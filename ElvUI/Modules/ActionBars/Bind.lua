@@ -420,7 +420,7 @@ function AB:LoadKeyBinder()
 	Popup.discard:SetScript("OnClick", function() AB:DeactivateBindMode(false) end)
 
 	Popup.perCharCheck = CreateFrame("CheckButton", Popup:GetName()..'CheckButton', Popup, "OptionsCheckButtonTemplate")
-	Popup.perCharCheck:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
+	_G[Popup.perCharCheck:GetName().."Text"]:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
 	Popup.perCharCheck:SetScript("OnLeave", GameTooltip_Hide)
 	Popup.perCharCheck:SetScript("OnShow", function(checkBtn) checkBtn:SetChecked(GetCurrentBindingSet() == 2) end)
 	Popup.perCharCheck:SetScript("OnClick", function()
