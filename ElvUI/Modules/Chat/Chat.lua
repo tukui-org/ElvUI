@@ -343,12 +343,13 @@ do --this can save some main file locals
 		["Alykins-Cenarius"]			= itsMel, -- DH
 		["Alyosha-Cenarius"]			= itsMel, -- Warrior
 		["Alytotes-Cenarius"]			= itsMel, -- Shaman
-		["Perìwìnkle-Cenarius"]			= itsMel, -- Shaman
 		["Dãwn-Cenarius"]				= itsMel, -- Paladin
-		["Pìper-Cenarius"]				= itsMel, -- Warlock
-		["Melbelle-Cenarius"]			= itsMel, -- Druid
-		["Spãrkles-Cenarius"]			= itsMel, -- Mage
+		["Freckles-Cenarius"]			= itsMel, -- DK
 		["Lõvi-Cenarius"]				= itsMel, -- Priest
+		["Melbelle-Cenarius"]			= itsMel, -- Druid
+		["Perìwìnkle-Cenarius"]			= itsMel, -- Shaman
+		["Pìper-Cenarius"]				= itsMel, -- Warlock
+		["Spãrkles-Cenarius"]			= itsMel, -- Mage
 		-- Lulupeep (Nihilist's wife)
 		["Arïä-WyrmrestAccord"] 		= DeathlyH,
 		["Belladonnä-WyrmrestAccord"] 	= DeathlyH,
