@@ -2,8 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
-local unpack, abs = unpack, abs
+local abs = abs
+local unpack = unpack
 local strjoin = strjoin
+local strmatch = strmatch
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
@@ -147,6 +149,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
 			if (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
 				if db.castbar.timeToHold > 0 then
+					local name = strmatch(sourceName, '([^%-]+).*')
 					if db.castbar.sourceInterruptClassColor then
 						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
 						if sourceClass then
@@ -154,9 +157,9 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 							sourceClass = classColor and classColor.colorStr
 						end
 
-						plate.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, sourceName) or sourceName))
+						plate.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, name) or name))
 					else
-						plate.Castbar.Text:SetText(INTERRUPTED.." > "..sourceName)
+						plate.Castbar.Text:SetText(INTERRUPTED.." > "..name)
 					end
 				end
 			end
