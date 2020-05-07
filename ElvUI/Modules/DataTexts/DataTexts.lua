@@ -388,7 +388,7 @@ function DT:LoadDataTexts(...)
 	end
 
 	for panelName, panel in pairs(DT.RegisteredPanels) do
-		if DT.db.panels[panelName].enable then
+		if not E.global.datatexts.customPanels[panelName] or DT.db.panels[panelName].enable then
 			DT:UpdatePanelInfo(panelName, panel, ...)
 		end
 	end
