@@ -37,7 +37,7 @@ G.bags = {
 }
 
 G.datatexts = {
-	panels = {},
+	customPanels = {},
 	customCurrencies = {},
 	newPanelInfo = {
 		name = '',

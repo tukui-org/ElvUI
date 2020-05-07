@@ -290,7 +290,7 @@ D.GeneratedKeys = {
 	private = {},
 	global = {
 		datatexts = {
-			panels = true,
+			customPanels = true,
 			customCurrencies = true
 		}
 	}

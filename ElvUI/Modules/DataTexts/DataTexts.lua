@@ -31,7 +31,7 @@ function DT:Initialize()
 	DT:RegisterLDB() -- LibDataBroker
 	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
 
-	for name, db in pairs(E.global.datatexts.panels) do
+	for name, db in pairs(E.global.datatexts.customPanels) do
 		DT:BuildPanel(name, db)
 	end
 
@@ -338,7 +338,7 @@ function DT:LoadDataTexts(...)
 	local isInPVP = inInstance and instanceType == "pvp"
 	local isBGPanel, enableBGPanel
 
-	for panel, db in pairs(E.global.datatexts.panels) do
+	for panel, db in pairs(E.global.datatexts.customPanels) do
 		DT:UpdateDTPanelAttributes(panel, db)
 	end
 

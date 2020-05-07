@@ -149,7 +149,7 @@ local function PanelGroup_Create(panel)
 		get = function(info) return E.db.datatexts.panels[panel][info[#info]] end,
 		set = function(info, value)
 			E.db.datatexts.panels[panel][info[#info]] = value
-			DT:UpdateDTPanelAttributes(panel, E.global.datatexts.panels[panel])
+			DT:UpdateDTPanelAttributes(panel, E.global.datatexts.customPanels[panel])
 			DT:LoadDataTexts()
 		end,
 		args = {
@@ -163,10 +163,10 @@ local function PanelGroup_Create(panel)
 				name = L["Panel Options"],
 				type = 'group',
 				guiInline = true,
-				get = function(info) return E.global.datatexts.panels[panel][info[#info]] end,
+				get = function(info) return E.global.datatexts.customPanels[panel][info[#info]] end,
 				set = function(info, value)
-					E.global.datatexts.panels[panel][info[#info]] = value
-					DT:UpdateDTPanelAttributes(panel, E.global.datatexts.panels[panel])
+					E.global.datatexts.customPanels[panel][info[#info]] = value
+					DT:UpdateDTPanelAttributes(panel, E.global.datatexts.customPanels[panel])
 					DT:LoadDataTexts()
 				end,
 				args = {
@@ -178,7 +178,7 @@ local function PanelGroup_Create(panel)
 						confirm = true,
 						func = function(info)
 							E.db.datatexts.panels[panel] = nil
-							E.global.datatexts.panels[panel] = nil
+							E.global.datatexts.customPanels[panel] = nil
 							DT:ReleasePanel(panel)
 							PanelGroup_Delete(panel)
 							PanelLayoutOptions()
@@ -191,8 +191,8 @@ local function PanelGroup_Create(panel)
 	}
 
 	E:CopyTable(E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args, DTPanelOptions)
-	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.panels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
-	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.panels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
+	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
+	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 end
 
 PanelLayoutOptions = function()
@@ -204,7 +204,7 @@ PanelLayoutOptions = function()
 	local options = E.Options.args.datatexts.args.panels.args
 
 	-- Custom Panels
-	for panel in pairs(E.global.datatexts.panels) do
+	for panel in pairs(E.global.datatexts.customPanels) do
 		PanelGroup_Create(panel)
 	end
 
@@ -688,7 +688,7 @@ E.Options.args.datatexts = {
 							width = 'full',
 							name = L['Name'],
 							--validate = function(_, value)
-							--	return E.global.datatexts.panels[value] and L['Name Taken'] or true
+							--	return E.global.datatexts.customPanels[value] and L['Name Taken'] or true
 							--end,
 						},
 						add = {
@@ -701,7 +701,7 @@ E.Options.args.datatexts = {
 							end,
 							func = function()
 								local name = E.global.datatexts.newPanelInfo.name
-								E.global.datatexts.panels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo)
+								E.global.datatexts.customPanels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo)
 								E.db.datatexts.panels[name] = { enable = true }
 
 								for i = 1, E.global.datatexts.newPanelInfo.numPoints do
@@ -709,7 +709,7 @@ E.Options.args.datatexts = {
 								end
 
 								PanelGroup_Create(name)
-								DT:BuildPanel(name, E.global.datatexts.panels[name])
+								DT:BuildPanel(name, E.global.datatexts.customPanels[name])
 								PanelLayoutOptions()
 
 								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name)
