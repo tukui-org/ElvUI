@@ -50,25 +50,17 @@ DT.UnitEvents = {
 function DT:BuildPanel(name, db)
 	local Panel = CreateFrame('Frame', name, E.UIParent)
 	Panel:Point('CENTER')
-
-	DT:UpdateDTPanelAttributes(name, db)
-
 	E:CreateMover(Panel, name..'Mover', name, nil, nil, nil, nil, nil, 'general,solo')
 
-	if db.enable then
-		Panel:Show()
-		E:EnableMover(_G[name].mover:GetName())
-		RegisterStateDriver(Panel, "visibility", db.visibility)
-	else
-		Panel:Hide()
-		E:DisableMover(_G[name].mover:GetName())
-	end
+	DT:UpdateDTPanelAttributes(name, db)
 end
 
 function DT:UpdateDTPanelAttributes(panel, db)
 	local Panel = _G[panel]
 
 	Panel:Size(db.width, db.height)
+	Panel.mover:Size(db.width, db.height)
+
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
 
@@ -77,17 +69,13 @@ function DT:UpdateDTPanelAttributes(panel, db)
 
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
 
-	if Panel.mover then
-		Panel.mover:Size(db.width, db.height)
-		if db.enable then
-			Panel:Show()
-			E:EnableMover(Panel.mover:GetName())
-			RegisterStateDriver(Panel, "visibility", db.visibility)
-		else
-			UnregisterStateDriver(Panel, "visibility")
-			Panel:Hide()
-			E:DisableMover(Panel.mover:GetName())
-		end
+	if DT.db.panels[panel].enable then
+		E:EnableMover(Panel.mover:GetName())
+		RegisterStateDriver(Panel, "visibility", db.visibility)
+	else
+		UnregisterStateDriver(Panel, "visibility")
+		Panel:Hide()
+		E:DisableMover(Panel.mover:GetName())
 	end
 end
 
@@ -213,6 +201,15 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	panel.anchor = anchor
 	panel.vertical = vertical
 
+	if not E.db.datatexts.panels[name] then
+		E.db.datatexts.panels[name] = {
+			enable = false,
+		}
+		for i = 1, numPoints do
+			E.db.datatexts.panels[name][i] = ''
+		end
+	end
+
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
 		if not dt then
@@ -288,13 +285,17 @@ function DT:LoadDataTexts(...)
 	local inInstance, instanceType = IsInInstance()
 	local isInPVP = inInstance and instanceType == "pvp"
 	local isBGPanel, enableBGPanel
+
+	for panel, db in pairs(E.global.datatexts.panels) do
+		DT:UpdateDTPanelAttributes(panel, db)
+	end
+
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		isBGPanel = isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
 		enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 
 		--Restore Panels
-		for i = 1, panel.numPoints do
-			local dt = panel.dataPanels[i]
+		for i, dt in ipairs(panel.dataPanels) do
 			dt:UnregisterAllEvents()
 			dt:SetScript('OnUpdate', nil)
 			dt:SetScript('OnEnter', nil)
