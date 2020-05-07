@@ -226,9 +226,6 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 
 			panel.dataPanels[i] = dt
 		end
-
-		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 	end
 
 	panel:HookScript('OnSizeChanged', DT.UpdatePanelDimensions)
