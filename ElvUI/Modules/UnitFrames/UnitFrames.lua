@@ -866,8 +866,8 @@ function UF:HandleSmartVisibility()
 		end
 
 		sv.raid.visibility = ''
-		sv.raid.enable = maxPlayers < 40
 		sv.raid40.visibility = ''
+		sv.raid.enable = maxPlayers < 40
 		sv.raid40.enable = maxPlayers == 40
 
 		if sv.raid.enable then
@@ -878,8 +878,8 @@ function UF:HandleSmartVisibility()
 		end
 	else
 		sv.raid.visibility = '[@raid6,noexists][@raid31,exists] hide;show'
-		sv.raid.enable = true
 		sv.raid40.visibility = '[@raid31,noexists] hide;show'
+		sv.raid.enable = true
 		sv.raid40.enable = true
 	end
 
