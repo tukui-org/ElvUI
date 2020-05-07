@@ -54,7 +54,7 @@ DT.PanelPool = { InUse = {}, Free = {}, Count = 0 }
 
 function DT:FetchFrame(givenName)
 	local count = DT.PanelPool.Count
-	local name = 'ElvUI_DTPanel_' .. count
+	local name = 'ElvUI_DTPanel' .. count
 	local frame
 
 	local poolName, poolFrame = next(DT.PanelPool.Free)
@@ -99,7 +99,7 @@ function DT:BuildPanel(name, db)
 	Panel:Point('CENTER')
 	Panel:Size(100, 10)
 
-	local MoverName = 'DTPanel_'..name..'Mover'
+	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
 	Panel.givenName = name
 
