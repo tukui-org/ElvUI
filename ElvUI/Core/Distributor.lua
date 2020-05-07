@@ -3,11 +3,10 @@ local D = E:GetModule('Distributor')
 local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 
---Lua functions
 local _G = _G
 local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
-local pairs, len, format, split, find = pairs, strlen, format, strsplit, strfind
---WoW API / Variables
+local len, format, split, find = strlen, format, strsplit, strfind
+
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
 local IsInGroup, UnitInParty = IsInGroup, UnitInParty
@@ -15,10 +14,6 @@ local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 -- GLOBALS: ElvDB, ElvPrivateDB
-
-----------------------------------
--- CONSTANTS
-----------------------------------
 
 local REQUEST_PREFIX = 'ELVUI_REQUEST'
 local REPLY_PREFIX = 'ELVUI_REPLY'
@@ -136,6 +131,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			whileDead = 1,
 			hideOnEscape = 1,
 		}
+
 		E:StaticPopup_Show('DISTRIBUTOR_RESPONSE')
 
 		Downloads[sender] = {
@@ -153,11 +149,11 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		if response == 'YES' then
 			self:RegisterComm(TRANSFER_COMPLETE_PREFIX)
 			self:SendCommMessage(TRANSFER_PREFIX, Uploads[profileKey].serialData, dist, Uploads[profileKey].target)
-			Uploads[profileKey] = nil
 		else
 			E:StaticPopup_Show('DISTRIBUTOR_REQUEST_DENIED')
-			Uploads[profileKey] = nil
 		end
+
+		Uploads[profileKey] = nil
 	elseif prefix == TRANSFER_PREFIX then
 		self:UnregisterComm(TRANSFER_PREFIX)
 		E:StaticPopupSpecial_Hide(self.statusBar)
@@ -303,53 +299,38 @@ local function GetProfileData(profileType)
 		return
 	end
 
-	local profileKey
-	local profileData = {}
-
+	local profileData, profileKey = {}
 	if profileType == 'profile' then
-		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
-
-		local data = ElvDB.profiles[profileKey]
-
 		--Copy current profile data
-		profileData = E:CopyTable(profileData, data)
+		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
+		profileData = E:CopyTable(profileData, ElvDB.profiles[profileKey])
+
 		--This table will also hold all default values, not just the changed settings.
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
 		profileData = E:RemoveTableDuplicates(profileData, P, D.GeneratedKeys.profile)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile)
-
 	elseif profileType == 'private' then
-		profileKey = 'private'
-
 		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
-		local data = ElvPrivateDB.profiles[privateKey]
-
-		profileData = E:CopyTable(profileData, data)
+		profileData = E:CopyTable(profileData, ElvPrivateDB.profiles[privateKey])
 		profileData = E:RemoveTableDuplicates(profileData, V, D.GeneratedKeys.private)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private)
-
+		profileKey = 'private'
 	elseif profileType == 'global' then
-		profileKey = 'global'
-
-		local data = ElvDB.global
-
-		profileData = E:CopyTable(profileData, data)
+		profileData = E:CopyTable(profileData, ElvDB.global)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global)
-
+		profileKey = 'global'
 	elseif profileType == 'filters' then
-		profileKey = 'filters'
-
 		profileData.unitframe = {}
 		profileData.unitframe.aurafilters = {}
 		profileData.unitframe.aurafilters = E:CopyTable(profileData.unitframe.aurafilters, ElvDB.global.unitframe.aurafilters)
 		profileData.unitframe.buffwatch = {}
 		profileData.unitframe.buffwatch = E:CopyTable(profileData.unitframe.buffwatch, ElvDB.global.unitframe.buffwatch)
 		profileData = E:RemoveTableDuplicates(profileData, G)
+		profileKey = 'filters'
 	elseif profileType == 'styleFilters' then
 		profileKey = 'styleFilters'
-
 		profileData.nameplate = {}
 		profileData.nameplate.filters = {}
 		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, ElvDB.global.nameplate.filters)
