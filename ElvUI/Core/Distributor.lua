@@ -288,7 +288,11 @@ D.GeneratedKeys = {
 		movers = true
 	},
 	private = {},
-	global = {}
+	global = {
+		datatexts = {
+			panels = true
+		}
+	}
 }
 
 local function SetCustomVars(data, keys)
