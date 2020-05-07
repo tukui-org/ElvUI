@@ -9,8 +9,132 @@ local datatexts = {}
 
 local _G = _G
 local tonumber = tonumber
+local tostring = tostring
+local format = format
 local pairs = pairs
 local type = type
+
+local DTPanelOptions = {
+	numPoints = {
+		order = 1,
+		type = 'range',
+		name = L["Number of DataTexts"],
+		min = 1, max = 20, step = 1,
+	},
+	growth = {
+		order = 2,
+		type = 'select',
+		name = L["Growth"],
+		values = {
+			HORIZONTAL = 'HORIZONTAL',
+			VERTICAL = 'VERTICAL'
+		},
+	},
+	width = {
+		order = 3,
+		type = 'range',
+		name = L["Width"],
+		min = 24, max = E.screenwidth, step = 1,
+	},
+	height = {
+		order = 4,
+		type = 'range',
+		name = L["Height"],
+		min = 24, max = E.screenheight, step = 1,
+	},
+	backdrop = {
+		order = 5,
+		name = L["Backdrop"],
+		type = "toggle",
+	},
+	panelTransparency = {
+		order = 6,
+		type = 'toggle',
+		name = L["Panel Transparency"],
+	},
+	mouseover = {
+		order = 7,
+		name = L["Mouse Over"],
+		desc = L["The frame is not shown unless you mouse over the frame."],
+		type = "toggle",
+	},
+	border = {
+		order = 8,
+		name = L["Show Border"],
+		type = "toggle",
+	},
+	strataAndLevel = {
+		order = 9,
+		type = "group",
+		name = L["Strata and Level"],
+		guiInline = true,
+		args = {
+			frameStrata = {
+				order = 2,
+				type = "select",
+				name = L["Frame Strata"],
+				values = {
+					["BACKGROUND"] = "BACKGROUND",
+					["LOW"] = "LOW",
+					["MEDIUM"] = "MEDIUM",
+					["HIGH"] = "HIGH",
+					["DIALOG"] = "DIALOG",
+					["TOOLTIP"] = "TOOLTIP",
+				},
+			},
+			frameLevel = {
+				order = 5,
+				type = "range",
+				name = L["Frame Level"],
+				min = 2, max = 128, step = 1,
+			},
+		},
+	},
+	tooltip = {
+		order = 10,
+		type = "group",
+		name = L["Tooltip"],
+		guiInline = true,
+		args = {
+			tooltipAnchor = {
+				order = 2,
+				type = "select",
+				name = L["Anchor"],
+				values = {
+					ANCHOR_TOP = 'ANCHOR_TOP',
+					ANCHOR_RIGHT = 'ANCHOR_RIGHT',
+					ANCHOR_BOTTOM = 'ANCHOR_BOTTOM',
+					ANCHOR_LEFT = 'ANCHOR_LEFT',
+					ANCHOR_TOPRIGHT = 'ANCHOR_TOPRIGHT',
+					ANCHOR_BOTTOMRIGHT = 'ANCHOR_BOTTOMRIGHT',
+					ANCHOR_TOPLEFT = 'ANCHOR_TOPLEFT',
+					ANCHOR_BOTTOMLEFT = 'ANCHOR_BOTTOMLEFT',
+					ANCHOR_CURSOR = 'ANCHOR_CURSOR',
+				},
+			},
+			tooltipXOffset = {
+				order = 2,
+				type = 'range',
+				name = L["X-Offset"],
+				min = -30, max = 30, step = 1,
+			},
+			tooltipYOffset = {
+				order = 3,
+				type = 'range',
+				name = L["Y-Offset"],
+				min = -30, max = 30, step = 1,
+			},
+		},
+	},
+	visibility = {
+		type = 'input',
+		order = 11,
+		name = L["Visibility State"],
+		desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
+		width = 'full',
+	},
+}
+
 
 function DT:PanelLayoutOptions()
 	for name, data in pairs(DT.RegisteredDataTexts) do
@@ -18,41 +142,98 @@ function DT:PanelLayoutOptions()
 	end
 	datatexts[''] = L["NONE"]
 
-	local order
 	local table = E.Options.args.datatexts.args.panels.args
-	for pointLoc, tab in pairs(P.datatexts.panels) do
-		if not _G[pointLoc] then table[pointLoc] = nil; return; end
-		if type(tab) == 'table' then
-			if pointLoc:find("Chat") then
-				order = 15
-			else
-				order = 20
-			end
-			table[pointLoc] = {
-				type = 'group',
-				args = {},
-				name = L[pointLoc] or pointLoc,
-				order = order,
-			}
-			for option in pairs(tab) do
-				table[pointLoc].args[option] = {
-					type = 'select',
-					name = L[option] or option:upper(),
-					values = datatexts,
+
+	-- Custom Panels
+	for panel in pairs(E.global.datatexts.panels) do
+		DT:PanelGroup_Create(panel)
+	end
+
+	-- This will mixin the options for the Custom Panels.
+	for pointLoc, tab in pairs(DT.db.panels) do
+		if _G[pointLoc] then
+			if type(tab) == 'table' then
+				table[pointLoc] = table[pointLoc] or {
+					type = 'group',
+					args = {},
+					name = L[pointLoc] or pointLoc,
 					get = function(info) return E.db.datatexts.panels[pointLoc][info[#info]] end,
 					set = function(info, value) E.db.datatexts.panels[pointLoc][info[#info]] = value; DT:LoadDataTexts() end,
 				}
+				for option, value in pairs(tab) do
+					if type(option) == 'number' then
+						table[pointLoc].args[tostring(option)] = {
+							type = 'select',
+							order = option,
+							name = L[format("Position %d", option)],
+							values = datatexts,
+							get = function(info) return E.db.datatexts.panels[pointLoc][tonumber(info[#info])] end,
+							set = function(info, value) E.db.datatexts.panels[pointLoc][tonumber(info[#info])] = value; DT:LoadDataTexts() end,
+						}
+					elseif type(value) ~= 'boolean' then
+						table[pointLoc].args[option] = {
+							type = 'select',
+							name = L[option],
+							values = datatexts,
+						}
+					end
+				end
+			elseif type(tab) == 'string' then
+				table.smallPanels.args[pointLoc] = {
+					type = 'select',
+					name = L[pointLoc] or pointLoc,
+					values = datatexts,
+					get = function(info) return E.db.datatexts.panels[pointLoc] end,
+					set = function(info, value) E.db.datatexts.panels[pointLoc] = value; DT:LoadDataTexts() end,
+				}
 			end
-		elseif type(tab) == 'string' then
-			table.smallPanels.args[pointLoc] = {
-				type = 'select',
-				name = L[pointLoc] or pointLoc,
-				values = datatexts,
-				get = function(info) return E.db.datatexts.panels[pointLoc] end,
-				set = function(info, value) E.db.datatexts.panels[pointLoc] = value; DT:LoadDataTexts() end,
-			}
 		end
 	end
+end
+
+function DT:PanelGroup_Delete(panel)
+	E.Options.args.datatexts.args.panels.args[panel] = nil
+end
+
+function DT:PanelGroup_Create(panel)
+	E.Options.args.datatexts.args.panels.args[panel] = {
+		type = 'group',
+		name = panel,
+		get = function(info) return E.db.datatexts.panels[panel][info[#info]] end,
+		set = function(info, value) E.db.datatexts.panels[panel][info[#info]] = value DT:UpdateDTPanelAttributes(panel, E.global.datatexts.panels[panel]) DT:LoadDataTexts() end,
+		args = {
+			enable = {
+				order = 0,
+				type = 'toggle',
+				name = L['Enable'],
+			},
+			panelOptions = {
+				order = -1,
+				name = L["Panel Options"],
+				type = 'group',
+				guiInline = true,
+				get = function(info) return E.global.datatexts.panels[panel][info[#info]] end,
+				set = function(info, value) E.global.datatexts.panels[panel][info[#info]] = value DT:UpdateDTPanelAttributes(panel, E.global.datatexts.panels[panel]) DT:LoadDataTexts() end,
+				args = {
+					delete = {
+						order = 3,
+						type = 'execute',
+						name = L['Delete'],
+						width = 'full',
+						confirm = true,
+						func = function(info)
+							E.db.datatexts.panels[panel] = nil
+							E.global.datatexts.panels[panel] = nil
+
+							E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', 'newPanel')
+						end,
+					},
+				},
+			}
+		},
+	}
+
+	E:CopyTable(E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args, DTPanelOptions)
 end
 
 local function CreateCustomCurrencyOptions(currencyID)
@@ -471,10 +652,62 @@ E.Options.args.datatexts = {
 						Minimap:UpdateSettings()
 					end,
 				},
+				newPanel = {
+					order = 0,
+					type = 'group',
+					name = L['New Panel'],
+					get = function(info) return E.global.datatexts.newPanelInfo[info[#info]] end,
+					set = function(info, value) E.global.datatexts.newPanelInfo[info[#info]] = value end,
+					args = {
+						name = {
+							order = 0,
+							type = 'input',
+							width = 'full',
+							name = L['Name'],
+							--validate = function(_, value)
+							--	return E.global.datatexts.panels[value] and L['Name Taken'] or true
+							--end,
+						},
+						add = {
+							order = 14,
+							type = 'execute',
+							name = L['Add'],
+							width = 'full',
+							hidden = function() return E.global.datatexts.newPanelInfo.name == '' end,
+							func = function()
+								E.global.datatexts.panels[E.global.datatexts.newPanelInfo.name] = CopyTable(E.global.datatexts.newPanelInfo)
+
+								E.db.datatexts.panels[E.global.datatexts.newPanelInfo.name] = { enable = true }
+
+								for i = 1, E.global.datatexts.newPanelInfo.numPoints do
+									E.db.datatexts.panels[E.global.datatexts.newPanelInfo.name][i] = ''
+								end
+
+								DT:PanelGroup_Create(E.global.datatexts.newPanelInfo.name)
+								DT:BuildPanel(E.global.datatexts.newPanelInfo.name, E.global.datatexts.panels[E.global.datatexts.newPanelInfo.name])
+								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', E.global.datatexts.newPanelInfo.name)
+
+								E.global.datatexts.newPanelInfo = CopyTable(G.datatexts.newPanelInfo)
+							end,
+						},
+					},
+				},
 				smallPanels = {
 					type = "group",
 					name = L["Small Panels"],
-					order = 12,
+					order = 1,
+					args = {},
+				},
+				LeftChatDataPanel = {
+					type = "group",
+					name = L["LeftChatDataPanel"],
+					order = 2,
+					args = {},
+				},
+				RightChatDataPanel = {
+					type = "group",
+					name = L["RightChatDataPanel"],
+					order = 3,
 					args = {},
 				},
 			},
@@ -551,6 +784,8 @@ E.Options.args.datatexts = {
 		},
 	},
 }
+
+E:CopyTable(E.Options.args.datatexts.args.panels.args.newPanel.args, DTPanelOptions)
 
 DT:PanelLayoutOptions()
 SetupCustomCurrencies()

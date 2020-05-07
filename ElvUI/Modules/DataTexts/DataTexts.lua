@@ -27,12 +27,16 @@ function DT:Initialize()
 	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
 	DT:RegisterLDB() -- LibDataBroker
 	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
+
+	for name, db in pairs(E.global.datatexts.panels) do
+		DT:BuildPanel(name, db)
+	end
+
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
 end
 
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
-DT.PointLocation = {'middle', 'left', 'right'}
 DT.UnitEvents = {
 	UNIT_AURA = true,
 	UNIT_RESISTANCES = true,
@@ -42,6 +46,50 @@ DT.UnitEvents = {
 	UNIT_TARGET = true,
 	UNIT_SPELL_HASTE = true
 }
+
+function DT:BuildPanel(name, db)
+	local Panel = CreateFrame('Frame', name, E.UIParent)
+	Panel:Point('CENTER')
+
+	DT:UpdateDTPanelAttributes(name, db)
+
+	E:CreateMover(Panel, name..'Mover', name, nil, nil, nil, nil, nil, 'general,solo')
+
+	if db.enable then
+		Panel:Show()
+		E:EnableMover(_G[name].mover:GetName())
+		RegisterStateDriver(Panel, "visibility", db.visibility)
+	else
+		Panel:Hide()
+		E:DisableMover(_G[name].mover:GetName())
+	end
+end
+
+function DT:UpdateDTPanelAttributes(panel, db)
+	local Panel = _G[panel]
+
+	Panel:Size(db.width, db.height)
+	Panel:SetFrameStrata(db.frameStrata)
+	Panel:SetFrameLevel(db.frameLevel)
+
+	Panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
+	E:TogglePixelBorders(Panel, db.backdrop and db.border)
+
+	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
+
+	if Panel.mover then
+		Panel.mover:Size(db.width, db.height)
+		if db.enable then
+			Panel:Show()
+			E:EnableMover(Panel.mover:GetName())
+			RegisterStateDriver(Panel, "visibility", db.visibility)
+		else
+			UnregisterStateDriver(Panel, "visibility")
+			Panel:Hide()
+			E:DisableMover(Panel.mover:GetName())
+		end
+	end
+end
 
 local LDBHex = '|cffFFFFFF'
 function DT:BuildPanelFunctions(name, obj)
@@ -106,29 +154,32 @@ function DT:RegisterLDB()
 	end
 end
 
-function DT:GetDataPanelPoint(panel, i, numPoints)
+function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
 	if numPoints == 1 then
 		return 'CENTER', panel, 'CENTER'
 	else
-		if i == 1 then
-			return 'CENTER', panel, 'CENTER'
-		elseif i == 2 then
-			return 'RIGHT', panel.dataPanels.middle, 'LEFT', -4, 0
-		elseif i == 3 then
-			return 'LEFT', panel.dataPanels.middle, 'RIGHT', 4, 0
+		local point, relativePoint, xOffset, yOffset = 'LEFT', i == 1 and 'LEFT' or 'RIGHT', 4, 0
+		if vertical then
+			point, relativePoint, xOffset, yOffset = 'TOP', i == 1 and 'TOP' or 'BOTTOM', 0, -4
 		end
+
+		local lastPanel = i == 1 and panel or panel.dataPanels[i - 1]
+		return point, lastPanel, relativePoint, xOffset, yOffset
 	end
 end
 
 function DT:UpdatePanelDimensions()
 	local panelWidth, panelHeight = self:GetSize()
-	local width = (panelWidth / self.numPoints) - 4
-	local height = panelHeight - 4
-	for i=1, self.numPoints do
-		local dt = self.dataPanels[DT.PointLocation[i]]
+	local width, height = (panelWidth / self.numPoints) - 4, panelHeight - 4
+	if self.vertical then
+		width, height = panelWidth - 4, (panelHeight / self.numPoints) - 4
+	end
+
+	for i, dt in ipairs(self.dataPanels) do
+		dt:SetShown(i <= self.numPoints)
 		dt:Size(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(self, i, self.numPoints))
+		dt:Point(DT:GetDataPanelPoint(self, i, self.numPoints, self.vertical))
 	end
 end
 
@@ -147,25 +198,31 @@ function DT:SetupTooltip(panel)
 	end
 end
 
-function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff)
-	DT.RegisteredPanels[panel:GetName()] = panel
-	panel.dataPanels = {}
+function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
+	local name = panel:GetName()
+	if not name then
+		E:Print('DataTexts: Requires a panel name.')
+		return
+	end
+
+	DT.RegisteredPanels[name] = panel
+	panel.dataPanels = panel.dataPanels or {}
 	panel.numPoints = numPoints
 	panel.xOff = xOff
 	panel.yOff = yOff
 	panel.anchor = anchor
+	panel.vertical = vertical
 
-	for i=1, numPoints do
-		local pointIndex = DT.PointLocation[i]
-		local dt = panel.dataPanels[pointIndex]
+	for i = 1, numPoints do
+		local dt = panel.dataPanels[i]
 		if not dt then
-			dt = CreateFrame('Button', 'DataText'..i, panel)
+			dt = CreateFrame('Button', name..'DataText'..i, panel)
 			dt:RegisterForClicks("AnyUp")
 			dt.text = dt:CreateFontString(nil, 'OVERLAY')
 			dt.text:SetAllPoints()
 			dt.text:SetJustifyH("CENTER")
 			dt.text:SetJustifyV("MIDDLE")
-			panel.dataPanels[pointIndex] = dt
+			panel.dataPanels[i] = dt
 		end
 
 		dt:ClearAllPoints()
@@ -230,15 +287,14 @@ function DT:LoadDataTexts(...)
 	local font, fontSize, fontOutline = LSM:Fetch("font", DT.db.font), DT.db.fontSize, DT.db.fontOutline
 	local inInstance, instanceType = IsInInstance()
 	local isInPVP = inInstance and instanceType == "pvp"
-	local pointIndex, isBGPanel, enableBGPanel
+	local isBGPanel, enableBGPanel
 	for panelName, panel in pairs(DT.RegisteredPanels) do
 		isBGPanel = isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
 		enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 
 		--Restore Panels
-		for i=1, panel.numPoints do
-			pointIndex = DT.PointLocation[i]
-			local dt = panel.dataPanels[pointIndex]
+		for i = 1, panel.numPoints do
+			local dt = panel.dataPanels[i]
 			dt:UnregisterAllEvents()
 			dt:SetScript('OnUpdate', nil)
 			dt:SetScript('OnEnter', nil)
@@ -247,7 +303,7 @@ function DT:LoadDataTexts(...)
 			dt.text:FontTemplate(font, fontSize, fontOutline)
 			dt.text:SetWordWrap(DT.db.wordWrap)
 			dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
-			dt.pointIndex = pointIndex
+			dt.pointIndex = i
 
 			if enableBGPanel then
 				dt:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
@@ -267,7 +323,7 @@ function DT:LoadDataTexts(...)
 				for name, data in pairs(DT.RegisteredDataTexts) do
 					for option, value in pairs(DT.db.panels) do
 						if value and type(value) == 'table' then
-							if option == panelName and DT.db.panels[option][pointIndex] and DT.db.panels[option][pointIndex] == name then
+							if option == panelName and DT.db.panels[option][i] and DT.db.panels[option][i] == name then
 								DT:AssignPanelToDataText(dt, data, ...)
 							end
 						elseif value and type(value) == 'string' and value == name then

@@ -37,7 +37,26 @@ G.bags = {
 }
 
 G.datatexts = {
-	customCurrencies = {}
+	customCurrencies = {},
+	newPanelInfo = {
+		name = '',
+		enable = true,
+		growth = 'HORIZONTAL',
+		width = 300,
+		height = 22,
+		frameStrata = 'LOW',
+		numPoints = 3,
+		frameLevel = 1,
+		backdrop = true,
+		panelTransparency = false,
+		mouseover = false,
+		border = true,
+		visibility = '[petbattle] hide;show',
+		tooltipAnchor = 'ANCHOR_TOPLEFT',
+		tooltipXOffset = -17,
+		tooltipYOffset = 4,
+	},
+	panels = {},
 }
 
 G.nameplate = {
