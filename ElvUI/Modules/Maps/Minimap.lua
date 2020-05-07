@@ -207,23 +207,20 @@ function M:UpdateSettings()
 
 	_G.Minimap:Size(E.MinimapSize, E.MinimapSize)
 
-	local LeftMiniPanel = _G.LeftMiniPanel
-	local RightMiniPanel = _G.RightMiniPanel
+	local MinimapPanel = _G.MinimapPanel
 	local MMHolder = _G.MMHolder
 	local Minimap = _G.Minimap
 
 	if E.db.datatexts.minimapPanels then
-		LeftMiniPanel:Show()
-		RightMiniPanel:Show()
+		MinimapPanel:Show()
 	else
-		LeftMiniPanel:Hide()
-		RightMiniPanel:Hide()
+		MinimapPanel:Hide()
 	end
 
 	MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
 
 	if E.db.datatexts.minimapPanels then
-		MMHolder:Height(Minimap:GetHeight() + (LeftMiniPanel and (LeftMiniPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
+		MMHolder:Height(Minimap:GetHeight() + (MinimapPanel and (MinimapPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
 	else
 		MMHolder:Height(Minimap:GetHeight() + E.Border + E.Spacing*3)
 	end

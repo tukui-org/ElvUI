@@ -172,9 +172,7 @@ function LO:SetDataPanelStyle()
 	_G.LeftChatToggleButton:SetTemplate(panelStyle, panelGlossTex)
 	_G.RightChatDataPanel:SetTemplate(panelStyle, panelGlossTex)
 	_G.RightChatToggleButton:SetTemplate(panelStyle, panelGlossTex)
-
-	_G.LeftMiniPanel:SetTemplate(miniStyle, miniGlossTex)
-	_G.RightMiniPanel:SetTemplate(miniStyle, miniGlossTex)
+	_G.MinimapPanel:SetTemplate(miniStyle, miniGlossTex)
 end
 
 function LO:RepositionChatDataPanels()
@@ -450,20 +448,12 @@ end
 
 function LO:CreateMinimapPanels()
 	local Minimap = _G.Minimap
-	local lminipanel = CreateFrame('Frame', 'LeftMiniPanel', Minimap)
-
-	lminipanel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -E.Border, -E.Spacing*3)
-	lminipanel:Point('BOTTOMRIGHT', Minimap, 'BOTTOM', 0, -(E.Spacing*3 + PANEL_HEIGHT))
-	lminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
-	lminipanel:Hide()
-	DT:RegisterPanel(lminipanel, 1, 'ANCHOR_BOTTOMLEFT', lminipanel:GetWidth() * 2, -4)
-
-	local rminipanel = CreateFrame('Frame', 'RightMiniPanel', Minimap)
-	rminipanel:Point('TOPRIGHT', Minimap, 'BOTTOMRIGHT', E.Border, -(E.Spacing*3))
-	rminipanel:Point('BOTTOMLEFT', lminipanel, 'BOTTOMRIGHT', -E.Border + (E.Spacing*3), 0)
-	rminipanel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
-	rminipanel:Hide()
-	DT:RegisterPanel(rminipanel, 1, 'ANCHOR_BOTTOM', 0, -4)
+	local panel = CreateFrame('Frame', 'MinimapPanel', Minimap)
+	panel:Point('TOPLEFT', Minimap, 'BOTTOMLEFT', -E.Border, -E.Spacing*3)
+	panel:Point('BOTTOMRIGHT', Minimap, 'BOTTOMRIGHT', 0, -(E.Spacing*3 + PANEL_HEIGHT))
+	panel:SetTemplate(E.db.datatexts.panelTransparency and 'Transparent' or 'Default', true)
+	panel:Hide()
+	DT:RegisterPanel(panel, 2, 'ANCHOR_BOTTOMLEFT', 0, -4)
 end
 
 E:RegisterModule(LO:GetName())
