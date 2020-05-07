@@ -50,18 +50,63 @@ DT.UnitEvents = {
 	UNIT_SPELL_HASTE = true
 }
 
+DT.PanelPool = { InUse = {}, Free = {}, Count = 0 }
+
+function DT:FetchFrame(givenName)
+	local count = DT.PanelPool.Count
+	local name = 'ElvUI_DTPanel_' .. count
+	local frame
+
+	local poolName, poolFrame = next(DT.PanelPool.Free)
+	if poolName then
+		frame = poolFrame
+		DT.PanelPool.Free[poolName] = nil
+	else
+		frame = CreateFrame('Frame', name, E.UIParent)
+		DT.PanelPool.Count = DT.PanelPool.Count + 1
+	end
+
+	DT.PanelPool.InUse[givenName] = frame
+
+	return frame
+end
+
+function DT:ReleasePanel(givenName)
+	local panel = DT.PanelPool.InUse[givenName]
+	if panel then
+		panel:UnregisterAllEvents()
+		panel:SetScript('OnUpdate', nil)
+		panel:SetScript('OnEnter', nil)
+		panel:SetScript('OnLeave', nil)
+		panel:SetScript('OnClick', nil)
+		panel:Hide()
+
+		UnregisterStateDriver(panel, 'visibility')
+		E:DisableMover(panel.moverName)
+
+		DT.PanelPool.Free[givenName] = panel
+		DT.PanelPool.InUse[givenName] = nil
+	end
+end
+
 function DT:BuildPanel(name, db)
-	local Panel = CreateFrame('Frame', 'ElvUI_DTPanel_'..name, E.UIParent)
+	local Panel = DT:FetchFrame(name)
 	Panel:Point('CENTER')
 	Panel:Size(100, 10)
-	Panel.customName = name
 
-	E:CreateMover(Panel, 'DTPanel_'..name..'Mover', name, nil, nil, nil, nil, nil, 'general,solo')
+	local MoverName = 'DTPanel_'..name..'Mover'
+	Panel.moverName = MoverName
+	Panel.givenName = name
+
+	if not E:HasMover(MoverName) then
+		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'general,solo')
+	end
+
 	DT:UpdateDTPanelAttributes(name, db)
 end
 
 function DT:UpdateDTPanelAttributes(name, db)
-	local Panel = _G['ElvUI_DTPanel_'..name]
+	local Panel = DT.PanelPool.InUse[name]
 
 	Panel:Size(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
@@ -72,12 +117,12 @@ function DT:UpdateDTPanelAttributes(name, db)
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
 
 	if DT.db.panels[name].enable then
-		E:EnableMover(Panel.mover:GetName())
+		E:EnableMover(Panel.moverName)
 		RegisterStateDriver(Panel, "visibility", db.visibility)
 	else
 		UnregisterStateDriver(Panel, "visibility")
 		Panel:Hide()
-		E:DisableMover(Panel.mover:GetName())
+		E:DisableMover(Panel.moverName)
 	end
 end
 
@@ -190,7 +235,7 @@ end
 
 function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	local realName = panel:GetName()
-	local name = panel.customName or realName
+	local name = panel.givenName or realName
 
 	if not name then
 		E:Print('DataTexts: Requires a panel name.')

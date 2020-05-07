@@ -360,6 +360,10 @@ function E:ToggleMovers(show, moverType)
 	end
 end
 
+function E:HasMover(name)
+	return self.CreatedMovers[name] or self.DisabledMovers[name]
+end
+
 function E:DisableMover(name)
 	if self.DisabledMovers[name] then return end
 	if not self.CreatedMovers[name] then
