@@ -220,6 +220,20 @@ PanelLayoutOptions = function()
 				end,
 			}
 
+			-- temp to delete old data in WIP testing
+			if not P.datatexts.panels[name] and not DT.PanelPool.InUse[name] then
+				options[name].args.delete = {
+					order = -1,
+					type = 'execute',
+					name = L['Delete'],
+					func = function()
+						E.db.datatexts.panels[name] = nil
+						options[name] = nil
+						PanelLayoutOptions()
+					end,
+				}
+			end
+
 			for option, value in pairs(tab) do
 				if type(option) == 'number' then
 					options[name].args[tostring(option)] = {
