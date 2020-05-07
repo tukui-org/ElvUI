@@ -848,16 +848,9 @@ function UF.headerPrototype:Reset()
 end
 
 UF.SmartSettings = {
-	raid = {
-		visibility = ''
-	},
-	raid40 = {
-		visibility = '',
-		numGroups = 8
-	},
-	raidpet = {
-		enable = false
-	}
+	raid = {},
+	raid40 = { numGroups = 8 },
+	raidpet = { enable = false }
 }
 
 function UF:HandleSmartVisibility()
@@ -872,7 +865,9 @@ function UF:HandleSmartVisibility()
 			maxPlayers = 40
 		end
 
+		sv.raid.visibility = ''
 		sv.raid.enable = maxPlayers < 40
+		sv.raid40.visibility = ''
 		sv.raid40.enable = maxPlayers == 40
 
 		if sv.raid.enable then
@@ -882,7 +877,9 @@ function UF:HandleSmartVisibility()
 			end
 		end
 	else
+		sv.raid.visibility = '[@raid6,noexists][@raid31,exists] hide;show'
 		sv.raid.enable = true
+		sv.raid40.visibility = '[@raid31,noexists] hide;show'
 		sv.raid40.enable = true
 	end
 
