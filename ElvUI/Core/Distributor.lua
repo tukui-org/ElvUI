@@ -250,6 +250,7 @@ local blacklistedKeys = {
 	private = {},
 	global = {
 		general = {
+			AceGUI = true,
 			UIScale = true,
 			locale = true,
 			version = true,
