@@ -10,7 +10,7 @@
 --Lua functions
 local _G = _G
 local unpack = unpack
-local format, gsub, type, tcopy = format, gsub, type, table.copy
+local format, gsub, type = format, gsub, type
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
@@ -46,6 +46,31 @@ Engine[4] = E.DF.profile
 Engine[5] = E.DF.global
 _G.ElvUI = Engine
 
+E.oUF = Engine.oUF
+E.ActionBars = E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
+E.AFK = E:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
+E.Auras = E:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
+E.Bags = E:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.Blizzard = E:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
+E.Chat = E:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.DataBars = E:NewModule('DataBars','AceEvent-3.0')
+E.DataTexts = E:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.DebugTools = E:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
+E.Distributor = E:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+E.Layout = E:NewModule('Layout','AceEvent-3.0')
+E.Minimap = E:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.Misc = E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0')
+E.ModuleCopy = E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
+E.NamePlates = E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+E.PluginInstaller = E:NewModule('PluginInstaller')
+E.RaidUtility = E:NewModule('RaidUtility','AceEvent-3.0')
+E.Skins = E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.Threat = E:NewModule('Threat','AceEvent-3.0')
+E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
+E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
+E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
+E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+
 do
 	local locale = GetLocale()
 	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
@@ -64,9 +89,9 @@ do
 
 		-- in this case: `major` is the lib table and `minor` is the minor version
 		if type(major) == 'table' and type(minor) == 'number' then
-			self.Libs[name], self.LibsMinor[name] = major, minor
+			E.Libs[name], E.LibsMinor[name] = major, minor
 		else -- in this case: `major` is the lib name and `minor` is the silent switch
-			self.Libs[name], self.LibsMinor[name] = _G.LibStub(major, minor)
+			E.Libs[name], E.LibsMinor[name] = _G.LibStub(major, minor)
 		end
 	end
 
@@ -92,31 +117,6 @@ do
 	E.LSM = E.Libs.LSM
 	E.Masque = E.Libs.Masque
 end
-
-E.oUF = Engine.oUF
-E.ActionBars = E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
-E.AFK = E:NewModule('AFK','AceEvent-3.0','AceTimer-3.0')
-E.Auras = E:NewModule('Auras','AceHook-3.0','AceEvent-3.0')
-E.Bags = E:NewModule('Bags','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-E.Blizzard = E:NewModule('Blizzard','AceEvent-3.0','AceHook-3.0')
-E.Chat = E:NewModule('Chat','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.DataBars = E:NewModule('DataBars','AceEvent-3.0')
-E.DataTexts = E:NewModule('DataTexts','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.DebugTools = E:NewModule('DebugTools','AceEvent-3.0','AceHook-3.0')
-E.Distributor = E:NewModule('Distributor','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
-E.Layout = E:NewModule('Layout','AceEvent-3.0')
-E.Minimap = E:NewModule('Minimap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-E.Misc = E:NewModule('Misc','AceEvent-3.0','AceTimer-3.0')
-E.ModuleCopy = E:NewModule('ModuleCopy','AceEvent-3.0','AceTimer-3.0','AceComm-3.0','AceSerializer-3.0')
-E.NamePlates = E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
-E.PluginInstaller = E:NewModule('PluginInstaller')
-E.RaidUtility = E:NewModule('RaidUtility','AceEvent-3.0')
-E.Skins = E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.Threat = E:NewModule('Threat','AceEvent-3.0')
-E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
-E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
-E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
 do
 	local a1,a2,a3 = '','([%(%)%.%%%+%-%*%?%[%^%$])','%%%1'
@@ -146,60 +146,59 @@ function E:OnInitialize()
 		ElvCharacterDB = {}
 	end
 
-	ElvCharacterData = nil; --Depreciated
-	ElvPrivateData = nil; --Depreciated
-	ElvData = nil; --Depreciated
+	ElvCharacterData = nil --Depreciated
+	ElvPrivateData = nil --Depreciated
+	ElvData = nil --Depreciated
 
-	self.db = tcopy(self.DF.profile, true)
-	self.global = tcopy(self.DF.global, true)
+	E.db = E:CopyTable({}, E.DF.profile)
+	E.global = E:CopyTable({}, E.DF.global)
+	E.private = E:CopyTable({}, E.privateVars.profile)
 
 	local ElvDB = ElvDB
 	if ElvDB then
 		if ElvDB.global then
-			self:CopyTable(self.global, ElvDB.global)
+			E:CopyTable(E.global, ElvDB.global)
 		end
 
 		local profileKey
 		if ElvDB.profileKeys then
-			profileKey = ElvDB.profileKeys[self.myname..' - '..self.myrealm]
+			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
 		if profileKey and ElvDB.profiles and ElvDB.profiles[profileKey] then
-			self:CopyTable(self.db, ElvDB.profiles[profileKey])
+			E:CopyTable(E.db, ElvDB.profiles[profileKey])
 		end
 	end
-
-	self.private = tcopy(self.privateVars.profile, true)
 
 	local ElvPrivateDB = ElvPrivateDB
 	if ElvPrivateDB then
 		local profileKey
 		if ElvPrivateDB.profileKeys then
-			profileKey = ElvPrivateDB.profileKeys[self.myname..' - '..self.myrealm]
+			profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
 		end
 
 		if profileKey and ElvPrivateDB.profiles and ElvPrivateDB.profiles[profileKey] then
-			self:CopyTable(self.private, ElvPrivateDB.profiles[profileKey])
+			E:CopyTable(E.private, ElvPrivateDB.profiles[profileKey])
 		end
 	end
 
-	self.twoPixelsPlease = false
-	self.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
-	self.PixelMode = self.twoPixelsPlease or self.private.general.pixelPerfect -- keep this over `UIScale`
-	self:UIScale(true)
-	self:UpdateMedia()
-	self:Contruct_StaticPopups()
-	self:InitializeInitialModules()
+	E.twoPixelsPlease = false
+	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
+	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
+	E:UIScale(true)
+	E:UpdateMedia()
+	E:Contruct_StaticPopups()
+	E:InitializeInitialModules()
 
-	if self.private.general.minimap.enable then
-		self.Minimap:SetGetMinimapShape()
+	if E.private.general.minimap.enable then
+		E.Minimap:SetGetMinimapShape()
 		_G.Minimap:SetMaskTexture(130937) -- interface/chatframe/chatframebackground.blp
 	else
 		_G.Minimap:SetMaskTexture(186178) -- textures/minimapmask.blp
 	end
 
-	if GetAddOnEnableState(self.myname, 'Tukui') == 2 then
-		self:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
+	if GetAddOnEnableState(E.myname, 'Tukui') == 2 then
+		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 
 	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
@@ -209,10 +208,10 @@ function E:OnInitialize()
 	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
 		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
 		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
-		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', self.PositionGameMenuButton)
+		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 
-	self.loadedtime = GetTime()
+	E.loadedtime = GetTime()
 end
 
 function E:PositionGameMenuButton()
@@ -236,7 +235,7 @@ function E:ResetProfile()
 
 	local ElvPrivateDB = ElvPrivateDB
 	if ElvPrivateDB.profileKeys then
-		profileKey = ElvPrivateDB.profileKeys[self.myname..' - '..self.myrealm]
+		profileKey = ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
 	end
 
 	if profileKey and ElvPrivateDB.profiles and ElvPrivateDB.profiles[profileKey] then
@@ -248,5 +247,5 @@ function E:ResetProfile()
 end
 
 function E:OnProfileReset()
-	self:StaticPopup_Show('RESET_PROFILE_PROMPT')
+	E:StaticPopup_Show('RESET_PROFILE_PROMPT')
 end
