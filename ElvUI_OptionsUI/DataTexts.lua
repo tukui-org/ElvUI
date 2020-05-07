@@ -190,6 +190,8 @@ local function PanelGroup_Create(panel)
 	}
 
 	E:CopyTable(E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args, DTPanelOptions)
+	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.panels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
+	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.panels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 end
 
 PanelLayoutOptions = function()
