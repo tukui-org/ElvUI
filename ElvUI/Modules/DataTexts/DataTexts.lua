@@ -5,10 +5,13 @@ local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 
 local _G = _G
-local pairs, type, error, pcall, strlen = pairs, type, error, pcall, strlen
+local type, error, pcall = type, error, pcall
+local ipairs, pairs, strlen = ipairs, pairs, strlen
 local CreateFrame = CreateFrame
 local IsInInstance = IsInInstance
 local InCombatLockdown = InCombatLockdown
+local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
 
 function DT:Initialize()
 	DT.Initialized = true
@@ -48,25 +51,22 @@ DT.UnitEvents = {
 }
 
 function DT:BuildPanel(name, db)
-	local Panel = CreateFrame('Frame', name, E.UIParent)
+	local Panel = CreateFrame('Frame', 'ElvUI_DTPanel_'..name, E.UIParent)
 	Panel:Point('CENTER')
-	E:CreateMover(Panel, name..'Mover', name, nil, nil, nil, nil, nil, 'general,solo')
 
+	E:CreateMover(Panel, 'DTPanel_'..name..'Mover', name, nil, nil, nil, nil, nil, 'general,solo')
 	DT:UpdateDTPanelAttributes(name, db)
 end
 
 function DT:UpdateDTPanelAttributes(panel, db)
-	local Panel = _G[panel]
+	local Panel = _G['ElvUI_DTPanel_'..panel]
 
 	Panel:Size(db.width, db.height)
-	Panel.mover:Size(db.width, db.height)
-
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
-
 	Panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
-	E:TogglePixelBorders(Panel, db.backdrop and db.border)
 
+	E:TogglePixelBorders(Panel, db.backdrop and db.border)
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
 
 	if DT.db.panels[panel].enable then
@@ -81,7 +81,7 @@ end
 
 local LDBHex = '|cffFFFFFF'
 function DT:BuildPanelFunctions(name, obj)
-	local panel = nil
+	local panel
 
 	local function OnEnter(dt)
 		DT:SetupTooltip(dt)
@@ -151,7 +151,7 @@ function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
 			point, relativePoint, xOffset, yOffset = 'TOP', i == 1 and 'TOP' or 'BOTTOM', 0, -4
 		end
 
-		local lastPanel = i == 1 and panel or panel.dataPanels[i - 1]
+		local lastPanel = (i == 1 and panel) or panel.dataPanels[i - 1]
 		return point, lastPanel, relativePoint, xOffset, yOffset
 	end
 end
@@ -202,9 +202,8 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	panel.vertical = vertical
 
 	if not E.db.datatexts.panels[name] then
-		E.db.datatexts.panels[name] = {
-			enable = false,
-		}
+		E.db.datatexts.panels[name] = { enable = false }
+
 		for i = 1, numPoints do
 			E.db.datatexts.panels[name][i] = ''
 		end
@@ -215,10 +214,12 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 		if not dt then
 			dt = CreateFrame('Button', name..'DataText'..i, panel)
 			dt:RegisterForClicks("AnyUp")
+
 			dt.text = dt:CreateFontString(nil, 'OVERLAY')
 			dt.text:SetAllPoints()
 			dt.text:SetJustifyH("CENTER")
 			dt.text:SetJustifyV("MIDDLE")
+
 			panel.dataPanels[i] = dt
 		end
 
