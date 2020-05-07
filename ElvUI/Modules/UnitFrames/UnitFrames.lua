@@ -849,10 +849,10 @@ end
 
 UF.SmartSettings = {
 	raid = {
-		visibility = '[@raid6,noexists][@raid31,exists] hide;show'
+		visibility = ''
 	},
 	raid40 = {
-		visibility = '[@raid31,noexists] hide;show',
+		visibility = '',
 		numGroups = 8
 	},
 	raidpet = {
@@ -872,8 +872,8 @@ function UF:HandleSmartVisibility()
 			maxPlayers = 40
 		end
 
-		sv.raid.enable = maxPlayers <= 30
-		sv.raid40.enable = maxPlayers > 30
+		sv.raid.enable = maxPlayers < 40
+		sv.raid40.enable = maxPlayers == 40
 
 		if sv.raid.enable then
 			local maxGroups = E:Round(maxPlayers/5)
