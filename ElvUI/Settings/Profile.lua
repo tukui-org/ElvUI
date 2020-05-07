@@ -909,12 +909,6 @@ P.datatexts = {
 		},
 		LeftMiniPanel = 'Guild',
 		RightMiniPanel = 'Friends',
-		BottomMiniPanel = '',
-		TopMiniPanel = '',
-		BottomLeftMiniPanel = '',
-		BottomRightMiniPanel = '',
-		TopRightMiniPanel = '',
-		TopLeftMiniPanel = '',
 	},
 	battleground = true,
 	panelTransparency = false,
@@ -957,12 +951,6 @@ P.datatexts = {
 	minimapPanels = true,
 	leftChatPanel = true,
 	rightChatPanel = true,
-	minimapTop = false,
-	minimapTopLeft = false,
-	minimapTopRight = false,
-	minimapBottom = false,
-	minimapBottomLeft = false,
-	minimapBottomRight = false,
 }
 
 --Tooltip

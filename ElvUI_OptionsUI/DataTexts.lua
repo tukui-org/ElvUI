@@ -236,6 +236,10 @@ local function PanelGroup_Create(panel)
 	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 end
 
+local function ColorizeName(name, color)
+	return color and format('|cFF%s%s|r', color, name) or name
+end
+
 PanelLayoutOptions = function()
 	for name, data in pairs(DT.RegisteredDataTexts) do
 		datatexts[name] = data.localizedName or L[name]
@@ -256,7 +260,6 @@ PanelLayoutOptions = function()
 				options[name] = {
 					type = 'group',
 					args = {},
-					name = L[name] or name,
 					get = function(info) return E.db.datatexts.panels[name][info[#info]] end,
 					set = function(info, value)
 						E.db.datatexts.panels[name][info[#info]] = value
@@ -264,6 +267,8 @@ PanelLayoutOptions = function()
 					end,
 				}
 			end
+
+			options[name].name = ColorizeName(L[name] or name, P.datatexts.panels[name] and '999999' or E.global.datatexts.customPanels[name] and 'ffffff')
 
 			-- temp to delete old data in WIP testing
 			if not P.datatexts.panels[name] and not E.global.datatexts.customPanels[name] then
@@ -301,17 +306,6 @@ PanelLayoutOptions = function()
 					}
 				end
 			end
-		elseif type(tab) == 'string' then
-			options.smallPanels.args[name] = {
-				type = 'select',
-				name = L[name] or name,
-				values = datatexts,
-				get = function(info) return E.db.datatexts.panels[name] end,
-				set = function(info, value)
-					E.db.datatexts.panels[name] = value
-					DT:UpdatePanelInfo(name)
-				end,
-			}
 		end
 	end
 end
@@ -680,64 +674,10 @@ E.Options.args.datatexts = {
 						Minimap:UpdateSettings()
 					end,
 				},
-				minimapTop = {
-					order = 5,
-					name = L["TopMiniPanel"],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.datatexts[info[#info]] = value
-						Minimap:UpdateSettings()
-					end,
-				},
-				minimapTopLeft = {
-					order = 6,
-					name = L["TopLeftMiniPanel"],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.datatexts[info[#info]] = value
-						Minimap:UpdateSettings()
-					end,
-				},
-				minimapTopRight = {
-					order = 7,
-					name = L["TopRightMiniPanel"],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.datatexts[info[#info]] = value
-						Minimap:UpdateSettings()
-					end,
-				},
-				minimapBottom = {
-					order = 8,
-					name = L["BottomMiniPanel"],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.datatexts[info[#info]] = value
-						Minimap:UpdateSettings()
-					end,
-				},
-				minimapBottomLeft = {
-					order = 9,
-					name = L["BottomLeftMiniPanel"],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.datatexts[info[#info]] = value
-						Minimap:UpdateSettings()
-					end,
-				},
-				minimapBottomRight = {
-					order = 10,
-					name = L["BottomRightMiniPanel"],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.datatexts[info[#info]] = value
-						Minimap:UpdateSettings()
-					end,
-				},
 				newPanel = {
 					order = 0,
 					type = 'group',
-					name = L['New Panel'],
+					name = ColorizeName(L['New Panel'], '33ff33'),
 					get = function(info) return E.global.datatexts.newPanelInfo[info[#info]] end,
 					set = function(info, value) E.global.datatexts.newPanelInfo[info[#info]] = value end,
 					args = {
@@ -776,12 +716,6 @@ E.Options.args.datatexts = {
 							end,
 						},
 					},
-				},
-				smallPanels = {
-					type = "group",
-					name = L["Small Panels"],
-					order = 1,
-					args = {},
 				},
 				LeftChatDataPanel = {
 					type = "group",

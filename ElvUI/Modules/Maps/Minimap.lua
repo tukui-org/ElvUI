@@ -209,12 +209,6 @@ function M:UpdateSettings()
 
 	local LeftMiniPanel = _G.LeftMiniPanel
 	local RightMiniPanel = _G.RightMiniPanel
-	local BottomMiniPanel = _G.BottomMiniPanel
-	local BottomLeftMiniPanel = _G.BottomLeftMiniPanel
-	local BottomRightMiniPanel = _G.BottomRightMiniPanel
-	local TopMiniPanel = _G.TopMiniPanel
-	local TopLeftMiniPanel = _G.TopLeftMiniPanel
-	local TopRightMiniPanel = _G.TopRightMiniPanel
 	local MMHolder = _G.MMHolder
 	local Minimap = _G.Minimap
 
@@ -224,42 +218,6 @@ function M:UpdateSettings()
 	else
 		LeftMiniPanel:Hide()
 		RightMiniPanel:Hide()
-	end
-
-	if E.db.datatexts.minimapBottom then
-		BottomMiniPanel:Show()
-	else
-		BottomMiniPanel:Hide()
-	end
-
-	if E.db.datatexts.minimapBottomLeft then
-		BottomLeftMiniPanel:Show()
-	else
-		BottomLeftMiniPanel:Hide()
-	end
-
-	if E.db.datatexts.minimapBottomRight then
-		BottomRightMiniPanel:Show()
-	else
-		BottomRightMiniPanel:Hide()
-	end
-
-	if E.db.datatexts.minimapTop then
-		TopMiniPanel:Show()
-	else
-		TopMiniPanel:Hide()
-	end
-
-	if E.db.datatexts.minimapTopLeft then
-		TopLeftMiniPanel:Show()
-	else
-		TopLeftMiniPanel:Hide()
-	end
-
-	if E.db.datatexts.minimapTopRight then
-		TopRightMiniPanel:Show()
-	else
-		TopRightMiniPanel:Hide()
 	end
 
 	MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
