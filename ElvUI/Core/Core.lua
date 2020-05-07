@@ -6,7 +6,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local strjoin, twipe, tinsert, tremove, tContains = strjoin, wipe, tinsert, tremove, tContains
-local format, find, strrep, strlen, sub = format, strfind, strrep, strlen, strsub
+local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 --WoW API / Variables
 local CreateFrame = CreateFrame
@@ -165,6 +165,18 @@ do -- used in optionsUI
 	E.DEFAULT_FILTER = {}
 	for filter, tbl in pairs(G.unitframe.aurafilters) do
 		E.DEFAULT_FILTER[filter] = tbl.type
+	end
+end
+
+do
+	local a1,a2 = '','[%s%-]'
+	function E:ShortenRealm(realm)
+		return gsub(realm, a2, a1)
+	end
+
+	local a3 = format('%%-%s', E:ShortenRealm(E.myrealm))
+	function E:StripMyRealm(name)
+		return gsub(name, a3, a1)
 	end
 end
 
