@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 --Lua functions
 local _G = _G
 local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, sort, unpack, wipe, ceil
-local format, gsub, strfind, strjoin, strsplit, strmatch = format, gsub, strfind, strjoin, strsplit, strmatch
+local format, strfind, strjoin, strsplit, strmatch = format, strfind, strjoin, strsplit, strmatch
 --WoW API / Variables
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
@@ -83,7 +83,6 @@ local mobilestatus = {
 	[2] = "|TInterface\\ChatFrame\\UI-ChatIcon-ArmoryChat-BusyMobile:14:14:0:0:16:16:0:16:0:16|t",
 }
 
-local PLAYER_REALM = gsub(E.myrealm,'[%s%-]','')
 local function inGroup(name)
 	return (UnitInParty(name) or UnitInRaid(name)) and "|cffaaaaaa*|r" or ""
 end
@@ -100,20 +99,19 @@ local function BuildGuildTable()
 		zone = (isMobile and not connected) and REMOTE_CHAT or zone
 
 		if connected or isMobile then
-			local newName = gsub(name,'%-'..PLAYER_REALM,'')
 			guildTable[#guildTable + 1] = {
-				name = newName,				--1
-				rank = rank,				--2
-				level = level,				--3
-				zone = zone,				--4
-				note = note,				--5
-				officerNote = officerNote,	--6
-				online = connected,			--7
-				status = statusInfo,		--8
-				class = className,			--9
-				rankIndex = rankIndex,		--10
-				isMobile = isMobile,		--11
-				guid = guid					--12
+				name = E:StripMyRealm(name),	--1
+				rank = rank,					--2
+				level = level,					--3
+				zone = zone,					--4
+				note = note,					--5
+				officerNote = officerNote,		--6
+				online = connected,				--7
+				status = statusInfo,			--8
+				class = className,				--9
+				rankIndex = rankIndex,			--10
+				isMobile = isMobile,			--11
+				guid = guid						--12
 			}
 		end
 	end

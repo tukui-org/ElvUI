@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 34
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 35
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -210,12 +210,8 @@ end
 
 function lib:VersionCheck(event, prefix, message, _, sender)
 	if (event == "CHAT_MSG_ADDON" and prefix == lib.prefix) and (sender and message and not strmatch(message, "^%s-$")) then
-		if not lib.myName then
-			lib.myName = E.myname .. "-" .. gsub(E.myrealm, "[%s%-]", "")
-		end
-		if sender == lib.myName then
-			return
-		end
+		if not lib.myName then lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm)) end
+		if sender == lib.myName then return end
 
 		if not E.pluginRecievedOutOfDateMessage then
 			for name, version in gmatch(message, "([^=]+)=([%d%p]+);") do

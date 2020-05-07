@@ -5,7 +5,7 @@ local S = E:GetModule('Skins')
 
 --Lua functions
 local _G = _G
-local gsub = gsub
+local unpack = unpack
 local format = format
 local pairs = pairs
 local ipairs = ipairs
@@ -39,8 +39,20 @@ local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 local CURRENT_PAGE = 0
 local MAX_PAGE = 8
 
-local myRealm = gsub(E.myrealm,'[%s%-]','')
-local myName = E.myname..'-'..myRealm
+local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
+local ELV_TOONS = {
+	['Elv-Spirestone']			= true,
+	['Elvz-Spirestone']			= true,
+	['Fleshlite-Spirestone']	= true,
+	['Elvidan-Spirestone']		= true,
+	['Elvilas-Spirestone']		= true,
+	['Fraku-Spirestone']		= true,
+	['Jarvix-Spirestone']		= true,
+	['Watermelon-Spirestone']	= true,
+	['Zinxbe-Spirestone']		= true,
+	['Whorlock-Spirestone']		= true,
+}
+
 local function SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows() -- Monitor this
 	FCF_SetLocked(_G.ChatFrame1, 1)
@@ -123,7 +135,7 @@ local function SetupChat(noDisplayMsg)
 		end
 	end
 
-	if myName == 'Elvz-Kil\'jaeden' or myName == 'Illidelv-Area52' or myName == 'Elv-Spirestone' then
+	if ELV_TOONS[PLAYER_NAME] then
 		SetCVar('scriptErrors', 1)
 	end
 

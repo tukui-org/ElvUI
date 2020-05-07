@@ -6,7 +6,7 @@ local LibBase64 = E.Libs.Base64
 --Lua functions
 local _G = _G
 local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
-local len, format, split, find = strlen, format, strsplit, strfind
+local pairs, len, format, split, find = pairs, strlen, format, strsplit, strfind
 --WoW API / Variables
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
@@ -51,7 +51,7 @@ function D:Distribute(target, otherServer, isGlobal)
 	local profileKey, data
 	if not isGlobal then
 		if ElvDB.profileKeys then
-			profileKey = ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+			profileKey = ElvDB.profileKeys[E.mynameRealm]
 		end
 
 		data = ElvDB.profiles[profileKey]
@@ -314,7 +314,7 @@ local function GetProfileData(profileType)
 	local profileData = {}
 
 	if profileType == 'profile' then
-		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.myname..' - '..E.myrealm]
+		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
 
 		local data = ElvDB.profiles[profileKey]
 		local vars = SetCustomVars(data, D.GeneratedKeys.profile)
@@ -330,7 +330,7 @@ local function GetProfileData(profileType)
 	elseif profileType == 'private' then
 		profileKey = 'private'
 
-		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
 		local data = ElvPrivateDB.profiles[privateKey]
 		local vars = SetCustomVars(data, D.GeneratedKeys.private)
 
@@ -508,7 +508,7 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 			return
 		end
 	elseif profileType == 'private' then
-		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.myname..' - '..E.myrealm]
+		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
 		if privateKey then
 			profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
 			ElvPrivateDB.profiles[privateKey] = profileData
