@@ -113,9 +113,9 @@ function DT:BuildPanelFrame(name, db)
 	Panel.moverName = MoverName
 	Panel.givenName = name
 
-	local mover = E:GetMover(MoverName)
-	if mover then
-		E:SetMoverPoints(MoverName, mover, Panel)
+	local holder = E:GetMoverHolder(MoverName)
+	if holder then
+		E:SetMoverPoints(MoverName, holder, Panel)
 	else
 		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'general,solo')
 	end

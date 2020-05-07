@@ -85,7 +85,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	local width = parent.dirtyWidth or parent:GetWidth()
 	local height = parent.dirtyHeight or parent:GetHeight()
 
-	local f = parent.mover or CreateFrame('Button', name, E.UIParent)
+	local f = CreateFrame('Button', name, E.UIParent)
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
@@ -96,7 +96,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:Size(width, height)
 	f:Hide()
 
-	local fs = f.text or f:CreateFontString(nil, 'OVERLAY')
+	local fs = f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
 	fs:Point('CENTER')
 	fs:SetText(text or name)
@@ -360,7 +360,7 @@ function E:ToggleMovers(show, moverType)
 	end
 end
 
-function E:GetMover(name)
+function E:GetMoverHolder(name)
 	local created = self.CreatedMovers[name]
 	local disabled = self.DisabledMovers[name]
 	return created or disabled, not not disabled
