@@ -37,6 +37,7 @@ G.bags = {
 }
 
 G.datatexts = {
+	panels = {},
 	customCurrencies = {},
 	newPanelInfo = {
 		name = '',
@@ -56,7 +57,6 @@ G.datatexts = {
 		tooltipXOffset = -17,
 		tooltipYOffset = 4,
 	},
-	panels = {},
 }
 
 G.nameplate = {

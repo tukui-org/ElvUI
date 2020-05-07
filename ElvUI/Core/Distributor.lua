@@ -290,23 +290,11 @@ D.GeneratedKeys = {
 	private = {},
 	global = {
 		datatexts = {
-			panels = true
+			panels = true,
+			customCurrencies = true
 		}
 	}
 }
-
-local function SetCustomVars(data, keys)
-	if not data then return end
-
-	local vars = E:CopyTable({}, keys)
-	for key in pairs(data) do
-		if type(key) ~= 'table' then
-			vars[key] = true
-		end
-	end
-
-	return vars
-end
 
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= 'string' then
@@ -321,14 +309,13 @@ local function GetProfileData(profileType)
 		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
 
 		local data = ElvDB.profiles[profileKey]
-		local vars = SetCustomVars(data, D.GeneratedKeys.profile)
 
 		--Copy current profile data
 		profileData = E:CopyTable(profileData, data)
 		--This table will also hold all default values, not just the changed settings.
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
-		profileData = E:RemoveTableDuplicates(profileData, P, vars)
+		profileData = E:RemoveTableDuplicates(profileData, P, D.GeneratedKeys.profile)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile)
 
 	elseif profileType == 'private' then
@@ -336,20 +323,18 @@ local function GetProfileData(profileType)
 
 		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
 		local data = ElvPrivateDB.profiles[privateKey]
-		local vars = SetCustomVars(data, D.GeneratedKeys.private)
 
 		profileData = E:CopyTable(profileData, data)
-		profileData = E:RemoveTableDuplicates(profileData, V, vars)
+		profileData = E:RemoveTableDuplicates(profileData, V, D.GeneratedKeys.private)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private)
 
 	elseif profileType == 'global' then
 		profileKey = 'global'
 
 		local data = ElvDB.global
-		local vars = SetCustomVars(data, D.GeneratedKeys.global)
 
 		profileData = E:CopyTable(profileData, data)
-		profileData = E:RemoveTableDuplicates(profileData, G, vars)
+		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global)
 
 	elseif profileType == 'filters' then
