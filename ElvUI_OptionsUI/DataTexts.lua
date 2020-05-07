@@ -677,7 +677,7 @@ E.Options.args.datatexts = {
 							width = 'full',
 							hidden = function() return E.global.datatexts.newPanelInfo.name == '' end,
 							func = function()
-								E.global.datatexts.panels[E.global.datatexts.newPanelInfo.name] = CopyTable(E.global.datatexts.newPanelInfo)
+								E.global.datatexts.panels[E.global.datatexts.newPanelInfo.name] = E:CopyTable({}, E.global.datatexts.newPanelInfo)
 
 								E.db.datatexts.panels[E.global.datatexts.newPanelInfo.name] = { enable = true }
 
@@ -689,7 +689,7 @@ E.Options.args.datatexts = {
 								DT:BuildPanel(E.global.datatexts.newPanelInfo.name, E.global.datatexts.panels[E.global.datatexts.newPanelInfo.name])
 								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', E.global.datatexts.newPanelInfo.name)
 
-								E.global.datatexts.newPanelInfo = CopyTable(G.datatexts.newPanelInfo)
+								E.global.datatexts.newPanelInfo = E:CopyTable({}, G.datatexts.newPanelInfo)
 							end,
 						},
 					},
