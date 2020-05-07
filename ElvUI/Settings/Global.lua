@@ -56,6 +56,12 @@ G.datatexts = {
 		tooltipAnchor = 'ANCHOR_TOPLEFT',
 		tooltipXOffset = -17,
 		tooltipYOffset = 4,
+		fonts = {
+			enable = false,
+			font = "PT Sans Narrow",
+			fontSize = 12,
+			fontOutline = "OUTLINE",
+		}
 	},
 }
 

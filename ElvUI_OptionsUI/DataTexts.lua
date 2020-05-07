@@ -91,7 +91,7 @@ local DTPanelOptions = {
 		},
 	},
 	tooltip = {
-		order = 10,
+		order = 15,
 		type = "group",
 		name = L["Tooltip"],
 		guiInline = true,
@@ -130,7 +130,7 @@ local DTPanelOptions = {
 	},
 	visibility = {
 		type = 'input',
-		order = 11,
+		order = 16,
 		name = L["Visibility State"],
 		desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 		width = 'full',
@@ -182,6 +182,49 @@ local function PanelGroup_Create(panel)
 							PanelLayoutOptions()
 							E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', 'newPanel')
 						end,
+					},
+					fonts = {
+						order = 10,
+						type = "group",
+						name = L["Fonts"],
+						guiInline = true,
+						get = function(info)
+							local settings = E.global.datatexts.customPanels[panel]
+							if not settings.fonts then settings.fonts = E:CopyTable({}, G.datatexts.newPanelInfo.fonts) end
+							return settings.fonts[info[#info]]
+						end,
+						set = function(info, value)
+							E.global.datatexts.customPanels[panel].fonts[info[#info]] = value
+							DT:UpdateDTPanelAttributes(panel, E.global.datatexts.customPanels[panel])
+						end,
+						args = {
+							enable = {
+								type = "toggle",
+								order = 1,
+								name = L["Enable"],
+								desc = L["This will override the global cooldown settings."],
+								disabled = E.noop,
+							},
+							fontSize = {
+								order = 3,
+								type = 'range',
+								name = L["Text Font Size"],
+								min = 10, max = 50, step = 1,
+							},
+							font = {
+								order = 4,
+								type = 'select',
+								name = L["Font"],
+								dialogControl = 'LSM30_Font',
+								values = AceGUIWidgetLSMlists.font,
+							},
+							fontOutline = {
+								order = 5,
+								type = "select",
+								name = L["Font Outline"],
+								values = C.Values.FontFlags,
+							},
+						}
 					},
 				},
 			}
@@ -249,7 +292,8 @@ PanelLayoutOptions = function()
 							DT:UpdatePanelInfo(name)
 						end,
 					}
-				elseif type(value) ~= 'boolean' then
+				elseif type(value) ~= 'boolean' and P.datatexts.panels[name][option] then
+					-- TODO: need to convert the old [name][option] to the number style..
 					options[name].args[option] = {
 						type = 'select',
 						name = L[option],

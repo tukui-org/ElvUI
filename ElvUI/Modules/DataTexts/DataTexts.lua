@@ -334,6 +334,12 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	local enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
 
+	local db = panel.db
+	local font, fontSize, fontOutline = data.font, data.fontSize, data.fontOutline
+	if db and db.fonts and db.fonts.enable then
+		font, fontSize, fontOutline = LSM:Fetch("font", db.fonts.font), db.fonts.fontSize, db.fonts.fontOutline
+	end
+
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
 		dt:UnregisterAllEvents()
@@ -341,7 +347,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt:SetScript('OnEnter', nil)
 		dt:SetScript('OnLeave', nil)
 		dt:SetScript('OnClick', nil)
-		dt.text:FontTemplate(data.font, data.fontSize, data.fontOutline)
+		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
 		dt.pointIndex = i
@@ -401,6 +407,7 @@ end
 
 function DT:UpdateDTPanelAttributes(name, db)
 	local Panel = DT.PanelPool.InUse[name]
+	Panel.db = db
 
 	Panel:Size(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
