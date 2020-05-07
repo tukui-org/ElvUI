@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local type, error, pcall = type, error, pcall
-local ipairs, pairs, strlen = ipairs, pairs, strlen
+local ipairs, pairs, next, strlen = ipairs, pairs, next, strlen
 local CreateFrame = CreateFrame
 local IsInInstance = IsInInstance
 local InCombatLockdown = InCombatLockdown
@@ -332,6 +332,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	local data = DT.LoadedInfo
 	local isBGPanel = data.isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
 	local enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
+	if not panel then panel = DT.RegisteredPanels[panelName] end
 
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do

@@ -217,7 +217,7 @@ PanelLayoutOptions = function()
 					get = function(info) return E.db.datatexts.panels[name][info[#info]] end,
 					set = function(info, value)
 						E.db.datatexts.panels[name][info[#info]] = value
-						DT:LoadDataTexts()
+						DT:UpdatePanelInfo(name)
 					end,
 				}
 			end
@@ -246,7 +246,7 @@ PanelLayoutOptions = function()
 						get = function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end,
 						set = function(info, value)
 							E.db.datatexts.panels[name][tonumber(info[#info])] = value
-							DT:LoadDataTexts()
+							DT:UpdatePanelInfo(name)
 						end,
 					}
 				elseif type(value) ~= 'boolean' then
@@ -265,7 +265,7 @@ PanelLayoutOptions = function()
 				get = function(info) return E.db.datatexts.panels[name] end,
 				set = function(info, value)
 					E.db.datatexts.panels[name] = value
-					DT:LoadDataTexts()
+					DT:UpdatePanelInfo(name)
 				end,
 			}
 		end
