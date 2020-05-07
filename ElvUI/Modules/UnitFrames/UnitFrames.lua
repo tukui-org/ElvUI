@@ -859,8 +859,9 @@ function UF:HandleSmartVisibility()
 
 	local _, instanceType, _, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
 	if instanceType == 'raid' or instanceType == 'pvp' then
-		if UF.instanceMapIDs[instanceID] then
-			maxPlayers = UF.instanceMapIDs[instanceID]
+		local maxInstancePlayers = UF.instanceMapIDs[instanceID]
+		if maxInstancePlayers then
+			maxPlayers =  maxInstancePlayers
 		elseif not maxPlayers or maxPlayers == 0 then
 			maxPlayers = 40
 		end
