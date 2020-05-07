@@ -209,16 +209,18 @@ PanelLayoutOptions = function()
 	-- This will mixin the options for the Custom Panels.
 	for name, tab in pairs(DT.db.panels) do
 		if type(tab) == 'table' then
-			options[name] = options[name] or {
-				type = 'group',
-				args = {},
-				name = L[name] or name,
-				get = function(info) return E.db.datatexts.panels[name][info[#info]] end,
-				set = function(info, value)
-					E.db.datatexts.panels[name][info[#info]] = value
-					DT:UpdateDTPanelAttributes(name, E.global.datatexts.customPanels[name])
-				end,
-			}
+			if not options[name] then
+				options[name] = {
+					type = 'group',
+					args = {},
+					name = L[name] or name,
+					get = function(info) return E.db.datatexts.panels[name][info[#info]] end,
+					set = function(info, value)
+						E.db.datatexts.panels[name][info[#info]] = value
+						DT:UpdateDTPanelAttributes(name, E.global.datatexts.customPanels[name])
+					end,
+				}
+			end
 
 			-- temp to delete old data in WIP testing
 			if not P.datatexts.panels[name] and not DT.PanelPool.InUse[name] then
