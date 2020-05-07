@@ -74,18 +74,23 @@ end
 function DT:ReleasePanel(givenName)
 	local panel = DT.PanelPool.InUse[givenName]
 	if panel then
-		panel:UnregisterAllEvents()
-		panel:SetScript('OnUpdate', nil)
-		panel:SetScript('OnEnter', nil)
-		panel:SetScript('OnLeave', nil)
-		panel:SetScript('OnClick', nil)
 		panel:Hide()
+
+		for _, dt in ipairs(panel.dataPanels) do
+			dt:UnregisterAllEvents()
+			dt:SetScript('OnUpdate', nil)
+			dt:SetScript('OnEnter', nil)
+			dt:SetScript('OnLeave', nil)
+			dt:SetScript('OnClick', nil)
+			dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
+		end
 
 		UnregisterStateDriver(panel, 'visibility')
 		E:DisableMover(panel.moverName)
 
 		DT.PanelPool.Free[givenName] = panel
 		DT.PanelPool.InUse[givenName] = nil
+		DT.RegisteredPanels[givenName] = nil
 	end
 end
 
