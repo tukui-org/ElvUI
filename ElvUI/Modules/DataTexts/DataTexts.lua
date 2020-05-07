@@ -113,7 +113,7 @@ function DT:BuildPanelFrame(name, db)
 	Panel.moverName = MoverName
 	Panel.givenName = name
 
-	local mover = E:HasMover(MoverName)
+	local mover = E:GetMover(MoverName)
 	if mover then
 		E:SetMoverPoints(MoverName, mover, Panel)
 	else
