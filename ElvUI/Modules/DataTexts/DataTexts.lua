@@ -32,7 +32,7 @@ function DT:Initialize()
 	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
 
 	for name, db in pairs(E.global.datatexts.customPanels) do
-		DT:BuildPanel(name, db)
+		DT:BuildPanelFrame(name, db)
 	end
 
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
@@ -40,6 +40,12 @@ end
 
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
+DT.LoadedInfo = {}
+DT.PanelPool = {
+	InUse = {},
+	Free = {},
+	Count = 0
+}
 DT.UnitEvents = {
 	UNIT_AURA = true,
 	UNIT_RESISTANCES = true,
@@ -49,8 +55,6 @@ DT.UnitEvents = {
 	UNIT_TARGET = true,
 	UNIT_SPELL_HASTE = true
 }
-
-DT.PanelPool = { InUse = {}, Free = {}, Count = 0 }
 
 function DT:FetchFrame(givenName)
 	local count = DT.PanelPool.Count
@@ -71,30 +75,36 @@ function DT:FetchFrame(givenName)
 	return frame
 end
 
+function DT:EmptyPanel(panel)
+	panel:Hide()
+
+	for _, dt in ipairs(panel.dataPanels) do
+		dt:UnregisterAllEvents()
+		dt:SetScript('OnUpdate', nil)
+		dt:SetScript('OnEnter', nil)
+		dt:SetScript('OnLeave', nil)
+		dt:SetScript('OnClick', nil)
+
+		if dt.text:GetText() then
+			dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
+		end
+	end
+
+	UnregisterStateDriver(panel, 'visibility')
+	E:DisableMover(panel.moverName)
+end
+
 function DT:ReleasePanel(givenName)
 	local panel = DT.PanelPool.InUse[givenName]
 	if panel then
-		panel:Hide()
-
-		for _, dt in ipairs(panel.dataPanels) do
-			dt:UnregisterAllEvents()
-			dt:SetScript('OnUpdate', nil)
-			dt:SetScript('OnEnter', nil)
-			dt:SetScript('OnLeave', nil)
-			dt:SetScript('OnClick', nil)
-			dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
-		end
-
-		UnregisterStateDriver(panel, 'visibility')
-		E:DisableMover(panel.moverName)
-
+		DT:EmptyPanel(panel)
 		DT.PanelPool.Free[givenName] = panel
 		DT.PanelPool.InUse[givenName] = nil
 		DT.RegisteredPanels[givenName] = nil
 	end
 end
 
-function DT:BuildPanel(name, db)
+function DT:BuildPanelFrame(name, db)
 	local Panel = DT:FetchFrame(name)
 	Panel:Point('CENTER')
 	Panel:Size(100, 10)
@@ -103,32 +113,14 @@ function DT:BuildPanel(name, db)
 	Panel.moverName = MoverName
 	Panel.givenName = name
 
-	if not E:HasMover(MoverName) then
+	local mover = E:HasMover(MoverName)
+	if mover then
+		E:SetMoverPoints(MoverName, mover, Panel)
+	else
 		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'general,solo')
 	end
 
 	DT:UpdateDTPanelAttributes(name, db)
-end
-
-function DT:UpdateDTPanelAttributes(name, db)
-	local Panel = DT.PanelPool.InUse[name]
-
-	Panel:Size(db.width, db.height)
-	Panel:SetFrameStrata(db.frameStrata)
-	Panel:SetFrameLevel(db.frameLevel)
-	Panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
-
-	E:TogglePixelBorders(Panel, db.backdrop and db.border)
-	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
-
-	if DT.db.panels[name].enable then
-		E:EnableMover(Panel.moverName)
-		RegisterStateDriver(Panel, "visibility", db.visibility)
-	else
-		UnregisterStateDriver(Panel, "visibility")
-		Panel:Hide()
-		E:DisableMover(Panel.moverName)
-	end
 end
 
 local LDBHex = '|cffFFFFFF'
@@ -278,7 +270,11 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 		end
 	end
 
-	panel:HookScript('OnSizeChanged', DT.UpdatePanelDimensions)
+	if not panel.onSizeHooked then
+		panel:HookScript('OnSizeChanged', DT.UpdatePanelDimensions)
+		panel.onSizeHooked = true
+	end
+
 	DT.UpdatePanelDimensions(panel)
 end
 
@@ -332,66 +328,93 @@ function DT:AssignPanelToDataText(panel, data, event, ...)
 	panel:SetScript('OnLeave', data.onLeave or DT.Data_OnLeave)
 end
 
-function DT:LoadDataTexts(...)
-	local font, fontSize, fontOutline = LSM:Fetch("font", DT.db.font), DT.db.fontSize, DT.db.fontOutline
-	local inInstance, instanceType = IsInInstance()
-	local isInPVP = inInstance and instanceType == "pvp"
-	local isBGPanel, enableBGPanel
+function DT:UpdatePanelInfo(panelName, panel, ...)
+	local data = DT.LoadedInfo
+	local isBGPanel = data.isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
+	local enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 
-	for panel, db in pairs(E.global.datatexts.customPanels) do
-		DT:UpdateDTPanelAttributes(panel, db)
-	end
+	--Restore Panels
+	for i, dt in ipairs(panel.dataPanels) do
+		dt:UnregisterAllEvents()
+		dt:SetScript('OnUpdate', nil)
+		dt:SetScript('OnEnter', nil)
+		dt:SetScript('OnLeave', nil)
+		dt:SetScript('OnClick', nil)
+		dt.text:FontTemplate(data.font, data.fontSize, data.fontOutline)
+		dt.text:SetWordWrap(DT.db.wordWrap)
+		dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
+		dt.pointIndex = i
 
-	for panelName, panel in pairs(DT.RegisteredPanels) do
-		isBGPanel = isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
-		enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
+		if enableBGPanel then
+			dt:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
+			dt:SetScript('OnEvent', DT.UPDATE_BATTLEFIELD_SCORE)
+			dt:SetScript('OnEnter', DT.BattlegroundStats)
+			dt:SetScript('OnLeave', DT.Data_OnLeave)
+			dt:SetScript('OnClick', DT.HideBattlegroundTexts)
+			DT.UPDATE_BATTLEFIELD_SCORE(dt)
+			DT.ShowingBGStats = true
+		else
+			-- we aren't showing BGStats anymore
+			if (isBGPanel or not data.isInPVP) and DT.ShowingBGStats then
+				DT.ShowingBGStats = nil
+			end
 
-		--Restore Panels
-		for i, dt in ipairs(panel.dataPanels) do
-			dt:UnregisterAllEvents()
-			dt:SetScript('OnUpdate', nil)
-			dt:SetScript('OnEnter', nil)
-			dt:SetScript('OnLeave', nil)
-			dt:SetScript('OnClick', nil)
-			dt.text:FontTemplate(font, fontSize, fontOutline)
-			dt.text:SetWordWrap(DT.db.wordWrap)
-			dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
-			dt.pointIndex = i
-
-			if enableBGPanel then
-				dt:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
-				dt:SetScript('OnEvent', DT.UPDATE_BATTLEFIELD_SCORE)
-				dt:SetScript('OnEnter', DT.BattlegroundStats)
-				dt:SetScript('OnLeave', DT.Data_OnLeave)
-				dt:SetScript('OnClick', DT.HideBattlegroundTexts)
-				DT.UPDATE_BATTLEFIELD_SCORE(dt)
-				DT.ShowingBGStats = true
-			else
-				-- we aren't showing BGStats anymore
-				if (isBGPanel or not isInPVP) and DT.ShowingBGStats then
-					DT.ShowingBGStats = nil
-				end
-
-				--Register Panel to Datatext
-				for name, data in pairs(DT.RegisteredDataTexts) do
-					for option, value in pairs(DT.db.panels) do
-						if value and type(value) == 'table' then
-							if option == panelName and DT.db.panels[option][i] and DT.db.panels[option][i] == name then
-								DT:AssignPanelToDataText(dt, data, ...)
-							end
-						elseif value and type(value) == 'string' and value == name then
-							if DT.db.panels[option] == name and option == panelName then
-								DT:AssignPanelToDataText(dt, data, ...)
-							end
+			--Register Panel to Datatext
+			for name, info in pairs(DT.RegisteredDataTexts) do
+				for option, value in pairs(DT.db.panels) do
+					if value and type(value) == 'table' then
+						if option == panelName and DT.db.panels[option][i] and DT.db.panels[option][i] == name then
+							DT:AssignPanelToDataText(dt, info, ...)
+						end
+					elseif value and type(value) == 'string' and value == name then
+						if DT.db.panels[option] == name and option == panelName then
+							DT:AssignPanelToDataText(dt, info, ...)
 						end
 					end
 				end
 			end
 		end
 	end
+end
+
+function DT:LoadDataTexts(...)
+	local data = DT.LoadedInfo
+	data.font, data.fontSize, data.fontOutline = LSM:Fetch("font", DT.db.font), DT.db.fontSize, DT.db.fontOutline
+	data.inInstance, data.instanceType = IsInInstance()
+	data.isInPVP = data.inInstance and data.instanceType == "pvp"
+
+	for panel, db in pairs(E.global.datatexts.customPanels) do
+		DT:UpdateDTPanelAttributes(panel, db)
+	end
+
+	for panelName, panel in pairs(DT.RegisteredPanels) do
+		if DT.db.panels[panelName].enable then
+			DT:UpdatePanelInfo(panelName, panel, ...)
+		end
+	end
 
 	if DT.ForceHideBGStats then
 		DT.ForceHideBGStats = nil
+	end
+end
+
+function DT:UpdateDTPanelAttributes(name, db)
+	local Panel = DT.PanelPool.InUse[name]
+
+	Panel:Size(db.width, db.height)
+	Panel:SetFrameStrata(db.frameStrata)
+	Panel:SetFrameLevel(db.frameLevel)
+	Panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
+
+	E:TogglePixelBorders(Panel, db.backdrop and db.border)
+	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
+
+	if DT.db.panels[name].enable then
+		E:EnableMover(Panel.moverName)
+		RegisterStateDriver(Panel, "visibility", db.visibility)
+		DT:UpdatePanelInfo(name, Panel)
+	else
+		DT:EmptyPanel(Panel)
 	end
 end
 

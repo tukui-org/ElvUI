@@ -150,7 +150,6 @@ local function PanelGroup_Create(panel)
 		set = function(info, value)
 			E.db.datatexts.panels[panel][info[#info]] = value
 			DT:UpdateDTPanelAttributes(panel, E.global.datatexts.customPanels[panel])
-			DT:LoadDataTexts()
 		end,
 		args = {
 			enable = {
@@ -167,7 +166,6 @@ local function PanelGroup_Create(panel)
 				set = function(info, value)
 					E.global.datatexts.customPanels[panel][info[#info]] = value
 					DT:UpdateDTPanelAttributes(panel, E.global.datatexts.customPanels[panel])
-					DT:LoadDataTexts()
 				end,
 				args = {
 					delete = {
@@ -210,49 +208,50 @@ PanelLayoutOptions = function()
 
 	-- This will mixin the options for the Custom Panels.
 	for name, tab in pairs(DT.db.panels) do
-		if DT.PanelPool.InUse[name] then
-			if type(tab) == 'table' then
-				options[name] = options[name] or {
-					type = 'group',
-					args = {},
-					name = L[name] or name,
-					get = function(info) return E.db.datatexts.panels[name][info[#info]] end,
-					set = function(info, value) E.db.datatexts.panels[name][info[#info]] = value; DT:LoadDataTexts() end,
-				}
+		if type(tab) == 'table' then
+			options[name] = options[name] or {
+				type = 'group',
+				args = {},
+				name = L[name] or name,
+				get = function(info) return E.db.datatexts.panels[name][info[#info]] end,
+				set = function(info, value)
+					E.db.datatexts.panels[name][info[#info]] = value
+					DT:UpdateDTPanelAttributes(name, E.global.datatexts.customPanels[name])
+				end,
+			}
 
-				for option, value in pairs(tab) do
-					if type(option) == 'number' then
-						options[name].args[tostring(option)] = {
-							type = 'select',
-							order = option,
-							name = L[format("Position %d", option)],
-							values = datatexts,
-							get = function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end,
-							set = function(info, value)
-								E.db.datatexts.panels[name][tonumber(info[#info])] = value
-								DT:LoadDataTexts()
-							end,
-						}
-					elseif type(value) ~= 'boolean' then
-						options[name].args[option] = {
-							type = 'select',
-							name = L[option],
-							values = datatexts,
-						}
-					end
+			for option, value in pairs(tab) do
+				if type(option) == 'number' then
+					options[name].args[tostring(option)] = {
+						type = 'select',
+						order = option,
+						name = L[format("Position %d", option)],
+						values = datatexts,
+						get = function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end,
+						set = function(info, value)
+							E.db.datatexts.panels[name][tonumber(info[#info])] = value
+							DT:UpdateDTPanelAttributes(name, E.global.datatexts.customPanels[name])
+						end,
+					}
+				elseif type(value) ~= 'boolean' then
+					options[name].args[option] = {
+						type = 'select',
+						name = L[option],
+						values = datatexts,
+					}
 				end
-			elseif type(tab) == 'string' then
-				options.smallPanels.args[name] = {
-					type = 'select',
-					name = L[name] or name,
-					values = datatexts,
-					get = function(info) return E.db.datatexts.panels[name] end,
-					set = function(info, value)
-						E.db.datatexts.panels[name] = value
-						DT:LoadDataTexts()
-					end,
-				}
 			end
+		elseif type(tab) == 'string' then
+			options.smallPanels.args[name] = {
+				type = 'select',
+				name = L[name] or name,
+				values = datatexts,
+				get = function(info) return E.db.datatexts.panels[name] end,
+				set = function(info, value)
+					E.db.datatexts.panels[name] = value
+					DT:UpdateDTPanelAttributes(name, E.global.datatexts.customPanels[name])
+				end,
+			}
 		end
 	end
 end
@@ -709,7 +708,7 @@ E.Options.args.datatexts = {
 								end
 
 								PanelGroup_Create(name)
-								DT:BuildPanel(name, E.global.datatexts.customPanels[name])
+								DT:BuildPanelFrame(name, E.global.datatexts.customPanels[name])
 								PanelLayoutOptions()
 
 								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name)

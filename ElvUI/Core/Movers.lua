@@ -49,7 +49,7 @@ local function UpdateCoords(self)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
-local function SetPoints(name, holder, parent)
+function E:SetMoverPoints(name, holder, parent)
 	local point1, relativeTo1, relativePoint1, xOffset1, yOffset1 = unpack(holder.parentPoint)
 	local point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = GetSettingPoints(name)
 	if not point2 then -- fallback to the parents original point (on create) if the setting doesn't exist
@@ -85,7 +85,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	local width = parent.dirtyWidth or parent:GetWidth()
 	local height = parent.dirtyHeight or parent:GetHeight()
 
-	local f = CreateFrame('Button', name, E.UIParent)
+	local f = parent.mover or CreateFrame('Button', name, E.UIParent)
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
@@ -96,7 +96,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:Size(width, height)
 	f:Hide()
 
-	local fs = f:CreateFontString(nil, 'OVERLAY')
+	local fs = f.text or f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
 	fs:Point('CENTER')
 	fs:SetText(text or name)
@@ -120,7 +120,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	E.snapBars[#E.snapBars+1] = f
 
 	parent:SetScript('OnSizeChanged', SizeChanged)
-	SetPoints(name, holder, parent)
+	E:SetMoverPoints(name, holder, parent)
 
 	local function OnDragStart(self)
 		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
@@ -444,7 +444,7 @@ function E:SetMoversPositions()
 	end
 
 	for name, holder in pairs(E.CreatedMovers) do
-		SetPoints(name, holder)
+		E:SetMoverPoints(name, holder)
 	end
 end
 
