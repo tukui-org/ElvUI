@@ -898,14 +898,14 @@ P.datatexts = {
 	wordWrap = false,
 	panels = {
 		LeftChatDataPanel = {
-			[1] = 'Talent/Loot Specialization',
-			[2] = 'Durability',
-			[3] = 'BfA Missions',
+			'Talent/Loot Specialization',
+			'Durability',
+			'BfA Missions'
 		},
 		RightChatDataPanel = {
-			[1] = 'System',
-			[2] = 'Time',
-			[3] = 'Gold',
+			'System',
+			'Time',
+			'Gold'
 		},
 		LeftMiniPanel = 'Guild',
 		RightMiniPanel = 'Friends',
