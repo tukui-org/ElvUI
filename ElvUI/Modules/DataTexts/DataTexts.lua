@@ -53,13 +53,15 @@ DT.UnitEvents = {
 function DT:BuildPanel(name, db)
 	local Panel = CreateFrame('Frame', 'ElvUI_DTPanel_'..name, E.UIParent)
 	Panel:Point('CENTER')
+	Panel:Size(100, 10)
+	Panel.customName = name
 
 	E:CreateMover(Panel, 'DTPanel_'..name..'Mover', name, nil, nil, nil, nil, nil, 'general,solo')
 	DT:UpdateDTPanelAttributes(name, db)
 end
 
-function DT:UpdateDTPanelAttributes(panel, db)
-	local Panel = _G['ElvUI_DTPanel_'..panel]
+function DT:UpdateDTPanelAttributes(name, db)
+	local Panel = _G['ElvUI_DTPanel_'..name]
 
 	Panel:Size(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
@@ -69,7 +71,7 @@ function DT:UpdateDTPanelAttributes(panel, db)
 	E:TogglePixelBorders(Panel, db.backdrop and db.border)
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
 
-	if DT.db.panels[panel].enable then
+	if DT.db.panels[name].enable then
 		E:EnableMover(Panel.mover:GetName())
 		RegisterStateDriver(Panel, "visibility", db.visibility)
 	else
@@ -187,7 +189,9 @@ function DT:SetupTooltip(panel)
 end
 
 function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
-	local name = panel:GetName()
+	local realName = panel:GetName()
+	local name = panel.customName or realName
+
 	if not name then
 		E:Print('DataTexts: Requires a panel name.')
 		return
@@ -212,7 +216,7 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
 		if not dt then
-			dt = CreateFrame('Button', name..'DataText'..i, panel)
+			dt = CreateFrame('Button', realName..'_DataText'..i, panel)
 			dt:RegisterForClicks("AnyUp")
 
 			dt.text = dt:CreateFontString(nil, 'OVERLAY')
@@ -227,7 +231,7 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints))
 	end
 
-	panel:SetScript('OnSizeChanged', DT.UpdatePanelDimensions)
+	panel:HookScript('OnSizeChanged', DT.UpdatePanelDimensions)
 	DT.UpdatePanelDimensions(panel)
 end
 

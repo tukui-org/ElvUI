@@ -137,72 +137,21 @@ local DTPanelOptions = {
 	},
 }
 
-
-function DT:PanelLayoutOptions()
-	for name, data in pairs(DT.RegisteredDataTexts) do
-		datatexts[name] = data.localizedName or L[name]
-	end
-	datatexts[''] = L["NONE"]
-
-	local table = E.Options.args.datatexts.args.panels.args
-
-	-- Custom Panels
-	for panel in pairs(E.global.datatexts.panels) do
-		DT:PanelGroup_Create(panel)
-	end
-
-	-- This will mixin the options for the Custom Panels.
-	for pointLoc, tab in pairs(DT.db.panels) do
-		if _G[pointLoc] then
-			if type(tab) == 'table' then
-				table[pointLoc] = table[pointLoc] or {
-					type = 'group',
-					args = {},
-					name = L[pointLoc] or pointLoc,
-					get = function(info) return E.db.datatexts.panels[pointLoc][info[#info]] end,
-					set = function(info, value) E.db.datatexts.panels[pointLoc][info[#info]] = value; DT:LoadDataTexts() end,
-				}
-				for option, value in pairs(tab) do
-					if type(option) == 'number' then
-						table[pointLoc].args[tostring(option)] = {
-							type = 'select',
-							order = option,
-							name = L[format("Position %d", option)],
-							values = datatexts,
-							get = function(info) return E.db.datatexts.panels[pointLoc][tonumber(info[#info])] end,
-							set = function(info, value) E.db.datatexts.panels[pointLoc][tonumber(info[#info])] = value; DT:LoadDataTexts() end,
-						}
-					elseif type(value) ~= 'boolean' then
-						table[pointLoc].args[option] = {
-							type = 'select',
-							name = L[option],
-							values = datatexts,
-						}
-					end
-				end
-			elseif type(tab) == 'string' then
-				table.smallPanels.args[pointLoc] = {
-					type = 'select',
-					name = L[pointLoc] or pointLoc,
-					values = datatexts,
-					get = function(info) return E.db.datatexts.panels[pointLoc] end,
-					set = function(info, value) E.db.datatexts.panels[pointLoc] = value; DT:LoadDataTexts() end,
-				}
-			end
-		end
-	end
-end
-
-function DT:PanelGroup_Delete(panel)
+local PanelLayoutOptions -- so PanelGroup_Create and PanelLayoutOptions can call each other locally
+local function PanelGroup_Delete(panel)
 	E.Options.args.datatexts.args.panels.args[panel] = nil
 end
 
-function DT:PanelGroup_Create(panel)
+local function PanelGroup_Create(panel)
 	E.Options.args.datatexts.args.panels.args[panel] = {
 		type = 'group',
 		name = panel,
 		get = function(info) return E.db.datatexts.panels[panel][info[#info]] end,
-		set = function(info, value) E.db.datatexts.panels[panel][info[#info]] = value DT:UpdateDTPanelAttributes(panel, E.global.datatexts.panels[panel]) DT:LoadDataTexts() end,
+		set = function(info, value)
+			E.db.datatexts.panels[panel][info[#info]] = value
+			DT:UpdateDTPanelAttributes(panel, E.global.datatexts.panels[panel])
+			DT:LoadDataTexts()
+		end,
 		args = {
 			enable = {
 				order = 0,
@@ -215,7 +164,11 @@ function DT:PanelGroup_Create(panel)
 				type = 'group',
 				guiInline = true,
 				get = function(info) return E.global.datatexts.panels[panel][info[#info]] end,
-				set = function(info, value) E.global.datatexts.panels[panel][info[#info]] = value DT:UpdateDTPanelAttributes(panel, E.global.datatexts.panels[panel]) DT:LoadDataTexts() end,
+				set = function(info, value)
+					E.global.datatexts.panels[panel][info[#info]] = value
+					DT:UpdateDTPanelAttributes(panel, E.global.datatexts.panels[panel])
+					DT:LoadDataTexts()
+				end,
 				args = {
 					delete = {
 						order = 3,
@@ -226,7 +179,8 @@ function DT:PanelGroup_Create(panel)
 						func = function(info)
 							E.db.datatexts.panels[panel] = nil
 							E.global.datatexts.panels[panel] = nil
-
+							PanelGroup_Delete(panel)
+							PanelLayoutOptions()
 							E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', 'newPanel')
 						end,
 					},
@@ -236,6 +190,68 @@ function DT:PanelGroup_Create(panel)
 	}
 
 	E:CopyTable(E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args, DTPanelOptions)
+end
+
+PanelLayoutOptions = function()
+	for name, data in pairs(DT.RegisteredDataTexts) do
+		datatexts[name] = data.localizedName or L[name]
+	end
+	datatexts[''] = L["NONE"]
+
+	local options = E.Options.args.datatexts.args.panels.args
+
+	-- Custom Panels
+	for panel in pairs(E.global.datatexts.panels) do
+		PanelGroup_Create(panel)
+	end
+
+	-- This will mixin the options for the Custom Panels.
+	for name, tab in pairs(DT.db.panels) do
+		if _G['ElvUI_DTPanel_'..name] then
+			if type(tab) == 'table' then
+				options[name] = options[name] or {
+					type = 'group',
+					args = {},
+					name = L[name] or name,
+					get = function(info) return E.db.datatexts.panels[name][info[#info]] end,
+					set = function(info, value) E.db.datatexts.panels[name][info[#info]] = value; DT:LoadDataTexts() end,
+				}
+
+				for option, value in pairs(tab) do
+					if type(option) == 'number' then
+						options[name].args[tostring(option)] = {
+							type = 'select',
+							order = option,
+							name = L[format("Position %d", option)],
+							values = datatexts,
+							get = function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end,
+							set = function(info, value)
+								E.db.datatexts.panels[name][tonumber(info[#info])] = value
+								DT:LoadDataTexts()
+							end,
+						}
+					elseif type(value) ~= 'boolean' then
+						options[name].args[option] = {
+							type = 'select',
+							name = L[option],
+							values = datatexts,
+						}
+					end
+				end
+			elseif type(tab) == 'string' then
+				options.smallPanels.args[name] = {
+					type = 'select',
+					name = L[name] or name,
+					values = datatexts,
+					get = function(info) return E.db.datatexts.panels[name] end,
+					set = function(info, value)
+						E.db.datatexts.panels[name] = value
+						DT:LoadDataTexts()
+					end,
+				}
+			end
+		end
+	end
 end
 
 local function CreateCustomCurrencyOptions(currencyID)
@@ -262,7 +278,9 @@ local function CreateCustomCurrencyOptions(currencyID)
 						E.global.datatexts.customCurrencies[currencyID] = nil
 						--Remove currency from datatext selection
 						datatexts[currency.NAME] = nil
-						DT:PanelLayoutOptions()
+
+						PanelLayoutOptions()
+
 						--Reload datatexts to clear panel
 						DT:LoadDataTexts()
 					end,
@@ -675,20 +693,23 @@ E.Options.args.datatexts = {
 							type = 'execute',
 							name = L['Add'],
 							width = 'full',
-							hidden = function() return E.global.datatexts.newPanelInfo.name == '' end,
+							hidden = function()
+								return E.global.datatexts.newPanelInfo.name == ''
+							end,
 							func = function()
-								E.global.datatexts.panels[E.global.datatexts.newPanelInfo.name] = E:CopyTable({}, E.global.datatexts.newPanelInfo)
-
-								E.db.datatexts.panels[E.global.datatexts.newPanelInfo.name] = { enable = true }
+								local name = E.global.datatexts.newPanelInfo.name
+								E.global.datatexts.panels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo)
+								E.db.datatexts.panels[name] = { enable = true }
 
 								for i = 1, E.global.datatexts.newPanelInfo.numPoints do
-									E.db.datatexts.panels[E.global.datatexts.newPanelInfo.name][i] = ''
+									E.db.datatexts.panels[name][i] = ''
 								end
 
-								DT:PanelGroup_Create(E.global.datatexts.newPanelInfo.name)
-								DT:BuildPanel(E.global.datatexts.newPanelInfo.name, E.global.datatexts.panels[E.global.datatexts.newPanelInfo.name])
-								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', E.global.datatexts.newPanelInfo.name)
+								PanelGroup_Create(name)
+								DT:BuildPanel(name, E.global.datatexts.panels[name])
+								PanelLayoutOptions()
 
+								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name)
 								E.global.datatexts.newPanelInfo = E:CopyTable({}, G.datatexts.newPanelInfo)
 							end,
 						},
@@ -771,7 +792,7 @@ E.Options.args.datatexts = {
 						DT:RegisterCustomCurrencyDT(currencyID)
 						--Create options for this datatext
 						CreateCustomCurrencyOptions(currencyID)
-						DT:PanelLayoutOptions()
+						PanelLayoutOptions()
 						--Reload datatexts in case the currency we just added was already selected on a panel
 						DT:LoadDataTexts()
 					end,
@@ -789,6 +810,6 @@ E.Options.args.datatexts = {
 
 E:CopyTable(E.Options.args.datatexts.args.panels.args.newPanel.args, DTPanelOptions)
 
-DT:PanelLayoutOptions()
+PanelLayoutOptions()
 SetupCustomCurrencies()
 SetupFriendClients()
