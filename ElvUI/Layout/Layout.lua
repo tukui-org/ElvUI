@@ -263,6 +263,10 @@ function LO:CreateChatPanels()
 	lchattb.parent = lchat
 	lchattb.OnEnter = ChatButton_OnEnter
 	lchattb.OnLeave = ChatButton_OnLeave
+	lchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
+	lchattb.texture = lchattb:GetNormalTexture()
+	lchattb.texture:SetRotation(E.Skins.ArrowRotation.left)
+	lchattb.texture:Size(10)
 	lchattb:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
@@ -271,12 +275,6 @@ function LO:CreateChatPanels()
 			ChatButton_OnClick(lcb)
 		end
 	end)
-
-	lchattb.text = lchattb:CreateFontString(nil, 'OVERLAY')
-	lchattb.text:FontTemplate()
-	lchattb.text:Point('CENTER')
-	lchattb.text:SetJustifyH('CENTER')
-	lchattb.text:SetText('<')
 
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
@@ -306,6 +304,10 @@ function LO:CreateChatPanels()
 	--Right Chat Toggle Button
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
 	rchattb.parent = rchat
+	rchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
+	rchattb.texture = rchattb:GetNormalTexture()
+	rchattb.texture:SetRotation(E.Skins.ArrowRotation.right)
+	rchattb.texture:Size(10)
 	rchattb:RegisterForClicks('AnyUp')
 	rchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)
@@ -314,12 +316,6 @@ function LO:CreateChatPanels()
 			ChatButton_OnClick(rcb)
 		end
 	end)
-
-	rchattb.text = rchattb:CreateFontString(nil, 'OVERLAY')
-	rchattb.text:FontTemplate()
-	rchattb.text:Point('CENTER')
-	rchattb.text:SetJustifyH('CENTER')
-	rchattb.text:SetText('>')
 
 	--Load Settings
 	local fadeToggle = E.db.chat.fadeChatToggles

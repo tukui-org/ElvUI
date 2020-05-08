@@ -54,10 +54,10 @@ S.Blizzard.Regions = {
 
 -- Depends on the arrow texture to be up by default.
 S.ArrowRotation = {
-	['up'] = 0,
-	['down'] = 3.14,
-	['left'] = 1.57,
-	['right'] = -1.57,
+	up = 0,
+	down = 3.14,
+	left = 1.57,
+	right = -1.57,
 }
 
 function S:HandleInsetFrame(frame)
