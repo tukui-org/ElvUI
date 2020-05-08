@@ -1884,7 +1884,9 @@ function CH:SetupChat()
 	_G.GeneralDockManager:Point("BOTTOMLEFT", _G.LeftChatTab, "BOTTOMLEFT", 0, E.PixelMode and 1 or -1)
 	_G.GeneralDockManager:Point("BOTTOMRIGHT", _G.LeftChatTab, "BOTTOMRIGHT", 0, E.PixelMode and 1 or -1)
 	_G.GeneralDockManager:Height(22)
-	_G.GeneralDockManager.scrollFrame:Height(20)
+	_G.GeneralDockManager.scrollFrame:ClearAllPoints()
+	_G.GeneralDockManager.scrollFrame:Point("TOPLEFT", _G.ChatFrame2Tab, "TOPRIGHT", 0, 2)
+	_G.GeneralDockManager.scrollFrame:Point("BOTTOMRIGHT", _G.GeneralDockManagerOverflowButton, "BOTTOMRIGHT", 0, -2)
 	self:PositionChat(true)
 
 	if not self.HookSecured then
@@ -2514,13 +2516,12 @@ function CH:DefaultSmileys()
 end
 
 local channelButtons = {
-	[1] = _G.ChatFrameChannelButton,
-	[2] = _G.ChatFrameToggleVoiceDeafenButton,
-	[3] = _G.ChatFrameToggleVoiceMuteButton
+	_G.ChatFrameChannelButton,
+	_G.ChatFrameToggleVoiceDeafenButton,
+	_G.ChatFrameToggleVoiceMuteButton
 }
 
 function CH:RepositionChatVoiceIcons()
-	_G.GeneralDockManagerScrollFrame:SetPoint('BOTTOMRIGHT') -- call our hook
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
 	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 2)
 end
@@ -2532,11 +2533,7 @@ function CH:UpdateVoiceChatIcons()
 end
 
 function CH:HandleChatVoiceIcons()
-	if CH.db.hideVoiceButtons then
-		for _, button in pairs(channelButtons) do
-			button:Hide()
-		end
-	elseif CH.db.pinVoiceButtons then
+	if CH.db.pinVoiceButtons then
 		for index, button in pairs(channelButtons) do
 			button:ClearAllPoints()
 			button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
@@ -2549,19 +2546,20 @@ function CH:HandleChatVoiceIcons()
 			end
 		end
 
-		hooksecurefunc(_G.GeneralDockManagerScrollFrame, 'SetPoint', function(frame, point, anchor, attachTo, x, y, stopLoop)
-			if anchor == _G.GeneralDockManagerOverflowButton and (x == 0 and y == 0) then
-				frame:Point(point, anchor, attachTo, -3, -6)
-			elseif (not stopLoop and not _G.GeneralDockManagerOverflowButton:IsShown()) and (point == "BOTTOMRIGHT" and anchor ~= channelButtons[3] and anchor ~= channelButtons[1]) then
-				frame:Point(point, anchor, attachTo, (channelButtons[3]:IsShown() and -30) or -15, 0, true)
-			end
-		end)
-
 		CH:RepositionChatVoiceIcons()
 		channelButtons[3]:HookScript("OnShow", CH.RepositionChatVoiceIcons)
 		channelButtons[3]:HookScript("OnHide", CH.RepositionChatVoiceIcons)
 	else
-		CH:CreateChatVoicePanel()
+		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.LeftChatTab, 'RIGHT', -4, 0)
+
+		if CH.db.hideVoiceButtons then
+			for _, button in pairs(channelButtons) do
+				button:Hide()
+			end
+		else
+			CH:CreateChatVoicePanel()
+		end
 	end
 end
 
