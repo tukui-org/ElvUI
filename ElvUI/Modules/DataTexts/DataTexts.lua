@@ -243,6 +243,12 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	end
 end
 
+function DT:Panel_DefaultGlobalSettings(panel)
+	E.global.customPanels[panel] = E:CopyTable({}, G.datatexts.newPanelInfo)
+	E.global.customPanels[panel].enable = nil
+	E.global.customPanels[panel].name = nil
+end
+
 function DT:AssignPanelToDataText(dt, data, event, ...)
 	if data.events then
 		for _, ev in pairs(data.events) do
