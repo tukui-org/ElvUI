@@ -462,40 +462,45 @@ end
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 
-	local tab = _G[name..'Tab']
+	local tab = _G[name.."Tab"]
 	if not tab.text then tab.text = _G[name.."TabText"] end
 	tab.text:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
 
 	if frame.styled then return end
 
 	frame:SetFrameLevel(4)
+	frame:SetClampRectInsets(0,0,0,0)
+	frame:SetClampedToScreen(false)
+	frame:StripTextures(true)
+
+	_G[name.."ButtonFrame"]:Kill()
 
 	local id = frame:GetID()
-
-	local editbox = _G[name..'EditBox']
-	local scroll = frame.ScrollBar
-	local scrollToBottom = frame.ScrollToBottomButton
+	local editbox = _G[name.."EditBox"]
 	local scrollTex = _G[name.."ThumbTexture"]
-
-	--Character count
-	editbox.characterCount = editbox:CreateFontString()
-	editbox.characterCount:FontTemplate()
-	editbox.characterCount:SetTextColor(190, 190, 190, 0.4)
-	editbox.characterCount:Point("TOPRIGHT", editbox, "TOPRIGHT", -5, 0)
-	editbox.characterCount:Point("BOTTOMRIGHT", editbox, "BOTTOMRIGHT", -5, 0)
-	editbox.characterCount:SetJustifyH("CENTER")
-	editbox.characterCount:Width(40)
-
-	for _, texName in pairs(tabTexs) do
-		_G[tab:GetName()..texName..'Left']:SetTexture()
-		_G[tab:GetName()..texName..'Middle']:SetTexture()
-		_G[tab:GetName()..texName..'Right']:SetTexture()
-	end
+	local scrollToBottom = frame.ScrollToBottomButton
+	local scroll = frame.ScrollBar
 
 	if scroll then
 		scroll:Kill()
 		scrollToBottom:Kill()
 		scrollTex:Kill()
+	end
+
+	--Character count
+	local charCount = editbox:CreateFontString()
+	charCount:FontTemplate()
+	charCount:SetTextColor(190, 190, 190, 0.4)
+	charCount:Point("TOPRIGHT", editbox, "TOPRIGHT", -5, 0)
+	charCount:Point("BOTTOMRIGHT", editbox, "BOTTOMRIGHT", -5, 0)
+	charCount:SetJustifyH("CENTER")
+	charCount:Width(40)
+	editbox.characterCount = charCount
+
+	for _, texName in pairs(tabTexs) do
+		_G[name..'Tab'..texName..'Left']:SetTexture()
+		_G[name..'Tab'..texName..'Middle']:SetTexture()
+		_G[name..'Tab'..texName..'Right']:SetTexture()
 	end
 
 	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
@@ -506,11 +511,13 @@ function CH:StyleChat(frame)
 		end
 	end)
 
-	tab:Size(22)
-	tab.left = _G[name.."TabLeft"]
+
+	if not tab.left then tab.left = _G[name.."TabLeft"] end
 	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	tab.text:ClearAllPoints()
 	tab.text:Point('LEFT', tab.left, 'RIGHT', 0, E.PixelMode and 3 or 5)
+	tab:Height(22)
+
 	hooksecurefunc(tab.text, "SetTextColor", function(tt, r, g, b)
 		local rR, gG, bB = unpack(E.media.rgbvaluecolor)
 		if r ~= rR or g ~= gG or b ~= bB then
@@ -522,11 +529,6 @@ function CH:StyleChat(frame)
 		tab.conversationIcon:ClearAllPoints()
 		tab.conversationIcon:Point('RIGHT', tab.text, 'LEFT', -1, 0)
 	end
-
-	frame:SetClampRectInsets(0,0,0,0)
-	frame:SetClampedToScreen(false)
-	frame:StripTextures(true)
-	_G[name..'ButtonFrame']:Kill()
 
 	local repeatedText
 	local function OnTextChanged(editBox)
@@ -606,14 +608,15 @@ function CH:StyleChat(frame)
 
 	local LeftChatPanel, LeftChatDataPanel, LeftChatToggleButton = _G.LeftChatPanel, _G.LeftChatDataPanel, _G.LeftChatToggleButton
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
-	_G[format(editbox:GetName().."Left", id)]:Kill()
-	_G[format(editbox:GetName().."Mid", id)]:Kill()
-	_G[format(editbox:GetName().."Right", id)]:Kill()
+	_G[name.."EditBoxLeft"]:Kill()
+	_G[name.."EditBoxMid"]:Kill()
+	_G[name.."EditBoxRight"]:Kill()
+
 	editbox:SetTemplate(nil, true)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(LeftChatDataPanel)
-	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 	editbox:HookScript("OnTextChanged", OnTextChanged)
+	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
@@ -647,18 +650,20 @@ function CH:StyleChat(frame)
 	end
 
 	--copy chat button
-	frame.button = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
-	frame.button:EnableMouse(true)
-	frame.button:SetAlpha(0.35)
-	frame.button:Size(20, 22)
-	frame.button:Point('TOPRIGHT', 0, -4)
-	frame.button:SetFrameLevel(frame:GetFrameLevel() + 5)
+	local copyButton = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
+	copyButton:EnableMouse(true)
+	copyButton:SetAlpha(0.35)
+	copyButton:Size(20, 22)
+	copyButton:Point('TOPRIGHT', 0, -4)
+	copyButton:SetFrameLevel(frame:GetFrameLevel() + 5)
+	frame.button = copyButton
 
-	frame.button.tex = frame.button:CreateTexture(nil, 'OVERLAY')
-	frame.button.tex:SetInside()
-	frame.button.tex:SetTexture(E.Media.Textures.Copy)
+	local copyTexture = frame.button:CreateTexture(nil, 'OVERLAY')
+	copyTexture:SetInside()
+	copyTexture:SetTexture(E.Media.Textures.Copy)
+	copyButton.texture = copyTexture
 
-	frame.button:SetScript("OnMouseUp", function(_, btn)
+	copyButton:SetScript("OnMouseUp", function(_, btn)
 		if btn == "RightButton" and id == 1 then
 			ToggleFrame(_G.ChatMenu)
 		else
@@ -666,8 +671,8 @@ function CH:StyleChat(frame)
 		end
 	end)
 
-	frame.button:SetScript("OnEnter", function(button) button:SetAlpha(1) end)
-	frame.button:SetScript("OnLeave", function(button)
+	copyButton:SetScript("OnEnter", function(button) button:SetAlpha(1) end)
+	copyButton:SetScript("OnLeave", function(button)
 		if _G[button:GetParent():GetName().."TabText"]:IsShown() then
 			button:SetAlpha(0.35)
 		else
