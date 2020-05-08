@@ -320,8 +320,6 @@ function DT:AssignPanelToDataText(panel, dt, data, event, ...)
 	end
 
 	dt:SetScript('OnLeave', data.onLeave or DT.Data_OnLeave)
-
-	DT:UpdatePanelDimensions(panel)
 end
 
 function DT:UpdatePanelInfo(panelName, panel, ...)
@@ -329,6 +327,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	local isBGPanel = data.isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
 	local enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
+
+	DT:UpdatePanelDimensions(panel)
 
 	local db = panel.db
 	local font, fontSize, fontOutline = data.font, data.fontSize, data.fontOutline
