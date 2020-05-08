@@ -1431,7 +1431,6 @@ Fixed position of the ElvUI Status Report frame (/estatus).
 Fixed issue updating npc titles on NamePlates.  
 Fixed placement issue of name and level on NamePlates when "Always Show Target Healthbar" is disabled.  
 Improved workaround for vehicle issue on Antoran High Command (credit: ls-@GitHub).  
-test
 
 **Misc. Changes:**  
 The Style Filter action "Name Only" will also display the NPC title now.  
