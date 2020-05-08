@@ -505,10 +505,11 @@ function CH:StyleChat(frame)
 	end)
 
 	tab:Size(22)
+	tab.left = _G[name.."TabLeft"]
 	tab.text = _G[name.."TabText"]
 	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	tab.text:ClearAllPoints()
-	tab.text:Point('LEFT', _G[name.."TabLeft"], 'RIGHT', 0, 4)
+	tab.text:Point('LEFT', tab.left, 'RIGHT', 0, E.PixelMode and 0 or 3)
 	hooksecurefunc(tab.text, "SetTextColor", function(tt, r, g, b)
 		local rR, gG, bB = unpack(E.media.rgbvaluecolor)
 		if r ~= rR or g ~= gG or b ~= bB then
@@ -649,7 +650,7 @@ function CH:StyleChat(frame)
 	frame.button:EnableMouse(true)
 	frame.button:SetAlpha(0.35)
 	frame.button:Size(20, 22)
-	frame.button:Point('TOPRIGHT')
+	frame.button:Point('TOPRIGHT', 0, -4)
 	frame.button:SetFrameLevel(frame:GetFrameLevel() + 5)
 
 	frame.button.tex = frame.button:CreateTexture(nil, 'OVERLAY')
@@ -882,13 +883,14 @@ function CH:UpdateChatTabs()
 			end
 		end
 
-		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and (id == self.RightChatWindowID) then
+		local chatShown = chat:IsShown()
+		if chatShown and not (id > NUM_CHAT_WINDOWS) and (id == self.RightChatWindowID) then
 			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
 				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
 			else
 				CH:SetupChatTabs(tab, false)
 			end
-		elseif not isDocked and chat:IsShown() then
+		elseif not isDocked and chatShown then
 			tab:SetParent(_G.RightChatPanel)
 			chat:SetParent(_G.RightChatPanel)
 			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
@@ -926,7 +928,7 @@ function CH:PositionChat(override)
 	local fadeUndockedTabs = E.db.chat.fadeUndockedTabs
 	local fadeTabsNoBackdrop = E.db.chat.fadeTabsNoBackdrop
 
-	local BASE_OFFSET = E.PixelMode and 24 or 27
+	local BASE_OFFSET = 28 + (E.PixelMode and 0 or 4)
 	for i=1, CreatedFrames do
 		local chat = _G[format("ChatFrame%d", i)]
 		local tab = _G[format("ChatFrame%sTab", i)]
@@ -944,9 +946,18 @@ function CH:PositionChat(override)
 			chat.FontStringContainer:SetOutside(chat)
 		end
 
-		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
+		local chatShown = chat:IsShown()
+		if chatShown then
+			-- that chat font container leaks outside of its frame
+			-- we cant clip it, so lets force that leak sooner so
+			-- i can position it properly, patch: 8.3.0 ~Simpy
+			chat:Hide()
+			chat:Show()
+		end
+
+		if chatShown and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
 			chat:ClearAllPoints()
-			chat:Point("BOTTOMLEFT", RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 0 or 1)
+			chat:Point("BOTTOMLEFT", RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
 
 			if id ~= 2 then
 				chat:Size((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 10, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
@@ -970,14 +981,14 @@ function CH:PositionChat(override)
 			else
 				CH:SetupChatTabs(tab, false)
 			end
-		elseif not isDocked and chat:IsShown() then
+		elseif not isDocked and chatShown then
 			tab:SetParent(_G.UIParent)
 			chat:SetParent(_G.UIParent)
 			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
-				chat:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 0 or 1)
+				chat:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
 				chat:Size(E.db.chat.panelWidth - 10, (E.db.chat.panelHeight - BASE_OFFSET))
 
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
@@ -1862,8 +1873,8 @@ function CH:SetupChat()
 
 	_G.GeneralDockManager:SetParent(_G.LeftChatPanel)
 	_G.GeneralDockManager:ClearAllPoints()
-	_G.GeneralDockManager:Point("BOTTOMLEFT", _G.ChatFrame1, "TOPLEFT", 0, 2)
-	_G.GeneralDockManager:Point("BOTTOMRIGHT", _G.ChatFrame1, "TOPRIGHT", 0, 2)
+	_G.GeneralDockManager:Point("BOTTOMLEFT", _G.LeftChatTab, "BOTTOMLEFT", 0, E.PixelMode and 4 or 1)
+	_G.GeneralDockManager:Point("BOTTOMRIGHT", _G.LeftChatTab, "BOTTOMRIGHT", 0, E.PixelMode and 4 or 1)
 	_G.GeneralDockManager:Height(22)
 	_G.GeneralDockManager.scrollFrame:Height(20)
 	self:PositionChat(true)

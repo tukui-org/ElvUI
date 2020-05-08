@@ -120,9 +120,9 @@ function HideBothChat()
 end
 
 local channelButtons = {
-	[1] = _G.ChatFrameChannelButton,
-	[2] = _G.ChatFrameToggleVoiceDeafenButton,
-	[3] = _G.ChatFrameToggleVoiceMuteButton
+	_G.ChatFrameChannelButton,
+	_G.ChatFrameToggleVoiceDeafenButton,
+	_G.ChatFrameToggleVoiceMuteButton
 }
 
 function LO:ToggleChatTabPanels(rightOverride, leftOverride)
