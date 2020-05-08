@@ -244,9 +244,9 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 end
 
 function DT:Panel_DefaultGlobalSettings(panel)
-	E.global.customPanels[panel] = E:CopyTable({}, G.datatexts.newPanelInfo)
-	E.global.customPanels[panel].enable = nil
-	E.global.customPanels[panel].name = nil
+	G.datatexts.customPanels[panel] = E:CopyTable({}, G.datatexts.newPanelInfo)
+	G.datatexts.customPanels[panel].enable = nil
+	G.datatexts.customPanels[panel].name = nil
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
