@@ -847,7 +847,7 @@ function CH:UpdateEditboxAnchors()
 	local classic = self == "classic"
 	local leftChat = classic and _G.LeftChatPanel
 	local width = classic and 0 or 5
-	local bottomheight = classic and 1 or (E.PixelMode and 1 or 5)
+	local bottomheight = classic and 1 or (E.PixelMode and 3 or 5)
 	local topheight = classic and 0 or (E.PixelMode and -1 or -5)
 	local panel_height = 22
 
