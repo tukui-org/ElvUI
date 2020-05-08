@@ -121,6 +121,7 @@ function DT:BuildPanelFrame(name, db)
 		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'general,solo')
 	end
 
+	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
 	DT:UpdateDTPanelAttributes(name, db)
 end
 
@@ -308,10 +309,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	local width, height = (panelWidth / numPoints) - 4, panelHeight - 4
 	if vertical then width, height = panelWidth - 4, (panelHeight / numPoints) - 4 end
 
-	if not panel.dataPanels then
-		panel.dataPanels = {}
-	end
-
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
 		if not dt then
@@ -412,7 +409,7 @@ function DT:UpdateDTPanelAttributes(name, db)
 	Panel.xOff = db.tooltipXOffset
 	Panel.yOff = db.tooltipYOffset
 	Panel.anchor = db.tooltipAnchor
-	Panel.vertical = db.tooltipYOffset
+	Panel.vertical = db.growth == 'VERTICAL'
 
 	if DT.db.panels[name].enable then
 		E:EnableMover(Panel.moverName)
