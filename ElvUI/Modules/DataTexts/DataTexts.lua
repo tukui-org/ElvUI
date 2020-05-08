@@ -106,7 +106,7 @@ function DT:ReleasePanel(givenName)
 end
 
 function DT:BuildPanelFrame(name, db)
-	db = db or E.global.datatexts.customPanels[name]
+	db = db or E.global.datatexts.customPanels[name] or DT:Panel_DefaultGlobalSettings(name)
 
 	if not db then return end
 
@@ -237,22 +237,16 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	panel.yOff = yOff
 	panel.anchor = anchor
 	panel.vertical = vertical
-
-	if not E.db.datatexts.panels[name] then
-		E.db.datatexts.panels[name] = { enable = false }
-	end
-
-	for i = 1, numPoints do
-		if not E.db.datatexts.panels[name][i] then
-			E.db.datatexts.panels[name][i] = ''
-		end
-	end
 end
 
-function DT:Panel_DefaultGlobalSettings(panel)
-	E.global.datatexts.customPanels[panel] = E:CopyTable({}, G.datatexts.newPanelInfo)
-	E.global.datatexts.customPanels[panel].enable = nil
-	E.global.datatexts.customPanels[panel].name = nil
+function DT:Panel_DefaultGlobalSettings(name)
+	local db = E:CopyTable({}, G.datatexts.newPanelInfo)
+	db.enable = nil
+	db.name = nil
+
+	E.global.datatexts.customPanels[name] = db
+
+	return db
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
@@ -422,6 +416,16 @@ function DT:UpdateDTPanelAttributes(name, db)
 	Panel.yOff = db.tooltipYOffset
 	Panel.anchor = db.tooltipAnchor
 	Panel.vertical = db.growth == 'VERTICAL'
+
+	if not DT.db.panels[name] then
+		DT.db.panels[name] = { enable = true }
+	end
+
+	for i = 1, E.global.datatexts.customPanels[name].numPoints do
+		if not DT.db.panels[name][i] then
+			DT.db.panels[name][i] = ''
+		end
+	end
 
 	if DT.db.panels[name].enable then
 		E:EnableMover(Panel.moverName)
