@@ -450,6 +450,7 @@ E.Options.args.chat = {
 					order = 2,
 					type = 'toggle',
 					name = L["Tab Panel Transparency"],
+					disabled = function() return not E.db.chat.panelTabBackdrop end,
 					set = function(info, value) E.db.chat.panelTabTransparency = value; Layout:SetChatTabStyle(); end,
 				},
 				panelTabBackdrop = {
