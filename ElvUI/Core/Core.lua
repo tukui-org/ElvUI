@@ -92,6 +92,7 @@ E.VehicleLocks = {}
 E.CreditsList = {}
 E.LockedCVars = {}
 E.IgnoredCVars = {}
+E.UpdatedCVars = {}
 E.InversePoints = {
 	TOP = 'BOTTOM',
 	BOTTOM = 'TOP',
@@ -342,30 +343,38 @@ do	--Update font/texture paths when they are registered by the addon providing t
 end
 
 do
-	local function CVAR_UPDATE(cvarName, value)
-		if not (E.IgnoredCVars and E.LockedCVars) then return end
-		if not E.IgnoredCVars[cvarName] and E.LockedCVars[cvarName] and E.LockedCVars[cvarName] ~= value then
-			if InCombatLockdown() then
-				E.CVarUpdate = true
-				return
+	local function CVAR_UPDATE(name, value)
+		if not E.IgnoredCVars[name] then
+			local locked = E.LockedCVars[name]
+			if locked ~= nil and locked ~= value then
+				if InCombatLockdown() then
+					E.CVarUpdate = true
+					return
+				end
+
+				SetCVar(name, E.LockedCVars[name])
 			end
 
-			SetCVar(cvarName, E.LockedCVars[cvarName])
+			local func = E.UpdatedCVars and E.UpdatedCVars[name]
+			if func then func(value) end
 		end
 	end
 
 	hooksecurefunc('SetCVar', CVAR_UPDATE)
-	function E:LockCVar(cvarName, value)
-		if GetCVar(cvarName) ~= value then
-			SetCVar(cvarName, value)
+	function E:LockCVar(name, value)
+		if GetCVar(name) ~= value then
+			SetCVar(name, value)
 		end
 
-		self.LockedCVars[cvarName] = value
+		self.LockedCVars[name] = value
 	end
 
-	function E:IgnoreCVar(cvarName, ignore)
-		ignore = not not ignore --cast to bool, just in case
-		self.IgnoredCVars[cvarName] = ignore
+	function E:UpdatedCVar(name, func)
+		self.UpdatedCVars[name] = func
+	end
+
+	function E:IgnoreCVar(name, ignore)
+		self.IgnoredCVars[name] = (not not ignore) -- cast to bool, just in case
 	end
 end
 

@@ -264,6 +264,8 @@ function LO:CreateChatPanels()
 	lchattb.parent = lchat
 	lchattb.OnEnter = ChatButton_OnEnter
 	lchattb.OnLeave = ChatButton_OnLeave
+	lchattb:SetFrameStrata('LOW')
+	lchattb:SetFrameLevel(0)
 	lchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
 	lchattb.texture = lchattb:GetNormalTexture()
 	lchattb.texture:SetRotation(E.Skins.ArrowRotation.left)
@@ -307,6 +309,8 @@ function LO:CreateChatPanels()
 	--Right Chat Toggle Button
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
 	rchattb.parent = rchat
+	rchattb:SetFrameStrata('LOW')
+	rchattb:SetFrameLevel(0)
 	rchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
 	rchattb.texture = rchattb:GetNormalTexture()
 	rchattb.texture:SetRotation(E.Skins.ArrowRotation.right)

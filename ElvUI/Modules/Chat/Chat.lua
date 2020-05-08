@@ -833,25 +833,41 @@ function CH:SetupChatTabs(frame, hook)
 	end
 end
 
-function CH:UpdateAnchors()
-	local ChatPanel = _G.LeftChatPanel
-	local PANEL_HEIGHT = 22
+function CH:ChatEdit_SetLastActiveWindow(editbox)
+	local style = editbox.chatStyle or GetCVar('chatStyle')
+	if style == 'im' then editbox:SetAlpha(0.5) end
+end
 
-	for _, frameName in pairs(_G.CHAT_FRAMES) do
-		local frame = _G[frameName..'EditBox']
-		if not frame then break end
+function CH:ChatEdit_DeactivateChat(editbox)
+	local style = editbox.chatStyle or GetCVar('chatStyle')
+	if style == 'im' then editbox:Hide() end
+end
 
-		frame:ClearAllPoints()
-		if E.db.chat.editBoxPosition == 'BELOW_CHAT' then
-			frame:Point("TOPLEFT", ChatPanel, "BOTTOMLEFT", 0, 0)
-			frame:Point("BOTTOMRIGHT", ChatPanel, "BOTTOMRIGHT", 0, -PANEL_HEIGHT)
+function CH:UpdateEditboxAnchors()
+	local classic = self == "classic"
+	local leftChat = classic and _G.LeftChatPanel
+	local width = classic and 0 or 5
+	local bottomheight = classic and 1 or (E.PixelMode and 1 or 5)
+	local topheight = classic and 0 or (E.PixelMode and -1 or -5)
+	local panel_height = 22
+
+	for _, name in pairs(_G.CHAT_FRAMES) do
+		local frame = _G[name]
+		local editbox = frame and frame.editBox
+		if not editbox then return end
+		editbox.chatStyle = self
+
+		local anchorTo = leftChat or frame
+		editbox:ClearAllPoints()
+
+		if E.db.chat.editBoxPosition == "BELOW_CHAT" then
+			editbox:Point("TOPLEFT", anchorTo, "BOTTOMLEFT", -width, topheight)
+			editbox:Point("BOTTOMRIGHT", anchorTo, "BOTTOMRIGHT", width, -(panel_height+bottomheight))
 		else
-			frame:Point("BOTTOMLEFT", ChatPanel, "TOPLEFT", 0, 0)
-			frame:Point("TOPRIGHT", ChatPanel, "TOPRIGHT", 0, PANEL_HEIGHT)
+			editbox:Point("BOTTOMLEFT", anchorTo, "TOPLEFT", -width, topheight)
+			editbox:Point("TOPRIGHT", anchorTo, "TOPRIGHT", width, panel_height+bottomheight)
 		end
 	end
-
-	CH:PositionChat(true)
 end
 
 local function FindRightChatID()
@@ -2723,10 +2739,13 @@ function CH:Initialize()
 	self:DefaultSmileys()
 	self:UpdateChatKeywords()
 	self:UpdateFading()
-	self:UpdateAnchors()
 	self:Panels_ColorUpdate()
 	self:HandleChatVoiceIcons()
+	self.UpdateEditboxAnchors(GetCVar('chatStyle'))
+	E:UpdatedCVar('chatStyle', self.UpdateEditboxAnchors)
 
+	self:SecureHook('ChatEdit_SetLastActiveWindow')
+	self:SecureHook('ChatEdit_DeactivateChat')
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	self:SecureHook('FCF_SetWindowAlpha')
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
