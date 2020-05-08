@@ -166,6 +166,7 @@ local function PanelGroup_Create(panel)
 				set = function(info, value)
 					E.global.datatexts.customPanels[panel][info[#info]] = value
 					DT:UpdateDTPanelAttributes(panel, E.global.datatexts.customPanels[panel])
+					PanelLayoutOptions()
 				end,
 				args = {
 					delete = {

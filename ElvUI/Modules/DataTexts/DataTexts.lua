@@ -236,8 +236,10 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 
 	if not E.db.datatexts.panels[name] then
 		E.db.datatexts.panels[name] = { enable = false }
+	end
 
-		for i = 1, panel.numPoints do
+	for i = 1, numPoints do
+		if not E.db.datatexts.panels[name][i] then
 			E.db.datatexts.panels[name][i] = ''
 		end
 	end
