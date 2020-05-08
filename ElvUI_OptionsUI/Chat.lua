@@ -119,24 +119,35 @@ E.Options.args.chat = {
 						CH:UpdateChatTabs()
 					end,
 				},
-				fadeChatToggles = {
+				hideChatToggles = {
 					order = 9,
+					type = 'toggle',
+					name = L["Hide Chat Toggles"],
+					set = function(self, value)
+						E.db.chat.hideChatToggles = value;
+						CH:RefreshToggleButtons()
+						Layout:RepositionChatDataPanels()
+					end,
+				},
+				fadeChatToggles = {
+					order = 10,
 					type = 'toggle',
 					name = L["Fade Chat Toggles"],
 					desc = L["Fades the buttons that toggle chat windows when that window has been toggled off."],
+					disabled = function() return E.db.chat.hideChatToggles end,
 					set = function(self, value)
 						E.db.chat.fadeChatToggles = value;
 						CH:RefreshToggleButtons()
 					end,
 				},
 				chatHistory = {
-					order = 10,
+					order = 11,
 					type = 'toggle',
 					name = L["Chat History"],
 					desc = L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."],
 				},
 				useAltKey = {
-					order = 11,
+					order = 12,
 					type = "toggle",
 					name = L["Use Alt Key"],
 					desc = L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."],
@@ -146,43 +157,43 @@ E.Options.args.chat = {
 					end,
 				},
 				autoClosePetBattleLog = {
-					order = 12,
+					order = 13,
 					type = "toggle",
 					name = L["Auto-Close Pet Battle Log"],
 				},
 				useBTagName = {
-					order = 13,
+					order = 14,
 					type = "toggle",
 					name = L["Use Real ID BattleTag"],
 					desc = L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."],
 				},
 				socialQueueMessages = {
-					order = 14,
+					order = 15,
 					type = "toggle",
 					name = L["Quick Join Messages"],
 					desc = L["Show clickable Quick Join messages inside of the chat."],
 				},
 				copyChatLines = {
-					order = 15,
+					order = 16,
 					type = "toggle",
 					name = L["Copy Chat Lines"],
 					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
 				},
 				spacer = {
-					order = 16,
+					order = 17,
 					type = 'description',
 					name = '',
 					width = 'full',
 				},
 				numAllowedCombatRepeat = {
-					order = 17,
+					order = 18,
 					type = "range",
 					name = L["Allowed Combat Repeat"],
 					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
 					min = 2, max = 10, step = 1,
 				},
 				throttleInterval = {
-					order = 18,
+					order = 19,
 					type = 'range',
 					name = L["Spam Interval"],
 					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
@@ -195,7 +206,7 @@ E.Options.args.chat = {
 					end,
 				},
 				scrollDownInterval = {
-					order = 19,
+					order = 20,
 					type = 'range',
 					name = L["Scroll Interval"],
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
@@ -205,14 +216,14 @@ E.Options.args.chat = {
 					end,
 				},
 				numScrollMessages = {
-					order = 20,
+					order = 21,
 					type = "range",
 					name = L["Scroll Messages"],
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
 				fontGroup = {
-					order = 20,
+					order = 25,
 					type = 'group',
 					name = L["Fonts"],
 					disabled = function() return not E.Chat.Initialized; end,
@@ -253,7 +264,7 @@ E.Options.args.chat = {
 					},
 				},
 				alerts = {
-					order = 21,
+					order = 30,
 					type = 'group',
 					name = L["Alerts"],
 					disabled = function() return not E.Chat.Initialized; end,
@@ -286,7 +297,7 @@ E.Options.args.chat = {
 					},
 				},
 				voicechatGroup = {
-					order = 22,
+					order = 40,
 					type = 'group',
 					name = L["BINDING_HEADER_VOICE_CHAT"],
 					args = {
@@ -324,7 +335,7 @@ E.Options.args.chat = {
 					},
 				},
 				timestampGroup = {
-					order = 23,
+					order = 45,
 					type = 'group',
 					name = L["TIMESTAMPS_LABEL"],
 					args = {
@@ -368,7 +379,7 @@ E.Options.args.chat = {
 					},
 				},
 				classColorMentionGroup = {
-					order = 24,
+					order = 50,
 					type = "group",
 					name = L["Class Color Mentions"],
 					disabled = function() return not E.Chat.Initialized; end,

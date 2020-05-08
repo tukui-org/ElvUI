@@ -172,26 +172,27 @@ function LO:RepositionChatDataPanels()
 	RightChatTab:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 2, -PANEL_HEIGHT-2)
 
 	local SPACING = E.PixelMode and 1 or -1
+	local SIDE_BUTTON = E.db.chat.hideChatToggles and 0 or (SIDE_BUTTON_WIDTH+1)
 	if E.db.chat.LeftChatDataPanelAnchor == 'ABOVE_CHAT' then
 		LeftChatDataPanel:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', 0, -SPACING)
-		LeftChatDataPanel:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', 1 + SIDE_BUTTON_WIDTH, 1 + PANEL_HEIGHT)
+		LeftChatDataPanel:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', SIDE_BUTTON, 1 + PANEL_HEIGHT)
 		LeftChatToggleButton:Point('BOTTOMRIGHT', LeftChatDataPanel, 'BOTTOMLEFT', 1, 0)
 		LeftChatToggleButton:Point('TOPLEFT', LeftChatDataPanel, 'TOPLEFT', -(SIDE_BUTTON_WIDTH + 1), 0)
 	else
 		LeftChatDataPanel:Point('TOPRIGHT', LeftChatPanel, 'BOTTOMRIGHT', 0, SPACING)
-		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', 1 + SIDE_BUTTON_WIDTH, -(1 + PANEL_HEIGHT))
+		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SIDE_BUTTON, -(1 + PANEL_HEIGHT))
 		LeftChatToggleButton:Point('TOPRIGHT', LeftChatDataPanel, 'TOPLEFT', 1, 0)
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatDataPanel, 'BOTTOMLEFT', -(SIDE_BUTTON_WIDTH + 1), 0)
 	end
 
 	if E.db.chat.RightChatDataPanelAnchor == 'ABOVE_CHAT' then
 		RightChatDataPanel:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 0, -SPACING)
-		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -(SIDE_BUTTON_WIDTH + 1), 1 + PANEL_HEIGHT)
+		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -SIDE_BUTTON, 1 + PANEL_HEIGHT)
 		RightChatToggleButton:Point('BOTTOMLEFT', RightChatDataPanel, 'BOTTOMRIGHT', -1, 0)
 		RightChatToggleButton:Point('TOPRIGHT', RightChatDataPanel, 'TOPRIGHT', SIDE_BUTTON_WIDTH + 1, 0)
 	else
 		RightChatDataPanel:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', 0, SPACING)
-		RightChatDataPanel:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -(SIDE_BUTTON_WIDTH + 1), -(1 + PANEL_HEIGHT))
+		RightChatDataPanel:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -SIDE_BUTTON, -(1 + PANEL_HEIGHT))
 		RightChatToggleButton:Point('TOPLEFT', RightChatDataPanel, 'TOPRIGHT', -1, 0)
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', SIDE_BUTTON_WIDTH + 1, 0)
 	end
@@ -207,10 +208,10 @@ end
 
 function LO:ToggleChatPanels()
 	_G.LeftChatDataPanel:SetShown(E.db.datatexts.panels.LeftChatDataPanel.enable)
-	_G.LeftChatToggleButton:SetShown(E.db.datatexts.panels.LeftChatDataPanel.enable)
+	_G.LeftChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.LeftChatDataPanel.enable)
 
 	_G.RightChatDataPanel:SetShown(E.db.datatexts.panels.RightChatDataPanel.enable)
-	_G.RightChatToggleButton:SetShown(E.db.datatexts.panels.RightChatDataPanel.enable)
+	_G.RightChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
 
 	local panelBackdrop = E.db.chat.panelBackdrop
 	if panelBackdrop == 'SHOWBOTH' then

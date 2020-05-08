@@ -907,6 +907,8 @@ end
 function CH:RefreshToggleButtons()
 	_G.LeftChatToggleButton:SetAlpha(E.db.LeftChatPanelFaded and E.db.chat.fadeChatToggles and 0 or 1)
 	_G.RightChatToggleButton:SetAlpha(E.db.RightChatPanelFaded and E.db.chat.fadeChatToggles and 0 or 1)
+	_G.LeftChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.LeftChatDataPanel.enable)
+	_G.RightChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
 end
 
 function CH:PositionChat(override)

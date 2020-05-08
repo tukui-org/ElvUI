@@ -243,7 +243,7 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	end
 end
 
-function DT:AssignPanelToDataText(panel, dt, data, event, ...)
+function DT:AssignPanelToDataText(dt, data, event, ...)
 	if data.events then
 		for _, ev in pairs(data.events) do
 			if data.objectEvent then
@@ -364,11 +364,11 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 					if value and type(value) == 'table' then
 						local opt = DT.db.panels[option]
 						if option == panelName and opt[i] and opt[i] == name then
-							DT:AssignPanelToDataText(panel, dt, info, ...)
+							DT:AssignPanelToDataText(dt, info, ...)
 						end
 					elseif value and type(value) == 'string' and value == name then
 						if option == panelName and DT.db.panels[option] == name then
-							DT:AssignPanelToDataText(panel, dt, info, ...)
+							DT:AssignPanelToDataText(dt, info, ...)
 						end
 					end
 				end
