@@ -253,6 +253,13 @@ E.Options.args.filters = {
 					set = function(info, value) E.global.unitframe.aurafilters[selectedFilter].type = value; UF:Update_AllFrames(); end,
 					hidden = function() return (selectedFilter == 'Debuff Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' or selectedFilter == 'Whitelist' or selectedFilter == 'Blacklist') end,
 				},
+				selectSpellheader = {
+					order = 9,
+					type = "description",
+					name = L["|cffFF0000Warning:|r Use the click the arrow on the dropdown box to see a list of spells."],
+					hidden = function() return not E.db.unitframe.smartRaidFilter end,
+					fontSize = "medium",
+				},
 				selectSpell = {
 					name = L["Select Spell"],
 					type = 'select',

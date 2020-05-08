@@ -1351,6 +1351,7 @@ L["Use Real ID BattleTag"] = "显示战网昵称"
 L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."] = "使用Shift+左键来改变友方/敌方/普通状态. 普通状态将允许过滤器检查所有单位. 友方/敌方将只检查对应单位."
 L["Use Static Position"] = "固定位置"
 L["Use Tanked Color when a nameplate is being effectively tanked by another tank."] = "当另一个坦克更有效的坦住时姓名板使用被坦住的颜色"
+L["|cffFF0000Warning:|r Use the click the arrow on the dropdown box to see a list of spells."] = true
 L["Use the custom backdrop color instead of a multiple of the main color."] = "使用自定义背景色而不是多种主色."
 L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."] = "使用配置文件内的增益指示器而不是全局的"
 L["Use thin borders on certain unitframe elements."] = "使用细边框"
