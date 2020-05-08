@@ -236,7 +236,7 @@ local tagStrings = {
 	end]],
 
 	['level'] = [[function(u)
-		local l = UnitLevel(u)
+		local l = UnitEffectiveLevel(u)
 		if(UnitIsWildBattlePet(u) or UnitIsBattlePetCompanion(u)) then
 			l = UnitBattlePetLevel(u)
 		end
