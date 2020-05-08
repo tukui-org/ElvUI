@@ -306,17 +306,6 @@ PanelLayoutOptions = function()
 					}
 				end
 			end
-		elseif type(tab) == 'string' then
-			options.smallPanels.args[name] = {
-				type = 'select',
-				name = L[name] or name,
-				values = datatexts,
-				get = function(info) return E.db.datatexts.panels[name] end,
-				set = function(info, value)
-					E.db.datatexts.panels[name] = value
-					DT:UpdatePanelInfo(name)
-				end,
-			}
 		end
 	end
 end
@@ -727,12 +716,6 @@ E.Options.args.datatexts = {
 							end,
 						},
 					},
-				},
-				smallPanels = {
-					type = "group",
-					name = ColorizeName(L["Small Panels"], '999999'),
-					order = 1,
-					args = {},
 				},
 				LeftChatDataPanel = {
 					type = "group",

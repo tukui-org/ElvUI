@@ -201,18 +201,21 @@ function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
 	end
 end
 
-function DT:UpdatePanelDimensions()
-	local panelWidth, panelHeight = self:GetSize()
-	local width, height = (panelWidth / self.numPoints) - 4, panelHeight - 4
-	if self.vertical then
-		width, height = panelWidth - 4, (panelHeight / self.numPoints) - 4
+function DT:UpdatePanelDimensions(panel)
+	local panelWidth, panelHeight = panel:GetSize()
+	local numPoints = panel.numPoints or 1
+	local vertical = panel.vertical
+
+	local width, height = (panelWidth / numPoints) - 4, panelHeight - 4
+	if vertical then
+		width, height = panelWidth - 4, (panelHeight / numPoints) - 4
 	end
 
-	for i, dt in ipairs(self.dataPanels) do
-		dt:SetShown(i <= self.numPoints)
+	for i, dt in ipairs(panel.dataPanels) do
+		dt:SetShown(i <= numPoints)
 		dt:Size(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(self, i, self.numPoints, self.vertical))
+		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 	end
 end
 
@@ -270,19 +273,9 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 			panel.dataPanels[i] = dt
 		end
 	end
-
-	if not panel.onSizeHooked then
-		panel:HookScript('OnSizeChanged', DT.UpdatePanelDimensions)
-		panel.onSizeHooked = true
-	end
-
-	DT.UpdatePanelDimensions(panel)
 end
 
-function DT:AssignPanelToDataText(panel, data, event, ...)
-	data.panel = panel
-	panel.name = data.name or ""
-
+function DT:AssignPanelToDataText(panel, dt, data, event, ...)
 	if data.events then
 		for _, ev in pairs(data.events) do
 			if data.objectEvent then
@@ -291,9 +284,9 @@ function DT:AssignPanelToDataText(panel, data, event, ...)
 				end
 			elseif data.eventFunc then
 				if DT.UnitEvents[ev] then
-					pcall(panel.RegisterUnitEvent, panel, ev, 'player')
+					pcall(dt.RegisterUnitEvent, dt, ev, 'player')
 				else
-					pcall(panel.RegisterEvent, panel, ev)
+					pcall(dt.RegisterEvent, dt, ev)
 				end
 			end
 		end
@@ -303,30 +296,32 @@ function DT:AssignPanelToDataText(panel, data, event, ...)
 	if data.objectEvent then
 		data.objectEventFunc(data.objectEvent, ev, ...)
 	elseif data.eventFunc then
-		panel:SetScript('OnEvent', data.eventFunc)
-		data.eventFunc(panel, ev, ...)
+		dt:SetScript('OnEvent', data.eventFunc)
+		data.eventFunc(dt, ev, ...)
 	end
 
 	if data.onUpdate then
-		panel:SetScript('OnUpdate', data.onUpdate)
-		data.onUpdate(panel, 20000)
+		dt:SetScript('OnUpdate', data.onUpdate)
+		data.onUpdate(dt, 20000)
 	end
 
 	if data.onClick then
-		panel:SetScript('OnClick', function(p, button)
+		dt:SetScript('OnClick', function(p, button)
 			if E.db.datatexts.noCombatClick and InCombatLockdown() then return end
 			data.onClick(p, button)
 		end)
 	end
 
 	if data.onEnter then
-		panel:SetScript('OnEnter', function(p)
+		dt:SetScript('OnEnter', function(p)
 			if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
 			data.onEnter(p)
 		end)
 	end
 
-	panel:SetScript('OnLeave', data.onLeave or DT.Data_OnLeave)
+	dt:SetScript('OnLeave', data.onLeave or DT.Data_OnLeave)
+
+	DT:UpdatePanelDimensions(panel)
 end
 
 function DT:UpdatePanelInfo(panelName, panel, ...)
@@ -371,12 +366,13 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			for name, info in pairs(DT.RegisteredDataTexts) do
 				for option, value in pairs(DT.db.panels) do
 					if value and type(value) == 'table' then
-						if option == panelName and DT.db.panels[option][i] and DT.db.panels[option][i] == name then
-							DT:AssignPanelToDataText(dt, info, ...)
+						local opt = DT.db.panels[option]
+						if option == panelName and opt[i] and opt[i] == name then
+							DT:AssignPanelToDataText(panel, dt, info, ...)
 						end
 					elseif value and type(value) == 'string' and value == name then
-						if DT.db.panels[option] == name and option == panelName then
-							DT:AssignPanelToDataText(dt, info, ...)
+						if option == panelName and DT.db.panels[option] == name then
+							DT:AssignPanelToDataText(panel, dt, info, ...)
 						end
 					end
 				end
