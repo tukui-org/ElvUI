@@ -106,6 +106,10 @@ function DT:ReleasePanel(givenName)
 end
 
 function DT:BuildPanelFrame(name, db)
+	db = db or E.global.datatexts.customPanels[name]
+
+	if not db then return end
+
 	local Panel = DT:FetchFrame(name)
 	Panel:Point('CENTER')
 	Panel:Size(100, 10)
