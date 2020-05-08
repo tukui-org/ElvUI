@@ -153,14 +153,6 @@ function LO:ToggleChatTabPanels(rightOverride, leftOverride)
 	end
 end
 
-function LO:SetChatTabStyle()
-	local tabStyle = (E.db.chat.panelTabTransparency and "Transparent") or nil
-	local glossTex = (not tabStyle and true) or nil
-
-	_G.LeftChatTab:SetTemplate(tabStyle, glossTex)
-	_G.RightChatTab:SetTemplate(tabStyle, glossTex)
-end
-
 function LO:SetDataPanelStyle()
 	local miniStyle = E.db.datatexts.panelTransparency and "Transparent" or nil
 	local panelStyle = (not E.db.datatexts.panelBackdrop) and "NoBackdrop" or miniStyle
@@ -185,48 +177,48 @@ function LO:RepositionChatDataPanels()
 	local LeftChatToggleButton = _G.LeftChatToggleButton
 	local RightChatToggleButton = _G.RightChatToggleButton
 
+	LeftChatTab:ClearAllPoints()
+	RightChatTab:ClearAllPoints()
 	LeftChatDataPanel:ClearAllPoints()
 	RightChatDataPanel:ClearAllPoints()
 
-	--Left Chat Tab
-	LeftChatTab:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', 1, -1)
-	LeftChatTab:Point('TOPRIGHT', LeftChatPanel, 'TOPRIGHT', -1, -1)
-	LeftChatTab:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', -1, -(1 + PANEL_HEIGHT))
-	LeftChatTab:Point('BOTTOMLEFT', LeftChatPanel, 'TOPLEFT', 1, -(1 + PANEL_HEIGHT))
+	LeftChatTab:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', 2, -2)
+	LeftChatTab:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', -2, -PANEL_HEIGHT-2)
+	RightChatTab:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -2, -2)
+	RightChatTab:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 2, -PANEL_HEIGHT-2)
 
-	--Right Chat Tab
-	RightChatTab:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -1, -1)
-	RightChatTab:Point('TOPLEFT', RightChatPanel, 'TOPLEFT', 1, -1)
-	RightChatTab:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 1, -(1 + PANEL_HEIGHT))
-	RightChatTab:Point('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', -1, -(1 + PANEL_HEIGHT))
-
-	-- Datateext: Left Chat Data Panel
-	-- Hide Button: Left Chat Toggle Button
+	local SPACING = E.PixelMode and 1 or -1
 	if E.db.chat.LeftChatDataPanelAnchor == 'ABOVE_CHAT' then
-		LeftChatDataPanel:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', 0, -1)
+		LeftChatDataPanel:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', 0, -SPACING)
 		LeftChatDataPanel:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', 1 + SIDE_BUTTON_WIDTH, 1 + PANEL_HEIGHT)
 		LeftChatToggleButton:Point('BOTTOMRIGHT', LeftChatDataPanel, 'BOTTOMLEFT', 1, 0)
 		LeftChatToggleButton:Point('TOPLEFT', LeftChatDataPanel, 'TOPLEFT', -(SIDE_BUTTON_WIDTH + 1), 0)
 	else
-		LeftChatDataPanel:Point('TOPRIGHT', LeftChatPanel, 'BOTTOMRIGHT', 0, 1)
+		LeftChatDataPanel:Point('TOPRIGHT', LeftChatPanel, 'BOTTOMRIGHT', 0, SPACING)
 		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', 1 + SIDE_BUTTON_WIDTH, -(1 + PANEL_HEIGHT))
 		LeftChatToggleButton:Point('TOPRIGHT', LeftChatDataPanel, 'TOPLEFT', 1, 0)
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatDataPanel, 'BOTTOMLEFT', -(SIDE_BUTTON_WIDTH + 1), 0)
 	end
 
-	-- Datateext: Right Chat Data Panel
-	-- Hide Button: Right Chat Toggle Button
 	if E.db.chat.RightChatDataPanelAnchor == 'ABOVE_CHAT' then
-		RightChatDataPanel:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 0, -1)
+		RightChatDataPanel:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 0, -SPACING)
 		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -(SIDE_BUTTON_WIDTH + 1), 1 + PANEL_HEIGHT)
 		RightChatToggleButton:Point('BOTTOMLEFT', RightChatDataPanel, 'BOTTOMRIGHT', -1, 0)
 		RightChatToggleButton:Point('TOPRIGHT', RightChatDataPanel, 'TOPRIGHT', SIDE_BUTTON_WIDTH + 1, 0)
 	else
-		RightChatDataPanel:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', 0, 1)
+		RightChatDataPanel:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', 0, SPACING)
 		RightChatDataPanel:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -(SIDE_BUTTON_WIDTH + 1), -(1 + PANEL_HEIGHT))
 		RightChatToggleButton:Point('TOPLEFT', RightChatDataPanel, 'TOPRIGHT', -1, 0)
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', SIDE_BUTTON_WIDTH + 1, 0)
 	end
+end
+
+function LO:SetChatTabStyle()
+	local tabStyle = (E.db.chat.panelTabTransparency and "Transparent") or nil
+	local glossTex = (not tabStyle and true) or nil
+
+	_G.LeftChatTab:SetTemplate(tabStyle, glossTex)
+	_G.RightChatTab:SetTemplate(tabStyle, glossTex)
 end
 
 function LO:ToggleChatPanels()
@@ -374,6 +366,7 @@ function LO:CreateChatPanels()
 	end
 
 	self:ToggleChatPanels()
+	self:SetChatTabStyle()
 end
 
 function LO:CreateMinimapPanels()
