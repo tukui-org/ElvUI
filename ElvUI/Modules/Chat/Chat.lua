@@ -1881,12 +1881,12 @@ function CH:SetupChat()
 
 	_G.GeneralDockManager:SetParent(_G.LeftChatPanel)
 	_G.GeneralDockManager:ClearAllPoints()
-	_G.GeneralDockManager:Point("BOTTOMLEFT", _G.LeftChatTab, "BOTTOMLEFT", 0, E.PixelMode and 1 or -1)
-	_G.GeneralDockManager:Point("BOTTOMRIGHT", _G.LeftChatTab, "BOTTOMRIGHT", 0, E.PixelMode and 1 or -1)
+	_G.GeneralDockManager:Point("BOTTOMLEFT", _G.LeftChatTab, "BOTTOMLEFT", 0, E.PixelMode and 3 or 1)
+	_G.GeneralDockManager:Point("BOTTOMRIGHT", _G.LeftChatTab, "BOTTOMRIGHT", 0, E.PixelMode and 3 or 1)
 	_G.GeneralDockManager:Height(22)
 	_G.GeneralDockManager.scrollFrame:ClearAllPoints()
-	_G.GeneralDockManager.scrollFrame:Point("TOPLEFT", _G.ChatFrame2Tab, "TOPRIGHT", 0, 2)
-	_G.GeneralDockManager.scrollFrame:Point("BOTTOMRIGHT", _G.GeneralDockManagerOverflowButton, "BOTTOMRIGHT", 0, -2)
+	_G.GeneralDockManager.scrollFrame:Point("TOPLEFT", _G.ChatFrame2Tab, "TOPRIGHT", 0, 1)
+	_G.GeneralDockManager.scrollFrame:Point("BOTTOMRIGHT", _G.GeneralDockManagerOverflowButton, "BOTTOMRIGHT", 0, -1)
 	self:PositionChat(true)
 
 	if not self.HookSecured then
