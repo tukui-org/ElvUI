@@ -461,7 +461,10 @@ end
 
 function CH:StyleChat(frame)
 	local name = frame:GetName()
-	_G[name.."TabText"]:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
+
+	local tab = _G[name..'Tab']
+	if not tab.text then tab.text = _G[name.."TabText"] end
+	tab.text:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
 
 	if frame.styled then return end
 
@@ -469,7 +472,6 @@ function CH:StyleChat(frame)
 
 	local id = frame:GetID()
 
-	local tab = _G[name..'Tab']
 	local editbox = _G[name..'EditBox']
 	local scroll = frame.ScrollBar
 	local scrollToBottom = frame.ScrollToBottomButton
@@ -506,7 +508,6 @@ function CH:StyleChat(frame)
 
 	tab:Size(22)
 	tab.left = _G[name.."TabLeft"]
-	tab.text = _G[name.."TabText"]
 	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	tab.text:ClearAllPoints()
 	tab.text:Point('LEFT', tab.left, 'RIGHT', 0, E.PixelMode and 3 or 5)
