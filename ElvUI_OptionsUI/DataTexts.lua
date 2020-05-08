@@ -259,6 +259,7 @@ PanelLayoutOptions = function()
 			if not options[name] then
 				options[name] = {
 					type = 'group',
+					name = ColorizeName(L[name] or name, P.datatexts.panels[name] and '999999' or E.global.datatexts.customPanels[name] and 'ffffff'),
 					args = {},
 					get = function(info) return E.db.datatexts.panels[name][info[#info]] end,
 					set = function(info, value)
@@ -267,8 +268,6 @@ PanelLayoutOptions = function()
 					end,
 				}
 			end
-
-			options[name].name = ColorizeName(L[name] or name, P.datatexts.panels[name] and '999999' or E.global.datatexts.customPanels[name] and 'ffffff')
 
 			-- temp to delete old data in WIP testing
 			if not P.datatexts.panels[name] and not E.global.datatexts.customPanels[name] then
@@ -299,7 +298,7 @@ PanelLayoutOptions = function()
 					}
 				elseif type(value) ~= 'boolean' and P.datatexts.panels[name][option] then
 					-- TODO: need to convert the old [name][option] to the number style..
-					options[name].args[option] = {
+					options[name].args[option] = options[name].args[option] or {
 						type = 'select',
 						name = L[option],
 						values = datatexts,
@@ -487,24 +486,6 @@ E.Options.args.datatexts = {
 							name = L["Battleground Texts"],
 							desc = L["When inside a battleground display personal scoreboard information on the main datatext bars."],
 						},
-						panelTransparency = {
-							order = 4,
-							name = L["Panel Transparency"],
-							type = 'toggle',
-							set = function(info, value)
-								E.db.datatexts[info[#info]] = value
-								Layout:SetDataPanelStyle()
-							end,
-						},
-						panelBackdrop = {
-							order = 5,
-							name = L["Backdrop"],
-							type = 'toggle',
-							set = function(info, value)
-								E.db.datatexts[info[#info]] = value
-								Layout:SetDataPanelStyle()
-							end,
-						},
 						noCombatClick = {
 							order = 6,
 							type = "toggle",
@@ -634,46 +615,6 @@ E.Options.args.datatexts = {
 			name = L["Panels"],
 			order = 4,
 			args = {
-				leftChatPanel = {
-					order = 2,
-					name = L["Datatext Panel (Left)"],
-					desc = L["Display data panels below the chat, used for datatexts."],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.datatexts[info[#info]] = value
-						if E.db.LeftChatPanelFaded then
-							E.db.LeftChatPanelFaded = true;
-							_G.HideLeftChat()
-						end
-						Chat:UpdateAnchors()
-						Layout:ToggleChatPanels()
-					end,
-				},
-				rightChatPanel = {
-					order = 3,
-					name = L["Datatext Panel (Right)"],
-					desc = L["Display data panels below the chat, used for datatexts."],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.datatexts[info[#info]] = value
-						if E.db.RightChatPanelFaded then
-							E.db.RightChatPanelFaded = true;
-							_G.HideRightChat()
-						end
-						Chat:UpdateAnchors()
-						Layout:ToggleChatPanels()
-					end,
-				},
-				minimapPanels = {
-					order = 4,
-					name = L["Minimap Panels"],
-					desc = L["Display minimap panels below the minimap, used for datatexts."],
-					type = 'toggle',
-					set = function(info, value)
-						E.db.datatexts[info[#info]] = value
-						Minimap:UpdateSettings()
-					end,
-				},
 				newPanel = {
 					order = 0,
 					type = 'group',
@@ -719,15 +660,111 @@ E.Options.args.datatexts = {
 				},
 				LeftChatDataPanel = {
 					type = "group",
-					name = L["LeftChatDataPanel"],
+					name = ColorizeName(L["Datatext Panel (Left)"], '999999'),
+					desc = L["Display data panels below the chat, used for datatexts."],
 					order = 2,
-					args = {},
+					get = function(info) return E.db.datatexts.panels.LeftChatDataPanel[info[#info]] end,
+					set = function(info, value) E.db.datatexts.panels.LeftChatDataPanel[info[#info]] = value DT:UpdatePanelInfo('LeftChatDataPanel') Layout:SetDataPanelStyle() end,
+					args = {
+						enable = {
+							order = 0,
+							name = L['Enable'],
+							type = 'toggle',
+							set = function(info, value)
+								E.db.datatexts.panels[info[#info - 1]][info[#info]] = value
+								if E.db.LeftChatPanelFaded then
+									E.db.LeftChatPanelFaded = true;
+									_G.HideLeftChat()
+								end
+								Chat:UpdateAnchors()
+								Layout:ToggleChatPanels()
+								Layout:SetDataPanelStyle()
+								DT:UpdatePanelInfo('LeftChatDataPanel')
+							end,
+						},
+						backdrop = {
+							order = 5,
+							name = L["Backdrop"],
+							type = "toggle",
+						},
+						panelTransparency = {
+							order = 6,
+							type = 'toggle',
+							name = L["Panel Transparency"],
+						},
+					},
 				},
 				RightChatDataPanel = {
 					type = "group",
-					name = L["RightChatDataPanel"],
+					name = ColorizeName(L["Datatext Panel (Right)"], '999999'),
+					desc = L["Display data panels below the chat, used for datatexts."],
 					order = 3,
-					args = {},
+					get = function(info) return E.db.datatexts.panels.RightChatDataPanel[info[#info]] end,
+					set = function(info, value) E.db.datatexts.panels.RightChatDataPanel[info[#info]] = value DT:UpdatePanelInfo('RightChatDataPanel') Layout:SetDataPanelStyle() end,
+					args = {
+						enable = {
+							order = 0,
+							name = L['Enable'],
+							type = 'toggle',
+							set = function(info, value)
+								E.db.datatexts.panels[info[#info - 1]][info[#info]] = value
+								if E.db.RightChatPanelFaded then
+									E.db.RightChatPanelFaded = true;
+									_G.HideRightChat()
+								end
+								Chat:UpdateAnchors()
+								Layout:ToggleChatPanels()
+								Layout:SetDataPanelStyle()
+								DT:UpdatePanelInfo('RightChatDataPanel')
+							end,
+						},
+						backdrop = {
+							order = 5,
+							name = L["Backdrop"],
+							type = "toggle",
+						},
+						panelTransparency = {
+							order = 6,
+							type = 'toggle',
+							name = L["Panel Transparency"],
+						},
+					},
+				},
+				MinimapPanel = {
+					type = "group",
+					name = ColorizeName(L["Minimap Panels"], '999999'),
+					desc = L["Display minimap panels below the minimap, used for datatexts."],
+					get = function(info) return E.db.datatexts.panels.MinimapPanel[info[#info]] end,
+					set = function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') end,
+					order = 4,
+					args = {
+						enable = {
+							order = 0,
+							name = L['Enable'],
+							type = 'toggle',
+							set = function(info, value)
+								E.db.datatexts.panels[info[#info - 1]][info[#info]] = value
+								DT:UpdatePanelInfo('MinimapPanel')
+								Minimap:UpdateSettings()
+							end,
+						},
+						numPoints = {
+							order = 1,
+							type = 'range',
+							name = L["Number of DataTexts"],
+							min = 1, max = 2, step = 1,
+						},
+						backdrop = {
+							order = 5,
+							name = L["Backdrop"],
+							type = "toggle",
+						},
+						panelTransparency = {
+							order = 6,
+							type = 'toggle',
+							name = L["Panel Transparency"],
+						},
+					},
 				},
 			},
 		},

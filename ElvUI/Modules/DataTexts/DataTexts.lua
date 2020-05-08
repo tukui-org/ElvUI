@@ -236,23 +236,8 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	if not E.db.datatexts.panels[name] then
 		E.db.datatexts.panels[name] = { enable = false }
 
-		for i = 1, numPoints do
+		for i = 1, panel.numPoints do
 			E.db.datatexts.panels[name][i] = ''
-		end
-	end
-
-	for i = 1, numPoints do
-		local dt = panel.dataPanels[i]
-		if not dt then
-			dt = CreateFrame('Button', realName..'_DataText'..i, panel)
-			dt:RegisterForClicks("AnyUp")
-
-			dt.text = dt:CreateFontString(nil, 'OVERLAY')
-			dt.text:SetAllPoints()
-			dt.text:SetJustifyH("CENTER")
-			dt.text:SetJustifyV("MIDDLE")
-
-			panel.dataPanels[i] = dt
 		end
 	end
 end
@@ -310,18 +295,36 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	local enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
 
-	local db = panel.db
+	local db = panel.db or P.datatexts.panels[panelName] and DT.db.panels[panelName]
 	local font, fontSize, fontOutline = data.font, data.fontSize, data.fontOutline
 	if db and db.fonts and db.fonts.enable then
 		font, fontSize, fontOutline = LSM:Fetch("font", db.fonts.font), db.fonts.fontSize, db.fonts.fontOutline
 	end
 
 	local panelWidth, panelHeight = panel:GetSize()
-	local numPoints = panel.numPoints or 1
-	local vertical = panel.vertical
+	local numPoints = db and db.numPoints or panel.numPoints or 1
+	local vertical = db and db.vertical or panel.vertical
 
 	local width, height = (panelWidth / numPoints) - 4, panelHeight - 4
 	if vertical then width, height = panelWidth - 4, (panelHeight / numPoints) - 4 end
+
+	for i = 1, numPoints do
+		local dt = panel.dataPanels[i]
+		if not dt then
+			dt = CreateFrame('Button', panelName..'_DataText'..i, panel)
+			dt:RegisterForClicks("AnyUp")
+
+			dt.text = dt:CreateFontString(nil, 'OVERLAY')
+			dt.text:SetAllPoints()
+			dt.text:SetJustifyH("CENTER")
+			dt.text:SetJustifyV("MIDDLE")
+
+			panel.dataPanels[i] = dt
+		end
+	end
+
+	panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
+	E:TogglePixelBorders(panel, db.backdrop and db.border)
 
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
@@ -401,10 +404,11 @@ function DT:UpdateDTPanelAttributes(name, db)
 	Panel:Size(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
-	Panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
-
-	E:TogglePixelBorders(Panel, db.backdrop and db.border)
-	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
+	Panel.numPoints = db.numPoints
+	Panel.xOff = db.tooltipXOffset
+	Panel.yOff = db.tooltipYOffset
+	Panel.anchor = db.tooltipAnchor
+	Panel.vertical = db.tooltipYOffset
 
 	if DT.db.panels[name].enable then
 		E:EnableMover(Panel.moverName)

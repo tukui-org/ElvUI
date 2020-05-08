@@ -900,16 +900,29 @@ P.datatexts = {
 	wordWrap = false,
 	panels = {
 		LeftChatDataPanel = {
+			enable = true,
+			backdrop = true,
+			border = true,
+			panelTransparency = false,
 			'Talent/Loot Specialization',
 			'Durability',
 			'BfA Missions'
 		},
 		RightChatDataPanel = {
+			enable = true,
+			backdrop = true,
+			border = true,
+			panelTransparency = false,
 			'System',
 			'Time',
 			'Gold'
 		},
 		MinimapPanel = {
+			enable = true,
+			backdrop = true,
+			border = true,
+			panelTransparency = false,
+			numPoints = 2,
 			'Guild',
 			'Friends'
 		}

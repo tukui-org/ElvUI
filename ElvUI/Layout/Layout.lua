@@ -16,46 +16,39 @@ local function Panel_OnShow(self)
 end
 
 function LO:Initialize()
-	self.Initialized = true
-	self:CreateChatPanels()
-	self:CreateMinimapPanels()
-	self:SetDataPanelStyle()
+	LO.Initialized = true
+	LO:CreateChatPanels()
+	LO:CreateMinimapPanels()
 
-	self.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent)
-	self.BottomPanel:SetTemplate('Transparent')
-	self.BottomPanel:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', -1, -1)
-	self.BottomPanel:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
-	self.BottomPanel:Height(PANEL_HEIGHT)
-	self.BottomPanel:SetScript('OnShow', Panel_OnShow)
+	LO:SetDataPanelStyle()
+
+	LO.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent)
+	LO.BottomPanel:SetTemplate('Transparent')
+	LO.BottomPanel:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', -1, -1)
+	LO.BottomPanel:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
+	LO.BottomPanel:Height(PANEL_HEIGHT)
+	LO.BottomPanel:SetScript('OnShow', Panel_OnShow)
 	E.FrameLocks.ElvUI_BottomPanel = true
-	Panel_OnShow(self.BottomPanel)
-	self:BottomPanelVisibility()
+	Panel_OnShow(LO.BottomPanel)
+	LO:BottomPanelVisibility()
 
-	self.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent)
-	self.TopPanel:SetTemplate('Transparent')
-	self.TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
-	self.TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
-	self.TopPanel:Height(PANEL_HEIGHT)
-	self.TopPanel:SetScript('OnShow', Panel_OnShow)
-	Panel_OnShow(self.TopPanel)
+	LO.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent)
+	LO.TopPanel:SetTemplate('Transparent')
+	LO.TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
+	LO.TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
+	LO.TopPanel:Height(PANEL_HEIGHT)
+	LO.TopPanel:SetScript('OnShow', Panel_OnShow)
+	Panel_OnShow(LO.TopPanel)
 	E.FrameLocks.ElvUI_TopPanel = true
-	self:TopPanelVisibility()
+	LO:TopPanelVisibility()
 end
 
 function LO:BottomPanelVisibility()
-	if E.db.general.bottomPanel then
-		self.BottomPanel:Show()
-	else
-		self.BottomPanel:Hide()
-	end
+	LO.BottomPanel:SetShown(E.db.general.bottomPanel)
 end
 
 function LO:TopPanelVisibility()
-	if E.db.general.topPanel then
-		self.TopPanel:Show()
-	else
-		self.TopPanel:Hide()
-	end
+	LO.TopPanel:SetShown(E.db.general.topPanel)
 end
 
 local function finishFade(self)
@@ -154,17 +147,8 @@ function LO:ToggleChatTabPanels(rightOverride, leftOverride)
 end
 
 function LO:SetDataPanelStyle()
-	local miniStyle = E.db.datatexts.panelTransparency and "Transparent" or nil
-	local panelStyle = (not E.db.datatexts.panelBackdrop) and "NoBackdrop" or miniStyle
-
-	local miniGlossTex = (not miniStyle and true) or nil
-	local panelGlossTex = (not panelStyle and true) or nil
-
-	_G.LeftChatDataPanel:SetTemplate(panelStyle, panelGlossTex)
-	_G.LeftChatToggleButton:SetTemplate(panelStyle, panelGlossTex)
-	_G.RightChatDataPanel:SetTemplate(panelStyle, panelGlossTex)
-	_G.RightChatToggleButton:SetTemplate(panelStyle, panelGlossTex)
-	_G.MinimapPanel:SetTemplate(miniStyle, miniGlossTex)
+	_G.LeftChatToggleButton:SetTemplate(E.db.datatexts.panels.LeftChatDataPanel.backdrop and (E.db.datatexts.panels.LeftChatDataPanel.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
+	_G.RightChatToggleButton:SetTemplate(E.db.datatexts.panels.RightChatDataPanel.backdrop and (E.db.datatexts.panels.RightChatDataPanel.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
 end
 
 function LO:RepositionChatDataPanels()
@@ -222,21 +206,11 @@ function LO:SetChatTabStyle()
 end
 
 function LO:ToggleChatPanels()
-	if E.db.datatexts.leftChatPanel then
-		_G.LeftChatDataPanel:Show()
-		_G.LeftChatToggleButton:Show()
-	else
-		_G.LeftChatDataPanel:Hide()
-		_G.LeftChatToggleButton:Hide()
-	end
+	_G.LeftChatDataPanel:SetShown(E.db.datatexts.panels.LeftChatDataPanel.enable)
+	_G.LeftChatToggleButton:SetShown(E.db.datatexts.panels.LeftChatDataPanel.enable)
 
-	if E.db.datatexts.rightChatPanel then
-		_G.RightChatDataPanel:Show()
-		_G.RightChatToggleButton:Show()
-	else
-		_G.RightChatDataPanel:Hide()
-		_G.RightChatToggleButton:Hide()
-	end
+	_G.RightChatDataPanel:SetShown(E.db.datatexts.panels.RightChatDataPanel.enable)
+	_G.RightChatToggleButton:SetShown(E.db.datatexts.panels.RightChatDataPanel.enable)
 
 	local panelBackdrop = E.db.chat.panelBackdrop
 	if panelBackdrop == 'SHOWBOTH' then
@@ -365,8 +339,8 @@ function LO:CreateChatPanels()
 		rchat:Hide()
 	end
 
-	self:ToggleChatPanels()
-	self:SetChatTabStyle()
+	LO:ToggleChatPanels()
+	LO:SetChatTabStyle()
 end
 
 function LO:CreateMinimapPanels()
@@ -374,7 +348,7 @@ function LO:CreateMinimapPanels()
 	panel:Point('TOPLEFT', _G.Minimap, 'BOTTOMLEFT', -1, -1)
 	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', 1, -PANEL_HEIGHT)
 	panel:Hide()
-	DT:RegisterPanel(panel, 2, 'ANCHOR_BOTTOMLEFT', 0, -4)
+	DT:RegisterPanel(panel, E.db.datatexts.panels.MinimapPanel.numPoints, 'ANCHOR_BOTTOMLEFT', 0, -4)
 end
 
 E:RegisterModule(LO:GetName())
