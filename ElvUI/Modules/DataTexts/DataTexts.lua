@@ -308,6 +308,10 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	local width, height = (panelWidth / numPoints) - 4, panelHeight - 4
 	if vertical then width, height = panelWidth - 4, (panelHeight / numPoints) - 4 end
 
+	if not panel.dataPanels then
+		panel.dataPanels = {}
+	end
+
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
 		if not dt then
