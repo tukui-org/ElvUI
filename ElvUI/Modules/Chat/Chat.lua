@@ -824,20 +824,18 @@ function CH:SetupChatTabs(frame, hook)
 end
 
 function CH:UpdateAnchors()
-	local ChatFrame1, LeftChatTab = _G.ChatFrame1, _G.LeftChatTab
+	local ChatPanel = _G.LeftChatPanel
 	for _, frameName in pairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName..'EditBox']
-		if not frame then break; end
-		local noBackdrop = (self.db.panelBackdrop == "HIDEBOTH" or self.db.panelBackdrop == "RIGHT")
+		if not frame then break end
+
 		frame:ClearAllPoints()
-		if not E.db.datatexts.leftChatPanel and E.db.chat.editBoxPosition == 'BELOW_CHAT' then
-			frame:Point("TOPLEFT", ChatFrame1, "BOTTOMLEFT", noBackdrop and -1 or -4, noBackdrop and -1 or -4)
-			frame:Point("BOTTOMRIGHT", ChatFrame1, "BOTTOMRIGHT", noBackdrop and 10 or 7, -LeftChatTab:GetHeight()-(noBackdrop and 1 or 4))
-		elseif E.db.chat.editBoxPosition == 'BELOW_CHAT' then
-			frame:SetAllPoints(_G.LeftChatDataPanel)
+		if E.db.chat.editBoxPosition == 'BELOW_CHAT' then
+			frame:Point("TOPLEFT", ChatPanel, "BOTTOMLEFT", 0, 0)
+			frame:Point("BOTTOMRIGHT", ChatPanel, "BOTTOMRIGHT", 0, -22)
 		else
-			frame:Point("BOTTOMLEFT", ChatFrame1, "TOPLEFT", noBackdrop and -1 or -1, noBackdrop and 1 or 4)
-			frame:Point("TOPRIGHT", ChatFrame1, "TOPRIGHT", noBackdrop and 10 or 4, LeftChatTab:GetHeight()+(noBackdrop and 1 or 4))
+			frame:Point("BOTTOMLEFT", ChatPanel, "TOPLEFT", 0, 0)
+			frame:Point("TOPRIGHT", ChatPanel, "TOPRIGHT", 0, 22)
 		end
 	end
 
@@ -942,13 +940,10 @@ function CH:PositionChat(override)
 		end
 
 		if chat:IsShown() and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
+			BASE_OFFSET = BASE_OFFSET - 24
 			chat:ClearAllPoints()
-			if E.db.datatexts.rightChatPanel then
-				chat:Point("BOTTOMLEFT", RightChatDataPanel, "TOPLEFT", 1, 3)
-			else
-				BASE_OFFSET = BASE_OFFSET - 24
-				chat:Point("BOTTOMLEFT", RightChatDataPanel, "BOTTOMLEFT", 1, 1)
-			end
+			chat:Point("BOTTOMLEFT", RightChatPanel, "BOTTOMLEFT", 1, 1)
+
 			if id ~= 2 then
 				chat:Size((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 11, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
 			else
@@ -977,13 +972,9 @@ function CH:PositionChat(override)
 			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
 		else
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
+				BASE_OFFSET = BASE_OFFSET - 24
 				chat:ClearAllPoints()
-				if E.db.datatexts.leftChatPanel then
-					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "TOPLEFT", 1, 3)
-				else
-					BASE_OFFSET = BASE_OFFSET - 24
-					chat:Point("BOTTOMLEFT", LeftChatToggleButton, "BOTTOMLEFT", 1, 1)
-				end
+				chat:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 1, 1)
 				chat:Size(E.db.chat.panelWidth - 11, (E.db.chat.panelHeight - BASE_OFFSET))
 
 				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
@@ -1009,7 +1000,7 @@ function CH:PositionChat(override)
 		end
 	end
 
-	E.Layout:RepositionChatDataPanels() --Bugfix: #686
+	E.Layout:RepositionChatDataPanels()
 
 	self.initialMove = true
 end
