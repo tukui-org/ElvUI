@@ -201,24 +201,6 @@ function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
 	end
 end
 
-function DT:UpdatePanelDimensions(panel)
-	local panelWidth, panelHeight = panel:GetSize()
-	local numPoints = panel.numPoints or 1
-	local vertical = panel.vertical
-
-	local width, height = (panelWidth / numPoints) - 4, panelHeight - 4
-	if vertical then
-		width, height = panelWidth - 4, (panelHeight / numPoints) - 4
-	end
-
-	for i, dt in ipairs(panel.dataPanels) do
-		dt:SetShown(i <= numPoints)
-		dt:Size(width, height)
-		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
-	end
-end
-
 function DT:Data_OnLeave()
 	DT.tooltip:Hide()
 end
@@ -328,16 +310,26 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	local enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
 
-	DT:UpdatePanelDimensions(panel)
-
 	local db = panel.db
 	local font, fontSize, fontOutline = data.font, data.fontSize, data.fontOutline
 	if db and db.fonts and db.fonts.enable then
 		font, fontSize, fontOutline = LSM:Fetch("font", db.fonts.font), db.fonts.fontSize, db.fonts.fontOutline
 	end
 
+	local panelWidth, panelHeight = panel:GetSize()
+	local numPoints = panel.numPoints or 1
+	local vertical = panel.vertical
+
+	local width, height = (panelWidth / numPoints) - 4, panelHeight - 4
+	if vertical then width, height = panelWidth - 4, (panelHeight / numPoints) - 4 end
+
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
+		dt:SetShown(i <= numPoints)
+		dt:Size(width, height)
+		dt:ClearAllPoints()
+		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
+
 		dt:UnregisterAllEvents()
 		dt:SetScript('OnUpdate', nil)
 		dt:SetScript('OnEnter', nil)
