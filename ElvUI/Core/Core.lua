@@ -548,12 +548,15 @@ function E:RemoveTableDuplicates(cleanTable, checkTable, generatedKeys)
 	end
 
 	local rtdCleaned = {}
+	local keyTable = type(generatedKeys) == 'table'
 	for option, value in pairs(cleanTable) do
+		local default = checkTable[option]
+		local genTable = keyTable and generatedKeys[option]
 		-- we only want to add settings which are existing in the default table, unless it's allowed by generatedKeys
-		if (checkTable[option] ~= nil) or (type(generatedKeys) ~= 'table' and generatedKeys) or generatedKeys == nil then
-			if type(value) == 'table' and type(checkTable[option]) == 'table' then
-				rtdCleaned[option] = self:RemoveTableDuplicates(value, checkTable[option], (type(generatedKeys) == 'table' and generatedKeys[option]) or nil)
-			elseif cleanTable[option] ~= checkTable[option] then
+		if default ~= nil or (genTable or (not keyTable and generatedKeys) or generatedKeys == nil) then
+			if type(value) == 'table' and type(default) == 'table' then
+				rtdCleaned[option] = self:RemoveTableDuplicates(value, default, genTable or nil)
+			elseif cleanTable[option] ~= default then
 				-- add unique data to our clean table
 				rtdCleaned[option] = value
 			end
