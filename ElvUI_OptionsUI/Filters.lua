@@ -256,7 +256,7 @@ E.Options.args.filters = {
 				selectSpellheader = {
 					order = 9,
 					type = "description",
-					name = L["|cffFF0000Warning:|r Use the click the arrow on the dropdown box to see a list of spells."],
+					name = L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."],
 					hidden = function() return not E.db.unitframe.smartRaidFilter end,
 					fontSize = "medium",
 				},
