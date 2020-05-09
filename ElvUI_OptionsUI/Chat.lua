@@ -469,7 +469,7 @@ E.Options.args.chat = {
 						['BELOW_CHAT'] = L["Below Chat"],
 						['ABOVE_CHAT'] = L["Above Chat"],
 					},
-					set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateAnchors() end,
+					set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateEditboxAnchors() end,
 				},
 				LeftChatDataPanelAnchor = {
 					order = 5,
@@ -496,7 +496,7 @@ E.Options.args.chat = {
 					type = 'select',
 					name = L["Panel Backdrop"],
 					desc = L["Toggle showing of the left and right chat panels."],
-					set = function(info, value) E.db.chat.panelBackdrop = value; Layout:ToggleChatPanels(); CH:PositionChat(true); CH:UpdateAnchors() end,
+					set = function(info, value) E.db.chat.panelBackdrop = value; Layout:ToggleChatPanels(); CH:PositionChat(true); CH:UpdateEditboxAnchors() end,
 					values = {
 						['HIDEBOTH'] = L["Hide Both"],
 						['SHOWBOTH'] = L["Show Both"],
