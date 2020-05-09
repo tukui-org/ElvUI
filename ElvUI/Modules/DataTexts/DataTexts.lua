@@ -11,10 +11,10 @@ local ipairs, pairs, next, strlen = ipairs, pairs, next, strlen
 local CreateFrame = CreateFrame
 local IsInInstance = IsInInstance
 local InCombatLockdown = InCombatLockdown
-local IsAltKeyDown = IsAltKeyDown
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 local hdt_enabled = false
+local chosenDT = nil
 
 function DT:Initialize()
 	DT.Initialized = true
@@ -40,6 +40,7 @@ function DT:Initialize()
 
 	E:RegisterChatCommand('hdt', DT.HyperDT)
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
+	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
 end
 
 function DT:HyperDT()
@@ -72,19 +73,16 @@ DT.UnitEvents = {
 
 local menuFrame = CreateFrame('Frame', "ElvUI_HyperDTMenuFrame", E.UIParent, 'UIDropDownMenuTemplate')
 menuFrame:SetClampedToScreen(true)
-menuFrame.SetAnchor = function(self, anchor)
-	local point = E:GetScreenQuadrant(anchor)
+menuFrame:EnableMouse(true)
+menuFrame.SetAnchor = function(self, dt)
+	local point = E:GetScreenQuadrant(dt)
 	local bottom = point and strfind(point, "BOTTOM")
 	local left = point and strfind(point, "LEFT")
 
 	local anchor1 = (bottom and left and "BOTTOMLEFT") or (bottom and "BOTTOMRIGHT") or (left and "TOPLEFT") or "TOPRIGHT"
 	local anchor2 = (bottom and left and "TOPLEFT") or (bottom and "TOPRIGHT") or (left and "BOTTOMLEFT") or "BOTTOMRIGHT"
 
-	self.xOffset = 0
-	self.yOffset = 0
-	self.point = anchor1
-	self.relativeTo = anchor
-	self.relativePoint = anchor2
+	UIDropDownMenu_SetAnchor(self, 0, 0, anchor1, dt, anchor2)
 end
 
 local function MenuSet(dt, value)
@@ -93,6 +91,8 @@ local function MenuSet(dt, value)
 	if hdt_enabled then
 		DT:EnableHyperMode()
 	end
+
+	chosenDT = nil
 end
 
 local function MenuGet(dt, value)
@@ -100,12 +100,27 @@ local function MenuGet(dt, value)
 	return DT.db.panels[dt.parentName][dt.pointIndex] == value
 end
 
-local chosenDT = nil
 local menuList = {
 	{ text = L["NONE"], checked = function() return MenuGet(chosenDT, '') end, func = function() MenuSet(chosenDT, '') end }
 }
 
+function DT:SingleHyperMode(_, key, active)
+	if (key == 'LALT' or key == 'RALT') then
+		if active == 1 and MouseIsOver(chosenDT) then
+			DT:OnLeave()
+
+			menuFrame:SetAnchor(chosenDT)
+			EasyMenu(menuList, menuFrame, nil, nil, nil, 'MENU')
+		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
+			CloseDropDownMenus()
+			chosenDT = nil
+		end
+	end
+end
+
 function DT:EnableHyperMode()
+	DT:OnLeave()
+
 	for _, panel in pairs(DT.RegisteredPanels) do
 		for _, dt in pairs(panel.dataPanels) do
 			dt.overlay:Show()
@@ -114,7 +129,7 @@ function DT:EnableHyperMode()
 			dt:SetScript("OnClick", function(self, button)
 				if button == "RightButton" then
 					menuFrame:SetAnchor(self)
-					EasyMenu(menuList, menuFrame, nil, nil, nil, 'MENU', 1)
+					EasyMenu(menuList, menuFrame, nil, nil, nil, 'MENU')
 				end
 			end)
 		end
@@ -123,19 +138,16 @@ end
 
 function DT:OnEnter()
 	if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
-	if IsAltKeyDown() then
-		chosenDT = self
-		menuFrame:SetAnchor(self)
-		EasyMenu(menuList, menuFrame, nil, nil, nil, 'MENU', 1)
-	else
-		if self.MouseEnters then
-			for _, func in ipairs(self.MouseEnters) do
-				func(self)
-			end
-		end
 
-		DT.MouseEnter(self)
+	chosenDT = self
+
+	if self.MouseEnters then
+		for _, func in ipairs(self.MouseEnters) do
+			func(self)
+		end
 	end
+
+	DT.MouseEnter(self)
 end
 
 function DT:OnLeave()
