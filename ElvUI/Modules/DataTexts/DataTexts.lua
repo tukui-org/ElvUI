@@ -546,6 +546,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.MouseEnters = {}
 			dt.MouseLeaves = {}
 			dt.parent = panel
+			dt.parentName = panelName
 			dt.db = db
 			dt.pointIndex = i
 			dt:RegisterForClicks("AnyUp")
