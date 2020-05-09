@@ -56,7 +56,35 @@ DT.UnitEvents = {
 	UNIT_SPELL_HASTE = true
 }
 
+local function Bar_OnEnter(self)
+	if self.db.mouseover then
+		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+	end
+end
+
+local function Button_OnEnter(self)
+	if self.db.mouseover then
+		E:UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
+	end
+end
+
+local function Bar_OnLeave(self)
+	if self.db.mouseover then
+		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
+	end
+end
+
+local function Button_OnLeave(self)
+	if self.db.mouseover then
+		E:UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
+	end
+end
+
 function DT:FetchFrame(givenName)
+	if DT.PanelPool.InUse[givenName] then
+		return DT.PanelPool.InUse[givenName]
+	end
+
 	local count = DT.PanelPool.Count
 	local name = 'ElvUI_DTPanel' .. count
 	local frame
@@ -111,8 +139,11 @@ function DT:BuildPanelFrame(name, db)
 	if not db then return end
 
 	local Panel = DT:FetchFrame(name)
+	Panel:ClearAllPoints()
 	Panel:Point('CENTER')
 	Panel:Size(100, 10)
+	Panel:SetScript("OnEnter", Bar_OnEnter)
+	Panel:SetScript("OnLeave", Bar_OnLeave)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -349,6 +380,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
 		dt.pointIndex = i
+		dt.db = db
+		dt.parent = panel
 
 		if enableBGPanel then
 			dt:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
@@ -379,6 +412,10 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 					end
 				end
 			end
+
+			-- DT - Set Scripts - Hooking for Mouseover
+			dt:HookScript("OnEnter", Button_OnEnter)
+			dt:HookScript("OnLeave", Button_OnLeave)
 		end
 	end
 end
@@ -421,6 +458,7 @@ function DT:UpdateDTPanelAttributes(name, db)
 		DT.db.panels[name] = { enable = true }
 	end
 
+	print(name)
 	for i = 1, E.global.datatexts.customPanels[name].numPoints do
 		if not DT.db.panels[name][i] then
 			DT.db.panels[name][i] = ''

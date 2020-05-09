@@ -40,7 +40,7 @@ local DTPanelOptions = {
 		order = 4,
 		type = 'range',
 		name = L["Height"],
-		min = 24, max = E.screenheight, step = 1,
+		min = 12, max = E.screenheight, step = 1,
 	},
 	backdrop = {
 		order = 5,
