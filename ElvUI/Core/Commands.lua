@@ -168,6 +168,18 @@ function E:GetCPUImpact()
 	end
 end
 
+function E:EHelp()
+	E:Print('Here is a list of all important ElvUI commands:')
+	print('    /ec or /elvui - Toggle the ElvUI OptionsUI.')
+	print('    /moveui - Toggle anchors to reposition various elements.')
+	print('    /kb - Toggle the keybind mode.')
+	print('    /resetui - Reset all frames to their original positions.')
+	print('    /egrid <64>/<128>/<256> - Toggle a pixel grid.')
+	print('    /bgstats - Toggle Battleground stats on your DataTexts.')
+	print('    /luaerror <on>/<off> - Disable all AddOns except ElvUI.')
+	print('    /estatus - Important informations for support questions.')
+end
+
 local BLIZZARD_ADDONS = {
 	'Blizzard_AchievementUI',
 	'Blizzard_AdventureMap',
@@ -288,6 +300,8 @@ function E:LoadCommands()
 	self:RegisterChatCommand('cleanguild', 'MassGuildKick')
 	self:RegisterChatCommand('enableblizzard', 'EnableBlizzardAddOns')
 	self:RegisterChatCommand('estatus', 'ShowStatusReport')
+	self:RegisterChatCommand('ehelp', 'EHelp')
+	self:RegisterChatCommand('ecommands', 'EHelp')
 	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 
 	if E.private.actionbar.enable then
