@@ -70,156 +70,40 @@ DT.UnitEvents = {
 	UNIT_SPELL_HASTE = true
 }
 
+local menuFrame = CreateFrame('Frame', "ElvUI_HyperDTMenuFrame", E.UIParent, 'UIDropDownMenuTemplate')
+menuFrame:SetClampedToScreen(true)
+menuFrame.SetAnchor = function(self, anchor)
+	local point = E:GetScreenQuadrant(anchor)
+	local bottom = point and strfind(point, "BOTTOM")
+	local left = point and strfind(point, "LEFT")
+
+	local anchor1 = (bottom and left and "BOTTOMLEFT") or (bottom and "BOTTOMRIGHT") or (left and "TOPLEFT") or "TOPRIGHT"
+	local anchor2 = (bottom and left and "TOPLEFT") or (bottom and "TOPRIGHT") or (left and "BOTTOMLEFT") or "BOTTOMRIGHT"
+
+	self.xOffset = 0
+	self.yOffset = 0
+	self.point = anchor1
+	self.relativeTo = anchor
+	self.relativePoint = anchor2
+end
+
+local function MenuSet(dt, value)
+	DT.db.panels[dt.parentName][dt.pointIndex] = value
+	DT:UpdatePanelInfo(dt.parentName, dt.parent)
+	if hdt_enabled then
+		DT:EnableHyperMode()
+	end
+end
+
+local function MenuGet(dt, value)
+	if not dt.parentName then return end
+	return DT.db.panels[dt.parentName][dt.pointIndex] == value
+end
+
 local chosenDT = nil
-
-local startChar = {
-	["AB"] = {},
-	["CD"] = {},
-	["EF"] = {},
-	["GH"] = {},
-	["IJ"] = {},
-	["KL"] = {},
-	["MN"] = {},
-	["OP"] = {},
-	["QR"] = {},
-	["ST"] = {},
-	["UV"] = {},
-	["WX"] = {},
-	["YZ"] = {}
+local menuList = {
+	{ text = L["NONE"], checked = function() return MenuGet(chosenDT, '') end, func = function() MenuSet(chosenDT, '') end }
 }
-
-local menu = {}
-
-local function CreateMenu(level)
-	menu = wipe(menu)
-
-	local numDTs = 0
-	local nameMap = {}
-	local hexColor = _G.GREEN_FONT_COLOR_CODE
-
-	for name, _ in pairs(DT.RegisteredDataTexts) do
-		numDTs = numDTs + 1
-		nameMap[numDTs] = name
-	end
-
-	sort(nameMap, function(a, b) return a < b end)
-
-	if (numDTs > 0) then
-		numDTs = numDTs + 1
-		nameMap[numDTs] = L["NONE"]
-	end
-
-	if numDTs == 0 then
-		return
-	elseif numDTs <= 20 then
-		for i = 1, numDTs do
-			local name = nameMap[i]
-			local active = chosenDT.menuGetFunc() == name
-			menu.hasArrow = false
-			menu.notCheckable = true
-			menu.text = name
-			menu.colorCode = active and hexColor or "|cffffffff"
-			menu.func = function() chosenDT.menuSetFunc(name) end
-			UIDropDownMenu_AddButton(menu)
-		end
-	else
-		level = level or 1
-		nameMap[numDTs] = nil
-		numDTs = numDTs - 1
-
-		if level == 1 then
-			for key in pairs(startChar) do
-				menu.text = key
-				menu.notCheckable = true
-				menu.hasArrow = true
-				menu.value = {["Level1_Key"] = key}
-				UIDropDownMenu_AddButton(menu, level)
-			end
-			local active = chosenDT.menuGetFunc() == L['NONE']
-			menu.hasArrow = false
-			menu.notCheckable = true
-			menu.text = L['NONE']
-			menu.colorCode = active == 1 and hexColor or "|cffffffff"
-			menu.func = function()
-				chosenDT.menuSetFunc(L['NONE'])
-			end
-			UIDropDownMenu_AddButton(menu)
-		elseif level == 2 then
-			local Level1_Key = _G.UIDROPDOWNMENU_MENU_VALUE["Level1_Key"]
-			for i = 1, numDTs do
-				local name = nameMap[i]
-				local active = chosenDT.menuGetFunc() == name
-				local firstChar = name:sub(1, 1):upper()
-				menu.text = name
-				menu.colorCode = active and hexColor or "|cffffffff"
-				menu.func = function()
-					chosenDT.menuSetFunc(name)
-				end
-				menu.hasArrow = false
-				menu.notCheckable = true
-
-				if firstChar >= "A" and firstChar <= "B" and Level1_Key == "AB" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "C" and firstChar <= "D" and Level1_Key == "CD" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "E" and firstChar <= "F" and Level1_Key == "EF" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "G" and firstChar <= "H" and Level1_Key == "GH" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "I" and firstChar <= "J" and Level1_Key == "IJ" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "K" and firstChar <= "L" and Level1_Key == "KL" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "M" and firstChar <= "N" and Level1_Key == "MN" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "O" and firstChar <= "P" and Level1_Key == "OP" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "Q" and firstChar <= "R" and Level1_Key == "QR" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "S" and firstChar <= "T" and Level1_Key == "ST" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "U" and firstChar <= "V" and Level1_Key == "UV" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "W" and firstChar <= "X" and Level1_Key == "WX" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-
-				if firstChar >= "Y" and firstChar <= "Z" and Level1_Key == "YZ" then
-					UIDropDownMenu_AddButton(menu, level)
-				end
-			end
-		end
-	end
-end
-
-local menuFrame = CreateFrame("Frame", "HyperDTMenuFrame", E.UIParent)
-_G.HyperDTMenuFrame.displayMode = "MENU"
-_G.HyperDTMenuFrame.initialize = function(_, level)
-	menuFrame:SetTemplate("Transparent", true)
-	CreateMenu(level)
-end
 
 function DT:EnableHyperMode()
 	for _, panel in pairs(DT.RegisteredPanels) do
@@ -229,8 +113,8 @@ function DT:EnableHyperMode()
 			dt:SetScript("OnLeave", nil)
 			dt:SetScript("OnClick", function(self, button)
 				if button == "RightButton" then
-					chosenDT = dt
-					ToggleDropDownMenu(1, nil, menuFrame, self, 0, -2)
+					menuFrame:SetAnchor(self)
+					EasyMenu(menuList, menuFrame, nil, nil, nil, 'MENU', 1)
 				end
 			end)
 		end
@@ -241,7 +125,8 @@ function DT:OnEnter()
 	if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
 	if IsAltKeyDown() then
 		chosenDT = self
-		ToggleDropDownMenu(1, nil, menuFrame, self, 0, -2)
+		menuFrame:SetAnchor(self)
+		EasyMenu(menuList, menuFrame, nil, nil, nil, 'MENU', 1)
 	else
 		if self.MouseEnters then
 			for _, func in ipairs(self.MouseEnters) do
@@ -545,10 +430,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt = CreateFrame('Button', panelName..'_DataText'..i, panel)
 			dt.MouseEnters = {}
 			dt.MouseLeaves = {}
-			dt.parent = panel
-			dt.parentName = panelName
-			dt.db = db
-			dt.pointIndex = i
 			dt:RegisterForClicks("AnyUp")
 
 			dt.text = dt:CreateFontString(nil, 'OVERLAY')
@@ -560,17 +441,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.overlay:SetColorTexture(0, 1, 0, .3)
 			dt.overlay:SetAllPoints()
 			dt.overlay:Hide()
-
-			dt.menuSetFunc = function(value)
-				DT.db.panels[panelName][dt.pointIndex] = value
-				DT:LoadDataTexts()
-				if hdt_enabled then
-					DT:EnableHyperMode()
-				end
-			end
-			dt.menuGetFunc = function()
-				return DT.db.panels[panelName][dt.pointIndex]
-			end
 
 			panel.dataPanels[i] = dt
 		end
@@ -592,6 +462,11 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt:SetScript('OnLeave', DT.OnLeave)
 		wipe(dt.MouseEnters)
 		wipe(dt.MouseLeaves)
+
+		dt.parent = panel
+		dt.parentName = panelName
+		dt.db = db
+		dt.pointIndex = i
 
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:SetWordWrap(DT.db.wordWrap)
@@ -735,6 +610,8 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 	end
 
 	DT.RegisteredDataTexts[name] = data
+
+	tinsert(menuList, { text = localizedName or name, checked = function() return MenuGet(chosenDT, name) end, func = function() MenuSet(chosenDT, name) end })
 
 	return data
 end
