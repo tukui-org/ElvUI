@@ -5,8 +5,6 @@ local Layout = E:GetModule('Layout')
 local Chat = E:GetModule('Chat')
 local Minimap = E:GetModule('Minimap')
 
-local datatexts = {}
-
 local _G = _G
 local tonumber = tonumber
 local tostring = tostring
@@ -14,6 +12,9 @@ local format = format
 local pairs = pairs
 local type = type
 
+-- GLOBALS: AceGUIWidgetLSMlists
+
+local datatexts = {}
 local DTPanelOptions = {
 	numPoints = {
 		order = 1,
@@ -677,6 +678,8 @@ E.Options.args.datatexts = {
 									E.db.LeftChatPanelFaded = true;
 									_G.HideLeftChat()
 								end
+
+								Chat:UpdateEditboxAnchors()
 								Layout:ToggleChatPanels()
 								Layout:SetDataPanelStyle()
 								DT:UpdatePanelInfo('LeftChatDataPanel')
@@ -712,6 +715,8 @@ E.Options.args.datatexts = {
 									E.db.RightChatPanelFaded = true;
 									_G.HideRightChat()
 								end
+
+								Chat:UpdateEditboxAnchors()
 								Layout:ToggleChatPanels()
 								Layout:SetDataPanelStyle()
 								DT:UpdatePanelInfo('RightChatDataPanel')
