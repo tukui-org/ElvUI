@@ -4152,13 +4152,6 @@ E.Options.args.unitframe = {
 									name = L["Friendly"],
 									type = 'color',
 								},
-								--[[ LS- said to just use "Player Extended" as "Player" and don't use "Player Simple" at all
-								['4'] = {
-									order = 4,
-									name = L["Player Simple"],
-									type = 'color',
-								},
-								]]
 								['5'] = {
 									order = 5,
 									name = L["Player"], -- Player Extended
@@ -4184,13 +4177,6 @@ E.Options.args.unitframe = {
 									name = L["Dead"],
 									type = 'color',
 								},
-								--[[ disabled in oUF for now by LS-
-								['12'] = {
-									order = 12,
-									name = L["Self"],
-									type = 'color',
-								},
-								]]
 								['13'] = {
 									order = 13,
 									name = L["Battleground Friendly"],
@@ -4198,45 +4184,6 @@ E.Options.args.unitframe = {
 								},
 							},
 						},
-						--[[threatGroup = {
-							order = 8,
-							type = 'group',
-							name = L["Threat"],
-							get = function(info)
-								local n = tonumber(info[#info])
-								local t = E.db.unitframe.colors.threat[n]
-								local d = P.unitframe.colors.threat[n]
-								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-							end,
-							set = function(info, r, g, b)
-								local n = tonumber(info[#info])
-								local t = E.db.unitframe.colors.threat[n]
-								t.r, t.g, t.b = r, g, b
-								UF:Update_AllFrames()
-							end,
-							args = {
-								['0'] = {
-									order = 0,
-									name = L["Low Threat"],
-									type = 'color',
-								},
-								['1'] = {
-									order = 1,
-									name = L["Overnuking"],
-									type = 'color',
-								},
-								['2'] = {
-									order = 2,
-									name = L["Losing Threat"],
-									type = 'color',
-								},
-								['3'] = {
-									order = 3,
-									name = L["Securely Tanking"],
-									type = 'color',
-								},
-							},
-						},]]
 						healPrediction = {
 							order = 9,
 							name = L["Heal Prediction"],
