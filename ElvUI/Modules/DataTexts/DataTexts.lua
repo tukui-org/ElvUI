@@ -5,6 +5,7 @@ local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 
 local _G = _G
+local tinsert, wipe = tinsert, wipe
 local type, error, pcall = type, error, pcall
 local ipairs, pairs, next, strlen = ipairs, pairs, next, strlen
 local CreateFrame = CreateFrame
@@ -56,27 +57,42 @@ DT.UnitEvents = {
 	UNIT_SPELL_HASTE = true
 }
 
-local function Bar_OnEnter(self)
-	if self.db.mouseover then
-		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+function DT:OnEnter()
+	if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
+
+	if self.MouseEnters then
+		for _, func in ipairs(self.MouseEnters) do
+			func(self)
+		end
+	end
+
+	DT.MouseEnter(self)
+end
+
+function DT:OnLeave()
+	if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
+
+	if self.MouseLeaves then
+		for _, func in ipairs(self.MouseLeaves) do
+			func(self)
+		end
+	end
+
+	DT.MouseLeave(self)
+	DT.tooltip:Hide()
+end
+
+function DT:MouseEnter()
+	local frame = self.parent or self
+	if frame.db.mouseover then
+		E:UIFrameFadeIn(frame, 0.2, frame:GetAlpha(), 1)
 	end
 end
 
-local function Button_OnEnter(self)
-	if self.db.mouseover then
-		E:UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
-	end
-end
-
-local function Bar_OnLeave(self)
-	if self.db.mouseover then
-		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-	end
-end
-
-local function Button_OnLeave(self)
-	if self.db.mouseover then
-		E:UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
+function DT:MouseLeave()
+	local frame = self.parent or self
+	if frame.db.mouseover then
+		E:UIFrameFadeOut(frame, 0.2, frame:GetAlpha(), 0)
 	end
 end
 
@@ -142,8 +158,8 @@ function DT:BuildPanelFrame(name, db)
 	Panel:ClearAllPoints()
 	Panel:Point('CENTER')
 	Panel:Size(100, 10)
-	Panel:SetScript("OnEnter", Bar_OnEnter)
-	Panel:SetScript("OnLeave", Bar_OnLeave)
+	Panel:SetScript('OnEnter', DT.OnEnter)
+	Panel:SetScript('OnLeave', DT.OnLeave)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -237,10 +253,6 @@ function DT:GetDataPanelPoint(panel, i, numPoints, vertical)
 	end
 end
 
-function DT:Data_OnLeave()
-	DT.tooltip:Hide()
-end
-
 function DT:SetupTooltip(panel)
 	local parent = panel:GetParent()
 	DT.tooltip:Hide()
@@ -318,13 +330,11 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 
 	if data.onEnter then
-		dt:SetScript('OnEnter', function(p)
-			if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
-			data.onEnter(p)
-		end)
+		tinsert(dt.MouseEnters, data.onEnter)
 	end
-
-	dt:SetScript('OnLeave', data.onLeave or DT.Data_OnLeave)
+	if data.onLeave then
+		tinsert(dt.MouseLeaves, data.onLeave)
+	end
 end
 
 function DT:UpdatePanelInfo(panelName, panel, ...)
@@ -350,12 +360,17 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		local dt = panel.dataPanels[i]
 		if not dt then
 			dt = CreateFrame('Button', panelName..'_DataText'..i, panel)
-			dt:RegisterForClicks("AnyUp")
+			dt.MouseEnters = {}
+			dt.MouseLeaves = {}
+			dt.parent = panel
+			dt.db = db
 
-			dt.text = dt:CreateFontString(nil, 'OVERLAY')
-			dt.text:SetAllPoints()
-			dt.text:SetJustifyH("CENTER")
-			dt.text:SetJustifyV("MIDDLE")
+			dt:RegisterForClicks("AnyUp")
+			local text = dt:CreateFontString(nil, 'OVERLAY')
+			text:SetAllPoints()
+			text:SetJustifyH("CENTER")
+			text:SetJustifyV("MIDDLE")
+			dt.text = text
 
 			panel.dataPanels[i] = dt
 		end
@@ -370,25 +385,25 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt:Size(width, height)
 		dt:ClearAllPoints()
 		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
-
 		dt:UnregisterAllEvents()
 		dt:SetScript('OnUpdate', nil)
-		dt:SetScript('OnEnter', nil)
-		dt:SetScript('OnLeave', nil)
 		dt:SetScript('OnClick', nil)
-		dt.text:FontTemplate(font, fontSize, fontOutline)
-		dt.text:SetWordWrap(DT.db.wordWrap)
-		dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
+		dt:SetScript('OnEnter', DT.OnEnter)
+		dt:SetScript('OnLeave', DT.OnLeave)
+		wipe(dt.MouseEnters)
+		wipe(dt.MouseLeaves)
+
+		local text = dt.text
+		text:FontTemplate(font, fontSize, fontOutline)
+		text:SetWordWrap(DT.db.wordWrap)
+		text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
 		dt.pointIndex = i
-		dt.db = db
-		dt.parent = panel
 
 		if enableBGPanel then
 			dt:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
 			dt:SetScript('OnEvent', DT.UPDATE_BATTLEFIELD_SCORE)
-			dt:SetScript('OnEnter', DT.BattlegroundStats)
-			dt:SetScript('OnLeave', DT.Data_OnLeave)
 			dt:SetScript('OnClick', DT.HideBattlegroundTexts)
+			tinsert(dt.MouseEnters, DT.BattlegroundStats)
 			DT.UPDATE_BATTLEFIELD_SCORE(dt)
 			DT.ShowingBGStats = true
 		else
@@ -412,10 +427,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 					end
 				end
 			end
-
-			-- DT - Set Scripts - Hooking for Mouseover
-			dt:HookScript("OnEnter", Button_OnEnter)
-			dt:HookScript("OnLeave", Button_OnLeave)
 		end
 	end
 end
@@ -445,6 +456,7 @@ function DT:UpdateDTPanelAttributes(name, db)
 	local Panel = DT.PanelPool.InUse[name]
 	Panel.db = db
 
+	DT.OnLeave(Panel)
 	Panel:Size(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
@@ -458,7 +470,6 @@ function DT:UpdateDTPanelAttributes(name, db)
 		DT.db.panels[name] = { enable = true }
 	end
 
-	print(name)
 	for i = 1, E.global.datatexts.customPanels[name].numPoints do
 		if not DT.db.panels[name][i] then
 			DT.db.panels[name][i] = ''
