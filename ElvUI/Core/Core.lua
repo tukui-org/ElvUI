@@ -942,7 +942,7 @@ end
 function E:UpdateChat(skipCallback)
 	Chat:PositionChat(true)
 	Chat:SetupChat()
-	Chat:UpdateAnchors()
+	Chat:UpdateEditboxAnchors()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
