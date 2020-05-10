@@ -247,10 +247,11 @@ function LO:CreateChatPanels()
 	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, nil, nil, nil, 'chat,general')
 
 	--Background Texture
-	lchat.tex = lchat:CreateTexture(nil, 'OVERLAY')
-	lchat.tex:SetInside()
-	lchat.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
-	lchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
+	local lchattex = lchat:CreateTexture(nil, 'OVERLAY')
+	lchattex:SetInside()
+	lchattex:SetTexture(E.db.chat.panelBackdropNameLeft)
+	lchattex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
+	lchat.tex = lchattex
 
 	--Left Chat Tab
 	CreateFrame('Frame', 'LeftChatTab', lchat)
@@ -261,17 +262,9 @@ function LO:CreateChatPanels()
 
 	--Left Chat Toggle Button
 	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
-	lchattb.parent = lchat
-	lchattb.OnEnter = ChatButton_OnEnter
-	lchattb.OnLeave = ChatButton_OnLeave
-	lchattb:SetFrameStrata('LOW')
-	lchattb:SetFrameLevel(0)
 	lchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
-	lchattb.texture = lchattb:GetNormalTexture()
-	lchattb.texture:SetRotation(E.Skins.ArrowRotation.left)
-	lchattb.texture:ClearAllPoints()
-	lchattb.texture:Point('CENTER')
-	lchattb.texture:Size(12)
+	lchattb:SetFrameStrata('BACKGROUND')
+	lchattb:SetFrameLevel(301)
 	lchattb:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 	lchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	lchattb:SetScript('OnLeave', ChatButton_OnLeave)
@@ -280,6 +273,16 @@ function LO:CreateChatPanels()
 			ChatButton_OnClick(lcb)
 		end
 	end)
+
+	local lchattbtex = lchattb:GetNormalTexture()
+	lchattbtex:SetRotation(E.Skins.ArrowRotation.left)
+	lchattbtex:ClearAllPoints()
+	lchattbtex:Point('CENTER')
+	lchattbtex:Size(12)
+	lchattb.texture = lchattbtex
+	lchattb.OnEnter = ChatButton_OnEnter
+	lchattb.OnLeave = ChatButton_OnLeave
+	lchattb.parent = lchat
 
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
@@ -294,10 +297,11 @@ function LO:CreateChatPanels()
 	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, nil, nil, nil, 'chat,general')
 
 	--Background Texture
-	rchat.tex = rchat:CreateTexture(nil, 'OVERLAY')
-	rchat.tex:SetInside()
-	rchat.tex:SetTexture(E.db.chat.panelBackdropNameRight)
-	rchat.tex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
+	local rchattex = rchat:CreateTexture(nil, 'OVERLAY')
+	rchattex:SetInside()
+	rchattex:SetTexture(E.db.chat.panelBackdropNameRight)
+	rchattex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
+	rchat.tex = rchattex
 
 	--Right Chat Tab
 	CreateFrame('Frame', 'RightChatTab', rchat)
@@ -308,16 +312,10 @@ function LO:CreateChatPanels()
 
 	--Right Chat Toggle Button
 	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
-	rchattb.parent = rchat
-	rchattb:SetFrameStrata('LOW')
-	rchattb:SetFrameLevel(0)
 	rchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
-	rchattb.texture = rchattb:GetNormalTexture()
-	rchattb.texture:SetRotation(E.Skins.ArrowRotation.right)
-	rchattb.texture:ClearAllPoints()
-	rchattb.texture:Point('CENTER')
-	rchattb.texture:Size(12)
 	rchattb:RegisterForClicks('AnyUp')
+	rchattb:SetFrameStrata('BACKGROUND')
+	rchattb:SetFrameLevel(301)
 	rchattb:SetScript('OnEnter', ChatButton_OnEnter)
 	rchattb:SetScript('OnLeave', ChatButton_OnLeave)
 	rchattb:SetScript('OnClick', function(rcb, btn)
@@ -325,6 +323,14 @@ function LO:CreateChatPanels()
 			ChatButton_OnClick(rcb)
 		end
 	end)
+
+	local rchattbtex = rchattb:GetNormalTexture()
+	rchattbtex:SetRotation(E.Skins.ArrowRotation.right)
+	rchattbtex:ClearAllPoints()
+	rchattbtex:Point('CENTER')
+	rchattbtex:Size(12)
+	rchattb.texture = rchattbtex
+	rchattb.parent = rchat
 
 	--Load Settings
 	local fadeToggle = E.db.chat.fadeChatToggles
