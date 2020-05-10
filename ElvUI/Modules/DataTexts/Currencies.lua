@@ -36,10 +36,10 @@ local currencyList = {}
 for currency, data in pairs(Currencies) do
 	local name, _, texture = GetCurrencyInfo(data.ID)
 	if name then
-		Currencies.NAME = name
-		Currencies.ICON = format(iconString, texture)
+		data.NAME = name
+		data.ICON = format(iconString, texture)
 
-		currencyList[currency] = data.NAME
+		currencyList[currency] = name
 	end
 end
 currencyList.GOLD = BONUS_ROLL_REWARD_MONEY
