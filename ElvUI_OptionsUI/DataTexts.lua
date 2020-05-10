@@ -150,7 +150,7 @@ local function PanelGroup_Create(panel)
 		get = function(info) return E.db.datatexts.panels[panel][info[#info]] end,
 		set = function(info, value)
 			E.db.datatexts.panels[panel][info[#info]] = value
-			DT:UpdateDTPanelAttributes(panel, E.global.datatexts.customPanels[panel])
+			DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel])
 		end,
 		args = {
 			enable = {
@@ -166,7 +166,7 @@ local function PanelGroup_Create(panel)
 				get = function(info) return E.global.datatexts.customPanels[panel][info[#info]] end,
 				set = function(info, value)
 					E.global.datatexts.customPanels[panel][info[#info]] = value
-					DT:UpdateDTPanelAttributes(panel, E.global.datatexts.customPanels[panel])
+					DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel])
 					PanelLayoutOptions()
 				end,
 				args = {
@@ -197,7 +197,7 @@ local function PanelGroup_Create(panel)
 						end,
 						set = function(info, value)
 							E.global.datatexts.customPanels[panel].fonts[info[#info]] = value
-							DT:UpdateDTPanelAttributes(panel, E.global.datatexts.customPanels[panel])
+							DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel])
 						end,
 						args = {
 							enable = {

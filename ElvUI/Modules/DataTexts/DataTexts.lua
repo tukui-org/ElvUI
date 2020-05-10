@@ -233,7 +233,7 @@ function DT:BuildPanelFrame(name, db, initLoad)
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
 
 	if not initLoad then
-		DT:UpdateDTPanelAttributes(name, db)
+		DT:UpdatePanelAttributes(name, db)
 	end
 end
 
@@ -519,7 +519,7 @@ function DT:LoadDataTexts(...)
 	data.isInPVP = data.inInstance and data.instanceType == 'pvp'
 
 	for panel, db in pairs(E.global.datatexts.customPanels) do
-		DT:UpdateDTPanelAttributes(panel, db)
+		DT:UpdatePanelAttributes(panel, db)
 	end
 
 	for panelName, panel in pairs(DT.RegisteredPanels) do
@@ -533,7 +533,7 @@ function DT:LoadDataTexts(...)
 	end
 end
 
-function DT:UpdateDTPanelAttributes(name, db)
+function DT:UpdatePanelAttributes(name, db)
 	local Panel = DT.PanelPool.InUse[name]
 	Panel.db = db
 
