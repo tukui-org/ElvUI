@@ -117,7 +117,9 @@ end
 function DT:OnEnter()
 	if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
 
-	SelectedDatatext = self
+	if self.parent then
+		SelectedDatatext = self
+	end
 
 	if self.MouseEnters then
 		for _, func in ipairs(self.MouseEnters) do
