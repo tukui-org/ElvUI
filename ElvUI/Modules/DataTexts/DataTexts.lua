@@ -86,7 +86,7 @@ function DT:SingleHyperMode(_, key, active)
 	end
 end
 
-function DT:HyperFunc(button)
+function DT:HyperClick(button)
 	if button == 'RightButton' then
 		SelectedDatatext = self
 		menuFrame:SetAnchor(self)
@@ -102,7 +102,7 @@ function DT:EnableHyperMode()
 			dt.overlay:Show()
 			dt:SetScript('OnEnter', nil)
 			dt:SetScript('OnLeave', nil)
-			dt:SetScript('OnClick', DT.HyperFunc)
+			dt:SetScript('OnClick', DT.HyperClick)
 		end
 	end
 end
@@ -123,8 +123,6 @@ end
 
 function DT:OnLeave()
 	if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
-
-	SelectedDatatext = nil
 
 	if self.MouseLeaves then
 		for _, func in ipairs(self.MouseLeaves) do
@@ -436,7 +434,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			local overlay = dt:CreateTexture(nil, 'OVERLAY')
 			overlay:SetColorTexture(0, 1, 0, .3)
 			overlay:SetAllPoints()
-			overlay:Hide()
 			dt.overlay = overlay
 
 			panel.dataPanels[i] = dt
@@ -460,6 +457,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		wipe(dt.MouseEnters)
 		wipe(dt.MouseLeaves)
 
+		dt.overlay:Hide()
 		dt.pointIndex = i
 		dt.parent = panel
 		dt.parentName = panelName
