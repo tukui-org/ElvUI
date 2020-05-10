@@ -23,7 +23,7 @@ local function OnEvent(self, event, ...)
 
 	local primStat = UnitStat("player", statID)
 
-	self.text:SetFormattedText(displayNumberString, L[SPEC_STAT_STRINGS[statID]..': '], primStat)
+	self.text:SetFormattedText(displayNumberString, SPEC_STAT_STRINGS[statID]..': ', primStat)
 
 	lastPanel = self
 end

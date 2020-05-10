@@ -6,8 +6,7 @@ local lastPanel;
 local join = string.join
 
 local function OnEvent(self, event, ...)
-	local stat  = UnitStat("player", 4)
-	self.text:SetFormattedText(displayNumberString, L['Intellect: '], stat)
+	self.text:SetFormattedText(displayNumberString, L['Intellect: '], UnitStat("player", 4))
 
 	lastPanel = self
 end
