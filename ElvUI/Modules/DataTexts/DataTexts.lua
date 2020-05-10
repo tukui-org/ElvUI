@@ -88,6 +88,7 @@ function DT:EnableHyperMode()
 			dt:SetScript("OnClick", function(self, button)
 				if button == "RightButton" then
 					menuFrame:SetAnchor(self)
+					chosenDT = self
 					EasyMenu(menuList, menuFrame, nil, nil, nil, 'MENU')
 				end
 			end)
