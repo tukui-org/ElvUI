@@ -59,6 +59,7 @@ menuFrame.MenuSetItem = function(dt, value)
 	CloseDropDownMenus()
 end
 menuFrame.MenuGetItem = function(dt, value)
+	if not dt then return end
 	return DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value
 end
 
@@ -263,7 +264,7 @@ end
 
 function DT:SetupObjectLDB(name, obj)
 	local onEnter, onLeave, onClick, onCallback, onEvent = DT:BuildPanelFunctions(name, obj)
-	local data = DT:RegisterDatatext(name, nil, onEvent, nil, onClick, onEnter, onLeave)
+	local data = DT:RegisterDatatext(name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave)
 	E.valueColorUpdateFuncs[onCallback] = true
 	data.isLibDataBroker = true
 
