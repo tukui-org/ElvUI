@@ -48,6 +48,7 @@ menuFrame.SetAnchor = function(self, dt)
 	UIDropDownMenu_SetAnchor(self, 0, 0, anchor1, dt, anchor2)
 end
 menuFrame.MenuSetItem = function(dt, value)
+	if not dt then return end
 	DT.db.panels[dt.parentName][dt.pointIndex] = value
 	DT:UpdatePanelInfo(dt.parentName, dt.parent)
 	if hdt_enabled then
@@ -58,8 +59,7 @@ menuFrame.MenuSetItem = function(dt, value)
 	CloseDropDownMenus()
 end
 menuFrame.MenuGetItem = function(dt, value)
-	if not dt.parentName then return end
-	return DT.db.panels[dt.parentName][dt.pointIndex] == value
+	return DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value
 end
 
 local menuList = {}
