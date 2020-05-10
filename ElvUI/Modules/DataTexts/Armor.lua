@@ -50,4 +50,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Armor', {"UNIT_STATS", "UNIT_RESISTANCES", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, ARMOR)
+DT:RegisterDatatext('Armor', 'Stats', {"UNIT_STATS", "UNIT_RESISTANCES", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, ARMOR)

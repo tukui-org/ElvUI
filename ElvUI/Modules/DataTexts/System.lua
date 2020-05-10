@@ -198,4 +198,4 @@ local function Update(self, t)
 	end
 end
 
-DT:RegisterDatatext('System', nil, nil, Update, Click, OnEnter, OnLeave, L["System"])
+DT:RegisterDatatext('System', nil, nil, nil, Update, Click, OnEnter, OnLeave, L["System"])
