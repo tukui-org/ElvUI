@@ -16,43 +16,6 @@ local UnregisterStateDriver = UnregisterStateDriver
 local hdt_enabled = false
 local chosenDT = nil
 
-function DT:Initialize()
-	DT.Initialized = true
-	DT.db = E.db.datatexts
-
-	DT.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
-	TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
-
-	-- Ignore header font size on DatatextTooltip
-	local font = E.Libs.LSM:Fetch("font", E.db.tooltip.font)
-	local fontOutline = E.db.tooltip.fontOutline
-	local textSize = E.db.tooltip.textFontSize
-	_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
-	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
-
-	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
-	DT:RegisterLDB() -- LibDataBroker
-	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
-
-	for name, db in pairs(E.global.datatexts.customPanels) do
-		DT:BuildPanelFrame(name, db)
-	end
-
-	E:RegisterChatCommand('hdt', DT.HyperDT)
-	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
-	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
-end
-
-function DT:HyperDT()
-	if hdt_enabled then
-		hdt_enabled = false
-		DT:LoadDataTexts()
-	else
-		hdt_enabled = true
-		DT:EnableHyperMode()
-	end
-end
-
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
 DT.LoadedInfo = {}
@@ -84,8 +47,7 @@ menuFrame.SetAnchor = function(self, dt)
 
 	UIDropDownMenu_SetAnchor(self, 0, 0, anchor1, dt, anchor2)
 end
-
-local function MenuSet(dt, value)
+menuFrame.MenuSetItem = function(dt, value)
 	DT.db.panels[dt.parentName][dt.pointIndex] = value
 	DT:UpdatePanelInfo(dt.parentName, dt.parent)
 	if hdt_enabled then
@@ -93,19 +55,17 @@ local function MenuSet(dt, value)
 	end
 
 	chosenDT = nil
+	CloseDropDownMenus()
 end
-
-local function MenuGet(dt, value)
+menuFrame.MenuGetItem = function(dt, value)
 	if not dt.parentName then return end
 	return DT.db.panels[dt.parentName][dt.pointIndex] == value
 end
 
-local menuList = {
-	{ text = L["NONE"], checked = function() return MenuGet(chosenDT, '') end, func = function() MenuSet(chosenDT, '') end }
-}
+local menuList = {}
 
 function DT:SingleHyperMode(_, key, active)
-	if (key == 'LALT' or key == 'RALT') then
+	if (key == 'LALT' or key == 'RALT') and chosenDT then
 		if active == 1 and MouseIsOver(chosenDT) then
 			DT:OnLeave()
 
@@ -113,7 +73,6 @@ function DT:SingleHyperMode(_, key, active)
 			EasyMenu(menuList, menuFrame, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
 			CloseDropDownMenus()
-			chosenDT = nil
 		end
 	end
 end
@@ -571,10 +530,78 @@ function DT:UpdateDTPanelAttributes(name, db)
 	end
 end
 
+local function GetMenuListCategory(category)
+	for i, info in ipairs(menuList) do
+		if info.text == category then
+			return i
+		end
+	end
+end
+
+local function SortMenuList(list)
+	for _, table in pairs(list) do
+		if table.menuList then
+			SortMenuList(table.menuList)
+		end
+	end
+
+	sort(list, function(a, b) return a.text < b.text end)
+end
+
+function DT:Initialize()
+	DT.Initialized = true
+	DT.db = E.db.datatexts
+
+	DT.tooltip = CreateFrame("GameTooltip", "DatatextTooltip", E.UIParent, "GameTooltipTemplate")
+	TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
+
+	-- Ignore header font size on DatatextTooltip
+	local font = E.Libs.LSM:Fetch("font", E.db.tooltip.font)
+	local fontOutline = E.db.tooltip.fontOutline
+	local textSize = E.db.tooltip.textFontSize
+	_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
+	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
+
+	LDB.RegisterCallback(E, "LibDataBroker_DataObjectCreated", DT.SetupObjectLDB)
+	DT:RegisterLDB() -- LibDataBroker
+	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
+
+	for name, db in pairs(E.global.datatexts.customPanels) do
+		DT:BuildPanelFrame(name, db)
+	end
+
+	E:RegisterChatCommand('hdt', DT.HyperDT)
+	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
+	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
+
+	for name, info in pairs(DT.RegisteredDataTexts) do
+		local category = GetMenuListCategory(info.category or MISCELLANEOUS)
+		if not category then
+			category = #menuList + 1
+			tinsert(menuList, { text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} } )
+		end
+		tinsert(menuList[category].menuList, { text = info.localizedName or name, checked = function() return menuFrame.MenuGetItem(chosenDT, name) end, func = function() menuFrame.MenuSetItem(chosenDT, name) end })
+	end
+
+	SortMenuList(menuList)
+	tinsert(menuList, { text = L["NONE"], checked = function() return menuFrame.MenuGetItem(chosenDT, '') end, func = function() menuFrame.MenuSetItem(chosenDT, '') end })
+end
+
+function DT:HyperDT()
+	if hdt_enabled then
+		hdt_enabled = false
+		DT:LoadDataTexts()
+	else
+		hdt_enabled = true
+		DT:EnableHyperMode()
+	end
+end
+
 --[[
 	DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName)
 
 	name - name of the datatext (required)
+	category - name of the category the datatext belongs to.
 	events - must be a table with string values of event names to register
 	eventFunc - function that gets fired when an event gets triggered
 	updateFunc - onUpdate script target function
@@ -584,9 +611,9 @@ end
 	localizedName - localized name of the datetext
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent
 ]]
-function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent)
+function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent)
 	if not name then error('Cannot register datatext no name was provided.') end
-	local data = {name = name}
+	local data = {name = name, category = category}
 
 	if type(events) ~= 'table' and events ~= nil then
 		error('Events must be registered as a table.')
@@ -622,8 +649,6 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 	end
 
 	DT.RegisteredDataTexts[name] = data
-
-	tinsert(menuList, { text = localizedName or name, checked = function() return MenuGet(chosenDT, name) end, func = function() MenuSet(chosenDT, name) end })
 
 	return data
 end
