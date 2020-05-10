@@ -7,7 +7,7 @@ local join = string.join
 local UnitStat = UnitStat
 
 local function OnEvent(self)
-	self.text:SetFormattedText(displayNumberString, L['Agility: '], UnitStat("player", 2))
+	self.text:SetFormattedText(displayNumberString, L['Strength: '], UnitStat("player", 1))
 
 	lastPanel = self
 end
@@ -19,7 +19,7 @@ local function ValueColorUpdate(hex, r, g, b)
 		OnEvent(lastPanel)
 	end
 end
-
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
-DT:RegisterDatatext('Agility', 'Primary', { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent)
+DT:RegisterDatatext('Strength', 'Primary', { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE" }, OnEvent)
+
