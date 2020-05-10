@@ -1204,6 +1204,19 @@ do
 			end
 		end
 	end
+
+	function E:UnregisterAllEventsForObject(object, func)
+		if not (object and func) then
+			E:Print('Error. Usage: UnregisterAllEventsForObject(object, func)')
+			return
+		end
+
+		for event in pairs(eventTable) do
+			if E:IsEventRegisteredForObject(event, object) then
+				E:UnregisterEventForObject(event, object, func)
+			end
+		end
+	end
 end
 
 function E:ResetAllUI()

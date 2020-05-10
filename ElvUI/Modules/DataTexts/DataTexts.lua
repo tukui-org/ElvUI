@@ -33,7 +33,7 @@ function DT:Initialize()
 	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the "CustomCurrency" DT.
 
 	for name, db in pairs(E.global.datatexts.customPanels) do
-		DT:BuildPanelFrame(name, db)
+		DT:BuildPanelFrame(name, db, true)
 	end
 
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
@@ -148,7 +148,7 @@ function DT:ReleasePanel(givenName)
 	end
 end
 
-function DT:BuildPanelFrame(name, db)
+function DT:BuildPanelFrame(name, db, initLoad)
 	db = db or E.global.datatexts.customPanels[name] or DT:Panel_DefaultGlobalSettings(name)
 
 	if not db then return end
@@ -172,7 +172,10 @@ function DT:BuildPanelFrame(name, db)
 	end
 
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
-	DT:UpdateDTPanelAttributes(name, db)
+
+	if not initLoad then
+		DT:UpdateDTPanelAttributes(name, db)
+	end
 end
 
 local LDBHex = '|cffFFFFFF'
@@ -294,12 +297,18 @@ end
 function DT:AssignPanelToDataText(dt, data, event, ...)
 	if data.events then
 		for _, ev in pairs(data.events) do
-			if data.objectEvent then
-				if not E:HasFunctionForObject(ev, data.objectEvent, data.objectEventFunc) then
-					E:RegisterEventForObject(ev, data.objectEvent, data.objectEventFunc)
-				end
-			elseif data.eventFunc then
-				if DT.UnitEvents[ev] then
+			if data.eventFunc then
+				if data.objectEvent then
+					if not dt.objectEventFunc then
+						dt.objectEvent = data.objectEvent
+						dt.objectEventFunc = function(_, ...)
+							if data.eventFunc then data.eventFunc(dt, ...) end
+						end
+					end
+					if not E:HasFunctionForObject(ev, data.objectEvent, dt.objectEventFunc) then
+						E:RegisterEventForObject(ev, data.objectEvent, dt.objectEventFunc)
+					end
+				elseif DT.UnitEvents[ev] then
 					pcall(dt.RegisterUnitEvent, dt, ev, 'player')
 				else
 					pcall(dt.RegisterEvent, dt, ev)
@@ -309,10 +318,11 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 
 	local ev = event or 'ELVUI_FORCE_UPDATE'
-	if data.objectEvent then
-		data.objectEventFunc(data.objectEvent, ev, ...)
-	elseif data.eventFunc then
-		dt:SetScript('OnEvent', data.eventFunc)
+	if data.eventFunc then
+		if not data.objectEvent then
+			dt:SetScript('OnEvent', data.eventFunc)
+		end
+
 		data.eventFunc(dt, ev, ...)
 	end
 
@@ -337,13 +347,13 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 end
 
 function DT:UpdatePanelInfo(panelName, panel, ...)
-	local data = DT.LoadedInfo
-	local isBGPanel = data.isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
+	local info = DT.LoadedInfo
+	local isBGPanel = info.isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
 	local enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
 
 	local db = panel.db or P.datatexts.panels[panelName] and DT.db.panels[panelName]
-	local font, fontSize, fontOutline = data.font, data.fontSize, data.fontOutline
+	local font, fontSize, fontOutline = info.font, info.fontSize, info.fontOutline
 	if db and db.fonts and db.fonts.enable then
 		font, fontSize, fontOutline = LSM:Fetch("font", db.fonts.font), db.fonts.fontSize, db.fonts.fontOutline
 	end
@@ -392,6 +402,11 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		wipe(dt.MouseEnters)
 		wipe(dt.MouseLeaves)
 
+		if dt.objectEvent and dt.objectEventFunc then
+			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
+			dt.objectEvent, dt.objectEventFunc = nil, nil
+		end
+
 		local text = dt.text
 		text:FontTemplate(font, fontSize, fontOutline)
 		text:SetWordWrap(DT.db.wordWrap)
@@ -407,21 +422,21 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			DT.ShowingBGStats = true
 		else
 			-- we aren't showing BGStats anymore
-			if (isBGPanel or not data.isInPVP) and DT.ShowingBGStats then
+			if (isBGPanel or not info.isInPVP) and DT.ShowingBGStats then
 				DT.ShowingBGStats = nil
 			end
 
 			--Register Panel to Datatext
-			for name, info in pairs(DT.RegisteredDataTexts) do
+			for name, data in pairs(DT.RegisteredDataTexts) do
 				for option, value in pairs(DT.db.panels) do
 					if value and type(value) == 'table' then
 						local opt = DT.db.panels[option]
 						if option == panelName and opt[i] and opt[i] == name then
-							DT:AssignPanelToDataText(dt, info, ...)
+							DT:AssignPanelToDataText(dt, data, ...)
 						end
 					elseif value and type(value) == 'string' and value == name then
 						if option == panelName and DT.db.panels[option] == name then
-							DT:AssignPanelToDataText(dt, info, ...)
+							DT:AssignPanelToDataText(dt, data, ...)
 						end
 					end
 				end
@@ -507,11 +522,6 @@ function DT:RegisterDatatext(name, events, eventFunc, updateFunc, clickFunc, onE
 		data.events = events
 		data.eventFunc = eventFunc
 		data.objectEvent = objectEvent
-		data.objectEventFunc = data.objectEvent and function(_, ...)
-			if data.eventFunc then
-				data.eventFunc(data.panel, ...)
-			end
-		end
 	end
 
 	if updateFunc and type(updateFunc) == 'function' then

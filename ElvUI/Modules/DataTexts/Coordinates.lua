@@ -8,25 +8,26 @@ local InCombatLockdown = InCombatLockdown
 
 local displayString = ""
 local inRestrictedArea = false
+local mapInfo = E.MapInfo
 
 local function Update(self, elapsed)
-	if inRestrictedArea or not E.MapInfo.coordsWatching then return end
+	if inRestrictedArea or not mapInfo.coordsWatching then return end
 
 	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
 
 	if self.timeSinceUpdate > 0.1 then
-		self.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
+		self.text:SetFormattedText(displayString, mapInfo.xText or 0, mapInfo.yText or 0)
 		self.timeSinceUpdate = 0
 	end
 end
 
-local function OnEvent(panel)
-	if E.MapInfo.x and E.MapInfo.y then
+local function OnEvent(self)
+	if mapInfo.x and mapInfo.y then
 		inRestrictedArea = false
-		panel.text:SetFormattedText(displayString, E.MapInfo.xText or 0, E.MapInfo.yText or 0)
+		self.text:SetFormattedText(displayString, mapInfo.xText or 0, mapInfo.yText or 0)
 	else
 		inRestrictedArea = true
-		panel.text:SetText('')
+		self.text:SetText('')
 	end
 end
 
@@ -40,4 +41,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Coords', {"LOADING_SCREEN_DISABLED", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "ZONE_CHANGED_NEW_AREA"}, OnEvent, Update, Click, nil, nil, L["Coords"], E.MapInfo)
+DT:RegisterDatatext('Coords', {"LOADING_SCREEN_DISABLED", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "ZONE_CHANGED_NEW_AREA"}, OnEvent, Update, Click, nil, nil, L["Coords"], mapInfo)
