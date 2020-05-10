@@ -176,6 +176,7 @@ function E:EHelp()
 	print('    /resetui - Reset all frames to their original positions.')
 	print('    /egrid <64>/<128>/<256> - Toggle a pixel grid.')
 	print('    /bgstats - Toggle Battleground stats on your DataTexts.')
+	print('    /hdt - Edit your DataTexts without opening the OptionsUI.')
 	print('    /luaerror <on>/<off> - Disable all AddOns except ElvUI.')
 	print('    /estatus - Important informations for support questions.')
 end
