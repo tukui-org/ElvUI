@@ -289,6 +289,7 @@ function E:LoadCommands()
 	---- Note: showall, delay, and minCalls will default if not set
 	---- arg1 can be 'all' this will scan all registered modules!
 
+	self:RegisterChatCommand('hdt', DT.HyperDT)
 	self:RegisterChatCommand('bgstats', 'BGStats')
 	self:RegisterChatCommand('hellokitty', 'HelloKittyToggle')
 	self:RegisterChatCommand('hellokittyfix', 'HelloKittyFix')

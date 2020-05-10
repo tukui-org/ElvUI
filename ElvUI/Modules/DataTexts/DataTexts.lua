@@ -20,7 +20,8 @@ local MISCELLANEOUS = MISCELLANEOUS
 
 local ActivateHyperMode = false
 local SelectedDatatext = nil
-
+local HyperList = {}
+DT.HyperList = HyperList
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
 DT.LoadedInfo = {}
@@ -73,7 +74,6 @@ menuFrame.MenuGetItem = function(dt, value)
 	return dt and (DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value)
 end
 
-local HyperList = {}
 function DT:SingleHyperMode(_, key, active)
 	if SelectedDatatext and (key == 'LALT' or key == 'RALT') then
 		if active == 1 and MouseIsOver(SelectedDatatext) then
@@ -460,6 +460,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		wipe(dt.MouseEnters)
 		wipe(dt.MouseLeaves)
 
+		dt.pointIndex = i
 		dt.parent = panel
 		dt.parentName = panelName
 		dt.db = db
@@ -473,7 +474,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		text:FontTemplate(font, fontSize, fontOutline)
 		text:SetWordWrap(DT.db.wordWrap)
 		text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
-		dt.pointIndex = i
 
 		if enableBGPanel then
 			dt:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
@@ -590,20 +590,19 @@ function DT:HyperDT()
 end
 
 function DT:RegisterHyperDT()
-	E:RegisterChatCommand('hdt', DT.HyperDT)
-	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
-
 	for name, info in pairs(DT.RegisteredDataTexts) do
 		local category = GetMenuListCategory(info.category or MISCELLANEOUS)
 		if not category then
 			category = #HyperList + 1
 			tinsert(HyperList, { text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} } )
 		end
+
 		tinsert(HyperList[category].menuList, { text = info.localizedName or name, checked = function() return menuFrame.MenuGetItem(SelectedDatatext, name) end, func = function() menuFrame.MenuSetItem(SelectedDatatext, name) end })
 	end
 
 	SortMenuList(HyperList)
 	tinsert(HyperList, { text = L["NONE"], checked = function() return menuFrame.MenuGetItem(SelectedDatatext, '') end, func = function() menuFrame.MenuSetItem(SelectedDatatext, '') end })
+	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
 end
 
 function DT:Initialize()
