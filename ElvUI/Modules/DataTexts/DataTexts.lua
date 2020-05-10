@@ -18,8 +18,8 @@ local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 local UnregisterStateDriver = UnregisterStateDriver
 local MISCELLANEOUS = MISCELLANEOUS
 
-local ActivateHyperMode = false
-local SelectedDatatext = nil
+local ActivateHyperMode
+local SelectedDatatext
 local HyperList = {}
 DT.HyperList = HyperList
 DT.RegisteredPanels = {}
@@ -586,7 +586,7 @@ end
 
 function DT:HyperDT()
 	if ActivateHyperMode then
-		ActivateHyperMode = false
+		ActivateHyperMode = nil
 		DT:LoadDataTexts()
 	else
 		ActivateHyperMode = true
