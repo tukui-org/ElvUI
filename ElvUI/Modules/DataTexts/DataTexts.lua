@@ -64,7 +64,7 @@ menuFrame.MenuSetItem = function(dt, value)
 	DT:UpdatePanelInfo(dt.parentName, dt.parent)
 
 	if ActivateHyperMode then
-		DT:EnableHyperMode()
+		DT:EnableHyperMode(dt.parent)
 	end
 
 	SelectedDatatext = nil
@@ -86,23 +86,30 @@ function DT:SingleHyperMode(_, key, active)
 	end
 end
 
-function DT:HyperClick(button)
-	if button == 'RightButton' then
-		SelectedDatatext = self
-		menuFrame:SetAnchor(self)
-		EasyMenu(HyperList, menuFrame, nil, nil, nil, 'MENU')
-	end
+function DT:HyperClick()
+	SelectedDatatext = self
+	menuFrame:SetAnchor(self)
+	EasyMenu(HyperList, menuFrame, nil, nil, nil, 'MENU')
 end
 
-function DT:EnableHyperMode()
+function DT:EnableHyperMode(Panel)
 	DT:OnLeave()
 
-	for _, panel in pairs(DT.RegisteredPanels) do
-		for _, dt in pairs(panel.dataPanels) do
+	if Panel then
+		for _, dt in pairs(Panel.dataPanels) do
 			dt.overlay:Show()
 			dt:SetScript('OnEnter', nil)
 			dt:SetScript('OnLeave', nil)
 			dt:SetScript('OnClick', DT.HyperClick)
+		end
+	else
+		for _, panel in pairs(DT.RegisteredPanels) do
+			for _, dt in pairs(panel.dataPanels) do
+				dt.overlay:Show()
+				dt:SetScript('OnEnter', nil)
+				dt:SetScript('OnLeave', nil)
+				dt:SetScript('OnClick', DT.HyperClick)
+			end
 		end
 	end
 end
@@ -432,7 +439,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.text = text
 
 			local overlay = dt:CreateTexture(nil, 'OVERLAY')
-			overlay:SetColorTexture(0, 1, 0, .3)
+			overlay:SetColorTexture(0.3, 0.9, 0.3, .3)
 			overlay:SetAllPoints()
 			dt.overlay = overlay
 
