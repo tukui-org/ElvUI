@@ -143,10 +143,14 @@ local function PanelGroup_Delete(panel)
 	E.Options.args.datatexts.args.panels.args[panel] = nil
 end
 
+local function ColorizeName(name, color)
+	return format('|cFF%s%s|r', color or 'ffd100', name)
+end
+
 local function PanelGroup_Create(panel)
 	E.Options.args.datatexts.args.panels.args[panel] = {
 		type = 'group',
-		name = panel,
+		name = ColorizeName(panel),
 		get = function(info) return E.db.datatexts.panels[panel][info[#info]] end,
 		set = function(info, value)
 			E.db.datatexts.panels[panel][info[#info]] = value
@@ -238,10 +242,6 @@ local function PanelGroup_Create(panel)
 	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 end
 
-local function ColorizeName(name, color)
-	return color and format('|cFF%s%s|r', color, name) or name
-end
-
 PanelLayoutOptions = function()
 	for name, data in pairs(DT.RegisteredDataTexts) do
 		datatexts[name] = data.localizedName or L[name]
@@ -261,7 +261,7 @@ PanelLayoutOptions = function()
 			if not options[name] then
 				options[name] = {
 					type = 'group',
-					name = ColorizeName(L[name] or name, P.datatexts.panels[name] and '999999' or E.global.datatexts.customPanels[name] and 'ffffff'),
+					name = ColorizeName(name, 'ffffff'),
 					args = {},
 					get = function(info) return E.db.datatexts.panels[name][info[#info]] end,
 					set = function(info, value)
@@ -662,7 +662,7 @@ E.Options.args.datatexts = {
 				},
 				LeftChatDataPanel = {
 					type = "group",
-					name = ColorizeName(L["Datatext Panel (Left)"], '999999'),
+					name = ColorizeName(L["Datatext Panel (Left)"], 'cccccc'),
 					desc = L["Display data panels below the chat, used for datatexts."],
 					order = 2,
 					get = function(info) return E.db.datatexts.panels.LeftChatDataPanel[info[#info]] end,
@@ -699,7 +699,7 @@ E.Options.args.datatexts = {
 				},
 				RightChatDataPanel = {
 					type = "group",
-					name = ColorizeName(L["Datatext Panel (Right)"], '999999'),
+					name = ColorizeName(L["Datatext Panel (Right)"], 'cccccc'),
 					desc = L["Display data panels below the chat, used for datatexts."],
 					order = 3,
 					get = function(info) return E.db.datatexts.panels.RightChatDataPanel[info[#info]] end,
@@ -736,7 +736,7 @@ E.Options.args.datatexts = {
 				},
 				MinimapPanel = {
 					type = "group",
-					name = ColorizeName(L["Minimap Panels"], '999999'),
+					name = ColorizeName(L["Minimap Panels"], 'cccccc'),
 					desc = L["Display minimap panels below the minimap, used for datatexts."],
 					get = function(info) return E.db.datatexts.panels.MinimapPanel[info[#info]] end,
 					set = function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') end,
