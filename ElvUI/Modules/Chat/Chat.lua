@@ -2545,14 +2545,18 @@ function CH:RepositionChatVoiceIcons()
 end
 
 function CH:UpdateVoiceChatIcons()
-	for _, button in pairs(channelButtons) do
+	for _, button in ipairs(channelButtons) do
 		button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
 	end
 end
 
 function CH:HandleChatVoiceIcons()
-	if CH.db.pinVoiceButtons then
-		for index, button in pairs(channelButtons) do
+	if CH.db.hideVoiceButtons then
+		for _, button in ipairs(channelButtons) do
+			button:Hide()
+		end
+	elseif CH.db.pinVoiceButtons then
+		for index, button in ipairs(channelButtons) do
 			button:ClearAllPoints()
 			button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
 			Skins:HandleButton(button, nil, nil, nil, true)
@@ -2568,16 +2572,12 @@ function CH:HandleChatVoiceIcons()
 		channelButtons[3]:HookScript("OnShow", CH.RepositionChatVoiceIcons)
 		channelButtons[3]:HookScript("OnHide", CH.RepositionChatVoiceIcons)
 	else
+		CH:CreateChatVoicePanel()
+	end
+
+	if not CH.db.pinVoiceButtons then
 		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
 		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.LeftChatTab, 'RIGHT', -4, 0)
-
-		if CH.db.hideVoiceButtons then
-			for _, button in pairs(channelButtons) do
-				button:Hide()
-			end
-		else
-			CH:CreateChatVoicePanel()
-		end
 	end
 end
 
@@ -2593,7 +2593,7 @@ function CH:CreateChatVoicePanel()
 	channelButtons[1]:ClearAllPoints()
 	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
 
-	for _, button in pairs(channelButtons) do
+	for _, button in ipairs(channelButtons) do
 		Skins:HandleButton(button, nil, nil, nil, true)
 		button.Icon:SetParent(button)
 		button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
