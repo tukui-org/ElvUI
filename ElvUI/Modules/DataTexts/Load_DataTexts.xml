@@ -1,5 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
 	<Script file='DataTexts.lua'/>
+	<Script file='Agility.lua'/>
 	<Script file='Armor.lua'/>
 	<Script file='AttackPower.lua'/>
 	<Script file='Avoidance.lua'/>
@@ -7,11 +8,13 @@
 	<Script file='Battleground.lua'/>
 	<Script file='CallToArms.lua'/>
 	<Script file='CombatTime.lua'/>
+	<Script file='ConfigElvUI.lua'/>
 	<Script file='Coordinates.lua'/>
 	<Script file='Crit.lua'/>
+	<Script file='Currencies.lua'/>
+	<Script file='CustomCurrency.lua'/>
 	<Script file='DPS.lua'/>
 	<Script file='Durability.lua'/>
-	<Script file='ConfigElvUI.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Garrison.lua'/>
 	<Script file='Gold.lua'/>
@@ -20,7 +23,10 @@
 	<Script file='HPS.lua'/>
 	<Script file='Leech.lua'/>
 	<Script file='Mastery.lua'/>
+	<Script file='MissionsBFA.lua'/>
+	<Script file='MovementSpeed.lua'/>
 	<Script file='Orderhall.lua'/>
+	<Script file='Quickjoin.lua'/>
 	<Script file='Regen.lua'/>
 	<Script file='SpecSwitch.lua'/>
 	<Script file='Speed.lua'/>
@@ -28,9 +34,4 @@
 	<Script file='System.lua'/>
 	<Script file='Time.lua'/>
 	<Script file='Versatility.lua'/>
-	<Script file='MovementSpeed.lua'/>
-	<Script file='Currencies.lua'/>
-	<Script file='CustomCurrency.lua'/>
-	<Script file='Quickjoin.lua'/>
-	<Script file='MissionsBFA.lua'/>
 </Ui>
