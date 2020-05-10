@@ -15,26 +15,32 @@ local OTHER = OTHER
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 local Currencies = {
 	--BfA
-	["RICH_AZERITE_FRAGMENT"] = {ID = 1565, NAME = GetCurrencyInfo(1565), ICON = format(iconString, select(3, GetCurrencyInfo(1565)))},
-	["SEAFARERS_DUBLOON"] = {ID = 1710, NAME = GetCurrencyInfo(1710), ICON = format(iconString, select(3, GetCurrencyInfo(1710)))},
-	["SEAL_OF_WARTORN_FATE"] = {ID = 1580, NAME = GetCurrencyInfo(1580), ICON = format(iconString, select(3, GetCurrencyInfo(1580)))},
-	["WAR_RESOURCES"] = {ID = 1560, NAME = GetCurrencyInfo(1560), ICON = format(iconString, select(3, GetCurrencyInfo(1560)))},
-	["WAR_SUPPLIES"] = {ID = 1587, NAME = GetCurrencyInfo(1587), ICON = format(iconString, select(3, GetCurrencyInfo(1587)))},
-	["HONORBOUND_SERVICE_MEDAL"] = {ID = 1716, NAME = GetCurrencyInfo(1716), ICON = format(iconString, select(3, GetCurrencyInfo(1716)))},
-	["7TH_LEGION_SERVICE_MEDAL"] = {ID = 1717, NAME = GetCurrencyInfo(1717), ICON = format(iconString, select(3, GetCurrencyInfo(1717)))},
-	["TITAN_RESIDUUM"] = {ID = 1718, NAME = GetCurrencyInfo(1718), ICON = format(iconString, select(3, GetCurrencyInfo(1718)))},
-	["PRISMATIC_MANAPEARL"] = {ID = 1721, NAME = GetCurrencyInfo(1721), ICON = format(iconString, select(3, GetCurrencyInfo(1721)))},
-	["CORRUPTED_MEMENTOS"] = {ID = 1719, NAME = GetCurrencyInfo(1719), ICON = format(iconString, select(3, GetCurrencyInfo(1719)))},
-	["COALESCING_VISIONS"] = {ID = 1755, NAME = GetCurrencyInfo(1755), ICON = format(iconString, select(3, GetCurrencyInfo(1755)))},
-	["ECHOES_OF_NYALOTHA"] = {ID = 1803, NAME = GetCurrencyInfo(1803), ICON = format(iconString, select(3, GetCurrencyInfo(1803)))},
+	["RICH_AZERITE_FRAGMENT"] = {ID = 1565},
+	["SEAFARERS_DUBLOON"] = {ID = 1710},
+	["SEAL_OF_WARTORN_FATE"] = {ID = 1580},
+	["WAR_RESOURCES"] = {ID = 1560},
+	["WAR_SUPPLIES"] = {ID = 1587},
+	["HONORBOUND_SERVICE_MEDAL"] = {ID = 1716},
+	["7TH_LEGION_SERVICE_MEDAL"] = {ID = 1717},
+	["TITAN_RESIDUUM"] = {ID = 1718},
+	["PRISMATIC_MANAPEARL"] = {ID = 1721},
+	["CORRUPTED_MEMENTOS"] = {ID = 1719},
+	["COALESCING_VISIONS"] = {ID = 1755},
+	["ECHOES_OF_NYALOTHA"] = {ID = 1803},
 	-- Other
-	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format(iconString, select(3, GetCurrencyInfo(515)))},
+	["DARKMOON_PRIZE_TICKET"] = {ID = 515},
 }
 
 -- CurrencyList for config
 local currencyList = {}
 for currency, data in pairs(Currencies) do
-	currencyList[currency] = data.NAME
+	local name, _, texture = GetCurrencyInfo(data.ID)
+	if name then
+		Currencies.NAME = name
+		Currencies.ICON = format(iconString, texture)
+
+		currencyList[currency] = data.NAME
+	end
 end
 currencyList.GOLD = BONUS_ROLL_REWARD_MONEY
 DT.CurrencyList = currencyList
