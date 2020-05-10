@@ -212,9 +212,9 @@ function M:UpdateSettings()
 	local Minimap = _G.Minimap
 
 	MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
+	MinimapPanel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
 
 	if E.db.datatexts.panels.MinimapPanel.enable then
-		MinimapPanel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
 		MMHolder:Height(Minimap:GetHeight() + (MinimapPanel and (MinimapPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
 	else
 		MMHolder:Height(Minimap:GetHeight() + E.Border + E.Spacing*3)
