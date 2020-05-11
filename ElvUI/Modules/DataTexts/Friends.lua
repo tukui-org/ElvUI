@@ -145,7 +145,6 @@ local clientTags = {
 	[BNET_CLIENT_COD] = "BO4",
 	[BNET_CLIENT_COD_MW] = "MW",
 	[BNET_CLIENT_COD_MW2] = "MW2",
-	["ODIN"] = "MW",
 	["BSAp"] = L["Mobile"],
 }
 
