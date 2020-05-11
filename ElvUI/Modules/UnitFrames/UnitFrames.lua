@@ -560,9 +560,9 @@ function UF:Update_AllFrames()
 	end
 
 	if UF.db.smartRaidFilter then
-		UF:HandleSmartVisibility()
+		UF:HandleSmartVisibility(true)
 	else
-		UF:UpdateAllHeaders()
+		UF:UpdateAllHeaders(nil, true)
 	end
 end
 
@@ -853,7 +853,7 @@ UF.SmartSettings = {
 	raidpet = { enable = false }
 }
 
-function UF:HandleSmartVisibility()
+function UF:HandleSmartVisibility(update)
 	local sv = UF.SmartSettings
 	sv.raid.numGroups = 6
 
@@ -884,7 +884,7 @@ function UF:HandleSmartVisibility()
 		sv.raid40.enable = true
 	end
 
-	UF:UpdateAllHeaders(sv)
+	UF:UpdateAllHeaders(sv, update)
 end
 
 function UF:ZONE_CHANGED_NEW_AREA()
@@ -933,7 +933,7 @@ function UF:GetSmartVisibilitySetting(setting, group, smart, db)
 	return db[setting]
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, smartSettings)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, smartSettings, update)
 	local db = self.db.units[group]
 	local Header = self[group]
 
@@ -1002,7 +1002,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		end
 	end
 
-	if enableStateChanged then
+	if enableStateChanged or update then
 		UF.headerFunctions[group]:Update(Header)
 	end
 
@@ -1091,13 +1091,13 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-function UF:UpdateAllHeaders(smartSettings)
+function UF:UpdateAllHeaders(smartSettings, update)
 	if E.private.unitframe.disabledBlizzardFrames.party then
 		ElvUF:DisableBlizzard('party')
 	end
 
 	for group in pairs(self.headers) do
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smartSettings)
+		self:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smartSettings, update)
 	end
 end
 
