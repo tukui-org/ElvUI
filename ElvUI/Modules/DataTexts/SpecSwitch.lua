@@ -30,22 +30,26 @@ local inactiveString = strjoin("", "|cffFF0000", _G.FACTION_INACTIVE, "|r")
 local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = SELECT_LOOT_SPECIALIZATION, isTitle = true, notCheckable = true },
-	{ notCheckable = true, func = function() SetLootSpecialization(0) end },
-	{ notCheckable = true },
-	{ notCheckable = true },
-	{ notCheckable = true },
-	{ notCheckable = true }
-}
-local specList = {
-	{ text = _G.SPECIALIZATION, isTitle = true, notCheckable = true },
-	{ notCheckable = true },
-	{ notCheckable = true },
-	{ notCheckable = true },
-	{ notCheckable = true }
+	{ checked = function() return GetLootSpecialization() == 0 end, func = function() SetLootSpecialization(0) end },
 }
 
-local function OnEvent(self)
+local specList = {
+	{ text = _G.SPECIALIZATION, isTitle = true, notCheckable = true },
+}
+local DataSet
+local function OnEvent(self, event)
 	lastPanel = self
+
+	if not DataSet and event == 'PLAYER_ENTERING_WORLD' then
+		for index = 1, 4 do
+			local id, name, _, texture = GetSpecializationInfo(index)
+			if ( id ) then
+				menuList[index + 2] = { text = name, checked = function() return GetLootSpecialization() == id end, func = function() SetLootSpecialization(id) end }
+				specList[index + 1] = { text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', texture, name), checked = function() return GetSpecialization() == index end, func = function() SetSpecialization(index) end }
+			end
+		end
+		DataSet = true
+	end
 
 	local specIndex = GetSpecialization()
 	if not specIndex then
@@ -159,17 +163,7 @@ local function OnClick(self, button)
 				HideUIPanel(_G.PlayerTalentFrame)
 			end
 		else
-			for index = 1, 4 do
-				local id, name, _, texture = GetSpecializationInfo(index)
-				if ( id ) then
-					specList[index + 1].text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', texture, name)
-					specList[index + 1].func = function() SetSpecialization(index) end
-				else
-					specList[index + 1] = nil
-				end
-			end
-
-			E.DataTexts:SetEasyMenuAnchor(menuFrame, self)
+			DT:SetEasyMenuAnchor(menuFrame, self)
 			_G.EasyMenu(specList, menuFrame, nil, nil, nil, "MENU")
 		end
 	else
@@ -177,17 +171,7 @@ local function OnClick(self, button)
 		local _, specName = GetSpecializationInfo(specIndex)
 		menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName)
 
-		for index = 1, 4 do
-			local id, name = GetSpecializationInfo(index)
-			if ( id ) then
-				menuList[index + 2].text = name
-				menuList[index + 2].func = function() SetLootSpecialization(id) end
-			else
-				menuList[index + 2] = nil
-			end
-		end
-
-		E.DataTexts:SetEasyMenuAnchor(menuFrame, self)
+		DT:SetEasyMenuAnchor(menuFrame, self)
 		_G.EasyMenu(menuList, menuFrame, nil, nil, nil, "MENU")
 	end
 end
