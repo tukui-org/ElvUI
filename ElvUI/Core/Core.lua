@@ -1602,5 +1602,6 @@ function E:Initialize()
 		local msg = format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)
 		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
 		print(msg)
+		E:Print("Please use /ehelp for a list of available commands.")
 	end
 end
