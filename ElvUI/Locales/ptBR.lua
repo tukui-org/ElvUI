@@ -189,6 +189,7 @@ L["Level Up Display / Boss Banner"] = true
 L["List of installations in queue:"] = true
 L["Lock"] = "Travar"
 L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"
+L["LOGIN_MSG_HELP"] = "Please use /ehelp for a list of available commands."
 L["Loot / Alert Frames"] = "Quadro de Saque / Alerta"
 L["Loot Frame"] = true
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Senhor! É um milagre! O Download sumiu como um peido no vento! Tente novamente!"
