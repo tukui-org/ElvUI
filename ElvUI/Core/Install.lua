@@ -374,6 +374,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.unitframe.units.pet.debuffs.anchorPoint = 'TOPRIGHT'
 				E.db.unitframe.units.pet.debuffs.enable = true
 				E.db.unitframe.units.pet.disableTargetGlow = false
+				E.db.unitframe.units.pet.disableFocusGlow = false
 				E.db.unitframe.units.pet.infoPanel.height = 14
 				E.db.unitframe.units.pet.portrait.camDistanceScale = 2
 				E.db.unitframe.units.pet.width = 270

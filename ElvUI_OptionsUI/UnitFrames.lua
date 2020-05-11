@@ -2914,16 +2914,22 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 				values = orientationValues,
 			},
 			disableMouseoverGlow = {
-				order = 11,
+				order = 12,
 				type = "toggle",
 				name = L["Block Mouseover Glow"],
 				desc = L["Forces Mouseover Glow to be disabled for these frames"],
 			},
 			disableTargetGlow = {
-				order = 12,
+				order = 13,
 				type = "toggle",
 				name = L["Block Target Glow"],
 				desc = L["Forces Target Glow to be disabled for these frames"],
+			},
+			disableFocusGlow = {
+				order = 14,
+				type = "toggle",
+				name = L["Block Focus Glow"],
+				desc = L["Forces Focus Glow to be disabled for these frames"],
 			},
 		},
 	}
@@ -3479,6 +3485,53 @@ E.Options.args.unitframe = {
 								UF:FrameGlow_UpdateFrames();
 							end,
 							disabled = function() return not E.db.unitframe.colors.frameGlow.targetGlow.enable end,
+							args = {
+								enable = {
+									order = 1,
+									type = 'toggle',
+									name = L["Enable"],
+									disabled = false,
+								},
+								spacer = {
+									order = 2,
+									type = "description",
+									name = "",
+								},
+								class = {
+									order = 3,
+									type = 'toggle',
+									name = L["Use Class Color"],
+									desc = L["Alpha channel is taken from the color option."],
+								},
+								color = {
+									order = 4,
+									name = L["COLOR"],
+									type = 'color',
+									hasAlpha = true,
+								},
+							}
+						},
+						focusGlow = {
+							order = 4,
+							type = 'group',
+							guiInline = true,
+							name = L["Focused Glow"],
+							get = function(info)
+								local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]]
+								if type(t) == "boolean" then return t end
+								local d = P.unitframe.colors.frameGlow.focusGlow[info[#info]]
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]]
+								if type(t) == "boolean" then
+									E.db.unitframe.colors.frameGlow.focusGlow[info[#info]] = r
+								else
+									t.r, t.g, t.b, t.a = r, g, b, a
+								end
+								UF:FrameGlow_UpdateFrames();
+							end,
+							disabled = function() return not E.db.unitframe.colors.frameGlow.focusGlow.enable end,
 							args = {
 								enable = {
 									order = 1,

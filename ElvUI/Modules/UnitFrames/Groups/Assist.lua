@@ -26,6 +26,7 @@ function UF:Construct_AssistFrames()
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
+	self.FocusGlow = UF:Construct_FocusGlow(self)
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
 

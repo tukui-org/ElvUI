@@ -22,6 +22,7 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Debuffs = self:Construct_Debuffs(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
+	frame.FocusGlow = self:Construct_FocusGlow(frame)
 	frame.Fader = self:Construct_Fader()
 	frame.Cutaway = self:Construct_Cutaway(frame)
 	frame.customTexts = {}
