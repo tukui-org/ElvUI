@@ -8,7 +8,6 @@ local Minimap = E:GetModule('Minimap')
 local _G = _G
 local tonumber = tonumber
 local tostring = tostring
-local strsub = strsub
 local format = format
 local pairs = pairs
 local type = type

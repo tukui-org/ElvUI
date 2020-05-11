@@ -70,9 +70,8 @@ function B:GarrisonDropDown()
 						{text = WAR_CAMPAIGN, func = ShowLanding_, arg1 = C_Garrison_GetLandingPageGarrisonType(), notCheckable = true},
 					}
 				end
-				_G.EasyMenu(landingChoices, landingChoiceMenu, "cursor", 0, 0, "MENU", 4)
-				_G.DropDownList1:ClearAllPoints()
-				_G.DropDownList1:Point("TOPRIGHT", btn, "TOPLEFT", 10, -4)
+				E.DataTexts:SetEasyMenuAnchor(landingChoiceMenu, btn)
+				_G.EasyMenu(landingChoices, landingChoiceMenu, nil, nil, nil, "MENU")
 			elseif _G.GarrisonLandingPage.garrTypeID == 3 then
 				ShowLanding(2)
 				MaybeStopSound(btn.closeSoundID)

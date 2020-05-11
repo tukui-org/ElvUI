@@ -168,7 +168,9 @@ local function OnClick(self, button)
 					specList[index + 1] = nil
 				end
 			end
-			_G.EasyMenu(specList, menuFrame, "cursor", -15, -7, "MENU", 2)
+
+			E.DataTexts:SetEasyMenuAnchor(menuFrame, self)
+			_G.EasyMenu(menuList, menuFrame, nil, nil, nil, "MENU")
 		end
 	else
 		DT.tooltip:Hide()
@@ -185,7 +187,8 @@ local function OnClick(self, button)
 			end
 		end
 
-		_G.EasyMenu(menuList, menuFrame, "cursor", -15, -7, "MENU", 2)
+		E.DataTexts:SetEasyMenuAnchor(menuFrame, self)
+		_G.EasyMenu(menuList, menuFrame, nil, nil, nil, "MENU")
 	end
 end
 

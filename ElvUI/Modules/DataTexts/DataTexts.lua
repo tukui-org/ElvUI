@@ -40,14 +40,7 @@ DT.UnitEvents = {
 	UNIT_SPELL_HASTE = true
 }
 
---> [HyperDT Credits] <--
---> Original Work: NihilisticPandemonium
---> Modified by Azilroka! :)
-local menuFrame = CreateFrame('Frame', 'ElvUI_HyperDTMenuFrame', E.UIParent, 'UIDropDownMenuTemplate')
-DT.HyperDTMenuFrame = menuFrame
-menuFrame:SetClampedToScreen(true)
-menuFrame:EnableMouse(true)
-menuFrame.SetAnchor = function(self, dt)
+function DT:SetEasyMenuAnchor(menu, dt)
 	local point = E:GetScreenQuadrant(dt)
 	local bottom = point and strfind(point, 'BOTTOM')
 	local left = point and strfind(point, 'LEFT')
@@ -55,11 +48,17 @@ menuFrame.SetAnchor = function(self, dt)
 	local anchor1 = (bottom and left and 'BOTTOMLEFT') or (bottom and 'BOTTOMRIGHT') or (left and 'TOPLEFT') or 'TOPRIGHT'
 	local anchor2 = (bottom and left and 'TOPLEFT') or (bottom and 'TOPRIGHT') or (left and 'BOTTOMLEFT') or 'BOTTOMRIGHT'
 
-	UIDropDownMenu_SetAnchor(self, 0, 0, anchor1, dt, anchor2)
+	UIDropDownMenu_SetAnchor(menu, 0, 0, anchor1, dt, anchor2)
 end
-menuFrame.MenuSetItem = function(dt, value)
-	if not dt then return end
 
+--> [HyperDT Credits] <--
+--> Original Work: NihilisticPandemonium
+--> Modified by Azilroka! :)
+local menuFrame = CreateFrame('Frame', 'ElvUI_HyperDTMenuFrame', E.UIParent, 'UIDropDownMenuTemplate')
+DT.HyperDTMenuFrame = menuFrame
+menuFrame:SetClampedToScreen(true)
+menuFrame:EnableMouse(true)
+menuFrame.MenuSetItem = function(dt, value)
 	DT.db.panels[dt.parentName][dt.pointIndex] = value
 	DT:UpdatePanelInfo(dt.parentName, dt.parent)
 
@@ -78,7 +77,7 @@ function DT:SingleHyperMode(_, key, active)
 	if SelectedDatatext and (key == 'LALT' or key == 'RALT') then
 		if active == 1 and MouseIsOver(SelectedDatatext) then
 			DT:OnLeave()
-			menuFrame:SetAnchor(SelectedDatatext)
+			DT:SetEasyMenuAnchor(menuFrame, SelectedDatatext)
 			EasyMenu(HyperList, menuFrame, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
 			CloseDropDownMenus()
@@ -88,7 +87,7 @@ end
 
 function DT:HyperClick()
 	SelectedDatatext = self
-	menuFrame:SetAnchor(self)
+	DT:SetEasyMenuAnchor(menuFrame, SelectedDatatext)
 	EasyMenu(HyperList, menuFrame, nil, nil, nil, 'MENU')
 end
 
@@ -609,6 +608,7 @@ function DT:RegisterHyperDT()
 
 	SortMenuList(HyperList)
 	tinsert(HyperList, { text = L["NONE"], checked = function() return menuFrame.MenuGetItem(SelectedDatatext, '') end, func = function() menuFrame.MenuSetItem(SelectedDatatext, '') end })
+
 	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
 end
 
