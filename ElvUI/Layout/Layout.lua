@@ -359,7 +359,7 @@ function LO:CreateMinimapPanels()
 	panel:Point('TOPLEFT', _G.Minimap, 'BOTTOMLEFT', -1, 0)
 	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', 1, -PANEL_HEIGHT)
 	panel:Hide()
-	DT:RegisterPanel(panel, E.db.datatexts.panels.MinimapPanel.numPoints, 'ANCHOR_BOTTOMLEFT', 0, -4)
+	DT:RegisterPanel(panel, E.db.datatexts.panels.MinimapPanel.numPoints, 'ANCHOR_BOTTOM', 0, -4)
 end
 
 E:RegisterModule(LO:GetName())
