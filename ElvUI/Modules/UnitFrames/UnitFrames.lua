@@ -853,7 +853,7 @@ UF.SmartSettings = {
 	raidpet = { enable = false }
 }
 
-function UF:HandleSmartVisibility(skipUpdate)
+function UF:HandleSmartVisibility()
 	local sv = UF.SmartSettings
 	sv.raid.numGroups = 6
 
