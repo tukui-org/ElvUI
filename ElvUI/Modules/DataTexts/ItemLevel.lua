@@ -46,7 +46,7 @@ local function OnEnter(self)
 		local itemInfo = E:GetGearSlotInfo('player', k)
 		if itemInfo then
 			local r, g, b = E:ColorGradient((itemInfo.iLvl - avgItemLevel) * 100, 1, 0, 0, 1, 1, 0, 0, 1, 0)
-			DT.tooltip:AddDoubleLine(itemIcon..itemLink, itemInfo.iLvl, 1, 1, 1, r, g, b)
+			DT.tooltip:AddDoubleLine(itemLink, itemInfo.iLvl, 1, 1, 1, r, g, b)
 		end
 	end
 
