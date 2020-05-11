@@ -378,3 +378,16 @@ L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, �
   Shift + 右鍵 - 暫時隱藏定位器.
   Ctrl + 右鍵 - 重置定位器位置到預設值.
 ]=]
+
+L["EHELP_COMMANDS"] = [=[Here is a list of all important %sElvUI|r commands:
+ |cFF999999/ec|r or |cFF999999/elvui|r  -  Toggle the %sElvUI OptionsUI|r.
+ |cFF999999/moveui|r  -  Toggle anchors to reposition various elements.
+ |cFF999999/kb|r  -  Toggle the keybind mode.
+ |cFF999999/resetui|r  -  Reset all frames to their original positions.
+ |cFF999999/bgstats|r  -  Toggle Battleground stats on your DataTexts.
+ |cFF999999/hdt|r  -  Edit your DataTexts without opening the %sOptionsUI|r.
+ |cFF999999/estatus|r  -  Important informations for support questions.
+ |cFF999999/egrid|r [|cFF99999964|r or |cFF999999128|r or |cFF999999256|r]  -  Toggle a pixel grid.
+ |cFF999999/luaerror|r [|cFF999999on|r or |cFF999999off|r]  -  Disable all AddOns except ElvUI.
+  note: |cFF999999/luaerror off|r will re-enable the addons disabled from using |cFF999999/luaerror on|r within that session.
+]=]

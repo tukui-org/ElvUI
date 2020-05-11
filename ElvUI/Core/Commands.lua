@@ -169,16 +169,7 @@ function E:GetCPUImpact()
 end
 
 function E:EHelp()
-	E:Print('Here is a list of all important ElvUI commands:')
-	print('    /ec or /elvui - Toggle the ElvUI OptionsUI.')
-	print('    /moveui - Toggle anchors to reposition various elements.')
-	print('    /kb - Toggle the keybind mode.')
-	print('    /resetui - Reset all frames to their original positions.')
-	print('    /egrid <64>/<128>/<256> - Toggle a pixel grid.')
-	print('    /bgstats - Toggle Battleground stats on your DataTexts.')
-	print('    /hdt - Edit your DataTexts without opening the OptionsUI.')
-	print('    /luaerror <on>/<off> - Disable all AddOns except ElvUI.')
-	print('    /estatus - Important informations for support questions.')
+	print(format(L["EHELP_COMMANDS"], E.media.hexvaluecolor, E.media.hexvaluecolor, E.media.hexvaluecolor))
 end
 
 local BLIZZARD_ADDONS = {
