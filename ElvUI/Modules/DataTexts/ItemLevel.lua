@@ -44,9 +44,9 @@ local function OnEnter(self)
 		local itemLink = GetInventoryItemLink("player", k)
 		local itemIcon = GetInventoryItemTexture("player", k)
 		local itemInfo = E:GetGearSlotInfo('player', k)
-		if itemInfo then
+		if itemInfo and itemInfo.iLvl then
 			local r, g, b = E:ColorGradient((itemInfo.iLvl - avgItemLevel) * 100, 1, 0, 0, 1, 1, 0, 0, 1, 0)
-			DT.tooltip:AddDoubleLine(itemLink, itemInfo.iLvl, 1, 1, 1, r, g, b)
+			DT.tooltip:AddDoubleLine("|T"..itemIcon..":13:15:0:0:50:50:4:46:4:46|t "..itemLink, itemInfo.iLvl, 1, 1, 1, r, g, b)
 		end
 	end
 
@@ -65,4 +65,4 @@ local function ValueColorUpdate(hex, r, g, b)
 end
 E["valueColorUpdateFuncs"][ValueColorUpdate] = true
 
-DT:RegisterDatatext("Item Level", 'Stats', {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, nil, OnEnter, nil, LFG_LIST_ITEM_LEVEL_INSTR_SHORT)
+DT:RegisterDatatext("Item Level", 'Stats', {"PLAYER_AVG_ITEM_LEVEL_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, LFG_LIST_ITEM_LEVEL_INSTR_SHORT)
