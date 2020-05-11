@@ -379,15 +379,16 @@ Opciones:
    Ctrl + Clic Derecho - Restablece la posición de los fijadores a los valores por defecto.
 ]=]
 
-L["EHELP_COMMANDS"] = [=[Aquí hay una lista de todos los comandos importantes de %sElvUI|r:
- |cFF999999/ec|r or |cFF999999/elvui|r  -  Mostrar/Ocultar el %sElvUI OptionsUI|r.
- |cFF999999/moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
- |cFF999999/kb|r  -  Mostrar/Ocultar el modo atajos.
- |cFF999999/resetui|r  -  Restablecer todos los marcos a sus posiciones originales.
- |cFF999999/bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
- |cFF999999/hdt|r  -  Edit your DataTexts without opening the %sOptionsUI|r.
- |cFF999999/estatus|r  -  Información importante para preguntas de soporte.
- |cFF999999/egrid|r [|cFF99999964|r or |cFF999999128|r or |cFF999999256|r]  -  Mostrar/Ocultar una cuadrícula de líneas.
- |cFF999999/luaerror|r [|cFF999999on|r or |cFF999999off|r]  -  Deshabilitar todos los AddOns excepto ElvUI.
-  nota: |cFF999999/luaerror off|r volverá a habilitar los complementos deshabilitado mediante el uso de |cFF999999/luaerror on|r dentro de esa sesión.
+-- * picks up a color
+L["EHELP_COMMANDS"] = [=[Aquí hay una lista de todos los comandos importantes de *ElvUI|r:
+ */ec|r or */elvui|r  -  Mostrar/Ocultar el *ElvUI OptionsUI|r.
+ */moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
+ */kb|r  -  Mostrar/Ocultar el modo atajos.
+ */resetui|r  -  Restablecer todos los marcos a sus posiciones originales.
+ */bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
+ */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
+ */estatus|r  -  Información importante para preguntas de soporte.
+ */egrid|r [*64|r or *128|r or *256|r]  -  Mostrar/Ocultar una cuadrícula de líneas.
+ */luaerror|r [*on|r or *off|r]  -  Deshabilitar todos los AddOns excepto ElvUI.
+  nota: */luaerror off|r volverá a habilitar los complementos deshabilitado mediante el uso de */luaerror on|r dentro de esa sesión.
 ]=]

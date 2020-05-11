@@ -4,8 +4,8 @@ local AB = E:GetModule('ActionBars')
 
 --Lua functions
 local _G = _G
-local tonumber, type, pairs, select = tonumber, type, pairs, select
-local lower, split, format, wipe, next = strlower, strsplit, format, wipe, next
+local tonumber, type, pairs, select, gsub = tonumber, type, pairs, select, gsub
+local lower, split, format, wipe, next, print = strlower, strsplit, format, wipe, next, print
 --WoW API / Variables
 local debugprofilestop = debugprofilestop
 local EnableAddOn = EnableAddOn
@@ -169,7 +169,7 @@ function E:GetCPUImpact()
 end
 
 function E:EHelp()
-	print(format(L["EHELP_COMMANDS"], E.media.hexvaluecolor, E.media.hexvaluecolor, E.media.hexvaluecolor))
+	print(gsub(L["EHELP_COMMANDS"], '*', E.media.hexvaluecolor))
 end
 
 local BLIZZARD_ADDONS = {

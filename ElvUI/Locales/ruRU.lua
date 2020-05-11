@@ -379,15 +379,16 @@ Options:
   Ctrl + RightClick - Resets mover position to default.
 ]=]
 
-L["EHELP_COMMANDS"] = [=[Here is a list of all important %sElvUI|r commands:
- |cFF999999/ec|r or |cFF999999/elvui|r  -  Toggle the %sElvUI OptionsUI|r.
- |cFF999999/moveui|r  -  Toggle anchors to reposition various elements.
- |cFF999999/kb|r  -  Toggle the keybind mode.
- |cFF999999/resetui|r  -  Reset all frames to their original positions.
- |cFF999999/bgstats|r  -  Toggle Battleground stats on your DataTexts.
- |cFF999999/hdt|r  -  Edit your DataTexts without opening the %sOptionsUI|r.
- |cFF999999/estatus|r  -  Important informations for support questions.
- |cFF999999/egrid|r [|cFF99999964|r or |cFF999999128|r or |cFF999999256|r]  -  Toggle a pixel grid.
- |cFF999999/luaerror|r [|cFF999999on|r or |cFF999999off|r]  -  Disable all AddOns except ElvUI.
-  note: |cFF999999/luaerror off|r will re-enable the addons disabled from using |cFF999999/luaerror on|r within that session.
+-- * picks up a color
+L["EHELP_COMMANDS"] = [=[Here is a list of all important *ElvUI|r commands:
+ */ec|r or */elvui|r  -  Toggle the *ElvUI OptionsUI|r.
+ */moveui|r  -  Toggle anchors to reposition various elements.
+ */kb|r  -  Toggle the keybind mode.
+ */resetui|r  -  Reset all frames to their original positions.
+ */bgstats|r  -  Toggle Battleground stats on your DataTexts.
+ */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
+ */estatus|r  -  Important informations for support questions.
+ */egrid|r [*64|r or *128|r or *256|r]  -  Toggle a pixel grid.
+ */luaerror|r [*on|r or *off|r]  -  Disable all AddOns except ElvUI.
+  note: */luaerror off|r will re-enable the addons disabled from using */luaerror on|r within that session.
 ]=]

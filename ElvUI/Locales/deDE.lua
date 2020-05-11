@@ -382,15 +382,16 @@ Options:
   Strg + Rechtsklick - Setzt den Anker auf Ursprungsposition zurück.
 ]=]
 
-L["EHELP_COMMANDS"] = [=[Hier ist eine liste aller wichtigen %sElvUI|r Kommandos:
- |cFF999999/ec|r or |cFF999999/elvui|r  -  Öffnet das %sElvUI OptionsUI|r.
- |cFF999999/moveui|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
- |cFF999999/kb|r  -  Aktiviert den Tastenbelegungsmodus.
- |cFF999999/resetui|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
- |cFF999999/bgstats|r  -  Aktiviert Schlachtfeld Statistiken über den Informationsleisten.
- |cFF999999/hdt|r  -  Informationsleisten bearbeiten ohne das %sOptionsUI|r öffnen zu müssen.
- |cFF999999/estatus|r  -  Wichtige Informationen für Supportfragen.
- |cFF999999/egrid|r [|cFF99999964|r oder |cFF999999128|r oder |cFF999999256|r]  -  Aktiviert ein Pixel Raster.
- |cFF999999/luaerror|r [|cFF999999on|r oder |cFF999999off|r]  -  Deaktiviert alle AddOns außer ElvUI.
-  PS: |cFF999999/luaerror off|r aktiviert wieder alle AddOns, die durch |cFF999999/luaerror on|r während der Sitzung deaktiviert wurden.
+-- * picks up a color
+L["EHELP_COMMANDS"] = [=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos:
+ */ec|r or */elvui|r  -  Öffnet das *ElvUI OptionsUI|r.
+ */moveui|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
+ */kb|r  -  Aktiviert den Tastenbelegungsmodus.
+ */resetui|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
+ */bgstats|r  -  Aktiviert Schlachtfeld Statistiken über den Informationsleisten.
+ */hdt|r  -  Informationsleisten bearbeiten ohne das *OptionsUI|r öffnen zu müssen.
+ */estatus|r  -  Wichtige Informationen für Supportfragen.
+ */egrid|r [*64|r oder *128|r oder *256|r]  -  Aktiviert ein Pixel Raster.
+ */luaerror|r [*on|r oder *off|r]  -  Deaktiviert alle AddOns außer ElvUI.
+  PS: */luaerror off|r aktiviert wieder alle AddOns, die durch */luaerror on|r während der Sitzung deaktiviert wurden.
 ]=]
