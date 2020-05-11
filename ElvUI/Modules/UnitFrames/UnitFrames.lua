@@ -966,8 +966,8 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		self.headers[group] = Header
 	end
 
-	local numGroupsChanged = (Header.numGroups ~= numGroups)
-	local enableStateChanged = (Header.enableState ~= enable)
+	local groupsChanged = (Header.numGroups ~= numGroups)
+	local stateChanged = (Header.enableState ~= enable)
 	Header.enableState = enable
 	Header.numGroups = numGroups
 	Header.db = db
@@ -984,7 +984,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			end
 		end
 
-		if numGroupsChanged or update then
+		if groupsChanged or update then
 			UF.headerFunctions[group]:AdjustVisibility(Header)
 			UF.headerFunctions[group]:Configure_Groups(Header)
 		end
@@ -1002,7 +1002,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		end
 	end
 
-	if enableStateChanged or update then
+	if stateChanged or update then
 		UF.headerFunctions[group]:Update(Header)
 	end
 
