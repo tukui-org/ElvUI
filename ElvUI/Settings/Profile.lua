@@ -1472,7 +1472,7 @@ P.unitframe = {
 			focusGlow = {
 				enable = false,
 				class = false,
-				color = {r=1, g=0, b=0, a=1}
+				color = {r=1, g=1, b=1, a=1}
 			},
 			mouseoverGlow = {
 				enable = true,
@@ -1561,7 +1561,7 @@ P.unitframe = {
 			middleClickFocus = true,
 			disableMouseoverGlow = false,
 			disableTargetGlow = true,
-			disableFocusGlow = false,
+			disableFocusGlow = true,
 			aurabar = CopyTable(UF_AuraBars),
 			buffs = CopyTable(UF_Auras),
 			castbar = CopyTable(UF_Castbar),

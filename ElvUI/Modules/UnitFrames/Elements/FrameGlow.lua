@@ -1,13 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
 local _G = _G
 local pairs = pairs
 local select = select
 local assert = assert
 local tinsert = tinsert
---WoW API / Variables
+local strsub = strsub
 local CreateFrame = CreateFrame
 local UnitClass = UnitClass
 local UnitExists = UnitExists
@@ -141,7 +140,7 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	end
 end
 
-function UF:FrameGlow_CreateGlow(frame, mouse)
+function UF:FrameGlow_CreateGlow(frame, which)
 	-- Main Glow to wrap the health frame to it's best ability
 	local mainGlow = frame:CreateShadow(nil, true)
 	mainGlow:SetFrameStrata('BACKGROUND')
@@ -152,13 +151,9 @@ function UF:FrameGlow_CreateGlow(frame, mouse)
 	powerGlow:SetFrameStrata('BACKGROUND')
 	powerGlow:Hide()
 
-	if mouse then
-		mainGlow:SetFrameLevel(4)
-		powerGlow:SetFrameLevel(4)
-	else
-		mainGlow:SetFrameLevel(3)
-		powerGlow:SetFrameLevel(3)
-	end
+	local level = (which == 'mouse' and 5) or (which == 'target' and 4) or 3
+	mainGlow:SetFrameLevel(level)
+	powerGlow:SetFrameLevel(level)
 
 	-- Eventing Frame
 	if not frame.FrameGlow then
@@ -167,7 +162,7 @@ function UF:FrameGlow_CreateGlow(frame, mouse)
 		frame.FrameGlow:SetScript('OnEvent', function(_, event)
 			if event == 'UPDATE_MOUSEOVER_UNIT' then
 				UF:FrameGlow_CheckMouseover(frame)
-			elseif event == 'PLAYER_FOCUS_CHANGED' then 
+			elseif event == 'PLAYER_FOCUS_CHANGED' then
 				UF:FrameGlow_CheckFocus(frame)
 			elseif event == 'PLAYER_TARGET_CHANGED' then
 				UF:FrameGlow_CheckTarget(frame)
@@ -272,46 +267,33 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	end
 end
 
-function UF:FrameGlow_CheckTarget(frame, setColor)
-	if not (frame and frame.TargetGlow and frame:IsVisible()) then return end
+function UF:FrameGlow_CheckUnit(frame, element, setting, color, glowEnabled, frameDisabled)
+	if not (element and frame:IsVisible()) then return end
 
 	local unit = frame.unit or (frame.isForced and 'player')
-	if E.db.unitframe.colors.frameGlow.targetGlow.enable and (unit and UnitIsUnit(unit, 'target')) and not (frame.db and frame.db.disableTargetGlow) then
-		if setColor then
-			UF:FrameGlow_SetGlowColor(frame.TargetGlow, unit, 'targetGlow')
+	if (glowEnabled and not frameDisabled) and unit and UnitIsUnit(unit, strsub(setting, 0, -5)) then
+		if color then
+			UF:FrameGlow_SetGlowColor(element, unit, setting)
 		end
-		if frame.TargetGlow.powerGlow then
+		if element.powerGlow then
 			if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
-				frame.TargetGlow.powerGlow:Show()
-			elseif frame.TargetGlow.powerGlow:IsShown() then
-				frame.TargetGlow.powerGlow:Hide()
+				element.powerGlow:Show()
+			elseif element.powerGlow:IsShown() then
+				element.powerGlow:Hide()
 			end
 		end
-		frame.TargetGlow:Show()
+		element:Show()
 	else
-		UF:FrameGlow_HideGlow(frame.TargetGlow)
+		UF:FrameGlow_HideGlow(element)
 	end
 end
 
-function UF:FrameGlow_CheckFocus(frame, setColor)
-	if not (frame and frame.FocusGlow and frame:IsVisible()) then return end
+function UF:FrameGlow_CheckTarget(frame, color)
+	UF:FrameGlow_CheckUnit(frame, frame.TargetGlow, 'targetGlow', color, E.db.unitframe.colors.frameGlow.targetGlow.enable, frame.db and frame.db.disableTargetGlow)
+end
 
-	local unit = frame.unit or (frame.isForced and 'player')
-	if E.db.unitframe.colors.frameGlow.focusGlow.enable and (unit and UnitIsUnit(unit, 'focus')) and not (frame.db and frame.db.disableFocusGlow) then
-		if setColor then
-			UF:FrameGlow_SetGlowColor(frame.FocusGlow, unit, 'focusGlow')
-		end
-		if frame.FocusGlow.powerGlow then
-			if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
-				frame.FocusGlow.powerGlow:Show()
-			elseif frame.FocusGlow.powerGlow:IsShown() then
-				frame.FocusGlow.powerGlow:Hide()
-			end
-		end
-		frame.FocusGlow:Show()
-	else
-		UF:FrameGlow_HideGlow(frame.FocusGlow)
-	end
+function UF:FrameGlow_CheckFocus(frame, color)
+	UF:FrameGlow_CheckUnit(frame, frame.FocusGlow, 'focusGlow', color, E.db.unitframe.colors.frameGlow.focusGlow.enable, frame.db and frame.db.disableFocusGlow)
 end
 
 function UF:FrameGlow_CheckMouseover(frame)
@@ -397,7 +379,7 @@ function UF:Construct_FrameGlow(frame, glow)
 end
 
 function UF:Construct_MouseGlow(frame)
-	local mainGlow = UF:FrameGlow_CreateGlow(frame, true)
+	local mainGlow = UF:FrameGlow_CreateGlow(frame, 'mouse')
 	UF:FrameGlow_ElementHook(frame, mainGlow, 'mainGlow')
 	UF:Construct_FrameGlow(frame, mainGlow)
 	frame.FrameGlow:RegisterEvent('UPDATE_MOUSEOVER_UNIT')
@@ -406,7 +388,7 @@ function UF:Construct_MouseGlow(frame)
 end
 
 function UF:Construct_TargetGlow(frame)
-	local targetGlow = UF:FrameGlow_CreateGlow(frame)
+	local targetGlow = UF:FrameGlow_CreateGlow(frame, 'target')
 	UF:FrameGlow_ElementHook(frame, targetGlow, 'targetGlow')
 	frame.FrameGlow:RegisterEvent('PLAYER_TARGET_CHANGED')
 
@@ -414,7 +396,7 @@ function UF:Construct_TargetGlow(frame)
 end
 
 function UF:Construct_FocusGlow(frame)
-	local focusGlow = UF:FrameGlow_CreateGlow(frame)
+	local focusGlow = UF:FrameGlow_CreateGlow(frame, 'focus')
 	UF:FrameGlow_ElementHook(frame, focusGlow, 'focusGlow')
 	frame.FrameGlow:RegisterEvent('PLAYER_FOCUS_CHANGED')
 
