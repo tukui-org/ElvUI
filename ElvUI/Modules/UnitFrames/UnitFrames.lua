@@ -984,7 +984,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			end
 		end
 
-		if numGroupsChanged then
+		if numGroupsChanged or update then
 			UF.headerFunctions[group]:AdjustVisibility(Header)
 			UF.headerFunctions[group]:Configure_Groups(Header)
 		end
