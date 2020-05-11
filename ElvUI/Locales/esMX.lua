@@ -188,8 +188,8 @@ L["Legs"] = "Piernas"
 L["Level Up Display / Boss Banner"] = "Subiste de nivel / Jefe Banner"
 L["List of installations in queue:"] = "Lista de Instalaciones en cola:"
 L["Lock"] = "Bloquear"
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"
-L["LOGIN_MSG_HELP"] = "Please use /ehelp for a list of available commands."
+L["LOGIN_MSG"] = "Bienvenido a %sElvUI|r versión %s%s|r, escribe /ec para acceder al menú de configuración del juego. Si necesita ayuda, puede visítenos en https://www.tukui.org o unirse a nuestro Discord: https://discord.gg/xFWcfgE"
+L["LOGIN_MSG_HELP"] = "Por favor, escriba /ehelp para obtener una lista de los comandos disponibles."
 L["Loot / Alert Frames"] = "Marcos de Botín / Alerta"
 L["Loot Frame"] = "Marco de Botín"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "¡Milagro! ¡La descarga se desvaneció como pedo! Intenta de nuevo"
@@ -373,21 +373,21 @@ L["Vim Brineheart"] = "Vim Almasalmuera"
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz clic en Bloquear cuando termines.
 Opciones:
-   Clic Izquierdo - Alternar empujar marco.
+   Clic Izquierdo - Mostrar/Ocultar empujar marco.
    Clic Derecho - Abrir la sección de configuración.
    Shift + Clic Derecho - Ocultar los fijadores temporalmente.
    Ctrl + Clic Derecho - Restablece la posición de los fijadores a los valores por defecto.
 ]=]
 
-L["EHELP_COMMANDS"] = [=[Here is a list of all important %sElvUI|r commands:
- |cFF999999/ec|r or |cFF999999/elvui|r  -  Toggle the %sElvUI OptionsUI|r.
- |cFF999999/moveui|r  -  Toggle anchors to reposition various elements.
- |cFF999999/kb|r  -  Toggle the keybind mode.
- |cFF999999/resetui|r  -  Reset all frames to their original positions.
- |cFF999999/bgstats|r  -  Toggle Battleground stats on your DataTexts.
+L["EHELP_COMMANDS"] = [=[Aquí hay una lista de todos los comandos importantes de %sElvUI|r:
+ |cFF999999/ec|r or |cFF999999/elvui|r  -  Mostrar/Ocultar el %sElvUI OptionsUI|r.
+ |cFF999999/moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
+ |cFF999999/kb|r  -  Mostrar/Ocultar el modo atajos.
+ |cFF999999/resetui|r  -  Restablecer todos los marcos a sus posiciones originales.
+ |cFF999999/bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
  |cFF999999/hdt|r  -  Edit your DataTexts without opening the %sOptionsUI|r.
- |cFF999999/estatus|r  -  Important informations for support questions.
- |cFF999999/egrid|r [|cFF99999964|r or |cFF999999128|r or |cFF999999256|r]  -  Toggle a pixel grid.
- |cFF999999/luaerror|r [|cFF999999on|r or |cFF999999off|r]  -  Disable all AddOns except ElvUI.
-  note: |cFF999999/luaerror off|r will re-enable the addons disabled from using |cFF999999/luaerror on|r within that session.
+ |cFF999999/estatus|r  -  Información importante para preguntas de soporte.
+ |cFF999999/egrid|r [|cFF99999964|r or |cFF999999128|r or |cFF999999256|r]  -  Mostrar/Ocultar una cuadrícula de líneas.
+ |cFF999999/luaerror|r [|cFF999999on|r or |cFF999999off|r]  -  Deshabilitar todos los AddOns excepto ElvUI.
+  nota: |cFF999999/luaerror off|r volverá a habilitar los complementos deshabilitado mediante el uso de |cFF999999/luaerror on|r dentro de esa sesión.
 ]=]
