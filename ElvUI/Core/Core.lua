@@ -1599,9 +1599,9 @@ function E:Initialize()
 	end
 
 	if self.db.general.loginmessage then
-		local msg = format(L["LOGIN_MSG"], self.media.hexvaluecolor, self.media.hexvaluecolor, self.version)
+		local msg = format(L["LOGIN_MSG"], self.version)
 		if Chat.Initialized then msg = select(2, Chat:FindURL('CHAT_MSG_DUMMY', msg)) end
 		print(msg)
-		E:Print(L["LOGIN_MSG_HELP"])
+		print(L["LOGIN_MSG_HELP"])
 	end
 end

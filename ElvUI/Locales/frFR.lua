@@ -2,6 +2,9 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "frFR")
 
+local COLOR1 = '|cFF1784d1'
+local COLOR2 = '|cfd9b9b9b'
+
 L[" |cff00ff00bound to |r"] = "|cff00ff00assigné à |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = true
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s tente de partager ses filtres avec vous. Voulez-vous accepter la demande ?"
@@ -188,8 +191,8 @@ L["Legs"] = "Jambes"
 L["Level Up Display / Boss Banner"] = "Affichage du gain de niveau / de la bannière du boss"
 L["List of installations in queue:"] = "Liste des installations en file d'attente"
 L["Lock"] = "Verrouiller"
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"
-L["LOGIN_MSG_HELP"] = "Please use /ehelp for a list of available commands."
+L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use /ehelp for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "Cadres de butin / Alerte"
 L["Loot Frame"] = "Cadre de butin"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Seigneur ! C'est un miracle ! Le téléchargement s'est envolé et a disparu comme un pet dans le vent ! Essayez encore !"
@@ -380,8 +383,7 @@ Options:
   Ctrl + clic droit - Réinitialiser la position par défaut.
 ]=]
 
--- * and ^ picks up a color
-L["EHELP_COMMANDS"] = [=[Here is a list of all important *ElvUI|r commands:
+L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */ec|r or */elvui|r  -  Toggle the *ElvUI|r ^OptionsUI|r.
  */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
@@ -393,4 +395,4 @@ L["EHELP_COMMANDS"] = [=[Here is a list of all important *ElvUI|r commands:
  */luaerror|r [^on|r or ^off|r]  -  Disable all AddOns except ElvUI.
   NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
   using */luaerror|r ^on|r within that session.
-]=]
+]=]):gsub('*', COLOR1):gsub('%^', COLOR2)

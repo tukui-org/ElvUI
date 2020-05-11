@@ -2,6 +2,9 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
 
+local COLOR1 = '|cFF1784d1'
+local COLOR2 = '|cfd9b9b9b'
+
 L[" |cff00ff00bound to |r"] = " |cff00ff00綁定到 |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "%s 框架存在一個衝突錨點，將強制將Buff附加到主單位框架之上。"
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 試圖與你分享過濾器設定. 你是否接受?"
@@ -188,8 +191,8 @@ L["Legs"] = "腿部"
 L["Level Up Display / Boss Banner"] = "升級提示 / 首領旗幟"
 L["List of installations in queue:"] = "即將安裝的列表"
 L["Lock"] = "鎖定"
-L["LOGIN_MSG"] = "歡迎使用 %sElvUI|r %s%s 版本|r, 輸入 /ec 可打開遊戲內設置介面. 如果你需要技術協助, 可訪問我們的網址 https://www.tukui.org 或是加入我們的 Discord 伺服器: https://discord.gg/xFWcfgE"
-L["LOGIN_MSG_HELP"] = "Please use /ehelp for a list of available commands."
+L["LOGIN_MSG"] = ("歡迎使用 *ElvUI|r *%s 版本|r, 輸入 /ec 可打開遊戲內設置介面. 如果你需要技術協助, 可訪問我們的網址 https://www.tukui.org 或是加入我們的 Discord 伺服器: https://discord.gg/xFWcfgE"):gsub('*',COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use /ehelp for a list of available *ElvUI|r commands."):gsub('*',COLOR1)
 L["Loot / Alert Frames"] = "拾取 / 提醒框架"
 L["Loot Frame"] = "拾取框架"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "天啊! 太奇葩啦! 下載消失了! 就像是在風中放了個屁... 再試一次吧!"
@@ -379,8 +382,7 @@ L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, �
   Ctrl + 右鍵 - 重置定位器位置到預設值.
 ]=]
 
--- * and ^ picks up a color
-L["EHELP_COMMANDS"] = [=[Here is a list of all important *ElvUI|r commands:
+L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */ec|r or */elvui|r  -  Toggle the *ElvUI|r ^OptionsUI|r.
  */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
@@ -392,4 +394,4 @@ L["EHELP_COMMANDS"] = [=[Here is a list of all important *ElvUI|r commands:
  */luaerror|r [^on|r or ^off|r]  -  Disable all AddOns except ElvUI.
   NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
   using */luaerror|r ^on|r within that session.
-]=]
+]=]):gsub('*',COLOR1):gsub('%^',COLOR2)

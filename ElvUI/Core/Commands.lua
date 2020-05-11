@@ -167,9 +167,7 @@ function E:GetCPUImpact()
 end
 
 function E:EHelp()
-	local msg = gsub(L["EHELP_COMMANDS"],'*','|cFF1784d1')
-	msg = gsub(msg,'%^','|cfd9b9b9b')
-	print(msg)
+	print(L["EHELP_COMMANDS"])
 end
 
 local BLIZZARD_ADDONS = {
