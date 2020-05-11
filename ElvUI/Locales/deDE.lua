@@ -191,8 +191,8 @@ L["Legs"] = "Beine"
 L["Level Up Display / Boss Banner"] = "Level Up Anzeige / Boss Banner"
 L["List of installations in queue:"] = "Liste der Installationen in der Warteschlange:"
 L["Lock"] = "Sperren"
-L["LOGIN_MSG"] = ("Willkommen zu *ElvUI|r Version *%s|r, Tippe /ec um das Konfigurationsmenü aufzurufen. Für technische Hilfe, besuche das Supportforum unter https://www.tukui.org oder trete unserem Discord bei: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
-L["LOGIN_MSG_HELP"] = ("Please use ^/ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1):gsub('%^', COLOR2)
+L["LOGIN_MSG"] = ("Willkommen zu *ElvUI|r Version *%s|r, Tippe */ec|r um das Konfigurationsmenü aufzurufen. Für technische Hilfe, besuche das Supportforum unter https://www.tukui.org oder trete unserem Discord bei: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "Beute-/Alarmfenster"
 L["Loot Frame"] = "Beute-Fenster"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Herr! Es ist ein Wunder! Der Download verschwand wie ein Furz im Wind! Versuche es nochmal!"
@@ -386,15 +386,15 @@ Options:
 ]=]
 
 L["EHELP_COMMANDS"] = ([=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos:
- */ec|r or */elvui|r  -  Öffnet das *ElvUI|r ^OptionsUI|r.
+ */ec|r or */elvui|r  -  Öffnet das *OptionsUI|r.
  */moveui|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
  */kb|r  -  Aktiviert den Tastenbelegungsmodus.
  */resetui|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
  */bgstats|r  -  Aktiviert Schlachtfeld Statistiken über den Informationsleisten.
  */hdt|r  -  Informationsleisten bearbeiten ohne das *ElvUI|r ^OptionsUI|r öffnen zu müssen.
  */estatus|r  -  Wichtige Informationen für Supportfragen.
- */egrid|r [^64|r oder ^128|r oder ^256|r]  -  Aktiviert ein Pixel Raster.
- */luaerror|r [^on|r oder ^off|r]  -  Deaktiviert alle AddOns außer ElvUI.
+ */egrid|r ^64|r oder ^128|r oder ^256|r  -  Aktiviert ein Pixel Raster.
+ */luaerror|r ^on|r oder ^off|r  -  Deaktiviert alle AddOns außer ElvUI.
   PS: */luaerror|r ^off|r aktiviert wieder alle AddOns,
   die durch */luaerror|r ^on|r während der Sitzung deaktiviert wurden.
 ]=]):gsub('*', COLOR1):gsub('%^', COLOR2)

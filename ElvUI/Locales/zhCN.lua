@@ -191,8 +191,8 @@ L["Legs"] = "腿"
 L["Level Up Display / Boss Banner"] = "升级提示/Boss拾取"
 L["List of installations in queue:"] = "即将安装的列表:"
 L["Lock"] = "锁定"
-L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
-L["LOGIN_MSG_HELP"] = ("Please use ^/ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1):gsub('%^', COLOR2)
+L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type */ec|r to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "拾取/提醒框"
 L["Loot Frame"] = "拾取框架"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "天啊! 太奇葩了! 下载消失了! 就像在风中放了一个屁... 再试一次吧!"
@@ -384,15 +384,15 @@ L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, �
 ]=]
 
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
- */ec|r or */elvui|r  -  Toggle the *ElvUI|r ^OptionsUI|r.
+ */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
  */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
  */resetui|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
- */hdt|r  -  Edit your DataTexts without opening the *ElvUI|r ^OptionsUI|r.
+ */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Important informations for support questions.
- */egrid|r [^64|r or ^128|r or ^256|r]  -  Toggle a pixel grid.
- */luaerror|r [^on|r or ^off|r]  -  Disable all AddOns except ElvUI.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
+ */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
   NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
   using */luaerror|r ^on|r within that session.
 ]=]):gsub('*', COLOR1):gsub('%^', COLOR2)

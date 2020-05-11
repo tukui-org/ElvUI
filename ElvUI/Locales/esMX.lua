@@ -191,8 +191,8 @@ L["Legs"] = "Piernas"
 L["Level Up Display / Boss Banner"] = "Subiste de nivel / Jefe Banner"
 L["List of installations in queue:"] = "Lista de Instalaciones en cola:"
 L["Lock"] = "Bloquear"
-L["LOGIN_MSG"] = ("Bienvenido a *ElvUI|r versión *%s|r, escribe /ec para acceder al menú de configuración del juego. Si necesita ayuda, puede visítenos en https://www.tukui.org o unirse a nuestro Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
-L["LOGIN_MSG_HELP"] = ("Por favor, escriba ^/ehelp|r para obtener una lista de los comandos de *ElvUI|r disponibles."):gsub('*', COLOR1):gsub('%^', COLOR2)
+L["LOGIN_MSG"] = ("Bienvenido a *ElvUI|r versión *%s|r, escribe */ec|r para acceder al menú de configuración del juego. Si necesita ayuda, puede visítenos en https://www.tukui.org o unirse a nuestro Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Por favor, escriba */ehelp|r para obtener una lista de los comandos de *ElvUI|r disponibles."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "Marcos de Botín / Alerta"
 L["Loot Frame"] = "Marco de Botín"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "¡Milagro! ¡La descarga se desvaneció como pedo! Intenta de nuevo"
@@ -383,15 +383,15 @@ Opciones:
 ]=]
 
 L["EHELP_COMMANDS"] = ([=[Aquí hay una lista de todos los comandos importantes de *ElvUI|r:
- */ec|r or */elvui|r  -  Mostrar/Ocultar el *ElvUI|r ^OptionsUI|r.
+ */ec|r or */elvui|r  -  Mostrar/Ocultar el *OptionsUI|r.
  */moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
  */kb|r  -  Mostrar/Ocultar el modo atajos.
  */resetui|r  -  Restablecer todos los marcos a sus posiciones originales.
  */bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
- */hdt|r  -  Edit your DataTexts without opening the *ElvUI|r ^OptionsUI|r.
+ */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Información importante para preguntas de soporte.
- */egrid|r [^64|r or ^128|r or ^256|r]  -  Mostrar/Ocultar una cuadrícula de líneas.
- */luaerror|r [^on|r or ^off|r]  -  Deshabilitar todos los AddOns excepto ElvUI.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  Mostrar/Ocultar una cuadrícula de líneas.
+ */luaerror|r ^on|r or ^off|r  -  Deshabilitar todos los AddOns excepto ElvUI.
   NOTA: */luaerror|r ^off|r volverá a habilitar los complementos deshabilitado
   mediante el uso de */luaerror|r ^on|r dentro de esa sesión.
 ]=]):gsub('*', COLOR1):gsub('%^', COLOR2)

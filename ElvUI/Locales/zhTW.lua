@@ -191,8 +191,8 @@ L["Legs"] = "腿部"
 L["Level Up Display / Boss Banner"] = "升級提示 / 首領旗幟"
 L["List of installations in queue:"] = "即將安裝的列表"
 L["Lock"] = "鎖定"
-L["LOGIN_MSG"] = ("歡迎使用 *ElvUI|r *%s 版本|r, 輸入 /ec 可打開遊戲內設置介面. 如果你需要技術協助, 可訪問我們的網址 https://www.tukui.org 或是加入我們的 Discord 伺服器: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
-L["LOGIN_MSG_HELP"] = ("Please use ^/ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1):gsub('%^', COLOR2)
+L["LOGIN_MSG"] = ("歡迎使用 *ElvUI|r *%s 版本|r, 輸入 */ec|r 可打開遊戲內設置介面. 如果你需要技術協助, 可訪問我們的網址 https://www.tukui.org 或是加入我們的 Discord 伺服器: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "拾取 / 提醒框架"
 L["Loot Frame"] = "拾取框架"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "天啊! 太奇葩啦! 下載消失了! 就像是在風中放了個屁... 再試一次吧!"
@@ -383,15 +383,15 @@ L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, �
 ]=]
 
 L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
- */ec|r or */elvui|r  -  Toggle the *ElvUI|r ^OptionsUI|r.
+ */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
  */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
  */resetui|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
- */hdt|r  -  Edit your DataTexts without opening the *ElvUI|r ^OptionsUI|r.
+ */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
  */estatus|r  -  Important informations for support questions.
- */egrid|r [^64|r or ^128|r or ^256|r]  -  Toggle a pixel grid.
- */luaerror|r [^on|r or ^off|r]  -  Disable all AddOns except ElvUI.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
+ */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
   NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
   using */luaerror|r ^on|r within that session.
 ]=]):gsub('*', COLOR1):gsub('%^', COLOR2)
