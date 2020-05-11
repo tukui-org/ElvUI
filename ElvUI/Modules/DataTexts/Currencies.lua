@@ -55,14 +55,16 @@ local goldText
 local function OnEvent(self)
 	goldText = E:FormatMoney(GetMoney(), E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins)
 
-	local selected = Currencies[E.db.datatexts.currencies.displayedCurrency]
-	if E.db.datatexts.currencies.displayedCurrency == "GOLD" or selected == nil then
+	local displayed = E.db.datatexts.currencies.displayedCurrency
+	local selected = Currencies[displayed]
+	if displayed == "GOLD" or selected == nil then
 		self.text:SetText(goldText)
 	else
+		local style = E.db.datatexts.currencies.displayStyle
 		local num, name, icon = GetInfo(selected.ID)
-		if E.db.datatexts.currencies.displayStyle == "ICON" then
+		if style == "ICON" then
 			self.text:SetFormattedText("%s %d", icon, num)
-		elseif E.db.datatexts.currencies.displayStyle == "ICON_TEXT" then
+		elseif style == "ICON_TEXT" then
 			self.text:SetFormattedText("%s %s %d", icon, name, num)
 		else --ICON_TEXT_ABBR
 			self.text:SetFormattedText("%s %s %d", icon, E:AbbreviateString(name), num)
@@ -70,6 +72,7 @@ local function OnEvent(self)
 	end
 end
 
+local faction = (E.myfaction == "Alliance" and 1717) or 1716
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
@@ -77,21 +80,21 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(EXPANSION_NAME7) --"BfA"
-	AddInfo(Currencies.RICH_AZERITE_FRAGMENT.ID)
-	AddInfo(Currencies.SEAFARERS_DUBLOON.ID)
-	AddInfo(Currencies.SEAL_OF_WARTORN_FATE.ID)
-	AddInfo(Currencies.WAR_RESOURCES.ID)
-	AddInfo(Currencies.WAR_SUPPLIES.ID)
-	AddInfo(((E.myfaction == "Alliance" and Currencies['7TH_LEGION_SERVICE_MEDAL']) or Currencies.HONORBOUND_SERVICE_MEDAL).ID)
-	AddInfo(Currencies.TITAN_RESIDUUM.ID)
-	AddInfo(Currencies.PRISMATIC_MANAPEARL.ID)
-	AddInfo(Currencies.CORRUPTED_MEMENTOS.ID)
-	AddInfo(Currencies.COALESCING_VISIONS.ID)
-	AddInfo(Currencies.ECHOES_OF_NYALOTHA.ID)
+	AddInfo(1565) -- RICH_AZERITE_FRAGMENT
+	AddInfo(1710) -- SEAFARERS_DUBLOON
+	AddInfo(1580) -- SEAL_OF_WARTORN_FATE
+	AddInfo(1560) -- WAR_RESOURCES
+	AddInfo(1587) -- WAR_SUPPLIES
+	AddInfo(faction) -- 7th Legion or Honorbound
+	AddInfo(1718) -- TITAN_RESIDUUM
+	AddInfo(1721) -- PRISMATIC_MANAPEARL
+	AddInfo(1719) -- CORRUPTED_MEMENTOS
+	AddInfo(1755) -- COALESCING_VISIONS
+	AddInfo(1803) -- ECHOES_OF_NYALOTHA
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(OTHER)
-	AddInfo(Currencies.DARKMOON_PRIZE_TICKET.ID)
+	AddInfo(515) -- DARKMOON_PRIZE_TICKET
 
 	-- If the "Display In Tooltip" box is checked (on by default), then also display custom currencies in the tooltip.
 	local shouldAddHeader = true
