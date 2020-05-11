@@ -38,6 +38,8 @@ function UF:Configure_DebuffHighlight(frame)
 				frame.DBHGlow:SetAllPoints(frame.ThreatIndicator.MainGlow)
 			elseif frame.TargetGlow then
 				frame.DBHGlow:SetAllPoints(frame.TargetGlow)
+			elseif frame.FocusGlow then
+				frame.DBHGlow:SetAllPoints(frame.FocusGlow)
 			end
 		else
 			frame.DebuffHighlightBackdrop = false

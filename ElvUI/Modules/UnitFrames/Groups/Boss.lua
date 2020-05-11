@@ -41,6 +41,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Cutaway = self:Construct_Cutaway(frame)
 	frame.MouseGlow = self:Construct_MouseGlow(frame)
 	frame.TargetGlow = self:Construct_TargetGlow(frame)
+	frame.FocusGlow = self:Construct_FocusGlow(frame)
 	frame:SetAttribute("type2", "focus")
 	frame.customTexts = {}
 

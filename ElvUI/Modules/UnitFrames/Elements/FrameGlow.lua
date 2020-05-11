@@ -42,6 +42,10 @@ function UF:FrameGlow_ElementHook(frame, glow, which)
 		if which == 'targetGlow' then
 			UF:FrameGlow_CheckTarget(frame)
 		end
+
+		if which == 'focusGlow' then
+			UF:FrameGlow_CheckFocus(frame)
+		end
 	end)
 end
 
@@ -163,6 +167,8 @@ function UF:FrameGlow_CreateGlow(frame, mouse)
 		frame.FrameGlow:SetScript('OnEvent', function(_, event)
 			if event == 'UPDATE_MOUSEOVER_UNIT' then
 				UF:FrameGlow_CheckMouseover(frame)
+			elseif event == 'PLAYER_FOCUS_CHANGED' then 
+				UF:FrameGlow_CheckFocus(frame)
 			elseif event == 'PLAYER_TARGET_CHANGED' then
 				UF:FrameGlow_CheckTarget(frame)
 			end
@@ -260,6 +266,10 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	if frame.TargetGlow then
 		UF:FrameGlow_CheckTarget(frame, true)
 	end
+
+	if frame.FocusGlow then
+		UF:FrameGlow_CheckFocus(frame, true)
+	end
 end
 
 function UF:FrameGlow_CheckTarget(frame, setColor)
@@ -280,6 +290,27 @@ function UF:FrameGlow_CheckTarget(frame, setColor)
 		frame.TargetGlow:Show()
 	else
 		UF:FrameGlow_HideGlow(frame.TargetGlow)
+	end
+end
+
+function UF:FrameGlow_CheckFocus(frame, setColor)
+	if not (frame and frame.FocusGlow and frame:IsVisible()) then return end
+
+	local unit = frame.unit or (frame.isForced and 'player')
+	if E.db.unitframe.colors.frameGlow.focusGlow.enable and (unit and UnitIsUnit(unit, 'focus')) and not (frame.db and frame.db.disableFocusGlow) then
+		if setColor then
+			UF:FrameGlow_SetGlowColor(frame.FocusGlow, unit, 'focusGlow')
+		end
+		if frame.FocusGlow.powerGlow then
+			if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
+				frame.FocusGlow.powerGlow:Show()
+			elseif frame.FocusGlow.powerGlow:IsShown() then
+				frame.FocusGlow.powerGlow:Hide()
+			end
+		end
+		frame.FocusGlow:Show()
+	else
+		UF:FrameGlow_HideGlow(frame.FocusGlow)
 	end
 end
 
@@ -380,6 +411,14 @@ function UF:Construct_TargetGlow(frame)
 	frame.FrameGlow:RegisterEvent('PLAYER_TARGET_CHANGED')
 
 	return targetGlow
+end
+
+function UF:Construct_FocusGlow(frame)
+	local focusGlow = UF:FrameGlow_CreateGlow(frame)
+	UF:FrameGlow_ElementHook(frame, focusGlow, 'focusGlow')
+	frame.FrameGlow:RegisterEvent('PLAYER_FOCUS_CHANGED')
+
+	return focusGlow
 end
 
 function UF:FrameGlow_CheckChildren(frame, dbTexture)
