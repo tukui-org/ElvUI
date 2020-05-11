@@ -560,9 +560,9 @@ function UF:Update_AllFrames()
 	end
 
 	if UF.db.smartRaidFilter then
-		UF:HandleSmartVisibility(true)
+		UF:HandleSmartVisibility()
 	else
-		UF:UpdateAllHeaders(nil, true)
+		UF:UpdateAllHeaders()
 	end
 end
 
@@ -853,7 +853,7 @@ UF.SmartSettings = {
 	raidpet = { enable = false }
 }
 
-function UF:HandleSmartVisibility(update)
+function UF:HandleSmartVisibility(skip)
 	local sv = UF.SmartSettings
 	sv.raid.numGroups = 6
 
@@ -884,12 +884,12 @@ function UF:HandleSmartVisibility(update)
 		sv.raid40.enable = true
 	end
 
-	UF:UpdateAllHeaders(sv, update)
+	UF:UpdateAllHeaders(sv, skip)
 end
 
 function UF:ZONE_CHANGED_NEW_AREA()
 	if UF.db.smartRaidFilter then
-		UF:HandleSmartVisibility()
+		UF:HandleSmartVisibility(true)
 	end
 end
 
@@ -899,7 +899,7 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	if initLogin or isReload then
 		UF:Update_AllFrames()
 	elseif UF.db.smartRaidFilter then
-		UF:HandleSmartVisibility()
+		UF:HandleSmartVisibility(true)
 	end
 end
 
@@ -933,7 +933,7 @@ function UF:GetSmartVisibilitySetting(setting, group, smart, db)
 	return db[setting]
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, smart, update)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, smart, skip)
 	local db = self.db.units[group]
 	local Header = self[group]
 
@@ -984,7 +984,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 			end
 		end
 
-		if groupsChanged or update then
+		if groupsChanged or not skip then
 			UF.headerFunctions[group]:AdjustVisibility(Header)
 			UF.headerFunctions[group]:Configure_Groups(Header)
 		end
@@ -1002,7 +1002,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		end
 	end
 
-	if stateChanged or update then
+	if stateChanged or not skip then
 		UF.headerFunctions[group]:Update(Header)
 	end
 
@@ -1091,13 +1091,13 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-function UF:UpdateAllHeaders(smart, update)
+function UF:UpdateAllHeaders(smart, skip)
 	if E.private.unitframe.disabledBlizzardFrames.party then
 		ElvUF:DisableBlizzard('party')
 	end
 
 	for group in pairs(self.headers) do
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smart, update)
+		self:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smart, skip)
 	end
 end
 
