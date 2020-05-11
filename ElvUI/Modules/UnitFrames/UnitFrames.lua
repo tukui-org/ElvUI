@@ -933,13 +933,13 @@ function UF:GetSmartVisibilitySetting(setting, group, smart, db)
 	return db[setting]
 end
 
-function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, smartSettings, update)
+function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, smart, update)
 	local db = self.db.units[group]
 	local Header = self[group]
 
-	local numGroups = UF:GetSmartVisibilitySetting('numGroups', group, smartSettings, db)
-	local visibility = UF:GetSmartVisibilitySetting('visibility', group, smartSettings, db)
-	local enable = UF:GetSmartVisibilitySetting('enable', group, smartSettings, db)
+	local numGroups = UF:GetSmartVisibilitySetting('numGroups', group, smart, db)
+	local visibility = UF:GetSmartVisibilitySetting('visibility', group, smart, db)
+	local enable = UF:GetSmartVisibilitySetting('enable', group, smart, db)
 	local name = E:StringTitle(group)
 
 	if not Header then
@@ -1091,13 +1091,13 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-function UF:UpdateAllHeaders(smartSettings, update)
+function UF:UpdateAllHeaders(smart, update)
 	if E.private.unitframe.disabledBlizzardFrames.party then
 		ElvUF:DisableBlizzard('party')
 	end
 
 	for group in pairs(self.headers) do
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smartSettings, update)
+		self:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smart, update)
 	end
 end
 
