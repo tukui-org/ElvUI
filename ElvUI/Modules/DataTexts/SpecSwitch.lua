@@ -170,7 +170,7 @@ local function OnClick(self, button)
 			end
 
 			E.DataTexts:SetEasyMenuAnchor(menuFrame, self)
-			_G.EasyMenu(menuList, menuFrame, nil, nil, nil, "MENU")
+			_G.EasyMenu(specList, menuFrame, nil, nil, nil, "MENU")
 		end
 	else
 		DT.tooltip:Hide()
