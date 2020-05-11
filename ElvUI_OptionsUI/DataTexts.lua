@@ -43,26 +43,17 @@ local DTPanelOptions = {
 		name = L["Height"],
 		min = 12, max = E.screenheight, step = 1,
 	},
-	backdrop = {
+	templateGroup = {
 		order = 5,
-		name = L["Backdrop"],
-		type = "toggle",
-	},
-	panelTransparency = {
-		order = 6,
-		type = 'toggle',
-		name = L["Panel Transparency"],
-	},
-	mouseover = {
-		order = 7,
-		name = L["Mouse Over"],
-		desc = L["The frame is not shown unless you mouse over the frame."],
-		type = "toggle",
-	},
-	border = {
-		order = 8,
-		name = L["Show Border"],
-		type = "toggle",
+		type = "multiselect",
+		name = L['Template'],
+		sortByValue = true,
+		values = {
+			backdrop = L["Backdrop"],
+			panelTransparency = L["Backdrop Transparency"],
+			mouseover = L["Mouse Over"],
+			border = L["Show Border"],
+		},
 	},
 	strataAndLevel = {
 		order = 9,
@@ -240,6 +231,8 @@ local function PanelGroup_Create(panel)
 	E:CopyTable(E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args, DTPanelOptions)
 	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
+	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.templateGroup.get = function(info, key) return E.global.datatexts.customPanels[panel][key] end
+	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.templateGroup.set = function(info, key, value) E.global.datatexts.customPanels[panel][key] = value; DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end
 end
 
 PanelLayoutOptions = function()
@@ -816,6 +809,8 @@ E.Options.args.datatexts = {
 }
 
 E:CopyTable(E.Options.args.datatexts.args.panels.args.newPanel.args, DTPanelOptions)
+E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.get = function(info, key) return E.global.datatexts.newPanelInfo[key] end
+E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.set = function(info, key, value) E.global.datatexts.newPanelInfo[key] = value end
 
 PanelLayoutOptions()
 SetupCustomCurrencies()
