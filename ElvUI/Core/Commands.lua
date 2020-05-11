@@ -160,16 +160,16 @@ function E:GetCPUImpact()
 		local ms_passed = debugprofilestop() - debugTimer
 		UpdateAddOnCPUUsage()
 
-		local per, passed =
-			((num_frames == 0 and 0) or (GetAddOnCPUUsage('ElvUI') / num_frames)),
-			((num_frames == 0 and 0) or (ms_passed / num_frames))
+		local per, passed = ((num_frames == 0 and 0) or (GetAddOnCPUUsage('ElvUI') / num_frames)), ((num_frames == 0 and 0) or (ms_passed / num_frames))
 		self:Print(format(cpuImpactMessage, per and per > 0 and format('%.3f', per) or 0, passed and passed > 0 and format('%.3f', passed) or 0))
 		toggleMode = false
 	end
 end
 
 function E:EHelp()
-	print(gsub(L["EHELP_COMMANDS"], '*', E.media.hexvaluecolor))
+	local msg = gsub(L["EHELP_COMMANDS"],'*','|cFF1784d1')
+	msg = gsub(msg,'%^','|cfd9b9b9b')
+	print(msg)
 end
 
 local BLIZZARD_ADDONS = {

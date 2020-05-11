@@ -379,16 +379,17 @@ Opciones:
    Ctrl + Clic Derecho - Restablece la posición de los fijadores a los valores por defecto.
 ]=]
 
--- * picks up a color
+-- * and ^ picks up a color
 L["EHELP_COMMANDS"] = [=[Aquí hay una lista de todos los comandos importantes de *ElvUI|r:
- */ec|r or */elvui|r  -  Mostrar/Ocultar el *ElvUI OptionsUI|r.
+ */ec|r or */elvui|r  -  Mostrar/Ocultar el *ElvUI|r ^OptionsUI|r.
  */moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
  */kb|r  -  Mostrar/Ocultar el modo atajos.
  */resetui|r  -  Restablecer todos los marcos a sus posiciones originales.
  */bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
- */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
+ */hdt|r  -  Edit your DataTexts without opening the *ElvUI|r ^OptionsUI|r.
  */estatus|r  -  Información importante para preguntas de soporte.
- */egrid|r [*64|r or *128|r or *256|r]  -  Mostrar/Ocultar una cuadrícula de líneas.
- */luaerror|r [*on|r or *off|r]  -  Deshabilitar todos los AddOns excepto ElvUI.
-  nota: */luaerror off|r volverá a habilitar los complementos deshabilitado mediante el uso de */luaerror on|r dentro de esa sesión.
+ */egrid|r [^64|r or ^128|r or ^256|r]  -  Mostrar/Ocultar una cuadrícula de líneas.
+ */luaerror|r [^on|r or ^off|r]  -  Deshabilitar todos los AddOns excepto ElvUI.
+  NOTA: */luaerror|r ^off|r volverá a habilitar los complementos deshabilitado
+  mediante el uso de */luaerror|r ^on|r dentro de esa sesión.
 ]=]

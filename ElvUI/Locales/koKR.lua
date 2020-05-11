@@ -380,16 +380,17 @@ L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동�
   Ctrl + 우클릭 - 조정자의 위치를 기본값으로 초기화합니다.
 ]=]
 
--- * picks up a color
+-- * and ^ picks up a color
 L["EHELP_COMMANDS"] = [=[Here is a list of all important *ElvUI|r commands:
- */ec|r or */elvui|r  -  Toggle the *ElvUI OptionsUI|r.
+ */ec|r or */elvui|r  -  Toggle the *ElvUI|r ^OptionsUI|r.
  */moveui|r  -  Toggle anchors to reposition various elements.
  */kb|r  -  Toggle the keybind mode.
  */resetui|r  -  Reset all frames to their original positions.
  */bgstats|r  -  Toggle Battleground stats on your DataTexts.
- */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
+ */hdt|r  -  Edit your DataTexts without opening the *ElvUI|r ^OptionsUI|r.
  */estatus|r  -  Important informations for support questions.
- */egrid|r [*64|r or *128|r or *256|r]  -  Toggle a pixel grid.
- */luaerror|r [*on|r or *off|r]  -  Disable all AddOns except ElvUI.
-  note: */luaerror off|r will re-enable the addons disabled from using */luaerror on|r within that session.
+ */egrid|r [^64|r or ^128|r or ^256|r]  -  Toggle a pixel grid.
+ */luaerror|r [^on|r or ^off|r]  -  Disable all AddOns except ElvUI.
+  NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
+  using */luaerror|r ^on|r within that session.
 ]=]
