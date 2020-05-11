@@ -42,10 +42,11 @@ local function OnEnter(self)
 
 	for _, k in pairs(slotID) do
 		local itemLink = GetInventoryItemLink("player", k)
+		local itemIcon = "|T"..GetInventoryItemTexture("player", k)..":13:15:0:0:50:50:4:46:4:46|t " or ""
 		local itemInfo = E:GetGearSlotInfo('player', k)
 		if itemInfo then
 			local r, g, b = E:ColorGradient((itemInfo.iLvl - avgItemLevel) * 100, 1, 0, 0, 1, 1, 0, 0, 1, 0)
-			DT.tooltip:AddDoubleLine(itemLink, itemInfo.iLvl, 1, 1, 1, r, g, b)
+			DT.tooltip:AddDoubleLine(itemIcon..itemLink, itemInfo.iLvl, 1, 1, 1, r, g, b)
 		end
 	end
 
