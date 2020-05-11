@@ -8,6 +8,7 @@ local Minimap = E:GetModule('Minimap')
 local _G = _G
 local tonumber = tonumber
 local tostring = tostring
+local strsub = strsub
 local format = format
 local pairs = pairs
 local type = type
@@ -412,47 +413,6 @@ local function SetupCustomCurrencies()
 	end
 end
 
-local clientTable = {
-	['WoW'] = "WoW",
-	['D3'] = "D3",
-	['WTCG'] = "HS", --Hearthstone
-	['Hero'] = "HotS", --Heros of the Storm
-	['Pro'] = "OW", --Overwatch
-	['S1'] = "SC",
-	['S2'] = "SC2",
-	['DST2'] = "Dst2",
-	['VIPR'] = "VIPR", -- COD
-	['BSAp'] = L["Mobile"],
-	['App'] = "App", --Launcher
-}
-
-local function SetupFriendClient(client, order)
-	local hideGroup = E.Options.args.datatexts.args.friends.args.hideGroup.args
-	if not (hideGroup and client and order) then return end --safety
-	local clientName = 'hide'..client
-	hideGroup[clientName] = {
-		order = order,
-		type = 'toggle',
-		name = clientTable[client] or client,
-		get = function(info) return E.db.datatexts.friends[clientName] or false end,
-		set = function(info, value) E.db.datatexts.friends[clientName] = value; DT:LoadDataTexts() end,
-	}
-end
-
-local function SetupFriendClients() --this function is used to create the client options in order
-	SetupFriendClient('App', 3)
-	SetupFriendClient('BSAp', 4)
-	SetupFriendClient('WoW', 5)
-	SetupFriendClient('D3', 6)
-	SetupFriendClient('WTCG', 7)
-	SetupFriendClient('Hero', 8)
-	SetupFriendClient('Pro', 9)
-	SetupFriendClient('S1', 10)
-	SetupFriendClient('S2', 11)
-	SetupFriendClient('DST2', 12)
-	SetupFriendClient('VIPR', 13)
-end
-
 E.Options.args.datatexts = {
 	type = "group",
 	name = L["DataTexts"],
@@ -782,26 +742,36 @@ E.Options.args.datatexts = {
 					type = "description",
 					name = L["Hide specific sections in the datatext tooltip."],
 				},
-				hideGroup = {
+				hideGroup1 = {
 					order = 2,
-					type = "group",
-					guiInline = true,
-					name = L["HIDE"],
-					args = {
-						hideAFK = {
-							order = 1,
-							type = 'toggle',
-							name = L["AFK"],
-							get = function(info) return E.db.datatexts.friends.hideAFK end,
-							set = function(info, value) E.db.datatexts.friends.hideAFK = value; DT:LoadDataTexts() end,
-						},
-						hideDND = {
-							order = 2,
-							type = 'toggle',
-							name = L["DND"],
-							get = function(info) return E.db.datatexts.friends.hideDND end,
-							set = function(info, value) E.db.datatexts.friends.hideDND = value; DT:LoadDataTexts() end,
-						},
+					type = "multiselect",
+					name = L["Hide by Status"],
+					get = function(info, key) return E.db.datatexts.friends[key] end,
+					set = function(info, key, value) E.db.datatexts.friends[key] = value; DT:LoadDataTexts() end,
+					values = {
+						hideAFK = L["AFK"],
+						hideDND = L["DND"],
+					},
+				},
+				hideGroup2 = {
+					order = 2,
+					type = "multiselect",
+					name = L["Hide by Application"],
+					get = function(info, key) return E.db.datatexts.friends[strsub(key, 4)] end,
+					set = function(info, key, value) E.db.datatexts.friends[strsub(key, 4)] = value; DT:LoadDataTexts() end,
+					values = {
+						['01-WoW'] = "World of Warcraft",
+						['02-App'] = "App",
+						['03-BSAp'] = L["Mobile"],
+						['04-D3'] = "Diablo 3",
+						['05-WTCG'] = "Hearthstone",
+						['06-Hero'] = "Heroes of the Storm",
+						['07-Pro'] = "Overwatch",
+						['08-S1'] = "Starcraft",
+						['09-S2'] = "Starcraft 2",
+						['10-VIPR'] = "COD: Black Ops 4",
+						['11-ODIN'] = "COD: Modern Warfare",
+						['12-LAZR'] = "COD: Modern Warfare 2",
 					},
 				},
 			},
@@ -849,4 +819,3 @@ E:CopyTable(E.Options.args.datatexts.args.panels.args.newPanel.args, DTPanelOpti
 
 PanelLayoutOptions()
 SetupCustomCurrencies()
-SetupFriendClients()
