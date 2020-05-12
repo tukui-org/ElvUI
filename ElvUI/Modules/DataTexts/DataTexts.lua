@@ -502,10 +502,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 						if option == panelName and opt[i] and opt[i] == name then
 							DT:AssignPanelToDataText(dt, data, ...)
 						end
-					elseif value and type(value) == 'string' and value == name then
-						if option == panelName and DT.db.panels[option] == name then
-							DT:AssignPanelToDataText(dt, data, ...)
-						end
 					end
 				end
 			end
@@ -547,6 +543,8 @@ function DT:UpdatePanelAttributes(name, db)
 	Panel.yOff = db.tooltipYOffset
 	Panel.anchor = db.tooltipAnchor
 	Panel.vertical = db.growth == 'VERTICAL'
+
+	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
 
 	if not DT.db.panels[name] then
 		DT.db.panels[name] = { enable = true }
