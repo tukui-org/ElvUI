@@ -15,16 +15,8 @@ local BATTLEGROUND = BATTLEGROUND
 
 local displayString, lastPanel = ''
 local dataLayout = {
-	LeftChatDataPanel = {
-		left	= 3,
-		middle	= 2,
-		right	= 4,
-	},
-	RightChatDataPanel = {
-		left	= 10,
-		middle	= 11,
-		right	= 5,
-	},
+	LeftChatDataPanel = { 3, 2, 4 },
+	RightChatDataPanel = { 10, 11, 5 },
 }
 
 local dataStrings = {
