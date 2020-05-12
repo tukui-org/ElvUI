@@ -6,9 +6,7 @@ local strjoin = strjoin
 local format = format
 local pi = math.pi
 
-local lastPanel
-local displayString1 = ''
-local displayString2 = ''
+local title, panel = ''
 
 local ITEM_LEVEL_ABBR = ITEM_LEVEL_ABBR
 local LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT = LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT
@@ -33,7 +31,7 @@ end
 local function OnEvent(self)
 	local avg, avgEquipped = GetAverageItemLevel()
 	local same = avg == avgEquipped
-	self.text:SetFormattedText(same and displayString2 or displayString1, ITEM_LEVEL_ABBR, avgEquipped, same and avg or '0')
+	self.text:SetFormattedText(title .. (same and '%0.2f|r' or '%0.2f / %0.2f|r'), ITEM_LEVEL_ABBR, avgEquipped, (not same and avg) or '0')
 end
 
 local function OnEnter(self)
@@ -56,15 +54,14 @@ local function OnEnter(self)
 	end
 
 	DT.tooltip:Show()
-	lastPanel = self
+	panel = self
 end
 
 local function ValueColorUpdate(hex)
-	displayString1 = strjoin('', '%s: ', hex, '%0.2f / %0.2f|r')
-	displayString2 = strjoin('', '%s: ', hex, '%0.2f|r')
+	title = strjoin('', '%s: ', hex)
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
+	if panel ~= nil then
+		OnEvent(panel)
 	end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
