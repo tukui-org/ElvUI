@@ -17,6 +17,7 @@ local BOSS = BOSS
 local DODGE_CHANCE = DODGE_CHANCE
 local MISS_CHANCE = MISS_CHANCE
 local PARRY_CHANCE = PARRY_CHANCE
+local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel, targetlv, playerlv
 local basemisschance, leveldifference, dodge, parry, block, unhittable
@@ -121,4 +122,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Avoidance', nil, {"UNIT_TARGET", "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", 'PLAYER_EQUIPMENT_CHANGED'}, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"])
+DT:RegisterDatatext('Avoidance', STAT_CATEGORY_ENHANCEMENTS, {"UNIT_TARGET", "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", 'PLAYER_EQUIPMENT_CHANGED'}, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"])

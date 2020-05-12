@@ -3,17 +3,20 @@ local DT = E:GetModule('DataTexts')
 
 local displayNumberString = ''
 local lastPanel;
-local join = string.join
+local strjoin = strjoin
 local UnitStat = UnitStat
+local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
+local ITEM_MOD_STAMINA_SHORT = ITEM_MOD_STAMINA_SHORT
+local LE_UNIT_STAT_STAMINA = LE_UNIT_STAT_STAMINA
 
 local function OnEvent(self)
-	self.text:SetFormattedText(displayNumberString, L['Stamina: '], UnitStat("player", 3))
+	self.text:SetFormattedText(displayNumberString, ITEM_MOD_STAMINA_SHORT, UnitStat("player", LE_UNIT_STAT_STAMINA))
 
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayNumberString = join("", "%s", hex, "%.f|r")
+	displayNumberString = strjoin("", "%s: ", hex, "%.f|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
@@ -21,4 +24,4 @@ local function ValueColorUpdate(hex, r, g, b)
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
-DT:RegisterDatatext('Stamina', 'Primary', { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE" }, OnEvent)
+DT:RegisterDatatext('Stamina', STAT_CATEGORY_ATTRIBUTES, { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE" }, OnEvent, nil, nil, nil, nil, ITEM_MOD_STAMINA_SHORT)

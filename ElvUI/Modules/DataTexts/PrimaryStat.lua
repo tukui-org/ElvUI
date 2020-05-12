@@ -3,11 +3,12 @@ local DT = E:GetModule('DataTexts')
 
 local displayNumberString = ''
 local lastPanel;
-local join = string.join
+local strjoin = strjoin
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecialization = GetSpecialization
 local UnitStat = UnitStat
-
+local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
+local SPEC_FRAME_PRIMARY_STAT = SPEC_FRAME_PRIMARY_STAT
 local statID
 
 local SPEC_STAT_STRINGS = {
@@ -29,7 +30,7 @@ local function OnEvent(self, event, ...)
 end
 
 local function ValueColorUpdate(hex, r, g, b)
-	displayNumberString = join("", "%s", hex, "%.f|r")
+	displayNumberString = strjoin("", "%s", hex, "%.f|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)
@@ -37,4 +38,4 @@ local function ValueColorUpdate(hex, r, g, b)
 end
 E['valueColorUpdateFuncs'][ValueColorUpdate] = true
 
-DT:RegisterDatatext('Primary Stat', 'Primary', { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE" }, OnEvent)
+DT:RegisterDatatext('Primary Stat', STAT_CATEGORY_ATTRIBUTES, { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE" }, OnEvent, nil, nil, nil, nil, SPEC_FRAME_PRIMARY_STAT:gsub('[:：%s]-%%s$',''))

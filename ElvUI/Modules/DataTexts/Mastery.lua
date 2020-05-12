@@ -8,6 +8,7 @@ local GetMasteryEffect = GetMasteryEffect
 local GetSpecialization = GetSpecialization
 local GetSpecializationMasterySpells = GetSpecializationMasterySpells
 local STAT_MASTERY = STAT_MASTERY
+local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel = ''
 
@@ -44,4 +45,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Mastery', nil, {"MASTERY_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY)
+DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {"MASTERY_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY)

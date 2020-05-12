@@ -6,6 +6,7 @@ local strjoin = strjoin
 --WoW API / Variables
 local GetSpellBonusDamage = GetSpellBonusDamage
 local GetSpellBonusHealing = GetSpellBonusHealing
+local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel = ''
 
@@ -31,4 +32,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Spell/Heal Power', nil, {"UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, nil, nil,L["Spell/Heal Power"])
+DT:RegisterDatatext('Spell/Heal Power', STAT_CATEGORY_ENHANCEMENTS, {"UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, nil, nil,L["Spell/Heal Power"])

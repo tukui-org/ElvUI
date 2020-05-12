@@ -12,6 +12,8 @@ local PaperDollFrame_GetArmorReduction = PaperDollFrame_GetArmorReduction
 local armorString = ARMOR..": "
 local chanceString = "%.2f%%"
 local displayString, lastPanel, effectiveArmor, _ = ''
+local ARMOR = ARMOR
+local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 
 local function OnEvent(self)
 	_, effectiveArmor = UnitArmor("player")
@@ -50,4 +52,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Armor', 'Stats', {"UNIT_STATS", "UNIT_RESISTANCES", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, ARMOR)
+DT:RegisterDatatext('Armor', STAT_CATEGORY_ATTRIBUTES, {"UNIT_STATS", "UNIT_RESISTANCES", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, ARMOR)
