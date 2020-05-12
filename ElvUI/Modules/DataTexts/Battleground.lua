@@ -15,30 +15,30 @@ local BATTLEGROUND = BATTLEGROUND
 
 local displayString, lastPanel = ''
 local dataLayout = {
-	['LeftChatDataPanel'] = {
-		['left'] = 10,
-		['middle'] = 5,
-		['right'] = 2,
+	LeftChatDataPanel = {
+		left	= 3,
+		middle	= 2,
+		right	= 4,
 	},
-	['RightChatDataPanel'] = {
-		['left'] = 4,
-		['middle'] = 3,
-		['right'] = 11,
+	RightChatDataPanel = {
+		left	= 10,
+		middle	= 11,
+		right	= 5,
 	},
 }
 
 local dataStrings = {
-	[10] = _G.DAMAGE,
-	[5] = _G.HONOR,
-	[2] = _G.KILLING_BLOWS,
-	[4] = _G.DEATHS,
-	[3] = _G.KILLS,
-	[11] = _G.SHOW_COMBAT_HEALING,
+	[10]	= _G.DAMAGE,
+	[5]		= _G.HONOR,
+	[2]		= _G.KILLING_BLOWS,
+	[4]		= _G.DEATHS,
+	[3]		= _G.KILLS,
+	[11]	= _G.SHOW_COMBAT_HEALING,
 }
 
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	lastPanel = self
-	local pointIndex = dataLayout[self:GetParent():GetName()][self.pointIndex]
+	local pointIndex = dataLayout[self.parentName][self.pointIndex]
 	for i=1, GetNumBattlefieldScores() do
 		local name = GetBattlefieldScore(i)
 		if name == E.myname then
