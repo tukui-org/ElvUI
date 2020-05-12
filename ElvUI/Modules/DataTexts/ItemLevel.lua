@@ -46,8 +46,8 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 
 	for _, k in ipairs(slotID) do
-		local itemInfo = E:GetGearSlotInfo('player', k)
-		local ilvl = itemInfo and itemInfo.iLvl
+		local info = E:GetGearSlotInfo('player', k)
+		local ilvl = (info and info ~= 'tooSoon') and info.iLvl
 		if ilvl then
 			local link = GetInventoryItemLink('player', k)
 			local icon = GetInventoryItemTexture('player', k)
@@ -56,7 +56,6 @@ local function OnEnter(self)
 	end
 
 	DT.tooltip:Show()
-
 	lastPanel = self
 end
 
