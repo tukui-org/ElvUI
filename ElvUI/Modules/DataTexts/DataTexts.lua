@@ -485,18 +485,9 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
 
 		if enableBGPanel then
-			dt:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
-			dt:SetScript('OnEvent', DT.UPDATE_BATTLEFIELD_SCORE)
 			dt:SetScript('OnClick', DT.HideBattlegroundTexts)
 			tinsert(dt.MouseEnters, DT.BattlegroundStats)
-			DT.UPDATE_BATTLEFIELD_SCORE(dt)
-			DT.ShowingBGStats = true
 		else
-			-- we aren't showing BGStats anymore
-			if (isBGPanel or not info.isInPVP) and DT.ShowingBGStats then
-				DT.ShowingBGStats = nil
-			end
-
 			--Register Panel to Datatext
 			for name, data in pairs(DT.RegisteredDataTexts) do
 				for option, value in pairs(DT.db.panels) do
@@ -526,6 +517,14 @@ function DT:LoadDataTexts(...)
 		if not E.global.datatexts.customPanels[panelName] or DT.db.panels[panelName].enable then
 			DT:UpdatePanelInfo(panelName, panel, ...)
 		end
+	end
+
+	if data.isInPVP and (not DT.ForceHideBGStats and E.db.datatexts.battleground) then
+		DT:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
+		DT:UPDATE_BATTLEFIELD_SCORE()
+		DT.ShowingBGStats = true
+	else
+		DT:UnregisterEvent('UPDATE_BATTLEFIELD_SCORE')
 	end
 
 	if DT.ForceHideBGStats then
