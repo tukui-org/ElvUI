@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
 local select, unpack = select, unpack
 local strfind, strsub, gsub = strfind, strsub, gsub
 local floor, max = floor, max
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS

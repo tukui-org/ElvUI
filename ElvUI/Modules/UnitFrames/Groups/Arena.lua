@@ -4,10 +4,9 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE

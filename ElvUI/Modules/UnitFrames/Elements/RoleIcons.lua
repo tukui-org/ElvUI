@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
 local random = random
---WoW API / Variables
+
 local GetUnitName = GetUnitName
 local GetInstanceInfo = GetInstanceInfo
 local GetBattlefieldScore = GetBattlefieldScore

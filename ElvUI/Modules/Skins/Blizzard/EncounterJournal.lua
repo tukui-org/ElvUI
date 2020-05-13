@@ -1,13 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack = unpack
 local select = select
 local pairs = pairs
 local rad = rad
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -473,7 +472,7 @@ function S:Blizzard_EncounterJournal()
 					sugg.reward.icon.backdrop:SetOutside(sugg.reward.icon)
 				end
 
-				local r, g, b = unpack(E["media"].bordercolor)
+				local r, g, b = unpack(E.media.bordercolor)
 				if rewardData.itemID then
 					local quality = select(3, GetItemInfo(rewardData.itemID))
 					if quality and quality > 1 then

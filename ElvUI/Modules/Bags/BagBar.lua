@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 
---Lua functions
 local _G = _G
 local unpack = unpack
 local tinsert = tinsert
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local RegisterStateDriver = RegisterStateDriver
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES

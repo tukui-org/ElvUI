@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local Sticky = E.Libs.SimpleSticky
 
---Lua functions
 local _G = _G
 local type, unpack, pairs, error = type, unpack, pairs, error
 local format, split, find, ipairs = format, strsplit, strfind, ipairs
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown

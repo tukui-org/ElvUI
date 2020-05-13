@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Lua functions
 local _G = _G
 local tinsert = tinsert
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local ToggleFrame = ToggleFrame
 local GetCursorPosition = GetCursorPosition

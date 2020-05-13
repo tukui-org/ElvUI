@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local select, unpack, pairs = select, unpack, pairs
---WoW API / Variables
+
 local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 local GetItemQualityColor = GetItemQualityColor

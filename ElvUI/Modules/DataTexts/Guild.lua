@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local ipairs, select, sort, unpack, wipe, ceil = ipairs, select, sort, unpack, wipe, ceil
 local format, strfind, strjoin, strsplit, strmatch = format, strfind, strjoin, strsplit, strmatch
---WoW API / Variables
+
 local GetDisplayedInviteType = GetDisplayedInviteType
 local GetGuildFactionInfo = GetGuildFactionInfo
 local GetGuildInfo = GetGuildInfo
@@ -124,22 +123,22 @@ end
 local FRIEND_ONLINE = select(2, strsplit(" ", _G.ERR_FRIEND_ONLINE_SS, 2))
 local resendRequest = false
 local eventHandlers = {
-	["PLAYER_GUILD_UPDATE"] = C_GuildInfo_GuildRoster,
-	["CHAT_MSG_SYSTEM"] = function(_, arg1)
+	PLAYER_GUILD_UPDATE = C_GuildInfo_GuildRoster,
+	CHAT_MSG_SYSTEM = function(_, arg1)
 		if FRIEND_ONLINE ~= nil and arg1 and strfind(arg1, FRIEND_ONLINE) then
 			resendRequest = true
 		end
 	end,
 	-- when we enter the world and guildframe is not available then
 	-- load guild frame, update guild message and guild xp
-	["PLAYER_ENTERING_WORLD"] = function()
+	PLAYER_ENTERING_WORLD = function()
 		if not _G.GuildFrame and IsInGuild() then
 			LoadAddOn("Blizzard_GuildUI")
 			C_GuildInfo_GuildRoster()
 		end
 	end,
 	-- Guild Roster updated, so rebuild the guild table
-	["GUILD_ROSTER_UPDATE"] = function(self)
+	GUILD_ROSTER_UPDATE = function(self)
 		if(resendRequest) then
 			resendRequest = false
 			return C_GuildInfo_GuildRoster()
@@ -152,7 +151,7 @@ local eventHandlers = {
 		end
 	end,
 	-- our guild message of the day changed
-	["GUILD_MOTD"] = function (self, arg1)
+	GUILD_MOTD = function(_, arg1)
 		guildMotD = arg1
 	end
 }

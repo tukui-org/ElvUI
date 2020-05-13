@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local MC = E:GetModule('ModuleCopy')
 
---Lua functions
 local pairs, next, type = pairs, next, type
 local format, error = format, error
 -- GLOBALS: ElvDB
@@ -175,10 +174,10 @@ end
 		}
 	* For example:
 		G.profileCopy.auras = {
-			['general'] = true,
-			['buffs'] = true,
-			['debuffs'] = true,
-			['cooldown'] = true,
+			general = true,
+			buffs = true,
+			debuffs = true,
+			cooldown = true,
 		}
 	* 'general' key can refer to a similar named subtable or all non-table variables inside your group
 	* If you leave the table as G.profileCopy[YourOptionGroupName] = {}, this will result in no valid copy template error.

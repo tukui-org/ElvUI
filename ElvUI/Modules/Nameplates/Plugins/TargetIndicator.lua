@@ -2,8 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local NP = E:GetModule('NamePlates')
 local LSM = E.LSM
 
---Lua functions
---WoW API / Variables
 local UnitHealth = UnitHealth
 local UnitIsUnit = UnitIsUnit
 local UnitHealthMax = UnitHealthMax

@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local SpellRange = E.Libs.SpellRange
 
---Lua functions
 local pairs, ipairs = pairs, ipairs
---WoW API / Variables
+
 local CheckInteractDistance = CheckInteractDistance
 local UnitCanAttack = UnitCanAttack
 local UnitInParty = UnitInParty

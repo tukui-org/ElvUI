@@ -3,14 +3,13 @@ local CH = E:GetModule('Chat')
 local Skins = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local gsub, strfind, gmatch, format, max = gsub, strfind, gmatch, format, max
 local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tinsert, tremove, tconcat = tinsert, tremove, table.concat
---WoW API / Variables
+
 local Ambiguate = Ambiguate
 local BetterDate = BetterDate
 local BNet_GetClientEmbeddedTexture = BNet_GetClientEmbeddedTexture
@@ -125,18 +124,18 @@ local DEFAULT_STRINGS = {
 }
 
 local hyperlinkTypes = {
-	['achievement'] = true,
-	['apower'] = true,
-	['currency'] = true,
-	['enchant'] = true,
-	['glyph'] = true,
-	['instancelock'] = true,
-	['item'] = true,
-	['keystone'] = true,
-	['quest'] = true,
-	['spell'] = true,
-	['talent'] = true,
-	['unit'] = true
+	achievement = true,
+	apower = true,
+	currency = true,
+	enchant = true,
+	glyph = true,
+	instancelock = true,
+	item = true,
+	keystone = true,
+	quest = true,
+	spell = true,
+	talent = true,
+	unit = true
 }
 
 local tabTexs = {
@@ -510,7 +509,6 @@ function CH:StyleChat(frame)
 			t:SetAlpha(0.6)
 		end
 	end)
-
 
 	if not tab.left then tab.left = _G[name.."TabLeft"] end
 	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))

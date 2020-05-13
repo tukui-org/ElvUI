@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local pairs, select = pairs, select
 local ceil, unpack = ceil, unpack
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
---WoW API / Variables
+
 local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey

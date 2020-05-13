@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local pairs, format = pairs, format
---WoW API / Variables
+
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
 local GetCurrencyListSize = GetCurrencyListSize

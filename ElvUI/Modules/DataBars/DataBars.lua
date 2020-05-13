@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('DataBars')
 
---Lua functions
 local _G = _G
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE

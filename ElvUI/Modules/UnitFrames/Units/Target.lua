@@ -4,10 +4,9 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Lua functions
 local _G = _G
 local tinsert = tinsert
---WoW API / Variables
+
 local IsAddOnLoaded = IsAddOnLoaded
 
 function UF:Construct_TargetFrame(frame)

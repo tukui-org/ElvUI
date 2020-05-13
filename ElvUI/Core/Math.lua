@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Lua functions
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
 local format, strsub, strupper, gsub, gmatch = format, strsub, strupper, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
@@ -16,21 +15,21 @@ local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
 E.ShortPrefixStyles = {
-	['TCHINESE'] = {{1e8,'億'}, {1e4,'萬'}},
-	['CHINESE'] = {{1e8,'亿'}, {1e4,'万'}},
-	['ENGLISH'] = {{1e12,'T'}, {1e9,'B'}, {1e6,'M'}, {1e3,'K'}},
-	['GERMAN'] = {{1e12,'Bio'}, {1e9,'Mrd'}, {1e6,'Mio'}, {1e3,'Tsd'}},
-	['KOREAN'] = {{1e8,'억'}, {1e4,'만'}, {1e3,'천'}},
-	['METRIC'] = {{1e12,'T'}, {1e9,'G'}, {1e6,'M'}, {1e3,'k'}}
+	TCHINESE = {{1e8,'億'}, {1e4,'萬'}},
+	CHINESE = {{1e8,'亿'}, {1e4,'万'}},
+	ENGLISH = {{1e12,'T'}, {1e9,'B'}, {1e6,'M'}, {1e3,'K'}},
+	GERMAN = {{1e12,'Bio'}, {1e9,'Mrd'}, {1e6,'Mio'}, {1e3,'Tsd'}},
+	KOREAN = {{1e8,'억'}, {1e4,'만'}, {1e3,'천'}},
+	METRIC = {{1e12,'T'}, {1e9,'G'}, {1e6,'M'}, {1e3,'k'}}
 }
 
 E.GetFormattedTextStyles = {
-	['CURRENT'] = '%s',
-	['CURRENT_MAX'] = '%s - %s',
-	['CURRENT_PERCENT'] = '%s - %.1f%%',
-	['CURRENT_MAX_PERCENT'] = '%s - %s | %.1f%%',
-	['PERCENT'] = '%.1f%%',
-	['DEFICIT'] = '-%s',
+	CURRENT = '%s',
+	CURRENT_MAX = '%s - %s',
+	CURRENT_PERCENT = '%s - %.1f%%',
+	CURRENT_MAX_PERCENT = '%s - %s | %.1f%%',
+	PERCENT = '%.1f%%',
+	DEFICIT = '-%s',
 }
 
 function E:BuildPrefixValues()

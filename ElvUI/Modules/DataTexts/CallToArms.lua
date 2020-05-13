@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
---WoW API / Variables
+
 local GetLFGRandomDungeonInfo = GetLFGRandomDungeonInfo
 local GetLFGRoleShortageRewards = GetLFGRoleShortageRewards
 local GetNumRandomDungeons = GetNumRandomDungeons

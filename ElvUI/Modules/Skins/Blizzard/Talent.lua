@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
---WoW API / Variables
+
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetNumSpecializations = GetNumSpecializations
@@ -23,7 +22,6 @@ function S:Blizzard_TalentUI()
 	S:HandlePortraitFrame(PlayerTalentFrame, true)
 
 	_G.PlayerTalentFrameTalents:StripTextures()
-
 
 	if E.global.general.disableTutorialButtons then
 		_G.PlayerTalentFrameSpecializationTutorialButton:Kill()

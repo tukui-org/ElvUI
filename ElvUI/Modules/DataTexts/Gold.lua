@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local type = type
 local format = string.format
@@ -10,7 +9,7 @@ local pairs = pairs
 local ipairs = ipairs
 local strjoin = strjoin
 local tinsert = tinsert
---WoW API / Variables
+
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetMoney = GetMoney
 local IsControlKeyDown = IsControlKeyDown

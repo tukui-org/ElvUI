@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Minimap')
 
---Lua functions
 local _G = _G
 local pairs = pairs
 local tinsert = tinsert
 local utf8sub = string.utf8sub
---WoW API / Variables
+
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
 local CreateFrame = CreateFrame

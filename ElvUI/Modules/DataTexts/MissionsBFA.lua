@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule("DataTexts")
 
---Lua functions
 local _G = _G
 local format, sort, ipairs = format, sort, ipairs
 local select, unpack = select, unpack
---WoW API / Variables
+
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
 local GetMouseFocus = GetMouseFocus
@@ -37,13 +36,13 @@ local InCombatLockdown = InCombatLockdown
 local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 
 local Widget_IDs, lastPanel = {
-	["Alliance"] = {
+	Alliance = {
 		56156, -- A Tempered Blade
 		{L["Farseer Ori"], 1940},
 		{L["Hunter Akana"], 1613},
 		{L["Bladesman Inowari"], 1966}
 	},
-	["Horde"] = {
+	Horde = {
 		55500, -- Save a Friend
 		{L["Neri Sharpfin"], 1621},
 		{L["Poen Gillbrack"], 1622},

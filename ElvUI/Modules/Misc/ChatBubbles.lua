@@ -2,10 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:GetModule('Misc')
 local CH = E:GetModule('Chat')
 
---Lua functions
 local format, wipe = format, wipe
 local select, unpack, pairs = select, unpack, pairs
---WoW API / Variables
+
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo

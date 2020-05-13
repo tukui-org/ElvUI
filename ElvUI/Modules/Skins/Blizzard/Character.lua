@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack, select = unpack, select
 local pairs, ipairs, type = pairs, ipairs, type
---WoW API / Variables
+
 local EquipmentManager_UnpackLocation = EquipmentManager_UnpackLocation
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 local GetContainerItemLink = GetContainerItemLink

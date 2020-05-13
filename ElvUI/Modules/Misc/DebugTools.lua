@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule('DebugTools')
 
---WoW API / Variables
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame

@@ -2,12 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AFK = E:GetModule('AFK')
 local CH = E:GetModule('Chat')
 
---Lua functions
 local _G = _G
 local floor = floor
 local tostring, pcall = tostring, pcall
 local format, strsub, gsub = format, strsub, gsub
---WoW API / Variables
+
 local Chat_GetChatCategory = Chat_GetChatCategory
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
@@ -43,7 +42,7 @@ local ignoreKeys = {
 	RSHIFT = true,
 }
 local printKeys = {
-	["PRINTSCREEN"] = true,
+	PRINTSCREEN = true,
 }
 
 if IsMacClient() then

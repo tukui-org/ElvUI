@@ -1,13 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local select = select
 local unpack = unpack
---WoW API / Variables
-local hooksecurefunc = hooksecurefunc
 
+local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_OrderHallUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.orderhall) then return end

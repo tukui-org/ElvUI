@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local ipairs, unpack = ipairs, unpack
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
@@ -63,7 +62,6 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillFrame.bg2:SetFrameLevel(TradeSkillFrame.bg2:GetFrameLevel() - 1)
 
 	S:HandleEditBox(TradeSkillFrame.SearchBox)
-
 
 	-- RecipeList
 	TradeSkillFrame.RecipeInset:StripTextures()

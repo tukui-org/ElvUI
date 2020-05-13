@@ -1,7 +1,7 @@
 --Lua functions
 local _G = _G
 local select = select
---WoW API / Variables
+
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame

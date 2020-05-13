@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local tinsert, xpcall, next = tinsert, xpcall, next
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
@@ -264,7 +263,7 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		local Texture = button.Icon:GetTexture()
 		if Texture and (type(Texture) == 'string' and strfind(Texture, [[Interface\ChatFrame\ChatFrameExpandArrow]])) then
 			button.Icon:SetTexture(E.Media.Textures.ArrowUp)
-			button.Icon:SetRotation(S.ArrowRotation['right'])
+			button.Icon:SetRotation(S.ArrowRotation.right)
 			button.Icon:SetVertexColor(1, 1, 1)
 		end
 	end

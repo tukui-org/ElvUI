@@ -2,10 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local format = format
---WoW API / Variables
+
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation

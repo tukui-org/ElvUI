@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
---Lua functions
 local _G = _G
 local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
 local min, strlower = min, strlower
---WoW API / Variables
+
 local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 local GetLFGProposal = GetLFGProposal
 local GetLFGProposalMember = GetLFGProposalMember
@@ -113,7 +112,6 @@ end
 
 function S:LookingForGroupFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
 
 	local PVEFrame = _G.PVEFrame
 	S:HandlePortraitFrame(PVEFrame, true)
@@ -558,10 +556,10 @@ function S:LookingForGroupFrames()
 	S:HandleEditBox(LFGListFrame.SearchPanel.SearchBox)
 
 	--[[local columns = {
-		['Name'] = true,
-		['Tank'] = true,
-		['Healer'] = true,
-		['Damager'] = true
+		Name = true,
+		Tank = true,
+		Healer = true,
+		Damager = true
 	}
 
 	for x in pairs(columns) do

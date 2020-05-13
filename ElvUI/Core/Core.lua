@@ -2,13 +2,12 @@ local ElvUI = select(2, ...)
 ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale doesn't exist yet, make it exist.
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Lua functions
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
 local strjoin, twipe, tinsert, tremove, tContains = strjoin, wipe, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool

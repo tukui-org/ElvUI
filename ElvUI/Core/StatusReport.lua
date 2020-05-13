@@ -31,18 +31,18 @@ function E:GetDisplayMode()
 end
 
 local EnglishClassName = {
-	['DEATHKNIGHT'] = 'Death Knight',
-	['DEMONHUNTER'] = 'Demon Hunter',
-	['DRUID'] = 'Druid',
-	['HUNTER'] = 'Hunter',
-	['MAGE'] = 'Mage',
-	['MONK'] = 'Monk',
-	['PALADIN'] = 'Paladin',
-	['PRIEST'] = 'Priest',
-	['ROGUE'] = 'Rogue',
-	['SHAMAN'] = 'Shaman',
-	['WARLOCK'] = 'Warlock',
-	['WARRIOR'] = 'Warrior',
+	DEATHKNIGHT = 'Death Knight',
+	DEMONHUNTER = 'Demon Hunter',
+	DRUID = 'Druid',
+	HUNTER = 'Hunter',
+	MAGE = 'Mage',
+	MONK = 'Monk',
+	PALADIN = 'Paladin',
+	PRIEST = 'Priest',
+	ROGUE = 'Rogue',
+	SHAMAN = 'Shaman',
+	WARLOCK = 'Warlock',
+	WARRIOR = 'Warrior',
 }
 
 local EnglishSpecName = {

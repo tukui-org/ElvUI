@@ -7,11 +7,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames')
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local pairs = pairs
 local twipe, tinsert = wipe, tinsert
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local DoEmote = DoEmote
 local GetCVar, SetCVar = GetCVar, SetCVar

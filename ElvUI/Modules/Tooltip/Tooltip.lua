@@ -2,14 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack, select, ipairs = unpack, select, ipairs
 local wipe, tinsert, tconcat = wipe, tinsert, table.concat
 local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strsub = strfind, format, strsub
 local strmatch, gmatch, gsub = strmatch, gmatch, gsub
---WoW API / Variables
+
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney

@@ -4,13 +4,12 @@ local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
 local Search = E.Libs.ItemSearch
 
---Lua functions
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
 local tinsert, tremove, twipe, tmaxn = tinsert, tremove, wipe, table.maxn
 local next, floor, ceil, abs = next, floor, ceil, abs
 local format, sub = format, strsub
---WoW API / Variables
+
 local GetCVarBool = GetCVarBool
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
@@ -2337,8 +2336,8 @@ function B:Initialize()
 	}
 
 	B.QuestColors = {
-		['questStarter'] = {B.db.colors.items.questStarter.r, B.db.colors.items.questStarter.g, B.db.colors.items.questStarter.b},
-		['questItem'] = {B.db.colors.items.questItem.r, B.db.colors.items.questItem.g, B.db.colors.items.questItem.b},
+		questStarter = {B.db.colors.items.questStarter.r, B.db.colors.items.questStarter.g, B.db.colors.items.questStarter.b},
+		questItem = {B.db.colors.items.questItem.r, B.db.colors.items.questItem.g, B.db.colors.items.questItem.b},
 	}
 
 	B:LoadBagBar()

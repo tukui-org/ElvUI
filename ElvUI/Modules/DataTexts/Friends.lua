@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
 local format, gsub, strfind, strjoin = format, gsub, strfind, strjoin
---WoW API / Variables
+
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
@@ -145,7 +144,7 @@ local clientTags = {
 	[BNET_CLIENT_COD] = "BO4",
 	[BNET_CLIENT_COD_MW] = "MW",
 	[BNET_CLIENT_COD_MW2] = "MW2",
-	["BSAp"] = L["Mobile"],
+	BSAp = L["Mobile"],
 }
 
 local clientIndex = {
@@ -159,8 +158,8 @@ local clientIndex = {
 	[BNET_CLIENT_COD] = 8,
 	[BNET_CLIENT_COD_MW] = 9,
 	[BNET_CLIENT_COD_MW2] = 10,
-	["App"] = 11,
-	["BSAp"] = 12,
+	App = 11,
+	BSAp = 12,
 }
 
 local function inGroup(name, realmName)

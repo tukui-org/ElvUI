@@ -3,14 +3,13 @@ local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack = unpack
 local format = format
 local pairs = pairs
 local ipairs = ipairs
 local tinsert = tinsert
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local SetCVar = SetCVar
 local PlaySound = PlaySound
@@ -228,7 +227,6 @@ function E:SetupTheme(theme, noDisplayMsg)
 		_G.InstallStepComplete:Show()
 	end
 end
-
 
 function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	if not noDataReset then

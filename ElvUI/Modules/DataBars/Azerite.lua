@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local floor = floor
 local format = format
---WoW API / Variables
+
 local C_ArtifactUI_IsEquippedArtifactDisabled = C_ArtifactUI.IsEquippedArtifactDisabled
 local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo

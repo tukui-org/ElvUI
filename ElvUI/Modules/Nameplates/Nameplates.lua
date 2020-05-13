@@ -2,10 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local NP = E:GetModule("NamePlates")
 local oUF = E.oUF
 
---Lua functions
 local _G = _G
 local format, pairs, select, strsplit, type, wipe = format, pairs, select, strsplit, type, wipe
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
 local GetCVarDefault = GetCVarDefault

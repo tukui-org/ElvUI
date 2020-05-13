@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack
---WoW API / Variables
+
 local GetInventoryItemLink = GetInventoryItemLink
 local hooksecurefunc = hooksecurefunc
 local IsCorruptedItem = IsCorruptedItem

@@ -4,7 +4,6 @@ local ElvUF = E.oUF
 local Translit = E.Libs.Translit
 local translitMark = "!"
 
---Lua functions
 local _G = _G
 local tonumber, next = tonumber, next
 local gmatch, gsub, format, select = gmatch, gsub, format, select
@@ -12,7 +11,6 @@ local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
 
---WoW API / Variables
 local CreateTextureMarkup = CreateTextureMarkup
 local UnitFactionGroup = UnitFactionGroup
 local GetCVarBool = GetCVarBool

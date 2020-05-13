@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local select, collectgarbage = select, collectgarbage
 local sort, wipe, floor, format = sort, wipe, floor, format
---WoW API / Variables
+
 local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMemoryUsage = GetAddOnMemoryUsage

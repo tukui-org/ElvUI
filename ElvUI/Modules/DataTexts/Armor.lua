@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local format = format
 local strjoin = strjoin
---WoW API / Variables
+
 local UnitLevel = UnitLevel
 local UnitArmor = UnitArmor
 local PaperDollFrame_GetArmorReduction = PaperDollFrame_GetArmorReduction

@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local RU = E:GetModule('RaidUtility')
 
---Lua functions
 local _G = _G
 local unpack, ipairs, pairs, next = unpack, ipairs, pairs, next
 local strfind, tinsert, wipe, sort = strfind, tinsert, wipe, sort
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local DoReadyCheck = DoReadyCheck
 local GameTooltip_Hide = GameTooltip_Hide

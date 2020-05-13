@@ -33,8 +33,8 @@ local InspectItems = {
 }
 
 local whileOpenEvents = {
-	['UPDATE_INVENTORY_DURABILITY'] = true,
-	['AZERITE_ESSENCE_UPDATE'] = true
+	UPDATE_INVENTORY_DURABILITY = true,
+	AZERITE_ESSENCE_UPDATE = true
 }
 
 function M:CreateInspectTexture(slot, x, y)

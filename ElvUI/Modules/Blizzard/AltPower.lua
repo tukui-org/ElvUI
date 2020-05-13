@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
---Lua functions
 local _G = _G
 local floor = floor
 local format = format
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local UnitPowerMax = UnitPowerMax

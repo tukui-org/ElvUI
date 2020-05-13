@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
---Lua functions
 local _G = _G
 local min = min
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local GetScreenHeight = GetScreenHeight
@@ -67,7 +66,6 @@ function B:MoveObjectiveFrame()
 
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
-
 
 	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame

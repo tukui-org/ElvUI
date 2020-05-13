@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
---Lua functions
 local _G = _G
 local unpack = unpack
 local pairs = pairs
---WoW API / Variables
+
 local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)

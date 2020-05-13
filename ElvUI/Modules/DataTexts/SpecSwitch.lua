@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local format, next, wipe, strjoin = format, next, wipe, strjoin
---WoW API / Variables
+
 local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations

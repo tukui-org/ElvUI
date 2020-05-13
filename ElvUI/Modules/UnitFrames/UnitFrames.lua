@@ -3,12 +3,11 @@ local UF = E:GetModule('UnitFrames');
 local LSM = E.Libs.LSM
 UF.LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
 local min, tinsert, strsub = min, tinsert, strsub
 local strfind, gsub, format = strfind, gsub, format
---WoW API / Variables
+
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
@@ -54,21 +53,21 @@ UF.units = {}
 UF.statusbars = {}
 UF.fontstrings = {}
 UF.badHeaderPoints = {
-	['TOP'] = 'BOTTOM',
-	['LEFT'] = 'RIGHT',
-	['BOTTOM'] = 'TOP',
-	['RIGHT'] = 'LEFT',
+	TOP = 'BOTTOM',
+	LEFT = 'RIGHT',
+	BOTTOM = 'TOP',
+	RIGHT = 'LEFT',
 }
 
 UF.headerFunctions = {}
 UF.classMaxResourceBar = {
-	['DEATHKNIGHT'] = 6,
-	['PALADIN'] = 5,
-	['WARLOCK'] = 5,
-	['MONK'] = 6,
-	['MAGE'] = 4,
-	['ROGUE'] = 6,
-	["DRUID"] = 5
+	DEATHKNIGHT = 6,
+	PALADIN = 5,
+	WARLOCK = 5,
+	MONK = 6,
+	MAGE = 4,
+	ROGUE = 6,
+	DRUID = 5
 }
 
 UF.instanceMapIDs = {
@@ -95,42 +94,42 @@ UF.instanceMapIDs = {
 }
 
 UF.headerGroupBy = {
-	["CLASS"] = function(header)
+	CLASS = function(header)
 		header:SetAttribute("groupingOrder", "DEATHKNIGHT,DEMONHUNTER,DRUID,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK")
 		header:SetAttribute("sortMethod", "NAME")
 		header:SetAttribute("groupBy", "CLASS")
 	end,
-	["MTMA"] = function(header)
+	MTMA = function(header)
 		header:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,NONE")
 		header:SetAttribute("sortMethod", "NAME")
 		header:SetAttribute("groupBy", "ROLE")
 	end,
-	["ROLE"] = function(header)
+	ROLE = function(header)
 		header:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
 		header:SetAttribute("sortMethod", "NAME")
 		header:SetAttribute("groupBy", "ASSIGNEDROLE")
 	end,
-	["ROLE2"] = function(header)
+	ROLE2 = function(header)
 		header:SetAttribute("groupingOrder", "TANK,DAMAGER,HEALER,NONE")
 		header:SetAttribute("sortMethod", "NAME")
 		header:SetAttribute("groupBy", "ASSIGNEDROLE")
 	end,
-	["NAME"] = function(header)
+	NAME = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute("sortMethod", "NAME")
 		header:SetAttribute("groupBy", nil)
 	end,
-	["GROUP"] = function(header)
+	GROUP = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute("sortMethod", "INDEX")
 		header:SetAttribute("groupBy", "GROUP")
 	end,
-	["CLASSROLE"] = function(header)
+	CLASSROLE = function(header)
 		header:SetAttribute("groupingOrder", "DEATHKNIGHT,WARRIOR,DEMONHUNTER,ROGUE,MONK,PALADIN,DRUID,SHAMAN,HUNTER,PRIEST,MAGE,WARLOCK")
 		header:SetAttribute("sortMethod", "NAME")
 		header:SetAttribute("groupBy", "CLASS")
 	end,
-	["PETNAME"] = function(header)
+	PETNAME = function(header)
 		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
 		header:SetAttribute("sortMethod", "NAME")
 		header:SetAttribute("groupBy", nil)
@@ -139,18 +138,18 @@ UF.headerGroupBy = {
 }
 
 local POINT_COLUMN_ANCHOR_TO_DIRECTION = {
-	['TOPTOP'] = 'UP_RIGHT',
-	['BOTTOMBOTTOM'] = 'TOP_RIGHT',
-	['LEFTLEFT'] = 'RIGHT_UP',
-	['RIGHTRIGHT'] = 'LEFT_UP',
-	['RIGHTTOP'] = 'LEFT_DOWN',
-	['LEFTTOP'] = 'RIGHT_DOWN',
-	['LEFTBOTTOM'] = 'RIGHT_UP',
-	['RIGHTBOTTOM'] = 'LEFT_UP',
-	['BOTTOMRIGHT'] = 'UP_LEFT',
-	['BOTTOMLEFT'] = 'UP_RIGHT',
-	['TOPRIGHT'] = 'DOWN_LEFT',
-	['TOPLEFT'] = 'DOWN_RIGHT'
+	TOPTOP = 'UP_RIGHT',
+	BOTTOMBOTTOM = 'TOP_RIGHT',
+	LEFTLEFT = 'RIGHT_UP',
+	RIGHTRIGHT = 'LEFT_UP',
+	RIGHTTOP = 'LEFT_DOWN',
+	LEFTTOP = 'RIGHT_DOWN',
+	LEFTBOTTOM = 'RIGHT_UP',
+	RIGHTBOTTOM = 'LEFT_UP',
+	BOTTOMRIGHT = 'UP_LEFT',
+	BOTTOMLEFT = 'UP_RIGHT',
+	TOPRIGHT = 'DOWN_LEFT',
+	TOPLEFT = 'DOWN_RIGHT'
 }
 
 local DIRECTION_TO_POINT = {
@@ -822,14 +821,10 @@ function UF.headerPrototype:Update(isForced)
 end
 
 function UF.headerPrototype:Reset()
-	self:Hide()
-
 	self:SetAttribute("showPlayer", true)
-
 	self:SetAttribute("showSolo", true)
 	self:SetAttribute("showParty", true)
 	self:SetAttribute("showRaid", true)
-
 	self:SetAttribute("columnSpacing", nil)
 	self:SetAttribute("columnAnchorPoint", nil)
 	self:SetAttribute("groupBy", nil)
@@ -845,6 +840,7 @@ function UF.headerPrototype:Reset()
 	self:SetAttribute("unitsPerColumn", nil)
 	self:SetAttribute("xOffset", nil)
 	self:SetAttribute("yOffset", nil)
+	self:Hide()
 end
 
 UF.SmartSettings = {
@@ -1233,7 +1229,6 @@ function ElvUF:DisableBlizzard(unit)
 	end
 end
 
-
 function UF:ADDON_LOADED(_, addon)
 	if addon ~= 'Blizzard_ArenaUI' then return; end
 	ElvUF:DisableBlizzard('arena')
@@ -1269,16 +1264,16 @@ function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
 end
 
 local ignoreSettings = {
-	['position'] = true,
-	['priority'] = true,
+	position = true,
+	priority = true,
 }
 
 local ignoreSettingsGroup = {
-	['visibility'] = true,
+	visibility = true,
 }
 
 local allowPass = {
-	['sizeOverride'] = true,
+	sizeOverride = true,
 }
 
 function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)

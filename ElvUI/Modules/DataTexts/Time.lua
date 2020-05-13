@@ -1,14 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local next, unpack = next, unpack
 local format, strjoin = format, strjoin
 local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
 
---WoW API / Variables
 local EJ_GetCurrentTier = EJ_GetCurrentTier
 local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_GetNumTiers = EJ_GetNumTiers

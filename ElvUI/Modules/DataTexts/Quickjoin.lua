@@ -2,10 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 local CH = E:GetModule('Chat')
 
---Lua functions
 local next, pairs, select, type = next, pairs, select, type
 local format, strjoin, wipe, gsub = format, strjoin, wipe, gsub
---WoW API / Variables
+
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo

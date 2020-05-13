@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local ceil = ceil
 local unpack = unpack
 local format, strfind = format, strfind
---WoW API / Variables
+
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey

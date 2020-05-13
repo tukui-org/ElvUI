@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local select, ipairs, format, sort = select, ipairs, format, sort
---WoW API / Variables
+
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel

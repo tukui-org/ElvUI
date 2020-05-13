@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
---Lua functions
 local _G = _G
 local pairs, ceil, floor, tonumber = pairs, ceil, floor, tonumber
 local strmatch, strlower, strfind = strmatch, strlower, strfind
---WoW API / Variables
+
 local GetLocale = GetLocale
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo

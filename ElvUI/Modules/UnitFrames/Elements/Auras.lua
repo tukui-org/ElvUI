@@ -2,12 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local sort, ceil, huge = sort, ceil, math.huge
 local select, unpack, next, format = select, unpack, next, format
 local strfind, strsplit, strmatch = strfind, strsplit, strmatch
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown

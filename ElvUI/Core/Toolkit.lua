@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local unpack, type, select, getmetatable, assert, pairs, pcall = unpack, type, select, getmetatable, assert, pairs, pcall
 local tonumber = tonumber
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
@@ -557,7 +556,7 @@ local function addapi(object)
 	end
 end
 
-local handled = {['Frame'] = true}
+local handled = {Frame = true}
 local object = CreateFrame('Frame')
 addapi(object)
 addapi(object:CreateTexture())

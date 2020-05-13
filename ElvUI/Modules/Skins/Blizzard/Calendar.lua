@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local ipairs, select, unpack = ipairs, select, unpack
---WoW API / Variables
+
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local CreateFrame = CreateFrame

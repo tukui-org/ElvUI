@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local gsub, type, pairs, ipairs, select, unpack, strfind = gsub, type, pairs, ipairs, select, unpack, strfind
---WoW API / Variables
+
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame

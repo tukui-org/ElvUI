@@ -22,6 +22,7 @@ local function ValueColorUpdate(hex, r, g, b)
 		OnEvent(lastPanel)
 	end
 end
-E['valueColorUpdateFuncs'][ValueColorUpdate] = true
+
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Stamina', STAT_CATEGORY_ATTRIBUTES, { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE" }, OnEvent, nil, nil, nil, nil, ITEM_MOD_STAMINA_SHORT)

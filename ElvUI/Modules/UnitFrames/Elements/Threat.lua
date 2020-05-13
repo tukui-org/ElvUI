@@ -84,11 +84,11 @@ end
 
 do
 	local classPowers = {
-		['MONK'] = 'Stagger',
-		['DRUID'] = 'AdditionalPower',
-		['PRIEST'] = 'AdditionalPower',
-		['SHAMAN'] = 'AdditionalPower',
-		['DEATHKNIGHT'] = 'Runes'
+		MONK = 'Stagger',
+		DRUID = 'AdditionalPower',
+		PRIEST = 'AdditionalPower',
+		SHAMAN = 'AdditionalPower',
+		DEATHKNIGHT = 'Runes'
 	}
 
 	local myClassPower = classPowers[E.myclass]

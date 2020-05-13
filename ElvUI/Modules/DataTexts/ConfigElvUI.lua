@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local pairs, strfind, strjoin = pairs, strfind, strjoin
---WoW API / Variables
+
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMetadata = GetAddOnMetadata
 local GetNumAddOns = GetNumAddOns

@@ -7,11 +7,10 @@
 		local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
---Lua functions
 local _G = _G
 local unpack = unpack
 local format, gsub, type = format, gsub, type
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata

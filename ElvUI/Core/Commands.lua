@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local tonumber, type, pairs, select, gsub = tonumber, type, pairs, select, gsub
 local lower, split, format, wipe, next, print = strlower, strsplit, format, wipe, next, print
---WoW API / Variables
+
 local debugprofilestop = debugprofilestop
 local EnableAddOn = EnableAddOn
 local GetAddOnCPUUsage = GetAddOnCPUUsage

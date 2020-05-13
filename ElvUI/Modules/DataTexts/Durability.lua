@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local format, strjoin, pairs = format, strjoin, pairs
---WoW API / Variables
+
 local GetInventoryItemDurability = GetInventoryItemDurability
 local GetInventorySlotInfo = GetInventorySlotInfo
 local ToggleCharacter = ToggleCharacter
@@ -16,16 +15,16 @@ local tooltipString = "%d%%"
 local totalDurability = 0
 local invDurability = {}
 local slots = {
-	["SecondaryHandSlot"] = L["Offhand"],
-	["MainHandSlot"] = L["Main Hand"],
-	["FeetSlot"] = L["Feet"],
-	["LegsSlot"] = L["Legs"],
-	["HandsSlot"] = L["Hands"],
-	["WristSlot"] = L["Wrist"],
-	["WaistSlot"] = L["Waist"],
-	["ChestSlot"] = L["Chest"],
-	["ShoulderSlot"] = L["Shoulder"],
-	["HeadSlot"] = L["Head"],
+	SecondaryHandSlot = L["Offhand"],
+	MainHandSlot = L["Main Hand"],
+	FeetSlot = L["Feet"],
+	LegsSlot = L["Legs"],
+	HandsSlot = L["Hands"],
+	WristSlot = L["Wrist"],
+	WaistSlot = L["Waist"],
+	ChestSlot = L["Chest"],
+	ShoulderSlot = L["Shoulder"],
+	HeadSlot = L["Head"],
 }
 
 local function OnEvent(self)

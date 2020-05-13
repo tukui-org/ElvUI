@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
---Lua functions
 local _G = _G
 local select, unpack, pairs = select, unpack, pairs
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 
 local function SkinIt(bar)

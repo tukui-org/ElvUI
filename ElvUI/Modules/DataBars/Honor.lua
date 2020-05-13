@@ -2,10 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local mod = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local format = format
---WoW API / Variables
+
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax

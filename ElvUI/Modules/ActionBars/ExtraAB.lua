@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
