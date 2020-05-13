@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local pairs, format = pairs, format
-
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
 local GetCurrencyListSize = GetCurrencyListSize

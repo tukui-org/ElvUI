@@ -176,7 +176,7 @@ local menuList = {
 	{ text = _G.CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true,}
 }
 
-local function inviteClick(self, name, guid)
+local function inviteClick(_, name, guid)
 	menuFrame:Hide()
 
 	if not (name and name ~= "") then return end
@@ -195,7 +195,7 @@ local function inviteClick(self, name, guid)
 	end
 end
 
-local function whisperClick(self, playerName)
+local function whisperClick(_, playerName)
 	menuFrame:Hide()
 	SetItemRef( "player:"..playerName, format("|Hplayer:%1$s|h[%1$s]|h",playerName), "LeftButton" )
 end
@@ -307,4 +307,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Guild', SOCIAL_LABEL, {"CHAT_MSG_SYSTEM", "GUILD_ROSTER_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter, nil, GUILD)
+DT:RegisterDatatext('Guild', _G.SOCIAL_LABEL, {"CHAT_MSG_SYSTEM", "GUILD_ROSTER_UPDATE", "PLAYER_GUILD_UPDATE", "GUILD_MOTD"}, OnEvent, nil, Click, OnEnter, nil, GUILD)

@@ -4,7 +4,6 @@ local DT = E:GetModule("DataTexts")
 local _G = _G
 local format, sort, ipairs = format, sort, ipairs
 local select, unpack = select, unpack
-
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
 local GetMouseFocus = GetMouseFocus

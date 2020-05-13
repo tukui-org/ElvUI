@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local pairs, strfind, strjoin = pairs, strfind, strjoin
-
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMetadata = GetAddOnMetadata
 local GetNumAddOns = GetNumAddOns

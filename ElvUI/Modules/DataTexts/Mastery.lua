@@ -2,12 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-
 local GetMasteryEffect = GetMasteryEffect
 local GetSpecialization = GetSpecialization
 local GetSpecializationMasterySpells = GetSpecializationMasterySpells
-local STAT_MASTERY = STAT_MASTERY
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
+local STAT_MASTERY = STAT_MASTERY
 
 local displayString, lastPanel = ''
 

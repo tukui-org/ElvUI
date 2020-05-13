@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local time, max, strjoin = time, max, strjoin
-
 local UnitGUID = UnitGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
@@ -82,4 +81,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('DPS', nil, {"UNIT_PET", "COMBAT_LOG_EVENT_UNFILTERED", "PLAYER_LEAVE_COMBAT", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, OnClick, nil, nil, STAT_DPS_SHORT)
+DT:RegisterDatatext('DPS', nil, {"UNIT_PET", "COMBAT_LOG_EVENT_UNFILTERED", "PLAYER_LEAVE_COMBAT", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, OnClick, nil, nil, _G.STAT_DPS_SHORT)

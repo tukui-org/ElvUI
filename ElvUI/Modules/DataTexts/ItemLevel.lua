@@ -6,8 +6,6 @@ local strjoin = strjoin
 local format = format
 local pi = math.pi
 
-local title, panel = ''
-
 local ITEM_LEVEL_ABBR = ITEM_LEVEL_ABBR
 local LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT = LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT
 local STAT_AVERAGE_ITEM_LEVEL = STAT_AVERAGE_ITEM_LEVEL
@@ -19,6 +17,7 @@ local GetInventoryItemTexture = GetInventoryItemTexture
 
 local iconString = '|T%s:13:15:0:0:50:50:4:46:4:46|t %s'
 local slotID = { 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 }
+local title, lastPanel = ''
 
 local function colorize(num)
 	if num >= 0 then
@@ -54,14 +53,14 @@ local function OnEnter(self)
 	end
 
 	DT.tooltip:Show()
-	panel = self
+	lastPanel = self
 end
 
 local function ValueColorUpdate(hex)
 	title = strjoin('', '%s: ', hex)
 
-	if panel ~= nil then
-		OnEvent(panel)
+	if lastPanel ~= nil then
+		OnEvent(lastPanel)
 	end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true

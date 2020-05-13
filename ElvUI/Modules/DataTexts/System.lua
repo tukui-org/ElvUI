@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 local select, collectgarbage = select, collectgarbage
 local sort, wipe, floor, format = sort, wipe, floor, format
-
 local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMemoryUsage = GetAddOnMemoryUsage

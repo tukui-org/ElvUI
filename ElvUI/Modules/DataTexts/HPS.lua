@@ -2,17 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local time, max, strjoin = time, max, strjoin
-
 local UnitGUID = UnitGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 
 local timeStamp, combatTime, healTotal = 0, 0, 0
 local lastSegment, petGUID = 0
 local displayString, lastPanel = ''
-local events = {
-	SPELL_HEAL = true,
-	SPELL_PERIODIC_HEAL = true
-}
+local events = {SPELL_HEAL = true, SPELL_PERIODIC_HEAL = true}
 
 local function Reset()
 	timeStamp, combatTime, healTotal = 0, 0, 0

@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local format, strjoin = format, strjoin
-
 local _G = _G
+local format, strjoin = format, strjoin
 local GetHaste = GetHaste
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus

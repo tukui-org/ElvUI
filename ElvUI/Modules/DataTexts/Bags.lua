@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local ToggleAllBags = ToggleAllBags

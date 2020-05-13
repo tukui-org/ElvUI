@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format, strjoin, pairs = format, strjoin, pairs
-
 local GetInventoryItemDurability = GetInventoryItemDurability
 local GetInventorySlotInfo = GetInventorySlotInfo
 local ToggleCharacter = ToggleCharacter

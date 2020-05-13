@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format, sort = format, sort
-
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel

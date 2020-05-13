@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-
 local GetSpellBonusDamage = GetSpellBonusDamage
 local GetSpellBonusHealing = GetSpellBonusHealing
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS

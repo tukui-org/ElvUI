@@ -1,22 +1,22 @@
 local E, L, V, P, G = unpack(select(2, ...))
 local DT = E:GetModule('DataTexts')
 
-local displayNumberString = ''
-local lastPanel;
 local strjoin = strjoin
 local UnitStat = UnitStat
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ITEM_MOD_STAMINA_SHORT = ITEM_MOD_STAMINA_SHORT
 local LE_UNIT_STAT_STAMINA = LE_UNIT_STAT_STAMINA
 
+local displayString, lastPanel = ''
+
 local function OnEvent(self)
-	self.text:SetFormattedText(displayNumberString, ITEM_MOD_STAMINA_SHORT, UnitStat("player", LE_UNIT_STAT_STAMINA))
+	self.text:SetFormattedText(displayString, ITEM_MOD_STAMINA_SHORT, UnitStat("player", LE_UNIT_STAT_STAMINA))
 
 	lastPanel = self
 end
 
-local function ValueColorUpdate(hex, r, g, b)
-	displayNumberString = strjoin("", "%s: ", hex, "%.f|r")
+local function ValueColorUpdate(hex)
+	displayString = strjoin("", "%s: ", hex, "%.f|r")
 
 	if lastPanel ~= nil then
 		OnEvent(lastPanel)

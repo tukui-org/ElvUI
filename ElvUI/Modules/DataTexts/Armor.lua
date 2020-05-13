@@ -3,16 +3,15 @@ local DT = E:GetModule('DataTexts')
 
 local format = format
 local strjoin = strjoin
-
 local UnitLevel = UnitLevel
 local UnitArmor = UnitArmor
 local PaperDollFrame_GetArmorReduction = PaperDollFrame_GetArmorReduction
-
+local ARMOR = ARMOR
 local armorString = ARMOR..": "
 local chanceString = "%.2f%%"
-local displayString, lastPanel, effectiveArmor, _ = ''
-local ARMOR = ARMOR
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
+
+local displayString, lastPanel, effectiveArmor, _ = ''
 
 local function OnEvent(self)
 	_, effectiveArmor = UnitArmor("player")

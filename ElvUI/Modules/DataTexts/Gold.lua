@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local type = type
-local format = string.format
+local format = format
 local wipe = wipe
 local pairs = pairs
 local ipairs = ipairs

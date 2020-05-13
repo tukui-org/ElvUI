@@ -29,9 +29,9 @@ local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local VOICE_CHAT_BATTLEGROUND = VOICE_CHAT_BATTLEGROUND
 local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
+local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS
 
-local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
-local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
+local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
 local ukDisplayFormat, europeDisplayFormat = '', ''
 local europeDisplayFormat_nocolor = strjoin("", "%02d", ":|r%02d")
 local ukDisplayFormat_nocolor = strjoin("", "", "%d", ":|r%02d", " %s|r")

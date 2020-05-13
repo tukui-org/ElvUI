@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local format, strjoin = format, strjoin
-
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus

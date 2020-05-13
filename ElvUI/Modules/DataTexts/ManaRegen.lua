@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-
 local GetManaRegen = GetManaRegen
 local InCombatLockdown = InCombatLockdown
-local MANA_REGEN = MANA_REGEN
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
+local MANA_REGEN = MANA_REGEN
 
 local displayString, lastPanel = ''
 

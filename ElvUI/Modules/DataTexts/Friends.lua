@@ -69,7 +69,7 @@ local menuList = {
 	{ text = _G.BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() E:StaticPopup_Show("SET_BN_BROADCAST") end },
 }
 
-local function inviteClick(self, name, guid)
+local function inviteClick(_, name, guid)
 	menuFrame:Hide()
 
 	if not (name and name ~= "") then return end
@@ -101,7 +101,7 @@ local function inviteClick(self, name, guid)
 	end
 end
 
-local function whisperClick(self, name, battleNet)
+local function whisperClick(_, name, battleNet)
 	menuFrame:Hide()
 
 	if battleNet then
@@ -571,4 +571,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Friends', SOCIAL_LABEL, {"BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter, nil, FRIENDS)
+DT:RegisterDatatext('Friends', _G.SOCIAL_LABEL, {"BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter, nil, _G.FRIENDS)

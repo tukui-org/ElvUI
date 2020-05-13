@@ -10,7 +10,7 @@ local displayString, lastPanel = ''
 local HAVE_MAIL_FROM = HAVE_MAIL_FROM
 local MAIL_LABEL = MAIL_LABEL
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self)
 	lastPanel = self
 	self.text:SetFormattedText(displayString, HasNewMail() and "New Mail" or "No Mail")
 end
