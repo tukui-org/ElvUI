@@ -147,7 +147,7 @@ local function SkinGuildChallengeAlert(frame)
 	-- Background
 	local region = select(2, frame:GetRegions())
 	if region:IsObjectType('Texture') then
-		if region:GetTexture() == "Interface\\GuildFrame\\GuildChallenges" then
+		if region:GetTexture() == [[Interface\GuildFrame\GuildChallenges]] then
 			region:Kill()
 		end
 	end
@@ -207,7 +207,7 @@ local function SkinInvasionAlert(frame)
 			end
 			-- Icon border
 			if icon and icon:IsObjectType('Texture') then
-				if icon:GetTexture() == "Interface\\Icons\\Ability_Warlock_DemonicPower" then
+				if icon:GetTexture() == [[Interface\Icons\Ability_Warlock_DemonicPower]] then
 					icon.b = CreateFrame("Frame", nil, frame)
 					icon.b:SetTemplate()
 					icon.b:SetOutside(icon)
@@ -277,7 +277,7 @@ local function SkinWorldQuestCompleteAlert(frame)
 			for i = 1, frame:GetNumRegions() do
 				local region = select(i, frame:GetRegions())
 				if region:IsObjectType('Texture') then
-					if region:GetTexture() == "Interface\\LFGFrame\\UI-LFG-DUNGEONTOAST" then
+					if region:GetTexture() == [[Interface\LFGFrame\UI-LFG-DUNGEONTOAST]] then
 						region:Kill()
 					end
 				end

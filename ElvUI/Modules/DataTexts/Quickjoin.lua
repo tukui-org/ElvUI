@@ -60,7 +60,7 @@ local function Update(panel)
 				end
 
 				if isLeader then
-					coloredName = format("|TInterface\\GroupFrame\\UI-Group-LeaderIcon:16:16|t%s", coloredName)
+					coloredName = format([[|TInterface\GroupFrame\UI-Group-LeaderIcon:16:16|t%s]], coloredName)
 				end
 
 				activity = activityName or UNKNOWN

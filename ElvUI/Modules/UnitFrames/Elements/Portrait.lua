@@ -7,7 +7,7 @@ local select = select
 local UnitClass = UnitClass
 local CreateFrame = CreateFrame
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
-local classIcon = 'Interface\\WorldStateFrame\\Icons-Classes'
+local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
 function UF:Construct_Portrait(frame, type)
 	local portrait

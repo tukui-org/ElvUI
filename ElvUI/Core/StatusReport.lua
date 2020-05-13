@@ -154,7 +154,7 @@ function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent,
 	leftDivider:Height(8)
 	leftDivider:Point('LEFT', section.Header, 'LEFT', 5, 0)
 	leftDivider:Point('RIGHT', section.Header.Text, 'LEFT', -5, 0)
-	leftDivider:SetTexture('Interface\\Tooltips\\UI-Tooltip-Border')
+	leftDivider:SetTexture([[Interface\Tooltips\UI-Tooltip-Border]])
 	leftDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 	section.Header.LeftDivider = leftDivider
 
@@ -162,7 +162,7 @@ function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent,
 	rightDivider:Height(8)
 	rightDivider:Point('RIGHT', section.Header, 'RIGHT', -5, 0)
 	rightDivider:Point('LEFT', section.Header.Text, 'RIGHT', 5, 0)
-	rightDivider:SetTexture('Interface\\Tooltips\\UI-Tooltip-Border')
+	rightDivider:SetTexture([[Interface\Tooltips\UI-Tooltip-Border]])
 	rightDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 	section.Header.RightDivider = rightDivider
 

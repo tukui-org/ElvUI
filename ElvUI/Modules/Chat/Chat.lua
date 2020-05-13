@@ -729,7 +729,7 @@ do
 		return (emoji and E.Libs.Base64:Decode(emoji)) or y
 	end
 	removeIconFromLine = function(text)
-		text = gsub(text, "|TInterface\\TargetingFrame\\UI%-RaidTargetingIcon_(%d+):0|t", raidIconFunc) --converts raid icons into {star} etc, if possible.
+		text = gsub(text, [[|TInterface\TargetingFrame\UI%-RaidTargetingIcon_(%d+):0|t]], raidIconFunc) --converts raid icons into {star} etc, if possible.
 		text = gsub(text, "(%s?)(|?)|[TA].-|[ta](%s?)", stripTextureFunc) --strip any other texture out but keep a single space from the side(s).
 		text = gsub(text, "(|?)|H(.-)|h(.-)|h", hyperLinkFunc) --strip hyperlink data only keeping the actual text.
 		return text
@@ -1738,7 +1738,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			if arg6 ~= "" then -- Blizzard Flags
 				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
-					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t"
+					pflag = [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t]]
 				else -- Away/Busy
 					pflag = _G["CHAT_FLAG_"..arg6] or ""
 				end
@@ -2611,8 +2611,8 @@ function CH:CreateChatVoicePanel()
 	-- Button:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
 
 	-- Change the QuickJoin Textures. Looks better =)
-	local friendTex = 'Interface\\HELPFRAME\\ReportLagIcon-Chat'
-	local queueTex = 'Interface\\HELPFRAME\\HelpIcon-ItemRestoration'
+	local friendTex = [[Interface\HELPFRAME\ReportLagIcon-Chat]]
+	local queueTex = [[Interface\HELPFRAME\HelpIcon-ItemRestoration]]
 
 	Button.FriendsButton:SetTexture(friendTex)
 	Button.QueueButton:SetTexture(queueTex)

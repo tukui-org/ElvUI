@@ -239,7 +239,7 @@ local function UpdateCurrencySkins()
 			if button.expandIcon then
 				if not button.highlightTexture then
 					button.highlightTexture = button:CreateTexture(button:GetName().."HighlightTexture", "HIGHLIGHT")
-					button.highlightTexture:SetTexture("Interface\\Buttons\\UI-PlusButton-Hilight")
+					button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
 					button.highlightTexture:SetBlendMode("ADD")
 					button.highlightTexture:SetInside(button.expandIcon)
 

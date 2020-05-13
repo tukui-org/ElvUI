@@ -249,7 +249,7 @@ function S:ContainerFrame()
 	AutoSort:StripTextures()
 	AutoSort:SetTemplate()
 	AutoSort.Icon = AutoSort:CreateTexture()
-	AutoSort.Icon:SetTexture("Interface\\ICONS\\INV_Pet_Broom")
+	AutoSort.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
 	AutoSort.Icon:SetTexCoord(unpack(E.TexCoords))
 	AutoSort.Icon:SetInside()
 

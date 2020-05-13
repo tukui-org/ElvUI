@@ -126,10 +126,10 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.ScenarioQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
 	S:HandleScrollBar(_G.ScenarioQueueFrameRandomScrollFrameScrollBar);
 
-	_G.GroupFinderFrame.groupButton1.icon:SetTexture("Interface\\Icons\\INV_Helmet_08")
-	_G.GroupFinderFrame.groupButton2.icon:SetTexture("Interface\\LFGFrame\\UI-LFR-PORTRAIT")
-	_G.GroupFinderFrame.groupButton3.icon:SetTexture("Interface\\Icons\\Icon_Scenarios")
-	_G.GroupFinderFrame.groupButton4.icon:SetTexture("Interface\\Icons\\Achievement_General_StayClassy")
+	_G.GroupFinderFrame.groupButton1.icon:SetTexture([[Interface\Icons\INV_Helmet_08]])
+	_G.GroupFinderFrame.groupButton2.icon:SetTexture([[Interface\LFGFrame\UI-LFR-PORTRAIT]])
+	_G.GroupFinderFrame.groupButton3.icon:SetTexture([[Interface\Icons\Icon_Scenarios]])
+	_G.GroupFinderFrame.groupButton4.icon:SetTexture([[Interface\Icons\Achievement_General_StayClassy]])
 
 	_G.LFGDungeonReadyDialogBackground:Kill()
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
@@ -139,7 +139,7 @@ function S:LookingForGroupFrames()
 	_G.LFGDungeonReadyDialog:SetTemplate("Transparent")
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:SetTemplate("Transparent")
-	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
 
 	hooksecurefunc(_G.LFGDungeonReadyDialog, "SetBackdrop", function(frame, backdrop)
@@ -162,7 +162,7 @@ function S:LookingForGroupFrames()
 	hooksecurefunc("LFGDungeonReadyStatusIndividual_UpdateIcon", function(button)
 		local _, role = GetLFGProposalMember(button:GetID())
 
-		button.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+		button.texture:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 		button.texture:SetAlpha(0.6)
 
 		if role == "DAMAGER" then
@@ -223,7 +223,7 @@ function S:LookingForGroupFrames()
 				roleButton.background = roleButton:CreateTexture(nil, "BACKGROUND")
 				roleButton.background:Size(80, 80)
 				roleButton.background:Point("CENTER")
-				roleButton.background:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+				roleButton.background:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 				roleButton.background:SetAlpha(0.65)
 
 				local buttonName = roleButton:GetName() ~= nil and roleButton:GetName() or roleButton.role
@@ -549,7 +549,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFGListInviteDialog.AcknowledgeButton)
 	S:HandleButton(_G.LFGListInviteDialog.AcceptButton)
 	S:HandleButton(_G.LFGListInviteDialog.DeclineButton)
-	_G.LFGListInviteDialog.RoleIcon:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	_G.LFGListInviteDialog.RoleIcon:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 
 	hooksecurefunc("LFGListInviteDialog_Show", SetRoleIcon)
 

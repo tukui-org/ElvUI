@@ -9,7 +9,7 @@ local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
-local LFG_ICONS = "Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS"
+local LFG_ICONS = [[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]]
 local function SkinNavBarButtons(self)
 	if (self:GetParent():GetName() == "EncounterJournal" and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == "WorldMapFrame" and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == "HelpFrameKnowledgebase" and not E.private.skins.blizzard.help) then
 		return
@@ -316,7 +316,7 @@ function S:BlizzardMiscFrames()
 				uncheck:SetTexture()
 				local _, co = check:GetTexCoord()
 				if co == 0 then
-					check:SetTexture("Interface\\Buttons\\UI-CheckBox-Check")
+					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
 					check:SetVertexColor(r, g, b, 1)
 					check:Size(20, 20)
 					check:SetDesaturated(true)

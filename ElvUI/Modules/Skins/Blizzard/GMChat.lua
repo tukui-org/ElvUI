@@ -47,7 +47,7 @@ function S:Blizzard_GMChatUI()
 	tab:ClearAllPoints()
 	tab:Point("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
 	tab:Point("TOPRIGHT", frame, "TOPRIGHT", 0, 28)
-	_G.GMChatTabIcon:SetTexture("Interface\\ChatFrame\\UI-ChatIcon-Blizz")
+	_G.GMChatTabIcon:SetTexture([[Interface\ChatFrame\UI-ChatIcon-Blizz]])
 
 	local close = _G.GMChatFrameCloseButton
 	S:HandleCloseButton(close)

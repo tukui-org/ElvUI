@@ -20,7 +20,7 @@ local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
-local WispSplode = "Interface\\Icons\\Spell_Nature_WispSplode"
+local WispSplode = [[Interface\Icons\Spell_Nature_WispSplode]]
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate')
 
 function AB:UPDATE_SHAPESHIFT_COOLDOWN()

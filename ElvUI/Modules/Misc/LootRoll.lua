@@ -145,7 +145,7 @@ function M:CreateRollFrame()
 	local tfade = frame:CreateTexture(nil, "BORDER")
 	tfade:Point("TOPLEFT", frame, "TOPLEFT", 4, 0)
 	tfade:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 0)
-	tfade:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
+	tfade:SetTexture([[Interface\ChatFrame\ChatFrameBackground]])
 	tfade:SetBlendMode("ADD")
 	tfade:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .1, .1, .1, 0)
 
@@ -165,15 +165,15 @@ function M:CreateRollFrame()
 	status.bg:SetDrawLayer('BACKGROUND', 2)
 	local spark = frame:CreateTexture(nil, "OVERLAY")
 	spark:Size(14, FRAME_HEIGHT)
-	spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
+	spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	spark:SetBlendMode("ADD")
 	status.spark = spark
 
-	local need, needtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Dice-Up", "Interface\\Buttons\\UI-GroupLoot-Dice-Highlight", "Interface\\Buttons\\UI-GroupLoot-Dice-Down", 1, NEED, "LEFT", frame.button, "RIGHT", 5, -1)
-	local greed, greedtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Coin-Up", "Interface\\Buttons\\UI-GroupLoot-Coin-Highlight", "Interface\\Buttons\\UI-GroupLoot-Coin-Down", 2, GREED, "LEFT", need, "RIGHT", 0, -1)
+	local need, needtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Dice-Up]], [[Interface\Buttons\UI-GroupLoot-Dice-Highlight]], [[Interface\Buttons\UI-GroupLoot-Dice-Down]], 1, NEED, "LEFT", frame.button, "RIGHT", 5, -1)
+	local greed, greedtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Coin-Up]], [[Interface\Buttons\UI-GroupLoot-Coin-Highlight]], [[Interface\Buttons\UI-GroupLoot-Coin-Down]], 2, GREED, "LEFT", need, "RIGHT", 0, -1)
 	local de, detext
-	de, detext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-DE-Up", "Interface\\Buttons\\UI-GroupLoot-DE-Highlight", "Interface\\Buttons\\UI-GroupLoot-DE-Down", 3, ROLL_DISENCHANT, "LEFT", greed, "RIGHT", 0, -1)
-	local pass, passtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Pass-Up", nil, "Interface\\Buttons\\UI-GroupLoot-Pass-Down", 0, PASS, "LEFT", de or greed, "RIGHT", 0, 2)
+	de, detext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE-Up]], [[Interface\Buttons\UI-GroupLoot-DE-Highlight]], [[Interface\Buttons\UI-GroupLoot-DE-Down]], 3, ROLL_DISENCHANT, "LEFT", greed, "RIGHT", 0, -1)
+	local pass, passtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass-Up]], nil, [[Interface\Buttons\UI-GroupLoot-Pass-Down]], 0, PASS, "LEFT", de or greed, "RIGHT", 0, 2)
 	frame.needbutt, frame.greedbutt, frame.disenchantbutt = need, greed, de
 	frame.need, frame.greed, frame.pass, frame.disenchant = needtext, greedtext, passtext, detext
 

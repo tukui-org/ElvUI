@@ -299,7 +299,7 @@ function AFK:Initialize()
 
 	self.AFKMode.bottom.faction = self.AFKMode.bottom:CreateTexture(nil, 'OVERLAY')
 	self.AFKMode.bottom.faction:Point("BOTTOMLEFT", self.AFKMode.bottom, "BOTTOMLEFT", offsetX, offsetY)
-	self.AFKMode.bottom.faction:SetTexture("Interface\\Timer\\"..factionGroup.."-Logo")
+	self.AFKMode.bottom.faction:SetTexture(format([[Interface\Timer\%s-Logo]], factionGroup))
 	self.AFKMode.bottom.faction:Size(size, size)
 
 	self.AFKMode.bottom.name = self.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')

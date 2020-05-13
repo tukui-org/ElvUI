@@ -114,7 +114,7 @@ AB.customExitButton = {
 			PetDismiss()
 		end
 	end,
-	texture = "Interface\\Icons\\Spell_Shadow_SacrificialShield",
+	texture = [[Interface\Icons\Spell_Shadow_SacrificialShield]],
 	tooltip = _G.LEAVE_VEHICLE,
 }
 

@@ -146,7 +146,7 @@ function S:WorldMapFrame()
 				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, "OVERLAY")
 				dialog.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
 				dialog.MinimizeButton.tex:SetInside()
-				dialog.MinimizeButton:SetHighlightTexture("Interface\\Buttons\\UI-PlusButton-Hilight", "ADD")
+				dialog.MinimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
 			end
 			dialog.isSkinned = true
 		end

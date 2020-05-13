@@ -111,7 +111,7 @@ function S:Blizzard_Collections()
 		bu.factionIcon:Point('TOPRIGHT', -1, -4)
 		bu.factionIcon:Point('BOTTOMRIGHT', -1, 4)
 
-		bu.favorite:SetTexture("Interface\\COMMON\\FavoritesIcon")
+		bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
 		bu.favorite:Point("TOPLEFT", bu.DragButton, "TOPLEFT" , -8, 8)
 		bu.favorite:Size(32, 32)
 	end

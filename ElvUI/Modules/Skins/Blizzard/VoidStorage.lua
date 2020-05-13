@@ -35,10 +35,10 @@ function S:Blizzard_VoidStorageUI()
 	VoidStorageFrame:StripTextures()
 	VoidStorageFrame:SetTemplate("Transparent")
 
-	VoidStorageFrame.Page1:SetNormalTexture("Interface\\Icons\\INV_Enchant_EssenceCosmicGreater")
+	VoidStorageFrame.Page1:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceCosmicGreater]])
 	VoidStorageFrame.Page1:Point("LEFT", "$parent", "TOPRIGHT", 1, -60)
 
-	VoidStorageFrame.Page2:SetNormalTexture("Interface\\Icons\\INV_Enchant_EssenceArcaneLarge")
+	VoidStorageFrame.Page2:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceArcaneLarge]])
 
 	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
 	_G.VoidStoragePurchaseFrame:SetTemplate()

@@ -80,7 +80,7 @@ function S:SpellBookFrame()
 
 		highlight:SetAllPoints(icon)
 		hooksecurefunc(highlight, "SetTexture", function(s, texture)
-			if texture == "Interface\\Buttons\\ButtonHilight-Square" then
+			if texture == [[Interface\Buttons\ButtonHilight-Square]] then
 				s:SetColorTexture(1, 1, 1, 0.3)
 			end
 		end)
@@ -170,7 +170,7 @@ function S:SpellBookFrame()
 
 			Frame['button'..i].highlightTexture:SetInside()
 			hooksecurefunc(Frame['button'..i].highlightTexture, "SetTexture", function(s, texture)
-				if texture == "Interface\\Buttons\\ButtonHilight-Square" then
+				if texture == [[Interface\Buttons\ButtonHilight-Square]] then
 					s:SetColorTexture(1, 1, 1, 0.3)
 				end
 			end)

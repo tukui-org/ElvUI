@@ -148,7 +148,7 @@ function S:ObjectiveTrackerFrame()
 	minimizeButton.tex = minimizeButton:CreateTexture(nil, "OVERLAY")
 	minimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
 	minimizeButton.tex:SetInside()
-	minimizeButton:SetHighlightTexture("Interface\\Buttons\\UI-PlusButton-Hilight", "ADD")
+	minimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
 	minimizeButton:HookScript("OnClick", function()
 		if ObjectiveTrackerFrame.collapsed then
 			minimizeButton.tex:SetTexture(E.Media.Textures.PlusButton)

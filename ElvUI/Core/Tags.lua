@@ -213,7 +213,7 @@ ElvUF.Tags.Methods['faction:icon'] = function(unit)
 	local factionGroup = UnitFactionGroup(unit)
 
 	if (factionGroup == 'Horde' or factionGroup == 'Alliance') then
-		return CreateTextureMarkup("Interface\\FriendsFrame\\PlusManz-"..factionGroup, 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+		return CreateTextureMarkup(format([[Interface\FriendsFrame\PlusManz-%s]], factionGroup), 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
 	else
 		return nil
 	end
@@ -243,9 +243,9 @@ end
 ElvUF.Tags.Events['status:icon'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['status:icon'] = function(unit)
 	if UnitIsAFK(unit) then
-		return CreateTextureMarkup('Interface\\FriendsFrame\\StatusIcon-Away', 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+		return CreateTextureMarkup([[Interface\FriendsFrame\StatusIcon-Away]], 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
 	elseif UnitIsDND(unit) then
-		return CreateTextureMarkup('Interface\\FriendsFrame\\StatusIcon-DnD', 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+		return CreateTextureMarkup([[Interface\FriendsFrame\StatusIcon-DnD]], 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
 	end
 
 	return nil
