@@ -184,6 +184,7 @@ function DT:EmptyPanel(panel)
 	for _, dt in ipairs(panel.dataPanels) do
 		dt:UnregisterAllEvents()
 		dt:SetScript('OnUpdate', nil)
+		dt:SetScript('OnEvent', nil)
 		dt:SetScript('OnEnter', nil)
 		dt:SetScript('OnLeave', nil)
 		dt:SetScript('OnClick', nil)
@@ -407,18 +408,24 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 end
 
 function DT:UpdatePanelInfo(panelName, panel, ...)
-	local info = DT.LoadedInfo
-	local isBGPanel = info.isInPVP and (panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel')
-	local enableBGPanel = isBGPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
-
 	local db = panel.db or P.datatexts.panels[panelName] and DT.db.panels[panelName]
-
 	if not db then return end
 
+	local info = DT.LoadedInfo
 	local font, fontSize, fontOutline = info.font, info.fontSize, info.fontOutline
 	if db and db.fonts and db.fonts.enable then
 		font, fontSize, fontOutline = LSM:Fetch('font', db.fonts.font), db.fonts.fontSize, db.fonts.fontOutline
+	end
+
+	local chatPanel = panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel'
+	local battlePanel = info.isInPVP and chatPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
+	if battlePanel then
+		DT:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
+		DT.ShowingBattleStats = true
+	elseif chatPanel and DT.ShowingBattleStats then
+		DT:UnregisterEvent('UPDATE_BATTLEFIELD_SCORE')
+		DT.ShowingBattleStats = nil
 	end
 
 	local panelWidth, panelHeight = panel:GetSize()
@@ -462,6 +469,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 		dt:UnregisterAllEvents()
 		dt:SetScript('OnUpdate', nil)
+		dt:SetScript('OnEvent', nil)
 		dt:SetScript('OnClick', nil)
 		dt:SetScript('OnEnter', DT.OnEnter)
 		dt:SetScript('OnLeave', DT.OnLeave)
@@ -472,6 +480,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.pointIndex = i
 		dt.parent = panel
 		dt.parentName = panelName
+		dt.battleStats = battlePanel
 		dt.db = db
 
 		if dt.objectEvent and dt.objectEventFunc then
@@ -484,9 +493,9 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		text:SetWordWrap(DT.db.wordWrap)
 		text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
 
-		if enableBGPanel then
-			dt:SetScript('OnClick', DT.HideBattlegroundTexts)
-			tinsert(dt.MouseEnters, DT.BattlegroundStats)
+		if battlePanel then
+			dt:SetScript('OnClick', DT.ToggleBattleStats)
+			tinsert(dt.MouseEnters, DT.HoverBattleStats)
 		else
 			--Register Panel to Datatext
 			for name, data in pairs(DT.RegisteredDataTexts) do
@@ -519,16 +528,8 @@ function DT:LoadDataTexts(...)
 		end
 	end
 
-	if data.isInPVP and (not DT.ForceHideBGStats and E.db.datatexts.battleground) then
-		DT:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
+	if DT.ShowingBattleStats then
 		DT:UPDATE_BATTLEFIELD_SCORE()
-		DT.ShowingBGStats = true
-	else
-		DT:UnregisterEvent('UPDATE_BATTLEFIELD_SCORE')
-	end
-
-	if DT.ForceHideBGStats then
-		DT.ForceHideBGStats = nil
 	end
 end
 

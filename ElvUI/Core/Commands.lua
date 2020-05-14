@@ -70,13 +70,6 @@ function E:LuaError(msg)
 	end
 end
 
-function E:BGStats()
-	DT.ForceHideBGStats = nil
-	DT:LoadDataTexts()
-
-	E:Print(L["Battleground datatexts will now show again if you are inside a battleground."])
-end
-
 local function OnCallback(command)
 	_G.MacroEditBox:GetScript('OnEvent')(_G.MacroEditBox, 'EXECUTE_CHAT_LINE', command)
 end
@@ -279,7 +272,7 @@ function E:LoadCommands()
 	---- arg1 can be 'all' this will scan all registered modules!
 
 	self:RegisterChatCommand('hdt', DT.HyperDT)
-	self:RegisterChatCommand('bgstats', 'BGStats')
+	self:RegisterChatCommand('bgstats', DT.ToggleBattleStats)
 	self:RegisterChatCommand('hellokitty', 'HelloKittyToggle')
 	self:RegisterChatCommand('hellokittyfix', 'HelloKittyFix')
 	self:RegisterChatCommand('harlemshake', 'HarlemShakeToggle')

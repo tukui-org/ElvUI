@@ -61,7 +61,7 @@ function THREAT:GetColor(unit)
 end
 
 function THREAT:Update()
-	if DT and DT.ShowingBGStats then
+	if DT and DT.ShowingBattleStats then
 		if self.bar:IsShown() then
 			self.bar:Hide()
 		end
