@@ -110,7 +110,9 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s: ", hex, "%s|r")
 
-	DT:UpdateBattlePanel('LEFT')
-	DT:UpdateBattlePanel('RIGHT')
+	if DT.ShowingBattleStats then
+		DT:UpdateBattlePanel('LEFT')
+		DT:UpdateBattlePanel('RIGHT')
+	end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
