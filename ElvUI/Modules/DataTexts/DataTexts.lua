@@ -419,10 +419,10 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	end
 
 	local chatPanel = panelName == 'LeftChatDataPanel' or panelName == 'RightChatDataPanel'
-	local battlePanel = info.isInPVP and chatPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
+	local battlePanel = info.isInBattle and chatPanel and (not DT.ForceHideBGStats and E.db.datatexts.battleground)
 	if battlePanel then
 		DT:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
-		DT.ShowingBattleStats = true
+		DT.ShowingBattleStats = info.instanceType
 	elseif chatPanel and DT.ShowingBattleStats then
 		DT:UnregisterEvent('UPDATE_BATTLEFIELD_SCORE')
 		DT.ShowingBattleStats = nil
@@ -516,7 +516,7 @@ function DT:LoadDataTexts(...)
 	local data = DT.LoadedInfo
 	data.font, data.fontSize, data.fontOutline = LSM:Fetch('font', DT.db.font), DT.db.fontSize, DT.db.fontOutline
 	data.inInstance, data.instanceType = IsInInstance()
-	data.isInPVP = data.inInstance and data.instanceType == 'pvp'
+	data.isInBattle = data.inInstance and (data.instanceType == 'pvp' or data.instanceType == 'arena')
 
 	for panel, db in pairs(E.global.datatexts.customPanels) do
 		DT:UpdatePanelAttributes(panel, db)
