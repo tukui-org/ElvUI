@@ -949,7 +949,7 @@ local function UpdateFilterGroup()
 								notInterruptible = {
 									type = "toggle",
 									order = 2,
-									name = L["Non-Interruptable"],
+									name = L["Non-Interruptible"],
 									desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."]
 								},
 								spacer1 = {
@@ -6236,11 +6236,11 @@ E.Options.args.nameplate = {
 								castColor = {
 									type = "color",
 									order = 1,
-									name = L["Cast Color"],
+									name = L["Interruptible"],
 									hasAlpha = false
 								},
 								castNoInterruptColor = {
-									name = L["Cast No Interrupt Color"],
+									name = L["Non-Interruptible"],
 									order = 2,
 									type = "color",
 									hasAlpha = false
