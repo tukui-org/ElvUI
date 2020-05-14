@@ -4002,12 +4002,12 @@ E.Options.args.unitframe = {
 								},
 								castColor = {
 									order = 9,
-									name = L["Interruptable"],
+									name = L["Interruptible"],
 									type = 'color',
 								},
 								castNoInterrupt = {
 									order = 10,
-									name = L["Non-Interruptable"],
+									name = L["Non-Interruptible"],
 									type = 'color',
 								},
 							},
