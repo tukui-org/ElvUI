@@ -18,10 +18,11 @@ local holder = {
 	RIGHT = { data = {}, _G.DAMAGE, _G.SHOW_COMBAT_HEALING, _G.HONOR }
 }
 
+DT.BattleStats = holder
 function DT:UpdateBattlePanel(which)
 	local info = which and holder[which]
 
-	local panel = info and info.dataPanels
+	local panel = info and info.panel
 	if not panel then return end
 
 	for i, name in ipairs(info) do
@@ -38,10 +39,6 @@ local RIGHT = holder.RIGHT.data
 function DT:UPDATE_BATTLEFIELD_SCORE()
 	myIndex = nil
 
-	if not RIGHT.panel then RIGHT.panel = _G.RightChatDataPanel and _G.RightChatDataPanel.dataPanels end
-	if not LEFT.panel then LEFT.panel = _G.LeftChatDataPanel and _G.LeftChatDataPanel.dataPanels end
-	if not LEFT.panel then return end
-
 	for i = 1, GetNumBattlefieldScores() do
 		local name, kb, hks, deaths, honor, _, _, _, _, dmg, heals = GetBattlefieldScore(i)
 		if name == E.myname then
@@ -52,8 +49,10 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 		end
 	end
 
-	DT:UpdateBattlePanel('LEFT')
-	DT:UpdateBattlePanel('RIGHT')
+	if myIndex then
+		DT:UpdateBattlePanel('LEFT')
+		DT:UpdateBattlePanel('RIGHT')
+	end
 end
 
 local function columnSort(lhs,rhs)
@@ -73,7 +72,7 @@ function DT:HoverBattleStats()
 			DT.tooltip:AddDoubleLine(BATTLEGROUND, E.MapInfo.name, 1,1,1, classColor.r, classColor.g, classColor.b)
 
 			-- Add extra statistics to watch based on what BG you are in.
-			for _, stat in ipairs(columns) do
+			for i, stat in ipairs(columns) do
 				local name = stat.name
 				if name and strlen(name) > 0 then
 					if not firstLine then
@@ -81,7 +80,7 @@ function DT:HoverBattleStats()
 						firstLine = true
 					end
 
-					DT.tooltip:AddDoubleLine(name, GetBattlefieldStatData(myIndex, stat.pvpStatID), 1,1,1)
+					DT.tooltip:AddDoubleLine(name, GetBattlefieldStatData(myIndex, i), 1,1,1)
 				end
 			end
 

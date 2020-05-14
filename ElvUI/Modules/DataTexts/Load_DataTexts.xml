@@ -6,7 +6,7 @@
 	<Script file='AttackPower.lua'/>
 	<Script file='Avoidance.lua'/>
 	<Script file='Bags.lua'/>
-	<Script file='Battleground.lua'/>
+	<Script file='BattleStats.lua'/>
 	<Script file='CallToArms.lua'/>
 	<Script file='CombatTime.lua'/>
 	<Script file='ConfigElvUI.lua'/>
