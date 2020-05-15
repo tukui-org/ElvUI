@@ -7,8 +7,8 @@ local pairs = pairs
 local CreateFrame = CreateFrame
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat
 
-local PANEL_HEIGHT = 22
-local SIDE_BUTTON_WIDTH = 18
+local BAR_HEIGHT = 22
+local TOGGLE_WIDTH = 18
 
 local function Panel_OnShow(self)
 	self:SetFrameLevel(200)
@@ -26,7 +26,7 @@ function LO:Initialize()
 	LO.BottomPanel:SetTemplate('Transparent')
 	LO.BottomPanel:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', -1, -1)
 	LO.BottomPanel:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
-	LO.BottomPanel:Height(PANEL_HEIGHT)
+	LO.BottomPanel:Height(BAR_HEIGHT)
 	LO.BottomPanel:SetScript('OnShow', Panel_OnShow)
 	E.FrameLocks.ElvUI_BottomPanel = true
 	Panel_OnShow(LO.BottomPanel)
@@ -36,7 +36,7 @@ function LO:Initialize()
 	LO.TopPanel:SetTemplate('Transparent')
 	LO.TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
 	LO.TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
-	LO.TopPanel:Height(PANEL_HEIGHT)
+	LO.TopPanel:Height(BAR_HEIGHT)
 	LO.TopPanel:SetScript('OnShow', Panel_OnShow)
 	Panel_OnShow(LO.TopPanel)
 	E.FrameLocks.ElvUI_TopPanel = true
@@ -151,8 +151,8 @@ function LO:SetDataPanelStyle()
 	_G.RightChatToggleButton:SetTemplate(E.db.datatexts.panels.RightChatDataPanel.backdrop and (E.db.datatexts.panels.RightChatDataPanel.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
 end
 
-local PanelHeight = PANEL_HEIGHT + 1
-local SideButtonWidth = SIDE_BUTTON_WIDTH + 1
+local barHeight = BAR_HEIGHT + 1
+local toggleWidth = TOGGLE_WIDTH + 1
 function LO:RepositionChatDataPanels()
 	local LeftChatTab = _G.LeftChatTab
 	local RightChatTab = _G.RightChatTab
@@ -171,41 +171,41 @@ function LO:RepositionChatDataPanels()
 	RightChatDataPanel:ClearAllPoints()
 
 	LeftChatTab:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', 2, -2)
-	LeftChatTab:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', -2, -PANEL_HEIGHT-2)
+	LeftChatTab:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', -2, -BAR_HEIGHT-2)
 	RightChatTab:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -2, -2)
-	RightChatTab:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 2, -PANEL_HEIGHT-2)
+	RightChatTab:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 2, -BAR_HEIGHT-2)
 
 	local SPACING = E.PixelMode and 1 or -1
-	local SIDE_BUTTON = E.db.chat.hideChatToggles and 0 or SideButtonWidth
+	local SIDE_BUTTON = E.db.chat.hideChatToggles and 0 or toggleWidth
 
 	local Left = LeftChatPanel:GetPoint()
 	if E.db.chat.LeftChatDataPanelAnchor == 'ABOVE_CHAT' then
 		LeftChatPanel:Point(Left, LeftChatMover, 0, 0)
 		LeftChatDataPanel:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', 0, -SPACING)
-		LeftChatDataPanel:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', SIDE_BUTTON, PanelHeight)
+		LeftChatDataPanel:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', SIDE_BUTTON, barHeight)
 		LeftChatToggleButton:Point('BOTTOMRIGHT', LeftChatDataPanel, 'BOTTOMLEFT', 1, 0)
-		LeftChatToggleButton:Point('TOPLEFT', LeftChatDataPanel, 'TOPLEFT', -SideButtonWidth, 0)
+		LeftChatToggleButton:Point('TOPLEFT', LeftChatDataPanel, 'TOPLEFT', -toggleWidth, 0)
 	else
-		LeftChatPanel:Point(Left, LeftChatMover, 0, PanelHeight)
+		LeftChatPanel:Point(Left, LeftChatMover, 0, barHeight)
 		LeftChatDataPanel:Point('TOPRIGHT', LeftChatPanel, 'BOTTOMRIGHT', 0, SPACING)
-		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SIDE_BUTTON, -PanelHeight)
+		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', SIDE_BUTTON, -barHeight)
 		LeftChatToggleButton:Point('TOPRIGHT', LeftChatDataPanel, 'TOPLEFT', 1, 0)
-		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatDataPanel, 'BOTTOMLEFT', -SideButtonWidth, 0)
+		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatDataPanel, 'BOTTOMLEFT', -toggleWidth, 0)
 	end
 
 	local Right = RightChatPanel:GetPoint()
 	if E.db.chat.RightChatDataPanelAnchor == 'ABOVE_CHAT' then
 		RightChatPanel:Point(Right, RightChatMover, 0, 0)
 		RightChatDataPanel:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 0, -SPACING)
-		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -SIDE_BUTTON, PanelHeight)
+		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -SIDE_BUTTON, barHeight)
 		RightChatToggleButton:Point('BOTTOMLEFT', RightChatDataPanel, 'BOTTOMRIGHT', -1, 0)
-		RightChatToggleButton:Point('TOPRIGHT', RightChatDataPanel, 'TOPRIGHT', SideButtonWidth, 0)
+		RightChatToggleButton:Point('TOPRIGHT', RightChatDataPanel, 'TOPRIGHT', toggleWidth, 0)
 	else
-		RightChatPanel:Point(Right, RightChatMover, 0, PanelHeight)
+		RightChatPanel:Point(Right, RightChatMover, 0, barHeight)
 		RightChatDataPanel:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', 0, SPACING)
-		RightChatDataPanel:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -SIDE_BUTTON, -PanelHeight)
+		RightChatDataPanel:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -SIDE_BUTTON, -barHeight)
 		RightChatToggleButton:Point('TOPLEFT', RightChatDataPanel, 'TOPRIGHT', -1, 0)
-		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', SideButtonWidth, 0)
+		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', toggleWidth, 0)
 	end
 end
 
@@ -223,8 +223,8 @@ function LO:ToggleChatPanels()
 
 	local panelHeight = E.db.chat.panelHeight
 	local rightHeight = E.db.chat.separateSizes and E.db.chat.panelHeightRight
-	_G.LeftChatMover:Height(panelHeight + (showLeftPanel and PanelHeight or 0))
-	_G.RightChatMover:Height((rightHeight or panelHeight) + (showRightPanel and PanelHeight or 0))
+	_G.LeftChatMover:Height(panelHeight + (showLeftPanel and barHeight or 0))
+	_G.RightChatMover:Height((rightHeight or panelHeight) + (showRightPanel and barHeight or 0))
 
 	_G.RightChatDataPanel:SetShown(showRightPanel)
 	_G.LeftChatDataPanel:SetShown(showLeftPanel)
@@ -377,7 +377,7 @@ end
 function LO:CreateMinimapPanels()
 	local panel = CreateFrame('Frame', 'MinimapPanel', _G.Minimap)
 	panel:Point('TOPLEFT', _G.Minimap, 'BOTTOMLEFT', -1, 0)
-	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', 1, -PANEL_HEIGHT)
+	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', 1, -BAR_HEIGHT)
 	panel:Hide()
 	DT:RegisterPanel(panel, E.db.datatexts.panels.MinimapPanel.numPoints, 'ANCHOR_BOTTOM', 0, -4)
 end
