@@ -265,7 +265,7 @@ do --this can save some main file locals
 		["Luckypriest-LaughingSkull"]	= Clover,
 		["Luckymonkas-LaughingSkull"]   = Clover,
 		["Luckydk-LaughingSkull"]       = Clover,
-		["Dracojr-LaughingSkull"]       = Clover,
+		["Luckyhunter-LaughingSkull"]       = Clover,
 		["Unluckyone-LaughingSkull"]    = Clover,
 		["Notlucky-LaughingSkull"]      = Clover,
 		["Luckymage-LaughingSkull"]     = Clover,
