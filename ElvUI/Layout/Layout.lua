@@ -199,13 +199,13 @@ function LO:RepositionChatDataPanels()
 		RightChatDataPanel:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 0, -SPACING)
 		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -SIDE_BUTTON, PanelHeight)
 		RightChatToggleButton:Point('BOTTOMLEFT', RightChatDataPanel, 'BOTTOMRIGHT', -1, 0)
-		RightChatToggleButton:Point('TOPRIGHT', RightChatDataPanel, 'TOPRIGHT', SideButtonWidth + 1, 0)
+		RightChatToggleButton:Point('TOPRIGHT', RightChatDataPanel, 'TOPRIGHT', SideButtonWidth, 0)
 	else
 		RightChatPanel:Point(Right, RightChatMover, 0, PanelHeight)
 		RightChatDataPanel:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', 0, SPACING)
 		RightChatDataPanel:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -SIDE_BUTTON, -PanelHeight)
 		RightChatToggleButton:Point('TOPLEFT', RightChatDataPanel, 'TOPRIGHT', -1, 0)
-		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', SideButtonWidth + 1, 0)
+		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', SideButtonWidth, 0)
 	end
 end
 
