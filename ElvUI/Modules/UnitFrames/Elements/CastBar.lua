@@ -196,32 +196,19 @@ function UF:Configure_Castbar(frame)
 		if db.spark then
 			castbar.Spark:Height(anchor:GetHeight() * 2)
 		end
-
-		if(castbar.Holder.mover) then
-			E:DisableMover(castbar.Holder.mover:GetName())
-		end
 	else
 		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
-		if not isMoved then
-			castbar.Holder.mover:ClearAllPoints()
-		end
+		if not isMoved then castbar.Holder.mover:ClearAllPoints() end
 
 		castbar:ClearAllPoints()
 		if frame.ORIENTATION ~= "RIGHT" then
 			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
-			if not isMoved then
-				castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER - frame.SPACING))
-			end
+			if not isMoved then castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER - frame.SPACING)) end
 		else
 			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
-			if not isMoved then
-				castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER - frame.SPACING))
-			end
+			if not isMoved then castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER - frame.SPACING)) end
 		end
 
-		if(castbar.Holder.mover) then
-			E:EnableMover(castbar.Holder.mover:GetName())
-		end
 	end
 
 	if not db.iconAttached and db.icon then
@@ -255,14 +242,18 @@ function UF:Configure_Castbar(frame)
 	castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and UF.db.colors.castbar_backdrop
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar)
 
+	if castbar.Holder.mover then
+		if db.enable and db.overlayOnFrame ~= 'None' then
+			E:EnableMover(castbar.Holder.mover:GetName())
+		else
+			E:DisableMover(castbar.Holder.mover:GetName())
+		end
+	end
+
 	if db.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
 	elseif not db.enable and frame:IsElementEnabled('Castbar') then
 		frame:DisableElement('Castbar')
-
-		if castbar.Holder.mover then
-			E:DisableMover(castbar.Holder.mover:GetName())
-		end
 	end
 end
 
