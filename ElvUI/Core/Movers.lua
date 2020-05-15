@@ -297,6 +297,7 @@ end
 
 function E:SaveMoverPosition(name)
 	local holder = E.CreatedMovers[name]
+	if not holder then return end
 	if not E.db.movers then E.db.movers = {} end
 	E.db.movers[name] = GetPoint(holder.mover)
 end
