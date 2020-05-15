@@ -106,6 +106,7 @@ local function ChatButton_OnClick(self)
 	end
 end
 
+-- these are used by the bindings and options
 function HideLeftChat()
 	ChatButton_OnClick(_G.LeftChatToggleButton)
 end
