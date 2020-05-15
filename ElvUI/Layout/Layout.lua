@@ -218,22 +218,20 @@ function LO:SetChatTabStyle()
 end
 
 function LO:ToggleChatPanels()
-	if E.db.datatexts.panels.LeftChatDataPanel.enable then
-		_G.LeftChatDataPanel:SetShown(E.db.datatexts.panels.LeftChatDataPanel.enable)
-		_G.LeftChatMover:Height(E.db.chat.panelHeight + PanelHeight)
-	else
-		_G.LeftChatMover:Height(E.db.chat.panelHeight)
-	end
+	local showRightPanel = E.db.datatexts.panels.RightChatDataPanel.enable
+	local showLeftPanel = E.db.datatexts.panels.LeftChatDataPanel.enable
 
-	if E.db.datatexts.panels.RightChatDataPanel.enable then
-		_G.RightChatDataPanel:SetShown(E.db.datatexts.panels.RightChatDataPanel.enable)
-		_G.RightChatMover:Height((E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) + PanelHeight)
-	else
-		_G.RightChatMover:Height(E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
-	end
+	local panelHeight = E.db.chat.panelHeight
+	local rightHeight = E.db.chat.separateSizes and E.db.chat.panelHeightRight
+	_G.LeftChatMover:Height(panelHeight + (showLeftPanel and PanelHeight or 0))
+	_G.RightChatMover:Height((rightHeight or panelHeight) + (showRightPanel and PanelHeight or 0))
 
-	_G.LeftChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.LeftChatDataPanel.enable)
-	_G.RightChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
+	_G.RightChatDataPanel:SetShown(showRightPanel)
+	_G.LeftChatDataPanel:SetShown(showLeftPanel)
+
+	local showToggles = not E.db.chat.hideChatToggles
+	_G.LeftChatToggleButton:SetShown(showToggles and E.db.datatexts.panels.LeftChatDataPanel.enable)
+	_G.RightChatToggleButton:SetShown(showToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
 
 	local panelBackdrop = E.db.chat.panelBackdrop
 	if panelBackdrop == 'SHOWBOTH' then
