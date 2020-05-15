@@ -153,6 +153,28 @@ end
 
 local barHeight = BAR_HEIGHT + 1
 local toggleWidth = TOGGLE_WIDTH + 1
+function LO:RefreshBarMovers()
+	local LeftChatPanel = _G.LeftChatPanel
+	local RightChatPanel = _G.RightChatPanel
+	local LeftChatMover = _G.LeftChatMover
+	local RightChatMover = _G.RightChatMover
+
+	local Left = LeftChatPanel:GetPoint()
+	local Right = RightChatPanel:GetPoint()
+	local showRightPanel = E.db.datatexts.panels.RightChatDataPanel.enable
+	local showLeftPanel = E.db.datatexts.panels.LeftChatDataPanel.enable
+	if not showLeftPanel or E.db.chat.LeftChatDataPanelAnchor == 'ABOVE_CHAT' then
+		LeftChatPanel:Point(Left, LeftChatMover, 0, 0)
+	elseif showLeftPanel then
+		LeftChatPanel:Point(Left, LeftChatMover, 0, barHeight)
+	end
+	if not showRightPanel or E.db.chat.RightChatDataPanelAnchor == 'ABOVE_CHAT' then
+		RightChatPanel:Point(Right, RightChatMover, 0, 0)
+	elseif showRightPanel then
+		RightChatPanel:Point(Right, RightChatMover, 0, barHeight)
+	end
+end
+
 function LO:RepositionChatDataPanels()
 	local LeftChatTab = _G.LeftChatTab
 	local RightChatTab = _G.RightChatTab
@@ -162,8 +184,6 @@ function LO:RepositionChatDataPanels()
 	local RightChatDataPanel = _G.RightChatDataPanel
 	local LeftChatToggleButton = _G.LeftChatToggleButton
 	local RightChatToggleButton = _G.RightChatToggleButton
-	local LeftChatMover = _G.LeftChatMover
-	local RightChatMover = _G.RightChatMover
 
 	LeftChatTab:ClearAllPoints()
 	RightChatTab:ClearAllPoints()
@@ -177,36 +197,31 @@ function LO:RepositionChatDataPanels()
 
 	local SPACING = E.PixelMode and 1 or -1
 	local sideButton = E.db.chat.hideChatToggles and 0 or toggleWidth
-
-	local Left = LeftChatPanel:GetPoint()
 	if E.db.chat.LeftChatDataPanelAnchor == 'ABOVE_CHAT' then
-		LeftChatPanel:Point(Left, LeftChatMover, 0, 0)
 		LeftChatDataPanel:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', 0, -SPACING)
 		LeftChatDataPanel:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', sideButton, barHeight)
 		LeftChatToggleButton:Point('BOTTOMRIGHT', LeftChatDataPanel, 'BOTTOMLEFT', 1, 0)
 		LeftChatToggleButton:Point('TOPLEFT', LeftChatDataPanel, 'TOPLEFT', -toggleWidth, 0)
 	else
-		LeftChatPanel:Point(Left, LeftChatMover, 0, barHeight)
 		LeftChatDataPanel:Point('TOPRIGHT', LeftChatPanel, 'BOTTOMRIGHT', 0, SPACING)
 		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', sideButton, -barHeight)
 		LeftChatToggleButton:Point('TOPRIGHT', LeftChatDataPanel, 'TOPLEFT', 1, 0)
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatDataPanel, 'BOTTOMLEFT', -toggleWidth, 0)
 	end
 
-	local Right = RightChatPanel:GetPoint()
 	if E.db.chat.RightChatDataPanelAnchor == 'ABOVE_CHAT' then
-		RightChatPanel:Point(Right, RightChatMover, 0, 0)
 		RightChatDataPanel:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 0, -SPACING)
 		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -sideButton, barHeight)
 		RightChatToggleButton:Point('BOTTOMLEFT', RightChatDataPanel, 'BOTTOMRIGHT', -1, 0)
 		RightChatToggleButton:Point('TOPRIGHT', RightChatDataPanel, 'TOPRIGHT', toggleWidth, 0)
 	else
-		RightChatPanel:Point(Right, RightChatMover, 0, barHeight)
 		RightChatDataPanel:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', 0, SPACING)
 		RightChatDataPanel:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -sideButton, -barHeight)
 		RightChatToggleButton:Point('TOPLEFT', RightChatDataPanel, 'TOPRIGHT', -1, 0)
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', toggleWidth, 0)
 	end
+
+	LO:RefreshBarMovers()
 end
 
 function LO:SetChatTabStyle()
@@ -232,6 +247,8 @@ function LO:ToggleChatPanels()
 	local showToggles = not E.db.chat.hideChatToggles
 	_G.LeftChatToggleButton:SetShown(showToggles and E.db.datatexts.panels.LeftChatDataPanel.enable)
 	_G.RightChatToggleButton:SetShown(showToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
+
+	LO:RefreshBarMovers()
 
 	local panelBackdrop = E.db.chat.panelBackdrop
 	if panelBackdrop == 'SHOWBOTH' then
