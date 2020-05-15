@@ -246,8 +246,8 @@ function LO:ToggleChatPanels()
 	_G.LeftChatDataPanel:SetShown(showLeftPanel)
 
 	local showToggles = not E.db.chat.hideChatToggles
-	_G.LeftChatToggleButton:SetShown(showToggles and E.db.datatexts.panels.LeftChatDataPanel.enable)
-	_G.RightChatToggleButton:SetShown(showToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
+	_G.LeftChatToggleButton:SetShown(showToggles and showLeftPanel)
+	_G.RightChatToggleButton:SetShown(showToggles and showRightPanel)
 
 	LO:RefreshChatMovers()
 
