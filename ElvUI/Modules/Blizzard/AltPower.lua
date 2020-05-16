@@ -192,11 +192,11 @@ function B:SkinAltPowerBar()
 			Hide = function() texTop:Hide() texBotomLeft:Hide() texBottomRight:Hide() end,
 		}
 
-		texTop:SetTexture([[Interface\AddOns\ElvUI\\Media\\Textures\\NZothTop]])
+		texTop:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothTop]])
 		texTop:Point("CENTER", powerbar, "TOP", 0, -19)
-		texBotomLeft:SetTexture([[Interface\AddOns\ElvUI\\Media\\Textures\\NZothBottomLeft]])
+		texBotomLeft:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothBottomLeft]])
 		texBotomLeft:Point("BOTTOMLEFT", powerbar, "BOTTOMLEFT", -7, -10)
-		texBottomRight:SetTexture([[Interface\AddOns\ElvUI\\Media\\Textures\\NZothBottomRight]])
+		texBottomRight:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothBottomRight]])
 		texBottomRight:Point("BOTTOMRIGHT", powerbar, "BOTTOMRIGHT", 7, -10)
 	end
 
