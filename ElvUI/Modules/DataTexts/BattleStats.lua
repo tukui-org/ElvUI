@@ -62,8 +62,8 @@ end
 function DT:HoverBattleStats()
 	DT:SetupTooltip(self)
 
-	if DT.ShowingBattleStats == 'pvp' then
-		local columns = myIndex and C_PvP_GetMatchPVPStatColumns()
+	if myIndex and DT.ShowingBattleStats == 'pvp' then
+		local columns = C_PvP_GetMatchPVPStatColumns()
 		if columns then
 			sort(columns, columnSort)
 
