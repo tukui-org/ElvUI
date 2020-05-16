@@ -243,10 +243,10 @@ function UF:Configure_Castbar(frame)
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar)
 
 	if castbar.Holder.mover then
-		if db.enable and db.overlayOnFrame ~= 'None' then
-			E:EnableMover(castbar.Holder.mover:GetName())
-		else
+		if db.overlayOnFrame ~= 'None' or not db.enable then
 			E:DisableMover(castbar.Holder.mover:GetName())
+		else
+			E:EnableMover(castbar.Holder.mover:GetName())
 		end
 	end
 
