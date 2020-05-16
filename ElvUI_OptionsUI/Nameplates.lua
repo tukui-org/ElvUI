@@ -24,7 +24,7 @@ local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local SetCVar = SetCVar
 
-local raidTargetIcon = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t %s"
+local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
 local selectedNameplateFilter
 
 local positionValues = {
