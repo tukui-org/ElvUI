@@ -517,6 +517,7 @@ function UF:PostUpdateAdditionalPower(_, MIN, MAX, event)
 		end
 
 		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+		self.colorPower = not custom_backdrop
 		if custom_backdrop then
 			self.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
 		end
