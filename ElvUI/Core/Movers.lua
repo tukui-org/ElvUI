@@ -54,7 +54,7 @@ function E:SetMoverPoints(name, parent)
 
 	local point1, relativeTo1, relativePoint1, xOffset1, yOffset1 = unpack(holder.parentPoint)
 	local point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = GetSettingPoints(name)
-	if not point2 then -- fallback to the parents original point (on create) if the setting doesn't exist
+	if not point2 or not _G[relativeTo2] then -- fallback to the parents original point (on create) if the setting doesn't exist
 		point2, relativeTo2, relativePoint2, xOffset2, yOffset2 = point1, relativeTo1, relativePoint1, xOffset1, yOffset1
 	end
 
