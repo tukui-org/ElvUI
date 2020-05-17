@@ -848,9 +848,6 @@ function E:UpdateDB()
 	E.db = E.data.profile
 	E.global = E.data.global
 
-	E.private.theme = nil
-	E.private.install_complete = nil
-
 	E:DBConversions()
 	Auras.db = E.db.auras
 	ActionBars.db = E.db.actionbar
