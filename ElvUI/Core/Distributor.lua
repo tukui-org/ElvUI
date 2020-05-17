@@ -245,6 +245,7 @@ local blacklistedKeys = {
 	},
 	private = {},
 	global = {
+		profileCopy = true,
 		general = {
 			AceGUI = true,
 			UIScale = true,
