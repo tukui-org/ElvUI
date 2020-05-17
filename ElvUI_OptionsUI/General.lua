@@ -229,6 +229,11 @@ E.Options.args.general = {
 						['PLAYER'] = L["PLAYER"],
 					},
 				},
+				autoTrackReputation = {
+					order = 19,
+					name = L["Auto Track Reputation"],
+					type = 'toggle',
+				},
 				threatGroup = {
 					order = 50,
 					type = "group",

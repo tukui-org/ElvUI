@@ -13,6 +13,7 @@ P.general = {
 	loginmessage = true,
 	interruptAnnounce = 'NONE',
 	autoRepair = 'NONE',
+	autoTrackReputation = false,
 	autoRoll = false,
 	autoAcceptInvite = false,
 	topPanel = false,
