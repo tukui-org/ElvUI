@@ -24,6 +24,7 @@ local TALENTS = TALENTS
 local PVP_TALENTS = PVP_TALENTS
 
 local displayString, lastPanel, active = ''
+local dataSet
 local activeString = strjoin("", "|cff00FF00" , _G.ACTIVE_PETS, "|r")
 local inactiveString = strjoin("", "|cffFF0000", _G.FACTION_INACTIVE, "|r")
 local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
@@ -35,19 +36,23 @@ local menuList = {
 local specList = {
 	{ text = _G.SPECIALIZATION, isTitle = true, notCheckable = true },
 }
-local DataSet
+
+local SPECIALIZATION_CACHE = {}
+
 local function OnEvent(self, event)
 	lastPanel = self
 
-	if not DataSet and event == 'PLAYER_ENTERING_WORLD' then
-		for index = 1, 4 do
-			local id, name, _, texture = GetSpecializationInfo(index)
+	if not dataSet and event == 'PLAYER_ENTERING_WORLD' then
+		for index = 1, GetNumSpecializations() do
+			local id, name, _, icon = GetSpecializationInfo(index)
 			if ( id ) then
 				menuList[index + 2] = { text = name, checked = function() return GetLootSpecialization() == id end, func = function() SetLootSpecialization(id) end }
-				specList[index + 1] = { text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', texture, name), checked = function() return GetSpecialization() == index end, func = function() SetSpecialization(index) end }
+				specList[index + 1] = { text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', icon, name), checked = function() return GetSpecialization() == index end, func = function() SetSpecialization(index) end }
+				SPECIALIZATION_CACHE[index] = { id = id, name = name, icon = icon }
+				SPECIALIZATION_CACHE[id] = { name = name, icon = icon }
 			end
 		end
-		DataSet = true
+		dataSet = true
 	end
 
 	local specIndex = GetSpecialization()
@@ -58,24 +63,19 @@ local function OnEvent(self, event)
 
 	active = specIndex
 
-	local spec, loot, text = '', 'N/A', LOOT
 	local specialization = GetLootSpecialization()
 
-	local _, _, _, specTex = GetSpecializationInfo(specIndex)
-	if specTex then
-		spec = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', specTex)
-	end
+	local info = SPECIALIZATION_CACHE[specIndex]
+	local spec = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.icon)
 
-	if specialization == 0 then
-		loot, text = spec, '|cFF54FF00'..text..'|r'
+	if specialization == 0 or info.id == specialization then
+		self.text:SetFormattedText('%s %s', spec, info.name)
 	else
-		local _, _, _, texture = GetSpecializationInfoByID(specialization)
-		if texture then
-			loot = format('|T%s:14:14:0:0:64:64:4:60:4:60|t', texture)
-		end
-	end
+		info = SPECIALIZATION_CACHE[specialization]
+		local loot = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.icon)
 
-	self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, text, loot)
+		self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, _G.LOOT, loot)
+	end
 end
 
 local function AddTexture(texture)
@@ -86,11 +86,8 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	for i = 1, GetNumSpecializations() do
-		local _, name, _, icon = GetSpecializationInfo(i)
-		if name then
-			DT.tooltip:AddLine(strjoin(" ", format(displayString, name), AddTexture(icon), (i == active and activeString or inactiveString)), 1, 1, 1)
-		end
+	for i, info in ipairs(SPECIALIZATION_CACHE) do
+		DT.tooltip:AddLine(strjoin(" ", format(displayString, info.name), AddTexture(info.icon), (i == active and activeString or inactiveString)), 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')

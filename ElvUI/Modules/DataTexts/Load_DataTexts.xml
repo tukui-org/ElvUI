@@ -16,6 +16,7 @@
 	<Script file='CustomCurrency.lua'/>
 	<Script file='DPS.lua'/>
 	<Script file='Durability.lua'/>
+	<Script file='Experience.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Garrison.lua'/>
 	<Script file='Gold.lua'/>
@@ -33,6 +34,7 @@
 	<Script file='Orderhall.lua'/>
 	<Script file='PrimaryStat.lua'/>
 	<Script file='Quickjoin.lua'/>
+	<Script file='Reputation.lua'/>
 	<Script file='SpecSwitch.lua'/>
 	<Script file='Speed.lua'/>
 	<Script file='SpellPower.lua'/>

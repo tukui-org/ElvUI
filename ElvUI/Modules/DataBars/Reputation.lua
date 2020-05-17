@@ -14,10 +14,7 @@ local ToggleCharacter = ToggleCharacter
 local CreateFrame = CreateFrame
 local REPUTATION, STANDING = REPUTATION, STANDING
 
-local backupColor = _G.FACTION_BAR_COLORS[1]
-local FactionStandingLabelUnknown = UNKNOWN
-
-function mod:UpdateReputation(event)
+function mod:UpdateReputation(event, eventType)
 	if not mod.db.reputation.enable then return end
 
 	local bar = self.repBar
@@ -34,10 +31,37 @@ function mod:UpdateReputation(event)
 			E:UnregisterObjectForVehicleLock(bar)
 		end
 
-		local ID, isFriend, friendText, standingLabel
+		local friendshipID = GetFriendshipReputation(factionID);
+		local text = ''
+		local textFormat = self.db.reputation.textFormat
+
+		local isFriend, friendText, standingLabel
 		local isCapped
 
-		if factionID and C_Reputation_IsFactionParagon(factionID) then
+--[[
+		if (event == 'COMBAT_TEXT_UPDATE' and eventType == 'FACTION') then
+			local faction = GetCurrentCombatTextEventInfo()
+			if faction ~= 'Guild' and faction ~= name then
+				ExpandAllFactionHeaders()
+				for i = 1, GetNumFactions() do
+					if faction == GetFactionInfo(i) then
+						SetWatchedFactionIndex(i)
+						break
+					end
+				end
+			end
+		end
+]]
+		if friendshipID then
+			local _, friendRep, _, _, _, _, friendTextLevel, friendThreshold, nextFriendThreshold = GetFriendshipReputation(factionID);
+			isFriend, reaction, friendText = true, 5, friendTextLevel
+			if ( nextFriendThreshold ) then
+				min, max, value = friendThreshold, nextFriendThreshold, friendRep;
+			else
+				min, max, value = 0, 1, 1
+				isCapped = true;
+			end
+		elseif C_Reputation_IsFactionParagon(factionID) then
 			local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 			if currentValue and threshold then
 				min, max = 0, threshold
@@ -48,7 +72,6 @@ function mod:UpdateReputation(event)
 			end
 		else
 			if reaction == _G.MAX_REPUTATION_REACTION then
-				-- max rank, make it look like a full bar
 				min, max, value = 0, 1, 1
 				isCapped = true
 			end
@@ -56,31 +79,10 @@ function mod:UpdateReputation(event)
 
 		bar.statusBar:SetMinMaxValues(min, max)
 		bar.statusBar:SetValue(value)
-		local color = _G.FACTION_BAR_COLORS[reaction] or backupColor
+		local color = _G.FACTION_BAR_COLORS[reaction]
 		bar.statusBar:SetStatusBarColor(color.r, color.g, color.b)
 
-		local numFactions = GetNumFactions()
-		local text = ''
-		local textFormat = self.db.reputation.textFormat
-
-		for i=1, numFactions do
-			local factionName, _, standingID,_,_,_,_,_,_,_,_,_,_, FactionID = GetFactionInfo(i)
-			local friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(FactionID)
-			if factionName == name then
-				if friendID ~= nil then
-					isFriend = true
-					friendText = friendTextLevel
-				else
-					ID = standingID
-				end
-			end
-		end
-
-		if ID then
-			standingLabel = _G['FACTION_STANDING_LABEL'..ID]
-		else
-			standingLabel = FactionStandingLabelUnknown
-		end
+		standingLabel = _G['FACTION_STANDING_LABEL'..reaction]
 
 		--Prevent a division by zero
 		local maxMinDiff = max - min
@@ -194,7 +196,8 @@ function mod:LoadReputationBar()
 	self.repBar.eventFrame:Hide()
 	self.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	self.repBar.eventFrame:SetScript("OnEvent", function(_, event) mod:UpdateReputation(event) end)
+	self.repBar.eventFrame:RegisterEvent("COMBAT_TEXT_UPDATE")
+	self.repBar.eventFrame:SetScript("OnEvent", function(_, event, ...) mod:UpdateReputation(event, ...) end)
 
 	self:UpdateReputationDimensions()
 
