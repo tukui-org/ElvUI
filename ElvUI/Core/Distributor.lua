@@ -258,6 +258,9 @@ local blacklistedKeys = {
 		chat = {
 			classColorMentionExcludedNames = true,
 		},
+		datatexts = {
+			newPanelInfo = true
+		},
 		nameplate = {
 			effectiveHealth = true,
 			effectivePower = true,
