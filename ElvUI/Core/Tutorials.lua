@@ -107,7 +107,7 @@ function E:SpawnTutorialFrame()
 end
 
 function E:Tutorials(forceShow)
-	if (not forceShow and self.db.hideTutorial) or (not forceShow and not self.private.install_complete) then return; end
+	if (not forceShow and self.db.hideTutorial) or (not forceShow and not self.private.install_complete) then return end
 	local f = ElvUITutorialWindow
 	if not f then
 		f = E:SpawnTutorialFrame()
