@@ -513,7 +513,7 @@ function CH:StyleChat(frame)
 	if not tab.left then tab.left = _G[name.."TabLeft"] end
 	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	tab.text:ClearAllPoints()
-	tab.text:Point('LEFT', tab.left, 'RIGHT', 0, E.PixelMode and 3 or 5)
+	tab.text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
 	tab:Height(22)
 
 	hooksecurefunc(tab.text, "SetTextColor", function(tt, r, g, b)
@@ -1896,13 +1896,11 @@ function CH:SetupChat()
 	end
 
 	_G.GeneralDockManager:SetParent(_G.LeftChatPanel)
-	_G.GeneralDockManager:ClearAllPoints()
-	_G.GeneralDockManager:Point("BOTTOMLEFT", _G.LeftChatTab, "BOTTOMLEFT", 0, E.PixelMode and 1 or -1)
-	_G.GeneralDockManager:Point("BOTTOMRIGHT", _G.LeftChatTab, "BOTTOMRIGHT", 0, E.PixelMode and 1 or -1)
-	_G.GeneralDockManager:Height(22)
+	_G.GeneralDockManager:SetInside(_G.LeftChatTab)
 	_G.GeneralDockManager.scrollFrame:ClearAllPoints()
-	_G.GeneralDockManager.scrollFrame:Point("TOPLEFT", _G.ChatFrame2Tab, "TOPRIGHT", 0, 1)
-	_G.GeneralDockManager.scrollFrame:Point("BOTTOMRIGHT", _G.GeneralDockManagerOverflowButton, "BOTTOMRIGHT", 0, -1)
+	_G.GeneralDockManager.scrollFrame:Point("TOPLEFT", _G.ChatFrame2Tab, "TOPRIGHT")
+	_G.GeneralDockManager.scrollFrame:Point("RIGHT", _G.GeneralDockManagerOverflowButton, "LEFT")
+	_G.GeneralDockManager.scrollFrame.child:Height(22)
 	self:PositionChat(true)
 
 	if not self.HookSecured then
@@ -2555,14 +2553,14 @@ function CH:HandleChatVoiceIcons()
 		end
 	elseif CH.db.pinVoiceButtons then
 		for index, button in ipairs(channelButtons) do
-			button:ClearAllPoints()
-			button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
 			Skins:HandleButton(button, nil, nil, nil, true)
+			button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
+			button:ClearAllPoints()
 
 			if index == 1 then
-				button:Point('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 2, -1) -- This also change the position for new chat tabs 0.o
+				button:Point('RIGHT', _G.LeftChatTab, 'RIGHT', 2, 0) -- This also change the position for new chat tabs 0.o
 			else
-				button:Point("RIGHT", channelButtons[index-1], "LEFT")
+				button:Point('RIGHT', channelButtons[index-1], 'LEFT')
 			end
 		end
 
