@@ -289,7 +289,10 @@ D.GeneratedKeys = {
 		customTexts = true,
 		movers = true
 	},
-	private = {},
+	private = {
+		theme = true,
+		install_complete = true
+	},
 	global = {
 		datatexts = {
 			customPanels = true,
