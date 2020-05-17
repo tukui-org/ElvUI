@@ -78,7 +78,7 @@ local DTPanelOptions = {
 				order = 5,
 				type = "range",
 				name = L["Frame Level"],
-				min = 2, max = 128, step = 1,
+				min = 1, max = 128, step = 1,
 			},
 		},
 	},

@@ -215,7 +215,7 @@ function DT:BuildPanelFrame(name, db, initLoad)
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
 	Panel:Point('CENTER')
-	Panel:Size(100, 10)
+	Panel:Size(db.width or 100, db.height or 10)
 	Panel:SetScript('OnEnter', DT.OnEnter)
 	Panel:SetScript('OnLeave', DT.OnLeave)
 
@@ -447,7 +447,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.MouseLeaves = {}
 			dt:RegisterForClicks('AnyUp')
 
-			local text = dt:CreateFontString(nil, 'OVERLAY')
+			local text = dt:CreateFontString(nil, 'ARTWORK')
 			text:SetAllPoints()
 			text:SetJustifyH('CENTER')
 			text:SetJustifyV('MIDDLE')
