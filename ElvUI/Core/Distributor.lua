@@ -236,6 +236,7 @@ end
 --Keys that should not be exported
 local blacklistedKeys = {
 	profile = {
+		gridSize = true,
 		general = {
 			numberPrefixStyle = true,
 		},
