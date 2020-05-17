@@ -4,7 +4,6 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local format, strjoin, pairs = format, strjoin, pairs
 local GetInventoryItemDurability = GetInventoryItemDurability
-local GetInventorySlotInfo = GetInventorySlotInfo
 local ToggleCharacter = ToggleCharacter
 local DURABILITY = DURABILITY
 local InCombatLockdown = InCombatLockdown
@@ -13,29 +12,29 @@ local displayString, lastPanel = ""
 local tooltipString = "%d%%"
 local totalDurability = 0
 local invDurability = {}
+
 local slots = {
-	SecondaryHandSlot = L["Offhand"],
-	MainHandSlot = L["Main Hand"],
-	FeetSlot = L["Feet"],
-	LegsSlot = L["Legs"],
-	HandsSlot = L["Hands"],
-	WristSlot = L["Wrist"],
-	WaistSlot = L["Waist"],
-	ChestSlot = L["Chest"],
-	ShoulderSlot = L["Shoulder"],
-	HeadSlot = L["Head"],
+	[1] = L["Head"],
+	[3] = L["Shoulder"],
+	[5] = L["Chest"],
+	[6] = L["Waist"],
+	[7] = L["Legs"],
+	[8] = L["Feet"],
+	[9] = L["Wrist"],
+	[10] = L["Hands"],
+	[16] = L["Main Hand"],
+	[17] = L["Offhand"],
 }
 
 local function OnEvent(self)
 	lastPanel = self
 	totalDurability = 100
 
-	for index, value in pairs(slots) do
-		local slot = GetInventorySlotInfo(index)
-		local current, max = GetInventoryItemDurability(slot)
+	for index, slotName in pairs(slots) do
+		local current, max = GetInventoryItemDurability(index)
 
 		if current then
-			invDurability[value] = (current/max)*100
+			invDurability[index] = (current/max)*100
 
 			if ((current/max) * 100) < totalDurability then
 				totalDurability = (current/max) * 100
@@ -55,7 +54,7 @@ local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	for slot, durability in pairs(invDurability) do
-		DT.tooltip:AddDoubleLine(slot, format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, 0, 0, 1, 1, 0, 0, 1, 0))
+		DT.tooltip:AddDoubleLine(slots[slot], format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, 0, 0, 1, 1, 0, 0, 1, 0))
 	end
 
 	DT.tooltip:Show()
