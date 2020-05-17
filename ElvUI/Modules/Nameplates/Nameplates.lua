@@ -474,6 +474,7 @@ function NP:PLAYER_ENTERING_WORLD()
 end
 
 function NP:ConfigureAll()
+	if E.private.nameplates.enable ~= true then return end
 	NP:StyleFilterConfigure() -- keep this at the top
 
 	local Scale = E.global.general.UIScale
