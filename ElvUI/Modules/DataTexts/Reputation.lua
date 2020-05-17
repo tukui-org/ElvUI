@@ -20,21 +20,6 @@ local function OnEvent(self, event, eventType)
 	if not name then return end
 
 	local friendshipID = GetFriendshipReputation(factionID);
-
---[[
-	if (event == 'COMBAT_TEXT_UPDATE' and eventType == 'FACTION') then
-		local faction = GetCurrentCombatTextEventInfo()
-		if faction ~= 'Guild' and faction ~= name then
-			ExpandAllFactionHeaders()
-			for i = 1, GetNumFactions() do
-				if faction == GetFactionInfo(i) then
-					SetWatchedFactionIndex(i)
-					break
-				end
-			end
-		end
-	end
-]]
 	local isFriend, friendText, standingLabel
 	local isCapped
 

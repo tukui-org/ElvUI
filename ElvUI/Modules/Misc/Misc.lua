@@ -98,6 +98,21 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
+function M:COMBAT_TEXT_UPDATE(event, ...)
+	local messagetype, faction = ...
+	if (messagetype == 'FACTION') then
+		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() then
+			ExpandAllFactionHeaders()
+			for i = 1, GetNumFactions() do
+				if faction == GetFactionInfo(i) then
+					SetWatchedFactionIndex(i)
+					break
+				end
+			end
+		end
+	end
+end
+
 do -- Auto Repair Functions
 	local STATUS, TYPE, COST, POSS
 	function M:AttemptAutoRepair(playerOverride)
@@ -329,6 +344,7 @@ function M:Initialize()
 	self:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
+	self:RegisterEvent('COMBAT_TEXT_UPDATE')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('QUEST_COMPLETE')
 

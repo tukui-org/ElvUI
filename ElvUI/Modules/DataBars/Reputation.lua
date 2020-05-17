@@ -38,20 +38,6 @@ function mod:UpdateReputation(event, eventType)
 		local isFriend, friendText, standingLabel
 		local isCapped
 
---[[
-		if (event == 'COMBAT_TEXT_UPDATE' and eventType == 'FACTION') then
-			local faction = GetCurrentCombatTextEventInfo()
-			if faction ~= 'Guild' and faction ~= name then
-				ExpandAllFactionHeaders()
-				for i = 1, GetNumFactions() do
-					if faction == GetFactionInfo(i) then
-						SetWatchedFactionIndex(i)
-						break
-					end
-				end
-			end
-		end
-]]
 		if friendshipID then
 			local _, friendRep, _, _, _, _, friendTextLevel, friendThreshold, nextFriendThreshold = GetFriendshipReputation(factionID);
 			isFriend, reaction, friendText = true, 5, friendTextLevel
