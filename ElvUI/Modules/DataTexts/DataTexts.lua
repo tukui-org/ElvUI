@@ -501,10 +501,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt:SetScript('OnClick', DT.ToggleBattleStats)
 			tinsert(dt.MouseEnters, DT.HoverBattleStats)
 		else
-			local dtName = DT.db.panels[panelName][i]
-			if dtName and DT.RegisteredDataTexts[dtName] then
-				DT:AssignPanelToDataText(dt, DT.RegisteredDataTexts[dtName], ...)
-			end
+			local assigned = DT.RegisteredDataTexts[ DT.db.panels[panelName][i] ]
+			if assigned then DT:AssignPanelToDataText(dt, assigned, ...) end
 		end
 	end
 end
