@@ -2558,7 +2558,7 @@ function CH:HandleChatVoiceIcons()
 			button:ClearAllPoints()
 
 			if index == 1 then
-				button:Point('RIGHT', _G.LeftChatTab, 'RIGHT', 2, 0) -- This also change the position for new chat tabs 0.o
+				button:Point('RIGHT', _G.LeftChatTab, 'RIGHT', 2, 0)
 			else
 				button:Point('RIGHT', channelButtons[index-1], 'LEFT')
 			end
