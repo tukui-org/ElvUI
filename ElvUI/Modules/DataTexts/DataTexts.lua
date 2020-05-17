@@ -405,6 +405,17 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 end
 
+function DT:GetTextAttributes(panel, db)
+	local panelWidth, panelHeight = panel:GetSize()
+	local numPoints = db and db.numPoints or panel.numPoints or 1
+	local vertical = db and db.vertical or panel.vertical
+
+	local width, height = (panelWidth / numPoints) - 4, panelHeight - 4
+	if vertical then width, height = panelWidth - 4, (panelHeight / numPoints) - 4 end
+
+	return width, height, vertical, numPoints
+end
+
 function DT:UpdatePanelInfo(panelName, panel, ...)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
 	local db = panel.db or P.datatexts.panels[panelName] and DT.db.panels[panelName]
@@ -426,12 +437,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		DT.ShowingBattleStats = nil
 	end
 
-	local panelWidth, panelHeight = panel:GetSize()
-	local numPoints = db and db.numPoints or panel.numPoints or 1
-	local vertical = db and db.vertical or panel.vertical
-
-	local width, height = (panelWidth / numPoints) - 4, panelHeight - 4
-	if vertical then width, height = panelWidth - 4, (panelHeight / numPoints) - 4 end
+	local width, height, vertical, numPoints = DT:GetTextAttributes(panel, db)
 
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
@@ -531,19 +537,33 @@ function DT:LoadDataTexts(...)
 	end
 end
 
+function DT:PanelSizeChanged()
+	if not self.dataPanels then return end
+	local db = self.db or P.datatexts.panels[self.name] and DT.db.panels[self.name]
+	local width, height, vertical, numPoints = DT:GetTextAttributes(self, db)
+
+	for i, dt in ipairs(self.dataPanels) do
+		dt:Size(width, height)
+		dt:ClearAllPoints()
+		dt:Point(DT:GetDataPanelPoint(self, i, numPoints, vertical))
+	end
+end
+
 function DT:UpdatePanelAttributes(name, db)
 	local Panel = DT.PanelPool.InUse[name]
-	Panel.db = db
-
 	DT.OnLeave(Panel)
-	Panel:Size(db.width, db.height)
-	Panel:SetFrameStrata(db.frameStrata)
-	Panel:SetFrameLevel(db.frameLevel)
+
+	Panel.db = db
+	Panel.name = name
 	Panel.numPoints = db.numPoints
 	Panel.xOff = db.tooltipXOffset
 	Panel.yOff = db.tooltipYOffset
 	Panel.anchor = db.tooltipAnchor
 	Panel.vertical = db.growth == 'VERTICAL'
+	Panel:Size(db.width, db.height)
+	Panel:SetFrameStrata(db.frameStrata)
+	Panel:SetFrameLevel(db.frameLevel)
+	Panel:SetScript('OnSizeChanged', DT.PanelSizeChanged)
 
 	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
 
