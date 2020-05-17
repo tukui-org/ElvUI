@@ -174,13 +174,8 @@ end
 
 local function Update(self, t)
 	int = int - t
-	int2 = int2 - t
 
 	if int < 0 then
-		RebuildAddonList()
-		int = 10
-	end
-	if int2 < 0 then
 		local framerate = floor(GetFramerate())
 		local latency = select(4, GetNetStats())
 
@@ -189,11 +184,11 @@ local function Update(self, t)
 			framerate,
 			statusColors[latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4],
 			latency)
-		int2 = 1
+		int = 1
 		if enteredFrame then
 			OnEnter(self)
 		end
 	end
 end
 
-DT:RegisterDatatext('System', nil, nil, nil, Update, Click, OnEnter, OnLeave, L["System"])
+DT:RegisterDatatext('System', nil, { 'ADDON_LOADED' }, RebuildAddonList, Update, Click, OnEnter, OnLeave, L["System"])
