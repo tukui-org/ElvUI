@@ -230,7 +230,7 @@ E.Options.args.general = {
 					},
 				},
 				autoTrackReputation = {
-					order = 19,
+					order = 20,
 					name = L["Auto Track Reputation"],
 					type = 'toggle',
 				},
