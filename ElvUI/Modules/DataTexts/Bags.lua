@@ -39,7 +39,7 @@ local function OnEnter(self)
 		local bagName = GetBagName(i) or 'Backpack'
 		local bagSlots = GetContainerNumSlots(i)
 		local r, g, b, icon = 1, 1, 1, 'Interface/Buttons/Button-Backpack-Up'
-		local r2, g2, b2 = E:ColorGradient(1 - bagFreeSlots/bagSlots, 1, .1, .1, 1, 1, .1, .1, 1, .1)
+		local r2, g2, b2 = E:ColorGradient(bagFreeSlots/bagSlots, .1, 1, .1, 1, 1, .1, 1, .1, .1)
 
 		if i > 0 then
 			local quality = GetInventoryItemQuality("player", 19 + i)
@@ -57,7 +57,9 @@ local function OnEnter(self)
 			DT.tooltip:AddLine(CURRENCY)
 			DT.tooltip:AddLine(" ")
 		end
-		if name and count then DT.tooltip:AddDoubleLine(format(iconString, icon, name), count, 1, 1, 1) end
+		if name and count then
+			DT.tooltip:AddDoubleLine(format(iconString, icon, name), count, 1, 1, 1, 1, 1, 1)
+		end
 	end
 
 	DT.tooltip:Show()

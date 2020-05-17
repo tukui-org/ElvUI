@@ -34,6 +34,7 @@ local QuestDifficultyColors = QuestDifficultyColors
 local UnitAlternatePowerTextureInfo = UnitAlternatePowerTextureInfo
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
+local UnitSex = UnitSex
 local UnitClassification = UnitClassification
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitExists = UnitExists

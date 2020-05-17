@@ -14,23 +14,23 @@ local totalDurability = 0
 local invDurability = {}
 
 local slots = {
-	[1] = L["Head"],
-	[3] = L["Shoulder"],
-	[5] = L["Chest"],
-	[6] = L["Waist"],
-	[7] = L["Legs"],
-	[8] = L["Feet"],
-	[9] = L["Wrist"],
-	[10] = L["Hands"],
-	[16] = L["Main Hand"],
-	[17] = L["Offhand"],
+	[1] = _G.INVTYPE_HEAD,
+	[3] = _G.INVTYPE_SHOULDER,
+	[5] = _G.INVTYPE_CHEST,
+	[6] = _G.INVTYPE_WAIST,
+	[7] = _G.INVTYPE_LEGS,
+	[8] = _G.INVTYPE_FEET,
+	[9] = _G.INVTYPE_WRIST,
+	[10] = _G.INVTYPE_HAND,
+	[16] = _G.INVTYPE_WEAPONMAINHAND,
+	[17] = _G.INVTYPE_WEAPONOFFHAND,
 }
 
 local function OnEvent(self)
 	lastPanel = self
 	totalDurability = 100
 
-	for index, slotName in pairs(slots) do
+	for index in pairs(slots) do
 		local current, max = GetInventoryItemDurability(index)
 
 		if current then
