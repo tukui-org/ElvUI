@@ -39,10 +39,10 @@ local specList = {
 
 local SPECIALIZATION_CACHE = {}
 
-local function OnEvent(self, event)
+local function OnEvent(self)
 	lastPanel = self
 
-	if not dataSet and event == 'PLAYER_ENTERING_WORLD' then
+	if not dataSet then
 		for index = 1, GetNumSpecializations() do
 			local id, name, _, icon = GetSpecializationInfo(index)
 			if ( id ) then
@@ -74,7 +74,7 @@ local function OnEvent(self, event)
 		info = SPECIALIZATION_CACHE[specialization]
 		local loot = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.icon)
 
-		self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, _G.LOOT, loot)
+		self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, LOOT, loot)
 	end
 end
 
