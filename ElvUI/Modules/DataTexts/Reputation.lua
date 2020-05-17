@@ -24,7 +24,7 @@ local function OnEvent(self, event, eventType)
 --[[
 	if (event == 'COMBAT_TEXT_UPDATE' and eventType == 'FACTION') then
 		local faction = GetCurrentCombatTextEventInfo()
-		if name ~= faction then
+		if faction ~= 'Guild' and faction ~= name then
 			ExpandAllFactionHeaders()
 			for i = 1, GetNumFactions() do
 				if faction == GetFactionInfo(i) then
