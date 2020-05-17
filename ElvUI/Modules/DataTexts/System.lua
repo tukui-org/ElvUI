@@ -22,8 +22,6 @@ local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
 local UNKNOWN = UNKNOWN
 
--- initial delay for update (let the ui load)
-local int, int2 = 6, 5
 local statusColors = {
 	"|cff0CD809",
 	"|cffE8DA0F",
@@ -41,11 +39,9 @@ local megaByteString = "%.2f mb"
 local function formatMem(memory)
 	local mult = 10^1
 	if memory > 999 then
-		local mem = ((memory/1024) * mult) / mult
-		return format(megaByteString, mem)
+		return format(megaByteString, ((memory/1024) * mult) / mult)
 	else
-		local mem = (memory * mult) / mult
-		return format(kiloByteString, mem)
+		return format(kiloByteString, (memory * mult) / mult)
 	end
 end
 
@@ -55,8 +51,8 @@ local function sortByMemoryOrCPU(a, b)
 	end
 end
 
-local memoryTable = {}
 local cpuTable = {}
+local memoryTable = {}
 local function RebuildAddonList()
 	local addOnCount = GetNumAddOns()
 	if (addOnCount == #memoryTable) then return end
@@ -64,6 +60,7 @@ local function RebuildAddonList()
 	-- Number of loaded addons changed, create new memoryTable for all addons
 	wipe(memoryTable)
 	wipe(cpuTable)
+
 	for i = 1, addOnCount do
 		memoryTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
 		cpuTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
@@ -73,25 +70,29 @@ end
 local function UpdateMemory()
 	-- Update the memory usages of the addons
 	UpdateAddOnMemoryUsage()
+
 	-- Load memory usage in table
 	local totalMemory = 0
-	for i = 1, #memoryTable do
-		memoryTable[i][3] = GetAddOnMemoryUsage(memoryTable[i][1])
-		totalMemory = totalMemory + memoryTable[i][3]
+	for _, data in ipairs(memoryTable) do
+		data[3] = GetAddOnMemoryUsage(data[1])
+		totalMemory = totalMemory + data[3]
 	end
+
 	-- Sort the table to put the largest addon on top
 	sort(memoryTable, sortByMemoryOrCPU)
+
 	return totalMemory
 end
 
 local function UpdateCPU()
 	--Update the CPU usages of the addons
 	UpdateAddOnCPUUsage()
+
 	-- Load cpu usage in table
 	local totalCPU = 0
-	for i = 1, #cpuTable do
-		local addonCPU = GetAddOnCPUUsage(cpuTable[i][1])
-		cpuTable[i][3] = addonCPU
+	for _, data in ipairs(cpuTable) do
+		local addonCPU = GetAddOnCPUUsage(data[1])
+		data[3] = addonCPU
 		totalCPU = totalCPU + addonCPU
 	end
 
@@ -110,14 +111,10 @@ end
 
 local ipTypes = {"IPv4", "IPv6"}
 local function OnEnter(self)
-	enteredFrame = true
-	local cpuProfiling = GetCVar("scriptProfile") == "1"
 	DT:SetupTooltip(self)
+	enteredFrame = true
 
-	local totalMemory = UpdateMemory()
-	local bandwidth = GetAvailableBandwidth()
 	local _, _, homePing, worldPing = GetNetStats()
-
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, homePing), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	DT.tooltip:AddDoubleLine(L["World Latency:"], format(homeLatencyString, worldPing), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 
@@ -127,13 +124,16 @@ local function OnEnter(self)
 		DT.tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[ipTypeWorld or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
 
+	local bandwidth = GetAvailableBandwidth()
 	if bandwidth ~= 0 then
 		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() *100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() * 100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
 		DT.tooltip:AddLine(" ")
 	end
 
 	local totalCPU
+	local totalMemory = UpdateMemory()
+	local cpuProfiling = GetCVar("scriptProfile") == "1"
 	DT.tooltip:AddDoubleLine(L["Total Memory:"], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	if cpuProfiling then
 		totalCPU = UpdateCPU()
@@ -142,23 +142,22 @@ local function OnEnter(self)
 
 	DT.tooltip:AddLine(" ")
 	if IsShiftKeyDown() or not cpuProfiling then
-		for i = 1, #memoryTable do
-			local ele = memoryTable[i]
-			if ele and IsAddOnLoaded(ele[1]) then
-				local red = ele[3] / totalMemory
-				local green = 1 - red
-				DT.tooltip:AddDoubleLine(ele[2], formatMem(ele[3]), 1, 1, 1, red, green + .5, 0)
+		for _, data in ipairs(memoryTable) do
+			if IsAddOnLoaded(data[1]) then
+				local red = data[3] / totalMemory
+				local green = (1 - red) + .5
+				DT.tooltip:AddDoubleLine(data[2], formatMem(data[3]), 1, 1, 1, red, green, 0)
 			end
 		end
 	else
-		for i = 1, #cpuTable do
-			local ele = cpuTable[i]
-			if ele and IsAddOnLoaded(ele[1]) then
-				local red = ele[3] / totalCPU
-				local green = 1 - red
-				DT.tooltip:AddDoubleLine(ele[2], format(homeLatencyString, ele[3]), 1, 1, 1, red, green + .5, 0)
+		for _, data in ipairs(cpuTable) do
+			if IsAddOnLoaded(data[1]) then
+				local red = data[3] / totalCPU
+				local green = (1 - red) + .5
+				DT.tooltip:AddDoubleLine(data[2], format(homeLatencyString, data[3]), 1, 1, 1, red, green, 0)
 			end
 		end
+
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
 	end
@@ -172,19 +171,20 @@ local function OnLeave()
 	DT.tooltip:Hide()
 end
 
-local function Update(self, t)
-	int = int - t
+local wait = 6 -- initial delay for update (let the ui load)
+local function Update(self, elapsed)
+	wait = wait - elapsed
 
-	if int < 0 then
+	if wait < 0 then
+		wait = 1
+
 		local framerate = floor(GetFramerate())
-		local latency = select(4, GetNetStats())
+		local _, _, _, latency = GetNetStats()
 
-		self.text:SetFormattedText("FPS: %s%d|r MS: %s%d|r",
-			statusColors[framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4],
-			framerate,
-			statusColors[latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4],
-			latency)
-		int = 1
+		local fps = framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4
+		local ping = latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4
+		self.text:SetFormattedText("FPS: %s%d|r MS: %s%d|r", statusColors[fps], framerate, statusColors[ping], latency)
+
 		if enteredFrame then
 			OnEnter(self)
 		end
