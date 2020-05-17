@@ -847,8 +847,9 @@ function E:UpdateDB()
 	E.private = E.charSettings.profile
 	E.db = E.data.profile
 	E.global = E.data.global
-	E.db.theme = nil
-	E.db.install_complete = nil
+
+	E.private.theme = nil
+	E.private.install_complete = nil
 
 	E:DBConversions()
 	Auras.db = E.db.auras
