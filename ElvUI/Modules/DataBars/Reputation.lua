@@ -4,21 +4,21 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local format = format
-
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation
-local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
+local GetWatchedFactionInfo = GetWatchedFactionInfo
 local InCombatLockdown = InCombatLockdown
 local ToggleCharacter = ToggleCharacter
 local CreateFrame = CreateFrame
-local REPUTATION, STANDING = REPUTATION, STANDING
+local REPUTATION = REPUTATION
+local STANDING = STANDING
 
-function mod:UpdateReputation(event, eventType)
+function mod:UpdateReputation(event)
 	if not mod.db.reputation.enable then return end
 
 	local bar = self.repBar
-	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
+	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
 
 	if not name or (self.db.reputation.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
 		bar:Hide()
@@ -31,39 +31,34 @@ function mod:UpdateReputation(event, eventType)
 			E:UnregisterObjectForVehicleLock(bar)
 		end
 
-		local friendshipID = GetFriendshipReputation(factionID);
-		local text = ''
-		local textFormat = self.db.reputation.textFormat
-
-		local isFriend, friendText, standingLabel
-		local isCapped
+		local friendshipID = GetFriendshipReputation(factionID)
+		local textFormat, text = self.db.reputation.textFormat, ''
+		local isCapped, isFriend, friendText, standingLabel
 
 		if friendshipID then
-			local _, friendRep, _, _, _, _, friendTextLevel, friendThreshold, nextFriendThreshold = GetFriendshipReputation(factionID);
+			local _, friendRep, _, _, _, _, friendTextLevel, friendThreshold, nextFriendThreshold = GetFriendshipReputation(factionID)
 			isFriend, reaction, friendText = true, 5, friendTextLevel
-			if ( nextFriendThreshold ) then
-				min, max, value = friendThreshold, nextFriendThreshold, friendRep;
+			if nextFriendThreshold then
+				Min, Max, value = friendThreshold, nextFriendThreshold, friendRep;
 			else
-				min, max, value = 0, 1, 1
-				isCapped = true;
+				Min, Max, value = 0, 1, 1
+				isCapped = true
 			end
 		elseif C_Reputation_IsFactionParagon(factionID) then
 			local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 			if currentValue and threshold then
-				min, max = 0, threshold
+				Min, Max = 0, threshold
 				value = currentValue % threshold
 				if hasRewardPending then
 					value = value + threshold
 				end
 			end
-		else
-			if reaction == _G.MAX_REPUTATION_REACTION then
-				min, max, value = 0, 1, 1
-				isCapped = true
-			end
+		elseif reaction == _G.MAX_REPUTATION_REACTION then
+			Min, Max, value = 0, 1, 1
+			isCapped = true
 		end
 
-		bar.statusBar:SetMinMaxValues(min, max)
+		bar.statusBar:SetMinMaxValues(Min, Max)
 		bar.statusBar:SetValue(value)
 		local color = _G.FACTION_BAR_COLORS[reaction]
 		bar.statusBar:SetStatusBarColor(color.r, color.g, color.b)
@@ -71,8 +66,8 @@ function mod:UpdateReputation(event, eventType)
 		standingLabel = _G['FACTION_STANDING_LABEL'..reaction]
 
 		--Prevent a division by zero
-		local maxMinDiff = max - min
-		if (maxMinDiff == 0) then
+		local maxMinDiff = Max - Min
+		if maxMinDiff == 0 then
 			maxMinDiff = 1
 		end
 
@@ -81,19 +76,19 @@ function mod:UpdateReputation(event, eventType)
 			text = format('%s: [%s]', name, isFriend and friendText or standingLabel)
 		else
 			if textFormat == 'PERCENT' then
-				text = format('%s: %d%% [%s]', name, ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
+				text = format('%s: %d%% [%s]', name, ((value - Min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
 			elseif textFormat == 'CURMAX' then
-				text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue(max - min), isFriend and friendText or standingLabel)
+				text = format('%s: %s - %s [%s]', name, E:ShortValue(value - Min), E:ShortValue(Max - Min), isFriend and friendText or standingLabel)
 			elseif textFormat == 'CURPERC' then
-				text = format('%s: %s - %d%% [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
+				text = format('%s: %s - %d%% [%s]', name, E:ShortValue(value - Min), ((value - Min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
 			elseif textFormat == 'CUR' then
-				text = format('%s: %s [%s]', name, E:ShortValue(value - min), isFriend and friendText or standingLabel)
+				text = format('%s: %s [%s]', name, E:ShortValue(value - Min), isFriend and friendText or standingLabel)
 			elseif textFormat == 'REM' then
-				text = format('%s: %s [%s]', name, E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
+				text = format('%s: %s [%s]', name, E:ShortValue((Max - Min) - (value-Min)), isFriend and friendText or standingLabel)
 			elseif textFormat == 'CURREM' then
-				text = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
+				text = format('%s: %s - %s [%s]', name, E:ShortValue(value - Min), E:ShortValue((Max - Min) - (value-Min)), isFriend and friendText or standingLabel)
 			elseif textFormat == 'CURPERCREM' then
-				text = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), E:ShortValue((max - min) - (value-min)), isFriend and friendText or standingLabel)
+				text = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(value - Min), ((value - Min) / (maxMinDiff) * 100), E:ShortValue((Max - Min) - (value-Min)), isFriend and friendText or standingLabel)
 			end
 		end
 
@@ -183,7 +178,9 @@ function mod:LoadReputationBar()
 	self.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self.repBar.eventFrame:RegisterEvent("COMBAT_TEXT_UPDATE")
-	self.repBar.eventFrame:SetScript("OnEvent", function(_, event, ...) mod:UpdateReputation(event, ...) end)
+	self.repBar.eventFrame:SetScript("OnEvent", function(_, event, ...)
+		mod:UpdateReputation(event, ...)
+	end)
 
 	self:UpdateReputationDimensions()
 

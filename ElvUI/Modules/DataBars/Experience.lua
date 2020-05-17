@@ -3,9 +3,8 @@ local mod = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local format = format
 local min = min
-
+local format = format
 local GetPetExperience, UnitXP, UnitXPMax = GetPetExperience, UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local GetExpansionLevel = GetExpansionLevel
@@ -14,7 +13,7 @@ local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 
 function mod:GetXP(unit)
-	if(unit == 'pet') then
+	if unit == 'pet' then
 		return GetPetExperience()
 	else
 		return UnitXP(unit), UnitXPMax(unit)
@@ -23,11 +22,11 @@ end
 
 function mod:UpdateExperience(event)
 	if not mod.db.experience.enable then return end
-
 	local bar = self.expBar
 
-	if (self.db.experience.hideAtMaxLevel and E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]) or IsXPUserDisabled() or
-		(self.db.experience.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
+	if IsXPUserDisabled()
+	or (self.db.experience.hideAtMaxLevel and E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()])
+	or (self.db.experience.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
 		E:DisableMover(self.expBar.mover:GetName())
 		bar:Hide()
 	else
@@ -44,7 +43,6 @@ function mod:UpdateExperience(event)
 		if max <= 0 then max = 1 end
 
 		bar.statusBar:SetMinMaxValues(0, max)
-		-- bar.statusBar:SetValue(cur - 1 >= 0 and cur - 1 or 0) -- this is set twice here for some reason
 		bar.statusBar:SetValue(cur)
 
 		local rested = GetXPExhaustion()
@@ -149,7 +147,7 @@ end
 
 function mod:EnableDisable_ExperienceBar()
 	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]
-	if (E.mylevel ~= maxLevel or not self.db.experience.hideAtMaxLevel) and self.db.experience.enable then
+	if self.db.experience.enable and (E.mylevel ~= maxLevel or not self.db.experience.hideAtMaxLevel) then
 		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
 		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
 		self:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExperience')
@@ -181,7 +179,9 @@ function mod:LoadExperienceBar()
 	self.expBar.eventFrame:Hide()
 	self.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	self.expBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateExperience(event) end)
+	self.expBar.eventFrame:SetScript("OnEvent", function(_, event)
+		mod:UpdateExperience(event)
+	end)
 
 	self:UpdateExperienceDimensions()
 

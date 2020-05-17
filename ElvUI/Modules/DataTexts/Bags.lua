@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
 local format = format
-
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local ToggleAllBags = ToggleAllBags

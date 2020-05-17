@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format, next, wipe, strjoin = format, next, wipe, strjoin
-
-local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
+local ipairs, wipe = ipairs, wipe
+local format, next, strjoin = format, next, strjoin
 local GetLootSpecialization = GetLootSpecialization
 local GetNumSpecializations = GetNumSpecializations
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
@@ -18,13 +17,13 @@ local SetLootSpecialization = SetLootSpecialization
 local SetSpecialization = SetSpecialization
 local ShowUIPanel = ShowUIPanel
 local LOOT = LOOT
-local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
-local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
 local TALENTS = TALENTS
 local PVP_TALENTS = PVP_TALENTS
+local SELECT_LOOT_SPECIALIZATION = SELECT_LOOT_SPECIALIZATION
+local LOOT_SPECIALIZATION_DEFAULT = LOOT_SPECIALIZATION_DEFAULT
+local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.GetAllSelectedPvpTalentIDs
 
 local displayString, lastPanel, active = ''
-local dataSet
 local activeString = strjoin("", "|cff00FF00" , _G.ACTIVE_PETS, "|r")
 local inactiveString = strjoin("", "|cffFF0000", _G.FACTION_INACTIVE, "|r")
 local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
@@ -39,20 +38,20 @@ local specList = {
 
 local SPECIALIZATION_CACHE = {}
 
+local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local function OnEvent(self)
 	lastPanel = self
 
-	if not dataSet then
+	if not next(SPECIALIZATION_CACHE) then
 		for index = 1, GetNumSpecializations() do
 			local id, name, _, icon = GetSpecializationInfo(index)
-			if ( id ) then
+			if id then
 				menuList[index + 2] = { text = name, checked = function() return GetLootSpecialization() == id end, func = function() SetLootSpecialization(id) end }
 				specList[index + 1] = { text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', icon, name), checked = function() return GetSpecialization() == index end, func = function() SetSpecialization(index) end }
 				SPECIALIZATION_CACHE[index] = { id = id, name = name, icon = icon }
 				SPECIALIZATION_CACHE[id] = { name = name, icon = icon }
 			end
 		end
-		dataSet = true
 	end
 
 	local specIndex = GetSpecialization()
@@ -64,23 +63,20 @@ local function OnEvent(self)
 	active = specIndex
 
 	local specialization = GetLootSpecialization()
-
 	local info = SPECIALIZATION_CACHE[specIndex]
-	local spec = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.icon)
+	local spec = format(mainIcon, info.icon)
 
 	if specialization == 0 or info.id == specialization then
 		self.text:SetFormattedText('%s %s', spec, info.name)
 	else
 		info = SPECIALIZATION_CACHE[specialization]
-		local loot = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.icon)
-
-		self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, LOOT, loot)
+		self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, info.icon))
 	end
 end
 
+local listIcon = '|T%s:16:16:0:0:50:50:4:46:4:46|t'
 local function AddTexture(texture)
-	texture = texture and '|T'..texture..':16:16:0:0:50:50:4:46:4:46|t' or ''
-	return texture
+	return texture and format(listIcon, texture) or ''
 end
 
 local function OnEnter(self)

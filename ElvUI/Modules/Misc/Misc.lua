@@ -42,6 +42,11 @@ local UnitInRaid = UnitInRaid
 local UnitName = UnitName
 local IsInGuild = IsInGuild
 local PlaySound = PlaySound
+local GetNumFactions = GetNumFactions
+local GetFactionInfo = GetFactionInfo
+local GetWatchedFactionInfo = GetWatchedFactionInfo
+local ExpandAllFactionHeaders = ExpandAllFactionHeaders
+local SetWatchedFactionIndex = SetWatchedFactionIndex
 
 local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
 local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
@@ -98,13 +103,13 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
-function M:COMBAT_TEXT_UPDATE(event, ...)
+function M:COMBAT_TEXT_UPDATE(_, messagetype, faction)
 	if not E.db.general.autoTrackReputation then return end
 
-	local messagetype, faction = ...
-	if (messagetype == 'FACTION') then
+	if messagetype == 'FACTION' then
 		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() then
 			ExpandAllFactionHeaders()
+
 			for i = 1, GetNumFactions() do
 				if faction == GetFactionInfo(i) then
 					SetWatchedFactionIndex(i)
