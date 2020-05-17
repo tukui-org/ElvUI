@@ -280,17 +280,22 @@ PanelLayoutOptions = function()
 
 			for option, value in pairs(tab) do
 				if type(option) == 'number' then
-					options[name].args[tostring(option)] = {
-						type = 'select',
-						order = option,
-						name = L[format("Position %d", option)],
-						values = datatexts,
-						get = function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end,
-						set = function(info, value)
-							E.db.datatexts.panels[name][tonumber(info[#info])] = value
-							DT:UpdatePanelInfo(name)
-						end,
-					}
+					if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
+						-- Number of Datatexts has been lowered, remove datatext entry in profile
+						tab[option] = nil
+					else
+						options[name].args[tostring(option)] = {
+							type = 'select',
+							order = option,
+							name = L[format("Position %d", option)],
+							values = datatexts,
+							get = function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end,
+							set = function(info, value)
+								E.db.datatexts.panels[name][tonumber(info[#info])] = value
+								DT:UpdatePanelInfo(name)
+							end,
+						}
+					end
 				elseif type(value) ~= 'boolean' and P.datatexts.panels[name] and P.datatexts.panels[name][option] then
 					-- TODO: need to convert the old [name][option] to the number style..
 					options[name].args[option] = options[name].args[option] or {
