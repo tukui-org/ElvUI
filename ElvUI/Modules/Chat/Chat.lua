@@ -513,7 +513,7 @@ function CH:StyleChat(frame)
 	if not tab.left then tab.left = _G[name.."TabLeft"] end
 	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	tab.text:ClearAllPoints()
-	tab.text:Point('LEFT', tab.left, 'RIGHT', 0, E.PixelMode and 5 or 7)
+	tab.text:Point('LEFT', tab.left, 'RIGHT', 0, E.PixelMode and 3 or 5)
 	tab:Height(22)
 
 	hooksecurefunc(tab.text, "SetTextColor", function(tt, r, g, b)
@@ -2560,7 +2560,7 @@ function CH:HandleChatVoiceIcons()
 			Skins:HandleButton(button, nil, nil, nil, true)
 
 			if index == 1 then
-				button:Point('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 2, -2) -- This also change the position for new chat tabs 0.o
+				button:Point('BOTTOMRIGHT', _G.LeftChatTab, 'BOTTOMRIGHT', 2, -1) -- This also change the position for new chat tabs 0.o
 			else
 				button:Point("RIGHT", channelButtons[index-1], "LEFT")
 			end
