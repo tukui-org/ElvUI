@@ -12,7 +12,7 @@ local GetInventoryItemLink = GetInventoryItemLink
 local GetMoneyString = GetMoneyString
 
 local DURABILITY = DURABILITY
-local REPAIR_COST  = REPAIR_COST
+local REPAIR_COST = REPAIR_COST
 local displayString = DURABILITY..": %s%d%%|r"
 local tooltipString = "%d%%"
 local totalDurability = 0
