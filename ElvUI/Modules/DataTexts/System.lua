@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local select, collectgarbage = select, collectgarbage
-local sort, wipe, floor, format = sort, wipe, floor, format
+local ipairs, sort, wipe, floor, format = ipairs, sort, wipe, floor, format
 local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMemoryUsage = GetAddOnMemoryUsage
