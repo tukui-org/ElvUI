@@ -933,7 +933,7 @@ function CH:PositionChat()
 	RightChatPanel:Size(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
 	LeftChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
 
-	if E.private.chat.enable ~= true or not self.db.lockPositions then return end
+	if not E.private.chat.enable or not self.db.lockPositions then return end
 
 	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
 	if CombatLogButton then CombatLogButton:Size(LeftChatTab:GetSize()) end
@@ -997,8 +997,6 @@ function CH:PositionChat()
 			end
 		end
 	end
-
-	E.Layout:RepositionChatDataPanels()
 
 	self.initialMove = true
 end
@@ -1861,6 +1859,7 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
 	self:PositionChat()
+	E.Layout:RepositionChatDataPanels()
 
 	if not self.HookSecured then
 		self:SecureHook('FCF_OpenTemporaryWindow', 'SetupChat')
