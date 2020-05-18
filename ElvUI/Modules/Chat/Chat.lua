@@ -462,7 +462,10 @@ function CH:StyleChat(frame)
 	local name = frame:GetName()
 
 	local tab = _G[name.."Tab"]
+	if frame.tab ~= tab then frame.tab = tab end
+	if tab.owner ~= frame then tab.owner = frame end
 	if not tab.text then tab.text = _G[name.."TabText"] end
+
 	tab.text:FontTemplate(LSM:Fetch("font", self.db.tabFont), self.db.tabFontSize, self.db.tabFontOutline)
 
 	if frame.styled then return end
@@ -784,50 +787,68 @@ function CH:CopyChat(frame)
 	end
 end
 
-function CH:OnEnter(frame)
-	_G[frame:GetName().."Text"]:Show()
+function CH:TabOnEnter(tab, _, chat)
+	tab.text:Show()
 
-	if frame.conversationIcon then
-		frame.conversationIcon:Show()
+	if not chat then chat = tab.owner end
+	if chat and chat.button and GetMouseFocus() ~= chat.button then
+		chat.button:SetAlpha(0.35)
+	end
+
+	if tab.conversationIcon then
+		tab.conversationIcon:Show()
 	end
 end
 
-function CH:OnLeave(frame)
-	_G[frame:GetName().."Text"]:Hide()
+function CH:TabOnLeave(tab, _, chat)
+	tab.text:Hide()
 
-	if frame.conversationIcon then
-		frame.conversationIcon:Hide()
+	if not chat then chat = tab.owner end
+	if chat and chat.button and GetMouseFocus() ~= chat.button then
+		chat.button:SetAlpha(0)
+	end
+
+	if tab.conversationIcon then
+		tab.conversationIcon:Hide()
 	end
 end
 
-function CH:SetupChatTabs(frame, hook)
-	if hook and (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnEnter) then
-		self:HookScript(frame, 'OnEnter')
-		self:HookScript(frame, 'OnLeave')
-	elseif not hook and self.hooks and self.hooks[frame] and self.hooks[frame].OnEnter then
-		self:Unhook(frame, 'OnEnter')
-		self:Unhook(frame, 'OnLeave')
+function CH:ChatOnEnter(chat)
+	CH:TabOnEnter(chat.tab, nil, chat)
+end
+
+function CH:ChatOnLeave(chat)
+	CH:TabOnLeave(chat.tab, nil, chat)
+end
+
+function CH:SetupChatTabs(chat, tab, hook)
+	if hook then
+		if not self.hooks or not self.hooks[chat] or not self.hooks[chat].OnEnter then
+			self:HookScript(chat, 'OnEnter', 'ChatOnEnter')
+			self:HookScript(chat, 'OnLeave', 'ChatOnLeave')
+		end
+
+		if not self.hooks or not self.hooks[tab] or not self.hooks[tab].OnEnter then
+			self:HookScript(tab, 'OnEnter', 'TabOnEnter')
+			self:HookScript(tab, 'OnLeave', 'TabOnLeave')
+		end
+	else
+		if self.hooks and self.hooks[chat] and self.hooks[chat].OnEnter then
+			self:Unhook(chat, 'OnEnter')
+			self:Unhook(chat, 'OnLeave')
+		end
+
+		if self.hooks and self.hooks[tab] and self.hooks[tab].OnEnter then
+			self:Unhook(tab, 'OnEnter')
+			self:Unhook(tab, 'OnLeave')
+		end
 	end
 
+	local focus = GetMouseFocus()
 	if not hook then
-		_G[frame:GetName().."Text"]:Show()
-
-		if frame.owner and frame.owner.button and GetMouseFocus() ~= frame.owner.button then
-			frame.owner.button:SetAlpha(0.35)
-		end
-		if frame.conversationIcon then
-			frame.conversationIcon:Show()
-		end
-	elseif GetMouseFocus() ~= frame then
-		_G[frame:GetName().."Text"]:Hide()
-
-		if frame.owner and frame.owner.button and GetMouseFocus() ~= frame.owner.button then
-			frame.owner.button:SetAlpha(0)
-		end
-
-		if frame.conversationIcon then
-			frame.conversationIcon:Hide()
-		end
+		CH:TabOnEnter(tab)
+	elseif focus ~= tab and focus ~= chat then
+		CH:TabOnLeave(tab)
 	end
 end
 
@@ -896,18 +917,16 @@ function CH:UpdateChatTab(chat, tab)
 	end
 
 	tab.isDocked = isDocked
-	tab.owner = chat
 
-	local chatShown = chat:IsShown()
-	if chatShown and not (chatID > NUM_CHAT_WINDOWS) and (chatID == self.RightChatWindowID) then
+	if chatID == self.RightChatWindowID and not (chatID > NUM_CHAT_WINDOWS) then
 		tab:SetParent(_G.RightChatPanel)
-		CH:SetupChatTabs(tab, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT') and E.db.chat.fadeTabsNoBackdrop)
-	elseif not isDocked and chatShown then
+		CH:SetupChatTabs(chat, tab, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT') and E.db.chat.fadeTabsNoBackdrop)
+	elseif not isDocked then
 		tab:SetParent(_G.UIParent)
-		CH:SetupChatTabs(tab, E.db.chat.fadeUndockedTabs)
+		CH:SetupChatTabs(chat, tab, E.db.chat.fadeUndockedTabs)
 	else
 		tab:SetParent((chatID > 2 and _G.GeneralDockManagerScrollFrameChild) or _G.GeneralDockManager)
-		CH:SetupChatTabs(tab, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT') and E.db.chat.fadeTabsNoBackdrop)
+		CH:SetupChatTabs(chat, tab, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT') and E.db.chat.fadeTabsNoBackdrop)
 	end
 end
 
