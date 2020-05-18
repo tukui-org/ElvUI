@@ -2570,6 +2570,11 @@ function CH:HandleChatVoiceIcons()
 		CH:CreateChatVoicePanel()
 	end
 
+	if not CH.db.hideVoiceButtons then
+		_G.GeneralDockManagerOverflowButtonList:SetFrameStrata('LOW')
+		_G.GeneralDockManagerOverflowButtonList:SetFrameLevel(5)
+	end
+
 	if not CH.db.pinVoiceButtons then
 		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
 		_G.GeneralDockManagerOverflowButton:Point('RIGHT', anchor, 'RIGHT', -4, 0)
