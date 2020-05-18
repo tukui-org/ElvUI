@@ -22,8 +22,7 @@ local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
 local ChangeChatColor = ChangeChatColor
 local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
 local FCF_ResetChatWindows = FCF_ResetChatWindows
-local FCF_SetLocked = FCF_SetLocked
-local FCF_DockFrame, FCF_UnDockFrame = FCF_DockFrame, FCF_UnDockFrame
+local FCF_UnDockFrame = FCF_UnDockFrame
 local FCF_OpenNewWindow = FCF_OpenNewWindow
 local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 local FCF_SetWindowName = FCF_SetWindowName
@@ -56,14 +55,8 @@ local function SetupChat(noDisplayMsg)
 	E.db.chat.lockPositions = true
 
 	FCF_ResetChatWindows()
-	FCF_SetLocked(_G.ChatFrame1, 1)
-	FCF_DockFrame(_G.ChatFrame2)
-	FCF_SetLocked(_G.ChatFrame2, 1)
-
 	FCF_OpenNewWindow(LOOT)
 	FCF_UnDockFrame(_G.ChatFrame3)
-	FCF_SetLocked(_G.ChatFrame3, 1)
-	_G.ChatFrame3:Show()
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local frame = _G[format('ChatFrame%s', i)]
