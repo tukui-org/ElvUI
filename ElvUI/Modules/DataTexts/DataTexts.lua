@@ -216,8 +216,6 @@ function DT:BuildPanelFrame(name, db, initLoad)
 	Panel:ClearAllPoints()
 	Panel:Point('CENTER')
 	Panel:Size(db.width, db.height)
-	Panel:SetScript('OnEnter', DT.OnEnter)
-	Panel:SetScript('OnLeave', DT.OnLeave)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -335,6 +333,11 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	end
 
 	DT.RegisteredPanels[name] = panel
+
+	panel:SetScript('OnEnter', DT.OnEnter)
+	panel:SetScript('OnLeave', DT.OnLeave)
+	panel:SetScript('OnSizeChanged', DT.PanelSizeChanged)
+
 	panel.dataPanels = panel.dataPanels or {}
 	panel.numPoints = numPoints
 	panel.xOff = xOff
@@ -554,7 +557,6 @@ function DT:UpdatePanelAttributes(name, db)
 	Panel:Size(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
-	Panel:SetScript('OnSizeChanged', DT.PanelSizeChanged)
 
 	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
 
