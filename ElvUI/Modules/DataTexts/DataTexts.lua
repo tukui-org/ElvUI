@@ -215,7 +215,7 @@ function DT:BuildPanelFrame(name, db, initLoad)
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
 	Panel:Point('CENTER')
-	Panel:Size(db.width or 100, db.height or 10)
+	Panel:Size(db.width, db.height)
 	Panel:SetScript('OnEnter', DT.OnEnter)
 	Panel:SetScript('OnLeave', DT.OnLeave)
 
