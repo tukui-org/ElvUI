@@ -942,7 +942,7 @@ function E:UpdateBags(skipCallback)
 end
 
 function E:UpdateChat(skipCallback)
-	Chat:PositionChat(true)
+	Chat:PositionChat()
 	Chat:SetupChat()
 	Chat:UpdateEditboxAnchors()
 

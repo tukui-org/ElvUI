@@ -124,7 +124,8 @@ local function SetupChat(noDisplayMsg)
 	ChangeChatColor('CHANNEL3', 232/255, 228/255, 121/255) -- Local Defense
 
 	if E.Chat then
-		E.Chat:PositionChat(true)
+		E.Chat:PositionChat()
+
 		if E.db.RightChatPanelFaded then
 			_G.RightChatToggleButton:Click()
 		end

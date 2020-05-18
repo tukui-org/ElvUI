@@ -441,9 +441,7 @@ E.Options.args.chat = {
 					desc = L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."],
 					set = function(info, value)
 						E.db.chat[info[#info]] = value
-						if value == true then
-							CH:PositionChat(true)
-						end
+						CH:PositionChat()
 					end,
 				},
 				panelTabTransparency = {
@@ -496,13 +494,18 @@ E.Options.args.chat = {
 					type = 'select',
 					name = L["Panel Backdrop"],
 					desc = L["Toggle showing of the left and right chat panels."],
-					set = function(info, value) E.db.chat.panelBackdrop = value; Layout:ToggleChatPanels(); CH:PositionChat(true); CH:UpdateEditboxAnchors() end,
 					values = {
 						['HIDEBOTH'] = L["Hide Both"],
 						['SHOWBOTH'] = L["Show Both"],
 						['LEFT'] = L["Left Only"],
 						['RIGHT'] = L["Right Only"],
 					},
+					set = function(info, value)
+						E.db.chat.panelBackdrop = value
+						Layout:ToggleChatPanels()
+						CH:PositionChat()
+						CH:UpdateEditboxAnchors()
+					end,
 				},
 				separateSizes = {
 					order = 8,
@@ -510,9 +513,9 @@ E.Options.args.chat = {
 					name = L["Separate Panel Sizes"],
 					desc = L["Enable the use of separate size options for the right chat panel."],
 					set = function(info, value)
-						E.db.chat.separateSizes = value;
-						CH:PositionChat(true);
-						Bags:Layout();
+						E.db.chat.separateSizes = value
+						CH:PositionChat()
+						Bags:Layout()
 					end,
 				},
 				panelHeight = {
@@ -520,8 +523,11 @@ E.Options.args.chat = {
 					type = 'range',
 					name = L["Panel Height"],
 					desc = L["PANEL_DESC"],
-					set = function(info, value) E.db.chat.panelHeight = value; CH:PositionChat(true); end,
 					min = 60, max = 600, step = 1,
+					set = function(info, value)
+						E.db.chat.panelHeight = value
+						CH:PositionChat()
+					end,
 				},
 				panelWidth = {
 					order = 10,
@@ -529,13 +535,15 @@ E.Options.args.chat = {
 					name = L["Panel Width"],
 					desc = L["PANEL_DESC"],
 					set = function(info, value)
-						E.db.chat.panelWidth = value;
-						CH:PositionChat(true);
-						local bags = Bags;
+						E.db.chat.panelWidth = value
+						CH:PositionChat()
+
+						local bags = Bags
 						if not E.db.chat.separateSizes then
-							bags:Layout();
+							bags:Layout()
 						end
-						bags:Layout(true);
+
+						bags:Layout(true)
 					end,
 					min = 50, max = 1000, step = 1,
 				},
@@ -560,10 +568,13 @@ E.Options.args.chat = {
 					type = 'range',
 					name = L["Right Panel Height"],
 					desc = L["Adjust the height of your right chat panel."],
+					min = 60, max = 600, step = 1,
 					disabled = function() return not E.db.chat.separateSizes end,
 					hidden = function() return not E.db.chat.separateSizes end,
-					set = function(info, value) E.db.chat.panelHeightRight = value; CH:PositionChat(true); end,
-					min = 60, max = 600, step = 1,
+					set = function(info, value)
+						E.db.chat.panelHeightRight = value
+						CH:PositionChat()
+					end,
 				},
 				panelWidthRight = {
 					order = 17,
@@ -573,9 +584,9 @@ E.Options.args.chat = {
 					disabled = function() return not E.db.chat.separateSizes end,
 					hidden = function() return not E.db.chat.separateSizes end,
 					set = function(info, value)
-						E.db.chat.panelWidthRight = value;
-						CH:PositionChat(true);
-						Bags:Layout();
+						E.db.chat.panelWidthRight = value
+						CH:PositionChat()
+						Bags:Layout()
 					end,
 					min = 50, max = 1000, step = 1,
 				},

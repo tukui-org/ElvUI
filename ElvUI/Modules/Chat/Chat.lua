@@ -886,43 +886,34 @@ local function FindRightChatID()
 	return rightChatID
 end
 
+function CH:UpdateChatTab(chat, tab)
+	local chatID = chat.id or chat:GetID()
+	local isDocked = chat.isDocked
+
+	if chatID > NUM_CHAT_WINDOWS then
+		local _, anchor = tab:GetPoint()
+		isDocked = anchor:GetName() ~= anchor
+	end
+
+	tab.isDocked = isDocked
+	tab.owner = chat
+
+	local chatShown = chat:IsShown()
+	if chatShown and not (chatID > NUM_CHAT_WINDOWS) and (chatID == self.RightChatWindowID) then
+		tab:SetParent(_G.RightChatPanel)
+		CH:SetupChatTabs(tab, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT') and E.db.chat.fadeTabsNoBackdrop)
+	elseif not isDocked and chatShown then
+		tab:SetParent(_G.UIParent)
+		CH:SetupChatTabs(tab, E.db.chat.fadeUndockedTabs)
+	else
+		tab:SetParent((chatID > 2 and _G.GeneralDockManagerScrollFrameChild) or _G.GeneralDockManager)
+		CH:SetupChatTabs(tab, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT') and E.db.chat.fadeTabsNoBackdrop)
+	end
+end
+
 function CH:UpdateChatTabs()
-	local fadeUndockedTabs = E.db.chat.fadeUndockedTabs
-	local fadeTabsNoBackdrop = E.db.chat.fadeTabsNoBackdrop
-
 	for i = 1, CreatedFrames do
-		local chat = _G[format("ChatFrame%d", i)]
-		local tab = _G[format("ChatFrame%sTab", i)]
-		local id = chat:GetID()
-		local isDocked = chat.isDocked
-		local chatbg = format("ChatFrame%dBackground", i)
-
-		if id > NUM_CHAT_WINDOWS then
-			if select(2, tab:GetPoint()):GetName() ~= chatbg then
-				isDocked = true
-			else
-				isDocked = false
-			end
-		end
-
-		local chatShown = chat:IsShown()
-		if chatShown and not (id > NUM_CHAT_WINDOWS) and (id == self.RightChatWindowID) then
-			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
-				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
-			else
-				CH:SetupChatTabs(tab, false)
-			end
-		elseif not isDocked and chatShown then
-			tab:SetParent(_G.RightChatPanel)
-			chat:SetParent(_G.RightChatPanel)
-			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
-		else
-			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT' then
-				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
-			else
-				CH:SetupChatTabs(tab, false)
-			end
-		end
+		CH:UpdateChatTab(_G[format('ChatFrame%d', i)], _G[format('ChatFrame%sTab', i)])
 	end
 end
 
@@ -933,8 +924,8 @@ function CH:RefreshToggleButtons()
 	_G.RightChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
 end
 
-function CH:PositionChat(override)
-	if ((InCombatLockdown() and not override and self.initialMove) or (IsMouseButtonDown("LeftButton") and not override)) then return end
+function CH:PositionChat()
+	if IsMouseButtonDown("LeftButton") or (self.initialMove and InCombatLockdown()) then return end
 
 	local RightChatPanel, LeftChatPanel, LeftChatTab = _G.RightChatPanel, _G.LeftChatPanel, _G.LeftChatTab
 	if not RightChatPanel or not LeftChatPanel then return end
@@ -949,25 +940,22 @@ function CH:PositionChat(override)
 
 	self.RightChatWindowID = FindRightChatID()
 
-	local fadeUndockedTabs = E.db.chat.fadeUndockedTabs
-	local fadeTabsNoBackdrop = E.db.chat.fadeTabsNoBackdrop
-
 	local BASE_OFFSET = 28 + (E.PixelMode and 0 or 4)
 	for i=1, CreatedFrames do
 		local chat = _G[format("ChatFrame%d", i)]
 		local tab = _G[format("ChatFrame%sTab", i)]
-		local chatbg = format("ChatFrame%dBackground", i)
-		local isDocked = chat.isDocked
-		local id = chat:GetID()
-		tab.isDocked = isDocked
-		tab.owner = chat
 
-		if id > NUM_CHAT_WINDOWS then
-			isDocked = select(2, tab:GetPoint()):GetName() ~= chatbg
-		end
+		local id = chat:GetID()
+		if chat.id ~= id then chat.id = id end
+
+		CH:UpdateChatTab(chat, tab)
 
 		if chat.FontStringContainer then
 			chat.FontStringContainer:SetOutside(chat)
+		end
+
+		if chat:IsMovable() then
+			chat:SetUserPlaced(true)
 		end
 
 		local chatShown = chat:IsShown()
@@ -980,63 +968,32 @@ function CH:PositionChat(override)
 		end
 
 		if chatShown and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
-			chat:ClearAllPoints()
-			chat:Point("BOTTOMLEFT", RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
-
 			if id ~= 2 then
 				chat:Size((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 10, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
 			else
 				chat:Size(E.db.chat.panelWidth - 10, (E.db.chat.panelHeight - BASE_OFFSET) - LeftChatTab:GetHeight())
 			end
 
-			--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 			if chat:GetLeft() then
-				FCF_SavePositionAndDimensions(chat, true)
+				FCF_SavePositionAndDimensions(chat)
 			end
 
-			tab:SetParent(RightChatPanel)
 			chat:SetParent(RightChatPanel)
-
-			if chat:IsMovable() then
-				chat:SetUserPlaced(true)
-			end
-			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT' then
-				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
-			else
-				CH:SetupChatTabs(tab, false)
-			end
-		elseif not isDocked and chatShown then
-			tab:SetParent(_G.UIParent)
+			chat:ClearAllPoints()
+			chat:Point("BOTTOMLEFT", RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
+		elseif chatShown and not tab.isDocked then
 			chat:SetParent(_G.UIParent)
-			CH:SetupChatTabs(tab, fadeUndockedTabs and true or false)
 		else
+			chat:SetParent(LeftChatPanel)
+
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
 				chat:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
 				chat:Size(E.db.chat.panelWidth - 10, (E.db.chat.panelHeight - BASE_OFFSET))
 
-				--Pass a 2nd argument which prevents an infinite loop in our ON_FCF_SavePositionAndDimensions function
 				if chat:GetLeft() then
-					FCF_SavePositionAndDimensions(chat, true)
+					FCF_SavePositionAndDimensions(chat)
 				end
-			end
-
-			chat:SetParent(LeftChatPanel)
-
-			if i > 2 then
-				tab:SetParent(_G.GeneralDockManagerScrollFrameChild)
-			else
-				tab:SetParent(_G.GeneralDockManager)
-			end
-
-			if chat:IsMovable() then
-				chat:SetUserPlaced(true)
-			end
-
-			if E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT' then
-				CH:SetupChatTabs(tab, fadeTabsNoBackdrop and true or false)
-			else
-				CH:SetupChatTabs(tab, false)
 			end
 		end
 	end
@@ -1903,7 +1860,7 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrame:Height(22)
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
-	self:PositionChat(true)
+	self:PositionChat()
 
 	if not self.HookSecured then
 		self:SecureHook('FCF_OpenTemporaryWindow', 'SetupChat')
@@ -2279,13 +2236,9 @@ function CH:CheckLFGRoles()
 	end
 end
 
-function CH:ON_FCF_SavePositionAndDimensions(_, noLoop)
-	if not noLoop then
-		CH:PositionChat()
-	end
-
+function CH:SavePositionAndDimensions(chat)
 	if not E.db.chat.lockPositions then
-		CH:UpdateChatTabs()
+		CH:UpdateChatTab(chat, _G[chat:GetName()..'Tab'])
 	end
 end
 
@@ -2760,7 +2713,7 @@ function CH:Initialize()
 	self:SecureHook('FCFDock_UpdateTabs')
 	self:SecureHook('FCF_SetWindowAlpha')
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
-	self:SecureHook('FCF_SavePositionAndDimensions', 'ON_FCF_SavePositionAndDimensions')
+	self:SecureHook('FCF_SavePositionAndDimensions', 'SavePositionAndDimensions')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
