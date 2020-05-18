@@ -2258,7 +2258,7 @@ function CH:SnappingChanged(chat)
 	CH:UpdateChatTab(chat)
 	CH:ShowBackground(chat.Background, not chat.isDocked)
 
-	if CH.db.lockPositions and not chat.isDocked then
+	if CH.db.lockPositions and (not chat.isDocked or chat == _G.ChatFrame1) then
 		CH:PositionChat(chat)
 	end
 end
