@@ -104,7 +104,6 @@ local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local UNKNOWN = UNKNOWN
 -- GLOBALS: ElvCharacterDB
 
-local CreatedFrames = 0
 local lfgRoles = {}
 local throttle = {}
 
@@ -685,7 +684,6 @@ function CH:StyleChat(frame)
 	_G.GeneralDockManagerOverflowButtonList:SetTemplate("Transparent")
 	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
 
-	CreatedFrames = id
 	frame.styled = true
 end
 
@@ -715,11 +713,8 @@ function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHis
 end
 
 function CH:UpdateSettings()
-	for i = 1, CreatedFrames do
-		local chat = _G[format("ChatFrame%d", i)]
-		local name = chat:GetName()
-		local editbox = _G[name..'EditBox']
-		editbox:SetAltArrowKeyMode(CH.db.useAltKey)
+	for _, name in ipairs(_G.CHAT_FRAMES) do
+		_G[name..'EditBox']:SetAltArrowKeyMode(CH.db.useAltKey)
 	end
 end
 
@@ -821,7 +816,7 @@ function CH:ChatOnLeave(chat)
 	CH:TabOnLeave(chat.tab)
 end
 
-function CH:SetupChatTabs(chat, hook)
+function CH:HandleFadeTabs(chat, hook)
 	local tab = chat.tab
 
 	if hook then
@@ -874,7 +869,7 @@ function CH:UpdateEditboxAnchors()
 	local topheight = classic and 0 or (E.PixelMode and -1 or -5)
 	local panel_height = 22
 
-	for _, name in pairs(_G.CHAT_FRAMES) do
+	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[name]
 		local editbox = frame and frame.editBox
 		if not editbox then return end
@@ -893,49 +888,49 @@ function CH:UpdateEditboxAnchors()
 	end
 end
 
-local function FindRightChatID()
-	local rightChatID
-
-	for _, frameName in pairs(_G.CHAT_FRAMES) do
-		local chat = _G[frameName]
-		local id = chat:GetID()
-
-		if E:FramesOverlap(chat, _G.RightChatPanel) and not E:FramesOverlap(chat, _G.LeftChatPanel) then
-			rightChatID = id
-			break
+function CH:FindRightChatWindow()
+	local oldChat = CH.RightChatWindow
+	if oldChat then -- check if we already have one snapped to the right chat
+		if E:FramesOverlap(oldChat, _G.RightChatPanel) and not E:FramesOverlap(oldChat, _G.LeftChatPanel) then
+			return oldChat
 		end
 	end
 
-	return rightChatID
+	for _, name in ipairs(_G.CHAT_FRAMES) do
+		local chat = _G[name]
+		if E:FramesOverlap(chat, _G.RightChatPanel) and not E:FramesOverlap(chat, _G.LeftChatPanel) then
+			return chat
+		end
+	end
 end
 
 function CH:UpdateChatTab(chat)
-	local chatID = chat.id or chat:GetID()
+	local id = chat:GetID()
 	local isDocked = chat.isDocked
 	local tab = chat.tab
 
-	if chatID > NUM_CHAT_WINDOWS then
+	if id > NUM_CHAT_WINDOWS then
 		local _, anchor = tab:GetPoint()
-		isDocked = anchor:GetName() ~= anchor
+		isDocked = anchor ~= chat.Background
 	end
 
 	tab.isDocked = isDocked
 
-	if chatID == self.RightChatWindowID and not (chatID > NUM_CHAT_WINDOWS) then
+	if chat == CH.RightChatWindow and not (id > NUM_CHAT_WINDOWS) then
 		tab:SetParent(_G.RightChatPanel)
-		CH:SetupChatTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'LEFT') and CH.db.fadeTabsNoBackdrop)
+		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'LEFT') and CH.db.fadeTabsNoBackdrop)
 	elseif not isDocked then
 		tab:SetParent(_G.UIParent)
-		CH:SetupChatTabs(chat, CH.db.fadeUndockedTabs)
+		CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs)
 	else
-		tab:SetParent((chatID > 2 and _G.GeneralDockManagerScrollFrameChild) or _G.GeneralDockManager)
-		CH:SetupChatTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'RIGHT') and CH.db.fadeTabsNoBackdrop)
+		tab:SetParent((id > 2 and _G.GeneralDockManagerScrollFrameChild) or _G.GeneralDockManager)
+		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'RIGHT') and CH.db.fadeTabsNoBackdrop)
 	end
 end
 
 function CH:UpdateChatTabs()
-	for i = 1, CreatedFrames do
-		CH:UpdateChatTab(_G[format('ChatFrame%d', i)])
+	for _, name in ipairs(_G.CHAT_FRAMES) do
+		CH:UpdateChatTab(_G[name])
 	end
 end
 
@@ -955,84 +950,65 @@ function CH:ShowBackground(bg, show)
 	end
 end
 
-function CH:PositionChat()
-	if IsMouseButtonDown("LeftButton") or (self.initialMove and InCombatLockdown()) then return end
+function CH:SavePositionAndDimensions(chat, ignore)
+	if not ignore and chat:GetLeft() then
+		FCF_SavePositionAndDimensions(chat)
+	end
+end
 
-	local RightChatPanel, LeftChatPanel, LeftChatTab = _G.RightChatPanel, _G.LeftChatPanel, _G.LeftChatTab
-	if not RightChatPanel or not LeftChatPanel then return end
+function CH:PositionChat(chat)
+	local tab = chat.tab
+	local id = chat:GetID()
 
-	RightChatPanel:Size(CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth, CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight)
-	LeftChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
+	CH.RightChatWindow = CH:FindRightChatWindow()
+	CH:UpdateChatTab(chat)
 
-	if not E.private.chat.enable or not CH.db.lockPositions then return end
-
-	local CombatLogButton = _G.CombatLogQuickButtonFrame_Custom
-	if CombatLogButton then CombatLogButton:Size(LeftChatTab:GetSize()) end
-
-	self.RightChatWindowID = FindRightChatID()
-
-	local BASE_OFFSET = 28 + (E.PixelMode and 0 or 4)
-	for i=1, CreatedFrames do
-		local chat = _G[format("ChatFrame%d", i)]
-		local tab = _G[format("ChatFrame%sTab", i)]
-
-		local id = chat:GetID()
-		if chat.id ~= id then chat.id = id end
-
-		CH:UpdateChatTab(chat)
-
-		if chat.FontStringContainer then
-			chat.FontStringContainer:SetOutside(chat)
-		end
-
-		if chat:IsMovable() then
-			chat:SetUserPlaced(true)
-		end
-
-		local chatShown = chat:IsShown()
-		if chatShown then
-			-- that chat font container leaks outside of its frame
-			-- we cant clip it, so lets force that leak sooner so
-			-- i can position it properly, patch: 8.3.0 ~Simpy
-			chat:Hide()
-			chat:Show()
-		end
-
-		if chatShown and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
-			if id ~= 2 then
-				chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET)
-			else
-				chat:Size(CH.db.panelWidth - 10, (CH.db.panelHeight - BASE_OFFSET) - LeftChatTab:GetHeight())
-			end
-
-			if chat:GetLeft() then
-				FCF_SavePositionAndDimensions(chat)
-			end
-
-			CH:ShowBackground(chat.Background, false)
-			chat:SetParent(RightChatPanel)
-			chat:ClearAllPoints()
-			chat:Point("BOTTOMLEFT", RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
-		elseif chatShown and not tab.isDocked then
-			CH:ShowBackground(chat.Background, true)
-			chat:SetParent(_G.UIParent)
-		else
-			CH:ShowBackground(chat.Background, false)
-			chat:SetParent(LeftChatPanel)
-
-			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
-				chat:ClearAllPoints()
-				chat:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
-				chat:Size(CH.db.panelWidth - 10, (CH.db.panelHeight - BASE_OFFSET))
-
-				if chat:GetLeft() then
-					FCF_SavePositionAndDimensions(chat)
-				end
-			end
-		end
+	if chat.FontStringContainer then
+		chat.FontStringContainer:SetOutside(chat)
 	end
 
-	self.initialMove = true
+	if chat:IsMovable() then
+		chat:SetUserPlaced(true)
+	end
+
+	local chatShown = chat:IsShown()
+	if chatShown then
+		-- that chat font container leaks outside of its frame
+		-- we cant clip it, so lets force that leak sooner so
+		-- i can position it properly, patch: 8.3.0 ~Simpy
+		chat:Hide()
+		chat:Show()
+	end
+
+	local BASE_OFFSET = 28 + (E.PixelMode and 0 or 4)
+	if chatShown and chat == CH.RightChatWindow and not (id > NUM_CHAT_WINDOWS) then
+		CH:ShowBackground(chat.Background, false)
+		chat:SetParent(_G.RightChatPanel)
+		chat:ClearAllPoints()
+		chat:Point("BOTTOMLEFT", _G.RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
+		chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - (BASE_OFFSET + (id == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0)))
+		CH:SavePositionAndDimensions(chat, true)
+	elseif chatShown and not tab.isDocked then
+		CH:ShowBackground(chat.Background, true)
+		chat:SetParent(_G.UIParent)
+	else
+		CH:ShowBackground(chat.Background, false)
+		chat:SetParent(_G.LeftChatPanel)
+
+		if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
+			chat:ClearAllPoints()
+			chat:Point("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
+			chat:Size(CH.db.panelWidth - 10, (CH.db.panelHeight - BASE_OFFSET))
+			CH:SavePositionAndDimensions(chat, true)
+		end
+	end
+end
+
+function CH:PositionChats()
+	if not E.private.chat.enable or not CH.db.lockPositions then return end
+	for _, name in ipairs(_G.CHAT_FRAMES) do
+		CH:PositionChat(_G[name])
+	end
 end
 
 function CH:Panels_ColorUpdate()
@@ -1046,8 +1022,8 @@ function CH:Panels_ColorUpdate()
 end
 
 local function UpdateChatTabColor(_, r, g, b)
-	for i=1, CreatedFrames do
-		_G['ChatFrame'..i..'TabText']:SetTextColor(r, g, b)
+	for _, name in ipairs(_G.CHAT_FRAMES) do
+		_G[name..'TabText']:SetTextColor(r, g, b)
 	end
 end
 E.valueColorUpdateFuncs[UpdateChatTabColor] = true
@@ -1205,7 +1181,7 @@ function CH:OnMouseWheel(frame)
 end
 
 function CH:EnableHyperlink()
-	for _, frameName in pairs(_G.CHAT_FRAMES) do
+	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		if (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnHyperlinkEnter) then
 			self:HookScript(frame, 'OnHyperlinkEnter')
@@ -1216,7 +1192,7 @@ function CH:EnableHyperlink()
 end
 
 function CH:DisableHyperlink()
-	for _, frameName in pairs(_G.CHAT_FRAMES) do
+	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		if self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter then
 			self:Unhook(frame, 'OnHyperlinkEnter')
@@ -1846,9 +1822,9 @@ local function FloatingChatFrameOnEvent(...)
 end
 
 function CH:SetupChat()
-	if E.private.chat.enable ~= true then return end
+	if not E.private.chat.enable then return end
 
-	for _, frameName in pairs(_G.CHAT_FRAMES) do
+	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		local id = frame:GetID()
 		local _, fontSize = FCF_GetChatWindowInfo(id)
@@ -1894,8 +1870,15 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrame:Height(22)
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
-	self:PositionChat()
+	_G.RightChatPanel:Size(CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth, CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight)
+	_G.LeftChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
+
 	E.Layout:RepositionChatDataPanels()
+	self:PositionChats()
+
+	if _G.CombatLogQuickButtonFrame_Custom then
+		_G.CombatLogQuickButtonFrame_Custom:Size(_G.LeftChatTab:GetSize())
+	end
 
 	if not self.HookSecured then
 		self:SecureHook('FCF_OpenTemporaryWindow', 'SetupChat')
@@ -2123,7 +2106,7 @@ function CH:PET_BATTLE_CLOSE()
 		return
 	end
 
-	for _, frameName in pairs(_G.CHAT_FRAMES) do
+	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		if frame then
 			local text = _G[frameName.."Tab"]:GetText()
@@ -2135,7 +2118,7 @@ function CH:PET_BATTLE_CLOSE()
 end
 
 function CH:UpdateFading()
-	for _, frameName in pairs(_G.CHAT_FRAMES) do
+	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		if frame then
 			frame:SetFading(CH.db.fade)
@@ -2153,7 +2136,7 @@ function CH:DisplayChatHistory()
 	end
 
 	CH.SoundTimer = true
-	for _, chat in pairs(_G.CHAT_FRAMES) do
+	for _, chat in ipairs(_G.CHAT_FRAMES) do
 		for i=1, #data do
 			local d = data[i]
 			if type(d) == 'table' then
@@ -2179,7 +2162,7 @@ function CH:DelayGuildMOTD()
 		if delay < 5 then return end
 		local msg = GetGuildRosterMOTD()
 		if msg and strlen(msg) > 0 then
-			for _, frame in pairs(_G.CHAT_FRAMES) do
+			for _, frame in ipairs(_G.CHAT_FRAMES) do
 				chat = _G[frame]
 				if chat and chat:IsEventRegistered('CHAT_MSG_GUILD') then
 					CH:ChatFrame_SystemEventHandler(chat, 'GUILD_MOTD', msg)
@@ -2274,6 +2257,10 @@ end
 function CH:SnappingChanged(chat)
 	CH:UpdateChatTab(chat)
 	CH:ShowBackground(chat.Background, not chat.isDocked)
+
+	if CH.db.lockPositions and not chat.isDocked then
+		CH:PositionChat(chat)
+	end
 end
 
 function CH:SocialQueueIsLeader(playerName, leaderName)
@@ -2544,8 +2531,6 @@ function CH:UpdateVoiceChatIcons()
 end
 
 function CH:HandleChatVoiceIcons()
-	local anchor = CH.db.lockPositions and _G.LeftChatTab or _G.GeneralDockManager
-
 	if CH.db.hideVoiceButtons then
 		for _, button in ipairs(channelButtons) do
 			button:Hide()
@@ -2557,7 +2542,7 @@ function CH:HandleChatVoiceIcons()
 			button:ClearAllPoints()
 
 			if index == 1 then
-				button:Point('RIGHT', anchor, 'RIGHT', 2, 0)
+				button:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', 2, 0)
 			else
 				button:Point('RIGHT', channelButtons[index-1], 'LEFT')
 			end
@@ -2577,7 +2562,7 @@ function CH:HandleChatVoiceIcons()
 
 	if not CH.db.pinVoiceButtons then
 		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', anchor, 'RIGHT', -4, 0)
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
 	end
 end
 
@@ -2677,7 +2662,7 @@ function CH:BuildCopyChatFrame()
 		end
 	end)
 	frame:SetScript("OnHide", function(copyChat)
-		if ( copyChat.isMoving or copyChat.isSizing) then
+		if copyChat.isMoving or copyChat.isSizing then
 			copyChat:StopMovingOrSizing()
 			copyChat.isMoving = false
 			copyChat.isSizing = false
@@ -2728,7 +2713,7 @@ function CH:Initialize()
 
 	self:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
 
-	if E.private.chat.enable ~= true then return end
+	if not E.private.chat.enable then return end
 	self.Initialized = true
 	CH.db = E.db.chat
 

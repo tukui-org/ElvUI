@@ -79,8 +79,6 @@ local function SetupChat(noDisplayMsg)
 
 		FCF_SavePositionAndDimensions(frame)
 		FCF_StopDragging(frame)
-
-		-- set default Elvui font size
 		FCF_SetChatWindowFontSize(nil, frame, 12)
 
 		-- rename windows general because moved to chat #3
@@ -126,7 +124,7 @@ local function SetupChat(noDisplayMsg)
 	ChangeChatColor('CHANNEL3', 232/255, 228/255, 121/255) -- Local Defense
 
 	if E.Chat then
-		E.Chat:PositionChat()
+		E.Chat:PositionChats()
 
 		if E.db.RightChatPanelFaded then
 			_G.RightChatToggleButton:Click()
