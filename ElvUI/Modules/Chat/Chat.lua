@@ -537,7 +537,7 @@ function CH:StyleChat(frame)
 		local len = strlen(text)
 
 		if (not repeatedText or not strfind(text, repeatedText, 1, true)) and InCombatLockdown() then
-			local MIN_REPEAT_CHARACTERS = E.db.chat.numAllowedCombatRepeat
+			local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
 			if len > MIN_REPEAT_CHARACTERS then
 				local repeatChar = true
 				for i=1, MIN_REPEAT_CHARACTERS, 1 do
@@ -883,7 +883,7 @@ function CH:UpdateEditboxAnchors()
 		local anchorTo = leftChat or frame
 		editbox:ClearAllPoints()
 
-		if E.db.chat.editBoxPosition == "BELOW_CHAT" then
+		if CH.db.editBoxPosition == "BELOW_CHAT" then
 			editbox:Point("TOPLEFT", anchorTo, "BOTTOMLEFT", -width, topheight)
 			editbox:Point("BOTTOMRIGHT", anchorTo, "BOTTOMRIGHT", width, -(panel_height+bottomheight))
 		else
@@ -923,13 +923,13 @@ function CH:UpdateChatTab(chat)
 
 	if chatID == self.RightChatWindowID and not (chatID > NUM_CHAT_WINDOWS) then
 		tab:SetParent(_G.RightChatPanel)
-		CH:SetupChatTabs(chat, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT') and E.db.chat.fadeTabsNoBackdrop)
+		CH:SetupChatTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'LEFT') and CH.db.fadeTabsNoBackdrop)
 	elseif not isDocked then
 		tab:SetParent(_G.UIParent)
-		CH:SetupChatTabs(chat, E.db.chat.fadeUndockedTabs)
+		CH:SetupChatTabs(chat, CH.db.fadeUndockedTabs)
 	else
 		tab:SetParent((chatID > 2 and _G.GeneralDockManagerScrollFrameChild) or _G.GeneralDockManager)
-		CH:SetupChatTabs(chat, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT') and E.db.chat.fadeTabsNoBackdrop)
+		CH:SetupChatTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'RIGHT') and CH.db.fadeTabsNoBackdrop)
 	end
 end
 
@@ -940,10 +940,10 @@ function CH:UpdateChatTabs()
 end
 
 function CH:RefreshToggleButtons()
-	_G.LeftChatToggleButton:SetAlpha(E.db.LeftChatPanelFaded and E.db.chat.fadeChatToggles and 0 or 1)
-	_G.RightChatToggleButton:SetAlpha(E.db.RightChatPanelFaded and E.db.chat.fadeChatToggles and 0 or 1)
-	_G.LeftChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.LeftChatDataPanel.enable)
-	_G.RightChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
+	_G.LeftChatToggleButton:SetAlpha(E.db.LeftChatPanelFaded and CH.db.fadeChatToggles and 0 or 1)
+	_G.RightChatToggleButton:SetAlpha(E.db.RightChatPanelFaded and CH.db.fadeChatToggles and 0 or 1)
+	_G.LeftChatToggleButton:SetShown(not CH.db.hideChatToggles and E.db.datatexts.panels.LeftChatDataPanel.enable)
+	_G.RightChatToggleButton:SetShown(not CH.db.hideChatToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
 end
 
 function CH:ShowBackground(bg, show)
@@ -961,8 +961,8 @@ function CH:PositionChat()
 	local RightChatPanel, LeftChatPanel, LeftChatTab = _G.RightChatPanel, _G.LeftChatPanel, _G.LeftChatTab
 	if not RightChatPanel or not LeftChatPanel then return end
 
-	RightChatPanel:Size(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
-	LeftChatPanel:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
+	RightChatPanel:Size(CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth, CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight)
+	LeftChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
 
 	if not E.private.chat.enable or not self.db.lockPositions then return end
 
@@ -1000,9 +1000,9 @@ function CH:PositionChat()
 
 		if chatShown and not (id > NUM_CHAT_WINDOWS) and id == self.RightChatWindowID then
 			if id ~= 2 then
-				chat:Size((E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth) - 10, (E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight) - BASE_OFFSET)
+				chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET)
 			else
-				chat:Size(E.db.chat.panelWidth - 10, (E.db.chat.panelHeight - BASE_OFFSET) - LeftChatTab:GetHeight())
+				chat:Size(CH.db.panelWidth - 10, (CH.db.panelHeight - BASE_OFFSET) - LeftChatTab:GetHeight())
 			end
 
 			if chat:GetLeft() then
@@ -1023,7 +1023,7 @@ function CH:PositionChat()
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
 				chat:ClearAllPoints()
 				chat:Point("BOTTOMLEFT", LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
-				chat:Size(E.db.chat.panelWidth - 10, (E.db.chat.panelHeight - BASE_OFFSET))
+				chat:Size(CH.db.panelWidth - 10, (CH.db.panelHeight - BASE_OFFSET))
 
 				if chat:GetLeft() then
 					FCF_SavePositionAndDimensions(chat)
@@ -1036,7 +1036,7 @@ function CH:PositionChat()
 end
 
 function CH:Panels_ColorUpdate()
-	local panelColor = E.db.chat.panelColor
+	local panelColor = CH.db.panelColor
 	_G.LeftChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 	_G.RightChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 
@@ -1858,7 +1858,7 @@ function CH:SetupChat()
 		frame:FontTemplate(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
 		frame:SetTimeVisible(100)
 		frame:SetFading(self.db.fade)
-		CH:ShowBackground(frame.Background, not frame.isDocked and not E.db.chat.lockPositions)
+		CH:ShowBackground(frame.Background, not frame.isDocked and not CH.db.lockPositions)
 
 		if id ~= 2 and not frame.OldAddMessage then
 			--Don't add timestamps to combat log, they don't work.
@@ -2539,7 +2539,7 @@ end
 
 function CH:UpdateVoiceChatIcons()
 	for _, button in ipairs(channelButtons) do
-		button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
+		button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 	end
 end
 
@@ -2553,7 +2553,7 @@ function CH:HandleChatVoiceIcons()
 	elseif CH.db.pinVoiceButtons then
 		for index, button in ipairs(channelButtons) do
 			Skins:HandleButton(button, nil, nil, nil, true)
-			button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
+			button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 			button:ClearAllPoints()
 
 			if index == 1 then
@@ -2582,7 +2582,7 @@ function CH:CreateChatVoicePanel()
 	Holder:Point("BOTTOMLEFT", _G.LeftChatPanel, "TOPLEFT", 0, 1)
 	Holder:Size(30, 86)
 	Holder:SetTemplate('Transparent', nil, true)
-	Holder:SetBackdropColor(E.db.chat.panelColor.r, E.db.chat.panelColor.g, E.db.chat.panelColor.b, E.db.chat.panelColor.a)
+	Holder:SetBackdropColor(CH.db.panelColor.r, CH.db.panelColor.g, CH.db.panelColor.b, CH.db.panelColor.a)
 	E:CreateMover(Holder, "SocialMenuMover", _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
 
 	channelButtons[1]:ClearAllPoints()
@@ -2591,7 +2591,7 @@ function CH:CreateChatVoicePanel()
 	for _, button in ipairs(channelButtons) do
 		Skins:HandleButton(button, nil, nil, nil, true)
 		button.Icon:SetParent(button)
-		button.Icon:SetDesaturated(E.db.chat.desaturateVoiceIcons)
+		button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 		button:SetParent(Holder)
 	end
 
@@ -2773,7 +2773,7 @@ function CH:Initialize()
 		_G.WIM.RegisterItemRefHandler('cpl', HyperLinkedCPL)
 	end
 
-	if not E.db.chat.lockPositions then
+	if not CH.db.lockPositions then
 		CH:UpdateChatTabs()
 	end
 
