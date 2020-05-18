@@ -2271,7 +2271,7 @@ function CH:CheckLFGRoles()
 	end
 end
 
-function CH:SavePositionAndDimensions(chat)
+function CH:SnappingChanged(chat)
 	CH:UpdateChatTab(chat)
 	CH:ShowBackground(chat.Background, not chat.isDocked)
 end
@@ -2747,7 +2747,8 @@ function CH:Initialize()
 	self:SecureHook('FCFDock_UpdateTabs')
 	self:SecureHook('FCF_SetWindowAlpha')
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
-	self:SecureHook('FCF_SavePositionAndDimensions', 'SavePositionAndDimensions')
+	self:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
+	self:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
