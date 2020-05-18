@@ -943,6 +943,15 @@ function CH:RefreshToggleButtons()
 	_G.RightChatToggleButton:SetShown(not E.db.chat.hideChatToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
 end
 
+function CH:ShowBackground(bg, show)
+	if show then
+		bg.Show = nil
+		bg:Show()
+	else
+		bg:Kill()
+	end
+end
+
 function CH:PositionChat()
 	if IsMouseButtonDown("LeftButton") or (self.initialMove and InCombatLockdown()) then return end
 
@@ -997,12 +1006,15 @@ function CH:PositionChat()
 				FCF_SavePositionAndDimensions(chat)
 			end
 
+			CH:ShowBackground(chat.Background, false)
 			chat:SetParent(RightChatPanel)
 			chat:ClearAllPoints()
 			chat:Point("BOTTOMLEFT", RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
 		elseif chatShown and not tab.isDocked then
+			CH:ShowBackground(chat.Background, true)
 			chat:SetParent(_G.UIParent)
 		else
+			CH:ShowBackground(chat.Background, false)
 			chat:SetParent(LeftChatPanel)
 
 			if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
@@ -1832,6 +1844,7 @@ end
 
 function CH:SetupChat()
 	if E.private.chat.enable ~= true then return end
+
 	for _, frameName in pairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		local id = frame:GetID()
@@ -1842,6 +1855,7 @@ function CH:SetupChat()
 		frame:FontTemplate(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
 		frame:SetTimeVisible(100)
 		frame:SetFading(self.db.fade)
+		CH:ShowBackground(frame.Background, not E.db.chat.lockPositions)
 
 		if id ~= 2 and not frame.OldAddMessage then
 			--Don't add timestamps to combat log, they don't work.

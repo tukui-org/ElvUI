@@ -441,7 +441,7 @@ E.Options.args.chat = {
 					desc = L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."],
 					set = function(info, value)
 						E.db.chat[info[#info]] = value
-						CH:PositionChat()
+						CH:SetupChat()
 					end,
 				},
 				panelTabTransparency = {
