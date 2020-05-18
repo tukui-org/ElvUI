@@ -2236,8 +2236,8 @@ end
 function CH:FCFDock_UpdateTabs(dock)
 	if dock == _G.GeneralDockManager then
 		dock.scrollFrame:ClearAllPoints()
-		dock.scrollFrame:Point("TOPLEFT", _G.ChatFrame2Tab, "TOPRIGHT")
 		dock.scrollFrame:Point("RIGHT", dock.overflowButton, "LEFT")
+		dock.scrollFrame:Point("TOPLEFT", (_G.ChatFrame2.isDocked and _G.ChatFrame2Tab) or _G.ChatFrame1Tab, "TOPRIGHT")
 	end
 end
 
