@@ -787,10 +787,10 @@ function CH:CopyChat(frame)
 	end
 end
 
-function CH:TabOnEnter(tab, _, chat)
+function CH:TabOnEnter(tab)
 	tab.text:Show()
 
-	if not chat then chat = tab.owner end
+	local chat = tab.owner
 	if chat and chat.button and GetMouseFocus() ~= chat.button then
 		chat.button:SetAlpha(0.35)
 	end
@@ -800,10 +800,10 @@ function CH:TabOnEnter(tab, _, chat)
 	end
 end
 
-function CH:TabOnLeave(tab, _, chat)
+function CH:TabOnLeave(tab)
 	tab.text:Hide()
 
-	if not chat then chat = tab.owner end
+	local chat = tab.owner
 	if chat and chat.button and GetMouseFocus() ~= chat.button then
 		chat.button:SetAlpha(0)
 	end
@@ -814,14 +814,16 @@ function CH:TabOnLeave(tab, _, chat)
 end
 
 function CH:ChatOnEnter(chat)
-	CH:TabOnEnter(chat.tab, nil, chat)
+	CH:TabOnEnter(chat.tab)
 end
 
 function CH:ChatOnLeave(chat)
-	CH:TabOnLeave(chat.tab, nil, chat)
+	CH:TabOnLeave(chat.tab)
 end
 
-function CH:SetupChatTabs(chat, tab, hook)
+function CH:SetupChatTabs(chat, hook)
+	local tab = chat.tab
+
 	if hook then
 		if not self.hooks or not self.hooks[chat] or not self.hooks[chat].OnEnter then
 			self:HookScript(chat, 'OnEnter', 'ChatOnEnter')
@@ -907,9 +909,10 @@ local function FindRightChatID()
 	return rightChatID
 end
 
-function CH:UpdateChatTab(chat, tab)
+function CH:UpdateChatTab(chat)
 	local chatID = chat.id or chat:GetID()
 	local isDocked = chat.isDocked
+	local tab = chat.tab
 
 	if chatID > NUM_CHAT_WINDOWS then
 		local _, anchor = tab:GetPoint()
@@ -920,19 +923,19 @@ function CH:UpdateChatTab(chat, tab)
 
 	if chatID == self.RightChatWindowID and not (chatID > NUM_CHAT_WINDOWS) then
 		tab:SetParent(_G.RightChatPanel)
-		CH:SetupChatTabs(chat, tab, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT') and E.db.chat.fadeTabsNoBackdrop)
+		CH:SetupChatTabs(chat, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'LEFT') and E.db.chat.fadeTabsNoBackdrop)
 	elseif not isDocked then
 		tab:SetParent(_G.UIParent)
-		CH:SetupChatTabs(chat, tab, E.db.chat.fadeUndockedTabs)
+		CH:SetupChatTabs(chat, E.db.chat.fadeUndockedTabs)
 	else
 		tab:SetParent((chatID > 2 and _G.GeneralDockManagerScrollFrameChild) or _G.GeneralDockManager)
-		CH:SetupChatTabs(chat, tab, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT') and E.db.chat.fadeTabsNoBackdrop)
+		CH:SetupChatTabs(chat, (E.db.chat.panelBackdrop == 'HIDEBOTH' or E.db.chat.panelBackdrop == 'RIGHT') and E.db.chat.fadeTabsNoBackdrop)
 	end
 end
 
 function CH:UpdateChatTabs()
 	for i = 1, CreatedFrames do
-		CH:UpdateChatTab(_G[format('ChatFrame%d', i)], _G[format('ChatFrame%sTab', i)])
+		CH:UpdateChatTab(_G[format('ChatFrame%d', i)])
 	end
 end
 
@@ -976,7 +979,7 @@ function CH:PositionChat()
 		local id = chat:GetID()
 		if chat.id ~= id then chat.id = id end
 
-		CH:UpdateChatTab(chat, tab)
+		CH:UpdateChatTab(chat)
 
 		if chat.FontStringContainer then
 			chat.FontStringContainer:SetOutside(chat)
@@ -1855,7 +1858,7 @@ function CH:SetupChat()
 		frame:FontTemplate(LSM:Fetch("font", self.db.font), fontSize, self.db.fontOutline)
 		frame:SetTimeVisible(100)
 		frame:SetFading(self.db.fade)
-		CH:ShowBackground(frame.Background, not E.db.chat.lockPositions)
+		CH:ShowBackground(frame.Background, not frame.isDocked and not E.db.chat.lockPositions)
 
 		if id ~= 2 and not frame.OldAddMessage then
 			--Don't add timestamps to combat log, they don't work.
@@ -2270,8 +2273,10 @@ end
 
 function CH:SavePositionAndDimensions(chat)
 	if not E.db.chat.lockPositions then
-		CH:UpdateChatTab(chat, _G[chat:GetName()..'Tab'])
+		CH:UpdateChatTab(chat)
 	end
+
+	CH:ShowBackground(chat.Background, not chat.isDocked)
 end
 
 function CH:SocialQueueIsLeader(playerName, leaderName)
