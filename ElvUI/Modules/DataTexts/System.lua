@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local select, collectgarbage = select, collectgarbage
+local tinsert, collectgarbage = tinsert, collectgarbage
 local ipairs, sort, wipe, floor, format = ipairs, sort, wipe, floor, format
 local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
@@ -36,34 +36,45 @@ local homeLatencyString = "%d ms"
 local kiloByteString = "%d kb"
 local megaByteString = "%.2f mb"
 
+local totalMemory = 0
+local totalCPU = 0
+local cpuProfiling = GetCVar("scriptProfile") == "1"
+
 local function formatMem(memory)
 	local mult = 10^1
-	if memory > 999 then
+	if memory >= 1024 then
 		return format(megaByteString, ((memory/1024) * mult) / mult)
 	else
 		return format(kiloByteString, (memory * mult) / mult)
 	end
 end
 
-local function sortByMemoryOrCPU(a, b)
+local function sortByMemory(a, b)
 	if a and b then
 		return (a[3] == b[3] and a[2] < b[2]) or a[3] > b[3]
 	end
 end
 
-local cpuTable = {}
-local memoryTable = {}
+local function sortByCPU(a, b)
+	if a and b then
+		return (a[4] == b[4] and a[2] < b[2]) or a[4] > b[4]
+	end
+end
+
+local infoTable = {}
+
 local function RebuildAddonList()
 	local addOnCount = GetNumAddOns()
-	if (addOnCount == #memoryTable) then return end
+	if (addOnCount == #infoTable) then return end
 
 	-- Number of loaded addons changed, create new memoryTable for all addons
-	wipe(memoryTable)
-	wipe(cpuTable)
+	wipe(infoTable)
 
 	for i = 1, addOnCount do
-		memoryTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
-		cpuTable[i] = {i, select(2, GetAddOnInfo(i)), 0}
+		local _, title, _, loadable = GetAddOnInfo(i)
+		if loadable then
+			tinsert(infoTable, {i, title, 0, 0})
+		end
 	end
 end
 
@@ -72,14 +83,17 @@ local function UpdateMemory()
 	UpdateAddOnMemoryUsage()
 
 	-- Load memory usage in table
-	local totalMemory = 0
-	for _, data in ipairs(memoryTable) do
-		data[3] = GetAddOnMemoryUsage(data[1])
-		totalMemory = totalMemory + data[3]
+	totalMemory = 0
+	for _, data in ipairs(infoTable) do
+		if IsAddOnLoaded(data[1]) then
+			local mem = GetAddOnMemoryUsage(data[1])
+			data[3] = mem
+			totalMemory = totalMemory + mem
+		end
 	end
 
 	-- Sort the table to put the largest addon on top
-	sort(memoryTable, sortByMemoryOrCPU)
+	sort(infoTable, sortByMemory)
 
 	return totalMemory
 end
@@ -88,16 +102,20 @@ local function UpdateCPU()
 	--Update the CPU usages of the addons
 	UpdateAddOnCPUUsage()
 
+	totalCPU = 0
 	-- Load cpu usage in table
-	local totalCPU = 0
-	for _, data in ipairs(cpuTable) do
-		local addonCPU = GetAddOnCPUUsage(data[1])
-		data[3] = addonCPU
-		totalCPU = totalCPU + addonCPU
+	for _, data in ipairs(infoTable) do
+		if IsAddOnLoaded(data[1]) then
+			local addonCPU = GetAddOnCPUUsage(data[1])
+			data[4] = addonCPU
+			totalCPU = totalCPU + addonCPU
+		end
 	end
 
-	-- Sort the table to put the largest addon on top
-	sort(cpuTable, sortByMemoryOrCPU)
+	if not IsShiftKeyDown() then
+		-- Sort the table to put the largest addon on top
+		sort(infoTable, sortByCPU)
+	end
 
 	return totalCPU
 end
@@ -113,6 +131,7 @@ local ipTypes = {"IPv4", "IPv6"}
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 	enteredFrame = true
+	UpdateMemory()
 
 	local _, _, homePing, worldPing = GetNetStats()
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, homePing), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
@@ -131,30 +150,31 @@ local function OnEnter(self)
 		DT.tooltip:AddLine(" ")
 	end
 
-	local totalCPU
-	local totalMemory = UpdateMemory()
-	local cpuProfiling = GetCVar("scriptProfile") == "1"
 	DT.tooltip:AddDoubleLine(L["Total Memory:"], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+
 	if cpuProfiling then
 		totalCPU = UpdateCPU()
 		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	end
 
 	DT.tooltip:AddLine(" ")
+
 	if IsShiftKeyDown() or not cpuProfiling then
-		for _, data in ipairs(memoryTable) do
+		for _, data in ipairs(infoTable) do
 			if IsAddOnLoaded(data[1]) then
 				local red = data[3] / totalMemory
 				local green = (1 - red) + .5
 				DT.tooltip:AddDoubleLine(data[2], formatMem(data[3]), 1, 1, 1, red, green, 0)
 			end
 		end
+		DT.tooltip:AddLine(" ")
 	else
-		for _, data in ipairs(cpuTable) do
+		for _, data in ipairs(infoTable) do
 			if IsAddOnLoaded(data[1]) then
-				local red = data[3] / totalCPU
-				local green = (1 - red) + .5
-				DT.tooltip:AddDoubleLine(data[2], format(homeLatencyString, data[3]), 1, 1, 1, red, green, 0)
+				local mem, cpu = data[3], data[4]
+				local memRed, cpuRed = mem / totalMemory, cpu / totalCPU
+				local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
+				DT.tooltip:AddDoubleLine(data[2], format('%s%s|r |cffffffff/|r %s%s|r', E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, data[4])), 1, 1, 1)
 			end
 		end
 
@@ -191,4 +211,4 @@ local function Update(self, elapsed)
 	end
 end
 
-DT:RegisterDatatext('System', nil, { 'ADDON_LOADED' }, RebuildAddonList, Update, Click, OnEnter, OnLeave, L["System"])
+DT:RegisterDatatext('System', nil, nil, RebuildAddonList, Update, Click, OnEnter, OnLeave, L["System"])
