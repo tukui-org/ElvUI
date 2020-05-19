@@ -19,7 +19,6 @@ function LO:Initialize()
 	LO.Initialized = true
 	LO:CreateChatPanels()
 	LO:CreateMinimapPanels()
-
 	LO:SetDataPanelStyle()
 
 	LO.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent)
@@ -120,20 +119,7 @@ function HideBothChat()
 	ChatButton_OnClick(_G.RightChatToggleButton)
 end
 
-local channelButtons = {
-	_G.ChatFrameChannelButton,
-	_G.ChatFrameToggleVoiceDeafenButton,
-	_G.ChatFrameToggleVoiceMuteButton
-}
-
 function LO:ToggleChatTabPanels(rightOverride, leftOverride)
-	if E.private.chat.enable and not E.db.chat.hideVoiceButtons then
-		local parent = (E.db.chat.panelTabBackdrop and _G.LeftChatTab) or _G.LeftChatPanel
-		for _, button in pairs(channelButtons) do
-			button.Icon:SetParent(parent)
-		end
-	end
-
 	if leftOverride or not E.db.chat.panelTabBackdrop then
 		_G.LeftChatTab:Hide()
 	else

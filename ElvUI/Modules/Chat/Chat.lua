@@ -888,43 +888,53 @@ function CH:UpdateEditboxAnchors()
 	end
 end
 
-function CH:FindRightChatWindow()
-	local oldChat = CH.RightChatWindow
-	if oldChat then -- check if we already have one snapped to the right chat
-		if E:FramesOverlap(oldChat, _G.RightChatPanel) and not E:FramesOverlap(oldChat, _G.LeftChatPanel) then
-			return oldChat
-		end
+function CH:FindChatWindows()
+	local left, right = CH.LeftChatWindow, CH.RightChatWindow
+
+	-- they already exist just return them :)
+	if left and right then
+		print('both exist')
+		return left, right
 	end
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[name]
-		if E:FramesOverlap(chat, _G.RightChatPanel) and not E:FramesOverlap(chat, _G.LeftChatPanel) then
-			return chat
+		if chat:IsShown() then
+			local onRight = E:FramesOverlap(chat, _G.RightChatPanel)
+			local onLeft = E:FramesOverlap(chat, _G.LeftChatPanel)
+
+			if not right and (onRight and not onLeft) then
+				right = chat
+			elseif not left and (onLeft and not onRight) then
+				left = chat
+			end
+
+			-- if both are found just return now, don't wait
+			if left and right then
+				print('found both', left:GetName(), right:GetName())
+				return left, right
+			end
 		end
 	end
+
+	print('found one or none')
+	-- none or one was found
+	return left, right
 end
 
 function CH:UpdateChatTab(chat)
-	local id = chat:GetID()
-	local isDocked = chat.isDocked
-	local tab = chat.tab
-
-	if id > NUM_CHAT_WINDOWS then
-		local _, anchor = tab:GetPoint()
-		isDocked = anchor ~= chat.Background
-	end
-
-	tab.isDocked = isDocked
-
-	if chat == CH.RightChatWindow and not (id > NUM_CHAT_WINDOWS) then
-		tab:SetParent(_G.RightChatPanel)
+	if chat == CH.LeftChatWindow then
+		chat.tab:SetParent(_G.LeftChatPanel)
 		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'LEFT') and CH.db.fadeTabsNoBackdrop)
-	elseif not isDocked then
-		tab:SetParent(_G.UIParent)
-		CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs)
-	else
-		tab:SetParent((id > 2 and _G.GeneralDockManagerScrollFrameChild) or _G.GeneralDockManager)
+	elseif chat == CH.RightChatWindow then
+		chat.tab:SetParent(_G.RightChatPanel)
 		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'RIGHT') and CH.db.fadeTabsNoBackdrop)
+	else
+		-- we need to update the tab parent to mimic the docker
+		local docker = _G.GeneralDockManager.primary
+		local parent = select(2, chat:GetPoint()) == docker and docker:GetParent()
+		chat.tab:SetParent(parent or _G.UIParent)
+		CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs)
 	end
 end
 
@@ -941,12 +951,14 @@ function CH:RefreshToggleButtons()
 	_G.RightChatToggleButton:SetShown(not CH.db.hideChatToggles and E.db.datatexts.panels.RightChatDataPanel.enable)
 end
 
-function CH:ShowBackground(bg, show)
+function CH:ShowBackground(background, show)
+	if not background then return end
+
 	if show then
-		bg.Show = nil
-		bg:Show()
+		background.Show = nil
+		background:Show()
 	else
-		bg:Kill()
+		background:Kill()
 	end
 end
 
@@ -957,10 +969,7 @@ function CH:SavePositionAndDimensions(chat, ignore)
 end
 
 function CH:PositionChat(chat)
-	local tab = chat.tab
-	local id = chat:GetID()
-
-	CH.RightChatWindow = CH:FindRightChatWindow()
+	CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows()
 	CH:UpdateChatTab(chat)
 
 	if chat.FontStringContainer then
@@ -971,8 +980,7 @@ function CH:PositionChat(chat)
 		chat:SetUserPlaced(true)
 	end
 
-	local chatShown = chat:IsShown()
-	if chatShown then
+	if chat:IsShown() then
 		-- that chat font container leaks outside of its frame
 		-- we cant clip it, so lets force that leak sooner so
 		-- i can position it properly, patch: 8.3.0 ~Simpy
@@ -980,26 +988,45 @@ function CH:PositionChat(chat)
 		chat:Show()
 	end
 
+	local docker, chatParent, iconParent = _G.GeneralDockManager.primary
 	local BASE_OFFSET = 28 + (E.PixelMode and 0 or 4)
-	if chatShown and chat == CH.RightChatWindow and not (id > NUM_CHAT_WINDOWS) then
+	if chat == CH.LeftChatWindow then
 		CH:ShowBackground(chat.Background, false)
-		chat:SetParent(_G.RightChatPanel)
+		chatParent = _G.LeftChatPanel
+		iconParent = E.db.chat.panelTabBackdrop and _G.LeftChatTab
+
+		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0)
+
+		chat:ClearAllPoints()
+		chat:Point("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
+		chat:Size(CH.db.panelWidth - 10, CH.db.panelHeight - offset)
+
+		CH:SavePositionAndDimensions(chat, true)
+	elseif chat == CH.RightChatWindow then
+		CH:ShowBackground(chat.Background, false)
+		chatParent = _G.RightChatPanel
+		iconParent = E.db.chat.panelTabBackdrop and _G.RightChatTab
+
+		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.RightChatTab:GetHeight() + 2) or 0)
+
 		chat:ClearAllPoints()
 		chat:Point("BOTTOMLEFT", _G.RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
-		chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - (BASE_OFFSET + (id == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0)))
-		CH:SavePositionAndDimensions(chat, true)
-	elseif chatShown and not tab.isDocked then
-		CH:ShowBackground(chat.Background, true)
-		chat:SetParent(_G.UIParent)
-	else
-		CH:ShowBackground(chat.Background, false)
-		chat:SetParent(_G.LeftChatPanel)
+		chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - offset)
 
-		if id ~= 2 and not (id > NUM_CHAT_WINDOWS) then
-			chat:ClearAllPoints()
-			chat:Point("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
-			chat:Size(CH.db.panelWidth - 10, (CH.db.panelHeight - BASE_OFFSET))
-			CH:SavePositionAndDimensions(chat, true)
+		CH:SavePositionAndDimensions(chat, true)
+	else
+		-- not docked, or chatframe1, or attached to chatframe 1
+		CH:ShowBackground(chat.Background, not chat.isDocked or (chat == docker or ((docker ~= CH.LeftChatWindow and docker ~= CH.RightChatWindow) and select(2, chat:GetPoint()) == docker)))
+		chatParent = _G.UIParent
+	end
+
+	chat:SetParent(chatParent)
+
+	if chat == docker then
+		_G.GeneralDockManager:SetParent(chatParent)
+
+		if CH.db.pinVoiceButtons and not E.db.chat.hideVoiceButtons then
+			CH:ReparentVoiceChatIcons(iconParent or chatParent)
 		end
 	end
 end
@@ -1866,7 +1893,6 @@ function CH:SetupChat()
 		self:EnableHyperlink()
 	end
 
-	_G.GeneralDockManager:SetParent(_G.LeftChatPanel)
 	_G.GeneralDockManager:ClearAllPoints()
 	_G.GeneralDockManager:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 2)
 	_G.GeneralDockManager:Point('BOTTOMRIGHT', _G.ChatFrame1, 'TOPRIGHT', 0, 2)
@@ -2255,12 +2281,30 @@ function CH:CheckLFGRoles()
 	end
 end
 
-function CH:SnappingChanged(chat)
-	CH:UpdateChatTab(chat)
-	CH:ShowBackground(chat.Background, not chat.isDocked)
+function CH:Unsnapped(chat)
+	if chat == CH.LeftChatWindow then
+		CH.LeftChatWindow = nil
+		print('left', chat:GetName())
+	elseif chat == CH.RightChatWindow then
+		CH.RightChatWindow = nil
+		print('right', chat:GetName())
+	end
+end
 
-	if CH.db.lockPositions and (not chat.isDocked or chat == _G.ChatFrame1) then
-		CH:PositionChat(chat)
+function CH:SnappingChanged(chat)
+	CH:Unsnapped(chat)
+	CH:UpdateChatTab(chat)
+
+	if CH.db.lockPositions then
+		if chat == _G.GeneralDockManager.primary then
+			for _, frame in pairs(_G.GeneralDockManager.DOCKED_CHAT_FRAMES) do
+				CH:PositionChat(frame)
+			end
+		else
+			CH:PositionChat(chat)
+		end
+	else
+		CH:ShowBackground(chat.Background, not chat.isDocked)
 	end
 end
 
@@ -2520,6 +2564,12 @@ local channelButtons = {
 	_G.ChatFrameToggleVoiceMuteButton
 }
 
+function CH:ReparentVoiceChatIcons(parent)
+	for _, button in pairs(channelButtons) do
+		button.Icon:SetParent(parent)
+	end
+end
+
 function CH:RepositionOverflowButton()
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
 	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
@@ -2740,6 +2790,7 @@ function CH:Initialize()
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	self:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
 	self:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
+	self:SecureHook('FCF_DockFrame', 'SnappingChanged')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
