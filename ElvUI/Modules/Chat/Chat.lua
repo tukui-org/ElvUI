@@ -565,7 +565,11 @@ function CH:StyleChat(frame)
 					end
 				end
 
-				ChatFrame_SendTell(Name or L["Invalid Target"], _G.ChatFrame1)
+				if Name then
+					ChatFrame_SendTell(Name, editBox.chatFrame)
+				else
+					_G.UIErrorsFrame:AddMessage(E.InfoColor .. L["Invalid Target"])
+				end
 			elseif text == '/gr ' then
 				editBox:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
 				ChatEdit_ParseText(editBox, 0)
@@ -893,13 +897,13 @@ function CH:FindChatWindows()
 
 	-- they already exist just return them :)
 	if left and right then
-		print('both exist')
 		return left, right
 	end
 
+	local docker = _G.GeneralDockManager.primary
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[name]
-		if chat:IsShown() then
+		if (chat.isDocked and docker) or chat:IsShown() then
 			local onRight = E:FramesOverlap(chat, _G.RightChatPanel)
 			local onLeft = E:FramesOverlap(chat, _G.LeftChatPanel)
 
@@ -911,15 +915,22 @@ function CH:FindChatWindows()
 
 			-- if both are found just return now, don't wait
 			if left and right then
-				print('found both', left:GetName(), right:GetName())
 				return left, right
 			end
 		end
 	end
 
-	print('found one or none')
 	-- none or one was found
 	return left, right
+end
+
+function CH:GetDockerParent(docker, chat)
+	if not docker then return end
+
+	local _, relativeTo = chat:GetPoint()
+	if relativeTo == docker then
+		return docker:GetParent()
+	end
 end
 
 function CH:UpdateChatTab(chat)
@@ -931,8 +942,7 @@ function CH:UpdateChatTab(chat)
 		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'RIGHT') and CH.db.fadeTabsNoBackdrop)
 	else
 		-- we need to update the tab parent to mimic the docker
-		local docker = _G.GeneralDockManager.primary
-		local parent = select(2, chat:GetPoint()) == docker and docker:GetParent()
+		local parent = CH:GetDockerParent(_G.GeneralDockManager.primary, chat)
 		chat.tab:SetParent(parent or _G.UIParent)
 		CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs)
 	end
@@ -1015,8 +1025,8 @@ function CH:PositionChat(chat)
 
 		CH:SavePositionAndDimensions(chat, true)
 	else
-		-- not docked, or chatframe1, or attached to chatframe 1
-		CH:ShowBackground(chat.Background, not chat.isDocked or (chat == docker or ((docker ~= CH.LeftChatWindow and docker ~= CH.RightChatWindow) and select(2, chat:GetPoint()) == docker)))
+		-- not docked, or ChatFrame1, or attached to ChatFrame1
+		CH:ShowBackground(chat.Background, not chat.isDocked or (chat == docker or ((docker ~= CH.LeftChatWindow and docker ~= CH.RightChatWindow) and CH:GetDockerParent(docker, chat))))
 		chatParent = _G.UIParent
 	end
 
@@ -1893,9 +1903,10 @@ function CH:SetupChat()
 		self:EnableHyperlink()
 	end
 
+	local chat = _G.GeneralDockManager.primary
 	_G.GeneralDockManager:ClearAllPoints()
-	_G.GeneralDockManager:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 2)
-	_G.GeneralDockManager:Point('BOTTOMRIGHT', _G.ChatFrame1, 'TOPRIGHT', 0, 2)
+	_G.GeneralDockManager:Point('BOTTOMLEFT', chat, 'TOPLEFT', 0, 2)
+	_G.GeneralDockManager:Point('BOTTOMRIGHT', chat, 'TOPRIGHT', 0, 2)
 	_G.GeneralDockManager:Height(22)
 	_G.GeneralDockManagerScrollFrame:Height(22)
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
@@ -2243,11 +2254,17 @@ function CH:SaveChatHistory(event, ...)
 	end
 end
 
+function CH:GetCombatLog()
+	local LOG = _G.COMBATLOG -- ChatFrame2
+	if LOG then return LOG, LOG.tab end
+end
+
 function CH:FCFDock_UpdateTabs(dock)
 	if dock == _G.GeneralDockManager then
+		local logchat, logchattab = CH:GetCombatLog()
 		dock.scrollFrame:ClearAllPoints()
 		dock.scrollFrame:Point("RIGHT", dock.overflowButton, "LEFT")
-		dock.scrollFrame:Point("TOPLEFT", (_G.ChatFrame2.isDocked and _G.ChatFrame2Tab) or _G.ChatFrame1Tab, "TOPRIGHT")
+		dock.scrollFrame:Point("TOPLEFT", (logchat.isDocked and logchattab) or dock.primary.tab, "TOPRIGHT")
 	end
 end
 
@@ -2284,26 +2301,24 @@ end
 function CH:Unsnapped(chat)
 	if chat == CH.LeftChatWindow then
 		CH.LeftChatWindow = nil
-		print('left', chat:GetName())
 	elseif chat == CH.RightChatWindow then
 		CH.RightChatWindow = nil
-		print('right', chat:GetName())
 	end
 end
 
 function CH:SnappingChanged(chat)
 	CH:Unsnapped(chat)
-	CH:UpdateChatTab(chat)
 
 	if CH.db.lockPositions then
 		if chat == _G.GeneralDockManager.primary then
-			for _, frame in pairs(_G.GeneralDockManager.DOCKED_CHAT_FRAMES) do
+			for _, frame in ipairs(_G.GeneralDockManager.DOCKED_CHAT_FRAMES) do
 				CH:PositionChat(frame)
 			end
 		else
 			CH:PositionChat(chat)
 		end
 	else
+		CH:UpdateChatTab(chat)
 		CH:ShowBackground(chat.Background, not chat.isDocked)
 	end
 end
