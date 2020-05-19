@@ -434,20 +434,21 @@ E.Options.args.chat = {
 			name = L["Panels"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				lockPositions = {
+				snapChats = {
 					order = 1,
 					type = 'toggle',
-					name = L["Lock Positions"],
-					desc = L["Attempt to lock the left and right chat frame positions. Disabling this option will allow you to move the main chat frame anywhere you wish."],
+					name = L["Snap Chats"],
+					desc = L["Snap chats into the Left or Right panel when moving the chat over them."],
 					set = function(info, value)
 						E.db.chat[info[#info]] = value
-						CH:SetupChat()
+						CH:PositionChats()
 					end,
 				},
 				panelTabTransparency = {
 					order = 2,
 					type = 'toggle',
 					name = L["Tab Panel Transparency"],
+					customWidth = 250,
 					disabled = function() return not E.db.chat.panelTabBackdrop end,
 					set = function(info, value) E.db.chat.panelTabTransparency = value; Layout:SetChatTabStyle(); end,
 				},

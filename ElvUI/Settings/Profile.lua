@@ -839,8 +839,8 @@ P.auras = {
 
 --Chat
 P.chat = {
-	lockPositions = true,
 	url = true,
+	snapChats = true,
 	shortChannels = true,
 	hyperlinkHover = true,
 	throttleInterval = 45,
@@ -891,7 +891,7 @@ P.chat = {
 	panelColor = {r = .06, g = .06, b = .06, a = 0.8},
 	pinVoiceButtons = true,
 	hideVoiceButtons = false,
-	desaturateVoiceIcons = true,
+	desaturateVoiceIcons = true
 }
 
 --Datatexts
