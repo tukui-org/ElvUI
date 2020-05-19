@@ -91,15 +91,9 @@ local function OnEnter(self)
 	local specialization = GetLootSpecialization()
 	if specialization == 0 then
 		local specIndex = GetSpecialization()
-		if specIndex then
-			local _, name = GetSpecializationInfo(specIndex)
-			DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, name)))
-		end
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, SPECIALIZATION_CACHE[specIndex].name)))
 	else
-		local specID, name = GetSpecializationInfoByID(specialization)
-		if specID then
-			DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, name))
-		end
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, SPECIALIZATION_CACHE[specialization].name))
 	end
 
 	DT.tooltip:AddLine(' ')
