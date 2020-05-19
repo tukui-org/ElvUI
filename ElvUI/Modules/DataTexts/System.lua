@@ -36,8 +36,7 @@ local homeLatencyString = "%d ms"
 local kiloByteString = "%d kb"
 local megaByteString = "%.2f mb"
 
-local totalMemory = 0
-local totalCPU = 0
+local totalMemory, totalCPU = 0, 0
 local cpuProfiling = GetCVar("scriptProfile") == "1"
 
 local function formatMem(memory)
@@ -63,11 +62,10 @@ end
 
 local infoTable = {}
 
-local function RebuildAddonList()
+local function BuildAddonList()
 	local addOnCount = GetNumAddOns()
 	if (addOnCount == #infoTable) then return end
 
-	-- Number of loaded addons changed, create new memoryTable for all addons
 	wipe(infoTable)
 
 	for i = 1, addOnCount do
@@ -79,11 +77,10 @@ local function RebuildAddonList()
 end
 
 local function UpdateMemory()
-	-- Update the memory usages of the addons
 	UpdateAddOnMemoryUsage()
 
-	-- Load memory usage in table
 	totalMemory = 0
+
 	for _, data in ipairs(infoTable) do
 		if IsAddOnLoaded(data[1]) then
 			local mem = GetAddOnMemoryUsage(data[1])
@@ -92,18 +89,16 @@ local function UpdateMemory()
 		end
 	end
 
-	-- Sort the table to put the largest addon on top
 	sort(infoTable, sortByMemory)
 
 	return totalMemory
 end
 
 local function UpdateCPU()
-	--Update the CPU usages of the addons
 	UpdateAddOnCPUUsage()
 
 	totalCPU = 0
-	-- Load cpu usage in table
+
 	for _, data in ipairs(infoTable) do
 		if IsAddOnLoaded(data[1]) then
 			local addonCPU = GetAddOnCPUUsage(data[1])
@@ -113,7 +108,6 @@ local function UpdateCPU()
 	end
 
 	if not IsShiftKeyDown() then
-		-- Sort the table to put the largest addon on top
 		sort(infoTable, sortByCPU)
 	end
 
@@ -211,4 +205,4 @@ local function Update(self, elapsed)
 	end
 end
 
-DT:RegisterDatatext('System', nil, nil, RebuildAddonList, Update, Click, OnEnter, OnLeave, L["System"])
+DT:RegisterDatatext('System', nil, nil, BuildAddonList, Update, Click, OnEnter, OnLeave, L["System"])
