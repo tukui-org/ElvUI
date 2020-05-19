@@ -144,6 +144,7 @@ local function OnEnter(self)
 		DT.tooltip:AddLine(" ")
 	end
 
+	DT.tooltip:AddDoubleLine(L["Lua Memory:"], formatMem(collectgarbage("count")), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 	DT.tooltip:AddDoubleLine(L["Total Memory:"], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
 
 	if cpuProfiling then
