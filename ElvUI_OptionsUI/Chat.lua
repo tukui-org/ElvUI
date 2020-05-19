@@ -434,16 +434,6 @@ E.Options.args.chat = {
 			name = L["Panels"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				snapChats = {
-					order = 1,
-					type = 'toggle',
-					name = L["Snap Chats"],
-					desc = L["Snap chats into the Left or Right panel when moving the chat over them."],
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-						CH:PositionChats()
-					end,
-				},
 				panelTabTransparency = {
 					order = 2,
 					type = 'toggle',

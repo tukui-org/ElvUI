@@ -52,8 +52,6 @@ local ELV_TOONS = {
 }
 
 local function SetupChat(noDisplayMsg)
-	E.db.chat.snapChats = true
-
 	FCF_ResetChatWindows()
 	FCF_OpenNewWindow(LOOT)
 	FCF_UnDockFrame(_G.ChatFrame3)

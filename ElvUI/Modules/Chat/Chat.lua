@@ -934,16 +934,15 @@ function CH:GetDockerParent(docker, chat)
 end
 
 function CH:UpdateChatTab(chat)
-	local snapChats = CH.db.snapChats
 	if chat == CH.LeftChatWindow then
-		chat.tab:SetParent((snapChats and _G.LeftChatPanel) or _G.UIParent)
+		chat.tab:SetParent(_G.LeftChatPanel or _G.UIParent)
 		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'LEFT') and CH.db.fadeTabsNoBackdrop)
 	elseif chat == CH.RightChatWindow then
-		chat.tab:SetParent((snapChats and _G.RightChatPanel) or _G.UIParent)
+		chat.tab:SetParent(_G.RightChatPanel or _G.UIParent)
 		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'RIGHT') and CH.db.fadeTabsNoBackdrop)
 	else
 		-- we need to update the tab parent to mimic the docker
-		chat.tab:SetParent((snapChats and CH:GetDockerParent(_G.GeneralDockManager.primary, chat)) or _G.UIParent)
+		chat.tab:SetParent(CH:GetDockerParent(_G.GeneralDockManager.primary, chat) or _G.UIParent)
 		CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs)
 	end
 end
@@ -979,27 +978,12 @@ end
 function CH:SnappingChanged(chat)
 	CH:Unsnapped(chat)
 
-	local primaryChat = chat == _G.GeneralDockManager.primary
-	if CH.db.snapChats then
-		if primaryChat then
-			for _, frame in ipairs(_G.GeneralDockManager.DOCKED_CHAT_FRAMES) do
-				CH:PositionChat(frame)
-			end
-		else
-			CH:PositionChat(chat)
-		end
-	elseif primaryChat then
-		CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows() -- needed for UpdateUnlockedBackgrounds
-
+	if chat == _G.GeneralDockManager.primary then
 		for _, frame in ipairs(_G.GeneralDockManager.DOCKED_CHAT_FRAMES) do
-			CH:UpdateChatTab(frame)
-			CH:UpdateUnlockedBackgrounds(frame)
+			CH:PositionChat(frame)
 		end
 	else
-		CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows() -- needed for UpdateUnlockedBackgrounds
-
-		CH:UpdateChatTab(chat)
-		CH:UpdateUnlockedBackgrounds(chat)
+		CH:PositionChat(chat)
 	end
 end
 
@@ -1097,19 +1081,8 @@ function CH:PositionChats()
 	_G.RightChatPanel:Size(CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth, CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight)
 	_G.LeftChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
 
-	if CH.db.snapChats then
-		for _, name in ipairs(_G.CHAT_FRAMES) do
-			CH:PositionChat(_G[name])
-		end
-	else
-		CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows() -- needed for UpdateUnlockedBackgrounds
-		for _, name in ipairs(_G.CHAT_FRAMES) do
-			local chat = _G[name]
-			chat:SetParent(_G.UIParent)
-			CH:UpdateChatTab(chat)
-			CH:UpdateUnlockedBackgrounds(chat)
-			CH:ReparentVoiceChatIcons(_G.UIParent)
-		end
+	for _, name in ipairs(_G.CHAT_FRAMES) do
+		CH:PositionChat(_G[name])
 	end
 end
 
