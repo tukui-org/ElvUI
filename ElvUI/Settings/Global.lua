@@ -19,7 +19,7 @@ G.general = {
 	},
 	AceGUI = {
 		width = 960,
-		height = 720
+		height = 730
 	},
 	disableTutorialButtons = true,
 	showMissingTalentAlert = false,
