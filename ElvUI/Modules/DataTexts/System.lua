@@ -35,8 +35,8 @@ local percentageString = "%.2f%%"
 local homeLatencyString = "%d ms"
 local kiloByteString = "%d kb"
 local megaByteString = "%.2f mb"
-
-local totalMemory, totalCPU = 0, 0
+local profilingString = '%s%s|r |cffffffff/|r %s%s|r'
+local totalAddOnMemory, totalCPU = 0, 0
 local cpuProfiling = GetCVar("scriptProfile") == "1"
 
 local function formatMem(memory)
@@ -79,19 +79,19 @@ end
 local function UpdateMemory()
 	UpdateAddOnMemoryUsage()
 
-	totalMemory = 0
+	totalAddOnMemory = 0
 
 	for _, data in ipairs(infoTable) do
 		if IsAddOnLoaded(data[1]) then
 			local mem = GetAddOnMemoryUsage(data[1])
 			data[3] = mem
-			totalMemory = totalMemory + mem
+			totalAddOnMemory = totalAddOnMemory + mem
 		end
 	end
 
 	sort(infoTable, sortByMemory)
 
-	return totalMemory
+	return totalAddOnMemory
 end
 
 local function UpdateCPU()
@@ -128,28 +128,27 @@ local function OnEnter(self)
 	UpdateMemory()
 
 	local _, _, homePing, worldPing = GetNetStats()
-	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, homePing), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-	DT.tooltip:AddDoubleLine(L["World Latency:"], format(homeLatencyString, worldPing), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, homePing), .69, .31, .31, .84, .75, .65)
+	DT.tooltip:AddDoubleLine(L["World Latency:"], format(homeLatencyString, worldPing), .69, .31, .31, .84, .75, .65)
 
 	if GetCVarBool("useIPv6") then
 		local ipTypeHome, ipTypeWorld = GetNetIpTypes()
-		DT.tooltip:AddDoubleLine(L["Home Protocol:"], ipTypes[ipTypeHome or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-		DT.tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[ipTypeWorld or 0] or UNKNOWN, 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L["Home Protocol:"], ipTypes[ipTypeHome or 0] or UNKNOWN, .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[ipTypeWorld or 0] or UNKNOWN, .69, .31, .31, .84, .75, .65)
 	end
 
-	local bandwidth = GetAvailableBandwidth()
-	if bandwidth ~= 0 then
-		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, bandwidth),0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() * 100),0.69, 0.31, 0.31, 0.84, 0.75, 0.65)
+	local Downloading = GetFileStreamingStatus() ~= 0 or GetBackgroundLoadingStatus() ~= 0
+	if Downloading then
+		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, GetAvailableBandwidth()), .69, .31, .31, .84, .75, .65)
+		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() * 100), .69, .31, .31, .84, .75, .65)
 		DT.tooltip:AddLine(" ")
 	end
 
-	DT.tooltip:AddDoubleLine(L["Total Memory:"], formatMem(collectgarbage("count")), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
-	DT.tooltip:AddDoubleLine(L["AddOn Memory:"], formatMem(totalMemory), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+	DT.tooltip:AddDoubleLine(L["AddOn Memory:"], formatMem(totalAddOnMemory), .69, .31, .31, .84, .75, .65)
 
 	if cpuProfiling then
 		totalCPU = UpdateCPU()
-		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), 0.69, 0.31, 0.31,0.84, 0.75, 0.65)
+		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), .69, .31, .31, .84, .75, .65)
 	end
 
 	DT.tooltip:AddLine(" ")
@@ -157,7 +156,7 @@ local function OnEnter(self)
 	if IsShiftKeyDown() or not cpuProfiling then
 		for _, data in ipairs(infoTable) do
 			if IsAddOnLoaded(data[1]) then
-				local red = data[3] / totalMemory
+				local red = data[3] / totalAddOnMemory
 				local green = (1 - red) + .5
 				DT.tooltip:AddDoubleLine(data[2], formatMem(data[3]), 1, 1, 1, red, green, 0)
 			end
@@ -167,9 +166,9 @@ local function OnEnter(self)
 		for _, data in ipairs(infoTable) do
 			if IsAddOnLoaded(data[1]) then
 				local mem, cpu = data[3], data[4]
-				local memRed, cpuRed = mem / totalMemory, cpu / totalCPU
+				local memRed, cpuRed = mem / totalAddOnMemory, cpu / totalCPU
 				local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
-				DT.tooltip:AddDoubleLine(data[2], format('%s%s|r |cffffffff/|r %s%s|r', E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, data[4])), 1, 1, 1)
+				DT.tooltip:AddDoubleLine(data[2], format(profilingString, E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, data[4])), 1, 1, 1)
 			end
 		end
 
