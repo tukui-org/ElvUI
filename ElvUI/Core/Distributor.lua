@@ -284,6 +284,7 @@ local blacklistedKeys = {
 --Keys that auto or user generated tables.
 D.GeneratedKeys = {
 	profile = {
+		v11NamePlateReset = true,
 		movers = true,
 		nameplates = {
 			filters = true
