@@ -74,6 +74,14 @@ function UF:Update_BossFrames(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
+	if not IsAddOnLoaded("Clique") then
+		if db.middleClickFocus then
+			frame:SetAttribute("type3", "focus")
+		elseif frame:GetAttribute("type3") == "focus" then
+			frame:SetAttribute("type3", nil)
+		end
+	end
+
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)

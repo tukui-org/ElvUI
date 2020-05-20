@@ -146,6 +146,14 @@ function UF:Update_TankFrames(frame, db)
 	UF:Configure_RaidIcon(frame)
 
 	if not frame.isChild then
+		if not IsAddOnLoaded("Clique") then
+			if db.middleClickFocus then
+				frame:SetAttribute("type3", "focus")
+			elseif frame:GetAttribute("type3") == "focus" then
+				frame:SetAttribute("type3", nil)
+			end
+		end
+
 		--Auras
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_AllAuras(frame)

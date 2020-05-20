@@ -3181,7 +3181,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		end
 	end
 
-	if groupName == 'target' and not IsAddOnLoaded("Clique") then
+	if (groupName == 'target' or groupName == 'boss' or groupName == 'tank' or groupName == 'arena' or groupName == 'assist') and not IsAddOnLoaded("Clique") then
 		config.args.middleClickFocus = {
 			order = 16,
 			name = L["Middle Click - Set Focus"],
