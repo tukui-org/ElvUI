@@ -167,6 +167,7 @@ P.databars.honor.hideBelowMaxLevel = false
 P.databars.azerite.hideAtMaxLevel = true
 P.databars.azerite.hideInVehicle = false
 P.databars.azerite.hideInCombat = false
+P.databars.azerite.hideBelowMaxLevel = false
 
 --Bags
 P.bags = {
