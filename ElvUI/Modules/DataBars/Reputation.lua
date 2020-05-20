@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('DataBars')
+local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -25,18 +25,18 @@ local STANDING = STANDING
 --	[8] = {r = 0.90196, g = 0.8, b = 0.50196},
 --};
 
-function mod:UpdateReputation(event)
-	if not mod.db.reputation.enable then return end
+function DB:UpdateReputation(event)
+	if not DB.db.reputation.enable then return end
 
 	local bar = self.repBar
 	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
 
-	if not name or (self.db.reputation.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
+	if not name or (DB.db.reputation.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
 		bar:Hide()
 	else
 		bar:Show()
 
-		if self.db.reputation.hideInVehicle then
+		if DB.db.reputation.hideInVehicle then
 			E:RegisterObjectForVehicleLock(bar, E.UIParent)
 		else
 			E:UnregisterObjectForVehicleLock(bar)
@@ -107,10 +107,10 @@ function mod:UpdateReputation(event)
 	end
 end
 
-function mod:ReputationBar_OnEnter()
+function DB:ReputationBar_OnEnter()
 	local GameTooltip = _G.GameTooltip
 
-	if mod.db.reputation.mouseover then
+	if DB.db.reputation.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 
@@ -144,57 +144,57 @@ function mod:ReputationBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:ReputationBar_OnClick()
+function DB:ReputationBar_OnClick()
 	ToggleCharacter("ReputationFrame")
 end
 
-function mod:UpdateReputationDimensions()
-	self.repBar:Width(self.db.reputation.width)
-	self.repBar:Height(self.db.reputation.height)
-	self.repBar.statusBar:SetOrientation(self.db.reputation.orientation)
-	self.repBar.statusBar:SetReverseFill(self.db.reputation.reverseFill)
-	self.repBar.text:FontTemplate(LSM:Fetch("font", self.db.reputation.font), self.db.reputation.textSize, self.db.reputation.fontOutline)
+function DB:UpdateReputationDimensions()
+	DB.repBar:Width(DB.db.reputation.width)
+	DB.repBar:Height(DB.db.reputation.height)
+	DB.repBar.statusBar:SetOrientation(DB.db.reputation.orientation)
+	DB.repBar.statusBar:SetReverseFill(DB.db.reputation.reverseFill)
+	DB.repBar.text:FontTemplate(LSM:Fetch("font", DB.db.reputation.font), DB.db.reputation.textSize, DB.db.reputation.fontOutline)
 
-	if self.db.reputation.orientation == "HORIZONTAL" then
-		self.repBar.statusBar:SetRotatesTexture(false)
+	if DB.db.reputation.orientation == "HORIZONTAL" then
+		DB.repBar.statusBar:SetRotatesTexture(false)
 	else
-		self.repBar.statusBar:SetRotatesTexture(true)
+		DB.repBar.statusBar:SetRotatesTexture(true)
 	end
 
-	if self.db.reputation.mouseover then
-		self.repBar:SetAlpha(0)
+	if DB.db.reputation.mouseover then
+		DB.repBar:SetAlpha(0)
 	else
-		self.repBar:SetAlpha(1)
-	end
-end
-
-function mod:EnableDisable_ReputationBar()
-	if self.db.reputation.enable then
-		self:RegisterEvent('UPDATE_FACTION', 'UpdateReputation')
-		self:UpdateReputation()
-		E:EnableMover(self.repBar.mover:GetName())
-	else
-		self:UnregisterEvent('UPDATE_FACTION')
-		self.repBar:Hide()
-		E:DisableMover(self.repBar.mover:GetName())
+		DB.repBar:SetAlpha(1)
 	end
 end
 
-function mod:LoadReputationBar()
-	self.repBar = self:CreateBar('ElvUI_ReputationBar', self.ReputationBar_OnEnter, self.ReputationBar_OnClick, 'RIGHT', _G.RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
-	E:RegisterStatusBar(self.repBar.statusBar)
+function DB:EnableDisable_ReputationBar()
+	if DB.db.reputation.enable then
+		DB:RegisterEvent('UPDATE_FACTION', 'UpdateReputation')
+		DB:UpdateReputation()
+		E:EnableMover(DB.repBar.mover:GetName())
+	else
+		DB:UnregisterEvent('UPDATE_FACTION')
+		DB.repBar:Hide()
+		E:DisableMover(DB.repBar.mover:GetName())
+	end
+end
 
-	self.repBar.eventFrame = CreateFrame("Frame")
-	self.repBar.eventFrame:Hide()
-	self.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
-	self.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	self.repBar.eventFrame:RegisterEvent("COMBAT_TEXT_UPDATE")
-	self.repBar.eventFrame:SetScript("OnEvent", function(_, event, ...)
-		mod:UpdateReputation(event, ...)
+function DB:LoadReputationBar()
+	DB.repBar = DB:CreateBar('ElvUI_ReputationBar', DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, 'RIGHT', _G.RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	E:RegisterStatusBar(DB.repBar.statusBar)
+
+	DB.repBar.eventFrame = CreateFrame("Frame")
+	DB.repBar.eventFrame:Hide()
+	DB.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+	DB.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	DB.repBar.eventFrame:RegisterEvent("COMBAT_TEXT_UPDATE")
+	DB.repBar.eventFrame:SetScript("OnEvent", function(_, event, ...)
+		DB:UpdateReputation(event, ...)
 	end)
 
-	self:UpdateReputationDimensions()
+	DB:UpdateReputationDimensions()
 
-	E:CreateMover(self.repBar, "ReputationBarMover", L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
-	self:EnableDisable_ReputationBar()
+	E:CreateMover(DB.repBar, "ReputationBarMover", L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
+	DB:EnableDisable_ReputationBar()
 end
