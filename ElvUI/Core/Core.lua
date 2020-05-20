@@ -499,12 +499,33 @@ end
 
 function E:CheckIncompatible()
 	if E.global.ignoreIncompatible then return end
-	if E:IsAddOnEnabled('Prat-3.0') and E.private.chat.enable then E:IncompatibleAddOn('Prat-3.0', 'Chat') end
-	if E:IsAddOnEnabled('Chatter') and E.private.chat.enable then E:IncompatibleAddOn('Chatter', 'Chat') end
-	if E:IsAddOnEnabled('TidyPlates') and E.private.nameplates.enable then E:IncompatibleAddOn('TidyPlates', 'NamePlates') end
-	if E:IsAddOnEnabled('Aloft') and E.private.nameplates.enable then E:IncompatibleAddOn('Aloft', 'NamePlates') end
-	if E:IsAddOnEnabled('Healers-Have-To-Die') and E.private.nameplates.enable then E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlates') end
-	if E:IsAddOnEnabled('Bartender4') and E.private.actionbar.enable then E:IncompatibleAddOn('Bartender4', 'ActionBar') end
+
+	if E.private.chat.enable then
+		if E:IsAddOnEnabled('Prat-3.0') then
+			E:IncompatibleAddOn('Prat-3.0', 'Chat')
+		end
+		if E:IsAddOnEnabled('Chatter') then
+			E:IncompatibleAddOn('Chatter', 'Chat')
+		end
+	end
+
+	if E.private.nameplates.enable then
+		if E:IsAddOnEnabled('TidyPlates') then
+			E:IncompatibleAddOn('TidyPlates', 'NamePlates')
+		end
+		if E:IsAddOnEnabled('Aloft') then
+			E:IncompatibleAddOn('Aloft', 'NamePlates')
+		end
+		if E:IsAddOnEnabled('Healers-Have-To-Die') then
+			E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlates')
+		end
+	end
+
+	if E.private.actionbar.enable then
+		if E:IsAddOnEnabled('Bartender4') then
+			E:IncompatibleAddOn('Bartender4', 'ActionBar')
+		end
+	end
 end
 
 function E:CopyTable(currentTable, defaultTable)
