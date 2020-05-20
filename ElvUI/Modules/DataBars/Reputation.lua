@@ -31,7 +31,7 @@ function DB:UpdateReputation(event)
 	local bar = self.repBar
 	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
 
-	if not name or (DB.db.reputation.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
+	if not name or (DB.db.reputation.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) or (DB.db.reputation.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
 		bar:Hide()
 	else
 		bar:Show()

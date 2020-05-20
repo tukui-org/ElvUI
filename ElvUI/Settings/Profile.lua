@@ -158,6 +158,7 @@ P.databars.experience.hideInCombat = false
 P.databars.reputation.enable = false
 P.databars.reputation.hideInVehicle = false
 P.databars.reputation.hideInCombat = false
+P.databars.reputation.hideBelowMaxLevel = false
 
 P.databars.honor.hideInVehicle = false
 P.databars.honor.hideInCombat = false
