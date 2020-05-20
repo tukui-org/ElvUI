@@ -988,14 +988,6 @@ function CH:SnappingChanged(chat)
 	end
 end
 
-function CH:UpdateUnlockedBackgrounds(chat)
-	if chat == CH.LeftChatWindow or chat == CH.RightChatWindow then
-		CH:ShowBackground(chat.Background, false)
-	else
-		CH:ShowBackground(chat.Background, CH:IsUndocked(chat))
-	end
-end
-
 function CH:ShowBackground(background, show)
 	if not background then return end
 
