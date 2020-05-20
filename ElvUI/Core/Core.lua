@@ -378,9 +378,8 @@ do
 end
 
 function E:ValueFuncCall()
-	for func in pairs(E.valueColorUpdateFuncs) do
-		func(E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor))
-	end
+	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
+	for func in pairs(E.valueColorUpdateFuncs) do func(hex, r, g, b) end
 end
 
 function E:UpdateFrameTemplates()
@@ -406,11 +405,12 @@ function E:UpdateFrameTemplates()
 end
 
 function E:UpdateBorderColors()
+	local r, g, b = unpack(E.media.bordercolor)
 	for frame in pairs(E.frames) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
 				if frame.template == 'Default' or frame.template == 'Transparent' then
-					frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					frame:SetBackdropBorderColor(r, g, b)
 				end
 			end
 		else
@@ -418,11 +418,12 @@ function E:UpdateBorderColors()
 		end
 	end
 
+	local r2, g2, b2 = unpack(E.media.unitframeBorderColor)
 	for frame in pairs(E.unitFrameElements) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBorderColors then
 				if frame.template == 'Default' or frame.template == 'Transparent' then
-					frame:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
+					frame:SetBackdropBorderColor(r2, g2, b2)
 				end
 			end
 		else
@@ -432,13 +433,16 @@ function E:UpdateBorderColors()
 end
 
 function E:UpdateBackdropColors()
+	local r, g, b = unpack(E.media.backdropcolor)
+	local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
+
 	for frame in pairs(E.frames) do
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' then
-					frame:SetBackdropColor(unpack(E.media.backdropcolor))
+					frame:SetBackdropColor(r, g, b)
 				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
+					frame:SetBackdropColor(r2, g2, b2, a2)
 				end
 			end
 		else
@@ -450,9 +454,9 @@ function E:UpdateBackdropColors()
 		if frame and frame.template and not frame.ignoreUpdates then
 			if not frame.ignoreBackdropColors then
 				if frame.template == 'Default' then
-					frame:SetBackdropColor(unpack(E.media.backdropcolor))
+					frame:SetBackdropColor(r, g, b)
 				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(unpack(E.media.backdropfadecolor))
+					frame:SetBackdropColor(r2, g2, b2, a2)
 				end
 			end
 		else
