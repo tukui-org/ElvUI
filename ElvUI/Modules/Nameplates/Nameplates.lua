@@ -55,47 +55,14 @@ do	-- credit: oUF/private.lua
 	end
 end
 
-local function CopySettings(fromUnit, toUnit)
-	local db = NP.db.units
-	if fromUnit ~= toUnit then
-		for option, value in pairs(db[fromUnit]) do
-			if type(value) ~= 'table' then
-				if db[toUnit][option] ~= nil then
-					db[toUnit][option] = value
-				end
-			else
-				if type(value) == 'table' then
-					for opt, val in pairs(db[fromUnit][option]) do
-						if type(val) ~= 'table'  then
-							if db[toUnit][option] ~= nil and (db[toUnit][option][opt] ~= nil) then
-								db[toUnit][option][opt] = val
-							end
-						else
-							if type(val) == 'table' then
-								for o, v in pairs(db[fromUnit][option][opt]) do
-									if db[toUnit][option] ~= nil and db[toUnit][option][opt] ~= nil and db[toUnit][option][opt][o] ~= nil then
-										db[toUnit][option][opt][o] = v
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-end
-
 function NP:ResetSettings(unit)
 	E:CopyTable(NP.db.units[unit], P.nameplates.units[unit])
 end
 
 function NP:CopySettings(from, to)
-	if (from == to) then
-		return
-	end
+	if from == to then return end
 
-	CopySettings(from, to)
+	E:CopyTable(NP.db.units[to], NP.db.units[from])
 end
 
 function NP:CVarReset()
