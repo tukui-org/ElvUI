@@ -34,7 +34,7 @@ function mod:UpdateAzerite(event, unit)
 	local bar = mod.azeriteBar
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 	if not azeriteItemLocation or (mod.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel())
-	or (mod.db.azerite.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) then
+	or (mod.db.azerite.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or (self.db.azerite.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
 		E:DisableMover(bar.mover:GetName())
 		bar:Hide()
 	else

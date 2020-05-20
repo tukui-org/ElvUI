@@ -328,21 +328,27 @@ E.Options.args.databars = {
 			name = L["Azerite Bar"],
 			args = {
 				enable = {
-					order = 1,
+					order = 0,
 					type = "toggle",
 					name = L["Enable"],
 					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:EnableDisable_AzeriteBar() end,
 				},
 				mouseover = {
-					order = 2,
+					order = 1,
 					type = "toggle",
 					name = L["Mouseover"],
 				},
 				hideAtMaxLevel = {
-					order = 3,
+					order = 2,
 					type = "toggle",
 					name = L["Hide At Max Power"],
 					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
+				},
+				hideBelowMaxLevel = {
+					order = 3,
+					type = "toggle",
+					name = L["Hide Below Max Level"],
+					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateHonor() end,
 				},
 				hideInVehicle = {
 					order = 4,
