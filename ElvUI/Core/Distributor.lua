@@ -579,8 +579,8 @@ E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
 	hasEditBox = 1,
 	editBoxWidth = 350,
 	maxLetters = 127,
-	OnAccept = function(_, data)
-		SetImportedProfile(data.profileType, data.profileKey, data.profileData, true)
+	OnAccept = function(self, data)
+		SetImportedProfile(data.profileType, self.editBox:GetText(), data.profileData, true)
 	end,
 	EditBoxOnTextChanged = function(self)
 		if self:GetText() == '' then
