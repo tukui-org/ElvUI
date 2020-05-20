@@ -29,8 +29,11 @@ local function OnEvent(self, event)
 		end
 	end
 
-	local StatID = SPECIALIZATION_CACHE[GetSpecialization()].statID
-	self.text:SetFormattedText(displayString, SPEC_STAT_STRINGS[StatID]..': ', UnitStat("player", StatID))
+	local StatID = SPECIALIZATION_CACHE[GetSpecialization()] and SPECIALIZATION_CACHE[GetSpecialization()].statID
+
+	if StatID then
+		self.text:SetFormattedText(displayString, SPEC_STAT_STRINGS[StatID]..': ', UnitStat("player", StatID))
+	end
 
 	lastPanel = self
 end
