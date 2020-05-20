@@ -1,6 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='Test.lua'/>
 	<Script file='Frame.lua'/>
-	<Script file='Table.lua'/>
 	<Script file='TInspect.lua'/>
 </Ui>

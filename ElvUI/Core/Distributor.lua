@@ -284,9 +284,9 @@ local blacklistedKeys = {
 --Keys that auto or user generated tables.
 D.GeneratedKeys = {
 	profile = {
-		v11NamePlateReset = true,
 		movers = true,
-		nameplates = {
+		v11NamePlateReset = true,
+		nameplates = { -- this is supposed to have an 's' because yeah, oh well
 			filters = true
 		},
 		unitframe = {
