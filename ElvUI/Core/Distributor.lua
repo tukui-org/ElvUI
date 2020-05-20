@@ -272,6 +272,8 @@ local blacklistedKeys = {
 			filters = true,
 		},
 		unitframe = {
+			aurafilters = true,
+			buffwatch = true,
 			effectiveHealth = true,
 			effectivePower = true,
 			effectiveAura = true,
@@ -297,6 +299,13 @@ D.GeneratedKeys = {
 		datatexts = {
 			customPanels = true,
 			customCurrencies = true
+		},
+		unitframe = {
+			aurafilters = true,
+			buffwatch = true,
+		},
+		nameplate = {
+			filters = true
 		}
 	}
 }
@@ -335,14 +344,14 @@ local function GetProfileData(profileType)
 		profileData.unitframe.aurafilters = E:CopyTable(profileData.unitframe.aurafilters, ElvDB.global.unitframe.aurafilters)
 		profileData.unitframe.buffwatch = {}
 		profileData.unitframe.buffwatch = E:CopyTable(profileData.unitframe.buffwatch, ElvDB.global.unitframe.buffwatch)
-		profileData = E:RemoveTableDuplicates(profileData, G)
+		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 		profileKey = 'filters'
 	elseif profileType == 'styleFilters' then
 		profileKey = 'styleFilters'
 		profileData.nameplate = {}
 		profileData.nameplate.filters = {}
 		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, ElvDB.global.nameplate.filters)
-		profileData = E:RemoveTableDuplicates(profileData, G)
+		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 	end
 
 	return profileKey, profileData
