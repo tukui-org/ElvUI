@@ -486,9 +486,11 @@ function NP:ConfigureAll()
 	NP:PLAYER_REGEN_ENABLED()
 
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
+		E:EnableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
 	else
+		E:DisableMover('ElvNP_PlayerMover')
 		NP:DisablePlate(_G.ElvNP_Player)
 		_G.ElvNP_Player:Disable()
 		_G.ElvNP_StaticSecure:Hide()
