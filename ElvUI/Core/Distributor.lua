@@ -284,10 +284,12 @@ local blacklistedKeys = {
 --Keys that auto or user generated tables.
 D.GeneratedKeys = {
 	profile = {
-		customTexts = true,
 		movers = true,
 		nameplates = {
 			filters = true
+		},
+		unitframe = {
+			units = {} -- required for the scope below for customTexts
 		}
 	},
 	private = {
@@ -308,6 +310,13 @@ D.GeneratedKeys = {
 		}
 	}
 }
+
+do
+	local units = D.GeneratedKeys.profile.unitframe.units
+	for unit in pairs(P.unitframe.units) do
+		units[unit] = {customTexts = true}
+	end
+end
 
 local function GetProfileData(profileType)
 	if not profileType or type(profileType) ~= 'string' then
