@@ -844,9 +844,9 @@ function E:UpdateStart(skipCallback, skipUpdateDB)
 end
 
 function E:UpdateDB()
-	E.private = E:CopyTable({}, E.charSettings.profile)
-	E.global = E:CopyTable({}, E.data.global)
-	E.db = E:CopyTable({}, E.data.profile)
+	E.private = E.charSettings.profile
+	E.global = E.data.global
+	E.db = E.data.profile
 
 	E:DBConversions()
 	Auras.db = E.db.auras
