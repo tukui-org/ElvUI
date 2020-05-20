@@ -239,11 +239,11 @@ local blacklistedKeys = {
 	profile = {
 		gridSize = true,
 		general = {
-			numberPrefixStyle = true,
+			numberPrefixStyle = true
 		},
 		chat = {
-			hideVoiceButtons = true,
-		},
+			hideVoiceButtons = true
+		}
 	},
 	private = {},
 	global = {
@@ -255,10 +255,10 @@ local blacklistedKeys = {
 			version = true,
 			eyefinity = true,
 			disableTutorialButtons = true,
-			showMissingTalentAlert = true,
+			showMissingTalentAlert = true
 		},
 		chat = {
-			classColorMentionExcludedNames = true,
+			classColorMentionExcludedNames = true
 		},
 		datatexts = {
 			newPanelInfo = true
@@ -270,7 +270,7 @@ local blacklistedKeys = {
 			effectiveHealthSpeed = true,
 			effectivePowerSpeed = true,
 			effectiveAuraSpeed = true,
-			filters = true,
+			filters = true
 		},
 		unitframe = {
 			aurafilters = true,
@@ -281,8 +281,8 @@ local blacklistedKeys = {
 			effectiveHealthSpeed = true,
 			effectivePowerSpeed = true,
 			effectiveAuraSpeed = true,
-			spellRangeCheck = true,
-		},
+			spellRangeCheck = true
+		}
 	},
 }
 
@@ -290,7 +290,10 @@ local blacklistedKeys = {
 D.GeneratedKeys = {
 	profile = {
 		customTexts = true,
-		movers = true
+		movers = true,
+		nameplates = {
+			filters = true
+		}
 	},
 	private = {
 		theme = true,
@@ -303,7 +306,7 @@ D.GeneratedKeys = {
 		},
 		unitframe = {
 			aurafilters = true,
-			buffwatch = true,
+			buffwatch = true
 		},
 		nameplate = {
 			filters = true
