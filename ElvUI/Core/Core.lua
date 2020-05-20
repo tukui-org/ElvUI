@@ -1547,7 +1547,7 @@ function E:RefreshModulesDB()
 end
 
 do
-	-- Shamelessy taken from AceDB-3.0 and stripped down by Simpy
+	-- Shamelessly taken from AceDB-3.0 and stripped down by Simpy
 	function E:CopyDefaults(dest, src)
 		for k, v in pairs(src) do
 			if type(v) == 'table' then
