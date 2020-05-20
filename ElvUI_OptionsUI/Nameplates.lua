@@ -5130,56 +5130,54 @@ local function GetUnitSettings(unit, name)
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
-		if unit == "FRIENDLY_NPC" or unit == "ENEMY_NPC" then
-			group.args.widgetXPBar = {
-				order = 14,
-				type = "group",
-				name = L["Follower XP"],
-				get = function(info)
-					return E.db.nameplates.units[unit].widgetXPBar[info[#info]]
-				end,
-				set = function(info, value)
-					E.db.nameplates.units[unit].widgetXPBar[info[#info]] = value
-					NP:ConfigureAll()
-				end,
-				args = {
-					enable = {
-						order = 1,
-						type = "toggle",
-						name = L["Enable"]
-					},
-					yOffset = {
-						order = 2,
-						name = L["Y-Offset"],
-						type = "range",
-						min = -100,
-						max = 100,
-						step = 1,
-						disabled = function()
-							return not E.db.nameplates.units[unit].widgetXPBar.enable
-						end
-					},
-					color = {
-						order = 3,
-						type = "color",
-						name = L["COLOR"],
-						hasAlpha = false,
-						disabled = function()
-							return not E.db.nameplates.units[unit].widgetXPBar.enable
-						end,
-						get = function(info)
-							local t = E.db.nameplates.units[unit].widgetXPBar.color
-							return t.r, t.g, t.b
-						end,
-						set = function(info, r, g, b)
-							local t = E.db.nameplates.units[unit].widgetXPBar.color
-							t.r, t.g, t.b = r, g, b
-							NP:ConfigureAll()
-						end
-					}
+		group.args.widgetXPBar = {
+			order = 14,
+			type = "group",
+			name = L["Follower XP"],
+			get = function(info)
+				return E.db.nameplates.units[unit].widgetXPBar[info[#info]]
+			end,
+			set = function(info, value)
+				E.db.nameplates.units[unit].widgetXPBar[info[#info]] = value
+				NP:ConfigureAll()
+			end,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"]
+				},
+				yOffset = {
+					order = 2,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100,
+					max = 100,
+					step = 1,
+					disabled = function()
+						return not E.db.nameplates.units[unit].widgetXPBar.enable
+					end
+				},
+				color = {
+					order = 3,
+					type = "color",
+					name = L["COLOR"],
+					hasAlpha = false,
+					disabled = function()
+						return not E.db.nameplates.units[unit].widgetXPBar.enable
+					end,
+					get = function(info)
+						local t = E.db.nameplates.units[unit].widgetXPBar.color
+						return t.r, t.g, t.b
+					end,
+					set = function(info, r, g, b)
+						local t = E.db.nameplates.units[unit].widgetXPBar.color
+						t.r, t.g, t.b = r, g, b
+						NP:ConfigureAll()
+					end
 				}
 			}
-		end
+		}
 	end
 
 	-- start groups at 30
