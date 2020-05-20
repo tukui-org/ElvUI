@@ -1546,6 +1546,33 @@ function E:RefreshModulesDB()
 	UnitFrames.db = self.db.unitframe --new ref
 end
 
+do
+	-- Shamelessy taken from AceDB-3.0 and stripped down by Simpy
+	function E:CopyDefaults(dest, src)
+		for k, v in pairs(src) do
+			if type(v) == 'table' then
+				if not rawget(dest, k) then rawset(dest, k, {}) end
+				if type(dest[k]) == 'table' then E:CopyDefaults(dest[k], v) end
+			elseif rawget(dest, k) == nil then
+				rawset(dest, k, v)
+			end
+		end
+	end
+
+	function E:RemoveDefaults(db, defaults)
+		setmetatable(db, nil)
+
+		for k,v in pairs(defaults) do
+			if type(v) == 'table' and type(db[k]) == 'table' then
+				E:RemoveDefaults(db[k], v)
+				if next(db[k]) == nil then db[k] = nil end
+			elseif db[k] == defaults[k] then
+				db[k] = nil
+			end
+		end
+	end
+end
+
 function E:Initialize()
 	twipe(self.db)
 	twipe(self.global)
