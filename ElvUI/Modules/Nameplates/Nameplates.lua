@@ -768,7 +768,7 @@ function NP:Initialize()
 	NP:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	NP:RegisterEvent("GROUP_ROSTER_UPDATE")
 	NP:RegisterEvent("GROUP_LEFT")
-	NP:RegisterEvent("PLAYER_LOGOUT", NP.StyleFilterClearDefaults)
+	NP:RegisterEvent("PLAYER_LOGOUT")
 
 	NP:StyleFilterInitialize()
 	NP:HideInterfaceOptions()

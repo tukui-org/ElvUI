@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule('Distributor')
+local NP = E:GetModule('NamePlates')
 local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 
@@ -351,6 +352,7 @@ local function GetProfileData(profileType)
 		profileData.nameplate = {}
 		profileData.nameplate.filters = {}
 		profileData.nameplate.filters = E:CopyTable(profileData.nameplate.filters, ElvDB.global.nameplate.filters)
+		NP:StyleFilterClearDefaults(profileData.nameplate.filters)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 	end
 
