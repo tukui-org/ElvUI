@@ -942,8 +942,9 @@ function CH:UpdateChatTab(chat)
 		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'RIGHT') and CH.db.fadeTabsNoBackdrop)
 	else
 		-- we need to update the tab parent to mimic the docker
-		chat.tab:SetParent(CH:GetDockerParent(_G.GeneralDockManager.primary, chat) or _G.UIParent)
-		CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs)
+		local dockerParent = CH:GetDockerParent(_G.GeneralDockManager.primary, chat)
+		chat.tab:SetParent(dockerParent or _G.UIParent)
+		CH:HandleFadeTabs(chat, not dockerParent and CH.db.fadeUndockedTabs)
 	end
 end
 
