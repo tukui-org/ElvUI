@@ -220,21 +220,21 @@ E.PopupDialogs.RESET_UF_UNIT = {
 	text = L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function(self)
-		if self.data and self.data.unit then
-			UF:ResetUnitSettings(self.data.unit)
-			if self.data.mover then
-				E:ResetMovers(self.data.mover)
+	OnAccept = function(_, data)
+		if data and data.unit then
+			UF:ResetUnitSettings(data.unit)
+			if data.mover then
+				E:ResetMovers(data.mover)
 			end
 
-			if self.data.unit == 'raidpet' then
-				UF:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true)
+			if data.unit == 'raidpet' then
+				UF:CreateAndUpdateHeaderGroup(data.unit, nil, nil, true)
 			end
 
 			if IsAddOnLoaded('ElvUI_OptionsUI') then
 				local ACD = E.Libs.AceConfigDialog
 				if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
-					ACD:SelectGroup('ElvUI', 'unitframe', self.data.unit)
+					ACD:SelectGroup('ElvUI', 'unitframe', data.unit)
 				end
 			end
 		else

@@ -153,31 +153,21 @@ function E:OnInitialize()
 	E.global = E:CopyTable({}, E.DF.global)
 	E.private = E:CopyTable({}, E.privateVars.profile)
 
-	local ElvDB = ElvDB
 	if ElvDB then
 		if ElvDB.global then
 			E:CopyTable(E.global, ElvDB.global)
 		end
 
-		local profileKey
-		if ElvDB.profileKeys then
-			profileKey = ElvDB.profileKeys[E.mynameRealm]
-		end
-
-		if profileKey and ElvDB.profiles and ElvDB.profiles[profileKey] then
-			E:CopyTable(E.db, ElvDB.profiles[profileKey])
+		local key = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
+		if key and ElvDB.profiles and ElvDB.profiles[key] then
+			E:CopyTable(E.db, ElvDB.profiles[key])
 		end
 	end
 
-	local ElvPrivateDB = ElvPrivateDB
 	if ElvPrivateDB then
-		local profileKey
-		if ElvPrivateDB.profileKeys then
-			profileKey = ElvPrivateDB.profileKeys[E.mynameRealm]
-		end
-
-		if profileKey and ElvPrivateDB.profiles and ElvPrivateDB.profiles[profileKey] then
-			E:CopyTable(E.private, ElvPrivateDB.profiles[profileKey])
+		local key = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
+		if key and ElvPrivateDB.profiles and ElvPrivateDB.profiles[key] then
+			E:CopyTable(E.private, ElvPrivateDB.profiles[key])
 		end
 	end
 
@@ -230,15 +220,9 @@ function E:PositionGameMenuButton()
 end
 
 function E:ResetProfile()
-	local profileKey
-
-	local ElvPrivateDB = ElvPrivateDB
-	if ElvPrivateDB.profileKeys then
-		profileKey = ElvPrivateDB.profileKeys[E.mynameRealm]
-	end
-
-	if profileKey and ElvPrivateDB.profiles and ElvPrivateDB.profiles[profileKey] then
-		ElvPrivateDB.profiles[profileKey] = nil
+	local key = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
+	if key and ElvPrivateDB.profiles and ElvPrivateDB.profiles[key] then
+		ElvPrivateDB.profiles[key] = nil
 	end
 
 	ElvCharacterDB = nil

@@ -844,9 +844,9 @@ function E:UpdateStart(skipCallback, skipUpdateDB)
 end
 
 function E:UpdateDB()
-	E.private = E.charSettings.profile
-	E.db = E.data.profile
-	E.global = E.data.global
+	E.private = E:CopyTable({}, E.charSettings.profile)
+	E.global = E:CopyTable({}, E.data.global)
+	E.db = E:CopyTable({}, E.data.profile)
 
 	E:DBConversions()
 	Auras.db = E.db.auras
@@ -1557,10 +1557,10 @@ function E:Initialize()
 	self.data.RegisterCallback(self, 'OnProfileCopied', 'StaggeredUpdateAll')
 	self.data.RegisterCallback(self, 'OnProfileReset', 'OnProfileReset')
 	self.charSettings = E.Libs.AceDB:New('ElvPrivateDB', self.privateVars)
-	E.Libs.DualSpec:EnhanceDatabase(self.data, 'ElvUI')
 	self.private = self.charSettings.profile
-	self.db = self.data.profile
 	self.global = self.data.global
+	self.db = self.data.profile
+	E.Libs.DualSpec:EnhanceDatabase(self.data, 'ElvUI')
 
 	self:CheckIncompatible()
 	self:DBConversions()

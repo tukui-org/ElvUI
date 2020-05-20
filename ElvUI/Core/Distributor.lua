@@ -46,26 +46,20 @@ end
 function D:Distribute(target, otherServer, isGlobal)
 	local profileKey, data
 	if not isGlobal then
-		if ElvDB.profileKeys then
-			profileKey = ElvDB.profileKeys[E.mynameRealm]
-		end
-
+		profileKey = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
 		data = ElvDB.profiles[profileKey]
 	else
 		profileKey = 'global'
 		data = ElvDB.global
 	end
 
-	if not data or not profileKey then return end
+	if not data then return end
 
 	local serialData = self:Serialize(data)
 	local length = len(serialData)
 	local message = format('%s:%d:%s', profileKey, length, target)
 
-	Uploads[profileKey] = {
-		serialData = serialData,
-		target = target,
-	}
+	Uploads[profileKey] = {serialData = serialData, target = target}
 
 	if otherServer then
 		if IsInRaid() and UnitInRaid('target') then
@@ -79,6 +73,7 @@ function D:Distribute(target, otherServer, isGlobal)
 	else
 		self:SendCommMessage(REQUEST_PREFIX, message, 'WHISPER', target)
 	end
+
 	self:RegisterComm(REPLY_PREFIX)
 	E:StaticPopup_Show('DISTRIBUTOR_WAITING')
 end
@@ -474,18 +469,14 @@ function D:Decode(dataString)
 end
 
 local function SetImportedProfile(profileType, profileKey, profileData, force)
-	D.profileType = nil
-	D.profileKey = nil
-	D.profileData = nil
-
 	if profileType == 'profile' then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.profile) --Remove unwanted options from import
+
 		if not ElvDB.profiles[profileKey] or force then
 			if force and E.data.keys.profile == profileKey then
 				--Overwriting an active profile doesn't update when calling SetProfile
 				--So make it look like we use a different profile
-				local tempKey = profileKey..'_Temp'
-				E.data.keys.profile = tempKey
+				E.data.keys.profile = profileKey..'_Temp'
 			end
 
 			ElvDB.profiles[profileKey] = profileData
@@ -493,33 +484,26 @@ local function SetImportedProfile(profileType, profileKey, profileData, force)
 			--Calling SetProfile will now update all settings correctly
 			E.data:SetProfile(profileKey)
 		else
-			D.profileType = profileType
-			D.profileKey = profileKey
-			D.profileData = profileData
-			E:StaticPopup_Show('IMPORT_PROFILE_EXISTS')
-
-			return
+			E:StaticPopup_Show('IMPORT_PROFILE_EXISTS', nil, nil, {profileKey = profileKey, profileType = profileType, profileData = profileData})
 		end
 	elseif profileType == 'private' then
 		local privateKey = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
 		if privateKey then
 			profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.private) --Remove unwanted options from import
 			ElvPrivateDB.profiles[privateKey] = profileData
+			E:StaticPopup_Show('IMPORT_RL')
 		end
-
-		E:StaticPopup_Show('IMPORT_RL')
 	elseif profileType == 'global' then
 		profileData = E:FilterTableFromBlacklist(profileData, blacklistedKeys.global) --Remove unwanted options from import
 		E:CopyTable(ElvDB.global, profileData)
 		E:StaticPopup_Show('IMPORT_RL')
 	elseif profileType == 'filters' then
 		E:CopyTable(ElvDB.global.unitframe, profileData.unitframe)
+		E:StaggeredUpdateAll(nil, true)
 	elseif profileType == 'styleFilters' then
 		E:CopyTable(ElvDB.global.nameplate, profileData.nameplate)
+		E:StaggeredUpdateAll(nil, true)
 	end
-
-	--Update all ElvUI modules
-	E:StaggeredUpdateAll(nil, true)
 end
 
 function D:ExportProfile(profileType, exportFormat)
@@ -586,11 +570,8 @@ E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
 	hasEditBox = 1,
 	editBoxWidth = 350,
 	maxLetters = 127,
-	OnAccept = function(self)
-		local profileType = D.profileType
-		local profileKey = self.editBox:GetText()
-		local profileData = D.profileData
-		SetImportedProfile(profileType, profileKey, profileData, true)
+	OnAccept = function(_, data)
+		SetImportedProfile(data.profileType, data.profileKey, data.profileData, true)
 	end,
 	EditBoxOnTextChanged = function(self)
 		if self:GetText() == '' then
@@ -599,7 +580,10 @@ E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
 			self:GetParent().button1:Enable()
 		end
 	end,
-	OnShow = function(self) self.editBox:SetText(D.profileKey) self.editBox:SetFocus() end,
+	OnShow = function(self, data)
+		self.editBox:SetText(data.profileKey)
+		self.editBox:SetFocus()
+	end,
 	timeout = 0,
 	whileDead = 1,
 	hideOnEscape = true,
