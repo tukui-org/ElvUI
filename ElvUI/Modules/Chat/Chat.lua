@@ -459,13 +459,9 @@ end
 
 function CH:StyleChat(frame)
 	local name = frame:GetName()
-
 	local tab = _G[name.."Tab"]
-	if frame.tab ~= tab then frame.tab = tab end
-	if tab.owner ~= frame then tab.owner = frame end
-	if not tab.text then tab.text = _G[name.."TabText"] end
 
-	tab.text:FontTemplate(LSM:Fetch("font", CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
+	tab.Text:FontTemplate(LSM:Fetch("font", CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
 	if frame.styled then return end
 
@@ -477,10 +473,10 @@ function CH:StyleChat(frame)
 	_G[name.."ButtonFrame"]:Kill()
 
 	local id = frame:GetID()
-	local editbox = _G[name.."EditBox"]
 	local scrollTex = _G[name.."ThumbTexture"]
 	local scrollToBottom = frame.ScrollToBottomButton
 	local scroll = frame.ScrollBar
+	local editbox = frame.editBox
 
 	if scroll then
 		scroll:Kill()
@@ -513,12 +509,12 @@ function CH:StyleChat(frame)
 	end)
 
 	if not tab.left then tab.left = _G[name.."TabLeft"] end
-	tab.text:SetTextColor(unpack(E.media.rgbvaluecolor))
-	tab.text:ClearAllPoints()
-	tab.text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
+	tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	tab.Text:ClearAllPoints()
+	tab.Text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
 	tab:Height(22)
 
-	hooksecurefunc(tab.text, "SetTextColor", function(tt, r, g, b)
+	hooksecurefunc(tab.Text, "SetTextColor", function(tt, r, g, b)
 		local rR, gG, bB = unpack(E.media.rgbvaluecolor)
 		if r ~= rR or g ~= gG or b ~= bB then
 			tt:SetTextColor(rR, gG, bB)
@@ -527,7 +523,7 @@ function CH:StyleChat(frame)
 
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
-		tab.conversationIcon:Point('RIGHT', tab.text, 'LEFT', -1, 0)
+		tab.conversationIcon:Point('RIGHT', tab.Text, 'LEFT', -1, 0)
 	end
 
 	local repeatedText
@@ -660,9 +656,9 @@ function CH:StyleChat(frame)
 	copyButton:Size(20, 22)
 	copyButton:Point('TOPRIGHT', 0, -4)
 	copyButton:SetFrameLevel(frame:GetFrameLevel() + 5)
-	frame.button = copyButton
+	frame.copyButton = copyButton
 
-	local copyTexture = frame.button:CreateTexture(nil, 'OVERLAY')
+	local copyTexture = frame.copyButton:CreateTexture(nil, 'OVERLAY')
 	copyTexture:SetInside()
 	copyTexture:SetTexture(E.Media.Textures.Copy)
 	copyButton.texture = copyTexture
@@ -786,42 +782,58 @@ function CH:CopyChat(frame)
 	end
 end
 
-function CH:TabOnEnter(tab)
-	tab.text:Show()
-
-	local chat = tab.owner
-	if chat and chat.button and GetMouseFocus() ~= chat.button then
-		chat.button:SetAlpha(0.35)
+function CH:GetOwner(tab)
+	if not tab.owner then
+		tab.owner = _G[strsub(tab:GetName(), 0, -4)]
 	end
+
+	return tab.owner
+end
+
+function CH:GetTab(chat)
+	if not chat.tab then
+		chat.tab = _G[chat:GetName() .. "Tab"]
+	end
+
+	return chat.tab
+end
+
+function CH:TabOnEnter(tab)
+	tab.Text:Show()
 
 	if tab.conversationIcon then
 		tab.conversationIcon:Show()
 	end
+
+	local chat = CH:GetOwner(tab)
+	if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
+		chat.copyButton:SetAlpha(0.35)
+	end
 end
 
 function CH:TabOnLeave(tab)
-	tab.text:Hide()
-
-	local chat = tab.owner
-	if chat and chat.button and GetMouseFocus() ~= chat.button then
-		chat.button:SetAlpha(0)
-	end
+	tab.Text:Hide()
 
 	if tab.conversationIcon then
 		tab.conversationIcon:Hide()
 	end
+
+	local chat = CH:GetOwner(tab)
+	if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
+		chat.copyButton:SetAlpha(0)
+	end
 end
 
 function CH:ChatOnEnter(chat)
-	CH:TabOnEnter(chat.tab)
+	CH:TabOnEnter(CH:GetTab(chat))
 end
 
 function CH:ChatOnLeave(chat)
-	CH:TabOnLeave(chat.tab)
+	CH:TabOnLeave(CH:GetTab(chat))
 end
 
 function CH:HandleFadeTabs(chat, hook)
-	local tab = chat.tab
+	local tab = CH:GetTab(chat)
 
 	if hook then
 		if not self.hooks or not self.hooks[chat] or not self.hooks[chat].OnEnter then
@@ -942,17 +954,17 @@ function CH:UpdateChatTab(chat)
 	end
 
 	if chat == CH.LeftChatWindow then
-		chat.tab:SetParent(_G.LeftChatPanel or _G.UIParent)
+		CH:GetTab(chat):SetParent(_G.LeftChatPanel or _G.UIParent)
 		CH:HandleFadeTabs(chat, fadeLeft)
 	elseif chat == CH.RightChatWindow then
-		chat.tab:SetParent(_G.RightChatPanel or _G.UIParent)
+		CH:GetTab(chat):SetParent(_G.RightChatPanel or _G.UIParent)
 		CH:HandleFadeTabs(chat, fadeRight)
 	else
 		local docker = _G.GeneralDockManager.primary
 		local parent = CH:GetDockerParent(docker, chat)
 
 		-- we need to update the tab parent to mimic the docker
-		chat.tab:SetParent(parent or _G.UIParent)
+		CH:GetTab(chat):SetParent(parent or _G.UIParent)
 
 		if parent and docker == CH.LeftChatWindow then
 			CH:HandleFadeTabs(chat, fadeLeft)
@@ -2299,7 +2311,7 @@ end
 
 function CH:GetCombatLog()
 	local LOG = _G.COMBATLOG -- ChatFrame2
-	if LOG then return LOG, LOG.tab end
+	if LOG then return LOG, CH:GetTab(LOG) end
 end
 
 function CH:FCFDock_UpdateTabs(dock)
@@ -2307,7 +2319,7 @@ function CH:FCFDock_UpdateTabs(dock)
 		local logchat, logchattab = CH:GetCombatLog()
 		dock.scrollFrame:ClearAllPoints()
 		dock.scrollFrame:Point("RIGHT", dock.overflowButton, "LEFT")
-		dock.scrollFrame:Point("TOPLEFT", (logchat.isDocked and logchattab) or dock.primary.tab, "TOPRIGHT")
+		dock.scrollFrame:Point("TOPLEFT", (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), "TOPRIGHT")
 	end
 end
 
