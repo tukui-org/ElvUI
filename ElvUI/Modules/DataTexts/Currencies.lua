@@ -78,11 +78,9 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(EXPANSION_NAME7) --"BfA"
-	AddInfo(1565) -- RICH_AZERITE_FRAGMENT
 	AddInfo(1710) -- SEAFARERS_DUBLOON
 	AddInfo(1580) -- SEAL_OF_WARTORN_FATE
 	AddInfo(1560) -- WAR_RESOURCES
-	AddInfo(1587) -- WAR_SUPPLIES
 	AddInfo(faction) -- 7th Legion or Honorbound
 	AddInfo(1718) -- TITAN_RESIDUUM
 	AddInfo(1721) -- PRISMATIC_MANAPEARL
