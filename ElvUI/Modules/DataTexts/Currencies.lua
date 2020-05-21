@@ -5,12 +5,14 @@ local _G = _G
 local format, pairs = format, pairs
 local GetMoney = GetMoney
 local GetCurrencyInfo = GetCurrencyInfo
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
 
 -- Currencies we care about
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
+
 local Currencies = {
 	--BfA
 	["SEAFARERS_DUBLOON"]			= {ID = 1710},
@@ -45,8 +47,8 @@ local function GetInfo(id)
 end
 
 local function AddInfo(id)
-	local num, name = GetInfo(id)
-	DT.tooltip:AddDoubleLine(name, num, 1, 1, 1)
+	local num, name, icon = GetInfo(id)
+	DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
 end
 
 local goldText
