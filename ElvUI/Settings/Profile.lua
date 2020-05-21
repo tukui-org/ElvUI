@@ -846,6 +846,7 @@ P.chat = {
 	throttleInterval = 45,
 	scrollDownInterval = 15,
 	fade = true,
+	inactivityTimer = 100,
 	font = 'PT Sans Narrow',
 	fontOutline = 'NONE',
 	fontSize = 10,

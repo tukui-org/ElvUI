@@ -70,16 +70,6 @@ E.Options.args.chat = {
 						E.db.chat[info[#info]] = value
 					end,
 				},
-				fade = {
-					order = 4,
-					type = 'toggle',
-					name = L["Fade Chat"],
-					desc = L["Fade the chat text when there is no activity."],
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-						CH:UpdateFading()
-					end,
-				},
 				emotionIcons = {
 					order = 5,
 					type = 'toggle',
@@ -221,6 +211,29 @@ E.Options.args.chat = {
 					name = L["Scroll Messages"],
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
+				},
+				fadingGroup = {
+					order = 25,
+					type = "group",
+					name = L["Fade Chat"],
+					disabled = function() return not E.Chat.Initialized; end,
+					set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateFading() end,
+					args = {
+						fade = {
+							order = 1,
+							type = "toggle",
+							name = L["Enable"],
+							desc = L["Fade the chat text when there is no activity."],
+						},
+						inactivityTimer = {
+							order = 2,
+							type = "range",
+							name = L["Inactivity Timer"],
+							desc = L["Controls how many seconds of inactivity has to pass before chat is faded."],
+							disabled = function() return not CH.db.fade end,
+							min = 5, softMax = 120, step = 1,
+						},
+					},
 				},
 				fontGroup = {
 					order = 25,

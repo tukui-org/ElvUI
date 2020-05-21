@@ -284,6 +284,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = true
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = true
 L["Controls the speed at which smoothed bars will be updated."] = true
+L["Controls how many seconds of inactivity has to pass before chat is faded."] = true
 L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = true
 L["Cooldown Text"] = "Texte temps de recharge"
@@ -669,6 +670,7 @@ L["Ignored Items and Search Syntax (Profile)"] = true
 L["Import Now"] = "Importer maintenant"
 L["Import Profile"] = "Importer le profil"
 L["Importing"] = "Importation"
+L["Inactivity Timer"] = true
 L["Index"] = "Index"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "Indique si les améliorations que vous lancez doivent être séparées avant ou après."
 L["Individual Units"] = true

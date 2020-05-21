@@ -285,6 +285,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "控制顯示多少光環, 這也會影響光環大小"
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "控制在血條和單位框架等元件的小數位數"
 L["Controls the speed at which smoothed bars will be updated."] = "控制平滑條更新的速度."
+L["Controls how many seconds of inactivity has to pass before chat is faded."] = true
 L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "控制選擇目標操作的接受點擊寬度和大小."
 L["Cooldown Text"] = "冷卻文字"
@@ -670,6 +671,7 @@ L["Ignored Items and Search Syntax (Profile)"] = "忽略的物品與搜尋語法
 L["Import Now"] = "現在導入"
 L["Import Profile"] = "導入配置文件"
 L["Importing"] = "正在導入"
+L["Inactivity Timer"] = true
 L["Index"] = "索引"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "將你自身施放的增益放於整體增益最前方或或最後方."
 L["Individual Units"] = "獨立單位"

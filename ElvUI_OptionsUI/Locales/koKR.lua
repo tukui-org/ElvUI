@@ -284,6 +284,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "표시될 오라의 수를 조절하며, 이는 크기에도 영향을 미칩니다."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "이름표와 유닛프레임 등에 구성요소로 표시되는 수치들이 소숫점 몇 자리까지 나타낼지 조정합니다."
 L["Controls the speed at which smoothed bars will be updated."] = true
+L["Controls how many seconds of inactivity has to pass before chat is faded."] = true
 L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = true
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = true
 L["Cooldown Text"] = "재사용 대기시간 설정"
@@ -668,6 +669,7 @@ L["Ignored Items and Search Syntax (Profile)"] = "제외된 아이템 또는 검
 L["Import Now"] = "지금 가져오기"
 L["Import Profile"] = "프로필 가져오기"
 L["Importing"] = "가져올 것"
+L["Inactivity Timer"] = true
 L["Index"] = "종류"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "스스로 시전한 효과를 우선 나열할 것인지 여부를 지정합니다."
 L["Individual Units"] = true

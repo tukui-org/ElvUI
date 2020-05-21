@@ -284,6 +284,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Контролирует кол-во отображаемых эффектов. Также влияет на размер иконок."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Задает количество десятичных долей, используемых на индикаторах здоровья и рамках юнитов."
 L["Controls the speed at which smoothed bars will be updated."] = "Задает скорость обновления плавных полос."
+L["Controls how many seconds of inactivity has to pass before chat is faded."] = true
 L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = "Задает отображаемый текст. Доступные тэги можно увидеть в разделе \"Доступные тэги\"."
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "Контролирует ширину и размер области, на которую можно будет кликнуть для выбора юнита."
 L["Cooldown Text"] = "Текст восстановления"
@@ -668,6 +669,7 @@ L["Ignored Items and Search Syntax (Profile)"] = "Игнорируемые пр�
 L["Import Now"] = "Импортировать"
 L["Import Profile"] = "Импорт профиля"
 L["Importing"] = "Импортирую"
+L["Inactivity Timer"] = true
 L["Index"] = "Порядок наложения"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "Определяет должны ли Ваши баффы находиться отдельно перед или после остальных."
 L["Individual Units"] = "Одиночные юниты"
