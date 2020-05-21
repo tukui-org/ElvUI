@@ -14,7 +14,6 @@ local type = type
 
 -- GLOBALS: AceGUIWidgetLSMlists
 
-local datatexts = {}
 local DTPanelOptions = {
 	numPoints = {
 		order = 1,
@@ -129,17 +128,16 @@ local DTPanelOptions = {
 	},
 }
 
-local PanelLayoutOptions -- so PanelGroup_Create and PanelLayoutOptions can call each other locally
-local function PanelGroup_Delete(panel)
-	E.Options.args.datatexts.args.panels.args[panel] = nil
-end
-
 local function ColorizeName(name, color)
 	return format('|cFF%s%s|r', color or 'ffd100', name)
 end
 
+local function PanelGroup_Delete(panel)
+	E.Options.args.datatexts.args.panels.args[panel] = nil
+end
+
 local function PanelGroup_Create(panel)
-	E.Options.args.datatexts.args.panels.args[panel] = {
+	local opts = {
 		type = 'group',
 		name = ColorizeName(panel),
 		get = function(info) return E.db.datatexts.panels[panel][info[#info]] end,
@@ -162,7 +160,7 @@ local function PanelGroup_Create(panel)
 				set = function(info, value)
 					E.global.datatexts.customPanels[panel][info[#info]] = value
 					DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel])
-					PanelLayoutOptions()
+					DT:PanelLayoutOptions()
 				end,
 				args = {
 					delete = {
@@ -176,7 +174,7 @@ local function PanelGroup_Create(panel)
 							E.global.datatexts.customPanels[panel] = nil
 							DT:ReleasePanel(panel)
 							PanelGroup_Delete(panel)
-							PanelLayoutOptions()
+							DT:PanelLayoutOptions()
 							E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', 'newPanel')
 						end,
 					},
@@ -228,18 +226,20 @@ local function PanelGroup_Create(panel)
 		},
 	}
 
-	E:CopyTable(E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args, DTPanelOptions)
-	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
-	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
-	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.templateGroup.get = function(info, key) return E.global.datatexts.customPanels[panel][key] end
-	E.Options.args.datatexts.args.panels.args[panel].args.panelOptions.args.templateGroup.set = function(info, key, value) E.global.datatexts.customPanels[panel][key] = value; DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end
+	local panelOpts = E:CopyTable(opts.args.panelOptions.args, DTPanelOptions)
+	panelOpts.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
+	panelOpts.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
+	panelOpts.templateGroup.get = function(info, key) return E.global.datatexts.customPanels[panel][key] end
+	panelOpts.templateGroup.set = function(info, key, value) E.global.datatexts.customPanels[panel][key] = value; DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end
+
+	E.Options.args.datatexts.args.panels.args[panel] = opts
 end
 
-PanelLayoutOptions = function()
+local dts = {[''] = L["NONE"]}
+function DT:PanelLayoutOptions()
 	for name, data in pairs(DT.RegisteredDataTexts) do
-		datatexts[name] = data.localizedName or L[name]
+		dts[name] = data.localizedName or L[name]
 	end
-	datatexts[''] = L["NONE"]
 
 	local options = E.Options.args.datatexts.args.panels.args
 
@@ -273,7 +273,7 @@ PanelLayoutOptions = function()
 					func = function()
 						E.db.datatexts.panels[name] = nil
 						options[name] = nil
-						PanelLayoutOptions()
+						DT:PanelLayoutOptions()
 					end,
 				}
 			end
@@ -288,7 +288,7 @@ PanelLayoutOptions = function()
 							type = 'select',
 							order = option,
 							name = L[format("Position %d", option)],
-							values = datatexts,
+							values = dts,
 							get = function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end,
 							set = function(info, value)
 								E.db.datatexts.panels[name][tonumber(info[#info])] = value
@@ -301,7 +301,7 @@ PanelLayoutOptions = function()
 					options[name].args[option] = options[name].args[option] or {
 						type = 'select',
 						name = L[option],
-						values = datatexts,
+						values = dts,
 					}
 				end
 			end
@@ -332,9 +332,9 @@ local function CreateCustomCurrencyOptions(currencyID)
 						--Remove from persistent storage
 						E.global.datatexts.customCurrencies[currencyID] = nil
 						--Remove currency from datatext selection
-						datatexts[currency.NAME] = nil
+						dts[currency.NAME] = nil
 
-						PanelLayoutOptions()
+						DT:PanelLayoutOptions()
 
 						--Reload datatexts to clear panel
 						DT:LoadDataTexts()
@@ -609,7 +609,7 @@ E.Options.args.datatexts = {
 
 								PanelGroup_Create(name)
 								DT:BuildPanelFrame(name, E.global.datatexts.customPanels[name])
-								PanelLayoutOptions()
+								DT:PanelLayoutOptions()
 
 								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name)
 								E.global.datatexts.newPanelInfo = E:CopyTable({}, G.datatexts.newPanelInfo)
@@ -797,7 +797,7 @@ E.Options.args.datatexts = {
 						DT:RegisterCustomCurrencyDT(currencyID)
 						--Create options for this datatext
 						CreateCustomCurrencyOptions(currencyID)
-						PanelLayoutOptions()
+						DT:PanelLayoutOptions()
 						--Reload datatexts in case the currency we just added was already selected on a panel
 						DT:LoadDataTexts()
 					end,
@@ -817,5 +817,5 @@ E:CopyTable(E.Options.args.datatexts.args.panels.args.newPanel.args, DTPanelOpti
 E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.get = function(info, key) return E.global.datatexts.newPanelInfo[key] end
 E.Options.args.datatexts.args.panels.args.newPanel.args.templateGroup.set = function(info, key, value) E.global.datatexts.newPanelInfo[key] = value end
 
-PanelLayoutOptions()
+DT:PanelLayoutOptions()
 SetupCustomCurrencies()
