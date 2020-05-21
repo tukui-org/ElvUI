@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local pairs, select = pairs, select
+local ipairs, pairs, select = ipairs, pairs, select
 local ceil, unpack = ceil, unpack
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
@@ -749,7 +749,7 @@ function AB:DisableBlizzard()
 
 	-- Hide MultiBar Buttons, but keep the bars alive
 	for _, name in ipairs({"ActionButton", "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarRightButton", "MultiBarLeftButton", "OverrideActionBarButton", "MultiCastActionButton"}) do
-		for i=1,12 do
+		for i = 1, 12 do
 			local frame = _G[name..i]
 			if frame then
 				frame:Hide()
