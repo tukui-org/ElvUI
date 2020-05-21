@@ -934,17 +934,33 @@ function CH:GetDockerParent(docker, chat)
 end
 
 function CH:UpdateChatTab(chat)
+	local fadeLeft, fadeRight
+	if CH.db.fadeTabsNoBackdrop then
+		local both = CH.db.panelBackdrop == 'HIDEBOTH'
+		fadeLeft = (both or CH.db.panelBackdrop == 'LEFT')
+		fadeRight = (both or CH.db.panelBackdrop == 'RIGHT')
+	end
+
 	if chat == CH.LeftChatWindow then
 		chat.tab:SetParent(_G.LeftChatPanel or _G.UIParent)
-		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'LEFT') and CH.db.fadeTabsNoBackdrop)
+		CH:HandleFadeTabs(chat, fadeLeft)
 	elseif chat == CH.RightChatWindow then
 		chat.tab:SetParent(_G.RightChatPanel or _G.UIParent)
-		CH:HandleFadeTabs(chat, (CH.db.panelBackdrop == 'HIDEBOTH' or CH.db.panelBackdrop == 'RIGHT') and CH.db.fadeTabsNoBackdrop)
+		CH:HandleFadeTabs(chat, fadeRight)
 	else
-		-- we need to update the tab parent to mimic the docker
 		local docker = _G.GeneralDockManager.primary
-		chat.tab:SetParent(CH:GetDockerParent(docker, chat) or _G.UIParent)
-		CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs and CH:IsUndocked(chat, docker))
+		local parent = CH:GetDockerParent(docker, chat)
+
+		-- we need to update the tab parent to mimic the docker
+		chat.tab:SetParent(parent or _G.UIParent)
+
+		if parent and docker == CH.LeftChatWindow then
+			CH:HandleFadeTabs(chat, fadeLeft)
+		elseif parent and docker == CH.RightChatWindow then
+			CH:HandleFadeTabs(chat, fadeRight)
+		else
+			CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs and CH:IsUndocked(chat, docker))
+		end
 	end
 end
 
