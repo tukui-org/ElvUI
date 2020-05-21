@@ -13,11 +13,9 @@ local OTHER = OTHER
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 local Currencies = {
 	--BfA
-	["RICH_AZERITE_FRAGMENT"]		= {ID = 1565},
 	["SEAFARERS_DUBLOON"]			= {ID = 1710},
 	["SEAL_OF_WARTORN_FATE"]		= {ID = 1580},
 	["WAR_RESOURCES"]				= {ID = 1560},
-	["WAR_SUPPLIES"]				= {ID = 1587},
 	["HONORBOUND_SERVICE_MEDAL"]	= {ID = 1716},
 	["7TH_LEGION_SERVICE_MEDAL"]	= {ID = 1717},
 	["TITAN_RESIDUUM"]				= {ID = 1718},
