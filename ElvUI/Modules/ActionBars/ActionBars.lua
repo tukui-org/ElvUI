@@ -748,42 +748,19 @@ function AB:DisableBlizzard()
 	_G.MultiBarRight:SetParent(UIHider)
 
 	-- Hide MultiBar Buttons, but keep the bars alive
-	for i=1,12 do
-		_G["ActionButton" .. i]:Hide()
-		_G["ActionButton" .. i]:UnregisterAllEvents()
-		_G["ActionButton" .. i]:SetAttribute("statehidden", true)
-
-		_G["MultiBarBottomLeftButton" .. i]:Hide()
-		_G["MultiBarBottomLeftButton" .. i]:UnregisterAllEvents()
-		_G["MultiBarBottomLeftButton" .. i]:SetAttribute("statehidden", true)
-
-		_G["MultiBarBottomRightButton" .. i]:Hide()
-		_G["MultiBarBottomRightButton" .. i]:UnregisterAllEvents()
-		_G["MultiBarBottomRightButton" .. i]:SetAttribute("statehidden", true)
-
-		_G["MultiBarRightButton" .. i]:Hide()
-		_G["MultiBarRightButton" .. i]:UnregisterAllEvents()
-		_G["MultiBarRightButton" .. i]:SetAttribute("statehidden", true)
-
-		_G["MultiBarLeftButton" .. i]:Hide()
-		_G["MultiBarLeftButton" .. i]:UnregisterAllEvents()
-		_G["MultiBarLeftButton" .. i]:SetAttribute("statehidden", true)
-
-		if _G["VehicleMenuBarActionButton" .. i] then
-			_G["VehicleMenuBarActionButton" .. i]:Hide()
-			_G["VehicleMenuBarActionButton" .. i]:UnregisterAllEvents()
-			_G["VehicleMenuBarActionButton" .. i]:SetAttribute("statehidden", true)
+	for _, name in ipairs({"ActionButton", "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarRightButton", "MultiBarLeftButton", "OverrideActionBarButton", "MultiCastActionButton"}) do
+		for i=1,12 do
+			local frame = _G[name..i]
+			if frame then
+				frame:Hide()
+				frame:UnregisterAllEvents()
+				frame:SetAttribute("statehidden", true)
+			end
 		end
+	end
 
-		if _G['OverrideActionBarButton'..i] then
-			_G['OverrideActionBarButton'..i]:Hide()
-			_G['OverrideActionBarButton'..i]:UnregisterAllEvents()
-			_G['OverrideActionBarButton'..i]:SetAttribute("statehidden", true)
-		end
-
-		_G['MultiCastActionButton'..i]:Hide()
-		_G['MultiCastActionButton'..i]:UnregisterAllEvents()
-		_G['MultiCastActionButton'..i]:SetAttribute("statehidden", true)
+	for _, frame in pairs({"StanceBarFrame", "PossessBarFrame", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiCastActionBarFrame"}) do
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS[frame] = nil
 	end
 
 	_G.ActionBarController:UnregisterAllEvents()
@@ -841,12 +818,6 @@ function AB:DisableBlizzard()
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
 	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
-
-	for _, frame in pairs({"MainMenuBar", "StanceBarFrame", "PossessBarFrame", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiCastActionBarFrame"}) do
-		if _G.UIPARENT_MANAGED_FRAME_POSITIONS[frame] then
-			_G.UIPARENT_MANAGED_FRAME_POSITIONS[frame].ignoreFramePositionManager = true
-		end
-	end
 
 	if _G.PlayerTalentFrame then
 		_G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
