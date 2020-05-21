@@ -352,10 +352,10 @@ do
 					return
 				end
 
-				SetCVar(name, E.LockedCVars[name])
+				SetCVar(name, locked)
 			end
 
-			local func = E.UpdatedCVars and E.UpdatedCVars[name]
+			local func = E.UpdatedCVars[name]
 			if func then func(value) end
 		end
 	end
