@@ -285,7 +285,7 @@ L["Controls how big of an area on the screen will accept clicks to target unit."
 L["Controls how many auras are displayed, this will also affect the size of the auras."] = "Legt fest wieviele Auren angezeigt werden. Dieses beeinflusst auch die Größe der Auren."
 L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."] = "Kontrolliert die Anzahl der Dezimalstellen in den Werten auf den Namensplaketten und Einheitenfenstern."
 L["Controls the speed at which smoothed bars will be updated."] = "Kontrolliert die Geschwindigkeit wie die Sanften Leistenübergange updaten."
-L["Controls how many seconds of inactivity has to pass before chat is faded."] = true
+L["Controls how many seconds of inactivity has to pass before chat is faded."] = "Kontrolliert die Sekunden die vergehen müssen bevor der chat ausblendet."
 L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = "Kontrolliert den angezeigten Text. Alle Tags findest du im menü unter Verfügbare Tags."
 L["Controls the width and how big of an area on the screen will accept clicks to target unit."] = "Ändert die Breite und legt die Größe des Bereichs auf dem Bildschirm fest, welche die klicks durch die feindlichen Einheiten erlaubt."
 L["Cooldown Text"] = "Abklingzeittext"
@@ -672,7 +672,7 @@ L["Ignored Items and Search Syntax (Profile)"] = "Ignorierte Gegenstände oder S
 L["Import Now"] = "Jetzt importieren"
 L["Import Profile"] = "Importiere Profil"
 L["Importing"] = "Importiere"
-L["Inactivity Timer"] = true
+L["Inactivity Timer"] = "Inaktivitäts-Timer"
 L["Index"] = "Index"
 L["Indicate whether buffs you cast yourself should be separated before or after."] = "Wenn du einen Stärkungszauber auf dich selber wirkst, zeige diesen zuerst in der Leiste."
 L["Individual Units"] = "Individuelle Einheiten"
