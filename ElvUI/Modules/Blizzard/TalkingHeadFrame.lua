@@ -43,7 +43,6 @@ local function InitializeTalkingHead()
 	local TalkingHeadFrame = _G.TalkingHeadFrame
 
 	--Prevent WoW from moving the frame around
-	TalkingHeadFrame.ignoreFramePositionManager = true
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.TalkingHeadFrame = nil
 
 	--Set default position

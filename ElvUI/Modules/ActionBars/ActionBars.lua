@@ -37,10 +37,8 @@ local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
-local UIHider
 
 AB.RegisterCooldown = E.RegisterCooldown
-
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
 AB.barDefaults = {
@@ -728,96 +726,46 @@ function AB:IconIntroTracker_Toggle()
 	local IconIntroTracker = _G.IconIntroTracker
 	if self.db.addNewSpells then
 		IconIntroTracker:RegisterEvent("SPELL_PUSHED_TO_ACTIONBAR")
-		IconIntroTracker:Show()
-		IconIntroTracker:SetParent(_G.UIParent)
+		UnregisterStateDriver(IconIntroTracker, 'visibility')
 	else
 		IconIntroTracker:UnregisterAllEvents()
-		IconIntroTracker:Hide()
-		IconIntroTracker:SetParent(UIHider)
+		RegisterStateDriver(IconIntroTracker, 'visibility', 'hide')
 	end
 end
 
 function AB:DisableBlizzard()
-	-- Hidden parent frame
-	UIHider = CreateFrame("Frame")
-	UIHider:Hide()
+	for _, name in ipairs({"MainMenuBar", "MicroButtonAndBagsBar", "StanceBarFrame", "PossessBarFrame", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiBarLeft", "MultiBarRight", "MultiCastActionBarFrame"}) do
+		RegisterStateDriver(_G[name], 'visibility', 'hide')
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+	end
 
-	_G.MultiBarBottomLeft:SetParent(UIHider)
-	_G.MultiBarBottomRight:SetParent(UIHider)
-	_G.MultiBarLeft:SetParent(UIHider)
-	_G.MultiBarRight:SetParent(UIHider)
-
-	-- Hide MultiBar Buttons, but keep the bars alive
 	for _, name in ipairs({"ActionButton", "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarRightButton", "MultiBarLeftButton", "OverrideActionBarButton", "MultiCastActionButton"}) do
-		for i = 1, 12 do
-			local frame = _G[name..i]
-			if frame then
-				frame:Hide()
-				frame:UnregisterAllEvents()
-				frame:SetAttribute("statehidden", true)
-			end
+		for i = 1, 12 do local frame = _G[name..i]
+			if frame then frame:UnregisterAllEvents() end
 		end
 	end
 
-	for _, frame in pairs({"StanceBarFrame", "PossessBarFrame", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiCastActionBarFrame"}) do
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS[frame] = nil
-	end
-
+	_G.MainMenuBarArtFrame:UnregisterAllEvents()
+	_G.StatusTrackingBarManager:UnregisterAllEvents()
+	_G.StanceBarFrame:UnregisterAllEvents()
+	_G.OverrideActionBar:UnregisterAllEvents()
+	_G.PossessBarFrame:UnregisterAllEvents()
+	_G.PetActionBarFrame:UnregisterAllEvents()
+	_G.MultiCastActionBarFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
-	_G.MainMenuBar:EnableMouse(false)
-	_G.MainMenuBar:SetAlpha(0)
-	_G.MainMenuBar:SetScale(0.00001)
-	_G.MainMenuBar:SetFrameStrata('BACKGROUND')
-	_G.MainMenuBar:SetFrameLevel(0)
-
-	_G.MicroButtonAndBagsBar:SetScale(0.00001)
-	_G.MicroButtonAndBagsBar:EnableMouse(false)
-	_G.MicroButtonAndBagsBar:SetFrameStrata('BACKGROUND')
-	_G.MicroButtonAndBagsBar:SetFrameLevel(0)
-
-	_G.MainMenuBarArtFrame:UnregisterAllEvents()
-	_G.MainMenuBarArtFrame:Hide()
-	_G.MainMenuBarArtFrame:SetParent(UIHider)
-
-	_G.StatusTrackingBarManager:EnableMouse(false)
-	_G.StatusTrackingBarManager:UnregisterAllEvents()
-	_G.StatusTrackingBarManager:Hide()
-
-	_G.StanceBarFrame:UnregisterAllEvents()
-	_G.StanceBarFrame:Hide()
-	_G.StanceBarFrame:SetParent(UIHider)
-
-	_G.OverrideActionBar:UnregisterAllEvents()
-	_G.OverrideActionBar:Hide()
-	_G.OverrideActionBar:SetParent(UIHider)
-
-	_G.PossessBarFrame:UnregisterAllEvents()
-	_G.PossessBarFrame:Hide()
-	_G.PossessBarFrame:SetParent(UIHider)
-
-	_G.PetActionBarFrame:UnregisterAllEvents()
-	_G.PetActionBarFrame:Hide()
-	_G.PetActionBarFrame:SetParent(UIHider)
-
-	_G.MultiCastActionBarFrame:UnregisterAllEvents()
-	_G.MultiCastActionBarFrame:Hide()
-	_G.MultiCastActionBarFrame:SetParent(UIHider)
-
-	--Enable/disable functionality to automatically put spells on the actionbar.
-	self:IconIntroTracker_Toggle()
-
-	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:EnableMouse(false)
-	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
-	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
+	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
 	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
-	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
+	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
+	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
+
+	self:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
 	self:SecureHook('BlizzardOptionsPanel_OnEvent')
-	--InterfaceOptionsFrameCategoriesButton6:SetScale(0.00001)
 
 	if _G.PlayerTalentFrame then
 		_G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
@@ -869,13 +817,13 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.showGrid = self.db["bar"..bar.id].showGrid
 	bar.buttonConfig.clickOnDown = self.db.keyDown
 	bar.buttonConfig.outOfRangeColoring = (self.db.useRangeColorText and 'hotkey') or 'button'
-	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, self.db.noRangeColor)
 	bar.buttonConfig.colors.mana = E:SetColorTable(bar.buttonConfig.colors.mana, self.db.noPowerColor)
 	bar.buttonConfig.colors.usable = E:SetColorTable(bar.buttonConfig.colors.usable, self.db.usableColor)
 	bar.buttonConfig.colors.notUsable = E:SetColorTable(bar.buttonConfig.colors.notUsable, self.db.notUsableColor)
 	bar.buttonConfig.useDrawBling = (self.db.hideCooldownBling ~= true)
 	bar.buttonConfig.useDrawSwipeOnCharges = self.db.useDrawSwipeOnCharges
+	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
 
 	for i, button in pairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)

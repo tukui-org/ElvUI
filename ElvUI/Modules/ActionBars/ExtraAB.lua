@@ -59,7 +59,7 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
-	ExtraActionBarFrame.ignoreFramePositionManager  = true
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:Point('BOTTOM', ExtraActionBarFrame, 'TOP', 0, 2)
@@ -68,7 +68,7 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:Point('CENTER', ZoneAbilityHolder, 'CENTER')
-	ZoneAbilityFrame.ignoreFramePositionManager = true
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]

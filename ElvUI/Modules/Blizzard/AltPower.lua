@@ -67,7 +67,7 @@ function B:PositionAltPowerBar()
 	_G.PlayerPowerBarAlt:ClearAllPoints()
 	_G.PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
 	_G.PlayerPowerBarAlt:SetParent(holder)
-	_G.PlayerPowerBarAlt.ignoreFramePositionManager = true
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.PlayerPowerBarAlt = nil
 
 	--The Blizzard function FramePositionDelegate:UIParentManageFramePositions()
 	--calls :ClearAllPoints on PlayerPowerBarAlt under certain conditions.
