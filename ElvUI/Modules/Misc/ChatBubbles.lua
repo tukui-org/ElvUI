@@ -100,8 +100,8 @@ function M:SkinBubble(frame)
 	end
 
 	local name = frame:CreateFontString(nil, "BORDER")
-	name:Point("TOPLEFT", 5, 5)
-	name:Point("BOTTOMRIGHT", frame, "TOPRIGHT", -5, -5)
+	name:Point("TOPLEFT", 5, 10)
+	name:Point("BOTTOMRIGHT", frame, "TOPRIGHT", -5, 5)
 	name:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
 	name:SetJustifyH("LEFT")
 	frame.Name = name
