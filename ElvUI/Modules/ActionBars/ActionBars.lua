@@ -734,27 +734,29 @@ function AB:IconIntroTracker_Toggle()
 end
 
 function AB:DisableBlizzard()
-	for _, name in ipairs({"MainMenuBar", "MicroButtonAndBagsBar", "StanceBarFrame", "PossessBarFrame", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiBarLeft", "MultiBarRight", "MultiCastActionBarFrame"}) do
-		RegisterStateDriver(_G[name], 'visibility', 'hide')
+	-- dont blindly add to this table, the first 5 get their events registered
+	for i, name in ipairs({"OverrideActionBar", "StanceBarFrame", "PossessBarFrame", "PetActionBarFrame", "MultiCastActionBarFrame", "MainMenuBar", "MicroButtonAndBagsBar", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiBarLeft", "MultiBarRight"}) do
+		local frame = _G[name]
+		if i < 6 then frame:UnregisterAllEvents() end
+
+		RegisterStateDriver(frame, 'visibility', 'hide')
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
 	end
 
 	for _, name in ipairs({"ActionButton", "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarRightButton", "MultiBarLeftButton", "OverrideActionBarButton", "MultiCastActionButton"}) do
-		for i = 1, 12 do local frame = _G[name..i]
+		for i = 1, 12 do
+			local frame = _G[name..i]
 			if frame then frame:UnregisterAllEvents() end
 		end
 	end
 
-	_G.MainMenuBarArtFrame:UnregisterAllEvents()
+	-- shut down some events for things we dont use
 	_G.StatusTrackingBarManager:UnregisterAllEvents()
-	_G.StanceBarFrame:UnregisterAllEvents()
-	_G.OverrideActionBar:UnregisterAllEvents()
-	_G.PossessBarFrame:UnregisterAllEvents()
-	_G.PetActionBarFrame:UnregisterAllEvents()
-	_G.MultiCastActionBarFrame:UnregisterAllEvents()
+	_G.MainMenuBarArtFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
+	-- hide some interface options we dont use
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetAlpha(0)
 	_G.InterfaceOptionsActionBarsPanelStackRightBarsText:Hide() -- hides the !
