@@ -85,8 +85,10 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	end
 
 	chatBubble.Name:SetFormattedText("|c%s%s|r", color.colorStr, name)
+	chatBubble.Name:Width(chatBubble:GetWidth()-10)
 end
 
+local yOffset --Value set in M:LoadChatBubbles()
 function M:SkinBubble(frame)
 	if frame:IsForbidden() then return end
 
@@ -100,8 +102,8 @@ function M:SkinBubble(frame)
 	end
 
 	local name = frame:CreateFontString(nil, "BORDER")
-	name:Point("TOPLEFT", 5, 10)
-	name:Point("BOTTOMRIGHT", frame, "TOPRIGHT", -5, 5)
+	name:Height(10) --Width set in M:AddChatBubbleName()
+	name:Point("BOTTOM", frame, "TOP", 0, yOffset)
 	name:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
 	name:SetJustifyH("LEFT")
 	frame.Name = name
@@ -248,6 +250,7 @@ function M:ToggleChatBubbleScript()
 end
 
 function M:LoadChatBubbles()
+	yOffset = E.private.general.chatBubbles == "backdrop" and 2 or E.private.general.chatBubbles == "backdrop_noborder" and -2 or 0
 	self.BubbleFrame = CreateFrame("Frame")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_SAY")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")
