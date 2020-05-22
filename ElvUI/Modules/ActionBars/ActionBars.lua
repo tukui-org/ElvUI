@@ -755,12 +755,17 @@ function AB:DisableBlizzard()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
+	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
+	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetAlpha(0)
+	_G.InterfaceOptionsActionBarsPanelStackRightBarsText:Hide() -- hides the !
+	_G.InterfaceOptionsActionBarsPanelRightTwoText:SetTextColor(1,1,1) -- no yellow
+	_G.InterfaceOptionsActionBarsPanelRightTwoText.SetTextColor = E.noop -- i said no yellow
 	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetScale(0.0001)
 	_G.InterfaceOptionsActionBarsPanelAlwaysShowActionBars:SetAlpha(0)
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetScale(0.0001)
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDownButton:SetAlpha(0)
-	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
 	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetScale(0.0001)
+	_G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown:SetAlpha(0)
 	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetScale(0.0001)
 	_G.InterfaceOptionsActionBarsPanelLockActionBars:SetAlpha(0)
 
