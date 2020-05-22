@@ -9,7 +9,6 @@ local GetNumSpecializations = GetNumSpecializations
 local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
-local GetSpecializationInfoByID = GetSpecializationInfoByID
 local GetTalentInfo = GetTalentInfo
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown

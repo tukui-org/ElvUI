@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs = pairs
-
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_BindingUI()

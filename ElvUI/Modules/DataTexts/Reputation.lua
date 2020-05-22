@@ -7,12 +7,8 @@ local format = format
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation
-local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
-local ExpandAllFactionHeaders = ExpandAllFactionHeaders
-local SetWatchedFactionIndex = SetWatchedFactionIndex
-
-local GetWatchedFactionInfo, GetNumFactions, GetFactionInfo = GetWatchedFactionInfo, GetNumFactions, GetFactionInfo
 local ToggleCharacter = ToggleCharacter
+local GetWatchedFactionInfo = GetWatchedFactionInfo
 local REPUTATION, STANDING = REPUTATION, STANDING
 
 local function OnEvent(self, event, eventType)

@@ -6,7 +6,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local _G = _G
 local tinsert = tinsert
-
 -- GLOBALS: ElvUF_Player
 
 function UF:Construct_PetFrame(frame)

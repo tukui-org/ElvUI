@@ -10,7 +10,6 @@ local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local hooksecurefunc = hooksecurefunc
 
---[[ SKINNING FUNCTIONS ]]--
 local function forceAlpha(self, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
 		self:SetAlpha(1, true)
@@ -768,7 +767,6 @@ end
 function S:AlertSystem()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.alertframes) then return end
 
-	--[[ HOOKS ]]--
 	-- Achievements
 	hooksecurefunc(_G.AchievementAlertSystem, "setUpFunction", SkinAchievementAlert)
 	hooksecurefunc(_G.CriteriaAlertSystem, "setUpFunction", SkinCriteriaAlert)
@@ -807,8 +805,6 @@ function S:AlertSystem()
 	hooksecurefunc(_G.NewPetAlertSystem, "setUpFunction", SkinNewPetAlert)
 	hooksecurefunc(_G.NewMountAlertSystem, "setUpFunction", SkinNewPetAlert)
 	hooksecurefunc(_G.NewToyAlertSystem, "setUpFunction", SkinNewPetAlert)
-
-	--[[ STATIC SKINNING ]]--
 
 	--Bonus Roll Money
 	local frame = _G.BonusRollMoneyWonFrame

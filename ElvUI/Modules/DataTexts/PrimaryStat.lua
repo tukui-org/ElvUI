@@ -1,11 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+local next = next
 local strjoin = strjoin
+local UnitStat = UnitStat
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecialization = GetSpecialization
-local UnitStat = UnitStat
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local SPEC_FRAME_PRIMARY_STAT = SPEC_FRAME_PRIMARY_STAT
 
@@ -19,7 +20,7 @@ local SPEC_STAT_STRINGS = {
 
 local SPECIALIZATION_CACHE = {}
 
-local function OnEvent(self, event)
+local function OnEvent(self)
 	if not next(SPECIALIZATION_CACHE) then
 		for index = 1, GetNumSpecializations() do
 			local id, _, _, _, _, statID = GetSpecializationInfo(index)

@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
-
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_VoidStorageUI()

@@ -3,9 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
-
-local GetInventoryItemLink = GetInventoryItemLink
 local hooksecurefunc = hooksecurefunc
+local GetInventoryItemLink = GetInventoryItemLink
 local IsCorruptedItem = IsCorruptedItem
 
 local function UpdateCorruption(self)

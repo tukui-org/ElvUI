@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
-
 local hooksecurefunc = hooksecurefunc
 local GetItemUpgradeItemInfo = GetItemUpgradeItemInfo
 local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS

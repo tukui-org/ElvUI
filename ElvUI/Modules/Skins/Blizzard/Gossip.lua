@@ -5,7 +5,6 @@ local _G = _G
 local gsub = gsub
 local pairs = pairs
 local strfind = strfind
-
 local hooksecurefunc = hooksecurefunc
 
 function S:GossipFrame()

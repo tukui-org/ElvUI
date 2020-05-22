@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames');
 
 local _G = _G
 local unpack = unpack
-
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraBars(statusBar)

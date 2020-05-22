@@ -2,12 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 local unpack = unpack
-
 local UnitIsWarModePhased = UnitIsWarModePhased
 
 local texCoords = {
-	[1] = {1 / 128, 33 / 128, 1 / 64, 33 / 64},
-	[2] = {34 / 128, 66 / 128, 1 / 64, 33 / 64},
+	{1/128,   33/128,  1/64,  33/64},
+	{34/128,  66/128,  1/64,  33/64},
 }
 
 function UF:PostUpdate_PhaseIcon(isInSamePhase)

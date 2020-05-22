@@ -6,12 +6,12 @@ local pairs, select, unpack = pairs, select, unpack
 
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
+local UnitSex = UnitSex
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationSpells = GetSpecializationSpells
 local GetSpellTexture = GetSpellTexture
-local UnitSex = UnitSex
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
 

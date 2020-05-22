@@ -63,7 +63,6 @@ local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
-local IsMouseButtonDown = IsMouseButtonDown
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local PlaySoundFile = PlaySoundFile
@@ -100,7 +99,6 @@ local SOUNDKIT_TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
-local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local UNKNOWN = UNKNOWN
 -- GLOBALS: ElvCharacterDB
 

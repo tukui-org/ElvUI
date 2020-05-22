@@ -47,6 +47,7 @@ local GetFactionInfo = GetFactionInfo
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ExpandAllFactionHeaders = ExpandAllFactionHeaders
 local SetWatchedFactionIndex = SetWatchedFactionIndex
+local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 
 local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
 local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID

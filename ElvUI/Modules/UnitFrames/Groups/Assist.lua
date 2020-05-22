@@ -8,6 +8,7 @@ local _G = _G
 local max = max
 
 local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
 local InCombatLockdown = InCombatLockdown
 local RegisterAttributeDriver = RegisterAttributeDriver
 

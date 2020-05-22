@@ -10,7 +10,6 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local UnitCanAttack = UnitCanAttack
-local GetSpellInfo = GetSpellInfo
 
 local _, ns = ...
 local ElvUF = ns.oUF

@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 local unpack = unpack
-
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_OrderHallUI()

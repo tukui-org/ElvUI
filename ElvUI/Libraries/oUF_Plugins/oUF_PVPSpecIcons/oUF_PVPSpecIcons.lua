@@ -12,7 +12,6 @@ local Update = function(self, event, unit)
 	if(specIcon.PreUpdate) then specIcon:PreUpdate(event) end
 
 	if instanceType == 'arena' then
-		local numOpps = GetNumArenaOpponentSpecs()
 		local ID = self.unit:match('arena(%d)') or self:GetID() or 0
 		local specID = GetArenaOpponentSpec(tonumber(ID))
 		if specID and specID > 0 then

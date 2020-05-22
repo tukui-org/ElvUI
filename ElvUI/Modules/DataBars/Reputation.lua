@@ -13,17 +13,7 @@ local ToggleCharacter = ToggleCharacter
 local CreateFrame = CreateFrame
 local REPUTATION = REPUTATION
 local STANDING = STANDING
-
---local FACTION_BAR_COLORS = {
---	[1] = {r = 1, g = 0.1, b = 0.1},
---	[2] = {r = 1, g = 0.5, b = 0.25},
---	[3] = {r = 1, g = 0.7, b = 0.3},
---	[4] = {r = 1, g = 1, b = 0},
---	[5] = {r = 0.32, g = 0.67, b = 0},
---	[6] = {r = 0, g = 0.43922, b = 1},
---	[7] = {r = 0.63922, g = 0.20784, b = 0.93333},
---	[8] = {r = 0.90196, g = 0.8, b = 0.50196},
---};
+local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 
 function DB:UpdateReputation(event)
 	if not DB.db.reputation.enable then return end

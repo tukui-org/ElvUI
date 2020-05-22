@@ -6,10 +6,10 @@ local _G = _G
 local unpack, ipairs, pairs, select = unpack, ipairs, pairs, select
 local min, strlower = min, strlower
 
-local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
+local hooksecurefunc = hooksecurefunc
 local GetLFGProposal = GetLFGProposal
 local GetLFGProposalMember = GetLFGProposalMember
-local hooksecurefunc = hooksecurefunc
+local GetBackgroundTexCoordsForRole = GetBackgroundTexCoordsForRole
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities

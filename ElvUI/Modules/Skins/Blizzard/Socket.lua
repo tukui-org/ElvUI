@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, unpack = ipairs, unpack
-
 local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc
 

@@ -5,8 +5,8 @@ local _G = _G
 local next, pairs, select, unpack = next, pairs, select, unpack
 
 local CreateFrame = CreateFrame
-local C_GuildInfo_CanViewOfficerNote = C_GuildInfo.CanViewOfficerNote
 local hooksecurefunc = hooksecurefunc
+local C_GuildInfo_CanViewOfficerNote = C_GuildInfo.CanViewOfficerNote
 
 function S:Blizzard_GuildUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guild) then return end

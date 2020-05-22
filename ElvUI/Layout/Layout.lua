@@ -3,7 +3,6 @@ local LO = E:GetModule('Layout')
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local pairs = pairs
 local CreateFrame = CreateFrame
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat
 

@@ -5,7 +5,7 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local _G = _G
-local tinsert = table.insert
+local tinsert = tinsert
 -- GLOBALS: ElvUF_Focus
 
 function UF:Construct_FocusTargetFrame(frame)

@@ -4,6 +4,7 @@ local CH = E:GetModule('Chat')
 
 local _G = _G
 local floor = floor
+local unpack = unpack
 local tostring, pcall = tostring, pcall
 local format, strsub, gsub = format, strsub, gsub
 

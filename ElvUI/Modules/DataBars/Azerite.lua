@@ -14,11 +14,12 @@ local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLe
 local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 local ARTIFACT_POWER = ARTIFACT_POWER
-local Item = Item
+local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local HasArtifactEquipped = HasArtifactEquipped
 local SocketInventoryItem = SocketInventoryItem
 local UIParentLoadAddOn = UIParentLoadAddOn
 local ToggleFrame = ToggleFrame
+local Item = Item
 
 function DB:UpdateAzerite(event, unit)
 	if not DB.db.azerite.enable then return end

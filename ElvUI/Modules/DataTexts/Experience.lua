@@ -9,9 +9,8 @@ local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local GetExpansionLevel = GetExpansionLevel
 local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 local displayString = ""
-local hexColor
 
-local function OnEvent(self, event)
+local function OnEvent(self)
 	if IsXPUserDisabled() then
 		displayString = 'Disabled'
 	elseif E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()] then

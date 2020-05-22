@@ -79,6 +79,7 @@ local function GetAuraType(unit, filter, filterTable)
 end
 
 local function FilterTable()
+	local debufftype, texture, filterSpell
 	return debufftype, texture, true, filterSpell.style, filterSpell.color
 end
 

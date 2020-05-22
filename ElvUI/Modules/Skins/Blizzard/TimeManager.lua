@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
-
 local hooksecurefunc = hooksecurefunc
 
 local function SetPlayTexture()

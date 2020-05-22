@@ -2,12 +2,16 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Bags')
 
 local _G = _G
+local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
 
 local CreateFrame = CreateFrame
+local GetBagSlotFlag = GetBagSlotFlag
 local RegisterStateDriver = RegisterStateDriver
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
+local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
+local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 
 local function OnEnter()
 	if not E.db.bags.bagBar.mouseover then return; end
