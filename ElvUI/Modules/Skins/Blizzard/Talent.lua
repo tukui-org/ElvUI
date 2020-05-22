@@ -203,8 +203,15 @@ function S:Blizzard_TalentUI()
 		local sex = s.isPet and UnitSex("pet") or UnitSex("player")
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, s.isPet, nil, sex)
 		if not id then return end
+
+		local scrollBar = s.spellsScroll.ScrollBar
+		if scrollBar and not scrollBar.backdrop then
+			S:HandleScrollBar(scrollBar)
+		end
+
 		local scrollChild = s.spellsScroll.child
 		scrollChild.specIcon:SetTexture(icon)
+		scrollChild:SetScale(0.99) -- the scrollbar showed on simpy's when it shouldn't, this fixes it by reducing the scale by .01 lol
 
 		local index = 1
 		local bonuses
