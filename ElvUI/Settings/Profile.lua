@@ -1814,7 +1814,7 @@ P.unitframe.units.player.power.text_format = '[powercolor][power:current]'
 P.unitframe.units.player.power.xOffset = -2
 
 P.unitframe.units.target.aurabar.maxDuration = 120
-P.unitframe.units.target.aurabar.priority = 'Blacklist,Personal,blockNoDuration,PlayerBuffs,Boss,RaidDebuffs'
+P.unitframe.units.target.aurabar.priority = 'Blacklist,blockNoDuration,Personal,Boss,RaidDebuffs,PlayerBuffs'
 P.unitframe.units.target.buffs.enable = true
 P.unitframe.units.target.buffs.anchorPoint = 'TOPRIGHT'
 P.unitframe.units.target.buffs.priority = 'Blacklist,Personal,nonPersonal'
@@ -1855,7 +1855,7 @@ P.unitframe.units.focus.aurabar.enable = false
 P.unitframe.units.focus.aurabar.detachedWidth = 190
 P.unitframe.units.focus.aurabar.maxBars = 3
 P.unitframe.units.focus.aurabar.maxDuration = 120
-P.unitframe.units.focus.aurabar.priority = 'Blacklist,blockNoDuration,Personal,PlayerBuffs,Boss,RaidDebuffs'
+P.unitframe.units.focus.aurabar.priority = 'Blacklist,blockNoDuration,Personal,Boss,RaidDebuffs,PlayerBuffs'
 P.unitframe.units.focus.buffs.anchorPoint = 'BOTTOMLEFT'
 P.unitframe.units.focus.buffs.maxDuration = 300
 P.unitframe.units.focus.buffs.numrows = 1
