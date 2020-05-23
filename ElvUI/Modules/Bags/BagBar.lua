@@ -130,7 +130,6 @@ function B:LoadBagBar()
 	B.BagBar:SetScript("OnLeave", OnLeave)
 
 	_G.MainMenuBarBackpackButton:SetParent(B.BagBar)
-	_G.MainMenuBarBackpackButton.SetParent = E.dummy
 	_G.MainMenuBarBackpackButton:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
@@ -144,7 +143,6 @@ function B:LoadBagBar()
 	for i=0, NUM_BAG_FRAMES-1 do
 		local b = _G["CharacterBag"..i.."Slot"]
 		b:SetParent(B.BagBar)
-		b.SetParent = E.dummy
 		b:HookScript('OnEnter', OnEnter)
 		b:HookScript('OnLeave', OnLeave)
 
