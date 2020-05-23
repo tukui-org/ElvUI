@@ -26,6 +26,8 @@ local InCombatLockdown = InCombatLockdown
 local C_PartyInfo_InviteUnit = C_PartyInfo.InviteUnit
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
 
+local CreateFrame = CreateFrame
+
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
 local GUILD = GUILD
 local GUILD_MOTD = GUILD_MOTD
