@@ -291,11 +291,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		widget.frame:StripTextures()
 	elseif TYPE == 'Dropdown-Pullout' then
 		local pullout = widget
-		if pullout.frame then
-			pullout.frame:SetTemplate(nil, true)
-		else
-			pullout:SetTemplate(nil, true)
-		end
+		pullout.frame:SetTemplate(nil, true)
 
 		if pullout.slider then
 			pullout.slider:SetTemplate()
