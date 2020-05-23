@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local tinsert, collectgarbage = tinsert, collectgarbage
+local tinsert, unpack, collectgarbage = tinsert, unpack, collectgarbage
 local ipairs, sort, wipe, floor, format = ipairs, sort, wipe, floor, format
 local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
@@ -39,7 +39,6 @@ local homeLatencyString = "%d ms"
 local kiloByteString = "%d kb"
 local megaByteString = "%.2f mb"
 local profilingString = '%s%s|r |cffffffff/|r %s%s|r'
-local totalAddOnMemory, totalCPU = 0, 0
 local cpuProfiling = GetCVar("scriptProfile") == "1"
 
 local function formatMem(memory)
@@ -51,74 +50,19 @@ local function formatMem(memory)
 	end
 end
 
-local function sortByMemory(a, b)
-	return a[3] > b[3]
-end
-
-local function sortByCPU(a, b)
-	return a[4] > b[4]
-end
-
 local infoTable = {}
-
 local function BuildAddonList()
 	local addOnCount = GetNumAddOns()
-	if (addOnCount == #infoTable) then return end
+	if addOnCount == #infoTable then return end
 
 	wipe(infoTable)
 
 	for i = 1, addOnCount do
 		local _, title, _, loadable = GetAddOnInfo(i)
 		if loadable then
-			tinsert(infoTable, {i, title, 0, 0})
+			tinsert(infoTable, {index = i, title = title})
 		end
 	end
-end
-
-local function UpdateMemory()
-	UpdateAddOnMemoryUsage()
-
-	totalAddOnMemory = 0
-
-	for _, data in ipairs(infoTable) do
-		local loaded = IsAddOnLoaded(data[1])
-		data[5] = loaded
-
-		if loaded then
-			local mem = GetAddOnMemoryUsage(data[1])
-			data[3] = mem
-			totalAddOnMemory = totalAddOnMemory + mem
-		end
-	end
-
-	if (not cpuProfiling) or IsShiftKeyDown() then
-		sort(infoTable, sortByMemory)
-	end
-
-	return totalAddOnMemory
-end
-
-local function UpdateCPU()
-	UpdateAddOnCPUUsage()
-
-	totalCPU = 0
-
-	for _, data in ipairs(infoTable) do
-		local loaded = IsAddOnLoaded(data[1])
-		data[5] = loaded
-
-		if loaded then
-			local addonCPU = GetAddOnCPUUsage(data[1])
-			data[4] = addonCPU
-			totalCPU = totalCPU + addonCPU
-		end
-	end
-
-	if not IsShiftKeyDown() then
-		sort(infoTable, sortByCPU)
-	end
-
-	return totalCPU
 end
 
 local function Click()
@@ -128,12 +72,14 @@ local function Click()
 	end
 end
 
-local ipTypes = {"IPv4", "IPv6"}
-local function OnEnter(self, slow)
+local function displaySort(a, b)
+	return a.sort > b.sort
+end
+
+local infoDisplay, ipTypes = {}, {"IPv4", "IPv6"}
+local function OnEnter(self)
 	DT:SetupTooltip(self)
 	enteredFrame = true
-
-	if not slow or slow == 1 then UpdateMemory() end
 
 	local _, _, homePing, worldPing = GetNetStats()
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, homePing), .69, .31, .31, .84, .75, .65)
@@ -152,37 +98,59 @@ local function OnEnter(self, slow)
 		DT.tooltip:AddLine(" ")
 	end
 
-	DT.tooltip:AddDoubleLine(L["AddOn Memory:"], formatMem(totalAddOnMemory), .69, .31, .31, .84, .75, .65)
-
+	UpdateAddOnMemoryUsage()
 	if cpuProfiling then
-		if not slow then totalCPU = UpdateCPU() end
+		UpdateAddOnCPUUsage()
+	end
+
+	local count, totalMEM, totalCPU = 0, 0, 0
+	local showByCPU = cpuProfiling and not IsShiftKeyDown()
+	for _, data in ipairs(infoTable) do
+		local i = data.index
+		if IsAddOnLoaded(i) then
+			local mem = GetAddOnMemoryUsage(i)
+			totalMEM = totalMEM + mem
+
+			local cpu
+			if cpuProfiling then
+				cpu = GetAddOnCPUUsage(i)
+				totalCPU = totalCPU + cpu
+			end
+
+			data.sort = (showByCPU and cpu) or mem
+			data.cpu = showByCPU and cpu
+			data.mem = mem
+
+			count = count + 1
+			infoDisplay[count] = data
+		end
+	end
+
+	DT.tooltip:AddDoubleLine(L["AddOn Memory:"], formatMem(totalMEM), .69, .31, .31, .84, .75, .65)
+	if cpuProfiling then
 		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), .69, .31, .31, .84, .75, .65)
 	end
 
 	DT.tooltip:AddLine(" ")
-
-	if IsShiftKeyDown() or not cpuProfiling then
-		for _, data in ipairs(infoTable) do
-			if data[5] then
-				local red = data[3] / totalAddOnMemory
-				local green = (1 - red) + .5
-				DT.tooltip:AddDoubleLine(data[2], formatMem(data[3]), 1, 1, 1, red, green, 0)
-			end
+	sort(infoDisplay, displaySort)
+	for i=1, count do
+		local data = infoDisplay[i]
+		local name, mem, cpu = data.title, data.mem, data.cpu
+		if cpu then
+			local memRed, cpuRed = mem / totalMEM, cpu / totalCPU
+			local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
+			DT.tooltip:AddDoubleLine(name, format(profilingString, E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, cpu)), 1, 1, 1)
+		else
+			local red = mem / totalMEM
+			local green = (1 - red) + .5
+			DT.tooltip:AddDoubleLine(name, formatMem(mem), 1, 1, 1, red or 1, green or 1, 0)
 		end
-	else
-		for _, data in ipairs(infoTable) do
-			if data[5] then
-				local mem, cpu = data[3], data[4]
-				local memRed, cpuRed = mem / totalAddOnMemory, cpu / totalCPU
-				local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
-				DT.tooltip:AddDoubleLine(data[2], format(profilingString, E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, data[4])), 1, 1, 1)
-			end
-		end
-
-		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
 	end
 
 	DT.tooltip:AddLine(" ")
+	if showByCPU then
+		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
+	end
 	DT.tooltip:AddLine(L["(Modifer Click) Collect Garbage"])
 	DT.tooltip:Show()
 end
