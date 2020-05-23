@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local select = select
+local wipe = wipe
 local format, pairs = format, pairs
 local GetInventoryItemDurability = GetInventoryItemDurability
 local ToggleCharacter = ToggleCharacter
@@ -36,10 +37,12 @@ local function OnEvent(self)
 	totalDurability = 100
 	totalRepairCost = 0
 
+	wipe(invDurability)
+
 	for index in pairs(slots) do
-		local current, max = GetInventoryItemDurability(index)
-		if current then
-			local perc = (current/max)*100
+		local currentDura, maxDura = GetInventoryItemDurability(index)
+		if currentDura and maxDura > 0 then
+			local perc = (currentDura/maxDura)*100
 			invDurability[index] = perc
 
 			if perc < totalDurability then
