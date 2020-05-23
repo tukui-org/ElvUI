@@ -9,9 +9,9 @@ local GetAddOnMemoryUsage = GetAddOnMemoryUsage
 local GetAvailableBandwidth = GetAvailableBandwidth
 local GetFileStreamingStatus = GetFileStreamingStatus
 local GetBackgroundLoadingStatus = GetBackgroundLoadingStatus
+local GetDownloadedPercentage = GetDownloadedPercentage
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
-local GetDownloadedPercentage = GetDownloadedPercentage
 local GetFramerate = GetFramerate
 local GetNetIpTypes = GetNetIpTypes
 local GetNetStats = GetNetStats
@@ -52,15 +52,11 @@ local function formatMem(memory)
 end
 
 local function sortByMemory(a, b)
-	if a and b then
-		return (a[3] == b[3] and a[2] < b[2]) or a[3] > b[3]
-	end
+	return a[3] > b[3]
 end
 
 local function sortByCPU(a, b)
-	if a and b then
-		return (a[4] == b[4] and a[2] < b[2]) or a[4] > b[4]
-	end
+	return a[4] > b[4]
 end
 
 local infoTable = {}
@@ -85,14 +81,19 @@ local function UpdateMemory()
 	totalAddOnMemory = 0
 
 	for _, data in ipairs(infoTable) do
-		if IsAddOnLoaded(data[1]) then
+		local loaded = IsAddOnLoaded(data[1])
+		data[5] = loaded
+
+		if loaded then
 			local mem = GetAddOnMemoryUsage(data[1])
 			data[3] = mem
 			totalAddOnMemory = totalAddOnMemory + mem
 		end
 	end
 
-	sort(infoTable, sortByMemory)
+	if (not cpuProfiling) or IsShiftKeyDown() then
+		sort(infoTable, sortByMemory)
+	end
 
 	return totalAddOnMemory
 end
@@ -103,7 +104,10 @@ local function UpdateCPU()
 	totalCPU = 0
 
 	for _, data in ipairs(infoTable) do
-		if IsAddOnLoaded(data[1]) then
+		local loaded = IsAddOnLoaded(data[1])
+		data[5] = loaded
+
+		if loaded then
 			local addonCPU = GetAddOnCPUUsage(data[1])
 			data[4] = addonCPU
 			totalCPU = totalCPU + addonCPU
@@ -125,12 +129,11 @@ local function Click()
 end
 
 local ipTypes = {"IPv4", "IPv6"}
-local function OnEnter(self)
-	if InCombatLockdown() then return end
-
+local function OnEnter(self, slow)
 	DT:SetupTooltip(self)
 	enteredFrame = true
-	UpdateMemory()
+
+	if not slow or slow == 1 then UpdateMemory() end
 
 	local _, _, homePing, worldPing = GetNetStats()
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, homePing), .69, .31, .31, .84, .75, .65)
@@ -152,7 +155,7 @@ local function OnEnter(self)
 	DT.tooltip:AddDoubleLine(L["AddOn Memory:"], formatMem(totalAddOnMemory), .69, .31, .31, .84, .75, .65)
 
 	if cpuProfiling then
-		totalCPU = UpdateCPU()
+		if not slow then totalCPU = UpdateCPU() end
 		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), .69, .31, .31, .84, .75, .65)
 	end
 
@@ -160,16 +163,15 @@ local function OnEnter(self)
 
 	if IsShiftKeyDown() or not cpuProfiling then
 		for _, data in ipairs(infoTable) do
-			if IsAddOnLoaded(data[1]) then
+			if data[5] then
 				local red = data[3] / totalAddOnMemory
 				local green = (1 - red) + .5
 				DT.tooltip:AddDoubleLine(data[2], formatMem(data[3]), 1, 1, 1, red, green, 0)
 			end
 		end
-		DT.tooltip:AddLine(" ")
 	else
 		for _, data in ipairs(infoTable) do
-			if IsAddOnLoaded(data[1]) then
+			if data[5] then
 				local mem, cpu = data[3], data[4]
 				local memRed, cpuRed = mem / totalAddOnMemory, cpu / totalCPU
 				local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
@@ -177,10 +179,10 @@ local function OnEnter(self)
 			end
 		end
 
-		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
 	end
 
+	DT.tooltip:AddLine(" ")
 	DT.tooltip:AddLine(L["(Modifer Click) Collect Garbage"])
 	DT.tooltip:Show()
 end
@@ -190,7 +192,7 @@ local function OnLeave()
 	DT.tooltip:Hide()
 end
 
-local wait = 6 -- initial delay for update (let the ui load)
+local wait, count = 10, 0 -- initial delay for update (let the ui load)
 local function Update(self, elapsed)
 	wait = wait - elapsed
 
@@ -204,7 +206,17 @@ local function Update(self, elapsed)
 		local ping = latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4
 		self.text:SetFormattedText("FPS: %s%d|r MS: %s%d|r", statusColors[fps], framerate, statusColors[ping], latency)
 
-		if enteredFrame then
+		if not enteredFrame then return end
+
+		if InCombatLockdown() then
+			if count > 3 then
+				OnEnter(self)
+				count = 0
+			else
+				OnEnter(self, count)
+				count = count + 1
+			end
+		else
 			OnEnter(self)
 		end
 	end
