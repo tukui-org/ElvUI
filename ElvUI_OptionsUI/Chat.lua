@@ -460,7 +460,14 @@ E.Options.args.chat = {
 					type = 'toggle',
 					name = L["Tab Panel"],
 					desc = L["Toggle the chat tab panel backdrop."],
-					set = function(info, value) E.db.chat.panelTabBackdrop = value; Layout:ToggleChatPanels(); end,
+					set = function(info, value)
+						E.db.chat.panelTabBackdrop = value
+						Layout:ToggleChatPanels()
+
+						if E.db.chat.pinVoiceButtons and not E.db.chat.hideVoiceButtons then
+							CH:ReparentVoiceChatIcon()
+						end
+					end,
 				},
 				editBoxPosition = {
 					order = 4,

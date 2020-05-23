@@ -1051,36 +1051,27 @@ function CH:PositionChat(chat)
 		chat:Show()
 	end
 
-	local docker, chatParent, iconParent = _G.GeneralDockManager.primary
+	local docker = _G.GeneralDockManager.primary
 	local BASE_OFFSET = 28 + (E.PixelMode and 0 or 4)
+	local iconParent, chatParent = CH:GetAnchorParents(chat)
 	if chat == CH.LeftChatWindow then
-		CH:ShowBackground(chat.Background, false)
-		chatParent = _G.LeftChatPanel
-		iconParent = E.db.chat.panelTabBackdrop and _G.LeftChatTab
-
 		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0)
-
 		chat:ClearAllPoints()
 		chat:Point("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
 		chat:Size(CH.db.panelWidth - 10, CH.db.panelHeight - offset)
 
+		CH:ShowBackground(chat.Background, false)
 		CH:SavePositionAndDimensions(chat, true)
 	elseif chat == CH.RightChatWindow then
-		CH:ShowBackground(chat.Background, false)
-		chatParent = _G.RightChatPanel
-		iconParent = E.db.chat.panelTabBackdrop and _G.RightChatTab
-
 		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.RightChatTab:GetHeight() + 2) or 0)
-
 		chat:ClearAllPoints()
 		chat:Point("BOTTOMLEFT", _G.RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
 		chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - offset)
 
+		CH:ShowBackground(chat.Background, false)
 		CH:SavePositionAndDimensions(chat, true)
-	else
-		-- show if: not docked, or ChatFrame1, or attached to ChatFrame1
+	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
 		CH:ShowBackground(chat.Background, CH:IsUndocked(chat, docker))
-		chatParent = _G.UIParent
 	end
 
 	chat:SetParent(chatParent)
@@ -1088,8 +1079,8 @@ function CH:PositionChat(chat)
 	if chat == docker then
 		_G.GeneralDockManager:SetParent(chatParent)
 
-		if CH.db.pinVoiceButtons and not E.db.chat.hideVoiceButtons then
-			CH:ReparentVoiceChatIcons(iconParent or chatParent)
+		if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
+			CH:ReparentVoiceChatIcon(iconParent or chatParent)
 		end
 	end
 end
@@ -2607,7 +2598,19 @@ local channelButtons = {
 	_G.ChatFrameToggleVoiceMuteButton
 }
 
-function CH:ReparentVoiceChatIcons(parent)
+function CH:GetAnchorParents(chat)
+	local Left = (chat == CH.LeftChatWindow and _G.LeftChatPanel)
+	local Right = (chat == CH.RightChatWindow and _G.RightChatPanel)
+	local Chat, Icon = Left or Right or _G.UIParent
+	if CH.db.panelTabBackdrop then
+		Icon = (Left and _G.LeftChatTab) or (Right and _G.RightChatTab)
+	end
+
+	return Icon or Chat, Chat
+end
+
+function CH:ReparentVoiceChatIcon(parent)
+	if not parent then parent = CH:GetAnchorParents(_G.GeneralDockManager.primary) end
 	for _, button in pairs(channelButtons) do
 		button.Icon:SetParent(parent)
 	end
