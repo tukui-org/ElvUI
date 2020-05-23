@@ -24,23 +24,19 @@ local minorGUI, minorConfigDialog = 36, 76
 
 function S:Ace3_SkinDropdown()
 	if self and self.obj then
-		if self.obj.pullout and self.obj.pullout.frame then
-			self.obj.pullout.frame:SetTemplate(nil, true)
-			if self.obj.pullout.slider then
-				self.obj.pullout.slider:SetTemplate()
-				self.obj.pullout.slider:SetThumbTexture(E.Media.Textures.White8x8)
-
-				local t = self.obj.pullout.slider:GetThumbTexture()
-				t:SetVertexColor(1, .82, 0, 0.8)
+		local pullout = self.obj.pullout and self.obj.pullout.frame and self.obj.pullout or self.obj.dropdown
+		if pullout then
+			if pullout.frame then
+				pullout.frame:SetTemplate(nil, true)
+			else
+				pullout:SetTemplate(nil, true)
 			end
-		elseif self.obj.dropdown then -- this will be LSM
-			self.obj.dropdown:SetTemplate(nil, true)
 
-			if self.obj.dropdown.slider then
-				self.obj.dropdown.slider:SetTemplate()
-				self.obj.dropdown.slider:SetThumbTexture(E.Media.Textures.White8x8)
+			if pullout.slider then
+				pullout.slider:SetTemplate()
+				pullout.slider:SetThumbTexture(E.Media.Textures.White8x8)
 
-				local t = self.obj.dropdown.slider:GetThumbTexture()
+				local t = pullout.slider:GetThumbTexture()
 				t:SetVertexColor(1, .82, 0, 0.8)
 			end
 		end
