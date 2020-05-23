@@ -13,20 +13,7 @@ local OTHER = OTHER
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = 'Backpack' }
 
-local listSize, i = GetCurrencyListSize(), 1
-while listSize >= i do
-	local name, isHeader, isExpanded = GetCurrencyListInfo(i)
-	if isHeader and not isExpanded then
-		ExpandCurrencyList(i, 1);
-		listSize = GetCurrencyListSize()
-	end
-	if not isHeader then
-		local currencyLink = GetCurrencyListLink(i)
-		local currencyID = currencyLink and C_CurrencyInfo.GetCurrencyIDFromLink(currencyLink)
-		DT.CurrencyList[tostring(currencyID)] = name
-	end
-	i = i + 1
-end
+local Collapsed = {}
 
 local function OnClick()
 	_G.ToggleCharacter("TokenFrame")
@@ -44,7 +31,33 @@ end
 
 local goldText
 local function OnEvent(self, event)
-	if event == 'GLOBAL_MOUSE_UP' and InCombatLockdown() then return end
+	if event == 'PLAYER_ENTERING_WORLD' or event == 'CURRENCY_DISPLAY_UPDATE' then
+		local listSize, i = GetCurrencyListSize(), 1
+
+		while listSize >= i do
+			local name, isHeader, isExpanded = GetCurrencyListInfo(i)
+			if isHeader and not isExpanded then
+				ExpandCurrencyList(i, 1);
+				listSize = GetCurrencyListSize()
+				Collapsed[name] = true
+			end
+			if not isHeader then
+				local currencyLink = GetCurrencyListLink(i)
+				local currencyID = currencyLink and C_CurrencyInfo.GetCurrencyIDFromLink(currencyLink)
+				DT.CurrencyList[tostring(currencyID)] = name
+			end
+			i = i + 1
+		end
+
+		for i = 1, listSize do
+			local name, isHeader, isExpanded = GetCurrencyListInfo(i)
+			if isHeader and isExpanded and Collapsed[name] then
+				ExpandCurrencyList(i, 0);
+			end
+		end
+		wipe(Collapsed)
+	end
+
 	goldText = E:FormatMoney(GetMoney(), E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins)
 
 	local displayed = E.db.datatexts.currencies.displayedCurrency
