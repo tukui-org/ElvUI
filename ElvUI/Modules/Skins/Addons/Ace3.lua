@@ -24,7 +24,7 @@ local minorGUI, minorConfigDialog = 36, 76
 
 function S:Ace3_SkinDropdown()
 	if self and self.obj then
-		local pullout = (self.obj.pullout and self.obj.pullout.frame) and self.obj.pullout or self.obj.dropdown -- Don't ask questions.. Just FUCKING ACCEPT IT
+		local pullout = self.obj.dropdown -- Don't ask questions.. Just FUCKING ACCEPT IT
 		if pullout then
 			if pullout.frame then
 				pullout.frame:SetTemplate(nil, true)
@@ -157,7 +157,6 @@ function S:Ace3_RegisterAsWidget(widget)
 	elseif TYPE == 'Dropdown' or TYPE == 'LQDropdown' then
 		local frame = widget.dropdown
 		local button = widget.button
-		local button_cover = widget.button_cover
 		local text = widget.text
 
 		frame:StripTextures()
@@ -183,8 +182,6 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		button:SetParent(frame.backdrop)
 		text:SetParent(frame.backdrop)
-		button:HookScript('OnClick', S.Ace3_SkinDropdown)
-		button_cover:HookScript('OnClick', S.Ace3_SkinDropdown)
 	elseif TYPE == 'LSM30_Font' or TYPE == 'LSM30_Sound' or TYPE == 'LSM30_Border' or TYPE == 'LSM30_Background' or TYPE == 'LSM30_Statusbar' then
 		local frame = widget.frame
 		local button = frame.dropButton
@@ -292,6 +289,20 @@ function S:Ace3_RegisterAsWidget(widget)
 		end
 	elseif TYPE == 'Icon' then
 		widget.frame:StripTextures()
+	elseif TYPE == 'Dropdown-Pullout' then
+		local pullout = widget
+		if pullout.frame then
+			pullout.frame:SetTemplate(nil, true)
+		else
+			pullout:SetTemplate(nil, true)
+		end
+
+		if pullout.slider then
+			pullout.slider:SetTemplate()
+			pullout.slider:SetThumbTexture(E.Media.Textures.White8x8)
+			local t = pullout.slider:GetThumbTexture()
+			t:SetVertexColor(1, .82, 0, 0.8)
+		end
 	end
 end
 
