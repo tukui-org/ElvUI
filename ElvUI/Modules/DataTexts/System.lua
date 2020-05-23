@@ -77,7 +77,7 @@ local function displaySort(a, b)
 end
 
 local infoDisplay, ipTypes = {}, {"IPv4", "IPv6"}
-local function OnEnter(self)
+local function OnEnter(self, slow)
 	DT:SetupTooltip(self)
 	enteredFrame = true
 
@@ -98,8 +98,11 @@ local function OnEnter(self)
 		DT.tooltip:AddLine(" ")
 	end
 
-	UpdateAddOnMemoryUsage()
-	if cpuProfiling then
+	if slow == 1 or not slow then
+		UpdateAddOnMemoryUsage()
+	end
+
+	if cpuProfiling and not slow then
 		UpdateAddOnCPUUsage()
 	end
 
