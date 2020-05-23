@@ -191,7 +191,12 @@ function E:OnInitialize()
 	end
 
 	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-	GameMenuButton:SetScript('OnClick', function() E:ToggleOptionsUI() HideUIPanel(GameMenuFrame) end)
+	GameMenuButton:SetScript('OnClick', function()
+		E:ToggleOptionsUI() --We already prevent it from opening in combat
+		if not InCombatLockdown() then
+			HideUIPanel(GameMenuFrame)
+		end
+	end)
 	GameMenuFrame[E.name] = GameMenuButton
 
 	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
