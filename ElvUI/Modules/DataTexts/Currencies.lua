@@ -10,32 +10,23 @@ local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
 
--- Currencies we care about
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
+DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = 'Backpack' }
 
-local Currencies = {
-	--BfA
-	["SEAFARERS_DUBLOON"]			= {ID = 1710},
-	["SEAL_OF_WARTORN_FATE"]		= {ID = 1580},
-	["WAR_RESOURCES"]				= {ID = 1560},
-	["HONORBOUND_SERVICE_MEDAL"]	= {ID = 1716},
-	["7TH_LEGION_SERVICE_MEDAL"]	= {ID = 1717},
-	["TITAN_RESIDUUM"]				= {ID = 1718},
-	["PRISMATIC_MANAPEARL"]			= {ID = 1721},
-	["CORRUPTED_MEMENTOS"]			= {ID = 1719},
-	["COALESCING_VISIONS"]			= {ID = 1755},
-	["ECHOES_OF_NYALOTHA"]			= {ID = 1803},
-	-- Other
-	["DARKMOON_PRIZE_TICKET"]		= {ID = 515},
-}
-
--- CurrencyList for config
-local list = {GOLD = BONUS_ROLL_REWARD_MONEY}
-for currency, data in pairs(Currencies) do
-	local name = GetCurrencyInfo(data.ID)
-	if name then list[currency] = name end
+local listSize, i = GetCurrencyListSize(), 1
+while listSize >= i do
+	local name, isHeader, isExpanded = GetCurrencyListInfo(i)
+	if isHeader and not isExpanded then
+		ExpandCurrencyList(i, 1);
+		listSize = GetCurrencyListSize()
+	end
+	if not isHeader then
+		local currencyLink = GetCurrencyListLink(i)
+		local currencyID = currencyLink and C_CurrencyInfo.GetCurrencyIDFromLink(currencyLink)
+		DT.CurrencyList[tostring(currencyID)] = name
+	end
+	i = i + 1
 end
-DT.CurrencyList = list
 
 local function OnClick()
 	_G.ToggleCharacter("TokenFrame")
@@ -52,22 +43,32 @@ local function AddInfo(id)
 end
 
 local goldText
-local function OnEvent(self)
+local function OnEvent(self, event)
+	if event == 'GLOBAL_MOUSE_UP' and InCombatLockdown() then return end
 	goldText = E:FormatMoney(GetMoney(), E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins)
 
 	local displayed = E.db.datatexts.currencies.displayedCurrency
-	local selected = Currencies[displayed]
-	if displayed == "GOLD" or selected == nil then
+	if displayed == 'BACKPACK' then
+		local displayString = ''
+		for i = 1, 3 do
+			local _, num, icon = GetBackpackCurrencyInfo(i);
+			if num then
+				displayString = (i > 1 and displayString..' ' or displayString)..format("%s %s", format(iconString, icon), E:ShortValue(num))
+			end
+		end
+
+		self.text:SetText(displayString == '' and goldText or displayString)
+	elseif displayed == "GOLD" then
 		self.text:SetText(goldText)
 	else
 		local style = E.db.datatexts.currencies.displayStyle
-		local num, name, icon = GetInfo(selected.ID)
+		local num, name, icon = GetInfo(tonumber(displayed))
 		if style == "ICON" then
-			self.text:SetFormattedText("%s %d", icon, num)
+			self.text:SetFormattedText("%s %s", icon, E:ShortValue(num))
 		elseif style == "ICON_TEXT" then
-			self.text:SetFormattedText("%s %s %d", icon, name, num)
+			self.text:SetFormattedText("%s %s %s", icon, name, E:ShortValue(num))
 		else --ICON_TEXT_ABBR
-			self.text:SetFormattedText("%s %s %d", icon, E:AbbreviateString(name), num)
+			self.text:SetFormattedText("%s %s %s", icon, E:AbbreviateString(name), E:ShortValue(num))
 		end
 	end
 end
@@ -111,4 +112,4 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Currencies', nil, {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED", "CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY)
+DT:RegisterDatatext('Currencies', nil, {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED", "CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE", "GLOBAL_MOUSE_UP"}, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY)

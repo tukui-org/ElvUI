@@ -504,6 +504,7 @@ E.Options.args.datatexts = {
 							get = function(info) return E.db.datatexts.currencies.displayedCurrency end,
 							set = function(info, value) E.db.datatexts.currencies.displayedCurrency = value; DT:LoadDataTexts() end,
 							values = DT.CurrencyList,
+							sortByValue = true,
 						},
 						displayStyle = {
 							order = 3,
@@ -511,7 +512,7 @@ E.Options.args.datatexts = {
 							name = L["Currency Format"],
 							get = function(info) return E.db.datatexts.currencies.displayStyle end,
 							set = function(info, value) E.db.datatexts.currencies.displayStyle = value; DT:LoadDataTexts() end,
-							hidden = function() return (E.db.datatexts.currencies.displayedCurrency == "GOLD") end,
+							hidden = function() return (E.db.datatexts.currencies.displayedCurrency == "GOLD") or (E.db.datatexts.currencies.displayedCurrency == "BACKPACK") end,
 							values = {
 								["ICON"] = L["Icons Only"],
 								["ICON_TEXT"] = L["Icons and Text"],

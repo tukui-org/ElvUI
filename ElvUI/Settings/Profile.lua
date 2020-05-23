@@ -940,7 +940,7 @@ P.datatexts = {
 	goldCoins = false,
 	---Currencies
 	currencies = {
-		displayedCurrency = 'GOLD',
+		displayedCurrency = 'BACKPACK',
 		displayStyle = 'ICON',
 	},
 	---Time
