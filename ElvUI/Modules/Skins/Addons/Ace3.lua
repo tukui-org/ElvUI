@@ -26,6 +26,13 @@ function S:Ace3_SkinDropdown()
 	if self and self.obj then
 		if self.obj.pullout and self.obj.pullout.frame then
 			self.obj.pullout.frame:SetTemplate(nil, true)
+			if self.obj.pullout.slider then
+				self.obj.pullout.slider:SetTemplate()
+				self.obj.pullout.slider:SetThumbTexture(E.Media.Textures.White8x8)
+
+				local t = self.obj.pullout.slider:GetThumbTexture()
+				t:SetVertexColor(1, .82, 0, 0.8)
+			end
 		elseif self.obj.dropdown then -- this will be LSM
 			self.obj.dropdown:SetTemplate(nil, true)
 
@@ -156,6 +163,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		local button = widget.button
 		local button_cover = widget.button_cover
 		local text = widget.text
+
 		frame:StripTextures()
 
 		S:HandleNextPrevButton(button, nil, {1, .8, 0})
