@@ -756,6 +756,9 @@ function AB:DisableBlizzard()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
+	-- causes a taint
+	_G.MainMenuBar.SetPositionForStatusBars = E.noop
+
 	-- hide some interface options we dont use
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetAlpha(0)
