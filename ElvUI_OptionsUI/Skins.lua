@@ -21,11 +21,11 @@ E.Options.args.skins = {
 			set = function(info, key, value) E.private.skins.blizzard[key] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 			sortByValue = true,
 			values = {
-				blizzardEnable = L["Blizzard"],
 				ace3 = "Ace3",
+				blizzardEnable = L["Blizzard"],
 				checkBoxSkin = L["CheckBox Skin"],
-				parchmentRemover = L["Parchment Remover"],
 				cleanBossButton = L["Clean Boss Button"],
+				parchmentRemover = L["Parchment Remover"],
 			},
 		},
 		talkingHead = {
