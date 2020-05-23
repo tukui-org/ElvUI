@@ -24,7 +24,7 @@ local minorGUI, minorConfigDialog = 36, 76
 
 function S:Ace3_SkinDropdown()
 	if self and self.obj then
-		local pullout = self.obj.pullout and self.obj.pullout.frame and self.obj.pullout or self.obj.dropdown
+		local pullout = (self.obj.pullout and self.obj.pullout.frame) and self.obj.pullout or self.obj.dropdown -- Don't ask questions.. Just FUCKING ACCEPT IT
 		if pullout then
 			if pullout.frame then
 				pullout.frame:SetTemplate(nil, true)
