@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local tinsert, unpack, collectgarbage = tinsert, unpack, collectgarbage
+local tinsert, collectgarbage = tinsert, collectgarbage
 local ipairs, sort, wipe, floor, format = ipairs, sort, wipe, floor, format
 local GetAddOnCPUUsage = GetAddOnCPUUsage
 local GetAddOnInfo = GetAddOnInfo
