@@ -34,11 +34,11 @@ E.Options.args.skins = {
 			end,
 			sortByValue = true,
 			values = {
-				ace3 = "Ace3",
+				ace3Enable = "Ace3",
 				blizzardEnable = L["Blizzard"],
 				checkBoxSkin = L["CheckBox Skin"],
 				cleanBossButton = L["Clean Boss Button"],
-				parchmentRemover = L["Parchment Remover"],
+				parchmentRemoverEnable = L["Parchment Remover"],
 			},
 		},
 		talkingHead = {
