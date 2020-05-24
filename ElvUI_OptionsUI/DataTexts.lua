@@ -503,7 +503,7 @@ E.Options.args.datatexts = {
 							name = L["Displayed Currency"],
 							get = function(info) return E.db.datatexts.currencies.displayedCurrency end,
 							set = function(info, value) E.db.datatexts.currencies.displayedCurrency = value; DT:LoadDataTexts() end,
-							values = DT.CurrencyList,
+							values = function() return DT.CurrencyList end,
 							sortByValue = true,
 						},
 						displayStyle = {
