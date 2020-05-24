@@ -25,7 +25,6 @@ local C_SpecializationInfo_GetAllSelectedPvpTalentIDs = C_SpecializationInfo.Get
 local displayString, lastPanel, active = ''
 local activeString = strjoin("", "|cff00FF00" , _G.ACTIVE_PETS, "|r")
 local inactiveString = strjoin("", "|cffFF0000", _G.FACTION_INACTIVE, "|r")
-local menuFrame = CreateFrame("Frame", "LootSpecializationDatatextClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = SELECT_LOOT_SPECIALIZATION, isTitle = true, notCheckable = true },
 	{ checked = function() return GetLootSpecialization() == 0 end, func = function() SetLootSpecialization(0) end },
@@ -35,20 +34,18 @@ local specList = {
 	{ text = _G.SPECIALIZATION, isTitle = true, notCheckable = true },
 }
 
-local SPECIALIZATION_CACHE = {}
+DT.SPECIALIZATION_CACHE = {}
 
 local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local function OnEvent(self)
 	lastPanel = self
 
-	if not next(SPECIALIZATION_CACHE) then
+	if #menuList == 2 then
 		for index = 1, GetNumSpecializations() do
 			local id, name, _, icon = GetSpecializationInfo(index)
 			if id then
 				menuList[index + 2] = { text = name, checked = function() return GetLootSpecialization() == id end, func = function() SetLootSpecialization(id) end }
 				specList[index + 1] = { text = format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', icon, name), checked = function() return GetSpecialization() == index end, func = function() SetSpecialization(index) end }
-				SPECIALIZATION_CACHE[index] = { id = id, name = name, icon = icon }
-				SPECIALIZATION_CACHE[id] = { name = name, icon = icon }
 			end
 		end
 	end
@@ -62,13 +59,13 @@ local function OnEvent(self)
 	active = specIndex
 
 	local specialization = GetLootSpecialization()
-	local info = SPECIALIZATION_CACHE[specIndex]
+	local info = DT.SPECIALIZATION_CACHE[specIndex]
 	local spec = format(mainIcon, info.icon)
 
 	if specialization == 0 or info.id == specialization then
 		self.text:SetFormattedText('%s %s', spec, info.name)
 	else
-		info = SPECIALIZATION_CACHE[specialization]
+		info = DT.SPECIALIZATION_CACHE[specialization]
 		self.text:SetFormattedText('%s: %s %s: %s', L["Spec"], spec, LOOT, format(mainIcon, info.icon))
 	end
 end
@@ -81,7 +78,7 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	for i, info in ipairs(SPECIALIZATION_CACHE) do
+	for i, info in ipairs(DT.SPECIALIZATION_CACHE) do
 		DT.tooltip:AddLine(strjoin(" ", format(displayString, info.name), AddTexture(info.icon), (i == active and activeString or inactiveString)), 1, 1, 1)
 	end
 
@@ -90,9 +87,9 @@ local function OnEnter(self)
 	local specialization = GetLootSpecialization()
 	if specialization == 0 then
 		local specIndex = GetSpecialization()
-		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, SPECIALIZATION_CACHE[specIndex].name)))
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, DT.SPECIALIZATION_CACHE[specIndex].name)))
 	else
-		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, SPECIALIZATION_CACHE[specialization].name))
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, DT.SPECIALIZATION_CACHE[specialization].name))
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -148,16 +145,16 @@ local function OnClick(self, button)
 				HideUIPanel(_G.PlayerTalentFrame)
 			end
 		else
-			DT:SetEasyMenuAnchor(menuFrame, self)
-			_G.EasyMenu(specList, menuFrame, nil, nil, nil, "MENU")
+			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
+			_G.EasyMenu(specList, DT.EasyMenu, nil, nil, nil, "MENU")
 		end
 	else
 		DT.tooltip:Hide()
 		local _, specName = GetSpecializationInfo(specIndex)
 		menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName)
 
-		DT:SetEasyMenuAnchor(menuFrame, self)
-		_G.EasyMenu(menuList, menuFrame, nil, nil, nil, "MENU")
+		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
+		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
 	end
 end
 

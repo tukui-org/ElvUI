@@ -31,7 +31,7 @@ function B:GarrisonDropDown()
 		return sound and StopSound(sound)
 	end
 
-	local landingChoiceMenu, landingChoices
+	local landingChoices
 	_G.GarrisonLandingPageMinimapButton:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	_G.GarrisonLandingPageMinimapButton:HookScript("PreClick", function(btn, b)
 		btn.landingVisiblePriorToClick = _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsVisible() and _G.GarrisonLandingPage.garrTypeID
@@ -58,8 +58,7 @@ function B:GarrisonDropDown()
 				end
 				MaybeStopSound(btn.openSoundID)
 				MaybeStopSound(btn.closeSoundID)
-				if not landingChoiceMenu then
-					landingChoiceMenu = CreateFrame("Frame", "ElvUI_LandingChoicesDropdown", E.UIParent, "UIDropDownMenuTemplate")
+				if not landingChoices then
 					local function ShowLanding_(_, ...)
 						return ShowLanding(...)
 					end
@@ -69,8 +68,8 @@ function B:GarrisonDropDown()
 						{text = WAR_CAMPAIGN, func = ShowLanding_, arg1 = C_Garrison_GetLandingPageGarrisonType(), notCheckable = true},
 					}
 				end
-				E.DataTexts:SetEasyMenuAnchor(landingChoiceMenu, btn)
-				_G.EasyMenu(landingChoices, landingChoiceMenu, nil, nil, nil, "MENU")
+				E.DataTexts:SetEasyMenuAnchor(E.DataTexts.EasyMenu, btn)
+				_G.EasyMenu(landingChoices, E.DataTexts.EasyMenu, nil, nil, nil, "MENU")
 			elseif _G.GarrisonLandingPage.garrTypeID == 3 then
 				ShowLanding(2)
 				MaybeStopSound(btn.closeSoundID)

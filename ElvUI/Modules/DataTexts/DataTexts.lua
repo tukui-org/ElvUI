@@ -17,6 +17,15 @@ local RegisterStateDriver = RegisterStateDriver
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 local UnregisterStateDriver = UnregisterStateDriver
 local MISCELLANEOUS = MISCELLANEOUS
+local GetCurrencyInfo = GetCurrencyInfo
+local GetCurrencyListInfo = GetCurrencyListInfo
+local GetCurrencyListSize = GetCurrencyListSize
+local GetCurrencyListLink = GetCurrencyListLink
+local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
+local ExpandCurrencyList = ExpandCurrencyList
+local tostring = tostring
+local GetNumSpecializations = GetNumSpecializations
+local GetSpecializationInfo = GetSpecializationInfo
 
 local ActivateHyperMode
 local SelectedDatatext
@@ -54,31 +63,13 @@ end
 --> [HyperDT Credits] <--
 --> Original Work: NihilisticPandemonium
 --> Modified by Azilroka! :)
-local menuFrame = CreateFrame('Frame', 'ElvUI_HyperDTMenuFrame', E.UIParent, 'UIDropDownMenuTemplate')
-DT.HyperDTMenuFrame = menuFrame
-menuFrame:SetClampedToScreen(true)
-menuFrame:EnableMouse(true)
-menuFrame.MenuSetItem = function(dt, value)
-	DT.db.panels[dt.parentName][dt.pointIndex] = value
-	DT:UpdatePanelInfo(dt.parentName, dt.parent)
-
-	if ActivateHyperMode then
-		DT:EnableHyperMode(dt.parent)
-	end
-
-	SelectedDatatext = nil
-	CloseDropDownMenus()
-end
-menuFrame.MenuGetItem = function(dt, value)
-	return dt and (DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value)
-end
 
 function DT:SingleHyperMode(_, key, active)
 	if SelectedDatatext and (key == 'LALT' or key == 'RALT') then
 		if active == 1 and MouseIsOver(SelectedDatatext) then
 			DT:OnLeave()
-			DT:SetEasyMenuAnchor(menuFrame, SelectedDatatext)
-			EasyMenu(HyperList, menuFrame, nil, nil, nil, 'MENU')
+			DT:SetEasyMenuAnchor(DT.EasyMenu, SelectedDatatext)
+			EasyMenu(HyperList, DT.EasyMenu, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
 			CloseDropDownMenus()
 		end
@@ -87,8 +78,8 @@ end
 
 function DT:HyperClick()
 	SelectedDatatext = self
-	DT:SetEasyMenuAnchor(menuFrame, SelectedDatatext)
-	EasyMenu(HyperList, menuFrame, nil, nil, nil, 'MENU')
+	DT:SetEasyMenuAnchor(DT.EasyMenu, SelectedDatatext)
+	EasyMenu(HyperList, DT.EasyMenu, nil, nil, nil, 'MENU')
 end
 
 function DT:EnableHyperMode(Panel)
@@ -315,7 +306,7 @@ end
 function DT:SetupTooltip(panel)
 	local parent = panel:GetParent()
 	DT.tooltip:Hide()
-	DT.tooltip:SetOwner(parent, parent.anchor, parent.xOff, parent.yOff)
+	DT.tooltip:SetOwner(panel, parent.anchor, parent.xOff, parent.yOff)
 	DT.tooltip:ClearLines()
 
 	if not _G.GameTooltip:IsForbidden() then
@@ -617,28 +608,93 @@ function DT:RegisterHyperDT()
 			tinsert(HyperList, { text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} } )
 		end
 
-		tinsert(HyperList[category].menuList, { text = info.localizedName or name, checked = function() return menuFrame.MenuGetItem(SelectedDatatext, name) end, func = function() menuFrame.MenuSetItem(SelectedDatatext, name) end })
+		tinsert(HyperList[category].menuList, { text = info.localizedName or name, checked = function() return DT.EasyMenu.MenuGetItem(SelectedDatatext, name) end, func = function() DT.EasyMenu.MenuSetItem(SelectedDatatext, name) end })
 	end
 
 	SortMenuList(HyperList)
-	tinsert(HyperList, { text = L["NONE"], checked = function() return menuFrame.MenuGetItem(SelectedDatatext, '') end, func = function() menuFrame.MenuSetItem(SelectedDatatext, '') end })
+	tinsert(HyperList, { text = L["NONE"], checked = function() return DT.EasyMenu.MenuGetItem(SelectedDatatext, '') end, func = function() DT.EasyMenu.MenuSetItem(SelectedDatatext, '') end })
 
 	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
+end
+
+function DT:PopulateData()
+	local Collapsed = {}
+	local listSize, i = GetCurrencyListSize(), 1
+
+	while listSize >= i do
+		local name, isHeader, isExpanded = GetCurrencyListInfo(i)
+		if isHeader and not isExpanded then
+			ExpandCurrencyList(i, 1);
+			listSize = GetCurrencyListSize()
+			Collapsed[name] = true
+		end
+		if not isHeader then
+			local currencyLink = GetCurrencyListLink(i)
+			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
+			if currencyID then
+				DT.CurrencyList[tostring(currencyID)] = name
+			end
+		end
+		i = i + 1
+	end
+
+	for k = 1, listSize do
+		local name, isHeader, isExpanded = GetCurrencyListInfo(k)
+		if isHeader and isExpanded and Collapsed[name] then
+			ExpandCurrencyList(k, 0);
+		end
+	end
+
+	wipe(Collapsed)
+
+	for index = 1, GetNumSpecializations() do
+		local id, name, _, icon, _, statID = GetSpecializationInfo(index)
+
+		if id then
+			DT.SPECIALIZATION_CACHE[index] = { id = id, name = name, icon = icon, statID = statID }
+			DT.SPECIALIZATION_CACHE[id] = { name = name, icon = icon }
+		end
+	end
+end
+
+function DT:CURRENCY_DISPLAY_UPDATE(_, currencyType)
+	if currencyType and not DT.CurrencyList[tostring(currencyType)] then
+		DT.CurrencyList[tostring(currencyType)] = GetCurrencyInfo(currencyType)
+	end
 end
 
 function DT:Initialize()
 	DT.Initialized = true
 	DT.db = E.db.datatexts
 
-	DT.tooltip = CreateFrame('GameTooltip', 'DatatextTooltip', E.UIParent, 'GameTooltipTemplate')
+	DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
+	DT.EasyMenu = CreateFrame("Frame", "DataTextEasyMenu", E.UIParent, "UIDropDownMenuTemplate")
+	DT.HyperDTMenuFrame = DT.EasyMenu
+	DT.EasyMenu:SetClampedToScreen(true)
+	DT.EasyMenu:EnableMouse(true)
+	DT.EasyMenu.MenuSetItem = function(dt, value)
+		DT.db.panels[dt.parentName][dt.pointIndex] = value
+		DT:UpdatePanelInfo(dt.parentName, dt.parent)
+
+		if ActivateHyperMode then
+			DT:EnableHyperMode(dt.parent)
+		end
+
+		SelectedDatatext = nil
+		CloseDropDownMenus()
+	end
+	DT.EasyMenu.MenuGetItem = function(dt, value)
+		return dt and (DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value)
+	end
+
 	TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
 
 	-- Ignore header font size on DatatextTooltip
 	local font = E.Libs.LSM:Fetch('font', E.db.tooltip.font)
 	local fontOutline = E.db.tooltip.fontOutline
 	local textSize = E.db.tooltip.textFontSize
-	_G.DatatextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
-	_G.DatatextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
+	_G.DataTextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
+	_G.DataTextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
 	LDB.RegisterCallback(E, 'LibDataBroker_DataObjectCreated', DT.SetupObjectLDB)
 	DT:RegisterLDB() -- LibDataBroker
@@ -654,6 +710,8 @@ function DT:Initialize()
 	end
 
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
+
+	DT:PopulateData()
 	DT:RegisterHyperDT()
 end
 

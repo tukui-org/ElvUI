@@ -172,7 +172,6 @@ local function OnEvent(self, event, ...)
 	end
 end
 
-local menuFrame = CreateFrame("Frame", "GuildDatatTextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = _G.OPTIONS_MENU, isTitle = true, notCheckable=true},
 	{ text = _G.INVITE, hasArrow = true, notCheckable=true,},
@@ -180,7 +179,7 @@ local menuList = {
 }
 
 local function inviteClick(_, name, guid)
-	menuFrame:Hide()
+	DT.EasyMenu:Hide()
 
 	if not (name and name ~= "") then return end
 
@@ -199,7 +198,7 @@ local function inviteClick(_, name, guid)
 end
 
 local function whisperClick(_, playerName)
-	menuFrame:Hide()
+	DT.EasyMenu:Hide()
 	SetItemRef( "player:"..playerName, format("|Hplayer:%1$s|h[%1$s]|h",playerName), "LeftButton" )
 end
 
@@ -231,8 +230,8 @@ local function Click(self, btn)
 			end
 		end
 
-		DT:SetEasyMenuAnchor(menuFrame, self)
-		_G.EasyMenu(menuList, menuFrame, nil, nil, nil, "MENU")
+		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
+		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
 	elseif InCombatLockdown() then
 		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
 	else

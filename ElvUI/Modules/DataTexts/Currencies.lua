@@ -8,18 +8,12 @@ local GetMoney = GetMoney
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 
 local GetCurrencyInfo = GetCurrencyInfo
-local GetCurrencyListInfo = GetCurrencyListInfo
-local GetCurrencyListSize = GetCurrencyListSize
-local GetCurrencyListLink = GetCurrencyListLink
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
-local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
-local ExpandCurrencyList = ExpandCurrencyList
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
 
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
-local CURRENCY_CACHE, Collapsed = {}, {}
 
 DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = 'Backpack' }
 
@@ -38,44 +32,7 @@ local function AddInfo(id)
 end
 
 local goldText
-local function OnEvent(self, event, ...)
-	if not next(CURRENCY_CACHE) then
-		local listSize, i = GetCurrencyListSize(), 1
-
-		while listSize >= i do
-			local name, isHeader, isExpanded = GetCurrencyListInfo(i)
-			if isHeader and not isExpanded then
-				ExpandCurrencyList(i, 1);
-				listSize = GetCurrencyListSize()
-				Collapsed[name] = true
-			end
-			if not isHeader then
-				local currencyLink = GetCurrencyListLink(i)
-				local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
-				if currencyID then
-					DT.CurrencyList[tostring(currencyID)] = name
-				end
-			end
-			i = i + 1
-		end
-
-		for k = 1, listSize do
-			local name, isHeader, isExpanded = GetCurrencyListInfo(k)
-			if isHeader and isExpanded and Collapsed[name] then
-				ExpandCurrencyList(k, 0);
-			end
-		end
-
-		wipe(Collapsed)
-	end
-
-	if event == 'CURRENCY_DISPLAY_UPDATE' then
-		local currencyType = ...
-		if currencyType and not DT.CurrencyList[tostring(currencyType)] then
-			DT.CurrencyList[tostring(currencyType)] = GetCurrencyInfo(currencyType)
-		end
-	end
-
+local function OnEvent(self)
 	goldText = E:FormatMoney(GetMoney(), E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins)
 
 	local displayed = E.db.datatexts.currencies.displayedCurrency
@@ -143,4 +100,4 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Currencies', nil, {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED", "CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE", "GLOBAL_MOUSE_UP"}, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY)
+DT:RegisterDatatext('Currencies', nil, {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED", "CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY)
