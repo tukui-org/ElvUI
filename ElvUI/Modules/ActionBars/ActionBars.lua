@@ -31,6 +31,7 @@ local UnitHealthMax = UnitHealthMax
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
+local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 
 local LAB = E.Libs.LAB
@@ -371,7 +372,7 @@ end
 
 function AB:CreateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
-	if db.enable ~= true then return end
+	if not db.enable then return end
 
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
@@ -463,7 +464,7 @@ function AB:UpdateBar1Paging()
 		AB.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
 	end
 
-	if (E.private.actionbar.enable ~= true or InCombatLockdown()) or not self.isInitialized then return; end
+	if (not E.private.actionbar.enable or InCombatLockdown()) or not self.isInitialized then return; end
 	local bar2Option = _G.InterfaceOptionsActionBarsPanelBottomRight
 	local bar3Option = _G.InterfaceOptionsActionBarsPanelBottomLeft
 	local bar4Option = _G.InterfaceOptionsActionBarsPanelRightTwo
@@ -506,7 +507,7 @@ function AB:UpdateButtonSettingsForBar(barName)
 end
 
 function AB:UpdateButtonSettings()
-	if E.private.actionbar.enable ~= true then return end
+	if not E.private.actionbar.enable then return end
 
 	if InCombatLockdown() then
 		AB.NeedsUpdateButtonSettings = true
@@ -654,23 +655,56 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 end
 
+function AB:ColorSwipeTexture(cooldown)
+	if not cooldown then return end
+
+	local color = (cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL) and AB.db.colorSwipeLOC or  AB.db.colorSwipeNormal
+	cooldown:SetSwipeColor(color.r, color.g, color.b, color.a)
+end
+
+function AB:FadeBlingTexture(cooldown, alpha)
+	if not cooldown then return end
+	cooldown:SetBlingTexture(alpha > 0.5 and 131010 or [[Interface\AddOns\ElvUI\Media\Textures\Blank]])  -- interface/cooldown/star4.blp
+end
+
+function AB:FadeBlings(alpha)
+	if AB.db.hideCooldownBling then return end
+	for button in pairs(AB.handledbuttons) do
+		if button.header and button.header:GetParent() == self.fadeParent then
+			AB:FadeBlingTexture(button.cooldown, alpha)
+		end
+	end
+end
+
+function AB:FadeBarBlings(bar, alpha)
+	if AB.db.hideCooldownBling then return end
+	for _, button in ipairs(bar.buttons) do
+		AB:FadeBlingTexture(button.cooldown, alpha)
+	end
+end
+
 function AB:Bar_OnEnter(bar)
 	if bar:GetParent() == self.fadeParent then
 		if(not self.fadeParent.mouseLock) then
 			E:UIFrameFadeIn(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1)
+			AB:FadeBlings(1)
 		end
 	elseif(bar.mouseover) then
 		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
 end
 
 function AB:Bar_OnLeave(bar)
 	if bar:GetParent() == self.fadeParent then
 		if not self.fadeParent.mouseLock then
-			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
+			local a = 1 - self.db.globalFadeAlpha
+			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), a)
+			AB:FadeBlings(a)
 		end
 	elseif bar.mouseover then
 		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+		AB:FadeBarBlings(bar, 0)
 	end
 end
 
@@ -679,9 +713,11 @@ function AB:Button_OnEnter(button)
 	if bar:GetParent() == self.fadeParent then
 		if not self.fadeParent.mouseLock then
 			E:UIFrameFadeIn(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1)
+			AB:FadeBlings(1)
 		end
 	elseif bar.mouseover then
 		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
 end
 
@@ -689,10 +725,13 @@ function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
 	if bar:GetParent() == self.fadeParent then
 		if not self.fadeParent.mouseLock then
-			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), 1 - self.db.globalFadeAlpha)
+			local a = 1 - self.db.globalFadeAlpha
+			E:UIFrameFadeOut(self.fadeParent, 0.2, self.fadeParent:GetAlpha(), a)
+			AB:FadeBlings(a)
 		end
 	elseif bar.mouseover then
 		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+		AB:FadeBarBlings(bar, 0)
 	end
 end
 
@@ -716,9 +755,12 @@ function AB:FadeParent_OnEvent()
 	if (cast or channel) or (cur ~= max) or (target or focus) or combat then
 		self.mouseLock = true
 		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+		AB:FadeBlings(1)
 	else
 		self.mouseLock = false
-		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), 1 - AB.db.globalFadeAlpha)
+		local a = 1 - AB.db.globalFadeAlpha
+		E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
+		AB:FadeBlings(a)
 	end
 end
 
@@ -831,7 +873,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.colors.mana = E:SetColorTable(bar.buttonConfig.colors.mana, self.db.noPowerColor)
 	bar.buttonConfig.colors.usable = E:SetColorTable(bar.buttonConfig.colors.usable, self.db.usableColor)
 	bar.buttonConfig.colors.notUsable = E:SetColorTable(bar.buttonConfig.colors.notUsable, self.db.notUsableColor)
-	bar.buttonConfig.useDrawBling = (self.db.hideCooldownBling ~= true)
+	bar.buttonConfig.useDrawBling = not self.db.hideCooldownBling
 	bar.buttonConfig.useDrawSwipeOnCharges = self.db.useDrawSwipeOnCharges
 	SetModifiedClick("PICKUPACTION", self.db.movementModifier)
 
@@ -1081,6 +1123,10 @@ function AB:LAB_CooldownUpdate(button, _, duration)
 	if button._state_type == "action" then
 		AB:UpdateChargeCooldown(button, duration)
 		AB:SetButtonDesaturation(button, duration)
+	end
+
+	if button.cooldown then
+		AB:ColorSwipeTexture(button.cooldown)
 	end
 end
 

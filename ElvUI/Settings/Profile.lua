@@ -2135,6 +2135,8 @@ P.actionbar = {
 	globalFadeAlpha = 0,
 	lockActionBars = true,
 	hideCooldownBling = false,
+	colorSwipeLOC = { r = 0.25, g = 0, b = 0, a = 0.8 },
+	colorSwipeNormal = { r = 0, g = 0, b = 0, a = 0.8 },
 	useDrawSwipeOnCharges = false,
 	addNewSpells = false,
 	rightClickSelfCast = false,

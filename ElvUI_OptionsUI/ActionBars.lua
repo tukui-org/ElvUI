@@ -230,11 +230,11 @@ E.Options.args.actionbar = {
 					get = function(info)
 						local t = E.db.actionbar[info[#info]]
 						local d = P.actionbar[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 					end,
-					set = function(info, r, g, b)
+					set = function(info, r, g, b, a)
 						local t = E.db.actionbar[info[#info]]
-						t.r, t.g, t.b = r, g, b
+						t.r, t.g, t.b, t.a = r, g, b, a
 						AB:UpdateButtonSettings();
 					end,
 					args = {
@@ -262,6 +262,18 @@ E.Options.args.actionbar = {
 							name = L["Not Usable"],
 							desc = L["Color of the actionbutton when not usable."],
 						},
+						colorSwipeNormal = {
+							type = 'color',
+							order = 5,
+							hasAlpha = true,
+							name = L["Swipe: Normal"],
+						},
+						colorSwipeLOC = {
+							type = 'color',
+							order = 6,
+							hasAlpha = true,
+							name = L["Swipe: Loss of Control"],
+						}
 					},
 				},
 				fontGroup = {
