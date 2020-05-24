@@ -207,7 +207,6 @@ function UF:Configure_Castbar(frame)
 			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 			if not isMoved then castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER - frame.SPACING)) end
 		end
-
 	end
 
 	if not db.iconAttached and db.icon then
