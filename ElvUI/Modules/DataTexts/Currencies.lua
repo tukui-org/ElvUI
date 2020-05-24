@@ -41,7 +41,7 @@ local goldText
 local function OnEvent(self, event, ...)
 	if event == 'CURRENCY_DISPLAY_UPDATE' then
 		local currencyType = ...
-		if not DT.CurrencyList[tostring(currencyType)] then
+		if currencyType and not DT.CurrencyList[tostring(currencyType)] then
 			DT.CurrencyList[tostring(currencyType)] = GetCurrencyInfo(currencyType)
 		end
 	end
