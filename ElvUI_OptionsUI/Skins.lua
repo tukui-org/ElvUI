@@ -17,8 +17,14 @@ E.Options.args.skins = {
 			order = 1,
 			type = 'multiselect',
 			name = L["General"],
-			get = function(info, key) return E.private.skins.blizzard[key] end,
-			set = function(info, key, value) E.private.skins.blizzard[key] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+			get = function(info, key) return key == 'blizzardEnable' and E.private.skins.blizzard.enable or E.private.skins[key] end,
+			set = function(info, key, value)
+				if key == 'blizzardEnable' then
+					E.private.skins.blizzard.enable = value; E:StaticPopup_Show("PRIVATE_RL")
+				else
+					E.private.skins[key] = value; E:StaticPopup_Show("PRIVATE_RL")
+				end
+			end,
 			sortByValue = true,
 			values = {
 				ace3 = "Ace3",
