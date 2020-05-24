@@ -251,13 +251,12 @@ local function OnEnter(self, _, noUpdate)
 	SortGuildTable(IsShiftKeyDown())
 
 	local guildName, guildRank = GetGuildInfo('player')
+	local applicants = GetNumGuildApplicants()
 
 	if guildName and guildRank then
-		DT.tooltip:AddDoubleLine(format(guildInfoString, guildName), format(guildInfoString2, online, total),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
+		DT.tooltip:AddDoubleLine(format(guildInfoString, guildName), format(guildInfoString2..(applicants > 0 and ' |cFFFFFFFF(|cff33ff33%d|r|cFFFFFFFF)|r' or ''), online, total, applicants), tthead.r, tthead.g, tthead.b, tthead.r, tthead.g, tthead.b)
 		DT.tooltip:AddLine(guildRank, unpack(tthead))
 	end
-
-	DT.tooltip:AddLine(format(_G.GUILDINFOTAB_APPLICANTS, GetNumGuildApplicants()))
 
 	if guildMotD ~= "" then
 		DT.tooltip:AddLine(' ')
