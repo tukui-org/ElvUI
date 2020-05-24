@@ -39,13 +39,6 @@ end
 
 local goldText
 local function OnEvent(self, event, ...)
-	if event == 'CURRENCY_DISPLAY_UPDATE' then
-		local currencyType = ...
-		if currencyType and not DT.CurrencyList[tostring(currencyType)] then
-			DT.CurrencyList[tostring(currencyType)] = GetCurrencyInfo(currencyType)
-		end
-	end
-
 	if not next(CURRENCY_CACHE) then
 		local listSize, i = GetCurrencyListSize(), 1
 
@@ -74,6 +67,13 @@ local function OnEvent(self, event, ...)
 		end
 
 		wipe(Collapsed)
+	end
+
+	if event == 'CURRENCY_DISPLAY_UPDATE' then
+		local currencyType = ...
+		if currencyType and not DT.CurrencyList[tostring(currencyType)] then
+			DT.CurrencyList[tostring(currencyType)] = GetCurrencyInfo(currencyType)
+		end
 	end
 
 	goldText = E:FormatMoney(GetMoney(), E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins)
