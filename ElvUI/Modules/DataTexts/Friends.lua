@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
-local format, gsub, strfind, strjoin = format, gsub, strfind, strjoin
+local format, gsub, strfind, strjoin, strmatch = format, gsub, strfind, strjoin, strmatch
 
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetInfo = BNGetInfo
@@ -233,6 +233,11 @@ end
 local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, realmName, faction, race, className, zoneName, level, guid, gameText)
 	className = E:UnlocalizedClassName(className) or ""
 	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or ""
+
+	if wowProjectID == classicID then
+		gameText, realmName = strmatch(gameText, '(.-)%s%-%s(.+)')
+	end
+
 	BNTable[bnIndex] = {
 		accountID = bnetIDAccount,		--1
 		accountName = accountName,		--2
