@@ -2,18 +2,26 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format, pairs = format, pairs
+local format, pairs, wipe = format, pairs, wipe
+local tonumber, tostring = tonumber, tostring
 local GetMoney = GetMoney
-local GetCurrencyInfo = GetCurrencyInfo
 local BreakUpLargeNumbers = BreakUpLargeNumbers
+
+local GetCurrencyInfo = GetCurrencyInfo
+local GetCurrencyListInfo = GetCurrencyListInfo
+local GetCurrencyListSize = GetCurrencyListSize
+local GetCurrencyListLink = GetCurrencyListLink
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
+local ExpandCurrencyList = ExpandCurrencyList
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
 
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
-DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = 'Backpack' }
+local CURRENCY_CACHE, Collapsed = {}, {}
 
-local Collapsed = {}
+DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = 'Backpack' }
 
 local function OnClick()
 	_G.ToggleCharacter("TokenFrame")
@@ -30,8 +38,15 @@ local function AddInfo(id)
 end
 
 local goldText
-local function OnEvent(self, event)
-	if event == 'PLAYER_ENTERING_WORLD' or event == 'CURRENCY_DISPLAY_UPDATE' then
+local function OnEvent(self, event, ...)
+	if event == 'CURRENCY_DISPLAY_UPDATE' then
+		local currencyType = ...
+		if not DT.CurrencyList[tostring(currencyType)] then
+			DT.CurrencyList[tostring(currencyType)] = GetCurrencyInfo(currencyType)
+		end
+	end
+
+	if not next(CURRENCY_CACHE) then
 		local listSize, i = GetCurrencyListSize(), 1
 
 		while listSize >= i do
@@ -43,18 +58,21 @@ local function OnEvent(self, event)
 			end
 			if not isHeader then
 				local currencyLink = GetCurrencyListLink(i)
-				local currencyID = currencyLink and C_CurrencyInfo.GetCurrencyIDFromLink(currencyLink)
-				DT.CurrencyList[tostring(currencyID)] = name
+				local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
+				if currencyID then
+					DT.CurrencyList[tostring(currencyID)] = name
+				end
 			end
 			i = i + 1
 		end
 
-		for i = 1, listSize do
-			local name, isHeader, isExpanded = GetCurrencyListInfo(i)
+		for k = 1, listSize do
+			local name, isHeader, isExpanded = GetCurrencyListInfo(k)
 			if isHeader and isExpanded and Collapsed[name] then
-				ExpandCurrencyList(i, 0);
+				ExpandCurrencyList(k, 0);
 			end
 		end
+
 		wipe(Collapsed)
 	end
 
