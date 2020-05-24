@@ -28,8 +28,9 @@ local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
 
 local ActivateHyperMode
-local SelectedDatatext
 local HyperList = {}
+
+DT.SelectedDatatext = nil
 DT.HyperList = HyperList
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
@@ -65,10 +66,10 @@ end
 --> Modified by Azilroka! :)
 
 function DT:SingleHyperMode(_, key, active)
-	if SelectedDatatext and (key == 'LALT' or key == 'RALT') then
-		if active == 1 and MouseIsOver(SelectedDatatext) then
+	if DT.SelectedDatatext and (key == 'LALT' or key == 'RALT') then
+		if active == 1 and MouseIsOver(DT.SelectedDatatext) then
 			DT:OnLeave()
-			DT:SetEasyMenuAnchor(DT.EasyMenu, SelectedDatatext)
+			DT:SetEasyMenuAnchor(DT.EasyMenu, DT.SelectedDatatext)
 			EasyMenu(HyperList, DT.EasyMenu, nil, nil, nil, 'MENU')
 		elseif _G.DropDownList1:IsShown() and not _G.DropDownList1:IsMouseOver() then
 			CloseDropDownMenus()
@@ -77,8 +78,8 @@ function DT:SingleHyperMode(_, key, active)
 end
 
 function DT:HyperClick()
-	SelectedDatatext = self
-	DT:SetEasyMenuAnchor(DT.EasyMenu, SelectedDatatext)
+	DT.SelectedDatatext = self
+	DT:SetEasyMenuAnchor(DT.EasyMenu, DT.SelectedDatatext)
 	EasyMenu(HyperList, DT.EasyMenu, nil, nil, nil, 'MENU')
 end
 
@@ -108,7 +109,7 @@ function DT:OnEnter()
 	if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
 
 	if self.parent then
-		SelectedDatatext = self
+		DT.SelectedDatatext = self
 	end
 
 	if self.MouseEnters then
@@ -572,7 +573,7 @@ function DT:UpdatePanelAttributes(name, db)
 	end
 end
 
-local function GetMenuListCategory(category)
+function DT:GetMenuListCategory(category)
 	for i, info in ipairs(HyperList) do
 		if info.text == category then
 			return i
@@ -580,10 +581,10 @@ local function GetMenuListCategory(category)
 	end
 end
 
-local function SortMenuList(list)
+function DT:SortMenuList(list)
 	for _, menu in pairs(list) do
 		if menu.menuList then
-			SortMenuList(menu.menuList)
+			DT:SortMenuList(menu.menuList)
 		end
 	end
 
@@ -602,17 +603,17 @@ end
 
 function DT:RegisterHyperDT()
 	for name, info in pairs(DT.RegisteredDataTexts) do
-		local category = GetMenuListCategory(info.category or MISCELLANEOUS)
+		local category = DT:GetMenuListCategory(info.category or MISCELLANEOUS)
 		if not category then
 			category = #HyperList + 1
 			tinsert(HyperList, { text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} } )
 		end
 
-		tinsert(HyperList[category].menuList, { text = info.localizedName or name, checked = function() return DT.EasyMenu.MenuGetItem(SelectedDatatext, name) end, func = function() DT.EasyMenu.MenuSetItem(SelectedDatatext, name) end })
+		tinsert(HyperList[category].menuList, { text = info.localizedName or name, checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end, func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end })
 	end
 
-	SortMenuList(HyperList)
-	tinsert(HyperList, { text = L["NONE"], checked = function() return DT.EasyMenu.MenuGetItem(SelectedDatatext, '') end, func = function() DT.EasyMenu.MenuSetItem(SelectedDatatext, '') end })
+	DT:SortMenuList(HyperList)
+	tinsert(HyperList, { text = L["NONE"], checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end, func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end })
 
 	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
 end
@@ -680,7 +681,7 @@ function DT:Initialize()
 			DT:EnableHyperMode(dt.parent)
 		end
 
-		SelectedDatatext = nil
+		DT.SelectedDatatext = nil
 		CloseDropDownMenus()
 	end
 	DT.EasyMenu.MenuGetItem = function(dt, value)

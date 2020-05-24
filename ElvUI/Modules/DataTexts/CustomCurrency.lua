@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
+local tinsert = tinsert
 local pairs, format = pairs, format
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
@@ -58,9 +59,10 @@ local function AddCurrencyNameToIndex(name)
 end
 
 local function RegisterNewDT(currencyID)
-	local name, _, icon = GetCurrencyInfo(currencyID)
+	local name, _, icon, _, _, _, isDiscovered = GetCurrencyInfo(currencyID)
 
-	if name then
+	if isDiscovered then
+		local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
 		--Add to internal storage, stored with name as key
 		CustomCurrencies[name] = {NAME = name, ID = currencyID, ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", icon), DISPLAY_STYLE = "ICON", USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true}
 		--Register datatext
@@ -69,6 +71,9 @@ local function RegisterNewDT(currencyID)
 		E.global.datatexts.customCurrencies[currencyID] = CustomCurrencies[name]
 		--Get the currency index for this currency, so we can use it for a tooltip
 		AddCurrencyNameToIndex(name)
+		--Set the HyperDT
+		tinsert(DT.HyperList[menuIndex].menuList, { text = name, checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end, func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end })
+		DT:SortMenuList(DT.HyperList[menuIndex].menuList)
 	end
 end
 
@@ -104,4 +109,13 @@ end
 function DT:RemoveCustomCurrency(currencyName)
 	--Remove from internal storage
 	CustomCurrencies[currencyName] = nil
+
+	local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
+	local menuList = DT.HyperList[menuIndex].menuList
+
+	for i, info in ipairs(menuList) do
+		if info.text == currencyName then
+			tremove(DT.HyperList[menuIndex].menuList, i)
+		end
+	end
 end
