@@ -650,7 +650,7 @@ E.Options.args.datatexts = {
 						},
 						border = {
 							order = 6,
-							name = L["Backdrop"],
+							name = L["Border"],
 							type = "toggle",
 						},
 						panelTransparency = {
@@ -692,7 +692,7 @@ E.Options.args.datatexts = {
 						},
 						border = {
 							order = 6,
-							name = L["Backdrop"],
+							name = L["Border"],
 							type = "toggle",
 						},
 						panelTransparency = {
@@ -733,7 +733,7 @@ E.Options.args.datatexts = {
 						},
 						border = {
 							order = 6,
-							name = L["Backdrop"],
+							name = L["Border"],
 							type = "toggle",
 						},
 						panelTransparency = {
