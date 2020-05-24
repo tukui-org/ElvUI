@@ -21,7 +21,7 @@ function S:SpellBookFrame()
 		_G.SpellBookFrameTutorialButton:Kill()
 	end
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		_G.SpellBookPage1:SetAlpha(0)
 		_G.SpellBookPage2:SetAlpha(0)
 		_G.SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
@@ -97,7 +97,7 @@ function S:SpellBookFrame()
 				end
 				E:Flash(button.SpellHighlightTexture, 1, true)
 			end
-			if E.private.skins.parchmentRemover.enable then
+			if E.private.skins.parchmentRemoverEnable then
 				button:SetHighlightTexture('')
 				local r = button.SpellName:GetTextColor()
 				if r < 0.8 then
@@ -134,7 +134,7 @@ function S:SpellBookFrame()
 	for _, Frame in pairs({ _G.SpellBookProfessionFrame:GetChildren() }) do
 		Frame.missingHeader:SetTextColor(1, 1, 0)
 
-		if E.private.skins.parchmentRemover.enable then
+		if E.private.skins.parchmentRemoverEnable then
 			Frame.missingText:SetTextColor(1, 1, 1)
 		else
 			Frame.missingText:SetTextColor(0, 0, 0)

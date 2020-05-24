@@ -45,7 +45,7 @@ function S:GossipFrame()
 	local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
 	GossipGreetingScrollFrame:SetTemplate()
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		for i = 1, _G.NUMGOSSIPBUTTONS do
 			_G["GossipTitleButton"..i]:GetFontString():SetTextColor(1, 1, 1)
 		end

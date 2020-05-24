@@ -326,7 +326,7 @@ function S:Ace3_RefreshTree(scrollToSelection)
 		self.treeframe:Show()
 	end
 
-	if not E.private.skins.ace3.enable then return end
+	if not E.private.skins.ace3Enable then return end
 
 	local status = self.status or self.localstatus
 	local groupstatus = status.groups
@@ -418,13 +418,13 @@ function S:Ace3_RegisterAsContainer(widget)
 end
 
 function S:Ace3_StyleTooltip()
-	if not self:IsForbidden() and E.private.skins.ace3.enable then
+	if not self:IsForbidden() and E.private.skins.ace3Enable then
 		self:SetTemplate('Transparent', nil, true)
 	end
 end
 
 function S:Ace3_StylePopup()
-	if not self.template and not self:IsForbidden() and E.private.skins.ace3.enable then
+	if not self.template and not self:IsForbidden() and E.private.skins.ace3Enable then
 		self:SetTemplate('Transparent', nil, true)
 		self:GetChildren():StripTextures()
 		S:HandleButton(self.accept, true)
@@ -468,7 +468,7 @@ function S:Ace3_MetaIndex(k, v)
 		S:SecureHookScript(v, 'OnShow', S.Ace3_StylePopup)
 	elseif k == 'RegisterAsContainer' then
 		rawset(self, k, function(s, w, ...)
-			if E.private.skins.ace3.enable then
+			if E.private.skins.ace3Enable then
 				S.Ace3_RegisterAsContainer(s, w, ...)
 			end
 
@@ -481,7 +481,7 @@ function S:Ace3_MetaIndex(k, v)
 		end)
 	elseif k == 'RegisterAsWidget' then
 		rawset(self, k, function(...)
-			if E.private.skins.ace3.enable then
+			if E.private.skins.ace3Enable then
 				S.Ace3_RegisterAsWidget(...)
 			end
 

@@ -85,7 +85,7 @@ function S:Blizzard_Calendar()
 		_G["CalendarDayButton"..i]:SetFrameLevel(_G["CalendarDayButton"..i]:GetFrameLevel() + 1)
 		local bu = _G["CalendarDayButton"..i]
 
-		if E.private.skins.parchmentRemover.enable then
+		if E.private.skins.parchmentRemoverEnable then
 			bu:DisableDrawLayer("BACKGROUND") -- This would remove the "Parchement"
 		end
 

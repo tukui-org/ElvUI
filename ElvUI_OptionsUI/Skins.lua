@@ -20,16 +20,13 @@ E.Options.args.skins = {
 			get = function(info, key)
 				if key == 'blizzardEnable' then
 					return E.private.skins.blizzard.enable
-				elseif key == 'ace3' then
-					return E.private.skins.ace3.enable
 				else
 					return E.private.skins[key]
 				end
 			end,
 			set = function(info, key, value)
-				local optionKey = key == 'blizzardEnable' and 'blizzard' or key == 'ace3' and 'ace3'
-				if key == 'blizzardEnable' or key == 'ace3' then
-					E.private.skins[optionKey].enable = value
+				if key == 'blizzardEnable' then
+					E.private.skins.blizzard.enable = value
 				else
 					E.private.skins[key] = value
 				end

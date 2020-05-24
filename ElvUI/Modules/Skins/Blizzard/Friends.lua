@@ -253,7 +253,7 @@ function S:FriendsFrame()
 	local SplashFrame = RAF.SplashFrame
 	S:HandleButton(SplashFrame.OKButton)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		SplashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
 
 		SplashFrame.PictureFrame:Hide()

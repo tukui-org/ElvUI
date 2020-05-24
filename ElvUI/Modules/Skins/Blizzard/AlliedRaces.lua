@@ -8,7 +8,7 @@ function S:Blizzard_AlliedRacesUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AlliedRaces) then return end
 
 	local AlliedRacesFrame = _G.AlliedRacesFrame
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		S:HandlePortraitFrame(AlliedRacesFrame, true)
 		select(2, AlliedRacesFrame.ModelFrame:GetRegions()):Hide()
 
@@ -46,7 +46,7 @@ function S:Blizzard_AlliedRacesUI()
 		for button in s.abilityPool:EnumerateActive() do
 			select(3, button:GetRegions()):Hide()
 			S:HandleIcon(button.Icon, true)
-			if E.private.skins.parchmentRemover.enable then
+			if E.private.skins.parchmentRemoverEnable then
 				button.Text:SetTextColor(1, 1, 1)
 			end
 		end

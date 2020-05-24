@@ -167,7 +167,7 @@ function S:Blizzard_GarrisonUI()
 	_G.GarrisonLandingPageTab1:ClearAllPoints()
 	_G.GarrisonLandingPageTab1:Point("TOPLEFT", GarrisonLandingPage, "BOTTOMLEFT", 70, 2)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		for i = 1, 10 do
 			select(i, GarrisonLandingPage:GetRegions()):Hide()
 		end
@@ -227,7 +227,7 @@ function S:Blizzard_GarrisonUI()
 				reward:ClearAllPoints()
 				reward:Point("TOPRIGHT", -5, -5)
 
-				if E.private.skins.parchmentRemover.enable then
+				if E.private.skins.parchmentRemoverEnable then
 					button.BG:Hide()
 
 					local bg = CreateFrame("Frame", nil, button)

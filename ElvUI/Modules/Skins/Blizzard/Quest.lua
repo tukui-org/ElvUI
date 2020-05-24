@@ -162,7 +162,7 @@ function S:BlizzardQuestFrames()
 
 		local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
 		if numSpellRewards > 0 then
-			if E.private.skins.parchmentRemover.enable then
+			if E.private.skins.parchmentRemoverEnable then
 				for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
 					spellHeader:SetVertexColor(1, 1, 1)
 				end
@@ -206,7 +206,7 @@ function S:BlizzardQuestFrames()
 			end
 		end
 
-		if E.private.skins.parchmentRemover.enable then
+		if E.private.skins.parchmentRemoverEnable then
 			_G.QuestInfoTitleHeader:SetTextColor(1, .8, .1)
 			_G.QuestInfoDescriptionHeader:SetTextColor(1, .8, .1)
 			_G.QuestInfoObjectivesHeader:SetTextColor(1, .8, .1)
@@ -296,7 +296,7 @@ function S:BlizzardQuestFrames()
 	local function UpdateGreetingFrame()
 		for Button in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
 			Button.Icon:SetDrawLayer("ARTWORK")
-			if E.private.skins.parchmentRemover.enable then
+			if E.private.skins.parchmentRemoverEnable then
 				local Text = Button:GetFontString():GetText()
 				if Text and strfind(Text, '|cff000000') then
 					Button:GetFontString():SetText(gsub(Text, '|cff000000', '|cffffe519'))
@@ -308,7 +308,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGreetingPanel:HookScript('OnShow', UpdateGreetingFrame)
 	hooksecurefunc("QuestFrameGreetingPanel_OnShow", UpdateGreetingFrame)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc('QuestFrameProgressItems_Update', function()
 			_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
 			_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
@@ -401,11 +401,11 @@ function S:BlizzardQuestFrames()
 		if not _G.QuestLogPopupDetailFrameScrollFrame.backdrop then
 			_G.QuestLogPopupDetailFrameScrollFrame:CreateBackdrop()
 			_G.QuestLogPopupDetailFrameScrollFrame:Height(s:GetHeight() - 2)
-			if not E.private.skins.parchmentRemover.enable then
+			if not E.private.skins.parchmentRemoverEnable then
 				StyleScrollFrame(_G.QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
 			end
 		end
-		if not E.private.skins.parchmentRemover.enable then
+		if not E.private.skins.parchmentRemoverEnable then
 			_G.QuestLogPopupDetailFrameScrollFrame.spellTex:Height(s:GetHeight() + 217)
 		end
 	end)

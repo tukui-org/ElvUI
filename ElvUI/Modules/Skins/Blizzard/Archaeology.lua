@@ -17,7 +17,7 @@ function S:Blizzard_ArchaeologyUI()
 	_G.ArchaeologyFrame.raceFilterDropDown.Text:ClearAllPoints()
 	_G.ArchaeologyFrame.raceFilterDropDown.Text:Point("LEFT", _G.ArchaeologyFrame.raceFilterDropDown.backdrop, "LEFT", 4, 0)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		_G.ArchaeologyFrameBgLeft:Kill()
 		_G.ArchaeologyFrameBgRight:Kill()
 

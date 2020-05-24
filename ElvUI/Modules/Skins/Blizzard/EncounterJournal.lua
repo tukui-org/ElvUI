@@ -153,7 +153,7 @@ local function ItemSetsFrame(_, button)
 		S:HandleIcon(button.Icon, true)
 		button.Border:SetAlpha(0)
 
-		if E.private.skins.parchmentRemover.enable then
+		if E.private.skins.parchmentRemoverEnable then
 			frame:StripTextures()
 			frame.ItemLevel:SetTextColor(1, 1, 1)
 			frame:CreateBackdrop("Transparent")
@@ -360,7 +360,7 @@ function S:Blizzard_EncounterJournal()
 			s:SetTexture()
 		end)
 
-		if E.private.skins.parchmentRemover.enable then
+		if E.private.skins.parchmentRemoverEnable then
 			item.boss:SetTextColor(1, 1, 1)
 			item.slot:SetTextColor(1, 1, 1)
 			item.armorType:SetTextColor(1, 1, 1)
@@ -392,7 +392,7 @@ function S:Blizzard_EncounterJournal()
 		end
 	end
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		local suggestFrame = _G.EncounterJournal.suggestFrame
 
 		-- Suggestion 1
@@ -507,7 +507,7 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(_G.EncounterJournal.LootJournal.ItemSetsFrame.ClassButton, true)
 	hooksecurefunc(_G.EncounterJournal.LootJournal.ItemSetsFrame, "ConfigureItemButton", ItemSetsFrame)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		--Boss selection buttons
 		hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
 

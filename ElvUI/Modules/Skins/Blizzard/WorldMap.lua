@@ -35,7 +35,7 @@ function S:WorldMapFrame()
 	local QuestMapFrame = _G.QuestMapFrame
 	QuestMapFrame.VerticalSeparator:Hide()
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		QuestMapFrame.DetailsFrame:StripTextures(true)
 		QuestMapFrame.DetailsFrame:CreateBackdrop()
 		QuestMapFrame.DetailsFrame.backdrop:Point('TOPLEFT', 0, 0)
