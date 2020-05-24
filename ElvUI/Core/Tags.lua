@@ -1038,6 +1038,14 @@ ElvUF.Tags.Methods['name:title'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
+ElvUF.Tags.Methods['title'] = function(unit) 
+    if (UnitIsPlayer(unit)) then
+        local titleid = GetCurrentTitle()
+		return GetTitleName(titleid)
+    end
+end
+
 ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
 ElvUF.Tags.Methods['quest:title'] = function(unit)
 	if UnitIsPlayer(unit) then
@@ -1270,6 +1278,7 @@ E.TagInfo = {
 	['name:short:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 10 letters)" },
 	['name:medium:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 15 letters)" },
 	['name:long:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 20 letters)" },
+	['title'] = { category = 'Names', description = "Displays player title" },
 	['name:title'] = { category = 'Names', description = "Displays player name and title" },
 	['npctitle'] = { category = 'Names', description = "Displays the NPC title (e.g. General Goods Vendor)" },
 	['npctitle:brackets'] = { category = 'Names', description = "Displays the NPC title with brackets (e.g. <General Goods Vendor>)" },
