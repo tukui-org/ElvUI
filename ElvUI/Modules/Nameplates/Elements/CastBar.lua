@@ -86,6 +86,7 @@ function NP:Castbar_PostCastStart(unit)
 end
 
 function NP:Castbar_PostCastFail()
+	self:SetStatusBarColor(.3, .3, .3)
 	NP:StyleFilterUpdate(self.__owner, 'FAKE_Casting')
 end
 
