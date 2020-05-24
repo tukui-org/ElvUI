@@ -1343,7 +1343,7 @@ function S:Initialize()
 	end
 
 	-- Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)
-	if E.private.skins.ace3.enable then
+	if E.private.skins.ace3Enable then
 		for _, n in next, S.EarlyAceWidgets do
 			if n.SetLayout then
 				S:Ace3_RegisterAsContainer(n)

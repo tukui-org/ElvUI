@@ -908,7 +908,7 @@ function E:Config_WindowOpened(frame)
 		E:Elasticize(frame.leftHolder.LogoTop, 128, 64)
 		E:Elasticize(frame.leftHolder.LogoBottom, 128, 64)
 
-		local unskinned = not E.private.skins.ace3.enable
+		local unskinned = not E.private.skins.ace3Enable
 		local offset = unskinned and 14 or 8
 		local version = frame.topHolder.version
 		E:Config_SaveOldPosition(version)
@@ -1113,7 +1113,7 @@ function E:ToggleOptionsUI(msg)
 				end
 			end
 
-			local unskinned = not E.private.skins.ace3.enable
+			local unskinned = not E.private.skins.ace3Enable
 			if unskinned then
 				for i=1, frame:GetNumRegions() do
 					local region = select(i, frame:GetRegions())
