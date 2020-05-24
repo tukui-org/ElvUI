@@ -357,6 +357,8 @@ function DT:Panel_DefaultGlobalSettings(name)
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
+	dt.name = data.name or '' -- This is needed for Custom Currencies
+
 	if data.events then
 		for _, ev in pairs(data.events) do
 			if data.eventFunc then
