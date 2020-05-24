@@ -658,7 +658,7 @@ end
 function AB:ColorSwipeTexture(cooldown)
 	if not cooldown then return end
 
-	local color = (cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL) and AB.db.colorSwipeLOC or  AB.db.colorSwipeNormal
+	local color = (cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL and AB.db.colorSwipeLOC) or AB.db.colorSwipeNormal
 	cooldown:SetSwipeColor(color.r, color.g, color.b, color.a)
 end
 
