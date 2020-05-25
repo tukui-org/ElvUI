@@ -507,17 +507,10 @@ function CH:StyleChat(frame)
 	end)
 
 	if not tab.left then tab.left = _G[name.."TabLeft"] end
-	tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	tab.Text:ClearAllPoints()
 	tab.Text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
 	tab:Height(22)
 
-	hooksecurefunc(tab.Text, "SetTextColor", function(tt, r, g, b)
-		local rR, gG, bB = unpack(E.media.rgbvaluecolor)
-		if r ~= rR or g ~= gG or b ~= bB then
-			tt:SetTextColor(rR, gG, bB)
-		end
-	end)
 
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
@@ -1106,12 +1099,12 @@ function CH:Panels_ColorUpdate()
 	end
 end
 
-local function UpdateChatTabColor(_, r, g, b)
+--[[local function UpdateChatTabColor(_, r, g, b)
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		_G[name..'TabText']:SetTextColor(r, g, b)
 	end
 end
-E.valueColorUpdateFuncs[UpdateChatTabColor] = true
+E.valueColorUpdateFuncs[UpdateChatTabColor] = true]]
 
 function CH:ScrollToBottom(frame)
 	frame:ScrollToBottom()
@@ -1346,11 +1339,21 @@ function CH:GetBNFriendColor(name, id, useBTag)
 		end
 	end
 
+	
 	if not Class then
 		Class = gameAccountInfo and gameAccountInfo.className and E:UnlocalizedClassName(gameAccountInfo.className)
 	end
 
 	local Color = E:ClassColor(Class)
+
+	-- tab is colorized prior to this being run, somewhat of a work around. May be a better way to do this whole thing
+	if not CH.ClassNames[strlower(name)] then
+		CH.ClassNames[strlower(name)] = Class
+		for x=11, #_G.CHAT_FRAMES do
+			CH:FCFTab_UpdateColors(_G["ChatFrame"..x..'Tab']) 
+		end		
+	end
+
 	return (Color and format('|c%s%s|r', Color.colorStr, TAG or name)) or TAG or name, isBattleTagFriend and BATTLE_TAG
 end
 
@@ -2804,6 +2807,24 @@ function CH:BuildCopyChatFrame()
 	Skins:HandleCloseButton(close)
 end
 
+function CH:FCFTab_UpdateColors(tab, selected)
+	if ( selected ) then
+		tab:GetFontString():SetTextColor(1, 1, 1)
+	elseif ( tab.conversationIcon ) then
+		local name = tab:GetText()
+		tab:SetText(gsub(name, "%-[^|]+", ""))
+
+		local classMatch = CH.ClassNames[strlower(name)]
+		if classMatch and RAID_CLASS_COLORS[classMatch] then
+			local color = E:ClassColor(classMatch)
+			tab:GetFontString():SetTextColor(color.r, color.g, color.b);
+		end
+	else
+		tab:GetFontString():SetTextColor(unpack(E.media.rgbvaluecolor))
+	end
+end
+
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
@@ -2837,6 +2858,7 @@ function CH:Initialize()
 	self:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
 	self:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
 	self:SecureHook('FCF_DockFrame', 'SnappingChanged')
+	self:SecureHook('FCFTab_UpdateColors', 'FCFTab_UpdateColors')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
