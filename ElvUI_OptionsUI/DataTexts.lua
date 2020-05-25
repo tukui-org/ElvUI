@@ -91,6 +91,7 @@ local DTPanelOptions = {
 				order = 2,
 				type = "select",
 				name = L["Anchor"],
+				width = 'double',
 				values = {
 					ANCHOR_TOP = L["ANCHOR_TOP"],
 					ANCHOR_RIGHT = L["ANCHOR_RIGHT"],
@@ -746,7 +747,7 @@ E.Options.args.datatexts = {
 			},
 		},
 		friends = {
-			order = 7,
+			order = 5,
 			type = "group",
 			name = L["FRIENDS"],
 			args = {
@@ -770,8 +771,8 @@ E.Options.args.datatexts = {
 					order = 2,
 					type = "multiselect",
 					name = L["Hide by Application"],
-					get = function(info, key) return E.db.datatexts.friends[key] end,
-					set = function(info, key, value) E.db.datatexts.friends[key] = value; DT:LoadDataTexts() end,
+					get = function(info, key) return E.db.datatexts.friends['hide'..key] end,
+					set = function(info, key, value) E.db.datatexts.friends['hide'..key] = value; DT:LoadDataTexts() end,
 					sortByValue = true,
 					values = {
 						['WoW'] = "World of Warcraft",
@@ -791,7 +792,7 @@ E.Options.args.datatexts = {
 			},
 		},
 		customCurrency = {
-			order = 8,
+			order = 6,
 			type = "group",
 			name = L["Custom Currency"],
 			args = {
