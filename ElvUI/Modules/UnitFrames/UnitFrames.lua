@@ -527,34 +527,34 @@ end
 
 function UF:Update_AllFrames()
 	if not E.private.unitframe.enable then return end
-	self:UpdateColors()
-	self:Update_FontStrings()
-	self:Update_StatusBars()
+	UF:UpdateColors()
+	UF:Update_FontStrings()
+	UF:Update_StatusBars()
 
-	for unit in pairs(self.units) do
-		if self.db.units[unit].enable then
-			self[unit]:Update()
-			self[unit]:Enable()
-			E:EnableMover(self[unit].mover:GetName())
+	for unit in pairs(UF.units) do
+		if UF.db.units[unit].enable then
+			UF[unit]:Update()
+			UF[unit]:Enable()
+			E:EnableMover(UF[unit].mover:GetName())
 		else
-			self[unit]:Update()
-			self[unit]:Disable()
-			E:DisableMover(self[unit].mover:GetName())
+			UF[unit]:Update()
+			UF[unit]:Disable()
+			E:DisableMover(UF[unit].mover:GetName())
 		end
 	end
 
-	for unit, group in pairs(self.groupunits) do
-		if self.db.units[group].enable then
-			self[unit]:Enable()
-			self[unit]:Update()
-			E:EnableMover(self[unit].mover:GetName())
+	for unit, group in pairs(UF.groupunits) do
+		if UF.db.units[group].enable then
+			UF[unit]:Enable()
+			UF[unit]:Update()
+			E:EnableMover(UF[unit].mover:GetName())
 		else
-			self[unit]:Disable()
-			E:DisableMover(self[unit].mover:GetName())
+			UF[unit]:Disable()
+			E:DisableMover(UF[unit].mover:GetName())
 		end
 
-		if self[unit].isForced then
-			self:ForceShow(self[unit])
+		if UF[unit].isForced then
+			UF:ForceShow(UF[unit])
 		end
 	end
 

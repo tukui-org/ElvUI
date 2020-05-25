@@ -45,8 +45,6 @@ function UF:Construct_AssistFrames()
 	self.originalParent = self:GetParent()
 
 	UF:Update_AssistFrames(self, E.db.unitframe.units.assist)
-	UF:Update_StatusBars()
-	UF:Update_FontStrings()
 
 	return self
 end
