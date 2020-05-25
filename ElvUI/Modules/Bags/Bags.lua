@@ -1191,23 +1191,6 @@ function B:UpdateTokens()
 	end
 end
 
-function B:Token_OnEnter()
-	local GameTooltip = _G.GameTooltip
-	GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-	GameTooltip:SetBackpackToken(self:GetID())
-
-	if TT.db.spellID then
-		GameTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, self.currencyID))
-		GameTooltip:Show()
-	end
-end
-
-function B:Token_OnClick()
-	if IsModifiedClick('CHATLINK') then
-		HandleModifiedItemClick(GetCurrencyLink(self.currencyID))
-	end
-end
-
 function B:UpdateGoldText()
 	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), E.db.bags.moneyFormat, not E.db.bags.moneyCoins))
 end
@@ -1717,20 +1700,16 @@ function B:ConstructContainerFrame(name, isBank)
 		f.currencyButton:Height(22)
 
 		for i = 1, MAX_WATCHED_TOKENS do
-			f.currencyButton[i] = CreateFrame('Button', f:GetName()..'CurrencyButton'..i, f.currencyButton)
+			f.currencyButton[i] = CreateFrame('Button', f:GetName()..'CurrencyButton'..i, f.currencyButton, 'BackpackTokenTemplate')
 			f.currencyButton[i]:Size(16)
 			f.currencyButton[i]:SetTemplate()
 			f.currencyButton[i]:SetID(i)
-			f.currencyButton[i].icon = f.currencyButton[i]:CreateTexture(nil, 'OVERLAY')
 			f.currencyButton[i].icon:SetInside()
 			f.currencyButton[i].icon:SetTexCoord(unpack(E.TexCoords))
 			f.currencyButton[i].text = f.currencyButton[i]:CreateFontString(nil, 'OVERLAY')
 			f.currencyButton[i].text:Point('LEFT', f.currencyButton[i], 'RIGHT', 2, 0)
 			f.currencyButton[i].text:FontTemplate()
 
-			f.currencyButton[i]:SetScript('OnEnter', B.Token_OnEnter)
-			f.currencyButton[i]:SetScript('OnLeave', GameTooltip_Hide)
-			f.currencyButton[i]:SetScript('OnClick', B.Token_OnClick)
 			f.currencyButton[i]:Hide()
 		end
 
@@ -1812,11 +1791,11 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.icon:SetInside()
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
 
-	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY')
+	slot.itemLevel = slot:CreateFontString(nil, 'ARTWORK', 2)
 	slot.itemLevel:Point('BOTTOMRIGHT', 0, 2)
 	slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
-	slot.bindType = slot:CreateFontString(nil, 'OVERLAY')
+	slot.bindType = slot:CreateFontString(nil, 'ARTWORK', 2)
 	slot.bindType:Point('TOP', 0, -2)
 	slot.bindType:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
