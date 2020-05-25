@@ -669,8 +669,7 @@ function DT:Initialize()
 	DT.db = E.db.datatexts
 
 	DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
-	DT.EasyMenu = CreateFrame("Frame", "DataTextEasyMenu", E.UIParent, "UIDropDownMenuTemplate")
-	DT.HyperDTMenuFrame = DT.EasyMenu
+	DT.EasyMenu = CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
 	DT.EasyMenu:SetClampedToScreen(true)
 	DT.EasyMenu:EnableMouse(true)
 	DT.EasyMenu.MenuSetItem = function(dt, value)
