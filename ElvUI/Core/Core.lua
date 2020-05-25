@@ -524,6 +524,9 @@ function E:CheckIncompatible()
 		if E:IsAddOnEnabled('Healers-Have-To-Die') then
 			E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlates')
 		end
+		if E:IsAddOnEnabled('Plater') then
+			E:IncompatibleAddOn('Plater', 'NamePlates')
+		end
 	end
 
 	if E.private.actionbar.enable then
