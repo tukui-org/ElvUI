@@ -27,12 +27,10 @@ local InCombatLockdown = InCombatLockdown
 local C_PartyInfo_InviteUnit = C_PartyInfo.InviteUnit
 local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
 
-local CreateFrame = CreateFrame
-
 local COMBAT_FACTION_CHANGE = COMBAT_FACTION_CHANGE
-local GUILD = GUILD
-local GUILD_MOTD = GUILD_MOTD
 local REMOTE_CHAT = REMOTE_CHAT
+local GUILD_MOTD = GUILD_MOTD
+local GUILD = GUILD
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}

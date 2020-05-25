@@ -2,19 +2,17 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format, pairs, wipe = format, pairs, wipe
-local tonumber, tostring = tonumber, tostring
-local GetMoney = GetMoney
+local format, pairs, tonumber = format, pairs, tonumber
 local BreakUpLargeNumbers = BreakUpLargeNumbers
-
-local GetCurrencyInfo = GetCurrencyInfo
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+local GetCurrencyInfo = GetCurrencyInfo
+local GetMoney = GetMoney
+
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
 
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
-
 DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = 'Backpack' }
 
 local function OnClick()

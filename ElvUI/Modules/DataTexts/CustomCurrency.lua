@@ -2,20 +2,19 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
+local ipairs, pairs, format = ipairs, pairs, format
 local tinsert, tremove = tinsert, tremove
-local pairs, format = pairs, format
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
 local GetCurrencyListSize = GetCurrencyListSize
 
 local CustomCurrencies = {}
 local CurrencyListNameToIndex = {}
-local currency, currencyAmount, currencyMax, _
 
 local function OnEvent(self)
-	currency = CustomCurrencies[self.name]
+	local currency = CustomCurrencies[self.name]
 	if currency then
-		_, currencyAmount, _, _, _, currencyMax = GetCurrencyInfo(currency.ID)
+		local _, currencyAmount, _, _, _, currencyMax = GetCurrencyInfo(currency.ID)
 		if currency.DISPLAY_STYLE == "ICON" then
 			if currency.SHOW_MAX then
 				self.text:SetFormattedText("%s %d / %d", currency.ICON, currencyAmount, currencyMax)

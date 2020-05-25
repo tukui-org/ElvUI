@@ -6,7 +6,6 @@ local _G = _G
 local C_Garrison_GetLandingPageGarrisonType = C_Garrison.GetLandingPageGarrisonType
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local IsAddOnLoaded = IsAddOnLoaded
-local CreateFrame = CreateFrame
 local HideUIPanel = HideUIPanel
 local PlaySound = PlaySound
 local StopSound = StopSound
