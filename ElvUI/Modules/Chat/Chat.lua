@@ -102,6 +102,13 @@ local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local UNKNOWN = UNKNOWN
 -- GLOBALS: ElvCharacterDB
 
+CH.GuidCache = {}
+CH.ClassNames = {}
+CH.Keywords = {}
+CH.PluginMessageFilters = {}
+CH.Smileys = {}
+CH.TalkingList = {}
+
 local lfgRoles = {}
 local throttle = {}
 
@@ -149,7 +156,6 @@ function CH:MessageIsProtected(message)
 	return message and (message ~= gsub(message, '(:?|?)|K(.-)|k', canChangeMessage))
 end
 
-CH.Smileys = {}
 function CH:RemoveSmiley(key)
 	if key and (type(key) == 'string') then
 		CH.Smileys[key] = nil
@@ -371,9 +377,6 @@ do --this can save some main file locals
 		["Zandahanz-Area52"]			= GoldShield,
 	}
 end
-
-CH.Keywords = {}
-CH.ClassNames = {}
 
 local function ChatFrame_OnMouseScroll(frame, delta)
 	local numScrollMessages = CH.db.numScrollMessages or 3
@@ -1101,7 +1104,8 @@ end
 
 local function UpdateChatTabColor()
 	for _, name in ipairs(_G.CHAT_FRAMES) do
-		CH:FCFTab_UpdateColors(_G[name..'Tab'], _G[name..'Tab'].selected)
+		local tab = CH:GetTab(_G[name])
+		CH:FCFTab_UpdateColors(tab, tab.selected)
 	end
 end
 E.valueColorUpdateFuncs[UpdateChatTabColor] = true
@@ -1339,21 +1343,11 @@ function CH:GetBNFriendColor(name, id, useBTag)
 		end
 	end
 
-	
 	if not Class then
 		Class = gameAccountInfo and gameAccountInfo.className and E:UnlocalizedClassName(gameAccountInfo.className)
 	end
 
 	local Color = E:ClassColor(Class)
-
-	-- tab is colorized prior to this being run, somewhat of a work around. May be a better way to do this whole thing
-	if not CH.ClassNames[strlower(name)] then
-		CH.ClassNames[strlower(name)] = Class
-		for x=11, #_G.CHAT_FRAMES do
-			CH:FCFTab_UpdateColors(_G["ChatFrame"..x..'Tab']) 
-		end		
-	end
-
 	return (Color and format('|c%s%s|r', Color.colorStr, TAG or name)) or TAG or name, isBattleTagFriend and BATTLE_TAG
 end
 
@@ -1371,7 +1365,6 @@ function CH:GetPluginIcon(sender)
 	end
 end
 
-CH.PluginMessageFilters = {}
 function CH:AddPluginMessageFilter(func, position)
 	if position then
 		tinsert(CH.PluginMessageFilters, position, func)
@@ -1380,33 +1373,25 @@ function CH:AddPluginMessageFilter(func, position)
 	end
 end
 
---Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
-function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
+--Modified copy from FrameXML ChatFrame.lua to add CUSTOM_CLASS_COLORS (args were changed)
+function CH:GetColoredName(event, englishClass, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	local chatType = strsub(event, 10)
-	if ( strsub(chatType, 1, 7) == "WHISPER" ) then
-		chatType = "WHISPER"
-	end
-	if ( strsub(chatType, 1, 7) == "CHANNEL" ) then
-		chatType = "CHANNEL"..arg8
-	end
-	local info = _G.ChatTypeInfo[chatType]
+	if strsub(chatType, 1, 7) == "WHISPER" then chatType = "WHISPER" end
+	if strsub(chatType, 1, 7) == "CHANNEL" then chatType = "CHANNEL"..arg8 end
 
 	--ambiguate guild chat names
-	if (chatType == "GUILD") then
-		arg2 = Ambiguate(arg2, "guild")
-	else
-		arg2 = Ambiguate(arg2, "none")
-	end
+	arg2 = Ambiguate(arg2, (chatType == "GUILD" and "guild") or "none")
 
-	if ( arg12 and info and Chat_ShouldColorChatByClass(info) ) then
-		local _, englishClass = GetPlayerInfoByGUID(arg12)
+	local info = (englishClass or arg12) and _G.ChatTypeInfo[chatType]
+	if info and Chat_ShouldColorChatByClass(info) then
+		if not englishClass then
+			local data = CH:GetPlayerInfoByGUID(arg12)
+			englishClass = data and data.englishClass
+		end
 
-		if ( englishClass ) then
-			local classColorTable = E:ClassColor(englishClass)
-			if ( not classColorTable ) then
-				return arg2
-			end
-			return format("\124cff%.2x%.2x%.2x", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255)..arg2.."\124r"
+		local color = englishClass and E:ClassColor(englishClass)
+		if color then
+			return format("\124cff%.2x%.2x%.2x%s\124r", color.r*255, color.g*255, color.b*255, arg2)
 		end
 	end
 
@@ -1482,17 +1467,17 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		arg2 = E.NameReplacements[arg2] or arg2
 
-		local _, _, englishClass, _, _, _, name, realm = pcall(GetPlayerInfoByGUID, arg12)
-		local coloredName = historySavedName or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
-		local nameWithRealm -- we also use this lower in function to correct mobile to link with the realm as well
-
-		--Cache name->class
-		realm = (realm and realm ~= '') and E:ShortenRealm(realm)
-		if name and name ~= '' then
-			CH.ClassNames[strlower(name)] = englishClass
-			nameWithRealm = (realm and name..'-'..realm) or name..'-'..PLAYER_REALM
-			CH.ClassNames[strlower(nameWithRealm)] = englishClass
+		-- data from populated guid info
+		local englishClass, nameWithRealm, realm
+		local data = CH:GetPlayerInfoByGUID(arg12)
+		if data then
+			realm = data.realm
+			englishClass = data.englishClass
+			nameWithRealm = data.nameWithRealm
 		end
+
+		-- fetch the name color to use
+		local coloredName = historySavedName or CH:GetColoredName(event, englishClass, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
@@ -2292,7 +2277,7 @@ function CH:SaveChatHistory(event, ...)
 		local coloredName, battleTag
 		if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
 		if battleTag then tempHistory[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
-		tempHistory[52] = coloredName or CH:GetColoredName(event, ...)
+		tempHistory[52] = coloredName or CH:GetColoredName(event, nil, ...)
 
 		tinsert(data, tempHistory)
 		while #data >= 128 do
@@ -2808,23 +2793,157 @@ function CH:BuildCopyChatFrame()
 end
 
 function CH:FCFTab_UpdateColors(tab, selected)
-	if ( selected ) then
-		tab:GetFontString():SetTextColor(1, 1, 1)
-	elseif ( tab.conversationIcon ) then
-		local name = tab:GetText()
-		tab:SetText(gsub(name, "%-[^|]+", ""))
+	if selected then
+		tab.Text:SetTextColor(1, 1, 1)
+	elseif tab.conversationIcon then
+		if not tab.originalText then
+			local text = tab:GetText()
+			tab.originalText = text
+			tab:SetText(gsub(E:StripMyRealm(text), "([%S]-)%-[%S]+", "%1|cFF999999*|r"))
+		end
 
-		local classMatch = CH.ClassNames[strlower(name)]
-		if classMatch and RAID_CLASS_COLORS[classMatch] then
-			local color = E:ClassColor(classMatch)
-			tab:GetFontString():SetTextColor(color.r, color.g, color.b);
+		local classMatch = CH.ClassNames[strlower(tab.originalText)]
+		local color = classMatch and E:ClassColor(classMatch)
+		if color then
+			tab.Text:SetTextColor(color.r, color.g, color.b)
 		end
 	else
-		tab:GetFontString():SetTextColor(unpack(E.media.rgbvaluecolor))
+		tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
+
 	tab.selected = selected
 end
 
+function CH:GetAvailableHead()
+	for i=1, self.maxHeads do
+		if not self.ChatHeadFrame[i]:IsShown() then
+			return self.ChatHeadFrame[i]
+		end
+	end
+end
+
+function CH:GetHeadByID(memberID)
+	for i=1, self.maxHeads do
+		if self.ChatHeadFrame[i].memberID == memberID then
+			return self.ChatHeadFrame[i]
+		end
+	end
+end
+
+function CH:ConfigureHead(memberID, channelID)
+	local frame = self:GetAvailableHead()
+	if not frame then return end
+
+	frame.memberID = memberID
+	frame.channelID = channelID
+
+	C_VoiceChat_SetPortraitTexture(frame.Portrait.texture, memberID, channelID)
+
+	local memberName = C_VoiceChat_GetMemberName(memberID, channelID)
+	local r, g, b = Voice_GetVoiceChannelNotificationColor(channelID)
+	frame.Name:SetText(memberName or "")
+	frame.Name:SetVertexColor(r, g, b, 1)
+	frame:Show()
+end
+
+function CH:DeconfigureHead(memberID) -- memberID, channelID
+	local frame = self:GetHeadByID(memberID)
+	if not frame then return end
+
+	frame.memberID = nil
+	frame.channelID = nil
+	frame:Hide()
+end
+
+function CH:VoiceOverlay(event, ...)
+	if event == "VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED" then
+		local memberID, channelID, isTalking = ...
+
+		if isTalking then
+			CH.TalkingList[memberID] = channelID
+			self:ConfigureHead(memberID, channelID)
+		else
+			CH.TalkingList[memberID] = nil
+			self:DeconfigureHead(memberID, channelID)
+		end
+	elseif event == "VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED" then
+		local memberID, channelID, volume = ...
+		local frame = CH:GetHeadByID(memberID)
+		if frame and channelID == frame.channelID then
+			frame.StatusBar.anim.progress:SetChange(volume)
+			frame.StatusBar.anim.progress:Play()
+
+			frame.StatusBar:SetStatusBarColor(E:ColorGradient(volume, 1, 0, 0, 1, 1, 0, 0, 1, 0))
+		end
+	--[[elseif event == "VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED" then
+		local channelID, isTransmitting = ...
+		local localPlayerMemberID = C_VoiceChat.GetLocalPlayerMemberID(channelID)
+		if isTransmitting and not CH.TalkingList[localPlayerMemberID] then
+			CH.TalkingList[localPlayerMemberID] = channelID
+			self:ConfigureHead(localPlayerMemberID, channelID)
+		end]]
+	end
+end
+
+function CH:SetChatHeadOrientation(position)
+	if position == "TOP" then
+		for i=1, self.maxHeads do
+			self.ChatHeadFrame[i]:ClearAllPoints()
+			if i == 1 then
+				self.ChatHeadFrame[i]:Point("TOP", self.ChatHeadFrame, "BOTTOM", 0, -E.Border*3)
+			else
+				self.ChatHeadFrame[i]:Point("TOP", self.ChatHeadFrame[i - 1], "BOTTOM", 0, -E.Border*3)
+			end
+		end
+	else
+		for i=1, self.maxHeads do
+			self.ChatHeadFrame[i]:ClearAllPoints()
+			if i == 1 then
+				self.ChatHeadFrame[i]:Point("BOTTOM", self.ChatHeadFrame, "TOP", 0, E.Border*3)
+			else
+				self.ChatHeadFrame[i]:Point("BOTTOM", self.ChatHeadFrame[i - 1], "TOP", 0, E.Border*3)
+			end
+		end
+	end
+end
+
+function CH:GetPlayerInfoByGUID(guid)
+	local data = CH.GuidCache[guid]
+	if not data then
+		local ok, localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = pcall(GetPlayerInfoByGUID, guid)
+		if not ok then return end
+
+		local shortRealm, nameWithRealm = (realm and realm ~= '') and E:ShortenRealm(realm)
+		if name and name ~= '' then
+			nameWithRealm = (shortRealm and name..'-'..shortRealm) or name..'-'..PLAYER_REALM
+		end
+
+		-- move em into a table
+		data = {
+			localizedClass = localizedClass,
+			englishClass = englishClass,
+			localizedRace = localizedRace,
+			englishRace = englishRace,
+			sex = sex,
+			name = name,
+			realm = realm,
+			nameWithRealm = nameWithRealm -- we use this to correct mobile to link with the realm as well
+		}
+
+		-- add it to ClassNames
+		if name then
+			CH.ClassNames[strlower(name)] = englishClass
+		end
+		if nameWithRealm then
+			CH.ClassNames[strlower(nameWithRealm)] = englishClass
+		end
+
+		-- push into the cache
+		CH.GuidCache[guid] = data
+	end
+
+	return data
+end
 
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
@@ -2850,16 +2969,17 @@ function CH:Initialize()
 	self:UpdateEditboxAnchors()
 	E:UpdatedCVar('chatStyle', self.UpdateEditboxAnchors)
 
+	self:SecureHook('GetPlayerInfoByGUID')
 	self:SecureHook('ChatEdit_SetLastActiveWindow')
 	self:SecureHook('ChatEdit_DeactivateChat')
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	self:SecureHook('FCFDock_UpdateTabs')
 	self:SecureHook('FCF_SetWindowAlpha')
+	self:SecureHook('FCFTab_UpdateColors')
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	self:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
 	self:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
 	self:SecureHook('FCF_DockFrame', 'SnappingChanged')
-	self:SecureHook('FCFTab_UpdateColors', 'FCFTab_UpdateColors')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
@@ -2965,100 +3085,6 @@ function CH:Initialize()
 		self.ChatHeadFrame[i]:Hide()
 	end
 	self:SetChatHeadOrientation("TOP")
-end
-
-CH.TalkingList = {}
-function CH:GetAvailableHead()
-	for i=1, self.maxHeads do
-		if not self.ChatHeadFrame[i]:IsShown() then
-			return self.ChatHeadFrame[i]
-		end
-	end
-end
-
-function CH:GetHeadByID(memberID)
-	for i=1, self.maxHeads do
-		if self.ChatHeadFrame[i].memberID == memberID then
-			return self.ChatHeadFrame[i]
-		end
-	end
-end
-
-function CH:ConfigureHead(memberID, channelID)
-	local frame = self:GetAvailableHead()
-	if not frame then return end
-
-	frame.memberID = memberID
-	frame.channelID = channelID
-
-	C_VoiceChat_SetPortraitTexture(frame.Portrait.texture, memberID, channelID)
-
-	local memberName = C_VoiceChat_GetMemberName(memberID, channelID)
-	local r, g, b = Voice_GetVoiceChannelNotificationColor(channelID)
-	frame.Name:SetText(memberName or "")
-	frame.Name:SetVertexColor(r, g, b, 1)
-	frame:Show()
-end
-
-function CH:DeconfigureHead(memberID) -- memberID, channelID
-	local frame = self:GetHeadByID(memberID)
-	if not frame then return end
-
-	frame.memberID = nil
-	frame.channelID = nil
-	frame:Hide()
-end
-
-function CH:VoiceOverlay(event, ...)
-	if event == "VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED" then
-		local memberID, channelID, isTalking = ...
-
-		if isTalking then
-			CH.TalkingList[memberID] = channelID
-			self:ConfigureHead(memberID, channelID)
-		else
-			CH.TalkingList[memberID] = nil
-			self:DeconfigureHead(memberID, channelID)
-		end
-	elseif event == "VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED" then
-		local memberID, channelID, volume = ...
-		local frame = CH:GetHeadByID(memberID)
-		if frame and channelID == frame.channelID then
-			frame.StatusBar.anim.progress:SetChange(volume)
-			frame.StatusBar.anim.progress:Play()
-
-			frame.StatusBar:SetStatusBarColor(E:ColorGradient(volume, 1, 0, 0, 1, 1, 0, 0, 1, 0))
-		end
-	--[[elseif event == "VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED" then
-		local channelID, isTransmitting = ...
-		local localPlayerMemberID = C_VoiceChat.GetLocalPlayerMemberID(channelID)
-		if isTransmitting and not CH.TalkingList[localPlayerMemberID] then
-			CH.TalkingList[localPlayerMemberID] = channelID
-			self:ConfigureHead(localPlayerMemberID, channelID)
-		end]]
-	end
-end
-
-function CH:SetChatHeadOrientation(position)
-	if position == "TOP" then
-		for i=1, self.maxHeads do
-			self.ChatHeadFrame[i]:ClearAllPoints()
-			if i == 1 then
-				self.ChatHeadFrame[i]:Point("TOP", self.ChatHeadFrame, "BOTTOM", 0, -E.Border*3)
-			else
-				self.ChatHeadFrame[i]:Point("TOP", self.ChatHeadFrame[i - 1], "BOTTOM", 0, -E.Border*3)
-			end
-		end
-	else
-		for i=1, self.maxHeads do
-			self.ChatHeadFrame[i]:ClearAllPoints()
-			if i == 1 then
-				self.ChatHeadFrame[i]:Point("BOTTOM", self.ChatHeadFrame, "TOP", 0, E.Border*3)
-			else
-				self.ChatHeadFrame[i]:Point("BOTTOM", self.ChatHeadFrame[i - 1], "TOP", 0, E.Border*3)
-			end
-		end
-	end
 end
 
 E:RegisterModule(CH:GetName())
