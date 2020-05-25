@@ -2188,6 +2188,65 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	return config
 end
 
+local function GetOptionsTable_PVPClassificationIndicator(updateFunc, groupName, numGroup)
+		local config = {
+			order = 30,
+			name = L["PvP Classification Indicator"],
+			desc = L["Cart / Flag / Orb / Assassin Bounty"],
+			type = "group",
+			get = function(info)
+				return E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]]
+			end,
+			set = function(info, value)
+				E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]] = value
+				updateFunc(UF, groupName, numGroup)
+			end,
+			args = {
+				enable = {
+					order = 1,
+					name = L["Enable"],
+					type = "toggle"
+				},
+				size = {
+					order = 2,
+					name = L["Size"],
+					type = "range",
+					min = 5,
+					max = 100,
+					step = 1
+				},
+				position = {
+					order = 3,
+					type = "select",
+					name = L["Icon Position"],
+					values = {
+						["CENTER"] = "CENTER",
+						["TOPLEFT"] = "TOPLEFT",
+						["BOTTOMLEFT"] = "BOTTOMLEFT",
+						["TOPRIGHT"] = "TOPRIGHT",
+						["BOTTOMRIGHT"] = "BOTTOMRIGHT"
+					}
+				},
+				xOffset = {
+					order = 4,
+					name = L["X-Offset"],
+					type = "range",
+					min = -100,
+					max = 100,
+					step = 1
+				},
+				yOffset = {
+					order = 5,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100,
+					max = 100,
+					step = 1
+				}
+			}
+		}
+end
+
 local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
 	local config = {
 		type = 'group',
@@ -5270,6 +5329,7 @@ E.Options.args.unitframe.args.groupUnits.args.boss = {
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
 	},
 }
 
@@ -5365,6 +5425,7 @@ E.Options.args.unitframe.args.groupUnits.args.arena = {
 		debuffs = GetOptionsTable_Auras('debuffs', false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'arena', 5),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'arena', 5),
+		pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator(UF.CreateAndUpdateUFGroup, 'arena', 5),
 	},
 }
 

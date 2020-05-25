@@ -16,31 +16,25 @@ function UF:Construct_BossFrames(frame)
 	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
-	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-
-	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
+	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.displayAltPower = true
-
-	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
-
-	frame.Name = self:Construct_NameText(frame)
-
-	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
-	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-	frame.InfoPanel = self:Construct_InfoPanel(frame)
-	frame.Buffs = self:Construct_Buffs(frame)
-
-	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
-
-	frame.Castbar = self:Construct_Castbar(frame)
-	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
-
-	frame.Fader = self:Construct_Fader()
-	frame.Cutaway = self:Construct_Cutaway(frame)
-	frame.MouseGlow = self:Construct_MouseGlow(frame)
-	frame.TargetGlow = self:Construct_TargetGlow(frame)
-	frame.FocusGlow = self:Construct_FocusGlow(frame)
+	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
+	frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
+	frame.Name = UF:Construct_NameText(frame)
+	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
+	frame.InfoPanel = UF:Construct_InfoPanel(frame)
+	frame.Buffs = UF:Construct_Buffs(frame)
+	frame.Debuffs = UF:Construct_Debuffs(frame)
+	frame.DebuffHighlight = UF:Construct_DebuffHighlight(frame)
+	frame.Castbar = UF:Construct_Castbar(frame)
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
+	frame.Fader = UF:Construct_Fader()
+	frame.Cutaway = UF:Construct_Cutaway(frame)
+	frame.MouseGlow = UF:Construct_MouseGlow(frame)
+	frame.TargetGlow = UF:Construct_TargetGlow(frame)
+	frame.FocusGlow = UF:Construct_FocusGlow(frame)
 	frame:SetAttribute("type2", "focus")
 	frame.customTexts = {}
 
@@ -86,39 +80,19 @@ function UF:Update_BossFrames(frame, db)
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	UF:Configure_InfoPanel(frame)
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Power
 	UF:Configure_Power(frame)
-
-	-- Power Predicition
 	UF:Configure_PowerPrediction(frame)
-
-	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-
-	--Castbar
 	UF:Configure_Castbar(frame)
-
-	--Raid Icon
 	UF:Configure_RaidIcon(frame)
-
 	UF:Configure_DebuffHighlight(frame)
-
 	UF:Configure_CustomTexts(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--Cutaway
+	UF:Configure_PvPClassificationIndicator(frame)
 	UF:Configure_Cutaway(frame)
 
 	frame:ClearAllPoints()

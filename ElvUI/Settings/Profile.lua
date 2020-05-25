@@ -1210,6 +1210,14 @@ local UF_Power = {
 	},
 }
 
+local UF_PvPClassificationIndicator = {
+	enable = true,
+	position = 'CENTER',
+	size = 36,
+	xOffset = 0,
+	yOffset = 0,
+}
+
 local UF_PVPIcon = {
 	anchorPoint = 'CENTER',
 	enable = false,
@@ -1680,6 +1688,7 @@ P.unitframe = {
 			castbar = CopyTable(UF_Castbar),
 			raidicon = CopyTable(UF_RaidIcon),
 			cutaway = CopyTable(UF_Cutaway),
+			pvpclassificationindicator = CopyTable(UF_PvPClassificationIndicator),
 		},
 		arena = {
 			enable = true,
@@ -1713,6 +1722,7 @@ P.unitframe = {
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
+			pvpclassificationindicator = CopyTable(UF_PvPClassificationIndicator),
 		},
 		party = {
 			enable = true,
