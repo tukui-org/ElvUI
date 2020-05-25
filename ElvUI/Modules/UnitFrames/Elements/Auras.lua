@@ -249,6 +249,7 @@ function UF:Configure_Auras(frame, which)
 		if button then
 			button.db = auras.db
 			UF:UpdateAuraSettings(auras, button)
+			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
 
 		index = index + 1
@@ -361,19 +362,21 @@ end
 function UF:PostUpdateAura(_, button)
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
-			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
+			if UF.db.colors.auraByType then button:SetBackdropBorderColor(0.9, 0.1, 0.1) end
 			button.icon:SetDesaturated(button.canDesaturate)
 		else
-			if E.BadDispels[button.spellID] and button.dtype and E:IsDispellableByMe(button.dtype) then
-				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
-			else
-				local color = (button.dtype and _G.DebuffTypeColor[button.dtype]) or _G.DebuffTypeColor.none
-				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
+			if UF.db.colors.auraByType then
+				if E.BadDispels[button.spellID] and button.dtype and E:IsDispellableByMe(button.dtype) then
+					button:SetBackdropBorderColor(0.05, 0.85, 0.94)
+				else
+					local color = (button.dtype and _G.DebuffTypeColor[button.dtype]) or _G.DebuffTypeColor.none
+					button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
+				end
 			end
 			button.icon:SetDesaturated(false)
 		end
 	else
-		if button.isStealable and not button.isFriend then
+		if UF.db.colors.auraByType and button.isStealable and not button.isFriend then
 			button:SetBackdropBorderColor(0.93, 0.91, 0.55, 1.0)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))

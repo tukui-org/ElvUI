@@ -4011,6 +4011,18 @@ E.Options.args.unitframe = {
 								},
 							},
 						},
+						auras = {
+							order = 5,
+							type = 'group',
+							name = L["Auras"],
+							args = {
+								auraByType = {
+									order = 3,
+									name = L["By Type"],
+									type = 'toggle',
+								},
+							},
+						},
 						auraBars = {
 							order = 5,
 							type = 'group',
