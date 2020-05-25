@@ -628,6 +628,7 @@ E.Options.args.bags = {
 					name = L["Bank"],
 					get = function(info, key) return E.db.bags.split[key] end,
 					set = function(info, key, value) E.db.bags.split[key] = value B:Layout(true) end,
+					sortByValue = true,
 					values = {
 						bag5 = L["Bank 1"],
 						bag6 = L["Bank 2"],
