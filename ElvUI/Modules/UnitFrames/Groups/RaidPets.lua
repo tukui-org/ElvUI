@@ -88,44 +88,19 @@ function UF:Update_RaidpetFrames(frame, db)
 
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-
-	--RaidDebuffs
 	UF:Configure_RaidDebuffs(frame)
-
-	--Raid Icon
 	UF:Configure_RaidIcon(frame)
-
-	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)
-
-	--OverHealing
 	UF:Configure_HealComm(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--BuffIndicator
 	UF:Configure_AuraWatch(frame, true)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
-
-	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")

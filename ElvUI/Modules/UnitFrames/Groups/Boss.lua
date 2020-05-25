@@ -20,7 +20,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.displayAltPower = true
 	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
-	frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
+	frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')

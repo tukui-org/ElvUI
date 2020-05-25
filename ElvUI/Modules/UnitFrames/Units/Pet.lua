@@ -9,27 +9,27 @@ local tinsert = tinsert
 -- GLOBALS: ElvUF_Player
 
 function UF:Construct_PetFrame(frame)
-	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
-	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
-	frame.Name = self:Construct_NameText(frame)
-	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
-	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-	frame.Buffs = self:Construct_Buffs(frame)
-	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.Castbar = self:Construct_Castbar(frame, L["Pet Castbar"])
+	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
+	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
+	frame.Name = UF:Construct_NameText(frame)
+	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
+	frame.Buffs = UF:Construct_Buffs(frame)
+	frame.Debuffs = UF:Construct_Debuffs(frame)
+	frame.Castbar = UF:Construct_Castbar(frame, L["Pet Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
-	frame.ThreatIndicator = self:Construct_Threat(frame)
-	frame.HealthPrediction = self:Construct_HealComm(frame)
-	frame.AuraWatch = self:Construct_AuraWatch(frame)
-	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-	frame.InfoPanel = self:Construct_InfoPanel(frame)
-	frame.MouseGlow = self:Construct_MouseGlow(frame)
-	frame.FocusGlow = self:Construct_FocusGlow(frame)
-	frame.TargetGlow = self:Construct_TargetGlow(frame)
-	frame.Fader = self:Construct_Fader()
-	frame.Cutaway = self:Construct_Cutaway(frame)
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
+	frame.HealthPrediction = UF:Construct_HealComm(frame)
+	frame.AuraWatch = UF:Construct_AuraWatch(frame)
+	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
+	frame.InfoPanel = UF:Construct_InfoPanel(frame)
+	frame.MouseGlow = UF:Construct_MouseGlow(frame)
+	frame.FocusGlow = UF:Construct_FocusGlow(frame)
+	frame.TargetGlow = UF:Construct_TargetGlow(frame)
+	frame.Fader = UF:Construct_Fader()
+	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 118)
@@ -67,47 +67,20 @@ function UF:Update_PetFrame(frame, db)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	UF:Configure_InfoPanel(frame)
-
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Power
 	UF:Configure_Power(frame)
-
-	--Power Predicition
 	UF:Configure_PowerPrediction(frame)
-
-	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--Castbar
 	UF:Configure_Castbar(frame)
-
-	--OverHealing
 	UF:Configure_HealComm(frame)
-
-	--AuraBars
 	UF:Configure_AuraBars(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
-
-	--CustomTexts
 	UF:Configure_CustomTexts(frame)
-
 	UF:Configure_AuraWatch(frame, true)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")

@@ -9,33 +9,33 @@ local tinsert = tinsert
 local IsAddOnLoaded = IsAddOnLoaded
 
 function UF:Construct_TargetFrame(frame)
-	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
+	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.frequentUpdates = true
-	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
-	frame.Name = self:Construct_NameText(frame)
-	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
-	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-	frame.Buffs = self:Construct_Buffs(frame)
-	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.ThreatIndicator = self:Construct_Threat(frame)
-	frame.Castbar = self:Construct_Castbar(frame, L["Target Castbar"])
+	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
+	frame.Name = UF:Construct_NameText(frame)
+	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
+	frame.Buffs = UF:Construct_Buffs(frame)
+	frame.Debuffs = UF:Construct_Debuffs(frame)
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
+	frame.Castbar = UF:Construct_Castbar(frame, L["Target Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
-	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
-	frame.HealthPrediction = self:Construct_HealComm(frame)
-	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
-	frame.InfoPanel = self:Construct_InfoPanel(frame)
-	frame.MouseGlow = self:Construct_MouseGlow(frame)
-	frame.TargetGlow = self:Construct_TargetGlow(frame)
-	frame.FocusGlow = self:Construct_FocusGlow(frame)
-	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-	frame.PhaseIndicator = self:Construct_PhaseIcon(frame)
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
+	frame.HealthPrediction = UF:Construct_HealComm(frame)
+	frame.DebuffHighlight = UF:Construct_DebuffHighlight(frame)
+	frame.InfoPanel = UF:Construct_InfoPanel(frame)
+	frame.MouseGlow = UF:Construct_MouseGlow(frame)
+	frame.TargetGlow = UF:Construct_TargetGlow(frame)
+	frame.FocusGlow = UF:Construct_FocusGlow(frame)
+	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
+	frame.PhaseIndicator = UF:Construct_PhaseIcon(frame)
 	frame.ResurrectIndicator = UF:Construct_ResurrectionIcon(frame)
 	frame.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(frame)
-	frame.PvPIndicator = self:Construct_PvPIcon(frame)
-	frame.Fader = self:Construct_Fader()
-	frame.Cutaway = self:Construct_Cutaway(frame)
+	frame.PvPIndicator = UF:Construct_PvPIcon(frame)
+	frame.Fader = UF:Construct_Fader()
+	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOM', 413, 68)
@@ -81,62 +81,25 @@ function UF:Update_TargetFrame(frame, db)
 	end
 
 	UF:Configure_InfoPanel(frame)
-
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Power
 	UF:Configure_Power(frame)
-
-	-- Power Predicition
 	UF:Configure_PowerPrediction(frame)
-
-	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-
-	-- Resurrect
 	UF:Configure_ResurrectionIcon(frame)
-
 	UF:Configure_RaidRoleIcons(frame)
-
-	--Castbar
 	UF:Configure_Castbar(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--Debuff Highlight
 	UF:Configure_DebuffHighlight(frame)
-
-	--OverHealing
 	UF:Configure_HealComm(frame)
-
-	--Raid Icon
 	UF:Configure_RaidIcon(frame)
-
-	--AuraBars
 	UF:Configure_AuraBars(frame)
-
-	-- PhaseIndicator
 	UF:Configure_PhaseIcon(frame)
-
-	--PvP & Prestige Icon
 	UF:Configure_PVPIcon(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
-
-	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))

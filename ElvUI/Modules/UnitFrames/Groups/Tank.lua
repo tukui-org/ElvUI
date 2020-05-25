@@ -129,21 +129,11 @@ function UF:Update_TankFrames(frame, db)
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
 
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
-
 	UF:Configure_RaidIcon(frame)
 
 	if not frame.isChild then
@@ -155,17 +145,10 @@ function UF:Update_TankFrames(frame, db)
 			end
 		end
 
-		--Auras
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_AllAuras(frame)
-
-		--RaidDebuffs
 		UF:Configure_RaidDebuffs(frame)
-
-		--Debuff Highlight
 		UF:Configure_DebuffHighlight(frame)
-
-		--Buff Indicator
 		UF:Configure_AuraWatch(frame)
 	end
 

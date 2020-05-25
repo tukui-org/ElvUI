@@ -130,21 +130,11 @@ function UF:Update_AssistFrames(frame, db)
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
 
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
 	UF:Configure_RaidIcon(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
 
 	if not frame.isChild then
@@ -155,17 +145,11 @@ function UF:Update_AssistFrames(frame, db)
 				frame:SetAttribute("type3", nil)
 			end
 		end
-		--Auras
+
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_AllAuras(frame)
-
-		--RaidDebuffs
 		UF:Configure_RaidDebuffs(frame)
-
-		--Debuff Highlight
 		UF:Configure_DebuffHighlight(frame)
-
-		--Buff Indicator
 		UF:Configure_AuraWatch(frame)
 	end
 

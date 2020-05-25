@@ -8,13 +8,15 @@ function UF:Construct_PvPClassificationIndicator(frame)
 end
 
 function UF:Configure_PvPClassificationIndicator(frame)
+	local db = frame.db
+
 	local PvPClassificationIndicator = frame.PvPClassificationIndicator
 	PvPClassificationIndicator:ClearAllPoints()
-	PvPClassificationIndicator:Point(frame.db.pvpClassificationIndicator.anchorPoint, frame.Health, frame.db.pvpClassificationIndicator.anchorPoint, frame.db.pvpClassificationIndicator.xOffset, frame.db.pvpClassificationIndicator.yOffset)
+	PvPClassificationIndicator:Point(E.InversePoints[db.pvpclassificationindicator.position], frame, db.pvpclassificationindicator.position, db.pvpclassificationindicator.xOffset, db.pvpclassificationindicator.yOffset)
 
-	if frame.db.pvpClassificationIndicator.enable and not frame:IsElementEnabled('PvPClassificationIndicator') then
+	if frame.db.pvpclassificationindicator.enable and not frame:IsElementEnabled('PvPClassificationIndicator') then
 		frame:EnableElement('PvPClassificationIndicator')
-	elseif not frame.db.pvpClassificationIndicator.enable and frame:IsElementEnabled('PvPClassificationIndicator') then
+	elseif not frame.db.pvpclassificationindicator.enable and frame:IsElementEnabled('PvPClassificationIndicator') then
 		frame:DisableElement('PvPClassificationIndicator')
 	end
 end

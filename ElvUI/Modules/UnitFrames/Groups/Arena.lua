@@ -82,7 +82,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.FocusGlow = UF:Construct_FocusGlow(frame)
 		frame.Trinket = UF:Construct_Trinket(frame)
 		frame.PVPSpecIcon = UF:Construct_PVPSpecIcon(frame)
-		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
+		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()
 		frame:SetAttribute("type2", "focus")
 
