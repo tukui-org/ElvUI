@@ -460,7 +460,7 @@ end
 
 function CH:StyleChat(frame)
 	local name = frame:GetName()
-	local tab = _G[name.."Tab"]
+	local tab = CH:GetTab(frame)
 
 	tab.Text:FontTemplate(LSM:Fetch("font", CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
@@ -786,7 +786,7 @@ end
 
 function CH:GetTab(chat)
 	if not chat.tab then
-		chat.tab = _G[chat:GetName() .. "Tab"]
+		chat.tab = _G[chat:GetName() .. 'Tab']
 	end
 
 	return chat.tab
@@ -2176,14 +2176,18 @@ function CH:PET_BATTLE_CLOSE()
 	end
 
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
-		local frame = _G[frameName]
-		if frame then
-			local text = _G[frameName.."Tab"]:GetText()
-			if strmatch(text, DEFAULT_STRINGS.PET_BATTLE_COMBAT_LOG) then
-				FCF_Close(frame)
-			end
+		local chat = _G[frameName]
+		local tab = CH:GetTab(chat)
+		local text = tab and tab.Text:GetText()
+		if text and strmatch(text, DEFAULT_STRINGS.PET_BATTLE_COMBAT_LOG) then
+			FCF_Close(chat)
 		end
 	end
+end
+
+function CH:FCF_Close(chat)
+	-- clear this out when it's closed, its used to colorize the chat tabs in FCFTab_UpdateColors
+	CH:GetTab(chat).classColor = nil
 end
 
 function CH:UpdateFading()
@@ -2795,20 +2799,26 @@ end
 function CH:FCFTab_UpdateColors(tab, selected)
 	if selected then
 		tab.Text:SetTextColor(1, 1, 1)
+		tab.classColor = nil
 	elseif tab.conversationIcon then
-		if not tab.originalText then
+		local color = tab.classColor
+		if not color then
 			local text = tab:GetText()
-			tab.originalText = text
+			local classMatch = CH.ClassNames[strlower(text)]
+			if classMatch then
+				color = E:ClassColor(classMatch)
+				tab.classColor = color
+			end
+
 			tab:SetText(gsub(E:StripMyRealm(text), "([%S]-)%-[%S]+", "%1|cFF999999*|r"))
 		end
 
-		local classMatch = CH.ClassNames[strlower(tab.originalText)]
-		local color = classMatch and E:ClassColor(classMatch)
 		if color then
 			tab.Text:SetTextColor(color.r, color.g, color.b)
 		end
 	else
 		tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+		tab.classColor = nil
 	end
 
 	tab.selected = selected
@@ -2974,6 +2984,7 @@ function CH:Initialize()
 	self:SecureHook('ChatEdit_DeactivateChat')
 	self:SecureHook('ChatEdit_OnEnterPressed')
 	self:SecureHook('FCFDock_UpdateTabs')
+	self:SecureHook('FCF_Close')
 	self:SecureHook('FCF_SetWindowAlpha')
 	self:SecureHook('FCFTab_UpdateColors')
 	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
