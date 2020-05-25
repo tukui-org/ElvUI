@@ -110,7 +110,8 @@ local function OnEnter(self)
 		if #pvpTalents > 0 then
 			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(PVP_TALENTS, 0.69, 0.31, 0.31)
-			for _, talentID in next, pvpTalents do
+			for i, talentID in next, pvpTalents do
+				if i > 4 then break end
 				local _, name, icon, _, _, _, unlocked = GetPvpTalentInfoByID(talentID)
 				if name and unlocked then
 					DT.tooltip:AddLine(AddTexture(icon)..' '..name)
