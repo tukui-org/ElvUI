@@ -711,6 +711,7 @@ function DT:Initialize()
 	end
 
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
+	DT:RegisterEvent('CURRENCY_DISPLAY_UPDATE')
 
 	DT:PopulateData()
 	DT:RegisterHyperDT()
