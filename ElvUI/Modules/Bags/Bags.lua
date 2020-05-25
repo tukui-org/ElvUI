@@ -68,7 +68,7 @@ local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UseContainerItem = UseContainerItem
-
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
@@ -1154,11 +1154,11 @@ function B:UpdateTokens()
 		button.icon:SetTexture(icon)
 
 		if B.db.currencyFormat == 'ICON_TEXT' then
-			button.text:SetText(name..': '..count)
+			button.text:SetText(name..': '..BreakUpLargeNumbers(count))
 		elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
-			button.text:SetText(E:AbbreviateString(name)..': '..count)
+			button.text:SetText(E:AbbreviateString(name)..': '..BreakUpLargeNumbers(count))
 		elseif B.db.currencyFormat == 'ICON' then
-			button.text:SetText(count)
+			button.text:SetText(BreakUpLargeNumbers(count))
 		end
 
 		button.currencyID = currencyID
