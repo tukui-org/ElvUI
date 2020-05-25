@@ -1099,12 +1099,12 @@ function CH:Panels_ColorUpdate()
 	end
 end
 
---[[local function UpdateChatTabColor(_, r, g, b)
+local function UpdateChatTabColor()
 	for _, name in ipairs(_G.CHAT_FRAMES) do
-		_G[name..'TabText']:SetTextColor(r, g, b)
+		CH:FCFTab_UpdateColors(_G[name..'Tab'], _G[name..'Tab'].selected)
 	end
 end
-E.valueColorUpdateFuncs[UpdateChatTabColor] = true]]
+E.valueColorUpdateFuncs[UpdateChatTabColor] = true
 
 function CH:ScrollToBottom(frame)
 	frame:ScrollToBottom()
@@ -2822,6 +2822,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 	else
 		tab:GetFontString():SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
+	tab.selected = selected
 end
 
 
