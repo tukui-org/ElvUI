@@ -2189,62 +2189,63 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 end
 
 local function GetOptionsTable_PVPClassificationIndicator(updateFunc, groupName, numGroup)
-		local config = {
-			order = 30,
-			name = L["PvP Classification Indicator"],
-			desc = L["Cart / Flag / Orb / Assassin Bounty"],
-			type = "group",
-			get = function(info)
-				return E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]]
-			end,
-			set = function(info, value)
-				E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]] = value
-				updateFunc(UF, groupName, numGroup)
-			end,
-			args = {
-				enable = {
-					order = 1,
-					name = L["Enable"],
-					type = "toggle"
-				},
-				size = {
-					order = 2,
-					name = L["Size"],
-					type = "range",
-					min = 5,
-					max = 100,
-					step = 1
-				},
-				position = {
-					order = 3,
-					type = "select",
-					name = L["Icon Position"],
-					values = {
-						["CENTER"] = "CENTER",
-						["TOPLEFT"] = "TOPLEFT",
-						["BOTTOMLEFT"] = "BOTTOMLEFT",
-						["TOPRIGHT"] = "TOPRIGHT",
-						["BOTTOMRIGHT"] = "BOTTOMRIGHT"
-					}
-				},
-				xOffset = {
-					order = 4,
-					name = L["X-Offset"],
-					type = "range",
-					min = -100,
-					max = 100,
-					step = 1
-				},
-				yOffset = {
-					order = 5,
-					name = L["Y-Offset"],
-					type = "range",
-					min = -100,
-					max = 100,
-					step = 1
+	local config = {
+		name = L["PvP Classification Indicator"],
+		desc = L["Cart / Flag / Orb / Assassin Bounty"],
+		type = "group",
+		get = function(info)
+			return E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]]
+		end,
+		set = function(info, value)
+			E.db.unitframe.units[groupName].pvpclassificationindicator[info[#info]] = value
+			updateFunc(UF, groupName, numGroup)
+		end,
+		args = {
+			enable = {
+				order = 1,
+				name = L["Enable"],
+				type = "toggle"
+			},
+			size = {
+				order = 2,
+				name = L["Size"],
+				type = "range",
+				min = 5,
+				max = 100,
+				step = 1
+			},
+			position = {
+				order = 3,
+				type = "select",
+				name = L["Icon Position"],
+				values = {
+					["CENTER"] = "CENTER",
+					["TOPLEFT"] = "TOPLEFT",
+					["BOTTOMLEFT"] = "BOTTOMLEFT",
+					["TOPRIGHT"] = "TOPRIGHT",
+					["BOTTOMRIGHT"] = "BOTTOMRIGHT"
 				}
+			},
+			xOffset = {
+				order = 4,
+				name = L["X-Offset"],
+				type = "range",
+				min = -100,
+				max = 100,
+				step = 1
+			},
+			yOffset = {
+				order = 5,
+				name = L["Y-Offset"],
+				type = "range",
+				min = -100,
+				max = 100,
+				step = 1
 			}
 		}
+	}
+
+	return config
 end
 
 local function GetOptionsTable_PVPIcon(updateFunc, groupName, numGroup)
