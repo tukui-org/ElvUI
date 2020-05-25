@@ -729,6 +729,31 @@ function TT:SetToyByItemID(tt, id)
 	tt:Show()
 end
 
+function TT:SetCurrencyToken(tt, id)
+	if tt:IsForbidden() then return end
+	id = tonumber(strmatch(GetCurrencyListLink(id),"currency:(%d+)"))
+    if not id or not self.db.spellID then return end
+
+	tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
+	tt:Show()
+end
+
+function TT:SetCurrencyTokenByID(tt, id)
+	if tt:IsForbidden() then return end
+    if not id or not self.db.spellID then return end
+
+	tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
+	tt:Show()
+end
+
+function TT:SetBackpackToken(tt, id)
+	if tt:IsForbidden() then return end
+    if not id or not self.db.spellID then return end
+
+	tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, select(4, GetBackpackCurrencyInfo(id))))
+	tt:Show()
+end
+
 function TT:RepositionBNET(frame, _, anchor)
 	if anchor ~= _G.BNETMover then
 		frame:ClearAllPoints()
@@ -833,6 +858,9 @@ function TT:Initialize()
 	self:SecureHook('SetItemRef')
 	self:SecureHook('GameTooltip_SetDefaultAnchor')
 	self:SecureHook(GameTooltip, 'SetToyByItemID')
+	self:SecureHook(GameTooltip, 'SetCurrencyToken')
+	self:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
+	self:SecureHook(GameTooltip, 'SetBackpackToken')
 	self:SecureHook(GameTooltip, 'SetUnitAura')
 	self:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	self:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
