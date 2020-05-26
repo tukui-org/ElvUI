@@ -59,6 +59,8 @@ local UnitPVPName = UnitPVPName
 local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
+local GetCurrencyListLink = GetCurrencyListLink
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
