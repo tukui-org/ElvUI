@@ -458,6 +458,11 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr
 end
 
+local editboxCharCount
+function CH:CountLinkCharacters()
+	editboxCharCount = editboxCharCount + (strlen(self) + 4) -- 4 is ending '|h|r'
+end
+
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 	local tab = CH:GetTab(frame)
@@ -565,6 +570,11 @@ function CH:StyleChat(frame)
 				ChatEdit_ParseText(editBox, 0)
 			end
 		end
+
+		-- recalculate the character count correctly with hyperlinks in it, using gsub so it matches multiple without gmatch
+		editboxCharCount = 0
+		gsub(text, '(|cff%x%x%x%x%x%x|H.-|h).-|h|r', CH.CountLinkCharacters)
+		if editboxCharCount ~= 0 then len = len - editboxCharCount end
 
 		editbox.characterCount:SetText(len > 0 and (255 - len) or '')
 
