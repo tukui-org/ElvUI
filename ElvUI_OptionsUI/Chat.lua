@@ -6,8 +6,12 @@ local Layout = E:GetModule('Layout')
 
 local _G = _G
 local gsub = gsub
+local wipe = wipe
+local format = format
 local strlower = strlower
 local GameTooltip = _G.GameTooltip
+
+local tabSelectorTable = {}
 
 E.Options.args.chat = {
 	type = "group",
@@ -260,19 +264,28 @@ E.Options.args.chat = {
 							order = 3,
 							type = 'select',
 							name = L["Selector Style"],
-							values = {
-								NONE	= L["NONE"],
-								ARROW	= '>Name<',
-								ARROW1	= '> Name <',
-								ARROW2	= '<Name>',
-								ARROW3	= '< Name >',
-								BOX		= '[Name]',
-								BOX1	= '[ Name ]',
-								CURLY	= '{Name}',
-								CURLY1	= '{ Name }',
-								CURVE	= '(Name)',
-								CURVE1	= '( Name )',
-							}
+							values = function()
+								wipe(tabSelectorTable)
+
+								for key, value in pairs(CH.TabStyles) do
+									if key == 'NONE' then
+										tabSelectorTable[key] = 'Name'
+									else
+										local color = CH.db.tabSelectorColor
+										local hexColor = E:RGBToHex(color.r, color.g, color.b)
+
+										local selectedColor = E.media.hexvaluecolor
+										if CH.db.tabSelectedTextEnabled then
+											color = E.db.chat.tabSelectedTextColor
+											selectedColor = E:RGBToHex(color.r, color.g, color.b)
+										end
+
+										tabSelectorTable[key] = format(value, hexColor, format('%sName|r', selectedColor), hexColor)
+									end
+								end
+
+								return tabSelectorTable
+							end,
 						},
 						tabSelectorColor = {
 							order = 4,

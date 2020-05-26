@@ -2843,7 +2843,7 @@ function CH:BuildCopyChatFrame()
 	Skins:HandleCloseButton(close)
 end
 
-local tabStyles = {
+CH.TabStyles = {
 	NONE	= '%s',
 	ARROW	= '%s>|r%s%s<|r',
 	ARROW1	= '%s>|r %s %s<|r',
@@ -2868,11 +2868,11 @@ function CH:FCFTab_UpdateColors(tab, selected)
 
 	if selected then
 		if CH.db.tabSelector == 'NONE' then
-			tab:SetFormattedText(tabStyles[CH.db.tabSelector], tab.whisperName or name)
+			tab:SetFormattedText(CH.TabStyles.NONE, tab.whisperName or name)
 		else
 			local color = CH.db.tabSelectorColor
 			local hexColor = E:RGBToHex(color.r, color.g, color.b)
-			tab:SetFormattedText(tabStyles[CH.db.tabSelector], hexColor, tab.whisperName or name, hexColor)
+			tab:SetFormattedText(CH.TabStyles[CH.db.tabSelector] or CH.TabStyles.ARROW1, hexColor, tab.whisperName or name, hexColor)
 		end
 
 		if CH.db.tabSelectedTextEnabled then
