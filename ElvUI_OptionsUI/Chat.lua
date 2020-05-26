@@ -269,7 +269,7 @@ E.Options.args.chat = {
 
 								for key, value in pairs(CH.TabStyles) do
 									if key == 'NONE' then
-										tabSelectorTable[key] = 'Name'
+										tabSelectorTable[key] = 'None'
 									else
 										local color = CH.db.tabSelectorColor
 										local hexColor = E:RGBToHex(color.r, color.g, color.b)

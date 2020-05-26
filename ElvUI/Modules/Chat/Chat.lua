@@ -792,7 +792,7 @@ end
 
 function CH:GetOwner(tab)
 	if not tab.owner then
-		tab.owner = _G[strsub(tab:GetName(), 0, -4)]
+		tab.owner = _G[format('ChatFrame%s', tab:GetID())]
 	end
 
 	return tab.owner
@@ -800,7 +800,7 @@ end
 
 function CH:GetTab(chat)
 	if not chat.tab then
-		chat.tab = _G[chat:GetName() .. 'Tab']
+		chat.tab = _G[format('ChatFrame%sTab', chat:GetID())]
 	end
 
 	return chat.tab
