@@ -3028,7 +3028,7 @@ function CH:GetPlayerInfoByGUID(guid)
 end
 
 function CH:ResetHistory()
-	ElvCharacterDB.ChatEditHistory = {}
+	ElvCharacterDB.ChatHistoryLog = {}
 end
 
 function CH:Initialize()
