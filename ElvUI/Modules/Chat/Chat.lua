@@ -2859,6 +2859,8 @@ CH.TabStyles = {
 
 function CH:FCFTab_UpdateColors(tab, selected)
 	local chat = CH:GetOwner(tab)
+	if not chat then return end
+
 	local whisper = tab.conversationIcon and chat.chatTarget
 	local name = chat.name
 
