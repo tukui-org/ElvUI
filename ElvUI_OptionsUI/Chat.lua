@@ -206,18 +206,24 @@ E.Options.args.chat = {
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
-				editboxHistorySize = {
-					order = 25,
-					type = 'range',
-					name = L["Editbox History"],
-					min = 5, max = 50, step = 1,
-				},
 				maxLines = {
-					order = 26,
+					order = 22,
 					type = 'range',
 					name = L["Max Lines"],
 					min = 10, max = 5000, step = 1,
 					set = function(info, value) E.db.chat[info[#info]] = value; CH:SetupChat() end,
+				},
+				editboxHistorySize = {
+					order = 23,
+					type = 'range',
+					name = L["Editbox History"],
+					min = 5, max = 50, step = 1,
+				},
+				resetHistory = {
+					order = 24,
+					type = "execute",
+					name = L['Reset Editbox History'],
+					func = function() CH:ResetEditboxHistory() end
 				},
 				tabSelection = {
 					order = 65,
