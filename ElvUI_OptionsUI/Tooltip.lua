@@ -80,25 +80,8 @@ E.Options.args.tooltip = {
 			name = L["Show ElvUI Users"],
 			desc = L["Show ElvUI users and their version of ElvUI."]
 		},
-		cursorAnchor = {
-			order = 12,
-			type = 'toggle',
-			name = L["Cursor Anchor"],
-			desc = L["Should tooltip be anchored to mouse cursor"],
-		},
-		cursorAnchorType = {
-			order = 13,
-			type = 'select',
-			name = L["Cursor Anchor Type"],
-			values = {
-				["ANCHOR_CURSOR"] = L["ANCHOR_CURSOR"],
-				["ANCHOR_CURSOR_LEFT"] = L["ANCHOR_CURSOR_LEFT"],
-				["ANCHOR_CURSOR_RIGHT"] = L["ANCHOR_CURSOR_RIGHT"],
-			},
-			disabled = function() return (not E.db.tooltip.cursorAnchor) end,
-		},
 		itemCount = {
-			order = 14,
+			order = 12,
 			type = 'select',
 			name = L["Item Count"],
 			desc = L["Display how many of a certain item you have in your possession."],
@@ -110,25 +93,42 @@ E.Options.args.tooltip = {
 			},
 		},
 		colorAlpha = {
-			order = 15,
+			order = 13,
 			type = "range",
 			name = L["OPACITY"],
 			isPercent = true,
 			min = 0, max = 1, step = 0.01,
+		},
+		cursorAnchor = {
+			order = 14,
+			type = 'toggle',
+			name = L["Cursor Anchor"],
+			desc = L["Should tooltip be anchored to mouse cursor"],
+		},
+		cursorAnchorType = {
+			order = 15,
+			type = 'select',
+			name = L["Cursor Anchor Type"],
+			values = {
+				["ANCHOR_CURSOR"] = L["ANCHOR_CURSOR"],
+				["ANCHOR_CURSOR_LEFT"] = L["ANCHOR_CURSOR_LEFT"],
+				["ANCHOR_CURSOR_RIGHT"] = L["ANCHOR_CURSOR_RIGHT"],
+			},
+			hidden = function() return (not E.db.tooltip.cursorAnchor) end,
 		},
 		cursorAnchorX = {
 			order = 16,
 			name = L["Cursor Anchor Offset X"],
 			type = "range",
 			min = -128, max = 128, step = 1,
-			disabled = function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end,
+			hidden = function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end,
 		},
 		cursorAnchorY = {
 			order = 17,
 			type = "range",
 			name = L["Cursor Anchor Offset Y"],
 			min = -128, max = 128, step = 1,
-			disabled = function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end,
+			hidden = function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end,
 		},
 		fontGroup = {
 			order = 30,
