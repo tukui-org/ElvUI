@@ -2867,7 +2867,9 @@ function CH:FCFTab_UpdateColors(tab, selected)
 	end
 
 	if selected then
-		if CH.db.tabSelector ~= 'NONE' then
+		if CH.db.tabSelector == 'NONE' then
+			tab:SetFormattedText(tabStyles[CH.db.tabSelector], tab.whisperName or name)
+		else
 			local color = CH.db.tabSelectorColor
 			local hexColor = E:RGBToHex(color.r, color.g, color.b)
 			tab:SetFormattedText(tabStyles[CH.db.tabSelector], hexColor, tab.whisperName or name, hexColor)
