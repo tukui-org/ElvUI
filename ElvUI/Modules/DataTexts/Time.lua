@@ -290,7 +290,7 @@ local function OnEvent(self, event)
 end
 
 local int = 3
-function Update(self, t)
+local function Update(self, t)
 	int = int - t
 
 	if int > 0 then return end
