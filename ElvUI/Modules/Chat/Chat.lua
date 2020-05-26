@@ -2846,12 +2846,14 @@ end
 local tabStyles = {
 	NONE	= '%s',
 	ARROW	= '%s>|r%s%s<|r',
-	BOX		= '%s[|r%s%s]|r',
-	CURLY	= '%s{|r%s%s}|r',
-	CURVE	= '%s(|r%s%s)|r',
 	ARROW1	= '%s>|r %s %s<|r',
+	ARROW2	= '%s<|r%s%s>|r',
+	ARROW3	= '%s<|r %s %s>|r',
+	BOX		= '%s[|r%s%s]|r',
 	BOX1	= '%s[|r %s %s]|r',
+	CURLY	= '%s{|r%s%s}|r',
 	CURLY1	= '%s{|r %s %s}|r',
+	CURVE	= '%s(|r%s%s)|r',
 	CURVE1	= '%s(|r %s %s)|r',
 }
 

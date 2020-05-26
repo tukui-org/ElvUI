@@ -256,14 +256,16 @@ E.Options.args.chat = {
 							name = L["Selector Style"],
 							values = {
 								NONE	= L["NONE"],
-								ARROW	= '>NAME<',
-								BOX		= '[NAME]',
-								CURLY	= '{NAME}',
-								CURVE	= '(NAME)',
-								ARROW1	= '> NAME <',
-								BOX1	= '[ NAME ]',
-								CURLY1	= '{ NAME }',
-								CURVE1	= '( NAME )',
+								ARROW	= '>Name<',
+								ARROW1	= '> Name <',
+								ARROW2	= '<Name>',
+								ARROW3	= '< Name >',
+								BOX		= '[Name]',
+								BOX1	= '[ Name ]',
+								CURLY	= '{Name}',
+								CURLY1	= '{ Name }',
+								CURVE	= '(Name)',
+								CURVE1	= '( Name )',
 							}
 						},
 						tabSelectorColor = {
@@ -308,7 +310,7 @@ E.Options.args.chat = {
 							type = 'range',
 							name = L["History Size"],
 							min = 10, max = 500, step = 1,
-							disabled = function() return E.db.chat.ChatHistory end,
+							disabled = function() return not E.db.chat.chatHistory end,
 						},
 						historyTypes = {
 							order = 4,
@@ -320,6 +322,7 @@ E.Options.args.chat = {
 							set = function(info, key, value)
 								E.db.chat.showHistory[key] = value
 							end,
+							disabled = function() return not E.db.chat.chatHistory end,
 							values = {
 								WHISPER		= L["Whisper"],
 								GUILD		= L["Guild"],
