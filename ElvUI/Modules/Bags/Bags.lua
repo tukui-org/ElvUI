@@ -1791,11 +1791,11 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.icon:SetInside()
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
 
-	slot.itemLevel = slot:CreateFontString(nil, 'ARTWORK', 2)
+	slot.itemLevel = slot:CreateFontString(nil, 'ARTWORK', 7)
 	slot.itemLevel:Point('BOTTOMRIGHT', 0, 2)
 	slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
-	slot.bindType = slot:CreateFontString(nil, 'ARTWORK', 2)
+	slot.bindType = slot:CreateFontString(nil, 'ARTWORK', 7)
 	slot.bindType:Point('TOP', 0, -2)
 	slot.bindType:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
