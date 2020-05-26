@@ -1116,13 +1116,13 @@ function CH:Panels_ColorUpdate()
 	end
 end
 
-local function UpdateChatTabColor()
+function CH:UpdateChatTabColors()
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local tab = CH:GetTab(_G[name])
 		CH:FCFTab_UpdateColors(tab, tab.selected)
 	end
 end
-E.valueColorUpdateFuncs[UpdateChatTabColor] = true
+E.valueColorUpdateFuncs[CH.UpdateChatTabColors] = true
 
 function CH:ScrollToBottom(frame)
 	frame:ScrollToBottom()
@@ -1920,6 +1920,7 @@ function CH:SetupChat()
 
 		frame:FontTemplate(LSM:Fetch("font", CH.db.font), fontSize, CH.db.fontOutline)
 		frame:SetTimeVisible(CH.db.inactivityTimer)
+		frame:SetMaxLines(CH.db.maxLines)
 		frame:SetFading(CH.db.fade)
 
 		if id ~= 2 and not frame.OldAddMessage then
@@ -2165,7 +2166,7 @@ function CH:ChatEdit_AddHistory(_, line) -- editBox, line
 
 		tinsert(ElvCharacterDB.ChatEditHistory, line)
 
-		if #ElvCharacterDB.ChatEditHistory > 20 then
+		if #ElvCharacterDB.ChatEditHistory > CH.db.editboxHistorySize then
 			tremove(ElvCharacterDB.ChatEditHistory, 1)
 		end
 	end
@@ -2202,7 +2203,7 @@ end
 function CH:FCF_Close(chat)
 	-- clear these off when it's closed, used by FCFTab_UpdateColors
 	local tab = CH:GetTab(chat)
-	tab.loweredText = nil
+	tab.whisperName = nil
 	tab.classColor = nil
 end
 
@@ -2215,6 +2216,27 @@ function CH:UpdateFading()
 		end
 	end
 end
+
+local historyTypes = { -- the events set on the chats are still in FindURL_Events, this is used to ignore some types only
+	CHAT_MSG_WHISPER			= 'WHISPER',
+	CHAT_MSG_WHISPER_INFORM		= 'WHISPER',
+	CHAT_MSG_BN_WHISPER			= 'WHISPER',
+	CHAT_MSG_BN_WHISPER_INFORM	= 'WHISPER',
+	CHAT_MSG_GUILD				= 'GUILD',
+	CHAT_MSG_GUILD_ACHIEVEMENT	= 'GUILD',
+	CHAT_MSG_OFFICER		= 'OFFICER',
+	CHAT_MSG_PARTY			= 'PARTY',
+	CHAT_MSG_PARTY_LEADER	= 'PARTY',
+	CHAT_MSG_RAID			= 'RAID',
+	CHAT_MSG_RAID_LEADER	= 'RAID',
+	CHAT_MSG_RAID_WARNING	= 'RAID',
+	CHAT_MSG_INSTANCE_CHAT			= 'INSTANCE',
+	CHAT_MSG_INSTANCE_CHAT_LEADER	= 'INSTANCE',
+	CHAT_MSG_CHANNEL		= 'CHANNEL',
+	CHAT_MSG_SAY			= 'SAY',
+	CHAT_MSG_YELL			= 'YELL',
+	CHAT_MSG_EMOTE			= 'EMOTE'  -- this never worked, check it sometime.
+}
 
 function CH:DisplayChatHistory()
 	local data = ElvCharacterDB.ChatHistoryLog
@@ -2231,7 +2253,11 @@ function CH:DisplayChatHistory()
 			local d = data[i]
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
-					if gsub(strsub(d[50],10),'_INFORM','') == messageType then
+					local historyType, skip = historyTypes[d[50]]
+					if historyType then -- let others go by..
+						if not CH.db.showHistory[historyType] then skip = true end -- but kill ignored ones
+					end
+					if not skip and gsub(strsub(d[50],10),'_INFORM','') == messageType then
 						if d[1] and not CH:MessageIsProtected(d[1]) then
 							CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
 						end
@@ -2270,6 +2296,11 @@ function CH:DelayGuildMOTD()
 end
 
 function CH:SaveChatHistory(event, ...)
+	local historyType = historyTypes[event]
+	if historyType then -- let others go by..
+		if not CH.db.showHistory[historyType] then return end -- but kill ignored ones
+	end
+
 	if CH.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
 		local message, author = ...
 		local when = time()
@@ -2300,7 +2331,7 @@ function CH:SaveChatHistory(event, ...)
 		tempHistory[52] = coloredName or CH:GetColoredName(event, nil, ...)
 
 		tinsert(data, tempHistory)
-		while #data >= 128 do
+		while #data >= CH.db.historySize do
 			tremove(data, 1)
 		end
 	end
@@ -2812,24 +2843,53 @@ function CH:BuildCopyChatFrame()
 	Skins:HandleCloseButton(close)
 end
 
+local tabStyles = {
+	NONE	= '%s',
+	ARROW	= '%s>|r%s%s<|r',
+	BOX		= '%s[|r%s%s]|r',
+	CURLY	= '%s{|r%s%s}|r',
+	CURVE	= '%s(|r%s%s)|r',
+	ARROW1	= '%s>|r %s %s<|r',
+	BOX1	= '%s[|r %s %s]|r',
+	CURLY1	= '%s{|r %s %s}|r',
+	CURVE1	= '%s(|r %s %s)|r',
+}
+
 function CH:FCFTab_UpdateColors(tab, selected)
+	local chat = CH:GetOwner(tab)
+	local whisper = tab.conversationIcon and chat.chatTarget
+	local name = chat.name
+
+	if whisper and not tab.whisperName then
+		tab.whisperName = gsub(E:StripMyRealm(name), "([%S]-)%-[%S]+", "%1|cFF999999*|r")
+	end
+
 	if selected then
-		tab.Text:SetTextColor(1, 1, 1)
-	elseif tab.conversationIcon then
-		if not tab.loweredText then
-			local text = tab:GetText()
-			tab.loweredText = strlower(text)
-			tab:SetText(gsub(E:StripMyRealm(text), "([%S]-)%-[%S]+", "%1|cFF999999*|r"))
+		if CH.db.tabSelector ~= 'NONE' then
+			local color = CH.db.tabSelectorColor
+			local hexColor = E:RGBToHex(color.r, color.g, color.b)
+			tab:SetFormattedText(tabStyles[CH.db.tabSelector], hexColor, tab.whisperName or name, hexColor)
 		end
 
+		if CH.db.tabSelectedTextEnabled then
+			local color = CH.db.tabSelectedTextColor
+			tab.Text:SetTextColor(color.r, color.g, color.b)
+		else
+			tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+		end
+	elseif whisper then
+		tab:SetText(tab.whisperName or name)
+
 		if not tab.classColor then
-			local classMatch = CH.ClassNames[tab.loweredText]
+			local classMatch = CH.ClassNames[strlower(name)]
 			if classMatch then tab.classColor = E:ClassColor(classMatch) end
 		end
 
-		local color = tab.classColor
-		if color then tab.Text:SetTextColor(color.r, color.g, color.b) end
+		if tab.classColor then
+			tab.Text:SetTextColor(tab.classColor.r, tab.classColor.g, tab.classColor.b)
+		end
 	else
+		tab:SetText(name)
 		tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
 
@@ -2965,6 +3025,10 @@ function CH:GetPlayerInfoByGUID(guid)
 	end
 
 	return data
+end
+
+function CH:ResetHistory()
+	ElvCharacterDB.ChatEditHistory = {}
 end
 
 function CH:Initialize()

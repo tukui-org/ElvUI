@@ -130,12 +130,6 @@ E.Options.args.chat = {
 						CH:RefreshToggleButtons()
 					end,
 				},
-				chatHistory = {
-					order = 11,
-					type = 'toggle',
-					name = L["Chat History"],
-					desc = L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."],
-				},
 				useAltKey = {
 					order = 12,
 					type = "toggle",
@@ -212,8 +206,135 @@ E.Options.args.chat = {
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
-				fadingGroup = {
+				editboxHistorySize = {
 					order = 25,
+					type = 'range',
+					name = L["Editbox History"],
+					min = 5, max = 50, step = 1,
+				},
+				maxLines = {
+					order = 26,
+					type = 'range',
+					name = L["Max Lines"],
+					min = 10, max = 5000, step = 1,
+					set = function(info, value) E.db.chat[info[#info]] = value; CH:SetupChat() end,
+				},
+				tabSelection = {
+					order = 65,
+					type = "group",
+					name = L["Tab Selector"],
+					set = function(info, value)
+						E.db.chat[info[#info]] = value;
+						CH:UpdateChatTabColors();
+					end,
+					args = {
+						tabSelectedTextEnabled = {
+							order = 1,
+							type = 'toggle',
+							name = L["Colorize Selected Text"],
+						},
+						tabSelectedTextColor = {
+							order = 2,
+							type = "color",
+							hasAlpha = false,
+							name = L["Selected Text Color"],
+							disabled = function() return not E.db.chat.tabSelectedTextEnabled end,
+							get = function()
+								local t = E.db.chat.tabSelectedTextColor
+								local d = P.chat.tabSelectedTextColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+							end,
+							set = function(_, r, g, b)
+								local t = E.db.chat.tabSelectedTextColor
+								t.r, t.g, t.b = r, g, b
+							end,
+						},
+						tabSelector = {
+							order = 3,
+							type = 'select',
+							name = L["Selector Style"],
+							values = {
+								NONE	= L["NONE"],
+								ARROW	= '>NAME<',
+								BOX		= '[NAME]',
+								CURLY	= '{NAME}',
+								CURVE	= '(NAME)',
+								ARROW1	= '> NAME <',
+								BOX1	= '[ NAME ]',
+								CURLY1	= '{ NAME }',
+								CURVE1	= '( NAME )',
+							}
+						},
+						tabSelectorColor = {
+							order = 4,
+							type = "color",
+							hasAlpha = false,
+							name = L["Selector Color"],
+							disabled = function() return E.db.chat.tabSelector == "NONE" end,
+							get = function()
+								local t = E.db.chat.tabSelectorColor
+								local d = P.chat.tabSelectorColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+							end,
+							set = function(_, r, g, b)
+								local t = E.db.chat.tabSelectorColor
+								t.r, t.g, t.b = r, g, b
+							end,
+						},
+					}
+				},
+				historyGroup = {
+					order = 70,
+					type = "group",
+					name = L["History"],
+					set = function(info, value) E.db.chat[info[#info]] = value end,
+					args = {
+						chatHistory = {
+							order = 1,
+							type = 'toggle',
+							name = L["Enable"],
+							desc = L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."],
+						},
+						resetHistory = {
+							order = 2,
+							type = "execute",
+							name = L['Reset History'],
+							func = function() CH:ResetHistory() end
+						},
+						historySize = {
+							order = 3,
+							type = 'range',
+							name = L["History Size"],
+							min = 10, max = 500, step = 1,
+							disabled = function() return E.db.chat.ChatHistory end,
+						},
+						historyTypes = {
+							order = 4,
+							type = 'multiselect',
+							name = L["Exclude Types"],
+							get = function(info, key) return
+								E.db.chat.showHistory[key]
+							end,
+							set = function(info, key, value)
+								E.db.chat.showHistory[key] = value
+							end,
+							values = {
+								WHISPER		= L["Whisper"],
+								GUILD		= L["Guild"],
+								OFFICER		= L["Officer"],
+								PARTY		= L["Party"],
+								RAID		= L["Raid"],
+								INSTANCE	= L["Instance"],
+								CHANNEL		= L["Channel"],
+								SAY			= L["Say"],
+								YELL		= L["Yell"],
+								EMOTE		= L["Emote"]
+							},
+						}
+					}
+				},
+				fadingGroup = {
+					order = 75,
 					type = "group",
 					name = L["Fade Chat"],
 					disabled = function() return not E.Chat.Initialized; end,
@@ -236,7 +357,7 @@ E.Options.args.chat = {
 					},
 				},
 				fontGroup = {
-					order = 25,
+					order = 80,
 					type = 'group',
 					name = L["Fonts"],
 					disabled = function() return not E.Chat.Initialized; end,
@@ -277,7 +398,7 @@ E.Options.args.chat = {
 					},
 				},
 				alerts = {
-					order = 30,
+					order = 85,
 					type = 'group',
 					name = L["Alerts"],
 					disabled = function() return not E.Chat.Initialized; end,
@@ -310,7 +431,7 @@ E.Options.args.chat = {
 					},
 				},
 				voicechatGroup = {
-					order = 40,
+					order = 90,
 					type = 'group',
 					name = L["BINDING_HEADER_VOICE_CHAT"],
 					args = {
@@ -348,7 +469,7 @@ E.Options.args.chat = {
 					},
 				},
 				timestampGroup = {
-					order = 45,
+					order = 95,
 					type = 'group',
 					name = L["TIMESTAMPS_LABEL"],
 					args = {
@@ -392,7 +513,7 @@ E.Options.args.chat = {
 					},
 				},
 				classColorMentionGroup = {
-					order = 50,
+					order = 100,
 					type = "group",
 					name = L["Class Color Mentions"],
 					disabled = function() return not E.Chat.Initialized; end,
