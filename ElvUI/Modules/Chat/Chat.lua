@@ -2200,8 +2200,10 @@ function CH:PET_BATTLE_CLOSE()
 end
 
 function CH:FCF_Close(chat)
-	-- clear this out when it's closed, its used to colorize the chat tabs in FCFTab_UpdateColors
-	CH:GetTab(chat).classColor = nil
+	-- clear these off when it's closed, used by FCFTab_UpdateColors
+	local tab = CH:GetTab(chat)
+	tab.loweredText = nil
+	tab.classColor = nil
 end
 
 function CH:UpdateFading()
@@ -2813,26 +2815,22 @@ end
 function CH:FCFTab_UpdateColors(tab, selected)
 	if selected then
 		tab.Text:SetTextColor(1, 1, 1)
-		tab.classColor = nil
 	elseif tab.conversationIcon then
-		local color = tab.classColor
-		if not color then
+		if not tab.loweredText then
 			local text = tab:GetText()
-			local classMatch = CH.ClassNames[strlower(text)]
-			if classMatch then
-				color = E:ClassColor(classMatch)
-				tab.classColor = color
-			end
-
+			tab.loweredText = strlower(text)
 			tab:SetText(gsub(E:StripMyRealm(text), "([%S]-)%-[%S]+", "%1|cFF999999*|r"))
 		end
 
-		if color then
-			tab.Text:SetTextColor(color.r, color.g, color.b)
+		if not tab.classColor then
+			local classMatch = CH.ClassNames[tab.loweredText]
+			if classMatch then tab.classColor = E:ClassColor(classMatch) end
 		end
+
+		local color = tab.classColor
+		if color then tab.Text:SetTextColor(color.r, color.g, color.b) end
 	else
 		tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
-		tab.classColor = nil
 	end
 
 	tab.selected = selected
