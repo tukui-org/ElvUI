@@ -731,10 +731,11 @@ function TT:SetToyByItemID(tt, id)
 	tt:Show()
 end
 
-function TT:SetCurrencyToken(tt, id)
+function TT:SetCurrencyToken(tt, index)
 	if tt:IsForbidden() then return end
-	id = tonumber(strmatch(GetCurrencyListLink(id),"currency:(%d+)"))
-    if not id or not self.db.spellID then return end
+
+	local id = self.db.spellID and tonumber(strmatch(GetCurrencyListLink(index),"currency:(%d+)"))
+    if not id then return end
 
 	tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
 	tt:Show()
