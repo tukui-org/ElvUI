@@ -1011,6 +1011,8 @@ end
 
 ElvUF.Tags.Events['class'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['class'] = function(unit)
+	if not UnitIsPlayer(unit) then return end
+
 	local _, classToken = UnitClass(unit)
 
 	if UnitSex(unit) == 3 then
@@ -1039,7 +1041,7 @@ ElvUF.Tags.Methods['name:title'] = function(unit)
 end
 
 ElvUF.Tags.Events['title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
-ElvUF.Tags.Methods['title'] = function(unit) 
+ElvUF.Tags.Methods['title'] = function(unit)
     if (UnitIsPlayer(unit)) then
         local titleid = GetCurrentTitle()
 		return GetTitleName(titleid)
