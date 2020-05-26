@@ -56,6 +56,12 @@ local function OnEvent(self)
 	local r, g, b = E:ColorGradient(totalDurability * .01, 1, .1, .1, 1, 1, .1, .1, 1, .1)
 	local hex = E:RGBToHex(r, g, b)
 	self.text:SetFormattedText(displayString, hex, totalDurability)
+
+	if (totalDurability <= 30) then
+		E:Flash(self, 0.53, true)
+	else
+		E:StopFlash(self)
+	end
 end
 
 local function Click()
