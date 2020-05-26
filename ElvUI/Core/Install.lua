@@ -1,6 +1,7 @@
 local E, L, V, P, G =unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
+local CH = E:GetModule('Chat')
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -29,7 +30,6 @@ local FCF_SetWindowName = FCF_SetWindowName
 local FCF_StopDragging = FCF_StopDragging
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
-local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 -- GLOBALS: ElvUIInstallFrame
@@ -56,14 +56,16 @@ local function SetupChat(noDisplayMsg)
 	FCF_OpenNewWindow(LOOT)
 	FCF_UnDockFrame(_G.ChatFrame3)
 
-	for i = 1, NUM_CHAT_WINDOWS do
-		local frame = _G[format('ChatFrame%s', i)]
+	for _, name in ipairs(_G.CHAT_FRAMES) do
+		local frame = _G[name]
+		local id = frame:GetID()
+		CH:FCFTab_UpdateColors(CH:GetTab(_G[name]))
 
 		-- move general bottom left
-		if i == 1 then
+		if id == 1 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.LeftChatToggleButton, 'TOPLEFT', 1, 3)
-		elseif i == 3 then
+		elseif id == 3 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.RightChatDataPanel, 'TOPLEFT', 1, 3)
 		end
@@ -73,11 +75,11 @@ local function SetupChat(noDisplayMsg)
 		FCF_SetChatWindowFontSize(nil, frame, 12)
 
 		-- rename windows general because moved to chat #3
-		if i == 1 then
+		if id == 1 then
 			FCF_SetWindowName(frame, GENERAL)
-		elseif i == 2 then
+		elseif id == 2 then
 			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif i == 3 then
+		elseif id == 3 then
 			FCF_SetWindowName(frame, LOOT..' / '..TRADE)
 		end
 	end
@@ -114,16 +116,14 @@ local function SetupChat(noDisplayMsg)
 	ChangeChatColor('CHANNEL2', 232/255, 158/255, 121/255) -- Trade
 	ChangeChatColor('CHANNEL3', 232/255, 228/255, 121/255) -- Local Defense
 
-	if E.Chat then
-		E.Chat:PositionChats()
+	CH:PositionChats()
 
-		if E.db.RightChatPanelFaded then
-			_G.RightChatToggleButton:Click()
-		end
+	if E.db.RightChatPanelFaded then
+		_G.RightChatToggleButton:Click()
+	end
 
-		if E.db.LeftChatPanelFaded then
-			_G.LeftChatToggleButton:Click()
-		end
+	if E.db.LeftChatPanelFaded then
+		_G.LeftChatToggleButton:Click()
 	end
 
 	if ELV_TOONS[PLAYER_NAME] then
