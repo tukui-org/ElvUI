@@ -2999,9 +2999,10 @@ function CH:GetPlayerInfoByGUID(guid)
 	local data = CH.GuidCache[guid]
 	if not data then
 		local ok, localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = pcall(GetPlayerInfoByGUID, guid)
-		if not ok then return end
+		if not (ok and englishClass) then return end
 
-		local shortRealm, nameWithRealm = (realm and realm ~= '') and E:ShortenRealm(realm)
+		if realm == '' then realm = nil end -- dont add realm for people on your realm
+		local shortRealm, nameWithRealm = realm and E:ShortenRealm(realm)
 		if name and name ~= '' then
 			nameWithRealm = (shortRealm and name..'-'..shortRealm) or name..'-'..PLAYER_REALM
 		end
