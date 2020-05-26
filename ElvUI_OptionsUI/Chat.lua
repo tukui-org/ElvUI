@@ -315,7 +315,7 @@ E.Options.args.chat = {
 						historyTypes = {
 							order = 4,
 							type = 'multiselect',
-							name = L["Exclude Types"],
+							name = L["Display Types"],
 							get = function(info, key) return
 								E.db.chat.showHistory[key]
 							end,
