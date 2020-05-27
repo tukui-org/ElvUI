@@ -5030,8 +5030,13 @@ local function GetUnitSettings(unit, name)
 			args = {
 				enable = {
 					type = "toggle",
-					order = 1,
+					order = 0,
 					name = L["Enable"]
+				},
+				hideIcon = {
+					type = "toggle",
+					order = 1,
+					name = L["Hide Icon"]
 				},
 				font = {
 					type = "select",

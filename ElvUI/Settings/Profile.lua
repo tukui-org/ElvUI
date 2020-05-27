@@ -441,6 +441,7 @@ local NP_EliteIcon = {
 
 local NP_QuestIcon = {
 	enable = true,
+	hideIcon = false,
 	position = 'RIGHT',
 	textPosition = 'BOTTOMRIGHT',
 	size = 20,

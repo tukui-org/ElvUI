@@ -43,6 +43,7 @@ function NP:Update_QuestIcons(nameplate)
 		for _, object in pairs(questIconTypes) do
 			local icon = nameplate.QuestIcons[object]
 			icon:Size(db.questIcon.size, db.questIcon.size)
+			icon:SetShown(not db.questIcon.hideIcon)
 			icon.Text:FontTemplate(E.Libs.LSM:Fetch("font", db.questIcon.font), db.questIcon.fontSize, db.questIcon.fontOutline)
 			icon.Text:ClearAllPoints()
 			icon.Text:Point(db.questIcon.textPosition, icon)
