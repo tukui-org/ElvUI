@@ -11,7 +11,7 @@ local ToggleCharacter = ToggleCharacter
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local REPUTATION, STANDING = REPUTATION, STANDING
 
-local function OnEvent(self, event, eventType)
+local function OnEvent(self)
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
 	if not name then return end
 

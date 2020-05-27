@@ -3,7 +3,7 @@ local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
+local ipairs, next, pairs, select = ipairs, next, pairs, select
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 

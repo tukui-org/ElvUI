@@ -30,11 +30,11 @@ local Screenshot = Screenshot
 local SetCVar = SetCVar
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
-local CinematicFrame = _G.CinematicFrame
-local MovieFrame = _G.MovieFrame
-local DNDstr = _G.DND
-local AFKstr = _G.AFK
-local C_PetBattles_IsInBattle = _G.C_PetBattles.IsInBattle
+local CinematicFrame = CinematicFrame
+local MovieFrame = MovieFrame
+local DNDstr = DND
+local AFKstr = AFK
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 
 local CAMERA_SPEED = 0.035
 local ignoreKeys = {

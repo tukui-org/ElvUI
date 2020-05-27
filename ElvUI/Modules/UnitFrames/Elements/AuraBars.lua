@@ -180,7 +180,7 @@ end
 
 local GOTAK_ID = 86659
 local GOTAK = GetSpellInfo(GOTAK_ID)
-function UF:PostUpdateBar_AuraBars(unit, statusBar, index, position, duration, expiration, debuffType, isStealable)
+function UF:PostUpdateBar_AuraBars(_, statusBar, _, _, _, _, debuffType) -- unit, statusBar, index, position, duration, expiration, debuffType, isStealable
 	local spellID = statusBar.spellID
 	local spellName = statusBar.spell
 

@@ -21,7 +21,7 @@ local IsDebugDisabled = function()
 	end
 end
 
-SLASH_FRAME1 = '/frame'
+_G.SLASH_FRAME1 = '/frame'
 SlashCmdList.FRAME = function(arg)
 	if IsDebugDisabled() then return end
 
@@ -32,7 +32,7 @@ SlashCmdList.FRAME = function(arg)
 	end
 
 	if arg ~= nil then
-		FRAME = arg -- Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
+		_G.FRAME = arg -- Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
 	end
 
 	if not _G.TableAttributeDisplay then
@@ -45,7 +45,7 @@ SlashCmdList.FRAME = function(arg)
 	end
 end
 
-SLASH_FRAMELIST1 = '/framelist'
+_G.SLASH_FRAMELIST1 = '/framelist'
 SlashCmdList.FRAMELIST = function(msg)
 	if IsDebugDisabled() then return end
 
@@ -92,7 +92,7 @@ local function TextureList(frame)
 	end
 end
 
-SLASH_TEXLIST1 = '/texlist'
+_G.SLASH_TEXLIST1 = '/texlist'
 SlashCmdList.TEXLIST = TextureList
 
 local function GetPoint(frame)
@@ -109,10 +109,10 @@ local function GetPoint(frame)
 	print(frameName, point, relativeToName, relativePoint, xOffset, yOffset)
 end
 
-SLASH_GETPOINT1 = '/getpoint'
+_G.SLASH_GETPOINT1 = '/getpoint'
 SlashCmdList.GETPOINT = GetPoint
 
-SLASH_DEV1 = '/dev'
+_G.SLASH_DEV1 = '/dev'
 SlashCmdList.DEV = function()
 	if not IsAddOnLoaded('ElvUIDev') then
 		local _, _, _, loadable, reason = GetAddOnInfo('ElvUIDev')
@@ -122,11 +122,11 @@ SlashCmdList.DEV = function()
 			elseif reason == 'DISABLED' then
 				print('ElvUIDev addon is disabled.')
 			elseif reason == 'DEMAND_LOADED' then
-				local loaded, reason = LoadAddOn('ElvUIDev')
+				local loaded, rsn = LoadAddOn('ElvUIDev')
 				if loaded then
 					ElvUIDev:ToggleFrame()
 				else
-					print('ElvUIDev addon cannot be loaded: %s.', strlower(reason))
+					print('ElvUIDev addon cannot be loaded: %s.', strlower(rsn))
 				end
 			end
 		end

@@ -86,7 +86,7 @@ local QuestTypesLocalized = {
 
 local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized.enUS
 
-local function QUEST_ACCEPTED(self, event, questLogIndex, questID)
+local function QUEST_ACCEPTED(_, _, questLogIndex, questID)
 	if questLogIndex and questLogIndex > 0 then
 		local questName = GetQuestLogTitle(questLogIndex)
 		if questName and (questID and questID > 0) then
@@ -95,7 +95,7 @@ local function QUEST_ACCEPTED(self, event, questLogIndex, questID)
 	end
 end
 
-local function QUEST_REMOVED(self, event, questID)
+local function QUEST_REMOVED(_, _, questID)
 	if not questID then return end
 	for questName, id in pairs(ActiveQuests) do
 		if id == questID then

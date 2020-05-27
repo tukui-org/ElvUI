@@ -353,7 +353,7 @@ end
 function E:ToggleMovers(show, moverType)
 	self.configMode = show
 
-	for name, holder in pairs(E.CreatedMovers) do
+	for _, holder in pairs(E.CreatedMovers) do
 		if show and holder.type[moverType] then
 			holder.mover:Show()
 		else

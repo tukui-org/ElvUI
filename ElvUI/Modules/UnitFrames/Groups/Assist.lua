@@ -6,7 +6,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local _G = _G
 local max = max
-
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local InCombatLockdown = InCombatLockdown

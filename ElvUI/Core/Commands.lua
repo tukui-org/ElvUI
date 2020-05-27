@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local tonumber, type, pairs, select, gsub = tonumber, type, pairs, select, gsub
+local tonumber, type, pairs, select = tonumber, type, pairs, select
 local lower, split, format, wipe, next, print = strlower, strsplit, format, wipe, next, print
 
 local debugprofilestop = debugprofilestop

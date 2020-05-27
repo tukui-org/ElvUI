@@ -210,22 +210,17 @@ function M:SkinBubble(frame)
 	frame.isSkinnedElvUI = true
 end
 
-local function ChatBubble_OnEvent(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
+local function ChatBubble_OnEvent(_, _, msg, sender, _, _, _, _, _, _, _, _, _, guid)
 	if not E.private.general.chatBubbleName then return end
 
 	messageToGUID[msg] = guid
 	messageToSender[msg] = Ambiguate(sender, "none")
 end
 
-local function ChatBubble_OnUpdate(self, elapsed)
-	if not M.BubbleFrame then return end
-	if not M.BubbleFrame.lastupdate then
-		M.BubbleFrame.lastupdate = -2 -- wait 2 seconds before hooking frames
-	end
-
-	M.BubbleFrame.lastupdate = M.BubbleFrame.lastupdate + elapsed
-	if M.BubbleFrame.lastupdate < 0.1 then return end
-	M.BubbleFrame.lastupdate = 0
+local function ChatBubble_OnUpdate(frame, elapsed)
+	frame.lastupdate = (frame.lastupdate or -2) + elapsed
+	if frame.lastupdate < 0.1 then return end
+	frame.lastupdate = 0
 
 	for _, chatBubble in pairs(C_ChatBubbles_GetAllChatBubbles()) do
 		if not chatBubble.isSkinnedElvUI then

@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames');
 local SpellRange = E.Libs.SpellRange
 
 local pairs, ipairs = pairs, ipairs
-
 local CheckInteractDistance = CheckInteractDistance
 local UnitCanAttack = UnitCanAttack
 local UnitInParty = UnitInParty

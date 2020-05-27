@@ -1,5 +1,4 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local Skins = E:GetModule('Skins')
 
 local wipe, sort, unpack = wipe, sort, unpack
 local next, pairs, tinsert = next, pairs, tinsert

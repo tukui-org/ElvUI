@@ -4,7 +4,6 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local format = format
-
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax

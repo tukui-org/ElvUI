@@ -127,15 +127,14 @@ local function SetPage(PageNum, PrevPage)
 	f.Status.text:SetFormattedText('%d / %d', f.CurrentPage, f.MaxPage)
 	if f.StepTitles then
 		for i = 1, #f.side.Lines do
-			local b = f.side.Lines[i]
-			local color
-			b.text:SetText(f.StepTitles[i])
+			local line, color = f.side.Lines[i]
+			line.text:SetText(f.StepTitles[i])
 			if i == f.CurrentPage then
 				color = f.StepTitlesColorSelected or {.09,.52,.82}
 			else
 				color = f.StepTitlesColor or {1,1,1}
 			end
-			b.text:SetTextColor(color[1] or color.r, color[2] or color.g, color[3] or color.b)
+			line.text:SetTextColor(color[1] or color.r, color[2] or color.g, color[3] or color.b)
 		end
 	end
 end

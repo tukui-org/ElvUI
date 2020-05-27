@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 
 local _G = _G
 local tinsert = tinsert
-
 local CreateFrame = CreateFrame
 local ToggleFrame = ToggleFrame
 local GetCursorPosition = GetCursorPosition

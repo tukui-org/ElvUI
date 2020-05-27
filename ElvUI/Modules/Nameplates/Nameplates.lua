@@ -3,7 +3,7 @@ local NP = E:GetModule("NamePlates")
 local oUF = E.oUF
 
 local _G = _G
-local format, pairs, select, strsplit, type, wipe = format, pairs, select, strsplit, type, wipe
+local format, pairs, select, strsplit, wipe = format, pairs, select, strsplit, wipe
 
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
