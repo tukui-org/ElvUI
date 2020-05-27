@@ -5330,7 +5330,6 @@ E.Options.args.unitframe.args.groupUnits.args.boss = {
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
 		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
-		pvpclassificationindicator = GetOptionsTable_PVPClassificationIndicator(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
 	},
 }
 

@@ -1707,7 +1707,6 @@ P.unitframe = {
 			castbar = CopyTable(UF_Castbar),
 			raidicon = CopyTable(UF_RaidIcon),
 			cutaway = CopyTable(UF_Cutaway),
-			pvpclassificationindicator = CopyTable(UF_PvPClassificationIndicator),
 		},
 		arena = {
 			enable = true,
