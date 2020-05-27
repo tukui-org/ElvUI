@@ -13,3 +13,6 @@ $RECYCLE.BIN/
 
 # Misc
 *.zip
+
+# Luacheck's Cache
+.luacheckcache
