@@ -80,6 +80,7 @@ end
 
 local function FilterTable()
 	local debufftype, texture, filterSpell
+
 	return debufftype, texture, true, filterSpell.style, filterSpell.color
 end
 
@@ -92,35 +93,17 @@ local function CheckTalentTree(tree)
 end
 
 local function CheckSpec(self, event, levels)
-	if event == 'CHARACTER_POINTS_CHANGED' and levels > 0 then return end
+	if Classic then return end
 
-	if not Classic then
-		-- Check for certain talents to see if we can dispel magic or not
-		if playerClass == 'PALADIN' then
-			if CheckTalentTree(1) then
-				CanDispel.Magic = true
-			else
-				CanDispel.Magic = false
-			end
-		elseif playerClass == 'SHAMAN' then
-			if CheckTalentTree(3) then
-				CanDispel.Magic = true
-			else
-				CanDispel.Magic = false
-			end
-		elseif playerClass == 'DRUID' then
-			if CheckTalentTree(4) then
-				CanDispel.Magic = true
-			else
-				CanDispel.Magic = false
-			end
-		elseif playerClass == 'MONK' then
-			if CheckTalentTree(2) then
-				CanDispel.Magic = true
-			else
-				CanDispel.Magic = false
-			end
-		end
+	-- Check for certain talents to see if we can dispel magic or not
+	if playerClass == 'PALADIN' then
+		CanDispel.Magic = CheckTalentTree(1)
+	elseif playerClass == 'SHAMAN' then
+		CanDispel.Magic = CheckTalentTree(3)
+	elseif playerClass == 'DRUID' then
+		CanDispel.Magic = CheckTalentTree(4)
+	elseif playerClass == 'MONK' then
+		CanDispel.Magic = CheckTalentTree(2)
 	end
 end
 

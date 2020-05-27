@@ -29,7 +29,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
 	frame.InfoPanel = UF:Construct_InfoPanel(frame)
-	frame.DebuffHighlight = UF:Construct_DebuffHighlight(frame)
+	frame.AuraHighlight = UF:Construct_AuraHighlight(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 
@@ -84,7 +84,7 @@ function UF:Update_FocusFrame(frame, db)
 	UF:Configure_AuraBars(frame)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_CustomTexts(frame)
-	UF:Configure_DebuffHighlight(frame)
+	UF:Configure_AuraHighlight(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end
