@@ -117,12 +117,6 @@ E.Options.args.general = {
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
-				questRewardMostValueIcon = {
-					order = 12,
-					type = "toggle",
-					name = L["Mark Quest Reward"],
-					desc = L["Marks the most valuable quest reward with a gold coin."],
-				},
 				messageRedirect = {
 					order = 13,
 					name = L["Chat Output"],
@@ -779,8 +773,14 @@ E.Options.args.general = {
 						["ENABLED_RESIZEPARENT"] = L["Enable + Adjust Movers"],
 					},
 				},
-				itemLevelInfo = {
+				questRewardMostValueIcon = {
 					order = 13,
+					type = "toggle",
+					name = L["Mark Quest Reward"],
+					desc = L["Marks the most valuable quest reward with a gold coin."],
+				},				
+				itemLevelInfo = {
+					order = 14,
 					name = L["Item Level"],
 					type = 'group',
 					guiInline = true,
@@ -842,7 +842,7 @@ E.Options.args.general = {
 					},
 				},
 				objectiveFrameGroup = {
-					order = 14,
+					order = 15,
 					type = "group",
 					guiInline = true,
 					name = L["Objective Frame"],
@@ -878,7 +878,7 @@ E.Options.args.general = {
 					},
 				},
 				chatBubblesGroup = {
-					order = 13,
+					order = 16,
 					type = "group",
 					guiInline = true,
 					name = L["Chat Bubbles"],
