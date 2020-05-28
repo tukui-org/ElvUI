@@ -427,7 +427,7 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 					or (name == 'notDispellable' and not canDispell)
 					or (name == 'CastByNPC' and not casterIsPlayer)
 					or (name == 'CastByPlayers' and casterIsPlayer)
-					or (name == 'BlizzardNamePlate' and (nameplateShowAll or (nameplateShowSelf and (isPlayer or myPet))))))
+					or (name == 'BlizzPlateAuras' and (nameplateShowAll or (nameplateShowSelf and (isPlayer or myPet))))))
 				-- Blacklists
 				or ((name == 'blockCastByPlayers' and casterIsPlayer)
 				or (name == 'blockNoDuration' and noDuration)

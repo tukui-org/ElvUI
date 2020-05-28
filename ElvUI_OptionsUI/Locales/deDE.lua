@@ -1405,6 +1405,7 @@ L["blockNoDuration"] = "[Blocke] Keine Dauer"
 L["blockNonPersonal"] = "[Blocke] Nicht Persönlich"
 L["blockNotDispellable"] = "[Blocke] Nicht Bannbar"
 L["Boss"] = true --No need to translate
+L["BlizzPlateAuras"] = true
 L["CastByNPC"] = "Gezaubert von NPC"
 L["CastByPlayers"] = "Gezaubert von Spieler"
 L["CastByUnit"] = "Gezaubert von Einheit"

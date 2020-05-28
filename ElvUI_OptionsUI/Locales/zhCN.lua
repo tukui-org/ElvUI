@@ -1407,6 +1407,7 @@ L["blockNoDuration"] = "[屏蔽]永久的"
 L["blockNonPersonal"] = "[屏蔽]他人的"
 L["blockNotDispellable"] = "[屏蔽]不可驱散的"
 L["Boss"] = "首领的"
+L["BlizzPlateAuras"] = true
 L["CastByNPC"] = "NPC施放的"
 L["CastByPlayers"] = "玩家施放的"
 L["CastByUnit"] = "该单位施放的"

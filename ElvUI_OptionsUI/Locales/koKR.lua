@@ -1400,6 +1400,7 @@ L["blockNoDuration"] = "[차단] No Duration"
 L["blockNonPersonal"] = "[차단] Non Personal"
 L["blockNotDispellable"] = "[차단] Not Dispellable"
 L["Boss"] = "우두머리"
+L["BlizzPlateAuras"] = true
 L["CastByNPC"] = "Cast By NPC"
 L["CastByPlayers"] = "Cast By Players"
 L["CastByUnit"] = "Cast By Unit"
