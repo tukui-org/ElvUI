@@ -932,6 +932,13 @@ ElvUF.Tags.Methods['guild:brackets'] = function(unit)
 	return guildName and format("<%s>", guildName) or nil
 end
 
+ElvUF.Tags.Events['guild:boxbrackets'] = 'PLAYER_GUILD_UPDATE'
+ElvUF.Tags.Methods['guild:boxbrackets'] = function(unit)
+	local guildName = GetGuildInfo(unit)
+
+	return guildName and format("[%s]", guildName) or nil
+end
+
 ElvUF.Tags.Events['guild:translit'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild:translit'] = function(unit)
 	if (UnitIsPlayer(unit)) then
@@ -944,6 +951,13 @@ ElvUF.Tags.Methods['guild:brackets:translit'] = function(unit)
 	local guildName = Translit:Transliterate(GetGuildInfo(unit), translitMark)
 
 	return guildName and format("<%s>", guildName) or nil
+end
+
+ElvUF.Tags.Events['guild:boxbrackets:translit'] = 'PLAYER_GUILD_UPDATE'
+ElvUF.Tags.Methods['guild:boxbrackets:translit'] = function(unit)
+	local guildName = Translit:Transliterate(GetGuildInfo(unit), translitMark)
+
+	return guildName and format("[%s]", guildName) or nil
 end
 
 ElvUF.Tags.Events['target'] = 'UNIT_TARGET'
@@ -989,6 +1003,23 @@ ElvUF.Tags.Methods['npctitle:brackets'] = function(unit)
 
 	if (Title and not Title:find('^'..LEVEL)) then
 		return Title and format("<%s>", Title) or nil
+	end
+end
+
+ElvUF.Tags.Events['npctitle:boxbrackets'] = 'UNIT_NAME_UPDATE'
+ElvUF.Tags.Methods['npctitle:boxbrackets'] = function(unit)
+	if (UnitIsPlayer(unit)) then
+		return
+	end
+
+	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetUnit(unit)
+	E.ScanTooltip:Show()
+
+	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
+
+	if (Title and not Title:find('^'..LEVEL)) then
+		return Title and format("[%s]", Title) or nil
 	end
 end
 
@@ -1195,6 +1226,8 @@ E.TagInfo = {
 	['guild'] = { category = 'Guild', description = "Displays the guild name" },
 	['guild:brackets'] = { category = 'Guild', description = "Displays the guild name with < > brackets (e.g. <GUILD>)" },
 	['guild:brackets:translit'] = { category = 'Guild', description = "Displays the guild name with < > and transliteration (e.g. <GUILD>)" },
+	['guild:boxbrackets'] = { category = 'Guild', description = "Displays the guild name with [] ] brackets (e.g. [GUILD])" },
+	['guild:boxbrackets:translit'] = { category = 'Guild', description = "Displays the guild name with [] ] and transliteration (e.g. [GUILD])" },	
 	['guild:rank'] = { category = 'Guild', description = "Displays the guild rank" },
 	['guild:translit'] = { category = 'Guild', description = "Displays the guild name with transliteration for cyrillic letters" },
 	--Health
@@ -1286,6 +1319,7 @@ E.TagInfo = {
 	['name:title'] = { category = 'Names', description = "Displays player name and title" },
 	['npctitle'] = { category = 'Names', description = "Displays the NPC title (e.g. General Goods Vendor)" },
 	['npctitle:brackets'] = { category = 'Names', description = "Displays the NPC title with brackets (e.g. <General Goods Vendor>)" },
+	['npctitle:boxbrackets'] = { category = 'Names', description = "Displays the NPC title with brackets (e.g. [General Goods Vendor])" },
 	--Party and Raid
 	['group'] = { category = 'Party and Raid', description = "Displays the group number the unit is in ('1' - '8')" },
 	['leader'] = { category = 'Party and Raid', description = "Displays 'L' if the unit is the group/raid leader" },
