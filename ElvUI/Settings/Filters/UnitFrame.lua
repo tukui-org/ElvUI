@@ -1324,7 +1324,7 @@ G.unitframe.specialFilters = {
 	notDispellable = true,
 	CastByNPC = true,
 	CastByPlayers = true,
-	BlizzPlateAuras = true,
+	BlizzardNameplate = true,
 
 	-- Blacklists
 	blockNonPersonal = true,
