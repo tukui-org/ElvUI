@@ -8,6 +8,9 @@ local SecondsToTime = SecondsToTime
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel
+local IsShiftKeyDown = IsShiftKeyDown
+local BreakUpLargeNumbers = BreakUpLargeNumbers
+local WrapTextInColorCode = WrapTextInColorCode
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local C_Garrison_GetBuildings = C_Garrison.GetBuildings
@@ -45,8 +48,10 @@ local LE_GARRISON_TYPE_7_0 = LE_GARRISON_TYPE_7_0
 local LE_GARRISON_TYPE_8_0 = LE_GARRISON_TYPE_8_0
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local TALENTS = TALENTS
+local DATE_COMPLETED = DATE_COMPLETED
 
 local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. " %d (%d/%d)"
+local MAIN_CURRENCY = 1560
 local NAZJATAR_MAP_ID = 1355
 local EXPANSION_NAME5 = EXPANSION_NAME5 -- "Warlords of Draenor"
 local EXPANSION_NAME6 = EXPANSION_NAME6 -- "Legion"
@@ -166,7 +171,7 @@ local function GetInfo(id)
 end
 
 local function AddInfo(id)
-	local num, name, icon = GetInfo(id)
+	local num, _, icon = GetInfo(id)
 	return format('%s %s', icon, BreakUpLargeNumbers(num))
 end
 
@@ -217,56 +222,58 @@ local function OnEnter(self, _, noUpdate)
 		end
 	end
 
-	-- Legion
-	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(EXPANSION_NAME6, 1, .5, 0)
-	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1220), nil, nil, nil, 1, 1, 1)
-
-	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
-
-	AddFollowerInfo(LE_GARRISON_TYPE_7_0)
-
-	-- "Loose Work Orders" (i.e. research, equipment)
-	wipe(info)
-	info = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
-	if #info > 0 then
-		DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
-		for _, looseShipments in ipairs() do
-			local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
-			if ( name and shipmentsReady and shipmentsTotal ) then
-				DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
-			end
-		end
-	end
-
-	AddTalentInfo(LE_GARRISON_TYPE_7_0)
-
-	-- Warlords of Draenor
-	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(EXPANSION_NAME5, 1, .5, 0)
-	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(824), nil, nil, nil, 1, 1, 1)
-	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
-
-	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddDoubleLine(L["Naval Mission(s) Report:"], AddInfo(1101), nil, nil, nil, 1, 1 , 1)
-	AddInProgressMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
-
-	--Buildings
-	wipe(info)
-	info = C_Garrison_GetBuildings(LE_GARRISON_TYPE_6_0)
-	if (#info > 0) then
-		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine(L["Building(s) Report:"])
-		for _, buildings in ipairs(info) do
-			local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
-			if ( name and shipmentsReady and shipmentsTotal ) then
-				DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
-			end
-		end
-	end
-
 	AddFollowerInfo(LE_GARRISON_TYPE_8_0)
 	AddTalentInfo(LE_GARRISON_TYPE_8_0)
+
+	if IsShiftKeyDown() then
+		-- Legion
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddLine(EXPANSION_NAME6, 1, .5, 0)
+		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1220), nil, nil, nil, 1, 1, 1)
+
+		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
+
+		AddFollowerInfo(LE_GARRISON_TYPE_7_0)
+
+		-- "Loose Work Orders" (i.e. research, equipment)
+		wipe(info)
+		info = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
+		if #info > 0 then
+			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
+			for _, looseShipments in ipairs() do
+				local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
+				if ( name and shipmentsReady and shipmentsTotal ) then
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+				end
+			end
+		end
+
+		AddTalentInfo(LE_GARRISON_TYPE_7_0)
+
+		-- Warlords of Draenor
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddLine(EXPANSION_NAME5, 1, .5, 0)
+		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(824), nil, nil, nil, 1, 1, 1)
+		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
+
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddDoubleLine(L["Naval Mission(s) Report:"], AddInfo(1101), nil, nil, nil, 1, 1 , 1)
+		AddInProgressMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
+
+		--Buildings
+		wipe(info)
+		info = C_Garrison_GetBuildings(LE_GARRISON_TYPE_6_0)
+		if (#info > 0) then
+			DT.tooltip:AddLine(' ')
+			DT.tooltip:AddLine(L["Building(s) Report:"])
+			for _, buildings in ipairs(info) do
+				local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
+				if ( name and shipmentsReady and shipmentsTotal ) then
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+				end
+			end
+		end
+	end
 
 	DT.tooltip:Show()
 end
@@ -292,7 +299,11 @@ local function OnEvent(self, event)
 	numMissions = numMissions + #C_Garrison.GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
 	numMissions = numMissions + #C_Garrison.GetCompleteMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
 
-	self.text:SetText(numMissions > 0 and format(GARRISON_NUM_COMPLETED_MISSIONS, numMissions) or _G.GARRISON_MISSIONS)
+	if numMissions > 0 then
+		self.text:SetText(format(DATE_COMPLETED, WrapTextInColorCode(numMissions, 'FF00FF00')))
+	else
+		self.text:SetText(AddInfo(MAIN_CURRENCY))
+	end
 end
 
 DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_MISSION_FINISHED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_LIST_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
