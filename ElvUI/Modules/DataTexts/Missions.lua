@@ -114,7 +114,7 @@ local function AddInProgressMissions(garrisonType, header, subheader, addLine)
 			end
 		end
 	else
-		DT.tooltip:AddLine(GARRISON_EMPTY_IN_PROGRESS_LIST)
+		DT.tooltip:AddLine(GARRISON_EMPTY_IN_PROGRESS_LIST, 1, 1, 1)
 	end
 end
 
@@ -167,7 +167,7 @@ end
 
 local function AddInfo(id)
 	local num, name, icon = GetInfo(id)
-	DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
+	return format('%s %s', icon, BreakUpLargeNumbers(num))
 end
 
 local function OnEnter(self, _, noUpdate)
@@ -179,9 +179,8 @@ local function OnEnter(self, _, noUpdate)
 		return
 	end
 
-	DT.tooltip:AddLine(EXPANSION_NAME7)
---	AddInfo(1560)
-	DT.tooltip:AddLine(L["Mission(s) Report:"])
+	DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
+	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1560), nil, nil, nil, 1, 1, 1)
 	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
 
 	-- Island Expeditions
@@ -220,9 +219,8 @@ local function OnEnter(self, _, noUpdate)
 
 	-- Legion
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(EXPANSION_NAME6)
---	AddInfo(1220)
-	DT.tooltip:AddLine(L["Mission(s) Report:"])
+	DT.tooltip:AddLine(EXPANSION_NAME6, 1, .5, 0)
+	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1220), nil, nil, nil, 1, 1, 1)
 
 	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 
@@ -245,14 +243,12 @@ local function OnEnter(self, _, noUpdate)
 
 	-- Warlords of Draenor
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(EXPANSION_NAME5)
---	AddInfo(824)
---	AddInfo(1101)
-	DT.tooltip:AddLine(L["Mission(s) Report:"])
+	DT.tooltip:AddLine(EXPANSION_NAME5, 1, .5, 0)
+	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(824), nil, nil, nil, 1, 1, 1)
 	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
 
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(L["Naval Mission(s) Report:"])
+	DT.tooltip:AddDoubleLine(L["Naval Mission(s) Report:"], AddInfo(1101), nil, nil, nil, 1, 1 , 1)
 	AddInProgressMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
 
 	--Buildings
@@ -291,7 +287,12 @@ local function OnEvent(self, event)
 		return
 	end
 
-	self.text:SetText(_G.GARRISON_MISSIONS)
+	local numMissions = #C_Garrison.GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
+	numMissions = numMissions + #C_Garrison.GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
+	numMissions = numMissions + #C_Garrison.GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
+	numMissions = numMissions + #C_Garrison.GetCompleteMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
+
+	self.text:SetText(numMissions > 0 and format(GARRISON_NUM_COMPLETED_MISSIONS, numMissions) or _G.GARRISON_MISSIONS)
 end
 
-DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
+DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_MISSION_FINISHED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_LIST_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
