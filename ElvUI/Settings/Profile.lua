@@ -1145,7 +1145,6 @@ local UF_Health = {
 
 local UF_HealthPrediction = {
 	enable = false,
-	showAbsorbAmount = false,
 	showOverAbsorbs = true,
 }
 

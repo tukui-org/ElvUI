@@ -1708,12 +1708,6 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 				type = "toggle",
 				name = L["Show Over Absorbs"],
 			},
-			showAbsorbAmount = {
-				order = 3,
-				type = "toggle",
-				name = L["Show Absorb Amount"],
-				disabled = function() return not E.db.unitframe.units[groupName].healPrediction.showOverAbsorbs end,
-			},
 			colors = {
 				order = 4,
 				type = "execute",

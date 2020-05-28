@@ -70,7 +70,6 @@ function UF:Construct_HealComm(frame)
 		healAbsorbBar = healAbsorbBar,
 		overAbsorb_ = overAbsorb,
 		overHealAbsorb_ = overHealAbsorb,
-		PostUpdate = UF.UpdateHealComm,
 		maxOverflow = 1,
 		health = health,
 		parent = parent,
@@ -244,12 +243,5 @@ function UF:Configure_HealComm(frame)
 		end
 	elseif frame:IsElementEnabled('HealthPrediction') then
 		frame:DisableElement('HealthPrediction')
-	end
-end
-
-function UF:UpdateHealComm(unit, _, _, _, _, hasOverAbsorb)
-	local pred = self.frame and self.frame.db and self.frame.db.healPrediction
-	if pred and (pred.showOverAbsorbs and pred.showAbsorbAmount) and hasOverAbsorb then
-		self.absorbBar:SetValue(UnitGetTotalAbsorbs(unit))
 	end
 end
