@@ -18,7 +18,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
 	spells = {
 	-- Death Knight
-		[47476]  = Defaults(2), -- Strangulate 
+		[47476]  = Defaults(2), -- Strangulate
 		[108194] = Defaults(4), -- Asphyxiate UH
 		[221562] = Defaults(4), -- Asphyxiate Blood
 		[207171] = Defaults(4), -- Winter is Coming
