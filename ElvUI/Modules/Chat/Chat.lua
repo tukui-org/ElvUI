@@ -2886,7 +2886,9 @@ function CH:FCFTab_UpdateColors(tab, selected)
 	end
 
 	if whisper then
-		tab:SetText(tab.whisperName or name)
+		if not selected then
+			tab:SetText(tab.whisperName or name)
+		end
 
 		if not tab.classColor then
 			local classMatch = CH.ClassNames[strlower(name)]
@@ -2897,7 +2899,10 @@ function CH:FCFTab_UpdateColors(tab, selected)
 			tab.Text:SetTextColor(tab.classColor.r, tab.classColor.g, tab.classColor.b)
 		end
 	else
-		tab:SetText(name)
+		if not selected then
+			tab:SetText(name)
+		end
+
 		tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
 end
