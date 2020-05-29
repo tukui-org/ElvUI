@@ -184,12 +184,6 @@ end
 local function OnEnter(self, _, noUpdate)
 	DT:SetupTooltip(self)
 
-	if not noUpdate then
-		DT.tooltip:Hide()
-		C_Garrison_RequestLandingPageShipmentInfo()
-		return
-	end
-
 	DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
 	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1560), nil, nil, nil, 1, 1, 1)
 	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
@@ -295,21 +289,13 @@ local function OnClick(self)
 end
 
 local function OnEvent(self, event)
-	if event == "GARRISON_LANDINGPAGE_SHIPMENTS" then
-		if GetMouseFocus() == self then
-			OnEnter(self, nil, true)
-		end
-
-		return
-	end
-
 	local numMissions = #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
 	+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 	+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
 	+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
 
 	if numMissions > 0 then
-		self.text:SetForamttedText(DATE_COMPLETED, numMissions)
+		self.text:SetFormattedText(DATE_COMPLETED, numMissions)
 	else
 		self.text:SetText(AddInfo(MAIN_CURRENCY))
 	end
