@@ -32,6 +32,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.AuraHighlight = UF:Construct_AuraHighlight(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
+	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
 
 	frame.customTexts = {}
 	frame:Point('BOTTOMRIGHT', UF.target, 'TOPRIGHT', 0, 220)
@@ -85,6 +86,7 @@ function UF:Update_FocusFrame(frame, db)
 	UF:Configure_Cutaway(frame)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_AuraHighlight(frame)
+	UF:Configure_CombatIndicator(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")
 end

@@ -25,7 +25,8 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 local _, ns = ...
 local oUF = ns.oUF
 
-local function Update(self, event)
+local function Update(self, event, unit)
+	if(not unit or self.unit ~= unit) then return end
 	local element = self.CombatIndicator
 
 	--[[ Callback: CombatIndicator:PreUpdate()
@@ -37,7 +38,7 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local inCombat = UnitAffectingCombat('player')
+	local inCombat = UnitAffectingCombat(unit)
 	if(inCombat) then
 		element:Show()
 	else
@@ -71,10 +72,12 @@ end
 
 local function Enable(self, unit)
 	local element = self.CombatIndicator
-	if(element and UnitIsUnit(unit, 'player')) then
+	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
+		self:RegisterEvent('UNIT_COMBAT', Path)
+		self:RegisterEvent('UNIT_FLAGS', Path)
 		self:RegisterEvent('PLAYER_REGEN_DISABLED', Path, true)
 		self:RegisterEvent('PLAYER_REGEN_ENABLED', Path, true)
 
@@ -92,6 +95,8 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
+		self:UnregisterEvent('UNIT_COMBAT', Path)
+		self:UnregisterEvent('UNIT_FLAGS', Path)
 		self:UnregisterEvent('PLAYER_REGEN_DISABLED', Path)
 		self:UnregisterEvent('PLAYER_REGEN_ENABLED', Path)
 	end
