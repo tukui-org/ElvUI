@@ -32,9 +32,9 @@ local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 local CinematicFrame = CinematicFrame
 local MovieFrame = MovieFrame
-local DNDstr = DND
-local AFKstr = AFK
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local DNDstr = _G.DND
+local AFKstr = _G.AFK
 
 local CAMERA_SPEED = 0.035
 local ignoreKeys = {

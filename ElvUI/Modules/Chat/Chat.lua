@@ -2880,7 +2880,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 		if CH.db.tabSelectedTextEnabled then
 			local color = CH.db.tabSelectedTextColor
 			tab.Text:SetTextColor(color.r, color.g, color.b)
-		else
+		elseif not whisper then
 			tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 		end
 	elseif whisper then
