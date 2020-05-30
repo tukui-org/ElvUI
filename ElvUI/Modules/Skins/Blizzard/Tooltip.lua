@@ -18,18 +18,18 @@ function S:TooltipFrames()
 	S:HandleCloseButton(_G.ItemRefCloseButton)
 
 	-- Skin Blizzard Tooltips
-	local GameTooltip = _G.GameTooltip
-	GameTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
-	GameTooltip.ItemTooltip.IconBorder:SetAlpha(0)
-	GameTooltip.ItemTooltip:CreateBackdrop("Default")
-	GameTooltip.ItemTooltip.backdrop:SetOutside(GameTooltip.ItemTooltip.Icon)
-	GameTooltip.ItemTooltip.Count:ClearAllPoints()
-	GameTooltip.ItemTooltip.Count:Point('BOTTOMRIGHT', GameTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
-	hooksecurefunc(GameTooltip.ItemTooltip.IconBorder, 'SetVertexColor', function(s, r, g, b)
+	local ItemTooltip = _G.GameTooltip.ItemTooltip
+	ItemTooltip:CreateBackdrop("Default")
+	ItemTooltip.backdrop:SetOutside(ItemTooltip.Icon)
+	ItemTooltip.Count:ClearAllPoints()
+	ItemTooltip.Count:Point('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
+	ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
+	ItemTooltip.IconBorder:SetAlpha(0)
+	hooksecurefunc(ItemTooltip.IconBorder, 'SetVertexColor', function(s, r, g, b)
 		s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 		s:SetTexture()
 	end)
-	hooksecurefunc(GameTooltip.ItemTooltip.IconBorder, 'Hide', function(s)
+	hooksecurefunc(ItemTooltip.IconBorder, 'Hide', function(s)
 		s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
