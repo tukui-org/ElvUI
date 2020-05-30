@@ -366,6 +366,8 @@ E.TimeFormats = { -- short / indicator color
 	[4] = {'%.1fs', '%.1f%ss|r'},
 	[5] = {'%d:%02d', '%d%s:|r%02d'}, --mmss
 	[6] = {'%d:%02d', '%d%s:|r%02d'}, --hhmm
+	[7] = {'%dm %02ds', '%d%sm|r %02d%ss|r'}, --mmss2
+	[8] = {'%dh %02dm', '%d%sh|r %02d%sm|r'}, --hhmm2
 }
 
 for _, x in pairs(E.TimeFormats) do

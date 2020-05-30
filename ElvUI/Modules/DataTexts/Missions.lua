@@ -16,7 +16,6 @@ local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local C_Garrison_GetBuildings = C_Garrison.GetBuildings
 local C_Garrison_GetInProgressMissions = C_Garrison.GetInProgressMissions
 local C_Garrison_GetLandingPageShipmentInfo = C_Garrison.GetLandingPageShipmentInfo
-local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
 local C_Garrison_GetLandingPageShipmentInfoByContainerID = C_Garrison.GetLandingPageShipmentInfoByContainerID
@@ -58,6 +57,7 @@ local EXPANSION_NAME7 = EXPANSION_NAME7 -- "Battle for Azeroth"
 local MAIN_CURRENCY = 1560
 local NAZJATAR_MAP_ID = 1355
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
+local numMissions = 0
 
 local Widget_IDs = {
 	Alliance = {
@@ -94,29 +94,30 @@ local menuList = {
 }
 
 local info = {}
-local function AddInProgressMissions(garrisonType, header, subheader, addLine)
+local function AddInProgressMissions(garrisonType)
 	wipe(info)
 
 	C_Garrison_GetInProgressMissions(info, garrisonType)
 
 	if #info > 0 then
-		if addLine then DT.tooltip:AddLine(" ") end
-		if header then DT.tooltip:AddDoubleLine(header, '') end
-		if subheader then DT.tooltip:AddDoubleLine(subheader, '') end
-
 		sort(info, sortFunction) --Sort by time left, lowest first
 
 		for _, mission in ipairs(info) do
-			local timeLeft = mission.timeLeft:match("%d")
+			local timeLeft = mission.timeLeftSeconds
 			local r, g, b = 1, 1, 1
 			if mission.isRare then
 				r, g, b = 0.09, 0.51, 0.81
 			end
 
-			if timeLeft and timeLeft == "0" then
+			if timeLeft and timeLeft == 0 then
 				DT.tooltip:AddDoubleLine(mission.name, GOAL_COMPLETED, r, g, b, GREEN_FONT_COLOR:GetRGB())
 			else
-				DT.tooltip:AddDoubleLine(mission.name, mission.timeLeft, r, g, b)
+				local time, _, _, remainder, minutes, seconds = E:GetTimeInfo(timeLeft, 0, 3600)
+				local id = timeLeft and timeLeft > 3600 and 8 or 7
+				if remainder and remainder > 0 then
+					minutes, _, seconds = E:GetTimeInfo(remainder * 60, 0)
+				end
+				DT.tooltip:AddDoubleLine(mission.name, format(E.TimeFormats[id][1], time, minutes, seconds), r, g, b, 1, 1, 1)
 			end
 		end
 	else
@@ -162,7 +163,7 @@ local function AddTalentInfo(garrisonType)
 						if talent.researchTimeRemaining and talent.researchTimeRemaining == 0 then
 							DT.tooltip:AddDoubleLine(talent.name, GOAL_COMPLETED, 1, 1, 1, GREEN_FONT_COLOR:GetRGB())
 						else
-							DT.tooltip:AddDoubleLine(talent.name, SecondsToTime(talent.researchTimeRemaining), 1, 1, 1)
+							DT.tooltip:AddDoubleLine(talent.name, E:GetTimeInfo(talent.researchTimeRemaining), 1, 1, 1, 1, 1, 1)
 						end
 					end
 				end
@@ -181,7 +182,7 @@ local function AddInfo(id)
 	return format('%s %s', icon, BreakUpLargeNumbers(num))
 end
 
-local function OnEnter(self, _, noUpdate)
+local function OnEnter(self)
 	DT:SetupTooltip(self)
 
 	DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
@@ -244,7 +245,7 @@ local function OnEnter(self, _, noUpdate)
 			for _, looseShipments in ipairs(info) do
 				local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
 				if name and shipmentsReady and shipmentsTotal then
-					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
 				end
 			end
 		end
@@ -271,7 +272,7 @@ local function OnEnter(self, _, noUpdate)
 			for _, buildings in ipairs(info) do
 				local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
 				if name and shipmentsReady and shipmentsTotal then
-					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
 				end
 			end
 		end
@@ -289,10 +290,12 @@ local function OnClick(self)
 end
 
 local function OnEvent(self, event)
-	local numMissions = #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
-	+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
-	+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
-	+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
+	if event == 'GARRISON_LANDINGPAGE_SHIPMENTS' or event == 'GARRISON_MISSION_FINISHED' then
+		numMissions = #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
+		+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
+		+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
+		+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
+	end
 
 	if numMissions > 0 then
 		self.text:SetFormattedText(DATE_COMPLETED, numMissions)
