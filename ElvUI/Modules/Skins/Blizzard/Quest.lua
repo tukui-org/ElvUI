@@ -386,6 +386,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestModelScene:Point("TOPLEFT", _G.QuestLogDetailFrame, "TOPRIGHT", 4, -34)
 	_G.QuestNPCModelTextFrame:StripTextures()
 	_G.QuestNPCModelTextFrame:CreateBackdrop("Transparent")
+	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
 	S:HandlePortraitFrame(QuestLogPopupDetailFrame)
