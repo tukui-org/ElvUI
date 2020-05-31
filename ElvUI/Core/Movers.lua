@@ -15,8 +15,20 @@ local hooksecurefunc = hooksecurefunc
 E.CreatedMovers = {}
 E.DisabledMovers = {}
 
+local function WidthChanged(frame, width)
+	if InCombatLockdown() or frame.ignoreSizeChanged then return end
+
+	frame.mover:SetWidth(width)
+end
+
+local function HeightChanged(frame, height)
+	if InCombatLockdown() or frame.ignoreSizeChanged then return end
+
+	frame.mover:SetSize(height)
+end
+
 local function SizeChanged(frame, width, height)
-	if InCombatLockdown() or frame.ignoreMoverSize then return end
+	if InCombatLockdown() or frame.ignoreSizeChanged then return end
 
 	frame.mover:SetSize(width, height)
 end
@@ -119,6 +131,8 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	if not ignoreSizeChanged then
 		hooksecurefunc(parent, 'SetSize', SizeChanged)
+		hooksecurefunc(parent, 'SetHeight', HeightChanged)
+		hooksecurefunc(parent, 'SetWidth', WidthChanged)
 	end
 
 	E:SetMoverPoints(name, parent)
