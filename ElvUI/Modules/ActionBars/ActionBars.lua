@@ -795,6 +795,8 @@ function AB:DisableBlizzard()
 	_G.StatusTrackingBarManager:UnregisterAllEvents()
 	_G.MainMenuBarArtFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
+
+	-- this will cause a taint at MultiBarRight:SetShown
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
 	-- causes a taint
