@@ -14,10 +14,24 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 E.CreatedMovers = {}
 E.DisabledMovers = {}
 
-local function SizeChanged(frame)
+local function SizeChanged(frame, width, height)
 	if InCombatLockdown() then return end
+	frame.mover:SetSize(width, height)
+end
 
+local function PointChanged(frame)
+	if InCombatLockdown() then return end
 	frame.mover:SetSize(frame:GetSize())
+end
+
+local function HeightChanged(frame, height)
+	if InCombatLockdown() then return end
+	frame.mover:SetHeight(height)
+end
+
+local function WidthChanged(frame, width)
+	if InCombatLockdown() then return end
+	frame.mover:SetWidth(width)
 end
 
 local function GetPoint(obj)
@@ -115,7 +129,11 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	parent.mover = f
 	E.snapBars[#E.snapBars+1] = f
 
-	parent:SetScript('OnSizeChanged', SizeChanged)
+	--hooksecurefunc(parent, 'SetPoint', PointChanged)
+	--hooksecurefunc(parent, 'SetHeight', HeightChanged)
+	--hooksecurefunc(parent, 'SetWidth', WidthChanged)
+	hooksecurefunc(parent, 'SetSize', SizeChanged)
+
 	E:SetMoverPoints(name, parent)
 
 	local function OnDragStart(self)

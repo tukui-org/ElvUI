@@ -158,8 +158,7 @@ function AB:PositionAndSizeBar(barName)
 	--Size of all buttons + Spacing between all buttons + Spacing between additional rows of buttons + Spacing between backdrop and buttons + Spacing on end borders with non-thin borders
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult - 1)) + (sideSpacing*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult - 1)) + (sideSpacing*2)
-	bar:Width(barWidth)
-	bar:Height(barHeight)
+	bar:SetSize(barWidth, barHeight)
 
 	bar.mouseover = bar.db.mouseover
 

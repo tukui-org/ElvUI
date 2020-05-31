@@ -139,8 +139,7 @@ function AB:PositionAndSizeBarPet()
 
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:Width(barWidth)
-	bar:Height(barHeight)
+	bar:Size(barWidth, barHeight)
 
 	if self.db.barPet.enabled then
 		bar:SetScale(1)
@@ -243,9 +242,6 @@ function AB:PositionAndSizeBarPet()
 	end
 
 	RegisterStateDriver(bar, "show", visibility)
-
-	--Fix issue with mover not updating size when bar is hidden
-	bar:GetScript("OnSizeChanged")(bar)
 
 	if MasqueGroup and E.private.actionbar.masque.petBar then MasqueGroup:ReSkin() end
 end

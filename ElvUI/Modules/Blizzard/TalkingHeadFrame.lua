@@ -7,11 +7,8 @@ local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
 function B:ScaleTalkingHeadFrame()
-	local scale = E:Scale(E.db.general.talkingHeadFrameScale or 1)
-
 	local TalkingHeadFrame = _G.TalkingHeadFrame
-	TalkingHeadFrame:SetScale(scale)
-	TalkingHeadFrame:GetScript("OnSizeChanged")(TalkingHeadFrame) --Resize mover
+	TalkingHeadFrame:SetScale(E.db.general.talkingHeadFrameScale or 1)
 
 	--Reset Model Camera
 	local model = TalkingHeadFrame.MainFrame.Model
