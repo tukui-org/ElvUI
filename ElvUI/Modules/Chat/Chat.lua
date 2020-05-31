@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local CH = E:GetModule('Chat')
+local LO = E:GetModule('Layout')
 local Skins = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
@@ -1948,7 +1949,7 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrame:Height(22)
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
-	E.Layout:RepositionChatDataPanels()
+	LO:RepositionChatDataPanels()
 	self:PositionChats()
 
 	if _G.CombatLogQuickButtonFrame_Custom then

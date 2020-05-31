@@ -41,6 +41,12 @@ function LO:Initialize()
 	Panel_OnShow(LO.TopPanel)
 	E.FrameLocks.ElvUI_TopPanel = true
 	LO:TopPanelVisibility()
+
+	-- if the chat module is off we still need to spawn the dts for the panels
+	-- if we are going to have the panels show even when it's disabled
+	if not E.private.chat.enable then
+		LO:RepositionChatDataPanels()
+	end
 end
 
 function LO:BottomPanelVisibility()
@@ -173,15 +179,17 @@ function LO:RepositionChatDataPanels()
 	local LeftChatToggleButton = _G.LeftChatToggleButton
 	local RightChatToggleButton = _G.RightChatToggleButton
 
-	LeftChatTab:ClearAllPoints()
-	RightChatTab:ClearAllPoints()
+	if E.private.chat.enable then
+		LeftChatTab:ClearAllPoints()
+		RightChatTab:ClearAllPoints()
+		LeftChatTab:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', 2, -2)
+		LeftChatTab:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', -2, -BAR_HEIGHT-2)
+		RightChatTab:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -2, -2)
+		RightChatTab:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 2, -BAR_HEIGHT-2)
+	end
+
 	LeftChatDataPanel:ClearAllPoints()
 	RightChatDataPanel:ClearAllPoints()
-
-	LeftChatTab:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', 2, -2)
-	LeftChatTab:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', -2, -BAR_HEIGHT-2)
-	RightChatTab:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -2, -2)
-	RightChatTab:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 2, -BAR_HEIGHT-2)
 
 	local SPACING = E.PixelMode and 1 or -1
 	local sideButton = E.db.chat.hideChatToggles and 0 or toggleWidth
@@ -259,6 +267,8 @@ function LO:ToggleChatPanels()
 end
 
 function LO:ResaveChatPosition()
+	if not E.private.chat.enable then return end
+
 	local name, chat = self.name
 	if name == 'LeftChatMover' then
 		chat = CH.LeftChatWindow
