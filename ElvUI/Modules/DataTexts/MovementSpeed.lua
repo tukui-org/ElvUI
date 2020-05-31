@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-
 local BASE_MOVEMENT_SPEED = BASE_MOVEMENT_SPEED
 local GetUnitSpeed = GetUnitSpeed
 local IsFalling = IsFalling

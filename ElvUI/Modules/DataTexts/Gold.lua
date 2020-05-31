@@ -2,13 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local type = type
-local format = format
-local wipe = wipe
-local pairs = pairs
-local ipairs = ipairs
-local strjoin = strjoin
-local tinsert = tinsert
+local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
+local format, strjoin, tinsert = format, strjoin, tinsert
 
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetMoney = GetMoney

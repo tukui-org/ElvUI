@@ -10,7 +10,6 @@ local ITEM_LEVEL_ABBR = ITEM_LEVEL_ABBR
 local LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT = LFG_LIST_ITEM_LEVEL_INSTR_PVP_SHORT
 local STAT_AVERAGE_ITEM_LEVEL = STAT_AVERAGE_ITEM_LEVEL
 local GMSURVEYRATING3 = GMSURVEYRATING3
-
 local GetAverageItemLevel= GetAverageItemLevel
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventoryItemTexture = GetInventoryItemTexture

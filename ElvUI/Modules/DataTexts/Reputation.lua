@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format = format
-
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFriendshipReputation = GetFriendshipReputation

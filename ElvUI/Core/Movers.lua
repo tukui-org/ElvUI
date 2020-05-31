@@ -10,6 +10,7 @@ local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
+local hooksecurefunc = hooksecurefunc
 
 E.CreatedMovers = {}
 E.DisabledMovers = {}

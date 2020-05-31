@@ -4,6 +4,7 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local format, sort = format, sort
 local wipe, unpack, ipairs = wipe, unpack, ipairs
+local GetMouseFocus = GetMouseFocus
 local GetCurrencyInfo = GetCurrencyInfo
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown

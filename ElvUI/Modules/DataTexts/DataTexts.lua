@@ -5,6 +5,7 @@ local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 
 local _G = _G
+local tostring = tostring
 local tinsert, wipe, sort, type, error, pcall = tinsert, wipe, sort, type, error, pcall
 local ipairs, pairs, next, strlen, strfind = ipairs, pairs, next, strlen, strfind
 local CloseDropDownMenus = CloseDropDownMenus
@@ -23,7 +24,6 @@ local GetCurrencyListSize = GetCurrencyListSize
 local GetCurrencyListLink = GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
 local ExpandCurrencyList = ExpandCurrencyList
-local tostring = tostring
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
 

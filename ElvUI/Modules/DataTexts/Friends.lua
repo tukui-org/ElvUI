@@ -7,6 +7,7 @@ local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
 local format, gsub, strfind, strjoin, strmatch = format, gsub, strfind, strjoin, strmatch
 
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
+local GetMouseFocus = GetMouseFocus
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
 local BNInviteFriend = BNInviteFriend
