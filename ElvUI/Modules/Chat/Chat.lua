@@ -33,7 +33,6 @@ local CreateFrame = CreateFrame
 local FCF_Close = FCF_Close
 local FCF_GetChatWindowInfo = FCF_GetChatWindowInfo
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
-local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
 local FCF_StartAlertFlash = FCF_StartAlertFlash
 local FCFManager_ShouldSuppressMessage = FCFManager_ShouldSuppressMessage
@@ -1035,12 +1034,6 @@ function CH:ShowBackground(background, show)
 	end
 end
 
-function CH:SavePositionAndDimensions(chat, ignore)
-	if not ignore and chat:GetLeft() then
-		FCF_SavePositionAndDimensions(chat)
-	end
-end
-
 function CH:PositionChat(chat)
 	CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows()
 	CH:UpdateChatTab(chat)
@@ -1071,7 +1064,6 @@ function CH:PositionChat(chat)
 		chat:Size(CH.db.panelWidth - 10, CH.db.panelHeight - offset)
 
 		CH:ShowBackground(chat.Background, false)
-		CH:SavePositionAndDimensions(chat, true)
 	elseif chat == CH.RightChatWindow then
 		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.RightChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
@@ -1079,7 +1071,6 @@ function CH:PositionChat(chat)
 		chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - offset)
 
 		CH:ShowBackground(chat.Background, false)
-		CH:SavePositionAndDimensions(chat, true)
 	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
 		CH:ShowBackground(chat.Background, CH:IsUndocked(chat, docker))
 	end

@@ -1,9 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LO = E:GetModule('Layout')
 local DT = E:GetModule('DataTexts')
+local CH = E:GetModule('Chat')
 
 local _G = _G
 local CreateFrame = CreateFrame
+local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat
 
 local BAR_HEIGHT = 22
@@ -256,6 +258,19 @@ function LO:ToggleChatPanels()
 	end
 end
 
+function LO:ResaveChatPosition()
+	local name, chat = self.name
+	if name == 'LeftChatMover' then
+		chat = CH.LeftChatWindow
+	elseif name == 'RightChatMover' then
+		chat = CH.RightChatWindow
+	end
+
+	if chat and chat:GetLeft() then
+		FCF_SavePositionAndDimensions(chat)
+	end
+end
+
 function LO:CreateChatPanels()
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
@@ -267,7 +282,7 @@ function LO:CreateChatPanels()
 	lchat.backdrop.ignoreBackdropColors = true
 	lchat.backdrop:SetAllPoints()
 	lchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = lchat, finishedFuncKeep = true}
-	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, nil, nil, nil, 'chat,general')
+	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general')
 
 	--Background Texture
 	local lchattex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -317,7 +332,7 @@ function LO:CreateChatPanels()
 	rchat.backdrop.ignoreBackdropColors = true
 	rchat.backdrop:SetAllPoints()
 	rchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = rchat, finishedFuncKeep = true}
-	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, nil, nil, nil, 'chat,general')
+	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general')
 
 	--Background Texture
 	local rchattex = rchat:CreateTexture(nil, 'OVERLAY')
