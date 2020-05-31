@@ -67,11 +67,10 @@ function UF:Update_AssistHeader(header, db)
 		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -248)
 
 		local width, height = header:GetSize()
-		header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,assist,generalGroup')
-		header:SetAttribute('minHeight', header.dirtyHeight)
-		header:SetAttribute('minWidth', header.dirtyWidth)
+		header:SetAttribute('minHeight', max(height, 2*db.height + db.verticalSpacing))
+		header:SetAttribute('minWidth', width)
 		header.positioned = true;
 	end
 end

@@ -64,12 +64,12 @@ function UF:Update_TankHeader(header, db)
 
 	if not header.positioned then
 		local width, height = header:GetSize()
-		header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
+
 		header:ClearAllPoints()
 		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -186)
 		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,tank,generalGroup')
-		header:SetAttribute('minHeight', header.dirtyHeight)
-		header:SetAttribute('minWidth', header.dirtyWidth)
+		header:SetAttribute('minHeight', max(height, 2*db.height + db.verticalSpacing))
+		header:SetAttribute('minWidth', width)
 		header.positioned = true;
 	end
 end

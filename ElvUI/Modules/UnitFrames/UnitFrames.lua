@@ -745,12 +745,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 		end
 	end
 
-	if not Header.isInstanceForced then
-		Header.dirtyWidth = width - horizontalSpacing -groupSpacing
-		Header.dirtyHeight = height - verticalSpacing -groupSpacing
-	end
-
-	Header:Size(width - horizontalSpacing -groupSpacing, height - verticalSpacing -groupSpacing)
+	Header:SetSize(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
 end
 
 function UF.groupPrototype:Update(Header)

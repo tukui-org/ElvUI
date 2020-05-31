@@ -83,10 +83,6 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	if overlay == nil then overlay = true end
 
-	--Use dirtyWidth / dirtyHeight to set initial size if possible
-	local width = parent.dirtyWidth or parent:GetWidth()
-	local height = parent.dirtyHeight or parent:GetHeight()
-
 	local f = CreateFrame('Button', name, E.UIParent)
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
@@ -95,12 +91,12 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f:EnableMouseWheel(true)
 	f:SetMovable(true)
 	f:SetTemplate('Transparent', nil, nil, true)
-	f:Size(width, height)
+	f:SetSize(parent:GetSize())
 	f:Hide()
 
 	local fs = f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
-	fs:Point('CENTER')
+	fs:SetPoint('CENTER')
 	fs:SetText(text or name)
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
 	fs:SetJustifyH('CENTER')
@@ -159,7 +155,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 		local x2, y2, p2 = E:CalculateMoverPoints(self)
 		self:ClearAllPoints()
-		self:Point(p2, E.UIParent, p2, x2, y2)
+		self:SetPoint(p2, E.UIParent, p2, x2, y2)
 
 		E:SaveMoverPosition(name)
 
