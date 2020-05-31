@@ -797,11 +797,11 @@ function AB:DisableBlizzard()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
 
-	-- this will cause a taint at MultiBarRight:SetShown, try to turn this off to resolve it
-	_G.ActionBarController_UpdateAll = E.noop
-
-	-- causes a taint
-	_G.MainMenuBar.SetPositionForStatusBars = E.noop
+	-- * these seem to work but keep an eye on them for possible new taints spawned
+	-- MultiBarRight:SetShown taint during combat from: SpellBookFrame, ZoneAbility, and ActionBarController
+	_G.ActionBarController_UpdateAll = E.noop -- this seems to work
+	-- MainMenuBar:ClearAllPoints taint during combat from: MainMenuBar
+	_G.MainMenuBar.SetPositionForStatusBars = E.noop -- this seems to work
 
 	-- hide some interface options we dont use
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
