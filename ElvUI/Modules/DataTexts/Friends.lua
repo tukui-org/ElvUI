@@ -353,24 +353,6 @@ local function BuildBNTable(total)
 	end
 end
 
-local function OnEvent(self, event, message)
-	local onlineFriends = C_FriendList_GetNumOnlineFriends()
-	local _, numBNetOnline = BNGetNumFriends()
-
-	-- special handler to detect friend coming online or going offline
-	-- when this is the case, we invalidate our buffered table and update the
-	-- datatext information
-	if event == "CHAT_MSG_SYSTEM" then
-		if not (strfind(message, friendOnline) or strfind(message, friendOffline)) then return end
-	end
-
-	-- force update when showing tooltip
-	dataValid = false
-
-	self.text:SetFormattedText(displayString, _G.FRIENDS, onlineFriends + numBNetOnline)
-	lastPanel = self
-end
-
 local function Click(self, btn)
 	DT.tooltip:Hide()
 
@@ -567,6 +549,27 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
+local function OnEvent(self, event, message)
+	local onlineFriends = C_FriendList_GetNumOnlineFriends()
+	local _, numBNetOnline = BNGetNumFriends()
+
+	-- special handler to detect friend coming online or going offline
+	-- when this is the case, we invalidate our buffered table and update the
+	-- datatext information
+	if event == "CHAT_MSG_SYSTEM" then
+		if not (strfind(message, friendOnline) or strfind(message, friendOffline)) then return end
+	end
+	-- force update when showing tooltip
+	dataValid = false
+
+	if event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
+		OnEnter(self)
+	end
+
+	self.text:SetFormattedText(displayString, _G.FRIENDS, onlineFriends + numBNetOnline)
+	lastPanel = self
+end
+
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s: ", hex, "%d|r")
 
@@ -576,4 +579,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Friends', _G.SOCIAL_LABEL, {"BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter, nil, _G.FRIENDS)
+DT:RegisterDatatext('Friends', _G.SOCIAL_LABEL, {"BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM", "MODIFIER_STATE_CHANGED"}, OnEvent, nil, Click, OnEnter, nil, _G.FRIENDS)

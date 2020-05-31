@@ -41,6 +41,15 @@ local megaByteString = "%.2f mb"
 local profilingString = '%s%s|r |cffffffff/|r %s%s|r'
 local cpuProfiling = GetCVar("scriptProfile") == "1"
 
+local CombineAddOns = {
+	['DBM-Core'] = '^<DBM>',
+	['DataStore'] = '^DataStore',
+	['Altoholic'] = '^Altoholic',
+	['AtlasLoot'] = '^AtlasLoot',
+	['Details'] = '^Details!',
+	['RaiderIO'] = '^RaiderIO',
+}
+
 local function formatMem(memory)
 	local mult = 10^1
 	if memory >= 1024 then
@@ -51,6 +60,8 @@ local function formatMem(memory)
 end
 
 local infoTable = {}
+DT.SystemInfo = infoTable
+
 local function BuildAddonList()
 	local addOnCount = GetNumAddOns()
 	if addOnCount == #infoTable then return end
@@ -58,9 +69,9 @@ local function BuildAddonList()
 	wipe(infoTable)
 
 	for i = 1, addOnCount do
-		local _, title, _, loadable = GetAddOnInfo(i)
-		if loadable then
-			tinsert(infoTable, {index = i, title = title})
+		local name, title, _, loadable, reason = GetAddOnInfo(i)
+		if loadable or reason == "DEMAND_LOADED" then
+			tinsert(infoTable, {name = name, index = i, title = title})
 		end
 	end
 end
@@ -106,6 +117,8 @@ local function OnEnter(self, slow)
 		UpdateAddOnCPUUsage()
 	end
 
+	wipe(infoDisplay)
+
 	local count, totalMEM, totalCPU = 0, 0, 0
 	local showByCPU = cpuProfiling and not IsShiftKeyDown()
 	for _, data in ipairs(infoTable) do
@@ -135,18 +148,58 @@ local function OnEnter(self, slow)
 	end
 
 	DT.tooltip:AddLine(" ")
-	sort(infoDisplay, displaySort)
-	for i=1, count do
+
+	for addon, searchString in pairs(CombineAddOns) do
+		local addonIndex, memoryUsage, cpuUsage = 0, 0, 0
+		for i, data in pairs(infoDisplay) do
+			if data and data.name == addon then
+				addonIndex = i
+				break
+			end
+		end
+		for k, data in pairs(infoDisplay) do
+			if type(data) == 'table' then
+				local name, mem, cpu = data.title, data.mem, data.cpu
+				local stripName = E:StripString(data.title)
+				if name and (strmatch(stripName, searchString) or data.name == addon) then
+					if data.name ~= addon and stripName ~= addon then
+						memoryUsage = memoryUsage + mem;
+						if showByCPU and cpuProfiling then
+							cpuUsage = cpuUsage + cpu;
+						end
+						infoDisplay[k] = false
+					end
+				end
+			end
+		end
+		if addonIndex > 0 and infoDisplay[addonIndex] then
+			if memoryUsage > 0 then infoDisplay[addonIndex].mem = memoryUsage end
+			if cpuProfiling and cpuUsage > 0 then infoDisplay[addonIndex].cpu = cpuUsage end
+		end
+	end
+
+	for i = count, 1, -1 do
 		local data = infoDisplay[i]
-		local name, mem, cpu = data.title, data.mem, data.cpu
-		if cpu then
-			local memRed, cpuRed = mem / totalMEM, cpu / totalCPU
-			local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
-			DT.tooltip:AddDoubleLine(name, format(profilingString, E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, cpu)), 1, 1, 1)
-		else
-			local red = mem / totalMEM
-			local green = (1 - red) + .5
-			DT.tooltip:AddDoubleLine(name, formatMem(mem), 1, 1, 1, red or 1, green or 1, 0)
+		if type(data) == 'boolean' then
+			tremove(infoDisplay, i)
+		end
+	end
+
+	sort(infoDisplay, displaySort)
+
+	for i = 1, count do
+		local data = infoDisplay[i]
+		if data then
+			local name, mem, cpu = data.title, data.mem, data.cpu
+			if cpu then
+				local memRed, cpuRed = mem / totalMEM, cpu / totalCPU
+				local memGreen, cpuGreen = (1 - memRed) + .5, (1 - cpuRed) + .5
+				DT.tooltip:AddDoubleLine(name, format(profilingString, E:RGBToHex(memRed, memGreen, 0), formatMem(mem), E:RGBToHex(cpuRed, cpuGreen, 0), format(homeLatencyString, cpu)), 1, 1, 1)
+			else
+				local red = mem / totalMEM
+				local green = (1 - red) + .5
+				DT.tooltip:AddDoubleLine(name, formatMem(mem), 1, 1, 1, red or 1, green or 1, 0)
+			end
 		end
 	end
 
