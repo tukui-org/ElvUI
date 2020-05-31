@@ -103,8 +103,7 @@ function UF:Configure_Castbar(frame)
 
 	castbar:Width(db.width - ((frame.BORDER+frame.SPACING)*2))
 	castbar:Height(db.height - ((frame.BORDER+frame.SPACING)*2))
-	castbar.Holder:Width(db.width)
-	castbar.Holder:Height(db.height)
+	castbar.Holder:Size(db.width, db.height)
 
 	local oSC = castbar.Holder:GetScript('OnSizeChanged')
 	if oSC then oSC(castbar.Holder) end
