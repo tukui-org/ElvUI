@@ -36,6 +36,7 @@ end
 
 function NP:Update_Portrait(nameplate)
 	local db = NP.db.units[nameplate.frameType]
+	if not db then return end
 
 	if NP:StyleFilterCheckChanges(nameplate, 'Portrait') or (db.portrait and db.portrait.enable) then
 		if not nameplate:IsElementEnabled('Portrait') then
