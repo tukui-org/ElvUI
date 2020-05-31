@@ -829,9 +829,9 @@ function TT:Initialize()
 		self.MountIDs[select(2, C_MountJournal_GetMountInfoByID(mountID))] = mountID
 	end
 
-	_G.BNToastFrame:Size(_G.BNToastFrame:GetSize()) -- might need this for the mover
 	_G.BNToastFrame:Point('TOPRIGHT', _G.MMHolder, 'BOTTOMRIGHT', 0, -10)
 	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostBNToastMove)
+	_G.BNToastFrame.mover:SetSize(_G.BNToastFrame:GetSize())
 	self:SecureHook(_G.BNToastFrame, "SetPoint", "RepositionBNET")
 
 	if E.private.tooltip.enable ~= true then return end

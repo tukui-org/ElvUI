@@ -60,17 +60,21 @@ function UF:Update_TankHeader(header, db)
 
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	header:SetAttribute("yOffset", db.verticalSpacing)
+	header:SetAttribute('yOffset', db.verticalSpacing)
 
 	if not header.positioned then
-		local width, height = header:GetSize()
-
 		header:ClearAllPoints()
-		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -186)
-		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,tank,generalGroup')
-		header:SetAttribute('minHeight', max(height, 2*db.height + db.verticalSpacing))
+		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
+
+		local width, height = header:GetSize()
+		local minHeight = max(height, 2*db.height + db.verticalSpacing)
+		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
-		header.positioned = true;
+
+		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,tank,generalGroup')
+		header.mover:SetSize(width, minHeight)
+
+		header.positioned = true
 	end
 end
 

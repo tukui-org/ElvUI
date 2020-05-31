@@ -15,23 +15,9 @@ E.CreatedMovers = {}
 E.DisabledMovers = {}
 
 local function SizeChanged(frame, width, height)
-	if InCombatLockdown() then return end
+	if InCombatLockdown() or frame.ignoreMoverSize then return end
+
 	frame.mover:SetSize(width, height)
-end
-
-local function PointChanged(frame)
-	if InCombatLockdown() then return end
-	frame.mover:SetSize(frame:GetSize())
-end
-
-local function HeightChanged(frame, height)
-	if InCombatLockdown() then return end
-	frame.mover:SetHeight(height)
-end
-
-local function WidthChanged(frame, width)
-	if InCombatLockdown() then return end
-	frame.mover:SetWidth(width)
 end
 
 local function GetPoint(obj)
@@ -86,8 +72,8 @@ local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
-local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, shouldDisable, configString, perferCorners)
-	if not parent then return end --If for some reason the parent isnt loaded yet
+local function UpdateMover(name, parent, textString, overlay, snapOffset, postdrag, shouldDisable, configString, perferCorners, ignoreSizeChanged)
+	if not (name and parent) then return end --If for some reason the parent isnt loaded yet, also require a name
 
 	local holder = E.CreatedMovers[name]
 	if holder.Created then return end
@@ -109,7 +95,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	local fs = f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
 	fs:Point('CENTER')
-	fs:SetText(text or name)
+	fs:SetText(textString or name)
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
 	fs:SetJustifyH('CENTER')
 	f:SetFontString(fs)
@@ -119,20 +105,20 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 	f.parent = parent
 	f.overlay = overlay
 	f.postdrag = postdrag
-	f.textString = text or name
+	f.textString = textString or name
 	f.snapOffset = snapOffset or -2
 	f.shouldDisable = shouldDisable
 	f.configString = configString
 	f.perferCorners = perferCorners
+	f.ignoreSizeChanged = ignoreSizeChanged
 
 	holder.mover = f
 	parent.mover = f
 	E.snapBars[#E.snapBars+1] = f
 
-	--hooksecurefunc(parent, 'SetPoint', PointChanged)
-	--hooksecurefunc(parent, 'SetHeight', HeightChanged)
-	--hooksecurefunc(parent, 'SetWidth', WidthChanged)
-	hooksecurefunc(parent, 'SetSize', SizeChanged)
+	if not ignoreSizeChanged then
+		hooksecurefunc(parent, 'SetSize', SizeChanged)
+	end
 
 	E:SetMoverPoints(name, parent)
 
@@ -343,30 +329,33 @@ function E:SaveMoverDefaultPosition(name)
 	end
 end
 
-function E:CreateMover(parent, name, text, overlay, snapoffset, postdrag, moverTypes, shouldDisable, configString, perferCorners)
-	if not moverTypes then moverTypes = 'ALL,GENERAL' end
-
+function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, types, shouldDisable, configString, perferCorners, ignoreSizeChanged)
 	local holder = E.CreatedMovers[name]
 	if holder == nil then
 		holder = {}
-		holder.type = {}
+		holder.types = {}
 
-		for _, moverType in ipairs({split(',', moverTypes)}) do
-			holder.type[moverType] = true
+		if types then
+			for _, x in ipairs({split(',', types)}) do
+				holder.types[x] = true
+			end
+		else
+			holder.types.ALL = true
+			holder.types.GENERAL = true
 		end
 
 		E:SetMoverLayoutPositionPoint(holder, name, parent)
 		E.CreatedMovers[name] = holder
 	end
 
-	UpdateMover(parent, name, text, overlay, snapoffset, postdrag, shouldDisable, configString, perferCorners)
+	UpdateMover(name, parent, textString, overlay, snapoffset, postdrag, shouldDisable, configString, perferCorners, ignoreSizeChanged)
 end
 
 function E:ToggleMovers(show, moverType)
 	self.configMode = show
 
 	for _, holder in pairs(E.CreatedMovers) do
-		if show and holder.type[moverType] then
+		if show and holder.types[moverType] then
 			holder.mover:Show()
 		else
 			holder.mover:Hide()
@@ -476,6 +465,6 @@ end
 
 function E:LoadMovers()
 	for n, t in pairs(E.CreatedMovers) do
-		UpdateMover(t.parent, n, t.textString, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString, t.perferCorners)
+		UpdateMover(n, t.parent, t.textString, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString, t.perferCorners, t.ignoreSizeChanged)
 	end
 end

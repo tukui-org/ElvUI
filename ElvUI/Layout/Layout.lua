@@ -292,7 +292,7 @@ function LO:CreateChatPanels()
 	lchat.backdrop.ignoreBackdropColors = true
 	lchat.backdrop:SetAllPoints()
 	lchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = lchat, finishedFuncKeep = true}
-	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general')
+	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', nil, true)
 
 	--Background Texture
 	local lchattex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -342,7 +342,7 @@ function LO:CreateChatPanels()
 	rchat.backdrop.ignoreBackdropColors = true
 	rchat.backdrop:SetAllPoints()
 	rchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = rchat, finishedFuncKeep = true}
-	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general')
+	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', nil, true)
 
 	--Background Texture
 	local rchattex = rchat:CreateTexture(nil, 'OVERLAY')

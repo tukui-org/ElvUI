@@ -60,18 +60,21 @@ function UF:Update_AssistHeader(header, db)
 
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	header:SetAttribute("yOffset", db.verticalSpacing)
+	header:SetAttribute('yOffset', db.verticalSpacing)
 
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -248)
+		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -248)
 
 		local width, height = header:GetSize()
+		local minHeight = max(height, 2*db.height + db.verticalSpacing)
+		header:SetAttribute('minHeight', minHeight)
+		header:SetAttribute('minWidth', width)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,assist,generalGroup')
-		header:SetAttribute('minHeight', max(height, 2*db.height + db.verticalSpacing))
-		header:SetAttribute('minWidth', width)
-		header.positioned = true;
+		header.mover:SetSize(width, minHeight)
+
+		header.positioned = true
 	end
 end
 
