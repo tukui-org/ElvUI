@@ -17,9 +17,7 @@ E.DisabledMovers = {}
 local function SizeChanged(frame)
 	if InCombatLockdown() then return end
 
-	-- this solves the group one issue on unitframes, patch: 8.3.0 ~Simpy
-	E:Delay(0, frame.mover.Size, frame.mover, frame.dirtyWidth or frame:GetWidth(), frame.dirtyHeight or frame:GetHeight())
-	--frame.mover:Size(frame.dirtyWidth or frame:GetWidth(), frame.dirtyHeight or frame:GetHeight())
+	frame.mover:SetSize(frame:GetSize())
 end
 
 local function GetPoint(obj)
@@ -96,7 +94,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 	local fs = f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
-	fs:SetPoint('CENTER')
+	fs:Point('CENTER')
 	fs:SetText(text or name)
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
 	fs:SetJustifyH('CENTER')
@@ -155,7 +153,7 @@ local function UpdateMover(parent, name, text, overlay, snapOffset, postdrag, sh
 
 		local x2, y2, p2 = E:CalculateMoverPoints(self)
 		self:ClearAllPoints()
-		self:SetPoint(p2, E.UIParent, p2, x2, y2)
+		self:Point(p2, E.UIParent, p2, x2, y2)
 
 		E:SaveMoverPosition(name)
 

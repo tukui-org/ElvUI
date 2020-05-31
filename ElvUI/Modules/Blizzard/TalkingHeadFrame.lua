@@ -8,7 +8,7 @@ local CreateFrame = CreateFrame
 
 function B:ScaleTalkingHeadFrame()
 	local TalkingHeadFrame = _G.TalkingHeadFrame
-	TalkingHeadFrame:SetScale(E.db.general.talkingHeadFrameScale or 1)
+	TalkingHeadFrame:Scale(E.db.general.talkingHeadFrameScale or 1)
 	TalkingHeadFrame:GetScript("OnSizeChanged")(TalkingHeadFrame) --Resize mover
 
 	--Reset Model Camera
