@@ -330,7 +330,7 @@ function NP:UpdatePlate(nameplate)
 		end
 
 		if nameplate.isTarget then
-			NP:SetupTarget(nameplate)
+			NP:SetupTarget(nameplate, nil, true)
 		end
 	end
 
@@ -393,7 +393,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 	end
 end
 
-function NP:SetupTarget(nameplate, removed)
+function NP:SetupTarget(nameplate, removed, alreadyUpdated)
 	local TCP = _G.ElvNP_TargetClassPower
 	local nameOnly = nameplate and (NP:StyleFilterCheckChanges(nameplate, 'NameOnly') or NP.db.units[nameplate.frameType].nameOnly)
 	TCP.realPlate = (NP.db.units.TARGET.classpower.enable and not (removed or nameOnly) and nameplate) or nil
@@ -417,7 +417,10 @@ function NP:SetupTarget(nameplate, removed)
 	end
 
 	if nameplate and (not nameplate.blizzPlate.name:IsShown()) then
-		NP:UpdatePlate(nameplate)
+		if not alreadyUpdated then
+			NP:UpdatePlate(nameplate)
+		end
+
 		NP.LastTargetNameplate = nameplate
 	elseif NP.LastTargetNameplate then
 		NP:DisablePlate(NP.LastTargetNameplate)
@@ -520,14 +523,6 @@ function NP:ConfigureAll()
 				nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
 			end
 
-			NP:UpdatePlate(nameplate)
-
-			if nameplate.isTarget then
-				NP:SetupTarget(nameplate)
-			end
-
-			nameplate:UpdateAllElements("ForceUpdate")
-
 			if nameplate.frameType == "PLAYER" then
 				NP.PlayerNamePlateAnchor:ClearAllPoints()
 				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
@@ -535,6 +530,8 @@ function NP:ConfigureAll()
 				NP.PlayerNamePlateAnchor:Show()
 			end
 
+			NP:UpdatePlate(nameplate)
+			nameplate:UpdateAllElements("ForceUpdate")
 			NP:StyleFilterUpdate(nameplate, "NAME_PLATE_UNIT_ADDED") -- keep this at the end of the loop
 		end
 	end
@@ -620,14 +617,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate:Size(nameplate.width, nameplate.height)
 
-		if (not blizzPlate.name:IsShown()) then
+		if not blizzPlate.name:IsShown() then
 			NP:DisablePlate(nameplate, false)
 		else
 			NP:UpdatePlate(nameplate)
-		end
-
-		if nameplate.isTarget then
-			NP:SetupTarget(nameplate)
 		end
 
 		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
