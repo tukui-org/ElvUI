@@ -49,6 +49,7 @@ local CombineAddOns = {
 	['AtlasLoot'] = '^AtlasLoot',
 	['Details'] = '^Details!',
 	['RaiderIO'] = '^RaiderIO',
+	["BigWigs"] = '^BigWigs',
 }
 
 local function formatMem(memory)
