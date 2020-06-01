@@ -1258,17 +1258,86 @@ function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
 	end
 end
 
-local ignoreSettings = {
-	position = true,
-	priority = true,
-}
-
-local ignoreSettingsGroup = {
-	visibility = true,
-}
-
-local allowPass = {
-	sizeOverride = true,
+local Blacklist = {
+	arena = {
+		enable = true,
+		fader = true,
+	},
+	assist = {
+		enable = true,
+		fader = true,
+	},
+	boss = {
+		enable = true,
+		fader = true,
+	},
+	focus = {
+		enable = true,
+		fader = true,
+	},
+	focustarget = {
+		enable = true,
+		fader = true,
+	},
+	party = {
+		enable = true,
+		visibility = true, -- Confirm this Simpy
+		fader = true,
+	},
+	pet = {
+		enable = true,
+		fader = true,
+	},
+	pettarget = {
+		enable = true,
+		fader = true,
+	},
+	player = {
+		enable = true,
+		aurabars = true,
+		fader = true,
+		buffs = {
+			priority = true,
+			minDuration = true,
+			maxDuration = true,
+		},
+		debuffs = {
+			priority = true,
+			minDuration = true,
+			maxDuration = true,
+		},
+	},
+	raid = {
+		enable = true,
+		fader = true,
+		visibility = true, -- Confirm this Simpy
+	},
+	raid40 = {
+		enable = true,
+		fader = true,
+		visibility = true, -- Confirm this Simpy
+	},
+	raidpet = {
+		enable = true,
+		fader = true,
+		visibility = true, -- Confirm this Simpy
+	},
+	tank = {
+		fader = true,
+		enable = true,
+	},
+	target = {
+		fader = true,
+		enable = true,
+	},
+	targettarget = {
+		fader = true,
+		enable = true,
+	},
+	targettargettarget = {
+		fader = true,
+		enable = true,
+	},
 }
 
 function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
