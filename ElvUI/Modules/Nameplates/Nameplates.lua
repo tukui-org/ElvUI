@@ -55,6 +55,19 @@ do	-- credit: oUF/private.lua
 	end
 end
 
+local Blacklist = {
+	PLAYER = {
+		enable = true,
+		health = {
+			enable = true,
+		},
+	},
+	ENEMY_PLAYER = {},
+	FRIENDLY_PLAYER = {},
+	ENEMY_NPC = {},
+	FRIENDLY_NPC = {},
+}
+
 function NP:ResetSettings(unit)
 	E:CopyTable(NP.db.units[unit], P.nameplates.units[unit])
 end
