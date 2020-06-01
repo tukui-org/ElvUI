@@ -122,10 +122,9 @@ local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(_G.ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(_G.ERR_FRIEND_OFFLINE_S,"%%s","")
-local BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_COD, BNET_CLIENT_COD_MW, BNET_CLIENT_COD_MW2 = BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_COD, BNET_CLIENT_COD_MW, BNET_CLIENT_COD_MW2
-local wowString = BNET_CLIENT_WOW
-local classicID = WOW_PROJECT_CLASSIC
-local retailID = WOW_PROJECT_ID
+local wowString = _G.BNET_CLIENT_WOW
+local retailID = _G.WOW_PROJECT_ID
+local WOW_CLASSIC = _G.BNET_FRIEND_TOOLTIP_WOW_CLASSIC
 local dataValid, lastPanel = false
 local statusTable = {
 	AFK = " |cffFFFFFF[|r|cffFF9900"..L["AFK"].."|r|cffFFFFFF]|r",
@@ -135,30 +134,30 @@ local statusTable = {
 -- Makro for get the client: /run for i,v in pairs(_G) do if type(i)=="string" and i:match("BNET_CLIENT_") then print(i,"=",v) end end
 local clientSorted = {}
 local clientTags = {
-	[BNET_CLIENT_WOW] = "WoW",
-	[BNET_CLIENT_D3] = "D3",
-	[BNET_CLIENT_WTCG] = "HS",
-	[BNET_CLIENT_HEROES] = "HotS",
-	[BNET_CLIENT_OVERWATCH] = "OW",
-	[BNET_CLIENT_SC] = "SC",
-	[BNET_CLIENT_SC2] = "SC2",
-	[BNET_CLIENT_COD] = "BO4",
-	[BNET_CLIENT_COD_MW] = "MW",
-	[BNET_CLIENT_COD_MW2] = "MW2",
+	[_G.BNET_CLIENT_WOW] = "WoW",
+	[_G.BNET_CLIENT_D3] = "D3",
+	[_G.BNET_CLIENT_WTCG] = "HS",
+	[_G.BNET_CLIENT_HEROES] = "HotS",
+	[_G.BNET_CLIENT_OVERWATCH] = "OW",
+	[_G.BNET_CLIENT_SC] = "SC",
+	[_G.BNET_CLIENT_SC2] = "SC2",
+	[_G.BNET_CLIENT_COD] = "BO4",
+	[_G.BNET_CLIENT_COD_MW] = "MW",
+	[_G.BNET_CLIENT_COD_MW2] = "MW2",
 	BSAp = L["Mobile"],
 }
 
 local clientIndex = {
-	[BNET_CLIENT_WOW] = 1,
-	[BNET_CLIENT_D3] = 2,
-	[BNET_CLIENT_WTCG] = 3,
-	[BNET_CLIENT_HEROES] = 4,
-	[BNET_CLIENT_OVERWATCH] = 5,
-	[BNET_CLIENT_SC] = 6,
-	[BNET_CLIENT_SC2] = 7,
-	[BNET_CLIENT_COD] = 8,
-	[BNET_CLIENT_COD_MW] = 9,
-	[BNET_CLIENT_COD_MW2] = 10,
+	[_G.BNET_CLIENT_WOW] = 1,
+	[_G.BNET_CLIENT_D3] = 2,
+	[_G.BNET_CLIENT_WTCG] = 3,
+	[_G.BNET_CLIENT_HEROES] = 4,
+	[_G.BNET_CLIENT_OVERWATCH] = 5,
+	[_G.BNET_CLIENT_SC] = 6,
+	[_G.BNET_CLIENT_SC2] = 7,
+	[_G.BNET_CLIENT_COD] = 8,
+	[_G.BNET_CLIENT_COD_MW] = 9,
+	[_G.BNET_CLIENT_COD_MW2] = 10,
 	App = 11,
 	BSAp = 12,
 }
@@ -235,11 +234,7 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 	className = E:UnlocalizedClassName(className) or ""
 	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or ""
 
-	if wowProjectID == classicID then
-		gameText, realmName = strmatch(gameText, '(.-)%s%-%s(.+)')
-	end
-
-	BNTable[bnIndex] = {
+	local obj = {
 		accountID = bnetIDAccount,		--1
 		accountName = accountName,		--2
 		battleTag = battleTag,			--3
@@ -260,6 +255,12 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 		guid = guid,					--18
 		gameText = gameText				--19
 	}
+
+	if strmatch(gameText, WOW_CLASSIC) then
+		obj.classicText, obj.realmName = strmatch(gameText, '(.-)%s%-%s(.+)')
+	end
+
+	BNTable[bnIndex] = obj
 
 	if tableList[client] then
 		tableList[client][#tableList[client]+1] = BNTable[bnIndex]
@@ -516,7 +517,7 @@ local function OnEnter(self)
 						end
 
 						if not shouldSkip then
-							local header = format("%s (%s)", battleNetString, (info.wowProjectID == classicID and info.gameText) or clientTags[client] or client)
+							local header = format("%s (%s)", battleNetString, info.classicText or clientTags[client] or client)
 							if info.client and info.client == wowString then
 								classc = E:ClassColor(info.className)
 								if info.level and info.level ~= '' then
