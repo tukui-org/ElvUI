@@ -1340,46 +1340,15 @@ local Blacklist = {
 	},
 }
 
-function UF:MergeUnitSettings(fromUnit, toUnit, isGroupUnit)
-	local db = self.db.units
-	local filter = ignoreSettings
-	if isGroupUnit then
-		filter = ignoreSettingsGroup
-	end
-	if fromUnit ~= toUnit then
-		for option, value in pairs(db[fromUnit]) do
-			if type(value) ~= 'table' and not filter[option] then
-				if db[toUnit][option] ~= nil then
-					db[toUnit][option] = value
-				end
-			elseif not filter[option] then
-				if type(value) == 'table' then
-					for opt, val in pairs(db[fromUnit][option]) do
-						--local val = db[fromUnit][option][opt]
-						if type(val) ~= 'table' and not filter[opt] then
-							if db[toUnit][option] ~= nil and (db[toUnit][option][opt] ~= nil or allowPass[opt]) then
-								db[toUnit][option][opt] = val
-							end
-						elseif not filter[opt] then
-							if type(val) == 'table' then
-								for o, v in pairs(db[fromUnit][option][opt]) do
-									if not filter[o] then
-										if db[toUnit][option] ~= nil and db[toUnit][option][opt] ~= nil and db[toUnit][option][opt][o] ~= nil then
-											db[toUnit][option][opt][o] = v
-										end
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	else
+function UF:MergeUnitSettings(from, to)
+	if from == to then
 		E:Print(L["You cannot copy settings from the same unit."])
+		return
 	end
 
-	self:Update_AllFrames()
+	E:CopyTable(UF.db.units[to], E:FilterTableFromBlacklist(UF.db.units[from], Blacklist))
+
+	UF:Update_AllFrames()
 end
 
 function UF:UpdateBackdropTextureColor(r, g, b)

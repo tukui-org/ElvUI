@@ -73,9 +73,12 @@ function NP:ResetSettings(unit)
 end
 
 function NP:CopySettings(from, to)
-	if from == to then return end
+	if from == to then
+		E:Print(L["You cannot copy settings from the same unit."])
+		return
+	end
 
-	E:CopyTable(NP.db.units[to], NP.db.units[from])
+	E:CopyTable(NP.db.units[to], E:FilterTableFromBlacklist(NP.db.units[from], Blacklist))
 end
 
 function NP:CVarReset()
