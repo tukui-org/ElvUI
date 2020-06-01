@@ -1346,7 +1346,7 @@ function UF:MergeUnitSettings(from, to)
 		return
 	end
 
-	E:CopyTable(UF.db.units[to], E:FilterTableFromBlacklist(UF.db.units[from], Blacklist))
+	E:CopyTable(UF.db.units[to], E:FilterTableFromBlacklist(UF.db.units[from], Blacklist[to]))
 
 	UF:Update_AllFrames()
 end

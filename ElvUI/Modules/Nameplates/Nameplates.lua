@@ -78,7 +78,7 @@ function NP:CopySettings(from, to)
 		return
 	end
 
-	E:CopyTable(NP.db.units[to], E:FilterTableFromBlacklist(NP.db.units[from], Blacklist))
+	E:CopyTable(NP.db.units[to], E:FilterTableFromBlacklist(NP.db.units[from], Blacklist[to]))
 end
 
 function NP:CVarReset()
