@@ -564,7 +564,7 @@ local function OnEvent(self, event, message)
 	-- force update when showing tooltip
 	dataValid = false
 
-	if event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
+	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
 		OnEnter(self)
 	end
 

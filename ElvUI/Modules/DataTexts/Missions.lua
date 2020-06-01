@@ -275,6 +275,9 @@ local function OnEnter(self)
 				end
 			end
 		end
+	else
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddLine("Hold Shift - Show Previous Expansion", .66, .66, .66)
 	end
 
 	DT.tooltip:Show()
@@ -302,7 +305,7 @@ local function OnEvent(self, event)
 		self.text:SetText(AddInfo(MAIN_CURRENCY))
 	end
 
-	if event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
+	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
 		OnEnter(self)
 	end
 end
