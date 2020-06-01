@@ -399,6 +399,14 @@ function NP:SetupTarget(nameplate, removed)
 		TCP.Stagger:ClearAllPoints()
 		TCP.Stagger:Point("CENTER", moveToPlate, "CENTER", NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
 	end
+
+	if nameplate and (not nameplate.blizzPlate.name:IsShown()) then
+		NP:UpdatePlate(nameplate)
+		NP.LastTargetNameplate = nameplate
+	elseif NP.LastTargetNameplate then
+		NP:DisablePlate(NP.LastTargetNameplate)
+		NP.LastTargetNameplate = nil
+	end
 end
 
 function NP:SetNamePlateClickThrough()
@@ -596,7 +604,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate:Size(nameplate.width, nameplate.height)
 
-		NP:UpdatePlate(nameplate)
+		if (not blizzPlate.name:IsShown()) then
+			NP:DisablePlate(nameplate, false)
+		else
+			NP:UpdatePlate(nameplate)
+		end
 
 		if nameplate.isTarget then
 			NP:SetupTarget(nameplate)
