@@ -372,7 +372,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 		end
 	else
 		if nameplate:IsElementEnabled("QuestIcons") then nameplate:DisableElement("QuestIcons") end
-		if nameplate:IsElementEnabled("Highlight") then nameplate:DisableElement("Hightlight") end
+		if nameplate:IsElementEnabled("Highlight") then nameplate:DisableElement("Highlight") end
 		if nameplate:IsElementEnabled("PVPRole") then nameplate:DisableElement("PVPRole") end
 	end
 end
