@@ -925,8 +925,8 @@ function UF:GetSmartVisibilitySetting(setting, group, smart, db)
 end
 
 function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTemplate, smart, skip)
-	local db = self.db.units[group]
-	local Header = self[group]
+	local db = UF.db.units[group]
+	local Header = UF[group]
 
 	local numGroups = UF:GetSmartVisibilitySetting('numGroups', group, smart, db)
 	local visibility = UF:GetSmartVisibilitySetting('visibility', group, smart, db)
@@ -984,10 +984,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		if not UF.headerFunctions[group].Update then
 			UF.headerFunctions[group].Update = function()
 				local func = UF["Update_"..name.."Frames"]
-				UF["Update_"..name.."Header"](UF, Header, db)
+				UF["Update_"..name.."Header"](UF, Header, Header.db)
 
 				for i = 1, Header:GetNumChildren() do
-					Header:UpdateChild(func, select(i, Header:GetChildren()), db)
+					Header:UpdateChild(func, select(i, Header:GetChildren()), Header.db)
 				end
 			end
 		end

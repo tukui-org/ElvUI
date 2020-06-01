@@ -81,10 +81,10 @@ end
 function UF:Update_TankFrames(frame, db)
 	frame.db = db
 	frame.colors = ElvUF.colors
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		if(self.thinBorders) then
+		if(UF.thinBorders) then
 			frame.SPACING = 0
 			frame.BORDER = E.mult
 		else
