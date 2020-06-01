@@ -46,16 +46,17 @@ function UF:Construct_Debuffs(frame)
 end
 
 function UF:Aura_OnClick()
-	local mod = E.db.unitframe.auraBlacklistModifier
-	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
+	local keyDown = IsShiftKeyDown() and 'SHIFT' or IsAltKeyDown() and 'ALT' or IsControlKeyDown() and 'CTRL'
+	if not keyDown then return end
 
 	local spellName, spellID = self.name, self.spellID
-	if spellName and spellID then
-		if not E.global.unitframe.aurafilters.Blacklist.spells[spellID] then
-			E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], spellName))
-			E.global.unitframe.aurafilters.Blacklist.spells[spellID] = { enable = true, priority = 0 }
+	local listName = UF.db.modifiers[keyDown]
+	if spellName and spellID and listName then
+		if not E.global.unitframe.aurafilters[listName].spells[spellID] then
+			E:Print(format(L["The spell '%s' has been added to the '%s' unitframe aura filter."], spellName, listName))
+			E.global.unitframe.aurafilters[listName].spells[spellID] = { enable = true, priority = 0 }
 		else
-			E.global.unitframe.aurafilters.Blacklist.spells[spellID].enable = true
+			E.global.unitframe.aurafilters[listName].spells[spellID].enable = true
 		end
 
 		UF:Update_AllFrames()

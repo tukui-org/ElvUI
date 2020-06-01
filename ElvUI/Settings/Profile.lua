@@ -1381,7 +1381,11 @@ P.unitframe = {
 	debuffHighlighting = 'FILL',
 	smartRaidFilter = true,
 	targetOnMouseDown = false,
-	auraBlacklistModifier = 'NONE',
+	modifiers = {
+		SHIFT = 'NONE',
+		CTRL = 'NONE',
+		ALT = 'NONE',
+	},
 	thinBorders = false,
 	targetSound = false,
 	colors = {

@@ -3345,6 +3345,26 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 	return config
 end
 
+local filterList = {}
+local function modifierList()
+	wipe(filterList)
+
+	filterList['NONE'] = L["NONE"]
+	filterList['Blacklist'] = L["Blacklist"]
+	filterList['Whitelist'] = L["Whitelist"]
+
+	local list = E.global.unitframe.aurafilters
+	if list then
+		for filter in pairs(list) do
+			if not G.unitframe.aurafilters[filter] then
+				filterList[filter] = filter
+			end
+		end
+	end
+
+	return filterList
+end
+
 E.Options.args.unitframe = {
 	type = "group",
 	name = L["UnitFrames"],
@@ -3385,26 +3405,8 @@ E.Options.args.unitframe = {
 					name = L["General"],
 					disabled = function() return not E.UnitFrames.Initialized end,
 					args = {
-						auraBlacklistModifier = {
-							order = 1,
-							type = "select",
-							name = L["Blacklist Modifier"],
-							desc = L["You need to hold this modifier down in order to blacklist an aura by right-clicking the icon. Set to None to disable the blacklist functionality."],
-							values = {
-								['NONE'] = L["NONE"],
-								['SHIFT'] = L["SHIFT_KEY_TEXT"],
-								['ALT'] = L["ALT_KEY_TEXT"],
-								['CTRL'] = L["CTRL_KEY_TEXT"],
-							},
-						},
-						spacer1 = {
-							order = 2,
-							type = "description",
-							name = " ",
-							width = "full"
-						},
 						thinBorders = {
-							order = 3,
+							order = 1,
 							name = L["Thin Borders"],
 							desc = L["Use thin borders on certain unitframe elements."],
 							type = 'toggle',
@@ -3412,26 +3414,26 @@ E.Options.args.unitframe = {
 							set = function(info, value) E.db.unitframe[info[#info]] = value; E:StaticPopup_Show("CONFIG_RL") end,
 						},
 						smartRaidFilter = {
-							order = 4,
+							order = 2,
 							name = L["Smart Raid Filter"],
 							desc = L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."],
 							type = 'toggle',
 							set = function(info, value) E.db.unitframe[info[#info]] = value; UF:UpdateAllHeaders() end
 						},
 						targetOnMouseDown = {
-							order = 5,
+							order = 3,
 							name = L["Target On Mouse-Down"],
 							desc = L["Target units on mouse down rather than mouse up. \n\n|cffFF0000Warning: If you are using the addon Clique you may have to adjust your Clique settings when changing this."],
 							type = "toggle",
 						},
 						targetSound = {
-							order = 6,
+							order = 4,
 							type = "toggle",
 							name = L["Targeting Sound"],
 							desc = L["Enable a sound if you select a unit."],
 						},
 						effectiveGroup = {
-							order = 9,
+							order = 5,
 							type = 'group',
 							guiInline = true,
 							name = L["Effective Updates"],
@@ -3502,6 +3504,34 @@ E.Options.args.unitframe = {
 									disabled = function() return not E.global.unitframe.effectiveAura end,
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
+								},
+							},
+						},
+						modifiers = {
+							type = 'group',
+							name = L["Modifiers"],
+							order = 6,
+							guiInline = true,
+							get = function(info) return E.db.unitframe.modifiers[info[#info]] end,
+							set = function(info, value) E.db.unitframe.modifiers[info[#info]] = value end,
+							args = {
+								SHIFT = {
+									order = 1,
+									type = "select",
+									name = L["SHIFT"],
+									values = modifierList,
+								},
+								ALT = {
+									order = 2,
+									type = "select",
+									name = L["ALT"],
+									values = modifierList,
+								},
+								CTRL = {
+									order = 3,
+									type = "select",
+									name = L["CTRL"],
+									values = modifierList,
 								},
 							},
 						},
