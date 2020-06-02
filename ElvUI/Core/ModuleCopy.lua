@@ -6,7 +6,7 @@ local format, error = format, error
 -- GLOBALS: ElvDB
 
 --This table to reserve settings names in E.global.profileCopy. Used in export/imports functions
---Pligins can add own values for their internal settings for safechecks here
+--Plugins can add own values for their internal settings for safechecks here
 MC.InternalOptions = {
 	selected = true,
 	movers = true,
@@ -32,12 +32,12 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 				name = L["General"],
 			},
 			PreButtonSpacer = {
-				order = 200,
+				order = -4,
 				type = 'description',
 				name = "",
 			},
 			import = {
-				order = 201,
+				order = -3,
 				type = 'execute',
 				name = L["Import Now"],
 				func = function()
@@ -49,7 +49,7 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 				end,
 			},
 			export = {
-				order = 202,
+				order = -2,
 				type = 'execute',
 				name = L["Export Now"],
 				func = function()
@@ -64,12 +64,12 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 	}
 	if pluginSection then
 		config.args.general.hidden = function(info) return E.global.profileCopy[pluginSection][section][ info[#info] ] == nil end
-		config.args.general.get = function(info) return E.global.profileCopy[pluginSection][section][ info[#info] ] end
-		config.args.general.set = function(info, value) E.global.profileCopy[pluginSection][section][ info[#info] ] = value end
+		config.get = function(info) return E.global.profileCopy[pluginSection][section][ info[#info] ] end
+		config.set = function(info, value) E.global.profileCopy[pluginSection][section][ info[#info] ] = value end
 	else
 		config.args.general.hidden = function(info) return E.global.profileCopy[section][ info[#info] ] == nil end
-		config.args.general.get = function(info) return E.global.profileCopy[section][ info[#info] ] end
-		config.args.general.set = function(info, value) E.global.profileCopy[section][ info[#info] ] = value end
+		config.get = function(info) return E.global.profileCopy[section][ info[#info] ] end
+		config.set = function(info, value) E.global.profileCopy[section][ info[#info] ] = value end
 	end
 	return config
 end
