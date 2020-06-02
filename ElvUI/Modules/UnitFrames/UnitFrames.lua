@@ -1281,7 +1281,7 @@ local Blacklist = {
 	},
 	party = {
 		enable = true,
-		visibility = true, -- Confirm this Simpy
+		visibility = true,
 		fader = true,
 	},
 	pet = {
@@ -1310,17 +1310,17 @@ local Blacklist = {
 	raid = {
 		enable = true,
 		fader = true,
-		visibility = true, -- Confirm this Simpy
+		visibility = true,
 	},
 	raid40 = {
 		enable = true,
 		fader = true,
-		visibility = true, -- Confirm this Simpy
+		visibility = true,
 	},
 	raidpet = {
 		enable = true,
 		fader = true,
-		visibility = true, -- Confirm this Simpy
+		visibility = true,
 	},
 	tank = {
 		fader = true,
