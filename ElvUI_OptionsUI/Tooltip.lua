@@ -7,6 +7,14 @@ local tonumber = tonumber
 local GameTooltip = _G.GameTooltip
 local GameTooltipStatusBar = _G.GameTooltipStatusBar
 
+local modifierValues = {
+	['ALL'] = L["Always Hide"],
+	['NONE'] = L["Never Hide"],
+	['SHIFT'] = L["SHIFT_KEY_TEXT"],
+	['ALT'] = L["ALT_KEY_TEXT"],
+	['CTRL'] = L["CTRL_KEY_TEXT"],
+}
+
 E.Options.args.tooltip = {
 	type = "group",
 	name = L["Tooltip"],
@@ -39,11 +47,11 @@ E.Options.args.tooltip = {
 			name = L["Target Info"],
 			desc = L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."],
 		},
-		npcID = {
+		modifierID = {
 			order = 5,
-			type = 'toggle',
-			name = L["NPC IDs"],
-			desc = L["Display the npc ID when mousing over a npc tooltip."],
+			type = 'select',
+			name = L["Modifier for IDs"],
+			values = modifierValues,
 		},
 		playerTitles = {
 			order = 6,
@@ -62,12 +70,6 @@ E.Options.args.tooltip = {
 			type = 'toggle',
 			name = L["Current Mount"],
 			desc = L["Display current mount the unit is riding."],
-		},
-		spellID = {
-			order = 9,
-			type = 'toggle',
-			name = L["Spell/Item IDs"],
-			desc = L["Display the spell or item ID when mousing over a spell or item tooltip."],
 		},
 		alwaysShowRealm = {
 			order = 10,
@@ -195,39 +197,21 @@ E.Options.args.tooltip = {
 					type = 'select',
 					name = L["ActionBars"],
 					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
-					values = {
-						['ALL'] = L["Always Hide"],
-						['NONE'] = L["Never Hide"],
-						['SHIFT'] = L["SHIFT_KEY_TEXT"],
-						['ALT'] = L["ALT_KEY_TEXT"],
-						['CTRL'] = L["CTRL_KEY_TEXT"],
-					},
+					values = modifierValues,
 				},
 				bags = {
 					order = 2,
 					type = 'select',
 					name = L["Bags/Bank"],
 					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
-					values = {
-						['ALL'] = L["Always Hide"],
-						['NONE'] = L["Never Hide"],
-						['SHIFT'] = L["SHIFT_KEY_TEXT"],
-						['ALT'] = L["ALT_KEY_TEXT"],
-						['CTRL'] = L["CTRL_KEY_TEXT"],
-					},
+					values = modifierValues,
 				},
 				unitFrames = {
 					order = 3,
 					type = 'select',
 					name = L["UnitFrames"],
 					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
-					values = {
-						['ALL'] = L["Always Hide"],
-						['NONE'] = L["Never Hide"],
-						['SHIFT'] = L["SHIFT_KEY_TEXT"],
-						['ALT'] = L["ALT_KEY_TEXT"],
-						['CTRL'] = L["CTRL_KEY_TEXT"],
-					},
+					values = modifierValues,
 				},
 				combat = {
 					order = 4,
@@ -240,7 +224,7 @@ E.Options.args.tooltip = {
 					type = 'select',
 					name = L["Combat Override Key"],
 					desc = L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."],
-					disabled = function() return not E.db.tooltip.visibility.combat end,
+					hidden = function() return not E.db.tooltip.visibility.combat end,
 					values = {
 						['ALL'] = L["Always Hide"],
 						['SHIFT'] = L["SHIFT_KEY_TEXT"],
