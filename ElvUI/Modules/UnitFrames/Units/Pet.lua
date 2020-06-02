@@ -10,6 +10,7 @@ local tinsert = tinsert
 
 function UF:Construct_PetFrame(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Health.colorPetByUnitClass = true
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
 	frame.Name = UF:Construct_NameText(frame)
