@@ -667,14 +667,17 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	local _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
 
 	if id then
+		local sourceText
 		if TT.MountIDs[id] then
-			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
+			_, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
 			tt:AddLine(" ")
 			tt:AddLine(sourceText, 1, 1, 1)
-			tt:AddLine(" ")
 		end
 
 		if TT:IsModKeyDown() then
+			if sourceText then
+				tt:AddLine(" ")
+			end
 			if caster then
 				local name = UnitName(caster)
 				local _, class = UnitClass(caster)
