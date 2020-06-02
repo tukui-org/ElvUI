@@ -101,7 +101,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if not TT.db.visibility then return end
 	if tt:GetAnchorType() ~= "ANCHOR_NONE" then return end
 
-	if TT.db.visibility.combat and InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
+	if InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
 		tt:Hide()
 		return
 	end
