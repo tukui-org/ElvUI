@@ -138,6 +138,7 @@ local function CreateNamePlatesConfig()
 
 	MC:AddConfigOptions(P.nameplates, config)
 
+	-- Locales
 	config.args.cooldown.name = L["Cooldown Text"]
 	config.args.cooldown.order = 2
 
@@ -147,18 +148,22 @@ local function CreateNamePlatesConfig()
 	config.args.plateSize.name = L["Clickable Size"]
 	config.args.colors.name = L["COLORS"]
 	config.args.visibility.name = L["Visibility"]
-	config.args.filters = nil
 
-	config.args.units.order = -5
-	config.args.units.type = "group"
-	config.args.units.guiInline = true
-	config.args.units.name = L["NamePlates"]
-	config.args.units.args = {}
-	config.args.units.get = function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end
-	config.args.units.set = function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end
+	-- Modify Tables
+	config.args.filters = nil
+	config.args.units = {
+		order = -5,
+		type = "group",
+		guiInline = true,
+		name = L["NamePlates"],
+		get = function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end,
+		set = function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end,
+		args = {},
+	}
 
 	MC:AddConfigOptions(P.nameplates.units, config.args.units)
 
+	-- Locales
 	config.args.units.args.PLAYER.name = L["Player"]
 	config.args.units.args.TARGET.name = L["Target"]
 	config.args.units.args.FRIENDLY_PLAYER.name = L["FRIENDLY_PLAYER"]
