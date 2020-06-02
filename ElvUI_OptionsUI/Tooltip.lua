@@ -8,11 +8,11 @@ local GameTooltip = _G.GameTooltip
 local GameTooltipStatusBar = _G.GameTooltipStatusBar
 
 local modifierValues = {
-	['ALL'] = L["Always Hide"],
-	['NONE'] = L["Never Hide"],
-	['SHIFT'] = L["SHIFT_KEY_TEXT"],
-	['ALT'] = L["ALT_KEY_TEXT"],
-	['CTRL'] = L["CTRL_KEY_TEXT"],
+	SHOW	= L["Show"],
+	HIDE	= L["Hide"],
+	SHIFT	= L["SHIFT_KEY_TEXT"],
+	CTRL	= L["CTRL_KEY_TEXT"],
+	ALT		= L["ALT_KEY_TEXT"],
 }
 
 E.Options.args.tooltip = {

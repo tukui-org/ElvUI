@@ -90,28 +90,26 @@ local classification = {
 	rare = format("|cffAF5050 %s|r", _G.ITEM_QUALITY3_DESC)
 }
 
+function TT:IsModKeyDown(db)
+	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
+	return k == 'SHOW' or ((k == 'SHIFT' and IsShiftKeyDown()) or (k == 'CTRL' and IsControlKeyDown()) or (k == 'ALT' and IsAltKeyDown()))
+end
+
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if tt:IsForbidden() then return end
 	if E.private.tooltip.enable ~= true then return end
 	if not TT.db.visibility then return end
 	if tt:GetAnchorType() ~= "ANCHOR_NONE" then return end
 
-	if InCombatLockdown() and TT.db.visibility.combat then
-		local modifier = TT.db.visibility.combatOverride
-		if not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown())) then
-			tt:Hide()
-			return
-		end
+	if TT.db.visibility.combat and InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
+		tt:Hide()
+		return
 	end
 
 	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
-	if (TT.db.visibility.actionbars ~= 'NONE' and ownerName and (strfind(ownerName, "ElvUI_Bar") or strfind(ownerName, "ElvUI_StanceBar") or strfind(ownerName, "PetAction")) and not keybindFrame.active) then
-		local modifier = TT.db.visibility.actionbars
-
-		if (modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
-			tt:Hide()
-			return
-		end
+	if ownerName and (strfind(ownerName, "ElvUI_Bar") or strfind(ownerName, "ElvUI_StanceBar") or strfind(ownerName, "PetAction")) and not keybindFrame.active and TT:IsModKeyDown(TT.db.visibility.actionbars) then
+		tt:Hide()
+		return
 	end
 
 	if tt.StatusBar then
@@ -197,7 +195,7 @@ function TT:GetLevelLine(tt, offset)
 	end
 end
 
-function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
+function TT:SetUnitText(tt, unit)
 	local name, realm = UnitName(unit)
 
 	if UnitIsPlayer(unit) then
@@ -207,7 +205,9 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		local nameRealm = (realm and realm ~= "" and format("%s-%s", name, realm)) or name
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		local pvpName = UnitPVPName(unit)
+		local level = UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
+		local isShiftKeyDown = IsShiftKeyDown()
 
 		local nameColor = E:ClassColor(class) or PRIEST_COLOR
 
@@ -284,6 +284,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 			local creatureType = UnitCreatureType(unit)
 			local pvpFlag, diffColor
 
+			local level = UnitLevel(unit)
 			if isPetWild or isPetCompanion then
 				level = UnitBattlePetLevel(unit)
 
@@ -421,23 +422,16 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	if tt:IsForbidden() then return end
 
 	local unit = select(2, tt:GetUnit())
-	local isShiftKeyDown = IsShiftKeyDown()
-	local isControlKeyDown = IsControlKeyDown()
 	local isPlayerUnit = UnitIsPlayer(unit)
-	if ((tt:GetOwner() ~= _G.UIParent) and (TT.db.visibility and TT.db.visibility.unitFrames ~= 'NONE')) then
-		local modifier = TT.db.visibility.unitFrames
-
-		if (modifier == 'ALL' or not ((modifier == 'SHIFT' and isShiftKeyDown) or (modifier == 'CTRL' and isControlKeyDown) or (modifier == 'ALT' and IsAltKeyDown()))) then
-			tt:Hide()
-			return
-		end
+	if TT.db.visibility and TT:IsModKeyDown(TT.db.visibility.unitFrames) and (tt:GetOwner() ~= _G.UIParent) then
+		tt:Hide()
+		return
 	end
 
 	if not unit then
 		local GMF = GetMouseFocus()
-		if GMF and GMF.GetAttribute and GMF:GetAttribute("unit") then
-			unit = GMF:GetAttribute("unit")
-		end
+		local focusUnit = GMF and GMF.GetAttribute and GMF:GetAttribute("unit")
+		if focusUnit then unit = focusUnit end
 		if not unit or not UnitExists(unit) then
 			return
 		end
@@ -445,8 +439,10 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	TT:RemoveTrashLines(tt) --keep an eye on this may be buggy
 
-	local color = TT:SetUnitText(tt, unit, UnitLevel(unit), isShiftKeyDown)
-	if TT.db.showMount and not isShiftKeyDown and unit ~= "player" and isPlayerUnit then
+	local isShiftKeyDown = IsShiftKeyDown()
+	local isControlKeyDown = IsControlKeyDown()
+	local color = TT:SetUnitText(tt, unit)
+	if TT.db.showMount and isPlayerUnit and unit ~= "player" and not isShiftKeyDown then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
 			if not name then break end
@@ -509,7 +505,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 	end
 
 	-- NPC ID's
-	if unit and (TT.db.modifierID == 'NONE' or ((TT.db.modifierID == 'SHIFT' and IsShiftKeyDown()) or (TT.db.modifierID == 'CTRL' and IsControlKeyDown()) or (TT.db.modifierID == 'ALT' and IsAltKeyDown()))) and not isPlayerUnit then
+	if unit and not isPlayerUnit and TT:IsModKeyDown() then
 		if C_PetBattles_IsInBattle() then return end
 		local guid = UnitGUID(unit) or ""
 		local id = tonumber(strmatch(guid, "%-(%d-)%-%x-$"), 10)
@@ -560,14 +556,10 @@ end
 function TT:GameTooltip_OnTooltipSetItem(tt)
 	if tt:IsForbidden() then return end
 	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
-	if (TT.db.visibility and TT.db.visibility.bags ~= 'NONE' and ownerName and (strfind(ownerName, "ElvUI_Container") or strfind(ownerName, "ElvUI_BankContainer"))) then
-		local modifier = TT.db.visibility.bags
-
-		if (modifier == 'ALL' or not ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
-			tt.itemCleared = true
-			tt:Hide()
-			return
-		end
+	if TT.db.visibility and ownerName and (strfind(ownerName, "ElvUI_Container") or strfind(ownerName, "ElvUI_BankContainer")) and TT:IsModKeyDown(TT.db.visibility.bags) then
+		tt.itemCleared = true
+		tt:Hide()
+		return
 	end
 
 	if not tt.itemCleared then
@@ -575,8 +567,8 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local num = GetItemCount(link)
 		local numall = GetItemCount(link,true)
 		local left, right, bankCount = " ", " ", " "
-		local modifier = TT.db.modifierID
-		if link and (modifier == 'NONE' or ((modifier == 'SHIFT' and IsShiftKeyDown()) or (modifier == 'CTRL' and IsControlKeyDown()) or (modifier == 'ALT' and IsAltKeyDown()))) then
+
+		if link and TT:IsModKeyDown() then
 			left = format("|cFFCA3C3C%s|r %s", _G.ID, strmatch(link, ":(%w+)"))
 		end
 
@@ -682,7 +674,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 			tt:AddLine(" ")
 		end
 
-		if (TT.db.modifierID == 'NONE' or ((TT.db.modifierID == 'SHIFT' and IsShiftKeyDown()) or (TT.db.modifierID == 'CTRL' and IsControlKeyDown()) or (TT.db.modifierID == 'ALT' and IsAltKeyDown()))) then
+		if TT:IsModKeyDown() then
 			if caster then
 				local name = UnitName(caster)
 				local _, class = UnitClass(caster)
@@ -700,7 +692,7 @@ end
 function TT:GameTooltip_OnTooltipSetSpell(tt)
 	if tt:IsForbidden() then return end
 	local id = select(2, tt:GetSpell())
-	if id and (TT.db.modifierID == 'NONE' or ((TT.db.modifierID == 'SHIFT' and IsShiftKeyDown()) or (TT.db.modifierID == 'CTRL' and IsControlKeyDown()) or (TT.db.modifierID == 'ALT' and IsAltKeyDown()))) then
+	if id and TT:IsModKeyDown() then
 		local displayString = format("|cFFCA3C3C%s|r %d", _G.ID, id)
 
 		for i = 1, tt:NumLines() do
@@ -717,8 +709,9 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 end
 
 function TT:SetItemRef(link)
-	if not link or not link and strfind(link,"^spell:") then return end
-	if (TT.db.modifierID == 'NONE' or ((TT.db.modifierID == 'SHIFT' and IsShiftKeyDown()) or (TT.db.modifierID == 'CTRL' and IsControlKeyDown()) or (TT.db.modifierID == 'ALT' and IsAltKeyDown()))) then
+	if not link then return end
+
+	if TT:IsModKeyDown() then
 		_G.ItemRefTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, strsub(link,7)))
 		_G.ItemRefTooltip:Show()
 	end
@@ -726,7 +719,7 @@ end
 
 function TT:SetToyByItemID(tt, id)
 	if tt:IsForbidden() then return end
-	if id and (TT.db.modifierID == 'NONE' or ((TT.db.modifierID == 'SHIFT' and IsShiftKeyDown()) or (TT.db.modifierID == 'CTRL' and IsControlKeyDown()) or (TT.db.modifierID == 'ALT' and IsAltKeyDown()))) then
+	if id and TT:IsModKeyDown() then
 		tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
 		tt:Show()
 	end
@@ -735,7 +728,7 @@ end
 function TT:SetCurrencyToken(tt, index)
 	if tt:IsForbidden() then return end
 
-	local id = (TT.db.modifierID == 'NONE' or ((TT.db.modifierID == 'SHIFT' and IsShiftKeyDown()) or (TT.db.modifierID == 'CTRL' and IsControlKeyDown()) or (TT.db.modifierID == 'ALT' and IsAltKeyDown()))) and tonumber(strmatch(GetCurrencyListLink(index),"currency:(%d+)"))
+	local id = TT:IsModKeyDown() and tonumber(strmatch(GetCurrencyListLink(index),"currency:(%d+)"))
 	if not id then return end
 
 	tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
@@ -744,7 +737,7 @@ end
 
 function TT:SetCurrencyTokenByID(tt, id)
 	if tt:IsForbidden() then return end
-	if id and (TT.db.modifierID == 'NONE' or ((TT.db.modifierID == 'SHIFT' and IsShiftKeyDown()) or (TT.db.modifierID == 'CTRL' and IsControlKeyDown()) or (TT.db.modifierID == 'ALT' and IsAltKeyDown()))) then
+	if id and TT:IsModKeyDown() then
 		tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
 		tt:Show()
 	end
@@ -752,7 +745,7 @@ end
 
 function TT:SetBackpackToken(tt, id)
 	if tt:IsForbidden() then return end
-	if id and (TT.db.modifierID == 'NONE' or ((TT.db.modifierID == 'SHIFT' and IsShiftKeyDown()) or (TT.db.modifierID == 'CTRL' and IsControlKeyDown()) or (TT.db.modifierID == 'ALT' and IsAltKeyDown()))) then
+	if id and TT:IsModKeyDown() then
 		tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, select(4, GetBackpackCurrencyInfo(id))))
 		tt:Show()
 	end
