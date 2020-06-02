@@ -107,7 +107,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	end
 
 	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
-	if ownerName and (strfind(ownerName, "ElvUI_Bar") or strfind(ownerName, "ElvUI_StanceBar") or strfind(ownerName, "PetAction")) and not keybindFrame.active and TT:IsModKeyDown(TT.db.visibility.actionbars) then
+	if ownerName and (strfind(ownerName, "ElvUI_Bar") or strfind(ownerName, "ElvUI_StanceBar") or strfind(ownerName, "PetAction")) and not keybindFrame.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
 		tt:Hide()
 		return
 	end
@@ -423,7 +423,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local unit = select(2, tt:GetUnit())
 	local isPlayerUnit = UnitIsPlayer(unit)
-	if TT.db.visibility and TT:IsModKeyDown(TT.db.visibility.unitFrames) and (tt:GetOwner() ~= _G.UIParent) then
+	if TT.db.visibility and not TT:IsModKeyDown(TT.db.visibility.unitFrames) and (tt:GetOwner() ~= _G.UIParent) then
 		tt:Hide()
 		return
 	end
@@ -556,7 +556,7 @@ end
 function TT:GameTooltip_OnTooltipSetItem(tt)
 	if tt:IsForbidden() then return end
 	local ownerName = tt:GetOwner() and tt:GetOwner().GetName and tt:GetOwner():GetName()
-	if TT.db.visibility and ownerName and (strfind(ownerName, "ElvUI_Container") or strfind(ownerName, "ElvUI_BankContainer")) and TT:IsModKeyDown(TT.db.visibility.bags) then
+	if TT.db.visibility and ownerName and (strfind(ownerName, "ElvUI_Container") or strfind(ownerName, "ElvUI_BankContainer")) and not TT:IsModKeyDown(TT.db.visibility.bags) then
 		tt.itemCleared = true
 		tt:Hide()
 		return

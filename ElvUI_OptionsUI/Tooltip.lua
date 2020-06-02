@@ -225,12 +225,7 @@ E.Options.args.tooltip = {
 					name = L["Combat Override Key"],
 					desc = L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."],
 					hidden = function() return not E.db.tooltip.visibility.combat end,
-					values = {
-						['ALL'] = L["Always Hide"],
-						['SHIFT'] = L["SHIFT_KEY_TEXT"],
-						['ALT'] = L["ALT_KEY_TEXT"],
-						['CTRL'] = L["CTRL_KEY_TEXT"],
-					},
+					values = modifierValues,
 				},
 			},
 		},
