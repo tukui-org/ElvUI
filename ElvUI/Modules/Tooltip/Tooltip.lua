@@ -312,7 +312,7 @@ function TT:SetUnitText(tt, unit, level, isShiftKeyDown)
 		end
 
 		local unitReaction = UnitReaction(unit, "player")
-		local nameColor = unitReaction and ((TT.db.useCustomFactionColors and TT.db..factionColors[unitReaction]) or _G.FACTION_BAR_COLORS[unitReaction]) or PRIEST_COLOR
+		local nameColor = unitReaction and ((TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]) or _G.FACTION_BAR_COLORS[unitReaction]) or PRIEST_COLOR
 		local nameColorStr = nameColor.colorStr or E:RGBToHex(nameColor.r, nameColor.g, nameColor.b, 'ff')
 
 		_G.GameTooltipTextLeft1:SetFormattedText("|c%s%s|r", nameColorStr, name or UNKNOWN)
