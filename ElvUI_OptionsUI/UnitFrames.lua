@@ -3386,6 +3386,53 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 	return config
 end
 
+local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits)
+	local config = {
+		type = "group",
+		name = L["Strata and Level"],
+		get = function(info) return E.db.unitframe.units[groupName].strataAndLevel[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].strataAndLevel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			useCustomStrata = {
+				order = 1,
+				type = "toggle",
+				name = L["Use Custom Strata"],
+			},
+			frameStrata = {
+				order = 2,
+				type = "select",
+				name = L["Frame Strata"],
+				values = {
+					["BACKGROUND"] = "BACKGROUND",
+					["LOW"] = "LOW",
+					["MEDIUM"] = "MEDIUM",
+					["HIGH"] = "HIGH",
+					["DIALOG"] = "DIALOG",
+					["TOOLTIP"] = "TOOLTIP",
+				},
+			},
+			spacer = {
+				order = 3,
+				type = "description",
+				name = "",
+			},
+			useCustomLevel = {
+				order = 4,
+				type = "toggle",
+				name = L["Use Custom Level"],
+			},
+			frameLevel = {
+				order = 5,
+				type = "range",
+				name = L["Frame Level"],
+				min = 2, max = 128, step = 1,
+			},
+		},
+	}
+
+	return config
+end
+
 local filterList = {}
 local function modifierList()
 	wipe(filterList)
@@ -4916,6 +4963,7 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 				},
 			},
 		},
+		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'player'),
 		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'player'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'player'),
 		castbar = GetOptionsTable_Castbar(true, UF.CreateAndUpdateUF, 'player'),
@@ -4981,6 +5029,7 @@ E.Options.args.unitframe.args.individualUnits.args.target = {
 			set = function(info, value) UF:MergeUnitSettings(value, 'target'); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'target'),
+		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'target'),
 		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'target'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'target'),
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'target'),
@@ -5046,6 +5095,7 @@ E.Options.args.unitframe.args.individualUnits.args.targettarget = {
 			set = function(info, value) UF:MergeUnitSettings(value, 'targettarget'); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettarget'),
+		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettarget'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'targettarget'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettarget'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettarget'),
@@ -5103,6 +5153,7 @@ E.Options.args.unitframe.args.individualUnits.args.targettargettarget = {
 			set = function(info, value) UF:MergeUnitSettings(value, 'targettargettarget'); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettargettarget'),
+		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettargettarget'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'targettargettarget'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'targettargettarget'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'targettargettarget'),
@@ -5160,6 +5211,7 @@ E.Options.args.unitframe.args.individualUnits.args.focus = {
 			set = function(info, value) UF:MergeUnitSettings(value, 'focus'); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focus'),
+		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'focus'),
 		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'focus'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUF, 'focus'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'focus'),
@@ -5222,6 +5274,7 @@ E.Options.args.unitframe.args.individualUnits.args.focustarget = {
 			set = function(info, value) UF:MergeUnitSettings(value, 'focustarget'); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focustarget'),
+		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'focustarget'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'focustarget'),
 		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUF, 'focustarget'),
 		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUF, 'focustarget'),
@@ -5279,6 +5332,7 @@ E.Options.args.unitframe.args.individualUnits.args.pet = {
 			set = function(info, value) UF:MergeUnitSettings(value, 'pet'); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pet'),
+		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'pet'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUF, 'pet'),
 		healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateUF, 'pet'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pet'),
@@ -5338,6 +5392,7 @@ E.Options.args.unitframe.args.individualUnits.args.pettarget = {
 			values = UF.units,
 			set = function(info, value) UF:MergeUnitSettings(value, 'pettarget'); end,
 		},
+		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'pettarget'),
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pettarget'),
 		buffs = GetOptionsTable_Auras('buffs', false, UF.CreateAndUpdateUF, 'pettarget'),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUF, 'pettarget'),
