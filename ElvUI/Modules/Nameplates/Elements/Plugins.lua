@@ -30,26 +30,27 @@ function NP:Construct_QuestIcons(nameplate)
 end
 
 function NP:Update_QuestIcons(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local frameType = nameplate.frameType
+	local db = frameType and NP.db.units[frameType].questIcon
 
-	if db.questIcon.enable and (nameplate.frameType == "FRIENDLY_NPC" or nameplate.frameType == "ENEMY_NPC") then
+	if db and db.enable and (frameType == "FRIENDLY_NPC" or frameType == "ENEMY_NPC") then
 		if not nameplate:IsElementEnabled("QuestIcons") then
 			nameplate:EnableElement("QuestIcons")
 		end
 
 		nameplate.QuestIcons:ClearAllPoints()
-		nameplate.QuestIcons:Point(E.InversePoints[db.questIcon.position], nameplate, db.questIcon.position, db.questIcon.xOffset, db.questIcon.yOffset)
+		nameplate.QuestIcons:Point(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
 
 		for _, object in pairs(questIconTypes) do
 			local icon = nameplate.QuestIcons[object]
-			icon:Size(db.questIcon.size, db.questIcon.size)
-			icon:SetAlpha(db.questIcon.hideIcon and 0 or 1)
+			icon:Size(db.size, db.size)
+			icon:SetAlpha(db.hideIcon and 0 or 1)
 
-			icon.Text:FontTemplate(E.Libs.LSM:Fetch("font", db.questIcon.font), db.questIcon.fontSize, db.questIcon.fontOutline)
+			icon.Text:FontTemplate(E.Libs.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
 			icon.Text:ClearAllPoints()
-			icon.Text:Point(db.questIcon.textPosition, icon)
+			icon.Text:Point(db.textPosition, icon)
 
-			icon.size, icon.position = db.questIcon.size, db.questIcon.position
+			icon.size, icon.position = db.size, db.position
 		end
 	elseif nameplate:IsElementEnabled("QuestIcons") then
 		nameplate:DisableElement("QuestIcons")

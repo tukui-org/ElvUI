@@ -20,7 +20,7 @@ local ActiveQuests = {
 
 local UsedLocale = GetLocale()
 local QuestTypesLocalized = {
-	["enUS"] = {
+	enUS = {
 		["slain"] = "KILL",
 		["destroy"] = "KILL",
 		["eleminate"] = "KILL",
@@ -31,7 +31,7 @@ local QuestTypesLocalized = {
 		["ask"] = "CHAT",
 		["talk"] = "CHAT",
 	},
-	["deDE"] = {
+	deDE = {
 		["besiegen"] = "KILL",
 		["besiegt"] = "KILL",
 		["getötet"] = "KILL",
@@ -42,27 +42,27 @@ local QuestTypesLocalized = {
 		["sprecht"] = "CHAT",
 		["genährt"] = "KILL",
 	},
-	["esMX"] = {
+	esMX = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
 	},
-	["frFR"] = {
+	frFR = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
 	},
-	["koKR"] = {
+	koKR = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
 	},
-	["ptBR"] = {
+	ptBR = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
 	},
-	["ruRU"] = {
+	ruRU = {
 		["убит"] = "KILL",
 		["уничтож"] = "KILL",
 		["разбомблен"] = "KILL",
@@ -70,14 +70,14 @@ local QuestTypesLocalized = {
 		["сразит"] = "KILL",
 		["поговорит"] = "CHAT",
 	},
-	["zhCN"] = {
+	zhCN = {
 		["消灭"] = "KILL",
 		["摧毁"] = "KILL",
 		["获得"] = "KILL",
 		["击败"] = "KILL",
 		["交谈"] = "CHAT",
 	},
-	["zhTW"] = {
+	zhTW = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
