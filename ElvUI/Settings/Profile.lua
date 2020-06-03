@@ -454,8 +454,19 @@ local NP_QuestIcon = {
 
 --NamePlate
 P.nameplates = {
-	smoothbars = false,
 	clampToScreen = false,
+	fadeIn = true,
+	font = 'PT Sans Narrow',
+	fontOutline = 'OUTLINE',
+	fontSize = 11,
+	highlight = true,
+	lowHealthThreshold = 0.4,
+	motionType =  'STACKED',
+	nameColoredGlow = false,
+	showEnemyCombat = 'DISABLED',
+	showFriendlyCombat = 'DISABLED',
+	smoothbars = false,
+	statusbar = 'ElvUI Norm',
 	clickThrough = {
 		personal = false,
 		friendly = false,
@@ -468,6 +479,20 @@ P.nameplates = {
 		friendlyHeight = 30,
 		enemyWidth = 150,
 		enemyHeight = 30,
+	},
+	threat = {
+		enable = true,
+		beingTankedByTank = true,
+		goodScale = 1,
+		badScale = 1,
+		useThreatColor = true,
+		indicator = false,
+	},
+	filters = {
+		ElvUI_Boss = {triggers = {enable = false}},
+		ElvUI_Target = {triggers = {enable = true}},
+		ElvUI_NonTarget = {triggers = {enable = true}},
+		ElvUI_Explosives = {triggers = {enable = true}},
 	},
 	colors = {
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
@@ -544,31 +569,6 @@ P.nameplates = {
 			},
 			WARLOCK = {r = 148/255, g = 130/255, b = 201/255}
 		},
-	},
-	filters = {
-		ElvUI_Boss = {triggers = {enable = false}},
-		ElvUI_Target = {triggers = {enable = true}},
-		ElvUI_NonTarget = {triggers = {enable = true}},
-		ElvUI_Explosives = {triggers = {enable = true}},
-	},
-	font = 'PT Sans Narrow',
-	fontOutline = 'OUTLINE',
-	fontSize = 11,
-	lowHealthThreshold = 0.4,
-	motionType =  'STACKED',
-	nameColoredGlow = false,
-	showEnemyCombat = 'DISABLED',
-	showFriendlyCombat = 'DISABLED',
-	statusbar = 'ElvUI Norm',
-	highlight = true,
-	fadeIn = true,
-	threat = {
-		enable = true,
-		beingTankedByTank = true,
-		goodScale = 1,
-		badScale = 1,
-		useThreatColor = true,
-		indicator = false,
 	},
 	visibility = {
 		showAll = true,

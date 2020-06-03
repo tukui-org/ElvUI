@@ -407,7 +407,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 	end
 end
 
-function NP:SetupTarget(nameplate, removed, alreadyUpdated)
+function NP:SetupTarget(nameplate, removed)
 	local TCP = _G.ElvNP_TargetClassPower
 	local nameOnly = nameplate and (NP:StyleFilterCheckChanges(nameplate, 'NameOnly') or NP.db.units[nameplate.frameType].nameOnly)
 	TCP.realPlate = (NP.db.units.TARGET.classpower.enable and not (removed or nameOnly) and nameplate) or nil
@@ -428,17 +428,6 @@ function NP:SetupTarget(nameplate, removed, alreadyUpdated)
 		TCP.Stagger:SetParent(moveToPlate)
 		TCP.Stagger:ClearAllPoints()
 		TCP.Stagger:Point("CENTER", moveToPlate, "CENTER", NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
-	end
-
-	if nameplate and (not nameplate.blizzPlate.name:IsShown()) then
-		if not alreadyUpdated then
-			NP:UpdatePlate(nameplate)
-		end
-
-		NP.LastTargetNameplate = nameplate
-	elseif NP.LastTargetNameplate then
-		NP:DisablePlate(NP.LastTargetNameplate)
-		NP.LastTargetNameplate = nil
 	end
 end
 
@@ -628,18 +617,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		nameplate:Size(nameplate.width, nameplate.height)
+		nameplate:UpdateTags()
 
-		if not blizzPlate.name:IsShown() then
-			NP:DisablePlate(nameplate, false)
-		else
-			NP:UpdatePlate(nameplate)
-		end
+		NP:UpdatePlate(nameplate)
 
 		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
-
-		nameplate:UpdateTags()
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == "NAME_PLATE_UNIT_REMOVED" then
