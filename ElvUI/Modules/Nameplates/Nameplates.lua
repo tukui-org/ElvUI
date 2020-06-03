@@ -3,7 +3,8 @@ local NP = E:GetModule("NamePlates")
 local oUF = E.oUF
 
 local _G = _G
-local format, pairs, select, strsplit, wipe = format, pairs, select, strsplit, wipe
+local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
+local format, select, strsplit = format, select, strsplit
 
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
@@ -147,37 +148,35 @@ function NP:SetCVars()
 end
 
 function NP:PLAYER_REGEN_DISABLED()
-	if (NP.db.showFriendlyCombat == "TOGGLE_ON") then
+	if NP.db.showFriendlyCombat == "TOGGLE_ON" then
 		SetCVar("nameplateShowFriends", 1)
-	elseif (NP.db.showFriendlyCombat == "TOGGLE_OFF") then
+	elseif NP.db.showFriendlyCombat == "TOGGLE_OFF" then
 		SetCVar("nameplateShowFriends", 0)
 	end
 
-	if (NP.db.showEnemyCombat == "TOGGLE_ON") then
+	if NP.db.showEnemyCombat == "TOGGLE_ON" then
 		SetCVar("nameplateShowEnemies", 1)
-	elseif (NP.db.showEnemyCombat == "TOGGLE_OFF") then
+	elseif NP.db.showEnemyCombat == "TOGGLE_OFF" then
 		SetCVar("nameplateShowEnemies", 0)
 	end
 end
 
 function NP:PLAYER_REGEN_ENABLED()
-	if (NP.db.showFriendlyCombat == "TOGGLE_ON") then
+	if NP.db.showFriendlyCombat == "TOGGLE_ON" then
 		SetCVar("nameplateShowFriends", 0)
-	elseif (NP.db.showFriendlyCombat == "TOGGLE_OFF") then
+	elseif NP.db.showFriendlyCombat == "TOGGLE_OFF" then
 		SetCVar("nameplateShowFriends", 1)
 	end
 
-	if (NP.db.showEnemyCombat == "TOGGLE_ON") then
+	if NP.db.showEnemyCombat == "TOGGLE_ON" then
 		SetCVar("nameplateShowEnemies", 0)
-	elseif (NP.db.showEnemyCombat == "TOGGLE_OFF") then
+	elseif NP.db.showEnemyCombat == "TOGGLE_OFF" then
 		SetCVar("nameplateShowEnemies", 1)
 	end
 end
 
 function NP:Style(frame, unit)
-	if (not unit) then
-		return
-	end
+	if not unit then return end
 
 	frame.isNamePlate = true
 
@@ -337,25 +336,38 @@ function NP:UpdatePlate(nameplate)
 	NP:StyleFilterEvents(nameplate)
 end
 
-function NP:DisablePlate(nameplate, nameOnly)
-	if nameplate:IsElementEnabled("Health") then nameplate:DisableElement("Health") end
-	if nameplate:IsElementEnabled("HealthPrediction") then nameplate:DisableElement("HealthPrediction") end
-	if nameplate:IsElementEnabled("Power") then nameplate:DisableElement("Power") end
-	if nameplate:IsElementEnabled("ClassificationIndicator") then nameplate:DisableElement("ClassificationIndicator") end
-	if nameplate:IsElementEnabled("Castbar") then nameplate:DisableElement("Castbar") end
-	if nameplate:IsElementEnabled("Portrait") then nameplate:DisableElement("Portrait") end
-	if nameplate:IsElementEnabled("ThreatIndicator") then nameplate:DisableElement("ThreatIndicator") end
-	if nameplate:IsElementEnabled("TargetIndicator") then nameplate:DisableElement("TargetIndicator") end
-	if nameplate:IsElementEnabled("ClassPower") then nameplate:DisableElement("ClassPower") end
-	if nameplate:IsElementEnabled("PvPIndicator") then nameplate:DisableElement("PvPIndicator") end
-	if nameplate:IsElementEnabled("PvPClassificationIndicator") then nameplate:DisableElement("PvPClassificationIndicator") end
-	if nameplate:IsElementEnabled("Auras") then nameplate:DisableElement("Auras") end
+NP.DisableInNotNameOnly = {
+	"QuestIcons",
+	"Highlight",
+	"PVPRole"
+}
 
-	if E.myclass == "DEATHKNIGHT" and nameplate:IsElementEnabled("Runes") then
-		nameplate:DisableElement("Runes")
-	end
-	if E.myclass == "MONK" and nameplate:IsElementEnabled("Stagger") then
-		nameplate:DisableElement("Stagger")
+NP.DisableElements = {
+	"Health",
+	"HealthPrediction",
+	"Power",
+	"ClassificationIndicator",
+	"Castbar",
+	"Portrait",
+	"ThreatIndicator",
+	"TargetIndicator",
+	"ClassPower",
+	"PvPIndicator",
+	"PvPClassificationIndicator",
+	"Auras"
+}
+
+if E.myclass == "DEATHKNIGHT" then
+	tinsert(NP.DisableElements, "Runes")
+elseif E.myclass == "MONK" then
+	tinsert(NP.DisableElements, "Stagger")
+end
+
+function NP:DisablePlate(nameplate, nameOnly)
+	for _, element in ipairs(NP.DisableElements) do
+		if nameplate:IsElementEnabled(element) then
+			nameplate:DisableElement(element)
+		end
 	end
 
 	NP:Update_Tags(nameplate)
@@ -387,9 +399,11 @@ function NP:DisablePlate(nameplate, nameOnly)
 			nameplate.Title:Point("TOP", nameplate.Name, "BOTTOM", 0, -2)
 		end
 	else
-		if nameplate:IsElementEnabled("QuestIcons") then nameplate:DisableElement("QuestIcons") end
-		if nameplate:IsElementEnabled("Highlight") then nameplate:DisableElement("Highlight") end
-		if nameplate:IsElementEnabled("PVPRole") then nameplate:DisableElement("PVPRole") end
+		for _, element in ipairs(NP.DisableInNotNameOnly) do
+			if nameplate:IsElementEnabled(element) then
+				nameplate:DisableElement(element)
+			end
+		end
 	end
 end
 
@@ -461,10 +475,8 @@ function NP:GROUP_ROSTER_UPDATE()
 	wipe(NP.GroupRoles)
 
 	if NP.IsInGroup then
-		local NumPlayers, Unit =
-			(isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers(),
-			(isInRaid and "raid") or "party"
-		for i = 1, NumPlayers do
+		local Unit = (isInRaid and "raid") or "party"
+		for i = 1, ((isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers()) do
 			if UnitExists(Unit .. i) then
 				NP.GroupRoles[UnitName(Unit .. i)] = UnitGroupRolesAssigned(Unit .. i)
 			end
