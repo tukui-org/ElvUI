@@ -182,7 +182,7 @@ function UF:Configure_Castbar(frame)
 			end
 
 			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
-			if(frame.ORIENTATION == "RIGHT") then
+			if frame.ORIENTATION == "RIGHT" then
 				castbar:Point("TOPLEFT", anchor, "TOPLEFT")
 				castbar:Point("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", -iconWidth - frame.SPACING*3, 0)
 			else
@@ -198,7 +198,11 @@ function UF:Configure_Castbar(frame)
 		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
 		if not isMoved then castbar.Holder.mover:ClearAllPoints() end
 
-		castbar:ClearAllPoints()
+		if db.positionsGroup then
+			castbar.Holder:ClearAllPoints()
+			castbar.Holder:Point(INVERT_ANCHORPOINT[db.positionsGroup.anchorPoint], frame, db.positionsGroup.anchorPoint, db.positionsGroup.xOffset, db.positionsGroup.yOffset)
+		end
+
 		if frame.ORIENTATION ~= "RIGHT" then
 			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
 			if not isMoved then castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER - frame.SPACING)) end
