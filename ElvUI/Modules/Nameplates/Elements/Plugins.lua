@@ -62,16 +62,17 @@ function NP:Construct_ClassificationIndicator(nameplate)
 end
 
 function NP:Update_ClassificationIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local frameType = nameplate.frameType
+	local db = frameType and NP.db.units[frameType].eliteIcon
 
-	if (nameplate.frameType == "FRIENDLY_NPC" or nameplate.frameType == "ENEMY_NPC") and db.eliteIcon.enable then
+	if db and db.enable and (frameType == "FRIENDLY_NPC" or frameType == "ENEMY_NPC") then
 		if not nameplate:IsElementEnabled("ClassificationIndicator") then
 			nameplate:EnableElement("ClassificationIndicator")
 		end
 
 		nameplate.ClassificationIndicator:ClearAllPoints()
-		nameplate.ClassificationIndicator:Size(db.eliteIcon.size, db.eliteIcon.size)
-		nameplate.ClassificationIndicator:Point(E.InversePoints[db.eliteIcon.position], nameplate, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
+		nameplate.ClassificationIndicator:Size(db.size, db.size)
+		nameplate.ClassificationIndicator:Point(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
 	elseif nameplate:IsElementEnabled("ClassificationIndicator") then
 		nameplate:DisableElement("ClassificationIndicator")
 	end
