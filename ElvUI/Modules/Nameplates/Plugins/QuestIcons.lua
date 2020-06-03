@@ -228,7 +228,7 @@ local function Update(self, event, unit)
 				icon = element.Item
 			end
 
-			if not icon:IsShown() then
+			if icon and not icon:IsShown() then
 				shownCount = (shownCount and shownCount + 1) or 0
 
 				local size = icon.size or 25
