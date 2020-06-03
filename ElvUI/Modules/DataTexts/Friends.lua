@@ -551,7 +551,7 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event, ...)
+local function OnEvent(self, event, message)
 	local onlineFriends = C_FriendList_GetNumOnlineFriends()
 	local _, numBNetOnline = BNGetNumFriends()
 
@@ -559,17 +559,13 @@ local function OnEvent(self, event, ...)
 	-- when this is the case, we invalidate our buffered table and update the
 	-- datatext information
 	if event == "CHAT_MSG_SYSTEM" then
-		local message = ...
 		if not (strfind(message, friendOnline) or strfind(message, friendOffline)) then return end
 	end
 	-- force update when showing tooltip
 	dataValid = false
 
-	if event == 'MODIFIER_STATE_CHANGED' then
-		local key = ...
-		if (key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL") and GetMouseFocus() == self then
-			OnEnter(self)
-		end
+	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
+		OnEnter(self)
 	end
 
 	self.text:SetFormattedText(displayString, _G.FRIENDS, onlineFriends + numBNetOnline)

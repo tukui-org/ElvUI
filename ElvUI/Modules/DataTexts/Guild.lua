@@ -292,11 +292,8 @@ local function OnEvent(self, event, ...)
 		local func = eventHandlers[event]
 		if func then func(self, ...) end
 
-		if event == 'MODIFIER_STATE_CHANGED' then
-			local key = ...
-			if (key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL") and GetMouseFocus() == self then
-				OnEnter(self)
-			end
+		if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
+			OnEnter(self)
 		end
 
 		self.text:SetFormattedText(displayString, #guildTable)
