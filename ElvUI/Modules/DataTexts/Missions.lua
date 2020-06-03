@@ -291,7 +291,7 @@ local function OnClick(self)
 	_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
 end
 
-local function OnEvent(self, event)
+local function OnEvent(self, event, ...)
 	if event == 'GARRISON_LANDINGPAGE_SHIPMENTS' or event == 'GARRISON_MISSION_FINISHED' then
 		numMissions = #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
 		+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
@@ -305,8 +305,11 @@ local function OnEvent(self, event)
 		self.text:SetText(AddInfo(MAIN_CURRENCY))
 	end
 
-	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
-		OnEnter(self)
+	if event == 'MODIFIER_STATE_CHANGED' then
+		local key = ...
+		if (key == "LSHIFT" or key == "RSHIFT" or key == "LCTRL" or key == "RCTRL") and GetMouseFocus() == self then
+			OnEnter(self)
+		end
 	end
 end
 
