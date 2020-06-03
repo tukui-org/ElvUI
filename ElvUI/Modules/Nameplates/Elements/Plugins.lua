@@ -32,7 +32,7 @@ end
 function NP:Update_QuestIcons(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 
-	if (nameplate.frameType == "FRIENDLY_NPC" or nameplate.frameType == "ENEMY_NPC") and db.questIcon.enable then
+	if db.questIcon.enable and (nameplate.frameType == "FRIENDLY_NPC" or nameplate.frameType == "ENEMY_NPC") then
 		if not nameplate:IsElementEnabled("QuestIcons") then
 			nameplate:EnableElement("QuestIcons")
 		end
@@ -43,10 +43,12 @@ function NP:Update_QuestIcons(nameplate)
 		for _, object in pairs(questIconTypes) do
 			local icon = nameplate.QuestIcons[object]
 			icon:Size(db.questIcon.size, db.questIcon.size)
-			icon:SetShown(not db.questIcon.hideIcon)
+			icon:SetAlpha(db.questIcon.hideIcon and 0 or 1)
+
 			icon.Text:FontTemplate(E.Libs.LSM:Fetch("font", db.questIcon.font), db.questIcon.fontSize, db.questIcon.fontOutline)
 			icon.Text:ClearAllPoints()
 			icon.Text:Point(db.questIcon.textPosition, icon)
+
 			icon.size, icon.position = db.questIcon.size, db.questIcon.position
 		end
 	elseif nameplate:IsElementEnabled("QuestIcons") then
