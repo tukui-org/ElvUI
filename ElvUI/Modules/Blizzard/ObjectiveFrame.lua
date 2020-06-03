@@ -5,11 +5,11 @@ local _G = _G
 local min = min
 
 local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
 local GetScreenHeight = GetScreenHeight
 local GetScreenWidth = GetScreenWidth
 local hooksecurefunc = hooksecurefunc
 local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
@@ -34,11 +34,12 @@ local function IsFramePositionedLeft(frame)
 end
 
 function B:SetObjectiveFrameAutoHide()
-	if not _G.ObjectiveTrackerFrame.AutoHider then return; end --Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
+	if not _G.ObjectiveTrackerFrame.AutoHider then return end --Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
+
 	if E.db.general.objectiveFrameAutoHide then
 		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0")
 	else
-		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "0")
+		UnregisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider")
 	end
 end
 
@@ -79,22 +80,18 @@ function B:MoveObjectiveFrame()
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 
 	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
-	ObjectiveTrackerFrame.AutoHider:SetAttribute("_onstate-objectiveHider", [[
+	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', [[
 		if newstate == 1 then
-			self:Hide()
-		else
-			self:Show()
+			if not ObjectiveTrackerFrame.collapsed then
+				local _, _, difficultyID = GetInstanceInfo()
+				if difficultyID and difficultyID ~= 8 then --ignore for keystones
+					ObjectiveTracker_Collapse()
+				end
+			end
+		elseif ObjectiveTrackerFrame.collapsed then
+			ObjectiveTracker_Expand()
 		end
 	]])
-
-	ObjectiveTrackerFrame.AutoHider:SetScript("OnHide", function()
-		local _, _, difficultyID = GetInstanceInfo()
-		if difficultyID and difficultyID ~= 8 then
-			_G.ObjectiveTracker_Collapse()
-		end
-	end)
-
-	ObjectiveTrackerFrame.AutoHider:SetScript("OnShow", _G.ObjectiveTracker_Expand)
 
 	self:SetObjectiveFrameAutoHide()
 end
