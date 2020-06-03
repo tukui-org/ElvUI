@@ -10,7 +10,6 @@ local tinsert = tinsert
 
 function UF:Construct_PetFrame(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
-	frame.Health.colorPetByUnitClass = true
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
 	frame.Name = UF:Construct_NameText(frame)
@@ -62,6 +61,7 @@ function UF:Update_PetFrame(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
+	frame.Health.colorPetByUnitClass = db.health.colorPetByUnitClass
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)

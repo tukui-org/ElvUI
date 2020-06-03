@@ -1611,18 +1611,18 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 		args = {
 			reverseFill = {
 				type = "toggle",
-				order = 4,
+				order = 1,
 				name = L["Reverse Fill"],
 			},
 			attachTextTo = {
 				type = 'select',
-				order = 5,
+				order = 3,
 				name = L["Attach Text To"],
 				desc = L["The object you want to attach to."],
 				values = attachToValues,
 			},
 			colorOverride = {
-				order = 6,
+				order = 4,
 				name = L["Class Color Override"],
 				desc = L["Override the default class color setting."],
 				type = 'select',
@@ -1631,7 +1631,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 			},
 			configureButton = {
-				order = 7,
+				order = 5,
 				name = L["Coloring"],
 				desc = L["This opens the UnitFrames Color settings. These settings affect all unitframes."],
 				type = 'execute',
@@ -1684,6 +1684,14 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 				['HORIZONTAL'] = L["Horizontal"],
 				['VERTICAL'] = L["Vertical"],
 			},
+		}
+	end
+
+	if groupName == 'pet' or groupName == 'raidpet' then
+		config.args.colorPetByUnitClass = {
+			type = "toggle",
+			order = 2,
+			name = L["Color by Unit Class"],
 		}
 	end
 
@@ -5509,36 +5517,41 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 				enable = {
 					type = 'toggle',
 					name = L["Enable"],
-					order = 2,
+					order = 0,
+				},
+				colorPetByUnitClass = {
+					type = 'toggle',
+					name = L["Color by Unit Class"],
+					order = 1,
 				},
 				width = {
-					order = 3,
+					order = 2,
 					name = L["Width"],
 					type = 'range',
 					min = 10, max = 500, step = 1,
 				},
 				height = {
-					order = 4,
+					order = 3,
 					name = L["Height"],
 					type = 'range',
 					min = 5, max = 500, step = 1,
 				},
 				anchorPoint = {
 					type = 'select',
-					order = 5,
+					order = 4,
 					name = L["Anchor Point"],
 					desc = L["What point to anchor to the frame you set to attach to."],
 					values = petAnchors,
 				},
 				xOffset = {
-					order = 6,
+					order = 5,
 					type = 'range',
 					name = L["X-Offset"],
 					desc = L["An X offset (in pixels) to be used when anchoring new frames."],
 					min = -500, max = 500, step = 1,
 				},
 				yOffset = {
-					order = 7,
+					order = 6,
 					type = 'range',
 					name = L["Y-Offset"],
 					desc = L["An Y offset (in pixels) to be used when anchoring new frames."],
