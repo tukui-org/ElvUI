@@ -6,6 +6,7 @@ local min = min
 
 local CreateFrame = CreateFrame
 local GetScreenHeight = GetScreenHeight
+local GetInstanceInfo = GetInstanceInfo
 local GetScreenWidth = GetScreenWidth
 local hooksecurefunc = hooksecurefunc
 local RegisterStateDriver = RegisterStateDriver
@@ -79,19 +80,23 @@ function B:MoveObjectiveFrame()
 	end
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 
+	-- objectiveFrameAutoHide
 	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
-	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', [[
-		if newstate == 1 then
-			if not ObjectiveTrackerFrame.collapsed then
-				local _, _, difficultyID = GetInstanceInfo()
-				if difficultyID and difficultyID ~= 8 then --ignore for keystones
-					ObjectiveTracker_Collapse()
-				end
+	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
+	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', function()
+		if not ObjectiveTrackerFrame.collapsed then
+			local _, _, difficultyID = GetInstanceInfo()
+			if difficultyID and difficultyID ~= 8 then
+				_G.ObjectiveTracker_Collapse()
 			end
-		elseif ObjectiveTrackerFrame.collapsed then
-			ObjectiveTracker_Expand()
 		end
-	]])
+	end)
+
+	ObjectiveTrackerFrame.AutoHider:SetScript('OnShow', function()
+		if ObjectiveTrackerFrame.collapsed then
+			_G.ObjectiveTracker_Expand()
+		end
+	end)
 
 	self:SetObjectiveFrameAutoHide()
 end
