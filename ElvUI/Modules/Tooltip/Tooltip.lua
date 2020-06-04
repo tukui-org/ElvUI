@@ -6,8 +6,7 @@ local _G = _G
 local unpack, select, ipairs = unpack, select, ipairs
 local wipe, tinsert, tconcat = wipe, tinsert, table.concat
 local floor, tonumber, strlower = floor, tonumber, strlower
-local strfind, format, strsub = strfind, format, strsub
-local strmatch, gmatch, gsub = strmatch, gmatch, gsub
+local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
@@ -713,9 +712,9 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 end
 
 function TT:SetItemRef(link)
-	if not link or IsModifierKeyDown() then return end
+	if IsModifierKeyDown() or not (link and strfind(link, '^spell:')) then return end
 
-	_G.ItemRefTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, strsub(link,7)))
+	_G.ItemRefTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, strmatch(link, ':(%d+)')))
 	_G.ItemRefTooltip:Show()
 end
 
