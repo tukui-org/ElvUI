@@ -72,8 +72,8 @@ function B:MoveObjectiveFrame()
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 
 	-- objectiveFrameAutoHide: the states here are managed otherwise by: "ObjectiveTracker_Collapse" and "ObjectiveTracker_Expand"
-	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
-	ObjectiveTrackerFrame.AutoHider:SetFrameRef('ObjectiveTrackerFrame', _G.ObjectiveTrackerFrame)
+	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
+	ObjectiveTrackerFrame.AutoHider:SetFrameRef('ObjectiveTrackerFrame', ObjectiveTrackerFrame)
 	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', [[
 		local frame = self:GetFrameRef('ObjectiveTrackerFrame')
 		if newstate == 1 then -- collapse
