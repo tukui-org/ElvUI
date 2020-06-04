@@ -77,7 +77,7 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', function()
 		if not ObjectiveTrackerFrame.collapsed then
 			local _, _, difficultyID = GetInstanceInfo()
-			if difficultyID and difficultyID ~= 8 then
+			if difficultyID and difficultyID ~= 8 then -- ignore hide in keystone runs
 				_G.ObjectiveTracker_Collapse()
 			end
 		end
