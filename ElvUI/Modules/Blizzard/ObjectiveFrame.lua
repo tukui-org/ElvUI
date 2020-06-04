@@ -71,23 +71,42 @@ function B:MoveObjectiveFrame()
 	end
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 
-	-- objectiveFrameAutoHide
+	-- objectiveFrameAutoHide: the states here are managed otherwise by: "ObjectiveTracker_Collapse" and "ObjectiveTracker_Expand"
 	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
-	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
-	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', function()
-		if not ObjectiveTrackerFrame.collapsed then
-			local _, _, difficultyID = GetInstanceInfo()
-			if difficultyID and difficultyID ~= 8 then
-				_G.ObjectiveTracker_Collapse()
+	ObjectiveTrackerFrame.AutoHider:SetFrameRef('ObjectiveTrackerFrame', _G.ObjectiveTrackerFrame)
+	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', [[
+		local frame = self:GetFrameRef('ObjectiveTrackerFrame')
+		if newstate == 1 then -- collapse
+			if frame.BlocksFrame:IsShown() then
+				local _, _, difficultyID = GetInstanceInfo()
+				if difficultyID and difficultyID ~= 8 then -- dont touch it in keystone runs
+					frame.collapsed = true
+
+					frame.BlocksFrame:Hide()
+					frame.HeaderMenu.Title:Show()
+
+					if frame.HeaderMenu.MinimizeButton.tex then
+						minimizeButton.tex:SetTexture(E.Media.Textures.PlusButton)
+					else
+						frame.HeaderMenu.MinimizeButton:GetNormalTexture():SetTexCoord(0, 0.5, 0, 0.5)
+						frame.HeaderMenu.MinimizeButton:GetPushedTexture():SetTexCoord(0.5, 1, 0, 0.5)
+					end
+				end
+			end
+		elseif not frame.BlocksFrame:IsShown() then
+			frame.collapsed = nil
+
+			frame.BlocksFrame:Show()
+			frame.HeaderMenu.Title:Hide()
+
+			if frame.HeaderMenu.MinimizeButton.tex then
+				frame.HeaderMenu.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
+			else
+				frame.HeaderMenu.MinimizeButton:GetNormalTexture():SetTexCoord(0, 0.5, 0.5, 1)
+				frame.HeaderMenu.MinimizeButton:GetPushedTexture():SetTexCoord(0.5, 1, 0.5, 1)
 			end
 		end
-	end)
-
-	ObjectiveTrackerFrame.AutoHider:SetScript('OnShow', function()
-		if ObjectiveTrackerFrame.collapsed then
-			_G.ObjectiveTracker_Expand()
-		end
-	end)
+	]])
 
 	self:SetObjectiveFrameAutoHide()
 end
