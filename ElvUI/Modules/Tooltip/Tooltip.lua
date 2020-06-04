@@ -61,6 +61,7 @@ local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local GetCurrencyListLink = GetCurrencyListLink
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
+local IsModifierKeyDown = IsModifierKeyDown
 
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
@@ -712,7 +713,7 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 end
 
 function TT:SetItemRef(link)
-	if not link then return end
+	if not link or IsModifierKeyDown() then return end
 
 	_G.ItemRefTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, strsub(link,7)))
 	_G.ItemRefTooltip:Show()
