@@ -76,6 +76,8 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame.AutoHider:SetFrameRef('ObjectiveTrackerFrame', ObjectiveTrackerFrame)
 	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', [[
 		local frame = self:GetFrameRef('ObjectiveTrackerFrame')
+		if not frame.BlocksFrame then return end
+
 		if newstate == 1 then -- collapse
 			if frame.BlocksFrame:IsShown() then
 				local _, _, difficultyID = GetInstanceInfo()
