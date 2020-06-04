@@ -137,25 +137,28 @@ local function SkinFindGroupButton(block)
 	end
 end
 
+local function TrackerStateChanged()
+	local minimizeButton = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+	if _G.ObjectiveTrackerFrame.collapsed then
+		minimizeButton.tex:SetTexture(E.Media.Textures.PlusButton)
+	else
+		minimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
+	end
+end
+
 function S:ObjectiveTrackerFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
-	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
-	local minimizeButton = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
-	minimizeButton:StripTextures()
-	minimizeButton:Size(16, 16)
-	minimizeButton.tex = minimizeButton:CreateTexture(nil, "OVERLAY")
-	minimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
-	minimizeButton.tex:SetInside()
-	minimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
-	minimizeButton:HookScript("OnClick", function()
-		if ObjectiveTrackerFrame.collapsed then
-			minimizeButton.tex:SetTexture(E.Media.Textures.PlusButton)
-		else
-			minimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
-		end
-	end)
+	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+	minimize:StripTextures()
+	minimize:Size(16, 16)
+	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
+	minimize.tex = minimize:CreateTexture(nil, "OVERLAY")
+	minimize.tex:SetTexture(E.Media.Textures.MinusButton)
+	minimize.tex:SetInside()
 
+	hooksecurefunc("ObjectiveTracker_Expand",TrackerStateChanged)
+	hooksecurefunc("ObjectiveTracker_Collapse",TrackerStateChanged)
 	hooksecurefunc("BonusObjectiveTrackerProgressBar_SetValue",ColorProgressBars)			--[Color]: Bonus Objective Progress Bar
 	hooksecurefunc("ObjectiveTrackerProgressBar_SetValue",ColorProgressBars)				--[Color]: Quest Progress Bar
 	hooksecurefunc("ScenarioTrackerProgressBar_SetValue",ColorProgressBars)					--[Color]: Scenario Progress Bar
