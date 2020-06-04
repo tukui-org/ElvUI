@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local NP = E:GetModule("NamePlates")
 
 local _G = _G
+local strfind = strfind
 local pairs, unpack = pairs, unpack
 local CreateFrame = CreateFrame
 
@@ -46,9 +47,12 @@ function NP:Update_QuestIcons(nameplate)
 			icon:Size(db.size, db.size)
 			icon:SetAlpha(db.hideIcon and 0 or 1)
 
-			icon.Text:FontTemplate(E.Libs.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+			local xoffset = strfind(db.textPosition, 'LEFT') and -2 or 2
+			local yoffset = strfind(db.textPosition, 'BOTTOM') and 2 or -2
 			icon.Text:ClearAllPoints()
-			icon.Text:Point(db.textPosition, icon)
+			icon.Text:Point('CENTER', icon, db.textPosition, xoffset, yoffset)
+			icon.Text:FontTemplate(E.Libs.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+			icon.Text:SetJustifyH('CENTER')
 
 			icon.size, icon.position = db.size, db.position
 		end
