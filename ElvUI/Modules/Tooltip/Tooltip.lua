@@ -562,13 +562,13 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		return
 	end
 
-	if not tt.itemCleared then
+	if not tt.itemCleared and TT:IsModKeyDown() then
 		local _, link = tt:GetItem()
 		local num = GetItemCount(link)
 		local numall = GetItemCount(link,true)
 		local left, right, bankCount = " ", " ", " "
 
-		if link and TT:IsModKeyDown() then
+		if link then
 			left = format("|cFFCA3C3C%s|r %s", _G.ID, strmatch(link, ":(%w+)"))
 		end
 
@@ -714,10 +714,8 @@ end
 function TT:SetItemRef(link)
 	if not link then return end
 
-	if TT:IsModKeyDown() then
-		_G.ItemRefTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, strsub(link,7)))
-		_G.ItemRefTooltip:Show()
-	end
+	_G.ItemRefTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, strsub(link,7)))
+	_G.ItemRefTooltip:Show()
 end
 
 function TT:SetToyByItemID(tt, id)
