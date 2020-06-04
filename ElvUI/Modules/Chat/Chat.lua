@@ -1012,6 +1012,11 @@ function CH:Unsnapped(chat)
 	end
 end
 
+function CH:ClearSnapping()
+	CH.LeftChatWindow = nil
+	CH.RightChatWindow = nil
+end
+
 function CH:SnappingChanged(chat)
 	CH:Unsnapped(chat)
 
@@ -3075,6 +3080,8 @@ function CH:Initialize()
 	self:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
 	self:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
 	self:SecureHook('FCF_DockFrame', 'SnappingChanged')
+	self:SecureHook('FCF_ResetChatWindows', 'ClearSnapping')
+	self:SecureHook('RedockChatWindows', 'ClearSnapping')
 	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
