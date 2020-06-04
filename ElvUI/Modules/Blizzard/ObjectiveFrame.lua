@@ -46,28 +46,19 @@ end
 
 function B:MoveObjectiveFrame()
 	local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
-	ObjectiveFrameHolder:Width(130)
-	ObjectiveFrameHolder:Height(22)
 	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
+	ObjectiveFrameHolder:Size(130, 22)
 
 	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
-	local ObjectiveFrameMover = _G.ObjectiveFrameMover
+	ObjectiveFrameHolder:SetAllPoints(_G.ObjectiveFrameMover)
+
 	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
-	ObjectiveFrameHolder:SetAllPoints(ObjectiveFrameMover)
-
-	ObjectiveTrackerFrame:ClearAllPoints()
-	ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
-	B:SetObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
-
-	ObjectiveTrackerFrame:SetMovable(true)
-
-	if ObjectiveTrackerFrame:IsMovable() then
-		ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
-	end
-
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
+	ObjectiveTrackerFrame:SetMovable(true)
+	ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
+	B:SetObjectiveFrameHeight()
 
 	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame
