@@ -18,6 +18,7 @@ local C_Garrison_GetLandingPageShipmentInfo = C_Garrison.GetLandingPageShipmentI
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
 local C_Garrison_GetLandingPageShipmentInfoByContainerID = C_Garrison.GetLandingPageShipmentInfoByContainerID
+local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageShipmentInfo
 local C_Garrison_GetCompleteMissions = C_Garrison.GetCompleteMissions
 local C_Garrison_GetLooseShipments = C_Garrison.GetLooseShipments
 local C_Garrison_GetTalentTreeIDsByClassID = C_Garrison.GetTalentTreeIDsByClassID
@@ -133,8 +134,8 @@ local function AddFollowerInfo(garrisonType)
 		for _, followerShipments in ipairs(info) do
 			local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(followerShipments)
 			if (name and shipmentsReady and shipmentsTotal) then
-				timeleftString = (timeleftString and timeleftString .. " ") or ""
-				DT.tooltip:AddDoubleLine(name, timeleftString .. format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1)
+				timeleftString = (timeleftString and " "..timeleftString) or ""
+				DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal)..timeleftString, 1, 1, 1)
 			end
 		end
 	end
@@ -240,9 +241,13 @@ local function OnEnter(self)
 			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
 
 			for _, looseShipments in ipairs(info) do
-				local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
-				if name and shipmentsReady and shipmentsTotal then
-					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
+				local name, _, shipmentCapacity, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
+				if name then
+					local timeLeft = duration - (GetServerTime() - timeStart)
+					local time, _, _, remainder = E:GetTimeInfo(timeLeft, 0, HOUR)
+					local id = timeLeft and timeLeft > HOUR and 8 or 7
+					timeleftString = (timeleftString and " "..format(GARRISON_LANDING_NEXT,format(E.TimeFormats[id][1], time, remainder))) or ""
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal)..timeleftString, 1, 1, 1, 1, 1, 1)
 				end
 			end
 		end
@@ -265,14 +270,18 @@ local function OnEnter(self)
 		if #info > 0 then
 			local AddLine = true
 			for _, buildings in ipairs(info) do
-				local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
-				if name and shipmentsReady and shipmentsTotal then
+				local name, _, shipmentCapacity, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString, itemName = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
+				if name and shipmentsTotal then
 					if AddLine then
 						DT.tooltip:AddLine(' ')
 						DT.tooltip:AddLine(L["Building(s) Report:"])
 						AddLine = false
 					end
-					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
+					local timeLeft = duration - (GetServerTime() - timeStart)
+					local time, _, _, remainder = E:GetTimeInfo(timeLeft, 0, HOUR)
+					local id = timeLeft and timeLeft > HOUR and 8 or 7
+					timeleftString = (timeleftString and " "..format(GARRISON_LANDING_NEXT,format(E.TimeFormats[id][1], time, remainder))) or ""
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal)..timeleftString, 1, 1, 1, 1, 1, 1)
 				end
 			end
 		end
@@ -293,8 +302,12 @@ local function OnClick(self)
 end
 
 local function OnEvent(self, event, ...)
-	if event == 'CURRENCY_DISPLAY_UPDATE' and ... ~= MAIN_CURRENCY then
+	if event == 'CURRENCY_DISPLAY_UPDATE' and select(1, ...) ~= MAIN_CURRENCY then
 		return
+	end
+
+	if event == 'GARRISON_SHIPMENT_RECEIVED' or (event == 'SHIPMENT_UPDATE' and select(1, ...) == true) then
+		C_Garrison_RequestLandingPageShipmentInfo()
 	end
 
 	if event == 'GARRISON_MISSION_NPC_OPENED' then
@@ -321,4 +334,4 @@ local function OnEvent(self, event, ...)
 	end
 end
 
-DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_MISSION_FINISHED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_NPC_CLOSED', 'GARRISON_MISSION_NPC_OPENED', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
+DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_SHIPMENT_RECEIVED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_FINISHED', 'GARRISON_MISSION_NPC_CLOSED', 'GARRISON_MISSION_NPC_OPENED', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
