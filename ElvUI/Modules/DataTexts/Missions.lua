@@ -57,6 +57,7 @@ local MAIN_CURRENCY = 1560
 local NAZJATAR_MAP_ID = 1355
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 local numMissions = 0
+local HOUR = 3600
 
 local Widget_IDs = {
 	Alliance = {
@@ -111,12 +112,9 @@ local function AddInProgressMissions(garrisonType)
 			if timeLeft and timeLeft == 0 then
 				DT.tooltip:AddDoubleLine(mission.name, GOAL_COMPLETED, r, g, b, GREEN_FONT_COLOR:GetRGB())
 			else
-				local time, _, _, remainder, minutes, seconds = E:GetTimeInfo(timeLeft, 0, 3600)
-				local id = timeLeft and timeLeft > 3600 and 8 or 7
-				if remainder and remainder > 0 then
-					minutes, _, seconds = E:GetTimeInfo(remainder * 60, 0)
-				end
-				DT.tooltip:AddDoubleLine(mission.name, format(E.TimeFormats[id][1], time, minutes, seconds), r, g, b, 1, 1, 1)
+				local time, _, _, remainder = E:GetTimeInfo(timeLeft, 0, HOUR)
+				local id = timeLeft and timeLeft > HOUR and 8 or 7
+				DT.tooltip:AddDoubleLine(mission.name, format(E.TimeFormats[id][1], time, remainder), r, g, b, 1, 1, 1)
 			end
 		end
 	else
@@ -265,12 +263,15 @@ local function OnEnter(self)
 		wipe(info)
 		info = C_Garrison_GetBuildings(LE_GARRISON_TYPE_6_0)
 		if #info > 0 then
-			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(L["Building(s) Report:"])
-
+			local AddLine = true
 			for _, buildings in ipairs(info) do
 				local name, _, _, shipmentsReady, shipmentsTotal = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
 				if name and shipmentsReady and shipmentsTotal then
+					if AddLine then
+						DT.tooltip:AddLine(' ')
+						DT.tooltip:AddLine(L["Building(s) Report:"])
+						AddLine = false
+					end
 					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
 				end
 			end
@@ -291,8 +292,18 @@ local function OnClick(self)
 	_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
 end
 
-local function OnEvent(self, event)
-	if event == 'GARRISON_LANDINGPAGE_SHIPMENTS' or event == 'GARRISON_MISSION_FINISHED' then
+local function OnEvent(self, event, ...)
+	if event == 'CURRENCY_DISPLAY_UPDATE' and ... ~= MAIN_CURRENCY then
+		return
+	end
+
+	if event == 'GARRISON_MISSION_NPC_OPENED' then
+		self:RegisterEvent('GARRISON_MISSION_LIST_UPDATE')
+	elseif event == 'GARRISON_MISSION_NPC_CLOSED' then
+		self:UnregisterEvent('GARRISON_MISSION_LIST_UPDATE')
+	end
+
+	if event == 'GARRISON_LANDINGPAGE_SHIPMENTS' or event == 'GARRISON_MISSION_FINISHED' or event == 'GARRISON_MISSION_NPC_CLOSED' or event == 'GARRISON_MISSION_LIST_UPDATE' then
 		numMissions = #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
 		+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 		+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
@@ -310,4 +321,4 @@ local function OnEvent(self, event)
 	end
 end
 
-DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_MISSION_FINISHED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_LIST_UPDATE', 'GARRISON_MISSION_NPC_CLOSED', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
+DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_MISSION_FINISHED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_NPC_CLOSED', 'GARRISON_MISSION_NPC_OPENED', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
