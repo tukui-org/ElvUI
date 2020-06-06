@@ -132,7 +132,7 @@ end
 E.TagFunctions.Abbrev = Abbrev
 
 local function LastName(name)
-	return strmatch(name, '.+%s(.+)$')
+	return strmatch(name, '([%S]+)$')
 end
 E.TagFunctions.LastName = LastName
 
