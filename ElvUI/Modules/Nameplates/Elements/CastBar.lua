@@ -201,8 +201,8 @@ function NP:Update_Castbar(nameplate)
 			nameplate.Castbar.Time:Point('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
 			nameplate.Castbar.Text:Point('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
 		else
-			nameplate.Castbar.Time:Point('RIGHT', nameplate.Castbar, 'RIGHT', -4, 0)
-			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', 4, 0)
+			nameplate.Castbar.Time:Point('RIGHT', nameplate.Castbar, 'RIGHT', -1, 0)
+			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
 		end
 
 		if db.castbar.hideTime then
