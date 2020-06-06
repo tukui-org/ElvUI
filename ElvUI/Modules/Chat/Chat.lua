@@ -1385,7 +1385,7 @@ function CH:AddPluginMessageFilter(func, position)
 end
 
 --Modified copy from FrameXML ChatFrame.lua to add CUSTOM_CLASS_COLORS (args were changed)
-function CH:GetColoredName(event, englishClass, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
+function CH:GetColoredName(event, classColor, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	local chatType = strsub(event, 10)
 	if strsub(chatType, 1, 7) == "WHISPER" then chatType = "WHISPER" end
 	if strsub(chatType, 1, 7) == "CHANNEL" then chatType = "CHANNEL"..arg8 end
@@ -1393,16 +1393,15 @@ function CH:GetColoredName(event, englishClass, _, arg2, _, _, _, _, _, arg8, _,
 	--ambiguate guild chat names
 	arg2 = Ambiguate(arg2, (chatType == "GUILD" and "guild") or "none")
 
-	local info = (englishClass or arg12) and _G.ChatTypeInfo[chatType]
+	local info = (classColor or arg12) and _G.ChatTypeInfo[chatType]
 	if info and Chat_ShouldColorChatByClass(info) then
-		if not englishClass then
+		if not classColor then
 			local data = CH:GetPlayerInfoByGUID(arg12)
-			englishClass = data and data.englishClass
+			classColor = data and data.classColor
 		end
 
-		local color = englishClass and E:ClassColor(englishClass)
-		if color then
-			return format("\124cff%.2x%.2x%.2x%s\124r", color.r*255, color.g*255, color.b*255, arg2)
+		if classColor then
+			return format("\124cff%.2x%.2x%.2x%s\124r", classColor.r*255, classColor.g*255, classColor.b*255, arg2)
 		end
 	end
 
@@ -1479,16 +1478,16 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		arg2 = E.NameReplacements[arg2] or arg2
 
 		-- data from populated guid info
-		local englishClass, nameWithRealm, realm
+		local classColor, nameWithRealm, realm
 		local data = CH:GetPlayerInfoByGUID(arg12)
 		if data then
 			realm = data.realm
-			englishClass = data.englishClass
+			classColor = data.classColor
 			nameWithRealm = data.nameWithRealm
 		end
 
 		-- fetch the name color to use
-		local coloredName = historySavedName or CH:GetColoredName(event, englishClass, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+		local coloredName = historySavedName or CH:GetColoredName(event, classColor, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
@@ -2239,7 +2238,7 @@ function CH:DisplayChatHistory()
 	local data = ElvCharacterDB.ChatHistoryLog
 	if not (data and next(data)) then return end
 
-	if not GetPlayerInfoByGUID(E.myguid) then
+	if not CH:GetPlayerInfoByGUID(E.myguid) then
 		E:Delay(0.1, CH.DisplayChatHistory)
 		return
 	end
@@ -3018,7 +3017,8 @@ function CH:GetPlayerInfoByGUID(guid)
 			sex = sex,
 			name = name,
 			realm = realm,
-			nameWithRealm = nameWithRealm -- we use this to correct mobile to link with the realm as well
+			nameWithRealm = nameWithRealm, -- we use this to correct mobile to link with the realm as well
+			classColor = E:ClassColor(englishClass)
 		}
 
 		-- add it to ClassNames

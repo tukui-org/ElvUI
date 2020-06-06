@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local CH = E:GetModule('Chat')
 
 local _G = _G
 local abs = abs
@@ -8,7 +9,6 @@ local strjoin = strjoin
 local strmatch = strmatch
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
-local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local INTERRUPTED = INTERRUPTED
 
@@ -145,20 +145,19 @@ end
 function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
 	if (event == 'SPELL_INTERRUPT' or event == 'SPELL_PERIODIC_INTERRUPT') and targetGUID and (sourceName and sourceName ~= "") then
-		local plate = NP.PlateGUID[targetGUID]
+		local plate, classColor = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
 			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
 			if (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
 				if db.castbar.timeToHold > 0 then
 					local name = strmatch(sourceName, '([^%-]+).*')
 					if db.castbar.sourceInterruptClassColor then
-						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
-						if sourceClass then
-							local classColor = E:ClassColor(sourceClass)
-							sourceClass = classColor and classColor.colorStr
+						local data = CH:GetPlayerInfoByGUID(sourceGUID)
+						if data and data.classColor then
+							classColor = data.classColor.colorStr
 						end
 
-						plate.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, name) or name))
+						plate.Castbar.Text:SetText(INTERRUPTED.." > "..(classColor and strjoin('', '|c', classColor, name) or name))
 					else
 						plate.Castbar.Text:SetText(INTERRUPTED.." > "..name)
 					end

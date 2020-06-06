@@ -8,7 +8,6 @@ local select, unpack, pairs = select, unpack, pairs
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
-local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local RemoveExtraSpaces = RemoveExtraSpaces
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
@@ -76,12 +75,9 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	if not name then return end
 
 	local color = PRIEST_COLOR
-	if guid and guid ~= "" then
-		local _, Class = GetPlayerInfoByGUID(guid)
-		if Class then
-			local c = E:ClassColor(Class)
-			if c then color = c end
-		end
+	local data = guid and guid ~= "" and CH:GetPlayerInfoByGUID(guid)
+	if data and data.classColor then
+		color = data.classColor
 	end
 
 	chatBubble.Name:SetFormattedText("|c%s%s|r", color.colorStr, name)
