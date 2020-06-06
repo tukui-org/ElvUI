@@ -3017,8 +3017,7 @@ function CH:GetPlayerInfoByGUID(guid)
 			sex = sex,
 			name = name,
 			realm = realm,
-			nameWithRealm = nameWithRealm, -- we use this to correct mobile to link with the realm as well
-			classColor = E:ClassColor(englishClass)
+			nameWithRealm = nameWithRealm -- we use this to correct mobile to link with the realm as well
 		}
 
 		-- add it to ClassNames
@@ -3032,6 +3031,9 @@ function CH:GetPlayerInfoByGUID(guid)
 		-- push into the cache
 		CH.GuidCache[guid] = data
 	end
+
+	-- we still need to recheck this each time because CUSTOM_CLASS_COLORS can change
+	if data then data.classColor = E:ClassColor(data.englishClass) end
 
 	return data
 end
