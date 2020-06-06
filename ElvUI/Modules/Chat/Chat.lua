@@ -2191,10 +2191,7 @@ function CH:PET_BATTLE_CLOSE()
 	if InCombatLockdown() then
 		CH:RegisterEvent('PLAYER_REGEN_ENABLED', 'PET_BATTLE_CLOSE')
 		return
-	end
-
-	-- we can take this off once it goes through once
-	if CH:IsEventRegistered('PLAYER_REGEN_ENABLED') then
+	else -- we can take this off once it goes through once
 		CH:UnregisterEvent('PLAYER_REGEN_ENABLED')
 	end
 
