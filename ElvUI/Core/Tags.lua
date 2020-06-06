@@ -131,6 +131,11 @@ local function Abbrev(name)
 end
 E.TagFunctions.Abbrev = Abbrev
 
+local function LastName(name)
+	return strmatch(name, '.+%s(.+)$')
+end
+E.TagFunctions.LastName = LastName
+
 local Harmony = {
 	[0] = {1, 1, 1},
 	[1] = {.57, .63, .35, 1},
@@ -260,6 +265,17 @@ ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 
 	if name and strfind(name, '%s') then
 		name = Abbrev(name)
+	end
+
+	return name ~= nil and name or ''
+end
+
+ElvUF.Tags.Events['name:last'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
+ElvUF.Tags.Methods['name:last'] = function(unit)
+	local name = UnitName(unit)
+
+	if name and strfind(name, '%s') then
+		name = LastName(name)
 	end
 
 	return name ~= nil and name or ''
@@ -1278,6 +1294,7 @@ E.TagInfo = {
 	['name:abbrev:short'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 10 letters)" },
 	['name:abbrev:medium'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 15 letters)" },
 	['name:abbrev:long'] = { category = 'Names', description = "Displays the name of the unit with abbreviation (limited to 20 letters)" },
+	['name:last'] = { category = 'Names', description = "Displays the last word of the unit's name" },
 	['name:veryshort:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 5 letters)" },
 	['name:short:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 10 letters)" },
 	['name:medium:status'] = { category = 'Names', description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 15 letters)" },
