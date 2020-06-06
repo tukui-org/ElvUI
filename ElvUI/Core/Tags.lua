@@ -131,11 +131,6 @@ local function Abbrev(name)
 end
 E.TagFunctions.Abbrev = Abbrev
 
-local function LastName(name)
-	return strmatch(name, '([%S]+)$')
-end
-E.TagFunctions.LastName = LastName
-
 local Harmony = {
 	[0] = {1, 1, 1},
 	[1] = {.57, .63, .35, 1},
@@ -275,7 +270,7 @@ ElvUF.Tags.Methods['name:last'] = function(unit)
 	local name = UnitName(unit)
 
 	if name and strfind(name, '%s') then
-		name = LastName(name)
+		name = strmatch(name, '([%S]+)$')
 	end
 
 	return name ~= nil and name or ''
