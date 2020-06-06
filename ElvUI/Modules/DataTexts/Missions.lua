@@ -27,7 +27,10 @@ local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
 local GetQuestObjectiveInfo = GetQuestObjectiveInfo
+local GetServerTime = GetServerTime
+local IsAltKeyDown = IsAltKeyDown
 
+local GARRISON_LANDING_NEXT = GARRISON_LANDING_NEXT
 local CAPACITANCE_WORK_ORDERS = CAPACITANCE_WORK_ORDERS
 local FOLLOWERLIST_LABEL_TROOPS = FOLLOWERLIST_LABEL_TROOPS
 local GARRISON_EMPTY_IN_PROGRESS_LIST = GARRISON_EMPTY_IN_PROGRESS_LIST
@@ -234,6 +237,8 @@ local function OnEnter(self)
 		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 		AddFollowerInfo(LE_GARRISON_TYPE_7_0)
 
+		local serverTime = GetServerTime()
+
 		-- "Loose Work Orders" (i.e. research, equipment)
 		wipe(info)
 		info = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
@@ -241,9 +246,9 @@ local function OnEnter(self)
 			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
 
 			for _, looseShipments in ipairs(info) do
-				local name, _, shipmentCapacity, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
+				local name, _, _, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
 				if name then
-					local timeLeft = duration - (GetServerTime() - timeStart)
+					local timeLeft = duration - (serverTime - timeStart)
 					local time, _, _, remainder = E:GetTimeInfo(timeLeft, 0, HOUR)
 					local id = timeLeft and timeLeft > HOUR and 8 or 7
 					timeleftString = (timeleftString and " "..format(GARRISON_LANDING_NEXT,format(E.TimeFormats[id][1], time, remainder))) or ""
@@ -270,14 +275,14 @@ local function OnEnter(self)
 		if #info > 0 then
 			local AddLine = true
 			for _, buildings in ipairs(info) do
-				local name, _, shipmentCapacity, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString, itemName = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
+				local name, _, _, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
 				if name and shipmentsTotal then
 					if AddLine then
 						DT.tooltip:AddLine(' ')
 						DT.tooltip:AddLine(L["Building(s) Report:"])
 						AddLine = false
 					end
-					local timeLeft = duration - (GetServerTime() - timeStart)
+					local timeLeft = duration - (serverTime - timeStart)
 					local time, _, _, remainder = E:GetTimeInfo(timeLeft, 0, HOUR)
 					local id = timeLeft and timeLeft > HOUR and 8 or 7
 					timeleftString = (timeleftString and " "..format(GARRISON_LANDING_NEXT,format(E.TimeFormats[id][1], time, remainder))) or ""
@@ -329,7 +334,7 @@ local function OnEvent(self, event, ...)
 		self.text:SetText(AddInfo(MAIN_CURRENCY))
 	end
 
-	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
+	if event == 'MODIFIER_STATE_CHANGED' and not IsAltKeyDown() and GetMouseFocus() == self then
 		OnEnter(self)
 	end
 end
