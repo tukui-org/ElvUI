@@ -144,7 +144,7 @@ end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
-	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
+	if (event == 'SPELL_INTERRUPT' or event == 'SPELL_PERIODIC_INTERRUPT') and targetGUID and (sourceName and sourceName ~= "") then
 		local plate = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
 			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
