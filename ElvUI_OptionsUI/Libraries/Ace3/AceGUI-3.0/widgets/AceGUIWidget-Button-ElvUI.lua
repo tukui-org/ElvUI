@@ -19,6 +19,8 @@ Scripts
 -------------------------------------------------------------------------------]]
 local dragdropButton
 local function lockTooltip()
+	_G.ElvUIAceConfigDialogTooltip:Hide()
+
 	DragTooltip:ClearAllPoints()
 	DragTooltip:SetOwner(UIParent, "ANCHOR_CURSOR")
 	DragTooltip:SetText(" ")
