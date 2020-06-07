@@ -619,7 +619,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate:Size(nameplate.width, nameplate.height)
 		nameplate:UpdateTags()
 
-		NP:UpdatePlate(nameplate)
+		if nameplate.frameType ~= nameplate.previousType then
+			NP:UpdatePlate(nameplate)
+		end
+
+		nameplate.previousType = nameplate.frameType
 
 		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
 			NP:PlateFade(nameplate, 1, 0, 1)
@@ -664,6 +668,7 @@ local optionsTable = {
 	"MotionDropDown",
 	"ShowAll"
 }
+
 function NP:HideInterfaceOptions()
 	for _, x in pairs(optionsTable) do
 		local o = _G["InterfaceOptionsNamesPanelUnitNameplates" .. x]
