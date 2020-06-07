@@ -41,9 +41,6 @@ function S:BlizzardMiscFrames()
 
 	-- Blizzard frame we want to reskin
 	local skins = {
-		"InterfaceOptionsFrame",
-		"VideoOptionsFrame",
-		"AudioOptionsFrame",
 		"AutoCompleteBox",
 		"ReadyCheckFrame",
 		"QueueStatusFrame",
