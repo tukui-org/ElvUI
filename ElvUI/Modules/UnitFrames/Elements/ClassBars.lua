@@ -466,56 +466,6 @@ function UF:PostUpdateAdditionalPower(_, MIN, MAX, event)
 	local db = frame.db
 
 	if frame.USE_CLASSBAR and ((MIN ~= MAX or (not db.classbar.autoHide)) and (event ~= "ElementDisable")) then
-		if db.classbar.additionalPowerText then
-			local powerValue = frame.Power.value
-			local powerValueText = powerValue:GetText()
-			local powerValueParent = powerValue:GetParent()
-			local powerTextPosition = db.power.position
-			local color = ElvUF.colors.power.MANA
-			color = E:RGBToHex(color[1], color[2], color[3])
-
-			--Attempt to remove |cFFXXXXXX color codes in order to determine if power text is really empty
-			if powerValueText then
-				local _, endIndex = strfind(powerValueText, "|cff")
-				if endIndex then
-					endIndex = endIndex + 7 --Add hex code
-					powerValueText = strsub(powerValueText, endIndex)
-					powerValueText = gsub(powerValueText, "%s+", "")
-				end
-			end
-
-			self.text:ClearAllPoints()
-			if not frame.CLASSBAR_DETACHED then
-				self.text:SetParent(powerValueParent)
-				if (powerValueText and (powerValueText ~= "" and powerValueText ~= " ")) then
-					if strfind(powerTextPosition, "RIGHT") then
-						self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
-						self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(MIN / MAX * 100))
-					elseif strfind(powerTextPosition, "LEFT") then
-						self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
-						self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(MIN / MAX * 100))
-					else
-						if select(4, powerValue:GetPoint()) <= 0 then
-							self.text:Point("LEFT", powerValue, "RIGHT", -3, 0)
-							self.text:SetFormattedText("|cffD7BEA5-|r"..color.." %d%%|r", floor(MIN / MAX * 100))
-						else
-							self.text:Point("RIGHT", powerValue, "LEFT", 3, 0)
-							self.text:SetFormattedText(color.."%d%%|r |cffD7BEA5- |r", floor(MIN / MAX * 100))
-						end
-					end
-				else
-					self.text:Point(powerValue:GetPoint())
-					self.text:SetFormattedText(color.."%d%%|r", floor(MIN / MAX * 100))
-				end
-			else
-				self.text:SetParent(frame.RaisedElementParent) -- needs to be 'frame.RaisedElementParent' otherwise the new PowerPrediction Bar will overlap
-				self.text:Point("CENTER", self)
-				self.text:SetFormattedText(color.."%d%%|r", floor(MIN / MAX * 100))
-			end
-		else --Text disabled
-			self.text:SetText('')
-		end
-
 		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
 		self.colorPower = not custom_backdrop
 		if custom_backdrop then
@@ -524,7 +474,6 @@ function UF:PostUpdateAdditionalPower(_, MIN, MAX, event)
 
 		self:Show()
 	else --Bar disabled
-		self.text:SetText('')
 		self:Hide()
 	end
 end
@@ -536,7 +485,6 @@ function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
 		frame.ClassBar = 'AdditionalPower'
 	else
 		frame.ClassBar = 'ClassPower'
-		self.text:SetText('')
 	end
 
 	if stateChanged then

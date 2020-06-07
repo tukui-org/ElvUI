@@ -355,6 +355,19 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end
 
+	ElvUF.Tags.Events[format('additionalpower:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
+	ElvUF.Tags.Methods[format('additionalpower:%s', tagTextFormat)] = function(unit)
+		if UnitPowerType(unit) ~= 0 and ADDITIONAL_POWER_BAR_INDEX == 0 then
+			local min = UnitPower(unit, SPELL_POWER_MANA)
+
+			if min == 0 and tagTextFormat ~= 'deficit' then
+				return ''
+			else
+				return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA))
+			end
+		end
+	end
+
 	ElvUF.Tags.Events[format('classpower:%s', tagTextFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('classpower:%s', tagTextFormat)] = function()
 		local min, max = GetClassPower(E.myclass)
