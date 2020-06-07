@@ -291,7 +291,7 @@ function NP:StylePlate(nameplate)
 	NP.Plates[nameplate] = nameplate:GetName()
 end
 
-function NP:UpdatePlate(nameplate)
+function NP:UpdatePlate(nameplate, updateBase) 	-- updateBase = nameplate.frameType ~= nameplate.previousType
 	NP:Update_Tags(nameplate)
 	NP:Update_Highlight(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
@@ -619,16 +619,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate:Size(nameplate.width, nameplate.height)
 		nameplate:UpdateTags()
 
-		if nameplate.frameType ~= nameplate.previousType then
-			NP:UpdatePlate(nameplate)
-		else
-			local SF_NameOnly = NP:StyleFilterCheckChanges(nameplate, 'NameOnly')
-			local SF_Visibility = NP:StyleFilterCheckChanges(nameplate, 'Visibility')
-			if SF_Visibility or SF_NameOnly or NP.db.units[nameplate.frameType].nameOnly or not NP.db.units[nameplate.frameType].enable then
-				NP:DisablePlate(nameplate, SF_NameOnly or (NP.db.units[nameplate.frameType].nameOnly and not SF_Visibility))
-			end
-			NP:StyleFilterEvents(nameplate)
-		end
+		NP:UpdatePlate(nameplate, nameplate.frameType ~= nameplate.previousType)
 
 		nameplate.previousType = nameplate.frameType
 
