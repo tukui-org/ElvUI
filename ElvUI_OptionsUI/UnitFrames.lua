@@ -1776,8 +1776,13 @@ local function GetOptionsTable_InformationPanel(updateFunc, groupName, numUnits)
 		args = {
 			enable = {
 				type = 'toggle',
-				order = 2,
+				order = 0,
 				name = L["Enable"],
+			},
+			above = {
+				type = 'toggle',
+				order = 1,
+				name = L["Above"],
 			},
 			transparent = {
 				type = "toggle",

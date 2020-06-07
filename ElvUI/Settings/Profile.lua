@@ -1162,6 +1162,7 @@ local UF_HealthPrediction = {
 
 local UF_InfoPanel = {
 	enable = false,
+	above = false,
 	height = 20,
 	transparent = false,
 }

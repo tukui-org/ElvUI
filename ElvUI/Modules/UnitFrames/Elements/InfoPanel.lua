@@ -19,21 +19,20 @@ function UF:Configure_InfoPanel(frame)
 	if frame.USE_INFO_PANEL then
 		frame.InfoPanel:Show()
 		frame.InfoPanel:ClearAllPoints()
+		frame.InfoPanel:Size(db.width - (frame.BORDER * 2), db.infoPanel.height)
 
-		if frame.ORIENTATION == "RIGHT" and not (frame.unitframeType == "arena") then
-			frame.InfoPanel:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING)
-			if(frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED) then
-				frame.InfoPanel:Point("TOPLEFT", frame.Power.backdrop, "BOTTOMLEFT", frame.BORDER, -(frame.SPACING*3))
-			else
-				frame.InfoPanel:Point("TOPLEFT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER, -(frame.SPACING*3))
-			end
+		local parent
+
+		if not db.infoPanel.above and (frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED) then
+			parent = frame.Power.backdrop
 		else
-			frame.InfoPanel:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
-			if(frame.USE_POWERBAR and not frame.USE_INSET_POWERBAR and not frame.POWERBAR_DETACHED) then
-				frame.InfoPanel:Point("TOPRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
-			else
-				frame.InfoPanel:Point("TOPRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER, -(frame.SPACING*3))
-			end
+			parent = frame.Health.backdrop
+		end
+
+		if db.infoPanel.above then
+			frame.InfoPanel:Point('BOTTOM', parent, 'TOP', 0, (frame.SPACING*3))
+		else
+			frame.InfoPanel:Point('TOP', parent, 'BOTTOM', 0, -(frame.SPACING*3))
 		end
 
 		local thinBorders = self.thinBorders
