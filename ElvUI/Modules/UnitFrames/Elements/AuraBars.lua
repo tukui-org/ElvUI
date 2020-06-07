@@ -120,13 +120,13 @@ function UF:Configure_AuraBars(frame)
 			holder:Size(db.aurabar.detachedWidth, 20)
 
 			if frame.unitframeType == "player" then
-				E:CreateMover(holder, 'ElvUF_PlayerAuraMover',  "Player Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,aurabar')
+				E:CreateMover(holder, 'ElvUF_PlayerAuraMover', "Player Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,aurabar')
 			elseif frame.unitframeType == "target" then
-				E:CreateMover(holder, 'ElvUF_TargetAuraMover',  "Target Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,aurabar')
+				E:CreateMover(holder, 'ElvUF_TargetAuraMover', "Target Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,aurabar')
 			elseif frame.unitframeType == "pet" then
-				E:CreateMover(holder, 'ElvUF_PetAuraMover',  "Pet Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,pet,aurabar')
+				E:CreateMover(holder, 'ElvUF_PetAuraMover', "Pet Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,pet,aurabar')
 			elseif frame.unitframeType == "focus" then
-				E:CreateMover(holder, 'ElvUF_FocusAuraMover',  "Focus Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,focus,aurabar')
+				E:CreateMover(holder, 'ElvUF_FocusAuraMover', "Focus Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,focus,aurabar')
 			end
 
 			auraBars.Holder = holder
