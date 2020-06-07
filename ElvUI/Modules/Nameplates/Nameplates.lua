@@ -621,6 +621,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.frameType ~= nameplate.previousType then
 			NP:UpdatePlate(nameplate)
+		else
+			NP:StyleFilterEvents(nameplate)
 		end
 
 		nameplate.previousType = nameplate.frameType
