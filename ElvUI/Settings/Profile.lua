@@ -1104,6 +1104,7 @@ local UF_Castbar = {
 	insideInfoPanel = true,
 	latency = true,
 	overlayOnFrame = 'None',
+	reverse = false,
 	spark = true,
 	textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
 	tickColor = {r = 0, g = 0, b = 0, a = 0.8},

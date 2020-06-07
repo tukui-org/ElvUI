@@ -118,6 +118,8 @@ function UF:Configure_Castbar(frame)
 
 	castbar.timeToHold = db.timeToHold
 
+	castbar:SetReverseFill(db.reverse)
+
 	--Latency
 	if frame.unit == 'player' and db.latency then
 		castbar.SafeZone = castbar.LatencyTexture
@@ -154,7 +156,7 @@ function UF:Configure_Castbar(frame)
 
 	if db.spark then
 		castbar.Spark = castbar.Spark_
-		castbar.Spark:Point('CENTER', castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
+		castbar.Spark:Point('CENTER', castbar:GetStatusBarTexture(), db.reverse and 'LEFT' or 'RIGHT', 0, 0)
 		castbar.Spark:Height(db.height * 2)
 	elseif castbar.Spark then
 		castbar.Spark:Hide()
