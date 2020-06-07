@@ -3597,7 +3597,7 @@ E.Options.args.unitframe = {
 						},
 						modifiers = {
 							type = 'group',
-							name = L["Modifiers"],
+							name = L["Filter Modifiers"],
 							order = 6,
 							guiInline = true,
 							get = function(info) return E.db.unitframe.modifiers[info[#info]] end,
