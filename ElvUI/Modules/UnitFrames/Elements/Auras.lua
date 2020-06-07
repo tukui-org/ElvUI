@@ -51,7 +51,7 @@ function UF:Aura_OnClick()
 
 	local spellName, spellID = self.name, self.spellID
 	local listName = UF.db.modifiers[keyDown]
-	if spellName and spellID and listName then
+	if spellName and spellID and listName ~= 'NONE' then
 		if not E.global.unitframe.aurafilters[listName].spells[spellID] then
 			E:Print(format(L["The spell '%s' has been added to the '%s' unitframe aura filter."], spellName, listName))
 			E.global.unitframe.aurafilters[listName].spells[spellID] = { enable = true, priority = 0 }
