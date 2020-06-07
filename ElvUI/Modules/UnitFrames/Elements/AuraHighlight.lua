@@ -29,6 +29,7 @@ function UF:Configure_AuraHighlight(frame)
 		frame:EnableElement('AuraHighlight')
 
 		frame.AuraHighlight:SetBlendMode(UF.db.colors.debuffHighlight.blendMode)
+		frame.AuraHighlight:SetAllPoints(frame.Health:GetStatusBarTexture())
 		frame.AuraHighlightFilterTable = E.global.unitframe.DebuffHighlightColors
 
 		if E.db.unitframe.debuffHighlighting == 'GLOW' then
