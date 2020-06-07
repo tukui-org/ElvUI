@@ -622,6 +622,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if nameplate.frameType ~= nameplate.previousType then
 			NP:UpdatePlate(nameplate)
 		else
+			local SF_NameOnly = NP:StyleFilterCheckChanges(nameplate, 'NameOnly')
+			local SF_Visibility = NP:StyleFilterCheckChanges(nameplate, 'Visibility')
+			if SF_Visibility or SF_NameOnly or NP.db.units[nameplate.frameType].nameOnly or not NP.db.units[nameplate.frameType].enable then
+				NP:DisablePlate(nameplate, SF_NameOnly or (NP.db.units[nameplate.frameType].nameOnly and not SF_Visibility))
+			end
 			NP:StyleFilterEvents(nameplate)
 		end
 
