@@ -693,22 +693,13 @@ function TT:SetUnitAura(tt, unit, index, filter)
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(tt)
-	if tt:IsForbidden() then return end
-	local id = select(2, tt:GetSpell())
-	if id and TT:IsModKeyDown() then
-		local displayString = format("|cFFCA3C3C%s|r %d", _G.ID, id)
+	if tt:IsForbidden() or not TT:IsModKeyDown() then return end
 
-		for i = 1, tt:NumLines() do
-			local line = _G[format("GameTooltipTextLeft%d", i)]
-			local text = line and line.GetText and line:GetText()
-			if text and strfind(text, displayString) then
-				return
-			end
-		end
+	local _, id = tt:GetSpell()
+	if not id then return end
 
-		tt:AddLine(displayString)
-		tt:Show()
-	end
+	tt:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, id))
+	tt:Show()
 end
 
 function TT:SetItemRef(link)
