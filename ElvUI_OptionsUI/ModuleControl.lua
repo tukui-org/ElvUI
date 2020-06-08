@@ -269,11 +269,13 @@ E.Options.args.modulecontrol= {
 					order = 1,
 					type = "description",
 					name = L["This section will allow you to copy settings to a select module from or to a different profile."],
+					fontSize = 'medium',
 				},
 				pluginInfo = {
 					order = 2,
 					type = "description",
 					name = L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."],
+					fontSize = 'medium',
 				},
 				profile = {
 					order = 3,
