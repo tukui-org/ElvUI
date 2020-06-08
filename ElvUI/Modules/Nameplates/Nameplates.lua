@@ -303,7 +303,7 @@ function NP:UpdatePlate(nameplate, updateBase) 	-- updateBase = nameplate.frameT
 	local SF_Visibility = NP:StyleFilterCheckChanges(nameplate, 'Visibility')
 	if SF_Visibility or SF_NameOnly or NP.db.units[nameplate.frameType].nameOnly or not NP.db.units[nameplate.frameType].enable then
 		NP:DisablePlate(nameplate, SF_NameOnly or (NP.db.units[nameplate.frameType].nameOnly and not SF_Visibility))
-	else
+	elseif updateBase or not SF_Visibility or not SF_NameOnly then
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
 		NP:Update_Power(nameplate)
@@ -327,10 +327,10 @@ function NP:UpdatePlate(nameplate, updateBase) 	-- updateBase = nameplate.frameT
 		if nameplate == _G.ElvNP_Player then
 			NP:Update_Fader(nameplate)
 		end
+	end
 
-		if nameplate.isTarget then
-			NP:SetupTarget(nameplate, nil, true)
-		end
+	if nameplate.isTarget then
+		NP:SetupTarget(nameplate, nil, true)
 	end
 
 	NP:StyleFilterEvents(nameplate)
