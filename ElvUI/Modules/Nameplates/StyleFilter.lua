@@ -398,7 +398,7 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 end
 
 function mod:StyleFilterUpdatePlate(frame, nameOnly)
-	mod:UpdatePlate(frame) -- enable elements back
+	mod:UpdatePlate(frame, true) -- enable elements back
 
 	if frame.frameType then
 		local db = mod.db.units[frame.frameType]
