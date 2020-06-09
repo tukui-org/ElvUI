@@ -309,7 +309,7 @@ ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local deficit = (min / max) - 1
 	if deficit == 0 then
-		return ''
+		return nil
 	else
 		return E:GetFormattedText('PERCENT', deficit, -1)
 	end
@@ -339,7 +339,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		local min = UnitPower(unit, pType)
 
 		if min == 0 and tagTextFormat ~= 'deficit' then
-			return ''
+			return nil
 		else
 			return E:GetFormattedText(textFormat, UnitPower(unit, pType), UnitPowerMax(unit, pType))
 		end
@@ -350,7 +350,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		local min = UnitPower(unit, SPELL_POWER_MANA)
 
 		if min == 0 and tagTextFormat ~= 'deficit' then
-			return ''
+			return nil
 		else
 			return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA))
 		end
@@ -362,7 +362,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			local min = UnitPower(unit, SPELL_POWER_MANA)
 
 			if min == 0 and tagTextFormat ~= 'deficit' then
-				return ''
+				return nil
 			else
 				return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA))
 			end
