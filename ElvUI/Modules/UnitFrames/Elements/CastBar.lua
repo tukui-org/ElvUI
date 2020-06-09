@@ -83,8 +83,7 @@ function UF:Construct_Castbar(frame, moverName)
 	if moverName then
 		local name = frame:GetName()
 		local configName = name:gsub('^ElvUF_', ''):lower()
-		local configSection = (configName == "party" or configName == "arena" or configName == "boss") and "groupUnits" or "individualUnits"
-		E:CreateMover(castbar.Holder, name..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO', nil, 'unitframe,'..configSection..','..configName..',castbar')
+		E:CreateMover(castbar.Holder, name..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,'..configName..',castbar')
 	end
 
 	local icon = button:CreateTexture(nil, "ARTWORK")
