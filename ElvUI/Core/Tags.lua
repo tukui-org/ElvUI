@@ -315,6 +315,7 @@ ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
 	end
 end
 
+local additionalPowerIndex = _G.ADDITIONAL_POWER_BAR_INDEX
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagTextFormat = strlower(gsub(textFormat, '_', '-'))
 	ElvUF.Tags.Events[format('health:%s', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
@@ -357,7 +358,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	ElvUF.Tags.Events[format('additionalpower:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('additionalpower:%s', tagTextFormat)] = function(unit)
-		if UnitPowerType(unit) ~= 0 and ADDITIONAL_POWER_BAR_INDEX == 0 then
+		if UnitPowerType(unit) ~= 0 and additionalPowerIndex == 0 then
 			local min = UnitPower(unit, SPELL_POWER_MANA)
 
 			if min == 0 and tagTextFormat ~= 'deficit' then
@@ -847,8 +848,8 @@ ElvUF.Tags.Methods['distance'] = function(unit)
 	return d or nil
 end
 
-local baseSpeed = BASE_MOVEMENT_SPEED
-local speedText = SPEED
+local speedText = _G.SPEED
+local baseSpeed = _G.BASE_MOVEMENT_SPEED
 ElvUF.Tags.OnUpdateThrottle['speed:percent'] = 0.1
 ElvUF.Tags.Methods['speed:percent'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
