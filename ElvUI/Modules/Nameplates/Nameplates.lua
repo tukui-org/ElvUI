@@ -532,7 +532,7 @@ function NP:ConfigureAll()
 				NP.PlayerNamePlateAnchor:Show()
 			end
 
-			NP:UpdatePlate(nameplate)
+			NP:UpdatePlate(nameplate, true)
 			nameplate:UpdateAllElements('ForceUpdate')
 			NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this at the end of the loop
 		end
