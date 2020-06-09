@@ -197,7 +197,7 @@ ElvUF.Tags.Methods['altpowercolor'] = function(u)
 
 		return Hex(r,g,b)
 	else
-		return nil
+		return
 	end
 end
 
@@ -207,7 +207,7 @@ ElvUF.Tags.Methods['afk'] = function(unit)
 	if isAFK then
 		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', DEFAULT_AFK_MESSAGE)
 	else
-		return nil
+		return
 	end
 end
 
@@ -218,7 +218,7 @@ ElvUF.Tags.Methods['faction:icon'] = function(unit)
 	if (factionGroup == 'Horde' or factionGroup == 'Alliance') then
 		return CreateTextureMarkup(format([[Interface\FriendsFrame\PlusManz-%s]], factionGroup), 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
 	else
-		return nil
+		return
 	end
 end
 
@@ -240,7 +240,7 @@ ElvUF.Tags.Methods['status:text'] = function(unit)
 		return CHAT_FLAG_DND
 	end
 
-	return nil
+	return
 end
 
 ElvUF.Tags.Events['status:icon'] = 'PLAYER_FLAGS_CHANGED'
@@ -251,7 +251,7 @@ ElvUF.Tags.Methods['status:icon'] = function(unit)
 		return CreateTextureMarkup([[Interface\FriendsFrame\StatusIcon-DnD]], 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
 	end
 
-	return nil
+	return
 end
 
 ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
@@ -309,7 +309,7 @@ ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local deficit = (min / max) - 1
 	if deficit == 0 then
-		return nil
+		return
 	else
 		return E:GetFormattedText('PERCENT', deficit, -1)
 	end
@@ -339,7 +339,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		local min = UnitPower(unit, pType)
 
 		if min == 0 and tagTextFormat ~= 'deficit' then
-			return nil
+			return
 		else
 			return E:GetFormattedText(textFormat, UnitPower(unit, pType), UnitPowerMax(unit, pType))
 		end
@@ -350,7 +350,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		local min = UnitPower(unit, SPELL_POWER_MANA)
 
 		if min == 0 and tagTextFormat ~= 'deficit' then
-			return nil
+			return
 		else
 			return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA))
 		end
@@ -362,7 +362,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			local min = UnitPower(unit, SPELL_POWER_MANA)
 
 			if min == 0 and tagTextFormat ~= 'deficit' then
-				return nil
+				return
 			else
 				return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA))
 			end
@@ -373,7 +373,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Methods[format('classpower:%s', tagTextFormat)] = function()
 		local min, max = GetClassPower(E.myclass)
 		if min == 0 then
-			return nil
+			return
 		else
 			return E:GetFormattedText(textFormat, min, max)
 		end
@@ -387,7 +387,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 			return E:GetFormattedText(textFormat, cur, max)
 		else
-			return nil
+			return
 		end
 	end
 end
@@ -608,7 +608,7 @@ ElvUF.Tags.Methods['realm:translit'] = function(unit)
 	if realm and realm ~= "" then
 		return realm
 	else
-		return nil
+		return
 	end
 end
 
@@ -631,7 +631,7 @@ ElvUF.Tags.Methods['threat:percent'] = function(unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
 		return format('%.0f%%', percent)
 	else
-		return nil
+		return
 	end
 end
 
@@ -641,7 +641,7 @@ ElvUF.Tags.Methods['threat:current'] = function(unit)
 	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
 		return E:ShortValue(threatvalue)
 	else
-		return nil
+		return
 	end
 end
 
@@ -651,7 +651,7 @@ ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	if (status) and (IsInGroup() or UnitExists('pet')) then
 		return Hex(GetThreatStatusColor(status))
 	else
-		return nil
+		return
 	end
 end
 
@@ -687,7 +687,7 @@ ElvUF.Tags.Methods['statustimer'] = function(unit)
 		local secs = floor(timer - (mins * 60))
 		return format("%s (%01.f:%02.f)", L[status], mins, secs)
 	else
-		return nil
+		return
 	end
 end
 
@@ -704,7 +704,7 @@ ElvUF.Tags.Methods['pvptimer'] = function(unit)
 			return PVP
 		end
 	else
-		return nil
+		return
 	end
 end
 
@@ -718,7 +718,7 @@ ElvUF.Tags.Events['absorbs'] = 'UNIT_ABSORB_AMOUNT_CHANGED'
 ElvUF.Tags.Methods['absorbs'] = function(unit)
 	local absorb = UnitGetTotalAbsorbs(unit) or 0
 	if absorb == 0 then
-		return nil
+		return
 	else
 		return E:ShortValue(absorb)
 	end
@@ -728,7 +728,7 @@ ElvUF.Tags.Events['incomingheals:personal'] = 'UNIT_HEAL_PREDICTION'
 ElvUF.Tags.Methods['incomingheals:personal'] = function(unit)
 	local heal = UnitGetIncomingHeals(unit, 'player') or 0
 	if heal == 0 then
-		return nil
+		return
 	else
 		return E:ShortValue(heal)
 	end
@@ -740,7 +740,7 @@ ElvUF.Tags.Methods['incomingheals:others'] = function(unit)
 	local heal = UnitGetIncomingHeals(unit) or 0
 	local others = heal - personal
 	if others == 0 then
-		return nil
+		return
 	else
 		return E:ShortValue(others)
 	end
@@ -750,7 +750,7 @@ ElvUF.Tags.Events['incomingheals'] = 'UNIT_HEAL_PREDICTION'
 ElvUF.Tags.Methods['incomingheals'] = function(unit)
 	local heal = UnitGetIncomingHeals(unit) or 0
 	if heal == 0 then
-		return nil
+		return
 	else
 		return E:ShortValue(heal)
 	end
