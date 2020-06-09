@@ -145,6 +145,7 @@ L["Bank 5"] = "銀行 5"
 L["Bank 6"] = "銀行 6"
 L["Bank 7"] = "銀行 7"
 L["Bank Only"] = "僅銀行"
+L["Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?"] = true
 L["Bar Direction"] = "背包條排序方向"
 L["Bars will transition smoothly."] = "狀態條平滑增減"
 L["Battleground Friendly"] = "戰場友方"

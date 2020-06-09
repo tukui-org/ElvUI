@@ -934,7 +934,7 @@ for i = 1, 10 do
 
 	if (E.myclass == 'DRUID' and i >= 7 or E.myclass == 'ROGUE' and i == 7) then
 		E.Options.args.actionbar.args.playerBars.args['bar'..i].args.enabled.confirm = function(info, value)
-			return format('Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?', i)
+			return format(L["Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?"], i)
 		end
 	end
 end

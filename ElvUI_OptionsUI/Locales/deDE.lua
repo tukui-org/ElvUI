@@ -145,6 +145,7 @@ L["Bank 5"] = true
 L["Bank 6"] = true
 L["Bank 7"] = true
 L["Bank Only"] = "Nur Bank"
+L["Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?"] = true
 L["Bar Direction"] = "Ausrichtung Leiste"
 L["Bars will transition smoothly."] = "Sanfter Übergang der Leisten."
 L["Battleground Friendly"] = "Schlachtfeld Freundlich"
