@@ -291,7 +291,7 @@ function NP:StylePlate(nameplate)
 	NP.Plates[nameplate] = nameplate:GetName()
 end
 
-function NP:UpdatePlate(nameplate, updateBase) 	-- updateBase = nameplate.frameType ~= nameplate.previousType
+function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_Tags(nameplate)
 	NP:Update_Highlight(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
@@ -327,6 +327,8 @@ function NP:UpdatePlate(nameplate, updateBase) 	-- updateBase = nameplate.frameT
 		if nameplate == _G.ElvNP_Player then
 			NP:Update_Fader(nameplate)
 		end
+	else
+		NP:Update_Health(nameplate, true) -- this will only reset the ouf vars so it won't hold stale threat ones
 	end
 
 	if nameplate.isTarget then
