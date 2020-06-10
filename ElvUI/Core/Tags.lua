@@ -83,6 +83,7 @@ local SPELL_POWER_CHI = Enum.PowerType.Chi
 local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
 local SPELL_POWER_MANA = Enum.PowerType.Mana
 local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
+local ALT_MANA_BAR_PAIR_DISPLAY_INFO = ALT_MANA_BAR_PAIR_DISPLAY_INFO
 
 -- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
 
@@ -338,33 +339,22 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		local pType = UnitPowerType(unit)
 		local min = UnitPower(unit, pType)
 
-		if min == 0 and tagTextFormat ~= 'deficit' then
+		if not UnitIsPlayer(unit) and min == 0 and tagTextFormat ~= 'deficit' then
 			return
 		else
-			return E:GetFormattedText(textFormat, UnitPower(unit, pType), UnitPowerMax(unit, pType))
-		end
-	end
-
-	ElvUF.Tags.Events[format('mana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
-	ElvUF.Tags.Methods[format('mana:%s', tagTextFormat)] = function(unit)
-		local min = UnitPower(unit, SPELL_POWER_MANA)
-
-		if min == 0 and tagTextFormat ~= 'deficit' then
-			return
-		else
-			return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA))
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, pType))
 		end
 	end
 
 	ElvUF.Tags.Events[format('additionalpower:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('additionalpower:%s', tagTextFormat)] = function(unit)
-		if UnitPowerType(unit) ~= 0 and additionalPowerIndex == 0 then
+		if ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass] and ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass][UnitPowerType(unit)] and additionalPowerIndex == 0 then
 			local min = UnitPower(unit, SPELL_POWER_MANA)
 
-			if min == 0 and tagTextFormat ~= 'deficit' then
+			if min == 0 and tagTextFormat == 'deficit' then
 				return
 			else
-				return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA))
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
 			end
 		end
 	end
@@ -492,24 +482,6 @@ ElvUF.Tags.Events['power:max'] = 'UNIT_DISPLAYPOWER UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:max'] = function(unit)
 	local pType = UnitPowerType(unit)
 	local max = UnitPowerMax(unit, pType)
-
-	return E:GetFormattedText('CURRENT', max, max)
-end
-
-ElvUF.Tags.Methods['manacolor'] = function()
-	local mana = _G.PowerBarColor.MANA
-	local altR, altG, altB = mana.r, mana.g, mana.b
-	local color = ElvUF.colors.power.MANA
-	if color then
-		return Hex(color[1], color[2], color[3])
-	else
-		return Hex(altR, altG, altB)
-	end
-end
-
-ElvUF.Tags.Events['mana:max'] = 'UNIT_MAXPOWER'
-ElvUF.Tags.Methods['mana:max'] = function(unit)
-	local max = UnitPowerMax(unit, SPELL_POWER_MANA)
 
 	return E:GetFormattedText('CURRENT', max, max)
 end
@@ -1214,7 +1186,6 @@ E.TagInfo = {
 	['threatcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's threat situation" },
 	['classpowercolor'] = { category = 'Colors', description = "Changes the color of the special power based upon its type" },
 	['classificationcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's classification" },
-	['manacolor'] = { category = 'Colors', description = "Changes the text color to a light-blue mana color" },
 	['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	--Guild
 	['guild'] = { category = 'Guild', description = "Displays the guild name" },
@@ -1267,19 +1238,6 @@ E.TagInfo = {
 	['smartlevel'] = { category = 'Level', description = "Only display the unit's level if it is not the same as yours" },
 	['level'] = { category = 'Level', description = "Displays the level of the unit" },
 	--Mana
-	['mana:current'] = { category = 'Mana', description = "Displays the unit's current amount of mana (e.g. 97200)" },
-	['mana:current:shortvalue'] = { category = 'Mana', description = "Shortvalue of the unit's current amount of mana (e.g. 4k instead of 4000)" },
-	['mana:current-percent'] = { category = 'Mana', description = "Displays the current amount of mana as a whole number and a percentage, separated by a dash" },
-	['mana:current-percent:shortvalue'] = { category = 'Mana', description = "Shortvalue of the current mana and mana as a percentage, separated by a dash" },
-	['mana:current-max'] = { category = 'Mana', description = "Displays the current mana and max mana, separated by a dash" },
-	['mana:current-max:shortvalue'] = { category = 'Mana', description = "Shortvalue of the current mana and max mana, separated by a dash" },
-	['mana:current-max-percent'] = { category = 'Mana', description = "Displays the current mana and max mana, separated by a dash (% when not full power)" },
-	['mana:current-max-percent:shortvalue'] = { category = 'Mana', description = "Shortvalue of the current mana and max mana, separated by a dash (% when not full power)" },
-	['mana:percent'] = { category = 'Mana', description = "Displays the mana of the unit as a percentage value" },
-	['mana:max'] = { category = 'Mana', description = "Displays the unit's maximum mana" },
-	['mana:max:shortvalue'] = { category = 'Mana', description = "Shortvalue of the unit's maximum mana" },
-	['mana:deficit'] = { category = 'Mana', description = "Displays the mana deficit (Total Mana - Current Mana = -Deficit)" },
-	['mana:deficit:shortvalue'] = { category = 'Mana', description = "Shortvalue of the mana deficit (Total Mana - Current Mana = -Deficit)" },
 	['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
 	['maxmana'] = { category = 'Mana', description = "Displays the max amount of mana the unit can have" },
 	--Miscellaneous
