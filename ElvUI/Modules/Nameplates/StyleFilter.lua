@@ -428,6 +428,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	local c = frame.StyleFilterActionChanges
 	if not c then return end
 
+	local db = mod.db.units[frame.frameType]
+
 	if Visibility then
 		c.Visibility = true
 		mod:DisablePlate(frame) -- disable the plate elements
@@ -455,7 +457,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 
 		mod:StyleFilterBorderLock(frame.Health.backdrop, true)
 		frame.Health.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
-		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
+		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop, true)
 			frame.Power.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
 		end
@@ -529,6 +531,7 @@ end
 
 function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	wipe(frame.StyleFilterActionChanges)
+	local db = mod.db.units[frame.frameType]
 
 	if Visibility then
 		mod:StyleFilterUpdatePlate(frame)
@@ -551,7 +554,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		local r, g, b = unpack(E.media.bordercolor)
 		mod:StyleFilterBorderLock(frame.Health.backdrop)
 		frame.Health.backdrop:SetBackdropBorderColor(r, g, b)
-		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
+		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop)
 			frame.Power.backdrop:SetBackdropBorderColor(r, g, b)
 		end
@@ -578,11 +581,11 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if NameOnly then
 		mod:StyleFilterUpdatePlate(frame, true)
 	else -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
-		if NameTag then frame:Tag(frame.Name, mod.db.units[frame.frameType].name.format) end
-		if PowerTag then frame:Tag(frame.Power.Text, mod.db.units[frame.frameType].power.text.format) end
-		if HealthTag then frame:Tag(frame.Health.Text, mod.db.units[frame.frameType].health.text.format) end
-		if TitleTag then frame:Tag(frame.Title, mod.db.units[frame.frameType].title.format) end
-		if LevelTag then frame:Tag(frame.Level, mod.db.units[frame.frameType].level.format) end
+		if NameTag then frame:Tag(frame.Name, db.name.format) end
+		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) end
+		if HealthTag then frame:Tag(frame.Health.Text, db.health.text.format) end
+		if TitleTag then frame:Tag(frame.Title, db.title.format) end
+		if LevelTag then frame:Tag(frame.Level, db.level.format) end
 	end
 	-- Update Tags in both cases because `Update_Tags` doesn't actually call `UpdateTag`.
 	if NameTag then frame.Name:UpdateTag() end
@@ -936,8 +939,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 end
 
 function mod:StyleFilterPass(frame, actions)
-	local healthBarEnabled = (frame.frameType and mod.db.units[frame.frameType].health.enable) or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
-	local powerBarEnabled = frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable
+	local db = mod.db.units[frame.frameType]
+	local healthBarEnabled = (frame.frameType and db.health.enable) or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
+	local powerBarEnabled = frame.frameType and db.power and db.power.enable
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
 	mod:StyleFilterSetChanges(frame, actions,
