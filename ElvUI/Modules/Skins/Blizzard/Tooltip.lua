@@ -5,6 +5,7 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local unpack = unpack
 local pairs = pairs
+local GameTooltip = GameTooltip
 local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
@@ -66,6 +67,7 @@ function S:TooltipFrames()
 		_G.WarCampaignTooltip,
 		_G.EmbeddedItemTooltip,
 		_G.ReputationParagonTooltip,
+		_G.ElvUIConfigTooltip,
 		-- already have locals
 		StoryTooltip,
 		GameTooltip,
