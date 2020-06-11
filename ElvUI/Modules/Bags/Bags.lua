@@ -412,10 +412,15 @@ end
 
 function B:SCRAPPING_MACHINE_SHOW()
 	E:Delay(0.1, B.Layout, B)
+
+	if not B.BagFrame:IsShown() then
+		ToggleAllBags()
+	end
 end
 
 function B:SCRAPPING_MACHINE_CLOSE()
 	E:Delay(0.1, B.Layout, B)
+	ToggleAllBags()
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -2378,6 +2383,8 @@ function B:Initialize()
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
+	B:RegisterEvent('AUCTION_HOUSE_SHOW', 'OpenBags')
+	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseBags')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
 	B:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
@@ -2385,8 +2392,6 @@ function B:Initialize()
 	B:RegisterEvent('SCRAPPING_MACHINE_SHOW')
 	B:RegisterEvent('SCRAPPING_MACHINE_CLOSE')
 	-- Mera find this usefull.. so blame him
-	B:RegisterEvent('AUCTION_HOUSE_SHOW', 'OpenBags')
-	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseBags')
 
 	_G.BankFrame:SetScale(0.0001)
 	_G.BankFrame:SetAlpha(0)
