@@ -9,6 +9,7 @@ Cutaway errored on initial login or profile change sometimes.
 **Misc. Changes:**  
 Blacklisted the Experience Eliminated debuff.  
 Castbar 'Display Target' allowed on all Unitframes.  
+The bags will now show, if we open the Auction House or Scrapping Machine.  
 ___
 
 ## Version 11.41 [ May 1st 2020 ]
