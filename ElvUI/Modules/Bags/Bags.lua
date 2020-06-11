@@ -2384,6 +2384,9 @@ function B:Initialize()
 	B:RegisterEvent('GUILDBANKFRAME_OPENED')
 	B:RegisterEvent('SCRAPPING_MACHINE_SHOW')
 	B:RegisterEvent('SCRAPPING_MACHINE_CLOSE')
+	-- Mera find this usefull.. so blame him
+	B:RegisterEvent('AUCTION_HOUSE_SHOW', 'OpenBags')
+	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseBags')
 
 	_G.BankFrame:SetScale(0.0001)
 	_G.BankFrame:SetAlpha(0)
