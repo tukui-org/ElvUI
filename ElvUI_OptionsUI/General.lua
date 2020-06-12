@@ -778,7 +778,7 @@ E.Options.args.general = {
 					type = "toggle",
 					name = L["Mark Quest Reward"],
 					desc = L["Marks the most valuable quest reward with a gold coin."],
-				},				
+				},
 				itemLevelInfo = {
 					order = 14,
 					name = L["Item Level"],
