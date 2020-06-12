@@ -49,7 +49,7 @@ function B:MoveObjectiveFrame()
 	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 	ObjectiveFrameHolder:Size(130, 22)
 
-	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
+	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 	ObjectiveFrameHolder:SetAllPoints(_G.ObjectiveFrameMover)
 
 	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
