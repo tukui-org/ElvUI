@@ -43,7 +43,10 @@ function UF:Construct_AssistFrames()
 
 	self.originalParent = self:GetParent()
 
-	UF:Update_AssistFrames(self, E.db.unitframe.units.assist)
+	-- temp fix?
+	-- why would this cause the auras to be spawned on init login (reload would be fine) ~Simpy
+	-- UF:Update_AssistFrames(self, E.db.unitframe.units.assist)
+	E:Delay(0, UF.Update_AssistFrames, UF, self, E.db.unitframe.units.assist)
 
 	return self
 end

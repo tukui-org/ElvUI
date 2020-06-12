@@ -259,12 +259,6 @@ function UF:Configure_Auras(frame, which)
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 	auras:Height(auras.size * rows)
-
-	if auras.db.enable then
-		auras:Show()
-	else
-		auras:Hide()
-	end
 end
 
 local function SortAurasByTime(a, b)
