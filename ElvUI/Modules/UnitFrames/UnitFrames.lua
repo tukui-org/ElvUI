@@ -1478,7 +1478,7 @@ function UF:PLAYER_TARGET_CHANGED()
 	end
 end
 
-function UF:AfterStyleCallback()
+function UF:AfterStyleCallback() --
 	-- this will wait until after ouf pushes `EnableElement` onto the newly spawned frames
 	-- calling an update onto assist or tank in the styleFunc is before the `EnableElement`
 	-- that would cause the auras to be shown when a new frame is spawned (tank2, assist2)
