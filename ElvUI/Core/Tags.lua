@@ -1241,6 +1241,12 @@ E.TagInfo = {
 	['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
 	['maxmana'] = { category = 'Mana', description = "Displays the max amount of mana the unit can have" },
 	--Miscellaneous
+	['additionalpower:current'] = { category = 'Miscellaneous', description = "Displays the unit's current additional power" },
+	['additionalpower:current-max'] = { category = 'Miscellaneous', description = "Displays the unit's current and maxium additional power, separated by a dash" },
+	['additionalpower:current-max-percent'] = { category = 'Miscellaneous', description = "Displays the current and max additional power of the unit, separated by a dash (% when not full)" },
+	['additionalpower:current-percent'] = { category = 'Miscellaneous', description = "Displays the current additional power of the unit and % when not full" },
+	['additionalpower:deficit'] = { category = 'Miscellaneous', description = "Displays the player's additional power as a deficit" },
+	['additionalpower:percent'] = { category = 'Miscellaneous', description = "Displays the player's additional power as a percentage" },
 	['affix'] = { category = 'Miscellaneous', description = "Displays low level critter mobs" },
 	['class'] = { category = 'Miscellaneous', description = "Displays the class of the unit, if that unit is a player" },
 	['race'] = { category = 'Miscellaneous', description = "Displays the race" },
