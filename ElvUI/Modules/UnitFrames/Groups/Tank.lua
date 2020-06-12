@@ -43,11 +43,6 @@ function UF:Construct_TankFrames()
 
 	self.originalParent = self:GetParent()
 
-	-- temp fix?
-	-- why would this cause the auras to be spawned on init login (reload would be fine) ~Simpy
-	-- UF:Update_TankFrames(self, E.db.unitframe.units.tank)
-	E:Delay(0, UF.Update_TankFrames, UF, self, E.db.unitframe.units.tank)
-
 	return self
 end
 

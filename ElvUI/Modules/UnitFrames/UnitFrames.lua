@@ -1478,6 +1478,18 @@ function UF:PLAYER_TARGET_CHANGED()
 	end
 end
 
+function UF:AfterStyleCallback()
+	-- this will wait until after ouf pushes `EnableElement` onto the newly spawned frames
+	-- calling an update onto assist or tank in the styleFunc is before the `EnableElement`
+	-- that would cause the auras to be shown when a new frame is spawned (tank2, assist2)
+	-- even when they are disabled. this makes sure the update happens after so its proper.
+	if self.unitframeType == "tank" or self.unitframeType == "tanktarget" then
+		UF:Update_TankFrames(self, E.db.unitframe.units.tank)
+	elseif self.unitframeType == "assist" or self.unitframeType == "assisttarget" then
+		UF:Update_AssistFrames(self, E.db.unitframe.units.assist)
+	end
+end
+
 function UF:Initialize()
 	UF.db = E.db.unitframe
 	UF.thinBorders = UF.db.thinBorders or E.PixelMode
@@ -1489,6 +1501,7 @@ function UF:Initialize()
 	RegisterStateDriver(E.ElvUF_Parent, "visibility", "[petbattle] hide; show")
 
 	UF:UpdateColors()
+	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		UF:Construct_UF(frame, unit)
 	end)
