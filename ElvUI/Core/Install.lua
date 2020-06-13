@@ -51,7 +51,7 @@ local ELV_TOONS = {
 	['Whorlock-Spirestone']		= true,
 }
 
-local function SetupChat(noDisplayMsg)
+function E:SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows()
 	FCF_OpenNewWindow(LOOT)
 	FCF_UnDockFrame(_G.ChatFrame3)
@@ -141,7 +141,7 @@ local function SetupChat(noDisplayMsg)
 	end
 end
 
-local function SetupCVars(noDisplayMsg)
+function E:SetupCVars(noDisplayMsg)
 	SetCVar('statusTextDisplay', 'BOTH')
 	SetCVar('screenshotQuality', 10)
 	SetCVar('chatMouseScroll', 1)
@@ -565,7 +565,7 @@ local function SetPage(PageNum)
 		f.Desc2:SetText(L["Please click the button below to setup your CVars."])
 		f.Desc3:SetText(L["Importance: |cff07D400High|r"])
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', SetupCVars)
+		InstallOption1Button:SetScript('OnClick', function() E:SetupCVars() end)
 		InstallOption1Button:SetText(L["Setup CVars"])
 	elseif PageNum == 3 then
 		f.SubTitle:SetText(L["Chat"])
@@ -573,7 +573,7 @@ local function SetPage(PageNum)
 		f.Desc2:SetText(L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', SetupChat)
+		InstallOption1Button:SetScript('OnClick', function() E:SetupChat() end)
 		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
 		f.SubTitle:SetText(L["Theme Setup"])
