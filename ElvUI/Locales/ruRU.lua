@@ -339,7 +339,6 @@ L["Welcome to ElvUI version %s!"] = "Добро пожаловать в ElvUI в
 L["whispers"] = "шепчет"
 L["World Latency:"] = "Глобальная задержка:"
 L["World Protocol:"] = "Глобальный протокол:"
-L["WoW Token:"] = "WoW токен:"
 L["Wrist"] = "Запястья"
 L["XP:"] = "Опыт:"
 L["yells"] = "кричит"

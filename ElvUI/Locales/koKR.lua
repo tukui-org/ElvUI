@@ -339,7 +339,6 @@ L["Welcome to ElvUI version %s!"] = "ElvUI 버전 %s에 오신 것을 환영합�
 L["whispers"] = "귓"
 L["World Latency:"] = true
 L["World Protocol:"] = true
-L["WoW Token:"] = true
 L["Wrist"] = "손목"
 L["XP:"] = "경험치:"
 L["yells"] = "외침"
