@@ -103,7 +103,7 @@ local function Event()
 end
 
 local function Update(self)
-	local element = self.PVPRole
+	local element, isShown = self.PVPRole
 
 	if (element.PreUpdate) then
 		element:PreUpdate()
@@ -117,14 +117,14 @@ local function Update(self)
 
 		if (Healers[name] and element.ShowHealers) then
 			element:SetTexture(element.HealerTexture)
-			element:Show()
+			isShown = true
 		elseif (Tanks[name] and element.ShowTanks) then
 			element:SetTexture(element.TankTexture)
-			element:Show()
-		else
-			element:Hide()
+			isShown = true
 		end
 	end
+
+	element:SetShown(isShown)
 
 	if (element.PostUpdate) then
 		return element:PostUpdate(instanceType)
