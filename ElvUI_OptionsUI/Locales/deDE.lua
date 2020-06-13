@@ -295,6 +295,7 @@ L["Copy Chat Lines"] = "Chatzeile kopieren"
 L["Copy From"] = "Kopieren von"
 L["Copy settings from another unit."] = "Kopiere Einstellungen von einer anderen Einheit."
 L["Copy Settings From"] = "Kopiere Einstellungen von"
+L["Copy Settings From %s. This will overwrite %s profile.\n\n Are you sure?"] = true
 L["Core |cff1784d1ElvUI|r options."] = "|cff1784d1ElvUI|r Einstellungen"
 L["Count Font Size"] = "Anzahl Schriftgröße"
 L["Count xOffset"] = "Den Versatz auf der X-Achse zählen"

@@ -491,7 +491,7 @@ E.Options.args.profiles.order = 5
 
 E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles, E.data)
 E.Options.args.profiles.args.copyfrom.confirm = function(info, value) -- Current Profile Function - E.data:GetCurrentProfile()
-	return format(L["Copy Settings From %s. Are you sure?"], value)
+	return format(L["Copy Settings From %s. This will overwrite %s profile.\n\n Are you sure?"], value, E.data:GetCurrentProfile())
 end
 
 if not E.Options.args.profiles.plugins then

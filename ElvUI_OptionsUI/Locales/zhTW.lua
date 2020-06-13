@@ -295,6 +295,7 @@ L["Copy Chat Lines"] = "複製聊天記錄"
 L["Copy From"] = "複製自"
 L["Copy settings from another unit."] = "從其他框架中複製設置"
 L["Copy Settings From"] = "複製設置"
+L["Copy Settings From %s. This will overwrite %s profile.\n\n Are you sure?"] = true
 L["Core |cff1784d1ElvUI|r options."] = "核心 |cff1784d1ElvUI|r 選項"
 L["Count Font Size"] = "計數字體尺寸"
 L["Count xOffset"] = "層數X軸偏移"

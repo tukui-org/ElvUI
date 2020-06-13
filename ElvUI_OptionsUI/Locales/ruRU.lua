@@ -295,6 +295,7 @@ L["Copy Chat Lines"] = "Копирование строк чата"
 L["Copy From"] = "Скопировать из"
 L["Copy settings from another unit."] = "Скопировать настройки с другого юнита."
 L["Copy Settings From"] = "Скопировать из"
+L["Copy Settings From %s. This will overwrite %s profile.\n\n Are you sure?"] = true
 L["Core |cff1784d1ElvUI|r options."] = "Основные опции |cff1784d1ElvUI|r"
 L["Count Font Size"] = "Размер шрифта стаков"
 L["Count xOffset"] = "Отступ стаков по X"
