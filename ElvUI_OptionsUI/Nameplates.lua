@@ -1257,7 +1257,7 @@ local function UpdateFilterGroup()
 								healer = {
 									type = "toggle",
 									order = 2,
-									name = L["HEALER"]
+									name = L["Healer"]
 								},
 								damager = {
 									type = "toggle",
