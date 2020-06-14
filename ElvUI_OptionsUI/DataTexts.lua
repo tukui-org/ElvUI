@@ -569,6 +569,23 @@ E.Options.args.datatexts = {
 						},
 					},
 				},
+				durability = {
+					order = 8,
+					type = "group",
+					name = L["Durability"],
+					guiInline = true,
+					args = {
+						percThreshold = {
+							order = 1,
+							type = "range",
+							name = L["Flash Threshold"],
+							desc = L["The durability percent that the datatext will start flashing.  Set to -1 to disable"],
+							min = -1, max = 99, step = 1,
+							get = function(info) return E.db.datatexts.durability[info[#info]] end,
+							set = function(info, value) E.db.datatexts.durability[info[#info]] = value; DT:LoadDataTexts() end,
+						},
+					},
+				},
 			},
 		},
 		panels = {

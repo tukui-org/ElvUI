@@ -488,6 +488,7 @@ L["Filter Type"] = "Filter Typ"
 L["Filters are not allowed to have commas in their name. Stripping commas from filter name."] = "Filtern ist es nicht erlaubt Kommas im Namen zu haben. Entferne Kommas vom Filter Namen."
 L["Filters Page"] = "Filter Seite"
 L["Flash"] = "Blinken"
+L["Flash Threshold"] = true
 L["Fluid Position Buffs on Debuffs"] = "Flüssige Position Stärkungszauber auf Schwächungszauber"
 L["Fluid Position Debuffs on Buffs"] = "Flüssige Position Schwächungszauber auf Stärkungszauber"
 L["Flyout Direction"] = "Ausklapprichtung"
@@ -1213,6 +1214,7 @@ L["The direction the auras will grow and then the direction they will grow after
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "Das Anzeigeformat für die Währungssymbole, welche unter der Haupttasche angezeigt werden. (Du musst eine Währung beobachten, damit diese angezeigt wird)"
 L["The display format of the money text that is shown at the top of the main bag."] = "Das Anzeigeformat für Gold oben an der Haupttasche."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "Das Anzeigeformat für Gold in den Haupt-Infoleisten und Tooltips."
+L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = true
 L["The first button anchors itself to this point on the bar."] = "Der erste Aktionstaste dockt an diesen Punkt in der Leiste an."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schrift, die über den Köpfen der Spieler auftaucht. |cffFF0000WARNUNG: Das benötigt einen Neustart des Spiels oder einen Relog um in Effekt zu treten.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Die Schriftart des Kampftextes. |cffFF0000WARNUNG: Nach der änderung dieser Option muss das Spiel neu gestartet werden.|r"

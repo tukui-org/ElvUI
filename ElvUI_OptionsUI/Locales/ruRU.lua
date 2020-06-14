@@ -484,6 +484,7 @@ L["Filter Type"] = "Тип фильтра"
 L["Filters are not allowed to have commas in their name. Stripping commas from filter name."] = "Фильтры не могут иметь запятые в имени, удаляю запятые."
 L["Filters Page"] = "Фильтры"
 L["Flash"] = "Мерцание"
+L["Flash Threshold"] = true
 L["Fluid Position Buffs on Debuffs"] = "Переменная позиция баффов над дебаффами"
 L["Fluid Position Debuffs on Buffs"] = "Переменная позиция дебаффов над баффами"
 L["Flyout Direction"] = "Направление раскрытия"
@@ -1208,6 +1209,7 @@ L["The direction the auras will grow and then the direction they will grow after
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "Формат отображения валюты в сумках. (У вас должна быть выбрана валюта для отслеживания, чтобы видеть результат)"
 L["The display format of the money text that is shown at the top of the main bag."] = "Формат отображения текста золота в верхней части основной сумки."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "Формат отображения золота на инфо-тексте золота и его подсказке."
+L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = true
 L["The first button anchors itself to this point on the bar."] = "Первая кнопка прикрепляется к этой точке панели"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт, которым будет написан текст над головами игроков. |cffFF0000ВНИМАНИЕ: Необходим перезапуск игры или релог для начала действия этой настройки.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Шрифт текста боя. |cffFF0000ВНИМАНИЕ: это действие потребует перезапуска игры или повторного входа в мир.|r"

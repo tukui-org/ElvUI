@@ -486,6 +486,7 @@ L["Filter Type"] = "Tipo de filtro"
 L["Filters are not allowed to have commas in their name. Stripping commas from filter name."] = true
 L["Filters Page"] = true
 L["Flash"] = true
+L["Flash Threshold"] = true
 L["Fluid Position Buffs on Debuffs"] = true
 L["Fluid Position Debuffs on Buffs"] = true
 L["Flyout Direction"] = true
@@ -1210,6 +1211,7 @@ L["The direction the auras will grow and then the direction they will grow after
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "O formato de exibição dos ícones de moeda exibidos abaixo da bolsa principal. (Para isto ser exibido é necessário que selecione Mostrar na Mochila na moeda desejada na aba Moeda dentro do Quadro do Personagem)."
 L["The display format of the money text that is shown at the top of the main bag."] = true
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = true
+L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = true
 L["The first button anchors itself to this point on the bar."] = "O primeiro botão fixa-se a este ponto da barra"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "A fonte do texto que aparece sobre a cabeça dos jogadores. |cffFF0000ATENÇÃO: Para esta alteração fazer efeito é necessário que o jogo seja reiniciado ou relogado.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Fonte que o texto de combate usará. |cffFF0000AVISO: Para que as mudanças sejam efetuadas é necessário reiniciar ou relogar o jogo."

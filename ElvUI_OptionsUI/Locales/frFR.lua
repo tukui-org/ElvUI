@@ -485,6 +485,7 @@ L["Filter Type"] = "Type de filtre"
 L["Filters are not allowed to have commas in their name. Stripping commas from filter name."] = true
 L["Filters Page"] = true
 L["Flash"] = true
+L["Flash Threshold"] = true
 L["Fluid Position Buffs on Debuffs"] = "Position fluide des améliorations avec les affaiblissements"
 L["Fluid Position Debuffs on Buffs"] = "Position fluide des affaiblissements avec les améliorations"
 L["Flyout Direction"] = "Sens d'agrandissement"
@@ -1208,6 +1209,7 @@ L["The direction the auras will grow and then the direction they will grow after
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "Le format d'affichage des icônes de devises qui sont affichés dans les sacs. (Vous devez montrer cette devise pour l'afficher)"
 L["The display format of the money text that is shown at the top of the main bag."] = "Le format d'affichage de l'argent que vous avez visible en haut du sac principal."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "L'affichage du format de l'argent que vous possédez dans le texte d'informations Argent et dans son infobulle."
+L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = true
 L["The first button anchors itself to this point on the bar."] = "Ancrage du premier bouton sur le point de la barre."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "Police qui apparait sur le texte au dessus de la tête des joueurs. |cffFF0000ATTENTION: requiert un redémarrage du jeu ou une reconnexion pour que les changements soient pris en compte.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "La police qui sera utilisée pour les textes de combat. |cffFF0000Note : Ce changement nécessite de relancer le jeu ou d'une reconnexion pour prendre effet.|r"

@@ -483,6 +483,7 @@ L["Filter Type"] = "필터 종류"
 L["Filters are not allowed to have commas in their name. Stripping commas from filter name."] = "필터는 이름에 콤마를 허용하지 않습니다. 필터 이름에서 콤마를 제거하세요."
 L["Filters Page"] = "필터 설정"
 L["Flash"] = "반짝임"
+L["Flash Threshold"] = true
 L["Fluid Position Buffs on Debuffs"] = "약화효과에 강화효과를 유동적으로 두기"
 L["Fluid Position Debuffs on Buffs"] = "강화효과에 약화효과를 유동적으로 두기"
 L["Flyout Direction"] = "확장 방향"
@@ -1208,6 +1209,7 @@ L["The direction the auras will grow and then the direction they will grow after
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "화폐의 표시방법을 결정합니다."
 L["The display format of the money text that is shown at the top of the main bag."] = "통합가방 상단에 표시되는 보유 골드의 표시 방법을 결정합니다."
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "정보문자와 툴팁에서 표시될 골드의 형식을 결정합니다."
+L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = true
 L["The first button anchors itself to this point on the bar."] = "첫 번째 요소를 기준으로 나머지가 나열됩니다."
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 캐릭터 위에 표시되는 이름, 길드, 칭호 등의 글꼴을 변경합니다.|n|n|cffff0000주의|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "화면상에서 전투 상황에 관련된 글자에 적용되는 글꼴입니다.|n|n|cffff0000WARNING|r|n이 설정은 리로드가 아닌 캐릭터에 재접속하야 적용됩니다."

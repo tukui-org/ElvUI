@@ -488,6 +488,7 @@ L["Filter Type"] = "过滤器类型"
 L["Filters are not allowed to have commas in their name. Stripping commas from filter name."] = "过滤器的名字中不允许有逗号, 已将逗号移除."
 L["Filters Page"] = "过滤器界面"
 L["Flash"] = "闪光"
+L["Flash Threshold"] = true
 L["Fluid Position Buffs on Debuffs"] = "增益流动定位在减益上"
 L["Fluid Position Debuffs on Buffs"] = "减益流动定位在增益上"
 L["Flyout Direction"] = "飞出方向"
@@ -1215,6 +1216,7 @@ L["The direction the auras will grow and then the direction they will grow after
 L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"] = "背包底部的货币显示格式(你需要在货币页中勾选显示)"
 L["The display format of the money text that is shown at the top of the main bag."] = "在主背包上方显示的金钱文字的格式"
 L["The display format of the money text that is shown in the gold datatext and its tooltip."] = "在信息文字中显示的金钱格式"
+L["The durability percent that the datatext will start flashing.  Set to -1 to disable"] = true
 L["The first button anchors itself to this point on the bar."] = "第一个按钮对齐动作条的方向"
 L["The font that appears on the text above players heads. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "玩家头顶姓名的字体. |cffFF0000警告: 你需要重启游戏或重新登录才能使用此功能.|r"
 L["The font that combat text will use. |cffFF0000WARNING: This requires a game restart or re-log for this change to take effect.|r"] = "战斗信息将使用此字体, |cffFF0000警告:需重启游戏或重新登陆才可使此变更生效.|r"
