@@ -1642,11 +1642,11 @@ function E:Initialize()
 	twipe(E.private)
 
 	E.myguid = UnitGUID('player')
-	E.data = E.Libs.AceDB:New('ElvDB', E.DF)
+	E.data = E.Libs.AceDB:New('ElvDB', E.DF, true)
 	E.data.RegisterCallback(E, 'OnProfileChanged', 'StaggeredUpdateAll')
 	E.data.RegisterCallback(E, 'OnProfileCopied', 'StaggeredUpdateAll')
 	E.data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
-	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
+	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars, true)
 	E.private = E.charSettings.profile
 	E.global = E.data.global
 	E.db = E.data.profile

@@ -484,93 +484,106 @@ local function ExportImport_Open(mode)
 end
 
 --Create Profiles Table
-E.Options.args.profiles = E.Libs.AceDBOptions:GetOptionsTable(E.data)
-E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles)
-E.Options.args.profiles.name = L["Profiles"]
-E.Options.args.profiles.order = 5
+E.Options.args.profiles = {
+	order = 5,
+	type = "group",
+	childGroups = "tab",
+	name = L["Profiles"],
+	args = {
+		profile = E.Libs.AceDBOptions:GetOptionsTable(E.data),
+		private = E.Libs.AceDBOptions:GetOptionsTable(E.charSettings),
+		distribute = {
+			type = "group",
+			order = 3,
+			childGroups = "tab",
+			name = L["Import / Export"],
+			args = {
+				desc = {
+					name = L["This feature will allow you to transfer settings to other characters."],
+					type = "description",
+					order = 0
+				},
+				distributeProfile = {
+					name = L["Share Current Profile"],
+					desc = L["Sends your current profile to your target."],
+					type = "execute",
+					order = 1,
+					func = function()
+						if not UnitExists("target") or not UnitIsPlayer("target")
+						or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+							E:Print(L["You must be targeting a player."])
+							return
+						end
 
-E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles, E.data)
-E.Options.args.profiles.args.copyfrom.confirm = function(info, value) -- Current Profile Function - E.data:GetCurrentProfile()
+						local name, server = UnitName("target")
+						if name and (not server or server == "") then
+							D:Distribute(name)
+						elseif server then
+							D:Distribute(name, true)
+						end
+					end
+				},
+				distributeGlobal = {
+					name = L["Share Filters"],
+					desc = L["Sends your filter settings to your target."],
+					type = "execute",
+					order = 2,
+					func = function()
+						if not UnitExists("target") or not UnitIsPlayer("target")
+						or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
+							E:Print(L["You must be targeting a player."])
+							return
+						end
+
+						local name, server = UnitName("target")
+						if name and (not server or server == "") then
+							D:Distribute(name, false, true)
+						elseif server then
+							D:Distribute(name, true, true)
+						end
+					end
+				},
+				spacer2 = {
+					order = 3,
+					type = "description",
+					name = ""
+				},
+				exportProfile = {
+					name = L["Export Profile"],
+					type = "execute",
+					order = 4,
+					func = function()
+						ExportImport_Open("export")
+					end
+				},
+				importProfile = {
+					name = L["Import Profile"],
+					type = "execute",
+					order = 5,
+					func = function()
+						ExportImport_Open("import")
+					end
+				}
+			}
+		}
+	},
+}
+
+E.Options.args.profiles.args.profile.name = L["Profile"]
+E.Options.args.profiles.args.profile.order = 1
+E.Options.args.profiles.args.private.name = L["Private"]
+E.Options.args.profiles.args.private.order = 2
+
+E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles.args.profile)
+E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
+E.Options.args.profiles.args.profile.args.copyfrom.confirm = function(info, value)
 	return format(L["Copy Settings From %s. This will overwrite %s profile.\n\n Are you sure?"], value, E.data:GetCurrentProfile())
 end
 
-if not E.Options.args.profiles.plugins then
-	E.Options.args.profiles.plugins = {}
+E.Libs.AceConfig:RegisterOptionsTable("ElvPrivates", E.Options.args.profiles.args.private)
+E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)
+	return format(L["Copy Settings From %s. This will overwrite %s profile.\n\n Are you sure?"], value, E.charSettings:GetCurrentProfile())
 end
-
-E.Options.args.profiles.plugins.ElvUI = {
-	spacer = {
-		order = 89,
-		type = "description",
-		name = "\n\n"
-	},
-	desc = {
-		name = L["This feature will allow you to transfer settings to other characters."],
-		type = "description",
-		order = 90
-	},
-	distributeProfile = {
-		name = L["Share Current Profile"],
-		desc = L["Sends your current profile to your target."],
-		type = "execute",
-		order = 91,
-		func = function()
-			if not UnitExists("target") or not UnitIsPlayer("target")
-			or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
-				E:Print(L["You must be targeting a player."])
-				return
-			end
-
-			local name, server = UnitName("target")
-			if name and (not server or server == "") then
-				D:Distribute(name)
-			elseif server then
-				D:Distribute(name, true)
-			end
-		end
-	},
-	distributeGlobal = {
-		name = L["Share Filters"],
-		desc = L["Sends your filter settings to your target."],
-		type = "execute",
-		order = 92,
-		func = function()
-			if not UnitExists("target") or not UnitIsPlayer("target")
-			or not UnitIsFriend("player", "target") or UnitIsUnit("player", "target") then
-				E:Print(L["You must be targeting a player."])
-				return
-			end
-
-			local name, server = UnitName("target")
-			if name and (not server or server == "") then
-				D:Distribute(name, false, true)
-			elseif server then
-				D:Distribute(name, true, true)
-			end
-		end
-	},
-	spacer2 = {
-		order = 93,
-		type = "description",
-		name = ""
-	},
-	exportProfile = {
-		name = L["Export Profile"],
-		type = "execute",
-		order = 94,
-		func = function()
-			ExportImport_Open("export")
-		end
-	},
-	importProfile = {
-		name = L["Import Profile"],
-		type = "execute",
-		order = 95,
-		func = function()
-			ExportImport_Open("import")
-		end
-	}
-}
 
 if GetAddOnEnableState(nil, "ElvUI_Config") ~= 0 then
 	E:StaticPopup_Show("ELVUI_CONFIG_FOUND")

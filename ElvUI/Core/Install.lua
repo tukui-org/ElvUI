@@ -35,7 +35,7 @@ local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 -- GLOBALS: ElvUIInstallFrame
 
 local CURRENT_PAGE = 0
-local MAX_PAGE = 8
+local MAX_PAGE = 10
 
 local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
 local ELV_TOONS = {
@@ -423,11 +423,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 					E:SaveMoverDefaultPosition(mover)
 				end
 			end
-
-			if layout == 'healer' then
-				E.db.unitframe.units.party.enable = false
-				E.db.unitframe.units.raid.visibility = '[nogroup] hide;show'
-			end
 	end
 
 	E:StaggeredUpdateAll(nil, true)
@@ -438,7 +433,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	end
 end
 
-local function SetupAuras(style, noDisplayMsg)
+function E:SetupAuras(style, noDisplayMsg)
 	local frame = UF.player
 	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
 	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
@@ -522,7 +517,7 @@ local function ResetAll()
 	ElvUIInstallFrame:Size(550, 400)
 end
 
-local function SetPage(PageNum)
+function E:SetPage(PageNum)
 	CURRENT_PAGE = PageNum
 	ResetAll()
 
@@ -576,6 +571,37 @@ local function SetPage(PageNum)
 		InstallOption1Button:SetScript('OnClick', function() E:SetupChat() end)
 		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
+		f.SubTitle:SetText(L["Profile Settings Setup"])
+		f.Desc1:SetText(L["Please click the button below to setup your Profile Settings."])
+		InstallOption1Button:Show()
+		InstallOption1Button:SetScript('OnClick', function()
+			E.data:SetProfile('Default')
+			E:NextPage()
+		end)
+		InstallOption1Button:SetText(L["Shared Profile"])
+		InstallOption2Button:Show()
+		InstallOption2Button:SetScript('OnClick', function()
+			E.data:SetProfile(format('%s - %s', UnitName("player"), GetRealmName()))
+			E:NextPage()
+		end)
+		InstallOption2Button:SetText(L["New Profile"])
+	elseif PageNum == 5 then
+		f.SubTitle:SetText(L["Private Settings Setup"])
+		f.Desc1:SetText(L["Please click the button below to setup your Private Settings."])
+		f.Desc2:SetText(L["These settings controls the modules on and off functionality."])
+		InstallOption1Button:Show()
+		InstallOption1Button:SetScript('OnClick', function()
+			E.charSettings:SetProfile('Default')
+			E:NextPage()
+		end)
+		InstallOption1Button:SetText(L["Shared Profile"])
+		InstallOption2Button:Show()
+		InstallOption2Button:SetScript('OnClick', function()
+			E.charSettings:SetProfile(format('%s - %s', UnitName("player"), GetRealmName()))
+			E:NextPage()
+		end)
+		InstallOption2Button:SetText(L["New Profile"])
+	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Theme Setup"])
 		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
 		f.Desc2:SetText(L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."])
@@ -589,7 +615,7 @@ local function SetPage(PageNum)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
-	elseif PageNum == 5 then
+	elseif PageNum == 7 then
 		f.SubTitle:SetText(_G.UISCALE)
 		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
 		InstallSlider:Show()
@@ -626,7 +652,7 @@ local function SetPage(PageNum)
 
 		InstallOption2Button:SetText(L["Preview"])
 		f.Desc3:SetText(L["Importance: |cff07D400High|r"])
-	elseif PageNum == 6 then
+	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
 		f.Desc2:SetText(L["This will change the layout of your unitframes and actionbars."])
@@ -640,18 +666,18 @@ local function SetPage(PageNum)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
 		InstallOption3Button:SetText(L["Caster DPS"])
-	elseif PageNum == 7 then
+	elseif PageNum == 9 then
 		f.SubTitle:SetText(L["Auras"])
 		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
 		f.Desc2:SetText(L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', function() SetupAuras(true) end)
+		InstallOption1Button:SetScript('OnClick', function() E:SetupAuras(true) end)
 		InstallOption1Button:SetText(L["Aura Bars & Icons"])
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() SetupAuras() end)
+		InstallOption2Button:SetScript('OnClick', function() E:SetupAuras() end)
 		InstallOption2Button:SetText(L["Icons Only"])
-	elseif PageNum == 8 then
+	elseif PageNum == 10 then
 		f.SubTitle:SetText(L["Installation Complete"])
 		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])
@@ -665,17 +691,17 @@ local function SetPage(PageNum)
 	end
 end
 
-local function NextPage()
+function E:NextPage()
 	if CURRENT_PAGE ~= MAX_PAGE then
 		CURRENT_PAGE = CURRENT_PAGE + 1
-		SetPage(CURRENT_PAGE)
+		E:SetPage(CURRENT_PAGE)
 	end
 end
 
-local function PreviousPage()
+function E:PreviousPage()
 	if CURRENT_PAGE ~= 1 then
 		CURRENT_PAGE = CURRENT_PAGE - 1
-		SetPage(CURRENT_PAGE)
+		E:SetPage(CURRENT_PAGE)
 	end
 end
 
@@ -730,7 +756,7 @@ function E:Install()
 	--Create Frame
 	if not ElvUIInstallFrame then
 		local f = CreateFrame('Button', 'ElvUIInstallFrame', E.UIParent)
-		f.SetPage = SetPage
+		f.SetPage = E.SetPage
 		f:Size(550, 400)
 		f:SetTemplate('Transparent')
 		f:Point('CENTER')
@@ -752,7 +778,7 @@ function E:Install()
 		f.Next:Point('BOTTOMRIGHT', -5, 5)
 		f.Next:SetText(CONTINUE)
 		f.Next:Disable()
-		f.Next:SetScript('OnClick', NextPage)
+		f.Next:SetScript('OnClick', E.NextPage)
 		S:HandleButton(f.Next, true)
 
 		f.Prev = CreateFrame('Button', 'InstallPrevButton', f, 'UIPanelButtonTemplate')
@@ -760,7 +786,7 @@ function E:Install()
 		f.Prev:Point('BOTTOMLEFT', 5, 5)
 		f.Prev:SetText(PREVIOUS)
 		f.Prev:Disable()
-		f.Prev:SetScript('OnClick', PreviousPage)
+		f.Prev:SetScript('OnClick', E.PreviousPage)
 		S:HandleButton(f.Prev, true)
 
 		f.Status = CreateFrame('StatusBar', 'InstallStatus', f)
@@ -881,5 +907,5 @@ function E:Install()
 
 	ElvUIInstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	ElvUIInstallFrame:Show()
-	NextPage()
+	E:NextPage()
 end

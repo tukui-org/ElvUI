@@ -284,9 +284,7 @@ E.Options.args.modulecontrol= {
 					desc = L["Select a profile to copy from/to."],
 					get = function(info) return E.global.profileCopy.selected end,
 					set = function(info, value) E.global.profileCopy.selected = value end,
-					values = E.Options.args.profiles.args.copyfrom.values,
-					disabled = E.Options.args.profiles.args.copyfrom.disabled,
-					arg = E.Options.args.profiles.args.copyfrom.arg,
+					values = function() return E.data:GetProfiles() end,
 				},
 				elvui = {
 					order = 10,
@@ -294,7 +292,6 @@ E.Options.args.modulecontrol= {
 					name = 'ElvUI',
 					desc = L["Core |cff1784d1ElvUI|r options."],
 					childGroups = "tree",
-					disabled = E.Options.args.profiles.args.copyfrom.disabled,
 					args = {
 						header = {
 							order = 0,
@@ -320,7 +317,6 @@ E.Options.args.modulecontrol= {
 					name = L["Movers"],
 					desc = L["On screen positions for different elements."],
 					childGroups = "tree",
-					disabled = E.Options.args.profiles.args.copyfrom.disabled,
 					args = MC:CreateMoversConfigGroup(),
 				},
 			},
