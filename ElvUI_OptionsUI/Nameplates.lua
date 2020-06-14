@@ -3103,7 +3103,7 @@ local function GetUnitSettings(unit, name)
 			},
 			copySettings = {
 				order = -7,
-				name = L["Copy Settings From"],
+				name = L["Copy Settings from"],
 				desc = L["Copy settings from another unit."],
 				type = "select",
 				values = copyValues,
