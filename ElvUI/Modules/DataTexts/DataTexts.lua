@@ -485,6 +485,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.battleStats = battlePanel
 		dt.db = db
 
+		E:StopFlash(dt)
+
 		if dt.objectEvent and dt.objectEventFunc then
 			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
 			dt.objectEvent, dt.objectEventFunc = nil, nil
@@ -556,7 +558,7 @@ function DT:UpdatePanelAttributes(name, db)
 	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
 
 	if not DT.db.panels[name] then
-		DT.db.panels[name] = { enable = true }
+		DT.db.panels[name] = { enable = false }
 	end
 
 	for i = 1, E.global.datatexts.customPanels[name].numPoints do
