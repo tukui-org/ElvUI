@@ -108,6 +108,17 @@ function S:TooltipFrames()
 			TT:UnregisterEvent(event)
 		end
 	end)
+
+	-- Icon in ItemTooltip is stuck sometimes because of nargles, we dont want that
+	-- I have no idea if this actually works, it's a guess. ~Simpy
+	hooksecurefunc('EmbeddedItemTooltip_UpdateSize', function(frame)
+		if frame.Tooltip:IsShown() then
+			local textLeft = _G[frame.Tooltip:GetName() .. 'TextLeft1']
+			if textLeft and not textLeft:GetText() then
+				frame:Hide()
+			end
+		end
+	end)
 end
 
 S:AddCallback('TooltipFrames')
