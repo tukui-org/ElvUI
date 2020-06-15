@@ -783,7 +783,7 @@ E.Options.args.datatexts = {
 					type = "description",
 					name = L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."],
 				},
-				addCustomCurrency = {
+				add = {
 					order = 1,
 					type = "input",
 					name = L["Add Currency ID"],
