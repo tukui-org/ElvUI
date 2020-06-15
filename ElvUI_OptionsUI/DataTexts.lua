@@ -318,7 +318,7 @@ local function CreateCustomCurrencyOptions(currencyID)
 			guiInline = false,
 			args = {
 				displayStyle = {
-					order = 3,
+					order = 1,
 					type = "select",
 					name = L["Display Style"],
 					get = function(info) return E.global.datatexts.customCurrencies[currencyID].DISPLAY_STYLE end,
@@ -785,10 +785,9 @@ E.Options.args.datatexts = {
 				},
 				add = {
 					order = 1,
-					type = "input",
-					name = L["Add Currency ID"],
-					desc = "http://www.wowhead.com/currencies",
-					get = function() return "" end,
+					type = "select",
+					name = L["Add Currency"],
+					width = 'double',
 					set = function(info, value)
 						local currencyID = tonumber(value)
 						if not currencyID then return; end
@@ -797,10 +796,18 @@ E.Options.args.datatexts = {
 						DT:PanelLayoutOptions()
 						DT:LoadDataTexts()
 					end,
+					values = function()
+						local list = E:CopyTable({}, DT.CurrencyList)
+						list.GOLD = nil
+						list.BACKPACK = nil
+
+						return list
+					end,
 				},
 				delete = {
 					order = 2,
 					type = "select",
+					width = 'double',
 					name = L["DELETE"],
 					set = function(info, value)
 						local currencyName = E.global.datatexts.customCurrencies[value].NAME
