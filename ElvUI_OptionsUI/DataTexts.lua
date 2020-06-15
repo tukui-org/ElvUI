@@ -13,7 +13,7 @@ local pairs = pairs
 local type = type
 
 -- GLOBALS: AceGUIWidgetLSMlists
-
+local currencyList = {}
 local DTPanelOptions = {
 	numPoints = {
 		order = 1,
@@ -65,12 +65,12 @@ local DTPanelOptions = {
 				type = "select",
 				name = L["Frame Strata"],
 				values = {
-					["BACKGROUND"] = "BACKGROUND",
-					["LOW"] = "LOW",
-					["MEDIUM"] = "MEDIUM",
-					["HIGH"] = "HIGH",
-					["DIALOG"] = "DIALOG",
-					["TOOLTIP"] = "TOOLTIP",
+					BACKGROUND = "BACKGROUND",
+					LOW = "LOW",
+					MEDIUM = "MEDIUM",
+					HIGH = "HIGH",
+					DIALOG = "DIALOG",
+					TOOLTIP = "TOOLTIP",
 				},
 			},
 			frameLevel = {
@@ -265,7 +265,6 @@ function DT:PanelLayoutOptions()
 				}
 			end
 
-			-- temp to delete old data in WIP testing
 			if not P.datatexts.panels[name] and not E.global.datatexts.customPanels[name] then
 				options[name].args.delete = {
 					order = -1,
@@ -282,7 +281,6 @@ function DT:PanelLayoutOptions()
 			for option, value in pairs(tab) do
 				if type(option) == 'number' then
 					if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
-						-- Number of Datatexts has been lowered, remove datatext entry in profile
 						tab[option] = nil
 					else
 						options[name].args[tostring(option)] = {
@@ -311,47 +309,22 @@ function DT:PanelLayoutOptions()
 end
 
 local function CreateCustomCurrencyOptions(currencyID)
-	local currency = E.global.datatexts.customCurrencies[currencyID] --The datatext has been registered prior to this
+	local currency = E.global.datatexts.customCurrencies[currencyID]
 	if currency then
-		E.Options.args.datatexts.args.customCurrency.args.currencies.args[currency.NAME] = {
+		E.Options.args.datatexts.args.customCurrency.args[currency.NAME] = {
 			order = 1,
 			type = "group",
 			name = currency.NAME,
 			guiInline = false,
 			args = {
-				removeDT = {
-					order = 1,
-					type = "execute",
-					name = L["DELETE"],
-					func = function()
-						--Remove stored entries of this currency datatext
-						DT:RemoveCustomCurrency(currency.NAME)
-						--Remove options group
-						E.Options.args.datatexts.args.customCurrency.args.currencies.args[currency.NAME] = nil
-						--Remove entry from registered datatext storage
-						DT.RegisteredDataTexts[currency.NAME] = nil
-						--Remove from persistent storage
-						E.global.datatexts.customCurrencies[currencyID] = nil
-						--Remove currency from datatext selection
-						dts[currency.NAME] = nil
-
-						DT:PanelLayoutOptions()
-
-						--Reload datatexts to clear panel
-						DT:LoadDataTexts()
-					end,
-				},
 				displayStyle = {
 					order = 3,
 					type = "select",
 					name = L["Display Style"],
 					get = function(info) return E.global.datatexts.customCurrencies[currencyID].DISPLAY_STYLE end,
 					set = function(info, value)
-						--Save new display style
 						E.global.datatexts.customCurrencies[currencyID].DISPLAY_STYLE = value
-						--Update internal value
 						DT:UpdateCustomCurrencySettings(currency.NAME, "DISPLAY_STYLE", value)
-						--Reload datatexts
 						DT:LoadDataTexts()
 					end,
 					values = {
@@ -361,41 +334,34 @@ local function CreateCustomCurrencyOptions(currencyID)
 					},
 				},
 				showMax = {
-					order = 4,
+					order = 2,
 					type = "toggle",
 					name = L["Current / Max"],
 					get = function(info) return E.global.datatexts.customCurrencies[currencyID].SHOW_MAX end,
 					set = function(info, value)
-						--Save new value
 						E.global.datatexts.customCurrencies[currencyID].SHOW_MAX = value
-						--Update internal value
 						DT:UpdateCustomCurrencySettings(currency.NAME, "SHOW_MAX", value)
-						--Reload datatexts
 						DT:LoadDataTexts()
 					end,
 				},
 				useTooltip = {
-					order = 5,
+					order = 3,
 					type = "toggle",
 					name = L["Use Tooltip"],
 					get = function(info) return E.global.datatexts.customCurrencies[currencyID].USE_TOOLTIP end,
 					set = function(info, value)
-						--Save new value
 						E.global.datatexts.customCurrencies[currencyID].USE_TOOLTIP = value
-						--Update internal value
 						DT:UpdateCustomCurrencySettings(currency.NAME, "USE_TOOLTIP", value)
 					end,
 				},
 				displayInMainTooltip = {
-					order = 6,
+					order = 4,
 					type = "toggle",
 					name = L["Display In Main Tooltip"],
 					desc = L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."],
 					get = function(info) return E.global.datatexts.customCurrencies[currencyID].DISPLAY_IN_MAIN_TOOLTIP end,
 					set = function(info, value)
-						--Save new value
 						E.global.datatexts.customCurrencies[currencyID].DISPLAY_IN_MAIN_TOOLTIP = value
-						--Update internal value
 						DT:UpdateCustomCurrencySettings(currency.NAME, "DISPLAY_IN_MAIN_TOOLTIP", value)
 					end,
 				},
@@ -405,7 +371,6 @@ local function CreateCustomCurrencyOptions(currencyID)
 end
 
 local function SetupCustomCurrencies()
-	--Create options for all stored custom currency datatexts
 	for currencyID in pairs(E.global.datatexts.customCurrencies) do
 		CreateCustomCurrencyOptions(currencyID)
 	end
@@ -814,12 +779,12 @@ E.Options.args.datatexts = {
 			name = L["Custom Currency"],
 			args = {
 				description = {
-					order = 2,
+					order = 0,
 					type = "description",
 					name = L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."],
 				},
 				addCustomCurrency = {
-					order = 3,
+					order = 1,
 					type = "input",
 					name = L["Add Currency ID"],
 					desc = "http://www.wowhead.com/currencies",
@@ -827,20 +792,35 @@ E.Options.args.datatexts = {
 					set = function(info, value)
 						local currencyID = tonumber(value)
 						if not currencyID then return; end
-						--Register a new datatext where name is the name of the currency
 						DT:RegisterCustomCurrencyDT(currencyID)
-						--Create options for this datatext
 						CreateCustomCurrencyOptions(currencyID)
 						DT:PanelLayoutOptions()
-						--Reload datatexts in case the currency we just added was already selected on a panel
 						DT:LoadDataTexts()
 					end,
 				},
-				currencies = {
-					order = 5,
-					type = "group",
-					name = L["Custom Currencies"],
-					args = {}
+				delete = {
+					order = 2,
+					type = "select",
+					name = L["DELETE"],
+					set = function(info, value)
+						local currencyName = E.global.datatexts.customCurrencies[value].NAME
+						DT:RemoveCustomCurrency(currencyName)
+						E.Options.args.datatexts.args.customCurrency.args[currencyName] = nil
+						DT.RegisteredDataTexts[currencyName] = nil
+						E.global.datatexts.customCurrencies[value] = nil
+						dts[currencyName] = nil
+						DT:PanelLayoutOptions()
+						DT:LoadDataTexts()
+					end,
+					values = function()
+						wipe(currencyList)
+
+						for currencyID, table in pairs(E.global.datatexts.customCurrencies) do
+							currencyList[currencyID] = table.NAME
+						end
+
+						return currencyList
+					end
 				},
 			},
 		},
