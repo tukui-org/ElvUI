@@ -521,33 +521,12 @@ function S:CharacterFrame()
 		S:HandleTab(_G["CharacterFrameTab"..i])
 	end
 
-	--Buttons used to toggle between equipment manager, titles, and character stats
-	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
-
 	hooksecurefunc("ExpandFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("CollapseFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("ReputationFrame_Update", UpdateFactionSkins)
 
-	--Reputation Paragon Tooltip
-	if E.private.skins.blizzard.tooltip then
-		local tooltip = _G.EmbeddedItemTooltip
-		local reward = tooltip.ItemTooltip
-		local icon = reward.Icon
-		tooltip:SetTemplate("Transparent")
-		if icon then
-			S:HandleIcon(icon, true)
-			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(icnBdr, r, g, b)
-				icnBdr:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
-				icnBdr:SetTexture()
-			end)
-			hooksecurefunc(reward.IconBorder, "Hide", function(icnBdr)
-				icnBdr:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
-		end
-		tooltip:HookScript("OnShow", function(tt)
-			tt:SetTemplate("Transparent")
-		end)
-	end
+	--Buttons used to toggle between equipment manager, titles, and character stats
+	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
 
 	--Currency
 	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)

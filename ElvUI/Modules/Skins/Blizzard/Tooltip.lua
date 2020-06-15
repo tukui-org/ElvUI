@@ -38,13 +38,31 @@ function S:TooltipFrames()
 	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
 	StoryTooltip:SetFrameLevel(4)
 
-	-- EmbeddedItemTooltip
-	local reward = _G.EmbeddedItemTooltip.ItemTooltip
+	-- EmbeddedItemTooltip (also Paragon Reputation)
+	local embedded = _G.EmbeddedItemTooltip
+	local reward = embedded.ItemTooltip
 	local icon = reward.Icon
+	embedded:SetTemplate("Transparent")
+
 	if reward and reward.backdrop then
 		reward.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
 		reward.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
 	end
+
+	if icon then
+		S:HandleIcon(icon, true)
+		hooksecurefunc(reward.IconBorder, "SetVertexColor", function(border, r, g, b)
+			border:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			border:SetTexture()
+		end)
+		hooksecurefunc(reward.IconBorder, "Hide", function(border)
+			border:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
+	end
+
+	embedded:HookScript("OnShow", function(tt)
+		tt:SetTemplate("Transparent")
+	end)
 
 	-- Skin GameTooltip Status Bar
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
@@ -77,7 +95,7 @@ function S:TooltipFrames()
 		TT:SetStyle(tt)
 	end
 
-	-- [Backdrop coloring] There has to be a more elegant way of doing this.
+	-- [Backdrop Coloring] There has to be a more elegant way of doing this.
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin

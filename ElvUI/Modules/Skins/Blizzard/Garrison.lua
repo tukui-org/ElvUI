@@ -319,20 +319,20 @@ function S:Blizzard_GarrisonUI()
 	S:HandleCloseButton(_G.GarrisonLandingPageTutorialBox.CloseButton)
 
 	if E.private.skins.blizzard.tooltip ~= true then return end
+
 	-- ShipYard: Mission Tooltip
 	local tooltip = _G.GarrisonShipyardMapMissionTooltip
 	local reward = tooltip.ItemTooltip
-	local bonusReward = tooltip.BonusReward
-	local icon = reward.Icon
-	local bonusIcon = bonusReward.Icon
 	tooltip:SetTemplate("Transparent")
+
+	local icon = reward.Icon
 	if icon then
 		S:HandleIcon(icon)
 		reward.IconBorder:SetTexture()
 	end
-	if bonusIcon then
-		S:HandleIcon(bonusIcon) --TODO: Check how this actually looks
-	end
+
+	local bonusIcon = tooltip.BonusReward and tooltip.BonusReward.Icon
+	if bonusIcon then S:HandleIcon(bonusIcon) end
 
 	-- Threat Counter Tooltips
 	-- The tooltip starts using blue backdrop and white border unless we re-set the template.
