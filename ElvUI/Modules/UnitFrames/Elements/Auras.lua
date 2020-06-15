@@ -363,12 +363,12 @@ end
 function UF:PostUpdateAura(_, button)
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
-			if UF.db.colors.auraByType then button:SetBackdropBorderColor(0.9, 0.1, 0.1) end
+			if UF.db.colors.auraByType then button:SetBackdropBorderColor(.9, .1, .1) end
 			button.icon:SetDesaturated(button.canDesaturate)
 		else
 			if UF.db.colors.auraByType then
 				if E.BadDispels[button.spellID] and button.dtype and E:IsDispellableByMe(button.dtype) then
-					button:SetBackdropBorderColor(0.05, 0.85, 0.94)
+					button:SetBackdropBorderColor(.05, .85, .94)
 				else
 					local color = (button.dtype and _G.DebuffTypeColor[button.dtype]) or _G.DebuffTypeColor.none
 					button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
@@ -378,7 +378,7 @@ function UF:PostUpdateAura(_, button)
 		end
 	else
 		if UF.db.colors.auraByType and button.isStealable and not button.isFriend then
-			button:SetBackdropBorderColor(0.93, 0.91, 0.55, 1.0)
+			button:SetBackdropBorderColor(.93, .91, .55)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
@@ -392,7 +392,7 @@ end
 function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, nameplateShowSelf, nameplateShowAll, ...)
 	local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
 
-	for i=1, select('#', ...) do
+	for i = 1, select('#', ...) do
 		local name = select(i, ...)
 		local check = (isFriend and strmatch(name, "^Friendly:([^,]*)")) or (not isFriend and strmatch(name, "^Enemy:([^,]*)")) or nil
 		if check ~= false then

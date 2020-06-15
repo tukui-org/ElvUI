@@ -654,7 +654,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 	local verticalSpacing = db.verticalSpacing
 
 	local numGroups = Header.numGroups
-	for i=1, numGroups do
+	for i = 1, numGroups do
 		local group = Header.groups[i]
 
 		if group then
@@ -752,9 +752,10 @@ function UF.groupPrototype:Update(Header)
 	local group = Header.groupName
 
 	UF[group].db = UF.db.units[group]
-	for i=1, #Header.groups do
-		Header.groups[i].db = UF.db.units[group]
-		Header.groups[i]:Update()
+
+	for _, Group in ipairs(Header.groups) do
+		Group.db = UF.db.units[group]
+		Group:Update()
 	end
 end
 
