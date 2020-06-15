@@ -13,7 +13,6 @@ local IsShiftKeyDown = IsShiftKeyDown
 local C_WowTokenPublic_UpdateMarketPrice = C_WowTokenPublic.UpdateMarketPrice
 local C_WowTokenPublic_GetCurrentMarketPrice = C_WowTokenPublic.GetCurrentMarketPrice
 local C_Timer_NewTicker = C_Timer.NewTicker
-local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 -- GLOBALS: ElvDB
 
@@ -25,6 +24,8 @@ local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Counters: Hold
 local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Data: Hold Shift + Right Click"], '|r')
 
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
+
+local menuList = {}
 
 local function sortFunction(a, b)
 	return a.amount > b.amount
@@ -72,11 +73,26 @@ local function OnEvent(self)
 	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins))
 end
 
+local function deleteCharacter(self, name)
+	ElvDB.gold[E.myrealm][name] = nil
+	ElvDB.class[E.myrealm][name] = nil
+	ElvDB.faction[E.myrealm][name] = nil
+
+	if name == E.myname then
+		OnEvent(self)
+	end
+end
+
 local function Click(self, btn)
 	if btn == 'RightButton' then
 		if IsShiftKeyDown() then
-			wipe(ElvDB.gold)
-			OnEvent(self)
+			wipe(menuList)
+			for name in pairs(ElvDB.gold[E.myrealm]) do
+				tinsert(menuList, { text = name, notCheckable = true, func = function() deleteCharacter(self, name) end })
+			end
+
+			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
+			_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
 			DT.tooltip:Hide()
 		elseif IsControlKeyDown() then
 			Profit = 0

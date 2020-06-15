@@ -5733,43 +5733,8 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					desc = L["An Y offset (in pixels) to be used when anchoring new frames."],
 					min = -500, max = 500, step = 1,
 				},
-				name = {
-					order = 8,
-					type = 'group',
-					guiInline = true,
-					get = function(info) return E.db.unitframe.units.party.targetsGroup.name[info[#info]] end,
-					set = function(info, value) E.db.unitframe.units.party.targetsGroup.name[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('party') end,
-					name = L["Name"],
-					args = {
-						position = {
-							type = 'select',
-							order = 1,
-							name = L["Position"],
-							values = positionValues,
-						},
-						xOffset = {
-							order = 2,
-							type = 'range',
-							name = L["X-Offset"],
-							desc = L["Offset position for text."],
-							min = -300, max = 300, step = 1,
-						},
-						yOffset = {
-							order = 3,
-							type = 'range',
-							name = L["Y-Offset"],
-							desc = L["Offset position for text."],
-							min = -300, max = 300, step = 1,
-						},
-						text_format = {
-							order = 100,
-							name = L["Text Format"],
-							desc = L["Controls the text displayed. Tags are available in the Available Tags section of the config."],
-							type = 'input',
-							width = 'full',
-						},
-					},
-				},
+				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party'),
+				raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party'),
 			},
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'party'),
@@ -5798,6 +5763,8 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 	},
 }
 E.Options.args.unitframe.args.groupUnits.args.party.args.classbar.name = L["Alternative Power"]
+E.Options.args.unitframe.args.groupUnits.args.party.args.targetsGroup.args.name.guiInline = true
+E.Options.args.unitframe.args.groupUnits.args.party.args.targetsGroup.args.raidicon.guiInline = true
 
 --Raid Frames
 E.Options.args.unitframe.args.groupUnits.args.raid = {
@@ -6074,6 +6041,7 @@ E.Options.args.unitframe.args.groupUnits.args.tank = {
 					min = -500, max = 500, step = 1,
 				},
 				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank'),
+				raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'tank'),
 			},
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'tank'),
@@ -6091,6 +6059,7 @@ E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.a
 E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.tank.targetsGroup.name[info[#info]] end
 E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.tank.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'tank') end
 E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.guiInline = true
+E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.raidicon.guiInline = true
 
 --Assist Frames
 E.Options.args.unitframe.args.groupUnits.args.assist = {
@@ -6158,6 +6127,7 @@ E.Options.args.unitframe.args.groupUnits.args.assist = {
 					min = -500, max = 500, step = 1,
 				},
 				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'assist'),
+				raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'assist'),
 			},
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'assist'),
@@ -6175,6 +6145,7 @@ E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name
 E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.assist.targetsGroup.name[info[#info]] end
 E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.assist.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'assist') end
 E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.guiInline = true
+E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.raidicon.guiInline = true
 
 --MORE COLORING STUFF YAY
 E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup = {
