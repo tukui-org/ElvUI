@@ -73,8 +73,8 @@ function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, di
 	return optionTable
 end
 
-function ACH:Toggle(name, desc, order, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+function ACH:Toggle(name, desc, order, tristate, confirm, width, get, set, disabled, hidden)
+	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, tristate  = tristate, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	local confirmType = type(confirm)
 	if confirmType == 'boolean' then
