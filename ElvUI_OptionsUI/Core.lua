@@ -10,10 +10,15 @@ local _G, format, sort, tinsert = _G, format, sort, tinsert
 
 C.Values = {
 	FontFlags = {
-		["NONE"] = L["NONE"],
-		["OUTLINE"] = "OUTLINE",
-		["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
-		["THICKOUTLINE"] = "THICKOUTLINE"
+		NONE = L["NONE"],
+		OUTLINE = "OUTLINE",
+		MONOCHROMEOUTLINE = "MONOCROMEOUTLINE",
+		THICKOUTLINE = "THICKOUTLINE"
+	},
+	FontSize = {
+		min = 4,
+		max = 64,
+		step = 1,
 	}
 }
 
