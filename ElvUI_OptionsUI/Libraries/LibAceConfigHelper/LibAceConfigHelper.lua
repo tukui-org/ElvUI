@@ -40,8 +40,8 @@ function ACH:Input(name, desc, order, values, width, get, set, disabled, hidden)
 	return { type = 'input', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden, values = values }
 end
 
-function ACH:Select(name, desc, order, values, confirm, width, disabled, hidden)
-	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
+function ACH:Select(name, desc, order, values, confirm, width, get, set, disabled, hidden)
+	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	local confirmType = type(confirm)
 	if confirmType == 'boolean' then
@@ -56,8 +56,8 @@ function ACH:Select(name, desc, order, values, confirm, width, disabled, hidden)
 	return optionTable
 end
 
-function ACH:MultiSelect(name, desc, order, values, confirm, width, disabled, hidden)
-	local optionTable = { type = 'multiselect' ,name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
+function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, disabled, hidden)
+	local optionTable = { type = 'multiselect' ,name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	local confirmType = type(confirm)
 	if confirmType == 'boolean' then
@@ -72,8 +72,8 @@ function ACH:MultiSelect(name, desc, order, values, confirm, width, disabled, hi
 	return optionTable
 end
 
-function ACH:Toggle(name, desc, order, confirm, width, disabled, hidden)
-	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, width = width, disabled = disabled, hidden = hidden }
+function ACH:Toggle(name, desc, order, confirm, width, get, set, disabled, hidden)
+	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	local confirmType = type(confirm)
 	if confirmType == 'boolean' then
@@ -97,8 +97,8 @@ end
 -- bigStep - a more generally-useful step size. Support in UIs is optional.
 -- isPercent (boolean) - represent e.g. 1.0 as 100%, etc. (default=false)
 
-function ACH:Range(name, desc, order, values, width, disabled, hidden)
-	local optionTable = { type = 'range', name = name, desc = desc, order = order, width = width, disabled = disabled, hidden = hidden }
+function ACH:Range(name, desc, order, values, width, get, set, disabled, hidden)
+	local optionTable = { type = 'range', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	for key, value in pairs(values) do
 		optionTable[key] = value
@@ -107,26 +107,26 @@ function ACH:Range(name, desc, order, values, width, disabled, hidden)
 	return optionTable
 end
 
-local function SharedMediaSelect(type, name, desc, order, values, width, disabled, hidden)
-	return { type = 'select', dialogControl = type, name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
+local function SharedMediaSelect(type, name, desc, order, values, width, get, set, disabled, hidden)
+	return { type = 'select', dialogControl = type, name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 end
 
-function ACH:SharedMediaFont(name, desc, order, values, width, disabled, hidden)
-	return SharedMediaSelect('LSM30_Font', name, desc, order, values, width, disabled, hidden)
+function ACH:SharedMediaFont(name, desc, order, values, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Font', name, desc, order, values, width, get, set, disabled, hidden)
 end
 
-function ACH:SharedMediaSound(name, desc, order, values, width, disabled, hidden)
-	return SharedMediaSelect('LSM30_Sound', name, desc, order, values, width, disabled, hidden)
+function ACH:SharedMediaSound(name, desc, order, values, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Sound', name, desc, order, values, width, get, set, disabled, hidden)
 end
 
-function ACH:SharedMediaStatusbar(name, desc, order, values, width, disabled, hidden)
-	return SharedMediaSelect('LSM30_Statusbar', name, desc, order, values, width, disabled, hidden)
+function ACH:SharedMediaStatusbar(name, desc, order, values, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Statusbar', name, desc, order, values, width, get, set, disabled, hidden)
 end
 
-function ACH:SharedMediaBackground(name, desc, order, values, width, disabled, hidden)
-	return SharedMediaSelect('LSM30_Background', name, desc, order, values, width, disabled, hidden)
+function ACH:SharedMediaBackground(name, desc, order, values, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Background', name, desc, order, values, width, get, set, disabled, hidden)
 end
 
-function ACH:SharedMediaBorder(name, desc, order, values, width, disabled, hidden)
-	return SharedMediaSelect('LSM30_Border', name, desc, order, values, width, disabled, hidden)
+function ACH:SharedMediaBorder(name, desc, order, values, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Border', name, desc, order, values, width, get, set, disabled, hidden)
 end
