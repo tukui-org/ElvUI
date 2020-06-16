@@ -12,6 +12,7 @@
 	<Include file='Ace3\AceHook-3.0\AceHook-3.0.xml'/>
 	<Include file='LibSpellRange-1.0\lib.xml'/>
 	<Include file='LibSharedMedia-3.0\lib.xml'/>
+	<Script file='LibAceConfigHelper\LibAceConfigHelper.lua'/>
 	<Script file='LibSimpleSticky\LibSimpleSticky.lua'/>
 	<Include file='oUF\oUF.xml'/>
 	<Include file='oUF_Plugins\oUF_Plugins.xml'/>
