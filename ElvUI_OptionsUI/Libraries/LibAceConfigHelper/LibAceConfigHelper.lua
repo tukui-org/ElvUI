@@ -1,6 +1,7 @@
 local LibStub = LibStub
 local MAJOR, MINOR = 'LibAceConfigHelper', 1
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
+local LSM = LibStub('LibSharedMedia-3.0')
 
 if not ACH then return end
 
@@ -111,22 +112,22 @@ local function SharedMediaSelect(type, name, desc, order, values, width, get, se
 	return { type = 'select', dialogControl = type, name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 end
 
-function ACH:SharedMediaFont(name, desc, order, values, width, get, set, disabled, hidden)
-	return SharedMediaSelect('LSM30_Font', name, desc, order, values, width, get, set, disabled, hidden)
+function ACH:SharedMediaFont(name, desc, order, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Font', name, desc, order, function() return LSM:HashTable('font') end, width, get, set, disabled, hidden)
 end
 
-function ACH:SharedMediaSound(name, desc, order, values, width, get, set, disabled, hidden)
-	return SharedMediaSelect('LSM30_Sound', name, desc, order, values, width, get, set, disabled, hidden)
+function ACH:SharedMediaSound(name, desc, order, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Sound', name, desc, order, function() return LSM:HashTable('sound') end, width, get, set, disabled, hidden)
 end
 
-function ACH:SharedMediaStatusbar(name, desc, order, values, width, get, set, disabled, hidden)
-	return SharedMediaSelect('LSM30_Statusbar', name, desc, order, values, width, get, set, disabled, hidden)
+function ACH:SharedMediaStatusbar(name, desc, order, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Statusbar', name, desc, order, function() return LSM:HashTable('statusbar') end, width, get, set, disabled, hidden)
 end
 
-function ACH:SharedMediaBackground(name, desc, order, values, width, get, set, disabled, hidden)
-	return SharedMediaSelect('LSM30_Background', name, desc, order, values, width, get, set, disabled, hidden)
+function ACH:SharedMediaBackground(name, desc, order, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Background', name, desc, order, function() return LSM:HashTable('background') end, width, get, set, disabled, hidden)
 end
 
-function ACH:SharedMediaBorder(name, desc, order, values, width, get, set, disabled, hidden)
-	return SharedMediaSelect('LSM30_Border', name, desc, order, values, width, get, set, disabled, hidden)
+function ACH:SharedMediaBorder(name, desc, order, width, get, set, disabled, hidden)
+	return SharedMediaSelect('LSM30_Border', name, desc, order, function() return LSM:HashTable('border') end, width, get, set, disabled, hidden)
 end
