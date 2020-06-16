@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local TT = E:GetModule('Tooltip')
+local ACH = E.Libs.ACH
 
 local _G = _G
 local tonumber = tonumber
@@ -15,330 +16,49 @@ local modifierValues = {
 	ALT		= L["ALT_KEY_TEXT"],
 }
 
-E.Options.args.tooltip = {
-	type = "group",
-	name = L["Tooltip"],
-	childGroups = "tree",
-	order = 2,
-	get = function(info) return E.db.tooltip[info[#info]] end,
-	set = function(info, value) E.db.tooltip[info[#info]] = value; end,
-	args = {
-		intro = {
-			order = 1,
-			type = "description",
-			name = L["TOOLTIP_DESC"],
-		},
-		enable = {
-			order = 2,
-			type = "toggle",
-			name = L["Enable"],
-			get = function(info) return E.private.tooltip[info[#info]] end,
-			set = function(info, value) E.private.tooltip[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end
-		},
-		role = {
-			order = 3,
-			type = 'toggle',
-			name = L["ROLE"],
-			desc = L["Display the unit role in the tooltip."],
-		},
-		targetInfo = {
-			order = 4,
-			type = 'toggle',
-			name = L["Target Info"],
-			desc = L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."],
-		},
-		modifierID = {
-			order = 5,
-			type = 'select',
-			name = L["Modifier for IDs"],
-			values = modifierValues,
-		},
-		playerTitles = {
-			order = 6,
-			type = 'toggle',
-			name = L["Player Titles"],
-			desc = L["Display player titles."],
-		},
-		guildRanks = {
-			order = 7,
-			type = 'toggle',
-			name = L["Guild Ranks"],
-			desc = L["Display guild ranks if a unit is guilded."],
-		},
-		showMount = {
-			order = 8,
-			type = 'toggle',
-			name = L["Current Mount"],
-			desc = L["Display current mount the unit is riding."],
-		},
-		alwaysShowRealm = {
-			order = 10,
-			type = 'toggle',
-			name = L["Always Show Realm"],
-		},
-		showElvUIUsers = {
-			order = 11,
-			type = 'toggle',
-			name = L["Show ElvUI Users"],
-			desc = L["Show ElvUI users and their version of ElvUI."]
-		},
-		itemCount = {
-			order = 12,
-			type = 'select',
-			name = L["Item Count"],
-			desc = L["Display how many of a certain item you have in your possession."],
-			values = {
-				["BAGS_ONLY"] = L["Bags Only"],
-				["BANK_ONLY"] = L["Bank Only"],
-				["BOTH"] = L["Both"],
-				["NONE"] = L["NONE"],
-			},
-		},
-		colorAlpha = {
-			order = 13,
-			type = "range",
-			name = L["OPACITY"],
-			isPercent = true,
-			min = 0, max = 1, step = 0.01,
-		},
-		cursorAnchor = {
-			order = 14,
-			type = 'toggle',
-			name = L["Cursor Anchor"],
-			desc = L["Should tooltip be anchored to mouse cursor"],
-		},
-		cursorAnchorType = {
-			order = 15,
-			type = 'select',
-			name = L["Cursor Anchor Type"],
-			values = {
-				["ANCHOR_CURSOR"] = L["ANCHOR_CURSOR"],
-				["ANCHOR_CURSOR_LEFT"] = L["ANCHOR_CURSOR_LEFT"],
-				["ANCHOR_CURSOR_RIGHT"] = L["ANCHOR_CURSOR_RIGHT"],
-			},
-			hidden = function() return (not E.db.tooltip.cursorAnchor) end,
-		},
-		cursorAnchorX = {
-			order = 16,
-			name = L["Cursor Anchor Offset X"],
-			type = "range",
-			min = -128, max = 128, step = 1,
-			hidden = function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end,
-		},
-		cursorAnchorY = {
-			order = 17,
-			type = "range",
-			name = L["Cursor Anchor Offset Y"],
-			min = -128, max = 128, step = 1,
-			hidden = function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end,
-		},
-		fontGroup = {
-			order = 30,
-			type = "group",
-			name = L["Font"],
-			args = {
-				font = {
-					order = 1,
-					type = "select", dialogControl = 'LSM30_Font',
-					name = L["Font"],
-					values = AceGUIWidgetLSMlists.font,
-					get = function(info) return E.db.tooltip.font end,
-					set = function(info, value) E.db.tooltip.font = value; TT:SetTooltipFonts() end,
-				},
-				fontOutline = {
-					order = 2,
-					name = L["Font Outline"],
-					type = "select",
-					values = C.Values.FontFlags,
-					get = function(info) return E.db.tooltip.fontOutline end,
-					set = function(info, value) E.db.tooltip.fontOutline = value; TT:SetTooltipFonts() end,
-				},
-				spacer = {
-					order = 3,
-					type = "description",
-					name = "",
-				},
-				headerFontSize = {
-					order = 4,
-					type = "range",
-					name = L["Header Font Size"],
-					min = 4, max = 212, step = 1,
-					get = function(info) return E.db.tooltip.headerFontSize end,
-					set = function(info, value) E.db.tooltip.headerFontSize = value; TT:SetTooltipFonts() end,
-				},
-				textFontSize = {
-					order = 5,
-					type = "range",
-					name = L["Text Font Size"],
-					min = 4, max = 212, step = 1,
-					get = function(info) return E.db.tooltip.textFontSize end,
-					set = function(info, value) E.db.tooltip.textFontSize = value; TT:SetTooltipFonts() end,
-				},
-				smallTextFontSize = {
-					order = 6,
-					type = "range",
-					name = L["Comparison Font Size"],
-					desc = L["This setting controls the size of text in item comparison tooltips."],
-					min = 4, max = 212, step = 1,
-					get = function(info) return E.db.tooltip.smallTextFontSize end,
-					set = function(info, value) E.db.tooltip.smallTextFontSize = value; TT:SetTooltipFonts() end,
-				},
-			},
-		},
-		visibility = {
-			order = 31,
-			type = "group",
-			name = L["Visibility"],
-			get = function(info) return E.db.tooltip.visibility[info[#info]] end,
-			set = function(info, value) E.db.tooltip.visibility[info[#info]] = value; end,
-			args = {
-				actionbars = {
-					order = 1,
-					type = 'select',
-					name = L["ActionBars"],
-					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
-					values = modifierValues,
-				},
-				bags = {
-					order = 2,
-					type = 'select',
-					name = L["Bags/Bank"],
-					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
-					values = modifierValues,
-				},
-				unitFrames = {
-					order = 3,
-					type = 'select',
-					name = L["UnitFrames"],
-					desc = L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."],
-					values = modifierValues,
-				},
-				combatOverride = {
-					order = 4,
-					type = 'select',
-					name = L["Combat Override Key"],
-					desc = L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."],
-					values = modifierValues,
-				},
-			},
-		},
-		healthBar = {
-			order = 33,
-			type = "group",
-			name = L["Health Bar"],
-			get = function(info) return E.db.tooltip.healthBar[info[#info]] end,
-			set = function(info, value) E.db.tooltip.healthBar[info[#info]] = value; end,
-			args = {
-				height = {
-					order = 1,
-					name = L["Height"],
-					type = 'range',
-					min = 1, max = 15, step = 1,
-					set = function(info, value) E.db.tooltip.healthBar.height = value;
-						if not GameTooltip:IsForbidden() then
-							GameTooltipStatusBar:Height(value);
-						end
-					end,
-				},
-				statusPosition = {
-					order = 2,
-					type = "select",
-					name = L["Position"],
-					values = {
-						["BOTTOM"] = L["Bottom"],
-						["TOP"] = L["Top"],
-					},
-				},
-				text = {
-					order = 3,
-					type = "toggle",
-					name = L["Text"],
-					set = function(info, value)
-						E.db.tooltip.healthBar.text = value;
-						if not GameTooltip:IsForbidden() then
-							if value then
-								GameTooltipStatusBar.text:Show();
-							else
-								GameTooltipStatusBar.text:Hide()
-							end
-						end
-					end,
-				},
-				font = {
-					type = "select", dialogControl = 'LSM30_Font',
-					order = 4,
-					name = L["Font"],
-					values = AceGUIWidgetLSMlists.font,
-					set = function(info, value)
-						E.db.tooltip.healthBar.font = value;
-						if not GameTooltip:IsForbidden() then
-							GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline)
-						end
-					end,
-					disabled = function() return not E.db.tooltip.healthBar.text end,
-				},
-				fontSize = {
-					order = 5,
-					name = L["FONT_SIZE"],
-					type = "range",
-					min = 4, max = 500, step = 1,
-					set = function(info, value)
-						E.db.tooltip.healthBar.fontSize = value;
-						if not GameTooltip:IsForbidden() then
-							GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline)
-						end
-					end,
-					disabled = function() return not E.db.tooltip.healthBar.text end,
-				},
-				fontOutline = {
-					order = 6,
-					name = L["Font Outline"],
-					type = "select",
-					values = C.Values.FontFlags,
-					set = function(info, value)
-						E.db.tooltip.healthBar.fontOutline = value;
-						if not GameTooltip:IsForbidden() then
-							GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline)
-						end
-					end,
-					disabled = function() return not E.db.tooltip.healthBar.text end,
-				},
-			},
-		},
-		factionColors = {
-			order = 34,
-			type = "group",
-			name = L["Custom Faction Colors"],
-			args = {
-				useCustomFactionColors = {
-					order = 0,
-					type = 'toggle',
-					name = L["Custom Faction Colors"],
-					get = function(info) return E.db.tooltip.useCustomFactionColors end,
-					set = function(info, value) E.db.tooltip.useCustomFactionColors = value; end,
-				},
-			},
-			get = function(info)
-				local v = tonumber(info[#info])
-				local t = E.db.tooltip.factionColors[v]
-				local d = P.tooltip.factionColors[v]
-				return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-			end,
-			set = function(info, r, g, b)
-				local v = tonumber(info[#info])
-				local t = E.db.tooltip.factionColors[v]
-				t.r, t.g, t.b = r, g, b
-			end,
-		},
-	},
-}
+E.Options.args.tooltip = ACH:Group(L["Tooltip"], nil, 2, "tree", function(info) return E.db.tooltip[info[#info]] end, function(info, value) E.db.tooltip[info[#info]] = value; end)
+E.Options.args.tooltip.args.intro = ACH:Description(L["TOOLTIP_DESC"], 1)
+E.Options.args.tooltip.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return E.private.tooltip[info[#info]] end, function(info, value) E.private.tooltip[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end)
+E.Options.args.tooltip.args.role = ACH:Toggle(L["ROLE"], L["Display the unit role in the tooltip."], 3)
+E.Options.args.tooltip.args.targetInfo = ACH:Toggle(L["Target Info"], L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."], 4)
+E.Options.args.tooltip.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 5, modifierValues)
+E.Options.args.tooltip.args.playerTitles = ACH:Toggle(L["Player Titles"], L["Display player titles."], 6)
+E.Options.args.tooltip.args.guildRanks = ACH:Toggle(L["Guild Ranks"], L["Display guild ranks if a unit is guilded."], 7)
+E.Options.args.tooltip.args.showMount = ACH:Toggle(L["Current Mount"], L["Display current mount the unit is riding."], 8)
+E.Options.args.tooltip.args.alwaysShowRealm = ACH:Toggle(L["Always Show Realm"], nil, 9)
+E.Options.args.tooltip.args.showElvUIUsers = ACH:Toggle(L["Show ElvUI Users"], L["Show ElvUI users and their version of ElvUI."], 10)
+E.Options.args.tooltip.args.itemCount = ACH:Select(L["Item Count"], L["Display how many of a certain item you have in your possession."], 11, { BAGS_ONLY = L["Bags Only"], BANK_ONLY = L["Bank Only"], BOTH = L["Both"], NONE = L["NONE"] })
+E.Options.args.tooltip.args.colorAlpha = ACH:Range(L["OPACITY"], nil, 12, { isPercent = true, min = 0, max = 1, step = 0.01 })
+E.Options.args.tooltip.args.cursorAnchor = ACH:Toggle(L["Cursor Anchor"], L["Should tooltip be anchored to mouse cursor"], 13)
+E.Options.args.tooltip.args.cursorAnchorType = ACH:Select(L["Cursor Anchor Type"], nil, 14, { ANCHOR_CURSOR = L["ANCHOR_CURSOR"], ANCHOR_CURSOR_LEFT = L["ANCHOR_CURSOR_LEFT"], ANCHOR_CURSOR_RIGHT = L["ANCHOR_CURSOR_RIGHT"] }, nil, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) end)
+E.Options.args.tooltip.args.cursorAnchorX = ACH:Range(L["Cursor Anchor Offset X"], nil, 15, { min = -128, max = 128, step = 1 }, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end)
+E.Options.args.tooltip.args.cursorAnchorY = ACH:Range(L["Cursor Anchor Offset Y"], nil, 16, { min = -128, max = 128, step = 1 }, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end)
+
+E.Options.args.tooltip.args.fontGroup = ACH:Group(L["Font"], nil, nil, nil, function(info) return E.db.tooltip[info[#info]] end, function(info, value) E.db.tooltip[info[#info]] = value; end)
+E.Options.args.tooltip.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
+E.Options.args.tooltip.args.fontGroup.args.fontOutline = ACH:Select(L["Font Outline"], nil, 2, C.Values.FontFlags)
+E.Options.args.tooltip.args.fontGroup.args.spacer = ACH:Spacer(3)
+E.Options.args.tooltip.args.fontGroup.args.headerFontSize = ACH:Range(L["Header Font Size"], nil, 4, C.Values.FontSize)
+E.Options.args.tooltip.args.fontGroup.args.textFontSize = ACH:Range(L["Text Font Size"], nil, 5, C.Values.FontSize)
+E.Options.args.tooltip.args.fontGroup.args.smallTextFontSize = ACH:Range(L["Comparison Font Size"], L["This setting controls the size of text in item comparison tooltips."], 6, C.Values.FontSize)
+
+E.Options.args.tooltip.args.visibility = ACH:Group(L["Visibility"], nil, nil, nil, function(info) return E.db.tooltip.visibility[info[#info]] end, function(info, value) E.db.tooltip.visibility[info[#info]] = value; end)
+E.Options.args.tooltip.args.visibility.args.actionbars = ACH:Select(L["ActionBars"], L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."], 1, modifierValues)
+E.Options.args.tooltip.args.visibility.args.bags = ACH:Select(L["Bags/Bank"], L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."], 2, modifierValues)
+E.Options.args.tooltip.args.visibility.args.unitFrames = ACH:Select(L["UnitFrames"], L["Choose when you want the tooltip to show. If a modifer is chosen, then you need to hold that down to show the tooltip."], 3, modifierValues)
+E.Options.args.tooltip.args.visibility.args.combatOverride = ACH:Select(L["Combat Override Key"], L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."], 4, modifierValues)
+
+E.Options.args.tooltip.args.healthBar = ACH:Group(L["Health Bar"], nil, nil, nil, function(info) return E.db.tooltip.healthBar[info[#info]] end, function(info, value) E.db.tooltip.healthBar[info[#info]] = value; end)
+E.Options.args.tooltip.args.healthBar.args.height = ACH:Range(L["Height"], nil, 1, { min = 1, max = 15, step = 1 }, nil, nil, function(info, value) E.db.tooltip.healthBar.height = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar:Height(value); end end)
+E.Options.args.tooltip.args.healthBar.args.statusPosition = ACH:Select(L["Position"], nil, 2, { BOTTOM = L["Bottom"], TOP = L["Top"] })
+E.Options.args.tooltip.args.healthBar.args.text = ACH:Toggle(L["Text"], nil, 3, nil, nil, nil, nil, function(info, value) E.db.tooltip.healthBar.text = value; if not GameTooltip:IsForbidden() then if value then GameTooltipStatusBar.text:Show(); else GameTooltipStatusBar.text:Hide() end end end)
+E.Options.args.tooltip.args.healthBar.args.font = ACH:SharedMediaFont(L["Font"], nil, 4, nil, nil, function(info, value) E.db.tooltip.healthBar.font = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text end)
+E.Options.args.tooltip.args.healthBar.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 5, C.Values.FontSize, nil, nil, function(info, value) E.db.tooltip.healthBar.fontSize = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text end)
+E.Options.args.tooltip.args.healthBar.args.fontOutline = ACH:Select(L["Font Outline"], nil, 6, C.Values.FontFlags, nil, nil, nil, function(info, value) E.db.tooltip.healthBar.fontOutline = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text end)
+
+E.Options.args.tooltip.args.factionColors = ACH:Group(L["Custom Faction Colors"], nil, nil, nil, function(info) local v = tonumber(info[#info]) local t = E.db.tooltip.factionColors[v] local d = P.tooltip.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local v = tonumber(info[#info]); local t = E.db.tooltip.factionColors[v]; t.r, t.g, t.b = r, g, b end)
+E.Options.args.tooltip.args.factionColors.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], nil, 0, nil, nil, nil, function(info) return E.db.tooltip.useCustomFactionColors end, function(info, value) E.db.tooltip.useCustomFactionColors = value; end)
 
 for i = 1, 8 do
-	E.Options.args.tooltip.args.factionColors.args[""..i] = {
-		order = i,
-		type = "color",
-		hasAlpha = false,
-		name = L["FACTION_STANDING_LABEL"..i],
-		disabled = function() return not E.Tooltip.Initialized or not E.db.tooltip.useCustomFactionColors end,
-	}
+	E.Options.args.tooltip.args.factionColors.args[""..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true, nil, function() return not E.Tooltip.Initialized or not E.db.tooltip.useCustomFactionColors end)
 end

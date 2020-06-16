@@ -15,11 +15,7 @@ C.Values = {
 		MONOCHROMEOUTLINE = "MONOCROMEOUTLINE",
 		THICKOUTLINE = "THICKOUTLINE"
 	},
-	FontSize = {
-		min = 4,
-		max = 64,
-		step = 1,
-	}
+	FontSize = { min = 4, max = 64, step = 1 }
 }
 
 E:AddLib('AceGUI', 'AceGUI-3.0')
