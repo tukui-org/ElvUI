@@ -4,146 +4,40 @@ local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not ACH then return end
 
-local wipe = wipe
-local optionTable = {}
-
-function ACH:Color(name, desc, order, arg, alpha, width, disabled, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "color"
-	optionTable.name = name
-	optionTable.desc = desc
-	optionTable.order = order
-	optionTable.hasAlpha = alpha
-	optionTable.arg = arg
-	optionTable.width = width
-	optionTable.disabled = disabled
-	optionTable.hidden = hidden
-
-	return optionTable
+function ACH:Color(name, desc, order, alpha, width, disabled, hidden)
+	return { type = "color", name = name, desc = desc, order = order, hasAlpha = alpha, width = width, disabled = disabled, hidden = hidden }
 end
 
 function ACH:Description(name, order, fontSize, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "description"
-	optionTable.name = name
-	optionTable.order = order
-	optionTable.hidden = hidden
-	optionTable.fontSize = fontSize
-
-	return optionTable
+	return { type = "description", name = name, order = order, hidden = hidden, fontSize = fontSize }
 end
 
-function ACH:Execute(name, desc, order, arg, func, confirm, width, disabled, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "execute"
-	optionTable.name = name
-	optionTable.desc = desc
-	optionTable.order = order
-	optionTable.arg = arg
-	optionTable.func = func
-	optionTable.width = width
-	optionTable.disabled = disabled
-	optionTable.hidden = hidden
-	optionTable.confirm = confirm and true
-	optionTable.confirmText = confirm
-
-	return optionTable
+function ACH:Execute(name, desc, order, func, confirm, width, disabled, hidden)
+	return { type = "execute", name = name, desc = desc, order = order, func = func, width = width, disabled = disabled, hidden = hidden, confirm = confirm and true, confirmText = confirm }
 end
 
 function ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "group"
-	optionTable.childGroups = childGroups
-	optionTable.name = name
-	optionTable.desc = desc
-	optionTable.order = order
-	optionTable.set = set
-	optionTable.get = get
-	optionTable.hidden = hidden
-	optionTable.disabled = disabled
-	optionTable.args = {}
-
-	return optionTable
+	return { type = "group", childGroups = childGroups, name = name, desc = desc, order = order, set = set, get = get, hidden = hidden, disabled = disabled, args = {} }
 end
 
 function ACH:Header(name, order, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "header"
-	optionTable.name = name
-	optionTable.order = order
-	optionTable.hidden = hidden
-
-	return optionTable
+	return { type = "header", name = name, order = order, hidden = hidden }
 end
 
-function ACH:Input(name, desc, order, arg, values, width, get, set, disabled, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "input"
-	optionTable.name = name
-	optionTable.desc = desc
-	optionTable.order = order
-	optionTable.arg = arg
-	optionTable.width = width
-	optionTable.get = get
-	optionTable.set = set
-	optionTable.disabled = disabled
-	optionTable.hidden = hidden
-	optionTable.values = values
-
-	return optionTable
+function ACH:Input(name, desc, order, values, width, get, set, disabled, hidden)
+	return { type = "input", name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden, values = values }
 end
 
-function ACH:Select(name, desc, order, arg, values, width, disabled, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "select"
-	optionTable.name = name
-	optionTable.desc = desc
-	optionTable.order = order
-	optionTable.values = values
-	optionTable.arg = arg
-	optionTable.width = width
-	optionTable.disabled = disabled
-	optionTable.hidden = hidden
-
-	return optionTable
+function ACH:Select(name, desc, order, values, width, disabled, hidden)
+	return { type = "select", name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
 end
 
-function ACH:MultiSelect(name, desc, order, arg, values, width, disabled, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "multiselect"
-	optionTable.name = name
-	optionTable.desc = desc
-	optionTable.order = order
-	optionTable.values = values
-	optionTable.arg = arg
-	optionTable.width = width
-	optionTable.disabled = disabled
-	optionTable.hidden = hidden
-
-	return optionTable
+function ACH:MultiSelect(name, desc, order, values, width, disabled, hidden)
+	return { type = "multiselect" ,name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
 end
 
-function ACH:Toggle(name, desc, order, arg, width, disabled, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "toggle"
-	optionTable.name = name
-	optionTable.desc = desc
-	optionTable.order = order
-	optionTable.arg = arg
-	optionTable.width = width
-	optionTable.disabled = disabled
-	optionTable.hidden = hidden
-
-	return optionTable
+function ACH:Toggle(name, desc, order, width, disabled, hidden)
+	return { type = "toggle", name = name, desc = desc, order = order, width = width, disabled = disabled, hidden = hidden }
 end
 
 -- Values are the following: key = value
@@ -156,15 +50,7 @@ end
 -- isPercent (boolean) - represent e.g. 1.0 as 100%, etc. (default=false)
 
 function ACH:Range(name, desc, order, values, width, disabled, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "range"
-	optionTable.name = name
-	optionTable.desc = desc
-	optionTable.order = order
-	optionTable.width = width
-	optionTable.disabled = disabled
-	optionTable.hidden = hidden
+	local optionTable = { type = "range", name = name, desc = desc, order = order, width = width, disabled = disabled, hidden = hidden }
 
 	for key, value in pairs(values) do
 		optionTable[key] = value
@@ -173,39 +59,26 @@ function ACH:Range(name, desc, order, values, width, disabled, hidden)
 	return optionTable
 end
 
-function ACH:SharedMediaSelect(type, name, desc, order, arg, values, width, disabled, hidden)
-	wipe(optionTable)
-
-	optionTable.type = "select"
-	optionTable.dialogControl = type
-	optionTable.name = name
-	optionTable.desc = desc
-	optionTable.order = order
-	optionTable.values = values
-	optionTable.arg = arg
-	optionTable.width = width
-	optionTable.disabled = disabled
-	optionTable.hidden = hidden
-
-	return optionTable
+function ACH:SharedMediaSelect(type, name, desc, order, values, width, disabled, hidden)
+	return { type = "select", dialogControl = type, name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
 end
 
-function ACH:SharedMediaFont(name, desc, order, arg, values, width, disabled, hidden)
-	return ACH:SharedMediaSelect("LSM30_Font", name, desc, order, arg, values, width, disabled, hidden)
+function ACH:SharedMediaFont(name, desc, order, values, width, disabled, hidden)
+	return ACH:SharedMediaSelect("LSM30_Font", name, desc, order, values, width, disabled, hidden)
 end
 
-function ACH:SharedMediaSound(name, desc, order, arg, values, width, disabled, hidden)
-	return ACH:SharedMediaSelect("LSM30_Sound", name, desc, order, arg, values, width, disabled, hidden)
+function ACH:SharedMediaSound(name, desc, order, values, width, disabled, hidden)
+	return ACH:SharedMediaSelect("LSM30_Sound", name, desc, order, values, width, disabled, hidden)
 end
 
-function ACH:SharedMediaStatusbar(name, desc, order, arg, values, width, disabled, hidden)
-	return ACH:SharedMediaSelect("LSM30_Statusbar", name, desc, order, arg, values, width, disabled, hidden)
+function ACH:SharedMediaStatusbar(name, desc, order, values, width, disabled, hidden)
+	return ACH:SharedMediaSelect("LSM30_Statusbar", name, desc, order, values, width, disabled, hidden)
 end
 
-function ACH:SharedMediaBackground(name, desc, order, arg, values, width, disabled, hidden)
-	return ACH:SharedMediaSelect("LSM30_Background", name, desc, order, arg, values, width, disabled, hidden)
+function ACH:SharedMediaBackground(name, desc, order, values, width, disabled, hidden)
+	return ACH:SharedMediaSelect("LSM30_Background", name, desc, order, values, width, disabled, hidden)
 end
 
-function ACH:SharedMediaBorder(name, desc, order, arg, values, width, disabled, hidden)
-	return ACH:SharedMediaSelect("LSM30_Border", name, desc, order, arg, values, width, disabled, hidden)
+function ACH:SharedMediaBorder(name, desc, order, values, width, disabled, hidden)
+	return ACH:SharedMediaSelect("LSM30_Border", name, desc, order, values, width, disabled, hidden)
 end
