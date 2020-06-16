@@ -27,25 +27,25 @@ local positionValues = {
 }
 
 local orientationValues = {
-	["LEFT"] = L["Left"],
-	["MIDDLE"] = L["Middle"],
-	["RIGHT"] = L["Right"],
+	LEFT = L["Left"],
+	MIDDLE = L["Middle"],
+	RIGHT = L["Right"],
 }
 
 local threatValues = {
-	['GLOW'] = L["Glow"],
-	['BORDERS'] = L["Borders"],
-	['HEALTHBORDER'] = L["Health Border"],
-	["INFOPANELBORDER"] = L["InfoPanel Border"],
-	['ICONTOPLEFT'] = L["Icon: TOPLEFT"],
-	['ICONTOPRIGHT'] = L["Icon: TOPRIGHT"],
-	['ICONBOTTOMLEFT'] = L["Icon: BOTTOMLEFT"],
-	['ICONBOTTOMRIGHT'] = L["Icon: BOTTOMRIGHT"],
-	['ICONLEFT'] = L["Icon: LEFT"],
-	['ICONRIGHT'] = L["Icon: RIGHT"],
-	['ICONTOP'] = L["Icon: TOP"],
-	['ICONBOTTOM'] = L["Icon: BOTTOM"],
-	['NONE'] = L["NONE"],
+	GLOW = L["Glow"],
+	BORDERS = L["Borders"],
+	HEALTHBORDER = L["Health Border"],
+	INFOPANELBORDER = L["InfoPanel Border"],
+	ICONTOPLEFT = L["Icon: TOPLEFT"],
+	ICONTOPRIGHT = L["Icon: TOPRIGHT"],
+	ICONBOTTOMLEFT = L["Icon: BOTTOMLEFT"],
+	ICONBOTTOMRIGHT = L["Icon: BOTTOMRIGHT"],
+	ICONLEFT = L["Icon: LEFT"],
+	ICONRIGHT = L["Icon: RIGHT"],
+	ICONTOP = L["Icon: TOP"],
+	ICONBOTTOM = L["Icon: BOTTOM"],
+	NONE = L["NONE"],
 }
 
 local petAnchors = {
@@ -60,10 +60,10 @@ local petAnchors = {
 }
 
 local attachToValues = {
-	["Health"] = L["Health"],
-	["Power"] = L["Power"],
-	["InfoPanel"] = L["Information Panel"],
-	["Frame"] = L["Frame"],
+	Health = L["Health"],
+	Power = L["Power"],
+	InfoPanel = L["Information Panel"],
+	Frame = L["Frame"],
 }
 
 local growthDirectionValues = {
@@ -78,24 +78,24 @@ local growthDirectionValues = {
 }
 
 local smartAuraPositionValues = {
-	["DISABLED"] = L["DISABLE"],
-	["BUFFS_ON_DEBUFFS"] = L["Position Buffs on Debuffs"],
-	["DEBUFFS_ON_BUFFS"] = L["Position Debuffs on Buffs"],
-	["FLUID_BUFFS_ON_DEBUFFS"] = L["Fluid Position Buffs on Debuffs"],
-	["FLUID_DEBUFFS_ON_BUFFS"] = L["Fluid Position Debuffs on Buffs"],
+	DISABLED = L["DISABLE"],
+	BUFFS_ON_DEBUFFS = L["Position Buffs on Debuffs"],
+	DEBUFFS_ON_BUFFS = L["Position Debuffs on Buffs"],
+	FLUID_BUFFS_ON_DEBUFFS = L["Fluid Position Buffs on Debuffs"],
+	FLUID_DEBUFFS_ON_BUFFS = L["Fluid Position Debuffs on Buffs"],
 }
 
 local colorOverrideValues = {
-	['USE_DEFAULT'] = L["Use Default"],
-	['FORCE_ON'] = L["Force On"],
-	['FORCE_OFF'] = L["Force Off"],
+	USE_DEFAULT = L["Use Default"],
+	FORCE_ON = L["Force On"],
+	FORCE_OFF = L["Force Off"],
 }
 
 local blendModeValues = {
-	['DISABLE'] = L["Disable"],
-	['BLEND'] = L["Blend"],
-	['ADD'] = L["Additive Blend"],
-	['ALPHAKEY'] = L["Alpha Key"],
+	DISABLE = L["Disable"],
+	BLEND = L["Blend"],
+	ADD = L["Additive Blend"],
+	ALPHAKEY = L["Alpha Key"],
 }
 
 local CUSTOMTEXT_CONFIGS = {}
@@ -152,6 +152,59 @@ end
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
+local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, subGroup)
+	local config = {
+		type = "group",
+		name = L["Strata and Level"],
+		get = function(info) return E.db.unitframe.units[groupName].strataAndLevel[info[#info]] end,
+		set = function(info, value) E.db.unitframe.units[groupName].strataAndLevel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		args = {
+			useCustomStrata = {
+				order = 1,
+				type = "toggle",
+				name = L["Use Custom Strata"],
+			},
+			frameStrata = {
+				order = 2,
+				type = "select",
+				name = L["Frame Strata"],
+				values = {
+					BACKGROUND = "BACKGROUND",
+					LOW = "LOW",
+					MEDIUM = "MEDIUM",
+					HIGH = "HIGH",
+					DIALOG = "DIALOG",
+					TOOLTIP = "TOOLTIP",
+				},
+			},
+			spacer = {
+				order = 3,
+				type = "description",
+				name = "",
+			},
+			useCustomLevel = {
+				order = 4,
+				type = "toggle",
+				name = L["Use Custom Level"],
+			},
+			frameLevel = {
+				order = 5,
+				type = "range",
+				name = L["Frame Level"],
+				min = 2, max = 128, step = 1,
+			},
+		},
+	}
+
+	if subGroup then
+		config.guiInline = true
+		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].strataAndLevel[info[#info]] end
+		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].strataAndLevel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end
+	end
+
+	return config
+end
+
 local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	local config = {
 		type = 'group',
@@ -184,8 +237,8 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				name = L["Anchor Point"],
 				desc = L["What point to anchor to the frame you set to attach to."],
 				values = {
-					['ABOVE'] = L["Above"],
-					['BELOW'] = L["Below"],
+					ABOVE = L["Above"],
+					BELOW = L["Below"],
 				},
 			},
 			attachTo = {
@@ -194,10 +247,10 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				name = L["Attach To"],
 				desc = L["The object you want to attach to."],
 				values = {
-					['FRAME'] = L["Frame"],
-					['DEBUFFS'] = L["Debuffs"],
-					['BUFFS'] = L["Buffs"],
-					['DETACHED'] = L["Detach From Frame"],
+					FRAME = L["Frame"],
+					DEBUFFS = L["Debuffs"],
+					BUFFS = L["Buffs"],
+					DETACHED = L["Detach From Frame"],
 				},
 			},
 			height = {
@@ -225,11 +278,11 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				desc = L["Method to sort by."],
 				type = 'select',
 				values = {
-					['TIME_REMAINING'] = L["Time Remaining"],
-					['DURATION'] = L["Duration"],
-					['NAME'] = L["NAME"],
-					['INDEX'] = L["Index"],
-					["PLAYER"] = L["PLAYER"],
+					TIME_REMAINING = L["Time Remaining"],
+					DURATION = L["Duration"],
+					NAME = L["NAME"],
+					INDEX = L["Index"],
+					PLAYER = L["PLAYER"],
 				},
 			},
 			sortDirection = {
@@ -238,8 +291,8 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				desc = L["Ascending or Descending order."],
 				type = 'select',
 				values = {
-					['ASCENDING'] = L["Ascending"],
-					['DESCENDING'] = L["Descending"],
+					ASCENDING = L["Ascending"],
+					DESCENDING = L["Descending"],
 				},
 			},
 			friendlyAuraType = {
@@ -248,8 +301,8 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				name = L["Friendly Aura Type"],
 				desc = L["Set the type of auras to show when a unit is friendly."],
 				values = {
-					['HARMFUL'] = L["Debuffs"],
-					['HELPFUL'] = L["Buffs"],
+					HARMFUL = L["Debuffs"],
+					HELPFUL = L["Buffs"],
 				},
 			},
 			enemyAuraType = {
@@ -258,8 +311,8 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 				name = L["Enemy Aura Type"],
 				desc = L["Set the type of auras to show when a unit is a foe."],
 				values = {
-					['HARMFUL'] = L["Debuffs"],
-					['HELPFUL'] = L["Buffs"],
+					HARMFUL = L["Debuffs"],
+					HELPFUL = L["Buffs"],
 				},
 			},
 			yOffset = {
@@ -470,10 +523,10 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				name = L["Attach To"],
 				desc = L["What to attach the buff anchor frame to."],
 				values = {
-					['FRAME'] = L["Frame"],
-					['DEBUFFS'] = L["Debuffs"],
-					["HEALTH"] = L["Health"],
-					["POWER"] = L["Power"],
+					FRAME = L["Frame"],
+					DEBUFFS = L["Debuffs"],
+					HEALTH = L["Health"],
+					POWER = L["Power"],
 				},
 				disabled = function()
 					local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
@@ -499,11 +552,11 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				desc = L["Method to sort by."],
 				type = 'select',
 				values = {
-					['TIME_REMAINING'] = L["Time Remaining"],
-					['DURATION'] = L["Duration"],
-					['NAME'] = L["NAME"],
-					['INDEX'] = L["Index"],
-					["PLAYER"] = L["PLAYER"],
+					TIME_REMAINING = L["Time Remaining"],
+					DURATION = L["Duration"],
+					NAME = L["NAME"],
+					INDEX = L["Index"],
+					PLAYER = L["PLAYER"],
 				},
 			},
 			sortDirection = {
@@ -512,8 +565,8 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 				desc = L["Ascending or Descending order."],
 				type = 'select',
 				values = {
-					['ASCENDING'] = L["Ascending"],
-					['DESCENDING'] = L["Descending"],
+					ASCENDING = L["Ascending"],
+					DESCENDING = L["Descending"],
 				},
 			},
 			stacks = {
@@ -564,13 +617,13 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 						name = L["Position"],
 						type = "select",
 						values = {
-							["TOP"] = "TOP",
-							["LEFT"] = "LEFT",
-							["BOTTOM"] = "BOTTOM",
-							["CENTER"] = "CENTER",
-							["TOPLEFT"] = "TOPLEFT",
-							["BOTTOMLEFT"] = "BOTTOMLEFT",
-							["TOPRIGHT"] = "TOPRIGHT",
+							TOP = "TOP",
+							LEFT = "LEFT",
+							BOTTOM = "BOTTOM",
+							CENTER = "CENTER",
+							TOPLEFT = "TOPLEFT",
+							BOTTOMLEFT = "BOTTOMLEFT",
+							TOPRIGHT = "TOPRIGHT",
 						},
 					},
 				}
@@ -710,10 +763,10 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 
 	if auraType == "debuffs" then
 		config.args.attachTo.values = {
-			['FRAME'] = L["Frame"],
-			['BUFFS'] = L["Buffs"],
-			["HEALTH"] = L["Health"],
-			["POWER"] = L["Power"],
+			FRAME = L["Frame"],
+			BUFFS = L["Buffs"],
+			HEALTH = L["Health"],
+			POWER = L["Power"],
 		}
 		config.args.attachTo.disabled = function()
 			local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
@@ -806,9 +859,9 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 						order = 2,
 						type = 'select',
 						values = {
-							['timerOnly'] = L["Timer Only"],
-							['coloredIcon'] = L["Colored Icon"],
-							['texturedIcon'] = L["Textured Icon"],
+							timerOnly = L["Timer Only"],
+							coloredIcon = L["Colored Icon"],
+							texturedIcon = L["Textured Icon"],
 						},
 					},
 					textThreshold = {
@@ -944,10 +997,10 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				name = L["Format"],
 				desc = L["Cast Time Format"],
 				values = {
-					['CURRENTMAX'] = L["Current / Max"],
-					['CURRENT'] = L["Current"],
-					['REMAINING'] = L["Remaining"],
-					['REMAININGMAX'] = L["Remaining / Max"],
+					CURRENTMAX = L["Current / Max"],
+					CURRENT = L["Current"],
+					REMAINING = L["Remaining"],
+					REMAININGMAX = L["Remaining / Max"],
 				},
 			},
 			timeToHold = {
@@ -969,10 +1022,10 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				name = L["Attach To"],
 				desc = L["The object you want to attach to."],
 				values = {
-					["Health"] = L["Health"],
-					["Power"] = L["Power"],
-					["InfoPanel"] = L["Information Panel"],
-					["None"] = L["NONE"],
+					Health = L["Health"],
+					Power = L["Power"],
+					InfoPanel = L["Information Panel"],
+					None = L["NONE"],
 				},
 			},
 			textGroup = {
@@ -1085,8 +1138,8 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						desc = L["The object you want to attach to."],
 						disabled = function() return E.db.unitframe.units[groupName].castbar.iconAttached end,
 						values = {
-							["Frame"] = L["Frame"],
-							["Castbar"] = L["Castbar"],
+							Frame = L["Frame"],
+							Castbar = L["Castbar"],
 						},
 					},
 					iconPosition = {
@@ -1112,50 +1165,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 					},
 				},
 			},
-			strataAndLevel = {
-				order = 18,
-				type = "group",
-				name = L["Strata and Level"],
-				get = function(info) return E.db.unitframe.units[groupName].castbar.strataAndLevel[info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName].castbar.strataAndLevel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-				guiInline = true,
-				args = {
-					useCustomStrata = {
-						order = 1,
-						type = "toggle",
-						name = L["Use Custom Strata"],
-					},
-					frameStrata = {
-						order = 2,
-						type = "select",
-						name = L["Frame Strata"],
-						values = {
-							["BACKGROUND"] = "BACKGROUND",
-							["LOW"] = "LOW",
-							["MEDIUM"] = "MEDIUM",
-							["HIGH"] = "HIGH",
-							["DIALOG"] = "DIALOG",
-							["TOOLTIP"] = "TOOLTIP",
-						},
-					},
-					spacer = {
-						order = 3,
-						type = "description",
-						name = "",
-					},
-					useCustomLevel = {
-						order = 4,
-						type = "toggle",
-						name = L["Use Custom Level"],
-					},
-					frameLevel = {
-						order = 5,
-						type = "range",
-						name = L["Frame Level"],
-						min = 2, max = 128, step = 1,
-					},
-				},
-			}
+			strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'castbar'),
 		},
 	}
 
@@ -1328,14 +1338,14 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 end
 
 local individual = {
-	['player'] = true,
-	['target'] = true,
-	['targettarget'] = true,
-	['targettargettarget'] = true,
-	['focus'] = true,
-	['focustarget'] = true,
-	['pet'] = true,
-	['pettarget'] = true
+	player = true,
+	target = true,
+	targettarget = true,
+	targettargettarget = true,
+	focus = true,
+	focustarget = true,
+	pet = true,
+	pettarget = true
 }
 
 local function CreateCustomTextGroup(unit, objectName)
@@ -1438,9 +1448,9 @@ local function CreateCustomTextGroup(unit, objectName)
 				name = L["JustifyH"],
 				desc = L["Sets the font instance's horizontal text alignment style."],
 				values = {
-					['CENTER'] = L["Center"],
-					['LEFT'] = L["Left"],
-					['RIGHT'] = L["Right"],
+					CENTER = L["Center"],
+					LEFT = L["Left"],
+					RIGHT = L["Right"],
 				},
 			},
 			xOffset = {
@@ -1506,14 +1516,14 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 					end
 
 					E.db.unitframe.units[groupName].customTexts[textName] = {
-						['text_format'] = strmatch(textName, '^%[') and textName or '',
-						['size'] = E.db.unitframe.fontSize,
-						['font'] = E.db.unitframe.font,
-						['xOffset'] = 0,
-						['yOffset'] = 0,
-						['justifyH'] = 'CENTER',
-						['fontOutline'] = E.db.unitframe.fontOutline,
-						['attachTextTo'] = 'Health'
+						text_format = strmatch(textName, '^%[') and textName or '',
+						size = E.db.unitframe.fontSize,
+						font = E.db.unitframe.font,
+						xOffset = 0,
+						yOffset = 0,
+						justifyH = 'CENTER',
+						fontOutline = E.db.unitframe.fontOutline,
+						attachTextTo = 'Health'
 					};
 
 					CreateCustomTextGroup(groupName, textName)
@@ -1719,8 +1729,8 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 			name = L["Statusbar Fill Orientation"],
 			desc = L["Direction the health bar moves when gaining/losing health."],
 			values = {
-				['HORIZONTAL'] = L["Horizontal"],
-				['VERTICAL'] = L["Vertical"],
+				HORIZONTAL = L["Horizontal"],
+				VERTICAL = L["Vertical"],
 			},
 		}
 	end
@@ -1939,7 +1949,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				values = {
 					['2D'] = L["2D"],
 					['3D'] = L["3D"],
-					['Class'] = L["Class"],
+					Class = L["Class"],
 				},
 			},
 			width = {
@@ -2025,10 +2035,10 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				order = 3,
 				name = L["Style"],
 				values = {
-					['fill'] = L["Filled"],
-					['spaced'] = L["Spaced"],
-					['inset'] = L["Inset"],
-					['offset'] = L["Offset"],
+					fill = L["Filled"],
+					spaced = L["Spaced"],
+					inset = L["Inset"],
+					offset = L["Offset"],
 				},
 				set = function(info, value)
 					E.db.unitframe.units[groupName].power[info[#info]] = value
@@ -2164,57 +2174,14 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 				desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
 				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
 				values = {
-					["FRAME"] = "FRAME",
-					["UIPARENT"] = "UIPARENT",
+					FRAME = "FRAME",
+					UIPARENT = "UIPARENT",
 				},
 			}
 	end
 
 	if hasStrataLevel then
-		config.args.strataAndLevel = {
-			order = 100,
-			type = "group",
-			name = L["Strata and Level"],
-			get = function(info) return E.db.unitframe.units[groupName].power.strataAndLevel[info[#info]] end,
-			set = function(info, value) E.db.unitframe.units[groupName].power.strataAndLevel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-			guiInline = true,
-			args = {
-				useCustomStrata = {
-					order = 1,
-					type = "toggle",
-					name = L["Use Custom Strata"],
-				},
-				frameStrata = {
-					order = 2,
-					type = "select",
-					name = L["Frame Strata"],
-					values = {
-						["BACKGROUND"] = "BACKGROUND",
-						["LOW"] = "LOW",
-						["MEDIUM"] = "MEDIUM",
-						["HIGH"] = "HIGH",
-						["DIALOG"] = "DIALOG",
-						["TOOLTIP"] = "TOOLTIP",
-					},
-				},
-				spacer = {
-					order = 3,
-					type = "description",
-					name = "",
-				},
-				useCustomLevel = {
-					order = 4,
-					type = "toggle",
-					name = L["Use Custom Level"],
-				},
-				frameLevel = {
-					order = 5,
-					type = "range",
-					name = L["Frame Level"],
-					min = 2, max = 128, step = 1,
-				},
-			},
-		}
+		config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'power')
 	end
 
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
@@ -2259,11 +2226,11 @@ local function GetOptionsTable_PVPClassificationIndicator(updateFunc, groupName,
 				type = "select",
 				name = L["Icon Position"],
 				values = {
-					["CENTER"] = "CENTER",
-					["TOPLEFT"] = "TOPLEFT",
-					["BOTTOMLEFT"] = "BOTTOMLEFT",
-					["TOPRIGHT"] = "TOPRIGHT",
-					["BOTTOMRIGHT"] = "BOTTOMRIGHT"
+					CENTER = "CENTER",
+					TOPLEFT = "TOPLEFT",
+					BOTTOMLEFT = "BOTTOMLEFT",
+					TOPRIGHT = "TOPRIGHT",
+					BOTTOMRIGHT = "BOTTOMRIGHT"
 				}
 			},
 			xOffset = {
@@ -2625,8 +2592,8 @@ local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
 				order = 3,
 				name = L["Position"],
 				values = {
-					['TOPLEFT'] = L["TOPLEFT"],
-					['TOPRIGHT'] = L["TOPRIGHT"],
+					TOPLEFT = L["TOPLEFT"],
+					TOPRIGHT = L["TOPRIGHT"],
 				},
 			},
 			xOffset = {
@@ -2899,8 +2866,8 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 					name = L["Frame Orientation"],
 					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
 					values = {
-						['HORIZONTAL'] = L["Horizontal"],
-						['VERTICAL'] = L["Vertical"],
+						HORIZONTAL = L["Horizontal"],
+						VERTICAL = L["Vertical"],
 					},
 				},
 				verticalOrientation = {
@@ -2923,56 +2890,11 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 					desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
 					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
 					values = {
-						["FRAME"] = "FRAME",
-						["UIPARENT"] = "UIPARENT",
+						FRAME = "FRAME",
+						UIPARENT = "UIPARENT",
 					},
 				},
-				strataAndLevel = {
-					order = 10,
-					type = "group",
-					name = L["Strata and Level"],
-					get = function(info) return E.db.unitframe.units.player.classbar.strataAndLevel[info[#info]] end,
-					set = function(info, value) E.db.unitframe.units.player.classbar.strataAndLevel[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
-					guiInline = true,
-					disabled = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-					hidden = function() return not E.db.unitframe.units.player.classbar.detachFromFrame end,
-					args = {
-						useCustomStrata = {
-							order = 1,
-							type = "toggle",
-							name = L["Use Custom Strata"],
-						},
-						frameStrata = {
-							order = 2,
-							type = "select",
-							name = L["Frame Strata"],
-							values = {
-								["BACKGROUND"] = "BACKGROUND",
-								["LOW"] = "LOW",
-								["MEDIUM"] = "MEDIUM",
-								["HIGH"] = "HIGH",
-								["DIALOG"] = "DIALOG",
-								["TOOLTIP"] = "TOOLTIP",
-							},
-						},
-						spacer = {
-							order = 3,
-							type = "description",
-							name = "",
-						},
-						useCustomLevel = {
-							order = 4,
-							type = "toggle",
-							name = L["Use Custom Level"],
-						},
-						frameLevel = {
-							order = 5,
-							type = "range",
-							name = L["Frame Level"],
-							min = 2, max = 128, step = 1,
-						},
-					},
-				},
+				strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'classbar'),
 			},
 		}
 	end
@@ -3076,10 +2998,10 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			type = "select",
 			name = L["Growth Direction"],
 			values = {
-				["UP"] = L["Bottom to Top"],
-				["DOWN"] = L["Top to Bottom"],
-				["LEFT"] = L["Right to Left"],
-				["RIGHT"] = L["Left to Right"],
+				UP = L["Bottom to Top"],
+				DOWN = L["Top to Bottom"],
+				LEFT = L["Right to Left"],
+				RIGHT = L["Left to Right"],
 			},
 		}
 
@@ -3223,13 +3145,13 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 					customWidth = 250,
 					type = 'select',
 					values = {
-						['CLASS'] = L["CLASS"],
-						['CLASSROLE'] = L["CLASS"]..' & '..L["ROLE"],
-						['ROLE'] = L["Role: Tank, Healer, Damage"],
-						['ROLE2'] = L["Role: Tank, Damage, Healer"],
-						['NAME'] = L["NAME"],
-						['MTMA'] = L["Main Tanks / Main Assist"],
-						['GROUP'] = L["GROUP"],
+						CLASS = L["CLASS"],
+						CLASSROLE = L["CLASS"]..' & '..L["ROLE"],
+						ROLE = L["Role: Tank, Healer, Damage"],
+						ROLE2 = L["Role: Tank, Damage, Healer"],
+						NAME = L["NAME"],
+						MTMA = L["Main Tanks / Main Assist"],
+						GROUP = L["GROUP"],
 					},
 				},
 				sortDir = {
@@ -3238,8 +3160,8 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 					desc = L["Defines the sort order of the selected sort method."],
 					type = 'select',
 					values = {
-						['ASC'] = L["Ascending"],
-						['DESC'] = L["Descending"]
+						ASC = L["Ascending"],
+						DESC = L["Descending"]
 					},
 				},
 				spacer = {
@@ -3360,15 +3282,15 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 				sortByValue = true,
 				name = L["Texture"],
 				values = {
-					["CUSTOM"] = L["CUSTOM"],
-					["DEFAULT"] = L["DEFAULT"],
-					["COMBAT"] = E:TextureString(E.Media.Textures.Combat, ":14"),
-					["PLATINUM"] = [[|TInterface\Challenges\ChallengeMode_Medal_Platinum:14|t]],
-					["ATTACK"] = [[|TInterface\CURSOR\Attack:14|t]],
-					["ALERT"] = [[|TInterface\DialogFrame\UI-Dialog-Icon-AlertNew:14|t]],
-					["ALERT2"] = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14|t]],
-					["ARTHAS"] =[[|TInterface\LFGFRAME\UI-LFR-PORTRAIT:14|t]],
-					["SKULL"] = [[|TInterface\LootFrame\LootPanel-Icon:14|t]],
+					CUSTOM = L["CUSTOM"],
+					DEFAULT = L["DEFAULT"],
+					COMBAT = E:TextureString(E.Media.Textures.Combat, ":14"),
+					PLATINUM = [[|TInterface\Challenges\ChallengeMode_Medal_Platinum:14|t]],
+					ATTACK = [[|TInterface\CURSOR\Attack:14|t]],
+					ALERT = [[|TInterface\DialogFrame\UI-Dialog-Icon-AlertNew:14|t]],
+					ALERT2 = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14|t]],
+					ARTHAS =[[|TInterface\LFGFRAME\UI-LFR-PORTRAIT:14|t]],
+					SKULL = [[|TInterface\LootFrame\LootPanel-Icon:14|t]],
 				},
 			},
 			customTexture = {
@@ -3384,53 +3306,6 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 					updateFunc(UF, groupName, numUnits)
 					UF:TestingDisplay_CombatIndicator(UF[groupName])
 				end
-			},
-		},
-	}
-
-	return config
-end
-
-local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits)
-	local config = {
-		type = "group",
-		name = L["Strata and Level"],
-		get = function(info) return E.db.unitframe.units[groupName].strataAndLevel[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].strataAndLevel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			useCustomStrata = {
-				order = 1,
-				type = "toggle",
-				name = L["Use Custom Strata"],
-			},
-			frameStrata = {
-				order = 2,
-				type = "select",
-				name = L["Frame Strata"],
-				values = {
-					["BACKGROUND"] = "BACKGROUND",
-					["LOW"] = "LOW",
-					["MEDIUM"] = "MEDIUM",
-					["HIGH"] = "HIGH",
-					["DIALOG"] = "DIALOG",
-					["TOOLTIP"] = "TOOLTIP",
-				},
-			},
-			spacer = {
-				order = 3,
-				type = "description",
-				name = "",
-			},
-			useCustomLevel = {
-				order = 4,
-				type = "toggle",
-				name = L["Use Custom Level"],
-			},
-			frameLevel = {
-				order = 5,
-				type = "range",
-				name = L["Frame Level"],
-				min = 2, max = 128, step = 1,
 			},
 		},
 	}
@@ -4657,9 +4532,9 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe[info[#info]] end,
 									set = function(info, value) E.db.unitframe[info[#info]] = value end,
 									values = {
-										['NONE'] = NONE,
-										['GLOW'] = L["Glow"],
-										['FILL'] = L["Fill"]
+										NONE = NONE,
+										GLOW = L["Glow"],
+										FILL = L["Fill"]
 									},
 								},
 								blendMode = {
@@ -4925,10 +4800,10 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 					sortByValue = true,
 					name = L["Texture"],
 					values = {
-						["CUSTOM"] = L["CUSTOM"],
-						["DEFAULT"] = L["DEFAULT"],
-						["RESTING"] = E:TextureString(E.Media.Textures.Resting, ":14"),
-						["RESTING1"] = E:TextureString(E.Media.Textures.Resting1, ":14"),
+						CUSTOM = L["CUSTOM"],
+						DEFAULT = L["DEFAULT"],
+						RESTING = E:TextureString(E.Media.Textures.Resting, ":14"),
+						RESTING1 = E:TextureString(E.Media.Textures.Resting1, ":14"),
 					},
 				},
 				customTexture = {
@@ -5445,8 +5320,7 @@ E.Options.args.unitframe.args.groupUnits.args.boss = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
-				['boss'] = 'boss',
-				['arena'] = 'arena',
+				arena = L['Arena'],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'boss'); end,
 		},
@@ -5499,8 +5373,7 @@ E.Options.args.unitframe.args.groupUnits.args.arena = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
-				['boss'] = 'boss',
-				['arena'] = 'arena',
+				boss = L['Boss'],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'arena'); end,
 		},
@@ -5521,8 +5394,8 @@ E.Options.args.unitframe.args.groupUnits.args.arena = {
 					order = 3,
 					name = L["Position"],
 					values = {
-						['LEFT'] = L["Left"],
-						['RIGHT'] = L["Right"],
+						LEFT = L["Left"],
+						RIGHT = L["Right"],
 					},
 				},
 				size = {
@@ -5596,8 +5469,8 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
-				['raid'] = L["Raid Frames"],
-				['raid40'] = L["Raid40 Frames"],
+				raid = L["Raid Frames"],
+				raid40 = L["Raid40 Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'party', true); end,
 		},
@@ -5808,8 +5681,8 @@ E.Options.args.unitframe.args.groupUnits.args.raid = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
-				['party'] = L["Party Frames"],
-				['raid40'] = L["Raid40 Frames"],
+				party = L["Party Frames"],
+				raid40 = L["Raid40 Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raid', true); end,
 		},
@@ -5881,8 +5754,8 @@ E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
-				['party'] = L["Party Frames"],
-				['raid'] = L["Raid Frames"],
+				party = L["Party Frames"],
+				raid = L["Raid Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raid40', true); end,
 		},
@@ -5954,8 +5827,8 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
-				['party'] = L["Party Frames"],
-				['raid'] = L["Raid Frames"],
+				party = L["Party Frames"],
+				raid = L["Raid Frames"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'raidpet', true); end,
 		},
@@ -6054,8 +5927,8 @@ E.Options.args.unitframe.args.groupUnits.args.tank = {
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'tank'),
 	},
 }
-E.Options.args.unitframe.args.groupUnits.args.tank.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
-E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.groupUnits.args.tank.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
+E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
 E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.tank.targetsGroup.name[info[#info]] end
 E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.tank.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'tank') end
 E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.guiInline = true
@@ -6140,8 +6013,8 @@ E.Options.args.unitframe.args.groupUnits.args.assist = {
 		rdebuffs = GetOptionsTable_RaidDebuff(UF.CreateAndUpdateHeaderGroup, 'assist'),
 	},
 }
-E.Options.args.unitframe.args.groupUnits.args.assist.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
-E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.args.attachTextTo.values = { ["Health"] = L["Health"], ["Frame"] = L["Frame"] }
+E.Options.args.unitframe.args.groupUnits.args.assist.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
+E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
 E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.assist.targetsGroup.name[info[#info]] end
 E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.assist.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'assist') end
 E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.guiInline = true
@@ -6299,9 +6172,9 @@ if E.myclass == 'DEATHKNIGHT' then
 		type = 'select',
 		order = 7,
 		values = {
-			['asc'] = L["Ascending"],
-			['desc'] = L["Descending"],
-			['NONE'] = L["NONE"],
+			asc = L["Ascending"],
+			desc = L["Descending"],
+			NONE = L["NONE"],
 		},
 		get = function(info) return E.db.unitframe.units.player.classbar[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
