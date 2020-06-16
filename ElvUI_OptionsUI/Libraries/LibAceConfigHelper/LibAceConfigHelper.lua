@@ -37,8 +37,8 @@ function ACH:Header(name, order, get, set, hidden)
 	return { type = 'header', name = name, order = order, get = get, set = set, hidden = hidden }
 end
 
-function ACH:Input(name, desc, order, values, width, get, set, disabled, hidden)
-	return { type = 'input', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden, values = values }
+function ACH:Input(name, desc, order, multiline, width, get, set, disabled, hidden, validate)
+	return { type = 'input', name = name, desc = desc, order = order, multiline = multiline, width = width, get = get, set = set, disabled = disabled, hidden = hidden, validate = validate }
 end
 
 function ACH:Select(name, desc, order, values, confirm, width, get, set, disabled, hidden)
