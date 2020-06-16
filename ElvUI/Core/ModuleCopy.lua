@@ -21,11 +21,7 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 		type = 'group',
 		name = Name,
 		args = {
-			header = {
-				order = 0,
-				type = 'header',
-				name = Name,
-			},
+			header = E.Libs.ACH:Header(Name, 0),
 			general = {
 				order = 1,
 				type = 'toggle',
@@ -76,11 +72,7 @@ end
 
 function MC:CreateMoversConfigGroup()
 	local config = {
-		header = {
-			order = 0,
-			type = 'header',
-			name = L["On screen positions for different elements."],
-		},
+		header = E.Libs.ACH:Header(L["On screen positions for different elements."], 0),
 		PreButtonSpacer = {
 			order = 200,
 			type = 'description',
