@@ -427,72 +427,30 @@ E.Options.args.chat = {
 					name = L["Alerts"],
 					disabled = function() return not E.Chat.Initialized; end,
 					args = {
-						noAlertInCombat = {
+						whisperSound = {
 							order = 1,
+							type = 'select', dialogControl = 'LSM30_Sound',
+							name = L["Whisper Alert"],
+							values = AceGUIWidgetLSMlists.sound,
+						},
+						keywordSound = {
+							order = 2,
+							type = 'select', dialogControl = 'LSM30_Sound',
+							name = L["Keyword Alert"],
+							values = AceGUIWidgetLSMlists.sound,
+						},
+						noAlertInCombat = {
+							order = 3,
 							type = "toggle",
 							name = L["No Alert In Combat"],
 						},
-						keywordAlerts = {
-							order = 2,
-							type = 'group',
-							name = L["Keyword Alerts"],
-							guiInline = true,
-							args = {
-								keywordSound = {
-									order = 1,
-									type = 'select', dialogControl = 'LSM30_Sound',
-									name = L["Keyword Alert"],
-									values = AceGUIWidgetLSMlists.sound,
-								},
-								keywords = {
-									order = 2,
-									name = L["Keywords"],
-									desc = L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"],
-									type = 'input',
-									width = 'full',
-									set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateChatKeywords() end,
-								},
-							},
-						},
-						channelAlerts = {
-							order = 3,
-							type = 'group',
-							name = L["Channel Alerts"],
-							guiInline = true,
-							get = function(info) return E.db.chat.channelAlerts[info[#info]] end,
-							set = function(info, value) E.db.chat.channelAlerts[info[#info]] = value end,
-							args = {
-								GUILD = {
-									type = 'select', dialogControl = 'LSM30_Sound',
-									name = L["Guild"],
-									values = AceGUIWidgetLSMlists.sound,
-								},
-								OFFICER = {
-									type = 'select', dialogControl = 'LSM30_Sound',
-									name = L["Officer"],
-									values = AceGUIWidgetLSMlists.sound,
-								},
-								INSTANCE_CHAT = {
-									type = 'select', dialogControl = 'LSM30_Sound',
-									name = L["Instance"],
-									values = AceGUIWidgetLSMlists.sound,
-								},
-								PARTY = {
-									type = 'select', dialogControl = 'LSM30_Sound',
-									name = L["Party"],
-									values = AceGUIWidgetLSMlists.sound,
-								},
-								RAID = {
-									type = 'select', dialogControl = 'LSM30_Sound',
-									name = L["Raid"],
-									values = AceGUIWidgetLSMlists.sound,
-								},
-								WHISPER = {
-									type = 'select', dialogControl = 'LSM30_Sound',
-									name = L["Whisper"],
-									values = AceGUIWidgetLSMlists.sound,
-								},
-							},
+						keywords = {
+							order = 4,
+							name = L["Keywords"],
+							desc = L["List of words to color in chat if found in a message. If you wish to add multiple words you must seperate the word with a comma. To search for your current name you can use %MYNAME%.\n\nExample:\n%MYNAME%, ElvUI, RBGs, Tank"],
+							type = 'input',
+							width = 'full',
+							set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateChatKeywords() end,
 						},
 					},
 				},
