@@ -108,6 +108,10 @@ function ACH:Range(name, desc, order, values, width, get, set, disabled, hidden)
 	return optionTable
 end
 
+function ACH:Spacer(order)
+	return { name = ' ', type = 'description', order = order }
+end
+
 local function SharedMediaSelect(type, name, desc, order, values, width, get, set, disabled, hidden)
 	return { type = 'select', dialogControl = type, name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 end
