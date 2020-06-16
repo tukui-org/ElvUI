@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local mod = E:GetModule('DataBars')
+local ACH = E.Libs.ACH
 
 E.Options.args.databars = {
 	type = "group",
@@ -10,16 +11,8 @@ E.Options.args.databars = {
 	get = function(info) return E.db.databars[info[#info]] end,
 	set = function(info, value) E.db.databars[info[#info]] = value; end,
 	args = {
-		intro = {
-			order = 1,
-			type = "description",
-			name = L["Setup on-screen display of information bars."],
-		},
-		spacer = {
-			order = 2,
-			type = "description",
-			name = "",
-		},
+		intro = ACH:Description(L["Setup on-screen display of information bars."], 1),
+		spacer = ACH:Description("", 2),
 		experience = {
 			order = 5,
 			get = function(info) return mod.db.experience[info[#info]] end,

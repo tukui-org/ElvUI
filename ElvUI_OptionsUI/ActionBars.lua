@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local AB = E:GetModule('ActionBars')
+local ACH = E.Libs.ACH
 
 local _G = _G
 local pairs = pairs
@@ -26,11 +27,7 @@ E.Options.args.actionbar = {
 	get = function(info) return E.db.actionbar[info[#info]] end,
 	set = function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end,
 	args = {
-		intro = {
-			order = 0,
-			type = "description",
-			name = L["ACTIONBARS_DESC"],
-		},
+		intro = ACH:Description(L["ACTIONBARS_DESC"], 0),
 		enable = {
 			order = 1,
 			type = "toggle",
@@ -51,11 +48,7 @@ E.Options.args.actionbar = {
 					func = function() AB:ActivateBindMode(); E:ToggleOptionsUI(); GameTooltip:Hide(); end,
 					disabled = function() return not E.private.actionbar.enable end,
 				},
-				spacer = {
-					order = 1,
-					type = "description",
-					name = "",
-				},
+				spacer = ACH:Spacer(1),
 				macrotext = {
 					order = 3,
 					type = "toggle",

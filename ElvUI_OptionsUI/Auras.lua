@@ -117,11 +117,7 @@ E.Options.args.auras = {
 		E:StaticPopup_Show("PRIVATE_RL")
 	end,
 	args = {
-		intro = {
-			order = 0,
-			type = 'description',
-			name = L["AURAS_DESC"],
-		},
+		intro = ACH:Description(L["AURAS_DESC"], 0),
 		enable = {
 			order = 1,
 			type = 'toggle',

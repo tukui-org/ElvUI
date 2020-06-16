@@ -2,6 +2,7 @@ local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local C, L = unpack(select(2, ...))
 local WM = E:GetModule('WorldMap')
 local MM = E:GetModule('Minimap')
+local ACH = E.Libs.ACH
 
 -- GLOBALS: WORLD_MAP_MIN_ALPHA
 
@@ -39,11 +40,7 @@ E.Options.args.maps = {
 							get = function(info) return E.global.general.smallerWorldMapScale end,
 							set = function(info, value) E.global.general.smallerWorldMapScale = value; E:StaticPopup_Show("GLOBAL_RL") end,
 						},
-						spacer1 = {
-							order = 3,
-							type = "description",
-							name = ""
-						},
+						spacer1 = ACH:Description("", 3),
 						fadeMapWhenMoving = {
 							order = 4,
 							type = "toggle",
@@ -255,12 +252,7 @@ E.Options.args.maps = {
 									set = function(info, value) E.private.general.minimap.hideClassHallReport = value; E:StaticPopup_Show("PRIVATE_RL") end,
 									disabled = function() return not E.private.general.minimap.enable end,
 								},
-								spacer = {
-									order = 2,
-									type = "description",
-									name = "",
-									width = "full"
-								},
+								spacer = ACH:Description("", 2, nil, "full"),
 								position = {
 									order = 3,
 									type = "select",
@@ -315,12 +307,7 @@ E.Options.args.maps = {
 									set = function(info, value) E.private.general.minimap.hideCalendar = value; MM:UpdateSettings() end,
 									disabled = function() return not E.private.general.minimap.enable end,
 								},
-								spacer = {
-									order = 2,
-									type = "description",
-									name = "",
-									width = "full"
-								},
+								spacer = ACH:Description("", 2, nil, "full"),
 								position = {
 									order = 3,
 									type = "select",

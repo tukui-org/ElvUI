@@ -2,6 +2,7 @@ local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local C, L = unpack(select(2, ...))
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule("NamePlates")
+local ACH = E.Libs.ACH
 
 local _G = _G
 local format, gsub, ipairs, pairs, select, strmatch, strsplit = format, gsub, ipairs, pairs, select, strmatch, strsplit
@@ -177,11 +178,7 @@ local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUni
 					TOOLTIP = "TOOLTIP",
 				},
 			},
-			spacer = {
-				order = 3,
-				type = "description",
-				name = "",
-			},
+			spacer = ACH:Spacer(3),
 			useCustomLevel = {
 				order = 4,
 				type = "toggle",
@@ -450,12 +447,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 							updateFunc(UF, groupName)
 						end
 					},
-					spacer1 = {
-						order = 8,
-						type = "description",
-						fontSize = 'medium',
-						name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
-					}
+					spacer1 = ACH:Description(L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."], 8, "medium"),
 				},
 			},
 		},
@@ -750,12 +742,7 @@ local function GetOptionsTable_Auras(auraType, isGroupFrame, updateFunc, groupNa
 							updateFunc(UF, groupName, numUnits)
 						end
 					},
-					spacer1 = {
-						order = 8,
-						type = "description",
-						fontSize = 'medium',
-						name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."],
-					}
+					spacer1 = ACH:Description(L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."], 8, "medium"),
 				},
 			},
 		},
@@ -849,11 +836,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
 				set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
 				args = {
-					header = {
-						order = 1,
-						type = "description",
-						name = L['|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click "Configure Auras" and change that specific Auras settings. If "Profile Specific" is selected it will apply to that filter set.'],
-					},
+					header = ACH:Description(L['|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click "Configure Auras" and change that specific Auras settings. If "Profile Specific" is selected it will apply to that filter set.'], 1),
 					style = {
 						name = L["Style"],
 						order = 2,
@@ -1610,12 +1593,7 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 				name = L["Casting"],
 				disabled = function() return not E.db.unitframe.units[groupName].fader.enable or E.db.unitframe.units[groupName].fader.range end,
 			},
-			spacer = {
-				order = 13,
-				type = 'description',
-				name = ' ',
-				width = 'full',
-			},
+			spacer = ACH:Description("", 13, nil, "full"),
 			delay = {
 				order = 14,
 				name = L["Fade Out Delay"],
@@ -1903,15 +1881,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].portrait[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].portrait[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			warning = {
-				order = 1,
-				type = "description",
-				fontSize = 'medium',
-				width = 'full',
-				name = function()
-					return (E.db.unitframe.units[groupName].orientation == "MIDDLE" and L["Overlay mode is forced when the Frame Orientation is set to Middle."]) or ''
-				end
-			},
+			warning = ACH:Description(function() return (E.db.unitframe.units[groupName].orientation == "MIDDLE" and L["Overlay mode is forced when the Frame Orientation is set to Middle."]) or '' end, 1, "medium", "full"),
 			enable = {
 				type = 'toggle',
 				order = 2,
@@ -2828,11 +2798,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 			type = "toggle",
 			name = L["Additional Power Text"],
 		}
-		config.args.spacer = {
-			order = 10,
-			type = "description",
-			name = "",
-		}
+		config.args.spacer = ACH:Spacer(10)
 		config.args.detachGroup = {
 			order = 20,
 			type = "group",
@@ -3037,12 +3003,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 					min = 5, max = 500, step = 1,
 					set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 				},
-				spacer = {
-					order = 3,
-					name = '',
-					type = 'description',
-					width = 'full',
-				},
+				spacer = ACH:Description("", 3, nil, "full"),
 				growthDirection = {
 					order = 4,
 					name = L["Growth Direction"],
@@ -3164,12 +3125,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 						DESC = L["Descending"]
 					},
 				},
-				spacer = {
-					order = 3,
-					type = 'description',
-					width = 'full',
-					name = ' '
-				},
+				spacer = ACH:Description("", 3, nil, "full"),
 				raidWideSorting = {
 					order = 4,
 					name = L["Raid-Wide Sorting"],
@@ -3341,11 +3297,7 @@ E.Options.args.unitframe = {
 	get = function(info) return E.db.unitframe[info[#info]] end,
 	set = function(info, value) E.db.unitframe[info[#info]] = value end,
 	args = {
-		intro = {
-			order = 0,
-			type = "description",
-			name = L["UNITFRAME_DESC"],
-		},
+		intro = ACH:Description(L["UNITFRAME_DESC"], 0),
 		enable = {
 			order = 1,
 			type = "toggle",
@@ -3406,13 +3358,7 @@ E.Options.args.unitframe = {
 							guiInline = true,
 							name = L["Effective Updates"],
 							args = {
-								warning = {
-									order = 0,
-									type = "description",
-									fontSize = 'medium',
-									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."].."\n"..
-									L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."]
-								},
+								warning = ACH:Description(L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."].."\n"..L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."], 0, "medium"),
 								effectiveHealth = {
 									order = 1,
 									type = "toggle",
@@ -3434,12 +3380,7 @@ E.Options.args.unitframe = {
 									get = function(info) return E.global.unitframe[info[#info]] end,
 									set = function(info, value) E.global.unitframe[info[#info]] = value; UF:Update_AllFrames() end
 								},
-								spacer1 = {
-									order = 4,
-									type = "description",
-									name = " ",
-									width = "full"
-								},
+								spacer1 = ACH:Description("", 4, nil, "full"),
 								effectiveHealthSpeed = {
 									order = 5,
 									name = L["Health Speed"],
@@ -3595,11 +3536,7 @@ E.Options.args.unitframe = {
 									name = L["Enable"],
 									disabled = false,
 								},
-								spacer = {
-									order = 2,
-									type = "description",
-									name = "",
-								},
+								spacer = ACH:Spacer(2),
 								class = {
 									order = 3,
 									type = 'toggle',
@@ -3642,11 +3579,7 @@ E.Options.args.unitframe = {
 									name = L["Enable"],
 									disabled = false,
 								},
-								spacer = {
-									order = 2,
-									type = "description",
-									name = "",
-								},
+								spacer = ACH:Spacer(2),
 								class = {
 									order = 3,
 									type = 'toggle',
@@ -3689,11 +3622,7 @@ E.Options.args.unitframe = {
 									name = L["Enable"],
 									disabled = false,
 								},
-								spacer = {
-									order = 2,
-									type = "description",
-									name = "",
-								},
+								spacer = ACH:Spacer(2),
 								class = {
 									order = 3,
 									type = 'toggle',
@@ -3750,11 +3679,7 @@ E.Options.args.unitframe = {
 										UF:FrameGlow_UpdateFrames();
 									end,
 								},
-								spacer = {
-									order = 3,
-									type = "description",
-									name = "",
-								},
+								spacer = ACH:Spacer(3),
 								class = {
 									order = 4,
 									type = 'toggle',
@@ -3980,12 +3905,7 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},]=]
-								spacer2 = {
-									order = 5,
-									type = "description",
-									name = " ",
-									width = 'full'
-								},
+								spacer2 = ACH:Description("", 5, nil, "full"),
 								custompowerbackdrop = {
 									order = 6,
 									type = 'toggle',
@@ -4011,12 +3931,7 @@ E.Options.args.unitframe = {
 										UF:Update_AllFrames()
 									end,
 								},
-								spacer3 = {
-									order = 8,
-									type = "description",
-									name = " ",
-									width = 'full'
-								},
+								spacer3 = ACH:Description("", 8, nil, "full"),
 								MANA = {
 									order = 20,
 									name = L["MANA"],
@@ -4122,12 +4037,7 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 								},
-								spacer1 = {
-									order = 5,
-									type = "description",
-									name = " ",
-									width = 'full'
-								},
+								spacer1 = ACH:Description("", 5, nil, "full"),
 								customcastbarbackdrop = {
 									order = 6,
 									type = 'toggle',
@@ -4143,12 +4053,7 @@ E.Options.args.unitframe = {
 									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
 									disabled = function() return not E.db.unitframe.colors.customcastbarbackdrop end
 								},
-								spacer2 = {
-									order = 8,
-									type = "description",
-									name = " ",
-									width = 'full'
-								},
+								spacer2 = ACH:Description("", 8, nil, "full"),
 								castColor = {
 									order = 9,
 									name = L["Interruptible"],
@@ -4207,12 +4112,7 @@ E.Options.args.unitframe = {
 									desc = L["Color all buffs that reduce the unit's incoming damage."],
 									type = 'toggle',
 								},
-								spacer1 = {
-									order = 5,
-									type = "description",
-									name = " ",
-									width = 'full'
-								},
+								spacer1 = ACH:Description("", 5, nil, "full"),
 								customaurabarbackdrop = {
 									order = 6,
 									type = 'toggle',
@@ -4238,12 +4138,7 @@ E.Options.args.unitframe = {
 										UF:Update_AllFrames()
 									end,
 								},
-								spacer2 = {
-									order = 8,
-									type = "description",
-									name = " ",
-									width = 'full'
-								},
+								spacer2 = ACH:Description("", 8, nil, "full"),
 								BUFFS = {
 									order = 10,
 									name = L["Buffs"],
@@ -4423,12 +4318,7 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors.healPrediction.maxOverflow end,
 									set = function(info, value) E.db.unitframe.colors.healPrediction.maxOverflow = value; UF:Update_AllFrames() end,
 								},
-								spacer1 = {
-									order = 2,
-									type = "description",
-									name = " ",
-									width = 'full'
-								},
+								spacer1 = ACH:Description("", 2, nil, "full"),
 								personal = {
 									order = 3,
 									name = L["Personal"],
@@ -4490,11 +4380,7 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors.powerPrediction[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors.powerPrediction[info[#info]] = value; UF:Update_AllFrames() end,
 								},
-								spacer2 = {
-									order = 16,
-									type = "description",
-									name = "",
-								},
+								spacer2 = ACH:Spacer(16),
 								color = {
 									order = 17,
 									name = L["Power Prediction Color"],
@@ -4545,12 +4431,7 @@ E.Options.args.unitframe = {
 									get = function(info) return E.db.unitframe.colors.debuffHighlight[info[#info]] end,
 									set = function(info, value) E.db.unitframe.colors.debuffHighlight[info[#info]] = value; UF:Update_AllFrames(); end
 								},
-								spacer1 = {
-									order = 3,
-									type = "description",
-									name = " ",
-									width = 'full'
-								},
+								spacer1 = ACH:Description("", 3, nil, "full"),
 								Magic = {
 									order = 4,
 									name = L["ENCOUNTER_JOURNAL_SECTION_FLAG7"],--Magic Effect
@@ -5648,13 +5529,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid = {
 	set = function(info, value) E.db.unitframe.units.raid[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
-		header = {
-			order = 0,
-			type = "description",
-			name = L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."],
-			fontSize = "large",
-			hidden = function() return not E.db.unitframe.smartRaidFilter end,
-		},
+		header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, "large", nil, function() return not E.db.unitframe.smartRaidFilter end),
 		enable = {
 			type = 'toggle',
 			order = 1,
@@ -5721,13 +5596,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 	set = function(info, value) E.db.unitframe.units.raid40[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
-		header = {
-			order = 0,
-			type = "description",
-			name = L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."],
-			fontSize = "large",
-			hidden = function() return not E.db.unitframe.smartRaidFilter end,
-		},
+		header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, "large", nil, function() return not E.db.unitframe.smartRaidFilter end),
 		enable = {
 			type = 'toggle',
 			order = 1,
@@ -5794,13 +5663,7 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 	set = function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raidpet') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
-		header = {
-			order = 0,
-			type = "description",
-			name = L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."],
-			fontSize = "large",
-			hidden = function() return not E.db.unitframe.smartRaidFilter end,
-		},
+		header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, "large", nil, function() return not E.db.unitframe.smartRaidFilter end),
 		enable = {
 			type = 'toggle',
 			order = 1,
@@ -6083,12 +5946,7 @@ E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.class
 				UF:Update_AllFrames()
 			end,
 		},
-		spacer2 = {
-			order = 6,
-			type = "description",
-			name = " ",
-			width = 'full'
-		},
+		spacer2 = ACH:Description("", 6, nil, "full"),
 	}
 }
 
@@ -6112,12 +5970,7 @@ end
 
 
 if P.unitframe.colors.classResources[E.myclass] then
-	E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args.spacer5 = {
-		order = 20,
-		name = ' ',
-		type = 'description',
-		width = 'full',
-	}
+	E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args.spacer5 = ACH:Description("", 20, nil, "full")
 
 	local ORDER = 30
 	if E.myclass == 'PALADIN' then

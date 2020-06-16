@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local _, L = unpack(select(2, ...))
 local UF = E:GetModule('UnitFrames')
+local ACH = E.Libs.ACH
 
 local gsub = gsub
 local wipe = wipe
@@ -249,13 +250,7 @@ E.Options.args.filters = {
 			guiInline = true,
 			order = 10,
 			args = {
-				selectSpellheader = {
-					order = 0,
-					type = "description",
-					name = L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."],
-					hidden = function() return not E.db.unitframe.smartRaidFilter end,
-					fontSize = "medium",
-				},
+				selectSpellheader = ACH:Description(L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, "medium", nil, function() return not E.db.unitframe.smartRaidFilter end),
 				selectSpell = {
 					name = L["Select Spell"],
 					type = 'select',

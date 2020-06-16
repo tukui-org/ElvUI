@@ -3,6 +3,7 @@ local C, L = unpack(select(2, ...))
 local CH = E:GetModule('Chat')
 local Bags = E:GetModule('Bags')
 local Layout = E:GetModule('Layout')
+local ACH = E.Libs.ACH
 
 local _G = _G
 local gsub = gsub
@@ -21,11 +22,7 @@ E.Options.args.chat = {
 	get = function(info) return E.db.chat[info[#info]] end,
 	set = function(info, value) E.db.chat[info[#info]] = value end,
 	args = {
-		intro = {
-			order = 1,
-			type = "description",
-			name = L["CHAT_DESC"],
-		},
+		intro = ACH:Description(L["CHAT_DESC"], 1),
 		enable = {
 			order = 2,
 			type = "toggle",
@@ -167,12 +164,7 @@ E.Options.args.chat = {
 					name = L["Copy Chat Lines"],
 					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
 				},
-				spacer = {
-					order = 17,
-					type = 'description',
-					name = '',
-					width = 'full',
-				},
+				spacer = ACH:Description("", 17, nil, "full"),
 				numAllowedCombatRepeat = {
 					order = 18,
 					type = "range",

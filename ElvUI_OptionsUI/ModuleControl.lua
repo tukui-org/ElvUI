@@ -2,6 +2,7 @@ local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local C, L = unpack(select(2, ...))
 local UF = E:GetModule('UnitFrames')
 local MC = E:GetModule('ModuleCopy')
+local ACH = E.Libs.ACH
 
 function MC:AddConfigOptions(settings, config)
 	for option, tbl in pairs(settings) do
@@ -265,18 +266,8 @@ E.Options.args.modulecontrol= {
 			childGroups = "tab",
 			handler = E.Options.args.profiles.handler,
 			args = {
-				intro = {
-					order = 1,
-					type = "description",
-					name = L["This section will allow you to copy settings to a select module from or to a different profile."],
-					fontSize = 'medium',
-				},
-				pluginInfo = {
-					order = 2,
-					type = "description",
-					name = L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."],
-					fontSize = 'medium',
-				},
+				intro = ACH:Description(L["This section will allow you to copy settings to a select module from or to a different profile."], 1, "medium"),
+				pluginInfo = ACH:Description(L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."], 2, "medium"),
 				profile = {
 					order = 3,
 					type = "select",
@@ -293,7 +284,7 @@ E.Options.args.modulecontrol= {
 					desc = L["Core |cff1784d1ElvUI|r options."],
 					childGroups = "tree",
 					args = {
-						header = E.Libs.ACH:Header(L["Core |cff1784d1ElvUI|r options."], 0),
+						header = ACH:Header(L["Core |cff1784d1ElvUI|r options."], 0),
 						actionbar = CreateActionbarsConfig(),
 						auras = CreateAurasConfig(),
 						bags = CreateBagsConfig(),
@@ -322,17 +313,9 @@ E.Options.args.modulecontrol= {
 			name = L["Module Reset"],
 			order = 2,
 			args = {
-				header = E.Libs.ACH:Header(L["Module Reset"], 0),
-				intro = {
-					order = 1,
-					type = "description",
-					name = L["This section will help reset specfic settings back to default."],
-				},
-				space1 = {
-					order = 2,
-					type = "description",
-					name = "",
-				},
+				header = ACH:Header(L["Module Reset"], 0),
+				intro = ACH:Description(L["This section will help reset specfic settings back to default."], 1),
+				space1 = ACH:Description("", 2),
 				general = {
 					order = 3,
 					type = 'execute',

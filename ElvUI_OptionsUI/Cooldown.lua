@@ -1,5 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
+local ACH = E.Libs.ACH
+
 local pairs = pairs
 
 -- GLOBALS: AceGUIWidgetLSMlists
@@ -107,7 +109,7 @@ local function group(order, db, label)
 						get = function(info) return (profile(db))[info[#info]] end,
 						set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 					},
-					spacer1 = E.Libs.ACH:Header(L["Threshold Colors"], 3),
+					spacer1 = ACH:Header(L["Threshold Colors"], 3),
 					expiringColor = {
 						type = 'color',
 						order = 5,
@@ -155,7 +157,7 @@ local function group(order, db, label)
 						name = L["HH:MM"],
 						disabled = function() return not (profile(db)).override end,
 					},
-					spacer3 = E.Libs.ACH:Header(L["Time Indicator Colors"], 12),
+					spacer3 = ACH:Header(L["Time Indicator Colors"], 12),
 					useIndicatorColor = {
 						type = "toggle",
 						order = 13,
@@ -164,11 +166,7 @@ local function group(order, db, label)
 						set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 						disabled = function() return not (profile(db)).override end,
 					},
-					spacer4 = {
-						order = 14,
-						type = "description",
-						name = ''
-					},
+					spacer4 = ACH:Description("", 14),
 					expireIndicator = {
 						type = 'color',
 						order = 15,
@@ -298,11 +296,7 @@ E.Options.args.cooldown = {
 	get = function(info) return E.db.cooldown[info[#info]] end,
 	set = function(info, value) E.db.cooldown[info[#info]] = value; E:UpdateCooldownSettings('global'); end,
 	args = {
-		intro = {
-			order = 1,
-			type = 'description',
-			name = L["COOLDOWN_DESC"],
-		},
+		intro = ACH:Description(L["COOLDOWN_DESC"], 1),
 		enable = {
 			type = "toggle",
 			order = 2,

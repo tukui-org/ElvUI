@@ -4,6 +4,7 @@ local DT = E:GetModule('DataTexts')
 local Layout = E:GetModule('Layout')
 local Chat = E:GetModule('Chat')
 local Minimap = E:GetModule('Minimap')
+local ACH = E.Libs.ACH
 
 local _G = _G
 local tonumber = tonumber
@@ -384,16 +385,8 @@ E.Options.args.datatexts = {
 	get = function(info) return E.db.datatexts[info[#info]] end,
 	set = function(info, value) E.db.datatexts[info[#info]] = value; DT:LoadDataTexts() end,
 	args = {
-		intro = {
-			order = 1,
-			type = "description",
-			name = L["DATATEXT_DESC"],
-		},
-		spacer = {
-			order = 2,
-			type = "description",
-			name = "",
-		},
+		intro = ACH:Description(L["DATATEXT_DESC"], 1),
+		spacer = ACH:Description("", 2),
 		general = {
 			order = 3,
 			type = "group",
@@ -733,11 +726,7 @@ E.Options.args.datatexts = {
 			type = "group",
 			name = L["FRIENDS"],
 			args = {
-				description = {
-					order = 1,
-					type = "description",
-					name = L["Hide specific sections in the datatext tooltip."],
-				},
+				description = ACH:Description(L["Hide specific sections in the datatext tooltip."], 1),
 				hideGroup1 = {
 					order = 2,
 					type = "multiselect",
@@ -778,11 +767,7 @@ E.Options.args.datatexts = {
 			type = "group",
 			name = L["Custom Currency"],
 			args = {
-				description = {
-					order = 0,
-					type = "description",
-					name = L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."],
-				},
+				description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0),
 				add = {
 					order = 1,
 					type = "select",

@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local B = E:GetModule("Blizzard")
+local ACH = E.Libs.ACH
 
 E.Options.args.skins = {
 	type = "group",
@@ -8,11 +9,7 @@ E.Options.args.skins = {
 	childGroups = "tab",
 	order = 2,
 	args = {
-		intro = {
-			order = 0,
-			type = "description",
-			name = L["SKINS_DESC"],
-		},
+		intro = ACH:Description(L["SKINS_DESC"], 0),
 		general = {
 			order = 1,
 			type = 'multiselect',

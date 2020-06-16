@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local B = E:GetModule('Bags')
+local ACH = E.Libs.ACH
 
 local _G = _G
 local gsub = gsub
@@ -16,11 +17,7 @@ E.Options.args.bags = {
 	get = function(info) return E.db.bags[info[#info]] end,
 	set = function(info, value) E.db.bags[info[#info]] = value end,
 	args = {
-		intro = {
-			order = 1,
-			type = 'description',
-			name = L["BAGS_DESC"],
-		},
+		intro = ACH:Description(L["BAGS_DESC"], 1),
 		enable = {
 			order = 2,
 			type = "toggle",
@@ -687,11 +684,7 @@ E.Options.args.bags = {
 					name = L["Sort Inverted"],
 					desc = L["Direction the bag sorting will use to allocate the items."],
 				},
-				description = {
-					order = 3,
-					type = "description",
-					name = L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."],
-				},
+				description = ACH:Description(L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."], 3),
 				addEntryGroup = {
 					order = 4,
 					type = "group",
