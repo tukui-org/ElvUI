@@ -8,8 +8,8 @@ function ACH:Color(name, desc, order, alpha, width, disabled, hidden)
 	return { type = 'color', name = name, desc = desc, order = order, hasAlpha = alpha, width = width, disabled = disabled, hidden = hidden }
 end
 
-function ACH:Description(name, order, fontSize, hidden)
-	return { type = 'description', name = name, order = order, hidden = hidden, fontSize = fontSize }
+function ACH:Description(name, order, fontSize, width, hidden)
+	return { type = 'description', name = name, order = order, fontSize = fontSize, width = width, hidden = hidden }
 end
 
 function ACH:Execute(name, desc, order, func, confirm, width, get, set, disabled, hidden)
