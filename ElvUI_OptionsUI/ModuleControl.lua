@@ -293,11 +293,7 @@ E.Options.args.modulecontrol= {
 					desc = L["Core |cff1784d1ElvUI|r options."],
 					childGroups = "tree",
 					args = {
-						header = {
-							order = 0,
-							type = "header",
-							name = L["Core |cff1784d1ElvUI|r options."],
-						},
+						header = E.Libs.ACH:Header(L["Core |cff1784d1ElvUI|r options."], 0),
 						actionbar = CreateActionbarsConfig(),
 						auras = CreateAurasConfig(),
 						bags = CreateBagsConfig(),
@@ -326,11 +322,7 @@ E.Options.args.modulecontrol= {
 			name = L["Module Reset"],
 			order = 2,
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Module Reset"],
-				},
+				header = E.Libs.ACH:Header(L["Module Reset"], 0),
 				intro = {
 					order = 1,
 					type = "description",

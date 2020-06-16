@@ -107,11 +107,7 @@ local function group(order, db, label)
 						get = function(info) return (profile(db))[info[#info]] end,
 						set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 					},
-					spacer1 = {
-						order = 3,
-						type = "header",
-						name = L["Threshold Colors"]
-					},
+					spacer1 = E.Libs.ACH:Header(L["Threshold Colors"], 3),
 					expiringColor = {
 						type = 'color',
 						order = 5,
@@ -159,11 +155,7 @@ local function group(order, db, label)
 						name = L["HH:MM"],
 						disabled = function() return not (profile(db)).override end,
 					},
-					spacer3 = {
-						order = 12,
-						type = "header",
-						name = L["Time Indicator Colors"]
-					},
+					spacer3 = E.Libs.ACH:Header(L["Time Indicator Colors"], 12),
 					useIndicatorColor = {
 						type = "toggle",
 						order = 13,
