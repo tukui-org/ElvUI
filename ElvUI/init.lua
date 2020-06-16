@@ -110,6 +110,7 @@ do
 	E:AddLib('Base64', 'LibBase64-1.0-ElvUI')
 	E:AddLib('Masque', 'Masque', true)
 	E:AddLib('Translit', 'LibTranslit-1.0')
+	E:AddLib('ACH', 'LibAceConfigHelper')
 	-- added on ElvUI_OptionsUI load: AceGUI, AceConfig, AceConfigDialog, AceConfigRegistry, AceDBOptions
 
 	-- backwards compatible for plugins
