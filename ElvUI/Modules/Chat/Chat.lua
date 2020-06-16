@@ -1134,15 +1134,6 @@ function CH:PrintURL(url)
 end
 
 function CH:FindURL(event, msg, author, ...)
-	if (event == "CHAT_MSG_WHISPER" or event == "CHAT_MSG_BN_WHISPER") and (CH.db.whisperSound ~= 'None') and not CH.SoundTimer then
-		if (strsub(msg,1,3) == "OQ,") then return false, msg, author, ... end
-		if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
-			PlaySoundFile(LSM:Fetch("sound", CH.db.whisperSound), "Master")
-		end
-
-		CH.SoundTimer = E:Delay(1, CH.ThrottleSound)
-	end
-
 	if not CH.db.url then
 		msg = CH:CheckKeyword(msg, author)
 		msg = CH:GetSmileyReplacementText(msg)
@@ -1855,6 +1846,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
+
+			chatType = strfind(chatType, "WHISPER") and "WHISPER" or strfind(chatType, "INSTANCE_CHAT") and "INSTANCE_CHAT" or strfind(chatType, "PARTY") and "PARTY" or strfind(chatType, "RAID") and "RAID" or chatType
+			if CH.db.channelAlerts[chatType] ~= 'None' and (not CH.db.noAlertInCombat or CH.db.noAlertInCombat and not InCombatLockdown()) and not CH.SoundTimer then
+				CH.SoundTimer = E:Delay(chatType == 'WHISPER' and 1 or 5, CH.ThrottleSound)
+				PlaySoundFile(LSM:Fetch("sound", CH.db.channelAlerts[chatType]), "Master")
+			end
+
 			frame:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime)
 		end
 
@@ -2032,12 +2030,12 @@ function CH:CheckKeyword(message, author)
 			protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
 			for keyword in pairs(CH.Keywords) do
 				if hyperLink == keyword then
-					if (CH.db.keywordSound ~= 'None') and not self.SoundTimer then
+					if (CH.db.keywordSound ~= 'None') and not CH.SoundTimer then
 						if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
 							PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
 						end
 
-						self.SoundTimer = E:Delay(1, CH.ThrottleSound)
+						CH.SoundTimer = E:Delay(1, CH.ThrottleSound)
 					end
 				end
 			end
@@ -2063,7 +2061,7 @@ function CH:CheckKeyword(message, author)
 							PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
 						end
 
-						self.SoundTimer = E:Delay(1, CH.ThrottleSound)
+						CH.SoundTimer = E:Delay(1, CH.ThrottleSound)
 					end
 				end
 			end
@@ -2101,7 +2099,7 @@ function CH:CheckKeyword(message, author)
 end
 
 function CH:AddLines(lines, ...)
-	for i=select("#", ...),1,-1 do
+	for i = select("#", ...), 1, -1 do
 	local x = select(i, ...)
 		if x:IsObjectType('FontString') and not x:GetName() then
 			tinsert(lines, x:GetText())
@@ -2254,6 +2252,7 @@ function CH:DisplayChatHistory()
 	end
 
 	CH.SoundTimer = true
+
 	for _, chat in ipairs(_G.CHAT_FRAMES) do
 		for i=1, #data do
 			local d = data[i]
@@ -2272,6 +2271,7 @@ function CH:DisplayChatHistory()
 			end
 		end
 	end
+
 	CH.SoundTimer = nil
 end
 
@@ -3060,10 +3060,10 @@ function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
 
-	self:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
+	CH:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
 
 	if not E.private.chat.enable then return end
-	self.Initialized = true
+	CH.Initialized = true
 	CH.db = E.db.chat
 
 	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
@@ -3071,43 +3071,43 @@ function CH:Initialize()
 
 	_G.ChatFrameMenuButton:Kill()
 
-	self:SetupChat()
-	self:DefaultSmileys()
-	self:UpdateChatKeywords()
-	self:UpdateFading()
-	self:Panels_ColorUpdate()
-	self:HandleChatVoiceIcons()
-	self:UpdateEditboxAnchors()
-	E:UpdatedCVar('chatStyle', self.UpdateEditboxAnchors)
+	CH:SetupChat()
+	CH:DefaultSmileys()
+	CH:UpdateChatKeywords()
+	CH:UpdateFading()
+	CH:Panels_ColorUpdate()
+	CH:HandleChatVoiceIcons()
+	CH:UpdateEditboxAnchors()
+	E:UpdatedCVar('chatStyle', CH.UpdateEditboxAnchors)
 
-	self:SecureHook('GetPlayerInfoByGUID')
-	self:SecureHook('ChatEdit_SetLastActiveWindow')
-	self:SecureHook('ChatEdit_DeactivateChat')
-	self:SecureHook('ChatEdit_OnEnterPressed')
-	self:SecureHook('FCFDock_UpdateTabs')
-	self:SecureHook('FCF_Close')
-	self:SecureHook('FCF_SetWindowAlpha')
-	self:SecureHook('FCFTab_UpdateColors')
-	self:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
-	self:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
-	self:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
-	self:SecureHook('FCF_DockFrame', 'SnappingChanged')
-	self:SecureHook('FCF_ResetChatWindows', 'ClearSnapping')
-	self:SecureHook('RedockChatWindows', 'ClearSnapping')
-	self:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
-	self:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
-	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
-	self:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
-	self:RegisterEvent('PET_BATTLE_CLOSE')
+	CH:SecureHook('GetPlayerInfoByGUID')
+	CH:SecureHook('ChatEdit_SetLastActiveWindow')
+	CH:SecureHook('ChatEdit_DeactivateChat')
+	CH:SecureHook('ChatEdit_OnEnterPressed')
+	CH:SecureHook('FCFDock_UpdateTabs')
+	CH:SecureHook('FCF_Close')
+	CH:SecureHook('FCF_SetWindowAlpha')
+	CH:SecureHook('FCFTab_UpdateColors')
+	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
+	CH:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
+	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
+	CH:SecureHook('FCF_DockFrame', 'SnappingChanged')
+	CH:SecureHook('FCF_ResetChatWindows', 'ClearSnapping')
+	CH:SecureHook('RedockChatWindows', 'ClearSnapping')
+	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
+	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
+	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
+	CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
+	CH:RegisterEvent('PET_BATTLE_CLOSE')
 
 	if E.private.general.voiceOverlay then
-		self:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED', 'VoiceOverlay')
-		self:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED', 'VoiceOverlay')
-		self:RegisterEvent('VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED', 'VoiceOverlay')
-		self:RegisterEvent('VOICE_CHAT_COMMUNICATION_MODE_CHANGED', 'VoiceOverlay')
-		self:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_REMOVED', 'VoiceOverlay')
-		self:RegisterEvent('VOICE_CHAT_CHANNEL_REMOVED', 'VoiceOverlay')
-		self:RegisterEvent('VOICE_CHAT_CHANNEL_DEACTIVATED', 'VoiceOverlay')
+		CH:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED', 'VoiceOverlay')
+		CH:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED', 'VoiceOverlay')
+		CH:RegisterEvent('VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED', 'VoiceOverlay')
+		CH:RegisterEvent('VOICE_CHAT_COMMUNICATION_MODE_CHANGED', 'VoiceOverlay')
+		CH:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_REMOVED', 'VoiceOverlay')
+		CH:RegisterEvent('VOICE_CHAT_CHANNEL_REMOVED', 'VoiceOverlay')
+		CH:RegisterEvent('VOICE_CHAT_CHANNEL_DEACTIVATED', 'VoiceOverlay')
 		_G.VoiceActivityManager:UnregisterAllEvents()
 	end
 
@@ -3122,12 +3122,12 @@ function CH:Initialize()
 		_G.ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
 		local nType = strsub(event, 10)
 		if nType ~= 'AFK' and nType ~= 'DND' and nType ~= 'COMMUNITIES_CHANNEL' then
-			self:RegisterEvent(event, 'SaveChatHistory')
+			CH:RegisterEvent(event, 'SaveChatHistory')
 		end
 	end
 
-	if CH.db.chatHistory then self:DisplayChatHistory() end
-	self:BuildCopyChatFrame()
+	if CH.db.chatHistory then CH:DisplayChatHistory() end
+	CH:BuildCopyChatFrame()
 
 	-- Editbox Backdrop Color
 	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
@@ -3156,23 +3156,23 @@ function CH:Initialize()
 	end)
 
 	--Chat Heads Frame
-	self.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
-	self.ChatHeadFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -80)
-	self.ChatHeadFrame:Height(20)
-	self.ChatHeadFrame:Width(200)
-	E:CreateMover(self.ChatHeadFrame, 'VOICECHAT', L["Voice Overlay"])
-	self.maxHeads = 5
-	self.volumeBarHeight = 3
+	CH.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
+	CH.ChatHeadFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -80)
+	CH.ChatHeadFrame:Height(20)
+	CH.ChatHeadFrame:Width(200)
+	E:CreateMover(CH.ChatHeadFrame, 'VOICECHAT', L["Voice Overlay"])
+	CH.maxHeads = 5
+	CH.volumeBarHeight = 3
 
 	local CHAT_HEAD_HEIGHT = 40
-	for i=1, self.maxHeads do
-		local chatHead = CreateFrame("Frame", "ElvUIChatHeadFrame"..i, self.ChatHeadFrame)
-		chatHead:Width(self.ChatHeadFrame:GetWidth())
+	for i=1, CH.maxHeads do
+		local chatHead = CreateFrame("Frame", "ElvUIChatHeadFrame"..i, CH.ChatHeadFrame)
+		chatHead:Width(CH.ChatHeadFrame:GetWidth())
 		chatHead:Height(CHAT_HEAD_HEIGHT)
 
 		chatHead.Portrait = CreateFrame("Frame", nil, chatHead)
-		chatHead.Portrait:Width(CHAT_HEAD_HEIGHT - self.volumeBarHeight)
-		chatHead.Portrait:Height(CHAT_HEAD_HEIGHT - self.volumeBarHeight - E.Border*2)
+		chatHead.Portrait:Width(CHAT_HEAD_HEIGHT - CH.volumeBarHeight)
+		chatHead.Portrait:Height(CHAT_HEAD_HEIGHT - CH.volumeBarHeight - E.Border*2)
 		chatHead.Portrait:Point("TOPLEFT", chatHead, "TOPLEFT")
 		chatHead.Portrait:SetTemplate()
 		chatHead.Portrait.texture = chatHead.Portrait:CreateTexture(nil, "OVERLAY")
@@ -3185,8 +3185,8 @@ function CH:Initialize()
 
 		chatHead.StatusBar = CreateFrame("StatusBar", nil, chatHead)
 		chatHead.StatusBar:Point("TOPLEFT", chatHead.Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
-		chatHead.StatusBar:Width(CHAT_HEAD_HEIGHT - E.Border*2 - self.volumeBarHeight)
-		chatHead.StatusBar:Height(self.volumeBarHeight)
+		chatHead.StatusBar:Width(CHAT_HEAD_HEIGHT - E.Border*2 - CH.volumeBarHeight)
+		chatHead.StatusBar:Height(CH.volumeBarHeight)
 		chatHead.StatusBar:CreateBackdrop()
 		chatHead.StatusBar:SetStatusBarTexture(E.media.normTex)
 		chatHead.StatusBar:SetMinMaxValues(0, 1)
@@ -3197,9 +3197,9 @@ function CH:Initialize()
 		chatHead.StatusBar.anim.progress:SetDuration(.3)
 
 		chatHead:Hide()
-		self.ChatHeadFrame[i] = chatHead
+		CH.ChatHeadFrame[i] = chatHead
 	end
-	self:SetChatHeadOrientation("TOP")
+	CH:SetChatHeadOrientation("TOP")
 end
 
 E:RegisterModule(CH:GetName())
