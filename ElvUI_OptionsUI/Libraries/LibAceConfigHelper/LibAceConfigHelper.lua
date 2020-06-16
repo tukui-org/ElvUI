@@ -12,32 +12,80 @@ function ACH:Description(name, order, fontSize, hidden)
 	return { type = 'description', name = name, order = order, hidden = hidden, fontSize = fontSize }
 end
 
-function ACH:Execute(name, desc, order, func, confirm, width, disabled, hidden)
-	return { type = 'execute', name = name, desc = desc, order = order, func = func, width = width, disabled = disabled, hidden = hidden, confirm = confirm and true, confirmText = confirm }
+function ACH:Execute(name, desc, order, func, confirm, width, get, set, disabled, hidden)
+	local optionTable = { type = 'execute', name = name, desc = desc, order = order, func = func, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+
+	local confirmType = type(confirm)
+	if confirmType == 'boolean' then
+		optionTable.confirm = true
+	elseif confirmType == 'string' then
+		optionTable.confirm = true
+		optionTable.confirmText = confirm
+	elseif confirmType == 'function' then
+		optionTable.confirm = confirm
+	end
+
+	return optionTable
 end
 
 function ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden)
 	return { type = 'group', childGroups = childGroups, name = name, desc = desc, order = order, set = set, get = get, hidden = hidden, disabled = disabled, args = {} }
 end
 
-function ACH:Header(name, order, hidden)
-	return { type = 'header', name = name, order = order, hidden = hidden }
+function ACH:Header(name, order, get, set, hidden)
+	return { type = 'header', name = name, order = order, get = get, set = set, hidden = hidden }
 end
 
 function ACH:Input(name, desc, order, values, width, get, set, disabled, hidden)
 	return { type = 'input', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden, values = values }
 end
 
-function ACH:Select(name, desc, order, values, width, disabled, hidden)
-	return { type = 'select', name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
+function ACH:Select(name, desc, order, values, confirm, width, disabled, hidden)
+	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
+
+	local confirmType = type(confirm)
+	if confirmType == 'boolean' then
+		optionTable.confirm = true
+	elseif confirmType == 'string' then
+		optionTable.confirm = true
+		optionTable.confirmText = confirm
+	elseif confirmType == 'function' then
+		optionTable.confirm = confirm
+	end
+
+	return optionTable
 end
 
-function ACH:MultiSelect(name, desc, order, values, width, disabled, hidden)
-	return { type = 'multiselect' ,name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
+function ACH:MultiSelect(name, desc, order, values, confirm, width, disabled, hidden)
+	local optionTable = { type = 'multiselect' ,name = name, desc = desc, order = order, values = values, width = width, disabled = disabled, hidden = hidden }
+
+	local confirmType = type(confirm)
+	if confirmType == 'boolean' then
+		optionTable.confirm = true
+	elseif confirmType == 'string' then
+		optionTable.confirm = true
+		optionTable.confirmText = confirm
+	elseif confirmType == 'function' then
+		optionTable.confirm = confirm
+	end
+
+	return optionTable
 end
 
-function ACH:Toggle(name, desc, order, width, disabled, hidden)
-	return { type = 'toggle', name = name, desc = desc, order = order, width = width, disabled = disabled, hidden = hidden }
+function ACH:Toggle(name, desc, order, confirm, width, disabled, hidden)
+	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, width = width, disabled = disabled, hidden = hidden }
+
+	local confirmType = type(confirm)
+	if confirmType == 'boolean' then
+		optionTable.confirm = true
+	elseif confirmType == 'string' then
+		optionTable.confirm = true
+		optionTable.confirmText = confirm
+	elseif confirmType == 'function' then
+		optionTable.confirm = confirm
+	end
+
+	return optionTable
 end
 
 -- Values are the following: key = value
