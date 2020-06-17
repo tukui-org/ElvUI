@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local MC = E:GetModule('ModuleCopy')
-local ACH = E.Libs.ACH
 
 local pairs, next, type = pairs, next, type
 local format, error = format, error
@@ -22,13 +21,13 @@ function MC:CreateModuleConfigGroup(Name, section, pluginSection)
 		type = 'group',
 		name = Name,
 		args = {
-			header = ACH:Header(Name, 0),
+			header = E.Libs.ACH:Header(Name, 0),
 			general = {
 				order = 1,
 				type = 'toggle',
 				name = L["General"],
 			},
-			spacer = ACH:Spacer(-4),
+			spacer = E.Libs.ACH:Spacer(-4),
 			import = {
 				order = -3,
 				type = 'execute',
@@ -69,8 +68,8 @@ end
 
 function MC:CreateMoversConfigGroup()
 	local config = {
-		header = ACH:Header(L["On screen positions for different elements."], 0),
-		spacer = ACH:Spacer(200),
+		header = E.Libs.ACH:Header(L["On screen positions for different elements."], 0),
+		spacer = E.Libs.ACH:Spacer(200),
 		import = {
 			order = 201,
 			type = 'execute',

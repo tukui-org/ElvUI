@@ -1,6 +1,5 @@
 local E = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule("Distributor")
-local ACH = E.Libs.ACH
 
 local Engine = select(2, ...)
 Engine[1] = {}
@@ -33,6 +32,7 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local GameTooltip_Hide = GameTooltip_Hide
 local GameFontHighlightSmall = _G.GameFontHighlightSmall
+local ACH = E.Libs.ACH
 
 --Function we can call on profile change to update GUI
 function E:RefreshGUI()
