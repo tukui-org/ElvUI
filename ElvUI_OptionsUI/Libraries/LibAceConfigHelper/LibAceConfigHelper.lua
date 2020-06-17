@@ -10,7 +10,7 @@ function ACH:Color(name, desc, order, alpha, width, disabled, hidden)
 end
 
 function ACH:Description(name, order, fontSize, width, hidden)
-	return { type = 'description', name = name, order = order, fontSize = fontSize, width = width, hidden = hidden }
+	return { type = 'description', name = name, order = order, fontSize = fontSize, image = image, imageCoords = imageCoords, imageWidth = imageWidth, imageHeight = imageHeight, width = width, hidden = hidden }
 end
 
 function ACH:Execute(name, desc, order, func, confirm, width, get, set, disabled, hidden)
