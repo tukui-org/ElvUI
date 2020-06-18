@@ -188,6 +188,7 @@ local function CreateUnitframesConfig()
 	config.args.colors.args.threat.name = L["Threat"]
 
 	config.args.units = ACH:Group(L["UnitFrames"], nil, 4, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
+	config.args.units.guiInline = true
 
 	MC:AddConfigOptions(P.unitframe.units, config.args.units)
 
