@@ -3716,22 +3716,6 @@ local function GetUnitSettings(unit, name)
 						max = 60,
 						step = 1
 					},
-					--width = {
-					--	order = 3,
-					--	name = L["Icon Width"],
-					--	type = "range",
-					--	min = 6, max = 60, step = 1,
-					--	get = function(info) return E.db.nameplates.units[unit].buffs[info[#info]] end,
-					--	set = function(info, value) E.db.nameplates.units[unit].buffs[info[#info]] = value; NP:ConfigureAll() end,
-					--},
-					--height = {
-					--	order = 4,
-					--	name = L["Icon Height"],
-					--	type = "range",
-					--	min = 6, max = 60, step = 1,
-					--	get = function(info) return E.db.nameplates.units[unit].buffs[info[#info]] end,
-					--	set = function(info, value) E.db.nameplates.units[unit].buffs[info[#info]] = value; NP:ConfigureAll() end,
-					--},
 					spacing = {
 						order = 5,
 						name = L["Spacing"],
@@ -4054,22 +4038,6 @@ local function GetUnitSettings(unit, name)
 						max = 60,
 						step = 1
 					},
-					--width = {
-					--	order = 3,
-					--	name = L["Icon Width"],
-					--	type = "range",
-					--	min = 6, max = 60, step = 1,
-					--	get = function(info) return E.db.nameplates.units[unit].debuffs[info[#info]] end,
-					--	set = function(info, value) E.db.nameplates.units[unit].debuffs[info[#info]] = value; NP:ConfigureAll() end,
-					--},
-					--height = {
-					--	order = 4,
-					--	name = L["Icon Height"],
-					--	type = "range",
-					--	min = 6, max = 60, step = 1,
-					--	get = function(info) return E.db.nameplates.units[unit].debuffs[info[#info]] end,
-					--	set = function(info, value) E.db.nameplates.units[unit].debuffs[info[#info]] = value; NP:ConfigureAll() end,
-					--},
 					spacing = {
 						order = 5,
 						name = L["Spacing"],
@@ -6240,13 +6208,6 @@ E.Options.args.nameplate = {
 									name = L["Friendly"],
 									type = "color"
 								},
-								--[[ LS- said to just use "Player Extended" as "Player" and don't use "Player Simple" at all
-								['4'] = {
-									order = 4,
-									name = L["Player Simple"],
-									type = 'color',
-								},
-							]]
 								["5"] = {
 									order = 5,
 									name = L["Player"], -- Player Extended
@@ -6272,13 +6233,6 @@ E.Options.args.nameplate = {
 									name = L["Dead"],
 									type = "color"
 								},
-								--[[ disabled in oUF for now by LS-
-								['12'] = {
-									order = 12,
-									name = L["Self"],
-									type = 'color',
-								},
-							]]
 								["13"] = {
 									order = 13,
 									name = L["Battleground Friendly"],
