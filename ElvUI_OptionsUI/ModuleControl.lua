@@ -172,8 +172,7 @@ end
 local function CreateUnitframesConfig()
 	local config = MC:CreateModuleConfigGroup(L["UnitFrames"], "unitframe")
 	config.args.cooldown = ACH:Toggle(L["Cooldown Text"], nil, 2, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end)
-	config.args.cooldown.guiInline = true
-	config.args.colors = ACH:Toggle(L["COLORS"], nil, 3, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
+	config.args.colors = ACH:Group(L["COLORS"], nil, 3, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
 	config.args.colors.guiInline = true
 
 	MC:AddConfigOptions(P.unitframe.colors, config.args.colors)
