@@ -22,6 +22,7 @@ local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local Profit, Spent = 0, 0
 local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Counters: Hold Ctrl + Right Click"], '|r')
 local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Data: Hold Shift + Right Click"], '|r')
+local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 
@@ -126,7 +127,7 @@ local function OnEnter(self)
 	wipe(myGold)
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
-			local color = E:ClassColor(ElvDB.class[E.myrealm][k] or 'PRIEST')
+			local color = E:ClassColor(ElvDB.class[E.myrealm][k]) or PRIEST_COLOR
 			tinsert(myGold,
 				{
 					name = k,
