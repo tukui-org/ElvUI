@@ -1111,6 +1111,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[306928] = Defaults(), -- Umbral Breath
 		[312530] = Defaults(), -- Entropic Breath
 		[306929] = Defaults(), -- Bubbling Breath
+		[318078] = Defaults(), -- Fixated
 		-- Drest
 		[310406] = Defaults(), -- Void Glare
 		[310277] = Defaults(), -- Volatile Seed [tank]
