@@ -165,7 +165,7 @@ E.Options.args.chat = {
 					name = L["Copy Chat Lines"],
 					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
 				},
-				spacer = ACH:Description("", 17, nil, "full"),
+				spacer = ACH:Spacer(17, "full"),
 				numAllowedCombatRepeat = {
 					order = 18,
 					type = "range",

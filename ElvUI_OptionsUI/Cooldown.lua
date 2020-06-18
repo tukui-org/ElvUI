@@ -166,7 +166,7 @@ local function group(order, db, label)
 						set = function(info, value) (profile(db))[info[#info]] = value; E:UpdateCooldownSettings(db); end,
 						disabled = function() return not (profile(db)).override end,
 					},
-					spacer4 = ACH:Description("", 14),
+					spacer4 = ACH:Spacer(14),
 					expireIndicator = {
 						type = 'color',
 						order = 15,

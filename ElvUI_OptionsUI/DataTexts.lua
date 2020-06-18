@@ -387,7 +387,7 @@ E.Options.args.datatexts = {
 	set = function(info, value) E.db.datatexts[info[#info]] = value; DT:LoadDataTexts() end,
 	args = {
 		intro = ACH:Description(L["DATATEXT_DESC"], 1),
-		spacer = ACH:Description("", 2),
+		spacer = ACH:Spacer(2),
 		general = {
 			order = 3,
 			type = "group",

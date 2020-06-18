@@ -12,7 +12,7 @@ E.Options.args.databars = {
 	set = function(info, value) E.db.databars[info[#info]] = value; end,
 	args = {
 		intro = ACH:Description(L["Setup on-screen display of information bars."], 1),
-		spacer = ACH:Description("", 2),
+		spacer = ACH:Spacer(2),
 		experience = {
 			order = 5,
 			get = function(info) return mod.db.experience[info[#info]] end,

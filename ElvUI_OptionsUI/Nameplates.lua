@@ -953,7 +953,7 @@ local function UpdateFilterGroup()
 									name = L["Non-Interruptible"],
 									desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."]
 								},
-								spacer1 = ACH:Description("", 3, nil, "full"),
+								spacer1 = ACH:Spacer(3, "full"),
 								isCasting = {
 									type = "toggle",
 									order = 4,
@@ -966,7 +966,7 @@ local function UpdateFilterGroup()
 									name = L["Not Casting Anything"],
 									desc = L["If enabled then the filter will activate if the unit is not casting anything."]
 								},
-								spacer1 = ACH:Description("", 6, nil, "full"),
+								spacer1 = ACH:Spacer(6, "full"),
 								isChanneling = {
 									type = "toggle",
 									order = 7,
@@ -1069,7 +1069,7 @@ local function UpdateFilterGroup()
 									type = "toggle",
 									order = 4
 								},
-								spacer1 = ACH:Description("", 5, nil, "full"),
+								spacer1 = ACH:Spacer(5, "full"),
 								inVehicle = {
 									name = L["Player in Vehicle"],
 									desc = L["If enabled then the filter will only activate when you are in a Vehicle."],
@@ -1094,7 +1094,7 @@ local function UpdateFilterGroup()
 									order = 9,
 									type = "toggle"
 								},
-								spacer2 = ACH:Description("", 10, nil, "full"),
+								spacer2 = ACH:Spacer(10, "full"),
 								isResting = {
 									type = "toggle",
 									name = L["Player is Resting"],
@@ -1984,7 +1984,7 @@ local function UpdateFilterGroup()
 									order = 4,
 									type = "toggle"
 								},
-								spacer1 = ACH:Description("", 5, nil, "full"),
+								spacer1 = ACH:Spacer(5, "full"),
 								offTank = {
 									name = L["Off Tank"],
 									order = 6,
@@ -2659,7 +2659,7 @@ local function UpdateFilterGroup()
 		}
 
 		if NP.StyleFilterCustomChecks then
-			E.Options.args.nameplate.args.filters.args.triggers.args.combat.args.types.args.pluginSpacer = ACH:Description("", 49, nil, "full")
+			E.Options.args.nameplate.args.filters.args.triggers.args.combat.args.types.args.pluginSpacer = ACH:Spacer(49, "full")
 		end
 
 		E.Options.args.nameplate.args.filters.args.actions = {
@@ -5659,7 +5659,7 @@ E.Options.args.nameplate = {
 									get = function(info) return E.global.nameplate[info[#info]] end,
 									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
 								},
-								spacer1 = ACH:Description("", 4, nil, "full"),
+								spacer1 = ACH:Spacer(4, "full"),
 								effectiveHealthSpeed = {
 									order = 5,
 									name = L["Health Speed"],
@@ -6596,7 +6596,7 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup()
 					end
 				},
-				spacer1 = ACH:Description("", 4, nil, "full"),
+				spacer1 = ACH:Spacer(4, "full"),
 				classBarGroup = {
 					order = 10,
 					type = "group",
