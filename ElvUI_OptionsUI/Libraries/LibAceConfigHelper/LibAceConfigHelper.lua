@@ -58,7 +58,7 @@ function ACH:Select(name, desc, order, values, confirm, width, get, set, disable
 end
 
 function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'multiselect' ,name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+	local optionTable = { type = 'multiselect', name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	local confirmType = type(confirm)
 	if confirmType == 'boolean' then

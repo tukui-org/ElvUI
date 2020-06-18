@@ -7,10 +7,7 @@ local ACH = E.Libs.ACH
 function MC:AddConfigOptions(settings, config)
 	for option, tbl in pairs(settings) do
 		if type(tbl) == 'table' and not (tbl.r and tbl.g and tbl.b) then
-			config.args[option] = {
-				type = "toggle",
-				name = option,
-			}
+			config.args[option] = ACH:Toggle(option)
 		end
 	end
 end
@@ -75,19 +72,13 @@ end
 
 --Chat
 local function CreateChatConfig()
-	local config = MC:CreateModuleConfigGroup(L["Chat"], "chat")
-
-	return config
+	return MC:CreateModuleConfigGroup(L["Chat"], "chat")
 end
 
 --Cooldowns
 local function CreateCooldownConfig()
 	local config = MC:CreateModuleConfigGroup(L["Cooldown Text"], "cooldown")
-	config.args.fonts = {
-		order = 2,
-		type = "toggle",
-		name = L["Fonts"],
-	}
+	config.args.fonts = ACH:Toggle(L["Fonts"], nil, 2)
 
 	return config
 end
@@ -109,11 +100,7 @@ end
 --DataTexts
 local function CreateDatatextsConfig()
 	local config = MC:CreateModuleConfigGroup(L["DataTexts"], "datatexts")
-	config.args.panels = {
-		order = 2,
-		type = "toggle",
-		name = L["Panels"],
-	}
+	config.args.panels = ACH:Toggle(L["Panels"], nil, 2)
 
 	return config
 end
@@ -152,15 +139,8 @@ local function CreateNamePlatesConfig()
 
 	-- Modify Tables
 	config.args.filters = nil
-	config.args.units = {
-		order = -5,
-		type = "group",
-		guiInline = true,
-		name = L["NamePlates"],
-		get = function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end,
-		set = function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end,
-		args = {},
-	}
+	config.args.units = ACH:Group(L["NamePlates"], nil, -5, nil, function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end)
+	config.args.units.guiInline = true
 
 	MC:AddConfigOptions(P.nameplates.units, config.args.units)
 
@@ -191,23 +171,10 @@ end
 --UnitFrames
 local function CreateUnitframesConfig()
 	local config = MC:CreateModuleConfigGroup(L["UnitFrames"], "unitframe")
-	config.args.cooldown = {
-		order = 2,
-		type = "toggle",
-		name = L["Cooldown Text"],
-		get = function(info) return E.global.profileCopy.unitframe[info[#info]] end,
-		set = function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end
-	}
-
-	config.args.colors = {
-		order = 3,
-		type = "group",
-		guiInline = true,
-		name = L["COLORS"],
-		get = function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end,
-		set = function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end,
-		args = {},
-	}
+	config.args.cooldown = ACH:Toggle(L["Cooldown Text"], nil, 2, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end)
+	config.args.cooldown.guiInline = true
+	config.args.colors = ACH:Toggle(L["COLORS"], nil, 3, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
+	config.args.colors.guiInline = true
 
 	MC:AddConfigOptions(P.unitframe.colors, config.args.colors)
 
@@ -221,15 +188,7 @@ local function CreateUnitframesConfig()
 	config.args.colors.args.selection.name = L["Selection"]
 	config.args.colors.args.threat.name = L["Threat"]
 
-	config.args.units = {
-		order = 4,
-		type = "group",
-		guiInline = true,
-		name = L["UnitFrames"],
-		get = function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end,
-		set = function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end,
-		args = {},
-	}
+	config.args.units = ACH:Group(L["UnitFrames"], nil, 4, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
 
 	MC:AddConfigOptions(P.unitframe.units, config.args.units)
 
