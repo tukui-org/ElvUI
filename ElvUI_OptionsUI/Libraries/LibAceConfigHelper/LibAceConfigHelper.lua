@@ -108,8 +108,8 @@ function ACH:Range(name, desc, order, values, width, get, set, disabled, hidden)
 	return optionTable
 end
 
-function ACH:Spacer(order)
-	return { name = ' ', type = 'description', order = order }
+function ACH:Spacer(order, width)
+	return { name = ' ', type = 'description', order = order, width = width }
 end
 
 local function SharedMediaSelect(type, name, desc, order, values, width, get, set, disabled, hidden)
