@@ -1465,6 +1465,10 @@ local function CreateCustomTextGroup(unit, objectName)
 		},
 	}
 
+	if unit == 'player' and UF.player.AdditionalPower then
+		E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName].args.attachTextTo.values.AdditionalPower = L["Additional Power"]
+	end
+
 	tinsert(CUSTOMTEXT_CONFIGS, E.Options.args.unitframe.args[group].args[unit].args.customText.args[objectName]) --Register this custom text config to be hidden on profile change
 end
 
