@@ -4,6 +4,8 @@ local UF = E:GetModule('UnitFrames')
 local MC = E:GetModule('ModuleCopy')
 local ACH = E.Libs.ACH
 
+local type, pairs = type, pairs
+
 function MC:AddConfigOptions(settings, config)
 	for option, tbl in pairs(settings) do
 		if type(tbl) == 'table' and not (tbl.r and tbl.g and tbl.b) then

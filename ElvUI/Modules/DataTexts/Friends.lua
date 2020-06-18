@@ -17,6 +17,7 @@ local GetDisplayedInviteType = GetDisplayedInviteType
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
+local IsAltKeyDown = IsAltKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local SendChatMessage = SendChatMessage
 local SetItemRef = SetItemRef

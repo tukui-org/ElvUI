@@ -126,8 +126,7 @@ local function OnEnter(self)
 	wipe(myGold)
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
-			local class = ElvDB.class[E.myrealm][k] or 'PRIEST'
-			local color = E:ClassColor(class or 'PRIEST')
+			local color = E:ClassColor(ElvDB.class[E.myrealm][k] or 'PRIEST')
 			tinsert(myGold,
 				{
 					name = k,

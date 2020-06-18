@@ -2,6 +2,7 @@ local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local C, L = unpack(select(2, ...))
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule("NamePlates")
+local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
 local _G = _G
@@ -12,8 +13,6 @@ local IsAddOnLoaded = IsAddOnLoaded
 
 -- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
 -- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
-
-local ACD = E.Libs.AceConfigDialog
 
 local positionValues = {
 	TOPLEFT = 'TOPLEFT',

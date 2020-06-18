@@ -4,6 +4,7 @@ local WM = E:GetModule('WorldMap')
 local MM = E:GetModule('Minimap')
 local ACH = E.Libs.ACH
 
+local _G = _G
 -- GLOBALS: WORLD_MAP_MIN_ALPHA
 
 E.Options.args.maps = {

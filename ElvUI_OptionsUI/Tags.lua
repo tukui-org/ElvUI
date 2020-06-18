@@ -2,6 +2,7 @@ local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local C, L = unpack(select(2, ...))
 local ACH = E.Libs.ACH
 
+local _G = _G
 local format = format
 
 E.Options.args.tagGroup = ACH:Group(L["Available Tags"], nil, 3, 'tab')

@@ -5,18 +5,17 @@ local ACH = E.Libs.ACH
 
 local _G = _G
 local pairs = pairs
+local format = format
 local SetCVar = SetCVar
 local GameTooltip = _G.GameTooltip
 
--- GLOBALS: NUM_ACTIONBAR_BUTTONS, NUM_PET_ACTION_SLOTS
--- GLOBALS: LOCK_ACTIONBAR, MICRO_BUTTONS
--- GLOBALS: AceGUIWidgetLSMlists
+-- GLOBALS: NUM_ACTIONBAR_BUTTONS, NUM_PET_ACTION_SLOTS, LOCK_ACTIONBAR, MICRO_BUTTONS, AceGUIWidgetLSMlists
 
 local points = {
-	["TOPLEFT"] = "TOPLEFT",
-	["TOPRIGHT"] = "TOPRIGHT",
-	["BOTTOMLEFT"] = "BOTTOMLEFT",
-	["BOTTOMRIGHT"] = "BOTTOMRIGHT",
+	TOPLEFT = "TOPLEFT",
+	TOPRIGHT = "TOPRIGHT",
+	BOTTOMLEFT = "BOTTOMLEFT",
+	BOTTOMRIGHT = "BOTTOMRIGHT",
 }
 
 E.Options.args.actionbar = {

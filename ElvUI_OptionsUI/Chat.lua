@@ -8,6 +8,7 @@ local ACH = E.Libs.ACH
 local _G = _G
 local gsub = gsub
 local wipe = wipe
+local pairs = pairs
 local format = format
 local strlower = strlower
 local GameTooltip = _G.GameTooltip

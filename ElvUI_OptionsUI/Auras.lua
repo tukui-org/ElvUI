@@ -4,7 +4,6 @@ local A = E:GetModule('Auras')
 local ACH = E.Libs.ACH
 
 local format = format
-
 -- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
 
 local function GetAuraOptions()

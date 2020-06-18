@@ -7,6 +7,7 @@ local Minimap = E:GetModule('Minimap')
 local ACH = E.Libs.ACH
 
 local _G = _G
+local wipe = wipe
 local tonumber = tonumber
 local tostring = tostring
 local format = format
