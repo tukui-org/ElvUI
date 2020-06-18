@@ -20,7 +20,6 @@ function S:HelpFrame()
 		_G.HelpFrameKnowledgebaseSearchButton,
 		_G.HelpFrameKnowledgebaseNavBarHomeButton,
 		_G.HelpFrameCharacterStuckStuck,
-		_G.HelpFrameButton16,
 		_G.HelpFrameSubmitSuggestionSubmit,
 		_G.HelpFrameReportBugSubmit,
 	}
@@ -56,7 +55,7 @@ function S:HelpFrame()
 	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
 	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
-	for i=1, _G.HelpFrameSubmitSuggestion:GetNumChildren() do
+	for i = 1, _G.HelpFrameSubmitSuggestion:GetNumChildren() do
 		local child = select(i, _G.HelpFrameSubmitSuggestion:GetChildren())
 		if not child:GetName() then
 			child:StripTextures()
@@ -83,13 +82,24 @@ function S:HelpFrame()
 		local b = _G["HelpFrameButton"..i]
 		local s = _G["HelpFrameButton"..i.."Selected"]
 
+		-- button 16 is special
+		local b16 = _G.HelpFrameButton16
+		local sb16 = _G.HelpFrameButton16Selected
+
 		S:HandleButton(b)
+		S:HandleButton(b16)
 		b.text:ClearAllPoints()
 		b.text:Point("CENTER")
 		b.text:SetJustifyH("CENTER")
 
+		b16.text:ClearAllPoints()
+		b16.text:Point("CENTER")
+		b16.text:SetJustifyH("CENTER")
+
 		s:SetAlpha(0)
 		s.SetAlpha = E.noop
+		sb16:SetAlpha(0)
+		sb16.SetAlpha = E.noop
 	end
 
 	-- skin table options
@@ -125,7 +135,7 @@ function S:HelpFrame()
 
 	local HelpFrame = _G.HelpFrame
 	HelpFrame:StripTextures(true)
-	HelpFrame:CreateBackdrop("Transparent")
+	HelpFrame:CreateBackdrop('Transparent')
 	S:HandleEditBox(_G.HelpFrameKnowledgebaseSearchBox)
 	S:HandleScrollBar(_G.HelpFrameKnowledgebaseScrollFrameScrollBar, 5)
 	S:HandleCloseButton(_G.HelpFrameCloseButton, HelpFrame.backdrop)
@@ -140,7 +150,7 @@ function S:HelpFrame()
 
 	S:HandleButton(_G.HelpFrameGM_ResponseNeedMoreHelp)
 	S:HandleButton(_G.HelpFrameGM_ResponseCancel)
-	for i=1, _G.HelpFrameGM_Response:GetNumChildren() do
+	for i = 1, _G.HelpFrameGM_Response:GetNumChildren() do
 		local child = select(i, _G.HelpFrameGM_Response:GetChildren())
 		if child and child:IsObjectType('Frame') and not child:GetName() then
 			child:SetTemplate()
