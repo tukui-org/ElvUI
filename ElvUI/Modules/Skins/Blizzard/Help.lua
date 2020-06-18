@@ -81,10 +81,15 @@ function S:HelpFrame()
 	-- skin main buttons
 	for i = 1, 6 do
 		local b = _G["HelpFrameButton"..i]
-		S:HandleButton(b, true)
+		local s = _G["HelpFrameButton"..i.."Selected"]
+
+		S:HandleButton(b)
 		b.text:ClearAllPoints()
 		b.text:Point("CENTER")
 		b.text:SetJustifyH("CENTER")
+
+		s:SetAlpha(0)
+		s.SetAlpha = E.noop
 	end
 
 	-- skin table options
