@@ -82,8 +82,8 @@ local function bar_SetSmoothedMinMaxValues(self, min, max)
 end
 
 local function SmoothBar(bar)
-    bar._min, bar._max = bar:GetMinMaxValues()
-    bar._value = bar:GetValue()
+	bar._min, bar._max = bar:GetMinMaxValues()
+	bar._value = bar:GetValue()
 
 	if not bar.SetValue_ then
 		bar.SetValue_ = bar.SetValue

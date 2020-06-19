@@ -86,18 +86,18 @@ do
 		end
 
 		for _, bar in pairs(AB.handledBars) do
-			for i=1, #bar.buttons do
+			for i = 1, #bar.buttons do
 				tinsert(self.massiveShakeObjects, bar.buttons[i])
 			end
 		end
 
 		if ElvUI_StanceBar then
-			for i=1, #ElvUI_StanceBar.buttons do
+			for i = 1, #ElvUI_StanceBar.buttons do
 				tinsert(self.massiveShakeObjects, ElvUI_StanceBar.buttons[i])
 			end
 		end
 
-		for i=1, NUM_PET_ACTION_SLOTS do
+		for i = 1, NUM_PET_ACTION_SLOTS do
 			local button = _G['PetActionButton'..i]
 			if button then
 				tinsert(self.massiveShakeObjects, button)

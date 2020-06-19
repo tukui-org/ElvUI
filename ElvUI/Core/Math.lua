@@ -53,7 +53,7 @@ function E:ShortValue(value, dec)
 	local abs_value = value<0 and -value or value
 	local decimal = dec and format('%%.%df', tonumber(dec) or 0)
 
-	for i=1, #E.ShortPrefixValues do
+	for i = 1, #E.ShortPrefixValues do
 		if abs_value >= E.ShortPrefixValues[i][1] then
 			if decimal then
 				return format(decimal..E.ShortPrefixValues[i][2], value / E.ShortPrefixValues[i][1])
@@ -89,7 +89,7 @@ end
 function E:TextGradient(text, ...)
 	local msg, len, idx = '', utf8len(text), 0
 
-	for i=1, len do
+	for i = 1, len do
 		local x = utf8sub(text, i, i)
 		if strmatch(x, '%s') then
 			msg = msg .. x
