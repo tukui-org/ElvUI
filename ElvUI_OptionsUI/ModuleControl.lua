@@ -214,158 +214,41 @@ local function CreateUnitframesConfig()
 	return config
 end
 
-E.Options.args.modulecontrol= {
-	order = 3,
-	type = "group",
-	name = L["Module Control"],
-	childGroups = "tab",
-	args = {
-		modulecopy = {
-			type = "group",
-			name = L["Module Copy"],
-			order = 1,
-			childGroups = "tab",
-			handler = E.Options.args.profiles.handler,
-			args = {
-				intro = ACH:Description(L["This section will allow you to copy settings to a select module from or to a different profile."], 1, "medium"),
-				pluginInfo = ACH:Description(L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."], 2, "medium"),
-				profile = {
-					order = 3,
-					type = "select",
-					name = L["Profile"],
-					desc = L["Select a profile to copy from/to."],
-					get = function(info) return E.global.profileCopy.selected end,
-					set = function(info, value) E.global.profileCopy.selected = value end,
-					values = function() return E.data:GetProfiles() end,
-				},
-				elvui = {
-					order = 10,
-					type = 'group',
-					name = 'ElvUI',
-					desc = L["Core |cff1784d1ElvUI|r options."],
-					childGroups = "tree",
-					args = {
-						header = ACH:Header(L["Core |cff1784d1ElvUI|r options."], 0),
-						actionbar = CreateActionbarsConfig(),
-						auras = CreateAurasConfig(),
-						bags = CreateBagsConfig(),
-						chat = CreateChatConfig(),
-						cooldown = CreateCooldownConfig(),
-						databars = CreateDatatbarsConfig(),
-						datatexts = CreateDatatextsConfig(),
-						general = CreateGeneralConfig(),
-						nameplates = CreateNamePlatesConfig(),
-						tooltip = CreateTooltipConfig(),
-						uniframes = CreateUnitframesConfig(),
-					},
-				},
-				movers = {
-					order = 20,
-					type = 'group',
-					name = L["Movers"],
-					desc = L["On screen positions for different elements."],
-					childGroups = "tree",
-					args = MC:CreateMoversConfigGroup(),
-				},
-			},
-		},
-		modulereset = {
-			type = "group",
-			name = L["Module Reset"],
-			order = 2,
-			args = {
-				header = ACH:Header(L["Module Reset"], 0),
-				intro = ACH:Description(L["This section will help reset specfic settings back to default."], 1),
-				space1 = ACH:Spacer(2),
-				general = {
-					order = 3,
-					type = 'execute',
-					name = L["General"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset General settings?"],
-					func = function() E:CopyTable(E.db.general, P.general) end,
-				},
-				actionbar = {
-					order = 5,
-					type = 'execute',
-					name = L["ActionBars"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset ActionBars settings?"],
-					func = function() E:CopyTable(E.db.actionbar, P.actionbar) end,
-				},
-				bags = {
-					order = 6,
-					type = 'execute',
-					name = L["Bags"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset Bags settings?"],
-					func = function() E:CopyTable(E.db.bags, P.bags) end,
-				},
-				auras = {
-					order = 7,
-					type = 'execute',
-					name = L["Auras"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset Auras settings?"],
-					func = function() E:CopyTable(E.db.auras, P.auras) end,
-				},
-				chat = {
-					order = 8,
-					type = 'execute',
-					name = L["Chat"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset Chat settings?"],
-					func = function() E:CopyTable(E.db.chat, P.chat) end,
-				},
-				cooldown = {
-					order = 9,
-					type = 'execute',
-					name = L["Cooldown Text"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset Cooldown settings?"],
-					func = function() E:CopyTable(E.db.cooldown, P.cooldown) end,
-				},
-				databars = {
-					order = 10,
-					type = 'execute',
-					name = L["DataBars"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset DataBars settings?"],
-					func = function() E:CopyTable(E.db.databars, P.databars) end,
-				},
-				datatexts = {
-					order = 11,
-					type = 'execute',
-					name = L["DataTexts"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset DataTexts settings?"],
-					func = function() E:CopyTable(E.db.datatexts, P.datatexts) end,
-				},
-				nameplates = {
-					order = 12,
-					type = 'execute',
-					name = L["NamePlates"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset NamePlates settings?"],
-					func = function() E:CopyTable(E.db.nameplates, P.nameplates) end,
-				},
-				tooltip = {
-					order = 13,
-					type = 'execute',
-					name = L["Tooltip"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset Tooltip settings?"],
-					func = function() E:CopyTable(E.db.tooltip, P.tooltip) end,
-				},
-				uniframes = {
-					order = 14,
-					type = 'execute',
-					name = L["UnitFrames"],
-					confirm = true,
-					confirmText = L["Are you sure you want to reset UnitFrames settings?"],
-					func = function() E:CopyTable(E.db.unitframe, P.unitframe); UF:Update_AllFrames() end,
-				},
-			},
-		},
-	},
-}
+E.Options.args.modulecontrol= ACH:Group(L["Module Control"], nil, 3, 'tab')
+E.Options.args.modulecontrol.args.modulecopy = ACH:Group(L["Module Copy"], nil, 1, 'tab')
+E.Options.args.modulecontrol.args.modulecopy.handler = E.Options.args.profiles.handler
+E.Options.args.modulecontrol.args.modulecopy.args.intro = ACH:Description(L["This section will allow you to copy settings to a select module from or to a different profile."], 1, "medium")
+E.Options.args.modulecontrol.args.modulecopy.args.pluginInfo = ACH:Description(L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."], 2, "medium")
+E.Options.args.modulecontrol.args.modulecopy.args.profile = ACH:Select(L["Profile"], L["Select a profile to copy from/to."], 3, function() return E.data:GetProfiles() end, nil, nil, function() return E.global.profileCopy.selected end, function(_, value) E.global.profileCopy.selected = value end)
+E.Options.args.modulecontrol.args.modulecopy.args.elvui = ACH:Group('ElvUI', L["Core |cff1784d1ElvUI|r options."], 10, 'tree')
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.header = ACH:Header(L["Core |cff1784d1ElvUI|r options."], 0)
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.actionbar = CreateActionbarsConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.auras = CreateAurasConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.bags = CreateBagsConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.chat = CreateChatConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.cooldown = CreateCooldownConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.databars = CreateDatatbarsConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.datatexts = CreateDatatextsConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.general = CreateGeneralConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.nameplates = CreateNamePlatesConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.tooltip = CreateTooltipConfig()
+E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.uniframes = CreateUnitframesConfig()
+
+E.Options.args.modulecontrol.args.modulecopy.args.movers = ACH:Group(L["Movers"], L["On screen positions for different elements."], 20, 'tree')
+E.Options.args.modulecontrol.args.modulecopy.args.movers.args = MC:CreateMoversConfigGroup()
+
+E.Options.args.modulecontrol.args.modulereset = ACH:Group(L["Module Reset"], nil, 2, nil, nil, nil, nil, nil, function(info) E:CopyTable(E.db[info[#info]], P[info[#info]]) end)
+E.Options.args.modulecontrol.args.modulereset.args.header = ACH:Header(L["Module Reset"], 0)
+E.Options.args.modulecontrol.args.modulereset.args.intro = ACH:Description(L["This section will help reset specfic settings back to default."], 1)
+E.Options.args.modulecontrol.args.modulereset.args.space1 = ACH:Spacer(2)
+E.Options.args.modulecontrol.args.modulereset.args.general = ACH:Execute(L["General"], nil, 3, nil, L["Are you sure you want to reset General settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.actionbar = ACH:Execute(L["ActionBars"], nil, 4, nil, L["Are you sure you want to reset ActionBars settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.bags = ACH:Execute(L["Bags"], nil, 5, nil, L["Are you sure you want to reset Bags settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.auras = ACH:Execute(L["Auras"], nil, 6, nil, L["Are you sure you want to reset Auras settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.chat = ACH:Execute(L["Chat"], nil, 7, nil, L["Are you sure you want to reset Chat settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.cooldown = ACH:Execute(L["Cooldown Text"], nil, 8, nil, L["Are you sure you want to reset Cooldown settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.databars = ACH:Execute(L["DataBars"], nil, 9, nil, L["Are you sure you want to reset DataBars settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.datatexts = ACH:Execute(L["DataTexts"], nil, 10, nil, L["Are you sure you want to reset DataTexts settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.nameplates = ACH:Execute(L["NamePlates"], nil, 11, nil, L["Are you sure you want to reset NamePlates settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.tooltip = ACH:Execute(L["Tooltip"], nil, 12, nil, L["Are you sure you want to reset Tooltip settings?"])
+E.Options.args.modulecontrol.args.modulereset.args.uniframes = ACH:Execute(L["UnitFrames"], nil, 13, function() E:CopyTable(E.db.unitframe, P.unitframe); UF:Update_AllFrames() end, L["Are you sure you want to reset UnitFrames settings?"])

@@ -29,8 +29,8 @@ function ACH:Execute(name, desc, order, func, confirm, width, get, set, disabled
 	return optionTable
 end
 
-function ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden)
-	return { type = 'group', childGroups = childGroups, name = name, desc = desc, order = order, set = set, get = get, hidden = hidden, disabled = disabled, args = {} }
+function ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden, func)
+	return { type = 'group', childGroups = childGroups, name = name, desc = desc, order = order, set = set, get = get, hidden = hidden, disabled = disabled, func = func, args = {} }
 end
 
 function ACH:Header(name, order, get, set, hidden)
