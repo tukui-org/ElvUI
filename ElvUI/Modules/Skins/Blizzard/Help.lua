@@ -4,6 +4,27 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select, unpack = select, unpack
 
+local function OnEnter(f)
+	f.text:SetTextColor(1, 1, 1)
+end
+
+local function OnLeave(f)
+	f.text:SetTextColor(1, .8, 0)
+end
+
+local function HandleTabButton(button)
+	button.selected:SetColorTexture(1, 1, 1, 0.3)
+	button.selected:SetDrawLayer("BACKGROUND")
+	button.text:ClearAllPoints()
+	button.text:Point("CENTER")
+	button.text:SetJustifyH("CENTER")
+
+	S:HandleButton(button)
+
+	button:SetScript("OnEnter", OnEnter)
+	button:SetScript("OnLeave", OnLeave)
+end
+
 function S:HelpFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.help) then return end
 
@@ -79,28 +100,9 @@ function S:HelpFrame()
 
 	-- skin main buttons
 	for i = 1, 6 do
-		local b = _G["HelpFrameButton"..i]
-		local s = _G["HelpFrameButton"..i.."Selected"]
-
-		-- button 16 is special
-		local b16 = _G.HelpFrameButton16
-		local sb16 = _G.HelpFrameButton16Selected
-
-		S:HandleButton(b)
-		S:HandleButton(b16)
-		b.text:ClearAllPoints()
-		b.text:Point("CENTER")
-		b.text:SetJustifyH("CENTER")
-
-		b16.text:ClearAllPoints()
-		b16.text:Point("CENTER")
-		b16.text:SetJustifyH("CENTER")
-
-		s:SetAlpha(0)
-		s.SetAlpha = E.noop
-		sb16:SetAlpha(0)
-		sb16.SetAlpha = E.noop
+		HandleTabButton(_G["HelpFrameButton"..i])
 	end
+	HandleTabButton(_G.HelpFrameButton16)
 
 	-- skin table options
 	for i = 1, _G.HelpFrameKnowledgebaseScrollFrameScrollChild:GetNumChildren() do
