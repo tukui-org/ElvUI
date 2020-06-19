@@ -15,9 +15,6 @@ end
 local function HandleTabButton(button)
 	button.selected:SetColorTexture(1, 1, 1, 0.3)
 	button.selected:SetDrawLayer("BACKGROUND")
-	button.text:ClearAllPoints()
-	button.text:Point("CENTER")
-	button.text:SetJustifyH("CENTER")
 
 	S:HandleButton(button)
 
