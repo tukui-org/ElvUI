@@ -828,7 +828,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				end,
 			},
 			applyToAll = {
-				name = '',
+				name = ' ',
 				guiInline = true,
 				type = 'group',
 				order = 50,
