@@ -16,14 +16,16 @@ end
 function ACH:Execute(name, desc, order, func, confirm, width, get, set, disabled, hidden)
 	local optionTable = { type = 'execute', name = name, desc = desc, order = order, func = func, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	local confirmType = type(confirm)
-	if confirmType == 'boolean' then
-		optionTable.confirm = true
-	elseif confirmType == 'string' then
-		optionTable.confirm = true
-		optionTable.confirmText = confirm
-	elseif confirmType == 'function' then
-		optionTable.confirm = confirm
+	if confirm then
+		local confirmType = type(confirm)
+		if confirmType == 'boolean' then
+			optionTable.confirm = true
+		elseif confirmType == 'string' then
+			optionTable.confirm = true
+			optionTable.confirmText = confirm
+		elseif confirmType == 'function' then
+			optionTable.confirm = confirm
+		end
 	end
 
 	return optionTable
@@ -44,14 +46,16 @@ end
 function ACH:Select(name, desc, order, values, confirm, width, get, set, disabled, hidden)
 	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	local confirmType = type(confirm)
-	if confirmType == 'boolean' then
-		optionTable.confirm = true
-	elseif confirmType == 'string' then
-		optionTable.confirm = true
-		optionTable.confirmText = confirm
-	elseif confirmType == 'function' then
-		optionTable.confirm = confirm
+	if confirm then
+		local confirmType = type(confirm)
+		if confirmType == 'boolean' then
+			optionTable.confirm = true
+		elseif confirmType == 'string' then
+			optionTable.confirm = true
+			optionTable.confirmText = confirm
+		elseif confirmType == 'function' then
+			optionTable.confirm = confirm
+		end
 	end
 
 	return optionTable
@@ -60,14 +64,16 @@ end
 function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, disabled, hidden)
 	local optionTable = { type = 'multiselect', name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	local confirmType = type(confirm)
-	if confirmType == 'boolean' then
-		optionTable.confirm = true
-	elseif confirmType == 'string' then
-		optionTable.confirm = true
-		optionTable.confirmText = confirm
-	elseif confirmType == 'function' then
-		optionTable.confirm = confirm
+	if confirm then
+		local confirmType = type(confirm)
+		if confirmType == 'boolean' then
+			optionTable.confirm = true
+		elseif confirmType == 'string' then
+			optionTable.confirm = true
+			optionTable.confirmText = confirm
+		elseif confirmType == 'function' then
+			optionTable.confirm = confirm
+		end
 	end
 
 	return optionTable
@@ -76,14 +82,16 @@ end
 function ACH:Toggle(name, desc, order, tristate, confirm, width, get, set, disabled, hidden)
 	local optionTable = { type = 'toggle', name = name, desc = desc, order = order, tristate  = tristate, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
-	local confirmType = type(confirm)
-	if confirmType == 'boolean' then
-		optionTable.confirm = true
-	elseif confirmType == 'string' then
-		optionTable.confirm = true
-		optionTable.confirmText = confirm
-	elseif confirmType == 'function' then
-		optionTable.confirm = confirm
+	if confirm then
+		local confirmType = type(confirm)
+		if confirmType == 'boolean' then
+			optionTable.confirm = true
+		elseif confirmType == 'string' then
+			optionTable.confirm = true
+			optionTable.confirmText = confirm
+		elseif confirmType == 'function' then
+			optionTable.confirm = confirm
+		end
 	end
 
 	return optionTable
