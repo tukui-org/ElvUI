@@ -88,6 +88,7 @@ local function Click(self, btn)
 	if btn == 'RightButton' then
 		if IsShiftKeyDown() then
 			wipe(menuList)
+			tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
 			for name in pairs(ElvDB.gold[E.myrealm]) do
 				tinsert(menuList, { text = name, notCheckable = true, func = function() deleteCharacter(self, name) end })
 			end
