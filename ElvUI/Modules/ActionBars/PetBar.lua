@@ -314,7 +314,7 @@ function AB:CreateBarPet()
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
-	for i=1, NUM_PET_ACTION_SLOTS do
+	for i = 1, NUM_PET_ACTION_SLOTS do
 		local button = _G["PetActionButton"..i]
 		if not button.ICON then
 			button.ICON = button:CreateTexture("PetActionButton"..i..'ICON')

@@ -140,7 +140,7 @@ function B:LoadBagBar()
 	tinsert(B.BagBar.buttons, _G.MainMenuBarBackpackButton)
 	B:SkinBag(_G.MainMenuBarBackpackButton)
 
-	for i=0, NUM_BAG_FRAMES-1 do
+	for i = 0, NUM_BAG_FRAMES-1 do
 		local b = _G["CharacterBag"..i.."Slot"]
 		b:SetParent(B.BagBar)
 		b:HookScript('OnEnter', OnEnter)

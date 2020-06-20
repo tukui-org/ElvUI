@@ -84,7 +84,7 @@ end
 local function TextureList(frame)
 	frame = _G[frame] or FRAME
 
-	for i=1, frame:GetNumRegions() do
+	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
 		if region.IsObjectType and region:IsObjectType('Texture') then
 			print(region:GetTexture(), region:GetName(), region:GetDrawLayer())

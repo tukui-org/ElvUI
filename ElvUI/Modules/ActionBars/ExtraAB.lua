@@ -20,7 +20,7 @@ function AB:Extra_SetAlpha()
 	if not E.private.actionbar.enable then return; end
 	local alpha = E.db.actionbar.extraActionButton.alpha
 
-	for i=1, _G.ExtraActionBarFrame:GetNumChildren() do
+	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then
 			button:SetAlpha(alpha)

@@ -309,7 +309,7 @@ function AB:Tooltip_OnUpdate(tooltip, e)
 end
 
 function AB:UpdateFlyouts()
-	for i=1, GetNumFlyouts() do
+	for i = 1, GetNumFlyouts() do
 		local x = GetFlyoutID(i)
 		local _, _, numSlots, isKnown = GetFlyoutInfo(x)
 		if isKnown then
