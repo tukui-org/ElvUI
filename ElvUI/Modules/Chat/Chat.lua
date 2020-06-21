@@ -1266,21 +1266,14 @@ function CH:OnMouseWheel(frame)
 	end
 end
 
-function CH:EnableHyperlink()
+function CH:ToggleHyperlink()
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		if (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnHyperlinkEnter) then
 			self:HookScript(frame, 'OnHyperlinkEnter')
 			self:HookScript(frame, 'OnHyperlinkLeave')
 			self:HookScript(frame, 'OnMouseWheel')
-		end
-	end
-end
-
-function CH:DisableHyperlink()
-	for _, frameName in ipairs(_G.CHAT_FRAMES) do
-		local frame = _G[frameName]
-		if self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter then
+		elseif self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter then
 			self:Unhook(frame, 'OnHyperlinkEnter')
 			self:Unhook(frame, 'OnHyperlinkLeave')
 			self:Unhook(frame, 'OnMouseWheel')
@@ -1848,7 +1841,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
 
 			local alertType = strfind(chatType, "WHISPER") and "WHISPER" or strfind(chatType, "INSTANCE_CHAT") and "INSTANCE_CHAT" or strfind(chatType, "PARTY") and "PARTY" or strfind(chatType, "RAID") and "RAID" or chatType
-			if CH.db.channelAlerts[alertType] ~= 'None' and (not CH.db.noAlertInCombat or CH.db.noAlertInCombat and not InCombatLockdown()) and not CH.SoundTimer then
+			if (arg2 ~= PLAYER_NAME) and CH.db.channelAlerts[alertType] and CH.db.channelAlerts[alertType] ~= 'None' and (not CH.db.noAlertInCombat or CH.db.noAlertInCombat and not InCombatLockdown()) and not CH.SoundTimer then
 				CH.SoundTimer = E:Delay(alertType == 'WHISPER' and 1 or 5, CH.ThrottleSound)
 				PlaySoundFile(LSM:Fetch("sound", CH.db.channelAlerts[alertType]), "Master")
 			end
@@ -1911,7 +1904,7 @@ function CH:SetupChat()
 		local frame = _G[frameName]
 		local id = frame:GetID()
 		local _, fontSize = FCF_GetChatWindowInfo(id)
-		self:StyleChat(frame)
+		CH:StyleChat(frame)
 		FCFTab_UpdateAlpha(frame)
 
 		frame:FontTemplate(LSM:Fetch("font", CH.db.font), fontSize, CH.db.fontOutline)
@@ -1942,7 +1935,7 @@ function CH:SetupChat()
 	end
 
 	if CH.db.hyperlinkHover then
-		self:EnableHyperlink()
+		CH:ToggleHyperlink()
 	end
 
 	local chat = _G.GeneralDockManager.primary
@@ -1954,15 +1947,15 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
 	LO:RepositionChatDataPanels()
-	self:PositionChats()
+	CH:PositionChats()
 
 	if _G.CombatLogQuickButtonFrame_Custom then
 		_G.CombatLogQuickButtonFrame_Custom:Size(_G.LeftChatTab:GetSize())
 	end
 
-	if not self.HookSecured then
-		self:SecureHook('FCF_OpenTemporaryWindow', 'SetupChat')
-		self.HookSecured = true
+	if not CH.HookSecured then
+		CH:SecureHook('FCF_OpenTemporaryWindow', 'SetupChat')
+		CH.HookSecured = true
 	end
 end
 

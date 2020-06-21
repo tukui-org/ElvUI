@@ -28,8 +28,8 @@ E.Options.args.chat = {
 			order = 2,
 			type = "toggle",
 			name = L["Enable"],
-			get = function(info) return E.private.chat.enable end,
-			set = function(info, value) E.private.chat.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
+			get = function() return E.private.chat.enable end,
+			set = function(_, value) E.private.chat.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
 		},
 		general = {
 			order = 3,
@@ -56,11 +56,7 @@ E.Options.args.chat = {
 					desc = L["Display the hyperlink tooltip while hovering over a hyperlink."],
 					set = function(info, value)
 						E.db.chat[info[#info]] = value
-						if value == true then
-							CH:EnableHyperlink()
-						else
-							CH:DisableHyperlink()
-						end
+						CH:ToggleHyperlink()
 					end,
 				},
 				sticky = {
@@ -68,18 +64,12 @@ E.Options.args.chat = {
 					type = 'toggle',
 					name = L["Sticky Chat"],
 					desc = L["When opening the Chat Editbox to type a message having this option set means it will retain the last channel you spoke in. If this option is turned off opening the Chat Editbox should always default to the SAY channel."],
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-					end,
 				},
 				emotionIcons = {
 					order = 5,
 					type = 'toggle',
 					name = L["Emotion Icons"],
 					desc = L["Display emotion icons in chat."],
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-					end,
 				},
 				lfgIcons = {
 					order = 6,
@@ -192,9 +182,6 @@ E.Options.args.chat = {
 					name = L["Scroll Interval"],
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
 					min = 0, max = 120, step = 5,
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-					end,
 				},
 				numScrollMessages = {
 					order = 21,
@@ -435,6 +422,7 @@ E.Options.args.chat = {
 									order = 1,
 									type = 'select', dialogControl = 'LSM30_Sound',
 									name = L["Keyword Alert"],
+									width = 'double',
 									values = AceGUIWidgetLSMlists.sound,
 								},
 								keywords = {
