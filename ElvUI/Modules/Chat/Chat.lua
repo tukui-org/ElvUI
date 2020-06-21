@@ -643,7 +643,7 @@ function CH:StyleChat(frame)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(LeftChatDataPanel)
 	editbox:HookScript("OnTextChanged", OnTextChanged)
-	self:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
+	CH:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
@@ -804,7 +804,7 @@ function CH:CopyChat(frame)
 		if fontSize < 10 then fontSize = 12 end
 		FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		_G.CopyChatFrame:Show()
-		local lineCt = self:GetLines(frame)
+		local lineCt = CH:GetLines(frame)
 		local text = tconcat(copyLines, " \n", 1, lineCt)
 		FCF_SetChatWindowFontSize(frame, frame, fontSize)
 		_G.CopyChatFrameEditBox:SetText(text)
@@ -867,24 +867,24 @@ function CH:HandleFadeTabs(chat, hook)
 	local tab = CH:GetTab(chat)
 
 	if hook then
-		if not self.hooks or not self.hooks[chat] or not self.hooks[chat].OnEnter then
-			self:HookScript(chat, 'OnEnter', 'ChatOnEnter')
-			self:HookScript(chat, 'OnLeave', 'ChatOnLeave')
+		if not CH.hooks or not CH.hooks[chat] or not CH.hooks[chat].OnEnter then
+			CH:HookScript(chat, 'OnEnter', 'ChatOnEnter')
+			CH:HookScript(chat, 'OnLeave', 'ChatOnLeave')
 		end
 
-		if not self.hooks or not self.hooks[tab] or not self.hooks[tab].OnEnter then
-			self:HookScript(tab, 'OnEnter', 'TabOnEnter')
-			self:HookScript(tab, 'OnLeave', 'TabOnLeave')
+		if not CH.hooks or not CH.hooks[tab] or not CH.hooks[tab].OnEnter then
+			CH:HookScript(tab, 'OnEnter', 'TabOnEnter')
+			CH:HookScript(tab, 'OnLeave', 'TabOnLeave')
 		end
 	else
-		if self.hooks and self.hooks[chat] and self.hooks[chat].OnEnter then
-			self:Unhook(chat, 'OnEnter')
-			self:Unhook(chat, 'OnLeave')
+		if CH.hooks and CH.hooks[chat] and CH.hooks[chat].OnEnter then
+			CH:Unhook(chat, 'OnEnter')
+			CH:Unhook(chat, 'OnLeave')
 		end
 
-		if self.hooks and self.hooks[tab] and self.hooks[tab].OnEnter then
-			self:Unhook(tab, 'OnEnter')
-			self:Unhook(tab, 'OnLeave')
+		if CH.hooks and CH.hooks[tab] and CH.hooks[tab].OnEnter then
+			CH:Unhook(tab, 'OnEnter')
+			CH:Unhook(tab, 'OnLeave')
 		end
 	end
 
@@ -1147,7 +1147,7 @@ E.valueColorUpdateFuncs[CH.UpdateChatTabColors] = true
 function CH:ScrollToBottom(frame)
 	frame:ScrollToBottom()
 
-	self:CancelTimer(frame.ScrollTimer, true)
+	CH:CancelTimer(frame.ScrollTimer, true)
 end
 
 function CH:PrintURL(url)
@@ -1290,15 +1290,15 @@ end
 function CH:ToggleHyperlink(enable)
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
-		local hooked = self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter
+		local hooked = CH.hooks and CH.hooks[frame] and CH.hooks[frame].OnHyperlinkEnter
 		if enable and not hooked then
-			self:HookScript(frame, 'OnHyperlinkEnter')
-			self:HookScript(frame, 'OnHyperlinkLeave')
-			self:HookScript(frame, 'OnMouseWheel')
+			CH:HookScript(frame, 'OnHyperlinkEnter')
+			CH:HookScript(frame, 'OnHyperlinkLeave')
+			CH:HookScript(frame, 'OnMouseWheel')
 		elseif not enable and hooked then
-			self:Unhook(frame, 'OnHyperlinkEnter')
-			self:Unhook(frame, 'OnHyperlinkLeave')
-			self:Unhook(frame, 'OnMouseWheel')
+			CH:Unhook(frame, 'OnHyperlinkEnter')
+			CH:Unhook(frame, 'OnHyperlinkLeave')
+			CH:Unhook(frame, 'OnMouseWheel')
 		end
 	end
 end
@@ -2244,8 +2244,7 @@ function CH:DisplayChatHistory()
 	CH.SoundTimer = true
 
 	for _, chat in ipairs(_G.CHAT_FRAMES) do
-		for i = 1, #data do
-			local d = data[i]
+		for _, d in ipairs(data) do
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
 					local historyType, skip = historyTypes[d[50]]
@@ -2466,7 +2465,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 			local searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
 			if searchResultInfo then
 				activityID, name, leaderName = searchResultInfo.activityID, searchResultInfo.name, searchResultInfo.leaderName
-				isLeader = self:SocialQueueIsLeader(playerName, leaderName)
+				isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
 			end
 		end
 
@@ -2475,9 +2474,9 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 		end
 
 		if name then
-			self:SocialQueueMessage(guid, format('%s %s: [%s] |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], fullName or UNKNOWN, name))
+			CH:SocialQueueMessage(guid, format('%s %s: [%s] |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], fullName or UNKNOWN, name))
 		else
-			self:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], fullName or UNKNOWN))
+			CH:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], fullName or UNKNOWN))
 		end
 	elseif firstQueue then
 		local output, outputCount, queueCount = '', '', 0
@@ -2496,7 +2495,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 		end
 		if output ~= '' then
 			if queueCount > 0 then outputCount = format(LFG_LIST_AND_MORE, queueCount) end
-			self:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r %s', coloredName, SOCIAL_QUEUE_QUEUED_FOR, output, outputCount))
+			CH:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r %s', coloredName, SOCIAL_QUEUE_QUEUED_FOR, output, outputCount))
 		end
 	end
 end
@@ -2904,23 +2903,23 @@ function CH:FCFTab_UpdateColors(tab, selected)
 end
 
 function CH:GetAvailableHead()
-	for i = 1, self.maxHeads do
-		if not self.ChatHeadFrame[i]:IsShown() then
-			return self.ChatHeadFrame[i]
+	for _, ChatHead in ipairs(CH.ChatHeadFrame) do
+		if not ChatHead:IsShown() then
+			return ChatHead
 		end
 	end
 end
 
 function CH:GetHeadByID(memberID)
-	for i = 1, self.maxHeads do
-		if self.ChatHeadFrame[i].memberID == memberID then
-			return self.ChatHeadFrame[i]
+	for _, ChatHead in ipairs(CH.ChatHeadFrame) do
+		if ChatHead.memberID == memberID then
+			return ChatHead
 		end
 	end
 end
 
 function CH:ConfigureHead(memberID, channelID)
-	local frame = self:GetAvailableHead()
+	local frame = CH:GetAvailableHead()
 	if not frame then return end
 
 	frame.memberID = memberID
@@ -2936,7 +2935,7 @@ function CH:ConfigureHead(memberID, channelID)
 end
 
 function CH:DeconfigureHead(memberID) -- memberID, channelID
-	local frame = self:GetHeadByID(memberID)
+	local frame = CH:GetHeadByID(memberID)
 	if not frame then return end
 
 	frame.memberID = nil
@@ -2950,10 +2949,10 @@ function CH:VoiceOverlay(event, ...)
 
 		if isTalking then
 			CH.TalkingList[memberID] = channelID
-			self:ConfigureHead(memberID, channelID)
+			CH:ConfigureHead(memberID, channelID)
 		else
 			CH.TalkingList[memberID] = nil
-			self:DeconfigureHead(memberID, channelID)
+			CH:DeconfigureHead(memberID, channelID)
 		end
 	elseif event == "VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED" then
 		local memberID, channelID, volume = ...
@@ -2969,30 +2968,20 @@ function CH:VoiceOverlay(event, ...)
 		local localPlayerMemberID = C_VoiceChat.GetLocalPlayerMemberID(channelID)
 		if isTransmitting and not CH.TalkingList[localPlayerMemberID] then
 			CH.TalkingList[localPlayerMemberID] = channelID
-			self:ConfigureHead(localPlayerMemberID, channelID)
+			CH:ConfigureHead(localPlayerMemberID, channelID)
 		end]]
 	end
 end
 
 function CH:SetChatHeadOrientation(position)
-	if position == "TOP" then
-		for i = 1, self.maxHeads do
-			self.ChatHeadFrame[i]:ClearAllPoints()
-			if i == 1 then
-				self.ChatHeadFrame[i]:Point("TOP", self.ChatHeadFrame, "BOTTOM", 0, -E.Border*3)
-			else
-				self.ChatHeadFrame[i]:Point("TOP", self.ChatHeadFrame[i - 1], "BOTTOM", 0, -E.Border*3)
-			end
-		end
-	else
-		for i = 1, self.maxHeads do
-			self.ChatHeadFrame[i]:ClearAllPoints()
-			if i == 1 then
-				self.ChatHeadFrame[i]:Point("BOTTOM", self.ChatHeadFrame, "TOP", 0, E.Border*3)
-			else
-				self.ChatHeadFrame[i]:Point("BOTTOM", self.ChatHeadFrame[i - 1], "TOP", 0, E.Border*3)
-			end
-		end
+	local point, relativePoint, offset = 'TOP', 'BOTTOM', -E.Border*3
+	if position == 'BOTTOM' then -- This is never used. Maybe was supposed to be an option at one point?
+		point, relativePoint, offset = 'BOTTOM', 'TOP', E.Border*3
+	end
+
+	for i, ChatHead in ipairs(CH.ChatHeadFrame) do
+		ChatHead:ClearAllPoints()
+		ChatHead:Point(point, i == 1 and CH.ChatHeadFrame or CH.ChatHeadFrame[i - 1], relativePoint, 0, offset)
 	end
 end
 
