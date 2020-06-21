@@ -148,6 +148,27 @@ local tabTexs = {
 	'Highlight'
 }
 
+local historyTypes = { -- the events set on the chats are still in FindURL_Events, this is used to ignore some types only
+	CHAT_MSG_WHISPER			= 'WHISPER',
+	CHAT_MSG_WHISPER_INFORM		= 'WHISPER',
+	CHAT_MSG_BN_WHISPER			= 'WHISPER',
+	CHAT_MSG_BN_WHISPER_INFORM	= 'WHISPER',
+	CHAT_MSG_GUILD				= 'GUILD',
+	CHAT_MSG_GUILD_ACHIEVEMENT	= 'GUILD',
+	CHAT_MSG_OFFICER		= 'OFFICER',
+	CHAT_MSG_PARTY			= 'PARTY',
+	CHAT_MSG_PARTY_LEADER	= 'PARTY',
+	CHAT_MSG_RAID			= 'RAID',
+	CHAT_MSG_RAID_LEADER	= 'RAID',
+	CHAT_MSG_RAID_WARNING	= 'RAID',
+	CHAT_MSG_INSTANCE_CHAT			= 'INSTANCE',
+	CHAT_MSG_INSTANCE_CHAT_LEADER	= 'INSTANCE',
+	CHAT_MSG_CHANNEL		= 'CHANNEL',
+	CHAT_MSG_SAY			= 'SAY',
+	CHAT_MSG_YELL			= 'YELL',
+	CHAT_MSG_EMOTE			= 'EMOTE'  -- this never worked, check it sometime.
+}
+
 local canChangeMessage = function(arg1, id)
 	if id and arg1 == "" then return id end
 end
@@ -1840,9 +1861,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
 
-			local alertType = strfind(chatType, "WHISPER") and "WHISPER" or strfind(chatType, "INSTANCE_CHAT") and "INSTANCE_CHAT" or strfind(chatType, "PARTY") and "PARTY" or strfind(chatType, "RAID") and "RAID" or chatType
+			local alertType = historyTypes[chatType]
 			if (arg2 ~= PLAYER_NAME) and CH.db.channelAlerts[alertType] and CH.db.channelAlerts[alertType] ~= 'None' and (not CH.db.noAlertInCombat or CH.db.noAlertInCombat and not InCombatLockdown()) and not CH.SoundTimer then
-				CH.SoundTimer = E:Delay(alertType == 'WHISPER' and 1 or 5, CH.ThrottleSound)
+				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
 				PlaySoundFile(LSM:Fetch("sound", CH.db.channelAlerts[alertType]), "Master")
 			end
 
@@ -2028,7 +2049,7 @@ function CH:CheckKeyword(message, author)
 							PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
 						end
 
-						CH.SoundTimer = E:Delay(1, CH.ThrottleSound)
+						CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
 					end
 				end
 			end
@@ -2049,12 +2070,12 @@ function CH:CheckKeyword(message, author)
 			for keyword in pairs(CH.Keywords) do
 				if lowerCaseWord == strlower(keyword) then
 					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
-					if (author ~= PLAYER_NAME) and (CH.db.keywordSound ~= 'None') and not self.SoundTimer then
+					if (author ~= PLAYER_NAME) and (CH.db.keywordSound ~= 'None') and not CH.SoundTimer then
 						if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
 							PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
 						end
 
-						CH.SoundTimer = E:Delay(1, CH.ThrottleSound)
+						CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
 					end
 				end
 			end
@@ -2213,27 +2234,6 @@ function CH:UpdateFading()
 		end
 	end
 end
-
-local historyTypes = { -- the events set on the chats are still in FindURL_Events, this is used to ignore some types only
-	CHAT_MSG_WHISPER			= 'WHISPER',
-	CHAT_MSG_WHISPER_INFORM		= 'WHISPER',
-	CHAT_MSG_BN_WHISPER			= 'WHISPER',
-	CHAT_MSG_BN_WHISPER_INFORM	= 'WHISPER',
-	CHAT_MSG_GUILD				= 'GUILD',
-	CHAT_MSG_GUILD_ACHIEVEMENT	= 'GUILD',
-	CHAT_MSG_OFFICER		= 'OFFICER',
-	CHAT_MSG_PARTY			= 'PARTY',
-	CHAT_MSG_PARTY_LEADER	= 'PARTY',
-	CHAT_MSG_RAID			= 'RAID',
-	CHAT_MSG_RAID_LEADER	= 'RAID',
-	CHAT_MSG_RAID_WARNING	= 'RAID',
-	CHAT_MSG_INSTANCE_CHAT			= 'INSTANCE',
-	CHAT_MSG_INSTANCE_CHAT_LEADER	= 'INSTANCE',
-	CHAT_MSG_CHANNEL		= 'CHANNEL',
-	CHAT_MSG_SAY			= 'SAY',
-	CHAT_MSG_YELL			= 'YELL',
-	CHAT_MSG_EMOTE			= 'EMOTE'  -- this never worked, check it sometime.
-}
 
 function CH:DisplayChatHistory()
 	local data = ElvCharacterDB.ChatHistoryLog
