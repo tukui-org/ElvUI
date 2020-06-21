@@ -56,7 +56,7 @@ E.Options.args.chat = {
 					desc = L["Display the hyperlink tooltip while hovering over a hyperlink."],
 					set = function(info, value)
 						E.db.chat[info[#info]] = value
-						CH:ToggleHyperlink()
+						CH:ToggleHyperlink(value)
 					end,
 				},
 				sticky = {
@@ -455,7 +455,7 @@ E.Options.args.chat = {
 									width = 'double',
 									values = AceGUIWidgetLSMlists.sound,
 								},
-								INSTANCE_CHAT = {
+								INSTANCE = {
 									type = 'select', dialogControl = 'LSM30_Sound',
 									name = L["Instance"],
 									width = 'double',
