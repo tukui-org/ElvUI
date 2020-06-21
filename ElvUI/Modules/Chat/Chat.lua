@@ -1287,14 +1287,15 @@ function CH:OnMouseWheel(frame)
 	end
 end
 
-function CH:ToggleHyperlink()
+function CH:ToggleHyperlink(enable)
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
-		if (not self.hooks or not self.hooks[frame] or not self.hooks[frame].OnHyperlinkEnter) then
+		local hooked = self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter
+		if enable and not hooked then
 			self:HookScript(frame, 'OnHyperlinkEnter')
 			self:HookScript(frame, 'OnHyperlinkLeave')
 			self:HookScript(frame, 'OnMouseWheel')
-		elseif self.hooks and self.hooks[frame] and self.hooks[frame].OnHyperlinkEnter then
+		elseif not enable and hooked then
 			self:Unhook(frame, 'OnHyperlinkEnter')
 			self:Unhook(frame, 'OnHyperlinkLeave')
 			self:Unhook(frame, 'OnMouseWheel')
@@ -1861,10 +1862,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
 
-			local alertType = historyTypes[chatType]
-			if (arg2 ~= PLAYER_NAME) and CH.db.channelAlerts[alertType] and CH.db.channelAlerts[alertType] ~= 'None' and (not CH.db.noAlertInCombat or CH.db.noAlertInCombat and not InCombatLockdown()) and not CH.SoundTimer then
+			local alertType = CH.db.channelAlerts[historyTypes[chatType]]
+			if not CH.SoundTimer and (arg2 ~= PLAYER_NAME and alertType and alertType ~= 'None') and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
 				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
-				PlaySoundFile(LSM:Fetch("sound", CH.db.channelAlerts[alertType]), "Master")
+				PlaySoundFile(LSM:Fetch("sound", alertType), "Master")
 			end
 
 			frame:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime)
@@ -1956,7 +1957,7 @@ function CH:SetupChat()
 	end
 
 	if CH.db.hyperlinkHover then
-		CH:ToggleHyperlink()
+		CH:ToggleHyperlink(true)
 	end
 
 	local chat = _G.GeneralDockManager.primary
