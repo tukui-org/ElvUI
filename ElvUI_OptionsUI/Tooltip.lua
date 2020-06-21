@@ -60,5 +60,5 @@ E.Options.args.tooltip.args.factionColors = ACH:Group(L["Custom Faction Colors"]
 E.Options.args.tooltip.args.factionColors.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], nil, 0, nil, nil, nil, function() return E.db.tooltip.useCustomFactionColors end, function(_, value) E.db.tooltip.useCustomFactionColors = value; end)
 
 for i = 1, 8 do
-	E.Options.args.tooltip.args.factionColors.args[""..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true, nil, function() return not E.Tooltip.Initialized or not E.db.tooltip.useCustomFactionColors end)
+	E.Options.args.tooltip.args.factionColors.args[""..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true, nil, nil, nil, function() return not E.Tooltip.Initialized or not E.db.tooltip.useCustomFactionColors end)
 end
