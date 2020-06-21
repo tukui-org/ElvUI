@@ -1884,7 +1884,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].portrait[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].portrait[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
-			warning = ACH:Description(function() return (E.db.unitframe.units[groupName].orientation == "MIDDLE" and L["Overlay mode is forced when the Frame Orientation is set to Middle."]) or '' end, 1, "medium", "full"),
+			warning = ACH:Description(function() return (E.db.unitframe.units[groupName].orientation == "MIDDLE" and L["Overlay mode is forced when the Frame Orientation is set to Middle."]) or '' end, 1, "medium", nil, nil, nil, nil, "full"),
 			enable = {
 				type = 'toggle',
 				order = 2,
