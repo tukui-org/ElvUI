@@ -158,7 +158,7 @@ function DB:EnableDisable_AzeriteBar()
 end
 
 function DB:LoadAzeriteBar()
-	DB.azeriteBar = DB:CreateBar('ElvUI_AzeriteBar', DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, 'RIGHT', DB.honorBar, 'LEFT', E.Border - E.Spacing*3, 0)
+	DB.azeriteBar = DB:CreateBar('ElvUI_AzeriteBar', DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245)
 	DB.azeriteBar.statusBar:SetStatusBarColor(.901, .8, .601)
 	DB.azeriteBar.statusBar:SetMinMaxValues(0, 325)
 	DB.azeriteBar.statusBar:SetFrameLevel(DB.azeriteBar:GetFrameLevel() + 2)

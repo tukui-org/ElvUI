@@ -47,19 +47,19 @@ AB.barDefaults = {
 		page = 1,
 		bindButtons = "ACTIONBUTTON",
 		conditions = format("[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex()),
-		position = "BOTTOM,ElvUIParent,BOTTOM,0,4",
+		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,191',
 	},
 	bar2 = {
 		page = 5,
 		bindButtons = "MULTIACTIONBAR2BUTTON",
 		conditions = "",
-		position = "BOTTOM,ElvUI_Bar1,TOP,0,2",
+		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
 	},
 	bar3 = {
 		page = 6,
 		bindButtons = "MULTIACTIONBAR1BUTTON",
 		conditions = "",
-		position = "LEFT,ElvUI_Bar1,RIGHT,4,0",
+		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,139',
 	},
 	bar4 = {
 		page = 4,
@@ -71,7 +71,7 @@ AB.barDefaults = {
 		page = 3,
 		bindButtons = "MULTIACTIONBAR3BUTTON",
 		conditions = "",
-		position = "RIGHT,ElvUI_Bar1,LEFT,-4,0",
+		position = 'BOTTOM,ElvUIParent,BOTTOM,-92,57',
 	},
 	bar6 = {
 		page = 2,

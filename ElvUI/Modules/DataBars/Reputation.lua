@@ -171,7 +171,7 @@ function DB:EnableDisable_ReputationBar()
 end
 
 function DB:LoadReputationBar()
-	DB.repBar = DB:CreateBar('ElvUI_ReputationBar', DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, 'RIGHT', _G.RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	DB.repBar = DB:CreateBar('ElvUI_ReputationBar', DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264)
 	E:RegisterStatusBar(DB.repBar.statusBar)
 
 	DB.repBar.eventFrame = CreateFrame("Frame")

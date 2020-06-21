@@ -167,7 +167,7 @@ function DB:EnableDisable_ExperienceBar()
 end
 
 function DB:LoadExperienceBar()
-	DB.expBar = DB:CreateBar('ElvUI_ExperienceBar', DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, 'LEFT', _G.LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
+	DB.expBar = DB:CreateBar('ElvUI_ExperienceBar', DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, 'BOTTOM', E.UIParent, 'BOTTOM', 0, 43)
 	DB.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
 	DB.expBar.rested = CreateFrame('StatusBar', nil, DB.expBar)
 	DB.expBar.rested:SetInside()

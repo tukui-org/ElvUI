@@ -1646,7 +1646,7 @@ function E:Initialize()
 	E.data.RegisterCallback(E, 'OnProfileChanged', 'StaggeredUpdateAll')
 	E.data.RegisterCallback(E, 'OnProfileCopied', 'StaggeredUpdateAll')
 	E.data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
-	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars, true)
+	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
 	E.private = E.charSettings.profile
 	E.global = E.data.global
 	E.db = E.data.profile

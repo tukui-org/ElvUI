@@ -125,7 +125,7 @@ function DB:EnableDisable_HonorBar()
 end
 
 function DB:LoadHonorBar()
-	DB.honorBar = DB:CreateBar('ElvUI_HonorBar', DB.HonorBar_OnEnter, DB.HonorBar_OnClick, 'RIGHT', _G.RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
+	DB.honorBar = DB:CreateBar('ElvUI_HonorBar', DB.HonorBar_OnEnter, DB.HonorBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255)
 	DB.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
 	DB.honorBar.statusBar:SetMinMaxValues(0, 325)
 

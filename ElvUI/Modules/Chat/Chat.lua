@@ -3136,7 +3136,7 @@ function CH:Initialize()
 
 	--Chat Heads Frame
 	CH.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
-	CH.ChatHeadFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -80)
+	CH.ChatHeadFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 368, -210)
 	CH.ChatHeadFrame:Height(20)
 	CH.ChatHeadFrame:Width(200)
 	E:CreateMover(CH.ChatHeadFrame, 'VOICECHAT', L["Voice Overlay"])

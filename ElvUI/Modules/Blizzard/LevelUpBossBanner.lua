@@ -17,7 +17,7 @@ function B:Handle_LevelUpDisplay_BossBanner()
 	if not Holder then
 		Holder = CreateFrame("Frame", "LevelUpBossBannerHolder", E.UIParent)
 		Holder:Size(200, 20)
-		Holder:Point("TOP", E.UIParent, "TOP", 0, -120)
+		Holder:Point("TOP", E.UIParent, "TOP", -1, -120)
 	end
 
 	E:CreateMover(Holder, "LevelUpBossBannerMover", L["Level Up Display / Boss Banner"])

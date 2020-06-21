@@ -46,7 +46,7 @@ function UF:Update_RaidpetHeader(header, db)
 
 	if not parent.positioned then
 		parent:ClearAllPoints()
-		parent:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 574)
+		parent:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, 737)
 		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid Pet Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raidpet,generalGroup')
 		parent.positioned = true
 	end
