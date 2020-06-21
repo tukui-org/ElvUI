@@ -2014,7 +2014,7 @@ function CH:ChatThrottleIntervalHandler(event, message, author, ...)
 		return true
 	else
 		if blockObject then blockObject.time = time() end
-		return CH.FindURL(self, event, message, author, ...)
+		return CH:FindURL(event, message, author, ...)
 	end
 end
 
