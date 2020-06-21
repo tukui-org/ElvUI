@@ -2041,16 +2041,14 @@ local protectLinks = {}
 function CH:CheckKeyword(message, author)
 	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
 		protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
-		if author ~= PLAYER_NAME then
+		if CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME then
 			for keyword in pairs(CH.Keywords) do
-				if hyperLink == keyword then
-					if (CH.db.keywordSound ~= 'None') and not CH.SoundTimer then
-						if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
-							PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
-						end
-
-						CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
+				if hyperLink == keyword and not CH.SoundTimer then
+					if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
+						PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
 					end
+
+					CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
 				end
 			end
 		end
