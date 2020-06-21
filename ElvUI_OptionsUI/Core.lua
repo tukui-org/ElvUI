@@ -9,13 +9,9 @@ local C, L = Engine[1], Engine[2]
 local _G, format, sort, tinsert = _G, format, sort, tinsert
 
 C.Values = {
-	FontFlags = {
-		NONE = L["NONE"],
-		OUTLINE = "OUTLINE",
-		MONOCHROMEOUTLINE = "MONOCROMEOUTLINE",
-		THICKOUTLINE = "THICKOUTLINE"
-	},
-	FontSize = { min = 4, max = 64, step = 1 }
+	FontFlags = { NONE = L["NONE"], OUTLINE = "OUTLINE", MONOCHROMEOUTLINE = "MONOCROMEOUTLINE", THICKOUTLINE = "THICKOUTLINE" },
+	FontSize = { min = 8, max = 64, step = 1 },
+	Strata = { BACKGROUND = "BACKGROUND", LOW = "LOW", MEDIUM = "MEDIUM", HIGH = "HIGH", DIALOG = "DIALOG", TOOLTIP = "TOOLTIP" }
 }
 
 E:AddLib('AceGUI', 'AceGUI-3.0')
