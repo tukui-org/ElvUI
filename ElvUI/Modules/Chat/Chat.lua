@@ -557,7 +557,7 @@ function CH:StyleChat(frame)
 			local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
 			if len > MIN_REPEAT_CHARACTERS then
 				local repeatChar = true
-				for i=1, MIN_REPEAT_CHARACTERS, 1 do
+				for i = 1, MIN_REPEAT_CHARACTERS, 1 do
 					local first = -1 - i
 					if strsub(text,-i,-i) ~= strsub(text,first,first) then
 						repeatChar = false
@@ -1431,7 +1431,7 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 			if not seenGroups[groupIndex] then
 				seenGroups[groupIndex] = true
 				local groupList = "["
-				for i=1, GetNumGroupMembers() do
+				for i = 1, GetNumGroupMembers() do
 					local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i)
 					if name and subgroup == groupIndex then
 						local classColorTable = E:ClassColor(classFileName)
@@ -2041,7 +2041,7 @@ function CH:CheckKeyword(message, author)
 	local letSound = not CH.SoundTimer and (CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME) and letInCombat
 
 	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
-		protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
+		protectLinks[hyperLink] = gsub(hyperLink,'%s','|s')
 
 		if letSound then
 			for keyword in pairs(CH.Keywords) do
@@ -2245,7 +2245,7 @@ function CH:DisplayChatHistory()
 	CH.SoundTimer = true
 
 	for _, chat in ipairs(_G.CHAT_FRAMES) do
-		for i=1, #data do
+		for i = 1, #data do
 			local d = data[i]
 			if type(d) == 'table' then
 				for _, messageType in pairs(_G[chat].messageTypeList) do
@@ -2365,7 +2365,7 @@ function CH:CheckLFGRoles()
 		lfgRoles[PLAYER_NAME] = rolePaths[role]
 	end
 
-	for i=1, GetNumGroupMembers() do
+	for i = 1, GetNumGroupMembers() do
 		if UnitExists(unit..i) and not UnitIsUnit(unit..i, "player") then
 			role = UnitGroupRolesAssigned(unit..i)
 			name, realm = UnitName(unit..i)
@@ -2905,7 +2905,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 end
 
 function CH:GetAvailableHead()
-	for i=1, self.maxHeads do
+	for i = 1, self.maxHeads do
 		if not self.ChatHeadFrame[i]:IsShown() then
 			return self.ChatHeadFrame[i]
 		end
@@ -2913,7 +2913,7 @@ function CH:GetAvailableHead()
 end
 
 function CH:GetHeadByID(memberID)
-	for i=1, self.maxHeads do
+	for i = 1, self.maxHeads do
 		if self.ChatHeadFrame[i].memberID == memberID then
 			return self.ChatHeadFrame[i]
 		end
@@ -2977,7 +2977,7 @@ end
 
 function CH:SetChatHeadOrientation(position)
 	if position == "TOP" then
-		for i=1, self.maxHeads do
+		for i = 1, self.maxHeads do
 			self.ChatHeadFrame[i]:ClearAllPoints()
 			if i == 1 then
 				self.ChatHeadFrame[i]:Point("TOP", self.ChatHeadFrame, "BOTTOM", 0, -E.Border*3)
@@ -2986,7 +2986,7 @@ function CH:SetChatHeadOrientation(position)
 			end
 		end
 	else
-		for i=1, self.maxHeads do
+		for i = 1, self.maxHeads do
 			self.ChatHeadFrame[i]:ClearAllPoints()
 			if i == 1 then
 				self.ChatHeadFrame[i]:Point("BOTTOM", self.ChatHeadFrame, "TOP", 0, E.Border*3)
@@ -3156,7 +3156,7 @@ function CH:Initialize()
 	CH.volumeBarHeight = 3
 
 	local CHAT_HEAD_HEIGHT = 40
-	for i=1, CH.maxHeads do
+	for i = 1, CH.maxHeads do
 		local chatHead = CreateFrame("Frame", "ElvUIChatHeadFrame"..i, CH.ChatHeadFrame)
 		chatHead:Width(CH.ChatHeadFrame:GetWidth())
 		chatHead:Height(CHAT_HEAD_HEIGHT)
