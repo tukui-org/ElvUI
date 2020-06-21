@@ -1462,10 +1462,12 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			return true
 		end
 
-		local historySavedName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved names without overriding
+		local notChatHistory, historySavedName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved names without overriding
 		if isHistory == "ElvUI_ChatHistory" then
 			if historyBTag then arg2 = historyBTag end -- swap arg2 (which is a |k string) to btag name
 			historySavedName = historyName
+		else
+			notChatHistory = true
 		end
 
 		local chatType = strsub(event, 10)
@@ -1863,7 +1865,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
 
 			local alertType = CH.db.channelAlerts[historyTypes[chatType]]
-			if not CH.SoundTimer and (arg2 ~= PLAYER_NAME and alertType and alertType ~= 'None') and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
+			if notChatHistory and not CH.SoundTimer and (arg2 ~= PLAYER_NAME and alertType and alertType ~= 'None') and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
 				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
 				PlaySoundFile(LSM:Fetch("sound", alertType), "Master")
 			end
@@ -1871,7 +1873,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			frame:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime)
 		end
 
-		if ( isHistory ~= "ElvUI_ChatHistory" ) and ( chatType == "WHISPER" or chatType == "BN_WHISPER" ) then
+		if notChatHistory and ( chatType == "WHISPER" or chatType == "BN_WHISPER" ) then
 			--BN_WHISPER FIXME
 			ChatEdit_SetLastTellTarget(arg2, chatType)
 			if ( frame.tellTimer and (GetTime() > frame.tellTimer) ) then
@@ -1882,7 +1884,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			FlashClientIcon()
 		end
 
-		if ( isHistory ~= "ElvUI_ChatHistory" ) and ( not frame:IsShown() ) then
+		if notChatHistory and ( not frame:IsShown() ) then
 			if ( (frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab) ) then
 				if ( not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == "WHISPER" or chatType == "BN_WHISPER" ) then --BN_WHISPER FIXME
 					if not FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
