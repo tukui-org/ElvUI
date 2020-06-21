@@ -468,10 +468,10 @@ function CH:GetSmileyReplacementText(msg)
 		endpos = pos or origlen
 		outstr = outstr .. CH:InsertEmotions(strsub(msg,startpos,endpos)); --run replacement on this bit
 		startpos = endpos + 1
-		if(pos ~= nil) then
+		if pos ~= nil then
 			_, endpos = strfind(msg,"|h.-|h",startpos)
 			endpos = endpos or origlen
-			if(startpos < endpos) then
+			if startpos < endpos then
 				outstr = outstr .. strsub(msg,startpos,endpos); --don't run replacement on this bit
 				startpos = endpos + 1
 			end
@@ -1533,7 +1533,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		if chatGroup == "CHANNEL" then
 			chatTarget = tostring(arg8)
 		elseif chatGroup == "WHISPER" or chatGroup == "BN_WHISPER" then
-			if(not(strsub(arg2, 1, 2) == "|K")) then
+			if not(strsub(arg2, 1, 2) == "|K") then
 				chatTarget = strupper(arg2)
 			else
 				chatTarget = arg2
@@ -1625,7 +1625,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		elseif chatType == "RESTRICTED" then
 			frame:AddMessage(_G.CHAT_RESTRICTED_TRIAL, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 		elseif chatType == "CHANNEL_LIST" then
-			if(channelLength > 0) then
+			if channelLength > 0 then
 				frame:AddMessage(format(_G["CHAT_"..chatType.."_GET"]..arg1, tonumber(arg8), arg4), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			else
 				frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
@@ -1639,7 +1639,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				GMError(("Missing global string for %q"):format("CHAT_"..arg1.."_NOTICE_BN"))
 				return
 			end
-			if(arg5 ~= "") then
+			if arg5 ~= "" then
 				-- TWO users in this notice (E.G. x kicked y)
 				frame:AddMessage(format(globalstring, arg8, arg4, arg2, arg5), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			elseif arg1 == "INVITE" then
@@ -2358,19 +2358,19 @@ function CH:CheckLFGRoles()
 
 	wipe(lfgRoles)
 
-	if(not isInGroup or not CH.db.lfgIcons) then return end
+	if not isInGroup or not CH.db.lfgIcons then return end
 
 	local role = UnitGroupRolesAssigned("player")
-	if(role) then
+	if role then
 		lfgRoles[PLAYER_NAME] = rolePaths[role]
 	end
 
 	for i=1, GetNumGroupMembers() do
-		if(UnitExists(unit..i) and not UnitIsUnit(unit..i, "player")) then
+		if UnitExists(unit..i) and not UnitIsUnit(unit..i, "player") then
 			role = UnitGroupRolesAssigned(unit..i)
 			name, realm = UnitName(unit..i)
 
-			if(role and name) then
+			if role and name then
 				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..PLAYER_REALM
 				lfgRoles[name] = rolePaths[role]
 			end
