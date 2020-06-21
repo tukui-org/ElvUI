@@ -2039,16 +2039,19 @@ end
 
 local protectLinks = {}
 function CH:CheckKeyword(message, author)
+	local letInCombat = (not CH.db.noAlertInCombat or not InCombatLockdown())
+	local letSound = not CH.SoundTimer and (CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME) and letInCombat
+
 	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
 		protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
-		if CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME and not CH.SoundTimer then
+
+		if letSound then
 			for keyword in pairs(CH.Keywords) do
 				if hyperLink == keyword then
-					if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
-						PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
-					end
-
 					CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
+					PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
+					letSound = false -- dont let a second sound fire below
+					break
 				end
 			end
 		end
@@ -2068,12 +2071,11 @@ function CH:CheckKeyword(message, author)
 			for keyword in pairs(CH.Keywords) do
 				if lowerCaseWord == strlower(keyword) then
 					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
-					if CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME and not CH.SoundTimer then
-						if (CH.db.noAlertInCombat and not InCombatLockdown()) or not CH.db.noAlertInCombat then
-							PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
-						end
 
+					if letSound then -- dont break because it's recoloring all found
 						CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
+						PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
+						letSound = false -- but dont let additional hits call the sound
 					end
 				end
 			end
