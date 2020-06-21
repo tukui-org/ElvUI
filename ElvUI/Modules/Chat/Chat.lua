@@ -2039,9 +2039,9 @@ end
 
 local protectLinks = {}
 function CH:CheckKeyword(message, author)
-	if author ~= PLAYER_NAME then
-		for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
-			protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
+	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
+		protectLinks[hyperLink]=gsub(hyperLink,'%s','|s')
+		if author ~= PLAYER_NAME then
 			for keyword in pairs(CH.Keywords) do
 				if hyperLink == keyword then
 					if (CH.db.keywordSound ~= 'None') and not CH.SoundTimer then
