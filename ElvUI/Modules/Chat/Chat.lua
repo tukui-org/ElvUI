@@ -1547,8 +1547,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		if chatGroup == "WHISPER" or chatGroup == "BN_WHISPER" then
 			if frame.privateMessageList and not frame.privateMessageList[strlower(arg2)] then
 				return true
-			elseif ( frame.excludePrivateMessageList and frame.excludePrivateMessageList[strlower(arg2)]
-				and ( (chatGroup == "WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline") or (chatGroup == "BN_WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline") ) ) then
+			elseif frame.excludePrivateMessageList and frame.excludePrivateMessageList[strlower(arg2)] and ((chatGroup == "WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline") or (chatGroup == "BN_WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline")) then
 				return true
 			end
 		end
@@ -1870,7 +1869,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			frame:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime)
 		end
 
-		if notChatHistory and ( chatType == "WHISPER" or chatType == "BN_WHISPER" ) then
+		if notChatHistory and (chatType == "WHISPER" or chatType == "BN_WHISPER") then
 			--BN_WHISPER FIXME
 			ChatEdit_SetLastTellTarget(arg2, chatType)
 			if frame.tellTimer and (GetTime() > frame.tellTimer) then
@@ -1881,7 +1880,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			FlashClientIcon()
 		end
 
-		if notChatHistory and ( not frame:IsShown() ) then
+		if notChatHistory and not frame:IsShown() then
 			if (frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab) then
 				if not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == "WHISPER" or chatType == "BN_WHISPER" then --BN_WHISPER FIXME
 					if not FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
