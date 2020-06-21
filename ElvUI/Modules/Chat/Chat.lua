@@ -2039,7 +2039,7 @@ end
 
 local protectLinks = {}
 function CH:CheckKeyword(message, author)
-	local letInCombat = (not CH.db.noAlertInCombat or not InCombatLockdown())
+	local letInCombat = not CH.db.noAlertInCombat or not InCombatLockdown()
 	local letSound = not CH.SoundTimer and (CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME) and letInCombat
 
 	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
