@@ -5,8 +5,8 @@ local LSM = LibStub('LibSharedMedia-3.0')
 
 if not ACH then return end
 
-function ACH:Color(name, desc, order, alpha, width, disabled, hidden)
-	return { type = 'color', name = name, desc = desc, order = order, hasAlpha = alpha, width = width, disabled = disabled, hidden = hidden }
+function ACH:Color(name, desc, order, alpha, width, get, set, disabled, hidden)
+	return { type = 'color', name = name, desc = desc, order = order, hasAlpha = alpha, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 end
 
 function ACH:Description(name, order, fontSize, image, imageCoords, imageWidth, imageHeight, width, hidden)
