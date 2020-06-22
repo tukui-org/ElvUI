@@ -85,6 +85,7 @@ L["Continue"] = "下一步"
 L["Coords"] = "坐标"
 L["copperabbrev"] = "|cffeda55f铜|r"
 L["Count"] = "计数"
+L["Current Difficulties:"] = true
 L["Current Level:"] = "当前等级:"
 L["CVars Set"] = "参数设定"
 L["CVars"] = "参数"

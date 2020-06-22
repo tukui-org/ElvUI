@@ -85,6 +85,7 @@ L["Continue"] = "Продолжить"
 L["Coords"] = "Коорд."
 L["copperabbrev"] = "|cffeda55fм|r"
 L["Count"] = "Кол-во"
+L["Current Difficulties:"] = true
 L["Current Level:"] = "Текущий уровень:"
 L["CVars Set"] = "Настройки сброшены"
 L["CVars"] = "Настройки игры"

@@ -85,6 +85,7 @@ L["Continue"] = true
 L["Coords"] = true
 L["copperabbrev"] = "|cffeda55fc|r"
 L["Count"] = true
+L["Current Difficulties:"] = true
 L["Current Level:"] = true
 L["CVars Set"] = true
 L["CVars"] = true

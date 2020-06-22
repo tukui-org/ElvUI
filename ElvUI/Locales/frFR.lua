@@ -85,6 +85,7 @@ L["Continue"] = true
 L["Coords"] = "Coordonnées"
 L["copperabbrev"] = "|cffeda55fc|r"
 L["Count"] = "Nombre"
+L["Current Difficulties:"] = true
 L["Current Level:"] = "Niveau actuel :"
 L["CVars Set"] = "CVars configurées"
 L["CVars"] = "CVars"

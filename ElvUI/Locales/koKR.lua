@@ -85,6 +85,7 @@ L["Continue"] = true
 L["Coords"] = "좌표"
 L["copperabbrev"] = [[|TInterface\MoneyFrame\UI-MoneyIcons:0:0:1:0:64:16:33:48:1:16|t]]
 L["Count"] = "갯수"
+L["Current Difficulties:"] = true
 L["Current Level:"] = "현재 레벨"
 L["CVars Set"] = "CVars 설정"
 L["CVars"] = "게임 인터페이스 설정(CVars)"
