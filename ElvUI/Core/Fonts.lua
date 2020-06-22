@@ -30,11 +30,6 @@ function E:UpdateBlizzardFonts()
 	end
 
 	if E.eyefinity then
-		SetCVar('floatingcombattextcombatlogperiodicspells',0)
-		SetCVar('floatingcombattextpetmeleedamage',0)
-		SetCVar('floatingcombattextcombatdamage',0)
-		SetCVar('floatingcombattextcombathealing',0)
-
 		-- set an invisible font for xp, honor kill, etc
 		COMBAT = E.Media.Fonts.Invisible
 	end
