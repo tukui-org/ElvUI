@@ -346,7 +346,7 @@ local NP_PvPIcon = {
 
 local NP_PvPClassificationIndicator = {
 	enable = false,
-	position = 'LEFT',
+	position = 'TOPLEFT',
 	size = 36,
 	xOffset = 0,
 	yOffset = 0,
