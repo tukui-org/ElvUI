@@ -677,8 +677,10 @@ end
 
 function AB:FadeBarBlings(bar, alpha)
 	if AB.db.hideCooldownBling then return end
-	for _, button in ipairs(AB.handledbuttons) do
-		AB:FadeBlingTexture(button.cooldown, alpha)
+	if bar.buttons then
+		for _, button in ipairs(bar.buttons) do
+			AB:FadeBlingTexture(button.cooldown, alpha)
+		end
 	end
 end
 
