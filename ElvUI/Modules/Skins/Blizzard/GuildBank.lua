@@ -18,7 +18,7 @@ function S:Blizzard_GuildBankUI()
 	S:HandleScrollBar(_G.GuildBankPopupScrollFrameScrollBar)
 
 	--Close button doesn't have a fucking name, extreme hackage
-	for i=1, GuildBankFrame:GetNumChildren() do
+	for i = 1, GuildBankFrame:GetNumChildren() do
 		local child = select(i, GuildBankFrame:GetChildren())
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
 			S:HandleCloseButton(child)
@@ -43,10 +43,10 @@ function S:Blizzard_GuildBankUI()
 	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
 	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
 
-	for i=1, _G.NUM_GUILDBANK_COLUMNS do
+	for i = 1, _G.NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn"..i]:StripTextures()
 
-		for x=1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
+		for x = 1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = _G["GuildBankColumn"..i.."Button"..x]
 			local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
 			local texture = _G["GuildBankColumn"..i.."Button"..x.."NormalTexture"]
@@ -57,7 +57,7 @@ function S:Blizzard_GuildBankUI()
 			button:SetTemplate(nil, true)
 
 			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-				s:GetParent():SetBackdropBorderColor(r,g,b)
+				s:GetParent():SetBackdropBorderColor(r, g, b)
 				s:SetTexture()
 			end)
 			hooksecurefunc(button.IconBorder, 'Hide', function(s)
@@ -69,7 +69,7 @@ function S:Blizzard_GuildBankUI()
 		end
 	end
 
-	for i=1, _G.MAX_GUILDBANK_TABS do
+	for i = 1, _G.MAX_GUILDBANK_TABS do
 		local button = _G["GuildBankTab"..i.."Button"]
 		local texture = _G["GuildBankTab"..i.."ButtonIconTexture"]
 		_G["GuildBankTab"..i]:StripTextures(true)
@@ -82,7 +82,7 @@ function S:Blizzard_GuildBankUI()
 		texture:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	for i=1, 4 do
+	for i = 1, 4 do
 		S:HandleTab(_G["GuildBankFrameTab"..i])
 	end
 
