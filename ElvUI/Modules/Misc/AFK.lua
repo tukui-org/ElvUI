@@ -160,16 +160,18 @@ local function OnKeyDown(_, key)
 end
 
 local function Chat_OnMouseWheel(self, delta)
-	if delta == 1 and IsShiftKeyDown() then
-		self:ScrollToTop()
+	if delta == 1 then
+		if IsShiftKeyDown() then
+			self:ScrollToTop()
+		else
+			self:ScrollUp()
+		end
 	elseif delta == -1 then
 		if IsShiftKeyDown() then
 			self:ScrollToBottom()
 		else
 			self:ScrollDown()
 		end
-	else
-		self:ScrollUp()
 	end
 end
 
