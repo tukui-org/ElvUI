@@ -76,6 +76,9 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point("TOPLEFT", E.mult, -E.mult)
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point("BOTTOMRIGHT", -E.mult, E.mult)
 
+	--Here Mera
+	_G.MerchantItem1:Point("TOPLEFT", _G.MerchantFrame, "TOPLEFT", 24, -69)
+
 	_G.MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
 	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'SetVertexColor', function(s, r, g, b)
 		s:GetParent():SetBackdropBorderColor(r, g, b)
