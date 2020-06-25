@@ -29,6 +29,9 @@ function S:MerchantFrame()
 
 	S:HandleDropDownBox(_G.MerchantFrameLootFilter)
 
+	--Center the columns on the frame
+	_G.MerchantItem1:Point("TOPLEFT", _G.MerchantFrame, "TOPLEFT", 24, -69)
+
 	-- skin tabs
 	for i= 1, 2 do
 		S:HandleTab(_G["MerchantFrameTab"..i])
@@ -75,9 +78,6 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point("TOPLEFT", E.mult, -E.mult)
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point("BOTTOMRIGHT", -E.mult, E.mult)
-
-	--Center the columns on the frame
-	_G.MerchantItem1:Point("TOPLEFT", _G.MerchantFrame, "TOPLEFT", 24, -69)
 
 	_G.MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
 	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'SetVertexColor', function(s, r, g, b)
