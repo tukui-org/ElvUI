@@ -76,7 +76,7 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point("TOPLEFT", E.mult, -E.mult)
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point("BOTTOMRIGHT", -E.mult, E.mult)
 
-	--Here Mera
+	--Center the columns on the frame
 	_G.MerchantItem1:Point("TOPLEFT", _G.MerchantFrame, "TOPLEFT", 24, -69)
 
 	_G.MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
