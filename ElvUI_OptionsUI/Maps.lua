@@ -19,7 +19,7 @@ local buttonPositions = {
 }
 
 local buttonScale = { min = 0.5, max = 2, step = 0.05 }
-local buttonOffsets = { min = -50, max = 50, step = 1 }
+local buttonOffsets = { min = -60, max = 60, step = 1 }
 
 E.Options.args.maps = ACH:Group(L["Maps"], nil, 2, 'tab')
 
