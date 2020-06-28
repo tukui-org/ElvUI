@@ -13,8 +13,8 @@ function ACH:Description(name, order, fontSize, image, imageCoords, imageWidth, 
 	return { type = 'description', name = name, order = order, fontSize = fontSize, image = image, imageCoords = imageCoords, imageWidth = imageWidth, imageHeight = imageHeight, width = width, hidden = hidden }
 end
 
-function ACH:Execute(name, desc, order, func, confirm, width, get, set, disabled, hidden)
-	local optionTable = { type = 'execute', name = name, desc = desc, order = order, func = func, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+function ACH:Execute(name, desc, order, func, image, confirm, width, get, set, disabled, hidden)
+	local optionTable = { type = 'execute', name = name, desc = desc, order = order, func = func, image = image, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	if confirm then
 		local confirmType = type(confirm)
