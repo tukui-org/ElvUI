@@ -5,6 +5,8 @@ if not oUF then return end
 local playerClass = select(2, UnitClass('player'))
 
 local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+local wipe = wipe
+local tinsert = tinsert
 
 local DispelList, BlackList = {}, {}
 
@@ -38,11 +40,19 @@ if not Classic then
 	BlackList[137637] = true -- Warbringer, Slow
 end
 
-local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
+local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1, none = 0 }
 local FilterList = {}
+
+local function SortAuraByPriority(a, b)
+	local aPriority = a.debufftype and DispellPriority[a.debufftype] or 0
+	local bPriority = b.debufftype and DispellPriority[b.debufftype] or 0
+
+	return aPriority > bPriority
+end
 
 local function GetAuraType(unit, filter, filterTable)
 	if not unit or not UnitCanAssist('player', unit) then return nil end
+	wipe(FilterList)
 
 	local i = 1
 	while true do
@@ -53,10 +63,10 @@ local function GetAuraType(unit, filter, filterTable)
 
 		if (filterTable and filterSpell) then
 			if filterSpell.enable then
-				return debufftype, texture, true, filterSpell.style, filterSpell.color
+				tinsert(FilterList, {spellID = spellID, debufftype = debufftype, texture = texture, style = filterSpell.style, color = filterSpell.color})
 			end
 		elseif debufftype and (not filter or (filter and CanDispel[debufftype])) and not (BlackList[name] or BlackList[spellID]) then
-			return debufftype, texture
+			tinsert(FilterList, {spellID = spellID, debufftype = debufftype, texture = texture })
 		end
 		i = i + 1
 	end
@@ -70,7 +80,7 @@ local function GetAuraType(unit, filter, filterTable)
 
 		if (filterTable and filterSpell) then
 			if filterSpell.enable then
-				return debufftype, texture, true, filterSpell.style, filterSpell.color
+				tinsert(FilterList, {spellID = spellID, debufftype = debufftype, texture = texture, style = filterSpell.style, color = filterSpell.color})
 			end
 		end
 
@@ -79,9 +89,9 @@ local function GetAuraType(unit, filter, filterTable)
 end
 
 local function FilterTable()
-	local debufftype, texture, filterSpell
+	sort(FilterList, SortAuraByPriority)
 
-	return debufftype, texture, true, filterSpell.style, filterSpell.color
+	return FilterList[1] and unpack(FilterList[1])
 end
 
 local function CheckTalentTree(tree)
@@ -110,7 +120,9 @@ end
 local function Update(self, event, unit)
 	if unit ~= self.unit then return; end
 
-	local debuffType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
+	GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
+
+	local debuffType, texture, wasFiltered, style, color = FilterTable()
 
 	if(wasFiltered) then
 		if style == 'GLOW' and self.AuraHightlightGlow then
