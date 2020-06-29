@@ -3,7 +3,6 @@
 
 	<Script file='Agility.lua'/>
 	<Script file='Armor.lua'/>
-	<Script file='AttackPower.lua'/>
 	<Script file='Avoidance.lua'/>
 	<Script file='Bags.lua'/>
 	<Script file='BattleStats.lua'/>
@@ -36,7 +35,6 @@
 	<Script file='Reputation.lua'/>
 	<Script file='SpecSwitch.lua'/>
 	<Script file='Speed.lua'/>
-	<Script file='SpellPower.lua'/>
 	<Script file='Stamina.lua'/>
 	<Script file='Strength.lua'/>
 	<Script file='System.lua'/>
