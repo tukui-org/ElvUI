@@ -113,6 +113,7 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')
 	Castbar.Icon:SetTexCoord(unpack(E.TexCoords))
 	Castbar.Icon:SetInside()
+
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
@@ -121,6 +122,7 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Text:SetJustifyH('LEFT')
 	Castbar.Text:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	Castbar.Text:SetWordWrap(false)
 
 	Castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
 	Castbar.CustomDelayText = NP.Castbar_CustomDelayText
@@ -204,6 +206,8 @@ function NP:Update_Castbar(nameplate)
 			nameplate.Castbar.Time:Point('RIGHT', nameplate.Castbar, 'RIGHT', -1, 0)
 			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
 		end
+
+		nameplate.Castbar.Text:Point('RIGHT', nameplate.Castbar, 'RIGHT', -20, 0)
 
 		if db.castbar.hideTime then
 			nameplate.Castbar.Time:Hide()
