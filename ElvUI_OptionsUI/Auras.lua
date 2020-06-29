@@ -48,9 +48,9 @@ E.Options.args.auras.args.general.args.statusBar.args.barTexture = ACH:SharedMed
 E.Options.args.auras.args.general.args.statusBar.args.barColor = ACH:Color(L.COLOR, nil, 4, true, nil, function() local t = E.db.auras.barColor local d = P.auras.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(_, r, g, b) local t = E.db.auras.barColor t.r, t.g, t.b = r, g, b end, function() return not E.db.auras.barShow or (E.db.auras.barColorGradient or not E.db.auras.barShow) end)
 E.Options.args.auras.args.general.args.statusBar.args.barColorGradient = ACH:Toggle(L["Color by Value"], nil, 5)
 E.Options.args.auras.args.general.args.statusBar.args.barPosition = ACH:Select(L["Position"], nil, 6, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
-E.Options.args.auras.args.general.args.statusBar.args.barWidth = ACH:Range(L["Width"], nil, 6, { min = 1, max = 10, step = 1 }, nil, nil, nil, nil, function() return E.db.auras.barPosition == 'TOP' or E.db.auras.barPosition == 'BOTTOM' end)
-E.Options.args.auras.args.general.args.statusBar.args.barHeight = ACH:Range(L["Height"], nil, 6, { min = 1, max = 10, step = 1 }, nil, nil, nil, nil, function() return E.db.auras.barPosition == 'LEFT' or E.db.auras.barPosition == 'RIGHT' end)
-E.Options.args.auras.args.general.args.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 7, { min = -10, max = 10, step = 1 })
+E.Options.args.auras.args.general.args.statusBar.args.barWidth = ACH:Range(L["Width"], nil, 7, { min = 1, max = 10, step = 1 }, nil, nil, nil, nil, function() return E.db.auras.barPosition == 'TOP' or E.db.auras.barPosition == 'BOTTOM' end)
+E.Options.args.auras.args.general.args.statusBar.args.barHeight = ACH:Range(L["Height"], nil, 7, { min = 1, max = 10, step = 1 }, nil, nil, nil, nil, function() return E.db.auras.barPosition == 'LEFT' or E.db.auras.barPosition == 'RIGHT' end)
+E.Options.args.auras.args.general.args.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 8, { min = -10, max = 10, step = 1 })
 
 E.Options.args.auras.args.general.args.masque = ACH:MultiSelect(L["Masque Support"], nil, 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E:StaticPopup_Show("PRIVATE_RL") end, function() return not E.private.auras.enable end)
 
