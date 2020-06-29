@@ -11,7 +11,17 @@ local _G, format, sort, tinsert = _G, format, sort, tinsert
 C.Values = {
 	FontFlags = { NONE = L["NONE"], OUTLINE = "OUTLINE", MONOCHROMEOUTLINE = "MONOCROMEOUTLINE", THICKOUTLINE = "THICKOUTLINE" },
 	FontSize = { min = 8, max = 64, step = 1 },
-	Strata = { BACKGROUND = "BACKGROUND", LOW = "LOW", MEDIUM = "MEDIUM", HIGH = "HIGH", DIALOG = "DIALOG", TOOLTIP = "TOOLTIP" }
+	Strata = { BACKGROUND = "BACKGROUND", LOW = "LOW", MEDIUM = "MEDIUM", HIGH = "HIGH", DIALOG = "DIALOG", TOOLTIP = "TOOLTIP" },
+	GrowthDirection = {
+		DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
+		DOWN_LEFT = format(L["%s and then %s"], L["Down"], L["Left"]),
+		UP_RIGHT = format(L["%s and then %s"], L["Up"], L["Right"]),
+		UP_LEFT = format(L["%s and then %s"], L["Up"], L["Left"]),
+		RIGHT_DOWN = format(L["%s and then %s"], L["Right"], L["Down"]),
+		RIGHT_UP = format(L["%s and then %s"], L["Right"], L["Up"]),
+		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
+		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
+	}
 }
 
 E:AddLib('AceGUI', 'AceGUI-3.0')
@@ -233,11 +243,11 @@ E.Options.args.info = {
 }
 
 local profileTypeItems = {
-	["profile"] = L["Profile"],
-	["private"] = L["Private (Character Settings)"],
-	["global"] = L["Global (Account Settings)"],
-	["filters"] = L["Aura Filters"],
-	["styleFilters"] = L["NamePlate Style Filters"]
+	profile = L["Profile"],
+	private = L["Private (Character Settings)"],
+	global = L["Global (Account Settings)"],
+	filters = L["Aura Filters"],
+	styleFilters = L["NamePlate Style Filters"]
 }
 local profileTypeListOrder = {
 	"profile",
@@ -247,9 +257,9 @@ local profileTypeListOrder = {
 	"styleFilters"
 }
 local exportTypeItems = {
-	["text"] = L["Text"],
-	["luaTable"] = L["Table"],
-	["luaPlugin"] = L["Plugin"]
+	text = L["Text"],
+	luaTable = L["Table"],
+	luaPlugin = L["Plugin"]
 }
 local exportTypeListOrder = {
 	"text",
@@ -542,12 +552,17 @@ end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles.args.profile)
 E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
-E.Options.args.profiles.args.profile.args.copyfrom.confirm = function(info, value)
+E.Options.args.profiles.args.profile.args.copyfrom.confirm = function(_, value)
 	return format(L["Copy Settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, E.data:GetCurrentProfile())
 end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvPrivates", E.Options.args.profiles.args.private)
-E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)
+
+E.Options.args.profiles.args.private.args.choose.confirm = function(_, value)
+	return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
+end
+
+E.Options.args.profiles.args.private.args.copyfrom.confirm = function(_, value)
 	return format(L["Copy Settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, E.charSettings:GetCurrentProfile())
 end
 
