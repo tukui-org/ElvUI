@@ -207,7 +207,7 @@ do --this can save some main file locals
 	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
 	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
-	local ElvSorbet		= E:TextureString(E.Media.ChatLogos.ElvSorbet,y)
+	local ElvSimpy		= E:TextureString(E.Media.ChatLogos.ElvSimpy,y)
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
@@ -230,19 +230,19 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Rainbow Sorbet: ff9966 (Light Salmon), ff6699 (Hot Pink), 9966ff (Light Violet), 6699ff (Cornflower Blue), 66ff99 (Pale Green)
-		local SimpyColors = function(t) return specialText(t, 1.0,0.6,0.4, 1.0,0.4,0.6, 0.6,0.4,1.0, 0.4,0.6,1.0, 0.4,1.0,0.6) end
+		--Simpys Colors (Cotton Candy): 9966FF (Slate Violet), FF66CC (Hot Pink), 66CCFF (Sky Blue), 4488FF (Dodger Blue)
+		local SimpyColors = function(t) return specialText(t, 0.6,0.4,1, 1,0.4,0.8, 0.4,0.8,1, 0.26,0.53,1) end
 		--Detroit Lions Colors: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
-		--Rainbow (8 Colors: 253,62,68, 254,152,73, 255,222,75, 109,253,101, 84,196,252, 163,93,250, 198,121,251, 254,129,193)
+		--Rainbow (8 Colors): FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
 		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1.00,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.50,0.75) end
-		--Light Spring: '50dad3','56e580','d8da33','dfa455','ee8879','f972d1','b855df','50dad3'
+		--Light Spring: 50DAD3, 56E580, D8DA33, DFA455, EE8879, F972D1, B855DF, 50DAD3
 		local MelColors = function(t) return specialText(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
 		--Class Colors: Normal to Negative (Orange->Blue, Red->Cyan, etc)
 		local nm = function(c) return max(1-c,0.15) end
 		local NihiColors = function(class) local c = _G.RAID_CLASS_COLORS[class] local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, nm(c.r), nm(c.g), nm(c.b) return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 
-		itsSimpy = function() return ElvSorbet, SimpyColors end
+		itsSimpy = function() return ElvSimpy, SimpyColors end
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
