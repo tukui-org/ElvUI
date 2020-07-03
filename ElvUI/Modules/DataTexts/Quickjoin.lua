@@ -45,7 +45,7 @@ local function Update(lastPanel)
 			local queues = C_SocialQueue_GetGroupQueues(guid)
 			local firstQueue, numQueues = queues and queues[1], queues and #queues or 0
 			local isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
-			local coloredName = (playerName and format('%s%s|r%s', nameColor, playerName, extraCount)) or format('{%s%s}', UNKNOWN, extraCount)
+			local coloredName = (playerName and playerName ~= '' and format('%s%s|r%s', nameColor, playerName, extraCount)) or format('{%s%s}', UNKNOWN, extraCount)
 
 			local activity
 			if isLFGList and firstQueue and firstQueue.eligible then

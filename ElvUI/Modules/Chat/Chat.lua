@@ -2449,7 +2449,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 	if numMembers > 1 then
 		extraCount = format(' +%s', numMembers - 1)
 	end
-	if playerName then
+	if playerName and playerName ~= '' then
 		coloredName = format('%s%s|r%s', nameColor, playerName, extraCount)
 	else
 		coloredName = format('{%s%s}', UNKNOWN, extraCount)
