@@ -2,10 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 local random = random
-local GetUnitName = GetUnitName
-local GetInstanceInfo = GetInstanceInfo
-local GetBattlefieldScore = GetBattlefieldScore
-local GetNumBattlefieldScores = GetNumBattlefieldScores
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsConnected = UnitIsConnected
 
@@ -25,28 +21,6 @@ local roleIconTextures = {
 	DAMAGER = E.Media.Textures.DPS
 }
 
---From http://forums.wowace.com/showpost.php?p=325677&postcount=5
-local specNameToRole = {}
-for i = 1, GetNumClasses() do
-	local _, class, classID = GetClassInfo(i)
-	specNameToRole[class] = {}
-	for j = 1, GetNumSpecializationsForClassID(classID) do
-		local _, spec, _, _, role = GetSpecializationInfoForClassID(classID, j)
-		specNameToRole[class][spec] = role
-	end
-end
-
-local function GetBattleFieldIndexFromUnitName(name)
-	local nameFromIndex
-	for index = 1, GetNumBattlefieldScores() do
-		nameFromIndex = GetBattlefieldScore(index)
-		if nameFromIndex == name then
-			return index
-		end
-	end
-	return nil
-end
-
 function UF:UpdateRoleIcon(event)
 	local lfdrole = self.GroupRoleIndicator
 	if not self.db then return; end
@@ -57,27 +31,10 @@ function UF:UpdateRoleIcon(event)
 		return
 	end
 
-	local role
-	local _, instanceType = GetInstanceInfo()
-	if instanceType == "pvp" then
-		local name = GetUnitName(self.unit, true)
-		local index = GetBattleFieldIndexFromUnitName(name)
-		if index then
-			local _, _, _, _, _, _, _, _, classToken, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(index)
-			if classToken and talentSpec then
-				role = specNameToRole[classToken][talentSpec]
-			else
-				role = UnitGroupRolesAssigned(self.unit) --Fallback
-			end
-		else
-			role = UnitGroupRolesAssigned(self.unit) --Fallback
-		end
-	else
-		role = UnitGroupRolesAssigned(self.unit)
-		if self.isForced and role == 'NONE' then
-			local rnd = random(1, 3)
-			role = rnd == 1 and "TANK" or (rnd == 2 and "HEALER" or (rnd == 3 and "DAMAGER"))
-		end
+	local role = UnitGroupRolesAssigned(self.unit)
+	if self.isForced and role == 'NONE' then
+		local rnd = random(1, 3)
+		role = rnd == 1 and "TANK" or (rnd == 2 and "HEALER" or (rnd == 3 and "DAMAGER"))
 	end
 
 	local shouldHide = ((event == "PLAYER_REGEN_DISABLED" and db.combatHide and true) or false)
