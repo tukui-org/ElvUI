@@ -78,6 +78,7 @@ local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local GetChatWindowInfo = GetChatWindowInfo
 local UnitName = UnitName
 local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
 
@@ -2853,52 +2854,68 @@ CH.TabStyles = {
 }
 
 function CH:FCFTab_UpdateColors(tab, selected)
-	local chat = CH:GetOwner(tab)
-	if not chat then return end
-	tab.selected = selected
+	if not tab then return end
 
-	local whisper = tab.conversationIcon and chat.chatTarget
-	local name = chat.name
+	if tab:GetParent() == _G.ChatConfigFrameChatTabManager then
+		if selected then
+			tab.Text:SetTextColor(1, 1, 1)
+		end
 
-	if whisper and not tab.whisperName then
-		tab.whisperName = gsub(E:StripMyRealm(name), "([%S]-)%-[%S]+", "%1|cFF999999*|r")
-	end
+		local name = GetChatWindowInfo(tab:GetID())
+		if name then
+			tab.Text:SetText(name)
+		end
 
-	if selected then
-		if CH.db.tabSelector == 'NONE' then
-			tab:SetFormattedText(CH.TabStyles.NONE, tab.whisperName or name)
+		tab:SetAlpha(1) -- for some reason blizzard likes to change the alpha here? idk
+	else -- actual chat tab and other
+		local chat = CH:GetOwner(tab)
+		if not chat then return end
+
+		tab.selected = selected
+
+		local whisper = tab.conversationIcon and chat.chatTarget
+		local name = chat.name
+
+		if whisper and not tab.whisperName then
+			tab.whisperName = gsub(E:StripMyRealm(name), "([%S]-)%-[%S]+", "%1|cFF999999*|r")
+		end
+
+		if selected then
+			if CH.db.tabSelector == 'NONE' then
+				tab:SetFormattedText(CH.TabStyles.NONE, tab.whisperName or name)
+			else
+				local color = CH.db.tabSelectorColor
+				local hexColor = E:RGBToHex(color.r, color.g, color.b)
+				tab:SetFormattedText(CH.TabStyles[CH.db.tabSelector] or CH.TabStyles.ARROW1, hexColor, tab.whisperName or name, hexColor)
+			end
+
+			if CH.db.tabSelectedTextEnabled then
+				local color = CH.db.tabSelectedTextColor
+				tab.Text:SetTextColor(color.r, color.g, color.b)
+				return -- using selected text color
+			end
+		end
+
+		if whisper then
+			if not selected then
+				tab:SetText(tab.whisperName or name)
+			end
+
+			if not tab.classColor then
+				local classMatch = CH.ClassNames[strlower(name)]
+				if classMatch then tab.classColor = E:ClassColor(classMatch) end
+			end
+
+			if tab.classColor then
+				tab.Text:SetTextColor(tab.classColor.r, tab.classColor.g, tab.classColor.b)
+			end
 		else
-			local color = CH.db.tabSelectorColor
-			local hexColor = E:RGBToHex(color.r, color.g, color.b)
-			tab:SetFormattedText(CH.TabStyles[CH.db.tabSelector] or CH.TabStyles.ARROW1, hexColor, tab.whisperName or name, hexColor)
-		end
+			if not selected then
+				tab:SetText(name)
+			end
 
-		if CH.db.tabSelectedTextEnabled then
-			local color = CH.db.tabSelectedTextColor
-			tab.Text:SetTextColor(color.r, color.g, color.b)
-			return -- using selected text color
+			tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 		end
-	end
-
-	if whisper then
-		if not selected then
-			tab:SetText(tab.whisperName or name)
-		end
-
-		if not tab.classColor then
-			local classMatch = CH.ClassNames[strlower(name)]
-			if classMatch then tab.classColor = E:ClassColor(classMatch) end
-		end
-
-		if tab.classColor then
-			tab.Text:SetTextColor(tab.classColor.r, tab.classColor.g, tab.classColor.b)
-		end
-	else
-		if not selected then
-			tab:SetText(name)
-		end
-
-		tab.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
 end
 
