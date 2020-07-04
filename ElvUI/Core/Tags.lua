@@ -55,7 +55,6 @@ local UnitIsPVP = UnitIsPVP
 local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
 local UnitIsUnit = UnitIsUnit
 local UnitIsWildBattlePet = UnitIsWildBattlePet
-local UnitLevel = UnitLevel
 local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
@@ -525,12 +524,12 @@ end
 
 ElvUF.Tags.Events['smartlevel'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['smartlevel'] = function(unit)
-	local level = UnitLevel(unit)
+	local level = UnitEffectiveLevel(unit)
 	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
 		return UnitBattlePetLevel(unit);
-	elseif level == E.mylevel then
+	elseif level == UnitEffectiveLevel('player') then
 		return nil
-	elseif(level > 0) then
+	elseif level > 0 then
 		return level
 	else
 		return '??'
