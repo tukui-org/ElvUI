@@ -1336,7 +1336,7 @@ E.TagInfo = {
 	['target:medium:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)" },
 	['target:long:translit'] = { category = 'Target', description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)" },
 	--Threat
-	['threat'] = { category = 'Threat', description = "Displays the current threat" },
+	['threat'] = { category = 'Threat', description = "Displays the current threat situation (Aggro is secure tanking, -- is losing threat and ++ is gaining threat)" },
 	['threat:percent'] = { category = 'Threat', description = "Displays the current threat as a percent" },
 	['threat:current'] = { category = 'Threat', description = "Displays the current threat as a value" },
 }
