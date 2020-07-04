@@ -20,7 +20,7 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetPVPTimer = GetPVPTimer
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local GetQuestGreenRange = GetQuestGreenRange
+local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetQuestLogTitle = GetQuestLogTitle
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetSpecialization = GetSpecialization
@@ -56,6 +56,7 @@ local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
 local UnitIsUnit = UnitIsUnit
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitLevel = UnitLevel
+local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
@@ -501,18 +502,8 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 			r, g, b = c.r, c.g, c.b
 		end
 	else
-		local DiffColor = UnitLevel(unit) - E.mylevel
-		if (DiffColor >= 5) then
-			r, g, b = 0.69, 0.31, 0.31
-		elseif (DiffColor >= 3) then
-			r, g, b = 0.71, 0.43, 0.27
-		elseif (DiffColor >= -2) then
-			r, g, b = 0.84, 0.75, 0.65
-		elseif (-DiffColor <= GetQuestGreenRange()) then
-			r, g, b = 0.33, 0.59, 0.33
-		else
-			r, g, b = 0.55, 0.57, 0.61
-		end
+		local c = GetCreatureDifficultyColor(UnitEffectiveLevel(unit))
+		r, g, b = c.r, c.g, c.b
 	end
 
 	return Hex(r, g, b)
