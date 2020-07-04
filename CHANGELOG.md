@@ -5,6 +5,7 @@
 **Bug Fixes:**  
 Debuff Highlight in Glow mode was glowing around the edges of the screen instead of the unitframe.  
 Cutaway errored on initial login or profile change sometimes.  
+Role Icons on our UnitFrames sometimes dont show in BG's, we hope that we fixed that now.  
 
 **Misc. Changes:**  
 Blacklisted the Experience Eliminated debuff.  
