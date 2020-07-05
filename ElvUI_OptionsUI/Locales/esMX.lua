@@ -1,6 +1,7 @@
 -- Spanish localization file for esES and esMX.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "esMX")
 
+L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = "|cFFff3333Advertencia|r: Las tags de |cFF999999[mana:x]|r |cFFff3333NO|r devolverán nada en las clases que tengan maná como potencia adicional, a menos que sea la potencia adicional."
 L["# Displayed Auras"] = "# Auras mostradas"
 L["%s and then %s"] = "%s y entonces %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
@@ -115,7 +116,7 @@ L["Automatically hide the objective frame during boss or arena fights."] = "Ocul
 L["Automatically repair using the following method when visiting a merchant."] = "Repara de forma automática usando el siguiente método cuando visites un comerciante."
 L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."] = "Tira codicia o desencanta (si se puede) automáticamente para los objetos verdes. Esto sólo funciona si ya tienes el nivel máximo."
 L["Automatically vendor gray items when visiting a vendor."] = "Vender automáticamente los objetos grises al visitar al vendedor."
-L["Available Tags"] = true
+L["Available Tags"] = "Tags de Disponibles"
 L["AzeriteUI"] = true
 L["Backdrop color of transparent frames"] = "Color de fondo de los marcos transparentes."
 L["Backdrop Color"] = "Color de Fondo"

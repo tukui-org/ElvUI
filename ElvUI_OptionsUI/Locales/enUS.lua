@@ -1,6 +1,7 @@
 -- English localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 
+L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = true
 L["# Displayed Auras"] = true
 L["%s and then %s"] = true
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
