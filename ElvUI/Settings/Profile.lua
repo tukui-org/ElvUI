@@ -1854,7 +1854,7 @@ P.unitframe.units.player.health.position = 'LEFT'
 P.unitframe.units.player.health.text_format = '[healthcolor][health:current-percent]'
 P.unitframe.units.player.health.xOffset = 2
 P.unitframe.units.player.power.position = 'RIGHT'
-P.unitframe.units.player.power.text_format = '[powercolor][power:current< - ][mana:percent]'
+P.unitframe.units.player.power.text_format = '[powercolor][power:current< |cFFFFFFFF- ][manacolor][mana:percent]'
 P.unitframe.units.player.power.xOffset = -2
 
 P.unitframe.units.target.aurabar.maxDuration = 120
