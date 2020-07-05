@@ -193,10 +193,9 @@ local function GetClassPower(Class)
 	end
 
 	-- try additional mana
-	local powerFlag = UnitPowerType('player')
 	if not r then
 		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[Class]
-		if barIndex and barIndex[powerFlag] then
+		if barIndex and barIndex[UnitPowerType('player')] then
 			min = UnitPower('player', SPELL_POWER_MANA)
 			max = UnitPowerMax('player', SPELL_POWER_MANA)
 
