@@ -105,7 +105,7 @@ ElvUF.Tags.SharedEvents.INSTANCE_ENCOUNTER_ENGAGE_UNIT = true
 local function UnitName(unit)
 	local name, realm = _G.UnitName(unit)
 
-	if (name == UNKNOWN and E.myclass == "MONK") and UnitIsUnit(unit, "pet") then
+	if name == UNKNOWN and E.myclass == "MONK" and UnitIsUnit(unit, "pet") then
 		name = format(UNITNAME_SUMMON_TITLE17, _G.UnitName("player"))
 	end
 
@@ -164,9 +164,9 @@ local function GetClassPower(class)
 			min = UnitStagger("player")
 			max = UnitHealthMax("player")
 			local staggerRatio = min / max
-			if (staggerRatio >= STAGGER_RED_TRANSITION) then
+			if staggerRatio >= STAGGER_RED_TRANSITION then
 				r, g, b = unpack(StaggerColors[STAGGER_RED_INDEX])
-			elseif (staggerRatio >= STAGGER_YELLOW_TRANSITION) then
+			elseif staggerRatio >= STAGGER_YELLOW_TRANSITION then
 				r, g, b = unpack(StaggerColors[STAGGER_YELLOW_INDEX])
 			else
 				r, g, b = unpack(StaggerColors[STAGGER_GREEN_INDEX])
@@ -191,35 +191,26 @@ ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
 		local _, r, g, b = UnitAlternatePowerTextureInfo(u, 2)
-
 		if not r then
 			r, g, b = 1, 1, 1
 		end
 
 		return Hex(r,g,b)
-	else
-		return
 	end
 end
 
 ElvUF.Tags.Events['afk'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['afk'] = function(unit)
-	local isAFK = UnitIsAFK(unit)
-	if isAFK then
+	if UnitIsAFK(unit) then
 		return format('|cffFFFFFF[|r|cffFF0000%s|r|cFFFFFFFF]|r', DEFAULT_AFK_MESSAGE)
-	else
-		return
 	end
 end
 
 ElvUF.Tags.Events['faction:icon'] = 'UNIT_FACTION'
 ElvUF.Tags.Methods['faction:icon'] = function(unit)
 	local factionGroup = UnitFactionGroup(unit)
-
-	if (factionGroup == 'Horde' or factionGroup == 'Alliance') then
+	if factionGroup == 'Horde' or factionGroup == 'Alliance' then
 		return CreateTextureMarkup(format([[Interface\FriendsFrame\PlusManz-%s]], factionGroup), 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
-	else
-		return
 	end
 end
 
@@ -240,8 +231,6 @@ ElvUF.Tags.Methods['status:text'] = function(unit)
 	elseif UnitIsDND(unit) then
 		return CHAT_FLAG_DND
 	end
-
-	return
 end
 
 ElvUF.Tags.Events['status:icon'] = 'PLAYER_FLAGS_CHANGED'
@@ -251,30 +240,26 @@ ElvUF.Tags.Methods['status:icon'] = function(unit)
 	elseif UnitIsDND(unit) then
 		return CreateTextureMarkup([[Interface\FriendsFrame\StatusIcon-DnD]], 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
 	end
-
-	return
 end
 
 ElvUF.Tags.Events['name:abbrev'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['name:abbrev'] = function(unit)
 	local name = UnitName(unit)
-
 	if name and strfind(name, '%s') then
 		name = Abbrev(name)
 	end
 
-	return name ~= nil and name or ''
+	return name
 end
 
 ElvUF.Tags.Events['name:last'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['name:last'] = function(unit)
 	local name = UnitName(unit)
-
 	if name and strfind(name, '%s') then
 		name = strmatch(name, '([%S]+)$')
 	end
 
-	return name ~= nil and name or ''
+	return name
 end
 
 do
@@ -309,9 +294,7 @@ ElvUF.Tags.Events['health:deficit-percent:nostatus'] = 'UNIT_HEALTH_FREQUENT UNI
 ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local deficit = (min / max) - 1
-	if deficit == 0 then
-		return
-	else
+	if deficit ~= 0 then
 		return E:GetFormattedText('PERCENT', deficit, -1)
 	end
 end
@@ -322,7 +305,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Events[format('health:%s', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 	ElvUF.Tags.Methods[format('health:%s', tagTextFormat)] = function(unit)
 		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
-		if (status) then
+		if status then
 			return status
 		else
 			return E:GetFormattedText(textFormat, UnitHealth(unit), UnitHealthMax(unit))
@@ -336,13 +319,12 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	ElvUF.Tags.Events[format('power:%s', tagTextFormat)] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 	ElvUF.Tags.Methods[format('power:%s', tagTextFormat)] = function(unit)
-		local pType = UnitPowerType(unit)
-		local min = UnitPower(unit, pType)
-
-		if not UnitIsPlayer(unit) and min == 0 and tagTextFormat ~= 'deficit' then
-			return
-		else
-			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, pType))
+		if UnitIsPlayer(unit) then
+			local pType = UnitPowerType(unit)
+			local min = UnitPower(unit, pType)
+			if min ~= 0 and tagTextFormat ~= 'deficit' then
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, pType))
+			end
 		end
 	end
 
@@ -350,10 +332,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Methods[format('additionalpower:%s', tagTextFormat)] = function(unit)
 		if ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass] and ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass][UnitPowerType(unit)] and additionalPowerIndex == 0 then
 			local min = UnitPower(unit, SPELL_POWER_MANA)
-
-			if min == 0 and tagTextFormat == 'deficit' then
-				return
-			else
+			if min ~= 0 and tagTextFormat ~= 'deficit' then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
 			end
 		end
@@ -362,9 +341,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Events[format('classpower:%s', tagTextFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('classpower:%s', tagTextFormat)] = function()
 		local min, max = GetClassPower(E.myclass)
-		if min == 0 then
-			return
-		else
+		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
 	end
@@ -374,10 +351,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 		if cur > 0 then
 			local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
-
 			return E:GetFormattedText(textFormat, cur, max)
-		else
-			return
 		end
 	end
 end
@@ -388,7 +362,7 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 		local deficit = max - cur
 
-		if (deficit > 0 and cur > 0) then
+		if deficit > 0 and cur > 0 then
 			return _TAGS["health:deficit-percent:nostatus"](unit)
 		else
 			return _TAGS[format("name:%s", textFormat)](unit)
@@ -398,54 +372,62 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 	ElvUF.Tags.Events[format('name:abbrev:%s', textFormat)] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 	ElvUF.Tags.Methods[format('name:abbrev:%s', textFormat)] = function(unit)
 		local name = UnitName(unit)
-
 		if name and strfind(name, '%s') then
 			name = Abbrev(name)
 		end
 
-		return name ~= nil and E:ShortenString(name, length) or ''
+		if name then
+			return E:ShortenString(name, length)
+		end
 	end
 
 	ElvUF.Tags.Events[format('name:%s', textFormat)] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 	ElvUF.Tags.Methods[format('name:%s', textFormat)] = function(unit)
 		local name = UnitName(unit)
-		return name ~= nil and E:ShortenString(name, length) or nil
+		if name then
+			return E:ShortenString(name, length)
+		end
 	end
 
 	ElvUF.Tags.Events[format('name:%s:status', textFormat)] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH_FREQUENT INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 	ElvUF.Tags.Methods[format('name:%s:status', textFormat)] = function(unit)
 		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		local name = UnitName(unit)
-		if (status) then
+		if status then
 			return status
-		else
-			return name ~= nil and E:ShortenString(name, length) or nil
+		elseif name then
+			return E:ShortenString(name, length)
 		end
 	end
 
 	ElvUF.Tags.Events[format('name:%s:translit', textFormat)] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 	ElvUF.Tags.Methods[format('name:%s:translit', textFormat)] = function(unit)
 		local name = Translit:Transliterate(UnitName(unit), translitMark)
-		return name ~= nil and E:ShortenString(name, length) or nil
+		if name then
+			return E:ShortenString(name, length)
+		end
 	end
 
 	ElvUF.Tags.Events[format('target:%s', textFormat)] = 'UNIT_TARGET'
 	ElvUF.Tags.Methods[format('target:%s', textFormat)] = function(unit)
 		local targetName = UnitName(unit.."target")
-		return targetName ~= nil and E:ShortenString(targetName, length) or nil
+		if targetName then
+			return E:ShortenString(targetName, length)
+		end
 	end
 
 	ElvUF.Tags.Events[format('target:%s:translit', textFormat)] = 'UNIT_TARGET'
 	ElvUF.Tags.Methods[format('target:%s:translit', textFormat)] = function(unit)
 		local targetName = Translit:Transliterate(UnitName(unit.."target"), translitMark)
-		return targetName ~= nil and E:ShortenString(targetName, length) or nil
+		if targetName then
+			return E:ShortenString(targetName, length)
+		end
 	end
 end
 
 ElvUF.Tags.Events['health:max'] = 'UNIT_MAXHEALTH'
 ElvUF.Tags.Methods['health:max'] = function(unit)
 	local max = UnitHealthMax(unit)
-
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
@@ -453,7 +435,7 @@ ElvUF.Tags.Events['health:percent-with-absorbs'] = 'UNIT_HEALTH_FREQUENT UNIT_MA
 ElvUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
-	if (status) then
+	if status then
 		return status
 	end
 
@@ -471,7 +453,7 @@ ElvUF.Tags.Methods['health:deficit-percent:name'] = function(unit)
 	local currentHealth = UnitHealth(unit)
 	local deficit = UnitHealthMax(unit) - currentHealth
 
-	if (deficit > 0 and currentHealth > 0) then
+	if deficit > 0 and currentHealth > 0 then
 		return _TAGS["health:percent-nostatus"](unit)
 	else
 		return _TAGS.name(unit)
@@ -489,7 +471,7 @@ end
 ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	local c
-	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
+	if UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
 		local level = UnitBattlePetLevel(unit)
 
 		local teamLevel = C_PetJournal_GetPetTeamAverageLevel();
@@ -509,12 +491,13 @@ ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNT
 ElvUF.Tags.Methods['namecolor'] = function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local unitPlayer = UnitIsPlayer(unit)
-	if (unitPlayer) then
+	if unitPlayer then
 		local _, unitClass = UnitClass(unit)
 		local class = ElvUF.colors.class[unitClass]
-		if not class then return "" end
+		if not class then return end
+
 		return Hex(class[1], class[2], class[3])
-	elseif (unitReaction) then
+	elseif unitReaction then
 		local reaction = ElvUF.colors.reaction[unitReaction]
 		return Hex(reaction[1], reaction[2], reaction[3])
 	else
@@ -525,8 +508,8 @@ end
 ElvUF.Tags.Events['smartlevel'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['smartlevel'] = function(unit)
 	local level = UnitEffectiveLevel(unit)
-	if ( UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) ) then
-		return UnitBattlePetLevel(unit);
+	if UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
+		return UnitBattlePetLevel(unit)
 	elseif level == UnitEffectiveLevel('player') then
 		return nil
 	elseif level > 0 then
@@ -539,35 +522,26 @@ end
 ElvUF.Tags.Events['realm'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['realm'] = function(unit)
 	local _, realm = UnitName(unit)
-
 	if realm and realm ~= "" then
 		return realm
-	else
-		return nil
 	end
 end
 
 ElvUF.Tags.Events['realm:dash'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['realm:dash'] = function(unit)
 	local _, realm = UnitName(unit)
-
 	if realm and (realm ~= "" and realm ~= E.myrealm) then
-		realm = format("-%s", realm)
-	elseif realm == "" then
-		realm = nil
+		return format("-%s", realm)
+	elseif realm ~= "" then
+		return realm
 	end
-
-	return realm
 end
 
 ElvUF.Tags.Events['realm:translit'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['realm:translit'] = function(unit)
 	local _, realm = Translit:Transliterate(UnitName(unit), translitMark)
-
 	if realm and realm ~= "" then
 		return realm
-	else
-		return
 	end
 end
 
@@ -576,83 +550,79 @@ ElvUF.Tags.Methods['realm:dash:translit'] = function(unit)
 	local _, realm = Translit:Transliterate(UnitName(unit), translitMark)
 
 	if realm and (realm ~= "" and realm ~= E.myrealm) then
-		realm = format("-%s", realm)
-	elseif realm == "" then
-		realm = nil
+		return format("-%s", realm)
+	elseif realm ~= "" then
+		return realm
 	end
-
-	return realm
 end
 
 ElvUF.Tags.Events['threat:percent'] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:percent'] = function(unit)
 	local _, _, percent = UnitDetailedThreatSituation('player', unit)
-	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
+	if percent and percent > 0 and (IsInGroup() or UnitExists('pet')) then
 		return format('%.0f%%', percent)
-	else
-		return
 	end
 end
 
 ElvUF.Tags.Events['threat:current'] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threat:current'] = function(unit)
 	local _, _, percent, _, threatvalue = UnitDetailedThreatSituation('player', unit)
-	if(percent and percent > 0) and (IsInGroup() or UnitExists('pet')) then
+	if percent and percent > 0 and (IsInGroup() or UnitExists('pet')) then
 		return E:ShortValue(threatvalue)
-	else
-		return
 	end
 end
 
 ElvUF.Tags.Events['threatcolor'] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE'
 ElvUF.Tags.Methods['threatcolor'] = function(unit)
 	local _, status = UnitDetailedThreatSituation('player', unit)
-	if (status) and (IsInGroup() or UnitExists('pet')) then
+	if status and (IsInGroup() or UnitExists('pet')) then
 		return Hex(GetThreatStatusColor(status))
-	else
-		return
 	end
 end
 
 local unitStatus = {}
 ElvUF.Tags.OnUpdateThrottle['statustimer'] = 1
 ElvUF.Tags.Methods['statustimer'] = function(unit)
-	if not UnitIsPlayer(unit) then return; end
+	if not UnitIsPlayer(unit) then return end
+
 	local guid = UnitGUID(unit)
-	if (UnitIsAFK(unit)) then
-		if not unitStatus[guid] or unitStatus[guid] and unitStatus[guid][1] ~= 'AFK' then
+	local status = unitStatus[guid]
+
+	if UnitIsAFK(unit) then
+		if not status or status[1] ~= 'AFK' then
 			unitStatus[guid] = {'AFK', GetTime()}
 		end
-	elseif(UnitIsDND(unit)) then
-		if not unitStatus[guid] or unitStatus[guid] and unitStatus[guid][1] ~= 'DND' then
+	elseif UnitIsDND(unit) then
+		if not status or status[1] ~= 'DND' then
 			unitStatus[guid] = {'DND', GetTime()}
 		end
-	elseif(UnitIsDead(unit)) or (UnitIsGhost(unit))then
-		if not unitStatus[guid] or unitStatus[guid] and unitStatus[guid][1] ~= 'Dead' then
+	elseif UnitIsDead(unit) or UnitIsGhost(unit) then
+		if not status or status[1] ~= 'Dead' then
 			unitStatus[guid] = {'Dead', GetTime()}
 		end
-	elseif(not UnitIsConnected(unit)) then
-		if not unitStatus[guid] or unitStatus[guid] and unitStatus[guid][1] ~= 'Offline' then
+	elseif not UnitIsConnected(unit) then
+		if not status or status[1] ~= 'Offline' then
 			unitStatus[guid] = {'Offline', GetTime()}
 		end
 	else
 		unitStatus[guid] = nil
 	end
 
-	if unitStatus[guid] ~= nil then
-		local status = unitStatus[guid][1]
-		local timer = GetTime() - unitStatus[guid][2]
+	if status ~= unitStatus[guid] then
+		status = unitStatus[guid]
+	end
+
+	if status then
+		local timer = GetTime() - status[2]
 		local mins = floor(timer / 60)
 		local secs = floor(timer - (mins * 60))
-		return format("%s (%01.f:%02.f)", L[status], mins, secs)
-	else
-		return
+		return format("%s (%01.f:%02.f)", L[status[1]], mins, secs)
 	end
 end
 
 ElvUF.Tags.OnUpdateThrottle['pvptimer'] = 1
 ElvUF.Tags.Methods['pvptimer'] = function(unit)
-	if (UnitIsPVPFreeForAll(unit) or UnitIsPVP(unit)) then
+	if UnitIsPVPFreeForAll(unit) or UnitIsPVP(unit) then
 		local timer = GetPVPTimer()
 
 		if timer ~= 301000 and timer ~= -1 then
@@ -662,8 +632,6 @@ ElvUF.Tags.Methods['pvptimer'] = function(unit)
 		else
 			return PVP
 		end
-	else
-		return
 	end
 end
 
@@ -676,9 +644,7 @@ end
 ElvUF.Tags.Events['absorbs'] = 'UNIT_ABSORB_AMOUNT_CHANGED'
 ElvUF.Tags.Methods['absorbs'] = function(unit)
 	local absorb = UnitGetTotalAbsorbs(unit) or 0
-	if absorb == 0 then
-		return
-	else
+	if absorb ~= 0 then
 		return E:ShortValue(absorb)
 	end
 end
@@ -686,9 +652,7 @@ end
 ElvUF.Tags.Events['incomingheals:personal'] = 'UNIT_HEAL_PREDICTION'
 ElvUF.Tags.Methods['incomingheals:personal'] = function(unit)
 	local heal = UnitGetIncomingHeals(unit, 'player') or 0
-	if heal == 0 then
-		return
-	else
+	if heal ~= 0 then
 		return E:ShortValue(heal)
 	end
 end
@@ -698,9 +662,7 @@ ElvUF.Tags.Methods['incomingheals:others'] = function(unit)
 	local personal = UnitGetIncomingHeals(unit, 'player') or 0
 	local heal = UnitGetIncomingHeals(unit) or 0
 	local others = heal - personal
-	if others == 0 then
-		return
-	else
+	if others ~= 0 then
 		return E:ShortValue(others)
 	end
 end
@@ -708,9 +670,7 @@ end
 ElvUF.Tags.Events['incomingheals'] = 'UNIT_HEAL_PREDICTION'
 ElvUF.Tags.Methods['incomingheals'] = function(unit)
 	local heal = UnitGetIncomingHeals(unit) or 0
-	if heal == 0 then
-		return
-	else
+	if heal ~= 0 then
 		return E:ShortValue(heal)
 	end
 end
@@ -744,12 +704,12 @@ end)
 
 ElvUF.Tags.OnUpdateThrottle['nearbyplayers:8'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
-	local unitsInRange, d = 0
+	local unitsInRange, distance = 0
 	if UnitIsConnected(unit) then
 		for groupUnit in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				d = E:GetDistance(unit, groupUnit)
-				if d and d <= 8 then
+				distance = E:GetDistance(unit, groupUnit)
+				if distance and distance <= 8 then
 					unitsInRange = unitsInRange + 1
 				end
 			end
@@ -761,12 +721,12 @@ end
 
 ElvUF.Tags.OnUpdateThrottle['nearbyplayers:10'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
-	local unitsInRange, d = 0
+	local unitsInRange, distance = 0
 	if UnitIsConnected(unit) then
 		for groupUnit in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				d = E:GetDistance(unit, groupUnit)
-				if d and d <= 10 then
+				distance = E:GetDistance(unit, groupUnit)
+				if distance and distance <= 10 then
 					unitsInRange = unitsInRange + 1
 				end
 			end
@@ -778,12 +738,12 @@ end
 
 ElvUF.Tags.OnUpdateThrottle['nearbyplayers:30'] = 0.25
 ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
-	local unitsInRange, d = 0
+	local unitsInRange, distance = 0
 	if UnitIsConnected(unit) then
 		for groupUnit in pairs(GroupUnits) do
 			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				d = E:GetDistance(unit, groupUnit)
-				if d and d <= 30 then
+				distance = E:GetDistance(unit, groupUnit)
+				if distance and distance <= 30 then
 					unitsInRange = unitsInRange + 1
 				end
 			end
@@ -795,16 +755,16 @@ end
 
 ElvUF.Tags.OnUpdateThrottle['distance'] = 0.1
 ElvUF.Tags.Methods['distance'] = function(unit)
-	local d
+	local distance
 	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
-		d = E:GetDistance('player', unit)
+		distance = E:GetDistance('player', unit)
 
-		if d then
-			d = format("%.1f", d)
+		if distance then
+			distance = format("%.1f", distance)
 		end
 	end
 
-	return d or nil
+	return distance
 end
 
 local speedText = _G.SPEED
@@ -826,7 +786,7 @@ ElvUF.Tags.Methods['speed:percent-moving'] = function(unit)
 		currentSpeedInPercent = format("%s: %d%%", speedText, currentSpeedInPercent)
 	end
 
-	return currentSpeedInPercent or nil
+	return currentSpeedInPercent
 end
 
 ElvUF.Tags.OnUpdateThrottle['speed:percent-raw'] = 0.1
@@ -846,20 +806,18 @@ ElvUF.Tags.Methods['speed:percent-moving-raw'] = function(unit)
 		currentSpeedInPercent = format("%d%%", currentSpeedInPercent)
 	end
 
-	return currentSpeedInPercent or nil
+	return currentSpeedInPercent
 end
 
 ElvUF.Tags.OnUpdateThrottle['speed:yardspersec'] = 0.1
 ElvUF.Tags.Methods['speed:yardspersec'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
-
 	return format("%s: %.1f", speedText, currentSpeedInYards)
 end
 
 ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving'] = 0.1
 ElvUF.Tags.Methods['speed:yardspersec-moving'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
-
 	return currentSpeedInYards > 0 and format("%s: %.1f", speedText, currentSpeedInYards) or nil
 end
 
@@ -872,25 +830,22 @@ end
 ElvUF.Tags.OnUpdateThrottle['speed:yardspersec-moving-raw'] = 0.1
 ElvUF.Tags.Methods['speed:yardspersec-moving-raw'] = function(unit)
 	local currentSpeedInYards = GetUnitSpeed(unit)
-
 	return currentSpeedInYards > 0 and format("%.1f", currentSpeedInYards) or nil
 end
 
 ElvUF.Tags.Events['classificationcolor'] = 'UNIT_CLASSIFICATION_CHANGED'
 ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 	local c = UnitClassification(unit)
-	if(c == 'rare' or c == 'elite') then
-		return Hex(1, 0.5, 0.25) --Orange
-	elseif(c == 'rareelite' or c == 'worldboss') then
-		return Hex(1, 0, 0) --Red
+	if c == 'rare' or c == 'elite' then
+		return Hex(1, 0.5, 0.25)
+	elseif c == 'rareelite' or c == 'worldboss' then
+		return Hex(1, 0, 0)
 	end
 end
 
 ElvUF.Tags.Events['classification:icon'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['classification:icon'] = function(unit)
-	if UnitIsPlayer(unit) then
-		return
-	end
+	if UnitIsPlayer(unit) then return end
 
 	local classification = UnitClassification(unit)
 	if classification == "elite" or classification == "worldboss" then
@@ -904,82 +859,88 @@ ElvUF.Tags.SharedEvents.PLAYER_GUILD_UPDATE = true
 
 ElvUF.Tags.Events['guild'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild'] = function(unit)
-	if (UnitIsPlayer(unit)) then
-		return GetGuildInfo(unit) or nil
+	if UnitIsPlayer(unit) then
+		return GetGuildInfo(unit)
 	end
 end
 
 ElvUF.Tags.Events['guild:brackets'] = 'PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild:brackets'] = function(unit)
 	local guildName = GetGuildInfo(unit)
-
-	return guildName and format("<%s>", guildName) or nil
+	if guildName then
+		return format("<%s>", guildName)
+	end
 end
 
 ElvUF.Tags.Events['guild:translit'] = 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild:translit'] = function(unit)
-	if (UnitIsPlayer(unit)) then
-		return Translit:Transliterate(GetGuildInfo(unit), translitMark) or nil
+	if UnitIsPlayer(unit) then
+		local guildName = GetGuildInfo(unit)
+		if guildName then
+			return Translit:Transliterate(guildName, translitMark)
+		end
 	end
 end
 
 ElvUF.Tags.Events['guild:brackets:translit'] = 'PLAYER_GUILD_UPDATE'
 ElvUF.Tags.Methods['guild:brackets:translit'] = function(unit)
-	local guildName = Translit:Transliterate(GetGuildInfo(unit), translitMark)
-
-	return guildName and format("<%s>", guildName) or nil
+	local guildName = GetGuildInfo(unit)
+	if guildName then
+		return format("<%s>", Translit:Transliterate(guildName, translitMark))
+	end
 end
 
 ElvUF.Tags.Events['target'] = 'UNIT_TARGET'
 ElvUF.Tags.Methods['target'] = function(unit)
 	local targetName = UnitName(unit.."target")
-	return targetName or nil
+	if targetName then
+		return targetName
+	end
 end
 
 ElvUF.Tags.Events['target:translit'] = 'UNIT_TARGET'
 ElvUF.Tags.Methods['target:translit'] = function(unit)
-	local targetName = Translit:Transliterate(UnitName(unit.."target"), translitMark)
-	return targetName or nil
+	local targetName = UnitName(unit.."target")
+	if targetName then
+		return Translit:Transliterate(targetName, translitMark)
+	end
 end
 
 ElvUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['npctitle'] = function(unit)
-	if (UnitIsPlayer(unit)) then
-		return
-	end
+	if UnitIsPlayer(unit) then return end
 
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unit)
 	E.ScanTooltip:Show()
 
 	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-
-	if (Title and not Title:find('^'..LEVEL)) then
+	if Title and not Title:find('^'..LEVEL) then
 		return Title
 	end
 end
 
 ElvUF.Tags.Events['npctitle:brackets'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['npctitle:brackets'] = function(unit)
-	if (UnitIsPlayer(unit)) then
-		return
-	end
+	if UnitIsPlayer(unit) then return end
 
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unit)
 	E.ScanTooltip:Show()
 
 	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-
-	if (Title and not Title:find('^'..LEVEL)) then
-		return Title and format("<%s>", Title) or nil
+	if Title and not Title:find('^'..LEVEL) then
+		return format("<%s>", Title)
 	end
 end
 
 ElvUF.Tags.Events['guild:rank'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['guild:rank'] = function(unit)
-	if (UnitIsPlayer(unit)) then
-		return select(2, GetGuildInfo(unit)) or ''
+	if UnitIsPlayer(unit) then
+		local _, rank = GetGuildInfo(unit)
+		if rank then
+			return rank
+		end
 	end
 end
 
@@ -1000,7 +961,6 @@ ElvUF.Tags.Methods['class'] = function(unit)
 	if not UnitIsPlayer(unit) then return end
 
 	local _, classToken = UnitClass(unit)
-
 	if UnitSex(unit) == 3 then
 		return _G.LOCALIZED_CLASS_NAMES_FEMALE[classToken]
 	else
@@ -1010,60 +970,58 @@ end
 
 ElvUF.Tags.Events['specialization'] = 'PLAYER_TALENT_UPDATE'
 ElvUF.Tags.Methods['specialization'] = function(unit)
-	if (UnitIsPlayer(unit)) then
+	if UnitIsPlayer(unit) then
 		local currentSpec = GetSpecialization()
 		if currentSpec then
 			local _, currentSpecName = GetSpecializationInfo(currentSpec)
-			return currentSpecName
+			if currentSpecName then
+				return currentSpecName
+			end
 		end
 	end
 end
 
 ElvUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['name:title'] = function(unit)
-	if (UnitIsPlayer(unit)) then
+	if UnitIsPlayer(unit) then
 		return UnitPVPName(unit)
 	end
 end
 
 ElvUF.Tags.Events['title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['title'] = function(unit)
-    if (UnitIsPlayer(unit)) then
-        local titleid = GetCurrentTitle()
-		return GetTitleName(titleid)
+    if UnitIsPlayer(unit) then
+		return GetTitleName(GetCurrentTitle())
     end
 end
 
 ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
 ElvUF.Tags.Methods['quest:title'] = function(unit)
-	if UnitIsPlayer(unit) then
-		return
-	end
+	if UnitIsPlayer(unit) then return end
 
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unit)
 	E.ScanTooltip:Show()
 
 	local QuestName
-
 	if E.ScanTooltip:NumLines() >= 3 then
 		for i = 3, E.ScanTooltip:NumLines() do
 			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
 			local QuestLineText = QuestLine and QuestLine:GetText()
-
 			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
 
-			if not ( PlayerName and PlayerName ~= '' and PlayerName ~= UnitName('player') ) then
-				if ProgressText then
-					QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
-				end
+			if ProgressText and (not PlayerName or PlayerName == '' or PlayerName == UnitName('player')) then
+				QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
 			end
 		end
-		for i = 1, GetNumQuestLogEntries() do
-			local title, level, _, isHeader = GetQuestLogTitle(i)
-			if not isHeader and title == QuestName then
-				local colors = GetQuestDifficultyColor(level)
-				return Hex(colors.r, colors.g, colors.b)..QuestName..'|r'
+
+		if QuestName then
+			for i = 1, GetNumQuestLogEntries() do
+				local title, level, _, isHeader = GetQuestLogTitle(i)
+				if not isHeader and title == QuestName then
+					local colors = GetQuestDifficultyColor(level)
+					return Hex(colors.r, colors.g, colors.b)..QuestName..'|r'
+				end
 			end
 		end
 	end
@@ -1071,43 +1029,28 @@ end
 
 ElvUF.Tags.Events['quest:info'] = 'QUEST_LOG_UPDATE'
 ElvUF.Tags.Methods['quest:info'] = function(unit)
-	if UnitIsPlayer(unit) then
-		return
-	end
+	if UnitIsPlayer(unit) then return end
 
 	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
 	E.ScanTooltip:SetUnit(unit)
 	E.ScanTooltip:Show()
 
-	local ObjectiveCount = 0
 	local QuestName
-
 	if E.ScanTooltip:NumLines() >= 3 then
 		for i = 3, E.ScanTooltip:NumLines() do
 			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
 			local QuestLineText = QuestLine and QuestLine:GetText()
-
 			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
-			if (not PlayerName or PlayerName == '' or PlayerName == UnitName('player')) and ProgressText then
-				local x, y
-				if not QuestName and ProgressText then
+			if ProgressText and (not PlayerName or PlayerName == '' or PlayerName == UnitName('player')) then
+				if not QuestName then
 					QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
 				end
-				if ProgressText then
-					x, y = strmatch(ProgressText, '(%d+)/(%d+)')
-					if x and y then
-						local NumLeft = y - x
-						if NumLeft > ObjectiveCount then -- track highest number of objectives
-							ObjectiveCount = NumLeft
-							if ProgressText then
-								return ProgressText
-							end
-						end
-					else
-						if ProgressText then
-							return QuestName .. ': ' .. ProgressText
-						end
-					end
+
+				local x, y = strmatch(ProgressText, '(%d+)/(%d+)')
+				if x and y and (y - x) > 0 then
+					return ProgressText
+				elseif QuestName then
+					return QuestName .. ': ' .. ProgressText
 				end
 			end
 		end
@@ -1130,7 +1073,6 @@ ElvUF.Tags.Methods['ElvUI-Users'] = function(unit)
 			end
 		end
 	end
-	return ""
 end
 
 ElvUF.Tags.Events['creature'] = ''
