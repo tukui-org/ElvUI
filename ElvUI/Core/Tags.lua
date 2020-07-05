@@ -204,17 +204,6 @@ local function GetClassPower(Class)
 		end
 	end
 
-	-- return stock power info
-	if not r then
-		min = UnitPower('player', powerFlag)
-		max = UnitPowerMax('player', powerFlag)
-
-		local power = ElvUF.colors.power[powerFlag]
-		if power then
-			r, g, b = unpack(power)
-		end
-	end
-
 	return min or 0, max or 0, r or 1, g or 1, b or 1
 end
 E.TagFunctions.GetClassPower = GetClassPower
