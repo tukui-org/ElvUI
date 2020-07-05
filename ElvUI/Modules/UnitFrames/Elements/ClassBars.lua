@@ -444,6 +444,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.colorPower = true
 	additionalPower.frequentUpdates = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
+	additionalPower.PostUpdateColor = UF.PostColorAdditionalPower
 	additionalPower.PostUpdateVisibility = UF.PostVisibilityAdditionalPower
 	additionalPower:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
@@ -463,19 +464,23 @@ function UF:Construct_AdditionalPowerBar(frame)
 	return additionalPower
 end
 
+function UF:PostColorAdditionalPower()
+	local frame = self.origParent or self:GetParent()
+	if frame.USE_CLASSBAR then
+		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+		if custom_backdrop then
+			self.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		end
+	end
+end
+
 function UF:PostUpdateAdditionalPower(_, MIN, MAX, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if frame.USE_CLASSBAR and ((MIN ~= MAX or (not db.classbar.autoHide)) and (event ~= "ElementDisable")) then
-		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-		self.colorPower = not custom_backdrop
-		if custom_backdrop then
-			self.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-		end
-
+	if frame.USE_CLASSBAR and event ~= "ElementDisable" and (MIN ~= MAX or not db.classbar.autoHide) then
 		self:Show()
-	else --Bar disabled
+	else
 		self:Hide()
 	end
 end
@@ -483,11 +488,7 @@ end
 function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
 	local frame = self.origParent or self:GetParent()
 
-	if enabled then
-		frame.ClassBar = 'AdditionalPower'
-	else
-		frame.ClassBar = 'ClassPower'
-	end
+	frame.ClassBar = (enabled and 'AdditionalPower') or 'ClassPower'
 
 	if stateChanged then
 		ToggleResourceBar(frame[frame.ClassBar])
