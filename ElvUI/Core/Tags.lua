@@ -70,7 +70,7 @@ local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
 local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
 
 local SPELL_POWER_MANA = Enum.PowerType.Mana
-local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
+local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
@@ -79,8 +79,6 @@ local LEVEL = LEVEL
 local PVP = PVP
 
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
-local ALT_MANA_BAR_PAIR_DISPLAY_INFO = ALT_MANA_BAR_PAIR_DISPLAY_INFO
-
 -- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
 
 --Expose local functions for plugins onto this table
@@ -332,7 +330,6 @@ ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
 	end
 end
 
-local additionalPowerIndex = _G.ADDITIONAL_POWER_BAR_INDEX
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagTextFormat = strlower(gsub(textFormat, '_', '-'))
 	ElvUF.Tags.Events[format('health:%s', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
@@ -361,15 +358,11 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end
 
-	ElvUF.Tags.Events[format('additionalpower:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
-	ElvUF.Tags.Methods[format('additionalpower:%s', tagTextFormat)] = function(unit)
-		local powerFlag = UnitPowerType(unit)
-		local mana = ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
-		if mana and mana[powerFlag] and additionalPowerIndex == 0 then
-			local min = UnitPower(unit, SPELL_POWER_MANA)
-			if min ~= 0 and tagTextFormat ~= 'deficit' then
-				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
-			end
+	ElvUF.Tags.Events[format('mana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
+	ElvUF.Tags.Methods[format('mana:%s', tagTextFormat)] = function(unit)
+		local min = UnitPower(unit, SPELL_POWER_MANA)
+		if min ~= 0 and tagTextFormat ~= 'deficit' then
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
 		end
 	end
 
@@ -673,6 +666,12 @@ end
 ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpowercolor'] = function()
 	local _, _, r, g, b = GetClassPower(E.myclass, 2)
+	return Hex(r, g, b)
+end
+
+ElvUF.Tags.Events['manacolor'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+ElvUF.Tags.Methods['manacolor'] = function()
+	local r, g, b = unpack(ElvUF.colors.power[SPELL_POWER_MANA])
 	return Hex(r, g, b)
 end
 
@@ -1256,12 +1255,12 @@ E.TagInfo = {
 	['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals " },
 	['maxpp'] = { category = 'Power', description = "Displays the max amount of power of the unit in whole numbers without decimals" },
 	['missingpp'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" },
-	['additionalpower:current'] = { category = 'Power', description = "Displays the unit's current additional power" },
-	['additionalpower:current-max'] = { category = 'Power', description = "Displays the unit's current and maximum additional power, separated by a dash" },
-	['additionalpower:current-max-percent'] = { category = 'Power', description = "Displays the current and max additional power of the unit, separated by a dash (% when not full)" },
-	['additionalpower:current-percent'] = { category = 'Power', description = "Displays the current additional power of the unit and % when not full" },
-	['additionalpower:deficit'] = { category = 'Power', description = "Displays the player's additional power as a deficit" },
-	['additionalpower:percent'] = { category = 'Power', description = "Displays the player's additional power as a percentage" },
+	['mana:current'] = { category = 'Power', description = "Displays the unit's current mana" },
+	['mana:current-max'] = { category = 'Power', description = "Displays the unit's current and maximum mana, separated by a dash" },
+	['mana:current-max-percent'] = { category = 'Power', description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" },
+	['mana:current-percent'] = { category = 'Power', description = "Displays the current mana of the unit and % when not full" },
+	['mana:deficit'] = { category = 'Power', description = "Displays the player's mana as a deficit" },
+	['mana:percent'] = { category = 'Power', description = "Displays the player's mana as a percentage" },
 	--PvP
 	['pvp'] = { category = 'PvP', description = "Displays 'PvP' if the unit is pvp flagged" },
 	['pvptimer'] = { category = 'PvP', description = "Displays remaining time on pvp-flagged status" },
