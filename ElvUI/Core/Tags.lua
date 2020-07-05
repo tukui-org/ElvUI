@@ -179,10 +179,7 @@ local function GetClassPower(Class, Type)
 			if retColors and min > 0 then
 				local powerColor = ElvUF.colors.ClassBars[Class]
 				if Class == 'MONK' then -- chi is a table
-					local powerColors = powerColor[min]
-					if powerColors then
-						r, g, b = unpack(powerColors)
-					end
+					r, g, b = unpack(powerColor[min])
 				else
 					r, g, b = unpack(powerColor)
 				end
