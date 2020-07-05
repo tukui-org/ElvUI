@@ -144,38 +144,35 @@ local ClassPowers = {
 	WARLOCK		= Enum.PowerType.SoulShards
 }
 
-local function GetClassPower(Class, Type)
+local function GetClassPower(Class)
 	local min, max, r, g, b
 
-	local retValues = not Type or Type == 1
-	local retColors = not Type or Type == 2
-
+	-- try stagger
 	if Class == 'MONK' then
 		local spec = GetSpecialization()
 		if spec == SPEC_MONK_BREWMASTER then
 			min = UnitStagger('player')
 			max = UnitHealthMax('player')
 
-			if retColors then
-				local staggerRatio = min / max
-				if staggerRatio >= STAGGER_RED_TRANSITION then
-					r, g, b = unpack(StaggerColors[STAGGER_RED_INDEX])
-				elseif staggerRatio >= STAGGER_YELLOW_TRANSITION then
-					r, g, b = unpack(StaggerColors[STAGGER_YELLOW_INDEX])
-				else
-					r, g, b = unpack(StaggerColors[STAGGER_GREEN_INDEX])
-				end
+			local staggerRatio = min / max
+			if staggerRatio >= STAGGER_RED_TRANSITION then
+				r, g, b = unpack(StaggerColors[STAGGER_RED_INDEX])
+			elseif staggerRatio >= STAGGER_YELLOW_TRANSITION then
+				r, g, b = unpack(StaggerColors[STAGGER_YELLOW_INDEX])
+			else
+				r, g, b = unpack(StaggerColors[STAGGER_GREEN_INDEX])
 			end
 		end
 	end
 
+	-- try special powers or combo points
 	if not r then
 		local barType = ClassPowers[Class]
 		if barType then
 			min = UnitPower('player', barType)
 			max = UnitPowerMax('player', barType)
 
-			if retColors and min > 0 then
+			if min > 0 then
 				local powerColor = ElvUF.colors.ClassBars[Class]
 				if Class == 'MONK' then -- chi is a table
 					r, g, b = unpack(powerColor[min])
@@ -187,33 +184,39 @@ local function GetClassPower(Class, Type)
 			min = UnitPower('player', ComboColors)
 			max = UnitPowerMax('player', ComboColors)
 
-			if retColors and min > 0 then
+			if min > 0 then
 				local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
 				local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
 				local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
 				r, g, b = ElvUF:ColorGradient(min, max, r1, g1, b1, r2, g2, b2, r3, g3, b3)
 			end
 		end
+	end
 
-		if not r then
-			local powerFlag = UnitPowerType('player')
-			min = UnitPower('player', powerFlag)
-			max = UnitPowerMax('player', powerFlag)
+	-- try additional mana
+	local powerFlag = UnitPowerType('player')
+	if not r then
+		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[Class]
+		if barIndex and barIndex[powerFlag] then
+			min = UnitPower('player', SPELL_POWER_MANA)
+			max = UnitPowerMax('player', SPELL_POWER_MANA)
 
-			local power = retColors and ElvUF.colors.power[powerFlag]
-			if power then
-				r, g, b = unpack(power)
-			end
+			r, g, b = unpack(ElvUF.colors.power.MANA)
 		end
 	end
 
-	if retValues and retColors then
-		return min or 0, max or 0, r or 1, g or 1, b or 1
-	elseif retValues then
-		return min or 0, max or 0
-	elseif retColors then
-		return nil, nil, r or 1, g or 1, b or 1
+	-- return stock power info
+	if not r then
+		min = UnitPower('player', powerFlag)
+		max = UnitPowerMax('player', powerFlag)
+
+		local power = ElvUF.colors.power[powerFlag]
+		if power then
+			r, g, b = unpack(power)
+		end
 	end
+
+	return min or 0, max or 0, r or 1, g or 1, b or 1
 end
 E.TagFunctions.GetClassPower = GetClassPower
 
@@ -350,25 +353,28 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Events[format('power:%s', tagTextFormat)] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 	ElvUF.Tags.Methods[format('power:%s', tagTextFormat)] = function(unit)
 		if UnitIsPlayer(unit) then
-			local pType = UnitPowerType(unit)
-			local min = UnitPower(unit, pType)
+			local powerType = UnitPowerType(unit)
+			local min = UnitPower(unit, powerType)
 			if min ~= 0 and tagTextFormat ~= 'deficit' then
-				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, pType))
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType))
 			end
 		end
 	end
 
 	ElvUF.Tags.Events[format('mana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('mana:%s', tagTextFormat)] = function(unit)
-		local min = UnitPower(unit, SPELL_POWER_MANA)
-		if min ~= 0 and tagTextFormat ~= 'deficit' then
-			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
+		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
+		if barIndex and barIndex[UnitPowerType(unit)] then
+			local min = UnitPower(unit, SPELL_POWER_MANA)
+			if min ~= 0 and tagTextFormat ~= 'deficit' then
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
+			end
 		end
 	end
 
 	ElvUF.Tags.Events[format('classpower:%s', tagTextFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('classpower:%s', tagTextFormat)] = function()
-		local min, max = GetClassPower(E.myclass, 1)
+		local min, max = GetClassPower(E.myclass)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
@@ -490,8 +496,8 @@ end
 
 ElvUF.Tags.Events['power:max'] = 'UNIT_DISPLAYPOWER UNIT_MAXPOWER'
 ElvUF.Tags.Methods['power:max'] = function(unit)
-	local pType = UnitPowerType(unit)
-	local max = UnitPowerMax(unit, pType)
+	local powerType = UnitPowerType(unit)
+	local max = UnitPowerMax(unit, powerType)
 
 	return E:GetFormattedText('CURRENT', max, max)
 end
@@ -665,13 +671,13 @@ end
 
 ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpowercolor'] = function()
-	local _, _, r, g, b = GetClassPower(E.myclass, 2)
+	local _, _, r, g, b = GetClassPower(E.myclass)
 	return Hex(r, g, b)
 end
 
 ElvUF.Tags.Events['manacolor'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['manacolor'] = function()
-	local r, g, b = unpack(ElvUF.colors.power[SPELL_POWER_MANA])
+	local r, g, b = unpack(ElvUF.colors.power.MANA)
 	return Hex(r, g, b)
 end
 
@@ -1203,6 +1209,12 @@ E.TagInfo = {
 	--Mana
 	['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
 	['maxmana'] = { category = 'Mana', description = "Displays the max amount of mana the unit can have" },
+	['mana:current'] = { category = 'Mana', description = "Displays the unit's current mana" },
+	['mana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum mana, separated by a dash" },
+	['mana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" },
+	['mana:current-percent'] = { category = 'Mana', description = "Displays the current mana of the unit and % when not full" },
+	['mana:deficit'] = { category = 'Mana', description = "Displays the player's mana as a deficit" },
+	['mana:percent'] = { category = 'Mana', description = "Displays the player's mana as a percentage" },
 	--Miscellaneous
 	['affix'] = { category = 'Miscellaneous', description = "Displays low level critter mobs" },
 	['class'] = { category = 'Miscellaneous', description = "Displays the class of the unit, if that unit is a player" },
@@ -1255,12 +1267,6 @@ E.TagInfo = {
 	['perpp'] = { category = 'Power', description = "Displays the unit's percentage power without decimals " },
 	['maxpp'] = { category = 'Power', description = "Displays the max amount of power of the unit in whole numbers without decimals" },
 	['missingpp'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" },
-	['mana:current'] = { category = 'Power', description = "Displays the unit's current mana" },
-	['mana:current-max'] = { category = 'Power', description = "Displays the unit's current and maximum mana, separated by a dash" },
-	['mana:current-max-percent'] = { category = 'Power', description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" },
-	['mana:current-percent'] = { category = 'Power', description = "Displays the current mana of the unit and % when not full" },
-	['mana:deficit'] = { category = 'Power', description = "Displays the player's mana as a deficit" },
-	['mana:percent'] = { category = 'Power', description = "Displays the player's mana as a percentage" },
 	--PvP
 	['pvp'] = { category = 'PvP', description = "Displays 'PvP' if the unit is pvp flagged" },
 	['pvptimer'] = { category = 'PvP', description = "Displays remaining time on pvp-flagged status" },
@@ -1282,14 +1288,14 @@ E.TagInfo = {
 	['realm:dash'] = { category = 'Realm', description = "Displays the server name with a dash in front (e.g. -Realm)" },
 	['realm:dash:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters and a dash in front" },
 	--Speed
-	['speed:percent'] = { category = 'Speed', description = "" },
-	['speed:percent-raw'] = { category = 'Speed', description = "" },
-	['speed:yardspersec'] = { category = 'Speed', description = "" },
-	['speed:percent-moving'] = { category = 'Speed', description = "" },
-	['speed:yardspersec-moving'] = { category = 'Speed', description = "" },
-	['speed:percent-moving-raw'] = { category = 'Speed', description = "" },
-	['speed:yardspersec-moving-raw'] = { category = 'Speed', description = "" },
-	['speed:yardspersec-raw'] = { category = 'Speed', description = "" },
+	['speed:percent'] = { category = 'Speed' },
+	['speed:percent-raw'] = { category = 'Speed' },
+	['speed:yardspersec'] = { category = 'Speed' },
+	['speed:percent-moving'] = { category = 'Speed' },
+	['speed:yardspersec-moving'] = { category = 'Speed' },
+	['speed:percent-moving-raw'] = { category = 'Speed' },
+	['speed:yardspersec-moving-raw'] = { category = 'Speed' },
+	['speed:yardspersec-raw'] = { category = 'Speed' },
 	--Status
 	['status'] = { category = 'Status', description = "Displays zzz, dead, ghost, offline" },
 	['status:icon'] = { category = 'Status', description = "Displays AFK/DND as an orange(afk) / red(dnd) icon" },
