@@ -1648,6 +1648,7 @@ function E:Initialize()
 	E.data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
 	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
 	E.charSettings.RegisterCallback(E, 'OnProfileChanged', function() ReloadUI() end)
+	E.charSettings.RegisterCallback(E, 'OnProfileReset', 'OnPrivateProfileReset')
 	E.private = E.charSettings.profile
 	E.global = E.data.global
 	E.db = E.data.profile

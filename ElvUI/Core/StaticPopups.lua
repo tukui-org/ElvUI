@@ -397,6 +397,14 @@ E.PopupDialogs.RESET_PROFILE_PROMPT = {
 	OnAccept = function() E:ResetProfile() end,
 }
 
+E.PopupDialogs.RESET_PRIVATE_PROFILE_PROMPT = {
+	text = L["Are you sure you want to reset all the settings on this profile?"],
+	button1 = YES,
+	button2 = NO,
+	hideOnEscape = 1,
+	OnAccept = function() E:ResetPrivateProfile() end,
+}
+
 E.PopupDialogs.WARNING_BLIZZARD_ADDONS = {
 	text = L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."],
 	button1 = OKAY,

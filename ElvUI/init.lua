@@ -225,15 +225,23 @@ function E:PositionGameMenuButton()
 end
 
 function E:ResetProfile()
-	local key = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
-	if key and ElvPrivateDB.profiles and ElvPrivateDB.profiles[key] then
-		ElvPrivateDB.profiles[key] = nil
-	end
-
 	ElvCharacterDB = nil
 	ReloadUI()
 end
 
 function E:OnProfileReset()
 	E:StaticPopup_Show('RESET_PROFILE_PROMPT')
+end
+
+function E:ResetPrivateProfile()
+	local key = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
+	if key and ElvPrivateDB.profiles and ElvPrivateDB.profiles[key] then
+		ElvPrivateDB.profiles[key] = nil
+	end
+
+	ReloadUI()
+end
+
+function E:OnPrivateProfileReset()
+	E:StaticPopup_Show('RESET_PRIVATE_PROFILE_PROMPT')
 end
