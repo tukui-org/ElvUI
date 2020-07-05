@@ -70,6 +70,7 @@ local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
 local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
 
 local SPELL_POWER_MANA = Enum.PowerType.Mana
+local COMBO_POINTS = Enum.PowerType.ComboPoints
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
@@ -126,8 +127,6 @@ local function Abbrev(name)
 end
 E.TagFunctions.Abbrev = Abbrev
 
-local ComboColors = Enum.PowerType.ComboPoints
-local StaggerColors = ElvUF.colors.power.STAGGER
 -- percentages at which the bar should change color
 local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION
 local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION
@@ -156,11 +155,11 @@ local function GetClassPower(Class)
 
 			local staggerRatio = min / max
 			if staggerRatio >= STAGGER_RED_TRANSITION then
-				r, g, b = unpack(StaggerColors[STAGGER_RED_INDEX])
+				r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_RED_INDEX])
 			elseif staggerRatio >= STAGGER_YELLOW_TRANSITION then
-				r, g, b = unpack(StaggerColors[STAGGER_YELLOW_INDEX])
+				r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_YELLOW_INDEX])
 			else
-				r, g, b = unpack(StaggerColors[STAGGER_GREEN_INDEX])
+				r, g, b = unpack(ElvUF.colors.power.STAGGER[STAGGER_GREEN_INDEX])
 			end
 		end
 	end
@@ -181,8 +180,8 @@ local function GetClassPower(Class)
 				end
 			end
 		else
-			min = UnitPower('player', ComboColors)
-			max = UnitPowerMax('player', ComboColors)
+			min = UnitPower('player', COMBO_POINTS)
+			max = UnitPowerMax('player', COMBO_POINTS)
 
 			if min > 0 then
 				local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
