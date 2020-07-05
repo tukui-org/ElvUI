@@ -26,6 +26,7 @@ local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetThreatStatusColor = GetThreatStatusColor
+local GetRuneCooldown = GetRuneCooldown
 local GetTime = GetTime
 local GetUnitSpeed = GetUnitSpeed
 local IsInGroup = IsInGroup
@@ -170,6 +171,17 @@ local function GetClassPower(Class)
 		if barType then
 			min = UnitPower('player', barType)
 			max = UnitPowerMax('player', barType)
+
+			if Class == 'DEATHKNIGHT' then
+				min = 0 -- only count full runes
+
+				for i=1, 6 do
+					local _, _, runeReady = GetRuneCooldown(i)
+					if runeReady then
+						min = min + 1
+					end
+				end
+			end
 
 			if min > 0 then
 				local powerColor = ElvUF.colors.ClassBars[Class]
@@ -359,7 +371,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end
 
-	ElvUF.Tags.Events[format('classpower:%s', tagTextFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+	ElvUF.Tags.Events[format('classpower:%s', tagTextFormat)] = (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('classpower:%s', tagTextFormat)] = function()
 		local min, max = GetClassPower(E.myclass)
 		if min ~= 0 then
