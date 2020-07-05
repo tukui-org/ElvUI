@@ -64,11 +64,13 @@ local function group(order, db, label)
 
 	if db == 'global' then
 		mainArgs.reverse = nil
-		mainArgs.hideBlizzard = nil
 		mainArgs.colorGroup.args.override = nil
 		mainArgs.colorGroup.disabled = nil
 		mainArgs.colorGroup.name = L["COLORS"]
+
+		-- keep these two in this order
 		E.Options.args.cooldown.args.hideBlizzard = mainArgs.hideBlizzard
+		mainArgs.hideBlizzard = nil
 	elseif db == 'auras' then
 		mainArgs.reverse = nil
 		mainArgs.hideBlizzard = nil
