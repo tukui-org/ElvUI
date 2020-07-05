@@ -71,7 +71,6 @@ local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
 
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
-local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
 local UNKNOWN = UNKNOWN
@@ -79,10 +78,6 @@ local LEVEL = LEVEL
 local PVP = PVP
 
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
-local SPELL_POWER_CHI = Enum.PowerType.Chi
-local SPELL_POWER_HOLY_POWER = Enum.PowerType.HolyPower
-local SPELL_POWER_MANA = Enum.PowerType.Mana
-local SPELL_POWER_SOUL_SHARDS = Enum.PowerType.SoulShards
 local ALT_MANA_BAR_PAIR_DISPLAY_INFO = ALT_MANA_BAR_PAIR_DISPLAY_INFO
 
 -- GLOBALS: ElvUF, Hex, _TAGS, _COLORS
@@ -132,16 +127,7 @@ local function Abbrev(name)
 end
 E.TagFunctions.Abbrev = Abbrev
 
-local Harmony = {
-	[0] = {1, 1, 1},
-	[1] = {.57, .63, .35, 1},
-	[2] = {.47, .63, .35, 1},
-	[3] = {.37, .63, .35, 1},
-	[4] = {.27, .63, .33, 1},
-	[5] = {.17, .63, .33, 1},
-	[6] = {.17, .63, .33, 1},
-}
-
+local ComboColors = Enum.PowerType.ComboPoints
 local StaggerColors = ElvUF.colors.power.STAGGER
 -- percentages at which the bar should change color
 local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION
@@ -151,38 +137,82 @@ local STAGGER_GREEN_INDEX = STAGGER_GREEN_INDEX or 1
 local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
 local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
 
-local function GetClassPower(class)
-	local min, max, r, g, b = 0, 0, 1, 1, 1
+local ClassPowers = {
+	MONK		= Enum.PowerType.Chi,
+	MAGE		= Enum.PowerType.ArcaneCharges,
+	PALADIN		= Enum.PowerType.HolyPower,
+	DEATHKNIGHT	= Enum.PowerType.Runes,
+	WARLOCK		= Enum.PowerType.SoulShards
+}
 
-	local spec = GetSpecialization()
-	if class == 'PALADIN' and spec == SPEC_PALADIN_RETRIBUTION then
-		min = UnitPower('player', SPELL_POWER_HOLY_POWER);
-		max = UnitPowerMax('player', SPELL_POWER_HOLY_POWER);
-		r, g, b = 228/255, 225/255, 16/255
-	elseif class == 'MONK' then
+local function GetClassPower(Class, Type)
+	local min, max, r, g, b
+
+	local retValues = not Type or Type == 1
+	local retColors = not Type or Type == 2
+
+	if Class == 'MONK' then
+		local spec = GetSpecialization()
 		if spec == SPEC_MONK_BREWMASTER then
-			min = UnitStagger("player")
-			max = UnitHealthMax("player")
-			local staggerRatio = min / max
-			if staggerRatio >= STAGGER_RED_TRANSITION then
-				r, g, b = unpack(StaggerColors[STAGGER_RED_INDEX])
-			elseif staggerRatio >= STAGGER_YELLOW_TRANSITION then
-				r, g, b = unpack(StaggerColors[STAGGER_YELLOW_INDEX])
-			else
-				r, g, b = unpack(StaggerColors[STAGGER_GREEN_INDEX])
+			min = UnitStagger('player')
+			max = UnitHealthMax('player')
+
+			if retColors then
+				local staggerRatio = min / max
+				if staggerRatio >= STAGGER_RED_TRANSITION then
+					r, g, b = unpack(StaggerColors[STAGGER_RED_INDEX])
+				elseif staggerRatio >= STAGGER_YELLOW_TRANSITION then
+					r, g, b = unpack(StaggerColors[STAGGER_YELLOW_INDEX])
+				else
+					r, g, b = unpack(StaggerColors[STAGGER_GREEN_INDEX])
+				end
 			end
-		else
-			min = UnitPower("player", SPELL_POWER_CHI)
-			max = UnitPowerMax("player", SPELL_POWER_CHI)
-			r, g, b = unpack(Harmony[min])
 		end
-	elseif class == 'WARLOCK' then
-		min = UnitPower("player", SPELL_POWER_SOUL_SHARDS)
-		max = UnitPowerMax("player", SPELL_POWER_SOUL_SHARDS)
-		r, g, b = 148/255, 130/255, 201/255
 	end
 
-	return min, max, r, g, b
+	if not r then
+		local barType = ClassPowers[Class]
+		if barType then
+			min = UnitPower('player', barType)
+			max = UnitPowerMax('player', barType)
+
+			if retColors and min > 0 then
+				local powerColor = ElvUF.colors.ClassBars[Class]
+				if Class == 'MONK' then -- chi is a table
+					local powerColors = powerColor[min]
+					if powerColors then
+						r, g, b = unpack(powerColors)
+					end
+				else
+					r, g, b = unpack(powerColor)
+				end
+			end
+		else
+			min = UnitPower('player', ComboColors)
+			max = UnitPowerMax('player', ComboColors)
+
+			if retColors and min > 0 then
+				local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
+				local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
+				local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
+				r, g, b = ElvUF:ColorGradient(min, max, r1, g1, b1, r2, g2, b2, r3, g3, b3)
+			end
+		end
+
+		if retColors and not r then
+			local powerFlag = UnitPowerType('player')
+			local power = ElvUF.colors.power[powerFlag]
+			if power then r, g, b = unpack(power) end
+		end
+	end
+
+	if retValues and retColors then
+		return min or 0, max or 0, r or 1, g or 1, b or 1
+	elseif retValues then
+		return min or 0, max or 0
+	elseif retColors then
+		return nil, nil, r or 1, g or 1, b or 1
+	end
 end
 E.TagFunctions.GetClassPower = GetClassPower
 
@@ -340,7 +370,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	ElvUF.Tags.Events[format('classpower:%s', tagTextFormat)] = E.myclass == 'MONK' and 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER UNIT_AURA' or 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('classpower:%s', tagTextFormat)] = function()
-		local min, max = GetClassPower(E.myclass)
+		local min, max = GetClassPower(E.myclass, 1)
 		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, max)
 		end
@@ -637,7 +667,7 @@ end
 
 ElvUF.Tags.Events['classpowercolor'] = 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
 ElvUF.Tags.Methods['classpowercolor'] = function()
-	local _, _, r, g, b = GetClassPower(E.myclass)
+	local _, _, r, g, b = GetClassPower(E.myclass, 2)
 	return Hex(r, g, b)
 end
 
