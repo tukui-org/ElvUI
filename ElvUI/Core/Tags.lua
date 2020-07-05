@@ -152,7 +152,7 @@ local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
 local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
 
 local function GetClassPower(class)
-	local min, max, r, g, b = 0, 0, 0, 0, 0
+	local min, max, r, g, b = 0, 0, 1, 1, 1
 
 	local spec = GetSpecialization()
 	if class == 'PALADIN' and spec == SPEC_PALADIN_RETRIBUTION then
