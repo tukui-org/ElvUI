@@ -69,6 +69,7 @@ local GetTitleName = GetTitleName
 local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
 local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
 
+local SPELL_POWER_MANA = Enum.PowerType.Mana
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
@@ -362,7 +363,9 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	ElvUF.Tags.Events[format('additionalpower:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('additionalpower:%s', tagTextFormat)] = function(unit)
-		if ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass] and ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass][UnitPowerType(unit)] and additionalPowerIndex == 0 then
+		local powerFlag = UnitPowerType(unit)
+		local mana = ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
+		if mana and mana[powerFlag] and additionalPowerIndex == 0 then
 			local min = UnitPower(unit, SPELL_POWER_MANA)
 			if min ~= 0 and tagTextFormat ~= 'deficit' then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
