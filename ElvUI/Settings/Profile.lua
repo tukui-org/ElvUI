@@ -461,7 +461,7 @@ P.nameplates = {
 	fontSize = 11,
 	highlight = true,
 	lowHealthThreshold = 0.4,
-	motionType =  'STACKED',
+	motionType = 'STACKED',
 	nameColoredGlow = false,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
@@ -501,7 +501,7 @@ P.nameplates = {
 		castNoInterruptColor = {r = 0.78, g = 0.25, b = 0.25},
 		castbarDesaturate = true,
 		reactions = {
-			good = {r = .29,  g = .68, b = .30},
+			good = {r = .29, g = .68, b = .30},
 			neutral = {r = .85, g = .77, b = .36},
 			bad = {r = 0.78, g = 0.25, b = 0.25},
 		},
@@ -587,7 +587,7 @@ P.nameplates = {
 			totems = false,
 		},
 	},
-	cutaway =  {
+	cutaway = {
 		health = {
 			enabled = false,
 			fadeOutTime = 0.6,
@@ -657,7 +657,7 @@ P.nameplates = {
 			markTanks = true,
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
-			debuffs =  CopyTable(NP_Auras),
+			debuffs = CopyTable(NP_Auras),
 			health = CopyTable(NP_Health),
 			level = CopyTable(NP_Level),
 			name = CopyTable(NP_Name),
@@ -676,7 +676,7 @@ P.nameplates = {
 			markTanks = true,
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
-			debuffs =  CopyTable(NP_Auras),
+			debuffs = CopyTable(NP_Auras),
 			health = CopyTable(NP_Health),
 			level = CopyTable(NP_Level),
 			name = CopyTable(NP_Name),
@@ -1218,7 +1218,7 @@ local UF_Portrait = {
 	overlay = false,
 	overlayAlpha = 0.5,
 	camDistanceScale = 2,
-	desaturation =  0,
+	desaturation = 0,
 	rotation = 0,
 	style = '3D',
 	width = 45,
@@ -1854,7 +1854,7 @@ P.unitframe.units.player.health.position = 'LEFT'
 P.unitframe.units.player.health.text_format = '[healthcolor][health:current-percent]'
 P.unitframe.units.player.health.xOffset = 2
 P.unitframe.units.player.power.position = 'RIGHT'
-P.unitframe.units.player.power.text_format = '[classpowercolor][classpower:current]  [powercolor][power:current]'
+P.unitframe.units.player.power.text_format = '[classpowercolor][classpower:current][powercolor][  >power:current]'
 P.unitframe.units.player.power.xOffset = -2
 
 P.unitframe.units.target.aurabar.maxDuration = 120
