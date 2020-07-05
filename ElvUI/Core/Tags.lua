@@ -196,10 +196,15 @@ local function GetClassPower(Class, Type)
 			end
 		end
 
-		if retColors and not r then
+		if not r then
 			local powerFlag = UnitPowerType('player')
-			local power = ElvUF.colors.power[powerFlag]
-			if power then r, g, b = unpack(power) end
+			min = UnitPower('player', powerFlag)
+			max = UnitPowerMax('player', powerFlag)
+
+			local power = retColors and ElvUF.colors.power[powerFlag]
+			if power then
+				r, g, b = unpack(power)
+			end
 		end
 	end
 
