@@ -175,7 +175,7 @@ local function GetClassPower(Class)
 			if Class == 'DEATHKNIGHT' then
 				min = 0 -- only count full runes
 
-				for i=1, max do
+				for i = 1, max do
 					local _, _, runeReady = GetRuneCooldown(i)
 					if runeReady then
 						min = min + 1

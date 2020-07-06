@@ -1,7 +1,7 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
-L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = true
+L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = "|cFFff3333Warunung: |cFF999999[mana:x] Tags werden |cFFff3333NICHT|r angezeigt für Klassen die Mana als Alternative Kraft haben, es sei den es ist die Alternative Kraft."
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF0000Warnung:|r Klick auf den Pfeil rechts in der Dropdown Box um eine Liste der Fähigkeiten zu sehen."
