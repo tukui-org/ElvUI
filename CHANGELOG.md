@@ -2,7 +2,7 @@
 
 **DATATEXTS:**  
 Creativity feature added by allowing you to create and customize **Datatext Panels**!  
-Added **/hdt** command or pressing ALT while hovering the Datatext will spawn a menu to change the Text quickly (original work and code by Nihilist). Thank you for letting us have this! <3  
+Added **/hdt** command or pressing ALT while hovering the Datatext will spawn a menu to change the Datatext quickly (original work and code by Nihilist). Thank you for letting us have this! <3  
 Added **Missions** and removed **Garrison**, **BfA Missions**, and **Orderhall**.  
 Added **Primary Stat** and removed **Attack Power** and **Spell Power**.  
 Added new texts **Reputation**, **Experience**, **Item Level**, **Mail**, and **Difficulty**.  
