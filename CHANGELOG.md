@@ -22,7 +22,7 @@ Castbar *Display Target* allowed on all frames.
 Focus Glow based on if a unit is Focused.  
 Party castbars can be positioned now.  
 
-**NAMEPLATES:**
+**NAMEPLATES:**  
 Added *Show Only Names* option which will put *Blizzard Nameplates* into *Name Only* mode.  
 Optimized plate load in so the preformance will be improved if plates spawn quickly.  
 Added *Hide Icon* options for *Quest Icons*, also text position was greatly improved.  
