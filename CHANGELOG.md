@@ -1,16 +1,53 @@
 # Version 11.42 [ ETA: 🍨 ]
 
-**New Additions:**  
+**DATATEXTS:**  
+Creativity feature added by allowing you to create *Panels* and make them how you want; also more datatexts to pick from!  
+Added */hdt* command or pressing ALT while hovering the Datatext will spawn a menu to change the Text quickly (original work and code by Nihilist). Thank you for letting us have this! <3  
+Added *Primary Stat* and removed *Attack Power* and *Spell Power*.  
+Added *Flash Threshold* to *Durability*.  
 
-**Bug Fixes:**  
-Debuff Highlight in Glow mode was glowing around the edges of the screen instead of the unitframe.  
-Cutaway errored on initial login or profile change sometimes.  
-Role Icons on our UnitFrames sometimes dont show in BG's, we hope that we fixed that now.  
+**UNITFRAMES:**  
+Smart Filter appears to have finally passed it's exams, yay!  
+Stopped allowing *Custom Backdrop* on *Additional Power* to change the bar color to white.  
+Made sure Auras wont show on *Tank* or *Assist* frames when the option is disabled.  
+Debuff Highlight (now *Aura Highlight*) in Glow mode was glowing around the edges of the screen instead of the frame.  
+Role Icons will now appear in Battlegrounds, they were scared of battles; so we gave them invisible sunglasses.  
+Deleted *Show Absorb Amount* option, as it would often be greater than the units health in some cases.  
+You can now change the *Frame Level* and *Frame Strata* of Individual frames.  
+PVP Classification Indicator can now be displayed on Arena Frames.  
+Castbars were trained to allow the casting backwards.  
+Target and Focus frames now have a shiny combat icon.  
+Aura borders color by type can be toggled off now.  
+Castbar *Display Target* allowed on all frames.  
+Focus Glow based on if a unit is Focused.  
+Party castbars can be positioned now.  
 
-**Misc. Changes:**  
-Blacklisted the Experience Eliminated debuff.  
-Castbar 'Display Target' allowed on all Unitframes.  
-The bags will now show, if we open the Auction House or Scrapping Machine.  
+**NAMEPLATES:**
+Added *Show Only Names* option which will put *Blizzard Nameplates* into *Name Only* mode.  
+Optimized plate load in so the preformance will be improved if plates spawn quickly.  
+Added *Hide Icon* options for *Quest Icons*, also text position was greatly improved.  
+
+**CHAT:**  
+Tabs can be customized with color and we added a feature to let you hug the text with arrows.  
+Editbox now supports Blizzard's *IM Style* and displays the *Character Count* correctly.  
+Editbox History Size can be adjusted or Reset via a button in the options.  
+History Size can be adjusted and the history channels can be excluded by type.  
+Alerts can now be set by Channel type.  
+Max Lines can be adjusted.  
+
+**TAGS:**  
+Swapped *[additionalpower:%s]* to *[mana:%s]* and readded *[manacolor]*.  
+Swapped *[difficultycolor]* use Blizzard's *Creature Difficulty Color* instead of our custom coloring.  
+Added *[classpowercolor]* and updated *[classpower:%s]* so it supports (in this order): Special, Combo Points, or Alt Mana.  
+Added *[name:last]*.  
+
+**UI:**  
+Movers should be better at doing their job and also stop appearing on Castbars when the Castbar was disabled.  
+Cutaway would locate its very own error on initial login or profile change sometimes, that error has been corrected.  
+Swapped *ElvUI_NonTarget* StyleFilter to use *Alpha 0.5* by default instead of 0.3.  
+Bags will auto open and close with the *Auction House* and *Scrapping Machine*.  
+Profile Export is now cleaned of settings which are not considered active. This means if you use a Plugin but it is disabled, when you export your profile the settings from that plugin are *not* included in the export.  
+Blacklisted the *Experience Eliminated* debuff.  
 ___
 
 ## Version 11.41 [ May 1st 2020 ]
