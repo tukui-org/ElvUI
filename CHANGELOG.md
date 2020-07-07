@@ -3,8 +3,12 @@
 **DATATEXTS:**  
 Creativity feature added by allowing you to create *Panels* and make them how you want; also more datatexts to pick from!  
 Added */hdt* command or pressing ALT while hovering the Datatext will spawn a menu to change the Text quickly (original work and code by Nihilist). Thank you for letting us have this! <3  
+Added *Missions* and removed *Garrison*, *BfA Missions*, and *Orderhall*.  
 Added *Primary Stat* and removed *Attack Power* and *Spell Power*.  
-Added *Flash Threshold* to *Durability*.  
+Added new texts *Reputation*, *Experience*, *Item Level*, *Mail*, and *Difficulty*.  
+Added stat texts *Intellect*, *Agility*, *Stamina*, *Strength*.  
+Added setting *Flash Threshold* to *Durability*.  
+Multiple texts were reworked for this update.  
 
 **UNITFRAMES:**  
 Smart Filter appears to have finally passed it's exams, yay!  
