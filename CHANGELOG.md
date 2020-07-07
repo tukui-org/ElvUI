@@ -1,66 +1,66 @@
 # Version 11.42 [ ETA: 🍨 ]
 
 **DATATEXTS:**  
-Creativity feature added by allowing you to create *Panels* and make them how you want; also more datatexts to pick from!  
-Added */hdt* command or pressing ALT while hovering the Datatext will spawn a menu to change the Text quickly (original work and code by Nihilist). Thank you for letting us have this! <3  
-Added *Missions* and removed *Garrison*, *BfA Missions*, and *Orderhall*.  
-Added *Primary Stat* and removed *Attack Power* and *Spell Power*.  
-Added new texts *Reputation*, *Experience*, *Item Level*, *Mail*, and *Difficulty*.  
-Added stat texts *Intellect*, *Agility*, *Stamina*, *Strength*.  
-Added setting *Flash Threshold* to *Durability*.  
+Creativity feature added by allowing you to create and customize **Datatext Panels**!  
+Added **/hdt** command or pressing ALT while hovering the Datatext will spawn a menu to change the Text quickly (original work and code by Nihilist). Thank you for letting us have this! <3  
+Added **Missions** and removed **Garrison**, **BfA Missions**, and **Orderhall**.  
+Added **Primary Stat** and removed **Attack Power** and **Spell Power**.  
+Added new texts **Reputation**, **Experience**, **Item Level**, **Mail**, and **Difficulty**.  
+Added stat texts **Intellect**, **Agility**, **Stamina**, **Strength**.  
+Added setting **Flash Threshold** to **Durability**.  
 Multiple texts were reworked for this update.  
 
 **UNITFRAMES:**  
-Smart Filter appears to have finally passed it's exams, yay!  
-Stopped allowing *Custom Backdrop* on *Additional Power* to change the bar color to white.  
-Made sure Auras wont show on *Tank* or *Assist* frames when the option is disabled.  
-Debuff Highlight (now *Aura Highlight*) in Glow mode was glowing around the edges of the screen instead of the frame.  
+Smart Filter appears to have finally passed its exams, yay!  
+Stopped allowing **Custom Backdrop** on **Additional Power** to change the bar color to white.  
+Made sure Auras wont show on **Tank** or **Assist** frames when the option is disabled.  
+Debuff Highlight (now **Aura Highlight**) in Glow mode was glowing around the edges of the screen instead of the frame.  
 Role Icons will now appear in Battlegrounds, they were scared of battles; so we gave them invisible sunglasses.  
-Deleted *Show Absorb Amount* option, as it would often be greater than the units health in some cases.  
-You can now change the *Frame Level* and *Frame Strata* of Individual frames.  
+Deleted **Show Absorb Amount** option, as it would often be greater than the units health in some cases.  
+You can now change the **Frame Level** and **Frame Strata** of Individual frames.  
 PVP Classification Indicator can now be displayed on Arena Frames.  
 Castbars were trained to allow the casting backwards.  
 Target and Focus frames now have a shiny combat icon.  
 Aura borders color by type can be toggled off now.  
-Castbar *Display Target* allowed on all frames.  
+Castbar **Display Target** allowed on all frames.  
 Focus Glow based on if a unit is Focused.  
 Party castbars can be positioned now.  
 
 **NAMEPLATES:**  
-Added *Show Only Names* option which will put *Blizzard Nameplates* into *Name Only* mode.  
+Added **Show Only Names** option which will put **Blizzard Nameplates** into **Name Only** mode.  
 Optimized plate load in so the performance will be improved if plates spawn quickly.  
-Added *Hide Icon* options for *Quest Icons*, also text position was greatly improved.  
+Added **Hide Icon** options for **Quest Icons**, also text position was greatly improved.  
 
 **CHAT:**  
-Removed *Lock Position* option, the windows will now be snapped to the Panel if within proximity.  
+Removed **Lock Position** option, the windows will now be snapped to the Panel if within proximity.  
 Tabs can be customized with color and we added a feature to let you hug the text with arrows.  
-Editbox now supports Blizzard's *IM Style* and displays the *Character Count* correctly.  
+Editbox now supports Blizzard's **IM Style** and displays the **Character Count** correctly.  
 Editbox History Size can be adjusted or Reset via a button in the options.  
 History Size can be adjusted and the history channels can be excluded by type.  
 Alerts can now be set by Channel type.  
 Max Lines can be adjusted.  
 
 **TAGS:**  
-Swapped *[additionalpower:%s]* to *[mana:%s]* and readded *[manacolor]*.  
-Swapped *[difficultycolor]* use Blizzard's *Creature Difficulty Color* instead of our custom coloring.  
-Added *[classpowercolor]* and updated *[classpower:%s]* so it supports (in this order): Special, Combo Points, or Alt Mana.  
-Added *[name:last]*.  
+Swapped **[additionalpower:%s]** to **[mana:%s]** and readded **[manacolor]**.  
+Swapped **[difficultycolor]** to use Blizzard's **Creature Difficulty Color** instead of our custom coloring.  
+Added **[classpowercolor]** and updated **[classpower:%s]** so it supports (in this order): Special, Combo Points, or Alt Mana.  
+Added **[name:last]**.  
 
 **UI:**  
 Movers should be better at doing their job and also stop appearing on Castbars when the Castbar was disabled.  
 Cutaway would locate its very own error on initial login or profile change sometimes, that error has been corrected.  
-Swapped *ElvUI_NonTarget* StyleFilter to use *Alpha 0.5* by default instead of 0.3.  
-Bags will auto open and close with the *Auction House* and *Scrapping Machine*.  
-Profile Export is now cleaned of settings which are not considered active. This means if you use a Plugin but it is disabled, when you export your profile the settings from that plugin are *not* included in the export.  
-Blacklisted the *Experience Eliminated* debuff.  
+Swapped **ElvUI_NonTarget** StyleFilter to use **Alpha 0.5** by default instead of 0.3.  
+Bags will auto open and close with the **Auction House** and **Scrapping Machine**.  
+Profile Export is now cleaned of settings which are not considered active. This means if you use a Plugin but it is disabled, when you export your profile the settings from that plugin are **not** included in the export.  
+Blacklisted the **Experience Eliminated** debuff.  
 ___
 
 ## Version 11.41 [ May 1st 2020 ]
 
 **Bug Fixes:**  
-The font used in */estatus* and *Addon Manager* on CN/TW/KR should fallback to a font that works instead of trying to use Expressway, which isn't supported.  
-*Combat Log Skin* and *Combat Time DataText* were misbehaving.  
-Worked out a couple more weird things with *Smart Raid Filter*.  
+The font used in **/estatus** and **Addon Manager** on CN/TW/KR should fallback to a font that works instead of trying to use Expressway, which isn't supported.  
+**Combat Log Skin** and **Combat Time DataText** were misbehaving.  
+Worked out a couple more weird things with **Smart Raid Filter**.  
 Cutaway works correctly on Vertical Orientation Health Unitframes. (#1776)  
 Fixed issue which caused Transparency setting to mess up the health on Unitframes with Vertical and/or Reverse Fill enabled.  
 Fixed Absorbs display on Unitframes with Reverse fill on (in Vertical or not) when Show Absorbs Amount was off.  
@@ -68,7 +68,7 @@ Fixed a bug in the new Addon Manager skin (AddOn index must be in the range of 1
 
 **Misc. Changes:**  
 Lowered the min value on some Unitframes elements, mainly health. (#1798)  
-Display Plugins in */estatus*.  
+Display Plugins in **/estatus**.  
 ___
 
 ### Version 11.40 [ April 30th 2020 ]
@@ -80,25 +80,25 @@ ___
 ### Version 11.39 [ April 30th 2020 ]
 
 **New Additions:**  
-Added a note above Raid / Raid40 / RaidPet which states you can't toggle them or change their number of groups when *Smart Raid Filter* is enabled (under UnitFrames > General).  
+Added a note above Raid / Raid40 / RaidPet which states you can't toggle them or change their number of groups when **Smart Raid Filter** is enabled (under UnitFrames > General).  
 
 **Bug Fixes:**  
-Datatexts do their thing even better than before, for real this time, hopefully. *(X doubt)*  
+Datatexts do their thing even better than before, for real this time, hopefully. **(X doubt)**  
 
 **Misc. Changes:**  
-Upgraded */estatus* with shiny new beautiful colours.  
+Upgraded **/estatus** with shiny new beautiful colours.  
 Fresh coat of paint on the Addon Manager too.  
 ___
 
 ### Version 11.38 [ April 28th 2020 ]
 
 **New Additions:**  
-*Smart Raid Visibility* has rejoined the UI *(it's actually reformed now)*.  
-Added *[name:health]* tag which displays health lost using colors on the name text, neato.  
-Added *[ElvUI-Users]* tag which displays other cool people than yourself.  
+**Smart Raid Visibility** has rejoined the UI **(it's actually reformed now)**.  
+Added **[name:health]** tag which displays health lost using colors on the name text, neato.  
+Added **[ElvUI-Users]** tag which displays other cool people than yourself.  
 Some ultra rare super high tech Mechagon debuffs were added (jk, they are normal).  
-Added *My Pet* and *Other Pets* to Aura Filtering system.  
-Borrowed the *[status:text]* and *[status:icon]* tags from Classic.  
+Added **My Pet** and **Other Pets** to Aura Filtering system.  
+Borrowed the **[status:text]** and **[status:icon]** tags from Classic.  
 Show Assigned Icon option now exists for the bags.  
 Add Echoes of Ny'alotha to Currency DataText.  
 Tooltip NPC names now adapt to the custom faction colors in tooltip settings.  
@@ -106,7 +106,7 @@ Tooltip NPC names now adapt to the custom faction colors in tooltip settings.
 **Bug Fixes:**  
 The options bottom buttons now use the language selected in the config, nice.  
 Nazjatar Followers Missions Datatext was doing a goof, which has been ungoofed by a professional ungoofer.  
-Health and Power prediction has learned new tricks *(which actually doesn't do anything new but we promise they are ten times cooler now)*.  
+Health and Power prediction has learned new tricks **(which actually doesn't do anything new but we promise they are ten times cooler now)**.  
 Some Datatexts refused to show information on login, now they are willing to share said info.  
 Some kind of Alternative Power oops, something about UnitIsUnit; rare bug, big time squashed.  
 The bottom of letters on the bottom line of the chat will now be visible to all earthlings.  
@@ -130,7 +130,7 @@ Updated the Raid Utility, with nice clean shiny fresh new updates.
 Faction gold will hide if its zero on the gold datatext.  
 Added Traditional Chinese number prefix. (Thanks @mcc)  
 Added Fade Chat Toggles option which can prevent the toggle buttons from disappearing with the chat. (Thanks @Sirenfal)  
-Raid-wide-sorting has now evolved, the new way will sort the *Number of Groups* and ignore the ending groups so you can hide benched players. (Thanks @BeeVa)  
+Raid-wide-sorting has now evolved, the new way will sort the **Number of Groups** and ignore the ending groups so you can hide benched players. (Thanks @BeeVa)  
 More N'zoth eyes on the Inspect frame items.  
 Drain Soul has 5 ticks (not 6 ticks btw).  
 ___
@@ -144,32 +144,32 @@ ___
 ### Version 11.37 [ February 11th 2020 ]
 
 **New Additions:**  
-Added option to display *ElvUI Version* of other *ElvUI users* into Tooltip.  
+Added option to display **ElvUI Version** of other **ElvUI users** into Tooltip.  
 
 **Bug Fixes:**  
-The *Top Auras* were having some trouble deciding what border color to wear, it's now selected for them (once again).  
-Unitframe *Portrait Style Class* wasn't playing nicely with the *Overlay* option but they are now friends.  
-Nameplate *Follower XP* was showing on other players followers, it won't do that anymore.  
-When selecting a *Custom Filter*, there was a *0.3333~%* chance to get an error. That *should* no longer be the case.  
-It seems unitframes were confused as to whether or not the unit was *disconnected* and can now display the connection color correctly.  
+The **Top Auras** were having some trouble deciding what border color to wear, it's now selected for them (once again).  
+Unitframe **Portrait Style Class** wasn't playing nicely with the **Overlay** option but they are now friends.  
+Nameplate **Follower XP** was showing on other players followers, it won't do that anymore.  
+When selecting a **Custom Filter**, there was a **0.3333~%** chance to get an error. That **should** no longer be the case.  
+It seems unitframes were confused as to whether or not the unit was **disconnected** and can now display the connection color correctly.  
 
 **Misc. Changes:**  
-Added 8.3 Affixs into the *Raid Debuffs* filter.  
-Debuff Highlighting *Blend Mode* MOD was removed, as it's use was very specific and misunderstood.  
+Added 8.3 Affixs into the **Raid Debuffs** filter.  
+Debuff Highlighting **Blend Mode** MOD was removed, as it's use was very specific and misunderstood.  
 ___
 
 ### Version 11.36 [ February 7th 2020 ]
 
 **Bug Fixes:**  
-Quite sure the *Quick Join Datatext* was being super noisy in the background, so we calmed it's rage with cuddles. This might have caused *Stuttering Issues* for people on high population realms. (#1702)  
-Profile *Spec Switch* doesn't lawl around your anchors anymore, it should place them nice and neat where they belong.  
-If you had *AuraBar Colors* that weren't being colorize correctly, recheck the filter and enable it. It was 100% nargles, I just know it.  
+Quite sure the **Quick Join Datatext** was being super noisy in the background, so we calmed it's rage with cuddles. This might have caused **Stuttering Issues** for people on high population realms. (#1702)  
+Profile **Spec Switch** doesn't lawl around your anchors anymore, it should place them nice and neat where they belong.  
+If you had **AuraBar Colors** that weren't being colorize correctly, recheck the filter and enable it. It was 100% nargles, I just know it.  
 
 **Misc. Changes:**  
-Nameplate *Follower XP* has now been properly trained on how to collect IDs all by itself.  
-Buff Indicator Style *Timer Only* will now use the selected color for the timer.  
-If you were a bad boi and interrupt yourself with the *Interrupt Announce* on it will now no longer embarrass you.  
-Spells inside of the *AuraBar Colors* filter which were using *Name* instead of *Spell ID* will be converted to *Spell ID*, if possible.  
+Nameplate **Follower XP** has now been properly trained on how to collect IDs all by itself.  
+Buff Indicator Style **Timer Only** will now use the selected color for the timer.  
+If you were a bad boi and interrupt yourself with the **Interrupt Announce** on it will now no longer embarrass you.  
+Spells inside of the **AuraBar Colors** filter which were using **Name** instead of **Spell ID** will be converted to **Spell ID**, if possible.  
 ___
 
 ### Version 11.352 [ February 5th 2020 ]
@@ -181,7 +181,7 @@ ___
 ### Version 11.351 [ February 5th 2020 ]
 
 **Hotfixed:**  
-We had to retrain *Reset Anchors* and *Nudge Reset* because they forgot how to do the thing.  
+We had to retrain **Reset Anchors** and **Nudge Reset** because they forgot how to do the thing.  
 ___
 
 ### Version 11.35 [ February 5th 2020 ]
@@ -190,7 +190,7 @@ ___
 For some reason Style Filters had convinced Portraits into being too clingy on Nameplates.  
 Reversed Font Explosion Feature on CN, TW, and KR clients (Azil says he is a badboi and very sorry <3).  
 Party Pets, Party/Assist/Tank Target frames now remember their size setting and don't do updates while they hide anymore.  
-Convinced the Filters section to Reset Filters when you *SMASH BUTTON*, and you can once again delete old spells from lists.  
+Convinced the Filters section to Reset Filters when you **SMASH BUTTON**, and you can once again delete old spells from lists.  
 
 **Misc. Changes:**  
 General section of Units in Unitframe settings are less of a mess.  
@@ -207,9 +207,9 @@ ___
 ### Version 11.34 [ February 4th 2020 ]
 
 **New Additions:**  
-The options window has been upgraded and sections have been reorganized a bit (Repooc does *NOT* like it tho).  
-Debuffs inside of *The Sleeping City* [Ny'alotha] will now by shown by Raid Debuffs filter (Thanks Broccoliz).  
-*Corrupted Mementos* and *Coalescing Visions* are now displayed by the Currency Datatext.  
+The options window has been upgraded and sections have been reorganized a bit (Repooc does **NOT** like it tho).  
+Debuffs inside of **The Sleeping City** [Ny'alotha] will now by shown by Raid Debuffs filter (Thanks Broccoliz).  
+**Corrupted Mementos** and **Coalescing Visions** are now displayed by the Currency Datatext.  
 Buff Indicator now has its options reworked.  
 
 **Bug Fixes:**  
@@ -218,9 +218,9 @@ Frame Glow is now cool with hugging the Alt Power Bar on Unitframes too.
 Fixed Vehicle Exit options, they were misbehaving unintentionally.  
 
 **Misc. Changes:**  
-The *Smart Raid Visibility* option gquit the UI.  
-Added more IDs to show *Voidtouched Egg* on nameplates (some were hiding but Mera found them).  
-Debuff Highlight will now not show something when it's added but not enabled (changed so you can blacklist *Grasping Tendrils*).  
+The **Smart Raid Visibility** option gquit the UI.  
+Added more IDs to show **Voidtouched Egg** on nameplates (some were hiding but Mera found them).  
+Debuff Highlight will now not show something when it's added but not enabled (changed so you can blacklist **Grasping Tendrils**).  
 Intenté completar más del archivo de localización para español. Si es malo por favor mensaje Simpy en Discord. >x>  
 ___
 
