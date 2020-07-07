@@ -15,7 +15,7 @@ Smart Filter appears to have finally passed its exams, yay!
 Stopped allowing **Custom Backdrop** on **Additional Power** to change the bar color to white.  
 Made sure Auras wont show on **Tank** or **Assist** frames when the option is disabled.  
 Debuff Highlight (now **Aura Highlight**) in Glow mode was glowing around the edges of the screen instead of the frame.  
-Role Icons will now appear in Battlegrounds, they were scared of battles; so we gave them invisible sunglasses.  
+**Role Icons** will now appear in Battlegrounds, they were scared of battles; so we gave them invisible sunglasses.  
 Deleted **Show Absorb Amount** option, as it would often be greater than the units health in some cases.  
 You can now change the **Frame Level** and **Frame Strata** of Individual frames.  
 PVP Classification Indicator can now be displayed on Arena Frames.  
