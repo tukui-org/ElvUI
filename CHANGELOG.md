@@ -24,10 +24,11 @@ Party castbars can be positioned now.
 
 **NAMEPLATES:**  
 Added *Show Only Names* option which will put *Blizzard Nameplates* into *Name Only* mode.  
-Optimized plate load in so the preformance will be improved if plates spawn quickly.  
+Optimized plate load in so the performance will be improved if plates spawn quickly.  
 Added *Hide Icon* options for *Quest Icons*, also text position was greatly improved.  
 
 **CHAT:**  
+Removed *Lock Position* option, the windows will now be snapped to the Panel if within proximity.  
 Tabs can be customized with color and we added a feature to let you hug the text with arrows.  
 Editbox now supports Blizzard's *IM Style* and displays the *Character Count* correctly.  
 Editbox History Size can be adjusted or Reset via a button in the options.  
