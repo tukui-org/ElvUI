@@ -139,14 +139,14 @@ P.databars = {}
 for _, databar in pairs({ 'experience', 'reputation', 'honor', 'azerite'}) do
 	P.databars[databar] = {
 		enable = true,
-		width = 10,
-		height = 180,
+		width = 222,
+		height = 10,
 		textFormat = 'NONE',
 		textSize = 11,
 		font = 'PT Sans Narrow',
 		fontOutline = 'NONE',
 		mouseover = false,
-		orientation = 'VERTICAL',
+		orientation = 'HORIZONTAL',
 		reverseFill = false,
 	}
 end
@@ -154,6 +154,8 @@ end
 P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.hideInVehicle = false
 P.databars.experience.hideInCombat = false
+P.databars.experience.width = 348
+P.databars.experience.textSize = 12
 
 P.databars.reputation.enable = false
 P.databars.reputation.hideInVehicle = false
