@@ -275,17 +275,20 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 
 	if y >= screenCenterY then -- TOP: 1080p = 540
 		point, nudgePoint, nudgeInversePoint = 'TOP', 'TOP', 'BOTTOM'
-		y = -(screenHeight - mover:GetTop())
+		local top = mover:GetTop()
+		y = (not top and 0) or -(screenHeight - top)
 	else
-		y = mover:GetBottom()
+		local bottom = mover:GetBottom()
+		y = (not bottom and 0) or bottom
 	end
 
 	if x >= (screenWidth * 2 / 3) then -- RIGHT: 1080p = 1280
 		point, nudgePoint, nudgeInversePoint = point..'RIGHT', 'RIGHT', 'LEFT'
-		x = mover:GetRight() - screenWidth
+		local right = mover:GetRight()
+		x = (not right and 0) or (right - screenWidth)
 	elseif x <= (screenWidth / 3) or mover.perferCorners then -- LEFT: 1080p = 640
 		point, nudgePoint, nudgeInversePoint = point..'LEFT', 'LEFT', 'RIGHT'
-		x = mover:GetLeft()
+		x = mover:GetLeft() or 0
 	else
 		x = x - screenCenterX
 	end
