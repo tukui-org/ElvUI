@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local B = E:GetModule('Bags')
+local ACH = E.Libs.ACH
 
 local _G = _G
 local gsub = gsub
@@ -16,11 +17,7 @@ E.Options.args.bags = {
 	get = function(info) return E.db.bags[info[#info]] end,
 	set = function(info, value) E.db.bags[info[#info]] = value end,
 	args = {
-		intro = {
-			order = 1,
-			type = 'description',
-			name = L["BAGS_DESC"],
-		},
+		intro = ACH:Description(L["BAGS_DESC"], 1),
 		enable = {
 			order = 2,
 			type = "toggle",
@@ -610,78 +607,33 @@ E.Options.args.bags = {
 				},
 				splitbags = {
 					order = 4,
-					type = "group",
+					type = "multiselect",
 					name = L["Player"],
-					get = function(info) return E.db.bags.split[info[#info]] end,
-					set = function(info, value) E.db.bags.split[info[#info]] = value B:Layout() end,
-					guiInline = true,
-					args = {
-						bag1 = {
-							order = 2,
-							type = "toggle",
-							name = L["Bag 1"],
-						},
-						bag2 = {
-							order = 3,
-							type = "toggle",
-							name = L["Bag 2"],
-						},
-						bag3 = {
-							order = 4,
-							type = "toggle",
-							name = L["Bag 3"],
-						},
-						bag4 = {
-							order = 5,
-							type = "toggle",
-							name = L["Bag 4"],
-						},
+					get = function(info, key) return E.db.bags.split[key] end,
+					set = function(info, key, value) E.db.bags.split[key] = value B:Layout() end,
+					values = {
+						bag1 = L["Bag 1"],
+						bag2 = L["Bag 2"],
+						bag3 = L["Bag 3"],
+						bag4 = L["Bag 4"],
 					},
 					disabled = function() return not E.db.bags.split.player end,
 				},
 				splitbank = {
 					order = 5,
-					type = "group",
+					type = "multiselect",
 					name = L["Bank"],
-					get = function(info) return E.db.bags.split[info[#info]] end,
-					set = function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end,
-					guiInline = true,
-					args = {
-						bag5 = {
-							order = 2,
-							type = "toggle",
-							name = L["Bank 1"],
-						},
-						bag6 = {
-							order = 3,
-							type = "toggle",
-							name = L["Bank 2"],
-						},
-						bag7 = {
-							order = 4,
-							type = "toggle",
-							name = L["Bank 3"],
-						},
-						bag8 = {
-							order = 5,
-							type = "toggle",
-							name = L["Bank 4"],
-						},
-						bag9 = {
-							order = 6,
-							type = "toggle",
-							name = L["Bank 5"],
-						},
-						bag10 = {
-							order = 7,
-							type = "toggle",
-							name = L["Bank 6"],
-						},
-						bag11 = {
-							order = 8,
-							type = "toggle",
-							name = L["Bank 7"],
-						},
+					get = function(info, key) return E.db.bags.split[key] end,
+					set = function(info, key, value) E.db.bags.split[key] = value B:Layout(true) end,
+					sortByValue = true,
+					values = {
+						bag5 = L["Bank 1"],
+						bag6 = L["Bank 2"],
+						bag7 = L["Bank 3"],
+						bag8 = L["Bank 4"],
+						bag9 = L["Bank 5"],
+						bag10 = L["Bank 6"],
+						bag11 = L["Bank 7"],
 					},
 					disabled = function() return not E.db.bags.split.bank end,
 				},
@@ -732,11 +684,7 @@ E.Options.args.bags = {
 					name = L["Sort Inverted"],
 					desc = L["Direction the bag sorting will use to allocate the items."],
 				},
-				description = {
-					order = 3,
-					type = "description",
-					name = L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."],
-				},
+				description = ACH:Description(L["Here you can add items or search terms that you want to be excluded from sorting. To remove an item just click on its name in the list."], 3),
 				addEntryGroup = {
 					order = 4,
 					type = "group",

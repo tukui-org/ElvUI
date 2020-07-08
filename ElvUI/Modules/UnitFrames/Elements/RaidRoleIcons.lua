@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---WoW API / Variables
 local CreateFrame = CreateFrame
 
 function UF:Construct_RaidRoleFrames(frame)
@@ -61,11 +60,11 @@ function UF:RaidRoleUpdate()
 		if isLeader and db.raidRoleIcons.position == 'TOPLEFT' then
 			leader:Point('LEFT', anchor, 'LEFT', db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
 		elseif isLeader and db.raidRoleIcons.position == 'TOPRIGHT' then
-			leader:Point('RIGHT', anchor, 'RIGHT', db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
+			leader:Point('RIGHT', anchor, 'RIGHT', -db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
 		elseif isAssist and db.raidRoleIcons.position == 'TOPLEFT' then
 			assistant:Point('LEFT', anchor, 'LEFT', db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
 		elseif isAssist and db.raidRoleIcons.position == 'TOPRIGHT' then
-			assistant:Point('RIGHT', anchor, 'RIGHT', db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
+			assistant:Point('RIGHT', anchor, 'RIGHT', -db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
 		end
 	end
 end

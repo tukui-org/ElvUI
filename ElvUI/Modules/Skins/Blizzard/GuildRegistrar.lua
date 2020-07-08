@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local select = select
 
@@ -21,7 +20,7 @@ function S:GuildRegistrarFrame()
 	for i = 1, _G.GuildRegistrarFrameEditBox:GetNumRegions() do
 		local region = select(i, _G.GuildRegistrarFrameEditBox:GetRegions())
 		if region and region:IsObjectType('Texture') then
-			if region:GetTexture() == "Interface\\ChatFrame\\UI-ChatInputBorder-Left" or region:GetTexture() == "Interface\\ChatFrame\\UI-ChatInputBorder-Right" then
+			if region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Left]] or region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Right]] then
 				region:Kill()
 			end
 		end

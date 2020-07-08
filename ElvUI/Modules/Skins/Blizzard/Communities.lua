@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
---WoW API / Variables
+
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
@@ -39,7 +38,7 @@ local function HandleRoleChecks(button, ...)
 	button:DisableDrawLayer("OVERLAY")
 
 	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
-	button.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	button.bg:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	button.bg:SetTexCoord(...)
 	button.bg:Point("CENTER")
 	button.bg:Size(40)

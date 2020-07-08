@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local Skins = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local DISABLE = DISABLE
 local HIDE = HIDE
@@ -80,15 +79,15 @@ function E:SpawnTutorialFrame()
 	_G[f.disableButton:GetName() .. 'Text']:SetText(DISABLE)
 	f.disableButton:Point('BOTTOMLEFT')
 	Skins:HandleCheckBox(f.disableButton)
-	f.disableButton:SetScript('OnShow', function(self) self:SetChecked(E.db.hideTutorial) end)
+	f.disableButton:SetScript('OnShow', function(btn) btn:SetChecked(E.db.hideTutorial) end)
 
-	f.disableButton:SetScript('OnClick', function(self) E.db.hideTutorial = self:GetChecked() end)
+	f.disableButton:SetScript('OnClick', function(btn) E.db.hideTutorial = btn:GetChecked() end)
 
 	f.hideButton = CreateFrame('Button', f:GetName()..'HideButton', f, 'OptionsButtonTemplate')
 	f.hideButton:Point('BOTTOMRIGHT', -5, 5)
 	Skins:HandleButton(f.hideButton)
 	_G[f.hideButton:GetName() .. 'Text']:SetText(HIDE)
-	f.hideButton:SetScript('OnClick', function(self) E:StaticPopupSpecial_Hide(self:GetParent()) end)
+	f.hideButton:SetScript('OnClick', function(btn) E:StaticPopupSpecial_Hide(btn:GetParent()) end)
 
 	f.nextButton = CreateFrame('Button', f:GetName()..'NextButton', f, 'OptionsButtonTemplate')
 	f.nextButton:Point('RIGHT', f.hideButton, 'LEFT', -4, 0)
@@ -108,7 +107,7 @@ function E:SpawnTutorialFrame()
 end
 
 function E:Tutorials(forceShow)
-	if (not forceShow and self.db.hideTutorial) or (not forceShow and not self.private.install_complete) then return; end
+	if (not forceShow and self.db.hideTutorial) or (not forceShow and not self.private.install_complete) then return end
 	local f = ElvUITutorialWindow
 	if not f then
 		f = E:SpawnTutorialFrame()

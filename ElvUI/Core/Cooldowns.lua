@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local next, ipairs, pairs = next, ipairs, pairs
 local floor, tinsert = floor, tinsert
---WoW API / Variables
+
 local GetTime = GetTime
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc

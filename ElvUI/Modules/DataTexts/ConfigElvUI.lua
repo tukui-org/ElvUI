@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local pairs, strfind, strjoin = pairs, strfind, strjoin
---WoW API / Variables
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnMetadata = GetAddOnMetadata
 local GetNumAddOns = GetNumAddOns
@@ -66,4 +64,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('ElvUI Config', nil, OnEvent, nil, Click, OnEnter)
+DT:RegisterDatatext('ElvUI Config', nil, nil, OnEvent, nil, Click, OnEnter)

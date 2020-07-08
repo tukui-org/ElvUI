@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
---Lua functions
 local _G = _G
 local pairs, ceil, floor, tonumber = pairs, ceil, floor, tonumber
 local strmatch, strlower, strfind = strmatch, strlower, strfind
---WoW API / Variables
+
 local GetLocale = GetLocale
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
@@ -21,7 +20,7 @@ local ActiveQuests = {
 
 local UsedLocale = GetLocale()
 local QuestTypesLocalized = {
-	["enUS"] = {
+	enUS = {
 		["slain"] = "KILL",
 		["destroy"] = "KILL",
 		["eleminate"] = "KILL",
@@ -32,7 +31,7 @@ local QuestTypesLocalized = {
 		["ask"] = "CHAT",
 		["talk"] = "CHAT",
 	},
-	["deDE"] = {
+	deDE = {
 		["besiegen"] = "KILL",
 		["besiegt"] = "KILL",
 		["getötet"] = "KILL",
@@ -43,27 +42,27 @@ local QuestTypesLocalized = {
 		["sprecht"] = "CHAT",
 		["genährt"] = "KILL",
 	},
-	["esMX"] = {
+	esMX = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
 	},
-	["frFR"] = {
+	frFR = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
 	},
-	["koKR"] = {
+	koKR = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
 	},
-	["ptBR"] = {
+	ptBR = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
 	},
-	["ruRU"] = {
+	ruRU = {
 		["убит"] = "KILL",
 		["уничтож"] = "KILL",
 		["разбомблен"] = "KILL",
@@ -71,14 +70,14 @@ local QuestTypesLocalized = {
 		["сразит"] = "KILL",
 		["поговорит"] = "CHAT",
 	},
-	["zhCN"] = {
+	zhCN = {
 		["消灭"] = "KILL",
 		["摧毁"] = "KILL",
 		["获得"] = "KILL",
 		["击败"] = "KILL",
 		["交谈"] = "CHAT",
 	},
-	["zhTW"] = {
+	zhTW = {
 		["slain"] = "KILL",
 		["destroyed"] = "KILL",
 		["speak"] = "CHAT",
@@ -87,7 +86,7 @@ local QuestTypesLocalized = {
 
 local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized.enUS
 
-local function QUEST_ACCEPTED(self, event, questLogIndex, questID)
+local function QUEST_ACCEPTED(_, _, questLogIndex, questID)
 	if questLogIndex and questLogIndex > 0 then
 		local questName = GetQuestLogTitle(questLogIndex)
 		if questName and (questID and questID > 0) then
@@ -96,7 +95,7 @@ local function QUEST_ACCEPTED(self, event, questLogIndex, questID)
 	end
 end
 
-local function QUEST_REMOVED(self, event, questID)
+local function QUEST_REMOVED(_, _, questID)
 	if not questID then return end
 	for questName, id in pairs(ActiveQuests) do
 		if id == questID then
@@ -229,13 +228,13 @@ local function Update(self, event, unit)
 				icon = element.Item
 			end
 
-			if not icon:IsShown() then
+			if icon and not icon:IsShown() then
 				shownCount = (shownCount and shownCount + 1) or 0
 
 				local size = icon.size or 25
 				local setPosition = icon.position or "TOPLEFT"
 				local newPosition = E.InversePoints[setPosition]
-				local offset = 2 + (shownCount * size)
+				local offset = shownCount * (5 + size)
 
 				icon:Show()
 				icon:ClearAllPoints()

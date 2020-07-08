@@ -1,16 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
-local type = type
-local format = string.format
-local wipe = wipe
-local pairs = pairs
-local ipairs = ipairs
-local strjoin = strjoin
-local tinsert = tinsert
---WoW API / Variables
+local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
+local format, strjoin, tinsert = format, strjoin, tinsert
+
 local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetMoney = GetMoney
 local IsControlKeyDown = IsControlKeyDown
@@ -19,15 +13,24 @@ local IsShiftKeyDown = IsShiftKeyDown
 local C_WowTokenPublic_UpdateMarketPrice = C_WowTokenPublic.UpdateMarketPrice
 local C_WowTokenPublic_GetCurrentMarketPrice = C_WowTokenPublic.GetCurrentMarketPrice
 local C_Timer_NewTicker = C_Timer.NewTicker
-local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 -- GLOBALS: ElvDB
 
 local Ticker
 local CURRENCY = CURRENCY
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local Profit, Spent = 0, 0
-local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Counters: Hold Shift + Right Click"], '|r')
+local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Counters: Hold Ctrl + Right Click"], '|r')
 local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Data: Hold Shift + Right Click"], '|r')
+local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+
+local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
+
+local menuList = {}
+
+local function sortFunction(a, b)
+	return a.amount > b.amount
+end
 
 local function OnEvent(self)
 	if not IsLoggedIn() then return end
@@ -71,11 +74,27 @@ local function OnEvent(self)
 	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins))
 end
 
+local function deleteCharacter(self, name)
+	ElvDB.gold[E.myrealm][name] = nil
+	ElvDB.class[E.myrealm][name] = nil
+	ElvDB.faction[E.myrealm][name] = nil
+
+	if name == E.myname then
+		OnEvent(self)
+	end
+end
+
 local function Click(self, btn)
 	if btn == 'RightButton' then
 		if IsShiftKeyDown() then
-			wipe(ElvDB.gold)
-			OnEvent(self)
+			wipe(menuList)
+			tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
+			for name in pairs(ElvDB.gold[E.myrealm]) do
+				tinsert(menuList, { text = name, notCheckable = true, func = function() deleteCharacter(self, name) end })
+			end
+
+			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
+			_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
 			DT.tooltip:Hide()
 		elseif IsControlKeyDown() then
 			Profit = 0
@@ -109,8 +128,7 @@ local function OnEnter(self)
 	wipe(myGold)
 	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
 		if ElvDB.gold[E.myrealm][k] then
-			local class = ElvDB.class[E.myrealm][k] or 'PRIEST'
-			local color = E:ClassColor(class) or PRIEST_COLOR
+			local color = E:ClassColor(ElvDB.class[E.myrealm][k]) or PRIEST_COLOR
 			tinsert(myGold,
 				{
 					name = k,
@@ -131,6 +149,8 @@ local function OnEnter(self)
 		totalGold = totalGold+ElvDB.gold[E.myrealm][k]
 	end
 
+	sort(myGold, sortFunction)
+
 	for _, g in ipairs(myGold) do
 		local nameLine = ''
 		if g.faction ~= '' and g.faction ~= 'Neutral' then
@@ -144,20 +164,22 @@ local function OnEnter(self)
 
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["Server: "])
-	if totalAlliance ~= 0 then DT.tooltip:AddDoubleLine(L["Alliance: "], E:FormatMoney(totalAlliance, style, textOnly), 0, .376, 1, 1, 1, 1) end
-	if totalHorde ~= 0 then DT.tooltip:AddDoubleLine(L["Horde: "], E:FormatMoney(totalHorde, style, textOnly), 1, .2, .2, 1, 1, 1) end
-	DT.tooltip:AddLine(' ')
+	if totalAlliance > 0 and totalHorde > 0 then
+		if totalAlliance ~= 0 then DT.tooltip:AddDoubleLine(L["Alliance: "], E:FormatMoney(totalAlliance, style, textOnly), 0, .376, 1, 1, 1, 1) end
+		if totalHorde ~= 0 then DT.tooltip:AddDoubleLine(L["Horde: "], E:FormatMoney(totalHorde, style, textOnly), 1, .2, .2, 1, 1, 1) end
+		DT.tooltip:AddLine(' ')
+	end
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
-		local name, count = GetBackpackCurrencyInfo(i)
+		local name, count, icon = GetBackpackCurrencyInfo(i)
 		if name and i == 1 then
 			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(CURRENCY)
 		end
-		if name and count then DT.tooltip:AddDoubleLine(name, count, 1, 1, 1) end
+		if name and count then DT.tooltip:AddDoubleLine(format("%s %s", format(iconString, icon), name), BreakUpLargeNumbers(count), 1, 1, 1, 1, 1, 1) end
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -167,4 +189,4 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Gold', {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED"}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])
+DT:RegisterDatatext('Gold', nil, {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED"}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])

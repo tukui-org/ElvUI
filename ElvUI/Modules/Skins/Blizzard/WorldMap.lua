@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
---WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
 local function WorldMapBountyBoard(Frame)
@@ -37,7 +35,7 @@ function S:WorldMapFrame()
 	local QuestMapFrame = _G.QuestMapFrame
 	QuestMapFrame.VerticalSeparator:Hide()
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		QuestMapFrame.DetailsFrame:StripTextures(true)
 		QuestMapFrame.DetailsFrame:CreateBackdrop()
 		QuestMapFrame.DetailsFrame.backdrop:Point('TOPLEFT', 0, 0)
@@ -147,7 +145,7 @@ function S:WorldMapFrame()
 				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, "OVERLAY")
 				dialog.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
 				dialog.MinimizeButton.tex:SetInside()
-				dialog.MinimizeButton:SetHighlightTexture("Interface\\Buttons\\UI-PlusButton-Hilight", "ADD")
+				dialog.MinimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
 			end
 			dialog.isSkinned = true
 		end

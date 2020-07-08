@@ -5,12 +5,11 @@ local Misc = E:GetModule('Misc')
 local Bags = E:GetModule('Bags')
 local Skins = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
 local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, wipe
 local strlower, format, error = strlower, format, error
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
@@ -221,21 +220,21 @@ E.PopupDialogs.RESET_UF_UNIT = {
 	text = L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"],
 	button1 = ACCEPT,
 	button2 = CANCEL,
-	OnAccept = function(self)
-		if self.data and self.data.unit then
-			UF:ResetUnitSettings(self.data.unit)
-			if self.data.mover then
-				E:ResetMovers(self.data.mover)
+	OnAccept = function(_, data)
+		if data and data.unit then
+			UF:ResetUnitSettings(data.unit)
+			if data.mover then
+				E:ResetMovers(data.mover)
 			end
 
-			if self.data.unit == 'raidpet' then
-				UF:CreateAndUpdateHeaderGroup(self.data.unit, nil, nil, true)
+			if data.unit == 'raidpet' then
+				UF:CreateAndUpdateHeaderGroup(data.unit, nil, nil, true)
 			end
 
 			if IsAddOnLoaded('ElvUI_OptionsUI') then
 				local ACD = E.Libs.AceConfigDialog
 				if ACD and ACD.OpenFrames and ACD.OpenFrames.ElvUI then
-					ACD:SelectGroup('ElvUI', 'unitframe', self.data.unit)
+					ACD:SelectGroup('ElvUI', 'unitframe', data.unit)
 				end
 			end
 		else
@@ -390,12 +389,12 @@ E.PopupDialogs.CONFIRM_LOOT_DISTRIBUTION = {
 	hideOnEscape = 1,
 }
 
-E.PopupDialogs.RESET_PROFILE_PROMPT = {
+E.PopupDialogs.RESET_PRIVATE_PROFILE_PROMPT = {
 	text = L["Are you sure you want to reset all the settings on this profile?"],
 	button1 = YES,
 	button2 = NO,
 	hideOnEscape = 1,
-	OnAccept = function() E:ResetProfile() end,
+	OnAccept = function() E:ResetPrivateProfile() end,
 }
 
 E.PopupDialogs.WARNING_BLIZZARD_ADDONS = {
@@ -476,11 +475,10 @@ E.PopupDialogs.SCRIPT_PROFILE = {
 }
 
 E.PopupDialogs.ELVUI_CONFIG_FOUND = {
-    text = L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."],
-    button1 = ACCEPT,
-    whileDead = 1,
-    hideOnEscape = false,
-
+	text = L["You still have ElvUI_Config installed.  ElvUI_Config has been renamed to ElvUI_OptionsUI, please remove it."],
+	button1 = ACCEPT,
+	whileDead = 1,
+	hideOnEscape = false,
 }
 
 local MAX_STATIC_POPUPS = 4
@@ -908,11 +906,11 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	if ( info.closeButton ) then
 		local closeButton = _G[dialog:GetName()..'CloseButton']
 		if ( info.closeButtonIsHide ) then
-			closeButton:SetNormalTexture('Interface\\Buttons\\UI-Panel-HideButton-Up')
-			closeButton:SetPushedTexture('Interface\\Buttons\\UI-Panel-HideButton-Down')
+			closeButton:SetNormalTexture([[Interface\Buttons\UI-Panel-HideButton-Up]])
+			closeButton:SetPushedTexture([[Interface\Buttons\UI-Panel-HideButton-Down]])
 		else
-			closeButton:SetNormalTexture('Interface\\Buttons\\UI-Panel-MinimizeButton-Up')
-			closeButton:SetPushedTexture('Interface\\Buttons\\UI-Panel-MinimizeButton-Down')
+			closeButton:SetNormalTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Up]])
+			closeButton:SetPushedTexture([[Interface\Buttons\UI-Panel-MinimizeButton-Down]])
 		end
 		closeButton:Show()
 	else

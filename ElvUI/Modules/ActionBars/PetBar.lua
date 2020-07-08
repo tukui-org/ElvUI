@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local ceil = ceil
 local unpack = unpack
---WoW API / Variables
+
 local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar
@@ -140,8 +139,7 @@ function AB:PositionAndSizeBarPet()
 
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:Width(barWidth)
-	bar:Height(barHeight)
+	bar:Size(barWidth, barHeight)
 
 	if self.db.barPet.enabled then
 		bar:SetScale(1)
@@ -245,9 +243,6 @@ function AB:PositionAndSizeBarPet()
 
 	RegisterStateDriver(bar, "show", visibility)
 
-	--Fix issue with mover not updating size when bar is hidden
-	bar:GetScript("OnSizeChanged")(bar)
-
 	if MasqueGroup and E.private.actionbar.masque.petBar then MasqueGroup:ReSkin() end
 end
 
@@ -319,7 +314,7 @@ function AB:CreateBarPet()
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
-	for i=1, NUM_PET_ACTION_SLOTS do
+	for i = 1, NUM_PET_ACTION_SLOTS do
 		local button = _G["PetActionButton"..i]
 		if not button.ICON then
 			button.ICON = button:CreateTexture("PetActionButton"..i..'ICON')

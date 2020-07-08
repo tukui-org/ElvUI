@@ -1,19 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local time, max, strjoin = time, max, strjoin
---WoW API / Variables
-local UnitGUID = UnitGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local UnitGUID = UnitGUID
 
 local timeStamp, combatTime, healTotal = 0, 0, 0
 local lastSegment, petGUID = 0
 local displayString, lastPanel = ''
-local events = {
-	SPELL_HEAL = true,
-	SPELL_PERIODIC_HEAL = true
-}
+local events = {SPELL_HEAL = true, SPELL_PERIODIC_HEAL = true}
 
 local function Reset()
 	timeStamp, combatTime, healTotal = 0, 0, 0
@@ -69,4 +64,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('HPS', {"UNIT_PET", "COMBAT_LOG_EVENT_UNFILTERED", "PLAYER_LEAVE_COMBAT", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, OnClick, nil, nil, L["HPS"])
+DT:RegisterDatatext('HPS', nil, {"UNIT_PET", "COMBAT_LOG_EVENT_UNFILTERED", "PLAYER_LEAVE_COMBAT", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, OnClick, nil, nil, L["HPS"])

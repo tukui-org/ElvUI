@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
-local pairs = pairs
+local ipairs = ipairs
 local unpack = unpack
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapDenied = UnitIsTapDenied
@@ -99,13 +99,14 @@ function NP:Construct_Health(nameplate)
 	return Health
 end
 
-function NP:Update_Health(nameplate)
+function NP:Update_Health(nameplate, skipUpdate)
 	local db = NP.db.units[nameplate.frameType]
 
 	nameplate.Health.colorTapping = true
 	nameplate.Health.colorSelection = true
 	nameplate.Health.colorClass = db.health.useClassColor
 	nameplate.Health.considerSelectionInCombatHostile = true
+	if skipUpdate then return end
 
 	if db.health.enable then
 		if not nameplate:IsElementEnabled('Health') then
@@ -143,18 +144,19 @@ function NP:Update_Health(nameplate)
 	nameplate.Health:Height(db.health.height)
 end
 
+local bars = { 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }
 function NP:Construct_HealthPrediction(nameplate)
 	local HealthPrediction = CreateFrame('Frame', nameplate:GetDebugName()..'HealthPrediction', nameplate)
 
-	for _, Bar in pairs({ 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }) do
-		HealthPrediction[Bar] = CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)
-		HealthPrediction[Bar]:SetFrameStrata(nameplate:GetFrameStrata())
-		HealthPrediction[Bar]:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
-		HealthPrediction[Bar]:Point('TOP')
-		HealthPrediction[Bar]:Point('BOTTOM')
-		HealthPrediction[Bar]:Width(150)
-
-		NP.StatusBars[HealthPrediction[Bar]] = true
+	for _, name in ipairs(bars) do
+		local bar = CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)
+		bar:SetFrameStrata(nameplate:GetFrameStrata())
+		bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		bar:Point('TOP')
+		bar:Point('BOTTOM')
+		bar:Width(150)
+		HealthPrediction[name] = bar
+		NP.StatusBars[bar] = true
 	end
 
 	local healthTexture = nameplate.Health:GetStatusBarTexture()

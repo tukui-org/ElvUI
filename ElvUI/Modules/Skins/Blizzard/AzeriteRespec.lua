@@ -40,7 +40,6 @@ function S:Blizzard_AzeriteRespecUI()
 	ButtonFrame.MoneyFrame:ClearAllPoints()
 	ButtonFrame.MoneyFrame:Point("BOTTOMRIGHT", ButtonFrame.MoneyFrameEdge, 7, 5)
 
-
 	S:HandleButton(ButtonFrame.AzeriteRespecButton, true)
 	S:HandleCloseButton(AzeriteRespecFrame.CloseButton)
 end

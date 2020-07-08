@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack
---WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_VoidStorageUI()
@@ -36,10 +34,10 @@ function S:Blizzard_VoidStorageUI()
 	VoidStorageFrame:StripTextures()
 	VoidStorageFrame:SetTemplate("Transparent")
 
-	VoidStorageFrame.Page1:SetNormalTexture("Interface\\Icons\\INV_Enchant_EssenceCosmicGreater")
+	VoidStorageFrame.Page1:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceCosmicGreater]])
 	VoidStorageFrame.Page1:Point("LEFT", "$parent", "TOPRIGHT", 1, -60)
 
-	VoidStorageFrame.Page2:SetNormalTexture("Interface\\Icons\\INV_Enchant_EssenceArcaneLarge")
+	VoidStorageFrame.Page2:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceArcaneLarge]])
 
 	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
 	_G.VoidStoragePurchaseFrame:SetTemplate()
@@ -51,7 +49,7 @@ function S:Blizzard_VoidStorageUI()
 
 	S:HandleEditBox(_G.VoidItemSearchBox)
 
-	for StorageType, NumSlots  in pairs({ ['Deposit'] = 9, ['Withdraw'] = 9, ['Storage'] = 80 }) do
+	for StorageType, NumSlots  in pairs({ Deposit = 9, Withdraw = 9, Storage = 80 }) do
 		for i = 1, NumSlots do
 			local Button = _G["VoidStorage"..StorageType.."Button"..i]
 			Button:StripTextures()

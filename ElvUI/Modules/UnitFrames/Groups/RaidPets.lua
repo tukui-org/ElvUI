@@ -4,9 +4,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Lua functions
 local _G = _G
---WoW API / Variables
 local CreateFrame = CreateFrame
 
 function UF:Construct_RaidpetFrames()
@@ -25,8 +23,9 @@ function UF:Construct_RaidpetFrames()
 	self.Debuffs = UF:Construct_Debuffs(self)
 	self.AuraWatch = UF:Construct_AuraWatch(self)
 	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
-	self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
+	self.AuraHighlight = UF:Construct_AuraHighlight(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
+	self.FocusGlow = UF:Construct_FocusGlow(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
@@ -47,7 +46,7 @@ function UF:Update_RaidpetHeader(header, db)
 
 	if not parent.positioned then
 		parent:ClearAllPoints()
-		parent:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 574)
+		parent:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, 737)
 		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid Pet Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raidpet,generalGroup')
 		parent.positioned = true
 	end
@@ -87,46 +86,22 @@ function UF:Update_RaidpetFrames(frame, db)
 		frame.BOTTOM_OFFSET = 0
 	end
 
+	frame.Health.colorPetByUnitClass = db.health.colorPetByUnitClass
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-
-	--RaidDebuffs
 	UF:Configure_RaidDebuffs(frame)
-
-	--Raid Icon
 	UF:Configure_RaidIcon(frame)
-
-	--Debuff Highlight
-	UF:Configure_DebuffHighlight(frame)
-
-	--OverHealing
+	UF:Configure_AuraHighlight(frame)
 	UF:Configure_HealComm(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--BuffIndicator
 	UF:Configure_AuraWatch(frame, true)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
-
-	--CustomTexts
 	UF:Configure_CustomTexts(frame)
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")

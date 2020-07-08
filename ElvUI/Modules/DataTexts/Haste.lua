@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
-local format, strjoin = format, strjoin
---WoW API / Variables
 local _G = _G
+local format, strjoin = format, strjoin
 local GetHaste = GetHaste
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
@@ -18,6 +16,7 @@ local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local STAT_HASTE_TOOLTIP = STAT_HASTE_TOOLTIP
 local STAT_HASTE_BASE_TOOLTIP = STAT_HASTE_BASE_TOOLTIP
 local RED_FONT_COLOR_CODE = RED_FONT_COLOR_CODE
+local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel = ''
 
@@ -61,4 +60,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Haste', {"UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "UNIT_SPELL_HASTE"}, OnEvent, nil, nil, OnEnter, nil, STAT_HASTE)
+DT:RegisterDatatext('Haste', STAT_CATEGORY_ENHANCEMENTS, {"UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "UNIT_SPELL_HASTE"}, OnEvent, nil, nil, OnEnter, nil, STAT_HASTE)

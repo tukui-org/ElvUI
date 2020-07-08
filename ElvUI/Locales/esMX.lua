@@ -2,6 +2,9 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "esMX")
 
+local COLOR1 = '|cFF1784d1'
+local COLOR2 = '|cfd9b9b9b'
+
 L[" |cff00ff00bound to |r"] = " |cff00ff00ligado(a) a |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "El marco de %s tiene un punto de anclaje en conflicto. Obligar a los Buffs a unirse a la unidad principal."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s quiere compartir sus filtros contigo. ¿Aceptas la petición?"
@@ -82,6 +85,7 @@ L["Continue"] = "Continuar"
 L["Coords"] = true
 L["copperabbrev"] = "|cffeda55fc|r"
 L["Count"] = "Contador"
+L["Current Difficulties:"] = true
 L["Current Level:"] = "Nivel Actual:"
 L["CVars Set"] = "CVars Configuradas"
 L["CVars"] = "CVars"
@@ -188,7 +192,8 @@ L["Legs"] = "Piernas"
 L["Level Up Display / Boss Banner"] = "Subiste de nivel / Jefe Banner"
 L["List of installations in queue:"] = "Lista de Instalaciones en cola:"
 L["Lock"] = "Bloquear"
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"
+L["LOGIN_MSG"] = ("Bienvenido a *ElvUI|r versión *%s|r, escribe */ec|r para acceder al menú de configuración del juego. Si necesita ayuda, puede visítenos en https://www.tukui.org o unirse a nuestro Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Por favor, escriba */ehelp|r para obtener una lista de los comandos de *ElvUI|r disponibles."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "Marcos de Botín / Alerta"
 L["Loot Frame"] = "Marco de Botín"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "¡Milagro! ¡La descarga se desvaneció como pedo! Intenta de nuevo"
@@ -255,7 +260,7 @@ L["Remaining:"] = "Restante"
 L["Remove Bar %d Action Page"] = "Quitar Barra %d de la paginación"
 L["Reputation Bar"] = "Barra de Reputación"
 L["Request was denied by user."] = "Petición denegada por el jugador."
-L["Reset Counters: Hold Shift + Right Click"] = "Restablecer el Contador: Mantén Shift + Clic Derecho"
+L["Reset Counters: Hold Ctrl + Right Click"] = "Restablecer el Contador: Mantén Ctrl + Clic Derecho"
 L["Reset Data: Hold Shift + Right Click"] = "Restablecer los Datos: Mantén Shift + Clic Derecho"
 L["Reset Position"] = "Reestablecer Posición"
 L["Rested:"] = "Descansado:"
@@ -335,7 +340,6 @@ L["Welcome to ElvUI version %s!"] = "Bienvenido(a) a ElvUI versión %s!"
 L["whispers"] = "susurra"
 L["World Latency:"] = "Latencia Mundial:"
 L["World Protocol:"] = "Protocolo Mundial:"
-L["WoW Token:"] = "Fichas de WoW:"
 L["Wrist"] = "Muñeca"
 L["XP:"] = "XP:"
 L["yells"] = "grita"
@@ -372,8 +376,22 @@ L["Vim Brineheart"] = "Vim Almasalmuera"
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz clic en Bloquear cuando termines.
 Opciones:
-   Clic Izquierdo - Alternar empujar marco.
+   Clic Izquierdo - Mostrar/Ocultar empujar marco.
    Clic Derecho - Abrir la sección de configuración.
    Shift + Clic Derecho - Ocultar los fijadores temporalmente.
    Ctrl + Clic Derecho - Restablece la posición de los fijadores a los valores por defecto.
 ]=]
+
+L["EHELP_COMMANDS"] = ([=[Aquí hay una lista de todos los comandos importantes de *ElvUI|r:
+ */ec|r or */elvui|r  -  Mostrar/Ocultar el *OptionsUI|r.
+ */moveui|r  -  Mostrar/Ocultar los fijadores para reposicionar varios elementos.
+ */kb|r  -  Mostrar/Ocultar el modo atajos.
+ */resetui|r  -  Restablecer todos los marcos a sus posiciones originales.
+ */bgstats|r  -  Mostrar/Ocultar las estadísticas del campo de batalla en tus Textos de Datos.
+ */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
+ */estatus|r  -  Información importante para preguntas de soporte.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  Mostrar/Ocultar una cuadrícula de líneas.
+ */luaerror|r ^on|r or ^off|r  -  Deshabilitar todos los AddOns excepto ElvUI.
+  NOTA: */luaerror|r ^off|r volverá a habilitar los complementos deshabilitado
+  mediante el uso de */luaerror|r ^on|r dentro de esa sesión.
+]=]):gsub('*', COLOR1):gsub('%^', COLOR2)

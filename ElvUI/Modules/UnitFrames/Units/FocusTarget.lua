@@ -4,35 +4,30 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Lua functions
 local _G = _G
-local tinsert = table.insert
+local tinsert = tinsert
 -- GLOBALS: ElvUF_Focus
 
 function UF:Construct_FocusTargetFrame(frame)
-	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-
-	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
-
-	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
-
-	frame.Name = self:Construct_NameText(frame)
-
-	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
-	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-
-	frame.Buffs = self:Construct_Buffs(frame)
-	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
-	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.ThreatIndicator = self:Construct_Threat(frame)
-	frame.MouseGlow = self:Construct_MouseGlow(frame)
-	frame.TargetGlow = self:Construct_TargetGlow(frame)
-	frame.InfoPanel = self:Construct_InfoPanel(frame)
-	frame.Fader = self:Construct_Fader()
-	frame.Cutaway = self:Construct_Cutaway(frame)
+	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
+	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
+	frame.Name = UF:Construct_NameText(frame)
+	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
+	frame.Buffs = UF:Construct_Buffs(frame)
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
+	frame.Debuffs = UF:Construct_Debuffs(frame)
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
+	frame.MouseGlow = UF:Construct_MouseGlow(frame)
+	frame.TargetGlow = UF:Construct_TargetGlow(frame)
+	frame.FocusGlow = UF:Construct_FocusGlow(frame)
+	frame.InfoPanel = UF:Construct_InfoPanel(frame)
+	frame.Fader = UF:Construct_Fader()
+	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	frame.customTexts = {}
-	frame:Point('BOTTOM', ElvUF_Focus, 'TOP', 0, 7) --Set to default position
+	frame:Point('BOTTOM', UF.focus, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["FocusTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,focustarget,generalGroup')
 
 	frame.unitframeType = "focustarget"
@@ -59,6 +54,14 @@ function UF:Update_FocusTargetFrame(frame, db)
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
+	end
+
+	if db.strataAndLevel and db.strataAndLevel.useCustomStrata then
+		frame:SetFrameStrata(db.strataAndLevel.frameStrata)
+	end
+
+	if db.strataAndLevel and db.strataAndLevel.useCustomLevel then
+		frame:SetFrameLevel(db.strataAndLevel.frameLevel)
 	end
 
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')

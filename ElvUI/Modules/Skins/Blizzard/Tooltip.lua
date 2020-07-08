@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
---Lua functions
 local _G = _G
 local unpack = unpack
 local pairs = pairs
---WoW API / Variables
+local GameTooltip = GameTooltip
 local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
@@ -20,18 +19,18 @@ function S:TooltipFrames()
 	S:HandleCloseButton(_G.ItemRefCloseButton)
 
 	-- Skin Blizzard Tooltips
-	local GameTooltip = _G.GameTooltip
-	GameTooltip.ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
-	GameTooltip.ItemTooltip.IconBorder:SetAlpha(0)
-	GameTooltip.ItemTooltip:CreateBackdrop("Default")
-	GameTooltip.ItemTooltip.backdrop:SetOutside(GameTooltip.ItemTooltip.Icon)
-	GameTooltip.ItemTooltip.Count:ClearAllPoints()
-	GameTooltip.ItemTooltip.Count:Point('BOTTOMRIGHT', GameTooltip.ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
-	hooksecurefunc(GameTooltip.ItemTooltip.IconBorder, 'SetVertexColor', function(s, r, g, b)
+	local ItemTooltip = _G.GameTooltip.ItemTooltip
+	ItemTooltip:CreateBackdrop("Default")
+	ItemTooltip.backdrop:SetOutside(ItemTooltip.Icon)
+	ItemTooltip.Count:ClearAllPoints()
+	ItemTooltip.Count:Point('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
+	ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
+	ItemTooltip.IconBorder:SetAlpha(0)
+	hooksecurefunc(ItemTooltip.IconBorder, 'SetVertexColor', function(s, r, g, b)
 		s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 		s:SetTexture()
 	end)
-	hooksecurefunc(GameTooltip.ItemTooltip.IconBorder, 'Hide', function(s)
+	hooksecurefunc(ItemTooltip.IconBorder, 'Hide', function(s)
 		s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
@@ -39,13 +38,31 @@ function S:TooltipFrames()
 	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
 	StoryTooltip:SetFrameLevel(4)
 
-	-- EmbeddedItemTooltip
-	local reward = _G.EmbeddedItemTooltip.ItemTooltip
+	-- EmbeddedItemTooltip (also Paragon Reputation)
+	local embedded = _G.EmbeddedItemTooltip
+	local reward = embedded.ItemTooltip
 	local icon = reward.Icon
+	embedded:SetTemplate("Transparent")
+
 	if reward and reward.backdrop then
 		reward.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
 		reward.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
 	end
+
+	if icon then
+		S:HandleIcon(icon, true)
+		hooksecurefunc(reward.IconBorder, "SetVertexColor", function(border, r, g, b)
+			border:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			border:SetTexture()
+		end)
+		hooksecurefunc(reward.IconBorder, "Hide", function(border)
+			border:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
+	end
+
+	embedded:HookScript("OnShow", function(tt)
+		tt:SetTemplate("Transparent")
+	end)
 
 	-- Skin GameTooltip Status Bar
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
@@ -68,6 +85,7 @@ function S:TooltipFrames()
 		_G.WarCampaignTooltip,
 		_G.EmbeddedItemTooltip,
 		_G.ReputationParagonTooltip,
+		_G.ElvUIConfigTooltip,
 		-- already have locals
 		StoryTooltip,
 		GameTooltip,
@@ -77,7 +95,7 @@ function S:TooltipFrames()
 		TT:SetStyle(tt)
 	end
 
-	-- [Backdrop coloring] There has to be a more elegant way of doing this.
+	-- [Backdrop Coloring] There has to be a more elegant way of doing this.
 	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin
@@ -88,6 +106,17 @@ function S:TooltipFrames()
 			tt.IconBorder:SetAlpha(0)
 			tt.Icon:SetTexCoord(unpack(E.TexCoords))
 			TT:UnregisterEvent(event)
+		end
+	end)
+
+	-- Icon in ItemTooltip is stuck sometimes because of nargles, we dont want that
+	-- I have no idea if this actually works, it's a guess. ~Simpy
+	hooksecurefunc('EmbeddedItemTooltip_UpdateSize', function(frame)
+		if frame.Tooltip:IsShown() then
+			local textLeft = _G[frame.Tooltip:GetName() .. 'TextLeft1']
+			if textLeft and not textLeft:GetText() then
+				frame:Hide()
+			end
 		end
 	end)
 end

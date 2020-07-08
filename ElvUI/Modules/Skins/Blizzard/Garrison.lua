@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
@@ -168,7 +167,7 @@ function S:Blizzard_GarrisonUI()
 	_G.GarrisonLandingPageTab1:ClearAllPoints()
 	_G.GarrisonLandingPageTab1:Point("TOPLEFT", GarrisonLandingPage, "BOTTOMLEFT", 70, 2)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		for i = 1, 10 do
 			select(i, GarrisonLandingPage:GetRegions()):Hide()
 		end
@@ -228,7 +227,7 @@ function S:Blizzard_GarrisonUI()
 				reward:ClearAllPoints()
 				reward:Point("TOPRIGHT", -5, -5)
 
-				if E.private.skins.parchmentRemover.enable then
+				if E.private.skins.parchmentRemoverEnable then
 					button.BG:Hide()
 
 					local bg = CreateFrame("Frame", nil, button)
@@ -320,20 +319,20 @@ function S:Blizzard_GarrisonUI()
 	S:HandleCloseButton(_G.GarrisonLandingPageTutorialBox.CloseButton)
 
 	if E.private.skins.blizzard.tooltip ~= true then return end
+
 	-- ShipYard: Mission Tooltip
 	local tooltip = _G.GarrisonShipyardMapMissionTooltip
 	local reward = tooltip.ItemTooltip
-	local bonusReward = tooltip.BonusReward
-	local icon = reward.Icon
-	local bonusIcon = bonusReward.Icon
 	tooltip:SetTemplate("Transparent")
+
+	local icon = reward.Icon
 	if icon then
 		S:HandleIcon(icon)
 		reward.IconBorder:SetTexture()
 	end
-	if bonusIcon then
-		S:HandleIcon(bonusIcon) --TODO: Check how this actually looks
-	end
+
+	local bonusIcon = tooltip.BonusReward and tooltip.BonusReward.Icon
+	if bonusIcon then S:HandleIcon(bonusIcon) end
 
 	-- Threat Counter Tooltips
 	-- The tooltip starts using blue backdrop and white border unless we re-set the template.

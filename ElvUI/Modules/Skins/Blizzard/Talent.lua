@@ -1,18 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
---WoW API / Variables
+
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
+local UnitSex = UnitSex
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpecializationSpells = GetSpecializationSpells
 local GetSpellTexture = GetSpellTexture
-local UnitSex = UnitSex
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
 
@@ -23,7 +22,6 @@ function S:Blizzard_TalentUI()
 	S:HandlePortraitFrame(PlayerTalentFrame, true)
 
 	_G.PlayerTalentFrameTalents:StripTextures()
-
 
 	if E.global.general.disableTutorialButtons then
 		_G.PlayerTalentFrameSpecializationTutorialButton:Kill()
@@ -205,8 +203,15 @@ function S:Blizzard_TalentUI()
 		local sex = s.isPet and UnitSex("pet") or UnitSex("player")
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, s.isPet, nil, sex)
 		if not id then return end
+
+		local scrollBar = s.spellsScroll.ScrollBar
+		if scrollBar and not scrollBar.backdrop then
+			S:HandleScrollBar(scrollBar)
+		end
+
 		local scrollChild = s.spellsScroll.child
 		scrollChild.specIcon:SetTexture(icon)
+		scrollChild:SetScale(0.99) -- the scrollbar showed on simpy's when it shouldn't, this fixes it by reducing the scale by .01 lol
 
 		local index = 1
 		local bonuses

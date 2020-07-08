@@ -1,20 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack, sort, gsub, wipe = unpack, sort, gsub, wipe
 local strupper, ipairs, tonumber = strupper, ipairs, tonumber
 local floor, select, type, min = floor, select, type, min
 local pairs, tinsert, tContains = pairs, tinsert, tContains
 local strsplit = strsplit
---WoW API / Variables
+
 local hooksecurefunc = hooksecurefunc
 local EnableAddOn = EnableAddOn
 local LoadAddOn = LoadAddOn
 local GetAddOnMetadata = GetAddOnMetadata
 local GetAddOnInfo = GetAddOnInfo
-local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local InCombatLockdown = InCombatLockdown
@@ -24,6 +22,8 @@ local EditBox_ClearFocus = EditBox_ClearFocus
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
+
+local ConfigTooltip = CreateFrame("GameTooltip", "ElvUIConfigTooltip", E.UIParent, "GameTooltipTemplate")
 
 local grid
 E.ConfigModeLayouts = {
@@ -594,17 +594,17 @@ function E:Config_StopMoving()
 end
 
 local function Config_ButtonOnEnter(self)
-	if GameTooltip:IsForbidden() or not self.desc then return end
+	if ConfigTooltip:IsForbidden() or not self.desc then return end
 
-	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT", 0, 2)
-	GameTooltip:AddLine(self.desc, 1, 1, 1, true)
-	GameTooltip:Show()
+	ConfigTooltip:SetOwner(self, "ANCHOR_TOPRIGHT", 0, 2)
+	ConfigTooltip:AddLine(self.desc, 1, 1, 1, true)
+	ConfigTooltip:Show()
 end
 
 local function Config_ButtonOnLeave()
-	if GameTooltip:IsForbidden() then return end
+	if ConfigTooltip:IsForbidden() then return end
 
-	GameTooltip:Hide()
+	ConfigTooltip:Hide()
 end
 
 local function Config_StripNameColor(name)
@@ -837,8 +837,8 @@ function E:Config_CloseWindow()
 		ACD:Close('ElvUI')
 	end
 
-	if not GameTooltip:IsForbidden() then
-		GameTooltip:Hide()
+	if not ConfigTooltip:IsForbidden() then
+		ConfigTooltip:Hide()
 	end
 end
 
@@ -853,8 +853,8 @@ function E:Config_OpenWindow()
 		end
 	end
 
-	if not GameTooltip:IsForbidden() then
-		GameTooltip:Hide()
+	if not ConfigTooltip:IsForbidden() then
+		ConfigTooltip:Hide()
 	end
 end
 
@@ -909,7 +909,7 @@ function E:Config_WindowOpened(frame)
 		E:Elasticize(frame.leftHolder.LogoTop, 128, 64)
 		E:Elasticize(frame.leftHolder.LogoBottom, 128, 64)
 
-		local unskinned = not E.private.skins.ace3.enable
+		local unskinned = not E.private.skins.ace3Enable
 		local offset = unskinned and 14 or 8
 		local version = frame.topHolder.version
 		E:Config_SaveOldPosition(version)
@@ -1114,7 +1114,7 @@ function E:ToggleOptionsUI(msg)
 				end
 			end
 
-			local unskinned = not E.private.skins.ace3.enable
+			local unskinned = not E.private.skins.ace3Enable
 			if unskinned then
 				for i=1, frame:GetNumRegions() do
 					local region = select(i, frame:GetRegions())

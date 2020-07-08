@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:GetModule('Misc')
 local Bags = E:GetModule('Bags')
 
---Lua functions
 local _G = _G
 local select = select
 local format = format
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local AcceptGroup = AcceptGroup
 local C_FriendList_IsFriend = C_FriendList.IsFriend
@@ -43,6 +42,12 @@ local UnitInRaid = UnitInRaid
 local UnitName = UnitName
 local IsInGuild = IsInGuild
 local PlaySound = PlaySound
+local GetNumFactions = GetNumFactions
+local GetFactionInfo = GetFactionInfo
+local GetWatchedFactionInfo = GetWatchedFactionInfo
+local ExpandAllFactionHeaders = ExpandAllFactionHeaders
+local SetWatchedFactionIndex = SetWatchedFactionIndex
+local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 
 local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
 local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
@@ -96,6 +101,24 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 		SendChatMessage(msg, "YELL")
 	elseif channel == "EMOTE" then
 		SendChatMessage(msg, "EMOTE")
+	end
+end
+
+function M:COMBAT_TEXT_UPDATE(_, messagetype)
+	if not E.db.general.autoTrackReputation then return end
+
+	if messagetype == 'FACTION' then
+		local faction = GetCurrentCombatTextEventInfo()
+		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() then
+			ExpandAllFactionHeaders()
+
+			for i = 1, GetNumFactions() do
+				if faction == GetFactionInfo(i) then
+					SetWatchedFactionIndex(i)
+					break
+				end
+			end
+		end
 	end
 end
 
@@ -281,7 +304,7 @@ function M:QUEST_COMPLETE()
 		frame:Size(20)
 		frame.Icon = frame:CreateTexture(nil, "OVERLAY")
 		frame.Icon:SetAllPoints(frame)
-		frame.Icon:SetTexture("Interface\\MONEYFRAME\\UI-GoldIcon")
+		frame.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
 		self.QuestRewardGoldIconFrame = frame
 	end
 
@@ -330,6 +353,7 @@ function M:Initialize()
 	self:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
+	self:RegisterEvent('COMBAT_TEXT_UPDATE')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('QUEST_COMPLETE')
 

@@ -10,6 +10,7 @@ E.Media = {
 }
 
 local format = format
+local ipairs, type = ipairs, type
 local westAndRU = LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western
 
 do
@@ -162,7 +163,7 @@ AddMedia('emoji','Wink')
 AddMedia('emoji','ZZZ')
 
 AddMedia('logo','ElvRainbow')
-AddMedia('logo','ElvSorbet')
+AddMedia('logo','ElvSimpy')
 AddMedia('logo','ElvBlue')
 AddMedia('logo','ElvGreen')
 AddMedia('logo','ElvOrange')

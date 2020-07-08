@@ -3,12 +3,11 @@ local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
 
---Lua functions
 local _G = _G
 local setmetatable, getfenv, setfenv = setmetatable, getfenv, setfenv
 local type, unpack, select, pairs = type, unpack, select, pairs
 local min, random, format = min, random, format
---WoW API / Variables
+
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitHealth = UnitHealth
@@ -23,10 +22,15 @@ local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 
-local attributeBlacklist = {["showRaid"] = true, ["showParty"] = true, ["showSolo"] = true}
 local configEnv
 local originalEnvs = {}
 local overrideFuncs = {}
+
+local attributeBlacklist = {
+	showRaid = true,
+	showParty = true,
+	showSolo = true
+}
 
 local function createConfigEnv()
 	if( configEnv ) then return end
@@ -277,14 +281,16 @@ function UF:PLAYER_REGEN_DISABLED()
 	end
 
 	for i=1, 5 do
-		if self['arena'..i] and self['arena'..i].isForced then
-			self:UnforceShow(self['arena'..i])
+		local arena = self['arena'..i]
+		if arena and arena.isForced then
+			self:UnforceShow(arena)
 		end
-	end
 
-	for i=1, 4 do
-		if self['boss'..i] and self['boss'..i].isForced then
-			self:UnforceShow(self['boss'..i])
+		if i < 5 then
+			local boss = self['boss'..i]
+			if boss and boss.isForced then
+				self:UnforceShow(boss)
+			end
 		end
 	end
 end

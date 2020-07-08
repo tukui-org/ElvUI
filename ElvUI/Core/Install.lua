@@ -1,16 +1,16 @@
 local E, L, V, P, G =unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB, Localize Underscore
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
+local CH = E:GetModule('Chat')
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
-local gsub = gsub
+local unpack = unpack
 local format = format
 local pairs = pairs
 local ipairs = ipairs
 local tinsert = tinsert
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local SetCVar = SetCVar
 local PlaySound = PlaySound
@@ -23,59 +23,66 @@ local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
 local ChangeChatColor = ChangeChatColor
 local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
 local FCF_ResetChatWindows = FCF_ResetChatWindows
-local FCF_SetLocked = FCF_SetLocked
-local FCF_DockFrame, FCF_UnDockFrame = FCF_DockFrame, FCF_UnDockFrame
+local FCF_UnDockFrame = FCF_UnDockFrame
 local FCF_OpenNewWindow = FCF_OpenNewWindow
 local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 local FCF_SetWindowName = FCF_SetWindowName
 local FCF_StopDragging = FCF_StopDragging
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
-local NUM_CHAT_WINDOWS = NUM_CHAT_WINDOWS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 -- GLOBALS: ElvUIInstallFrame
 
 local CURRENT_PAGE = 0
-local MAX_PAGE = 8
+local MAX_PAGE = 10
 
-local myRealm = gsub(E.myrealm,'[%s%-]','')
-local myName = E.myname..'-'..myRealm
-local function SetupChat(noDisplayMsg)
-	FCF_ResetChatWindows() -- Monitor this
-	FCF_SetLocked(_G.ChatFrame1, 1)
-	FCF_DockFrame(_G.ChatFrame2)
-	FCF_SetLocked(_G.ChatFrame2, 1)
+local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
+local ELV_TOONS = {
+	['Elv-Spirestone']			= true,
+	['Elvz-Spirestone']			= true,
+	['Fleshlite-Spirestone']	= true,
+	['Elvidan-Spirestone']		= true,
+	['Elvilas-Spirestone']		= true,
+	['Fraku-Spirestone']		= true,
+	['Jarvix-Spirestone']		= true,
+	['Watermelon-Spirestone']	= true,
+	['Zinxbe-Spirestone']		= true,
+	['Whorlock-Spirestone']		= true,
+}
 
+function E:SetupChat(noDisplayMsg)
+	FCF_ResetChatWindows()
 	FCF_OpenNewWindow(LOOT)
 	FCF_UnDockFrame(_G.ChatFrame3)
-	FCF_SetLocked(_G.ChatFrame3, 1)
-	_G.ChatFrame3:Show()
 
-	for i = 1, NUM_CHAT_WINDOWS do
-		local frame = _G[format('ChatFrame%s', i)]
+	for _, name in ipairs(_G.CHAT_FRAMES) do
+		local frame = _G[name]
+		local id = frame:GetID()
+
+		if E.private.chat.enable then
+			CH:FCFTab_UpdateColors(CH:GetTab(_G[name]))
+		end
 
 		-- move general bottom left
-		if i == 1 then
+		if id == 1 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.LeftChatToggleButton, 'TOPLEFT', 1, 3)
-		elseif i == 3 then
+		elseif id == 3 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.RightChatDataPanel, 'TOPLEFT', 1, 3)
 		end
 
 		FCF_SavePositionAndDimensions(frame)
 		FCF_StopDragging(frame)
-
-		-- set default Elvui font size
 		FCF_SetChatWindowFontSize(nil, frame, 12)
 
 		-- rename windows general because moved to chat #3
-		if i == 1 then
+		if id == 1 then
 			FCF_SetWindowName(frame, GENERAL)
-		elseif i == 2 then
+		elseif id == 2 then
 			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif i == 3 then
+		elseif id == 3 then
 			FCF_SetWindowName(frame, LOOT..' / '..TRADE)
 		end
 	end
@@ -112,18 +119,19 @@ local function SetupChat(noDisplayMsg)
 	ChangeChatColor('CHANNEL2', 232/255, 158/255, 121/255) -- Trade
 	ChangeChatColor('CHANNEL3', 232/255, 228/255, 121/255) -- Local Defense
 
-	if E.Chat then
-		E.Chat:PositionChat(true)
-		if E.db.RightChatPanelFaded then
-			_G.RightChatToggleButton:Click()
-		end
-
-		if E.db.LeftChatPanelFaded then
-			_G.LeftChatToggleButton:Click()
-		end
+	if E.private.chat.enable then
+		CH:PositionChats()
 	end
 
-	if myName == 'Elvz-Kil\'jaeden' or myName == 'Illidelv-Area52' or myName == 'Elv-Spirestone' then
+	if E.db.RightChatPanelFaded then
+		_G.RightChatToggleButton:Click()
+	end
+
+	if E.db.LeftChatPanelFaded then
+		_G.LeftChatToggleButton:Click()
+	end
+
+	if ELV_TOONS[PLAYER_NAME] then
 		SetCVar('scriptErrors', 1)
 	end
 
@@ -133,7 +141,7 @@ local function SetupChat(noDisplayMsg)
 	end
 end
 
-local function SetupCVars(noDisplayMsg)
+function E:SetupCVars(noDisplayMsg)
 	SetCVar('statusTextDisplay', 'BOTH')
 	SetCVar('screenshotQuality', 10)
 	SetCVar('chatMouseScroll', 1)
@@ -217,7 +225,6 @@ function E:SetupTheme(theme, noDisplayMsg)
 	end
 end
 
-
 function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	if not noDataReset then
 		E.db.layoutSet = layout
@@ -269,23 +276,8 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.chat.panelHeight = 236
 			E.db.chat.panelWidth = 472
 			E.db.chat.tabFontSize = 10
-		--DataBars
-			E.db.databars.azerite.height = 10
-			E.db.databars.azerite.orientation = 'HORIZONTAL'
-			E.db.databars.azerite.width = 222
-			E.db.databars.experience.height = 10
-			E.db.databars.experience.orientation = 'HORIZONTAL'
-			E.db.databars.experience.textSize = 12
-			E.db.databars.experience.width = 348
-			E.db.databars.honor.height = 10
-			E.db.databars.honor.orientation = 'HORIZONTAL'
-			E.db.databars.honor.width = 222
-			E.db.databars.reputation.enable = true
-			E.db.databars.reputation.height = 10
-			E.db.databars.reputation.orientation = 'HORIZONTAL'
-			E.db.databars.reputation.width = 222
 		--DataTexts
-			E.db.datatexts.panels.LeftChatDataPanel.right = 'Quick Join'
+			E.db.datatexts.panels.LeftChatDataPanel[3] = 'Quick Join'
 		--General
 			E.db.general.bonusObjectivePosition = 'AUTO'
 			E.db.general.minimap.size = 220
@@ -416,11 +408,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 					E:SaveMoverDefaultPosition(mover)
 				end
 			end
-
-			if layout == 'healer' then
-				E.db.unitframe.units.party.enable = false
-				E.db.unitframe.units.raid.visibility = '[nogroup] hide;show'
-			end
 	end
 
 	E:StaggeredUpdateAll(nil, true)
@@ -431,7 +418,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	end
 end
 
-local function SetupAuras(style, noDisplayMsg)
+function E:SetupAuras(style, noDisplayMsg)
 	local frame = UF.player
 	E:CopyTable(E.db.unitframe.units.player.buffs, P.unitframe.units.player.buffs)
 	E:CopyTable(E.db.unitframe.units.player.debuffs, P.unitframe.units.player.debuffs)
@@ -515,7 +502,7 @@ local function ResetAll()
 	ElvUIInstallFrame:Size(550, 400)
 end
 
-local function SetPage(PageNum)
+function E:SetPage(PageNum)
 	CURRENT_PAGE = PageNum
 	ResetAll()
 
@@ -558,7 +545,7 @@ local function SetPage(PageNum)
 		f.Desc2:SetText(L["Please click the button below to setup your CVars."])
 		f.Desc3:SetText(L["Importance: |cff07D400High|r"])
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', SetupCVars)
+		InstallOption1Button:SetScript('OnClick', function() E:SetupCVars() end)
 		InstallOption1Button:SetText(L["Setup CVars"])
 	elseif PageNum == 3 then
 		f.SubTitle:SetText(L["Chat"])
@@ -566,9 +553,40 @@ local function SetPage(PageNum)
 		f.Desc2:SetText(L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', SetupChat)
+		InstallOption1Button:SetScript('OnClick', function() E:SetupChat() end)
 		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
+		f.SubTitle:SetText(L["Profile Settings Setup"])
+		f.Desc1:SetText(L["Please click the button below to setup your Profile Settings."])
+		InstallOption1Button:Show()
+		InstallOption1Button:SetScript('OnClick', function()
+			E.data:SetProfile('Default')
+			E:NextPage()
+		end)
+		InstallOption1Button:SetText(L["Shared Profile"])
+		InstallOption2Button:Show()
+		InstallOption2Button:SetScript('OnClick', function()
+			E.data:SetProfile(E.mynameRealm)
+			E:NextPage()
+		end)
+		InstallOption2Button:SetText(L["New Profile"])
+	elseif PageNum == 5 then
+		f.SubTitle:SetText(L["Private Settings Setup"])
+		f.Desc1:SetText(L["Please click the button below to setup your Private Settings."])
+		f.Desc2:SetText(L["These settings controls the modules on and off functionality."])
+		InstallOption1Button:Show()
+		InstallOption1Button:SetScript('OnClick', function()
+			E.charSettings:SetProfile('Default')
+			E:NextPage()
+		end)
+		InstallOption1Button:SetText(L["Shared Profile"])
+		InstallOption2Button:Show()
+		InstallOption2Button:SetScript('OnClick', function()
+			E.charSettings:SetProfile(E.mynameRealm)
+			E:NextPage()
+		end)
+		InstallOption2Button:SetText(L["New Profile"])
+	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Theme Setup"])
 		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
 		f.Desc2:SetText(L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."])
@@ -582,7 +600,7 @@ local function SetPage(PageNum)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
-	elseif PageNum == 5 then
+	elseif PageNum == 7 then
 		f.SubTitle:SetText(_G.UISCALE)
 		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
 		InstallSlider:Show()
@@ -619,7 +637,7 @@ local function SetPage(PageNum)
 
 		InstallOption2Button:SetText(L["Preview"])
 		f.Desc3:SetText(L["Importance: |cff07D400High|r"])
-	elseif PageNum == 6 then
+	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
 		f.Desc2:SetText(L["This will change the layout of your unitframes and actionbars."])
@@ -633,18 +651,18 @@ local function SetPage(PageNum)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
 		InstallOption3Button:SetText(L["Caster DPS"])
-	elseif PageNum == 7 then
+	elseif PageNum == 9 then
 		f.SubTitle:SetText(L["Auras"])
 		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
 		f.Desc2:SetText(L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', function() SetupAuras(true) end)
+		InstallOption1Button:SetScript('OnClick', function() E:SetupAuras(true) end)
 		InstallOption1Button:SetText(L["Aura Bars & Icons"])
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function() SetupAuras() end)
+		InstallOption2Button:SetScript('OnClick', function() E:SetupAuras() end)
 		InstallOption2Button:SetText(L["Icons Only"])
-	elseif PageNum == 8 then
+	elseif PageNum == 10 then
 		f.SubTitle:SetText(L["Installation Complete"])
 		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])
@@ -658,17 +676,17 @@ local function SetPage(PageNum)
 	end
 end
 
-local function NextPage()
+function E:NextPage()
 	if CURRENT_PAGE ~= MAX_PAGE then
 		CURRENT_PAGE = CURRENT_PAGE + 1
-		SetPage(CURRENT_PAGE)
+		E:SetPage(CURRENT_PAGE)
 	end
 end
 
-local function PreviousPage()
+function E:PreviousPage()
 	if CURRENT_PAGE ~= 1 then
 		CURRENT_PAGE = CURRENT_PAGE - 1
-		SetPage(CURRENT_PAGE)
+		E:SetPage(CURRENT_PAGE)
 	end
 end
 
@@ -723,7 +741,7 @@ function E:Install()
 	--Create Frame
 	if not ElvUIInstallFrame then
 		local f = CreateFrame('Button', 'ElvUIInstallFrame', E.UIParent)
-		f.SetPage = SetPage
+		f.SetPage = E.SetPage
 		f:Size(550, 400)
 		f:SetTemplate('Transparent')
 		f:Point('CENTER')
@@ -745,7 +763,7 @@ function E:Install()
 		f.Next:Point('BOTTOMRIGHT', -5, 5)
 		f.Next:SetText(CONTINUE)
 		f.Next:Disable()
-		f.Next:SetScript('OnClick', NextPage)
+		f.Next:SetScript('OnClick', E.NextPage)
 		S:HandleButton(f.Next, true)
 
 		f.Prev = CreateFrame('Button', 'InstallPrevButton', f, 'UIPanelButtonTemplate')
@@ -753,7 +771,7 @@ function E:Install()
 		f.Prev:Point('BOTTOMLEFT', 5, 5)
 		f.Prev:SetText(PREVIOUS)
 		f.Prev:Disable()
-		f.Prev:SetScript('OnClick', PreviousPage)
+		f.Prev:SetScript('OnClick', E.PreviousPage)
 		S:HandleButton(f.Prev, true)
 
 		f.Status = CreateFrame('StatusBar', 'InstallStatus', f)
@@ -874,5 +892,5 @@ function E:Install()
 
 	ElvUIInstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	ElvUIInstallFrame:Show()
-	NextPage()
+	E:NextPage()
 end

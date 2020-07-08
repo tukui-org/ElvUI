@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local ceil = ceil
 local unpack = unpack
 local format, strfind = format, strfind
---WoW API / Variables
+
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
@@ -21,7 +20,7 @@ local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
-local WispSplode = "Interface\\Icons\\Spell_Nature_WispSplode"
+local WispSplode = [[Interface\Icons\Spell_Nature_WispSplode]]
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate')
 
 function AB:UPDATE_SHAPESHIFT_COOLDOWN()
@@ -151,8 +150,7 @@ function AB:PositionAndSizeBarShapeShift()
 
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:Width(barWidth)
-	bar:Height(barHeight)
+	bar:Size(barWidth, barHeight)
 
 	local horizontalGrowth, verticalGrowth
 	if point == "TOPLEFT" or point == "TOPRIGHT" then
@@ -288,7 +286,7 @@ function AB:AdjustMaxStanceButtons(event)
 		return
 	end
 
-	for i=1, #bar.buttons do
+	for i = 1, #bar.buttons do
 		bar.buttons[i]:Hide()
 	end
 
@@ -333,7 +331,7 @@ end
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar.backdrop:SetAllPoints()
-	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4)
+	bar:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
 	bar.buttons = {}
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')

@@ -6,11 +6,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Blizzard')
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local strlen, strjoin, gsub = strlen, strjoin, gsub
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local IsControlKeyDown = IsControlKeyDown

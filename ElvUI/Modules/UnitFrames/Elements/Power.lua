@@ -1,8 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+local select = select
 local random = random
 local CreateFrame = CreateFrame
+local UnitPowerType = UnitPowerType
 local hooksecurefunc = hooksecurefunc
 
 local _, ns = ...
@@ -72,8 +74,10 @@ function UF:Configure_Power(frame)
 	if frame.USE_POWERBAR then
 		if not frame:IsElementEnabled('Power') then
 			frame:EnableElement('Power')
-			power:Show()
 		end
+
+		--Show the power here so that attached texts can be displayed correctly.
+		power:Show() --Since it is updated in the PostUpdatePower, so it's fine!
 
 		E:SetSmoothing(power, self.db.smoothbars)
 
@@ -81,7 +85,7 @@ function UF:Configure_Power(frame)
 		frame:SetPowerUpdateSpeed(E.global.unitframe.effectivePowerSpeed)
 
 		--Text
-		local attachPoint = self:GetObjectAnchorPoint(frame, db.power.attachTextTo)
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo)
 		power.value:ClearAllPoints()
 		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
@@ -249,7 +253,8 @@ function UF:PostUpdatePowerColor()
 	end
 end
 
-function UF:PostUpdatePower(unit, cur)
+local powerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
+function UF:PostUpdatePower(unit, cur, min, max)
 	local parent = self.origParent or self:GetParent()
 	if parent.isForced then
 		self.cur = random(1, 100)
@@ -258,19 +263,21 @@ function UF:PostUpdatePower(unit, cur)
 		self:SetValue(self.cur)
 	end
 
-	if parent.db and parent.db.power then
-		if unit == 'player' and parent.db.power.autoHide and parent.POWERBAR_DETACHED then
-			if cur == 0 then
-				self:Hide()
-			else
-				self:Show()
-			end
-		elseif not self:IsShown() then
+	local db = parent.db and parent.db.power
+	if not db then return end
+
+	if (unit == 'player' or unit == 'target') and db.autoHide and parent.POWERBAR_DETACHED then
+		local _, powerType = UnitPowerType(unit)
+		if (powerTypesFull[powerType] and cur == max) or cur == min then
+			self:Hide()
+		else
 			self:Show()
 		end
+	elseif not self:IsShown() then
+		self:Show()
+	end
 
-		if parent.db.power.hideonnpc then
-			UF:PostNamePosition(parent, unit)
-		end
+	if db.hideonnpc then
+		UF:PostNamePosition(parent, unit)
 	end
 end

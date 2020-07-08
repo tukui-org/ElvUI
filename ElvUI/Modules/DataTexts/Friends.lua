@@ -1,13 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local type, ipairs, pairs, select = type, ipairs, pairs, select
 local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
-local format, gsub, strfind, strjoin = format, gsub, strfind, strjoin
---WoW API / Variables
+local format, gsub, strfind, strjoin, strmatch = format, gsub, strfind, strjoin, strmatch
+
 local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
+local GetMouseFocus = GetMouseFocus
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
 local BNInviteFriend = BNInviteFriend
@@ -17,6 +17,7 @@ local GetDisplayedInviteType = GetDisplayedInviteType
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
+local IsAltKeyDown = IsAltKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local SendChatMessage = SendChatMessage
 local SetItemRef = SetItemRef
@@ -55,7 +56,6 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 	preferredIndex = 3
 }
 
-local menuFrame = CreateFrame("Frame", "FriendDatatextRightClickMenu", E.UIParent, "UIDropDownMenuTemplate")
 local menuList = {
 	{ text = _G.OPTIONS_MENU, isTitle = true, notCheckable=true},
 	{ text = _G.INVITE, hasArrow = true, notCheckable=true, },
@@ -70,8 +70,8 @@ local menuList = {
 	{ text = _G.BN_BROADCAST_TOOLTIP, notCheckable=true, func = function() E:StaticPopup_Show("SET_BN_BROADCAST") end },
 }
 
-local function inviteClick(self, name, guid)
-	menuFrame:Hide()
+local function inviteClick(_, name, guid)
+	DT.EasyMenu:Hide()
 
 	if not (name and name ~= "") then return end
 	local isBNet = type(name) == 'number'
@@ -102,8 +102,8 @@ local function inviteClick(self, name, guid)
 	end
 end
 
-local function whisperClick(self, name, battleNet)
-	menuFrame:Hide()
+local function whisperClick(_, name, battleNet)
+	DT.EasyMenu:Hide()
 
 	if battleNet then
 		ChatFrame_SendBNetTell(name)
@@ -122,10 +122,9 @@ local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
 local displayString = ''
 local friendTable, BNTable, tableList = {}, {}, {}
 local friendOnline, friendOffline = gsub(_G.ERR_FRIEND_ONLINE_SS,"\124Hplayer:%%s\124h%[%%s%]\124h",""), gsub(_G.ERR_FRIEND_OFFLINE_S,"%%s","")
-local BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2, BNET_CLIENT_COD = BNET_CLIENT_WOW, BNET_CLIENT_D3, BNET_CLIENT_WTCG, BNET_CLIENT_SC2, BNET_CLIENT_HEROES, BNET_CLIENT_OVERWATCH, BNET_CLIENT_SC, BNET_CLIENT_DESTINY2, BNET_CLIENT_COD
-local wowString = BNET_CLIENT_WOW
-local classicID = WOW_PROJECT_CLASSIC
-local retailID = WOW_PROJECT_ID
+local wowString = _G.BNET_CLIENT_WOW
+local retailID = _G.WOW_PROJECT_ID
+local WOW_CLASSIC = _G.BNET_FRIEND_TOOLTIP_WOW_CLASSIC
 local dataValid, lastPanel = false
 local statusTable = {
 	AFK = " |cffFFFFFF[|r|cffFF9900"..L["AFK"].."|r|cffFFFFFF]|r",
@@ -135,31 +134,32 @@ local statusTable = {
 -- Makro for get the client: /run for i,v in pairs(_G) do if type(i)=="string" and i:match("BNET_CLIENT_") then print(i,"=",v) end end
 local clientSorted = {}
 local clientTags = {
-	[BNET_CLIENT_WOW] = "WoW",
-	[BNET_CLIENT_D3] = "D3",
-	[BNET_CLIENT_WTCG] = "HS",
-	[BNET_CLIENT_HEROES] = "HotS",
-	[BNET_CLIENT_OVERWATCH] = "OW",
-	[BNET_CLIENT_SC] = "SC",
-	[BNET_CLIENT_SC2] = "SC2",
-	[BNET_CLIENT_DESTINY2] = "Dst2",
-	[BNET_CLIENT_COD] = "BO4",
-	["ODIN"] = "MW",
-	["BSAp"] = L["Mobile"],
+	[_G.BNET_CLIENT_WOW] = "WoW",
+	[_G.BNET_CLIENT_D3] = "D3",
+	[_G.BNET_CLIENT_WTCG] = "HS",
+	[_G.BNET_CLIENT_HEROES] = "HotS",
+	[_G.BNET_CLIENT_OVERWATCH] = "OW",
+	[_G.BNET_CLIENT_SC] = "SC",
+	[_G.BNET_CLIENT_SC2] = "SC2",
+	[_G.BNET_CLIENT_COD] = "BO4",
+	[_G.BNET_CLIENT_COD_MW] = "MW",
+	[_G.BNET_CLIENT_COD_MW2] = "MW2",
+	BSAp = L["Mobile"],
 }
 
 local clientIndex = {
-	[BNET_CLIENT_WOW] = 1,
-	[BNET_CLIENT_D3] = 2,
-	[BNET_CLIENT_WTCG] = 3,
-	[BNET_CLIENT_HEROES] = 4,
-	[BNET_CLIENT_OVERWATCH] = 5,
-	[BNET_CLIENT_SC] = 6,
-	[BNET_CLIENT_SC2] = 7,
-	[BNET_CLIENT_DESTINY2] = 8,
-	[BNET_CLIENT_COD] = 9,
-	["App"] = 10,
-	["BSAp"] = 11,
+	[_G.BNET_CLIENT_WOW] = 1,
+	[_G.BNET_CLIENT_D3] = 2,
+	[_G.BNET_CLIENT_WTCG] = 3,
+	[_G.BNET_CLIENT_HEROES] = 4,
+	[_G.BNET_CLIENT_OVERWATCH] = 5,
+	[_G.BNET_CLIENT_SC] = 6,
+	[_G.BNET_CLIENT_SC2] = 7,
+	[_G.BNET_CLIENT_COD] = 8,
+	[_G.BNET_CLIENT_COD_MW] = 9,
+	[_G.BNET_CLIENT_COD_MW2] = 10,
+	App = 11,
+	BSAp = 12,
 }
 
 local function inGroup(name, realmName)
@@ -233,7 +233,8 @@ end
 local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, realmName, faction, race, className, zoneName, level, guid, gameText)
 	className = E:UnlocalizedClassName(className) or ""
 	characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or ""
-	BNTable[bnIndex] = {
+
+	local obj = {
 		accountID = bnetIDAccount,		--1
 		accountName = accountName,		--2
 		battleTag = battleTag,			--3
@@ -254,6 +255,12 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 		guid = guid,					--18
 		gameText = gameText				--19
 	}
+
+	if strmatch(gameText, WOW_CLASSIC) then
+		obj.classicText, obj.realmName = strmatch(gameText, '(.-)%s%-%s(.+)')
+	end
+
+	BNTable[bnIndex] = obj
 
 	if tableList[client] then
 		tableList[client][#tableList[client]+1] = BNTable[bnIndex]
@@ -348,24 +355,6 @@ local function BuildBNTable(total)
 	end
 end
 
-local function OnEvent(self, event, message)
-	local onlineFriends = C_FriendList_GetNumOnlineFriends()
-	local _, numBNetOnline = BNGetNumFriends()
-
-	-- special handler to detect friend coming online or going offline
-	-- when this is the case, we invalidate our buffered table and update the
-	-- datatext information
-	if event == "CHAT_MSG_SYSTEM" then
-		if not (strfind(message, friendOnline) or strfind(message, friendOffline)) then return end
-	end
-
-	-- force update when showing tooltip
-	dataValid = false
-
-	self.text:SetFormattedText(displayString, _G.FRIENDS, onlineFriends + numBNetOnline)
-	lastPanel = self
-end
-
 local function Click(self, btn)
 	DT.tooltip:Hide()
 
@@ -440,7 +429,8 @@ local function Click(self, btn)
 			end
 		end
 
-		_G.EasyMenu(menuList, menuFrame, "cursor", 0, 0, "MENU", 2)
+		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
+		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
 	elseif InCombatLockdown() then
 		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
 	else
@@ -527,7 +517,7 @@ local function OnEnter(self)
 						end
 
 						if not shouldSkip then
-							local header = format("%s (%s)", battleNetString, (info.wowProjectID == classicID and info.gameText) or clientTags[client] or client)
+							local header = format("%s (%s)", battleNetString, info.classicText or clientTags[client] or client)
 							if info.client and info.client == wowString then
 								classc = E:ClassColor(info.className)
 								if info.level and info.level ~= '' then
@@ -561,6 +551,27 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
+local function OnEvent(self, event, message)
+	local onlineFriends = C_FriendList_GetNumOnlineFriends()
+	local _, numBNetOnline = BNGetNumFriends()
+
+	-- special handler to detect friend coming online or going offline
+	-- when this is the case, we invalidate our buffered table and update the
+	-- datatext information
+	if event == "CHAT_MSG_SYSTEM" then
+		if not (strfind(message, friendOnline) or strfind(message, friendOffline)) then return end
+	end
+	-- force update when showing tooltip
+	dataValid = false
+
+	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and GetMouseFocus() == self then
+		OnEnter(self)
+	end
+
+	self.text:SetFormattedText(displayString, _G.FRIENDS, onlineFriends + numBNetOnline)
+	lastPanel = self
+end
+
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s: ", hex, "%d|r")
 
@@ -570,4 +581,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Friends', {"BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM"}, OnEvent, nil, Click, OnEnter, nil, FRIENDS)
+DT:RegisterDatatext('Friends', _G.SOCIAL_LABEL, {"BN_FRIEND_ACCOUNT_ONLINE", "BN_FRIEND_ACCOUNT_OFFLINE", "BN_FRIEND_INFO_CHANGED", "FRIENDLIST_UPDATE", "CHAT_MSG_SYSTEM", "MODIFIER_STATE_CHANGED"}, OnEvent, nil, Click, OnEnter, nil, _G.FRIENDS)

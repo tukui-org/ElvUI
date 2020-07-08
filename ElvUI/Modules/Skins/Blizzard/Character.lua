@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack, select = unpack, select
 local pairs, ipairs, type = pairs, ipairs, type
---WoW API / Variables
+
 local EquipmentManager_UnpackLocation = EquipmentManager_UnpackLocation
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 local GetContainerItemLink = GetContainerItemLink
@@ -240,7 +239,7 @@ local function UpdateCurrencySkins()
 			if button.expandIcon then
 				if not button.highlightTexture then
 					button.highlightTexture = button:CreateTexture(button:GetName().."HighlightTexture", "HIGHLIGHT")
-					button.highlightTexture:SetTexture("Interface\\Buttons\\UI-PlusButton-Hilight")
+					button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
 					button.highlightTexture:SetBlendMode("ADD")
 					button.highlightTexture:SetInside(button.expandIcon)
 
@@ -522,33 +521,12 @@ function S:CharacterFrame()
 		S:HandleTab(_G["CharacterFrameTab"..i])
 	end
 
-	--Buttons used to toggle between equipment manager, titles, and character stats
-	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
-
 	hooksecurefunc("ExpandFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("CollapseFactionHeader", UpdateFactionSkins)
 	hooksecurefunc("ReputationFrame_Update", UpdateFactionSkins)
 
-	--Reputation Paragon Tooltip
-	if E.private.skins.blizzard.tooltip then
-		local tooltip = _G.EmbeddedItemTooltip
-		local reward = tooltip.ItemTooltip
-		local icon = reward.Icon
-		tooltip:SetTemplate("Transparent")
-		if icon then
-			S:HandleIcon(icon, true)
-			hooksecurefunc(reward.IconBorder, "SetVertexColor", function(icnBdr, r, g, b)
-				icnBdr:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
-				icnBdr:SetTexture()
-			end)
-			hooksecurefunc(reward.IconBorder, "Hide", function(icnBdr)
-				icnBdr:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
-		end
-		tooltip:HookScript("OnShow", function(tt)
-			tt:SetTemplate("Transparent")
-		end)
-	end
+	--Buttons used to toggle between equipment manager, titles, and character stats
+	hooksecurefunc("PaperDollFrame_UpdateSidebarTabs", FixSidebarTabCoords)
 
 	--Currency
 	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)

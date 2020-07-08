@@ -2,10 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 local CH = E:GetModule('Chat')
 
---Lua functions
 local next, pairs, select, type = next, pairs, select, type
 local format, strjoin, wipe, gsub = format, strjoin, wipe, gsub
---WoW API / Variables
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
 local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
@@ -32,10 +30,10 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function Update(panel)
+local function Update(lastPanel)
 	wipe(quickJoin)
 
-	if not panel then return end
+	if not lastPanel then return end
 	local quickJoinGroups = C_SocialQueue_GetAllGroups()
 	for _, guid in pairs(quickJoinGroups) do
 		local players = C_SocialQueue_GetGroupMembers(guid)
@@ -47,7 +45,7 @@ local function Update(panel)
 			local queues = C_SocialQueue_GetGroupQueues(guid)
 			local firstQueue, numQueues = queues and queues[1], queues and #queues or 0
 			local isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
-			local coloredName = (playerName and format('%s%s|r%s', nameColor, playerName, extraCount)) or format('{%s%s}', UNKNOWN, extraCount)
+			local coloredName = (playerName and playerName ~= '' and format('%s%s|r%s', nameColor, playerName, extraCount)) or format('{%s%s}', UNKNOWN, extraCount)
 
 			local activity
 			if isLFGList and firstQueue and firstQueue.eligible then
@@ -61,7 +59,7 @@ local function Update(panel)
 				end
 
 				if isLeader then
-					coloredName = format("|TInterface\\GroupFrame\\UI-Group-LeaderIcon:16:16|t%s", coloredName)
+					coloredName = format([[|TInterface\GroupFrame\UI-Group-LeaderIcon:16:16|t%s]], coloredName)
 				end
 
 				activity = activityName or UNKNOWN
@@ -96,17 +94,17 @@ local function Update(panel)
 		end
 	end
 
-	panel.text:SetFormattedText(displayString, QUICK_JOIN, #quickJoinGroups)
+	lastPanel.text:SetFormattedText(displayString, QUICK_JOIN, #quickJoinGroups)
 end
 
-local delayed, panel
+local delayed, lastPanel
 local function throttle()
-	if panel then Update(panel) end
+	if lastPanel then Update(lastPanel) end
 	delayed = nil
 end
 
 local function OnEvent(self, event)
-	if panel ~= self then panel = self end
+	if lastPanel ~= self then lastPanel = self end
 	if delayed then return end
 
 	-- use a nonarg passing function, so that it goes through c_timer instead of the waitframe
@@ -115,8 +113,8 @@ end
 
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s: ", hex, "%s|r")
-	if panel then OnEvent(panel) end
+	if lastPanel then OnEvent(lastPanel) end
 end
 
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
-DT:RegisterDatatext('Quick Join', {"SOCIAL_QUEUE_UPDATE"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)
+DT:RegisterDatatext('Quick Join', _G.SOCIAL_LABEL, {"SOCIAL_QUEUE_UPDATE"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)

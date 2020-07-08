@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---WoW API / Variables
 local UnitIsPlayer = UnitIsPlayer
 
 function UF:Construct_NameText(frame)
@@ -32,6 +31,7 @@ end
 
 function UF:PostNamePosition(frame, unit)
 	if not frame.Power.value:IsShown() then return end
+
 	local db = frame.db
 	if UnitIsPlayer(unit) or (db.power and not db.power.enable) then
 		local position = db.name.position

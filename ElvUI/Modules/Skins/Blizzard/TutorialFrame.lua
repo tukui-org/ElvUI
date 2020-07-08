@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
---WoW API / Variables
 
 function S:TutorialFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Tutorials) then return end

@@ -2,12 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local sort, ceil, huge = sort, ceil, math.huge
 local select, unpack, next, format = select, unpack, next, format
 local strfind, strsplit, strmatch = strfind, strsplit, strmatch
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
@@ -46,14 +45,19 @@ function UF:Construct_Debuffs(frame)
 	return debuffs
 end
 
-local function OnClick(btn)
-	local mod = E.db.unitframe.auraBlacklistModifier
-	if mod == "NONE" or not ((mod == "SHIFT" and IsShiftKeyDown()) or (mod == "ALT" and IsAltKeyDown()) or (mod == "CTRL" and IsControlKeyDown())) then return end
-	local auraName = btn.name
+function UF:Aura_OnClick()
+	local keyDown = IsShiftKeyDown() and 'SHIFT' or IsAltKeyDown() and 'ALT' or IsControlKeyDown() and 'CTRL'
+	if not keyDown then return end
 
-	if auraName then
-		E:Print(format(L["The spell '%s' has been added to the Blacklist unitframe aura filter."], auraName))
-		E.global.unitframe.aurafilters.Blacklist.spells[btn.spellID] = { enable = true, priority = 0 }
+	local spellName, spellID = self.name, self.spellID
+	local listName = UF.db.modifiers[keyDown]
+	if spellName and spellID and listName ~= 'NONE' then
+		if not E.global.unitframe.aurafilters[listName].spells[spellID] then
+			E:Print(format(L["The spell '%s' has been added to the '%s' unitframe aura filter."], spellName, listName))
+			E.global.unitframe.aurafilters[listName].spells[spellID] = { enable = true, priority = 0 }
+		else
+			E.global.unitframe.aurafilters[listName].spells[spellID].enable = true
+		end
 
 		UF:Update_AllFrames()
 	end
@@ -78,7 +82,7 @@ function UF:Construct_AuraIcon(button)
 	button.stealable:SetTexture()
 
 	button:RegisterForClicks('RightButtonUp')
-	button:SetScript('OnClick', OnClick)
+	button:SetScript('OnClick', UF.Aura_OnClick)
 
 	button.cd.CooldownOverride = 'unitframe'
 	E:RegisterCooldown(button.cd)
@@ -246,6 +250,7 @@ function UF:Configure_Auras(frame, which)
 		if button then
 			button.db = auras.db
 			UF:UpdateAuraSettings(auras, button)
+			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
 
 		index = index + 1
@@ -358,20 +363,22 @@ end
 function UF:PostUpdateAura(_, button)
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
-			button:SetBackdropBorderColor(0.9, 0.1, 0.1)
+			if UF.db.colors.auraByType then button:SetBackdropBorderColor(.9, .1, .1) end
 			button.icon:SetDesaturated(button.canDesaturate)
 		else
-			if E.BadDispels[button.spellID] and button.dtype and E:IsDispellableByMe(button.dtype) then
-				button:SetBackdropBorderColor(0.05, 0.85, 0.94)
-			else
-				local color = (button.dtype and _G.DebuffTypeColor[button.dtype]) or _G.DebuffTypeColor.none
-				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
+			if UF.db.colors.auraByType then
+				if E.BadDispels[button.spellID] and button.dtype and E:IsDispellableByMe(button.dtype) then
+					button:SetBackdropBorderColor(.05, .85, .94)
+				else
+					local color = (button.dtype and _G.DebuffTypeColor[button.dtype]) or _G.DebuffTypeColor.none
+					button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
+				end
 			end
 			button.icon:SetDesaturated(false)
 		end
 	else
-		if button.isStealable and not button.isFriend then
-			button:SetBackdropBorderColor(0.93, 0.91, 0.55, 1.0)
+		if UF.db.colors.auraByType and button.isStealable and not button.isFriend then
+			button:SetBackdropBorderColor(.93, .91, .55)
 		else
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
@@ -382,10 +389,10 @@ function UF:PostUpdateAura(_, button)
 	end
 end
 
-function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, ...)
+function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlayer, unitIsCaster, myPet, otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, nameplateShowSelf, nameplateShowAll, ...)
 	local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
 
-	for i=1, select('#', ...) do
+	for i = 1, select('#', ...) do
 		local name = select(i, ...)
 		local check = (isFriend and strmatch(name, "^Friendly:([^,]*)")) or (not isFriend and strmatch(name, "^Enemy:([^,]*)")) or nil
 		if check ~= false then
@@ -420,7 +427,8 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 					or (name == 'Dispellable' and canDispell)
 					or (name == 'notDispellable' and not canDispell)
 					or (name == 'CastByNPC' and not casterIsPlayer)
-					or (name == 'CastByPlayers' and casterIsPlayer)))
+					or (name == 'CastByPlayers' and casterIsPlayer)
+					or (name == 'BlizzardNameplate' and (nameplateShowAll or (nameplateShowSelf and (isPlayer or myPet))))))
 				-- Blacklists
 				or ((name == 'blockCastByPlayers' and casterIsPlayer)
 				or (name == 'blockNoDuration' and noDuration)
@@ -436,7 +444,7 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 	end
 end
 
-function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expiration, caster, isStealable, _, spellID, _, isBossDebuff, casterIsPlayer)
+function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, _, isBossDebuff, casterIsPlayer, nameplateShowAll)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local db = button.db or self.db
@@ -453,6 +461,7 @@ function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expir
 	button.dtype = debuffType
 	button.duration = duration
 	button.expiration = expiration
+	button.noTime = duration == 0 and expiration == 0
 	button.stackCount = count
 	button.name = name
 	button.spellID = spellID
@@ -464,7 +473,7 @@ function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expir
 	local allowDuration = noDuration or (duration and duration > 0 and (not db.maxDuration or db.maxDuration == 0 or duration <= db.maxDuration) and (not db.minDuration or db.minDuration == 0 or duration >= db.minDuration))
 
 	if db.priority and db.priority ~= '' then
-		local filterCheck, spellPriority = UF:CheckFilter(caster, name, spellID, button.canDispell, button.isFriend, button.isPlayer, button.unitIsCaster, button.myPet, button.otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, strsplit(',', db.priority))
+		local filterCheck, spellPriority = UF:CheckFilter(caster, name, spellID, button.canDispell, button.isFriend, button.isPlayer, button.unitIsCaster, button.myPet, button.otherPet, isBossDebuff, allowDuration, noDuration, casterIsPlayer, nameplateShowSelf, nameplateShowAll, strsplit(',', db.priority))
 		if spellPriority then button.priority = spellPriority end -- this is the only difference from auarbars code
 		return filterCheck
 	else

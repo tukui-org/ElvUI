@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='Patch.lua'/>
 	<Script file='Core.lua'/>
 	<Script file='Math.lua'/>

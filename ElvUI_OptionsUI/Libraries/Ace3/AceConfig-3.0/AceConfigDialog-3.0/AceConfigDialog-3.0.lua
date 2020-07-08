@@ -1144,6 +1144,11 @@ local function sortTblAsStrings(x,y)
 	return tostring(x) < tostring(y) -- Support numbers as keys
 end
 
+-- added by ElvUI
+local function sortTblByValue(x,y)
+	return x[2] < y[2]
+end
+
 --[[
 	options - root of the options table being fed
 	container - widget that controls will be placed in
@@ -1346,14 +1351,20 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 				elseif v.type == "multiselect" then
 					local values = GetOptionsMemberValue("values", v, options, path, appName)
 					local disabled = CheckOptionDisabled(v, options, path, appName)
+					local sortByValue = GetOptionsMemberValue("sortByValue", v, options, path, appName)
 
 					local valuesort = new()
 					if values then
 						for value, text in pairs(values) do
-							tinsert(valuesort, value)
+							tinsert(valuesort, (sortByValue and {value, text}) or value)
 						end
 					end
-					tsort(valuesort)
+
+					if sortByValue then
+						tsort(valuesort, sortTblByValue)
+					else
+						tsort(valuesort)
+					end
 
 					local controlType = v.dialogControl or v.control
 					if controlType then
@@ -1383,7 +1394,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 						end
 						--check:SetTriState(v.tristate)
 						for i = 1, #valuesort do
-							local key = valuesort[i]
+							local key = (sortByValue and valuesort[i][1]) or valuesort[i]
 							local value = GetOptionsMemberValue("get",v, options, path, appName, key)
 							control:SetItemValue(key,value)
 						end
@@ -1399,7 +1410,7 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 						control:PauseLayout()
 
 						for i = 1, #valuesort do
-							local value = valuesort[i]
+							local value = (sortByValue and valuesort[i][1]) or valuesort[i]
 							local text = values[value]
 							if dragdrop then
 								local button = gui:Create("Button-ElvUI")

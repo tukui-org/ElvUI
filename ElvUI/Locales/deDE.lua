@@ -2,6 +2,9 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "deDE")
 
+local COLOR1 = '|cFF1784d1'
+local COLOR2 = '|cfd9b9b9b'
+
 L[" |cff00ff00bound to |r"] = " |cff00ff00gebunden zu |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = true
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s möchte seine Filter Einstellungen mit dir teilen. Möchtest du die Anfrage annehmen?"
@@ -82,6 +85,7 @@ L["Continue"] = "Fortfahren"
 L["Coords"] = "Koordinaten"
 L["copperabbrev"] = "|cffeda55fc|r"
 L["Count"] = "Zähler"
+L["Current Difficulties:"] = "Derzeitiger Schwierigkeitsgrad:"
 L["Current Level:"] = "Derzeitiges Level:"
 L["CVars Set"] = "CVars gesetzt"
 L["CVars"] = "CVars"
@@ -188,7 +192,8 @@ L["Legs"] = "Beine"
 L["Level Up Display / Boss Banner"] = "Level Up Anzeige / Boss Banner"
 L["List of installations in queue:"] = "Liste der Installationen in der Warteschlange:"
 L["Lock"] = "Sperren"
-L["LOGIN_MSG"] = "Willkommen zu %sElvUI|r Version %s%s|r, Tippe /ec um das Konfigurationsmenü aufzurufen. Für technische Hilfe, besuche das Supportforum unter https://www.tukui.org oder trete unserem Discord bei: https://discord.gg/xFWcfgE"
+L["LOGIN_MSG"] = ("Willkommen zu *ElvUI|r Version *%s|r, Tippe */ec|r um das Konfigurationsmenü aufzurufen. Für technische Hilfe, besuche das Supportforum unter https://www.tukui.org oder trete unserem Discord bei: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "Beute-/Alarmfenster"
 L["Loot Frame"] = "Beute-Fenster"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Herr! Es ist ein Wunder! Der Download verschwand wie ein Furz im Wind! Versuche es nochmal!"
@@ -256,7 +261,7 @@ L["Remaining:"] = "Verbleibend:"
 L["Remove Bar %d Action Page"] = "Entferne Leiste %d Aktion Seite"
 L["Reputation Bar"] = "Rufleiste"
 L["Request was denied by user."] = "Die Anfrage wurde vom Benutzer abgelehnt."
-L["Reset Counters: Hold Shift + Right Click"] = "Zähler zurücksetzen: Halte Shift + Rechtsklick"
+L["Reset Counters: Hold Ctrl + Right Click"] = "Zähler zurücksetzen: Halte Ctrl + Rechtsklick"
 L["Reset Data: Hold Shift + Right Click"] = "Daten zurücksetzen: Halte Shift + Rechtsklick"
 L["Reset Position"] = "Position zurücksetzen"
 L["Rested:"] = "Ausgeruht:"
@@ -337,7 +342,6 @@ L["Welcome to ElvUI version %s!"] = "Willkommen bei ElvUI Version %s!"
 L["whispers"] = "flüstern"
 L["World Latency:"] = "Welt Latenz"
 L["World Protocol:"] = "Welt Protokoll"
-L["WoW Token:"] = "WoW-Marke"
 L["Wrist"] = "Handgelenke"
 L["XP:"] = "EP:"
 L["yells"] = "schreien"
@@ -380,3 +384,17 @@ Options:
   Shift + Rechtsklick - Blendet den Anker vorübergehend aus.
   Strg + Rechtsklick - Setzt den Anker auf Ursprungsposition zurück.
 ]=]
+
+L["EHELP_COMMANDS"] = ([=[Hier ist eine liste aller wichtigen *ElvUI|r Kommandos:
+ */ec|r or */elvui|r  -  Öffnet die *ElvUI Optionen|r.
+ */moveui|r  -  Zeigt alle Ankerpunkte um Elemente zu verschieben.
+ */kb|r  -  Aktiviert den Tastenbelegungsmodus.
+ */resetui|r  -  Setzt alle Fenster auf ihre Standardposition zurück.
+ */bgstats|r  -  Aktiviert Schlachtfeld Statistiken über den Informationsleisten.
+ */hdt|r  -  Informationsleisten bearbeiten ohne die *Optionen|r öffnen zu müssen.
+ */estatus|r  -  Wichtige Informationen für Supportfragen.
+ */egrid|r ^64|r oder ^128|r oder ^256|r  -  Aktiviert ein Pixel Raster.
+ */luaerror|r ^on|r oder ^off|r  -  Deaktiviert alle AddOns außer ElvUI.
+  PS: */luaerror|r ^off|r aktiviert wieder alle AddOns,
+  die durch */luaerror|r ^on|r während der Sitzung deaktiviert wurden.
+]=]):gsub('*', COLOR1):gsub('%^', COLOR2)

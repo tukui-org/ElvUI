@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
 local CreateFrame = CreateFrame
 
 local function PetButtons(btn, p)

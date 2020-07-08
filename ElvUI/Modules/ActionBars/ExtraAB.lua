@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
@@ -21,7 +20,7 @@ function AB:Extra_SetAlpha()
 	if not E.private.actionbar.enable then return; end
 	local alpha = E.db.actionbar.extraActionButton.alpha
 
-	for i=1, _G.ExtraActionBarFrame:GetNumChildren() do
+	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then
 			button:SetAlpha(alpha)
@@ -54,22 +53,22 @@ function AB:SetupExtraButton()
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
-	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
+	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
-	ExtraActionBarFrame.ignoreFramePositionManager  = true
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
-	ZoneAbilityHolder:Point('BOTTOM', ExtraActionBarFrame, 'TOP', 0, 2)
+	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
 
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:Point('CENTER', ZoneAbilityHolder, 'CENTER')
-	ZoneAbilityFrame.ignoreFramePositionManager = true
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]

@@ -2,6 +2,9 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "ruRU")
 
+local COLOR1 = '|cFF1784d1'
+local COLOR2 = '|cfd9b9b9b'
+
 L[" |cff00ff00bound to |r"] = " |cff00ff00назначено для |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = "Фрейм %s содержит конфликтующие точки крепления. Баффы будут принудительно закреплены на самом фрейме."
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s хочет передать Вам свои фильтры. Желаете ли Вы принять их?"
@@ -82,6 +85,7 @@ L["Continue"] = "Продолжить"
 L["Coords"] = "Коорд."
 L["copperabbrev"] = "|cffeda55fм|r"
 L["Count"] = "Кол-во"
+L["Current Difficulties:"] = true
 L["Current Level:"] = "Текущий уровень:"
 L["CVars Set"] = "Настройки сброшены"
 L["CVars"] = "Настройки игры"
@@ -188,7 +192,8 @@ L["Legs"] = "Ноги"
 L["Level Up Display / Boss Banner"] = "Уровень / Баннер босса"
 L["List of installations in queue:"] = "Очередь установки:"
 L["Lock"] = "Закрепить"
-L["LOGIN_MSG"] = "Добро пожаловать в %sElvUI|r версии %s%s|r, наберите /ec для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://www.tukui.org или присоединяйтесь к серверу Discord: https://discord.gg/xFWcfgE"
+L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%s|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://www.tukui.org или присоединяйтесь к серверу Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "Розыгрыш/оповещения"
 L["Loot Frame"] = "Окно добычи"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Чтоб его! Загрузка была... да всплыла. Попробуйте еще раз!"
@@ -255,7 +260,7 @@ L["Remaining:"] = "Осталось:"
 L["Remove Bar %d Action Page"] = "Удалить панель %d из списка переключаемых"
 L["Reputation Bar"] = "Полоса репутации"
 L["Request was denied by user."] = "Запрос отклонен пользователем."
-L["Reset Counters: Hold Shift + Right Click"] = "Сбросить счётчики: Shift + ПКМ"
+L["Reset Counters: Hold Ctrl + Right Click"] = "Сбросить счётчики: Ctrl + ПКМ"
 L["Reset Data: Hold Shift + Right Click"] = "Сбросить данные: Shift + ПКМ"
 L["Reset Position"] = "Сбросить позицию"
 L["Rested:"] = "Бодрость:"
@@ -335,7 +340,6 @@ L["Welcome to ElvUI version %s!"] = "Добро пожаловать в ElvUI в
 L["whispers"] = "шепчет"
 L["World Latency:"] = "Глобальная задержка:"
 L["World Protocol:"] = "Глобальный протокол:"
-L["WoW Token:"] = "WoW токен:"
 L["Wrist"] = "Запястья"
 L["XP:"] = "Опыт:"
 L["yells"] = "кричит"
@@ -377,3 +381,17 @@ Options:
   Shift + RightClick - Hides mover temporarily.
   Ctrl + RightClick - Resets mover position to default.
 ]=]
+
+L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
+ */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
+ */moveui|r  -  Toggle anchors to reposition various elements.
+ */kb|r  -  Toggle the keybind mode.
+ */resetui|r  -  Reset all frames to their original positions.
+ */bgstats|r  -  Toggle Battleground stats on your DataTexts.
+ */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
+ */estatus|r  -  Important informations for support questions.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
+ */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
+  NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
+  using */luaerror|r ^on|r within that session.
+]=]):gsub('*', COLOR1):gsub('%^', COLOR2)

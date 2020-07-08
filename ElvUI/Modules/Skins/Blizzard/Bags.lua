@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack, select = unpack, select
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -250,7 +249,7 @@ function S:ContainerFrame()
 	AutoSort:StripTextures()
 	AutoSort:SetTemplate()
 	AutoSort.Icon = AutoSort:CreateTexture()
-	AutoSort.Icon:SetTexture("Interface\\ICONS\\INV_Pet_Broom")
+	AutoSort.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
 	AutoSort.Icon:SetTexCoord(unpack(E.TexCoords))
 	AutoSort.Icon:SetInside()
 

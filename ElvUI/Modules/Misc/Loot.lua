@@ -2,12 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:GetModule('Misc')
 local LBG = E.Libs.ButtonGlow
 
---Lua functions
 local _G = _G
 local unpack, pairs = unpack, pairs
 local tinsert = tinsert
 local max = max
---WoW API / Variables
+
 local CloseLoot = CloseLoot
 local CreateFrame = CreateFrame
 local CursorOnUpdate = CursorOnUpdate
@@ -153,7 +152,7 @@ local function createSlot(id)
 	frame.name = name
 
 	local drop = frame:CreateTexture(nil, 'ARTWORK')
-	drop:SetTexture('Interface\\QuestFrame\\UI-QuestLogTitleHighlight')
+	drop:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
 	drop:Point('LEFT', icon, 'RIGHT', 0, 0)
 	drop:Point('RIGHT', frame)
 	drop:SetAllPoints(frame)
@@ -307,9 +306,8 @@ end
 function M:LoadLoot()
 	if not E.private.general.loot then return end
 	lootFrameHolder = CreateFrame('Frame', 'ElvLootFrameHolder', E.UIParent)
-	lootFrameHolder:Point('TOPLEFT', 36, -195)
-	lootFrameHolder:Width(150)
-	lootFrameHolder:Height(22)
+	lootFrameHolder:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 418, -186)
+	lootFrameHolder:Size(150, 22)
 
 	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
 	lootFrame:SetClampedToScreen(true)

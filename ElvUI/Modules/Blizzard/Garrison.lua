@@ -1,13 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
---Lua functions
 local _G = _G
---WoW API / Variables
+
 local C_Garrison_GetLandingPageGarrisonType = C_Garrison.GetLandingPageGarrisonType
 local ShowGarrisonLandingPage = ShowGarrisonLandingPage
 local IsAddOnLoaded = IsAddOnLoaded
-local CreateFrame = CreateFrame
 local HideUIPanel = HideUIPanel
 local PlaySound = PlaySound
 local StopSound = StopSound
@@ -32,7 +30,7 @@ function B:GarrisonDropDown()
 		return sound and StopSound(sound)
 	end
 
-	local landingChoiceMenu, landingChoices
+	local landingChoices
 	_G.GarrisonLandingPageMinimapButton:RegisterForClicks("LeftButtonUp", "RightButtonUp")
 	_G.GarrisonLandingPageMinimapButton:HookScript("PreClick", function(btn, b)
 		btn.landingVisiblePriorToClick = _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsVisible() and _G.GarrisonLandingPage.garrTypeID
@@ -59,8 +57,7 @@ function B:GarrisonDropDown()
 				end
 				MaybeStopSound(btn.openSoundID)
 				MaybeStopSound(btn.closeSoundID)
-				if not landingChoiceMenu then
-					landingChoiceMenu = CreateFrame("Frame", "ElvUI_LandingChoicesDropdown", E.UIParent, "UIDropDownMenuTemplate")
+				if not landingChoices then
 					local function ShowLanding_(_, ...)
 						return ShowLanding(...)
 					end
@@ -70,9 +67,8 @@ function B:GarrisonDropDown()
 						{text = WAR_CAMPAIGN, func = ShowLanding_, arg1 = C_Garrison_GetLandingPageGarrisonType(), notCheckable = true},
 					}
 				end
-				_G.EasyMenu(landingChoices, landingChoiceMenu, "cursor", 0, 0, "MENU", 4)
-				_G.DropDownList1:ClearAllPoints()
-				_G.DropDownList1:Point("TOPRIGHT", btn, "TOPLEFT", 10, -4)
+				E.DataTexts:SetEasyMenuAnchor(E.DataTexts.EasyMenu, btn)
+				_G.EasyMenu(landingChoices, E.DataTexts.EasyMenu, nil, nil, nil, "MENU")
 			elseif _G.GarrisonLandingPage.garrTypeID == 3 then
 				ShowLanding(2)
 				MaybeStopSound(btn.closeSoundID)

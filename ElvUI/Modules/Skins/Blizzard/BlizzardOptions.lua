@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local select = select
 local ipairs = ipairs
 local pairs = pairs
---WoW API / Variables
+
 local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown

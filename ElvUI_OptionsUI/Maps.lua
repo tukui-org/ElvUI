@@ -2,598 +2,106 @@ local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local C, L = unpack(select(2, ...))
 local WM = E:GetModule('WorldMap')
 local MM = E:GetModule('Minimap')
+local ACH = E.Libs.ACH
 
+local _G = _G
 -- GLOBALS: WORLD_MAP_MIN_ALPHA
 
-E.Options.args.maps = {
-	type = "group",
-	name = L["Maps"],
-	order = 2,
-	childGroups = "tab",
-	args = {
-		worldMap = {
-			order = 1,
-			type = "group",
-			name = L["WORLD_MAP"],
-			args = {
-				generalGroup = {
-					order = 1,
-					type = "group",
-					name = L["General"],
-					guiInline = true,
-					args = {
-						smallerWorldMap = {
-							order = 1,
-							type = "toggle",
-							name = L["Smaller World Map"],
-							desc = L["Make the world map smaller."],
-							get = function(info) return E.global.general.smallerWorldMap end,
-							set = function(info, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end,
-						},
-						smallerWorldMapScale = {
-							order = 2,
-							type = "range",
-							name = L["Smaller World Map Scale"],
-							isPercent = true,
-							min = 0.5, max = 0.9, step = 0.01,
-							get = function(info) return E.global.general.smallerWorldMapScale end,
-							set = function(info, value) E.global.general.smallerWorldMapScale = value; E:StaticPopup_Show("GLOBAL_RL") end,
-						},
-						spacer1 = {
-							order = 3,
-							type = "description",
-							name = ""
-						},
-						fadeMapWhenMoving = {
-							order = 4,
-							type = "toggle",
-							name = L["MAP_FADE_TEXT"],
-							get = function(info) return E.global.general.fadeMapWhenMoving end,
-							set = function(info, value)
-								E.global.general.fadeMapWhenMoving = value;
-							end,
-						},
-						mapAlphaWhenMoving = {
-							order = 5,
-							type = "range",
-							name = L["Map Opacity When Moving"],
-							isPercent = true,
-							min = 0, max = 1, step = 0.01,
-							get = function(info) return E.global.general.mapAlphaWhenMoving end,
-							set = function(info, value)
-								E.global.general.mapAlphaWhenMoving = value;
-								-- we use E.noop to force the update of the minValue here
-								E.WorldMap.UpdateMapFade(_G.WorldMapFrame, E.global.general.mapAlphaWhenMoving, 1.0, E.global.general.fadeMapDuration, E.noop);
-							end,
-						},
-						fadeMapDuration = {
-							order = 6,
-							type = "range",
-							name = L["Fade Duration"],
-							min = 0, max = 1, step = 0.01,
-							get = function(info) return E.global.general.fadeMapDuration end,
-							set = function(info, value)
-								E.global.general.fadeMapDuration = value;
-								-- we use E.noop to force the update of the minValue here
-								E.WorldMap.UpdateMapFade(_G.WorldMapFrame, E.global.general.mapAlphaWhenMoving, 1.0, E.global.general.fadeMapDuration, E.noop);
-							end,
-						},
-					},
-				},
-				coordinatesGroup = {
-					order = 3,
-					type = "group",
-					name = L["World Map Coordinates"],
-					guiInline = true,
-					args = {
-						enable = {
-							order = 1,
-							type = "toggle",
-							name = L["Enable"],
-							desc = L["Puts coordinates on the world map."],
-							get = function(info) return E.global.general.WorldMapCoordinates.enable end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show("GLOBAL_RL") end,
-						},
-						position = {
-							order = 3,
-							type = "select",
-							name = L["Position"],
-							get = function(info) return E.global.general.WorldMapCoordinates.position end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.position = value; WM:PositionCoords() end,
-							disabled = function() return not E.global.general.WorldMapCoordinates.enable end,
-							values = {
-								["TOP"] = "TOP",
-								["TOPLEFT"] = "TOPLEFT",
-								["TOPRIGHT"] = "TOPRIGHT",
-								["BOTTOM"] = "BOTTOM",
-								["BOTTOMLEFT"] = "BOTTOMLEFT",
-								["BOTTOMRIGHT"] = "BOTTOMRIGHT",
-							},
-						},
-						xOffset = {
-							order = 4,
-							type = "range",
-							name = L["X-Offset"],
-							get = function(info) return E.global.general.WorldMapCoordinates.xOffset end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.xOffset = value; WM:PositionCoords()end,
-							disabled = function() return not E.global.general.WorldMapCoordinates.enable end,
-							min = -200, max = 200, step = 1,
-						},
-						yOffset = {
-							order = 5,
-							type = "range",
-							name = L["Y-Offset"],
-							get = function(info) return E.global.general.WorldMapCoordinates.yOffset end,
-							set = function(info, value) E.global.general.WorldMapCoordinates.yOffset = value; WM:PositionCoords() end,
-							disabled = function() return not E.global.general.WorldMapCoordinates.enable end,
-							min = -200, max = 200, step = 1,
-						},
-					},
-				},
-			},
-		},
-		minimap = {
-			order = 2,
-			type = "group",
-			name = L["MINIMAP_LABEL"],
-			get = function(info) return E.db.general.minimap[info[#info]] end,
-			childGroups = "tab",
-			args = {
-				generalGroup = {
-					order = 1,
-					type = "group",
-					name = L["General"],
-					guiInline = true,
-					args = {
-						enable = {
-							order = 1,
-							type = "toggle",
-							name = L["Enable"],
-							desc = L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"],
-							get = function(info) return E.private.general.minimap[info[#info]] end,
-							set = function(info, value) E.private.general.minimap[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
-						},
-						size = {
-							order = 2,
-							type = "range",
-							name = L["Size"],
-							desc = L["Adjust the size of the minimap."],
-							min = 40, max = 500, step = 1,
-							get = function(info) return E.db.general.minimap[info[#info]] end,
-							set = function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings() end,
-							disabled = function() return not E.private.general.minimap.enable end,
-						},
-					},
-				},
-				locationTextGroup = {
-					order = 2,
-					type = "group",
-					name = L["Location Text"],
-					args = {
-						locationText = {
-							order = 1,
-							type = 'select',
-							name = L["Location Text"],
-							desc = L["Change settings for the display of the location text that is on the minimap."],
-							get = function(info) return E.db.general.minimap.locationText end,
-							set = function(info, value) E.db.general.minimap.locationText = value; MM:UpdateSettings(); MM:Update_ZoneText() end,
-							values = {
-								['MOUSEOVER'] = L["Minimap Mouseover"],
-								['SHOW'] = L["Always Display"],
-								['HIDE'] = L["Hide"],
-							},
-							disabled = function() return not E.private.general.minimap.enable end,
-						},
-						locationFont = {
-							order = 2,
-							type = "select",
-							dialogControl = 'LSM30_Font',
-							name = L["Font"],
-							values = AceGUIWidgetLSMlists.font,
-							set = function(info, value) E.db.general.minimap.locationFont = value; MM:Update_ZoneText() end,
-							disabled = function() return not E.private.general.minimap.enable end,
-						},
-						locationFontSize = {
-							order = 3,
-							type = "range",
-							name = L["FONT_SIZE"],
-							min = 6, max = 36, step = 1,
-							set = function(info, value) E.db.general.minimap.locationFontSize = value; MM:Update_ZoneText() end,
-							disabled = function() return not E.private.general.minimap.enable end,
-						},
-						locationFontOutline = {
-							order = 4,
-							type = "select",
-							name = L["Font Outline"],
-							set = function(info, value) E.db.general.minimap.locationFontOutline = value; MM:Update_ZoneText() end,
-							disabled = function() return not E.private.general.minimap.enable end,
-							values = C.Values.FontFlags,
-						},
-					},
-				},
-				zoomResetGroup = {
-					order = 3,
-					type = "group",
-					name = L["Reset Zoom"],
-					args = {
-						enableZoomReset = {
-							order = 1,
-							type = "toggle",
-							name = L["Reset Zoom"],
-							get = function(info) return E.db.general.minimap.resetZoom.enable end,
-							set = function(info, value) E.db.general.minimap.resetZoom.enable = value; MM:UpdateSettings() end,
-							disabled = function() return not E.private.general.minimap.enable end,
-						},
-						zoomResetTime = {
-							order = 2,
-							type = "range",
-							name = L["Seconds"],
-							min = 1, max = 15, step = 1,
-							get = function(info) return E.db.general.minimap.resetZoom.time end,
-							set = function(info, value) E.db.general.minimap.resetZoom.time = value; MM:UpdateSettings() end,
-							disabled = function() return (not E.db.general.minimap.resetZoom.enable or not E.private.general.minimap.enable) end,
-						},
-					},
-				},
-				icons = {
-					order = 4,
-					type = "group",
-					name = L["Minimap Buttons"],
-					args = {
-						classHall = {
-							order = 1,
-							type = "group",
-							name = L["GARRISON_LANDING_PAGE_TITLE"],
-							get = function(info) return E.db.general.minimap.icons.classHall[info[#info]] end,
-							set = function(info, value) E.db.general.minimap.icons.classHall[info[#info]] = value; MM:UpdateSettings() end,
-							args = {
-								hideClassHallReport = {
-									order = 1,
-									type = "toggle",
-									name = L["Hide"],
-									get = function(info) return E.private.general.minimap.hideClassHallReport end,
-									set = function(info, value) E.private.general.minimap.hideClassHallReport = value; E:StaticPopup_Show("PRIVATE_RL") end,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								spacer = {
-									order = 2,
-									type = "description",
-									name = "",
-									width = "full"
-								},
-								position = {
-									order = 3,
-									type = "select",
-									name = L["Position"],
-									disabled = function() return (E.private.general.minimap.hideClassHallReport or not E.private.general.minimap.enable) end,
-									values = {
-										["LEFT"] = L["Left"],
-										["RIGHT"] = L["Right"],
-										["TOP"] = L["Top"],
-										["BOTTOM"] = L["Bottom"],
-										["TOPLEFT"] = L["Top Left"],
-										["TOPRIGHT"] = L["Top Right"],
-										["BOTTOMLEFT"] = L["Bottom Left"],
-										["BOTTOMRIGHT"] = L["Bottom Right"],
-									},
-								},
-								scale = {
-									order = 4,
-									type = "range",
-									name = L["Scale"],
-									min = 0.5, max = 2, step = 0.05,
-									disabled = function() return (E.private.general.minimap.hideClassHallReport or not E.private.general.minimap.enable) end,
-								},
-								xOffset = {
-									order = 5,
-									type = "range",
-									name = L["X-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return (E.private.general.minimap.hideClassHallReport or not E.private.general.minimap.enable) end,
-								},
-								yOffset = {
-									order = 6,
-									type = "range",
-									name = L["Y-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return (E.private.general.minimap.hideClassHallReport or not E.private.general.minimap.enable) end,
-								},
-							},
-						},
-						calendar = {
-							order = 2,
-							type = "group",
-							name = L["Calendar"],
-							get = function(info) return E.db.general.minimap.icons.calendar[info[#info]] end,
-							set = function(info, value) E.db.general.minimap.icons.calendar[info[#info]] = value; MM:UpdateSettings() end,
-							args = {
-								hideCalendar = {
-									order = 1,
-									type = "toggle",
-									name = L["Hide"],
-									get = function(info) return E.private.general.minimap.hideCalendar end,
-									set = function(info, value) E.private.general.minimap.hideCalendar = value; MM:UpdateSettings() end,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								spacer = {
-									order = 2,
-									type = "description",
-									name = "",
-									width = "full"
-								},
-								position = {
-									order = 3,
-									type = "select",
-									name = L["Position"],
-									disabled = function() return (E.private.general.minimap.hideCalendar or not E.private.general.minimap.enable) end,
-									values = {
-										["LEFT"] = L["Left"],
-										["RIGHT"] = L["Right"],
-										["TOP"] = L["Top"],
-										["BOTTOM"] = L["Bottom"],
-										["TOPLEFT"] = L["Top Left"],
-										["TOPRIGHT"] = L["Top Right"],
-										["BOTTOMLEFT"] = L["Bottom Left"],
-										["BOTTOMRIGHT"] = L["Bottom Right"],
-									},
-								},
-								scale = {
-									order = 4,
-									type = "range",
-									name = L["Scale"],
-									min = 0.5, max = 2, step = 0.05,
-									disabled = function() return (E.private.general.minimap.hideCalendar or not E.private.general.minimap.enable) end,
-								},
-								xOffset = {
-									order = 5,
-									type = "range",
-									name = L["X-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return (E.private.general.minimap.hideCalendar or not E.private.general.minimap.enable) end,
-								},
-								yOffset = {
-									order = 6,
-									type = "range",
-									name = L["Y-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return (E.private.general.minimap.hideCalendar or not E.private.general.minimap.enable) end,
-								},
-
-							},
-						},
-						mail = {
-							order = 3,
-							type = "group",
-							name = L["MAIL_LABEL"],
-							get = function(info) return E.db.general.minimap.icons.mail[info[#info]] end,
-							set = function(info, value) E.db.general.minimap.icons.mail[info[#info]] = value; MM:UpdateSettings() end,
-							args = {
-								position = {
-									order = 1,
-									type = "select",
-									name = L["Position"],
-									disabled = function() return not E.private.general.minimap.enable end,
-									values = {
-										["LEFT"] = L["Left"],
-										["RIGHT"] = L["Right"],
-										["TOP"] = L["Top"],
-										["BOTTOM"] = L["Bottom"],
-										["TOPLEFT"] = L["Top Left"],
-										["TOPRIGHT"] = L["Top Right"],
-										["BOTTOMLEFT"] = L["Bottom Left"],
-										["BOTTOMRIGHT"] = L["Bottom Right"],
-									},
-								},
-								scale = {
-									order = 2,
-									type = "range",
-									name = L["Scale"],
-									min = 0.5, max = 2, step = 0.05,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								xOffset = {
-									order = 3,
-									type = "range",
-									name = L["X-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								yOffset = {
-									order = 4,
-									type = "range",
-									name = L["Y-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-							},
-						},
-						lfgEye = {
-							order = 4,
-							type = "group",
-							name = L["LFG Queue"],
-							get = function(info) return E.db.general.minimap.icons.lfgEye[info[#info]] end,
-							set = function(info, value) E.db.general.minimap.icons.lfgEye[info[#info]] = value; MM:UpdateSettings() end,
-							args = {
-								position = {
-									order = 1,
-									type = "select",
-									name = L["Position"],
-									disabled = function() return not E.private.general.minimap.enable end,
-									values = {
-										["LEFT"] = L["Left"],
-										["RIGHT"] = L["Right"],
-										["TOP"] = L["Top"],
-										["BOTTOM"] = L["Bottom"],
-										["TOPLEFT"] = L["Top Left"],
-										["TOPRIGHT"] = L["Top Right"],
-										["BOTTOMLEFT"] = L["Bottom Left"],
-										["BOTTOMRIGHT"] = L["Bottom Right"],
-									},
-								},
-								scale = {
-									order = 2,
-									type = "range",
-									name = L["Scale"],
-									min = 0.5, max = 2, step = 0.05,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								xOffset = {
-									order = 3,
-									type = "range",
-									name = L["X-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								yOffset = {
-									order = 4,
-									type = "range",
-									name = L["Y-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-							},
-						},
-						difficulty = {
-							order = 5,
-							type = "group",
-							name = L["Instance Difficulty"],
-							get = function(info) return E.db.general.minimap.icons.difficulty[info[#info]] end,
-							set = function(info, value) E.db.general.minimap.icons.difficulty[info[#info]] = value; MM:UpdateSettings() end,
-							args = {
-								position = {
-									order = 1,
-									type = "select",
-									name = L["Position"],
-									disabled = function() return not E.private.general.minimap.enable end,
-									values = {
-										["LEFT"] = L["Left"],
-										["RIGHT"] = L["Right"],
-										["TOP"] = L["Top"],
-										["BOTTOM"] = L["Bottom"],
-										["TOPLEFT"] = L["Top Left"],
-										["TOPRIGHT"] = L["Top Right"],
-										["BOTTOMLEFT"] = L["Bottom Left"],
-										["BOTTOMRIGHT"] = L["Bottom Right"],
-									},
-								},
-								scale = {
-									order = 2,
-									type = "range",
-									name = L["Scale"],
-									min = 0.5, max = 2, step = 0.05,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								xOffset = {
-									order = 3,
-									type = "range",
-									name = L["X-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								yOffset = {
-									order = 4,
-									type = "range",
-									name = L["Y-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-							},
-						},
-						challengeMode = {
-							order = 6,
-							type = "group",
-							name = L["CHALLENGE_MODE"],
-							get = function(info) return E.db.general.minimap.icons.challengeMode[info[#info]] end,
-							set = function(info, value) E.db.general.minimap.icons.challengeMode[info[#info]] = value; MM:UpdateSettings() end,
-							args = {
-								position = {
-									order = 1,
-									type = "select",
-									name = L["Position"],
-									disabled = function() return not E.private.general.minimap.enable end,
-									values = {
-										["LEFT"] = L["Left"],
-										["RIGHT"] = L["Right"],
-										["TOP"] = L["Top"],
-										["BOTTOM"] = L["Bottom"],
-										["TOPLEFT"] = L["Top Left"],
-										["TOPRIGHT"] = L["Top Right"],
-										["BOTTOMLEFT"] = L["Bottom Left"],
-										["BOTTOMRIGHT"] = L["Bottom Right"],
-									},
-								},
-								scale = {
-									order = 2,
-									type = "range",
-									name = L["Scale"],
-									min = 0.5, max = 2, step = 0.05,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								xOffset = {
-									order = 3,
-									type = "range",
-									name = L["X-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								yOffset = {
-									order = 4,
-									type = "range",
-									name = L["Y-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-							},
-						},
-						ticket = {
-							order = 8,
-							type = "group",
-							name = L["Open Ticket"],
-							get = function(info) return E.db.general.minimap.icons.ticket[info[#info]] end,
-							set = function(info, value) E.db.general.minimap.icons.ticket[info[#info]] = value; MM:UpdateSettings() end,
-							args = {
-								position = {
-									order = 1,
-									type = "select",
-									name = L["Position"],
-									disabled = function() return not E.private.general.minimap.enable end,
-									values = {
-										["LEFT"] = L["Left"],
-										["RIGHT"] = L["Right"],
-										["TOP"] = L["Top"],
-										["BOTTOM"] = L["Bottom"],
-										["TOPLEFT"] = L["Top Left"],
-										["TOPRIGHT"] = L["Top Right"],
-										["BOTTOMLEFT"] = L["Bottom Left"],
-										["BOTTOMRIGHT"] = L["Bottom Right"],
-									},
-								},
-								scale = {
-									order = 2,
-									type = "range",
-									name = L["Scale"],
-									min = 0.5, max = 2, step = 0.05,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								xOffset = {
-									order = 3,
-									type = "range",
-									name = L["X-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-								yOffset = {
-									order = 4,
-									type = "range",
-									name = L["Y-Offset"],
-									min = -50, max = 50, step = 1,
-									disabled = function() return not E.private.general.minimap.enable end,
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	},
+local buttonPositions = {
+	LEFT = L["Left"],
+	RIGHT = L["Right"],
+	TOP = L["Top"],
+	BOTTOM = L["Bottom"],
+	TOPLEFT = L["Top Left"],
+	TOPRIGHT = L["Top Right"],
+	BOTTOMLEFT = L["Bottom Left"],
+	BOTTOMRIGHT = L["Bottom Right"],
 }
+
+local buttonScale = { min = 0.5, max = 2, step = 0.05 }
+local buttonOffsets = { min = -60, max = 60, step = 1 }
+
+E.Options.args.maps = ACH:Group(L["Maps"], nil, 2, 'tab')
+
+E.Options.args.maps.args.worldMap = ACH:Group(L["WORLD_MAP"], nil, 1, 'tab')
+
+E.Options.args.maps.args.worldMap.args.generalGroup = ACH:Group(L["General"], nil, 1, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value end)
+E.Options.args.maps.args.worldMap.args.generalGroup.guiInline = true
+E.Options.args.maps.args.worldMap.args.generalGroup.args.smallerWorldMap = ACH:Toggle(L["Smaller World Map"], L["Make the world map smaller."], 1, nil, nil, nil, nil, function(_, value) E.global.general.smallerWorldMap = value; E:StaticPopup_Show("GLOBAL_RL") end)
+E.Options.args.maps.args.worldMap.args.generalGroup.args.smallerWorldMapScale = ACH:Range(L["Smaller World Map Scale"], nil, 2, { min = .5, max = .9, step = .01, isPercent = true }, nil, nil, function(_, value) E.global.general.smallerWorldMapScale = value; E:StaticPopup_Show("GLOBAL_RL") end)
+
+E.Options.args.maps.args.worldMap.args.generalGroup.args.spacer1 = ACH:Spacer(3)
+E.Options.args.maps.args.worldMap.args.generalGroup.args.fadeMapWhenMoving = ACH:Toggle(L["MAP_FADE_TEXT"], nil, 4)
+E.Options.args.maps.args.worldMap.args.generalGroup.args.mapAlphaWhenMoving = ACH:Range(L["Map Opacity When Moving"], nil, 5, { min = 0, max = 1, step = .01, isPercent = true }, nil, nil, function(_, value) E.global.general.mapAlphaWhenMoving = value; E.WorldMap.UpdateMapFade(_G.WorldMapFrame, E.global.general.mapAlphaWhenMoving, 1.0, E.global.general.fadeMapDuration, E.noop); end) -- we use E.noop to force the update of the minValue here
+E.Options.args.maps.args.worldMap.args.generalGroup.args.fadeMapDuration = ACH:Range(L["Fade Duration"], nil, 6, { min = 0, max = 1, step = .01, isPercent = true }, nil, nil, function(_, value) E.global.general.mapAlphaWhenMoving = value; E.WorldMap.UpdateMapFade(_G.WorldMapFrame, E.global.general.mapAlphaWhenMoving, 1.0, E.global.general.fadeMapDuration, E.noop); end) -- we use E.noop to force the update of the minValue here
+
+E.Options.args.maps.args.worldMap.args.coordinatesGroup = ACH:Group(L["World Map Coordinates"], nil, 3, nil, function(info) return E.global.general.WorldMapCoordinates[info[#info]] end, function(info, value) E.global.general.WorldMapCoordinates[info[#info]] = value; WM:PositionCoords() end)
+E.Options.args.maps.args.worldMap.args.coordinatesGroup.guiInline = true
+E.Options.args.maps.args.worldMap.args.coordinatesGroup.args.enable = ACH:Toggle(L["Enable"], L["Puts coordinates on the world map."], 1, nil, nil, nil, nil, function(_, value) E.global.general.WorldMapCoordinates.enable = value; E:StaticPopup_Show("GLOBAL_RL") end)
+E.Options.args.maps.args.worldMap.args.coordinatesGroup.args.position = ACH:Select(L["Position"], nil, 3, buttonPositions, nil, nil, nil, nil, function() return not E.global.general.WorldMapCoordinates.enable end)
+E.Options.args.maps.args.worldMap.args.coordinatesGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -200, max = 200, step = 1 }, nil, nil, nil, function() return not E.global.general.WorldMapCoordinates.enable end)
+E.Options.args.maps.args.worldMap.args.coordinatesGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -200, max = 200, step = 1 }, nil, nil, nil, function() return not E.global.general.WorldMapCoordinates.enable end)
+
+E.Options.args.maps.args.minimap = ACH:Group(L["MINIMAP_LABEL"], nil, 2, 'tab', function(info) return E.db.general.minimap[info[#info]] end, function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings() end)
+E.Options.args.maps.args.minimap.args.generalGroup = ACH:Group(L["General"], nil, 1)
+E.Options.args.maps.args.minimap.args.generalGroup.guiInline = true
+E.Options.args.maps.args.minimap.args.generalGroup.args.enable = ACH:Toggle(L["Enable"], L["Enable/Disable the minimap. |cffFF0000Warning: This will prevent you from seeing the minimap datatexts.|r"], 1, nil, nil, nil, function(info) return E.private.general.minimap[info[#info]] end, function(info, value) E.private.general.minimap[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end)
+E.Options.args.maps.args.minimap.args.generalGroup.args.size = ACH:Range(L["Size"], L["Adjust the size of the minimap."], 2, { min = 24, max = 500, step = 1 }, nil, nil, nil, function() return not E.private.general.minimap.enable end)
+
+E.Options.args.maps.args.minimap.args.locationTextGroup = ACH:Group(L["Location Text"], nil, 2, nil, function(info) return E.db.general.minimap[info[#info]] end, function(info, value) E.db.general.minimap[info[#info]] = value; MM:UpdateSettings(); MM:Update_ZoneText() end, function() return not E.private.general.minimap.enable end)
+E.Options.args.maps.args.minimap.args.locationTextGroup.args.locationText = ACH:Select(L["Location Text"], L["Change settings for the display of the location text that is on the minimap."], 1, { MOUSEOVER = L["Minimap Mouseover"], SHOW = L["Always Display"], HIDE = L["Hide"] })
+E.Options.args.maps.args.minimap.args.locationTextGroup.args.locationFont = ACH:SharedMediaFont(L["Font"], nil, 2)
+E.Options.args.maps.args.minimap.args.locationTextGroup.args.locationFontSize = ACH:Range(L["FONT_SIZE"], nil, 3, { min = 6, max = 36, step = 1 })
+E.Options.args.maps.args.minimap.args.locationTextGroup.args.locationFontOutline = ACH:Select(L["Font Outline"], nil, 4, C.Values.FontFlags)
+
+E.Options.args.maps.args.minimap.args.zoomResetGroup = ACH:Group(L["Reset Zoom"], nil, 3, nil, function(info) return E.db.general.minimap.resetZoom[info[#info]] end, function(info, value) E.db.general.minimap.resetZoom[info[#info]] = value; MM:UpdateSettings() end, function() return not E.private.general.minimap.enable end)
+E.Options.args.maps.args.minimap.args.zoomResetGroup.args.enableZoomReset = ACH:Toggle(L["Reset Zoom"], nil, 1)
+E.Options.args.maps.args.minimap.args.zoomResetGroup.args.zoomResetTime =  ACH:Range(L["Seconds"], nil, 2, { min = 1, max = 15, step = 1 })
+
+E.Options.args.maps.args.minimap.args.icons = ACH:Group(L["Minimap Buttons"], nil, 4, nil, function(info) return E.db.general.minimap.icons[info[#info - 1]][info[#info]] end, function(info, value) E.db.general.minimap.icons[info[#info - 1]][info[#info]] = value; MM:UpdateSettings() end, function() return not E.private.general.minimap.enable end)
+
+E.Options.args.maps.args.minimap.args.icons.args.classHall = ACH:Group(L["GARRISON_LANDING_PAGE_TITLE"], nil, 1)
+E.Options.args.maps.args.minimap.args.icons.args.classHall.args.hideClassHallReport = ACH:Toggle(L["Hide"], nil, 1, nil, nil, nil, function() return E.private.general.minimap.hideClassHallReport end, function(_, value) E.private.general.minimap.hideClassHallReport = value; MM:UpdateSettings() end)
+E.Options.args.maps.args.minimap.args.icons.args.classHall.args.spacer = ACH:Spacer(2, "full")
+E.Options.args.maps.args.minimap.args.icons.args.classHall.args.position = ACH:Select(L["Position"], nil, 3, buttonPositions, nil, nil, nil, nil, function() return E.private.general.minimap.hideClassHallReport end)
+E.Options.args.maps.args.minimap.args.icons.args.classHall.args.scale = ACH:Range(L["Scale"], nil, 4, buttonScale, nil, nil, nil, function() return E.private.general.minimap.hideClassHallReport end)
+E.Options.args.maps.args.minimap.args.icons.args.classHall.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideClassHallReport end)
+E.Options.args.maps.args.minimap.args.icons.args.classHall.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideClassHallReport end)
+
+E.Options.args.maps.args.minimap.args.icons.args.calendar = ACH:Group(L["Calendar"], nil, 2)
+E.Options.args.maps.args.minimap.args.icons.args.calendar.args.hideCalendar = ACH:Toggle(L["Hide"], nil, 1, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end, function(_, value) E.private.general.minimap.hideCalendar = value; MM:UpdateSettings() end)
+E.Options.args.maps.args.minimap.args.icons.args.calendar.args.spacer = ACH:Spacer(2, "full")
+E.Options.args.maps.args.minimap.args.icons.args.calendar.args.position = ACH:Select(L["Position"], nil, 3, buttonPositions, nil, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
+E.Options.args.maps.args.minimap.args.icons.args.calendar.args.scale = ACH:Range(L["Scale"], nil, 4, buttonScale, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
+E.Options.args.maps.args.minimap.args.icons.args.calendar.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
+E.Options.args.maps.args.minimap.args.icons.args.calendar.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
+
+E.Options.args.maps.args.minimap.args.icons.args.mail = ACH:Group(L["MAIL_LABEL"], nil, 3)
+E.Options.args.maps.args.minimap.args.icons.args.mail.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
+E.Options.args.maps.args.minimap.args.icons.args.mail.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
+E.Options.args.maps.args.minimap.args.icons.args.mail.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
+E.Options.args.maps.args.minimap.args.icons.args.mail.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
+
+E.Options.args.maps.args.minimap.args.icons.args.lfgEye = ACH:Group(L["LFG Queue"], nil, 4)
+E.Options.args.maps.args.minimap.args.icons.args.lfgEye.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
+E.Options.args.maps.args.minimap.args.icons.args.lfgEye.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
+E.Options.args.maps.args.minimap.args.icons.args.lfgEye.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
+E.Options.args.maps.args.minimap.args.icons.args.lfgEye.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
+
+E.Options.args.maps.args.minimap.args.icons.args.difficulty = ACH:Group(L["Instance Difficulty"], nil, 5)
+E.Options.args.maps.args.minimap.args.icons.args.difficulty.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
+E.Options.args.maps.args.minimap.args.icons.args.difficulty.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
+E.Options.args.maps.args.minimap.args.icons.args.difficulty.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
+E.Options.args.maps.args.minimap.args.icons.args.difficulty.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
+
+E.Options.args.maps.args.minimap.args.icons.args.challengeMode = ACH:Group(L["CHALLENGE_MODE"], nil, 6)
+E.Options.args.maps.args.minimap.args.icons.args.challengeMode.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
+E.Options.args.maps.args.minimap.args.icons.args.challengeMode.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
+E.Options.args.maps.args.minimap.args.icons.args.challengeMode.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
+E.Options.args.maps.args.minimap.args.icons.args.challengeMode.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
+
+E.Options.args.maps.args.minimap.args.icons.args.ticket = ACH:Group(L["Open Ticket"], nil, 8)
+E.Options.args.maps.args.minimap.args.icons.args.ticket.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
+E.Options.args.maps.args.minimap.args.icons.args.ticket.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
+E.Options.args.maps.args.minimap.args.icons.args.ticket.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
+E.Options.args.maps.args.minimap.args.icons.args.ticket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)

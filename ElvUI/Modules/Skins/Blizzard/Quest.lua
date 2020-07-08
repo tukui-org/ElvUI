@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local gsub, type, pairs, ipairs, select, unpack, strfind = gsub, type, pairs, ipairs, select, unpack, strfind
---WoW API / Variables
+
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame
@@ -163,7 +162,7 @@ function S:BlizzardQuestFrames()
 
 		local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
 		if numSpellRewards > 0 then
-			if E.private.skins.parchmentRemover.enable then
+			if E.private.skins.parchmentRemoverEnable then
 				for spellHeader in rewardsFrame.spellHeaderPool:EnumerateActive() do
 					spellHeader:SetVertexColor(1, 1, 1)
 				end
@@ -207,7 +206,7 @@ function S:BlizzardQuestFrames()
 			end
 		end
 
-		if E.private.skins.parchmentRemover.enable then
+		if E.private.skins.parchmentRemoverEnable then
 			_G.QuestInfoTitleHeader:SetTextColor(1, .8, .1)
 			_G.QuestInfoDescriptionHeader:SetTextColor(1, .8, .1)
 			_G.QuestInfoObjectivesHeader:SetTextColor(1, .8, .1)
@@ -272,6 +271,7 @@ function S:BlizzardQuestFrames()
 			RewardButton.NameFrame:Hide()
 
 			hooksecurefunc(RewardButton.IconBorder, 'SetVertexColor', function(_, r, g, b) RewardButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
+			hooksecurefunc(RewardButton.IconBorder, 'Hide', function() RewardButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 		end
 	end)
 
@@ -297,7 +297,7 @@ function S:BlizzardQuestFrames()
 	local function UpdateGreetingFrame()
 		for Button in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
 			Button.Icon:SetDrawLayer("ARTWORK")
-			if E.private.skins.parchmentRemover.enable then
+			if E.private.skins.parchmentRemoverEnable then
 				local Text = Button:GetFontString():GetText()
 				if Text and strfind(Text, '|cff000000') then
 					Button:GetFontString():SetText(gsub(Text, '|cff000000', '|cffffe519'))
@@ -309,7 +309,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGreetingPanel:HookScript('OnShow', UpdateGreetingFrame)
 	hooksecurefunc("QuestFrameGreetingPanel_OnShow", UpdateGreetingFrame)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc('QuestFrameProgressItems_Update', function()
 			_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
 			_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
@@ -387,6 +387,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestModelScene:Point("TOPLEFT", _G.QuestLogDetailFrame, "TOPRIGHT", 4, -34)
 	_G.QuestNPCModelTextFrame:StripTextures()
 	_G.QuestNPCModelTextFrame:CreateBackdrop("Transparent")
+	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
 	S:HandlePortraitFrame(QuestLogPopupDetailFrame)
@@ -402,11 +403,11 @@ function S:BlizzardQuestFrames()
 		if not _G.QuestLogPopupDetailFrameScrollFrame.backdrop then
 			_G.QuestLogPopupDetailFrameScrollFrame:CreateBackdrop()
 			_G.QuestLogPopupDetailFrameScrollFrame:Height(s:GetHeight() - 2)
-			if not E.private.skins.parchmentRemover.enable then
+			if not E.private.skins.parchmentRemoverEnable then
 				StyleScrollFrame(_G.QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
 			end
 		end
-		if not E.private.skins.parchmentRemover.enable then
+		if not E.private.skins.parchmentRemoverEnable then
 			_G.QuestLogPopupDetailFrameScrollFrame.spellTex:Height(s:GetHeight() + 217)
 		end
 	end)

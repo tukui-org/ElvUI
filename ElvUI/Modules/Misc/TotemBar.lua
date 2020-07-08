@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TOTEMS = E:GetModule('Totems')
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
 local CooldownFrame_Set = CooldownFrame_Set
@@ -83,7 +82,7 @@ function TOTEMS:Initialize()
 	self.db = E.db.general.totems
 
 	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
-	bar:Point('TOPLEFT', _G.LeftChatPanel, 'TOPRIGHT', 14, 0)
+	bar:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 490, 4)
 	self.bar = bar
 
 	for i=1, MAX_TOTEMS do

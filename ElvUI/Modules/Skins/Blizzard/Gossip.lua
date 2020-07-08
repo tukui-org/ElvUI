@@ -1,12 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local gsub = gsub
 local pairs = pairs
 local strfind = strfind
---WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
 function S:GossipFrame()
@@ -47,7 +45,7 @@ function S:GossipFrame()
 	local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
 	GossipGreetingScrollFrame:SetTemplate()
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		for i = 1, _G.NUMGOSSIPBUTTONS do
 			_G["GossipTitleButton"..i]:GetFontString():SetTextColor(1, 1, 1)
 		end

@@ -2,6 +2,9 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 
+local COLOR1 = '|cFF1784d1'
+local COLOR2 = '|cfd9b9b9b'
+
 L[" |cff00ff00bound to |r"] = " |cff00ff00绑定到 |r"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = true
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 试图与你分享过滤器配置. 你是否接受?"
@@ -82,6 +85,7 @@ L["Continue"] = "下一步"
 L["Coords"] = "坐标"
 L["copperabbrev"] = "|cffeda55f铜|r"
 L["Count"] = "计数"
+L["Current Difficulties:"] = true
 L["Current Level:"] = "当前等级:"
 L["CVars Set"] = "参数设定"
 L["CVars"] = "参数"
@@ -188,7 +192,8 @@ L["Legs"] = "腿"
 L["Level Up Display / Boss Banner"] = "升级提示/Boss拾取"
 L["List of installations in queue:"] = "即将安装的列表:"
 L["Lock"] = "锁定"
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"
+L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type */ec|r to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "拾取/提醒框"
 L["Loot Frame"] = "拾取框架"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "天啊! 太奇葩了! 下载消失了! 就像在风中放了一个屁... 再试一次吧!"
@@ -255,7 +260,7 @@ L["Remaining:"] = "剩余:"
 L["Remove Bar %d Action Page"] = "移除第%d动作条"
 L["Reputation Bar"] = "声望条"
 L["Request was denied by user."] = "请求被对方拒绝."
-L["Reset Counters: Hold Shift + Right Click"] = "重置计数器: 按住Shift + 右键点击"
+L["Reset Counters: Hold Ctrl + Right Click"] = "重置计数器: 按住Ctrl + 右键点击"
 L["Reset Data: Hold Shift + Right Click"] = "重置数据: 按住 Shift + 右键点击"
 L["Reset Position"] = "重设位置"
 L["Rested:"] = "休息:"
@@ -335,7 +340,6 @@ L["Welcome to ElvUI version %s!"] = "欢迎使用 ElvUI 版本 %s!"
 L["whispers"] = "密语"
 L["World Latency:"] = "世界延迟:"
 L["World Protocol:"] ="世界协议:"
-L["WoW Token:"] = "魔兽世界时光徽章:"
 L["Wrist"] = "护腕"
 L["XP:"] = "经验:"
 L["yells"] = "大喊"
@@ -378,3 +382,17 @@ L["DESC_MOVERCONFIG"] = [=[解除框架移动锁定. 现在可以移动它们, �
   Shift + 右键 - 暂时隐藏定位开关
   Ctrl + 右键 - 重置定位开关位置
 ]=]
+
+L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
+ */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
+ */moveui|r  -  Toggle anchors to reposition various elements.
+ */kb|r  -  Toggle the keybind mode.
+ */resetui|r  -  Reset all frames to their original positions.
+ */bgstats|r  -  Toggle Battleground stats on your DataTexts.
+ */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
+ */estatus|r  -  Important informations for support questions.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
+ */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
+  NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
+  using */luaerror|r ^on|r within that session.
+]=]):gsub('*', COLOR1):gsub('%^', COLOR2)

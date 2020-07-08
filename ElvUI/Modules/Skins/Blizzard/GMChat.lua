@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local select = select
---WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_GMChatUI()
@@ -48,7 +46,7 @@ function S:Blizzard_GMChatUI()
 	tab:ClearAllPoints()
 	tab:Point("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
 	tab:Point("TOPRIGHT", frame, "TOPRIGHT", 0, 28)
-	_G.GMChatTabIcon:SetTexture("Interface\\ChatFrame\\UI-ChatIcon-Blizz")
+	_G.GMChatTabIcon:SetTexture([[Interface\ChatFrame\UI-ChatIcon-Blizz]])
 
 	local close = _G.GMChatFrameCloseButton
 	S:HandleCloseButton(close)

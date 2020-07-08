@@ -1,17 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack, select = unpack, select
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local hooksecurefunc = hooksecurefunc
 
---[[ SKINNING FUNCTIONS ]]--
 local function forceAlpha(self, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
 		self:SetAlpha(1, true)
@@ -148,7 +146,7 @@ local function SkinGuildChallengeAlert(frame)
 	-- Background
 	local region = select(2, frame:GetRegions())
 	if region:IsObjectType('Texture') then
-		if region:GetTexture() == "Interface\\GuildFrame\\GuildChallenges" then
+		if region:GetTexture() == [[Interface\GuildFrame\GuildChallenges]] then
 			region:Kill()
 		end
 	end
@@ -208,7 +206,7 @@ local function SkinInvasionAlert(frame)
 			end
 			-- Icon border
 			if icon and icon:IsObjectType('Texture') then
-				if icon:GetTexture() == "Interface\\Icons\\Ability_Warlock_DemonicPower" then
+				if icon:GetTexture() == [[Interface\Icons\Ability_Warlock_DemonicPower]] then
 					icon.b = CreateFrame("Frame", nil, frame)
 					icon.b:SetTemplate()
 					icon.b:SetOutside(icon)
@@ -278,7 +276,7 @@ local function SkinWorldQuestCompleteAlert(frame)
 			for i = 1, frame:GetNumRegions() do
 				local region = select(i, frame:GetRegions())
 				if region:IsObjectType('Texture') then
-					if region:GetTexture() == "Interface\\LFGFrame\\UI-LFG-DUNGEONTOAST" then
+					if region:GetTexture() == [[Interface\LFGFrame\UI-LFG-DUNGEONTOAST]] then
 						region:Kill()
 					end
 				end
@@ -769,7 +767,6 @@ end
 function S:AlertSystem()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.alertframes) then return end
 
-	--[[ HOOKS ]]--
 	-- Achievements
 	hooksecurefunc(_G.AchievementAlertSystem, "setUpFunction", SkinAchievementAlert)
 	hooksecurefunc(_G.CriteriaAlertSystem, "setUpFunction", SkinCriteriaAlert)
@@ -808,8 +805,6 @@ function S:AlertSystem()
 	hooksecurefunc(_G.NewPetAlertSystem, "setUpFunction", SkinNewPetAlert)
 	hooksecurefunc(_G.NewMountAlertSystem, "setUpFunction", SkinNewPetAlert)
 	hooksecurefunc(_G.NewToyAlertSystem, "setUpFunction", SkinNewPetAlert)
-
-	--[[ STATIC SKINNING ]]--
 
 	--Bonus Roll Money
 	local frame = _G.BonusRollMoneyWonFrame

@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs, select = pairs, select
---WoW API / Variables
 
 function S:Blizzard_ArchaeologyUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.archaeology) then return end
@@ -19,7 +17,7 @@ function S:Blizzard_ArchaeologyUI()
 	_G.ArchaeologyFrame.raceFilterDropDown.Text:ClearAllPoints()
 	_G.ArchaeologyFrame.raceFilterDropDown.Text:Point("LEFT", _G.ArchaeologyFrame.raceFilterDropDown.backdrop, "LEFT", 4, 0)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		_G.ArchaeologyFrameBgLeft:Kill()
 		_G.ArchaeologyFrameBgRight:Kill()
 

@@ -1,12 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('DataBars')
+local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
-local format = format
 local min = min
---WoW API / Variables
+local format = format
 local GetPetExperience, UnitXP, UnitXPMax = GetPetExperience, UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local GetExpansionLevel = GetExpansionLevel
@@ -14,43 +12,42 @@ local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 
-function mod:GetXP(unit)
-	if(unit == 'pet') then
+function DB:GetXP(unit)
+	if unit == 'pet' then
 		return GetPetExperience()
 	else
 		return UnitXP(unit), UnitXPMax(unit)
 	end
 end
 
-function mod:UpdateExperience(event)
-	if not mod.db.experience.enable then return end
+function DB:UpdateExperience(event)
+	if not DB.db.experience.enable then return end
+	local bar = DB.expBar
 
-	local bar = self.expBar
-
-	if (self.db.experience.hideAtMaxLevel and E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]) or IsXPUserDisabled() or
-		(self.db.experience.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
-		E:DisableMover(self.expBar.mover:GetName())
+	if IsXPUserDisabled()
+	or (DB.db.experience.hideAtMaxLevel and E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()])
+	or (DB.db.experience.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
+		E:DisableMover(DB.expBar.mover:GetName())
 		bar:Hide()
 	else
-		E:EnableMover(self.expBar.mover:GetName())
+		E:EnableMover(DB.expBar.mover:GetName())
 		bar:Show()
 
-		if self.db.experience.hideInVehicle then
+		if DB.db.experience.hideInVehicle then
 			E:RegisterObjectForVehicleLock(bar, E.UIParent)
 		else
 			E:UnregisterObjectForVehicleLock(bar)
 		end
 
-		local cur, max = self:GetXP('player')
+		local cur, max = DB:GetXP('player')
 		if max <= 0 then max = 1 end
 
 		bar.statusBar:SetMinMaxValues(0, max)
-		-- bar.statusBar:SetValue(cur - 1 >= 0 and cur - 1 or 0) -- this is set twice here for some reason
 		bar.statusBar:SetValue(cur)
 
 		local rested = GetXPExhaustion()
 		local text = ''
-		local textFormat = self.db.experience.textFormat
+		local textFormat = DB.db.experience.textFormat
 
 		if rested and rested > 0 then
 			bar.rested:SetMinMaxValues(0, max)
@@ -96,16 +93,16 @@ function mod:UpdateExperience(event)
 	end
 end
 
-function mod:ExperienceBar_OnEnter()
+function DB:ExperienceBar_OnEnter()
 	local GameTooltip = _G.GameTooltip
-	if mod.db.experience.mouseover then
+	if DB.db.experience.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
-	local cur, max = mod:GetXP('player')
+	local cur, max = DB:GetXP('player')
 	local rested = GetXPExhaustion()
 	GameTooltip:AddLine(L["Experience"])
 	GameTooltip:AddLine(' ')
@@ -120,72 +117,74 @@ function mod:ExperienceBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:ExperienceBar_OnClick() end
+function DB:ExperienceBar_OnClick() end
 
-function mod:UpdateExperienceDimensions()
-	self.expBar:Width(self.db.experience.width)
-	self.expBar:Height(self.db.experience.height)
+function DB:UpdateExperienceDimensions()
+	DB.expBar:Width(DB.db.experience.width)
+	DB.expBar:Height(DB.db.experience.height)
 
-	self.expBar.text:FontTemplate(LSM:Fetch("font", self.db.experience.font), self.db.experience.textSize, self.db.experience.fontOutline)
-	self.expBar.rested:SetOrientation(self.db.experience.orientation)
-	self.expBar.statusBar:SetReverseFill(self.db.experience.reverseFill)
+	DB.expBar.text:FontTemplate(LSM:Fetch("font", DB.db.experience.font), DB.db.experience.textSize, DB.db.experience.fontOutline)
+	DB.expBar.rested:SetOrientation(DB.db.experience.orientation)
+	DB.expBar.statusBar:SetReverseFill(DB.db.experience.reverseFill)
 
-	self.expBar.statusBar:SetOrientation(self.db.experience.orientation)
-	self.expBar.rested:SetReverseFill(self.db.experience.reverseFill)
+	DB.expBar.statusBar:SetOrientation(DB.db.experience.orientation)
+	DB.expBar.rested:SetReverseFill(DB.db.experience.reverseFill)
 
-	if self.db.experience.orientation == "HORIZONTAL" then
-		self.expBar.rested:SetRotatesTexture(false)
-		self.expBar.statusBar:SetRotatesTexture(false)
+	if DB.db.experience.orientation == "HORIZONTAL" then
+		DB.expBar.rested:SetRotatesTexture(false)
+		DB.expBar.statusBar:SetRotatesTexture(false)
 	else
-		self.expBar.rested:SetRotatesTexture(true)
-		self.expBar.statusBar:SetRotatesTexture(true)
+		DB.expBar.rested:SetRotatesTexture(true)
+		DB.expBar.statusBar:SetRotatesTexture(true)
 	end
 
-	if self.db.experience.mouseover then
-		self.expBar:SetAlpha(0)
+	if DB.db.experience.mouseover then
+		DB.expBar:SetAlpha(0)
 	else
-		self.expBar:SetAlpha(1)
+		DB.expBar:SetAlpha(1)
 	end
 end
 
-function mod:EnableDisable_ExperienceBar()
+function DB:EnableDisable_ExperienceBar()
 	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]
-	if (E.mylevel ~= maxLevel or not self.db.experience.hideAtMaxLevel) and self.db.experience.enable then
-		self:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
-		self:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
-		self:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExperience')
-		self:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExperience')
-		self:UnregisterEvent("UPDATE_EXPANSION_LEVEL")
-		self:UpdateExperience()
-		E:EnableMover(self.expBar.mover:GetName())
+	if DB.db.experience.enable and (E.mylevel ~= maxLevel or not DB.db.experience.hideAtMaxLevel) then
+		DB:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
+		DB:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
+		DB:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExperience')
+		DB:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExperience')
+		DB:UnregisterEvent("UPDATE_EXPANSION_LEVEL")
+		DB:UpdateExperience()
+		E:EnableMover(DB.expBar.mover:GetName())
 	else
-		self:UnregisterEvent('PLAYER_XP_UPDATE')
-		self:UnregisterEvent("DISABLE_XP_GAIN")
-		self:UnregisterEvent("ENABLE_XP_GAIN")
-		self:UnregisterEvent('UPDATE_EXHAUSTION')
-		self:RegisterEvent("UPDATE_EXPANSION_LEVEL", "EnableDisable_ExperienceBar")
-		self.expBar:Hide()
-		E:DisableMover(self.expBar.mover:GetName())
+		DB:UnregisterEvent('PLAYER_XP_UPDATE')
+		DB:UnregisterEvent("DISABLE_XP_GAIN")
+		DB:UnregisterEvent("ENABLE_XP_GAIN")
+		DB:UnregisterEvent('UPDATE_EXHAUSTION')
+		DB:RegisterEvent("UPDATE_EXPANSION_LEVEL", "EnableDisable_ExperienceBar")
+		DB.expBar:Hide()
+		E:DisableMover(DB.expBar.mover:GetName())
 	end
 end
 
-function mod:LoadExperienceBar()
-	self.expBar = self:CreateBar('ElvUI_ExperienceBar', self.ExperienceBar_OnEnter, self.ExperienceBar_OnClick, 'LEFT', _G.LeftChatPanel, 'RIGHT', -E.Border + E.Spacing*3, 0)
-	self.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
-	self.expBar.rested = CreateFrame('StatusBar', nil, self.expBar)
-	self.expBar.rested:SetInside()
-	self.expBar.rested:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(self.expBar.rested)
-	self.expBar.rested:SetStatusBarColor(1, 0, 1, 0.2)
+function DB:LoadExperienceBar()
+	DB.expBar = DB:CreateBar('ElvUI_ExperienceBar', DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, 'BOTTOM', E.UIParent, 'BOTTOM', 0, 43)
+	DB.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
+	DB.expBar.rested = CreateFrame('StatusBar', nil, DB.expBar)
+	DB.expBar.rested:SetInside()
+	DB.expBar.rested:SetStatusBarTexture(E.media.normTex)
+	E:RegisterStatusBar(DB.expBar.rested)
+	DB.expBar.rested:SetStatusBarColor(1, 0, 1, 0.2)
 
-	self.expBar.eventFrame = CreateFrame("Frame")
-	self.expBar.eventFrame:Hide()
-	self.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
-	self.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	self.expBar.eventFrame:SetScript("OnEvent", function(self, event) mod:UpdateExperience(event) end)
+	DB.expBar.eventFrame = CreateFrame("Frame")
+	DB.expBar.eventFrame:Hide()
+	DB.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+	DB.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	DB.expBar.eventFrame:SetScript("OnEvent", function(_, event)
+		DB:UpdateExperience(event)
+	end)
 
-	self:UpdateExperienceDimensions()
+	DB:UpdateExperienceDimensions()
 
-	E:CreateMover(self.expBar, "ExperienceBarMover", L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
-	self:EnableDisable_ExperienceBar()
+	E:CreateMover(DB.expBar, "ExperienceBarMover", L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
+	DB:EnableDisable_ExperienceBar()
 end

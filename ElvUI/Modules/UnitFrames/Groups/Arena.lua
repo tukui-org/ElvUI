@@ -4,11 +4,11 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
+
 local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 
@@ -63,29 +63,31 @@ function UF:Construct_ArenaFrames(frame)
 	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
-	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-	frame.Name = self:Construct_NameText(frame)
+	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Name = UF:Construct_NameText(frame)
 
 	if not frame.isChild then
-		frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
-		frame.PowerPrediction = self:Construct_PowerPrediction(frame)
+		frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
+		frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
 
-		frame.Portrait3D = self:Construct_Portrait(frame, 'model')
-		frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
+		frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
+		frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
 
-		frame.Buffs = self:Construct_Buffs(frame)
-		frame.Debuffs = self:Construct_Debuffs(frame)
-		frame.Castbar = self:Construct_Castbar(frame)
-		frame.HealthPrediction = self:Construct_HealComm(frame)
-		frame.MouseGlow = self:Construct_MouseGlow(frame)
-		frame.TargetGlow = self:Construct_TargetGlow(frame)
-		frame.Trinket = self:Construct_Trinket(frame)
-		frame.PVPSpecIcon = self:Construct_PVPSpecIcon(frame)
-		frame.Fader = self:Construct_Fader()
+		frame.Buffs = UF:Construct_Buffs(frame)
+		frame.Debuffs = UF:Construct_Debuffs(frame)
+		frame.Castbar = UF:Construct_Castbar(frame)
+		frame.HealthPrediction = UF:Construct_HealComm(frame)
+		frame.MouseGlow = UF:Construct_MouseGlow(frame)
+		frame.TargetGlow = UF:Construct_TargetGlow(frame)
+		frame.FocusGlow = UF:Construct_FocusGlow(frame)
+		frame.Trinket = UF:Construct_Trinket(frame)
+		frame.PVPSpecIcon = UF:Construct_PVPSpecIcon(frame)
+		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
+		frame.Fader = UF:Construct_Fader()
 		frame:SetAttribute("type2", "focus")
 
 		frame.customTexts = {}
-		frame.InfoPanel = self:Construct_InfoPanel(frame)
+		frame.InfoPanel = UF:Construct_InfoPanel(frame)
 		frame.unitframeType = "arena"
 
 		-- Arena Preparation
@@ -107,7 +109,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.PostUpdate = self.PostUpdateArenaFrame -- used to hide arena prep info
 	end
 
-	frame.Cutaway = self:Construct_Cutaway(frame)
+	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA', nil, 'unitframe,groupUnits,arena,generalGroup')
@@ -139,51 +141,34 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.PVPINFO_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
 	end
 
+	if not IsAddOnLoaded("Clique") then
+		if db.middleClickFocus then
+			frame:SetAttribute("type3", "focus")
+		elseif frame:GetAttribute("type3") == "focus" then
+			frame:SetAttribute("type3", nil)
+		end
+	end
+
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:Configure_InfoPanel(frame)
-
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Power
 	UF:Configure_Power(frame)
-
-	-- Power Predicition
 	UF:Configure_PowerPrediction(frame)
-
-	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-
-	--Castbar
 	UF:Configure_Castbar(frame)
-
-	--PVPSpecIcon
 	UF:Configure_PVPSpecIcon(frame)
-
-	--Trinket
 	UF:Configure_Trinket(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--Heal Prediction
 	UF:Configure_HealComm(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
-
-	--CustomTexts
 	UF:Configure_CustomTexts(frame)
+	UF:Configure_PvPClassificationIndicator(frame)
 
 	frame:ClearAllPoints()
 	if frame.index == 1 then

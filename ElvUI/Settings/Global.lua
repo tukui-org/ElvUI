@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 --Global Settings
 G.general = {
 	UIScale = 0.64,
-	version = 11.41,
+	version = 11.42,
 	locale = E:GetLocale(),
 	eyefinity = false,
 	smallerWorldMap = true,
@@ -19,7 +19,7 @@ G.general = {
 	},
 	AceGUI = {
 		width = 960,
-		height = 720
+		height = 730
 	},
 	disableTutorialButtons = true,
 	showMissingTalentAlert = false,
@@ -37,7 +37,32 @@ G.bags = {
 }
 
 G.datatexts = {
-	customCurrencies = {}
+	customPanels = {},
+	customCurrencies = {},
+	newPanelInfo = {
+		name = '',
+		enable = true,
+		growth = 'HORIZONTAL',
+		width = 300,
+		height = 22,
+		frameStrata = 'LOW',
+		numPoints = 3,
+		frameLevel = 1,
+		backdrop = true,
+		panelTransparency = false,
+		mouseover = false,
+		border = true,
+		visibility = '[petbattle] hide;show',
+		tooltipAnchor = 'ANCHOR_TOPLEFT',
+		tooltipXOffset = -17,
+		tooltipYOffset = 4,
+		fonts = {
+			enable = false,
+			font = "PT Sans Narrow",
+			fontSize = 12,
+			fontOutline = "OUTLINE",
+		}
+	},
 }
 
 G.nameplate = {

@@ -1,17 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
 local unpack, tonumber = unpack, tonumber
 local abs, min = abs, min
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local UnitSpellHaste = UnitSpellHaste
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local UnitCanAttack = UnitCanAttack
-local GetSpellInfo = GetSpellInfo
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -85,7 +83,7 @@ function UF:Construct_Castbar(frame, moverName)
 	if moverName then
 		local name = frame:GetName()
 		local configName = name:gsub('^ElvUF_', ''):lower()
-		E:CreateMover(castbar.Holder, name..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO', nil, 'unitframe,'..configName..',castbar')
+		E:CreateMover(castbar.Holder, name..'CastbarMover', moverName, nil, -6, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,'..configName..',castbar')
 	end
 
 	local icon = button:CreateTexture(nil, "ARTWORK")
@@ -105,8 +103,7 @@ function UF:Configure_Castbar(frame)
 
 	castbar:Width(db.width - ((frame.BORDER+frame.SPACING)*2))
 	castbar:Height(db.height - ((frame.BORDER+frame.SPACING)*2))
-	castbar.Holder:Width(db.width)
-	castbar.Holder:Height(db.height)
+	castbar.Holder:Size(db.width, db.height)
 
 	local oSC = castbar.Holder:GetScript('OnSizeChanged')
 	if oSC then oSC(castbar.Holder) end
@@ -120,6 +117,8 @@ function UF:Configure_Castbar(frame)
 	end
 
 	castbar.timeToHold = db.timeToHold
+
+	castbar:SetReverseFill(db.reverse)
 
 	--Latency
 	if frame.unit == 'player' and db.latency then
@@ -157,7 +156,7 @@ function UF:Configure_Castbar(frame)
 
 	if db.spark then
 		castbar.Spark = castbar.Spark_
-		castbar.Spark:Point('CENTER', castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
+		castbar.Spark:Point('CENTER', castbar:GetStatusBarTexture(), db.reverse and 'LEFT' or 'RIGHT', 0, 0)
 		castbar.Spark:Height(db.height * 2)
 	elseif castbar.Spark then
 		castbar.Spark:Hide()
@@ -185,7 +184,7 @@ function UF:Configure_Castbar(frame)
 			end
 
 			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
-			if(frame.ORIENTATION == "RIGHT") then
+			if frame.ORIENTATION == "RIGHT" then
 				castbar:Point("TOPLEFT", anchor, "TOPLEFT")
 				castbar:Point("BOTTOMRIGHT", anchor, "BOTTOMRIGHT", -iconWidth - frame.SPACING*3, 0)
 			else
@@ -197,31 +196,21 @@ function UF:Configure_Castbar(frame)
 		if db.spark then
 			castbar.Spark:Height(anchor:GetHeight() * 2)
 		end
-
-		if(castbar.Holder.mover) then
-			E:DisableMover(castbar.Holder.mover:GetName())
-		end
 	else
 		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
-		if not isMoved then
-			castbar.Holder.mover:ClearAllPoints()
+		if not isMoved then castbar.Holder.mover:ClearAllPoints() end
+
+		if db.positionsGroup then
+			castbar.Holder:ClearAllPoints()
+			castbar.Holder:Point(INVERT_ANCHORPOINT[db.positionsGroup.anchorPoint], frame, db.positionsGroup.anchorPoint, db.positionsGroup.xOffset, db.positionsGroup.yOffset)
 		end
 
-		castbar:ClearAllPoints()
 		if frame.ORIENTATION ~= "RIGHT" then
 			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
-			if not isMoved then
-				castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER - frame.SPACING))
-			end
+			if not isMoved then castbar.Holder.mover:Point("TOPRIGHT", frame, "BOTTOMRIGHT", 0, -(frame.BORDER - frame.SPACING)) end
 		else
 			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
-			if not isMoved then
-				castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER - frame.SPACING))
-			end
-		end
-
-		if(castbar.Holder.mover) then
-			E:EnableMover(castbar.Holder.mover:GetName())
+			if not isMoved then castbar.Holder.mover:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -(frame.BORDER - frame.SPACING)) end
 		end
 	end
 
@@ -256,14 +245,18 @@ function UF:Configure_Castbar(frame)
 	castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and UF.db.colors.castbar_backdrop
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar)
 
+	if castbar.Holder.mover then
+		if db.overlayOnFrame ~= 'None' or not db.enable then
+			E:DisableMover(castbar.Holder.mover:GetName())
+		else
+			E:EnableMover(castbar.Holder.mover:GetName())
+		end
+	end
+
 	if db.enable and not frame:IsElementEnabled('Castbar') then
 		frame:EnableElement('Castbar')
 	elseif not db.enable and frame:IsElementEnabled('Castbar') then
 		frame:DisableElement('Castbar')
-
-		if castbar.Holder.mover then
-			E:DisableMover(castbar.Holder.mover:GetName())
-		end
 	end
 end
 
@@ -369,7 +362,7 @@ function UF:PostCastStart(unit)
 	if unit == "vehicle" then unit = "player" end
 
 	if db.castbar.displayTarget and self.curTarget then
-		self.Text:SetText(GetSpellInfo(self.spellID)..' > '..self.curTarget)
+		self.Text:SetText(self.spellName..' > '..self.curTarget)
 	end
 
 	-- Get length of Time, then calculate available length for Text

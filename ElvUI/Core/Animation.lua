@@ -25,7 +25,6 @@ t:SetPoint("CENTER")
 t:FontTemplate(nil, 20)
 E:SetUpAnimGroup(t, "Number", 10, 5)
 
-
 local b = CreateFrame("BUTTON", nil, UIParent)
 b:SetPoint("CENTER", 0, -100)
 b:SetTemplate()

@@ -2,6 +2,9 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "koKR")
 
+local COLOR1 = '|cFF1784d1'
+local COLOR2 = '|cfd9b9b9b'
+
 L[" |cff00ff00bound to |r"] = " 키로 다음의 행동을 실행합니다: |cff2eb7e4"
 L["%s frame has a conflicting anchor point. Forcing the Buffs to be attached to the main unitframe."] = true
 L["%s is attempting to share his filters with you. Would you like to accept the request?"] = "%s 유저가 필터설정을 전송하려 합니다. 받으시겠습니까?"
@@ -80,8 +83,9 @@ L["Config Mode:"] = "표시할 프레임 계열:"
 L["Confused.. Try Again!"] = "작업에 혼선이 있었습니다. 다시 시도해 주세요."
 L["Continue"] = true
 L["Coords"] = "좌표"
-L["copperabbrev"] = "|TInterface\\MoneyFrame\\UI-MoneyIcons:0:0:1:0:64:16:33:48:1:16|t"
+L["copperabbrev"] = [[|TInterface\MoneyFrame\UI-MoneyIcons:0:0:1:0:64:16:33:48:1:16|t]]
 L["Count"] = "갯수"
+L["Current Difficulties:"] = true
 L["Current Level:"] = "현재 레벨"
 L["CVars Set"] = "CVars 설정"
 L["CVars"] = "게임 인터페이스 설정(CVars)"
@@ -130,7 +134,7 @@ L["Garrison"] = "주둔지"
 L["Ghost"] = "유령"
 L["GM Ticket Frame"] = "GM요청 번호표"
 L["Gold"] = "골드"
-L["goldabbrev"] = "|TInterface\\MoneyFrame\\UI-MoneyIcons:0:0:1:0:64:16:1:16:1:16|t"
+L["goldabbrev"] = [[|TInterface\MoneyFrame\UI-MoneyIcons:0:0:1:0:64:16:1:16:1:16|t]]
 L["Grid Size:"] = "격자 크기 :"
 L["Hands"] = "손"
 L["Head"] = "머리"
@@ -188,7 +192,8 @@ L["Legs"] = "다리"
 L["Level Up Display / Boss Banner"] = "레벨업 표시 / 보스 배너"
 L["List of installations in queue:"] = "설치 대기열 목록"
 L["Lock"] = "잠금"
-L["LOGIN_MSG"] = "Welcome to %sElvUI|r version %s%s|r, type /ec to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"
+L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type */ec|r to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
 L["Loot / Alert Frames"] = "획득/알림 창"
 L["Loot Frame"] = "전리품 프레임"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "데이터를 받는 중 혼선이 생겼습니다. 다시 시도해주세요."
@@ -255,7 +260,7 @@ L["Remaining:"] = "다음 레벨까지: "
 L["Remove Bar %d Action Page"] = "Blizzard %d번 행동단축바 숨기기"
 L["Reputation Bar"] = "평판 바"
 L["Request was denied by user."] = "상대방이 전송을 거절했습니다."
-L["Reset Counters: Hold Shift + Right Click"] = "통계 초기화: 쉬프트+우클릭"
+L["Reset Counters: Hold Ctrl + Right Click"] = true
 L["Reset Data: Hold Shift + Right Click"] = "자료 초기화: 쉬프트+우클릭"
 L["Reset Position"] = "위치 초기화"
 L["Rested:"] = "휴식 경험치:"
@@ -277,7 +282,7 @@ L["Setup CVars"] = "인터페이스 설정 적용"
 L["Shoulder"] = "어깨"
 L["Show/Hide Reagents"] = "재료은행 표시"
 L["Shows a frame with needed info for support."] = true
-L["silverabbrev"] = "|TInterface\\MoneyFrame\\UI-MoneyIcons:0:0:1:0:64:16:17:32:1:16|t"
+L["silverabbrev"] = [[|TInterface\MoneyFrame\UI-MoneyIcons:0:0:1:0:64:16:17:32:1:16|t]]
 L["Skip Process"] = "건너뛰기"
 L["Sort Tab"] = "탭 정렬"
 L["SP"] = "주문력"
@@ -335,7 +340,6 @@ L["Welcome to ElvUI version %s!"] = "ElvUI 버전 %s에 오신 것을 환영합�
 L["whispers"] = "귓"
 L["World Latency:"] = true
 L["World Protocol:"] = true
-L["WoW Token:"] = true
 L["Wrist"] = "손목"
 L["XP:"] = "경험치:"
 L["yells"] = "외침"
@@ -378,3 +382,17 @@ L["DESC_MOVERCONFIG"] = [=[프레임을 드래그로 원하는 위치로 이동�
   Shift + 우클릭 - 조정자를 일시적으로 숨깁니다.
   Ctrl + 우클릭 - 조정자의 위치를 기본값으로 초기화합니다.
 ]=]
+
+L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
+ */ec|r or */elvui|r  -  Toggle the *OptionsUI|r.
+ */moveui|r  -  Toggle anchors to reposition various elements.
+ */kb|r  -  Toggle the keybind mode.
+ */resetui|r  -  Reset all frames to their original positions.
+ */bgstats|r  -  Toggle Battleground stats on your DataTexts.
+ */hdt|r  -  Edit your DataTexts without opening the *OptionsUI|r.
+ */estatus|r  -  Important informations for support questions.
+ */egrid|r ^64|r or ^128|r or ^256|r  -  Toggle a pixel grid.
+ */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
+  NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
+  using */luaerror|r ^on|r within that session.
+]=]):gsub('*', COLOR1):gsub('%^', COLOR2)

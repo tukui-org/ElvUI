@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)) -- Import Functions/Constants, Config, Locales
 local RU = E:GetModule('RaidUtility')
 
---Lua functions
 local _G = _G
 local unpack, ipairs, pairs, next = unpack, ipairs, pairs, next
 local strfind, tinsert, wipe, sort = strfind, tinsert, wipe, sort
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local DoReadyCheck = DoReadyCheck
 local GameTooltip_Hide = GameTooltip_Hide
@@ -179,10 +178,7 @@ end
 
 local count = {}
 local function UpdateIcons(self)
-	local raid = IsInRaid()
-	local party --= IsInGroup() --We could have this in party :thinking:
-
-	if not (raid or party) then
+	if not IsInRaid() then
 		self:Hide()
 		return
 	else
@@ -192,17 +188,10 @@ local function UpdateIcons(self)
 
 	wipe(count)
 
-	local role
 	for i = 1, GetNumGroupMembers() do
-		role = UnitGroupRolesAssigned((raid and "raid" or "party")..i)
+		local role = UnitGroupRolesAssigned("raid"..i)
 		if role and role ~= "NONE" then
 			count[role] = (count[role] or 0) + 1
-		end
-	end
-
-	if (not raid) and party then -- only need this party (we believe)
-		if E.myrole then
-			count[E.myrole] = (count[E.myrole] or 0) + 1
 		end
 	end
 

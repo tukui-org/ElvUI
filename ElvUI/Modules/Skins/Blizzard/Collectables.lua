@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local select = select
 local ipairs, pairs, unpack = ipairs, pairs, unpack
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local PlayerHasToy = PlayerHasToy
@@ -112,7 +111,7 @@ function S:Blizzard_Collections()
 		bu.factionIcon:Point('TOPRIGHT', -1, -4)
 		bu.factionIcon:Point('BOTTOMRIGHT', -1, 4)
 
-		bu.favorite:SetTexture("Interface\\COMMON\\FavoritesIcon")
+		bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
 		bu.favorite:Point("TOPLEFT", bu.DragButton, "TOPLEFT" , -8, 8)
 		bu.favorite:Size(32, 32)
 	end
@@ -508,7 +507,7 @@ function S:Blizzard_Collections()
 	end)
 
 	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetTexture(E.Media.Textures.ArrowUp)
-	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetRotation(S.ArrowRotation['down'])
+	_G.WardrobeSetsCollectionVariantSetsButton.Icon:SetRotation(S.ArrowRotation.down)
 
 	-- Transmogrify NPC
 	local WardrobeFrame = _G.WardrobeFrame

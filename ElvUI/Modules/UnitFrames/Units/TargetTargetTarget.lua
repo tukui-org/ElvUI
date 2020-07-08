@@ -4,26 +4,26 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Lua functions
 local _G = _G
 local tinsert = tinsert
 
 function UF:Construct_TargetTargetTargetFrame(frame)
-	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
-	frame.PowerPrediction = self:Construct_PowerPrediction(frame)
-	frame.Name = self:Construct_NameText(frame)
-	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
-	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-	frame.Buffs = self:Construct_Buffs(frame)
-	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
-	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.ThreatIndicator = self:Construct_Threat(frame)
-	frame.InfoPanel = self:Construct_InfoPanel(frame)
-	frame.MouseGlow = self:Construct_MouseGlow(frame)
-	frame.TargetGlow = self:Construct_TargetGlow(frame)
-	frame.Fader = self:Construct_Fader()
-	frame.Cutaway = self:Construct_Cutaway(frame)
+	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
+	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
+	frame.Name = UF:Construct_NameText(frame)
+	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
+	frame.Buffs = UF:Construct_Buffs(frame)
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
+	frame.Debuffs = UF:Construct_Debuffs(frame)
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
+	frame.InfoPanel = UF:Construct_InfoPanel(frame)
+	frame.MouseGlow = UF:Construct_MouseGlow(frame)
+	frame.TargetGlow = UF:Construct_TargetGlow(frame)
+	frame.FocusGlow = UF:Construct_FocusGlow(frame)
+	frame.Fader = UF:Construct_Fader()
+	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 160) --Set to default position
@@ -55,42 +55,31 @@ function UF:Update_TargetTargetTargetFrame(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
+	if db.strataAndLevel and db.strataAndLevel.useCustomStrata then
+		frame:SetFrameStrata(db.strataAndLevel.frameStrata)
+	end
+
+	if db.strataAndLevel and db.strataAndLevel.useCustomLevel then
+		frame:SetFrameLevel(db.strataAndLevel.frameLevel)
+	end
+
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+
 	UF:Configure_InfoPanel(frame)
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Power
 	UF:Configure_Power(frame)
-
-	--Power Predicition
 	UF:Configure_PowerPrediction(frame)
-
-	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--Raid Icon
 	UF:Configure_RaidIcon(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
-
 	UF:Configure_CustomTexts(frame)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + self.db.units.player.castbar.height))

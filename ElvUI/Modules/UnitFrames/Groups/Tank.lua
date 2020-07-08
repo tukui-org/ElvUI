@@ -4,11 +4,10 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Lua functions
 local _G = _G
 local max = max
---WoW API / Variables
 local CreateFrame = CreateFrame
+local IsAddOnLoaded = IsAddOnLoaded
 local InCombatLockdown = InCombatLockdown
 local RegisterAttributeDriver = RegisterAttributeDriver
 
@@ -26,6 +25,7 @@ function UF:Construct_TankFrames()
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
+	self.FocusGlow = UF:Construct_FocusGlow(self)
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
 
@@ -34,16 +34,12 @@ function UF:Construct_TankFrames()
 		self.Debuffs = UF:Construct_Debuffs(self)
 		self.AuraWatch = UF:Construct_AuraWatch(self)
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
-		self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
+		self.AuraHighlight = UF:Construct_AuraHighlight(self)
 
 		self.unitframeType = "tank"
 	else
 		self.unitframeType = "tanktarget"
 	end
-
-	UF:Update_TankFrames(self, E.db.unitframe.units.tank)
-	UF:Update_StatusBars()
-	UF:Update_FontStrings()
 
 	self.originalParent = self:GetParent()
 
@@ -62,27 +58,31 @@ function UF:Update_TankHeader(header, db)
 
 	header:SetAttribute('point', 'BOTTOM')
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	header:SetAttribute("yOffset", db.verticalSpacing)
+	header:SetAttribute('yOffset', db.verticalSpacing)
 
 	if not header.positioned then
-		local width, height = header:GetSize()
-		header.dirtyWidth, header.dirtyHeight = width, max(height, 2*db.height + db.verticalSpacing)
 		header:ClearAllPoints()
-		header:Point("TOPLEFT", E.UIParent, "TOPLEFT", 4, -186)
+		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
+
+		local width, height = header:GetSize()
+		local minHeight = max(height, 2*db.height + db.verticalSpacing)
+		header:SetAttribute('minHeight', minHeight)
+		header:SetAttribute('minWidth', width)
+
 		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,tank,generalGroup')
-		header:SetAttribute('minHeight', header.dirtyHeight)
-		header:SetAttribute('minWidth', header.dirtyWidth)
-		header.positioned = true;
+		header.mover:SetSize(width, minHeight)
+
+		header.positioned = true
 	end
 end
 
 function UF:Update_TankFrames(frame, db)
 	frame.db = db
 	frame.colors = ElvUF.colors
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		if(self.thinBorders) then
+		if(UF.thinBorders) then
 			frame.SPACING = 0
 			frame.BORDER = E.mult
 		else
@@ -128,35 +128,26 @@ function UF:Update_TankFrames(frame, db)
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
 
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--Cutaway
 	UF:Configure_Cutaway(frame)
-
 	UF:Configure_RaidIcon(frame)
 
 	if not frame.isChild then
-		--Auras
+		if not IsAddOnLoaded("Clique") then
+			if db.middleClickFocus then
+				frame:SetAttribute("type3", "focus")
+			elseif frame:GetAttribute("type3") == "focus" then
+				frame:SetAttribute("type3", nil)
+			end
+		end
+
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_AllAuras(frame)
-
-		--RaidDebuffs
 		UF:Configure_RaidDebuffs(frame)
-
-		--Debuff Highlight
-		UF:Configure_DebuffHighlight(frame)
-
-		--Buff Indicator
+		UF:Configure_AuraHighlight(frame)
 		UF:Configure_AuraWatch(frame)
 	end
 

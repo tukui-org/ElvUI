@@ -1,21 +1,20 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
-local pairs, format = pairs, format
---WoW API / Variables
+local _G = _G
+local ipairs, pairs, format = ipairs, pairs, format
+local tinsert, tremove = tinsert, tremove
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
 local GetCurrencyListSize = GetCurrencyListSize
 
 local CustomCurrencies = {}
 local CurrencyListNameToIndex = {}
-local currency, currencyAmount, currencyMax, _
 
 local function OnEvent(self)
-	currency = CustomCurrencies[self.name]
+	local currency = CustomCurrencies[self.name]
 	if currency then
-		_, currencyAmount, _, _, _, currencyMax = GetCurrencyInfo(currency.ID)
+		local _, currencyAmount, _, _, _, currencyMax = GetCurrencyInfo(currency.ID)
 		if currency.DISPLAY_STYLE == "ICON" then
 			if currency.SHOW_MAX then
 				self.text:SetFormattedText("%s %d / %d", currency.ICON, currencyAmount, currencyMax)
@@ -59,17 +58,21 @@ local function AddCurrencyNameToIndex(name)
 end
 
 local function RegisterNewDT(currencyID)
-	local name, _, icon = GetCurrencyInfo(currencyID)
+	local name, _, icon, _, _, _, isDiscovered = GetCurrencyInfo(currencyID)
 
-	if name then
+	if isDiscovered then
+		local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
 		--Add to internal storage, stored with name as key
 		CustomCurrencies[name] = {NAME = name, ID = currencyID, ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", icon), DISPLAY_STYLE = "ICON", USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true}
 		--Register datatext
-		DT:RegisterDatatext(name, {"CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, name)
+		DT:RegisterDatatext(name, _G.CURRENCY, {"CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, name)
 		--Save info to persistent storage, stored with ID as key
 		E.global.datatexts.customCurrencies[currencyID] = CustomCurrencies[name]
 		--Get the currency index for this currency, so we can use it for a tooltip
 		AddCurrencyNameToIndex(name)
+		--Set the HyperDT
+		tinsert(DT.HyperList[menuIndex].menuList, { text = name, checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end, func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end })
+		DT:SortMenuList(DT.HyperList[menuIndex].menuList)
 	end
 end
 
@@ -81,7 +84,7 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 		--We called this in DT:Initialize, so load all the stored currency datatexts
 		for _, info in pairs(E.global.datatexts.customCurrencies) do
 			CustomCurrencies[info.NAME] = {NAME = info.NAME, ID = info.ID, ICON = info.ICON, DISPLAY_STYLE = info.DISPLAY_STYLE, USE_TOOLTIP = info.USE_TOOLTIP, SHOW_MAX = info.SHOW_MAX, DISPLAY_IN_MAIN_TOOLTIP = info.DISPLAY_IN_MAIN_TOOLTIP}
-			DT:RegisterDatatext(info.NAME, {"CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, info.NAME)
+			DT:RegisterDatatext(info.NAME, _G.CURRENCY, {"CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, info.NAME)
 			--Get the currency index for this currency, so we can use it for a tooltip
 			AddCurrencyNameToIndex(info.NAME)
 		end
@@ -105,4 +108,13 @@ end
 function DT:RemoveCustomCurrency(currencyName)
 	--Remove from internal storage
 	CustomCurrencies[currencyName] = nil
+
+	local menuIndex = DT:GetMenuListCategory(_G.CURRENCY)
+	local menuList = DT.HyperList[menuIndex].menuList
+
+	for i, info in ipairs(menuList) do
+		if info.text == currencyName then
+			tremove(DT.HyperList[menuIndex].menuList, i)
+		end
+	end
 end

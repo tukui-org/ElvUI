@@ -59,12 +59,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local PI = E:GetModule('PluginInstaller')
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack
 local tinsert, tremove = tinsert, tremove
 local format = format
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local PlaySound = PlaySound
 local UIFrameFadeOut = UIFrameFadeOut
@@ -128,15 +127,14 @@ local function SetPage(PageNum, PrevPage)
 	f.Status.text:SetFormattedText('%d / %d', f.CurrentPage, f.MaxPage)
 	if f.StepTitles then
 		for i = 1, #f.side.Lines do
-			local b = f.side.Lines[i]
-			local color
-			b.text:SetText(f.StepTitles[i])
+			local line, color = f.side.Lines[i]
+			line.text:SetText(f.StepTitles[i])
 			if i == f.CurrentPage then
 				color = f.StepTitlesColorSelected or {.09,.52,.82}
 			else
 				color = f.StepTitlesColor or {1,1,1}
 			end
-			b.text:SetTextColor(color[1] or color.r, color[2] or color.g, color[3] or color.b)
+			line.text:SetTextColor(color[1] or color.r, color[2] or color.g, color[3] or color.b)
 		end
 	end
 end

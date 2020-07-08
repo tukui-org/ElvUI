@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---WoW API / Variables
 local unpack = unpack
 local CreateFrame = CreateFrame
 
@@ -52,6 +51,10 @@ function UF:BuffIndicator_PostCreateIcon(button)
 
 	UF:Configure_FontString(button.count)
 	UF:Update_FontString(button.count)
+
+	button.count:ClearAllPoints()
+	button.count:Point('BOTTOMRIGHT', 1, 1)
+	button.count:SetJustifyH('RIGHT')
 end
 
 function UF:BuffIndicator_PostUpdateIcon(_, button)

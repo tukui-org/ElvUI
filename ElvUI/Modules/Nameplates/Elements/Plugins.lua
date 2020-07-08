@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local NP = E:GetModule("NamePlates")
 
 local _G = _G
+local strfind = strfind
 local pairs, unpack = pairs, unpack
 local CreateFrame = CreateFrame
 
@@ -30,23 +31,30 @@ function NP:Construct_QuestIcons(nameplate)
 end
 
 function NP:Update_QuestIcons(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local frameType = nameplate.frameType
+	local db = frameType and NP.db.units[frameType].questIcon
 
-	if (nameplate.frameType == "FRIENDLY_NPC" or nameplate.frameType == "ENEMY_NPC") and db.questIcon.enable then
+	if db and db.enable and (frameType == "FRIENDLY_NPC" or frameType == "ENEMY_NPC") then
 		if not nameplate:IsElementEnabled("QuestIcons") then
 			nameplate:EnableElement("QuestIcons")
 		end
 
 		nameplate.QuestIcons:ClearAllPoints()
-		nameplate.QuestIcons:Point(E.InversePoints[db.questIcon.position], nameplate, db.questIcon.position, db.questIcon.xOffset, db.questIcon.yOffset)
+		nameplate.QuestIcons:Point(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
 
 		for _, object in pairs(questIconTypes) do
 			local icon = nameplate.QuestIcons[object]
-			icon:Size(db.questIcon.size, db.questIcon.size)
-			icon.Text:FontTemplate(E.Libs.LSM:Fetch("font", db.questIcon.font), db.questIcon.fontSize, db.questIcon.fontOutline)
+			icon:Size(db.size, db.size)
+			icon:SetAlpha(db.hideIcon and 0 or 1)
+
+			local xoffset = strfind(db.textPosition, 'LEFT') and -2 or 2
+			local yoffset = strfind(db.textPosition, 'BOTTOM') and 2 or -2
 			icon.Text:ClearAllPoints()
-			icon.Text:Point(db.questIcon.textPosition, icon)
-			icon.size, icon.position = db.questIcon.size, db.questIcon.position
+			icon.Text:Point('CENTER', icon, db.textPosition, xoffset, yoffset)
+			icon.Text:FontTemplate(E.Libs.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+			icon.Text:SetJustifyH('CENTER')
+
+			icon.size, icon.position = db.size, db.position
 		end
 	elseif nameplate:IsElementEnabled("QuestIcons") then
 		nameplate:DisableElement("QuestIcons")
@@ -58,16 +66,17 @@ function NP:Construct_ClassificationIndicator(nameplate)
 end
 
 function NP:Update_ClassificationIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local frameType = nameplate.frameType
+	local db = frameType and NP.db.units[frameType].eliteIcon
 
-	if (nameplate.frameType == "FRIENDLY_NPC" or nameplate.frameType == "ENEMY_NPC") and db.eliteIcon.enable then
+	if db and db.enable and (frameType == "FRIENDLY_NPC" or frameType == "ENEMY_NPC") then
 		if not nameplate:IsElementEnabled("ClassificationIndicator") then
 			nameplate:EnableElement("ClassificationIndicator")
 		end
 
 		nameplate.ClassificationIndicator:ClearAllPoints()
-		nameplate.ClassificationIndicator:Size(db.eliteIcon.size, db.eliteIcon.size)
-		nameplate.ClassificationIndicator:Point(E.InversePoints[db.eliteIcon.position], nameplate, db.eliteIcon.position, db.eliteIcon.xOffset, db.eliteIcon.yOffset)
+		nameplate.ClassificationIndicator:Size(db.size, db.size)
+		nameplate.ClassificationIndicator:Point(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
 	elseif nameplate:IsElementEnabled("ClassificationIndicator") then
 		nameplate:DisableElement("ClassificationIndicator")
 	end

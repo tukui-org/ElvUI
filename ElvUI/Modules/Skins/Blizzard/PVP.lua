@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
 local GetCurrencyInfo = GetCurrencyInfo
@@ -18,7 +17,7 @@ local function HandleRoleChecks(button, ...)
 	button:DisableDrawLayer("OVERLAY")
 
 	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
-	button.bg:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	button.bg:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	button.bg:SetTexCoord(...)
 	button.bg:Point("CENTER")
 	button.bg:Size(40)
@@ -50,9 +49,9 @@ function S:Blizzard_PVPUI()
 	local PVPQueueFrame = _G.PVPQueueFrame
 	PVPQueueFrame.HonorInset:StripTextures()
 
-	PVPQueueFrame.CategoryButton1.Icon:SetTexture("Interface\\Icons\\achievement_bg_winwsg")
-	PVPQueueFrame.CategoryButton2.Icon:SetTexture("Interface\\Icons\\achievement_bg_killxenemies_generalsroom")
-	PVPQueueFrame.CategoryButton3.Icon:SetTexture("Interface\\Icons\\Achievement_General_StayClassy")
+	PVPQueueFrame.CategoryButton1.Icon:SetTexture([[Interface\Icons\achievement_bg_winwsg]])
+	PVPQueueFrame.CategoryButton2.Icon:SetTexture([[Interface\Icons\achievement_bg_killxenemies_generalsroom]])
+	PVPQueueFrame.CategoryButton3.Icon:SetTexture([[Interface\Icons\Achievement_General_StayClassy]])
 
 	local SeasonReward = PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
 	SeasonReward.CircleMask:Hide()
@@ -96,7 +95,7 @@ function S:Blizzard_PVPUI()
 		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
 		EnlistmentBonusIcon:Point("TOPLEFT", reward.EnlistmentBonus, "TOPLEFT", 2, -2)
 		EnlistmentBonusIcon:Point("BOTTOMRIGHT", reward.EnlistmentBonus, "BOTTOMRIGHT", -2, 2)
-		EnlistmentBonusIcon:SetTexture("Interface\\Icons\\achievement_guildperk_honorablemention_rank2")
+		EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
 		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
@@ -236,7 +235,7 @@ function S:PVPReadyDialog()
 	S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
 	S:HandleButton(_G.PVPReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.PVPReadyDialogCloseButton)
-	_G.PVPReadyDialogRoleIcon.texture:SetTexture("Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS")
+	_G.PVPReadyDialogRoleIcon.texture:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	_G.PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
 
 	hooksecurefunc("PVPReadyDialog_Display", function(s, _, _, _, queueType, _, role)

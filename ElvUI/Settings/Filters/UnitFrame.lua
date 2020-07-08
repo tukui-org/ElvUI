@@ -624,6 +624,8 @@ G.unitframe.aurafilters.Blacklist = {
 		[113942] = Defaults(), -- Demonic: Gateway
 		[89140]  = Defaults(), -- Demonic Rebirth: Cooldown
 		[287825] = Defaults(), -- Lethargy debuff (fight or flight)
+		[206662] = Defaults(), -- Experience Eliminated (in range)
+		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
 	},
 }
 
@@ -1109,6 +1111,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[306928] = Defaults(), -- Umbral Breath
 		[312530] = Defaults(), -- Entropic Breath
 		[306929] = Defaults(), -- Bubbling Breath
+		[318078] = Defaults(), -- Fixated
 		-- Drest
 		[310406] = Defaults(), -- Void Glare
 		[310277] = Defaults(), -- Volatile Seed [tank]
@@ -1175,9 +1178,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 }
 
 -- Spells that we want to show the duration backwards
-E.ReverseTimer = {
-
-}
+E.ReverseTimer = {}
 
 -- BuffWatch: List of personal spells to show on unitframes as icon
 function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displayText, textThreshold, xOffset, yOffset)
@@ -1322,6 +1323,7 @@ G.unitframe.specialFilters = {
 	notDispellable = true,
 	CastByNPC = true,
 	CastByPlayers = true,
+	BlizzardNameplate = true,
 
 	-- Blacklists
 	blockNonPersonal = true,

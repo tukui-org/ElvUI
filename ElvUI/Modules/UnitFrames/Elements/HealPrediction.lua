@@ -55,8 +55,8 @@ function UF:Construct_HealComm(frame)
 	local otherBar = CreateFrame('StatusBar', nil, parent)
 	local absorbBar = CreateFrame('StatusBar', nil, parent)
 	local healAbsorbBar = CreateFrame('StatusBar', nil, parent)
-	local overAbsorb = parent:CreateTexture(nil, "ARTWORK")
-	local overHealAbsorb = parent:CreateTexture(nil, "ARTWORK")
+	local overAbsorb = myBar:CreateTexture(nil, "ARTWORK")
+	local overHealAbsorb = myBar:CreateTexture(nil, "ARTWORK")
 
 	myBar:SetFrameLevel(11)
 	otherBar:SetFrameLevel(11)
@@ -70,7 +70,6 @@ function UF:Construct_HealComm(frame)
 		healAbsorbBar = healAbsorbBar,
 		overAbsorb_ = overAbsorb,
 		overHealAbsorb_ = overHealAbsorb,
-		PostUpdate = UF.UpdateHealComm,
 		maxOverflow = 1,
 		health = health,
 		parent = parent,
@@ -133,7 +132,7 @@ function UF:Configure_HealComm(frame)
 		overAbsorb:SetVertexColor(c.overabsorbs.r, c.overabsorbs.g, c.overabsorbs.b, c.overabsorbs.a)
 		overHealAbsorb:SetVertexColor(c.overhealabsorbs.r, c.overhealabsorbs.g, c.overhealabsorbs.b, c.overhealabsorbs.a)
 
-		if frame.db.healPrediction.showOverAbsorbs and not showAbsorbAmount then
+		if frame.db.healPrediction.showOverAbsorbs then
 			healPrediction.overAbsorb = overAbsorb
 			healPrediction.overHealAbsorb = overHealAbsorb
 		elseif healPrediction.overAbsorb then
@@ -178,7 +177,7 @@ function UF:Configure_HealComm(frame)
 			healAbsorbBar:Point(p2, healthBarTexture, p2)
 
 			if healPrediction.overAbsorb then
-				healPrediction.overAbsorb:Size(1, 0)
+				healPrediction.overAbsorb:Size(4, 0)
 				healPrediction.overAbsorb:ClearAllPoints()
 				healPrediction.overAbsorb:Point("TOP", health, "TOP")
 				healPrediction.overAbsorb:Point("BOTTOM", health, "BOTTOM")
@@ -186,7 +185,7 @@ function UF:Configure_HealComm(frame)
 			end
 
 			if healPrediction.overHealAbsorb then
-				healPrediction.overHealAbsorb:Size(1, 0)
+				healPrediction.overHealAbsorb:Size(4, 0)
 				healPrediction.overHealAbsorb:ClearAllPoints()
 				healPrediction.overHealAbsorb:Point("TOP", health, "TOP")
 				healPrediction.overHealAbsorb:Point("BOTTOM", health, "BOTTOM")
@@ -244,12 +243,5 @@ function UF:Configure_HealComm(frame)
 		end
 	elseif frame:IsElementEnabled('HealthPrediction') then
 		frame:DisableElement('HealthPrediction')
-	end
-end
-
-function UF:UpdateHealComm(unit, _, _, _, _, hasOverAbsorb)
-	local pred = self.frame and self.frame.db and self.frame.db.healPrediction
-	if pred and (pred.showOverAbsorbs and pred.showAbsorbAmount) and hasOverAbsorb then
-		self.absorbBar:SetValue(UnitGetTotalAbsorbs(unit))
 	end
 end

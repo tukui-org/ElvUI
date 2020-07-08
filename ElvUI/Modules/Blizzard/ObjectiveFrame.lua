@@ -1,16 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
---Lua functions
 local _G = _G
 local min = min
---WoW API / Variables
+
 local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
 local GetScreenHeight = GetScreenHeight
+local GetInstanceInfo = GetInstanceInfo
 local GetScreenWidth = GetScreenWidth
 local hooksecurefunc = hooksecurefunc
 local RegisterStateDriver = RegisterStateDriver
+local UnregisterStateDriver = UnregisterStateDriver
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
@@ -35,39 +35,30 @@ local function IsFramePositionedLeft(frame)
 end
 
 function B:SetObjectiveFrameAutoHide()
-	if not _G.ObjectiveTrackerFrame.AutoHider then return; end --Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
+	if not _G.ObjectiveTrackerFrame.AutoHider then return end --Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
+
 	if E.db.general.objectiveFrameAutoHide then
 		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0")
 	else
-		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "0")
+		UnregisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider")
 	end
 end
 
 function B:MoveObjectiveFrame()
 	local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
-	ObjectiveFrameHolder:Width(130)
-	ObjectiveFrameHolder:Height(22)
 	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
+	ObjectiveFrameHolder:Size(130, 22)
 
-	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,objectiveFrameGroup')
-	local ObjectiveFrameMover = _G.ObjectiveFrameMover
+	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
+	ObjectiveFrameHolder:SetAllPoints(_G.ObjectiveFrameMover)
+
 	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
-	ObjectiveFrameHolder:SetAllPoints(ObjectiveFrameMover)
-
-	ObjectiveTrackerFrame:ClearAllPoints()
-	ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
-	B:SetObjectiveFrameHeight()
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
-
-	ObjectiveTrackerFrame:SetMovable(true)
-
-	if ObjectiveTrackerFrame:IsMovable() then
-		ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
-	end
-
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
-
+	ObjectiveTrackerFrame:SetMovable(true)
+	ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
+	B:SetObjectiveFrameHeight()
 
 	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame
@@ -80,23 +71,23 @@ function B:MoveObjectiveFrame()
 	end
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 
-	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, _G.ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
-	ObjectiveTrackerFrame.AutoHider:SetAttribute("_onstate-objectiveHider", [[
-		if newstate == 1 then
-			self:Hide()
-		else
-			self:Show()
-		end
-	]])
-
-	ObjectiveTrackerFrame.AutoHider:SetScript("OnHide", function()
-		local _, _, difficultyID = GetInstanceInfo()
-		if difficultyID and difficultyID ~= 8 then
-			_G.ObjectiveTracker_Collapse()
+	-- objectiveFrameAutoHide
+	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
+	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
+	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', function()
+		if not ObjectiveTrackerFrame.collapsed then
+			local _, _, difficultyID = GetInstanceInfo()
+			if difficultyID and difficultyID ~= 8 then -- ignore hide in keystone runs
+				_G.ObjectiveTracker_Collapse()
+			end
 		end
 	end)
 
-	ObjectiveTrackerFrame.AutoHider:SetScript("OnShow", _G.ObjectiveTracker_Expand)
+	ObjectiveTrackerFrame.AutoHider:SetScript('OnShow', function()
+		if ObjectiveTrackerFrame.collapsed then
+			_G.ObjectiveTracker_Expand()
+		end
+	end)
 
 	self:SetObjectiveFrameAutoHide()
 end

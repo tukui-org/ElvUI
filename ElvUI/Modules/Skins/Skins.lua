@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local tinsert, xpcall, next = tinsert, xpcall, next
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
@@ -54,10 +53,10 @@ S.Blizzard.Regions = {
 
 -- Depends on the arrow texture to be up by default.
 S.ArrowRotation = {
-	['up'] = 0,
-	['down'] = 3.14,
-	['left'] = 1.57,
-	['right'] = -1.57,
+	up = 0,
+	down = 3.14,
+	left = 1.57,
+	right = -1.57,
 }
 
 function S:HandleInsetFrame(frame)
@@ -264,7 +263,7 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		local Texture = button.Icon:GetTexture()
 		if Texture and (type(Texture) == 'string' and strfind(Texture, [[Interface\ChatFrame\ChatFrameExpandArrow]])) then
 			button.Icon:SetTexture(E.Media.Textures.ArrowUp)
-			button.Icon:SetRotation(S.ArrowRotation['right'])
+			button.Icon:SetRotation(S.ArrowRotation.right)
 			button.Icon:SetVertexColor(1, 1, 1)
 		end
 	end
@@ -500,88 +499,92 @@ function S:HandleStatusBar(frame, color)
 	E:RegisterStatusBar(frame)
 end
 
-function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, forceSaturation)
-	assert(frame, 'does not exist.')
+do
+	local check = [[Interface\Buttons\UI-CheckBox-Check]]
+	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
+	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, forceSaturation)
+		assert(frame, 'does not exist.')
 
-	if frame.isSkinned then return end
+		if frame.isSkinned then return end
 
-	frame:StripTextures()
-	frame.forceSaturation = forceSaturation
+		frame:StripTextures()
+		frame.forceSaturation = forceSaturation
 
-	if noBackdrop then
-		frame:SetTemplate()
-		frame:Size(16)
-	else
-		frame:CreateBackdrop()
-		frame.backdrop:SetInside(nil, 4, 4)
-	end
-
-	if not noReplaceTextures then
-		if frame.SetCheckedTexture then
-			if E.private.skins.checkBoxSkin then
-				frame:SetCheckedTexture(E.Media.Textures.Melli)
-
-				local checkedTexture = frame:GetCheckedTexture()
-				checkedTexture:SetVertexColor(1, .82, 0, 0.8)
-				checkedTexture:SetInside(frame.backdrop)
-			else
-				frame:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
-
-				if noBackdrop then
-					frame:GetCheckedTexture():SetInside(nil, -4, -4)
-				end
-			end
+		if noBackdrop then
+			frame:SetTemplate()
+			frame:Size(16)
+		else
+			frame:CreateBackdrop()
+			frame.backdrop:SetInside(nil, 4, 4)
 		end
 
-		if frame.SetDisabledTexture then
-			if E.private.skins.checkBoxSkin then
-				frame:SetDisabledTexture(E.Media.Textures.Melli)
-
-				local disabledTexture = frame:GetDisabledTexture()
-				disabledTexture:SetVertexColor(.6, .6, .6, .8)
-				disabledTexture:SetInside(frame.backdrop)
-			else
-				frame:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
-
-				if noBackdrop then
-					frame:GetDisabledTexture():SetInside(nil, -4, -4)
-				end
-			end
-		end
-
-		frame:HookScript('OnDisable', function(checkbox)
-			if not checkbox.SetDisabledTexture then return; end
-			if checkbox:GetChecked() then
+		if not noReplaceTextures then
+			if frame.SetCheckedTexture then
 				if E.private.skins.checkBoxSkin then
-					checkbox:SetDisabledTexture(E.Media.Textures.Melli)
+					frame:SetCheckedTexture(E.Media.Textures.Melli)
+
+					local checkedTexture = frame:GetCheckedTexture()
+					checkedTexture:SetVertexColor(1, .82, 0, 0.8)
+					checkedTexture:SetInside(frame.backdrop)
 				else
-					checkbox:SetDisabledTexture("Interface\\Buttons\\UI-CheckBox-Check-Disabled")
+					frame:SetCheckedTexture(check)
+
+					if noBackdrop then
+						frame:GetCheckedTexture():SetInside(nil, -4, -4)
+					end
 				end
-			else
-				checkbox:SetDisabledTexture("")
 			end
-		end)
 
-		hooksecurefunc(frame, "SetNormalTexture", function(checkbox, texPath)
-			if texPath ~= "" then checkbox:SetNormalTexture("") end
-		end)
-		hooksecurefunc(frame, "SetPushedTexture", function(checkbox, texPath)
-			if texPath ~= "" then checkbox:SetPushedTexture("") end
-		end)
-		hooksecurefunc(frame, "SetHighlightTexture", function(checkbox, texPath)
-			if texPath ~= "" then checkbox:SetHighlightTexture("") end
-		end)
-		hooksecurefunc(frame, "SetCheckedTexture", function(checkbox, texPath)
-			if texPath == E.Media.Textures.Melli or texPath == "Interface\\Buttons\\UI-CheckBox-Check" then return end
-			if E.private.skins.checkBoxSkin then
-				checkbox:SetCheckedTexture(E.Media.Textures.Melli)
-			else
-				checkbox:SetCheckedTexture("Interface\\Buttons\\UI-CheckBox-Check")
+			if frame.SetDisabledTexture then
+				if E.private.skins.checkBoxSkin then
+					frame:SetDisabledTexture(E.Media.Textures.Melli)
+
+					local disabledTexture = frame:GetDisabledTexture()
+					disabledTexture:SetVertexColor(.6, .6, .6, .8)
+					disabledTexture:SetInside(frame.backdrop)
+				else
+					frame:SetDisabledTexture(disabled)
+
+					if noBackdrop then
+						frame:GetDisabledTexture():SetInside(nil, -4, -4)
+					end
+				end
 			end
-		end)
+
+			frame:HookScript('OnDisable', function(checkbox)
+				if not checkbox.SetDisabledTexture then return; end
+				if checkbox:GetChecked() then
+					if E.private.skins.checkBoxSkin then
+						checkbox:SetDisabledTexture(E.Media.Textures.Melli)
+					else
+						checkbox:SetDisabledTexture(disabled)
+					end
+				else
+					checkbox:SetDisabledTexture("")
+				end
+			end)
+
+			hooksecurefunc(frame, "SetNormalTexture", function(checkbox, texPath)
+				if texPath ~= "" then checkbox:SetNormalTexture("") end
+			end)
+			hooksecurefunc(frame, "SetPushedTexture", function(checkbox, texPath)
+				if texPath ~= "" then checkbox:SetPushedTexture("") end
+			end)
+			hooksecurefunc(frame, "SetHighlightTexture", function(checkbox, texPath)
+				if texPath ~= "" then checkbox:SetHighlightTexture("") end
+			end)
+			hooksecurefunc(frame, "SetCheckedTexture", function(checkbox, texPath)
+				if texPath == E.Media.Textures.Melli or texPath == check then return end
+				if E.private.skins.checkBoxSkin then
+					checkbox:SetCheckedTexture(E.Media.Textures.Melli)
+				else
+					checkbox:SetCheckedTexture(check)
+				end
+			end)
+		end
+
+		frame.isSkinned = true
 	end
-
-	frame.isSkinned = true
 end
 
 function S:HandleRadioButton(Button)
@@ -1340,7 +1343,7 @@ function S:Initialize()
 	end
 
 	-- Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)
-	if E.private.skins.ace3.enable then
+	if E.private.skins.ace3Enable then
 		for _, n in next, S.EarlyAceWidgets do
 			if n.SetLayout then
 				S:Ace3_RegisterAsContainer(n)

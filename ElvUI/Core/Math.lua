@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Lua functions
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
 local format, strsub, strupper, gsub, gmatch = format, strsub, strupper, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
@@ -16,21 +15,21 @@ local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
 E.ShortPrefixStyles = {
-	['TCHINESE'] = {{1e8,'億'}, {1e4,'萬'}},
-	['CHINESE'] = {{1e8,'亿'}, {1e4,'万'}},
-	['ENGLISH'] = {{1e12,'T'}, {1e9,'B'}, {1e6,'M'}, {1e3,'K'}},
-	['GERMAN'] = {{1e12,'Bio'}, {1e9,'Mrd'}, {1e6,'Mio'}, {1e3,'Tsd'}},
-	['KOREAN'] = {{1e8,'억'}, {1e4,'만'}, {1e3,'천'}},
-	['METRIC'] = {{1e12,'T'}, {1e9,'G'}, {1e6,'M'}, {1e3,'k'}}
+	TCHINESE = {{1e8,'億'}, {1e4,'萬'}},
+	CHINESE = {{1e8,'亿'}, {1e4,'万'}},
+	ENGLISH = {{1e12,'T'}, {1e9,'B'}, {1e6,'M'}, {1e3,'K'}},
+	GERMAN = {{1e12,'Bio'}, {1e9,'Mrd'}, {1e6,'Mio'}, {1e3,'Tsd'}},
+	KOREAN = {{1e8,'억'}, {1e4,'만'}, {1e3,'천'}},
+	METRIC = {{1e12,'T'}, {1e9,'G'}, {1e6,'M'}, {1e3,'k'}}
 }
 
 E.GetFormattedTextStyles = {
-	['CURRENT'] = '%s',
-	['CURRENT_MAX'] = '%s - %s',
-	['CURRENT_PERCENT'] = '%s - %.1f%%',
-	['CURRENT_MAX_PERCENT'] = '%s - %s | %.1f%%',
-	['PERCENT'] = '%.1f%%',
-	['DEFICIT'] = '-%s',
+	CURRENT = '%s',
+	CURRENT_MAX = '%s - %s',
+	CURRENT_PERCENT = '%s - %.1f%%',
+	CURRENT_MAX_PERCENT = '%s - %s | %.1f%%',
+	PERCENT = '%.1f%%',
+	DEFICIT = '-%s',
 }
 
 function E:BuildPrefixValues()
@@ -54,7 +53,7 @@ function E:ShortValue(value, dec)
 	local abs_value = value<0 and -value or value
 	local decimal = dec and format('%%.%df', tonumber(dec) or 0)
 
-	for i=1, #E.ShortPrefixValues do
+	for i = 1, #E.ShortPrefixValues do
 		if abs_value >= E.ShortPrefixValues[i][1] then
 			if decimal then
 				return format(decimal..E.ShortPrefixValues[i][2], value / E.ShortPrefixValues[i][1])
@@ -90,7 +89,7 @@ end
 function E:TextGradient(text, ...)
 	local msg, len, idx = '', utf8len(text), 0
 
-	for i=1, len do
+	for i = 1, len do
 		local x = utf8sub(text, i, i)
 		if strmatch(x, '%s') then
 			msg = msg .. x
@@ -367,6 +366,8 @@ E.TimeFormats = { -- short / indicator color
 	[4] = {'%.1fs', '%.1f%ss|r'},
 	[5] = {'%d:%02d', '%d%s:|r%02d'}, --mmss
 	[6] = {'%d:%02d', '%d%s:|r%02d'}, --hhmm
+	[7] = {'%dm %02ds', '%d%sm|r %02d%ss|r'}, --mmss2
+	[8] = {'%dh %02dm', '%d%sh|r %02d%sm|r'}, --hhmm2
 }
 
 for _, x in pairs(E.TimeFormats) do
@@ -440,9 +441,9 @@ end
 
 --Money text formatting, code taken from Scrooge by thelibrarian ( http://www.wowace.com/addons/scrooge/ )
 local COLOR_COPPER, COLOR_SILVER, COLOR_GOLD = '|cffeda55f', '|cffc7c7cf', '|cffffd700'
-local ICON_COPPER = '|TInterface\\MoneyFrame\\UI-CopperIcon:12:12|t'
-local ICON_SILVER = '|TInterface\\MoneyFrame\\UI-SilverIcon:12:12|t'
-local ICON_GOLD = '|TInterface\\MoneyFrame\\UI-GoldIcon:12:12|t'
+local ICON_COPPER = [[|TInterface\MoneyFrame\UI-CopperIcon:12:12|t]]
+local ICON_SILVER = [[|TInterface\MoneyFrame\UI-SilverIcon:12:12|t]]
+local ICON_GOLD = [[|TInterface\MoneyFrame\UI-GoldIcon:12:12|t]]
 function E:FormatMoney(amount, style, textonly)
 	local coppername = textonly and L["copperabbrev"] or ICON_COPPER
 	local silvername = textonly and L["silverabbrev"] or ICON_SILVER

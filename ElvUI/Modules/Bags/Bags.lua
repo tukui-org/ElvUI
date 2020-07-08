@@ -4,13 +4,12 @@ local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
 local Search = E.Libs.ItemSearch
 
---Lua functions
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
 local tinsert, tremove, twipe, tmaxn = tinsert, tremove, wipe, table.maxn
 local next, floor, ceil, abs = next, floor, ceil, abs
 local format, sub = format, strsub
---WoW API / Variables
+
 local GetCVarBool = GetCVarBool
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
@@ -33,7 +32,6 @@ local GetContainerItemLink = GetContainerItemLink
 local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
-local GetCurrencyLink = GetCurrencyLink
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
 local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 local GetGuildBankItemLink = GetGuildBankItemLink
@@ -43,10 +41,8 @@ local GetItemQualityColor = GetItemQualityColor
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
-local HandleModifiedItemClick = HandleModifiedItemClick
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
-local IsModifiedClick = IsModifiedClick
 local IsReagentBankUnlocked = IsReagentBankUnlocked
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local PickupContainerItem = PickupContainerItem
@@ -68,14 +64,16 @@ local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
+local ToggleAllBags = ToggleAllBags
 local UseContainerItem = UseContainerItem
-
+local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local hooksecurefunc = hooksecurefunc
 
+local BAG_FILTER_ICONS = BAG_FILTER_ICONS
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
 local BAG_FILTER_IGNORE = BAG_FILTER_IGNORE
@@ -149,7 +147,7 @@ end
 function B:DisableBlizzard()
 	_G.BankFrame:UnregisterAllEvents()
 
-	for i=1, NUM_CONTAINER_FRAMES do
+	for i = 1, NUM_CONTAINER_FRAMES do
 		_G['ContainerFrame'..i]:UnregisterAllEvents()
 		_G['ContainerFrame'..i]:Kill()
 	end
@@ -173,7 +171,7 @@ function B:UpdateSearch()
 	local prevSearch = SEARCH_STRING
 	if #search > MIN_REPEAT_CHARACTERS then
 		local repeatChar = true
-		for i=1, MIN_REPEAT_CHARACTERS, 1 do
+		for i = 1, MIN_REPEAT_CHARACTERS, 1 do
 			if sub(search,(0-i), (0-i)) ~= sub(search,(-1-i),(-1-i)) then
 				repeatChar = false
 				break
@@ -415,10 +413,15 @@ end
 
 function B:SCRAPPING_MACHINE_SHOW()
 	E:Delay(0.1, B.Layout, B)
+
+	if not B.BagFrame:IsShown() then
+		ToggleAllBags()
+	end
 end
 
 function B:SCRAPPING_MACHINE_CLOSE()
 	E:Delay(0.1, B.Layout, B)
+	ToggleAllBags()
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -643,7 +646,7 @@ end
 
 function B:UpdateBagSlots(frame, bagID)
 	if bagID == REAGENTBANK_CONTAINER then
-		for i=1, B.REAGENTBANK_SIZE do
+		for i = 1, B.REAGENTBANK_SIZE do
 			B:UpdateReagentSlot(i)
 		end
 	else
@@ -1154,11 +1157,11 @@ function B:UpdateTokens()
 		button.icon:SetTexture(icon)
 
 		if B.db.currencyFormat == 'ICON_TEXT' then
-			button.text:SetText(name..': '..count)
+			button.text:SetText(name..': '..BreakUpLargeNumbers(count))
 		elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
-			button.text:SetText(E:AbbreviateString(name)..': '..count)
+			button.text:SetText(E:AbbreviateString(name)..': '..BreakUpLargeNumbers(count))
 		elseif B.db.currencyFormat == 'ICON' then
-			button.text:SetText(count)
+			button.text:SetText(BreakUpLargeNumbers(count))
 		end
 
 		button.currencyID = currencyID
@@ -1188,23 +1191,6 @@ function B:UpdateTokens()
 			f.currencyButton[2]:Point('BOTTOM', f.currencyButton, 'BOTTOM', -(f.currencyButton[2].text:GetWidth() / 3), 3)
 			f.currencyButton[3]:Point('BOTTOMRIGHT', f.currencyButton, 'BOTTOMRIGHT', -(f.currencyButton[3].text:GetWidth()) - (f.currencyButton[3]:GetWidth() / 2), 3)
 		end
-	end
-end
-
-function B:Token_OnEnter()
-	local GameTooltip = _G.GameTooltip
-	GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
-	GameTooltip:SetBackpackToken(self:GetID())
-
-	if TT.db.spellID then
-		GameTooltip:AddLine(format("|cFFCA3C3C%s|r %d", _G.ID, self.currencyID))
-		GameTooltip:Show()
-	end
-end
-
-function B:Token_OnClick()
-	if IsModifiedClick('CHATLINK') then
-		HandleModifiedItemClick(GetCurrencyLink(self.currencyID))
 	end
 end
 
@@ -1717,20 +1703,16 @@ function B:ConstructContainerFrame(name, isBank)
 		f.currencyButton:Height(22)
 
 		for i = 1, MAX_WATCHED_TOKENS do
-			f.currencyButton[i] = CreateFrame('Button', f:GetName()..'CurrencyButton'..i, f.currencyButton)
+			f.currencyButton[i] = CreateFrame('Button', f:GetName()..'CurrencyButton'..i, f.currencyButton, 'BackpackTokenTemplate')
 			f.currencyButton[i]:Size(16)
 			f.currencyButton[i]:SetTemplate()
 			f.currencyButton[i]:SetID(i)
-			f.currencyButton[i].icon = f.currencyButton[i]:CreateTexture(nil, 'OVERLAY')
 			f.currencyButton[i].icon:SetInside()
 			f.currencyButton[i].icon:SetTexCoord(unpack(E.TexCoords))
 			f.currencyButton[i].text = f.currencyButton[i]:CreateFontString(nil, 'OVERLAY')
 			f.currencyButton[i].text:Point('LEFT', f.currencyButton[i], 'RIGHT', 2, 0)
 			f.currencyButton[i].text:FontTemplate()
 
-			f.currencyButton[i]:SetScript('OnEnter', B.Token_OnEnter)
-			f.currencyButton[i]:SetScript('OnLeave', GameTooltip_Hide)
-			f.currencyButton[i]:SetScript('OnClick', B.Token_OnClick)
 			f.currencyButton[i]:Hide()
 		end
 
@@ -1812,11 +1794,11 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.icon:SetInside()
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
 
-	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY')
+	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY', nil, 1)
 	slot.itemLevel:Point('BOTTOMRIGHT', 0, 2)
 	slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
-	slot.bindType = slot:CreateFontString(nil, 'OVERLAY')
+	slot.bindType = slot:CreateFontString(nil, 'OVERLAY', nil, 1)
 	slot.bindType:Point('TOP', 0, -2)
 	slot.bindType:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
@@ -2337,8 +2319,8 @@ function B:Initialize()
 	}
 
 	B.QuestColors = {
-		['questStarter'] = {B.db.colors.items.questStarter.r, B.db.colors.items.questStarter.g, B.db.colors.items.questStarter.b},
-		['questItem'] = {B.db.colors.items.questItem.r, B.db.colors.items.questItem.g, B.db.colors.items.questItem.b},
+		questStarter = {B.db.colors.items.questStarter.r, B.db.colors.items.questStarter.g, B.db.colors.items.questStarter.b},
+		questItem = {B.db.colors.items.questItem.r, B.db.colors.items.questItem.g, B.db.colors.items.questItem.b},
 	}
 
 	B:LoadBagBar()
@@ -2402,6 +2384,8 @@ function B:Initialize()
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
+	B:RegisterEvent('AUCTION_HOUSE_SHOW', 'OpenBags')
+	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseBags')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
 	B:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')

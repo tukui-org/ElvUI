@@ -1,5 +1,4 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local Skins = E:GetModule('Skins')
 
 local wipe, sort, unpack = wipe, sort, unpack
 local next, pairs, tinsert = next, pairs, tinsert
@@ -31,18 +30,18 @@ function E:GetDisplayMode()
 end
 
 local EnglishClassName = {
-	['DEATHKNIGHT'] = 'Death Knight',
-	['DEMONHUNTER'] = 'Demon Hunter',
-	['DRUID'] = 'Druid',
-	['HUNTER'] = 'Hunter',
-	['MAGE'] = 'Mage',
-	['MONK'] = 'Monk',
-	['PALADIN'] = 'Paladin',
-	['PRIEST'] = 'Priest',
-	['ROGUE'] = 'Rogue',
-	['SHAMAN'] = 'Shaman',
-	['WARLOCK'] = 'Warlock',
-	['WARRIOR'] = 'Warrior',
+	DEATHKNIGHT = 'Death Knight',
+	DEMONHUNTER = 'Demon Hunter',
+	DRUID = 'Druid',
+	HUNTER = 'Hunter',
+	MAGE = 'Mage',
+	MONK = 'Monk',
+	PALADIN = 'Paladin',
+	PRIEST = 'Priest',
+	ROGUE = 'Rogue',
+	SHAMAN = 'Shaman',
+	WARLOCK = 'Warlock',
+	WARRIOR = 'Warrior',
 }
 
 local EnglishSpecName = {
@@ -154,7 +153,7 @@ function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent,
 	leftDivider:Height(8)
 	leftDivider:Point('LEFT', section.Header, 'LEFT', 5, 0)
 	leftDivider:Point('RIGHT', section.Header.Text, 'LEFT', -5, 0)
-	leftDivider:SetTexture('Interface\\Tooltips\\UI-Tooltip-Border')
+	leftDivider:SetTexture([[Interface\Tooltips\UI-Tooltip-Border]])
 	leftDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 	section.Header.LeftDivider = leftDivider
 
@@ -162,7 +161,7 @@ function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent,
 	rightDivider:Height(8)
 	rightDivider:Point('RIGHT', section.Header, 'RIGHT', -5, 0)
 	rightDivider:Point('LEFT', section.Header.Text, 'RIGHT', 5, 0)
-	rightDivider:SetTexture('Interface\\Tooltips\\UI-Tooltip-Border')
+	rightDivider:SetTexture([[Interface\Tooltips\UI-Tooltip-Border]])
 	rightDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 	section.Header.RightDivider = rightDivider
 

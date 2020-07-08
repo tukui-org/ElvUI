@@ -4,11 +4,10 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Lua functions
 local _G = _G
 local max = max
 local tinsert = tinsert
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
 local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
@@ -16,58 +15,59 @@ local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Target
 
 function UF:Construct_PlayerFrame(frame)
-	frame.ThreatIndicator = self:Construct_Threat(frame)
-	frame.Health = self:Construct_HealthBar(frame, true, true, 'RIGHT')
-	frame.Power = self:Construct_PowerBar(frame, true, true, 'LEFT')
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
+	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
+	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
 	frame.Power.frequentUpdates = true
-	frame.Name = self:Construct_NameText(frame)
-	frame.Portrait3D = self:Construct_Portrait(frame, 'model')
-	frame.Portrait2D = self:Construct_Portrait(frame, 'texture')
-	frame.Buffs = self:Construct_Buffs(frame)
-	frame.Debuffs = self:Construct_Debuffs(frame)
-	frame.Castbar = self:Construct_Castbar(frame, L["Player Castbar"])
+	frame.Name = UF:Construct_NameText(frame)
+	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
+	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
+	frame.Buffs = UF:Construct_Buffs(frame)
+	frame.Debuffs = UF:Construct_Debuffs(frame)
+	frame.Castbar = UF:Construct_Castbar(frame, L["Player Castbar"])
 
 	--Create a holder frame all "classbars" can be positioned into
 	frame.ClassBarHolder = CreateFrame("Frame", nil, frame)
 	frame.ClassBarHolder:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
 
 	--Combo points was moved to the ClassPower element, so all classes need to have a ClassBar now.
-	frame.ClassPower = self:Construct_ClassBar(frame)
+	frame.ClassPower = UF:Construct_ClassBar(frame)
 	frame.ClassBar = 'ClassPower'
 
 	--Some classes need another set of different classbars.
 	if E.myclass == "DEATHKNIGHT" then
-		frame.Runes = self:Construct_DeathKnightResourceBar(frame)
+		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
 	elseif E.myclass == "DRUID" then
-		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
+		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	elseif E.myclass == "MONK" then
-		frame.Stagger = self:Construct_Stagger(frame)
+		frame.Stagger = UF:Construct_Stagger(frame)
 	elseif E.myclass == 'PRIEST' then
-		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
+		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	elseif E.myclass == 'SHAMAN' then
-		frame.AdditionalPower = self:Construct_AdditionalPowerBar(frame)
+		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
 	end
 
-	frame.PowerPrediction = self:Construct_PowerPrediction(frame) -- must be AFTER Power & AdditionalPower
-	frame.MouseGlow = self:Construct_MouseGlow(frame)
-	frame.TargetGlow = self:Construct_TargetGlow(frame)
-	frame.RaidTargetIndicator = self:Construct_RaidIcon(frame)
-	frame.RaidRoleFramesAnchor = self:Construct_RaidRoleFrames(frame)
-	frame.RestingIndicator = self:Construct_RestingIndicator(frame)
+	frame.PowerPrediction = UF:Construct_PowerPrediction(frame) -- must be AFTER Power & AdditionalPower
+	frame.MouseGlow = UF:Construct_MouseGlow(frame)
+	frame.TargetGlow = UF:Construct_TargetGlow(frame)
+	frame.FocusGlow = UF:Construct_FocusGlow(frame)
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
+	frame.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(frame)
+	frame.RestingIndicator = UF:Construct_RestingIndicator(frame)
 	frame.ResurrectIndicator = UF:Construct_ResurrectionIcon(frame)
-	frame.CombatIndicator = self:Construct_CombatIndicator(frame)
-	frame.PvPText = self:Construct_PvPIndicator(frame)
-	frame.DebuffHighlight = self:Construct_DebuffHighlight(frame)
-	frame.HealthPrediction = self:Construct_HealComm(frame)
-	frame.AuraBars = self:Construct_AuraBarHeader(frame)
-	frame.InfoPanel = self:Construct_InfoPanel(frame)
-	frame.PvPIndicator = self:Construct_PvPIcon(frame)
-	frame.Fader = self:Construct_Fader()
-	frame.Cutaway = self:Construct_Cutaway(frame)
+	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
+	frame.PvPText = UF:Construct_PvPIndicator(frame)
+	frame.AuraHighlight = UF:Construct_AuraHighlight(frame)
+	frame.HealthPrediction = UF:Construct_HealComm(frame)
+	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
+	frame.InfoPanel = UF:Construct_InfoPanel(frame)
+	frame.PvPIndicator = UF:Construct_PvPIcon(frame)
+	frame.Fader = UF:Construct_Fader()
+	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
-	frame:Point('BOTTOMLEFT', E.UIParent, 'BOTTOM', -413, 68) --Set to default position
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,generalGroup')
 
 	frame.unitframeType = "player"
@@ -106,51 +106,33 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
+	if db.strataAndLevel and db.strataAndLevel.useCustomStrata then
+		frame:SetFrameStrata(db.strataAndLevel.frameStrata)
+	end
+
+	if db.strataAndLevel and db.strataAndLevel.useCustomLevel then
+		frame:SetFrameLevel(db.strataAndLevel.frameLevel)
+	end
+
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	UF:Configure_InfoPanel(frame)
-
-	--Threat
 	UF:Configure_Threat(frame)
-
-	--Rest Icon
 	UF:Configure_RestingIndicator(frame)
-
-	--Combat Icon
 	UF:Configure_CombatIndicator(frame)
-
-	--Resource Bars
 	UF:Configure_ClassBar(frame)
-
-	--Health
 	UF:Configure_HealthBar(frame)
-
-	--Name
 	UF:UpdateNameSettings(frame)
-
-	--PvP
 	UF:Configure_PVPIndicator(frame)
-
-	--Power
 	UF:Configure_Power(frame)
-
-	-- Power Predicition
 	UF:Configure_PowerPrediction(frame)
-
-	--Portrait
 	UF:Configure_Portrait(frame)
-
-	--Auras
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)
-
-	-- Resurrect
 	UF:Configure_ResurrectionIcon(frame)
-
-	--Castbar
 	frame:DisableElement('Castbar')
 	UF:Configure_Castbar(frame)
 
@@ -162,36 +144,21 @@ function UF:Update_PlayerFrame(frame, db)
 		CastingBarFrame_SetUnit(_G.PetCastingBarFrame, nil)
 	end
 
-	--Fader
 	UF:Configure_Fader(frame)
-
-	--Debuff Highlight
-	UF:Configure_DebuffHighlight(frame)
-
-	--Raid Icon
+	UF:Configure_AuraHighlight(frame)
 	UF:Configure_RaidIcon(frame)
-
-	--OverHealing
 	UF:Configure_HealComm(frame)
-
-	--AuraBars
 	UF:Configure_AuraBars(frame)
+	UF:Configure_PVPIcon(frame)
+	UF:Configure_RaidRoleIcons(frame)
+	UF:Configure_Cutaway(frame)
+	UF:Configure_CustomTexts(frame)
+
 	--We need to update Target AuraBars if attached to Player AuraBars
 	--mainly because of issues when using power offset on player and switching to/from middle orientation
-	if E.db.unitframe.units.target.aurabar.attachTo == "PLAYER_AURABARS" and ElvUF_Target then
-		UF:Configure_AuraBars(ElvUF_Target)
+	if E.db.unitframe.units.target.aurabar.attachTo == "PLAYER_AURABARS" and UF.target then
+		UF:Configure_AuraBars(UF.target)
 	end
-
-	--PvP & Prestige Icon
-	UF:Configure_PVPIcon(frame)
-
-	UF:Configure_RaidRoleIcons(frame)
-
-	--Cutaway
-	UF:Configure_Cutaway(frame)
-
-	--CustomTexts
-	UF:Configure_CustomTexts(frame)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")

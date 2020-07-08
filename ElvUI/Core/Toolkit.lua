@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local unpack, type, select, getmetatable, assert, pairs, pcall = unpack, type, select, getmetatable, assert, pairs, pcall
 local tonumber = tonumber
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
@@ -25,7 +24,7 @@ function E:SafeGetPoint(frame)
 end
 
 -- ls, Azil, and Simpy made this to replace Blizzard's SetBackdrop API while the textures can't snap
-E.PixelBorders = {'TOPLEFT', 'TOPRIGHT', 'BOTTOMLEFT', 'BOTTOMRIGHT', 'TOP', 'BOTTOM', 'LEFT', 'RIGHT'}
+E.PixelBorders = {'TOP', 'BOTTOM', 'LEFT', 'RIGHT'}
 function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRight, insetTop, insetBottom)
 	if not frame.pixelBorders then return end
 
@@ -48,15 +47,10 @@ function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRigh
 		frame.pixelBorders.CENTER:Point('BOTTOMRIGHT', frame)
 	end
 
-	frame.pixelBorders.TOPLEFT:Size(edgeSize)
-	frame.pixelBorders.TOPRIGHT:Size(edgeSize)
-	frame.pixelBorders.BOTTOMLEFT:Size(edgeSize)
-	frame.pixelBorders.BOTTOMRIGHT:Size(edgeSize)
-
-	frame.pixelBorders.TOP:Height(edgeSize)
-	frame.pixelBorders.BOTTOM:Height(edgeSize)
-	frame.pixelBorders.LEFT:Width(edgeSize)
-	frame.pixelBorders.RIGHT:Width(edgeSize)
+	frame.pixelBorders.TOP:SetHeight(edgeSize)
+	frame.pixelBorders.BOTTOM:SetHeight(edgeSize)
+	frame.pixelBorders.LEFT:SetWidth(edgeSize)
+	frame.pixelBorders.RIGHT:SetWidth(edgeSize)
 end
 
 function E:GetBackdropColor(frame)
@@ -120,22 +114,17 @@ function E:BuildPixelBorders(frame, noSecureHook)
 
 		borders.CENTER = frame:CreateTexture('$parentPixelBorderCENTER', 'BACKGROUND', nil, -1)
 
-		borders.TOPLEFT:Point('BOTTOMRIGHT', borders.CENTER, 'TOPLEFT', 1, -1)
-		borders.TOPRIGHT:Point('BOTTOMLEFT', borders.CENTER, 'TOPRIGHT', -1, -1)
-		borders.BOTTOMLEFT:Point('TOPRIGHT', borders.CENTER, 'BOTTOMLEFT', 1, 1)
-		borders.BOTTOMRIGHT:Point('TOPLEFT', borders.CENTER, 'BOTTOMRIGHT', -1, 1)
+		borders.TOP:Point('BOTTOMLEFT', borders.CENTER, 'TOPLEFT', 1, -1)
+		borders.TOP:Point('BOTTOMRIGHT', borders.CENTER, 'TOPRIGHT', -1, -1)
 
-		borders.TOP:Point('TOPLEFT', borders.TOPLEFT, 'TOPRIGHT', 0, 0)
-		borders.TOP:Point('TOPRIGHT', borders.TOPRIGHT, 'TOPLEFT', 0, 0)
+		borders.BOTTOM:Point('TOPLEFT', borders.CENTER, 'BOTTOMLEFT', 1, 1)
+		borders.BOTTOM:Point('TOPRIGHT', borders.CENTER, 'BOTTOMRIGHT', -1, 1)
 
-		borders.BOTTOM:Point('BOTTOMLEFT', borders.BOTTOMLEFT, 'BOTTOMRIGHT', 0, 0)
-		borders.BOTTOM:Point('BOTTOMRIGHT', borders.BOTTOMRIGHT, 'BOTTOMLEFT', 0, 0)
+		borders.LEFT:Point('TOPRIGHT', borders.TOP, 'TOPLEFT', 0, 0)
+		borders.LEFT:Point('BOTTOMRIGHT', borders.BOTTOM, 'BOTTOMLEFT', 0, 0)
 
-		borders.LEFT:Point('TOPLEFT', borders.TOPLEFT, 'BOTTOMLEFT', 0, 0)
-		borders.LEFT:Point('BOTTOMLEFT', borders.BOTTOMLEFT, 'TOPLEFT', 0, 0)
-
-		borders.RIGHT:Point('TOPRIGHT', borders.TOPRIGHT, 'BOTTOMRIGHT', 0, 0)
-		borders.RIGHT:Point('BOTTOMRIGHT', borders.BOTTOMRIGHT, 'TOPRIGHT', 0, 0)
+		borders.RIGHT:Point('TOPLEFT', borders.TOP, 'TOPRIGHT', 0, 0)
+		borders.RIGHT:Point('BOTTOMLEFT', borders.BOTTOM, 'BOTTOMRIGHT', 0, 0)
 
 		if not noSecureHook then
 			hooksecurefunc(frame, 'SetBackdropColor', E.HookedSetBackdropColor)
@@ -557,7 +546,7 @@ local function addapi(object)
 	end
 end
 
-local handled = {['Frame'] = true}
+local handled = {Frame = true}
 local object = CreateFrame('Frame')
 addapi(object)
 addapi(object:CreateTexture())

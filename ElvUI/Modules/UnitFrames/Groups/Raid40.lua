@@ -4,9 +4,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
---Lua functions
 local _G = _G
---WoW API / Variables
 local CreateFrame = CreateFrame
 -- GLOBALS: ElvUF_Raid40
 
@@ -28,7 +26,7 @@ function UF:Construct_Raid40Frames()
 	self.Debuffs = UF:Construct_Debuffs(self)
 	self.AuraWatch = UF:Construct_AuraWatch(self)
 	self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
-	self.DebuffHighlight = UF:Construct_DebuffHighlight(self)
+	self.AuraHighlight = UF:Construct_AuraHighlight(self)
 	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
 	self.SummonIndicator = UF:Construct_SummonIcon(self)
 	self.GroupRoleIndicator = UF:Construct_RoleIcon(self)
@@ -36,6 +34,7 @@ function UF:Construct_Raid40Frames()
 	self.PhaseIndicator = UF:Construct_PhaseIcon(self)
 	self.MouseGlow = UF:Construct_MouseGlow(self)
 	self.TargetGlow = UF:Construct_TargetGlow(self)
+	self.FocusGlow = UF:Construct_FocusGlow(self)
 	self.InfoPanel = UF:Construct_InfoPanel(self)
 	self.ThreatIndicator = UF:Construct_Threat(self)
 	self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
@@ -49,9 +48,6 @@ function UF:Construct_Raid40Frames()
 
 	self.unitframeType = "raid40"
 
-	UF:Update_StatusBars()
-	UF:Update_FontStrings()
-
 	return self
 end
 
@@ -61,7 +57,7 @@ function UF:Update_Raid40Header(header, db)
 
 	if not parent.positioned then
 		parent:ClearAllPoints()
-		parent:Point("BOTTOMLEFT", E.UIParent, "BOTTOMLEFT", 4, 195)
+		parent:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, 482)
 		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid-40 Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raid40,generalGroup')
 		parent.positioned = true
 	end
@@ -131,7 +127,7 @@ function UF:Update_Raid40Frames(frame, db)
 	UF:Configure_RaidIcon(frame)
 	UF:Configure_ResurrectionIcon(frame)
 	UF:Configure_SummonIcon(frame)
-	UF:Configure_DebuffHighlight(frame)
+	UF:Configure_AuraHighlight(frame)
 	UF:Configure_RoleIcon(frame)
 	UF:Configure_HealComm(frame)
 	UF:Configure_RaidRoleIcons(frame)

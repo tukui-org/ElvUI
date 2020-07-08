@@ -88,7 +88,7 @@ function NP:Power_UpdateColor(_, unit)
 	end
 end
 
-function NP:Power_PostUpdate(unit, cur, min, max)
+function NP:Power_PostUpdate(_, cur) --unit, cur, min, max
 	local db = NP.db.units[self.__owner.frameType]
 
 	if not db then return end

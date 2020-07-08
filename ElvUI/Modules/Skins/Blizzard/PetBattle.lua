@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local pairs, unpack = pairs, unpack
---WoW API / Variables
+
 local _G = _G
 local C_PetBattles_GetPetType = C_PetBattles.GetPetType
 local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
@@ -96,7 +95,7 @@ function S:PetBattleFrame()
 
 		infoBar.FirstAttack = infoBar:CreateTexture(nil, "ARTWORK")
 		infoBar.FirstAttack:Size(30)
-		infoBar.FirstAttack:SetTexture("Interface\\PetBattles\\PetBattle-StatIcons")
+		infoBar.FirstAttack:SetTexture([[Interface\PetBattles\PetBattle-StatIcons]])
 		if index == 1 then
 			infoBar.HealthBarBackdrop:Point('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -E.Border, E.Border)
 			infoBar.HealthBarBackdrop:Point('BOTTOMLEFT', infoBar.ActualHealthBar, 'BOTTOMLEFT', -E.Border, -E.Border)

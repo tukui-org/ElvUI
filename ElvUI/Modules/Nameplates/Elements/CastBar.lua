@@ -1,12 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local CH = E:GetModule('Chat')
 
 local _G = _G
-local unpack, abs = unpack, abs
+local abs = abs
+local unpack = unpack
 local strjoin = strjoin
+local strmatch = strmatch
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
-local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local INTERRUPTED = INTERRUPTED
 
@@ -84,6 +86,7 @@ function NP:Castbar_PostCastStart(unit)
 end
 
 function NP:Castbar_PostCastFail()
+	self:SetStatusBarColor(.3, .3, .3)
 	NP:StyleFilterUpdate(self.__owner, 'FAKE_Casting')
 end
 
@@ -110,6 +113,7 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')
 	Castbar.Icon:SetTexCoord(unpack(E.TexCoords))
 	Castbar.Icon:SetInside()
+
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
@@ -118,6 +122,7 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Text:SetJustifyH('LEFT')
 	Castbar.Text:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	Castbar.Text:SetWordWrap(false)
 
 	Castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
 	Castbar.CustomDelayText = NP.Castbar_CustomDelayText
@@ -141,22 +146,22 @@ end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
-	if (event == "SPELL_INTERRUPT") and targetGUID and (sourceName and sourceName ~= "") then
-		local plate = NP.PlateGUID[targetGUID]
+	if (event == 'SPELL_INTERRUPT' or event == 'SPELL_PERIODIC_INTERRUPT') and targetGUID and (sourceName and sourceName ~= "") then
+		local plate, classColor = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
 			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
 			if (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
 				if db.castbar.timeToHold > 0 then
+					local name = strmatch(sourceName, '([^%-]+).*')
 					if db.castbar.sourceInterruptClassColor then
-						local _, sourceClass = GetPlayerInfoByGUID(sourceGUID)
-						if sourceClass then
-							local classColor = E:ClassColor(sourceClass)
-							sourceClass = classColor and classColor.colorStr
+						local data = CH:GetPlayerInfoByGUID(sourceGUID)
+						if data and data.classColor then
+							classColor = data.classColor.colorStr
 						end
 
-						plate.Castbar.Text:SetText(INTERRUPTED.." > "..(sourceClass and strjoin('', '|c', sourceClass, sourceName) or sourceName))
+						plate.Castbar.Text:SetFormattedText("%s > %s", INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
 					else
-						plate.Castbar.Text:SetText(INTERRUPTED.." > "..sourceName)
+						plate.Castbar.Text:SetFormattedText("%s > %s", INTERRUPTED, name)
 					end
 				end
 			end
@@ -198,9 +203,11 @@ function NP:Update_Castbar(nameplate)
 			nameplate.Castbar.Time:Point('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
 			nameplate.Castbar.Text:Point('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
 		else
-			nameplate.Castbar.Time:Point('RIGHT', nameplate.Castbar, 'RIGHT', -4, 0)
-			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', 4, 0)
+			nameplate.Castbar.Time:Point('RIGHT', nameplate.Castbar, 'RIGHT', -1, 0)
+			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
 		end
+
+		nameplate.Castbar.Text:Point('RIGHT', nameplate.Castbar, 'RIGHT', -20, 0)
 
 		if db.castbar.hideTime then
 			nameplate.Castbar.Time:Hide()

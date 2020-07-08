@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Lua functions
 local _G = _G
 local tinsert = tinsert
---WoW API / Variables
 local CreateFrame = CreateFrame
 local ToggleFrame = ToggleFrame
 local GetCursorPosition = GetCursorPosition
@@ -14,7 +12,6 @@ local BUTTON_WIDTH = 135
 
 local function OnClick(btn)
 	btn.func()
-
 	btn:GetParent():Hide()
 end
 
@@ -38,11 +35,11 @@ function E:DropDown(list, frame, xOffset, yOffset)
 	xOffset = xOffset or 0
 	yOffset = yOffset or 0
 
-	for i=1, #frame.buttons do
+	for i = 1, #frame.buttons do
 		frame.buttons[i]:Hide()
 	end
 
-	for i=1, #list do
+	for i = 1, #list do
 		if not frame.buttons[i] then
 			frame.buttons[i] = CreateFrame('Button', nil, frame)
 

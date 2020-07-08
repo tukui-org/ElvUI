@@ -1,66 +1,65 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
-local format, select, pairs = format, select, pairs
---WoW API / Variables
+local format, pairs, tonumber = format, pairs, tonumber
+local BreakUpLargeNumbers = BreakUpLargeNumbers
+local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMoney = GetMoney
+
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
 
--- Currencies we care about
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
-local Currencies = {
-	--BfA
-	["RICH_AZERITE_FRAGMENT"] = {ID = 1565, NAME = GetCurrencyInfo(1565), ICON = format(iconString, select(3, GetCurrencyInfo(1565)))},
-	["SEAFARERS_DUBLOON"] = {ID = 1710, NAME = GetCurrencyInfo(1710), ICON = format(iconString, select(3, GetCurrencyInfo(1710)))},
-	["SEAL_OF_WARTORN_FATE"] = {ID = 1580, NAME = GetCurrencyInfo(1580), ICON = format(iconString, select(3, GetCurrencyInfo(1580)))},
-	["WAR_RESOURCES"] = {ID = 1560, NAME = GetCurrencyInfo(1560), ICON = format(iconString, select(3, GetCurrencyInfo(1560)))},
-	["WAR_SUPPLIES"] = {ID = 1587, NAME = GetCurrencyInfo(1587), ICON = format(iconString, select(3, GetCurrencyInfo(1587)))},
-	["HONORBOUND_SERVICE_MEDAL"] = {ID = 1716, NAME = GetCurrencyInfo(1716), ICON = format(iconString, select(3, GetCurrencyInfo(1716)))},
-	["7TH_LEGION_SERVICE_MEDAL"] = {ID = 1717, NAME = GetCurrencyInfo(1717), ICON = format(iconString, select(3, GetCurrencyInfo(1717)))},
-	["TITAN_RESIDUUM"] = {ID = 1718, NAME = GetCurrencyInfo(1718), ICON = format(iconString, select(3, GetCurrencyInfo(1718)))},
-	["PRISMATIC_MANAPEARL"] = {ID = 1721, NAME = GetCurrencyInfo(1721), ICON = format(iconString, select(3, GetCurrencyInfo(1721)))},
-	["CORRUPTED_MEMENTOS"] = {ID = 1719, NAME = GetCurrencyInfo(1719), ICON = format(iconString, select(3, GetCurrencyInfo(1719)))},
-	["COALESCING_VISIONS"] = {ID = 1755, NAME = GetCurrencyInfo(1755), ICON = format(iconString, select(3, GetCurrencyInfo(1755)))},
-	["ECHOES_OF_NYALOTHA"] = {ID = 1803, NAME = GetCurrencyInfo(1803), ICON = format(iconString, select(3, GetCurrencyInfo(1803)))},
-	-- Other
-	["DARKMOON_PRIZE_TICKET"] = {ID = 515, NAME = GetCurrencyInfo(515), ICON = format(iconString, select(3, GetCurrencyInfo(515)))},
-}
-
--- CurrencyList for config
-local currencyList = {}
-for currency, data in pairs(Currencies) do
-	currencyList[currency] = data.NAME
-end
-currencyList.GOLD = BONUS_ROLL_REWARD_MONEY
-DT.CurrencyList = currencyList
+DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = 'Backpack' }
 
 local function OnClick()
 	_G.ToggleCharacter("TokenFrame")
 end
 
+local function GetInfo(id)
+	local name, num, icon = GetCurrencyInfo(id)
+	return num, name, (icon and format(iconString, icon)) or '136012'
+end
+
+local function AddInfo(id)
+	local num, name, icon = GetInfo(id)
+	DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
+end
+
 local goldText
 local function OnEvent(self)
 	goldText = E:FormatMoney(GetMoney(), E.db.datatexts.goldFormat or "BLIZZARD", not E.db.datatexts.goldCoins)
-	local chosenCurrency = Currencies[E.db.datatexts.currencies.displayedCurrency]
-	if E.db.datatexts.currencies.displayedCurrency == "GOLD" or chosenCurrency == nil then
+
+	local displayed = E.db.datatexts.currencies.displayedCurrency
+	if displayed == 'BACKPACK' then
+		local displayString = ''
+		for i = 1, 3 do
+			local _, num, icon = GetBackpackCurrencyInfo(i);
+			if num then
+				displayString = (i > 1 and displayString..' ' or displayString)..format("%s %s", format(iconString, icon), E:ShortValue(num))
+			end
+		end
+
+		self.text:SetText(displayString == '' and goldText or displayString)
+	elseif displayed == "GOLD" then
 		self.text:SetText(goldText)
 	else
-		local currencyAmount = select(2, GetCurrencyInfo(chosenCurrency.ID))
-		if E.db.datatexts.currencies.displayStyle == "ICON" then
-			self.text:SetFormattedText("%s %d", chosenCurrency.ICON, currencyAmount)
-		elseif E.db.datatexts.currencies.displayStyle == "ICON_TEXT" then
-			self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, chosenCurrency.NAME, currencyAmount)
+		local style = E.db.datatexts.currencies.displayStyle
+		local num, name, icon = GetInfo(tonumber(displayed))
+		if style == "ICON" then
+			self.text:SetFormattedText("%s %s", icon, E:ShortValue(num))
+		elseif style == "ICON_TEXT" then
+			self.text:SetFormattedText("%s %s %s", icon, name, E:ShortValue(num))
 		else --ICON_TEXT_ABBR
-			self.text:SetFormattedText("%s %s %d", chosenCurrency.ICON, E:AbbreviateString(chosenCurrency.NAME), currencyAmount)
+			self.text:SetFormattedText("%s %s %s", icon, E:AbbreviateString(name), E:ShortValue(num))
 		end
 	end
 end
 
+local faction = (E.myfaction == "Alliance" and 1717) or 1716
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
@@ -68,30 +67,21 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(EXPANSION_NAME7) --"BfA"
-	DT.tooltip:AddDoubleLine(Currencies.RICH_AZERITE_FRAGMENT.NAME, select(2, GetCurrencyInfo(Currencies.RICH_AZERITE_FRAGMENT.ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies.SEAFARERS_DUBLOON.NAME, select(2, GetCurrencyInfo(Currencies.SEAFARERS_DUBLOON.ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies.SEAL_OF_WARTORN_FATE.NAME, select(2, GetCurrencyInfo(Currencies.SEAL_OF_WARTORN_FATE.ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies.WAR_RESOURCES.NAME, select(2, GetCurrencyInfo(Currencies.WAR_RESOURCES.ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies.WAR_SUPPLIES.NAME, select(2, GetCurrencyInfo(Currencies.WAR_SUPPLIES.ID)), 1, 1, 1)
-	if E.myfaction == "Alliance" then
-		DT.tooltip:AddDoubleLine(Currencies['7TH_LEGION_SERVICE_MEDAL'].NAME, select(2, GetCurrencyInfo(Currencies['7TH_LEGION_SERVICE_MEDAL'].ID)), 1, 1, 1)
-	else
-		DT.tooltip:AddDoubleLine(Currencies.HONORBOUND_SERVICE_MEDAL.NAME, select(2, GetCurrencyInfo(Currencies.HONORBOUND_SERVICE_MEDAL.ID)), 1, 1, 1)
-	end
-	DT.tooltip:AddDoubleLine(Currencies.TITAN_RESIDUUM.NAME, select(2, GetCurrencyInfo(Currencies.TITAN_RESIDUUM.ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies.PRISMATIC_MANAPEARL.NAME, select(2, GetCurrencyInfo(Currencies.PRISMATIC_MANAPEARL.ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies.CORRUPTED_MEMENTOS.NAME, select(2, GetCurrencyInfo(Currencies.CORRUPTED_MEMENTOS.ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies.COALESCING_VISIONS.NAME, select(2, GetCurrencyInfo(Currencies.COALESCING_VISIONS.ID)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(Currencies.ECHOES_OF_NYALOTHA.NAME, select(2, GetCurrencyInfo(Currencies.ECHOES_OF_NYALOTHA.ID)), 1, 1, 1)
+	AddInfo(1710) -- SEAFARERS_DUBLOON
+	AddInfo(1580) -- SEAL_OF_WARTORN_FATE
+	AddInfo(1560) -- WAR_RESOURCES
+	AddInfo(faction) -- 7th Legion or Honorbound
+	AddInfo(1718) -- TITAN_RESIDUUM
+	AddInfo(1721) -- PRISMATIC_MANAPEARL
+	AddInfo(1719) -- CORRUPTED_MEMENTOS
+	AddInfo(1755) -- COALESCING_VISIONS
+	AddInfo(1803) -- ECHOES_OF_NYALOTHA
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(OTHER)
-	DT.tooltip:AddDoubleLine(Currencies.DARKMOON_PRIZE_TICKET.NAME, select(2, GetCurrencyInfo(Currencies.DARKMOON_PRIZE_TICKET.ID)), 1, 1, 1)
+	AddInfo(515) -- DARKMOON_PRIZE_TICKET
 
-	--[[
-		If the "Display In Tooltip" box is checked (on by default), then also display custom
-		currencies in the tooltip.
-	]]
+	-- If the "Display In Tooltip" box is checked (on by default), then also display custom currencies in the tooltip.
 	local shouldAddHeader = true
 	for _, info in pairs(E.global.datatexts.customCurrencies) do
 		if info.DISPLAY_IN_MAIN_TOOLTIP then
@@ -101,12 +91,11 @@ local function OnEnter(self)
 				shouldAddHeader = false
 			end
 
-			DT.tooltip:AddDoubleLine(info.NAME, select(2, GetCurrencyInfo(info.ID)), 1, 1, 1)
+			AddInfo(info.ID)
 		end
 	end
 
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Currencies', {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED", "CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, OnClick, OnEnter, nil, CURRENCY)
-
+DT:RegisterDatatext('Currencies', nil, {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED", "CHAT_MSG_CURRENCY", "CURRENCY_DISPLAY_UPDATE"}, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY)

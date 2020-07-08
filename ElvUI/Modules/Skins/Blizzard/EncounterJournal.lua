@@ -1,13 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack = unpack
 local select = select
 local pairs = pairs
 local rad = rad
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -154,7 +153,7 @@ local function ItemSetsFrame(_, button)
 		S:HandleIcon(button.Icon, true)
 		button.Border:SetAlpha(0)
 
-		if E.private.skins.parchmentRemover.enable then
+		if E.private.skins.parchmentRemoverEnable then
 			frame:StripTextures()
 			frame.ItemLevel:SetTextColor(1, 1, 1)
 			frame:CreateBackdrop("Transparent")
@@ -269,7 +268,7 @@ function S:Blizzard_EncounterJournal()
 
 	EncounterInfo.reset:ClearAllPoints()
 	EncounterInfo.reset:Point("TOPRIGHT", EncounterInfo.difficulty, "TOPLEFT", -10, 0)
-	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture("Interface\\EncounterJournal\\UI-EncounterJournalTextures")
+	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
 
 	S:HandleScrollBar(EncounterInfo.bossesScroll.ScrollBar, 6)
@@ -361,7 +360,7 @@ function S:Blizzard_EncounterJournal()
 			s:SetTexture()
 		end)
 
-		if E.private.skins.parchmentRemover.enable then
+		if E.private.skins.parchmentRemoverEnable then
 			item.boss:SetTextColor(1, 1, 1)
 			item.slot:SetTextColor(1, 1, 1)
 			item.armorType:SetTextColor(1, 1, 1)
@@ -393,7 +392,7 @@ function S:Blizzard_EncounterJournal()
 		end
 	end
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		local suggestFrame = _G.EncounterJournal.suggestFrame
 
 		-- Suggestion 1
@@ -473,7 +472,7 @@ function S:Blizzard_EncounterJournal()
 					sugg.reward.icon.backdrop:SetOutside(sugg.reward.icon)
 				end
 
-				local r, g, b = unpack(E["media"].bordercolor)
+				local r, g, b = unpack(E.media.bordercolor)
 				if rewardData.itemID then
 					local quality = select(3, GetItemInfo(rewardData.itemID))
 					if quality and quality > 1 then
@@ -508,7 +507,7 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(_G.EncounterJournal.LootJournal.ItemSetsFrame.ClassButton, true)
 	hooksecurefunc(_G.EncounterJournal.LootJournal.ItemSetsFrame, "ConfigureItemButton", ItemSetsFrame)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		--Boss selection buttons
 		hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
 

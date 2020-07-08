@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
+local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
 -- credit: Aftermathh
@@ -15,9 +16,10 @@ function S:Blizzard_CombatLog()
 
 	local FontContainer = _G.ChatFrame2.FontStringContainer
 	if FontContainer then
+		local point1, point2 = E.PixelMode and 2 or 1, E.PixelMode and 0 or 1
 		Button:ClearAllPoints()
-		Button:Point('BOTTOMLEFT', FontContainer, 'TOPLEFT', -1, 1)
-		Button:Point('BOTTOMRIGHT', FontContainer, 'TOPRIGHT', E.PixelMode and 4 or 0, 1)
+		Button:Point('BOTTOMLEFT', FontContainer, 'TOPLEFT', -point1, point2)
+		Button:Point('BOTTOMRIGHT', FontContainer, 'TOPRIGHT', point1, point2)
 	end
 
 	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', function()

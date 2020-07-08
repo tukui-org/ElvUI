@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
 function S:MerchantFrame()
@@ -31,12 +29,15 @@ function S:MerchantFrame()
 
 	S:HandleDropDownBox(_G.MerchantFrameLootFilter)
 
+	-- Center the columns on the frame
+	_G.MerchantItem1:Point("TOPLEFT", _G.MerchantFrame, "TOPLEFT", 24, -69)
+
 	-- skin tabs
-	for i= 1, 2 do
+	for i = 1, 2 do
 		S:HandleTab(_G["MerchantFrameTab"..i])
 	end
 
-	-- skin icons / merchant slots
+	-- Skin icons / merchant slots
 	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 		local button = _G["MerchantItem"..i.."ItemButton"]
 		local icon = button.icon

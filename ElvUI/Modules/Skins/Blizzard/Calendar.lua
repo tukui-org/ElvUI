@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local ipairs, select, unpack = ipairs, select, unpack
---WoW API / Variables
+
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local CreateFrame = CreateFrame
@@ -86,7 +85,7 @@ function S:Blizzard_Calendar()
 		_G["CalendarDayButton"..i]:SetFrameLevel(_G["CalendarDayButton"..i]:GetFrameLevel() + 1)
 		local bu = _G["CalendarDayButton"..i]
 
-		if E.private.skins.parchmentRemover.enable then
+		if E.private.skins.parchmentRemoverEnable then
 			bu:DisableDrawLayer("BACKGROUND") -- This would remove the "Parchement"
 		end
 
@@ -173,7 +172,7 @@ function S:Blizzard_Calendar()
 			local button = _G["CalendarClassButton"..i]
 			local tcoords = CLASS_ICON_TCOORDS[class]
 			local buttonIcon = button:GetNormalTexture()
-			buttonIcon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
+			buttonIcon:SetTexture([[Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes]])
 			buttonIcon:SetTexCoord(tcoords[1] + 0.015, tcoords[2] - 0.02, tcoords[3] + 0.018, tcoords[4] - 0.02) --F U C K I N G H A X
 		end
 	end)

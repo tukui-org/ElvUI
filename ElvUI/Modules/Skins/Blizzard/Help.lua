@@ -1,9 +1,26 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local select, unpack = select, unpack
+
+local function OnEnter(f)
+	f.text:SetTextColor(1, 1, 1)
+end
+
+local function OnLeave(f)
+	f.text:SetTextColor(1, .8, 0)
+end
+
+local function HandleTabButton(button)
+	button.selected:SetColorTexture(1, 1, 1, 0.3)
+	button.selected:SetDrawLayer("BACKGROUND")
+
+	S:HandleButton(button)
+
+	button:SetScript("OnEnter", OnEnter)
+	button:SetScript("OnLeave", OnLeave)
+end
 
 function S:HelpFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.help) then return end
@@ -21,7 +38,6 @@ function S:HelpFrame()
 		_G.HelpFrameKnowledgebaseSearchButton,
 		_G.HelpFrameKnowledgebaseNavBarHomeButton,
 		_G.HelpFrameCharacterStuckStuck,
-		_G.HelpFrameButton16,
 		_G.HelpFrameSubmitSuggestionSubmit,
 		_G.HelpFrameReportBugSubmit,
 	}
@@ -57,7 +73,7 @@ function S:HelpFrame()
 	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Transparent")
 	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
 	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
-	for i=1, _G.HelpFrameSubmitSuggestion:GetNumChildren() do
+	for i = 1, _G.HelpFrameSubmitSuggestion:GetNumChildren() do
 		local child = select(i, _G.HelpFrameSubmitSuggestion:GetChildren())
 		if not child:GetName() then
 			child:StripTextures()
@@ -81,12 +97,9 @@ function S:HelpFrame()
 
 	-- skin main buttons
 	for i = 1, 6 do
-		local b = _G["HelpFrameButton"..i]
-		S:HandleButton(b, true)
-		b.text:ClearAllPoints()
-		b.text:Point("CENTER")
-		b.text:SetJustifyH("CENTER")
+		HandleTabButton(_G["HelpFrameButton"..i])
 	end
+	HandleTabButton(_G.HelpFrameButton16)
 
 	-- skin table options
 	for i = 1, _G.HelpFrameKnowledgebaseScrollFrameScrollChild:GetNumChildren() do
@@ -121,7 +134,7 @@ function S:HelpFrame()
 
 	local HelpFrame = _G.HelpFrame
 	HelpFrame:StripTextures(true)
-	HelpFrame:CreateBackdrop("Transparent")
+	HelpFrame:CreateBackdrop('Transparent')
 	S:HandleEditBox(_G.HelpFrameKnowledgebaseSearchBox)
 	S:HandleScrollBar(_G.HelpFrameKnowledgebaseScrollFrameScrollBar, 5)
 	S:HandleCloseButton(_G.HelpFrameCloseButton, HelpFrame.backdrop)
@@ -136,7 +149,7 @@ function S:HelpFrame()
 
 	S:HandleButton(_G.HelpFrameGM_ResponseNeedMoreHelp)
 	S:HandleButton(_G.HelpFrameGM_ResponseCancel)
-	for i=1, _G.HelpFrameGM_Response:GetNumChildren() do
+	for i = 1, _G.HelpFrameGM_Response:GetNumChildren() do
 		local child = select(i, _G.HelpFrameGM_Response:GetChildren())
 		if child and child:IsObjectType('Frame') and not child:GetName() then
 			child:SetTemplate()

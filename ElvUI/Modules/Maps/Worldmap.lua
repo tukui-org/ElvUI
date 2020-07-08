@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('WorldMap')
 
---Lua functions
 local _G = _G
 local strfind = strfind
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local SetUIPanelAttribute = SetUIPanelAttribute
 local MOUSE_LABEL = MOUSE_LABEL:gsub("|[TA].-|[ta]","")
@@ -15,12 +14,12 @@ local PlayerMovementFrameFader = PlayerMovementFrameFader
 -- GLOBALS: CoordsHolder
 
 local INVERTED_POINTS = {
-	["TOPLEFT"] = "BOTTOMLEFT",
-	["TOPRIGHT"] = "BOTTOMRIGHT",
-	["BOTTOMLEFT"] = "TOPLEFT",
-	["BOTTOMRIGHT"] = "TOPRIGHT",
-	["TOP"] = "BOTTOM",
-	["BOTTOM"] = "TOP",
+	TOPLEFT = "BOTTOMLEFT",
+	TOPRIGHT = "BOTTOMRIGHT",
+	BOTTOMLEFT = "TOPLEFT",
+	BOTTOMRIGHT = "TOPRIGHT",
+	TOP = "BOTTOM",
+	BOTTOM = "TOP",
 }
 
 -- this will be updated later

@@ -3,7 +3,7 @@ local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local ipairs, next, pairs, rawget, rawset, select = ipairs, next, pairs, rawget, rawset, select
+local ipairs, next, pairs, select = ipairs, next, pairs, select
 local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, tonumber, type, unpack
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
@@ -398,7 +398,7 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 end
 
 function mod:StyleFilterUpdatePlate(frame, nameOnly)
-	mod:UpdatePlate(frame) -- enable elements back
+	mod:UpdatePlate(frame, true) -- enable elements back
 
 	if frame.frameType then
 		local db = mod.db.units[frame.frameType]
@@ -428,6 +428,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	local c = frame.StyleFilterActionChanges
 	if not c then return end
 
+	local db = mod.db.units[frame.frameType]
+
 	if Visibility then
 		c.Visibility = true
 		mod:DisablePlate(frame) -- disable the plate elements
@@ -455,7 +457,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 
 		mod:StyleFilterBorderLock(frame.Health.backdrop, true)
 		frame.Health.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
-		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
+		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop, true)
 			frame.Power.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
 		end
@@ -529,6 +531,7 @@ end
 
 function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	wipe(frame.StyleFilterActionChanges)
+	local db = mod.db.units[frame.frameType]
 
 	if Visibility then
 		mod:StyleFilterUpdatePlate(frame)
@@ -551,7 +554,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		local r, g, b = unpack(E.media.bordercolor)
 		mod:StyleFilterBorderLock(frame.Health.backdrop)
 		frame.Health.backdrop:SetBackdropBorderColor(r, g, b)
-		if frame.Power.backdrop and (frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable) then
+		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop)
 			frame.Power.backdrop:SetBackdropBorderColor(r, g, b)
 		end
@@ -578,11 +581,11 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if NameOnly then
 		mod:StyleFilterUpdatePlate(frame, true)
 	else -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
-		if NameTag then frame:Tag(frame.Name, mod.db.units[frame.frameType].name.format) end
-		if PowerTag then frame:Tag(frame.Power.Text, mod.db.units[frame.frameType].power.text.format) end
-		if HealthTag then frame:Tag(frame.Health.Text, mod.db.units[frame.frameType].health.text.format) end
-		if TitleTag then frame:Tag(frame.Title, mod.db.units[frame.frameType].title.format) end
-		if LevelTag then frame:Tag(frame.Level, mod.db.units[frame.frameType].level.format) end
+		if NameTag then frame:Tag(frame.Name, db.name.format) end
+		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) end
+		if HealthTag then frame:Tag(frame.Health.Text, db.health.text.format) end
+		if TitleTag then frame:Tag(frame.Title, db.title.format) end
+		if LevelTag then frame:Tag(frame.Level, db.level.format) end
 	end
 	-- Update Tags in both cases because `Update_Tags` doesn't actually call `UpdateTag`.
 	if NameTag then frame.Name:UpdateTag() end
@@ -936,8 +939,9 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 end
 
 function mod:StyleFilterPass(frame, actions)
-	local healthBarEnabled = (frame.frameType and mod.db.units[frame.frameType].health.enable) or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
-	local powerBarEnabled = frame.frameType and mod.db.units[frame.frameType].power and mod.db.units[frame.frameType].power.enable
+	local db = mod.db.units[frame.frameType]
+	local healthBarEnabled = (frame.frameType and db.health.enable) or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
+	local powerBarEnabled = frame.frameType and db.power and db.power.enable
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
 	mod:StyleFilterSetChanges(frame, actions,
@@ -1315,45 +1319,24 @@ function mod:StyleFilterRemoveCustomCheck(name)
 	mod.StyleFilterCustomChecks[name] = nil
 end
 
--- Shamelessy taken from AceDB-3.0 and stripped down by Simpy
-local function copyDefaults(dest, src)
-	for k, v in pairs(src) do
-		if type(v) == 'table' then
-			if not rawget(dest, k) then rawset(dest, k, {}) end
-			if type(dest[k]) == 'table' then copyDefaults(dest[k], v) end
-		elseif rawget(dest, k) == nil then
-			rawset(dest, k, v)
-		end
-	end
+function mod:PLAYER_LOGOUT()
+	mod:StyleFilterClearDefaults(E.global.nameplate.filters)
 end
 
-local function removeDefaults(db, defaults)
-	setmetatable(db, nil)
-
-	for k,v in pairs(defaults) do
-		if type(v) == 'table' and type(db[k]) == 'table' then
-			removeDefaults(db[k], v)
-			if next(db[k]) == nil then db[k] = nil end
-		elseif db[k] == defaults[k] then
-			db[k] = nil
-		end
-	end
-end
-
-function mod:StyleFilterClearDefaults()
-	for filterName, filterTable in pairs(E.global.nameplate.filters) do
+function mod:StyleFilterClearDefaults(tbl)
+	for filterName, filterTable in pairs(tbl) do
 		if G.nameplate.filters[filterName] then
 			local defaultTable = E:CopyTable({}, E.StyleFilterDefaults)
 			E:CopyTable(defaultTable, G.nameplate.filters[filterName])
-			removeDefaults(filterTable, defaultTable)
+			E:RemoveDefaults(filterTable, defaultTable)
 		else
-			removeDefaults(filterTable, E.StyleFilterDefaults)
+			E:RemoveDefaults(filterTable, E.StyleFilterDefaults)
 		end
 	end
 end
 
 function mod:StyleFilterCopyDefaults(tbl)
-	copyDefaults(tbl, E.StyleFilterDefaults)
+	E:CopyDefaults(tbl, E.StyleFilterDefaults)
 end
 
 function mod:StyleFilterInitialize()

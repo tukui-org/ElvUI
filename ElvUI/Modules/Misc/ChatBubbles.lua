@@ -2,14 +2,12 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:GetModule('Misc')
 local CH = E:GetModule('Chat')
 
---Lua functions
 local format, wipe = format, wipe
 local select, unpack, pairs = select, unpack, pairs
---WoW API / Variables
+
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
-local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local RemoveExtraSpaces = RemoveExtraSpaces
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
@@ -77,17 +75,16 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	if not name then return end
 
 	local color = PRIEST_COLOR
-	if guid and guid ~= "" then
-		local _, Class = GetPlayerInfoByGUID(guid)
-		if Class then
-			local c = E:ClassColor(Class)
-			if c then color = c end
-		end
+	local data = guid and guid ~= "" and CH:GetPlayerInfoByGUID(guid)
+	if data and data.classColor then
+		color = data.classColor
 	end
 
 	chatBubble.Name:SetFormattedText("|c%s%s|r", color.colorStr, name)
+	chatBubble.Name:Width(chatBubble:GetWidth()-10)
 end
 
+local yOffset --Value set in M:LoadChatBubbles()
 function M:SkinBubble(frame)
 	if frame:IsForbidden() then return end
 
@@ -101,8 +98,8 @@ function M:SkinBubble(frame)
 	end
 
 	local name = frame:CreateFontString(nil, "BORDER")
-	name:Point("TOPLEFT", 5, 5)
-	name:Point("BOTTOMRIGHT", frame, "TOPRIGHT", -5, -5)
+	name:Height(10) --Width set in M:AddChatBubbleName()
+	name:Point("BOTTOM", frame, "TOP", 0, yOffset)
 	name:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
 	name:SetJustifyH("LEFT")
 	frame.Name = name
@@ -209,22 +206,17 @@ function M:SkinBubble(frame)
 	frame.isSkinnedElvUI = true
 end
 
-local function ChatBubble_OnEvent(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
+local function ChatBubble_OnEvent(_, _, msg, sender, _, _, _, _, _, _, _, _, _, guid)
 	if not E.private.general.chatBubbleName then return end
 
 	messageToGUID[msg] = guid
 	messageToSender[msg] = Ambiguate(sender, "none")
 end
 
-local function ChatBubble_OnUpdate(self, elapsed)
-	if not M.BubbleFrame then return end
-	if not M.BubbleFrame.lastupdate then
-		M.BubbleFrame.lastupdate = -2 -- wait 2 seconds before hooking frames
-	end
-
-	M.BubbleFrame.lastupdate = M.BubbleFrame.lastupdate + elapsed
-	if M.BubbleFrame.lastupdate < 0.1 then return end
-	M.BubbleFrame.lastupdate = 0
+local function ChatBubble_OnUpdate(frame, elapsed)
+	frame.lastupdate = (frame.lastupdate or -2) + elapsed
+	if frame.lastupdate < 0.1 then return end
+	frame.lastupdate = 0
 
 	for _, chatBubble in pairs(C_ChatBubbles_GetAllChatBubbles()) do
 		if not chatBubble.isSkinnedElvUI then
@@ -249,6 +241,7 @@ function M:ToggleChatBubbleScript()
 end
 
 function M:LoadChatBubbles()
+	yOffset = E.private.general.chatBubbles == "backdrop" and 2 or E.private.general.chatBubbles == "backdrop_noborder" and -2 or 0
 	self.BubbleFrame = CreateFrame("Frame")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_SAY")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")

@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ]]
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 19 -- the real minor version is 74
+local MINOR_VERSION = 20 -- the real minor version is 74
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -50,6 +50,7 @@ local str_match, format, tinsert, tremove = string.match, format, tinsert, tremo
 -- GLOBALS: IsItemAction, IsItemInRange, IsShiftKeyDown, IsSpellInRange, IsSpellOverlayed, IsStackableAction, IsUsableAction, IsUsableItem
 -- GLOBALS: IsUsableSpell, LibStub, PickupAction, PickupCompanion, PickupEquipmentSet, PickupItem, PickupMacro, PickupPetAction, PickupSpell
 -- GLOBALS: RANGE_INDICATOR, SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, TOOLTIP_UPDATE_TIME, UIParent, ZoneAbilityFrame
+-- GLOBALS: GetOnBarHighlightMark
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
@@ -1318,7 +1319,6 @@ function UpdateCooldown(self)
 	if (locStart + locDuration) > (start + duration) then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge-LoC")
-			self.cooldown:SetSwipeColor(0.17, 0, 0)
 			self.cooldown:SetHideCountdownNumbers(true)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_LOSS_OF_CONTROL
 		end
@@ -1327,7 +1327,6 @@ function UpdateCooldown(self)
 	else
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_NORMAL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
-			self.cooldown:SetSwipeColor(0, 0, 0)
 			self.cooldown:SetHideCountdownNumbers(self.config.disableCountDownNumbers)
 			self.cooldown.currentCooldownType = COOLDOWN_TYPE_NORMAL
 		end

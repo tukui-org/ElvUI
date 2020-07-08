@@ -2,6 +2,7 @@ local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, Profil
 local C, L = unpack(select(2, ...))
 local NP = E:GetModule("NamePlates")
 local ACD = E.Libs.AceConfigDialog
+local ACH = E.Libs.ACH
 
 local _G = _G
 local tconcat, tostring = table.concat, tostring
@@ -24,7 +25,7 @@ local GetSpellInfo = GetSpellInfo
 local GetTalentInfo = GetTalentInfo
 local SetCVar = SetCVar
 
-local raidTargetIcon = "|TInterface\\TargetingFrame\\UI-RaidTargetingIcon_%s:0|t %s"
+local raidTargetIcon = [[|TInterface\TargetingFrame\UI-RaidTargetingIcon_%s:0|t %s]]
 local selectedNameplateFilter
 
 local positionValues = {
@@ -949,15 +950,10 @@ local function UpdateFilterGroup()
 								notInterruptible = {
 									type = "toggle",
 									order = 2,
-									name = L["Non-Interruptable"],
+									name = L["Non-Interruptible"],
 									desc = L["If enabled then the filter will only activate if the unit is casting not interruptible spells."]
 								},
-								spacer1 = {
-									order = 3,
-									type = "description",
-									name = " ",
-									width = "full"
-								},
+								spacer1 = ACH:Spacer(3, "full"),
 								isCasting = {
 									type = "toggle",
 									order = 4,
@@ -970,12 +966,7 @@ local function UpdateFilterGroup()
 									name = L["Not Casting Anything"],
 									desc = L["If enabled then the filter will activate if the unit is not casting anything."]
 								},
-								spacer2 = {
-									order = 6,
-									type = "description",
-									name = " ",
-									width = "full"
-								},
+								spacer1 = ACH:Spacer(6, "full"),
 								isChanneling = {
 									type = "toggle",
 									order = 7,
@@ -1027,16 +1018,8 @@ local function UpdateFilterGroup()
 							name = L["Not Spell"],
 							desc = L["If enabled then the filter will only activate if the unit is not casting or channeling one of the selected spells."]
 						},
-						description1 = {
-							order = 10,
-							type = "description",
-							name = L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."]
-						},
-						description2 = {
-							order = 11,
-							type = "description",
-							name = L["If this list is empty, and if Interruptible is checked, then the filter will activate on any type of cast that can be interrupted."]
-						}
+						description1 = ACH:Description(L["You do not need to use Is Casting Anything or Is Channeling Anything for these spells to trigger."], 10),
+						description2 = ACH:Description(L["If this list is empty, and if Interruptible is checked, then the filter will activate on any type of cast that can be interrupted."], 11),
 					}
 				},
 				combat = {
@@ -1086,12 +1069,7 @@ local function UpdateFilterGroup()
 									type = "toggle",
 									order = 4
 								},
-								spacer1 = {
-									type = "description",
-									name = " ",
-									width = "full",
-									order = 5
-								},
+								spacer1 = ACH:Spacer(5, "full"),
 								inVehicle = {
 									name = L["Player in Vehicle"],
 									desc = L["If enabled then the filter will only activate when you are in a Vehicle."],
@@ -1116,12 +1094,7 @@ local function UpdateFilterGroup()
 									order = 9,
 									type = "toggle"
 								},
-								spacer2 = {
-									type = "description",
-									name = " ",
-									width = "full",
-									order = 10
-								},
+								spacer2 = ACH:Spacer(10, "full"),
 								isResting = {
 									type = "toggle",
 									name = L["Player is Resting"],
@@ -1257,7 +1230,7 @@ local function UpdateFilterGroup()
 								healer = {
 									type = "toggle",
 									order = 2,
-									name = L["HEALER"]
+									name = L["Healer"]
 								},
 								damager = {
 									type = "toggle",
@@ -1604,11 +1577,7 @@ local function UpdateFilterGroup()
 								return not E.global.nameplate.filters[selectedNameplateFilter].triggers.level
 							end
 						},
-						spacer1 = {
-							order = 3,
-							type = "description",
-							name = L["LEVEL_BOSS"]
-						},
+						spacer1 = ACH:Description(L["LEVEL_BOSS"], 3),
 						minlevel = {
 							order = 4,
 							type = "range",
@@ -2015,12 +1984,7 @@ local function UpdateFilterGroup()
 									order = 4,
 									type = "toggle"
 								},
-								spacer1 = {
-									order = 5,
-									type = "description",
-									name = " ",
-									width = "full"
-								},
+								spacer1 = ACH:Spacer(5, "full"),
 								offTank = {
 									name = L["Off Tank"],
 									order = 6,
@@ -2695,12 +2659,7 @@ local function UpdateFilterGroup()
 		}
 
 		if NP.StyleFilterCustomChecks then
-			E.Options.args.nameplate.args.filters.args.triggers.args.combat.args.types.args.pluginSpacer = {
-				type = "description",
-				name = " ",
-				width = "full",
-				order = 49
-			}
+			E.Options.args.nameplate.args.filters.args.triggers.args.combat.args.types.args.pluginSpacer = ACH:Spacer(49, "full")
 		end
 
 		E.Options.args.nameplate.args.filters.args.actions = {
@@ -3103,7 +3062,7 @@ local function GetUnitSettings(unit, name)
 			},
 			copySettings = {
 				order = -7,
-				name = L["Copy Settings From"],
+				name = L["Copy settings from"],
 				desc = L["Copy settings from another unit."],
 				type = "select",
 				values = copyValues,
@@ -3757,22 +3716,6 @@ local function GetUnitSettings(unit, name)
 						max = 60,
 						step = 1
 					},
-					--width = {
-					--	order = 3,
-					--	name = L["Icon Width"],
-					--	type = "range",
-					--	min = 6, max = 60, step = 1,
-					--	get = function(info) return E.db.nameplates.units[unit].buffs[info[#info]] end,
-					--	set = function(info, value) E.db.nameplates.units[unit].buffs[info[#info]] = value; NP:ConfigureAll() end,
-					--},
-					--height = {
-					--	order = 4,
-					--	name = L["Icon Height"],
-					--	type = "range",
-					--	min = 6, max = 60, step = 1,
-					--	get = function(info) return E.db.nameplates.units[unit].buffs[info[#info]] end,
-					--	set = function(info, value) E.db.nameplates.units[unit].buffs[info[#info]] = value; NP:ConfigureAll() end,
-					--},
 					spacing = {
 						order = 5,
 						name = L["Spacing"],
@@ -4050,13 +3993,7 @@ local function GetUnitSettings(unit, name)
 									NP:ConfigureAll()
 								end
 							},
-							spacer3 = {
-								order = 9,
-								type = "description",
-								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."] ..
-									"\n" ..
-										L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."]
-							}
+							spacer3 = ACH:Description(L["Use drag and drop to rearrange filter priority or right click to remove a filter."] .."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."], 9),
 						}
 					}
 				}
@@ -4101,22 +4038,6 @@ local function GetUnitSettings(unit, name)
 						max = 60,
 						step = 1
 					},
-					--width = {
-					--	order = 3,
-					--	name = L["Icon Width"],
-					--	type = "range",
-					--	min = 6, max = 60, step = 1,
-					--	get = function(info) return E.db.nameplates.units[unit].debuffs[info[#info]] end,
-					--	set = function(info, value) E.db.nameplates.units[unit].debuffs[info[#info]] = value; NP:ConfigureAll() end,
-					--},
-					--height = {
-					--	order = 4,
-					--	name = L["Icon Height"],
-					--	type = "range",
-					--	min = 6, max = 60, step = 1,
-					--	get = function(info) return E.db.nameplates.units[unit].debuffs[info[#info]] end,
-					--	set = function(info, value) E.db.nameplates.units[unit].debuffs[info[#info]] = value; NP:ConfigureAll() end,
-					--},
 					spacing = {
 						order = 5,
 						name = L["Spacing"],
@@ -4394,13 +4315,7 @@ local function GetUnitSettings(unit, name)
 									NP:ConfigureAll()
 								end
 							},
-							spacer3 = {
-								order = 9,
-								type = "description",
-								name = L["Use drag and drop to rearrange filter priority or right click to remove a filter."] ..
-									"\n" ..
-										L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."]
-							}
+							spacer3 = ACH:Description(L["Use drag and drop to rearrange filter priority or right click to remove a filter."].."\n"..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."], 9),
 						}
 					}
 				}
@@ -5030,8 +4945,13 @@ local function GetUnitSettings(unit, name)
 			args = {
 				enable = {
 					type = "toggle",
-					order = 1,
+					order = 0,
 					name = L["Enable"]
+				},
+				hideIcon = {
+					type = "toggle",
+					order = 1,
+					name = L["Hide Icon"]
 				},
 				font = {
 					type = "select",
@@ -5130,56 +5050,54 @@ local function GetUnitSettings(unit, name)
 			name = L["Show Title"],
 			desc = L["Title will only appear if Name Only is enabled or triggered in a Style Filter."]
 		}
-		if unit == "FRIENDLY_NPC" or unit == "ENEMY_NPC" then
-			group.args.widgetXPBar = {
-				order = 14,
-				type = "group",
-				name = L["Follower XP"],
-				get = function(info)
-					return E.db.nameplates.units[unit].widgetXPBar[info[#info]]
-				end,
-				set = function(info, value)
-					E.db.nameplates.units[unit].widgetXPBar[info[#info]] = value
-					NP:ConfigureAll()
-				end,
-				args = {
-					enable = {
-						order = 1,
-						type = "toggle",
-						name = L["Enable"]
-					},
-					yOffset = {
-						order = 2,
-						name = L["Y-Offset"],
-						type = "range",
-						min = -100,
-						max = 100,
-						step = 1,
-						disabled = function()
-							return not E.db.nameplates.units[unit].widgetXPBar.enable
-						end
-					},
-					color = {
-						order = 3,
-						type = "color",
-						name = L["COLOR"],
-						hasAlpha = false,
-						disabled = function()
-							return not E.db.nameplates.units[unit].widgetXPBar.enable
-						end,
-						get = function(info)
-							local t = E.db.nameplates.units[unit].widgetXPBar.color
-							return t.r, t.g, t.b
-						end,
-						set = function(info, r, g, b)
-							local t = E.db.nameplates.units[unit].widgetXPBar.color
-							t.r, t.g, t.b = r, g, b
-							NP:ConfigureAll()
-						end
-					}
+		group.args.widgetXPBar = {
+			order = 14,
+			type = "group",
+			name = L["Follower XP"],
+			get = function(info)
+				return E.db.nameplates.units[unit].widgetXPBar[info[#info]]
+			end,
+			set = function(info, value)
+				E.db.nameplates.units[unit].widgetXPBar[info[#info]] = value
+				NP:ConfigureAll()
+			end,
+			args = {
+				enable = {
+					order = 1,
+					type = "toggle",
+					name = L["Enable"]
+				},
+				yOffset = {
+					order = 2,
+					name = L["Y-Offset"],
+					type = "range",
+					min = -100,
+					max = 100,
+					step = 1,
+					disabled = function()
+						return not E.db.nameplates.units[unit].widgetXPBar.enable
+					end
+				},
+				color = {
+					order = 3,
+					type = "color",
+					name = L["COLOR"],
+					hasAlpha = false,
+					disabled = function()
+						return not E.db.nameplates.units[unit].widgetXPBar.enable
+					end,
+					get = function(info)
+						local t = E.db.nameplates.units[unit].widgetXPBar.color
+						return t.r, t.g, t.b
+					end,
+					set = function(info, r, g, b)
+						local t = E.db.nameplates.units[unit].widgetXPBar.color
+						t.r, t.g, t.b = r, g, b
+						NP:ConfigureAll()
+					end
 				}
 			}
-		end
+		}
 	end
 
 	-- start groups at 30
@@ -5356,11 +5274,7 @@ E.Options.args.nameplate = {
 	get = function(info) return E.db.nameplates[info[#info]] end,
 	set = function(info, value) E.db.nameplates[info[#info]] = value; NP:ConfigureAll() end,
 	args = {
-		intro = {
-			order = 0,
-			type = "description",
-			name = L["NAMEPLATE_DESC"],
-		},
+		intro = ACH:Description(L["NAMEPLATE_DESC"], 0),
 		enable = {
 			order = 1,
 			type = "toggle",
@@ -5501,31 +5415,19 @@ E.Options.args.nameplate = {
 							max = 0.8,
 							step = 0.01
 						},
-						otherAtBase = {
-							order = 10,
-							type = "toggle",
-							name = L["Nameplate At Base"],
-							desc = L["Position other Nameplates at the base, rather than overhead."],
-							get = function()
-								return GetCVarBool("nameplateOtherAtBase")
-							end,
-							set = function(_, value)
-								SetCVar("nameplateOtherAtBase", value and 2 or 0)
-							end
-						},
 						highlight = {
-							order = 11,
+							order = 10,
 							type = "toggle",
 							name = L["Hover Highlight"]
 						},
 						fadeIn = {
-							order = 12,
+							order = 11,
 							type = "toggle",
 							name = L["Alpha Fading"]
 						},
 						smoothbars = {
 							type = "toggle",
-							order = 13,
+							order = 12,
 							name = L["Smooth Bars"],
 							desc = L["Bars will transition smoothly."],
 							set = function(info, value)
@@ -5534,10 +5436,29 @@ E.Options.args.nameplate = {
 							end
 						},
 						clampToScreen = {
-							order = 14,
+							order = 13,
 							type = "toggle",
 							name = L["Clamp Nameplates"],
 							desc = L["Clamp nameplates to the top of the screen when outside of view."]
+						},
+						cvars = {
+							order = 14,
+							type = "multiselect",
+							name = L["Blizzard CVars"],
+							get = function(info, key)
+								return GetCVarBool(key)
+							end,
+							set = function(_, key, value)
+								if key == 'nameplateOtherAtBase' then
+									SetCVar(key, value and "2" or "0")
+								else
+									SetCVar(key, value and "1" or "0")
+								end
+							end,
+							values = {
+								nameplateOtherAtBase = L["Nameplate At Base"],
+								nameplateShowOnlyNames = 'Show Only Names',
+							},
 						},
 						plateVisibility = {
 							order = 50,
@@ -5716,13 +5637,7 @@ E.Options.args.nameplate = {
 							childGroups = "tab",
 							name = L["Effective Updates"],
 							args = {
-								warning = {
-									order = 0,
-									type = "description",
-									fontSize = 'medium',
-									name = L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."].."\n"..
-									L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."]
-								},
+								warning = ACH:Description(L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."].."\n"..L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."], 0, "medium"),
 								effectiveHealth = {
 									order = 1,
 									type = "toggle",
@@ -5744,12 +5659,7 @@ E.Options.args.nameplate = {
 									get = function(info) return E.global.nameplate[info[#info]] end,
 									set = function(info, value) E.global.nameplate[info[#info]] = value; NP:ConfigureAll() end
 								},
-								spacer1 = {
-									order = 4,
-									type = "description",
-									name = " ",
-									width = "full"
-								},
+								spacer1 = ACH:Spacer(4, "full"),
 								effectiveHealthSpeed = {
 									order = 5,
 									name = L["Health Speed"],
@@ -6236,11 +6146,11 @@ E.Options.args.nameplate = {
 								castColor = {
 									type = "color",
 									order = 1,
-									name = L["Cast Color"],
+									name = L["Interruptible"],
 									hasAlpha = false
 								},
 								castNoInterruptColor = {
-									name = L["Cast No Interrupt Color"],
+									name = L["Non-Interruptible"],
 									order = 2,
 									type = "color",
 									hasAlpha = false
@@ -6298,13 +6208,6 @@ E.Options.args.nameplate = {
 									name = L["Friendly"],
 									type = "color"
 								},
-								--[[ LS- said to just use "Player Extended" as "Player" and don't use "Player Simple" at all
-								['4'] = {
-									order = 4,
-									name = L["Player Simple"],
-									type = 'color',
-								},
-							]]
 								["5"] = {
 									order = 5,
 									name = L["Player"], -- Player Extended
@@ -6330,13 +6233,6 @@ E.Options.args.nameplate = {
 									name = L["Dead"],
 									type = "color"
 								},
-								--[[ disabled in oUF for now by LS-
-								['12'] = {
-									order = 12,
-									name = L["Self"],
-									type = 'color',
-								},
-							]]
 								["13"] = {
 									order = 13,
 									name = L["Battleground Friendly"],
@@ -6700,12 +6596,7 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup()
 					end
 				},
-				spacer1 = {
-					order = 4,
-					type = "description",
-					name = " ",
-					width = "full"
-				},
+				spacer1 = ACH:Spacer(4, "full"),
 				classBarGroup = {
 					order = 10,
 					type = "group",
@@ -6815,37 +6706,3 @@ for i = 1, 6 do
 		end
 	}
 end
-
---[=[
-	E.Options.args.tagGroup = {
-		order = 925,
-		type = "group",
-		name = L["Available Tags"],
-		args = {}
-	}
-
-	for Tag in next, E.oUF.Tags.Methods do
-		E.Options.args.tagGroup.args[Tag] = {
-			type = 'description',
-			fontSize = 'medium',
-			name = Tag,
-		}
-	end
-
-	E.Options.args.EventTrace = {
-		order = -50,
-		type = "group",
-		name = L["Event Trace"],
-		args = {}
-	}
-
-	local Frame = CreateFrame('Frame')
-	Frame:RegisterAllEvents()
-	Frame:SetScript('OnEvent', function(self, event, ...)
-		E.Options.args.EventTrace.args[event] = {
-			type = 'description',
-			fontSize = 'medium',
-			name = event,
-		}
-	end)
-]=]
