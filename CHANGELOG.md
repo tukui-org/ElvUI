@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-Prevented a rare error inside of CalculateMoverPoints.  
+Movers: Fixed an error while placing PlayerPowerBarAlt without StickFrames enabled.  
 
 **Misc. Changes:**  
 
