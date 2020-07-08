@@ -7,6 +7,8 @@ do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 	if (_G.UIDROPDOWNMENU_OPEN_PATCH_VERSION or 0) < 1 then _G.UIDROPDOWNMENU_OPEN_PATCH_VERSION = 1 end
 	--CommunitiesUI #2		- https://www.townlong-yak.com/bugs/YhgQma-SetValueRefreshTaint
 	if (_G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION or 0) < 1 then _G.COMMUNITY_UIDD_REFRESH_PATCH_VERSION = 1 end
+	--InterfaceOptions		- https://www.townlong-yak.com/bugs/gXwH4P-IOFrameSelection
+	if (_G.IOFRAME_SELECTION_PATCH_VERSION or 0) < 1 then _G.IOFRAME_SELECTION_PATCH_VERSION = 1 end
 
 	--	*NOTE* Simpy: these two were updated to fix an issue which was caused on the dropdowns with submenus
 	--HonorFrameLoadTaint	- https://www.townlong-yak.com/bugs/afKy4k-HonorFrameLoadTaint
@@ -79,6 +81,14 @@ do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 		hooksecurefunc('SetCVar', function(n)
 			if n == 'lastSelectedClubId' then
 				CleanDropdowns()
+			end
+		end)
+	end
+
+	if _G.IOFRAME_SELECTION_PATCH_VERSION == 1 then
+		_G.InterfaceOptionsFrame:HookScript("OnHide", function()
+			if _G.IOFRAME_SELECTION_PATCH_VERSION == 1 then
+				_G.InterfaceOptionsFrameCategories.selection = nil
 			end
 		end)
 	end
