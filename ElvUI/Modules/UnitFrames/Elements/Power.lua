@@ -83,9 +83,6 @@ function UF:Configure_Power(frame)
 		frame:SetPowerUpdateSpeed(E.global.unitframe.effectivePowerSpeed)
 
 		--Text
-		local attachPoint = self:GetObjectAnchorPoint(frame, db.power.attachTextTo)
-		power.value:ClearAllPoints()
-		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
 
 		if db.power.attachTextTo == "Power" then
@@ -262,8 +259,9 @@ function UF:PostUpdatePower(unit, cur, min, max)
 		self:SetValue(self.cur)
 	end
 
-	if parent.db and parent.db.power then
-		if (unit == 'player' or unit == 'target') and parent.db.power.autoHide and parent.POWERBAR_DETACHED then
+	local db = parent.db and parent.db.power
+	if db then
+		if (unit == 'player' or unit == 'target') and db.autoHide and parent.POWERBAR_DETACHED then
 			if PowerTypesFull[select(2, UnitPowerType(unit))] and cur == max or cur == min then
 				self:Hide()
 			else
@@ -273,7 +271,11 @@ function UF:PostUpdatePower(unit, cur, min, max)
 			self:Show()
 		end
 
-		if parent.db.power.hideonnpc then
+		local attachPoint = UF:GetObjectAnchorPoint(parent, db.attachTextTo)
+		self.value:ClearAllPoints()
+		self.value:Point(db.position, attachPoint, db.position, db.xOffset, db.yOffset)
+
+		if db.hideonnpc then
 			UF:PostNamePosition(parent, unit)
 		end
 	end

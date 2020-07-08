@@ -31,6 +31,7 @@ end
 
 function UF:PostNamePosition(frame, unit)
 	if not frame.Power.value:IsShown() then return end
+
 	local db = frame.db
 	if UnitIsPlayer(unit) or (db.power and not db.power.enable) then
 		local position = db.name.position
