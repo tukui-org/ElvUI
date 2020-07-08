@@ -21,13 +21,13 @@ function UF:Configure_CustomTexts(frame)
 				object = frame:CreateFontString(nil, 'OVERLAY')
 			end
 
-			local db = frameDB.customTexts[name]
+			local db, tagFont = frameDB.customTexts[name]
 			if db.font then
-				font = UF.LSM:Fetch("font", db.font)
+				tagFont = UF.LSM:Fetch("font", db.font)
 			end
 
 			local attachPoint = self:GetObjectAnchorPoint(frame, db.attachTextTo)
-			object:FontTemplate(font, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
+			object:FontTemplate(tagFont or font, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
 			object:SetJustifyH(db.justifyH or 'CENTER')
 			object:ClearAllPoints()
 			object:Point(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
