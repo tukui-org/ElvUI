@@ -18,6 +18,7 @@ Debuff Highlight (now **Aura Highlight**) in Glow mode was glowing around the ed
 **Role Icons** will now appear in Battlegrounds, they were scared of battles; so we gave them invisible sunglasses.  
 Deleted **Show Absorb Amount** option, as it would often be greater than the units health in some cases.  
 You can now change the **Frame Level** and **Frame Strata** of Individual frames.  
+Tags attached to the Power element (including Custom Texts) will be placed correctly with the AutoHide option.  
 PVP Classification Indicator can now be displayed on Arena Frames.  
 Castbars were trained to allow the casting backwards.  
 Target and Focus frames now have a shiny combat icon.  
@@ -37,6 +38,7 @@ Tabs can be customized with color and we added a feature to let you hug the text
 Editbox now supports Blizzard's **IM Style** and displays the **Character Count** correctly.  
 Editbox History Size can be adjusted or Reset via a button in the options.  
 History Size can be adjusted and the history channels can be excluded by type.  
+Role Icons will appear correctly after a reload.  
 Alerts can now be set by Channel type.  
 Max Lines can be adjusted.  
 
