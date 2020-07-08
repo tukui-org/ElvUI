@@ -268,7 +268,6 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 	local x, y = mover:GetCenter()
 
 	local point, nudgePoint, nudgeInversePoint = 'BOTTOM', 'BOTTOM', 'TOP'
-
 	if not x or not y then -- if GetCenter on the mover fails, default to UIParent center? (lazy fix, dont know why GetCenter can fail)
 		x, y = screenCenterX, screenCenterY
 	end
