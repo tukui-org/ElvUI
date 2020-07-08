@@ -1,4 +1,17 @@
-# Version 11.42 [ ETA: 🍨 ]
+# Version 11.43 [ ETA: 🍨 ]
+
+**New Additions:**  
+
+
+**Bug Fixes:**  
+
+
+**Misc. Changes:**  
+
+
+___
+
+# Version 11.42 [ July 8th 2020 ]
 
 **DATATEXTS:**  
 Creativity feature added by allowing you to create and customize **Datatext Panels**!  
