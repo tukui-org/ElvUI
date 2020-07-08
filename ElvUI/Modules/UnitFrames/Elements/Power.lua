@@ -248,8 +248,7 @@ function UF:PostUpdatePowerColor()
 	end
 end
 
-local PowerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
-
+local powerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
 function UF:PostUpdatePower(unit, cur, min, max)
 	local parent = self.origParent or self:GetParent()
 	if parent.isForced then
@@ -262,7 +261,8 @@ function UF:PostUpdatePower(unit, cur, min, max)
 	local db = parent.db and parent.db.power
 	if db then
 		if (unit == 'player' or unit == 'target') and db.autoHide and parent.POWERBAR_DETACHED then
-			if PowerTypesFull[select(2, UnitPowerType(unit))] and cur == max or cur == min then
+			local _, powerType = UnitPowerType(unit)
+			if (powerTypesFull[powerType] and cur == max) or cur == min then
 				self:Hide()
 			else
 				self:Show()
