@@ -277,7 +277,6 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 
 	if x >= (width * 2 / 3) then -- RIGHT: 1080p = 1280
 		point, nudgePoint, nudgeInversePoint = point..'RIGHT', 'RIGHT', 'LEFT'
-
 		x = mover:GetRight() - width
 	elseif x <= (width / 3) or mover.perferCorners then -- LEFT: 1080p = 640
 		point, nudgePoint, nudgeInversePoint = point..'LEFT', 'LEFT', 'RIGHT'
