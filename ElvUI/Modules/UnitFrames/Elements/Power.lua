@@ -263,7 +263,7 @@ function UF:PostUpdatePower(unit, cur, min, max)
 	end
 
 	if parent.db and parent.db.power then
-		if unit == 'player' and parent.db.power.autoHide and parent.POWERBAR_DETACHED then
+		if (unit == 'player' or unit == 'target') and parent.db.power.autoHide and parent.POWERBAR_DETACHED then
 			if PowerTypesFull[select(2, UnitPowerType(unit))] and cur == max or cur == min then
 				self:Hide()
 			else
