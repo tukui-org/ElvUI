@@ -64,6 +64,7 @@ local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
+local ToggleAllBags = ToggleAllBags
 local UseContainerItem = UseContainerItem
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_Item_CanScrapItem = C_Item.CanScrapItem

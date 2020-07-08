@@ -50,6 +50,7 @@ local str_match, format, tinsert, tremove = string.match, format, tinsert, tremo
 -- GLOBALS: IsItemAction, IsItemInRange, IsShiftKeyDown, IsSpellInRange, IsSpellOverlayed, IsStackableAction, IsUsableAction, IsUsableItem
 -- GLOBALS: IsUsableSpell, LibStub, PickupAction, PickupCompanion, PickupEquipmentSet, PickupItem, PickupMacro, PickupPetAction, PickupSpell
 -- GLOBALS: RANGE_INDICATOR, SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, TOOLTIP_UPDATE_TIME, UIParent, ZoneAbilityFrame
+-- GLOBALS: GetOnBarHighlightMark
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")

@@ -7,7 +7,7 @@ assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded i
 -------------
 
 local _G = _G
-local pairs, ipairs = pairs, ipairs
+local pairs, ipairs, type = pairs, ipairs, type
 local next, tinsert, tremove = next, tinsert, tremove
 local CreateFrame = CreateFrame
 local GetMouseFocus = GetMouseFocus

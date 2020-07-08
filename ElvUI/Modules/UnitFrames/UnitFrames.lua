@@ -4,8 +4,8 @@ local LSM = E.Libs.LSM
 UF.LSM = E.Libs.LSM
 
 local _G = _G
-local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
-local min, tinsert, strsub = min, tinsert, strsub
+local select, type, unpack, assert, tostring = select, type, unpack, assert, tostring
+local min, pairs, ipairs, tinsert, strsub = min, pairs, ipairs, tinsert, strsub
 local strfind, gsub, format = strfind, gsub, format
 
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting

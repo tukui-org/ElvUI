@@ -18,11 +18,12 @@ local GetSpecialization = GetSpecialization
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
+local UnitFactionGroup = UnitFactionGroup
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
 local IsInRaid = IsInRaid
 local SetCVar = SetCVar
-local UnitFactionGroup = UnitFactionGroup
+local ReloadUI = ReloadUI
 local UnitGUID = UnitGUID
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
@@ -1647,7 +1648,7 @@ function E:Initialize()
 	E.data.RegisterCallback(E, 'OnProfileCopied', 'StaggeredUpdateAll')
 	E.data.RegisterCallback(E, 'OnProfileReset', 'StaggeredUpdateAll')
 	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
-	E.charSettings.RegisterCallback(E, 'OnProfileChanged', function() ReloadUI() end)
+	E.charSettings.RegisterCallback(E, 'OnProfileChanged', ReloadUI)
 	E.charSettings.RegisterCallback(E, 'OnProfileReset', 'OnPrivateProfileReset')
 	E.private = E.charSettings.profile
 	E.global = E.data.global
