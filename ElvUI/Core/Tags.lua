@@ -726,8 +726,7 @@ f:SetScript("OnEvent", function()
 		groupSize = GetNumGroupMembers()
 	elseif IsInGroup() then
 		groupType = "party"
-		groupSize = GetNumGroupMembers() - 1
-		GroupUnits.player = true
+		groupSize = GetNumGroupMembers()
 	else
 		groupType = "solo"
 		groupSize = 1
