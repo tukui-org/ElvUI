@@ -4,45 +4,55 @@ local UF = E:GetModule('UnitFrames');
 local pairs = pairs
 
 function UF:Configure_CustomTexts(frame)
-	local db = frame.db
+	local frameDB = frame.db
 
 	--Make sure CustomTexts are hidden if they don't exist in current profile
-	for objectName, object in pairs(frame.customTexts) do
-		if (not db.customTexts) or (db.customTexts and not db.customTexts[objectName]) then
+	for name, object in pairs(frame.customTexts) do
+		if not frameDB.customTexts or not frameDB.customTexts[name] then
 			object:Hide()
 		end
 	end
 
-	if db.customTexts then
-		local customFont = UF.LSM:Fetch("font", UF.db.font)
-		for objectName in pairs(db.customTexts) do
-			if not frame.customTexts[objectName] then
-				frame.customTexts[objectName] = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
+	if frameDB.customTexts then
+		local font = UF.LSM:Fetch("font", UF.db.font)
+		for name in pairs(frameDB.customTexts) do
+			local object = frame.customTexts[name]
+			if not object then
+				object = frame:CreateFontString(nil, 'OVERLAY')
 			end
 
-			local objectDB = db.customTexts[objectName]
-
-			if objectDB.font then
-				customFont = UF.LSM:Fetch("font", objectDB.font)
+			local db = frameDB.customTexts[name]
+			if db.font then
+				font = UF.LSM:Fetch("font", db.font)
 			end
 
-			local attachPoint = self:GetObjectAnchorPoint(frame, objectDB.attachTextTo)
-			frame.customTexts[objectName]:FontTemplate(customFont, objectDB.size or UF.db.fontSize, objectDB.fontOutline or UF.db.fontOutline)
-			frame.customTexts[objectName]:SetJustifyH(objectDB.justifyH or 'CENTER')
-			frame.customTexts[objectName]:ClearAllPoints()
-			frame.customTexts[objectName]:Point(objectDB.justifyH or 'CENTER', attachPoint, objectDB.justifyH or 'CENTER', objectDB.xOffset, objectDB.yOffset)
+			local attachPoint = self:GetObjectAnchorPoint(frame, db.attachTextTo)
+			object:FontTemplate(font, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
+			object:SetJustifyH(db.justifyH or 'CENTER')
+			object:ClearAllPoints()
+			object:Point(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
+
+			if db.attachTextTo == "Power" then
+				object:SetParent(frame.Power.RaisedElementParent)
+			else
+				object:SetParent(frame.RaisedElementParent)
+			end
 
 			--This takes care of custom texts that were added before the enable option was added.
-			if objectDB.enable == nil then
-				objectDB.enable = true
+			if db.enable == nil then
+				db.enable = true
 			end
 
-			if objectDB.enable then
-				frame:Tag(frame.customTexts[objectName], objectDB.text_format or '')
-				frame.customTexts[objectName]:Show()
+			if db.enable then
+				frame:Tag(object, db.text_format or '')
+				object:Show()
 			else
-				frame:Untag(frame.customTexts[objectName])
-				frame.customTexts[objectName]:Hide()
+				frame:Untag(object)
+				object:Hide()
+			end
+
+			if not frame.customTexts[name] then
+				frame.customTexts[name] = object
 			end
 		end
 	end

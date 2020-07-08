@@ -74,8 +74,10 @@ function UF:Configure_Power(frame)
 	if frame.USE_POWERBAR then
 		if not frame:IsElementEnabled('Power') then
 			frame:EnableElement('Power')
-			power:Show()
 		end
+
+		--Show the power here so that attached texts can be displayed correctly.
+		power:Show() --Since it is updated in the PostUpdatePower, so it's fine!
 
 		E:SetSmoothing(power, self.db.smoothbars)
 
@@ -83,6 +85,9 @@ function UF:Configure_Power(frame)
 		frame:SetPowerUpdateSpeed(E.global.unitframe.effectivePowerSpeed)
 
 		--Text
+		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo)
+		power.value:ClearAllPoints()
+		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
 
 		if db.power.attachTextTo == "Power" then
@@ -271,10 +276,6 @@ function UF:PostUpdatePower(unit, cur, min, max)
 	elseif not self:IsShown() then
 		self:Show()
 	end
-
-	local attachPoint = UF:GetObjectAnchorPoint(parent, db.attachTextTo)
-	self.value:ClearAllPoints()
-	self.value:Point(db.position, attachPoint, db.position, db.xOffset, db.yOffset)
 
 	if db.hideonnpc then
 		UF:PostNamePosition(parent, unit)
