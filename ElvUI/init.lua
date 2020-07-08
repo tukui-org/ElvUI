@@ -226,8 +226,7 @@ function E:PositionGameMenuButton()
 end
 
 function E:ResetProfile()
-	ElvCharacterDB = nil
-	ReloadUI()
+	E:StaggeredUpdateAll()
 end
 
 function E:OnProfileReset()
