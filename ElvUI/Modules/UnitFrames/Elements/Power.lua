@@ -259,24 +259,24 @@ function UF:PostUpdatePower(unit, cur, min, max)
 	end
 
 	local db = parent.db and parent.db.power
-	if db then
-		if (unit == 'player' or unit == 'target') and db.autoHide and parent.POWERBAR_DETACHED then
-			local _, powerType = UnitPowerType(unit)
-			if (powerTypesFull[powerType] and cur == max) or cur == min then
-				self:Hide()
-			else
-				self:Show()
-			end
-		elseif not self:IsShown() then
+	if not db then return end
+
+	if (unit == 'player' or unit == 'target') and db.autoHide and parent.POWERBAR_DETACHED then
+		local _, powerType = UnitPowerType(unit)
+		if (powerTypesFull[powerType] and cur == max) or cur == min then
+			self:Hide()
+		else
 			self:Show()
 		end
+	elseif not self:IsShown() then
+		self:Show()
+	end
 
-		local attachPoint = UF:GetObjectAnchorPoint(parent, db.attachTextTo)
-		self.value:ClearAllPoints()
-		self.value:Point(db.position, attachPoint, db.position, db.xOffset, db.yOffset)
+	local attachPoint = UF:GetObjectAnchorPoint(parent, db.attachTextTo)
+	self.value:ClearAllPoints()
+	self.value:Point(db.position, attachPoint, db.position, db.xOffset, db.yOffset)
 
-		if db.hideonnpc then
-			UF:PostNamePosition(parent, unit)
-		end
+	if db.hideonnpc then
+		UF:PostNamePosition(parent, unit)
 	end
 end
