@@ -407,6 +407,8 @@ E.Options.args.profiles.args.private.args.choose.confirm = function(_, value)
 	return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
 end
 
+E.Options.args.profiles.args.profile.args.reset.confirm = true
+
 E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles.args.profile)
 E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
 E.Options.args.profiles.args.profile.args.copyfrom.confirm = function(_, value)
