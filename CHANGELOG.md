@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-
+Prevented a rare error inside of CalculateMoverPoints.  
 
 **Misc. Changes:**  
 
