@@ -7,7 +7,7 @@
 Movers: Fixed an error while placing PlayerPowerBarAlt with StickFrames disabled.  
 
 **Misc. Changes:**  
-
+Options: Readd the confirmation popup to Reset Profile button.  
 
 ___
 
