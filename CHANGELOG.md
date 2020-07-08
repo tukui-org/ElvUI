@@ -4,7 +4,7 @@
 
 
 **Bug Fixes:**  
-Movers: Fixed an error while placing PlayerPowerBarAlt without StickFrames enabled.  
+Movers: Fixed an error while placing PlayerPowerBarAlt with StickFrames disabled.  
 
 **Misc. Changes:**  
 
