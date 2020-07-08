@@ -52,6 +52,7 @@ local UnitIsPVP = UnitIsPVP
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitIsUnit = UnitIsUnit
 local UnitIsWildBattlePet = UnitIsWildBattlePet
+local UnitLevel = UnitLevel
 local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitName = UnitName
 local UnitPVPName = UnitPVPName
