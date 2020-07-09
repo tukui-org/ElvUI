@@ -793,19 +793,19 @@ function AB:DisableBlizzard()
 		end
 	end
 
+	---------- keep an eye on them for possible issues ----------
+	-- 1) MultiBarRight:SetShown taint during combat from: SpellBookFrame, ZoneAbility, and ActionBarController
+	-- _G.ActionBarController_UpdateAll = E.noop		-- breaks actionbar paging?
+
+	-- 2) MainMenuBar:ClearAllPoints taint during combat from: MainMenuBar
+	_G.MainMenuBar.SetPositionForStatusBars = E.noop	-- this seems to work
+	-------------------------------------------------------------
+
 	-- shut down some events for things we dont use
 	_G.StatusTrackingBarManager:UnregisterAllEvents()
 	_G.MainMenuBarArtFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
-
-	-- * these seem to work but keep an eye on them for possible new taints spawned
-	-- MultiBarRight:SetShown taint during combat from: SpellBookFrame, ZoneAbility, and ActionBarController
-
-	-- TODO: Simpy, look at this that I commented out.  Reports of actionbar paging not working and commenting this out fixed that issue
-	-- _G.ActionBarController_UpdateAll = E.noop -- this seems to work
-	-- MainMenuBar:ClearAllPoints taint during combat from: MainMenuBar
-	_G.MainMenuBar.SetPositionForStatusBars = E.noop -- this seems to work
 
 	-- hide some interface options we dont use
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
