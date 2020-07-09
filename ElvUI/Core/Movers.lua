@@ -263,31 +263,26 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 end
 
 function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
-	local screenWidth, screenHeight = E.UIParent:GetRight(), E.UIParent:GetTop()
-	local screenCenterX, screenCenterY = E.UIParent:GetCenter()
+	local centerX, centerY = E.UIParent:GetCenter()
+	local width = E.UIParent:GetRight()
 	local x, y = mover:GetCenter()
 
 	local point, nudgePoint, nudgeInversePoint = 'BOTTOM', 'BOTTOM', 'TOP'
-
-	if not x or not y then -- if GetCenter on the mover fails, default to UIParent center? (lazy fix, dont know why GetCenter can fail)
-		x, y = screenCenterX, screenCenterY
-	end
-
-	if y >= screenCenterY then -- TOP: 1080p = 540
+	if y >= centerY then -- TOP: 1080p = 540
 		point, nudgePoint, nudgeInversePoint = 'TOP', 'TOP', 'BOTTOM'
-		y = -(screenHeight - mover:GetTop())
+		y = -(E.UIParent:GetTop() - mover:GetTop())
 	else
 		y = mover:GetBottom()
 	end
 
-	if x >= (screenWidth * 2 / 3) then -- RIGHT: 1080p = 1280
+	if x >= (width * 2 / 3) then -- RIGHT: 1080p = 1280
 		point, nudgePoint, nudgeInversePoint = point..'RIGHT', 'RIGHT', 'LEFT'
-		x = mover:GetRight() - screenWidth
-	elseif x <= (screenWidth / 3) or mover.perferCorners then -- LEFT: 1080p = 640
+		x = mover:GetRight() - width
+	elseif x <= (width / 3) or mover.perferCorners then -- LEFT: 1080p = 640
 		point, nudgePoint, nudgeInversePoint = point..'LEFT', 'LEFT', 'RIGHT'
 		x = mover:GetLeft()
 	else
-		x = x - screenCenterX
+		x = x - centerX
 	end
 
 	--Update coordinates if nudged

@@ -621,30 +621,8 @@ E.Options.args.chat = {
 			name = L["Panels"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				panelTabTransparency = {
-					order = 2,
-					type = 'toggle',
-					name = L["Tab Panel Transparency"],
-					customWidth = 250,
-					disabled = function() return not E.db.chat.panelTabBackdrop end,
-					set = function(info, value) E.db.chat.panelTabTransparency = value; Layout:SetChatTabStyle(); end,
-				},
-				panelTabBackdrop = {
-					order = 3,
-					type = 'toggle',
-					name = L["Tab Panel"],
-					desc = L["Toggle the chat tab panel backdrop."],
-					set = function(info, value)
-						E.db.chat.panelTabBackdrop = value
-						Layout:ToggleChatPanels()
-
-						if E.db.chat.pinVoiceButtons and not E.db.chat.hideVoiceButtons then
-							CH:ReparentVoiceChatIcon()
-						end
-					end,
-				},
 				editBoxPosition = {
-					order = 4,
+					order = 1,
 					type = 'select',
 					name = L["Chat EditBox Position"],
 					desc = L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."],
@@ -654,148 +632,193 @@ E.Options.args.chat = {
 					},
 					set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateEditboxAnchors() end,
 				},
-				LeftChatDataPanelAnchor = {
-					order = 5,
-					type = 'select',
-					name = L["Left Panel Position"],
-					values = {
-						['BELOW_CHAT'] = L["Below Chat"],
-						['ABOVE_CHAT'] = L["Above Chat"],
-					},
-					set = function(info, value) E.db.chat[info[#info]] = value; Layout:RepositionChatDataPanels() end,
-				},
-				RightChatDataPanelAnchor = {
-					order = 6,
-					type = 'select',
-					name = L["Right Panel Position"],
-					values = {
-						['BELOW_CHAT'] = L["Below Chat"],
-						['ABOVE_CHAT'] = L["Above Chat"],
-					},
-					set = function(info, value) E.db.chat[info[#info]] = value; Layout:RepositionChatDataPanels() end,
-				},
-				panelBackdrop = {
-					order = 7,
-					type = 'select',
-					name = L["Panel Backdrop"],
-					desc = L["Toggle showing of the left and right chat panels."],
-					values = {
-						['HIDEBOTH'] = L["Hide Both"],
-						['SHOWBOTH'] = L["Show Both"],
-						['LEFT'] = L["Left Only"],
-						['RIGHT'] = L["Right Only"],
-					},
-					set = function(info, value)
-						E.db.chat.panelBackdrop = value
-						Layout:ToggleChatPanels()
-						CH:PositionChats()
-						CH:UpdateEditboxAnchors()
-					end,
-				},
-				separateSizes = {
-					order = 8,
-					type = 'toggle',
-					name = L["Separate Panel Sizes"],
-					desc = L["Enable the use of separate size options for the right chat panel."],
-					set = function(info, value)
-						E.db.chat.separateSizes = value
-						CH:PositionChats()
-						Bags:Layout()
-					end,
-				},
-				panelHeight = {
-					order = 9,
-					type = 'range',
-					name = L["Panel Height"],
-					desc = L["PANEL_DESC"],
-					min = 60, max = 600, step = 1,
-					set = function(info, value)
-						E.db.chat.panelHeight = value
-						CH:PositionChats()
-					end,
-				},
-				panelWidth = {
-					order = 10,
-					type = 'range',
-					name = L["Panel Width"],
-					desc = L["PANEL_DESC"],
-					set = function(info, value)
-						E.db.chat.panelWidth = value
-						CH:PositionChats()
+				tabGroup = {
+					order = 2,
+					type = 'group',
+					guiInline = true,
+					name = L["Tab Panels"],
+					args = {
+						panelTabTransparency = {
+							order = 1,
+							type = 'toggle',
+							name = L["Tab Panel Transparency"],
+							customWidth = 250,
+							disabled = function() return not E.db.chat.panelTabBackdrop end,
+							set = function(info, value) E.db.chat.panelTabTransparency = value; Layout:SetChatTabStyle(); end,
+						},
+						panelTabBackdrop = {
+							order = 2,
+							type = 'toggle',
+							name = L["Tab Panel"],
+							desc = L["Toggle the chat tab panel backdrop."],
+							set = function(info, value)
+								E.db.chat.panelTabBackdrop = value
+								Layout:ToggleChatPanels()
 
-						local bags = Bags
-						if not E.db.chat.separateSizes then
-							bags:Layout()
-						end
+								if E.db.chat.pinVoiceButtons and not E.db.chat.hideVoiceButtons then
+									CH:ReparentVoiceChatIcon()
+								end
+							end,
+						},
+					}
+				},
+				datatextGroup = {
+					order = 3,
+					type = 'group',
+					guiInline = true,
+					name = L["DataText Panels"],
+					args = {
+						LeftChatDataPanelAnchor = {
+							order = 1,
+							type = 'select',
+							name = L["Left Position"],
+							values = {
+								['BELOW_CHAT'] = L["Below Chat"],
+								['ABOVE_CHAT'] = L["Above Chat"],
+							},
+							set = function(info, value) E.db.chat[info[#info]] = value; Layout:RepositionChatDataPanels() end,
+						},
+						RightChatDataPanelAnchor = {
+							order = 2,
+							type = 'select',
+							name = L["Right Position"],
+							values = {
+								['BELOW_CHAT'] = L["Below Chat"],
+								['ABOVE_CHAT'] = L["Above Chat"],
+							},
+							set = function(info, value) E.db.chat[info[#info]] = value; Layout:RepositionChatDataPanels() end,
+						}
+					}
+				},
+				panels = {
+					order = 4,
+					type = 'group',
+					guiInline = true,
+					name = L["Chat Panels"],
+					args = {
+						separateSizes = {
+							order = 1,
+							type = 'toggle',
+							name = L["Separate Panel Sizes"],
+							desc = L["Enable the use of separate size options for the right chat panel."],
+							set = function(info, value)
+								E.db.chat.separateSizes = value
+								CH:PositionChats()
+								Bags:Layout()
+							end,
+						},
+						panelHeight = {
+							order = 2,
+							type = 'range',
+							name = L["Panel Height"],
+							desc = L["PANEL_DESC"],
+							min = 60, max = 600, step = 1,
+							set = function(info, value)
+								E.db.chat.panelHeight = value
+								CH:PositionChats()
+							end,
+						},
+						panelWidth = {
+							order = 3,
+							type = 'range',
+							name = L["Panel Width"],
+							desc = L["PANEL_DESC"],
+							set = function(info, value)
+								E.db.chat.panelWidth = value
+								CH:PositionChats()
 
-						bags:Layout(true)
-					end,
-					min = 50, max = 1000, step = 1,
-				},
-				panelColor = {
-					order = 11,
-					type = "color",
-					name = L["Backdrop Color"],
-					hasAlpha = true,
-					get = function(info)
-						local t = E.db.chat.panelColor
-						local d = P.chat.panelColor
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
-					end,
-					set = function(info, r, g, b, a)
-						local t = E.db.chat.panelColor
-						t.r, t.g, t.b, t.a = r, g, b, a
-						CH:Panels_ColorUpdate()
-					end,
-				},
-				panelHeightRight = {
-					order = 16,
-					type = 'range',
-					name = L["Right Panel Height"],
-					desc = L["Adjust the height of your right chat panel."],
-					min = 60, max = 600, step = 1,
-					disabled = function() return not E.db.chat.separateSizes end,
-					hidden = function() return not E.db.chat.separateSizes end,
-					set = function(info, value)
-						E.db.chat.panelHeightRight = value
-						CH:PositionChats()
-					end,
-				},
-				panelWidthRight = {
-					order = 17,
-					type = 'range',
-					name = L["Right Panel Width"],
-					desc = L["Adjust the width of your right chat panel."],
-					disabled = function() return not E.db.chat.separateSizes end,
-					hidden = function() return not E.db.chat.separateSizes end,
-					set = function(info, value)
-						E.db.chat.panelWidthRight = value
-						CH:PositionChats()
-						Bags:Layout()
-					end,
-					min = 50, max = 1000, step = 1,
-				},
-				panelBackdropNameLeft = {
-					order = 18,
-					type = 'input',
-					width = 'full',
-					name = L["Panel Texture (Left)"],
-					desc = L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."],
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-						E:UpdateMedia()
-					end,
-				},
-				panelBackdropNameRight = {
-					order = 19,
-					type = 'input',
-					width = 'full',
-					name = L["Panel Texture (Right)"],
-					desc = L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."],
-					set = function(info, value)
-						E.db.chat[info[#info]] = value
-						E:UpdateMedia()
-					end,
+								if not E.db.chat.separateSizes then
+									Bags:Layout()
+								end
+
+								Bags:Layout(true)
+							end,
+							min = 50, max = 1000, step = 1,
+						},
+						panelBackdrop = {
+							order = 4,
+							type = 'select',
+							name = L["Panel Backdrop"],
+							desc = L["Toggle showing of the left and right chat panels."],
+							values = {
+								['HIDEBOTH'] = L["Hide Both"],
+								['SHOWBOTH'] = L["Show Both"],
+								['LEFT'] = L["Left Only"],
+								['RIGHT'] = L["Right Only"],
+							},
+							set = function(info, value)
+								E.db.chat.panelBackdrop = value
+								Layout:ToggleChatPanels()
+								CH:PositionChats()
+								CH:UpdateEditboxAnchors()
+							end,
+						},
+						panelColor = {
+							order = 5,
+							type = "color",
+							name = L["Backdrop Color"],
+							hasAlpha = true,
+							get = function(info)
+								local t = E.db.chat.panelColor
+								local d = P.chat.panelColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.chat.panelColor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								CH:Panels_ColorUpdate()
+							end,
+						},
+						panelHeightRight = {
+							order = 6,
+							type = 'range',
+							name = L["Right Panel Height"],
+							desc = L["Adjust the height of your right chat panel."],
+							min = 60, max = 600, step = 1,
+							disabled = function() return not E.db.chat.separateSizes end,
+							hidden = function() return not E.db.chat.separateSizes end,
+							set = function(info, value)
+								E.db.chat.panelHeightRight = value
+								CH:PositionChats()
+							end,
+						},
+						panelWidthRight = {
+							order = 7,
+							type = 'range',
+							name = L["Right Panel Width"],
+							desc = L["Adjust the width of your right chat panel."],
+							disabled = function() return not E.db.chat.separateSizes end,
+							hidden = function() return not E.db.chat.separateSizes end,
+							set = function(info, value)
+								E.db.chat.panelWidthRight = value
+								CH:PositionChats()
+								Bags:Layout()
+							end,
+							min = 50, max = 1000, step = 1,
+						},
+						panelBackdropNameLeft = {
+							order = 8,
+							type = 'input',
+							width = 'full',
+							name = L["Panel Texture (Left)"],
+							desc = L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."],
+							set = function(info, value)
+								E.db.chat[info[#info]] = value
+								E:UpdateMedia()
+							end,
+						},
+						panelBackdropNameRight = {
+							order = 9,
+							type = 'input',
+							width = 'full',
+							name = L["Panel Texture (Right)"],
+							desc = L["Specify a filename located inside the World of Warcraft directory. Textures folder that you wish to have set as a panel background.\n\nPlease Note:\n-The image size recommended is 256x128\n-You must do a complete game restart after adding a file to the folder.\n-The file type must be tga format.\n\nExample: Interface\\AddOns\\ElvUI\\Media\\Textures\\Copy\n\nOr for most users it would be easier to simply put a tga file into your WoW folder, then type the name of the file here."],
+							set = function(info, value)
+								E.db.chat[info[#info]] = value
+								E:UpdateMedia()
+							end,
+						},
+					}
 				},
 			},
 		},

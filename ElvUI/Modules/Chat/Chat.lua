@@ -95,7 +95,6 @@ local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
-local SOUNDKIT_TELL_MESSAGE = SOUNDKIT.TELL_MESSAGE
 
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
@@ -467,13 +466,13 @@ function CH:GetSmileyReplacementText(msg)
 	while(startpos <= origlen) do
 		local pos = strfind(msg,"|H",startpos,true)
 		endpos = pos or origlen
-		outstr = outstr .. CH:InsertEmotions(strsub(msg,startpos,endpos)); --run replacement on this bit
+		outstr = outstr .. CH:InsertEmotions(strsub(msg,startpos,endpos)) --run replacement on this bit
 		startpos = endpos + 1
 		if pos ~= nil then
 			_, endpos = strfind(msg,"|h.-|h",startpos)
 			endpos = endpos or origlen
 			if startpos < endpos then
-				outstr = outstr .. strsub(msg,startpos,endpos); --don't run replacement on this bit
+				outstr = outstr .. strsub(msg,startpos,endpos) --don't run replacement on this bit
 				startpos = endpos + 1
 			end
 		end
@@ -1264,7 +1263,7 @@ end
 
 local hyperLinkEntered
 function CH:OnHyperlinkEnter(frame, refString)
-	if InCombatLockdown() then return; end
+	if InCombatLockdown() then return end
 	local linkToken = strmatch(refString, "^([^:]+)")
 	if hyperlinkTypes[linkToken] then
 		_G.GameTooltip:SetOwner(frame, "ANCHOR_CURSOR")
@@ -1727,7 +1726,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			-- Search for icon links and replace them with texture links.
-			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)); -- If arg17 is true, don't convert to raid icons
+			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)) -- If arg17 is true, don't convert to raid icons
 
 			--Remove groups of many spaces
 			arg1 = RemoveExtraSpaces(arg1)
@@ -1861,8 +1860,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
 
-			local alertType = CH.db.channelAlerts[historyTypes[chatType]]
-			if notChatHistory and not CH.SoundTimer and (arg2 ~= PLAYER_NAME and alertType and alertType ~= 'None') and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
+			local alertType = notChatHistory and not CH.SoundTimer and not strfind(event, "_INFORM") and CH.db.channelAlerts[historyTypes[event]]
+			if alertType and alertType ~= "None" and arg2 ~= PLAYER_NAME and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
 				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
 				PlaySoundFile(LSM:Fetch("sound", alertType), "Master")
 			end
@@ -1871,13 +1870,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		end
 
 		if notChatHistory and (chatType == "WHISPER" or chatType == "BN_WHISPER") then
-			--BN_WHISPER FIXME
 			ChatEdit_SetLastTellTarget(arg2, chatType)
-			if frame.tellTimer and (GetTime() > frame.tellTimer) then
-				PlaySound(SOUNDKIT_TELL_MESSAGE)
-			end
-			frame.tellTimer = GetTime() + _G.CHAT_TELL_ALERT_TIME
-			--FCF_FlashTab(frame)
 			FlashClientIcon()
 		end
 
@@ -1885,7 +1878,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if (frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab) then
 				if not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == "WHISPER" or chatType == "BN_WHISPER" then --BN_WHISPER FIXME
 					if not FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
-						FCF_StartAlertFlash(frame); --This would taint if we were not using LibChatAnims
+						FCF_StartAlertFlash(frame) --This would taint if we were not using LibChatAnims
 					end
 				end
 			end
@@ -2242,8 +2235,6 @@ function CH:DisplayChatHistory()
 		return
 	end
 
-	CH.SoundTimer = true
-
 	for _, chat in ipairs(_G.CHAT_FRAMES) do
 		for _, d in ipairs(data) do
 			if type(d) == 'table' then
@@ -2261,8 +2252,6 @@ function CH:DisplayChatHistory()
 			end
 		end
 	end
-
-	CH.SoundTimer = nil
 end
 
 tremove(_G.ChatTypeGroup.GUILD, 2)

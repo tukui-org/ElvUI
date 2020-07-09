@@ -135,6 +135,7 @@ do
 	DisableAddOn("ElvUI_EverySecondCounts")
 	DisableAddOn("ElvUI_AuraBarsMovers")
 	DisableAddOn("ElvUI_CustomTweaks")
+	DisableAddOn("ElvUI_DTBars2")
 end
 
 function E:OnEnable()
@@ -225,12 +226,15 @@ function E:PositionGameMenuButton()
 	end
 end
 
-function E:ResetPrivateProfile()
-	local key = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
-	if key and ElvPrivateDB.profiles and ElvPrivateDB.profiles[key] then
-		ElvPrivateDB.profiles[key] = nil
-	end
+function E:ResetProfile()
+	E:StaggeredUpdateAll()
+end
 
+function E:OnProfileReset()
+	E:StaticPopup_Show('RESET_PROFILE_PROMPT')
+end
+
+function E:ResetPrivateProfile()
 	ReloadUI()
 end
 
