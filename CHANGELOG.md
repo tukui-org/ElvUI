@@ -5,6 +5,7 @@
 
 **Bug Fixes:**  
 Movers: Fixed an error while placing PlayerPowerBarAlt with StickFrames disabled.  
+Aura Highlight: This actually works now.  
 
 **Misc. Changes:**  
 Options: Readd the confirmation popup to Reset Profile button.  
