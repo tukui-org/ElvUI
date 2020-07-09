@@ -12,8 +12,9 @@ local displayString, lastPanel = ''
 local function OnEvent(self)
 	local StatID = DT.SPECIALIZATION_CACHE[GetSpecialization()] and DT.SPECIALIZATION_CACHE[GetSpecialization()].statID
 
-	if StatID then
-		self.text:SetFormattedText(displayString, _G["SPELL_STAT"..StatID.."_NAME"]..': ', UnitStat("player", StatID))
+	local name = StatID and _G['SPELL_STAT'..StatID..'_NAME']
+	if name then
+		self.text:SetFormattedText(displayString, name..': ', UnitStat('player', StatID))
 	end
 
 	lastPanel = self
@@ -29,4 +30,4 @@ end
 
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Primary Stat', STAT_CATEGORY_ATTRIBUTES, { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE" }, OnEvent, nil, nil, nil, nil, SPEC_FRAME_PRIMARY_STAT:gsub('[:：%s]-%%s$',''))
+DT:RegisterDatatext('Primary Stat', STAT_CATEGORY_ATTRIBUTES, { 'UNIT_STATS', 'UNIT_AURA', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE' }, OnEvent, nil, nil, nil, nil, SPEC_FRAME_PRIMARY_STAT:gsub('[:：%s]-%%s$',''))
