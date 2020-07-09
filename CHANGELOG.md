@@ -1,14 +1,25 @@
-# Version 11.43 [ ETA: 🍨 ]
+# Version 11.44 [ ETA: 🍨 ]
 
 **New Additions:**  
 
 
 **Bug Fixes:**  
-Movers: Fixed an error while placing PlayerPowerBarAlt with StickFrames disabled.  
-Aura Highlight: This actually works now.  
+
 
 **Misc. Changes:**  
+
+
+___
+
+# Version 11.43 [ July 9th 2020 ]
+
+**Hotfixed:**  
+Chat: Whisper Sound works again.  
+Tooltip: Item Count works again.  
+Aura Highlight: This actually works again too.  
 Options: Readd the confirmation popup to Reset Profile button.  
+Movers: Fixed an error while placing PlayerPowerBarAlt with StickFrames disabled.  
+ElvUI_DTBars2 is now depreciated and forced off.  
 
 ___
 

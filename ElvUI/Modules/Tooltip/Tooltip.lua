@@ -571,17 +571,17 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		local numall = GetItemCount(link,true)
 		local left, right, bankCount = ' ', ' ', ' '
 
-		if link then
+		if link and TT:IsModKeyDown() then
 			left = format('|cFFCA3C3C%s|r %s', _G.ID, strmatch(link, ':(%w+)'))
 		end
 
 		if TT.db.itemCount == 'BAGS_ONLY' then
 			right = format('|cFFCA3C3C%s|r %d', L["Count"], num)
 		elseif TT.db.itemCount == 'BANK_ONLY' then
-			bankCount = format('|cFFCA3C3C%s|r %d', L["Bank"],(numall - num))
+			bankCount = format('|cFFCA3C3C%s|r %d', L["Bank"], numall - num)
 		elseif TT.db.itemCount == 'BOTH' then
 			right = format('|cFFCA3C3C%s|r %d', L["Count"], num)
-			bankCount = format('|cFFCA3C3C%s|r %d', L["Bank"],(numall - num))
+			bankCount = format('|cFFCA3C3C%s|r %d', L["Bank"], numall - num)
 		end
 
 		if left ~= ' ' or right ~= ' ' then
