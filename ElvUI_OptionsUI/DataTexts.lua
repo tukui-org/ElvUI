@@ -280,7 +280,7 @@ function DT:PanelLayoutOptions()
 				}
 			end
 
-			for option, value in pairs(tab) do
+			for option in pairs(tab) do
 				if type(option) == 'number' then
 					if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
 						tab[option] = nil
@@ -297,13 +297,6 @@ function DT:PanelLayoutOptions()
 							end,
 						}
 					end
-				elseif type(value) ~= 'boolean' and P.datatexts.panels[name] and P.datatexts.panels[name][option] then
-					-- TODO: need to convert the old [name][option] to the number style..
-					options[name].args[option] = options[name].args[option] or {
-						type = 'select',
-						name = L[option],
-						values = dts,
-					}
 				end
 			end
 		end
