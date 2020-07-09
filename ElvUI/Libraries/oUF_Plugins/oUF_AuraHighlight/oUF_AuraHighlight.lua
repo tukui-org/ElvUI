@@ -2,28 +2,34 @@ local _, ns = ...
 local oUF = ns.oUF
 if not oUF then return end
 
-local playerClass = select(2, UnitClass('player'))
-
+local UnitAura = UnitAura
+local UnitCanAssist = UnitCanAssist
+local GetSpecialization = GetSpecialization
+local GetActiveSpecGroup = GetActiveSpecGroup
 local Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-
 local DispelList, BlackList = {}, {}
+-- GLOBALS: DebuffTypeColor
+
+--local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
+--local FilterList = {}
 
 if Classic then
-	DispelList.PRIEST = { Magic = true, Disease = true }
-	DispelList.SHAMAN = { Poison = true, Disease = true }
-	DispelList.PALADIN = { Magic = true, Poison = true, Disease = true }
-	DispelList.MAGE = { Curse = true }
-	DispelList.DRUID = { Curse = true, Poison = true }
-	DispelList.WARLOCK = { Magic = true }
+	DispelList.PRIEST	= { Magic = true, Disease = true }
+	DispelList.SHAMAN	= { Poison = true, Disease = true }
+	DispelList.PALADIN	= { Magic = true, Poison = true, Disease = true }
+	DispelList.MAGE		= { Curse = true }
+	DispelList.DRUID	= { Curse = true, Poison = true }
+	DispelList.WARLOCK	= { Magic = true }
 else
-	DispelList.PRIEST = { Magic = true, Disease = true }
-	DispelList.SHAMAN = { Magic = false, Curse = true }
-	DispelList.PALADIN = { Magic = false, Poison = true, Disease = true }
-	DispelList.DRUID = { Magic = false, Curse = true, Poison = true, Disease = false }
-	DispelList.MONK = { Magic = false, Poison = true, Disease = true }
-	DispelList.MAGE = { Curse = true }
+	DispelList.PRIEST	= { Magic = true, Disease = true }
+	DispelList.SHAMAN	= { Magic = false, Curse = true }
+	DispelList.PALADIN	= { Magic = false, Poison = true, Disease = true }
+	DispelList.DRUID	= { Magic = false, Curse = true, Poison = true, Disease = false }
+	DispelList.MONK		= { Magic = false, Poison = true, Disease = true }
+	DispelList.MAGE		= { Curse = true }
 end
 
+local playerClass = select(2, UnitClass('player'))
 local CanDispel = DispelList[playerClass] or {}
 
 if not Classic then
@@ -38,11 +44,8 @@ if not Classic then
 	BlackList[137637] = true -- Warbringer, Slow
 end
 
-local DispellPriority = { Magic = 4, Curse = 3, Disease = 2, Poison = 1 }
-local FilterList = {}
-
 local function GetAuraType(unit, filter, filterTable)
-	if not unit or not UnitCanAssist('player', unit) then return nil end
+	if not unit or not UnitCanAssist('player', unit) then return end
 
 	local i = 1
 	while true do
@@ -50,14 +53,14 @@ local function GetAuraType(unit, filter, filterTable)
 		if not texture then break end
 
 		local filterSpell = filterTable[spellID] or filterTable[name]
-
-		if (filterTable and filterSpell) then
+		if filterTable and filterSpell then
 			if filterSpell.enable then
 				return debufftype, texture, true, filterSpell.style, filterSpell.color
 			end
 		elseif debufftype and (not filter or (filter and CanDispel[debufftype])) and not (BlackList[name] or BlackList[spellID]) then
 			return debufftype, texture
 		end
+
 		i = i + 1
 	end
 
@@ -67,32 +70,31 @@ local function GetAuraType(unit, filter, filterTable)
 		if not texture then break end
 
 		local filterSpell = filterTable[spellID]
-
-		if (filterTable and filterSpell) then
-			if filterSpell.enable then
-				return debufftype, texture, true, filterSpell.style, filterSpell.color
-			end
+		if filterTable and filterSpell and filterSpell.enable then
+			return debufftype, texture, true, filterSpell.style, filterSpell.color
 		end
 
 		i = i + 1
 	end
 end
 
+--[[
 local function FilterTable()
 	local debufftype, texture, filterSpell
-
 	return debufftype, texture, true, filterSpell.style, filterSpell.color
 end
+]]
 
 local function CheckTalentTree(tree)
 	local activeGroup = GetActiveSpecGroup()
+	local spec = activeGroup and GetSpecialization(false, false, activeGroup)
 
-	if activeGroup and GetSpecialization(false, false, activeGroup) then
-		return tree == GetSpecialization(false, false, activeGroup)
+	if spec then
+		return tree == spec
 	end
 end
 
-local function CheckSpec(self, event, levels)
+local function CheckSpec()
 	if Classic then return end
 
 	-- Check for certain talents to see if we can dispel magic or not
@@ -107,12 +109,12 @@ local function CheckSpec(self, event, levels)
 	end
 end
 
-local function Update(self, event, unit)
-	if unit ~= self.unit then return; end
+local function Update(self, _, unit)
+	if unit ~= self.unit then return end
 
 	local debuffType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
-	if(wasFiltered) then
+	if wasFiltered then
 		if style == 'GLOW' and self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Show()
 			self.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -122,6 +124,7 @@ local function Update(self, event, unit)
 		end
 	elseif debuffType then
 		color = DebuffTypeColor[debuffType or 'none']
+
 		if self.AuraHighlightBackdrop and self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Show()
 			self.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -148,11 +151,8 @@ local function Update(self, event, unit)
 end
 
 local function Enable(self)
-	local element = self.AuraHighlight
-	if element then
-
+	if self.AuraHighlight then
 		self:RegisterEvent('UNIT_AURA', Update)
-
 		return true
 	end
 end
@@ -166,8 +166,8 @@ local function Disable(self)
 			self.AuraHightlightGlow:Hide()
 		end
 
-		if self.AuraHighlight then
-			self.AuraHighlight:SetVertexColor(0, 0, 0, 0)
+		if element then
+			element:SetVertexColor(0, 0, 0, 0)
 		end
 	end
 end
