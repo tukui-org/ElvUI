@@ -795,7 +795,7 @@ function AB:DisableBlizzard()
 
 	---------- keep an eye on them for possible issues ----------
 	-- 1) MultiBarRight:SetShown taint during combat from: SpellBookFrame, ZoneAbility, and ActionBarController
-	_G.ValidateActionBarTransition = E.noop
+	_G.BeginActionBarTransition = E.noop
 
 	-- 2) MainMenuBar:ClearAllPoints taint during combat from: MainMenuBar
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop
