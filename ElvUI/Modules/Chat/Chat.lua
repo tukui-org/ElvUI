@@ -2342,22 +2342,19 @@ function CH:FCF_SetWindowAlpha(frame, alpha)
 end
 
 function CH:CheckLFGRoles()
-	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
-	local unit, name, realm = (isInRaid and "raid" or "party")
-
+	if not CH.db.lfgIcons or not IsInGroup() then return end
 	wipe(lfgRoles)
 
-	if not isInGroup or not CH.db.lfgIcons then return end
-
-	local role = UnitGroupRolesAssigned("player")
-	if role then
-		lfgRoles[PLAYER_NAME] = rolePaths[role]
+	local playerRole = UnitGroupRolesAssigned("player")
+	if playerRole then
+		lfgRoles[PLAYER_NAME] = rolePaths[playerRole]
 	end
 
+	local unit = (IsInRaid() and "raid" or "party")
 	for i = 1, GetNumGroupMembers() do
 		if UnitExists(unit..i) and not UnitIsUnit(unit..i, "player") then
-			role = UnitGroupRolesAssigned(unit..i)
-			name, realm = UnitName(unit..i)
+			local role = UnitGroupRolesAssigned(unit..i)
+			local name, realm = UnitName(unit..i)
 
 			if role and name then
 				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..PLAYER_REALM
