@@ -736,6 +736,23 @@ function AB:Button_OnLeave(button)
 	end
 end
 
+function AB:MultiActionBar_Update()
+	local pages = VIEWABLE_ACTION_BAR_PAGES
+
+	if SHOW_MULTI_ACTIONBAR_1 then pages[BOTTOMLEFT_ACTIONBAR_PAGE] = nil end
+	if SHOW_MULTI_ACTIONBAR_2 then pages[BOTTOMRIGHT_ACTIONBAR_PAGE] = nil end
+	if SHOW_MULTI_ACTIONBAR_3 then pages[RIGHT_ACTIONBAR_PAGE] = nil end
+	if SHOW_MULTI_ACTIONBAR_3 and SHOW_MULTI_ACTIONBAR_4 then pages[LEFT_ACTIONBAR_PAGE] = nil end
+
+	for i=1, 6 do
+		local name = 'bar'..i
+		local page = AB.barDefaults[name].page
+		if AB.db[name].enabled then
+			pages[page] = nil
+		end
+	end
+end
+
 function AB:BlizzardOptionsPanel_OnEvent()
 	_G.InterfaceOptionsActionBarsPanelBottomRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 2)
 	_G.InterfaceOptionsActionBarsPanelBottomLeft.Text:SetFormattedText(L["Remove Bar %d Action Page"], 3)
@@ -795,7 +812,7 @@ function AB:DisableBlizzard()
 
 	---------- keep an eye on them for possible issues ----------
 	-- 1) MultiBarRight:SetShown taint during combat from: SpellBookFrame, ZoneAbility, and ActionBarController
-	_G.BeginActionBarTransition = E.noop
+	_G.ActionBarController_UpdateAll = E.noop
 
 	-- 2) MainMenuBar:ClearAllPoints taint during combat from: MainMenuBar
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop
@@ -824,6 +841,7 @@ function AB:DisableBlizzard()
 
 	AB:IconIntroTracker_Toggle() --Enable/disable functionality to automatically put spells on the actionbar.
 	AB:SecureHook('BlizzardOptionsPanel_OnEvent')
+	AB:SecureHook('MultiActionBar_Update')
 
 	if _G.PlayerTalentFrame then
 		_G.PlayerTalentFrame:UnregisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
