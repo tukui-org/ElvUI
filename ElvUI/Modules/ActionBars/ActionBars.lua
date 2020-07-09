@@ -744,7 +744,7 @@ function AB:MultiActionBar_Update()
 	if SHOW_MULTI_ACTIONBAR_3 then pages[RIGHT_ACTIONBAR_PAGE] = nil end
 	if SHOW_MULTI_ACTIONBAR_3 and SHOW_MULTI_ACTIONBAR_4 then pages[LEFT_ACTIONBAR_PAGE] = nil end
 
-	for i=1, 6 do
+	for i=3, 6 do
 		local name = 'bar'..i
 		local page = AB.barDefaults[name].page
 		if AB.db[name].enabled then
