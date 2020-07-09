@@ -135,6 +135,7 @@ do
 	DisableAddOn("ElvUI_EverySecondCounts")
 	DisableAddOn("ElvUI_AuraBarsMovers")
 	DisableAddOn("ElvUI_CustomTweaks")
+	DisableAddOn("ElvUI_DTBars2")
 end
 
 function E:OnEnable()
