@@ -563,7 +563,7 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		return
 	end
 
-	if not tt.itemCleared and TT:IsModKeyDown() then
+	if not tt.itemCleared then
 		local _, link = tt:GetItem()
 		local num = GetItemCount(link)
 		local numall = GetItemCount(link,true)
