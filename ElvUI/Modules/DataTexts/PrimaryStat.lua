@@ -9,17 +9,11 @@ local SPEC_FRAME_PRIMARY_STAT = SPEC_FRAME_PRIMARY_STAT
 
 local displayString, lastPanel = ''
 
-local SPEC_STAT_STRINGS = {
-	[_G.LE_UNIT_STAT_STRENGTH]	= _G.SPEC_FRAME_PRIMARY_STAT_STRENGTH,
-	[_G.LE_UNIT_STAT_AGILITY]	= _G.SPEC_FRAME_PRIMARY_STAT_AGILITY,
-	[_G.LE_UNIT_STAT_INTELLECT]	= _G.SPEC_FRAME_PRIMARY_STAT_INTELLECT,
-}
-
 local function OnEvent(self)
 	local StatID = DT.SPECIALIZATION_CACHE[GetSpecialization()] and DT.SPECIALIZATION_CACHE[GetSpecialization()].statID
 
 	if StatID then
-		self.text:SetFormattedText(displayString, SPEC_STAT_STRINGS[StatID]..': ', UnitStat("player", StatID))
+		self.text:SetFormattedText(displayString, _G["SPELL_STAT"..StatID.."_NAME"]..': ', UnitStat("player", StatID))
 	end
 
 	lastPanel = self
