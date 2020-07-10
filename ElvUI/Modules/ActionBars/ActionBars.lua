@@ -39,6 +39,10 @@ local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
+local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
+hiddenParent:SetAllPoints()
+hiddenParent:Hide()
+
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
@@ -743,11 +747,11 @@ end
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	for i, name in ipairs({"OverrideActionBar", "StanceBarFrame", "PossessBarFrame", "PetActionBarFrame", "MultiCastActionBarFrame", "MainMenuBar", "MicroButtonAndBagsBar", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiBarLeft", "MultiBarRight"}) do
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+
 		local frame = _G[name]
 		if i < 6 then frame:UnregisterAllEvents() end
-
-		RegisterStateDriver(frame, 'visibility', 'hide')
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+		frame:SetParent(hiddenParent)
 	end
 
 	for _, name in ipairs({"ActionButton", "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarRightButton", "MultiBarLeftButton", "OverrideActionBarButton", "MultiCastActionButton"}) do
