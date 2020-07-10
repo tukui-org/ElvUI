@@ -14,7 +14,7 @@ function UF:Configure_CustomTexts(frame)
 	end
 
 	if frameDB.customTexts then
-		local font = UF.LSM:Fetch("font", UF.db.font)
+		local font = UF.LSM:Fetch('font', UF.db.font)
 		for name in pairs(frameDB.customTexts) do
 			local object = frame.customTexts[name]
 			if not object then
@@ -23,7 +23,7 @@ function UF:Configure_CustomTexts(frame)
 
 			local db, tagFont = frameDB.customTexts[name]
 			if db.font then
-				tagFont = UF.LSM:Fetch("font", db.font)
+				tagFont = UF.LSM:Fetch('font', db.font)
 			end
 
 			local attachPoint = self:GetObjectAnchorPoint(frame, db.attachTextTo)
@@ -32,9 +32,9 @@ function UF:Configure_CustomTexts(frame)
 			object:ClearAllPoints()
 			object:Point(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
 
-			if db.attachTextTo == "Power" and frame.Power then
+			if db.attachTextTo == 'Power' and frame.Power then
 				object:SetParent(frame.Power.RaisedElementParent)
-			elseif db.attachTextTo == "AdditionalPower" and frame.AdditionalPower then
+			elseif db.attachTextTo == 'AdditionalPower' and frame.AdditionalPower then
 				object:SetParent(frame.AdditionalPower.RaisedElementParent)
 			else
 				object:SetParent(frame.RaisedElementParent)
