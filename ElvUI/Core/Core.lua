@@ -311,7 +311,6 @@ function E:UpdateMedia()
 
 	--Value Color
 	local value = E.db.general.valuecolor
-
 	if E:CheckClassColor(value.r, value.g, value.b) then
 		value = E:ClassColor(E.myclass, true)
 		E.db.general.valuecolor.r = value.r
@@ -321,7 +320,6 @@ function E:UpdateMedia()
 
 	--Chat Tab Selector Color
 	local selectorColor = E.db.chat.tabSelectorColor
-
 	if E:CheckClassColor(selectorColor.r, selectorColor.g, selectorColor.b) then
 		selectorColor = E:ClassColor(E.myclass, true)
 		E.db.chat.tabSelectorColor.r = selectorColor.r
@@ -332,6 +330,7 @@ function E:UpdateMedia()
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 	E.media.rgbvaluecolor = {value.r, value.g, value.b}
 
+	-- Chat Panel Background Texture
 	local LeftChatPanel, RightChatPanel = _G.LeftChatPanel, _G.RightChatPanel
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
 		LeftChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
