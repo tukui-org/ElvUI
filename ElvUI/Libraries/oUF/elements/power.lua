@@ -206,17 +206,18 @@ local function Update(self, event, unit)
 	if(element.displayAltPower) then
 		displayType, min = getDisplayPower(unit)
 	end
-	if not min then min = 0 end
 
 	local cur, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
+	if not min then min = 0 end
 
-	element:SetMinMaxValues(min or 0, max)
+	element:SetMinMaxValues(min, max)
 
 	if not UnitIsConnected(unit) then
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
 	end
+
 	element.cur = cur
 	element.min = min
 	element.max = max
