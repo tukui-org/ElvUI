@@ -32,8 +32,10 @@ function UF:Configure_CustomTexts(frame)
 			object:ClearAllPoints()
 			object:Point(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
 
-			if db.attachTextTo == "Power" then
+			if db.attachTextTo == "Power" and frame.Power then
 				object:SetParent(frame.Power.RaisedElementParent)
+			elseif db.attachTextTo == "AdditionalPower" and frame.AlternativePower then
+				object:SetParent(frame.AlternativePower.RaisedElementParent)
 			else
 				object:SetParent(frame.RaisedElementParent)
 			end
