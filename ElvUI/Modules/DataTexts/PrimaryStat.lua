@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Inport: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+local _G = _G
 local strjoin = strjoin
 local UnitStat = UnitStat
 local GetSpecialization = GetSpecialization
