@@ -761,13 +761,8 @@ function AB:DisableBlizzard()
 		end
 	end
 
-	---------- keep an eye on them for possible issues ----------
-	-- 1) MultiBarRight:SetShown taint during combat from: SpellBookFrame, ZoneAbility, and ActionBarController
-	---- ?????
-
-	-- 2) MainMenuBar:ClearAllPoints taint during combat from: MainMenuBar
+	-- MainMenuBar:ClearAllPoints taint during combat
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop
-	-------------------------------------------------------------
 
 	-- shut down some events for things we dont use
 	_G.StatusTrackingBarManager:UnregisterAllEvents()
