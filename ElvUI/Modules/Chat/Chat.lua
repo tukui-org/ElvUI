@@ -57,7 +57,7 @@ local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetPlayerLink = GetPlayerLink
 local GetRaidRosterInfo = GetRaidRosterInfo
-local GetTime, GMError = GetTime, GMError
+local GMError = GMError
 local GMChatFrame_IsGM = GMChatFrame_IsGM
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
@@ -1393,21 +1393,23 @@ function CH:AddPluginMessageFilter(func, position)
 end
 
 --Modified copy from FrameXML ChatFrame.lua to add CUSTOM_CLASS_COLORS (args were changed)
-function CH:GetColoredName(event, classColor, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
+function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	local chatType = strsub(event, 10)
-	if strsub(chatType, 1, 7) == "WHISPER" then chatType = "WHISPER" end
-	if strsub(chatType, 1, 7) == "CHANNEL" then chatType = "CHANNEL"..arg8 end
+
+	local subType = strsub(chatType, 1, 7)
+	if subType == "WHISPER" then
+		chatType = "WHISPER"
+	elseif subType == "CHANNEL" then
+		chatType = "CHANNEL"..arg8
+	end
 
 	--ambiguate guild chat names
 	arg2 = Ambiguate(arg2, (chatType == "GUILD" and "guild") or "none")
 
-	local info = (classColor or arg12) and _G.ChatTypeInfo[chatType]
+	local info = arg12 and _G.ChatTypeInfo[chatType]
 	if info and Chat_ShouldColorChatByClass(info) then
-		if not classColor then
-			local data = CH:GetPlayerInfoByGUID(arg12)
-			classColor = data and data.classColor
-		end
-
+		local data = CH:GetPlayerInfoByGUID(arg12)
+		local classColor = data and data.classColor
 		if classColor then
 			return format("\124cff%.2x%.2x%.2x%s\124r", classColor.r*255, classColor.g*255, classColor.b*255, arg2)
 		end
@@ -1485,16 +1487,15 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		arg2 = E.NameReplacements[arg2] or arg2
 
 		-- data from populated guid info
-		local classColor, nameWithRealm, realm
+		local nameWithRealm, realm
 		local data = CH:GetPlayerInfoByGUID(arg12)
 		if data then
 			realm = data.realm
-			classColor = data.classColor
 			nameWithRealm = data.nameWithRealm
 		end
 
 		-- fetch the name color to use
-		local coloredName = historySavedName or CH:GetColoredName(event, classColor, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+		local coloredName = historySavedName or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
@@ -2313,7 +2314,7 @@ function CH:SaveChatHistory(event, ...)
 		local coloredName, battleTag
 		if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
 		if battleTag then tempHistory[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
-		tempHistory[52] = coloredName or CH:GetColoredName(event, nil, ...)
+		tempHistory[52] = coloredName or CH:GetColoredName(event, ...)
 
 		tinsert(data, tempHistory)
 		while #data >= CH.db.historySize do
@@ -2341,22 +2342,19 @@ function CH:FCF_SetWindowAlpha(frame, alpha)
 end
 
 function CH:CheckLFGRoles()
-	local isInGroup, isInRaid = IsInGroup(), IsInRaid()
-	local unit, name, realm = (isInRaid and "raid" or "party")
-
+	if not CH.db.lfgIcons or not IsInGroup() then return end
 	wipe(lfgRoles)
 
-	if not isInGroup or not CH.db.lfgIcons then return end
-
-	local role = UnitGroupRolesAssigned("player")
-	if role then
-		lfgRoles[PLAYER_NAME] = rolePaths[role]
+	local playerRole = UnitGroupRolesAssigned("player")
+	if playerRole then
+		lfgRoles[PLAYER_NAME] = rolePaths[playerRole]
 	end
 
+	local unit = (IsInRaid() and "raid" or "party")
 	for i = 1, GetNumGroupMembers() do
 		if UnitExists(unit..i) and not UnitIsUnit(unit..i, "player") then
-			role = UnitGroupRolesAssigned(unit..i)
-			name, realm = UnitName(unit..i)
+			local role = UnitGroupRolesAssigned(unit..i)
+			local name, realm = UnitName(unit..i)
 
 			if role and name then
 				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..PLAYER_REALM

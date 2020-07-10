@@ -176,12 +176,14 @@ local function Chat_OnMouseWheel(self, delta)
 end
 
 local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
-	local coloredName = GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 	local type = strsub(event, 10)
 	local info = _G.ChatTypeInfo[type]
 
+	local coloredName
 	if event == 'CHAT_MSG_BN_WHISPER' then
 		coloredName = CH:GetBNFriendColor(arg2, arg13)
+	else
+		coloredName = CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 	end
 
 	arg1 = RemoveExtraSpaces(arg1)

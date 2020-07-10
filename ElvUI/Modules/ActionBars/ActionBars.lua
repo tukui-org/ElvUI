@@ -39,6 +39,10 @@ local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
+local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
+hiddenParent:SetAllPoints()
+hiddenParent:Hide()
+
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
@@ -462,42 +466,6 @@ function AB:UpdateBar1Paging()
 	else
 		AB.barDefaults.bar1.conditions = format("[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetVehicleBarIndex(), GetOverrideBarIndex())
 	end
-
-	if (not E.private.actionbar.enable or InCombatLockdown()) or not AB.isInitialized then return; end
-	local bar2Option = _G.InterfaceOptionsActionBarsPanelBottomRight
-	local bar3Option = _G.InterfaceOptionsActionBarsPanelBottomLeft
-	local bar4Option = _G.InterfaceOptionsActionBarsPanelRightTwo
-	local bar5Option = _G.InterfaceOptionsActionBarsPanelRight
-
-	if (AB.db.bar2.enabled and not bar2Option:GetChecked()) or (not AB.db.bar2.enabled and bar2Option:GetChecked())  then
-		bar2Option:Click()
-	end
-
-	if (AB.db.bar3.enabled and not bar3Option:GetChecked()) or (not AB.db.bar3.enabled and bar3Option:GetChecked())  then
-		bar3Option:Click()
-	end
-
-	if not AB.db.bar5.enabled and not AB.db.bar4.enabled then
-		if bar4Option:GetChecked() then
-			bar4Option:Click()
-		end
-
-		if bar5Option:GetChecked() then
-			bar5Option:Click()
-		end
-	elseif not AB.db.bar5.enabled then
-		if not bar5Option:GetChecked() then
-			bar5Option:Click()
-		end
-
-		if not bar4Option:GetChecked() then
-			bar4Option:Click()
-		end
-	elseif (AB.db.bar4.enabled and not bar4Option:GetChecked()) or (not AB.db.bar4.enabled and bar4Option:GetChecked()) then
-		bar4Option:Click()
-	elseif (AB.db.bar5.enabled and not bar5Option:GetChecked()) or (not AB.db.bar5.enabled and bar5Option:GetChecked()) then
-		bar5Option:Click()
-	end
 end
 
 function AB:UpdateButtonSettingsForBar(barName)
@@ -779,11 +747,11 @@ end
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	for i, name in ipairs({"OverrideActionBar", "StanceBarFrame", "PossessBarFrame", "PetActionBarFrame", "MultiCastActionBarFrame", "MainMenuBar", "MicroButtonAndBagsBar", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiBarLeft", "MultiBarRight"}) do
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+
 		local frame = _G[name]
 		if i < 6 then frame:UnregisterAllEvents() end
-
-		RegisterStateDriver(frame, 'visibility', 'hide')
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
+		frame:SetParent(hiddenParent)
 	end
 
 	for _, name in ipairs({"ActionButton", "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarRightButton", "MultiBarLeftButton", "OverrideActionBarButton", "MultiCastActionButton"}) do
@@ -793,17 +761,14 @@ function AB:DisableBlizzard()
 		end
 	end
 
+	-- MainMenuBar:ClearAllPoints taint during combat
+	_G.MainMenuBar.SetPositionForStatusBars = E.noop
+
 	-- shut down some events for things we dont use
 	_G.StatusTrackingBarManager:UnregisterAllEvents()
 	_G.MainMenuBarArtFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
-
-	-- * these seem to work but keep an eye on them for possible new taints spawned
-	-- MultiBarRight:SetShown taint during combat from: SpellBookFrame, ZoneAbility, and ActionBarController
-	_G.ActionBarController_UpdateAll = E.noop -- this seems to work
-	-- MainMenuBar:ClearAllPoints taint during combat from: MainMenuBar
-	_G.MainMenuBar.SetPositionForStatusBars = E.noop -- this seems to work
 
 	-- hide some interface options we dont use
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)

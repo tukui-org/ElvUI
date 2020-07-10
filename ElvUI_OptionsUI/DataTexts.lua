@@ -18,13 +18,13 @@ local type = type
 local currencyList = {}
 local DTPanelOptions = {
 	numPoints = {
-		order = 1,
+		order = 2,
 		type = 'range',
 		name = L["Number of DataTexts"],
 		min = 1, max = 20, step = 1,
 	},
 	growth = {
-		order = 2,
+		order = 3,
 		type = 'select',
 		name = L["Growth"],
 		values = {
@@ -33,19 +33,19 @@ local DTPanelOptions = {
 		},
 	},
 	width = {
-		order = 3,
+		order = 4,
 		type = 'range',
 		name = L["Width"],
 		min = 24, max = E.screenwidth, step = 1,
 	},
 	height = {
-		order = 4,
+		order = 5,
 		type = 'range',
 		name = L["Height"],
 		min = 12, max = E.screenheight, step = 1,
 	},
 	templateGroup = {
-		order = 5,
+		order = 10,
 		type = "multiselect",
 		name = L['Template'],
 		sortByValue = true,
@@ -57,7 +57,7 @@ local DTPanelOptions = {
 		},
 	},
 	strataAndLevel = {
-		order = 9,
+		order = 15,
 		type = "group",
 		name = L["Strata and Level"],
 		guiInline = true,
@@ -84,7 +84,7 @@ local DTPanelOptions = {
 		},
 	},
 	tooltip = {
-		order = 15,
+		order = 20,
 		type = "group",
 		name = L["Tooltip"],
 		guiInline = true,
@@ -124,7 +124,7 @@ local DTPanelOptions = {
 	},
 	visibility = {
 		type = 'input',
-		order = 16,
+		order = 25,
 		name = L["Visibility State"],
 		desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 		width = 'full',
@@ -562,7 +562,7 @@ E.Options.args.datatexts = {
 							end,
 						},
 						add = {
-							order = -1,
+							order = 1,
 							type = 'execute',
 							name = L['Add'],
 							width = 'full',
@@ -691,23 +691,23 @@ E.Options.args.datatexts = {
 							end,
 						},
 						numPoints = {
-							order = 1,
+							order = 5,
 							type = 'range',
 							name = L["Number of DataTexts"],
 							min = 1, max = 2, step = 1,
 						},
 						backdrop = {
-							order = 5,
+							order = 6,
 							name = L["Backdrop"],
 							type = "toggle",
 						},
 						border = {
-							order = 6,
+							order = 7,
 							name = L["Border"],
 							type = "toggle",
 						},
 						panelTransparency = {
-							order = 7,
+							order = 8,
 							type = 'toggle',
 							name = L["Panel Transparency"],
 						},
