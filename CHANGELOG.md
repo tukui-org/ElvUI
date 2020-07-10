@@ -4,7 +4,8 @@
 
 
 **Bug Fixes:**  
-
+Chat: Keep **Tab Selection Color** following class color when class color is selected but you switch to another character on the same profile.  
+UnitFrames: Fixed **Power Detatched AutoHide** for units which should hide at zero power.  
 
 **Misc. Changes:**  
 
