@@ -319,6 +319,16 @@ function E:UpdateMedia()
 		E.db.general.valuecolor.b = value.b
 	end
 
+	--Chat Tab Selector Color
+	local selectorColor = E.db.chat.tabSelectorColor
+
+	if E:CheckClassColor(selectorColor.r, selectorColor.g, selectorColor.b) then
+		selectorColor = E:ClassColor(E.myclass, true)
+		E.db.chat.tabSelectorColor.r = selectorColor.r
+		E.db.chat.tabSelectorColor.g = selectorColor.g
+		E.db.chat.tabSelectorColor.b = selectorColor.b
+	end
+
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 	E.media.rgbvaluecolor = {value.r, value.g, value.b}
 
