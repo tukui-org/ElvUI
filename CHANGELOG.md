@@ -1,4 +1,4 @@
-# Version 11.44 [ ETA: 🍨 ]
+# Version 11.45 [ ETA: 🍨 ]
 
 **New Additions:**  
 
@@ -8,6 +8,15 @@
 
 **Misc. Changes:**  
 
+
+___
+
+# Version 11.44 [ July 9th 2020 ]
+
+**Hotfixes:**  
+Chat: Fixed incompatiblity with Total RP 3.  
+Nameplate: Added Castbar Interrupted color setting.  
+Actionbars: Fixed paging.  
 
 ___
 
