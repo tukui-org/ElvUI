@@ -71,7 +71,7 @@ local function OnEvent(self)
 		Profit = Profit + Change
 	end
 
-	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins))
+	self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or "BLIZZARD", not E.global.datatexts.settings.Gold.goldCoins))
 end
 
 local function deleteCharacter(self, name)
@@ -109,8 +109,8 @@ end
 local myGold = {}
 local function OnEnter(self)
 	DT:SetupTooltip(self)
-	local textOnly = not E.db.datatexts.goldCoins and true or false
-	local style = E.db.datatexts.goldFormat or 'BLIZZARD'
+	local textOnly = not E.global.datatexts.settings.Gold.goldCoins and true or false
+	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
 
 	DT.tooltip:AddLine(L["Session:"])
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
@@ -133,7 +133,7 @@ local function OnEnter(self)
 				{
 					name = k,
 					amount = ElvDB.gold[E.myrealm][k],
-					amountText = E:FormatMoney(ElvDB.gold[E.myrealm][k], E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins),
+					amountText = E:FormatMoney(ElvDB.gold[E.myrealm][k], style, textOnly),
 					faction = ElvDB.faction[E.myrealm][k] or '',
 					r = color.r, g = color.g, b = color.b,
 				}

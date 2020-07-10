@@ -24,9 +24,7 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s", hex, "%.f|r")
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
 
 E.valueColorUpdateFuncs[ValueColorUpdate] = true

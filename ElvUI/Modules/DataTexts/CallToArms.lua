@@ -17,7 +17,7 @@ local RAID_FINDER = RAID_FINDER
 local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ":14:14")
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ":14:14")
 local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ":14:14")
-local NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": N/A"
+local displayString = ''
 local enteredFrame, lastPanel = false
 
 local function MakeIconString(tank, healer, damage)
@@ -42,9 +42,9 @@ local function OnEvent(self)
 	local unavailable = true
 
 	--Dungeons
-	for i=1, GetNumRandomDungeons() do
+	for i = 1, GetNumRandomDungeons() do
 		local id = GetLFGRandomDungeonInfo(i)
-		for x = 1,LFG_ROLE_NUM_SHORTAGE_TYPES do
+		for x = 1, LFG_ROLE_NUM_SHORTAGE_TYPES do
 			local eligible, forTank, forHealer, forDamage, itemCount = GetLFGRoleShortageRewards(id, x)
 			if eligible and forTank and itemCount > 0 then tankReward = true; unavailable = false; end
 			if eligible and forHealer and itemCount > 0 then healerReward = true; unavailable = false; end
@@ -63,26 +63,18 @@ local function OnEvent(self)
 		end
 	end
 
-	if unavailable then
-		self.text:SetText(NOBONUSREWARDS)
+	if E.global.datatexts.settings['Call to Arms'].NoLabel then
+		self.text:SetFormattedText(displayString, unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
 	else
-		self.text:SetText(BATTLEGROUND_HOLIDAY..": "..MakeIconString(tankReward, healerReward, dpsReward))
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings['Call to Arms'].Label ~= '' and E.global.datatexts.settings['Call to Arms'].Label or BATTLEGROUND_HOLIDAY..": ", unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
 	end
+
 	lastPanel = self
 end
 
 local function OnClick()
 	PVEFrame_ToggleFrame("GroupFinderFrame", _G.LFDParentFrame)
 end
-
-local function ValueColorUpdate(hex)
-	NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": "..hex.."N/A|r"
-
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
-end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 local function OnEnter(self)
 	if not enteredFrame then
@@ -91,14 +83,14 @@ local function OnEnter(self)
 
 	DT:SetupTooltip(self)
 	local numCTA = 0
-	local addTooltipHeader = true
-	for i=1, GetNumRandomDungeons() do
+	local addTooltipHeader, addTooltipSeparator = true
+	for i = 1, GetNumRandomDungeons() do
 		local id, name = GetLFGRandomDungeonInfo(i)
 		local tankReward = false
 		local healerReward = false
 		local dpsReward = false
 		local unavailable = true
-		for x=1, LFG_ROLE_NUM_SHORTAGE_TYPES do
+		for x = 1, LFG_ROLE_NUM_SHORTAGE_TYPES do
 			local eligible, forTank, forHealer, forDamage, itemCount = GetLFGRoleShortageRewards(id, x)
 			if eligible then unavailable = false end
 			if eligible and forTank and itemCount > 0 then tankReward = true end
@@ -112,6 +104,7 @@ local function OnEnter(self)
 				if addTooltipHeader then
 					DT.tooltip:AddLine(DUNGEONS)
 					addTooltipHeader = false
+					addTooltipSeparator = true
 				end
 				DT.tooltip:AddDoubleLine(name..":", rolesString, 1, 1, 1)
 			end
@@ -139,11 +132,11 @@ local function OnEnter(self)
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)
 			if rolesString ~= ""  then
 				if addTooltipHeader then
-					DT.tooltip:AddLine(" ")
+					if addTooltipSeparator then DT.tooltip:AddLine(' ') end
 					DT.tooltip:AddLine(RAID_FINDER)
 					addTooltipHeader = false
 				end
-				DT.tooltip:AddDoubleLine(name..":", rolesString, 1, 1, 1)
+				DT.tooltip:AddDoubleLine(name..':', rolesString, 1, 1, 1)
 			end
 			if tankReward or healerReward or dpsReward then numCTA = numCTA + 1 end
 		end
@@ -172,4 +165,11 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-DT:RegisterDatatext('Call to Arms', nil, {"LFG_UPDATE_RANDOM_INFO"}, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY)
+local function ValueColorUpdate(hex)
+	displayString = strjoin('', E.global.datatexts.settings['Call to Arms'].NoLabel and '' or '%s', hex, '%s|r')
+
+	if lastPanel then OnEvent(lastPanel) end
+end
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
+
+DT:RegisterDatatext('Call to Arms', nil, {"LFG_UPDATE_RANDOM_INFO"}, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ValueColorUpdate)

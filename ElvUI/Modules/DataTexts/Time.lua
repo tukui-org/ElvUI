@@ -43,16 +43,6 @@ local enteredFrame, curHr, curMin, curAmPm = false
 
 local Update, lastPanel
 
-local function ValueColorUpdate(hex)
-	europeDisplayFormat = strjoin("", "%02d", hex, ":|r%02d")
-	ukDisplayFormat = strjoin("", "", "%d", hex, ":|r%02d", hex, " %s|r")
-
-	if lastPanel ~= nil then
-		Update(lastPanel, 20000)
-	end
-end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
-
 local function ConvertTime(h, m)
 	local AmPm
 	if E.db.datatexts.time24 == true then
@@ -326,4 +316,12 @@ function Update(self, t)
 	int = 5
 end
 
-DT:RegisterDatatext('Time', nil, {"UPDATE_INSTANCE_INFO"}, OnEvent, Update, Click, OnEnter, OnLeave)
+local function ValueColorUpdate(hex)
+	europeDisplayFormat = strjoin("", "%02d", hex, ":|r%02d")
+	ukDisplayFormat = strjoin("", "", "%d", hex, ":|r%02d", hex, " %s|r")
+
+	if lastPanel then Update(lastPanel, 20000) end
+end
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
+
+DT:RegisterDatatext('Time', nil, {"UPDATE_INSTANCE_INFO"}, OnEvent, Update, Click, OnEnter, OnLeave, nil, nil, ValueColorUpdate)

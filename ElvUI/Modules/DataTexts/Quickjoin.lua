@@ -30,10 +30,11 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function Update(lastPanel)
+local function Update(self)
 	wipe(quickJoin)
 
-	if not lastPanel then return end
+	if not self then return end
+
 	local quickJoinGroups = C_SocialQueue_GetAllGroups()
 	for _, guid in pairs(quickJoinGroups) do
 		local players = C_SocialQueue_GetGroupMembers(guid)
@@ -94,7 +95,11 @@ local function Update(lastPanel)
 		end
 	end
 
-	lastPanel.text:SetFormattedText(displayString, QUICK_JOIN, #quickJoinGroups)
+	if E.global.datatexts.settings['Quick Join'].NoLabel then
+		self.text:SetFormattedText(displayString, #quickJoinGroups)
+	else
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings['Quick Join'].Label ~= '' and E.global.datatexts.settings['Quick Join'].Label or QUICK_JOIN..': ', #quickJoinGroups)
+	end
 end
 
 local delayed, lastPanel
@@ -112,9 +117,10 @@ local function OnEvent(self, event)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%s|r")
+	displayString = strjoin('', E.global.datatexts.settings['Quick Join'].NoLabel and '' or '%s', hex, '%d|r')
+
 	if lastPanel then OnEvent(lastPanel) end
 end
 
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
-DT:RegisterDatatext('Quick Join', _G.SOCIAL_LABEL, {"SOCIAL_QUEUE_UPDATE"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)
+DT:RegisterDatatext('Quick Join', _G.SOCIAL_LABEL, {"SOCIAL_QUEUE_UPDATE"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN, nil, ValueColorUpdate)
