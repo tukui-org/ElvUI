@@ -6155,6 +6155,12 @@ E.Options.args.nameplate = {
 									type = "color",
 									hasAlpha = false
 								},
+								castInterruptedColor = {
+									name = L["Interrupted"],
+									order = 2,
+									type = "color",
+									hasAlpha = false
+								},
 								castbarDesaturate = {
 									type = "toggle",
 									name = L["Desaturated Icon"],
