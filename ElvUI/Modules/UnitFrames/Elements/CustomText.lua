@@ -34,8 +34,8 @@ function UF:Configure_CustomTexts(frame)
 
 			if db.attachTextTo == "Power" and frame.Power then
 				object:SetParent(frame.Power.RaisedElementParent)
-			elseif db.attachTextTo == "AdditionalPower" and frame.AlternativePower then
-				object:SetParent(frame.AlternativePower.RaisedElementParent)
+			elseif db.attachTextTo == "AdditionalPower" and frame.AdditionalPower then
+				object:SetParent(frame.AdditionalPower.RaisedElementParent)
 			else
 				object:SetParent(frame.RaisedElementParent)
 			end
