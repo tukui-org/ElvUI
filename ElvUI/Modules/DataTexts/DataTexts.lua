@@ -27,6 +27,8 @@ local ExpandCurrencyList = ExpandCurrencyList
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
 
+local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
+local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
 local ActivateHyperMode
 local HyperList = {}
 
@@ -646,7 +648,7 @@ function DT:PopulateData()
 			Collapsed[name] = true
 		end
 		if isHeader then
-			P.datatexts.currencies.tooltip[i] = { name, nil, nil, (name == (_G['EXPANSION_NAME'..GetExpansionLevel()])) or (name == MISCELLANEOUS) or (strfind(name, LFG_TYPE_DUNGEON)) }
+			P.datatexts.currencies.tooltip[i] = { name, nil, nil, (name == expansion or name == MISCELLANEOUS) or strfind(name, LFG_TYPE_DUNGEON) }
 			E.db.datatexts.currencies.tooltip[i] = E.db.datatexts.currencies.tooltip[i] or { name, nil, nil, P.datatexts.currencies.tooltip[i][4] }
 			E.db.datatexts.currencies.tooltip[i][1] = name
 
