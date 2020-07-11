@@ -289,6 +289,9 @@ D.GeneratedKeys = {
 		nameplates = { -- this is supposed to have an 's' because yeah, oh well
 			filters = true
 		},
+		datatexts = {
+			panels = true,
+		},
 		unitframe = {
 			units = {} -- required for the scope below for customTexts
 		}
