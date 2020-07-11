@@ -546,20 +546,18 @@ function E:CheckIncompatible()
 	end
 end
 
-function E:CopyTable(currentTable, defaultTable)
-	if type(currentTable) ~= 'table' then currentTable = {} end
+function E:CopyTable(current, default)
+	if type(current) ~= 'table' then
+		current = {}
+	end
 
-	if type(defaultTable) == 'table' then
-		for option, value in pairs(defaultTable) do
-			if type(value) == 'table' then
-				value = E:CopyTable(currentTable[option], value)
-			end
-
-			currentTable[option] = value
+	if type(default) == 'table' then
+		for option, value in pairs(default) do
+			current[option] = (type(value) == 'table' and E:CopyTable(current[option], value)) or value
 		end
 	end
 
-	return currentTable
+	return current
 end
 
 function E:RemoveEmptySubTables(tbl)
