@@ -980,16 +980,16 @@ function CH:UpdateChatTab(chat)
 	local fadeLeft, fadeRight
 	if CH.db.fadeTabsNoBackdrop then
 		local both = CH.db.panelBackdrop == 'HIDEBOTH'
-		fadeLeft = (both or CH.db.panelBackdrop == 'LEFT')
-		fadeRight = (both or CH.db.panelBackdrop == 'RIGHT')
+		fadeLeft = (both or CH.db.panelBackdrop == 'RIGHT')
+		fadeRight = (both or CH.db.panelBackdrop == 'LEFT')
 	end
 
 	if chat == CH.LeftChatWindow then
 		CH:GetTab(chat):SetParent(_G.LeftChatPanel or _G.UIParent)
-		CH:HandleFadeTabs(chat, fadeRight)
+		CH:HandleFadeTabs(chat, fadeLeft)
 	elseif chat == CH.RightChatWindow then
 		CH:GetTab(chat):SetParent(_G.RightChatPanel or _G.UIParent)
-		CH:HandleFadeTabs(chat, fadeLeft)
+		CH:HandleFadeTabs(chat, fadeRight)
 	else
 		local docker = _G.GeneralDockManager.primary
 		local parent = CH:GetDockerParent(docker, chat)
@@ -998,9 +998,9 @@ function CH:UpdateChatTab(chat)
 		CH:GetTab(chat):SetParent(parent or _G.UIParent)
 
 		if parent and docker == CH.LeftChatWindow then
-			CH:HandleFadeTabs(chat, fadeRight)
-		elseif parent and docker == CH.RightChatWindow then
 			CH:HandleFadeTabs(chat, fadeLeft)
+		elseif parent and docker == CH.RightChatWindow then
+			CH:HandleFadeTabs(chat, fadeRight)
 		else
 			CH:HandleFadeTabs(chat, CH.db.fadeUndockedTabs and CH:IsUndocked(chat, docker))
 		end
