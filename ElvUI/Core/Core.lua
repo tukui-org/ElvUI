@@ -537,6 +537,9 @@ function E:CheckIncompatible()
 		if E:IsAddOnEnabled('Plater') then
 			E:IncompatibleAddOn('Plater', 'NamePlates')
 		end
+		if E:IsAddOnEnabled('Kui_Nameplates') then
+			E:IncompatibleAddOn('Kui_Nameplates', 'NamePlates')
+		end
 	end
 
 	if E.private.actionbar.enable then
