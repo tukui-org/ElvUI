@@ -19,12 +19,14 @@ local function OnClick()
 end
 
 local function GetInfo(id)
+	if type(id) ~= 'number' then return end
 	local name, num, icon = GetCurrencyInfo(id)
 	return num, name, (icon and format(iconString, icon)) or '136012'
 end
 
 local function AddInfo(id)
 	local num, name, icon = GetInfo(id)
+	if not name then return end
 	DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
 end
 
