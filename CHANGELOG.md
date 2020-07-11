@@ -4,8 +4,10 @@
 
 
 **Bug Fixes:**  
+Chat: Fixed **Fade Tabs No Backdrop** will now fade the correct chat tabs.  
 Chat: Keep **Tab Selection Color** following class color when class color is selected but you switch to another character on the same profile.  
 UnitFrames: Fixed **Power Detatched AutoHide** for units which should hide at zero power.  
+CustomTexts: Correctly place the Text when attached to **AdditionalPower**.  
 
 **Misc. Changes:**  
 
