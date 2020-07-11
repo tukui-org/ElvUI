@@ -566,21 +566,23 @@ local function CreateDTOptions(name, data)
 end
 
 local function SetupDTCustomization()
-	local Table = E:CopyTable({}, DT.RegisteredDataTexts)
+	local currencyTable = {}
+	for name, data in pairs(DT.RegisteredDataTexts) do
+		currencyTable[name] = data
+	end
 
 	for _, info in pairs(E.global.datatexts.customCurrencies) do
-		if Table[info.NAME] then
-			Table[info.NAME] = nil
+		local name = info.NAME
+		if currencyTable[name] then
+			currencyTable[name] = nil
 		end
 	end
 
-	for name, data in pairs(Table) do
+	for name, data in pairs(currencyTable) do
 		if not data.isLibDataBroker then
 			CreateDTOptions(name, data)
 		end
 	end
-
-	wipe(Table)
 end
 
 E.Options.args.datatexts = {
