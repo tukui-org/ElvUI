@@ -730,7 +730,6 @@ L["LeftChatDataPanel"] = "Panel de Chat Izquierdo"
 L["LeftMiniPanel"] = "Panel Izquierdo del Minimapa"
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["LF Guild Frame"] = "Búsqueda de Hermandad"
-L["LFG Icons"] = true
 L["LFG Queue"] = true
 L["Limit the number of rows or columns."] = "Limita el número de filas o de columnas."
 L["Link to the latest development version."] = true

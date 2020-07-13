@@ -730,7 +730,6 @@ L["LeftChatDataPanel"] = "Fenêtre de discussion à gauche"
 L["LeftMiniPanel"] = "Minicarte à gauche"
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["LF Guild Frame"] = "Recherche de Guilde"
-L["LFG Icons"] = "Icône LFR"
 L["LFG Queue"] = "Outil raid"
 L["Limit the number of rows or columns."] = "Limiter le nombre de lignes ou de colonnes."
 L["Link to the latest development version."] = true

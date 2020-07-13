@@ -729,7 +729,6 @@ L["LeftChatDataPanel"] = "좌측 패널 정보문자 탭"
 L["LeftMiniPanel"] = "미니맵 왼쪽 정보문자"
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["LF Guild Frame"] = "길드 찾기 창"
-L["LFG Icons"] = "역할 아이콘 표시"
 L["LFG Queue"] = "파티찾기 표시기"
 L["Limit the number of rows or columns."] = "표시줄 수를 제한해 최종적으로 보여줄 오라의 총 개수를 제한합니다."
 L["Link to the latest development version."] = true
