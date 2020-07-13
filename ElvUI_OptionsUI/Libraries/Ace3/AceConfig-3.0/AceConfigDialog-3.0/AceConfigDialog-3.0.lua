@@ -563,6 +563,7 @@ end
 local function OptionOnMouseLeave(widget, event)
 	if AceConfigDialog.tooltip:IsShown() then
 		AceConfigDialog.tooltip:Hide()
+		AceConfigDialog.tooltip:ClearAllPoints()
 	end
 end
 
