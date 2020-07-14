@@ -351,12 +351,10 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	ElvUF.Tags.Events[format('power:%s', tagTextFormat)] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 	ElvUF.Tags.Methods[format('power:%s', tagTextFormat)] = function(unit)
-		if UnitIsPlayer(unit) then
-			local powerType = UnitPowerType(unit)
-			local min = UnitPower(unit, powerType)
-			if min ~= 0 and tagTextFormat ~= 'deficit' then
-				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType))
-			end
+		local powerType = UnitPowerType(unit)
+		local min = UnitPower(unit, powerType)
+		if min ~= 0 and tagTextFormat ~= 'deficit' then
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType))
 		end
 	end
 
@@ -522,19 +520,15 @@ end
 
 ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['namecolor'] = function(unit)
-	local unitReaction = UnitReaction(unit, 'player')
-	local unitPlayer = UnitIsPlayer(unit)
-	if unitPlayer then
+	if UnitIsPlayer(unit) then
 		local _, unitClass = UnitClass(unit)
 		local class = ElvUF.colors.class[unitClass]
-		if not class then return end
-
-		return Hex(class[1], class[2], class[3])
-	elseif unitReaction then
-		local reaction = ElvUF.colors.reaction[unitReaction]
-		return Hex(reaction[1], reaction[2], reaction[3])
+		if class then
+			return Hex(class[1], class[2], class[3])
+		end
 	else
-		return '|cFFC2C2C2'
+		local color = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
+		return (color and Hex(color[1], color[2], color[3])) or '|cFFC2C2C2'
 	end
 end
 
