@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 local CreateFrame = CreateFrame
 
 function UF:Construct_AltPowerBar(frame)
-	local altpower = CreateFrame("StatusBar", nil, frame)
+	local altpower = CreateFrame("StatusBar", "$parent_AlternativePower", frame)
 	altpower:SetStatusBarTexture(E.media.blankTex)
 	altpower:SetStatusBarColor(.7, .7, .6)
 	altpower:GetStatusBarTexture():SetHorizTile(false)

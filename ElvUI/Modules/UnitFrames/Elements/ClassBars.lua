@@ -291,7 +291,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 -- MONK, PALADIN, WARLOCK, MAGE, and COMBOS
 -------------------------------------------------------------
 function UF:Construct_ClassBar(frame)
-	local bars = CreateFrame("Frame", nil, frame)
+	local bars = CreateFrame("Frame", '$parent_ClassBar', frame)
 	bars:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 	bars:Hide()
 
@@ -387,7 +387,7 @@ local function PostUpdateRunes(self)
 end
 
 function UF:Construct_DeathKnightResourceBar(frame)
-	local runes = CreateFrame("Frame", nil, frame)
+	local runes = CreateFrame("Frame", '$parent_Runes', frame)
 	runes:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 	runes.backdrop:Hide()
 
@@ -507,7 +507,7 @@ end
 -- Stagger Bar
 -----------------------------------------------------------
 function UF:Construct_Stagger(frame)
-	local stagger = CreateFrame("Statusbar", nil, frame)
+	local stagger = CreateFrame("Statusbar", '$parent_Stagger', frame)
 	stagger:CreateBackdrop(nil,nil, nil, self.thinBorders, true)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
