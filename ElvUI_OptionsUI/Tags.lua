@@ -20,8 +20,6 @@ E.Options.args.tagGroup.args.Names.args.nameHealthInfo2 = ACH:Input('|cFF666666[
 E.Options.args.tagGroup.args.Names.args.nameHealthInfo3 = ACH:Input('|cFF666666[3/5]|r Class color name text, missing hp based on hex code', nil, 3, nil, 'full', function() return '[name:health{class:00ff00}]' end)
 E.Options.args.tagGroup.args.Names.args.nameHealthInfo4 = ACH:Input('|cFF666666[4/5]|r Name text based on hex code, missing hp red', nil, 4, nil, 'full', function() return '[name:health{00ff00}]' end)
 E.Options.args.tagGroup.args.Names.args.nameHealthInfo5 = ACH:Input('|cFF666666[5/5]|r Name text based on hex code, missing hp class color', nil, 5, nil, 'full', function() return '[name:health{00ff00:class}]' end)
-E.Options.args.tagGroup.args.Mana = ACH:Group(L["Mana"])
-E.Options.args.tagGroup.args.Mana.args.header = ACH:Description(L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."], 8, "medium")
 
 local getTag = function(info) return format('[%s]', info[#info]) end
 
