@@ -1,15 +1,17 @@
 # Version 11.45 [ ETA: 🍨 ]
 
-**New Additions:**  
-
-
-**Bug Fixes:**  
-Chat: Fixed **Fade Tabs No Backdrop** will now fade the correct chat tabs.  
-Chat: Keep **Tab Selection Color** following class color when class color is selected but you switch to another character on the same profile.  
-UnitFrames: Fixed **Power Detatched AutoHide** for units which should hide at zero power.  
-CustomTexts: Correctly place the Text when attached to **AdditionalPower**.  
-
-**Misc. Changes:**  
+**Unbroken Features:**  
+Options: (**Ace3 Error**) This might finally stop exploding now with the help of Foxlit! **Thank you, Foxlit!** :D  
+Options: Copying a **Private Profile** will now reload on accepting.  
+Chat: **Fade Tabs No Backdrop** will now fade the correct chat tabs, they were hecka confused.  
+Chat: **Tab Selection Color** can now follow the class color that is selected when switching to another character on the same profile.  
+UnitFrames: **Power Detatched AutoHide** for units which should hide at zero power, will actually hide now at zero power.  
+UnitFrames: Tank frames will now use the correct fonts on initial load in.  
+CustomTexts: Correctly place the text when attached to **AdditionalPower**.  
+Datatexts: **Custom Panel** settings will actually export now.  
+Datatexts: One **Currency** error and one **Custom Currency** error have suddenly vanished from the UI.  
+Tags: **[power:%s]** will work on NPCs again, **[mana:%s]** will return mana always again, **[additionalmana:%s]** was added for the additional mana display.  
+UI: You can once again move Blizzard's Player Alt Power Bar with our movers.  
 
 
 ___
