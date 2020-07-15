@@ -1,16 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
-local select = select
 local format = format
 local strjoin = strjoin
 local UnitLevel = UnitLevel
 local UnitArmor = UnitArmor
 local PaperDollFrame_GetArmorReduction = PaperDollFrame_GetArmorReduction
-local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ARMOR = ARMOR
-
 local chanceString = '%.2f%%'
+local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
+
 local displayString, lastPanel, effectiveArmor = ''
 
 local function OnEvent(self)

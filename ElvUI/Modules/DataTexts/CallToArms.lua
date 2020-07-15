@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local strjoin = strjoin
 
 local GetLFGRandomDungeonInfo = GetLFGRandomDungeonInfo
 local GetLFGRoleShortageRewards = GetLFGRoleShortageRewards
@@ -18,8 +17,8 @@ local RAID_FINDER = RAID_FINDER
 local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ":14:14")
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ":14:14")
 local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ":14:14")
-local enteredFrame, lastPanel = false
 local displayString = ''
+local enteredFrame, lastPanel = false
 
 local function MakeIconString(tank, healer, damage)
 	local str = ""
