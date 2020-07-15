@@ -89,25 +89,17 @@ end
 local function OnEnter(self)
 	DT:SetupTooltip(self)
 
-	if targetlv > 1 then
-		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], strjoin("", " (", L["lvl"], " ", targetlv, ")"))
-	elseif targetlv == -1 then
-		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], strjoin("", " (", BOSS, ")"))
-	else
-		DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], strjoin("", " (", L["lvl"], " ", playerlv, ")"))
-	end
-	DT.tooltip:AddLine' '
-	DT.tooltip:AddDoubleLine(DODGE_CHANCE, format(chanceString, dodge),1,1,1)
-	DT.tooltip:AddDoubleLine(PARRY_CHANCE, format(chanceString, parry),1,1,1)
-	DT.tooltip:AddDoubleLine(BLOCK_CHANCE, format(chanceString, block),1,1,1)
-	DT.tooltip:AddDoubleLine(MISS_CHANCE, format(chanceString, basemisschance),1,1,1)
+	local rightString = targetlv > 1 and strjoin('', ' (', L['lvl'], ' ', targetlv, ')') or targetlv == -1 and strjoin('', ' (', BOSS, ')') or strjoin('', ' (', L['lvl'], ' ', playerlv, ')')
+	DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], rightString)
 	DT.tooltip:AddLine(' ')
 
-	if unhittable > 0 then
-		DT.tooltip:AddDoubleLine(L["Unhittable:"], '+'..format(chanceString, unhittable), 1, 1, 1, 0, 1, 0)
-	else
-		DT.tooltip:AddDoubleLine(L["Unhittable:"], format(chanceString, unhittable), 1, 1, 1, 1, 0, 0)
-	end
+	DT.tooltip:AddDoubleLine(DODGE_CHANCE, format(chanceString, dodge), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(PARRY_CHANCE, format(chanceString, parry), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(BLOCK_CHANCE, format(chanceString, block), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(MISS_CHANCE, format(chanceString, basemisschance), 1, 1, 1)
+	DT.tooltip:AddLine(' ')
+
+	DT.tooltip:AddDoubleLine(L["Unhittable:"], (unhittable > 0 and '+' or '')..format(chanceString, unhittable), 1, 1, 1, (unhittable < 0 and 1 or 0), (unhittable > 0 and 1 or 0), 0)
 	DT.tooltip:Show()
 end
 
