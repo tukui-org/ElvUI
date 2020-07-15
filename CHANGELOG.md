@@ -5,7 +5,7 @@
 
 ___
 
-# Version 11.45 [ ETA: July 15th 2020 ]
+# Version 11.45 [ July 15th 2020 ]
 
 **Unbroken Features:**  
 Options: (**Ace3 Error**) This might finally stop exploding now with the help of Foxlit! **Thank you, Foxlit!** :D  
