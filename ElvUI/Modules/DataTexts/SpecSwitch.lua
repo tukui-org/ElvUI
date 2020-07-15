@@ -34,8 +34,6 @@ local specList = {
 	{ text = _G.SPECIALIZATION, isTitle = true, notCheckable = true },
 }
 
-DT.SPECIALIZATION_CACHE = {}
-
 local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local function OnEvent(self)
 	lastPanel = self

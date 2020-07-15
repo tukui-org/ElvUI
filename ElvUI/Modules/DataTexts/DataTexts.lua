@@ -49,6 +49,7 @@ DT.UnitEvents = {
 	UNIT_TARGET = true,
 	UNIT_SPELL_HASTE = true
 }
+DT.SPECIALIZATION_CACHE = {}
 
 function DT:SetEasyMenuAnchor(menu, dt)
 	local point = E:GetScreenQuadrant(dt)
