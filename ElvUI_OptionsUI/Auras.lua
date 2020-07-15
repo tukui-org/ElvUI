@@ -3,8 +3,6 @@ local C, L = unpack(select(2, ...))
 local A = E:GetModule('Auras')
 local ACH = E.Libs.ACH
 
--- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
-
 local function GetAuraOptions()
 	local auraOptions = {}
 

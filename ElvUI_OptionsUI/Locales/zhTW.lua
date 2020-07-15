@@ -1,7 +1,6 @@
 -- Traditional Chinese localization file for zhTW.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhTW")
 
-L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = true
 L["# Displayed Auras"] = "顯示光環的數量"
 L["%s and then %s"] = "%s 與 %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
@@ -730,7 +729,6 @@ L["LeftChatDataPanel"] = "左對話框"
 L["LeftMiniPanel"] = "小地圖左側"
 L["LEVEL_BOSS"] = "為團隊首領框架設定等級為-1, 也可以設定為0來關閉."
 L["LF Guild Frame"] = "尋求公會"
-L["LFG Icons"] = "隨機隊列圖標"
 L["LFG Queue"] = "隨機隊列"
 L["Limit the number of rows or columns."] = "最大行數或列數."
 L["Link to the latest development version."] = "最新開發版連接"

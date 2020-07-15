@@ -1,7 +1,6 @@
 -- German localization file for deDE.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "deDE")
 
-L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = "|cFFff3333Warunung: |cFF999999[mana:x] Tags werden |cFFff3333NICHT|r angezeigt für Klassen die Mana als Alternative Kraft haben, es sei den es ist die Alternative Kraft."
 L["# Displayed Auras"] = "# angezeigte Auren"
 L["%s and then %s"] = "%s und dann %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF0000Warnung:|r Klick auf den Pfeil rechts in der Dropdown Box um eine Liste der Fähigkeiten zu sehen."
@@ -733,7 +732,6 @@ L["LeftChatDataPanel"] = "Linker Chat"
 L["LeftMiniPanel"] = "Minimap Links"
 L["LEVEL_BOSS"] = "Setze das Level auf -1 für Boss Einheiten oder auf 0 um zu deaktivieren"
 L["LF Guild Frame"] = "LF Gilde Fenster"
-L["LFG Icons"] = "LFG Symbole"
 L["LFG Queue"] = "LFG Warteschlange"
 L["Limit the number of rows or columns."] = "Beschränkung für die Anzahl an Leisten oder Spalten."
 L["Link to the latest development version."] = "Link zur neusten Entwicklungsversion."

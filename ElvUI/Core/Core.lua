@@ -311,7 +311,6 @@ function E:UpdateMedia()
 
 	--Value Color
 	local value = E.db.general.valuecolor
-
 	if E:CheckClassColor(value.r, value.g, value.b) then
 		value = E:ClassColor(E.myclass, true)
 		E.db.general.valuecolor.r = value.r
@@ -319,9 +318,19 @@ function E:UpdateMedia()
 		E.db.general.valuecolor.b = value.b
 	end
 
+	--Chat Tab Selector Color
+	local selectorColor = E.db.chat.tabSelectorColor
+	if E:CheckClassColor(selectorColor.r, selectorColor.g, selectorColor.b) then
+		selectorColor = E:ClassColor(E.myclass, true)
+		E.db.chat.tabSelectorColor.r = selectorColor.r
+		E.db.chat.tabSelectorColor.g = selectorColor.g
+		E.db.chat.tabSelectorColor.b = selectorColor.b
+	end
+
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 	E.media.rgbvaluecolor = {value.r, value.g, value.b}
 
+	-- Chat Panel Background Texture
 	local LeftChatPanel, RightChatPanel = _G.LeftChatPanel, _G.RightChatPanel
 	if LeftChatPanel and LeftChatPanel.tex and RightChatPanel and RightChatPanel.tex then
 		LeftChatPanel.tex:SetTexture(E.db.chat.panelBackdropNameLeft)
@@ -528,6 +537,9 @@ function E:CheckIncompatible()
 		if E:IsAddOnEnabled('Plater') then
 			E:IncompatibleAddOn('Plater', 'NamePlates')
 		end
+		if E:IsAddOnEnabled('Kui_Nameplates') then
+			E:IncompatibleAddOn('Kui_Nameplates', 'NamePlates')
+		end
 	end
 
 	if E.private.actionbar.enable then
@@ -537,20 +549,18 @@ function E:CheckIncompatible()
 	end
 end
 
-function E:CopyTable(currentTable, defaultTable)
-	if type(currentTable) ~= 'table' then currentTable = {} end
+function E:CopyTable(current, default)
+	if type(current) ~= 'table' then
+		current = {}
+	end
 
-	if type(defaultTable) == 'table' then
-		for option, value in pairs(defaultTable) do
-			if type(value) == 'table' then
-				value = E:CopyTable(currentTable[option], value)
-			end
-
-			currentTable[option] = value
+	if type(default) == 'table' then
+		for option, value in pairs(default) do
+			current[option] = (type(value) == 'table' and E:CopyTable(current[option], value)) or value
 		end
 	end
 
-	return currentTable
+	return current
 end
 
 function E:RemoveEmptySubTables(tbl)
@@ -1649,6 +1659,7 @@ function E:Initialize()
 	E.data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
 	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
 	E.charSettings.RegisterCallback(E, 'OnProfileChanged', ReloadUI)
+	E.charSettings.RegisterCallback(E, 'OnProfileCopied', ReloadUI)
 	E.charSettings.RegisterCallback(E, 'OnProfileReset', 'OnPrivateProfileReset')
 	E.private = E.charSettings.profile
 	E.global = E.data.global

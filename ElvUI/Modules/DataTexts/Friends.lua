@@ -575,7 +575,7 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s: ", hex, "%d|r")
 
-	if lastPanel ~= nil then
+	if lastPanel then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
 	end
 end

@@ -168,14 +168,7 @@ local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUni
 				order = 2,
 				type = "select",
 				name = L["Frame Strata"],
-				values = {
-					BACKGROUND = "BACKGROUND",
-					LOW = "LOW",
-					MEDIUM = "MEDIUM",
-					HIGH = "HIGH",
-					DIALOG = "DIALOG",
-					TOOLTIP = "TOOLTIP",
-				},
+				values = C.Values.Strata,
 			},
 			spacer = ACH:Spacer(3),
 			useCustomLevel = {

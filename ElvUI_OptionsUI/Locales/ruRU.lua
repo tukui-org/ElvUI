@@ -1,7 +1,6 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
-L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = true
 L["# Displayed Auras"] = "Кол-во аур"
 L["%s and then %s"] = "%s, а затем %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
@@ -729,7 +728,6 @@ L["LeftChatDataPanel"] = "Левая панель чата"
 L["LeftMiniPanel"] = "Миникарта, слева"
 L["LEVEL_BOSS"] = "Установите на -1 для боссов или 0 для отключения."
 L["LF Guild Frame"] = "Поиск гильдии"
-L["LFG Icons"] = "Иконки роли"
 L["LFG Queue"] = "Очередь"
 L["Limit the number of rows or columns."] = "Определяет максимальное количество рядов/столбцов."
 L["Link to the latest development version."] = "Ссылка на последнюю девелоперскую версию."

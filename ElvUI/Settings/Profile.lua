@@ -1817,7 +1817,6 @@ P.unitframe = {
 			disableMouseoverGlow = false,
 			disableTargetGlow = false,
 			disableFocusGlow = false,
-			disableDebuffHighlight = true,
 			verticalSpacing = 7,
 			targetsGroup = CopyTable(UF_SubGroup),
 			buffIndicator = CopyTable(UF_AuraWatch),

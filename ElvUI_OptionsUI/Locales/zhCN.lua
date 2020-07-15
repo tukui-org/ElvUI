@@ -1,7 +1,6 @@
 -- Simplified Chinese localization file for zhCN.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "zhCN")
 
-L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = true
 L["# Displayed Auras"] = "显示光环的数量"
 L["%s and then %s"] = "%s 于 %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF0000警告:|r 点击下拉菜单的箭头来查看法术列表."
@@ -735,7 +734,6 @@ L["LeftChatDataPanel"] = "左聊天框"
 L["LeftMiniPanel"] = "小地图左方"
 L["LEVEL_BOSS"] = "对首领请设置为-1, 或者设为0以禁用."
 L["LF Guild Frame"] = "寻求公会"
-L["LFG Icons"] = "随机队列图标"
 L["LFG Queue"] = "随机队列"
 L["Limit the number of rows or columns."] = "最大行数或列数"
 L["Link to the latest development version."] = "最新开发版链接"

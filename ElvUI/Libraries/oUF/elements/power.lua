@@ -208,8 +208,9 @@ local function Update(self, event, unit)
 	end
 
 	local cur, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
+	if not min then min = 0 end
 
-	element:SetMinMaxValues(min or 0, max)
+	element:SetMinMaxValues(min, max)
 
 	if not UnitIsConnected(unit) then
 		element:SetValue(max)

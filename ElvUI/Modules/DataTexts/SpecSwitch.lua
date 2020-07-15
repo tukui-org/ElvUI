@@ -34,8 +34,6 @@ local specList = {
 	{ text = _G.SPECIALIZATION, isTitle = true, notCheckable = true },
 }
 
-DT.SPECIALIZATION_CACHE = {}
-
 local mainIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local function OnEvent(self)
 	lastPanel = self
@@ -162,9 +160,7 @@ end
 local function ValueColorUpdate()
 	displayString = strjoin("", "|cffFFFFFF%s:|r ")
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 

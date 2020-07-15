@@ -980,8 +980,8 @@ function CH:UpdateChatTab(chat)
 	local fadeLeft, fadeRight
 	if CH.db.fadeTabsNoBackdrop then
 		local both = CH.db.panelBackdrop == 'HIDEBOTH'
-		fadeLeft = (both or CH.db.panelBackdrop == 'LEFT')
-		fadeRight = (both or CH.db.panelBackdrop == 'RIGHT')
+		fadeLeft = (both or CH.db.panelBackdrop == 'RIGHT')
+		fadeRight = (both or CH.db.panelBackdrop == 'LEFT')
 	end
 
 	if chat == CH.LeftChatWindow then

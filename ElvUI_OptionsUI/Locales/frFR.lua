@@ -1,7 +1,6 @@
 -- French localization file for frFR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "frFR")
 
-L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = true
 L["# Displayed Auras"] = "Auras affichées"
 L["%s and then %s"] = "%s et alors %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
@@ -730,7 +729,6 @@ L["LeftChatDataPanel"] = "Fenêtre de discussion à gauche"
 L["LeftMiniPanel"] = "Minicarte à gauche"
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["LF Guild Frame"] = "Recherche de Guilde"
-L["LFG Icons"] = "Icône LFR"
 L["LFG Queue"] = "Outil raid"
 L["Limit the number of rows or columns."] = "Limiter le nombre de lignes ou de colonnes."
 L["Link to the latest development version."] = true

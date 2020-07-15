@@ -74,7 +74,7 @@ E.Options.args.chat = {
 				lfgIcons = {
 					order = 6,
 					type = 'toggle',
-					name = L["LFG Icons"],
+					name = L["Role Icon"],
 					desc = L["Display LFG Icons in group chat."],
 					set = function(self, value)
 						E.db.chat.lfgIcons = value;
@@ -281,7 +281,7 @@ E.Options.args.chat = {
 							set = function(_, r, g, b)
 								local t = E.db.chat.tabSelectorColor
 								t.r, t.g, t.b = r, g, b
-								CH:UpdateChatTabColors();
+								E:UpdateMedia();
 							end,
 						},
 					}

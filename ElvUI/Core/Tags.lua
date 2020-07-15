@@ -351,23 +351,29 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	ElvUF.Tags.Events[format('power:%s', tagTextFormat)] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 	ElvUF.Tags.Methods[format('power:%s', tagTextFormat)] = function(unit)
-		if UnitIsPlayer(unit) then
-			local powerType = UnitPowerType(unit)
-			local min = UnitPower(unit, powerType)
-			if min ~= 0 and tagTextFormat ~= 'deficit' then
-				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType))
-			end
+		local powerType = UnitPowerType(unit)
+		local min = UnitPower(unit, powerType)
+		if min ~= 0 and tagTextFormat ~= 'deficit' then
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType))
 		end
 	end
 
-	ElvUF.Tags.Events[format('mana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
-	ElvUF.Tags.Methods[format('mana:%s', tagTextFormat)] = function(unit)
+	ElvUF.Tags.Events[format('additionalmana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
+	ElvUF.Tags.Methods[format('additionalmana:%s', tagTextFormat)] = function(unit)
 		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
 		if barIndex and barIndex[UnitPowerType(unit)] then
 			local min = UnitPower(unit, SPELL_POWER_MANA)
 			if min ~= 0 and tagTextFormat ~= 'deficit' then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
 			end
+		end
+	end
+
+	ElvUF.Tags.Events[format('mana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
+	ElvUF.Tags.Methods[format('mana:%s', tagTextFormat)] = function(unit)
+		local min = UnitPower(unit, SPELL_POWER_MANA)
+		if min ~= 0 and tagTextFormat ~= 'deficit' then
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
 		end
 	end
 
@@ -522,19 +528,15 @@ end
 
 ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['namecolor'] = function(unit)
-	local unitReaction = UnitReaction(unit, 'player')
-	local unitPlayer = UnitIsPlayer(unit)
-	if unitPlayer then
+	if UnitIsPlayer(unit) then
 		local _, unitClass = UnitClass(unit)
 		local class = ElvUF.colors.class[unitClass]
-		if not class then return end
-
-		return Hex(class[1], class[2], class[3])
-	elseif unitReaction then
-		local reaction = ElvUF.colors.reaction[unitReaction]
-		return Hex(reaction[1], reaction[2], reaction[3])
+		if class then
+			return Hex(class[1], class[2], class[3])
+		end
 	else
-		return '|cFFC2C2C2'
+		local color = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
+		return (color and Hex(color[1], color[2], color[3])) or '|cFFC2C2C2'
 	end
 end
 
@@ -1207,6 +1209,12 @@ E.TagInfo = {
 	--Mana
 	['curmana'] = { category = 'Mana', description = "Displays the current mana without decimals" },
 	['maxmana'] = { category = 'Mana', description = "Displays the max amount of mana the unit can have" },
+	['additionalmana:current'] = { category = 'Mana', description = "Displays the unit's current additional mana" },
+	['additionalmana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum additional mana, separated by a dash" },
+	['additionalmana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max additional mana of the unit, separated by a dash (% when not full)" },
+	['additionalmana:current-percent'] = { category = 'Mana', description = "Displays the current additional mana of the unit and % when not full" },
+	['additionalmana:deficit'] = { category = 'Mana', description = "Displays the player's additional mana as a deficit" },
+	['additionalmana:percent'] = { category = 'Mana', description = "Displays the player's additional mana as a percentage" },
 	['mana:current'] = { category = 'Mana', description = "Displays the unit's current mana" },
 	['mana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum mana, separated by a dash" },
 	['mana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" },

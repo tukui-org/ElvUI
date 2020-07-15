@@ -12,7 +12,7 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 function UF:Construct_PowerBar(frame, bg, text, textPos)
-	local power = CreateFrame('StatusBar', nil, frame)
+	local power = CreateFrame('StatusBar', '$parent_PowerBar', frame)
 	UF.statusbars[power] = true
 
 	hooksecurefunc(power, 'SetStatusBarColor', function(_, r, g, b)

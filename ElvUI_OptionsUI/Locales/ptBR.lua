@@ -1,7 +1,6 @@
 -- Portuguese localization file for ptBR.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ptBR")
 
-L["|cFFff3333Warning|r: |cFF999999[mana:x]|r tags will |cFFff3333NOT|r return anything on classes which have mana as an additional power, unless it's the additional power."] = true
 L["# Displayed Auras"] = true
 L["%s and then %s"] = "%s e depois %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
@@ -730,7 +729,6 @@ L["LeftChatDataPanel"] = "Bate-papo esquerdo."
 L["LeftMiniPanel"] = "Minimapa - esquerda"
 L["LEVEL_BOSS"] = "Set level to -1 for boss units or set to 0 to disable."
 L["LF Guild Frame"] = "Localizador de Guildas"
-L["LFG Icons"] = true
 L["LFG Queue"] = true
 L["Limit the number of rows or columns."] = "Limitar o número de linhas ou colunas."
 L["Link to the latest development version."] = true
