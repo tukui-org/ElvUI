@@ -591,7 +591,13 @@ function DT:SortMenuList(list)
 		end
 	end
 
-	sort(list, function(a, b) return a.text < b.text end)
+	sort(list, function(a, b)
+		if a.order and b.order then
+			return a.order < b.order
+		end
+
+		return a.text < b.text
+	end)
 end
 
 function DT:HyperDT()
@@ -609,15 +615,23 @@ function DT:RegisterHyperDT()
 		local category = DT:GetMenuListCategory(info.category or MISCELLANEOUS)
 		if not category then
 			category = #HyperList + 1
-			tinsert(HyperList, { text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} } )
+			tinsert(HyperList, { order = 0, text = info.category or MISCELLANEOUS, notCheckable = true, hasArrow = true, menuList = {} } )
 		end
 
-		tinsert(HyperList[category].menuList, { text = info.localizedName or name, checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end, func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end })
+		tinsert(HyperList[category].menuList, {
+			text = info.localizedName or name,
+			checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, name) end,
+			func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, name) end
+		})
 	end
 
-	DT:SortMenuList(HyperList)
-	tinsert(HyperList, { text = L["NONE"], checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end, func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end })
+	tinsert(HyperList, {
+		order = 100, text = L["NONE"],
+		checked = function() return DT.EasyMenu.MenuGetItem(DT.SelectedDatatext, '') end,
+		func = function() DT.EasyMenu.MenuSetItem(DT.SelectedDatatext, '') end
+	})
 
+	DT:SortMenuList(HyperList)
 	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
 end
 
