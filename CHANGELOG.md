@@ -26,7 +26,7 @@ ___
 # Version 11.44 [ July 9th 2020 ]
 
 **Hotfixes:**  
-Chat: Fixed incompatiblity with Total RP 3.  
+Chat: Fixed incompatibility with Total RP 3.  
 Nameplate: Added Castbar Interrupted color setting.  
 Actionbars: Fixed paging.  
 
