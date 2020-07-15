@@ -162,9 +162,7 @@ end
 local function ValueColorUpdate()
 	displayString = strjoin("", "|cffFFFFFF%s:|r ")
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 

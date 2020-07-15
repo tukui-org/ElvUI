@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local ipairs, pairs, format = ipairs, pairs, format
-local tinsert, tremove = tinsert, tremove
+local tinsert, tremove, next = tinsert, tremove, next
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
 local GetCurrencyListSize = GetCurrencyListSize

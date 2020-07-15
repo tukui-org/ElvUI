@@ -18,12 +18,9 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s: ", hex, "%.f|r")
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
 
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 DT:RegisterDatatext('Strength', STAT_CATEGORY_ATTRIBUTES, { "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE" }, OnEvent, nil, nil, nil, nil, ITEM_MOD_STRENGTH_SHORT)
-

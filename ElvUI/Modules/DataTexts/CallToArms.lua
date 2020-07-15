@@ -78,9 +78,7 @@ end
 local function ValueColorUpdate(hex)
 	NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..": "..hex.."N/A|r"
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
