@@ -20,15 +20,15 @@ local function OnClick()
 end
 
 local function GetInfo(id)
-	if type(id) ~= 'number' then return end
 	local name, num, icon = GetCurrencyInfo(id)
-	return num, name, (icon and format(iconString, icon)) or '136012'
+	return name, num, (icon and format(iconString, icon)) or '136012'
 end
 
 local function AddInfo(id)
-	local num, name, icon = GetInfo(id)
-	if not name then return end
-	DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
+	local name, num, icon = GetInfo(id)
+	if name then
+		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
+	end
 end
 
 local goldText
@@ -39,7 +39,7 @@ local function OnEvent(self)
 	if displayed == 'BACKPACK' then
 		local displayString = ''
 		for i = 1, 3 do
-			local _, num, icon = GetBackpackCurrencyInfo(i);
+			local _, num, icon = GetBackpackCurrencyInfo(i)
 			if num then
 				displayString = (i > 1 and displayString..' ' or displayString)..format('%s %s', format(iconString, icon), E:ShortValue(num))
 			end
@@ -49,8 +49,13 @@ local function OnEvent(self)
 	elseif displayed == 'GOLD' then
 		self.text:SetText(goldText)
 	else
+		local id = tonumber(displayed)
+		if not id then return end
+
+		local name, num, icon = GetInfo(id)
+		if not name then return end
+
 		local style = E.db.datatexts.currencies.displayStyle
-		local num, name, icon = GetInfo(tonumber(displayed))
 		if style == 'ICON' then
 			self.text:SetFormattedText('%s %s', icon, E:ShortValue(num))
 		elseif style == 'ICON_TEXT' then
@@ -93,7 +98,10 @@ local function OnEnter(self)
 				shouldAddHeader = false
 			end
 
-			AddInfo(info.ID)
+			local id = info.ID
+			if id and type(id) == 'number' then
+				AddInfo(id)
+			end
 		end
 	end
 
