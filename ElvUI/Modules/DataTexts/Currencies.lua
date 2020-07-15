@@ -18,15 +18,15 @@ local function OnClick()
 end
 
 local function GetInfo(id)
+	if type(id) ~= 'number' then return end
 	local name, num, icon = GetCurrencyInfo(id)
-	return name, num, (icon and format(iconString, icon)) or '136012'
+	return num, name, (icon and format(iconString, icon)) or '136012'
 end
 
 local function AddInfo(id)
-	local name, num, icon = GetInfo(id)
-	if name then
-		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
-	end
+	local num, name, icon = GetInfo(id)
+	if not name then return end
+	DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
 end
 
 local goldText
@@ -37,7 +37,7 @@ local function OnEvent(self)
 	if displayed == 'BACKPACK' then
 		local displayString = ''
 		for i = 1, 3 do
-			local _, num, icon = GetBackpackCurrencyInfo(i)
+			local _, num, icon = GetBackpackCurrencyInfo(i);
 			if num then
 				displayString = (i > 1 and displayString..' ' or displayString)..format("%s %s", format(iconString, icon), E:ShortValue(num))
 			end
@@ -47,13 +47,8 @@ local function OnEvent(self)
 	elseif displayed == "GOLD" then
 		self.text:SetText(goldText)
 	else
-		local id = tonumber(displayed)
-		if not id then return end
-
-		local name, num, icon = GetInfo(id)
-		if not name then return end
-
 		local style = E.db.datatexts.currencies.displayStyle
+		local num, name, icon = GetInfo(tonumber(displayed))
 		if style == "ICON" then
 			self.text:SetFormattedText("%s %s", icon, E:ShortValue(num))
 		elseif style == "ICON_TEXT" then
@@ -69,12 +64,9 @@ local function OnEnter(self)
 
 	local addLine, goldSpace
 	for _, info in ipairs(E.db.datatexts.currencies.tooltip) do
-		local name, id, _, enabled = unpack(info)
-		if id and enabled then
-			if type(id) == 'number' then
-				AddInfo(id)
-			end
-
+		local name, currencyID, _, enabled = unpack(info)
+		if currencyID and enabled then
+			AddInfo(currencyID)
 			goldSpace = true
 		elseif enabled then
 			if addLine then
@@ -82,7 +74,6 @@ local function OnEnter(self)
 			else
 				addLine = true
 			end
-
 			DT.tooltip:AddLine(name)
 			goldSpace = true
 		end
@@ -91,7 +82,6 @@ local function OnEnter(self)
 	if goldSpace then
 		DT.tooltip:AddLine(' ')
 	end
-
 	DT.tooltip:AddDoubleLine(L["Gold"]..":", goldText, nil, nil, nil, 1, 1, 1)
 	DT.tooltip:Show()
 end
