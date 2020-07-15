@@ -66,14 +66,7 @@ local DTPanelOptions = {
 				order = 2,
 				type = "select",
 				name = L["Frame Strata"],
-				values = {
-					BACKGROUND = "BACKGROUND",
-					LOW = "LOW",
-					MEDIUM = "MEDIUM",
-					HIGH = "HIGH",
-					DIALOG = "DIALOG",
-					TOOLTIP = "TOOLTIP",
-				},
+				values = C.Values.Strata,
 			},
 			frameLevel = {
 				order = 5,
