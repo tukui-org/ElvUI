@@ -34,20 +34,17 @@ end
 
 local function OnEvent(self)
 	local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
-	if E.global.datatexts.settings.Versatility.NoLabel then
-		self.text:SetFormattedText(displayString, versatility)
-	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Versatility.Label ~= '' and E.global.datatexts.settings.Versatility.Label or STAT_VERSATILITY, versatility)
-	end
-
+	self.text:SetFormattedText(displayString, STAT_VERSATILITY, versatility)
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', E.global.datatexts.settings.Versatility.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Versatility.Decimal..'f%%|r')
+	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
 
-	if lastPanel then OnEvent(lastPanel) end
+	if lastPanel ~= nil then
+		OnEvent(lastPanel)
+	end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Versatility', STAT_CATEGORY_ENHANCEMENTS, {"UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "PLAYER_DAMAGE_DONE_MODS"}, OnEvent, nil, nil, OnEnter, nil, STAT_VERSATILITY, nil, ValueColorUpdate)
+DT:RegisterDatatext('Versatility', STAT_CATEGORY_ENHANCEMENTS, {"UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "PLAYER_DAMAGE_DONE_MODS"}, OnEvent, nil, nil, OnEnter, nil, STAT_VERSATILITY)

@@ -2,18 +2,30 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local pairs, strjoin = pairs, strjoin
+local pairs, strfind, strjoin = pairs, strfind, strjoin
+local GetAddOnInfo = GetAddOnInfo
+local GetAddOnMetadata = GetAddOnMetadata
+local GetNumAddOns = GetNumAddOns
 local IsShiftKeyDown = IsShiftKeyDown
 local ReloadUI = ReloadUI
 local InCombatLockdown = InCombatLockdown
 
-local displayString = ''
-local configText = 'ElvUI'
+local displayString = ""
+local configText = "ElvUI"
 local reloadText = RELOADUI
-local lastPanel
+local plugins, lastPanel
 
 local function OnEvent(self)
 	lastPanel = self
+
+	for i = 1, GetNumAddOns() do
+		local name, _, _, enabled = GetAddOnInfo(i)
+		if enabled and strfind(name, "ElvUI") and not (name == "ElvUI") then
+			plugins = plugins or {}
+			local version = GetAddOnMetadata(i, "version")
+			plugins[name] = version
+		end
+	end
 
 	self.text:SetFormattedText(displayString, configText)
 end
@@ -23,16 +35,11 @@ local function OnEnter(self)
 
 	DT.tooltip:AddDoubleLine(L["Left Click:"], L["Toggle Configuration"], 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Hold Shift + Right Click:"], reloadText, 1, 1, 1)
-
-	if E.Libs.EP.registeredPrefix then
-		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddDoubleLine('Plugins:', 'Version:')
-
-		for _, plugin in pairs(E.Libs.EP.plugins) do
-			if not plugin.isLib then
-				local r, g, b = E:HexToRGB(plugin.old and 'ff3333' or '33ff33')
-				DT.tooltip:AddDoubleLine(plugin.title, plugin.version, 1, 1, 1, r/255, g/255, b/255)
-			end
+	if plugins then
+		DT.tooltip:AddLine(" ")
+		DT.tooltip:AddDoubleLine("Plugins:", "Version:")
+		for plugin, version in pairs(plugins) do
+			DT.tooltip:AddDoubleLine(plugin, version, 1, 1, 1, 1, 1, 1)
 		end
 	end
 
@@ -51,7 +58,9 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", hex, "%s|r")
 
-	if lastPanel then OnEvent(lastPanel) end
+	if lastPanel ~= nil then
+		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
+	end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 

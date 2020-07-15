@@ -43,7 +43,7 @@ local function OnEvent(self)
 
 	local color = _G.FACTION_BAR_COLORS[reaction]
 	local text = ''
-	local textFormat = E.global.datatexts.settings.Reputation.textFormat
+	local textFormat = E.DataBars.db.reputation.textFormat
 
 	standingLabel = E:RGBToHex(color.r, color.g, color.b, nil, _G['FACTION_STANDING_LABEL'..reaction]..'|r')
 
