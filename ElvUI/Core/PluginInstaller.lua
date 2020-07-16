@@ -328,8 +328,8 @@ function PI:CreateFrame()
 	f.pending.tex:Point('BOTTOMRIGHT', f.pending, 'BOTTOMRIGHT', -2, 2)
 	f.pending.tex:SetTexture([[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]])
 	f.pending:CreateBackdrop('Transparent')
-	f.pending:SetScript('OnEnter', function(self)
-		_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
+	f.pending:SetScript('OnEnter', function(button)
+		_G.GameTooltip:SetOwner(button, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
 		_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
 		_G.GameTooltip:AddLine(' ')
 		for i = 1, #PI.Installs do
@@ -406,12 +406,13 @@ end
 
 function PI:RunInstall()
 	if not E.private.install_complete then return end
-	if self.Installs[1] and not PluginInstallFrame:IsShown() and not (_G.ElvUIInstallFrame and _G.ElvUIInstallFrame:IsShown()) then
+
+	local db = self.Installs[1]
+	if db and not f:IsShown() and not (_G.ElvUIInstallFrame and _G.ElvUIInstallFrame:IsShown()) then
 		f.StepTitles = nil
 		f.StepTitlesColor = nil
 		f.StepTitlesColorSelected = nil
 
-		local db = self.Installs[1]
 		f.CurrentPage = 0
 		f.MaxPage = #(db.Pages)
 
@@ -464,9 +465,10 @@ function PI:RunInstall()
 
 		f.Pages = db.Pages
 
-		PluginInstallFrame:Show()
-
+		f:Show()
+		f:ClearAllPoints()
 		f:Point('CENTER')
+
 		if db.StepTitles and #db.StepTitles == f.MaxPage then
 			f:Point('CENTER', E.UIParent, 'CENTER', -((db.StepTitleWidth or 140)/2), 0)
 			f.side:SetWidth(db.StepTitleWidth or 140)
@@ -488,7 +490,7 @@ function PI:RunInstall()
 		NextPage()
 	end
 
-	if #(self.Installs) > 1 then
+	if #self.Installs > 1 then
 		f.pending:Show()
 		E:Flash(f.pending, 0.53, true)
 	else
