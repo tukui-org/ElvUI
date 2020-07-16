@@ -1,7 +1,14 @@
-# Version 11.46 [ ETA: 🍨 ]
+# Version 11.47 [ ETA: 🍨 ]
 
 **Hotfixes:**  
 
+
+___
+
+# Version 11.46 [ July 15th 2020 ]
+
+**Hotfixes:**  
+Plugin Installer hiccup.  
 
 ___
 
