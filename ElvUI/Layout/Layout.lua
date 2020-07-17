@@ -404,8 +404,8 @@ end
 
 function LO:CreateMinimapPanels()
 	local panel = CreateFrame('Frame', 'MinimapPanel', _G.Minimap)
-	panel:Point('TOPLEFT', _G.Minimap, 'BOTTOMLEFT', -1, 0)
-	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', 1, -BAR_HEIGHT)
+	panel:Point('TOPLEFT', _G.Minimap, 'BOTTOMLEFT', E.PixelMode and -1 or -2, 0)
+	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', E.PixelMode and 1 or 2, -BAR_HEIGHT)
 	panel:Hide()
 	DT:RegisterPanel(panel, E.db.datatexts.panels.MinimapPanel.numPoints, 'ANCHOR_BOTTOM', 0, -4)
 end
