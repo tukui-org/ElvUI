@@ -17,7 +17,7 @@ L["A setting you have changed will change an option for this character only. Thi
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]"
 L["Accepting this will reset the UnitFrame settings for %s. Are you sure?"] = "Aceitar isso irá resetar suas configurações de Quadro de Unidade  para %s. Você tem certeza?"
 L["Accepting this will reset your Filter Priority lists for all auras on NamePlates. Are you sure?"] = "Aceitar isso irá resetar sua lista de Prioridade de Filtros para todas as auras nas NamePlates. Você tem certeza?"
-L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "Aceitar isso irá resetar sua lista de Prioridade de Filtros para todas as auras nas UnitFrames. Você tem certeza?"
+L["Accepting this will reset your Filter Priority lists for all auras on UnitFrames. Are you sure?"] = "Aceitar isso irá resetar sua lista de Prioridade de Filtros para todas as auras nos Quadros de Unidades. Você tem certeza?"
 L["Additive Blend"] = true
 L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."] = "Ajuste sua escala de interface de usuário para caber na sua tela ou pressione o botão de autoscale para fazê-lo automaticamente"
 L["AFK"] = true
