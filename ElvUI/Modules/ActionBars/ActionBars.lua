@@ -756,19 +756,16 @@ function AB:SetNoops(frame)
 	end
 end
 
-local function dummyZero()
-	return 0
-end
-
 local function SpellButtonOnEnter(self)
 	AB.SpellButtonOnEnter(self)
 end
 
+local SpellBookTooltip = CreateFrame("GameTooltip", "ElvUISpellBookTooltip", E.UIParent, "GameTooltipTemplate")
 function AB:SpellButtonOnEnter()
 	-- copied from SpellBookFrame to remove:
-	-- ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
+	--- ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
 
-	local tt = _G.GameTooltip
+	local tt = SpellBookTooltip
 	if tt:IsForbidden() then return end
 	tt:SetOwner(self, 'ANCHOR_RIGHT')
 
@@ -784,6 +781,10 @@ function AB:SpellButtonOnEnter()
 	tt:Show()
 end
 
+function AB:SpellButtonOnLeave()
+	SpellBookTooltip:Hide()
+end
+
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	for i, name in ipairs({"OverrideActionBar", "StanceBarFrame", "PossessBarFrame", "PetActionBarFrame", "MultiCastActionBarFrame", "MainMenuBar", "MicroButtonAndBagsBar", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiBarLeft", "MultiBarRight"}) do
@@ -796,6 +797,7 @@ function AB:DisableBlizzard()
 	end
 
 	-- let spell book buttons work without tainting by replacing this function
+	hooksecurefunc(_G.GameTooltip, 'Hide', AB.SpellButtonOnLeave)
 	SpellButton_OnEnter = AB.SpellButtonOnEnter
 
 	-- MainMenuBar:ClearAllPoints taint during combat
@@ -813,9 +815,8 @@ function AB:DisableBlizzard()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
 	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
+	_G.VerticalMultiBarsContainer:SetSize(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
 	AB:SetNoops(_G.VerticalMultiBarsContainer)
-	_G.VerticalMultiBarsContainer.GetTop = dummyZero
-	_G.VerticalMultiBarsContainer.GetBottom = dummyZero
 
 	-- hide some interface options we dont use
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)

@@ -86,6 +86,7 @@ function S:TooltipFrames()
 		_G.EmbeddedItemTooltip,
 		_G.ReputationParagonTooltip,
 		_G.ElvUIConfigTooltip,
+		_G.ElvUISpellBookTooltip,
 		-- already have locals
 		StoryTooltip,
 		GameTooltip,
