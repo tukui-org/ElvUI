@@ -30,6 +30,7 @@ local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
+local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
@@ -38,8 +39,6 @@ local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
-
--- GLOBALS: SpellButton_OnEnter
 
 local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
 hiddenParent:SetAllPoints()
@@ -768,7 +767,8 @@ function AB:SpellButtonOnEnter(_, tt)
 	tt:SetOwner(self, 'ANCHOR_RIGHT')
 
 	local slot = _G.SpellBook_GetSpellBookSlot(self)
-	self.UpdateTooltip = (tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType) and SpellButtonOnEnter) or nil
+	local item = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
+	self.UpdateTooltip = (item and AB.SpellButtonOnEnter) or nil
 
 	local highlight = self.SpellHighlightTexture
 	if highlight and highlight:IsShown() then
@@ -795,8 +795,11 @@ function AB:DisableBlizzard()
 	end
 
 	-- let spell book buttons work without tainting by replacing this function
-	hooksecurefunc(_G.GameTooltip, 'Hide', AB.SpellButtonOnLeave)
-	SpellButton_OnEnter = AB.SpellButtonOnEnter
+	for i = 1, SPELLS_PER_PAGE do
+		local button = _G['SpellButton' .. i]
+		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
+		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+	end
 
 	-- MainMenuBar:ClearAllPoints taint during combat
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop
