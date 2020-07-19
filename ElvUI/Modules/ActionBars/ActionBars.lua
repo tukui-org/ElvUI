@@ -747,9 +747,9 @@ function AB:IconIntroTracker_Toggle()
 end
 
 -- these calls are tainted when accessed by ValidateActionBarTransition
-local noopis = { "ClearAllPoints", "SetPoint", "SetScale", "SetShown", "SetSize" }
-function AB:SetNoopsis(frame)
-	for _, func in pairs(noopis) do
+local noops = { "ClearAllPoints", "SetPoint", "SetScale", "SetShown", "SetSize" }
+function AB:SetNoopsi(frame)
+	for _, func in pairs(noops) do
 		if frame[func] ~= E.noop then
 			frame[func] = E.noop
 		end
@@ -793,7 +793,7 @@ function AB:DisableBlizzard()
 		local frame = _G[name]
 		if i < 6 then frame:UnregisterAllEvents() end
 		frame:SetParent(hiddenParent)
-		AB:SetNoopsis(frame)
+		AB:SetNoopsi(frame)
 	end
 
 	-- let spell book buttons work without tainting by replacing this function
@@ -804,8 +804,8 @@ function AB:DisableBlizzard()
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop
 
 	-- shut down some events for things we dont use
-	AB:SetNoopsis(_G.MainMenuBarArtFrame)
-	AB:SetNoopsis(_G.MainMenuBarArtFrameBackground)
+	AB:SetNoopsi(_G.MainMenuBarArtFrame)
+	AB:SetNoopsi(_G.MainMenuBarArtFrameBackground)
 	_G.MainMenuBarArtFrame:UnregisterAllEvents()
 	_G.StatusTrackingBarManager:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
@@ -816,7 +816,7 @@ function AB:DisableBlizzard()
 
 	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
 	_G.VerticalMultiBarsContainer:SetSize(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
-	AB:SetNoopsis(_G.VerticalMultiBarsContainer)
+	AB:SetNoopsi(_G.VerticalMultiBarsContainer)
 
 	-- hide some interface options we dont use
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
