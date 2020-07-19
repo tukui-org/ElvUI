@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:GetModule('Tooltip')
+local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
@@ -655,13 +656,19 @@ function TT:SetStyle(tt)
 	tt:SetBackdropColor(r, g, b, TT.db.colorAlpha)
 end
 
-function TT:MODIFIER_STATE_CHANGED(_, key)
-	if key == 'LSHIFT' or key == 'RSHIFT' or key == 'LCTRL' or key == 'RCTRL' or key == 'LALT' or key == 'RALT' then
+function TT:MODIFIER_STATE_CHANGED()
+	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
-		local notOnAuras = not (owner and owner.UpdateTooltip)
-		if notOnAuras and UnitExists('mouseover') then
+		if owner == _G.UIParent and UnitExists('mouseover') then
 			GameTooltip:SetUnit('mouseover')
+		elseif owner and owner:GetParent() == _G.SpellBookSpellIconsFrame then
+			AB.SpellButtonOnEnter(owner, nil, GameTooltip)
 		end
+	end
+
+	if _G.ElvUISpellBookTooltip:IsShown() then
+		local button = _G.ElvUISpellBookTooltip:GetOwner()
+		if button then AB.SpellButtonOnEnter(button) end
 	end
 end
 
@@ -862,7 +869,7 @@ function TT:Initialize()
 	TT:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	TT:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
-	TT:SecureHookScript(ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
+	TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created

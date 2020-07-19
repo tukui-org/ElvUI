@@ -756,16 +756,14 @@ function AB:SetNoopsi(frame)
 	end
 end
 
-local function SpellButtonOnEnter(self)
-	AB.SpellButtonOnEnter(self)
-end
-
 local SpellBookTooltip = CreateFrame("GameTooltip", "ElvUISpellBookTooltip", E.UIParent, "GameTooltipTemplate")
-function AB:SpellButtonOnEnter()
+function AB:SpellButtonOnEnter(_, tt)
 	-- copied from SpellBookFrame to remove:
 	--- ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
 
-	local tt = SpellBookTooltip
+	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled.
+	if not tt then tt = SpellBookTooltip end
+
 	if tt:IsForbidden() then return end
 	tt:SetOwner(self, 'ANCHOR_RIGHT')
 
