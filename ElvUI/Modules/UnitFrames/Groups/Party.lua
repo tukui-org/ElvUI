@@ -93,10 +93,10 @@ function UF:Update_PartyFrames(frame, db)
 	frame.db = db
 
 	frame.colors = ElvUF.colors
-	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
+	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		if(self.thinBorders) then
+		if UF.thinBorders then
 			frame.SPACING = 0
 			frame.BORDER = E.mult
 		else
@@ -147,27 +147,26 @@ function UF:Update_PartyFrames(frame, db)
 
 		frame.BOTTOM_OFFSET = 0
 
-		local childDB = db.petsGroup
-		if frame.childType == "target" then
-			childDB = db.targetsGroup
-		else
-			frame.Health.colorPetByUnitClass = childDB.colorPetByUnitClass
+		frame.db = frame.childType == "target" and db.targetsGroup or db.petsGroup
+		db = frame.db
+
+		if frame.childType == 'pet' then
+			frame.Health.colorPetByUnitClass = db.colorPetByUnitClass
 		end
 
-		frame:Size(childDB.width, childDB.height)
+		frame:Size(db.width, db.height)
 
 		if not InCombatLockdown() then
-			if childDB.enable then
+			if db.enable then
 				frame:Enable()
 				frame:ClearAllPoints()
-				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
+				frame:Point(E.InversePoints[db.anchorPoint], frame.originalParent, db.anchorPoint, db.xOffset, db.yOffset)
 			else
 				frame:Disable()
 			end
 		end
 
 		UF:Configure_HealthBar(frame)
-		UF:UpdateNameSettings(frame, frame.childType)
 	else
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
@@ -192,9 +191,9 @@ function UF:Update_PartyFrames(frame, db)
 		UF:Configure_ClassBar(frame)
 		UF:Configure_AltPowerBar(frame)
 		UF:Configure_CustomTexts(frame)
-		UF:UpdateNameSettings(frame)
 	end
 
+	UF:UpdateNameSettings(frame)
 	UF:Configure_RaidIcon(frame)
 	UF:Configure_Fader(frame)
 	UF:Configure_Cutaway(frame)
