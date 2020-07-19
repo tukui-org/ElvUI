@@ -11,6 +11,7 @@ local next, floor, ceil, abs = next, floor, ceil, abs
 local format, sub = format, strsub
 
 local GetCVarBool = GetCVarBool
+local UnitAffectingCombat = UnitAffectingCombat
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
@@ -645,8 +646,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 end
 
 function B:UpdateBagButtons()
-	B.BagFrame.bagsButton:SetEnabled(not UnitAffectingCombat('player'))
-	B.BagFrame.bagsButton:GetNormalTexture():SetDesaturated(UnitAffectingCombat('player'))
+	local playerCombat = UnitAffectingCombat('player')
+	B.BagFrame.bagsButton:SetEnabled(not playerCombat)
+	B.BagFrame.bagsButton:GetNormalTexture():SetDesaturated(playerCombat)
 end
 
 function B:UpdateBagSlots(frame, bagID)
