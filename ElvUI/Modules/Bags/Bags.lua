@@ -644,6 +644,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 end
 
+function B:UpdateBagButtons()
+	B.BagFrame.bagsButton:SetEnabled(not UnitAffectingCombat('player'))
+	B.BagFrame.bagsButton:GetNormalTexture():SetDesaturated(UnitAffectingCombat('player'))
+end
+
 function B:UpdateBagSlots(frame, bagID)
 	if bagID == REAGENTBANK_CONTAINER then
 		for i = 1, B.REAGENTBANK_SIZE do
@@ -2388,6 +2393,9 @@ function B:Initialize()
 	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseBags')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
+	B:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateBagButtons')
+	B:RegisterEvent('PLAYER_REGEN_DISABLED', 'UpdateBagButtons')
+
 	B:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
 	B:RegisterEvent('GUILDBANKFRAME_OPENED')
 	B:RegisterEvent('SCRAPPING_MACHINE_SHOW')
