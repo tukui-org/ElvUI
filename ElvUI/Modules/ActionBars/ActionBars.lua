@@ -758,6 +758,47 @@ local function dummyZero()
 	return 0
 end
 
+local function SpellButtonOnEnter(self)
+	AB.SpellButtonOnEnter(self)
+end
+
+-- copied from SpellBookFrame to remove `ActionBarController_UpdateAll`
+function AB:SpellButtonOnEnter()
+	local tt = _G.GameTooltip
+	if tt:IsForbidden() then return end
+
+	local slot = _G.SpellBook_GetSpellBookSlot(self)
+	tt:SetOwner(self, "ANCHOR_RIGHT")
+
+	local bookType = _G.SpellBookFrame.bookType
+	if tt:SetSpellBookItem(slot, bookType) then
+		self.UpdateTooltip = SpellButtonOnEnter
+	else
+		self.UpdateTooltip = nil
+	end
+
+	_G.ClearOnBarHighlightMarks()
+	_G.ClearPetActionHighlightMarks()
+
+	local slotType, actionID = _G.GetSpellBookItemInfo(slot, bookType)
+	if slotType == "SPELL" then
+		_G.UpdateOnBarHighlightMarksBySpell(actionID)
+	elseif slotType == "FLYOUT" then
+		_G.UpdateOnBarHighlightMarksByFlyout(actionID)
+	elseif slotType == "PETACTION" then
+		_G.UpdateOnBarHighlightMarksByPetAction(actionID)
+		_G.UpdatePetActionHighlightMarks(actionID)
+		_G.PetActionBar_Update(_G.PetActionBarFrame)
+	end
+
+	if self.SpellHighlightTexture and self.SpellHighlightTexture:IsShown() then
+		local color = _G.LIGHTBLUE_FONT_COLOR
+		tt:AddLine(_G.SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, color.r, color.g, color.b)
+	end
+
+	tt:Show()
+end
+
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	for i, name in ipairs({"OverrideActionBar", "StanceBarFrame", "PossessBarFrame", "PetActionBarFrame", "MultiCastActionBarFrame", "MainMenuBar", "MicroButtonAndBagsBar", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiBarLeft", "MultiBarRight"}) do
@@ -782,6 +823,8 @@ function AB:DisableBlizzard()
 	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
+
+	_G.SpellButton_OnEnter = AB.SpellButtonOnEnter
 
 	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
 	AB:SetNoops(_G.VerticalMultiBarsContainer)
