@@ -378,33 +378,28 @@ function PI:CreateFrame()
 	f:SetScript('OnHide', function() PI:CloseInstall() end)
 end
 
-local function SortInstalls(a, b)
-	return a and a.Name > b and b.Name
-end
-
 function PI:Queue(addon)
 	local addonIsQueued = false
-	for _, v in pairs(PI.Installs) do
+	for _, v in pairs(self.Installs) do
 		if v.Name == addon.Name then
 			addonIsQueued = true
 		end
 	end
 
 	if not addonIsQueued then
-		tinsert(PI.Installs, #(PI.Installs)+1, addon)
-		sort(PI.Installs, SortInstalls)
-		PI:RunInstall()
+		tinsert(self.Installs, #(self.Installs)+1, addon)
+		self:RunInstall()
 	end
 end
 
 function PI:CloseInstall()
-	tremove(PI.Installs, 1)
+	tremove(self.Installs, 1)
 	f.side:Hide()
 	for i = 1, #f.side.Lines do
 		f.side.Lines[i].text:SetText('')
 		f.side.Lines[i]:Hide()
 	end
-	if #PI.Installs > 0 then
+	if #self.Installs > 0 then
 		E:Delay(1, PI.RunInstall, PI)
 	end
 end
@@ -412,7 +407,7 @@ end
 function PI:RunInstall()
 	if not E.private.install_complete then return end
 
-	local db = PI.Installs[1]
+	local db = self.Installs[1]
 	if db and not f:IsShown() and not (_G.ElvUIInstallFrame and _G.ElvUIInstallFrame:IsShown()) then
 		f.StepTitles = nil
 		f.StepTitlesColor = nil
@@ -495,7 +490,7 @@ function PI:RunInstall()
 		NextPage()
 	end
 
-	if #PI.Installs > 1 then
+	if #self.Installs > 1 then
 		f.pending:Show()
 		E:Flash(f.pending, 0.53, true)
 	else
