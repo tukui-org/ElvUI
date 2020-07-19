@@ -762,37 +762,19 @@ local function SpellButtonOnEnter(self)
 	AB.SpellButtonOnEnter(self)
 end
 
--- copied from SpellBookFrame to remove `ActionBarController_UpdateAll`
 function AB:SpellButtonOnEnter()
+	-- copied from SpellBookFrame to remove:
+	-- ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
+
 	local tt = _G.GameTooltip
 	if tt:IsForbidden() then return end
+	tt:SetOwner(self, 'ANCHOR_RIGHT')
 
 	local slot = _G.SpellBook_GetSpellBookSlot(self)
-	tt:SetOwner(self, "ANCHOR_RIGHT")
+	self.UpdateTooltip = (tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType) and SpellButtonOnEnter) or nil
 
-	local bookType = _G.SpellBookFrame.bookType
-	if tt:SetSpellBookItem(slot, bookType) then
-		self.UpdateTooltip = SpellButtonOnEnter
-	else
-		self.UpdateTooltip = nil
-	end
-
-	_G.ClearOnBarHighlightMarks()
-	_G.ClearPetActionHighlightMarks()
-
---[[
-	local slotType, actionID = _G.GetSpellBookItemInfo(slot, bookType)
-	if slotType == "SPELL" then
-		_G.UpdateOnBarHighlightMarksBySpell(actionID)
-	elseif slotType == "FLYOUT" then
-		_G.UpdateOnBarHighlightMarksByFlyout(actionID)
-	elseif slotType == "PETACTION" then
-		_G.UpdateOnBarHighlightMarksByPetAction(actionID)
-		_G.UpdatePetActionHighlightMarks(actionID)
-		_G.PetActionBar_Update(_G.PetActionBarFrame)
-	end
-]]
-	if self.SpellHighlightTexture and self.SpellHighlightTexture:IsShown() then
+	local highlight = self.SpellHighlightTexture
+	if highlight and highlight:IsShown() then
 		local color = _G.LIGHTBLUE_FONT_COLOR
 		tt:AddLine(_G.SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, color.r, color.g, color.b)
 	end
@@ -811,6 +793,9 @@ function AB:DisableBlizzard()
 		AB:SetNoops(frame)
 	end
 
+	-- let spell book buttons work without tainting by replacing this function
+	SpellButton_OnEnter = AB.SpellButtonOnEnter
+
 	-- MainMenuBar:ClearAllPoints taint during combat
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop
 
@@ -824,8 +809,6 @@ function AB:DisableBlizzard()
 	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
-
-	_G.SpellButton_OnEnter = AB.SpellButtonOnEnter
 
 	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
 	AB:SetNoops(_G.VerticalMultiBarsContainer)
