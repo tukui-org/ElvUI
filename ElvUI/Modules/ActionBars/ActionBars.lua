@@ -744,6 +744,20 @@ function AB:IconIntroTracker_Toggle()
 	end
 end
 
+-- these calls are tainted when accessed by ValidateActionBarTransition
+local noops = { "ClearAllPoints", "SetPoint", "SetScale", "SetShown", "SetSize" }
+function AB:SetNoops(frame)
+	for _, func in pairs(noops) do
+		if frame[func] ~= E.noop then
+			frame[func] = E.noop
+		end
+	end
+end
+
+local function dummyZero()
+	return 0
+end
+
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	for i, name in ipairs({"OverrideActionBar", "StanceBarFrame", "PossessBarFrame", "PetActionBarFrame", "MultiCastActionBarFrame", "MainMenuBar", "MicroButtonAndBagsBar", "MultiBarBottomLeft", "MultiBarBottomRight", "MultiBarLeft", "MultiBarRight"}) do
@@ -752,23 +766,26 @@ function AB:DisableBlizzard()
 		local frame = _G[name]
 		if i < 6 then frame:UnregisterAllEvents() end
 		frame:SetParent(hiddenParent)
-	end
-
-	for _, name in ipairs({"ActionButton", "MultiBarBottomLeftButton", "MultiBarBottomRightButton", "MultiBarRightButton", "MultiBarLeftButton", "OverrideActionBarButton", "MultiCastActionButton"}) do
-		for i = 1, 12 do
-			local frame = _G[name..i]
-			if frame then frame:UnregisterAllEvents() end
-		end
+		AB:SetNoops(frame)
 	end
 
 	-- MainMenuBar:ClearAllPoints taint during combat
 	_G.MainMenuBar.SetPositionForStatusBars = E.noop
 
 	-- shut down some events for things we dont use
-	_G.StatusTrackingBarManager:UnregisterAllEvents()
+	AB:SetNoops(_G.MainMenuBarArtFrame)
+	AB:SetNoops(_G.MainMenuBarArtFrameBackground)
 	_G.MainMenuBarArtFrame:UnregisterAllEvents()
+	_G.StatusTrackingBarManager:UnregisterAllEvents()
+	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
+	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
+
+	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
+	AB:SetNoops(_G.VerticalMultiBarsContainer)
+	_G.VerticalMultiBarsContainer.GetTop = dummyZero
+	_G.VerticalMultiBarsContainer.GetBottom = dummyZero
 
 	-- hide some interface options we dont use
 	_G.InterfaceOptionsActionBarsPanelStackRightBars:SetScale(0.5)
