@@ -778,9 +778,11 @@ function AB:DisableBlizzard()
 	_G.MainMenuBarArtFrame:UnregisterAllEvents()
 	_G.StatusTrackingBarManager:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
+	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SHOWGRID') -- these are needed to let the ExtraActionButton show
+	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_HIDEGRID')
 	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
-	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR')
+	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
 	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
 	AB:SetNoops(_G.VerticalMultiBarsContainer)
