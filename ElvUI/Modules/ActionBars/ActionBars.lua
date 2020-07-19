@@ -780,6 +780,7 @@ function AB:SpellButtonOnEnter()
 	_G.ClearOnBarHighlightMarks()
 	_G.ClearPetActionHighlightMarks()
 
+--[[
 	local slotType, actionID = _G.GetSpellBookItemInfo(slot, bookType)
 	if slotType == "SPELL" then
 		_G.UpdateOnBarHighlightMarksBySpell(actionID)
@@ -790,7 +791,7 @@ function AB:SpellButtonOnEnter()
 		_G.UpdatePetActionHighlightMarks(actionID)
 		_G.PetActionBar_Update(_G.PetActionBarFrame)
 	end
-
+]]
 	if self.SpellHighlightTexture and self.SpellHighlightTexture:IsShown() then
 		local color = _G.LIGHTBLUE_FONT_COLOR
 		tt:AddLine(_G.SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, color.r, color.g, color.b)
