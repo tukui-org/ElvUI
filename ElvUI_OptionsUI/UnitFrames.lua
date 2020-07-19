@@ -1329,12 +1329,6 @@ local function UpdateCustomTextGroup(unit)
 			local child = select(i, UF[unit]:GetChildren())
 			UF:Configure_CustomTexts(child)
 			child:UpdateTags()
-
-			for x = 1, child:GetNumChildren() do
-				local subchild = select(x, child:GetChildren())
-				UF:Configure_CustomTexts(subchild)
-				subchild:UpdateTags()
-			end
 		end
 	elseif unit == 'boss' or unit == 'arena' then
 		for i = 1, 5 do
