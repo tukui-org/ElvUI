@@ -18,7 +18,6 @@ local function OnEvent(self)
 	end
 
 	lastPanel = self
-	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)
