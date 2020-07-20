@@ -170,7 +170,7 @@ function TT:RemoveTrashLines(tt)
 		local tiptext = _G['GameTooltipTextLeft'..i]
 		local linetext = tiptext:GetText()
 
-		if(linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE) then
+		if linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE then
 			tiptext:SetText('')
 			tiptext:Hide()
 		end
@@ -181,7 +181,7 @@ function TT:GetLevelLine(tt, offset)
 	if tt:IsForbidden() then return end
 	for i = offset, tt:NumLines() do
 		local tipLine = _G['GameTooltipTextLeft'..i]
-		local tipText = tipLine and tipLine.GetText and tipLine:GetText() and strlower(tipLine:GetText())
+		local tipText = tipLine and tipLine:GetText() and strlower(tipLine:GetText())
 		if tipText and (strfind(tipText, LEVEL1) or strfind(tipText, LEVEL2)) then
 			return tipLine
 		end
@@ -707,7 +707,16 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local _, id = tt:GetSpell()
 	if not id then return end
 
-	tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, id))
+	local ID = format('|cFFCA3C3C%s|r %d', _G.ID, id)
+	for i = 3, tt:NumLines() do
+		local line = _G[format('GameTooltipTextLeft%d', i)]
+		local text = line and line:GetText()
+		if text and strfind(text, ID) then
+			return -- this is called twice on talents for some reason?
+		end
+	end
+
+	tt:AddLine(ID)
 	tt:Show()
 end
 
