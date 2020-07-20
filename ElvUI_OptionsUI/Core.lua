@@ -403,15 +403,8 @@ E.Options.args.profiles.args.profile.order = 1
 E.Options.args.profiles.args.private.name = L["Private"]
 E.Options.args.profiles.args.private.order = 2
 
-E.Options.args.profiles.args.private.args.choose.confirm = function(_, value)
-	return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
-end
-
 E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles.args.profile)
 E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
-E.Options.args.profiles.args.profile.args.copyfrom.confirm = function(_, value)
-	return format(L["Copy Settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, E.data:GetCurrentProfile())
-end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvPrivates", E.Options.args.profiles.args.private)
 
@@ -419,8 +412,8 @@ E.Options.args.profiles.args.private.args.choose.confirm = function(_, value)
 	return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
 end
 
-E.Options.args.profiles.args.private.args.copyfrom.confirm = function(_, value)
-	return format(L["Copy Settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, E.charSettings:GetCurrentProfile())
+E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)
+	return format(L["Copy Settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, info.handler:GetCurrentProfile())
 end
 
 if GetAddOnEnableState(nil, 'ElvUI_Config') ~= 0 then
