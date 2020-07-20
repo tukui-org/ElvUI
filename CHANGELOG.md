@@ -1,6 +1,11 @@
 # Version 11.47 [ ETA: 🍨 ]
 
-**Hotfixes:**  
+**Nice:**  
+UI: Spellbook spells should work in combat without tainting now, this might fix other taint issues as well.  
+UnitFrames: Party Target settings were effecting Party settings, not the Party Target settings. (#1930)  
+Datatexts: Tooltips were hanging around during combat when they weren't supposed to.  
+Minimap: Datatext bar offset for non-thin border theme corrected. (#1925)  
+Minimap: Reset Zoom setting should apply correctly again.  
 
 
 ___
