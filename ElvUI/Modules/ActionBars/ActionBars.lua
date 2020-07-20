@@ -801,7 +801,7 @@ function AB:SpellButtonOnEnter(_, tt)
 	tt:Show()
 end
 
-function AB:SpellButtonUpdateButton(event)
+function AB:UpdateSpellBookTooltip(event)
 	-- only need to check the shown state when its not called from TT:MODIFIER_STATE_CHANGED which already checks the shown state
 	local button = (not event or SpellBookTooltip:IsShown()) and SpellBookTooltip:GetOwner()
 	if button then AB.SpellButtonOnEnter(button) end
@@ -1222,7 +1222,7 @@ function AB:Initialize()
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
-	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'SpellButtonUpdateButton')
+	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
 
 	if C_PetBattles_IsInBattle() then
 		AB:RemoveBindings()

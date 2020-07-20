@@ -667,7 +667,7 @@ function TT:MODIFIER_STATE_CHANGED()
 	end
 
 	if _G.ElvUISpellBookTooltip:IsShown() then
-		AB:SpellButtonUpdateButton()
+		AB:UpdateSpellBookTooltip()
 	end
 end
 
