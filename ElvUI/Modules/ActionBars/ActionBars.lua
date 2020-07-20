@@ -757,18 +757,13 @@ function AB:SetNoopsi(frame)
 end
 
 local SpellBookTooltip = CreateFrame("GameTooltip", "ElvUISpellBookTooltip", E.UIParent, "GameTooltipTemplate")
-SpellBookTooltip.updateTooltip = TOOLTIP_UPDATE_TIME
 function AB:SpellBookTooltipOnUpdate(elapsed)
-	self.updateTooltip = self.updateTooltip - elapsed
-	if self.updateTooltip > 0 then return end
-	self.updateTooltip = TOOLTIP_UPDATE_TIME
+	self.elapsed = (self.elapsed or 0) + elapsed
+	if self.elapsed < TOOLTIP_UPDATE_TIME then return end
+	self.elapsed = 0
 
 	local owner = self:GetOwner()
-	if owner and owner.UpdateTooltip then
-		owner:UpdateTooltip()
-	elseif self.UpdateTooltip then
-		self:UpdateTooltip()
-	end
+	if owner then AB.SpellButtonOnEnter(owner) end
 end
 
 function AB:SpellButtonOnEnter(_, tt)
@@ -791,11 +786,7 @@ function AB:SpellButtonOnEnter(_, tt)
 	end
 
 	if tt == SpellBookTooltip then
-		self.UpdateTooltip = (needsUpdate and AB.SpellButtonOnEnter) or nil
-
-		if needsUpdate then
-			tt:SetScript('OnUpdate', AB.SpellBookTooltipOnUpdate)
-		end
+		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
 	tt:Show()
