@@ -31,6 +31,7 @@ local UnitHealthMax = UnitHealthMax
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
+local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
@@ -756,19 +757,37 @@ function AB:SetNoopsi(frame)
 end
 
 local SpellBookTooltip = CreateFrame("GameTooltip", "ElvUISpellBookTooltip", E.UIParent, "GameTooltipTemplate")
+SpellBookTooltip.updateTooltip = TOOLTIP_UPDATE_TIME
+function AB:SpellBookTooltipOnUpdate(elapsed)
+	self.updateTooltip = self.updateTooltip - elapsed
+	if self.updateTooltip > 0 then return end
+	self.updateTooltip = TOOLTIP_UPDATE_TIME
+
+	local owner = self:GetOwner()
+	if owner and owner.UpdateTooltip then
+		owner:UpdateTooltip()
+	elseif self.UpdateTooltip then
+		self:UpdateTooltip()
+	end
+end
+
 function AB:SpellButtonOnEnter(_, tt)
 	-- copied from SpellBookFrame to remove:
 	--- ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
 
-	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled.
+	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
 	if not tt then tt = SpellBookTooltip end
 
 	if tt:IsForbidden() then return end
 	tt:SetOwner(self, 'ANCHOR_RIGHT')
 
 	local slot = _G.SpellBook_GetSpellBookSlot(self)
-	local item = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
-	self.UpdateTooltip = (item and AB.SpellButtonOnEnter) or nil
+	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType) and tt == SpellBookTooltip
+	self.UpdateTooltip = (needsUpdate and AB.SpellButtonOnEnter) or nil
+
+	if needsUpdate then
+		tt:SetScript('OnUpdate', AB.SpellBookTooltipOnUpdate)
+	end
 
 	local highlight = self.SpellHighlightTexture
 	if highlight and highlight:IsShown() then
@@ -779,8 +798,15 @@ function AB:SpellButtonOnEnter(_, tt)
 	tt:Show()
 end
 
+function AB:SpellButtonUpdateButton(event)
+	-- only need to check the shown state when its not called from TT:MODIFIER_STATE_CHANGED which already checks the shown state
+	local button = (not event or SpellBookTooltip:IsShown()) and SpellBookTooltip:GetOwner()
+	if button then AB.SpellButtonOnEnter(button) end
+end
+
 function AB:SpellButtonOnLeave()
 	SpellBookTooltip:Hide()
+	SpellBookTooltip:SetScript('OnUpdate', nil)
 end
 
 function AB:DisableBlizzard()
@@ -796,7 +822,7 @@ function AB:DisableBlizzard()
 
 	-- let spell book buttons work without tainting by replacing this function
 	for i = 1, SPELLS_PER_PAGE do
-		local button = _G['SpellButton' .. i]
+		local button = _G['SpellButton'..i]
 		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
 	end
@@ -1151,7 +1177,15 @@ end
 function AB:Initialize()
 	AB.db = E.db.actionbar
 
-	if not E.private.actionbar.enable then return end
+	if not E.private.actionbar.enable then
+		-- this is used by TT:MODIFIER_STATE_CHANGED to safely show the Spell ID in combat
+		for i = 1, SPELLS_PER_PAGE do
+			_G['SpellButton'..i]:HookScript('OnLeave', AB.SpellButtonOnLeave)
+		end
+
+		return
+	end
+
 	AB.Initialized = true
 
 	LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
@@ -1190,9 +1224,10 @@ function AB:Initialize()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 
-	AB:RegisterEvent("UPDATE_BINDINGS", "ReassignBindings")
-	AB:RegisterEvent("PET_BATTLE_CLOSE", "ReassignBindings")
+	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
+	AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
+	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'SpellButtonUpdateButton')
 
 	if C_PetBattles_IsInBattle() then
 		AB:RemoveBindings()

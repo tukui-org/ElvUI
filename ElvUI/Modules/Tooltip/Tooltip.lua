@@ -667,8 +667,7 @@ function TT:MODIFIER_STATE_CHANGED()
 	end
 
 	if _G.ElvUISpellBookTooltip:IsShown() then
-		local button = _G.ElvUISpellBookTooltip:GetOwner()
-		if button then AB.SpellButtonOnEnter(button) end
+		AB:SpellButtonUpdateButton()
 	end
 end
 
