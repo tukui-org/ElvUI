@@ -59,7 +59,9 @@ local function columnSort(lhs,rhs)
 	return lhs.orderIndex < rhs.orderIndex
 end
 
-function DT:HoverBattleStats()
+function DT:HoverBattleStats() -- OnEnter
+	DT.tooltip:ClearLines()
+
 	if myIndex and DT.ShowingBattleStats == 'pvp' then
 		local columns = C_PvP_GetMatchPVPStatColumns()
 		if columns then
