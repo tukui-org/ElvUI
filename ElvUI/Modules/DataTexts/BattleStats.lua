@@ -60,8 +60,6 @@ local function columnSort(lhs,rhs)
 end
 
 function DT:HoverBattleStats()
-	DT:SetupTooltip(self)
-
 	if myIndex and DT.ShowingBattleStats == 'pvp' then
 		local columns = C_PvP_GetMatchPVPStatColumns()
 		if columns then
@@ -83,8 +81,6 @@ function DT:HoverBattleStats()
 					DT.tooltip:AddDoubleLine(name, GetBattlefieldStatData(myIndex, i), 1,1,1)
 				end
 			end
-
-			DT.tooltip:Show()
 		end
 	end
 end

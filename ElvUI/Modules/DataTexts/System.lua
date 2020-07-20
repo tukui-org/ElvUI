@@ -90,8 +90,9 @@ local function displaySort(a, b)
 end
 
 local infoDisplay, ipTypes = {}, {"IPv4", "IPv6"}
-local function OnEnter(self, slow)
-	DT:SetupTooltip(self)
+local function OnEnter(_, slow)
+	DT.tooltip:ClearLines()
+
 	enteredFrame = true
 
 	local _, _, homePing, worldPing = GetNetStats()
@@ -210,12 +211,10 @@ local function OnEnter(self, slow)
 		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
 	end
 	DT.tooltip:AddLine(L["(Modifer Click) Collect Garbage"])
-	DT.tooltip:Show()
 end
 
 local function OnLeave()
 	enteredFrame = false
-	DT.tooltip:Hide()
 end
 
 local wait, count = 10, 0 -- initial delay for update (let the ui load)

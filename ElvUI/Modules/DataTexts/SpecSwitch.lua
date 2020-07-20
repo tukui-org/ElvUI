@@ -73,8 +73,8 @@ local function AddTexture(texture)
 	return texture and format(listIcon, texture) or ''
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	for i, info in ipairs(DT.SPECIALIZATION_CACHE) do
 		DT.tooltip:AddLine(strjoin(" ", format(displayString, info.name), AddTexture(info.icon), (i == active and activeString or inactiveString)), 1, 1, 1)
@@ -124,8 +124,6 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(L["|cffFFFFFFLeft Click:|r Change Talent Specialization"])
 	DT.tooltip:AddLine(L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"])
 	DT.tooltip:AddLine(L["|cffFFFFFFRight Click:|r Change Loot Specialization"])
-
-	DT.tooltip:Show()
 end
 
 local function OnClick(self, button)
@@ -133,7 +131,6 @@ local function OnClick(self, button)
 	if not specIndex then return end
 
 	if button == "LeftButton" then
-		DT.tooltip:Hide()
 		if not _G.PlayerTalentFrame then
 			_G.LoadAddOn("Blizzard_TalentUI")
 		end
@@ -148,7 +145,6 @@ local function OnClick(self, button)
 			_G.EasyMenu(specList, DT.EasyMenu, nil, nil, nil, "MENU")
 		end
 	else
-		DT.tooltip:Hide()
 		local _, specName = GetSpecializationInfo(specIndex)
 		menuList[2].text = format(LOOT_SPECIALIZATION_DEFAULT, specName)
 

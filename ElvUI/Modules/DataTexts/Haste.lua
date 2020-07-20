@@ -27,8 +27,8 @@ local function OnEvent(self)
 	lastPanel = self
 end
 
-local OnEnter = function(self)
-	DT:SetupTooltip(self)
+local OnEnter = function()
+	DT.tooltip:ClearLines()
 
 	local rating = CR_HASTE_MELEE
 	local classTooltip = _G["STAT_HASTE_"..E.myclass.."_TOOLTIP"]
@@ -47,8 +47,6 @@ local OnEnter = function(self)
 
 	DT.tooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_HASTE).." ".. format(hasteFormatString, format("%.2F%%", haste))..FONT_COLOR_CODE_CLOSE)
 	DT.tooltip:AddLine(classTooltip..format(STAT_HASTE_BASE_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(rating)), GetCombatRatingBonus(rating)))
-
-	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

@@ -68,8 +68,8 @@ local function OnEvent(self)
 end
 
 local faction = (E.myfaction == 'Alliance' and 1717) or 1716
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddDoubleLine(L["Gold"]..':', goldText, nil, nil, nil, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
@@ -105,8 +105,6 @@ local function OnEnter(self)
 			end
 		end
 	end
-
-	DT.tooltip:Show()
 end
 
 DT:RegisterDatatext('Currencies', nil, {'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, _G.CURRENCY)

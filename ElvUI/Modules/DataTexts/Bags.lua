@@ -30,8 +30,8 @@ local function OnClick()
 	ToggleAllBags()
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	for i = 0, NUM_BAG_SLOTS do
 		local bagName = GetBagName(i)
@@ -62,8 +62,6 @@ local function OnEnter(self)
 			DT.tooltip:AddDoubleLine(format(iconString, icon, name), count, 1, 1, 1, 1, 1, 1)
 		end
 	end
-
-	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

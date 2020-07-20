@@ -38,13 +38,14 @@ local function OnEvent(self)
 end
 
 local function OnEnter(self)
-	if not CustomCurrencies[self.name].USE_TOOLTIP then return; end
-	local index = CurrencyListNameToIndex[self.name]
-	if not index then return; end
+	DT.tooltip:ClearLines()
 
-	DT:SetupTooltip(self)
+	local currency = CustomCurrencies[self.name]
+	if not currency or not currency.USE_TOOLTIP then return end
+
+	local index = CurrencyListNameToIndex[self.name]
+	if not index then return end
 	DT.tooltip:SetCurrencyToken(index)
-	DT.tooltip:Show()
 end
 
 local function AddCurrencyNameToIndex(name)

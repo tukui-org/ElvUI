@@ -82,12 +82,11 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-local function OnEnter(self)
-	if not enteredFrame then
-		enteredFrame = true
-	end
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
-	DT:SetupTooltip(self)
+	enteredFrame = true
+
 	local numCTA = 0
 	local addTooltipHeader = true
 	for i=1, GetNumRandomDungeons() do
@@ -146,8 +145,6 @@ local function OnEnter(self)
 			if tankReward or healerReward or dpsReward then numCTA = numCTA + 1 end
 		end
 	end
-
-	DT.tooltip:Show()
 end
 
 local updateInterval = 10
@@ -166,7 +163,6 @@ local function Update(self, elapsed)
 end
 
 local function OnLeave()
-	DT.tooltip:Hide()
 	enteredFrame = false
 end
 

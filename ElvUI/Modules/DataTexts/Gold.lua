@@ -95,11 +95,9 @@ local function Click(self, btn)
 
 			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 			_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
-			DT.tooltip:Hide()
 		elseif IsControlKeyDown() then
 			Profit = 0
 			Spent = 0
-			DT.tooltip:Hide()
 		end
 	else
 		_G.ToggleAllBags()
@@ -107,8 +105,9 @@ local function Click(self, btn)
 end
 
 local myGold = {}
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
+
 	local textOnly = not E.db.datatexts.goldCoins and true or false
 	local style = E.db.datatexts.goldFormat or 'BLIZZARD'
 
@@ -185,8 +184,6 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(resetCountersFormatter)
 	DT.tooltip:AddLine(resetInfoFormatter)
-
-	DT.tooltip:Show()
 end
 
 DT:RegisterDatatext('Gold', nil, {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED"}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])

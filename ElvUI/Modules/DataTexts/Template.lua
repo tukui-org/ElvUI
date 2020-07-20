@@ -17,9 +17,7 @@ local function Click()
 end
 
 local function OnEnter(self)
-	DT:SetupTooltip(self)
-
-	DT.tooltip:Show()
+	DT.tooltip:ClearLines()
 end
 
 --[[

@@ -86,8 +86,8 @@ local function OnEvent(self)
 	lastPanel = self
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	local rightString = targetlv > 1 and strjoin('', ' (', L['lvl'], ' ', targetlv, ')') or targetlv == -1 and strjoin('', ' (', BOSS, ')') or strjoin('', ' (', L['lvl'], ' ', playerlv, ')')
 	DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], rightString)
@@ -100,7 +100,6 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddDoubleLine(L["Unhittable:"], (unhittable > 0 and '+' or '')..format(chanceString, unhittable), 1, 1, 1, (unhittable < 0 and 1 or 0), (unhittable > 0 and 1 or 0), 0)
-	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

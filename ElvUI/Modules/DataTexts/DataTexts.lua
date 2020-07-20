@@ -30,6 +30,9 @@ local GetSpecializationInfo = GetSpecializationInfo
 local ActivateHyperMode
 local HyperList = {}
 
+DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
+DT.EasyMenu = CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
+
 DT.SelectedDatatext = nil
 DT.HyperList = HyperList
 DT.RegisteredPanels = {}
@@ -40,6 +43,7 @@ DT.PanelPool = {
 	Free = {},
 	Count = 0
 }
+
 DT.UnitEvents = {
 	UNIT_AURA = true,
 	UNIT_RESISTANCES = true,
@@ -49,6 +53,7 @@ DT.UnitEvents = {
 	UNIT_TARGET = true,
 	UNIT_SPELL_HASTE = true
 }
+
 DT.SPECIALIZATION_CACHE = {}
 
 function DT:SetEasyMenuAnchor(menu, dt)
@@ -113,10 +118,14 @@ function DT:OnEnter()
 		DT.SelectedDatatext = self
 	end
 
+	DT:SetupTooltip(self)
+
 	if self.MouseEnters then
 		for _, func in ipairs(self.MouseEnters) do
 			func(self)
 		end
+
+		DT.tooltip:Show()
 	end
 
 	DT.MouseEnter(self)
@@ -231,19 +240,18 @@ function DT:BuildPanelFunctions(name, obj)
 	local panel
 
 	local function OnEnter(dt)
-		DT:SetupTooltip(dt)
 		if obj.OnTooltipShow then obj.OnTooltipShow(DT.tooltip) end
 		if obj.OnEnter then obj.OnEnter(dt) end
-		DT.tooltip:Show()
 	end
 
 	local function OnLeave(dt)
 		if obj.OnLeave then obj.OnLeave(dt) end
-		DT.tooltip:Hide()
 	end
 
 	local function OnClick(dt, button)
-		if obj.OnClick then obj.OnClick(dt, button) end
+		if obj.OnClick then
+			obj.OnClick(dt, button)
+		end
 	end
 
 	local function UpdateText(_, Name, _, Value)
@@ -305,9 +313,7 @@ end
 
 function DT:SetupTooltip(panel)
 	local parent = panel:GetParent()
-	DT.tooltip:Hide()
 	DT.tooltip:SetOwner(panel, parent.anchor, parent.xOff, parent.yOff)
-	DT.tooltip:ClearLines()
 
 	if not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:Hide() -- WHY??? BECAUSE FUCK GAMETOOLTIP, THATS WHY!!
@@ -357,7 +363,9 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 					if not dt.objectEventFunc then
 						dt.objectEvent = data.objectEvent
 						dt.objectEventFunc = function(_, ...)
-							if data.eventFunc then data.eventFunc(dt, ...) end
+							if data.eventFunc then
+								data.eventFunc(dt, ...)
+							end
 						end
 					end
 					if not E:HasFunctionForObject(ev, data.objectEvent, dt.objectEventFunc) then
@@ -684,8 +692,6 @@ function DT:Initialize()
 	DT.Initialized = true
 	DT.db = E.db.datatexts
 
-	DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
-	DT.EasyMenu = CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
 	DT.EasyMenu:SetClampedToScreen(true)
 	DT.EasyMenu:EnableMouse(true)
 	DT.EasyMenu.MenuSetItem = function(dt, value)

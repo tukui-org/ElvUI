@@ -20,8 +20,8 @@ local function OnEvent(self)
 	lastPanel = self
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddLine(L["Mitigation By Level: "])
 	DT.tooltip:AddLine(' ')
@@ -37,8 +37,6 @@ local function OnEnter(self)
 		local armorReduction = PaperDollFrame_GetArmorReduction(effectiveArmor, lv)
 		DT.tooltip:AddDoubleLine(lv, format(chanceString, armorReduction),1,1,1)
 	end
-
-	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

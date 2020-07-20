@@ -183,8 +183,8 @@ local function AddInfo(id)
 	return format('%s %s', icon, BreakUpLargeNumbers(num))
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
 	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1560), nil, nil, nil, 1, 1, 1)
@@ -294,14 +294,11 @@ local function OnEnter(self)
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine("Hold Shift - Show Previous Expansion", .66, .66, .66)
 	end
-
-	DT.tooltip:Show()
 end
 
 local function OnClick(self)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 
-	DT.tooltip:Hide()
 	DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 	_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
 end

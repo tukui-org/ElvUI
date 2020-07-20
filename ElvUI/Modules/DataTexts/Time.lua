@@ -84,7 +84,6 @@ local function Click()
 end
 
 local function OnLeave()
-	DT.tooltip:Hide()
 	enteredFrame = false
 end
 
@@ -131,10 +130,10 @@ local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 local function sortFunc(a,b) return a[1] < b[1] end
 
 local collectedInstanceImages = false
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
-	if(not enteredFrame) then
+	if not enteredFrame then
 		enteredFrame = true
 		RequestRaidInfo()
 	end
@@ -273,14 +272,10 @@ local function OnEnter(self)
 		DT.tooltip:AddLine(" ")
 	end
 	if AmPm == -1 then
-		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME,
-			format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
-		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME,
-			format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
-
-	DT.tooltip:Show()
 end
 
 local function OnEvent(self, event)

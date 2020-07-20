@@ -69,8 +69,8 @@ local function Click()
 	ToggleCharacter("PaperDollFrame")
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	for slot, durability in pairs(invDurability) do
 		DT.tooltip:AddDoubleLine(format('|T%s:14:14:0:0:64:64:4:60:4:60|t  %s', GetInventoryItemTexture("player", slot), GetInventoryItemLink("player", slot)), format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, .1, .1, 1, 1, .1, .1, 1, .1))
@@ -80,8 +80,6 @@ local function OnEnter(self)
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddDoubleLine(REPAIR_COST, GetMoneyString(totalRepairCost), .6, .8, 1, 1, 1, 1)
 	end
-
-	DT.tooltip:Show()
 end
 
 DT:RegisterDatatext('Durability', nil, {"UPDATE_INVENTORY_DURABILITY", "MERCHANT_SHOW"}, OnEvent, nil, Click, OnEnter, nil, DURABILITY)

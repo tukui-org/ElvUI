@@ -16,18 +16,16 @@ local UNKNOWN, QUICK_JOIN = UNKNOWN, QUICK_JOIN
 local displayString = ''
 local quickJoin = {}
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
-
+local function OnEnter()
 	if not next(quickJoin) then return end
+	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddLine(QUICK_JOIN, nil, nil, nil, true)
 	DT.tooltip:AddLine(" ")
+
 	for name, activity in pairs(quickJoin) do
 		DT.tooltip:AddDoubleLine(name, activity, nil, nil, nil, 1, 1, 1)
 	end
-
-	DT.tooltip:Show()
 end
 
 local function Update(lastPanel)
