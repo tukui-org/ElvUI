@@ -398,6 +398,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		dt:SetScript('OnClick', function(p, button)
 			if E.db.datatexts.noCombatClick and InCombatLockdown() then return end
 			data.onClick(p, button)
+			DT.tooltip:Hide()
 		end)
 	end
 
