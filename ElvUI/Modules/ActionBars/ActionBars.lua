@@ -1180,15 +1180,7 @@ end
 function AB:Initialize()
 	AB.db = E.db.actionbar
 
-	if not E.private.actionbar.enable then
-		-- this is used by TT:MODIFIER_STATE_CHANGED to safely show the Spell ID in combat
-		for i = 1, SPELLS_PER_PAGE do
-			_G['SpellButton'..i]:HookScript('OnLeave', AB.SpellButtonOnLeave)
-		end
-
-		return
-	end
-
+	if not E.private.actionbar.enable then return end
 	AB.Initialized = true
 
 	LAB.RegisterCallback(AB, "OnButtonUpdate", AB.LAB_ButtonUpdate)
