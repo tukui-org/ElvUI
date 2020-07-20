@@ -19,7 +19,6 @@ end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-
 	DT.tooltip:AddDoubleLine(L["Left Click:"], L["Toggle Configuration"], 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Hold Shift + Right Click:"], reloadText, 1, 1, 1)
 
@@ -34,6 +33,8 @@ local function OnEnter()
 			end
 		end
 	end
+
+	DT.tooltip:Show()
 end
 
 local function Click(_, button)

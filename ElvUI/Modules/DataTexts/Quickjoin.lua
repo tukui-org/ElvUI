@@ -26,6 +26,8 @@ local function OnEnter()
 	for name, activity in pairs(quickJoin) do
 		DT.tooltip:AddDoubleLine(name, activity, nil, nil, nil, 1, 1, 1)
 	end
+
+	DT.tooltip:Show()
 end
 
 local function Update(lastPanel)

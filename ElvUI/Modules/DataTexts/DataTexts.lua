@@ -124,8 +124,6 @@ function DT:OnEnter()
 		for _, func in ipairs(self.MouseEnters) do
 			func(self)
 		end
-
-		DT.tooltip:Show()
 	end
 
 	DT.MouseEnter(self)

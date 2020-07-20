@@ -83,6 +83,8 @@ function DT:HoverBattleStats() -- OnEnter
 					DT.tooltip:AddDoubleLine(name, GetBattlefieldStatData(myIndex, i), 1,1,1)
 				end
 			end
+
+			DT.tooltip:Show()
 		end
 	end
 end

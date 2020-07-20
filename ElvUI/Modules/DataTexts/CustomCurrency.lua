@@ -46,6 +46,7 @@ local function OnEnter(self)
 	local index = CurrencyListNameToIndex[self.name]
 	if not index then return end
 	DT.tooltip:SetCurrencyToken(index)
+	DT.tooltip:Show()
 end
 
 local function AddCurrencyNameToIndex(name)

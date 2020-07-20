@@ -25,6 +25,7 @@ local function OnEnter()
 
 	DT.tooltip:AddDoubleLine(text, nil, 1, 1, 1)
 	DT.tooltip:AddLine(tooltip, nil, nil, nil, true)
+	DT.tooltip:Show()
 end
 
 local function OnEvent(self)

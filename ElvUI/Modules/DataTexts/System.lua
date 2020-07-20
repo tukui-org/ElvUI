@@ -92,7 +92,6 @@ end
 local infoDisplay, ipTypes = {}, {"IPv4", "IPv6"}
 local function OnEnter(_, slow)
 	DT.tooltip:ClearLines()
-
 	enteredFrame = true
 
 	local _, _, homePing, worldPing = GetNetStats()
@@ -211,6 +210,7 @@ local function OnEnter(_, slow)
 		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
 	end
 	DT.tooltip:AddLine(L["(Modifer Click) Collect Garbage"])
+	DT.tooltip:Show()
 end
 
 local function OnLeave()

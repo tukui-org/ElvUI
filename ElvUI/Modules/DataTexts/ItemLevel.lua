@@ -52,6 +52,7 @@ local function OnEnter(self)
 	end
 
 	lastPanel = self
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

@@ -80,6 +80,8 @@ local function OnEnter()
 		DT.tooltip:AddLine(" ")
 		DT.tooltip:AddDoubleLine(REPAIR_COST, GetMoneyString(totalRepairCost), .6, .8, 1, 1, 1, 1)
 	end
+
+	DT.tooltip:Show()
 end
 
 DT:RegisterDatatext('Durability', nil, {"UPDATE_INVENTORY_DURABILITY", "MERCHANT_SHOW"}, OnEvent, nil, Click, OnEnter, nil, DURABILITY)

@@ -100,6 +100,7 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddDoubleLine(L["Unhittable:"], (unhittable > 0 and '+' or '')..format(chanceString, unhittable), 1, 1, 1, (unhittable < 0 and 1 or 0), (unhittable > 0 and 1 or 0), 0)
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

@@ -30,6 +30,7 @@ local function OnEvent(self)
 
 	self.text:SetFormattedText(displayString, movementSpeedText, speed/BASE_MOVEMENT_SPEED*100)
 	lastPanel = self
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

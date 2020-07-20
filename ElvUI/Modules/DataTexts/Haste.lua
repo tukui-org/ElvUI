@@ -35,18 +35,19 @@ local OnEnter = function()
 	local haste = GetHaste()
 
 	local hasteFormatString
-	if (haste < 0 and not GetPVPGearStatRules()) then
+	if haste < 0 and not GetPVPGearStatRules() then
 		hasteFormatString = RED_FONT_COLOR_CODE.."%s"..FONT_COLOR_CODE_CLOSE
 	else
 		hasteFormatString = "%s"
 	end
 
-	if (not classTooltip) then
+	if not classTooltip then
 		classTooltip = STAT_HASTE_TOOLTIP
 	end
 
 	DT.tooltip:AddLine(HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_HASTE).." ".. format(hasteFormatString, format("%.2F%%", haste))..FONT_COLOR_CODE_CLOSE)
 	DT.tooltip:AddLine(classTooltip..format(STAT_HASTE_BASE_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(rating)), GetCombatRatingBonus(rating)))
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

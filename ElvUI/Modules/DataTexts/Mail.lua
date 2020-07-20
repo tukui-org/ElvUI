@@ -19,13 +19,16 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	local senders = { GetLatestThreeSenders() }
-	if #senders > 0 then
-		DT.tooltip:AddLine(HasNewMail() and HAVE_MAIL_FROM or MAIL_LABEL, 1, 1, 1)
-		DT.tooltip:AddLine(' ')
-		for _, sender in pairs(senders) do
-			DT.tooltip:AddLine(sender)
-		end
+	if not next(senders) then return end
+
+	DT.tooltip:AddLine(HasNewMail() and HAVE_MAIL_FROM or MAIL_LABEL, 1, 1, 1)
+	DT.tooltip:AddLine(' ')
+
+	for _, sender in pairs(senders) do
+		DT.tooltip:AddLine(sender)
 	end
+
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

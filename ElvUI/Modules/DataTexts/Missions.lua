@@ -294,6 +294,8 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine("Hold Shift - Show Previous Expansion", .66, .66, .66)
 	end
+
+	DT.tooltip:Show()
 end
 
 local function OnClick(self)

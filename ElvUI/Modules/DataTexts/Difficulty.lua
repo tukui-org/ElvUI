@@ -121,12 +121,12 @@ end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-
 	DT.tooltip:SetText(L["Current Difficulties:"])
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(format('%s %s', DungeonTexture, DiffLabel[DungeonDifficultyID]), 1, 1, 1)
 	DT.tooltip:AddLine(format('%s %s', RaidTexture, DiffLabel[RaidDifficultyID]), 1, 1, 1)
 	DT.tooltip:AddLine(format('%s %s', LegacyTexture, DiffLabel[LegacyRaidDifficultyID]), 1, 1, 1)
+	DT.tooltip:Show()
 end
 
 DT:RegisterDatatext('Difficulty', nil, {'CHAT_MSG_SYSTEM', 'LOADING_SCREEN_DISABLED'}, OnEvent, nil, OnClick, OnEnter, nil, 'Difficulty')

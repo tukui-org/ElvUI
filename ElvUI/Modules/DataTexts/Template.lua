@@ -18,6 +18,8 @@ end
 
 local function OnEnter(self)
 	DT.tooltip:ClearLines()
+	-- code goes here
+	DT.tooltip:Show()
 end
 
 --[[

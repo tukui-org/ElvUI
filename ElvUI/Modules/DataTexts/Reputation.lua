@@ -103,6 +103,8 @@ local function OnEnter()
 		if reaction ~= _G.MAX_REPUTATION_REACTION or C_Reputation_IsFactionParagon(factionID) then
 			DT.tooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
 		end
+
+		DT.tooltip:Show()
 	end
 end
 

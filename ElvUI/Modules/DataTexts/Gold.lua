@@ -184,6 +184,7 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(resetCountersFormatter)
 	DT.tooltip:AddLine(resetInfoFormatter)
+	DT.tooltip:Show()
 end
 
 DT:RegisterDatatext('Gold', nil, {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED"}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])

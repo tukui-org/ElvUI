@@ -279,6 +279,8 @@ local function OnEnter(_, _, noUpdate)
 	if not noUpdate then
 		C_GuildInfo_GuildRoster()
 	end
+
+	DT.tooltip:Show()
 end
 
 local function OnEvent(self, event, ...)

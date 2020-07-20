@@ -62,6 +62,8 @@ local function OnEnter()
 			DT.tooltip:AddDoubleLine(format(iconString, icon, name), count, 1, 1, 1, 1, 1, 1)
 		end
 	end
+
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

@@ -28,6 +28,8 @@ local function OnEnter()
 			DT.tooltip:AddLine(" ")
 			DT.tooltip:AddSpellByID(masterySpell2)
 		end
+
+		DT.tooltip:Show()
 	end
 end
 

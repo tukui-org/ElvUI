@@ -71,6 +71,8 @@ local function OnEnter()
 	if rested then
 		DT.tooltip:AddDoubleLine(L["Rested:"], format('+%d (%d%%)', rested, E:Round(rested / max * 100)), 1, 1, 1)
 	end
+
+	DT.tooltip:Show()
 end
 
 DT:RegisterDatatext('Experience', nil, {'PLAYER_XP_UPDATE', 'DISABLE_XP_GAIN', 'ENABLE_XP_GAIN', 'UPDATE_EXHAUSTION'}, OnEvent, nil, nil, OnEnter, nil, _G.COMBAT_XP_GAIN)

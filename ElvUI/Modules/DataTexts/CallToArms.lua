@@ -84,7 +84,6 @@ E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
-
 	enteredFrame = true
 
 	local numCTA = 0
@@ -145,6 +144,8 @@ local function OnEnter()
 			if tankReward or healerReward or dpsReward then numCTA = numCTA + 1 end
 		end
 	end
+
+	DT.tooltip:Show()
 end
 
 local updateInterval = 10
