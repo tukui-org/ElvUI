@@ -123,8 +123,6 @@ function DT:OnEnter()
 end
 
 function DT:OnLeave()
-	if E.db.datatexts.noCombatHover and InCombatLockdown() then return end
-
 	if self.MouseLeaves then
 		for _, func in ipairs(self.MouseLeaves) do
 			func(self)
