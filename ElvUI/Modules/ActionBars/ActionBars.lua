@@ -782,17 +782,20 @@ function AB:SpellButtonOnEnter(_, tt)
 	tt:SetOwner(self, 'ANCHOR_RIGHT')
 
 	local slot = _G.SpellBook_GetSpellBookSlot(self)
-	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType) and tt == SpellBookTooltip
-	self.UpdateTooltip = (needsUpdate and AB.SpellButtonOnEnter) or nil
-
-	if needsUpdate then
-		tt:SetScript('OnUpdate', AB.SpellBookTooltipOnUpdate)
-	end
+	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
 
 	local highlight = self.SpellHighlightTexture
 	if highlight and highlight:IsShown() then
 		local color = _G.LIGHTBLUE_FONT_COLOR
 		tt:AddLine(_G.SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, color.r, color.g, color.b)
+	end
+
+	if tt == SpellBookTooltip then
+		self.UpdateTooltip = (needsUpdate and AB.SpellButtonOnEnter) or nil
+
+		if needsUpdate then
+			tt:SetScript('OnUpdate', AB.SpellBookTooltipOnUpdate)
+		end
 	end
 
 	tt:Show()
