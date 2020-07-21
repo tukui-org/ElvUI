@@ -5,7 +5,6 @@ local _G = _G
 local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
 local format, strjoin, tinsert = format, strjoin, tinsert
 
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetMoney = GetMoney
 local IsControlKeyDown = IsControlKeyDown
 local IsLoggedIn = IsLoggedIn
@@ -23,6 +22,7 @@ local Profit, Spent = 0, 0
 local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Counters: Hold Ctrl + Right Click"], '|r')
 local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Data: Hold Shift + Right Click"], '|r')
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 
@@ -173,12 +173,14 @@ local function OnEnter()
 	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
-		local name, count, icon = GetBackpackCurrencyInfo(i)
-		if name and i == 1 then
+		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
+		if info.name and i == 1 then
 			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(CURRENCY)
 		end
-		if name and count then DT.tooltip:AddDoubleLine(format("%s %s", format(iconString, icon), name), BreakUpLargeNumbers(count), 1, 1, 1, 1, 1, 1) end
+		if info.name and info.quantity then
+			DT.tooltip:AddDoubleLine(format("%s %s", format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
+		end
 	end
 
 	DT.tooltip:AddLine(' ')

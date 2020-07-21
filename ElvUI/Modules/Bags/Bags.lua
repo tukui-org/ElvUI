@@ -22,7 +22,6 @@ local DeleteCursorItem = DeleteCursorItem
 local DepositReagentBank = DepositReagentBank
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetBagSlotFlag = GetBagSlotFlag
 local GetBankAutosortDisabled = GetBankAutosortDisabled
 local GetBankBagSlotFlag = GetBankBagSlotFlag
@@ -98,6 +97,7 @@ local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
+local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame, ElvUIReagentBankFrameItem1
 
 -- 8.3 this are now local in blizzard files. Copy & Pasted:
@@ -1156,22 +1156,22 @@ function B:UpdateTokens()
 	end
 
 	for i = 1, MAX_WATCHED_TOKENS do
-		local name, count, icon, currencyID = GetBackpackCurrencyInfo(i)
-		if not name then break end
+		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
+		if not info.name then break end
 
 		local button = f.currencyButton[i]
 		button:ClearAllPoints()
-		button.icon:SetTexture(icon)
+		button.icon:SetTexture(info.iconFileID)
 
 		if B.db.currencyFormat == 'ICON_TEXT' then
-			button.text:SetText(name..': '..BreakUpLargeNumbers(count))
+			button.text:SetText(info.name..': '..BreakUpLargeNumbers(info.quantity))
 		elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
-			button.text:SetText(E:AbbreviateString(name)..': '..BreakUpLargeNumbers(count))
+			button.text:SetText(E:AbbreviateString(info.name)..': '..BreakUpLargeNumbers(info.quantity))
 		elseif B.db.currencyFormat == 'ICON' then
-			button.text:SetText(BreakUpLargeNumbers(count))
+			button.text:SetText(BreakUpLargeNumbers(info.quantity))
 		end
 
-		button.currencyID = currencyID
+		button.currencyID = info.currencyTypesID
 		button:Show()
 
 		numTokens = numTokens + 1

@@ -5,10 +5,10 @@ local _G = _G
 local type = type
 local format, pairs, tonumber = format, pairs, tonumber
 local BreakUpLargeNumbers = BreakUpLargeNumbers
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetCurrencyInfo = GetCurrencyInfo
 local GetMoney = GetMoney
 
+local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
@@ -40,9 +40,9 @@ local function OnEvent(self)
 	if displayed == 'BACKPACK' then
 		local displayString = ''
 		for i = 1, 3 do
-			local _, num, icon = GetBackpackCurrencyInfo(i)
-			if num then
-				displayString = (i > 1 and displayString..' ' or displayString)..format('%s %s', format(iconString, icon), E:ShortValue(num))
+			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
+			if info.quantity then
+				displayString = (i > 1 and displayString..' ' or displayString)..format('%s %s', format(iconString, info.iconFileID), E:ShortValue(info.quantity))
 			end
 		end
 

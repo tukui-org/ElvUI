@@ -6,7 +6,6 @@ local format = format
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local ToggleAllBags = ToggleAllBags
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local CURRENCY = CURRENCY
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
@@ -14,6 +13,7 @@ local GetBagName = GetBagName
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemTexture = GetInventoryItemTexture
+local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 
 local displayString, lastPanel = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
@@ -52,14 +52,14 @@ local function OnEnter()
 	end
 
 	for i = 1, MAX_WATCHED_TOKENS do
-		local name, count, icon = GetBackpackCurrencyInfo(i)
-		if name and i == 1 then
+		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
+		if info.name and i == 1 then
 			DT.tooltip:AddLine(" ")
 			DT.tooltip:AddLine(CURRENCY)
 			DT.tooltip:AddLine(" ")
 		end
-		if name and count then
-			DT.tooltip:AddDoubleLine(format(iconString, icon, name), count, 1, 1, 1, 1, 1, 1)
+		if info.name and info.quantity then
+			DT.tooltip:AddDoubleLine(format(iconString, info.iconFileID, info.name), info.quantity, 1, 1, 1, 1, 1, 1)
 		end
 	end
 

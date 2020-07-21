@@ -12,7 +12,6 @@ local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatc
 local CanInspect = CanInspect
 
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetCurrencyListLink = GetCurrencyListLink
 local GetGuildInfo = GetGuildInfo
@@ -64,6 +63,7 @@ local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 
+local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
@@ -756,8 +756,11 @@ end
 function TT:SetBackpackToken(tt, id)
 	if tt:IsForbidden() then return end
 	if id and TT:IsModKeyDown() then
-		tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, select(4, GetBackpackCurrencyInfo(id))))
-		tt:Show()
+		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(id)
+		if info.currencyTypesID then
+			tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, info.currencyTypesID))
+			tt:Show()
+		end
 	end
 end
 
