@@ -193,6 +193,8 @@ for k, v in next, {
 	--]]
 	UpdateAllElements = function(self, event)
 		local unit = self.unit
+
+		-- tukz's ghetto fix, for now (modified by simpy because setalpha didnt work for us)
 		if(not unitExists(unit)) then
 			self:Hide()
 			return
