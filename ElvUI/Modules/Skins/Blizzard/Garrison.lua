@@ -468,6 +468,10 @@ function S:Blizzard_GarrisonUI()
 	XPBar:CreateBackdrop()
 
 	Class:Size(50, 43)
+
+	-- SHADOWLANDS ?
+	-- local CovenantMissionFrame = _G.CovenantMissionFrame
+
 end
 
 local function SkinFollowerTooltip(frame)
