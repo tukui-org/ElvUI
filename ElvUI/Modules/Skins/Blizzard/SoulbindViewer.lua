@@ -9,7 +9,7 @@ local _G = _G
 function S:Blizzard_SoulbindsViewer()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.SoulbindViewer) then return end
 
-	local frame = _G.CovenantPreviewFrame
+	local frame = _G.SoulbindViewer
 
 	-- Fill me
 end
