@@ -199,9 +199,9 @@ function S:PetBattleFrame()
 				end
 
 				if isBuff then
-					--frame.backdrop:SetBackdropBorderColor(0, 1, 0)
+					frame.backdrop:SetBackdropBorderColor(0, 1, 0)
 				else
-					--frame.backdrop:SetBackdropBorderColor(1, 0, 0)
+					frame.backdrop:SetBackdropBorderColor(1, 0, 0)
 				end
 
 				-- move duration and change font
@@ -253,9 +253,9 @@ function S:PetBattleFrame()
 		hooksecurefunc("BattlePetToolTip_Show", function(_, _, rarity)
 			local quality = rarity and ITEM_QUALITY_COLORS[rarity]
 			if quality and rarity > 1 then
-				--_G.BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+				_G.BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
 			else
-				--_G.BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				_G.BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 

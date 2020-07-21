@@ -48,13 +48,13 @@ local function BattleNetFrame_OnEnter(button)
 	if not button.backdrop then return end
 	local bnetColor = _G.FRIENDS_BNET_NAME_COLOR
 
-	--button.backdrop:SetBackdropBorderColor(bnetColor.r, bnetColor.g, bnetColor.b)
+	button.backdrop:SetBackdropBorderColor(bnetColor.r, bnetColor.g, bnetColor.b)
 end
 
 local function BattleNetFrame_OnLeave(button)
 	if not button.backdrop then return end
 
-	--button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
 local function RAFRewards()
@@ -147,7 +147,7 @@ function S:FriendsFrame()
 	button:Size(FriendsFrameBattlenetFrame:GetSize())
 	button:CreateBackdrop()
 	button.backdrop:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
-	--button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
 	button:SetScript("OnClick", function() FriendsFrameBattlenetFrame.BroadcastFrame:ToggleFrame() end)
 	button:SetScript("OnEnter", BattleNetFrame_OnEnter)

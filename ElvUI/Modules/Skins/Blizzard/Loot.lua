@@ -78,7 +78,7 @@ function S:LootFrame()
 			i:SetTexCoord(unpack(E.TexCoords))
 			b:CreateBackdrop()
 			b.backdrop:SetOutside(i)
-			--b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
 
 		for i=1, MasterLooterFrame:GetNumChildren() do

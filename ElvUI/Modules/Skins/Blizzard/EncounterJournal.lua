@@ -162,7 +162,7 @@ local function ItemSetsFrame(_, button)
 		end
 	end
 
-	--button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
+	button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
 end
 
 local function HandleTopTabs(tab)
@@ -479,7 +479,7 @@ function S:Blizzard_EncounterJournal()
 						r, g, b = GetItemQualityColor(quality)
 					end
 				end
-				--sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
+				sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end)
 	end

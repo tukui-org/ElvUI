@@ -39,15 +39,15 @@ function S:Blizzard_ArtifactUI()
 				child.HighlightTexture:SetAlpha(0)
 				child.HighlightTexture.SetAlpha = E.noop
 				if child.Selected:IsShown() then
-					--child.backdrop:SetBackdropBorderColor(1,1,1)
+					child.backdrop:SetBackdropBorderColor(1,1,1)
 				end
 				child.Selected:SetAlpha(0)
 				child.Selected.SetAlpha = E.noop
 				hooksecurefunc(child.Selected, "SetShown", function(_, isActive)
 					if isActive then
-						--child.backdrop:SetBackdropBorderColor(1,1,1)
+						child.backdrop:SetBackdropBorderColor(1,1,1)
 					else
-						--child.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+						child.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					end
 				end)
 			end

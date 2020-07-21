@@ -456,10 +456,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		c.Borders = true
 
 		mod:StyleFilterBorderLock(frame.Health.backdrop, true)
-		--frame.Health.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
+		frame.Health.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
 		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop, true)
-			--frame.Power.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
+			frame.Power.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
 		end
 	end
 	if HealthFlash then
@@ -553,10 +553,10 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if Borders then
 		local r, g, b = unpack(E.media.bordercolor)
 		mod:StyleFilterBorderLock(frame.Health.backdrop)
-		--frame.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		frame.Health.backdrop:SetBackdropBorderColor(r, g, b)
 		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop)
-			--frame.Power.backdrop:SetBackdropBorderColor(r, g, b)
+			frame.Power.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end
 	if HealthFlash then

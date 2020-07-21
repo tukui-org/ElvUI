@@ -51,7 +51,7 @@ function UF:PostUpdate_AuraHighlight(object, debuffType, _, wasFiltered)
 	if debuffType and not wasFiltered then
 		local color = UF.db.colors.debuffHighlight[debuffType]
 		if object.AuraHighlightBackdrop and object.AuraHightlightGlow then
-			--object.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+			object.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
 		else
 			object.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
 		end

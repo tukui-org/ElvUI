@@ -44,7 +44,7 @@ function UF:Configure_ClassBar(frame, cur)
 
 	local color = E.db.unitframe.colors.borderColor
 	if not bars.backdrop.ignoreBorderColors then
-		--bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then

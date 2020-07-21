@@ -84,7 +84,7 @@ local function Update(self)
 
 		if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
 			element.Shadow:Show()
-			--element.Shadow:SetBackdropBorderColor(r, g, b)
+			element.Shadow:SetBackdropBorderColor(r, g, b)
 		end
 
 		if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then

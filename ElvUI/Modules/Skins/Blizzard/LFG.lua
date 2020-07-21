@@ -74,7 +74,7 @@ local function SkinItemButton(parentFrame, _, index)
 		local r, g, b, a = item.IconBorder:GetVertexColor()
 		if r then
 			item.IconBorder:SetTexture()
-			--item.backdrop:SetBackdropBorderColor(r, g, b, a)
+			item.backdrop:SetBackdropBorderColor(r, g, b, a)
 		end
 
 		item.Count:SetDrawLayer("OVERLAY")

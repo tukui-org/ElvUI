@@ -929,7 +929,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 				if button.Follower.PortraitFrame and button.Follower.PortraitFrame.quality then
 					local color = ITEM_QUALITY_COLORS[button.Follower.PortraitFrame.quality]
 					if color and button.Follower.PortraitFrame.backdrop then
-						--button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+						button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 					end
 				end
 			end

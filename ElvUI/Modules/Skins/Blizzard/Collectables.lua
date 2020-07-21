@@ -76,30 +76,30 @@ function S:Blizzard_Collections()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
 		bu:HookScript("OnEnter", function(s)
-			--s.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-			--s.icon.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+			s.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+			s.icon.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 		end)
 
 		bu:HookScript("OnLeave", function(s)
 			if s.selected then
-				--s.backdrop:SetBackdropBorderColor(1, .8, .1)
-				--s.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+				s.backdrop:SetBackdropBorderColor(1, .8, .1)
+				s.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 			else
-				--s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				--s.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				s.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
 		hooksecurefunc(bu.selectedTexture, 'Show', function()
 			bu.name:SetTextColor(1, .8, .1)
-			--bu.backdrop:SetBackdropBorderColor(1, .8, .1)
-			--bu.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+			bu.backdrop:SetBackdropBorderColor(1, .8, .1)
+			bu.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 		end)
 
 		hooksecurefunc(bu.selectedTexture, 'Hide', function()
 			bu.name:SetTextColor(1, 1, 1)
-			--bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			--bu.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			bu.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		bu:SetHighlightTexture(nil)
@@ -160,25 +160,25 @@ function S:Blizzard_Collections()
 		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
 
 		bu:HookScript("OnEnter", function(s)
-			--s.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+			s.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 		end)
 
 		bu:HookScript("OnLeave", function(s)
 			if s.selected then
-				--s.backdrop:SetBackdropBorderColor(1, .8, .1)
+				s.backdrop:SetBackdropBorderColor(1, .8, .1)
 			else
-				--s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
 		hooksecurefunc(bu.selectedTexture, 'Show', function()
 			bu.name:SetTextColor(1, .8, .1)
-			--bu.backdrop:SetBackdropBorderColor(1, .8, .1)
+			bu.backdrop:SetBackdropBorderColor(1, .8, .1)
 		end)
 
 		hooksecurefunc(bu.selectedTexture, 'Hide', function()
 			bu.name:SetTextColor(1, 1, 1)
-			--bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		bu.dragButton.ActiveTexture:SetAlpha(0)
@@ -188,7 +188,7 @@ function S:Blizzard_Collections()
 		bu.selectedTexture:SetTexture()
 
 		hooksecurefunc(bu.iconBorder, 'SetVertexColor', function(_, r, g, b)
-			--bu.icon.backdrop:SetBackdropBorderColor(r, g, b)
+			bu.icon.backdrop:SetBackdropBorderColor(r, g, b)
 		end)
 
 		hooksecurefunc(bu.iconBorder, 'Hide', function()
@@ -336,9 +336,9 @@ function S:Blizzard_Collections()
 			if quality then
 				r, g, b = GetItemQualityColor(quality)
 			end
-			--s.backdrop:SetBackdropBorderColor(r, g, b)
+			s.backdrop:SetBackdropBorderColor(r, g, b)
 		else
-			--s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 
@@ -382,12 +382,12 @@ function S:Blizzard_Collections()
 			button.name:SetTextColor(1, 1, 1)
 			button.level:SetTextColor(1, 1, 1)
 			button.special:SetTextColor(1, .82, 0)
-			--button.backdrop:SetBackdropBorderColor(GetItemQualityColor(7))
+			button.backdrop:SetBackdropBorderColor(GetItemQualityColor(7))
 		else
 			button.name:SetTextColor(0.4, 0.4, 0.4)
 			button.level:SetTextColor(0.4, 0.4, 0.4)
 			button.special:SetTextColor(0.4, 0.4, 0.4)
-			--button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 		button.SetTextColor = E.noop
 	end)
@@ -443,7 +443,7 @@ function S:Blizzard_Collections()
 					else
 						r, g, b = unpack(E.media.bordercolor)
 					end
-					--bg.backdrop:SetBackdropBorderColor(r, g, b)
+					bg.backdrop:SetBackdropBorderColor(r, g, b)
 				end)
 			end
 		end
@@ -453,7 +453,7 @@ function S:Blizzard_Collections()
 			Frame.PendingTransmogFrame.Glowframe:CreateBackdrop()
 			Frame.PendingTransmogFrame.Glowframe.backdrop:SetOutside()
 			Frame.PendingTransmogFrame.Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
-			--Frame.PendingTransmogFrame.Glowframe.backdrop:SetBackdropBorderColor(1, .77, 1, 1)
+			Frame.PendingTransmogFrame.Glowframe.backdrop:SetBackdropBorderColor(1, .77, 1, 1)
 			Frame.PendingTransmogFrame.Glowframe = Frame.PendingTransmogFrame.Glowframe.backdrop
 
 			for i = 1, 12 do
@@ -500,9 +500,9 @@ function S:Blizzard_Collections()
 		if itemFrame.collected then
 			local quality = C_TransmogCollection_GetSourceInfo(itemFrame.sourceID).quality
 			local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
-			--icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
-			--icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 

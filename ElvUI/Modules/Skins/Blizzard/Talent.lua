@@ -278,16 +278,16 @@ function S:Blizzard_TalentUI()
 				S:HandleIcon(s.Texture)
 				if not slotInfo.selectedTalentID then
 					s.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
-					--s.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
+					s.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
 				else
-					--s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			else
 				s.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
 				s.Texture:SetTexCoord(0, 1, 0, 1)
 				s.Texture:SetDesaturated(true)
 				s.Texture:Show()
-				--s.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
+				s.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
 			end
 		end)
 	end

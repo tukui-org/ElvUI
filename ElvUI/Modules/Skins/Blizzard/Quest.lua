@@ -203,7 +203,7 @@ function S:BlizzardQuestFrames()
 				end
 
 				local r, g, b = followerReward.PortraitFrame.PortraitRingQuality:GetVertexColor()
-				--followerReward.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
+				followerReward.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
 			end
 		end
 
@@ -272,10 +272,10 @@ function S:BlizzardQuestFrames()
 			RewardButton.NameFrame:Hide()
 
 			hooksecurefunc(RewardButton.IconBorder, 'SetVertexColor', function(_, r, g, b)
-				--RewardButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+				RewardButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end)
 			hooksecurefunc(RewardButton.IconBorder, 'Hide', function()
-				--RewardButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				RewardButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 		end
 	end)

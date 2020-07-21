@@ -128,7 +128,7 @@ function S:Blizzard_Calendar()
 		edgeFile = E.media.blankTex,
 		edgeSize = 2,
 	})
-	--_G.CalendarTodayFrame:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
+	_G.CalendarTodayFrame:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
 
 	--CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()

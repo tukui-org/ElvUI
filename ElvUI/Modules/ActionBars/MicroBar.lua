@@ -42,13 +42,13 @@ local function onEnter(button)
 	end
 
 	if button.backdrop and button:IsEnabled() then
-		--button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+		button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	end
 end
 
 local function onLeave(button)
 	if button.backdrop and button:IsEnabled() then
-		--button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 end
 

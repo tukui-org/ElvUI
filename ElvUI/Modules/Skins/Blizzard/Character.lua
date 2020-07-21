@@ -94,7 +94,7 @@ local function SkinItemFlyouts()
 				button.backdrop:SetAllPoints()
 
 				if i ~= 1 then -- dont call this intially on placeInBags button
-					--button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
+					button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
 				end
 
 				if i == 1 or i == 2 then

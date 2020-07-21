@@ -117,7 +117,7 @@ local function Update(self, _, unit)
 	if wasFiltered then
 		if style == 'GLOW' and self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Show()
-			--self.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
+			self.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
 		elseif self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Hide()
 			self.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
@@ -127,7 +127,7 @@ local function Update(self, _, unit)
 
 		if self.AuraHighlightBackdrop and self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Show()
-			--self.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
+			self.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b)
 		elseif self.AuraHighlightUseTexture then
 			self.AuraHighlight:SetTexture(texture)
 		else

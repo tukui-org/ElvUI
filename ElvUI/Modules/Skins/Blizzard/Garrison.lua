@@ -41,7 +41,7 @@ function S:Blizzard_GarrisonUI()
 				S:HandleIcon(reward.Icon, true)
 			end
 
-			--reward.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			reward.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 			index = index + 1
 		end
 	end)

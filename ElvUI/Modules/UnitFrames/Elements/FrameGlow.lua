@@ -209,7 +209,7 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 	else
 		glow:SetBackdropBorderColor(r, g, b, a)
 		if glow.powerGlow then
-			--glow.powerGlow:SetBackdropBorderColor(r, g, b, a)
+			glow.powerGlow:SetBackdropBorderColor(r, g, b, a)
 		end
 	end
 end

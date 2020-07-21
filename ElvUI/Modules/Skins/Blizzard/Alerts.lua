@@ -342,9 +342,9 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 
 	local color = ITEM_QUALITY_COLORS[quality]
 	if color then
-		--frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
+		frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
-		--frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
+		frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
 	end
 end
 
@@ -475,9 +475,9 @@ local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
 	if frame.PortraitFrame and frame.PortraitFrame.squareBG then
 		local color = quality and ITEM_QUALITY_COLORS[quality]
 		if color then
-			--frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
+			frame.PortraitFrame.squareBG:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
-			--frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
+			frame.PortraitFrame.squareBG:SetBackdropBorderColor(0, 0, 0)
 		end
 	end
 end
@@ -512,9 +512,9 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 	local _, _, itemRarity = GetItemInfo(itemLink)
 	local color = ITEM_QUALITY_COLORS[itemRarity]
 	if color then
-		--frame.Icon.b:SetBackdropBorderColor(color.r, color.g, color.b)
+		frame.Icon.b:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
-		--frame.Icon.b:SetBackdropBorderColor(0, 0, 0)
+		frame.Icon.b:SetBackdropBorderColor(0, 0, 0)
 	end
 end
 

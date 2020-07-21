@@ -49,7 +49,7 @@ function S:Blizzard_BlackMarketUI()
 
 				local cR, cG, cB = button.Item.IconBorder:GetVertexColor()
 				if not cR then cR, cG, cB = unpack(E.media.bordercolor) end
-				--button.Item.backdrop:SetBackdropBorderColor(cR, cG, cB)
+				button.Item.backdrop:SetBackdropBorderColor(cR, cG, cB)
 				button.Item.IconBorder:SetTexture()
 
 				hooksecurefunc(button.Item.IconBorder, 'SetVertexColor', function(s, r, g, b)
