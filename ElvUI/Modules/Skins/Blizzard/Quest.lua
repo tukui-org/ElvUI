@@ -122,7 +122,7 @@ function S:BlizzardQuestFrames()
 	QuestInfoItemHighlight:CreateBackdrop()
 	QuestInfoItemHighlight.backdrop:SetAllPoints()
 	QuestInfoItemHighlight:SetBackdropBorderColor(1, 1, 0)
-	--QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
+	QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
 	QuestInfoItemHighlight:Size(142, 40)
 
 	hooksecurefunc("QuestInfoItem_OnClick", function(s)

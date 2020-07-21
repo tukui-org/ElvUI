@@ -604,7 +604,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			local rr, gg, bb = unpack(E.media.bordercolor)
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
 			slot:SetBackdropBorderColor(rr, gg, bb)
-			--slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
+			slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 			slot.ignoreBorderColors = nil
 		end
 	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
@@ -616,7 +616,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		local rr, gg, bb = unpack(E.media.bordercolor)
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
 		slot:SetBackdropBorderColor(rr, gg, bb)
-		--slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
+		slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 		slot.ignoreBorderColors = nil
 	end
 
