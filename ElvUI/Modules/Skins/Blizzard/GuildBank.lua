@@ -57,11 +57,11 @@ function S:Blizzard_GuildBankUI()
 			button:SetTemplate(nil, true)
 
 			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-				--s:GetParent():SetBackdropBorderColor(r, g, b)
+				s:GetParent():SetBackdropBorderColor(r, g, b)
 				s:SetTexture()
 			end)
 			hooksecurefunc(button.IconBorder, 'Hide', function(s)
-				--s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 
 			icon:SetInside()
