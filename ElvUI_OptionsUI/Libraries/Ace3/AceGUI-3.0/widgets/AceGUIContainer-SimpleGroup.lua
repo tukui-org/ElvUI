@@ -46,7 +46,7 @@ local methods = {
 Constructor
 -------------------------------------------------------------------------------]]
 local function Constructor()
-	local frame = CreateFrame("Frame", nil, UIParent)
+	local frame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
 	frame:SetFrameStrata("FULLSCREEN_DIALOG")
 
 	--Container Support

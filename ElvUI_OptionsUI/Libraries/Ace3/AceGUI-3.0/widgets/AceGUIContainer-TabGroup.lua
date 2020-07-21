@@ -103,7 +103,7 @@ local methods = {
 
 	["CreateTab"] = function(self, id)
 		local tabname = ("AceGUITabGroup%dTab%d"):format(self.num, id)
-		local tab = CreateFrame("Button", tabname, self.border, "OptionsFrameTabButtonTemplate")
+		local tab = CreateFrame("Button", tabname, self.border, BackdropTemplateMixin and "OptionsFrameTabButtonTemplate, BackdropTemplate" or "OptionsFrameTabButtonTemplate")
 		tab.obj = self
 		tab.id = id
 
@@ -304,7 +304,7 @@ local PaneBackdrop  = {
 
 local function Constructor()
 	local num = AceGUI:GetNextWidgetNum(Type)
-	local frame = CreateFrame("Frame",nil,UIParent)
+	local frame = CreateFrame("Frame",nil,UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
 	frame:SetHeight(100)
 	frame:SetWidth(100)
 	frame:SetFrameStrata("FULLSCREEN_DIALOG")

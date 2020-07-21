@@ -39,7 +39,7 @@ local methods = {
 Constructor
 -------------------------------------------------------------------------------]]
 local function Constructor()
-	local frame = CreateFrame("Frame", nil, UIParent)
+	local frame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
 	frame:Hide()
 
 	local label = frame:CreateFontString(nil, "BACKGROUND", "GameFontNormal")

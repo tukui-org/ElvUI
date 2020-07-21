@@ -217,7 +217,7 @@ local ManualBackdrop = {
 }
 
 local function Constructor()
-	local frame = CreateFrame("Frame", nil, UIParent)
+	local frame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
 
 	frame:EnableMouse(true)
 	frame:SetScript("OnMouseDown", Frame_OnMouseDown)
