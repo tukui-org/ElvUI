@@ -13,7 +13,6 @@ local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
-local GetCurrencyListLink = GetCurrencyListLink
 local GetGuildInfo = GetGuildInfo
 local GetInspectSpecialization = GetInspectSpecialization
 local GetItemCount = GetItemCount
@@ -63,6 +62,7 @@ local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 
+local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
 local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
@@ -738,7 +738,7 @@ end
 function TT:SetCurrencyToken(tt, index)
 	if tt:IsForbidden() then return end
 
-	local id = TT:IsModKeyDown() and tonumber(strmatch(GetCurrencyListLink(index),'currency:(%d+)'))
+	local id = TT:IsModKeyDown() and tonumber(strmatch(C_CurrencyInfo_GetCurrencyListLink(index),'currency:(%d+)'))
 	if not id then return end
 
 	tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, id))

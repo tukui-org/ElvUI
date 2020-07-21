@@ -6,7 +6,7 @@ local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 
 local CreateFrame = CreateFrame
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
-local GetCurrencyInfo = GetCurrencyInfo
+local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
@@ -155,18 +155,17 @@ function S:Blizzard_PVPUI()
 
 	-- Item Borders for HonorFrame & ConquestFrame
 	hooksecurefunc('PVPUIFrame_ConfigureRewardFrame', function(rewardFrame, _, _, itemRewards, currencyRewards)
-		local rewardTexture, rewardQuaility = nil, 1
+		local rewardTexture, rewardQuaility, _ = nil, 1
 
 		if currencyRewards then
 			for _, reward in ipairs(currencyRewards) do
-				local name, _, texture, _, _, _, _, quality = GetCurrencyInfo(reward.id)
-				if quality == _G.LE_ITEM_QUALITY_ARTIFACT then
-					_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, name, texture, quality)
+				local info = C_CurrencyInfo_GetCurrencyInfo(reward.id)
+				if info.quality == _G.LE_ITEM_QUALITY_ARTIFACT then
+					_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, info.name, info.iconFileID, info.quality)
 				end
 			end
 		end
 
-		local _
 		if not rewardTexture and itemRewards then
 			local reward = itemRewards[1]
 			if reward then

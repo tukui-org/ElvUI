@@ -8,7 +8,7 @@ local strmatch, strlower, strfind = strmatch, strlower, strfind
 local GetLocale = GetLocale
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
-local GetQuestLogTitle = C_QuestLog.GetTitleForLogIndex
+local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
@@ -88,7 +88,7 @@ local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized.enUS
 
 local function QUEST_ACCEPTED(_, _, questLogIndex, questID)
 	if questLogIndex and questLogIndex > 0 then
-		local questName = GetQuestLogTitle(questLogIndex)
+		local questName = C_QuestLog_GetTitleForLogIndex(questLogIndex)
 		if questName and (questID and questID > 0) then
 			ActiveQuests[questName] = questID
 		end

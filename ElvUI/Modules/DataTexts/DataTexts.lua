@@ -18,9 +18,10 @@ local RegisterStateDriver = RegisterStateDriver
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 local UnregisterStateDriver = UnregisterStateDriver
 local MISCELLANEOUS = MISCELLANEOUS
-local GetCurrencyInfo = GetCurrencyInfo
-local GetCurrencyListInfo = GetCurrencyListInfo
-local GetCurrencyListLink = GetCurrencyListLink
+local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
+local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
+local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
+local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
 local ExpandCurrencyList = ExpandCurrencyList
 local GetNumSpecializations = GetNumSpecializations
@@ -642,28 +643,28 @@ end
 
 function DT:PopulateData()
 	local Collapsed = {}
-	local listSize, i = --[[GetCurrencyListSize()]] 0, 1
+	local listSize, i = C_CurrencyInfo_GetCurrencyListSize(), 1
 
 	while listSize >= i do
-		local name, isHeader, isExpanded = GetCurrencyListInfo(i)
-		if isHeader and not isExpanded then
+		local info = C_CurrencyInfo_GetCurrencyListInfo(i)
+		if info.isHeader and not info.isHeaderExpanded then
 			ExpandCurrencyList(i, 1);
-			listSize = --[[GetCurrencyListSize()]] 0
-			Collapsed[name] = true
+			listSize = C_CurrencyInfo_GetCurrencyListSize()
+			Collapsed[info.name] = true
 		end
-		if not isHeader then
-			local currencyLink = GetCurrencyListLink(i)
+		if not info.isHeader then
+			local currencyLink = C_CurrencyInfo_GetCurrencyListLink(i)
 			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
 			if currencyID then
-				DT.CurrencyList[tostring(currencyID)] = name
+				DT.CurrencyList[tostring(currencyID)] = info.name
 			end
 		end
 		i = i + 1
 	end
 
 	for k = 1, listSize do
-		local name, isHeader, isExpanded = GetCurrencyListInfo(k)
-		if isHeader and isExpanded and Collapsed[name] then
+		local info = C_CurrencyInfo_GetCurrencyListInfo(k)
+		if info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
 			ExpandCurrencyList(k, 0);
 		end
 	end
@@ -682,7 +683,10 @@ end
 
 function DT:CURRENCY_DISPLAY_UPDATE(_, currencyType)
 	if currencyType and not DT.CurrencyList[tostring(currencyType)] then
-		DT.CurrencyList[tostring(currencyType)] = GetCurrencyInfo(currencyType)
+		local info = C_CurrencyInfo_GetCurrencyInfo(currencyType)
+		if info.name then
+			DT.CurrencyList[tostring(currencyType)] = info.name
+		end
 	end
 end
 
