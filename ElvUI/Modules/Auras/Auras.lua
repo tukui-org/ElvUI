@@ -131,7 +131,7 @@ function A:CreateIcon(button)
 	button.highlight:SetColorTexture(1, 1, 1, .45)
 	button.highlight:SetInside()
 
-	button.statusBar = E:CreateFrame('StatusBar', nil, button)
+	button.statusBar = CreateFrame('StatusBar', nil, button)
 	button.statusBar:SetFrameLevel(button:GetFrameLevel())
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
 	button.statusBar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', A.db.barTexture))
@@ -420,7 +420,7 @@ function A:CreateAuraHeader(filter)
 		name = 'ElvUIPlayerBuffs'
 	end
 
-	local header = E:CreateFrame('Frame', name, E.UIParent, 'SecureAuraHeaderTemplate')
+	local header = CreateFrame('Frame', name, E.UIParent, 'SecureAuraHeaderTemplate')
 	header:SetClampedToScreen(true)
 	header:SetAttribute('unit', 'player')
 	header:SetAttribute('filter', filter)

@@ -157,7 +157,7 @@ function S:Blizzard_TalentUI()
 				bu.icon:SetDrawLayer("OVERLAY", 1)
 				S:HandleIcon(bu.icon, true)
 
-				bu.bg = E:CreateFrame("Frame", nil, bu)
+				bu.bg = CreateFrame("Frame", nil, bu)
 				bu.bg:CreateBackdrop("Overlay")
 				bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
 				bu.bg:Point("TOPLEFT", 15, -1)

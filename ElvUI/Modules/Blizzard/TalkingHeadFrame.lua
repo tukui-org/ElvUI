@@ -52,7 +52,7 @@ function B:PositionTalkingHead()
 		InitializeTalkingHead()
 		B:ScaleTalkingHeadFrame()
 	else --We want the mover to be available immediately, so we load it ourselves
-		local f = E:CreateFrame("Frame")
+		local f = CreateFrame("Frame")
 		f:RegisterEvent("PLAYER_ENTERING_WORLD")
 		f:SetScript("OnEvent", function(frame, event)
 			frame:UnregisterEvent(event)

@@ -21,7 +21,7 @@ local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
 local WispSplode = [[Interface\Icons\Spell_Nature_WispSplode]]
-local bar = E:CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate')
+local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate')
 
 function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 	local numForms = GetNumShapeshiftForms()
@@ -293,7 +293,7 @@ function AB:AdjustMaxStanceButtons(event)
 	local numButtons = GetNumShapeshiftForms()
 	for i = 1, NUM_STANCE_SLOTS do
 		if not bar.buttons[i] then
-			bar.buttons[i] = E:CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
+			bar.buttons[i] = CreateFrame("CheckButton", format(bar:GetName().."Button%d", i), bar, "StanceButtonTemplate")
 			bar.buttons[i]:SetID(i)
 
 			self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')

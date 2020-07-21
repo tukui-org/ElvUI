@@ -142,7 +142,7 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 end
 
 function B:AlertMovers()
-	local AlertFrameHolder = E:CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
+	local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 	AlertFrameHolder:Width(180)
 	AlertFrameHolder:Height(20)
 	AlertFrameHolder:Point('TOP', E.UIParent, 'TOP', -1, -18)

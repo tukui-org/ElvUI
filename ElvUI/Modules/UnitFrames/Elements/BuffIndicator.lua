@@ -5,7 +5,7 @@ local unpack = unpack
 
 
 function UF:Construct_AuraWatch(frame)
-	local auras = E:CreateFrame("Frame", nil, frame)
+	local auras = CreateFrame("Frame", nil, frame)
 	auras:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
 	auras:SetInside(frame.Health)
 	auras.presentAlpha = 1

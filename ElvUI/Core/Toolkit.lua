@@ -258,7 +258,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 
 		if not E.PixelMode and not frame.forcePixelMode then
 			if not frame.iborder then
-				local border = E:CreateFrame('Frame', nil, frame)
+				local border = CreateFrame('Frame', nil, frame)
 				E:BuildPixelBorders(border, true)
 				E:SetBackdrop(border, true, nil, E.mult, -E.mult, -E.mult, -E.mult, -E.mult)
 				E:SetBackdropBorderColor(border, 0, 0, 0, 1)
@@ -267,7 +267,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			end
 
 			if not frame.oborder then
-				local border = E:CreateFrame('Frame', nil, frame)
+				local border = CreateFrame('Frame', nil, frame)
 				E:BuildPixelBorders(border, true)
 				E:SetBackdrop(border, true, nil, E.mult, E.mult, E.mult, E.mult, E.mult)
 				E:SetBackdropBorderColor(border, 0, 0, 0, 1)
@@ -292,7 +292,7 @@ end
 
 local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
-	local backdrop = frame.backdrop or E:CreateFrame('Frame', nil, parent, BackdropTemplateMixin and "BackdropTemplate")
+	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, "BackdropTemplate")
 	if not frame.backdrop then frame.backdrop = backdrop end
 
 	if frame.forcePixelMode or forcePixelMode then
@@ -317,13 +317,13 @@ local function CreateShadow(frame, size, pass)
 
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
-	local shadow = E:CreateFrame('Frame', nil, frame)
+	local shadow = CreateFrame('Frame', nil, frame, "BackdropTemplate")
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, size or 3, size or 3)
-	--shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(size or 3)})
-	--shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
-	--shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
+	shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(size or 3)})
+	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
+	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 
 	if pass then
 		return shadow
@@ -493,10 +493,12 @@ do
 	CreateCloseButton = function(frame, size, offset, texture, backdrop)
 		if frame.CloseButton then return end
 
-		local CloseButton = E:CreateFrame('Button', nil, frame)
+		local CloseButton = CreateFrame('Button', nil, frame)
 		CloseButton:Size(size or 16)
 		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
-		if backdrop then CloseButton:CreateBackdrop(nil, true) end
+		if backdrop then
+			CloseButton:CreateBackdrop(nil, true)
+		end
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')
 		CloseButton.Texture:SetAllPoints()
@@ -547,7 +549,7 @@ local function addapi(object)
 end
 
 local handled = {Frame = true}
-local object = E:CreateFrame('Frame')
+local object = CreateFrame('Frame')
 addapi(object)
 addapi(object:CreateTexture())
 addapi(object:CreateFontString())
@@ -563,9 +565,5 @@ while object do
 	object = EnumerateFrames(object)
 end
 
---Add API to `CreateFont` objects without actually creating one
-addapi(_G.GameFontNormal)
-
---Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the 'Frame' widget
-local scrollFrame = E:CreateFrame('ScrollFrame')
-addapi(scrollFrame)
+addapi(_G.GameFontNormal) --Add API to `CreateFont` objects without actually creating one
+addapi(CreateFrame('ScrollFrame')) --Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the 'Frame' widget

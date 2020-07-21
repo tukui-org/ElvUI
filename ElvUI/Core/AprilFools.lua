@@ -265,7 +265,7 @@ do
 			_G.HelloKittyRight:Show()
 			return
 		end
-		local helloKittyLeft = E:CreateFrame('Frame', 'HelloKittyLeft', _G.UIParent)
+		local helloKittyLeft = CreateFrame('Frame', 'HelloKittyLeft', _G.UIParent)
 		helloKittyLeft:Size(120, 128)
 		helloKittyLeft:SetMovable(true)
 		helloKittyLeft:EnableMouse(true)
@@ -282,7 +282,7 @@ do
 		helloKittyLeft:SetScript('OnDragStop', OnDragStop)
 		helloKittyLeft:SetScript('OnUpdate', OnUpdate)
 
-		local helloKittyRight = E:CreateFrame('Frame', 'HelloKittyRight', _G.UIParent)
+		local helloKittyRight = CreateFrame('Frame', 'HelloKittyRight', _G.UIParent)
 		helloKittyRight:Size(120, 128)
 		helloKittyRight:SetMovable(true)
 		helloKittyRight:EnableMouse(true)

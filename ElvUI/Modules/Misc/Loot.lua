@@ -110,7 +110,7 @@ end
 local function createSlot(id)
 	local iconsize = (iconSize - 2)
 
-	local frame = E:CreateFrame('Button', 'ElvLootSlot'..id, lootFrame)
+	local frame = CreateFrame('Button', 'ElvLootSlot'..id, lootFrame)
 	frame:Point('LEFT', 8, 0)
 	frame:Point('RIGHT', -8, 0)
 	frame:Height(iconsize)
@@ -123,7 +123,7 @@ local function createSlot(id)
 	frame:SetScript('OnClick', OnClick)
 	frame:SetScript('OnShow', OnShow)
 
-	local iconFrame = E:CreateFrame('Frame', nil, frame)
+	local iconFrame = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	iconFrame:Height(iconsize)
 	iconFrame:Width(iconsize)
 	iconFrame:Point('RIGHT', frame)
@@ -305,11 +305,11 @@ end
 
 function M:LoadLoot()
 	if not E.private.general.loot then return end
-	lootFrameHolder = E:CreateFrame('Frame', 'ElvLootFrameHolder', E.UIParent)
+	lootFrameHolder = CreateFrame('Frame', 'ElvLootFrameHolder', E.UIParent)
 	lootFrameHolder:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 418, -186)
 	lootFrameHolder:Size(150, 22)
 
-	lootFrame = E:CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
+	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder, 'BackdropTemplate')
 	lootFrame:SetClampedToScreen(true)
 	lootFrame:Point('TOPLEFT')
 	lootFrame:Size(256, 64)

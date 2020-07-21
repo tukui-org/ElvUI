@@ -12,8 +12,8 @@ function UF:Construct_PartyFrames()
 	self:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 	self:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 
-	self.RaisedElementParent = E:CreateFrame('Frame', nil, self)
-	self.RaisedElementParent.TextureParent = E:CreateFrame('Frame', nil, self.RaisedElementParent)
+	self.RaisedElementParent = CreateFrame('Frame', nil, self)
+	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
 	self.BORDER = E.Border
 	self.SPACING = E.Spacing
@@ -64,7 +64,7 @@ function UF:Construct_PartyFrames()
 		self.ClassBar = 'AlternativePower'
 		self.customTexts = {}
 
-		self.Sparkle = E:CreateFrame("Frame", nil, self)
+		self.Sparkle = CreateFrame("Frame", nil, self)
 		self.Sparkle:SetAllPoints(self.Health)
 		self.Castbar = UF:Construct_Castbar(self)
 

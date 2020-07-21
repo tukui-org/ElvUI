@@ -65,13 +65,13 @@ function NP:Health_UpdateColor(_, unit)
 end
 
 function NP:Construct_Health(nameplate)
-	local Health = E:CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
+	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(5)
 	Health:CreateBackdrop('Transparent')
 	Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
 
-	local clipFrame = E:CreateFrame('Frame', nil, Health)
+	local clipFrame = CreateFrame('Frame', nil, Health)
 	clipFrame:SetClipsChildren(true)
 	clipFrame:SetAllPoints()
 	clipFrame:EnableMouse(false)
@@ -146,10 +146,10 @@ end
 
 local bars = { 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }
 function NP:Construct_HealthPrediction(nameplate)
-	local HealthPrediction = E:CreateFrame('Frame', nameplate:GetDebugName()..'HealthPrediction', nameplate)
+	local HealthPrediction = CreateFrame('Frame', nameplate:GetDebugName()..'HealthPrediction', nameplate)
 
 	for _, name in ipairs(bars) do
-		local bar = E:CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)
+		local bar = CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)
 		bar:SetFrameStrata(nameplate:GetFrameStrata())
 		bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		bar:Point('TOP')

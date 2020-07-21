@@ -17,7 +17,7 @@ function B:PositionDurabilityFrame()
 
 	local Scale = E.db.general.durabilityScale or 1
 
-	local DurabilityFrameHolder = E:CreateFrame("Frame", "DurabilityFrameHolder", E.UIParent)
+	local DurabilityFrameHolder = CreateFrame("Frame", "DurabilityFrameHolder", E.UIParent)
 	DurabilityFrameHolder:Size(DurabilityFrame:GetSize())
 	DurabilityFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 

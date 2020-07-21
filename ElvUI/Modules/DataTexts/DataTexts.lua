@@ -30,8 +30,8 @@ local GetSpecializationInfo = GetSpecializationInfo
 local ActivateHyperMode
 local HyperList = {}
 
-DT.tooltip = E:CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
-DT.EasyMenu = E:CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
+DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
+DT.EasyMenu = CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
 
 DT.SelectedDatatext = nil
 DT.HyperList = HyperList
@@ -167,7 +167,7 @@ function DT:FetchFrame(givenName)
 		frame = poolFrame
 		DT.PanelPool.Free[poolName] = nil
 	else
-		frame = E:CreateFrame('Frame', name, E.UIParent)
+		frame = CreateFrame('Frame', name, E.UIParent)
 		DT.PanelPool.Count = DT.PanelPool.Count + 1
 	end
 
@@ -445,7 +445,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
 		if not dt then
-			dt = E:CreateFrame('Button', panelName..'_DataText'..i, panel)
+			dt = CreateFrame('Button', panelName..'_DataText'..i, panel)
 			dt.MouseEnters = {}
 			dt.MouseLeaves = {}
 			dt:RegisterForClicks('AnyUp')

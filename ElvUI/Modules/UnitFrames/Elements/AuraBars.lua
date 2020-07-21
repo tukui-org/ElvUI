@@ -53,7 +53,7 @@ function UF:AuraBars_SetPosition(from, to)
 end
 
 function UF:Construct_AuraBarHeader(frame)
-	local auraBar = E:CreateFrame('Frame', '$parent_AuraBars', frame)
+	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
 	auraBar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
 	auraBar:SetHeight(1)
 	auraBar.PreSetPosition = UF.SortAuras
@@ -115,7 +115,7 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		if not auraBars.Holder then
-			local holder = E:CreateFrame('Frame', nil, auraBars)
+			local holder = CreateFrame('Frame', nil, auraBars)
 			holder:Point("BOTTOM", frame, "TOP", 0, 0)
 			holder:Size(db.aurabar.detachedWidth, 20)
 

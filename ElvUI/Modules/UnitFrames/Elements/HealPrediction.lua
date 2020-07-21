@@ -51,10 +51,10 @@ function UF:Construct_HealComm(frame)
 	local health = frame.Health
 	local parent = health.ClipFrame
 
-	local myBar = E:CreateFrame('StatusBar', nil, parent)
-	local otherBar = E:CreateFrame('StatusBar', nil, parent)
-	local absorbBar = E:CreateFrame('StatusBar', nil, parent)
-	local healAbsorbBar = E:CreateFrame('StatusBar', nil, parent)
+	local myBar = CreateFrame('StatusBar', nil, parent)
+	local otherBar = CreateFrame('StatusBar', nil, parent)
+	local absorbBar = CreateFrame('StatusBar', nil, parent)
+	local healAbsorbBar = CreateFrame('StatusBar', nil, parent)
 	local overAbsorb = myBar:CreateTexture(nil, "ARTWORK")
 	local overHealAbsorb = myBar:CreateTexture(nil, "ARTWORK")
 

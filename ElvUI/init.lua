@@ -71,10 +71,6 @@ E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
 E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
 E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
-function E:CreateFrame(frameType, name, parent, template)
-	return CreateFrame(frameType, name, parent, (template and template..", BackdropTemplate") or "BackdropTemplate")
-end
-
 do
 	local locale = GetLocale()
 	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
@@ -178,7 +174,7 @@ function E:OnInitialize()
 	end
 
 	E.twoPixelsPlease = false
-	E.ScanTooltip = E:CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
+	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
 	E:UIScale(true)
 	E:UpdateMedia()
@@ -196,7 +192,7 @@ function E:OnInitialize()
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 
-	local GameMenuButton = E:CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate, BackdropTemplate')
 	GameMenuButton:SetScript('OnClick', function()
 		E:ToggleOptionsUI() --We already prevent it from opening in combat
 		if not InCombatLockdown() then

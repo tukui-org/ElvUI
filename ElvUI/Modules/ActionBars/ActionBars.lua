@@ -41,7 +41,7 @@ local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
 
-local hiddenParent = E:CreateFrame("Frame", nil, _G.UIParent)
+local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
@@ -289,7 +289,7 @@ function AB:PositionAndSizeBar(barName)
 end
 
 function AB:CreateBar(id)
-	local bar = E:CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
+	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
 	SecureHandlerSetFrameRef(bar, "MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
 
 	local point, anchor, attachTo, x, y = strsplit(',', AB.barDefaults['bar'..id].position)
@@ -379,7 +379,7 @@ function AB:CreateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
 	if not db.enable then return end
 
-	local holder = E:CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
+	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
 	holder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
 	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,vehicleExitButton')
@@ -756,7 +756,7 @@ function AB:SetNoopsi(frame)
 	end
 end
 
-local SpellBookTooltip = E:CreateFrame("GameTooltip", "ElvUISpellBookTooltip", E.UIParent, "GameTooltipTemplate")
+local SpellBookTooltip = CreateFrame("GameTooltip", "ElvUISpellBookTooltip", E.UIParent, "GameTooltipTemplate, BackdropTemplate")
 function AB:SpellBookTooltipOnUpdate(elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed < TOOLTIP_UPDATE_TIME then return end
@@ -1180,7 +1180,7 @@ function AB:Initialize()
 	LAB.RegisterCallback(AB, "OnCooldownUpdate", AB.LAB_CooldownUpdate)
 	LAB.RegisterCallback(AB, "OnCooldownDone", AB.LAB_CooldownDone)
 
-	AB.fadeParent = E:CreateFrame("Frame", "Elv_ABFade", _G.UIParent)
+	AB.fadeParent = CreateFrame("Frame", "Elv_ABFade", _G.UIParent)
 	AB.fadeParent:SetAlpha(1 - AB.db.globalFadeAlpha)
 	AB.fadeParent:RegisterEvent("PLAYER_REGEN_DISABLED")
 	AB.fadeParent:RegisterEvent("PLAYER_REGEN_ENABLED")

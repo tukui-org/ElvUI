@@ -203,14 +203,14 @@ end
 
 -- DropDownMenu library support
 function S:SkinLibDropDownMenu(prefix)
-	if _G[prefix..'_UIDropDownMenu_E:CreateFrames'] and not S[prefix..'_UIDropDownMenuSkinned'] then
+	if _G[prefix..'_UIDropDownMenu_CreateFrames'] and not S[prefix..'_UIDropDownMenuSkinned'] then
 		local bd = _G[prefix..'_DropDownList1Backdrop']
 		local mbd = _G[prefix..'_DropDownList1MenuBackdrop']
 		if bd and not bd.template then bd:SetTemplate('Transparent') end
 		if mbd and not mbd.template then mbd:SetTemplate('Transparent') end
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true
-		hooksecurefunc(prefix..'_UIDropDownMenu_E:CreateFrames', function()
+		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
 			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS'];
 			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop'];
 			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop'];
@@ -1385,7 +1385,7 @@ function S:Initialize()
 			end
 		end)
 
-		local frame = E:CreateFrame('Frame')
+		local frame = CreateFrame('Frame')
 		frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 		frame:RegisterEvent('UPDATE_ALL_UI_WIDGETS')
 		frame:SetScript('OnEvent', function()

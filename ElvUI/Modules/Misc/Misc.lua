@@ -262,7 +262,7 @@ local function ChallengeModeTimer_Update(timerID, elapsedTime, timeLimit)
 end
 
 function M:SetupChallengeTimer()
-	local bar = E:CreateFrame("StatusBar", "ElvUI_ChallengeModeTimer", E.UIParent)
+	local bar = CreateFrame("StatusBar", "ElvUI_ChallengeModeTimer", E.UIParent)
 	bar:Size(250, 20)
 	bar:Point("TOPLEFT", E.UIParent, "TOPLEFT", 10, -10)
 	bar:CreateBackdrop("Transparent")
@@ -299,7 +299,7 @@ function M:QUEST_COMPLETE()
 	local numQuests = GetNumQuestChoices()
 
 	if not self.QuestRewardGoldIconFrame then
-		local frame = E:CreateFrame("Frame", nil, firstItem)
+		local frame = CreateFrame("Frame", nil, firstItem)
 		frame:SetFrameStrata("HIGH")
 		frame:Size(20)
 		frame.Icon = frame:CreateTexture(nil, "OVERLAY")

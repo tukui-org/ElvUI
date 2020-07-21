@@ -5,7 +5,7 @@ local unpack = unpack
 
 
 function UF:Construct_Threat(frame)
-	local threat = E:CreateFrame("Frame", nil, frame)
+	local threat = CreateFrame("Frame", nil, frame)
 
 	--Main ThreatGlow
 	threat.MainGlow = frame:CreateShadow(nil, true)

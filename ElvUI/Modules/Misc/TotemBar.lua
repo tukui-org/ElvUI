@@ -81,17 +81,17 @@ function TOTEMS:Initialize()
 
 	self.db = E.db.general.totems
 
-	local bar = E:CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
+	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
 	bar:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 490, 4)
 	self.bar = bar
 
 	for i=1, MAX_TOTEMS do
-		local frame = E:CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
+		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar, 'BackdropTemplate')
 		frame:SetID(i)
 		frame:SetTemplate()
 		frame:StyleButton()
 		frame:Hide()
-		frame.holder = E:CreateFrame('Frame', nil, frame)
+		frame.holder = CreateFrame('Frame', nil, frame)
 		frame.holder:SetAlpha(0)
 		frame.holder:SetAllPoints()
 
@@ -99,7 +99,7 @@ function TOTEMS:Initialize()
 		frame.iconTexture:SetTexCoord(unpack(E.TexCoords))
 		frame.iconTexture:SetInside()
 
-		frame.cooldown = E:CreateFrame('Cooldown', frame:GetName()..'Cooldown', frame, 'CooldownFrameTemplate')
+		frame.cooldown = CreateFrame('Cooldown', frame:GetName()..'Cooldown', frame, 'CooldownFrameTemplate')
 		frame.cooldown:SetReverse(true)
 		frame.cooldown:SetInside()
 		E:RegisterCooldown(frame.cooldown)

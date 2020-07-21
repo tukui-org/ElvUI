@@ -16,7 +16,7 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
 function UF:Construct_Buffs(frame)
-	local buffs = E:CreateFrame('Frame', "$parentBuffs", frame)
+	local buffs = CreateFrame('Frame', "$parentBuffs", frame)
 	buffs.spacing = E.Spacing
 	buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
@@ -31,7 +31,7 @@ function UF:Construct_Buffs(frame)
 end
 
 function UF:Construct_Debuffs(frame)
-	local debuffs = E:CreateFrame('Frame', "$parentDebuffs", frame)
+	local debuffs = CreateFrame('Frame', "$parentDebuffs", frame)
 	debuffs.spacing = E.Spacing
 	debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon

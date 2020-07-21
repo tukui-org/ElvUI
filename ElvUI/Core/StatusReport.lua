@@ -88,14 +88,14 @@ local function GetSpecName()
 end
 
 function E:CreateStatusContent(num, width, parent, anchorTo, content)
-	if not content then content = E:CreateFrame('Frame', nil, parent) end
+	if not content then content = CreateFrame('Frame', nil, parent) end
 	content:Size(width, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
 	content:Point('TOP', anchorTo, 'BOTTOM')
 
 	local font = E.Libs.LSM:Fetch('font', 'Expressway')
 	for i = 1, num do
 		if not content['Line'..i] then
-			local line = E:CreateFrame('Frame', nil, content)
+			local line = CreateFrame('Frame', nil, content)
 			line:Size(width, 20)
 
 			local text = line:CreateFontString(nil, 'ARTWORK')
@@ -131,11 +131,11 @@ function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent,
 	if width > parentWidth then parent:SetWidth(width + 25) end
 	if height then parent:SetHeight(parentHeight + height) end
 
-	local section = E:CreateFrame('Frame', nil, parent)
+	local section = CreateFrame('Frame', nil, parent)
 	section:Size(width, height or 0)
 	section:Point(anchor1, anchorTo, anchor2, 0, yOffset)
 
-	local header = E:CreateFrame('Frame', nil, section)
+	local header = CreateFrame('Frame', nil, section)
 	header:Size(headerWidth or width, headerHeight)
 	header:Point('TOP', section)
 	section.Header = header
@@ -170,7 +170,7 @@ end
 
 function E:CreateStatusFrame()
 	--Main frame
-	local StatusFrame = E:CreateFrame('Frame', 'ElvUIStatusReport', E.UIParent)
+	local StatusFrame = CreateFrame('Frame', 'ElvUIStatusReport', E.UIParent)
 	StatusFrame:Point('CENTER', E.UIParent, 'CENTER')
 	StatusFrame:SetFrameStrata('HIGH')
 	StatusFrame:CreateBackdrop('Transparent', nil, true)
@@ -180,7 +180,7 @@ function E:CreateStatusFrame()
 	StatusFrame:Hide()
 
 	--Plugin frame
-	local PluginFrame = E:CreateFrame('Frame', 'ElvUIStatusPlugins', StatusFrame)
+	local PluginFrame = CreateFrame('Frame', 'ElvUIStatusPlugins', StatusFrame)
 	PluginFrame:SetPoint('TOPLEFT', StatusFrame, 'TOPRIGHT', E.mult + 2*E.Border, 0)
 	PluginFrame:SetFrameStrata('HIGH')
 	PluginFrame:CreateBackdrop('Transparent', nil, true)
@@ -193,7 +193,7 @@ function E:CreateStatusFrame()
 	StatusFrame.CloseButton:HookScript('OnClick', CloseClicked)
 
 	--Title logo (drag to move frame)
-	local titleLogoFrame = E:CreateFrame('Frame', nil, StatusFrame, 'TitleDragAreaTemplate')
+	local titleLogoFrame = CreateFrame('Frame', nil, StatusFrame, 'TitleDragAreaTemplate')
 	titleLogoFrame:Point('CENTER', StatusFrame, 'TOP')
 	titleLogoFrame:Size(240, 80)
 	StatusFrame.TitleLogoFrame = titleLogoFrame
@@ -221,7 +221,7 @@ function E:CreateStatusFrame()
 	StatusFrame.Section1.Content = E:CreateStatusContent(4, 260, StatusFrame.Section1, StatusFrame.Section1.Header)
 	StatusFrame.Section2.Content = E:CreateStatusContent(5, 260, StatusFrame.Section2, StatusFrame.Section2.Header)
 	StatusFrame.Section3.Content = E:CreateStatusContent(6, 260, StatusFrame.Section3, StatusFrame.Section3.Header)
-	--StatusFrame.Section4.Content = E:CreateFrame('Frame', nil, StatusFrame.Section4)
+	--StatusFrame.Section4.Content = CreateFrame('Frame', nil, StatusFrame.Section4)
 	--StatusFrame.Section4.Content:Size(240, 25)
 	--StatusFrame.Section4.Content:Point('TOP', StatusFrame.Section4.Header, 'BOTTOM', 0, 0)
 
@@ -236,12 +236,12 @@ function E:CreateStatusFrame()
 	StatusFrame.Section3.Content.Line3.Text:SetFormattedText('Class: |cff4beb2c%s|r', EnglishClassName[E.myclass])
 
 	--[[Export buttons
-	StatusFrame.Section4.Content.Button1 = E:CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
+	StatusFrame.Section4.Content.Button1 = CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
 	StatusFrame.Section4.Content.Button1:Size(100, 25)
 	StatusFrame.Section4.Content.Button1:Point('LEFT', StatusFrame.Section4.Content, 'LEFT')
 	StatusFrame.Section4.Content.Button1:SetText('Forum')
 	StatusFrame.Section4.Content.Button1:SetButtonState('DISABLED')
-	StatusFrame.Section4.Content.Button2 = E:CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
+	StatusFrame.Section4.Content.Button2 = CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
 	StatusFrame.Section4.Content.Button2:Size(100, 25)
 	StatusFrame.Section4.Content.Button2:Point('RIGHT', StatusFrame.Section4.Content, 'RIGHT')
 	StatusFrame.Section4.Content.Button2:SetText('Ticket')

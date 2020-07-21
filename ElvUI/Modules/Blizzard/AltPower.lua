@@ -56,7 +56,7 @@ function B:SetAltPowerBarText(text, name, value, max, percent)
 end
 
 function B:PositionAltPowerBar()
-	local holder = E:CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
+	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
 	holder:Point('TOP', E.UIParent, 'TOP', -1, -36)
 	holder:Size(128, 50)
 
@@ -161,7 +161,7 @@ end
 function B:SkinAltPowerBar()
 	if not E.db.general.altPowerBar.enable then return end
 
-	local powerbar = E:CreateFrame("StatusBar", "ElvUI_AltPowerBar", E.UIParent)
+	local powerbar = CreateFrame("StatusBar", "ElvUI_AltPowerBar", E.UIParent)
 	powerbar:CreateBackdrop(nil, true)
 	powerbar:SetMinMaxValues(0, 200)
 	powerbar:Point("CENTER", _G.AltPowerBarHolder)

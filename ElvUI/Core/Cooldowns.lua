@@ -162,7 +162,7 @@ function E:Cooldown_Options(timer, db, parent)
 end
 
 function E:CreateCooldownTimer(parent)
-	local timer = E:CreateFrame('Frame', nil, parent)
+	local timer = CreateFrame('Frame', nil, parent)
 	timer:Hide()
 	timer:SetAllPoints()
 	timer.parent = parent

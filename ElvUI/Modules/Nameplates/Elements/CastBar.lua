@@ -99,7 +99,7 @@ function NP:Castbar_PostCastStop()
 end
 
 function NP:Construct_Castbar(nameplate)
-	local Castbar = E:CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)
+	local Castbar = CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
 	Castbar:SetFrameLevel(5)
 	Castbar:CreateBackdrop('Transparent')
@@ -107,7 +107,7 @@ function NP:Construct_Castbar(nameplate)
 
 	NP.StatusBars[Castbar] = true
 
-	Castbar.Button = E:CreateFrame('Frame', nil, Castbar)
+	Castbar.Button = CreateFrame('Frame', nil, Castbar, "BackdropTemplate")
 	Castbar.Button:SetTemplate()
 
 	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')

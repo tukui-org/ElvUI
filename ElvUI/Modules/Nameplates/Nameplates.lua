@@ -190,7 +190,7 @@ function NP:Style(frame, unit)
 end
 
 function NP:Construct_RaisedELement(nameplate)
-	local RaisedElement = E:CreateFrame('Frame', nameplate:GetDebugName() .. 'RaisedElement', nameplate)
+	local RaisedElement = CreateFrame('Frame', nameplate:GetDebugName() .. 'RaisedElement', nameplate)
 	RaisedElement:SetFrameStrata(nameplate:GetFrameStrata())
 	RaisedElement:SetFrameLevel(10)
 	RaisedElement:SetAllPoints()
@@ -729,7 +729,7 @@ function NP:Initialize()
 
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
 
-	local StaticSecure = E:CreateFrame('Button', 'ElvNP_StaticSecure', _G.UIParent, 'SecureUnitButtonTemplate')
+	local StaticSecure = CreateFrame('Button', 'ElvNP_StaticSecure', _G.UIParent, 'SecureUnitButtonTemplate')
 	StaticSecure:SetAttribute('unit', 'player')
 	StaticSecure:SetAttribute('*type1', 'target')
 	StaticSecure:SetAttribute('*type2', 'togglemenu')
@@ -766,7 +766,7 @@ function NP:Initialize()
 	_G.ElvNP_TargetClassPower:ClearAllPoints()
 	_G.ElvNP_TargetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
 
-	NP.PlayerNamePlateAnchor = E:CreateFrame('Frame', 'ElvUIPlayerNamePlateAnchor', E.UIParent)
+	NP.PlayerNamePlateAnchor = CreateFrame('Frame', 'ElvUIPlayerNamePlateAnchor', E.UIParent)
 	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 

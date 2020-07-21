@@ -4,8 +4,8 @@ local UF = E:GetModule('UnitFrames');
 
 
 function UF:Construct_Trinket(frame)
-	local trinket = E:CreateFrame("Frame", nil, frame)
-	trinket.bg = E:CreateFrame("Frame", nil, trinket)
+	local trinket = CreateFrame("Frame", nil, frame)
+	trinket.bg = CreateFrame("Frame", nil, trinket, "BackdropTemplate")
 	trinket.bg:SetTemplate(nil, nil, nil, self.thinBorders, true)
 	trinket.bg:SetFrameLevel(trinket:GetFrameLevel() - 1)
 	trinket:SetInside(trinket.bg)

@@ -5,7 +5,7 @@ local unpack = unpack
 
 
 function UF:Construct_RaidDebuffs(frame)
-	local debuff = E:CreateFrame('Frame', nil, frame.RaisedElementParent)
+	local debuff = CreateFrame('Frame', nil, frame.RaisedElementParent, 'BackdropTemplate')
 	debuff:SetTemplate(nil, nil, nil, UF.thinBorders, true)
 	debuff:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 20) --Make them appear above regular buffs or debuffs
 

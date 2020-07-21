@@ -1148,7 +1148,7 @@ local SecureButtons = {}
 local SecureOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
 local SecureOnLeave = function(s) s.text:SetTextColor(1, 0.17, 0.26) end
 function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
-	local btn = E:CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate, BackdropTemplate')
+	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate, BackdropTemplate')
 	btn:SetAttribute('type', 'macro')
 	btn:SetAttribute('macrotext', macro)
 	btn:SetAllPoints(button)
@@ -1197,7 +1197,7 @@ function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
 	for index = 1, MAX_STATIC_POPUPS do
-		E.StaticPopupFrames[index] = E:CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate, BackdropTemplate')
+		E.StaticPopupFrames[index] = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate, BackdropTemplate')
 		E.StaticPopupFrames[index]:SetID(index)
 
 		--Fix Scripts
@@ -1216,7 +1216,7 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
 
-		_G['ElvUI_StaticPopup'..index..'CheckButton'] = E:CreateFrame('CheckButton', 'ElvUI_StaticPopup'..index..'CheckButton', _G['ElvUI_StaticPopup'..index], 'UICheckButtonTemplate, BackdropTemplate')
+		_G['ElvUI_StaticPopup'..index..'CheckButton'] = CreateFrame('CheckButton', 'ElvUI_StaticPopup'..index..'CheckButton', _G['ElvUI_StaticPopup'..index], 'UICheckButtonTemplate, BackdropTemplate')
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
 
 		--Skin

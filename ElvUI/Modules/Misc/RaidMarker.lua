@@ -80,13 +80,13 @@ end
 
 local ANG_RAD = rad(360) / 7
 function M:LoadRaidMarker()
-	local marker = E:CreateFrame("Frame", nil, E.UIParent);
+	local marker = CreateFrame("Frame", nil, E.UIParent);
 	marker:EnableMouse(true);
-	marker:Size(100, 100);
 	marker:SetFrameStrata("DIALOG");
+	marker:Size(100, 100);
 
 	for i = 1, 8 do
-		local button = E:CreateFrame("Button", "RaidMarkIconButton"..i, marker);
+		local button = CreateFrame("Button", "RaidMarkIconButton"..i, marker);
 		button:Size(40);
 		button:SetID(i);
 		button.Texture = button:CreateTexture(button:GetName().."NormalTexture", "ARTWORK");

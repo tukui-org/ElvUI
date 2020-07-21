@@ -717,7 +717,7 @@ ElvUF.Tags.Methods['incomingheals'] = function(unit)
 end
 
 local GroupUnits = {}
-local f = E:CreateFrame("Frame")
+local f = CreateFrame("Frame")
 f:RegisterEvent("GROUP_ROSTER_UPDATE")
 f:SetScript("OnEvent", function()
 	local groupType, groupSize

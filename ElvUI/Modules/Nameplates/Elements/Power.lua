@@ -106,13 +106,13 @@ function NP:Power_PostUpdate(_, cur) --unit, cur, min, max
 end
 
 function NP:Construct_Power(nameplate)
-	local Power = E:CreateFrame('StatusBar', nameplate:GetDebugName()..'Power', nameplate)
+	local Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'Power', nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
 	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
 
-	local clipFrame = E:CreateFrame('Frame', nil, Power)
+	local clipFrame = CreateFrame('Frame', nil, Power)
 	clipFrame:SetClipsChildren(true)
 	clipFrame:SetAllPoints()
 	clipFrame:EnableMouse(false)

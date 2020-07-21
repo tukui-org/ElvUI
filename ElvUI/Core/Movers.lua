@@ -78,7 +78,7 @@ function E:SetMoverPoints(name, parent)
 end
 
 local isDragging = false
-local coordFrame = E:CreateFrame('Frame')
+local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
@@ -91,7 +91,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	if overlay == nil then overlay = true end
 
-	local f = E:CreateFrame('Button', name, E.UIParent)
+	local f = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)

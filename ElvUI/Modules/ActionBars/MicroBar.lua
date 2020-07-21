@@ -59,7 +59,7 @@ function AB:HandleMicroButton(button)
 	local normal = button:GetNormalTexture()
 	local disabled = button:GetDisabledTexture()
 
-	local f = E:CreateFrame("Frame", nil, button)
+	local f = CreateFrame("Frame", nil, button, 'BackdropTemplate')
 	f:SetFrameLevel(1)
 	f:SetFrameStrata("BACKGROUND")
 	f:SetTemplate(nil, true)
@@ -189,11 +189,11 @@ function AB:UpdateMicroButtons()
 end
 
 function AB:SetupMicroBar()
-	local microBar = E:CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
+	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
 	microBar:EnableMouse(false)
 
-	microBar.visibility = E:CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
+	microBar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
 	microBar.visibility:SetScript("OnShow", function() microBar:Show() end)
 	microBar.visibility:SetScript("OnHide", function() microBar:Hide() end)
 

@@ -29,7 +29,7 @@ local function isCloseEnough(new, target, range)
 	return true
 end
 
-local frame = E:CreateFrame('Frame')
+local frame = CreateFrame('Frame')
 local function onUpdate(_, elapsed)
 	for object, target in next, activeObjects do
 		local new = Lerp(object._value, target, clamp(AMOUNT * elapsed * TARGET_FPS))

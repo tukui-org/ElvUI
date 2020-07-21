@@ -4,8 +4,8 @@ local UF = E:GetModule('UnitFrames');
 
 
 function UF:Construct_PVPSpecIcon(frame)
-	local specIcon = E:CreateFrame("Frame", nil, frame)
-	specIcon.bg = E:CreateFrame("Frame", nil, specIcon)
+	local specIcon = CreateFrame("Frame", nil, frame)
+	specIcon.bg = CreateFrame("Frame", nil, specIcon, "BackdropTemplate")
 	specIcon.bg:SetTemplate(nil, nil, nil, self.thinBorders, true)
 	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
 	specIcon:SetInside(specIcon.bg)

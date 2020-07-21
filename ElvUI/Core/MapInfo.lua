@@ -40,7 +40,7 @@ function E:MapInfo_Update()
 	E:MapInfo_CoordsUpdate()
 end
 
-local coordsWatcher = E:CreateFrame('Frame')
+local coordsWatcher = CreateFrame('Frame')
 function E:MapInfo_CoordsStart()
 	E.MapInfo.coordsWatching = true
 	E.MapInfo.coordsFalling = nil

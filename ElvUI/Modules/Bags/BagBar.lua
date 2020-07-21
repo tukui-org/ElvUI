@@ -120,7 +120,7 @@ end
 function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
-	B.BagBar = E:CreateFrame("Frame", "ElvUIBags", E.UIParent)
+	B.BagBar = CreateFrame("Frame", "ElvUIBags", E.UIParent)
 	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	B.BagBar.buttons = {}
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent')

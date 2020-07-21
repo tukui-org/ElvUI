@@ -28,7 +28,7 @@ local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 
 --Create the new minimap tracking dropdown frame and initialize it
-local ElvUIMiniMapTrackingDropDown = E:CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", _G.UIParent, "UIDropDownMenuTemplate")
+local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", _G.UIParent, "UIDropDownMenuTemplate")
 ElvUIMiniMapTrackingDropDown:SetID(1)
 ElvUIMiniMapTrackingDropDown:SetClampedToScreen(true)
 ElvUIMiniMapTrackingDropDown:Hide()
@@ -36,7 +36,7 @@ _G.UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, _G.MiniMapTrackingDro
 ElvUIMiniMapTrackingDropDown.noResize = true
 
 --Create the minimap micro menu
-local menuFrame = E:CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent)
+local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent, "BackdropTemplate")
 local menuList = {
 	{text = _G.CHARACTER_BUTTON,
 	func = function() ToggleCharacter("PaperDollFrame") end},
@@ -342,7 +342,7 @@ function M:Initialize()
 	menuFrame:SetTemplate("Transparent", true)
 
 	local Minimap = _G.Minimap
-	local mmholder = E:CreateFrame('Frame', 'MMHolder', Minimap)
+	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 	mmholder:Width((Minimap:GetWidth() + 29))
 	mmholder:Height(Minimap:GetHeight() + 53)

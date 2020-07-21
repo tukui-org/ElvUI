@@ -163,7 +163,7 @@ function DB:LoadAzeriteBar()
 	DB.azeriteBar.statusBar:SetMinMaxValues(0, 325)
 	DB.azeriteBar.statusBar:SetFrameLevel(DB.azeriteBar:GetFrameLevel() + 2)
 
-	DB.azeriteBar.eventFrame = E:CreateFrame('Frame')
+	DB.azeriteBar.eventFrame = CreateFrame('Frame')
 	DB.azeriteBar.eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
 	DB.azeriteBar.eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
 	DB.azeriteBar.eventFrame:RegisterEvent('PLAYER_ENTERING_WORLD')

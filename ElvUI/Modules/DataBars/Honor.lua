@@ -129,7 +129,7 @@ function DB:LoadHonorBar()
 	DB.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
 	DB.honorBar.statusBar:SetMinMaxValues(0, 325)
 
-	DB.honorBar.eventFrame = E:CreateFrame("Frame")
+	DB.honorBar.eventFrame = CreateFrame("Frame")
 	DB.honorBar.eventFrame:Hide()
 	DB.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	DB.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")

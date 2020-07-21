@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 
 
 function UF:Construct_RaidRoleFrames(frame)
-	local anchor = E:CreateFrame('Frame', nil, frame.RaisedElementParent)
+	local anchor = CreateFrame('Frame', nil, frame.RaisedElementParent)
 	frame.LeaderIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.AssistantIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 

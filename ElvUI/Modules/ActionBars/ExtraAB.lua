@@ -52,7 +52,7 @@ function AB:SetupExtraButton()
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
-	ExtraActionBarHolder = E:CreateFrame('Frame', nil, E.UIParent)
+	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
 	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
 
@@ -61,7 +61,7 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
-	ZoneAbilityHolder = E:CreateFrame('Frame', nil, E.UIParent)
+	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
 

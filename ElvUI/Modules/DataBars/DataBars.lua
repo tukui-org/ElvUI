@@ -15,7 +15,7 @@ function DB:OnLeave()
 end
 
 function DB:CreateBar(name, onEnter, onClick, ...)
-	local bar = E:CreateFrame('Button', name, E.UIParent)
+	local bar = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
 	bar:Point(...)
 	bar:SetScript('OnEnter', onEnter)
 	bar:SetScript('OnLeave', DB.OnLeave)
@@ -24,7 +24,7 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 	bar:SetTemplate('Transparent')
 	bar:Hide()
 
-	bar.statusBar = E:CreateFrame('StatusBar', nil, bar)
+	bar.statusBar = CreateFrame('StatusBar', nil, bar)
 	bar.statusBar:SetInside()
 	bar.statusBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(bar.statusBar)

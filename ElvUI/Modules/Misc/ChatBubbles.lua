@@ -226,7 +226,7 @@ end
 
 function M:LoadChatBubbles()
 	yOffset = E.private.general.chatBubbles == "backdrop" and 2 or E.private.general.chatBubbles == "backdrop_noborder" and -2 or 0
-	self.BubbleFrame = E:CreateFrame("Frame")
+	self.BubbleFrame = CreateFrame("Frame")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_SAY")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_SAY")

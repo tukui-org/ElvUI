@@ -641,7 +641,7 @@ function E:LoadAPI()
 	if _G.OrderHallCommandBar then
 		E:HandleCommandBar()
 	else
-		local frame = E:CreateFrame('Frame')
+		local frame = CreateFrame('Frame')
 		frame:RegisterEvent('ADDON_LOADED')
 		frame:SetScript('OnEvent', function(Frame, event, addon)
 			if event == 'ADDON_LOADED' and addon == 'Blizzard_OrderHallUI' then

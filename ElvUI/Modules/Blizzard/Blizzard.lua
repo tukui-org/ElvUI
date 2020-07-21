@@ -34,7 +34,7 @@ function B:Initialize()
 	E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
 	-- Quick Join Bug
-	E:CreateFrame("Frame"):SetScript("OnUpdate", function()
+	CreateFrame("Frame"):SetScript("OnUpdate", function()
 		if _G.LFRBrowseFrame.timeToClear then
 			_G.LFRBrowseFrame.timeToClear = nil
 		end

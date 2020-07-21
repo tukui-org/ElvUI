@@ -37,7 +37,7 @@ local function SkinSocialHeaderTab(tab)
 		tex:SetTexture()
 	end
 	tab:GetHighlightTexture():SetTexture()
-	tab.backdrop = E:CreateFrame("Frame", nil, tab)
+	tab.backdrop = CreateFrame("Frame", nil, tab, "BackdropTemplate")
 	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
 	tab.backdrop:Point("TOPLEFT", 3, -8)
@@ -141,7 +141,7 @@ function S:FriendsFrame()
 	FriendsFrameBattlenetFrame.backdrop:SetAllPoints()
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
-	local button = E:CreateFrame("Button", nil, FriendsFrameBattlenetFrame)
+	local button = CreateFrame("Button", nil, FriendsFrameBattlenetFrame)
 	button:Point("TOPLEFT", FriendsFrameBattlenetFrame, "TOPLEFT")
 	button:Point("BOTTOMRIGHT", FriendsFrameBattlenetFrame, "BOTTOMRIGHT")
 	button:Size(FriendsFrameBattlenetFrame:GetSize())

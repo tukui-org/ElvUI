@@ -45,7 +45,7 @@ function B:SetObjectiveFrameAutoHide()
 end
 
 function B:MoveObjectiveFrame()
-	local ObjectiveFrameHolder = E:CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
+	local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
 	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 	ObjectiveFrameHolder:Size(130, 22)
 
@@ -72,7 +72,7 @@ function B:MoveObjectiveFrame()
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 
 	-- objectiveFrameAutoHide
-	ObjectiveTrackerFrame.AutoHider = E:CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
+	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
 	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
 	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', function()
 		if not ObjectiveTrackerFrame.collapsed then

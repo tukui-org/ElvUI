@@ -860,7 +860,7 @@ function TT:Initialize()
 	end
 	TT:SetTooltipFonts()
 
-	local GameTooltipAnchor = E:CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
+	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
 	GameTooltipAnchor:Point('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 400)

@@ -429,7 +429,7 @@ function S:Blizzard_Collections()
 				Model.Border:SetAlpha(0)
 				Model.TransmogStateTexture:SetAlpha(0)
 
-				local bg = E:CreateFrame("Frame", nil, Model)
+				local bg = CreateFrame("Frame", nil, Model)
 				bg:SetAllPoints()
 				bg:CreateBackdrop()
 				bg.backdrop:SetOutside(Model, 2, 2)

@@ -12,7 +12,7 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 function UF:Construct_PowerBar(frame, bg, text, textPos)
-	local power = E:CreateFrame('StatusBar', '$parent_PowerBar', frame)
+	local power = CreateFrame('StatusBar', '$parent_PowerBar', frame)
 	UF.statusbars[power] = true
 
 	hooksecurefunc(power, 'SetStatusBarColor', function(_, r, g, b)
@@ -26,7 +26,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 		end
 	end)
 
-	power.RaisedElementParent = E:CreateFrame('Frame', nil, power)
+	power.RaisedElementParent = CreateFrame('Frame', nil, power)
 	power.RaisedElementParent:SetFrameLevel(power:GetFrameLevel() + 100)
 	power.RaisedElementParent:SetAllPoints()
 
@@ -56,7 +56,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.colorTapping = false
 	power:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 
-	local clipFrame = E:CreateFrame('Frame', nil, power)
+	local clipFrame = CreateFrame('Frame', nil, power)
 	clipFrame:SetClipsChildren(true)
 	clipFrame:SetAllPoints()
 	clipFrame:EnableMouse(false)
@@ -143,7 +143,7 @@ function UF:Configure_Power(frame)
 			power:Width(frame.POWERBAR_WIDTH - ((frame.BORDER + frame.SPACING)*2))
 			power:Height(frame.POWERBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 			if not power.Holder or (power.Holder and not power.Holder.mover) then
-				power.Holder = E:CreateFrame("Frame", nil, power)
+				power.Holder = CreateFrame("Frame", nil, power)
 				power.Holder:Size(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
 				power.Holder:Point("BOTTOM", frame, "BOTTOM", 0, -20)
 				power:ClearAllPoints()

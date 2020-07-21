@@ -126,7 +126,7 @@ local function SkinAbilitiesInfo()
 
 			HandleButton(header.button)
 
-			header.button.bg = E:CreateFrame("Frame", nil, header.button)
+			header.button.bg = CreateFrame("Frame", nil, header.button, "BackdropTemplate")
 			header.button.bg:SetTemplate()
 			header.button.bg:SetOutside(header.button.abilityIcon)
 			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
@@ -338,7 +338,7 @@ function S:Blizzard_EncounterJournal()
 		item.icon:SetDrawLayer("ARTWORK")
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 
-		item.IconBackdrop = E:CreateFrame("Frame", nil, item)
+		item.IconBackdrop = CreateFrame("Frame", nil, item, "BackdropTemplate")
 		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
 		item.IconBackdrop:Point("TOPLEFT", item.icon, -1, 1)
 		item.IconBackdrop:Point("BOTTOMRIGHT", item.icon, 1, -1)

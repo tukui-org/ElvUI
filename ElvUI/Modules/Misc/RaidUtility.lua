@@ -46,7 +46,7 @@ end
 
 -- Function to create buttons in this module
 function RU:CreateUtilButton(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, text, texture)
-	local b = E:CreateFrame("Button", name, parent, template)
+	local b = CreateFrame("Button", name, parent, template)
 	b:Width(width)
 	b:Height(height)
 	b:Point(point, relativeto, point2, xOfs, yOfs)
@@ -205,7 +205,7 @@ function RU:Initialize()
 	self.updateMedia = true -- update fonts and textures on entering world once, used to set the custom media from a plugin
 	self.Buttons = {}
 
-	local RaidUtilityPanel = E:CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerBaseTemplate, BackdropTemplate")
+	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerBaseTemplate, BackdropTemplate")
 	RaidUtilityPanel:SetScript("OnMouseUp", function(panel, ...) SecureHandler_OnClick(panel, "_onclick", ...) end)
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
@@ -278,7 +278,7 @@ function RU:Initialize()
 	CloseButton:SetScript("OnMouseUp", function() RaidUtilityPanel.toggled = false end)
 	SecureHandlerSetFrameRef(RaidUtilityPanel, "RaidUtility_CloseButton", CloseButton)
 
-	local RoleIcons = E:CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel)
+	local RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel, "BackdropTemplate")
 	RoleIcons:Point("LEFT", RaidUtilityPanel, "RIGHT", -1, 0)
 	RoleIcons:Size(36, PANEL_HEIGHT)
 	RoleIcons:SetTemplate("Transparent")
@@ -289,7 +289,7 @@ function RU:Initialize()
 
 	local roles = {"TANK", "HEALER", "DAMAGER"}
 	for i, role in ipairs(roles) do
-		local frame = E:CreateFrame("Frame", "$parent_"..role, RoleIcons)
+		local frame = CreateFrame("Frame", "$parent_"..role, RoleIcons)
 		if i == 1 then
 			frame:Point("BOTTOM", 0, 4)
 		else

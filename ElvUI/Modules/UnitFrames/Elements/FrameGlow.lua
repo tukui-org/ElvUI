@@ -157,7 +157,7 @@ function UF:FrameGlow_CreateGlow(frame, which)
 
 	-- Eventing Frame
 	if not frame.FrameGlow then
-		frame.FrameGlow = E:CreateFrame('Frame', nil, frame)
+		frame.FrameGlow = CreateFrame('Frame', nil, frame)
 		frame.FrameGlow:Hide()
 		frame.FrameGlow:SetScript('OnEvent', function(_, event)
 			if event == 'UPDATE_MOUSEOVER_UNIT' then

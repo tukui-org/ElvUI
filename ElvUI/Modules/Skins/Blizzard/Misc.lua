@@ -243,7 +243,7 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameContentsFrameText:Point("TOPLEFT", 53, 0)
 		_G.GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
 		_G.GhostFrameContentsFrameIcon:Point("RIGHT", _G.GhostFrameContentsFrameText, "LEFT", -12, 0)
-		local b = E:CreateFrame("Frame", nil, _G.GhostFrameContentsFrameIcon:GetParent())
+		local b = CreateFrame("Frame", nil, _G.GhostFrameContentsFrameIcon:GetParent(), "BackdropTemplate")
 		local p = E.PixelMode and 1 or 2
 		b:Point("TOPLEFT", _G.GhostFrameContentsFrameIcon, -p, p)
 		b:Point("BOTTOMRIGHT", _G.GhostFrameContentsFrameIcon, p, -p)
@@ -256,7 +256,7 @@ function S:BlizzardMiscFrames()
 	_G.OpacityFrame:SetTemplate("Transparent")
 
 	--DropDownMenu
-	hooksecurefunc("UIDropDownMenu_E:CreateFrames", function(level, index)
+	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
 		local listFrame = _G["DropDownList"..level];
 		local listFrameName = listFrame:GetName();
 		local expandArrow = _G[listFrameName.."Button"..index.."ExpandArrow"];
@@ -348,7 +348,7 @@ function S:BlizzardMiscFrames()
 	StackSplitFrame:StripTextures()
 	StackSplitFrame:CreateBackdrop("Transparent")
 
-	StackSplitFrame.bg1 = E:CreateFrame("Frame", nil, StackSplitFrame)
+	StackSplitFrame.bg1 = CreateFrame("Frame", nil, StackSplitFrame, "BackdropTemplate")
 	StackSplitFrame.bg1:SetTemplate("Transparent")
 	StackSplitFrame.bg1:Point("TOPLEFT", 10, -15)
 	StackSplitFrame.bg1:Point("BOTTOMRIGHT", -10, 55)

@@ -495,7 +495,7 @@ function S:Blizzard_AchievementUI(event)
 	end
 end
 
-local f = E:CreateFrame("Frame")
+local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)
