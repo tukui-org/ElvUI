@@ -684,7 +684,7 @@ end
 function DT:CURRENCY_DISPLAY_UPDATE(_, currencyType)
 	if currencyType and not DT.CurrencyList[tostring(currencyType)] then
 		local info = C_CurrencyInfo_GetCurrencyInfo(currencyType)
-		if info.name then
+		if info and info.name then
 			DT.CurrencyList[tostring(currencyType)] = info.name
 		end
 	end

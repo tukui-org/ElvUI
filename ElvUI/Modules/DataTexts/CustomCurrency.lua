@@ -15,6 +15,8 @@ local function OnEvent(self)
 	local currency = CustomCurrencies[self.name]
 	if currency then
 		local info = C_CurrencyInfo_GetCurrencyInfo(currency.ID)
+		if not info then return end
+
 		if currency.DISPLAY_STYLE == "ICON" then
 			if currency.SHOW_MAX then
 				self.text:SetFormattedText("%s %d / %d", currency.ICON, info.quantity, info.maxQuantity)

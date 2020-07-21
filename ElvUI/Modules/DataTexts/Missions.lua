@@ -179,8 +179,8 @@ local function GetInfo(id)
 end
 
 local function AddInfo(id)
-	local num, _, icon = GetInfo(id)
-	return format('%s %s', icon, BreakUpLargeNumbers(num))
+	local quantity, _, icon = GetInfo(id)
+	return format('%s %s', icon, BreakUpLargeNumbers(quantity))
 end
 
 local function OnEnter()
