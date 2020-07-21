@@ -1057,7 +1057,7 @@ ElvUF.Tags.Methods['quest:title'] = function(unit)
 
 		if QuestName then
 			for i = 1, GetNumQuestLogEntries() do
-				local title, _, _, _, _, level, _, _, _, isHeader = C_QuestLog_QuestInfo(i) -- 9.0 mew API, please check this
+				local title, _, _, _, _, level, _, _, _, isHeader = C_QuestLog_QuestInfo(i) -- 9.0 mew API, please check this either: use C_QuestLog.QuestInfo or C_QuestLog.GetTitleForLogIndex or GetTitleForQuestID
 				if not isHeader and title == QuestName then
 					local colors = GetQuestDifficultyColor(level)
 					return Hex(colors.r, colors.g, colors.b)..QuestName..'|r'
