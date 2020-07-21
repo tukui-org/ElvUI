@@ -82,4 +82,7 @@
 	<Script file='Warboard.lua'/>
 	<Script file='WarfrontPartyPose.lua'/>
 	<Script file='WorldMap.lua'/>
+
+	<!--9.0-->
+	<!--Script file='CovenantPreview.lua'/-->
 </Ui>

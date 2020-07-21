@@ -142,6 +142,9 @@ V.skins = {
 		AzeriteEssence = true,
 		Tutorials = true,
 		ItemInteraction = true,
+
+		-- 9.0
+		-- CovenantPreview = true,
 	},
 }
 
