@@ -97,16 +97,16 @@ local menuList = {
 	{text = _G.WAR_CAMPAIGN,					func = LandingPage, arg1 = LE_GARRISON_TYPE_8_0, notCheckable = true},
 }
 
-local currencyInfo = {}
+local data = {}
 local function AddInProgressMissions(garrisonType)
-	wipe(currencyInfo)
+	wipe(data)
 
-	C_Garrison_GetInProgressMissions(currencyInfo, garrisonType)
+	C_Garrison_GetInProgressMissions(data, garrisonType)
 
-	if not next(currencyInfo) then
-		sort(currencyInfo, sortFunction) --Sort by time left, lowest first
+	if not next(data) then
+		sort(data, sortFunction) -- Sort by time left, lowest first
 
-		for _, mission in ipairs(currencyInfo) do
+		for _, mission in ipairs(data) do
 			local timeLeft = mission.timeLeftSeconds
 			local r, g, b = 1, 1, 1
 			if mission.isRare then
@@ -127,14 +127,14 @@ local function AddInProgressMissions(garrisonType)
 end
 
 local function AddFollowerInfo(garrisonType)
-	wipe(currencyInfo)
+	wipe(data)
 
-	currencyInfo = C_Garrison_GetFollowerShipments(garrisonType)
+	data = C_Garrison_GetFollowerShipments(garrisonType)
 
-	if not next(currencyInfo) then
+	if not next(data) then
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- "Troops"
-		for _, followerShipments in ipairs(currencyInfo) do
+		for _, followerShipments in ipairs(data) do
 			local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(followerShipments)
 			if (name and shipmentsReady and shipmentsTotal) then
 				timeleftString = (timeleftString and " "..timeleftString) or ""
@@ -145,18 +145,18 @@ local function AddFollowerInfo(garrisonType)
 end
 
 local function AddTalentInfo(garrisonType)
-	wipe(currencyInfo)
+	wipe(data)
 
-	currencyInfo = C_Garrison_GetTalentTreeIDsByClassID(garrisonType, E.myClassID)
+	data = C_Garrison_GetTalentTreeIDsByClassID(garrisonType, E.myClassID)
 
-	if not next(currencyInfo) then
+	if not next(data) then
 		-- this is a talent that has completed, but has not been seen in the talent UI yet.
 		local completeTalentID = C_Garrison_GetCompleteTalent(garrisonType)
 		if completeTalentID > 0 then
 			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(TALENTS)
 
-			for _, treeID in ipairs(currencyInfo) do
+			for _, treeID in ipairs(data) do
 				local _, _, tree = C_Garrison_GetTalentTreeInfoForID(treeID)
 				for _, talent in ipairs(tree) do
 					if talent.isBeingResearched or talent.id == completeTalentID then
@@ -240,12 +240,14 @@ local function OnEnter()
 		local serverTime = GetServerTime()
 
 		-- "Loose Work Orders" (i.e. research, equipment)
-		wipe(currencyInfo)
-		currencyInfo = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
-		if #currencyInfo > 0 then
+		wipe(data)
+
+		data = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
+
+		if not next(data) then
 			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
 
-			for _, looseShipments in ipairs(currencyInfo) do
+			for _, looseShipments in ipairs(data) do
 				local name, _, _, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
 				if name then
 					local timeLeft = duration - (serverTime - timeStart)
@@ -270,13 +272,13 @@ local function OnEnter()
 		AddInProgressMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
 
 		--Buildings
-		wipe(currencyInfo)
+		wipe(data)
 
-		currencyInfo = C_Garrison_GetBuildings(LE_GARRISON_TYPE_6_0)
+		data = C_Garrison_GetBuildings(LE_GARRISON_TYPE_6_0)
 
-		if not next(currencyInfo) then
+		if not next(data) then
 			local AddLine = true
-			for _, buildings in ipairs(currencyInfo) do
+			for _, buildings in ipairs(data) do
 				local name, _, _, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
 				if name and shipmentsTotal then
 					if AddLine then
