@@ -4,7 +4,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local select, unpack, pairs = select, unpack, pairs
 
-local CreateFrame = CreateFrame
+
 
 local function SkinIt(bar)
 	for i=1, bar:GetNumRegions() do
@@ -24,7 +24,7 @@ local function SkinIt(bar)
 	end
 
 	if not bar.backdrop then
-		bar.backdrop = CreateFrame("Frame", nil, bar)
+		bar.backdrop = E:CreateFrame("Frame", nil, bar)
 		bar.backdrop:SetFrameLevel(0)
 		bar.backdrop:SetTemplate("Transparent")
 		bar.backdrop:SetOutside()

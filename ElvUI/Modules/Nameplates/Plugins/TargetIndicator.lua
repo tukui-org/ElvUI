@@ -84,7 +84,7 @@ local function Update(self)
 
 		if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
 			element.Shadow:Show()
-			element.Shadow:SetBackdropBorderColor(r, g, b)
+			--element.Shadow:SetBackdropBorderColor(r, g, b)
 		end
 
 		if element.Spark and (element.style == 'style2' or element.style == 'style6' or element.style == 'style8') then
@@ -154,7 +154,6 @@ local function Enable(self)
 		end
 
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
-		self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 
 		return true
 	end
@@ -170,7 +169,6 @@ local function Disable(self)
 		if element.Spark then element.Spark:Hide() end
 
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
-		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 	end
 end
 

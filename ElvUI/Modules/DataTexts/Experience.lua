@@ -6,13 +6,12 @@ local format = format
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local GetExpansionLevel = GetExpansionLevel
-local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 local displayString = ""
 
 local function OnEvent(self)
 	if IsXPUserDisabled() then
 		displayString = 'Disabled'
-	elseif E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()] then
+	elseif E.mylevel == 60 then
 		displayString = 'Max'
 	else
 		local cur, max = UnitXP('player'), UnitXPMax('player')

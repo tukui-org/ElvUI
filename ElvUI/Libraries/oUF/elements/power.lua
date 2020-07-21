@@ -325,25 +325,6 @@ local function SetColorThreat(element, state)
 	end
 end
 
---[[ Power:SetFrequentUpdates(state)
-Used to toggle frequent updates.
-
-* self  - the Power element
-* state - the desired state (boolean)
---]]
-local function SetFrequentUpdates(element, state)
-	if(element.frequentUpdates ~= state) then
-		element.frequentUpdates = state
-		if(element.frequentUpdates) then
-			element.__owner:UnregisterEvent('UNIT_POWER_UPDATE', Path)
-			element.__owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-		else
-			element.__owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-			element.__owner:RegisterEvent('UNIT_POWER_UPDATE', Path)
-		end
-	end
-end
-
 -- ElvUI changed block
 local onUpdateElapsed, onUpdateWait = 0, 0.25
 local function onUpdatePower(self, elapsed)
@@ -366,17 +347,12 @@ local function SetPowerUpdateMethod(self, state, force)
 
 		if state then
 			self.Power:SetScript('OnUpdate', onUpdatePower)
-			self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 			self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 			self:UnregisterEvent('UNIT_MAXPOWER', Path)
 		else
 			self.Power:SetScript('OnUpdate', nil)
 			self:RegisterEvent('UNIT_MAXPOWER', Path)
-			if self.Power.frequentUpdates then
-				self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-			else
-				self:RegisterEvent('UNIT_POWER_UPDATE', Path)
-			end
+			self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		end
 	end
 end
@@ -391,7 +367,6 @@ local function Enable(self)
 		element.SetColorSelection = SetColorSelection
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
-		element.SetFrequentUpdates = SetFrequentUpdates
 
 		-- ElvUI changed block
 		self.SetPowerUpdateSpeed = SetPowerUpdateSpeed
@@ -415,6 +390,7 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
 		self:RegisterEvent('UNIT_POWER_BAR_HIDE', Path)
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', Path)
@@ -440,7 +416,6 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', Path)
 		self:UnregisterEvent('UNIT_POWER_BAR_SHOW', Path)
-		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
 		self:UnregisterEvent('UNIT_FACTION', ColorPath)

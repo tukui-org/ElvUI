@@ -1,18 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 
 function UF:Construct_PowerPrediction(frame)
-	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
+	local mainBar = E:CreateFrame('StatusBar', nil, frame.Power)
 	local prediction = { mainBar = mainBar, parent = frame }
 	mainBar:SetStatusBarTexture(E.media.blankTex)
 	mainBar.parent = frame.Power
 	mainBar:Hide()
 
 	if frame.AdditionalPower then
-		prediction.altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
+		prediction.altBar = E:CreateFrame('StatusBar', nil, frame.AdditionalPower)
 		prediction.altBar:SetStatusBarTexture(E.media.blankTex)
 		prediction.altBar:Hide()
 

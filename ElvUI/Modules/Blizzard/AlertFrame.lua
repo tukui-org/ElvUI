@@ -5,7 +5,7 @@ local Misc = E:GetModule('Misc')
 local _G = _G
 local pairs = pairs
 local ipairs = ipairs
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10
@@ -142,7 +142,7 @@ local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 end
 
 function B:AlertMovers()
-	local AlertFrameHolder = CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
+	local AlertFrameHolder = E:CreateFrame("Frame", "AlertFrameHolder", E.UIParent)
 	AlertFrameHolder:Width(180)
 	AlertFrameHolder:Height(20)
 	AlertFrameHolder:Point('TOP', E.UIParent, 'TOP', -1, -18)

@@ -7,7 +7,7 @@ local select = select
 local assert = assert
 local tinsert = tinsert
 local strsub = strsub
-local CreateFrame = CreateFrame
+
 local UnitClass = UnitClass
 local UnitExists = UnitExists
 local UnitIsPlayer = UnitIsPlayer
@@ -157,7 +157,7 @@ function UF:FrameGlow_CreateGlow(frame, which)
 
 	-- Eventing Frame
 	if not frame.FrameGlow then
-		frame.FrameGlow = CreateFrame('Frame', nil, frame)
+		frame.FrameGlow = E:CreateFrame('Frame', nil, frame)
 		frame.FrameGlow:Hide()
 		frame.FrameGlow:SetScript('OnEvent', function(_, event)
 			if event == 'UPDATE_MOUSEOVER_UNIT' then
@@ -209,7 +209,7 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 	else
 		glow:SetBackdropBorderColor(r, g, b, a)
 		if glow.powerGlow then
-			glow.powerGlow:SetBackdropBorderColor(r, g, b, a)
+			--glow.powerGlow:SetBackdropBorderColor(r, g, b, a)
 		end
 	end
 end

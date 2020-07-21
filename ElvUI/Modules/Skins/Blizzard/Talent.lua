@@ -5,7 +5,7 @@ local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
+
 local UnitSex = UnitSex
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
@@ -157,7 +157,7 @@ function S:Blizzard_TalentUI()
 				bu.icon:SetDrawLayer("OVERLAY", 1)
 				S:HandleIcon(bu.icon, true)
 
-				bu.bg = CreateFrame("Frame", nil, bu)
+				bu.bg = E:CreateFrame("Frame", nil, bu)
 				bu.bg:CreateBackdrop("Overlay")
 				bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
 				bu.bg:Point("TOPLEFT", 15, -1)
@@ -278,16 +278,16 @@ function S:Blizzard_TalentUI()
 				S:HandleIcon(s.Texture)
 				if not slotInfo.selectedTalentID then
 					s.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
-					s.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
+					--s.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
 				else
-					s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					--s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			else
 				s.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
 				s.Texture:SetTexCoord(0, 1, 0, 1)
 				s.Texture:SetDesaturated(true)
 				s.Texture:Show()
-				s.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
+				--s.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
 			end
 		end)
 	end

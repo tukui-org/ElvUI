@@ -3,7 +3,7 @@ local B = E:GetModule('Blizzard')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
-local CreateFrame = CreateFrame
+
 local IsAddOnLoaded = IsAddOnLoaded
 
 function B:Initialize()
@@ -34,7 +34,7 @@ function B:Initialize()
 	E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
 	-- Quick Join Bug
-	CreateFrame("Frame"):SetScript("OnUpdate", function()
+	E:CreateFrame("Frame"):SetScript("OnUpdate", function()
 		if _G.LFRBrowseFrame.timeToClear then
 			_G.LFRBrowseFrame.timeToClear = nil
 		end

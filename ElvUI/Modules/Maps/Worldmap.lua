@@ -4,7 +4,7 @@ local M = E:GetModule('WorldMap')
 local _G = _G
 local strfind = strfind
 
-local CreateFrame = CreateFrame
+
 local SetUIPanelAttribute = SetUIPanelAttribute
 local MOUSE_LABEL = MOUSE_LABEL:gsub("|[TA].-|[ta]","")
 local PLAYER = PLAYER
@@ -158,7 +158,7 @@ end
 
 function M:EnableMapFading(frame)
 	if not fadeFrame then
-		fadeFrame = CreateFrame("FRAME")
+		fadeFrame = E:CreateFrame("FRAME")
 		fadeFrame:SetScript("OnUpdate", M.MapFadeOnUpdate)
 		frame:HookScript("OnHide", M.StopMapFromFading)
 	end
@@ -195,7 +195,7 @@ function M:Initialize()
 
 	local WorldMapFrame = _G.WorldMapFrame
 	if E.global.general.WorldMapCoordinates.enable then
-		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
+		local CoordsHolder = E:CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 10)
 		CoordsHolder:SetFrameStrata(WorldMapFrame.BorderFrame:GetFrameStrata())
 		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')

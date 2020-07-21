@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select, unpack = select, unpack
 
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_GuildBankUI()
@@ -38,7 +38,7 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankInfoScrollFrame:Width(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
-	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
+	GuildBankFrame.inset = E:CreateFrame("Frame", nil, GuildBankFrame)
 	GuildBankFrame.inset:SetTemplate()
 	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
 	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
@@ -57,11 +57,11 @@ function S:Blizzard_GuildBankUI()
 			button:SetTemplate(nil, true)
 
 			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-				s:GetParent():SetBackdropBorderColor(r, g, b)
+				--s:GetParent():SetBackdropBorderColor(r, g, b)
 				s:SetTexture()
 			end)
 			hooksecurefunc(button.IconBorder, 'Hide', function(s)
-				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+				--s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 
 			icon:SetInside()

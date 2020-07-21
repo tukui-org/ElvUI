@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next, pairs, select, unpack = next, pairs, select, unpack
 
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 local C_GuildInfo_CanViewOfficerNote = C_GuildInfo.CanViewOfficerNote
 
@@ -169,19 +169,19 @@ function S:Blizzard_GuildUI()
 	end
 
 	local GuildInfoFrameInfo = _G.GuildInfoFrameInfo
-	local backdrop1 = CreateFrame("Frame", nil, GuildInfoFrameInfo)
+	local backdrop1 = E:CreateFrame("Frame", nil, GuildInfoFrameInfo)
 	backdrop1:SetTemplate("Transparent")
 	backdrop1:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
 	backdrop1:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -22)
 	backdrop1:Point("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 200)
 
-	local backdrop2 = CreateFrame("Frame", nil, GuildInfoFrameInfo)
+	local backdrop2 = E:CreateFrame("Frame", nil, GuildInfoFrameInfo)
 	backdrop2:SetTemplate("Transparent")
 	backdrop2:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
 	backdrop2:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -158)
 	backdrop2:Point("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 118)
 
-	local backdrop3 = CreateFrame("Frame", nil, GuildInfoFrameInfo)
+	local backdrop3 = E:CreateFrame("Frame", nil, GuildInfoFrameInfo)
 	backdrop3:SetTemplate("Transparent")
 	backdrop3:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
 	backdrop3:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -233)

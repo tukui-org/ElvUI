@@ -48,9 +48,9 @@ function S:Blizzard_OrderHallUI()
 				bu.Highlight:SetColorTexture(1, 1, 1, .25)
 
 				if bu.talent.selected then
-					bu.backdrop:SetBackdropBorderColor(1, 1, 0)
+					--bu.backdrop:SetBackdropBorderColor(1, 1, 0)
 				else
-					bu.backdrop:SetBackdropBorderColor(0, 0, 0)
+					--bu.backdrop:SetBackdropBorderColor(0, 0, 0)
 				end
 			end
 		end

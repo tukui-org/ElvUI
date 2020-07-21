@@ -9,7 +9,7 @@ local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 local GetNumFilteredAchievements = GetNumFilteredAchievements
 local IsAddOnLoaded = IsAddOnLoaded
-local CreateFrame = CreateFrame
+
 
 local function skinAch(Achievement, BiggerIcon)
 	if Achievement.isSkinned then return; end
@@ -29,12 +29,14 @@ local function skinAch(Achievement, BiggerIcon)
 
 	if Achievement.highlight then
 		Achievement.highlight:StripTextures()
-		Achievement:HookScript('OnEnter', function(self) self.backdrop:SetBackdropBorderColor(1, 1, 0) end)
+		Achievement:HookScript('OnEnter', function(self)
+			self.backdrop:SetBackdropBorderColor(1, 1, 0)
+		end)
 		Achievement:HookScript('OnLeave', function(self)
 			if (self.player and self.player.accountWide or self.accountWide) then
-				self.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
+				--self.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
 			else
-				self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				--self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 	end
@@ -128,11 +130,11 @@ function S:Blizzard_AchievementUI(event)
 
 					hooksecurefunc(Achievement.player, 'Saturate', function()
 						if Achievement.player.accountWide then
-							Achievement.player.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
-							Achievement.friend.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
+							--Achievement.player.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
+							--Achievement.friend.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
 						else
-							Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-							Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+							--Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+							--Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 						end
 					end)
 				end
@@ -346,9 +348,9 @@ function S:Blizzard_AchievementUI(event)
 	hooksecurefunc('AchievementButton_DisplayAchievement', function(frame)
 		if frame.backdrop then
 			if frame.accountWide then
-				frame.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
+				--frame.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
 			else
-				frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				--frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)
@@ -370,9 +372,9 @@ function S:Blizzard_AchievementUI(event)
 			end
 
 			if frame.accountWide then
-				frame.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
+				--frame.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
 			else
-				frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				--frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)
@@ -481,11 +483,11 @@ function S:Blizzard_AchievementUI(event)
 
 		hooksecurefunc(Achievement.player, 'Saturate', function()
 			if Achievement.player.accountWide then
-				Achievement.player.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
-				Achievement.friend.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
+				--Achievement.player.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
+				--Achievement.friend.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
 			else
-				Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				--Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				--Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
@@ -493,7 +495,7 @@ function S:Blizzard_AchievementUI(event)
 	end
 end
 
-local f = CreateFrame("Frame")
+local f = E:CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function(self, event)
 	self:UnregisterEvent(event)

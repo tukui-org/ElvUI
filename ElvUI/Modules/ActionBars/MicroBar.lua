@@ -6,7 +6,7 @@ local pairs = pairs
 local assert = assert
 local unpack = unpack
 
-local CreateFrame = CreateFrame
+
 local C_StorePublic_IsEnabled = C_StorePublic.IsEnabled
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent
 local GetCurrentRegionName = GetCurrentRegionName
@@ -42,13 +42,13 @@ local function onEnter(button)
 	end
 
 	if button.backdrop and button:IsEnabled() then
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+		--button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	end
 end
 
 local function onLeave(button)
 	if button.backdrop and button:IsEnabled() then
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		--button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 end
 
@@ -59,7 +59,7 @@ function AB:HandleMicroButton(button)
 	local normal = button:GetNormalTexture()
 	local disabled = button:GetDisabledTexture()
 
-	local f = CreateFrame("Frame", nil, button)
+	local f = E:CreateFrame("Frame", nil, button)
 	f:SetFrameLevel(1)
 	f:SetFrameStrata("BACKGROUND")
 	f:SetTemplate(nil, true)
@@ -189,11 +189,11 @@ function AB:UpdateMicroButtons()
 end
 
 function AB:SetupMicroBar()
-	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
+	local microBar = E:CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
 	microBar:EnableMouse(false)
 
-	microBar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
+	microBar.visibility = E:CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
 	microBar.visibility:SetScript("OnShow", function() microBar:Show() end)
 	microBar.visibility:SetScript("OnHide", function() microBar:Hide() end)
 
@@ -216,14 +216,6 @@ function AB:SetupMicroBar()
 	-- With this method we might don't taint anything. Instead of using :Kill()
 	_G.MainMenuBarPerformanceBar:SetAlpha(0)
 	_G.MainMenuBarPerformanceBar:SetScale(0.00001)
-
-	_G.CollectionsMicroButtonAlert:EnableMouse(false)
-	_G.CollectionsMicroButtonAlert:SetAlpha(0)
-	_G.CollectionsMicroButtonAlert:SetScale(0.00001)
-
-	_G.CharacterMicroButtonAlert:EnableMouse(false)
-	_G.CharacterMicroButtonAlert:SetAlpha(0)
-	_G.CharacterMicroButtonAlert:SetScale(0.00001)
 
 	E:CreateMover(microBar, 'MicrobarMover', L["Micro Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,microbar')
 end

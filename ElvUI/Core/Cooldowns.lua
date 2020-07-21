@@ -5,7 +5,7 @@ local next, ipairs, pairs = next, ipairs, pairs
 local floor, tinsert = floor, tinsert
 
 local GetTime = GetTime
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)
@@ -162,7 +162,7 @@ function E:Cooldown_Options(timer, db, parent)
 end
 
 function E:CreateCooldownTimer(parent)
-	local timer = CreateFrame('Frame', nil, parent)
+	local timer = E:CreateFrame('Frame', nil, parent)
 	timer:Hide()
 	timer:SetAllPoints()
 	timer.parent = parent

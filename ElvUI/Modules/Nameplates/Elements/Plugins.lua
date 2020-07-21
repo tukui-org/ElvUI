@@ -4,13 +4,13 @@ local NP = E:GetModule("NamePlates")
 local _G = _G
 local strfind = strfind
 local pairs, unpack = pairs, unpack
-local CreateFrame = CreateFrame
+
 
 local questIconTypes = { "Item", "Loot", "Skull", "Chat" }
 local targetIndicators = { "Spark", "TopIndicator", "LeftIndicator", "RightIndicator" }
 
 function NP:Construct_QuestIcons(nameplate)
-	local QuestIcons = CreateFrame("Frame", nameplate:GetDebugName() .. "QuestIcons", nameplate)
+	local QuestIcons = E:CreateFrame("Frame", nameplate:GetDebugName() .. "QuestIcons", nameplate)
 	QuestIcons:Size(20)
 	QuestIcons:Hide()
 
@@ -83,10 +83,10 @@ function NP:Update_ClassificationIndicator(nameplate)
 end
 
 function NP:Construct_TargetIndicator(nameplate)
-	local TargetIndicator = CreateFrame("Frame", nameplate:GetDebugName() .. "TargetIndicator", nameplate)
+	local TargetIndicator = E:CreateFrame("Frame", nameplate:GetDebugName() .. "TargetIndicator", nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
-	TargetIndicator.Shadow = CreateFrame("Frame", nil, TargetIndicator)
+	TargetIndicator.Shadow = E:CreateFrame("Frame", nil, TargetIndicator, BackdropTemplateMixin and "BackdropTemplate")
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
 	TargetIndicator.Shadow:Hide()
 
@@ -139,7 +139,7 @@ function NP:Update_TargetIndicator(nameplate)
 
 		if nameplate.TargetIndicator.Shadow and (GlowStyle == "style1" or GlowStyle == "style5" or GlowStyle == "style7") then
 			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
-			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
+			--nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
 			nameplate.TargetIndicator.Shadow:SetAlpha(Color.a)
 		end
 
@@ -153,7 +153,7 @@ function NP:Update_TargetIndicator(nameplate)
 end
 
 function NP:Construct_Highlight(nameplate)
-	local Highlight = CreateFrame("Frame", nameplate:GetDebugName() .. "Highlight", nameplate)
+	local Highlight = E:CreateFrame("Frame", nameplate:GetDebugName() .. "Highlight", nameplate)
 	Highlight:Hide()
 	Highlight:EnableMouse(false)
 	Highlight:SetFrameLevel(9)
@@ -291,7 +291,7 @@ function NP:Update_Cutaway(nameplate)
 end
 
 function NP:Construct_WidgetXPBar(nameplate)
-	local WidgetXPBar = CreateFrame("StatusBar", nameplate:GetDebugName() .. "WidgetXPBar", nameplate)
+	local WidgetXPBar = E:CreateFrame("StatusBar", nameplate:GetDebugName() .. "WidgetXPBar", nameplate)
 	WidgetXPBar:SetFrameStrata(nameplate:GetFrameStrata())
 	WidgetXPBar:SetFrameLevel(5)
 	WidgetXPBar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))

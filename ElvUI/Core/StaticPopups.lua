@@ -10,7 +10,7 @@ local pairs, type, unpack, assert = pairs, type, unpack, assert
 local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, wipe
 local strlower, format, error = strlower, format, error
 
-local CreateFrame = CreateFrame
+
 local IsAddOnLoaded = IsAddOnLoaded
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
 local GetBindingFromClick, RunBinding = GetBindingFromClick, RunBinding
@@ -1148,7 +1148,7 @@ local SecureButtons = {}
 local SecureOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
 local SecureOnLeave = function(s) s.text:SetTextColor(1, 0.17, 0.26) end
 function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
-	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate')
+	local btn = E:CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate, BackdropTemplate')
 	btn:SetAttribute('type', 'macro')
 	btn:SetAttribute('macrotext', macro)
 	btn:SetAllPoints(button)
@@ -1197,7 +1197,7 @@ function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
 	for index = 1, MAX_STATIC_POPUPS do
-		E.StaticPopupFrames[index] = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate')
+		E.StaticPopupFrames[index] = E:CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate, BackdropTemplate')
 		E.StaticPopupFrames[index]:SetID(index)
 
 		--Fix Scripts
@@ -1216,16 +1216,16 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
 
-		_G['ElvUI_StaticPopup'..index..'CheckButton'] = CreateFrame('CheckButton', 'ElvUI_StaticPopup'..index..'CheckButton', _G['ElvUI_StaticPopup'..index], 'UICheckButtonTemplate')
+		_G['ElvUI_StaticPopup'..index..'CheckButton'] = E:CreateFrame('CheckButton', 'ElvUI_StaticPopup'..index..'CheckButton', _G['ElvUI_StaticPopup'..index], 'UICheckButtonTemplate, BackdropTemplate')
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
 
 		--Skin
 		E.StaticPopupFrames[index].Border:StripTextures()
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
 
-		for i = 1, 3 do
+		--[[for i = 1, 3 do
 			Skins:HandleButton(_G['ElvUI_StaticPopup'..index..'Button'..i])
-		end
+		end]]
 
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate(nil, nil, '')
@@ -1242,8 +1242,8 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
 		_G['ElvUI_StaticPopup'..index..'ItemFrameNameFrame']:Kill()
 		_G['ElvUI_StaticPopup'..index..'ItemFrame']:GetNormalTexture():Kill()
-		_G['ElvUI_StaticPopup'..index..'ItemFrame']:SetTemplate()
-		_G['ElvUI_StaticPopup'..index..'ItemFrame']:StyleButton()
+		--_G['ElvUI_StaticPopup'..index..'ItemFrame']:SetTemplate()
+		--_G['ElvUI_StaticPopup'..index..'ItemFrame']:StyleButton()
 		_G['ElvUI_StaticPopup'..index..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
 		_G['ElvUI_StaticPopup'..index..'ItemFrameIconTexture']:SetInside()
 	end

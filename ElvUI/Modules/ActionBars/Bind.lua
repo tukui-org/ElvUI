@@ -7,7 +7,7 @@ local select, tonumber, pairs = select, tonumber, pairs
 local floor = floor
 local format = format
 
-local CreateFrame = CreateFrame
+
 local GetSpellInfo = GetSpellInfo
 local IsAddOnLoaded = IsAddOnLoaded
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
@@ -30,7 +30,7 @@ local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOL
 local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
 -- GLOBALS: ElvUIBindPopupWindow, ElvUIBindPopupWindowCheckButton
 
-local bind = CreateFrame("Frame", "ElvUI_KeyBinder", E.UIParent)
+local bind = E:CreateFrame("Frame", "ElvUI_KeyBinder", E.UIParent)
 
 function AB:ActivateBindMode()
 	if InCombatLockdown() then
@@ -380,7 +380,7 @@ function AB:LoadKeyBinder()
 	self:UpdateFlyouts()
 
 	--Special Popup
-	local Popup = CreateFrame("Frame", "ElvUIBindPopupWindow", _G.UIParent)
+	local Popup = E:CreateFrame("Frame", "ElvUIBindPopupWindow", _G.UIParent)
 	Popup:SetFrameStrata("DIALOG")
 	Popup:EnableMouse(true)
 	Popup:SetMovable(true)
@@ -393,7 +393,7 @@ function AB:LoadKeyBinder()
 	Popup:SetScript('OnMouseUp', Popup.StopMovingOrSizing)
 	Popup:Hide()
 
-	Popup.header = CreateFrame('Button', nil, Popup, 'OptionsButtonTemplate')
+	Popup.header = E:CreateFrame('Button', nil, Popup, 'OptionsButtonTemplate')
 	Popup.header:Size(100, 25)
 	Popup.header:Point("CENTER", Popup, 'TOP')
 	Popup.header:RegisterForClicks('AnyUp', 'AnyDown')
@@ -409,17 +409,17 @@ function AB:LoadKeyBinder()
 	Popup.desc:Point("BOTTOMRIGHT", -18, 48)
 	Popup.desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."])
 
-	Popup.save = CreateFrame("Button", Popup:GetName()..'SaveButton', Popup, "OptionsButtonTemplate")
+	Popup.save = E:CreateFrame("Button", Popup:GetName()..'SaveButton', Popup, "OptionsButtonTemplate")
 	Popup.save:SetText(L["Save"])
 	Popup.save:Width(150)
 	Popup.save:SetScript("OnClick", function() AB:DeactivateBindMode(true) end)
 
-	Popup.discard = CreateFrame("Button", Popup:GetName()..'DiscardButton', Popup, "OptionsButtonTemplate")
+	Popup.discard = E:CreateFrame("Button", Popup:GetName()..'DiscardButton', Popup, "OptionsButtonTemplate")
 	Popup.discard:Width(150)
 	Popup.discard:SetText(L["Discard"])
 	Popup.discard:SetScript("OnClick", function() AB:DeactivateBindMode(false) end)
 
-	Popup.perCharCheck = CreateFrame("CheckButton", Popup:GetName()..'CheckButton', Popup, "OptionsCheckButtonTemplate")
+	Popup.perCharCheck = E:CreateFrame("CheckButton", Popup:GetName()..'CheckButton', Popup, "OptionsCheckButtonTemplate")
 	_G[Popup.perCharCheck:GetName().."Text"]:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
 	Popup.perCharCheck:SetScript("OnLeave", GameTooltip_Hide)
 	Popup.perCharCheck:SetScript("OnShow", function(checkBtn) checkBtn:SetChecked(GetCurrentBindingSet() == 2) end)

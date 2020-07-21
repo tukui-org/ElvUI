@@ -9,7 +9,7 @@ local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen,
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 
-local CreateFrame = CreateFrame
+
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
 local GetSpellInfo = GetSpellInfo
@@ -153,14 +153,14 @@ E.GemTypeInfo = {
 }
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
-E.UIParent = CreateFrame('Frame', 'ElvUIParent', _G.UIParent)
+E.UIParent = E:CreateFrame('Frame', 'ElvUIParent', _G.UIParent)
 E.UIParent:SetFrameLevel(_G.UIParent:GetFrameLevel())
 E.UIParent:SetSize(_G.UIParent:GetSize())
 E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
 
-E.HiddenFrame = CreateFrame('Frame')
+E.HiddenFrame = E:CreateFrame('Frame')
 E.HiddenFrame:Hide()
 
 do -- used in optionsUI
@@ -862,7 +862,7 @@ do
 
 	_G.C_ChatInfo.RegisterAddonMessagePrefix('ELVUI_VERSIONCHK')
 
-	local f = CreateFrame('Frame')
+	local f = E:CreateFrame('Frame')
 	f:RegisterEvent('CHAT_MSG_ADDON')
 	f:RegisterEvent('GROUP_ROSTER_UPDATE')
 	f:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -1146,7 +1146,7 @@ function E:UpdateAll(doUpdates)
 end
 
 do
-	E.ObjectEventTable, E.ObjectEventFrame = {}, CreateFrame('Frame')
+	E.ObjectEventTable, E.ObjectEventFrame = {}, E:CreateFrame('Frame')
 	local eventFrame, eventTable = E.ObjectEventFrame, E.ObjectEventTable
 
 	eventFrame:SetScript('OnEvent', function(_, event, ...)

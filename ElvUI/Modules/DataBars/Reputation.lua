@@ -10,7 +10,7 @@ local GetFriendshipReputation = GetFriendshipReputation
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local InCombatLockdown = InCombatLockdown
 local ToggleCharacter = ToggleCharacter
-local CreateFrame = CreateFrame
+
 local REPUTATION = REPUTATION
 local STANDING = STANDING
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
@@ -174,7 +174,7 @@ function DB:LoadReputationBar()
 	DB.repBar = DB:CreateBar('ElvUI_ReputationBar', DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264)
 	E:RegisterStatusBar(DB.repBar.statusBar)
 
-	DB.repBar.eventFrame = CreateFrame("Frame")
+	DB.repBar.eventFrame = E:CreateFrame("Frame")
 	DB.repBar.eventFrame:Hide()
 	DB.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	DB.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")

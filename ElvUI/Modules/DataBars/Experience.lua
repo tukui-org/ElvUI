@@ -8,9 +8,8 @@ local format = format
 local GetPetExperience, UnitXP, UnitXPMax = GetPetExperience, UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local GetExpansionLevel = GetExpansionLevel
-local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 local InCombatLockdown = InCombatLockdown
-local CreateFrame = CreateFrame
+
 
 function DB:GetXP(unit)
 	if unit == 'pet' then
@@ -25,7 +24,7 @@ function DB:UpdateExperience(event)
 	local bar = DB.expBar
 
 	if IsXPUserDisabled()
-	or (DB.db.experience.hideAtMaxLevel and E.mylevel == MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()])
+	or (DB.db.experience.hideAtMaxLevel and E.mylevel == 60)
 	or (DB.db.experience.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
 		E:DisableMover(DB.expBar.mover:GetName())
 		bar:Hide()
@@ -146,8 +145,7 @@ function DB:UpdateExperienceDimensions()
 end
 
 function DB:EnableDisable_ExperienceBar()
-	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]
-	if DB.db.experience.enable and (E.mylevel ~= maxLevel or not DB.db.experience.hideAtMaxLevel) then
+	if DB.db.experience.enable and (E.mylevel ~= 60 or not DB.db.experience.hideAtMaxLevel) then
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
 		DB:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
 		DB:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExperience')
@@ -169,13 +167,13 @@ end
 function DB:LoadExperienceBar()
 	DB.expBar = DB:CreateBar('ElvUI_ExperienceBar', DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, 'BOTTOM', E.UIParent, 'BOTTOM', 0, 43)
 	DB.expBar.statusBar:SetStatusBarColor(0, 0.4, 1, .8)
-	DB.expBar.rested = CreateFrame('StatusBar', nil, DB.expBar)
+	DB.expBar.rested = E:CreateFrame('StatusBar', nil, DB.expBar)
 	DB.expBar.rested:SetInside()
 	DB.expBar.rested:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(DB.expBar.rested)
 	DB.expBar.rested:SetStatusBarColor(1, 0, 1, 0.2)
 
-	DB.expBar.eventFrame = CreateFrame("Frame")
+	DB.expBar.eventFrame = E:CreateFrame("Frame")
 	DB.expBar.eventFrame:Hide()
 	DB.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	DB.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")

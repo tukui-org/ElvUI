@@ -5,7 +5,7 @@ local _G = _G
 local pairs, unpack, ipairs, next, tonumber, tinsert = pairs, unpack, ipairs, next, tonumber, tinsert
 
 local ChatEdit_InsertLink = ChatEdit_InsertLink
-local CreateFrame = CreateFrame
+
 local CursorOnUpdate = CursorOnUpdate
 local DressUpItemLink = DressUpItemLink
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
@@ -99,7 +99,7 @@ local function StatusUpdate(frame)
 end
 
 local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...)
-	local f = CreateFrame("Button", nil, parent)
+	local f = E:CreateFrame("Button", nil, parent)
 	f:Point(...)
 	f:Size(FRAME_HEIGHT - 4)
 	f:SetNormalTexture(ntex)
@@ -119,7 +119,7 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 end
 
 function M:CreateRollFrame()
-	local frame = CreateFrame("Frame", nil, E.UIParent)
+	local frame = E:CreateFrame("Frame", nil, E.UIParent)
 	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
 	frame:SetTemplate()
 	frame:SetScript("OnEvent", OnEvent)
@@ -128,7 +128,7 @@ function M:CreateRollFrame()
 	frame:RegisterEvent("CANCEL_LOOT_ROLL")
 	frame:Hide()
 
-	local button = CreateFrame("Button", nil, frame)
+	local button = E:CreateFrame("Button", nil, frame)
 	button:Point("RIGHT", frame, 'LEFT', -(E.Spacing*3), 0)
 	button:Size(FRAME_HEIGHT - (E.Border * 2))
 	button:CreateBackdrop()
@@ -149,7 +149,7 @@ function M:CreateRollFrame()
 	tfade:SetBlendMode("ADD")
 	tfade:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .1, .1, .1, 0)
 
-	local status = CreateFrame("StatusBar", nil, frame)
+	local status = E:CreateFrame("StatusBar", nil, frame)
 	status:SetInside()
 	status:SetScript("OnUpdate", StatusUpdate)
 	status:SetFrameLevel(status:GetFrameLevel()-1)

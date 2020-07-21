@@ -101,7 +101,7 @@ local function onLeave()
 end
 
 local function createAuraIcon(element, index)
-	local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element)
+	local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element, "BackdropTemplate")
 	button:RegisterForClicks('RightButtonUp')
 
 	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')

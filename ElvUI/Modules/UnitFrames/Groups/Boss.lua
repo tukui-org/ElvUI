@@ -5,15 +5,15 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local _G = _G
-local CreateFrame = CreateFrame
+
 local IsAddOnLoaded = IsAddOnLoaded
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 -- GLOBALS: BossHeaderMover
 
-local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
+local BossHeader = E:CreateFrame('Frame', 'BossHeader', E.UIParent)
 function UF:Construct_BossFrames(frame)
-	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)
+	frame.RaisedElementParent = E:CreateFrame('Frame', nil, frame)
+	frame.RaisedElementParent.TextureParent = E:CreateFrame('Frame', nil, frame.RaisedElementParent)
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')

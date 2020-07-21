@@ -9,7 +9,7 @@ local min, pairs, ipairs, tinsert, strsub = min, pairs, ipairs, tinsert, strsub
 local strfind, gsub, format = strfind, gsub, format
 
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
-local CreateFrame = CreateFrame
+
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
 local IsReplacingUnit = IsReplacingUnit
@@ -32,7 +32,7 @@ local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
-local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
+local hiddenParent = E:CreateFrame("Frame", nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
@@ -263,8 +263,8 @@ function UF:Construct_UF(frame, unit)
 	frame.CLASSBAR_YOFFSET = 0	--placeholder
 	frame.BOTTOM_OFFSET = 0 --placeholder
 
-	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)
+	frame.RaisedElementParent = E:CreateFrame('Frame', nil, frame)
+	frame.RaisedElementParent.TextureParent = E:CreateFrame('Frame', nil, frame.RaisedElementParent)
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
 	if not self.groupunits[unit] then
@@ -939,7 +939,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		ElvUF:SetActiveStyle("ElvUF_"..name)
 
 		if numGroups then
-			Header = CreateFrame('Frame', 'ElvUF_'..name, ElvUF_Parent, 'SecureHandlerStateTemplate');
+			Header = E:CreateFrame('Frame', 'ElvUF_'..name, ElvUF_Parent, 'SecureHandlerStateTemplate');
 			Header.groups = {}
 			Header.groupName = group
 			Header.template = Header.template or template
@@ -1499,7 +1499,7 @@ function UF:Initialize()
 	if E.private.unitframe.enable ~= true then return end
 	UF.Initialized = true
 
-	E.ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
+	E.ElvUF_Parent = E:CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
 	E.ElvUF_Parent:SetFrameStrata("LOW")
 	RegisterStateDriver(E.ElvUF_Parent, "visibility", "[petbattle] hide; show")
 

@@ -50,13 +50,13 @@ local function OnEnter(self)
 end
 
 local function AddCurrencyNameToIndex(name)
-	for index = 1, GetCurrencyListSize() do
+	--[[for index = 1, GetCurrencyListSize() do
 		local currencyName = GetCurrencyListInfo(index)
 		if currencyName == name then
 			CurrencyListNameToIndex[name] = index
 			break
 		end
-	end
+	end]]
 end
 
 local function RegisterNewDT(currencyID)

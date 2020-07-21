@@ -5,15 +5,15 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local _G = _G
-local CreateFrame = CreateFrame
+
 -- GLOBALS: ElvUF_Raid
 
 function UF:Construct_RaidFrames()
 	self:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 	self:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 
-	self.RaisedElementParent = CreateFrame('Frame', nil, self)
-	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
+	self.RaisedElementParent = E:CreateFrame('Frame', nil, self)
+	self.RaisedElementParent.TextureParent = E:CreateFrame('Frame', nil, self.RaisedElementParent)
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
 
 	self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')

@@ -28,10 +28,10 @@ function S:Blizzard_ItemUpgradeUI()
 		if icon then
 			ItemButton.IconTexture:SetTexCoord(unpack(E.TexCoords))
 			local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
-			ItemButton.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			--ItemButton.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
 			ItemButton.IconTexture:SetTexture("")
-			ItemButton.backdrop:SetBackdropBorderColor(0, 0, 0)
+			--ItemButton.backdrop:SetBackdropBorderColor(0, 0, 0)
 		end
 	end)
 

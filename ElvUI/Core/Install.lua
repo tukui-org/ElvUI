@@ -11,7 +11,7 @@ local pairs = pairs
 local ipairs = ipairs
 local tinsert = tinsert
 
-local CreateFrame = CreateFrame
+
 local SetCVar = SetCVar
 local PlaySound = PlaySound
 local ReloadUI = ReloadUI
@@ -693,7 +693,7 @@ end
 --Install UI
 function E:Install()
 	if not _G.InstallStepComplete then
-		local imsg = CreateFrame('Frame', 'InstallStepComplete', E.UIParent)
+		local imsg = E:CreateFrame('Frame', 'InstallStepComplete', E.UIParent)
 		imsg:Size(418, 72)
 		imsg:Point('TOP', 0, -190)
 		imsg:Hide()
@@ -740,7 +740,7 @@ function E:Install()
 
 	--Create Frame
 	if not ElvUIInstallFrame then
-		local f = CreateFrame('Button', 'ElvUIInstallFrame', E.UIParent)
+		local f = E:CreateFrame('Button', 'ElvUIInstallFrame', E.UIParent)
 		f.SetPage = E.SetPage
 		f:Size(550, 400)
 		f:SetTemplate('Transparent')
@@ -758,7 +758,7 @@ function E:Install()
 		f.Title:Point('TOP', 0, -5)
 		f.Title:SetText(L["ElvUI Installation"])
 
-		f.Next = CreateFrame('Button', 'InstallNextButton', f, 'UIPanelButtonTemplate')
+		f.Next = E:CreateFrame('Button', 'InstallNextButton', f, 'UIPanelButtonTemplate')
 		f.Next:Size(110, 25)
 		f.Next:Point('BOTTOMRIGHT', -5, 5)
 		f.Next:SetText(CONTINUE)
@@ -766,7 +766,7 @@ function E:Install()
 		f.Next:SetScript('OnClick', E.NextPage)
 		S:HandleButton(f.Next, true)
 
-		f.Prev = CreateFrame('Button', 'InstallPrevButton', f, 'UIPanelButtonTemplate')
+		f.Prev = E:CreateFrame('Button', 'InstallPrevButton', f, 'UIPanelButtonTemplate')
 		f.Prev:Size(110, 25)
 		f.Prev:Point('BOTTOMLEFT', 5, 5)
 		f.Prev:SetText(PREVIOUS)
@@ -774,7 +774,7 @@ function E:Install()
 		f.Prev:SetScript('OnClick', E.PreviousPage)
 		S:HandleButton(f.Prev, true)
 
-		f.Status = CreateFrame('StatusBar', 'InstallStatus', f)
+		f.Status = E:CreateFrame('StatusBar', 'InstallStatus', f)
 		f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
 		f.Status:CreateBackdrop()
 		f.Status:SetStatusBarTexture(E.media.normTex)
@@ -795,7 +795,7 @@ function E:Install()
 		f.Status.text:Point('CENTER')
 		f.Status.text:SetText(CURRENT_PAGE..' / '..MAX_PAGE)
 
-		f.Slider = CreateFrame('Slider', 'InstallSlider', f)
+		f.Slider = E:CreateFrame('Slider', 'InstallSlider', f)
 		f.Slider:SetOrientation('HORIZONTAL')
 		f.Slider:Height(15)
 		f.Slider:Width(400)
@@ -812,14 +812,14 @@ function E:Install()
 		f.Slider.Cur:Point('BOTTOM', f.Slider, 'TOP', 0, 10)
 		f.Slider.Cur:FontTemplate(nil, 30, nil)
 
-		f.Option1 = CreateFrame('Button', 'InstallOption1Button', f, 'UIPanelButtonTemplate')
+		f.Option1 = E:CreateFrame('Button', 'InstallOption1Button', f, 'UIPanelButtonTemplate')
 		f.Option1:Size(160, 30)
 		f.Option1:Point('BOTTOM', 0, 45)
 		f.Option1:SetText('')
 		f.Option1:Hide()
 		S:HandleButton(f.Option1, true)
 
-		f.Option2 = CreateFrame('Button', 'InstallOption2Button', f, 'UIPanelButtonTemplate')
+		f.Option2 = E:CreateFrame('Button', 'InstallOption2Button', f, 'UIPanelButtonTemplate')
 		f.Option2:Size(110, 30)
 		f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45)
 		f.Option2:SetText('')
@@ -828,7 +828,7 @@ function E:Install()
 		f.Option2:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45) end)
 		S:HandleButton(f.Option2, true)
 
-		f.Option3 = CreateFrame('Button', 'InstallOption3Button', f, 'UIPanelButtonTemplate')
+		f.Option3 = E:CreateFrame('Button', 'InstallOption3Button', f, 'UIPanelButtonTemplate')
 		f.Option3:Size(100, 30)
 		f.Option3:Point('LEFT', f.Option2, 'RIGHT', 4, 0)
 		f.Option3:SetText('')
@@ -837,7 +837,7 @@ function E:Install()
 		f.Option3:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45); f.Option2:Width(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
 		S:HandleButton(f.Option3, true)
 
-		f.Option4 = CreateFrame('Button', 'InstallOption4Button', f, 'UIPanelButtonTemplate')
+		f.Option4 = E:CreateFrame('Button', 'InstallOption4Button', f, 'UIPanelButtonTemplate')
 		f.Option4:Size(100, 30)
 		f.Option4:Point('LEFT', f.Option3, 'RIGHT', 4, 0)
 		f.Option4:SetText('')
@@ -872,7 +872,7 @@ function E:Install()
 		f.Desc3:Point('TOPLEFT', 20, -175)
 		f.Desc3:Width(f:GetWidth() - 40)
 
-		local close = CreateFrame('Button', 'InstallCloseButton', f, 'UIPanelCloseButton')
+		local close = E:CreateFrame('Button', 'InstallCloseButton', f, 'UIPanelCloseButton')
 		close:Point('TOPRIGHT', f, 'TOPRIGHT')
 		close:SetScript('OnClick', function() f:Hide() end)
 		S:HandleCloseButton(close)

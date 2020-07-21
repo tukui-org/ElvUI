@@ -456,10 +456,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		c.Borders = true
 
 		mod:StyleFilterBorderLock(frame.Health.backdrop, true)
-		frame.Health.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
+		--frame.Health.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
 		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop, true)
-			frame.Power.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
+			--frame.Power.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
 		end
 	end
 	if HealthFlash then
@@ -553,10 +553,10 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if Borders then
 		local r, g, b = unpack(E.media.bordercolor)
 		mod:StyleFilterBorderLock(frame.Health.backdrop)
-		frame.Health.backdrop:SetBackdropBorderColor(r, g, b)
+		--frame.Health.backdrop:SetBackdropBorderColor(r, g, b)
 		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop)
-			frame.Power.backdrop:SetBackdropBorderColor(r, g, b)
+			--frame.Power.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end
 	if HealthFlash then
@@ -1032,11 +1032,9 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_DISPLAYPOWER',
 	'UNIT_FACTION',
 	'UNIT_HEALTH',
-	'UNIT_HEALTH_FREQUENT',
 	'UNIT_MAXHEALTH',
 	'UNIT_NAME_UPDATE',
 	'UNIT_PET',
-	'UNIT_POWER_FREQUENT',
 	'UNIT_POWER_UPDATE',
 	-- list of events added during StyleFilterEvents
 	'MODIFIER_STATE_CHANGED',
@@ -1112,12 +1110,10 @@ function mod:StyleFilterConfigure()
 				if t.healthThreshold then
 					events.UNIT_HEALTH = 1
 					events.UNIT_MAXHEALTH = 1
-					events.UNIT_HEALTH_FREQUENT = 1
 				end
 
 				if t.powerThreshold then
 					events.UNIT_POWER_UPDATE = 1
-					events.UNIT_POWER_FREQUENT = 1
 					events.UNIT_DISPLAYPOWER = 1
 				end
 

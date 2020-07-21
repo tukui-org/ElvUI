@@ -6,7 +6,7 @@ local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, 
 local format, strsub, strupper, gsub, gmatch = format, strsub, strupper, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
-local CreateFrame = CreateFrame
+
 local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
 local BreakUpLargeNumbers = BreakUpLargeNumbers
@@ -320,7 +320,7 @@ function E:WaitFunc(elapse)
 end
 
 E.WaitTable = {}
-E.WaitFrame = CreateFrame('Frame', 'ElvUI_WaitFrame', _G.UIParent)
+E.WaitFrame = E:CreateFrame('Frame', 'ElvUI_WaitFrame', _G.UIParent)
 E.WaitFrame:SetScript('OnUpdate', E.WaitFunc)
 
 --Add time before calling a function

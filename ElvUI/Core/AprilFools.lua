@@ -11,7 +11,7 @@ local _G = _G
 local pairs = pairs
 local twipe, tinsert = wipe, tinsert
 
-local CreateFrame = CreateFrame
+
 local DoEmote = DoEmote
 local GetCVar, SetCVar = GetCVar, SetCVar
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
@@ -265,7 +265,7 @@ do
 			_G.HelloKittyRight:Show()
 			return
 		end
-		local helloKittyLeft = CreateFrame('Frame', 'HelloKittyLeft', _G.UIParent)
+		local helloKittyLeft = E:CreateFrame('Frame', 'HelloKittyLeft', _G.UIParent)
 		helloKittyLeft:Size(120, 128)
 		helloKittyLeft:SetMovable(true)
 		helloKittyLeft:EnableMouse(true)
@@ -282,7 +282,7 @@ do
 		helloKittyLeft:SetScript('OnDragStop', OnDragStop)
 		helloKittyLeft:SetScript('OnUpdate', OnUpdate)
 
-		local helloKittyRight = CreateFrame('Frame', 'HelloKittyRight', _G.UIParent)
+		local helloKittyRight = E:CreateFrame('Frame', 'HelloKittyRight', _G.UIParent)
 		helloKittyRight:Size(120, 128)
 		helloKittyRight:SetMovable(true)
 		helloKittyRight:EnableMouse(true)

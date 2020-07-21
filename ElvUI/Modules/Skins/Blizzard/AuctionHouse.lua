@@ -131,8 +131,12 @@ local function HandleSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
-	hooksecurefunc(ItemButton.IconBorder, "SetVertexColor", function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	hooksecurefunc(ItemButton.IconBorder, "Hide", function() ItemButton.Icon.backdrop:SetBackdropBorderColor(0, 0, 0) end)
+	hooksecurefunc(ItemButton.IconBorder, "SetVertexColor", function(_, r, g, b)
+		--ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+	end)
+	hooksecurefunc(ItemButton.IconBorder, "Hide", function()
+		--ItemButton.Icon.backdrop:SetBackdropBorderColor(0, 0, 0)
+	end)
 
 	S:HandleEditBox(frame.QuantityInput.InputBox)
 	S:HandleButton(frame.QuantityInput.MaxButton)
@@ -170,8 +174,12 @@ local function HandleTokenSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
-	hooksecurefunc(ItemButton.IconBorder, "SetVertexColor", function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	hooksecurefunc(ItemButton.IconBorder, "Hide", function() ItemButton.Icon.backdrop:SetBackdropBorderColor(0, 0, 0) end)
+	hooksecurefunc(ItemButton.IconBorder, "SetVertexColor", function(_, r, g, b)
+		--ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+	end)
+	hooksecurefunc(ItemButton.IconBorder, "Hide", function()
+		--ItemButton.Icon.backdrop:SetBackdropBorderColor(0, 0, 0)
+	end)
 
 	S:HandleButton(frame.PostButton)
 	HandleAuctionButtons(frame.DummyRefreshButton)
@@ -376,7 +384,7 @@ local function LoadSkin()
 
 	local ItemButton = Token.ItemButton
 	S:HandleIcon(ItemButton.Icon, true)
-	ItemButton.Icon.backdrop:SetBackdropBorderColor(0, .8, 1)
+	--ItemButton.Icon.backdrop:SetBackdropBorderColor(0, .8, 1)
 	ItemButton.IconBorder:SetAlpha(0)
 
 	--WoW Token Tutorial Frame

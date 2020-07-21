@@ -4,7 +4,7 @@ local oUF = E.oUF
 
 local _G = _G
 local unpack, max = unpack, max
-local CreateFrame = CreateFrame
+
 local UnitHasVehicleUI = UnitHasVehicleUI
 
 local MAX_POINTS = {
@@ -51,7 +51,7 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate)
 end
 
 function NP:Construct_ClassPower(nameplate)
-	local ClassPower = CreateFrame('Frame', nameplate:GetDebugName()..'ClassPower', nameplate)
+	local ClassPower = E:CreateFrame('Frame', nameplate:GetDebugName()..'ClassPower', nameplate)
 	ClassPower:CreateBackdrop('Transparent')
 	ClassPower:Hide()
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
@@ -61,7 +61,7 @@ function NP:Construct_ClassPower(nameplate)
 	local texture = E.LSM:Fetch('statusbar', NP.db.statusbar)
 
 	for i = 1, Max do
-		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
+		ClassPower[i] = E:CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
 		ClassPower[i]:SetStatusBarTexture(texture)
 		ClassPower[i]:SetFrameStrata(nameplate:GetFrameStrata())
 		ClassPower[i]:SetFrameLevel(6)
@@ -150,7 +150,7 @@ function NP:Runes_PostUpdate()
 end
 
 function NP:Construct_Runes(nameplate)
-	local Runes = CreateFrame('Frame', nameplate:GetDebugName()..'Runes', nameplate)
+	local Runes = E:CreateFrame('Frame', nameplate:GetDebugName()..'Runes', nameplate)
 	Runes:SetFrameStrata(nameplate:GetFrameStrata())
 	Runes:SetFrameLevel(5)
 	Runes:CreateBackdrop('Transparent')
@@ -163,7 +163,7 @@ function NP:Construct_Runes(nameplate)
 	local color = NP.db.colors.classResources.DEATHKNIGHT
 
 	for i = 1, 6 do
-		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
+		Runes[i] = E:CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
 		Runes[i]:SetStatusBarTexture(texture)
 		Runes[i]:SetStatusBarColor(color.r, color.g, color.b)
 		NP.StatusBars[Runes[i]] = true
@@ -227,7 +227,7 @@ function NP:Update_Runes(nameplate)
 end
 
 function NP:Construct_Stagger(nameplate)
-    local Stagger = CreateFrame('StatusBar', nameplate:GetDebugName()..'Stagger', nameplate)
+    local Stagger = E:CreateFrame('StatusBar', nameplate:GetDebugName()..'Stagger', nameplate)
 	Stagger:SetFrameStrata(nameplate:GetFrameStrata())
 	Stagger:SetFrameLevel(5)
 	Stagger:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))

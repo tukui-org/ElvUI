@@ -12,7 +12,7 @@ local Chat_GetChatCategory = Chat_GetChatCategory
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local CloseAllWindows = CloseAllWindows
-local CreateFrame = CreateFrame
+
 local GetBattlefieldStatus = GetBattlefieldStatus
 local GetColoredName = GetColoredName
 local GetGuildInfo = GetGuildInfo
@@ -249,7 +249,7 @@ end
 function AFK:Initialize()
 	AFK.Initialized = true
 
-	AFK.AFKMode = CreateFrame('Frame', 'ElvUIAFKFrame')
+	AFK.AFKMode = E:CreateFrame('Frame', 'ElvUIAFKFrame')
 	AFK.AFKMode:SetFrameLevel(1)
 	AFK.AFKMode:SetScale(_G.UIParent:GetScale())
 	AFK.AFKMode:SetAllPoints(_G.UIParent)
@@ -257,7 +257,7 @@ function AFK:Initialize()
 	AFK.AFKMode:EnableKeyboard(true)
 	AFK.AFKMode:SetScript('OnKeyDown', OnKeyDown)
 
-	AFK.AFKMode.chat = CreateFrame('ScrollingMessageFrame', nil, AFK.AFKMode)
+	AFK.AFKMode.chat = E:CreateFrame('ScrollingMessageFrame', nil, AFK.AFKMode)
 	AFK.AFKMode.chat:Size(500, 200)
 	AFK.AFKMode.chat:Point('TOPLEFT', AFK.AFKMode, 'TOPLEFT', 4, -4)
 	AFK.AFKMode.chat:FontTemplate()
@@ -273,7 +273,7 @@ function AFK:Initialize()
 	AFK.AFKMode.chat:SetScript('OnMouseWheel', Chat_OnMouseWheel)
 	AFK.AFKMode.chat:SetScript('OnEvent', Chat_OnEvent)
 
-	AFK.AFKMode.bottom = CreateFrame('Frame', nil, AFK.AFKMode)
+	AFK.AFKMode.bottom = E:CreateFrame('Frame', nil, AFK.AFKMode)
 	AFK.AFKMode.bottom:SetFrameLevel(0)
 	AFK.AFKMode.bottom:SetTemplate('Transparent')
 	AFK.AFKMode.bottom:Point('BOTTOM', AFK.AFKMode, 'BOTTOM', 0, -E.Border)
@@ -320,11 +320,11 @@ function AFK:Initialize()
 	AFK.AFKMode.bottom.time:SetTextColor(0.7, 0.7, 0.7)
 
 	--Use this frame to control position of the model
-	AFK.AFKMode.bottom.modelHolder = CreateFrame('Frame', nil, AFK.AFKMode.bottom)
+	AFK.AFKMode.bottom.modelHolder = E:CreateFrame('Frame', nil, AFK.AFKMode.bottom)
 	AFK.AFKMode.bottom.modelHolder:Size(150, 150)
 	AFK.AFKMode.bottom.modelHolder:Point('BOTTOMRIGHT', AFK.AFKMode.bottom, 'BOTTOMRIGHT', -200, 220)
 
-	AFK.AFKMode.bottom.model = CreateFrame('PlayerModel', 'ElvUIAFKPlayerModel', AFK.AFKMode.bottom.modelHolder)
+	AFK.AFKMode.bottom.model = E:CreateFrame('PlayerModel', 'ElvUIAFKPlayerModel', AFK.AFKMode.bottom.modelHolder)
 	AFK.AFKMode.bottom.model:Point('CENTER', AFK.AFKMode.bottom.modelHolder, 'CENTER')
 	AFK.AFKMode.bottom.model:Size(GetScreenWidth() * 2, GetScreenHeight() * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
 	AFK.AFKMode.bottom.model:SetCamDistanceScale(4.5) --Since the model frame is huge, we need to zoom out quite a bit.

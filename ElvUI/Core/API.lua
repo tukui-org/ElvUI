@@ -7,7 +7,6 @@ local _G = _G
 local wipe, date = wipe, date
 local format, select, type, ipairs, pairs = format, select, type, ipairs, pairs
 local strmatch, strfind, tonumber, tostring = strmatch, strfind, tonumber, tostring
-local strlen, CreateFrame = strlen, CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -642,7 +641,7 @@ function E:LoadAPI()
 	if _G.OrderHallCommandBar then
 		E:HandleCommandBar()
 	else
-		local frame = CreateFrame('Frame')
+		local frame = E:CreateFrame('Frame')
 		frame:RegisterEvent('ADDON_LOADED')
 		frame:SetScript('OnEvent', function(Frame, event, addon)
 			if event == 'ADDON_LOADED' and addon == 'Blizzard_OrderHallUI' then

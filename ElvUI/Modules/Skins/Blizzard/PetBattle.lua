@@ -7,7 +7,7 @@ local _G = _G
 local C_PetBattles_GetPetType = C_PetBattles.GetPetType
 local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
 local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
@@ -71,20 +71,20 @@ function S:PetBattleFrame()
 		infoBar.Border2:SetAlpha(0)
 		infoBar.healthBarWidth = 300
 
-		infoBar.IconBackdrop = CreateFrame("Frame", nil, infoBar)
+		infoBar.IconBackdrop = E:CreateFrame("Frame", nil, infoBar)
 		infoBar.IconBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.IconBackdrop:SetOutside(infoBar.Icon)
 		infoBar.IconBackdrop:SetTemplate()
 		infoBar.BorderFlash:Kill()
 		infoBar.HealthBarBG:Kill()
 		infoBar.HealthBarFrame:Kill()
-		infoBar.HealthBarBackdrop = CreateFrame("Frame", nil, infoBar)
+		infoBar.HealthBarBackdrop = E:CreateFrame("Frame", nil, infoBar)
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.HealthBarBackdrop:SetTemplate("Transparent")
 		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + (E.Border * 2))
 		infoBar.ActualHealthBar:SetTexture(E.media.normTex)
 		E:RegisterStatusBar(infoBar.ActualHealthBar)
-		infoBar.PetTypeFrame = CreateFrame("Frame", nil, infoBar)
+		infoBar.PetTypeFrame = E:CreateFrame("Frame", nil, infoBar)
 		infoBar.PetTypeFrame:Size(100, 23)
 		infoBar.PetTypeFrame.text = infoBar.PetTypeFrame:CreateFontString(nil, 'OVERLAY')
 		infoBar.PetTypeFrame.text:FontTemplate()
@@ -199,9 +199,9 @@ function S:PetBattleFrame()
 				end
 
 				if isBuff then
-					frame.backdrop:SetBackdropBorderColor(0, 1, 0)
+					--frame.backdrop:SetBackdropBorderColor(0, 1, 0)
 				else
-					frame.backdrop:SetBackdropBorderColor(1, 0, 0)
+					--frame.backdrop:SetBackdropBorderColor(1, 0, 0)
 				end
 
 				-- move duration and change font
@@ -253,9 +253,9 @@ function S:PetBattleFrame()
 		hooksecurefunc("BattlePetToolTip_Show", function(_, _, rarity)
 			local quality = rarity and ITEM_QUALITY_COLORS[rarity]
 			if quality and rarity > 1 then
-				_G.BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+				--_G.BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
 			else
-				_G.BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				--_G.BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 
@@ -292,7 +292,7 @@ function S:PetBattleFrame()
 		infoBar.ActualHealthBar:ClearAllPoints()
 		infoBar.ActualHealthBar:Point("TOPLEFT", infoBar.backdrop, 'BOTTOMLEFT', E.Border, -3)
 
-		infoBar.HealthBarBackdrop = CreateFrame("Frame", nil, infoBar)
+		infoBar.HealthBarBackdrop = E:CreateFrame("Frame", nil, infoBar)
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.HealthBarBackdrop:SetTemplate()
 		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + (E.Border*2))
@@ -309,7 +309,7 @@ function S:PetBattleFrame()
 	-- PET BATTLE ACTION BAR SETUP --
 	---------------------------------
 
-	local bar = CreateFrame("Frame", "ElvUIPetBattleActionBar", f)
+	local bar = E:CreateFrame("Frame", "ElvUIPetBattleActionBar", f)
 	bar:Size (52*6 + 7*10, 52 * 1 + 10*2)
 	bar:EnableMouse(true)
 	bar:SetTemplate()

@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 
@@ -37,7 +37,7 @@ local function SkinSocialHeaderTab(tab)
 		tex:SetTexture()
 	end
 	tab:GetHighlightTexture():SetTexture()
-	tab.backdrop = CreateFrame("Frame", nil, tab)
+	tab.backdrop = E:CreateFrame("Frame", nil, tab)
 	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
 	tab.backdrop:Point("TOPLEFT", 3, -8)
@@ -48,13 +48,13 @@ local function BattleNetFrame_OnEnter(button)
 	if not button.backdrop then return end
 	local bnetColor = _G.FRIENDS_BNET_NAME_COLOR
 
-	button.backdrop:SetBackdropBorderColor(bnetColor.r, bnetColor.g, bnetColor.b)
+	--button.backdrop:SetBackdropBorderColor(bnetColor.r, bnetColor.g, bnetColor.b)
 end
 
 local function BattleNetFrame_OnLeave(button)
 	if not button.backdrop then return end
 
-	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	--button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
 local function RAFRewards()
@@ -141,13 +141,13 @@ function S:FriendsFrame()
 	FriendsFrameBattlenetFrame.backdrop:SetAllPoints()
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
-	local button = CreateFrame("Button", nil, FriendsFrameBattlenetFrame)
+	local button = E:CreateFrame("Button", nil, FriendsFrameBattlenetFrame)
 	button:Point("TOPLEFT", FriendsFrameBattlenetFrame, "TOPLEFT")
 	button:Point("BOTTOMRIGHT", FriendsFrameBattlenetFrame, "BOTTOMRIGHT")
 	button:Size(FriendsFrameBattlenetFrame:GetSize())
 	button:CreateBackdrop()
 	button.backdrop:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
-	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	--button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
 	button:SetScript("OnClick", function() FriendsFrameBattlenetFrame.BroadcastFrame:ToggleFrame() end)
 	button:SetScript("OnEnter", BattleNetFrame_OnEnter)

@@ -8,7 +8,7 @@ local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
 local UnitIsPVP = UnitIsPVP
-local CreateFrame = CreateFrame
+
 local InCombatLockdown = InCombatLockdown
 local TogglePVPUI = TogglePVPUI
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
@@ -129,7 +129,7 @@ function DB:LoadHonorBar()
 	DB.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
 	DB.honorBar.statusBar:SetMinMaxValues(0, 325)
 
-	DB.honorBar.eventFrame = CreateFrame("Frame")
+	DB.honorBar.eventFrame = E:CreateFrame("Frame")
 	DB.honorBar.eventFrame:Hide()
 	DB.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
 	DB.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")

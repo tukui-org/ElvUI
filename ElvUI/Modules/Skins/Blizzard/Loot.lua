@@ -6,7 +6,7 @@ local _G = _G
 local unpack, select = unpack, select
 
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
+
 local GetLootSlotInfo = GetLootSlotInfo
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
@@ -78,7 +78,7 @@ function S:LootFrame()
 			i:SetTexCoord(unpack(E.TexCoords))
 			b:CreateBackdrop()
 			b.backdrop:SetOutside(i)
-			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+			--b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
 
 		for i=1, MasterLooterFrame:GetNumChildren() do
@@ -106,7 +106,7 @@ function S:LootFrame()
 	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
 
 	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
-	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame("Frame", nil, BonusRollFrame.PromptFrame)
+	BonusRollFrame.PromptFrame.IconBackdrop = E:CreateFrame("Frame", nil, BonusRollFrame.PromptFrame)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()
@@ -115,11 +115,11 @@ function S:LootFrame()
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
 
 	BonusRollFrame.BlackBackgroundHoist.Background:Hide()
-	BonusRollFrame.BlackBackgroundHoist.b = CreateFrame("Frame", nil, BonusRollFrame)
+	BonusRollFrame.BlackBackgroundHoist.b = E:CreateFrame("Frame", nil, BonusRollFrame)
 	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate()
 	BonusRollFrame.BlackBackgroundHoist.b:SetOutside(BonusRollFrame.PromptFrame.Timer)
 
-	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
+	BonusRollFrame.SpecIcon.b = E:CreateFrame("Frame", nil, BonusRollFrame)
 	BonusRollFrame.SpecIcon.b:SetTemplate()
 	BonusRollFrame.SpecIcon.b:Point("BOTTOMRIGHT", BonusRollFrame, -2, 2)
 	BonusRollFrame.SpecIcon.b:Size(BonusRollFrame.SpecIcon:GetSize())
@@ -196,11 +196,11 @@ function S:LootFrame()
 
 		button.IconBorder:SetTexture()
 		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-			s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			--s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 			s:SetTexture()
 		end)
 		hooksecurefunc(button.IconBorder, 'Hide', function(s)
-			s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			--s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		local point, attachTo, point2, x, y = button:GetPoint()

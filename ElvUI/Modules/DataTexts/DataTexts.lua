@@ -9,7 +9,7 @@ local tostring = tostring
 local tinsert, wipe, sort, type, error, pcall = tinsert, wipe, sort, type, error, pcall
 local ipairs, pairs, next, strlen, strfind = ipairs, pairs, next, strlen, strfind
 local CloseDropDownMenus = CloseDropDownMenus
-local CreateFrame = CreateFrame
+
 local EasyMenu = EasyMenu
 local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
@@ -30,8 +30,8 @@ local GetSpecializationInfo = GetSpecializationInfo
 local ActivateHyperMode
 local HyperList = {}
 
-DT.tooltip = CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
-DT.EasyMenu = CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
+DT.tooltip = E:CreateFrame('GameTooltip', 'DataTextTooltip', E.UIParent, 'GameTooltipTemplate')
+DT.EasyMenu = E:CreateFrame('Frame', 'DataTextEasyMenu', E.UIParent, 'UIDropDownMenuTemplate')
 
 DT.SelectedDatatext = nil
 DT.HyperList = HyperList
@@ -167,7 +167,7 @@ function DT:FetchFrame(givenName)
 		frame = poolFrame
 		DT.PanelPool.Free[poolName] = nil
 	else
-		frame = CreateFrame('Frame', name, E.UIParent)
+		frame = E:CreateFrame('Frame', name, E.UIParent)
 		DT.PanelPool.Count = DT.PanelPool.Count + 1
 	end
 
@@ -445,7 +445,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	for i = 1, numPoints do
 		local dt = panel.dataPanels[i]
 		if not dt then
-			dt = CreateFrame('Button', panelName..'_DataText'..i, panel)
+			dt = E:CreateFrame('Button', panelName..'_DataText'..i, panel)
 			dt.MouseEnters = {}
 			dt.MouseLeaves = {}
 			dt:RegisterForClicks('AnyUp')
@@ -643,13 +643,13 @@ end
 
 function DT:PopulateData()
 	local Collapsed = {}
-	local listSize, i = GetCurrencyListSize(), 1
+	local listSize, i = --[[GetCurrencyListSize()]] 0, 1
 
 	while listSize >= i do
 		local name, isHeader, isExpanded = GetCurrencyListInfo(i)
 		if isHeader and not isExpanded then
 			ExpandCurrencyList(i, 1);
-			listSize = GetCurrencyListSize()
+			listSize = --[[GetCurrencyListSize()]] 0
 			Collapsed[name] = true
 		end
 		if not isHeader then

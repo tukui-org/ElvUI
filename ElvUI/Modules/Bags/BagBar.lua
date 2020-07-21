@@ -6,7 +6,7 @@ local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
 
-local CreateFrame = CreateFrame
+
 local GetBagSlotFlag = GetBagSlotFlag
 local RegisterStateDriver = RegisterStateDriver
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
@@ -120,7 +120,7 @@ end
 function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
-	B.BagBar = CreateFrame("Frame", "ElvUIBags", E.UIParent)
+	B.BagBar = E:CreateFrame("Frame", "ElvUIBags", E.UIParent)
 	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	B.BagBar.buttons = {}
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent')

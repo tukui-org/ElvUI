@@ -94,25 +94,25 @@ local function SkinItemFlyouts()
 				button.backdrop:SetAllPoints()
 
 				if i ~= 1 then -- dont call this intially on placeInBags button
-					button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
+					--button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
 				end
 
 				if i == 1 or i == 2 then
 					hooksecurefunc(button.icon, 'SetTexture', function(self)
 						local loc = self:GetParent().location
 						if (loc == PLACEINBAGS_LOCATION) or (loc == IGNORESLOT_LOCATION) or (loc == UNIGNORESLOT_LOCATION) then
-							self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+							--self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 						end
 					end)
 				end
 
 				button.IconBorder:SetTexture()
 				hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
-					self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+					--self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 					self:SetTexture()
 				end)
 				hooksecurefunc(button.IconBorder, 'Hide', function(self)
-					self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					--self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end)
 			end
 		end
@@ -321,8 +321,12 @@ function S:CharacterFrame()
 			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown'])
 			hooksecurefunc(Slot, 'DisplayAsAzeriteItem', UpdateAzeriteItem)
 			hooksecurefunc(Slot, 'DisplayAsAzeriteEmpoweredItem', UpdateAzeriteEmpoweredItem)
-			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
-			hooksecurefunc(Slot.IconBorder, 'Hide', function() Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b)
+				Slot:SetBackdropBorderColor(r, g, b)
+			end)
+			hooksecurefunc(Slot.IconBorder, 'Hide', function()
+				Slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
 
 			Slot:HookScript('OnShow', CorruptionIcon)
 			Slot:HookScript('OnEvent', CorruptionIcon)
@@ -400,7 +404,7 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
 	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailLFGBonusReputationCheckBox)
+	--S:HandleCheckBox(_G.ReputationDetailLFGBonusReputationCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 

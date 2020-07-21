@@ -10,7 +10,7 @@ local _G = _G
 local strlen, strjoin, gsub = strlen, strjoin, gsub
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
 
-local CreateFrame = CreateFrame
+
 local IsAddOnLoaded = IsAddOnLoaded
 local IsControlKeyDown = IsControlKeyDown
 local IsModifierKeyDown = IsModifierKeyDown
@@ -156,7 +156,7 @@ function B:EnhanceColorPicker()
 
 	--Skin the default frame, move default buttons into place
 	_G.ColorPickerFrame:SetClampedToScreen(true)
-	_G.ColorPickerFrame:SetTemplate("Transparent")
+	_G.ColorPickerFrame:CreateBackdrop("Transparent")
 	_G.ColorPickerFrame.Border:Hide()
 
 	_G.ColorPickerFrame.Header:StripTextures()
@@ -170,8 +170,8 @@ function B:EnhanceColorPicker()
 	_G.ColorPickerOkayButton:Point("BOTTOMLEFT", _G.ColorPickerFrame,"BOTTOMLEFT", 6,6)
 	_G.ColorPickerOkayButton:Point("RIGHT", _G.ColorPickerCancelButton,"LEFT", -4,0)
 	S:HandleSliderFrame(_G.OpacitySliderFrame)
-	S:HandleButton(_G.ColorPickerOkayButton)
-	S:HandleButton(_G.ColorPickerCancelButton)
+	--S:HandleButton(_G.ColorPickerOkayButton)
+	--S:HandleButton(_G.ColorPickerCancelButton)
 
 	_G.ColorPickerFrame:HookScript("OnShow", function(frame)
 		-- get color that will be replaced
@@ -223,7 +223,7 @@ function B:EnhanceColorPicker()
 	t:Hide()
 
 	-- add copy button to the _G.ColorPickerFrame
-	local b = CreateFrame("Button", "ColorPPCopy", _G.ColorPickerFrame, "UIPanelButtonTemplate")
+	local b = E:CreateFrame("Button", "ColorPPCopy", _G.ColorPickerFrame, "UIPanelButtonTemplate")
 	S:HandleButton(b)
 	b:SetText(CALENDAR_COPY_EVENT)
 	b:Width(60)
@@ -244,7 +244,7 @@ function B:EnhanceColorPicker()
 	end)
 
 	--class color button
-	b = CreateFrame('Button', 'ColorPPClass', _G.ColorPickerFrame, 'UIPanelButtonTemplate')
+	b = E:CreateFrame('Button', 'ColorPPClass', _G.ColorPickerFrame, 'UIPanelButtonTemplate')
 	b:SetText(CLASS)
 	S:HandleButton(b)
 	b:Width(80)
@@ -261,7 +261,7 @@ function B:EnhanceColorPicker()
 	end)
 
 	-- add paste button to the _G.ColorPickerFrame
-	b = CreateFrame("Button", "ColorPPPaste", _G.ColorPickerFrame, "UIPanelButtonTemplate")
+	b = E:CreateFrame("Button", "ColorPPPaste", _G.ColorPickerFrame, "UIPanelButtonTemplate")
 	b:SetText(CALENDAR_PASTE_EVENT)
 	S:HandleButton(b)
 	b:Width(60)
@@ -281,7 +281,7 @@ function B:EnhanceColorPicker()
 	end)
 
 	-- add defaults button to the _G.ColorPickerFrame
-	b = CreateFrame("Button", "ColorPPDefault", _G.ColorPickerFrame, "UIPanelButtonTemplate")
+	b = E:CreateFrame("Button", "ColorPPDefault", _G.ColorPickerFrame, "UIPanelButtonTemplate")
 	b:SetText(DEFAULT)
 	S:HandleButton(b)
 	b:Width(80)
@@ -325,7 +325,7 @@ function B:EnhanceColorPicker()
 	local boxes = { "R", "G", "B", "H", "A" }
 	for i = 1, #boxes do
 		local rgb = boxes[i]
-		local box = CreateFrame("EditBox", "ColorPPBox"..rgb, _G.ColorPickerFrame, "InputBoxTemplate")
+		local box = E:CreateFrame("EditBox", "ColorPPBox"..rgb, _G.ColorPickerFrame, "InputBoxTemplate")
 		box:Point("TOP", "ColorPickerWheel", "BOTTOM", 0, -15)
 		box:SetFrameStrata("DIALOG")
 		box:SetAutoFocus(false)
@@ -397,7 +397,7 @@ function B:EnhanceColorPicker()
 	_G.ColorPPBoxA:SetScript("OnTabPressed", function() _G.ColorPPBoxR:SetFocus() end)
 
 	-- make the color picker movable.
-	local mover = CreateFrame('Frame', nil, _G.ColorPickerFrame)
+	local mover = E:CreateFrame('Frame', nil, _G.ColorPickerFrame)
 	mover:Point('TOPLEFT', _G.ColorPickerFrame, 'TOP', -60, 0)
 	mover:Point('BOTTOMRIGHT', _G.ColorPickerFrame, 'TOP', 60, -15)
 	mover:SetScript('OnMouseDown', function() _G.ColorPickerFrame:StartMoving() end)

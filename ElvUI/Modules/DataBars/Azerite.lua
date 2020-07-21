@@ -12,7 +12,7 @@ local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
 local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLevel
 local InCombatLockdown = InCombatLockdown
-local CreateFrame = CreateFrame
+
 local ARTIFACT_POWER = ARTIFACT_POWER
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local HasArtifactEquipped = HasArtifactEquipped
@@ -163,7 +163,7 @@ function DB:LoadAzeriteBar()
 	DB.azeriteBar.statusBar:SetMinMaxValues(0, 325)
 	DB.azeriteBar.statusBar:SetFrameLevel(DB.azeriteBar:GetFrameLevel() + 2)
 
-	DB.azeriteBar.eventFrame = CreateFrame('Frame')
+	DB.azeriteBar.eventFrame = E:CreateFrame('Frame')
 	DB.azeriteBar.eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
 	DB.azeriteBar.eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
 	DB.azeriteBar.eventFrame:RegisterEvent('PLAYER_ENTERING_WORLD')

@@ -193,7 +193,12 @@ for k, v in next, {
 	--]]
 	UpdateAllElements = function(self, event)
 		local unit = self.unit
-		if(not unitExists(unit)) then return end
+		if(not unitExists(unit)) then
+			self:Hide()
+			return
+		else
+			self:Show()
+		end
 
 		assert(type(event) == 'string', "Invalid argument 'event' in UpdateAllElements.")
 

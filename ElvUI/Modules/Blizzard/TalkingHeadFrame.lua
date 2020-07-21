@@ -4,7 +4,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local ipairs, tremove = ipairs, tremove
 local IsAddOnLoaded = IsAddOnLoaded
-local CreateFrame = CreateFrame
+
 
 function B:ScaleTalkingHeadFrame()
 	local scale = E.db.general.talkingHeadFrameScale or 1
@@ -52,7 +52,7 @@ function B:PositionTalkingHead()
 		InitializeTalkingHead()
 		B:ScaleTalkingHeadFrame()
 	else --We want the mover to be available immediately, so we load it ourselves
-		local f = CreateFrame("Frame")
+		local f = E:CreateFrame("Frame")
 		f:RegisterEvent("PLAYER_ENTERING_WORLD")
 		f:SetScript("OnEvent", function(frame, event)
 			frame:UnregisterEvent(event)

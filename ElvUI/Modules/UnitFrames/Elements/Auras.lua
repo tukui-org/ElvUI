@@ -7,7 +7,7 @@ local sort, ceil, huge = sort, ceil, math.huge
 local select, unpack, next, format = select, unpack, next, format
 local strfind, strsplit, strmatch = strfind, strsplit, strmatch
 
-local CreateFrame = CreateFrame
+
 local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -16,7 +16,7 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
 function UF:Construct_Buffs(frame)
-	local buffs = CreateFrame('Frame', "$parentBuffs", frame)
+	local buffs = E:CreateFrame('Frame', "$parentBuffs", frame)
 	buffs.spacing = E.Spacing
 	buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
@@ -31,7 +31,7 @@ function UF:Construct_Buffs(frame)
 end
 
 function UF:Construct_Debuffs(frame)
-	local debuffs = CreateFrame('Frame', "$parentDebuffs", frame)
+	local debuffs = E:CreateFrame('Frame', "$parentDebuffs", frame)
 	debuffs.spacing = E.Spacing
 	debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
@@ -363,7 +363,9 @@ end
 function UF:PostUpdateAura(_, button)
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
-			if UF.db.colors.auraByType then button:SetBackdropBorderColor(.9, .1, .1) end
+			if UF.db.colors.auraByType then
+				button:SetBackdropBorderColor(.9, .1, .1)
+			end
 			button.icon:SetDesaturated(button.canDesaturate)
 		else
 			if UF.db.colors.auraByType then

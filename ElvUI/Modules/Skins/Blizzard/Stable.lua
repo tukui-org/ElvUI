@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
-local CreateFrame = CreateFrame
+
 
 local function PetButtons(btn, p)
 	local button = _G[btn]
@@ -55,7 +55,7 @@ function S:PetStableFrame()
 	local PetStableSelectedPetIcon = _G.PetStableSelectedPetIcon
 	if PetStableSelectedPetIcon then
 		PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
-		local b = CreateFrame("Frame", nil, PetStableSelectedPetIcon:GetParent())
+		local b = E:CreateFrame("Frame", nil, PetStableSelectedPetIcon:GetParent())
 		b:Point("TOPLEFT", PetStableSelectedPetIcon, -p, p)
 		b:Point("BOTTOMRIGHT", PetStableSelectedPetIcon, p, -p)
 		PetStableSelectedPetIcon:Size(37,37)

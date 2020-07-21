@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Blizzard')
 
 local _G = _G
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 
 local function topCenterPosition(self, _, b)
@@ -27,11 +27,11 @@ local function UIWidgets()
 	local topCenterContainer = _G.UIWidgetTopCenterContainerFrame
 	local belowMiniMapcontainer = _G.UIWidgetBelowMinimapContainerFrame
 
-	local topCenterHolder = CreateFrame('Frame', 'TopCenterContainerHolder', E.UIParent)
+	local topCenterHolder = E:CreateFrame('Frame', 'TopCenterContainerHolder', E.UIParent)
 	topCenterHolder:Point("TOP", E.UIParent, "TOP", 0, -30)
 	topCenterHolder:Size(10, 58)
 
-	local belowMiniMapHolder = CreateFrame('Frame', 'BelowMinimapContainerHolder', E.UIParent)
+	local belowMiniMapHolder = E:CreateFrame('Frame', 'BelowMinimapContainerHolder', E.UIParent)
 	belowMiniMapHolder:Point("TOPRIGHT", _G.Minimap, "BOTTOMRIGHT", 0, -16)
 	belowMiniMapHolder:Size(128, 40)
 

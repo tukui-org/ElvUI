@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 
-local CreateFrame = CreateFrame
+
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
 local GetCurrencyInfo = GetCurrencyInfo
 local GetItemInfo = GetItemInfo
@@ -57,7 +57,7 @@ function S:Blizzard_PVPUI()
 	SeasonReward.CircleMask:Hide()
 	SeasonReward.Ring:Hide()
 	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
-	local RewardFrameBorder = CreateFrame("Frame", nil, SeasonReward)
+	local RewardFrameBorder = E:CreateFrame("Frame", nil, SeasonReward)
 	RewardFrameBorder:SetTemplate()
 	RewardFrameBorder:SetOutside(SeasonReward.Icon)
 	SeasonReward.Icon:SetParent(RewardFrameBorder)
@@ -176,7 +176,7 @@ function S:Blizzard_PVPUI()
 
 		if rewardTexture then
 			rewardFrame.Icon:SetTexture(rewardTexture)
-			rewardFrame.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(rewardQuaility))
+			--rewardFrame.Icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(rewardQuaility))
 		end
 	end)
 

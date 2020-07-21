@@ -23,7 +23,7 @@ local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Pet Bar")
 
-local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate')
+local bar = E:CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate')
 bar:SetFrameStrata("LOW")
 
 function AB:UpdatePet(event, unit)

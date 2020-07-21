@@ -1,11 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local CreateFrame = CreateFrame
+
 
 function UF:Construct_PVPSpecIcon(frame)
-	local specIcon = CreateFrame("Frame", nil, frame)
-	specIcon.bg = CreateFrame("Frame", nil, specIcon)
+	local specIcon = E:CreateFrame("Frame", nil, frame)
+	specIcon.bg = E:CreateFrame("Frame", nil, specIcon)
 	specIcon.bg:SetTemplate(nil, nil, nil, self.thinBorders, true)
 	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
 	specIcon:SetInside(specIcon.bg)

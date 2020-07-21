@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local CreateFrame = CreateFrame
+
 
 function UF:Construct_AltPowerBar(frame)
-	local altpower = CreateFrame("StatusBar", "$parent_AlternativePower", frame)
+	local altpower = E:CreateFrame("StatusBar", "$parent_AlternativePower", frame)
 	altpower:SetStatusBarTexture(E.media.blankTex)
 	altpower:SetStatusBarColor(.7, .7, .6)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
@@ -15,7 +15,7 @@ function UF:Construct_AltPowerBar(frame)
 	altpower.BG:SetAllPoints()
 	altpower.BG:SetTexture(E.media.blankTex)
 
-	altpower.RaisedElementParent = CreateFrame('Frame', nil, altpower)
+	altpower.RaisedElementParent = E:CreateFrame('Frame', nil, altpower)
 	altpower.RaisedElementParent:SetFrameLevel(altpower:GetFrameLevel() + 100)
 	altpower.RaisedElementParent:SetAllPoints()
 

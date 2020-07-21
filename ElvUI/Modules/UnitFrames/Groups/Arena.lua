@@ -7,12 +7,12 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 local _G = _G
 local unpack = unpack
 
-local CreateFrame = CreateFrame
+
 local IsAddOnLoaded = IsAddOnLoaded
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 
-local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
+local ArenaHeader = E:CreateFrame('Frame', 'ArenaHeader', E.UIParent)
 
 function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specClass)
 	if not (frame and frame.ArenaPrepSpec and frame.ArenaPrepIcon) then return end
@@ -59,8 +59,8 @@ function UF:PostUpdateArenaPreparation(_, specID)
 end
 
 function UF:Construct_ArenaFrames(frame)
-	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
-	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)
+	frame.RaisedElementParent = E:CreateFrame('Frame', nil, frame)
+	frame.RaisedElementParent.TextureParent = E:CreateFrame('Frame', nil, frame.RaisedElementParent)
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
@@ -92,7 +92,7 @@ function UF:Construct_ArenaFrames(frame)
 
 		-- Arena Preparation
 		frame.ArenaPrepIcon = frame:CreateTexture(nil, 'OVERLAY')
-		frame.ArenaPrepIcon.bg = CreateFrame('Frame', nil, frame)
+		frame.ArenaPrepIcon.bg = E:CreateFrame('Frame', nil, frame)
 		frame.ArenaPrepIcon.bg:SetAllPoints(frame.PVPSpecIcon.bg)
 		frame.ArenaPrepIcon.bg:SetTemplate()
 		frame.ArenaPrepIcon:SetParent(frame.ArenaPrepIcon.bg)

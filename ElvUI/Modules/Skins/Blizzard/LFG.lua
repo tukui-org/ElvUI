@@ -64,17 +64,17 @@ local function SkinItemButton(parentFrame, _, index)
 		item.Icon:SetInside()
 
 		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
-			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			--self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 			self:SetTexture()
 		end)
 		hooksecurefunc(item.IconBorder, "Hide", function(self)
-			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			--self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		local r, g, b, a = item.IconBorder:GetVertexColor()
 		if r then
 			item.IconBorder:SetTexture()
-			item.backdrop:SetBackdropBorderColor(r, g, b, a)
+			--item.backdrop:SetBackdropBorderColor(r, g, b, a)
 		end
 
 		item.Count:SetDrawLayer("OVERLAY")
@@ -122,8 +122,6 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
-	S:HandleButton(_G.LFDQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
-	S:HandleButton(_G.ScenarioQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
 	S:HandleScrollBar(_G.ScenarioQueueFrameRandomScrollFrameScrollBar);
 
 	_G.GroupFinderFrame.groupButton1.icon:SetTexture([[Interface\Icons\INV_Helmet_08]])
@@ -698,7 +696,7 @@ function S:LookingForGroupFrames()
 	end)
 
 	-- Tutorial
-	S:HandleCloseButton(_G.PremadeGroupsPvETutorialAlert.CloseButton)
+	--S:HandleCloseButton(_G.PremadeGroupsPvETutorialAlert.CloseButton)
 end
 
 function S:Blizzard_ChallengesUI()

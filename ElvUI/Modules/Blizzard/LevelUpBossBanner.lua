@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Blizzard')
 
 local _G = _G
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 
 local Holder
@@ -15,7 +15,7 @@ end
 
 function B:Handle_LevelUpDisplay_BossBanner()
 	if not Holder then
-		Holder = CreateFrame("Frame", "LevelUpBossBannerHolder", E.UIParent)
+		Holder = E:CreateFrame("Frame", "LevelUpBossBannerHolder", E.UIParent)
 		Holder:Size(200, 20)
 		Holder:Point("TOP", E.UIParent, "TOP", -1, -120)
 	end

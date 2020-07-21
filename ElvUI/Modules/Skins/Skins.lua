@@ -5,7 +5,7 @@ local _G = _G
 local tinsert, xpcall, next = tinsert, xpcall, next
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
@@ -203,14 +203,14 @@ end
 
 -- DropDownMenu library support
 function S:SkinLibDropDownMenu(prefix)
-	if _G[prefix..'_UIDropDownMenu_CreateFrames'] and not S[prefix..'_UIDropDownMenuSkinned'] then
+	if _G[prefix..'_UIDropDownMenu_E:CreateFrames'] and not S[prefix..'_UIDropDownMenuSkinned'] then
 		local bd = _G[prefix..'_DropDownList1Backdrop']
 		local mbd = _G[prefix..'_DropDownList1MenuBackdrop']
 		if bd and not bd.template then bd:SetTemplate('Transparent') end
 		if mbd and not mbd.template then mbd:SetTemplate('Transparent') end
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true
-		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
+		hooksecurefunc(prefix..'_UIDropDownMenu_E:CreateFrames', function()
 			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS'];
 			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop'];
 			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop'];
@@ -321,7 +321,7 @@ do
 			Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
 			Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
 			Thumb.backdrop:SetFrameLevel(Thumb.backdrop:GetFrameLevel() + 2)
-			Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
+			--Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
 
 			frame.Thumb = Thumb
 		end
@@ -929,7 +929,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 				if button.Follower.PortraitFrame and button.Follower.PortraitFrame.quality then
 					local color = ITEM_QUALITY_COLORS[button.Follower.PortraitFrame.quality]
 					if color and button.Follower.PortraitFrame.backdrop then
-						button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+						--button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 					end
 				end
 			end
@@ -1342,7 +1342,7 @@ function S:Initialize()
 		end
 	end
 
-	-- Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)
+	--[[ Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)
 	if E.private.skins.ace3Enable then
 		for _, n in next, S.EarlyAceWidgets do
 			if n.SetLayout then
@@ -1357,7 +1357,7 @@ function S:Initialize()
 	end
 	for _, n in next, S.EarlyDropdowns do
 		S:SkinLibDropDownMenu(n)
-	end
+	end]]
 
 	do -- Credits ShestakUI
 		hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, "Setup", function(widgetInfo)
@@ -1383,7 +1383,7 @@ function S:Initialize()
 			end
 		end)
 
-		local frame = CreateFrame('Frame')
+		local frame = E:CreateFrame('Frame')
 		frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 		frame:RegisterEvent('UPDATE_ALL_UI_WIDGETS')
 		frame:SetScript('OnEvent', function()
@@ -1409,7 +1409,7 @@ function S:Initialize()
 		end)
 	end
 
-	hooksecurefunc("TriStateCheckbox_SetState", function(_, checkButton)
+	--[[hooksecurefunc("TriStateCheckbox_SetState", function(_, checkButton)
 		if checkButton.forceSaturation then
 			local tex = checkButton:GetCheckedTexture()
 			if checkButton.state == 2 then
@@ -1419,7 +1419,7 @@ function S:Initialize()
 				tex:SetVertexColor(0.6, 0.6, 0.6)
 			end
 		end
-	end)
+	end)]]
 end
 
 -- Keep this outside, it's used for skinning addons before ElvUI load

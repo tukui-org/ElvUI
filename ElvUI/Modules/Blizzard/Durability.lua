@@ -3,7 +3,7 @@ local B = E:GetModule('Blizzard')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
+
 
 local function SetPosition(frame, _, parent)
 	if parent ~= _G.DurabilityFrameHolder then
@@ -17,7 +17,7 @@ function B:PositionDurabilityFrame()
 
 	local Scale = E.db.general.durabilityScale or 1
 
-	local DurabilityFrameHolder = CreateFrame("Frame", "DurabilityFrameHolder", E.UIParent)
+	local DurabilityFrameHolder = E:CreateFrame("Frame", "DurabilityFrameHolder", E.UIParent)
 	DurabilityFrameHolder:Size(DurabilityFrame:GetSize())
 	DurabilityFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 

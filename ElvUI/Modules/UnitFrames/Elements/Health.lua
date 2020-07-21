@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 local random = random
-local CreateFrame = CreateFrame
+
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitReaction = UnitReaction
 local UnitIsPlayer = UnitIsPlayer
@@ -20,7 +20,7 @@ function UF.HealthClipFrame_OnUpdate(clipFrame)
 end
 
 function UF:Construct_HealthBar(frame, bg, text, textPos)
-	local health = CreateFrame('StatusBar', '$parent_HealthBar', frame)
+	local health = E:CreateFrame('StatusBar', '$parent_HealthBar', frame)
 	UF.statusbars[health] = true
 
 	health:SetFrameLevel(10) --Make room for Portrait and Power which should be lower by default
@@ -50,7 +50,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health.colorDisconnected = true
 	health:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
 
-	local clipFrame = CreateFrame('Frame', nil, health)
+	local clipFrame = E:CreateFrame('Frame', nil, health)
 	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
 	clipFrame:SetClipsChildren(true)
 	clipFrame:SetAllPoints()

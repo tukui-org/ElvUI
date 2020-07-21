@@ -5,7 +5,7 @@ local _G = _G
 local type, unpack, pairs, error = type, unpack, pairs, error
 local format, split, find, ipairs = format, strsplit, strfind, ipairs
 
-local CreateFrame = CreateFrame
+
 local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown
@@ -78,7 +78,7 @@ function E:SetMoverPoints(name, parent)
 end
 
 local isDragging = false
-local coordFrame = CreateFrame('Frame')
+local coordFrame = E:CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
@@ -91,7 +91,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	if overlay == nil then overlay = true end
 
-	local f = CreateFrame('Button', name, E.UIParent)
+	local f = E:CreateFrame('Button', name, E.UIParent)
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)

@@ -8,7 +8,7 @@ local tinsert = tinsert
 local max = max
 
 local CloseLoot = CloseLoot
-local CreateFrame = CreateFrame
+
 local CursorOnUpdate = CursorOnUpdate
 local CursorUpdate = CursorUpdate
 local GetCursorPosition = GetCursorPosition
@@ -110,7 +110,7 @@ end
 local function createSlot(id)
 	local iconsize = (iconSize - 2)
 
-	local frame = CreateFrame('Button', 'ElvLootSlot'..id, lootFrame)
+	local frame = E:CreateFrame('Button', 'ElvLootSlot'..id, lootFrame)
 	frame:Point('LEFT', 8, 0)
 	frame:Point('RIGHT', -8, 0)
 	frame:Height(iconsize)
@@ -123,7 +123,7 @@ local function createSlot(id)
 	frame:SetScript('OnClick', OnClick)
 	frame:SetScript('OnShow', OnShow)
 
-	local iconFrame = CreateFrame('Frame', nil, frame)
+	local iconFrame = E:CreateFrame('Frame', nil, frame)
 	iconFrame:Height(iconsize)
 	iconFrame:Width(iconsize)
 	iconFrame:Point('RIGHT', frame)
@@ -305,11 +305,11 @@ end
 
 function M:LoadLoot()
 	if not E.private.general.loot then return end
-	lootFrameHolder = CreateFrame('Frame', 'ElvLootFrameHolder', E.UIParent)
+	lootFrameHolder = E:CreateFrame('Frame', 'ElvLootFrameHolder', E.UIParent)
 	lootFrameHolder:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 418, -186)
 	lootFrameHolder:Size(150, 22)
 
-	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
+	lootFrame = E:CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
 	lootFrame:SetClampedToScreen(true)
 	lootFrame:Point('TOPLEFT')
 	lootFrame:Size(256, 64)

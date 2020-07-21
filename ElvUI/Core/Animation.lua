@@ -25,7 +25,7 @@ t:SetPoint("CENTER")
 t:FontTemplate(nil, 20)
 E:SetUpAnimGroup(t, "Number", 10, 5)
 
-local b = CreateFrame("BUTTON", nil, UIParent)
+local b = E:CreateFrame("BUTTON", nil, UIParent)
 b:SetPoint("CENTER", 0, -100)
 b:SetTemplate()
 b:SetSize(40,30)
@@ -215,7 +215,7 @@ function E:SlideOut(obj, customName)
 	obj[customName].out1:Play()
 end
 
-local FADEFRAMES, FADEMANAGER = {}, CreateFrame('FRAME')
+local FADEFRAMES, FADEMANAGER = {}, E:CreateFrame('FRAME')
 FADEMANAGER.delay = 0.025
 
 function E:UIFrameFade_OnUpdate(elapsed)

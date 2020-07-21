@@ -21,8 +21,12 @@ function S:Blizzard_ScrappingMachineUI()
 		button:SetTemplate()
 		S:HandleIcon(button.Icon)
 		button.IconBorder:SetAlpha(0)
-		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(_, r, g, b) button:SetBackdropBorderColor(r, g, b) end)
-		hooksecurefunc(button.IconBorder, 'Hide', function() button:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(_, r, g, b)
+			button:SetBackdropBorderColor(r, g, b)
+		end)
+		hooksecurefunc(button.IconBorder, 'Hide', function()
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end)
 	end
 
 	-- Temp mover

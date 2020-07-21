@@ -4,7 +4,7 @@ local M = E:GetModule('Misc')
 
 local sin, cos, rad = math.sin, math.cos, rad -- sin~=math.sin, cos~=math.cos, rad==math.rad; why? who knows? :P
 
-local CreateFrame = CreateFrame
+
 local GetNumGroupMembers = GetNumGroupMembers
 local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitIsGroupAssistant = UnitIsGroupAssistant
@@ -80,13 +80,13 @@ end
 
 local ANG_RAD = rad(360) / 7
 function M:LoadRaidMarker()
-	local marker = CreateFrame("Frame", nil, E.UIParent);
+	local marker = E:CreateFrame("Frame", nil, E.UIParent);
 	marker:EnableMouse(true);
 	marker:Size(100, 100);
 	marker:SetFrameStrata("DIALOG");
 
 	for i = 1, 8 do
-		local button = CreateFrame("Button", "RaidMarkIconButton"..i, marker);
+		local button = E:CreateFrame("Button", "RaidMarkIconButton"..i, marker);
 		button:Size(40);
 		button:SetID(i);
 		button.Texture = button:CreateTexture(button:GetName().."NormalTexture", "ARTWORK");

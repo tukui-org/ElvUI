@@ -4,7 +4,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local min = min
 
-local CreateFrame = CreateFrame
+
 local GetScreenHeight = GetScreenHeight
 local GetInstanceInfo = GetInstanceInfo
 local GetScreenWidth = GetScreenWidth
@@ -45,7 +45,7 @@ function B:SetObjectiveFrameAutoHide()
 end
 
 function B:MoveObjectiveFrame()
-	local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
+	local ObjectiveFrameHolder = E:CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
 	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 	ObjectiveFrameHolder:Size(130, 22)
 
@@ -72,7 +72,7 @@ function B:MoveObjectiveFrame()
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
 
 	-- objectiveFrameAutoHide
-	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
+	ObjectiveTrackerFrame.AutoHider = E:CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
 	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
 	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', function()
 		if not ObjectiveTrackerFrame.collapsed then

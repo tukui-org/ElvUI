@@ -3,7 +3,7 @@ local D = E:GetModule('DebugTools')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
+
 local InCombatLockdown = InCombatLockdown
 local GetCVarBool = GetCVarBool
 local StaticPopup_Hide = StaticPopup_Hide
@@ -35,7 +35,7 @@ function D:ModifyErrorFrame()
 	local BUTTON_SPACING = 2
 
 	-- Add a first button
-	local firstButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
+	local firstButton = E:CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
 	firstButton:Point("BOTTOMLEFT", ScriptErrorsFrame.Reload, "BOTTOMRIGHT", BUTTON_SPACING, 0)
 	firstButton:SetText("First")
 	firstButton:Height(BUTTON_HEIGHT)
@@ -47,7 +47,7 @@ function D:ModifyErrorFrame()
 	ScriptErrorsFrame.firstButton = firstButton
 
 	-- Also add a Last button for errors
-	local lastButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
+	local lastButton = E:CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
 	lastButton:Point("BOTTOMRIGHT", ScriptErrorsFrame.Close, "BOTTOMLEFT", -BUTTON_SPACING, 0)
 	lastButton:Height(BUTTON_HEIGHT)
 	lastButton:Width(BUTTON_WIDTH)
@@ -111,7 +111,7 @@ end
 
 function D:Initialize()
 	self.Initialized = true
-	self.HideFrame = CreateFrame('Frame')
+	self.HideFrame = E:CreateFrame('Frame')
 	self.HideFrame:Hide()
 
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame

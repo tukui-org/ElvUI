@@ -4,7 +4,7 @@ local AB = E:GetModule('ActionBars')
 local _G = _G
 local unpack = unpack
 
-local CreateFrame = CreateFrame
+
 local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
 local hooksecurefunc = hooksecurefunc
@@ -52,7 +52,7 @@ function AB:SetupExtraButton()
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
-	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
+	ExtraActionBarHolder = E:CreateFrame('Frame', nil, E.UIParent)
 	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
 
@@ -61,7 +61,7 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
-	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
+	ZoneAbilityHolder = E:CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
 
@@ -78,7 +78,7 @@ function AB:SetupExtraButton()
 			button.checked = true
 
 			self:StyleButton(button, true)
-			button:SetTemplate()
+			button:CreateBackdrop()
 			button.icon:SetDrawLayer('ARTWORK')
 
 			if E.private.skins.cleanBossButton and button.style then -- Hide the Artwork

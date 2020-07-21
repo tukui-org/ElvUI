@@ -6,7 +6,7 @@ local ipairs, select, unpack = ipairs, select, unpack
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
-local CreateFrame = CreateFrame
+
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_Calendar()
@@ -101,7 +101,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarWeekdaySelectedTexture:SetVertexColor(1, 1, 1, 0.6)
 
 	for i = 1, 6 do
-		local vline = CreateFrame("Frame", nil, _G["CalendarDayButton"..i])
+		local vline = E:CreateFrame("Frame", nil, _G["CalendarDayButton"..i])
 		vline:Height(548)
 		vline:Width(1)
 		vline:Point("TOP", _G["CalendarDayButton"..i], "TOPRIGHT")
@@ -109,7 +109,7 @@ function S:Blizzard_Calendar()
 	end
 
 	for i = 1, 36, 7 do
-		local hline = CreateFrame("Frame", nil, _G["CalendarDayButton"..i])
+		local hline = E:CreateFrame("Frame", nil, _G["CalendarDayButton"..i])
 		hline:Width(637)
 		hline:Height(1)
 		hline:Point("LEFT", _G["CalendarDayButton"..i], "TOPLEFT")
@@ -128,7 +128,7 @@ function S:Blizzard_Calendar()
 		edgeFile = E.media.blankTex,
 		edgeSize = 2,
 	})
-	_G.CalendarTodayFrame:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
+	--_G.CalendarTodayFrame:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
 
 	--CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()

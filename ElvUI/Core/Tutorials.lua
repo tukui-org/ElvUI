@@ -3,7 +3,7 @@ local Skins = E:GetModule('Skins')
 
 local _G = _G
 
-local CreateFrame = CreateFrame
+
 local DISABLE = DISABLE
 local HIDE = HIDE
 -- GLOBALS: ElvUITutorialWindow
@@ -47,7 +47,7 @@ function E:SetPrevTutorial()
 end
 
 function E:SpawnTutorialFrame()
-	local f = CreateFrame('Frame', 'ElvUITutorialWindow', E.UIParent)
+	local f = E:CreateFrame('Frame', 'ElvUITutorialWindow', E.UIParent)
 	f:SetFrameStrata('DIALOG')
 	f:SetToplevel(true)
 	f:SetClampedToScreen(true)
@@ -56,7 +56,7 @@ function E:SpawnTutorialFrame()
 	f:SetTemplate('Transparent')
 	f:Hide()
 
-	local header = CreateFrame('Button', nil, f)
+	local header = E:CreateFrame('Button', nil, f)
 	header:SetTemplate(nil, true)
 	header:Width(120); header:Height(25)
 	header:Point('CENTER', f, 'TOP')
@@ -75,7 +75,7 @@ function E:SpawnTutorialFrame()
 	desc:Point('BOTTOMRIGHT', -18, 30)
 	f.desc = desc
 
-	f.disableButton = CreateFrame('CheckButton', f:GetName()..'DisableButton', f, 'OptionsCheckButtonTemplate')
+	f.disableButton = E:CreateFrame('CheckButton', f:GetName()..'DisableButton', f, 'OptionsCheckButtonTemplate')
 	_G[f.disableButton:GetName() .. 'Text']:SetText(DISABLE)
 	f.disableButton:Point('BOTTOMLEFT')
 	Skins:HandleCheckBox(f.disableButton)
@@ -83,20 +83,20 @@ function E:SpawnTutorialFrame()
 
 	f.disableButton:SetScript('OnClick', function(btn) E.db.hideTutorial = btn:GetChecked() end)
 
-	f.hideButton = CreateFrame('Button', f:GetName()..'HideButton', f, 'OptionsButtonTemplate')
+	f.hideButton = E:CreateFrame('Button', f:GetName()..'HideButton', f, 'OptionsButtonTemplate')
 	f.hideButton:Point('BOTTOMRIGHT', -5, 5)
 	Skins:HandleButton(f.hideButton)
 	_G[f.hideButton:GetName() .. 'Text']:SetText(HIDE)
 	f.hideButton:SetScript('OnClick', function(btn) E:StaticPopupSpecial_Hide(btn:GetParent()) end)
 
-	f.nextButton = CreateFrame('Button', f:GetName()..'NextButton', f, 'OptionsButtonTemplate')
+	f.nextButton = E:CreateFrame('Button', f:GetName()..'NextButton', f, 'OptionsButtonTemplate')
 	f.nextButton:Point('RIGHT', f.hideButton, 'LEFT', -4, 0)
 	f.nextButton:Width(20)
 	Skins:HandleButton(f.nextButton)
 	_G[f.nextButton:GetName() .. 'Text']:SetText('>')
 	f.nextButton:SetScript('OnClick', function() E:SetNextTutorial() end)
 
-	f.prevButton = CreateFrame('Button', f:GetName()..'PrevButton', f, 'OptionsButtonTemplate')
+	f.prevButton = E:CreateFrame('Button', f:GetName()..'PrevButton', f, 'OptionsButtonTemplate')
 	f.prevButton:Point('RIGHT', f.nextButton, 'LEFT', -4, 0)
 	f.prevButton:Width(20)
 	Skins:HandleButton(f.prevButton)

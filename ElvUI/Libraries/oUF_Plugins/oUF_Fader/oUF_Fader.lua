@@ -221,10 +221,9 @@ local options = {
 	Health = {
 		enable = function(self)
 			self:RegisterEvent('UNIT_HEALTH', Update)
-			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
 			self:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end,
-		events = {'UNIT_HEALTH','UNIT_HEALTH_FREQUENT','UNIT_MAXHEALTH'}
+		events = {'UNIT_HEALTH','UNIT_MAXHEALTH'}
 	},
 	Power = {
 		enable = function(self)

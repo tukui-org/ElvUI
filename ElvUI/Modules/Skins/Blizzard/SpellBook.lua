@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, select = pairs, select
-local CreateFrame = CreateFrame
+
 local GetProfessionInfo = GetProfessionInfo
 local hooksecurefunc = hooksecurefunc
 
@@ -26,7 +26,7 @@ function S:SpellBookFrame()
 		_G.SpellBookPage2:SetAlpha(0)
 		_G.SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
 	else
-		local pagebackdrop = CreateFrame("Frame", nil, SpellBookFrame)
+		local pagebackdrop = E:CreateFrame("Frame", nil, SpellBookFrame)
 		pagebackdrop:SetTemplate()
 		pagebackdrop:Point("TOPLEFT", _G.SpellBookPage1, "TOPLEFT", -2, 2)
 		pagebackdrop:Point("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", -8, 4)

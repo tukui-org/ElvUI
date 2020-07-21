@@ -5,7 +5,7 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local pairs, select, wipe = pairs, select, wipe
 
-local CreateFrame = CreateFrame
+
 local GetThreatStatusColor = GetThreatStatusColor
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local UnitClass = UnitClass
@@ -143,7 +143,7 @@ function THREAT:Initialize()
 	self.Initialized = true
 	self.db = E.db.general.threat
 
-	self.bar = CreateFrame('StatusBar', 'ElvUI_ThreatBar', E.UIParent)
+	self.bar = E:CreateFrame('StatusBar', 'ElvUI_ThreatBar', E.UIParent)
 	self.bar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(self.bar)
 	self.bar:SetMinMaxValues(0, 100)

@@ -21,7 +21,7 @@ function S:Blizzard_GarrisonTemplates()
 		local color = followerInfo.quality and ITEM_QUALITY_COLORS[followerInfo.quality]
 		if color then
 			if s.PortraitFrame.backdrop then
-				s.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				--s.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 			end
 			s.Name:SetVertexColor(color.r, color.g, color.b)
 		end

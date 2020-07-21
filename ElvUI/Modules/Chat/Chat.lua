@@ -30,7 +30,7 @@ local ChatFrame_ResolvePrefixedChannelName = ChatFrame_ResolvePrefixedChannelNam
 local ChatFrame_SendTell = ChatFrame_SendTell
 local ChatFrame_SystemEventHandler = ChatFrame_SystemEventHandler
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
-local CreateFrame = CreateFrame
+
 local FCF_Close = FCF_Close
 local FCF_GetChatWindowInfo = FCF_GetChatWindowInfo
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
@@ -639,7 +639,7 @@ function CH:StyleChat(frame)
 	_G[name.."EditBoxMid"]:Kill()
 	_G[name.."EditBoxRight"]:Kill()
 
-	editbox:SetTemplate(nil, true)
+	editbox:CreateBackdrop(nil, true)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(LeftChatDataPanel)
 	editbox:HookScript("OnTextChanged", OnTextChanged)
@@ -677,7 +677,7 @@ function CH:StyleChat(frame)
 	end
 
 	--copy chat button
-	local copyButton = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
+	local copyButton = E:CreateFrame('Frame', format("CopyChatButton%d", id), frame)
 	copyButton:EnableMouse(true)
 	copyButton:SetAlpha(0.35)
 	copyButton:Size(20, 22)
@@ -2257,7 +2257,7 @@ end
 
 tremove(_G.ChatTypeGroup.GUILD, 2)
 function CH:DelayGuildMOTD()
-	local delay, checks, delayFrame, chat = 0, 0, CreateFrame('Frame')
+	local delay, checks, delayFrame, chat = 0, 0, E:CreateFrame('Frame')
 	tinsert(_G.ChatTypeGroup.GUILD, 2, 'GUILD_MOTD')
 	delayFrame:SetScript('OnUpdate', function(df, elapsed)
 		delay = delay + elapsed
@@ -2686,7 +2686,7 @@ function CH:HandleChatVoiceIcons()
 end
 
 function CH:CreateChatVoicePanel()
-	local Holder = CreateFrame('Frame', 'ChatButtonHolder', E.UIParent)
+	local Holder = E:CreateFrame('Frame', 'ChatButtonHolder', E.UIParent)
 	Holder:ClearAllPoints()
 	Holder:Point("BOTTOMLEFT", _G.LeftChatPanel, "TOPLEFT", 0, 1)
 	Holder:Size(30, 86)
@@ -2752,7 +2752,7 @@ function CH:CreateChatVoicePanel()
 end
 
 function CH:BuildCopyChatFrame()
-	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
+	local frame = E:CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	tinsert(_G.UISpecialFrames, "CopyChatFrame")
 	frame:SetTemplate('Transparent')
 	frame:Size(700, 200)
@@ -2789,10 +2789,10 @@ function CH:BuildCopyChatFrame()
 	end)
 	frame:SetFrameStrata("DIALOG")
 
-	local scrollArea = CreateFrame("ScrollFrame", "CopyChatScrollFrame", frame, "UIPanelScrollFrameTemplate")
+	local scrollArea = E:CreateFrame("ScrollFrame", "CopyChatScrollFrame", frame, "UIPanelScrollFrameTemplate")
 	scrollArea:Point("TOPLEFT", frame, "TOPLEFT", 8, -30)
 	scrollArea:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
-	Skins:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
+	--Skins:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
 	scrollArea:SetScript("OnSizeChanged", function(scroll)
 		_G.CopyChatFrameEditBox:Width(scroll:GetWidth())
 		_G.CopyChatFrameEditBox:Height(scroll:GetHeight())
@@ -2801,7 +2801,7 @@ function CH:BuildCopyChatFrame()
 		_G.CopyChatFrameEditBox:SetHitRectInsets(0, 0, offset, (_G.CopyChatFrameEditBox:GetHeight() - offset - scroll:GetHeight()))
 	end)
 
-	local editBox = CreateFrame("EditBox", "CopyChatFrameEditBox", frame)
+	local editBox = E:CreateFrame("EditBox", "CopyChatFrameEditBox", frame)
 	editBox:SetMultiLine(true)
 	editBox:SetMaxLetters(99999)
 	editBox:EnableMouse(true)
@@ -2819,7 +2819,7 @@ function CH:BuildCopyChatFrame()
 		end
 	end)
 
-	local close = CreateFrame("Button", "CopyChatFrameCloseButton", frame, "UIPanelCloseButton")
+	local close = E:CreateFrame("Button", "CopyChatFrameCloseButton", frame, "UIPanelCloseButton")
 	close:Point("TOPRIGHT")
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
@@ -3127,6 +3127,7 @@ function CH:Initialize()
 		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
 
+		--[[
 		if chanName and (chatType == "CHANNEL") then
 			if chanName == 0 then
 				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -3137,10 +3138,11 @@ function CH:Initialize()
 		else
 			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
 		end
+		]]
 	end)
 
 	--Chat Heads Frame
-	CH.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
+	CH.ChatHeadFrame = E:CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
 	CH.ChatHeadFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 368, -210)
 	CH.ChatHeadFrame:Height(20)
 	CH.ChatHeadFrame:Width(200)
@@ -3150,11 +3152,11 @@ function CH:Initialize()
 
 	local CHAT_HEAD_HEIGHT = 40
 	for i = 1, CH.maxHeads do
-		local chatHead = CreateFrame("Frame", "ElvUIChatHeadFrame"..i, CH.ChatHeadFrame)
+		local chatHead = E:CreateFrame("Frame", "ElvUIChatHeadFrame"..i, CH.ChatHeadFrame)
 		chatHead:Width(CH.ChatHeadFrame:GetWidth())
 		chatHead:Height(CHAT_HEAD_HEIGHT)
 
-		chatHead.Portrait = CreateFrame("Frame", nil, chatHead)
+		chatHead.Portrait = E:CreateFrame("Frame", nil, chatHead)
 		chatHead.Portrait:Width(CHAT_HEAD_HEIGHT - CH.volumeBarHeight)
 		chatHead.Portrait:Height(CHAT_HEAD_HEIGHT - CH.volumeBarHeight - E.Border*2)
 		chatHead.Portrait:Point("TOPLEFT", chatHead, "TOPLEFT")
@@ -3167,7 +3169,7 @@ function CH:Initialize()
 		chatHead.Name:FontTemplate(nil, 20)
 		chatHead.Name:Point("LEFT", chatHead.Portrait, "RIGHT", 2, 0)
 
-		chatHead.StatusBar = CreateFrame("StatusBar", nil, chatHead)
+		chatHead.StatusBar = E:CreateFrame("StatusBar", nil, chatHead)
 		chatHead.StatusBar:Point("TOPLEFT", chatHead.Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
 		chatHead.StatusBar:Width(CHAT_HEAD_HEIGHT - E.Border*2 - CH.volumeBarHeight)
 		chatHead.StatusBar:Height(CH.volumeBarHeight)

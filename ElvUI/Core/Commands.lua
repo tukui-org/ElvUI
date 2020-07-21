@@ -131,7 +131,7 @@ local num_frames = 0
 local function OnUpdate()
 	num_frames = num_frames + 1
 end
-local f = CreateFrame('Frame')
+local f = E:CreateFrame('Frame')
 f:Hide()
 f:SetScript('OnUpdate', OnUpdate)
 

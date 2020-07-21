@@ -7,7 +7,7 @@ local select = select
 local pairs = pairs
 local rad = rad
 
-local CreateFrame = CreateFrame
+
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
@@ -126,7 +126,7 @@ local function SkinAbilitiesInfo()
 
 			HandleButton(header.button)
 
-			header.button.bg = CreateFrame("Frame", nil, header.button)
+			header.button.bg = E:CreateFrame("Frame", nil, header.button)
 			header.button.bg:SetTemplate()
 			header.button.bg:SetOutside(header.button.abilityIcon)
 			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
@@ -162,7 +162,7 @@ local function ItemSetsFrame(_, button)
 		end
 	end
 
-	button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
+	--button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
 end
 
 local function HandleTopTabs(tab)
@@ -338,7 +338,7 @@ function S:Blizzard_EncounterJournal()
 		item.icon:SetDrawLayer("ARTWORK")
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 
-		item.IconBackdrop = CreateFrame("Frame", nil, item)
+		item.IconBackdrop = E:CreateFrame("Frame", nil, item)
 		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
 		item.IconBackdrop:Point("TOPLEFT", item.icon, -1, 1)
 		item.IconBackdrop:Point("BOTTOMRIGHT", item.icon, 1, -1)
@@ -356,7 +356,7 @@ function S:Blizzard_EncounterJournal()
 		item.armorType:Point("RIGHT", item, "RIGHT", -10, 0)
 
 		hooksecurefunc(item.IconBorder, "SetVertexColor", function(s, r, g, b)
-			s:GetParent().IconBackdrop:SetBackdropBorderColor(r, g, b)
+			--s:GetParent().IconBackdrop:SetBackdropBorderColor(r, g, b)
 			s:SetTexture()
 		end)
 
@@ -479,7 +479,7 @@ function S:Blizzard_EncounterJournal()
 						r, g, b = GetItemQualityColor(quality)
 					end
 				end
-				sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
+				--sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 		end)
 	end

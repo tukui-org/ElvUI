@@ -5,7 +5,7 @@ local pairs = pairs
 
 local Enum = Enum
 local IsFalling = IsFalling
-local CreateFrame = CreateFrame
+
 local UnitPosition = UnitPosition
 local GetUnitSpeed = GetUnitSpeed
 local CreateVector2D = CreateVector2D
@@ -40,7 +40,7 @@ function E:MapInfo_Update()
 	E:MapInfo_CoordsUpdate()
 end
 
-local coordsWatcher = CreateFrame('Frame')
+local coordsWatcher = E:CreateFrame('Frame')
 function E:MapInfo_CoordsStart()
 	E.MapInfo.coordsWatching = true
 	E.MapInfo.coordsFalling = nil

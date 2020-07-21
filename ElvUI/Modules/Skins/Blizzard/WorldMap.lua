@@ -5,9 +5,9 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 local function WorldMapBountyBoard(Frame)
-	Frame.BountyName:FontTemplate()
+	--Frame.BountyName:FontTemplate()
 
-	S:HandleCloseButton(Frame.TutorialBox.CloseButton)
+	--S:HandleCloseButton(Frame.TutorialBox.CloseButton)
 end
 
 function S:WorldMapFrame()
@@ -54,15 +54,15 @@ function S:WorldMapFrame()
 	QuestScrollFrame.DetailFrame.backdrop:SetFrameLevel(1)
 	QuestScrollFrame.DetailFrame.backdrop:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPLEFT", 3, 1)
 	QuestScrollFrame.DetailFrame.backdrop:Point("BOTTOMRIGHT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", -2, -7)
-	QuestScrollFrame.Background:SetInside(QuestScrollFrame.DetailFrame.backdrop)
+	--QuestScrollFrame.Background:SetInside(QuestScrollFrame.DetailFrame.backdrop)
 	QuestScrollFrame.Contents.StoryHeader.Background:Width(251)
 	QuestScrollFrame.Contents.StoryHeader.Background:Point("TOP", 0, -9)
 	QuestScrollFrame.Contents.StoryHeader.Text:Point("TOPLEFT", 18, -20)
 	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAllPoints(QuestScrollFrame.Contents.StoryHeader.Background)
 	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAlpha(0)
-	S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
-	QuestScrollFrameScrollBar:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPRIGHT", 1, -15)
-	QuestScrollFrameScrollBar:Point("BOTTOMLEFT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", 6, 10)
+	--S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
+	--QuestScrollFrameScrollBar:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPRIGHT", 1, -15)
+	--QuestScrollFrameScrollBar:Point("BOTTOMLEFT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", 6, 10)
 
 	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton)
 	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton)
@@ -72,7 +72,7 @@ function S:WorldMapFrame()
 
 	if E.private.skins.blizzard.tooltip then
 		QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
-		QuestScrollFrame.WarCampaignTooltip:SetTemplate("Transparent")
+		--QuestScrollFrame.WarCampaignTooltip:SetTemplate("Transparent")
 	end
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
@@ -100,7 +100,7 @@ function S:WorldMapFrame()
 	WorldMapFrame.overlayFrames[2]:SetHighlightTexture([[Interface\Minimap\Tracking\None]], "ADD")
 	WorldMapFrame.overlayFrames[2]:GetHighlightTexture():SetAllPoints(WorldMapFrame.overlayFrames[2].Icon)
 
-	WorldMapBountyBoard(WorldMapFrame.overlayFrames[3]) -- BountyBoard
+	--WorldMapBountyBoard(WorldMapFrame.overlayFrames[3]) -- BountyBoard
 	--WorldMapActionButtonTemplate(WorldMapFrame.overlayFrames[4]) -- ActionButtons
 	--WorldMapZoneTimerTemplate(WorldMapFrame.overlayFrames[5]) -- Timer?
 

@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local CreateFrame = CreateFrame
+
 
 function UF:Construct_InfoPanel(frame)
-	local infoPanel = CreateFrame("Frame", '$parent_InfoPanel', frame)
+	local infoPanel = E:CreateFrame("Frame", '$parent_InfoPanel', frame)
 	infoPanel:SetFrameLevel(7) --Health is 10 and filled power is 5 by default
 
 	local thinBorders = self.thinBorders

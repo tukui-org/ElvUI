@@ -111,8 +111,12 @@ function S:Blizzard_InspectUI()
 			end
 
 			Slot.IconBorder:SetAlpha(0)
-			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b) Slot:SetBackdropBorderColor(r, g, b) end)
-			hooksecurefunc(Slot.IconBorder, 'Hide', function() Slot:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b)
+				Slot:SetBackdropBorderColor(r, g, b)
+			end)
+			hooksecurefunc(Slot.IconBorder, 'Hide', function()
+				Slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
 		end
 	end
 

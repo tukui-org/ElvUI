@@ -6,7 +6,7 @@ local gsub, type, pairs, ipairs, select, unpack, strfind = gsub, type, pairs, ip
 
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local GetMoney = GetMoney
-local CreateFrame = CreateFrame
+
 local GetQuestID = GetQuestID
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
@@ -119,9 +119,10 @@ function S:BlizzardQuestFrames()
 
 	local QuestInfoItemHighlight = _G.QuestInfoItemHighlight
 	QuestInfoItemHighlight:StripTextures()
-	QuestInfoItemHighlight:SetTemplate(nil, nil, true)
+	QuestInfoItemHighlight:CreateBackdrop()
+	QuestInfoItemHighlight.backdrop:SetAllPoints()
 	QuestInfoItemHighlight:SetBackdropBorderColor(1, 1, 0)
-	QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
+	--QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
 	QuestInfoItemHighlight:Size(142, 40)
 
 	hooksecurefunc("QuestInfoItem_OnClick", function(s)
@@ -191,7 +192,7 @@ function S:BlizzardQuestFrames()
 					level:ClearAllPoints()
 					level:Point("BOTTOM", followerReward.PortraitFrame, 0, 3)
 
-					local squareBG = CreateFrame("Frame", nil, followerReward.PortraitFrame)
+					local squareBG = E:CreateFrame("Frame", nil, followerReward.PortraitFrame)
 					squareBG:SetFrameLevel(followerReward.PortraitFrame:GetFrameLevel()-1)
 					squareBG:Point("TOPLEFT", 2, -2)
 					squareBG:Point("BOTTOMRIGHT", -2, 2)
@@ -202,7 +203,7 @@ function S:BlizzardQuestFrames()
 				end
 
 				local r, g, b = followerReward.PortraitFrame.PortraitRingQuality:GetVertexColor()
-				followerReward.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
+				--followerReward.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
 			end
 		end
 
@@ -270,8 +271,12 @@ function S:BlizzardQuestFrames()
 			RewardButton.IconBorder:SetAlpha(0)
 			RewardButton.NameFrame:Hide()
 
-			hooksecurefunc(RewardButton.IconBorder, 'SetVertexColor', function(_, r, g, b) RewardButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-			hooksecurefunc(RewardButton.IconBorder, 'Hide', function() RewardButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+			hooksecurefunc(RewardButton.IconBorder, 'SetVertexColor', function(_, r, g, b)
+				--RewardButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			end)
+			hooksecurefunc(RewardButton.IconBorder, 'Hide', function()
+				--RewardButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end)
 		end
 	end)
 
@@ -367,7 +372,7 @@ function S:BlizzardQuestFrames()
 		button:StripTextures()
 		button:SetFrameLevel(button:GetFrameLevel() +1)
 
-		local frame = CreateFrame("Frame", nil, button)
+		local frame = E:CreateFrame("Frame", nil, button, BackdropTemplateMixin and "BackdropTemplate")
 		frame:SetFrameLevel(button:GetFrameLevel() -1)
 		frame:SetTemplate("Transparent", nil, true)
 		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -412,7 +417,7 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
-	S:HandleScrollBar(_G.QuestMapDetailsScrollFrameScrollBar)
+	--S:HandleScrollBar(_G.QuestMapDetailsScrollFrameScrollBar)
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)
