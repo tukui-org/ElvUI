@@ -21,8 +21,8 @@ local function OnClick()
 end
 
 local function GetInfo(id)
-	local name, num, icon = C_CurrencyInfo_GetCurrencyInfo(id)
-	return name, num, (icon and format(iconString, icon)) or '136012'
+	local info = C_CurrencyInfo_GetCurrencyInfo(id)
+	return info.name, info.quantity, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
 end
 
 local function AddInfo(id)
