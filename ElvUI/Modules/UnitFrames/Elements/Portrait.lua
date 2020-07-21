@@ -5,7 +5,7 @@ local rad = rad
 local unpack = unpack
 local select = select
 local UnitClass = UnitClass
-
+local CreateFrame = CreateFrame
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 

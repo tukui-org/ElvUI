@@ -5,7 +5,6 @@ local _G = _G
 local format = format
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
-local GetExpansionLevel = GetExpansionLevel
 local displayString = ""
 
 local function OnEvent(self)

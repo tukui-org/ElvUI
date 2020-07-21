@@ -4,7 +4,7 @@ local select = select
 
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
-
+local CreateFrame = CreateFrame
 -- GLOBALS: ElvUI
 
 local function OnMouseDown(self, button)

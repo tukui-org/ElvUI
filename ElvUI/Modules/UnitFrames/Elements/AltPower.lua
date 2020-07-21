@@ -1,8 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-
-
+local CreateFrame = CreateFrame
 function UF:Construct_AltPowerBar(frame)
 	local altpower = CreateFrame("StatusBar", "$parent_AlternativePower", frame)
 	altpower:SetStatusBarTexture(E.media.blankTex)

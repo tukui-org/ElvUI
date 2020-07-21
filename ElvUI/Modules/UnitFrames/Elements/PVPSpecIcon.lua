@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-
+local CreateFrame = CreateFrame
 
 function UF:Construct_PVPSpecIcon(frame)
 	local specIcon = CreateFrame("Frame", nil, frame)

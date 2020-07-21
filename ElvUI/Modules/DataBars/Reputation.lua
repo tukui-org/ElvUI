@@ -10,7 +10,7 @@ local GetFriendshipReputation = GetFriendshipReputation
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local InCombatLockdown = InCombatLockdown
 local ToggleCharacter = ToggleCharacter
-
+local CreateFrame = CreateFrame
 local REPUTATION = REPUTATION
 local STANDING = STANDING
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL

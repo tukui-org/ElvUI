@@ -7,7 +7,7 @@ local ceil, unpack = ceil, unpack
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
 local ClearOverrideBindings = ClearOverrideBindings
-
+local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetFlyoutID = GetFlyoutID
 local GetMouseFocus = GetMouseFocus

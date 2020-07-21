@@ -7,7 +7,7 @@ local select = select
 local assert = assert
 local tinsert = tinsert
 local strsub = strsub
-
+local CreateFrame = CreateFrame
 local UnitClass = UnitClass
 local UnitExists = UnitExists
 local UnitIsPlayer = UnitIsPlayer

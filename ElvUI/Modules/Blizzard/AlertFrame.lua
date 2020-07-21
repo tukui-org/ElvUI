@@ -5,7 +5,7 @@ local Misc = E:GetModule('Misc')
 local _G = _G
 local pairs = pairs
 local ipairs = ipairs
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 local POSITION, ANCHOR_POINT, YOFFSET = "TOP", "BOTTOM", -10

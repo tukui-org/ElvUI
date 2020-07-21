@@ -8,7 +8,7 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local UnitIsConnected = UnitIsConnected
-
+local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 

@@ -10,7 +10,7 @@ local pairs, type, unpack, assert = pairs, type, unpack, assert
 local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, wipe
 local strlower, format, error = strlower, format, error
 
-
+local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
 local GetBindingFromClick, RunBinding = GetBindingFromClick, RunBinding

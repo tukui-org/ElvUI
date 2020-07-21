@@ -7,9 +7,8 @@ local min = min
 local format = format
 local GetPetExperience, UnitXP, UnitXPMax = GetPetExperience, UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
-local GetExpansionLevel = GetExpansionLevel
 local InCombatLockdown = InCombatLockdown
-
+local CreateFrame = CreateFrame
 
 function DB:GetXP(unit)
 	if unit == 'pet' then

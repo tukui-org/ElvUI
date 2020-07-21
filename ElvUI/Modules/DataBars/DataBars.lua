@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DB = E:GetModule('DataBars')
 
 local _G = _G
-
-local GetExpansionLevel = GetExpansionLevel
+local CreateFrame = CreateFrame
 -- GLOBALS: ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, ElvUI_AzeriteBar
 
 function DB:OnLeave()

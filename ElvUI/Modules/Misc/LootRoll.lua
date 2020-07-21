@@ -5,7 +5,7 @@ local _G = _G
 local pairs, unpack, ipairs, next, tonumber, tinsert = pairs, unpack, ipairs, next, tonumber, tinsert
 
 local ChatEdit_InsertLink = ChatEdit_InsertLink
-
+local CreateFrame = CreateFrame
 local CursorOnUpdate = CursorOnUpdate
 local DressUpItemLink = DressUpItemLink
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem

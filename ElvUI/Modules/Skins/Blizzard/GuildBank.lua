@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select, unpack = select, unpack
 
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_GuildBankUI()

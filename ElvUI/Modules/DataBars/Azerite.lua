@@ -12,7 +12,7 @@ local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
 local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLevel
 local InCombatLockdown = InCombatLockdown
-
+local CreateFrame = CreateFrame
 local ARTIFACT_POWER = ARTIFACT_POWER
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local HasArtifactEquipped = HasArtifactEquipped

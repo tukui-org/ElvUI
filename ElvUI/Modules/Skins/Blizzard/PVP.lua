@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 
-
+local CreateFrame = CreateFrame
 local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
 local GetCurrencyInfo = GetCurrencyInfo
 local GetItemInfo = GetItemInfo

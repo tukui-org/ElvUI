@@ -14,11 +14,11 @@ local function MailFrameSkin()
 			btn:StyleButton()
 			btn.skinned = true
 			hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(self, r, g, b)
-				--self:GetParent():SetBackdropBorderColor(r, g, b)
+				self:GetParent():SetBackdropBorderColor(r, g, b)
 				self:SetTexture()
 			end)
 			hooksecurefunc(btn.IconBorder, 'Hide', function(self)
-				--self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+				self:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 		end
 
@@ -51,11 +51,11 @@ function S:MailFrame()
 
 		local ib = _G["MailItem"..i.."ButtonIconBorder"]
 		hooksecurefunc(ib, 'SetVertexColor', function(s, r, g, b)
-			--s:GetParent():SetBackdropBorderColor(r, g, b)
+			s:GetParent():SetBackdropBorderColor(r, g, b)
 			s:SetTexture()
 		end)
 		hooksecurefunc(ib, 'Hide', function(s)
-			--s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
 
@@ -146,11 +146,11 @@ function S:MailFrame()
 		btn:StyleButton()
 
 		hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(s, r, g, b)
-			--s:GetParent():SetBackdropBorderColor(r, g, b)
+			s:GetParent():SetBackdropBorderColor(r, g, b)
 			s:SetTexture()
 		end)
 		hooksecurefunc(btn.IconBorder, 'Hide', function(s)
-			--s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		local t = _G["OpenMailAttachmentButton"..i.."IconTexture"]

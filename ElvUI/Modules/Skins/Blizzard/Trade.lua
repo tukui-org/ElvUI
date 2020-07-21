@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 function S:TradeFrame()
@@ -69,19 +69,19 @@ function S:TradeFrame()
 
 			-- Player Icon Border
 			hooksecurefunc(player_button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-				--s:GetParent():SetBackdropBorderColor(r, g, b)
+				s:GetParent():SetBackdropBorderColor(r, g, b)
 				s:SetTexture()
 			end)
 			hooksecurefunc(player_button.IconBorder, 'Hide', function(s)
-				--s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 			-- Recipient Icon Border
 			hooksecurefunc(recipient_button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-				--s:GetParent():SetBackdropBorderColor(r, g, b)
+				s:GetParent():SetBackdropBorderColor(r, g, b)
 				s:SetTexture()
 			end)
 			hooksecurefunc(recipient_button.IconBorder, 'Hide', function(s)
-				--s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 		end
 	end

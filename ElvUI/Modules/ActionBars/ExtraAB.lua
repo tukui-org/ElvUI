@@ -3,8 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local unpack = unpack
-
-
+local CreateFrame = CreateFrame
 local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
 local hooksecurefunc = hooksecurefunc

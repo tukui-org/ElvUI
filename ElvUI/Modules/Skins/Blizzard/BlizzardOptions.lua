@@ -373,7 +373,6 @@ function S:BlizzardOptions()
 	local SplashFrame = _G.SplashFrame
 	SplashFrame:CreateBackdrop("Transparent")
 	SplashFrame.Header:FontTemplate(nil, 22)
-	--SplashFrame.RightTitle:FontTemplate(nil, 30)
 	S:HandleButton(SplashFrame.BottomCloseButton)
 	S:HandleCloseButton(SplashFrame.TopCloseButton)
 

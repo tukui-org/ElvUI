@@ -8,7 +8,7 @@ local tinsert = tinsert
 local max = max
 
 local CloseLoot = CloseLoot
-
+local CreateFrame = CreateFrame
 local CursorOnUpdate = CursorOnUpdate
 local CursorUpdate = CursorUpdate
 local GetCursorPosition = GetCursorPosition

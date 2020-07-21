@@ -6,7 +6,7 @@ local format, wipe = format, wipe
 local select, unpack, pairs = select, unpack, pairs
 
 local Ambiguate = Ambiguate
-
+local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local RemoveExtraSpaces = RemoveExtraSpaces
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles

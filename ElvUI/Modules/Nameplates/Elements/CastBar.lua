@@ -7,7 +7,7 @@ local abs = abs
 local unpack = unpack
 local strjoin = strjoin
 local strmatch = strmatch
-
+local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local INTERRUPTED = INTERRUPTED

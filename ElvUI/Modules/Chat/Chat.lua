@@ -30,7 +30,7 @@ local ChatFrame_ResolvePrefixedChannelName = ChatFrame_ResolvePrefixedChannelNam
 local ChatFrame_SendTell = ChatFrame_SendTell
 local ChatFrame_SystemEventHandler = ChatFrame_SystemEventHandler
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
-
+local CreateFrame = CreateFrame
 local FCF_Close = FCF_Close
 local FCF_GetChatWindowInfo = FCF_GetChatWindowInfo
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
@@ -3127,7 +3127,6 @@ function CH:Initialize()
 		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
 
-		--[[
 		if chanName and (chatType == "CHANNEL") then
 			if chanName == 0 then
 				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -3138,7 +3137,6 @@ function CH:Initialize()
 		else
 			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
 		end
-		]]
 	end)
 
 	--Chat Heads Frame

@@ -5,7 +5,7 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local pairs, select, wipe = pairs, select, wipe
 
-
+local CreateFrame = CreateFrame
 local GetThreatStatusColor = GetThreatStatusColor
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local UnitClass = UnitClass

@@ -6,7 +6,7 @@ local ipairs, select, unpack = ipairs, select, unpack
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_Calendar()

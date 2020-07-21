@@ -53,11 +53,11 @@ function S:Blizzard_BlackMarketUI()
 				button.Item.IconBorder:SetTexture()
 
 				hooksecurefunc(button.Item.IconBorder, 'SetVertexColor', function(s, r, g, b)
-					--s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+					s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 					s:SetTexture()
 				end)
 				hooksecurefunc(button.Item.IconBorder, 'Hide', function(s)
-					--s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end)
 
 				button.skinned = true

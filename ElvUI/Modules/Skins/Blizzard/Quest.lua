@@ -6,7 +6,7 @@ local gsub, type, pairs, ipairs, select, unpack, strfind = gsub, type, pairs, ip
 
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local GetMoney = GetMoney
-
+local CreateFrame = CreateFrame
 local GetQuestID = GetQuestID
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney

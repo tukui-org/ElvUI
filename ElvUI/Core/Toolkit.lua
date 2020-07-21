@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local LSM = E.Libs.LSM
 
 local _G = _G
-local unpack, type, select, getmetatable, assert, pairs, pcall = unpack, type, select, getmetatable, assert, pairs, pcall
-local tonumber = tonumber
-
-
+local unpack, type, select, getmetatable = unpack, type, select, getmetatable
+local assert, pairs, pcall, tonumber = assert, pairs, pcall, tonumber
 local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 

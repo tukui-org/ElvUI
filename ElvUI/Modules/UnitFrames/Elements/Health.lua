@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 local random = random
-
+local CreateFrame = CreateFrame
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitReaction = UnitReaction
 local UnitIsPlayer = UnitIsPlayer

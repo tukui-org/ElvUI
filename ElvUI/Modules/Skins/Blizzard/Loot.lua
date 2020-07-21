@@ -6,7 +6,7 @@ local _G = _G
 local unpack, select = unpack, select
 
 local hooksecurefunc = hooksecurefunc
-
+local CreateFrame = CreateFrame
 local GetLootSlotInfo = GetLootSlotInfo
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
@@ -196,11 +196,11 @@ function S:LootFrame()
 
 		button.IconBorder:SetTexture()
 		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-			--s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 			s:SetTexture()
 		end)
 		hooksecurefunc(button.IconBorder, 'Hide', function(s)
-			--s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		local point, attachTo, point2, x, y = button:GetPoint()

@@ -3,8 +3,7 @@ local M = E:GetModule('WorldMap')
 
 local _G = _G
 local strfind = strfind
-
-
+local CreateFrame = CreateFrame
 local SetUIPanelAttribute = SetUIPanelAttribute
 local MOUSE_LABEL = MOUSE_LABEL:gsub("|[TA].-|[ta]","")
 local PLAYER = PLAYER

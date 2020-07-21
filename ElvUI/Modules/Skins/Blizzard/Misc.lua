@@ -7,7 +7,7 @@ local unpack = unpack
 
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
-
+local CreateFrame = CreateFrame
 
 local LFG_ICONS = [[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]]
 local function SkinNavBarButtons(self)
@@ -223,11 +223,11 @@ function S:BlizzardMiscFrames()
 
 		-- Quality IconBorder
 		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'SetVertexColor', function(s, r, g, b)
-			--s:GetParent():SetBackdropBorderColor(r, g, b)
+			s:GetParent():SetBackdropBorderColor(r, g, b)
 			s:SetTexture()
 		end)
 		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(s)
-			--s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
+			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
 

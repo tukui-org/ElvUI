@@ -3,8 +3,7 @@ local B = E:GetModule('Blizzard')
 
 local _G = _G
 local select, unpack, pairs = select, unpack, pairs
-
-
+local CreateFrame = CreateFrame
 
 local function SkinIt(bar)
 	for i=1, bar:GetNumRegions() do

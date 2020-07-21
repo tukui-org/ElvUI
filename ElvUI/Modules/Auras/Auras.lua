@@ -5,8 +5,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local floor, format, tinsert = floor, format, tinsert
 local select, unpack, strmatch = select, unpack, strmatch
-
-
+local CreateFrame = CreateFrame
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemQualityColor = GetItemQualityColor
@@ -251,7 +250,7 @@ function A:UpdateAura(button, index)
 			button.statusBar:Hide()
 		end
 
-		--[[if button.debuffType ~= DebuffType then
+		if button.debuffType ~= DebuffType then
 			if button.filter == 'HARMFUL' then
 				local color = _G.DebuffTypeColor[DebuffType]
 				button:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -261,7 +260,7 @@ function A:UpdateAura(button, index)
 				button:SetBackdropBorderColor(cr, cg, cb)
 				button.statusBar.backdrop:SetBackdropBorderColor(cr, cg, cb)
 			end
-		end]]
+		end
 
 		button.texture:SetTexture(texture)
 	end

@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack, select = unpack, select
 
-
+local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS

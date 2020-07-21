@@ -5,7 +5,7 @@ local pairs = pairs
 
 local Enum = Enum
 local IsFalling = IsFalling
-
+local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local GetUnitSpeed = GetUnitSpeed
 local CreateVector2D = CreateVector2D

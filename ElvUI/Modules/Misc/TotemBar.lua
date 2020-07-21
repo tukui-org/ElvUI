@@ -4,7 +4,7 @@ local TOTEMS = E:GetModule('Totems')
 local _G = _G
 local unpack = unpack
 
-
+local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
 local CooldownFrame_Set = CooldownFrame_Set
 local MAX_TOTEMS = MAX_TOTEMS

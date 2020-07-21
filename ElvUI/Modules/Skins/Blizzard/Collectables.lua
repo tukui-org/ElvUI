@@ -5,7 +5,7 @@ local _G = _G
 local select = select
 local ipairs, pairs, unpack = ipairs, pairs, unpack
 
-
+local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local PlayerHasToy = PlayerHasToy
 local hooksecurefunc = hooksecurefunc

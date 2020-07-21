@@ -8,7 +8,7 @@ local _G = _G
 local max = max
 local tinsert = tinsert
 
-
+local CreateFrame = CreateFrame
 local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
 local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS

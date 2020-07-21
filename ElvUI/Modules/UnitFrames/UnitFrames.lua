@@ -9,7 +9,7 @@ local min, pairs, ipairs, tinsert, strsub = min, pairs, ipairs, tinsert, strsub
 local strfind, gsub, format = strfind, gsub, format
 
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
-
+local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local hooksecurefunc = hooksecurefunc
 local IsReplacingUnit = IsReplacingUnit

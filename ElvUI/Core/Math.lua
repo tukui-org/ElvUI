@@ -6,7 +6,7 @@ local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, 
 local format, strsub, strupper, gsub, gmatch = format, strsub, strupper, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
-
+local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
 local BreakUpLargeNumbers = BreakUpLargeNumbers

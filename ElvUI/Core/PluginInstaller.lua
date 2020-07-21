@@ -61,11 +61,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
-local tinsert, tremove = tinsert, tremove
-local format = format
-
+local tinsert, tremove, format = tinsert, tremove, format
 
 local PlaySound = PlaySound
+local CreateFrame = CreateFrame
 local UIFrameFadeOut = UIFrameFadeOut
 local CONTINUE, PREVIOUS, UNKNOWN = CONTINUE, PREVIOUS, UNKNOWN
 -- GLOBALS: PluginInstallFrame

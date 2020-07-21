@@ -27,11 +27,11 @@ function S:TooltipFrames()
 	ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	ItemTooltip.IconBorder:SetAlpha(0)
 	hooksecurefunc(ItemTooltip.IconBorder, 'SetVertexColor', function(s, r, g, b)
-		--s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+		s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 		s:SetTexture()
 	end)
 	hooksecurefunc(ItemTooltip.IconBorder, 'Hide', function(s)
-		--s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end)
 
 	-- StoryTooltip
@@ -52,11 +52,11 @@ function S:TooltipFrames()
 	if icon then
 		S:HandleIcon(icon, true)
 		hooksecurefunc(reward.IconBorder, "SetVertexColor", function(border, r, g, b)
-			--border:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
+			border:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
 			border:SetTexture()
 		end)
 		hooksecurefunc(reward.IconBorder, "Hide", function(border)
-			--border:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			border:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
 

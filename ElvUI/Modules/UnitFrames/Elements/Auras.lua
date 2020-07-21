@@ -7,7 +7,7 @@ local sort, ceil, huge = sort, ceil, math.huge
 local select, unpack, next, format = select, unpack, next, format
 local strfind, strsplit, strmatch = strfind, strsplit, strmatch
 
-
+local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown

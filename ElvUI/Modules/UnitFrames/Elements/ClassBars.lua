@@ -1,11 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local select, unpack = select, unpack
-local strfind, strsub, gsub = strfind, strsub, gsub
-local floor, max = floor, max
-
-
+local max = max
+local unpack = unpack
+local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 -- GLOBALS: ElvUF_Player
@@ -76,7 +74,7 @@ function UF:Configure_ClassBar(frame, cur)
 			bars[i].backdrop:Hide()
 
 			if i <= frame.MAX_CLASS_BAR then
-				--bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 				bars[i]:Height(bars:GetHeight())
 				if frame.MAX_CLASS_BAR == 1 then

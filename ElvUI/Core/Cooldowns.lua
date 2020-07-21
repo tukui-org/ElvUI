@@ -5,7 +5,7 @@ local next, ipairs, pairs = next, ipairs, pairs
 local floor, tinsert = floor, tinsert
 
 local GetTime = GetTime
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 local ICON_SIZE = 36 --the normal size for an icon (don't change this)

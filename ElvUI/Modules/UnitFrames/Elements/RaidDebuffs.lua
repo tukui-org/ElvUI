@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 local unpack = unpack
-
+local CreateFrame = CreateFrame
 
 function UF:Construct_RaidDebuffs(frame)
 	local debuff = CreateFrame('Frame', nil, frame.RaisedElementParent, 'BackdropTemplate')

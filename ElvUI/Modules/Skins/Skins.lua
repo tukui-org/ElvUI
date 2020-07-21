@@ -5,7 +5,7 @@ local _G = _G
 local tinsert, xpcall, next = tinsert, xpcall, next
 local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
 
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
@@ -321,7 +321,7 @@ do
 			Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
 			Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
 			Thumb.backdrop:SetFrameLevel(Thumb.backdrop:GetFrameLevel() + 2)
-			--Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
+			Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
 
 			frame.Thumb = Thumb
 		end

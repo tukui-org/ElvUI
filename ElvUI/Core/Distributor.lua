@@ -8,7 +8,7 @@ local _G = _G
 local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
 local len, format, split, find = strlen, format, strsplit, strfind
 
-
+local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
 local IsInGroup, UnitInParty = IsInGroup, UnitInParty
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME

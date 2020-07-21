@@ -8,7 +8,7 @@ local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
 local UnitIsPVP = UnitIsPVP
-
+local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local TogglePVPUI = TogglePVPUI
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL

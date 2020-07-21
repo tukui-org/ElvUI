@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next, pairs, select, unpack = next, pairs, select, unpack
 
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local C_GuildInfo_CanViewOfficerNote = C_GuildInfo.CanViewOfficerNote
 

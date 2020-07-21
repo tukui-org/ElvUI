@@ -4,7 +4,7 @@ local oUF = E.oUF
 
 local _G = _G
 local unpack, max = unpack, max
-
+local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 
 local MAX_POINTS = {

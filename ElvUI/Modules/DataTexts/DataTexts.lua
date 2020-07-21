@@ -9,7 +9,7 @@ local tostring = tostring
 local tinsert, wipe, sort, type, error, pcall = tinsert, wipe, sort, type, error, pcall
 local ipairs, pairs, next, strlen, strfind = ipairs, pairs, next, strlen, strfind
 local CloseDropDownMenus = CloseDropDownMenus
-
+local CreateFrame = CreateFrame
 local EasyMenu = EasyMenu
 local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
@@ -20,7 +20,6 @@ local UnregisterStateDriver = UnregisterStateDriver
 local MISCELLANEOUS = MISCELLANEOUS
 local GetCurrencyInfo = GetCurrencyInfo
 local GetCurrencyListInfo = GetCurrencyListInfo
-local GetCurrencyListSize = GetCurrencyListSize
 local GetCurrencyListLink = GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
 local ExpandCurrencyList = ExpandCurrencyList

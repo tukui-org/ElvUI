@@ -5,6 +5,7 @@ local _G = _G
 local unpack, ipairs, pairs, next = unpack, ipairs, pairs, next
 local strfind, tinsert, wipe, sort = strfind, tinsert, wipe, sort
 
+local CreateFrame = CreateFrame
 local DoReadyCheck = DoReadyCheck
 local GameTooltip_Hide = GameTooltip_Hide
 local GetInstanceInfo = GetInstanceInfo
@@ -15,6 +16,7 @@ local InCombatLockdown = InCombatLockdown
 local InitiateRolePoll = InitiateRolePoll
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
+local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SecureHandler_OnClick = SecureHandler_OnClick
 local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned

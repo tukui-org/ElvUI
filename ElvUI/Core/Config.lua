@@ -13,7 +13,7 @@ local EnableAddOn = EnableAddOn
 local LoadAddOn = LoadAddOn
 local GetAddOnMetadata = GetAddOnMetadata
 local GetAddOnInfo = GetAddOnInfo
-
+local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown

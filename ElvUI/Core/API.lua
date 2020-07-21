@@ -7,6 +7,7 @@ local _G = _G
 local wipe, date = wipe, date
 local format, select, type, ipairs, pairs = format, select, type, ipairs, pairs
 local strmatch, strfind, tonumber, tostring = strmatch, strfind, tonumber, tostring
+local strlen, CreateFrame = strlen, CreateFrame
 local GetAddOnEnableState = GetAddOnEnableState
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetCVar, SetCVar = GetCVar, SetCVar

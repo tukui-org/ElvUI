@@ -12,9 +12,8 @@ local Chat_GetChatCategory = Chat_GetChatCategory
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local CloseAllWindows = CloseAllWindows
-
+local CreateFrame = CreateFrame
 local GetBattlefieldStatus = GetBattlefieldStatus
-local GetColoredName = GetColoredName
 local GetGuildInfo = GetGuildInfo
 local GetScreenHeight = GetScreenHeight
 local GetScreenWidth = GetScreenWidth

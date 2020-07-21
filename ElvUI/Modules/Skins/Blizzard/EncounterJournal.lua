@@ -7,7 +7,7 @@ local select = select
 local pairs = pairs
 local rad = rad
 
-
+local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
@@ -356,7 +356,7 @@ function S:Blizzard_EncounterJournal()
 		item.armorType:Point("RIGHT", item, "RIGHT", -10, 0)
 
 		hooksecurefunc(item.IconBorder, "SetVertexColor", function(s, r, g, b)
-			--s:GetParent().IconBackdrop:SetBackdropBorderColor(r, g, b)
+			s:GetParent().IconBackdrop:SetBackdropBorderColor(r, g, b)
 			s:SetTexture()
 		end)
 

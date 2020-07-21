@@ -3,7 +3,7 @@ local B = E:GetModule('Blizzard')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
-
+local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 
 function B:Initialize()

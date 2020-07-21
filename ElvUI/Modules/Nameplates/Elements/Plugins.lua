@@ -4,7 +4,7 @@ local NP = E:GetModule("NamePlates")
 local _G = _G
 local strfind = strfind
 local pairs, unpack = pairs, unpack
-
+local CreateFrame = CreateFrame
 
 local questIconTypes = { "Item", "Loot", "Skull", "Chat" }
 local targetIndicators = { "Spark", "TopIndicator", "LeftIndicator", "RightIndicator" }
@@ -86,7 +86,7 @@ function NP:Construct_TargetIndicator(nameplate)
 	local TargetIndicator = CreateFrame("Frame", nameplate:GetDebugName() .. "TargetIndicator", nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
-	TargetIndicator.Shadow = CreateFrame("Frame", nil, TargetIndicator, BackdropTemplateMixin and "BackdropTemplate")
+	TargetIndicator.Shadow = CreateFrame("Frame", nil, TargetIndicator, "BackdropTemplate")
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
 	TargetIndicator.Shadow:Hide()
 

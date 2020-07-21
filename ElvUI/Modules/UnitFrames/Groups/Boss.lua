@@ -5,7 +5,7 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local _G = _G
-
+local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 -- GLOBALS: BossHeaderMover

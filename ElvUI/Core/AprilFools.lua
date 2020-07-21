@@ -11,7 +11,7 @@ local _G = _G
 local pairs = pairs
 local twipe, tinsert = wipe, tinsert
 
-
+local CreateFrame = CreateFrame
 local DoEmote = DoEmote
 local GetCVar, SetCVar = GetCVar, SetCVar
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS

@@ -8,7 +8,7 @@ local utf8sub = string.utf8sub
 
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
-
+local CreateFrame = CreateFrame
 local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 local GetMinimapZoneText = GetMinimapZoneText
 local GetZonePVPInfo = GetZonePVPInfo

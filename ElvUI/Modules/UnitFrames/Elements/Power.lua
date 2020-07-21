@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local select = select
 local random = random
-
+local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local hooksecurefunc = hooksecurefunc
 

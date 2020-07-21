@@ -11,7 +11,7 @@ local _G = _G
 local unpack = unpack
 local format, gsub, type = format, gsub, type
 
-
+local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata

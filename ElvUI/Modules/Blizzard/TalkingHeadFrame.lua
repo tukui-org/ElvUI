@@ -4,7 +4,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local ipairs, tremove = ipairs, tremove
 local IsAddOnLoaded = IsAddOnLoaded
-
+local CreateFrame = CreateFrame
 
 function B:ScaleTalkingHeadFrame()
 	local scale = E.db.general.talkingHeadFrameScale or 1

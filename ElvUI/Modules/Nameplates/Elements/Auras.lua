@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local floor = floor
 local unpack = unpack
-
+local CreateFrame = CreateFrame
 
 function NP:Construct_Auras(nameplate)
 	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)

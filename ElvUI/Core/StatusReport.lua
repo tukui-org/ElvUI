@@ -3,6 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local wipe, sort, unpack = wipe, sort, unpack
 local next, pairs, tinsert = next, pairs, tinsert
 
+local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
 local GetCVar = GetCVar
 local GetLocale = GetLocale

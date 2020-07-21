@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 

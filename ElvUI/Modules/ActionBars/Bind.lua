@@ -3,11 +3,8 @@ local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
-local select, tonumber, pairs = select, tonumber, pairs
-local floor = floor
-local format = format
-
-
+local select, tonumber, pairs, floor, format = select, tonumber, pairs, floor, format
+local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local IsAddOnLoaded = IsAddOnLoaded
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings

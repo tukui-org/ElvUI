@@ -12,7 +12,7 @@ local FRIENDS_BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local FRIENDS_WOW_BACKGROUND_COLOR = FRIENDS_WOW_BACKGROUND_COLOR
 local GetClassInfo = GetClassInfo
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local GetGuildRewardInfo = GetGuildRewardInfo
 local GetItemQualityColor = GetItemQualityColor

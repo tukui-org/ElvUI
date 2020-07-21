@@ -3,7 +3,7 @@ local D = E:GetModule('DebugTools')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-
+local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local GetCVarBool = GetCVarBool
 local StaticPopup_Hide = StaticPopup_Hide

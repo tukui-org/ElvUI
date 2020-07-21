@@ -5,7 +5,7 @@ local ElvUF = ns.oUF
 assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local _G = _G
-
+local CreateFrame = CreateFrame
 -- GLOBALS: ElvUF_Raid40
 
 function UF:Construct_Raid40Frames()

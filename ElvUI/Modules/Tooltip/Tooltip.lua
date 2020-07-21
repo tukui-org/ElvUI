@@ -10,7 +10,7 @@ local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
 local CanInspect = CanInspect
-
+local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetCurrencyListLink = GetCurrencyListLink

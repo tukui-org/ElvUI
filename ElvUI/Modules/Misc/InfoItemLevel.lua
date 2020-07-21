@@ -10,7 +10,7 @@ local next = next
 local pairs = pairs
 local unpack = unpack
 local UnitGUID = UnitGUID
-
+local CreateFrame = CreateFrame
 
 local InspectItems = {
 	"HeadSlot",

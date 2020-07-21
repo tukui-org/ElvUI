@@ -6,7 +6,7 @@ local _G = _G
 local select = select
 local format = format
 
-
+local CreateFrame = CreateFrame
 local AcceptGroup = AcceptGroup
 local C_FriendList_IsFriend = C_FriendList.IsFriend
 local CanGuildBankRepair = CanGuildBankRepair

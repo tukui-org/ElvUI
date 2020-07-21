@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 
-
+local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 

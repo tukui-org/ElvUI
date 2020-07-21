@@ -9,7 +9,7 @@ local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen,
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 
-
+local CreateFrame = CreateFrame
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
 local GetSpellInfo = GetSpellInfo

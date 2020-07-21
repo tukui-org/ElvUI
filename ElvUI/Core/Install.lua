@@ -11,7 +11,7 @@ local pairs = pairs
 local ipairs = ipairs
 local tinsert = tinsert
 
-
+local CreateFrame = CreateFrame
 local SetCVar = SetCVar
 local PlaySound = PlaySound
 local ReloadUI = ReloadUI

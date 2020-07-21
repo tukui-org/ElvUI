@@ -64,11 +64,11 @@ local function SkinItemButton(parentFrame, _, index)
 		item.Icon:SetInside()
 
 		hooksecurefunc(item.IconBorder, "SetVertexColor", function(self, r, g, b)
-			--self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
+			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
 			self:SetTexture()
 		end)
 		hooksecurefunc(item.IconBorder, "Hide", function(self)
-			--self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 
 		local r, g, b, a = item.IconBorder:GetVertexColor()
@@ -694,9 +694,6 @@ function S:LookingForGroupFrames()
 			end
 		end
 	end)
-
-	-- Tutorial
-	--S:HandleCloseButton(_G.PremadeGroupsPvETutorialAlert.CloseButton)
 end
 
 function S:Blizzard_ChallengesUI()

@@ -4,9 +4,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local floor = floor
 local format = format
-
-
-local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 local UnitPowerMax = UnitPowerMax
 local UnitPower = UnitPower
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo

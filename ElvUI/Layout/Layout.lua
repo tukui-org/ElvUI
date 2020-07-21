@@ -4,7 +4,7 @@ local DT = E:GetModule('DataTexts')
 local CH = E:GetModule('Chat')
 
 local _G = _G
-
+local CreateFrame = CreateFrame
 local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat
 

@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
-
+local CreateFrame = CreateFrame
 
 local function PetButtons(btn, p)
 	local button = _G[btn]

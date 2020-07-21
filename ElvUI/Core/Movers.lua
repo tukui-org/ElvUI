@@ -5,7 +5,7 @@ local _G = _G
 local type, unpack, pairs, error = type, unpack, pairs, error
 local format, split, find, ipairs = format, strsplit, strfind, ipairs
 
-
+local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown
 local IsControlKeyDown = IsControlKeyDown

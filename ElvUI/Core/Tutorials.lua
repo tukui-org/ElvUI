@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local Skins = E:GetModule('Skins')
 
 local _G = _G
-
-
+local CreateFrame = CreateFrame
 local DISABLE = DISABLE
 local HIDE = HIDE
 -- GLOBALS: ElvUITutorialWindow

@@ -9,7 +9,7 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local UnitIsConnected = UnitIsConnected
-
+local CreateFrame = CreateFrame
 
 function NP:Health_UpdateColor(_, unit)
 	if(not unit or self.unit ~= unit) then return end

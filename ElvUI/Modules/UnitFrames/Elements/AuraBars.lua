@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 local _G = _G
 local unpack = unpack
-
+local CreateFrame = CreateFrame
 
 function UF:Construct_AuraBars(statusBar)
 	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)

@@ -9,7 +9,7 @@ local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 local GetNumFilteredAchievements = GetNumFilteredAchievements
 local IsAddOnLoaded = IsAddOnLoaded
-
+local CreateFrame = CreateFrame
 
 local function skinAch(Achievement, BiggerIcon)
 	if Achievement.isSkinned then return; end

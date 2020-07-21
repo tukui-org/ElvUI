@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 local unpack, tonumber = unpack, tonumber
 local abs, min = abs, min
 
-
+local CreateFrame = CreateFrame
 local UnitSpellHaste = UnitSpellHaste
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
