@@ -3129,13 +3129,13 @@ function CH:Initialize()
 
 		if chanName and (chatType == "CHANNEL") then
 			if chanName == 0 then
-				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				editbox.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			else
 				info = ChatTypeInfo[chatType..chanName]
-				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+				editbox.backdrop:SetBackdropBorderColor(info.r, info.g, info.b)
 			end
 		else
-			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+			editbox.backdrop:SetBackdropBorderColor(info.r, info.g, info.b)
 		end
 	end)
 
