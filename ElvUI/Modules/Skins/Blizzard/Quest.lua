@@ -87,7 +87,7 @@ end
 -- Quest objective text color
 local function Quest_GetQuestID()
 	if _G.QuestInfoFrame.questLog then
-		return select(8, GetQuestLogTitle(GetQuestLogSelection()))
+		return select(8, GetQuestLogTitle(GetQuestLogSelection())) -- 9.0 new API inc.
 	else
 		return GetQuestID()
 	end

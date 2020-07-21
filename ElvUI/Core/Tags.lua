@@ -21,7 +21,7 @@ local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetPVPTimer = GetPVPTimer
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
-local GetQuestLogTitle = GetQuestLogTitle
+local C_QuestLog_QuestInfo = C_QuestLog.QuestInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
@@ -1030,9 +1030,9 @@ end
 
 ElvUF.Tags.Events['title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['title'] = function(unit)
-    if UnitIsPlayer(unit) then
+	if UnitIsPlayer(unit) then
 		return GetTitleName(GetCurrentTitle())
-    end
+	end
 end
 
 ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
@@ -1057,7 +1057,7 @@ ElvUF.Tags.Methods['quest:title'] = function(unit)
 
 		if QuestName then
 			for i = 1, GetNumQuestLogEntries() do
-				local title, level, _, isHeader = GetQuestLogTitle(i)
+				local title, _, _, _, _, level, _, _, _, isHeader = C_QuestLog_QuestInfo(i) -- 9.0 mew API, please check this
 				if not isHeader and title == QuestName then
 					local colors = GetQuestDifficultyColor(level)
 					return Hex(colors.r, colors.g, colors.b)..QuestName..'|r'
