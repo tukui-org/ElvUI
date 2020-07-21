@@ -1157,7 +1157,7 @@ function B:UpdateTokens()
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
-		if not info.name then break end
+		if not info then break end
 
 		local button = f.currencyButton[i]
 		button:ClearAllPoints()

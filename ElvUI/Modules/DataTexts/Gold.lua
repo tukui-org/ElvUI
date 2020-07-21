@@ -174,12 +174,14 @@ local function OnEnter()
 
 	for i = 1, MAX_WATCHED_TOKENS do
 		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
-		if info.name and i == 1 then
-			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(CURRENCY)
-		end
-		if info.name and info.quantity then
-			DT.tooltip:AddDoubleLine(format("%s %s", format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
+		if info then
+			if i == 1 then
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(CURRENCY)
+			end
+			if info.quantity then
+				DT.tooltip:AddDoubleLine(format("%s %s", format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
+			end
 		end
 	end
 

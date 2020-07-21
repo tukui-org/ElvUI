@@ -757,7 +757,7 @@ function TT:SetBackpackToken(tt, id)
 	if tt:IsForbidden() then return end
 	if id and TT:IsModKeyDown() then
 		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(id)
-		if info.currencyTypesID then
+		if info and info.currencyTypesID then
 			tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, info.currencyTypesID))
 			tt:Show()
 		end
