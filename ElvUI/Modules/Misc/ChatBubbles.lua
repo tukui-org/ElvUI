@@ -20,15 +20,11 @@ function M:UpdateBubbleBorder()
 	if not self.text then return end
 
 	if E.private.general.chatBubbles == 'backdrop' then
-		if E.PixelMode then
-			self:SetBackdropBorderColor(self.text:GetTextColor())
-		else
-			local r, g, b = self.text:GetTextColor()
-			self.bordertop:SetColorTexture(r, g, b)
-			self.borderbottom:SetColorTexture(r, g, b)
-			self.borderleft:SetColorTexture(r, g, b)
-			self.borderright:SetColorTexture(r, g, b)
-		end
+		local r, g, b = self.text:GetTextColor()
+		self.bordertop:SetColorTexture(r, g, b)
+		self.borderbottom:SetColorTexture(r, g, b)
+		self.borderleft:SetColorTexture(r, g, b)
+		self.borderright:SetColorTexture(r, g, b)
 	end
 
 	local name = self.Name and self.Name:GetText()
@@ -105,107 +101,85 @@ function M:SkinBubble(frame)
 	frame.Name = name
 
 	if E.private.general.chatBubbles == 'backdrop' then
-		if E.PixelMode then
-			frame:CreateBackdrop()
-			frame.backdrop:SetBackdrop({
-				bgFile = E.media.blankTex,
-				edgeFile = E.media.blankTex,
-				tile = false, tileSize = 0, edgeSize = E.mult,
-				insets = {left = 0, right = 0, top = 0, bottom = 0}
-			})
-
-			frame.backdrop:SetBackdropColor(unpack(E.media.backdropfadecolor))
-			frame.backdrop:SetBackdropBorderColor(0, 0, 0)
-		else
-			frame.backdrop:SetBackdrop(nil)
-		end
-
-		if not E.PixelMode then
-			local r, g, b = frame.text:GetTextColor()
-			frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
-			frame.backdrop:SetAllPoints(frame)
-			frame.backdrop:SetColorTexture(unpack(E.media.backdropfadecolor))
-			frame.backdrop:SetDrawLayer("ARTWORK", -8)
-
-			frame.bordertop = frame:CreateTexture(nil, "ARTWORK")
-			frame.bordertop:Point("TOPLEFT", frame, "TOPLEFT", -E.mult*2, E.mult*2)
-			frame.bordertop:Point("TOPRIGHT", frame, "TOPRIGHT", E.mult*2, E.mult*2)
-			frame.bordertop:Height(E.mult)
-			frame.bordertop:SetColorTexture(r, g, b)
-			frame.bordertop:SetDrawLayer("ARTWORK", -6)
-
-			frame.bordertop.backdrop = frame:CreateTexture(nil, "ARTWORK")
-			frame.bordertop.backdrop:Point("TOPLEFT", frame.bordertop, "TOPLEFT", -E.mult, E.mult)
-			frame.bordertop.backdrop:Point("TOPRIGHT", frame.bordertop, "TOPRIGHT", E.mult, E.mult)
-			frame.bordertop.backdrop:Height(E.mult * 3)
-			frame.bordertop.backdrop:SetColorTexture(0, 0, 0)
-			frame.bordertop.backdrop:SetDrawLayer("ARTWORK", -7)
-
-			frame.borderbottom = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderbottom:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", -E.mult*2, -E.mult*2)
-			frame.borderbottom:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", E.mult*2, -E.mult*2)
-			frame.borderbottom:Height(E.mult)
-			frame.borderbottom:SetColorTexture(r, g, b)
-			frame.borderbottom:SetDrawLayer("ARTWORK", -6)
-
-			frame.borderbottom.backdrop = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderbottom.backdrop:Point("BOTTOMLEFT", frame.borderbottom, "BOTTOMLEFT", -E.mult, -E.mult)
-			frame.borderbottom.backdrop:Point("BOTTOMRIGHT", frame.borderbottom, "BOTTOMRIGHT", E.mult, -E.mult)
-			frame.borderbottom.backdrop:Height(E.mult * 3)
-			frame.borderbottom.backdrop:SetColorTexture(0, 0, 0)
-			frame.borderbottom.backdrop:SetDrawLayer("ARTWORK", -7)
-
-			frame.borderleft = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderleft:Point("TOPLEFT", frame, "TOPLEFT", -E.mult*2, E.mult*2)
-			frame.borderleft:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", E.mult*2, -E.mult*2)
-			frame.borderleft:Width(E.mult)
-			frame.borderleft:SetColorTexture(r, g, b)
-			frame.borderleft:SetDrawLayer("ARTWORK", -6)
-
-			frame.borderleft.backdrop = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderleft.backdrop:Point("TOPLEFT", frame.borderleft, "TOPLEFT", -E.mult, E.mult)
-			frame.borderleft.backdrop:Point("BOTTOMLEFT", frame.borderleft, "BOTTOMLEFT", -E.mult, -E.mult)
-			frame.borderleft.backdrop:Width(E.mult * 3)
-			frame.borderleft.backdrop:SetColorTexture(0, 0, 0)
-			frame.borderleft.backdrop:SetDrawLayer("ARTWORK", -7)
-
-			frame.borderright = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderright:Point("TOPRIGHT", frame, "TOPRIGHT", E.mult*2, E.mult*2)
-			frame.borderright:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -E.mult*2, -E.mult*2)
-			frame.borderright:Width(E.mult)
-			frame.borderright:SetColorTexture(r, g, b)
-			frame.borderright:SetDrawLayer("ARTWORK", -6)
-
-			frame.borderright.backdrop = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderright.backdrop:Point("TOPRIGHT", frame.borderright, "TOPRIGHT", E.mult, E.mult)
-			frame.borderright.backdrop:Point("BOTTOMRIGHT", frame.borderright, "BOTTOMRIGHT", E.mult, -E.mult)
-			frame.borderright.backdrop:Width(E.mult * 3)
-			frame.borderright.backdrop:SetColorTexture(0, 0, 0)
-			frame.borderright.backdrop:SetDrawLayer("ARTWORK", -7)
-		end
-
+		local r, g, b = 1, 1, 1
 		if frame.text then
-			frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
+			local textR, textG, textB = frame.text:GetTextColor()
+			if textR then r, g, b = textR, textG, textB end
 		end
+
+		frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
+		frame.backdrop:SetAllPoints(frame)
+		frame.backdrop:SetColorTexture(unpack(E.media.backdropfadecolor))
+		frame.backdrop:SetDrawLayer("ARTWORK", -8)
+
+		frame.bordertop = frame:CreateTexture(nil, "ARTWORK")
+		frame.bordertop:Point("TOPLEFT", frame, "TOPLEFT", -E.mult*2, E.mult*2)
+		frame.bordertop:Point("TOPRIGHT", frame, "TOPRIGHT", E.mult*2, E.mult*2)
+		frame.bordertop:Height(E.mult)
+		frame.bordertop:SetColorTexture(r, g, b)
+		frame.bordertop:SetDrawLayer("ARTWORK", -6)
+
+		frame.bordertop.backdrop = frame:CreateTexture(nil, "ARTWORK")
+		frame.bordertop.backdrop:Point("TOPLEFT", frame.bordertop, "TOPLEFT", -E.mult, E.mult)
+		frame.bordertop.backdrop:Point("TOPRIGHT", frame.bordertop, "TOPRIGHT", E.mult, E.mult)
+		frame.bordertop.backdrop:Height(E.mult * 3)
+		frame.bordertop.backdrop:SetColorTexture(0, 0, 0)
+		frame.bordertop.backdrop:SetDrawLayer("ARTWORK", -7)
+
+		frame.borderbottom = frame:CreateTexture(nil, "ARTWORK")
+		frame.borderbottom:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", -E.mult*2, -E.mult*2)
+		frame.borderbottom:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", E.mult*2, -E.mult*2)
+		frame.borderbottom:Height(E.mult)
+		frame.borderbottom:SetColorTexture(r, g, b)
+		frame.borderbottom:SetDrawLayer("ARTWORK", -6)
+
+		frame.borderbottom.backdrop = frame:CreateTexture(nil, "ARTWORK")
+		frame.borderbottom.backdrop:Point("BOTTOMLEFT", frame.borderbottom, "BOTTOMLEFT", -E.mult, -E.mult)
+		frame.borderbottom.backdrop:Point("BOTTOMRIGHT", frame.borderbottom, "BOTTOMRIGHT", E.mult, -E.mult)
+		frame.borderbottom.backdrop:Height(E.mult * 3)
+		frame.borderbottom.backdrop:SetColorTexture(0, 0, 0)
+		frame.borderbottom.backdrop:SetDrawLayer("ARTWORK", -7)
+
+		frame.borderleft = frame:CreateTexture(nil, "ARTWORK")
+		frame.borderleft:Point("TOPLEFT", frame, "TOPLEFT", -E.mult*2, E.mult*2)
+		frame.borderleft:Point("BOTTOMLEFT", frame, "BOTTOMLEFT", E.mult*2, -E.mult*2)
+		frame.borderleft:Width(E.mult)
+		frame.borderleft:SetColorTexture(r, g, b)
+		frame.borderleft:SetDrawLayer("ARTWORK", -6)
+
+		frame.borderleft.backdrop = frame:CreateTexture(nil, "ARTWORK")
+		frame.borderleft.backdrop:Point("TOPLEFT", frame.borderleft, "TOPLEFT", -E.mult, E.mult)
+		frame.borderleft.backdrop:Point("BOTTOMLEFT", frame.borderleft, "BOTTOMLEFT", -E.mult, -E.mult)
+		frame.borderleft.backdrop:Width(E.mult * 3)
+		frame.borderleft.backdrop:SetColorTexture(0, 0, 0)
+		frame.borderleft.backdrop:SetDrawLayer("ARTWORK", -7)
+
+		frame.borderright = frame:CreateTexture(nil, "ARTWORK")
+		frame.borderright:Point("TOPRIGHT", frame, "TOPRIGHT", E.mult*2, E.mult*2)
+		frame.borderright:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -E.mult*2, -E.mult*2)
+		frame.borderright:Width(E.mult)
+		frame.borderright:SetColorTexture(r, g, b)
+		frame.borderright:SetDrawLayer("ARTWORK", -6)
+
+		frame.borderright.backdrop = frame:CreateTexture(nil, "ARTWORK")
+		frame.borderright.backdrop:Point("TOPRIGHT", frame.borderright, "TOPRIGHT", E.mult, E.mult)
+		frame.borderright.backdrop:Point("BOTTOMRIGHT", frame.borderright, "BOTTOMRIGHT", E.mult, -E.mult)
+		frame.borderright.backdrop:Width(E.mult * 3)
+		frame.borderright.backdrop:SetColorTexture(0, 0, 0)
+		frame.borderright.backdrop:SetDrawLayer("ARTWORK", -7)
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
-		frame:SetBackdrop(nil)
 		frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
 		frame.backdrop:SetInside(frame, 4, 4)
 		frame.backdrop:SetColorTexture(unpack(E.media.backdropfadecolor))
 		frame.backdrop:SetDrawLayer("ARTWORK", -8)
 		frame:SetClampedToScreen(false)
-
-		if frame.text then
-			frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
-		end
 	elseif E.private.general.chatBubbles == 'nobackdrop' then
-		frame:SetBackdrop(nil)
 		frame:SetClampedToScreen(false)
 		frame.Name:Hide()
+	end
 
-		if frame.text then
-			frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
-		end
+	if frame.text then
+		frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	end
 
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)
