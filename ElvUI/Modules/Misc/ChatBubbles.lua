@@ -196,14 +196,15 @@ local function ChatBubble_OnEvent(_, _, msg, sender, _, _, _, _, _, _, _, _, _, 
 	messageToSender[msg] = Ambiguate(sender, "none")
 end
 
-local function ChatBubble_OnUpdate(frame, elapsed)
-	frame.lastupdate = (frame.lastupdate or -2) + elapsed
-	if frame.lastupdate < 0.1 then return end
-	frame.lastupdate = 0
+local function ChatBubble_OnUpdate(eventFrame, elapsed)
+	eventFrame.lastupdate = (eventFrame.lastupdate or -2) + elapsed
+	if eventFrame.lastupdate < 0.1 then return end
+	eventFrame.lastupdate = 0
 
-	for _, chatBubble in pairs(C_ChatBubbles_GetAllChatBubbles()) do
-		if not chatBubble.isSkinnedElvUI then
-			M:SkinBubble(chatBubble)
+	for _, frame in pairs(C_ChatBubbles_GetAllChatBubbles()) do
+		local bub = frame:GetChildren(1)
+		if bub and not bub:IsForbidden() and not bub.isSkinnedElvUI then
+			M:SkinBubble(frame)
 		end
 	end
 end
