@@ -5,10 +5,10 @@ local _G = _G
 local type = type
 local format, pairs, tonumber = format, pairs, tonumber
 local BreakUpLargeNumbers = BreakUpLargeNumbers
-local GetCurrencyInfo = GetCurrencyInfo
 local GetMoney = GetMoney
 
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
+local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local OTHER = OTHER
@@ -21,7 +21,7 @@ local function OnClick()
 end
 
 local function GetInfo(id)
-	local name, num, icon = GetCurrencyInfo(id)
+	local name, num, icon = C_CurrencyInfo_GetCurrencyInfo(id)
 	return name, num, (icon and format(iconString, icon)) or '136012'
 end
 
