@@ -22,7 +22,11 @@ end
 
 local function GetInfo(id)
 	local info = C_CurrencyInfo_GetCurrencyInfo(id)
-	return info.name, info.quantity, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
+	if info then
+		return info.name, info.quantity, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
+	else
+		return '', '', '136012'
+	end
 end
 
 local function AddInfo(id)

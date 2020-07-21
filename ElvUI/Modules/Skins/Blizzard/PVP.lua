@@ -160,7 +160,7 @@ function S:Blizzard_PVPUI()
 		if currencyRewards then
 			for _, reward in ipairs(currencyRewards) do
 				local info = C_CurrencyInfo_GetCurrencyInfo(reward.id)
-				if info.quality == 6 then -- artifact
+				if info and info.quality == 6 then -- artifact
 					_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, info.name, info.iconFileID, info.quality)
 				end
 			end
