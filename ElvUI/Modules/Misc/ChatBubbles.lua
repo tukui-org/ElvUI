@@ -115,7 +115,7 @@ function M:SkinBubble(frame)
 			})
 
 			frame.backdrop:SetBackdropColor(unpack(E.media.backdropfadecolor))
-			frame:SetBackdropBorderColor(0, 0, 0)
+			frame.backdrop:SetBackdropBorderColor(0, 0, 0)
 		else
 			frame.backdrop:SetBackdrop(nil)
 		end
