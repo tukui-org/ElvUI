@@ -400,6 +400,7 @@ local function Disable(self)
 	if(element) then
 		ElementDisable(self)
 
+		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 	end
 end
