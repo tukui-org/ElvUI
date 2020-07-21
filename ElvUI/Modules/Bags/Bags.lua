@@ -87,8 +87,6 @@ local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
-local LE_ITEM_QUALITY_COMMON = LE_ITEM_QUALITY_COMMON
-local LE_ITEM_QUALITY_POOR = LE_ITEM_QUALITY_POOR
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
@@ -484,7 +482,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot.questIcon:Hide()
 	end
 
-	slot.isJunk = (slot.rarity and slot.rarity == LE_ITEM_QUALITY_POOR) and not noValue
+	slot.isJunk = (slot.rarity and slot.rarity == 0) and not noValue
 	slot.junkDesaturate = slot.isJunk and E.db.bags.junkDesaturate
 
 	SetItemButtonTexture(slot, texture)
@@ -519,7 +517,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	local professionColors = B.ProfessionColors[bagType]
 	local showItemLevel = B.db.itemLevel and clink and not professionColors
-	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
+	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > 1)
 
 	if B.db.specialtyColors and professionColors then
 		local r, g, b = unpack(professionColors)
@@ -1081,7 +1079,7 @@ function B:UpdateReagentSlot(slotID)
 			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
 			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 			slot.ignoreBorderColors = true
-		elseif B.db.qualityColors and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
+		elseif B.db.qualityColors and slot.rarity and slot.rarity > 1 then
 			slot.newItemGlow:SetVertexColor(r, g, b)
 			slot:SetBackdropBorderColor(r, g, b)
 			slot.ignoreBorderColors = true
