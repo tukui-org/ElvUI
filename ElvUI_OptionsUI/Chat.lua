@@ -81,47 +81,6 @@ E.Options.args.chat = {
 						CH:CheckLFGRoles()
 					end,
 				},
-				fadeUndockedTabs = {
-					order = 7,
-					type = 'toggle',
-					name = L["Fade Undocked Tabs"],
-					desc = L["Fades the text on chat tabs that are not docked at the left or right chat panel."],
-					set = function(self, value)
-						E.db.chat.fadeUndockedTabs = value;
-						CH:UpdateChatTabs()
-					end,
-				},
-				fadeTabsNoBackdrop = {
-					order = 8,
-					type = 'toggle',
-					name = L["Fade Tabs No Backdrop"],
-					desc = L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."],
-					set = function(self, value)
-						E.db.chat.fadeTabsNoBackdrop = value;
-						CH:UpdateChatTabs()
-					end,
-				},
-				hideChatToggles = {
-					order = 9,
-					type = 'toggle',
-					name = L["Hide Chat Toggles"],
-					set = function(self, value)
-						E.db.chat.hideChatToggles = value;
-						CH:RefreshToggleButtons()
-						Layout:RepositionChatDataPanels()
-					end,
-				},
-				fadeChatToggles = {
-					order = 10,
-					type = 'toggle',
-					name = L["Fade Chat Toggles"],
-					desc = L["Fades the buttons that toggle chat windows when that window has been toggled off."],
-					disabled = function() return E.db.chat.hideChatToggles end,
-					set = function(self, value)
-						E.db.chat.fadeChatToggles = value;
-						CH:RefreshToggleButtons()
-					end,
-				},
 				useAltKey = {
 					order = 12,
 					type = "toggle",
@@ -208,6 +167,20 @@ E.Options.args.chat = {
 					type = "execute",
 					name = L['Reset Editbox History'],
 					func = function() CH:ResetEditboxHistory() end
+				},
+				editBoxPosition = {
+					order = 25,
+					type = 'select',
+					name = L["Chat EditBox Position"],
+					desc = L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."],
+					values = {
+						['BELOW_CHAT'] = L["Below Chat"],
+						['ABOVE_CHAT'] = L["Above Chat"],
+					},
+					set = function(info, value)
+						E.db.chat[info[#info]] = value;
+						CH:UpdateEditboxAnchors()
+					end,
 				},
 				tabSelection = {
 					order = 65,
@@ -621,19 +594,49 @@ E.Options.args.chat = {
 			name = L["Panels"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
-				editBoxPosition = {
+				fadeUndockedTabs = {
 					order = 1,
-					type = 'select',
-					name = L["Chat EditBox Position"],
-					desc = L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."],
-					values = {
-						['BELOW_CHAT'] = L["Below Chat"],
-						['ABOVE_CHAT'] = L["Above Chat"],
-					},
-					set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateEditboxAnchors() end,
+					type = 'toggle',
+					name = L["Fade Undocked Tabs"],
+					desc = L["Fades the text on chat tabs that are not docked at the left or right chat panel."],
+					set = function(self, value)
+						E.db.chat.fadeUndockedTabs = value;
+						CH:UpdateChatTabs()
+					end,
+				},
+				fadeTabsNoBackdrop = {
+					order = 2,
+					type = 'toggle',
+					name = L["Fade Tabs No Backdrop"],
+					desc = L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."],
+					set = function(self, value)
+						E.db.chat.fadeTabsNoBackdrop = value;
+						CH:UpdateChatTabs()
+					end,
+				},
+				hideChatToggles = {
+					order = 3,
+					type = 'toggle',
+					name = L["Hide Chat Toggles"],
+					set = function(self, value)
+						E.db.chat.hideChatToggles = value;
+						CH:RefreshToggleButtons()
+						Layout:RepositionChatDataPanels()
+					end,
+				},
+				fadeChatToggles = {
+					order = 4,
+					type = 'toggle',
+					name = L["Fade Chat Toggles"],
+					desc = L["Fades the buttons that toggle chat windows when that window has been toggled off."],
+					disabled = function() return E.db.chat.hideChatToggles end,
+					set = function(self, value)
+						E.db.chat.fadeChatToggles = value;
+						CH:RefreshToggleButtons()
+					end,
 				},
 				tabGroup = {
-					order = 2,
+					order = 10,
 					type = 'group',
 					guiInline = true,
 					name = L["Tab Panels"],
@@ -663,7 +666,7 @@ E.Options.args.chat = {
 					}
 				},
 				datatextGroup = {
-					order = 3,
+					order = 15,
 					type = 'group',
 					guiInline = true,
 					name = L["DataText Panels"],
@@ -691,13 +694,29 @@ E.Options.args.chat = {
 					}
 				},
 				panels = {
-					order = 4,
+					order = 20,
 					type = 'group',
 					guiInline = true,
 					name = L["Chat Panels"],
 					args = {
-						separateSizes = {
+						panelColor = {
 							order = 1,
+							type = "color",
+							name = L["Backdrop Color"],
+							hasAlpha = true,
+							get = function(info)
+								local t = E.db.chat.panelColor
+								local d = P.chat.panelColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.chat.panelColor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								CH:Panels_ColorUpdate()
+							end,
+						},
+						separateSizes = {
+							order = 2,
 							type = 'toggle',
 							name = L["Separate Panel Sizes"],
 							desc = L["Enable the use of separate size options for the right chat panel."],
@@ -708,7 +727,7 @@ E.Options.args.chat = {
 							end,
 						},
 						panelHeight = {
-							order = 2,
+							order = 3,
 							type = 'range',
 							name = L["Panel Height"],
 							desc = L["PANEL_DESC"],
@@ -719,7 +738,7 @@ E.Options.args.chat = {
 							end,
 						},
 						panelWidth = {
-							order = 3,
+							order = 4,
 							type = 'range',
 							name = L["Panel Width"],
 							desc = L["PANEL_DESC"],
@@ -736,7 +755,7 @@ E.Options.args.chat = {
 							min = 50, max = 1000, step = 1,
 						},
 						panelBackdrop = {
-							order = 4,
+							order = 5,
 							type = 'select',
 							name = L["Panel Backdrop"],
 							desc = L["Toggle showing of the left and right chat panels."],
@@ -753,21 +772,15 @@ E.Options.args.chat = {
 								CH:UpdateEditboxAnchors()
 							end,
 						},
-						panelColor = {
-							order = 5,
-							type = "color",
-							name = L["Backdrop Color"],
-							hasAlpha = true,
-							get = function(info)
-								local t = E.db.chat.panelColor
-								local d = P.chat.panelColor
-								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
-							end,
-							set = function(info, r, g, b, a)
-								local t = E.db.chat.panelColor
-								t.r, t.g, t.b, t.a = r, g, b, a
-								CH:Panels_ColorUpdate()
-							end,
+						panelSnapping = {
+							order = 6,
+							type = 'toggle',
+							name = L["Panel Snapping"],
+							desc = L["When disabled the Chat Background color has to be set via Blizzards Chat Tabs Background setting."],
+							set = function(info, value)
+								E.db.chat.panelSnapping = value
+								CH:PositionChats()
+							end
 						},
 						panelHeightRight = {
 							order = 6,

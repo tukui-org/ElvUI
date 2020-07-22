@@ -936,6 +936,8 @@ function CH:UpdateEditboxAnchors()
 end
 
 function CH:FindChatWindows()
+	if not CH.db.panelSnapping then return end
+
 	local left, right = CH.LeftChatWindow, CH.RightChatWindow
 
 	-- they already exist just return them :)
