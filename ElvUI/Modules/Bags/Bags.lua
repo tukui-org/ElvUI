@@ -1786,7 +1786,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	end
 
 	slot.searchOverlay:SetAllPoints()
-	slot.IconBorder:SetAlpha(0)
+	slot.IconBorder:Kill()
 	slot.IconOverlay:SetInside()
 
 	slot.cooldown = _G[slot:GetName()..'Cooldown']
