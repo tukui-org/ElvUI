@@ -49,6 +49,7 @@ S.Blizzard.Regions = {
 	'BottomRightTex',
 	'RightTex',
 	'MiddleTex',
+	'Center',
 }
 
 -- Depends on the arrow texture to be up by default.
