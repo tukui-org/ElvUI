@@ -239,7 +239,7 @@ E.Options.args.general = {
 							order = 41,
 							type = "toggle",
 							name = L["Enable"],
-							set = function(info, value) E.db.general.threat.enable = value; Threat:ToggleEnable()end,
+							set = function(info, value) E.db.general.threat.enable = value; Threat:ToggleEnable() end,
 						},
 						position = {
 							order = 42,
