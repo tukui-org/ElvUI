@@ -1,4 +1,7 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file='Tooltip.lua'/>
+
+	<!--
 	<Script file='Achievement.lua'/>
 	<Script file='Addonmanager.lua'/>
 	<Script file='AdventureMap.lua'/>
@@ -72,7 +75,6 @@
 	<Script file='Talent.lua'/>
 	<Script file='TalkingHead.lua'/>
 	<Script file='Taxi.lua'/>
-	<Script file='Tooltip.lua'/>
 	<Script file='TimeManager.lua'/>
 	<Script file='Trade.lua'/>
 	<Script file='TradeSkill.lua'/>
@@ -82,6 +84,7 @@
 	<Script file='Warboard.lua'/>
 	<Script file='WarfrontPartyPose.lua'/>
 	<Script file='WorldMap.lua'/>
+	-->
 
 	<!--9.0-->
 	<!--Script file='CovenantPreview.lua'/-->

@@ -76,7 +76,7 @@ function S:TooltipFrames()
 	TT:SecureHook('GameTooltip_ShowStatusBar') -- Skin Status Bars
 	TT:SecureHook('GameTooltip_ShowProgressBar') -- Skin Progress Bars
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
-	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
+	TT:SecureHook('SharedTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
 
 	-- Style Tooltips which are created before load
 	local styleTT = {

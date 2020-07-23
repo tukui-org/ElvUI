@@ -2,7 +2,7 @@
 ..\FrameXML\UI.xsd">
 	<Script file='Skins.lua'/>
 	<Include file='Addons\Load_Addons.xml'/>
-	<!--Include file='Blizzard\Load_Blizzard.xml'/-->
+	<Include file='Blizzard\Load_Blizzard.xml'/>
 
 	<Slider name='HybridScrollBarTemplateFixed' parentKey='scrollBar' virtual='true'>
 		<Size x='20' y='0'/>
