@@ -417,7 +417,7 @@ function S:BlizzardQuestFrames()
 		end
 	end)
 
-	--S:HandleScrollBar(_G.QuestMapDetailsScrollFrameScrollBar)
+	S:HandleScrollBar(_G.QuestMapDetailsScrollFrameScrollBar)
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)

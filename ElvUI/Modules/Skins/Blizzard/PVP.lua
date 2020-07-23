@@ -10,6 +10,7 @@ local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
+local LE_ITEM_QUALITY_ARTIFACT = Enum.ItemQuality.Artifact
 
 local function HandleRoleChecks(button, ...)
 	button:StripTextures()
@@ -160,7 +161,7 @@ function S:Blizzard_PVPUI()
 		if currencyRewards then
 			for _, reward in ipairs(currencyRewards) do
 				local info = C_CurrencyInfo_GetCurrencyInfo(reward.id)
-				if info and info.quality == 6 then -- artifact
+				if info and info.quality == LE_ITEM_QUALITY_ARTIFACT then
 					_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, info.name, info.iconFileID, info.quality)
 				end
 			end
