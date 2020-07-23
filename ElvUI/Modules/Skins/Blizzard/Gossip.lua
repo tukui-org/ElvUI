@@ -46,6 +46,8 @@ function S:GossipFrame()
 	GossipGreetingScrollFrame:CreateBackdrop()
 
 	if E.private.skins.parchmentRemoverEnable then
+		-- 9.0 got to fix .. have some mixin
+		--[[
 		for i = 1, _G.NUMGOSSIPBUTTONS do
 			_G["GossipTitleButton"..i]:GetFontString():SetTextColor(1, 1, 1)
 		end
@@ -63,6 +65,7 @@ function S:GossipFrame()
 				end
 			end
 		end)
+		]]
 	else
 		GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
 		GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
