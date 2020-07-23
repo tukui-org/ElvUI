@@ -949,13 +949,10 @@ function CH:FindChatWindows()
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[name]
 		if (chat.isDocked and docker) or chat:IsShown() then
-			local onRight = E:FramesOverlap(chat, _G.RightChatPanel)
-			local onLeft = E:FramesOverlap(chat, _G.LeftChatPanel)
-
-			if not right and (onRight and not onLeft) then
-				right = chat
-			elseif not left and (onLeft and not onRight) then
+			if not left and E:FramesOverlap(chat, _G.LeftChatPanel) then
 				left = chat
+			elseif not right and E:FramesOverlap(chat, _G.RightChatPanel) then
+				right = chat
 			end
 
 			-- if both are found just return now, don't wait
