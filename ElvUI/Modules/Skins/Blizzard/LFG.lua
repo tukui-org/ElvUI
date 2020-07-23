@@ -218,7 +218,9 @@ function S:LookingForGroupFrames()
 		end
 	end
 
-	hooksecurefunc("SetCheckButtonIsRadio", S.HandleCheckBox)
+	hooksecurefunc("SetCheckButtonIsRadio", function(button)
+		S:HandleCheckBox(button)
+	end)
 
 	--Fix issue with role buttons overlapping each other (Blizzard bug)
 	local repositionCheckButtons = {
