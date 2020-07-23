@@ -46,20 +46,24 @@ function S:GossipFrame()
 	GossipGreetingScrollFrame:CreateBackdrop()
 
 	if E.private.skins.parchmentRemoverEnable then
-		for _, button in ipairs(GossipFrame.buttons) do
-			local str = button:GetFontString()
-			if str then str:SetTextColor(1, 1, 1) end
+		if GossipFrame.buttons and next(GossipFrame.buttons) then
+			for _, button in ipairs(GossipFrame.buttons) do
+				local str = button:GetFontString()
+				if str then str:SetTextColor(1, 1, 1) end
+			end
 		end
 
 		_G.GossipGreetingText:SetTextColor(1, 1, 1)
 
 		hooksecurefunc("GossipFrameUpdate", function()
-			for _, button in ipairs(GossipFrame.buttons) do
-				local str = button:GetFontString()
-				if str then
-					local text = str:GetText()
-					if text and strfind(text, '|cff000000') then
-						str:SetText(gsub(text, '|cff000000', '|cffffe519'))
+			if GossipFrame.buttons and next(GossipFrame.buttons) then
+				for _, button in ipairs(GossipFrame.buttons) do
+					local str = button:GetFontString()
+					if str then
+						local text = str:GetText()
+						if text and strfind(text, '|cff000000') then
+							str:SetText(gsub(text, '|cff000000', '|cffffe519'))
+						end
 					end
 				end
 			end
