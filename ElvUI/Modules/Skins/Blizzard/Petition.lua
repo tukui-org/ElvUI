@@ -8,7 +8,7 @@ function S:PetitionFrame()
 
 	local PetitionFrame = _G.PetitionFrame
 	PetitionFrame:StripTextures(true)
-	PetitionFrame:SetTemplate("Transparent")
+	PetitionFrame:CreateBackdrop("Transparent")
 	_G.PetitionFrameInset:Kill()
 
 	S:HandleButton(_G.PetitionFrameSignButton)

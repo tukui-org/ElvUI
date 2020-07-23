@@ -9,7 +9,7 @@ function S:LookingForGuildFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfguild) then return end
 
 	local LookingForGuildFrame = _G.LookingForGuildFrame
-	S:HandlePortraitFrame(LookingForGuildFrame, true)
+	S:HandlePortraitFrame(LookingForGuildFrame)
 
 	local checkbox = {
 		"LookingForGuildPvPButton",

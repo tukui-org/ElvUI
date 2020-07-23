@@ -89,7 +89,7 @@ function S:Blizzard_PVPUI()
 		S:HandleIcon(reward.Icon, true)
 
 		reward.EnlistmentBonus:StripTextures()
-		reward.EnlistmentBonus:SetTemplate()
+		reward.EnlistmentBonus:CreateBackdrop()
 		reward.EnlistmentBonus:Size(20, 20)
 		reward.EnlistmentBonus:Point("TOPRIGHT", 2, 2)
 
@@ -203,9 +203,6 @@ function S:Blizzard_PVPUI()
 		S:HandleIcon(Frame.ConquestBar.Reward.Icon)
 	end
 
-	--Tutorials
-	S:HandleCloseButton(_G.PremadeGroupsPvPTutorialAlert.CloseButton)
-
 	-- New Season Frame
 	local NewSeasonPopup = _G.PVPQueueFrame.NewSeasonPopup
 	S:HandleButton(NewSeasonPopup.Leave)
@@ -231,7 +228,7 @@ function S:PVPReadyDialog()
 
 	--PVP QUEUE FRAME
 	_G.PVPReadyDialog:StripTextures()
-	_G.PVPReadyDialog:SetTemplate("Transparent")
+	_G.PVPReadyDialog:CreateBackdrop("Transparent")
 	S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
 	S:HandleButton(_G.PVPReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.PVPReadyDialogCloseButton)

@@ -7,7 +7,7 @@ function S:Blizzard_ItemInteractionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.ItemInteraction) then return end
 
 	local ItemInteractionFrame = _G.ItemInteractionFrame
-	S:HandlePortraitFrame(ItemInteractionFrame, true)
+	S:HandlePortraitFrame(ItemInteractionFrame)
 
 	do -- ItemSlot
 		local ItemSlot = ItemInteractionFrame.ItemSlot

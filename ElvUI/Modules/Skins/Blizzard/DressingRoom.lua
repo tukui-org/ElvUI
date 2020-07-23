@@ -7,7 +7,7 @@ function S:DressUpFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.dressingroom) then return end
 
 	local DressUpFrame = _G.DressUpFrame
-	S:HandlePortraitFrame(DressUpFrame, true)
+	S:HandlePortraitFrame(DressUpFrame)
 
 	S:HandleButton(_G.DressUpFrameResetButton)
 	S:HandleButton(_G.DressUpFrameCancelButton)
@@ -24,11 +24,11 @@ function S:DressUpFrame()
 	-- Wardrobe edit frame
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures(true)
-	WardrobeOutfitFrame:SetTemplate("Transparent")
+	WardrobeOutfitFrame:CreateBackdrop("Transparent")
 
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
 	WardrobeOutfitEditFrame:StripTextures(true)
-	WardrobeOutfitEditFrame:SetTemplate("Transparent")
+	WardrobeOutfitEditFrame:CreateBackdrop("Transparent")
 	WardrobeOutfitEditFrame.EditBox:StripTextures()
 	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
 	WardrobeOutfitEditFrame.EditBox.backdrop:Point("TOPLEFT", WardrobeOutfitEditFrame.EditBox, "TOPLEFT", -5, -5)

@@ -8,7 +8,7 @@ function S:GuildRegistrarFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildregistrar) then return end
 
 	local GuildRegistrarFrame = _G.GuildRegistrarFrame
-	S:HandlePortraitFrame(GuildRegistrarFrame, true)
+	S:HandlePortraitFrame(GuildRegistrarFrame)
 
 	_G.GuildRegistrarFrameEditBox:StripTextures()
 	_G.GuildRegistrarGreetingFrame:StripTextures()

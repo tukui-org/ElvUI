@@ -19,7 +19,7 @@ function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
 	local PlayerTalentFrame = _G.PlayerTalentFrame
-	S:HandlePortraitFrame(PlayerTalentFrame, true)
+	S:HandlePortraitFrame(PlayerTalentFrame)
 
 	_G.PlayerTalentFrameTalents:StripTextures()
 

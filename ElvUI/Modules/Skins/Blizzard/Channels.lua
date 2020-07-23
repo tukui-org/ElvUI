@@ -10,9 +10,8 @@ function S:Blizzard_Channels()
 	local ChannelFrame = _G.ChannelFrame
 	local CreateChannelPopup = _G.CreateChannelPopup
 
-	S:HandlePortraitFrame(ChannelFrame, true)
+	S:HandlePortraitFrame(ChannelFrame)
 	CreateChannelPopup:StripTextures()
-
 	CreateChannelPopup:CreateBackdrop("Transparent")
 
 	S:HandleButton(ChannelFrame.NewButton)
@@ -39,7 +38,7 @@ function S:Blizzard_Channels()
 
 	-- Hide the Channel Header Textures
 	hooksecurefunc(_G.ChannelButtonHeaderMixin, "Update", function(s)
-		s:SetTemplate("Transparent")
+		s:CreateBackdrop("Transparent")
 		s.NormalTexture:SetTexture()
 	end)
 end

@@ -17,7 +17,7 @@ function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
 	local InspectFrame = _G.InspectFrame
-	S:HandlePortraitFrame(InspectFrame, true)
+	S:HandlePortraitFrame(InspectFrame)
 	S:HandleButton(_G.InspectPaperDollFrame.ViewButton)
 
 	_G.SpecializationRing:Hide()

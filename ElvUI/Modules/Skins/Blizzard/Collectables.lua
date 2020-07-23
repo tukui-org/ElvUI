@@ -27,7 +27,7 @@ function S:Blizzard_Collections()
 
 	-- global
 	local CollectionsJournal = _G.CollectionsJournal
-	S:HandlePortraitFrame(CollectionsJournal, true)
+	S:HandlePortraitFrame(CollectionsJournal)
 
 	for i=1, 5 do
 		S:HandleTab(_G['CollectionsJournalTab'..i])
@@ -503,7 +503,7 @@ function S:Blizzard_Collections()
 
 	-- Transmogrify NPC
 	local WardrobeFrame = _G.WardrobeFrame
-	S:HandlePortraitFrame(WardrobeFrame, true)
+	S:HandlePortraitFrame(WardrobeFrame)
 
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures()

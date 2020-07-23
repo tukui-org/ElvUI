@@ -40,11 +40,11 @@ function S:PetStableFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end
 
 	local PetStableFrame = _G.PetStableFrame
-	S:HandlePortraitFrame(PetStableFrame, true)
+	S:HandlePortraitFrame(PetStableFrame)
 
 	_G.PetStableLeftInset:StripTextures()
 	_G.PetStableBottomInset:StripTextures()
-	_G.PetStableFrameInset:SetTemplate('Transparent')
+	_G.PetStableFrameInset:CreateBackdrop('Transparent')
 
 	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
 	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button

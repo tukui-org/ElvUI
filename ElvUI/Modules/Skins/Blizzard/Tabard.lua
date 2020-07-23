@@ -9,7 +9,7 @@ function S:TabardFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tabard) then return end
 
 	local TabardFrame = _G.TabardFrame
-	S:HandlePortraitFrame(TabardFrame, true)
+	S:HandlePortraitFrame(TabardFrame)
 
 	S:HandleButton(_G.TabardFrameCancelButton)
 	S:HandleButton(_G.TabardFrameAcceptButton)

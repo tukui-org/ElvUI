@@ -49,7 +49,7 @@ local function SkinPetTooltip(tt)
 	tt.BorderBottom:SetTexture()
 	tt.BorderBottomRight:SetTexture()
 	tt.BorderBottomLeft:SetTexture()
-	tt:SetTemplate("Transparent")
+	tt:CreateBackdrop("Transparent")
 end
 
 function S:PetBattleFrame()
@@ -401,7 +401,7 @@ function S:PetBattleFrame()
 
 	local PetBattleQueueReadyFrame = _G.PetBattleQueueReadyFrame
 	PetBattleQueueReadyFrame:StripTextures()
-	PetBattleQueueReadyFrame:SetTemplate("Transparent")
+	PetBattleQueueReadyFrame:CreateBackdrop("Transparent")
 	S:HandleButton(PetBattleQueueReadyFrame.AcceptButton)
 	S:HandleButton(PetBattleQueueReadyFrame.DeclineButton)
 	PetBattleQueueReadyFrame.Art:SetTexture([[Interface\PetBattles\PetBattlesQueue]])

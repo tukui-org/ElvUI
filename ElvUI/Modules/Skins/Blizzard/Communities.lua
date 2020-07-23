@@ -103,7 +103,7 @@ function S:Blizzard_Communities()
 	_G.CommunitiesFrameInset.Bg:Hide()
 	CommunitiesFrame.CommunitiesList.InsetFrame:StripTextures()
 
-	S:HandlePortraitFrame(CommunitiesFrame, true)
+	S:HandlePortraitFrame(CommunitiesFrame)
 
 	local CommunitiesFrameCommunitiesList = _G.CommunitiesFrameCommunitiesList
 	CommunitiesFrameCommunitiesList.FilligreeOverlay:Hide()
@@ -208,7 +208,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.MemberList.WatermarkFrame:Hide()
 
 	CommunitiesFrame.Chat:StripTextures()
-	CommunitiesFrame.Chat.InsetFrame:SetTemplate("Transparent")
+	CommunitiesFrame.Chat.InsetFrame:CreateBackdrop("Transparent")
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
@@ -217,6 +217,7 @@ function S:Blizzard_Communities()
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
 	ClubFinderGuildFinderFrame:StripTextures()
 
+	S:HandleDropDownBox(_G.ClubFinderLanguageDropdown)
 	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.PreviousPage)
 	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.NextPage)
 
@@ -343,12 +344,8 @@ function S:Blizzard_Communities()
 	hooksecurefunc(CommunitiesFrame.MemberList, "RefreshListDisplay", function(s)
 		for i = 1, s.ColumnDisplay:GetNumChildren() do
 			local child = select(i, s.ColumnDisplay:GetChildren())
-			if not child.IsSkinned then
-				child:StripTextures()
-				child:SetTemplate("Transparent")
-
-				child.IsSkinned = true
-			end
+			child:StripTextures()
+			child:CreateBackdrop("Transparent")
 		end
 
 		for _, button in ipairs(s.ListScrollFrame.buttons or {}) do
@@ -359,7 +356,8 @@ function S:Blizzard_Communities()
 					for i = 1, 3 do
 						select(i, header:GetRegions()):Hide()
 					end
-					header:SetTemplate("Transparent")
+
+					header:CreateBackdrop("Transparent")
 				end
 
 				button.hooked = true
@@ -527,8 +525,8 @@ function S:Blizzard_Communities()
 	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel
 	BossModel:StripTextures()
 	BossModel.TextFrame:StripTextures()
-	BossModel:SetTemplate("Transparent")
-	BossModel.TextFrame:SetTemplate("Transparent")
+	BossModel:CreateBackdrop("Transparent")
+	BossModel.TextFrame:CreateBackdrop("Transparent")
 
 	-- Filters Frame
 	local FiltersFrame = _G.CommunitiesGuildNewsFiltersFrame
@@ -545,8 +543,8 @@ function S:Blizzard_Communities()
 	-- Guild Message EditBox
 	local EditFrame = _G.CommunitiesGuildTextEditFrame
 	EditFrame:StripTextures()
-	EditFrame:SetTemplate("Transparent")
-	EditFrame.Container:SetTemplate("Transparent")
+	EditFrame:CreateBackdrop("Transparent")
+	EditFrame.Container:CreateBackdrop("Transparent")
 	S:HandleScrollBar(_G.CommunitiesGuildTextEditFrameScrollBar)
 	S:HandleButton(_G.CommunitiesGuildTextEditFrameAcceptButton)
 
@@ -710,19 +708,19 @@ function S:Blizzard_Communities()
 	-- InvitationsFrames
 	local ClubFinderInvitationFrame = CommunitiesFrame.ClubFinderInvitationFrame
 	ClubFinderInvitationFrame.InsetFrame:StripTextures()
-	ClubFinderInvitationFrame:SetTemplate()
+	ClubFinderInvitationFrame:CreateBackdrop()
 	S:HandleButton(ClubFinderInvitationFrame.AcceptButton)
 	S:HandleButton(ClubFinderInvitationFrame.DeclineButton)
 	S:HandleButton(ClubFinderInvitationFrame.ApplyButton)
 
 	ClubFinderInvitationFrame.WarningDialog:StripTextures()
-	ClubFinderInvitationFrame.WarningDialog:SetTemplate("Transparent")
+	ClubFinderInvitationFrame.WarningDialog:CreateBackdrop("Transparent")
 	S:HandleButton(ClubFinderInvitationFrame.WarningDialog.Accept)
 	S:HandleButton(ClubFinderInvitationFrame.WarningDialog.Cancel)
 
 	local InvitationFrame = CommunitiesFrame.InvitationFrame
 	InvitationFrame.InsetFrame:StripTextures()
-	InvitationFrame:SetTemplate()
+	InvitationFrame:CreateBackdrop()
 	S:HandleButton(InvitationFrame.AcceptButton)
 	S:HandleButton(InvitationFrame.DeclineButton)
 

@@ -16,7 +16,7 @@ function S:Blizzard_TimeManager()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.timemanager) then return end
 
 	local TimeManagerFrame = _G.TimeManagerFrame
-	S:HandlePortraitFrame(TimeManagerFrame, true)
+	S:HandlePortraitFrame(TimeManagerFrame)
 
 	S:HandleDropDownBox(_G.TimeManagerAlarmHourDropDown, 80)
 	S:HandleDropDownBox(_G.TimeManagerAlarmMinuteDropDown, 80)
@@ -29,7 +29,7 @@ function S:Blizzard_TimeManager()
 
 	local TimeManagerStopwatchCheck = _G.TimeManagerStopwatchCheck
 	_G.TimeManagerStopwatchFrame:StripTextures()
-	TimeManagerStopwatchCheck:SetTemplate()
+	TimeManagerStopwatchCheck:CreateBackdrop()
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 	TimeManagerStopwatchCheck:GetNormalTexture():SetInside()
 

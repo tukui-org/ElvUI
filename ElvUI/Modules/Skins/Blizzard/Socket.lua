@@ -10,7 +10,7 @@ function S:Blizzard_ItemSocketingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.socket) then return end
 
 	local ItemSocketingFrame = _G.ItemSocketingFrame
-	S:HandlePortraitFrame(ItemSocketingFrame, true)
+	S:HandlePortraitFrame(ItemSocketingFrame)
 
 	_G.ItemSocketingDescription:DisableDrawLayer("BORDER")
 	_G.ItemSocketingDescription:DisableDrawLayer("BACKGROUND")

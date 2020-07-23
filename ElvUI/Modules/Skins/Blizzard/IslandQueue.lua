@@ -8,7 +8,7 @@ function S:Blizzard_IslandsQueueUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.IslandQueue) then return end
 
 	local IslandsFrame = _G.IslandsQueueFrame
-	S:HandlePortraitFrame(IslandsFrame, true)
+	S:HandlePortraitFrame(IslandsFrame)
 	S:HandleButton(IslandsFrame.DifficultySelectorFrame.QueueButton)
 
 	local WeeklyQuest = IslandsFrame.WeeklyQuest

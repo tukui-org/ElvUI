@@ -34,7 +34,7 @@ function S:Blizzard_TradeSkillUI()
 
 	-- MainFrame
 	local TradeSkillFrame = _G.TradeSkillFrame
-	S:HandlePortraitFrame(TradeSkillFrame, true)
+	S:HandlePortraitFrame(TradeSkillFrame)
 
 	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
 	TradeSkillFrame.RankFrame:StripTextures()

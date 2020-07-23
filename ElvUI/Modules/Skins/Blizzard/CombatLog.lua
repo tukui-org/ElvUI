@@ -12,7 +12,7 @@ function S:Blizzard_CombatLog()
 
 	local Button = _G.CombatLogQuickButtonFrame_Custom
 	Button:StripTextures()
-	Button:SetTemplate('Transparent')
+	Button:CreateBackdrop('Transparent')
 
 	local FontContainer = _G.ChatFrame2.FontStringContainer
 	if FontContainer then

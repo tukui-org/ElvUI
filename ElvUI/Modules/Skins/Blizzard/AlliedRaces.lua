@@ -9,7 +9,7 @@ function S:Blizzard_AlliedRacesUI()
 
 	local AlliedRacesFrame = _G.AlliedRacesFrame
 	if E.private.skins.parchmentRemoverEnable then
-		S:HandlePortraitFrame(AlliedRacesFrame, true)
+		S:HandlePortraitFrame(AlliedRacesFrame)
 		select(2, AlliedRacesFrame.ModelFrame:GetRegions()):Hide()
 
 		local scrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame

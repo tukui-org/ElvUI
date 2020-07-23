@@ -11,7 +11,7 @@ function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
 	local SpellBookFrame = _G.SpellBookFrame
-	S:HandlePortraitFrame(SpellBookFrame, true)
+	S:HandlePortraitFrame(SpellBookFrame)
 
 	for _, object in pairs({ "SpellBookSpellIconsFrame", "SpellBookSideTabsFrame", "SpellBookPageNavigationFrame" }) do
 		_G[object]:StripTextures()
@@ -59,15 +59,13 @@ function S:SpellBookFrame()
 		end
 
 		S:HandleIcon(icon)
-		icon:SetInside()
 		E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
-		button:SetTemplate(nil, true)
+		button:CreateBackdrop(nil, true)
+		icon:SetInside(button.backdrop)
 
 		if button.SpellHighlightTexture then
 			button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
-			if icon then
-				button.SpellHighlightTexture:SetOutside(button)
-			end
+			button.SpellHighlightTexture:SetInside(button.backdrop)
 			E:Flash(button.SpellHighlightTexture, 1, true)
 		end
 
@@ -88,15 +86,12 @@ function S:SpellBookFrame()
 	hooksecurefunc("SpellButton_UpdateButton", function()
 		for i = 1, _G.SPELLS_PER_PAGE do
 			local button = _G["SpellButton"..i]
-			local icon = _G["SpellButton"..i.."IconTexture"]
-
 			if button.SpellHighlightTexture then
 				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
-				if icon then
-					button.SpellHighlightTexture:SetOutside(button.backdrop)
-				end
+				button.SpellHighlightTexture:SetInside(button.backdrop)
 				E:Flash(button.SpellHighlightTexture, 1, true)
 			end
+
 			if E.private.skins.parchmentRemoverEnable then
 				button:SetHighlightTexture('')
 				local r = button.SpellName:GetTextColor()
@@ -116,7 +111,7 @@ function S:SpellBookFrame()
 	for i = 1, 8 do
 		local Tab = _G["SpellBookSkillLineTab"..i]
 		Tab:StripTextures()
-		Tab:SetTemplate()
+		Tab:CreateBackdrop()
 		Tab:StyleButton(nil, true)
 	end
 

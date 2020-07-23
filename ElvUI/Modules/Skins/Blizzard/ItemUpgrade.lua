@@ -11,7 +11,7 @@ function S:Blizzard_ItemUpgradeUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemUpgrade) then return end
 
 	local ItemUpgradeFrame = _G.ItemUpgradeFrame
-	S:HandlePortraitFrame(ItemUpgradeFrame, true)
+	S:HandlePortraitFrame(ItemUpgradeFrame)
 
 	local ItemButton = ItemUpgradeFrame.ItemButton
 	ItemButton:CreateBackdrop()

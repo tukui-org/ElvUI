@@ -40,7 +40,7 @@ function S:Blizzard_TrainerUI()
 	end
 
 	local ClassTrainerFrame = _G.ClassTrainerFrame
-	S:HandlePortraitFrame(ClassTrainerFrame, true)
+	S:HandlePortraitFrame(ClassTrainerFrame)
 
 	for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
 		local button = _G["ClassTrainerScrollFrameButton"..i]

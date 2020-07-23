@@ -20,7 +20,7 @@ local FrameTexs = {
 local function SkinOnShow()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame:SetParent(E.UIParent)
-	ScriptErrorsFrame:SetTemplate('Transparent')
+	ScriptErrorsFrame:CreateBackdrop('Transparent')
 	S:HandleScrollBar(_G.ScriptErrorsFrameScrollBar)
 	S:HandleCloseButton(_G.ScriptErrorsFrameClose)
 	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
@@ -50,9 +50,9 @@ end
 
 local function SkinTableAttributeDisplay(frame)
 	frame:StripTextures()
-	frame:SetTemplate("Transparent")
+	frame:CreateBackdrop("Transparent")
 	frame.ScrollFrameArt:StripTextures()
-	frame.ScrollFrameArt:SetTemplate("Transparent")
+	frame.ScrollFrameArt:CreateBackdrop("Transparent")
 	S:HandleCloseButton(frame.CloseButton)
 	frame.OpenParentButton:ClearAllPoints()
 	frame.OpenParentButton:Point("TOPLEFT", frame, "TOPLEFT", 2, -2)
@@ -91,22 +91,15 @@ function S:Blizzard_DebugTools()
 
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
-		_G.FrameStackTooltip:HookScript("OnShow", function(s)
-			if not s.template then
-				s:SetTemplate("Transparent")
-			end
-		end)
-
-		_G.EventTraceTooltip:HookScript("OnShow", function(s)
-			s:SetTemplate("Transparent", nil, true)
-		end)
+		_G.FrameStackTooltip:CreateBackdrop("Transparent")
+		_G.EventTraceTooltip:CreateBackdrop("Transparent")
 	end
 
 	for i=1, #FrameTexs do
 		_G["EventTraceFrame"..FrameTexs[i]]:SetTexture()
 	end
 
-	_G.EventTraceFrame:SetTemplate("Transparent")
+	_G.EventTraceFrame:CreateBackdrop("Transparent")
 	S:HandleCloseButton(_G.EventTraceFrameCloseButton)
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])

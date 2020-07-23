@@ -23,7 +23,7 @@ function S:Blizzard_OrderHallUI()
 
 	local OrderHallTalentFrame = _G.OrderHallTalentFrame
 
-	S:HandlePortraitFrame(OrderHallTalentFrame, true)
+	S:HandlePortraitFrame(OrderHallTalentFrame)
 	S:HandleButton(OrderHallTalentFrame.BackButton)
 	S:HandleIcon(OrderHallTalentFrame.Currency.Icon)
 	OrderHallTalentFrame.OverlayElements:SetAlpha(0)

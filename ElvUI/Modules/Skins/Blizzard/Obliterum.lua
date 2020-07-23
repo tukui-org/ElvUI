@@ -8,7 +8,7 @@ function S:Blizzard_ObliterumUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Obliterum) then return end
 
 	local ObliterumForgeFrame = _G.ObliterumForgeFrame
-	S:HandlePortraitFrame(ObliterumForgeFrame, true)
+	S:HandlePortraitFrame(ObliterumForgeFrame)
 	ObliterumForgeFrame.ItemSlot:CreateBackdrop()
 	ObliterumForgeFrame.ItemSlot.Icon:SetTexCoord(unpack(E.TexCoords))
 	S:HandleButton(ObliterumForgeFrame.ObliterateButton)

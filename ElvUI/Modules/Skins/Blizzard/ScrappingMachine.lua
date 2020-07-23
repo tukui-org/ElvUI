@@ -10,7 +10,7 @@ function S:Blizzard_ScrappingMachineUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Scrapping) then return end
 
 	local MachineFrame = _G.ScrappingMachineFrame
-	S:HandlePortraitFrame(MachineFrame, true)
+	S:HandlePortraitFrame(MachineFrame)
 	S:HandleButton(MachineFrame.ScrapButton)
 
 	local ItemSlots = MachineFrame.ItemSlots

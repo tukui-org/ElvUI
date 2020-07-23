@@ -49,25 +49,29 @@ function S:WorldMapFrame()
 	QuestScrollFrame.DetailFrame.BottomDetail:Hide()
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
 
-	local QuestScrollFrameScrollBar = _G.QuestScrollFrameScrollBar
+	local QuestScrollFrameScrollBar = _G.QuestScrollFrame.ScrollBar
 	QuestScrollFrame.DetailFrame:CreateBackdrop()
 	QuestScrollFrame.DetailFrame.backdrop:SetFrameLevel(1)
 	QuestScrollFrame.DetailFrame.backdrop:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPLEFT", 3, 1)
 	QuestScrollFrame.DetailFrame.backdrop:Point("BOTTOMRIGHT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", -2, -7)
-	--QuestScrollFrame.Background:SetInside(QuestScrollFrame.DetailFrame.backdrop)
+	QuestMapFrame.Background:SetInside(QuestScrollFrame.DetailFrame.backdrop)
 	QuestScrollFrame.Contents.StoryHeader.Background:Width(251)
 	QuestScrollFrame.Contents.StoryHeader.Background:Point("TOP", 0, -9)
 	QuestScrollFrame.Contents.StoryHeader.Text:Point("TOPLEFT", 18, -20)
 	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAllPoints(QuestScrollFrame.Contents.StoryHeader.Background)
 	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAlpha(0)
-	--S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
-	--QuestScrollFrameScrollBar:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPRIGHT", 1, -15)
-	--QuestScrollFrameScrollBar:Point("BOTTOMLEFT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", 6, 10)
+	S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
+	QuestScrollFrameScrollBar:Point("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPRIGHT", 1, -15)
+	QuestScrollFrameScrollBar:Point("BOTTOMLEFT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", 6, 10)
 
-	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton)
-	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton)
+	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton, true)
+	QuestMapFrame.DetailsFrame.BackButton:SetFrameLevel(5)
+	S:HandleButton(QuestMapFrame.DetailsFrame.AbandonButton, true)
+	QuestMapFrame.DetailsFrame.AbandonButton:SetFrameLevel(5)
 	S:HandleButton(QuestMapFrame.DetailsFrame.ShareButton, true)
-	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton)
+	QuestMapFrame.DetailsFrame.ShareButton:SetFrameLevel(5)
+	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton, true)
+	QuestMapFrame.DetailsFrame.TrackButton:SetFrameLevel(5)
 	S:HandleButton(QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton, true)
 
 	if E.private.skins.blizzard.tooltip then
@@ -108,7 +112,7 @@ function S:WorldMapFrame()
 	QuestMapFrame.QuestSessionManagement:StripTextures()
 
 	local ExecuteSessionCommand = QuestMapFrame.QuestSessionManagement.ExecuteSessionCommand
-	ExecuteSessionCommand:SetTemplate()
+	ExecuteSessionCommand:CreateBackdrop()
 	ExecuteSessionCommand:StyleButton()
 
 	local icon = ExecuteSessionCommand:CreateTexture(nil, "ARTWORK")

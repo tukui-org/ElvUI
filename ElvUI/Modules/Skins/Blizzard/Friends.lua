@@ -111,7 +111,7 @@ function S:FriendsFrame()
 	end
 
 	local FriendsFrame = _G.FriendsFrame
-	S:HandlePortraitFrame(FriendsFrame, true)
+	S:HandlePortraitFrame(FriendsFrame)
 
 	_G.WhoFrameListInset:StripTextures()
 	_G.WhoFrameListInset.NineSlice:Hide()
@@ -168,7 +168,7 @@ function S:FriendsFrame()
 	S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton)
 
 	S:HandleEditBox(_G.AddFriendNameEditBox)
-	_G.AddFriendFrame:SetTemplate("Transparent")
+	_G.AddFriendFrame:CreateBackdrop("Transparent")
 
 	--Pending invites
 	S:HandleButton(_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton)
@@ -224,7 +224,7 @@ function S:FriendsFrame()
 	_G.QuickJoinScrollFrameBottom:SetTexture()
 	_G.QuickJoinScrollFrameMiddle:SetTexture()
 	QuickJoinRoleSelectionFrame:StripTextures()
-	QuickJoinRoleSelectionFrame:SetTemplate("Transparent")
+	QuickJoinRoleSelectionFrame:CreateBackdrop("Transparent")
 	S:HandleButton(QuickJoinRoleSelectionFrame.AcceptButton)
 	S:HandleButton(QuickJoinRoleSelectionFrame.CancelButton)
 	S:HandleCloseButton(QuickJoinRoleSelectionFrame.CloseButton)

@@ -11,7 +11,7 @@ function S:Blizzard_MacroUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end
 
 	local MacroFrame = _G.MacroFrame
-	S:HandlePortraitFrame(MacroFrame, true)
+	S:HandlePortraitFrame(MacroFrame)
 	MacroFrame:Width(360)
 
 	_G.MacroFrameTextBackground:StripTextures()

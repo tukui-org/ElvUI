@@ -11,7 +11,7 @@ function S:Blizzard_AzeriteEssenceUI()
 	if not C_AzeriteEssence_CanOpenUI() then return end
 
 	local AzeriteEssenceUI = _G.AzeriteEssenceUI
-	S:HandlePortraitFrame(AzeriteEssenceUI, true)
+	S:HandlePortraitFrame(AzeriteEssenceUI)
 
 	-- Reposition the Level Badge
 	AzeriteEssenceUI.PowerLevelBadgeFrame:ClearAllPoints()

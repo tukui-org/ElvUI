@@ -12,7 +12,7 @@ function S:Blizzard_GuildUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guild) then return end
 
 	local GuildFrame = _G.GuildFrame
-	S:HandlePortraitFrame(GuildFrame, true)
+	S:HandlePortraitFrame(GuildFrame)
 
 	S:HandleCloseButton(_G.GuildMemberDetailCloseButton)
 	S:HandleScrollBar(_G.GuildInfoFrameApplicantsContainerScrollBar)
@@ -257,7 +257,7 @@ function S:GuildInviteFrame()
 
 	local GuildInviteFrame = _G.GuildInviteFrame
 	GuildInviteFrame:StripTextures()
-	GuildInviteFrame:SetTemplate('Transparent')
+	GuildInviteFrame:CreateBackdrop('Transparent')
 	GuildInviteFrame.Points:ClearAllPoints()
 	GuildInviteFrame.Points:Point('TOP', GuildInviteFrame, 'CENTER', 15, -25)
 	S:HandleButton(_G.GuildInviteFrameJoinButton)

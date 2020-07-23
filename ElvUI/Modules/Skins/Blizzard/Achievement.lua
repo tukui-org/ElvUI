@@ -18,7 +18,7 @@ local function skinAch(Achievement, BiggerIcon)
 	Achievement:StripTextures(true)
 	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
-	Achievement.icon:SetTemplate()
+	Achievement.icon:CreateBackdrop()
 	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
 	Achievement.icon:ClearAllPoints()
 	Achievement.icon:Point("TOPLEFT", 8, -8)
@@ -150,16 +150,9 @@ function S:Blizzard_AchievementUI(event)
 
 	if not IsAddOnLoaded("Blizzard_AchievementUI") then return end
 
-	_G.AchievementFrameCategories:SetBackdrop(nil)
-	_G.AchievementFrameSummary:SetBackdrop(nil)
-
-	for i = 1, 17 do
-		select(i, _G.AchievementFrame:GetRegions()):Hide()
-	end
-
+	_G.AchievementFrameSummary:StripTextures()
 	_G.AchievementFrameSummaryBackground:Hide()
 	_G.AchievementFrameSummary:GetChildren():Hide()
-	_G.AchievementFrameCategoriesContainerScrollBarBG:SetAlpha(0)
 
 	for i = 1, 4 do
 		select(i, _G.AchievementFrameHeader:GetRegions()):Hide()
@@ -215,6 +208,7 @@ function S:Blizzard_AchievementUI(event)
 	end
 
 	local AchievementFrame = _G.AchievementFrame
+	AchievementFrame:StripTextures()
 	AchievementFrame:CreateBackdrop("Transparent")
 	AchievementFrame.backdrop:Point("TOPLEFT", 0, 7)
 	AchievementFrame.backdrop:Point("BOTTOMRIGHT")
@@ -226,9 +220,14 @@ function S:Blizzard_AchievementUI(event)
 	_G.AchievementFrameHeaderPoints:Point("LEFT", _G.AchievementFrameHeaderTitle, "RIGHT", 2, 0)
 
 	--Backdrops
+	_G.AchievementFrameCategories:StripTextures()
+	_G.AchievementFrameCategoriesContainerScrollBarBG:SetAlpha(0)
 	_G.AchievementFrameCategoriesContainer:CreateBackdrop("Transparent")
 	_G.AchievementFrameCategoriesContainer.backdrop:Point("TOPLEFT", 0, 4)
 	_G.AchievementFrameCategoriesContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
+	_G.AchievementFrameCategoriesBG:SetAlpha(0)
+	_G.AchievementFrameWaterMark:SetAlpha(0)
+	--_G.AchievementFrameCategoriesBG:SetInside(_G.AchievementFrameCategoriesContainer.backdrop)
 
 	_G.AchievementFrameAchievementsContainer:CreateBackdrop("Transparent")
 	_G.AchievementFrameAchievementsContainer.backdrop:Point("TOPLEFT", -2, 2)
@@ -265,8 +264,7 @@ function S:Blizzard_AchievementUI(event)
 
 	-- Search
 	AchievementFrame.searchResults:StripTextures()
-	AchievementFrame.searchResults:SetTemplate("Transparent")
-
+	AchievementFrame.searchResults:CreateBackdrop("Transparent")
 	AchievementFrame.searchPreviewContainer:StripTextures()
 	AchievementFrame.searchPreviewContainer:ClearAllPoints()
 	AchievementFrame.searchPreviewContainer:Point("TOPLEFT", AchievementFrame, "TOPRIGHT", 2, 6)

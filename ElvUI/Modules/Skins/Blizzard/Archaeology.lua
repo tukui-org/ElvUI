@@ -8,8 +8,7 @@ function S:Blizzard_ArchaeologyUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.archaeology) then return end
 
 	local ArchaeologyFrame = _G.ArchaeologyFrame
-	S:HandlePortraitFrame(ArchaeologyFrame, true)
-
+	S:HandlePortraitFrame(ArchaeologyFrame)
 	S:HandleButton(ArchaeologyFrame.artifactPage.solveFrame.solveButton, true)
 	S:HandleButton(ArchaeologyFrame.artifactPage.backButton, true)
 

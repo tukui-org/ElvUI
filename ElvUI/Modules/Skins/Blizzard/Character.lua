@@ -286,8 +286,7 @@ function S:CharacterFrame()
 
 	-- General
 	local CharacterFrame = _G.CharacterFrame
-	S:HandlePortraitFrame(CharacterFrame, true)
-
+	S:HandlePortraitFrame(CharacterFrame)
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
 	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
 	S:HandleScrollBar(_G.GearManagerDialogPopupScrollFrameScrollBar)

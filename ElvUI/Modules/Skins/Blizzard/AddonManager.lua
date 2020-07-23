@@ -16,7 +16,7 @@ function S:AddonList()
 	local maxShown = _G.MAX_ADDONS_DISPLAYED
 	local AddonCharacterDropDown = _G.AddonCharacterDropDown
 
-	S:HandlePortraitFrame(AddonList, true)
+	S:HandlePortraitFrame(AddonList)
 	S:HandleButton(AddonList.EnableAllButton, true)
 	S:HandleButton(AddonList.DisableAllButton, true)
 	S:HandleButton(AddonList.OkayButton, true)

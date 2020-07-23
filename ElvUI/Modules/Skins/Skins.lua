@@ -50,6 +50,15 @@ S.Blizzard.Regions = {
 	'RightTex',
 	'MiddleTex',
 	'Center',
+	-- 9.0 might want these later? (achievement frame uses them and maybe something else)
+	--'BottomEdge',
+	--'LeftEdge',
+	--'RightEdge',
+	--'TopEdge',
+	--'TopLeftCorner',
+	--'TopRightCorner',
+	--'BottomLeftCorner',
+	--'BottomRightCorner',
 }
 
 -- Depends on the arrow texture to be up by default.
@@ -78,7 +87,7 @@ function S:HandleInsetFrame(frame)
 end
 
 -- All frames that have a Portrait
-function S:HandlePortraitFrame(frame, setBackdrop)
+function S:HandlePortraitFrame(frame, setTemplate)
 	assert(frame, "doesn't exist!")
 
 	local name = frame and frame.GetName and frame:GetName()
@@ -101,11 +110,11 @@ function S:HandlePortraitFrame(frame, setBackdrop)
 		S:HandleCloseButton(frame.CloseButton)
 	end
 
-	if setBackdrop then
+	if setTemplate then
+		frame:SetTemplate('Transparent')
+	else
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:SetAllPoints()
-	else
-		frame:SetTemplate('Transparent')
 	end
 end
 
@@ -271,14 +280,7 @@ function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, st
 	if button.SetDisabledTexture then button:SetDisabledTexture("") end
 
 	if strip then button:StripTextures() end
-
-	local buttonName = button.GetName and button:GetName()
-	for _, region in pairs(S.Blizzard.Regions) do
-		region = buttonName and _G[buttonName..region] or button[region]
-		if region then
-			region:SetAlpha(0)
-		end
-	end
+	S:HandleBlizzardRegions(button)
 
 	if button.Icon then
 		local Texture = button.Icon:GetTexture()
@@ -389,7 +391,7 @@ end
 function S:HandleRotateButton(btn)
 	if btn.isSkinned then return end
 
-	btn:SetTemplate()
+	btn:CreateBackdrop()
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
 
 	local normTex = btn:GetNormalTexture()
@@ -449,24 +451,27 @@ do
 	end
 end
 
-function S:HandleEditBox(frame)
-	assert(frame, "doesnt exist!")
-
-	if frame.backdrop then return end
-
-	local EditBoxName = frame.GetName and frame:GetName()
+function S:HandleBlizzardRegions(frame, name)
 	for _, Region in pairs(S.Blizzard.Regions) do
-		if EditBoxName and _G[EditBoxName..Region] then
-			_G[EditBoxName..Region]:SetAlpha(0)
+		if name and _G[name..Region] then
+			_G[name..Region]:SetAlpha(0)
 		end
 		if frame[Region] then
 			frame[Region]:SetAlpha(0)
 		end
 	end
+end
+
+function S:HandleEditBox(frame)
+	assert(frame, "doesnt exist!")
+
+	if frame.backdrop then return end
 
 	frame:CreateBackdrop()
 	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
+	S:HandleBlizzardRegions(frame)
 
+	local EditBoxName = frame:GetName()
 	if EditBoxName and (strfind(EditBoxName, "Silver") or strfind(EditBoxName, "Copper")) then
 		frame.backdrop:Point("BOTTOMRIGHT", -12, -2)
 	end
@@ -534,7 +539,6 @@ do
 		frame.forceSaturation = forceSaturation
 
 		if noBackdrop then
-			frame:SetTemplate()
 			frame:Size(16)
 		else
 			frame:CreateBackdrop()
@@ -1035,7 +1039,7 @@ function S:HandleTooltipBorderedFrame(frame)
 
 	if frame.Background then frame.Background:Hide() end
 
-	frame:SetTemplate("Transparent")
+	frame:CreateBackdrop("Transparent")
 end
 
 function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)

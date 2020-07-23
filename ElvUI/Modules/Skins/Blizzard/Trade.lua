@@ -10,7 +10,7 @@ function S:TradeFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trade) then return end
 
 	local TradeFrame = _G.TradeFrame
-	S:HandlePortraitFrame(TradeFrame, true)
+	S:HandlePortraitFrame(TradeFrame)
 
 	TradeFrame.RecipientOverlay.portrait:SetAlpha(0)
 	TradeFrame.RecipientOverlay.portraitFrame:SetAlpha(0)

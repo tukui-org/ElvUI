@@ -82,7 +82,7 @@ function S:Blizzard_GarrisonUI()
 
 	-- Capacitive display frame
 	local GarrisonCapacitiveDisplayFrame = _G.GarrisonCapacitiveDisplayFrame
-	S:HandlePortraitFrame(GarrisonCapacitiveDisplayFrame, true)
+	S:HandlePortraitFrame(GarrisonCapacitiveDisplayFrame)
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.StartWorkOrderButton)
 	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton)
 	GarrisonCapacitiveDisplayFrame.Count:StripTextures()
@@ -108,7 +108,7 @@ function S:Blizzard_GarrisonUI()
 	end)
 
 	-- Recruiter frame
-	S:HandlePortraitFrame(_G.GarrisonRecruiterFrame, true)
+	S:HandlePortraitFrame(_G.GarrisonRecruiterFrame)
 
 	-- Recruiter Unavailable frame
 	local UnavailableFrame = _G.GarrisonRecruiterFrame.UnavailableFrame
@@ -486,13 +486,15 @@ local function SkinAbilityTooltip(frame)
 	for i = 1, 9 do
 		select(i, frame:GetRegions()):Hide()
 	end
+
 	local icon = frame.Icon
 	icon:SetTexCoord(unpack(E.TexCoords))
 	if not frame.border then
 		frame.border = CreateFrame("Frame", nil, frame)
 		S:HandleIcon(frame.Icon, frame.border)
 	end
-	frame:SetTemplate("Transparent")
+
+	frame:CreateBackdrop("Transparent")
 end
 
 function S:GarrisonTooltips()

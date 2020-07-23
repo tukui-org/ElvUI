@@ -11,11 +11,11 @@ function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
 	_G.ItemTextFrame:StripTextures(true)
-	_G.ItemTextFrame:SetTemplate("Transparent")
+	_G.ItemTextFrame:CreateBackdrop("Transparent")
 
 	_G.ItemTextScrollFrame:StripTextures()
 
-	_G.GossipFrame:SetTemplate("Transparent")
+	_G.GossipFrame:CreateBackdrop("Transparent")
 	_G.GossipFramePortrait:Kill()
 
 	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
@@ -40,10 +40,10 @@ function S:GossipFrame()
 	end
 
 	local GossipFrame = _G.GossipFrame
-	S:HandlePortraitFrame(GossipFrame, true)
+	S:HandlePortraitFrame(GossipFrame)
 
 	local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
-	GossipGreetingScrollFrame:SetTemplate()
+	GossipGreetingScrollFrame:CreateBackdrop()
 
 	if E.private.skins.parchmentRemoverEnable then
 		for i = 1, _G.NUMGOSSIPBUTTONS do

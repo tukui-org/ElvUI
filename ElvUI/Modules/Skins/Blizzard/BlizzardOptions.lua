@@ -24,7 +24,7 @@ local function HandlePushToTalkButton(button)
 	button.MiddleMiddle:Hide()
 	button:SetHighlightTexture("")
 
-	button:SetTemplate(nil, true)
+	button:CreateBackdrop(nil, true)
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)
 	button:HookScript("OnLeave", S.SetOriginalBackdrop)
 end
@@ -62,7 +62,7 @@ function S:BlizzardOptions()
 		end
 	end)
 
-	_G.RolePollPopup:SetTemplate("Transparent")
+	_G.RolePollPopup:CreateBackdrop("Transparent")
 
 	_G.InterfaceOptionsFrame:SetClampedToScreen(true)
 	_G.InterfaceOptionsFrame:SetMovable(true)
@@ -155,7 +155,7 @@ function S:BlizzardOptions()
 
 	for _, Frame in pairs(ChatFrames) do
 		Frame:StripTextures()
-		Frame:SetTemplate('Transparent')
+		Frame:CreateBackdrop('Transparent')
 	end
 
 	for _, CheckBox in pairs(ChatCheckBoxs) do
@@ -279,7 +279,7 @@ function S:BlizzardOptions()
 
 	for _, Frame in pairs(OptionsFrames) do
 		Frame:StripTextures()
-		Frame:SetTemplate('Transparent')
+		Frame:CreateBackdrop('Transparent')
 	end
 
 	local InterfaceOptionsFrame = _G.InterfaceOptionsFrame
@@ -329,7 +329,7 @@ function S:BlizzardOptions()
 	local newProfileDialog = _G.CompactUnitFrameProfilesNewProfileDialog
 	if newProfileDialog then
 		newProfileDialog:StripTextures()
-		newProfileDialog:SetTemplate('Transparent')
+		newProfileDialog:CreateBackdrop('Transparent')
 
 		S:HandleDropDownBox(_G.CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
 		S:HandleButton(_G.CompactUnitFrameProfilesNewProfileDialogCreateButton)
@@ -345,7 +345,7 @@ function S:BlizzardOptions()
 	local deleteProfileDialog = _G.CompactUnitFrameProfilesDeleteProfileDialog
 	if deleteProfileDialog then
 		deleteProfileDialog:StripTextures()
-		deleteProfileDialog:SetTemplate('Transparent')
+		deleteProfileDialog:CreateBackdrop('Transparent')
 
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogDeleteButton)
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)

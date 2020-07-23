@@ -25,7 +25,7 @@ local PlusButtonIDs = {
 }
 
 local function HandleReward(frame)
-	if (not frame) then return end
+	if not frame then return end
 
 	if frame.Icon then
 		frame.Icon:SetDrawLayer('ARTWORK')
@@ -69,17 +69,14 @@ local function HandleReward(frame)
 end
 
 local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
-	scrollFrame:SetTemplate()
+	scrollFrame:CreateBackdrop()
+
 	if not scrollFrame.spellTex then
 		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
 	end
 
 	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-	if inset then
-		scrollFrame.spellTex:Point("TOPLEFT", 1, -1)
-	else
-		scrollFrame.spellTex:Point("TOPLEFT")
-	end
+	scrollFrame.spellTex:Point("TOPLEFT", inset and 1 or 0, inset and -1 or 0)
 	scrollFrame.spellTex:Size(widthOverride or 506, heightOverride or 615)
 	scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 end
@@ -121,8 +118,8 @@ function S:BlizzardQuestFrames()
 	QuestInfoItemHighlight:StripTextures()
 	QuestInfoItemHighlight:CreateBackdrop()
 	QuestInfoItemHighlight.backdrop:SetAllPoints()
-	QuestInfoItemHighlight:SetBackdropBorderColor(1, 1, 0)
-	QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
+	QuestInfoItemHighlight.backdrop:SetBackdropBorderColor(1, 1, 0)
+	QuestInfoItemHighlight.backdrop:SetBackdropColor(0, 0, 0, 0)
 	QuestInfoItemHighlight:Size(142, 40)
 
 	hooksecurefunc("QuestInfoItem_OnClick", function(s)
@@ -283,13 +280,13 @@ function S:BlizzardQuestFrames()
 
 	--Quest Frame
 	local QuestFrame = _G.QuestFrame
-	S:HandlePortraitFrame(QuestFrame, true)
+	S:HandlePortraitFrame(QuestFrame)
 
 	_G.QuestFrameDetailPanel:StripTextures(true)
 	_G.QuestDetailScrollFrame:StripTextures(true)
-	_G.QuestDetailScrollFrame:SetTemplate()
-	_G.QuestProgressScrollFrame:SetTemplate()
-	_G.QuestGreetingScrollFrame:SetTemplate()
+	_G.QuestDetailScrollFrame:CreateBackdrop()
+	_G.QuestProgressScrollFrame:CreateBackdrop()
+	_G.QuestGreetingScrollFrame:CreateBackdrop()
 
 	local function UpdateGreetingFrame()
 		for Button in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
@@ -394,7 +391,7 @@ function S:BlizzardQuestFrames()
 	S:HandleButton(_G.QuestLogPopupDetailFrameTrackButton)
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.QuestLogPopupDetailFrameScrollFrameScrollBar)
-	QuestLogPopupDetailFrame:SetTemplate("Transparent")
+	QuestLogPopupDetailFrame:CreateBackdrop("Transparent")
 
 	_G.QuestLogPopupDetailFrameScrollFrame:HookScript('OnShow', function(s)
 		if not _G.QuestLogPopupDetailFrameScrollFrame.backdrop then
@@ -408,8 +405,6 @@ function S:BlizzardQuestFrames()
 			_G.QuestLogPopupDetailFrameScrollFrame.spellTex:Height(s:GetHeight() + 217)
 		end
 	end)
-
-	S:HandleScrollBar(_G.QuestMapDetailsScrollFrameScrollBar)
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)

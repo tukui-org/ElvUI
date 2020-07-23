@@ -102,7 +102,7 @@ function S:LookingForGroupFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	local PVEFrame = _G.PVEFrame
-	S:HandlePortraitFrame(PVEFrame, true)
+	S:HandlePortraitFrame(PVEFrame)
 
 	_G.RaidFinderQueueFrame:StripTextures(true)
 	_G.PVEFrameBg:Hide()
@@ -122,9 +122,9 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
 	_G.LFGDungeonReadyDialog:StripTextures()
-	_G.LFGDungeonReadyDialog:SetTemplate("Transparent")
+	_G.LFGDungeonReadyDialog:CreateBackdrop("Transparent")
 	_G.LFGDungeonReadyStatus:StripTextures()
-	_G.LFGDungeonReadyStatus:SetTemplate("Transparent")
+	_G.LFGDungeonReadyStatus:CreateBackdrop("Transparent")
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
 
@@ -218,9 +218,7 @@ function S:LookingForGroupFrames()
 		end
 	end
 
-	hooksecurefunc("SetCheckButtonIsRadio", function(button)
-		S:HandleCheckBox(button)
-	end)
+	hooksecurefunc("SetCheckButtonIsRadio", S.HandleCheckBox)
 
 	--Fix issue with role buttons overlapping each other (Blizzard bug)
 	local repositionCheckButtons = {
@@ -466,7 +464,7 @@ function S:LookingForGroupFrames()
 	--[[LFGInvitePopup_Update("Elvz", true, true, true)
 	StaticPopupSpecial_Show(LFGInvitePopup);]]
 	_G.LFGInvitePopup:StripTextures()
-	_G.LFGInvitePopup:SetTemplate("Transparent")
+	_G.LFGInvitePopup:CreateBackdrop("Transparent")
 	S:HandleButton(_G.LFGInvitePopupAcceptButton)
 	S:HandleButton(_G.LFGInvitePopupDeclineButton)
 
@@ -515,9 +513,9 @@ function S:LookingForGroupFrames()
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
 
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate("Transparent")
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog:CreateBackdrop("Transparent")
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate("Transparent")
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:CreateBackdrop("Transparent")
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
 	S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
@@ -525,13 +523,13 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
 
 	_G.LFGListApplicationDialog:StripTextures()
-	_G.LFGListApplicationDialog:SetTemplate("Transparent")
+	_G.LFGListApplicationDialog:CreateBackdrop("Transparent")
 	S:HandleButton(_G.LFGListApplicationDialog.SignUpButton)
 	S:HandleButton(_G.LFGListApplicationDialog.CancelButton)
 	S:HandleEditBox(_G.LFGListApplicationDialogDescription)
 
 	_G.LFGListInviteDialog:StripTextures()
-	_G.LFGListInviteDialog:SetTemplate("Transparent")
+	_G.LFGListInviteDialog:CreateBackdrop("Transparent")
 	S:HandleButton(_G.LFGListInviteDialog.AcknowledgeButton)
 	S:HandleButton(_G.LFGListInviteDialog.AcceptButton)
 	S:HandleButton(_G.LFGListInviteDialog.DeclineButton)
@@ -623,7 +621,7 @@ function S:LookingForGroupFrames()
 	S:HandleCheckBox(LFGListFrame.ApplicationViewer.AutoAcceptButton)
 
 	LFGListFrame.ApplicationViewer.Inset:StripTextures()
-	LFGListFrame.ApplicationViewer.Inset:SetTemplate("Transparent")
+	LFGListFrame.ApplicationViewer.Inset:CreateBackdrop("Transparent")
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.NameColumnHeader, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.RoleColumnHeader, true)
@@ -659,9 +657,9 @@ function S:LookingForGroupFrames()
 
 	hooksecurefunc("LFGListCategorySelection_AddButton", function(self, btnIndex, categoryID, filters)
 		local button = self.CategoryButtons[btnIndex]
-		if(button) then
+		if button then
 			if not button.isSkinned then
-				button:SetTemplate()
+				button:CreateBackdrop()
 				button.Icon:SetDrawLayer("BACKGROUND", 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()
@@ -675,10 +673,10 @@ function S:LookingForGroupFrames()
 
 			button.SelectedTexture:Hide()
 			local selected = self.selectedCategory == categoryID and self.selectedFilters == filters
-			if(selected) then
-				button:SetBackdropBorderColor(1, 1, 0)
+			if selected then
+				button.backdrop:SetBackdropBorderColor(1, 1, 0)
 			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)
