@@ -669,6 +669,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[314565] = Defaults(), -- Defiled Ground
 		[314392] = Defaults(), -- Vile Corruption
 
+	-- Shadowlands Dungeons
+		-- De Other Side
+		-- Halls of Atonement
+		-- Mists of Tirna Scithe
+		-- Plaguefall
+		-- Sanguine Depths
+		-- Spires of Ascension
+		-- The Necrotic Wake
+		-- Theater of Pain
+
 	-- BFA Dungeons
 		-- Freehold
 		[258323] = Defaults(), -- Infected Wound
@@ -862,6 +872,18 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[299475] = Defaults(), -- B.O.R.K
 		[293670] = Defaults(), -- Chain Blade
 
+	-- Castle Nathria
+		-- Shriekwing
+		-- Huntsman Altimor
+		-- Hungering Destroyer
+		-- Sun King's Salvation
+		-- Artificer Xy'mox
+		-- Lady Inerva Darkvein
+		-- The Council of Blood
+		-- Sludgefist
+		-- Stoneborn Generals
+		-- Sire Denathrius
+
 	-- Uldir
 		-- MOTHER
 		[268277] = Defaults(), -- Purifying Flame
@@ -915,7 +937,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[263235] = Defaults(), -- Blood Feast
 		[270287] = Defaults(), -- Blighted Ground
 
-	-- Siege of Zuldazar
+	-- Battle of Dazar'alor
 		-- Rawani Kanae / Frida Ironbellows
 		[283573] = Defaults(), -- Sacred Blade
 		[283617] = Defaults(), -- Wave of Light
@@ -998,7 +1020,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[282432] = Defaults(), -- Crushing Doubt
 		[282589] = Defaults(), -- Mind Scramble
 		[292826] = Defaults(), -- Mind Scramble
-		-- Fathuul the Feared
+		-- Uu'nat
 		[284851] = Defaults(), -- Touch of the End
 		[286459] = Defaults(), -- Feedback: Void
 		[286457] = Defaults(), -- Feedback: Ocean
@@ -1082,7 +1104,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[298014] = Defaults(), -- Cold Blast
 		[298018] = Defaults(), -- Frozen
 
-	-- Nyalotha
+	-- Ny'alotha
 		-- Wrathion
 		[313255] = Defaults(), -- Creeping Madness (Slow Effect)
 		[306163] = Defaults(), -- Incineration
