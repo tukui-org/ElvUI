@@ -451,13 +451,15 @@ do
 	end
 end
 
-function S:HandleBlizzardRegions(frame, name)
-	for _, Region in pairs(S.Blizzard.Regions) do
-		if name and _G[name..Region] then
-			_G[name..Region]:SetAlpha(0)
-		end
-		if frame[Region] then
-			frame[Region]:SetAlpha(0)
+function S:HandleBlizzardRegions(frame, name, kill)
+	for _, area in pairs(S.Blizzard.Regions) do
+		local object = (name and _G[name..area]) or frame[area]
+		if object then
+			if kill then
+				object:Kill()
+			else
+				object:SetAlpha(0)
+			end
 		end
 	end
 end
@@ -736,6 +738,7 @@ function S:HandleSliderFrame(frame)
 
 	frame:StripTextures()
 	frame:SetThumbTexture(E.Media.Textures.Melli)
+
 	if not frame.backdrop then
 		frame:CreateBackdrop()
 		frame.backdrop:SetAllPoints()
