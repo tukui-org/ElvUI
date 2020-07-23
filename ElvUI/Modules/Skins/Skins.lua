@@ -112,14 +112,18 @@ end
 function S:SetModifiedBackdrop()
 	if self:IsEnabled() then
 		if self.backdrop then self = self.backdrop end
-		self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+		if self.SetBackdropBorderColor then
+			self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+		end
 	end
 end
 
 function S:SetOriginalBackdrop()
 	if self:IsEnabled() then
 		if self.backdrop then self = self.backdrop end
-		self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		if self.SetBackdropBorderColor then
+			self:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
 	end
 end
 
