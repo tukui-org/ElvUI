@@ -244,7 +244,7 @@ function S:SkinTalentListButtons(frame)
 	end
 end
 
-function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSetTemplate)
+function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, styleTemplate, noGlossTex)
 	assert(button, "doesn't exist!")
 
 	if button.isSkinned then return end
@@ -279,14 +279,16 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 		end
 	end
 
-	if useCreateBackdrop then
-		button:CreateBackdrop(nil, true)
-	elseif not noSetTemplate then
-		button:SetTemplate(nil, true)
-	end
+	if not noStyle then
+		if setTemplate then
+			button:SetTemplate(styleTemplate, not noGlossTex)
+		else
+			button:CreateBackdrop(styleTemplate, not noGlossTex)
+		end
 
-	button:HookScript("OnEnter", S.SetModifiedBackdrop)
-	button:HookScript("OnLeave", S.SetOriginalBackdrop)
+		button:HookScript("OnEnter", S.SetModifiedBackdrop)
+		button:HookScript("OnLeave", S.SetOriginalBackdrop)
+	end
 
 	button.isSkinned = true
 end
@@ -1074,7 +1076,7 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 
 	btn:StripTextures()
 	if not noBackdrop then
-		S:HandleButton(btn, nil, nil, true)
+		S:HandleButton(btn)
 	end
 
 	if stripTexts then

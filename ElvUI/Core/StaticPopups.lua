@@ -1223,9 +1223,9 @@ function E:Contruct_StaticPopups()
 		E.StaticPopupFrames[index].Border:StripTextures()
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
 
-		--[[for i = 1, 3 do
+		for i = 1, 3 do
 			Skins:HandleButton(_G['ElvUI_StaticPopup'..index..'Button'..i])
-		end]]
+		end
 
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate(nil, nil, '')

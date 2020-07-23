@@ -235,7 +235,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
 	elseif (TYPE == 'Button' or TYPE == 'Button-ElvUI') then
 		local frame = widget.frame
-		S:HandleButton(frame, true, nil, true)
+		S:HandleButton(frame, true)
 		frame.backdrop:SetInside()
 
 		widget.text:SetParent(frame.backdrop)
@@ -257,7 +257,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		local button = widget.button
 		local msgframe = widget.msgframe
 
-		S:HandleButton(button, true, nil, true)
+		S:HandleButton(button, true)
 		button.backdrop:SetInside()
 
 		msgframe:StripTextures()

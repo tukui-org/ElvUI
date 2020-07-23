@@ -485,8 +485,8 @@ function S:CharacterFrame()
 	end)
 
 	--Equipement Manager
-	S:HandleButton(_G.PaperDollEquipmentManagerPaneEquipSet, nil, nil, true)
-	S:HandleButton(_G.PaperDollEquipmentManagerPaneSaveSet, nil, nil, true)
+	S:HandleButton(_G.PaperDollEquipmentManagerPaneEquipSet)
+	S:HandleButton(_G.PaperDollEquipmentManagerPaneSaveSet)
 	_G.PaperDollEquipmentManagerPaneEquipSet:Width(_G.PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
 	_G.PaperDollEquipmentManagerPaneSaveSet:Width(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
 	_G.PaperDollEquipmentManagerPaneEquipSet:Point("TOPLEFT", _G.PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
@@ -516,8 +516,8 @@ function S:CharacterFrame()
 
 	--Icon selection frame
 	S:HandleIconSelectionFrame(_G.GearManagerDialogPopup, _G.NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton")
-	S:HandleButton(_G.GearManagerDialogPopupOkay, nil, nil, true)
-	S:HandleButton(_G.GearManagerDialogPopupCancel, nil, nil, true)
+	S:HandleButton(_G.GearManagerDialogPopupOkay)
+	S:HandleButton(_G.GearManagerDialogPopupCancel)
 	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
 
 	--Handle Tabs at bottom of character frame
