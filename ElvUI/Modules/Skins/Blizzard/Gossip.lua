@@ -46,26 +46,23 @@ function S:GossipFrame()
 	GossipGreetingScrollFrame:CreateBackdrop()
 
 	if E.private.skins.parchmentRemoverEnable then
-		-- 9.0 got to fix .. have some mixin
-		--[[
-		for i = 1, _G.NUMGOSSIPBUTTONS do
-			_G["GossipTitleButton"..i]:GetFontString():SetTextColor(1, 1, 1)
+		for _, button in ipairs(GossipFrame.buttons) do
+			button:GetFontString():SetTextColor(1, 1, 1)
 		end
 
 		_G.GossipGreetingText:SetTextColor(1, 1, 1)
 
 		hooksecurefunc("GossipFrameUpdate", function()
-			for i = 1, _G.NUMGOSSIPBUTTONS do
-				local button = _G["GossipTitleButton"..i]
-				if button:GetFontString() then
-					local Text = button:GetFontString():GetText()
-					if Text and strfind(Text, '|cff000000') then
-						button:GetFontString():SetText(gsub(Text, '|cff000000', '|cffffe519'))
+			for _, button in ipairs(GossipFrame.buttons) do
+				local fontString = button:GetFontString()
+				if fontString then
+					local text = fontString:GetText()
+					if text and strfind(text, '|cff000000') then
+						button:GetFontString():SetText(gsub(text, '|cff000000', '|cffffe519'))
 					end
 				end
 			end
 		end)
-		]]
 	else
 		GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
 		GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
