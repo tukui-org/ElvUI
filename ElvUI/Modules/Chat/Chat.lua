@@ -936,6 +936,8 @@ function CH:UpdateEditboxAnchors()
 end
 
 function CH:FindChatWindows()
+	if not CH.db.panelSnapping then return end
+
 	local left, right = CH.LeftChatWindow, CH.RightChatWindow
 
 	-- they already exist just return them :)
@@ -2623,16 +2625,19 @@ local channelButtons = {
 function CH:GetAnchorParents(chat)
 	local Left = (chat == CH.LeftChatWindow and _G.LeftChatPanel)
 	local Right = (chat == CH.RightChatWindow and _G.RightChatPanel)
-	local Chat, Icon = Left or Right or _G.UIParent
-	if CH.db.panelTabBackdrop then
-		Icon = (Left and _G.LeftChatTab) or (Right and _G.RightChatTab)
+	local Chat, TabPanel = Left or Right or _G.UIParent
+	if CH.db.panelTabBackdrop and not ((CH.db.panelBackdrop == 'HIDEBOTH') or (Left and CH.db.panelBackdrop == 'RIGHT') or (Right and CH.db.panelBackdrop == 'LEFT')) then
+		TabPanel = (Left and _G.LeftChatTab) or (Right and _G.RightChatTab)
 	end
 
-	return Icon or Chat, Chat
+	return TabPanel or Chat, Chat
 end
 
 function CH:ReparentVoiceChatIcon(parent)
-	if not parent then parent = CH:GetAnchorParents(_G.GeneralDockManager.primary) end
+	if not parent then
+		parent = CH:GetAnchorParents(_G.GeneralDockManager.primary)
+	end
+
 	for _, button in pairs(channelButtons) do
 		button.Icon:SetParent(parent)
 	end

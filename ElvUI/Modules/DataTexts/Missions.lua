@@ -27,7 +27,7 @@ local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQu
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
 local GetQuestObjectiveInfo = GetQuestObjectiveInfo
-local GetServerTime = GetServerTime
+local SecondsToTime = SecondsToTime
 local IsAltKeyDown = IsAltKeyDown
 
 local GARRISON_LANDING_NEXT = GARRISON_LANDING_NEXT
@@ -61,7 +61,6 @@ local MAIN_CURRENCY = 1560
 local NAZJATAR_MAP_ID = 1355
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 local numMissions = 0
-local HOUR = 3600
 
 local Widget_IDs = {
 	Alliance = {
@@ -116,9 +115,7 @@ local function AddInProgressMissions(garrisonType)
 			if timeLeft and timeLeft == 0 then
 				DT.tooltip:AddDoubleLine(mission.name, GOAL_COMPLETED, r, g, b, GREEN_FONT_COLOR:GetRGB())
 			else
-				local time, _, _, remainder = E:GetTimeInfo(timeLeft, 0, HOUR)
-				local id = timeLeft and timeLeft > HOUR and 8 or 7
-				DT.tooltip:AddDoubleLine(mission.name, format(E.TimeFormats[id][1], time, remainder), r, g, b, 1, 1, 1)
+				DT.tooltip:AddDoubleLine(mission.name, SecondsToTime(timeLeft), r, g, b, 1, 1, 1)
 			end
 		end
 	else
@@ -136,9 +133,12 @@ local function AddFollowerInfo(garrisonType)
 		DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- "Troops"
 		for _, followerShipments in ipairs(data) do
 			local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(followerShipments)
-			if (name and shipmentsReady and shipmentsTotal) then
-				timeleftString = (timeleftString and " "..timeleftString) or ""
-				DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal)..timeleftString, 1, 1, 1)
+			if name and shipmentsReady and shipmentsTotal then
+				if timeleftString then
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. " " .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
+				else
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
+				end
 			end
 		end
 	end
@@ -164,7 +164,7 @@ local function AddTalentInfo(garrisonType)
 						if talent.researchTimeRemaining and talent.researchTimeRemaining == 0 then
 							DT.tooltip:AddDoubleLine(talent.name, GOAL_COMPLETED, 1, 1, 1, GREEN_FONT_COLOR:GetRGB())
 						else
-							DT.tooltip:AddDoubleLine(talent.name, E:GetTimeInfo(talent.researchTimeRemaining), 1, 1, 1, 1, 1, 1)
+							DT.tooltip:AddDoubleLine(talent.name, SecondsToTime(talent.researchTimeRemaining), 1, 1, 1, 1, 1, 1)
 						end
 					end
 				end
@@ -237,24 +237,20 @@ local function OnEnter()
 		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 		AddFollowerInfo(LE_GARRISON_TYPE_7_0)
 
-		local serverTime = GetServerTime()
-
 		-- "Loose Work Orders" (i.e. research, equipment)
-		wipe(data)
-
-		data = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
-
-		if not next(data) then
+		wipe(info)
+		info = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
+		if #info > 0 then
 			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
 
-			for _, looseShipments in ipairs(data) do
-				local name, _, _, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
+			for _, looseShipments in ipairs(info) do
+				local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
 				if name then
-					local timeLeft = duration - (serverTime - timeStart)
-					local time, _, _, remainder = E:GetTimeInfo(timeLeft, 0, HOUR)
-					local id = timeLeft and timeLeft > HOUR and 8 or 7
-					timeleftString = (timeleftString and " "..format(GARRISON_LANDING_NEXT,format(E.TimeFormats[id][1], time, remainder))) or ""
-					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal)..timeleftString, 1, 1, 1, 1, 1, 1)
+					if timeleftString then
+						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. " " .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
+					else
+						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
+					end
 				end
 			end
 		end
@@ -272,25 +268,24 @@ local function OnEnter()
 		AddInProgressMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
 
 		--Buildings
-		wipe(data)
-
-		data = C_Garrison_GetBuildings(LE_GARRISON_TYPE_6_0)
-
-		if not next(data) then
+		wipe(info)
+		info = C_Garrison_GetBuildings(LE_GARRISON_TYPE_6_0)
+		if #info > 0 then
 			local AddLine = true
-			for _, buildings in ipairs(data) do
-				local name, _, _, shipmentsReady, shipmentsTotal, timeStart, duration, timeleftString = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
+			for _, buildings in ipairs(info) do
+				local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)
 				if name and shipmentsTotal then
 					if AddLine then
 						DT.tooltip:AddLine(' ')
 						DT.tooltip:AddLine(L["Building(s) Report:"])
 						AddLine = false
 					end
-					local timeLeft = duration - (serverTime - timeStart)
-					local time, _, _, remainder = E:GetTimeInfo(timeLeft, 0, HOUR)
-					local id = timeLeft and timeLeft > HOUR and 8 or 7
-					timeleftString = (timeleftString and " "..format(GARRISON_LANDING_NEXT,format(E.TimeFormats[id][1], time, remainder))) or ""
-					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal)..timeleftString, 1, 1, 1, 1, 1, 1)
+
+					if timeleftString then
+						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. " " .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
+					else
+						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
+					end
 				end
 			end
 		end
