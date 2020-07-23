@@ -6,5 +6,9 @@ function B:KillBlizzard()
 	if E.global.general.disableTutorialButtons then
 		_G.HelpPlate:Kill()
 		_G.HelpPlateTooltip:Kill()
+
+		hooksecurefunc(_G.HelpTip, "Show", function(self, parent, info, relativeRegion)
+			_G.HelpTip.Hide(self, parent, info.text)
+		end)
 	end
 end
