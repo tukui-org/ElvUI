@@ -33,7 +33,7 @@ local function HandleReward(frame)
 	end
 
 	if frame.IconBorder then
-		frame.IconBorder:SetAlpha(0)
+		frame.IconBorder:Kill()
 	end
 
 	if frame.Count then
@@ -265,18 +265,10 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
 		local RewardButton = rewardsFrame.RewardButtons[index]
 
-		if (not RewardButton.Icon.backdrop) then
+		if not RewardButton.Icon.backdrop then
 			HandleReward(RewardButton)
-
-			RewardButton.IconBorder:SetAlpha(0)
 			RewardButton.NameFrame:Hide()
-
-			hooksecurefunc(RewardButton.IconBorder, 'SetVertexColor', function(_, r, g, b)
-				RewardButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
-			end)
-			hooksecurefunc(RewardButton.IconBorder, 'Hide', function()
-				RewardButton.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
+			S:HandleIconBorder(RewardButton.IconBorder)
 		end
 	end)
 

@@ -355,10 +355,7 @@ function S:Blizzard_EncounterJournal()
 		item.armorType:ClearAllPoints()
 		item.armorType:Point("RIGHT", item, "RIGHT", -10, 0)
 
-		hooksecurefunc(item.IconBorder, "SetVertexColor", function(s, r, g, b)
-			s:GetParent().IconBackdrop:SetBackdropBorderColor(r, g, b)
-			s:SetTexture()
-		end)
+		S:HandleIconBorder(item.IconBorder)
 
 		if E.private.skins.parchmentRemoverEnable then
 			item.boss:SetTextColor(1, 1, 1)
@@ -492,8 +489,8 @@ function S:Blizzard_EncounterJournal()
 		tooltip:SetTemplate("Transparent")
 		S:HandleIcon(item1.icon)
 		S:HandleIcon(item2.icon)
-		item1.IconBorder:SetTexture()
-		item2.IconBorder:SetTexture()
+		item1.IconBorder:Kill()
+		item2.IconBorder:Kill()
 	end
 
 	--Dungeon/raid selection buttons (From AddOnSkins)

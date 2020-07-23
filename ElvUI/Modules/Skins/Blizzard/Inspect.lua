@@ -98,25 +98,19 @@ function S:Blizzard_InspectUI()
 
 	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
+			S:HandleIconBorder(Slot.IconBorder)
 			S:HandleIcon(Slot.icon)
+			Slot.icon:SetInside()
+
 			Slot:StripTextures()
 			Slot:SetTemplate()
 			Slot:StyleButton()
-			Slot.icon:SetInside()
 
 			if not Slot.Eye then
 				Slot.Eye = Slot:CreateTexture()
 				Slot.Eye:SetAtlas("Nzoth-inventory-icon")
 				Slot.Eye:SetInside()
 			end
-
-			Slot.IconBorder:SetAlpha(0)
-			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b)
-				Slot:SetBackdropBorderColor(r, g, b)
-			end)
-			hooksecurefunc(Slot.IconBorder, 'Hide', function()
-				Slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
 		end
 	end
 

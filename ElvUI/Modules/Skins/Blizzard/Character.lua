@@ -93,6 +93,8 @@ local function SkinItemFlyouts()
 				button:CreateBackdrop()
 				button.backdrop:SetAllPoints()
 
+				S:HandleIconBorder(button.IconBorder)
+
 				if i ~= 1 then -- dont call this intially on placeInBags button
 					button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
 				end
@@ -105,15 +107,6 @@ local function SkinItemFlyouts()
 						end
 					end)
 				end
-
-				button.IconBorder:SetTexture()
-				hooksecurefunc(button.IconBorder, 'SetVertexColor', function(self, r, g, b)
-					self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-					self:SetTexture()
-				end)
-				hooksecurefunc(button.IconBorder, 'Hide', function(self)
-					self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end)
 			end
 		end
 	end
@@ -310,7 +303,8 @@ function S:CharacterFrame()
 			Slot.CorruptedHighlightTexture:SetAtlas('Nzoth-charactersheet-item-glow')
 			Slot.IconOverlay:SetAtlas('Nzoth-inventory-icon')
 			Slot.IconOverlay:SetInside()
-			Slot.IconBorder:SetAlpha(0)
+
+			S:HandleIconBorder(Slot.IconBorder)
 
 			if Slot.popoutButton:GetPoint() == 'TOP' then
 				Slot.popoutButton:Point('TOP', Slot, 'BOTTOM', 0, 2)
@@ -321,12 +315,6 @@ function S:CharacterFrame()
 			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown'])
 			hooksecurefunc(Slot, 'DisplayAsAzeriteItem', UpdateAzeriteItem)
 			hooksecurefunc(Slot, 'DisplayAsAzeriteEmpoweredItem', UpdateAzeriteEmpoweredItem)
-			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b)
-				Slot.backdrop:SetBackdropBorderColor(r, g, b)
-			end)
-			hooksecurefunc(Slot.IconBorder, 'Hide', function()
-				Slot.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
 
 			Slot:HookScript('OnShow', CorruptionIcon)
 			Slot:HookScript('OnEvent', CorruptionIcon)

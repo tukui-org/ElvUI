@@ -25,14 +25,7 @@ function S:TooltipFrames()
 	ItemTooltip.Count:ClearAllPoints()
 	ItemTooltip.Count:Point('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 	ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
-	ItemTooltip.IconBorder:SetAlpha(0)
-	hooksecurefunc(ItemTooltip.IconBorder, 'SetVertexColor', function(s, r, g, b)
-		s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-		s:SetTexture()
-	end)
-	hooksecurefunc(ItemTooltip.IconBorder, 'Hide', function(s)
-		s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end)
+	S:HandleIconBorder(ItemTooltip.IconBorder)
 
 	-- StoryTooltip
 	local StoryTooltip = _G.QuestScrollFrame.StoryTooltip
@@ -51,13 +44,7 @@ function S:TooltipFrames()
 
 	if icon then
 		S:HandleIcon(icon, true)
-		hooksecurefunc(reward.IconBorder, "SetVertexColor", function(border, r, g, b)
-			border:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
-			border:SetTexture()
-		end)
-		hooksecurefunc(reward.IconBorder, "Hide", function(border)
-			border:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+		S:HandleIconBorder(reward.IconBorder)
 	end
 
 	embedded:HookScript("OnShow", function(tt)
@@ -104,7 +91,7 @@ function S:TooltipFrames()
 		if addon == "Blizzard_IslandsQueueUI" then
 			local tt = _G.IslandsQueueFrameTooltip:GetParent()
 			tt:GetParent():HookScript("OnShow", IslandTooltipStyle)
-			tt.IconBorder:SetAlpha(0)
+			tt.IconBorder:Kill()
 			tt.Icon:SetTexCoord(unpack(E.TexCoords))
 			TT:UnregisterEvent(event)
 		end

@@ -23,7 +23,7 @@ function S:Blizzard_WarfrontsPartyPoseUI()
 	rewardFrame.backdrop:Point("BOTTOMRIGHT", rewardFrame.NameFrame, 0, -5)
 
 	rewardFrame.NameFrame:SetAlpha(0)
-	rewardFrame.IconBorder:SetAlpha(0)
+	rewardFrame.IconBorder:Kill()
 	rewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 end
 

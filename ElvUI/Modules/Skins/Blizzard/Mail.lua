@@ -145,13 +145,7 @@ function S:MailFrame()
 		btn:SetTemplate(nil, true)
 		btn:StyleButton()
 
-		hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(s, r, g, b)
-			s:GetParent():SetBackdropBorderColor(r, g, b)
-			s:SetTexture()
-		end)
-		hooksecurefunc(btn.IconBorder, 'Hide', function(s)
-			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+		S:HandleIconBorder(btn.IconBorder)
 
 		local t = _G["OpenMailAttachmentButton"..i.."IconTexture"]
 		if t then

@@ -1372,7 +1372,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.ContainerHolder[i].icon:SetInside()
 		f.ContainerHolder[i].icon:SetTexCoord(unpack(E.TexCoords))
 
-		f.ContainerHolder[i].IconBorder:SetAlpha(0)
+		f.ContainerHolder[i].IconBorder:Kill()
 
 		B:CreateFilterIcon(f.ContainerHolder[i])
 
@@ -1834,7 +1834,7 @@ function B:ConstructReagentSlot(f, slotID)
 	slot:SetNormalTexture(nil)
 
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
-	slot.IconBorder:SetAlpha(0)
+	slot.IconBorder:Kill()
 	slot.IconOverlay:SetInside()
 
 	slot.Count:ClearAllPoints()

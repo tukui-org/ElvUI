@@ -40,7 +40,7 @@ local function SkinButton(button)
 
 		button:SetTemplate(nil, true)
 		button:StyleButton()
-		button.IconBorder:SetAlpha(0)
+		button.IconBorder:Kill()
 
 		local icon = button.icon
 		icon:SetInside()

@@ -183,17 +183,9 @@ function S:Blizzard_Collections()
 
 		bu.dragButton.ActiveTexture:SetAlpha(0)
 		bu.dragButton.levelBG:SetTexture()
-
-		bu.iconBorder:SetTexture()
 		bu.selectedTexture:SetTexture()
 
-		hooksecurefunc(bu.iconBorder, 'SetVertexColor', function(_, r, g, b)
-			bu.icon.backdrop:SetBackdropBorderColor(r, g, b)
-		end)
-
-		hooksecurefunc(bu.iconBorder, 'Hide', function()
-			bu.icon.backdrop:SetBackdropColor(unpack(E.media.bordercolor))
-		end)
+		S:HandleIconBorder(bu.iconBorder)
 	end
 
 	_G.PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')

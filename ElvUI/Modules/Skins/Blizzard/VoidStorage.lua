@@ -53,17 +53,11 @@ function S:Blizzard_VoidStorageUI()
 		for i = 1, NumSlots do
 			local Button = _G["VoidStorage"..StorageType.."Button"..i]
 			Button:StripTextures()
-			Button:SetTemplate()
+			Button:CreateBackdrop()
 			Button:StyleButton()
 			S:HandleIcon(Button.icon)
 			Button.icon:SetInside()
-			Button.IconBorder:SetAlpha(0)
-			hooksecurefunc(Button.IconBorder, 'SetVertexColor', function(_, r, g, b)
-				Button:SetBackdropBorderColor(r, g, b)
-			end)
-			hooksecurefunc(Button.IconBorder, 'Hide', function()
-				Button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
+			S:HandleIconBorder(Button.IconBorder)
 		end
 	end
 end

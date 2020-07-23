@@ -25,7 +25,7 @@ end
 function B:SkinBag(bag)
 	local icon = _G[bag:GetName().."IconTexture"]
 	bag.oldTex = icon:GetTexture()
-	bag.IconBorder:SetAlpha(0)
+	bag.IconBorder:Kill()
 
 	bag:StripTextures()
 	bag:SetTemplate()

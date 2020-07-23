@@ -44,7 +44,10 @@ local function HandleListIcon(frame)
 				if cell and cell.Icon then
 					if not cell.IsSkinned then
 						S:HandleIcon(cell.Icon)
-						if cell.IconBorder then cell.IconBorder:SetAlpha(0) end
+
+						if cell.IconBorder then
+							cell.IconBorder:Kill()
+						end
 
 						cell.IsSkinned = true
 					end
@@ -63,7 +66,7 @@ local function HandleSummaryIcons(frame)
 				S:HandleIcon(child.Icon)
 
 				if child.IconBorder then
-					child.IconBorder:SetAlpha(0)
+					child.IconBorder:Kill()
 				end
 
 				child.IsSkinned = true
@@ -123,7 +126,7 @@ local function HandleSellFrame(frame)
 
 	local ItemButton = ItemDisplay.ItemButton
 	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
-	if ItemButton.IconBorder then ItemButton.IconBorder:SetAlpha(0) end
+	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
 
 	ItemButton.EmptyBackground:Hide()
 	ItemButton:SetPushedTexture("")
@@ -131,13 +134,7 @@ local function HandleSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
-	hooksecurefunc(ItemButton.IconBorder, "SetVertexColor", function(_, r, g, b)
-		ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
-	end)
-	hooksecurefunc(ItemButton.IconBorder, "Hide", function()
-		ItemButton.Icon.backdrop:SetBackdropBorderColor(0, 0, 0)
-	end)
-
+	S:HandleIconBorder(ItemButton.IconBorder)
 	S:HandleEditBox(frame.QuantityInput.InputBox)
 	S:HandleButton(frame.QuantityInput.MaxButton)
 	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.GoldBox)
@@ -166,7 +163,7 @@ local function HandleTokenSellFrame(frame)
 
 	local ItemButton = ItemDisplay.ItemButton
 	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
-	if ItemButton.IconBorder then ItemButton.IconBorder:SetAlpha(0) end
+	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
 
 	ItemButton.EmptyBackground:Hide()
 	ItemButton:SetPushedTexture("")
@@ -174,12 +171,7 @@ local function HandleTokenSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
-	hooksecurefunc(ItemButton.IconBorder, "SetVertexColor", function(_, r, g, b)
-		ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
-	end)
-	hooksecurefunc(ItemButton.IconBorder, "Hide", function()
-		ItemButton.Icon.backdrop:SetBackdropBorderColor(0, 0, 0)
-	end)
+	S:HandleIconBorder(ItemButton.IconBorder)
 
 	S:HandleButton(frame.PostButton)
 	HandleAuctionButtons(frame.DummyRefreshButton)
@@ -385,7 +377,7 @@ local function LoadSkin()
 	local ItemButton = Token.ItemButton
 	S:HandleIcon(ItemButton.Icon, true)
 	ItemButton.Icon.backdrop:SetBackdropBorderColor(0, .8, 1)
-	ItemButton.IconBorder:SetAlpha(0)
+	ItemButton.IconBorder:Kill()
 
 	--WoW Token Tutorial Frame
 	local WowTokenGameTimeTutorial = Frame.WoWTokenResults.GameTimeTutorial

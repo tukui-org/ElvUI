@@ -205,14 +205,17 @@ function S:BlizzardMiscFrames()
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameGold'])
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameSilver'])
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameCopper'])
+		S:HandleIconBorder(_G['StaticPopup'..i..'ItemFrame'].IconBorder)
+
 		_G['StaticPopup'..i..'EditBox'].backdrop:Point('TOPLEFT', -2, -4)
 		_G['StaticPopup'..i..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
 		_G['StaticPopup'..i..'ItemFrameNameFrame']:Kill()
 		_G['StaticPopup'..i..'ItemFrame']:SetTemplate()
 		_G['StaticPopup'..i..'ItemFrame']:StyleButton()
-		_G['StaticPopup'..i..'ItemFrame'].IconBorder:SetAlpha(0)
+		_G['StaticPopup'..i..'ItemFrame'].IconBorder:Kill()
 		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
 		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetInside()
+
 		local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
 		if normTex then
 			normTex:SetTexture()
@@ -220,15 +223,6 @@ function S:BlizzardMiscFrames()
 				if tex ~= nil then s:SetTexture() end
 			end)
 		end
-
-		-- Quality IconBorder
-		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'SetVertexColor', function(s, r, g, b)
-			s:GetParent():SetBackdropBorderColor(r, g, b)
-			s:SetTexture()
-		end)
-		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(s)
-			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
 	end
 
 	-- skin return to graveyard button

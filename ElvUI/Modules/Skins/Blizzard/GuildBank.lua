@@ -53,19 +53,13 @@ function S:Blizzard_GuildBankUI()
 			if texture then
 				texture:SetTexture()
 			end
-			button:StyleButton()
-			button:SetTemplate(nil, true)
 
-			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-				s:GetParent():SetBackdropBorderColor(r, g, b)
-				s:SetTexture()
-			end)
-			hooksecurefunc(button.IconBorder, 'Hide', function(s)
-				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
+			button:StyleButton()
+			button:CreateBackdrop(nil, true)
 
 			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
+			S:HandleIconBorder(button.IconBorder)
 		end
 	end
 

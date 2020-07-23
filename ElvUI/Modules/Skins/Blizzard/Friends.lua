@@ -60,7 +60,7 @@ end
 local function RAFRewards()
 	for reward in _G.RecruitAFriendRewardsFrame.rewardPool:EnumerateActive() do
 		S:HandleIcon(reward.Button.Icon)
-		reward.Button.IconBorder:SetAlpha(0)
+		reward.Button.IconBorder:Kill()
 	end
 end
 
@@ -272,7 +272,7 @@ function S:FriendsFrame()
 	Claiming:CreateBackdrop("Transparent")
 	S:HandleIcon(Claiming.NextRewardButton.Icon)
 	Claiming.NextRewardButton.CircleMask:Hide()
-	Claiming.NextRewardButton.IconBorder:SetAlpha(0)
+	Claiming.NextRewardButton.IconBorder:Kill()
 	S:HandleButton(Claiming.ClaimOrViewRewardButton)
 
 	local RecruitList = RAF.RecruitList

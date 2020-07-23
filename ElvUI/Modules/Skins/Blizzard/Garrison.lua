@@ -222,7 +222,7 @@ function S:Blizzard_GarrisonUI()
 				reward.border = CreateFrame("Frame", nil, reward)
 				S:HandleIcon(reward.Icon, reward.border)
 				reward.Quantity:SetParent(reward.border)
-				reward.IconBorder:SetAlpha(0)
+				reward.IconBorder:Kill()
 				-- For some reason, this fix icon border in 8.1
 				reward:ClearAllPoints()
 				reward:Point("TOPRIGHT", -5, -5)

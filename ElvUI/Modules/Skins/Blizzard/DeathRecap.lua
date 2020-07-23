@@ -20,7 +20,7 @@ function S:Blizzard_DeathRecap()
 		recap.backdrop:SetOutside(recap.Icon)
 		recap.Icon:SetTexCoord(unpack(E.TexCoords))
 		recap.Icon:SetParent(recap.backdrop)
-		recap.IconBorder:SetAlpha(0)
+		recap.IconBorder:Kill()
 	end
 end
 

@@ -244,6 +244,22 @@ function S:SkinTalentListButtons(frame)
 	end
 end
 
+function S:HandleIconBorder(IconBorder)
+	local parent = IconBorder:GetParent()
+	local p = parent and parent.backdrop
+	if p and not parent.IconBorderHooked then
+		hooksecurefunc(IconBorder, 'SetVertexColor', function(_, r, g, b) p:SetBackdropBorderColor(r, g, b) end)
+		hooksecurefunc(IconBorder, 'Hide', function() p:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
+		IconBorder:Kill()
+
+		local r, g, b = IconBorder:GetVertexColor()
+		if not r then r, g, b = unpack(E.media.bordercolor) end
+		p:SetBackdropBorderColor(r, g, b)
+
+		parent.IconBorderHooked = true
+	end
+end
+
 function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, styleTemplate, noGlossTex)
 	assert(button, "doesn't exist!")
 
