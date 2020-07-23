@@ -278,8 +278,7 @@ function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSet
 	if useCreateBackdrop then
 		button:CreateBackdrop(nil, true)
 	elseif not noSetTemplate then
-		-- 9.0 Shadowlands comment this out for now, i think this is only used for VoiceChatButton
-		--button:SetTemplate(nil, true)
+		button:SetTemplate(nil, true)
 	end
 
 	button:HookScript("OnEnter", S.SetModifiedBackdrop)
