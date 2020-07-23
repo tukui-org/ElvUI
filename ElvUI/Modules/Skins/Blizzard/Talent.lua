@@ -24,9 +24,7 @@ function S:Blizzard_TalentUI()
 	_G.PlayerTalentFrameTalents:StripTextures()
 
 	if E.global.general.disableTutorialButtons then
-		_G.PlayerTalentFrameSpecializationTutorialButton:Kill()
 		_G.PlayerTalentFrameTalentsTutorialButton:Kill()
-		_G.PlayerTalentFramePetSpecializationTutorialButton:Kill()
 	end
 
 	local buttons = {
@@ -316,11 +314,6 @@ function S:Blizzard_TalentUI()
 	PvpTalentFrame.Swords:Size(72, 67)
 	PvpTalentFrame.Orb:Hide()
 	PvpTalentFrame.Ring:Hide()
-
-	PvpTalentFrame.TrinketSlot:Point("TOP", 0, -16)
-	PvpTalentFrame.TalentSlot1:Point("TOP", PvpTalentFrame.TrinketSlot, "BOTTOM", 0, -16)
-	PvpTalentFrame.TalentSlot2:Point("TOP", PvpTalentFrame.TalentSlot1, "BOTTOM", 0, -10)
-	PvpTalentFrame.TalentSlot3:Point("TOP", PvpTalentFrame.TalentSlot2, "BOTTOM", 0, -10)
 
 	for _, Button in pairs(PvpTalentFrame.TalentList.ScrollFrame.buttons) do
 		Button:DisableDrawLayer("BACKGROUND")
