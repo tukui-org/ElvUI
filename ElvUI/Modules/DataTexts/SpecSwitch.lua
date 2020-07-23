@@ -49,15 +49,16 @@ local function OnEvent(self)
 	end
 
 	local specIndex = GetSpecialization()
-	if not specIndex then
+	local specialization = GetLootSpecialization()
+	local info = DT.SPECIALIZATION_CACHE[specIndex]
+
+	if not info then
 		self.text:SetText('N/A')
 		return
 	end
 
 	active = specIndex
 
-	local specialization = GetLootSpecialization()
-	local info = DT.SPECIALIZATION_CACHE[specIndex]
 	local spec = format(mainIcon, info.icon)
 
 	if specialization == 0 or info.id == specialization then
