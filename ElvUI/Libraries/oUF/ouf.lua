@@ -745,7 +745,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 	walkObject(object, unit)
 
 	object:SetAttribute('unit', unit)
-	RegisterUnitWatch(object)
+	--RegisterUnitWatch(object)
 
 	return object
 end
