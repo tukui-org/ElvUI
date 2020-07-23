@@ -47,18 +47,19 @@ function S:GossipFrame()
 
 	if E.private.skins.parchmentRemoverEnable then
 		for _, button in ipairs(GossipFrame.buttons) do
-			button:GetFontString():SetTextColor(1, 1, 1)
+			local str = button:GetFontString()
+			if str then str:SetTextColor(1, 1, 1) end
 		end
 
 		_G.GossipGreetingText:SetTextColor(1, 1, 1)
 
 		hooksecurefunc("GossipFrameUpdate", function()
 			for _, button in ipairs(GossipFrame.buttons) do
-				local fontString = button:GetFontString()
-				if fontString then
-					local text = fontString:GetText()
+				local str = button:GetFontString()
+				if str then
+					local text = str:GetText()
 					if text and strfind(text, '|cff000000') then
-						button:GetFontString():SetText(gsub(text, '|cff000000', '|cffffe519'))
+						str:SetText(gsub(text, '|cff000000', '|cffffe519'))
 					end
 				end
 			end
