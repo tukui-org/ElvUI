@@ -1070,7 +1070,7 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 
 	btn:StripTextures()
 	if not noBackdrop then
-		S:HandleButton(btn)
+		S:HandleButton(btn, nil, nil, true)
 	end
 
 	if stripTexts then
