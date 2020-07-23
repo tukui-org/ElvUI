@@ -302,6 +302,7 @@ function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, st
 			button:SetTemplate(styleTemplate, not noGlossTex)
 		else
 			button:CreateBackdrop(styleTemplate, not noGlossTex)
+			button.backdrop:SetAllPoints()
 		end
 
 		button:HookScript("OnEnter", S.SetModifiedBackdrop)
