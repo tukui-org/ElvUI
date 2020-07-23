@@ -161,7 +161,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame:StripTextures()
 
-		--S:HandleNextPrevButton(button, nil, {1, .8, 0})
+		S:HandleNextPrevButton(button, nil, {1, .8, 0})
 
 		frame:CreateBackdrop()
 		frame.backdrop:Point('TOPLEFT', 15, -2)
@@ -189,7 +189,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		frame:StripTextures()
 		frame:CreateBackdrop()
 
-		--S:HandleNextPrevButton(button, nil, {1, .8, 0})
+		S:HandleNextPrevButton(button, nil, {1, .8, 0})
 
 		frame.label:ClearAllPoints()
 		frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -357,7 +357,7 @@ end
 function S:Ace3_RegisterAsContainer(widget)
 	local TYPE = widget.type
 	if TYPE == 'ScrollFrame' then
-		--S:HandleScrollBar(widget.scrollbar)
+		S:HandleScrollBar(widget.scrollbar)
 	elseif TYPE == 'InlineGroup' or TYPE == 'TreeGroup' or TYPE == 'TabGroup' or TYPE == 'Frame' or TYPE == 'DropdownGroup' or TYPE == 'Window' then
 		local frame = widget.content:GetParent()
 		if TYPE == 'Frame' then
@@ -401,7 +401,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 
 		if widget.scrollbar then
-			--S:HandleScrollBar(widget.scrollbar)
+			S:HandleScrollBar(widget.scrollbar)
 		end
 	elseif TYPE == 'SimpleGroup' then
 		local frame = widget.content:GetParent()
