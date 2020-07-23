@@ -1,4 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Script file='Character.lua'/>
 	<Script file='Tooltip.lua'/>
 
 	<!--
@@ -22,7 +23,6 @@
 	<Script file='Battlenet.lua'/>
 	<Script file='Calendar.lua'/>
 	<Script file='Channels.lua'/>
-	<Script file='Character.lua'/>
 	<Script file='Collectables.lua'/>
 	<Script file='CombatLog.lua' />
 	<Script file='Communities.lua'/>

@@ -293,7 +293,7 @@ function S:CharacterFrame()
 
 	-- General
 	local CharacterFrame = _G.CharacterFrame
-	S:HandlePortraitFrame(CharacterFrame)
+	S:HandlePortraitFrame(CharacterFrame, true)
 
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
 	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
@@ -303,7 +303,7 @@ function S:CharacterFrame()
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
-			Slot:SetTemplate()
+			Slot:CreateBackdrop()
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
 			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
@@ -322,10 +322,10 @@ function S:CharacterFrame()
 			hooksecurefunc(Slot, 'DisplayAsAzeriteItem', UpdateAzeriteItem)
 			hooksecurefunc(Slot, 'DisplayAsAzeriteEmpoweredItem', UpdateAzeriteEmpoweredItem)
 			hooksecurefunc(Slot.IconBorder, 'SetVertexColor', function(_, r, g, b)
-				Slot:SetBackdropBorderColor(r, g, b)
+				Slot.backdrop:SetBackdropBorderColor(r, g, b)
 			end)
 			hooksecurefunc(Slot.IconBorder, 'Hide', function()
-				Slot:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				Slot.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end)
 
 			Slot:HookScript('OnShow', CorruptionIcon)
@@ -410,7 +410,7 @@ function S:CharacterFrame()
 
 	_G.EquipmentFlyoutFrameHighlight:Kill()
 	_G.EquipmentFlyoutFrame.NavigationFrame:StripTextures()
-	_G.EquipmentFlyoutFrame.NavigationFrame:SetTemplate("Transparent")
+	_G.EquipmentFlyoutFrame.NavigationFrame:CreateBackdrop("Transparent")
 	_G.EquipmentFlyoutFrame.NavigationFrame:Point("TOPLEFT", _G.EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -E.Border - E.Spacing)
 	_G.EquipmentFlyoutFrame.NavigationFrame:Point("TOPRIGHT", _G.EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -E.Border - E.Spacing)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
@@ -485,8 +485,8 @@ function S:CharacterFrame()
 	end)
 
 	--Equipement Manager
-	S:HandleButton(_G.PaperDollEquipmentManagerPaneEquipSet)
-	S:HandleButton(_G.PaperDollEquipmentManagerPaneSaveSet)
+	S:HandleButton(_G.PaperDollEquipmentManagerPaneEquipSet, nil, nil, true)
+	S:HandleButton(_G.PaperDollEquipmentManagerPaneSaveSet, nil, nil, true)
 	_G.PaperDollEquipmentManagerPaneEquipSet:Width(_G.PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
 	_G.PaperDollEquipmentManagerPaneSaveSet:Width(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
 	_G.PaperDollEquipmentManagerPaneEquipSet:Point("TOPLEFT", _G.PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
@@ -516,8 +516,8 @@ function S:CharacterFrame()
 
 	--Icon selection frame
 	S:HandleIconSelectionFrame(_G.GearManagerDialogPopup, _G.NUM_GEARSET_ICONS_SHOWN, "GearManagerDialogPopupButton")
-	S:HandleButton(_G.GearManagerDialogPopupOkay)
-	S:HandleButton(_G.GearManagerDialogPopupCancel)
+	S:HandleButton(_G.GearManagerDialogPopupOkay, nil, nil, true)
+	S:HandleButton(_G.GearManagerDialogPopupCancel, nil, nil, true)
 	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
 
 	--Handle Tabs at bottom of character frame

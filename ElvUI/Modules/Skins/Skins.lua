@@ -1034,7 +1034,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	scrollFrame:StripTextures()
 	editBox:DisableDrawLayer("BACKGROUND") -- Removes textures around it
 
-	frame:SetTemplate("Transparent")
+	frame:CreateBackdrop("Transparent")
 	frame:Height(frame:GetHeight() + 10)
 	scrollFrame:Height(scrollFrame:GetHeight() + 10)
 
@@ -1042,7 +1042,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 		local button = _G[buttonNameTemplate..i]
 		if button then
 			button:StripTextures()
-			button:SetTemplate()
+			button:CreateBackdrop()
 			button:StyleButton(true)
 
 			local icon = _G[buttonNameTemplate..i.."Icon"]
