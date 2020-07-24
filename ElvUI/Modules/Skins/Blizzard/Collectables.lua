@@ -48,10 +48,21 @@ local function selectedTextureSetShown(texture, shown)
 	end
 end
 
-local function mountNameColor(name, fontObject)
-	if fontObject == 'GameFontDisable' then
+local function mountNameColor(self)
+	local button = self:GetParent()
+	local name = button.name
+
+	if name:GetFontObject() == _G.GameFontDisable then
 		name:SetTextColor(0.4, 0.4, 0.4)
 	else
+		if button.background then
+			local _, g, b = button.background:GetVertexColor()
+			if g == 0 and b == 0 then
+				name:SetTextColor(0.9, 0.3, 0.3)
+				return
+			end
+		end
+
 		name:SetTextColor(0.9, 0.9, 0.9)
 	end
 end
@@ -160,6 +171,7 @@ local function JournalScrollButtons(frame)
 				bu.favorite:Size(32, 32)
 
 				hooksecurefunc(bu.name, 'SetFontObject', mountNameColor)
+				hooksecurefunc(bu.background, 'SetVertexColor', mountNameColor)
 			end
 		end
 	end
