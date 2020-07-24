@@ -1790,6 +1790,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.searchOverlay:SetAllPoints()
 	slot.IconBorder:Kill()
 	slot.IconOverlay:SetInside()
+	slot.IconOverlay2:SetInside()
 
 	slot.cooldown = _G[slot:GetName()..'Cooldown']
 	slot.cooldown.CooldownOverride = 'bags'
@@ -1836,6 +1837,7 @@ function B:ConstructReagentSlot(f, slotID)
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
 	slot.IconBorder:Kill()
 	slot.IconOverlay:SetInside()
+	slot.IconOverlay2:SetInside()
 
 	slot.Count:ClearAllPoints()
 	slot.Count:Point('BOTTOMRIGHT', 0, 2)
