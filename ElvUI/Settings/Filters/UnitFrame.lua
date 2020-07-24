@@ -670,7 +670,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[314392] = Defaults(), -- Vile Corruption
 
 	-- Shadowlands Dungeons
-		-- De Other Side
 		-- Halls of Atonement
 		[335338] = Defaults(), -- Ritual of Woe
 		[326891] = Defaults(), -- Anguish
@@ -693,8 +692,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[329110] = Defaults(), -- Slime Injection
 		[325552] = Defaults(), -- Cytotoxic Slash
 		[336301] = Defaults(), -- Web Wrap
-		-- Sanguine Depths
-		-- Spires of Ascension
 		-- The Necrotic Wake
 		[321821] = Defaults(), -- Disgusting Guts
 		[323365] = Defaults(), -- Clinging Darkness
@@ -706,6 +703,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323464] = Defaults(), -- Dark Ichor
 		[323198] = Defaults(), -- Dark Exile
 		-- Theater of Pain
+		-- Sanguine Depths
+		-- Spires of Ascension
+		-- De Other Side
 
 	-- BFA Dungeons
 		-- Freehold
@@ -901,13 +901,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[293670] = Defaults(), -- Chain Blade
 
 	-- Castle Nathria
-		-- Shriekwing
-		-- Huntsman Altimor
 		-- Hungering Destroyer
 		[334228] = Defaults(), -- Volatile Ejection
 		[329298] = Defaults(), -- Gluttonous Miasma
-		-- Sun King's Salvation
-		-- Artificer Xy'mox
 		-- Lady Inerva Darkvein
 		[325936] = Defaults(), -- Shared Cognition
 		[335396] = Defaults(), -- Hidden Desire
@@ -915,6 +911,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[324982] = Defaults(), -- Shared Suffering Partner
 		[332664] = Defaults(), -- Concentrate Anima
 		[325382] = Defaults(), -- Warped Desires
+		-- Sun King's Salvation
+		-- Artificer Xy'mox
+		-- Shriekwing
+		-- Huntsman Altimor
 		-- The Council of Blood
 		-- Sludgefist
 		-- Stoneborn Generals
