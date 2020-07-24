@@ -23,8 +23,10 @@ function S:Blizzard_CovenantSanctum()
 	end)
 
 	S:HandleCloseButton(_G.CovenantSanctumFrameCloseButton)
-	S:HandleTab(_G.CovenantSanctumFrameTab1)
 
+	S:HandleTab(_G.CovenantSanctumFrameTab1)
+	_G.CovenantSanctumFrameTab1:ClearAllPoints()
+	_G.CovenantSanctumFrameTab1:Point('BOTTOMLEFT', frame, 23, -32) --default is: 23, 9
 end
 
 S:AddCallbackForAddon('Blizzard_CovenantSanctum')
