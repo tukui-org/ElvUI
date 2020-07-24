@@ -130,9 +130,9 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 		frame:SetBackdrop()
 	else
 		frame:SetBackdrop({
-			bgFile = E.media.blankTex,
+			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
 			edgeFile = E.media.blankTex,
-			tile = false, tileSize = 0, edgeSize = E.mult,
+			tile = false, tileSize = 0, edgeSize = (not E.twoPixelsPlease and E.mult) or E.mult*2,
 			insets = {left = 0, right = 0, top = 0, bottom = 0}
 		})
 
@@ -150,8 +150,9 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 				border:SetBackdrop({
 					edgeFile = E.media.blankTex,
 					edgeSize = E.mult,
-					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
+					insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 				})
+
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetAllPoints()
 				frame.iborder = border
@@ -164,6 +165,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 					edgeSize = E.mult,
 					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
 				})
+
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetAllPoints()
 				frame.oborder = border
