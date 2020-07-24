@@ -885,9 +885,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		-- Shriekwing
 		-- Huntsman Altimor
 		-- Hungering Destroyer
+		[334228] = Defaults(), -- Volatile Ejection
+		[329298] = Defaults(), -- Gluttonous Miasma
 		-- Sun King's Salvation
 		-- Artificer Xy'mox
 		-- Lady Inerva Darkvein
+		[325936] = Defaults(), -- Shared Cognition
+		[335396] = Defaults(), -- Hidden Desire
+		[324983] = Defaults(), -- Shared Suffering
+		[324982] = Defaults(), -- Shared Suffering Partner
+		[332664] = Defaults(), -- Concentrate Anima
+		[325382] = Defaults(), -- Warped Desires
 		-- The Council of Blood
 		-- Sludgefist
 		-- Stoneborn Generals
