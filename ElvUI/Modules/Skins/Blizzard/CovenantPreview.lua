@@ -13,21 +13,25 @@ function S:Blizzard_CovenantPreviewUI()
 	local frame = _G.CovenantPreviewFrame
 
 	hooksecurefunc(frame, 'TryShow', function(self)
-		self.Background:SetAlpha(0)
-		self.BorderFrame:SetAlpha(0)
+		if not self.IsSkinned then
+			self.Background:SetAlpha(0)
+			self.BorderFrame:SetAlpha(0)
 
-		self:CreateBackdrop('Transparent')
+			self:CreateBackdrop('Transparent')
 
-		self.Title:DisableDrawLayer('BACKGROUND')
-		self.Title.Text:SetTextColor(1, .8, 0)
-		self.Title:CreateBackdrop('Transparent')
+			self.Title:DisableDrawLayer('BACKGROUND')
+			self.Title.Text:SetTextColor(1, .8, 0)
+			self.Title:CreateBackdrop('Transparent')
 
-		self.ModelSceneContainer.ModelSceneBorder:SetAlpha(0)
+			self.ModelSceneContainer.ModelSceneBorder:SetAlpha(0)
 
-		self.InfoPanel.Parchment:SetAlpha(0)
-		self.InfoPanel:CreateBackdrop('Transparent')
+			self.InfoPanel.Parchment:SetAlpha(0)
+			self.InfoPanel:CreateBackdrop('Transparent')
 
-		S:HandleCloseButton(self.CloseButton)
+			S:HandleCloseButton(self.CloseButton)
+
+			self.IsSkinned = true
+		end
 	end)
 
 	frame.InfoPanel.Description:SetTextColor(1, 1, 1)

@@ -46,6 +46,7 @@ E.Options.args.skins.args.blizzard.values = {
 	collections = L["COLLECTIONS"],
 	Communities = L["COMMUNITIES"],
 	Contribution = L["Contribution"],
+	CovenantPreview = L["Covenant Preview"],
 	deathRecap = L["DEATH_RECAP_TITLE"],
 	debug = L["Debug Tools"],
 	dressingroom = L["DRESSUP_FRAME"],
