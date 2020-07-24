@@ -98,9 +98,11 @@ local function JournalScrollButtons(frame)
 				icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 			end)
 			hooksecurefunc(bu.selectedTexture, 'Hide', function()
-				local r, g, b = unpack(E.media.bordercolor)
-				bu.backdrop:SetBackdropBorderColor(r, g, b)
-				icon.backdrop:SetBackdropBorderColor(r, g, b)
+				if not bu.selected then
+					local r, g, b = unpack(E.media.bordercolor)
+					bu.backdrop:SetBackdropBorderColor(r, g, b)
+					icon.backdrop:SetBackdropBorderColor(r, g, b)
+				end
 			end)
 
 			local iconBorder = bu.iconBorder or bu.IconBorder
