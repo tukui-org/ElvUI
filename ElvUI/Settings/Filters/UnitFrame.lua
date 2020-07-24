@@ -677,6 +677,15 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		-- Sanguine Depths
 		-- Spires of Ascension
 		-- The Necrotic Wake
+		[321821] = Defaults(), -- Disgusting Guts
+		[323365] = Defaults(), -- Clinging Darkness
+		[338353] = Defaults(), -- Goresplatter
+		[333485] = Defaults(), -- Disease Cloud
+		[338357] = Defaults(), -- Tenderize
+		[328181] = Defaults(), -- Frigid Cold
+		[320170] = Defaults(), -- Necrotic Bolt
+		[323464] = Defaults(), -- Dark Ichor
+		[323198] = Defaults(), -- Dark Exile
 		-- Theater of Pain
 
 	-- BFA Dungeons
