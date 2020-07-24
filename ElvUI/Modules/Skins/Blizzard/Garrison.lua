@@ -494,13 +494,18 @@ function S:Blizzard_GarrisonUI()
 		S:HandleTab(_G["CovenantMissionFrameTab"..i])
 	end
 
+	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
+
 	S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar)
 
-	-- Adventures
+	-- Adventures / Follower Tab
 	S:HandleScrollBar(_G.CovenantMissionFrameFollowersListScrollFrameScrollBar)
+	S:HandleIcon(_G.CovenantMissionFrame.FollowerTab.CostFrame.CostIcon)
+	--S:HandleButton(_G.CovenantMissionFrame.FollowerTab.ButtonFrame.HealFollowerButton) --grr.. plx find the correct name
 
 	-- Mission Tab
 	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
+
 end
 
 local function SkinFollowerTooltip(frame)
