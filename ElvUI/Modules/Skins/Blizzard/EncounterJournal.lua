@@ -375,9 +375,10 @@ function S:Blizzard_EncounterJournal()
 
 	--Suggestions
 	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
-		local suggestion = _G.EncounterJournal.suggestFrame["Suggestion"..i];
+		local suggestion = _G.EncounterJournal.suggestFrame["Suggestion"..i]
 		if i == 1 then
 			HandleButton(suggestion.button)
+			suggestion.button:SetFrameLevel(4)
 			S:HandleNextPrevButton(suggestion.prevButton, nil, nil, true)
 			S:HandleNextPrevButton(suggestion.nextButton, nil, nil, true)
 		else

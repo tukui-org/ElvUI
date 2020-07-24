@@ -100,7 +100,7 @@ local function JournalScrollButtons(frame)
 				icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 			end)
 			hooksecurefunc(bu.selectedTexture, 'Hide', function()
-				if not bu.selected then
+				if not bu.selectedTexture:IsShown() then
 					local r, g, b = unpack(E.media.bordercolor)
 					bu.backdrop:SetBackdropBorderColor(r, g, b)
 					icon.backdrop:SetBackdropBorderColor(r, g, b)
