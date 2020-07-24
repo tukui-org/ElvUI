@@ -423,6 +423,8 @@ function S:Blizzard_Collections()
 		if not button.styled then
 			S:HandleItemButton(button, true)
 
+			button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
+			button.iconTextureUncollected:SetInside(button)
 			button.iconTexture:SetDrawLayer('ARTWORK')
 			button.hover:SetAllPoints(button.iconTexture)
 			button.slotFrameCollected:SetAlpha(0)
@@ -437,7 +439,6 @@ function S:Blizzard_Collections()
 		button.name:Point('LEFT', button, 'RIGHT', 4, 8)
 		button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
 
-		button.SetTextColor = nil
 		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
 			button.name:SetTextColor(0.9, 0.9, 0.9)
 			button.level:SetTextColor(0.9, 0.9, 0.9)
@@ -449,7 +450,6 @@ function S:Blizzard_Collections()
 			button.special:SetTextColor(0.4, 0.4, 0.4)
 			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
-		button.SetTextColor = E.noop
 	end)
 
 	hooksecurefunc(HeirloomsJournal, 'LayoutCurrentPage', function()
