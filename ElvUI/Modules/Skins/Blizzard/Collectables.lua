@@ -243,7 +243,7 @@ function S:Blizzard_Collections()
 	end
 
 	_G.PetJournalPetCard:StripTextures()
-	_G.PetJournalPetCard:CreateBackdrop()
+	_G.PetJournalPetCard:CreateBackdrop("Transparent")
 	_G.PetJournalPetCardInset:StripTextures()
 	_G.PetJournalPetCardPetInfoQualityBorder:SetAlpha(0)
 
@@ -255,12 +255,11 @@ function S:Blizzard_Collections()
 
 	if E.private.skins.blizzard.tooltip then
 		local tt = _G.PetJournalPrimaryAbilityTooltip
+		tt.Background:SetTexture()
 		if tt.Delimiter1 then
 			tt.Delimiter1:SetTexture()
 			tt.Delimiter2:SetTexture()
 		end
-
-		tt.Background:SetTexture()
 		tt.BorderTop:SetTexture()
 		tt.BorderTopLeft:SetTexture()
 		tt.BorderTopRight:SetTexture()
@@ -269,7 +268,6 @@ function S:Blizzard_Collections()
 		tt.BorderBottom:SetTexture()
 		tt.BorderBottomRight:SetTexture()
 		tt.BorderBottomLeft:SetTexture()
-
 		tt:CreateBackdrop("Transparent")
 	end
 
@@ -464,7 +462,7 @@ function S:Blizzard_Collections()
 	--Sets
 	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
 	SetsCollectionFrame.RightInset:StripTextures()
-	SetsCollectionFrame:SetTemplate("Transparent")
+	SetsCollectionFrame:CreateBackdrop("Transparent")
 	SetsCollectionFrame.LeftInset:StripTextures()
 
 	local ScrollFrame = SetsCollectionFrame.ScrollFrame
@@ -509,7 +507,7 @@ function S:Blizzard_Collections()
 
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures()
-	WardrobeOutfitFrame:SetTemplate("Transparent")
+	WardrobeOutfitFrame:CreateBackdrop("Transparent")
 	S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
 	S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
 	_G.WardrobeOutfitDropDown:SetHeight(34)
@@ -536,7 +534,7 @@ function S:Blizzard_Collections()
 
 	--Transmogrify NPC Sets tab
 	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
-	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate("Transparent")
+	WardrobeCollectionFrame.SetsTransmogFrame:CreateBackdrop("Transparent")
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
 
