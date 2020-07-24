@@ -67,7 +67,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleCloseButton(GarrisonBuildingFrame.CloseButton, GarrisonBuildingFrame.backdrop)
 	if E.private.skins.blizzard.tooltip then
 		GarrisonBuildingFrame.BuildingLevelTooltip:StripTextures()
-		GarrisonBuildingFrame.BuildingLevelTooltip:SetTemplate('Transparent')
+		GarrisonBuildingFrame.BuildingLevelTooltip:CreateBackdrop('Transparent')
 	end
 
 	-- Follower List
@@ -289,7 +289,7 @@ function S:Blizzard_GarrisonUI()
 	MissionList:CreateBackdrop("Transparent")
 	MissionList.backdrop:SetOutside(MissionList.MapTexture)
 	MissionList.CompleteDialog.BorderFrame:StripTextures()
-	MissionList.CompleteDialog.BorderFrame:SetTemplate("Transparent")
+	MissionList.CompleteDialog.BorderFrame:CreateBackdrop("Transparent")
 
 	-- ShipYard: Mission
 	MissionPage = MissionTab.MissionPage
@@ -316,14 +316,14 @@ function S:Blizzard_GarrisonUI()
 	-- HandleShipFollowerPage(FollowerList.followerTab)
 
 	--LandingPage Tutorial
-	S:HandleCloseButton(_G.GarrisonLandingPageTutorialBox.CloseButton)
+	--S:HandleCloseButton(_G.GarrisonLandingPageTutorialBox.CloseButton) -- are you still there?
 
 	if E.private.skins.blizzard.tooltip ~= true then return end
 
 	-- ShipYard: Mission Tooltip
 	local tooltip = _G.GarrisonShipyardMapMissionTooltip
 	local reward = tooltip.ItemTooltip
-	tooltip:SetTemplate("Transparent")
+	tooltip:CreateBackdrop("Transparent")
 
 	local icon = reward.Icon
 	if icon then
@@ -338,10 +338,10 @@ function S:Blizzard_GarrisonUI()
 	-- The tooltip starts using blue backdrop and white border unless we re-set the template.
 	-- We should check if there is a better way of doing this.
 	S:HookScript(_G.GarrisonMissionMechanicFollowerCounterTooltip, "OnShow", function(s)
-		s:SetTemplate("Transparent")
+		s:CreateBackdrop("Transparent")
 	end)
 	S:HookScript(_G.GarrisonMissionMechanicTooltip, "OnShow", function(s)
-		s:SetTemplate("Transparent")
+		s:CreateBackdrop("Transparent")
 	end)
 
 	-- MissionFrame
@@ -353,7 +353,7 @@ function S:Blizzard_GarrisonUI()
 	OrderHallMissionFrame:CreateBackdrop("Transparent")
 	OrderHallMissionFrame.backdrop:SetOutside(OrderHallMissionFrame.BorderFrame)
 	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
-	S:HandleCloseButton(_G.OrderHallMissionTutorialFrame.GlowBox.CloseButton)
+	--S:HandleCloseButton(_G.OrderHallMissionTutorialFrame.GlowBox.CloseButton)
 
 	for i = 1, 3 do
 		S:HandleTab(_G["OrderHallMissionFrameTab" .. i])
@@ -362,9 +362,9 @@ function S:Blizzard_GarrisonUI()
 	for _, Button in pairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
 		if not Button.isSkinned then
 			Button:StripTextures()
-			Button:SetTemplate()
+			Button:CreateBackdrop()
 			S:HandleButton(Button)
-			Button:SetBackdropBorderColor(0, 0, 0, 0)
+			Button.backdrop:SetBackdropBorderColor(0, 0, 0, 0)
 			Button.LocBG:Hide()
 			Button.isSkinned = true
 		end
@@ -375,7 +375,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList = OrderHallMissionFrame.FollowerList -- swap
 	local FollowerTab = OrderHallMissionFrame.FollowerTab
 	Follower:StripTextures()
-	Follower:SetTemplate("Transparent")
+	Follower:CreateBackdrop("Transparent")
 	FollowerList:StripTextures()
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
@@ -401,7 +401,7 @@ function S:Blizzard_GarrisonUI()
 	local ZoneSupportMissionPage = MissionTab.ZoneSupportMissionPage
 	S:HandleScrollBar(MissionList.listScroll.scrollBar)
 	MissionList.CompleteDialog:StripTextures()
-	MissionList.CompleteDialog:SetTemplate("Transparent")
+	MissionList.CompleteDialog:CreateBackdrop("Transparent")
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	MissionList:StripTextures()
 	MissionList.listScroll:StripTextures()
@@ -454,7 +454,7 @@ function S:Blizzard_GarrisonUI()
 	local XPBar = MissionFrame.FollowerTab.XPBar
 	local Class = MissionFrame.FollowerTab.Class
 	Follower:StripTextures()
-	Follower:SetTemplate("Transparent")
+	Follower:CreateBackdrop("Transparent")
 	S:HandleEditBox(Follower.SearchBox)
 	hooksecurefunc(Follower, "ShowFollower", function(s)
 		S:HandleFollowerPage(s, true, true)
@@ -469,9 +469,38 @@ function S:Blizzard_GarrisonUI()
 
 	Class:Size(50, 43)
 
-	-- SHADOWLANDS ?
-	-- local CovenantMissionFrame = _G.CovenantMissionFrame
+	-- Shadowlands Mission
+	local CovenantMissionFrame = _G.CovenantMissionFrame
+	CovenantMissionFrame.OverlayElements:Hide()
+	CovenantMissionFrame.TopBorder:Hide()
+	CovenantMissionFrame.TopLeftCorner:Hide()
+	CovenantMissionFrame.TopRightCorner:Hide()
+	CovenantMissionFrame.RightBorder:Hide()
+	CovenantMissionFrame.LeftBorder:Hide()
+	CovenantMissionFrame.BotLeftCorner:Hide()
+	CovenantMissionFrame.BotRightCorner:Hide()
+	CovenantMissionFrame.BottomBorder:Hide()
+	CovenantMissionFrame.GarrCorners:Hide()
+	CovenantMissionFrame.BackgroundTile:Kill()
+	CovenantMissionFrame.Left:Hide()
+	CovenantMissionFrame.Bottom:Hide()
+	CovenantMissionFrame.Top:Hide()
+	CovenantMissionFrame.Right:Hide()
 
+	CovenantMissionFrame:CreateBackdrop('Transparent')
+	S:HandleCloseButton(CovenantMissionFrame.CloseButton)
+
+	for i = 1, 2 do
+		S:HandleTab(_G["CovenantMissionFrameTab"..i])
+	end
+
+	S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar)
+
+	-- Adventures
+	S:HandleScrollBar(_G.CovenantMissionFrameFollowersListScrollFrameScrollBar)
+
+	-- Mission Tab
+	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
 end
 
 local function SkinFollowerTooltip(frame)
