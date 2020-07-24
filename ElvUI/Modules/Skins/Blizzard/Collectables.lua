@@ -22,15 +22,80 @@ local function TextColorModified(text, r, g, b)
 	end
 end
 
-local function CustomIconBorder(iconBorder, r, g, b)
+local function petNameColor(iconBorder, r, g, b)
 	local parent = iconBorder:GetParent()
 	if not parent.name then return end
 
-	if not r then
-		parent.name:SetTextColor(0.9, 0.9, 0.9)
-	else
+	if r and parent.owned then
 		parent.name:SetTextColor(r, g, b)
+	else
+		if parent.isDead and parent.isDead:IsShown() then
+			parent.name:SetTextColor(0.9, 0.3, 0.3)
+		else
+			parent.name:SetTextColor(0.4, 0.4, 0.4)
+		end
 	end
+end
+
+local function SelectedTextureFunction(texture, shown)
+	local parent = texture:GetParent()
+	local icon = parent.icon or parent.Icon
+	if shown then
+		parent.backdrop:SetBackdropBorderColor(1, .8, .1)
+		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		parent.backdrop:SetBackdropBorderColor(r, g, b)
+		icon.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+end
+
+local function mountNameColor(name, fontObject)
+	if fontObject == 'GameFontDisable' then
+		name:SetTextColor(0.4, 0.4, 0.4)
+	else
+		name:SetTextColor(0.9, 0.9, 0.9)
+	end
+end
+
+local function selectedTextureShow(texture)
+	local parent = texture:GetParent()
+	parent.backdrop:SetBackdropBorderColor(1, .8, .1)
+	parent.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+end
+
+local function selectedTextureHide(texture)
+	local parent = texture:GetParent()
+	if not parent.hovered then
+		local r, g, b = unpack(E.media.bordercolor)
+		parent.backdrop:SetBackdropBorderColor(r, g, b)
+		parent.icon.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+
+	if parent.petList then
+		petNameColor(parent.iconBorder, parent.iconBorder:GetVertexColor())
+	end
+end
+
+local function buttonOnEnter(button)
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	local icon = button.icon or button.Icon
+	button.backdrop:SetBackdropBorderColor(r, g, b)
+	icon.backdrop:SetBackdropBorderColor(r, g, b)
+	button.hovered = true
+end
+
+local function buttonOnLeave(button)
+	local icon = button.icon or button.Icon
+	if button.selected or (button.SelectedTexture and button.SelectedTexture:IsShown()) then
+		button.backdrop:SetBackdropBorderColor(1, .8, .1)
+		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
+		icon.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+	button.hovered = nil
 end
 
 local function JournalScrollButtons(frame)
@@ -56,23 +121,8 @@ local function JournalScrollButtons(frame)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:CreateBackdrop(nil, nil, nil, true)
 
-		bu:HookScript("OnEnter", function()
-			local r, g, b = unpack(E.media.rgbvaluecolor)
-			bu.backdrop:SetBackdropBorderColor(r, g, b)
-			icon.backdrop:SetBackdropBorderColor(r, g, b)
-			bu.hovered = true
-		end)
-		bu:HookScript("OnLeave", function()
-			if bu.selected or (bu.SelectedTexture and bu.SelectedTexture:IsShown()) then
-				bu.backdrop:SetBackdropBorderColor(1, .8, .1)
-				icon.backdrop:SetBackdropBorderColor(1, .8, .1)
-			else
-				local r, g, b = unpack(E.media.bordercolor)
-				bu.backdrop:SetBackdropBorderColor(r, g, b)
-				icon.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-			bu.hovered = nil
-		end)
+		bu:HookScript("OnEnter", buttonOnEnter)
+		bu:HookScript("OnLeave", buttonOnLeave)
 
 		local highlight = _G[bu:GetName().."Highlight"]
 		if highlight then
@@ -82,49 +132,27 @@ local function JournalScrollButtons(frame)
 		end
 
 		if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
+			bu.setList = true
 			bu.Favorite:SetAtlas("PetJournal-FavoritesIcon", true)
 			bu.Favorite:Point("TOPLEFT", bu.Icon, "TOPLEFT", -8, 8)
 
-			hooksecurefunc(bu.SelectedTexture, 'SetShown', function(_, shown)
-				if shown then
-					bu.backdrop:SetBackdropBorderColor(1, .8, .1)
-					icon.backdrop:SetBackdropBorderColor(1, .8, .1)
-				else
-					local r, g, b = unpack(E.media.bordercolor)
-					bu.backdrop:SetBackdropBorderColor(r, g, b)
-					icon.backdrop:SetBackdropBorderColor(r, g, b)
-				end
-			end)
+			hooksecurefunc(bu.SelectedTexture, 'SetShown', SelectedTextureFunction)
 		else
 			bu.selectedTexture:SetTexture()
-			hooksecurefunc(bu.selectedTexture, 'Show', function()
-				bu.backdrop:SetBackdropBorderColor(1, .8, .1)
-				icon.backdrop:SetBackdropBorderColor(1, .8, .1)
-			end)
-			hooksecurefunc(bu.selectedTexture, 'Hide', function()
-				if not bu.hovered then
-					local r, g, b = unpack(E.media.bordercolor)
-					bu.backdrop:SetBackdropBorderColor(r, g, b)
-					icon.backdrop:SetBackdropBorderColor(r, g, b)
-				end
-			end)
-
-			local iconBorder = bu.iconBorder or bu.IconBorder
-			if iconBorder then
-				if bu.name then
-					S:HandleIconBorder(iconBorder, CustomIconBorder)
-				else
-					iconBorder:Kill()
-				end
-			end
+			hooksecurefunc(bu.selectedTexture, 'Show', selectedTextureShow)
+			hooksecurefunc(bu.selectedTexture, 'Hide', selectedTextureHide)
 
 			if frame:GetParent() == _G.PetJournal then
+				bu.petList = true
 				bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
 				bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
 
 				bu.dragButton.ActiveTexture:SetAlpha(0)
 				bu.dragButton.levelBG:SetTexture()
+
+				S:HandleIconBorder(bu.iconBorder, petNameColor)
 			elseif frame:GetParent() == _G.MountJournal then
+				bu.mountList = true
 				bu.factionIcon:SetDrawLayer('OVERLAY')
 				bu.factionIcon:Point('TOPRIGHT', -1, -1)
 				bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
@@ -132,6 +160,8 @@ local function JournalScrollButtons(frame)
 				bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
 				bu.favorite:Point("TOPLEFT", bu.DragButton, "TOPLEFT" , -8, 8)
 				bu.favorite:Size(32, 32)
+
+				hooksecurefunc(bu.name, 'SetFontObject', mountNameColor)
 			end
 		end
 	end
