@@ -11,7 +11,6 @@ function S:Blizzard_Soulbinds()
 	frame:StripTextures()
 	frame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(frame.CloseButton)
-
 	S:HandleButton(frame.ActivateButton)
 end
 

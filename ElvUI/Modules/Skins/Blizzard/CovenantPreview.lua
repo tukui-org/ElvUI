@@ -35,7 +35,7 @@ function S:Blizzard_CovenantPreviewUI()
 		end
 	end)
 
-	hooksecurefunc(frame, 'SetupTextureKits', function(self, button)
+	hooksecurefunc(frame, 'SetupTextureKits', function(_, button)
 		if button.IconBorder and not button.isSkinned then
 			button.IconBorder:SetAlpha(0)
 			button.CircleMask:Hide()
@@ -43,8 +43,8 @@ function S:Blizzard_CovenantPreviewUI()
 
 			if not button.bg then
 				button.bg = CreateFrame('Frame', nil, button, 'BackdropTemplate')
- 				S:HandleIcon(button.Icon, button.bg)
- 			end
+				S:HandleIcon(button.Icon, button.bg)
+			end
 
 			button.isSkinned = true
 		end

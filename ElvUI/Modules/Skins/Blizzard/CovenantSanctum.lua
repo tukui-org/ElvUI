@@ -9,21 +9,17 @@ function S:Blizzard_CovenantSanctum()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.CovenantSanctum) then return end
 
 	local frame = _G.CovenantSanctumFrame
-
-	hooksecurefunc(frame, 'SetTab', function() -- check this hook plx
-		if not frame.IsSkinned then
+	hooksecurefunc(frame, 'SetTab', function()
+		if not frame.backdrop then
 			frame:StripTextures()
 			frame:CreateBackdrop('Transparent')
 
 			S:HandleButton(frame.UpgradesTab.DepositButton)
 			S:HandleButton(frame.UpgradesTab.TalentsList.UpgradeButton)
-
-			frame.IsSkinned = true
 		end
 	end)
 
 	S:HandleCloseButton(_G.CovenantSanctumFrameCloseButton)
-
 	S:HandleTab(_G.CovenantSanctumFrameTab1)
 	_G.CovenantSanctumFrameTab1:ClearAllPoints()
 	_G.CovenantSanctumFrameTab1:Point('BOTTOMLEFT', frame, 23, -32) --default is: 23, 9

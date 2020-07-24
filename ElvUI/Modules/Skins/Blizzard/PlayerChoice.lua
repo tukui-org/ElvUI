@@ -2,44 +2,40 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select, select
+local select = select
 local hooksecurefunc = hooksecurefunc
 
--- SHADOWLANDS
+local function StyleText(text)
+	if text.IsSkinned then return end
+	text:SetTextColor(1, 1, 1)
+	text.SetTextColor = E.noop
+	text.IsSkinned = true
+end
 
 function S:Blizzard_PlayerChoiceUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.PlayerChoice) then return end
 
 	local frame = _G.PlayerChoiceFrame
+	hooksecurefunc(frame, 'Update', function()
+		if not frame.IsSkinned then
+			frame.BlackBackground:SetAlpha(0)
+			frame.Background:SetAlpha(0)
+			frame.NineSlice:SetAlpha(0)
+			frame.BorderFrame.Header:SetAlpha(0)
 
-	local function StyleText(self)
-		if self.IsSkinned then return end
+			frame:CreateBackdrop('Transparent')
 
-		self:SetTextColor(1, 1, 1)
-		self.SetTextColor = E.noop
-		self.IsSkinned = true
-	end
+			frame.Title:DisableDrawLayer('BACKGROUND')
+			frame.Title.Text:SetTextColor(1, .8, 0)
 
-	hooksecurefunc(frame, 'Update', function(self)
-		if not self.IsSkinned then
-			self.BlackBackground:SetAlpha(0)
-			self.Background:SetAlpha(0)
-			self.NineSlice:SetAlpha(0)
-			self.BorderFrame.Header:SetAlpha(0)
+			S:HandleCloseButton(frame.CloseButton)
+			frame.CloseButton.Border:SetAlpha(0)
 
-			self:CreateBackdrop('Transparent')
-
-			self.Title:DisableDrawLayer('BACKGROUND')
-			self.Title.Text:SetTextColor(1, .8, 0)
-
-			S:HandleCloseButton(self.CloseButton)
-			self.CloseButton.Border:SetAlpha(0)
-
-			self.IsSkinned = true
+			frame.IsSkinned = true
 		end
 
-		for i = 1, self:GetNumOptions() do
-			local option = self.Options[i]
+		for i = 1, frame:GetNumOptions() do
+			local option = frame.Options[i]
 			option.Header.Text:SetTextColor(1, .8, 0)
 			option.OptionText:SetTextColor(1, 1, 1)
 
@@ -57,7 +53,7 @@ function S:Blizzard_PlayerChoiceUI()
 
 							S:HandleIcon(child.Spell.Icon)
 
-							 child.Spell.isSkinned = true
+							child.Spell.isSkinned = true
 						end
 
 						child.Spell.Text:SetTextColor(1, 1, 1)

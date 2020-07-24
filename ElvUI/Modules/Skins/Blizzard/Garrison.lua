@@ -315,16 +315,12 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame.Icon:SetAtlas("ShipMission_CurrencyIcon-Oil", false) --Re-add the material icon
 	-- HandleShipFollowerPage(FollowerList.followerTab)
 
-	--LandingPage Tutorial
-	--S:HandleCloseButton(_G.GarrisonLandingPageTutorialBox.CloseButton) -- are you still there?
-
 	if E.private.skins.blizzard.tooltip ~= true then return end
 
 	-- ShipYard: Mission Tooltip
 	local tooltip = _G.GarrisonShipyardMapMissionTooltip
-	local reward = tooltip.ItemTooltip
 	tooltip:CreateBackdrop("Transparent")
-
+	local reward = tooltip.ItemTooltip
 	local icon = reward.Icon
 	if icon then
 		S:HandleIcon(icon)
@@ -335,14 +331,8 @@ function S:Blizzard_GarrisonUI()
 	if bonusIcon then S:HandleIcon(bonusIcon) end
 
 	-- Threat Counter Tooltips
-	-- The tooltip starts using blue backdrop and white border unless we re-set the template.
-	-- We should check if there is a better way of doing this.
-	S:HookScript(_G.GarrisonMissionMechanicFollowerCounterTooltip, "OnShow", function(s)
-		s:CreateBackdrop("Transparent")
-	end)
-	S:HookScript(_G.GarrisonMissionMechanicTooltip, "OnShow", function(s)
-		s:CreateBackdrop("Transparent")
-	end)
+	_G.GarrisonMissionMechanicFollowerCounterTooltip:CreateBackdrop("Transparent")
+	_G.GarrisonMissionMechanicTooltip:CreateBackdrop("Transparent")
 
 	-- MissionFrame
 	local OrderHallMissionFrame = _G.OrderHallMissionFrame
@@ -353,7 +343,6 @@ function S:Blizzard_GarrisonUI()
 	OrderHallMissionFrame:CreateBackdrop("Transparent")
 	OrderHallMissionFrame.backdrop:SetOutside(OrderHallMissionFrame.BorderFrame)
 	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
-	--S:HandleCloseButton(_G.OrderHallMissionTutorialFrame.GlowBox.CloseButton)
 
 	for i = 1, 3 do
 		S:HandleTab(_G["OrderHallMissionFrameTab" .. i])
@@ -495,7 +484,6 @@ function S:Blizzard_GarrisonUI()
 	end
 
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
-
 	S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar)
 
 	-- Complete Missions
@@ -509,7 +497,6 @@ function S:Blizzard_GarrisonUI()
 
 	-- Mission Tab
 	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
-
 end
 
 local function SkinFollowerTooltip(frame)

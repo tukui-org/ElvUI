@@ -41,6 +41,13 @@ local ISLANDS_HEADER = ISLANDS_HEADER
 local ISLANDS_QUEUE_FRAME_TITLE = ISLANDS_QUEUE_FRAME_TITLE
 local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
 local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
+local LE_FOLLOWER_TYPE_GARRISON_6_0 = Enum.GarrisonFollowerType.FollowerType_6_0
+local LE_FOLLOWER_TYPE_GARRISON_7_0 = Enum.GarrisonFollowerType.FollowerType_7_0
+local LE_FOLLOWER_TYPE_GARRISON_8_0 = Enum.GarrisonFollowerType.FollowerType_8_0
+local LE_FOLLOWER_TYPE_SHIPYARD_6_2 = Enum.GarrisonFollowerType.ShipyardType_6_2
+local LE_GARRISON_TYPE_6_0 = Enum.GarrisonType.Type_6_0
+local LE_GARRISON_TYPE_7_0 = Enum.GarrisonType.Type_7_0
+local LE_GARRISON_TYPE_8_0 = Enum.GarrisonType.Type_8_0
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- "Completed: |cFF33FF33%s|r"
 local TALENTS = TALENTS
@@ -193,14 +200,14 @@ local function OnEnter()
 		DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
 		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1560), nil, nil, nil, 1, 1, 1)
 		AddInProgressMissions(Enum.GarrisonFollowerType.FollowerType_8_0)
-	
+
 		-- Island Expeditions
 		if E.mylevel >= GetMaxLevelForExpansionLevel(LE_EXPANSION_BATTLE_FOR_AZEROTH) then
 			local questID = C_IslandsQueue_GetIslandsWeeklyQuestID()
 			if questID then
 				local _, _, finished, numFulfilled, numRequired = GetQuestObjectiveInfo(questID, 1, false)
 				local text, r1, g1, b1
-	
+
 				if finished or C_QuestLog_IsQuestFlaggedCompleted(questID) then
 					text = GOAL_COMPLETED
 					r1, g1, b1 = GREEN_FONT_COLOR:GetRGB()
@@ -208,18 +215,18 @@ local function OnEnter()
 					text = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS:format(numFulfilled, numRequired)
 					r1, g1, b1 = 1, 1, 1
 				end
-	
+
 				DT.tooltip:AddLine(" ")
 				DT.tooltip:AddLine(ISLANDS_HEADER .. ":")
 				DT.tooltip:AddDoubleLine(ISLANDS_QUEUE_FRAME_TITLE, text, 1, 1, 1, r1, g1, b1)
 			end
 		end
-	
+
 		local widgetGroup = Widget_IDs[E.myfaction]
 		if E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and C_QuestLog_IsQuestFlaggedCompleted(widgetGroup[1]) then
 			DT.tooltip:AddLine(" ")
 			DT.tooltip:AddLine(L["Nazjatar Follower XP"])
-	
+
 			for i = 2, 4 do
 				local npcName, widgetID = unpack(widgetGroup[i])
 				local cur, toNext, _, rank, maxRank = E:GetWidgetInfoBase(widgetID)
@@ -228,7 +235,7 @@ local function OnEnter()
 				end
 			end
 		end
-	
+
 		AddFollowerInfo(Enum.GarrisonType.Type_7_0)
 		AddTalentInfo(Enum.GarrisonType.Type_7_0)
 
