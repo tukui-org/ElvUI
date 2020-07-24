@@ -105,7 +105,11 @@ local function JournalScrollButtons(frame)
 
 			local iconBorder = bu.iconBorder or bu.IconBorder
 			if iconBorder then
-				S:HandleIconBorder(iconBorder, CustomIconBorder)
+				if bu.name then
+					S:HandleIconBorder(iconBorder, CustomIconBorder)
+				else
+					iconBorder:Kill()
+				end
 			end
 
 			if frame:GetParent() == _G.PetJournal then
