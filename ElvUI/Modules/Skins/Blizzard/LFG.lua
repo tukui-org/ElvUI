@@ -51,10 +51,7 @@ end
 local function SkinItemButton(parentFrame, _, index)
 	local parentName = parentFrame:GetName()
 	local item = _G[parentName.."Item"..index]
-
 	if item and not item.backdrop then
-		S:HandleIconBorder(item.IconBorder)
-
 		item:CreateBackdrop()
 		item.backdrop:ClearAllPoints()
 		item.backdrop:Point("LEFT", 1, 0)
@@ -75,6 +72,8 @@ local function SkinItemButton(parentFrame, _, index)
 
 		item.roleIcon1:SetParent(item.backdrop)
 		item.roleIcon2:SetParent(item.backdrop)
+
+		S:HandleIconBorder(item.IconBorder)
 	end
 end
 
@@ -433,19 +432,19 @@ function S:LookingForGroupFrames()
 				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 				tab:GetNormalTexture():SetInside()
 
-				tab.pushed = true;
+				tab.pushed = true
 				tab:CreateBackdrop()
 				tab.backdrop:SetAllPoints()
 				tab:StyleButton(true)
-				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(self, texPath)
+				hooksecurefunc(tab:GetHighlightTexture(), "SetTexture", function(highlight, texPath)
 					if texPath ~= nil then
-						self:SetTexture();
+						highlight:SetTexture()
 					end
 				end)
 
-				hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(self, texPath)
+				hooksecurefunc(tab:GetCheckedTexture(), "SetTexture", function(highlight, texPath)
 					if texPath ~= nil then
-						self:SetTexture();
+						highlight:SetTexture()
 					end
 				end)
 			end
@@ -459,6 +458,7 @@ function S:LookingForGroupFrames()
 			S:HandleButton(_G.LFRBrowseFrameRefreshButton)
 			S:HandleButton(_G.LFRBrowseFrameInviteButton)
 			S:HandleButton(_G.LFRBrowseFrameSendMessageButton)
+
 			_G.LFRQueueFrameSpecificListScrollFrameScrollBar.skinned = true
 		end
 	end)
@@ -662,6 +662,7 @@ function S:LookingForGroupFrames()
 		if button then
 			if not button.isSkinned then
 				button:CreateBackdrop()
+				button.backdrop:SetAllPoints()
 				button.Icon:SetDrawLayer("BACKGROUND", 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()

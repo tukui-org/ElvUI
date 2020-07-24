@@ -33,18 +33,10 @@ function S:TooltipFrames()
 
 	-- EmbeddedItemTooltip (also Paragon Reputation)
 	local embedded = _G.EmbeddedItemTooltip
-	local reward = embedded.ItemTooltip
-	local icon = reward.Icon
 	embedded:SetTemplate("Transparent")
 
-	if reward and reward.backdrop then
-		reward.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
-		reward.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
-	end
-
-	if icon then
-		S:HandleIcon(icon, true)
-		S:HandleIconBorder(reward.IconBorder)
+	if embedded.ItemTooltip.Icon then
+		S:HandleIcon(embedded.ItemTooltip.Icon, true)
 	end
 
 	embedded:HookScript("OnShow", function(tt)
