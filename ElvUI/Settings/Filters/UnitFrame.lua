@@ -688,6 +688,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[331172] = Defaults(), -- Mind Link
 		[322563] = Defaults(), -- Marked Prey
 		-- Plaguefall
+		[336258] = Defaults(), -- Solitary Prey
+		[331818] = Defaults(), -- Shadow Ambush
+		[329110] = Defaults(), -- Slime Injection
+		[325552] = Defaults(), -- Cytotoxic Slash
+		[336301] = Defaults(), -- Web Wrap
 		-- Sanguine Depths
 		-- Spires of Ascension
 		-- The Necrotic Wake
