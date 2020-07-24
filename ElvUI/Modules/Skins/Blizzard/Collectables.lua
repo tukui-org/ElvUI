@@ -26,14 +26,12 @@ local function petNameColor(iconBorder, r, g, b)
 	local parent = iconBorder:GetParent()
 	if not parent.name then return end
 
-	if r and parent.owned then
+	if parent.isDead and parent.isDead:IsShown() then
+		parent.name:SetTextColor(0.9, 0.3, 0.3)
+	elseif r and parent.owned then
 		parent.name:SetTextColor(r, g, b)
 	else
-		if parent.isDead and parent.isDead:IsShown() then
-			parent.name:SetTextColor(0.9, 0.3, 0.3)
-		else
-			parent.name:SetTextColor(0.4, 0.4, 0.4)
-		end
+		parent.name:SetTextColor(0.4, 0.4, 0.4)
 	end
 end
 
@@ -101,7 +99,7 @@ end
 local function JournalScrollButtons(frame)
 	for i, bu in ipairs(frame.buttons) do
 		bu:StripTextures()
-		bu:CreateBackdrop("Transparent", nil, nil, true)
+		bu:CreateBackdrop('Transparent', nil, nil, true)
 		bu:Size(210, 42)
 		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
 		bu.backdrop:SetAllPoints()
@@ -117,14 +115,14 @@ local function JournalScrollButtons(frame)
 
 		local icon = bu.icon or bu.Icon
 		icon:Size(40)
-		icon:Point("LEFT", -43, 0)
+		icon:Point('LEFT', -43, 0)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:CreateBackdrop(nil, nil, nil, true)
 
-		bu:HookScript("OnEnter", buttonOnEnter)
-		bu:HookScript("OnLeave", buttonOnLeave)
+		bu:HookScript('OnEnter', buttonOnEnter)
+		bu:HookScript('OnLeave', buttonOnLeave)
 
-		local highlight = _G[bu:GetName().."Highlight"]
+		local highlight = _G[bu:GetName()..'Highlight']
 		if highlight then
 			highlight:SetColorTexture(1, 1, 1, 0.3)
 			highlight:SetBlendMode('ADD')
@@ -133,8 +131,8 @@ local function JournalScrollButtons(frame)
 
 		if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
 			bu.setList = true
-			bu.Favorite:SetAtlas("PetJournal-FavoritesIcon", true)
-			bu.Favorite:Point("TOPLEFT", bu.Icon, "TOPLEFT", -8, 8)
+			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
+			bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
 
 			hooksecurefunc(bu.SelectedTexture, 'SetShown', SelectedTextureFunction)
 		else
@@ -158,7 +156,7 @@ local function JournalScrollButtons(frame)
 				bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
 
 				bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
-				bu.favorite:Point("TOPLEFT", bu.DragButton, "TOPLEFT" , -8, 8)
+				bu.favorite:Point('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
 				bu.favorite:Size(32, 32)
 
 				hooksecurefunc(bu.name, 'SetFontObject', mountNameColor)
@@ -182,7 +180,7 @@ function S:Blizzard_Collections()
 	S:HandleButton(_G.MountJournalFilterButton)
 
 	_G.MountJournalFilterButton:ClearAllPoints()
-	_G.MountJournalFilterButton:Point("LEFT", _G.MountJournalSearchBox, "RIGHT", 5, 0)
+	_G.MountJournalFilterButton:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
 
 	-------------------------------
 	--[[ mount journal (tab 1) ]]--
@@ -205,7 +203,7 @@ function S:Blizzard_Collections()
 
 	-- New Mount Equip. 8.2
 	MountJournal.BottomLeftInset:StripTextures()
-	MountJournal.BottomLeftInset:CreateBackdrop("Transparent")
+	MountJournal.BottomLeftInset:CreateBackdrop('Transparent')
 	MountJournal.BottomLeftInset.SlotButton:StripTextures()
 	S:HandleIcon(MountJournal.BottomLeftInset.SlotButton.ItemIcon)
 	S:HandleButton(MountJournal.BottomLeftInset.SlotButton)
@@ -223,7 +221,7 @@ function S:Blizzard_Collections()
 	S:HandleItemButton(_G.PetJournalSummonRandomFavoritePetButton, true)
 
 	for i = 1, 3 do
-		local f = _G["PetJournalLoadoutPet"..i.."HelpFrame"]
+		local f = _G['PetJournalLoadoutPet'..i..'HelpFrame']
 		f:StripTextures()
 	end
 
@@ -235,11 +233,11 @@ function S:Blizzard_Collections()
 	PetJournal.PetCount:StripTextures()
 	S:HandleEditBox(_G.PetJournalSearchBox)
 	_G.PetJournalSearchBox:ClearAllPoints()
-	_G.PetJournalSearchBox:Point("TOPLEFT", _G.PetJournalLeftInset, "TOPLEFT", (E.PixelMode and 13 or 10), -9)
+	_G.PetJournalSearchBox:Point('TOPLEFT', _G.PetJournalLeftInset, 'TOPLEFT', (E.PixelMode and 13 or 10), -9)
 	S:HandleButton(_G.PetJournalFilterButton)
 	_G.PetJournalFilterButton:Height(E.PixelMode and 22 or 24)
 	_G.PetJournalFilterButton:ClearAllPoints()
-	_G.PetJournalFilterButton:Point("TOPRIGHT", _G.PetJournalLeftInset, "TOPRIGHT", -5, -(E.PixelMode and 8 or 7))
+	_G.PetJournalFilterButton:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
 	_G.PetJournalListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.PetJournalListScrollFrameScrollBar)
 	JournalScrollButtons(PetJournal.listScroll)
@@ -267,7 +265,7 @@ function S:Blizzard_Collections()
 		petButton.pushed = true;
 		petButton.checked = true;
 		S:HandleItemButton(petButton)
-		petButton.levelBG:SetAtlas("PetJournal-LevelBubble", true)
+		petButton.levelBG:SetAtlas('PetJournal-LevelBubble', true)
 
 		petButton.backdrop:SetFrameLevel(_G['PetJournalLoadoutPet'..i].backdrop:GetFrameLevel() + 1)
 
@@ -299,7 +297,7 @@ function S:Blizzard_Collections()
 	end
 
 	_G.PetJournalPetCard:StripTextures()
-	_G.PetJournalPetCard:CreateBackdrop("Transparent")
+	_G.PetJournalPetCard:CreateBackdrop('Transparent')
 	_G.PetJournalPetCardInset:StripTextures()
 	_G.PetJournalPetCardPetInfoQualityBorder:SetAlpha(0)
 
@@ -326,7 +324,7 @@ function S:Blizzard_Collections()
 		tt.BorderBottomRight:SetTexture()
 		tt.BorderBottomLeft:SetTexture()
 
-		tt:CreateBackdrop("Transparent")
+		tt:CreateBackdrop('Transparent')
 	end
 
 	for i=1, 6 do
@@ -351,7 +349,7 @@ function S:Blizzard_Collections()
 	--Toy Box
 	local ToyBox = _G.ToyBox
 	S:HandleButton(_G.ToyBoxFilterButton)
-	_G.ToyBoxFilterButton:Point("TOPRIGHT", ToyBox, "TOPRIGHT", -15, -34)
+	_G.ToyBoxFilterButton:Point('TOPRIGHT', ToyBox, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
@@ -359,13 +357,13 @@ function S:Blizzard_Collections()
 
 	local progressBar = ToyBox.progressBar
 	progressBar.border:Hide()
-	progressBar:DisableDrawLayer("BACKGROUND")
+	progressBar:DisableDrawLayer('BACKGROUND')
 	progressBar:SetStatusBarTexture(E.media.normTex)
 	progressBar:CreateBackdrop()
 	E:RegisterStatusBar(progressBar)
 
 	for i = 1, 18 do
-		local button = ToyBox.iconsFrame["spellButton"..i]
+		local button = ToyBox.iconsFrame['spellButton'..i]
 		S:HandleItemButton(button, true)
 		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
 		button.iconTextureUncollected:SetInside(button)
@@ -374,12 +372,12 @@ function S:Blizzard_Collections()
 		button.pushed:SetAllPoints(button.iconTexture)
 		button.cooldown:SetAllPoints(button.iconTexture)
 
-		hooksecurefunc(button.name, "SetTextColor", TextColorModified)
-		hooksecurefunc(button.new, "SetTextColor", TextColorModified)
+		hooksecurefunc(button.name, 'SetTextColor', TextColorModified)
+		hooksecurefunc(button.new, 'SetTextColor', TextColorModified)
 		E:RegisterCooldown(button.cooldown)
 	end
 
-	hooksecurefunc("ToySpellButton_UpdateButton", function(s)
+	hooksecurefunc('ToySpellButton_UpdateButton', function(s)
 		if PlayerHasToy(s.itemID) then
 			local quality = select(3, GetItemInfo(s.itemID))
 			local r, g, b = 1, 1, 1
@@ -396,7 +394,7 @@ function S:Blizzard_Collections()
 	--Heirlooms
 	local HeirloomsJournal = _G.HeirloomsJournal
 	S:HandleButton(_G.HeirloomsJournalFilterButton)
-	_G.HeirloomsJournalFilterButton:Point("TOPRIGHT", HeirloomsJournal, "TOPRIGHT", -15, -34)
+	_G.HeirloomsJournalFilterButton:Point('TOPRIGHT', HeirloomsJournal, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
@@ -405,16 +403,16 @@ function S:Blizzard_Collections()
 
 	progressBar = HeirloomsJournal.progressBar -- swap local variable
 	progressBar.border:Hide()
-	progressBar:DisableDrawLayer("BACKGROUND")
+	progressBar:DisableDrawLayer('BACKGROUND')
 	progressBar:SetStatusBarTexture(E.media.normTex)
 	progressBar:CreateBackdrop()
 	E:RegisterStatusBar(progressBar)
 
-	hooksecurefunc(HeirloomsJournal, "UpdateButton", function(_, button)
+	hooksecurefunc(HeirloomsJournal, 'UpdateButton', function(_, button)
 		if not button.styled then
 			S:HandleItemButton(button, true)
 
-			button.iconTexture:SetDrawLayer("ARTWORK")
+			button.iconTexture:SetDrawLayer('ARTWORK')
 			button.hover:SetAllPoints(button.iconTexture)
 			button.slotFrameCollected:SetAlpha(0)
 			button.slotFrameUncollected:SetAlpha(0)
@@ -443,11 +441,11 @@ function S:Blizzard_Collections()
 		button.SetTextColor = E.noop
 	end)
 
-	hooksecurefunc(HeirloomsJournal, "LayoutCurrentPage", function()
+	hooksecurefunc(HeirloomsJournal, 'LayoutCurrentPage', function()
 		for i=1, #HeirloomsJournal.heirloomHeaderFrames do
 			local header = HeirloomsJournal.heirloomHeaderFrames[i]
 			header:StripTextures()
-			header.text:FontTemplate(nil, 15, "")
+			header.text:FontTemplate(nil, 15, '')
 			header.text:SetTextColor(1, 1, 1)
 		end
 	end)
@@ -479,12 +477,12 @@ function S:Blizzard_Collections()
 				Model.Border:SetAlpha(0)
 				Model.TransmogStateTexture:SetAlpha(0)
 
-				local border = CreateFrame("Frame", nil, Model, "BackdropTemplate")
+				local border = CreateFrame('Frame', nil, Model, 'BackdropTemplate')
 				border:SetOutside(Model)
 				border:SetTemplate()
 				E:SetBackdropColor(border, 0, 0, 0, 0)
 
-				local background = CreateFrame("Frame", nil, Model, "BackdropTemplate")
+				local background = CreateFrame('Frame', nil, Model, 'BackdropTemplate')
 				background:SetAllPoints(Model)
 				background:SetTemplate()
 				background:SetFrameLevel(3)
@@ -501,9 +499,9 @@ function S:Blizzard_Collections()
 
 				hooksecurefunc(Model.Border, 'SetAtlas', function(_, texture)
 					local r, g, b
-					if texture == "transmog-wardrobe-border-uncollected" then
+					if texture == 'transmog-wardrobe-border-uncollected' then
 						r, g, b = 1, 1, 0
-					elseif texture == "transmog-wardrobe-border-unusable" then
+					elseif texture == 'transmog-wardrobe-border-unusable' then
 						r, g, b =  1, 0, 0
 					else
 						r, g, b = unpack(E.media.bordercolor)
@@ -535,7 +533,7 @@ function S:Blizzard_Collections()
 
 	--Sets
 	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
-	SetsCollectionFrame:CreateBackdrop("Transparent")
+	SetsCollectionFrame:CreateBackdrop('Transparent')
 	SetsCollectionFrame.RightInset:StripTextures()
 	SetsCollectionFrame.LeftInset:StripTextures()
 	JournalScrollButtons(SetsCollectionFrame.ScrollFrame)
@@ -547,7 +545,7 @@ function S:Blizzard_Collections()
 	DetailsFrame.LongName:FontTemplate(nil, 16)
 	S:HandleButton(DetailsFrame.VariantSetsButton)
 
-	hooksecurefunc(SetsCollectionFrame, "SetItemFrameQuality", function(_, itemFrame)
+	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', function(_, itemFrame)
 		local icon = itemFrame.Icon
 		if not icon.backdrop then
 			icon:CreateBackdrop()
@@ -573,12 +571,12 @@ function S:Blizzard_Collections()
 
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures()
-	WardrobeOutfitFrame:CreateBackdrop("Transparent")
+	WardrobeOutfitFrame:CreateBackdrop('Transparent')
 	S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
 	S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
 	_G.WardrobeOutfitDropDown:SetHeight(34)
 	_G.WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
-	_G.WardrobeOutfitDropDown.SaveButton:Point("TOPLEFT", _G.WardrobeOutfitDropDown, "TOPRIGHT", -2, -2)
+	_G.WardrobeOutfitDropDown.SaveButton:Point('TOPLEFT', _G.WardrobeOutfitDropDown, 'TOPRIGHT', -2, -2)
 
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
@@ -593,21 +591,21 @@ function S:Blizzard_Collections()
 	end
 
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
-	WardrobeTransmogFrame.SpecButton:Point("RIGHT", WardrobeTransmogFrame.ApplyButton, "LEFT", -2, 0)
+	WardrobeTransmogFrame.SpecButton:Point('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -2, 0)
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)
 
 	--Transmogrify NPC Sets tab
 	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
-	WardrobeCollectionFrame.SetsTransmogFrame:CreateBackdrop("Transparent")
+	WardrobeCollectionFrame.SetsTransmogFrame:CreateBackdrop('Transparent')
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
 
 	-- Outfit Edit Frame
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
 	WardrobeOutfitEditFrame:StripTextures()
-	WardrobeOutfitEditFrame:CreateBackdrop("Transparent")
+	WardrobeOutfitEditFrame:CreateBackdrop('Transparent')
 	WardrobeOutfitEditFrame.EditBox:StripTextures()
 	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
 	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
