@@ -66,7 +66,7 @@ local PaneBackdrop  = {
 }
 
 local function Constructor()
-	local frame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
+	local frame = CreateFrame("Frame", nil, UIParent)
 	frame:SetFrameStrata("FULLSCREEN_DIALOG")
 
 	local titletext = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")

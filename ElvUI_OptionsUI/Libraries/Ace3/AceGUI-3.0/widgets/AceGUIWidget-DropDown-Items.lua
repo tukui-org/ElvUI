@@ -150,7 +150,7 @@ end
 function ItemBase.Create(type)
 	-- NOTE: Most of the following code is copied from AceGUI-3.0/Dropdown widget
 	local count = AceGUI:GetNextWidgetNum(type)
-	local frame = CreateFrame("Button", "AceGUI30DropDownItem"..count, nil, BackdropTemplateMixin and "BackdropTemplate" or nil)
+	local frame = CreateFrame("Button", "AceGUI30DropDownItem"..count)
 	local self = {}
 	self.frame = frame
 	frame.obj = self

@@ -210,10 +210,10 @@ Constructor
 -------------------------------------------------------------------------------]]
 local function Constructor()
 	local num  = AceGUI:GetNextWidgetNum(Type)
-	local frame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
+	local frame = CreateFrame("Frame", nil, UIParent)
 	frame:Hide()
 
-	local editbox = CreateFrame("EditBox", "AceGUI-3.0EditBox"..num, frame, BackdropTemplateMixin and "InputBoxTemplate, BackdropTemplate" or "InputBoxTemplate")
+	local editbox = CreateFrame("EditBox", "AceGUI-3.0EditBox"..num, frame, "InputBoxTemplate")
 	editbox:SetAutoFocus(false)
 	editbox:SetFontObject(ChatFontNormal)
 	editbox:SetScript("OnEnter", Control_OnEnter)
@@ -236,7 +236,7 @@ local function Constructor()
 	label:SetJustifyH("LEFT")
 	label:SetHeight(18)
 
-	local button = CreateFrame("Button", nil, editbox, BackdropTemplateMixin and "UIPanelButtonTemplate, BackdropTemplate" or "UIPanelButtonTemplate")
+	local button = CreateFrame("Button", nil, editbox, "UIPanelButtonTemplate")
 	button:SetWidth(40)
 	button:SetHeight(20)
 	button:SetPoint("RIGHT", -2, 0)

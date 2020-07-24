@@ -285,7 +285,7 @@ local backdrop = {
 }
 
 local function Constructor()
-	local frame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
+	local frame = CreateFrame("Frame", nil, UIParent)
 	frame:Hide()
 
 	local widgetNum = AceGUI:GetNextWidgetNum(Type)
@@ -297,7 +297,7 @@ local function Constructor()
 	label:SetText(ACCEPT)
 	label:SetHeight(10)
 
-	local button = CreateFrame("Button", ("%s%dButton"):format(Type, widgetNum), frame, BackdropTemplateMixin and "UIPanelButtonTemplate, BackdropTemplate" or "UIPanelButtonTemplate")
+	local button = CreateFrame("Button", ("%s%dButton"):format(Type, widgetNum), frame, "UIPanelButtonTemplate")
 	button:SetPoint("BOTTOMLEFT", 0, 4)
 	button:SetHeight(22)
 	button:SetWidth(label:GetStringWidth() + 24)
@@ -316,7 +316,7 @@ local function Constructor()
 	scrollBG:SetBackdropColor(0, 0, 0)
 	scrollBG:SetBackdropBorderColor(0.4, 0.4, 0.4)
 
-	local scrollFrame = CreateFrame("ScrollFrame", ("%s%dScrollFrame"):format(Type, widgetNum), frame, BackdropTemplateMixin and "UIPanelScrollFrameTemplate, BackdropTemplate" or "UIPanelScrollFrameTemplate")
+	local scrollFrame = CreateFrame("ScrollFrame", ("%s%dScrollFrame"):format(Type, widgetNum), frame, "UIPanelScrollFrameTemplate")
 
 	local scrollBar = _G[scrollFrame:GetName() .. "ScrollBar"]
 	scrollBar:ClearAllPoints()
@@ -336,7 +336,7 @@ local function Constructor()
 	scrollFrame:SetScript("OnSizeChanged", OnSizeChanged)
 	scrollFrame:HookScript("OnVerticalScroll", OnVerticalScroll)
 
-	local editBox = CreateFrame("EditBox", ("%s%dEdit"):format(Type, widgetNum), scrollFrame, BackdropTemplateMixin and "BackdropTemplate" or nil)
+	local editBox = CreateFrame("EditBox", ("%s%dEdit"):format(Type, widgetNum), scrollFrame)
 	editBox:SetAllPoints()
 	editBox:SetFontObject(ChatFontNormal)
 	editBox:SetMultiLine(true)

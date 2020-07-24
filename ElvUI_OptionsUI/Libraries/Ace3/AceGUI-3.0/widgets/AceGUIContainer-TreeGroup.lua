@@ -322,7 +322,7 @@ local methods = {
 	["CreateButton"] = function(self)
 		local num = AceGUI:GetNextWidgetNum("TreeGroupButton")
 		local name = ("AceGUI30TreeButton%d"):format(num)
-		local button = CreateFrame("Button", name, self.treeframe, BackdropTemplateMixin and "OptionsListButtonTemplate, BackdropTemplate" or "OptionsListButtonTemplate")
+		local button = CreateFrame("Button", name, self.treeframe, "OptionsListButtonTemplate")
 		button.obj = self
 		button.text = _G[name.."Text"] -- tell nev for this
 
@@ -637,7 +637,7 @@ local DraggerBackdrop  = {
 
 local function Constructor()
 	local num = AceGUI:GetNextWidgetNum(Type)
-	local frame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
+	local frame = CreateFrame("Frame", nil, UIParent)
 
 	local treeframe = CreateFrame("Frame", nil, frame, BackdropTemplateMixin and "BackdropTemplate" or nil)
 	treeframe:SetPoint("TOPLEFT")
@@ -665,7 +665,7 @@ local function Constructor()
 	dragger:SetScript("OnMouseDown", Dragger_OnMouseDown)
 	dragger:SetScript("OnMouseUp", Dragger_OnMouseUp)
 
-	local scrollbar = CreateFrame("Slider", ("AceConfigDialogTreeGroup%dScrollBar"):format(num), treeframe, BackdropTemplateMixin and "UIPanelScrollBarTemplate, BackdropTemplate" or "UIPanelScrollBarTemplate")
+	local scrollbar = CreateFrame("Slider", ("AceConfigDialogTreeGroup%dScrollBar"):format(num), treeframe, "UIPanelScrollBarTemplate")
 	scrollbar:SetScript("OnValueChanged", nil)
 	scrollbar:SetPoint("TOPRIGHT", -10, -26)
 	scrollbar:SetPoint("BOTTOMRIGHT", -10, 26)
@@ -687,7 +687,7 @@ local function Constructor()
 	border:SetBackdropBorderColor(0.4, 0.4, 0.4)
 
 	--Container Support
-	local content = CreateFrame("Frame", nil, border, BackdropTemplateMixin and "BackdropTemplate" or nil)
+	local content = CreateFrame("Frame", nil, border)
 	content:SetPoint("TOPLEFT", 10, -10)
 	content:SetPoint("BOTTOMRIGHT", -10, 10)
 

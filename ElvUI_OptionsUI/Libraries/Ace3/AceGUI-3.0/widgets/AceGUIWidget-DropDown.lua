@@ -300,8 +300,8 @@ do
 		--frame:SetToplevel(true)
 
 		-- NOTE: The whole scroll frame code is copied from the AceGUI-3.0 widget ScrollFrame
-		local scrollFrame = CreateFrame("ScrollFrame", nil, frame, BackdropTemplateMixin and "BackdropTemplate" or nil)
-		local itemFrame = CreateFrame("Frame", nil, scrollFrame, BackdropTemplateMixin and "BackdropTemplate" or nil)
+		local scrollFrame = CreateFrame("ScrollFrame", nil, frame)
+		local itemFrame = CreateFrame("Frame", nil, scrollFrame)
 
 		self.scrollFrame = scrollFrame
 		self.itemFrame = itemFrame
@@ -680,8 +680,8 @@ do
 
 	local function Constructor()
 		local count = AceGUI:GetNextWidgetNum(widgetType)
-		local frame = CreateFrame("Frame", nil, UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
-		local dropdown = CreateFrame("Frame", "AceGUI30DropDown"..count, frame, BackdropTemplateMixin and "UIDropDownMenuTemplate, BackdropTemplate" or  "UIDropDownMenuTemplate")
+		local frame = CreateFrame("Frame", nil, UIParent)
+		local dropdown = CreateFrame("Frame", "AceGUI30DropDown"..count, frame, "UIDropDownMenuTemplate")
 
 		local self = {}
 		self.type = widgetType
@@ -736,7 +736,7 @@ do
 		button:SetScript("OnLeave",Control_OnLeave)
 		button:SetScript("OnClick",Dropdown_TogglePullout)
 
-		local button_cover = CreateFrame("BUTTON",nil,self.frame,BackdropTemplateMixin and "BackdropTemplate" or nil)
+		local button_cover = CreateFrame("BUTTON",nil,self.frame)
 		self.button_cover = button_cover
 		button_cover.obj = self
 		button_cover:SetPoint("TOPLEFT",self.frame,"BOTTOMLEFT",0,25)

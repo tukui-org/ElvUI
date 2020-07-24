@@ -11,7 +11,7 @@ local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
 local UIParent = UIParent
-local DragTooltip = CreateFrame("GameTooltip", "ElvUIAceGUIWidgetDragTooltip", UIParent, BackdropTemplateMixin and "GameTooltipTemplate, BackdropTemplate" or "GameTooltipTemplate")
+local DragTooltip = CreateFrame("GameTooltip", "ElvUIAceGUIWidgetDragTooltip", UIParent, "GameTooltipTemplate")
 -- GLOBALS: ElvUI
 
 --[[-----------------------------------------------------------------------------
@@ -139,7 +139,7 @@ Constructor
 local S -- ref for Skins module in ElvUI
 local function Constructor()
 	local name = "AceGUI30Button" .. AceGUI:GetNextWidgetNum(Type)
-	local frame = CreateFrame("Button", name, UIParent, BackdropTemplateMixin and "UIPanelButtonTemplate, BackdropTemplate" or "UIPanelButtonTemplate")
+	local frame = CreateFrame("Button", name, UIParent, "UIPanelButtonTemplate")
 	frame:Hide()
 	frame:EnableMouse(true)
 	frame:RegisterForClicks("AnyUp")
@@ -149,7 +149,7 @@ local function Constructor()
 
 	-- dragdrop
 	if not dragdropButton then
-		dragdropButton = CreateFrame("Button", "ElvUIAceGUI30DragDropButton", UIParent, BackdropTemplateMixin and "UIPanelButtonTemplate, BackdropTemplate" or "UIPanelButtonTemplate")
+		dragdropButton = CreateFrame("Button", "ElvUIAceGUI30DragDropButton", UIParent, "UIPanelButtonTemplate")
 		dragdropButton:SetFrameStrata("TOOLTIP")
 		dragdropButton:SetFrameLevel(5)
 		dragdropButton:SetPoint('BOTTOM', DragTooltip, "BOTTOM", 0, 10)

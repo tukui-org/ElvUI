@@ -99,7 +99,7 @@ local methods = {
 Constructor
 -------------------------------------------------------------------------------]]
 local function Constructor()
-	local frame = CreateFrame("Frame", nil, nil, BackdropTemplateMixin and "BackdropTemplate" or nil)
+	local frame = CreateFrame("Frame")
 	frame:Hide()
 
 	-- support functions for the Blizzard Interface Options
