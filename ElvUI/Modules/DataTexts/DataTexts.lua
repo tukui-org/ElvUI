@@ -167,7 +167,7 @@ function DT:FetchFrame(givenName)
 		frame = poolFrame
 		DT.PanelPool.Free[poolName] = nil
 	else
-		frame = CreateFrame('Frame', name, E.UIParent)
+		frame = CreateFrame('Frame', name, E.UIParent, 'BackdropTemplate')
 		DT.PanelPool.Count = DT.PanelPool.Count + 1
 	end
 
