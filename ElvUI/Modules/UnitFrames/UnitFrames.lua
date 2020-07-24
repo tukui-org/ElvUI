@@ -1362,12 +1362,12 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 
 	if self.isTransparent then
 		if self.backdrop then
-			local _, _, _, a = E:GetBackdropColor(self.backdrop)
+			local _, _, _, a = self.backdrop:GetBackdropColor()
 			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a)
 		else
 			local parent = self:GetParent()
 			if parent and parent.template then
-				local _, _, _, a = E:GetBackdropColor(parent)
+				local _, _, _, a = parent:GetBackdropColor()
 				parent:SetBackdropColor(r * n, g * n, b * n, a)
 			end
 		end

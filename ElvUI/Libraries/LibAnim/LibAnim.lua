@@ -73,8 +73,8 @@ local ElvToolkit = {
 }
 
 local Set = {
-	backdrop = ElvToolkit.SetBackdropColor,
-	border = ElvToolkit.SetBackdropBorderColor,
+	backdrop = Updater.SetBackdropColor,
+	border = Updater.SetBackdropBorderColor,
 	statusbar = Updater.SetStatusBarColor,
 	text = FontString.SetTextColor,
 	texture = Texture.SetTexture,
@@ -82,8 +82,8 @@ local Set = {
 }
 
 local Get = {
-	backdrop = ElvToolkit.GetBackdropColor,
-	border = ElvToolkit.GetBackdropBorderColor,
+	backdrop = Updater.GetBackdropColor,
+	border = Updater.GetBackdropBorderColor,
 	statusbar = Updater.GetStatusBarColor,
 	text = FontString.GetTextColor,
 	texture = Texture.GetVertexColor,

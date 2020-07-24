@@ -491,13 +491,13 @@ function S:Blizzard_Collections()
 				local border = CreateFrame('Frame', nil, Model, 'BackdropTemplate')
 				border:SetOutside(Model)
 				border:SetTemplate()
-				E:SetBackdropColor(border, 0, 0, 0, 0)
+				border:SetBackdropColor(0, 0, 0, 0)
 
 				local background = CreateFrame('Frame', nil, Model, 'BackdropTemplate')
 				background:SetAllPoints(Model)
 				background:SetTemplate()
 				background:SetFrameLevel(3)
-				E:SetBackdropColor(background, 0, 0, 0, 1)
+				background:SetBackdropColor(0, 0, 0, 1)
 
 				for i=1, Model:GetNumRegions() do
 				local region = select(i, Model:GetRegions())

@@ -467,7 +467,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	end
 
 	panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
-	E:TogglePixelBorders(panel, db.border)
 
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do

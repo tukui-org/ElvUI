@@ -89,7 +89,7 @@ function S:Blizzard_Calendar()
 		end
 
 		bu:CreateBackdrop(nil, nil, nil, true)
-		bu.backdrop.pixelBorders.CENTER:SetAlpha(0)
+		bu.backdrop:SetBackdropColor(0,0,0,0)
 		bu:SetHighlightTexture(E.media.glossTex)
 		bu:SetFrameLevel(bu:GetFrameLevel() + 1)
 
@@ -113,7 +113,7 @@ function S:Blizzard_Calendar()
 
 	_G.CalendarTodayFrame:CreateBackdrop()
 	_G.CalendarTodayFrame.backdrop:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
-	_G.CalendarTodayFrame.backdrop.pixelBorders.CENTER:SetAlpha(0)
+	_G.CalendarTodayFrame.backdrop:SetBackdropColor(0,0,0,0)
 
 	--CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
