@@ -176,7 +176,7 @@ function S:Blizzard_EncounterJournal()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.encounterjournal) then return end
 
 	local EJ = _G.EncounterJournal
-	S:HandlePortraitFrame(EJ, true)
+	S:HandlePortraitFrame(EJ)
 
 	EJ.navBar:StripTextures(true)
 	EJ.navBar.overlay:StripTextures(true)
