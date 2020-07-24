@@ -2,11 +2,12 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_VoidStorageUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.voidstorage) then return end
+	local CanUseVoidStorage = CanUseVoidStorage
 
 	local StripAllTextures = {
 		"VoidStorageBorderFrame",
@@ -26,28 +27,33 @@ function S:Blizzard_VoidStorageUI()
 	for i = 1, 2 do
 		local tab = VoidStorageFrame["Page"..i]
 		S:HandleButton(tab)
+		tab:StripTextures()
 		tab:StyleButton(nil, true)
 		S:HandleIcon(tab:GetNormalTexture())
 		tab:GetNormalTexture():SetInside()
 	end
 
 	VoidStorageFrame:StripTextures()
-	VoidStorageFrame:SetTemplate("Transparent")
-
+	VoidStorageFrame:CreateBackdrop("Transparent")
 	VoidStorageFrame.Page1:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceCosmicGreater]])
 	VoidStorageFrame.Page1:Point("LEFT", "$parent", "TOPRIGHT", 1, -60)
-
 	VoidStorageFrame.Page2:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceArcaneLarge]])
 
 	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
-	_G.VoidStoragePurchaseFrame:SetTemplate()
-
-	S:HandleButton(_G.VoidStoragePurchaseButton)
-	S:HandleButton(_G.VoidStorageTransferButton)
+	_G.VoidStoragePurchaseFrame:CreateBackdrop()
 
 	S:HandleCloseButton(_G.VoidStorageBorderFrame.CloseButton)
-
+	S:HandleButton(_G.VoidStoragePurchaseButton)
+	S:HandleButton(_G.VoidStorageTransferButton)
 	S:HandleEditBox(_G.VoidItemSearchBox)
+
+	hooksecurefunc(_G, 'VoidStorageFrame_Update', function()
+		if CanUseVoidStorage() then
+			_G.VoidStorageBorderFrameMouseBlockFrame:Hide()
+			_G.VoidStoragePurchaseFrame:Hide()
+			_G.VoidStorageBorderFrame.Bg:Hide()
+		end
+	end)
 
 	for StorageType, NumSlots  in pairs({ Deposit = 9, Withdraw = 9, Storage = 80 }) do
 		for i = 1, NumSlots do
