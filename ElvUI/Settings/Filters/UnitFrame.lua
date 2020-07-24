@@ -682,6 +682,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323650] = Defaults(), -- Haunting Fixation
 		[326874] = Defaults(), -- Ankle Bites
 		-- Mists of Tirna Scithe
+		[325027] = Defaults(), -- Bramble Burst
+		[323043] = Defaults(), -- Bloodletting
+		[322557] = Defaults(), -- Soul Split
+		[331172] = Defaults(), -- Mind Link
+		[322563] = Defaults(), -- Marked Prey
 		-- Plaguefall
 		-- Sanguine Depths
 		-- Spires of Ascension
