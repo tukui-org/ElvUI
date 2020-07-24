@@ -22,9 +22,11 @@ local function TextColorModified(text, r, g, b)
 	end
 end
 
-local function CustomIconBorder(parent, r, g, b)
+local function CustomIconBorder(iconBorder, r, g, b)
+	local parent = iconBorder:GetParent()
 	if not parent.name then return end
-	if r == 0 and g == 0 and b == 0 then
+
+	if not r then
 		parent.name:SetTextColor(0.9, 0.9, 0.9)
 	else
 		parent.name:SetTextColor(r, g, b)
