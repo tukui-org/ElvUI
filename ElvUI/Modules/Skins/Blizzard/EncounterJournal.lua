@@ -167,7 +167,6 @@ end
 
 local function HandleTopTabs(tab)
 	S:HandleTab(tab)
-	tab:Width(tab:GetFontString():GetStringWidth() * 1.5)
 	tab:SetHitRectInsets(0, 0, 0, 0)
 end
 
@@ -207,10 +206,13 @@ function S:Blizzard_EncounterJournal()
 	HandleTopTabs(InstanceSelect.raidsTab)
 
 	InstanceSelect.suggestTab:ClearAllPoints()
+	InstanceSelect.suggestTab:Width(150)
 	InstanceSelect.suggestTab:Point("BOTTOMLEFT", InstanceSelect, "TOPLEFT", 2, -43)
 	InstanceSelect.dungeonsTab:ClearAllPoints()
+	InstanceSelect.dungeonsTab:Width(150)
 	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 2, 0)
 	InstanceSelect.raidsTab:ClearAllPoints()
+	InstanceSelect.raidsTab:Width(125)
 	InstanceSelect.raidsTab:Point("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", 2, 0)
 
 	--Skin the tab text
@@ -406,50 +408,33 @@ function S:Blizzard_EncounterJournal()
 		-- Suggestion 2 and 3
 		for i = 2, 3 do
 			suggestion = suggestFrame["Suggestion"..i]
-
 			suggestion.bg:Hide()
 			suggestion:CreateBackdrop("Transparent")
-
 			suggestion.icon:Point("TOPLEFT", 10, -10)
 
 			centerDisplay = suggestion.centerDisplay
-
 			centerDisplay:ClearAllPoints()
 			centerDisplay:Point("TOPLEFT", 85, -10)
 			centerDisplay.title.text:SetTextColor(1, 1, 1)
 			centerDisplay.description.text:SetTextColor(.9, .9, .9)
 
 			reward = suggestion.reward
-
 			reward.iconRing:Hide()
 			reward.iconRingHighlight:SetTexture()
 		end
 
 		hooksecurefunc("EJSuggestFrame_RefreshDisplay", function()
-			local s = suggestFrame
-			if #s.suggestions > 0 then
-				local sugg = s.Suggestion1
-				local data = s.suggestions[1]
-				sugg.iconRing:Hide()
-				if sugg and data then
+			for i, data in ipairs(suggestFrame.suggestions) do
+				local sugg = next(data) and suggestFrame["Suggestion"..i]
+				if sugg then
+					if not sugg.icon.backdrop then
+						sugg.icon:CreateBackdrop()
+					end
+
 					sugg.icon:SetMask("")
 					sugg.icon:SetTexture(data.iconPath)
 					sugg.icon:SetTexCoord(unpack(E.TexCoords))
-				end
-			end
-
-			if #s.suggestions > 1 then
-				for i = 2, #s.suggestions do
-					local sugg = s["Suggestion"..i]
-					if not sugg then break end
-
-					local data = s.suggestions[i]
 					sugg.iconRing:Hide()
-					if data.iconPath then
-						sugg.icon:SetMask("")
-						sugg.icon:SetTexture(data.iconPath)
-						sugg.icon:SetTexCoord(unpack(E.TexCoords))
-					end
 				end
 			end
 		end)
@@ -457,14 +442,14 @@ function S:Blizzard_EncounterJournal()
 		hooksecurefunc("EJSuggestFrame_UpdateRewards", function(sugg)
 			local rewardData = sugg.reward.data
 			if rewardData then
-				local texture = rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]]
-				sugg.reward.icon:SetMask("")
-				sugg.reward.icon:SetTexture(texture)
-
 				if not sugg.reward.icon.backdrop then
 					sugg.reward.icon:CreateBackdrop()
-					sugg.reward.icon.backdrop:SetOutside(sugg.reward.icon)
+					sugg.reward.icon.backdrop:SetFrameLevel(3)
 				end
+
+				sugg.reward.icon:SetMask("")
+				sugg.reward.icon:SetTexture(rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]])
+				sugg.reward.icon:SetTexCoord(unpack(E.TexCoords))
 
 				local r, g, b = unpack(E.media.bordercolor)
 				if rewardData.itemID then
