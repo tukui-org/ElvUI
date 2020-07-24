@@ -255,11 +255,12 @@ function S:Blizzard_Collections()
 
 	if E.private.skins.blizzard.tooltip then
 		local tt = _G.PetJournalPrimaryAbilityTooltip
-		tt.Background:SetTexture()
 		if tt.Delimiter1 then
 			tt.Delimiter1:SetTexture()
 			tt.Delimiter2:SetTexture()
 		end
+
+		tt.Background:SetTexture()
 		tt.BorderTop:SetTexture()
 		tt.BorderTopLeft:SetTexture()
 		tt.BorderTopRight:SetTexture()
@@ -268,6 +269,7 @@ function S:Blizzard_Collections()
 		tt.BorderBottom:SetTexture()
 		tt.BorderBottomRight:SetTexture()
 		tt.BorderBottomLeft:SetTexture()
+
 		tt:CreateBackdrop("Transparent")
 	end
 
