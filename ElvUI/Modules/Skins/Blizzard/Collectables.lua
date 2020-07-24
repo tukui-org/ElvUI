@@ -60,6 +60,7 @@ local function JournalScrollButtons(frame)
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			bu.backdrop:SetBackdropBorderColor(r, g, b)
 			icon.backdrop:SetBackdropBorderColor(r, g, b)
+			bu.hovered = true
 		end)
 		bu:HookScript("OnLeave", function()
 			if bu.selected or (bu.SelectedTexture and bu.SelectedTexture:IsShown()) then
@@ -70,6 +71,7 @@ local function JournalScrollButtons(frame)
 				bu.backdrop:SetBackdropBorderColor(r, g, b)
 				icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end
+			bu.hovered = nil
 		end)
 
 		local highlight = _G[bu:GetName().."Highlight"]
@@ -100,7 +102,7 @@ local function JournalScrollButtons(frame)
 				icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 			end)
 			hooksecurefunc(bu.selectedTexture, 'Hide', function()
-				if not bu.selectedTexture:IsShown() then
+				if not bu.hovered then
 					local r, g, b = unpack(E.media.bordercolor)
 					bu.backdrop:SetBackdropBorderColor(r, g, b)
 					icon.backdrop:SetBackdropBorderColor(r, g, b)
