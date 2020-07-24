@@ -498,6 +498,10 @@ function S:Blizzard_GarrisonUI()
 
 	S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar)
 
+	-- Complete Missions
+	_G.CombatLog.CombatLogMessageFrame:StripTextures()
+	S:HandleScrollBar(_G.CombatLog.CombatLogMessageFrame.ScrollBar)
+
 	-- Adventures / Follower Tab
 	S:HandleScrollBar(_G.CovenantMissionFrameFollowersListScrollFrameScrollBar)
 	S:HandleIcon(_G.CovenantMissionFrame.FollowerTab.CostFrame.CostIcon)
