@@ -98,13 +98,11 @@ function S:Blizzard_InspectUI()
 
 	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
 		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
-			S:HandleIconBorder(Slot.IconBorder)
-			S:HandleIcon(Slot.icon)
+			S:HandleIcon(Slot.icon, true)
 			Slot.icon:SetInside()
-
 			Slot:StripTextures()
-			Slot:SetTemplate()
 			Slot:StyleButton()
+			S:HandleIconBorder(Slot.IconBorder, Slot.icon.backdrop)
 
 			if not Slot.Eye then
 				Slot.Eye = Slot:CreateTexture()
