@@ -14,11 +14,11 @@ local GetItemQualityColor = GetItemQualityColor
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 
-local function TextColorModified(text, r, g, b)
+local function toyTextColor(text, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
-		text:SetTextColor(0.6, 0.6, 0.6)
+		text:SetTextColor(0.4, 0.4, 0.4)
 	elseif r == 1 and g == 0.82 and b == 0 then
-		text:SetTextColor(1, 1, 1)
+		text:SetTextColor(0.9, 0.9, 0.9)
 	end
 end
 
@@ -35,7 +35,7 @@ local function petNameColor(iconBorder, r, g, b)
 	end
 end
 
-local function SelectedTextureFunction(texture, shown)
+local function selectedTextureSetShown(texture, shown)
 	local parent = texture:GetParent()
 	local icon = parent.icon or parent.Icon
 	if shown then
@@ -134,7 +134,7 @@ local function JournalScrollButtons(frame)
 			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
 			bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
 
-			hooksecurefunc(bu.SelectedTexture, 'SetShown', SelectedTextureFunction)
+			hooksecurefunc(bu.SelectedTexture, 'SetShown', selectedTextureSetShown)
 		else
 			bu.selectedTexture:SetTexture()
 			hooksecurefunc(bu.selectedTexture, 'Show', selectedTextureShow)
@@ -372,8 +372,8 @@ function S:Blizzard_Collections()
 		button.pushed:SetAllPoints(button.iconTexture)
 		button.cooldown:SetAllPoints(button.iconTexture)
 
-		hooksecurefunc(button.name, 'SetTextColor', TextColorModified)
-		hooksecurefunc(button.new, 'SetTextColor', TextColorModified)
+		hooksecurefunc(button.name, 'SetTextColor', toyTextColor)
+		hooksecurefunc(button.new, 'SetTextColor', toyTextColor)
 		E:RegisterCooldown(button.cooldown)
 	end
 
