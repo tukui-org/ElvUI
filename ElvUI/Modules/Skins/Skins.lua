@@ -939,32 +939,34 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 		local index = offset + i -- adjust index
 
 		if button then
-			if (index <= numFollowers) and not button.template then
-				button:SetTemplate()
+			local fl = button.Follower
+			if (index <= numFollowers) and not button.backdrop then
+				button:CreateBackdrop()
 
 				if button.Category then
 					button.Category:ClearAllPoints()
 					button.Category:Point("TOP", button, "TOP", 0, -4)
 				end
 
-				if button.Follower then
-					button.Follower.Name:SetWordWrap(false)
-					button.Follower.BG:Hide()
-					button.Follower.Selection:SetTexture()
-					button.Follower.AbilitiesBG:SetTexture()
-					button.Follower.BusyFrame:SetAllPoints()
+				if fl and not fl.backdrop then
+					fl:CreateBackdrop()
+					fl.Name:SetWordWrap(false)
+					fl.BG:Hide()
+					fl.Selection:SetTexture()
+					fl.AbilitiesBG:SetTexture()
+					fl.BusyFrame:SetAllPoints()
 
-					local hl = button.Follower:GetHighlightTexture()
+					local hl = fl:GetHighlightTexture()
 					hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 					hl:ClearAllPoints()
 					hl:Point("TOPLEFT", 1, -1)
 					hl:Point("BOTTOMRIGHT", -1, 1)
 
-					if button.Follower.Counters then
-						for y = 1, #button.Follower.Counters do
-							local counter = button.Follower.Counters[y]
-							if counter and not counter.template then
-								counter:SetTemplate()
+					if fl.Counters then
+						for y = 1, #fl.Counters do
+							local counter = fl.Counters[y]
+							if counter and not counter.backdrop then
+								counter:CreateBackdrop()
 								if counter.Border then
 									counter.Border:SetTexture()
 								end
@@ -976,28 +978,28 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 						end
 					end
 
-					if button.Follower.PortraitFrame and not button.Follower.PortraitFrameStyled then
-						S:HandleGarrisonPortrait(button.Follower.PortraitFrame)
-						button.Follower.PortraitFrame:ClearAllPoints()
-						button.Follower.PortraitFrame:Point("TOPLEFT", 3, -3)
-						button.Follower.PortraitFrameStyled = true
+					if fl.PortraitFrame and not fl.PortraitFrameStyled then
+						S:HandleGarrisonPortrait(fl.PortraitFrame)
+						fl.PortraitFrame:ClearAllPoints()
+						fl.PortraitFrame:Point("TOPLEFT", 3, -3)
+						fl.PortraitFrameStyled = true
 					end
 				end
 			end
 
-			if button.Follower then
-				if button.Follower.Selection then
-					if button.Follower.Selection:IsShown() then
-						button.Follower:SetBackdropColor(0.9, 0.8, 0.1, 0.3)
+			if fl then
+				if fl.Selection and fl.backdrop then
+					if fl.Selection:IsShown() then
+						fl.backdrop:SetBackdropColor(0.9, 0.8, 0.1, 0.3)
 					else
-						button.Follower:SetBackdropColor(0, 0, 0, .25)
+						fl.backdrop:SetBackdropColor(0, 0, 0, .25)
 					end
 				end
 
-				if button.Follower.PortraitFrame and button.Follower.PortraitFrame.quality then
-					local color = ITEM_QUALITY_COLORS[button.Follower.PortraitFrame.quality]
-					if color and button.Follower.PortraitFrame.backdrop then
-						button.Follower.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				if fl.PortraitFrame and fl.PortraitFrame.quality then
+					local color = ITEM_QUALITY_COLORS[fl.PortraitFrame.quality]
+					if color and fl.PortraitFrame.backdrop then
+						fl.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 					end
 				end
 			end
