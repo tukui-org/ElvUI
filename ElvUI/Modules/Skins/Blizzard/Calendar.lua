@@ -82,14 +82,17 @@ function S:Blizzard_Calendar()
 	--Boost frame levels
 	for i = 1, 42 do
 		_G["CalendarDayButton"..i.."DarkFrame"]:SetAlpha(.5)
-		_G["CalendarDayButton"..i]:SetFrameLevel(_G["CalendarDayButton"..i]:GetFrameLevel() + 1)
 		local bu = _G["CalendarDayButton"..i]
 
 		if E.private.skins.parchmentRemoverEnable then
 			bu:DisableDrawLayer("BACKGROUND") -- This would remove the "Parchement"
 		end
 
+		bu:CreateBackdrop(nil, nil, nil, true)
+		bu.backdrop.pixelBorders.CENTER:SetAlpha(0)
 		bu:SetHighlightTexture(E.media.glossTex)
+		bu:SetFrameLevel(bu:GetFrameLevel() + 1)
+
 		local hl = bu:GetHighlightTexture()
 		hl:SetVertexColor(1, 1, 1, 0.3)
 		hl.SetAlpha = E.noop
@@ -100,22 +103,6 @@ function S:Blizzard_Calendar()
 	_G.CalendarWeekdaySelectedTexture:SetDesaturated(true)
 	_G.CalendarWeekdaySelectedTexture:SetVertexColor(1, 1, 1, 0.6)
 
-	for i = 1, 6 do
-		local vline = CreateFrame("Frame", nil, _G["CalendarDayButton"..i])
-		vline:Height(548)
-		vline:Width(1)
-		vline:Point("TOP", _G["CalendarDayButton"..i], "TOPRIGHT")
-		vline:CreateBackdrop()
-	end
-
-	for i = 1, 36, 7 do
-		local hline = CreateFrame("Frame", nil, _G["CalendarDayButton"..i])
-		hline:Width(637)
-		hline:Height(1)
-		hline:Point("LEFT", _G["CalendarDayButton"..i], "TOPLEFT")
-		hline:CreateBackdrop()
-	end
-
 	hooksecurefunc("CalendarFrame_SetToday", function()
 		_G.CalendarTodayFrame:SetAllPoints()
 	end)
@@ -124,11 +111,9 @@ function S:Blizzard_Calendar()
 	_G.CalendarTodayTextureGlow:Hide()
 	_G.CalendarTodayTexture:Hide()
 
-	_G.CalendarTodayFrame:SetBackdrop({
-		edgeFile = E.media.blankTex,
-		edgeSize = 2,
-	})
-	_G.CalendarTodayFrame:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
+	_G.CalendarTodayFrame:CreateBackdrop()
+	_G.CalendarTodayFrame.backdrop:SetBackdropBorderColor(_G.NORMAL_FONT_COLOR:GetRGB())
+	_G.CalendarTodayFrame.backdrop.pixelBorders.CENTER:SetAlpha(0)
 
 	--CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
@@ -193,7 +178,7 @@ function S:Blizzard_Calendar()
 	--Texture Picker Frame
 	_G.CalendarTexturePickerFrame:StripTextures()
 	_G.CalendarTexturePickerFrame.Header:StripTextures()
-	_G.CalendarTexturePickerFrame:SetTemplate("Transparent")
+	_G.CalendarTexturePickerFrame:CreateBackdrop("Transparent")
 
 	S:HandleScrollBar(_G.CalendarTexturePickerScrollBar)
 	S:HandleButton(_G.CalendarTexturePickerAcceptButton, true)
@@ -203,7 +188,7 @@ function S:Blizzard_Calendar()
 
 	--Mass Invite Frame
 	_G.CalendarMassInviteFrame:StripTextures()
-	_G.CalendarMassInviteFrame:SetTemplate("Transparent")
+	_G.CalendarMassInviteFrame:CreateBackdrop("Transparent")
 	_G.CalendarMassInviteFrame.Header:StripTextures()
 
 	S:HandleCloseButton(_G.CalendarMassInviteCloseButton)
@@ -229,9 +214,9 @@ function S:Blizzard_Calendar()
 	_G.CalendarViewEventFrame.Header:StripTextures()
 	_G.CalendarViewHolidayFrame.Header:StripTextures()
 	_G.CalendarViewEventDescriptionContainer:StripTextures()
-	_G.CalendarViewEventDescriptionContainer:SetTemplate("Transparent")
+	_G.CalendarViewEventDescriptionContainer:CreateBackdrop("Transparent")
 	_G.CalendarViewEventInviteList:StripTextures()
-	_G.CalendarViewEventInviteList:SetTemplate("Transparent")
+	_G.CalendarViewEventInviteList:CreateBackdrop("Transparent")
 	_G.CalendarViewEventInviteListSection:StripTextures()
 	S:HandleCloseButton(_G.CalendarViewEventCloseButton)
 	S:HandleScrollBar(_G.CalendarViewEventInviteListScrollFrameScrollBar)
@@ -244,7 +229,7 @@ function S:Blizzard_Calendar()
 	--Event Picker Frame
 	_G.CalendarEventPickerFrame:StripTextures()
 	_G.CalendarEventPickerFrame.Header:StripTextures()
-	_G.CalendarEventPickerFrame:SetTemplate("Transparent")
+	_G.CalendarEventPickerFrame:CreateBackdrop("Transparent")
 
 	S:HandleScrollBar(_G.CalendarEventPickerScrollBar)
 	S:HandleButton(_G.CalendarEventPickerCloseButton, true)
