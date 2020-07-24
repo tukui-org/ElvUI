@@ -351,7 +351,7 @@ function S:Blizzard_EncounterJournal()
 		item.armorType:ClearAllPoints()
 		item.armorType:Point("RIGHT", item, "RIGHT", -10, 0)
 
-		S:HandleIconBorder(item.IconBorder)
+		S:HandleIconBorder(item.IconBorder, item.IconBackdrop)
 
 		if E.private.skins.parchmentRemoverEnable then
 			item.boss:SetTextColor(1, 1, 1)

@@ -159,7 +159,7 @@ local function JournalScrollButtons(frame)
 				bu.dragButton.ActiveTexture:SetAlpha(0)
 				bu.dragButton.levelBG:SetTexture()
 
-				S:HandleIconBorder(bu.iconBorder, petNameColor)
+				S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
 			elseif frame:GetParent() == _G.MountJournal then
 				bu.mountList = true
 				bu.factionIcon:SetDrawLayer('OVERLAY')

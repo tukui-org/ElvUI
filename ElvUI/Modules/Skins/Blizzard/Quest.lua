@@ -261,11 +261,10 @@ function S:BlizzardQuestFrames()
 	-- Hook for WorldQuestRewards / QuestLogRewards
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
 		local RewardButton = rewardsFrame.RewardButtons[index]
-
 		if not RewardButton.Icon.backdrop then
 			HandleReward(RewardButton)
 			RewardButton.NameFrame:Hide()
-			S:HandleIconBorder(RewardButton.IconBorder)
+			S:HandleIconBorder(RewardButton.IconBorder, RewardButton.Icon.backdrop)
 		end
 	end)
 

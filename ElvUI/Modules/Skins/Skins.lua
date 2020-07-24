@@ -258,10 +258,8 @@ do
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
 			border.customFunc(border, r, g, b, a, br, bg, bb)
-		else
-			local parent = border:GetParent()
-			local backdrop = parent.backdrop or parent
-			backdrop:SetBackdropBorderColor(r, g, b)
+		elseif border.customBackdrop then
+			border.customBackdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end
 
@@ -270,24 +268,26 @@ do
 		if border.customFunc then
 			local r, g, b, a = border:GetVertexColor()
 			border.customFunc(border, r, g, b, a, br, bg, bb)
-		else
-			local parent = border:GetParent()
-			local backdrop = parent.backdrop or parent
-			backdrop:SetBackdropBorderColor(br, bg, bb)
+		elseif border.customBackdrop then
+			border.customBackdrop:SetBackdropBorderColor(br, bg, bb)
 		end
 	end
 
-	function S:HandleIconBorder(border, customFunc)
-		local parent = border:GetParent()
-		local backdrop = parent.backdrop or parent
+	function S:HandleIconBorder(border, backdrop, customFunc)
+		if not backdrop then
+			local parent = border:GetParent()
+			backdrop = parent.backdrop or parent
+		end
 
-		if not parent.IconBorderHooked then
+		border.customBackdrop = backdrop
+
+		if not border.IconBorderHooked then
 			border:Kill()
 
 			hooksecurefunc(border, 'SetVertexColor', iconBorderColor)
 			hooksecurefunc(border, 'Hide', iconBorderHide)
 
-			parent.IconBorderHooked = true
+			border.IconBorderHooked = true
 		end
 
 		local r, g, b, a = border:GetVertexColor()
