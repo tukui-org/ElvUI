@@ -13,14 +13,9 @@ local function MailFrameSkin()
 			btn:CreateBackdrop(nil, true)
 			btn.backdrop:SetAllPoints()
 			btn:StyleButton()
+			S:HandleIconBorder(btn.IconBorder)
+
 			btn.skinned = true
-			hooksecurefunc(btn.IconBorder, 'SetVertexColor', function(self, r, g, b)
-				self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-				self:SetTexture()
-			end)
-			hooksecurefunc(btn.IconBorder, 'Hide', function(self)
-				self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
 		end
 
 		local t = btn:GetNormalTexture()
@@ -50,14 +45,7 @@ function S:MailFrame()
 		t:SetTexCoord(unpack(E.TexCoords))
 		t:SetInside()
 
-		local ib = _G["MailItem"..i.."ButtonIconBorder"]
-		hooksecurefunc(ib, 'SetVertexColor', function(s, r, g, b)
-			s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-			s:SetTexture()
-		end)
-		hooksecurefunc(ib, 'Hide', function(s)
-			s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+		S:HandleIconBorder(_G["MailItem"..i.."ButtonIconBorder"])
 	end
 
 	_G.InboxFrame:CreateBackdrop("Transparent")
