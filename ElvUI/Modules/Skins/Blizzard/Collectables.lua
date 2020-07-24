@@ -35,19 +35,6 @@ local function petNameColor(iconBorder, r, g, b)
 	end
 end
 
-local function selectedTextureSetShown(texture, shown)
-	local parent = texture:GetParent()
-	local icon = parent.icon or parent.Icon
-	if shown then
-		parent.backdrop:SetBackdropBorderColor(1, .8, .1)
-		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
-	else
-		local r, g, b = unpack(E.media.bordercolor)
-		parent.backdrop:SetBackdropBorderColor(r, g, b)
-		icon.backdrop:SetBackdropBorderColor(r, g, b)
-	end
-end
-
 local function mountNameColor(self)
 	local button = self:GetParent()
 	local name = button.name
@@ -67,13 +54,26 @@ local function mountNameColor(self)
 	end
 end
 
-local function selectedTextureShow(texture)
+local function selectedTextureSetShown(texture, shown) -- used sets list
+	local parent = texture:GetParent()
+	local icon = parent.icon or parent.Icon
+	if shown then
+		parent.backdrop:SetBackdropBorderColor(1, .8, .1)
+		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		parent.backdrop:SetBackdropBorderColor(r, g, b)
+		icon.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+end
+
+local function selectedTextureShow(texture) -- used for pets/mounts
 	local parent = texture:GetParent()
 	parent.backdrop:SetBackdropBorderColor(1, .8, .1)
 	parent.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 end
 
-local function selectedTextureHide(texture)
+local function selectedTextureHide(texture) -- used for pets/mounts
 	local parent = texture:GetParent()
 	if not parent.hovered then
 		local r, g, b = unpack(E.media.bordercolor)
@@ -389,17 +389,16 @@ function S:Blizzard_Collections()
 		E:RegisterCooldown(button.cooldown)
 	end
 
-	hooksecurefunc('ToySpellButton_UpdateButton', function(s)
-		if PlayerHasToy(s.itemID) then
-			local quality = select(3, GetItemInfo(s.itemID))
-			local r, g, b = 1, 1, 1
+	hooksecurefunc('ToySpellButton_UpdateButton', function(button)
+		if button.itemID and PlayerHasToy(button.itemID) then
+			local _, _, quality = GetItemInfo(button.itemID)
 			if quality then
-				r, g, b = GetItemQualityColor(quality)
+				button.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
+			else
+				button.backdrop:SetBackdropBorderColor(0.9, 0.9, 0.9)
 			end
-
-			s.backdrop:SetBackdropBorderColor(r, g, b)
 		else
-			s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end)
 
@@ -440,8 +439,8 @@ function S:Blizzard_Collections()
 
 		button.SetTextColor = nil
 		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
-			button.name:SetTextColor(1, 1, 1)
-			button.level:SetTextColor(1, 1, 1)
+			button.name:SetTextColor(0.9, 0.9, 0.9)
+			button.level:SetTextColor(0.9, 0.9, 0.9)
 			button.special:SetTextColor(1, .82, 0)
 			button.backdrop:SetBackdropBorderColor(GetItemQualityColor(7))
 		else
@@ -458,7 +457,7 @@ function S:Blizzard_Collections()
 			local header = HeirloomsJournal.heirloomHeaderFrames[i]
 			header:StripTextures()
 			header.text:FontTemplate(nil, 15, '')
-			header.text:SetTextColor(1, 1, 1)
+			header.text:SetTextColor(0.9, 0.9, 0.9)
 		end
 	end)
 
@@ -510,16 +509,13 @@ function S:Blizzard_Collections()
 				end
 
 				hooksecurefunc(Model.Border, 'SetAtlas', function(_, texture)
-					local r, g, b
 					if texture == 'transmog-wardrobe-border-uncollected' then
-						r, g, b = 1, 1, 0
+						border:SetBackdropBorderColor(0.9, 0.9, 0.3)
 					elseif texture == 'transmog-wardrobe-border-unusable' then
-						r, g, b =  1, 0, 0
+						border:SetBackdropBorderColor(0.9, 0.3, 0.3)
 					else
-						r, g, b = unpack(E.media.bordercolor)
+						border:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					end
-
-					border:SetBackdropBorderColor(r, g, b)
 				end)
 			end
 		end
