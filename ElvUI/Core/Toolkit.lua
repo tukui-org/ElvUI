@@ -146,7 +146,8 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 
 		if not E.PixelMode and not frame.forcePixelMode then
 			if not frame.iborder then
-				local border = CreateFrame('Frame', nil, frame)
+				local border = CreateFrame('Frame', nil, frame, "BackdropTemplate")
+				border:SetInside(frame, E.mult, E.mult)
 				border:SetBackdrop({
 					edgeFile = E.media.blankTex,
 					edgeSize = E.mult,
@@ -154,12 +155,12 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 				})
 
 				border:SetBackdropBorderColor(0, 0, 0, 1)
-				border:SetAllPoints()
 				frame.iborder = border
 			end
 
 			if not frame.oborder then
-				local border = CreateFrame('Frame', nil, frame)
+				local border = CreateFrame('Frame', nil, frame, "BackdropTemplate")
+				border:SetOutside(frame, E.mult, E.mult)
 				border:SetBackdrop({
 					edgeFile = E.media.blankTex,
 					edgeSize = E.mult,
@@ -167,7 +168,6 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 				})
 
 				border:SetBackdropBorderColor(0, 0, 0, 1)
-				border:SetAllPoints()
 				frame.oborder = border
 			end
 		end
