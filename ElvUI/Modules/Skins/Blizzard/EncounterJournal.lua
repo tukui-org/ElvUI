@@ -166,8 +166,7 @@ local function ItemSetsFrame(_, button)
 end
 
 local function HandleTopTabs(tab)
-	S:HandleTab(tab, true)
-	tab:SetTemplate(nil, true)
+	S:HandleTab(tab)
 	tab:Width(tab:GetFontString():GetStringWidth() * 1.5)
 	tab:SetHitRectInsets(0, 0, 0, 0)
 end
@@ -206,7 +205,6 @@ function S:Blizzard_EncounterJournal()
 	HandleTopTabs(InstanceSelect.suggestTab)
 	HandleTopTabs(InstanceSelect.dungeonsTab)
 	HandleTopTabs(InstanceSelect.raidsTab)
-	HandleTopTabs(InstanceSelect.LootJournalTab)
 
 	InstanceSelect.suggestTab:ClearAllPoints()
 	InstanceSelect.suggestTab:Point("BOTTOMLEFT", InstanceSelect, "TOPLEFT", 2, -43)
@@ -214,8 +212,6 @@ function S:Blizzard_EncounterJournal()
 	InstanceSelect.dungeonsTab:Point("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 2, 0)
 	InstanceSelect.raidsTab:ClearAllPoints()
 	InstanceSelect.raidsTab:Point("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", 2, 0)
-	InstanceSelect.LootJournalTab:ClearAllPoints()
-	InstanceSelect.LootJournalTab:Point("BOTTOMLEFT", InstanceSelect.raidsTab, "BOTTOMRIGHT", 2, 0)
 
 	--Skin the tab text
 	for i = 1, #InstanceSelect.Tabs do
@@ -371,7 +367,7 @@ function S:Blizzard_EncounterJournal()
 
 	-- Search
 	_G.EncounterJournalSearchResults:StripTextures()
-	_G.EncounterJournalSearchResults:SetTemplate()
+	_G.EncounterJournalSearchResults:CreateBackdrop()
 	_G.EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
 
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
@@ -497,13 +493,6 @@ function S:Blizzard_EncounterJournal()
 	hooksecurefunc("EncounterJournal_ListInstances", SkinDungeons)
 	_G.EncounterJournal_ListInstances()
 
-	_G.EncounterJournal.LootJournal:CreateBackdrop("Transparent")
-	local parch = _G.EncounterJournal.LootJournal:GetRegions()
-	_G.EncounterJournal.LootJournal.backdrop:SetOutside(parch)
-
-	HandleButton(_G.EncounterJournal.LootJournal.ItemSetsFrame.ClassButton, true)
-	hooksecurefunc(_G.EncounterJournal.LootJournal.ItemSetsFrame, "ConfigureItemButton", ItemSetsFrame)
-
 	if E.private.skins.parchmentRemoverEnable then
 		--Boss selection buttons
 		hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
@@ -532,8 +521,6 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:SetAlpha(0)
-
-		parch:Kill()
 	end
 end
 

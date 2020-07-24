@@ -365,7 +365,7 @@ do --Tab Regions
 	}
 
 	function S:HandleTab(tab, noBackdrop)
-		if (not tab) or (tab.backdrop and not noBackdrop) then return end
+		if not tab or (tab.backdrop and not noBackdrop) then return end
 
 		for _, object in pairs(tabs) do
 			local tex = _G[tab:GetName()..object]
