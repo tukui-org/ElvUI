@@ -14,11 +14,20 @@ local GetItemQualityColor = GetItemQualityColor
 local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 
-local function TextColorModified(self, r, g, b)
+local function TextColorModified(text, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
-		self:SetTextColor(0.6, 0.6, 0.6)
+		text:SetTextColor(0.6, 0.6, 0.6)
 	elseif r == 1 and g == 0.82 and b == 0 then
-		self:SetTextColor(1, 1, 1)
+		text:SetTextColor(1, 1, 1)
+	end
+end
+
+local function CustomIconBorder(parent, r, g, b)
+	if not parent.name then return end
+	if r == 0 and g == 0 and b == 0 then
+		parent.name:SetTextColor(0.9, 0.9, 0.9)
+	else
+		parent.name:SetTextColor(r, g, b)
 	end
 end
 
@@ -94,14 +103,9 @@ local function JournalScrollButtons(frame)
 				icon.backdrop:SetBackdropBorderColor(r, g, b)
 			end)
 
-			if bu.iconBorder then
-				S:HandleIconBorder(bu.iconBorder, function(r, g, b)
-					if r == 0 and g == 0 and b == 0 then
-						bu.name:SetTextColor(0.9, 0.9, 0.9)
-					else
-						bu.name:SetTextColor(r, g, b)
-					end
-				end)
+			local iconBorder = bu.iconBorder or bu.IconBorder
+			if iconBorder then
+				S:HandleIconBorder(iconBorder, CustomIconBorder)
 			end
 
 			if frame:GetParent() == _G.PetJournal then

@@ -257,9 +257,9 @@ function S:HandleIconBorder(iconBorder, customFunc)
 	local parent = iconBorder:GetParent()
 	local p = parent and parent.backdrop
 	if p and not parent.IconBorderHooked then
-		hooksecurefunc(iconBorder, 'SetVertexColor', function(_, r, g, b)
+		hooksecurefunc(iconBorder, 'SetVertexColor', function(_, r, g, b, a)
 			if customFunc then
-				customFunc(r, g, b)
+				customFunc(parent, r, g, b, a)
 			else
 				p:SetBackdropBorderColor(r, g, b)
 			end
@@ -267,7 +267,7 @@ function S:HandleIconBorder(iconBorder, customFunc)
 		hooksecurefunc(iconBorder, 'Hide', function()
 			local r, g, b = unpack(E.media.bordercolor)
 			if customFunc then
-				customFunc(r, g, b)
+				customFunc(parent, r, g, b)
 			else
 				p:SetBackdropBorderColor(r, g, b)
 			end
@@ -276,7 +276,7 @@ function S:HandleIconBorder(iconBorder, customFunc)
 		local r, g, b = iconBorder:GetVertexColor()
 		if not r then r, g, b = unpack(E.media.bordercolor) end
 		if customFunc then
-			customFunc(r, g, b)
+			customFunc(parent, r, g, b)
 		else
 			p:SetBackdropBorderColor(r, g, b)
 		end
