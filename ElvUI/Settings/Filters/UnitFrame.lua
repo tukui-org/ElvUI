@@ -672,6 +672,15 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Shadowlands Dungeons
 		-- De Other Side
 		-- Halls of Atonement
+		[335338] = Defaults(), -- Ritual of Woe
+		[326891] = Defaults(), -- Anguish
+		[329321] = Defaults(), -- Jagged Swipe
+		[319603] = Defaults(), -- Curse of Stone
+		[319611] = Defaults(), -- Turned to Stone
+		[325876] = Defaults(), -- Curse of Obliteration
+		[326632] = Defaults(), -- Stony Veins
+		[323650] = Defaults(), -- Haunting Fixation
+		[326874] = Defaults(), -- Ankle Bites
 		-- Mists of Tirna Scithe
 		-- Plaguefall
 		-- Sanguine Depths
