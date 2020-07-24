@@ -253,17 +253,35 @@ function S:SkinTalentListButtons(frame)
 	end
 end
 
-function S:HandleIconBorder(IconBorder)
-	local parent = IconBorder:GetParent()
+function S:HandleIconBorder(iconBorder, customFunc)
+	local parent = iconBorder:GetParent()
 	local p = parent and parent.backdrop
 	if p and not parent.IconBorderHooked then
-		hooksecurefunc(IconBorder, 'SetVertexColor', function(_, r, g, b) p:SetBackdropBorderColor(r, g, b) end)
-		hooksecurefunc(IconBorder, 'Hide', function() p:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
-		IconBorder:Kill()
+		hooksecurefunc(iconBorder, 'SetVertexColor', function(_, r, g, b)
+			if customFunc then
+				customFunc(r, g, b)
+			else
+				p:SetBackdropBorderColor(r, g, b)
+			end
+		end)
+		hooksecurefunc(iconBorder, 'Hide', function()
+			local r, g, b = unpack(E.media.bordercolor)
+			if customFunc then
+				customFunc(r, g, b)
+			else
+				p:SetBackdropBorderColor(r, g, b)
+			end
+		end)
 
-		local r, g, b = IconBorder:GetVertexColor()
+		local r, g, b = iconBorder:GetVertexColor()
 		if not r then r, g, b = unpack(E.media.bordercolor) end
-		p:SetBackdropBorderColor(r, g, b)
+		if customFunc then
+			customFunc(r, g, b)
+		else
+			p:SetBackdropBorderColor(r, g, b)
+		end
+
+		iconBorder:Kill()
 
 		parent.IconBorderHooked = true
 	end

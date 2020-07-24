@@ -22,6 +22,107 @@ local function TextColorModified(self, r, g, b)
 	end
 end
 
+local function JournalScrollButtons(frame)
+	for i, bu in ipairs(frame.buttons) do
+		bu:StripTextures()
+		bu:CreateBackdrop("Transparent", nil, nil, true)
+		bu:Size(210, 42)
+		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
+		bu.backdrop:SetAllPoints()
+
+		local point, relativeTo, relativePoint, xOffset, yOffset = bu:GetPoint()
+		bu:ClearAllPoints()
+
+		if i == 1 then
+			bu:SetPoint(point, relativeTo, relativePoint, 44, yOffset)
+		else
+			bu:SetPoint(point, relativeTo, relativePoint, xOffset, -2)
+		end
+
+		local icon = bu.icon or bu.Icon
+		icon:Size(40)
+		icon:Point("LEFT", -43, 0)
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:CreateBackdrop(nil, nil, nil, true)
+
+		bu:HookScript("OnEnter", function()
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			bu.backdrop:SetBackdropBorderColor(r, g, b)
+			icon.backdrop:SetBackdropBorderColor(r, g, b)
+		end)
+		bu:HookScript("OnLeave", function()
+			if bu.selected or (bu.SelectedTexture and bu.SelectedTexture:IsShown()) then
+				bu.backdrop:SetBackdropBorderColor(1, .8, .1)
+				icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+			else
+				local r, g, b = unpack(E.media.bordercolor)
+				bu.backdrop:SetBackdropBorderColor(r, g, b)
+				icon.backdrop:SetBackdropBorderColor(r, g, b)
+			end
+		end)
+
+		local highlight = _G[bu:GetName().."Highlight"]
+		if highlight then
+			highlight:SetColorTexture(1, 1, 1, 0.3)
+			highlight:SetBlendMode('ADD')
+			highlight:SetAllPoints(bu.icon)
+		end
+
+		if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
+			bu.Favorite:SetAtlas("PetJournal-FavoritesIcon", true)
+			bu.Favorite:Point("TOPLEFT", bu.Icon, "TOPLEFT", -8, 8)
+
+			hooksecurefunc(bu.SelectedTexture, 'SetShown', function(_, shown)
+				if shown then
+					bu.backdrop:SetBackdropBorderColor(1, .8, .1)
+					icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+				else
+					local r, g, b = unpack(E.media.bordercolor)
+					bu.backdrop:SetBackdropBorderColor(r, g, b)
+					icon.backdrop:SetBackdropBorderColor(r, g, b)
+				end
+			end)
+		else
+			bu.selectedTexture:SetTexture()
+			hooksecurefunc(bu.selectedTexture, 'Show', function()
+				bu.backdrop:SetBackdropBorderColor(1, .8, .1)
+				icon.backdrop:SetBackdropBorderColor(1, .8, .1)
+			end)
+			hooksecurefunc(bu.selectedTexture, 'Hide', function()
+				local r, g, b = unpack(E.media.bordercolor)
+				bu.backdrop:SetBackdropBorderColor(r, g, b)
+				icon.backdrop:SetBackdropBorderColor(r, g, b)
+			end)
+
+			if bu.iconBorder then
+				S:HandleIconBorder(bu.iconBorder, function(r, g, b)
+					if r == 0 and g == 0 and b == 0 then
+						bu.name:SetTextColor(0.9, 0.9, 0.9)
+					else
+						bu.name:SetTextColor(r, g, b)
+					end
+				end)
+			end
+
+			if frame:GetParent() == _G.PetJournal then
+				bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
+				bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
+
+				bu.dragButton.ActiveTexture:SetAlpha(0)
+				bu.dragButton.levelBG:SetTexture()
+			elseif frame:GetParent() == _G.MountJournal then
+				bu.factionIcon:SetDrawLayer('OVERLAY')
+				bu.factionIcon:Point('TOPRIGHT', -1, -1)
+				bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
+
+				bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
+				bu.favorite:Point("TOPLEFT", bu.DragButton, "TOPLEFT" , -8, 8)
+				bu.favorite:Size(32, 32)
+			end
+		end
+	end
+end
+
 function S:Blizzard_Collections()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.collections) then return end
 
@@ -64,57 +165,7 @@ function S:Blizzard_Collections()
 	MountJournal.BottomLeftInset.SlotButton:StripTextures()
 	S:HandleIcon(MountJournal.BottomLeftInset.SlotButton.ItemIcon)
 	S:HandleButton(MountJournal.BottomLeftInset.SlotButton)
-
-	for _, bu in pairs(MountJournal.ListScrollFrame.buttons) do
-		bu:CreateBackdrop("Transparent")
-		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
-		bu.backdrop:SetInside(bu, 3, 3)
-
-		bu.icon:Point("LEFT", bu, -40, 0)
-		bu.icon:SetTexCoord(unpack(E.TexCoords))
-		bu.icon:CreateBackdrop()
-		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
-
-		bu:HookScript("OnEnter", function(s)
-			s.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-			s.icon.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-		end)
-
-		bu:HookScript("OnLeave", function(s)
-			if s.selected then
-				s.backdrop:SetBackdropBorderColor(1, .8, .1)
-				s.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
-			else
-				s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				s.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end)
-
-		hooksecurefunc(bu.selectedTexture, 'Show', function()
-			bu.name:SetTextColor(1, .8, .1)
-			bu.backdrop:SetBackdropBorderColor(1, .8, .1)
-			bu.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
-		end)
-
-		hooksecurefunc(bu.selectedTexture, 'Hide', function()
-			bu.name:SetTextColor(1, 1, 1)
-			bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			bu.icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
-
-		bu:SetHighlightTexture(nil)
-		bu.iconBorder:SetTexture()
-		bu.background:SetTexture()
-		bu.selectedTexture:SetTexture()
-
-		bu.factionIcon:SetDrawLayer('OVERLAY')
-		bu.factionIcon:Point('TOPRIGHT', -1, -4)
-		bu.factionIcon:Point('BOTTOMRIGHT', -1, 4)
-
-		bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
-		bu.favorite:Point("TOPLEFT", bu.DragButton, "TOPLEFT" , -8, 8)
-		bu.favorite:Size(32, 32)
-	end
+	JournalScrollButtons(MountJournal.ListScrollFrame)
 
 	-----------------------------
 	--[[ pet journal (tab 2) ]]--
@@ -147,46 +198,7 @@ function S:Blizzard_Collections()
 	_G.PetJournalFilterButton:Point("TOPRIGHT", _G.PetJournalLeftInset, "TOPRIGHT", -5, -(E.PixelMode and 8 or 7))
 	_G.PetJournalListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.PetJournalListScrollFrameScrollBar)
-
-	for _, bu in pairs(PetJournal.listScroll.buttons) do
-		bu:StripTextures()
-		bu:CreateBackdrop("Transparent")
-		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
-		bu.backdrop:SetInside(bu, 3, 3)
-
-		bu.icon:Point("LEFT", -40, 0)
-		bu.icon:SetTexCoord(unpack(E.TexCoords))
-		bu.icon:CreateBackdrop()
-		bu.icon.backdrop:SetOutside(bu.icon, 1, 1)
-
-		bu:HookScript("OnEnter", function(s)
-			s.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-		end)
-
-		bu:HookScript("OnLeave", function(s)
-			if s.selected then
-				s.backdrop:SetBackdropBorderColor(1, .8, .1)
-			else
-				s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end)
-
-		hooksecurefunc(bu.selectedTexture, 'Show', function()
-			bu.name:SetTextColor(1, .8, .1)
-			bu.backdrop:SetBackdropBorderColor(1, .8, .1)
-		end)
-
-		hooksecurefunc(bu.selectedTexture, 'Hide', function()
-			bu.name:SetTextColor(1, 1, 1)
-			bu.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
-
-		bu.dragButton.ActiveTexture:SetAlpha(0)
-		bu.dragButton.levelBG:SetTexture()
-		bu.selectedTexture:SetTexture()
-
-		S:HandleIconBorder(bu.iconBorder)
-	end
+	JournalScrollButtons(PetJournal.listScroll)
 
 	_G.PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')
 
@@ -330,6 +342,7 @@ function S:Blizzard_Collections()
 			if quality then
 				r, g, b = GetItemQualityColor(quality)
 			end
+
 			s.backdrop:SetBackdropBorderColor(r, g, b)
 		else
 			s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -413,7 +426,6 @@ function S:Blizzard_Collections()
 	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(_G.WardrobeCollectionFrameWeaponDropDown)
-
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 
 	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
@@ -423,10 +435,25 @@ function S:Blizzard_Collections()
 				Model.Border:SetAlpha(0)
 				Model.TransmogStateTexture:SetAlpha(0)
 
-				local bg = CreateFrame("Frame", nil, Model)
-				bg:SetAllPoints()
-				bg:CreateBackdrop()
-				bg.backdrop:SetOutside(Model, 2, 2)
+				local border = CreateFrame("Frame", nil, Model, "BackdropTemplate")
+				border:SetOutside(Model)
+				border:SetTemplate()
+				E:SetBackdropColor(border, 0, 0, 0, 0)
+
+				local background = CreateFrame("Frame", nil, Model, "BackdropTemplate")
+				background:SetAllPoints(Model)
+				background:SetTemplate()
+				background:SetFrameLevel(3)
+				E:SetBackdropColor(background, 0, 0, 0, 1)
+
+				for i=1, Model:GetNumRegions() do
+				local region = select(i, Model:GetRegions())
+					if region:IsObjectType('Texture') and region:GetTexture() == 1116940 then
+						region:SetColorTexture(1, 1, 1, 0.3)
+						region:SetBlendMode('ADD')
+						region:SetAllPoints(Model)
+					end
+				end
 
 				hooksecurefunc(Model.Border, 'SetAtlas', function(_, texture)
 					local r, g, b
@@ -437,7 +464,8 @@ function S:Blizzard_Collections()
 					else
 						r, g, b = unpack(E.media.bordercolor)
 					end
-					bg.backdrop:SetBackdropBorderColor(r, g, b)
+
+					border:SetBackdropBorderColor(r, g, b)
 				end)
 			end
 		end
@@ -463,19 +491,11 @@ function S:Blizzard_Collections()
 
 	--Sets
 	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
-	SetsCollectionFrame.RightInset:StripTextures()
 	SetsCollectionFrame:CreateBackdrop("Transparent")
+	SetsCollectionFrame.RightInset:StripTextures()
 	SetsCollectionFrame.LeftInset:StripTextures()
-
-	local ScrollFrame = SetsCollectionFrame.ScrollFrame
-	S:HandleScrollBar(ScrollFrame.scrollBar)
-	for i = 1, #ScrollFrame.buttons do
-		local bu = ScrollFrame.buttons[i]
-		S:HandleItemButton(bu)
-		bu.Favorite:SetAtlas("PetJournal-FavoritesIcon", true)
-		bu.Favorite:Point("TOPLEFT", bu.Icon, "TOPLEFT", -8, 8)
-		bu.SelectedTexture:SetColorTexture(1, 1, 1, 0.1)
-	end
+	JournalScrollButtons(SetsCollectionFrame.ScrollFrame)
+	S:HandleScrollBar(SetsCollectionFrame.ScrollFrame.scrollBar)
 
 	-- DetailsFrame
 	local DetailsFrame = SetsCollectionFrame.DetailsFrame
