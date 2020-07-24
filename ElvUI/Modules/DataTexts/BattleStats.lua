@@ -95,7 +95,7 @@ function DT:ToggleBattleStats()
 		E:Print(L["Battleground datatexts will now show again if you are inside a battleground."])
 	else
 		DT.ForceHideBGStats = true
-		E:Print(L["Battleground datatexts temporarily hidden, to show type /bgstats or right click the 'C' icon near the minimap."])
+		E:Print(L["Battleground datatexts temporarily hidden, to show type /bgstats"])
 	end
 
 	DT:UpdatePanelInfo('LeftChatDataPanel')
