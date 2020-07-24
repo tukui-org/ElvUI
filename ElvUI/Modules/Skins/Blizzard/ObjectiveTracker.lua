@@ -30,7 +30,7 @@ local function SkinItemButton(_, block)
 	local item = block.itemButton
 	if item and not item.skinned then
 		item:Size(25, 25)
-		item:SetTemplate("Transparent")
+		item:CreateBackdrop("Transparent")
 		item:StyleButton()
 		item:SetNormalTexture(nil)
 		item.icon:SetTexCoord(unpack(E.TexCoords))

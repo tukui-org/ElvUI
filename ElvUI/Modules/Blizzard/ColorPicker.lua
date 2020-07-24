@@ -169,8 +169,8 @@ function B:EnhanceColorPicker()
 	_G.ColorPickerOkayButton:Point("BOTTOMLEFT", _G.ColorPickerFrame,"BOTTOMLEFT", 6,6)
 	_G.ColorPickerOkayButton:Point("RIGHT", _G.ColorPickerCancelButton,"LEFT", -4,0)
 	S:HandleSliderFrame(_G.OpacitySliderFrame)
-	--S:HandleButton(_G.ColorPickerOkayButton)
-	--S:HandleButton(_G.ColorPickerCancelButton)
+	S:HandleButton(_G.ColorPickerOkayButton)
+	S:HandleButton(_G.ColorPickerCancelButton)
 
 	_G.ColorPickerFrame:HookScript("OnShow", function(frame)
 		-- get color that will be replaced
