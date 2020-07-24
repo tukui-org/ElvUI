@@ -84,7 +84,7 @@
 	<Script file='WorldMap.lua'/>
 
 	<!--9.0-->
-	<!--Script file='CovenantPreview.lua'/-->
+	<Script file='CovenantPreview.lua'/>
 	<!--Script file='PlayerChoice.lua'/-->
 	<!--Script file='CovenantSanctum.lua'/-->
 	<!--Script file='SoulbindViewer.lua'/-->
