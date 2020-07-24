@@ -80,6 +80,7 @@ E.Options.args.skins.args.blizzard.values = {
 	orderhall = L["Orderhall"],
 	petbattleui = L["Pet Battle"],
 	petition = L["Petition Frame"],
+	PlayerChoice = L["Player Choice Frame"],
 	pvp = L["PvP Frames"],
 	quest = L["Quest Frames"],
 	questChoice = L["Quest Choice"],
