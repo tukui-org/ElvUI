@@ -49,8 +49,9 @@ local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. " %d (%d/%d)"
 local EXPANSION_NAME5 = EXPANSION_NAME5 -- "Warlords of Draenor"
 local EXPANSION_NAME6 = EXPANSION_NAME6 -- "Legion"
 local EXPANSION_NAME7 = EXPANSION_NAME7 -- "Battle for Azeroth"
+local EXPANSION_NAME8 = EXPANSION_NAME8 -- "Shadowlands"
 
-local MAIN_CURRENCY = 1560
+local MAIN_CURRENCY = 1813
 local NAZJATAR_MAP_ID = 1355
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 local numMissions = 0
@@ -87,6 +88,7 @@ local menuList = {
 	{text = _G.GARRISON_LANDING_PAGE_TITLE,		func = LandingPage, arg1 = Enum.GarrisonType.Type_6_0, notCheckable = true},
 	{text = _G.ORDER_HALL_LANDING_PAGE_TITLE,	func = LandingPage, arg1 = Enum.GarrisonType.Type_7_0, notCheckable = true},
 	{text = _G.WAR_CAMPAIGN,					func = LandingPage, arg1 = Enum.GarrisonType.Type_8_0, notCheckable = true},
+	{text = _G.COVENANT_MISSIONS_TITLE,			func = LandingPage, arg1 = Enum.GarrisonType.Type_9_0, notCheckable = true},
 }
 
 local data = {}
@@ -179,49 +181,57 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
-	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1560), nil, nil, nil, 1, 1, 1)
-	AddInProgressMissions(Enum.GarrisonFollowerType.FollowerType_8_0)
+	DT.tooltip:AddLine(EXPANSION_NAME8, 1, .5, 0)
+	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1813), nil, nil, nil, 1, 1, 1)
+	AddInProgressMissions(Enum.GarrisonFollowerType.FollowerType_9_0)
 
-	-- Island Expeditions
-	if E.mylevel >= GetMaxLevelForExpansionLevel(LE_EXPANSION_BATTLE_FOR_AZEROTH) then
-		local questID = C_IslandsQueue_GetIslandsWeeklyQuestID()
-		if questID then
-			local _, _, finished, numFulfilled, numRequired = GetQuestObjectiveInfo(questID, 1, false)
-			local text, r1, g1, b1
-
-			if finished or C_QuestLog_IsQuestFlaggedCompleted(questID) then
-				text = GOAL_COMPLETED
-				r1, g1, b1 = GREEN_FONT_COLOR:GetRGB()
-			else
-				text = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS:format(numFulfilled, numRequired)
-				r1, g1, b1 = 1, 1, 1
-			end
-
-			DT.tooltip:AddLine(" ")
-			DT.tooltip:AddLine(ISLANDS_HEADER .. ":")
-			DT.tooltip:AddDoubleLine(ISLANDS_QUEUE_FRAME_TITLE, text, 1, 1, 1, r1, g1, b1)
-		end
-	end
-
-	local widgetGroup = Widget_IDs[E.myfaction]
-	if E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and C_QuestLog_IsQuestFlaggedCompleted(widgetGroup[1]) then
-		DT.tooltip:AddLine(" ")
-		DT.tooltip:AddLine(L["Nazjatar Follower XP"])
-
-		for i = 2, 4 do
-			local npcName, widgetID = unpack(widgetGroup[i])
-			local cur, toNext, _, rank, maxRank = E:GetWidgetInfoBase(widgetID)
-			if npcName and rank then
-				DT.tooltip:AddDoubleLine(npcName, (maxRank and L["Max Rank"]) or BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, toNext), 1, 1, 1)
-			end
-		end
-	end
-
-	AddFollowerInfo(Enum.GarrisonType.Type_7_0)
-	AddTalentInfo(Enum.GarrisonType.Type_7_0)
+	AddFollowerInfo(Enum.GarrisonType.Type_9_0)
 
 	if IsShiftKeyDown() then
+		-- Battle for Azeroth
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
+		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1560), nil, nil, nil, 1, 1, 1)
+		AddInProgressMissions(Enum.GarrisonFollowerType.FollowerType_8_0)
+	
+		-- Island Expeditions
+		if E.mylevel >= GetMaxLevelForExpansionLevel(LE_EXPANSION_BATTLE_FOR_AZEROTH) then
+			local questID = C_IslandsQueue_GetIslandsWeeklyQuestID()
+			if questID then
+				local _, _, finished, numFulfilled, numRequired = GetQuestObjectiveInfo(questID, 1, false)
+				local text, r1, g1, b1
+	
+				if finished or C_QuestLog_IsQuestFlaggedCompleted(questID) then
+					text = GOAL_COMPLETED
+					r1, g1, b1 = GREEN_FONT_COLOR:GetRGB()
+				else
+					text = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS:format(numFulfilled, numRequired)
+					r1, g1, b1 = 1, 1, 1
+				end
+	
+				DT.tooltip:AddLine(" ")
+				DT.tooltip:AddLine(ISLANDS_HEADER .. ":")
+				DT.tooltip:AddDoubleLine(ISLANDS_QUEUE_FRAME_TITLE, text, 1, 1, 1, r1, g1, b1)
+			end
+		end
+	
+		local widgetGroup = Widget_IDs[E.myfaction]
+		if E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and C_QuestLog_IsQuestFlaggedCompleted(widgetGroup[1]) then
+			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(L["Nazjatar Follower XP"])
+	
+			for i = 2, 4 do
+				local npcName, widgetID = unpack(widgetGroup[i])
+				local cur, toNext, _, rank, maxRank = E:GetWidgetInfoBase(widgetID)
+				if npcName and rank then
+					DT.tooltip:AddDoubleLine(npcName, (maxRank and L["Max Rank"]) or BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, toNext), 1, 1, 1)
+				end
+			end
+		end
+	
+		AddFollowerInfo(Enum.GarrisonType.Type_7_0)
+		AddTalentInfo(Enum.GarrisonType.Type_7_0)
+
 		-- Legion
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(EXPANSION_NAME6, 1, .5, 0)
