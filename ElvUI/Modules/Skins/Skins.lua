@@ -505,9 +505,17 @@ function S:HandleEditBox(frame)
 
 	if frame.backdrop then return end
 
+	-- do it manually here instead of using S:HandleBlizzardRegions. I dunno why it works like this.
+	local frameName = frame.GetName and frame:GetName()
+	for _, region in pairs(S.Blizzard.Regions) do
+		region = frameName and _G[frameName..region] or frame[region]
+		if region then
+			region:SetAlpha(0)
+		end
+	end
+
 	frame:CreateBackdrop()
 	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
-	S:HandleBlizzardRegions(frame)
 
 	local EditBoxName = frame:GetName()
 	if EditBoxName and (strfind(EditBoxName, "Silver") or strfind(EditBoxName, "Copper")) then
