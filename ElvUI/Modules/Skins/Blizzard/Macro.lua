@@ -15,9 +15,9 @@ function S:Blizzard_MacroUI()
 	MacroFrame:Width(360)
 
 	_G.MacroFrameTextBackground:StripTextures()
-	_G.MacroFrameTextBackground:SetTemplate()
+	_G.MacroFrameTextBackground:SetTemplate("Transparent")
 	_G.MacroButtonScrollFrame:StripTextures()
-	_G.MacroButtonScrollFrame:CreateBackdrop()
+	_G.MacroButtonScrollFrame:CreateBackdrop("Transparent")
 
 	S:HandleScrollBar(_G.MacroButtonScrollFrameScrollBar)
 	S:HandleScrollBar(_G.MacroFrameScrollFrameScrollBar)
@@ -59,7 +59,7 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameSelectedMacroButton:StripTextures()
 	_G.MacroFrameSelectedMacroButton:StyleButton(true)
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
-	_G.MacroFrameSelectedMacroButton:SetTemplate()
+	_G.MacroFrameSelectedMacroButton:CreateBackdrop()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
 	_G.MacroFrameSelectedMacroButtonIcon:Point("TOPLEFT", E.mult, -E.mult)
 	_G.MacroFrameSelectedMacroButtonIcon:Point("BOTTOMRIGHT", -E.mult, E.mult)
@@ -72,7 +72,7 @@ function S:Blizzard_MacroUI()
 		if b then
 			b:StripTextures()
 			b:StyleButton(true)
-			b:SetTemplate(nil, true)
+			b:CreateBackdrop("Transparent")
 		end
 
 		if t then
@@ -91,7 +91,10 @@ function S:Blizzard_MacroUI()
 
 	-- Popout Frame
 	S:HandleButton(MacroPopupFrame.BorderBox.OkayButton)
-	S:HandleButton(MacroPopupFrame.BorderBox.CancelButton)
+	local cancel_btn = MacroPopupFrame.BorderBox.CancelButton
+	S:HandleButton(cancel_btn)
+	cancel_btn:ClearAllPoints()
+	cancel_btn:Point("RIGHT", MacroPopupFrame.BorderBox, "BOTTOMRIGHT", -5, 15)
 	S:HandleScrollBar(_G.MacroPopupScrollFrameScrollBar)
 	S:HandleEditBox(_G.MacroPopupEditBox)
 	_G.MacroPopupNameLeft:SetTexture()
