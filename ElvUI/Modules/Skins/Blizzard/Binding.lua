@@ -28,7 +28,7 @@ function S:Blizzard_BindingUI()
 	KeyBindingFrame.Header:ClearAllPoints()
 	KeyBindingFrame.Header:Point("TOP", KeyBindingFrame, "TOP", 0, -4)
 	KeyBindingFrame:StripTextures()
-	KeyBindingFrame:SetTemplate("Transparent")
+	KeyBindingFrame:CreateBackdrop("Transparent")
 
 	_G.KeyBindingFrameCategoryList:StripTextures()
 	_G.KeyBindingFrameCategoryList:SetTemplate("Transparent")
