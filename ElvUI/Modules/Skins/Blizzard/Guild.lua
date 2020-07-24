@@ -123,9 +123,9 @@ function S:Blizzard_GuildUI()
 	end
 
 	--Detail Frame
-	_G.GuildMemberDetailFrame:SetTemplate("Transparent")
-	_G.GuildMemberNoteBackground:SetTemplate("Transparent")
-	_G.GuildMemberOfficerNoteBackground:SetTemplate("Transparent")
+	_G.GuildMemberDetailFrame:CreateBackdrop("Transparent")
+	_G.GuildMemberNoteBackground:CreateBackdrop("Transparent")
+	_G.GuildMemberOfficerNoteBackground:CreateBackdrop("Transparent")
 	_G.GuildMemberRankDropdown:SetFrameLevel(_G.GuildMemberRankDropdown:GetFrameLevel() + 5)
 	S:HandleDropDownBox(_G.GuildMemberRankDropdown, 175)
 
@@ -151,7 +151,7 @@ function S:Blizzard_GuildUI()
 	end
 
 	_G.GuildNewsFiltersFrame:StripTextures()
-	_G.GuildNewsFiltersFrame:SetTemplate("Transparent")
+	_G.GuildNewsFiltersFrame:CreateBackdrop("Transparent")
 	S:HandleCloseButton(_G.GuildNewsFiltersFrameCloseButton)
 
 	for i = 1, #_G.GuildNewsFiltersFrame.GuildNewsFilterButtons do
@@ -187,7 +187,7 @@ function S:Blizzard_GuildUI()
 	backdrop3:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -233)
 	backdrop3:Point("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 3)
 
-	_G.GuildRecruitmentCommentInputFrame:SetTemplate("Transparent")
+	_G.GuildRecruitmentCommentInputFrame:CreateBackdrop("Transparent")
 
 	for _, button in next, _G.GuildInfoFrameApplicantsContainer.buttons do
 		button.selectedTex:Kill()
@@ -196,9 +196,9 @@ function S:Blizzard_GuildUI()
 	end
 
 	--Text Edit Frame
-	_G.GuildTextEditFrame:SetTemplate("Transparent")
+	_G.GuildTextEditFrame:CreateBackdrop("Transparent")
 	S:HandleScrollBar(_G.GuildTextEditScrollFrameScrollBar, 5)
-	_G.GuildTextEditContainer:SetTemplate("Transparent")
+	_G.GuildTextEditContainer:CreateBackdrop("Transparent")
 	for i=1, _G.GuildTextEditFrame:GetNumChildren() do
 		local child = select(i, _G.GuildTextEditFrame:GetChildren())
 		if child:GetName() == "GuildTextEditFrameCloseButton" and child:GetWidth() < 33 then
@@ -211,7 +211,7 @@ function S:Blizzard_GuildUI()
 	--Guild Log
 	local GuildLogFrame = _G.GuildLogFrame
 	S:HandleScrollBar(_G.GuildLogScrollFrameScrollBar, 4)
-	GuildLogFrame:SetTemplate("Transparent")
+	GuildLogFrame:CreateBackdrop("Transparent")
 
 	--Blizzard has two buttons with the same name, this is a fucked up way of determining that it isn't the other button
 	for i=1, GuildLogFrame:GetNumChildren() do
