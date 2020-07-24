@@ -253,40 +253,55 @@ function S:SkinTalentListButtons(frame)
 	end
 end
 
-function S:HandleIconBorder(iconBorder, customFunc)
-	local parent = iconBorder:GetParent()
-	local ir, ig, ib, ia = iconBorder:GetVertexColor()
-	local br, bg, bb = unpack(E.media.bordercolor)
-	local backdrop = parent.backdrop or parent
-
-	if not parent.IconBorderHooked then
-		iconBorder:Kill()
-
-		hooksecurefunc(iconBorder, 'SetVertexColor', function(_, r, g, b, a)
-			if customFunc then
-				customFunc(iconBorder, r, g, b, a, br, bg, bb)
-			else
-				backdrop:SetBackdropBorderColor(r, g, b)
-			end
-		end)
-
-		hooksecurefunc(iconBorder, 'Hide', function()
-			if customFunc then
-				customFunc(iconBorder, ir, ig, ib, ia, br, bg, bb)
-			else
-				backdrop:SetBackdropBorderColor(br, bg, bb)
-			end
-		end)
-
-		parent.IconBorderHooked = true
+do
+	local function iconBorderColor(border, r, g, b, a)
+		if border.customFunc then
+			local br, bg, bb = unpack(E.media.bordercolor)
+			border.customFunc(border, r, g, b, a, br, bg, bb)
+		else
+			local parent = border:GetParent()
+			local backdrop = parent.backdrop or parent
+			backdrop:SetBackdropBorderColor(r, g, b)
+		end
 	end
 
-	if customFunc then
-		customFunc(iconBorder, ir, ig, ib, ia, br, bg, bb)
-	elseif ir then
-		backdrop:SetBackdropBorderColor(ir, ig, ib, ia)
-	else
-		backdrop:SetBackdropBorderColor(br, bg, bb)
+	local function iconBorderHide(border)
+		local br, bg, bb = unpack(E.media.bordercolor)
+		if border.customFunc then
+			local r, g, b, a = border:GetVertexColor()
+			border.customFunc(border, r, g, b, a, br, bg, bb)
+		else
+			local parent = border:GetParent()
+			local backdrop = parent.backdrop or parent
+			backdrop:SetBackdropBorderColor(br, bg, bb)
+		end
+	end
+
+	function S:HandleIconBorder(iconBorder, customFunc)
+		local parent = iconBorder:GetParent()
+		local backdrop = parent.backdrop or parent
+
+		if not parent.IconBorderHooked then
+			iconBorder:Kill()
+
+			hooksecurefunc(iconBorder, 'SetVertexColor', iconBorderColor)
+			hooksecurefunc(iconBorder, 'Hide', iconBorderHide)
+
+			parent.IconBorderHooked = true
+		end
+
+		local r, g, b, a = iconBorder:GetVertexColor()
+		if customFunc then
+			iconBorder.customFunc = customFunc
+
+			local br, bg, bb = unpack(E.media.bordercolor)
+			customFunc(iconBorder, r, g, b, a, br, bg, bb)
+		elseif r then
+			backdrop:SetBackdropBorderColor(r, g, b, a)
+		else
+			local br, bg, bb = unpack(E.media.bordercolor)
+			backdrop:SetBackdropBorderColor(br, bg, bb)
+		end
 	end
 end
 
