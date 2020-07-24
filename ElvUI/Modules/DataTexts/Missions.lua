@@ -41,13 +41,6 @@ local ISLANDS_HEADER = ISLANDS_HEADER
 local ISLANDS_QUEUE_FRAME_TITLE = ISLANDS_QUEUE_FRAME_TITLE
 local ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS = ISLANDS_QUEUE_WEEKLY_QUEST_PROGRESS
 local LE_EXPANSION_BATTLE_FOR_AZEROTH = LE_EXPANSION_BATTLE_FOR_AZEROTH
-local LE_FOLLOWER_TYPE_GARRISON_6_0 = LE_FOLLOWER_TYPE_GARRISON_6_0
-local LE_FOLLOWER_TYPE_GARRISON_7_0 = LE_FOLLOWER_TYPE_GARRISON_7_0
-local LE_FOLLOWER_TYPE_GARRISON_8_0 = LE_FOLLOWER_TYPE_GARRISON_8_0
-local LE_FOLLOWER_TYPE_SHIPYARD_6_2 = LE_FOLLOWER_TYPE_SHIPYARD_6_2
-local LE_GARRISON_TYPE_6_0 = LE_GARRISON_TYPE_6_0
-local LE_GARRISON_TYPE_7_0 = LE_GARRISON_TYPE_7_0
-local LE_GARRISON_TYPE_8_0 = LE_GARRISON_TYPE_8_0
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- "Completed: |cFF33FF33%s|r"
 local TALENTS = TALENTS
@@ -91,9 +84,9 @@ local function LandingPage(_, ...)
 end
 
 local menuList = {
-	{text = _G.GARRISON_LANDING_PAGE_TITLE,		func = LandingPage, arg1 = LE_GARRISON_TYPE_6_0, notCheckable = true},
-	{text = _G.ORDER_HALL_LANDING_PAGE_TITLE,	func = LandingPage, arg1 = LE_GARRISON_TYPE_7_0, notCheckable = true},
-	{text = _G.WAR_CAMPAIGN,					func = LandingPage, arg1 = LE_GARRISON_TYPE_8_0, notCheckable = true},
+	{text = _G.GARRISON_LANDING_PAGE_TITLE,		func = LandingPage, arg1 = Enum.GarrisonType.Type_6_0, notCheckable = true},
+	{text = _G.ORDER_HALL_LANDING_PAGE_TITLE,	func = LandingPage, arg1 = Enum.GarrisonType.Type_7_0, notCheckable = true},
+	{text = _G.WAR_CAMPAIGN,					func = LandingPage, arg1 = Enum.GarrisonType.Type_8_0, notCheckable = true},
 }
 
 local data = {}
@@ -188,7 +181,7 @@ local function OnEnter()
 
 	DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
 	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1560), nil, nil, nil, 1, 1, 1)
-	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
+	AddInProgressMissions(Enum.GarrisonFollowerType.FollowerType_8_0)
 
 	-- Island Expeditions
 	if E.mylevel >= GetMaxLevelForExpansionLevel(LE_EXPANSION_BATTLE_FOR_AZEROTH) then
@@ -225,8 +218,8 @@ local function OnEnter()
 		end
 	end
 
-	AddFollowerInfo(LE_GARRISON_TYPE_8_0)
-	AddTalentInfo(LE_GARRISON_TYPE_8_0)
+	AddFollowerInfo(Enum.GarrisonType.Type_7_0)
+	AddTalentInfo(Enum.GarrisonType.Type_7_0)
 
 	if IsShiftKeyDown() then
 		-- Legion
@@ -234,12 +227,12 @@ local function OnEnter()
 		DT.tooltip:AddLine(EXPANSION_NAME6, 1, .5, 0)
 		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1220), nil, nil, nil, 1, 1, 1)
 
-		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
-		AddFollowerInfo(LE_GARRISON_TYPE_7_0)
+		AddInProgressMissions(Enum.GarrisonFollowerType.FollowerType_7_0)
+		AddFollowerInfo(Enum.GarrisonType.Type_7_0)
 
 		-- "Loose Work Orders" (i.e. research, equipment)
 		wipe(info)
-		info = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
+		info = C_Garrison_GetLooseShipments(Enum.GarrisonType.Type_7_0)
 		if #info > 0 then
 			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
 
@@ -255,21 +248,21 @@ local function OnEnter()
 			end
 		end
 
-		AddTalentInfo(LE_GARRISON_TYPE_7_0)
+		AddTalentInfo(Enum.GarrisonType.Type_7_0)
 
 		-- Warlords of Draenor
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(EXPANSION_NAME5, 1, .5, 0)
 		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(824), nil, nil, nil, 1, 1, 1)
-		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
+		AddInProgressMissions(Enum.GarrisonFollowerType.FollowerType_6_0)
 
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddDoubleLine(L["Naval Mission(s) Report:"], AddInfo(1101), nil, nil, nil, 1, 1 , 1)
-		AddInProgressMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
+		AddInProgressMissions(Enum.GarrisonFollowerType.FollowerType_6_2)
 
 		--Buildings
 		wipe(info)
-		info = C_Garrison_GetBuildings(LE_GARRISON_TYPE_6_0)
+		info = C_Garrison_GetBuildings(Enum.GarrisonType.Type_6_0)
 		if #info > 0 then
 			local AddLine = true
 			for _, buildings in ipairs(info) do
@@ -320,10 +313,11 @@ local function OnEvent(self, event, ...)
 	end
 
 	if event == 'GARRISON_LANDINGPAGE_SHIPMENTS' or event == 'GARRISON_MISSION_FINISHED' or event == 'GARRISON_MISSION_NPC_CLOSED' or event == 'GARRISON_MISSION_LIST_UPDATE' then
-		numMissions = #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
-		+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
-		+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
-		+ #C_Garrison_GetCompleteMissions(LE_FOLLOWER_TYPE_SHIPYARD_6_2)
+		numMissions = #C_Garrison_GetCompleteMissions(Enum.GarrisonFollowerType.FollowerType_9_0)
+		+ #C_Garrison_GetCompleteMissions(Enum.GarrisonFollowerType.FollowerType_8_0)
+		+ #C_Garrison_GetCompleteMissions(Enum.GarrisonFollowerType.FollowerType_7_0)
+		+ #C_Garrison_GetCompleteMissions(Enum.GarrisonFollowerType.FollowerType_6_0)
+		+ #C_Garrison_GetCompleteMissions(Enum.GarrisonFollowerType.FollowerType_6_2)
 	end
 
 	if numMissions > 0 then
