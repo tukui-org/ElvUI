@@ -144,9 +144,10 @@ V.skins = {
 		ItemInteraction = true,
 
 		-- 9.0
+		AnimaDiversion = true,
 		CovenantPreview = true,
-		PlayerChoice = true,
 		CovenantSanctum = true,
+		PlayerChoice = true,
 		Soulbinds = true,
 	},
 }

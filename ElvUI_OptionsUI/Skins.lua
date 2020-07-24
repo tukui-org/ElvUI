@@ -27,6 +27,7 @@ E.Options.args.skins.args.blizzard.values = {
 	AdventureMap = L["ADVENTURE_MAP_TITLE"],
 	alertframes = L["Alert Frames"],
 	AlliedRaces = L["Allied Races"],
+	AnimaDiversion = L["Anima Diversion"],
 	archaeology = L["Archaeology Frame"],
 	artifact = L["ITEM_QUALITY6_DESC"],
 	auctionhouse = L["AUCTIONS"],
