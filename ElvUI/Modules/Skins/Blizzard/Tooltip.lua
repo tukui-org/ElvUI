@@ -75,9 +75,6 @@ function S:TooltipFrames()
 		TT:SetStyle(tt)
 	end
 
-	-- [Backdrop Coloring] There has to be a more elegant way of doing this.
-	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
-
 	-- Used for Island Skin
 	TT:RegisterEvent("ADDON_LOADED", function(event, addon)
 		if addon == "Blizzard_IslandsQueueUI" then
