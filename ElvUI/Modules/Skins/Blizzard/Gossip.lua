@@ -60,6 +60,9 @@ function S:GossipFrame()
 				for _, button in ipairs(GossipFrame.buttons) do
 					local str = button:GetFontString()
 					if str then
+						-- 9.0 Shadowland, Azilroka look at this please-
+						-- the below shit seems not to work so using: str:SetTextColor(1, 1, 1) for now.
+						str:SetTextColor(1, 1, 1)
 						local text = str:GetText()
 						if text and strfind(text, '|cff000000') then
 							str:SetText(gsub(text, '|cff000000', '|cffffe519'))
