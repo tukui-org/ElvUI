@@ -1178,7 +1178,11 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 		Disabled:SetRotation(rotation)
 	end
 
-	Normal:SetVertexColor(unpack(color or {1, 1, 1}))
+	if color then
+		Normal:SetVertexColor(color.r, color.g, color.b)
+	else
+		Normal:SetVertexColor(1, 1, 1)
+	end
 
 	btn.isSkinned = true
 end

@@ -113,6 +113,7 @@ function S:Ace3_SkinTab(tab)
 	hooksecurefunc(tab, 'SetSelected', S.Ace3_TabSetSelected)
 end
 
+local nextPrevColor = {r = 1, g = .8, b = 0}
 function S:Ace3_RegisterAsWidget(widget)
 	local TYPE = widget.type
 	if TYPE == 'MultiLineEditBox' or TYPE == 'MultiLineEditBox-ElvUI' then
@@ -160,13 +161,12 @@ function S:Ace3_RegisterAsWidget(widget)
 		local text = widget.text
 
 		frame:StripTextures()
-
-		S:HandleNextPrevButton(button, nil, {1, .8, 0})
-
 		frame:CreateBackdrop()
 		frame.backdrop:Point('TOPLEFT', 15, -2)
 		frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
 		frame.backdrop:SetClipsChildren(true)
+
+		S:HandleNextPrevButton(button, nil, nextPrevColor)
 
 		widget.label:ClearAllPoints()
 		widget.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -186,10 +186,14 @@ function S:Ace3_RegisterAsWidget(widget)
 		local frame = widget.frame
 		local button = frame.dropButton
 		local text = frame.text
+
 		frame:StripTextures()
 		frame:CreateBackdrop()
+		frame.backdrop:Point('TOPLEFT', 0, -21)
+		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
+		frame.backdrop:SetClipsChildren(true)
 
-		S:HandleNextPrevButton(button, nil, {1, .8, 0})
+		S:HandleNextPrevButton(button, nil, nextPrevColor)
 
 		frame.label:ClearAllPoints()
 		frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -201,10 +205,6 @@ function S:Ace3_RegisterAsWidget(widget)
 		button:ClearAllPoints()
 		button:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)
 		button:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
-
-		frame.backdrop:Point('TOPLEFT', 0, -21)
-		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
-		frame.backdrop:SetClipsChildren(true)
 
 		if TYPE == 'LSM30_Sound' then
 			widget.soundbutton:SetParent(frame.backdrop)
@@ -264,7 +264,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		msgframe:SetTemplate('Transparent')
 		msgframe.msg:ClearAllPoints()
 		msgframe.msg:Point('CENTER')
-	elseif (TYPE == 'ColorPicker' or TYPE == 'ColorPicker-ElvUI') then
+	elseif TYPE == 'ColorPicker' or TYPE == 'ColorPicker-ElvUI' then
 		local frame = widget.frame
 		local colorSwatch = widget.colorSwatch
 
@@ -317,7 +317,6 @@ function S:Ace3_RefreshTree(scrollToSelection)
 	if self.userdata and self.userdata.option and self.userdata.option.childGroups == 'ElvUI_HiddenTree' then
 		self.border:Point("TOPLEFT", self.treeframe, "TOPRIGHT", 1, 13)
 		self.border:Point("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", 6, 0)
-		--self.userdata.rootframe.titletext:SetParent(self.border)
 		self.treeframe:Hide()
 		return
 	else
@@ -344,12 +343,12 @@ function S:Ace3_RefreshTree(scrollToSelection)
 			if groupstatus[lines[i].uniquevalue] then
 				button.toggle:SetNormalTexture(E.Media.Textures.Minus)
 				button.toggle:SetPushedTexture(E.Media.Textures.Minus)
-				button.toggle:SetHighlightTexture('')
 			else
 				button.toggle:SetNormalTexture(E.Media.Textures.Plus)
 				button.toggle:SetPushedTexture(E.Media.Textures.Plus)
-				button.toggle:SetHighlightTexture('')
 			end
+
+			button.toggle:SetHighlightTexture('')
 		end
 	end
 end
