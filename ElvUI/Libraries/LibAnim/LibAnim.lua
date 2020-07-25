@@ -10,7 +10,7 @@ end
 
 -- GLOBALS: ElvUI
 
-local Updater = CreateFrame("StatusBar")
+local Updater = CreateFrame("StatusBar", nil, nil, "BackdropTemplate")
 local Texture = Updater:CreateTexture()
 local FontString = Updater:CreateFontString()
 local Initialize, Update, Easing = {}, {}, {}

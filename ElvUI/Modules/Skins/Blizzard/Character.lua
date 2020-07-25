@@ -70,9 +70,9 @@ local function SkinItemFlyouts()
 	local buttons = flyout.buttons
 	local buttonAnchor = flyout.buttonFrame
 
-	if not buttonAnchor.template then
+	if not buttonAnchor.backdrop then
 		buttonAnchor:StripTextures()
-		buttonAnchor:SetTemplate("Transparent")
+		buttonAnchor:CreateBackdrop("Transparent")
 	end
 
 	for i, button in ipairs(buttons) do
