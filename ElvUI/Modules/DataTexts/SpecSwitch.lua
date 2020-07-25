@@ -104,7 +104,7 @@ local function OnEnter()
 	end
 
 	local pvpTalents = C_SpecializationInfo_GetAllSelectedPvpTalentIDs()
-	if not next(pvpTalents) then
+	if next(pvpTalents) then
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(PVP_TALENTS, 0.69, 0.31, 0.31)
 

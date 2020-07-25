@@ -95,10 +95,10 @@ local function LandingPage(_, ...)
 end
 
 local menuList = {
-	{text = _G.GARRISON_LANDING_PAGE_TITLE,		func = LandingPage, arg1 = LE_GARRISON_TYPE_6_0, notCheckable = true},
-	{text = _G.ORDER_HALL_LANDING_PAGE_TITLE,	func = LandingPage, arg1 = LE_GARRISON_TYPE_7_0, notCheckable = true},
-	{text = _G.WAR_CAMPAIGN,					func = LandingPage, arg1 = LE_GARRISON_TYPE_8_0, notCheckable = true},
-	{text = _G.COVENANT_MISSIONS_TITLE,			func = LandingPage, arg1 = LE_GARRISON_TYPE_9_0, notCheckable = true},
+	{text = _G.GARRISON_LANDING_PAGE_TITLE,			 func = LandingPage, arg1 = LE_GARRISON_TYPE_6_0, notCheckable = true},
+	{text = _G.ORDER_HALL_LANDING_PAGE_TITLE,		 func = LandingPage, arg1 = LE_GARRISON_TYPE_7_0, notCheckable = true},
+	{text = _G.WAR_CAMPAIGN,						 func = LandingPage, arg1 = LE_GARRISON_TYPE_8_0, notCheckable = true},
+	{text = _G.GARRISON_TYPE_9_0_LANDING_PAGE_TITLE, func = LandingPage, arg1 = LE_GARRISON_TYPE_9_0, notCheckable = true},
 }
 
 local data = {}
@@ -107,7 +107,7 @@ local function AddInProgressMissions(garrisonType)
 
 	C_Garrison_GetInProgressMissions(data, garrisonType)
 
-	if not next(data) then
+	if next(data) then
 		sort(data, sortFunction) -- Sort by time left, lowest first
 
 		for _, mission in ipairs(data) do
@@ -133,7 +133,7 @@ local function AddFollowerInfo(garrisonType)
 
 	data = C_Garrison_GetFollowerShipments(garrisonType)
 
-	if not next(data) then
+	if next(data) then
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- "Troops"
 		for _, followerShipments in ipairs(data) do
@@ -154,7 +154,7 @@ local function AddTalentInfo(garrisonType)
 
 	data = C_Garrison_GetTalentTreeIDsByClassID(garrisonType, E.myClassID)
 
-	if not next(data) then
+	if next(data) then
 		-- this is a talent that has completed, but has not been seen in the talent UI yet.
 		local completeTalentID = C_Garrison_GetCompleteTalent(garrisonType)
 		if completeTalentID > 0 then
@@ -195,7 +195,11 @@ local function OnEnter()
 	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1813), nil, nil, nil, 1, 1, 1)
 	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_9_0)
 
-	AddFollowerInfo(LE_GARRISON_TYPE_9_0)
+	-- TODO - Probably not needed in this expansion - Not sure yet.
+	-- AddFollowerInfo(LE_GARRISON_TYPE_9_0)
+	-- TODO - Every sanctum have 5 separate garrision talent trees that would be nice to monitor but for now I don't know a way to get talent tree IDs without talking to upgrade NPC. We always can hardcode all 20 ids.
+	-- C_CovenantSanctumUI.GetFeatures() -> C_Garrison.GetTalentTreeInfo(). C_Garrison.GetCurrentGarrTalentTreeID() return ID only of the Reservoir upgrades.
+	-- AddTalentInfo(LE_FOLLOWER_TYPE_GARRISON_9_0)
 
 	if IsShiftKeyDown() then
 		-- Battle for Azeroth
