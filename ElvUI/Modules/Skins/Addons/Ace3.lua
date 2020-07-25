@@ -430,8 +430,8 @@ function S:Ace3_StyleTooltip()
 end
 
 function S:Ace3_StylePopup()
-	if not self.template and not self:IsForbidden() and E.private.skins.ace3Enable then
-		self:SetTemplate('Transparent', nil, true)
+	if not self.backdrop and not self:IsForbidden() and E.private.skins.ace3Enable then
+		self:CreateBackdrop('Transparent', nil, true)
 		self:GetChildren():StripTextures()
 		S:HandleButton(self.accept, true)
 		S:HandleButton(self.cancel, true)
