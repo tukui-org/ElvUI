@@ -84,13 +84,10 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 
 	local specialization = GetLootSpecialization()
-	if specialization == 0 then
-		local specIndex = GetSpecialization()
-		if DT.SPECIALIZATION_CACHE[specIndex] then
-			DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, DT.SPECIALIZATION_CACHE[specIndex].name)))
-		end
-	else
-		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, DT.SPECIALIZATION_CACHE[specialization].name))
+	local sameSpec = specialization == 0 and GetSpecialization()
+	local specIndex = DT.SPECIALIZATION_CACHE[sameSpec or specialization]
+	if specIndex and specIndex.name then
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, sameSpec and format(LOOT_SPECIALIZATION_DEFAULT, specIndex.name) or specIndex.name))
 	end
 
 	DT.tooltip:AddLine(' ')
