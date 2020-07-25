@@ -42,6 +42,14 @@ function S:WorldMapFrame()
 		QuestMapFrame.DetailsFrame.backdrop:Point('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', 0, 1)
 		QuestMapFrame.DetailsFrame.RewardsFrame:StripTextures()
 		QuestMapFrame.DetailsFrame.RewardsFrame:CreateBackdrop()
+
+		if QuestMapFrame.Background then
+			QuestMapFrame.Background:SetAlpha(0)
+		end
+
+		if QuestMapFrame.DetailsFrame.SealMaterialBG then
+			QuestMapFrame.DetailsFrame.SealMaterialBG:SetAlpha(0)
+		end
 	end
 
 	local QuestScrollFrame = _G.QuestScrollFrame

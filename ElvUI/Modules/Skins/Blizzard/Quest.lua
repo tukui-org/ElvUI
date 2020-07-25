@@ -326,6 +326,14 @@ function S:BlizzardQuestFrames()
 				end
 			end
 		end)
+
+		if _G.QuestFrameDetailPanel.SealMaterialBG then
+			_G.QuestFrameDetailPanel.SealMaterialBG:SetAlpha(0)
+		end
+
+		if _G.QuestFrameRewardPanel.SealMaterialBG then
+			_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
+		end
 	else
 		StyleScrollFrame(_G.QuestDetailScrollFrame, 506, 615, true)
 		StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
