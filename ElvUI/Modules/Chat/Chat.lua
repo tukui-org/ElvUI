@@ -1125,6 +1125,11 @@ function CH:PositionChats()
 	end
 end
 
+function CH:Panel_ColorUpdate()
+	local panelColor = CH.db.panelColor
+	self:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
+end
+
 function CH:Panels_ColorUpdate()
 	local panelColor = CH.db.panelColor
 	_G.LeftChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)

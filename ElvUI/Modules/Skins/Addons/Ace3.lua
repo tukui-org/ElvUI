@@ -22,6 +22,10 @@ local rawset = rawset
 -- versions of AceGUI and AceConfigDialog.
 local minorGUI, minorConfigDialog = 36, 76
 
+function S:Ace3_BackdropColor()
+	self:SetBackdropColor(0, 0, 0, 0.25)
+end
+
 function S:Ace3_SkinDropdown()
 	if self and self.obj then
 		local pullout = self.obj.dropdown -- Don't ask questions.. Just FUCKING ACCEPT IT
@@ -376,8 +380,8 @@ function S:Ace3_RegisterAsContainer(widget)
 
 		if TYPE == 'InlineGroup' then
 			frame:SetTemplate('Transparent')
-			frame.ignoreBackdropColors = true
-			frame:SetBackdropColor(0, 0, 0, 0.25)
+			frame.callbackBackdropColor = S.Ace3_BackdropColor
+			S.Ace3_BackdropColor(frame)
 		else
 			frame:SetTemplate('Transparent')
 		end
@@ -405,8 +409,8 @@ function S:Ace3_RegisterAsContainer(widget)
 	elseif TYPE == 'SimpleGroup' then
 		local frame = widget.content:GetParent()
 		frame:SetTemplate('Transparent')
-		frame.ignoreBackdropColors = true
-		frame:SetBackdropColor(0, 0, 0, 0.25)
+		frame.callbackBackdropColor = S.Ace3_BackdropColor
+		S.Ace3_BackdropColor(frame)
 	end
 
 	if widget.sizer_se then

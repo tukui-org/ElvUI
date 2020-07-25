@@ -289,7 +289,7 @@ function LO:CreateChatPanels()
 	lchat:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
 	lchat:CreateBackdrop('Transparent')
-	lchat.backdrop.ignoreBackdropColors = true
+	lchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
 	lchat.backdrop:SetAllPoints()
 	lchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = lchat, finishedFuncKeep = true}
 	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', nil, true)
@@ -339,7 +339,7 @@ function LO:CreateChatPanels()
 	rchat:Size(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
 	rchat:CreateBackdrop('Transparent')
-	rchat.backdrop.ignoreBackdropColors = true
+	rchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
 	rchat.backdrop:SetAllPoints()
 	rchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = rchat, finishedFuncKeep = true}
 	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', nil, true)

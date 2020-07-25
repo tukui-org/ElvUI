@@ -130,18 +130,16 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 		frame:SetBackdrop()
 	else
 		frame:SetBackdrop({
-			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
 			edgeFile = E.media.blankTex,
+			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
 			tile = false, tileSize = 0, edgeSize = (not E.twoPixelsPlease and E.mult) or E.mult*2,
 			insets = {left = 0, right = 0, top = 0, bottom = 0}
 		})
 
-		if not frame.ignoreBackdropColors then
-			if template == 'Transparent' then
-				frame:SetBackdropColor(backdropr, backdropg, backdropb, backdropa)
-			else
-				frame:SetBackdropColor(backdropr, backdropg, backdropb, 1)
-			end
+		if frame.callbackBackdropColor then
+			frame:callbackBackdropColor()
+		else
+			frame:SetBackdropColor(backdropr, backdropg, backdropb, template == 'Transparent' and backdropa or 1)
 		end
 
 		if not E.PixelMode and not frame.forcePixelMode then
@@ -149,8 +147,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 				local border = CreateFrame('Frame', nil, frame, "BackdropTemplate")
 				border:SetInside(frame, E.mult, E.mult)
 				border:SetBackdrop({
-					edgeFile = E.media.blankTex,
-					edgeSize = E.mult,
+					edgeFile = E.media.blankTex, edgeSize = E.mult,
 					insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
 				})
 
@@ -162,8 +159,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 				local border = CreateFrame('Frame', nil, frame, "BackdropTemplate")
 				border:SetOutside(frame, E.mult, E.mult)
 				border:SetBackdrop({
-					edgeFile = E.media.blankTex,
-					edgeSize = E.mult,
+					edgeFile = E.media.blankTex, edgeSize = E.mult,
 					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
 				})
 
@@ -217,7 +213,7 @@ local function CreateShadow(frame, size, pass)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, size or 3, size or 3)
-	shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(size or 3)})
+	shadow:SetBackdrop({edgeFile = E.media.GlowTex, edgeSize = E:Scale(size or 3)})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 
