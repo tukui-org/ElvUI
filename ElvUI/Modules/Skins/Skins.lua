@@ -1045,17 +1045,45 @@ function S:HandleGarrisonPortrait(portrait)
 	portrait:Size(size, size)
 
 	portrait.Portrait:SetTexCoord(unpack(E.TexCoords))
-	portrait.Portrait:ClearAllPoints()
-	portrait.Portrait:Point("TOPLEFT", 1, -1)
+	-- 9.0 Shadowland, needs adjustments
+	--portrait.Portrait:ClearAllPoints()
+	--portrait.Portrait:Point("TOPLEFT", 1, -1)
 
-	portrait.PortraitRing:Hide()
-	portrait.PortraitRingQuality:SetTexture()
-	portrait.PortraitRingCover:SetTexture()
-	portrait.LevelBorder:SetAlpha(0)
+	if portrait.PortraitRing then
+		portrait.PortraitRing:Hide()
+		portrait.PortraitRingQuality:SetTexture()
+		portrait.PortraitRingCover:SetTexture()
+	end
 
-	portrait.Level:ClearAllPoints()
-	portrait.Level:Point("BOTTOM")
-	portrait.Level:FontTemplate(nil, 12, "OUTLINE")
+	if portrait.PuckBorder then
+		portrait.PuckBorder:SetAlpha(0)
+	end
+
+	if portrait.LevelText then
+		-- 9.0 Shadowland, needs adjustments if the portrait have a healthbar
+		--portrait.LevelText:ClearAllPoints()
+		--portrait.LevelText:Point("BOTTOM")
+		portrait.LevelText:FontTemplate(nil, 12, "OUTLINE")
+	end
+
+	if portrait.LevelBorder then
+		portrait.LevelBorder:SetAlpha(0)
+	end
+
+	if portrait.LevelCircle then
+		portrait.LevelCircle:SetAlpha(0)
+	end
+
+	if portrait.HealthBar then
+		portrait.HealthBar.Border:SetAlpha(0)
+		portrait.HealthBar.Background:SetAlpha(0)
+		portrait.HealthBar.Health:SetTexture(E.media.normTex)
+		E:RegisterStatusBar(portrait.HealthBar.Health)
+
+		portrait.HealthBar:CreateBackdrop('Transparent')
+		portrait.HealthBar.backdrop:Point("TOPLEFT", portrait.HealthBar.Health, "TOPLEFT", -1, 1)
+		portrait.HealthBar.backdrop:Point("BOTTOMRIGHT", portrait.HealthBar.Health, "BOTTOMRIGHT", 1, -1)
+	end
 
 	if not portrait.backdrop then
 		portrait:CreateBackdrop()

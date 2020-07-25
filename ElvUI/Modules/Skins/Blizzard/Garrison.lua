@@ -489,14 +489,24 @@ function S:Blizzard_GarrisonUI()
 	-- Complete Missions
 	_G.CombatLog.CombatLogMessageFrame:StripTextures()
 	S:HandleScrollBar(_G.CombatLog.CombatLogMessageFrame.ScrollBar)
+	S:HandleButton(CovenantMissionFrame.MissionComplete.CompleteFrame.SpeedButton)
+	S:HandleButton(CovenantMissionFrame.MissionComplete.CompleteFrame.ContinueButton)
+
+	S:HandleButton(CovenantMissionFrame.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton)
 
 	-- Adventures / Follower Tab
+	Follower = _G.CovenantMissionFrameFollowers -- swap
+	hooksecurefunc(Follower, "ShowFollower", function(s)
+		S:HandleFollowerPage(s, true, true) -- it is doing nothing right now
+	end)
 	S:HandleScrollBar(_G.CovenantMissionFrameFollowersListScrollFrameScrollBar)
-	S:HandleIcon(_G.CovenantMissionFrame.FollowerTab.CostFrame.CostIcon)
+	S:HandleIcon(CovenantMissionFrame.FollowerTab.CostFrame.CostIcon)
 	--S:HandleButton(_G.CovenantMissionFrame.FollowerTab.ButtonFrame.HealFollowerButton) --grr.. plx find the correct name
 
 	-- Mission Tab
 	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
+	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
+	S:HandleIcon(CovenantMissionFrame.MissionTab.MissionPage.CostFrame.CostIcon)
 end
 
 local function SkinFollowerTooltip(frame)
