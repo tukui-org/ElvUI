@@ -93,12 +93,12 @@ function B:SizeAndPositionBagBar()
 			if active then
 				button.ElvUIFilterIcon:SetTexture(B.BAG_FILTER_ICONS[j])
 				button.ElvUIFilterIcon:SetShown(E.db.bags.showAssignedIcon)
-				button:SetBackdropBorderColor(unpack(B.AssignmentColors[j]))
+				button.backdrop:SetBackdropBorderColor(unpack(B.AssignmentColors[j]))
 				button.ignoreBorderColors = true --dont allow these border colors to update for now
 				break -- this loop
 			else
 				button.ElvUIFilterIcon:SetShown(false)
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				button.ignoreBorderColors = nil --restore these borders to be updated
 			end
 		end
