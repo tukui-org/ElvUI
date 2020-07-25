@@ -11,7 +11,6 @@
 	<Script file='AzeriteEssence.lua'/>
 	<Script file='AzeriteRespec.lua'/>
 	<Script file='Bags.lua'/>
-	<Script file='Barber.lua'/>
 	<Script file='Battlenet.lua'/>
 	<Script file='BGMap.lua'/>
 	<Script file='Binding.lua'/>
@@ -85,6 +84,7 @@
 
 	<!--9.0-->
 	<Script file='AnimaDiversion.lua'/>
+	<Script file='Barber.lua'/>
 	<Script file='CovenantPreview.lua'/>
 	<Script file='CovenantSanctum.lua'/>
 	<Script file='PlayerChoice.lua'/>
