@@ -41,12 +41,6 @@ function LO:Initialize()
 	Panel_OnShow(LO.TopPanel)
 	E.FrameLocks.ElvUI_TopPanel = true
 	LO:TopPanelVisibility()
-
-	-- if the chat module is off we still need to spawn the dts for the panels
-	-- if we are going to have the panels show even when it's disabled
-	if not E.private.chat.enable then
-		LO:RepositionChatDataPanels()
-	end
 end
 
 function LO:BottomPanelVisibility()
