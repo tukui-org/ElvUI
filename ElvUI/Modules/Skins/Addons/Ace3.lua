@@ -23,7 +23,8 @@ local rawset = rawset
 local minorGUI, minorConfigDialog = 36, 76
 
 function S:Ace3_BackdropColor()
-	self:SetBackdropColor(0, 0, 0, 0.25)
+	local backdrop = self.backdrop or self
+	backdrop:SetBackdropColor(0, 0, 0, 0.25)
 end
 
 function S:Ace3_SkinDropdown()
@@ -408,7 +409,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 	elseif TYPE == 'SimpleGroup' then
 		local frame = widget.content:GetParent()
-		frame:SetTemplate('Transparent')
+		frame:CreateBackdrop('Transparent')
 		frame.callbackBackdropColor = S.Ace3_BackdropColor
 		S.Ace3_BackdropColor(frame)
 	end
