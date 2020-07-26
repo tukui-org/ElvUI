@@ -1042,7 +1042,8 @@ function S:HandleGarrisonPortrait(portrait)
 	if not portrait.Portrait then return end
 
 	local size = portrait.Portrait:GetSize() + 2
-	portrait:Size(size, size)
+	-- 9.0 Shadowland, needs adjustments
+	--portrait:Size(size, size)
 
 	portrait.Portrait:SetTexCoord(unpack(E.TexCoords))
 	-- 9.0 Shadowland, needs adjustments
@@ -1060,10 +1061,14 @@ function S:HandleGarrisonPortrait(portrait)
 	end
 
 	if portrait.LevelText then
-		-- 9.0 Shadowland, needs adjustments if the portrait have a healthbar
-		--portrait.LevelText:ClearAllPoints()
-		--portrait.LevelText:Point("BOTTOM")
-		portrait.LevelText:FontTemplate(nil, 12, "OUTLINE")
+		portrait.LevelText:FontTemplate(nil, 12, 'OUTLINE')
+
+		portrait.LevelText:ClearAllPoints()
+		if portrait.HealthBar then
+			portrait.LevelText:Point('LEFT', portrait.HealthBar, 'RIGHT', -3, 0)
+		else
+			portrait.LevelText:Point('BOTTOM')
+		end
 	end
 
 	if portrait.LevelBorder then
@@ -1078,17 +1083,21 @@ function S:HandleGarrisonPortrait(portrait)
 		portrait.HealthBar.Border:SetAlpha(0)
 		portrait.HealthBar.Background:SetAlpha(0)
 		portrait.HealthBar.Health:SetTexture(E.media.normTex)
+
+		portrait.HealthBar:SetSize(90, 30)
+		portrait.HealthBar:ClearAllPoints()
+		portrait.HealthBar:Point('BOTTOM', portrait.Portrait, -11, -15)
 		E:RegisterStatusBar(portrait.HealthBar.Health)
 
 		portrait.HealthBar:CreateBackdrop('Transparent')
-		portrait.HealthBar.backdrop:Point("TOPLEFT", portrait.HealthBar.Health, "TOPLEFT", -1, 1)
-		portrait.HealthBar.backdrop:Point("BOTTOMRIGHT", portrait.HealthBar.Health, "BOTTOMRIGHT", 1, -1)
+		portrait.HealthBar.backdrop:Point('TOPLEFT', portrait.HealthBar.Health, 'TOPLEFT', -1, 1)
+		portrait.HealthBar.backdrop:Point('BOTTOMRIGHT', portrait.HealthBar.Health, 'BOTTOMRIGHT', 1, -1)
 	end
 
 	if not portrait.backdrop then
 		portrait:CreateBackdrop()
-		portrait.backdrop:Point("TOPLEFT", portrait, "TOPLEFT", -1, 1)
-		portrait.backdrop:Point("BOTTOMRIGHT", portrait, "BOTTOMRIGHT", 1, -1)
+		portrait.backdrop:Point('TOPLEFT', portrait.Portrait, 'TOPLEFT', -1, 1)
+		portrait.backdrop:Point('BOTTOMRIGHT', portrait.Portrait, 'BOTTOMRIGHT', 1, -1)
 		portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel())
 	end
 end
