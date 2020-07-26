@@ -8,6 +8,39 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 
+local function SkinEnemyBoard(self)
+	for socketTexture in self.enemySocketFramePool:EnumerateActive() do
+		socketTexture:SetAlpha(0) -- looks ugly
+	end
+
+	for enemyFrame in self.enemyFramePool:EnumerateActive() do
+		if not enemyFrame.IsSkinned then
+			S:HandleGarrisonPortrait(enemyFrame)
+
+			enemyFrame.IsSkinned = true
+		end
+	end
+end
+
+local function SkinFollowerBoard(self)
+	for socketTexture in self.followerSocketFramePool:EnumerateActive() do
+		socketTexture:SetAlpha(0) -- looks ugly
+	end
+
+	for followerFrame in self.followerFramePool:EnumerateActive() do
+		if not followerFrame.IsSkinned then
+			S:HandleGarrisonPortrait(followerFrame)
+
+			followerFrame.IsSkinned = true
+		end
+	end
+end
+
+local function SkinMissionBoard(board)
+	board:HookScript("OnShow", SkinEnemyBoard)
+	hooksecurefunc(board, "EnumerateFollowers", SkinFollowerBoard)
+end
+
 function S:Blizzard_GarrisonUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
@@ -56,6 +89,17 @@ function S:Blizzard_GarrisonUI()
 		end
 
 		frame.Icon:SetDrawLayer("BORDER", 0)
+	end)
+
+	hooksecurefunc("GarrisonMissionPortrait_SetFollowerPortrait", function(portraitFrame, followerInfo)
+		if not portraitFrame.IsSkinned then
+			S:HandleGarrisonPortrait(portraitFrame)
+			portraitFrame.IsSkinned = true
+		end
+
+		local color = ITEM_QUALITY_COLORS[followerInfo.quality]
+		portraitFrame.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		portraitFrame.Portrait.backdrop:Show()
 	end)
 
 	-- Building frame
@@ -136,7 +180,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 	hooksecurefunc(FollowerList, "ShowFollower", function(s)
-		S:HandleFollowerPage(s, true)
+		S:HandleFollowerAbilities(s, true)
 	end)
 
 	-- Mission list
@@ -249,7 +293,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleScrollBar(scrollFrame.scrollBar)
 
 	hooksecurefunc(FollowerList, "ShowFollower", function(s)
-		S:HandleFollowerPage(s, nil, true)
+		S:HandleFollowerAbilities(s, nil, true)
 	end)
 
 	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(s, index)
@@ -370,7 +414,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
 	hooksecurefunc(FollowerList, "ShowFollower", function(s)
-		S:HandleFollowerPage(s, true, true)
+		S:HandleFollowerAbilities(s, true, true)
 	end)
 	FollowerTab:StripTextures()
 	FollowerTab.Class:Size(50, 43)
@@ -446,7 +490,7 @@ function S:Blizzard_GarrisonUI()
 	Follower:CreateBackdrop("Transparent")
 	S:HandleEditBox(Follower.SearchBox)
 	hooksecurefunc(Follower, "ShowFollower", function(s)
-		S:HandleFollowerPage(s, true, true)
+		S:HandleFollowerAbilities(s, true, true)
 	end)
 	S:HandleScrollBar(_G.BFAMissionFrameFollowersListScrollFrameScrollBar)
 
@@ -500,7 +544,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerTab = CovenantMissionFrame.FollowerTab
 	-- Simpy, please check this, probably our functions needs to be rewritten for this!?
 	hooksecurefunc(Follower, 'ShowFollower', function(s)
-		S:HandleFollowerPage(s)
+		S:HandleFollowerAbilities(s)
 	end)
 	Follower:StripTextures()
 	Follower:CreateBackdrop('Transparent')
@@ -517,35 +561,6 @@ function S:Blizzard_GarrisonUI()
 	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
 	S:HandleIcon(CovenantMissionFrame.MissionTab.MissionPage.CostFrame.CostIcon)
-
-	local function SkinEnemyBoard(self)
-		for socketTexture in self.enemySocketFramePool:EnumerateActive() do
-			socketTexture:SetAlpha(0)
-		end
-		for enemyFrame in self.enemyFramePool:EnumerateActive() do
-			if not enemyFrame.IsSkinned then
-				S:HandleGarrisonPortrait(enemyFrame)
-				enemyFrame.IsSkinned = true
-			end
-		end
-	end
-
-	local function SkinFollowerBoard(self)
-		for socketTexture in self.followerSocketFramePool:EnumerateActive() do
-			socketTexture:SetAlpha(0)
-		end
-		for followerFrame in self.followerFramePool:EnumerateActive() do
-			if not followerFrame.IsSkinned then
-				S:HandleGarrisonPortrait(followerFrame)
-				followerFrame.IsSkinned = true
-			end
-		end
-	end
-
-	local function SkinMissionBoard(board)
-		board:HookScript("OnShow", SkinEnemyBoard)
-		hooksecurefunc(board, "EnumerateFollowers", SkinFollowerBoard)
-	end
 
 	SkinMissionBoard(CovenantMissionFrame.MissionTab.MissionPage.Board)
 	SkinMissionBoard(CovenantMissionFrame.MissionComplete.Board)

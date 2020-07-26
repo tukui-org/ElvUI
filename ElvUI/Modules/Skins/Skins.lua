@@ -804,8 +804,8 @@ function S:HandleSliderFrame(frame)
 end
 
 -- TODO: Update the function for BFA/Shadowlands
-function S:HandleFollowerPage(follower, hasItems, hasEquipment)
-	local followerTab = follower and follower.followerTab
+function S:HandleFollowerAbilities(followerList)
+	local followerTab = followerList and followerList.followerTab
 	local abilityFrame = followerTab.AbilitiesFrame
 	if not abilityFrame then return end
 
@@ -814,40 +814,32 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 		for i = 1, #abilities do
 			local iconButton = abilities[i].IconButton
 			local icon = iconButton and iconButton.Icon
-			if icon and not icon.backdrop then
-				S:HandleIcon(icon)
-				icon:SetDrawLayer("BORDER", 0)
-				if iconButton.Border then
-					iconButton.Border:SetTexture()
-				end
+			if icon then
+				iconButton.Border:SetAlpha(0)
+				S:HandleIcon(icon, true)
 			end
 		end
 	end
 
-	local combatAllySpells = abilityFrame.CombatAllySpell
-	if combatAllySpells then
-		for i = 1, #combatAllySpells do
-			local icon = combatAllySpells[i].iconTexture
-			if icon and not icon.backdrop then
-				S:HandleIcon(icon)
+	local equipment = abilityFrame.Equipment
+	if equipment then
+		for i = 1, #equipment do
+			local equip = equipment[i]
+			if equip then
+				equip.Border:SetAlpha(0)
+				equip.BG:SetAlpha(0)
+				S:HandleIcon(equip.Icon, true)
+				equip.Icon.backdrop:SetBackdropColor(1, 1, 1, .15)
 			end
 		end
 	end
 
-	if hasItems then
-		local weapon = followerTab.ItemWeapon
-		if weapon and not weapon.backdrop then
-			S:HandleIcon(weapon.Icon)
-			if weapon.Border then
-				weapon.Border:SetTexture()
-			end
-		end
-
-		local armor = followerTab.ItemArmor
-		if armor and not armor.backdrop then
-			S:HandleIcon(armor.Icon)
-			if armor.Border then
-				armor.Border:SetTexture()
+	local combatAllySpell = abilityFrame.CombatAllySpell
+	if combatAllySpell then
+		for i = 1, #combatAllySpell do
+			local icon = combatAllySpell[i].iconTexture
+			if icon then
+				S:HandleIcon(icon, true)
 			end
 		end
 	end
@@ -857,54 +849,6 @@ function S:HandleFollowerPage(follower, hasItems, hasEquipment)
 		xpbar:StripTextures()
 		xpbar:SetStatusBarTexture(E.media.normTex)
 		xpbar:CreateBackdrop("Transparent")
-	end
-
-	-- only OrderHall
-	if hasEquipment then
-		local equipment = abilityFrame.Equipment
-		if equipment then
-			for i = 1, #equipment do
-				-- fix borders being off
-				equipment[i]:SetScale(1)
-
-				-- handle its styling
-				if not equipment[i].template then
-					equipment[i]:SetTemplate()
-					equipment[i]:Size(48, 48)
-					if equipment[i].BG then
-						equipment[i].BG:SetTexture()
-					end
-					if equipment[i].Border then
-						equipment[i].Border:SetTexture()
-					end
-					if equipment[i].Icon then
-						equipment[i].Icon:SetTexCoord(unpack(E.TexCoords))
-						equipment[i].Icon:SetInside(equipment[i])
-					end
-					if equipment[i].EquipGlow then
-						equipment[i].EquipGlow:Size(78, 78)
-					end
-					if equipment[i].ValidSpellHighlight then
-						equipment[i].ValidSpellHighlight:Size(78, 78)
-					end
-				end
-
-				-- handle the placement slightly to move them apart a bit
-				if equipment[i]:IsShown() then
-					local point, anchor, secondaryPoint, _, y = equipment[i]:GetPoint();
-					if anchor and abilityFrame.EquipmentSlotsLabel then
-						local totalWidth = equipment[i]:GetWidth() * #equipment
-						if anchor ~= abilityFrame.EquipmentSlotsLabel then
-							equipment[i]:Point(point, anchor, secondaryPoint, E.Border*4, y);
-						elseif followerTab.isLandingPage then
-							equipment[i]:Point("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, 0);
-						else
-							equipment[i]:Point("TOPLEFT", abilityFrame.EquipmentSlotsLabel, "BOTTOM", -totalWidth/2, -20);
-						end
-					end
-				end
-			end
-		end
 	end
 end
 
@@ -1038,72 +982,64 @@ function S:HandleFollowerListOnUpdateData(frame)
 end
 
 -- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
+local AtlasToRoleTex = {
+	["Adventures-Tank"] = {.5, .75, 0, 1},
+	["Adventures-Healer"] = {.75, 1, 0, 1},
+	["Adventures-DPS"] = {.25, .5, 0, 1},
+}
+
+local function HandleFollowerRole(roleIcon, atlas)
+	roleIcon:SetTexture("Interface\\LFGFrame\\LFGROLE")
+	roleIcon:SetSize(18, 18)
+	local texcoord = AtlasToRoleTex[atlas]
+	if texcoord then
+		roleIcon:SetTexCoord(unpack(texcoord))
+	end
+end
+
 function S:HandleGarrisonPortrait(portrait)
 	if not portrait.Portrait then return end
 
-	local size = portrait.Portrait:GetSize() + 2
-	-- 9.0 Shadowland, needs adjustments
-	--portrait:Size(size, size)
+	local level = portrait.Level or portrait.LevelText
+	if level then
+		level:ClearAllPoints()
+		level:SetPoint("BOTTOM", portrait, 0, 12)
+		level:FontTemplate(nil, 12, 'OUTLINE')
+		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
+		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
+	end
 
-	portrait.Portrait:SetTexCoord(unpack(E.TexCoords))
-	-- 9.0 Shadowland, needs adjustments
-	--portrait.Portrait:ClearAllPoints()
-	--portrait.Portrait:Point("TOPLEFT", 1, -1)
+	portrait.Portrait:CreateBackdrop('Transparent')
 
 	if portrait.PortraitRing then
 		portrait.PortraitRing:Hide()
-		portrait.PortraitRingQuality:SetTexture()
-		portrait.PortraitRingCover:SetTexture()
+		portrait.PortraitRingQuality:SetTexture("")
+		portrait.PortraitRingCover:SetColorTexture(0, 0, 0)
+		portrait.PortraitRingCover:SetAllPoints(portrait.Portrait.backdrop)
 	end
 
-	if portrait.PuckBorder then
-		portrait.PuckBorder:SetAlpha(0)
+	if portrait.Empty then
+		portrait.Empty:SetColorTexture(0, 0, 0)
+		portrait.Empty:SetAllPoints(portrait.Portrait)
 	end
 
-	if portrait.LevelText then
-		portrait.LevelText:FontTemplate(nil, 12, 'OUTLINE')
-
-		portrait.LevelText:ClearAllPoints()
-		if portrait.HealthBar then
-			portrait.LevelText:Point('LEFT', portrait.HealthBar, 'RIGHT', -3, 0)
-		else
-			portrait.LevelText:Point('BOTTOM')
-		end
-	end
-
-	if portrait.LevelBorder then
-		portrait.LevelBorder:SetAlpha(0)
-	end
-
-	if portrait.LevelCircle then
-		portrait.LevelCircle:SetAlpha(0)
-	end
+	if portrait.Highlight then portrait.Highlight:Hide() end
+	if portrait.PuckBorder then portrait.PuckBorder:SetAlpha(0) end
 
 	if portrait.HealthBar then
-		portrait.HealthBar.Border:SetAlpha(0)
-		portrait.HealthBar.Background:SetAlpha(0)
+		portrait.HealthBar.Border:Hide()
+
+		local roleIcon = portrait.HealthBar.RoleIcon
+		roleIcon:ClearAllPoints()
+		roleIcon:SetPoint("TOPRIGHT", portrait.Portrait.backdrop, 5, 5)
+		hooksecurefunc(roleIcon, "SetAtlas", HandleFollowerRole)
+
+		local background = portrait.HealthBar.Background
+		background:SetAlpha(0)
+		background:ClearAllPoints()
+		background:SetPoint("TOPLEFT", portrait.Portrait.backdrop, "BOTTOMLEFT", E.mult, 6)
+		background:SetPoint("BOTTOMRIGHT", portrait.Portrait.backdrop, "BOTTOMRIGHT", -E.mult, E.mult)
 		portrait.HealthBar.Health:SetTexture(E.media.normTex)
-
-		portrait.HealthBar:SetSize(90, 30)
-		portrait.HealthBar:ClearAllPoints()
-		portrait.HealthBar:Point('BOTTOM', portrait.Portrait, -11, -15)
-		E:RegisterStatusBar(portrait.HealthBar.Health)
-
-		if not portrait.HealthBar.backdrop then
-			portrait.HealthBar:CreateBackdrop('Transparent')
-			portrait.HealthBar.backdrop:Point('TOPLEFT', portrait.HealthBar.Health, 'TOPLEFT', -1, 1)
-			portrait.HealthBar.backdrop:Point('BOTTOMRIGHT', portrait.HealthBar.Health, 'BOTTOMRIGHT', 1, -1)
-		end
-
-		-- TO DO: make RoleIcons pretty
-		-- portrait.HealthBar.RoleIcon
-	end
-
-	if not portrait.backdrop then
-		portrait:CreateBackdrop()
-		portrait.backdrop:Point('TOPLEFT', portrait.Portrait, 'TOPLEFT', -1, 1)
-		portrait.backdrop:Point('BOTTOMRIGHT', portrait.Portrait, 'BOTTOMRIGHT', 1, -1)
-		portrait.backdrop:SetFrameLevel(portrait:GetFrameLevel())
 	end
 end
 
