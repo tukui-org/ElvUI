@@ -2,10 +2,18 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub = gsub
 local pairs = pairs
-local strfind = strfind
 local hooksecurefunc = hooksecurefunc
+
+local function gossipTextColor()
+	local buttons = _G.GossipFrame.buttons
+	if buttons and next(buttons) then
+		for _, button in ipairs(buttons) do
+			local str = button:GetFontString()
+			if str then str:SetTextColor(1, 1, 1) end
+		end
+	end
+end
 
 function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
@@ -46,28 +54,9 @@ function S:GossipFrame()
 	GossipGreetingScrollFrame:CreateBackdrop()
 
 	if E.private.skins.parchmentRemoverEnable then
-		if GossipFrame.buttons and next(GossipFrame.buttons) then
-			for _, button in ipairs(GossipFrame.buttons) do
-				local str = button:GetFontString()
-				if str then str:SetTextColor(1, 1, 1) end
-			end
-		end
-
+		hooksecurefunc("GossipFrameUpdate", gossipTextColor)
 		_G.GossipGreetingText:SetTextColor(1, 1, 1)
-
-		hooksecurefunc("GossipFrameUpdate", function()
-			if GossipFrame.buttons and next(GossipFrame.buttons) then
-				for _, button in ipairs(GossipFrame.buttons) do
-					local str = button:GetFontString()
-					if str then
-						local r, g, b = str:GetTextColor()
-						if r == 0 and g == 0 and b == 0 then
-							str:SetTextColor(0.9, 0.9, 0.9)
-						end
-					end
-				end
-			end
-		end)
+		gossipTextColor()
 	else
 		GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
 		GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
