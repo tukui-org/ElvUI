@@ -703,6 +703,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323464] = Defaults(), -- Dark Ichor
 		[323198] = Defaults(), -- Dark Exile
 		-- Theater of Pain
+		[333299] = Defaults(), -- Curse of Desolation
+		[319539] = Defaults(), -- Soulless
+		[326892] = Defaults(), -- Fixate
+		[321768] = Defaults(), -- On the Hook
+		[323825] = Defaults(), -- Grasping Rift
 		-- Sanguine Depths
 		-- Spires of Ascension
 		-- De Other Side
