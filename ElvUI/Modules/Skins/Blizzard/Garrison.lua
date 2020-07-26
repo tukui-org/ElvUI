@@ -495,18 +495,64 @@ function S:Blizzard_GarrisonUI()
 	S:HandleButton(CovenantMissionFrame.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton)
 
 	-- Adventures / Follower Tab
+	-- TODO: Quality Border!?
 	Follower = _G.CovenantMissionFrameFollowers -- swap
-	hooksecurefunc(Follower, "ShowFollower", function(s)
-		S:HandleFollowerPage(s, true, true) -- it is doing nothing right now
+	FollowerTab = CovenantMissionFrame.FollowerTab
+	hooksecurefunc(Follower, 'ShowFollower', function(s)
+		S:HandleFollowerPage(s, true, true)
 	end)
+	Follower:StripTextures()
+	Follower:CreateBackdrop('Transparent')
+	FollowerTab:StripTextures()
 	S:HandleScrollBar(_G.CovenantMissionFrameFollowersListScrollFrameScrollBar)
 	S:HandleIcon(CovenantMissionFrame.FollowerTab.CostFrame.CostIcon)
+
+	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
+
 	--S:HandleButton(_G.CovenantMissionFrame.FollowerTab.ButtonFrame.HealFollowerButton) --grr.. plx find the correct name
 
 	-- Mission Tab
 	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
 	S:HandleIcon(CovenantMissionFrame.MissionTab.MissionPage.CostFrame.CostIcon)
+
+	-- 9.0 Covenant Landing Page PortraitFrame
+	-- TO DO: Quality Border!?
+	local PortraitFrame = GarrisonLandingPage.FollowerTab.CovenantFollowerPortraitFrame
+	PortraitFrame.PortraitRingCover:SetAlpha(0)
+	PortraitFrame.PuckBorder:SetAlpha(0)
+
+	PortraitFrame.Portrait:SetTexCoord(unpack(E.TexCoords))
+
+	PortraitFrame.LevelCircle:SetAlpha(0)
+	PortraitFrame.LevelText:FontTemplate(nil, 12, 'OUTLINE')
+	PortraitFrame.LevelText:ClearAllPoints()
+	PortraitFrame.LevelText:Point('LEFT', PortraitFrame.HealthBar, 'RIGHT', -3, 0)
+
+	PortraitFrame.HealthBar.Border:SetAlpha(0)
+	PortraitFrame.HealthBar.Background:SetAlpha(0)
+	PortraitFrame.HealthBar.Health:SetTexture(E.media.normTex)
+
+	PortraitFrame.HealthBar:SetSize(90, 30)
+	PortraitFrame.HealthBar:ClearAllPoints()
+	PortraitFrame.HealthBar:Point('BOTTOM', PortraitFrame.Portrait, -11, -15)
+	E:RegisterStatusBar(PortraitFrame.HealthBar.Health)
+
+	-- TO DO: Make RoleIcons pretty
+	-- PortraitFrame.HealthBar.RoleIcon
+
+	if not PortraitFrame.HealthBar.backdrop then
+		PortraitFrame.HealthBar:CreateBackdrop('Transparent')
+		PortraitFrame.HealthBar.backdrop:Point('TOPLEFT', PortraitFrame.HealthBar.Health, 'TOPLEFT', -1, 1)
+		PortraitFrame.HealthBar.backdrop:Point('BOTTOMRIGHT', PortraitFrame.HealthBar.Health, 'BOTTOMRIGHT', 1, -1)
+	end
+
+	if not PortraitFrame.backdrop then
+		PortraitFrame:CreateBackdrop()
+		PortraitFrame.backdrop:Point('TOPLEFT', PortraitFrame.Portrait, 'TOPLEFT', -1, 1)
+		PortraitFrame.backdrop:Point('BOTTOMRIGHT', PortraitFrame.Portrait, 'BOTTOMRIGHT', 1, -1)
+		PortraitFrame.backdrop:SetFrameLevel(PortraitFrame:GetFrameLevel())
+	end
 end
 
 local function SkinFollowerTooltip(frame)

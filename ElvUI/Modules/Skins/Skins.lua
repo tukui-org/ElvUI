@@ -1089,9 +1089,14 @@ function S:HandleGarrisonPortrait(portrait)
 		portrait.HealthBar:Point('BOTTOM', portrait.Portrait, -11, -15)
 		E:RegisterStatusBar(portrait.HealthBar.Health)
 
-		portrait.HealthBar:CreateBackdrop('Transparent')
-		portrait.HealthBar.backdrop:Point('TOPLEFT', portrait.HealthBar.Health, 'TOPLEFT', -1, 1)
-		portrait.HealthBar.backdrop:Point('BOTTOMRIGHT', portrait.HealthBar.Health, 'BOTTOMRIGHT', 1, -1)
+		if not portrait.HealthBar.backdrop then
+			portrait.HealthBar:CreateBackdrop('Transparent')
+			portrait.HealthBar.backdrop:Point('TOPLEFT', portrait.HealthBar.Health, 'TOPLEFT', -1, 1)
+			portrait.HealthBar.backdrop:Point('BOTTOMRIGHT', portrait.HealthBar.Health, 'BOTTOMRIGHT', 1, -1)
+		end
+
+		-- TO DO: make RoleIcons pretty
+		-- portrait.HealthBar.RoleIcon
 	end
 
 	if not portrait.backdrop then
