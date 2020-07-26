@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
--- SHADOWLANDS
+-- 9.0 SHADOWLANDS
 
 local function ReskinTalents(self)
 	for frame in self.talentPool:EnumerateActive() do
@@ -25,27 +25,6 @@ local function ReskinTalents(self)
 	end
 end
 
-local function ReskinUpgrades(frame)
-	if not frame then return end
-
-	if not frame.IsSkinned then
-		if frame.Border then frame.Border:SetAlpha(0) end
-		if frame.RankBorder then frame.RankBorder:SetAlpha(0) end
-		if frame.CircleMask then frame.CircleMask:Kill() end
-
-		if frame.Icon then
-			S:HandleIcon(frame.Icon, true)
-		end
-
-		-- 9.0 Shadowlands -- HALP!!
-		-- TO DO: Make the highlight and selected texture pretty
-		--frame.HighlightTexture:SetOutside(frame.Icon)
-		--frame.SelectedTexture:SetOutside(frame.Icon)
-
-		frame.IsSkinned = true
-	end
-end
-
 function S:Blizzard_CovenantSanctum()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.CovenantSanctum) then return end
 
@@ -63,12 +42,6 @@ function S:Blizzard_CovenantSanctum()
 			UpgradesTab.Background:SetAlpha(0)
 			UpgradesTab.Background:CreateBackdrop('Transparent')
 			S:HandleButton(UpgradesTab.DepositButton)
-
-			ReskinUpgrades(UpgradesTab.TravelUpgrade)
-			ReskinUpgrades(UpgradesTab.DiversionUpgrade)
-			ReskinUpgrades(UpgradesTab.AdventureUpgrade)
-			ReskinUpgrades(UpgradesTab.UniqueUpgrade)
-			--ReskinUpgrades(UpgradesTab.ReservoirUpgrade) -- maybe not cool to skin :thinking:
 
 			local TalentList = frame.UpgradesTab.TalentsList
 			TalentList.Divider:SetAlpha(0)
