@@ -709,6 +709,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[321768] = Defaults(), -- On the Hook
 		[323825] = Defaults(), -- Grasping Rift
 		-- Sanguine Depths
+		[326827] = Defaults(), -- Dread Bindings
+		[326836] = Defaults(), -- Curse of Suppression
+		[322554] = Defaults(), -- Castigate
+		[321038] = Defaults(), -- Burden Soul
 		-- Spires of Ascension
 		-- De Other Side
 
