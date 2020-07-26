@@ -498,60 +498,54 @@ function S:Blizzard_GarrisonUI()
 	-- TODO: Quality Border!?
 	Follower = _G.CovenantMissionFrameFollowers -- swap
 	FollowerTab = CovenantMissionFrame.FollowerTab
+	-- Simpy, please check this, probably our functions needs to be rewritten for this!?
 	hooksecurefunc(Follower, 'ShowFollower', function(s)
-		S:HandleFollowerPage(s, true, true)
+		S:HandleFollowerPage(s)
 	end)
 	Follower:StripTextures()
 	Follower:CreateBackdrop('Transparent')
+
 	FollowerTab:StripTextures()
 	S:HandleScrollBar(_G.CovenantMissionFrameFollowersListScrollFrameScrollBar)
 	S:HandleIcon(CovenantMissionFrame.FollowerTab.CostFrame.CostIcon)
 
 	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
 
-	--S:HandleButton(_G.CovenantMissionFrame.FollowerTab.ButtonFrame.HealFollowerButton) --grr.. plx find the correct name
+	S:HandleButton(_G.HealFollowerButtonTemplate)
 
 	-- Mission Tab
 	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
 	S:HandleIcon(CovenantMissionFrame.MissionTab.MissionPage.CostFrame.CostIcon)
 
-	-- 9.0 Covenant Landing Page PortraitFrame
-	-- TO DO: Quality Border!?
-	local PortraitFrame = GarrisonLandingPage.FollowerTab.CovenantFollowerPortraitFrame
-	PortraitFrame.PortraitRingCover:SetAlpha(0)
-	PortraitFrame.PuckBorder:SetAlpha(0)
+	local MissionBoard = CovenantMissionFrame.MissionTab.MissionPage.Board
+	local CompleteBoard = CovenantMissionFrame.MissionComplete.Board
 
-	PortraitFrame.Portrait:SetTexCoord(unpack(E.TexCoords))
+	for _, board in pairs({MissionBoard, CompleteBoard}) do
+		board:HookScript("OnShow", function(self) -- OnShow() meh?
+			for socketTexture in self.enemySocketFramePool:EnumerateActive() do
+				socketTexture:SetAlpha(0)
+			end
 
-	PortraitFrame.LevelCircle:SetAlpha(0)
-	PortraitFrame.LevelText:FontTemplate(nil, 12, 'OUTLINE')
-	PortraitFrame.LevelText:ClearAllPoints()
-	PortraitFrame.LevelText:Point('LEFT', PortraitFrame.HealthBar, 'RIGHT', -3, 0)
+			for enemyFrame in self.enemyFramePool:EnumerateActive() do
+				if not enemyFrame.IsSkinned then
+					S:HandleGarrisonPortrait(enemyFrame)
+					enemyFrame.IsSkinned = true
+				end
+			end
+		end)
+		hooksecurefunc(board, "EnumerateFollowers", function(self)
+			for socketTexture in self.followerSocketFramePool:EnumerateActive() do
+				socketTexture:SetAlpha(0)
+			end
 
-	PortraitFrame.HealthBar.Border:SetAlpha(0)
-	PortraitFrame.HealthBar.Background:SetAlpha(0)
-	PortraitFrame.HealthBar.Health:SetTexture(E.media.normTex)
-
-	PortraitFrame.HealthBar:SetSize(90, 30)
-	PortraitFrame.HealthBar:ClearAllPoints()
-	PortraitFrame.HealthBar:Point('BOTTOM', PortraitFrame.Portrait, -11, -15)
-	E:RegisterStatusBar(PortraitFrame.HealthBar.Health)
-
-	-- TO DO: Make RoleIcons pretty
-	-- PortraitFrame.HealthBar.RoleIcon
-
-	if not PortraitFrame.HealthBar.backdrop then
-		PortraitFrame.HealthBar:CreateBackdrop('Transparent')
-		PortraitFrame.HealthBar.backdrop:Point('TOPLEFT', PortraitFrame.HealthBar.Health, 'TOPLEFT', -1, 1)
-		PortraitFrame.HealthBar.backdrop:Point('BOTTOMRIGHT', PortraitFrame.HealthBar.Health, 'BOTTOMRIGHT', 1, -1)
-	end
-
-	if not PortraitFrame.backdrop then
-		PortraitFrame:CreateBackdrop()
-		PortraitFrame.backdrop:Point('TOPLEFT', PortraitFrame.Portrait, 'TOPLEFT', -1, 1)
-		PortraitFrame.backdrop:Point('BOTTOMRIGHT', PortraitFrame.Portrait, 'BOTTOMRIGHT', 1, -1)
-		PortraitFrame.backdrop:SetFrameLevel(PortraitFrame:GetFrameLevel())
+			for followerFrame in self.followerFramePool:EnumerateActive() do
+				if not followerFrame.IsSkinned then
+					S:HandleGarrisonPortrait(followerFrame)
+					followerFrame.IsSkinned = true
+				end
+			end
+		end)
 	end
 end
 
