@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 
 -- SHADOWLANDS
 -- DONT FORGET TO ADD ME TO THE OPTIONS
