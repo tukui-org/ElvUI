@@ -518,35 +518,37 @@ function S:Blizzard_GarrisonUI()
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
 	S:HandleIcon(CovenantMissionFrame.MissionTab.MissionPage.CostFrame.CostIcon)
 
-	local MissionBoard = CovenantMissionFrame.MissionTab.MissionPage.Board
-	local CompleteBoard = CovenantMissionFrame.MissionComplete.Board
-
-	for _, board in pairs({MissionBoard, CompleteBoard}) do
-		board:HookScript("OnShow", function(self) -- OnShow() meh?
-			for socketTexture in self.enemySocketFramePool:EnumerateActive() do
-				socketTexture:SetAlpha(0)
+	local function SkinEnemyBoard(self)
+		for socketTexture in self.enemySocketFramePool:EnumerateActive() do
+			socketTexture:SetAlpha(0)
+		end
+		for enemyFrame in self.enemyFramePool:EnumerateActive() do
+			if not enemyFrame.IsSkinned then
+				S:HandleGarrisonPortrait(enemyFrame)
+				enemyFrame.IsSkinned = true
 			end
-
-			for enemyFrame in self.enemyFramePool:EnumerateActive() do
-				if not enemyFrame.IsSkinned then
-					S:HandleGarrisonPortrait(enemyFrame)
-					enemyFrame.IsSkinned = true
-				end
-			end
-		end)
-		hooksecurefunc(board, "EnumerateFollowers", function(self)
-			for socketTexture in self.followerSocketFramePool:EnumerateActive() do
-				socketTexture:SetAlpha(0)
-			end
-
-			for followerFrame in self.followerFramePool:EnumerateActive() do
-				if not followerFrame.IsSkinned then
-					S:HandleGarrisonPortrait(followerFrame)
-					followerFrame.IsSkinned = true
-				end
-			end
-		end)
+		end
 	end
+
+	local function SkinFollowerBoard(self)
+		for socketTexture in self.followerSocketFramePool:EnumerateActive() do
+			socketTexture:SetAlpha(0)
+		end
+		for followerFrame in self.followerFramePool:EnumerateActive() do
+			if not followerFrame.IsSkinned then
+				S:HandleGarrisonPortrait(followerFrame)
+				followerFrame.IsSkinned = true
+			end
+		end
+	end
+
+	local function SkinMissionBoard(board)
+		board:HookScript("OnShow", SkinEnemyBoard)
+		hooksecurefunc(board, "EnumerateFollowers", SkinFollowerBoard)
+	end
+
+	SkinMissionBoard(CovenantMissionFrame.MissionTab.MissionPage.Board)
+	SkinMissionBoard(CovenantMissionFrame.MissionComplete.Board)
 end
 
 local function SkinFollowerTooltip(frame)
