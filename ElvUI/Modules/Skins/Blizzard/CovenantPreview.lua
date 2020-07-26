@@ -12,35 +12,37 @@ function S:Blizzard_CovenantPreviewUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.CovenantPreview) then return end
 
 	local frame = _G.CovenantPreviewFrame
+	frame.InfoPanel.Description:SetTextColor(1, 1, 1)
+	frame.InfoPanel.AbilitiesLabel:SetTextColor(1, .8, 0)
 
-	hooksecurefunc(frame, 'TryShow', function(self)
-		if not self.IsSkinned then
-			self.Background:SetAlpha(0)
-			self.BorderFrame:SetAlpha(0)
+	hooksecurefunc(frame, 'TryShow', function()
+		if not frame.IsSkinned then
+			frame.Background:SetAlpha(0)
+			frame.BorderFrame:SetAlpha(0)
 
-			self:CreateBackdrop('Transparent')
+			frame:CreateBackdrop('Transparent')
 
-			self.Title:DisableDrawLayer('BACKGROUND')
-			self.Title.Text:SetTextColor(1, .8, 0)
-			self.Title:CreateBackdrop('Transparent')
+			frame.Title:DisableDrawLayer('BACKGROUND')
+			frame.Title.Text:SetTextColor(1, .8, 0)
+			frame.Title:CreateBackdrop('Transparent')
 
-			self.ModelSceneContainer.ModelSceneBorder:SetAlpha(0)
+			frame.ModelSceneContainer.ModelSceneBorder:SetAlpha(0)
 
-			self.InfoPanel.Parchment:SetAlpha(0)
-			self.InfoPanel:CreateBackdrop('Transparent')
+			frame.InfoPanel.Parchment:SetAlpha(0)
+			frame.InfoPanel:CreateBackdrop('Transparent')
 
-			S:HandleCloseButton(self.CloseButton)
-			S:HandleButton(self.SelectButton)
+			S:HandleCloseButton(frame.CloseButton)
+			S:HandleButton(frame.SelectButton)
 
-			self.IsSkinned = true
+			frame.IsSkinned = true
 		end
 	end)
 
 	hooksecurefunc(frame, 'SetupTextureKits', function(_, button)
 		if button.IconBorder and not button.isSkinned then
-			button.IconBorder:SetAlpha(0)
 			button.CircleMask:Hide()
 			button.Background:SetAlpha(0)
+			button.IconBorder:Kill()
 
 			if not button.bg then
 				button.bg = CreateFrame('Frame', nil, button, 'BackdropTemplate')
@@ -50,9 +52,6 @@ function S:Blizzard_CovenantPreviewUI()
 			button.isSkinned = true
 		end
 	end)
-
-	frame.InfoPanel.Description:SetTextColor(1, 1, 1)
-	frame.InfoPanel.AbilitiesLabel:SetTextColor(1, .8, 0)
 
 	S:HandleCheckBox(_G.TransmogAndMountDressupFrame.ShowMountCheckButton)
 end

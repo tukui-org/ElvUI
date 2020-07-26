@@ -8,6 +8,10 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 
+local function showFollower(s)
+	S:HandleFollowerAbilities(s)
+end
+
 local function SkinEnemyBoard(self)
 	for socketTexture in self.enemySocketFramePool:EnumerateActive() do
 		socketTexture:SetAlpha(0) -- looks ugly
@@ -97,7 +101,7 @@ function S:Blizzard_GarrisonUI()
 			portraitFrame.IsSkinned = true
 		end
 
-		local color = ITEM_QUALITY_COLORS[followerInfo.quality]
+		local color = _G.ITEM_QUALITY_COLORS[followerInfo.quality]
 		portraitFrame.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		portraitFrame.Portrait.backdrop:Show()
 	end)
@@ -179,9 +183,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
-	hooksecurefunc(FollowerList, "ShowFollower", function(s)
-		S:HandleFollowerAbilities(s)
-	end)
+	hooksecurefunc(FollowerList, "ShowFollower", showFollower)
 
 	-- Mission list
 	local MissionTab = GarrisonMissionFrame.MissionTab
@@ -292,9 +294,7 @@ function S:Blizzard_GarrisonUI()
 	scrollFrame = FollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
 
-	hooksecurefunc(FollowerList, "ShowFollower", function(s)
-		S:HandleFollowerAbilities(s)
-	end)
+	hooksecurefunc(FollowerList, "ShowFollower", showFollower)
 
 	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(s, index)
 		local ability = s.Abilities[index]
@@ -413,9 +413,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
-	hooksecurefunc(FollowerList, "ShowFollower", function(s)
-		S:HandleFollowerAbilities(s)
-	end)
+	hooksecurefunc(FollowerList, "ShowFollower", showFollower)
 	FollowerTab:StripTextures()
 	FollowerTab.Class:Size(50, 43)
 	FollowerTab.XPBar:StripTextures()
@@ -489,9 +487,7 @@ function S:Blizzard_GarrisonUI()
 	Follower:StripTextures()
 	Follower:CreateBackdrop("Transparent")
 	S:HandleEditBox(Follower.SearchBox)
-	hooksecurefunc(Follower, "ShowFollower", function(s)
-		S:HandleFollowerAbilities(s)
-	end)
+	hooksecurefunc(Follower, "ShowFollower", showFollower)
 	S:HandleScrollBar(_G.BFAMissionFrameFollowersListScrollFrameScrollBar)
 
 	S:HandleFollowerListOnUpdateData("BFAMissionFrameFollowers") -- The function needs to be updated for BFA
@@ -543,9 +539,7 @@ function S:Blizzard_GarrisonUI()
 	Follower = _G.CovenantMissionFrameFollowers -- swap
 	FollowerTab = CovenantMissionFrame.FollowerTab
 	-- Simpy, please check this, probably our functions needs to be rewritten for this!?
-	hooksecurefunc(Follower, 'ShowFollower', function(s)
-		S:HandleFollowerAbilities(s)
-	end)
+	hooksecurefunc(Follower, 'ShowFollower', showFollower)
 	Follower:StripTextures()
 	Follower:CreateBackdrop('Transparent')
 
