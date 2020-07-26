@@ -10,7 +10,8 @@ local function gossipTextColor()
 	if buttons and next(buttons) then
 		for _, button in ipairs(buttons) do
 			local str = button:GetFontString()
-			if str then str:SetTextColor(1, 1, 1) end
+			str:SetText(E:StripString(str:GetText()))
+			str:SetTextColor(1, 1, 1)
 		end
 	end
 end
