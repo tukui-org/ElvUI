@@ -588,6 +588,41 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[298837] = Defaults(), -- Greater Flask of Endless Fathoms
 		[298839] = Defaults(), -- Greater Flask of the Vast Horizon
 		[298841] = Defaults(), -- Greater Flask of the Undertow
+	-- Shadowlands Consumables
+		[171270] = Defaults(), -- Potion of Spectral Agility
+		[171273] = Defaults(), -- Potion of Spectral Intellect
+		[171274] = Defaults(), -- Potion of Spectral Stamina
+		[171275] = Defaults(), -- Potion of Spectral Strength
+		[171352] = Defaults(), -- Potion of Empowered Exorcisms
+		[171351] = Defaults(), -- Potion of Deathly Fixation
+		[171350] = Defaults(), -- Potion of Divine Awakening
+		[171349] = Defaults(), -- Potion of Phantom Fire
+		[176811] = Defaults(), -- Potion of Sacrificial Anima
+		[171271] = Defaults(), -- Potion of Hardened Shadows
+		[171272] = Defaults(), -- Potion of Spiritual Clarity
+		[171276] = Defaults(), -- Spectral Flask of Power
+		[171278] = Defaults(), -- Spectral Flask of Stamina
+		[171286] = Defaults(), -- Embalmer's Oil
+		[171285] = Defaults(), -- Shadowcore Oil
+		[171370] = Defaults(), -- Potion of Specter Swiftness
+		[171263] = Defaults(), -- Potion of Soul Purity
+		[171264] = Defaults(), -- Potion of Shaded Sight
+		[171266] = Defaults(), -- Potion of Hidden Spirit
+		[172043] = Defaults(), -- Feast of Gluttonous Hedonism
+		[172042] = Defaults(), -- Surprisingly Palatable Feast
+		[172063] = Defaults(), -- Fried Bonefish
+		[172061] = Defaults(), -- Seraph Tenders
+		[172062] = Defaults(), -- Smothered Shank
+		[172041] = Defaults(), -- Phantasmal Souffle and Fries
+		[172045] = Defaults(), -- Tenebrous Crown Roast Aspic
+		[172049] = Defaults(), -- Crawler Ravioli with Apple Sauce
+		[172051] = Defaults(), -- Steak a la Mode
+		[172069] = Defaults(), -- Banana Beef Pudding
+		[172047] = Defaults(), -- Candied Amberjack Cakes
+		[172040] = Defaults(), -- Butterscotch Marinated Ribs
+		[172048] = Defaults(), -- Meaty Apple Dumplings
+		[172044] = Defaults(), -- Cinnamon Bonefish Stew
+		[172050] = Defaults(), -- Sweet Silvergrill Sausages
 	},
 }
 
