@@ -267,6 +267,7 @@ local function StripRegion(which, object, kill, alpha)
 		object:SetAlpha(0)
 	elseif which == STRIP_TEX then
 		object:SetTexture()
+		object:SetAtlas(nil)
 	elseif which == STRIP_FONT then
 		object:SetText('')
 	end
