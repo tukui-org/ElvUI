@@ -17,7 +17,6 @@ local MouseIsOver = MouseIsOver
 local RegisterStateDriver = RegisterStateDriver
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 local UnregisterStateDriver = UnregisterStateDriver
-local MISCELLANEOUS = MISCELLANEOUS
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
@@ -26,6 +25,7 @@ local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLin
 local ExpandCurrencyList = ExpandCurrencyList
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
+local MISCELLANEOUS = MISCELLANEOUS
 
 local ActivateHyperMode
 local HyperList = {}
@@ -589,20 +589,24 @@ function DT:GetMenuListCategory(category)
 	end
 end
 
-function DT:SortMenuList(list)
-	for _, menu in pairs(list) do
-		if menu.menuList then
-			DT:SortMenuList(menu.menuList)
-		end
-	end
-
-	sort(list, function(a, b)
+do
+	local function menuSort(a, b)
 		if a.order and b.order then
 			return a.order < b.order
 		end
 
 		return a.text < b.text
-	end)
+	end
+
+	function DT:SortMenuList(list)
+		for _, menu in pairs(list) do
+			if menu.menuList then
+				DT:SortMenuList(menu.menuList)
+			end
+		end
+
+		sort(list, menuSort)
+	end
 end
 
 function DT:HyperDT()
@@ -710,7 +714,9 @@ function DT:Initialize()
 		return dt and (DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value)
 	end
 
-	TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
+		TT:SetStyle(DT.tooltip)
+	end
 
 	-- Ignore header font size on DatatextTooltip
 	local font = E.Libs.LSM:Fetch('font', E.db.tooltip.font)
