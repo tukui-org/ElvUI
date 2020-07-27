@@ -424,9 +424,9 @@ function S:Ace3_RegisterAsContainer(widget)
 	end
 end
 
-function S:Ace3_StyleTooltip()
-	if not self:IsForbidden() and E.private.skins.ace3Enable then
-		self:SetTemplate('Transparent', nil, true)
+function S:Ace3_StyleTooltip(tt)
+	if not tt:IsForbidden() and E.private.skins.ace3Enable then
+		tt:SetTemplate('Transparent')
 	end
 end
 
@@ -457,9 +457,8 @@ function S:Ace3_SkinTooltip(lib, minor) -- lib: AceConfigDialog or AceGUI
 	if not lib.tooltip then
 		S:Ace3_MetaTable(lib)
 	else
-		if not S:IsHooked(lib.tooltip, 'OnShow') then
-			S:SecureHookScript(lib.tooltip, 'OnShow', S.Ace3_StyleTooltip)
-		end
+		S:Ace3_StyleTooltip(lib.tooltip)
+
 		if lib.popup and not S:IsHooked(lib.popup, 'OnShow') then -- StaticPopup
 			S:SecureHookScript(lib.popup, 'OnShow', S.Ace3_StylePopup)
 		end
@@ -469,7 +468,7 @@ end
 function S:Ace3_MetaIndex(k, v)
 	if k == 'tooltip' then
 		rawset(self, k, v)
-		S:SecureHookScript(v, 'OnShow', S.Ace3_StyleTooltip)
+		S:Ace3_StyleTooltip(v)
 	elseif k == 'popup' then
 		rawset(self, k, v)
 		S:SecureHookScript(v, 'OnShow', S.Ace3_StylePopup)

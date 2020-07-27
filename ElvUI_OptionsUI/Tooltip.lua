@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local TT = E:GetModule('Tooltip')
+local Skins = E:GetModule('Skins')
 local ACH = E.Libs.ACH
 
 local _G = _G
@@ -28,7 +29,7 @@ E.Options.args.tooltip.args.showMount = ACH:Toggle(L["Current Mount"], L["Displa
 E.Options.args.tooltip.args.alwaysShowRealm = ACH:Toggle(L["Always Show Realm"], nil, 9)
 E.Options.args.tooltip.args.showElvUIUsers = ACH:Toggle(L["Show ElvUI Users"], L["Show ElvUI users and their version of ElvUI."], 10)
 E.Options.args.tooltip.args.itemCount = ACH:Select(L["Item Count"], L["Display how many of a certain item you have in your possession."], 11, { BAGS_ONLY = L["Bags Only"], BANK_ONLY = L["Bank Only"], BOTH = L["Both"], NONE = L["NONE"] })
-E.Options.args.tooltip.args.colorAlpha = ACH:Range(L["OPACITY"], nil, 12, { isPercent = true, min = 0, max = 1, step = 0.01 })
+E.Options.args.tooltip.args.colorAlpha = ACH:Range(L["OPACITY"], nil, 12, { isPercent = true, min = 0, max = 1, step = 0.01 }, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value; Skins:StyleTooltips() end)
 E.Options.args.tooltip.args.cursorAnchor = ACH:Toggle(L["Cursor Anchor"], L["Should tooltip be anchored to mouse cursor"], 13)
 E.Options.args.tooltip.args.cursorAnchorType = ACH:Select(L["Cursor Anchor Type"], nil, 14, { ANCHOR_CURSOR = L["ANCHOR_CURSOR"], ANCHOR_CURSOR_LEFT = L["ANCHOR_CURSOR_LEFT"], ANCHOR_CURSOR_RIGHT = L["ANCHOR_CURSOR_RIGHT"] }, nil, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) end)
 E.Options.args.tooltip.args.cursorAnchorX = ACH:Range(L["Cursor Anchor Offset X"], nil, 15, { min = -128, max = 128, step = 1 }, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end)

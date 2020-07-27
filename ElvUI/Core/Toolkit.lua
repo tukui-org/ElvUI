@@ -139,7 +139,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 		if frame.callbackBackdropColor then
 			frame:callbackBackdropColor()
 		else
-			frame:SetBackdropColor(backdropr, backdropg, backdropb, template == 'Transparent' and backdropa or 1)
+			frame:SetBackdropColor(backdropr, backdropg, backdropb, frame.customBackdropAlpha or (template == 'Transparent' and backdropa) or 1)
 		end
 
 		if not E.PixelMode and not frame.forcePixelMode then

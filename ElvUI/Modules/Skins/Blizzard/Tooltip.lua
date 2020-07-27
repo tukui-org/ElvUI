@@ -5,7 +5,6 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local unpack = unpack
 local pairs = pairs
-local GameTooltip = GameTooltip
 local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
@@ -13,9 +12,29 @@ local function IslandTooltipStyle(self)
 	self:SetTemplate("Transparent", nil, true)
 end
 
+function S:StyleTooltips()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
+
+	for _, tt in pairs({
+		_G.ItemRefTooltip,
+		_G.FriendsTooltip,
+		_G.WarCampaignTooltip,
+		_G.EmbeddedItemTooltip,
+		_G.ReputationParagonTooltip,
+		_G.StoryTooltip,
+		_G.GameTooltip,
+		-- ours
+		_G.ElvUIConfigTooltip,
+		_G.ElvUISpellBookTooltip
+	}) do
+		TT:SetStyle(tt)
+	end
+end
+
 function S:TooltipFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 
+	S:StyleTooltips()
 	S:HandleCloseButton(_G.ItemRefCloseButton)
 
 	-- Skin Blizzard Tooltips
@@ -47,8 +66,8 @@ function S:TooltipFrames()
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
 	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
 	_G.GameTooltipStatusBar:ClearAllPoints()
-	_G.GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	_G.GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:Point("TOPLEFT", _G.GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:Point("TOPRIGHT", _G.GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 
 	-- Tooltip Styling
@@ -56,24 +75,6 @@ function S:TooltipFrames()
 	TT:SecureHook('GameTooltip_ShowProgressBar') -- Skin Progress Bars
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('SharedTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
-
-	-- Style Tooltips which are created before load
-	local styleTT = {
-		_G.ItemRefTooltip,
-		_G.FriendsTooltip,
-		_G.WarCampaignTooltip,
-		_G.EmbeddedItemTooltip,
-		_G.ReputationParagonTooltip,
-		_G.ElvUIConfigTooltip,
-		_G.ElvUISpellBookTooltip,
-		-- already have locals
-		StoryTooltip,
-		GameTooltip,
-	}
-
-	for _, tt in pairs(styleTT) do
-		TT:SetStyle(tt)
-	end
 
 	-- Used for Island Skin
 	TT:RegisterEvent("ADDON_LOADED", function(event, addon)

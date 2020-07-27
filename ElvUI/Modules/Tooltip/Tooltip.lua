@@ -636,10 +636,8 @@ end
 
 function TT:SetStyle(tt)
 	if not tt or (tt == E.ScanTooltip or tt.IsEmbedded) or tt:IsForbidden() then return end
-	tt:SetTemplate('Transparent', nil, true) --ignore updates
-
-	local r, g, b = tt:GetBackdropColor()
-	tt:SetBackdropColor(r, g, b, TT.db.colorAlpha)
+	tt.customBackdropAlpha = TT.db.colorAlpha
+	tt:SetTemplate('Transparent')
 end
 
 function TT:MODIFIER_STATE_CHANGED()

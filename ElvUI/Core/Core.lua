@@ -395,8 +395,8 @@ end
 
 function E:UpdateFrameTemplates()
 	for frame in pairs(E.frames) do
-		if frame and frame.template and not frame.ignoreUpdates then
-			if not frame.ignoreFrameTemplates then
+		if frame and frame.template and not frame:IsForbidden() then
+			if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
 				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode)
 			end
 		else
@@ -405,8 +405,8 @@ function E:UpdateFrameTemplates()
 	end
 
 	for frame in pairs(E.unitFrameElements) do
-		if frame and frame.template and not frame.ignoreUpdates then
-			if not frame.ignoreFrameTemplates then
+		if frame and frame.template and not frame:IsForbidden() then
+			if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
 				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode, frame.isUnitFrameElement)
 			end
 		else
@@ -418,11 +418,9 @@ end
 function E:UpdateBorderColors()
 	local r, g, b = unpack(E.media.bordercolor)
 	for frame in pairs(E.frames) do
-		if frame and frame.template and not frame.ignoreUpdates then
-			if not frame.ignoreBorderColors then
-				if frame.template == 'Default' or frame.template == 'Transparent' then
-					frame:SetBackdropBorderColor(r, g, b)
-				end
+		if frame and frame.template and not frame:IsForbidden() then
+			if not (frame.ignoreUpdates or frame.ignoreBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
+				frame:SetBackdropBorderColor(r, g, b)
 			end
 		else
 			E.frames[frame] = nil
@@ -431,11 +429,9 @@ function E:UpdateBorderColors()
 
 	local r2, g2, b2 = unpack(E.media.unitframeBorderColor)
 	for frame in pairs(E.unitFrameElements) do
-		if frame and frame.template and not frame.ignoreUpdates then
-			if not frame.ignoreBorderColors then
-				if frame.template == 'Default' or frame.template == 'Transparent' then
-					frame:SetBackdropBorderColor(r2, g2, b2)
-				end
+		if frame and frame.template and not frame:IsForbidden() then
+			if not (frame.ignoreUpdates or frame.ignoreBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
+				frame:SetBackdropBorderColor(r2, g2, b2)
 			end
 		else
 			E.unitFrameElements[frame] = nil
@@ -448,14 +444,16 @@ function E:UpdateBackdropColors()
 	local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
 
 	for frame in pairs(E.frames) do
-		if frame and frame.template and not frame.ignoreUpdates then
-			if frame.callbackBackdropColor then
-				frame:callbackBackdropColor()
-			else
-				if frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b)
-				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(r2, g2, b2, a2)
+		if frame and frame.template and not frame:IsForbidden() then
+			if not frame.ignoreUpdates then
+				if frame.callbackBackdropColor then
+					frame:callbackBackdropColor()
+				else
+					if frame.template == 'Default' then
+						frame:SetBackdropColor(r, g, b)
+					elseif frame.template == 'Transparent' then
+						frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
+					end
 				end
 			end
 		else
@@ -464,14 +462,16 @@ function E:UpdateBackdropColors()
 	end
 
 	for frame in pairs(E.unitFrameElements) do
-		if frame and frame.template and not frame.ignoreUpdates then
-			if frame.callbackBackdropColor then
-				frame:callbackBackdropColor()
-			else
-				if frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b)
-				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(r2, g2, b2, a2)
+		if frame and frame.template and not frame:IsForbidden() then
+			if not frame.ignoreUpdates then
+				if frame.callbackBackdropColor then
+					frame:callbackBackdropColor()
+				else
+					if frame.template == 'Default' then
+						frame:SetBackdropColor(r, g, b)
+					elseif frame.template == 'Transparent' then
+						frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
+					end
 				end
 			end
 		else
