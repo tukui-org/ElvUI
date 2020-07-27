@@ -42,7 +42,7 @@ function S:Blizzard_CovenantPreviewUI()
 		if button.IconBorder and not button.isSkinned then
 			button.CircleMask:Hide()
 			button.Background:SetAlpha(0)
-			button.IconBorder:SetAlpha(0)
+			button.IconBorder:SetAtlas(nil)
 
 			if not button.bg then
 				button.bg = CreateFrame('Frame', nil, button, 'BackdropTemplate')
