@@ -623,6 +623,10 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[172048] = Defaults(), -- Meaty Apple Dumplings
 		[172044] = Defaults(), -- Cinnamon Bonefish Stew
 		[172050] = Defaults(), -- Sweet Silvergrill Sausages
+		[171436] = Defaults(), -- Porous Sharpening Stone
+		[171438] = Defaults(), -- Porous Weightstone
+		[171437] = Defaults(), -- Shaded Sharpening Stone
+		[171439] = Defaults(), -- Shaded Weightstone
 	},
 }
 
