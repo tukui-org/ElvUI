@@ -930,11 +930,20 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[332664] = Defaults(), -- Concentrate Anima
 		[325382] = Defaults(), -- Warped Desires
 		-- Sun King's Salvation
+		[333002] = Defaults(), -- Vulgar Brand
+		[326078] = Defaults(), -- Infuser's Boon
+		[325251] = Defaults(), -- Sin of Pride
+		-- Sludgefist
+		[335470] = Defaults(), -- Chain Slam
+		[339181] = Defaults(), -- Chain Slam (Root)
+		[331209] = Defaults(), -- Hateful Gaze
+		[335293] = Defaults(), -- Chain Link
+		[335270] = Defaults(), -- Chain This One!
+		[335295] = Defaults(), -- Shattering Chain
 		-- Artificer Xy'mox
 		-- Shriekwing
 		-- Huntsman Altimor
 		-- The Council of Blood
-		-- Sludgefist
 		-- Stoneborn Generals
 		-- Sire Denathrius
 
