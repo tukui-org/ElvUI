@@ -772,12 +772,7 @@ end
 
 local function colorizeLine(text, r, g, b)
 	local hexCode = E:RGBToHex(r, g, b)
-	local hexReplacement = format("|r%s", hexCode)
-
-	text = gsub(text, "|r", hexReplacement) --If the message contains color strings then we need to add message color hex code after every "|r"
-	text = format("%s%s|r", hexCode, text) --Add message color
-
-	return text
+	return format("%s%s|r", hexCode, text)
 end
 
 local copyLines = {}
