@@ -87,6 +87,7 @@ E.Options.args.skins.args.blizzard.values = {
 	quest = L["Quest Frames"],
 	questChoice = L["Quest Choice"],
 	raid = L["Raid Frame"],
+	Runeforge = L["Runeforge"],
 	Scrapping = L["SCRAP_BUTTON"],
 	socket = L["Socket Frame"],
 	spellbook = L["SPELLBOOK"],
