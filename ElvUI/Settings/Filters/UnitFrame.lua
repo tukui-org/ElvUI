@@ -714,6 +714,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[322554] = Defaults(), -- Castigate
 		[321038] = Defaults(), -- Burden Soul
 		-- Spires of Ascension
+		[338729] = Defaults(), -- Charged Stomp
+		[338747] = Defaults(), -- Purifying Blast
+		[327481] = Defaults(), -- Dark Lance
+		[322818] = Defaults(), -- Lost Confidence
+		[322817] = Defaults(), -- Lingering Doubt
 		-- De Other Side
 		[320786] = Defaults(), -- Power Overwhelming
 		[334913] = Defaults(), -- Master of Death
