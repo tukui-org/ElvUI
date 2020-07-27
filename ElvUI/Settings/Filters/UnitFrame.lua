@@ -990,7 +990,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[265360] = Defaults(), -- Roiling Deceit
 		[265662] = Defaults(), -- Corruptor's Pact
 		[265646] = Defaults(), -- Will of the Corruptor
-		-- Ghuun
+		-- G'huun
 		[263436] = Defaults(), -- Imperfect Physiology
 		[263227] = Defaults(), -- Putrid Blood
 		[263372] = Defaults(), -- Power Matrix
@@ -1001,7 +1001,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[270287] = Defaults(), -- Blighted Ground
 
 	-- Battle of Dazar'alor
-		-- Rawani Kanae / Frida Ironbellows
+		-- Champions of the Light
 		[283573] = Defaults(), -- Sacred Blade
 		[283617] = Defaults(), -- Wave of Light
 		[283651] = Defaults(), -- Blinding Faith
