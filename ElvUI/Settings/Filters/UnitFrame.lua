@@ -653,11 +653,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
 	-- Mythic+ Dungeons
+		-- General Affix
 		[209858] = Defaults(), -- Necrotic
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
-		[196376] = Defaults(), -- Grievous Tear
 		-- 8.3 Affix
 		[314531] = Defaults(), -- Tear Flesh
 		[314308] = Defaults(), -- Spirit Breaker
