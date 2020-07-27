@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 local hooksecurefunc = hooksecurefunc
+local IsInJailersTower = IsInJailersTower
 
 local function StyleText(text)
 	if text.IsSkinned then return end
@@ -33,6 +34,8 @@ function S:Blizzard_PlayerChoiceUI()
 
 			frame.IsSkinned = true
 		end
+
+		frame.backdrop:SetShown(not IsInJailersTower())
 
 		for i = 1, frame:GetNumOptions() do
 			local option = frame.Options[i]
