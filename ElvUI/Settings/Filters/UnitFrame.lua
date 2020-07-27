@@ -715,6 +715,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[321038] = Defaults(), -- Burden Soul
 		-- Spires of Ascension
 		-- De Other Side
+		[320786] = Defaults(), -- Power Overwhelming
+		[334913] = Defaults(), -- Master of Death
+		[325725] = Defaults(), -- Cosmic Artifice
+		[328987] = Defaults(), -- Zealous
 
 	-- BFA Dungeons
 		-- Freehold
