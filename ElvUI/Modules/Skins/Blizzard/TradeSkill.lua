@@ -66,6 +66,7 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillFrame.RecipeInset:StripTextures()
 	TradeSkillFrame.RecipeList.LearnedTab:StripTextures()
 	TradeSkillFrame.RecipeList.UnlearnedTab:StripTextures()
+	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 
 	-- DetailsFrame
 	TradeSkillFrame.DetailsFrame:StripTextures()
