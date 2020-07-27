@@ -103,7 +103,7 @@ local DEVELOPERS = {
 	'|cff9482c9Darth Predator|r',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/FoxWarlock:15:15:0:0:64:64:5:59:5:59|t |cffff2020NihilisticPandemonium|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 0.6,0.4,1, 1,0.4,0.8, 0.4,0.8,1, 0.26,0.53,1)..'|r'
+	E:TextGradient('Simpy but my name needs to be longer.', 0.6,0.4,1, 1,0.4,0.8, 0.4,0.8,1, 0.26,0.53,1)
 }
 
 local TESTERS = {

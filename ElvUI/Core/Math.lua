@@ -100,9 +100,9 @@ function E:TextGradient(text, ...)
 			local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
 			if not r2 then
-				msg = msg .. E:RGBToHex(r1, g1, b1) .. x
+				msg = msg .. E:RGBToHex(r1, g1, b1, nil, x..'|r')
 			else
-				msg = msg .. E:RGBToHex(r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc) .. x
+				msg = msg .. E:RGBToHex(r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc, nil, x..'|r')
 				idx = idx + 1
 			end
 		end
