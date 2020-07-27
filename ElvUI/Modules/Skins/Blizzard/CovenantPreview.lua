@@ -38,18 +38,20 @@ function S:Blizzard_CovenantPreviewUI()
 		end
 	end)
 
-	hooksecurefunc(frame, 'SetupTextureKits', function(_, button)
-		if button.IconBorder and not button.isSkinned then
+	hooksecurefunc(_G.CovenantAbilityButtonMixin, 'SetupButton', function(button)
+		if not button.bg then
+			button.bg = CreateFrame('Frame', nil, button, 'BackdropTemplate')
+			S:HandleIcon(button.Icon, button.bg)
+		end
+
+		if button.CircleMask then
 			button.CircleMask:Hide()
+		end
+		if button.Background then
 			button.Background:SetAlpha(0)
+		end
+		if button.IconBorder then
 			button.IconBorder:StripTextures()
-
-			if not button.bg then
-				button.bg = CreateFrame('Frame', nil, button, 'BackdropTemplate')
-				S:HandleIcon(button.Icon, button.bg)
-			end
-
-			button.isSkinned = true
 		end
 	end)
 
