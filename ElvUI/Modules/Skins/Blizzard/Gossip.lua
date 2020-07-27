@@ -5,13 +5,20 @@ local _G = _G
 local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
-local function gossipTextColor()
+local function handleGossipText()
 	local buttons = _G.GossipFrame.buttons
 	if buttons and next(buttons) then
 		for _, button in ipairs(buttons) do
 			local str = button:GetFontString()
-			str:SetText(E:StripString(str:GetText()))
-			str:SetTextColor(1, 1, 1)
+			if str then
+				str:SetTextColor(1, 1, 1)
+
+				local text = str:GetText()
+				if text then
+					local stripped = E:StripString(text)
+					str:SetText(stripped)
+				end
+			end
 		end
 	end
 end
@@ -55,9 +62,9 @@ function S:GossipFrame()
 	GossipGreetingScrollFrame:CreateBackdrop()
 
 	if E.private.skins.parchmentRemoverEnable then
-		hooksecurefunc("GossipFrameUpdate", gossipTextColor)
+		hooksecurefunc("GossipFrameUpdate", handleGossipText)
 		_G.GossipGreetingText:SetTextColor(1, 1, 1)
-		gossipTextColor()
+		handleGossipText()
 	else
 		GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
 		GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
