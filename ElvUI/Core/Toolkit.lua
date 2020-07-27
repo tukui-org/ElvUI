@@ -263,13 +263,15 @@ local STRIP_FONT = 'FontString'
 local function StripRegion(which, object, kill, alpha)
 	if kill then
 		object:Kill()
-	elseif alpha then
-		object:SetAlpha(0)
 	elseif which == STRIP_TEX then
 		if object:GetTexture() then object:SetTexture(nil) end
 		if object:GetAtlas() then object:SetAtlas(nil) end
 	elseif which == STRIP_FONT then
 		object:SetText('')
+	end
+
+	if alpha then
+		object:SetAlpha(0)
 	end
 end
 
