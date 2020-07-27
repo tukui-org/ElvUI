@@ -21,6 +21,13 @@ function S:Blizzard_AnimaDiversionUI()
 	frame.AnimaDiversionCurrencyFrame.Background.backdrop:SetPoint('TOPLEFT', frame.AnimaDiversionCurrencyFrame, 'TOPLEFT', 0, -7)
 	frame.AnimaDiversionCurrencyFrame.Background.backdrop:SetPoint('BOTTOMRIGHT', frame.AnimaDiversionCurrencyFrame, 'BOTTOMRIGHT', 0, 7)
 	S:HandleIcon(frame.AnimaDiversionCurrencyFrame.CurrencyFrame.CurrencyIcon)
+
+	-- Tooltip
+	local popup = frame.SelectPinInfoFrame
+	popup:StripTextures()
+	popup:CreateBackdrop()
+	S:HandleCloseButton(popup.CloseButton)
+	--S:HandleIcon(popup.lastCurrency.CurrencyIcon)
 end
 
 S:AddCallbackForAddon('Blizzard_AnimaDiversionUI')

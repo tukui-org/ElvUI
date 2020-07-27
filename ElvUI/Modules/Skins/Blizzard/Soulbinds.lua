@@ -12,6 +12,9 @@ function S:Blizzard_Soulbinds()
 	frame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(frame.CloseButton)
 	S:HandleButton(frame.ActivateButton)
+
+	frame.Name:FontTemplate(nil, 22)
+	frame.Description:FontTemplate()
 end
 
 S:AddCallbackForAddon('Blizzard_Soulbinds')
