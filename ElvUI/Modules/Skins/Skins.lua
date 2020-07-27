@@ -255,6 +255,8 @@ end
 
 do
 	local function iconBorderColor(border, r, g, b, a)
+		border:StripTextures()
+
 		if border.customFunc then
 			local br, bg, bb = unpack(E.media.bordercolor)
 			border.customFunc(border, r, g, b, a, br, bg, bb)
@@ -282,7 +284,7 @@ do
 		border.customBackdrop = backdrop
 
 		if not border.IconBorderHooked then
-			border:Kill()
+			border:StripTextures()
 
 			hooksecurefunc(border, 'SetVertexColor', iconBorderColor)
 			hooksecurefunc(border, 'Hide', iconBorderHide)
