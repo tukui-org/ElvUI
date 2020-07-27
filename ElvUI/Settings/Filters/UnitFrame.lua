@@ -645,6 +645,10 @@ G.unitframe.aurafilters.Whitelist = {
 		[33206]  = Defaults(), -- Pain Suppression
 		[116849] = Defaults(), -- Life Cocoon
 		[22812]  = Defaults(), -- Barkskin
+		[102342] = Defaults(), -- Ironbark
+		[1022]   = Defaults(), -- Blessing of Protection
+		[204018] = Defaults(), -- Blessing of Spellwarding
+		[6940]   = Defaults(), -- Blessing of Sacrifice
 	},
 }
 
