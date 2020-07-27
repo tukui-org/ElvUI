@@ -116,9 +116,8 @@ function DT:OnEnter()
 
 	if self.parent then
 		DT.SelectedDatatext = self
+		DT:SetupTooltip(self)
 	end
-
-	DT:SetupTooltip(self)
 
 	if self.MouseEnters then
 		for _, func in ipairs(self.MouseEnters) do
