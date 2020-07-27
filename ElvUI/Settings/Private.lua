@@ -149,6 +149,7 @@ V.skins = {
 		CovenantSanctum = true,
 		PlayerChoice = true,
 		Soulbinds = true,
+		Runeforge = true,
 	},
 }
 

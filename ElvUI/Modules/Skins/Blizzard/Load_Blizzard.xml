@@ -88,5 +88,6 @@
 	<Script file='CovenantPreview.lua'/>
 	<Script file='CovenantSanctum.lua'/>
 	<Script file='PlayerChoice.lua'/>
+	<Script file='Runeforge.lua'/>
 	<Script file='Soulbinds.lua'/>
 </Ui>
