@@ -13,6 +13,19 @@ local function StyleText(text)
 	text.IsSkinned = true
 end
 
+local function HandleOptionButton(button)
+	if not button or button.IsSkinned then return end
+
+	button:StripTextures(true)
+	button:CreateBackdrop()
+	button.backdrop:SetAllPoints()
+
+	button:HookScript("OnEnter", S.SetModifiedBackdrop)
+	button:HookScript("OnLeave", S.SetOriginalBackdrop)
+
+	button.IsSkinned = true
+end
+
 function S:Blizzard_PlayerChoiceUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.PlayerChoice) then return end
 
@@ -41,6 +54,15 @@ function S:Blizzard_PlayerChoiceUI()
 			local option = frame.Options[i]
 			option.Header.Text:SetTextColor(1, .8, 0)
 			option.OptionText:SetTextColor(1, 1, 1)
+
+			-- for some reason the buttons are different. W T F
+			if IsInJailersTower() then
+				HandleOptionButton(option.OptionButtonsContainer.button1)
+				HandleOptionButton(option.OptionButtonsContainer.button2)
+			else
+				S:HandleButton(option.OptionButtonsContainer.button1)
+				--S:HandleButton(option.OptionButtonsContainer.button2)
+			end
 
 			for i = 1, option.WidgetContainer:GetNumChildren() do
 				local child = select(i, option.WidgetContainer:GetChildren())
@@ -76,8 +98,6 @@ function S:Blizzard_PlayerChoiceUI()
 					end
 				end
 			end
-
-			S:HandleButton(option.OptionButtonsContainer.button1)
 		end
 	end)
 end
