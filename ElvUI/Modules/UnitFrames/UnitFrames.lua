@@ -910,7 +910,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	header:SetParent(parent)
 	header:Show()
 
-	for k, v in pairs(self.headerPrototype) do
+	for k, v in pairs(UF.headerPrototype) do
 		header[k] = v
 	end
 
@@ -1088,8 +1088,8 @@ function UF:UpdateAllHeaders(smart, skip)
 		ElvUF:DisableBlizzard('party')
 	end
 
-	for group in pairs(self.headers) do
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smart, skip)
+	for group in pairs(UF.headers) do
+		UF:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smart, skip)
 	end
 end
 
