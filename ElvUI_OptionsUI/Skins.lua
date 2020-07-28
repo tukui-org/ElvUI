@@ -58,6 +58,7 @@ E.Options.args.skins.args.blizzard.values = {
 	gbank = L["GUILD_BANK"],
 	GMChat = L["GM Chat"],
 	gossip = L["Gossip Frame"],
+	guide = L["Guide Frame"],
 	guild = L["GUILD"],
 	guildcontrol = L["Guild Control Frame"],
 	guildregistrar = L["Guild Registrar"],

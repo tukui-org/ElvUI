@@ -73,6 +73,7 @@ V.skins = {
 		gbank = true,
 		archaeology = true,
 		guildcontrol = true,
+		guide = true,
 		guild = true,
 		tradeskill = true,
 		raid = true,
