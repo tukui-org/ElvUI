@@ -218,9 +218,8 @@ function S:BlizzardQuestFrames()
 			_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
 
 			-- 9.0 Shadowlands
-			_G.QuestInfoObjective1:SetTextColor(1, 1, 1)
-			_G.QuestInfoObjective2:SetTextColor(1, 1, 1)
-			_G.QuestInfoObjective3:SetTextColor(1, 1, 1)
+			if _G.QuestInfoObjective1 then _G.QuestInfoObjective1:SetTextColor(1, 1, 1) end
+			if _G.QuestInfoObjective2 then _G.QuestInfoObjective2:SetTextColor(1, 1, 1) end
 
 			if _G.QuestInfoRewardsFrame.SpellLearnText then
 				_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
