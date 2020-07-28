@@ -3340,7 +3340,7 @@ E.Options.args.unitframe = {
 							name = L["Smart Raid Filter"],
 							desc = L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."],
 							type = 'toggle',
-							set = function(info, value) E.db.unitframe[info[#info]] = value; UF:UpdateAllHeaders() end
+							set = function(info, value) E.db.unitframe[info[#info]] = value; UF:UpdateAllHeaders(value and UF.SmartSettings) end
 						},
 						targetOnMouseDown = {
 							order = 3,
