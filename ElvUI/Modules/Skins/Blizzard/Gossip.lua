@@ -76,12 +76,23 @@ function S:GossipFrame()
 	_G.GossipFrameGreetingGoodbyeButton:StripTextures()
 	S:HandleButton(_G.GossipFrameGreetingGoodbyeButton)
 
+	for i = 1, 4 do
+		local notch = _G["NPCFriendshipStatusBarNotch"..i]
+		if notch then
+			notch:SetColorTexture(0, 0, 0)
+			notch:SetSize(E.mult, 16)
+		end
+	end
+
 	local NPCFriendshipStatusBar = _G.NPCFriendshipStatusBar
 	NPCFriendshipStatusBar:StripTextures()
 	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
 	NPCFriendshipStatusBar:CreateBackdrop()
-
 	E:RegisterStatusBar(NPCFriendshipStatusBar)
+
+	NPCFriendshipStatusBar.icon:ClearAllPoints()
+	NPCFriendshipStatusBar.icon:Point("RIGHT", NPCFriendshipStatusBar, "LEFT", 0, -3)
+	S:HandleIcon(NPCFriendshipStatusBar.icon)
 end
 
 S:AddCallback('GossipFrame')
