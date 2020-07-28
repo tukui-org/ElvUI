@@ -17,12 +17,17 @@ function S:StyleTooltips()
 
 	for _, tt in pairs({
 		_G.ItemRefTooltip,
+		_G.ItemRefShoppingTooltip1,
+		_G.ItemRefShoppingTooltip2,
 		_G.FriendsTooltip,
 		_G.WarCampaignTooltip,
 		_G.EmbeddedItemTooltip,
 		_G.ReputationParagonTooltip,
-		_G.StoryTooltip,
 		_G.GameTooltip,
+		_G.ShoppingTooltip1,
+		_G.ShoppingTooltip2,
+		_G.QuestScrollFrame.StoryTooltip,
+		_G.QuestScrollFrame.CampaignTooltip,
 		-- ours
 		_G.ElvUIConfigTooltip,
 		_G.ElvUISpellBookTooltip
