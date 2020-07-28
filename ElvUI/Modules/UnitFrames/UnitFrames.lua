@@ -876,7 +876,7 @@ function UF:HandleSmartVisibility(skip)
 		sv.raid40.enable = true
 	end
 
-	UF:UpdateAllHeaders(sv, skip)
+	UF:UpdateAllHeaders(true, skip)
 end
 
 function UF:ZONE_CHANGED_NEW_AREA()
@@ -918,8 +918,8 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 end
 
 function UF:GetSmartVisibilitySetting(setting, group, smart, db)
-	if smart and smart[group] and smart[group][setting] ~= nil then
-		return smart[group][setting]
+	if smart and UF.SmartSettings[group] and UF.SmartSettings[group][setting] ~= nil then
+		return UF.SmartSettings[group][setting]
 	end
 
 	return db[setting]
