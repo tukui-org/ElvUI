@@ -7,7 +7,7 @@ local pairs = pairs
 local C_AzeriteEssence_CanOpenUI = C_AzeriteEssence.CanOpenUI
 
 function S:Blizzard_AzeriteEssenceUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AzeriteEssence) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.azeriteEssence) then return end
 	if not C_AzeriteEssence_CanOpenUI() then return end
 
 	local AzeriteEssenceUI = _G.AzeriteEssenceUI

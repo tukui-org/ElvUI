@@ -6,7 +6,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_Contribution()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Contribution) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.contribution) then return end
 
 	--Main Frame
 	local ContributionCollectionFrame = _G.ContributionCollectionFrame

@@ -26,7 +26,7 @@ local function ReskinTalents(self)
 end
 
 function S:Blizzard_CovenantSanctum()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.CovenantSanctum) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantSanctum) then return end
 
 	local frame = _G.CovenantSanctumFrame
 

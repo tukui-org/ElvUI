@@ -6,7 +6,7 @@ local hooksecurefunc = hooksecurefunc
 
 -- SHADOWLANDS
 function S:Blizzard_AnimaDiversionUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AnimaDiversion) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.animaDiversion) then return end
 
 	local frame = _G.AnimaDiversionFrame
 	frame:StripTextures()

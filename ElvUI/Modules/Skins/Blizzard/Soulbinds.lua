@@ -5,7 +5,7 @@ local _G = _G
 
 -- SHADOWLANDS
 function S:Blizzard_Soulbinds()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Soulbinds) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.soulbinds) then return end
 
 	local frame = _G.SoulbindViewer
 	frame:StripTextures()

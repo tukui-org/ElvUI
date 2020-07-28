@@ -95,7 +95,7 @@ local function ColorMemberName(self, info)
 end
 
 function S:Blizzard_Communities()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Communities) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
 
 	local CommunitiesFrame = _G.CommunitiesFrame
 	CommunitiesFrame:StripTextures()

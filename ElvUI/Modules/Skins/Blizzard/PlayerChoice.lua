@@ -27,7 +27,7 @@ local function HandleOptionButton(button)
 end
 
 function S:Blizzard_PlayerChoiceUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.PlayerChoice) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.playerChoice) then return end
 
 	local frame = _G.PlayerChoiceFrame
 	hooksecurefunc(frame, 'Update', function()

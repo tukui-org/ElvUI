@@ -9,7 +9,7 @@ local CreateFrame = CreateFrame
 -- DONT FORGET TO ADD ME TO THE OPTIONS
 
 function S:Blizzard_CovenantPreviewUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.CovenantPreview) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantPreview) then return end
 
 	local frame = _G.CovenantPreviewFrame
 	frame.InfoPanel.Description:SetTextColor(1, 1, 1)

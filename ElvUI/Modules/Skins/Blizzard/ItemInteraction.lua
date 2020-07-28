@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 function S:Blizzard_ItemInteractionUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.ItemInteraction) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemInteraction) then return end
 
 	local ItemInteractionFrame = _G.ItemInteractionFrame
 	S:HandlePortraitFrame(ItemInteractionFrame)
