@@ -370,6 +370,13 @@ do
 		frame.backdrop:Point('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
 		frame.backdrop:SetFrameLevel(frame.backdrop:GetFrameLevel() + 1)
 
+		if frame.ScrollUpBorder then
+			frame.ScrollUpBorder:Hide()
+		end
+		if frame.ScrollDownBorder then
+			frame.ScrollDownBorder:Hide()
+		end
+
 		for _, Button in pairs({ ScrollUpButton, ScrollDownButton }) do
 			if Button then
 				S:HandleNextPrevButton(Button)

@@ -8,6 +8,17 @@ function S:Blizzard_NewPlayerExperienceGuide()
 
 	local frame = _G.GuideFrame
 	S:HandlePortraitFrame(frame)
+
+	S:HandleScrollBar(frame.ScrollFrame.ScrollBar)
+	S:HandleButton(frame.ScrollFrame.ConfirmationButton)
+
+	frame.ScrollFrame.Child.ObjectivesFrame:StripTextures()
+	frame.ScrollFrame.Child.ObjectivesFrame:CreateBackdrop('Transparent')
+
+	-- Texts if parchment is enabled
+	-- TO DO: Add Parchment option
+	frame.Title:SetTextColor(1, 1, 1)
+	frame.ScrollFrame.Child.Text:SetTextColor(1, 1, 1)
 end
 
 S:AddCallbackForAddon('Blizzard_NewPlayerExperienceGuide')
