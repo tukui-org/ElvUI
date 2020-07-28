@@ -89,7 +89,7 @@ end
 function NP:Update_ThreatIndicator(nameplate)
 	local db = NP.db.threat
 
-	if (NP.InstanceType ~= 'arena' and NP.InstanceType ~= 'pvp') and nameplate.frameType == 'ENEMY_NPC' and db.enable then
+	if nameplate.frameType == 'ENEMY_NPC' and db.enable then
 		if not nameplate:IsElementEnabled('ThreatIndicator') then
 			nameplate:EnableElement('ThreatIndicator')
 		end
