@@ -11,8 +11,7 @@ local texCoords = {
 function UF:PostUpdate_PhaseIcon(isInSamePhase)
 	
 	if not isInSamePhase then
-		local warPhased = UnitPhaseReason(self.__owner.unit) == 2
-		self:SetTexCoord(unpack(texCoords[warPhased and 2 or 1]))
+		self:SetTexCoord(unpack(texCoords[UnitPhaseReason(self.__owner.unit) == 2 and 2 or 1]))
 	end
 end
 
