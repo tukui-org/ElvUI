@@ -8,10 +8,9 @@ local texCoords = {
 	{34/128,  66/128,  1/64,  33/64},
 }
 
-function UF:PostUpdate_PhaseIcon(isInSamePhase)
-	
-	if not isInSamePhase then
-		self:SetTexCoord(unpack(texCoords[UnitPhaseReason(self.__owner.unit) == 2 and 2 or 1]))
+function UF:PostUpdate_PhaseIcon(isPhased)
+	if isPhased then
+		self:SetTexCoord(unpack(texCoords[isPhased == 2 and 2 or 1]))
 	end
 end
 

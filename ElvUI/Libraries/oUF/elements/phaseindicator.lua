@@ -39,21 +39,21 @@ local function Update(self, event, unit)
 		element:PreUpdate()
 	end
 
-	local phaseReason = UnitPhaseReason(unit)
-	if(phaseReason == 2 and not phaseReason and UnitIsPlayer(unit) and UnitIsConnected(unit)) then
+	local isPhased = UnitPhaseReason(unit)
+	if(isPhased and UnitIsPlayer(unit) and UnitIsConnected(unit)) then
 		element:Show()
 	else
 		element:Hide()
 	end
 
-	--[[ Callback: PhaseIndicator:PostUpdate(isInSamePhase)
+	--[[ Callback: PhaseIndicator:PostUpdate(isPhased)
 	Called after the element has been updated.
 
 	* self          - the PhaseIndicator element
-	* isInSamePhase - indicates whether the unit is in the same phase as the player (boolean)
+	* isPhased		- returns enum of what type of phase if not in the same phase as the player (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(isInSamePhase)
+		return element:PostUpdate(isPhased)
 	end
 end
 
