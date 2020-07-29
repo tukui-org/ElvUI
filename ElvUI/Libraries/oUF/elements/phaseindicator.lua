@@ -50,7 +50,7 @@ local function Update(self, event, unit)
 	Called after the element has been updated.
 
 	* self          - the PhaseIndicator element
-	* isPhased		- returns enum of what type of phase if not in the same phase as the player (boolean)
+	* isPhased		- returns enum of what type of phase if not in the same phase as the player (number)
 	--]]
 	if(element.PostUpdate) then
 		return element:PostUpdate(isPhased)
