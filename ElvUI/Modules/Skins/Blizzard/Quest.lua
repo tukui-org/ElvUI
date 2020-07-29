@@ -217,9 +217,13 @@ function S:BlizzardQuestFrames()
 			_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
 			_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
 
-			-- 9.0 Shadowlands
-			if _G.QuestInfoObjective1 then _G.QuestInfoObjective1:SetTextColor(1, 1, 1) end
-			if _G.QuestInfoObjective2 then _G.QuestInfoObjective2:SetTextColor(1, 1, 1) end
+			-- 9.0 Shadowlands Objective Text Colors
+			for i = 1, 3 do -- Maybe more
+				local text = _G["QuestInfoObjective"..i]
+				if text then
+					text:SetTextColor(1, 1, 1)
+				end
+			end
 
 			if _G.QuestInfoRewardsFrame.SpellLearnText then
 				_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
