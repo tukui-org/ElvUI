@@ -1,17 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+local UnitPhaseReason = UnitPhaseReason
 local unpack = unpack
-local UnitIsWarModePhased = UnitIsWarModePhased
-
 local texCoords = {
 	{1/128,   33/128,  1/64,  33/64},
 	{34/128,  66/128,  1/64,  33/64},
 }
 
 function UF:PostUpdate_PhaseIcon(isInSamePhase)
+	
 	if not isInSamePhase then
-		self:SetTexCoord(unpack(texCoords[UnitIsWarModePhased(self.__owner.unit) and 2 or 1]))
+		local warPhased = UnitPhaseReason(self.__owner.unit) == 2
+		self:SetTexCoord(unpack(texCoords[warPhased and 2 or 1]))
 	end
 end
 
