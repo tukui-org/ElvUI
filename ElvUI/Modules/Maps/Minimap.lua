@@ -426,6 +426,13 @@ function M:Initialize()
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
 	self:RegisterEvent('ADDON_LOADED')
 	self:UpdateSettings()
+
+	-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
+	hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", function()
+		local pos = E.db.general.minimap.icons.classHall.position or "TOPLEFT"
+		GarrisonLandingPageMinimapButton:ClearAllPoints()
+		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.classHall.xOffset or 0, E.db.general.minimap.icons.classHall.yOffset or 0)
+	end)
 end
 
 E:RegisterModule(M:GetName())
