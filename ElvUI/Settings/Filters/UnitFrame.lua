@@ -983,10 +983,23 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[335293] = Defaults(), -- Chain Link
 		[335270] = Defaults(), -- Chain This One!
 		[335295] = Defaults(), -- Shattering Chain
+		-- Huntsman Altimor
+		[335304] = Defaults(), -- Sinseeker
+		[334971] = Defaults(), -- Jagged Claws
+		[335113] = Defaults(), -- Huntsman's Mark 1
+		[335112] = Defaults(), -- Huntsman's Mark 2
+		[335111] = Defaults(), -- Huntsman's Mark 3
+		[334945] = Defaults(), -- Bloody Thrash
+		-- The Council of Blood
+		[327773] = Defaults(), -- Drain Essence 1
+		[327052] = Defaults(), -- Drain Essence 2
+		[328334] = Defaults(), -- Tactical Advance
+		[330848] = Defaults(), -- Wrong Moves
+		[331706] = Defaults(), -- Scarlet Letter
+		[331636] = Defaults(), -- Dark Recital 1
+		[331637] = Defaults(), -- Dark Recital 2
 		-- Artificer Xy'mox
 		-- Shriekwing
-		-- Huntsman Altimor
-		-- The Council of Blood
 		-- Stoneborn Generals
 		-- Sire Denathrius
 
