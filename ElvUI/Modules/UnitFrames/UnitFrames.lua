@@ -918,8 +918,13 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 end
 
 function UF:GetSmartVisibilitySetting(setting, group, smart, db)
-	if smart and UF.SmartSettings[group] and UF.SmartSettings[group][setting] ~= nil then
-		return UF.SmartSettings[group][setting]
+	if smart then
+		local options = UF.SmartSettings[group]
+		local value = options and options[setting]
+
+		if value ~= nil then
+			return value
+		end
 	end
 
 	return db[setting]
