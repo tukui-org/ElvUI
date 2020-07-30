@@ -172,6 +172,17 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleCheckBox(OptionalReagents.HideUnownedButton)
 	S:HandleScrollBar(OptionalReagents.ScrollList.ScrollFrame.scrollBar)
 	S:HandleButton(OptionalReagents.CloseButton)
+
+	-- Needs probably updates - or/also a different way
+	hooksecurefunc(_G.OptionalReagentListLineMixin, "UpdateDisplay", function(self)
+		self.NameFrame:Kill()
+		self:DisableDrawLayer("ARTWORK")
+		S:HandleIcon(self.Icon)
+		self.IconBorder:SetAlpha(0)
+
+		self:CreateBackdrop()
+		self.backdrop:SetAllPoints()
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_TradeSkillUI')
