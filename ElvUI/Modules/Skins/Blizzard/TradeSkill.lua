@@ -92,7 +92,7 @@ function S:Blizzard_TradeSkillUI()
 			ResultIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 			ResultIcon:GetNormalTexture():SetInside()
 		end
-		ResultIcon:SetTemplate()
+		ResultIcon:CreateBackdrop()
 		ResultIcon.IconBorder:SetTexture()
 		ResultIcon.ResultBorder:SetTexture()
 
@@ -116,6 +116,30 @@ function S:Blizzard_TradeSkillUI()
 
 			Button.NameFrame:Kill()
 		end
+
+		-- 9.0 Shadowlands
+		for i = 1, #TradeSkillFrame.DetailsFrame.Contents.OptionalReagents do
+			local Button = TradeSkillFrame.DetailsFrame.Contents.OptionalReagents[i]
+			local Icon = Button.Icon
+
+			Icon:SetTexCoord(unpack(E.TexCoords))
+			Icon:SetDrawLayer("OVERLAY")
+			if not Icon.backdrop then
+				Icon.backdrop = CreateFrame("Frame", nil, Button, "BackdropTemplate")
+				Icon.backdrop:SetFrameLevel(Button:GetFrameLevel() - 1)
+				Icon.backdrop:SetTemplate()
+				Icon.backdrop:SetOutside(Icon)
+			end
+
+			Button.SocketGlow:SetAtlas(nil)
+			Button.SocketGlow:SetColorTexture(0, 1, 0, 0.2)
+			Button.SocketGlow:SetInside(Icon.backdrop)
+
+			--WIP :x
+			--Button.SelectedTexture:SetAtlas(nil)
+
+			Button.NameFrame:Kill()
+		end
 	end)
 
 	hooksecurefunc(TradeSkillFrame.RecipeList, "Refresh", function()
@@ -131,11 +155,23 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleCloseButton(TradeSkillFrame.DetailsFrame.GuildFrame.CloseButton)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton)
 	TradeSkillFrame.DetailsFrame.GuildFrame:StripTextures()
-	TradeSkillFrame.DetailsFrame.GuildFrame:SetTemplate("Transparent")
+	TradeSkillFrame.DetailsFrame.GuildFrame:CreateBackdrop("Transparent")
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()
-	TradeSkillFrame.DetailsFrame.GuildFrame.Container:SetTemplate("Transparent")
-	-- S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
+	TradeSkillFrame.DetailsFrame.GuildFrame.Container:CreateBackdrop("Transparent")
+	--S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
+
+	-- 9.0 Shadowlands
+	local OptionalReagents = TradeSkillFrame.OptionalReagentList
+	OptionalReagents:StripTextures()
+	OptionalReagents:CreateBackdrop('Transparent')
+
+	OptionalReagents.ScrollList:StripTextures()
+	OptionalReagents.ScrollList:CreateBackdrop('Transparent')
+
+	S:HandleCheckBox(OptionalReagents.HideUnownedButton)
+	S:HandleScrollBar(OptionalReagents.ScrollList.ScrollFrame.scrollBar)
+	S:HandleButton(OptionalReagents.CloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_TradeSkillUI')
