@@ -8,6 +8,7 @@ local utf8sub = string.utf8sub
 
 local CloseAllWindows = CloseAllWindows
 local CloseMenus = CloseMenus
+local PlaySound = PlaySound
 local CreateFrame = CreateFrame
 local GarrisonLandingPageMinimapButton_OnClick = GarrisonLandingPageMinimapButton_OnClick
 local GetMinimapZoneText = GetMinimapZoneText
@@ -16,7 +17,6 @@ local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
-local PlaySound = PlaySound
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
 local ToggleAchievementFrame = ToggleAchievementFrame
 local ToggleCharacter = ToggleCharacter
@@ -26,13 +26,17 @@ local ToggleFriendsFrame = ToggleFriendsFrame
 local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
+local hooksecurefunc = hooksecurefunc
+local Minimap = _G.Minimap
+
+-- GLOBALS: GetMinimapShape
 
 --Create the new minimap tracking dropdown frame and initialize it
 local ElvUIMiniMapTrackingDropDown = CreateFrame("Frame", "ElvUIMiniMapTrackingDropDown", _G.UIParent, "UIDropDownMenuTemplate")
 ElvUIMiniMapTrackingDropDown:SetID(1)
 ElvUIMiniMapTrackingDropDown:SetClampedToScreen(true)
 ElvUIMiniMapTrackingDropDown:Hide()
-_G.UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, _G.MiniMapTrackingDropDown_Initialize, "MENU");
+_G.UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, _G.MiniMapTrackingDropDown_Initialize, "MENU")
 ElvUIMiniMapTrackingDropDown.noResize = true
 
 --Create the minimap micro menu
@@ -91,27 +95,44 @@ local menuList = {
 	func = function()
 		if not _G.GameMenuFrame:IsShown() then
 			if _G.VideoOptionsFrame:IsShown() then
-				_G.VideoOptionsFrameCancel:Click();
+				_G.VideoOptionsFrameCancel:Click()
 			elseif _G.AudioOptionsFrame:IsShown() then
-				_G.AudioOptionsFrameCancel:Click();
+				_G.AudioOptionsFrameCancel:Click()
 			elseif _G.InterfaceOptionsFrame:IsShown() then
-				_G.InterfaceOptionsFrameCancel:Click();
+				_G.InterfaceOptionsFrameCancel:Click()
 			end
 
-			CloseMenus();
+			CloseMenus()
 			CloseAllWindows()
 			PlaySound(850) --IG_MAINMENU_OPEN
-			ShowUIPanel(_G.GameMenuFrame);
+			ShowUIPanel(_G.GameMenuFrame)
 		else
 			PlaySound(854) --IG_MAINMENU_QUIT
-			HideUIPanel(_G.GameMenuFrame);
-			MainMenuMicroButton_SetNormal();
+			HideUIPanel(_G.GameMenuFrame)
+			MainMenuMicroButton_SetNormal()
 		end
 	end}
 }
 
 tinsert(menuList, {text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end})
 tinsert(menuList, {text = _G.HELP_BUTTON, func = ToggleHelpFrame})
+
+function M:HandleGarrisonMinimapButton()
+	local button = _G.GarrisonLandingPageMinimapButton
+	if button then
+		local db = E.db.general.minimap.icons.classHall
+		local scale, pos = db.scale or 1, db.position or "TOPLEFT"
+		button:ClearAllPoints()
+		button:Point(pos, Minimap, pos, db.xOffset or 0, db.yOffset or 0)
+		button:SetScale(scale)
+
+		local box = _G.GarrisonLandingPageTutorialBox
+		if box then
+			box:SetScale(1/scale)
+			box:SetClampedToScreen(true)
+		end
+	end
+end
 
 function M:GetLocTextColor()
 	local pvpType = GetZonePVPInfo()
@@ -153,7 +174,7 @@ function M:Minimap_OnMouseDown(btn)
 			E:DropDown(menuList, menuFrame, -160, 0)
 		end
 	elseif btn == "RightButton" then
-		_G.ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, "cursor");
+		_G.ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, "cursor")
 	else
 		_G.Minimap_OnClick(self)
 	end
@@ -169,9 +190,9 @@ end
 
 function M:Update_ZoneText()
 	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
-	_G.Minimap.location:FontTemplate(E.Libs.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
-	_G.Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
-	_G.Minimap.location:SetTextColor(M:GetLocTextColor())
+	Minimap.location:FontTemplate(E.Libs.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
+	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
 
 function M:PLAYER_REGEN_ENABLED()
@@ -179,21 +200,23 @@ function M:PLAYER_REGEN_ENABLED()
 	self:UpdateSettings()
 end
 
-local isResetting
-local function ResetZoom()
-	_G.Minimap:SetZoom(0)
-	_G.MinimapZoomIn:Enable(); --Reset enabled state of buttons
-	_G.MinimapZoomOut:Disable();
-	isResetting = false
-end
-
-local function SetupZoomReset()
-	if E.db.general.minimap.resetZoom.enable and not isResetting then
-		isResetting = true
-		E:Delay(E.db.general.minimap.resetZoom.time, ResetZoom)
+do
+	local isResetting
+	local function ResetZoom()
+		Minimap:SetZoom(0)
+		_G.MinimapZoomIn:Enable(); --Reset enabled state of buttons
+		_G.MinimapZoomOut:Disable()
+		isResetting = false
 	end
+
+	local function SetupZoomReset()
+		if E.db.general.minimap.resetZoom.enable and not isResetting then
+			isResetting = true
+			E:Delay(E.db.general.minimap.resetZoom.time, ResetZoom)
+		end
+	end
+	hooksecurefunc(Minimap, "SetZoom", SetupZoomReset)
 end
-hooksecurefunc(_G.Minimap, "SetZoom", SetupZoomReset)
 
 function M:UpdateSettings()
 	if InCombatLockdown() then
@@ -201,14 +224,13 @@ function M:UpdateSettings()
 		return
 	end
 
-	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or _G.Minimap:GetWidth() + 10
+	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
 	E.MinimapWidth, E.MinimapHeight = E.MinimapSize, E.MinimapSize
 
-	_G.Minimap:Size(E.MinimapSize, E.MinimapSize)
+	Minimap:Size(E.MinimapSize, E.MinimapSize)
 
 	local MinimapPanel = _G.MinimapPanel
 	local MMHolder = _G.MMHolder
-	local Minimap = _G.Minimap
 
 	MMHolder:Width((Minimap:GetWidth() + E.Border + E.Spacing*3))
 	MinimapPanel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
@@ -229,25 +251,12 @@ function M:UpdateSettings()
 
 	_G.MinimapMover:Size(MMHolder:GetSize())
 
-	--Stop here if ElvUI Minimap is disabled.
-	if not E.private.general.minimap.enable then
-		return;
-	end
+	-- Stop here if ElvUI Minimap is disabled.
+	if not E.private.general.minimap.enable then return end
 
-	local GarrisonLandingPageMinimapButton = _G.GarrisonLandingPageMinimapButton
-	if GarrisonLandingPageMinimapButton then
-		local pos = E.db.general.minimap.icons.classHall.position or "TOPLEFT"
-		local scale = E.db.general.minimap.icons.classHall.scale or 1
-		GarrisonLandingPageMinimapButton:ClearAllPoints()
-		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.classHall.xOffset or 0, E.db.general.minimap.icons.classHall.yOffset or 0)
-		GarrisonLandingPageMinimapButton:SetScale(scale)
-
-		local GarrisonLandingPageTutorialBox = _G.GarrisonLandingPageTutorialBox
-		if GarrisonLandingPageTutorialBox then
-			GarrisonLandingPageTutorialBox:SetScale(1/scale)
-			GarrisonLandingPageTutorialBox:SetClampedToScreen(true)
-		end
-	end
+	-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
+	hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", M.HandleGarrisonMinimapButton)
+	M.HandleGarrisonMinimapButton()
 
 	local GameTimeFrame = _G.GameTimeFrame
 	if GameTimeFrame then
@@ -325,14 +334,13 @@ local function MinimapPostDrag()
 	_G.MinimapBackdrop:SetAllPoints(_G.Minimap)
 end
 
-local function GetMinimapShape()
+function M:GetMinimapShape()
 	return 'SQUARE'
 end
 
 function M:SetGetMinimapShape()
-	--This is just to support for other mods
-	_G.GetMinimapShape = GetMinimapShape
-	_G.Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
+	GetMinimapShape = M.GetMinimapShape --This is just to support for other mods
+	Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
 end
 
 function M:Initialize()
@@ -341,7 +349,6 @@ function M:Initialize()
 
 	menuFrame:SetTemplate("Transparent", true)
 
-	local Minimap = _G.Minimap
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point("TOPRIGHT", E.UIParent, "TOPRIGHT", -3, -3)
 	mmholder:Width((Minimap:GetWidth() + 29))
@@ -426,13 +433,6 @@ function M:Initialize()
 	self:RegisterEvent("ZONE_CHANGED", "Update_ZoneText")
 	self:RegisterEvent('ADDON_LOADED')
 	self:UpdateSettings()
-
-	-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
-	hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", function()
-		local pos = E.db.general.minimap.icons.classHall.position or "TOPLEFT"
-		GarrisonLandingPageMinimapButton:ClearAllPoints()
-		GarrisonLandingPageMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.classHall.xOffset or 0, E.db.general.minimap.icons.classHall.yOffset or 0)
-	end)
 end
 
 E:RegisterModule(M:GetName())
