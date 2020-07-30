@@ -117,7 +117,7 @@ local menuList = {
 tinsert(menuList, {text = _G.BLIZZARD_STORE, func = function() _G.StoreMicroButton:Click() end})
 tinsert(menuList, {text = _G.HELP_BUTTON, func = ToggleHelpFrame})
 
-function M:HandleGarrisonMinimapButton()
+function M:HandleGarrisonButton()
 	local button = _G.GarrisonLandingPageMinimapButton
 	if button then
 		local db = E.db.general.minimap.icons.classHall
@@ -255,8 +255,8 @@ function M:UpdateSettings()
 	if not E.private.general.minimap.enable then return end
 
 	-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
-	hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", M.HandleGarrisonMinimapButton)
-	M.HandleGarrisonMinimapButton()
+	hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", M.HandleGarrisonButton)
+	M.HandleGarrisonButton()
 
 	local GameTimeFrame = _G.GameTimeFrame
 	if GameTimeFrame then
