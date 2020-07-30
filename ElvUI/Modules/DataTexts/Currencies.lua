@@ -11,6 +11,7 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 local EXPANSION_NAME7 = EXPANSION_NAME7
+local EXPANSION_NAME8 = EXPANSION_NAME8
 local OTHER = OTHER
 
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
@@ -87,6 +88,15 @@ local function OnEnter()
 	AddInfo(1719) -- CORRUPTED_MEMENTOS
 	AddInfo(1755) -- COALESCING_VISIONS
 	AddInfo(1803) -- ECHOES_OF_NYALOTHA
+
+	DT.tooltip:AddLine(EXPANSION_NAME8) -- Shadowlands
+	AddInfo(1751) -- Freed Soul
+	AddInfo(1822) -- Renown
+	AddInfo(1813) -- Reservoir Anima
+	AddInfo(1812) -- Sanctum Anima Weaver
+	AddInfo(1811) -- Sanctum Architect
+	AddInfo(1810) -- Sanctum Artisan
+	AddInfo(1828) -- Soul Ash
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddLine(OTHER)
