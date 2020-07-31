@@ -254,8 +254,6 @@ function M:UpdateSettings()
 	-- Stop here if ElvUI Minimap is disabled.
 	if not E.private.general.minimap.enable then return end
 
-	-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
-	hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", M.HandleGarrisonButton)
 	M.HandleGarrisonButton()
 
 	local GameTimeFrame = _G.GameTimeFrame
@@ -399,6 +397,9 @@ function M:Initialize()
 	end
 
 	_G.MiniMapMailIcon:SetTexture(E.Media.Textures.Mail)
+
+	-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
+	hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", M.HandleGarrisonButton)
 
 	--Hide the BlopRing on Minimap
 	Minimap:SetArchBlobRingScalar(0)
