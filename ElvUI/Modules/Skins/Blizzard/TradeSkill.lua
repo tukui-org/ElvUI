@@ -174,12 +174,19 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleButton(OptionalReagents.CloseButton)
 
 	-- Needs probably updates - or/also a different way
-	hooksecurefunc(_G.OptionalReagentListLineMixin, "UpdateDisplay", function(frame)
+	hooksecurefunc(_G.OptionalReagentListLineMixin, 'UpdateDisplay', function(frame)
 		frame.NameFrame:Kill()
-		frame:DisableDrawLayer("ARTWORK")
+		frame:DisableDrawLayer('ARTWORK')
 
-		S:HandleIcon(frame.Icon)
-		S:HandleIconBorder(frame.IconBorder)
+		S:HandleIcon(frame.Icon, true)
+		frame.Icon:SetSize(32, 32)
+		frame.Icon:ClearAllPoints()
+		frame.Icon:SetPoint('TOPLEFT', frame, 'TOPLEFT', 3, -3)
+
+		if frame.Icon.backdrop then
+			frame.Icon.backdrop:SetAllPoints(frame.Icon)
+		end
+		S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
 
 		if not frame.backdrop then
 			frame:CreateBackdrop()
