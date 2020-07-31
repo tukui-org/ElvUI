@@ -135,6 +135,11 @@ UF.headerGroupBy = {
 		header:SetAttribute("groupBy", nil)
 		header:SetAttribute("filterOnPet", true) --This is the line that matters. Without this, it sorts based on the owners name
 	end,
+	INDEX = function(header)
+		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		header:SetAttribute("sortMethod", "INDEX")
+		header:SetAttribute("groupBy", nil)
+	end,
 }
 
 local POINT_COLUMN_ANCHOR_TO_DIRECTION = {
