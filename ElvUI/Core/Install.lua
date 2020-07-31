@@ -35,7 +35,7 @@ local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 -- GLOBALS: ElvUIInstallFrame
 
 local CURRENT_PAGE = 0
-local MAX_PAGE = 10
+local MAX_PAGE = 9
 
 local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
 local ELV_TOONS = {
@@ -571,22 +571,6 @@ function E:SetPage(PageNum)
 		end)
 		InstallOption2Button:SetText(L["New Profile"])
 	elseif PageNum == 5 then
-		f.SubTitle:SetText(L["Private Settings Setup"])
-		f.Desc1:SetText(L["Please click the button below to setup your Private Settings."])
-		f.Desc2:SetText(L["These settings controls the modules on and off functionality."])
-		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', function()
-			E.charSettings:SetProfile('Default')
-			E:NextPage()
-		end)
-		InstallOption1Button:SetText(L["Shared Profile"])
-		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', function()
-			E.charSettings:SetProfile(E.mynameRealm)
-			E:NextPage()
-		end)
-		InstallOption2Button:SetText(L["New Profile"])
-	elseif PageNum == 6 then
 		f.SubTitle:SetText(L["Theme Setup"])
 		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
 		f.Desc2:SetText(L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."])
@@ -600,7 +584,7 @@ function E:SetPage(PageNum)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
-	elseif PageNum == 7 then
+	elseif PageNum == 6 then
 		f.SubTitle:SetText(_G.UISCALE)
 		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
 		InstallSlider:Show()
@@ -637,7 +621,7 @@ function E:SetPage(PageNum)
 
 		InstallOption2Button:SetText(L["Preview"])
 		f.Desc3:SetText(L["Importance: |cffFF3333High|r"])
-	elseif PageNum == 8 then
+	elseif PageNum == 7 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
 		f.Desc2:SetText(L["This will change the layout of your unitframes and actionbars."])
@@ -651,7 +635,7 @@ function E:SetPage(PageNum)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
 		InstallOption3Button:SetText(L["Caster DPS"])
-	elseif PageNum == 9 then
+	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Auras"])
 		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
 		f.Desc2:SetText(L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."])
@@ -662,7 +646,7 @@ function E:SetPage(PageNum)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E:SetupAuras() end)
 		InstallOption2Button:SetText(L["Icons Only"])
-	elseif PageNum == 10 then
+	elseif PageNum == 9 then
 		f.SubTitle:SetText(L["Installation Complete"])
 		f.Desc1:SetText(L["You are now finished with the installation process. If you are in need of technical support please visit us at http://www.tukui.org."])
 		f.Desc2:SetText(L["Please click the button below so you can setup variables and ReloadUI."])
