@@ -151,6 +151,7 @@ V.skins = {
 		playerChoice = true,
 		soulbinds = true,
 		runeforge = true,
+		weeklyRewards = true,
 	},
 }
 

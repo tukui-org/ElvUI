@@ -107,5 +107,6 @@ E.Options.args.skins.args.blizzard.values = {
 	tutorials = L["Tutorials"],
 	voidstorage = L["VOID_STORAGE"],
 	warboard = L["Warboard"],
+	weeklyRewards = L["Weekly Rewards"],
 	worldmap = L["WORLD_MAP"],
 }
