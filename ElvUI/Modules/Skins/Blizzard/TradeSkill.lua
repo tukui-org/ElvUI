@@ -132,11 +132,14 @@ function S:Blizzard_TradeSkillUI()
 			end
 
 			Button.SocketGlow:SetAtlas(nil)
-			Button.SocketGlow:SetColorTexture(0, 1, 0, 0.2)
+			Button.SocketGlow:SetColorTexture(0, 1, 0)
+			Button.SocketGlow:ClearAllPoints()
 			Button.SocketGlow:SetInside(Icon.backdrop)
 
-			--WIP :x
-			--Button.SelectedTexture:SetAtlas(nil)
+			Button.SelectedTexture:SetAtlas(nil)
+			Button.SelectedTexture:SetColorTexture(0.9, 0.8, 0.1)
+			Button.SelectedTexture:ClearAllPoints()
+			Button.SelectedTexture:SetOutside(Icon.backdrop)
 
 			Button.NameFrame:Kill()
 		end
