@@ -7,10 +7,8 @@ function S:Blizzard_WeeklyRewards()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.weeklyRewards) then return end
 
 	local WeeklyRewardsFrame = _G.WeeklyRewardsFrame
-	WeeklyRewardsFrame:StripTextures()
 	WeeklyRewardsFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(WeeklyRewardsFrame.CloseButton)
-	S:HandleButton(WeeklyRewardsFrame.ActivateButton)
 
 	WeeklyRewardsFrame.Name:FontTemplate(nil, 22)
 	WeeklyRewardsFrame.Description:FontTemplate()
