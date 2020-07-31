@@ -6,12 +6,14 @@ local _G = _G
 function S:Blizzard_WeeklyRewards()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.weeklyRewards) then return end
 
-	local WeeklyRewardsFrame = _G.WeeklyRewardsFrame
-	WeeklyRewardsFrame:CreateBackdrop('Transparent')
-	S:HandleCloseButton(WeeklyRewardsFrame.CloseButton)
+	local frame = _G.WeeklyRewardsFrame
+	if E.private.skins.parchmentRemoverEnable then
+		frame:StripTextures()
+	end
 
-	WeeklyRewardsFrame.Name:FontTemplate(nil, 22)
-	WeeklyRewardsFrame.Description:FontTemplate()
+	frame:CreateBackdrop('Transparent')
+
+	S:HandleCloseButton(frame.CloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_WeeklyRewards')
