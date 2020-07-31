@@ -3143,6 +3143,10 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		}
 	end
 
+	if groupName == 'party' then
+		config.args.sortingGroup.args.groupBy.values.INDEX = L["Index"]
+	end
+
 	if groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
 		config.args.positionsGroup.args.numGroups.disabled = function()
 			return E.db.unitframe.smartRaidFilter
