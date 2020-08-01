@@ -5,8 +5,7 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
--- SHADOWLANDS
--- DONT FORGET TO ADD ME TO THE OPTIONS
+-- 9.0 SHADOWLANDS
 
 function S:Blizzard_CovenantPreviewUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantPreview) then return end
@@ -15,8 +14,8 @@ function S:Blizzard_CovenantPreviewUI()
 	frame.InfoPanel.Description:SetTextColor(1, 1, 1)
 	frame.InfoPanel.AbilitiesLabel:SetTextColor(1, .8, 0)
 
-	hooksecurefunc(frame, 'TryShow', function()
-		if not frame.IsSkinned then
+	hooksecurefunc(frame, 'TryShow', function(covenantInfo)
+		if not covenantInfo and not frame.IsSkinned then
 			frame.Background:SetAlpha(0)
 			frame.BorderFrame:SetAlpha(0)
 
@@ -54,6 +53,8 @@ function S:Blizzard_CovenantPreviewUI()
 			button.IconBorder:StripTextures()
 		end
 	end)
+
+	frame.ModelSceneContainer.Background:SetTexCoord(0.00970873786408, 0.99029126213592, 0.0092807424594, 0.9907192575406)
 
 	S:HandleCheckBox(_G.TransmogAndMountDressupFrame.ShowMountCheckButton)
 end
