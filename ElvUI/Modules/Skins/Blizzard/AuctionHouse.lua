@@ -134,7 +134,6 @@ local function HandleSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
-	S:HandleIconBorder(ItemButton.IconBorder)
 	S:HandleEditBox(frame.QuantityInput.InputBox)
 	S:HandleButton(frame.QuantityInput.MaxButton)
 	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.GoldBox)
@@ -171,7 +170,6 @@ local function HandleTokenSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
-	S:HandleIconBorder(ItemButton.IconBorder)
 
 	S:HandleButton(frame.PostButton)
 	HandleAuctionButtons(frame.DummyRefreshButton)
@@ -298,7 +296,7 @@ local function LoadSkin()
 
 	for _, EditBox in pairs(EditBoxes) do
 		S:HandleEditBox(EditBox)
-		EditBox:SetTextInsets(1, 1, -1, 1)
+		--EditBox:SetTextInsets(1, 1, -1, 1)
 	end
 
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
