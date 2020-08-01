@@ -178,6 +178,7 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc(_G.ACHIEVEMENT_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)				--[Skin]: Achievement Timer Bar
 	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"SetBlockHeader",SkinItemButton)					--[Skin]: Quest Item Buttons
 	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)				--[Skin]: World Quest Item Buttons
+	hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)			--[Skin]: Campaign Quest Item Buttons
 end
 
 S:AddCallback('ObjectiveTrackerFrame')
