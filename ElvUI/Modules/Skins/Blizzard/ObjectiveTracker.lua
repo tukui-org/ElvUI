@@ -26,6 +26,7 @@ local function ColorProgressBars(self, value)
 	S:StatusBarColorGradient(self.Bar, value, 100)
 end
 
+-- 9.0 Needs Update
 local function SkinItemButton(_, block)
 	local item = block.itemButton
 	if item and not item.skinned then
@@ -45,6 +46,7 @@ local function SkinItemButton(_, block)
 	end
 end
 
+-- 9.0 Needs Update
 local function SkinProgressBars(_, _, line)
 	local progressBar = line and line.ProgressBar
 	local bar = progressBar and progressBar.Bar
