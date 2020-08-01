@@ -133,12 +133,10 @@ function S:Blizzard_TradeSkillUI()
 
 			Button.SocketGlow:SetAtlas(nil)
 			Button.SocketGlow:SetColorTexture(0, 1, 0)
-			Button.SocketGlow:ClearAllPoints()
 			Button.SocketGlow:SetInside(Icon.backdrop)
 
 			Button.SelectedTexture:SetAtlas(nil)
 			Button.SelectedTexture:SetColorTexture(0.9, 0.8, 0.1)
-			Button.SelectedTexture:ClearAllPoints()
 			Button.SelectedTexture:SetOutside(Icon.backdrop)
 
 			Button.NameFrame:Kill()
@@ -188,8 +186,8 @@ function S:Blizzard_TradeSkillUI()
 
 		if frame.Icon.backdrop then
 			frame.Icon.backdrop:SetAllPoints(frame.Icon)
+			S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
 		end
-		S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
 
 		if not frame.backdrop then
 			frame:CreateBackdrop()

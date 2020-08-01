@@ -456,14 +456,13 @@ function S:BlizzardQuestFrames()
 
 	-- +/- Buttons for the CampaignHeaders in the QuestLog
 	hooksecurefunc(_G.CampaignCollapseButtonMixin, "UpdateState", function(button, isCollapsed)
-		button:SetSize(16, 16)
-
 		if isCollapsed then
 			button:SetNormalTexture(E.Media.Textures.PlusButton)
 		else
 			button:SetNormalTexture(E.Media.Textures.MinusButton)
 		end
 
+		button:SetSize(16, 16)
 		button:SetPushedTexture("")
 	end)
 end

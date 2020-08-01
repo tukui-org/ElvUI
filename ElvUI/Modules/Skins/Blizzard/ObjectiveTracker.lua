@@ -181,10 +181,9 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)			--[Skin]: Campaign Quest Item Buttons
 
 	-- The Maw - Torghast: Scenario Tracker Buff Block
-	local buffBlock = _G.ScenarioBlocksFrame.MawBuffsBlock.Container.List
-
-	buffBlock:HookScript("OnShow", function(self)
-		for mawBuff in self.buffPool:EnumerateActive() do
+	_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:HookScript("OnShow", function(frame)
+		if not frame.buffPool then return end
+		for mawBuff in frame.buffPool:EnumerateActive() do
 			if mawBuff:IsShown() and not mawBuff.IsSkinned then
 				mawBuff.Border:SetAlpha(0)
 				mawBuff.CircleMask:Hide()

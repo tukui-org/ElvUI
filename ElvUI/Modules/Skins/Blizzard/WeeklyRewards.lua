@@ -16,7 +16,10 @@ local function SkinActivityFrame(frame, isObject)
 			frame.Border:SetPoint("LEFT", frame, "RIGHT", 3, 0)
 		end
 	end
-	frame:CreateBackdrop()
+
+	if not frame.backdrop then
+		frame:CreateBackdrop()
+	end
 end
 
 function S:Blizzard_WeeklyRewards()
@@ -24,26 +27,25 @@ function S:Blizzard_WeeklyRewards()
 
 	-- /run UIParent_OnEvent({}, "WEEKLY_REWARDS_SHOW")
 	local frame = _G.WeeklyRewardsFrame
+	local header = frame.HeaderFrame
 
 	if E.private.skins.parchmentRemoverEnable then
 		frame:StripTextures()
-	end
-	frame:CreateBackdrop('Transparent')
-	S:HandleCloseButton(frame.CloseButton)
-
-	local header = frame.HeaderFrame
-	if E.private.skins.parchmentRemoverEnable then
 		header:StripTextures()
 	end
+
+	frame:CreateBackdrop('Transparent')
 	header:CreateBackdrop('Transparent')
 	header:Point('TOP', 1, -42)
+
+	S:HandleCloseButton(frame.CloseButton)
 
 	SkinActivityFrame(frame.RaidFrame)
 	SkinActivityFrame(frame.MythicFrame)
 	SkinActivityFrame(frame.PVPFrame)
 
-	for _, frame in pairs(frame.Activities) do
-		SkinActivityFrame(frame, true)
+	for _, activity in pairs(frame.Activities) do
+		SkinActivityFrame(activity, true)
 	end
 end
 

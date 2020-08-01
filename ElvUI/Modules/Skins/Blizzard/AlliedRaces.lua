@@ -46,6 +46,7 @@ function S:Blizzard_AlliedRacesUI()
 		for button in s.abilityPool:EnumerateActive() do
 			select(3, button:GetRegions()):Hide()
 			S:HandleIcon(button.Icon, true)
+
 			if E.private.skins.parchmentRemoverEnable then
 				button.Text:SetTextColor(1, 1, 1)
 			end

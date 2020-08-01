@@ -5,6 +5,8 @@ local _G = _G
 local unpack = unpack
 local select = select
 local pairs = pairs
+local ipairs = ipairs
+local next = next
 local rad = rad
 
 local CreateFrame = CreateFrame
@@ -144,25 +146,6 @@ local function SkinAbilitiesInfo()
 		index = index + 1
 		header = _G["EncounterJournalInfoHeader"..index]
 	end
-end
-
-local function ItemSetsFrame(_, button)
-	local frame = button:GetParent()
-
-	if not button.Icon.backdrop then
-		S:HandleIcon(button.Icon, true)
-		button.Border:SetAlpha(0)
-
-		if E.private.skins.parchmentRemoverEnable then
-			frame:StripTextures()
-			frame.ItemLevel:SetTextColor(1, 1, 1)
-			frame:CreateBackdrop("Transparent")
-			frame.backdrop:Point("BOTTOMLEFT")
-			frame.backdrop:Point("TOPLEFT", 10, 0)
-		end
-	end
-
-	button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
 end
 
 local function HandleTopTabs(tab)
