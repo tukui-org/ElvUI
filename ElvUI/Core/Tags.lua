@@ -886,14 +886,8 @@ ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 end
 
 do
-	local gold = "|A:nameplates-icon-elite-gold:16:16|a"
-	local silver = "|A:nameplates-icon-elite-silver:16:16|a"
-	local classifications = {
-		elite = gold,
-		worldboss = gold,
-		rareelite = silver,
-		rare = silver,
-	}
+	local gold, silver = "|A:nameplates-icon-elite-gold:16:16|a", "|A:nameplates-icon-elite-silver:16:16|a"
+	local classifications = { elite = gold, worldboss = gold, rareelite = silver, rare = silver }
 
 	ElvUF.Tags.Events['classification:icon'] = 'UNIT_NAME_UPDATE'
 	ElvUF.Tags.Methods['classification:icon'] = function(unit)
