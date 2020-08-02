@@ -49,6 +49,7 @@ end
 
 function AB:SetupExtraButton()
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
+	local ExtraAbilityContainer = _G.ExtraAbilityContainer -- 9.0 Shadowlands?
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
@@ -59,6 +60,12 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
+
+	-- Please check this 9.0 Shadowlands
+	ExtraAbilityContainer:SetParent(ExtraActionBarHolder)
+	ExtraAbilityContainer:ClearAllPoints()
+	ExtraAbilityContainer:SetPoint('CENTER', ExtraActionBarHolder, 'CENTER')
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
@@ -124,6 +131,7 @@ function AB:SetupExtraButton()
 
 	if HasExtraActionBar() then
 		ExtraActionBarFrame:Show()
+		ExtraAbilityContainer:Show()
 	end
 
 	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraActionButton')
