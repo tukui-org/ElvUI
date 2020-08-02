@@ -15,15 +15,12 @@ Chat: Made sure Voice Icons appears when Panel is hidden.
 Chat: Added a **Panel Snapping** option, which allows you to toggle the snapping into panels.  
 Config: Profile and Private confirmation popup was sometimes displaying incorrectly.  
 Locales: Updated Translations for Portuguese (Thanks to @Aleczk) and French (Thanks to @Pristie).  
-
-
 ___
 
 # Version 11.46 [ July 15th 2020 ]
 
 **Hotfixes:**  
 Plugin Installer hiccup.  
-
 ___
 
 # Version 11.45 [ July 15th 2020 ]
@@ -40,8 +37,6 @@ Datatexts: **Custom Panel** settings will actually export now.
 Datatexts: One **Currency** error and one **Custom Currency** error have suddenly vanished from the UI.  
 Tags: **[power:%s]** will work on NPCs again, **[mana:%s]** will return mana always again, **[additionalmana:%s]** was added for the additional mana display.  
 UI: You can once again move Blizzard's Player Alt Power Bar with our movers.  
-
-
 ___
 
 # Version 11.44 [ July 9th 2020 ]
@@ -50,7 +45,6 @@ ___
 Chat: Fixed incompatibility with Total RP 3.  
 Nameplate: Added Castbar Interrupted color setting.  
 Actionbars: Fixed paging.  
-
 ___
 
 # Version 11.43 [ July 9th 2020 ]
@@ -62,7 +56,6 @@ Aura Highlight: This actually works again too.
 Options: Readd the confirmation popup to Reset Profile button.  
 Movers: Fixed an error while placing PlayerPowerBarAlt with StickFrames disabled.  
 ElvUI_DTBars2 is now depreciated and forced off.  
-
 ___
 
 # Version 11.42 [ July 8th 2020 ]
