@@ -74,6 +74,7 @@ local unitExists = Private.unitExists
 -- ElvUI block
 local _G = _G
 local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 local setfenv, getfenv = setfenv, getfenv
 local rawget, rawset, select = rawget, rawset, select
 local format, tinsert, tremove = format, tinsert, tremove
