@@ -631,7 +631,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		nameplate.WidgetContainer:RegisterForWidgetSet(UnitWidgetSet(unit))
-		nameplate.WidgetContainer:ProcessAllWidgets()
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
