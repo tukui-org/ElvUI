@@ -237,13 +237,15 @@ ElvUF.Tags.Methods['afk'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['faction:icon'] = 'UNIT_FACTION'
-ElvUF.Tags.Methods['faction:icon'] = function(unit)
-	local factionGroup = UnitFactionGroup(unit)
-	if factionGroup == 'Horde' then
-		return "|TInterface/FriendsFrame/PlusManz-Horde:16:16|t"
-	elseif factionGroup == 'Alliance' then
-		return "|TInterface/FriendsFrame/PlusManz-Alliance:16:16|t"
+do
+	local faction = {
+		Horde = "|TInterface/FriendsFrame/PlusManz-Horde:16:16|t",
+		Alliance = "|TInterface/FriendsFrame/PlusManz-Alliance:16:16|t"
+	}
+
+	ElvUF.Tags.Events['faction:icon'] = 'UNIT_FACTION'
+	ElvUF.Tags.Methods['faction:icon'] = function(unit)
+		return faction[UnitFactionGroup(unit)]
 	end
 end
 
@@ -883,15 +885,20 @@ ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['classification:icon'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['classification:icon'] = function(unit)
-	if UnitIsPlayer(unit) then return end
+do
+	local gold = "|A:nameplates-icon-elite-gold:16:16|a"
+	local silver = "|A:nameplates-icon-elite-silver:16:16|a"
+	local classifications = {
+		elite = gold,
+		worldboss = gold,
+		rareelite = silver,
+		rare = silver,
+	}
 
-	local classification = UnitClassification(unit)
-	if classification == "elite" or classification == "worldboss" then
-		return "|A:nameplates-icon-elite-gold:16:16|a"
-	elseif classification == "rareelite" or classification == "rare" then
-		return "|A:nameplates-icon-elite-silver:16:16|a"
+	ElvUF.Tags.Events['classification:icon'] = 'UNIT_NAME_UPDATE'
+	ElvUF.Tags.Methods['classification:icon'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return classifications[UnitClassification(unit)]
 	end
 end
 
