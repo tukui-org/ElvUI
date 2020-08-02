@@ -844,8 +844,8 @@ L["Number of repeat characters while in combat before the chat editbox is automa
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "대화창의 스크롤이 맨 아래가 아니라면 이 값 만큼 시간이 지났을 때 맨 아래로 자동 스크롤링 됩니다."
 L["Objective Frame Height"] = "퀘스트프레임 세로길이"
 L["Off Cooldown"] = true
-L["Off Tank Bad Transtion"] = true
-L["Off Tank Good Transtion"] = true
+L["Off Tank Bad Transition"] = true
+L["Off Tank Good Transition"] = true
 L["Off Tank"] = true
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "디자인 설정을 무시하고 자원바를 생명력바 뒤로 겹친 후, 드러남 정도를 결정합니다.|n|n0으로 설정하면 겹치지 않고 디자인 설정대로 배치합니다."
 L["Offset position for text."] = "위치 기준점에서부터 얼마나 떨어진 곳에 문자를 배치할지 결정합니다."

@@ -846,8 +846,8 @@ L["Number of repeat characters while in combat before the chat editbox is automa
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Tempo, em segundos, para rolar o bate-papo até ao fim caso nao tenha rolado completamente."
 L["Objective Frame Height"] = "Altura do Quadro de Objetivos"
 L["Off Cooldown"] = "Fora do Tempo de Recarga"
-L["Off Tank Bad Transtion"] = true
-L["Off Tank Good Transtion"] = true
+L["Off Tank Bad Transition"] = true
+L["Off Tank Good Transition"] = true
 L["Off Tank"] = true
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "A distância entre barra de poder e a barra de vida, definir 0 para desactivar."
 L["Offset position for text."] = "Deslocamento da posição do texto"

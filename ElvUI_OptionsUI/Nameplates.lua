@@ -1991,13 +1991,13 @@ local function UpdateFilterGroup()
 									type = "toggle"
 								},
 								offTankGoodTransition = {
-									name = L["Off Tank Good Transtion"],
+									name = L["Off Tank Good Transition"],
 									customWidth = 200,
 									order = 7,
 									type = "toggle"
 								},
 								offTankBadTransition = {
-									name = L["Off Tank Bad Transtion"],
+									name = L["Off Tank Bad Transition"],
 									customWidth = 200,
 									order = 8,
 									type = "toggle"
@@ -6108,7 +6108,7 @@ E.Options.args.nameplate = {
 									end
 								},
 								offTankColorGoodTransition = {
-									name = L["Off Tank Good Transtion"],
+									name = L["Off Tank Good Transition"],
 									order = 6,
 									type = "color",
 									hasAlpha = false,
@@ -6117,7 +6117,7 @@ E.Options.args.nameplate = {
 									end
 								},
 								offTankColorBadTransition = {
-									name = L["Off Tank Bad Transtion"],
+									name = L["Off Tank Bad Transition"],
 									order = 7,
 									type = "color",
 									hasAlpha = false,
