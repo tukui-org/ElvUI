@@ -2,16 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local ipairs, pairs, select = ipairs, pairs, select
 local ceil, unpack = ceil, unpack
+local ipairs, pairs, select = ipairs, pairs, select
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
 local ClearOverrideBindings = ClearOverrideBindings
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
-local GetFlyoutID = GetFlyoutID
-local GetMouseFocus = GetMouseFocus
-local GetNumFlyouts, GetFlyoutInfo = GetNumFlyouts, GetFlyoutInfo
 local GetOverrideBarIndex = GetOverrideBarIndex
 local GetVehicleBarIndex = GetVehicleBarIndex
 local hooksecurefunc = hooksecurefunc
@@ -124,20 +121,23 @@ AB.customExitButton = {
 }
 
 function AB:PositionAndSizeBar(barName)
-	local buttonSpacing = E:Scale(AB.db[barName].buttonspacing)
-	local backdropSpacing = E:Scale((AB.db[barName].backdropSpacing or AB.db[barName].buttonspacing))
-	local buttonsPerRow = AB.db[barName].buttonsPerRow
-	local numButtons = AB.db[barName].buttons
-	local size = E:Scale(AB.db[barName].buttonsize)
-	local point = AB.db[barName].point
+	local db = AB.db[barName]
+
+	local buttonSpacing = E:Scale(db.buttonspacing)
+	local backdropSpacing = E:Scale(db.backdropSpacing or db.buttonspacing)
+	local buttonsPerRow = db.buttonsPerRow
+	local numButtons = db.buttons
+	local size = E:Scale(db.buttonsize)
+	local point = db.point
 	local numColumns = ceil(numButtons / buttonsPerRow)
-	local widthMult = AB.db[barName].widthMult
-	local heightMult = AB.db[barName].heightMult
-	local visibility = AB.db[barName].visibility
+	local widthMult = db.widthMult
+	local heightMult = db.heightMult
+	local visibility = db.visibility
 	local bar = AB.handledBars[barName]
 
-	bar.db = AB.db[barName]
-	bar.db.position = nil; --Depreciated
+	bar.db = db
+	bar.db.position = nil --Depreciated
+	bar.mouseover = db.mouseover
 
 	if visibility and visibility:match('[\n\r]') then
 		visibility = visibility:gsub('[\n\r]','')
@@ -151,7 +151,7 @@ function AB:PositionAndSizeBar(barName)
 		numColumns = 1
 	end
 
-	if bar.db.backdrop == true then
+	if db.backdrop == true then
 		bar.backdrop:Show()
 	else
 		bar.backdrop:Hide()
@@ -160,13 +160,11 @@ function AB:PositionAndSizeBar(barName)
 		heightMult = 1
 	end
 
-	local sideSpacing = (bar.db.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
+	local sideSpacing = (db.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
 	--Size of all buttons + Spacing between all buttons + Spacing between additional rows of buttons + Spacing between backdrop and buttons + Spacing on end borders with non-thin borders
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult - 1)) + (sideSpacing*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult - 1)) + (sideSpacing*2)
 	bar:SetSize(barWidth, barHeight)
-
-	bar.mouseover = bar.db.mouseover
 
 	local horizontalGrowth, verticalGrowth
 	if point == "TOPLEFT" or point == "TOPRIGHT" then
@@ -181,19 +179,19 @@ function AB:PositionAndSizeBar(barName)
 		horizontalGrowth = "LEFT"
 	end
 
-	if bar.db.mouseover then
+	if db.mouseover then
 		bar:SetAlpha(0)
 	else
-		bar:SetAlpha(bar.db.alpha)
+		bar:SetAlpha(db.alpha)
 	end
 
-	if bar.db.inheritGlobalFade then
+	if db.inheritGlobalFade then
 		bar:SetParent(AB.fadeParent)
 	else
 		bar:SetParent(E.UIParent)
 	end
 
-	bar:EnableMouse(not bar.db.clickThrough)
+	bar:EnableMouse(not db.clickThrough)
 
 	local button, lastButton, lastColumnButton
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
@@ -204,7 +202,7 @@ function AB:PositionAndSizeBar(barName)
 		button:ClearAllPoints()
 		button:SetAttribute("showgrid", 1)
 		button:Size(size)
-		button:EnableMouse(not bar.db.clickThrough)
+		button:EnableMouse(not db.clickThrough)
 
 		if i == 1 then
 			local x, y
@@ -249,9 +247,9 @@ function AB:PositionAndSizeBar(barName)
 		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
-	if bar.db.enabled or not bar.initialized then
-		if not bar.db.mouseover then
-			bar:SetAlpha(bar.db.alpha)
+	if db.enabled or not bar.initialized then
+		if not db.mouseover then
+			bar:SetAlpha(db.alpha)
 		end
 
 		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
@@ -281,7 +279,7 @@ function AB:PositionAndSizeBar(barName)
 		UnregisterStateDriver(bar, "visibility")
 	end
 
-	E:SetMoverSnapOffset('ElvAB_'..bar.id, bar.db.buttonspacing / 2)
+	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonspacing / 2)
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		MasqueGroup:ReSkin()
@@ -495,6 +493,7 @@ function AB:UpdateButtonSettings()
 
 	AB:UpdatePetBindings()
 	AB:UpdateStanceBindings()
+	AB:UpdateFlyoutButtons()
 
 	for barName, bar in pairs(AB.handledBars) do
 		if bar then
@@ -976,60 +975,70 @@ function AB:FixKeybindText(button)
 	end
 end
 
-AB.FlyoutButtons = 0
-function AB:SetupFlyoutButton()
-	for i = 1, AB.FlyoutButtons do
-		--prevent error if you don't have max amount of buttons
-		if _G["SpellFlyoutButton"..i] then
-			AB:StyleButton(_G["SpellFlyoutButton"..i], nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
-			_G["SpellFlyoutButton"..i]:StyleButton()
-			_G["SpellFlyoutButton"..i]:HookScript('OnEnter', function(btn)
-				local parent = btn:GetParent()
-				local parentAnchorButton = select(2, parent:GetPoint())
-				if not AB.handledbuttons[parentAnchorButton] then return end
+local function flyoutButtonAnchor(frame)
+	local parent = frame:GetParent()
+	local _, parentAnchorButton = parent:GetPoint()
+	if not AB.handledbuttons[parentAnchorButton] then return end
 
-				local parentAnchorBar = parentAnchorButton:GetParent()
-				AB:Bar_OnEnter(parentAnchorBar)
-			end)
-			_G["SpellFlyoutButton"..i]:HookScript('OnLeave', function(btn)
-				local parent = btn:GetParent()
-				local parentAnchorButton = select(2, parent:GetPoint())
-				if not AB.handledbuttons[parentAnchorButton] then return end
+	return parentAnchorButton:GetParent()
+end
 
-				local parentAnchorBar = parentAnchorButton:GetParent()
-				AB:Bar_OnLeave(parentAnchorBar)
-			end)
+function AB:FlyoutButton_OnEnter()
+	local anchor = flyoutButtonAnchor(self)
+	if anchor then AB:Bar_OnEnter(anchor) end
+end
 
-			if MasqueGroup and E.private.actionbar.masque.actionbars then
-				MasqueGroup:RemoveButton(_G["SpellFlyoutButton"..i]) --Remove first to fix issue with backdrops appearing at the wrong flyout menu
-				MasqueGroup:AddButton(_G["SpellFlyoutButton"..i])
-			end
-		end
+function AB:FlyoutButton_OnLeave()
+	local anchor = flyoutButtonAnchor(self)
+	if anchor then AB:Bar_OnLeave(anchor) end
+end
+
+local function spellFlyoutAnchor(frame)
+	local _, anchorButton = frame:GetPoint()
+	if not AB.handledbuttons[anchorButton] then return end
+
+	return anchorButton:GetParent()
+end
+
+function AB:SpellFlyout_OnEnter()
+	local anchor = spellFlyoutAnchor(self)
+	if anchor then AB:Bar_OnEnter(anchor) end
+end
+
+function AB:SpellFlyout_OnLeave()
+	local anchor = spellFlyoutAnchor(self)
+	if anchor then AB:Bar_OnLeave(anchor) end
+end
+
+function AB:UpdateFlyoutButtons()
+	local btn, i = _G['SpellFlyoutButton1'], 1
+	while btn do
+		AB:SetupFlyoutButton(btn)
+
+		i = i + 1
+		btn = _G['SpellFlyoutButton'..i]
+	end
+end
+
+function AB:SetupFlyoutButton(button)
+	if not AB.handledbuttons[button] then
+		AB:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
+		button:HookScript('OnEnter', AB.FlyoutButton_OnEnter)
+		button:HookScript('OnLeave', AB.FlyoutButton_OnLeave)
 	end
 
-	_G.SpellFlyout:HookScript('OnEnter', function(btn)
-		local anchorButton = select(2, btn:GetPoint())
-		if not AB.handledbuttons[anchorButton] then return end
+	if not InCombatLockdown() then
+		button:Size(AB.db.flyoutSize)
+	end
 
-		local parentAnchorBar = anchorButton:GetParent()
-		AB:Bar_OnEnter(parentAnchorBar)
-	end)
-
-	_G.SpellFlyout:HookScript('OnLeave', function(btn)
-		local anchorButton = select(2, btn:GetPoint())
-		if not AB.handledbuttons[anchorButton] then return end
-
-		local parentAnchorBar = anchorButton:GetParent()
-		AB:Bar_OnLeave(parentAnchorBar)
-	end)
+	if MasqueGroup and E.private.actionbar.masque.actionbars then
+		MasqueGroup:RemoveButton(button) --Remove first to fix issue with backdrops appearing at the wrong flyout menu
+		MasqueGroup:AddButton(button)
+	end
 end
 
 function AB:StyleFlyout(button)
-	if not button.FlyoutArrow or not button.FlyoutArrow:IsShown() then return end
-
-	if not LAB.buttonRegistry[button] then return end
-	if not button.FlyoutBorder then return end
-	local combat = InCombatLockdown()
+	if not (button.FlyoutBorder and button.FlyoutArrow and button.FlyoutArrow:IsShown() and LAB.buttonRegistry[button]) then return end
 
 	button.FlyoutBorder:SetAlpha(0)
 	button.FlyoutBorderShadow:SetAlpha(0)
@@ -1038,49 +1047,44 @@ function AB:StyleFlyout(button)
 	_G.SpellFlyoutVerticalBackground:SetAlpha(0)
 	_G.SpellFlyoutBackgroundEnd:SetAlpha(0)
 
-	for i=1, GetNumFlyouts() do
-		local _, _, numSlots, isKnown = GetFlyoutInfo(GetFlyoutID(i))
-		if numSlots and isKnown and (numSlots > AB.FlyoutButtons) then
-			AB.FlyoutButtons = numSlots
-		end
-	end
-
 	local actionbar = button:GetParent()
 	local parent = actionbar and actionbar:GetParent()
 	local parentName = parent and parent:GetName()
-	if parentName == "SpellBookSpellIconsFrame" then return end
+	if parentName == "SpellBookSpellIconsFrame" then
+		return
+	elseif actionbar then
+		-- Change arrow direction depending on what bar the button is on
 
-	--Change arrow direction depending on what bar the button is on
-	local arrowDistance = 2
-	if ((_G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button) or GetMouseFocus() == button) then
-		arrowDistance = 5
-	end
+		local arrowDistance = 2
+		if _G.SpellFlyout:IsShown() and _G.SpellFlyout:GetParent() == button then
+			arrowDistance = 5
+		end
 
-	if actionbar then
-		local direction = actionbar.db and actionbar.db.flyoutDirection or "AUTOMATIC"
-		local point = E:GetScreenQuadrant(actionbar)
+		local direction = (actionbar.db and actionbar.db.flyoutDirection) or "AUTOMATIC"
+		local point = direction == "AUTOMATIC" and E:GetScreenQuadrant(actionbar)
 		if point == "UNKNOWN" then return end
 
-		if ((direction == "AUTOMATIC" and strfind(point, "TOP")) or direction == "DOWN") then
+		local noCombat = not InCombatLockdown()
+		if direction == "DOWN" or (point and strfind(point, "TOP")) then
 			button.FlyoutArrow:ClearAllPoints()
 			button.FlyoutArrow:Point("BOTTOM", button, "BOTTOM", 0, -arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 180)
-			if not combat then button:SetAttribute("flyoutDirection", "DOWN") end
-		elseif ((direction == "AUTOMATIC" and point == "RIGHT") or direction == "LEFT") then
+			if noCombat then button:SetAttribute("flyoutDirection", "DOWN") end
+		elseif direction == "LEFT" or point == "RIGHT" then
 			button.FlyoutArrow:ClearAllPoints()
 			button.FlyoutArrow:Point("LEFT", button, "LEFT", -arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 270)
-			if not combat then button:SetAttribute("flyoutDirection", "LEFT") end
-		elseif ((direction == "AUTOMATIC" and point == "LEFT") or direction == "RIGHT") then
+			if noCombat then button:SetAttribute("flyoutDirection", "LEFT") end
+		elseif direction == "RIGHT" or point == "LEFT" then
 			button.FlyoutArrow:ClearAllPoints()
 			button.FlyoutArrow:Point("RIGHT", button, "RIGHT", arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 90)
-			if not combat then button:SetAttribute("flyoutDirection", "RIGHT") end
-		elseif ((direction == "AUTOMATIC" and (point == "CENTER" or strfind(point, "BOTTOM"))) or direction == "UP") then
+			if noCombat then button:SetAttribute("flyoutDirection", "RIGHT") end
+		elseif direction == "UP" or point == "CENTER" or (point and strfind(point, "BOTTOM")) then
 			button.FlyoutArrow:ClearAllPoints()
 			button.FlyoutArrow:Point("TOP", button, "TOP", 0, arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 0)
-			if not combat then button:SetAttribute("flyoutDirection", "UP") end
+			if noCombat then button:SetAttribute("flyoutDirection", "UP") end
 		end
 	end
 end
@@ -1100,7 +1104,7 @@ end
 function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
 		if button._state_type == "action" then
-			local duration = select(2, button:GetCooldown())
+			local _, duration = button:GetCooldown()
 			AB:UpdateChargeCooldown(button, duration)
 			AB:SetButtonDesaturation(button, duration)
 		end
@@ -1225,7 +1229,9 @@ function AB:Initialize()
 	SetCVar('lockActionBars', (AB.db.lockActionBars == true and 1 or 0))
 	_G.LOCK_ACTIONBAR = (AB.db.lockActionBars == true and "1" or "0") -- Keep an eye on this, in case it taints
 
-	_G.SpellFlyout:HookScript("OnShow", AB.SetupFlyoutButton)
+	hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
+	_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
+	_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
 end
 
 E:RegisterModule(AB:GetName())

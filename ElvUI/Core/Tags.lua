@@ -11,7 +11,6 @@ local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
 
-local CreateTextureMarkup = CreateTextureMarkup
 local UnitFactionGroup = UnitFactionGroup
 local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
@@ -64,7 +63,6 @@ local UnitPowerType = UnitPowerType
 local UnitPVPName = UnitPVPName
 local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
-local CreateAtlasMarkup = CreateAtlasMarkup
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
 
@@ -240,11 +238,15 @@ ElvUF.Tags.Methods['afk'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['faction:icon'] = 'UNIT_FACTION'
-ElvUF.Tags.Methods['faction:icon'] = function(unit)
-	local factionGroup = UnitFactionGroup(unit)
-	if factionGroup == 'Horde' or factionGroup == 'Alliance' then
-		return CreateTextureMarkup(format([[Interface\FriendsFrame\PlusManz-%s]], factionGroup), 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+do
+	local faction = {
+		Horde = "|TInterface/FriendsFrame/PlusManz-Horde:16:16|t",
+		Alliance = "|TInterface/FriendsFrame/PlusManz-Alliance:16:16|t"
+	}
+
+	ElvUF.Tags.Events['faction:icon'] = 'UNIT_FACTION'
+	ElvUF.Tags.Methods['faction:icon'] = function(unit)
+		return faction[UnitFactionGroup(unit)]
 	end
 end
 
@@ -270,9 +272,9 @@ end
 ElvUF.Tags.Events['status:icon'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['status:icon'] = function(unit)
 	if UnitIsAFK(unit) then
-		return CreateTextureMarkup([[Interface\FriendsFrame\StatusIcon-Away]], 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+		return "|TInterface/FriendsFrame/StatusIcon-Away:16:16|t"
 	elseif UnitIsDND(unit) then
-		return CreateTextureMarkup([[Interface\FriendsFrame\StatusIcon-DnD]], 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+		return "|TInterface/FriendsFrame/StatusIcon-DnD:16:16|t"
 	end
 end
 
@@ -884,15 +886,14 @@ ElvUF.Tags.Methods['classificationcolor'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['classification:icon'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['classification:icon'] = function(unit)
-	if UnitIsPlayer(unit) then return end
+do
+	local gold, silver = "|A:nameplates-icon-elite-gold:16:16|a", "|A:nameplates-icon-elite-silver:16:16|a"
+	local classifications = { elite = gold, worldboss = gold, rareelite = silver, rare = silver }
 
-	local classification = UnitClassification(unit)
-	if classification == "elite" or classification == "worldboss" then
-		return CreateAtlasMarkup("nameplates-icon-elite-gold", 16, 16)
-	elseif classification == "rareelite" or classification == 'rare' then
-		return CreateAtlasMarkup("nameplates-icon-elite-silver", 16, 16)
+	ElvUF.Tags.Events['classification:icon'] = 'UNIT_NAME_UPDATE'
+	ElvUF.Tags.Methods['classification:icon'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return classifications[UnitClassification(unit)]
 	end
 end
 

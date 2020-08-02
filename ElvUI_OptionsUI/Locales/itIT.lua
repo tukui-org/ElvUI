@@ -847,8 +847,8 @@ L["Number of repeat characters while in combat before the chat editbox is automa
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = true
 L["Objective Frame Height"] = true
 L["Off Cooldown"] = true
-L["Off Tank Bad Transtion"] = true
-L["Off Tank Good Transtion"] = true
+L["Off Tank Bad Transition"] = true
+L["Off Tank Good Transition"] = true
 L["Off Tank"] = true
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = true
 L["Offset position for text."] = true

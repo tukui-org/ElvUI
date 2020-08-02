@@ -2144,6 +2144,8 @@ P.actionbar = {
 	fontOutline = 'MONOCHROMEOUTLINE',
 	fontColor = { r = 1, g = 1, b = 1 },
 
+	flyoutSize = 32, -- match buttonsize default, blizz default is 28
+
 	macrotext = false,
 	hotkeytext = true,
 

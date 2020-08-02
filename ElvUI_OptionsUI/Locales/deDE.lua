@@ -848,8 +848,8 @@ L["Number of repeat characters while in combat before the chat editbox is automa
 L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."] = "Anzahl der Sekunden um im Chatfenster nach unten zu scrollen, wenn du nicht komplett nach unten gescrollt bist."
 L["Objective Frame Height"] = "Questfenster Höhe"
 L["Off Cooldown"] = "Benutzbar"
-L["Off Tank Bad Transtion"] = "Off Tank schlechter Übergang"
-L["Off Tank Good Transtion"] = "Off Tank guter Übergang"
+L["Off Tank Bad Transition"] = "Off Tank schlechter Übergang"
+L["Off Tank Good Transition"] = "Off Tank guter Übergang"
 L["Off Tank"] = true --No need to translate
 L["Offset of the powerbar to the healthbar, set to 0 to disable."] = "Versatz der Powerleiste zu der Lebensleiste. Setze es auf 0 um den Versatz zu deaktivieren."
 L["Offset position for text."] = "Versatz Positionen für Texte."
