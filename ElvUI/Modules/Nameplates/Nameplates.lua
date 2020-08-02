@@ -577,7 +577,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		local blizzPlate = nameplate:GetParent().UnitFrame
 		nameplate.blizzPlate = blizzPlate
-		nameplate.widget = blizzPlate.WidgetContainer
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
@@ -630,7 +629,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
-		nameplate.WidgetContainer:RegisterForWidgetSet(UnitWidgetSet(unit))
+		nameplate.WidgetContainer:RegisterForWidgetSet(UnitWidgetSet(unit), NP.Widget_DefaultLayout)
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
