@@ -767,6 +767,7 @@ local function unregisterEvents(fontstr)
 end
 
 -- this bullshit is to fix texture strings not adjusting to its inherited alpha
+-- it is a blizzard issue with how texture strings are rendered
 local alphaFix = CreateFrame('Frame')
 alphaFix.fontStrings = {}
 alphaFix:SetScript('OnUpdate', function()
