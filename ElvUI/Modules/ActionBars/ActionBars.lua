@@ -1027,15 +1027,8 @@ function AB:SetupFlyoutButton(button)
 		button:HookScript('OnLeave', AB.FlyoutButton_OnLeave)
 	end
 
-	local spell = not InCombatLockdown() and _G.SpellFlyout:GetParent()
-	if spell then
-		--[[local parent = spell:GetParent()
-		local parentName = parent and parent:GetName()
-		if parentName == "SpellBookSpellIconsFrame" then
-			button:SetSize(spell:GetSize())
-		else]]
-			button:Size(AB.db.flyoutSize)
-		--end
+	if not InCombatLockdown() then
+		button:Size(AB.db.flyoutSize)
 	end
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
