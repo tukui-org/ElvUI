@@ -11,7 +11,6 @@ local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
 
-local CreateTextureMarkup = CreateTextureMarkup
 local UnitFactionGroup = UnitFactionGroup
 local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
@@ -63,7 +62,6 @@ local UnitPowerType = UnitPowerType
 local UnitPVPName = UnitPVPName
 local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
-local CreateAtlasMarkup = CreateAtlasMarkup
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
 
@@ -242,8 +240,10 @@ end
 ElvUF.Tags.Events['faction:icon'] = 'UNIT_FACTION'
 ElvUF.Tags.Methods['faction:icon'] = function(unit)
 	local factionGroup = UnitFactionGroup(unit)
-	if factionGroup == 'Horde' or factionGroup == 'Alliance' then
-		return CreateTextureMarkup(format([[Interface\FriendsFrame\PlusManz-%s]], factionGroup), 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+	if factionGroup == 'Horde' then
+		return "|TInterface/FriendsFrame/PlusManz-Horde:16:16|t"
+	elseif factionGroup == 'Alliance' then
+		return "|TInterface/FriendsFrame/PlusManz-Alliance:16:16|t"
 	end
 end
 
@@ -269,9 +269,9 @@ end
 ElvUF.Tags.Events['status:icon'] = 'PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['status:icon'] = function(unit)
 	if UnitIsAFK(unit) then
-		return CreateTextureMarkup([[Interface\FriendsFrame\StatusIcon-Away]], 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+		return "|TInterface/FriendsFrame/StatusIcon-Away:16:16|t"
 	elseif UnitIsDND(unit) then
-		return CreateTextureMarkup([[Interface\FriendsFrame\StatusIcon-DnD]], 16, 16, 16, 16, 0, 1, 0, 1, 0, 0)
+		return "|TInterface/FriendsFrame/StatusIcon-DnD:16:16|t"
 	end
 end
 
@@ -889,9 +889,9 @@ ElvUF.Tags.Methods['classification:icon'] = function(unit)
 
 	local classification = UnitClassification(unit)
 	if classification == "elite" or classification == "worldboss" then
-		return CreateAtlasMarkup("nameplates-icon-elite-gold", 16, 16)
-	elseif classification == "rareelite" or classification == 'rare' then
-		return CreateAtlasMarkup("nameplates-icon-elite-silver", 16, 16)
+		return "|A:nameplates-icon-elite-gold:16:16|a"
+	elseif classification == "rareelite" or classification == "rare" then
+		return "|A:nameplates-icon-elite-silver:16:16|a"
 	end
 end
 
