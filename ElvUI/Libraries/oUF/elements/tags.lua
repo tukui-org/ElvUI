@@ -74,6 +74,7 @@ local unitExists = Private.unitExists
 -- ElvUI block
 local _G = _G
 local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 local setfenv, getfenv = setfenv, getfenv
 local rawget, rawset, select = rawget, rawset, select
 local format, tinsert, tremove = format, tinsert, tremove
@@ -644,7 +645,7 @@ end
 local function getTagFunc(tagstr)
 	local func = tagPool[tagstr]
 	if(not func) then
-		local format, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
+		local frmt, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
 		local args = {}
 
 		for bracket in tagstr:gmatch(_PATTERN) do
@@ -697,7 +698,7 @@ local function getTagFunc(tagstr)
 			else
 				numTags = -1
 				func = function(self)
-					return self:SetText(bracket)
+					self:SetText(bracket)
 				end
 			end
 			-- end block
@@ -718,7 +719,7 @@ local function getTagFunc(tagstr)
 				end
 
 				-- We do 1, numTags because tmp can hold several unneeded variables.
-				return self:SetFormattedText(format, unpack(tmp, 1, numTags))
+				self:SetFormattedText(frmt, unpack(tmp, 1, numTags))
 			end
 		end
 
@@ -765,6 +766,30 @@ local function unregisterEvents(fontstr)
 	end
 end
 
+-- this bullshit is to fix texture strings not adjusting to its inherited alpha
+-- it is a blizzard issue with how texture strings are rendered
+local alphaFix = CreateFrame('Frame')
+alphaFix.fontStrings = {}
+alphaFix:SetScript('OnUpdate', function()
+	local strs = alphaFix.fontStrings
+	if next(strs) then
+		for fs in next, strs do
+			strs[fs] = nil
+
+			local a = fs:GetAlpha()
+			fs:SetAlpha(0)
+			fs:SetAlpha(a)
+		end
+	else
+		alphaFix:Hide()
+	end
+end)
+
+local function fixAlpha(self)
+	alphaFix.fontStrings[self] = true
+	alphaFix:Show()
+end
+
 local taggedFS = {}
 
 --[[ Tags: frame:Tag(fs, tagstr, ...)
@@ -791,6 +816,12 @@ local function Tag(self, fs, tagstr, ...)
 	end
 
 	-- ElvUI
+	if not fs.__HookedAlphaFix then
+		hooksecurefunc(fs, 'SetText', fixAlpha)
+		hooksecurefunc(fs, 'SetFormattedText', fixAlpha)
+		fs.__HookedAlphaFix = true
+	end
+
 	for escapeSequence, replacement in next, escapeSequences do
 		while tagstr:find(escapeSequence) do
 			tagstr = tagstr:gsub(escapeSequence, replacement)
