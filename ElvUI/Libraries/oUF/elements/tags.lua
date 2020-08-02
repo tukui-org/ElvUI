@@ -645,7 +645,7 @@ end
 local function getTagFunc(tagstr)
 	local func = tagPool[tagstr]
 	if(not func) then
-		local format, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
+		local frmt, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
 		local args = {}
 
 		for bracket in tagstr:gmatch(_PATTERN) do
@@ -698,7 +698,7 @@ local function getTagFunc(tagstr)
 			else
 				numTags = -1
 				func = function(self)
-					return self:SetText(bracket)
+					self:SetText(bracket)
 				end
 			end
 			-- end block
@@ -719,7 +719,7 @@ local function getTagFunc(tagstr)
 				end
 
 				-- We do 1, numTags because tmp can hold several unneeded variables.
-				return self:SetFormattedText(format, unpack(tmp, 1, numTags))
+				self:SetFormattedText(frmt, unpack(tmp, 1, numTags))
 			end
 		end
 
@@ -766,6 +766,29 @@ local function unregisterEvents(fontstr)
 	end
 end
 
+-- this bullshit is to fix texture strings not adjusting to its inherited alpha
+local alphaFix = CreateFrame('Frame')
+alphaFix.fontStrings = {}
+alphaFix:SetScript('OnUpdate', function()
+	local strs = alphaFix.fontStrings
+	if not next(strs) then
+		alphaFix:Hide()
+	end
+
+	for fs in next, strs do
+		strs[fs] = nil
+
+		local a = fs:GetAlpha()
+		fs:SetAlpha(0)
+		fs:SetAlpha(a)
+	end
+end)
+
+local function fixAlpha(self)
+	alphaFix.fontStrings[self] = true
+	alphaFix:Show()
+end
+
 local taggedFS = {}
 
 --[[ Tags: frame:Tag(fs, tagstr, ...)
@@ -792,6 +815,12 @@ local function Tag(self, fs, tagstr, ...)
 	end
 
 	-- ElvUI
+	if not fs.__HookedAlphaFix then
+		hooksecurefunc(fs, 'SetText', fixAlpha)
+		hooksecurefunc(fs, 'SetFormattedText', fixAlpha)
+		fs.__HookedAlphaFix = true
+	end
+
 	for escapeSequence, replacement in next, escapeSequences do
 		while tagstr:find(escapeSequence) do
 			tagstr = tagstr:gsub(escapeSequence, replacement)
