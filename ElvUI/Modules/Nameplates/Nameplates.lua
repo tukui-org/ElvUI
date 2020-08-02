@@ -279,6 +279,7 @@ function NP:StylePlate(nameplate)
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	nameplate.WidgetXPBar = NP:Construct_WidgetXPBar(nameplate)
+	nameplate.WidgetContainer = NP:Construct_WidgetContainer(nameplate)
 
 	NP:Construct_Auras(nameplate)
 
@@ -629,6 +630,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
+		nameplate.WidgetContainer:RegisterForWidgetSet(UnitWidgetSet(unit))
+		nameplate.WidgetContainer:ProcessAllWidgets()
+
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		NP:StyleFilterClear(nameplate) -- keep this at the top
@@ -652,6 +656,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.Power.cur = nil
 		--- WidgetXPBar
 		nameplate.npcID = nil
+
+		nameplate.WidgetContainer:UnregisterForWidgetSet()
 
 		NP:StyleFilterClearVariables(nameplate) -- keep this at the end
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
