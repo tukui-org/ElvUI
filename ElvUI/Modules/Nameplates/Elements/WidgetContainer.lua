@@ -3,7 +3,8 @@ local NP = E:GetModule('NamePlates')
 
 function NP:Construct_WidgetContainer(nameplate)
 	local WidgetContainer = CreateFrame('Frame', nil, nameplate, 'UIWidgetContainerTemplate')
-	WidgetContainer:Point('BOTTOM', nameplate, 'TOP', 0, 10)
+	WidgetContainer:Hide()
+	WidgetContainer:SetPoint('BOTTOM', nameplate, 'TOP')
 
 	return WidgetContainer
 end
