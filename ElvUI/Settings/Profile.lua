@@ -2040,6 +2040,7 @@ P.unitframe.units.party.targetsGroup.name.text_format = '[namecolor][name:medium
 P.unitframe.units.party.targetsGroup.enable = false
 
 P.unitframe.units.raid = CopyTable(P.unitframe.units.party)
+P.unitframe.units.raid.groupBy = 'GROUP'
 P.unitframe.units.raid.buffs.numrows = 1
 P.unitframe.units.raid.buffs.perrow = 3
 P.unitframe.units.raid.castbar = nil
