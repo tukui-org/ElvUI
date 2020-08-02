@@ -771,16 +771,16 @@ local alphaFix = CreateFrame('Frame')
 alphaFix.fontStrings = {}
 alphaFix:SetScript('OnUpdate', function()
 	local strs = alphaFix.fontStrings
-	if not next(strs) then
+	if next(strs) then
+		for fs in next, strs do
+			strs[fs] = nil
+
+			local a = fs:GetAlpha()
+			fs:SetAlpha(0)
+			fs:SetAlpha(a)
+		end
+	else
 		alphaFix:Hide()
-	end
-
-	for fs in next, strs do
-		strs[fs] = nil
-
-		local a = fs:GetAlpha()
-		fs:SetAlpha(0)
-		fs:SetAlpha(a)
 	end
 end)
 
