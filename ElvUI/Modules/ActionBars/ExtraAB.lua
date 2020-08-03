@@ -84,7 +84,16 @@ function AB:SetupExtraButton()
 			if spellButton and not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
 				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
-				S:HandleIcon(spellButton.Icon, true)
+				spellButton:StyleButton(nil, nil, nil, true)
+				spellButton:CreateBackdrop()
+				spellButton.Icon:SetDrawLayer('ARTWORK')
+				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
+				spellButton.Icon:SetInside()
+
+				if spellButton.Cooldown then
+					spellButton.Cooldown.CooldownOverride = 'actionbar'
+					E:RegisterCooldown(spellButton.Cooldown)
+				end
 
 				spellButton.IsSkinned = true
 			end
@@ -122,6 +131,7 @@ function AB:SetupExtraButton()
 		end
 	end
 
+	--[[
 	local button = ZoneAbilityFrame.SpellButton
 	if button then
 		button:SetNormalTexture('')
@@ -142,7 +152,7 @@ function AB:SetupExtraButton()
 			button.Cooldown.CooldownOverride = 'actionbar'
 			E:RegisterCooldown(button.Cooldown)
 		end
-	end
+	end]]
 
 	if HasExtraActionBar() then
 		ExtraActionBarFrame:Show()
