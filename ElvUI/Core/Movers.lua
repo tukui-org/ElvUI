@@ -117,8 +117,6 @@ local function OnDragStop(self)
 		E:UIFrameFadeOut(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 0.4)
 	end
 
-	isDragging = false
-
 	if E.db.general.stickyFrames then
 		Sticky:StopMoving(self)
 	else
@@ -133,6 +131,7 @@ local function OnDragStop(self)
 
 	coordFrame.child = nil
 	coordFrame:Hide()
+	isDragging = false
 
 	HandlePostDrag(self)
 
