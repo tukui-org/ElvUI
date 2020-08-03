@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
+local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
@@ -71,10 +72,24 @@ function AB:SetupExtraButton()
 	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
 
+	-- Please check this 9.0 Shadowlands
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:Point('CENTER', ZoneAbilityHolder, 'CENTER')
+	ZoneAbilityFrame.Style:SetAlpha(0)
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
+
+	hooksecurefunc(ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(button)
+		for spellButton in button.SpellButtonContainer:EnumerateActive() do
+			if spellButton and not spellButton.IsSkinned then
+				spellButton.NormalTexture:SetAlpha(0)
+				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+				S:HandleIcon(spellButton.Icon, true)
+
+				spellButton.IsSkinned = true
+			end
+		end
+	end)
 
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
