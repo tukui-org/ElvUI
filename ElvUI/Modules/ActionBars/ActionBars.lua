@@ -181,8 +181,10 @@ function AB:PositionAndSizeBar(barName)
 
 	if db.mouseover then
 		bar:SetAlpha(0)
+		AB:FadeBarBlings(bar, 0)
 	else
 		bar:SetAlpha(db.alpha)
+		AB:FadeBarBlings(bar, db.alpha)
 	end
 
 	if db.inheritGlobalFade then
@@ -248,35 +250,30 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	if db.enabled or not bar.initialized then
-		if not db.mouseover then
-			bar:SetAlpha(db.alpha)
-		end
-
-		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
 		if AB.barDefaults['bar'..bar.id].conditions:find("[form,noform]") then
+			bar:SetAttribute("newCondition", gsub(AB.barDefaults['bar'..bar.id].conditions, " %[form,noform%] 0; ", ""))
 			bar:SetAttribute("hasTempBar", true)
-
-			local newCondition = gsub(AB.barDefaults['bar'..bar.id].conditions, " %[form,noform%] 0; ", "")
-			bar:SetAttribute("newCondition", newCondition)
 		else
 			bar:SetAttribute("hasTempBar", false)
 		end
 
-		bar:Show()
-		RegisterStateDriver(bar, "visibility", visibility); -- this is ghetto
+		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
+		RegisterStateDriver(bar, "visibility", visibility)
 		RegisterStateDriver(bar, "page", page)
 		bar:SetAttribute("page", page)
+		bar:Show()
 
 		if not bar.initialized then
 			bar.initialized = true
 			AB:PositionAndSizeBar(barName)
 			return
 		end
+
 		E:EnableMover(bar.mover:GetName())
 	else
 		E:DisableMover(bar.mover:GetName())
-		bar:Hide()
 		UnregisterStateDriver(bar, "visibility")
+		bar:Hide()
 	end
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonspacing / 2)
@@ -637,6 +634,7 @@ end
 
 function AB:FadeBlings(alpha)
 	if AB.db.hideCooldownBling then return end
+
 	for button in pairs(AB.handledbuttons) do
 		if button.header and button.header:GetParent() == AB.fadeParent then
 			AB:FadeBlingTexture(button.cooldown, alpha)
@@ -646,20 +644,19 @@ end
 
 function AB:FadeBarBlings(bar, alpha)
 	if AB.db.hideCooldownBling then return end
-	if bar.buttons then
-		for _, button in ipairs(bar.buttons) do
-			AB:FadeBlingTexture(button.cooldown, alpha)
-		end
+
+	for _, button in ipairs(bar.buttons) do
+		AB:FadeBlingTexture(button.cooldown, alpha)
 	end
 end
 
 function AB:Bar_OnEnter(bar)
 	if bar:GetParent() == AB.fadeParent then
-		if(not AB.fadeParent.mouseLock) then
+		if not AB.fadeParent.mouseLock then
 			E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 			AB:FadeBlings(1)
 		end
-	elseif(bar.mouseover) then
+	elseif bar.mouseover then
 		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
 		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
@@ -718,11 +715,8 @@ function AB:BlizzardOptionsPanel_OnEvent()
 end
 
 function AB:FadeParent_OnEvent()
-	local cur, max = UnitHealth("player"), UnitHealthMax("player")
-	local cast, channel = UnitCastingInfo("player"), UnitChannelInfo("player")
-	local target, focus = UnitExists("target"), UnitExists("focus")
-	local combat = UnitAffectingCombat("player")
-	if (cast or channel) or (cur ~= max) or (target or focus) or combat then
+	if UnitCastingInfo("player") or UnitChannelInfo("player") or UnitExists("target") or UnitExists("focus")
+	or UnitAffectingCombat("player") or (UnitHealth("player") ~= UnitHealthMax("player")) then
 		self.mouseLock = true
 		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 		AB:FadeBlings(1)

@@ -168,8 +168,10 @@ function AB:PositionAndSizeBarPet()
 	bar.mouseover = self.db.barPet.mouseover
 	if bar.mouseover then
 		bar:SetAlpha(0)
+		AB:FadeBarBlings(bar, 0)
 	else
 		bar:SetAlpha(bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
 
 	if self.db.barPet.inheritGlobalFade then

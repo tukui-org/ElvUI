@@ -22,6 +22,7 @@ local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
 local WispSplode = [[Interface\Icons\Spell_Nature_WispSplode]]
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate')
+bar.buttons = {}
 
 function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 	local numForms = GetNumShapeshiftForms()
@@ -188,8 +189,10 @@ function AB:PositionAndSizeBarShapeShift()
 
 		if self.db.stanceBar.mouseover == true then
 			bar:SetAlpha(0)
+			AB:FadeBarBlings(bar, 0)
 		else
 			bar:SetAlpha(bar.db.alpha)
+			AB:FadeBarBlings(bar, bar.db.alpha)
 		end
 
 		if i == 1 then
@@ -332,7 +335,6 @@ function AB:CreateBarShapeShift()
 	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar.backdrop:SetAllPoints()
 	bar:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
-	bar.buttons = {}
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
