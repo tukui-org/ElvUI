@@ -137,7 +137,6 @@ function AB:PositionAndSizeBar(barName)
 
 	bar.db = db
 	bar.db.position = nil --Depreciated
-	bar.mouseover = db.mouseover
 
 	if visibility and visibility:match('[\n\r]') then
 		visibility = visibility:gsub('[\n\r]','')
@@ -179,7 +178,8 @@ function AB:PositionAndSizeBar(barName)
 		horizontalGrowth = "LEFT"
 	end
 
-	if db.mouseover then
+	bar.mouseover = db.mouseover
+	if bar.mouseover then
 		bar:SetAlpha(0)
 		AB:FadeBarBlings(bar, 0)
 	else
@@ -635,9 +635,12 @@ end
 function AB:FadeBlings(alpha)
 	if AB.db.hideCooldownBling then return end
 
-	for button in pairs(AB.handledbuttons) do
-		if button.header and button.header:GetParent() == AB.fadeParent then
-			AB:FadeBlingTexture(button.cooldown, alpha)
+	for i = 1, AB.fadeParent:GetNumChildren() do
+		local bar = select(i, AB.fadeParent:GetChildren())
+		if bar.buttons then
+			for _, button in pairs(bar.buttons) do
+				AB:FadeBlingTexture(button.cooldown, alpha)
+			end
 		end
 	end
 end
@@ -651,25 +654,25 @@ function AB:FadeBarBlings(bar, alpha)
 end
 
 function AB:Bar_OnEnter(bar)
-	if bar:GetParent() == AB.fadeParent then
-		if not AB.fadeParent.mouseLock then
-			E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
-			AB:FadeBlings(1)
-		end
-	elseif bar.mouseover then
+	if bar:GetParent() == AB.fadeParent and not AB.fadeParent.mouseLock then
+		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
+		AB:FadeBlings(1)
+	end
+
+	if bar.mouseover then
 		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
 		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
 end
 
 function AB:Bar_OnLeave(bar)
-	if bar:GetParent() == AB.fadeParent then
-		if not AB.fadeParent.mouseLock then
-			local a = 1 - AB.db.globalFadeAlpha
-			E:UIFrameFadeOut(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), a)
-			AB:FadeBlings(a)
-		end
-	elseif bar.mouseover then
+	if bar:GetParent() == AB.fadeParent and not AB.fadeParent.mouseLock then
+		local a = 1 - AB.db.globalFadeAlpha
+		E:UIFrameFadeOut(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), a)
+		AB:FadeBlings(a)
+	end
+
+	if bar.mouseover then
 		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 		AB:FadeBarBlings(bar, 0)
 	end
@@ -677,12 +680,12 @@ end
 
 function AB:Button_OnEnter(button)
 	local bar = button:GetParent()
-	if bar:GetParent() == AB.fadeParent then
-		if not AB.fadeParent.mouseLock then
-			E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
-			AB:FadeBlings(1)
-		end
-	elseif bar.mouseover then
+	if bar:GetParent() == AB.fadeParent and not AB.fadeParent.mouseLock then
+		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
+		AB:FadeBlings(1)
+	end
+
+	if bar.mouseover then
 		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), bar.db.alpha)
 		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
@@ -690,13 +693,13 @@ end
 
 function AB:Button_OnLeave(button)
 	local bar = button:GetParent()
-	if bar:GetParent() == AB.fadeParent then
-		if not AB.fadeParent.mouseLock then
-			local a = 1 - AB.db.globalFadeAlpha
-			E:UIFrameFadeOut(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), a)
-			AB:FadeBlings(a)
-		end
-	elseif bar.mouseover then
+	if bar:GetParent() == AB.fadeParent and not AB.fadeParent.mouseLock then
+		local a = 1 - AB.db.globalFadeAlpha
+		E:UIFrameFadeOut(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), a)
+		AB:FadeBlings(a)
+	end
+
+	if bar.mouseover then
 		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
 		AB:FadeBarBlings(bar, 0)
 	end

@@ -121,7 +121,6 @@ function AB:PositionAndSizeBarShapeShift()
 	elseif point == "TOP" then point = "TOPRIGHT" elseif point == "BOTTOM" then point = "BOTTOMRIGHT" end
 
 	bar.db = self.db.stanceBar
-	bar.mouseover = self.db.stanceBar.mouseover
 
 	if bar.LastButton and numButtons > bar.LastButton then
 		numButtons = bar.LastButton
@@ -166,17 +165,26 @@ function AB:PositionAndSizeBarShapeShift()
 		horizontalGrowth = "LEFT"
 	end
 
-	if(self.db.stanceBar.inheritGlobalFade) then
+	bar.mouseover = self.db.stanceBar.mouseover
+	if bar.mouseover then
+		bar:SetAlpha(0)
+		AB:FadeBarBlings(bar, 0)
+	else
+		bar:SetAlpha(bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
+	end
+
+	if self.db.stanceBar.inheritGlobalFade then
 		bar:SetParent(self.fadeParent)
 	else
 		bar:SetParent(E.UIParent)
 	end
 
+	bar:EnableMouse(not self.db.stanceBar.clickThrough)
+
 	local button, lastButton, lastColumnButton
 	local useMasque = MasqueGroup and E.private.actionbar.masque.stanceBar
 	local firstButtonSpacing = (self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
-
-	bar:EnableMouse(not self.db.stanceBar.clickThrough)
 
 	for i = 1, NUM_STANCE_SLOTS do
 		button = _G["ElvUI_StanceBarButton"..i]
@@ -186,14 +194,6 @@ function AB:PositionAndSizeBarShapeShift()
 		button:ClearAllPoints()
 		button:Size(size)
 		button:EnableMouse(not self.db.stanceBar.clickThrough)
-
-		if self.db.stanceBar.mouseover == true then
-			bar:SetAlpha(0)
-			AB:FadeBarBlings(bar, 0)
-		else
-			bar:SetAlpha(bar.db.alpha)
-			AB:FadeBarBlings(bar, bar.db.alpha)
-		end
 
 		if i == 1 then
 			local x, y
