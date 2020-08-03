@@ -416,11 +416,13 @@ function E:CreateMoverPopup()
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
 	header:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	header:SetScript('OnShow', E.MoverNudgeHeaderOnShow)
+	nudgeFrame.header = header
 
 	title = header:CreateFontString('OVERLAY')
 	title:FontTemplate()
 	title:Point('CENTER', header, 'CENTER')
 	title:SetText(L["Nudge"])
+	nudgeFrame.title = title
 
 	local xOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'XEditBox', nudgeFrame, 'InputBoxTemplate')
 	xOffset:Width(50)
@@ -454,8 +456,8 @@ function E:CreateMoverPopup()
 	xOffset.text:Point('RIGHT', xOffset, 'LEFT', -4, 0)
 	xOffset.text:SetText('X:')
 	xOffset:Point('BOTTOMRIGHT', nudgeFrame, 'CENTER', -6, 8)
-	nudgeFrame.xOffset = xOffset
 	S:HandleEditBox(xOffset)
+	nudgeFrame.xOffset = xOffset
 
 	local yOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'YEditBox', nudgeFrame, 'InputBoxTemplate')
 	yOffset:Width(50)
@@ -489,8 +491,8 @@ function E:CreateMoverPopup()
 	yOffset.text:Point('RIGHT', yOffset, 'LEFT', -4, 0)
 	yOffset.text:SetText('Y:')
 	yOffset:Point('BOTTOMLEFT', nudgeFrame, 'CENTER', 16, 8)
-	nudgeFrame.yOffset = yOffset
 	S:HandleEditBox(yOffset)
+	nudgeFrame.yOffset = yOffset
 
 	local resetButton = CreateFrame('Button', nudgeFrame:GetName()..'ResetButton', nudgeFrame, 'UIPanelButtonTemplate')
 	resetButton:SetText(RESET)
@@ -502,6 +504,7 @@ function E:CreateMoverPopup()
 		end
 	end)
 	S:HandleButton(resetButton)
+	nudgeFrame.resetButton = resetButton
 
 	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame)
 	upButton:Point('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
@@ -509,6 +512,7 @@ function E:CreateMoverPopup()
 	S:HandleNextPrevButton(upButton)
 	S:HandleButton(upButton)
 	upButton:Size(22)
+	nudgeFrame.upButton = upButton
 
 	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame)
 	downButton:Point('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
@@ -516,6 +520,7 @@ function E:CreateMoverPopup()
 	S:HandleNextPrevButton(downButton)
 	S:HandleButton(downButton)
 	downButton:Size(22)
+	nudgeFrame.downButton = downButton
 
 	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame)
 	leftButton:Point('RIGHT', upButton, 'LEFT', -6, 0)
@@ -523,6 +528,7 @@ function E:CreateMoverPopup()
 	S:HandleNextPrevButton(leftButton)
 	S:HandleButton(leftButton)
 	leftButton:Size(22)
+	nudgeFrame.leftButton = leftButton
 
 	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame)
 	rightButton:Point('LEFT', downButton, 'RIGHT', 6, 0)
@@ -530,6 +536,7 @@ function E:CreateMoverPopup()
 	S:HandleNextPrevButton(rightButton)
 	S:HandleButton(rightButton)
 	rightButton:Size(22)
+	nudgeFrame.rightButton = rightButton
 end
 
 function E:Config_ResetSettings()
