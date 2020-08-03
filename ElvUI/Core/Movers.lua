@@ -180,15 +180,21 @@ local function OnMouseDown(self, button)
 	if isDragging then
 		OnDragStop(self)
 	elseif button == 'RightButton' then
-		if not isDragging then
-			if IsControlKeyDown() and self.textString then
-				E:ResetMovers(self.textString) --Allow resetting of anchor by Ctrl+RightClick
-			elseif IsShiftKeyDown() then
-				self:Hide() --Allow hiding a mover temporarily
-			elseif self.configString then
-				E:ToggleOptionsUI(self.configString) --OpenConfig
-			end
+		if IsControlKeyDown() and self.textString then
+			E:ResetMovers(self.textString) --Allow resetting of anchor by Ctrl+RightClick
+		elseif IsShiftKeyDown() then
+			self:Hide() --Allow hiding a mover temporarily
+		elseif self.configString then
+			E:ToggleOptionsUI(self.configString) --OpenConfig
 		end
+	end
+end
+
+local function OnMouseWheel(_, delta)
+	if IsShiftKeyDown() then
+		E:NudgeMover(delta)
+	else
+		E:NudgeMover(nil, delta)
 	end
 end
 
@@ -198,14 +204,6 @@ local function OnShow(self, r, g, b)
 	self.text:FontTemplate()
 	self.text:SetTextColor(r, g, b)
 	self:SetBackdropBorderColor(r, g, b)
-end
-
-local function OnMouseWheel(_, delta)
-	if IsShiftKeyDown() then
-		E:NudgeMover(delta)
-	else
-		E:NudgeMover(nil, delta)
-	end
 end
 
 local function UpdateColors()
