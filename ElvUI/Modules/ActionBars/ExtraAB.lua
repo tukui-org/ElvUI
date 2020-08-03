@@ -131,29 +131,6 @@ function AB:SetupExtraButton()
 		end
 	end
 
-	--[[
-	local button = ZoneAbilityFrame.SpellButton
-	if button then
-		button:SetNormalTexture('')
-		button:StyleButton(nil, nil, nil, true)
-		button:SetTemplate()
-		button.Icon:SetDrawLayer('ARTWORK')
-		button.Icon:SetTexCoord(unpack(E.TexCoords))
-		button.Icon:SetInside()
-
-		if E.private.skins.cleanBossButton and button.Style then -- Hide the Artwork
-			button.Style:SetTexture()
-			hooksecurefunc(button.Style, 'SetTexture', function(btn, tex)
-				if tex ~= nil then btn:SetTexture() end
-			end)
-		end
-
-		if button.Cooldown then
-			button.Cooldown.CooldownOverride = 'actionbar'
-			E:RegisterCooldown(button.Cooldown)
-		end
-	end]]
-
 	if HasExtraActionBar() then
 		ExtraActionBarFrame:Show()
 		ExtraAbilityContainer:Show()
