@@ -716,6 +716,15 @@ function E:Config_CreateButton(info, frame, unskinned, ...)
 	return btn
 end
 
+function E:Config_DialogOpened(name)
+	if name ~= 'ElvUI' then return end
+
+	local frame = E:Config_GetWindow()
+	if frame and frame.leftHolder then
+		E:Config_WindowOpened(frame)
+	end
+end
+
 function E:Config_UpdateLeftButtons()
 	local frame = E:Config_GetWindow()
 	if not (frame and frame.leftHolder) then return end
@@ -851,14 +860,7 @@ end
 
 function E:Config_OpenWindow()
 	local ACD = E.Libs.AceConfigDialog
-	if ACD then
-		ACD:Open('ElvUI')
-
-		local frame = E:Config_GetWindow()
-		if frame then
-			E:Config_WindowOpened(frame)
-		end
-	end
+	if ACD then ACD:Open('ElvUI') end
 
 	if not ConfigTooltip:IsForbidden() then
 		ConfigTooltip:Hide()
@@ -1087,10 +1089,18 @@ function E:ToggleOptionsUI(msg)
 		end
 	end
 
-	local ACD = E.Libs.AceConfigDialog
 	local frame = E:Config_GetWindow()
 	local mode, pages = E:Config_GetToggleMode(frame, msg)
-	if ACD then ACD[mode](ACD, E.name) end
+
+	local ACD = E.Libs.AceConfigDialog
+	if ACD then
+		if not ACD.OpenHookedElvUI then
+			hooksecurefunc(E.Libs.AceConfigDialog, 'Open', E.Config_DialogOpened)
+			ACD.OpenHookedElvUI = true
+		end
+
+		ACD[mode](ACD, E.name)
+	end
 
 	if not frame then
 		frame = E:Config_GetWindow()
@@ -1104,9 +1114,7 @@ function E:ToggleOptionsUI(msg)
 			E:Config_UpdateSize()
 		end
 
-		if frame.bottomHolder then
-			E:Config_WindowOpened(frame)
-		else -- window was released or never opened
+		if not frame.bottomHolder then -- window was released or never opened
 			frame:HookScript('OnHide', E.Config_WindowClosed)
 
 			for i=1, frame:GetNumChildren() do
