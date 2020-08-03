@@ -5,16 +5,15 @@ local _G = _G
 local gsub, type, pairs, ipairs, select, unpack, strfind = gsub, type, pairs, ipairs, select, unpack, strfind
 
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
+local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame
 local GetQuestID = GetQuestID
-local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetNumQuestLogRewardSpells = GetNumQuestLogRewardSpells
 local GetNumRewardSpells = GetNumRewardSpells
-local GetQuestLogSelection = GetQuestLogSelection
 local hooksecurefunc = hooksecurefunc
 
 local PlusButtonIDs = {
@@ -84,7 +83,7 @@ end
 -- Quest objective text color
 local function Quest_GetQuestID()
 	if _G.QuestInfoFrame.questLog then
-		return select(8, GetQuestLogTitle(GetQuestLogSelection())) -- 9.0 new API inc.
+		return C_QuestLog_GetSelectedQuest()
 	else
 		return GetQuestID()
 	end
