@@ -502,11 +502,9 @@ local function UpdateAuras(self, event, unit)
 end
 
 local function Update(self, event, unit)
-	if self.isForced or (self.unit ~= unit) then return end -- ElvUI changed
+	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (self.unit ~= unit) then return end -- ElvUI changed
 
-	if event ~= 'ElvUI_UpdateAllElements' then -- ElvUI
-		UpdateAuras(self, event, unit)
-	end
+	UpdateAuras(self, event, unit)
 
 	-- Assume no event means someone wants to re-anchor things. This is usually
 	-- done by UpdateAllElements and :ForceUpdate.
