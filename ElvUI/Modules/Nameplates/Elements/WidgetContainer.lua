@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
+local ipairs = ipairs
+
 function NP:Construct_WidgetContainer(nameplate)
 	local WidgetContainer = CreateFrame('Frame', nil, nameplate, 'UIWidgetContainerTemplate')
 	WidgetContainer:Hide()
@@ -20,13 +22,13 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 	widgetContainerFrame.horizontalRowContainerPool:ReleaseAll()
 
 	for index, widgetFrame in ipairs(sortedWidgets) do
-		widgetFrame:ClearAllPoints();
+		widgetFrame:ClearAllPoints()
 
-		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == Enum.UIWidgetSetLayoutDirection.Vertical;
-		local widgetUsesVertical = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Vertical;
+		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == Enum.UIWidgetSetLayoutDirection.Vertical
+		local widgetUsesVertical = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Vertical
 
-		local useOverlapLayout = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Overlap;
-		local useVerticalLayout = widgetUsesVertical or (widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Default and widgetSetUsesVertical);
+		local useOverlapLayout = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Overlap
+		local useVerticalLayout = widgetUsesVertical or (widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Default and widgetSetUsesVertical)
 
 		if useOverlapLayout then
 			local anchor = widgetContainerFrame[widgetSetUsesVertical and 'verticalAnchorPoint' or 'horizontalAnchorPoint']
@@ -46,7 +48,7 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 				widgetFrame:SetPoint(widgetContainerFrame.verticalAnchorPoint, relative, widgetContainerFrame.verticalRelativePoint, 0, widgetContainerFrame.verticalAnchorYOffset)
 
 				if horizontalRowContainer then
-					horizontalRowContainer:SetSize(horizontalRowWidth, horizontalRowHeight);
+					horizontalRowContainer:SetSize(horizontalRowWidth, horizontalRowHeight)
 					totalWidth = totalWidth + horizontalRowWidth
 					totalHeight = totalHeight + horizontalRowHeight
 					horizontalRowHeight, horizontalRowWidth = 0, 0
