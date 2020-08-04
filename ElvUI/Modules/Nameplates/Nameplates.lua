@@ -629,7 +629,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
-		nameplate.WidgetContainer:RegisterForWidgetSet(UnitWidgetSet(unit), NP.Widget_DefaultLayout)
+		nameplate.WidgetContainer:RegisterForWidgetSet(UnitWidgetSet(unit), NP.Widget_DefaultLayout, nil, unit)
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
