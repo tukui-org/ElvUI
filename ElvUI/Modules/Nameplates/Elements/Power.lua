@@ -138,7 +138,7 @@ function NP:Update_Power(nameplate)
 			nameplate:EnableElement('Power')
 		end
 
-		nameplate.Power:Point('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
+		nameplate.Power:SetPoint('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
 
 		nameplate:SetPowerUpdateMethod(E.global.nameplate.effectivePower)
 		nameplate:SetPowerUpdateSpeed(E.global.nameplate.effectivePowerSpeed)
@@ -152,7 +152,7 @@ function NP:Update_Power(nameplate)
 
 	if db.power.text.enable then
 		nameplate.Power.Text:ClearAllPoints()
-		nameplate.Power.Text:Point(E.InversePoints[db.power.text.position], db.power.text.parent == 'Nameplate' and nameplate or nameplate[db.power.text.parent], db.power.text.position, db.power.text.xOffset, db.power.text.yOffset)
+		nameplate.Power.Text:SetPoint(E.InversePoints[db.power.text.position], db.power.text.parent == 'Nameplate' and nameplate or nameplate[db.power.text.parent], db.power.text.position, db.power.text.xOffset, db.power.text.yOffset)
 		nameplate.Power.Text:FontTemplate(E.LSM:Fetch('font', db.power.text.font), db.power.text.fontSize, db.power.text.fontOutline)
 		nameplate.Power.Text:Show()
 	else

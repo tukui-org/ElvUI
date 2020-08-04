@@ -28,7 +28,7 @@ function UF:Construct_PlayerFrame(frame)
 
 	--Create a holder frame all "classbars" can be positioned into
 	frame.ClassBarHolder = CreateFrame("Frame", nil, frame)
-	frame.ClassBarHolder:Point("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
+	frame.ClassBarHolder:SetPoint("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
 
 	--Combo points was moved to the ClassPower element, so all classes need to have a ClassBar now.
 	frame.ClassPower = UF:Construct_ClassBar(frame)
@@ -67,7 +67,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
+	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,generalGroup')
 
 	frame.unitframeType = "player"

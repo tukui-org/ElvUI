@@ -36,7 +36,7 @@ function S:Blizzard_WeeklyRewards()
 
 	frame:CreateBackdrop('Transparent')
 	header:CreateBackdrop('Transparent')
-	header:Point('TOP', 1, -42)
+	header:SetPoint('TOP', 1, -42)
 
 	S:HandleCloseButton(frame.CloseButton)
 

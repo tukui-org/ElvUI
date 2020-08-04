@@ -27,7 +27,7 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	frame.customTexts = {}
-	frame:Point('BOTTOM', UF.focus, 'TOP', 0, 7) --Set to default position
+	frame:SetPoint('BOTTOM', UF.focus, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["FocusTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,focustarget,generalGroup')
 
 	frame.unitframeType = "focustarget"

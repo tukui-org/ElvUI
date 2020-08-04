@@ -43,21 +43,21 @@ function UF:Configure_Threat(frame)
 			threat.MainGlow:ClearAllPoints()
 
 			if frame.USE_POWERBAR_OFFSET then
-				threat.MainGlow:Point("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING + (frame.USE_CLASSBAR and (frame.USE_MINI_CLASSBAR and 0 or frame.CLASSBAR_HEIGHT) or 0))
-				threat.MainGlow:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
+				threat.MainGlow:SetPoint("TOPLEFT", frame.Health.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING + (frame.USE_CLASSBAR and (frame.USE_MINI_CLASSBAR and 0 or frame.CLASSBAR_HEIGHT) or 0))
+				threat.MainGlow:SetPoint("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
 
 				threat.PowerGlow:ClearAllPoints()
-				threat.PowerGlow:Point("TOPLEFT", frame.Power.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING)
-				threat.PowerGlow:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
+				threat.PowerGlow:SetPoint("TOPLEFT", frame.Power.backdrop, "TOPLEFT", -frame.SHADOW_SPACING - frame.SPACING, frame.SHADOW_SPACING + frame.SPACING)
+				threat.PowerGlow:SetPoint("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMRIGHT", frame.SHADOW_SPACING + frame.SPACING, -frame.SHADOW_SPACING - frame.SPACING)
 			else
-				threat.MainGlow:Point("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
+				threat.MainGlow:SetPoint("TOPLEFT", -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
 
 				if frame.USE_MINI_POWERBAR then
-					threat.MainGlow:Point("BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
-					threat.MainGlow:Point("BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
+					threat.MainGlow:SetPoint("BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
+					threat.MainGlow:SetPoint("BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
 				else
-					threat.MainGlow:Point("BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
-					threat.MainGlow:Point("BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
+					threat.MainGlow:SetPoint("BOTTOMLEFT", -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
+					threat.MainGlow:SetPoint("BOTTOMRIGHT", frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
 				end
 			end
 		elseif threatStyle:match('^ICON') then
@@ -66,7 +66,7 @@ function UF:Configure_Threat(frame)
 
 			local point = threatStyle:gsub("ICON", "")
 			threat.TextureIcon:ClearAllPoints()
-			threat.TextureIcon:Point(point, frame.Health, point)
+			threat.TextureIcon:SetPoint(point, frame.Health, point)
 		elseif threatStyle == "HEALTHBORDER" and frame.InfoPanel then
 			frame.InfoPanel:SetFrameLevel(frame.Health:GetFrameLevel() - 3)
 		elseif threatStyle == "INFOPANELBORDER" and frame.InfoPanel then

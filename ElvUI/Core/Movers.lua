@@ -52,7 +52,7 @@ local function UpdateCoords(self)
 	local nudgeFrame = _G.ElvUIMoverNudgeWindow
 
 	nudgeFrame:ClearAllPoints()
-	nudgeFrame:Point(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
+	nudgeFrame:SetPoint(nudgePoint, mover, nudgeInversePoint, coordX, coordY)
 	E:UpdateNudgeFrame(mover, x, y)
 end
 
@@ -68,12 +68,12 @@ function E:SetMoverPoints(name, parent)
 
 	if point2 then
 		holder.mover:ClearAllPoints()
-		holder.mover:Point(point2, relativeTo2, relativePoint2, xOffset2, yOffset2)
+		holder.mover:SetPoint(point2, relativeTo2, relativePoint2, xOffset2, yOffset2)
 	end
 
 	if parent then
 		parent:ClearAllPoints()
-		parent:Point(point1, parent.mover, 0, 0)
+		parent:SetPoint(point1, parent.mover, 0, 0)
 	end
 end
 
@@ -104,7 +104,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	local fs = f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
-	fs:Point('CENTER')
+	fs:SetPoint('CENTER')
 	fs:SetText(textString or name)
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
 	fs:SetJustifyH('CENTER')
@@ -169,7 +169,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 		local x2, y2, p2 = E:CalculateMoverPoints(self)
 		self:ClearAllPoints()
-		self:Point(p2, E.UIParent, p2, x2, y2)
+		self:SetPoint(p2, E.UIParent, p2, x2, y2)
 
 		E:SaveMoverPosition(name)
 
@@ -423,7 +423,7 @@ function E:ResetMovers(arg)
 			local frame = holder.mover
 			if point then
 				frame:ClearAllPoints()
-				frame:Point(point, anchor, secondaryPoint, x, y)
+				frame:SetPoint(point, anchor, secondaryPoint, x, y)
 			end
 
 			if holder.postdrag and type(holder.postdrag) == 'function' then

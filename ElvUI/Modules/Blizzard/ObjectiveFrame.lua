@@ -45,7 +45,7 @@ end
 
 function B:MoveObjectiveFrame()
 	local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
-	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
+	ObjectiveFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 	ObjectiveFrameHolder:Size(130, 22)
 
 	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
@@ -54,7 +54,7 @@ function B:MoveObjectiveFrame()
 	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
 	ObjectiveTrackerFrame:SetClampedToScreen(false)
 	ObjectiveTrackerFrame:ClearAllPoints()
-	ObjectiveTrackerFrame:Point('TOP', ObjectiveFrameHolder, 'TOP')
+	ObjectiveTrackerFrame:SetPoint('TOP', ObjectiveFrameHolder, 'TOP')
 	ObjectiveTrackerFrame:SetMovable(true)
 	ObjectiveTrackerFrame:SetUserPlaced(true) -- UIParent.lua line 3090 stops it from being moved <3
 	B:SetObjectiveFrameHeight()
@@ -63,9 +63,9 @@ function B:MoveObjectiveFrame()
 		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame
 		rewardsFrame:ClearAllPoints()
 		if E.db.general.bonusObjectivePosition == "RIGHT" or (E.db.general.bonusObjectivePosition == "AUTO" and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
-			rewardsFrame:Point("TOPLEFT", block, "TOPRIGHT", -10, -4)
+			rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4)
 		else
-			rewardsFrame:Point("TOPRIGHT", block, "TOPLEFT", 10, -4)
+			rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4)
 		end
 	end
 	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)

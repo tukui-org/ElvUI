@@ -39,7 +39,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
 
 	frame.customTexts = {}
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 342, 139)
+	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 342, 139)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,generalGroup')
 
 	frame.unitframeType = "target"

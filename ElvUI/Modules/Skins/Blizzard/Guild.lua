@@ -43,15 +43,15 @@ function S:Blizzard_GuildUI()
 	}
 
 	_G.GuildRewardsFrameVisitText:ClearAllPoints()
-	_G.GuildRewardsFrameVisitText:Point("TOP", _G.GuildRewardsFrame, "TOP", 0, 30)
+	_G.GuildRewardsFrameVisitText:SetPoint("TOP", _G.GuildRewardsFrame, "TOP", 0, 30)
 	for _, frame in pairs(striptextures) do
 		_G[frame]:StripTextures()
 	end
 
 	_G.GuildNewsBossModel:CreateBackdrop("Transparent")
 	_G.GuildNewsBossModelTextFrame:CreateBackdrop()
-	_G.GuildNewsBossModelTextFrame.backdrop:Point("TOPLEFT", _G.GuildNewsBossModel.backdrop, "BOTTOMLEFT", 0, -1)
-	_G.GuildNewsBossModel:Point("TOPLEFT", GuildFrame, "TOPRIGHT", 4, -43)
+	_G.GuildNewsBossModelTextFrame.backdrop:SetPoint("TOPLEFT", _G.GuildNewsBossModel.backdrop, "BOTTOMLEFT", 0, -1)
+	_G.GuildNewsBossModel:SetPoint("TOPLEFT", GuildFrame, "TOPRIGHT", 4, -43)
 
 	local buttons = {
 		"GuildMemberRemoveButton",
@@ -105,8 +105,8 @@ function S:Blizzard_GuildUI()
 	GuildFactionBar.progress:SetTexture(E.media.normTex)
 	E:RegisterStatusBar(GuildFactionBar.progress)
 	GuildFactionBar:CreateBackdrop()
-	GuildFactionBar.backdrop:Point("TOPLEFT", GuildFactionBar.progress, "TOPLEFT", -E.Border, E.Border)
-	GuildFactionBar.backdrop:Point("BOTTOMRIGHT", GuildFactionBar, "BOTTOMRIGHT", E.Spacing, E.PixelMode and 1 or 0)
+	GuildFactionBar.backdrop:SetPoint("TOPLEFT", GuildFactionBar.progress, "TOPLEFT", -E.Border, E.Border)
+	GuildFactionBar.backdrop:SetPoint("BOTTOMRIGHT", GuildFactionBar, "BOTTOMRIGHT", E.Spacing, E.PixelMode and 1 or 0)
 
 	--Roster
 	S:HandleScrollBar(_G.GuildRosterContainerScrollBar, 5)
@@ -158,7 +158,7 @@ function S:Blizzard_GuildUI()
 		S:HandleCheckBox(_G.GuildNewsFiltersFrame.GuildNewsFilterButtons[i])
 	end
 
-	_G.GuildNewsFiltersFrame:Point("TOPLEFT", GuildFrame, "TOPRIGHT", 4, -20)
+	_G.GuildNewsFiltersFrame:SetPoint("TOPLEFT", GuildFrame, "TOPRIGHT", 4, -20)
 	S:HandleScrollBar(_G.GuildNewsContainerScrollBar, 4)
 
 	--Info Frame
@@ -172,20 +172,20 @@ function S:Blizzard_GuildUI()
 	local backdrop1 = CreateFrame("Frame", nil, GuildInfoFrameInfo, "BackdropTemplate")
 	backdrop1:SetTemplate("Transparent")
 	backdrop1:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
-	backdrop1:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -22)
-	backdrop1:Point("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 200)
+	backdrop1:SetPoint("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -22)
+	backdrop1:SetPoint("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 200)
 
 	local backdrop2 = CreateFrame("Frame", nil, GuildInfoFrameInfo, "BackdropTemplate")
 	backdrop2:SetTemplate("Transparent")
 	backdrop2:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
-	backdrop2:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -158)
-	backdrop2:Point("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 118)
+	backdrop2:SetPoint("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -158)
+	backdrop2:SetPoint("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 118)
 
 	local backdrop3 = CreateFrame("Frame", nil, GuildInfoFrameInfo, "BackdropTemplate")
 	backdrop3:SetTemplate("Transparent")
 	backdrop3:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
-	backdrop3:Point("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -233)
-	backdrop3:Point("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 3)
+	backdrop3:SetPoint("TOPLEFT", GuildInfoFrameInfo, "TOPLEFT", 2, -233)
+	backdrop3:SetPoint("BOTTOMRIGHT", GuildInfoFrameInfo, "BOTTOMRIGHT", 0, 3)
 
 	_G.GuildRecruitmentCommentInputFrame:CreateBackdrop("Transparent")
 
@@ -244,7 +244,7 @@ function S:Blizzard_GuildUI()
 		if button.icon then
 			button.icon:SetTexCoord(unpack(E.TexCoords))
 			button.icon:ClearAllPoints()
-			button.icon:Point("TOPLEFT", 2, -2)
+			button.icon:SetPoint("TOPLEFT", 2, -2)
 			button:CreateBackdrop()
 			button.backdrop:SetOutside(button.icon)
 			button.icon:SetParent(button.backdrop)
@@ -259,7 +259,7 @@ function S:GuildInviteFrame()
 	GuildInviteFrame:StripTextures()
 	GuildInviteFrame:CreateBackdrop('Transparent')
 	GuildInviteFrame.Points:ClearAllPoints()
-	GuildInviteFrame.Points:Point('TOP', GuildInviteFrame, 'CENTER', 15, -25)
+	GuildInviteFrame.Points:SetPoint('TOP', GuildInviteFrame, 'CENTER', 15, -25)
 	S:HandleButton(_G.GuildInviteFrameJoinButton)
 	S:HandleButton(_G.GuildInviteFrameDeclineButton)
 	GuildInviteFrame:Height(225)

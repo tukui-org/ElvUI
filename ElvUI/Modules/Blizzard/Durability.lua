@@ -19,7 +19,7 @@ function B:PositionDurabilityFrame()
 
 	local DurabilityFrameHolder = CreateFrame("Frame", "DurabilityFrameHolder", E.UIParent)
 	DurabilityFrameHolder:Size(DurabilityFrame:GetSize())
-	DurabilityFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
+	DurabilityFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 
 	E:CreateMover(DurabilityFrameHolder, 'DurabilityFrameMover', L["Durability Frame"], nil, nil, nil, nil, nil, 'all,general')
 

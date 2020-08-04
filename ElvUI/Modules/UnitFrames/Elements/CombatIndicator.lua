@@ -51,7 +51,7 @@ function UF:Configure_CombatIndicator(frame)
 	local db = frame.db.CombatIcon
 
 	Icon:ClearAllPoints()
-	Icon:Point("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
+	Icon:SetPoint("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
 	Icon:Size(db.size)
 
 	if db.defaultColor then

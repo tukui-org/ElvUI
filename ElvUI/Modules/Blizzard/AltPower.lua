@@ -55,11 +55,11 @@ end
 
 function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
-	holder:Point('TOP', E.UIParent, 'TOP', -1, -36)
+	holder:SetPoint('TOP', E.UIParent, 'TOP', -1, -36)
 	holder:Size(128, 50)
 
 	_G.PlayerPowerBarAlt:ClearAllPoints()
-	_G.PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
+	_G.PlayerPowerBarAlt:SetPoint('CENTER', holder, 'CENTER')
 	_G.PlayerPowerBarAlt:SetParent(holder)
 	_G.PlayerPowerBarAlt:SetMovable(true)
 	_G.PlayerPowerBarAlt:SetUserPlaced(true)
@@ -162,14 +162,14 @@ function B:SkinAltPowerBar()
 	local powerbar = CreateFrame("StatusBar", "ElvUI_AltPowerBar", E.UIParent)
 	powerbar:CreateBackdrop(nil, true)
 	powerbar:SetMinMaxValues(0, 200)
-	powerbar:Point("CENTER", _G.AltPowerBarHolder)
+	powerbar:SetPoint("CENTER", _G.AltPowerBarHolder)
 	powerbar:Hide()
 
 	powerbar:SetScript("OnEnter", onEnter)
 	powerbar:SetScript("OnLeave", onLeave)
 
 	powerbar.text = powerbar:CreateFontString(nil, "OVERLAY")
-	powerbar.text:Point("CENTER", powerbar, "CENTER")
+	powerbar.text:SetPoint("CENTER", powerbar, "CENTER")
 	powerbar.text:SetJustifyH("CENTER")
 
 	do -- NZoth textures
@@ -184,11 +184,11 @@ function B:SkinAltPowerBar()
 		}
 
 		texTop:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothTop]])
-		texTop:Point("CENTER", powerbar, "TOP", 0, -19)
+		texTop:SetPoint("CENTER", powerbar, "TOP", 0, -19)
 		texBotomLeft:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothBottomLeft]])
-		texBotomLeft:Point("BOTTOMLEFT", powerbar, "BOTTOMLEFT", -7, -10)
+		texBotomLeft:SetPoint("BOTTOMLEFT", powerbar, "BOTTOMLEFT", -7, -10)
 		texBottomRight:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothBottomRight]])
-		texBottomRight:Point("BOTTOMRIGHT", powerbar, "BOTTOMRIGHT", 7, -10)
+		texBottomRight:SetPoint("BOTTOMRIGHT", powerbar, "BOTTOMRIGHT", 7, -10)
 	end
 
 	B:UpdateAltPowerBarSettings()

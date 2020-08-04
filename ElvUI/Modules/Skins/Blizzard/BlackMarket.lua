@@ -35,8 +35,8 @@ function S:Blizzard_BlackMarketUI()
 
 	BlackMarketFrame.MoneyFrameBorder:StripTextures()
 	S:HandleEditBox(_G.BlackMarketBidPriceGold)
-	_G.BlackMarketBidPriceGold.backdrop:Point("TOPLEFT", -2, 0)
-	_G.BlackMarketBidPriceGold.backdrop:Point("BOTTOMRIGHT", -2, 0)
+	_G.BlackMarketBidPriceGold.backdrop:SetPoint("TOPLEFT", -2, 0)
+	_G.BlackMarketBidPriceGold.backdrop:SetPoint("BOTTOMRIGHT", -2, 0)
 
 	S:HandleButton(BlackMarketFrame.BidButton)
 
@@ -61,7 +61,7 @@ function S:Blizzard_BlackMarketUI()
 		local region = select(i, BlackMarketFrame:GetRegions())
 		if region and region:IsObjectType("FontString") and region:GetText() == _G.BLACK_MARKET_TITLE then
 			region:ClearAllPoints()
-			region:Point('TOP', BlackMarketFrame, 'TOP', 0, -4)
+			region:SetPoint('TOP', BlackMarketFrame, 'TOP', 0, -4)
 		end
 	end
 

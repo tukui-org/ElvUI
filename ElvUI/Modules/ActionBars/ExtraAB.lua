@@ -54,12 +54,12 @@ function AB:SetupExtraButton()
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
-	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
+	ExtraActionBarHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
+	ExtraActionBarFrame:SetPoint('CENTER', ExtraActionBarHolder, 'CENTER')
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
 	-- Please check this 9.0 Shadowlands
@@ -69,13 +69,13 @@ function AB:SetupExtraButton()
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
-	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
+	ZoneAbilityHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
 
 	-- Please check this 9.0 Shadowlands
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
-	ZoneAbilityFrame:Point('CENTER', ZoneAbilityHolder, 'CENTER')
+	ZoneAbilityFrame:SetPoint('CENTER', ZoneAbilityHolder, 'CENTER')
 	ZoneAbilityFrame.Style:SetAlpha(0)
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 

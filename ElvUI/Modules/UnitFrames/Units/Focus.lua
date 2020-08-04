@@ -35,7 +35,7 @@ function UF:Construct_FocusFrame(frame)
 	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
 
 	frame.customTexts = {}
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 342, 59)
+	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 342, 59)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Focus Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,focus,generalGroup')
 
 	frame.unitframeType = "focus"

@@ -20,7 +20,7 @@ local function HandleRoleChecks(button, ...)
 	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
 	button.bg:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	button.bg:SetTexCoord(...)
-	button.bg:Point("CENTER")
+	button.bg:SetPoint("CENTER")
 	button.bg:Size(40)
 	button.bg:SetAlpha(0.6)
 	S:HandleCheckBox(button.checkButton)
@@ -43,7 +43,7 @@ function S:Blizzard_PVPUI()
 
 		bu.Icon:Size(45)
 		bu.Icon:ClearAllPoints()
-		bu.Icon:Point("LEFT", 10, 0)
+		bu.Icon:SetPoint("LEFT", 10, 0)
 		S:HandleIcon(bu.Icon, true)
 	end
 
@@ -91,11 +91,11 @@ function S:Blizzard_PVPUI()
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:CreateBackdrop()
 		reward.EnlistmentBonus:Size(20, 20)
-		reward.EnlistmentBonus:Point("TOPRIGHT", 2, 2)
+		reward.EnlistmentBonus:SetPoint("TOPRIGHT", 2, 2)
 
 		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
-		EnlistmentBonusIcon:Point("TOPLEFT", reward.EnlistmentBonus, "TOPLEFT", 2, -2)
-		EnlistmentBonusIcon:Point("BOTTOMRIGHT", reward.EnlistmentBonus, "BOTTOMRIGHT", -2, 2)
+		EnlistmentBonusIcon:SetPoint("TOPLEFT", reward.EnlistmentBonus, "TOPLEFT", 2, -2)
+		EnlistmentBonusIcon:SetPoint("BOTTOMRIGHT", reward.EnlistmentBonus, "BOTTOMRIGHT", -2, 2)
 		EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
 		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
@@ -110,15 +110,15 @@ function S:Blizzard_PVPUI()
 
 		bu:StripTextures()
 		bu:CreateBackdrop()
-		bu.backdrop:Point("TOPLEFT", 2, 0)
-		bu.backdrop:Point("BOTTOMRIGHT", -1, 2)
+		bu.backdrop:SetPoint("TOPLEFT", 2, 0)
+		bu.backdrop:SetPoint("BOTTOMRIGHT", -1, 2)
 		bu:StyleButton(nil, true)
 
 		bu.SelectedTexture:SetInside(bu.backdrop)
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 		bu.Icon:SetTexCoord(unpack(E.TexCoords))
-		bu.Icon:Point("TOPLEFT", 5, -3)
+		bu.Icon:SetPoint("TOPLEFT", 5, -3)
 	end
 
 	hooksecurefunc("LFG_PermanentlyDisableRoleButton", function(s)
@@ -152,7 +152,7 @@ function S:Blizzard_PVPUI()
 		S:HandleIcon(reward.Icon, true)
 	end
 
-	ConquestFrame.Arena3v3:Point("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
+	ConquestFrame.Arena3v3:SetPoint("TOP", ConquestFrame.Arena2v2, "BOTTOM", 0, -2)
 
 	-- Item Borders for HonorFrame & ConquestFrame
 	hooksecurefunc('PVPUIFrame_ConfigureRewardFrame', function(rewardFrame, _, _, itemRewards, currencyRewards)
@@ -196,7 +196,7 @@ function S:Blizzard_PVPUI()
 			Frame.ConquestBar.backdrop:SetOutside()
 		end
 
-		Frame.ConquestBar.Reward:Point("LEFT", Frame.ConquestBar, "RIGHT", -8, 0)
+		Frame.ConquestBar.Reward:SetPoint("LEFT", Frame.ConquestBar, "RIGHT", -8, 0)
 		Frame.ConquestBar:SetStatusBarTexture(E.media.normTex)
 		Frame.ConquestBar:SetStatusBarColor(unpack(E.myfaction == "Alliance" and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09}))
 

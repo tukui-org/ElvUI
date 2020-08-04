@@ -715,30 +715,30 @@ function UF.groupPrototype:Configure_Groups(Header)
 
 		if (i - 1) % groupsPerRowCol == 0 then
 			if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
-				if group then group:Point(point, Header, point, 0, height * yMult) end
+				if group then group:SetPoint(point, Header, point, 0, height * yMult) end
 				height = height + UNIT_HEIGHT + verticalSpacing + groupSpacing
 				newRows = newRows + 1
 			else
-				if group then group:Point(point, Header, point, width * xMult, 0) end
+				if group then group:SetPoint(point, Header, point, width * xMult, 0) end
 				width = width + dbWidth + horizontalSpacing + groupSpacing
 				newCols = newCols + 1
 			end
 		else
 			if DIRECTION_TO_POINT[direction] == "LEFT" or DIRECTION_TO_POINT[direction] == "RIGHT" then
 				if newRows == 1 then
-					if group then group:Point(point, Header, point, width * xMult, 0) end
+					if group then group:SetPoint(point, Header, point, width * xMult, 0) end
 					width = width + ((dbWidth + horizontalSpacing) * 5) + groupSpacing
 					newCols = newCols + 1
 				elseif group then
-					group:Point(point, Header, point, ((((dbWidth + horizontalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * xMult, (((UNIT_HEIGHT + verticalSpacing+groupSpacing) * (newRows - 1))) * yMult)
+					group:SetPoint(point, Header, point, ((((dbWidth + horizontalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * xMult, (((UNIT_HEIGHT + verticalSpacing+groupSpacing) * (newRows - 1))) * yMult)
 				end
 			else
 				if newCols == 1 then
-					if group then group:Point(point, Header, point, 0, height * yMult) end
+					if group then group:SetPoint(point, Header, point, 0, height * yMult) end
 					height = height + ((UNIT_HEIGHT + verticalSpacing) * 5) + groupSpacing
 					newRows = newRows + 1
 				elseif group then
-					group:Point(point, Header, point, (((dbWidth + horizontalSpacing +groupSpacing) * (newCols - 1))) * xMult, ((((UNIT_HEIGHT + verticalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * yMult)
+					group:SetPoint(point, Header, point, (((dbWidth + horizontalSpacing +groupSpacing) * (newCols - 1))) * xMult, ((((UNIT_HEIGHT + verticalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * yMult)
 				end
 			end
 		end
@@ -1397,23 +1397,23 @@ function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, sta
 	backdropTex:ClearAllPoints()
 	if statusBarOrientation == 'VERTICAL' then
 		if reverseFill then
-			backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
-			backdropTex:Point("TOPRIGHT", statusBarTex, "BOTTOMRIGHT")
-			backdropTex:Point("TOPLEFT", statusBarTex, "BOTTOMLEFT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			backdropTex:SetPoint("TOPRIGHT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:SetPoint("TOPLEFT", statusBarTex, "BOTTOMLEFT")
 		else
-			backdropTex:Point("TOPLEFT", statusBar, "TOPLEFT")
-			backdropTex:Point("BOTTOMLEFT", statusBarTex, "TOPLEFT")
-			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
+			backdropTex:SetPoint("TOPLEFT", statusBar, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "TOPRIGHT")
 		end
 	else
 		if reverseFill then
-			backdropTex:Point("TOPRIGHT", statusBarTex, "TOPLEFT")
-			backdropTex:Point("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
-			backdropTex:Point("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
+			backdropTex:SetPoint("TOPRIGHT", statusBarTex, "TOPLEFT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBarTex, "BOTTOMLEFT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBar, "BOTTOMLEFT")
 		else
-			backdropTex:Point("TOPLEFT", statusBarTex, "TOPRIGHT")
-			backdropTex:Point("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
-			backdropTex:Point("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
+			backdropTex:SetPoint("TOPLEFT", statusBarTex, "TOPRIGHT")
+			backdropTex:SetPoint("BOTTOMLEFT", statusBarTex, "BOTTOMRIGHT")
+			backdropTex:SetPoint("BOTTOMRIGHT", statusBar, "BOTTOMRIGHT")
 		end
 	end
 end

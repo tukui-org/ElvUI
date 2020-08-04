@@ -68,7 +68,7 @@ function S:GossipFrame()
 	else
 		GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
 		GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-		GossipGreetingScrollFrame.spellTex:Point("TOPLEFT", 2, -2)
+		GossipGreetingScrollFrame.spellTex:SetPoint("TOPLEFT", 2, -2)
 		GossipGreetingScrollFrame.spellTex:Size(506, 615)
 		GossipGreetingScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 	end
@@ -91,7 +91,7 @@ function S:GossipFrame()
 	E:RegisterStatusBar(NPCFriendshipStatusBar)
 
 	NPCFriendshipStatusBar.icon:ClearAllPoints()
-	NPCFriendshipStatusBar.icon:Point("RIGHT", NPCFriendshipStatusBar, "LEFT", 0, -3)
+	NPCFriendshipStatusBar.icon:SetPoint("RIGHT", NPCFriendshipStatusBar, "LEFT", 0, -3)
 	S:HandleIcon(NPCFriendshipStatusBar.icon)
 end
 

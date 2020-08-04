@@ -87,8 +87,8 @@ function NP:Construct_Health(nameplate)
 	local statusBarTexture = Health:GetStatusBarTexture()
 	local healthFlashTexture = Health:CreateTexture(nameplate:GetDebugName()..'FlashTexture', "OVERLAY")
 	healthFlashTexture:SetTexture(E.Libs.LSM:Fetch("background", "ElvUI Blank"))
-	healthFlashTexture:Point("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
-	healthFlashTexture:Point("TOPRIGHT", statusBarTexture, "TOPRIGHT")
+	healthFlashTexture:SetPoint("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
+	healthFlashTexture:SetPoint("TOPRIGHT", statusBarTexture, "TOPRIGHT")
 	healthFlashTexture:Hide()
 	nameplate.HealthFlashTexture = healthFlashTexture
 
@@ -113,9 +113,9 @@ function NP:Update_Health(nameplate, skipUpdate)
 			nameplate:EnableElement('Health')
 		end
 
-		nameplate.Health:Point('CENTER')
-		nameplate.Health:Point('LEFT')
-		nameplate.Health:Point('RIGHT')
+		nameplate.Health:SetPoint('CENTER')
+		nameplate.Health:SetPoint('LEFT')
+		nameplate.Health:SetPoint('RIGHT')
 
 		nameplate:SetHealthUpdateMethod(E.global.nameplate.effectiveHealth)
 		nameplate:SetHealthUpdateSpeed(E.global.nameplate.effectiveHealthSpeed)
@@ -129,7 +129,7 @@ function NP:Update_Health(nameplate, skipUpdate)
 
 	if db.health.text.enable then
 		nameplate.Health.Text:ClearAllPoints()
-		nameplate.Health.Text:Point(E.InversePoints[db.health.text.position], db.health.text.parent == 'Nameplate' and nameplate or nameplate[db.health.text.parent], db.health.text.position, db.health.text.xOffset, db.health.text.yOffset)
+		nameplate.Health.Text:SetPoint(E.InversePoints[db.health.text.position], db.health.text.parent == 'Nameplate' and nameplate or nameplate[db.health.text.parent], db.health.text.position, db.health.text.xOffset, db.health.text.yOffset)
 		nameplate.Health.Text:FontTemplate(E.LSM:Fetch('font', db.health.text.font), db.health.text.fontSize, db.health.text.fontOutline)
 		nameplate.Health.Text:Show()
 	else
@@ -152,8 +152,8 @@ function NP:Construct_HealthPrediction(nameplate)
 		local bar = CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)
 		bar:SetFrameStrata(nameplate:GetFrameStrata())
 		bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
-		bar:Point('TOP')
-		bar:Point('BOTTOM')
+		bar:SetPoint('TOP')
+		bar:SetPoint('BOTTOM')
 		bar:Width(150)
 		HealthPrediction[name] = bar
 		NP.StatusBars[bar] = true
@@ -161,20 +161,20 @@ function NP:Construct_HealthPrediction(nameplate)
 
 	local healthTexture = nameplate.Health:GetStatusBarTexture()
 	local healthFrameLevel = nameplate.Health:GetFrameLevel()
-	HealthPrediction.myBar:Point('LEFT', healthTexture, 'RIGHT')
+	HealthPrediction.myBar:SetPoint('LEFT', healthTexture, 'RIGHT')
 	HealthPrediction.myBar:SetFrameLevel(healthFrameLevel + 2)
 	HealthPrediction.myBar:SetStatusBarColor(NP.db.colors.healPrediction.personal.r, NP.db.colors.healPrediction.personal.g, NP.db.colors.healPrediction.personal.b)
 	HealthPrediction.myBar:SetMinMaxValues(0, 1)
 
-	HealthPrediction.otherBar:Point('LEFT', HealthPrediction.myBar:GetStatusBarTexture(), 'RIGHT')
+	HealthPrediction.otherBar:SetPoint('LEFT', HealthPrediction.myBar:GetStatusBarTexture(), 'RIGHT')
 	HealthPrediction.otherBar:SetFrameLevel(healthFrameLevel + 1)
 	HealthPrediction.otherBar:SetStatusBarColor(NP.db.colors.healPrediction.others.r, NP.db.colors.healPrediction.others.g, NP.db.colors.healPrediction.others.b)
 
-	HealthPrediction.absorbBar:Point('LEFT', HealthPrediction.otherBar:GetStatusBarTexture(), 'RIGHT')
+	HealthPrediction.absorbBar:SetPoint('LEFT', HealthPrediction.otherBar:GetStatusBarTexture(), 'RIGHT')
 	HealthPrediction.absorbBar:SetFrameLevel(healthFrameLevel)
 	HealthPrediction.absorbBar:SetStatusBarColor(NP.db.colors.healPrediction.absorbs.r, NP.db.colors.healPrediction.absorbs.g, NP.db.colors.healPrediction.absorbs.b)
 
-	HealthPrediction.healAbsorbBar:Point('RIGHT', healthTexture)
+	HealthPrediction.healAbsorbBar:SetPoint('RIGHT', healthTexture)
 	HealthPrediction.healAbsorbBar:SetFrameLevel(healthFrameLevel + 3)
 	HealthPrediction.healAbsorbBar:SetStatusBarColor(NP.db.colors.healPrediction.healAbsorbs.r, NP.db.colors.healPrediction.healAbsorbs.g, NP.db.colors.healPrediction.healAbsorbs.b)
 	HealthPrediction.healAbsorbBar:SetReverseFill(true)

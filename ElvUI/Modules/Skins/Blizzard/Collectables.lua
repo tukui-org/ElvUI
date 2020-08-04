@@ -126,7 +126,7 @@ local function JournalScrollButtons(frame)
 
 		local icon = bu.icon or bu.Icon
 		icon:Size(40)
-		icon:Point('LEFT', -43, 0)
+		icon:SetPoint('LEFT', -43, 0)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:CreateBackdrop(nil, nil, nil, true)
 
@@ -143,7 +143,7 @@ local function JournalScrollButtons(frame)
 		if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
 			bu.setList = true
 			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
-			bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
+			bu.Favorite:SetPoint('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
 
 			hooksecurefunc(bu.SelectedTexture, 'SetShown', selectedTextureSetShown)
 		else
@@ -153,8 +153,8 @@ local function JournalScrollButtons(frame)
 
 			if frame:GetParent() == _G.PetJournal then
 				bu.petList = true
-				bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
-				bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
+				bu.petTypeIcon:SetPoint('TOPRIGHT', -1, -1)
+				bu.petTypeIcon:SetPoint('BOTTOMRIGHT', -1, 1)
 
 				bu.dragButton.ActiveTexture:SetAlpha(0)
 				bu.dragButton.levelBG:SetTexture()
@@ -163,11 +163,11 @@ local function JournalScrollButtons(frame)
 			elseif frame:GetParent() == _G.MountJournal then
 				bu.mountList = true
 				bu.factionIcon:SetDrawLayer('OVERLAY')
-				bu.factionIcon:Point('TOPRIGHT', -1, -1)
-				bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
+				bu.factionIcon:SetPoint('TOPRIGHT', -1, -1)
+				bu.factionIcon:SetPoint('BOTTOMRIGHT', -1, 1)
 
 				bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
-				bu.favorite:Point('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
+				bu.favorite:SetPoint('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
 				bu.favorite:Size(32, 32)
 
 				hooksecurefunc(bu.name, 'SetFontObject', mountNameColor)
@@ -192,7 +192,7 @@ function S:Blizzard_Collections()
 	S:HandleButton(_G.MountJournalFilterButton)
 
 	_G.MountJournalFilterButton:ClearAllPoints()
-	_G.MountJournalFilterButton:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
+	_G.MountJournalFilterButton:SetPoint('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
 
 	-------------------------------
 	--[[ mount journal (tab 1) ]]--
@@ -245,11 +245,11 @@ function S:Blizzard_Collections()
 	PetJournal.PetCount:StripTextures()
 	S:HandleEditBox(_G.PetJournalSearchBox)
 	_G.PetJournalSearchBox:ClearAllPoints()
-	_G.PetJournalSearchBox:Point('TOPLEFT', _G.PetJournalLeftInset, 'TOPLEFT', (E.PixelMode and 13 or 10), -9)
+	_G.PetJournalSearchBox:SetPoint('TOPLEFT', _G.PetJournalLeftInset, 'TOPLEFT', (E.PixelMode and 13 or 10), -9)
 	S:HandleButton(_G.PetJournalFilterButton)
 	_G.PetJournalFilterButton:Height(E.PixelMode and 22 or 24)
 	_G.PetJournalFilterButton:ClearAllPoints()
-	_G.PetJournalFilterButton:Point('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
+	_G.PetJournalFilterButton:SetPoint('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
 	_G.PetJournalListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.PetJournalListScrollFrameScrollBar)
 	JournalScrollButtons(PetJournal.listScroll)
@@ -268,7 +268,7 @@ function S:Blizzard_Collections()
 		petButton:StripTextures()
 		petButton:CreateBackdrop()
 		petButton.backdrop:SetAllPoints()
-		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
+		petButton.petTypeIcon:SetPoint('BOTTOMLEFT', 2, 2)
 
 		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
 		petButton.dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 1)
@@ -361,7 +361,7 @@ function S:Blizzard_Collections()
 	--Toy Box
 	local ToyBox = _G.ToyBox
 	S:HandleButton(_G.ToyBoxFilterButton)
-	_G.ToyBoxFilterButton:Point('TOPRIGHT', ToyBox, 'TOPRIGHT', -15, -34)
+	_G.ToyBoxFilterButton:SetPoint('TOPRIGHT', ToyBox, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
@@ -405,7 +405,7 @@ function S:Blizzard_Collections()
 	--Heirlooms
 	local HeirloomsJournal = _G.HeirloomsJournal
 	S:HandleButton(_G.HeirloomsJournalFilterButton)
-	_G.HeirloomsJournalFilterButton:Point('TOPRIGHT', HeirloomsJournal, 'TOPRIGHT', -15, -34)
+	_G.HeirloomsJournalFilterButton:SetPoint('TOPRIGHT', HeirloomsJournal, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
@@ -436,8 +436,8 @@ function S:Blizzard_Collections()
 
 		button.levelBackground:SetTexture()
 
-		button.name:Point('LEFT', button, 'RIGHT', 4, 8)
-		button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
+		button.name:SetPoint('LEFT', button, 'RIGHT', 4, 8)
+		button.level:SetPoint('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
 
 		if C_Heirloom_PlayerHasHeirloom(button.itemID) then
 			button.name:SetTextColor(0.9, 0.9, 0.9)
@@ -476,7 +476,7 @@ function S:Blizzard_Collections()
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 
-	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
+	WardrobeCollectionFrame.FilterButton:SetPoint('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
 	S:HandleButton(WardrobeCollectionFrame.FilterButton)
 	S:HandleDropDownBox(_G.WardrobeCollectionFrameWeaponDropDown)
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
@@ -584,7 +584,7 @@ function S:Blizzard_Collections()
 	S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
 	_G.WardrobeOutfitDropDown:SetHeight(34)
 	_G.WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
-	_G.WardrobeOutfitDropDown.SaveButton:Point('TOPLEFT', _G.WardrobeOutfitDropDown, 'TOPRIGHT', -2, -2)
+	_G.WardrobeOutfitDropDown.SaveButton:SetPoint('TOPLEFT', _G.WardrobeOutfitDropDown, 'TOPRIGHT', -2, -2)
 
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
@@ -599,7 +599,7 @@ function S:Blizzard_Collections()
 	end
 
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
-	WardrobeTransmogFrame.SpecButton:Point('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -2, 0)
+	WardrobeTransmogFrame.SpecButton:SetPoint('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -2, 0)
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)

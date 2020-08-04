@@ -91,7 +91,7 @@ end
 function E:CreateStatusContent(num, width, parent, anchorTo, content)
 	if not content then content = CreateFrame('Frame', nil, parent) end
 	content:Size(width, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
-	content:Point('TOP', anchorTo, 'BOTTOM')
+	content:SetPoint('TOP', anchorTo, 'BOTTOM')
 
 	local font = E.Libs.LSM:Fetch('font', 'Expressway')
 	for i = 1, num do
@@ -107,9 +107,9 @@ function E:CreateStatusContent(num, width, parent, anchorTo, content)
 			line.Text = text
 
 			if i == 1 then
-				line:Point('TOP', content, 'TOP')
+				line:SetPoint('TOP', content, 'TOP')
 			else
-				line:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
+				line:SetPoint('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
 			end
 
 			content['Line'..i] = line
@@ -134,17 +134,17 @@ function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent,
 
 	local section = CreateFrame('Frame', nil, parent)
 	section:Size(width, height or 0)
-	section:Point(anchor1, anchorTo, anchor2, 0, yOffset)
+	section:SetPoint(anchor1, anchorTo, anchor2, 0, yOffset)
 
 	local header = CreateFrame('Frame', nil, section)
 	header:Size(headerWidth or width, headerHeight)
-	header:Point('TOP', section)
+	header:SetPoint('TOP', section)
 	section.Header = header
 
 	local font = E.Libs.LSM:Fetch('font', 'Expressway')
 	local text = section.Header:CreateFontString(nil, 'ARTWORK')
-	text:Point('TOP')
-	text:Point('BOTTOM')
+	text:SetPoint('TOP')
+	text:SetPoint('BOTTOM')
 	text:SetJustifyH('CENTER')
 	text:SetJustifyV('MIDDLE')
 	text:FontTemplate(font, 18, 'OUTLINE')
@@ -152,16 +152,16 @@ function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent,
 
 	local leftDivider = section.Header:CreateTexture(nil, 'ARTWORK')
 	leftDivider:Height(8)
-	leftDivider:Point('LEFT', section.Header, 'LEFT', 5, 0)
-	leftDivider:Point('RIGHT', section.Header.Text, 'LEFT', -5, 0)
+	leftDivider:SetPoint('LEFT', section.Header, 'LEFT', 5, 0)
+	leftDivider:SetPoint('RIGHT', section.Header.Text, 'LEFT', -5, 0)
 	leftDivider:SetTexture([[Interface\Tooltips\UI-Tooltip-Border]])
 	leftDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 	section.Header.LeftDivider = leftDivider
 
 	local rightDivider = section.Header:CreateTexture(nil, 'ARTWORK')
 	rightDivider:Height(8)
-	rightDivider:Point('RIGHT', section.Header, 'RIGHT', -5, 0)
-	rightDivider:Point('LEFT', section.Header.Text, 'RIGHT', 5, 0)
+	rightDivider:SetPoint('RIGHT', section.Header, 'RIGHT', -5, 0)
+	rightDivider:SetPoint('LEFT', section.Header.Text, 'RIGHT', 5, 0)
 	rightDivider:SetTexture([[Interface\Tooltips\UI-Tooltip-Border]])
 	rightDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 	section.Header.RightDivider = rightDivider
@@ -172,7 +172,7 @@ end
 function E:CreateStatusFrame()
 	--Main frame
 	local StatusFrame = CreateFrame('Frame', 'ElvUIStatusReport', E.UIParent)
-	StatusFrame:Point('CENTER', E.UIParent, 'CENTER')
+	StatusFrame:SetPoint('CENTER', E.UIParent, 'CENTER')
 	StatusFrame:SetFrameStrata('HIGH')
 	StatusFrame:CreateBackdrop('Transparent', nil, true)
 	StatusFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)
@@ -195,18 +195,18 @@ function E:CreateStatusFrame()
 
 	--Title logo (drag to move frame)
 	local titleLogoFrame = CreateFrame('Frame', nil, StatusFrame, 'TitleDragAreaTemplate')
-	titleLogoFrame:Point('CENTER', StatusFrame, 'TOP')
+	titleLogoFrame:SetPoint('CENTER', StatusFrame, 'TOP')
 	titleLogoFrame:Size(240, 80)
 	StatusFrame.TitleLogoFrame = titleLogoFrame
 
 	local LogoTop = StatusFrame.TitleLogoFrame:CreateTexture(nil, 'ARTWORK')
-	LogoTop:Point('CENTER', titleLogoFrame, 'TOP', 0, -36)
+	LogoTop:SetPoint('CENTER', titleLogoFrame, 'TOP', 0, -36)
 	LogoTop:SetTexture(E.Media.Textures.LogoTopSmall)
 	LogoTop:Size(128, 64)
 	titleLogoFrame.LogoTop = LogoTop
 
 	local LogoBottom = StatusFrame.TitleLogoFrame:CreateTexture(nil, 'ARTWORK')
-	LogoBottom:Point('CENTER', titleLogoFrame, 'TOP', 0, -36)
+	LogoBottom:SetPoint('CENTER', titleLogoFrame, 'TOP', 0, -36)
 	LogoBottom:SetTexture(E.Media.Textures.LogoBottomSmall)
 	LogoBottom:Size(128, 64)
 	titleLogoFrame.LogoBottom = LogoBottom
@@ -224,7 +224,7 @@ function E:CreateStatusFrame()
 	StatusFrame.Section3.Content = E:CreateStatusContent(6, 260, StatusFrame.Section3, StatusFrame.Section3.Header)
 	--StatusFrame.Section4.Content = CreateFrame('Frame', nil, StatusFrame.Section4)
 	--StatusFrame.Section4.Content:Size(240, 25)
-	--StatusFrame.Section4.Content:Point('TOP', StatusFrame.Section4.Header, 'BOTTOM', 0, 0)
+	--StatusFrame.Section4.Content:SetPoint('TOP', StatusFrame.Section4.Header, 'BOTTOM', 0, 0)
 
 	--Content lines
 	StatusFrame.Section1.Content.Line3.Text:SetFormattedText('Recommended Scale: |cff4beb2c%s|r', E:PixelBestSize())
@@ -239,12 +239,12 @@ function E:CreateStatusFrame()
 	--[[Export buttons
 	StatusFrame.Section4.Content.Button1 = CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
 	StatusFrame.Section4.Content.Button1:Size(100, 25)
-	StatusFrame.Section4.Content.Button1:Point('LEFT', StatusFrame.Section4.Content, 'LEFT')
+	StatusFrame.Section4.Content.Button1:SetPoint('LEFT', StatusFrame.Section4.Content, 'LEFT')
 	StatusFrame.Section4.Content.Button1:SetText('Forum')
 	StatusFrame.Section4.Content.Button1:SetButtonState('DISABLED')
 	StatusFrame.Section4.Content.Button2 = CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
 	StatusFrame.Section4.Content.Button2:Size(100, 25)
-	StatusFrame.Section4.Content.Button2:Point('RIGHT', StatusFrame.Section4.Content, 'RIGHT')
+	StatusFrame.Section4.Content.Button2:SetPoint('RIGHT', StatusFrame.Section4.Content, 'RIGHT')
 	StatusFrame.Section4.Content.Button2:SetText('Ticket')
 	StatusFrame.Section4.Content.Button2:SetButtonState('DISABLED')
 	Skins:HandleButton(StatusFrame.Section4.Content.Button1, true)

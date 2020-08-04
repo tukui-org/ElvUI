@@ -40,8 +40,8 @@ local function SkinSocialHeaderTab(tab)
 	tab.backdrop = CreateFrame("Frame", nil, tab, "BackdropTemplate")
 	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
-	tab.backdrop:Point("TOPLEFT", 3, -8)
-	tab.backdrop:Point("BOTTOMRIGHT", -6, 0)
+	tab.backdrop:SetPoint("TOPLEFT", 3, -8)
+	tab.backdrop:SetPoint("BOTTOMRIGHT", -6, 0)
 end
 
 local function BattleNetFrame_OnEnter(button)
@@ -133,7 +133,7 @@ function S:FriendsFrame()
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 70)
 
 	_G.FriendsFrameStatusDropDown:ClearAllPoints()
-	_G.FriendsFrameStatusDropDown:Point("TOPLEFT", FriendsFrame, "TOPLEFT", 5, -24)
+	_G.FriendsFrameStatusDropDown:SetPoint("TOPLEFT", FriendsFrame, "TOPLEFT", 5, -24)
 
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
@@ -142,8 +142,8 @@ function S:FriendsFrame()
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
 	local button = CreateFrame("Button", nil, FriendsFrameBattlenetFrame)
-	button:Point("TOPLEFT", FriendsFrameBattlenetFrame, "TOPLEFT")
-	button:Point("BOTTOMRIGHT", FriendsFrameBattlenetFrame, "BOTTOMRIGHT")
+	button:SetPoint("TOPLEFT", FriendsFrameBattlenetFrame, "TOPLEFT")
+	button:SetPoint("BOTTOMRIGHT", FriendsFrameBattlenetFrame, "BOTTOMRIGHT")
 	button:Size(FriendsFrameBattlenetFrame:GetSize())
 	button:CreateBackdrop()
 	button.backdrop:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
@@ -156,13 +156,13 @@ function S:FriendsFrame()
 	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
 
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
-	FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point("TOPLEFT", FriendsFrame, "TOPRIGHT", 1, -18)
+	FriendsFrameBattlenetFrame.UnavailableInfoFrame:SetPoint("TOPLEFT", FriendsFrame, "TOPRIGHT", 1, -18)
 
 	FriendsFrameBattlenetFrame.BroadcastFrame:StripTextures()
 	FriendsFrameBattlenetFrame.BroadcastFrame:CreateBackdrop("Transparent")
 	FriendsFrameBattlenetFrame.BroadcastFrame.EditBox:StripTextures()
 	FriendsFrameBattlenetFrame.BroadcastFrame:ClearAllPoints()
-	FriendsFrameBattlenetFrame.BroadcastFrame:Point("TOPLEFT", FriendsFrame, "TOPRIGHT", 3, -1)
+	FriendsFrameBattlenetFrame.BroadcastFrame:SetPoint("TOPLEFT", FriendsFrame, "TOPRIGHT", 3, -1)
 	S:HandleEditBox(FriendsFrameBattlenetFrame.BroadcastFrame.EditBox)
 	S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton)
 	S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton)
@@ -219,7 +219,7 @@ function S:FriendsFrame()
 	S:HandleButton(_G.QuickJoinFrame.JoinQueueButton)
 	QuickJoinFrame.JoinQueueButton:Size(131, 21)  --Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
-	QuickJoinFrame.JoinQueueButton:Point("BOTTOMRIGHT", QuickJoinFrame, "BOTTOMRIGHT", -6, 4)
+	QuickJoinFrame.JoinQueueButton:SetPoint("BOTTOMRIGHT", QuickJoinFrame, "BOTTOMRIGHT", -6, 4)
 	_G.QuickJoinScrollFrameTop:SetTexture()
 	_G.QuickJoinScrollFrameBottom:SetTexture()
 	_G.QuickJoinScrollFrameMiddle:SetTexture()
@@ -241,7 +241,7 @@ function S:FriendsFrame()
 		icon:SetTexCoord(.15, .85, .15, .85)
 
 		icon:ClearAllPoints()
-		icon:Point("RIGHT", btn, "RIGHT", -24, 0)
+		icon:SetPoint("RIGHT", btn, "RIGHT", -24, 0)
 		icon.SetPoint = E.noop
 	end
 

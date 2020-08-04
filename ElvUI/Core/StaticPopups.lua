@@ -562,9 +562,9 @@ function E:StaticPopup_SetUpPosition(dialog)
 		dialog:ClearAllPoints()
 
 		if lastFrame then
-			dialog:Point('TOP', lastFrame, 'BOTTOM', 0, -4)
+			dialog:SetPoint('TOP', lastFrame, 'BOTTOM', 0, -4)
 		else
-			dialog:Point('TOP', E.UIParent, 'TOP', 0, -100)
+			dialog:SetPoint('TOP', E.UIParent, 'TOP', 0, -100)
 		end
 
 		tinsert(E.StaticPopup_DisplayedFrames, dialog)
@@ -1027,16 +1027,16 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		dialog.numButtons = numButtons
 
 		if ( numButtons == 3 ) then
-			tempButtonLocs[1]:Point('BOTTOMRIGHT', dialog, 'BOTTOM', -72, 16)
+			tempButtonLocs[1]:SetPoint('BOTTOMRIGHT', dialog, 'BOTTOM', -72, 16)
 		elseif ( numButtons == 2 ) then
-			tempButtonLocs[1]:Point('BOTTOMRIGHT', dialog, 'BOTTOM', -6, 16)
+			tempButtonLocs[1]:SetPoint('BOTTOMRIGHT', dialog, 'BOTTOM', -6, 16)
 		elseif ( numButtons == 1 ) then
-			tempButtonLocs[1]:Point('BOTTOM', dialog, 'BOTTOM', 0, 16)
+			tempButtonLocs[1]:SetPoint('BOTTOM', dialog, 'BOTTOM', 0, 16)
 		end
 
 		for i=1, numButtons do
 			if ( i > 1 ) then
-				tempButtonLocs[i]:Point('LEFT', tempButtonLocs[i-1], 'RIGHT', 13, 0)
+				tempButtonLocs[i]:SetPoint('LEFT', tempButtonLocs[i-1], 'RIGHT', 13, 0)
 			end
 
 			local width = tempButtonLocs[i]:GetTextWidth()
@@ -1057,17 +1057,17 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	if ( info.showAlert ) then
 		alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERT)
 		if ( button3:IsShown() )then
-			alertIcon:Point('LEFT', 24, 10)
+			alertIcon:SetPoint('LEFT', 24, 10)
 		else
-			alertIcon:Point('LEFT', 24, 0)
+			alertIcon:SetPoint('LEFT', 24, 0)
 		end
 		alertIcon:Show()
 	elseif ( info.showAlertGear ) then
 		alertIcon:SetTexture(STATICPOPUP_TEXTURE_ALERTGEAR)
 		if ( button3:IsShown() )then
-			alertIcon:Point('LEFT', 24, 0)
+			alertIcon:SetPoint('LEFT', 24, 0)
 		else
-			alertIcon:Point('LEFT', 24, 0)
+			alertIcon:SetPoint('LEFT', 24, 0)
 		end
 		alertIcon:Show()
 	else
@@ -1080,7 +1080,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	local checkButtonText = _G[dialog:GetName()..'CheckButtonText']
 	if ( info.hasCheckButton ) then
 		checkButton:ClearAllPoints()
-		checkButton:Point('BOTTOMLEFT', 24, 20 + button1:GetHeight())
+		checkButton:SetPoint('BOTTOMLEFT', 24, 20 + button1:GetHeight())
 
 		if ( info.checkButtonText ) then
 			checkButtonText:SetText(info.checkButtonText)
@@ -1158,7 +1158,7 @@ function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
 	Skins:HandleButton(btn)
 
 	local t = btn:CreateFontString(nil, 'OVERLAY', btn)
-	t:Point('CENTER', 0, 1)
+	t:SetPoint('CENTER', 0, 1)
 	t:FontTemplate(nil, nil, 'NONE')
 	t:SetJustifyH('CENTER')
 	t:SetText(text)
@@ -1230,7 +1230,7 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate(nil, nil, '')
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetTextColor(1,0.17,0.26)
-		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:Point('LEFT', _G['ElvUI_StaticPopup'..index..'CheckButton'], 'RIGHT', 4, 1)
+		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetPoint('LEFT', _G['ElvUI_StaticPopup'..index..'CheckButton'], 'RIGHT', 4, 1)
 		Skins:HandleCheckBox(_G['ElvUI_StaticPopup'..index..'CheckButton'])
 
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetFrameLevel(_G['ElvUI_StaticPopup'..index..'EditBox']:GetFrameLevel()+1)
@@ -1238,8 +1238,8 @@ function E:Contruct_StaticPopups()
 		Skins:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameGold'])
 		Skins:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameSilver'])
 		Skins:HandleEditBox(_G['ElvUI_StaticPopup'..index..'MoneyInputFrameCopper'])
-		_G['ElvUI_StaticPopup'..index..'EditBox'].backdrop:Point('TOPLEFT', -2, -4)
-		_G['ElvUI_StaticPopup'..index..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
+		_G['ElvUI_StaticPopup'..index..'EditBox'].backdrop:SetPoint('TOPLEFT', -2, -4)
+		_G['ElvUI_StaticPopup'..index..'EditBox'].backdrop:SetPoint('BOTTOMRIGHT', 2, 4)
 		_G['ElvUI_StaticPopup'..index..'ItemFrameNameFrame']:Kill()
 		_G['ElvUI_StaticPopup'..index..'ItemFrame']:GetNormalTexture():Kill()
 		--_G['ElvUI_StaticPopup'..index..'ItemFrame']:SetTemplate()

@@ -10,14 +10,14 @@ local CreateFrame = CreateFrame
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 -- 8.2 restricted frame check
-function E:PointsRestricted(frame)
+function E:SetPointsRestricted(frame)
 	if frame and not pcall(frame.GetPoint, frame) then
 		return true
 	end
 end
 
 function E:SafeGetPoint(frame)
-	if frame and frame.GetPoint and not E:PointsRestricted(frame) then
+	if frame and frame.GetPoint and not E:SetPointsRestricted(frame) then
 		return frame:GetPoint()
 	end
 end
@@ -63,26 +63,21 @@ end
 
 local function Size(frame, width, height, ...)
 	assert(width)
-	frame:SetSize(E:Scale(width), E:Scale(height or width), ...)
+	frame:SetSize(width, height or width, ...)
 end
 
 local function Width(frame, width, ...)
 	assert(width)
-	frame:SetWidth(E:Scale(width), ...)
+	frame:SetWidth(width, ...)
 end
 
 local function Height(frame, height, ...)
 	assert(height)
-	frame:SetHeight(E:Scale(height), ...)
+	frame:SetHeight(height, ...)
 end
 
 local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 	if arg2 == nil then arg2 = obj:GetParent() end
-
-	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
-	if type(arg3)=='number' then arg3 = E:Scale(arg3) end
-	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
-	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
 
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
@@ -93,7 +88,7 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	anchor = anchor or obj:GetParent()
 
 	assert(anchor)
-	if E:PointsRestricted(obj) or obj:GetPoint() then
+	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
@@ -108,7 +103,7 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	anchor = anchor or obj:GetParent()
 
 	assert(anchor)
-	if E:PointsRestricted(obj) or obj:GetPoint() then
+	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 

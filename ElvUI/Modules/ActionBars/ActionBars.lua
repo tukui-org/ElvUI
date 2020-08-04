@@ -216,7 +216,7 @@ function AB:PositionAndSizeBar(barName)
 				x, y = -sideSpacing, sideSpacing
 			end
 
-			button:Point(point, bar, point, x, y)
+			button:SetPoint(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local y = -buttonSpacing
 			local buttonPoint, anchorPoint = "TOP", "BOTTOM"
@@ -225,7 +225,7 @@ function AB:PositionAndSizeBar(barName)
 				buttonPoint = "BOTTOM"
 				anchorPoint = "TOP"
 			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, 0, y)
+			button:SetPoint(buttonPoint, lastColumnButton, anchorPoint, 0, y)
 		else
 			local x = buttonSpacing
 			local buttonPoint, anchorPoint = "LEFT", "RIGHT"
@@ -235,7 +235,7 @@ function AB:PositionAndSizeBar(barName)
 				anchorPoint = "LEFT"
 			end
 
-			button:Point(buttonPoint, lastButton, anchorPoint, x, 0)
+			button:SetPoint(buttonPoint, lastButton, anchorPoint, x, 0)
 		end
 
 		if i > numButtons then
@@ -291,7 +291,7 @@ function AB:CreateBar(id)
 	SecureHandlerSetFrameRef(bar, "MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
 
 	local point, anchor, attachTo, x, y = strsplit(',', AB.barDefaults['bar'..id].position)
-	bar:Point(point, anchor, attachTo, x, y)
+	bar:SetPoint(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
 	bar:SetFrameStrata("LOW")
@@ -378,7 +378,7 @@ function AB:CreateVehicleLeave()
 	if not db.enable then return end
 
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
-	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
+	holder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
 	holder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
 	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,vehicleExitButton')
 
@@ -551,14 +551,14 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if count then
 		count:ClearAllPoints()
-		count:Point(countPosition, countXOffset, countYOffset)
+		count:SetPoint(countPosition, countXOffset, countYOffset)
 		count:FontTemplate(LSM:Fetch("font", AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		count:SetTextColor(color.r, color.g, color.b)
 	end
 
 	if macroText then
 		macroText:ClearAllPoints()
-		macroText:Point("BOTTOM", 0, 1)
+		macroText:SetPoint("BOTTOM", 0, 1)
 		macroText:FontTemplate(LSM:Fetch("font", AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		macroText:SetTextColor(color.r, color.g, color.b)
 	end
@@ -971,7 +971,7 @@ function AB:FixKeybindText(button)
 
 	if not button.useMasque then
 		hotkey:ClearAllPoints()
-		hotkey:Point(hotkeyPosition, hotkeyXOffset, hotkeyYOffset)
+		hotkey:SetPoint(hotkeyPosition, hotkeyXOffset, hotkeyYOffset)
 	end
 end
 
@@ -1067,22 +1067,22 @@ function AB:StyleFlyout(button)
 		local noCombat = not InCombatLockdown()
 		if direction == "DOWN" or (point and strfind(point, "TOP")) then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point("BOTTOM", button, "BOTTOM", 0, -arrowDistance)
+			button.FlyoutArrow:SetPoint("BOTTOM", button, "BOTTOM", 0, -arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 180)
 			if noCombat then button:SetAttribute("flyoutDirection", "DOWN") end
 		elseif direction == "LEFT" or point == "RIGHT" then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point("LEFT", button, "LEFT", -arrowDistance, 0)
+			button.FlyoutArrow:SetPoint("LEFT", button, "LEFT", -arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 270)
 			if noCombat then button:SetAttribute("flyoutDirection", "LEFT") end
 		elseif direction == "RIGHT" or point == "LEFT" then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point("RIGHT", button, "RIGHT", arrowDistance, 0)
+			button.FlyoutArrow:SetPoint("RIGHT", button, "RIGHT", arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 90)
 			if noCombat then button:SetAttribute("flyoutDirection", "RIGHT") end
 		elseif direction == "UP" or point == "CENTER" or (point and strfind(point, "BOTTOM")) then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:Point("TOP", button, "TOP", 0, arrowDistance)
+			button.FlyoutArrow:SetPoint("TOP", button, "TOP", 0, arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 0)
 			if noCombat then button:SetAttribute("flyoutDirection", "UP") end
 		end

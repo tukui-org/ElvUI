@@ -14,8 +14,8 @@ function S:Blizzard_AzeriteRespecUI()
 
 	local Lines = AzeriteRespecFrame:CreateTexture(nil, "BACKGROUND")
 	Lines:ClearAllPoints()
-	Lines:Point("TOPLEFT", -50, 25)
-	Lines:Point("BOTTOMRIGHT")
+	Lines:SetPoint("TOPLEFT", -50, 25)
+	Lines:SetPoint("BOTTOMRIGHT")
 	Lines:SetTexture([[Interface\Transmogrify\EtherealLines]], true, true)
 	Lines:SetHorizTile(true)
 	Lines:SetVertTile(true)
@@ -23,7 +23,7 @@ function S:Blizzard_AzeriteRespecUI()
 
 	local ItemSlot = AzeriteRespecFrame.ItemSlot
 	ItemSlot:Size(64, 64)
-	ItemSlot:Point("CENTER", AzeriteRespecFrame)
+	ItemSlot:SetPoint("CENTER", AzeriteRespecFrame)
 	ItemSlot.Icon:SetInside()
 	ItemSlot.GlowOverlay:SetAlpha(0)
 
@@ -38,7 +38,7 @@ function S:Blizzard_AzeriteRespecUI()
 
 	ButtonFrame.MoneyFrameEdge:Hide()
 	ButtonFrame.MoneyFrame:ClearAllPoints()
-	ButtonFrame.MoneyFrame:Point("BOTTOMRIGHT", ButtonFrame.MoneyFrameEdge, 7, 5)
+	ButtonFrame.MoneyFrame:SetPoint("BOTTOMRIGHT", ButtonFrame.MoneyFrameEdge, 7, 5)
 
 	S:HandleButton(ButtonFrame.AzeriteRespecButton, true)
 	S:HandleCloseButton(AzeriteRespecFrame.CloseButton)

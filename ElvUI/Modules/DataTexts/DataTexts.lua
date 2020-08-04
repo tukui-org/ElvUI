@@ -211,7 +211,7 @@ function DT:BuildPanelFrame(name, db, initLoad)
 
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
-	Panel:Point('CENTER')
+	Panel:SetPoint('CENTER')
 	Panel:Size(db.width, db.height)
 
 	local MoverName = 'DTPanel'..name..'Mover'
@@ -472,7 +472,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt:SetShown(i <= numPoints)
 		dt:Size(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
+		dt:SetPoint(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 		dt:UnregisterAllEvents()
 		dt:SetScript('OnUpdate', nil)
 		dt:SetScript('OnEvent', nil)
@@ -540,7 +540,7 @@ function DT:PanelSizeChanged()
 	for i, dt in ipairs(self.dataPanels) do
 		dt:Size(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(self, i, numPoints, vertical))
+		dt:SetPoint(DT:GetDataPanelPoint(self, i, numPoints, vertical))
 	end
 end
 

@@ -8,8 +8,8 @@ local CreateFrame = CreateFrame
 function UF:Construct_AuraBars(statusBar)
 	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	statusBar:SetScript('OnMouseDown', UF.Aura_OnClick)
-	statusBar:Point("LEFT")
-	statusBar:Point("RIGHT")
+	statusBar:SetPoint("LEFT")
+	statusBar:SetPoint("RIGHT")
 
 	statusBar.icon:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	UF.statusbars[statusBar] = true
@@ -23,7 +23,7 @@ function UF:Construct_AuraBars(statusBar)
 
 	statusBar.nameText:SetJustifyH('LEFT')
 	statusBar.nameText:SetJustifyV('MIDDLE')
-	statusBar.nameText:Point("RIGHT", statusBar.timeText, "LEFT", -4, 0)
+	statusBar.nameText:SetPoint("RIGHT", statusBar.timeText, "LEFT", -4, 0)
 	statusBar.nameText:SetWordWrap(false)
 
 	statusBar.bg = statusBar:CreateTexture(nil, 'BORDER')
@@ -116,7 +116,7 @@ function UF:Configure_AuraBars(frame)
 
 		if not auraBars.Holder then
 			local holder = CreateFrame('Frame', nil, auraBars)
-			holder:Point("BOTTOM", frame, "TOP", 0, 0)
+			holder:SetPoint("BOTTOM", frame, "TOP", 0, 0)
 			holder:Size(db.aurabar.detachedWidth, 20)
 
 			if frame.unitframeType == "player" then
@@ -170,8 +170,8 @@ function UF:Configure_AuraBars(frame)
 		local offsetRight = -xOffset - ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "RIGHT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "RIGHT"))) and frame.POWERBAR_OFFSET or 0)
 
 		auraBars:ClearAllPoints()
-		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, db.aurabar.attachTo == "DETACHED" and 0 or yOffset)
-		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, db.aurabar.attachTo == "DETACHED" and 0 or yOffset)
+		auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, db.aurabar.attachTo == "DETACHED" and 0 or yOffset)
+		auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, db.aurabar.attachTo == "DETACHED" and 0 or yOffset)
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
 		auraBars:Hide()

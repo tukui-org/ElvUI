@@ -15,7 +15,7 @@ function S:Blizzard_AzeriteEssenceUI()
 
 	-- Reposition the Level Badge
 	AzeriteEssenceUI.PowerLevelBadgeFrame:ClearAllPoints()
-	AzeriteEssenceUI.PowerLevelBadgeFrame:Point('TOPLEFT')
+	AzeriteEssenceUI.PowerLevelBadgeFrame:SetPoint('TOPLEFT')
 	AzeriteEssenceUI.PowerLevelBadgeFrame.Ring:Hide()
 	AzeriteEssenceUI.PowerLevelBadgeFrame.BackgroundBlack:Hide()
 
@@ -30,11 +30,11 @@ function S:Blizzard_AzeriteEssenceUI()
 		button:StyleButton()
 
 		S:HandleIcon(button.Icon)
-		button.Icon:Point("LEFT", button, "LEFT", 6, 0)
+		button.Icon:SetPoint("LEFT", button, "LEFT", 6, 0)
 
 		button:CreateBackdrop()
-		button.backdrop:Point("TOPLEFT", 2, -3)
-		button.backdrop:Point("BOTTOMRIGHT", -2, 3)
+		button.backdrop:SetPoint("TOPLEFT", 2, -3)
+		button.backdrop:SetPoint("BOTTOMRIGHT", -2, 3)
 	end
 
 	-- Header on the Essence List

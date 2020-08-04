@@ -26,7 +26,7 @@ function UF:Construct_TargetTargetTargetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 160) --Set to default position
+	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 160) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTargetTarget Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,targettargettarget,generalGroup')
 
 	frame.unitframeType = "targettargettarget"

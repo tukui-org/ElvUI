@@ -206,7 +206,7 @@ function AB:PositionAndSizeBarPet()
 				x, y = -firstButtonSpacing, firstButtonSpacing
 			end
 
-			button:Point(point, bar, point, x, y)
+			button:SetPoint(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0
 			local y = -buttonSpacing
@@ -216,7 +216,7 @@ function AB:PositionAndSizeBarPet()
 				buttonPoint = "BOTTOM"
 				anchorPoint = "TOP"
 			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y)
+			button:SetPoint(buttonPoint, lastColumnButton, anchorPoint, x, y)
 		else
 			local x = buttonSpacing
 			local y = 0
@@ -227,7 +227,7 @@ function AB:PositionAndSizeBarPet()
 				anchorPoint = "LEFT"
 			end
 
-			button:Point(buttonPoint, lastButton, anchorPoint, x, y)
+			button:SetPoint(buttonPoint, lastButton, anchorPoint, x, y)
 		end
 
 		if i > numButtons then
@@ -272,9 +272,9 @@ function AB:CreateBarPet()
 	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar.backdrop:SetAllPoints()
 	if self.db.bar4.enabled then
-		bar:Point('RIGHT', _G.ElvUI_Bar4, 'LEFT', -4, 0)
+		bar:SetPoint('RIGHT', _G.ElvUI_Bar4, 'LEFT', -4, 0)
 	else
-		bar:Point('RIGHT', E.UIParent, 'RIGHT', -4, 0)
+		bar:SetPoint('RIGHT', E.UIParent, 'RIGHT', -4, 0)
 	end
 
 	bar:SetAttribute("_onstate-show", [[

@@ -51,7 +51,7 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	local b = CreateFrame("Button", name, parent, template)
 	b:Width(width)
 	b:Height(height)
-	b:Point(point, relativeto, point2, xOfs, yOfs)
+	b:SetPoint(point, relativeto, point2, xOfs, yOfs)
 	b:HookScript("OnEnter", RU.ButtonEnter)
 	b:HookScript("OnLeave", RU.ButtonLeave)
 	b:SetTemplate(nil, true)
@@ -59,7 +59,7 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	if text then
 		local t = b:CreateFontString(nil, "OVERLAY", b)
 		t:FontTemplate()
-		t:Point("CENTER", b, 'CENTER', 0, -1)
+		t:SetPoint("CENTER", b, 'CENTER', 0, -1)
 		t:SetJustifyH("CENTER")
 		t:SetText(text)
 		b:SetFontString(t)
@@ -67,8 +67,8 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	elseif texture then
 		local t = b:CreateTexture(nil, "OVERLAY")
 		t:SetTexture(texture)
-		t:Point("TOPLEFT", b, "TOPLEFT", E.mult, -E.mult)
-		t:Point("BOTTOMRIGHT", b, "BOTTOMRIGHT", -E.mult, E.mult)
+		t:SetPoint("TOPLEFT", b, "TOPLEFT", E.mult, -E.mult)
+		t:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -E.mult, E.mult)
 		t.tex = texture
 		b.texture = t
 	end
@@ -142,7 +142,7 @@ function RU:RoleOnEnter()
 
 	local GameTooltip = _G.GameTooltip
 	GameTooltip:SetOwner(E.UIParent, "ANCHOR_NONE")
-	GameTooltip:Point(anchor1, self, anchor2, anchorX, 0)
+	GameTooltip:SetPoint(anchor1, self, anchor2, anchorX, 0)
 	GameTooltip:SetText(_G["INLINE_" .. role .. "_ICON"] .. _G[role])
 
 	local name, group, class, groupRole, color, coloredName, _
@@ -171,9 +171,9 @@ function RU:PositionRoleIcons()
 	local left = point and strfind(point, "LEFT")
 	_G.RaidUtilityRoleIcons:ClearAllPoints()
 	if left then
-		_G.RaidUtilityRoleIcons:Point("LEFT", _G.RaidUtilityPanel, "RIGHT", -1, 0)
+		_G.RaidUtilityRoleIcons:SetPoint("LEFT", _G.RaidUtilityPanel, "RIGHT", -1, 0)
 	else
-		_G.RaidUtilityRoleIcons:Point("RIGHT", _G.RaidUtilityPanel, "LEFT", 1, 0)
+		_G.RaidUtilityRoleIcons:SetPoint("RIGHT", _G.RaidUtilityPanel, "LEFT", 1, 0)
 	end
 end
 
@@ -212,7 +212,7 @@ function RU:Initialize()
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Width(230)
 	RaidUtilityPanel:Height(PANEL_HEIGHT)
-	RaidUtilityPanel:Point('TOP', E.UIParent, 'TOP', -400, 1)
+	RaidUtilityPanel:SetPoint('TOP', E.UIParent, 'TOP', -400, 1)
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
 	RaidUtilityPanel:SetFrameStrata("HIGH")
@@ -267,9 +267,9 @@ function RU:Initialize()
 		xOffset = xOffset - screenWidth
 		sb:ClearAllPoints()
 		if strfind(point, "BOTTOM") then
-			sb:Point('BOTTOM', E.UIParent, 'BOTTOM', xOffset, -1)
+			sb:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', xOffset, -1)
 		else
-			sb:Point('TOP', E.UIParent, 'TOP', xOffset, 1)
+			sb:SetPoint('TOP', E.UIParent, 'TOP', xOffset, 1)
 		end
 	end)
 	E.FrameLocks.RaidUtility_ShowButton = true
@@ -281,7 +281,7 @@ function RU:Initialize()
 	SecureHandlerSetFrameRef(RaidUtilityPanel, "RaidUtility_CloseButton", CloseButton)
 
 	local RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel, "BackdropTemplate")
-	RoleIcons:Point("LEFT", RaidUtilityPanel, "RIGHT", -1, 0)
+	RoleIcons:SetPoint("LEFT", RaidUtilityPanel, "RIGHT", -1, 0)
 	RoleIcons:Size(36, PANEL_HEIGHT)
 	RoleIcons:SetTemplate("Transparent")
 	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -293,21 +293,21 @@ function RU:Initialize()
 	for i, role in ipairs(roles) do
 		local frame = CreateFrame("Frame", "$parent_"..role, RoleIcons)
 		if i == 1 then
-			frame:Point("BOTTOM", 0, 4)
+			frame:SetPoint("BOTTOM", 0, 4)
 		else
-			frame:Point("BOTTOM", _G["RaidUtilityRoleIcons_"..roles[i-1]], "TOP", 0, 4)
+			frame:SetPoint("BOTTOM", _G["RaidUtilityRoleIcons_"..roles[i-1]], "TOP", 0, 4)
 		end
 
 		local texture = frame:CreateTexture(nil, "OVERLAY")
 		texture:SetTexture(E.Media.Textures.RoleIcons) --(337499)
 		local texA, texB, texC, texD = GetTexCoordsForRole(role)
 		texture:SetTexCoord(texA, texB, texC, texD)
-		texture:Point("TOPLEFT", frame, "TOPLEFT", -2, 2)
-		texture:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 2, -2)
+		texture:SetPoint("TOPLEFT", frame, "TOPLEFT", -2, 2)
+		texture:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 2, -2)
 		frame.texture = texture
 
 		local Count = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-		Count:Point("BOTTOMRIGHT", -2, 2)
+		Count:SetPoint("BOTTOMRIGHT", -2, 2)
 		Count:SetText(0)
 		frame.count = Count
 
@@ -359,7 +359,7 @@ function RU:Initialize()
 		tinsert(buttons, "CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton")
 		local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 		marker:ClearAllPoints()
-		marker:Point("TOPRIGHT", _G.RoleCheckButton, "BOTTOMRIGHT", 0, -5)
+		marker:SetPoint("TOPRIGHT", _G.RoleCheckButton, "BOTTOMRIGHT", 0, -5)
 		marker:SetParent("RaidUtilityPanel")
 		marker:Height(18)
 		marker:Width(_G.RoleCheckButton:GetWidth() * 0.22)
@@ -369,14 +369,14 @@ function RU:Initialize()
 		--Put other stuff back
 		local readyCheck = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateReadyCheck
 		readyCheck:ClearAllPoints()
-		readyCheck:Point("BOTTOMLEFT", _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, "TOPLEFT", 0, 1)
-		readyCheck:Point("BOTTOMRIGHT", _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, "TOPRIGHT", 0, 1)
+		readyCheck:SetPoint("BOTTOMLEFT", _G.CompactRaidFrameManagerDisplayFrameLockedModeToggle, "TOPLEFT", 0, 1)
+		readyCheck:SetPoint("BOTTOMRIGHT", _G.CompactRaidFrameManagerDisplayFrameHiddenModeToggle, "TOPRIGHT", 0, 1)
 		self.ReadyCheck = readyCheck
 
 		local rolePoll = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsInitiateRolePoll
 		rolePoll:ClearAllPoints()
-		rolePoll:Point("BOTTOMLEFT", readyCheck, "TOPLEFT", 0, 1)
-		rolePoll:Point("BOTTOMRIGHT", readyCheck, "TOPRIGHT", 0, 1)
+		rolePoll:SetPoint("BOTTOMLEFT", readyCheck, "TOPLEFT", 0, 1)
+		rolePoll:SetPoint("BOTTOMRIGHT", readyCheck, "TOPRIGHT", 0, 1)
 		self.RolePoll = rolePoll
 	else
 		E:StaticPopup_Show("WARNING_BLIZZARD_ADDONS")

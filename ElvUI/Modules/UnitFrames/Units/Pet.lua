@@ -32,7 +32,7 @@ function UF:Construct_PetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', -342, 100)
+	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -342, 100)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Pet Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,pet,generalGroup')
 
 	frame.unitframeType = "pet"

@@ -121,7 +121,7 @@ function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
 	B.BagBar = CreateFrame("Frame", "ElvUIBags", E.UIParent)
-	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
+	B.BagBar:SetPoint('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	B.BagBar.buttons = {}
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent')
 	B.BagBar.backdrop:SetAllPoints()
@@ -133,7 +133,7 @@ function B:LoadBagBar()
 	_G.MainMenuBarBackpackButton:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:Point("BOTTOMRIGHT", _G.MainMenuBarBackpackButton, "BOTTOMRIGHT", -1, 4)
+	_G.MainMenuBarBackpackButtonCount:SetPoint("BOTTOMRIGHT", _G.MainMenuBarBackpackButton, "BOTTOMRIGHT", -1, 4)
 	_G.MainMenuBarBackpackButton:HookScript('OnEnter', OnEnter)
 	_G.MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
 

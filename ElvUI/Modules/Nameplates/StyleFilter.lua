@@ -434,7 +434,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		c.Visibility = true
 		mod:DisablePlate(frame) -- disable the plate elements
 		frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise
-		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
+		frame:SetPoint('TOP', E.UIParent, 'BOTTOM', 0, -500)
 		return -- We hide it. Lets not do other things (no point)
 	end
 	if HealthColor then
@@ -536,7 +536,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if Visibility then
 		mod:StyleFilterUpdatePlate(frame)
 		frame:ClearAllPoints() -- pull the frame back in
-		frame:Point('CENTER')
+		frame:SetPoint('CENTER')
 	end
 	if HealthColor then
 		local h = frame.Health

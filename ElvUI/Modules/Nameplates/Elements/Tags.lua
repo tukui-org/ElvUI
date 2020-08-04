@@ -17,7 +17,7 @@ function NP:Update_Name(nameplate)
 
 	if db.name.enable then
 		nameplate.Name:ClearAllPoints()
-		nameplate.Name:Point(E.InversePoints[db.name.position], db.name.parent == 'Nameplate' and nameplate or nameplate[db.name.parent], db.name.position, db.name.xOffset, db.name.yOffset)
+		nameplate.Name:SetPoint(E.InversePoints[db.name.position], db.name.parent == 'Nameplate' and nameplate or nameplate[db.name.parent], db.name.position, db.name.xOffset, db.name.yOffset)
 		nameplate.Name:Show()
 	else
 		nameplate.Name:Hide()
@@ -33,7 +33,7 @@ function NP:Update_Level(nameplate)
 
 	if db.level.enable then
 		nameplate.Level:ClearAllPoints()
-		nameplate.Level:Point(E.InversePoints[db.level.position], db.level.parent == 'Nameplate' and nameplate or nameplate[db.level.parent], db.level.position, db.level.xOffset, db.level.yOffset)
+		nameplate.Level:SetPoint(E.InversePoints[db.level.position], db.level.parent == 'Nameplate' and nameplate or nameplate[db.level.parent], db.level.position, db.level.xOffset, db.level.yOffset)
 		nameplate.Level:Show()
 	else
 		nameplate.Level:Hide()
@@ -49,7 +49,7 @@ function NP:Update_Title(nameplate)
 
 	if db.title.enable then
 		nameplate.Title:ClearAllPoints()
-		nameplate.Title:Point(E.InversePoints[db.title.position], db.title.parent == 'Nameplate' and nameplate or nameplate[db.title.parent], db.title.position, db.title.xOffset, db.title.yOffset)
+		nameplate.Title:SetPoint(E.InversePoints[db.title.position], db.title.parent == 'Nameplate' and nameplate or nameplate[db.title.parent], db.title.position, db.title.xOffset, db.title.yOffset)
 		nameplate.Title:Show()
 	else
 		nameplate.Title:Hide()

@@ -264,11 +264,11 @@ end
 function M:SetupChallengeTimer()
 	local bar = CreateFrame("StatusBar", "ElvUI_ChallengeModeTimer", E.UIParent)
 	bar:Size(250, 20)
-	bar:Point("TOPLEFT", E.UIParent, "TOPLEFT", 10, -10)
+	bar:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 10, -10)
 	bar:CreateBackdrop("Transparent")
 	bar:SetStatusBarTexture(E.media.normTex)
 	bar.text = bar:CreateFontString(nil, "OVERLAY")
-	bar.text:Point("CENTER")
+	bar.text:SetPoint("CENTER")
 	bar.text:FontTemplate()
 
 	_G.ScenarioChallengeModeBlock.StatusBar:HookScript("OnValueChanged", OnValueChanged)
@@ -330,7 +330,7 @@ function M:QUEST_COMPLETE()
 		local btn = _G['QuestInfoRewardsFrameQuestInfoItem'..bestItem]
 		if btn and btn.type == 'choice' then
 			self.QuestRewardGoldIconFrame:ClearAllPoints()
-			self.QuestRewardGoldIconFrame:Point("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
+			self.QuestRewardGoldIconFrame:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
 			self.QuestRewardGoldIconFrame:Show()
 		end
 	end

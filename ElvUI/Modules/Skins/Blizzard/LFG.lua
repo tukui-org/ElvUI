@@ -33,7 +33,7 @@ local function HandleGoldIcon(button)
 
 	Button:CreateBackdrop()
 	Button.backdrop:ClearAllPoints()
-	Button.backdrop:Point("LEFT", 1, 0)
+	Button.backdrop:SetPoint("LEFT", 1, 0)
 	Button.backdrop:Size(42)
 
 	iconTexture:SetTexCoord(unpack(E.TexCoords))
@@ -54,7 +54,7 @@ local function SkinItemButton(parentFrame, _, index)
 	if item and not item.backdrop then
 		item:CreateBackdrop()
 		item.backdrop:ClearAllPoints()
-		item.backdrop:Point("LEFT", 1, 0)
+		item.backdrop:SetPoint("LEFT", 1, 0)
 		item.backdrop:Size(42)
 
 		item.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -207,7 +207,7 @@ function S:LookingForGroupFrames()
 			if(not isLeader) then
 				roleButton.background = roleButton:CreateTexture(nil, "BACKGROUND")
 				roleButton.background:Size(80, 80)
-				roleButton.background:Point("CENTER")
+				roleButton.background:SetPoint("CENTER")
 				roleButton.background:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 				roleButton.background:SetAlpha(0.65)
 
@@ -229,7 +229,7 @@ function S:LookingForGroupFrames()
 	}
 	for _, checkButton in pairs(repositionCheckButtons) do
 		checkButton:ClearAllPoints()
-		checkButton:Point("BOTTOMLEFT", 0, 0)
+		checkButton:SetPoint("BOTTOMLEFT", 0, 0)
 	end
 	hooksecurefunc("LFGListApplicationDialog_UpdateRoles", function(self) --Copy from Blizzard, we just fix position
 		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
@@ -255,24 +255,24 @@ function S:LookingForGroupFrames()
 
 		if ( avail2 ) then
 			avail1:ClearAllPoints();
-			avail1:Point("TOPRIGHT", self, "TOP", -40, -35)
+			avail1:SetPoint("TOPRIGHT", self, "TOP", -40, -35)
 			avail2:ClearAllPoints()
-			avail2:Point("TOPLEFT", self, "TOP", 40, -35)
+			avail2:SetPoint("TOPLEFT", self, "TOP", 40, -35)
 		elseif ( avail1 ) then
 			avail1:ClearAllPoints()
-			avail1:Point("TOP", self, "TOP", 0, -35)
+			avail1:SetPoint("TOP", self, "TOP", 0, -35)
 		end
 	end)
 
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon = _G.LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.Leader)
-	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Point(_G.LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
+	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetPoint(_G.LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Size(50)
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
 
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon = _G.RaidFinderQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.Leader)
-	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Point(_G.RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
+	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetPoint(_G.RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Size(50)
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
 
@@ -307,14 +307,14 @@ function S:LookingForGroupFrames()
 
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
-		bu.icon:Point("LEFT", 10, 0)
+		bu.icon:SetPoint("LEFT", 10, 0)
 		S:HandleIcon(bu.icon, true)
 	end
 
 	for i = 1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
-	_G.PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
+	_G.PVEFrameTab1:SetPoint('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
 
 	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
@@ -487,17 +487,17 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
 	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
 	LFGListFrame.CategorySelection.StartGroupButton:ClearAllPoints()
-	LFGListFrame.CategorySelection.StartGroupButton:Point("BOTTOMLEFT", -1, 3)
+	LFGListFrame.CategorySelection.StartGroupButton:SetPoint("BOTTOMLEFT", -1, 3)
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
-	LFGListFrame.CategorySelection.FindGroupButton:Point("BOTTOMRIGHT", -6, 3)
+	LFGListFrame.CategorySelection.FindGroupButton:SetPoint("BOTTOMRIGHT", -6, 3)
 
 	LFGListFrame.EntryCreation.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.EntryCreation.CancelButton)
 	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton)
 	LFGListFrame.EntryCreation.CancelButton:ClearAllPoints()
-	LFGListFrame.EntryCreation.CancelButton:Point("BOTTOMLEFT", -1, 3)
+	LFGListFrame.EntryCreation.CancelButton:SetPoint("BOTTOMLEFT", -1, 3)
 	LFGListFrame.EntryCreation.ListGroupButton:ClearAllPoints()
-	LFGListFrame.EntryCreation.ListGroupButton:Point("BOTTOMRIGHT", -6, 3)
+	LFGListFrame.EntryCreation.ListGroupButton:SetPoint("BOTTOMRIGHT", -6, 3)
 	S:HandleEditBox(LFGListFrame.EntryCreation.Description)
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
@@ -558,17 +558,17 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
 	S:HandleButton(_G.LFGListSearchPanelScrollFrame.StartGroupButton)
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
-	LFGListFrame.SearchPanel.BackButton:Point("BOTTOMLEFT", -1, 3)
+	LFGListFrame.SearchPanel.BackButton:SetPoint("BOTTOMLEFT", -1, 3)
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
-	LFGListFrame.SearchPanel.SignUpButton:Point("BOTTOMRIGHT", -6, 3)
+	LFGListFrame.SearchPanel.SignUpButton:SetPoint("BOTTOMRIGHT", -6, 3)
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
 	S:HandleScrollBar(_G.LFGListSearchPanelScrollFrameScrollBar)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
-	LFGListFrame.SearchPanel.FilterButton:Point("LEFT", LFGListFrame.SearchPanel.SearchBox, "RIGHT", 5, 0)
+	LFGListFrame.SearchPanel.FilterButton:SetPoint("LEFT", LFGListFrame.SearchPanel.SearchBox, "RIGHT", 5, 0)
 	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
 	LFGListFrame.SearchPanel.RefreshButton:Size(24)
-	LFGListFrame.SearchPanel.RefreshButton.Icon:Point("CENTER")
+	LFGListFrame.SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
 
 	hooksecurefunc("LFGListApplicationViewer_UpdateApplicant", function(button)
 		if not button.DeclineButton.template then
@@ -601,8 +601,8 @@ function S:LookingForGroupFrames()
 		for i = 2, numResults do
 			local button = self.AutoCompleteFrame.Results[i]
 			if button and not button.moved then
-				button:Point("TOPLEFT", self.AutoCompleteFrame.Results[i-1], "BOTTOMLEFT", 0, -2)
-				button:Point("TOPRIGHT", self.AutoCompleteFrame.Results[i-1], "BOTTOMRIGHT", 0, -2)
+				button:SetPoint("TOPLEFT", self.AutoCompleteFrame.Results[i-1], "BOTTOMLEFT", 0, -2)
+				button:SetPoint("TOPRIGHT", self.AutoCompleteFrame.Results[i-1], "BOTTOMRIGHT", 0, -2)
 				button.moved = true
 			end
 		end
@@ -611,11 +611,11 @@ function S:LookingForGroupFrames()
 
 	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:CreateBackdrop("Transparent")
-	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:Point("TOPLEFT", LFGListFrame.SearchPanel.AutoCompleteFrame, "TOPLEFT", 0, 3)
-	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:Point("BOTTOMRIGHT", LFGListFrame.SearchPanel.AutoCompleteFrame, "BOTTOMRIGHT", 6, 3)
+	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:SetPoint("TOPLEFT", LFGListFrame.SearchPanel.AutoCompleteFrame, "TOPLEFT", 0, 3)
+	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:SetPoint("BOTTOMRIGHT", LFGListFrame.SearchPanel.AutoCompleteFrame, "BOTTOMRIGHT", 6, 3)
 
-	LFGListFrame.SearchPanel.AutoCompleteFrame:Point("TOPLEFT", LFGListFrame.SearchPanel.SearchBox, "BOTTOMLEFT", -2, -8)
-	LFGListFrame.SearchPanel.AutoCompleteFrame:Point("TOPRIGHT", LFGListFrame.SearchPanel.SearchBox, "BOTTOMRIGHT", -4, -8)
+	LFGListFrame.SearchPanel.AutoCompleteFrame:SetPoint("TOPLEFT", LFGListFrame.SearchPanel.SearchBox, "BOTTOMLEFT", -2, -8)
+	LFGListFrame.SearchPanel.AutoCompleteFrame:SetPoint("TOPRIGHT", LFGListFrame.SearchPanel.SearchBox, "BOTTOMRIGHT", -4, -8)
 
 	--ApplicationViewer (Custom Groups)
 	LFGListFrame.ApplicationViewer.EntryName:FontTemplate()
@@ -629,33 +629,33 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.ApplicationViewer.RoleColumnHeader, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.ItemLevelColumnHeader, true)
 	LFGListFrame.ApplicationViewer.NameColumnHeader:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.NameColumnHeader:Point("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPLEFT", 0, 1)
+	LFGListFrame.ApplicationViewer.NameColumnHeader:SetPoint("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPLEFT", 0, 1)
 	LFGListFrame.ApplicationViewer.NameColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.RoleColumnHeader:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RoleColumnHeader:Point("LEFT", LFGListFrame.ApplicationViewer.NameColumnHeader, "RIGHT", 1, 0)
+	LFGListFrame.ApplicationViewer.RoleColumnHeader:SetPoint("LEFT", LFGListFrame.ApplicationViewer.NameColumnHeader, "RIGHT", 1, 0)
 	LFGListFrame.ApplicationViewer.RoleColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:Point("LEFT", LFGListFrame.ApplicationViewer.RoleColumnHeader, "RIGHT", 1, 0)
+	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:SetPoint("LEFT", LFGListFrame.ApplicationViewer.RoleColumnHeader, "RIGHT", 1, 0)
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
 	LFGListFrame.ApplicationViewer.RefreshButton:Size(24, 24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RefreshButton:Point("BOTTOMRIGHT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 16, 4)
+	LFGListFrame.ApplicationViewer.RefreshButton:SetPoint("BOTTOMRIGHT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 16, 4)
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RemoveEntryButton, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.EditButton, true)
 	LFGListFrame.ApplicationViewer.RemoveEntryButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RemoveEntryButton:Point("BOTTOMLEFT", -1, 3)
+	LFGListFrame.ApplicationViewer.RemoveEntryButton:SetPoint("BOTTOMLEFT", -1, 3)
 	LFGListFrame.ApplicationViewer.EditButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.EditButton:Point("BOTTOMRIGHT", -6, 3)
+	LFGListFrame.ApplicationViewer.EditButton:SetPoint("BOTTOMRIGHT", -6, 3)
 
 	local LFGListApplicationViewerScrollFrameScrollBar = _G.LFGListApplicationViewerScrollFrameScrollBar
 	S:HandleScrollBar(LFGListApplicationViewerScrollFrameScrollBar)
 	LFGListApplicationViewerScrollFrameScrollBar:ClearAllPoints()
-	LFGListApplicationViewerScrollFrameScrollBar:Point("TOPLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 0, -14)
-	LFGListApplicationViewerScrollFrameScrollBar:Point("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "BOTTOMRIGHT", 0, 14)
+	LFGListApplicationViewerScrollFrameScrollBar:SetPoint("TOPLEFT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 0, -14)
+	LFGListApplicationViewerScrollFrameScrollBar:SetPoint("BOTTOMLEFT", LFGListFrame.ApplicationViewer.Inset, "BOTTOMRIGHT", 0, 14)
 
 	hooksecurefunc("LFGListCategorySelection_AddButton", function(self, btnIndex, categoryID, filters)
 		local button = self.CategoryButtons[btnIndex]

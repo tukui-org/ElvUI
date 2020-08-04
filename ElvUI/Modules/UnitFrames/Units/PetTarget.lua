@@ -26,7 +26,7 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
-	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
+	frame:SetPoint('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["PetTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,pettarget,generalGroup')
 
 	frame.unitframeType = "pettarget"

@@ -79,8 +79,8 @@ local function SkinItemDisplay(frame)
 	local ItemDisplay = frame.ItemDisplay
 	ItemDisplay:StripTextures()
 	ItemDisplay:CreateBackdrop("Transparent")
-	ItemDisplay.backdrop:Point("TOPLEFT", 3, -3)
-	ItemDisplay.backdrop:Point("BOTTOMRIGHT", -3, 0)
+	ItemDisplay.backdrop:SetPoint("TOPLEFT", 3, -3)
+	ItemDisplay.backdrop:SetPoint("BOTTOMRIGHT", -3, 0)
 
 	local ItemButton = ItemDisplay.ItemButton
 	ItemButton.CircleMask:Hide()
@@ -105,7 +105,7 @@ local function HandleHeaders(frame)
 		end
 
 		if header.backdrop then
-			header.backdrop:Point("BOTTOMRIGHT", i < maxHeaders and -5 or 0, -2)
+			header.backdrop:SetPoint("BOTTOMRIGHT", i < maxHeaders and -5 or 0, -2)
 		end
 	end
 
@@ -217,7 +217,7 @@ local function LoadSkin()
 	end
 
 	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
-	_G.AuctionHouseFrameBuyTab:Point("BOTTOMLEFT", Frame, "BOTTOMLEFT", 0, -32)
+	_G.AuctionHouseFrameBuyTab:SetPoint("BOTTOMLEFT", Frame, "BOTTOMLEFT", 0, -32)
 
 	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)
@@ -301,7 +301,7 @@ local function LoadSkin()
 
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
 	ItemBuyFrame.BidFrame.BidButton:ClearAllPoints()
-	ItemBuyFrame.BidFrame.BidButton:Point("LEFT", ItemBuyFrame.BidFrame.BidAmount, "RIGHT", 2, -2)
+	ItemBuyFrame.BidFrame.BidButton:SetPoint("LEFT", ItemBuyFrame.BidFrame.BidAmount, "RIGHT", 2, -2)
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
 
 	--[[ Item Sell Frame | TAB 2 ]]--
