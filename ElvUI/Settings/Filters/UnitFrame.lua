@@ -1003,7 +1003,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[330713] = Defaults(), -- Reverberating Pain
 		[329370] = Defaults(), -- Deadly Descent
 		[336494] = Defaults(), -- Echo Screech
-		-- Stoneborn Generals
+		-- Stone Legion Generals
 		[334498] = Defaults(), -- Seismic Upheaval
 		[333913] = Defaults(), -- Wicked Laceration
 		[337643] = Defaults(), -- Unstable Footing
