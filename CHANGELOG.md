@@ -1,4 +1,11 @@
-### Version 11.47 [ ETA: 🍨 ]
+### Version 11.48 [ ETA: 🍨 ]
+
+**Shiny:**  
+
+
+___
+
+### Version 11.47 [ August 4th 2020 ]
 
 **UnitFrames:**  
 Party Target settings were effecting Party settings, not the Party Target settings. (#1930)  

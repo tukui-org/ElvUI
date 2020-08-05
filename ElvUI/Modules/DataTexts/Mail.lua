@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
+local next = next
 local pairs = pairs
 local strjoin = strjoin
 local HasNewMail = HasNewMail
