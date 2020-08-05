@@ -7,7 +7,6 @@ function NP:Construct_WidgetContainer(nameplate)
 	local WidgetContainer = CreateFrame('Frame', nil, nameplate, 'UIWidgetContainerTemplate')
 	WidgetContainer:Hide()
 	WidgetContainer:SetPoint('BOTTOM', nameplate, 'TOP')
-	WidgetContainer:UnregisterForWidgetSet()
 
 	return WidgetContainer
 end
