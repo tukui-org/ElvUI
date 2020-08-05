@@ -845,6 +845,7 @@ P.auras = {
 --Chat
 P.chat = {
 	url = true,
+	panelSnapping = true,
 	shortChannels = true,
 	hyperlinkHover = true,
 	throttleInterval = 45,
@@ -1770,7 +1771,7 @@ P.unitframe = {
 			verticalSpacing = 3,
 			numGroups = 1,
 			groupsPerRowCol = 1,
-			groupBy = 'GROUP',
+			groupBy = 'INDEX',
 			sortDir = 'ASC',
 			raidWideSorting = false,
 			invertGroupingOrder = false,
@@ -2039,6 +2040,7 @@ P.unitframe.units.party.targetsGroup.name.text_format = '[namecolor][name:medium
 P.unitframe.units.party.targetsGroup.enable = false
 
 P.unitframe.units.raid = CopyTable(P.unitframe.units.party)
+P.unitframe.units.raid.groupBy = 'GROUP'
 P.unitframe.units.raid.buffs.numrows = 1
 P.unitframe.units.raid.buffs.perrow = 3
 P.unitframe.units.raid.castbar = nil
@@ -2142,6 +2144,8 @@ P.actionbar = {
 	fontSize = 10,
 	fontOutline = 'MONOCHROMEOUTLINE',
 	fontColor = { r = 1, g = 1, b = 1 },
+
+	flyoutSize = 32, -- match buttonsize default, blizz default is 28
 
 	macrotext = false,
 	hotkeytext = true,

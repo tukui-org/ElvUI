@@ -11,6 +11,7 @@ local next, floor, ceil, abs = next, floor, ceil, abs
 local format, sub = format, strsub
 
 local GetCVarBool = GetCVarBool
+local UnitAffectingCombat = UnitAffectingCombat
 local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
@@ -642,6 +643,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if _G.GameTooltip:GetOwner() == slot and not slot.hasItem then
 		GameTooltip_Hide()
 	end
+end
+
+function B:UpdateBagButtons()
+	local playerCombat = UnitAffectingCombat('player')
+	B.BagFrame.bagsButton:SetEnabled(not playerCombat)
+	B.BagFrame.bagsButton:GetNormalTexture():SetDesaturated(playerCombat)
 end
 
 function B:UpdateBagSlots(frame, bagID)
@@ -2388,6 +2395,9 @@ function B:Initialize()
 	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseBags')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
+	B:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateBagButtons')
+	B:RegisterEvent('PLAYER_REGEN_DISABLED', 'UpdateBagButtons')
+
 	B:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
 	B:RegisterEvent('GUILDBANKFRAME_OPENED')
 	B:RegisterEvent('SCRAPPING_MACHINE_SHOW')

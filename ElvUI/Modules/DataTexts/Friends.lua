@@ -356,8 +356,6 @@ local function BuildBNTable(total)
 end
 
 local function Click(self, btn)
-	DT.tooltip:Hide()
-
 	if btn == "RightButton" then
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
@@ -449,14 +447,13 @@ local function TooltipAddXLine(X, header, ...)
 	DT.tooltip[X](DT.tooltip, ...)
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 	lastTooltipXLineHeader = nil
 
 	local onlineFriends = C_FriendList_GetNumOnlineFriends()
 	local numberOfFriends = C_FriendList_GetNumFriends()
 	local totalBNet, numBNetOnline = BNGetNumFriends()
-
 	local totalonline = onlineFriends + numBNetOnline
 
 	-- no friends online, quick exit

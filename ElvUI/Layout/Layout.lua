@@ -41,12 +41,6 @@ function LO:Initialize()
 	Panel_OnShow(LO.TopPanel)
 	E.FrameLocks.ElvUI_TopPanel = true
 	LO:TopPanelVisibility()
-
-	-- if the chat module is off we still need to spawn the dts for the panels
-	-- if we are going to have the panels show even when it's disabled
-	if not E.private.chat.enable then
-		LO:RepositionChatDataPanels()
-	end
 end
 
 function LO:BottomPanelVisibility()
@@ -404,8 +398,8 @@ end
 
 function LO:CreateMinimapPanels()
 	local panel = CreateFrame('Frame', 'MinimapPanel', _G.Minimap)
-	panel:Point('TOPLEFT', _G.Minimap, 'BOTTOMLEFT', -1, 0)
-	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', 1, -BAR_HEIGHT)
+	panel:Point('TOPLEFT', _G.Minimap, 'BOTTOMLEFT', E.PixelMode and -1 or -2, 0)
+	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', E.PixelMode and 1 or 2, -BAR_HEIGHT)
 	panel:Hide()
 	DT:RegisterPanel(panel, E.db.datatexts.panels.MinimapPanel.numPoints, 'ANCHOR_BOTTOM', 0, -4)
 end

@@ -506,9 +506,8 @@ local function Update(self, event, unit)
 
 	UpdateAuras(self, event, unit)
 
-	-- Assume no event means someone wants to re-anchor things. This is usually
-	-- done by UpdateAllElements and :ForceUpdate.
-	if(event == 'ForceUpdate' or not event) then
+	-- Assume no event means someone wants to re-anchor things. This is usually done by UpdateAllElements and :ForceUpdate.
+	if event == 'ForceUpdate' or event == 'ElvUI_UpdateAllElements' or not event then -- ElvUI changed
 		local buffs = self.Buffs
 		if(buffs) then
 			(buffs.SetPosition or SetPosition) (buffs, 1, buffs.createdIcons)

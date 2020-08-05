@@ -25,8 +25,8 @@ local SPELL_CRIT_CHANCE = SPELL_CRIT_CHANCE
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local displayString, lastPanel = ''
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	local text, tooltip
 	if E.role == "Caster" then

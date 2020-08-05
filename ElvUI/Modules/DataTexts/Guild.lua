@@ -190,8 +190,6 @@ end
 
 local function Click(self, btn)
 	if btn == "RightButton" and IsInGuild() then
-		DT.tooltip:Hide()
-
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
 
@@ -225,10 +223,9 @@ local function Click(self, btn)
 	end
 end
 
-local function OnEnter(self, _, noUpdate)
+local function OnEnter(_, _, noUpdate)
 	if not IsInGuild() then return end
-
-	DT:SetupTooltip(self)
+	DT.tooltip:ClearLines()
 
 	local total, _, online = GetNumGuildMembers()
 	if #guildTable == 0 then BuildGuildTable() end
@@ -279,11 +276,11 @@ local function OnEnter(self, _, noUpdate)
 		end
 	end
 
-	DT.tooltip:Show()
-
 	if not noUpdate then
 		C_GuildInfo_GuildRoster()
 	end
+
+	DT.tooltip:Show()
 end
 
 local function OnEvent(self, event, ...)

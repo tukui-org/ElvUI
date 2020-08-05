@@ -101,7 +101,6 @@ local function GetLabelTexture(ID)
 end
 
 local function OnClick(self)
-	DT.tooltip:Hide()
 	DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 	_G.EasyMenu(RightClickMenu, DT.EasyMenu, nil, nil, nil, "MENU")
 end
@@ -120,15 +119,13 @@ local function OnEvent(self)
 	end
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
-
+local function OnEnter()
+	DT.tooltip:ClearLines()
 	DT.tooltip:SetText(L["Current Difficulties:"])
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(format('%s %s', DungeonTexture, DiffLabel[DungeonDifficultyID]), 1, 1, 1)
 	DT.tooltip:AddLine(format('%s %s', RaidTexture, DiffLabel[RaidDifficultyID]), 1, 1, 1)
 	DT.tooltip:AddLine(format('%s %s', LegacyTexture, DiffLabel[LegacyRaidDifficultyID]), 1, 1, 1)
-
 	DT.tooltip:Show()
 end
 

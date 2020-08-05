@@ -82,12 +82,10 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-local function OnEnter(self)
-	if not enteredFrame then
-		enteredFrame = true
-	end
+local function OnEnter()
+	DT.tooltip:ClearLines()
+	enteredFrame = true
 
-	DT:SetupTooltip(self)
 	local numCTA = 0
 	local addTooltipHeader = true
 	for i=1, GetNumRandomDungeons() do
@@ -166,7 +164,6 @@ local function Update(self, elapsed)
 end
 
 local function OnLeave()
-	DT.tooltip:Hide()
 	enteredFrame = false
 end
 

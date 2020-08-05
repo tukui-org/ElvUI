@@ -100,9 +100,9 @@ function E:TextGradient(text, ...)
 			local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 
 			if not r2 then
-				msg = msg .. E:RGBToHex(r1, g1, b1) .. x
+				msg = msg .. E:RGBToHex(r1, g1, b1, nil, x..'|r')
 			else
-				msg = msg .. E:RGBToHex(r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc) .. x
+				msg = msg .. E:RGBToHex(r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc, nil, x..'|r')
 				idx = idx + 1
 			end
 		end
@@ -366,8 +366,6 @@ E.TimeFormats = { -- short / indicator color
 	[4] = {'%.1fs', '%.1f%ss|r'},
 	[5] = {'%d:%02d', '%d%s:|r%02d'}, --mmss
 	[6] = {'%d:%02d', '%d%s:|r%02d'}, --hhmm
-	[7] = {'%dm %02ds', '%d%sm|r %02d%ss|r'}, --mmss2
-	[8] = {'%dh %02dm', '%d%sh|r %02d%sm|r'}, --hhmm2
 }
 
 for _, x in pairs(E.TimeFormats) do

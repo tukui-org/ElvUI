@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TT = E:GetModule('Tooltip')
+local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
@@ -169,7 +170,7 @@ function TT:RemoveTrashLines(tt)
 		local tiptext = _G['GameTooltipTextLeft'..i]
 		local linetext = tiptext:GetText()
 
-		if(linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE) then
+		if linetext == _G.PVP or linetext == _G.FACTION_ALLIANCE or linetext == _G.FACTION_HORDE then
 			tiptext:SetText('')
 			tiptext:Hide()
 		end
@@ -180,7 +181,7 @@ function TT:GetLevelLine(tt, offset)
 	if tt:IsForbidden() then return end
 	for i = offset, tt:NumLines() do
 		local tipLine = _G['GameTooltipTextLeft'..i]
-		local tipText = tipLine and tipLine.GetText and tipLine:GetText() and strlower(tipLine:GetText())
+		local tipText = tipLine and tipLine:GetText() and strlower(tipLine:GetText())
 		if tipText and (strfind(tipText, LEVEL1) or strfind(tipText, LEVEL2)) then
 			return tipLine
 		end
@@ -655,13 +656,18 @@ function TT:SetStyle(tt)
 	tt:SetBackdropColor(r, g, b, TT.db.colorAlpha)
 end
 
-function TT:MODIFIER_STATE_CHANGED(_, key)
-	if key == 'LSHIFT' or key == 'RSHIFT' or key == 'LCTRL' or key == 'RCTRL' or key == 'LALT' or key == 'RALT' then
+function TT:MODIFIER_STATE_CHANGED()
+	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
-		local notOnAuras = not (owner and owner.UpdateTooltip)
-		if notOnAuras and UnitExists('mouseover') then
+		if owner == _G.UIParent and UnitExists('mouseover') then
 			GameTooltip:SetUnit('mouseover')
+		elseif owner and owner:GetParent() == _G.SpellBookSpellIconsFrame then
+			AB.SpellButtonOnEnter(owner, nil, GameTooltip)
 		end
+	end
+
+	if _G.ElvUISpellBookTooltip:IsShown() then
+		AB:UpdateSpellBookTooltip()
 	end
 end
 
@@ -701,7 +707,16 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local _, id = tt:GetSpell()
 	if not id then return end
 
-	tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, id))
+	local ID = format('|cFFCA3C3C%s|r %d', _G.ID, id)
+	for i = 3, tt:NumLines() do
+		local line = _G[format('GameTooltipTextLeft%d', i)]
+		local text = line and line:GetText()
+		if text and strfind(text, ID) then
+			return -- this is called twice on talents for some reason?
+		end
+	end
+
+	tt:AddLine(ID)
 	tt:Show()
 end
 
@@ -862,6 +877,7 @@ function TT:Initialize()
 	TT:SecureHookScript(GameTooltip, 'OnTooltipSetItem', 'GameTooltip_OnTooltipSetItem')
 	TT:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', 'GameTooltip_OnTooltipSetUnit')
 	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
+	TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created

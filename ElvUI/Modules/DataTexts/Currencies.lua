@@ -68,9 +68,8 @@ local function OnEvent(self)
 end
 
 local faction = (E.myfaction == 'Alliance' and 1717) or 1716
-local function OnEnter(self)
-	DT:SetupTooltip(self)
-
+local function OnEnter()
+	DT.tooltip:ClearLines()
 	DT.tooltip:AddDoubleLine(L["Gold"]..':', goldText, nil, nil, nil, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 

@@ -55,11 +55,10 @@ local function OnEvent(self)
 	end
 
 	self.text:SetText(displayString)
-	-- self.text:SetFormattedText()
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	local cur, max = UnitXP('player'), UnitXPMax('player')
 	local rested = GetXPExhaustion()

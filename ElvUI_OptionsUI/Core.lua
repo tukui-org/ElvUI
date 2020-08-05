@@ -103,7 +103,7 @@ local DEVELOPERS = {
 	'|cff9482c9Darth Predator|r',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/FoxWarlock:15:15:0:0:64:64:5:59:5:59|t |cffff2020NihilisticPandemonium|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 0.6,0.4,1, 1,0.4,0.8, 0.4,0.8,1, 0.26,0.53,1)..'|r'
+	E:TextGradient('Simpy but my name needs to be longer.', 1.00,1.00,0.60, 0.53,1.00,0.40, 0.01,0.80,0.58, 0.89,0.22,0.67, 1.00,0.73,0.40, 0.40,1.00,0.53)
 }
 
 local TESTERS = {
@@ -403,15 +403,8 @@ E.Options.args.profiles.args.profile.order = 1
 E.Options.args.profiles.args.private.name = L["Private"]
 E.Options.args.profiles.args.private.order = 2
 
-E.Options.args.profiles.args.private.args.choose.confirm = function(_, value)
-	return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
-end
-
 E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles.args.profile)
 E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
-E.Options.args.profiles.args.profile.args.copyfrom.confirm = function(_, value)
-	return format(L["Copy Settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, E.data:GetCurrentProfile())
-end
 
 E.Libs.AceConfig:RegisterOptionsTable("ElvPrivates", E.Options.args.profiles.args.private)
 
@@ -419,8 +412,8 @@ E.Options.args.profiles.args.private.args.choose.confirm = function(_, value)
 	return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
 end
 
-E.Options.args.profiles.args.private.args.copyfrom.confirm = function(_, value)
-	return format(L["Copy Settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, E.charSettings:GetCurrentProfile())
+E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)
+	return format(L["Copy Settings from %s. This will overwrite %s profile.\n\n Are you sure?"], value, info.handler:GetCurrentProfile())
 end
 
 if GetAddOnEnableState(nil, 'ElvUI_Config') ~= 0 then

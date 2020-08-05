@@ -86,8 +86,8 @@ local function OnEvent(self)
 	lastPanel = self
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	local rightString = targetlv > 1 and strjoin('', ' (', L['lvl'], ' ', targetlv, ')') or targetlv == -1 and strjoin('', ' (', BOSS, ')') or strjoin('', ' (', L['lvl'], ' ', playerlv, ')')
 	DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], rightString)

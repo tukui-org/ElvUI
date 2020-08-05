@@ -33,7 +33,7 @@ local function OnEvent(self)
 end
 
 local function OnEnter(self)
-	DT:SetupTooltip(self)
+	DT.tooltip:ClearLines()
 
 	local avg, avgEquipped, avgPvp = GetAverageItemLevel()
 	DT.tooltip:AddDoubleLine(STAT_AVERAGE_ITEM_LEVEL, format('%0.2f', avg), 1, 1, 1, .1, 1, .1)
@@ -51,8 +51,8 @@ local function OnEnter(self)
 		end
 	end
 
-	DT.tooltip:Show()
 	lastPanel = self
+	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

@@ -170,7 +170,7 @@ end
 function M:Update_ZoneText()
 	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
 	_G.Minimap.location:FontTemplate(E.Libs.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
-	_G.Minimap.location:SetText(utf8sub(GetMinimapZoneText(),1,46))
+	_G.Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
 	_G.Minimap.location:SetTextColor(M:GetLocTextColor())
 end
 

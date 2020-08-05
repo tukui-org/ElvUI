@@ -15,23 +15,22 @@ local function OnEvent(self)
 	self.text:SetFormattedText(displayString, STAT_MASTERY, GetMasteryEffect())
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	local primaryTalentTree = GetSpecialization()
-
-	if (primaryTalentTree) then
+	if primaryTalentTree then
 		local masterySpell, masterySpell2 = GetSpecializationMasterySpells(primaryTalentTree)
-		if (masterySpell) then
+		if masterySpell then
 			DT.tooltip:AddSpellByID(masterySpell)
 		end
-		if (masterySpell2) then
+		if masterySpell2 then
 			DT.tooltip:AddLine(" ")
 			DT.tooltip:AddSpellByID(masterySpell2)
 		end
+
+		DT.tooltip:Show()
 	end
-	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)

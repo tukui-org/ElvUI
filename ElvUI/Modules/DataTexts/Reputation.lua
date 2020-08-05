@@ -77,8 +77,8 @@ local function OnEvent(self)
 	self.text:SetText(text)
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
 	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
 	if factionID and C_Reputation_IsFactionParagon(factionID) then
@@ -103,9 +103,9 @@ local function OnEnter(self)
 		if reaction ~= _G.MAX_REPUTATION_REACTION or C_Reputation_IsFactionParagon(factionID) then
 			DT.tooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
 		end
-	end
 
-	DT.tooltip:Show()
+		DT.tooltip:Show()
+	end
 end
 
 local function OnClick()

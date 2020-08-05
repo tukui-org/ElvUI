@@ -135,6 +135,11 @@ UF.headerGroupBy = {
 		header:SetAttribute("groupBy", nil)
 		header:SetAttribute("filterOnPet", true) --This is the line that matters. Without this, it sorts based on the owners name
 	end,
+	INDEX = function(header)
+		header:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		header:SetAttribute("sortMethod", "INDEX")
+		header:SetAttribute("groupBy", nil)
+	end,
 }
 
 local POINT_COLUMN_ANCHOR_TO_DIRECTION = {
@@ -876,7 +881,7 @@ function UF:HandleSmartVisibility(skip)
 		sv.raid40.enable = true
 	end
 
-	UF:UpdateAllHeaders(sv, skip)
+	UF:UpdateAllHeaders(true, skip)
 end
 
 function UF:ZONE_CHANGED_NEW_AREA()
@@ -910,7 +915,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 	header:SetParent(parent)
 	header:Show()
 
-	for k, v in pairs(self.headerPrototype) do
+	for k, v in pairs(UF.headerPrototype) do
 		header[k] = v
 	end
 
@@ -918,8 +923,13 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 end
 
 function UF:GetSmartVisibilitySetting(setting, group, smart, db)
-	if smart and smart[group] and smart[group][setting] ~= nil then
-		return smart[group][setting]
+	if smart then
+		local options = UF.SmartSettings[group]
+		local value = options and options[setting]
+
+		if value ~= nil then
+			return value
+		end
 	end
 
 	return db[setting]
@@ -1088,8 +1098,8 @@ function UF:UpdateAllHeaders(smart, skip)
 		ElvUF:DisableBlizzard('party')
 	end
 
-	for group in pairs(self.headers) do
-		self:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smart, skip)
+	for group in pairs(UF.headers) do
+		UF:CreateAndUpdateHeaderGroup(group, nil, nil, nil, smart, skip)
 	end
 end
 

@@ -20,9 +20,8 @@ local function OnEvent(self)
 	lastPanel = self
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
-
+local function OnEnter()
+	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(L["Mitigation By Level: "])
 	DT.tooltip:AddLine(' ')
 
