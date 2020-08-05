@@ -580,9 +580,13 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
+		nameplate.isMe = UnitIsUnit(unit, 'player')
 		nameplate.isPet = UnitIsUnit(unit, 'pet')
+		nameplate.isFriend = UnitIsFriend('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
+		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 		nameplate.isPlayerControlled = UnitPlayerControlled(unit)
+		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.repReaction = UnitReaction(unit, 'player')
 		nameplate.unitGUID = UnitGUID(unit)
@@ -595,20 +599,25 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
 
-		if UnitIsUnit(unit, 'player') and NP.db.units.PLAYER.enable then
+		if nameplate.isMe then
 			nameplate.frameType = 'PLAYER'
-			NP.PlayerNamePlateAnchor:ClearAllPoints()
-			NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-			NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-			NP.PlayerNamePlateAnchor:Show()
-		elseif UnitIsPVPSanctuary(unit) or (nameplate.isPlayer and UnitIsFriend('player', unit) and nameplate.reaction and nameplate.reaction >= 5) then
+
+			if NP.db.units.PLAYER.enable then
+				NP.PlayerNamePlateAnchor:ClearAllPoints()
+				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:Show()
+			end
+		elseif nameplate.isPVPSanctuary then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
-		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction >= 5) or UnitFactionGroup(unit) == 'Neutral' then
-			nameplate.frameType = 'FRIENDLY_NPC'
-		elseif not nameplate.isPlayer and (nameplate.reaction and nameplate.reaction <= 4) then
-			nameplate.frameType = 'ENEMY_NPC'
-		else
-			nameplate.frameType = 'ENEMY_PLAYER'
+		elseif nameplate.isPlayer then
+			nameplate.frameType = (nameplate.isFriend and 'FRIENDLY_PLAYER') or 'ENEMY_PLAYER'
+		else -- must be an npc
+			if nameplate.faction == 'Neutral' or (nameplate.reaction and nameplate.reaction >= 5) then
+				nameplate.frameType = 'FRIENDLY_NPC'
+			else
+				nameplate.frameType = 'ENEMY_NPC'
+			end
 		end
 
 		if nameplate.frameType == 'PLAYER' then

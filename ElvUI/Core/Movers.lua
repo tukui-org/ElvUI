@@ -82,6 +82,143 @@ local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
+local function HandlePostDrag(self, event)
+	if self.postdrag and type(self.postdrag) == 'function' then
+		self.postdrag(self, E:GetScreenQuadrant(self))
+	end
+
+	if event then
+		self:UnregisterAllEvents()
+	end
+end
+
+local function OnDragStart(self)
+	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+
+	if _G.ElvUIGrid then
+		E:UIFrameFadeIn(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 1)
+	end
+
+	if E.db.general.stickyFrames then
+		Sticky:StartMoving(self, E.snapBars, self.snapOffset, self.snapOffset, self.snapOffset, self.snapOffset)
+	else
+		self:StartMoving()
+	end
+
+	coordFrame.child = self
+	coordFrame:Show()
+	isDragging = true
+end
+
+local function OnDragStop(self)
+	if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
+
+	if _G.ElvUIGrid and E.ConfigurationMode then
+		E:UIFrameFadeOut(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 0.4)
+	end
+
+	if E.db.general.stickyFrames then
+		Sticky:StopMoving(self)
+	else
+		self:StopMovingOrSizing()
+	end
+
+	local x2, y2, p2 = E:CalculateMoverPoints(self)
+	self:ClearAllPoints()
+	self:SetPoint(p2, E.UIParent, p2, x2, y2)
+
+	E:SaveMoverPosition(self.name)
+
+	coordFrame.child = nil
+	coordFrame:Hide()
+	isDragging = false
+
+	HandlePostDrag(self)
+
+	self:SetUserPlaced(false)
+end
+
+local function OnEnter(self)
+	if isDragging then return end
+
+	for _, frame in pairs(E.CreatedMovers) do
+		local mover = frame.mover
+		if mover:IsShown() and mover ~= self then
+			E:UIFrameFadeOut(mover, 0.75, mover:GetAlpha(), 0.5)
+		end
+	end
+
+	E.AssignFrameToNudge(self)
+
+	coordFrame.child = self
+	coordFrame:GetScript('OnUpdate')(coordFrame)
+
+	self.text:SetTextColor(1, 1, 1)
+end
+
+local function OnLeave(self)
+	if isDragging then return end
+
+	for _, frame in pairs(E.CreatedMovers) do
+		local mover = frame.mover
+		if mover:IsShown() and mover ~= self then
+			E:UIFrameFadeIn(mover, 0.75, mover:GetAlpha(), 1)
+		end
+	end
+
+	self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
+end
+
+local function OnMouseUp(_, button)
+	if button == 'LeftButton' and not isDragging then
+		_G.ElvUIMoverNudgeWindow:SetShown(not _G.ElvUIMoverNudgeWindow:IsShown())
+	end
+end
+
+local function OnMouseDown(self, button)
+	if isDragging then
+		OnDragStop(self)
+	elseif button == 'RightButton' then
+		if IsControlKeyDown() and self.textString then
+			E:ResetMovers(self.textString) --Allow resetting of anchor by Ctrl+RightClick
+		elseif IsShiftKeyDown() then
+			self:Hide() --Allow hiding a mover temporarily
+		elseif self.configString then
+			E:ToggleOptionsUI(self.configString) --OpenConfig
+		end
+	end
+end
+
+local function OnMouseWheel(_, delta)
+	if IsShiftKeyDown() then
+		E:NudgeMover(delta)
+	else
+		E:NudgeMover(nil, delta)
+	end
+end
+
+local function OnShow(self, r, g, b)
+	if not r then r, g, b = unpack(E.media.rgbvaluecolor) end
+
+	self.text:FontTemplate()
+	self.text:SetTextColor(r, g, b)
+	self:SetBackdropBorderColor(r, g, b)
+end
+
+local function UpdateColors()
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	for _, holder in pairs(E.CreatedMovers) do
+		OnShow(holder.mover, r, g, b)
+	end
+
+	local nudge = _G.ElvUIMoverNudgeWindow
+	if nudge then
+		nudge:SetBackdropBorderColor(r, g, b)
+		nudge.header:SetBackdropBorderColor(r, g, b)
+	end
+end
+E.valueColorUpdateFuncs[UpdateColors] = true
+
 local function UpdateMover(name, parent, textString, overlay, snapOffset, postdrag, shouldDisable, configString, perferCorners, ignoreSizeChanged)
 	if not (name and parent) then return end --If for some reason the parent isnt loaded yet, also require a name
 
@@ -106,8 +243,8 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 	fs:FontTemplate()
 	fs:SetPoint('CENTER')
 	fs:SetText(textString or name)
-	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
 	fs:SetJustifyH('CENTER')
+	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
 	f:SetFontString(fs)
 
 	f.text = fs
@@ -121,6 +258,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 	f.configString = configString
 	f.perferCorners = perferCorners
 	f.ignoreSizeChanged = ignoreSizeChanged
+	f.ignoreBorderColors = true
 
 	holder.mover = f
 	parent.mover = f
@@ -134,132 +272,16 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	E:SetMoverPoints(name, parent)
 
-	local function OnDragStart(self)
-		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-
-		if _G.ElvUIGrid then
-			E:UIFrameFadeIn(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 1)
-		end
-
-		if E.db.general.stickyFrames then
-			Sticky:StartMoving(self, E.snapBars, f.snapOffset, f.snapOffset, f.snapOffset, f.snapOffset)
-		else
-			self:StartMoving()
-		end
-
-		coordFrame.child = self
-		coordFrame:Show()
-		isDragging = true
-	end
-
-	local function OnDragStop(self)
-		if InCombatLockdown() then E:Print(ERR_NOT_IN_COMBAT) return end
-
-		if _G.ElvUIGrid and E.ConfigurationMode then
-			E:UIFrameFadeOut(_G.ElvUIGrid, 0.75, _G.ElvUIGrid:GetAlpha(), 0.4)
-		end
-
-		isDragging = false
-
-		if E.db.general.stickyFrames then
-			Sticky:StopMoving(self)
-		else
-			self:StopMovingOrSizing()
-		end
-
-		local x2, y2, p2 = E:CalculateMoverPoints(self)
-		self:ClearAllPoints()
-		self:SetPoint(p2, E.UIParent, p2, x2, y2)
-
-		E:SaveMoverPosition(name)
-
-		coordFrame.child = nil
-		coordFrame:Hide()
-
-		if postdrag and type(postdrag) == 'function' then
-			postdrag(self, E:GetScreenQuadrant(self))
-		end
-
-		self:SetUserPlaced(false)
-	end
-
-	local function OnEnter(self)
-		if isDragging then return end
-		for _, frame in pairs(E.CreatedMovers) do
-			local mover = frame.mover
-			if mover:IsShown() and mover ~= self then
-				E:UIFrameFadeOut(mover, 0.75, mover:GetAlpha(), 0.5)
-			end
-		end
-
-		self.text:SetTextColor(1, 1, 1)
-		E.AssignFrameToNudge(self)
-		coordFrame.child = self
-		coordFrame:GetScript('OnUpdate')(coordFrame)
-	end
-
-	local function OnLeave(self)
-		if isDragging then return end
-		for _, frame in pairs(E.CreatedMovers) do
-			local mover = frame.mover
-			if mover:IsShown() and mover ~= self then
-				E:UIFrameFadeIn(mover, 0.75, mover:GetAlpha(), 1)
-			end
-		end
-
-		self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
-	end
-
-	local function OnMouseUp(_, button)
-		if button == 'LeftButton' and not isDragging then
-			local nudgeFrame = _G.ElvUIMoverNudgeWindow
-			nudgeFrame:SetShown(not nudgeFrame:IsShown())
-		end
-	end
-
-	local function OnMouseDown(self, button)
-		if button == 'RightButton' then
-			--Allow resetting of anchor by Ctrl+RightClick
-			if IsControlKeyDown() and self.textString then
-				E:ResetMovers(self.textString)
-			elseif IsShiftKeyDown() then --Allow hiding a mover temporarily
-				self:Hide()
-			elseif self.configString then --OpenConfig
-				E:ToggleOptionsUI(self.configString)
-			end
-		end
-	end
-
-	local function OnShow(self)
-		self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-		self.text:FontTemplate()
-	end
-
-	local function OnMouseWheel(_, delta)
-		if IsShiftKeyDown() then
-			E:NudgeMover(delta)
-		else
-			E:NudgeMover(nil, delta)
-		end
-	end
-
 	f:SetScript('OnDragStart', OnDragStart)
-	f:SetScript('OnMouseUp', E.AssignFrameToNudge)
 	f:SetScript('OnDragStop', OnDragStop)
 	f:SetScript('OnEnter', OnEnter)
-	f:SetScript('OnMouseUp', OnMouseUp)
-	f:SetScript('OnMouseDown', OnMouseDown)
 	f:SetScript('OnLeave', OnLeave)
-	f:SetScript('OnShow', OnShow)
+	f:SetScript('OnMouseDown', OnMouseDown)
+	f:SetScript('OnMouseUp', OnMouseUp)
 	f:SetScript('OnMouseWheel', OnMouseWheel)
-
-	if postdrag and type(postdrag) == 'function' then
-		f:RegisterEvent('PLAYER_ENTERING_WORLD')
-		f:SetScript('OnEvent', function(self)
-			postdrag(f, E:GetScreenQuadrant(f))
-			self:UnregisterAllEvents()
-		end)
-	end
+	f:SetScript('OnShow', OnShow)
+	f:SetScript('OnEvent', HandlePostDrag)
+	f:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 
 function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
@@ -327,9 +349,7 @@ function E:SaveMoverDefaultPosition(name)
 
 	E:SetMoverLayoutPositionPoint(holder, name)
 
-	if holder.postdrag and type(holder.postdrag) == 'function' then
-		holder.postdrag(holder.mover, E:GetScreenQuadrant(holder.mover))
-	end
+	HandlePostDrag(holder.mover)
 end
 
 function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, types, shouldDisable, configString, perferCorners, ignoreSizeChanged)
@@ -426,9 +446,7 @@ function E:ResetMovers(arg)
 				frame:SetPoint(point, anchor, secondaryPoint, x, y)
 			end
 
-			if holder.postdrag and type(holder.postdrag) == 'function' then
-				holder.postdrag(frame, E:GetScreenQuadrant(frame))
-			end
+			HandlePostDrag(frame)
 
 			if all then
 				E:SaveMoverPosition(name)

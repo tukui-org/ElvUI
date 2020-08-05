@@ -230,15 +230,15 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Simpys Colors (Cotton Candy): 9966FF (Slate Violet), FF66CC (Hot Pink), 66CCFF (Sky Blue), 4488FF (Dodger Blue)
-		local SimpyColors = function(t) return specialText(t, 0.6,0.4,1, 1,0.4,0.8, 0.4,0.8,1, 0.26,0.53,1) end
-		--Detroit Lions Colors: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
+		--Simpys: FFFF66, 88FF66, 02CC96, E539AC, FFBB66, 66FF88 (Yellowish, Greeish, Springish, Pinkish, Sandy, Soft Green)
+		local SimpyColors = function(t) return specialText(t, 1.00,1.00,0.60, 0.53,1.00,0.40, 0.01,0.80,0.58, 0.89,0.22,0.67, 1.00,0.73,0.40, 0.40,1.00,0.53) end
+		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
-		--Rainbow (8 Colors): FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
+		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
 		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1.00,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.50,0.75) end
 		--Light Spring: 50DAD3, 56E580, D8DA33, DFA455, EE8879, F972D1, B855DF, 50DAD3
 		local MelColors = function(t) return specialText(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
-		--Class Colors: Normal to Negative (Orange->Blue, Red->Cyan, etc)
+		--Class: Normal to Negative (Orange->Blue, Red->Cyan, etc)
 		local nm = function(c) return max(1-c,0.15) end
 		local NihiColors = function(class) local c = _G.RAID_CLASS_COLORS[class] local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, nm(c.r), nm(c.g), nm(c.b) return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 

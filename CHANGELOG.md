@@ -1,31 +1,41 @@
-### Version 11.47 [ ETA: 🍨 ]
+### Version 11.48 [ ETA: 🍨 ]
+
+**Shiny:**  
+
+
+___
+
+### Version 11.47 [ August 4th 2020 ]
 
 **UnitFrames:**  
 Party Target settings were effecting Party settings, not the Party Target settings. (#1930)  
 Fixed Smart Raid Filter toggle not applying anchors.  
 
 **ActionBars:**  
-Added Flyout Button Size option.  
+Added Flyout Button Size option (for pets and such).  
+Hidden Pet bar blings were dragged to the depths, unless the bar shows, then they are back (temporarily).  
 
 **Datatexts:**  
 Tooltips were hanging around during combat when they weren't supposed to.  
-Fixed tooltip hopping from one location to another on some datatexts.  
-Fixed mission tooltip display time strangely.  
+Tooltips hopping around like rabbits from one location to another on some datatexts, we fed them some carrot and now they behave.  
+Mission tooltip display time strangely (aka wrong and broken).  
 
 **Minimap:**  
 Datatext bar offset for non-thin border theme corrected. (#1925)  
 Reset Zoom setting should apply correctly again.  
 
 **Chat:**  
-Made sure Voice Icons appears when Panel is hidden.  
+Made sure Voice Icons appear when the Panel is hidden.  
 Added a Panel Snapping option, which allows you to toggle the snapping into panels.  
 
 **Stuff:**  
-Talent tooltips were showing ID twice.  
+Talent tooltips were showing ID, not once but twice, sometimes three or four or five.. maybe six times.  
 Spellbook spells should work in combat without tainting now, this might fix other taint issues as well.  
 
 **Config:**  
 Profile and Private confirmation popup was sometimes displaying incorrectly.  
+Movers would sometimes get heavily attached to the mouse (and refusing to let go).  
+Sometimes when adjusting the aura settings for a unit it would bug and not actually update the positioning (mainly targettarget).  
 
 **Locales:**  
 Updated Translations for Portuguese (Thanks to @Aleczk) and French (Thanks to @Pristie).  
