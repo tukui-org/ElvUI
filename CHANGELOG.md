@@ -2,6 +2,7 @@
 
 **Nameplates:**  
 Added option to show Class Icon as Portrait.  
+Style filter settings were getting stuck in last version.  
 Corrected a few issues with Portrait backdrops being shown when they weren't supposed to.  
 
 ___
