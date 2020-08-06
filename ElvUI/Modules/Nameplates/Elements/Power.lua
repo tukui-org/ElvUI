@@ -150,17 +150,6 @@ function NP:Update_Power(nameplate)
 		end
 	end
 
-	if db.power.text.enable then
-		nameplate.Power.Text:ClearAllPoints()
-		nameplate.Power.Text:Point(E.InversePoints[db.power.text.position], db.power.text.parent == 'Nameplate' and nameplate or nameplate[db.power.text.parent], db.power.text.position, db.power.text.xOffset, db.power.text.yOffset)
-		nameplate.Power.Text:FontTemplate(E.LSM:Fetch('font', db.power.text.font), db.power.text.fontSize, db.power.text.fontOutline)
-		nameplate.Power.Text:Show()
-	else
-		nameplate.Power.Text:Hide()
-	end
-
-	nameplate:Tag(nameplate.Power.Text, db.power.text.format)
-
 	nameplate.Power.displayAltPower = db.power.displayAltPower
 	nameplate.Power.useAtlas = db.power.useAtlas
 	nameplate.Power.colorClass = db.power.useClassColor

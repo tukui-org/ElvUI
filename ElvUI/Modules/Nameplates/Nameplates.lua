@@ -259,6 +259,7 @@ function NP:StylePlate(nameplate)
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
+	nameplate.Health.Text.frequentUpdates = .1
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 	nameplate.Power = NP:Construct_Power(nameplate)
 	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
@@ -335,7 +336,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:SetupTarget(nameplate, nil, true)
 	end
 
-	nameplate:UpdateTags()
 	NP:StyleFilterEvents(nameplate)
 end
 
@@ -631,7 +631,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate:Size(nameplate.width, nameplate.height)
 
 		NP:UpdatePlate(nameplate, nameplate.frameType ~= nameplate.previousType)
-
 		nameplate.previousType = nameplate.frameType
 
 		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
@@ -640,8 +639,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
-		NP:StyleFilterClear(nameplate) -- keep this at the top
-
 		if nameplate.frameType == 'PLAYER' and (nameplate ~= _G.ElvNP_Test) then
 			NP.PlayerNamePlateAnchor:Hide()
 		end
