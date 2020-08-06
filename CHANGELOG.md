@@ -1,9 +1,17 @@
-### Version 11.49 [ ETA: 🍨 ]
+### Version 11.50 [ ETA: 🍨 ]
+
+**Shiny:**  
+
+___
+
+### Version 11.49 [ August 6th 2020 ]
 
 **Nameplates:**  
 Added option to show Class Icon as Portrait.  
 Style filter settings were getting stuck in last version.  
 Corrected a few issues with Portrait backdrops being shown when they weren't supposed to.  
+
+**Options:**
 Masque options are now clickable again.  
 
 ___
@@ -42,7 +50,7 @@ Added a Panel Snapping option, which allows you to toggle the snapping into pane
 Talent tooltips were showing ID, not once but twice, sometimes three or four or five.. maybe six times.  
 Spellbook spells should work in combat without tainting now, this might fix other taint issues as well.  
 
-**Config:**  
+**Options:**  
 Profile and Private confirmation popup was sometimes displaying incorrectly.  
 Movers would sometimes get heavily attached to the mouse (and refusing to let go).  
 Sometimes when adjusting the aura settings for a unit it would bug and not actually update the positioning (mainly targettarget).  
