@@ -51,7 +51,8 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate)
 end
 
 function NP:Construct_ClassPower(nameplate)
-	local ClassPower = CreateFrame('Frame', nameplate:GetDebugName()..'ClassPower', nameplate)
+	local frameName = nameplate:GetName()
+	local ClassPower = CreateFrame('Frame', frameName..'ClassPower', nameplate)
 	ClassPower:CreateBackdrop('Transparent')
 	ClassPower:Hide()
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
@@ -61,13 +62,13 @@ function NP:Construct_ClassPower(nameplate)
 	local texture = E.LSM:Fetch('statusbar', NP.db.statusbar)
 
 	for i = 1, Max do
-		ClassPower[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'ClassPower'..i, ClassPower)
+		ClassPower[i] = CreateFrame('StatusBar', frameName..'ClassPower'..i, ClassPower)
 		ClassPower[i]:SetStatusBarTexture(texture)
 		ClassPower[i]:SetFrameStrata(nameplate:GetFrameStrata())
 		ClassPower[i]:SetFrameLevel(6)
 		NP.StatusBars[ClassPower[i]] = true
 
-		ClassPower[i].bg = ClassPower:CreateTexture(nameplate:GetDebugName()..'ClassPower'..i..'bg', 'BORDER')
+		ClassPower[i].bg = ClassPower:CreateTexture(frameName..'ClassPower'..i..'bg', 'BORDER')
 		ClassPower[i].bg:SetAllPoints(ClassPower[i])
 		ClassPower[i].bg:SetTexture(texture)
 	end
@@ -150,7 +151,8 @@ function NP:Runes_PostUpdate()
 end
 
 function NP:Construct_Runes(nameplate)
-	local Runes = CreateFrame('Frame', nameplate:GetDebugName()..'Runes', nameplate)
+	local frameName = nameplate:GetName()
+	local Runes = CreateFrame('Frame', frameName..'Runes', nameplate)
 	Runes:SetFrameStrata(nameplate:GetFrameStrata())
 	Runes:SetFrameLevel(5)
 	Runes:CreateBackdrop('Transparent')
@@ -163,12 +165,12 @@ function NP:Construct_Runes(nameplate)
 	local color = NP.db.colors.classResources.DEATHKNIGHT
 
 	for i = 1, 6 do
-		Runes[i] = CreateFrame('StatusBar', nameplate:GetDebugName()..'Runes'..i, Runes)
+		Runes[i] = CreateFrame('StatusBar', frameName..'Runes'..i, Runes)
 		Runes[i]:SetStatusBarTexture(texture)
 		Runes[i]:SetStatusBarColor(color.r, color.g, color.b)
 		NP.StatusBars[Runes[i]] = true
 
-		Runes[i].bg = Runes[i]:CreateTexture(nameplate:GetDebugName()..'Runes'..i..'bg', 'BORDER')
+		Runes[i].bg = Runes[i]:CreateTexture(frameName..'Runes'..i..'bg', 'BORDER')
 		Runes[i].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
 		Runes[i].bg:SetTexture(texture)
 		Runes[i].bg:SetAllPoints()
@@ -227,7 +229,7 @@ function NP:Update_Runes(nameplate)
 end
 
 function NP:Construct_Stagger(nameplate)
-    local Stagger = CreateFrame('StatusBar', nameplate:GetDebugName()..'Stagger', nameplate)
+    local Stagger = CreateFrame('StatusBar', nameplate:GetName()..'Stagger', nameplate)
 	Stagger:SetFrameStrata(nameplate:GetFrameStrata())
 	Stagger:SetFrameLevel(5)
 	Stagger:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))

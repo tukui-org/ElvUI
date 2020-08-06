@@ -99,7 +99,7 @@ function NP:Castbar_PostCastStop()
 end
 
 function NP:Construct_Castbar(nameplate)
-	local Castbar = CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)
+	local Castbar = CreateFrame('StatusBar', nameplate:GetName()..'Castbar', nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
 	Castbar:SetFrameLevel(5)
 	Castbar:CreateBackdrop('Transparent')

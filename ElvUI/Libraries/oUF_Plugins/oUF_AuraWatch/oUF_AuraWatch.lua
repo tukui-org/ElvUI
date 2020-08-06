@@ -14,7 +14,7 @@ local UnitIsUnit = UnitIsUnit
 local GetSpellTexture = GetSpellTexture
 
 local function createAuraIcon(element, index)
-	local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element)
+	local button = CreateFrame('Button', element:GetName() .. 'Button' .. index, element)
 	button:EnableMouse(false)
 	button:Hide()
 

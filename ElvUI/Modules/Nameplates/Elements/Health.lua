@@ -60,7 +60,7 @@ function NP:Health_UpdateColor(_, unit)
 end
 
 function NP:Construct_Health(nameplate)
-	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
+	local Health = CreateFrame('StatusBar', nameplate:GetName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(5)
 	Health:CreateBackdrop('Transparent')
@@ -80,7 +80,7 @@ function NP:Construct_Health(nameplate)
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
-	local healthFlashTexture = Health:CreateTexture(nameplate:GetDebugName()..'FlashTexture', "OVERLAY")
+	local healthFlashTexture = Health:CreateTexture(nameplate:GetName()..'FlashTexture', "OVERLAY")
 	healthFlashTexture:SetTexture(E.Libs.LSM:Fetch("background", "ElvUI Blank"))
 	healthFlashTexture:Point("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
 	healthFlashTexture:Point("TOPRIGHT", statusBarTexture, "TOPRIGHT")
@@ -127,7 +127,7 @@ end
 
 local bars = { 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }
 function NP:Construct_HealthPrediction(nameplate)
-	local HealthPrediction = CreateFrame('Frame', nameplate:GetDebugName()..'HealthPrediction', nameplate)
+	local HealthPrediction = CreateFrame('Frame', nameplate:GetName()..'HealthPrediction', nameplate)
 
 	for _, name in ipairs(bars) do
 		local bar = CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)

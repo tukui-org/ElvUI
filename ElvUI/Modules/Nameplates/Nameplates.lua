@@ -197,7 +197,7 @@ function NP:Style(frame, unit)
 end
 
 function NP:Construct_RaisedELement(nameplate)
-	local RaisedElement = CreateFrame('Frame', nameplate:GetDebugName() .. 'RaisedElement', nameplate)
+	local RaisedElement = CreateFrame('Frame', nameplate:GetName() .. 'RaisedElement', nameplate)
 	RaisedElement:SetFrameStrata(nameplate:GetFrameStrata())
 	RaisedElement:SetFrameLevel(10)
 	RaisedElement:SetAllPoints()
@@ -304,6 +304,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_Highlight(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
+	NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
 	NP:Update_WidgetXPBar(nameplate)
 
@@ -319,7 +320,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:Update_ClassPower(nameplate)
 		NP:Update_Auras(nameplate, true)
 		NP:Update_ClassificationIndicator(nameplate)
-		NP:Update_Portrait(nameplate)
 		NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
 		NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
 		NP:Update_TargetIndicator(nameplate)
@@ -349,6 +349,7 @@ end
 NP.DisableInNotNameOnly = {
 	'QuestIcons',
 	'Highlight',
+	'Portrait',
 	'PVPRole'
 }
 
@@ -358,7 +359,6 @@ NP.DisableElements = {
 	'Power',
 	'ClassificationIndicator',
 	'Castbar',
-	'Portrait',
 	'ThreatIndicator',
 	'TargetIndicator',
 	'ClassPower',
@@ -389,7 +389,9 @@ function NP:DisablePlate(nameplate, nameOnly)
 	nameplate.Title:Hide()
 
 	if nameOnly then
+		local db = NP:PlateDB(nameplate)
 		NP:Update_Highlight(nameplate)
+
 		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:Point('CENTER', nameplate, 'CENTER', 0, 0)
@@ -397,13 +399,21 @@ function NP:DisablePlate(nameplate, nameOnly)
 		nameplate.RaidTargetIndicator:ClearAllPoints()
 		nameplate.RaidTargetIndicator:Point('BOTTOM', nameplate, 'TOP', 0, 0)
 
+		nameplate.Portrait:ClearAllPoints()
+		nameplate.Portrait:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
+		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
+
 		nameplate.PVPRole:ClearAllPoints()
-		nameplate.PVPRole:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
+
+		if nameplate.Portrait:IsShown() then
+			nameplate.PVPRole:Point('RIGHT', nameplate.Portrait, 'LEFT', -6, 0)
+		else
+			nameplate.PVPRole:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
+		end
 
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:Point('LEFT', nameplate.Name, 'RIGHT', 6, 0)
 
-		local db = NP:PlateDB(nameplate)
 		if db.showTitle then
 			nameplate.Title:Show()
 			nameplate.Title:ClearAllPoints()
@@ -420,11 +430,11 @@ end
 
 function NP:SetupTarget(nameplate, removed)
 	local TCP = _G.ElvNP_TargetClassPower
+	local cp = NP.db.units.TARGET.classpower
 
 	local db = NP:PlateDB(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
 
-	local cp = NP.db.units.TARGET.classpower
 	TCP.realPlate = cp.enable and nameplate and not (removed or sf.NameOnly or db.nameOnly)
 
 	local moveToPlate = TCP.realPlate or TCP

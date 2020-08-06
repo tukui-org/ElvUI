@@ -102,7 +102,7 @@ function NP:Power_PostUpdate(_, cur) --unit, cur, min, max
 end
 
 function NP:Construct_Power(nameplate)
-	local Power = CreateFrame('StatusBar', nameplate:GetDebugName()..'Power', nameplate)
+	local Power = CreateFrame('StatusBar', nameplate:GetName()..'Power', nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')

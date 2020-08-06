@@ -31,7 +31,7 @@ local function syncBackdrop(element)
 end
 
 function NP:Construct_Portrait(nameplate)
-	local Portrait = nameplate:CreateTexture(nil, 'OVERLAY')
+	local Portrait = nameplate:CreateTexture(nameplate:GetName() .. 'Portrait', 'OVERLAY', nil, 2)
 	Portrait:SetTexCoord(.18, .82, .18, .82)
 	Portrait:CreateBackdrop()
 	Portrait:Hide()
@@ -45,16 +45,18 @@ end
 
 function NP:Update_Portrait(nameplate)
 	local db = NP:PlateDB(nameplate)
-
 	local sf = NP:StyleFilterChanges(nameplate)
+
 	if sf.Portrait or (db.portrait and db.portrait.enable) then
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
 		end
 
-		nameplate.Portrait:ClearAllPoints()
-		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
-		nameplate.Portrait:Point(E.InversePoints[db.portrait.position], nameplate, db.portrait.position, db.portrait.xOffset, db.portrait.yOffset)
+		if not (db.nameOnly or sf.NameOnly) then
+			nameplate.Portrait:ClearAllPoints()
+			nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
+			nameplate.Portrait:Point(E.InversePoints[db.portrait.position], nameplate, db.portrait.position, db.portrait.xOffset, db.portrait.yOffset)
+		end
 	elseif nameplate:IsElementEnabled('Portrait') then
 		nameplate:DisableElement('Portrait')
 	end
