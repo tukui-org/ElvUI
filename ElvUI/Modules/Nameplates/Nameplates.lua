@@ -395,11 +395,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 		nameplate.Portrait:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.PVPRole:ClearAllPoints()
-		if nameplate.Portrait:IsShown() then
-			nameplate.PVPRole:Point('RIGHT', nameplate.Portrait, 'LEFT', -6, 0)
-		else
-			nameplate.PVPRole:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
-		end
+		nameplate.PVPRole:Point('RIGHT', (nameplate.Portrait:IsShown() and nameplate.Portrait) or nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:Point('LEFT', nameplate.Name, 'RIGHT', 6, 0)
