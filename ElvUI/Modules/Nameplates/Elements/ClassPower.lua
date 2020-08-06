@@ -250,9 +250,7 @@ function NP:Update_Stagger(nameplate)
 		nameplate.Stagger:ClearAllPoints()
 		nameplate.Stagger:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.Stagger:Size(db.classpower.width, db.classpower.height)
-	else
-		if nameplate:IsElementEnabled('Stagger') then
-			nameplate:DisableElement('Stagger')
-		end
+	elseif nameplate:IsElementEnabled('Stagger') then
+		nameplate:DisableElement('Stagger')
 	end
 end

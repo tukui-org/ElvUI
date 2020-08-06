@@ -139,10 +139,8 @@ function NP:Update_Auras(nameplate, forceUpdate)
 			nameplate.Buffs:Hide()
 			nameplate.Buffs = nil
 		end
-	else
-		if nameplate:IsElementEnabled('Auras') then
-			nameplate:DisableElement('Auras')
-		end
+	elseif nameplate:IsElementEnabled('Auras') then
+		nameplate:DisableElement('Auras')
 	end
 end
 

@@ -146,10 +146,8 @@ function NP:Update_Power(nameplate)
 		nameplate:SetPowerUpdateSpeed(E.global.nameplate.effectivePowerSpeed)
 
 		E:SetSmoothing(nameplate.Power, NP.db.smoothbars)
-	else
-		if nameplate:IsElementEnabled('Power') then
-			nameplate:DisableElement('Power')
-		end
+	elseif nameplate:IsElementEnabled('Power') then
+		nameplate:DisableElement('Power')
 	end
 
 	nameplate.Power.displayAltPower = db.power.displayAltPower

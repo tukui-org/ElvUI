@@ -121,10 +121,8 @@ function NP:Update_Health(nameplate, skipUpdate)
 		nameplate:SetHealthUpdateSpeed(E.global.nameplate.effectiveHealthSpeed)
 
 		E:SetSmoothing(nameplate.Health, NP.db.smoothbars)
-	else
-		if nameplate:IsElementEnabled('Health') then
-			nameplate:DisableElement('Health')
-		end
+	elseif nameplate:IsElementEnabled('Health') then
+		nameplate:DisableElement('Health')
 	end
 
 	nameplate.Health.width = db.health.width
@@ -185,9 +183,7 @@ function NP:Update_HealthPrediction(nameplate)
 		nameplate.HealthPrediction.otherBar:SetStatusBarColor(NP.db.colors.healPrediction.others.r, NP.db.colors.healPrediction.others.g, NP.db.colors.healPrediction.others.b)
 		nameplate.HealthPrediction.absorbBar:SetStatusBarColor(NP.db.colors.healPrediction.absorbs.r, NP.db.colors.healPrediction.absorbs.g, NP.db.colors.healPrediction.absorbs.b)
 		nameplate.HealthPrediction.healAbsorbBar:SetStatusBarColor(NP.db.colors.healPrediction.healAbsorbs.r, NP.db.colors.healPrediction.healAbsorbs.g, NP.db.colors.healPrediction.healAbsorbs.b)
-	else
-		if nameplate:IsElementEnabled('HealthPrediction') then
-			nameplate:DisableElement('HealthPrediction')
-		end
+	elseif nameplate:IsElementEnabled('HealthPrediction') then
+		nameplate:DisableElement('HealthPrediction')
 	end
 end

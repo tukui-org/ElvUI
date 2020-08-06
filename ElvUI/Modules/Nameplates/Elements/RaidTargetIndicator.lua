@@ -10,7 +10,7 @@ function NP:RaidTargetIndicator_Override()
 
 	if self.unit then
 		local index = GetRaidTargetIndex(self.unit)
-		if (index) and not UnitIsUnit(self.unit, 'player') then
+		if index and not UnitIsUnit(self.unit, 'player') then
 			SetRaidTargetIconTexture(element, index)
 			element:Show()
 		else
@@ -39,9 +39,7 @@ function NP:Update_RaidTargetIndicator(nameplate)
 
 		nameplate.RaidTargetIndicator:ClearAllPoints()
 		nameplate.RaidTargetIndicator:Point(E.InversePoints[db.raidTargetIndicator.position], nameplate, db.raidTargetIndicator.position, db.raidTargetIndicator.xOffset, db.raidTargetIndicator.yOffset)
-	else
-		if nameplate:IsElementEnabled('RaidTargetIndicator') then
-			nameplate:DisableElement('RaidTargetIndicator')
-		end
+	elseif nameplate:IsElementEnabled('RaidTargetIndicator') then
+		nameplate:DisableElement('RaidTargetIndicator')
 	end
 end

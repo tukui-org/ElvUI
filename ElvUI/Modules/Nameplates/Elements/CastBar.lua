@@ -222,9 +222,7 @@ function NP:Update_Castbar(nameplate)
 			nameplate.Castbar.Text:FontTemplate(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Text:Show()
 		end
-	else
-		if nameplate:IsElementEnabled('Castbar') then
-			nameplate:DisableElement('Castbar')
-		end
+	elseif nameplate:IsElementEnabled('Castbar') then
+		nameplate:DisableElement('Castbar')
 	end
 end
