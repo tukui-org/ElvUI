@@ -434,7 +434,7 @@ function NP:SetupTarget(nameplate, removed)
 	local db = NP:PlateDB(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
 
-	TCP.realPlate = cp.enable and nameplate and not (removed or sf.NameOnly or db.nameOnly)
+	TCP.realPlate = (cp.enable and not (removed or sf.NameOnly or db.nameOnly) and nameplate) or nil
 
 	local moveToPlate = TCP.realPlate or TCP
 
