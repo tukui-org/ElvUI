@@ -1,7 +1,14 @@
-### Version 11.48 [ ETA: 🍨 ]
+### Version 11.49 [ ETA: 🍨 ]
 
 **Shiny:**  
 
+
+___
+
+### Version 11.48 [ August 4th 2020 ]
+
+**Hotfixed:**  
+Attempted to fix strange nameplate behaviour.  
 
 ___
 
