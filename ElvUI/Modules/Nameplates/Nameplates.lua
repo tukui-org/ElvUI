@@ -429,6 +429,8 @@ function NP:DisablePlate(nameplate, nameOnly)
 end
 
 function NP:SetupTarget(nameplate, removed)
+	if not NP.db.units then return end
+
 	local TCP = _G.ElvNP_TargetClassPower
 	local cp = NP.db.units.TARGET.classpower
 
@@ -594,7 +596,7 @@ end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' then
-		NP:StyleFilterClear(nameplate) -- keep this at the top
+		local updateBase = NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		unit = unit or nameplate.unit
 
@@ -653,7 +655,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate:Size(nameplate.width, nameplate.height)
 
-		NP:UpdatePlate(nameplate, nameplate.frameType ~= nameplate.previousType)
+		NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
 		nameplate.previousType = nameplate.frameType
 
 		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
