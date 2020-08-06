@@ -9,7 +9,7 @@ function NP:Construct_TagText(nameplate)
 end
 
 function NP:Update_TagText(nameplate, element, db)
-	--if not db then return end
+	if not db then return end
 
 	nameplate:Tag(element, db.format)
 	element:FontTemplate(E.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
@@ -26,7 +26,7 @@ end
 
 function NP:Update_Tags(nameplate)
 	local db = NP.db.units[nameplate.frameType]
-	--if not db then return end
+	if not db then return end
 
 	NP:Update_TagText(nameplate, nameplate.Name, db.name)
 	NP:Update_TagText(nameplate, nameplate.Level, db.level)
