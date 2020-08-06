@@ -361,8 +361,8 @@ E.Options.args.actionbar = {
 					order = 60,
 					type = "group",
 					name = L["Masque Support"],
-					get = function(info, key) return E.private.actionbar.masque[key] end,
-					set = function(info, key, value) E.private.actionbar.masque[key] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					get = function(info) return E.private.actionbar.masque[info[#info]] end,
+					set = function(info, value) E.private.actionbar.masque[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
 					disabled = function() return not E.Masque or not E.private.actionbar.enable end,
 					--hidden = function() return not E.Masque end,
 					args = {

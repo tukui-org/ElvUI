@@ -50,7 +50,7 @@ E.Options.args.auras.args.general.args.statusBar.args.barWidth = ACH:Range(L["Wi
 E.Options.args.auras.args.general.args.statusBar.args.barHeight = ACH:Range(L["Height"], nil, 7, { min = 1, max = 10, step = 1 }, nil, nil, nil, nil, function() return E.db.auras.barPosition == 'LEFT' or E.db.auras.barPosition == 'RIGHT' end)
 E.Options.args.auras.args.general.args.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 8, { min = -10, max = 10, step = 1 })
 
-E.Options.args.auras.args.general.args.masque = ACH:MultiSelect(L["Masque Support"], nil, 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E:StaticPopup_Show("PRIVATE_RL") end, function() return not E.private.auras.enable end)
+E.Options.args.auras.args.general.args.masque = ACH:MultiSelect(L["Masque Support"], nil, 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E:StaticPopup_Show("PRIVATE_RL") end, function() return not E.Masque or not E.private.auras.enable end)
 
 E.Options.args.auras.args.buffs = ACH:Group(L["Buffs"], nil, 2, nil, function(info) return E.db.auras.buffs[info[#info]] end, function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function() return not E.private.auras.buffsHeader end)
 E.Options.args.auras.args.buffs.args = GetAuraOptions()
