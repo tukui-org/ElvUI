@@ -12,8 +12,8 @@ function NP:Update_Name(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 	if not db.name then return end
 
-	nameplate:Tag(nameplate.Name, db.name.format)
 	nameplate.Name:FontTemplate(E.LSM:Fetch('font', db.name.font), db.name.fontSize, db.name.fontOutline)
+	nameplate:Tag(nameplate.Name, db.name.format)
 
 	if db.name.enable then
 		nameplate.Name:ClearAllPoints()
@@ -28,8 +28,8 @@ function NP:Update_Level(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 	if not db.level then return end
 
-	nameplate:Tag(nameplate.Level, db.level.format)
 	nameplate.Level:FontTemplate(E.LSM:Fetch('font', db.level.font), db.level.fontSize, db.level.fontOutline)
+	nameplate:Tag(nameplate.Level, db.level.format)
 
 	if db.level.enable then
 		nameplate.Level:ClearAllPoints()
@@ -44,8 +44,8 @@ function NP:Update_Title(nameplate)
 	local db = NP.db.units[nameplate.frameType]
 	if not db.title then return end
 
-	nameplate:Tag(nameplate.Title, db.title.format)
 	nameplate.Title:FontTemplate(E.LSM:Fetch('font', db.title.font), db.title.fontSize, db.title.fontOutline)
+	nameplate:Tag(nameplate.Title, db.title.format)
 
 	if db.title.enable then
 		nameplate.Title:ClearAllPoints()
