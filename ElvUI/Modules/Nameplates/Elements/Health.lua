@@ -5,7 +5,6 @@ local ipairs = ipairs
 local unpack = unpack
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapDenied = UnitIsTapDenied
-local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local UnitIsConnected = UnitIsConnected
@@ -23,9 +22,7 @@ function NP:Health_UpdateColor(_, unit)
 		t = NP.db.colors.tapped
 	--[=[elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		t =  self.colors.threat[UnitThreatSituation('player', unit)]]=]
-	elseif(element.colorClass and UnitIsPlayer(unit)) or
-		(element.colorClassNPC and not UnitIsPlayer(unit)) or
-		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
+	elseif(element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and UnitPlayerControlled(unit) and not self.isPlayer) then
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
 	elseif Selection then

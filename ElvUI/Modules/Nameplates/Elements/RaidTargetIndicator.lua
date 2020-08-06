@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
-local UnitIsUnit = UnitIsUnit
 local GetRaidTargetIndex = GetRaidTargetIndex
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
@@ -10,7 +9,7 @@ function NP:RaidTargetIndicator_Override()
 
 	if self.unit then
 		local index = GetRaidTargetIndex(self.unit)
-		if index and not UnitIsUnit(self.unit, 'player') then
+		if index and not self.isMe then
 			SetRaidTargetIconTexture(element, index)
 			element:Show()
 		else
@@ -35,10 +34,9 @@ function NP:Update_RaidTargetIndicator(nameplate)
 			nameplate:EnableElement('RaidTargetIndicator')
 		end
 
-		nameplate.RaidTargetIndicator:Size(db.raidTargetIndicator.size, db.raidTargetIndicator.size)
-
 		nameplate.RaidTargetIndicator:ClearAllPoints()
 		nameplate.RaidTargetIndicator:Point(E.InversePoints[db.raidTargetIndicator.position], nameplate, db.raidTargetIndicator.position, db.raidTargetIndicator.xOffset, db.raidTargetIndicator.yOffset)
+		nameplate.RaidTargetIndicator:Size(db.raidTargetIndicator.size, db.raidTargetIndicator.size)
 	elseif nameplate:IsElementEnabled('RaidTargetIndicator') then
 		nameplate:DisableElement('RaidTargetIndicator')
 	end
