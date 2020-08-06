@@ -11,15 +11,16 @@ end
 function NP:Update_TagText(nameplate, element, db)
 	if not db then return end
 
-	nameplate:Tag(element, db.format)
-	element:FontTemplate(E.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-	element:UpdateTag()
-
 	if db.enable then
+		nameplate:Tag(element, db.format or '')
+		element:FontTemplate(E.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+		element:UpdateTag()
+
 		element:ClearAllPoints()
 		element:SetPoint(E.InversePoints[db.position], db.parent == 'Nameplate' and nameplate or nameplate[db.parent], db.position, db.xOffset, db.yOffset)
 		element:Show()
 	else
+		nameplate:Untag(element)
 		element:Hide()
 	end
 end
