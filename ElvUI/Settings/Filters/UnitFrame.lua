@@ -1012,7 +1012,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[334616] = Defaults(), -- Petrified
 		[334541] = Defaults(), -- Curse of Petrification
 		-- Artificer Xy'mox
+		[327902] = Defaults(), -- Fixate
+		[326302] = Defaults(), -- Stasis Trap
+		[325236] = Defaults(), -- Glyph of Destruction
+		[327414] = Defaults(), -- Possession
 		-- Sire Denathrius
+		[326851] = Defaults(), -- Blood Price
+		[327798] = Defaults(), -- Night Hunter
+		[327992] = Defaults(), -- Desolation
+		[328276] = Defaults(), -- March of the Penitent
+		[326699] = Defaults(), -- Burden of Sin
 
 	-- Uldir
 		-- MOTHER
