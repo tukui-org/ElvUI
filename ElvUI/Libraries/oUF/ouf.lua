@@ -193,12 +193,7 @@ for k, v in next, {
 	--]]
 	UpdateAllElements = function(self, event)
 		local unit = self.unit
-		if(not unitExists(unit)) then
-			self:Hide()
-			return
-		else
-			self:Show()
-		end
+		if(not unitExists(unit)) then return end
 
 		assert(type(event) == 'string', "Invalid argument 'event' in UpdateAllElements.")
 
@@ -743,7 +738,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 	walkObject(object, unit)
 
 	object:SetAttribute('unit', unit)
-	--RegisterUnitWatch(object)
+	RegisterUnitWatch(object)
 
 	return object
 end
