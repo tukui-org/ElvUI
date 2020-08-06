@@ -8,56 +8,28 @@ function NP:Construct_TagText(nameplate)
 	return Text
 end
 
-function NP:Update_Name(nameplate)
-	local db = NP.db.units[nameplate.frameType]
-	if not db.name then return end
+function NP:Update_TagText(nameplate, element, db)
+	if not db then return end
 
-	nameplate.Name:FontTemplate(E.LSM:Fetch('font', db.name.font), db.name.fontSize, db.name.fontOutline)
-	nameplate:Tag(nameplate.Name, db.name.format)
+	element:FontTemplate(E.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+	nameplate:Tag(element, db.format)
 
-	if db.name.enable then
-		nameplate.Name:ClearAllPoints()
-		nameplate.Name:SetPoint(E.InversePoints[db.name.position], db.name.parent == 'Nameplate' and nameplate or nameplate[db.name.parent], db.name.position, db.name.xOffset, db.name.yOffset)
-		nameplate.Name:Show()
+	if db.enable then
+		element:ClearAllPoints()
+		element:SetPoint(E.InversePoints[db.position], db.parent == 'Nameplate' and nameplate or nameplate[db.parent], db.position, db.xOffset, db.yOffset)
+		element:Show()
 	else
-		nameplate.Name:Hide()
-	end
-end
-
-function NP:Update_Level(nameplate)
-	local db = NP.db.units[nameplate.frameType]
-	if not db.level then return end
-
-	nameplate.Level:FontTemplate(E.LSM:Fetch('font', db.level.font), db.level.fontSize, db.level.fontOutline)
-	nameplate:Tag(nameplate.Level, db.level.format)
-
-	if db.level.enable then
-		nameplate.Level:ClearAllPoints()
-		nameplate.Level:SetPoint(E.InversePoints[db.level.position], db.level.parent == 'Nameplate' and nameplate or nameplate[db.level.parent], db.level.position, db.level.xOffset, db.level.yOffset)
-		nameplate.Level:Show()
-	else
-		nameplate.Level:Hide()
-	end
-end
-
-function NP:Update_Title(nameplate)
-	local db = NP.db.units[nameplate.frameType]
-	if not db.title then return end
-
-	nameplate.Title:FontTemplate(E.LSM:Fetch('font', db.title.font), db.title.fontSize, db.title.fontOutline)
-	nameplate:Tag(nameplate.Title, db.title.format)
-
-	if db.title.enable then
-		nameplate.Title:ClearAllPoints()
-		nameplate.Title:SetPoint(E.InversePoints[db.title.position], db.title.parent == 'Nameplate' and nameplate or nameplate[db.title.parent], db.title.position, db.title.xOffset, db.title.yOffset)
-		nameplate.Title:Show()
-	else
-		nameplate.Title:Hide()
+		element:Hide()
 	end
 end
 
 function NP:Update_Tags(nameplate)
-	NP:Update_Name(nameplate)
-	NP:Update_Level(nameplate)
-	NP:Update_Title(nameplate)
+	local db = NP.db.units[nameplate.frameType]
+	if not db then return end
+
+	NP:Update_TagText(nameplate, nameplate.Name, db.name)
+	NP:Update_TagText(nameplate, nameplate.Level, db.level)
+	NP:Update_TagText(nameplate, nameplate.Title, db.title)
+	NP:Update_TagText(nameplate, nameplate.Health, db.health and db.health.text)
+	NP:Update_TagText(nameplate, nameplate.Power, db.power and db.power.text)
 end
