@@ -663,7 +663,9 @@ function DT:PopulateData()
 
 	for k = 1, listSize do
 		local name, isHeader, isExpanded = GetCurrencyListInfo(k)
-		if isHeader and isExpanded and Collapsed[name] then
+		if not name then
+			break
+		elseif isHeader and isExpanded and Collapsed[name] then
 			ExpandCurrencyList(k, 0);
 		end
 	end

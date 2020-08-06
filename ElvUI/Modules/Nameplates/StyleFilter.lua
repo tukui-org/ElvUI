@@ -397,11 +397,13 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 	return anim
 end
 
-function mod:StyleFilterUpdatePlate(frame, nameOnly)
-	mod:UpdatePlate(frame, true) -- enable elements back
+function mod:StyleFilterUpdatePlate(frame, updateBase)
+	if updateBase then
+		mod:UpdatePlate(frame, true) -- enable elements back
+	end
 
 	if frame.frameType then
-		local db = mod.db.units[frame.frameType]
+		local db = mod:PlateDB(frame)
 		if db.health.enable then frame.Health:ForceUpdate() end
 		if db.power.enable then frame.Power:ForceUpdate() end
 	end
@@ -410,25 +412,22 @@ function mod:StyleFilterUpdatePlate(frame, nameOnly)
 		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
 	end
 
-	if not nameOnly then
-		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
-	end
+	mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 end
 
 function mod:StyleFilterBorderLock(backdrop, switch)
 	backdrop.ignoreBorderColors = switch -- but keep the backdrop updated
 end
 
-function mod:StyleFilterCheckChanges(frame, which)
-	local c = frame and frame.StyleFilterActionChanges
-	return c and c[which]
+do
+	local empty = {}
+	function mod:StyleFilterChanges(frame)
+		return (frame and frame.StyleFilterChanges) or empty
+	end
 end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
-	local c = frame.StyleFilterActionChanges
-	if not c then return end
-
-	local db = mod.db.units[frame.frameType]
+	local c, db = frame.StyleFilterChanges, mod:PlateDB(frame)
 
 	if Visibility then
 		c.Visibility = true
@@ -529,12 +528,12 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
-	wipe(frame.StyleFilterActionChanges)
-	local db = mod.db.units[frame.frameType]
+function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+	local db = mod:PlateDB(frame)
+	wipe(frame.StyleFilterChanges)
 
 	if Visibility then
-		mod:StyleFilterUpdatePlate(frame)
+		mod:StyleFilterUpdatePlate(frame, updateBase)
 		frame:ClearAllPoints() -- pull the frame back in
 		frame:Point('CENTER')
 	end
@@ -579,20 +578,14 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		frame.Portrait:ForceUpdate()
 	end
 	if NameOnly then
-		mod:StyleFilterUpdatePlate(frame, true)
+		mod:StyleFilterUpdatePlate(frame, updateBase)
 	else -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
-		if NameTag then frame:Tag(frame.Name, db.name.format) end
-		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) end
-		if HealthTag then frame:Tag(frame.Health.Text, db.health.text.format) end
-		if TitleTag then frame:Tag(frame.Title, db.title.format) end
-		if LevelTag then frame:Tag(frame.Level, db.level.format) end
+		if NameTag then frame:Tag(frame.Name, db.name.format) frame.Name:UpdateTag() end
+		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) frame.Power.Text:UpdateTag() end
+		if HealthTag then frame:Tag(frame.Health.Text, db.health.text.format) frame.Health.Text:UpdateTag() end
+		if TitleTag then frame:Tag(frame.Title, db.title.format) frame.Title:UpdateTag() end
+		if LevelTag then frame:Tag(frame.Level, db.level.format) frame.Level:UpdateTag() end
 	end
-	-- Update Tags in both cases because `Update_Tags` doesn't actually call `UpdateTag`.
-	if NameTag then frame.Name:UpdateTag() end
-	if PowerTag then frame.Power.Text:UpdateTag() end
-	if HealthTag then frame.Health.Text:UpdateTag() end
-	if TitleTag then frame.Title:UpdateTag() end
-	if LevelTag then frame.Level:UpdateTag() end
 end
 
 function mod:StyleFilterThreatUpdate(frame, unit)
@@ -939,7 +932,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 end
 
 function mod:StyleFilterPass(frame, actions)
-	local db = mod.db.units[frame.frameType]
+	local db = mod:PlateDB(frame)
 	local healthBarEnabled = (frame.frameType and db.health.enable) or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
 	local powerBarEnabled = frame.frameType and db.power and db.power.enable
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
@@ -963,9 +956,13 @@ function mod:StyleFilterPass(frame, actions)
 	)
 end
 
-function mod:StyleFilterClear(frame)
-	local c = frame and frame.StyleFilterActionChanges
-	if c and next(c) then mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility) end
+function mod:StyleFilterClear(frame, updateBase)
+	local c = frame.StyleFilterChanges
+	if c and next(c) then
+		local shouldUpdate = c.NameOnly or c.Visibility
+		mod:StyleFilterClearChanges(frame, updateBase, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
+		return shouldUpdate
+	end
 end
 
 function mod:StyleFilterSort(place)
@@ -999,8 +996,8 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 }
 
 function mod:StyleFilterSetVariables(nameplate)
-	if not nameplate.StyleFilterActionChanges then
-		nameplate.StyleFilterActionChanges = {}
+	if not nameplate.StyleFilterChanges then
+		nameplate.StyleFilterChanges = {}
 	end
 
 	for _, func in pairs(mod.StyleFilterEventFunctions) do
@@ -1009,10 +1006,6 @@ function mod:StyleFilterSetVariables(nameplate)
 end
 
 function mod:StyleFilterClearVariables(nameplate)
-	if nameplate.StyleFilterActionChanges then
-		wipe(nameplate.StyleFilterActionChanges)
-	end
-
 	nameplate.isTarget = nil
 	nameplate.isFocused = nil
 	nameplate.inVehicle = nil
@@ -1176,17 +1169,13 @@ function mod:StyleFilterConfigure()
 
 	if next(list) then
 		sort(list, mod.StyleFilterSort) -- sort by priority
-	else
-		for nameplate in pairs(mod.Plates) do
-			mod:StyleFilterClear(nameplate)
-		end
 	end
 end
 
 function mod:StyleFilterUpdate(frame, event)
 	if not mod.StyleFilterTriggerEvents[event] then return end
 
-	mod:StyleFilterClear(frame)
+	mod:StyleFilterClear(frame, true)
 
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
 		local filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]]

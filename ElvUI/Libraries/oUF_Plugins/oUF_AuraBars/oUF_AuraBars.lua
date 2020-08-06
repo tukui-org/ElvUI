@@ -5,10 +5,8 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local _G = _G
-local next = next
 local pcall = pcall
 local floor = floor
-local unpack = unpack
 local tinsert = tinsert
 local infinity = math.huge
 
@@ -16,6 +14,8 @@ local GetTime = GetTime
 local UnitAura = UnitAura
 local CreateFrame = CreateFrame
 local UnitIsFriend = UnitIsFriend
+
+-- GLOBALS: DebuffTypeColor
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60
 local function FormatTime(s)
@@ -60,7 +60,7 @@ local function onUpdate(self, elapsed)
 end
 
 local function createAuraBar(element, index)
-	local statusBar = CreateFrame('StatusBar', element:GetDebugName() .. 'StatusBar' .. index, element)
+	local statusBar = CreateFrame('StatusBar', element:GetName() .. 'StatusBar' .. index, element)
 	statusBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 	statusBar:SetMinMaxValues(0, 1)
 	statusBar.tooltipAnchor = element.tooltipAnchor
