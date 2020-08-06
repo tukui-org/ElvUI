@@ -11,30 +11,28 @@ local UnitIsConnected = UnitIsConnected
 local CreateFrame = CreateFrame
 
 function NP:Health_UpdateColor(_, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if not unit or self.unit ~= unit then return end
 	local element = self.Health
 	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
 	local r, g, b, t
-	if(element.colorDisconnected and not UnitIsConnected(unit)) then
+	if element.colorDisconnected and not UnitIsConnected(unit) then
 		t = self.colors.disconnected
-	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
+	elseif element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit) then
 		t = NP.db.colors.tapped
-	--[=[elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  self.colors.threat[UnitThreatSituation('player', unit)]]=]
-	elseif(element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and UnitPlayerControlled(unit) and not self.isPlayer) then
+	elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and UnitPlayerControlled(unit) and not self.isPlayer) then
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
 	elseif Selection then
 		if Selection == 3 then Selection = UnitPlayerControlled(unit) and 5 or 3 end
 		t = NP.db.colors.selection[Selection]
-	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
+	elseif element.colorReaction and UnitReaction(unit, 'player') then
 		local reaction = UnitReaction(unit, 'player')
 		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
 		t = NP.db.colors.reactions[reaction]
-	elseif(element.colorSmooth) then
+	elseif element.colorSmooth then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
-	elseif(element.colorHealth) then
+	elseif element.colorHealth then
 		t = NP.db.colors.health
 	end
 

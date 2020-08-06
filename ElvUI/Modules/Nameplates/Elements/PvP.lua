@@ -4,20 +4,15 @@ local NP = E:GetModule('NamePlates')
 local strlower = strlower
 
 function NP:PvPIndicator_PostUpdate(_, status)
-	if not status then return end
-
-	if (not self.Badge) or (self.Badge and not self.Badge:IsShown()) then
-		if status ~= 'FFA' then
-			self:SetAtlas('bfa-landingbutton-'..strlower(status)..'-up')
-			self:SetTexCoord(0, 1, 0, 1)
-		end
+	if (status and status ~= 'FFA') and (not self.Badge or not self.Badge:IsShown()) then
+		self:SetAtlas('bfa-landingbutton-'..strlower(status)..'-up')
+		self:SetTexCoord(0, 1, 0, 1)
 	end
 end
 
 function NP:Construct_PvPIndicator(nameplate)
 	local PvPIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
 	PvPIndicator.Badge_ = nameplate:CreateTexture(nil, 'ARTWORK')
-
 	PvPIndicator.PostUpdate = NP.PvPIndicator_PostUpdate
 
 	return PvPIndicator
