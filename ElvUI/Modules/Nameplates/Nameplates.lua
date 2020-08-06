@@ -82,6 +82,13 @@ function NP:CopySettings(from, to)
 	E:CopyTable(NP.db.units[to], E:FilterTableFromBlacklist(NP.db.units[from], Blacklist[to]))
 end
 
+do
+	local empty = {}
+	function NP:PlateDB(nameplate)
+		return (nameplate and NP.db.units[nameplate.frameType]) or empty
+	end
+end
+
 function NP:CVarReset()
 	SetCVar('nameplateMinAlpha', 1)
 	SetCVar('nameplateMaxAlpha', 1)
@@ -190,7 +197,7 @@ function NP:Style(frame, unit)
 end
 
 function NP:Construct_RaisedELement(nameplate)
-	local RaisedElement = CreateFrame('Frame', nameplate:GetDebugName() .. 'RaisedElement', nameplate)
+	local RaisedElement = CreateFrame('Frame', nameplate:GetName() .. 'RaisedElement', nameplate)
 	RaisedElement:SetFrameStrata(nameplate:GetFrameStrata())
 	RaisedElement:SetFrameLevel(10)
 	RaisedElement:SetAllPoints()
@@ -298,13 +305,14 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_Highlight(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
+	NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
 	NP:Update_WidgetXPBar(nameplate)
 
-	local SF_NameOnly = NP:StyleFilterCheckChanges(nameplate, 'NameOnly')
-	local SF_Visibility = NP:StyleFilterCheckChanges(nameplate, 'Visibility')
-	if SF_Visibility or SF_NameOnly or NP.db.units[nameplate.frameType].nameOnly or not NP.db.units[nameplate.frameType].enable then
-		NP:DisablePlate(nameplate, SF_NameOnly or (NP.db.units[nameplate.frameType].nameOnly and not SF_Visibility))
+	local db = NP:PlateDB(nameplate)
+	local sf = NP:StyleFilterChanges(nameplate)
+	if sf.Visibility or sf.NameOnly or db.nameOnly or not db.enable then
+		NP:DisablePlate(nameplate, sf.NameOnly or (db.nameOnly and not sf.Visibility))
 	elseif updateBase then
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
@@ -313,7 +321,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:Update_ClassPower(nameplate)
 		NP:Update_Auras(nameplate, true)
 		NP:Update_ClassificationIndicator(nameplate)
-		NP:Update_Portrait(nameplate)
 		NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
 		NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
 		NP:Update_TargetIndicator(nameplate)
@@ -343,6 +350,7 @@ end
 NP.DisableInNotNameOnly = {
 	'QuestIcons',
 	'Highlight',
+	'Portrait',
 	'PVPRole'
 }
 
@@ -352,7 +360,6 @@ NP.DisableElements = {
 	'Power',
 	'ClassificationIndicator',
 	'Castbar',
-	'Portrait',
 	'ThreatIndicator',
 	'TargetIndicator',
 	'ClassPower',
@@ -383,7 +390,10 @@ function NP:DisablePlate(nameplate, nameOnly)
 	nameplate.Title:Hide()
 
 	if nameOnly then
+		local db = NP:PlateDB(nameplate)
 		NP:Update_Highlight(nameplate)
+
+		-- The position values here are forced on purpose.
 		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
@@ -391,13 +401,20 @@ function NP:DisablePlate(nameplate, nameOnly)
 		nameplate.RaidTargetIndicator:ClearAllPoints()
 		nameplate.RaidTargetIndicator:SetPoint('BOTTOM', nameplate, 'TOP', 0, 0)
 
+		nameplate.Portrait:ClearAllPoints()
+		nameplate.Portrait:SetPoint('RIGHT', nameplate.Name, 'LEFT', -6, 0)
+
 		nameplate.PVPRole:ClearAllPoints()
-		nameplate.PVPRole:SetPoint('RIGHT', nameplate.Name, 'LEFT', -6, 0)
+		if nameplate.Portrait:IsShown() then
+			nameplate.PVPRole:SetPoint('RIGHT', nameplate.Portrait, 'LEFT', -6, 0)
+		else
+			nameplate.PVPRole:SetPoint('RIGHT', nameplate.Name, 'LEFT', -6, 0)
+		end
 
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:SetPoint('LEFT', nameplate.Name, 'RIGHT', 6, 0)
 
-		if NP.db.units[nameplate.frameType].showTitle then
+		if db.showTitle then
 			nameplate.Title:Show()
 			nameplate.Title:ClearAllPoints()
 			nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
@@ -413,25 +430,29 @@ end
 
 function NP:SetupTarget(nameplate, removed)
 	local TCP = _G.ElvNP_TargetClassPower
-	local nameOnly = nameplate and (NP:StyleFilterCheckChanges(nameplate, 'NameOnly') or NP.db.units[nameplate.frameType].nameOnly)
-	TCP.realPlate = (NP.db.units.TARGET.classpower.enable and not (removed or nameOnly) and nameplate) or nil
+	local cp = NP.db.units.TARGET.classpower
+
+	local db = NP:PlateDB(nameplate)
+	local sf = NP:StyleFilterChanges(nameplate)
+
+	TCP.realPlate = cp.enable and nameplate and not (removed or sf.NameOnly or db.nameOnly)
 
 	local moveToPlate = TCP.realPlate or TCP
 
 	if TCP.ClassPower then
 		TCP.ClassPower:SetParent(moveToPlate)
 		TCP.ClassPower:ClearAllPoints()
-		TCP.ClassPower:SetPoint('CENTER', moveToPlate, 'CENTER', NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
+		TCP.ClassPower:SetPoint('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 	if TCP.Runes then
 		TCP.Runes:SetParent(moveToPlate)
 		TCP.Runes:ClearAllPoints()
-		TCP.Runes:SetPoint('CENTER', moveToPlate, 'CENTER', NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
+		TCP.Runes:SetPoint('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 	if TCP.Stagger then
 		TCP.Stagger:SetParent(moveToPlate)
 		TCP.Stagger:ClearAllPoints()
-		TCP.Stagger:SetPoint('CENTER', moveToPlate, 'CENTER', NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
+		TCP.Stagger:SetPoint('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 end
 
@@ -456,8 +477,10 @@ end
 
 function NP:Update_StatusBars()
 	for bar in pairs(NP.StatusBars) do
-		local SF_HealthTexture = NP:StyleFilterCheckChanges(bar:GetParent(), 'HealthTexture')
-		if not SF_HealthTexture then bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex) end
+		local sf = NP:StyleFilterChanges(bar:GetParent())
+		if not sf.HealthTexture then
+			bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex)
+		end
 	end
 end
 

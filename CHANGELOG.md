@@ -1,7 +1,15 @@
-### Version 11.48 [ ETA: 🍨 ]
+### Version 11.49 [ ETA: 🍨 ]
 
-**Shiny:**  
+**Nameplates:**  
+Added option to show Class Icon as Portrait.  
+Corrected a few issues with Portrait backdrops being shown when they weren't supposed to.  
 
+___
+
+### Version 11.48 [ August 5th 2020 ]
+
+**Hotfixed:**  
+Attempted to fix strange nameplate behaviour.  
 
 ___
 

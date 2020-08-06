@@ -4338,7 +4338,7 @@ local function GetUnitSettings(unit, name)
 						type = "toggle"
 					},
 					width = {
-						order = 2,
+						order = 3,
 						name = L["Width"],
 						type = "range",
 						min = 12,
@@ -4346,7 +4346,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					height = {
-						order = 3,
+						order = 4,
 						name = L["Height"],
 						type = "range",
 						min = 12,
@@ -4354,7 +4354,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					position = {
-						order = 4,
+						order = 5,
 						type = "select",
 						name = L["Icon Position"],
 						values = {
@@ -4366,7 +4366,7 @@ local function GetUnitSettings(unit, name)
 						}
 					},
 					xOffset = {
-						order = 5,
+						order = 6,
 						name = L["X-Offset"],
 						type = "range",
 						min = -100,
@@ -4374,7 +4374,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					yOffset = {
-						order = 6,
+						order = 7,
 						name = L["Y-Offset"],
 						type = "range",
 						min = -100,
@@ -4828,13 +4828,6 @@ local function GetUnitSettings(unit, name)
 			type = "toggle",
 			name = L["Use Class Color"]
 		}
-		--[[
-		group.args.castGroup.args.displayTarget = {
-			order = 4, -- stays at 4
-			type = "toggle",
-			name = L["Display Target"],
-			desc = L["Display the target of your current cast. Useful for mouseover casts."]
-		}]]
 	elseif unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
 		group.args.general.args.visibilityShortcut = {
 			order = 100,
@@ -5102,6 +5095,11 @@ local function GetUnitSettings(unit, name)
 
 	-- start groups at 30
 	if unit == "PLAYER" or unit == "FRIENDLY_PLAYER" or unit == "ENEMY_PLAYER" then
+		group.args.portraitGroup.args.classicon = {
+			order = 2,
+			name = L["Class Icon"],
+			type = "toggle"
+		}
 		group.args.pvpclassificationindicator = {
 			order = 30,
 			name = L["PvP Classification Indicator"],

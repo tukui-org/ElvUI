@@ -13,11 +13,11 @@ local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local INTERRUPTED = INTERRUPTED
 
 function NP:Castbar_CheckInterrupt(unit)
-	if (unit == 'vehicle') then
+	if unit == 'vehicle' then
 		unit = 'player'
 	end
 
-	if (self.notInterruptible and UnitCanAttack('player', unit)) then
+	if self.notInterruptible and UnitCanAttack('player', unit) then
 		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b)
 
 		if self.Icon and NP.db.colors.castbarDesaturate then
@@ -99,7 +99,7 @@ function NP:Castbar_PostCastStop()
 end
 
 function NP:Construct_Castbar(nameplate)
-	local Castbar = CreateFrame('StatusBar', nameplate:GetDebugName()..'Castbar', nameplate)
+	local Castbar = CreateFrame('StatusBar', nameplate:GetName()..'Castbar', nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
 	Castbar:SetFrameLevel(5)
 	Castbar:CreateBackdrop('Transparent')
@@ -150,7 +150,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 		local plate, classColor = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
 			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
-			if (db and db.castbar and db.castbar.enable) and db.castbar.sourceInterrupt then
+			if db and db.castbar and db.castbar.enable and db.castbar.sourceInterrupt then
 				if db.castbar.timeToHold > 0 then
 					local name = strmatch(sourceName, '([^%-]+).*')
 					if db.castbar.sourceInterruptClassColor then
@@ -170,7 +170,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 function NP:Update_Castbar(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.castbar.enable then
 		if not nameplate:IsElementEnabled('Castbar') then
@@ -222,9 +222,7 @@ function NP:Update_Castbar(nameplate)
 			nameplate.Castbar.Text:FontTemplate(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Text:Show()
 		end
-	else
-		if nameplate:IsElementEnabled('Castbar') then
-			nameplate:DisableElement('Castbar')
-		end
+	elseif nameplate:IsElementEnabled('Castbar') then
+		nameplate:DisableElement('Castbar')
 	end
 end

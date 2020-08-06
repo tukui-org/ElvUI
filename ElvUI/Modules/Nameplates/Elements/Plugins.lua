@@ -10,7 +10,7 @@ local questIconTypes = { "Item", "Loot", "Skull", "Chat" }
 local targetIndicators = { "Spark", "TopIndicator", "LeftIndicator", "RightIndicator" }
 
 function NP:Construct_QuestIcons(nameplate)
-	local QuestIcons = CreateFrame("Frame", nameplate:GetDebugName() .. "QuestIcons", nameplate)
+	local QuestIcons = CreateFrame("Frame", nameplate:GetName() .. "QuestIcons", nameplate)
 	QuestIcons:Size(20)
 	QuestIcons:Hide()
 
@@ -62,7 +62,7 @@ function NP:Update_QuestIcons(nameplate)
 end
 
 function NP:Construct_ClassificationIndicator(nameplate)
-	return nameplate:CreateTexture(nameplate:GetDebugName() .. "ClassificationIndicator", "OVERLAY")
+	return nameplate:CreateTexture(nameplate:GetName() .. "ClassificationIndicator", "OVERLAY")
 end
 
 function NP:Update_ClassificationIndicator(nameplate)
@@ -83,7 +83,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 end
 
 function NP:Construct_TargetIndicator(nameplate)
-	local TargetIndicator = CreateFrame("Frame", nameplate:GetDebugName() .. "TargetIndicator", nameplate)
+	local TargetIndicator = CreateFrame("Frame", nameplate:GetName() .. "TargetIndicator", nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
 	TargetIndicator.Shadow = CreateFrame("Frame", nil, TargetIndicator, "BackdropTemplate")
@@ -101,7 +101,7 @@ function NP:Construct_TargetIndicator(nameplate)
 end
 
 function NP:Update_TargetIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if nameplate.frameType == "PLAYER" then
 		if nameplate:IsElementEnabled("TargetIndicator") then
@@ -153,7 +153,7 @@ function NP:Update_TargetIndicator(nameplate)
 end
 
 function NP:Construct_Highlight(nameplate)
-	local Highlight = CreateFrame("Frame", nameplate:GetDebugName() .. "Highlight", nameplate)
+	local Highlight = CreateFrame("Frame", nameplate:GetName() .. "Highlight", nameplate)
 	Highlight:Hide()
 	Highlight:EnableMouse(false)
 	Highlight:SetFrameLevel(9)
@@ -164,14 +164,15 @@ function NP:Construct_Highlight(nameplate)
 end
 
 function NP:Update_Highlight(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if NP.db.highlight and db.enable then
 		if not nameplate:IsElementEnabled("Highlight") then
 			nameplate:EnableElement("Highlight")
 		end
 
-		if db.health.enable and not (db.nameOnly or NP:StyleFilterCheckChanges(nameplate, 'NameOnly')) then
+		local sf = NP:StyleFilterChanges(nameplate)
+		if db.health.enable and not (db.nameOnly or sf.NameOnly) then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, 0.25)
 			nameplate.Highlight.texture:SetAllPoints(nameplate.HealthFlashTexture)
 			nameplate.Highlight.texture:SetAlpha(0.75)
@@ -186,7 +187,7 @@ function NP:Update_Highlight(nameplate)
 end
 
 function NP:Construct_PVPRole(nameplate)
-	local texture = nameplate:CreateTexture(nameplate:GetDebugName() .. "PVPRole", "OVERLAY")
+	local texture = nameplate:CreateTexture(nameplate:GetName() .. "PVPRole", "OVERLAY", nil, 1)
 	texture:Size(40, 40)
 	texture.HealerTexture = E.Media.Textures.Healer
 	texture.TankTexture = E.Media.Textures.Tank
@@ -198,7 +199,7 @@ function NP:Construct_PVPRole(nameplate)
 end
 
 function NP:Update_PVPRole(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if (nameplate.frameType == "FRIENDLY_PLAYER" or nameplate.frameType == "ENEMY_PLAYER") and (db.markHealers or db.markTanks) then
 		if not nameplate:IsElementEnabled("PVPRole") then
@@ -215,7 +216,7 @@ function NP:Update_PVPRole(nameplate)
 end
 
 function NP:Update_Fader(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if (not db.visibility) or db.visibility.showAlways then
 		if nameplate:IsElementEnabled("Fader") then
@@ -248,14 +249,15 @@ function NP:Update_Fader(nameplate)
 end
 
 function NP:Construct_Cutaway(nameplate)
+	local frameName = nameplate:GetName()
 	local Cutaway = {}
 
-	Cutaway.Health = nameplate.Health.ClipFrame:CreateTexture(nameplate:GetDebugName() .. "CutawayHealth")
+	Cutaway.Health = nameplate.Health.ClipFrame:CreateTexture(frameName .. "CutawayHealth")
 	local healthTexture = nameplate.Health:GetStatusBarTexture()
 	Cutaway.Health:SetPoint("TOPLEFT", healthTexture, "TOPRIGHT")
 	Cutaway.Health:SetPoint("BOTTOMLEFT", healthTexture, "BOTTOMRIGHT")
 
-	Cutaway.Power = nameplate.Power.ClipFrame:CreateTexture(nameplate:GetDebugName() .. "CutawayPower")
+	Cutaway.Power = nameplate.Power.ClipFrame:CreateTexture(frameName .. "CutawayPower")
 	local powerTexture = nameplate.Power:GetStatusBarTexture()
 	Cutaway.Power:SetPoint("TOPLEFT", powerTexture, "TOPRIGHT")
 	Cutaway.Power:SetPoint("BOTTOMLEFT", powerTexture, "BOTTOMRIGHT")
@@ -291,7 +293,7 @@ function NP:Update_Cutaway(nameplate)
 end
 
 function NP:Construct_WidgetXPBar(nameplate)
-	local WidgetXPBar = CreateFrame("StatusBar", nameplate:GetDebugName() .. "WidgetXPBar", nameplate)
+	local WidgetXPBar = CreateFrame("StatusBar", nameplate:GetName() .. "WidgetXPBar", nameplate)
 	WidgetXPBar:SetFrameStrata(nameplate:GetFrameStrata())
 	WidgetXPBar:SetFrameLevel(5)
 	WidgetXPBar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", NP.db.statusbar))
@@ -306,7 +308,8 @@ function NP:Construct_WidgetXPBar(nameplate)
 end
 
 function NP:Update_WidgetXPBar(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
+
 	if not db.widgetXPBar or not db.widgetXPBar.enable then
 		if nameplate:IsElementEnabled("WidgetXPBar") then
 			nameplate:DisableElement("WidgetXPBar")

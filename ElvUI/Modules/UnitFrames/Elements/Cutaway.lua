@@ -3,7 +3,7 @@ local UF = E:GetModule("UnitFrames")
 
 function UF:Construct_Cutaway(frame)
 	local cutaway = {}
-	local frameName = frame:GetDebugName()
+	local frameName = frame:GetName()
 
 	if frame.Power then
 		local powerTexture = frame.Power:GetStatusBarTexture()

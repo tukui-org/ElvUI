@@ -4,27 +4,22 @@ local NP = E:GetModule('NamePlates')
 local strlower = strlower
 
 function NP:PvPIndicator_PostUpdate(_, status)
-	if not status then return end
-
-	if (not self.Badge) or (self.Badge and not self.Badge:IsShown()) then
-		if status ~= 'FFA' then
-			self:SetAtlas('bfa-landingbutton-'..strlower(status)..'-up')
-			self:SetTexCoord(0, 1, 0, 1)
-		end
+	if (status and status ~= 'FFA') and (not self.Badge or not self.Badge:IsShown()) then
+		self:SetAtlas('bfa-landingbutton-'..strlower(status)..'-up')
+		self:SetTexCoord(0, 1, 0, 1)
 	end
 end
 
 function NP:Construct_PvPIndicator(nameplate)
 	local PvPIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
 	PvPIndicator.Badge_ = nameplate:CreateTexture(nil, 'ARTWORK')
-
 	PvPIndicator.PostUpdate = NP.PvPIndicator_PostUpdate
 
 	return PvPIndicator
 end
 
 function NP:Update_PvPIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.pvpindicator and db.pvpindicator.enable then
 		if not nameplate:IsElementEnabled('PvPIndicator') then
@@ -42,34 +37,28 @@ function NP:Update_PvPIndicator(nameplate)
 
 		nameplate.PvPIndicator:ClearAllPoints()
 		nameplate.PvPIndicator:SetPoint(E.InversePoints[db.pvpindicator.position], nameplate, db.pvpindicator.position, db.pvpindicator.xOffset, db.pvpindicator.yOffset)
-	else
-		if nameplate:IsElementEnabled('PvPIndicator') then
-			nameplate:DisableElement('PvPIndicator')
-		end
+	elseif nameplate:IsElementEnabled('PvPIndicator') then
+		nameplate:DisableElement('PvPIndicator')
 	end
 end
 
 function NP:Construct_PvPClassificationIndicator(nameplate)
     local PvPClassificationIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
-
 	return PvPClassificationIndicator
 end
 
 function NP:Update_PvPClassificationIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if (nameplate.frameType == 'ENEMY_PLAYER' or nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'PLAYER') and db.pvpclassificationindicator and db.pvpclassificationindicator.enable then
 		if not nameplate:IsElementEnabled('PvPClassificationIndicator') then
 			nameplate:EnableElement('PvPClassificationIndicator')
 		end
 
-		nameplate.PvPClassificationIndicator:Size(db.pvpclassificationindicator.size, db.pvpclassificationindicator.size)
-
 		nameplate.PvPClassificationIndicator:ClearAllPoints()
 		nameplate.PvPClassificationIndicator:SetPoint(E.InversePoints[db.pvpclassificationindicator.position], nameplate, db.pvpclassificationindicator.position, db.pvpclassificationindicator.xOffset, db.pvpclassificationindicator.yOffset)
-	else
-		if nameplate:IsElementEnabled('PvPClassificationIndicator') then
-			nameplate:DisableElement('PvPClassificationIndicator')
-		end
+		nameplate.PvPClassificationIndicator:SetSize(db.pvpclassificationindicator.size, db.pvpclassificationindicator.size)
+	elseif nameplate:IsElementEnabled('PvPClassificationIndicator') then
+		nameplate:DisableElement('PvPClassificationIndicator')
 	end
 end

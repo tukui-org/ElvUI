@@ -24,8 +24,8 @@ function NP:ThreatIndicator_PreUpdate(unit, pass)
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
-	local SF_Scale = NP:StyleFilterCheckChanges(self.__owner, 'Scale')
-	if not status and not SF_Scale then
+	local sf = NP:StyleFilterChanges(self.__owner)
+	if not status and not sf.Scale then
 		self.__owner.ThreatScale = 1
 		NP:ScalePlate(self.__owner, 1)
 	elseif status and NP.db.threat and NP.db.threat.enable and NP.db.threat.useThreatColor and not UnitIsTapDenied(unit) then
@@ -57,8 +57,7 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 			Scale = self.isTank and NP.db.threat.badScale or NP.db.threat.goodScale
 		end
 
-		local SF_HealthColor = NP:StyleFilterCheckChanges(self.__owner, 'HealthColor')
-		if SF_HealthColor then
+		if sf.HealthColor then
 			self.r, self.g, self.b = Color.r, Color.g, Color.b
 		else
 			self.__owner.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
@@ -67,7 +66,7 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 		if Scale then
 			self.__owner.ThreatScale = Scale
 
-			if not SF_Scale then
+			if not sf.Scale then
 				NP:ScalePlate(self.__owner, Scale)
 			end
 		end
@@ -99,9 +98,7 @@ function NP:Update_ThreatIndicator(nameplate)
 		else
 			nameplate.ThreatIndicator:SetAlpha(0)
 		end
-	else
-		if nameplate:IsElementEnabled('ThreatIndicator') then
-			nameplate:DisableElement('ThreatIndicator')
-		end
+	elseif nameplate:IsElementEnabled('ThreatIndicator') then
+		nameplate:DisableElement('ThreatIndicator')
 	end
 end

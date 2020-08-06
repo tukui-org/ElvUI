@@ -5,39 +5,34 @@ local ipairs = ipairs
 local unpack = unpack
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapDenied = UnitIsTapDenied
-local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local UnitIsConnected = UnitIsConnected
 local CreateFrame = CreateFrame
 
 function NP:Health_UpdateColor(_, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if not unit or self.unit ~= unit then return end
 	local element = self.Health
 	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
 	local r, g, b, t
-	if(element.colorDisconnected and not UnitIsConnected(unit)) then
+	if element.colorDisconnected and not UnitIsConnected(unit) then
 		t = self.colors.disconnected
-	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
+	elseif element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit) then
 		t = NP.db.colors.tapped
-	--[=[elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  self.colors.threat[UnitThreatSituation('player', unit)]]=]
-	elseif(element.colorClass and UnitIsPlayer(unit)) or
-		(element.colorClassNPC and not UnitIsPlayer(unit)) or
-		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
+	elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and UnitPlayerControlled(unit) and not self.isPlayer) then
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
 	elseif Selection then
 		if Selection == 3 then Selection = UnitPlayerControlled(unit) and 5 or 3 end
 		t = NP.db.colors.selection[Selection]
-	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
+	elseif element.colorReaction and UnitReaction(unit, 'player') then
 		local reaction = UnitReaction(unit, 'player')
 		if reaction <= 3 then reaction = 'bad' elseif reaction == 4 then reaction = 'neutral' else reaction = 'good' end
 		t = NP.db.colors.reactions[reaction]
-	elseif(element.colorSmooth) then
+	elseif element.colorSmooth then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
-	elseif(element.colorHealth) then
+	elseif element.colorHealth then
 		t = NP.db.colors.health
 	end
 
@@ -46,9 +41,9 @@ function NP:Health_UpdateColor(_, unit)
 		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
 	end
 
-	local SF_HealthColor = NP:StyleFilterCheckChanges(self, 'HealthColor')
-	if SF_HealthColor then
-		r, g, b = SF_HealthColor.r, SF_HealthColor.g, SF_HealthColor.b
+	local sf = NP:StyleFilterChanges(self)
+	if sf.HealthColor then
+		r, g, b = sf.HealthColor.r, sf.HealthColor.g, sf.HealthColor.b
 	end
 
 	if b then
@@ -65,7 +60,7 @@ function NP:Health_UpdateColor(_, unit)
 end
 
 function NP:Construct_Health(nameplate)
-	local Health = CreateFrame('StatusBar', nameplate:GetDebugName()..'Health', nameplate)
+	local Health = CreateFrame('StatusBar', nameplate:GetName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(5)
 	Health:CreateBackdrop('Transparent')
@@ -85,7 +80,7 @@ function NP:Construct_Health(nameplate)
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
-	local healthFlashTexture = Health:CreateTexture(nameplate:GetDebugName()..'FlashTexture', "OVERLAY")
+	local healthFlashTexture = Health:CreateTexture(nameplate:GetName()..'FlashTexture', "OVERLAY")
 	healthFlashTexture:SetTexture(E.Libs.LSM:Fetch("background", "ElvUI Blank"))
 	healthFlashTexture:SetPoint("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
 	healthFlashTexture:SetPoint("TOPRIGHT", statusBarTexture, "TOPRIGHT")
@@ -100,7 +95,7 @@ function NP:Construct_Health(nameplate)
 end
 
 function NP:Update_Health(nameplate, skipUpdate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	nameplate.Health.colorTapping = true
 	nameplate.Health.colorSelection = true
@@ -121,10 +116,8 @@ function NP:Update_Health(nameplate, skipUpdate)
 		nameplate:SetHealthUpdateSpeed(E.global.nameplate.effectiveHealthSpeed)
 
 		E:SetSmoothing(nameplate.Health, NP.db.smoothbars)
-	else
-		if nameplate:IsElementEnabled('Health') then
-			nameplate:DisableElement('Health')
-		end
+	elseif nameplate:IsElementEnabled('Health') then
+		nameplate:DisableElement('Health')
 	end
 
 	nameplate.Health.width = db.health.width
@@ -134,7 +127,7 @@ end
 
 local bars = { 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }
 function NP:Construct_HealthPrediction(nameplate)
-	local HealthPrediction = CreateFrame('Frame', nameplate:GetDebugName()..'HealthPrediction', nameplate)
+	local HealthPrediction = CreateFrame('Frame', nameplate:GetName()..'HealthPrediction', nameplate)
 
 	for _, name in ipairs(bars) do
 		local bar = CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)
@@ -174,7 +167,7 @@ function NP:Construct_HealthPrediction(nameplate)
 end
 
 function NP:Update_HealthPrediction(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.health.enable and db.health.healPrediction then
 		if not nameplate:IsElementEnabled('HealthPrediction') then
@@ -185,9 +178,7 @@ function NP:Update_HealthPrediction(nameplate)
 		nameplate.HealthPrediction.otherBar:SetStatusBarColor(NP.db.colors.healPrediction.others.r, NP.db.colors.healPrediction.others.g, NP.db.colors.healPrediction.others.b)
 		nameplate.HealthPrediction.absorbBar:SetStatusBarColor(NP.db.colors.healPrediction.absorbs.r, NP.db.colors.healPrediction.absorbs.g, NP.db.colors.healPrediction.absorbs.b)
 		nameplate.HealthPrediction.healAbsorbBar:SetStatusBarColor(NP.db.colors.healPrediction.healAbsorbs.r, NP.db.colors.healPrediction.healAbsorbs.g, NP.db.colors.healPrediction.healAbsorbs.b)
-	else
-		if nameplate:IsElementEnabled('HealthPrediction') then
-			nameplate:DisableElement('HealthPrediction')
-		end
+	elseif nameplate:IsElementEnabled('HealthPrediction') then
+		nameplate:DisableElement('HealthPrediction')
 	end
 end

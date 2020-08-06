@@ -26,8 +26,7 @@ function NP:Update_TagText(nameplate, element, db)
 end
 
 function NP:Update_Tags(nameplate)
-	local db = NP.db.units[nameplate.frameType]
-	if not db then return end
+	local db = NP:PlateDB(nameplate)
 
 	NP:Update_TagText(nameplate, nameplate.Name, db.name)
 	NP:Update_TagText(nameplate, nameplate.Level, db.level)
