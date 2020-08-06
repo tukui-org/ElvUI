@@ -392,6 +392,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 		local db = NP:PlateDB(nameplate)
 		NP:Update_Highlight(nameplate)
 
+		-- The position values here are forced on purpose.
 		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:Point('CENTER', nameplate, 'CENTER', 0, 0)
@@ -401,10 +402,8 @@ function NP:DisablePlate(nameplate, nameOnly)
 
 		nameplate.Portrait:ClearAllPoints()
 		nameplate.Portrait:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
-		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
 
 		nameplate.PVPRole:ClearAllPoints()
-
 		if nameplate.Portrait:IsShown() then
 			nameplate.PVPRole:Point('RIGHT', nameplate.Portrait, 'LEFT', -6, 0)
 		else

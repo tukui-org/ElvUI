@@ -52,9 +52,11 @@ function NP:Update_Portrait(nameplate)
 			nameplate:EnableElement('Portrait')
 		end
 
+		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
+
+		-- These values are forced in name only mode inside of DisablePlate
 		if not (db.nameOnly or sf.NameOnly) then
 			nameplate.Portrait:ClearAllPoints()
-			nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
 			nameplate.Portrait:Point(E.InversePoints[db.portrait.position], nameplate, db.portrait.position, db.portrait.xOffset, db.portrait.yOffset)
 		end
 	elseif nameplate:IsElementEnabled('Portrait') then
