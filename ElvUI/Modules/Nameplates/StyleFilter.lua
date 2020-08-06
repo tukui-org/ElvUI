@@ -1011,10 +1011,6 @@ function mod:StyleFilterSetVariables(nameplate)
 end
 
 function mod:StyleFilterClearVariables(nameplate)
-	if nameplate.StyleFilterChanges then
-		wipe(nameplate.StyleFilterChanges)
-	end
-
 	nameplate.isTarget = nil
 	nameplate.isFocused = nil
 	nameplate.inVehicle = nil
