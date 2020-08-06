@@ -81,22 +81,23 @@ local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
+local GameTooltip = GameTooltip
 local floor, min = math.floor, math.min
--- GLOBALS: GameTooltip
 -- end block
 
 local function UpdateTooltip(self)
+	if GameTooltip:IsForbidden() then return end
 	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local function onEnter(self)
-	if(not self:IsVisible()) then return end
-
+	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 	GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
 	self:UpdateTooltip()
 end
 
 local function onLeave()
+	if GameTooltip:IsForbidden() then return end
 	GameTooltip:Hide()
 end
 

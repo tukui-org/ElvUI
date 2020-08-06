@@ -15,6 +15,8 @@ local UnitAura = UnitAura
 local CreateFrame = CreateFrame
 local UnitIsFriend = UnitIsFriend
 
+-- GLOBALS: DebuffTypeColor
+
 local DAY, HOUR, MINUTE = 86400, 3600, 60
 local function FormatTime(s)
 	if s == infinity then s = 0 end
