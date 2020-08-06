@@ -25,11 +25,20 @@ function S:Blizzard_AnimaDiversionUI()
 	S:HandleButton(frame.ReinforceInfoFrame.AnimaNodeReinforceButton)
 
 	-- Tooltip
-	local popup = frame.SelectPinInfoFrame
-	popup:StripTextures()
-	popup:CreateBackdrop()
-	S:HandleCloseButton(popup.CloseButton)
-	--S:HandleIcon(popup.lastCurrency.CurrencyIcon)
+	local InfoFrame = frame.SelectPinInfoFrame
+	InfoFrame:StripTextures()
+	InfoFrame:CreateBackdrop()
+	S:HandleCloseButton(InfoFrame.CloseButton)
+
+	hooksecurefunc(InfoFrame, "SetupCosts", function(frame)
+		for currency in frame.currencyPool:EnumerateActive() do
+			if not currency.IsSkinned then
+				S:HandleIcon(currency.CurrencyIcon)
+
+				currency.IsSkinned = true
+			end
+		end
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_AnimaDiversionUI')
