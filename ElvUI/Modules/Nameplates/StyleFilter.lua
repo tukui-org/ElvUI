@@ -401,7 +401,7 @@ function mod:StyleFilterUpdatePlate(frame, nameOnly)
 	mod:UpdatePlate(frame, true) -- enable elements back
 
 	if frame.frameType then
-		local db = mod.db.units[frame.frameType]
+		local db = mod:PlateDB(frame)
 		if db.health.enable then frame.Health:ForceUpdate() end
 		if db.power.enable then frame.Power:ForceUpdate() end
 	end
@@ -427,10 +427,7 @@ do
 end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
-	local c = frame.StyleFilterChanges
-	if not c then return end
-
-	local db = mod.db.units[frame.frameType]
+	local c, db = frame.StyleFilterChanges, mod:PlateDB(frame)
 
 	if Visibility then
 		c.Visibility = true
@@ -532,8 +529,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 end
 
 function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+	local db = mod:PlateDB(frame)
 	wipe(frame.StyleFilterChanges)
-	local db = mod.db.units[frame.frameType]
 
 	if Visibility then
 		mod:StyleFilterUpdatePlate(frame)
@@ -941,7 +938,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 end
 
 function mod:StyleFilterPass(frame, actions)
-	local db = mod.db.units[frame.frameType]
+	local db = mod:PlateDB(frame)
 	local healthBarEnabled = (frame.frameType and db.health.enable) or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
 	local powerBarEnabled = frame.frameType and db.power and db.power.enable
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
@@ -1011,10 +1008,6 @@ function mod:StyleFilterSetVariables(nameplate)
 end
 
 function mod:StyleFilterClearVariables(nameplate)
-	if nameplate.StyleFilterChanges then
-		wipe(nameplate.StyleFilterChanges)
-	end
-
 	nameplate.isTarget = nil
 	nameplate.isFocused = nil
 	nameplate.inVehicle = nil
