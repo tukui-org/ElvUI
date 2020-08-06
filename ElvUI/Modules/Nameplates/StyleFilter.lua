@@ -580,18 +580,12 @@ function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor,
 	if NameOnly then
 		mod:StyleFilterUpdatePlate(frame, updateBase)
 	else -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
-		if NameTag then frame:Tag(frame.Name, db.name.format) end
-		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) end
-		if HealthTag then frame:Tag(frame.Health.Text, db.health.text.format) end
-		if TitleTag then frame:Tag(frame.Title, db.title.format) end
-		if LevelTag then frame:Tag(frame.Level, db.level.format) end
+		if NameTag then frame:Tag(frame.Name, db.name.format) frame.Name:UpdateTag() end
+		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) frame.Power.Text:UpdateTag() end
+		if HealthTag then frame:Tag(frame.Health.Text, db.health.text.format) frame.Health.Text:UpdateTag() end
+		if TitleTag then frame:Tag(frame.Title, db.title.format) frame.Title:UpdateTag() end
+		if LevelTag then frame:Tag(frame.Level, db.level.format) frame.Level:UpdateTag() end
 	end
-	-- Update Tags in both cases because `Update_Tags` doesn't actually call `UpdateTag`.
-	if NameTag then frame.Name:UpdateTag() end
-	if PowerTag then frame.Power.Text:UpdateTag() end
-	if HealthTag then frame.Health.Text:UpdateTag() end
-	if TitleTag then frame.Title:UpdateTag() end
-	if LevelTag then frame.Level:UpdateTag() end
 end
 
 function mod:StyleFilterThreatUpdate(frame, unit)

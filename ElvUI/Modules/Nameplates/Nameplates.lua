@@ -301,8 +301,6 @@ function NP:StylePlate(nameplate)
 end
 
 function NP:UpdatePlate(nameplate, updateBase)
-	NP:Update_Tags(nameplate)
-	NP:Update_Highlight(nameplate)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
@@ -314,8 +312,10 @@ function NP:UpdatePlate(nameplate, updateBase)
 	if sf.Visibility or sf.NameOnly or db.nameOnly or not db.enable then
 		NP:DisablePlate(nameplate, sf.NameOnly or (db.nameOnly and not sf.Visibility))
 	elseif updateBase then
+		NP:Update_Tags(nameplate)
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
+		NP:Update_Highlight(nameplate)
 		NP:Update_Power(nameplate)
 		NP:Update_Castbar(nameplate)
 		NP:Update_ClassPower(nameplate)
@@ -381,20 +381,11 @@ function NP:DisablePlate(nameplate, nameOnly)
 		end
 	end
 
-	NP:Update_Tags(nameplate)
-
-	nameplate.Health.Text:Hide()
-	nameplate.Power.Text:Hide()
-	nameplate.Name:Hide()
-	nameplate.Level:Hide()
-	nameplate.Title:Hide()
-
 	if nameOnly then
-		local db = NP:PlateDB(nameplate)
+		NP:Update_Tags(nameplate)
 		NP:Update_Highlight(nameplate)
 
 		-- The position values here are forced on purpose.
-		nameplate.Name:Show()
 		nameplate.Name:ClearAllPoints()
 		nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
 
@@ -405,20 +396,13 @@ function NP:DisablePlate(nameplate, nameOnly)
 		nameplate.Portrait:SetPoint('RIGHT', nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.PVPRole:ClearAllPoints()
-		if nameplate.Portrait:IsShown() then
-			nameplate.PVPRole:SetPoint('RIGHT', nameplate.Portrait, 'LEFT', -6, 0)
-		else
-			nameplate.PVPRole:SetPoint('RIGHT', nameplate.Name, 'LEFT', -6, 0)
-		end
+		nameplate.PVPRole:SetPoint('RIGHT', (nameplate.Portrait:IsShown() and nameplate.Portrait) or nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:SetPoint('LEFT', nameplate.Name, 'RIGHT', 6, 0)
 
-		if db.showTitle then
-			nameplate.Title:Show()
-			nameplate.Title:ClearAllPoints()
-			nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
-		end
+		nameplate.Title:ClearAllPoints()
+		nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
 	else
 		for _, element in ipairs(NP.DisableInNotNameOnly) do
 			if nameplate:IsElementEnabled(element) then
