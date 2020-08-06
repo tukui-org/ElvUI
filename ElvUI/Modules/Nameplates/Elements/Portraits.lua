@@ -24,9 +24,9 @@ function NP:Portrait_PostUpdate()
 	end
 end
 
-local function syncBackdrop(element)
-	if element.backdrop then
-		element.backdrop:SetShown(element:IsShown())
+function NP:Update_PortraitBackdrop()
+	if self.backdrop then
+		self.backdrop:SetShown(self:IsShown())
 	end
 end
 
@@ -37,8 +37,8 @@ function NP:Construct_Portrait(nameplate)
 	Portrait:Hide()
 
 	Portrait.PostUpdate = NP.Portrait_PostUpdate
-	hooksecurefunc(Portrait, 'Hide', syncBackdrop)
-	hooksecurefunc(Portrait, 'Show', syncBackdrop)
+	hooksecurefunc(Portrait, 'Hide', NP.Update_PortraitBackdrop)
+	hooksecurefunc(Portrait, 'Show', NP.Update_PortraitBackdrop)
 
 	return Portrait
 end
