@@ -650,7 +650,7 @@ function DT:PopulateData()
 	while listSize >= i do
 		local info = C_CurrencyInfo_GetCurrencyListInfo(i)
 		if info.isHeader and not info.isHeaderExpanded then
-			ExpandCurrencyList(i, true);
+			ExpandCurrencyList(i, true)
 			listSize = C_CurrencyInfo_GetCurrencyListSize()
 			Collapsed[info.name] = true
 		end
@@ -666,8 +666,10 @@ function DT:PopulateData()
 
 	for k = 1, listSize do
 		local info = C_CurrencyInfo_GetCurrencyListInfo(k)
-		if info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
-			ExpandCurrencyList(k, false);
+		if not info then
+			break
+		elseif info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
+			ExpandCurrencyList(k, false)
 		end
 	end
 
