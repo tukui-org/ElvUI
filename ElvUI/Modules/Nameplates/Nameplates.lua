@@ -259,6 +259,7 @@ function NP:StylePlate(nameplate)
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)
+	nameplate.Health.Text.frequentUpdates = .1
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 	nameplate.Power = NP:Construct_Power(nameplate)
 	nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
