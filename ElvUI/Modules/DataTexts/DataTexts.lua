@@ -22,7 +22,7 @@ local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
-local ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
+local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
 local MISCELLANEOUS = MISCELLANEOUS
@@ -650,7 +650,7 @@ function DT:PopulateData()
 	while listSize >= i do
 		local info = C_CurrencyInfo_GetCurrencyListInfo(i)
 		if info.isHeader and not info.isHeaderExpanded then
-			ExpandCurrencyList(i, true)
+			C_CurrencyInfo_ExpandCurrencyList(i, true)
 			listSize = C_CurrencyInfo_GetCurrencyListSize()
 			Collapsed[info.name] = true
 		end
@@ -669,7 +669,7 @@ function DT:PopulateData()
 		if not info then
 			break
 		elseif info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
-			ExpandCurrencyList(k, false)
+			C_CurrencyInfo_ExpandCurrencyList(k, false)
 		end
 	end
 
