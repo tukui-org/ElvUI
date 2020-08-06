@@ -1,3 +1,4 @@
+if not Live then return end
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
@@ -88,7 +89,7 @@ end
 
 function S:Blizzard_DebugTools()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.debug) then return end
-
+	
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
 		_G.FrameStackTooltip:CreateBackdrop("Transparent")

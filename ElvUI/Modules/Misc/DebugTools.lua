@@ -1,3 +1,4 @@
+if not Live then return end
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule('DebugTools')
 
@@ -116,6 +117,7 @@ function D:Initialize()
 	self.HideFrame:Hide()
 
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
+
 	self:SecureHookScript(ScriptErrorsFrame, 'OnShow', D.ModifyErrorFrame)
 	self:SecureHook(ScriptErrorsFrame, 'UpdateButtons', D.ScriptErrorsFrame_UpdateButtons)
 	self:SecureHook(ScriptErrorsFrame, 'OnError', D.ScriptErrorsFrame_OnError)
