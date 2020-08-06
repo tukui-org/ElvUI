@@ -336,7 +336,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:SetupTarget(nameplate, nil, true)
 	end
 
-	nameplate:UpdateTags()
 	NP:StyleFilterEvents(nameplate)
 end
 
