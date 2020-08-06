@@ -46,9 +46,9 @@ function NP:Health_UpdateColor(_, unit)
 		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
 	end
 
-	local SF_HealthColor = NP:StyleFilterCheckChanges(self, 'HealthColor')
-	if SF_HealthColor then
-		r, g, b = SF_HealthColor.r, SF_HealthColor.g, SF_HealthColor.b
+	local sf = NP:StyleFilterChanges(self)
+	if sf.HealthColor then
+		r, g, b = sf.HealthColor.r, sf.HealthColor.g, sf.HealthColor.b
 	end
 
 	if b then
@@ -100,7 +100,7 @@ function NP:Construct_Health(nameplate)
 end
 
 function NP:Update_Health(nameplate, skipUpdate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	nameplate.Health.colorTapping = true
 	nameplate.Health.colorSelection = true
@@ -174,7 +174,7 @@ function NP:Construct_HealthPrediction(nameplate)
 end
 
 function NP:Update_HealthPrediction(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.health.enable and db.health.healPrediction then
 		if not nameplate:IsElementEnabled('HealthPrediction') then

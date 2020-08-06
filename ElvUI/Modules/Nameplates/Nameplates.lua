@@ -82,6 +82,13 @@ function NP:CopySettings(from, to)
 	E:CopyTable(NP.db.units[to], E:FilterTableFromBlacklist(NP.db.units[from], Blacklist[to]))
 end
 
+do
+	local empty = {}
+	function NP:PlateDB(nameplate)
+		return (nameplate and NP.db.units[nameplate.frameType]) or empty
+	end
+end
+
 function NP:CVarReset()
 	SetCVar('nameplateMinAlpha', 1)
 	SetCVar('nameplateMaxAlpha', 1)
@@ -300,10 +307,10 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_QuestIcons(nameplate)
 	NP:Update_WidgetXPBar(nameplate)
 
-	local SF_NameOnly = NP:StyleFilterCheckChanges(nameplate, 'NameOnly')
-	local SF_Visibility = NP:StyleFilterCheckChanges(nameplate, 'Visibility')
-	if SF_Visibility or SF_NameOnly or NP.db.units[nameplate.frameType].nameOnly or not NP.db.units[nameplate.frameType].enable then
-		NP:DisablePlate(nameplate, SF_NameOnly or (NP.db.units[nameplate.frameType].nameOnly and not SF_Visibility))
+	local db = NP:PlateDB(nameplate)
+	local sf = NP:StyleFilterChanges(nameplate)
+	if sf.Visibility or sf.NameOnly or db.nameOnly or not db.enable then
+		NP:DisablePlate(nameplate, sf.NameOnly or (db.nameOnly and not sf.Visibility))
 	elseif updateBase then
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
@@ -396,7 +403,8 @@ function NP:DisablePlate(nameplate, nameOnly)
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:Point('LEFT', nameplate.Name, 'RIGHT', 6, 0)
 
-		if NP.db.units[nameplate.frameType].showTitle then
+		local db = NP:PlateDB(nameplate)
+		if db.showTitle then
 			nameplate.Title:Show()
 			nameplate.Title:ClearAllPoints()
 			nameplate.Title:Point('TOP', nameplate.Name, 'BOTTOM', 0, -2)
@@ -412,25 +420,29 @@ end
 
 function NP:SetupTarget(nameplate, removed)
 	local TCP = _G.ElvNP_TargetClassPower
-	local nameOnly = nameplate and (NP:StyleFilterCheckChanges(nameplate, 'NameOnly') or NP.db.units[nameplate.frameType].nameOnly)
-	TCP.realPlate = (NP.db.units.TARGET.classpower.enable and not (removed or nameOnly) and nameplate) or nil
+
+	local db = NP:PlateDB(nameplate)
+	local sf = NP:StyleFilterChanges(nameplate)
+
+	local cp = NP.db.units.TARGET.classpower
+	TCP.realPlate = cp.enable and nameplate and not (removed or sf.NameOnly or db.nameOnly)
 
 	local moveToPlate = TCP.realPlate or TCP
 
 	if TCP.ClassPower then
 		TCP.ClassPower:SetParent(moveToPlate)
 		TCP.ClassPower:ClearAllPoints()
-		TCP.ClassPower:Point('CENTER', moveToPlate, 'CENTER', NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
+		TCP.ClassPower:Point('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 	if TCP.Runes then
 		TCP.Runes:SetParent(moveToPlate)
 		TCP.Runes:ClearAllPoints()
-		TCP.Runes:Point('CENTER', moveToPlate, 'CENTER', NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
+		TCP.Runes:Point('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 	if TCP.Stagger then
 		TCP.Stagger:SetParent(moveToPlate)
 		TCP.Stagger:ClearAllPoints()
-		TCP.Stagger:Point('CENTER', moveToPlate, 'CENTER', NP.db.units.TARGET.classpower.xOffset, NP.db.units.TARGET.classpower.yOffset)
+		TCP.Stagger:Point('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 end
 
@@ -455,8 +467,10 @@ end
 
 function NP:Update_StatusBars()
 	for bar in pairs(NP.StatusBars) do
-		local SF_HealthTexture = NP:StyleFilterCheckChanges(bar:GetParent(), 'HealthTexture')
-		if not SF_HealthTexture then bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex) end
+		local sf = NP:StyleFilterChanges(bar:GetParent())
+		if not sf.HealthTexture then
+			bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex)
+		end
 	end
 end
 

@@ -103,7 +103,7 @@ function NP:Configure_Auras(nameplate, auras, db)
 end
 
 function NP:Update_Auras(nameplate, forceUpdate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.debuffs.enable or db.buffs.enable then
 		nameplate:SetAuraUpdateMethod(E.global.nameplate.effectiveAura)

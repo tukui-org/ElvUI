@@ -101,7 +101,7 @@ function NP:Construct_TargetIndicator(nameplate)
 end
 
 function NP:Update_TargetIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if nameplate.frameType == "PLAYER" then
 		if nameplate:IsElementEnabled("TargetIndicator") then
@@ -164,14 +164,15 @@ function NP:Construct_Highlight(nameplate)
 end
 
 function NP:Update_Highlight(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if NP.db.highlight and db.enable then
 		if not nameplate:IsElementEnabled("Highlight") then
 			nameplate:EnableElement("Highlight")
 		end
 
-		if db.health.enable and not (db.nameOnly or NP:StyleFilterCheckChanges(nameplate, 'NameOnly')) then
+		local sf = NP:StyleFilterChanges(nameplate)
+		if db.health.enable and not (db.nameOnly or sf.NameOnly) then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, 0.25)
 			nameplate.Highlight.texture:SetAllPoints(nameplate.HealthFlashTexture)
 			nameplate.Highlight.texture:SetAlpha(0.75)
@@ -198,7 +199,7 @@ function NP:Construct_PVPRole(nameplate)
 end
 
 function NP:Update_PVPRole(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if (nameplate.frameType == "FRIENDLY_PLAYER" or nameplate.frameType == "ENEMY_PLAYER") and (db.markHealers or db.markTanks) then
 		if not nameplate:IsElementEnabled("PVPRole") then
@@ -215,7 +216,7 @@ function NP:Update_PVPRole(nameplate)
 end
 
 function NP:Update_Fader(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if (not db.visibility) or db.visibility.showAlways then
 		if nameplate:IsElementEnabled("Fader") then
@@ -306,7 +307,8 @@ function NP:Construct_WidgetXPBar(nameplate)
 end
 
 function NP:Update_WidgetXPBar(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
+
 	if not db.widgetXPBar or not db.widgetXPBar.enable then
 		if nameplate:IsElementEnabled("WidgetXPBar") then
 			nameplate:DisableElement("WidgetXPBar")

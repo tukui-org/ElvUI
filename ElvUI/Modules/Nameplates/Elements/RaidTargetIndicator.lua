@@ -28,7 +28,7 @@ function NP:Construct_RaidTargetIndicator(nameplate)
 end
 
 function NP:Update_RaidTargetIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.raidTargetIndicator and db.raidTargetIndicator.enable then
 		if not nameplate:IsElementEnabled('RaidTargetIndicator') then

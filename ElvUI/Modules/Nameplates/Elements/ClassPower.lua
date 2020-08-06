@@ -89,7 +89,7 @@ function NP:Construct_ClassPower(nameplate)
 end
 
 function NP:Update_ClassPower(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('ClassPower') then
@@ -178,7 +178,7 @@ function NP:Construct_Runes(nameplate)
 end
 
 function NP:Update_Runes(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('Runes') then
@@ -240,7 +240,7 @@ function NP:Construct_Stagger(nameplate)
 end
 
 function NP:Update_Stagger(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('Stagger') then

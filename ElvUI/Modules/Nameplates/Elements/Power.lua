@@ -19,7 +19,9 @@ function NP:Power_UpdateColor(_, unit)
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 	element.token = ptoken
 
-	if NP:StyleFilterCheckChanges(self, 'PowerColor') then return end
+	local sf = NP:StyleFilterChanges(self)
+	if sf.PowerColor then return end
+
 	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
 	local r, g, b, t, atlas
@@ -131,7 +133,7 @@ function NP:Construct_Power(nameplate)
 end
 
 function NP:Update_Power(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.power.enable then
 		if not nameplate:IsElementEnabled('Power') then

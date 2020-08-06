@@ -5,21 +5,30 @@ local _G = _G
 local unpack = unpack
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
+local hooksecurefunc = hooksecurefunc
 
-function NP:Portrait_PostUpdate(unit)
-	local db = NP.db.units[self.__owner.frameType]
-	if not db then return end
+function NP:Portrait_PostUpdate()
+	local nameplate = self.__owner
+	local db = NP:PlateDB(nameplate)
 
-	if (db.portrait and db.portrait.classicon) and UnitIsPlayer(unit) then
-		local _, class = UnitClass(unit);
-		self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-		self:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[class]))
-		self.backdrop:Hide()
-	elseif NP:StyleFilterCheckChanges(self.__owner, 'Portrait') or (db.portrait and db.portrait.enable) then
-		self:SetTexCoord(.18, .82, .18, .82)
-		self.backdrop:Show()
+	local sf = NP:StyleFilterChanges(nameplate)
+	if sf.Portrait or (db.portrait and db.portrait.enable) then
+		if db.portrait.classicon and nameplate.isPlayer then
+			self:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+			self:SetTexCoord(unpack(_G.CLASS_ICON_TCOORDS[nameplate.classFile]))
+			self.backdrop:Hide()
+		else
+			self:SetTexCoord(.18, .82, .18, .82)
+			self.backdrop:Show()
+		end
 	else
 		self.backdrop:Hide()
+	end
+end
+
+local function syncBackdrop(element)
+	if element.backdrop then
+		element.backdrop:SetShown(element:IsShown())
 	end
 end
 
@@ -30,27 +39,25 @@ function NP:Construct_Portrait(nameplate)
 	Portrait:Hide()
 
 	Portrait.PostUpdate = NP.Portrait_PostUpdate
+	hooksecurefunc(Portrait, 'Hide', syncBackdrop)
+	hooksecurefunc(Portrait, 'Show', syncBackdrop)
 
 	return Portrait
 end
 
 function NP:Update_Portrait(nameplate)
-	local db = NP.db.units[nameplate.frameType]
-	if not db then return end
+	local db = NP:PlateDB(nameplate)
 
-	if NP:StyleFilterCheckChanges(nameplate, 'Portrait') or (db.portrait and db.portrait.enable) then
+	local sf = NP:StyleFilterChanges(nameplate)
+	if sf.Portrait or (db.portrait and db.portrait.enable) then
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
-			nameplate.Portrait.backdrop:Show()
 		end
 
 		nameplate.Portrait:ClearAllPoints()
 		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
 		nameplate.Portrait:Point(E.InversePoints[db.portrait.position], nameplate, db.portrait.position, db.portrait.xOffset, db.portrait.yOffset)
-	else
-		if nameplate:IsElementEnabled('Portrait') then
-			nameplate:DisableElement('Portrait')
-			nameplate.Portrait.backdrop:Hide()
-		end
+	elseif nameplate:IsElementEnabled('Portrait') then
+		nameplate:DisableElement('Portrait')
 	end
 end

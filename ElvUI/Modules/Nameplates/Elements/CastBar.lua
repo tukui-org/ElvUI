@@ -170,7 +170,7 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 function NP:Update_Castbar(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.castbar.enable then
 		if not nameplate:IsElementEnabled('Castbar') then

@@ -24,7 +24,7 @@ function NP:Construct_PvPIndicator(nameplate)
 end
 
 function NP:Update_PvPIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.pvpindicator and db.pvpindicator.enable then
 		if not nameplate:IsElementEnabled('PvPIndicator') then
@@ -56,7 +56,7 @@ function NP:Construct_PvPClassificationIndicator(nameplate)
 end
 
 function NP:Update_PvPClassificationIndicator(nameplate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if (nameplate.frameType == 'ENEMY_PLAYER' or nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'PLAYER') and db.pvpclassificationindicator and db.pvpclassificationindicator.enable then
 		if not nameplate:IsElementEnabled('PvPClassificationIndicator') then

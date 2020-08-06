@@ -419,13 +419,15 @@ function mod:StyleFilterBorderLock(backdrop, switch)
 	backdrop.ignoreBorderColors = switch -- but keep the backdrop updated
 end
 
-function mod:StyleFilterCheckChanges(frame, which)
-	local c = frame and frame.StyleFilterActionChanges
-	return c and c[which]
+do
+	local empty = {}
+	function mod:StyleFilterChanges(frame)
+		return (frame and frame.StyleFilterChanges) or empty
+	end
 end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
-	local c = frame.StyleFilterActionChanges
+	local c = frame.StyleFilterChanges
 	if not c then return end
 
 	local db = mod.db.units[frame.frameType]
@@ -530,7 +532,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 end
 
 function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
-	wipe(frame.StyleFilterActionChanges)
+	wipe(frame.StyleFilterChanges)
 	local db = mod.db.units[frame.frameType]
 
 	if Visibility then
@@ -964,7 +966,7 @@ function mod:StyleFilterPass(frame, actions)
 end
 
 function mod:StyleFilterClear(frame)
-	local c = frame and frame.StyleFilterActionChanges
+	local c = frame.StyleFilterChanges
 	if c and next(c) then mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility) end
 end
 
@@ -999,8 +1001,8 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 }
 
 function mod:StyleFilterSetVariables(nameplate)
-	if not nameplate.StyleFilterActionChanges then
-		nameplate.StyleFilterActionChanges = {}
+	if not nameplate.StyleFilterChanges then
+		nameplate.StyleFilterChanges = {}
 	end
 
 	for _, func in pairs(mod.StyleFilterEventFunctions) do
@@ -1009,8 +1011,8 @@ function mod:StyleFilterSetVariables(nameplate)
 end
 
 function mod:StyleFilterClearVariables(nameplate)
-	if nameplate.StyleFilterActionChanges then
-		wipe(nameplate.StyleFilterActionChanges)
+	if nameplate.StyleFilterChanges then
+		wipe(nameplate.StyleFilterChanges)
 	end
 
 	nameplate.isTarget = nil
