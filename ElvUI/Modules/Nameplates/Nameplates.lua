@@ -336,7 +336,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:SetupTarget(nameplate, nil, true)
 	end
 
-	nameplate:UpdateTags()
 	NP:StyleFilterEvents(nameplate)
 end
 
@@ -629,9 +628,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		nameplate:Size(nameplate.width, nameplate.height)
+		nameplate:UpdateTags()
 
 		NP:UpdatePlate(nameplate, nameplate.frameType ~= nameplate.previousType)
-
 		nameplate.previousType = nameplate.frameType
 
 		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
