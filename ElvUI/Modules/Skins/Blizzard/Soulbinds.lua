@@ -13,8 +13,13 @@ function S:Blizzard_Soulbinds()
 	S:HandleCloseButton(frame.CloseButton)
 	S:HandleButton(frame.ActivateButton)
 
-	frame.Name:FontTemplate(nil, 22)
-	frame.Description:FontTemplate()
+	if frame.Name then
+		frame.Name:FontTemplate(nil, 22)
+	end
+
+	if frame.Description then
+		frame.Description:FontTemplate()
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_Soulbinds')
