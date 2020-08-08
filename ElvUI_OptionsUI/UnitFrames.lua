@@ -2787,11 +2787,6 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 			type = 'toggle',
 			name = L["Auto-Hide"],
 		}
-		config.args.additionalPowerText = {
-			order = 6,
-			type = "toggle",
-			name = L["Additional Power Text"],
-		}
 		config.args.spacer = ACH:Spacer(10)
 		config.args.detachGroup = {
 			order = 20,
