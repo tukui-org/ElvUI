@@ -1346,6 +1346,7 @@ local function UpdateCustomTextGroup(unit)
 end
 
 local function CreateCustomTextGroup(unit, objectName)
+	if not E.private.unitframe.enable then return end
 	local group = individual[unit] and 'individualUnits' or 'groupUnits'
 	if not E.Options.args.unitframe.args[group].args[unit] then
 		return
