@@ -5509,7 +5509,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid = {
 	set = function(info, value) E.db.unitframe.units.raid[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
-		header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, "large", nil, function() return not E.db.unitframe.smartRaidFilter end),
+		header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, "large", nil, nil, nil, nil, nil, function() return not E.db.unitframe.smartRaidFilter end),
 		enable = {
 			type = 'toggle',
 			order = 1,
@@ -5576,7 +5576,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 	set = function(info, value) E.db.unitframe.units.raid40[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raid40') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
-		header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, "large", nil, function() return not E.db.unitframe.smartRaidFilter end),
+		header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, "large", nil, nil, nil, nil, nil, function() return not E.db.unitframe.smartRaidFilter end),
 		enable = {
 			type = 'toggle',
 			order = 1,
@@ -5643,7 +5643,7 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 	set = function(info, value) E.db.unitframe.units.raidpet[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('raidpet') end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
-		header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, "large", nil, function() return not E.db.unitframe.smartRaidFilter end),
+		header = ACH:Description(L["|cffFF0000Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."], 0, "large", nil, nil, nil, nil, nil, function() return not E.db.unitframe.smartRaidFilter end),
 		enable = {
 			type = 'toggle',
 			order = 1,
