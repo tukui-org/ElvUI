@@ -2,7 +2,8 @@
 
 **Shiny:**  
 Bags Datatext is less weird now.  
-Config Logo was animating a little too much.  
+Options Logo was animating a little too much.  
+Fixed an error which happened in the Options when UnitFrames were disabled.  
 Corrected a Style Filter error, also let entering and leaving combat trigger filters correctly (regardless of unit threat).  
 
 ___
