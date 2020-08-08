@@ -1,6 +1,7 @@
 ### Version 11.50 [ ETA: 🍨 ]
 
 **Shiny:**  
+Corrected a Style Filter error and let entering and leaving combat trigger filters correctly (regardless of unit threat).  
 
 ___
 
