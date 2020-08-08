@@ -427,7 +427,10 @@ do
 end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
-	local c, db = frame.StyleFilterChanges, mod:PlateDB(frame)
+	local c = frame.StyleFilterChanges
+	if not c then return end
+
+	local db = mod:PlateDB(frame)
 
 	if Visibility then
 		c.Visibility = true
@@ -530,7 +533,10 @@ end
 
 function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local db = mod:PlateDB(frame)
-	wipe(frame.StyleFilterChanges)
+
+	if frame.StyleFilterChanges then
+		wipe(frame.StyleFilterChanges)
+	end
 
 	if Visibility then
 		mod:StyleFilterUpdatePlate(frame, updateBase)
@@ -996,10 +1002,6 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 }
 
 function mod:StyleFilterSetVariables(nameplate)
-	if not nameplate.StyleFilterChanges then
-		nameplate.StyleFilterChanges = {}
-	end
-
 	for _, func in pairs(mod.StyleFilterEventFunctions) do
 		func(nameplate)
 	end
@@ -1032,6 +1034,8 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	-- list of events added during StyleFilterEvents
 	'MODIFIER_STATE_CHANGED',
 	'PLAYER_FOCUS_CHANGED',
+	'PLAYER_REGEN_DISABLED',
+	'PLAYER_REGEN_ENABLED',
 	'PLAYER_TARGET_CHANGED',
 	'PLAYER_UPDATE_RESTING',
 	'RAID_TARGET_UPDATE',
@@ -1116,6 +1120,8 @@ function mod:StyleFilterConfigure()
 				end
 
 				if t.inCombat or t.outOfCombat or t.inCombatUnit or t.outOfCombatUnit then
+					events.PLAYER_REGEN_DISABLED = 1
+					events.PLAYER_REGEN_ENABLED = 1
 					events.UNIT_THREAT_LIST_UPDATE = 1
 					events.UNIT_FLAGS = 1
 				end
@@ -1169,7 +1175,7 @@ function mod:StyleFilterConfigure()
 end
 
 function mod:StyleFilterUpdate(frame, event)
-	if not mod.StyleFilterTriggerEvents[event] then return end
+	if not frame.StyleFilterChanges or not mod.StyleFilterTriggerEvents[event] then return end
 
 	mod:StyleFilterClear(frame, true)
 
@@ -1265,6 +1271,8 @@ function mod:StyleFilterEvents(nameplate)
 	-- the ones added from here should not by registered already
 	mod:StyleFilterRegister(nameplate,'MODIFIER_STATE_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
+	mod:StyleFilterRegister(nameplate,'PLAYER_REGEN_DISABLED', true)
+	mod:StyleFilterRegister(nameplate,'PLAYER_REGEN_ENABLED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
 	mod:StyleFilterRegister(nameplate,'RAID_TARGET_UPDATE', true)
