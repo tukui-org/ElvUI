@@ -263,6 +263,8 @@ function NP:StylePlate(nameplate)
 	nameplate:Point('CENTER')
 	nameplate:SetScale(E.global.general.UIScale)
 
+	nameplate.StyleFilterChanges = {}
+
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
 	nameplate.Health.Text = NP:Construct_TagText(nameplate.RaisedElement)

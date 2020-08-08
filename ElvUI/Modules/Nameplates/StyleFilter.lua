@@ -427,7 +427,10 @@ do
 end
 
 function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
-	local c, db = frame.StyleFilterChanges, mod:PlateDB(frame)
+	local c = frame.StyleFilterChanges
+	if not c then return end
+
+	local db = mod:PlateDB(frame)
 
 	if Visibility then
 		c.Visibility = true
@@ -530,7 +533,10 @@ end
 
 function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local db = mod:PlateDB(frame)
-	wipe(frame.StyleFilterChanges)
+
+	if frame.StyleFilterChanges then
+		wipe(frame.StyleFilterChanges)
+	end
 
 	if Visibility then
 		mod:StyleFilterUpdatePlate(frame, updateBase)
@@ -996,10 +1002,6 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 }
 
 function mod:StyleFilterSetVariables(nameplate)
-	if not nameplate.StyleFilterChanges then
-		nameplate.StyleFilterChanges = {}
-	end
-
 	for _, func in pairs(mod.StyleFilterEventFunctions) do
 		func(nameplate)
 	end
@@ -1173,7 +1175,7 @@ function mod:StyleFilterConfigure()
 end
 
 function mod:StyleFilterUpdate(frame, event)
-	if not mod.StyleFilterTriggerEvents[event] then return end
+	if not frame.StyleFilterChanges or not mod.StyleFilterTriggerEvents[event] then return end
 
 	mod:StyleFilterClear(frame, true)
 
