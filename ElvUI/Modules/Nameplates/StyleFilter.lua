@@ -1036,6 +1036,8 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	-- list of events added during StyleFilterEvents
 	'MODIFIER_STATE_CHANGED',
 	'PLAYER_FOCUS_CHANGED',
+	'PLAYER_REGEN_DISABLED',
+	'PLAYER_REGEN_ENABLED',
 	'PLAYER_TARGET_CHANGED',
 	'PLAYER_UPDATE_RESTING',
 	'RAID_TARGET_UPDATE',
@@ -1122,6 +1124,8 @@ function mod:StyleFilterConfigure()
 				end
 
 				if t.inCombat or t.outOfCombat or t.inCombatUnit or t.outOfCombatUnit then
+					events.PLAYER_REGEN_DISABLED = 1
+					events.PLAYER_REGEN_ENABLED = 1
 					events.UNIT_THREAT_LIST_UPDATE = 1
 					events.UNIT_FLAGS = 1
 				end
@@ -1271,6 +1275,8 @@ function mod:StyleFilterEvents(nameplate)
 	-- the ones added from here should not by registered already
 	mod:StyleFilterRegister(nameplate,'MODIFIER_STATE_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
+	mod:StyleFilterRegister(nameplate,'PLAYER_REGEN_DISABLED', true)
+	mod:StyleFilterRegister(nameplate,'PLAYER_REGEN_ENABLED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
 	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
 	mod:StyleFilterRegister(nameplate,'RAID_TARGET_UPDATE', true)
