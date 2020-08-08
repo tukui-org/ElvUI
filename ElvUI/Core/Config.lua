@@ -904,7 +904,7 @@ function E:Config_WindowClosed()
 end
 
 function E:Config_WindowOpened(frame)
-	if frame and frame.bottomHolder then
+	if frame and frame.bottomHolder and not ConfigLogoTop then
 		frame.bottomHolder:Show()
 		frame.leftHolder:Show()
 		frame.topHolder:Show()
