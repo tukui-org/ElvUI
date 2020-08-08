@@ -2,8 +2,18 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
+local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
+
+local headers = {
+	_G.ObjectiveTrackerBlocksFrame.QuestHeader,
+	_G.ObjectiveTrackerBlocksFrame.AchievementHeader,
+	_G.ObjectiveTrackerBlocksFrame.ScenarioHeader,
+	_G.ObjectiveTrackerBlocksFrame.CampaignQuestHeader,
+	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header,
+	_G.WORLD_QUEST_TRACKER_MODULE.Header,
+	_G.ObjectiveTrackerFrame.BlocksFrame.UIWidgetsHeader
+}
 
 local function SkinOjectiveTrackerHeaders()
 	local frame = _G.ObjectiveTrackerFrame.MODULES
@@ -148,6 +158,14 @@ local function TrackerStateChanged()
 	end
 end
 
+local function UpdateMinimizeButton(button, collapsed)
+	if collapsed then
+		button.tex:SetTexture(E.Media.Textures.PlusButton)
+	else
+		button.tex:SetTexture(E.Media.Textures.MinusButton)
+	end
+end
+
 function S:ObjectiveTrackerFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
@@ -179,6 +197,20 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"SetBlockHeader",SkinItemButton)					--[Skin]: Quest Item Buttons
 	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)				--[Skin]: World Quest Item Buttons
 	hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)			--[Skin]: Campaign Quest Item Buttons
+
+	for _, header in pairs(headers) do
+		local minimize = header.MinimizeButton
+		if minimize then
+			minimize:GetNormalTexture():SetAlpha(0)
+			minimize:GetPushedTexture():SetAlpha(0)
+
+			minimize.tex = minimize:CreateTexture(nil, "OVERLAY")
+			minimize.tex:SetTexture(E.Media.Textures.MinusButton)
+			minimize.tex:SetInside()
+
+			hooksecurefunc(minimize, "SetCollapsed", UpdateMinimizeButton)
+		end
+	end
 
 	-- The Maw - Torghast: Scenario Tracker Buff Block
 	_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:HookScript("OnShow", function(frame)
