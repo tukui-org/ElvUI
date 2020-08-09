@@ -203,7 +203,7 @@ function NP:Update_Castbar(nameplate)
 			nameplate.Castbar.Time:SetPoint('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
 			nameplate.Castbar.Text:SetPoint('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
 		else
-			nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT')
+			nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -1, 0)
 			nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
 		end
 
