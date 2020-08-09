@@ -4,18 +4,18 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
-local _G = _G
 local pcall = pcall
 local floor = floor
+local format = format
+local unpack = unpack
 local tinsert = tinsert
 local infinity = math.huge
 
+local _G = _G
 local GetTime = GetTime
 local UnitAura = UnitAura
 local CreateFrame = CreateFrame
 local UnitIsFriend = UnitIsFriend
-
--- GLOBALS: DebuffTypeColor
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60
 local function FormatTime(s)
@@ -33,14 +33,15 @@ local function FormatTime(s)
 end
 
 local function onEnter(self)
-	if(not self:IsVisible()) then return end
+	if _G.GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
-	GameTooltip:SetOwner(self, self.tooltipAnchor)
-	GameTooltip:SetUnitAura(self.unit, self.index, self.filter)
+	_G.GameTooltip:SetOwner(self, self.tooltipAnchor)
+	_G.GameTooltip:SetUnitAura(self.unit, self.index, self.filter)
 end
 
 local function onLeave()
-	GameTooltip:Hide()
+	if _G.GameTooltip:IsForbidden() then return end
+	_G.GameTooltip:Hide()
 end
 
 local function onUpdate(self, elapsed)
@@ -146,8 +147,12 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			local r, g, b = .2, .6, 1
 			if element.buffColor then r, g, b = unpack(element.buffColor) end
 			if filter == 'HARMFUL' then
-				if not debuffType or debuffType == '' then debuffType = 'none' end
-				r, g, b = DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b
+				if not debuffType or debuffType == '' then
+					debuffType = 'none'
+				end
+
+				local color = _G.DebuffTypeColor[debuffType]
+				r, g, b = color.r, color.g, color.b
 			end
 
 			statusBar:SetStatusBarColor(r, g, b)

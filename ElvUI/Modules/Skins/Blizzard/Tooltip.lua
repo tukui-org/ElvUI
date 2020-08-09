@@ -3,9 +3,8 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local unpack = unpack
 local pairs = pairs
-local GameTooltip = GameTooltip
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
@@ -68,8 +67,8 @@ function S:TooltipFrames()
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
 	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
 	_G.GameTooltipStatusBar:ClearAllPoints()
-	_G.GameTooltipStatusBar:Point("TOPLEFT", GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	_G.GameTooltipStatusBar:Point("TOPRIGHT", GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:Point("TOPLEFT", _G.GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:Point("TOPRIGHT", _G.GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 
 	-- Tooltip Styling
@@ -80,6 +79,7 @@ function S:TooltipFrames()
 
 	-- Style Tooltips which are created before load
 	local styleTT = {
+		_G.GameTooltip,
 		_G.ItemRefTooltip,
 		_G.FriendsTooltip,
 		_G.WarCampaignTooltip,
@@ -89,7 +89,6 @@ function S:TooltipFrames()
 		_G.ElvUISpellBookTooltip,
 		-- already have locals
 		StoryTooltip,
-		GameTooltip,
 	}
 
 	for _, tt in pairs(styleTT) do
@@ -97,7 +96,7 @@ function S:TooltipFrames()
 	end
 
 	-- [Backdrop Coloring] There has to be a more elegant way of doing this.
-	TT:SecureHookScript(GameTooltip, 'OnUpdate', 'CheckBackdropColor')
+	TT:SecureHookScript(_G.GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin
 	TT:RegisterEvent("ADDON_LOADED", function(event, addon)
