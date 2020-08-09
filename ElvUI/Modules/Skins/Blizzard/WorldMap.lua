@@ -82,6 +82,9 @@ function S:WorldMapFrame()
 	QuestMapFrame.DetailsFrame.TrackButton:SetFrameLevel(5)
 	S:HandleButton(QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton, true)
 
+	QuestMapFrame.CampaignOverview.ScrollFrame:StripTextures()
+	S:HandleScrollBar(_G.QuestMapFrameScrollBar)
+
 	if E.private.skins.blizzard.tooltip then
 		QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
 		--QuestScrollFrame.WarCampaignTooltip:SetTemplate("Transparent")
