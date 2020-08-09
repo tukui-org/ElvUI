@@ -224,11 +224,9 @@ local function UpdateAuras(self, event, unit)
 
 		local isFriend = UnitIsFriend('player', unit)
 		local filter = (isFriend and (element.friendlyAuraType or 'HELPFUL') or (element.enemyAuraType or 'HARMFUL'))
-
 		local visible, hidden = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 
 		local fromRange, toRange
-
 		if(element.PreSetPosition) then
 			fromRange, toRange = element:PreSetPosition(element.maxBars)
 		end
