@@ -237,8 +237,10 @@ function DT:BuildPanelFunctions(name, obj)
 	local panel
 
 	local function OnEnter(dt)
+		DT.tooltip:ClearLines()
 		if obj.OnTooltipShow then obj.OnTooltipShow(DT.tooltip) end
 		if obj.OnEnter then obj.OnEnter(dt) end
+		DT.tooltip:Show()
 	end
 
 	local function OnLeave(dt)

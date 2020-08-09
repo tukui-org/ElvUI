@@ -1365,7 +1365,6 @@ local UF_ClassBar = {
 	height = 10,
 	autoHide = false,
 	sortDirection = 'asc',
-	additionalPowerText = false,
 	altPowerColor = { r = 0.2, g = 0.4, b = 0.8 },
 	altPowerTextFormat = '[altpower:current]',
 	detachFromFrame = false,
@@ -1838,7 +1837,6 @@ P.unitframe.units.player.aurabar.maxDuration = 120
 P.unitframe.units.player.aurabar.priority = 'Blacklist,blockNoDuration,Personal,Boss,RaidDebuffs,PlayerBuffs'
 P.unitframe.units.player.buffs.attachTo = 'DEBUFFS'
 P.unitframe.units.player.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Whitelist,blockNoDuration,nonPersonal'
-P.unitframe.units.player.classbar.additionalPowerText = true
 P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.player.fader.enable = false

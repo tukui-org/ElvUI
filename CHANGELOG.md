@@ -1,7 +1,10 @@
 ### Version 11.50 [ ETA: 🍨 ]
 
 **Shiny:**  
-Corrected a Style Filter error and let entering and leaving combat trigger filters correctly (regardless of unit threat).  
+Bags Datatext is less weird now.  
+Options Logo was animating a little too much.  
+Fixed an error which happened in the Options when UnitFrames were disabled.  
+Corrected a Style Filter error, also let entering and leaving combat trigger filters correctly (regardless of unit threat).  
 
 ___
 
