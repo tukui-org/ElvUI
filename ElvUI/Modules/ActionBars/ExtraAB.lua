@@ -100,6 +100,13 @@ function AB:SetupExtraButton()
 		end
 	end)
 
+	-- Sometimes the ZoneButtons anchor it to the ExtraAbilityContainer, we dont want this.
+	hooksecurefunc(ZoneAbilityFrame, "SetParent", function(self, parent)
+		if parent == ExtraAbilityContainer then
+			self:SetParent(ZoneAbilityHolder)
+		end
+	end)
+
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then
