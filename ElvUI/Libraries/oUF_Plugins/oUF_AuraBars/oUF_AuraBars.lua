@@ -4,42 +4,43 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
-local _G = _G
 local pcall = pcall
 local floor = floor
+local format = format
+local unpack = unpack
 local tinsert = tinsert
 local infinity = math.huge
 
+local _G = _G
 local GetTime = GetTime
 local UnitAura = UnitAura
 local CreateFrame = CreateFrame
 local UnitIsFriend = UnitIsFriend
 
--- GLOBALS: DebuffTypeColor
-
 local DAY, HOUR, MINUTE = 86400, 3600, 60
 local function FormatTime(s)
-	if s == infinity then s = 0 end
+	if s == infinity then return end
 
 	if s < MINUTE then
-		return ("%.1fs"):format(s)
+		return format("%.1fs", s)
 	elseif s < HOUR then
-		return ("%dm %ds"):format(s/60%60, s%60)
+		return format("%dm %ds", s/60%60, s%60)
 	elseif s < DAY then
-		return ("%dh %dm"):format(s/(60*60), s/60%60)
+		return format("%dh %dm", s/(60*60), s/60%60)
 	else
-		return ("%dd %dh"):format(s/DAY, (s / HOUR) - (floor(s/DAY) * 24))
+		return format("%dd %dh", s/DAY, (s / HOUR) - (floor(s/DAY) * 24))
 	end
 end
 
 local function onEnter(self)
-	if(not self:IsVisible()) then return end
+	if _G.GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
-	_G.GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
-	_G.GameTooltip:SetUnitAura(self.unit, self:GetID(), self.filter)
+	_G.GameTooltip:SetOwner(self, self.tooltipAnchor)
+	_G.GameTooltip:SetUnitAura(self.unit, self.index, self.filter)
 end
 
 local function onLeave()
+	if _G.GameTooltip:IsForbidden() then return end
 	_G.GameTooltip:Hide()
 end
 
@@ -101,9 +102,7 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateBar(element, unit, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, caster, isStealable,
-		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
-		timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
+	local name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll, timeMod, effect1, effect2, effect3 = UnitAura(unit, index, filter)
 
 	if(name) then
 		local position = visible + offset + 1
@@ -114,11 +113,12 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			element.createdBars = element.createdBars + 1
 		end
 
+		statusBar.unit = unit
+		statusBar.index = index
 		statusBar.caster = caster
 		statusBar.filter = filter
 		statusBar.isDebuff = isDebuff
-		statusBar.isPlayer = (caster == 'player' or caster == 'vehicle')
-		statusBar.unit = unit
+		statusBar.isPlayer = caster == 'player' or caster == 'vehicle'
 
 		local show = (element.CustomFilter or customFilter) (element, unit, statusBar, name, texture,
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
@@ -145,9 +145,14 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			end
 
 			local r, g, b = .2, .6, 1
+			if element.buffColor then r, g, b = unpack(element.buffColor) end
 			if filter == 'HARMFUL' then
-				if not debuffType or debuffType == '' then debuffType = 'none' end
-				r, g, b = DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b
+				if not debuffType or debuffType == '' then
+					debuffType = 'none'
+				end
+
+				local color = _G.DebuffTypeColor[debuffType]
+				r, g, b = color.r, color.g, color.b
 			end
 
 			statusBar:SetStatusBarColor(r, g, b)
@@ -179,7 +184,7 @@ local function SetPosition(element, from, to)
 		if(not button) then break end
 
 		button:ClearAllPoints()
-		button:SetPoint(anchor, element, anchor, (height + element.gap), growth * (i > 1 and ((i - 1) * (height)) or 0))
+		button:SetPoint(anchor, element, anchor, (height + element.gap), growth * (i > 1 and ((i - 1) * (height + spacing)) or 0))
 	end
 end
 
@@ -219,12 +224,9 @@ local function UpdateAuras(self, event, unit)
 
 		local isFriend = UnitIsFriend('player', unit)
 		local filter = (isFriend and (element.friendlyAuraType or 'HELPFUL') or (element.enemyAuraType or 'HARMFUL'))
-
 		local visible, hidden = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
-		-- visible and hidden is unused azil?
 
 		local fromRange, toRange
-
 		if(element.PreSetPosition) then
 			fromRange, toRange = element:PreSetPosition(element.maxBars)
 		end
