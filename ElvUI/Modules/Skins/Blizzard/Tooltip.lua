@@ -79,28 +79,7 @@ function S:TooltipFrames()
 	TT:SecureHook('GameTooltip_ShowStatusBar') -- Skin Status Bars
 	TT:SecureHook('GameTooltip_ShowProgressBar') -- Skin Progress Bars
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
-	TT:SecureHook('GameTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
-
-	-- Style Tooltips which are created before load
-	local styleTT = {
-		_G.GameTooltip,
-		_G.ItemRefTooltip,
-		_G.FriendsTooltip,
-		_G.WarCampaignTooltip,
-		_G.EmbeddedItemTooltip,
-		_G.ReputationParagonTooltip,
-		_G.ElvUIConfigTooltip,
-		_G.ElvUISpellBookTooltip,
-		-- already have locals
-		StoryTooltip,
-	}
-
-	for _, tt in pairs(styleTT) do
-		TT:SetStyle(tt)
-	end
-
-	-- [Backdrop Coloring] There has to be a more elegant way of doing this.
-	TT:SecureHookScript(_G.GameTooltip, 'OnUpdate', 'CheckBackdropColor')
+	TT:SecureHook('SharedTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
 
 	-- Used for Island Skin
 	TT:RegisterEvent("ADDON_LOADED", function(event, addon)
