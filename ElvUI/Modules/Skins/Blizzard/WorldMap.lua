@@ -4,10 +4,17 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local function WorldMapBountyBoard(Frame)
-	--Frame.BountyName:FontTemplate()
+local function SkinHeaders(header)
+	if not header.IsSkinned then
+		if header.TopFiligree then header.TopFiligree:Hide() end
 
-	--S:HandleCloseButton(Frame.TutorialBox.CloseButton)
+		header:SetAlpha(.8)
+
+		header.HighlightTexture:SetAllPoints(header.Background)
+		header.HighlightTexture:SetAlpha(0)
+
+		header.IsSkinned = true
+	end
 end
 
 function S:WorldMapFrame()
@@ -63,11 +70,8 @@ function S:WorldMapFrame()
 	QuestScrollFrame.DetailFrame.backdrop:SetPoint("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPLEFT", 3, 1)
 	QuestScrollFrame.DetailFrame.backdrop:SetPoint("BOTTOMRIGHT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", -2, -7)
 	QuestMapFrame.Background:SetInside(QuestScrollFrame.DetailFrame.backdrop)
-	QuestScrollFrame.Contents.StoryHeader.Background:Width(251)
-	QuestScrollFrame.Contents.StoryHeader.Background:SetPoint("TOP", 0, -9)
-	QuestScrollFrame.Contents.StoryHeader.Text:SetPoint("TOPLEFT", 18, -20)
-	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAllPoints(QuestScrollFrame.Contents.StoryHeader.Background)
-	QuestScrollFrame.Contents.StoryHeader.HighlightTexture:SetAlpha(0)
+
+	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
 	QuestScrollFrameScrollBar:SetPoint("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPRIGHT", 1, -15)
 	QuestScrollFrameScrollBar:SetPoint("BOTTOMLEFT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", 6, 10)
@@ -82,7 +86,9 @@ function S:WorldMapFrame()
 	QuestMapFrame.DetailsFrame.TrackButton:SetFrameLevel(5)
 	S:HandleButton(QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton, true)
 
-	QuestMapFrame.CampaignOverview.ScrollFrame:StripTextures()
+	local CampaignOverview = QuestMapFrame.CampaignOverview
+	SkinHeaders(CampaignOverview.Header)
+	CampaignOverview.ScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.QuestMapFrameScrollBar)
 
 	if E.private.skins.blizzard.tooltip then
@@ -114,10 +120,6 @@ function S:WorldMapFrame()
 	WorldMapFrame.overlayFrames[2].Icon:SetTexture([[Interface\Minimap\Tracking\None]])
 	WorldMapFrame.overlayFrames[2]:SetHighlightTexture([[Interface\Minimap\Tracking\None]], "ADD")
 	WorldMapFrame.overlayFrames[2]:GetHighlightTexture():SetAllPoints(WorldMapFrame.overlayFrames[2].Icon)
-
-	--WorldMapBountyBoard(WorldMapFrame.overlayFrames[3]) -- BountyBoard
-	--WorldMapActionButtonTemplate(WorldMapFrame.overlayFrames[4]) -- ActionButtons
-	--WorldMapZoneTimerTemplate(WorldMapFrame.overlayFrames[5]) -- Timer?
 
 	-- 8.2.5 Party Sync | Credits Aurora/Shestak
 	QuestMapFrame.QuestSessionManagement:StripTextures()
@@ -163,6 +165,12 @@ function S:WorldMapFrame()
 				dialog.MinimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
 			end
 			dialog.isSkinned = true
+		end
+	end)
+
+	hooksecurefunc("QuestLogQuests_Update", function()
+		for header in QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
+			SkinHeaders(header)
 		end
 	end)
 end
