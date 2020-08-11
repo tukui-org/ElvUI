@@ -398,7 +398,7 @@ function AB:LoadKeyBinder()
 	Popup.header:SetScript('OnMouseUp', function() Popup:StopMovingOrSizing() end)
 	Popup.header:SetText('Key Binds')
 
-	Popup.desc = Popup:CreateFontString("ARTWORK")
+	Popup.desc = Popup:CreateFontString(nil, "ARTWORK")
 	Popup.desc:SetFontObject("GameFontHighlight")
 	Popup.desc:SetJustifyV("TOP")
 	Popup.desc:SetJustifyH("LEFT")

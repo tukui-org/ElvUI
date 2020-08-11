@@ -278,12 +278,12 @@ function E:CreateMoverPopup()
 	header:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	header:SetScript('OnShow', E.MoverPopupHeaderOnShow)
 
-	local title = header:CreateFontString('OVERLAY')
+	local title = header:CreateFontString(nil, 'OVERLAY')
 	title:FontTemplate()
 	title:SetPoint('CENTER', header, 'CENTER')
 	title:SetText('ElvUI')
 
-	local desc = f:CreateFontString('ARTWORK')
+	local desc = f:CreateFontString(nil, 'ARTWORK')
 	desc:SetFontObject('GameFontHighlight')
 	desc:SetJustifyV('TOP')
 	desc:SetJustifyH('LEFT')
@@ -400,7 +400,7 @@ function E:CreateMoverPopup()
 
 	ElvUIMoverPopupWindow:HookScript('OnHide', function() ElvUIMoverNudgeWindow:Hide() end)
 
-	desc = nudgeFrame:CreateFontString('ARTWORK')
+	desc = nudgeFrame:CreateFontString(nil, 'ARTWORK')
 	desc:SetFontObject('GameFontHighlight')
 	desc:SetJustifyV('TOP')
 	desc:SetJustifyH('LEFT')
@@ -418,7 +418,7 @@ function E:CreateMoverPopup()
 	header:SetScript('OnShow', E.MoverNudgeHeaderOnShow)
 	nudgeFrame.header = header
 
-	title = header:CreateFontString('OVERLAY')
+	title = header:CreateFontString(nil, 'OVERLAY')
 	title:FontTemplate()
 	title:SetPoint('CENTER', header, 'CENTER')
 	title:SetText(L["Nudge"])

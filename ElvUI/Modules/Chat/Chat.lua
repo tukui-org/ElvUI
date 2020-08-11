@@ -519,7 +519,7 @@ function CH:StyleChat(frame)
 	end
 
 	--Character count
-	local charCount = editbox:CreateFontString()
+	local charCount = editbox:CreateFontString(nil, "ARTWORK")
 	charCount:FontTemplate()
 	charCount:SetTextColor(190, 190, 190, 0.4)
 	charCount:SetPoint("TOPRIGHT", editbox, "TOPRIGHT", -5, 0)
