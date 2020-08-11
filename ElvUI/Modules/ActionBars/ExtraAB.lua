@@ -11,6 +11,8 @@ local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 
+local ExtraButtons = {}
+
 local function FixExtraActionCD(cd)
 	local start, duration = GetActionCooldown(cd:GetParent().action)
 	E.OnSetCooldown(cd, start, duration)
@@ -90,6 +92,10 @@ function AB:SetupExtraButton()
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
 				spellButton.Icon:SetInside()
 
+				--check these
+				spellButton.HotKey:SetText(GetBindingKey(spellButton:GetName()))
+				tinsert(ExtraButtons, spellButton)
+
 				if spellButton.Cooldown then
 					spellButton.Cooldown.CooldownOverride = 'actionbar'
 					E:RegisterCooldown(spellButton.Cooldown)
@@ -130,6 +136,9 @@ function AB:SetupExtraButton()
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
 
+			button.HotKey:SetText(GetBindingKey("ExtraActionButton"..i))
+			tinsert(ExtraButtons, button)
+
 			if button.cooldown then
 				button.cooldown.CooldownOverride = 'actionbar'
 				E:RegisterCooldown(button.cooldown)
@@ -148,4 +157,15 @@ function AB:SetupExtraButton()
 
 	AB:Extra_SetAlpha()
 	AB:Extra_SetScale()
+end
+
+function AB:UpdateExtraBindings()
+	local name, binding, hotkey
+	for _, button in pairs(ExtraButtons) do
+		name = button:GetName()
+		binding = _G.GetBindingKey(name)
+		_G[name.."HotKey"]:SetText(binding)
+
+		AB:FixKeybindText(button)
+	end
 end

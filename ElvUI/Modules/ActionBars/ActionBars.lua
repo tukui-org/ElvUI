@@ -422,6 +422,7 @@ function AB:ReassignBindings(event)
 	if event == "UPDATE_BINDINGS" then
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings()
+		AB:UpdateExtraBindings()
 	end
 
 	AB:UnregisterEvent("PLAYER_REGEN_DISABLED")
@@ -962,10 +963,6 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'NMINUS', "N-")
 		text = gsub(text, 'NPLUS', "N+")
 		text = gsub(text, 'NEQUALS', "N=")
-
-		--Extra Action Buttons -- why its using "Mouse Button X instead of Button X.. IDK"
-		text = text:upper()
-		text = gsub(text, "MOUSE%sBUTTON%s", L["KEY_MOUSEBUTTON"])
 
 		hotkey:SetText(text)
 		hotkey:SetJustifyH(justify)
