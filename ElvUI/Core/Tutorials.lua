@@ -16,7 +16,7 @@ E.TutorialList = {
 	L["You can access the copy chat and chat menu functions by left/right clicking on the icon in the top right corner of the chat panel."],
 	L["You can see someones average item level inside the tooltip by holding shift and mousing over them."],
 	L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."],
-	L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab."],
+	L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable it in the profiles tab."],
 	L["A raid marker feature is available by pressing Escape -> Keybinds. Scroll to the bottom -> ElvUI -> Raid Marker."],
 	L["You can access the microbar by using middle mouse button on the minimap. You can also enable the MicroBar in the actionbar settings."],
 	L["If you accidently removed a default chat tab you can always re-run the chat part of the ElvUI installer."],
