@@ -9,19 +9,21 @@ local HIDE = HIDE
 -- GLOBALS: ElvUITutorialWindow
 
 E.TutorialList = {
-	L["For technical support visit us at http://www.tukui.org."],
-	L["You can toggle the microbar by using your middle mouse button on the minimap you can also accomplish this by enabling the actual microbar located in the actionbar settings."],
-	L["A raid marker feature is available by pressing Escape -> Keybinds scroll to the bottom under ElvUI and setting a keybind for the raid marker."],
-	L["You can set your keybinds quickly by typing /kb."],
-	L["The focus unit can be set by typing /focus when you are targeting the unit you want to focus. It is recommended you make a macro to do this."],
+	L["Need help? Join our Discord: https://discord.gg/xFWcfgE"],
+	L["You can enter the keybind mode by typing /kb"],
+	L["Don't forget to backup your WTF folder, all your profiles and settings are in there."],
+	L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI first."],
+	L["You can access the copy chat and chat menu functions by left/right clicking on the icon in the top right corner of the chat panel."],
+	L["You can see someones average item level inside the tooltip by holding shift and mousing over them."],
+	L["To setup chat colors, chat channels and chat font size, right-click the chat tab name."],
 	L["ElvUI has a dual spec feature which allows you to load different profiles based on your current spec on the fly. You can enable this from the profiles tab."],
-	L["You can access copy chat and chat menu functions by mouse over the top right corner of chat panel and left/right click on the button that will appear."],
-	L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI, remember ElvUI is a full UI replacement addon, you cannot run two addons that do the same thing."],
-	L["If you accidently remove a chat frame you can always go the in-game configuration menu, press install, go to the chat portion and reset them."],
-	L["To setup which channels appear in which chat frame, right click the chat tab and go to settings."],
-	L["You can use the /resetui command to reset all of your movers. You can also use the command to reset a specific mover, /resetui <mover name>.\nExample: /resetui Player Frame"],
-	L["To move abilities on the actionbars by default hold shift + drag. You can change the modifier key from the actionbar options menu."],
-	L["You can see someones average item level of their gear by holding shift and mousing over them. It should appear inside the tooltip."]
+	L["A raid marker feature is available by pressing Escape -> Keybinds. Scroll to the bottom -> ElvUI -> Raid Marker."],
+	L["You can access the microbar by using middle mouse button on the minimap. You can also enable the MicroBar in the actionbar settings."],
+	L["If you accidently removed a default chat tab you can always re-run the chat part of the ElvUI installer."],
+	L["You can quickly change your displayed DataTexts by mousing over them while holding ALT."],
+	L["To quickly move around certain elements of the UI, type /moveui"],
+	L["From time to time you should compare your ElvUI version against the most recent version on our website or the Tukui client."],
+	L["To list all available ElvUI commands, type in chat /ehelp"],
 }
 
 function E:SetNextTutorial()
