@@ -944,6 +944,7 @@ function AB:FixKeybindText(button)
 	end
 
 	if text then
+		
 		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
 		text = gsub(text, 'ALT%-', L["KEY_ALT"])
 		text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
@@ -961,6 +962,10 @@ function AB:FixKeybindText(button)
 		text = gsub(text, 'NMINUS', "N-")
 		text = gsub(text, 'NPLUS', "N+")
 		text = gsub(text, 'NEQUALS', "N=")
+
+		--Extra Action Buttons -- why its using "Mouse Button X instead of Button X.. IDK"
+		text = text:upper()
+		text = gsub(text, "MOUSE%sBUTTON%s", L["KEY_MOUSEBUTTON"])
 
 		hotkey:SetText(text)
 		hotkey:SetJustifyH(justify)
