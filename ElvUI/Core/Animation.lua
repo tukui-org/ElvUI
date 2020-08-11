@@ -19,7 +19,7 @@ function E:RandomAnimShake(index)
 end
 
 --TEST
---[[local t = UIParent:CreateFontString("FontString","OVERLAY","GameTooltipText")
+--[[local t = UIParent:CreateFontString(nil, "OVERLAY", "GameTooltipText")
 t:SetText(0)
 t:SetPoint("CENTER")
 t:FontTemplate(nil, 20)

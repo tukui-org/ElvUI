@@ -112,7 +112,7 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 	f:SetScript("OnLeave", HideTip)
 	f:SetScript("OnClick", ClickRoll)
 	f:SetMotionScriptsWhileDisabled(true)
-	local txt = f:CreateFontString(nil, nil)
+	local txt = f:CreateFontString(nil, "ARTWORK")
 	txt:FontTemplate(nil, nil, "OUTLINE")
 	txt:Point("CENTER", 0, rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0)
 	return f, txt
@@ -177,7 +177,7 @@ function M:CreateRollFrame()
 	frame.needbutt, frame.greedbutt, frame.disenchantbutt = need, greed, de
 	frame.need, frame.greed, frame.pass, frame.disenchant = needtext, greedtext, passtext, detext
 
-	local bind = frame:CreateFontString()
+	local bind = frame:CreateFontString(nil, "ARTWORK")
 	bind:Point("LEFT", pass, "RIGHT", 3, 1)
 	bind:FontTemplate(nil, nil, "OUTLINE")
 	frame.fsbind = bind
