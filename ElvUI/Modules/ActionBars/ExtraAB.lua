@@ -113,6 +113,7 @@ function AB:SetupExtraButton()
 		end
 	end)
 
+	-- 9.0 Shadowlands - Cooldowntext is not working on ExtraAB
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then
