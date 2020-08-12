@@ -93,8 +93,8 @@ function AB:SetupExtraButton()
 				spellButton.Icon:SetInside()
 
 				--check these
-				spellButton.HotKey:SetText(GetBindingKey(spellButton:GetName()))
-				tinsert(ExtraButtons, spellButton)
+				--spellButton.HotKey:SetText(GetBindingKey(spellButton:GetName()))
+				--tinsert(ExtraButtons, spellButton)
 
 				if spellButton.Cooldown then
 					spellButton.Cooldown.CooldownOverride = 'actionbar'
