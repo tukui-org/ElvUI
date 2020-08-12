@@ -160,12 +160,8 @@ function AB:SetupExtraButton()
 end
 
 function AB:UpdateExtraBindings()
-	local name, binding, hotkey
 	for _, button in pairs(ExtraButtons) do
-		name = button:GetName()
-		binding = _G.GetBindingKey(name)
-		_G[name.."HotKey"]:SetText(binding)
-
+		button.HotKey:SetText(_G.GetBindingKey(button:GetName()))
 		AB:FixKeybindText(button)
 	end
 end
