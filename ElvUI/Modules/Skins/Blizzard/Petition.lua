@@ -8,7 +8,7 @@ function S:PetitionFrame()
 
 	local PetitionFrame = _G.PetitionFrame
 	PetitionFrame:StripTextures(true)
-	PetitionFrame:SetTemplate("Transparent")
+	PetitionFrame:CreateBackdrop("Transparent")
 	_G.PetitionFrameInset:Kill()
 
 	S:HandleButton(_G.PetitionFrameSignButton)
@@ -29,8 +29,8 @@ function S:PetitionFrame()
 
 	_G.PetitionFrameInstructions:SetTextColor(1, 1, 1)
 
-	_G.PetitionFrameRenameButton:Point("LEFT", _G.PetitionFrameRequestButton, "RIGHT", 3, 0)
-	_G.PetitionFrameRenameButton:Point("RIGHT", _G.PetitionFrameCancelButton, "LEFT", -3, 0)
+	_G.PetitionFrameRenameButton:SetPoint("LEFT", _G.PetitionFrameRequestButton, "RIGHT", 3, 0)
+	_G.PetitionFrameRenameButton:SetPoint("RIGHT", _G.PetitionFrameCancelButton, "LEFT", -3, 0)
 end
 
 S:AddCallback('PetitionFrame')

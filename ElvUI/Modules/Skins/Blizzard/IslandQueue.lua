@@ -1,15 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack = unpack
 
 function S:Blizzard_IslandsQueueUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.IslandQueue) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.islandQueue) then return end
 
 	local IslandsFrame = _G.IslandsQueueFrame
-	S:HandlePortraitFrame(IslandsFrame, true)
+	S:HandlePortraitFrame(IslandsFrame)
 	S:HandleButton(IslandsFrame.DifficultySelectorFrame.QueueButton)
 
 	local WeeklyQuest = IslandsFrame.WeeklyQuest

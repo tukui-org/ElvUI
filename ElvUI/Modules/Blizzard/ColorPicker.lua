@@ -6,11 +6,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Blizzard')
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local strlen, strjoin, gsub = strlen, strjoin, gsub
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
---WoW API / Variables
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local IsControlKeyDown = IsControlKeyDown
@@ -157,19 +155,19 @@ function B:EnhanceColorPicker()
 
 	--Skin the default frame, move default buttons into place
 	_G.ColorPickerFrame:SetClampedToScreen(true)
-	_G.ColorPickerFrame:SetTemplate("Transparent")
+	_G.ColorPickerFrame:CreateBackdrop("Transparent")
 	_G.ColorPickerFrame.Border:Hide()
 
 	_G.ColorPickerFrame.Header:StripTextures()
 	_G.ColorPickerFrame.Header:ClearAllPoints()
-	_G.ColorPickerFrame.Header:Point("TOP", _G.ColorPickerFrame, 0, 0)
+	_G.ColorPickerFrame.Header:SetPoint("TOP", _G.ColorPickerFrame, 0, 0)
 
 	_G.ColorPickerCancelButton:ClearAllPoints()
 	_G.ColorPickerOkayButton:ClearAllPoints()
-	_G.ColorPickerCancelButton:Point("BOTTOMRIGHT", _G.ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
-	_G.ColorPickerCancelButton:Point("BOTTOMLEFT", _G.ColorPickerFrame, "BOTTOM", 0, 6)
-	_G.ColorPickerOkayButton:Point("BOTTOMLEFT", _G.ColorPickerFrame,"BOTTOMLEFT", 6,6)
-	_G.ColorPickerOkayButton:Point("RIGHT", _G.ColorPickerCancelButton,"LEFT", -4,0)
+	_G.ColorPickerCancelButton:SetPoint("BOTTOMRIGHT", _G.ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
+	_G.ColorPickerCancelButton:SetPoint("BOTTOMLEFT", _G.ColorPickerFrame, "BOTTOM", 0, 6)
+	_G.ColorPickerOkayButton:SetPoint("BOTTOMLEFT", _G.ColorPickerFrame,"BOTTOMLEFT", 6,6)
+	_G.ColorPickerOkayButton:SetPoint("RIGHT", _G.ColorPickerCancelButton,"LEFT", -4,0)
 	S:HandleSliderFrame(_G.OpacitySliderFrame)
 	S:HandleButton(_G.ColorPickerOkayButton)
 	S:HandleButton(_G.ColorPickerCancelButton)
@@ -206,7 +204,7 @@ function B:EnhanceColorPicker()
 
 	-- move the Color Swatch
 	_G.ColorSwatch:ClearAllPoints()
-	_G.ColorSwatch:Point("TOPLEFT", _G.ColorPickerFrame, "TOPLEFT", 215, -45)
+	_G.ColorSwatch:SetPoint("TOPLEFT", _G.ColorPickerFrame, "TOPLEFT", 215, -45)
 
 	-- add Color Swatch for original color
 	local t = _G.ColorPickerFrame:CreateTexture("ColorPPOldColorSwatch")
@@ -215,7 +213,7 @@ function B:EnhanceColorPicker()
 	t:SetColorTexture(0,0,0)
 	-- OldColorSwatch to appear beneath ColorSwatch
 	t:SetDrawLayer("BORDER")
-	t:Point("BOTTOMLEFT", "ColorSwatch", "TOPRIGHT", -(w/2), -(h/3))
+	t:SetPoint("BOTTOMLEFT", "ColorSwatch", "TOPRIGHT", -(w/2), -(h/3))
 
 	-- add Color Swatch for the copied color
 	t = _G.ColorPickerFrame:CreateTexture("ColorPPCopyColorSwatch")
@@ -224,12 +222,12 @@ function B:EnhanceColorPicker()
 	t:Hide()
 
 	-- add copy button to the _G.ColorPickerFrame
-	local b = CreateFrame("Button", "ColorPPCopy", _G.ColorPickerFrame, "UIPanelButtonTemplate")
+	local b = CreateFrame("Button", "ColorPPCopy", _G.ColorPickerFrame, "UIPanelButtonTemplate, BackdropTemplate")
 	S:HandleButton(b)
 	b:SetText(CALENDAR_COPY_EVENT)
 	b:Width(60)
 	b:Height(22)
-	b:Point("TOPLEFT", "ColorSwatch", "BOTTOMLEFT", 0, -5)
+	b:SetPoint("TOPLEFT", "ColorSwatch", "BOTTOMLEFT", 0, -5)
 
 	-- copy color into buffer on button click
 	b:SetScript("OnClick", function()
@@ -245,12 +243,12 @@ function B:EnhanceColorPicker()
 	end)
 
 	--class color button
-	b = CreateFrame('Button', 'ColorPPClass', _G.ColorPickerFrame, 'UIPanelButtonTemplate')
+	b = CreateFrame('Button', 'ColorPPClass', _G.ColorPickerFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 	b:SetText(CLASS)
 	S:HandleButton(b)
 	b:Width(80)
 	b:Height(22)
-	b:Point("TOP", "ColorPPCopy", "BOTTOMRIGHT", 0, -7)
+	b:SetPoint("TOP", "ColorPPCopy", "BOTTOMRIGHT", 0, -7)
 
 	b:SetScript('OnClick', function()
 		local color = E:ClassColor(E.myclass, true)
@@ -262,12 +260,12 @@ function B:EnhanceColorPicker()
 	end)
 
 	-- add paste button to the _G.ColorPickerFrame
-	b = CreateFrame("Button", "ColorPPPaste", _G.ColorPickerFrame, "UIPanelButtonTemplate")
+	b = CreateFrame("Button", "ColorPPPaste", _G.ColorPickerFrame, "UIPanelButtonTemplate, BackdropTemplate")
 	b:SetText(CALENDAR_PASTE_EVENT)
 	S:HandleButton(b)
 	b:Width(60)
 	b:Height(22)
-	b:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
+	b:SetPoint('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
 	b:Disable() -- enable when something has been copied
 
 	-- paste color on button click, updating frame components
@@ -282,12 +280,12 @@ function B:EnhanceColorPicker()
 	end)
 
 	-- add defaults button to the _G.ColorPickerFrame
-	b = CreateFrame("Button", "ColorPPDefault", _G.ColorPickerFrame, "UIPanelButtonTemplate")
+	b = CreateFrame("Button", "ColorPPDefault", _G.ColorPickerFrame, "UIPanelButtonTemplate, BackdropTemplate")
 	b:SetText(DEFAULT)
 	S:HandleButton(b)
 	b:Width(80)
 	b:Height(22)
-	b:Point("TOPLEFT", "ColorPPClass", "BOTTOMLEFT", 0, -7)
+	b:SetPoint("TOPLEFT", "ColorPPClass", "BOTTOMLEFT", 0, -7)
 	b:Disable() -- enable when something has been copied
 	b:SetScript("OnHide", function(btn)
 		if btn.colors then
@@ -315,19 +313,19 @@ function B:EnhanceColorPicker()
 	end)
 
 	-- position Color Swatch for copy color
-	_G.ColorPPCopyColorSwatch:Point("BOTTOM", "ColorPPPaste", "TOP", 0, 10)
+	_G.ColorPPCopyColorSwatch:SetPoint("BOTTOM", "ColorPPPaste", "TOP", 0, 10)
 
 	-- move the Opacity Slider Frame to align with bottom of Copy ColorSwatch
 	_G.OpacitySliderFrame:ClearAllPoints()
-	_G.OpacitySliderFrame:Point("BOTTOM", "ColorPPDefault", "BOTTOM", 0, 0)
-	_G.OpacitySliderFrame:Point("RIGHT", "ColorPickerFrame", "RIGHT", -35, 18)
+	_G.OpacitySliderFrame:SetPoint("BOTTOM", "ColorPPDefault", "BOTTOM", 0, 0)
+	_G.OpacitySliderFrame:SetPoint("RIGHT", "ColorPickerFrame", "RIGHT", -35, 18)
 
 	-- set up edit box frames and interior label and text areas
 	local boxes = { "R", "G", "B", "H", "A" }
 	for i = 1, #boxes do
 		local rgb = boxes[i]
-		local box = CreateFrame("EditBox", "ColorPPBox"..rgb, _G.ColorPickerFrame, "InputBoxTemplate")
-		box:Point("TOP", "ColorPickerWheel", "BOTTOM", 0, -15)
+		local box = CreateFrame("EditBox", "ColorPPBox"..rgb, _G.ColorPickerFrame, "InputBoxTemplate, BackdropTemplate")
+		box:SetPoint("TOP", "ColorPickerWheel", "BOTTOM", 0, -15)
 		box:SetFrameStrata("DIALOG")
 		box:SetAutoFocus(false)
 		box:SetTextInsets(0,7,0,0)
@@ -349,7 +347,7 @@ function B:EnhanceColorPicker()
 
 		-- label
 		local label = box:CreateFontString("ColorPPBoxLabel"..rgb, "ARTWORK", "GameFontNormalSmall")
-		label:Point("RIGHT", "ColorPPBox"..rgb, "LEFT", -5, 0)
+		label:SetPoint("RIGHT", "ColorPPBox"..rgb, "LEFT", -5, 0)
 		label:SetText(i == 4 and "#" or rgb)
 		label:SetTextColor(1, 1, 1)
 
@@ -385,11 +383,11 @@ function B:EnhanceColorPicker()
 	end
 
 	-- finish up with placement
-	_G.ColorPPBoxA:Point("RIGHT", "OpacitySliderFrame", "RIGHT", 10, 0)
-	_G.ColorPPBoxH:Point("RIGHT", "ColorPPDefault", "RIGHT", -10, 0)
-	_G.ColorPPBoxB:Point("RIGHT", "ColorPPDefault", "LEFT", -40, 0)
-	_G.ColorPPBoxG:Point("RIGHT", "ColorPPBoxB", "LEFT", -25, 0)
-	_G.ColorPPBoxR:Point("RIGHT", "ColorPPBoxG", "LEFT", -25, 0)
+	_G.ColorPPBoxA:SetPoint("RIGHT", "OpacitySliderFrame", "RIGHT", 10, 0)
+	_G.ColorPPBoxH:SetPoint("RIGHT", "ColorPPDefault", "RIGHT", -10, 0)
+	_G.ColorPPBoxB:SetPoint("RIGHT", "ColorPPDefault", "LEFT", -40, 0)
+	_G.ColorPPBoxG:SetPoint("RIGHT", "ColorPPBoxB", "LEFT", -25, 0)
+	_G.ColorPPBoxR:SetPoint("RIGHT", "ColorPPBoxG", "LEFT", -25, 0)
 
 	-- define the order of tab cursor movement
 	_G.ColorPPBoxR:SetScript("OnTabPressed", function() _G.ColorPPBoxG:SetFocus() end)
@@ -399,8 +397,8 @@ function B:EnhanceColorPicker()
 
 	-- make the color picker movable.
 	local mover = CreateFrame('Frame', nil, _G.ColorPickerFrame)
-	mover:Point('TOPLEFT', _G.ColorPickerFrame, 'TOP', -60, 0)
-	mover:Point('BOTTOMRIGHT', _G.ColorPickerFrame, 'TOP', 60, -15)
+	mover:SetPoint('TOPLEFT', _G.ColorPickerFrame, 'TOP', -60, 0)
+	mover:SetPoint('BOTTOMRIGHT', _G.ColorPickerFrame, 'TOP', 60, -15)
 	mover:SetScript('OnMouseDown', function() _G.ColorPickerFrame:StartMoving() end)
 	mover:SetScript('OnMouseUp', function() _G.ColorPickerFrame:StopMovingOrSizing() end)
 	mover:EnableMouse(true)

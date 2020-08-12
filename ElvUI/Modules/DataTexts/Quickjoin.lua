@@ -2,29 +2,27 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 local CH = E:GetModule('Chat')
 
---Lua functions
 local next, pairs, select, type = next, pairs, select, type
-local format, strjoin, wipe = format, strjoin, wipe
---WoW API / Variables
-local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
-local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
+local format, strjoin, wipe, gsub = format, strjoin, wipe, gsub
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
+local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
+local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
 local C_SocialQueue_GetAllGroups = C_SocialQueue.GetAllGroups
 local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
 local UNKNOWN, QUICK_JOIN = UNKNOWN, QUICK_JOIN
 
-local displayString, lastPanel = ''
-local quickJoinGroups, quickJoin = nil, {}
+local displayString = ''
+local quickJoin = {}
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
-
+local function OnEnter()
 	if not next(quickJoin) then return end
+	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddLine(QUICK_JOIN, nil, nil, nil, true)
 	DT.tooltip:AddLine(" ")
+
 	for name, activity in pairs(quickJoin) do
 		DT.tooltip:AddDoubleLine(name, activity, nil, nil, nil, 1, 1, 1)
 	end
@@ -32,32 +30,28 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self)
+local function Update(lastPanel)
 	wipe(quickJoin)
-	quickJoinGroups = C_SocialQueue_GetAllGroups()
 
-	local coloredName, players, playerName, nameColor, firstMember, numMembers, extraCount, isLFGList, firstQueue, queues, numQueues, activityName, leaderName, isLeader, activity, output, queueCount, queueName, searchResultInfo
+	if not lastPanel then return end
+	local quickJoinGroups = C_SocialQueue_GetAllGroups()
 	for _, guid in pairs(quickJoinGroups) do
-		players = C_SocialQueue_GetGroupMembers(guid)
+		local players = C_SocialQueue_GetGroupMembers(guid)
 		if players then
-			firstMember, numMembers, extraCount = players[1], #players, ''
-			playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
-			if numMembers > 1 then
-				extraCount = format(' +%s', numMembers - 1)
-			end
-			if playerName then
-				coloredName = format('%s%s|r%s', nameColor, playerName, extraCount)
-			else
-				coloredName = format('{%s%s}', UNKNOWN, extraCount)
-			end
+			local firstMember, numMembers, extraCount = players[1], #players, ''
+			local playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
+			if numMembers > 1 then extraCount = format(' +%s', numMembers - 1) end
 
-			queues = C_SocialQueue_GetGroupQueues(guid)
-			firstQueue, numQueues = queues and queues[1], queues and #queues or 0
-			isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
+			local queues = C_SocialQueue_GetGroupQueues(guid)
+			local firstQueue, numQueues = queues and queues[1], queues and #queues or 0
+			local isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
+			local coloredName = (playerName and playerName ~= '' and format('%s%s|r%s', nameColor, playerName, extraCount)) or format('{%s%s}', UNKNOWN, extraCount)
 
+			local activity
 			if isLFGList and firstQueue and firstQueue.eligible then
+				local activityName, isLeader, leaderName
 				if firstQueue.queueData.lfgListID then
-					searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
+					local searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
 					if searchResultInfo then
 						activityName, leaderName = searchResultInfo.name, searchResultInfo.leaderName
 						isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
@@ -65,7 +59,7 @@ local function OnEvent(self)
 				end
 
 				if isLeader then
-					coloredName = format("|TInterface\\GroupFrame\\UI-Group-LeaderIcon:16:16|t%s", coloredName)
+					coloredName = format([[|TInterface\GroupFrame\UI-Group-LeaderIcon:16:16|t%s]], coloredName)
 				end
 
 				activity = activityName or UNKNOWN
@@ -73,16 +67,16 @@ local function OnEvent(self)
 					activity = format("[+%s]%s", numQueues - 1, activity)
 				end
 			elseif firstQueue then
-				output, queueCount = '', 0
+				local output, queueCount = '', 0
 				for _, queue in pairs(queues) do
 					if type(queue) == 'table' and queue.eligible then
-						queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
+						local queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
 						if queueName ~= '' then
 							if output == '' then
-								output = queueName:gsub('\n.+','') -- grab only the first queue name
-								queueCount = queueCount + select(2, queueName:gsub('\n','')) -- collect additional on single queue
+								output = gsub(queueName,'\n.+','') -- grab only the first queue name
+								queueCount = queueCount + select(2, gsub(queueName,'\n','')) -- collect additional on single queue
 							else
-								queueCount = queueCount + 1 + select(2, queueName:gsub('\n','')) -- collect additional on additional queues
+								queueCount = queueCount + 1 + select(2, gsub(queueName,'\n','')) -- collect additional on additional queues
 							end
 						end
 					end
@@ -100,18 +94,27 @@ local function OnEvent(self)
 		end
 	end
 
-	self.text:SetFormattedText(displayString, QUICK_JOIN, #quickJoinGroups)
+	lastPanel.text:SetFormattedText(displayString, QUICK_JOIN, #quickJoinGroups)
+end
 
-	lastPanel = self
+local delayed, lastPanel
+local function throttle()
+	if lastPanel then Update(lastPanel) end
+	delayed = nil
+end
+
+local function OnEvent(self, event)
+	if lastPanel ~= self then lastPanel = self end
+	if delayed then return end
+
+	-- use a nonarg passing function, so that it goes through c_timer instead of the waitframe
+	delayed = E:Delay(event == 'ELVUI_FORCE_UPDATE' and 0 or 1, throttle)
 end
 
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s: ", hex, "%s|r")
-
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
-E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Quick Join', {"SOCIAL_QUEUE_UPDATE", "PLAYER_ENTERING_WORLD"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)
+E.valueColorUpdateFuncs[ValueColorUpdate] = true
+DT:RegisterDatatext('Quick Join', _G.SOCIAL_LABEL, {"SOCIAL_QUEUE_UPDATE"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)

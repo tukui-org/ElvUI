@@ -1,13 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
+local hooksecurefunc = hooksecurefunc
 local GuildControlGetNumRanks = GuildControlGetNumRanks
 local GetNumGuildBankTabs = GetNumGuildBankTabs
-local hooksecurefunc = hooksecurefunc
 
 local function SkinGuildRanks()
 	for i=1, GuildControlGetNumRanks() do
@@ -21,8 +19,8 @@ local function SkinGuildRanks()
 			end
 
 			rankFrame.nameBox.backdrop:ClearAllPoints()
-			rankFrame.nameBox.backdrop:Point("TOPLEFT", -2, -4)
-			rankFrame.nameBox.backdrop:Point("BOTTOMRIGHT", -4, 4)
+			rankFrame.nameBox.backdrop:SetPoint("TOPLEFT", -2, -4)
+			rankFrame.nameBox.backdrop:SetPoint("BOTTOMRIGHT", -4, 4)
 		end
 	end
 end
@@ -36,26 +34,26 @@ local function fixSkin(frame)
 		frame.bg1:SetTexture(E.media.normTex) --Default TukUI users this is normTex, normTex doesn't exist
 		E:RegisterStatusBar(frame.bg1)
 		frame.bg1:SetVertexColor(unpack(E.media.backdropcolor))
-		frame.bg1:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*4, -E.mult*4)
-		frame.bg1:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*4, E.mult*4)
+		frame.bg1:SetPoint("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*4, -E.mult*4)
+		frame.bg1:SetPoint("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*4, E.mult*4)
 
 		frame.bg2 = frame:CreateTexture(nil, "BACKGROUND")
 		frame.bg2:SetDrawLayer("BACKGROUND", 3)
 		frame.bg2:SetColorTexture(0,0,0)
-		frame.bg2:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*3, -E.mult*3)
-		frame.bg2:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*3, E.mult*3)
+		frame.bg2:SetPoint("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*3, -E.mult*3)
+		frame.bg2:SetPoint("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*3, E.mult*3)
 
 		frame.bg3 = frame:CreateTexture(nil, "BACKGROUND")
 		frame.bg3:SetDrawLayer("BACKGROUND", 2)
 		frame.bg3:SetColorTexture(unpack(E.media.bordercolor))
-		frame.bg3:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*2, -E.mult*2)
-		frame.bg3:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*2, E.mult*2)
+		frame.bg3:SetPoint("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult*2, -E.mult*2)
+		frame.bg3:SetPoint("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult*2, E.mult*2)
 
 		frame.bg4 = frame:CreateTexture(nil, "BACKGROUND")
 		frame.bg4:SetDrawLayer("BACKGROUND", 1)
 		frame.bg4:SetColorTexture(0,0,0)
-		frame.bg4:Point("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult, -E.mult)
-		frame.bg4:Point("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult, E.mult)
+		frame.bg4:SetPoint("TOPLEFT", frame.backdrop, 'TOPLEFT', E.mult, -E.mult)
+		frame.bg4:SetPoint("BOTTOMRIGHT", frame.backdrop, 'BOTTOMRIGHT', -E.mult, E.mult)
 	else
 		frame.bg1 = frame:CreateTexture(nil, "BACKGROUND")
 		frame.bg1:SetDrawLayer("BACKGROUND", 4)
@@ -76,8 +74,8 @@ function S:Blizzard_GuildControlUI()
 
 	local GuildControlUI = _G.GuildControlUI
 	GuildControlUI:StripTextures()
+	GuildControlUI:CreateBackdrop("Transparent")
 	_G.GuildControlUIHbar:StripTextures()
-	GuildControlUI:SetTemplate("Transparent")
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
 	S:HandleCloseButton(_G.GuildControlUICloseButton)
@@ -103,8 +101,8 @@ function S:Blizzard_GuildControlUI()
 
 	local GuildControlUIRankSettingsFrameGoldBox = _G.GuildControlUIRankSettingsFrameGoldBox
 	S:HandleEditBox(GuildControlUIRankSettingsFrameGoldBox)
-	GuildControlUIRankSettingsFrameGoldBox.backdrop:Point("TOPLEFT", -2, -4)
-	GuildControlUIRankSettingsFrameGoldBox.backdrop:Point("BOTTOMRIGHT", 2, 4)
+	GuildControlUIRankSettingsFrameGoldBox.backdrop:SetPoint("TOPLEFT", -2, -4)
+	GuildControlUIRankSettingsFrameGoldBox.backdrop:SetPoint("BOTTOMRIGHT", 2, 4)
 	GuildControlUIRankSettingsFrameGoldBox:StripTextures()
 
 	_G.GuildControlUIRankBankFrame:StripTextures()

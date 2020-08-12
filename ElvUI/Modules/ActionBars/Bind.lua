@@ -2,13 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
-local select, tonumber, pairs = select, tonumber, pairs
-local floor = floor
-local format = format
---WoW API / Variables
-local hooksecurefunc = hooksecurefunc
+local select, tonumber, pairs, floor, format = select, tonumber, pairs, floor, format
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local IsAddOnLoaded = IsAddOnLoaded
@@ -148,7 +143,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.bindstring = "SPELL "..bind.button.name
 
 		GameTooltip:SetOwner(bind, "ANCHOR_TOP")
-		GameTooltip:Point("BOTTOM", bind, "TOP", 0, 1)
+		GameTooltip:SetPoint("BOTTOM", bind, "TOP", 0, 1)
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
 		bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 			if #bind.button.bindings == 0 then
@@ -169,7 +164,7 @@ function AB:BindUpdate(button, spellmacro)
 		GameTooltip:Show()
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_TOP")
-			tt:Point("BOTTOM", bind, "TOP", 0, 1)
+			tt:SetPoint("BOTTOM", bind, "TOP", 0, 1)
 			tt:AddLine(bind.button.name, 1, 1, 1)
 			bind.button.bindings = {GetBindingKey(spellmacro.." "..bind.button.name)}
 			if #bind.button.bindings == 0 then
@@ -191,7 +186,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.name = GetMacroInfo(bind.button.id)
 
 		GameTooltip:SetOwner(bind, "ANCHOR_TOP")
-		GameTooltip:Point("BOTTOM", bind, "TOP", 0, 1)
+		GameTooltip:SetPoint("BOTTOM", bind, "TOP", 0, 1)
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
 
 		bind.button.bindings = {GetBindingKey(spellmacro.." "..bind.button.name)}
@@ -213,12 +208,12 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.bindstring = (spellmacro=="STANCE" and "SHAPESHIFTBUTTON" or "BONUSACTIONBUTTON")..bind.button.id
 
 		GameTooltip:SetOwner(bind, "ANCHOR_NONE")
-		GameTooltip:Point("BOTTOM", bind, "TOP", 0, 1)
+		GameTooltip:SetPoint("BOTTOM", bind, "TOP", 0, 1)
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
 		GameTooltip:Show()
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_NONE")
-			tt:Point("BOTTOM", bind, "TOP", 0, 1)
+			tt:SetPoint("BOTTOM", bind, "TOP", 0, 1)
 			tt:AddLine(bind.button.name, 1, 1, 1)
 			bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 			if #bind.button.bindings == 0 then
@@ -261,7 +256,7 @@ function AB:BindUpdate(button, spellmacro)
 		GameTooltip:Show()
 		GameTooltip:SetScript("OnHide", function(tt)
 			tt:SetOwner(bind, "ANCHOR_TOP")
-			tt:Point("BOTTOM", bind, "TOP", 0, 4)
+			tt:SetPoint("BOTTOM", bind, "TOP", 0, 4)
 			tt:AddLine(bind.button.name, 1, 1, 1)
 			bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 			if #bind.button.bindings == 0 then
@@ -298,7 +293,7 @@ function AB:Tooltip_OnUpdate(tooltip, e)
 	if tooltip:IsForbidden() then return; end
 
 	elapsed = elapsed + e
-	if elapsed < .2 then return else elapsed = 0 end
+	if (elapsed < .2) then return else elapsed = 0 end
 
 	local compareItems = IsModifiedClick("COMPAREITEMS")
 	if not tooltip.comparing and compareItems and tooltip:GetItem() then
@@ -311,17 +306,15 @@ function AB:Tooltip_OnUpdate(tooltip, e)
 end
 
 function AB:UpdateFlyouts()
-	for i=1, GetNumFlyouts() do
+	for i = 1, GetNumFlyouts() do
 		local x = GetFlyoutID(i)
 		local _, _, numSlots, isKnown = GetFlyoutInfo(x)
-		if (isKnown) then
+		if isKnown then
 			for k=1, numSlots do
-				local b = _G["SpellFlyoutButton"..k]
-				if _G.SpellFlyout:IsShown() and b and b:IsShown() then
-					if not b.hookedFlyout then
-						b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "FLYOUT"); end)
-						b.hookedFlyout = true
-					end
+				local b = _G.SpellFlyout:IsShown() and _G["SpellFlyoutButton"..k]
+				if b and b:IsShown() and not b.hookedFlyout then
+					b:HookScript("OnEnter", function(btn) AB:BindUpdate(btn, "FLYOUT") end)
+					b.hookedFlyout = true
 				end
 			end
 		end
@@ -331,8 +324,7 @@ end
 function AB:RegisterMacro(addon)
 	if addon == "Blizzard_MacroUI" then
 		for i=1, MAX_ACCOUNT_MACROS do
-			local b = _G["MacroButton"..i]
-			b:HookScript("OnEnter", function(b) AB:BindUpdate(b, "MACRO"); end)
+			_G["MacroButton"..i]:HookScript("OnEnter", function(btn) AB:BindUpdate(btn, "MACRO") end)
 		end
 	end
 end
@@ -359,11 +351,6 @@ function AB:LoadKeyBinder()
 	bind:Hide()
 
 	self:SecureHookScript(_G.GameTooltip, "OnUpdate", "Tooltip_OnUpdate")
-	hooksecurefunc(_G.GameTooltip, "Hide", function(tooltip)
-		if not tooltip:IsForbidden() then
-			for _, tt in pairs(tooltip.shoppingTooltips) do tt:Hide() end
-		end
-	end)
 
 	bind:SetScript('OnEnter', function(b) local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(b.button) end end)
 	bind:SetScript("OnLeave", function(b) AB:BindHide(); local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(b.button) end end)
@@ -390,84 +377,69 @@ function AB:LoadKeyBinder()
 	self:UpdateFlyouts()
 
 	--Special Popup
-	local f = CreateFrame("Frame", "ElvUIBindPopupWindow", _G.UIParent)
-	f:SetFrameStrata("DIALOG")
-	f:SetToplevel(true)
-	f:EnableMouse(true)
-	f:SetMovable(true)
-	f:SetFrameLevel(99)
-	f:SetClampedToScreen(true)
-	f:Width(360)
-	f:Height(130)
-	f:SetTemplate('Transparent')
-	f:Hide()
+	local Popup = CreateFrame("Frame", "ElvUIBindPopupWindow", _G.UIParent, "BackdropTemplate")
+	Popup:SetFrameStrata("DIALOG")
+	Popup:EnableMouse(true)
+	Popup:SetMovable(true)
+	Popup:SetFrameLevel(99)
+	Popup:SetClampedToScreen(true)
+	Popup:Size(360, 130)
+	Popup:SetTemplate('Transparent')
+	Popup:RegisterForDrag('AnyUp', 'AnyDown')
+	Popup:SetScript('OnMouseDown', Popup.StartMoving)
+	Popup:SetScript('OnMouseUp', Popup.StopMovingOrSizing)
+	Popup:Hide()
 
-	local header = CreateFrame('Button', nil, f)
-	header:SetTemplate(nil, true)
-	header:Width(100); header:Height(25)
-	header:Point("CENTER", f, 'TOP')
-	header:SetFrameLevel(header:GetFrameLevel() + 2)
-	header:EnableMouse(true)
-	header:RegisterForClicks('AnyUp', 'AnyDown')
-	header:SetScript('OnMouseDown', function() f:StartMoving() end)
-	header:SetScript('OnMouseUp', function() f:StopMovingOrSizing() end)
+	Popup.header = CreateFrame('Button', nil, Popup, 'OptionsButtonTemplate, BackdropTemplate')
+	Popup.header:Size(100, 25)
+	Popup.header:SetPoint("CENTER", Popup, 'TOP')
+	Popup.header:RegisterForClicks('AnyUp', 'AnyDown')
+	Popup.header:SetScript('OnMouseDown', function() Popup:StartMoving() end)
+	Popup.header:SetScript('OnMouseUp', function() Popup:StopMovingOrSizing() end)
+	Popup.header:SetText('Key Binds')
 
-	local title = header:CreateFontString("OVERLAY")
-	title:FontTemplate()
-	title:Point("CENTER", header, "CENTER")
-	title:SetText('Key Binds')
+	Popup.desc = Popup:CreateFontString(nil, "ARTWORK")
+	Popup.desc:SetFontObject("GameFontHighlight")
+	Popup.desc:SetJustifyV("TOP")
+	Popup.desc:SetJustifyH("LEFT")
+	Popup.desc:SetPoint("TOPLEFT", 18, -32)
+	Popup.desc:SetPoint("BOTTOMRIGHT", -18, 48)
+	Popup.desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."])
 
-	local desc = f:CreateFontString("ARTWORK")
-	desc:SetFontObject("GameFontHighlight")
-	desc:SetJustifyV("TOP")
-	desc:SetJustifyH("LEFT")
-	desc:Point("TOPLEFT", 18, -32)
-	desc:Point("BOTTOMRIGHT", -18, 48)
-	desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."])
+	Popup.save = CreateFrame("Button", Popup:GetName()..'SaveButton', Popup, "OptionsButtonTemplate, BackdropTemplate")
+	Popup.save:SetText(L["Save"])
+	Popup.save:Width(150)
+	Popup.save:SetScript("OnClick", function() AB:DeactivateBindMode(true) end)
 
-	local perCharCheck = CreateFrame("CheckButton", f:GetName()..'CheckButton', f, "OptionsCheckButtonTemplate")
-	_G[perCharCheck:GetName() .. "Text"]:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
+	Popup.discard = CreateFrame("Button", Popup:GetName()..'DiscardButton', Popup, "OptionsButtonTemplate, BackdropTemplate")
+	Popup.discard:Width(150)
+	Popup.discard:SetText(L["Discard"])
+	Popup.discard:SetScript("OnClick", function() AB:DeactivateBindMode(false) end)
 
-	perCharCheck:SetScript("OnShow", function(self)
-		self:SetChecked(GetCurrentBindingSet() == 2)
-	end)
-
-	perCharCheck:SetScript("OnClick", function()
-		if ( AB.bindingsChanged ) then
+	Popup.perCharCheck = CreateFrame("CheckButton", Popup:GetName()..'CheckButton', Popup, "OptionsCheckButtonTemplate, BackdropTemplate")
+	_G[Popup.perCharCheck:GetName().."Text"]:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
+	Popup.perCharCheck:SetScript("OnLeave", GameTooltip_Hide)
+	Popup.perCharCheck:SetScript("OnShow", function(checkBtn) checkBtn:SetChecked(GetCurrentBindingSet() == 2) end)
+	Popup.perCharCheck:SetScript("OnClick", function()
+		if AB.bindingsChanged then
 			E:StaticPopup_Show("CONFIRM_LOSE_BINDING_CHANGES")
 		else
 			AB:ChangeBindingProfile()
 		end
 	end)
 
-	perCharCheck:SetScript("OnEnter", function(self)
-		_G.GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	Popup.perCharCheck:SetScript("OnEnter", function(checkBtn)
+		_G.GameTooltip:SetOwner(checkBtn, "ANCHOR_RIGHT")
 		_G.GameTooltip:SetText(CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP, nil, nil, nil, nil, 1)
 	end)
 
-	perCharCheck:SetScript("OnLeave", GameTooltip_Hide)
-
-	local save = CreateFrame("Button", f:GetName()..'SaveButton', f, "OptionsButtonTemplate")
-	_G[save:GetName() .. "Text"]:SetText(L["Save"])
-	save:Width(150)
-	save:SetScript("OnClick", function()
-		AB:DeactivateBindMode(true)
-	end)
-
-	local discard = CreateFrame("Button", f:GetName()..'DiscardButton', f, "OptionsButtonTemplate")
-	discard:Width(150)
-	_G[discard:GetName() .. "Text"]:SetText(L["Discard"])
-
-	discard:SetScript("OnClick", function()
-		AB:DeactivateBindMode(false)
-	end)
-
 	--position buttons
-	perCharCheck:Point("BOTTOMLEFT", discard, "TOPLEFT", 0, 2)
-	save:Point("BOTTOMRIGHT", -14, 10)
-	discard:Point("BOTTOMLEFT", 14, 10)
+	Popup.perCharCheck:SetPoint("BOTTOMLEFT", Popup.discard, "TOPLEFT", 0, 2)
+	Popup.save:SetPoint("BOTTOMRIGHT", -14, 10)
+	Popup.discard:SetPoint("BOTTOMLEFT", 14, 10)
 
-	Skins:HandleCheckBox(perCharCheck)
-	Skins:HandleButton(save)
-	Skins:HandleButton(discard)
+	Skins:HandleCheckBox(Popup.perCharCheck)
+	Skins:HandleButton(Popup.save)
+	Skins:HandleButton(Popup.discard)
+	Skins:HandleButton(Popup.header)
 end

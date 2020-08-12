@@ -1,16 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
+local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
 local CreateFrame = CreateFrame
 local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
 local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
+
+local ExtraButtons = {}
 
 local function FixExtraActionCD(cd)
 	local start, duration = GetActionCooldown(cd:GetParent().action)
@@ -21,7 +22,7 @@ function AB:Extra_SetAlpha()
 	if not E.private.actionbar.enable then return; end
 	local alpha = E.db.actionbar.extraActionButton.alpha
 
-	for i=1, _G.ExtraActionBarFrame:GetNumChildren() do
+	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then
 			button:SetAlpha(alpha)
@@ -51,25 +52,66 @@ end
 
 function AB:SetupExtraButton()
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
+	local ExtraAbilityContainer = _G.ExtraAbilityContainer -- 9.0 Shadowlands?
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
-	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
+	ExtraActionBarHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
-	ExtraActionBarFrame.ignoreFramePositionManager  = true
+	ExtraActionBarFrame:SetPoint('CENTER', ExtraActionBarHolder, 'CENTER')
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
+
+	-- Please check this 9.0 Shadowlands
+	ExtraAbilityContainer:SetParent(ExtraActionBarHolder)
+	ExtraAbilityContainer:ClearAllPoints()
+	ExtraAbilityContainer:SetPoint('CENTER', ExtraActionBarHolder, 'CENTER')
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
-	ZoneAbilityHolder:Point('BOTTOM', ExtraActionBarFrame, 'TOP', 0, 2)
+	ZoneAbilityHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
 	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
 
+	-- Please check this 9.0 Shadowlands
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
-	ZoneAbilityFrame:Point('CENTER', ZoneAbilityHolder, 'CENTER')
-	ZoneAbilityFrame.ignoreFramePositionManager = true
+	ZoneAbilityFrame:SetPoint('CENTER', ZoneAbilityHolder, 'CENTER')
+	ZoneAbilityFrame.Style:SetAlpha(0)
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
+
+	hooksecurefunc(ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(button)
+		for spellButton in button.SpellButtonContainer:EnumerateActive() do
+			if spellButton and not spellButton.IsSkinned then
+				spellButton.NormalTexture:SetAlpha(0)
+				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+				spellButton:StyleButton(nil, nil, nil, true)
+				spellButton:CreateBackdrop()
+				spellButton.Icon:SetDrawLayer('ARTWORK')
+				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
+				spellButton.Icon:SetInside()
+
+				--check these
+				spellButton.HotKey:SetText(GetBindingKey(spellButton:GetName()))
+				tinsert(ExtraButtons, spellButton)
+
+				if spellButton.Cooldown then
+					spellButton.Cooldown.CooldownOverride = 'actionbar'
+					E:RegisterCooldown(spellButton.Cooldown)
+				end
+
+				spellButton.IsSkinned = true
+			end
+		end
+	end)
+
+	-- Sometimes the ZoneButtons anchor it to the ExtraAbilityContainer, we dont want this.
+	hooksecurefunc(ZoneAbilityFrame, "SetParent", function(self, parent)
+		if parent == ExtraAbilityContainer then
+			self:SetParent(ZoneAbilityHolder)
+		end
+	end)
 
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
@@ -79,7 +121,7 @@ function AB:SetupExtraButton()
 			button.checked = true
 
 			self:StyleButton(button, true)
-			button:SetTemplate()
+			button:CreateBackdrop()
 			button.icon:SetDrawLayer('ARTWORK')
 
 			if E.private.skins.cleanBossButton and button.style then -- Hide the Artwork
@@ -94,6 +136,9 @@ function AB:SetupExtraButton()
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
 
+			button.HotKey:SetText(GetBindingKey("ExtraActionButton"..i))
+			tinsert(ExtraButtons, button)
+
 			if button.cooldown then
 				button.cooldown.CooldownOverride = 'actionbar'
 				E:RegisterCooldown(button.cooldown)
@@ -102,30 +147,9 @@ function AB:SetupExtraButton()
 		end
 	end
 
-	local button = ZoneAbilityFrame.SpellButton
-	if button then
-		button:SetNormalTexture('')
-		button:StyleButton(nil, nil, nil, true)
-		button:SetTemplate()
-		button.Icon:SetDrawLayer('ARTWORK')
-		button.Icon:SetTexCoord(unpack(E.TexCoords))
-		button.Icon:SetInside()
-
-		if E.private.skins.cleanBossButton and button.Style then -- Hide the Artwork
-			button.Style:SetTexture()
-			hooksecurefunc(button.Style, 'SetTexture', function(btn, tex)
-				if tex ~= nil then btn:SetTexture() end
-			end)
-		end
-
-		if button.Cooldown then
-			button.Cooldown.CooldownOverride = 'actionbar'
-			E:RegisterCooldown(button.Cooldown)
-		end
-	end
-
 	if HasExtraActionBar() then
 		ExtraActionBarFrame:Show()
+		ExtraAbilityContainer:Show()
 	end
 
 	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraActionButton')
@@ -133,4 +157,11 @@ function AB:SetupExtraButton()
 
 	AB:Extra_SetAlpha()
 	AB:Extra_SetScale()
+end
+
+function AB:UpdateExtraBindings()
+	for _, button in pairs(ExtraButtons) do
+		button.HotKey:SetText(_G.GetBindingKey(button:GetName()))
+		AB:FixKeybindText(button)
+	end
 end

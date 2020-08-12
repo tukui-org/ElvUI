@@ -1,11 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local ceil = ceil
 local unpack = unpack
---WoW API / Variables
+
 local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar
@@ -26,11 +25,12 @@ local MasqueGroup = Masque and Masque:Group("ElvUI", "Pet Bar")
 
 local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerStateTemplate')
 bar:SetFrameStrata("LOW")
+bar.buttons = {}
 
 function AB:UpdatePet(event, unit)
 	if(event == "UNIT_AURA" and unit ~= "pet") then return end
 
-	for i=1, NUM_PET_ACTION_SLOTS, 1 do
+	for i = 1, NUM_PET_ACTION_SLOTS, 1 do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
 		local buttonName = "PetActionButton"..i
 		local autoCast = _G[buttonName.."AutoCastable"]
@@ -140,8 +140,7 @@ function AB:PositionAndSizeBarPet()
 
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:Width(barWidth)
-	bar:Height(barHeight)
+	bar:Size(barWidth, barHeight)
 
 	if self.db.barPet.enabled then
 		bar:SetScale(1)
@@ -167,31 +166,37 @@ function AB:PositionAndSizeBarPet()
 	end
 
 	bar.mouseover = self.db.barPet.mouseover
-	if(bar.mouseover) then
+	if bar.mouseover then
 		bar:SetAlpha(0)
+		AB:FadeBarBlings(bar, 0)
 	else
 		bar:SetAlpha(bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
 	end
 
-	if(self.db.barPet.inheritGlobalFade) then
+	if self.db.barPet.inheritGlobalFade then
 		bar:SetParent(self.fadeParent)
 	else
 		bar:SetParent(E.UIParent)
 	end
 
+	bar:EnableMouse(not self.db.barPet.clickThrough)
+
 	local button, lastButton, lastColumnButton, autoCast
 	local firstButtonSpacing = (self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
-	for i=1, NUM_PET_ACTION_SLOTS do
+	for i = 1, NUM_PET_ACTION_SLOTS do
 		button = _G["PetActionButton"..i]
 		lastButton = _G["PetActionButton"..i-1]
 		autoCast = _G["PetActionButton"..i..'AutoCastable']
 		lastColumnButton = _G["PetActionButton"..i-buttonsPerRow]
 
+		bar.buttons[i] = button
+
 		button:SetParent(bar)
 		button:ClearAllPoints()
 		button:SetAttribute("showgrid", 1)
 		button:Size(size)
-
+		button:EnableMouse(not self.db.barPet.clickThrough)
 		autoCast:SetOutside(button, autoCastSize, autoCastSize)
 
 		if i == 1 then
@@ -206,7 +211,7 @@ function AB:PositionAndSizeBarPet()
 				x, y = -firstButtonSpacing, firstButtonSpacing
 			end
 
-			button:Point(point, bar, point, x, y)
+			button:SetPoint(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0
 			local y = -buttonSpacing
@@ -216,7 +221,7 @@ function AB:PositionAndSizeBarPet()
 				buttonPoint = "BOTTOM"
 				anchorPoint = "TOP"
 			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y)
+			button:SetPoint(buttonPoint, lastColumnButton, anchorPoint, x, y)
 		else
 			local x = buttonSpacing
 			local y = 0
@@ -227,7 +232,7 @@ function AB:PositionAndSizeBarPet()
 				anchorPoint = "LEFT"
 			end
 
-			button:Point(buttonPoint, lastButton, anchorPoint, x, y)
+			button:SetPoint(buttonPoint, lastButton, anchorPoint, x, y)
 		end
 
 		if i > numButtons then
@@ -243,14 +248,11 @@ function AB:PositionAndSizeBarPet()
 
 	RegisterStateDriver(bar, "show", visibility)
 
-	--Fix issue with mover not updating size when bar is hidden
-	bar:GetScript("OnSizeChanged")(bar)
-
 	if MasqueGroup and E.private.actionbar.masque.petBar then MasqueGroup:ReSkin() end
 end
 
 function AB:UpdatePetCooldownSettings()
-	for i=1, NUM_PET_ACTION_SLOTS do
+	for i = 1, NUM_PET_ACTION_SLOTS do
 		local button = _G["PetActionButton"..i]
 		if button and button.cooldown then
 			button.cooldown:SetDrawBling(not self.db.hideCooldownBling)
@@ -259,7 +261,7 @@ function AB:UpdatePetCooldownSettings()
 end
 
 function AB:UpdatePetBindings()
-	for i=1, NUM_PET_ACTION_SLOTS do
+	for i = 1, NUM_PET_ACTION_SLOTS do
 		if self.db.hotkeytext then
 			local key = GetBindingKey("BONUSACTIONBUTTON"..i)
 			_G["PetActionButton"..i.."HotKey"]:Show()
@@ -272,12 +274,12 @@ function AB:UpdatePetBindings()
 end
 
 function AB:CreateBarPet()
-	bar:CreateBackdrop()
+	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar.backdrop:SetAllPoints()
 	if self.db.bar4.enabled then
-		bar:Point('RIGHT', _G.ElvUI_Bar4, 'LEFT', -4, 0)
+		bar:SetPoint('RIGHT', _G.ElvUI_Bar4, 'LEFT', -4, 0)
 	else
-		bar:Point('RIGHT', E.UIParent, 'RIGHT', -4, 0)
+		bar:SetPoint('RIGHT', E.UIParent, 'RIGHT', -4, 0)
 	end
 
 	bar:SetAttribute("_onstate-show", [[
@@ -289,7 +291,7 @@ function AB:CreateBarPet()
 	]])
 
 	bar:SetScript("OnHide", function()
-		for i=1, NUM_PET_ACTION_SLOTS, 1 do
+		for i = 1, NUM_PET_ACTION_SLOTS, 1 do
 			local button = _G["PetActionButton"..i]
 			if button.spellDataLoadedCancelFunc then
 				button.spellDataLoadedCancelFunc()
@@ -317,7 +319,7 @@ function AB:CreateBarPet()
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
-	for i=1, NUM_PET_ACTION_SLOTS do
+	for i = 1, NUM_PET_ACTION_SLOTS do
 		local button = _G["PetActionButton"..i]
 		if not button.ICON then
 			button.ICON = button:CreateTexture("PetActionButton"..i..'ICON')

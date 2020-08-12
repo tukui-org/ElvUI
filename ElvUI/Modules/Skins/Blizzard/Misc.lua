@@ -1,16 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs = pairs
 local unpack = unpack
---WoW API / Variables
+
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
-local LFG_ICONS = "Interface\\LFGFrame\\UI-LFG-ICONS-ROLEBACKGROUNDS"
+local LFG_ICONS = [[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]]
 local function SkinNavBarButtons(self)
 	if (self:GetParent():GetName() == "EncounterJournal" and not E.private.skins.blizzard.encounterjournal) or (self:GetParent():GetName() == "WorldMapFrame" and not E.private.skins.blizzard.worldmap) or (self:GetParent():GetName() == "HelpFrameKnowledgebase" and not E.private.skins.blizzard.help) then
 		return
@@ -42,9 +41,6 @@ function S:BlizzardMiscFrames()
 
 	-- Blizzard frame we want to reskin
 	local skins = {
-		"InterfaceOptionsFrame",
-		"VideoOptionsFrame",
-		"AudioOptionsFrame",
 		"AutoCompleteBox",
 		"ReadyCheckFrame",
 		"QueueStatusFrame",
@@ -53,7 +49,7 @@ function S:BlizzardMiscFrames()
 
 	for i = 1, #skins do
 		_G[skins[i]]:StripTextures()
-		_G[skins[i]]:SetTemplate("Transparent")
+		_G[skins[i]]:CreateBackdrop("Transparent")
 	end
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
@@ -106,7 +102,7 @@ function S:BlizzardMiscFrames()
 		end
 
 		_G.GameMenuFrame:StripTextures()
-		_G.GameMenuFrame:SetTemplate("Transparent")
+		_G.GameMenuFrame:CreateBackdrop("Transparent")
 		_G.GameMenuFrame.Header:StripTextures()
 		_G.GameMenuFrame.Header:ClearAllPoints()
 		_G.GameMenuFrame.Header:SetPoint("TOP", _G.GameMenuFrame, 0, 7)
@@ -122,7 +118,7 @@ function S:BlizzardMiscFrames()
 	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(s)
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
-			s.closeDialog:SetTemplate('Transparent')
+			s.closeDialog:CreateBackdrop('Transparent')
 			s:SetScale(_G.UIParent:GetScale())
 			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
 			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
@@ -139,7 +135,7 @@ function S:BlizzardMiscFrames()
 		if s and s.CloseDialog and not s.CloseDialog.template then
 			s:SetScale(_G.UIParent:GetScale())
 			s.CloseDialog:StripTextures()
-			s.CloseDialog:SetTemplate('Transparent')
+			s.CloseDialog:CreateBackdrop('Transparent')
 			S:HandleButton(s.CloseDialog.ConfirmButton)
 			S:HandleButton(s.CloseDialog.ResumeButton)
 		end
@@ -154,9 +150,9 @@ function S:BlizzardMiscFrames()
 
 	for i = 1, #ChatMenus do
 		if _G[ChatMenus[i]] == _G.ChatMenu then
-			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:SetTemplate("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) s:ClearAllPoints() s:Point("BOTTOMLEFT", _G.ChatFrame1, "TOPLEFT", 0, 30) end)
+			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:CreateBackdrop("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) s:ClearAllPoints() s:SetPoint("BOTTOMLEFT", _G.ChatFrame1, "TOPLEFT", 0, 30) end)
 		else
-			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:SetTemplate("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
+			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:CreateBackdrop("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
 		end
 	end
 
@@ -168,7 +164,7 @@ function S:BlizzardMiscFrames()
 	}
 
 	_G.LFDRoleCheckPopup:StripTextures()
-	_G.LFDRoleCheckPopup:SetTemplate("Transparent")
+	_G.LFDRoleCheckPopup:CreateBackdrop("Transparent")
 	S:HandleButton(_G.LFDRoleCheckPopupAcceptButton)
 	S:HandleButton(_G.LFDRoleCheckPopupDeclineButton)
 
@@ -187,7 +183,7 @@ function S:BlizzardMiscFrames()
 			end
 		end)
 		StaticPopup:StripTextures()
-		StaticPopup:SetTemplate('Transparent')
+		StaticPopup:CreateBackdrop('Transparent')
 
 		for j = 1, 4 do
 			local button = StaticPopup["button"..j]
@@ -209,14 +205,16 @@ function S:BlizzardMiscFrames()
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameGold'])
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameSilver'])
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameCopper'])
-		_G['StaticPopup'..i..'EditBox'].backdrop:Point('TOPLEFT', -2, -4)
-		_G['StaticPopup'..i..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
+
+		_G['StaticPopup'..i..'EditBox'].backdrop:SetPoint('TOPLEFT', -2, -4)
+		_G['StaticPopup'..i..'EditBox'].backdrop:SetPoint('BOTTOMRIGHT', 2, 4)
 		_G['StaticPopup'..i..'ItemFrameNameFrame']:Kill()
-		_G['StaticPopup'..i..'ItemFrame']:SetTemplate()
+		_G['StaticPopup'..i..'ItemFrame']:CreateBackdrop()
 		_G['StaticPopup'..i..'ItemFrame']:StyleButton()
-		_G['StaticPopup'..i..'ItemFrame'].IconBorder:SetAlpha(0)
+		S:HandleIconBorder(_G['StaticPopup'..i..'ItemFrame'].IconBorder)
 		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
 		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetInside()
+
 		local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
 		if normTex then
 			normTex:SetTexture()
@@ -224,15 +222,6 @@ function S:BlizzardMiscFrames()
 				if tex ~= nil then s:SetTexture() end
 			end)
 		end
-
-		-- Quality IconBorder
-		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'SetVertexColor', function(s, r, g, b)
-			s:GetParent():SetBackdropBorderColor(r, g, b)
-			s:SetTexture()
-		end)
-		hooksecurefunc(_G["StaticPopup"..i.."ItemFrame"].IconBorder, 'Hide', function(s)
-			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
 	end
 
 	-- skin return to graveyard button
@@ -242,22 +231,22 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameLeft:SetAlpha(0)
 		_G.GhostFrame:StripTextures()
 		_G.GhostFrame:ClearAllPoints()
-		_G.GhostFrame:Point("TOP", E.UIParent, "TOP", 0, -150)
-		_G.GhostFrameContentsFrame:SetTemplate("Transparent")
-		_G.GhostFrameContentsFrameText:Point("TOPLEFT", 53, 0)
+		_G.GhostFrame:SetPoint("TOP", E.UIParent, "TOP", 0, -150)
+		_G.GhostFrameContentsFrame:CreateBackdrop("Transparent")
+		_G.GhostFrameContentsFrameText:SetPoint("TOPLEFT", 53, 0)
 		_G.GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
-		_G.GhostFrameContentsFrameIcon:Point("RIGHT", _G.GhostFrameContentsFrameText, "LEFT", -12, 0)
-		local b = CreateFrame("Frame", nil, _G.GhostFrameContentsFrameIcon:GetParent())
+		_G.GhostFrameContentsFrameIcon:SetPoint("RIGHT", _G.GhostFrameContentsFrameText, "LEFT", -12, 0)
+		local b = CreateFrame("Frame", nil, _G.GhostFrameContentsFrameIcon:GetParent(), "BackdropTemplate")
 		local p = E.PixelMode and 1 or 2
-		b:Point("TOPLEFT", _G.GhostFrameContentsFrameIcon, -p, p)
-		b:Point("BOTTOMRIGHT", _G.GhostFrameContentsFrameIcon, p, -p)
+		b:SetPoint("TOPLEFT", _G.GhostFrameContentsFrameIcon, -p, p)
+		b:SetPoint("BOTTOMRIGHT", _G.GhostFrameContentsFrameIcon, p, -p)
 		_G.GhostFrameContentsFrameIcon:Size(37,38)
 		_G.GhostFrameContentsFrameIcon:SetParent(b)
-		b:SetTemplate()
+		b:CreateBackdrop()
 	end
 
 	_G.OpacityFrame:StripTextures()
-	_G.OpacityFrame:SetTemplate("Transparent")
+	_G.OpacityFrame:CreateBackdrop("Transparent")
 
 	--DropDownMenu
 	hooksecurefunc("UIDropDownMenu_CreateFrames", function(level, index)
@@ -274,11 +263,11 @@ function S:BlizzardMiscFrames()
 
 		local Backdrop = _G[listFrameName.."Backdrop"]
 		if not Backdrop.template then Backdrop:StripTextures() end
-		Backdrop:SetTemplate("Transparent")
+		Backdrop:CreateBackdrop("Transparent")
 
 		local menuBackdrop = _G[listFrameName.."MenuBackdrop"]
 		if not menuBackdrop.template then menuBackdrop:StripTextures() end
-		menuBackdrop:SetTemplate("Transparent")
+		menuBackdrop:CreateBackdrop("Transparent")
 	end)
 
 	hooksecurefunc("UIDropDownMenu_SetIconImage", function(icon, texture)
@@ -317,7 +306,7 @@ function S:BlizzardMiscFrames()
 				uncheck:SetTexture()
 				local _, co = check:GetTexCoord()
 				if co == 0 then
-					check:SetTexture("Interface\\Buttons\\UI-CheckBox-Check")
+					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
 					check:SetVertexColor(r, g, b, 1)
 					check:Size(20, 20)
 					check:SetDesaturated(true)
@@ -345,17 +334,17 @@ function S:BlizzardMiscFrames()
 	SideDressUpFrame:StripTextures()
 	SideDressUpFrame.BGTopLeft:Hide()
 	SideDressUpFrame.BGBottomLeft:Hide()
-	SideDressUpFrame:SetTemplate("Transparent")
+	SideDressUpFrame:CreateBackdrop("Transparent")
 
 	-- StackSplit
 	local StackSplitFrame = _G.StackSplitFrame
 	StackSplitFrame:StripTextures()
 	StackSplitFrame:CreateBackdrop("Transparent")
 
-	StackSplitFrame.bg1 = CreateFrame("Frame", nil, StackSplitFrame)
+	StackSplitFrame.bg1 = CreateFrame("Frame", nil, StackSplitFrame, "BackdropTemplate")
 	StackSplitFrame.bg1:SetTemplate("Transparent")
-	StackSplitFrame.bg1:Point("TOPLEFT", 10, -15)
-	StackSplitFrame.bg1:Point("BOTTOMRIGHT", -10, 55)
+	StackSplitFrame.bg1:SetPoint("TOPLEFT", 10, -15)
+	StackSplitFrame.bg1:SetPoint("BOTTOMRIGHT", -10, 55)
 	StackSplitFrame.bg1:SetFrameLevel(StackSplitFrame.bg1:GetFrameLevel() - 1)
 
 	S:HandleButton(StackSplitFrame.OkayButton)
@@ -364,20 +353,15 @@ function S:BlizzardMiscFrames()
 	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
 	for _, btn in pairs(buttons) do
 		btn:Size(14, 18)
-
 		btn:ClearAllPoints()
 
 		if btn == StackSplitFrame.LeftButton then
-			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+			btn:SetPoint('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
 		else
-			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+			btn:SetPoint('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
 		end
 
-		S:HandleNextPrevButton(btn)
-
-		if btn.SetTemplate then
-			btn:SetTemplate("NoBackdrop")
-		end
+		S:HandleNextPrevButton(btn, nil, nil, true)
 	end
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)

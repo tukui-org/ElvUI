@@ -1,13 +1,460 @@
-### Version 11.29 [ ETA: Soon ]
+### Version 11.50 [ ETA: 🍨 ]
 
-**New Additions:**  
-
-**Bug Fixes:**  
-
-**Misc. Changes:**  
+**Shiny:**  
+Bags Datatext is less weird now.  
+Options Logo was animating a little too much.  
+Fixed an error which happened in the Options when UnitFrames were disabled.  
+Corrected a Style Filter error, also let entering and leaving combat trigger filters correctly (regardless of unit threat).  
 
 ___
-### Version 11.28 for patch 8.3 [ January 14th 2020 ]
+
+### Version 11.49 [ August 6th 2020 ]
+
+**Nameplates:**  
+Added option to show Class Icon as Portrait.  
+Style filter settings were getting stuck in last version.  
+Corrected a few issues with Portrait backdrops being shown when they weren't supposed to.  
+
+**Options:**
+Masque options are now clickable again.  
+
+___
+
+### Version 11.48 [ August 5th 2020 ]
+
+**Hotfixed:**  
+Attempted to fix strange nameplate behaviour.  
+
+___
+
+### Version 11.47 [ August 4th 2020 ]
+
+**UnitFrames:**  
+Party Target settings were effecting Party settings, not the Party Target settings. (#1930)  
+Fixed Smart Raid Filter toggle not applying anchors.  
+
+**ActionBars:**  
+Added Flyout Button Size option (for pets and such).  
+Hidden Pet bar blings were dragged to the depths, unless the bar shows, then they are back (temporarily).  
+
+**Datatexts:**  
+Tooltips were hanging around during combat when they weren't supposed to.  
+Tooltips hopping around like rabbits from one location to another on some datatexts, we fed them some carrot and now they behave.  
+Mission tooltip display time strangely (aka wrong and broken).  
+
+**Minimap:**  
+Datatext bar offset for non-thin border theme corrected. (#1925)  
+Reset Zoom setting should apply correctly again.  
+
+**Chat:**  
+Made sure Voice Icons appear when the Panel is hidden.  
+Added a Panel Snapping option, which allows you to toggle the snapping into panels.  
+
+**Stuff:**  
+Talent tooltips were showing ID, not once but twice, sometimes three or four or five.. maybe six times.  
+Spellbook spells should work in combat without tainting now, this might fix other taint issues as well.  
+
+**Options:**  
+Profile and Private confirmation popup was sometimes displaying incorrectly.  
+Movers would sometimes get heavily attached to the mouse (and refusing to let go).  
+Sometimes when adjusting the aura settings for a unit it would bug and not actually update the positioning (mainly targettarget).  
+
+**Locales:**  
+Updated Translations for Portuguese (Thanks to @Aleczk) and French (Thanks to @Pristie).  
+
+___
+
+### Version 11.46 [ July 15th 2020 ]
+
+**Hotfixes:**  
+Plugin Installer hiccup.  
+
+___
+
+### Version 11.45 [ July 15th 2020 ]
+
+**Unbroken Features:**  
+Options: (**Ace3 Error**) This might finally stop exploding now with the help of Foxlit! **Thank you, Foxlit!** :D  
+Options: Copying a **Private Profile** will now reload on accepting.  
+Chat: **Fade Tabs No Backdrop** will now fade the correct chat tabs, they were hecka confused.  
+Chat: **Tab Selection Color** can now follow the class color that is selected when switching to another character on the same profile.  
+UnitFrames: **Power Detatched AutoHide** for units which should hide at zero power, will actually hide now at zero power.  
+UnitFrames: Tank frames will now use the correct fonts on initial load in.  
+CustomTexts: Correctly place the text when attached to **AdditionalPower**.  
+Datatexts: **Custom Panel** settings will actually export now.  
+Datatexts: One **Currency** error and one **Custom Currency** error have suddenly vanished from the UI.  
+Tags: **[power:%s]** will work on NPCs again, **[mana:%s]** will return mana always again, **[additionalmana:%s]** was added for the additional mana display.  
+UI: You can once again move Blizzard's Player Alt Power Bar with our movers.  
+
+___
+
+### Version 11.44 [ July 9th 2020 ]
+
+**Hotfixes:**  
+Chat: Fixed incompatibility with Total RP 3.  
+Nameplate: Added Castbar Interrupted color setting.  
+Actionbars: Fixed paging.  
+
+___
+
+### Version 11.43 [ July 9th 2020 ]
+
+**Hotfixed:**  
+Chat: Whisper Sound works again.  
+Tooltip: Item Count works again.  
+Aura Highlight: This actually works again too.  
+Options: Readd the confirmation popup to Reset Profile button.  
+Movers: Fixed an error while placing PlayerPowerBarAlt with StickFrames disabled.  
+ElvUI_DTBars2 is now depreciated and forced off.  
+
+___
+
+### Version 11.42 [ July 8th 2020 ]
+
+**DATATEXTS:**  
+Creativity feature added by allowing you to create and customize **Datatext Panels**!  
+Added **/hdt** command or pressing ALT while hovering the Datatext will spawn a menu to change the Datatext quickly (original work and code by Nihilist). Thank you for letting us have this! <3  
+Added **Missions** and removed **Garrison**, **BfA Missions**, and **Orderhall**.  
+Added **Primary Stat** and removed **Attack Power** and **Spell Power**.  
+Added new texts **Reputation**, **Experience**, **Item Level**, **Mail**, and **Difficulty**.  
+Added stat texts **Intellect**, **Agility**, **Stamina**, **Strength**.  
+Added setting **Flash Threshold** to **Durability**.  
+Multiple texts were reworked for this update.  
+
+**UNITFRAMES:**  
+Smart Filter appears to have finally passed its exams, yay!  
+Stopped allowing **Custom Backdrop** on **Additional Power** to change the bar color to white.  
+Made sure Auras wont show on **Tank** or **Assist** frames when the option is disabled.  
+Debuff Highlight (now **Aura Highlight**) in Glow mode was glowing around the edges of the screen instead of the frame.  
+**Role Icons** will now appear in Battlegrounds, they were scared of battles; so we gave them invisible sunglasses.  
+Deleted **Show Absorb Amount** option, as it would often be greater than the units health in some cases.  
+You can now change the **Frame Level** and **Frame Strata** of Individual frames.  
+Tags attached to the Power element (including Custom Texts) will be placed correctly with the AutoHide option.  
+PVP Classification Indicator can now be displayed on Arena Frames.  
+Castbars were trained to allow the casting backwards.  
+Target and Focus frames now have a shiny combat icon.  
+Aura borders color by type can be toggled off now.  
+Castbar **Display Target** allowed on all frames.  
+Focus Glow based on if a unit is Focused.  
+Party castbars can be positioned now.  
+
+**NAMEPLATES:**  
+Added **Show Only Names** option which will put **Blizzard Nameplates** into **Name Only** mode.  
+Optimized plate load in so the performance will be improved if plates spawn quickly.  
+Added **Hide Icon** options for **Quest Icons**, also text position was greatly improved.  
+
+**CHAT:**  
+Removed **Lock Position** option, the windows will now be snapped to the Panel if within proximity.  
+Tabs can be customized with color and we added a feature to let you hug the text with arrows.  
+Editbox now supports Blizzard's **IM Style** and displays the **Character Count** correctly.  
+Editbox History Size can be adjusted or Reset via a button in the options.  
+History Size can be adjusted and the history channels can be excluded by type.  
+Role Icons will appear correctly after a reload.  
+Alerts can now be set by Channel type.  
+Max Lines can be adjusted.  
+
+**TAGS:**  
+Swapped **[additionalpower:%s]** to **[mana:%s]** and readded **[manacolor]**.  
+Swapped **[difficultycolor]** to use Blizzard's **Creature Difficulty Color** instead of our custom coloring.  
+Added **[classpowercolor]** and updated **[classpower:%s]** so it supports (in this order): Special, Combo Points, or Alt Mana.  
+Added **[name:last]**.  
+
+**UI:**  
+Movers should be better at doing their job and also stop appearing on Castbars when the Castbar was disabled.  
+Cutaway would locate its very own error on initial login or profile change sometimes, that error has been corrected.  
+Swapped **ElvUI_NonTarget** StyleFilter to use **Alpha 0.5** by default instead of 0.3.  
+Bags will auto open and close with the **Auction House** and **Scrapping Machine**.  
+Profile Export is now cleaned of settings which are not considered active. This means if you use a Plugin but it is disabled, when you export your profile the settings from that plugin are **not** included in the export.  
+Blacklisted the **Experience Eliminated** debuff.  
+
+___
+
+#### Version 11.41 [ May 1st 2020 ]
+
+**Bug Fixes:**  
+The font used in **/estatus** and **Addon Manager** on CN/TW/KR should fallback to a font that works instead of trying to use Expressway, which isn't supported.  
+**Combat Log Skin** and **Combat Time DataText** were misbehaving.  
+Worked out a couple more weird things with **Smart Raid Filter**.  
+Cutaway works correctly on Vertical Orientation Health Unitframes. (#1776)  
+Fixed issue which caused Transparency setting to mess up the health on Unitframes with Vertical and/or Reverse Fill enabled.  
+Fixed Absorbs display on Unitframes with Reverse fill on (in Vertical or not) when Show Absorbs Amount was off.  
+Fixed a bug in the new Addon Manager skin (AddOn index must be in the range of 1 to 4).  
+
+**Misc. Changes:**  
+Lowered the min value on some Unitframes elements, mainly health. (#1798)  
+Display Plugins in **/estatus**.  
+
+___
+
+##### Version 11.40 [ April 30th 2020 ]
+
+**Changes:**  
+Tiny Update.  
+
+___
+
+##### Version 11.39 [ April 30th 2020 ]
+
+**New Additions:**  
+Added a note above Raid / Raid40 / RaidPet which states you can't toggle them or change their number of groups when **Smart Raid Filter** is enabled (under UnitFrames > General).  
+
+**Bug Fixes:**  
+Datatexts do their thing even better than before, for real this time, hopefully. **(X doubt)**  
+
+**Misc. Changes:**  
+Upgraded **/estatus** with shiny new beautiful colours.  
+Fresh coat of paint on the Addon Manager too.  
+
+___
+
+##### Version 11.38 [ April 28th 2020 ]
+
+**New Additions:**  
+**Smart Raid Visibility** has rejoined the UI **(it's actually reformed now)**.  
+Added **[name:health]** tag which displays health lost using colors on the name text, neato.  
+Added **[ElvUI-Users]** tag which displays other cool people than yourself.  
+Some ultra rare super high tech Mechagon debuffs were added (jk, they are normal).  
+Added **My Pet** and **Other Pets** to Aura Filtering system.  
+Borrowed the **[status:text]** and **[status:icon]** tags from Classic.  
+Show Assigned Icon option now exists for the bags.  
+Add Echoes of Ny'alotha to Currency DataText.  
+Tooltip NPC names now adapt to the custom faction colors in tooltip settings.  
+
+**Bug Fixes:**  
+The options bottom buttons now use the language selected in the config, nice.  
+Nazjatar Followers Missions Datatext was doing a goof, which has been ungoofed by a professional ungoofer.  
+Health and Power prediction has learned new tricks **(which actually doesn't do anything new but we promise they are ten times cooler now)**.  
+Some Datatexts refused to show information on login, now they are willing to share said info.  
+Some kind of Alternative Power oops, something about UnitIsUnit; rare bug, big time squashed.  
+The bottom of letters on the bottom line of the chat will now be visible to all earthlings.  
+Chat editbox will stay open when you move if it has text in it again and character count will only show if there is text in the editbox.  
+Add or Remove spell from a filter should now work how it was always meant to.  
+Threat tags have now leveled up there tag game.  
+Threat on Unitframes in Border mode would sometimes not update the borders correctly, they behave like good bois now.  
+Cutaway colors react instantly now, ninja status achieved.  
+Highlight texture for Items on the Character page are now the old style instead of the blizzard style.  
+Stance Bar will now get placed in the correct place, it was rolling a placement dice, we took it away.  
+Deathknight Runes can use the custom backdrop color now, epic.  
+Raid Debuffs has unlearned never-appear-unintentionally!  
+
+**Misc. Changes:**  
+Style Filters now support changing the Nameplate Tags for Health, Power, Name, Title, and Level because of this Name Color action was removed, you can tag a color onto it and make it do other neat stuff, if you want.  
+Style Filters threat triggering is now no longer wearing slow shoes.  
+Someone decided to show Corrupted Icon on Equipment Manager Flyout buttons, cool.  
+AuraBars using Debuffs type can once again, switch to Class Color, just like magic.  
+Updated the Death Recap, Combat Log, and Community skins in 2020 style.  
+Updated the Raid Utility, with nice clean shiny fresh new updates.  
+Faction gold will hide if its zero on the gold datatext.  
+Added Traditional Chinese number prefix. (Thanks @mcc)  
+Added Fade Chat Toggles option which can prevent the toggle buttons from disappearing with the chat. (Thanks @Sirenfal)  
+Raid-wide-sorting has now evolved, the new way will sort the **Number of Groups** and ignore the ending groups so you can hide benched players. (Thanks @BeeVa)  
+More N'zoth eyes on the Inspect frame items.  
+Drain Soul has 5 ticks (not 6 ticks btw).  
+
+___
+
+##### Version 11.371 [ February 11th 2020 ]
+
+**Hotfixed:**  
+Minor explosion on load with the release, damage has been absorbed by a fancy hotfix shielding mechanism.  
+
+___
+
+##### Version 11.37 [ February 11th 2020 ]
+
+**New Additions:**  
+Added option to display **ElvUI Version** of other **ElvUI users** into Tooltip.  
+
+**Bug Fixes:**  
+The **Top Auras** were having some trouble deciding what border color to wear, it's now selected for them (once again).  
+Unitframe **Portrait Style Class** wasn't playing nicely with the **Overlay** option but they are now friends.  
+Nameplate **Follower XP** was showing on other players followers, it won't do that anymore.  
+When selecting a **Custom Filter**, there was a **0.3333~%** chance to get an error. That **should** no longer be the case.  
+It seems unitframes were confused as to whether or not the unit was **disconnected** and can now display the connection color correctly.  
+
+**Misc. Changes:**  
+Added 8.3 Affixs into the **Raid Debuffs** filter.  
+Debuff Highlighting **Blend Mode** MOD was removed, as it's use was very specific and misunderstood.  
+
+___
+
+##### Version 11.36 [ February 7th 2020 ]
+
+**Bug Fixes:**  
+Quite sure the **Quick Join Datatext** was being super noisy in the background, so we calmed it's rage with cuddles. This might have caused **Stuttering Issues** for people on high population realms. (#1702)  
+Profile **Spec Switch** doesn't lawl around your anchors anymore, it should place them nice and neat where they belong.  
+If you had **AuraBar Colors** that weren't being colorize correctly, recheck the filter and enable it. It was 100% nargles, I just know it.  
+
+**Misc. Changes:**  
+Nameplate **Follower XP** has now been properly trained on how to collect IDs all by itself.  
+Buff Indicator Style **Timer Only** will now use the selected color for the timer.  
+If you were a bad boi and interrupt yourself with the **Interrupt Announce** on it will now no longer embarrass you.  
+Spells inside of the **AuraBar Colors** filter which were using **Name** instead of **Spell ID** will be converted to **Spell ID**, if possible.  
+
+___
+
+##### Version 11.352 [ February 5th 2020 ]
+
+**Hotfixed:**  
+Boss and Arena frames were casting Stealth on some profiles.  
+
+___
+
+##### Version 11.351 [ February 5th 2020 ]
+
+**Hotfixed:**  
+We had to retrain **Reset Anchors** and **Nudge Reset** because they forgot how to do the thing.  
+
+___
+
+##### Version 11.35 [ February 5th 2020 ]
+
+**Bug Fixes:**  
+For some reason Style Filters had convinced Portraits into being too clingy on Nameplates.  
+Reversed Font Explosion Feature on CN, TW, and KR clients (Azil says he is a badboi and very sorry <3).  
+Party Pets, Party/Assist/Tank Target frames now remember their size setting and don't do updates while they hide anymore.  
+Convinced the Filters section to Reset Filters when you **SMASH BUTTON**, and you can once again delete old spells from lists.  
+
+**Misc. Changes:**  
+General section of Units in Unitframe settings are less of a mess.  
+Vehicle Exit Button anchor size is now hugging the button like a good boi.  
+Anchors and Raid Control decided to start using the correct font after about a year or so.  
+
+___
+
+##### Version 11.341 [ February 4th 2020 ]
+
+**Hotfixed:**  
+Aura Bar Colors setting was getting spammed into the settings file.  
+
+___
+
+##### Version 11.34 [ February 4th 2020 ]
+
+**New Additions:**  
+The options window has been upgraded and sections have been reorganized a bit (Repooc does **NOT** like it tho).  
+Debuffs inside of **The Sleeping City** [Ny'alotha] will now by shown by Raid Debuffs filter (Thanks Broccoliz).  
+**Corrupted Mementos** and **Coalescing Visions** are now displayed by the Currency Datatext.  
+Buff Indicator now has its options reworked.  
+
+**Bug Fixes:**  
+Hopefully, Maybe, Perhaps, Possibly corrected the error which caused the Auras trying to attach to themselves on Unitframes (for real this time).  
+Frame Glow is now cool with hugging the Alt Power Bar on Unitframes too.  
+Fixed Vehicle Exit options, they were misbehaving unintentionally.  
+
+**Misc. Changes:**  
+The **Smart Raid Visibility** option gquit the UI.  
+Added more IDs to show **Voidtouched Egg** on nameplates (some were hiding but Mera found them).  
+Debuff Highlight will now not show something when it's added but not enabled (changed so you can blacklist **Grasping Tendrils**).  
+Intenté completar más del archivo de localización para español. Si es malo por favor mensaje Simpy en Discord. >x>  
+
+___
+
+##### Version 11.33 [ January 23rd 2020 ]
+
+**New Additions:**  
+Added Swap to Alt Power option to Raid and Raid40.  
+Added Alternative Power bar option to Raid and Raid40.  
+Added color option for Swapped Alt Power to Unitframes and Nameplates.  
+Added an option to disable Buffs or Debuffs specifically for Top Auras.  
+Added click-through option for Actionbars: Bar 1 through 10, Pet, and Stance bar.  
+
+**Bug Fixes:**  
+Attempted to fix Quest Icons on Nameplates which caused one quest to be displayed twice.  
+Fixed Raid40 Visibility Restore button not applying instantly.  
+Fixed the background color for Alternative Power bar, sometimes it was not updating to the correct color the first time.  
+Fixed an error when importing a profile, which complaining about priority not existing for auras.  
+Fixed the text info on Import and Export of a profile, it would stack the text at the bottom incorrectly before at first open.  
+Fixed resolution display on /estatus.  
+
+**Misc. Changes:**  
+ElvUI_CustomTweaks is now depreciated and forced off.  
+Let Swapped Alt Power work on all Alt Power types not just raid type ones.  
+Lowered Minimap minimum size to 40.  
+
+___
+
+##### Version 11.32 [ January 21st 2020 ]
+
+**New Additions:**  
+Added Faction info to the Gold Datatext and fixed a possible error with new characters on it.  
+Added support for Voidtouched Egg in Uldum onto the nameplates, similar to Nazjatar Follower XP.  
+Added Corrupted Item Icon onto the Character Frame for items with Corruption stat.  
+Added Color and Text Format option to the Party Alternative Power bar settings.  
+
+**Bug Fixes:**  
+Attempted to fix Boss Frame (or other Unitframes) name not being updated correctly.  
+Fixed error when using the "[health:deficit-percent:nostatus]" tag.  
+Fixed Reagent Bank Icon borders.  
+
+**Misc. Changes:**  
+Removed Nameplate Load Distance Options, until Blizzard decides if they will let us control it again in the future.  
+Reverted portrait facing and used a correct API to handle the X and Y Offsets.  
+Stopped letting AFK Mode activate when in a Pet Battle.  
+Changed the default position for the Alternative Power Bar.  
+Allow icon size six on the Buff Indicators.  
+
+___
+
+##### Version 11.312 [ January 18th 2020 ]
+
+**New Additions:**  
+Show Currency ID on Tooltip for Tracked Currencies on the Bag (if Tooltip settings allow Spell IDs to be shown).  
+
+**Hotfixed:**  
+Hide Purchase Bags when all slots are bought.  
+Revert Portrait Camera positioning.  
+
+___
+
+##### Version 11.311 [ January 17th 2020 ]
+
+**New Additions:**  
+Added Coalescing Visions & Corrupted Mementos to the currencies datatext.  
+Added Class Icon style to portraits, also added Pause and Desaturation setting for 3d portraits.  
+
+**Bug Fixes:**  
+Attempted to fix an issue which caused Chat Bubbles to error with Font not set.  
+Stopped the Unitframes from updating when using Display Frames. This was very noticable with effective updates enabled.  
+Fixed the Arena and Boss frames from being hidden when changing an option while using Display Frames.  
+Fixed the title tag for FRIENDLY_NPC Nameplates. They are not in a guild >.>  
+
+**Misc. Changes:**  
+Applied Actionbar transparency option on PetBar and StanceBar.  
+Fixed Vehicle Exit button highlight and added Frame Level and Strata options (found under ActionBars > Vehicle Exit).  
+Update instance ID from Deepwind Gorge. (Thanks AcidWeb)  
+
+___
+
+##### Version 11.301 [ January 15th 2020 ]
+
+**New Additions:**  
+Added an option to Swap to Alt Power on party frames, until we have a widget or something for corruption status of party members.  
+Removed the Vehicle Exit Button from the Minimap. We added a mover and the new settings can be found in the Actionbar configuration.  
+
+**Bug Fixes:**  
+Fixed an issue with Buff Indicators which caused an error because of the setting conversion code.  
+Fixed an issue that caused some unskinned Blizzard frames to get the edges torn off.  
+Attempted to fix the Portrait offsets and made the settings display an important note.  
+
+**Misc. Changes:**  
+Added the Nzoth eye texture to the Alternative Power Bar, if its Sanity.  
+When you hover the NZoth eye on Character page, it will now show a highlight around the items with corruption stat.  
+Set a texture when a submenu is selected in the Auctionhouse skin.  
+Fix backdrops on empty essences in the Character Frame.  
+Display an icon on Bag icons for corrupted items.  
+
+___
+
+##### Version 11.291 [ January 14th 2020 ]
+
+**Bug Fixes:**  
+Fixed barInfo error.  
+Fixed SetAuraUpdateMethod error.  
+
+___
+
+##### Version 11.28 for patch 8.3 [ January 14th 2020 ]
 
 **New Additions:**  
 Added an option to let Unitframe and/or Nameplate frames update their Health, Power, and/or Auras at consistent rate (between 0.1 and 0.5 of a second) rather than using Blizzard's event system for when to update. This is an opt-in method that is less recommended but might solve issues where the update isn't received correctly otherwise.  
@@ -35,7 +482,8 @@ Simplified the OrderHall Talent Frame skin (which is also used by the new 8.3 ta
 Optimized more of the Bag module code.  
 
 ___
-### Version 11.27 [ December 14th 2019 ]
+
+##### Version 11.27 [ December 14th 2019 ]
 
 **New Additions:**  
 Using "/luaerror off" will restore Addons disabled from "/luaerror on" in testing now (during that session only).  
@@ -56,7 +504,8 @@ Changed the Aura Spacing options to use max 20.
 Addons which were integrated into the base addon are now disabled automatically on load (VisualAuraTimers, ExtraActionBars, CastBarOverlay, EverySecondCounts, and AuraBarsMovers).  
 
 ___
-### Version 11.26 [ December 5th 2019 ]
+
+##### Version 11.26 [ December 5th 2019 ]
 
 **New Additions:**  
 Added spacing option for unitframe auras.  
@@ -79,7 +528,8 @@ Updated the Chat Spam Interval to resolve some issues with it.
 Updated Friends and Guild Datatext.  
 
 ___
-### Version 11.25 [ November 10th 2019 ]
+
+##### Version 11.25 [ November 10th 2019 ]
 
 **New Additions:**  
 Nameplate Quest Icons now have the ability to show for multiple quests and have a few new options.  
@@ -113,7 +563,8 @@ Changes the options to uses more tabs.
 For Plugin Authors: We added a seperator in our Options: <<< Plugins >>> Which means, you should add your options below it. Just change your main option number to: 6  
 
 ___
-### Version 11.24 [ October 8th 2019 ]
+
+##### Version 11.24 [ October 8th 2019 ]
 
 **New Additions:**  
 Available Tags is now available in the Options.  
@@ -140,7 +591,8 @@ Removed our clipping for UI Scale.
 Updated the Chat module & Guild and Friends DataText to use the new API blizzard switched too, with a few minor bug fixes.  
 
 ___
-### Version 11.23 [ September 24th 2019 ]
+
+##### Version 11.23 [ September 24th 2019 ]
 
 **New Additions:**  
 Added an option to enable a more visible Auto Attack animation on the ActionBars. Disabled by default.  
@@ -161,10 +613,10 @@ Changed the Battle.net status frame. Just click on your Battle.tag to add/edit t
 Added "Eye of Leotheras" (PvP Talent) to the PlayerBuffs Filter.  
 
 ___
-### Version 11.22 [ September 6th 2019 ]
+
+##### Version 11.22 [ September 6th 2019 ]
 
 **New Additions:**  
-
 
 **Bug Fixes:**  
 Fixed Style Filter error: attempt to compare nil with number (line 322).  
@@ -177,7 +629,8 @@ Fixed Friends Datatext to show those playing Classic WoW.
 **Misc. Changes:**  
 
 ___
-### Version 11.21 [ August 17th 2019 ]
+
+##### Version 11.21 [ August 17th 2019 ]
 
 **New Additions:**  
 Style Filters: Added a new trigger "Location" that triggers on which Map, Instance, Zone (like "Boralus Harbor") or Subzone (like "Sanctum of the Sages") you are currently in.  If enabled the filter will only trigger when you are inside one of the specified maps or instances.  
@@ -204,7 +657,8 @@ Added EP Boss one debuffs to Raid Debuffs.
 Updated our LibAnim by Hydra. <3  
 
 ___
-### Version 11.20 [ July 29th 2019 ]
+
+##### Version 11.20 [ July 29th 2019 ]
 
 **New Additions:**  
 
@@ -226,7 +680,8 @@ with various nameplate and unitframe settings.
 Tweaked a bit our Spec/Loot DataText.  
 
 ___
-### Version 11.19 [ July 22nd 2019 ]
+
+##### Version 11.19 [ July 22nd 2019 ]
 
 **New Additions:**  
 Added Player Can Attack and Player Can Not Attack unit conditions to Nameplate Style Filters.  
@@ -245,7 +700,8 @@ Module initialization and skin registration is now handled by xpcall providing b
 and S:RegisterSkin has returned as the preferred method for registering a skin.  
 
 ___
-### Version 11.18 [ July 9th 2019 ]
+
+##### Version 11.18 [ July 9th 2019 ]
 
 **New Additions:**  
 Added debuffs in Operation: Mechagon.  
@@ -260,38 +716,37 @@ Don't allow certain DataTexts not be toggled in combat because of Blizzard restr
 Actually, we might as well just remove ElvUIGVC completely.  
 
 ___
-### Version 11.17 [ July 8th 2019 ]
+
+##### Version 11.17 [ July 8th 2019 ]
 
 **New Additions:**  
 
-
 **Bug Fixes:**  
-
 
 **Misc. Changes:**  
 Disabled replying to ElvUIGVC chat channel at Blizzards request.  
 
 ___
-### Version 11.16 [ July 4th 2019 ]
+
+##### Version 11.16 [ July 4th 2019 ]
 
 **New Additions:**  
-
 
 **Bug Fixes:**  
 Fixed an issue with our chat to error out if you try to move it.  
 
-
 **Misc. Changes:**  
 
-
 ___
-### Version 11.15 [ July 3rd 2019 ]
+
+##### Version 11.15 [ July 3rd 2019 ]
 
 **New Additions:**  
 Added new consumable buffs.  
 Added debuffs in Eternal Palace.  
 Added a new element to Friendly NPC nameplates to display an XP Bar for the Nazjatar Bodyguards.  
 New Nameplate Style Filter Unit Conditions:  
+
 - "Not Pet": Activated when the unit is not the player's pet.  
 - "Player Controlled" / "Not Player Controlled": Activated when a unit is controlled by the active player or not.  
 - "Owned by Player" / "Not Owned By Player": Activated when a unit is owned by the active player or not.  
@@ -310,10 +765,10 @@ Adjusting the classbar position on nameplates while targeting something throws a
 Moving the General chat tab causes an error, please avoid trying to move it while we continue to investigate a fix, hopefully coming in 11.16.  
 
 ___
-### Version 11.14 [ June 26th 2019 ]
+
+##### Version 11.14 [ June 26th 2019 ]
 
 **New Additions:**  
-
 
 **Bug Fixes:**  
 Attempted fix for two Toolkit errors (cause by nameplate and bankframe code) and AceConfigDialog restricted regions error.  
@@ -323,7 +778,8 @@ Added Prismatic Manapearls to our currencies DataText. (#1372)
 Changed the Font Shadow styling around the UI.  
 
 ___
-### Version 11.13 [ June 25th 2019 ]
+
+##### Version 11.13 [ June 25th 2019 ]
 
 **New Additions:**  
 Added option to change the vertical/horizontal overlap of the Nameplates.  
@@ -343,7 +799,8 @@ Take account to the new Blizzard-Nameplate system.
 Updated existing skins with 8.2 changes.  
 
 ___
-### Version 11.12 [ May 31st 2019 ]
+
+##### Version 11.12 [ May 31st 2019 ]
 
 **Important Changes:**  
 ElvUI_Config has been renamed to ElvUI_OptionsUI.  
@@ -379,7 +836,8 @@ Various minor performance improvements.
 Cutaway health on Nameplates is back! :D  
 
 ___
-### Version 11.11 [ May 14th 2019 ]
+
+##### Version 11.11 [ May 14th 2019 ]
 
 **New Additions:**  
 Add debuffs for Crucible of Storms.  
@@ -437,7 +895,8 @@ Fixed an issue and garbage leak with the plugin version checker.
 Fixed DataText header text using the Tooltip Header size when it was not supposed too.  
 
 ___
-### Version 11.10 [ April 9th 2019 ]
+
+##### Version 11.10 [ April 9th 2019 ]
 
 **New Additions:**  
 
@@ -450,7 +909,8 @@ Update GMChat skin.
 Disabled Actionbar Charge Cooldown Text by default.  
 
 ___
-### Version 11.09 [ April 8th 2019 ]
+
+##### Version 11.09 [ April 8th 2019 ]
 
 **New Additions:**  
 
@@ -462,7 +922,8 @@ Fixed charge cooldown setting not applying correctly. (#1256)
 **Misc. Changes:**  
 
 ___
-### Version 11.08 [ April 8th 2019 ]
+
+##### Version 11.08 [ April 8th 2019 ]
 
 **New Additions:**  
 
@@ -478,7 +939,8 @@ ___
 **Misc. Changes:**  
 
 ___
-### Version 11.07 [ April 7th 2019 ]
+
+##### Version 11.07 [ April 7th 2019 ]
 
 **New Additions:**  
 [Nameplate] Added ElvUIPlayerNamePlateAnchor for WeakAuras and other addons.  
@@ -566,7 +1028,8 @@ Added Vehicle support to our new oUF_Fader lib. (#148)
 Scaled the Skip frame on the cinematic screen. (#1176)  
 
 ___
-### Version 11.06 [ March 14th 2019 ]
+
+##### Version 11.06 [ March 14th 2019 ]
 
 **New Additions:**  
 
@@ -582,7 +1045,8 @@ Fixed LFG Ready Popup skin from showing a Blizzard backdrop.
 Allowed the Config to once again leave the screen.  
 
 ___
-### Version 11.05 [ March 14th 2019 ]
+
+##### Version 11.05 [ March 14th 2019 ]
 
 **New Additions:**  
 
@@ -594,7 +1058,8 @@ Fixed issue which caused the chat panel backdrops color to change when updating 
 **Misc. Changes:**  
 
 ___
-### Version 11.04 [ March 14th 2019 ]
+
+##### Version 11.04 [ March 14th 2019 ]
 
 **New Additions:**  
 
@@ -605,7 +1070,8 @@ Fixed an issue which caused a hidden frame in the middle of the screen to hijack
 **Misc. Changes:**  
 
 ___
-### Version 11.03 [ March 14th 2019 ]
+
+##### Version 11.03 [ March 14th 2019 ]
 
 **New Additions:**  
 Added Target Class Bar on Nameplates.  
@@ -627,7 +1093,8 @@ Prevented the Update Popup from being shown while in combat.
 Added Dispellable to Nameplate Friendly NPC Buffs and Nameplate Enemy Player Debuffs list by default.  
 
 ___
-### Version 11.02 [ March 12th 2019 ]
+
+##### Version 11.02 [ March 12th 2019 ]
 
 **New Additions:**  
 
@@ -644,7 +1111,8 @@ Altered the way the CD module was handling the text on Nameplates, so that the t
 Allowed Test Nameplate to be movable via drag.  
 
 ___
-### Version 11.01 [ March 12th 2019 ]
+
+##### Version 11.01 [ March 12th 2019 ]
 
 **New Additions:**  
 
@@ -654,7 +1122,8 @@ Fixed pet bar not displaying the spell textures correctly.
 **Misc. Changes:**  
 
 ___
-### Version 11.00 [ March 12th 2019 ]
+
+##### Version 11.00 [ March 12th 2019 ]
 
 **New Additions:**  
 NamePlates were rewritten from scratch. They now utilize the oUF framework like our UnitFrames.  
@@ -668,7 +1137,8 @@ Put the Voice Chat Buttons in our Left Chat. Now its more intuitive to find it.
 Various skin tweaks/changes.  
 
 ___
-### Version 10.92 [ March 4th 2019 ]
+
+##### Version 10.92 [ March 4th 2019 ]
 
 **New Additions:**  
 Added option to suppress the "UI Scale Changed" popup for the current session. It is a checkbox on the popup itself.  
@@ -685,7 +1155,8 @@ Reverted some of the recent UI scale changes in an attempt to make it work corre
 A few skin tweaks.  
 
 ___
-### Version 10.91 [ February 27th 2019 ]
+
+##### Version 10.91 [ February 27th 2019 ]
 
 **New Additions:**  
 
@@ -695,7 +1166,8 @@ Fixed issue with Objective Tracker in Mythics.
 **Misc. Changes:**  
 
 ___
-### Version 10.90 [ February 25th 2019 ]
+
+##### Version 10.90 [ February 25th 2019 ]
 
 **New Additions:**  
 
@@ -704,9 +1176,9 @@ Fixed issue causing UIScale value to be stored as string instead of number, resu
 
 **Misc. Changes:**  
 Changed UIScale information popup so it will continue to pop up until an action has been taken. This is to make sure the user sees the info in case an error prevented the popup the first time.
-
 ___
-### Version 10.89 [ February 25th 2019 ]
+
+##### Version 10.89 [ February 25th 2019 ]
 
 **New Additions:**  
 Added options to change font, size and outline on the new itemlevel and enchant info on Character/Inspect frame.  
@@ -719,7 +1191,8 @@ Fixed rare issue where UIScale had been stored as 0 and would cause the UI to ex
 **Misc. Changes:**  
 
 ___
-### Version 10.88 [ February 24th 2019 ]
+
+##### Version 10.88 [ February 24th 2019 ]
 
 **New Additions:**  
 Added new scale options. (General -> Auto Scale | UI Scale)  
@@ -740,7 +1213,8 @@ Improved the tooltip item level code, it should be far more accurate now! (Thank
 The layout in the installer has been replaced with a new one.  
 
 ___
-### Version 10.87 [ January 30th 2019 ]
+
+##### Version 10.87 [ January 30th 2019 ]
 
 **New Additions:**  
 
@@ -752,7 +1226,8 @@ Fixed an error caused by incorrect file loading order.
 **Misc. Changes:**  
 
 ___
-### Version 10.86 [ January 29th 2019 ]
+
+##### Version 10.86 [ January 29th 2019 ]
 
 **New Additions:**  
 Added option to toggle on/off the colors on bag slots for bags with assigned items.  
@@ -776,7 +1251,8 @@ Moved the options for the Talking Head to the skin section.
 Added Battle of Dazar'alor raid and M+ Season 2 affix debuffs to the RaidDebuffs filter.  
 
 ___
-### Version 10.85 [ January 4th 2019 ]
+
+##### Version 10.85 [ January 4th 2019 ]
 
 **New Additions:**  
 Added Weakened Soul back to our Buff Indicator.  
@@ -810,7 +1286,8 @@ Hid the Recipient Portrait on the TradeFrame.
 ElvUI now staggers the updates that happen when a profile is changed. This should have minimal effect on existing plugins.  
 
 ___
-### Version 10.84 [ December 11th 2018 ]
+
+##### Version 10.84 [ December 11th 2018 ]
 
 **New Additions:**  
 Added option to use health texture also on the backdrop.  
@@ -834,7 +1311,8 @@ Some Code improvements.
 Various Skin tweaks.  
 
 ___
-### Version 10.83 [ November 20th 2018 ]
+
+##### Version 10.83 [ November 20th 2018 ]
 
 **New Additions:**  
 Added Drain Life to channel ticks.  
@@ -891,7 +1369,8 @@ Added ElvUIGVC chat channel for Version Checking (Addon Communication) and Voice
 Time datatext will now use the 24 hour clock by default in non-US regions. (#839 - Credit: @Zucht).  
 
 ___
-### Version 10.82 [ September 18th 2018 ]
+
+##### Version 10.82 [ September 18th 2018 ]
 
 **New Additions:**  
 Added toggle option for the New Item Glow in your bags. (#452)  
@@ -907,7 +1386,8 @@ Updated ArenaPrepFrame functions. (Thanks oUF)!
 Updated PvP, LFG & Talent skins.  
 
 ___
-### Version 10.81 [ September 6th 2018 ]
+
+##### Version 10.81 [ September 6th 2018 ]
 
 **New Additions:**  
 
@@ -920,7 +1400,8 @@ Added BfA Dungeon debuffs to RaidDebuff filter. Credit: Dharwin & Rubgrsch.
 Removed T-18 4 PC Bonus from the Druid Buff Indicator.  
 
 ___
-### Version 10.80 [ September 2nd 2018 ]
+
+##### Version 10.80 [ September 2nd 2018 ]
 
 **New Additions:**  
 Added toggle option for Cutaway health on Nameplates.  
@@ -945,7 +1426,8 @@ Removed Legion debuffs
 Updated BfA consumables buffs  
 
 ___
-### Version 10.79 [ August 20th 2018 ]
+
+##### Version 10.79 [ August 20th 2018 ]
 
 **New Additions:**  
 Added Tranquility channel ticks. (#586)  
@@ -984,7 +1466,8 @@ Skin the QuickJoinToastButton.
 Updated Chat Emojis.  
 
 ___
-### Version 10.78 [ July 28th 2018 ]
+
+##### Version 10.78 [ July 28th 2018 ]
 
 **New Additions:**  
 
@@ -1000,7 +1483,8 @@ Re-enable the old Guild skin back.
 Updated Communities, PVP & Tooltip skins.  
 
 ___
-### Version 10.77 [ July 20th 2018 ]
+
+##### Version 10.77 [ July 20th 2018 ]
 
 **New Additions:**  
 Added a mover for the Chat buttons.  
@@ -1015,7 +1499,8 @@ Updated CommunitiesUI skin.
 Added support for chat filters for community channels displayed in the real chat window.  
 
 ___
-### Version 10.76 for patch 8.0 [ July 19th 2018 ]
+
+##### Version 10.76 for patch 8.0 [ July 19th 2018 ]
 
 **New Additions:**  
 
@@ -1030,7 +1515,8 @@ Fixed a texture issue in the Quest Log skin.
 Updated skinning of the "TodayFrame" in the calendar. It uses skinning from Azilroka.  
 
 ___
-### Version 10.75 for patch 8.0 [ July 17th 2018 ]
+
+##### Version 10.75 for patch 8.0 [ July 17th 2018 ]
 
 **New Additions:**  
 New Cooldown settings, they can be found in the Cooldowns category.  
@@ -1062,7 +1548,8 @@ Simplify how the Chat module handles Chat Filters. (Thanks Ellypse)
 Changed how icons get shadowed in Guild bank and Bags module.  
 
 ___
-### Version 10.74 [ June 7th 2018 ]
+
+##### Version 10.74 [ June 7th 2018 ]
 
 **New Additions:**  
 Added "Group Spacing" option to party/raid frames. This allows you to separate each individual group.  
@@ -1104,7 +1591,8 @@ E:ShortValue will now floor values below 1000.
 Optimized nameplates a bit, by making sure updates on Blizzard plates would not continue firing after we replaced them with our own.  
 
 ___
-### Version 10.73 [ March 23rd 2018 ]
+
+##### Version 10.73 [ March 23rd 2018 ]
 
 **New Additions:**  
 Added color options for Debuff Highlighting.  
@@ -1149,7 +1637,8 @@ Updated the Quest and Upgrade Icon in the Bag module.
 Added Kin's Forging Strike to Raid Debuffs (for normal+ raids).  
 
 ___
-### Version 10.72 [ January 28th 2018 ]
+
+##### Version 10.72 [ January 28th 2018 ]
 
 **New Additions:**  
 None  
@@ -1166,7 +1655,8 @@ Sorted the Dropdown for Style Filters by Priority (rather than by Name).
 Skinned various tutorial frame close buttons.  
 
 ___
-### Version 10.71 [ January 23rd 2018 ]
+
+##### Version 10.71 [ January 23rd 2018 ]
 
 **New Additions:**  
 Added toggle option for the new handling of the "Unspent Talent Alert" frame.  
@@ -1197,7 +1687,8 @@ Style Filter border color action now applies to the Power Bar border as well.
 Stacks on nameplate auras will no longer be hidden when they reach 10 or above.  
 
 ___
-### Version 10.70 [ December 26th 2017 ]
+
+##### Version 10.70 [ December 26th 2017 ]
 
 **New Additions:**  
 Added new style filter triggers "Is Targeting Player" and "Is Not Targeting Player".  
@@ -1244,7 +1735,8 @@ Reverted a backdrop color change on the TradeSkill frame.
 Changed the name format used for the ElvUI nameplates. Previously it was "ElvUI_Plate%d_UnitFrame" and now it is "ElvUI_NamePlate%d".  
 
 ___
-### Version 10.69 [ December 1st 2017 ]
+
+##### Version 10.69 [ December 1st 2017 ]
 
 **New Additions:**  
 Added visibility settings to the Stance Bar. By default it will hide in vehicles and pet battles.  
@@ -1278,7 +1770,8 @@ Changed Ace3 skin to no longer add border on SimpleGroup widgets.
 The Quest Choice skin is now enabled by default.  
 
 ___
-### Version 10.68 [ October 26th 2017 ]
+
+##### Version 10.68 [ October 26th 2017 ]
 
 **New Additions:**  
 Added option to show Quick Join messages as clickable links in chat.  
@@ -1307,7 +1800,8 @@ Code clean-up by Rubgrsch.
 Updated some aura filters.  
 
 ___
-### Version 10.67 [ October 2nd 2017 ]
+
+##### Version 10.67 [ October 2nd 2017 ]
 
 **New Additions:**  
 None
@@ -1317,9 +1811,9 @@ Fixed error with castbar element (for real this time).
 
 **Misc. Changes:**  
 None
-
 ___
-### Version 10.66 [ October 2nd 2017 ]
+
+##### Version 10.66 [ October 2nd 2017 ]
 
 **New Additions:**  
 None
@@ -1329,9 +1823,9 @@ Fixed error in castbar element.
 
 **Misc. Changes:**  
 None
-
 ___
-### Version 10.65 [ October 1st 2017 ]
+
+##### Version 10.65 [ October 1st 2017 ]
 
 **New Additions:**  
 None  
@@ -1343,7 +1837,8 @@ Fixed issue creating new style filters.
 None  
 
 ___
-### Version 10.64 [ October 1st 2017 ]
+
+##### Version 10.64 [ October 1st 2017 ]
 
 **New Additions:**  
 Added Korean option for the "Numer Prefix Style" setting. This will allow unitframe tags to use the Korean number annotations.  
@@ -1401,7 +1896,8 @@ Added skin for the TableAttributeDisplay frame.
 Added some additional spells to the RaidDebuffs and RaidBuffsElvUI filters for M+ dungeons.  
 
 ___
-### Version 10.63 [ September 9th 2017 ]
+
+##### Version 10.63 [ September 9th 2017 ]
 
 **New Additions:**  
 Added quest boss trigger to nameplate Style Filters.  
@@ -1426,7 +1922,8 @@ Removed caching of HandleModifiedItemClick to allow hooks to fire from other add
 Fixed spell ID for Consuming Hunger in the RaidDebuffs filter.  
 
 ___
-### Version 10.62 [ August 30th 2017 ]
+
+##### Version 10.62 [ August 30th 2017 ]
 
 **New Additions:**  
 The enabled state of a Style Filter for nameplates is now stored in your profile instead of being global.  
@@ -1446,7 +1943,8 @@ Disabled the "Boss" Style Filter by default.
 Updated LibActionButton.  
 
 ___
-### Version 10.61 [ August 29th 2017 ]
+
+##### Version 10.61 [ August 29th 2017 ]
 
 **New Additions:**  
 None  
@@ -1458,7 +1956,8 @@ Fixed issue which broke the Ace3 config of other addons.
 Reverted some changes to Profiles section of ElvUI.  
 
 ___
-### Version 10.60 [ August 29th 2017 ]
+
+##### Version 10.60 [ August 29th 2017 ]
 
 **New Additions:**  
 MAJOR: Added "Style Filters" to NamePlates, allowing you to perform various actions on specific units that match your chosen filter settings.  
@@ -1494,7 +1993,8 @@ Added shortcut buttons to the ActionBars and UnitFrames main pages.
 Added Drag&Drop support to AceConfig buttons for our new aura filtering system.  
 
 ___
-### Version 10.59 [ June 27th 2017 ]  
+
+##### Version 10.59 [ June 27th 2017 ]  
 
 **New Additions:**  
 None

@@ -8,23 +8,10 @@ local CreateFrame = CreateFrame
 
 function B:ScaleTalkingHeadFrame()
 	local scale = E.db.general.talkingHeadFrameScale or 1
-
-	--Sanitize
-	if scale < 0.5 then scale = 0.5
-	elseif scale > 2 then scale = 2	end
-	scale = scale * E.mult
-
 	local TalkingHeadFrame = _G.TalkingHeadFrame
-	--:SetScale no longer triggers OnSizeChanged in Legion, and as such the mover will not update its size
-	--Calculate dirtyWidth/dirtyHeight based on original size and scale
-	--This way the mover frame will use the right size when we manually trigger "OnSizeChanged"
-	local width = TalkingHeadFrame:GetWidth() * scale
-	local height = TalkingHeadFrame:GetHeight() * scale
-	TalkingHeadFrame.dirtyWidth = width
-	TalkingHeadFrame.dirtyHeight = height
-
+	local width, height = TalkingHeadFrame:GetSize()
+	TalkingHeadFrame.mover:SetSize(width * scale, height * scale)
 	TalkingHeadFrame:SetScale(scale)
-	TalkingHeadFrame:GetScript("OnSizeChanged")(TalkingHeadFrame) --Resize mover
 
 	--Reset Model Camera
 	local model = TalkingHeadFrame.MainFrame.Model
@@ -43,12 +30,11 @@ local function InitializeTalkingHead()
 	local TalkingHeadFrame = _G.TalkingHeadFrame
 
 	--Prevent WoW from moving the frame around
-	TalkingHeadFrame.ignoreFramePositionManager = true
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.TalkingHeadFrame = nil
 
 	--Set default position
 	TalkingHeadFrame:ClearAllPoints()
-	TalkingHeadFrame:Point("BOTTOM", 0, 265)
+	TalkingHeadFrame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 373)
 
 	E:CreateMover(TalkingHeadFrame, "TalkingHeadFrameMover", L["Talking Head Frame"], nil, nil, nil, nil, nil, 'skins')
 

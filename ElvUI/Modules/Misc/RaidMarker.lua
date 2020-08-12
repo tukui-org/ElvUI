@@ -2,9 +2,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc')
 
---Lua functions
 local sin, cos, rad = math.sin, math.cos, rad -- sin~=math.sin, cos~=math.cos, rad==math.rad; why? who knows? :P
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local GetNumGroupMembers = GetNumGroupMembers
 local UnitIsGroupLeader = UnitIsGroupLeader
@@ -43,7 +42,7 @@ function M:RaidMarkShowIcons()
 	end
 	local x, y = GetCursorPosition();
 	local scale = E.UIParent:GetEffectiveScale();
-	self.RaidMarkFrame:Point("CENTER", E.UIParent, "BOTTOMLEFT", x / scale, y / scale);
+	self.RaidMarkFrame:SetPoint("CENTER", E.UIParent, "BOTTOMLEFT", x / scale, y / scale);
 	self.RaidMarkFrame:Show();
 end
 
@@ -65,8 +64,8 @@ M:RegisterEvent("PLAYER_TARGET_CHANGED", 'RaidMark_OnEvent');
 
 function M:RaidMarkButton_OnEnter()
 	self.Texture:ClearAllPoints();
-	self.Texture:Point("TOPLEFT", -10, 10);
-	self.Texture:Point("BOTTOMRIGHT", 10, -10);
+	self.Texture:SetPoint("TOPLEFT", -10, 10);
+	self.Texture:SetPoint("BOTTOMRIGHT", 10, -10);
 end
 
 function M:RaidMarkButton_OnLeave()
@@ -83,8 +82,8 @@ local ANG_RAD = rad(360) / 7
 function M:LoadRaidMarker()
 	local marker = CreateFrame("Frame", nil, E.UIParent);
 	marker:EnableMouse(true);
-	marker:Size(100, 100);
 	marker:SetFrameStrata("DIALOG");
+	marker:Size(100, 100);
 
 	for i = 1, 8 do
 		local button = CreateFrame("Button", "RaidMarkIconButton"..i, marker);
@@ -99,10 +98,10 @@ function M:LoadRaidMarker()
 		button:SetScript("OnEnter", M.RaidMarkButton_OnEnter);
 		button:SetScript("OnLeave", M.RaidMarkButton_OnLeave);
 		if i == 8 then
-			button:Point("CENTER");
+			button:SetPoint("CENTER");
 		else
 			local angle = ANG_RAD * (i - 1)
-			button:Point("CENTER", sin(angle) * 60, cos(angle) * 60);
+			button:SetPoint("CENTER", sin(angle) * 60, cos(angle) * 60);
 		end
 	end
 

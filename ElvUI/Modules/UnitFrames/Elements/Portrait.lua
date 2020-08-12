@@ -1,14 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---WoW API / Variables
+local rad = rad
+local unpack = unpack
+local select = select
+local UnitClass = UnitClass
 local CreateFrame = CreateFrame
+local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
+local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
 function UF:Construct_Portrait(frame, type)
 	local portrait
 
 	if type == 'texture' then
-		local backdrop = CreateFrame('Frame', nil, frame)
+		local backdrop = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 		portrait = frame:CreateTexture(nil, 'OVERLAY')
 		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 		backdrop:SetOutside(portrait)
@@ -25,124 +30,109 @@ function UF:Construct_Portrait(frame, type)
 	return portrait
 end
 
-function UF:Configure_Portrait(frame, dontHide)
-	if not frame.VARIABLES_SET then return end
-	local db = frame.db
-	if frame.Portrait and not dontHide then
-		frame.Portrait:Hide()
-		frame.Portrait:ClearAllPoints()
-		frame.Portrait.backdrop:Hide()
+function UF:Configure_Portrait(frame)
+	local last = frame.Portrait
+	if last then
+		last:Hide()
+		last.backdrop:Hide()
 	end
-	frame.Portrait = db.portrait.style == '2D' and frame.Portrait2D or frame.Portrait3D
 
-	local portrait = frame.Portrait
+	local db = frame.db
+	local portrait = (db.portrait.style == '3D' and frame.Portrait3D) or frame.Portrait2D
+	portrait.db = db.portrait
+	frame.Portrait = portrait
+
+	if portrait.db.style == 'Class' then
+		portrait:SetTexture(classIcon)
+		portrait.customTexture = classIcon
+	elseif portrait.db.style == '2D' then
+		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+		portrait.customTexture = nil
+	end
+
 	if frame.USE_PORTRAIT then
 		if not frame:IsElementEnabled('Portrait') then
 			frame:EnableElement('Portrait')
 		end
 
+		portrait:Show()
 		portrait:ClearAllPoints()
 		portrait.backdrop:ClearAllPoints()
-		if frame.USE_PORTRAIT_OVERLAY then
-			if db.portrait.style == '2D' then
-				portrait:SetParent(frame.Health)
-			else
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
-			end
 
-			portrait:SetAlpha(db.portrait.overlayAlpha)
-			if not dontHide then
-				portrait:Show()
-			end
+		if portrait.db.style == '3D' then
+			portrait:SetFrameLevel(frame.Health:GetFrameLevel())
+		else
+			portrait:SetParent(frame.USE_PORTRAIT_OVERLAY and frame.Health or frame)
+		end
+
+		if frame.USE_PORTRAIT_OVERLAY then
+			portrait:SetAlpha(portrait.db.overlayAlpha)
 			portrait.backdrop:Hide()
 
-			portrait:ClearAllPoints()
-			if db.portrait.fullOverlay then
+			if portrait.db.fullOverlay then
 				portrait:SetAllPoints(frame.Health)
 			else
 				local healthTex = frame.Health:GetStatusBarTexture()
 				if db.health.reverseFill then
-					portrait:Point("TOPLEFT", healthTex, "TOPLEFT")
-					portrait:Point("BOTTOMLEFT", healthTex, "BOTTOMLEFT")
-					portrait:Point("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT")
+					portrait:SetPoint("TOPLEFT", healthTex, "TOPLEFT")
+					portrait:SetPoint("BOTTOMLEFT", healthTex, "BOTTOMLEFT")
+					portrait:SetPoint("BOTTOMRIGHT", frame.Health, "BOTTOMRIGHT")
 				else
-					portrait:Point("TOPLEFT", frame.Health, "TOPLEFT")
-					portrait:Point("BOTTOMRIGHT", healthTex, "BOTTOMRIGHT")
-					portrait:Point("BOTTOMLEFT", healthTex, "BOTTOMLEFT")
+					portrait:SetPoint("TOPLEFT", frame.Health, "TOPLEFT")
+					portrait:SetPoint("BOTTOMRIGHT", healthTex, "BOTTOMRIGHT")
+					portrait:SetPoint("BOTTOMLEFT", healthTex, "BOTTOMLEFT")
 				end
 			end
 		else
-			portrait:ClearAllPoints()
-			portrait:SetAllPoints()
-
 			portrait:SetAlpha(1)
-			if not dontHide then
-				portrait:Show()
-			end
 			portrait.backdrop:Show()
-
-			if db.portrait.style == '2D' then
-				portrait:SetParent(frame)
-			else
-				portrait:SetFrameLevel(frame.Health:GetFrameLevel())
-			end
+			portrait:SetInside(portrait.backdrop, frame.BORDER)
 
 			if frame.ORIENTATION == "LEFT" then
-				portrait.backdrop:Point("TOPLEFT", frame, "TOPLEFT", frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
+				portrait.backdrop:SetPoint("TOPLEFT", frame, "TOPLEFT", frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
 
 				if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR or frame.POWERBAR_DETACHED then
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER - frame.SPACING*3, 0)
+					portrait.backdrop:SetPoint("BOTTOMRIGHT", frame.Health.backdrop, "BOTTOMLEFT", frame.BORDER - frame.SPACING*3, 0)
 				else
-					portrait.backdrop:Point("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", frame.BORDER - frame.SPACING*3, 0)
+					portrait.backdrop:SetPoint("BOTTOMRIGHT", frame.Power.backdrop, "BOTTOMLEFT", frame.BORDER - frame.SPACING*3, 0)
 				end
 			elseif frame.ORIENTATION == "RIGHT" then
-				portrait.backdrop:Point("TOPRIGHT", frame, "TOPRIGHT", -frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
+				portrait.backdrop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", -frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
 
 				if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR or frame.POWERBAR_DETACHED then
-					portrait.backdrop:Point("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER + frame.SPACING*3, 0)
+					portrait.backdrop:SetPoint("BOTTOMLEFT", frame.Health.backdrop, "BOTTOMRIGHT", -frame.BORDER + frame.SPACING*3, 0)
 				else
-					portrait.backdrop:Point("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", -frame.BORDER + frame.SPACING*3, 0)
+					portrait.backdrop:SetPoint("BOTTOMLEFT", frame.Power.backdrop, "BOTTOMRIGHT", -frame.BORDER + frame.SPACING*3, 0)
 				end
 			end
-
-			portrait:SetInside(portrait.backdrop, frame.BORDER)
 		end
 	else
 		if frame:IsElementEnabled('Portrait') then
 			frame:DisableElement('Portrait')
-			portrait:Hide()
-			portrait.backdrop:Hide()
 		end
+
+		portrait.backdrop:Hide()
+		portrait:Hide()
 	end
 end
 
-function UF:PortraitUpdate(unit, event, shouldUpdate)
-	local db = self:GetParent().db
-	if not db then return end
+function UF:PortraitUpdate(unit, event)
+	if self.stateChanged or event == 'ElvUI_UpdateAllElements' then
+		local db = self.db
+		if not db then return end
 
-	local portrait = db.portrait
-	if portrait.enable and self:GetParent().USE_PORTRAIT_OVERLAY then
-		self:SetAlpha(0); -- there was a reason for this. i dont remember
-		self:SetAlpha(db.portrait.overlayAlpha);
-	else
-		self:SetAlpha(1)
-	end
+		if self.playerModel then
+			if self.state then
+				self:SetCamDistanceScale(db.camDistanceScale)
+				self:SetViewTranslation(db.xOffset * 100, db.yOffset * 100)
+				self:SetRotation(rad(db.rotation))
+			end
 
-	if (shouldUpdate or (event == "ElvUI_UpdateAllElements" and self:IsObjectType("Model"))) then
-		local rotation = portrait.rotation or 0
-		local camDistanceScale = portrait.camDistanceScale or 1
-		local xOffset, yOffset = (portrait.xOffset or 0), (portrait.yOffset or 0)
-
-		if self:GetFacing() ~= (rotation / 57.29573671972358) then
-			self:SetFacing(rotation / 57.29573671972358) -- because 1 degree is equal 0,0174533 radian. Credit: Hndrxuprt
+			self:SetDesaturation(db.desaturation)
+			self:SetPaused(db.paused)
+		elseif db.style == 'Class' then
+			local Class = select(2, UnitClass(unit))
+			self:SetTexCoord(unpack(CLASS_ICON_TCOORDS[Class]))
 		end
-
-		self:SetCamDistanceScale(camDistanceScale)
-		self:SetPosition(xOffset, xOffset, yOffset)
-
-		--Refresh model to fix incorrect display issues
-		self:ClearModel()
-		self:SetUnit(unit)
 	end
 end
-

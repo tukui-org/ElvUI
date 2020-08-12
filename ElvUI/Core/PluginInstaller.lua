@@ -59,14 +59,12 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local PI = E:GetModule('PluginInstaller')
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs, unpack = pairs, unpack
-local tinsert, tremove = tinsert, tremove
-local format = format
---WoW API / Variables
-local CreateFrame = CreateFrame
+local tinsert, tremove, format = tinsert, tremove, format
+
 local PlaySound = PlaySound
+local CreateFrame = CreateFrame
 local UIFrameFadeOut = UIFrameFadeOut
 local CONTINUE, PREVIOUS, UNKNOWN = CONTINUE, PREVIOUS, UNKNOWN
 -- GLOBALS: PluginInstallFrame
@@ -128,15 +126,14 @@ local function SetPage(PageNum, PrevPage)
 	f.Status.text:SetFormattedText('%d / %d', f.CurrentPage, f.MaxPage)
 	if f.StepTitles then
 		for i = 1, #f.side.Lines do
-			local b = f.side.Lines[i]
-			local color
-			b.text:SetText(f.StepTitles[i])
+			local line, color = f.side.Lines[i]
+			line.text:SetText(f.StepTitles[i])
 			if i == f.CurrentPage then
 				color = f.StepTitlesColorSelected or {.09,.52,.82}
 			else
 				color = f.StepTitlesColor or {1,1,1}
 			end
-			b.text:SetTextColor(color[1] or color.r, color[2] or color.g, color[3] or color.b)
+			line.text:SetTextColor(color[1] or color.r, color[2] or color.g, color[3] or color.b)
 		end
 	end
 end
@@ -158,7 +155,7 @@ end
 function PI:CreateStepComplete()
 	local imsg = CreateFrame('Frame', 'PluginInstallStepComplete', E.UIParent)
 	imsg:Size(418, 72)
-	imsg:Point('TOP', 0, -190)
+	imsg:SetPoint('TOP', 0, -190)
 	imsg:Hide()
 	imsg:SetScript('OnShow', function(frame)
 		if frame.message then
@@ -196,13 +193,13 @@ function PI:CreateStepComplete()
 	imsg.lineBottom:SetTexCoord(0.00195313, 0.81835938, 0.01953125, 0.03320313)
 
 	imsg.text = imsg:CreateFontString(nil, 'ARTWORK', 'GameFont_Gigantic')
-	imsg.text:Point('BOTTOM', 0, 12)
+	imsg.text:SetPoint('BOTTOM', 0, 12)
 	imsg.text:SetTextColor(1, 0.82, 0)
 	imsg.text:SetJustifyH('CENTER')
 end
 
 function PI:CreateFrame()
-	f = CreateFrame('Button', 'PluginInstallFrame', E.UIParent)
+	f = CreateFrame('Button', 'PluginInstallFrame', E.UIParent, 'BackdropTemplate')
 	f.SetPage = SetPage
 	f:Size(550, 400)
 	f:SetTemplate('Transparent')
@@ -212,35 +209,35 @@ function PI:CreateFrame()
 
 	f.MoveFrame = CreateFrame('Frame', nil, f, 'TitleDragAreaTemplate')
 	f.MoveFrame:Size(450, 50)
-	f.MoveFrame:Point('TOP', f, 'TOP')
+	f.MoveFrame:SetPoint('TOP', f, 'TOP')
 
 	f.Title = f:CreateFontString(nil, 'OVERLAY')
 	f.Title:FontTemplate(nil, 17, nil)
-	f.Title:Point('TOP', 0, -5)
+	f.Title:SetPoint('TOP', 0, -5)
 
-	f.Next = CreateFrame('Button', 'PluginInstallNextButton', f, 'UIPanelButtonTemplate')
+	f.Next = CreateFrame('Button', 'PluginInstallNextButton', f, 'UIPanelButtonTemplate, BackdropTemplate')
 	f.Next:Size(110, 25)
-	f.Next:Point('BOTTOMRIGHT', -5, 5)
+	f.Next:SetPoint('BOTTOMRIGHT', -5, 5)
 	f.Next:SetText(CONTINUE)
 	f.Next:Disable()
 	f.Next:SetScript('OnClick', NextPage)
-	S:HandleButton(f.Next, true)
+	S:HandleButton(f.Next)
 
-	f.Prev = CreateFrame('Button', 'PluginInstallPrevButton', f, 'UIPanelButtonTemplate')
+	f.Prev = CreateFrame('Button', 'PluginInstallPrevButton', f, 'UIPanelButtonTemplate, BackdropTemplate')
 	f.Prev:Size(110, 25)
-	f.Prev:Point('BOTTOMLEFT', 5, 5)
+	f.Prev:SetPoint('BOTTOMLEFT', 5, 5)
 	f.Prev:SetText(PREVIOUS)
 	f.Prev:Disable()
 	f.Prev:SetScript('OnClick', PreviousPage)
-	S:HandleButton(f.Prev, true)
+	S:HandleButton(f.Prev)
 
 	f.Status = CreateFrame('StatusBar', 'PluginInstallStatus', f)
 	f.Status:SetFrameLevel(f.Status:GetFrameLevel() + 2)
 	f.Status:CreateBackdrop(nil, true)
 	f.Status:SetStatusBarTexture(E.media.normTex)
 	f.Status:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
-	f.Status:Point('TOPLEFT', f.Prev, 'TOPRIGHT', 6, -2)
-	f.Status:Point('BOTTOMRIGHT', f.Next, 'BOTTOMLEFT', -6, 2)
+	f.Status:SetPoint('TOPLEFT', f.Prev, 'TOPRIGHT', 6, -2)
+	f.Status:SetPoint('BOTTOMRIGHT', f.Next, 'BOTTOMLEFT', -6, 2)
 	-- Setup StatusBar Animation
 	f.Status.anim = _G.CreateAnimationGroup(f.Status)
 	f.Status.anim.progress = f.Status.anim:CreateAnimation('Progress')
@@ -251,34 +248,34 @@ function PI:CreateFrame()
 	f.Status.text:FontTemplate()
 	f.Status.text:SetPoint('CENTER')
 
-	f.Option1 = CreateFrame('Button', 'PluginInstallOption1Button', f, 'UIPanelButtonTemplate')
+	f.Option1 = CreateFrame('Button', 'PluginInstallOption1Button', f, 'UIPanelButtonTemplate, BackdropTemplate')
 	f.Option1:Size(160, 30)
-	f.Option1:Point('BOTTOM', 0, 45)
+	f.Option1:SetPoint('BOTTOM', 0, 45)
 	f.Option1:SetText('')
 	f.Option1:Hide()
-	S:HandleButton(f.Option1, true)
+	S:HandleButton(f.Option1)
 
-	f.Option2 = CreateFrame('Button', 'PluginInstallOption2Button', f, 'UIPanelButtonTemplate')
+	f.Option2 = CreateFrame('Button', 'PluginInstallOption2Button', f, 'UIPanelButtonTemplate, BackdropTemplate')
 	f.Option2:Size(110, 30)
-	f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45)
+	f.Option2:SetPoint('BOTTOMLEFT', f, 'BOTTOM', 4, 45)
 	f.Option2:SetText('')
 	f.Option2:Hide()
-	f.Option2:SetScript('OnShow', function() f.Option1:SetWidth(110); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
-	f.Option2:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45) end)
-	S:HandleButton(f.Option2, true)
+	f.Option2:SetScript('OnShow', function() f.Option1:SetWidth(110); f.Option1:ClearAllPoints(); f.Option1:SetPoint('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
+	f.Option2:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:SetPoint('BOTTOM', 0, 45) end)
+	S:HandleButton(f.Option2)
 
-	f.Option3 = CreateFrame('Button', 'PluginInstallOption3Button', f, 'UIPanelButtonTemplate')
+	f.Option3 = CreateFrame('Button', 'PluginInstallOption3Button', f, 'UIPanelButtonTemplate, BackdropTemplate')
 	f.Option3:Size(100, 30)
-	f.Option3:Point('LEFT', f.Option2, 'RIGHT', 4, 0)
+	f.Option3:SetPoint('LEFT', f.Option2, 'RIGHT', 4, 0)
 	f.Option3:SetText('')
 	f.Option3:Hide()
-	f.Option3:SetScript('OnShow', function() f.Option1:SetWidth(100); f.Option1:ClearAllPoints(); f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); f.Option2:SetWidth(100); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOM', f, 'BOTTOM', 0, 45)  end)
-	f.Option3:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
-	S:HandleButton(f.Option3, true)
+	f.Option3:SetScript('OnShow', function() f.Option1:SetWidth(100); f.Option1:ClearAllPoints(); f.Option1:SetPoint('RIGHT', f.Option2, 'LEFT', -4, 0); f.Option2:SetWidth(100); f.Option2:ClearAllPoints(); f.Option2:SetPoint('BOTTOM', f, 'BOTTOM', 0, 45)  end)
+	f.Option3:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:SetPoint('BOTTOM', 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:SetPoint('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
+	S:HandleButton(f.Option3)
 
-	f.Option4 = CreateFrame('Button', 'PluginInstallOption4Button', f, 'UIPanelButtonTemplate')
+	f.Option4 = CreateFrame('Button', 'PluginInstallOption4Button', f, 'UIPanelButtonTemplate, BackdropTemplate')
 	f.Option4:Size(100, 30)
-	f.Option4:Point('LEFT', f.Option3, 'RIGHT', 4, 0)
+	f.Option4:SetPoint('LEFT', f.Option3, 'RIGHT', 4, 0)
 	f.Option4:SetText('')
 	f.Option4:Hide()
 	f.Option4:SetScript('OnShow', function()
@@ -286,38 +283,38 @@ function PI:CreateFrame()
 		f.Option2:Width(100)
 
 		f.Option1:ClearAllPoints()
-		f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0)
+		f.Option1:SetPoint('RIGHT', f.Option2, 'LEFT', -4, 0)
 		f.Option2:ClearAllPoints()
-		f.Option2:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45)
+		f.Option2:SetPoint('BOTTOMRIGHT', f, 'BOTTOM', -4, 45)
 	end)
-	f.Option4:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
-	S:HandleButton(f.Option4, true)
+	f.Option4:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:SetPoint('BOTTOM', 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:SetPoint('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
+	S:HandleButton(f.Option4)
 
 	f.SubTitle = f:CreateFontString(nil, 'OVERLAY')
 	f.SubTitle:FontTemplate(nil, 15, nil)
-	f.SubTitle:Point('TOP', 0, -40)
+	f.SubTitle:SetPoint('TOP', 0, -40)
 
 	f.Desc1 = f:CreateFontString(nil, 'OVERLAY')
 	f.Desc1:FontTemplate()
-	f.Desc1:Point('TOPLEFT', 20, -75)
+	f.Desc1:SetPoint('TOPLEFT', 20, -75)
 	f.Desc1:Width(f:GetWidth() - 40)
 
 	f.Desc2 = f:CreateFontString(nil, 'OVERLAY')
 	f.Desc2:FontTemplate()
-	f.Desc2:Point('TOP', f.Desc1, 'BOTTOM', 0, -20)
+	f.Desc2:SetPoint('TOP', f.Desc1, 'BOTTOM', 0, -20)
 	f.Desc2:Width(f:GetWidth() - 40)
 
 	f.Desc3 = f:CreateFontString(nil, 'OVERLAY')
 	f.Desc3:FontTemplate()
-	f.Desc3:Point('TOP', f.Desc2, 'BOTTOM', 0, -20)
+	f.Desc3:SetPoint('TOP', f.Desc2, 'BOTTOM', 0, -20)
 	f.Desc3:Width(f:GetWidth() - 40)
 
 	f.Desc4 = f:CreateFontString(nil, 'OVERLAY')
 	f.Desc4:FontTemplate()
-	f.Desc4:Point('TOP', f.Desc3, 'BOTTOM', 0, -20)
+	f.Desc4:SetPoint('TOP', f.Desc3, 'BOTTOM', 0, -20)
 	f.Desc4:Width(f:GetWidth() - 40)
 
-	local close = CreateFrame('Button', 'PluginInstallCloseButton', f, 'UIPanelCloseButton')
+	local close = CreateFrame('Button', 'PluginInstallCloseButton', f, 'UIPanelCloseButton, BackdropTemplate')
 	close:SetPoint('TOPRIGHT', f, 'TOPRIGHT')
 	close:SetScript('OnClick', function() f:Hide() end)
 	S:HandleCloseButton(close)
@@ -326,12 +323,12 @@ function PI:CreateFrame()
 	f.pending:Size(20, 20)
 	f.pending:SetPoint('TOPLEFT', f, 'TOPLEFT', 8, -8)
 	f.pending.tex = f.pending:CreateTexture(nil, 'OVERLAY')
-	f.pending.tex:Point('TOPLEFT', f.pending, 'TOPLEFT', 2, -2)
-	f.pending.tex:Point('BOTTOMRIGHT', f.pending, 'BOTTOMRIGHT', -2, 2)
+	f.pending.tex:SetPoint('TOPLEFT', f.pending, 'TOPLEFT', 2, -2)
+	f.pending.tex:SetPoint('BOTTOMRIGHT', f.pending, 'BOTTOMRIGHT', -2, 2)
 	f.pending.tex:SetTexture([[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]])
 	f.pending:CreateBackdrop('Transparent')
-	f.pending:SetScript('OnEnter', function(self)
-		_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
+	f.pending:SetScript('OnEnter', function(button)
+		_G.GameTooltip:SetOwner(button, 'ANCHOR_BOTTOMLEFT', E.PixelMode and -7 or -9)
 		_G.GameTooltip:AddLine(L["List of installations in queue:"], 1, 1, 1)
 		_G.GameTooltip:AddLine(' ')
 		for i = 1, #PI.Installs do
@@ -344,8 +341,9 @@ function PI:CreateFrame()
 	end)
 
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
+	f.tutorialImage2 = f:CreateTexture('PluginInstallTutorialImage2', 'OVERLAY')
 
-	f.side = CreateFrame('Frame', 'PluginInstallTitleFrame', f)
+	f.side = CreateFrame('Frame', 'PluginInstallTitleFrame', f, 'BackdropTemplate')
 	f.side:SetTemplate('Transparent')
 	f.side:SetPoint('TOPLEFT', f, 'TOPRIGHT', E.PixelMode and 1 or 3, 0)
 	f.side:SetPoint('BOTTOMLEFT', f, 'BOTTOMRIGHT', E.PixelMode and 1 or 3, 0)
@@ -363,7 +361,7 @@ function PI:CreateFrame()
 		else
 			button:SetPoint('TOP', f.side.Lines[i - 1], 'BOTTOM')
 		end
-		button:SetSize(130, BUTTON_HEIGHT)
+		button:Size(130, BUTTON_HEIGHT)
 		button.text = button:CreateFontString(nil, 'OVERLAY')
 		button.text:SetPoint('TOPLEFT', button, 'TOPLEFT', 2, -2)
 		button.text:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -2, 2)
@@ -407,34 +405,69 @@ end
 
 function PI:RunInstall()
 	if not E.private.install_complete then return end
-	if self.Installs[1] and not PluginInstallFrame:IsShown() and not (_G.ElvUIInstallFrame and _G.ElvUIInstallFrame:IsShown()) then
+
+	local db = self.Installs[1]
+	if db and not f:IsShown() and not (_G.ElvUIInstallFrame and _G.ElvUIInstallFrame:IsShown()) then
 		f.StepTitles = nil
 		f.StepTitlesColor = nil
 		f.StepTitlesColorSelected = nil
-		local db = self.Installs[1]
+
 		f.CurrentPage = 0
 		f.MaxPage = #(db.Pages)
 
 		f.Title:SetText(db.Title or L["ElvUI Plugin Installation"])
 		f.Status:SetMinMaxValues(0, f.MaxPage)
 		f.Status.text:SetText(f.CurrentPage..' / '..f.MaxPage)
-		f.tutorialImage:SetTexture(db.tutorialImage or E.Media.Textures.Logo)
+
+		-- Logo
+		local LogoTop = db.tutorialImage or E.Media.Textures.LogoTop
+		f.tutorialImage:SetTexture(LogoTop)
+		f.tutorialImage:ClearAllPoints()
 		if db.tutorialImageSize then
 			f.tutorialImage:Size(db.tutorialImageSize[1], db.tutorialImageSize[2])
 		else
 			f.tutorialImage:Size(256, 128)
 		end
-		f.tutorialImage:ClearAllPoints()
 		if db.tutorialImagePoint then
-			f.tutorialImage:Point('BOTTOM', 0 + db.tutorialImagePoint[1], 70 + db.tutorialImagePoint[2])
+			f.tutorialImage:SetPoint('BOTTOM', 0 + db.tutorialImagePoint[1], 70 + db.tutorialImagePoint[2])
 		else
-			f.tutorialImage:Point('BOTTOM', 0, 70)
+			f.tutorialImage:SetPoint('BOTTOM', 0, 70)
+		end
+		if db.tutorialImageVertexColor then
+			f.tutorialImage:SetVertexColor(unpack(db.tutorialImageVertexColor))
+		elseif LogoTop == E.Media.Textures.LogoTop then
+			f.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
+		else
+			f.tutorialImage:SetVertexColor(1, 1, 1)
+		end
+
+		--Alt Logo
+		if LogoTop == E.Media.Textures.LogoTop or db.tutorialImage2 then
+			f.tutorialImage2:SetTexture(db.tutorialImage2 or E.Media.Textures.LogoBottom)
+			f.tutorialImage2:ClearAllPoints()
+			if db.tutorialImage2Size then
+				f.tutorialImage2:Size(db.tutorialImage2Size[1], db.tutorialImage2Size[2])
+			else
+				f.tutorialImage2:Size(256, 128)
+			end
+			if db.tutorialImage2Point then
+				f.tutorialImage2:SetPoint('BOTTOM', 0 + db.tutorialImage2Point[1], 70 + db.tutorialImage2Point[2])
+			else
+				f.tutorialImage2:SetPoint('BOTTOM', 0, 70)
+			end
+			if db.tutorialImage2VertexColor then
+				f.tutorialImage2:SetVertexColor(unpack(db.tutorialImage2VertexColor))
+			else
+				f.tutorialImage2:SetVertexColor(1, 1, 1)
+			end
 		end
 
 		f.Pages = db.Pages
 
-		PluginInstallFrame:Show()
+		f:Show()
+		f:ClearAllPoints()
 		f:SetPoint('CENTER')
+
 		if db.StepTitles and #db.StepTitles == f.MaxPage then
 			f:SetPoint('CENTER', E.UIParent, 'CENTER', -((db.StepTitleWidth or 140)/2), 0)
 			f.side:SetWidth(db.StepTitleWidth or 140)
@@ -452,9 +485,11 @@ function PI:RunInstall()
 			f.StepTitlesColor = db.StepTitlesColor
 			f.StepTitlesColorSelected = db.StepTitlesColorSelected
 		end
+
 		NextPage()
 	end
-	if #(self.Installs) > 1 then
+
+	if #self.Installs > 1 then
 		f.pending:Show()
 		E:Flash(f.pending, 0.53, true)
 	else

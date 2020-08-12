@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs = pairs
---WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
 local function SkinRewards()
@@ -19,7 +17,7 @@ local function SkinRewards()
 end
 
 function S:Blizzard_AdventureMap()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AdventureMap) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.adventureMap) then return end
 
 	--Quest Choise
 	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog

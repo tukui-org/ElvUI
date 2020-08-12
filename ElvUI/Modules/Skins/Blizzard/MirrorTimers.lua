@@ -42,7 +42,7 @@ function S:MirrorTimers()
 
 		local TimerText = mirrorTimer:CreateFontString(nil, 'OVERLAY')
 		TimerText:FontTemplate()
-		TimerText:Point("CENTER", statusBar, "CENTER", 0, 0)
+		TimerText:SetPoint("CENTER", statusBar, "CENTER", 0, 0)
 		mirrorTimer.TimerText = TimerText
 
 		mirrorTimer.timeSinceUpdate = 0.3 --Make sure timer value updates right away on first show

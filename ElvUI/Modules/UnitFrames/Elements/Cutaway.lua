@@ -3,7 +3,7 @@ local UF = E:GetModule("UnitFrames")
 
 function UF:Construct_Cutaway(frame)
 	local cutaway = {}
-	local frameName = frame:GetDebugName()
+	local frameName = frame:GetName()
 
 	if frame.Power then
 		local powerTexture = frame.Power:GetStatusBarTexture()
@@ -37,17 +37,20 @@ local cutawayPoints = {
 
 local DEFAULT_INDEX, VERT_INDEX = 1, 3
 function UF:GetPoints_Cutaway(db)
-	local index = (db.orientation == "VERTICAL" and VERT_INDEX) or DEFAULT_INDEX
-	local p1 = (db.reverseFill and -index) or index
-	local p2 = p1 + (db.reverseFill and -1 or 1)
+	local vertical = db and db.orientation == "VERTICAL"
+	local reversed = db and db.reverseFill
+
+	local index = (vertical and VERT_INDEX) or DEFAULT_INDEX
+	local p1 = (reversed and -index) or index
+	local p2 = p1 + ((reversed and -1) or 1)
+
 	return cutawayPoints[p1], cutawayPoints[p2]
 end
 
 function UF:Configure_Cutaway(frame)
-	local db = frame.db and frame.db.cutaway
-	local healthDB, powerDB = db and db.health, db and db.power
-	local healthEnabled = healthDB and healthDB.enabled
-	local powerEnabled = powerDB and powerDB.enabled
+	local db = frame.db.cutaway
+	local healthEnabled = db and db.health and db.health.enabled
+	local powerEnabled = db and db.power and db.power.enabled
 	if healthEnabled or powerEnabled then
 		if not frame:IsElementEnabled("Cutaway") then
 			frame:EnableElement("Cutaway")
@@ -56,7 +59,7 @@ function UF:Configure_Cutaway(frame)
 		frame.Cutaway:UpdateConfigurationValues(db)
 		local health = frame.Cutaway.Health
 		if health and healthEnabled then
-			local point1, point2 = UF:GetPoints_Cutaway(healthDB)
+			local point1, point2 = UF:GetPoints_Cutaway(frame.db.health)
 			local barTexture = frame.Health:GetStatusBarTexture()
 
 			health:ClearAllPoints()
@@ -69,7 +72,7 @@ function UF:Configure_Cutaway(frame)
 		local power = frame.Cutaway.Power
 		local powerUsable = powerEnabled and frame.USE_POWERBAR
 		if power and powerUsable then
-			local point1, point2 = UF:GetPoints_Cutaway(powerDB)
+			local point1, point2 = UF:GetPoints_Cutaway(frame.db.power)
 			local barTexture = frame.Power:GetStatusBarTexture()
 
 			power:ClearAllPoints()

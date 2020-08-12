@@ -1,8 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
---Lua functions
-local min, max, abs, floor, format = min, max, abs, floor, format
---WoW API / Variables
+local min, max, floor, format = min, max, floor, format
+
 local UIParent = UIParent
 local InCombatLockdown = InCombatLockdown
 local GetPhysicalScreenSize = GetPhysicalScreenSize
@@ -61,12 +60,6 @@ function E:UIScale(init)
 		E.UIParent:SetSize(width, height)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
 
-		--Calculate potential coordinate differences
-		E.diffGetLeft = E:Round(abs(UIParent:GetLeft() - E.UIParent:GetLeft()))
-		E.diffGetRight = E:Round(abs(UIParent:GetRight() - E.UIParent:GetRight()))
-		E.diffGetBottom = E:Round(abs(UIParent:GetBottom() - E.UIParent:GetBottom()))
-		E.diffGetTop = E:Round(abs(UIParent:GetTop() - E.UIParent:GetTop()))
-
 		if E:IsEventRegisteredForObject('PLAYER_REGEN_ENABLED', E.UIScale) then
 			E:UnregisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 		end
@@ -74,19 +67,19 @@ function E:UIScale(init)
 end
 
 function E:PixelBestSize()
-	local scale = E:Round(768 / E.screenheight, 5)
-	return max(0.4, min(1.15, scale))
+	return max(0.4, min(1.15, 768 / E.screenheight))
 end
 
 function E:PixelScaleChanged(event)
 	if event == 'UI_SCALE_CHANGED' then
 		E.screenwidth, E.screenheight = GetPhysicalScreenSize()
+		E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
 	end
 
 	E:UIScale(true) --Repopulate variables
 	E:UIScale() --Setup the scale
 
-	E:UpdateConfigSize(true) --Reposition config
+	E:Config_UpdateSize(true) --Reposition config
 end
 
 function E:Scale(x)

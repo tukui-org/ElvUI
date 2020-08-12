@@ -1,11 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
-local unpack = unpack
---WoW API / Variables
+local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
+
+local headers = {
+	_G.ObjectiveTrackerBlocksFrame.QuestHeader,
+	_G.ObjectiveTrackerBlocksFrame.AchievementHeader,
+	_G.ObjectiveTrackerBlocksFrame.ScenarioHeader,
+	_G.ObjectiveTrackerBlocksFrame.CampaignQuestHeader,
+	_G.BONUS_OBJECTIVE_TRACKER_MODULE.Header,
+	_G.WORLD_QUEST_TRACKER_MODULE.Header,
+	_G.ObjectiveTrackerFrame.BlocksFrame.UIWidgetsHeader
+}
 
 local function SkinOjectiveTrackerHeaders()
 	local frame = _G.ObjectiveTrackerFrame.MODULES
@@ -28,18 +36,19 @@ local function ColorProgressBars(self, value)
 	S:StatusBarColorGradient(self.Bar, value, 100)
 end
 
+-- 9.0 Needs Update
 local function SkinItemButton(_, block)
 	local item = block.itemButton
 	if item and not item.skinned then
 		item:Size(25, 25)
-		item:SetTemplate("Transparent")
+		item:CreateBackdrop("Transparent")
 		item:StyleButton()
 		item:SetNormalTexture(nil)
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 		item.icon:SetInside()
 		item.Cooldown:SetInside()
 		item.Count:ClearAllPoints()
-		item.Count:Point("TOPLEFT", 1, -1)
+		item.Count:SetPoint("TOPLEFT", 1, -1)
 		item.Count:FontTemplate(E.media.normFont, 14, "OUTLINE")
 		item.Count:SetShadowOffset(5, -5)
 		E:RegisterCooldown(item.Cooldown)
@@ -47,6 +56,7 @@ local function SkinItemButton(_, block)
 	end
 end
 
+-- 9.0 Needs Update
 local function SkinProgressBars(_, _, line)
 	local progressBar = line and line.ProgressBar
 	local bar = progressBar and progressBar.Bar
@@ -73,13 +83,13 @@ local function SkinProgressBars(_, _, line)
 
 		if label then
 			label:ClearAllPoints()
-			label:Point("CENTER", bar, 0, 1)
+			label:SetPoint("CENTER", bar, 0, 1)
 			label:FontTemplate(E.media.normFont, 14, "OUTLINE")
 		end
 
 		if icon then
 			icon:ClearAllPoints()
-			icon:Point("LEFT", bar, "RIGHT", E.PixelMode and 3 or 7, 0)
+			icon:SetPoint("LEFT", bar, "RIGHT", E.PixelMode and 3 or 7, 0)
 			icon:SetMask("")
 			icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -120,11 +130,11 @@ local function PositionFindGroupButton(block, button)
 		if block.groupFinderButton and b == block.groupFinderButton and block.itemButton and button == block.itemButton then
 			-- this fires when there is a group button and a item button to the left of it
 			-- we push the item button away from the group button (to the left)
-			button:Point(a, b, c, d-(E.PixelMode and -1 or 1), e);
+			button:SetPoint(a, b, c, d-(E.PixelMode and -1 or 1), e);
 		elseif b == block and block.groupFinderButton and button == block.groupFinderButton then
 			-- this fires when there is a group finder button
 			-- we push the group finder button down slightly
-			button:Point(a, b, c, d, e-(E.PixelMode and 2 or -1));
+			button:SetPoint(a, b, c, d, e-(E.PixelMode and 2 or -1));
 		end
 	end
 end
@@ -139,25 +149,36 @@ local function SkinFindGroupButton(block)
 	end
 end
 
+local function TrackerStateChanged()
+	local minimizeButton = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+	if _G.ObjectiveTrackerFrame.collapsed then
+		minimizeButton.tex:SetTexture(E.Media.Textures.PlusButton)
+	else
+		minimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
+	end
+end
+
+local function UpdateMinimizeButton(button, collapsed)
+	if collapsed then
+		button.tex:SetTexture(E.Media.Textures.PlusButton)
+	else
+		button.tex:SetTexture(E.Media.Textures.MinusButton)
+	end
+end
+
 function S:ObjectiveTrackerFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
-	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
-	local minimizeButton = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
-	minimizeButton:StripTextures()
-	minimizeButton:Size(16, 16)
-	minimizeButton.tex = minimizeButton:CreateTexture(nil, "OVERLAY")
-	minimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
-	minimizeButton.tex:SetInside()
-	minimizeButton:SetHighlightTexture("Interface\\Buttons\\UI-PlusButton-Hilight", "ADD")
-	minimizeButton:HookScript("OnClick", function()
-		if ObjectiveTrackerFrame.collapsed then
-			minimizeButton.tex:SetTexture(E.Media.Textures.PlusButton)
-		else
-			minimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
-		end
-	end)
+	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
+	minimize:StripTextures()
+	minimize:Size(16, 16)
+	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
+	minimize.tex = minimize:CreateTexture(nil, "OVERLAY")
+	minimize.tex:SetTexture(E.Media.Textures.MinusButton)
+	minimize.tex:SetInside()
 
+	hooksecurefunc("ObjectiveTracker_Expand",TrackerStateChanged)
+	hooksecurefunc("ObjectiveTracker_Collapse",TrackerStateChanged)
 	hooksecurefunc("BonusObjectiveTrackerProgressBar_SetValue",ColorProgressBars)			--[Color]: Bonus Objective Progress Bar
 	hooksecurefunc("ObjectiveTrackerProgressBar_SetValue",ColorProgressBars)				--[Color]: Quest Progress Bar
 	hooksecurefunc("ScenarioTrackerProgressBar_SetValue",ColorProgressBars)					--[Color]: Scenario Progress Bar
@@ -168,11 +189,44 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)			--[Skin]: World Quest Progress Bar
 	hooksecurefunc(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)	--[Skin]: Quest Progress Bar
 	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)			--[Skin]: Scenario Progress Bar
+	hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)		--[Skin]: Campaign Progress Bar
+	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)				--[Skin]: Quest Progress Bar
 	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)						--[Skin]: Quest Timer Bar
 	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)					--[Skin]: Scenario Timer Bar
 	hooksecurefunc(_G.ACHIEVEMENT_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)				--[Skin]: Achievement Timer Bar
 	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"SetBlockHeader",SkinItemButton)					--[Skin]: Quest Item Buttons
 	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)				--[Skin]: World Quest Item Buttons
+	hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)			--[Skin]: Campaign Quest Item Buttons
+
+	for _, header in pairs(headers) do
+		local minimize = header.MinimizeButton
+		if minimize then
+			minimize:GetNormalTexture():SetAlpha(0)
+			minimize:GetPushedTexture():SetAlpha(0)
+
+			minimize.tex = minimize:CreateTexture(nil, "OVERLAY")
+			minimize.tex:SetTexture(E.Media.Textures.MinusButton)
+			minimize.tex:SetInside()
+
+			hooksecurefunc(minimize, "SetCollapsed", UpdateMinimizeButton)
+		end
+	end
+
+	-- The Maw - Torghast: Scenario Tracker Buff Block
+	_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:HookScript("OnShow", function(frame)
+		if not frame.buffPool then return end
+		for mawBuff in frame.buffPool:EnumerateActive() do
+			if mawBuff:IsShown() and not mawBuff.IsSkinned then
+				mawBuff.Border:SetAlpha(0)
+				mawBuff.CircleMask:Hide()
+				mawBuff.CountRing:SetAlpha(0)
+				mawBuff.HighlightBorder:SetColorTexture(1, 1, 1, .25)
+				S:HandleIcon(mawBuff.Icon)
+
+				mawBuff.IsSkinned = true
+			end
+		end
+	end)
 end
 
 S:AddCallback('ObjectiveTrackerFrame')

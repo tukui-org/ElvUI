@@ -16,6 +16,8 @@ V.general = {
 	chatBubbleFontOutline = 'NONE',
 	chatBubbleName = false,
 	pixelPerfect = true,
+	replaceNameFont = true,
+	replaceCombatFont = true,
 	replaceBlizzFonts = true,
 	totemBar = true,
 	minimap = {
@@ -40,7 +42,8 @@ V.nameplates = {
 V.auras = {
 	enable = true,
 	disableBlizzard = true,
-
+	buffsHeader = true,
+	debuffsHeader = true,
 	masque = {
 		buffs = false,
 		debuffs = false,
@@ -52,14 +55,10 @@ V.chat = {
 }
 
 V.skins = {
-	ace3 = {
-		enable = true,
-	},
+	ace3Enable = true,
 	checkBoxSkin = true,
 	cleanBossButton = false,
-	parchmentRemover = {
-		enable = false,
-	},
+	parchmentRemoverEnable = false,
 	blizzard = {
 		enable = true,
 		deathRecap = true,
@@ -126,23 +125,33 @@ V.skins = {
 		orderhall = true,
 		artifact = true,
 		talkinghead = true,
-		AdventureMap = true,
-		Obliterum = true,
-		Contribution = true,
-		BlizzardOptions = true,
-		Warboard = true,
-		AlliedRaces = true,
-		Channels = true,
-		AzeriteUI = true,
-		AzeriteRespec = true,
-		Communities = true,
-		Scrapping = true,
-		IslandQueue = true,
-		IslandsPartyPose = true,
-		GMChat = true,
-		AzeriteEssence = true,
-		Tutorials = true,
-		ItemInteraction = true,
+		adventureMap = true,
+		obliterum = true,
+		contribution = true,
+		blizzardOptions = true,
+		warboard = true,
+		alliedRaces = true,
+		channels = true,
+		azerite = true,
+		azeriteRespec = true,
+		communities = true,
+		scrapping = true,
+		islandQueue = true,
+		islandsPartyPose = true,
+		gmChat = true,
+		azeriteEssence = true,
+		tutorials = true,
+		itemInteraction = true,
+
+		-- 9.0
+		animaDiversion = true,
+		covenantPreview = true,
+		covenantSanctum = true,
+		guide = true,
+		playerChoice = true,
+		soulbinds = true,
+		runeforge = true,
+		weeklyRewards = true,
 	},
 }
 

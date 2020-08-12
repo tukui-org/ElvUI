@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local M = E:GetModule('Misc')
 local Bags = E:GetModule('Bags')
 
---Lua functions
 local _G = _G
 local select = select
 local format = format
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local AcceptGroup = AcceptGroup
 local C_FriendList_IsFriend = C_FriendList.IsFriend
@@ -43,6 +42,12 @@ local UnitInRaid = UnitInRaid
 local UnitName = UnitName
 local IsInGuild = IsInGuild
 local PlaySound = PlaySound
+local GetNumFactions = GetNumFactions
+local GetFactionInfo = GetFactionInfo
+local GetWatchedFactionInfo = GetWatchedFactionInfo
+local ExpandAllFactionHeaders = ExpandAllFactionHeaders
+local SetWatchedFactionIndex = SetWatchedFactionIndex
+local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 
 local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
 local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
@@ -64,11 +69,13 @@ function M:ErrorFrameToggle(event)
 end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED()
-	local inGroup, inRaid, inPartyLFG = IsInGroup(), IsInRaid(), IsPartyLFG()
-	if not inGroup then return end -- not in group, exit.
+	local inGroup = IsInGroup()
+	if not inGroup then return end
 
-	local _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
-	if not (event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))) then return end -- No announce-able interrupt from player or pet, exit.
+	local _, event, _, sourceGUID, _, _, _, destGUID, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
+	local announce = event == "SPELL_INTERRUPT" and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet')) and destGUID ~= E.myguid
+	if not announce then return end -- No announce-able interrupt from player or pet, exit.
+	local inRaid, inPartyLFG = IsInRaid(), IsPartyLFG()
 
 	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns "false"
 	local _, instanceType = GetInstanceInfo()
@@ -81,19 +88,37 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 		inRaid = false --IsInRaid() returns true for arenas and they should not be considered a raid
 	end
 
-	local interruptAnnounce, msg = E.db.general.interruptAnnounce, format(INTERRUPT_MSG, destName, spellID, spellName)
-	if interruptAnnounce == "PARTY" then
+	local channel, msg = E.db.general.interruptAnnounce, format(INTERRUPT_MSG, destName, spellID, spellName)
+	if channel == "PARTY" then
 		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or "PARTY")
-	elseif interruptAnnounce == "RAID" then
+	elseif channel == "RAID" then
 		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or (inRaid and "RAID" or "PARTY"))
-	elseif interruptAnnounce == "RAID_ONLY" and inRaid then
+	elseif channel == "RAID_ONLY" and inRaid then
 		SendChatMessage(msg, inPartyLFG and "INSTANCE_CHAT" or "RAID")
-	elseif interruptAnnounce == "SAY" and instanceType ~= 'none' then
+	elseif channel == "SAY" and instanceType ~= 'none' then
 		SendChatMessage(msg, "SAY")
-	elseif interruptAnnounce == "YELL" and instanceType ~= 'none' then
+	elseif channel == "YELL" and instanceType ~= 'none' then
 		SendChatMessage(msg, "YELL")
-	elseif interruptAnnounce == "EMOTE" then
+	elseif channel == "EMOTE" then
 		SendChatMessage(msg, "EMOTE")
+	end
+end
+
+function M:COMBAT_TEXT_UPDATE(_, messagetype)
+	if not E.db.general.autoTrackReputation then return end
+
+	if messagetype == 'FACTION' then
+		local faction = GetCurrentCombatTextEventInfo()
+		if faction ~= 'Guild' and faction ~= GetWatchedFactionInfo() then
+			ExpandAllFactionHeaders()
+
+			for i = 1, GetNumFactions() do
+				if faction == GetFactionInfo(i) then
+					SetWatchedFactionIndex(i)
+					break
+				end
+			end
+		end
 	end
 end
 
@@ -216,7 +241,7 @@ end
 
 function M:PLAYER_ENTERING_WORLD()
 	self:ForceCVars()
-	self:ToggleChatBubbleScript()
+	--self:ToggleChatBubbleScript()
 end
 
 --[[local function OnValueChanged(self, value)
@@ -239,11 +264,11 @@ end
 function M:SetupChallengeTimer()
 	local bar = CreateFrame("StatusBar", "ElvUI_ChallengeModeTimer", E.UIParent)
 	bar:Size(250, 20)
-	bar:Point("TOPLEFT", E.UIParent, "TOPLEFT", 10, -10)
+	bar:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 10, -10)
 	bar:CreateBackdrop("Transparent")
 	bar:SetStatusBarTexture(E.media.normTex)
 	bar.text = bar:CreateFontString(nil, "OVERLAY")
-	bar.text:Point("CENTER")
+	bar.text:SetPoint("CENTER")
 	bar.text:FontTemplate()
 
 	_G.ScenarioChallengeModeBlock.StatusBar:HookScript("OnValueChanged", OnValueChanged)
@@ -279,7 +304,7 @@ function M:QUEST_COMPLETE()
 		frame:Size(20)
 		frame.Icon = frame:CreateTexture(nil, "OVERLAY")
 		frame.Icon:SetAllPoints(frame)
-		frame.Icon:SetTexture("Interface\\MONEYFRAME\\UI-GoldIcon")
+		frame.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
 		self.QuestRewardGoldIconFrame = frame
 	end
 
@@ -305,7 +330,7 @@ function M:QUEST_COMPLETE()
 		local btn = _G['QuestInfoRewardsFrameQuestInfoItem'..bestItem]
 		if btn and btn.type == 'choice' then
 			self.QuestRewardGoldIconFrame:ClearAllPoints()
-			self.QuestRewardGoldIconFrame:Point("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
+			self.QuestRewardGoldIconFrame:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
 			self.QuestRewardGoldIconFrame:Show()
 		end
 	end
@@ -315,7 +340,7 @@ function M:Initialize()
 	self.Initialized = true
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
-	self:LoadChatBubbles()
+	--self:LoadChatBubbles()
 	self:LoadLoot()
 	self:ToggleItemLevelInfo(true)
 	self:RegisterEvent('MERCHANT_SHOW')
@@ -328,6 +353,7 @@ function M:Initialize()
 	self:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
 	self:RegisterEvent('CVAR_UPDATE', 'ForceCVars')
+	self:RegisterEvent('COMBAT_TEXT_UPDATE')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('QUEST_COMPLETE')
 

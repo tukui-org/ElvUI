@@ -1,12 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
-local GetItemInfo = GetItemInfo
-local GetItemQualityColor = GetItemQualityColor
---WoW API / Variables
+local pairs, ipairs, select = pairs, ipairs, select
 local hooksecurefunc = hooksecurefunc
 
 --[[
@@ -34,7 +30,7 @@ local function HandleSearchBarFrame(Frame)
 	S:HandleButton(Frame.SearchButton)
 	S:HandleEditBox(Frame.SearchBox)
 	S:HandleButton(Frame.FavoritesSearchButton)
-	Frame.FavoritesSearchButton:SetSize(22, 22)
+	Frame.FavoritesSearchButton:Size(22)
 end
 
 local function HandleListIcon(frame)
@@ -48,7 +44,10 @@ local function HandleListIcon(frame)
 				if cell and cell.Icon then
 					if not cell.IsSkinned then
 						S:HandleIcon(cell.Icon)
-						if cell.IconBorder then cell.IconBorder:SetAlpha(0) end
+
+						if cell.IconBorder then
+							cell.IconBorder:Kill()
+						end
 
 						cell.IsSkinned = true
 					end
@@ -65,6 +64,10 @@ local function HandleSummaryIcons(frame)
 		if child and child.Icon then
 			if not child.IsSkinned then
 				S:HandleIcon(child.Icon)
+
+				if child.IconBorder then
+					child.IconBorder:Kill()
+				end
 
 				child.IsSkinned = true
 			end
@@ -84,7 +87,7 @@ local function SkinItemDisplay(frame)
 
 	-- We skin the new IconBorder from the AH, it looks really cool tbh.
 	ItemButton.Icon:SetTexCoord(.08, .92, .08, .92)
-	ItemButton.Icon:SetSize(44, 44)
+	ItemButton.Icon:Size(44)
 	ItemButton.IconBorder:SetTexCoord(.08, .92, .08, .92)
 end
 
@@ -111,7 +114,7 @@ end
 
 local function HandleAuctionButtons(button)
 	S:HandleButton(button)
-	button:SetSize(22,22)
+	button:Size(22)
 end
 
 local function HandleSellFrame(frame)
@@ -123,7 +126,7 @@ local function HandleSellFrame(frame)
 
 	local ItemButton = ItemDisplay.ItemButton
 	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
-	if ItemButton.IconBorder then ItemButton.IconBorder:SetAlpha(0) end
+	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
 
 	ItemButton.EmptyBackground:Hide()
 	ItemButton:SetPushedTexture("")
@@ -131,9 +134,6 @@ local function HandleSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
-	hooksecurefunc(ItemButton.IconBorder, "SetVertexColor", function(_, r, g, b) ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b) end)
-	hooksecurefunc(ItemButton.IconBorder, "Hide", function() ItemButton.Icon.backdrop:SetBackdropBorderColor(0, 0, 0) end)
-
 	S:HandleEditBox(frame.QuantityInput.InputBox)
 	S:HandleButton(frame.QuantityInput.MaxButton)
 	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.GoldBox)
@@ -149,8 +149,35 @@ local function HandleSellFrame(frame)
 
 	if frame.BuyoutModeCheckButton then
 		S:HandleCheckBox(frame.BuyoutModeCheckButton)
-		frame.BuyoutModeCheckButton:SetSize(20, 20)
+		frame.BuyoutModeCheckButton:Size(20)
 	end
+end
+
+local function HandleTokenSellFrame(frame)
+	frame:StripTextures()
+
+	local ItemDisplay = frame.ItemDisplay
+	ItemDisplay:StripTextures()
+	ItemDisplay:CreateBackdrop("Transparent")
+
+	local ItemButton = ItemDisplay.ItemButton
+	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
+	if ItemButton.IconBorder then ItemButton.IconBorder:Kill() end
+
+	ItemButton.EmptyBackground:Hide()
+	ItemButton:SetPushedTexture("")
+	ItemButton.Highlight:SetColorTexture(1, 1, 1, .25)
+	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
+
+	S:HandleIcon(ItemButton.Icon, true)
+
+	S:HandleButton(frame.PostButton)
+	HandleAuctionButtons(frame.DummyRefreshButton)
+
+	frame.DummyItemList:StripTextures()
+	frame.DummyItemList:CreateBackdrop("Transparent")
+	HandleAuctionButtons(frame.DummyRefreshButton)
+	S:HandleScrollBar(frame.DummyItemList.DummyScrollBar)
 end
 
 local function HandleSellList(frame, hasHeader)
@@ -212,8 +239,15 @@ local function LoadSkin()
 		button:StripTextures(true)
 		button:StyleButton()
 
-		button.SelectedTexture:SetAlpha(0)
+		button.SelectedTexture:SetInside(button)
 	end
+
+	hooksecurefunc("AuctionFrameFilters_UpdateCategories", function(categoriesList, _)
+		for _, button in ipairs(categoriesList.FilterButtons) do
+			button.SelectedTexture:SetAtlas(nil)
+			button.SelectedTexture:SetColorTexture(0.7, 0.7, 0.7, 0.4)
+		end
+	end)
 
 	--[[ Browse Frame ]]--
 	local Browse = Frame.BrowseResultsFrame
@@ -262,7 +296,7 @@ local function LoadSkin()
 
 	for _, EditBox in pairs(EditBoxes) do
 		S:HandleEditBox(EditBox)
-		EditBox:SetTextInsets(1, 1, -1, 1)
+		--EditBox:SetTextInsets(1, 1, -1, 1)
 	end
 
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
@@ -282,6 +316,9 @@ local function LoadSkin()
 
 	local ItemList = Frame.CommoditiesSellList
 	HandleSellList(ItemList, true)
+
+	local TokenSellFrame = Frame.WoWTokenSellFrame
+	HandleTokenSellFrame(TokenSellFrame)
 
 	--[[ Auctions Frame | TAB 3 ]]--
 	local AuctionsFrame = _G.AuctionHouseFrameAuctionsFrame
@@ -337,21 +374,21 @@ local function LoadSkin()
 
 	local ItemButton = Token.ItemButton
 	S:HandleIcon(ItemButton.Icon, true)
-	local _, _, itemRarity = GetItemInfo(_G.WOW_TOKEN_ITEM_ID)
-	local r, g, b
-	if itemRarity then
-		r, g, b = GetItemQualityColor(itemRarity)
-	end
-	ItemButton.Icon.backdrop:SetBackdropBorderColor(r, g, b)
-	ItemButton.IconBorder:SetAlpha(0)
+	ItemButton.Icon.backdrop:SetBackdropBorderColor(0, .8, 1)
+	ItemButton.IconBorder:Kill()
 
 	--WoW Token Tutorial Frame
 	local WowTokenGameTimeTutorial = Frame.WoWTokenResults.GameTimeTutorial
+	WowTokenGameTimeTutorial.NineSlice:Hide()
 	WowTokenGameTimeTutorial.TitleBg:SetAlpha(0)
 	WowTokenGameTimeTutorial:CreateBackdrop("Transparent")
 	S:HandleCloseButton(WowTokenGameTimeTutorial.CloseButton)
 	S:HandleButton(WowTokenGameTimeTutorial.RightDisplay.StoreButton)
 	WowTokenGameTimeTutorial.Bg:SetAlpha(0)
+	WowTokenGameTimeTutorial.LeftDisplay.Label:SetTextColor(1, 1, 1)
+	WowTokenGameTimeTutorial.LeftDisplay.Tutorial1:SetTextColor(1, 0, 0)
+	WowTokenGameTimeTutorial.RightDisplay.Label:SetTextColor(1, 1, 1)
+	WowTokenGameTimeTutorial.RightDisplay.Tutorial1:SetTextColor(1, 0, 0)
 
 	--[[ Dialogs ]]--
 	Frame.BuyDialog:StripTextures()

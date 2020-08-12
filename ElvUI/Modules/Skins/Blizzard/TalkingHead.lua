@@ -1,19 +1,17 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
---WoW API / Variables
 
 --Just some test code
 --[[
 local talkingHeadTextureKitRegionFormatStrings = {
-	["TextBackground"] = "%s-TextBackground",
-	["Portrait"] = "%s-PortraitFrame",
+	TextBackground = "%s-TextBackground",
+	Portrait = "%s-PortraitFrame",
 }
 local talkingHeadDefaultAtlases = {
-	["TextBackground"] = "TalkingHeads-TextBackground",
-	["Portrait"] = "TalkingHeads-Alliance-PortraitFrame",
+	TextBackground = "TalkingHeads-TextBackground",
+	Portrait = "TalkingHeads-Alliance-PortraitFrame",
 }
 local talkingHeadFontColor = {
 	["TalkingHeads-Horde"] = {Name = CreateColor(0.28, 0.02, 0.02), Text = CreateColor(0.0, 0.0, 0.0), Shadow = CreateColor(0.0, 0.0, 0.0, 0.0)},
@@ -127,11 +125,11 @@ function S:Blizzard_TalkingHeadUI()
 		local button = TalkingHeadFrame.MainFrame.CloseButton
 		S:HandleCloseButton(button)
 		button:ClearAllPoints()
-		button:Point('TOPRIGHT', TalkingHeadFrame.BackgroundFrame, 'TOPRIGHT', 0, -2)
+		button:SetPoint('TOPRIGHT', TalkingHeadFrame.BackgroundFrame, 'TOPRIGHT', 0, -2)
 	else
 		TalkingHeadFrame.MainFrame.Model:CreateBackdrop("Transparent")
 		TalkingHeadFrame.MainFrame.Model.backdrop:ClearAllPoints()
-		TalkingHeadFrame.MainFrame.Model.backdrop:Point("CENTER")
+		TalkingHeadFrame.MainFrame.Model.backdrop:SetPoint("CENTER")
 		TalkingHeadFrame.MainFrame.Model.backdrop:Size(120, 119)
 
 		TalkingHeadFrame.MainFrame.CloseButton:Kill()

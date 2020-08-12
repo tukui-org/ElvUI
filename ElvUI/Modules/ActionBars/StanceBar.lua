@@ -1,12 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local ceil = ceil
 local unpack = unpack
 local format, strfind = format, strfind
---WoW API / Variables
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
@@ -21,8 +19,9 @@ local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group("ElvUI", "Stance Bar")
-local WispSplode = "Interface\\Icons\\Spell_Nature_WispSplode"
+local WispSplode = [[Interface\Icons\Spell_Nature_WispSplode]]
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate')
+bar.buttons = {}
 
 function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 	local numForms = GetNumShapeshiftForms()
@@ -113,34 +112,14 @@ function AB:PositionAndSizeBarShapeShift()
 	local point = self.db.stanceBar.point
 	local widthMult = self.db.stanceBar.widthMult
 	local heightMult = self.db.stanceBar.heightMult
-	if bar.mover then
-		if self.db.stanceBar.usePositionOverride then
-			bar.mover.positionOverride = point
-		else
-			bar.mover.positionOverride = nil
-		end
-		E:UpdatePositionOverride(bar.mover:GetName())
-	end
 
-	--Now that we have set positionOverride for mover, convert "TOP" or "BOTTOM" to anchor points we can use
+	--Convert "TOP" or "BOTTOM" to anchor points we can use
 	local position = E:GetScreenQuadrant(bar)
 	if strfind(position, "LEFT") or position == "TOP" or position == "BOTTOM" then
-		if point == "TOP" then
-			point = "TOPLEFT"
-		elseif point == "BOTTOM" then
-			point = "BOTTOMLEFT"
-		end
-	else
-		if point == "TOP" then
-			point = "TOPRIGHT"
-		elseif point == "BOTTOM" then
-			point = "BOTTOMRIGHT"
-		end
-	end
+		if point == "TOP" then point = "TOPLEFT" elseif point == "BOTTOM" then point = "BOTTOMLEFT" end
+	elseif point == "TOP" then point = "TOPRIGHT" elseif point == "BOTTOM" then point = "BOTTOMRIGHT" end
 
 	bar.db = self.db.stanceBar
-	bar.db.position = nil; --Depreciated
-	bar.mouseover = self.db.stanceBar.mouseover
 
 	if bar.LastButton and numButtons > bar.LastButton then
 		numButtons = bar.LastButton
@@ -170,8 +149,7 @@ function AB:PositionAndSizeBarShapeShift()
 
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:Width(barWidth)
-	bar:Height(barHeight)
+	bar:Size(barWidth, barHeight)
 
 	local horizontalGrowth, verticalGrowth
 	if point == "TOPLEFT" or point == "TOPRIGHT" then
@@ -186,29 +164,35 @@ function AB:PositionAndSizeBarShapeShift()
 		horizontalGrowth = "LEFT"
 	end
 
-	if(self.db.stanceBar.inheritGlobalFade) then
+	bar.mouseover = self.db.stanceBar.mouseover
+	if bar.mouseover then
+		bar:SetAlpha(0)
+		AB:FadeBarBlings(bar, 0)
+	else
+		bar:SetAlpha(bar.db.alpha)
+		AB:FadeBarBlings(bar, bar.db.alpha)
+	end
+
+	if self.db.stanceBar.inheritGlobalFade then
 		bar:SetParent(self.fadeParent)
 	else
 		bar:SetParent(E.UIParent)
 	end
 
+	bar:EnableMouse(not self.db.stanceBar.clickThrough)
+
 	local button, lastButton, lastColumnButton
 	local useMasque = MasqueGroup and E.private.actionbar.masque.stanceBar
 	local firstButtonSpacing = (self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
 
-	for i=1, NUM_STANCE_SLOTS do
+	for i = 1, NUM_STANCE_SLOTS do
 		button = _G["ElvUI_StanceBarButton"..i]
 		lastButton = _G["ElvUI_StanceBarButton"..i-1]
 		lastColumnButton = _G["ElvUI_StanceBarButton"..i-buttonsPerRow]
 		button:SetParent(bar)
 		button:ClearAllPoints()
 		button:Size(size)
-
-		if self.db.stanceBar.mouseover == true then
-			bar:SetAlpha(0)
-		else
-			bar:SetAlpha(bar.db.alpha)
-		end
+		button:EnableMouse(not self.db.stanceBar.clickThrough)
 
 		if i == 1 then
 			local x, y
@@ -222,7 +206,7 @@ function AB:PositionAndSizeBarShapeShift()
 				x, y = -firstButtonSpacing, firstButtonSpacing
 			end
 
-			button:Point(point, bar, point, x, y)
+			button:SetPoint(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0
 			local y = -buttonSpacing
@@ -232,7 +216,7 @@ function AB:PositionAndSizeBarShapeShift()
 				buttonPoint = "BOTTOM"
 				anchorPoint = "TOP"
 			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y)
+			button:SetPoint(buttonPoint, lastColumnButton, anchorPoint, x, y)
 		else
 			local x = buttonSpacing
 			local y = 0
@@ -243,7 +227,7 @@ function AB:PositionAndSizeBarShapeShift()
 				anchorPoint = "LEFT"
 			end
 
-			button:Point(buttonPoint, lastButton, anchorPoint, x, y)
+			button:SetPoint(buttonPoint, lastButton, anchorPoint, x, y)
 		end
 
 		if i > numButtons then
@@ -304,7 +288,7 @@ function AB:AdjustMaxStanceButtons(event)
 		return
 	end
 
-	for i=1, #bar.buttons do
+	for i = 1, #bar.buttons do
 		bar.buttons[i]:Hide()
 	end
 
@@ -347,10 +331,9 @@ function AB:UpdateStanceBindings()
 end
 
 function AB:CreateBarShapeShift()
-	bar:CreateBackdrop()
+	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar.backdrop:SetAllPoints()
-	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -4)
-	bar.buttons = {}
+	bar:SetPoint('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
@@ -361,7 +344,7 @@ function AB:CreateBarShapeShift()
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift')
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift')
 
-	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar')
+	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar', true)
 	self:AdjustMaxStanceButtons()
 	self:StyleShapeShift()
 	self:UpdateStanceBindings()

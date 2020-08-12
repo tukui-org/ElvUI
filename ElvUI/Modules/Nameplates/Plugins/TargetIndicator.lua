@@ -2,8 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local NP = E:GetModule('NamePlates')
 local LSM = E.LSM
 
---Lua functions
---WoW API / Variables
 local UnitHealth = UnitHealth
 local UnitIsUnit = UnitIsUnit
 local UnitHealthMax = UnitHealthMax
@@ -22,7 +20,7 @@ local UnitHealthMax = UnitHealthMax
 local _, ns = ...
 local oUF = ns.oUF
 
-local function Update(self, event)
+local function Update(self)
 	local element = self.TargetIndicator
 
 	if (element.PreUpdate) then
@@ -156,7 +154,6 @@ local function Enable(self)
 		end
 
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
-		self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 
 		return true
 	end
@@ -172,7 +169,6 @@ local function Disable(self)
 		if element.Spark then element.Spark:Hide() end
 
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
-		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 	end
 end
 

@@ -57,8 +57,8 @@ end
 
 do -- other non-english locales require this
 	E.UnlocalizedClasses = {}
-	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
-	for k,v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
+	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
+	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_FEMALE) do E.UnlocalizedClasses[v] = k end
 
 	function E:UnlocalizedClassName(className)
 		return (className and className ~= '') and E.UnlocalizedClasses[className]
@@ -207,20 +207,32 @@ do
 end
 
 do
-	E.MaxNazjatarBodyguardRank = 30
-	function E:GetNazjatarBodyguardXP(widgetID)
+	function E:GetWidgetInfoID(guid)
+		return E.global.nameplate.widgetMap[guid]
+	end
+
+	function E:SetWidgetInfoID(guid, widgetID)
+		if widgetID then
+			E.global.nameplate.widgetMap[guid] = widgetID
+		end
+	end
+
+	E.MaxWidgetInfoRank = 30
+	function E:GetWidgetInfoBase(widgetID)
 		local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
 		if not widget then return end
-
-		local rank = tonumber(strmatch(widget.overrideBarText, '%d+'))
-		if not rank then return end
 
 		local cur = widget.barValue - widget.barMin
 		local toNext = widget.barMax - widget.barMin
 		local total = widget.barValue
-		local isMax = rank == E.MaxNazjatarBodyguardRank
 
-		return rank, cur, toNext, total, isMax
+		local rank, maxRank
+		if widget.overrideBarText then
+			rank = tonumber(strmatch(widget.overrideBarText, "%d+"))
+			maxRank = rank == E.MaxWidgetInfoRank
+		end
+
+		return cur, toNext, total, rank, maxRank
 	end
 end
 

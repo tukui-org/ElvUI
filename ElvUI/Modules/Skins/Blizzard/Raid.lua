@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs = pairs
 
@@ -23,20 +22,20 @@ function S:Blizzard_RaidUI()
 		local obj = _G[object]
 		if obj then
 			obj:StripTextures()
-		else
-			E:Print(object)
+
+			for j=1,5 do
+				local slot = _G[object.."Slot"..j]
+				if slot then
+					slot:StripTextures()
+					slot:CreateBackdrop("Transparent")
+					slot.backdrop:SetAllPoints()
+				end
+			end
 		end
 	end
 
 	for i=1, _G.MAX_RAID_GROUPS*5 do
 		S:HandleButton(_G["RaidGroupButton"..i], true)
-	end
-
-	for i=1,8 do
-		for j=1,5 do
-			_G["RaidGroup"..i.."Slot"..j]:StripTextures()
-			_G["RaidGroup"..i.."Slot"..j]:SetTemplate("Transparent")
-		end
 	end
 end
 

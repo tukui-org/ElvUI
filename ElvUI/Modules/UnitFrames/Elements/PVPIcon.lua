@@ -4,11 +4,11 @@ local UF = E:GetModule('UnitFrames');
 function UF:Construct_PvPIcon(frame)
 	local PvPIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK', nil, 1)
 	PvPIndicator:Size(30, 30)
-	PvPIndicator:Point('CENTER', frame, 'CENTER')
+	PvPIndicator:SetPoint('CENTER', frame, 'CENTER')
 
 	local Badge = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK')
 	Badge:Size(50, 52)
-	Badge:Point('CENTER', PvPIndicator, 'CENTER')
+	Badge:SetPoint('CENTER', PvPIndicator, 'CENTER')
 
 	PvPIndicator.Badge = Badge
 
@@ -18,7 +18,7 @@ end
 function UF:Configure_PVPIcon(frame)
 	local PvPIndicator = frame.PvPIndicator
 	PvPIndicator:ClearAllPoints()
-	PvPIndicator:Point(frame.db.pvpIcon.anchorPoint, frame.Health, frame.db.pvpIcon.anchorPoint, frame.db.pvpIcon.xOffset, frame.db.pvpIcon.yOffset)
+	PvPIndicator:SetPoint(frame.db.pvpIcon.anchorPoint, frame.Health, frame.db.pvpIcon.anchorPoint, frame.db.pvpIcon.xOffset, frame.db.pvpIcon.yOffset)
 
 	local scale = frame.db.pvpIcon.scale or 1
 	PvPIndicator:Size(30 * scale)

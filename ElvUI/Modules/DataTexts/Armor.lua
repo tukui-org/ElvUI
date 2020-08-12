@@ -1,16 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local format = format
 local strjoin = strjoin
---WoW API / Variables
 local UnitLevel = UnitLevel
 local UnitArmor = UnitArmor
 local PaperDollFrame_GetArmorReduction = PaperDollFrame_GetArmorReduction
-
+local ARMOR = ARMOR
 local armorString = ARMOR..": "
 local chanceString = "%.2f%%"
+local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
+
 local displayString, lastPanel, effectiveArmor, _ = ''
 
 local function OnEvent(self)
@@ -20,9 +20,8 @@ local function OnEvent(self)
 	lastPanel = self
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
-
+local function OnEnter()
+	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(L["Mitigation By Level: "])
 	DT.tooltip:AddLine(' ')
 
@@ -44,10 +43,8 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s", hex, "%d|r")
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Armor', {"UNIT_STATS", "UNIT_RESISTANCES", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, ARMOR)
+DT:RegisterDatatext('Armor', STAT_CATEGORY_ATTRIBUTES, {"UNIT_STATS", "UNIT_RESISTANCES", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, ARMOR)

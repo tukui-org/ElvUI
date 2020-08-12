@@ -2,7 +2,6 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
-
 local Update = function(self, event, unit)
 	if event == 'ARENA_OPPONENT_UPDATE' and unit ~= self.unit then return; end
 	local specIcon = self.PVPSpecIcon
@@ -13,7 +12,6 @@ local Update = function(self, event, unit)
 	if(specIcon.PreUpdate) then specIcon:PreUpdate(event) end
 
 	if instanceType == 'arena' then
-		local numOpps = GetNumArenaOpponentSpecs()
 		local ID = self.unit:match('arena(%d)') or self:GetID() or 0
 		local specID = GetArenaOpponentSpec(tonumber(ID))
 		if specID and specID > 0 then

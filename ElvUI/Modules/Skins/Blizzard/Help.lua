@@ -1,9 +1,26 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local select, unpack = select, unpack
+
+local function OnEnter(f)
+	f.text:SetTextColor(1, 1, 1)
+end
+
+local function OnLeave(f)
+	f.text:SetTextColor(1, .8, 0)
+end
+
+local function HandleTabButton(button)
+	button.selected:SetColorTexture(1, 1, 1, 0.3)
+	button.selected:SetDrawLayer("BACKGROUND")
+
+	S:HandleButton(button)
+
+	button:SetScript("OnEnter", OnEnter)
+	button:SetScript("OnLeave", OnLeave)
+end
 
 function S:HelpFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.help) then return end
@@ -21,7 +38,6 @@ function S:HelpFrame()
 		_G.HelpFrameKnowledgebaseSearchButton,
 		_G.HelpFrameKnowledgebaseNavBarHomeButton,
 		_G.HelpFrameCharacterStuckStuck,
-		_G.HelpFrameButton16,
 		_G.HelpFrameSubmitSuggestionSubmit,
 		_G.HelpFrameReportBugSubmit,
 	}
@@ -40,8 +56,8 @@ function S:HelpFrame()
 	local HelpFrameReportBugScrollFrame = _G.HelpFrameReportBugScrollFrame
 	HelpFrameReportBugScrollFrame:StripTextures()
 	HelpFrameReportBugScrollFrame:CreateBackdrop("Transparent")
-	HelpFrameReportBugScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
-	HelpFrameReportBugScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
+	HelpFrameReportBugScrollFrame.backdrop:SetPoint("TOPLEFT", -4, 4)
+	HelpFrameReportBugScrollFrame.backdrop:SetPoint("BOTTOMRIGHT", 6, -4)
 
 	for i = 1, _G.HelpFrameReportBug:GetNumChildren() do
 		local child = select(i, _G.HelpFrameReportBug:GetChildren())
@@ -55,9 +71,9 @@ function S:HelpFrame()
 	local HelpFrameSubmitSuggestionScrollFrame = _G.HelpFrameSubmitSuggestionScrollFrame
 	HelpFrameSubmitSuggestionScrollFrame:StripTextures()
 	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Transparent")
-	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
-	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
-	for i=1, _G.HelpFrameSubmitSuggestion:GetNumChildren() do
+	HelpFrameSubmitSuggestionScrollFrame.backdrop:SetPoint("TOPLEFT", -4, 4)
+	HelpFrameSubmitSuggestionScrollFrame.backdrop:SetPoint("BOTTOMRIGHT", 6, -4)
+	for i = 1, _G.HelpFrameSubmitSuggestion:GetNumChildren() do
 		local child = select(i, _G.HelpFrameSubmitSuggestion:GetChildren())
 		if not child:GetName() then
 			child:StripTextures()
@@ -74,19 +90,16 @@ function S:HelpFrame()
 
 		if buttons[i].text then
 			buttons[i].text:ClearAllPoints()
-			buttons[i].text:Point("CENTER")
+			buttons[i].text:SetPoint("CENTER")
 			buttons[i].text:SetJustifyH("CENTER")
 		end
 	end
 
 	-- skin main buttons
 	for i = 1, 6 do
-		local b = _G["HelpFrameButton"..i]
-		S:HandleButton(b, true)
-		b.text:ClearAllPoints()
-		b.text:Point("CENTER")
-		b.text:SetJustifyH("CENTER")
+		HandleTabButton(_G["HelpFrameButton"..i])
 	end
+	HandleTabButton(_G.HelpFrameButton16)
 
 	-- skin table options
 	for i = 1, _G.HelpFrameKnowledgebaseScrollFrameScrollChild:GetNumChildren() do
@@ -100,7 +113,7 @@ function S:HelpFrame()
 	S:HandleButton(HelpBrowserNavHome)
 	HelpBrowserNavHome:Size(26)
 	HelpBrowserNavHome:ClearAllPoints()
-	HelpBrowserNavHome:Point("BOTTOMLEFT", _G.HelpBrowser, "TOPLEFT", -5, 9)
+	HelpBrowserNavHome:SetPoint("BOTTOMLEFT", _G.HelpBrowser, "TOPLEFT", -5, 9)
 	S:HandleNextPrevButton(_G.HelpBrowserNavBack)
 	_G.HelpBrowserNavBack:Size(26)
 	S:HandleNextPrevButton(_G.HelpBrowserNavForward)
@@ -112,16 +125,16 @@ function S:HelpFrame()
 	S:HandleButton(_G.HelpBrowserBrowserSettings)
 	_G.HelpBrowserBrowserSettings:Size(26)
 	_G.HelpBrowserBrowserSettings:ClearAllPoints()
-	_G.HelpBrowserBrowserSettings:Point("TOPRIGHT", _G.HelpFrameCloseButton, "TOPLEFT", -3, -8)
+	_G.HelpBrowserBrowserSettings:SetPoint("TOPRIGHT", _G.HelpFrameCloseButton, "TOPLEFT", -3, -8)
 
 	-- skin misc items
 	_G.HelpFrameKnowledgebaseSearchBox:ClearAllPoints()
-	_G.HelpFrameKnowledgebaseSearchBox:Point("TOPLEFT", _G.HelpFrameMainInset, "TOPLEFT", 13, -10)
+	_G.HelpFrameKnowledgebaseSearchBox:SetPoint("TOPLEFT", _G.HelpFrameMainInset, "TOPLEFT", 13, -10)
 	_G.HelpFrameKnowledgebaseNavBar:StripTextures()
 
 	local HelpFrame = _G.HelpFrame
 	HelpFrame:StripTextures(true)
-	HelpFrame:CreateBackdrop("Transparent")
+	HelpFrame:CreateBackdrop('Transparent')
 	S:HandleEditBox(_G.HelpFrameKnowledgebaseSearchBox)
 	S:HandleScrollBar(_G.HelpFrameKnowledgebaseScrollFrameScrollBar, 5)
 	S:HandleCloseButton(_G.HelpFrameCloseButton, HelpFrame.backdrop)
@@ -130,16 +143,16 @@ function S:HelpFrame()
 	--Hearth Stone Button
 	local HelpFrameCharacterStuckHearthstone = _G.HelpFrameCharacterStuckHearthstone
 	HelpFrameCharacterStuckHearthstone:StyleButton()
-	HelpFrameCharacterStuckHearthstone:SetTemplate(nil, true)
+	HelpFrameCharacterStuckHearthstone:CreateBackdrop(nil, true)
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetInside()
 	HelpFrameCharacterStuckHearthstone.IconTexture:SetTexCoord(unpack(E.TexCoords))
 
 	S:HandleButton(_G.HelpFrameGM_ResponseNeedMoreHelp)
 	S:HandleButton(_G.HelpFrameGM_ResponseCancel)
-	for i=1, _G.HelpFrameGM_Response:GetNumChildren() do
+	for i = 1, _G.HelpFrameGM_Response:GetNumChildren() do
 		local child = select(i, _G.HelpFrameGM_Response:GetChildren())
 		if child and child:IsObjectType('Frame') and not child:GetName() then
-			child:SetTemplate()
+			child:CreateBackdrop()
 		end
 	end
 end

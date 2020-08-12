@@ -1,11 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('DataBars')
+local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
---Lua functions
 local _G = _G
 local format = format
---WoW API / Variables
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
@@ -16,19 +14,19 @@ local TogglePVPUI = TogglePVPUI
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local HONOR = HONOR
 
-function mod:UpdateHonor(event, unit)
-	if not mod.db.honor.enable then return end
+function DB:UpdateHonor(event, unit)
+	if not DB.db.honor.enable then return end
 	if event == "PLAYER_FLAGS_CHANGED" and unit ~= "player" then return end
 
-	local bar = self.honorBar
+	local bar = DB.honorBar
 
-	if (self.db.honor.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) or
-		(self.db.honor.hideOutsidePvP and not UnitIsPVP("player")) or (self.db.honor.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
+	if (DB.db.honor.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) or
+		(DB.db.honor.hideOutsidePvP and not UnitIsPVP("player")) or (DB.db.honor.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
 		bar:Hide()
 	else
 		bar:Show()
 
-		if self.db.honor.hideInVehicle then
+		if DB.db.honor.hideInVehicle then
 			E:RegisterObjectForVehicleLock(bar, E.UIParent)
 		else
 			E:UnregisterObjectForVehicleLock(bar)
@@ -44,7 +42,7 @@ function mod:UpdateHonor(event, unit)
 		bar.statusBar:SetValue(cur)
 
 		local text = ''
-		local textFormat = self.db.honor.textFormat
+		local textFormat = DB.db.honor.textFormat
 
 		if textFormat == 'PERCENT' then
 			text = format('%d%%', cur / max * 100)
@@ -66,9 +64,9 @@ function mod:UpdateHonor(event, unit)
 	end
 end
 
-function mod:HonorBar_OnEnter()
+function DB:HonorBar_OnEnter()
 	local GameTooltip = _G.GameTooltip
-	if mod.db.honor.mouseover then
+	if DB.db.honor.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 
@@ -90,56 +88,56 @@ function mod:HonorBar_OnEnter()
 	GameTooltip:Show()
 end
 
-function mod:HonorBar_OnClick()
+function DB:HonorBar_OnClick()
 	TogglePVPUI()
 end
 
-function mod:UpdateHonorDimensions()
-	self.honorBar:Width(self.db.honor.width)
-	self.honorBar:Height(self.db.honor.height)
-	self.honorBar.statusBar:SetOrientation(self.db.honor.orientation)
-	self.honorBar.statusBar:SetReverseFill(self.db.honor.reverseFill)
-	self.honorBar.text:FontTemplate(LSM:Fetch("font", self.db.honor.font), self.db.honor.textSize, self.db.honor.fontOutline)
+function DB:UpdateHonorDimensions()
+	DB.honorBar:Width(DB.db.honor.width)
+	DB.honorBar:Height(DB.db.honor.height)
+	DB.honorBar.statusBar:SetOrientation(DB.db.honor.orientation)
+	DB.honorBar.statusBar:SetReverseFill(DB.db.honor.reverseFill)
+	DB.honorBar.text:FontTemplate(LSM:Fetch("font", DB.db.honor.font), DB.db.honor.textSize, DB.db.honor.fontOutline)
 
-	if self.db.honor.orientation == "HORIZONTAL" then
-		self.honorBar.statusBar:SetRotatesTexture(false)
+	if DB.db.honor.orientation == "HORIZONTAL" then
+		DB.honorBar.statusBar:SetRotatesTexture(false)
 	else
-		self.honorBar.statusBar:SetRotatesTexture(true)
+		DB.honorBar.statusBar:SetRotatesTexture(true)
 	end
 
-	if self.db.honor.mouseover then
-		self.honorBar:SetAlpha(0)
+	if DB.db.honor.mouseover then
+		DB.honorBar:SetAlpha(0)
 	else
-		self.honorBar:SetAlpha(1)
-	end
-end
-
-function mod:EnableDisable_HonorBar()
-	if self.db.honor.enable then
-		self:RegisterEvent("HONOR_XP_UPDATE", "UpdateHonor")
-		self:UpdateHonor()
-		E:EnableMover(self.honorBar.mover:GetName())
-	else
-		self:UnregisterEvent("HONOR_XP_UPDATE")
-		self.honorBar:Hide()
-		E:DisableMover(self.honorBar.mover:GetName())
+		DB.honorBar:SetAlpha(1)
 	end
 end
 
-function mod:LoadHonorBar()
-	self.honorBar = self:CreateBar('ElvUI_HonorBar', self.HonorBar_OnEnter, self.HonorBar_OnClick, 'RIGHT', _G.RightChatPanel, 'LEFT', E.Border - E.Spacing*3, 0)
-	self.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
-	self.honorBar.statusBar:SetMinMaxValues(0, 325)
+function DB:EnableDisable_HonorBar()
+	if DB.db.honor.enable then
+		DB:RegisterEvent("HONOR_XP_UPDATE", "UpdateHonor")
+		DB:UpdateHonor()
+		E:EnableMover(DB.honorBar.mover:GetName())
+	else
+		DB:UnregisterEvent("HONOR_XP_UPDATE")
+		DB.honorBar:Hide()
+		E:DisableMover(DB.honorBar.mover:GetName())
+	end
+end
 
-	self.honorBar.eventFrame = CreateFrame("Frame")
-	self.honorBar.eventFrame:Hide()
-	self.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
-	self.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	self.honorBar.eventFrame:RegisterEvent("PLAYER_FLAGS_CHANGED")
-	self.honorBar.eventFrame:SetScript("OnEvent", function(self, event, unit) mod:UpdateHonor(event, unit) end)
+function DB:LoadHonorBar()
+	DB.honorBar = DB:CreateBar('ElvUI_HonorBar', DB.HonorBar_OnEnter, DB.HonorBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255)
+	DB.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
+	DB.honorBar.statusBar:SetMinMaxValues(0, 325)
 
-	self:UpdateHonorDimensions()
-	E:CreateMover(self.honorBar, "HonorBarMover", L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
+	DB.honorBar.eventFrame = CreateFrame("Frame")
+	DB.honorBar.eventFrame:Hide()
+	DB.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+	DB.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+	DB.honorBar.eventFrame:RegisterEvent("PLAYER_FLAGS_CHANGED")
+	DB.honorBar.eventFrame:SetScript("OnEvent", function(self, event, unit) DB:UpdateHonor(event, unit) end)
 
-	self:EnableDisable_HonorBar()
+	DB:UpdateHonorDimensions()
+	E:CreateMover(DB.honorBar, "HonorBarMover", L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
+
+	DB:EnableDisable_HonorBar()
 end

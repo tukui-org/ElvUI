@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc')
 
---Lua functions
 local _G = _G
 local pairs, unpack, ipairs, next, tonumber, tinsert = pairs, unpack, ipairs, next, tonumber, tinsert
---WoW API / Variables
+
 local ChatEdit_InsertLink = ChatEdit_InsertLink
 local CreateFrame = CreateFrame
 local CursorOnUpdate = CursorOnUpdate
@@ -91,7 +90,7 @@ local function StatusUpdate(frame)
 	if not frame.parent.rollID then return end
 	local t = GetLootRollTimeLeft(frame.parent.rollID)
 	local perc = t / frame.parent.time
-	frame.spark:Point("CENTER", frame, "LEFT", perc * frame:GetWidth(), 0)
+	frame.spark:SetPoint("CENTER", frame, "LEFT", perc * frame:GetWidth(), 0)
 	frame:SetValue(t)
 
 	if t > 1000000000 then
@@ -101,7 +100,7 @@ end
 
 local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...)
 	local f = CreateFrame("Button", nil, parent)
-	f:Point(...)
+	f:SetPoint(...)
 	f:Size(FRAME_HEIGHT - 4)
 	f:SetNormalTexture(ntex)
 	if ptex then f:SetPushedTexture(ptex) end
@@ -113,14 +112,14 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 	f:SetScript("OnLeave", HideTip)
 	f:SetScript("OnClick", ClickRoll)
 	f:SetMotionScriptsWhileDisabled(true)
-	local txt = f:CreateFontString(nil, nil)
+	local txt = f:CreateFontString(nil, "ARTWORK")
 	txt:FontTemplate(nil, nil, "OUTLINE")
-	txt:Point("CENTER", 0, rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0)
+	txt:SetPoint("CENTER", 0, rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0)
 	return f, txt
 end
 
 function M:CreateRollFrame()
-	local frame = CreateFrame("Frame", nil, E.UIParent)
+	local frame = CreateFrame("Frame", nil, E.UIParent, 'BackdropTemplate')
 	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
 	frame:SetTemplate()
 	frame:SetScript("OnEvent", OnEvent)
@@ -130,7 +129,7 @@ function M:CreateRollFrame()
 	frame:Hide()
 
 	local button = CreateFrame("Button", nil, frame)
-	button:Point("RIGHT", frame, 'LEFT', -(E.Spacing*3), 0)
+	button:SetPoint("RIGHT", frame, 'LEFT', -(E.Spacing*3), 0)
 	button:Size(FRAME_HEIGHT - (E.Border * 2))
 	button:CreateBackdrop()
 	button:SetScript("OnEnter", SetItemTip)
@@ -144,9 +143,9 @@ function M:CreateRollFrame()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 
 	local tfade = frame:CreateTexture(nil, "BORDER")
-	tfade:Point("TOPLEFT", frame, "TOPLEFT", 4, 0)
-	tfade:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 0)
-	tfade:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
+	tfade:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, 0)
+	tfade:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 0)
+	tfade:SetTexture([[Interface\ChatFrame\ChatFrameBackground]])
 	tfade:SetBlendMode("ADD")
 	tfade:SetGradientAlpha("VERTICAL", .1, .1, .1, 0, .1, .1, .1, 0)
 
@@ -166,27 +165,27 @@ function M:CreateRollFrame()
 	status.bg:SetDrawLayer('BACKGROUND', 2)
 	local spark = frame:CreateTexture(nil, "OVERLAY")
 	spark:Size(14, FRAME_HEIGHT)
-	spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
+	spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	spark:SetBlendMode("ADD")
 	status.spark = spark
 
-	local need, needtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Dice-Up", "Interface\\Buttons\\UI-GroupLoot-Dice-Highlight", "Interface\\Buttons\\UI-GroupLoot-Dice-Down", 1, NEED, "LEFT", frame.button, "RIGHT", 5, -1)
-	local greed, greedtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Coin-Up", "Interface\\Buttons\\UI-GroupLoot-Coin-Highlight", "Interface\\Buttons\\UI-GroupLoot-Coin-Down", 2, GREED, "LEFT", need, "RIGHT", 0, -1)
+	local need, needtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Dice-Up]], [[Interface\Buttons\UI-GroupLoot-Dice-Highlight]], [[Interface\Buttons\UI-GroupLoot-Dice-Down]], 1, NEED, "LEFT", frame.button, "RIGHT", 5, -1)
+	local greed, greedtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Coin-Up]], [[Interface\Buttons\UI-GroupLoot-Coin-Highlight]], [[Interface\Buttons\UI-GroupLoot-Coin-Down]], 2, GREED, "LEFT", need, "RIGHT", 0, -1)
 	local de, detext
-	de, detext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-DE-Up", "Interface\\Buttons\\UI-GroupLoot-DE-Highlight", "Interface\\Buttons\\UI-GroupLoot-DE-Down", 3, ROLL_DISENCHANT, "LEFT", greed, "RIGHT", 0, -1)
-	local pass, passtext = CreateRollButton(frame, "Interface\\Buttons\\UI-GroupLoot-Pass-Up", nil, "Interface\\Buttons\\UI-GroupLoot-Pass-Down", 0, PASS, "LEFT", de or greed, "RIGHT", 0, 2)
+	de, detext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-DE-Up]], [[Interface\Buttons\UI-GroupLoot-DE-Highlight]], [[Interface\Buttons\UI-GroupLoot-DE-Down]], 3, ROLL_DISENCHANT, "LEFT", greed, "RIGHT", 0, -1)
+	local pass, passtext = CreateRollButton(frame, [[Interface\Buttons\UI-GroupLoot-Pass-Up]], nil, [[Interface\Buttons\UI-GroupLoot-Pass-Down]], 0, PASS, "LEFT", de or greed, "RIGHT", 0, 2)
 	frame.needbutt, frame.greedbutt, frame.disenchantbutt = need, greed, de
 	frame.need, frame.greed, frame.pass, frame.disenchant = needtext, greedtext, passtext, detext
 
-	local bind = frame:CreateFontString()
+	local bind = frame:CreateFontString(nil, "ARTWORK")
 	bind:Point("LEFT", pass, "RIGHT", 3, 1)
 	bind:FontTemplate(nil, nil, "OUTLINE")
 	frame.fsbind = bind
 
 	local loot = frame:CreateFontString(nil, "ARTWORK")
 	loot:FontTemplate(nil, nil, "OUTLINE")
-	loot:Point("LEFT", bind, "RIGHT", 0, 0)
-	loot:Point("RIGHT", frame, "RIGHT", -5, 0)
+	loot:SetPoint("LEFT", bind, "RIGHT", 0, 0)
+	loot:SetPoint("RIGHT", frame, "RIGHT", -5, 0)
 	loot:Size(200, 10)
 	loot:SetJustifyH("LEFT")
 	frame.fsloot = loot
@@ -203,9 +202,9 @@ local function GetFrame()
 
 	local f = M:CreateRollFrame()
 	if pos == "TOP" then
-		f:Point("TOP", next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, "BOTTOM", 0, -4)
+		f:SetPoint("TOP", next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, "BOTTOM", 0, -4)
 	else
-		f:Point("BOTTOM", next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, "TOP", 0, 4)
+		f:SetPoint("BOTTOM", next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, "TOP", 0, 4)
 	end
 	tinsert(M.RollBars, f)
 	return f
@@ -247,7 +246,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.status:SetMinMaxValues(0, time)
 	f.status:SetValue(time)
 
-	f:Point("CENTER", _G.WorldFrame, "CENTER")
+	f:SetPoint("CENTER", _G.WorldFrame, "CENTER")
 	f:Show()
 	_G.AlertFrame:UpdateAnchors()
 

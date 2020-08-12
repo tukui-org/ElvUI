@@ -33,17 +33,17 @@ local InspectItems = {
 }
 
 local whileOpenEvents = {
-	['UPDATE_INVENTORY_DURABILITY'] = true,
-	['AZERITE_ESSENCE_UPDATE'] = true
+	UPDATE_INVENTORY_DURABILITY = true,
+	AZERITE_ESSENCE_UPDATE = true
 }
 
 function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
-	texture:Point("BOTTOM", x, y)
+	texture:SetPoint("BOTTOM", x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
 	texture:Size(14)
 
-	local backdrop = CreateFrame('Frame', nil, slot)
+	local backdrop = CreateFrame('Frame', nil, slot, "BackdropTemplate")
 	backdrop:SetTemplate(nil, nil, true)
 	backdrop:SetBackdropColor(0,0,0,0)
 	backdrop:SetOutside(texture)
@@ -182,7 +182,7 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 				inspectItem["textureSlotEssenceType"..x] = essenceType
 			end
 
-			essenceType:Point("BOTTOM", texture, "TOP", 0, -9)
+			essenceType:SetPoint("BOTTOM", texture, "TOP", 0, -9)
 			essenceType:SetAtlas(gsub(essence[2], '^tooltip%-(heartofazeroth)essence', '%1-list-selected'))
 			essenceType:Size(13, 17)
 			essenceType:Show()
@@ -194,7 +194,8 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 			if selected then
 				backdrop:SetBackdropColor(0,0,0,0)
 			else
-				backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
+				local r, g, b = unpack(E.media.backdropcolor)
+				backdrop:SetBackdropColor(r, g, b, 1)
 			end
 
 			essenceStep = essenceStep + 1
@@ -279,10 +280,10 @@ function M:CreateSlotStrings(frame, which)
 
 	if which == 'Inspect' then
 		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, "ARTWORK")
-		frame.ItemLevelText:Point("BOTTOMRIGHT", -6, 6)
+		frame.ItemLevelText:SetPoint("BOTTOMRIGHT", -6, 6)
 	else
 		frame.ItemLevelText = _G.CharacterStatsPane.ItemLevelFrame:CreateFontString(nil, "ARTWORK")
-		frame.ItemLevelText:Point("BOTTOM", _G.CharacterStatsPane.ItemLevelFrame.Value, "BOTTOM", 0, 0)
+		frame.ItemLevelText:SetPoint("BOTTOM", _G.CharacterStatsPane.ItemLevelFrame.Value, "BOTTOM", 0, 0)
 	end
 	frame.ItemLevelText:FontTemplate(nil, which == 'Inspect' and 12 or 20)
 
@@ -292,15 +293,15 @@ function M:CreateSlotStrings(frame, which)
 			local x, y, z, justify = M:GetInspectPoints(i)
 			slot.iLvlText = slot:CreateFontString(nil, "OVERLAY")
 			slot.iLvlText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
-			slot.iLvlText:Point("BOTTOM", slot, x, y)
+			slot.iLvlText:SetPoint("BOTTOM", slot, x, y)
 
 			slot.enchantText = slot:CreateFontString(nil, "OVERLAY")
 			slot.enchantText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
 
 			if i == 16 or i == 17 then
-				slot.enchantText:Point(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", slot, i==16 and -40 or 40, 3)
+				slot.enchantText:SetPoint(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", slot, i==16 and -40 or 40, 3)
 			else
-				slot.enchantText:Point(justify, slot, x + (justify == "BOTTOMLEFT" and 5 or -5), z)
+				slot.enchantText:SetPoint(justify, slot, x + (justify == "BOTTOMLEFT" and 5 or -5), z)
 			end
 
 			for u=1, 10 do

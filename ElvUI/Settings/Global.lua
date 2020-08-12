@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 --Global Settings
 G.general = {
 	UIScale = 0.64,
-	version = 11.27,
+	version = 11.49,
 	locale = E:GetLocale(),
 	eyefinity = false,
 	smallerWorldMap = true,
@@ -18,8 +18,8 @@ G.general = {
 		yOffset = 0
 	},
 	AceGUI = {
-		width = 1000,
-		height = 720
+		width = 960,
+		height = 730
 	},
 	disableTutorialButtons = true,
 	showMissingTalentAlert = false,
@@ -37,7 +37,32 @@ G.bags = {
 }
 
 G.datatexts = {
-	customCurrencies = {}
+	customPanels = {},
+	customCurrencies = {},
+	newPanelInfo = {
+		name = '',
+		enable = true,
+		growth = 'HORIZONTAL',
+		width = 300,
+		height = 22,
+		frameStrata = 'LOW',
+		numPoints = 3,
+		frameLevel = 1,
+		backdrop = true,
+		panelTransparency = false,
+		mouseover = false,
+		border = true,
+		visibility = '[petbattle] hide;show',
+		tooltipAnchor = 'ANCHOR_TOPLEFT',
+		tooltipXOffset = -17,
+		tooltipYOffset = 4,
+		fonts = {
+			enable = false,
+			font = "PT Sans Narrow",
+			fontSize = 12,
+			fontOutline = "OUTLINE",
+		}
+	},
 }
 
 G.nameplate = {
@@ -47,6 +72,29 @@ G.nameplate = {
 	effectiveHealthSpeed = 0.3,
 	effectivePowerSpeed = 0.3,
 	effectiveAuraSpeed = 0.3,
+	widgetMap = {
+		[149805] = 1940, -- Farseer Ori
+		[149804] = 1613, -- Hunter Akana
+		[149803] = 1966, -- Bladesman Inowari
+		[149904] = 1621, -- Neri Sharpfin
+		[149902] = 1622, -- Poen Gillbrack
+		[149906] = 1920, -- Vim Brineheart
+
+		[154304] = 1940, -- Farseer Ori
+		[150202] = 1613, -- Hunter Akana
+		[154297] = 1966, -- Bladesman Inowari
+		[151300] = 1621, -- Neri Sharpfin
+		[151310] = 1622, -- Poen Gillbrack
+		[151309] = 1920, -- Vim Brineheart
+
+		[163541] = 2342, -- Voidtouched Egg
+		[163592] = 2342, -- Yu'gaz
+		[163593] = 2342, -- Bitey McStabface
+		[163595] = 2342, -- Reginald
+		[163596] = 2342, -- Picco
+		[163648] = 2342, -- Bitey McStabface
+		[163651] = 2342, -- Yu'gaz
+	}
 }
 
 G.unitframe = {
@@ -241,7 +289,7 @@ G.unitframe = {
 
 G.profileCopy = {
 	--Specific values
-	selected = "Minimalistic",
+	selected = "Default",
 	movers = {},
 	--Modules
 	actionbar = {

@@ -1,16 +1,14 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
---Lua functions
 local _G = _G
 local floor = floor
 local format = format
---WoW API / Variables
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
-local UnitAlternatePowerInfo = UnitAlternatePowerInfo
 local UnitPowerMax = UnitPowerMax
 local UnitPower = UnitPower
+local GetUnitPowerBarInfo = GetUnitPowerBarInfo
+local GetUnitPowerBarStrings = GetUnitPowerBarStrings
 
 local function updateTooltip(self)
 	if _G.GameTooltip:IsForbidden() then return end
@@ -55,24 +53,17 @@ function B:SetAltPowerBarText(text, name, value, max, percent)
 	end
 end
 
-function B:PositionAltPower()
-	self:Point('CENTER', _G.AltPowerBarHolder, 'CENTER')
-end
-
 function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
-	holder:Point('TOP', E.UIParent, 'TOP', 0, -18)
+	holder:SetPoint('TOP', E.UIParent, 'TOP', -1, -36)
 	holder:Size(128, 50)
 
 	_G.PlayerPowerBarAlt:ClearAllPoints()
-	_G.PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
+	_G.PlayerPowerBarAlt:SetPoint('CENTER', holder, 'CENTER')
 	_G.PlayerPowerBarAlt:SetParent(holder)
-	_G.PlayerPowerBarAlt.ignoreFramePositionManager = true
-
-	--The Blizzard function FramePositionDelegate:UIParentManageFramePositions()
-	--calls :ClearAllPoints on PlayerPowerBarAlt under certain conditions.
-	--Doing ".ClearAllPoints = E.noop" causes error when you enter combat.
-	hooksecurefunc(_G.PlayerPowerBarAlt, "ClearAllPoints", B.PositionAltPower)
+	_G.PlayerPowerBarAlt:SetMovable(true)
+	_G.PlayerPowerBarAlt:SetUserPlaced(true)
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.PlayerPowerBarAlt = nil
 
 	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"], nil, nil, nil, nil, nil, 'general,alternativePowerGroup')
 end
@@ -136,6 +127,12 @@ function B:UpdateAltPowerBar()
 		self:SetMinMaxValues(barInfo.minPower, maxPower)
 		self:SetValue(power)
 
+		if barInfo.ID == 554 then -- Sanity 8.3: N'Zoth Eye
+			self.textures:Show()
+		else
+			self.textures:Hide()
+		end
+
 		if E.db.general.altPowerBar.statusBarColorGradient then
 			local value = (maxPower > 0 and power / maxPower) or 0
 			self.colorGradientValue = value
@@ -154,6 +151,7 @@ function B:UpdateAltPowerBar()
 		self.powerTooltip = nil
 		self.powerValue = nil
 
+		self.textures:Hide()
 		self:Hide()
 	end
 end
@@ -164,15 +162,34 @@ function B:SkinAltPowerBar()
 	local powerbar = CreateFrame("StatusBar", "ElvUI_AltPowerBar", E.UIParent)
 	powerbar:CreateBackdrop(nil, true)
 	powerbar:SetMinMaxValues(0, 200)
-	powerbar:Point("CENTER", _G.AltPowerBarHolder)
+	powerbar:SetPoint("CENTER", _G.AltPowerBarHolder)
 	powerbar:Hide()
 
 	powerbar:SetScript("OnEnter", onEnter)
 	powerbar:SetScript("OnLeave", onLeave)
 
 	powerbar.text = powerbar:CreateFontString(nil, "OVERLAY")
-	powerbar.text:Point("CENTER", powerbar, "CENTER")
+	powerbar.text:SetPoint("CENTER", powerbar, "CENTER")
 	powerbar.text:SetJustifyH("CENTER")
+
+	do -- NZoth textures
+		local texTop = powerbar:CreateTexture(nil, "OVERLAY")
+		local texBotomLeft = powerbar:CreateTexture(nil, "OVERLAY")
+		local texBottomRight = powerbar:CreateTexture(nil, "OVERLAY")
+
+		powerbar.textures = {
+			TOP = texTop, BOTTOMLEFT = texBotomLeft, BOTTOMRIGHT = texBottomRight,
+			Show = function() texTop:Show() texBotomLeft:Show() texBottomRight:Show() end,
+			Hide = function() texTop:Hide() texBotomLeft:Hide() texBottomRight:Hide() end,
+		}
+
+		texTop:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothTop]])
+		texTop:SetPoint("CENTER", powerbar, "TOP", 0, -19)
+		texBotomLeft:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothBottomLeft]])
+		texBotomLeft:SetPoint("BOTTOMLEFT", powerbar, "BOTTOMLEFT", -7, -10)
+		texBottomRight:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothBottomRight]])
+		texBottomRight:SetPoint("BOTTOMRIGHT", powerbar, "BOTTOMRIGHT", 7, -10)
+	end
 
 	B:UpdateAltPowerBarSettings()
 	B:UpdateAltPowerBarColors()

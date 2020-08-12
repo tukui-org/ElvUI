@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local next, ipairs, pairs = next, ipairs, pairs
 local floor, tinsert = floor, tinsert
---WoW API / Variables
+
 local GetTime = GetTime
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -70,10 +69,8 @@ function E:Cooldown_OnUpdate(elapsed)
 				end
 			end
 
-			local color = self.timeColors[id]
-			if color then
-				self.text:SetTextColor(color.r, color.g, color.b)
-			end
+			local color = not self.skipTextColor and self.timeColors[id]
+			if color then self.text:SetTextColor(color.r, color.g, color.b) end
 		end
 	end
 end
@@ -172,7 +169,7 @@ function E:CreateCooldownTimer(parent)
 	parent.timer = timer
 
 	local text = timer:CreateFontString(nil, 'OVERLAY')
-	text:Point('CENTER', 1, 1)
+	text:SetPoint('CENTER', 1, 1)
 	text:SetJustifyH('CENTER')
 	timer.text = text
 

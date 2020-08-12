@@ -7,11 +7,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames')
 local AB = E:GetModule('ActionBars')
 
---Lua functions
 local _G = _G
 local pairs = pairs
 local twipe, tinsert = wipe, tinsert
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local DoEmote = DoEmote
 local GetCVar, SetCVar = GetCVar, SetCVar
@@ -87,18 +86,18 @@ do
 		end
 
 		for _, bar in pairs(AB.handledBars) do
-			for i=1, #bar.buttons do
+			for i = 1, #bar.buttons do
 				tinsert(self.massiveShakeObjects, bar.buttons[i])
 			end
 		end
 
 		if ElvUI_StanceBar then
-			for i=1, #ElvUI_StanceBar.buttons do
+			for i = 1, #ElvUI_StanceBar.buttons do
 				tinsert(self.massiveShakeObjects, ElvUI_StanceBar.buttons[i])
 			end
 		end
 
-		for i=1, NUM_PET_ACTION_SLOTS do
+		for i = 1, NUM_PET_ACTION_SLOTS do
 			local button = _G['PetActionButton'..i]
 			if button then
 				tinsert(self.massiveShakeObjects, button)
@@ -267,11 +266,11 @@ do
 			return
 		end
 		local helloKittyLeft = CreateFrame('Frame', 'HelloKittyLeft', _G.UIParent)
-		helloKittyLeft:SetSize(120, 128)
+		helloKittyLeft:Size(120, 128)
 		helloKittyLeft:SetMovable(true)
 		helloKittyLeft:EnableMouse(true)
 		helloKittyLeft:RegisterForDrag('LeftButton')
-		helloKittyLeft:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMRIGHT', 2, -4)
+		helloKittyLeft:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMRIGHT', 2, -4)
 		helloKittyLeft.tex = helloKittyLeft:CreateTexture(nil, 'OVERLAY')
 		helloKittyLeft.tex:SetAllPoints()
 		helloKittyLeft.tex:SetTexture(E.Media.Textures.HelloKitty)
@@ -284,11 +283,11 @@ do
 		helloKittyLeft:SetScript('OnUpdate', OnUpdate)
 
 		local helloKittyRight = CreateFrame('Frame', 'HelloKittyRight', _G.UIParent)
-		helloKittyRight:SetSize(120, 128)
+		helloKittyRight:Size(120, 128)
 		helloKittyRight:SetMovable(true)
 		helloKittyRight:EnableMouse(true)
 		helloKittyRight:RegisterForDrag('LeftButton')
-		helloKittyRight:Point('BOTTOMRIGHT', _G.RightChatPanel, 'BOTTOMLEFT', -2, -4)
+		helloKittyRight:SetPoint('BOTTOMRIGHT', _G.RightChatPanel, 'BOTTOMLEFT', -2, -4)
 		helloKittyRight.tex = helloKittyRight:CreateTexture(nil, 'OVERLAY')
 		helloKittyRight.tex:SetAllPoints()
 		helloKittyRight.tex:SetTexture(E.Media.Textures.HelloKitty)

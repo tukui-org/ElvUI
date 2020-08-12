@@ -7,14 +7,14 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
-local tinsert = tinsert
-local wipe = wipe
+local min, wipe, pairs, tinsert = min, wipe, pairs, tinsert
+local CreateFrame = CreateFrame
 local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
 local GetSpellTexture = GetSpellTexture
 
 local function createAuraIcon(element, index)
-	local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element)
+	local button = CreateFrame('Button', element:GetName() .. 'Button' .. index, element)
 	button:EnableMouse(false)
 	button:Hide()
 
@@ -90,8 +90,8 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		button.filter = filter
 		button.isDebuff = isDebuff
 		button.debuffType = debuffType
-		button.isPlayer = caster == 'player'
 		button.spellID = spellID
+		button.isPlayer = caster == 'player'
 
 		local show = (element.CustomFilter or customFilter) (element, unit, button, name, texture,
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
@@ -100,9 +100,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		if(show) then
 			local setting = element.watched[spellID]
 			if(button.cd) then
-				button.cd.hideText = not setting.displayText
-				button.cd.textThreshold = setting.textThreshold ~= -1 and setting.textThreshold
-
 				if(duration and duration > 0) then
 					button.cd:SetCooldown(expiration - duration, duration)
 					button.cd:Show()
@@ -133,7 +130,12 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			if(button.icon) then button.icon:SetTexture(texture) end
 			if(button.count) then button.count:SetText(count > 1 and count) end
 
-			button:SetSize(setting.size, setting.size)
+			if setting.sizeOffset == 0 then
+				button:SetSize(element.size, element.size)
+			else
+				button:SetSize(setting.sizeOffset + element.size, setting.sizeOffset + element.size)
+			end
+
 			button:SetID(index)
 			button:Show()
 			button:ClearAllPoints()
@@ -145,7 +147,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 
 			return VISIBLE
 		else
-
 			button.isFiltered = true
 			return HIDDEN
 		end
@@ -175,7 +176,7 @@ local function onlyShowMissingIcon(element, unit, offset)
 		local button = element[position]
 		if(not button) then
 			button = (element.CreateIcon or createAuraIcon) (element, position)
-			table.insert(element, button)
+			tinsert(element, button)
 			element.createdIcons = element.createdIcons + 1
 		end
 
@@ -183,8 +184,13 @@ local function onlyShowMissingIcon(element, unit, offset)
 		if(button.icon) then button.icon:SetTexture(GetSpellTexture(SpellID)) end
 		if(button.overlay) then button.overlay:Hide() end
 
+		if setting.sizeOffset == 0 then
+			button:SetSize(element.size, element.size)
+		else
+			button:SetSize(setting.sizeOffset + element.size, setting.sizeOffset + element.size)
+		end
+
 		button:SetID(position)
-		button:SetSize(setting.size, setting.size)
 		button.spellID = SpellID
 
 		button:Show()
@@ -235,13 +241,12 @@ local function UpdateAuras(self, event, unit)
 
 		local numBuffs = element.numBuffs or 32
 		local numDebuffs = element.numDebuffs or 16
-		local max = element.numTotal or numBuffs + numDebuffs
+		local numAuras = element.numTotal or (numBuffs + numDebuffs)
 
 		for i = 1, #element do element[i].isFiltered = false end
 
-		local visibleBuffs, hiddenBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
-
-		local visibleDebuffs, hiddenDebuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
+		local visibleBuffs, hiddenBuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HELPFUL', min(numBuffs, numAuras), nil, 0, true)
+		local visibleDebuffs, hiddenDebuffs = filterIcons(element, unit, element.buffFilter or element.filter or 'HARMFUL', min(numDebuffs, numAuras - visibleBuffs), true, visibleBuffs)
 
 		element.visibleDebuffs = visibleDebuffs
 		element.visibleBuffs = visibleBuffs
@@ -279,6 +284,7 @@ local function Enable(self)
 		element.watched = element.watched or {}
 		element.createdIcons = element.createdIcons or 0
 		element.anchoredIcons = 0
+		element.size = 8
 
 		self:RegisterEvent('UNIT_AURA', UpdateAuras)
 		element:Show()

@@ -9,7 +9,9 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 
 function NP:Construct_Auras(nameplate)
-	local Buffs = CreateFrame('Frame', nameplate:GetDebugName()..'Buffs', nameplate)
+	local frameName = nameplate:GetName()
+
+	local Buffs = CreateFrame('Frame', frameName..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
 	Buffs:Size(300, 27)
@@ -24,7 +26,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs.type = 'buffs'
 	Buffs.forceShow = nameplate == _G.ElvNP_Test
 
-	local Debuffs = CreateFrame('Frame', nameplate:GetDebugName()..'Debuffs', nameplate)
+	local Debuffs = CreateFrame('Frame', frameName..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
 	Debuffs:Size(300, 27)
@@ -61,7 +63,7 @@ function NP:Construct_AuraIcon(button)
 	button.icon:SetInside()
 
 	button.count:ClearAllPoints()
-	button.count:Point('BOTTOMRIGHT', 1, 1)
+	button.count:SetPoint('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 
 	button.overlay:SetTexture()
@@ -99,11 +101,11 @@ function NP:Configure_Auras(nameplate, auras, db)
 	local mult = floor((nameplate.width or 150) / db.size) < db.numAuras
 	auras:Size((nameplate.width or 150), (mult and 1 or 2) * db.size)
 	auras:ClearAllPoints()
-	auras:Point(E.InversePoints[db.anchorPoint] or 'TOPRIGHT', db.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.anchorPoint or 'TOPRIGHT', db.xOffset, db.yOffset)
+	auras:SetPoint(E.InversePoints[db.anchorPoint] or 'TOPRIGHT', db.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.anchorPoint or 'TOPRIGHT', db.xOffset, db.yOffset)
 end
 
 function NP:Update_Auras(nameplate, forceUpdate)
-	local db = NP.db.units[nameplate.frameType]
+	local db = NP:PlateDB(nameplate)
 
 	if db.debuffs.enable or db.buffs.enable then
 		nameplate:SetAuraUpdateMethod(E.global.nameplate.effectiveAura)
@@ -139,10 +141,8 @@ function NP:Update_Auras(nameplate, forceUpdate)
 			nameplate.Buffs:Hide()
 			nameplate.Buffs = nil
 		end
-	else
-		if nameplate:IsElementEnabled('Auras') then
-			nameplate:DisableElement('Auras')
-		end
+	elseif nameplate:IsElementEnabled('Auras') then
+		nameplate:DisableElement('Auras')
 	end
 end
 
@@ -153,11 +153,11 @@ function NP:UpdateAuraSettings(button)
 
 		local point = (button.db and button.db.countPosition) or 'CENTER'
 		if point == 'CENTER' then
-			button.count:Point(point, 1, 0)
+			button.count:SetPoint(point, 1, 0)
 		else
 			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
 			button.count:SetJustifyH(right and 'RIGHT' or 'LEFT')
-			button.count:Point(point, right and -1 or 1, bottom and 1 or -1)
+			button.count:SetPoint(point, right and -1 or 1, bottom and 1 or -1)
 		end
 	end
 

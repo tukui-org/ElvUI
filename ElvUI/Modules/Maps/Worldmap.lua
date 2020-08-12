@@ -1,13 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('WorldMap')
 
---Lua functions
 local _G = _G
 local strfind = strfind
---WoW API / Variables
 local CreateFrame = CreateFrame
 local SetUIPanelAttribute = SetUIPanelAttribute
-local MOUSE_LABEL = MOUSE_LABEL:gsub("|T.-|t","")
+local MOUSE_LABEL = MOUSE_LABEL:gsub("|[TA].-|[ta]","")
 local PLAYER = PLAYER
 local hooksecurefunc = hooksecurefunc
 local IsPlayerMoving = IsPlayerMoving
@@ -15,12 +13,12 @@ local PlayerMovementFrameFader = PlayerMovementFrameFader
 -- GLOBALS: CoordsHolder
 
 local INVERTED_POINTS = {
-	["TOPLEFT"] = "BOTTOMLEFT",
-	["TOPRIGHT"] = "BOTTOMRIGHT",
-	["BOTTOMLEFT"] = "TOPLEFT",
-	["BOTTOMRIGHT"] = "TOPRIGHT",
-	["TOP"] = "BOTTOM",
-	["BOTTOM"] = "TOP",
+	TOPLEFT = "BOTTOMLEFT",
+	TOPRIGHT = "BOTTOMRIGHT",
+	BOTTOMLEFT = "TOPLEFT",
+	BOTTOMRIGHT = "TOPRIGHT",
+	TOP = "BOTTOM",
+	BOTTOM = "TOP",
 }
 
 -- this will be updated later
@@ -57,7 +55,7 @@ function M:SynchronizeDisplayState()
 	local WorldMapFrame = _G.WorldMapFrame
 	if WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:Point("CENTER", E.UIParent)
+		WorldMapFrame:SetPoint("CENTER", E.UIParent)
 	end
 end
 
@@ -65,7 +63,7 @@ function M:SetSmallWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	if not WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 16, -94)
+		WorldMapFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 16, -94)
 	end
 end
 
@@ -114,9 +112,9 @@ function M:PositionCoords()
 	if strfind(position, "TOP") then y = -5 end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
-	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
+	CoordsHolder.playerCoords:SetPoint(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
-	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
+	CoordsHolder.mouseCoords:SetPoint(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
 function M:MapShouldFade()

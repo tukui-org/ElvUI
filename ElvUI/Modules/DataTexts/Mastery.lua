@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local strjoin = strjoin
---WoW API / Variables
 local GetMasteryEffect = GetMasteryEffect
 local GetSpecialization = GetSpecialization
 local GetSpecializationMasterySpells = GetSpecializationMasterySpells
+local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local STAT_MASTERY = STAT_MASTERY
 
 local displayString, lastPanel = ''
@@ -16,32 +15,29 @@ local function OnEvent(self)
 	self.text:SetFormattedText(displayString, STAT_MASTERY, GetMasteryEffect())
 end
 
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	local primaryTalentTree = GetSpecialization()
-
-	if (primaryTalentTree) then
+	if primaryTalentTree then
 		local masterySpell, masterySpell2 = GetSpecializationMasterySpells(primaryTalentTree)
-		if (masterySpell) then
+		if masterySpell then
 			DT.tooltip:AddSpellByID(masterySpell)
 		end
-		if (masterySpell2) then
+		if masterySpell2 then
 			DT.tooltip:AddLine(" ")
 			DT.tooltip:AddSpellByID(masterySpell2)
 		end
+
+		DT.tooltip:Show()
 	end
-	DT.tooltip:Show()
 end
 
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Mastery', {"MASTERY_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY)
+DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {"MASTERY_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY)

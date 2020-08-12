@@ -1,14 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local unpack = unpack
---WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_Contribution()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Contribution) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.contribution) then return end
 
 	--Main Frame
 	local ContributionCollectionFrame = _G.ContributionCollectionFrame

@@ -66,10 +66,9 @@ local function Update(self, event, unit, powerType)
 
 	local cur, max
 	local barInfo = GetUnitPowerBarInfo(unit);
-	element.barType = barInfo.barType
-	element.powerName, element.powerTooltip = GetUnitPowerBarStrings(unit);
-
 	if(barInfo) then
+		element.barType = barInfo.barType
+		element.powerName, element.powerTooltip = GetUnitPowerBarStrings(unit);
 		cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
 		max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
 		element:SetMinMaxValues(barInfo.minPower, max)
@@ -86,7 +85,7 @@ local function Update(self, event, unit, powerType)
 	* max  - the maximum value of the unit's alternative power (number)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, barInfo.minPower or 0, max)
+		return element:PostUpdate(unit, cur, barInfo and barInfo.minPower or 0, max)
 	end
 end
 
@@ -107,8 +106,10 @@ local function Visibility(self, event, unit)
 	local element = self.AlternativePower
 
 	local barInfo = GetUnitPowerBarInfo(unit)
-	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not barInfo.hideFromOthers
-		or UnitIsUnit(unit, 'player') or UnitIsUnit(self.realUnit, 'player'))) then
+	if barInfo and barInfo.showOnRaid and (not barInfo.hideFromOthers
+		or UnitIsUnit(unit, 'player') or (UnitInParty(unit) or UnitInRaid(unit))
+		or (self.realUnit and UnitIsUnit(self.realUnit, 'player'))) then
+
 		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
@@ -149,6 +150,7 @@ local function Enable(self, unit)
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+			element:SetStatusBarColor(.7, .7, .6)
 		end
 
 		if(element:IsMouseEnabled()) then

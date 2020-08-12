@@ -1,27 +1,23 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local mod = E:GetModule('DataBars')
+local DB = E:GetModule('DataBars')
 
---Lua functions
 local _G = _G
---WoW API / Variables
 local CreateFrame = CreateFrame
-local GetExpansionLevel = GetExpansionLevel
-local MAX_PLAYER_LEVEL_TABLE = MAX_PLAYER_LEVEL_TABLE
 -- GLOBALS: ElvUI_ExperienceBar, ElvUI_ReputationBar, ElvUI_ArtifactBar, ElvUI_HonorBar, ElvUI_AzeriteBar
 
-function mod:OnLeave()
-	if (self == ElvUI_ExperienceBar and mod.db.experience.mouseover) or (self == ElvUI_ReputationBar and mod.db.reputation.mouseover) or (self == ElvUI_ArtifactBar and mod.db.artifact.mouseover) or (self == ElvUI_HonorBar and mod.db.honor.mouseover) or (self == ElvUI_AzeriteBar and mod.db.azerite.mouseover) then
+function DB:OnLeave()
+	if (self == ElvUI_ExperienceBar and DB.db.experience.mouseover) or (self == ElvUI_ReputationBar and DB.db.reputation.mouseover) or (self == ElvUI_ArtifactBar and DB.db.artifact.mouseover) or (self == ElvUI_HonorBar and DB.db.honor.mouseover) or (self == ElvUI_AzeriteBar and DB.db.azerite.mouseover) then
 		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)
 	end
 
 	_G.GameTooltip:Hide()
 end
 
-function mod:CreateBar(name, onEnter, onClick, ...)
-	local bar = CreateFrame('Button', name, E.UIParent)
-	bar:Point(...)
+function DB:CreateBar(name, onEnter, onClick, ...)
+	local bar = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
+	bar:SetPoint(...)
 	bar:SetScript('OnEnter', onEnter)
-	bar:SetScript('OnLeave', mod.OnLeave)
+	bar:SetScript('OnLeave', DB.OnLeave)
 	bar:SetScript('OnMouseDown', onClick)
 	bar:SetFrameStrata('LOW')
 	bar:SetTemplate('Transparent')
@@ -33,47 +29,46 @@ function mod:CreateBar(name, onEnter, onClick, ...)
 	E:RegisterStatusBar(bar.statusBar)
 	bar.text = bar.statusBar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
-	bar.text:Point('CENTER')
+	bar.text:SetPoint('CENTER')
 
 	E.FrameLocks[name] = true
 
 	return bar
 end
 
-function mod:UpdateDataBarDimensions()
-	self:UpdateExperienceDimensions()
-	self:UpdateReputationDimensions()
+function DB:UpdateDataBarDimensions()
+	DB:UpdateExperienceDimensions()
+	DB:UpdateReputationDimensions()
 	--self:UpdateArtifactDimensions()
-	self:UpdateHonorDimensions()
-	self:UpdateAzeriteDimensions()
+	DB:UpdateHonorDimensions()
+	DB:UpdateAzeriteDimensions()
 end
 
-function mod:PLAYER_LEVEL_UP(level)
-	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]
-	if (level ~= maxLevel or not self.db.experience.hideAtMaxLevel) and self.db.experience.enable then
-		self:UpdateExperience("PLAYER_LEVEL_UP", level)
+function DB:PLAYER_LEVEL_UP(level)
+	if (level ~= 60 or not self.db.experience.hideAtMaxLevel) and DB.db.experience.enable then
+		DB:UpdateExperience("PLAYER_LEVEL_UP", level)
 	else
 		self.expBar:Hide()
 	end
 
 	if(self.db.honor.enable) then
-		self:UpdateHonor("PLAYER_LEVEL_UP", level)
+		DB:UpdateHonor("PLAYER_LEVEL_UP", level)
 	else
 		self.honorBar:Hide()
 	end
 end
 
-function mod:Initialize()
-	self.Initialized = true
-	self.db = E.db.databars
+function DB:Initialize()
+	DB.Initialized = true
+	DB.db = E.db.databars
 
-	self:LoadExperienceBar()
-	self:LoadReputationBar()
-	self:LoadHonorBar()
-	--self:LoadArtifactBar()
-	self:LoadAzeriteBar()
+	DB:LoadExperienceBar()
+	DB:LoadReputationBar()
+	DB:LoadHonorBar()
+	--DB:LoadArtifactBar()
+	DB:LoadAzeriteBar()
 
-	self:RegisterEvent("PLAYER_LEVEL_UP")
+	DB:RegisterEvent("PLAYER_LEVEL_UP")
 end
 
-E:RegisterModule(mod:GetName())
+E:RegisterModule(DB:GetName())

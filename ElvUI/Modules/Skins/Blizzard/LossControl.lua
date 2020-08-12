@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
---WoW API / Variables
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
@@ -12,7 +10,7 @@ function S:LossOfControlFrame()
 
 	--/run LossOfControlFrame.fadeTime = 2000; LossOfControlFrame_SetUpDisplay(LossOfControlFrame, true, 'CONFUSE', 2094, 'Disoriented', [[Interface\Icons\Spell_Shadow_MindSteal]], 72101.9765625, 7.9950003623962, 8, 0, 5, 2)
 	local LossOfControlFrame = _G.LossOfControlFrame
-	local IconBackdrop = CreateFrame("Frame", nil, LossOfControlFrame)
+	local IconBackdrop = CreateFrame("Frame", nil, LossOfControlFrame, "BackdropTemplate")
 	IconBackdrop:SetTemplate()
 	IconBackdrop:SetOutside(LossOfControlFrame.Icon)
 	IconBackdrop:SetFrameLevel(LossOfControlFrame:GetFrameLevel() - 1)
@@ -24,20 +22,20 @@ function S:LossOfControlFrame()
 
 	hooksecurefunc("LossOfControlFrame_SetUpDisplay", function(s)
 		s.Icon:ClearAllPoints()
-		s.Icon:Point("CENTER", s, "CENTER", 0, 0)
+		s.Icon:SetPoint("CENTER", s, "CENTER", 0, 0)
 
 		s.AbilityName:ClearAllPoints()
-		s.AbilityName:Point("BOTTOM", s, 0, -28)
+		s.AbilityName:SetPoint("BOTTOM", s, 0, -28)
 		s.AbilityName.scrollTime = nil;
 		s.AbilityName:FontTemplate(E.media.normFont, 20, 'OUTLINE')
 
 		s.TimeLeft.NumberText:ClearAllPoints()
-		s.TimeLeft.NumberText:Point("BOTTOM", s, 4, -58)
+		s.TimeLeft.NumberText:SetPoint("BOTTOM", s, 4, -58)
 		s.TimeLeft.NumberText.scrollTime = nil;
 		s.TimeLeft.NumberText:FontTemplate(E.media.normFont, 20, 'OUTLINE')
 
 		s.TimeLeft.SecondsText:ClearAllPoints()
-		s.TimeLeft.SecondsText:Point("BOTTOM", s, 0, -80)
+		s.TimeLeft.SecondsText:SetPoint("BOTTOM", s, 0, -80)
 		s.TimeLeft.SecondsText.scrollTime = nil;
 		s.TimeLeft.SecondsText:FontTemplate(E.media.normFont, 20, 'OUTLINE')
 

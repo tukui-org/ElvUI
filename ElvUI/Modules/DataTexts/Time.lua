@@ -1,20 +1,19 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local _G = _G
 local next, unpack = next, unpack
 local format, strjoin = format, strjoin
 local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
 
---WoW API / Variables
 local EJ_GetCurrentTier = EJ_GetCurrentTier
 local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_GetNumTiers = EJ_GetNumTiers
 local EJ_SelectTier = EJ_SelectTier
 local GetDifficultyInfo = GetDifficultyInfo
 local GetGameTime = GetGameTime
+local GetLocale = GetLocale
 local GetNumSavedInstances = GetNumSavedInstances
 local GetNumSavedWorldBosses = GetNumSavedWorldBosses
 local GetNumWorldPVPAreas = GetNumWorldPVPAreas
@@ -30,9 +29,9 @@ local TIMEMANAGER_TOOLTIP_LOCALTIME = TIMEMANAGER_TOOLTIP_LOCALTIME
 local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local VOICE_CHAT_BATTLEGROUND = VOICE_CHAT_BATTLEGROUND
 local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
+local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS
 
-local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS.."(s)"
-local APM = { TIMEMANAGER_PM, TIMEMANAGER_AM }
+local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
 local ukDisplayFormat, europeDisplayFormat = '', ''
 local europeDisplayFormat_nocolor = strjoin("", "%02d", ":|r%02d")
 local ukDisplayFormat_nocolor = strjoin("", "", "%d", ":|r%02d", " %s|r")
@@ -85,7 +84,6 @@ local function Click()
 end
 
 local function OnLeave()
-	DT.tooltip:Hide()
 	enteredFrame = false
 end
 
@@ -99,6 +97,7 @@ local locale = GetLocale()
 if locale == 'deDE' then -- O.O
 	InstanceNameByID[1023] = "Belagerung von Boralus"	-- "Die Belagerung von Boralus"
 	InstanceNameByID[1041] = "Königsruh"				-- "Die Königsruh"
+	InstanceNameByID[1021] = "Kronsteiganwesen"			-- "Das Kronsteiganwesen"
 end
 
 local instanceIconByName = {}
@@ -131,10 +130,10 @@ local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 local function sortFunc(a,b) return a[1] < b[1] end
 
 local collectedInstanceImages = false
-local function OnEnter(self)
-	DT:SetupTooltip(self)
+local function OnEnter()
+	DT.tooltip:ClearLines()
 
-	if(not enteredFrame) then
+	if not enteredFrame then
 		enteredFrame = true
 		RequestRaidInfo()
 	end
@@ -273,11 +272,9 @@ local function OnEnter(self)
 		DT.tooltip:AddLine(" ")
 	end
 	if AmPm == -1 then
-		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME,
-			format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
-		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME,
-			format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
 	DT.tooltip:Show()
@@ -326,4 +323,4 @@ function Update(self, t)
 	int = 5
 end
 
-DT:RegisterDatatext('Time', {"UPDATE_INSTANCE_INFO"}, OnEvent, Update, Click, OnEnter, OnLeave)
+DT:RegisterDatatext('Time', nil, {"UPDATE_INSTANCE_INFO"}, OnEvent, Update, Click, OnEnter, OnLeave)

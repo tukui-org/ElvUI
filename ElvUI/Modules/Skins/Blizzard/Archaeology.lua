@@ -1,25 +1,22 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs, select = pairs, select
---WoW API / Variables
 
 function S:Blizzard_ArchaeologyUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.archaeology) then return end
 
 	local ArchaeologyFrame = _G.ArchaeologyFrame
-	S:HandlePortraitFrame(ArchaeologyFrame, true)
-
+	S:HandlePortraitFrame(ArchaeologyFrame)
 	S:HandleButton(ArchaeologyFrame.artifactPage.solveFrame.solveButton, true)
 	S:HandleButton(ArchaeologyFrame.artifactPage.backButton, true)
 
 	S:HandleDropDownBox(_G.ArchaeologyFrame.raceFilterDropDown)
 	_G.ArchaeologyFrame.raceFilterDropDown.Text:ClearAllPoints()
-	_G.ArchaeologyFrame.raceFilterDropDown.Text:Point("LEFT", _G.ArchaeologyFrame.raceFilterDropDown.backdrop, "LEFT", 4, 0)
+	_G.ArchaeologyFrame.raceFilterDropDown.Text:SetPoint("LEFT", _G.ArchaeologyFrame.raceFilterDropDown.backdrop, "LEFT", 4, 0)
 
-	if E.private.skins.parchmentRemover.enable then
+	if E.private.skins.parchmentRemoverEnable then
 		_G.ArchaeologyFrameBgLeft:Kill()
 		_G.ArchaeologyFrameBgRight:Kill()
 
@@ -70,7 +67,7 @@ function S:Blizzard_ArchaeologyUI()
 	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	_G.ArcheologyDigsiteProgressBar:ClearAllPoints()
-	_G.ArcheologyDigsiteProgressBar:Point("TOP", _G.UIParent, "TOP", 0, -400)
+	_G.ArcheologyDigsiteProgressBar:SetPoint("TOP", _G.UIParent, "TOP", 0, -400)
 	E:RegisterStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar)
 
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ArcheologyDigsiteProgressBar = nil

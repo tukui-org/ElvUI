@@ -103,7 +103,7 @@ local function UpdateColor(self, event, unit, powertype)
 	local element = self.AdditionalPower
 
 	local r, g, b, t
-	if(element.colorDisconnected and element.disconnected) then
+	if(element.colorDisconnected and not UnitIsConnected(unit)) then
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
@@ -171,11 +171,10 @@ local function Update(self, event, unit, powertype)
 
 	local cur = UnitPower('player', ADDITIONAL_POWER_BAR_INDEX)
 	local max = UnitPowerMax('player', ADDITIONAL_POWER_BAR_INDEX)
-	local disconnected = not UnitIsConnected(unit)
 
 	element:SetMinMaxValues(0, max)
 
-	if(disconnected) then
+	if not UnitIsConnected(unit) then
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
@@ -183,7 +182,6 @@ local function Update(self, event, unit, powertype)
 
 	element.cur = cur
 	element.max = max
-	element.disconnected = disconnected
 
 	--[[ Callback: AdditionalPower:PostUpdate(unit, cur, max)
 	Called after the element has been updated.
@@ -231,12 +229,7 @@ local function ElementEnable(self)
 		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 	end
 
-	if(element.frequentUpdates) then
-		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-	else
-		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
-	end
-
+	self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 	self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 	element:Show()
@@ -254,7 +247,6 @@ end
 
 local function ElementDisable(self)
 	self:UnregisterEvent('UNIT_MAXPOWER', Path)
-	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 	self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
 	self:UnregisterEvent('UNIT_FACTION', ColorPath)
@@ -378,25 +370,6 @@ local function SetColorThreat(element, state)
 	end
 end
 
---[[ Power:SetFrequentUpdates(state)
-Used to toggle frequent updates.
-
-* self  - the Power element
-* state - the desired state (boolean)
---]]
-local function SetFrequentUpdates(element, state)
-	if(element.frequentUpdates ~= state) then
-		element.frequentUpdates = state
-		if(element.frequentUpdates) then
-			element.__owner:UnregisterEvent('UNIT_POWER_UPDATE', Path)
-			element.__owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-		else
-			element.__owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-			element.__owner:RegisterEvent('UNIT_POWER_UPDATE', Path)
-		end
-	end
-end
-
 local function Enable(self, unit)
 	local element = self.AdditionalPower
 	if(element and UnitIsUnit(unit, 'player')) then
@@ -406,8 +379,8 @@ local function Enable(self, unit)
 		element.SetColorSelection = SetColorSelection
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
-		element.SetFrequentUpdates = SetFrequentUpdates
 
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
 		if(not element.displayPairs) then
@@ -427,6 +400,7 @@ local function Disable(self)
 	if(element) then
 		ElementDisable(self)
 
+		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 	end
 end

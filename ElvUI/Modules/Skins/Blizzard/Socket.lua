@@ -1,10 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local ipairs, unpack = ipairs, unpack
---WoW API / Variables
 local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc
 
@@ -12,7 +10,7 @@ function S:Blizzard_ItemSocketingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.socket) then return end
 
 	local ItemSocketingFrame = _G.ItemSocketingFrame
-	S:HandlePortraitFrame(ItemSocketingFrame, true)
+	S:HandlePortraitFrame(ItemSocketingFrame)
 
 	_G.ItemSocketingDescription:DisableDrawLayer("BORDER")
 	_G.ItemSocketingDescription:DisableDrawLayer("BACKGROUND")
@@ -44,7 +42,7 @@ function S:Blizzard_ItemSocketingUI()
 
 	_G.ItemSocketingFramePortrait:Kill()
 	_G.ItemSocketingSocketButton:ClearAllPoints()
-	_G.ItemSocketingSocketButton:Point("BOTTOMRIGHT", ItemSocketingFrame, "BOTTOMRIGHT", -5, 5)
+	_G.ItemSocketingSocketButton:SetPoint("BOTTOMRIGHT", ItemSocketingFrame, "BOTTOMRIGHT", -5, 5)
 	S:HandleButton(_G.ItemSocketingSocketButton)
 end
 

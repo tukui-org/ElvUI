@@ -7,28 +7,28 @@ local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 
 function B:Initialize()
-	self.Initialized = true
+	B.Initialized = true
 
-	self:EnhanceColorPicker()
-	self:KillBlizzard()
-	self:AlertMovers()
-	self:PositionCaptureBar()
-	self:PositionDurabilityFrame()
-	self:PositionGMFrames()
-	self:SkinBlizzTimers()
-	self:PositionVehicleFrame()
-	self:PositionTalkingHead()
-	self:Handle_LevelUpDisplay_BossBanner()
-	self:Handle_UIWidgets()
-	self:GarrisonDropDown()
+	B:EnhanceColorPicker()
+	B:KillBlizzard()
+	B:AlertMovers()
+	B:PositionCaptureBar()
+	B:PositionDurabilityFrame()
+	B:PositionGMFrames()
+	B:SkinBlizzTimers()
+	B:PositionVehicleFrame()
+	B:PositionTalkingHead()
+	B:Handle_LevelUpDisplay_BossBanner()
+	B:Handle_UIWidgets()
+	B:GarrisonDropDown()
 
 	if not IsAddOnLoaded("DugisGuideViewerZ") then
-		self:MoveObjectiveFrame()
+		B:MoveObjectiveFrame()
 	end
 
 	if not IsAddOnLoaded("SimplePowerBar") then
-		self:PositionAltPowerBar()
-		self:SkinAltPowerBar()
+		B:PositionAltPowerBar()
+		B:SkinAltPowerBar()
 	end
 
 	E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
@@ -45,7 +45,7 @@ function B:Initialize()
 	if TalentMicroButtonAlert then -- why do we need to check this?
 		if E.global.general.showMissingTalentAlert then
 			TalentMicroButtonAlert:ClearAllPoints()
-			TalentMicroButtonAlert:Point("CENTER", E.UIParent, "TOP", 0, -75)
+			TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
 			TalentMicroButtonAlert:StripTextures()
 			TalentMicroButtonAlert.Arrow:Hide()
 			TalentMicroButtonAlert.Text:FontTemplate()
@@ -53,8 +53,8 @@ function B:Initialize()
 			Skins:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
 
 			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
-			TalentMicroButtonAlert.tex:Point("RIGHT", -10, 0)
-			TalentMicroButtonAlert.tex:SetTexture("Interface\\DialogFrame\\UI-Dialog-Icon-AlertNew")
+			TalentMicroButtonAlert.tex:SetPoint("RIGHT", -10, 0)
+			TalentMicroButtonAlert.tex:SetTexture([[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]])
 			TalentMicroButtonAlert.tex:Size(32, 32)
 		else
 			TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show

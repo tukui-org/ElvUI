@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local mod = E:GetModule('DataBars')
+local ACH = E.Libs.ACH
 
 E.Options.args.databars = {
 	type = "group",
@@ -10,16 +11,8 @@ E.Options.args.databars = {
 	get = function(info) return E.db.databars[info[#info]] end,
 	set = function(info, value) E.db.databars[info[#info]] = value; end,
 	args = {
-		intro = {
-			order = 1,
-			type = "description",
-			name = L["Setup on-screen display of information bars."],
-		},
-		spacer = {
-			order = 2,
-			type = "description",
-			name = "",
-		},
+		intro = ACH:Description(L["Setup on-screen display of information bars."], 1),
+		spacer = ACH:Spacer(2),
 		experience = {
 			order = 5,
 			get = function(info) return mod.db.experience[info[#info]] end,
@@ -27,11 +20,6 @@ E.Options.args.databars = {
 			type = "group",
 			name = L["XPBAR_LABEL"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["XPBAR_LABEL"],
-				},
 				enable = {
 					order = 1,
 					type = "toggle",
@@ -132,11 +120,6 @@ E.Options.args.databars = {
 			type = "group",
 			name = L["REPUTATION"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["REPUTATION"],
-				},
 				enable = {
 					order = 1,
 					type = "toggle",
@@ -164,11 +147,6 @@ E.Options.args.databars = {
 					order = 5,
 					type = "toggle",
 					name = L["Reverse Fill Direction"],
-				},
-				spacer = {
-					order = 6,
-					type = "description",
-					name = " ",
 				},
 				orientation = {
 					order = 7,
@@ -236,11 +214,6 @@ E.Options.args.databars = {
 			type = "group",
 			name = L["HONOR"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["HONOR"],
-				},
 				enable = {
 					order = 1,
 					type = "toggle",
@@ -347,27 +320,28 @@ E.Options.args.databars = {
 			type = "group",
 			name = L["Azerite Bar"],
 			args = {
-				header = {
-					order = 0,
-					type = "header",
-					name = L["Azerite Bar"],
-				},
 				enable = {
-					order = 1,
+					order = 0,
 					type = "toggle",
 					name = L["Enable"],
 					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:EnableDisable_AzeriteBar() end,
 				},
 				mouseover = {
-					order = 2,
+					order = 1,
 					type = "toggle",
 					name = L["Mouseover"],
 				},
 				hideAtMaxLevel = {
-					order = 3,
+					order = 2,
 					type = "toggle",
 					name = L["Hide At Max Power"],
 					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
+				},
+				hideBelowMaxLevel = {
+					order = 3,
+					type = "toggle",
+					name = L["Hide Below Max Level"],
+					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateHonor() end,
 				},
 				hideInVehicle = {
 					order = 4,

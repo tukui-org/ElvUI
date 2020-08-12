@@ -90,7 +90,7 @@ end
 
 local function Health_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Health
-	local maxV = UnitHealthMax(unit)
+	local maxV = (element.GetHealthMax or UnitHealthMax)(unit)
 	if Shared_UpdateCheckReturn(self, element, PRE, maxV) or UnitIsTapDenied(unit) then
 		return
 	end
@@ -120,14 +120,13 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	end
 end
 
-local function Health_PostUpdateColor(self, _, _, _, _)
-	local r, g, b = self:GetStatusBarColor()
+local function Health_PostUpdateColor(self, r, g, b)
 	self.__owner.Cutaway.Health:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
 end
 
 local function Power_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Power
-	local maxV = UnitPowerMax(unit)
+	local maxV = (element.GetPowerMax or UnitPowerMax)(unit)
 	if Shared_UpdateCheckReturn(self, element, PRE, maxV) then
 		return
 	end
@@ -157,8 +156,7 @@ local function Power_PostUpdate(self, unit, curPower, _, maxPower)
 	end
 end
 
-local function Power_PostUpdateColor(self, _, _, _, _)
-	local r, g, b = self:GetStatusBarColor()
+local function Power_PostUpdateColor(self, r, g, b)
 	self.__owner.Cutaway.Power:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
 end
 
@@ -242,11 +240,7 @@ local function Enable(self)
 					self.Health.PostUpdate = Health_PostUpdate
 				end
 
-				if self.Health.PostUpdateColor then
-					hooksecurefunc(self.Health, "PostUpdateColor", Health_PostUpdateColor)
-				else
-					self.Health.PostUpdateColor = Health_PostUpdateColor
-				end
+				hooksecurefunc(self.Health, "SetStatusBarColor", Health_PostUpdateColor)
 
 				element.Health.hasCutawayHook = true
 			end
@@ -270,11 +264,7 @@ local function Enable(self)
 					self.Power.PostUpdate = Power_PostUpdate
 				end
 
-				if self.Power.PostUpdateColor then
-					hooksecurefunc(self.Power, "PostUpdateColor", Power_PostUpdateColor)
-				else
-					self.Power.PostUpdateColor = Power_PostUpdateColor
-				end
+				hooksecurefunc(self.Power, "SetStatusBarColor", Power_PostUpdateColor)
 
 				element.Power.hasCutawayHook = true
 			end

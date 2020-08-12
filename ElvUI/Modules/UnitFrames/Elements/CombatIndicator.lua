@@ -1,20 +1,18 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
---Lua functions
---WoW API / Variables
 local C_Timer_NewTimer = C_Timer.NewTimer
 local UnitAffectingCombat = UnitAffectingCombat
 
 local CombatTextures = {
-	["COMBAT"] = E.Media.Textures.Combat,
-	["DEFAULT"] = [[Interface\CharacterFrame\UI-StateIcon]],
-	["PLATINUM"] = [[Interface\Challenges\ChallengeMode_Medal_Platinum]],
-	["ATTACK"] = [[Interface\CURSOR\Attack]],
-	["ALERT"] = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]],
-	["ALERT2"] = [[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]],
-	["ARTHAS"] = [[Interface\LFGFRAME\UI-LFR-PORTRAIT]],
-	["SKULL"] = [[Interface\LootFrame\LootPanel-Icon]],
+	COMBAT = E.Media.Textures.Combat,
+	DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]],
+	PLATINUM = [[Interface\Challenges\ChallengeMode_Medal_Platinum]],
+	ATTACK = [[Interface\CURSOR\Attack]],
+	ALERT = [[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]],
+	ALERT2 = [[Interface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon]],
+	ARTHAS = [[Interface\LFGFRAME\UI-LFR-PORTRAIT]],
+	SKULL = [[Interface\LootFrame\LootPanel-Icon]],
 }
 
 function UF:Construct_CombatIndicator(frame)
@@ -49,12 +47,11 @@ function UF:TestingDisplay_CombatIndicator(frame)
 end
 
 function UF:Configure_CombatIndicator(frame)
-	if not frame.VARIABLES_SET then return end
 	local Icon = frame.CombatIndicator
 	local db = frame.db.CombatIcon
 
 	Icon:ClearAllPoints()
-	Icon:Point("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
+	Icon:SetPoint("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
 	Icon:Size(db.size)
 
 	if db.defaultColor then

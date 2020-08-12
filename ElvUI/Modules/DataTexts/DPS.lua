@@ -1,13 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
 local time, max, strjoin = time, max, strjoin
---WoW API / Variables
-local UnitGUID = UnitGUID
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local UnitGUID = UnitGUID
 
-local lastSegment, playerID, petID = 0
+local lastSegment, petGUID = 0
 local timeStamp, combatTime, DMGTotal, lastDMGAmount = 0, 0, 0, 0
 local displayString, lastPanel = ''
 local events = {
@@ -37,8 +35,8 @@ end
 local function OnEvent(self, event)
 	lastPanel = self
 
-	if event == "PLAYER_ENTERING_WORLD" then
-		playerID = E.myguid
+	if event == 'UNIT_PET' then
+		petGUID = UnitGUID("pet")
 	elseif event == 'PLAYER_REGEN_DISABLED' or event == "PLAYER_LEAVE_COMBAT" then
 		local now = time()
 		if now - lastSegment > 20 then --time since the last segment
@@ -52,7 +50,7 @@ local function OnEvent(self, event)
 		-- only use events from the player
 		local overKill
 
-		if sourceGUID == playerID or sourceGUID == petID then
+		if sourceGUID == E.myguid or sourceGUID == petGUID then
 			if timeStamp == 0 then timeStamp = timestamp end
 			lastSegment = timeStamp
 			combatTime = timestamp - timeStamp
@@ -64,8 +62,6 @@ local function OnEvent(self, event)
 			if arg16 == nil then overKill = 0 else overKill = arg16 end
 			DMGTotal = DMGTotal +  max(0, lastDMGAmount - overKill)
 		end
-	elseif event == "UNIT_PET" then
-		petID = UnitGUID("pet")
 	end
 
 	GetDPS(self)
@@ -79,10 +75,8 @@ end
 local function ValueColorUpdate(hex)
 	displayString = strjoin("", "%s: ", hex, "%s")
 
-	if lastPanel ~= nil then
-		OnEvent(lastPanel)
-	end
+	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('DPS', {'PLAYER_ENTERING_WORLD', 'COMBAT_LOG_EVENT_UNFILTERED', "PLAYER_LEAVE_COMBAT", 'PLAYER_REGEN_DISABLED', 'UNIT_PET'}, OnEvent, nil, OnClick, nil, nil, STAT_DPS_SHORT)
+DT:RegisterDatatext('DPS', nil, {"UNIT_PET", "COMBAT_LOG_EVENT_UNFILTERED", "PLAYER_LEAVE_COMBAT", "PLAYER_REGEN_DISABLED"}, OnEvent, nil, OnClick, nil, nil, _G.STAT_DPS_SHORT)

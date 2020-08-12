@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local select, unpack = select, unpack
---WoW API / Variables
+
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
@@ -19,11 +18,11 @@ function S:Blizzard_GuildBankUI()
 	S:HandleScrollBar(_G.GuildBankPopupScrollFrameScrollBar)
 
 	--Close button doesn't have a fucking name, extreme hackage
-	for i=1, GuildBankFrame:GetNumChildren() do
+	for i = 1, GuildBankFrame:GetNumChildren() do
 		local child = select(i, GuildBankFrame:GetChildren())
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
 			S:HandleCloseButton(child)
-			child:Point("TOPRIGHT", 0, 0)
+			child:SetPoint("TOPRIGHT", 0, 0)
 			child:SetFrameLevel(child:GetFrameLevel()+1)
 		end
 	end
@@ -33,44 +32,38 @@ function S:Blizzard_GuildBankUI()
 	S:HandleButton(_G.GuildBankInfoSaveButton, true)
 	S:HandleButton(_G.GuildBankFramePurchaseButton, true)
 
-	_G.GuildBankFrameWithdrawButton:Point("RIGHT", _G.GuildBankFrameDepositButton, "LEFT", -2, 0)
-	_G.GuildBankInfoScrollFrame:Point('TOPLEFT', _G.GuildBankInfo, 'TOPLEFT', -10, 12)
+	_G.GuildBankFrameWithdrawButton:SetPoint("RIGHT", _G.GuildBankFrameDepositButton, "LEFT", -2, 0)
+	_G.GuildBankInfoScrollFrame:SetPoint('TOPLEFT', _G.GuildBankInfo, 'TOPLEFT', -10, 12)
 	_G.GuildBankInfoScrollFrame:StripTextures()
 	_G.GuildBankInfoScrollFrame:Width(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
-	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
+	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame, "BackdropTemplate")
 	GuildBankFrame.inset:SetTemplate()
-	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
-	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
+	GuildBankFrame.inset:SetPoint("TOPLEFT", 20, -58)
+	GuildBankFrame.inset:SetPoint("BOTTOMRIGHT", -16, 60)
 
-	for i=1, _G.NUM_GUILDBANK_COLUMNS do
+	for i = 1, _G.NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn"..i]:StripTextures()
 
-		for x=1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
+		for x = 1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
 			local button = _G["GuildBankColumn"..i.."Button"..x]
 			local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
 			local texture = _G["GuildBankColumn"..i.."Button"..x.."NormalTexture"]
 			if texture then
 				texture:SetTexture()
 			end
-			button:StyleButton()
-			button:SetTemplate(nil, true)
 
-			hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-				s:GetParent():SetBackdropBorderColor(r,g,b)
-				s:SetTexture()
-			end)
-			hooksecurefunc(button.IconBorder, 'Hide', function(s)
-				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
+			button:StyleButton()
+			button:CreateBackdrop(nil, true)
 
 			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
+			S:HandleIconBorder(button.IconBorder)
 		end
 	end
 
-	for i=1, _G.MAX_GUILDBANK_TABS do
+	for i = 1, _G.MAX_GUILDBANK_TABS do
 		local button = _G["GuildBankTab"..i.."Button"]
 		local texture = _G["GuildBankTab"..i.."ButtonIconTexture"]
 		_G["GuildBankTab"..i]:StripTextures(true)
@@ -83,7 +76,7 @@ function S:Blizzard_GuildBankUI()
 		texture:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	for i=1, 4 do
+	for i = 1, 4 do
 		S:HandleTab(_G["GuildBankFrameTab"..i])
 	end
 
@@ -93,8 +86,8 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox.Right:Kill()
 	GuildItemSearchBox.searchIcon:Kill()
 	GuildItemSearchBox:CreateBackdrop("Overlay")
-	GuildItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
-	GuildItemSearchBox.backdrop:Point("BOTTOMRIGHT", -1, 1)
+	GuildItemSearchBox.backdrop:SetPoint("TOPLEFT", 10, -1)
+	GuildItemSearchBox.backdrop:SetPoint("BOTTOMRIGHT", -1, 1)
 
 	S:HandleScrollBar(_G.GuildBankTransactionsScrollFrameScrollBar)
 	S:HandleScrollBar(_G.GuildBankInfoScrollFrameScrollBar)

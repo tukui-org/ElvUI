@@ -17,8 +17,8 @@ local function Click()
 end
 
 local function OnEnter(self)
-	DT:SetupTooltip(self)
-
+	DT.tooltip:ClearLines()
+	-- code goes here
 	DT.tooltip:Show()
 end
 
@@ -35,4 +35,4 @@ end
 	localizedName - localized name of the datetext
 ]]
 
-DT:RegisterDatatext('DTName', {'PLAYER_ENTERING_WORLD'}, OnEvent, Update, Click, OnEnter)
+DT:RegisterDatatext('DTName', 'Category', {"EVENT1", "EVENT2", "EVENT3"}, OnEvent, Update, Click, OnEnter)

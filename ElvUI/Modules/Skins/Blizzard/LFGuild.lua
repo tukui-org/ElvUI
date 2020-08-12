@@ -1,17 +1,15 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
---Lua functions
 local _G = _G
 local pairs = pairs
---WoW API / Variables
 local hooksecurefunc = hooksecurefunc
 
 function S:LookingForGuildFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfguild) then return end
 
 	local LookingForGuildFrame = _G.LookingForGuildFrame
-	S:HandlePortraitFrame(LookingForGuildFrame, true)
+	S:HandlePortraitFrame(LookingForGuildFrame)
 
 	local checkbox = {
 		"LookingForGuildPvPButton",
