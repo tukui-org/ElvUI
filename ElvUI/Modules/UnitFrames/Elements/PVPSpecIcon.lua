@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 local CreateFrame = CreateFrame
+local unpack = unpack
 
 function UF:Construct_PVPSpecIcon(frame)
 	local specIcon = CreateFrame("Frame", nil, frame)
@@ -9,6 +10,7 @@ function UF:Construct_PVPSpecIcon(frame)
 	specIcon.bg:SetTemplate(nil, nil, nil, self.thinBorders, true)
 	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
 	specIcon:SetInside(specIcon.bg)
+	specIcon:SetTexCoord(unpack(E.TexCoords))
 
 	return specIcon
 end
