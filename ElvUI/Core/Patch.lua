@@ -93,7 +93,7 @@ do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 		end)
 	end
 
-	-- BackdropTemplate taint: https://github.com/Stanzilla/WoWUIBugs/issues/28
+	-- 9.0 Shadowlands BackdropTemplate taint: https://github.com/Stanzilla/WoWUIBugs/issues/28
 	hooksecurefunc(NineSliceUtil, "ApplyLayout", function(frame, layout)
 		if not rawget(frame, "ApplyBackdrop") or rawget(layout, "setupPieceVisualsFunction") ~= BackdropTemplateMixin.SetupPieceVisuals then
 			-- Probably not a backdrop being applied.
