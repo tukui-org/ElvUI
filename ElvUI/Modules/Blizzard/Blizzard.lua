@@ -5,6 +5,7 @@ local Skins = E:GetModule('Skins')
 local _G = _G
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
+local UnitXP, UnitXPMax, GetQuestLogRewardXP, GetRewardXP = UnitXP, UnitXPMax, GetQuestLogRewardXP, GetRewardXP
 
 function B:Initialize()
 	B.Initialized = true
@@ -37,6 +38,29 @@ function B:Initialize()
 	CreateFrame("Frame"):SetScript("OnUpdate", function()
 		if _G.LFRBrowseFrame.timeToClear then
 			_G.LFRBrowseFrame.timeToClear = nil
+		end
+	end)
+
+	--Add (+X%) to quest rewards experience text
+	hooksecurefunc("QuestInfo_Display", function(template, parentFrame, acceptButton, material, mapView)
+		local xp = 0
+		local UnitXP, UnitXPMax = UnitXP("player"), UnitXPMax("player")
+		if ( _G.QuestInfoFrame.questLog ) then
+			if C_QuestLog.ShouldShowQuestRewards(C_QuestLog.GetSelectedQuest()) then
+				xp = GetQuestLogRewardXP()
+				if xp > 0 then
+					local text = _G.MapQuestInfoRewardsFrame.XPFrame.Name:GetText()
+					if text then
+						_G.MapQuestInfoRewardsFrame.XPFrame.Name:SetFormattedText("%s (+%.2f%%)", text, ((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))
+					end
+				end
+			end
+		else
+			xp = GetRewardXP()
+			if xp > 0 then
+				local text = _G.QuestInfoXPFrame.ValueText:GetText()
+				_G.QuestInfoXPFrame.ValueText:SetFormattedText("%s (+%.2f%%)", text, ((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))
+			end			
 		end
 	end)
 
