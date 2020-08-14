@@ -42,6 +42,11 @@ function UF:BuffIndicator_PostCreateIcon(button)
 
 	E:RegisterCooldown(button.cd)
 
+	local blizzCooldownText = button.cd:GetRegions()
+	if blizzCooldownText:IsObjectType('FontString') then
+		button.cd.blizzText = blizzCooldownText
+	end
+
 	button.overlay:Hide()
 
 	button.icon.border = button:CreateTexture(nil, "BACKGROUND");
@@ -73,18 +78,39 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 			button.cd:SetDrawSwipe(false)
 		end
 
+		local blizzCooldowns = not E.db.cooldown.enable
 		if settings.style == 'timerOnly' then
 			button.cd.hideText = nil
-			if timer then
-				timer.skipTextColor = true
 
-				if timer.text then
-					timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
+			if timer then
+				if blizzCooldowns then
+					button.cd:SetHideCountdownNumbers(false)
+
+					if button.cd.blizzText then
+						button.cd.blizzText:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
+					end
+				else
+					timer.skipTextColor = true
+
+					if timer.text then
+						timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
+					end
 				end
 			end
 		else
 			button.cd.hideText = not settings.displayText
-			if timer then timer.skipTextColor = nil end
+
+			if timer then
+				if blizzCooldowns then
+					button.cd:SetHideCountdownNumbers(not settings.displayText)
+
+					if button.cd.blizzText then
+						button.cd.blizzText:SetTextColor(1, 1, 1)
+					end
+				else
+					timer.skipTextColor = nil
+				end
+			end
 
 			if settings.style == 'coloredIcon' then
 				button.icon:SetTexture(E.media.blankTex)
