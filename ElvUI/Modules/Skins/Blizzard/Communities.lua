@@ -189,10 +189,7 @@ function S:Blizzard_Communities()
 	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton)
 
 	S:HandleScrollBar(CommunitiesFrame.MemberList.ListScrollFrame.scrollBar)
-
-	S:HandleNextPrevButton(CommunitiesFrame.Chat.MessageFrame.ScrollBar.ScrollUp, "up") -- keep this on top of the: S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
 	S:HandleScrollBar(CommunitiesFrame.Chat.MessageFrame.ScrollBar)
-
 	S:HandleScrollBar(_G.CommunitiesFrameCommunitiesListListScrollFrame.ScrollBar)
 
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
