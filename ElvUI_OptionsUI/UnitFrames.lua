@@ -1,7 +1,6 @@
-local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local UF = E:GetModule('UnitFrames')
-local NP = E:GetModule("NamePlates")
 local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
