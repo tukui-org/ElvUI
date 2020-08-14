@@ -6,7 +6,7 @@ Engine[1] = {}
 Engine[2] = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
 local C, L = Engine[1], Engine[2]
 
-local _G, format, sort, tinsert = _G, format, sort, tinsert
+local _G, format, sort, tinsert, strmatch = _G, format, sort, tinsert, strmatch
 
 C.Values = {
 	FontFlags = { NONE = L["NONE"], OUTLINE = 'OUTLINE', MONOCHROMEOUTLINE = 'MONOCROMEOUTLINE', THICKOUTLINE = 'THICKOUTLINE' },
@@ -23,6 +23,15 @@ C.Values = {
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	}
 }
+
+C.StateSwitchGetText = function(_, TEXT)
+	local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
+	local text, blockB, blockS, blockT = friend or enemy or TEXT
+	local SF, localized = E.global.unitframe.specialFilters[text], L[text]
+	if SF and localized and text:match("^block") then blockB, blockS, blockT = localized:match("^%[(.-)](%s?)(.+)") end
+	local filterText = (blockB and format("|cFF999999%s|r%s%s", blockB, blockS, blockT)) or localized or text
+	return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or filterText
+end
 
 E:AddLib('AceGUI', 'AceGUI-3.0')
 E:AddLib('AceConfig', 'AceConfig-3.0-ElvUI')

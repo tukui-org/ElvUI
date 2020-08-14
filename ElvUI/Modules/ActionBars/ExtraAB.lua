@@ -93,8 +93,8 @@ function AB:SetupExtraButton()
 				spellButton.Icon:SetInside()
 
 				--check these
-				spellButton.HotKey:SetText(GetBindingKey(spellButton:GetName()))
-				tinsert(ExtraButtons, spellButton)
+				--spellButton.HotKey:SetText(GetBindingKey(spellButton:GetName()))
+				--tinsert(ExtraButtons, spellButton)
 
 				if spellButton.Cooldown then
 					spellButton.Cooldown.CooldownOverride = 'actionbar'
@@ -113,6 +113,7 @@ function AB:SetupExtraButton()
 		end
 	end)
 
+	-- 9.0 Shadowlands - Cooldowntext is not working on ExtraAB
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G["ExtraActionButton"..i]
 		if button then

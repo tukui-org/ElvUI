@@ -15,7 +15,7 @@ local _G = _G
 local GetTime = GetTime
 local UnitAura = UnitAura
 local CreateFrame = CreateFrame
-local UnitIsFriend = UnitIsFriend
+local UnitReaction = UnitReaction
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60
 local function FormatTime(s)
@@ -222,8 +222,8 @@ local function UpdateAuras(self, event, unit)
 	if(element) then
 		if(element.PreUpdate) then element:PreUpdate(unit) end
 
-		local isFriend = UnitIsFriend('player', unit)
-		local filter = (isFriend and (element.friendlyAuraType or 'HELPFUL') or (element.enemyAuraType or 'HARMFUL'))
+		local reaction = UnitReaction('player', unit)
+		local filter = (reaction and reaction > 3 and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
 		local visible, hidden = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 
 		local fromRange, toRange
