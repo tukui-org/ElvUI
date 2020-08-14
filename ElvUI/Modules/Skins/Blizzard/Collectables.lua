@@ -364,8 +364,8 @@ function S:Blizzard_Collections()
 	_G.ToyBoxFilterButton:SetPoint('TOPRIGHT', ToyBox, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(ToyBox.searchBox)
 	ToyBox.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
-	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
+	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, "right", nil, true)
+	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, "left", nil, true)
 
 	local progressBar = ToyBox.progressBar
 	progressBar.border:Hide()
@@ -408,8 +408,8 @@ function S:Blizzard_Collections()
 	_G.HeirloomsJournalFilterButton:SetPoint('TOPRIGHT', HeirloomsJournal, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
 	HeirloomsJournal.iconsFrame:StripTextures()
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
-	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, "right", nil, true)
+	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, "left", nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
 
 	progressBar = HeirloomsJournal.progressBar -- swap local variable
@@ -534,8 +534,8 @@ function S:Blizzard_Collections()
 		end
 
 		if Frame.PagingFrame then
-			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton, nil, nil, true)
-			S:HandleNextPrevButton(Frame.PagingFrame.NextPageButton, nil, nil, true)
+			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton, "left", nil, true)
+			S:HandleNextPrevButton(Frame.PagingFrame.NextPageButton, "right", nil, true)
 		end
 	end
 
