@@ -56,7 +56,7 @@ local function OverlayGlow_OnHide(self)
 	end
 end
 
--- 9.0 Shadowlands, fix glow anim to look pixelated
+-- 9.0 Shadowlands, fix glow anim to look pixelated. Just copied: ActionBarButtonSpellActivationAlertMixin:OnUpdate
 local function OverlayGlow_OnUpdate(self, elapsed)
 	AnimateTexCoords(self.ants, 256, 256, 48, 48, 22, elapsed, 0.01)
 
