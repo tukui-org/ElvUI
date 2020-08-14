@@ -1112,7 +1112,7 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 
 	if not arrowDir then
 		arrowDir = 'down'
-		local name = btn:GetName()
+		local name = btn:GetDebugName()
 		local ButtonName = name and name:lower()
 		if ButtonName then
 			if (strfind(ButtonName, 'left') or strfind(ButtonName, 'prev') or strfind(ButtonName, 'decrement') or strfind(ButtonName, 'backward') or strfind(ButtonName, 'back')) then
