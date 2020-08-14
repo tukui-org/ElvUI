@@ -412,14 +412,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 						dragOnClick = function(info)
 							filterPriority('aurabar', groupName, carryFilterFrom, true)
 						end,
-						stateSwitchGetText = function(_, TEXT)
-							local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
-							local text, blockB, blockS, blockT = friend or enemy or TEXT
-							local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-							if SF and localized and text:match("^block") then blockB, blockS, blockT = localized:match("^%[(.-)](%s?)(.+)") end
-							local filterText = (blockB and format("|cFF999999%s|r%s%s", blockB, blockS, blockT)) or localized or text
-							return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or filterText
-						end,
+						stateSwitchGetText = C.StateSwitchGetText,
 						stateSwitchOnClick = function(info)
 							filterPriority('aurabar', groupName, carryFilterFrom, nil, nil, true)
 						end,
@@ -707,14 +700,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 						dragOnClick = function(info)
 							filterPriority(auraType, groupName, carryFilterFrom, true)
 						end,
-						stateSwitchGetText = function(_, TEXT)
-							local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
-							local text, blockB, blockS, blockT = friend or enemy or TEXT
-							local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-							if SF and localized and text:match("^block") then blockB, blockS, blockT = localized:match("^%[(.-)](%s?)(.+)") end
-							local filterText = (blockB and format("|cFF999999%s|r%s%s", blockB, blockS, blockT)) or localized or text
-							return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or filterText
-						end,
+						stateSwitchGetText = C.StateSwitchGetText,
 						stateSwitchOnClick = function(info)
 							filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
 						end,
