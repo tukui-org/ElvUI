@@ -65,63 +65,53 @@ end
 function UF:BuffIndicator_PostUpdateIcon(_, button)
 	local settings = self.watched[button.spellID]
 	if settings then -- This should never fail.
-		button.cd.textThreshold = settings.textThreshold ~= -1 and settings.textThreshold
+		local onlyText = settings.style == 'timerOnly'
+		local colorIcon = settings.style == 'coloredIcon'
+		local textureIcon = settings.style == 'texturedIcon'
 
-		local timer = button.cd.timer
-		if (settings.style == 'coloredIcon' or settings.style == 'texturedIcon') and not button.icon:IsShown() then
+		if (colorIcon or textureIcon) and not button.icon:IsShown() then
 			button.icon:Show()
 			button.icon.border:Show()
 			button.cd:SetDrawSwipe(true)
-		elseif settings.style == 'timerOnly' and button.icon:IsShown() then
+		elseif onlyText and button.icon:IsShown() then
 			button.icon:Hide()
 			button.icon.border:Hide()
 			button.cd:SetDrawSwipe(false)
 		end
 
-		local blizzCooldowns = not E.db.cooldown.enable
-		if settings.style == 'timerOnly' then
-			button.cd.hideText = nil
+		if not E.db.cooldown.enable then -- cooldown module is off, handle blizzards cooldowns
+			if onlyText then
+				button.cd:SetHideCountdownNumbers(false)
 
-			if timer then
-				if blizzCooldowns then
-					button.cd:SetHideCountdownNumbers(false)
+				if button.cd.blizzText then
+					button.cd.blizzText:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
+				end
+			else
+				button.cd:SetHideCountdownNumbers(not settings.displayText)
 
-					if button.cd.blizzText then
-						button.cd.blizzText:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
-					end
-				else
-					timer.skipTextColor = true
-
-					if timer.text then
-						timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
-					end
+				if button.cd.blizzText then
+					button.cd.blizzText:SetTextColor(1, 1, 1)
 				end
 			end
-		else
-			button.cd.hideText = not settings.displayText
+		elseif button.cd.timer then
+			button.cd.textThreshold = settings.textThreshold ~= -1 and settings.textThreshold
+			button.cd.hideText = (not onlyText and not settings.displayText) or nil
+			button.cd.timer.skipTextColor = onlyText or nil
 
-			if timer then
-				if blizzCooldowns then
-					button.cd:SetHideCountdownNumbers(not settings.displayText)
-
-					if button.cd.blizzText then
-						button.cd.blizzText:SetTextColor(1, 1, 1)
-					end
-				else
-					timer.skipTextColor = nil
-				end
-			end
-
-			if settings.style == 'coloredIcon' then
-				button.icon:SetTexture(E.media.blankTex)
-				button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b)
-			elseif settings.style == 'texturedIcon' then
-				button.icon:SetVertexColor(1, 1, 1)
-				button.icon:SetTexCoord(unpack(E.TexCoords))
+			if button.cd.timer.text then
+				button.cd.timer.text:SetTextColor(settings.color.r, settings.color.g, settings.color.b)
 			end
 		end
 
-		if settings.style == 'texturedIcon' and button.filter == "HARMFUL" then
+		if colorIcon then
+			button.icon:SetTexture(E.media.blankTex)
+			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b)
+		elseif textureIcon then
+			button.icon:SetVertexColor(1, 1, 1)
+			button.icon:SetTexCoord(unpack(E.TexCoords))
+		end
+
+		if textureIcon and button.filter == "HARMFUL" then
 			button.icon.border:SetVertexColor(1, 0, 0)
 		else
 			button.icon.border:SetVertexColor(0, 0, 0)
