@@ -356,12 +356,16 @@ function S:BlizzardMiscFrames()
 		btn:ClearAllPoints()
 
 		if btn == StackSplitFrame.LeftButton then
-			btn:SetPoint('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+			S:HandleNextPrevButton(btn, "left", nil, true)
 		else
-			btn:SetPoint('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+			S:HandleNextPrevButton(btn, "right", nil, true)
 		end
 
-		S:HandleNextPrevButton(btn, nil, nil, true)
+		if btn.SetTemplate then
+			btn:SetTemplate("NoBackdrop")
+		end
 	end
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
