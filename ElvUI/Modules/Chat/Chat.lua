@@ -1120,6 +1120,8 @@ function CH:PositionChats()
 	_G.RightChatPanel:Size(CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth, CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight)
 	_G.LeftChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
 
+	LO:RepositionChatDataPanels()
+
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		CH:PositionChat(_G[name])
 	end
@@ -1958,7 +1960,6 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrame:Height(22)
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
-	LO:RepositionChatDataPanels()
 	CH:PositionChats()
 
 	if _G.CombatLogQuickButtonFrame_Custom then

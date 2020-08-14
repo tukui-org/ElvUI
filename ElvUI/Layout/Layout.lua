@@ -161,6 +161,14 @@ function LO:RefreshChatMovers()
 	elseif showRightPanel then
 		RightChatPanel:Point(Right, RightChatMover, 0, barHeight)
 	end
+
+	LeftChatMover:Size(E.db.chat.panelWidth, E.db.chat.panelHeight + (showLeftPanel and barHeight or 0))
+
+	if E.db.chat.separateSizes then
+		RightChatMover:Size(E.db.chat.panelWidthRight, E.db.chat.panelHeightRight + (showRightPanel and barHeight or 0))
+	else
+		RightChatMover:Size(E.db.chat.panelWidth, E.db.chat.panelHeight + (showRightPanel and barHeight or 0))
+	end
 end
 
 function LO:RepositionChatDataPanels()
@@ -226,11 +234,6 @@ function LO:ToggleChatPanels()
 	local showRightPanel = E.db.datatexts.panels.RightChatDataPanel.enable
 	local showLeftPanel = E.db.datatexts.panels.LeftChatDataPanel.enable
 
-	local panelHeight = E.db.chat.panelHeight
-	local rightHeight = E.db.chat.separateSizes and E.db.chat.panelHeightRight
-	_G.LeftChatMover:Height(panelHeight + (showLeftPanel and barHeight or 0))
-	_G.RightChatMover:Height((rightHeight or panelHeight) + (showRightPanel and barHeight or 0))
-
 	_G.RightChatDataPanel:SetShown(showRightPanel)
 	_G.LeftChatDataPanel:SetShown(showLeftPanel)
 
@@ -280,7 +283,7 @@ function LO:CreateChatPanels()
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
 	lchat:SetFrameStrata('BACKGROUND')
 	lchat:SetFrameLevel(300)
-	lchat:Size(E.db.chat.panelWidth, E.db.chat.panelHeight)
+	lchat:Size(100, 100)
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop.ignoreBackdropColors = true
@@ -330,7 +333,7 @@ function LO:CreateChatPanels()
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
 	rchat:SetFrameStrata('BACKGROUND')
 	rchat:SetFrameLevel(300)
-	rchat:Size(E.db.chat.separateSizes and E.db.chat.panelWidthRight or E.db.chat.panelWidth, E.db.chat.separateSizes and E.db.chat.panelHeightRight or E.db.chat.panelHeight)
+	rchat:Size(100, 100)
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
 	rchat:CreateBackdrop('Transparent')
 	rchat.backdrop.ignoreBackdropColors = true
