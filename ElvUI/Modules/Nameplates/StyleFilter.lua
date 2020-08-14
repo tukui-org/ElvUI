@@ -689,7 +689,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Player Controlled
 	if trigger.isPlayerControlled or trigger.isNotPlayerControlled then
-		local playerControlled = UnitPlayerControlled(frame.unit)
+		local playerControlled = UnitPlayerControlled(frame.unit) and not frame.isPlayer
 		if (trigger.isPlayerControlled and playerControlled or trigger.isNotPlayerControlled and not playerControlled) then passed = true else return end
 	end
 
