@@ -14,7 +14,6 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local SetCVar = SetCVar
-local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
@@ -22,6 +21,7 @@ local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
+local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
@@ -30,6 +30,7 @@ local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
+local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
@@ -593,6 +594,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isMe = UnitIsUnit(unit, 'player')
 		nameplate.isPet = UnitIsUnit(unit, 'pet')
 		nameplate.isFriend = UnitIsFriend('player', unit)
+		nameplate.isEnemy = UnitIsEnemy('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 		nameplate.faction = UnitFactionGroup(unit)
@@ -620,9 +622,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		elseif nameplate.isPVPSanctuary then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
 		elseif nameplate.isPlayer then
-			nameplate.frameType = (nameplate.isFriend and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_PLAYER') or 'ENEMY_PLAYER'
+			nameplate.frameType = (not nameplate.isEnemy and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_PLAYER') or 'ENEMY_PLAYER'
 		else -- must be an npc
-			nameplate.frameType = (nameplate.isFriend and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_NPC') or 'ENEMY_NPC'
+			nameplate.frameType = (not nameplate.isEnemy and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_NPC') or 'ENEMY_NPC'
 		end
 
 		if nameplate.frameType == 'PLAYER' then
