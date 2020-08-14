@@ -357,11 +357,11 @@ function S:BlizzardMiscFrames()
 
 		if btn == StackSplitFrame.LeftButton then
 			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
-			S:HandleNextPrevButton(btn, "left", nil, true)
 		else
 			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
-			S:HandleNextPrevButton(btn, "right", nil, true)
 		end
+
+		S:HandleNextPrevButton(btn)
 	end
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
