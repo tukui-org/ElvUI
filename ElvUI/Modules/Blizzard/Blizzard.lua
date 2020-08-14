@@ -51,7 +51,7 @@ function B:Initialize()
 				if xp > 0 then
 					local text = _G.MapQuestInfoRewardsFrame.XPFrame.Name:GetText()
 					if text then
-						_G.MapQuestInfoRewardsFrame.XPFrame.Name:SetFormattedText("%s (+%.2f%%)", text, (((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))*100)
+						_G.MapQuestInfoRewardsFrame.XPFrame.Name:SetFormattedText("%s (|cff4beb2c+%.2f%%|r)", text, (((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))*100)
 					end
 				end
 			end
@@ -59,8 +59,8 @@ function B:Initialize()
 			xp = GetRewardXP()
 			if xp > 0 then
 				local text = _G.QuestInfoXPFrame.ValueText:GetText()
-				_G.QuestInfoXPFrame.ValueText:SetFormattedText("%s (+%.2f%%)", text, (((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))*100)
-			end			
+				_G.QuestInfoXPFrame.ValueText:SetFormattedText("%s (|cff4beb2c+%.2f%%|r)", text, (((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))*100)
+			end
 		end
 	end)
 
