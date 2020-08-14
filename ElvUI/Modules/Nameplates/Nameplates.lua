@@ -27,7 +27,6 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
-local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
@@ -596,7 +595,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isFriend = UnitIsFriend('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
-		nameplate.isPlayerControlled = UnitPlayerControlled(unit)
 		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.reaction = UnitReaction('player', unit)
 		nameplate.repReaction = UnitReaction(unit, 'player')
@@ -622,13 +620,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		elseif nameplate.isPVPSanctuary then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
 		elseif nameplate.isPlayer then
-			nameplate.frameType = (nameplate.isFriend and 'FRIENDLY_PLAYER') or 'ENEMY_PLAYER'
+			nameplate.frameType = (nameplate.reaction and nameplate.reaction >= 5) and 'FRIENDLY_PLAYER' or 'ENEMY_PLAYER'
 		else -- must be an npc
-			if nameplate.faction == 'Neutral' or (nameplate.reaction and nameplate.reaction >= 5) then
-				nameplate.frameType = 'FRIENDLY_NPC'
-			else
-				nameplate.frameType = 'ENEMY_NPC'
-			end
+			nameplate.frameType = (nameplate.reaction and nameplate.reaction >= 5) and 'FRIENDLY_NPC' or 'ENEMY_NPC'
 		end
 
 		if nameplate.frameType == 'PLAYER' then
