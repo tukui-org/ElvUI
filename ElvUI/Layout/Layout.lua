@@ -162,8 +162,8 @@ function LO:RefreshChatMovers()
 		RightChatPanel:Point(Right, RightChatMover, 0, barHeight)
 	end
 
+	-- mover sizes: same as in CH.PositionChats for panels but including the datatext bar height
 	LeftChatMover:Size(E.db.chat.panelWidth, E.db.chat.panelHeight + (showLeftPanel and barHeight or 0))
-
 	if E.db.chat.separateSizes then
 		RightChatMover:Size(E.db.chat.panelWidthRight, E.db.chat.panelHeightRight + (showRightPanel and barHeight or 0))
 	else

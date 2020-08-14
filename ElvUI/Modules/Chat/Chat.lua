@@ -1117,8 +1117,12 @@ end
 function CH:PositionChats()
 	if not E.private.chat.enable then return end
 
-	_G.RightChatPanel:Size(CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth, CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight)
 	_G.LeftChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
+	if CH.db.separateSizes then
+		_G.RightChatPanel:Size(CH.db.panelWidthRight, CH.db.panelHeightRight)
+	else
+		_G.RightChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
+	end
 
 	LO:RepositionChatDataPanels()
 
