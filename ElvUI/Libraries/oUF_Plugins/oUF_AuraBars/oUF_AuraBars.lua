@@ -225,7 +225,7 @@ local function UpdateAuras(self, event, unit)
 
 		local isEnemy = UnitIsEnemy('player', unit)
 		local reaction = UnitReaction('player', unit)
-		local filter = (not isEnemy and (not reaction or reaction > 3) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
+		local filter = (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
 		local visible, hidden = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 
 		local fromRange, toRange
