@@ -6,6 +6,7 @@ local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumbe
 local strmatch, strlower, strfind = strmatch, strlower, strfind
 
 local GetLocale = GetLocale
+local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local GetQuestLogTitle = GetQuestLogTitle
 local IsInInstance = IsInInstance
@@ -293,9 +294,8 @@ local function Disable(self)
 end
 
 --initial quest scan
-for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-	local questID = C_QuestLog_GetQuestIDForLogIndex(i)
-	local questName = C_QuestLog_GetTitleForLogIndex(i)
+for i = 1, GetNumQuestLogEntries() do
+	local questName, _, _, _, _, _, _, questID = GetQuestLogTitle(i)
 	if questName and (questID and questID > 0) then
 		activeQuests[questName] = questID
 		questIndexByID[questID] = i
