@@ -6,7 +6,7 @@ local strfind = strfind
 local pairs, unpack = pairs, unpack
 local CreateFrame = CreateFrame
 
-local questIconTypes = { "Item", "Loot", "Skull", "Chat" }
+local questIconTypes = { "Default", "Item", "Skull", "Chat" }
 local targetIndicators = { "Spark", "TopIndicator", "LeftIndicator", "RightIndicator" }
 
 function NP:Construct_QuestIcons(nameplate)

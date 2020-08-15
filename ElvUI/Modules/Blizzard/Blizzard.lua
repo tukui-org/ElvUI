@@ -59,7 +59,9 @@ function B:Initialize()
 			xp = GetRewardXP()
 			if xp > 0 then
 				local text = _G.QuestInfoXPFrame.ValueText:GetText()
-				_G.QuestInfoXPFrame.ValueText:SetFormattedText("%s (|cff4beb2c+%.2f%%|r)", text, (((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))*100)
+				if text then
+					_G.QuestInfoXPFrame.ValueText:SetFormattedText("%s (|cff4beb2c+%.2f%%|r)", text, (((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))*100)
+				end
 			end
 		end
 	end)
