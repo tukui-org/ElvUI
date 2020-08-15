@@ -9,11 +9,17 @@ local GetLocale = GetLocale
 local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
+local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
+local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
+
 local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
 local iconTypes = {"Default", "Item", "Skull", "Chat"}
+local questIndexByID = {
+	--[questID] = questIndex
+}
 local activeQuests = {
 	--[questName] = questID
 }
@@ -64,12 +70,15 @@ local function QUEST_ACCEPTED(_, _, questLogIndex, questID)
 		local questName = C_QuestLog_GetTitleForLogIndex(questLogIndex)
 		if questName and (questID and questID > 0) then
 			activeQuests[questName] = questID
+			questIndexByID[questID] = questLogIndex
 		end
 	end
 end
 
 local function QUEST_REMOVED(_, _, questID)
 	if not questID then return end
+	questIndexByID[questID] = nil
+
 	for questName, id in pairs(activeQuests) do
 		if id == questID then
 			activeQuests[questName] = nil
@@ -98,24 +107,23 @@ local function GetQuests(unitID)
 	E.ScanTooltip:Show()
 
 	local QuestList, notMyQuest
+	local type, index, texture, _
 	for i = 3, E.ScanTooltip:NumLines() do
 		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
 		local text = str and str:GetText()
 		if not text or text == '' then return end
+
+		local activeID = activeQuests[text]
+		if activeID then
+			index = questIndexByID[activeID]
+			_, texture = GetQuestLogSpecialItemInfo(index)
+		end
 
 		if UnitIsPlayer(text) then
 			notMyQuest = text ~= E.myname
 		elseif text and not notMyQuest then
 			local count, percent = CheckTextForQuest(text)
 			if count then
-				local type, index, texture, _
-
-				local activeID = activeQuests[text]
-				if activeID then
-					index = GetQuestLogIndexByID(activeID)
-					_, texture = GetQuestLogSpecialItemInfo(index)
-				end
-
 				if texture then
 					type = "QUEST_ITEM"
 				else
@@ -139,7 +147,7 @@ local function GetQuests(unitID)
 						end
 					end
 				end
-
+				
 				if not QuestList then QuestList = {} end
 				QuestList[#QuestList + 1] = {
 					isPercent = percent,
@@ -287,5 +295,19 @@ local function Disable(self)
 		self:UnregisterEvent('PLAYER_ENTERING_WORLD', Path)
 	end
 end
+
+--more graceful way of doing this? it needs an initial scan of quests
+local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function()
+	for i = 1, C_QuestLog_GetNumQuestLogEntries() do
+		local questID = C_QuestLog_GetQuestIDForLogIndex(i)
+		local questName = C_QuestLog_GetTitleForLogIndex(i)
+		if questName and (questID and questID > 0) then
+			activeQuests[questName] = questID
+			questIndexByID[questID] = i
+		end
+	end
+end)
 
 oUF:AddElement('QuestIcons', Path, Enable, Disable)
