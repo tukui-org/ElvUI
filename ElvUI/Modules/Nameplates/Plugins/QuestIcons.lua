@@ -122,7 +122,7 @@ local function GetQuests(unitID)
 					local lowerText = strlower(text)
 
 					-- check chat type first
-					for listText in ipairs(questTypes.CHAT) do
+					for _, listText in ipairs(questTypes.CHAT) do
 						if strfind(lowerText, listText, nil, true) then
 							type = "CHAT"
 							break
@@ -131,7 +131,7 @@ local function GetQuests(unitID)
 
 					-- check kill type if chat type doesn't exist
 					if not type then
-						for listText in ipairs(questTypes.KILL) do
+						for _, listText in ipairs(questTypes.KILL) do
 							if strfind(lowerText, listText, nil, true) then
 								type = "KILL"
 								break
