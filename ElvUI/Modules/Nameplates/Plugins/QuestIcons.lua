@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local oUF = E.oUF
 
 local _G = _G
-local pairs, ceil, floor, tonumber = pairs, ceil, floor, tonumber
+local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
 local strmatch, strlower, strfind = strmatch, strlower, strfind
 
 local GetLocale = GetLocale
@@ -13,93 +13,66 @@ local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
-local questIconTypes = {"Item", "Loot", "Skull", "Chat"}
-local ActiveQuests = {
+local iconTypes = {"Default", "Item", "Skull", "Chat"}
+local activeQuests = {
 	--[questName] = questID
 }
 
-local UsedLocale = GetLocale()
-local QuestTypesLocalized = {
+local typesLocalized = {
 	enUS = {
-		["slain"] = "KILL",
-		["destroy"] = "KILL",
-		["eleminate"] = "KILL",
-		["repel"] = "KILL",
-		["kill"] = "KILL",
-		["defeat"] = "KILL",
-		["speak"] = "CHAT",
-		["ask"] = "CHAT",
-		["talk"] = "CHAT",
+		KILL = {"slain", "destroy", "eliminate", "repel", "kill", "defeat"},
+		CHAT = {"speak", "ask", "talk", "build"}
 	},
 	deDE = {
-		["besiegen"] = "KILL",
-		["besiegt"] = "KILL",
-		["getötet"] = "KILL",
-		["töten"] = "KILL",
-		["tötet"] = "KILL",
-		["zerstört"] = "KILL",
-		["befragt"] = "CHAT",
-		["sprecht"] = "CHAT",
-		["genährt"] = "KILL",
-	},
-	esMX = {
-		["slain"] = "KILL",
-		["destroyed"] = "KILL",
-		["speak"] = "CHAT",
-	},
-	frFR = {
-		["slain"] = "KILL",
-		["destroyed"] = "KILL",
-		["speak"] = "CHAT",
-	},
-	koKR = {
-		["slain"] = "KILL",
-		["destroyed"] = "KILL",
-		["speak"] = "CHAT",
-	},
-	ptBR = {
-		["slain"] = "KILL",
-		["destroyed"] = "KILL",
-		["speak"] = "CHAT",
+		KILL = {"besiegen", "besiegt", "getötet", "töten", "tötet", "zerstört", "genährt"},
+		CHAT = {"befragt", "sprecht"}
 	},
 	ruRU = {
-		["убит"] = "KILL",
-		["уничтож"] = "KILL",
-		["разбомблен"] = "KILL",
-		["разбит"] = "KILL",
-		["сразит"] = "KILL",
-		["поговорит"] = "CHAT",
+		KILL = {"убит", "уничтож", "разбомблен", "разбит", "сразит"},
+		CHAT = {"поговорит", "спрашивать", "строить"}
+	},
+	esMX = {
+		KILL = {"matar", "destruir", "eliminar", "repeler", "derrotar"},
+		CHAT = {"hablar", "preguntar", "construir"}
+	},
+	ptBR = {
+		KILL = {"matar", "destruir", "eliminar", "repelir", "derrotar"},
+		CHAT = {"falar", "perguntar", "construir"}
+	},
+	frFR = {
+		KILL = {"tuer", "détruire", "éliminer", "repousser", "tuer", "vaincre"},
+		CHAT = {"parler", "demander", "construire"}
+	},
+	koKR = {
+		KILL = {"살인", "멸하다", "제거", "죽이다", "격퇴하다", "죽임", "패배"},
+		CHAT = {"말하다", "질문하다", "구축하다"}
 	},
 	zhCN = {
-		["消灭"] = "KILL",
-		["摧毁"] = "KILL",
-		["获得"] = "KILL",
-		["击败"] = "KILL",
-		["交谈"] = "CHAT",
+		KILL = {"消灭", "摧毁", "获得", "击败", "被杀", "毁灭", "击退", "杀死"},
+		CHAT = {"交谈", "说话", "询问", "建立"}
 	},
 	zhTW = {
-		["slain"] = "KILL",
-		["destroyed"] = "KILL",
-		["speak"] = "CHAT",
+		KILL = {"被殺", "毀滅", "消除", "擊退", "殺死", "打败"},
+		CHAT = {"說話", "詢問", "交談", "建立", "建设"}
 	},
 }
 
-local QuestTypes = QuestTypesLocalized[UsedLocale] or QuestTypesLocalized.enUS
+local questTypes = typesLocalized[GetLocale()] or typesLocalized.enUS
 
 local function QUEST_ACCEPTED(_, _, questLogIndex, questID)
 	if questLogIndex and questLogIndex > 0 then
 		local questName = C_QuestLog_GetTitleForLogIndex(questLogIndex)
 		if questName and (questID and questID > 0) then
-			ActiveQuests[questName] = questID
+			activeQuests[questName] = questID
 		end
 	end
 end
 
 local function QUEST_REMOVED(_, _, questID)
 	if not questID then return end
-	for questName, id in pairs(ActiveQuests) do
+	for questName, id in pairs(activeQuests) do
 		if id == questID then
-			ActiveQuests[questName] = nil
+			activeQuests[questName] = nil
 			break
 		end
 	end
@@ -137,7 +110,7 @@ local function GetQuests(unitID)
 			if count then
 				local type, index, texture, _
 
-				local activeID = ActiveQuests[text]
+				local activeID = activeQuests[text]
 				if activeID then
 					index = GetQuestLogIndexByID(activeID)
 					_, texture = GetQuestLogSpecialItemInfo(index)
@@ -147,10 +120,22 @@ local function GetQuests(unitID)
 					type = "QUEST_ITEM"
 				else
 					local lowerText = strlower(text)
-					for typeString in pairs(QuestTypes) do
-						if strfind(lowerText, typeString, nil, true) then
-							type = QuestTypes[typeString]
+
+					-- check chat type first
+					for _, listText in ipairs(questTypes.CHAT) do
+						if strfind(lowerText, listText, nil, true) then
+							type = "CHAT"
 							break
+						end
+					end
+
+					-- check kill type if chat type doesn't exist
+					if not type then
+						for _, listText in ipairs(questTypes.KILL) do
+							if strfind(lowerText, listText, nil, true) then
+								type = "KILL"
+								break
+							end
 						end
 					end
 				end
@@ -160,7 +145,7 @@ local function GetQuests(unitID)
 					isPercent = percent,
 					itemTexture = texture,
 					objectiveCount = count,
-					questType = type or "LOOT",
+					questType = type or "DEFAULT",
 					-- below keys are currently unused
 					questLogIndex = index,
 					questID = activeID
@@ -174,7 +159,7 @@ local function GetQuests(unitID)
 end
 
 local function hideIcons(element)
-	for _, object in pairs(questIconTypes) do
+	for _, object in pairs(iconTypes) do
 		local icon = element[object]
 		icon:Hide()
 
@@ -217,11 +202,10 @@ local function Update(self, event, unit)
 
 		if isPercent or objectiveCount > 0 then
 			local icon
-
-			if questType == "KILL" then
+			if questType == "DEFAULT" then
+				icon = element.Default
+			elseif questType == "KILL" then
 				icon = element.Skull
-			elseif questType == "LOOT" then
-				icon = element.Loot
 			elseif questType == "CHAT" then
 				icon = element.Chat
 			elseif questType == "QUEST_ITEM" then
@@ -270,8 +254,8 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if element.Loot:IsObjectType('Texture') and not element.Loot:GetAtlas() then
-			element.Loot:SetAtlas('Banker')
+		if element.Default:IsObjectType('Texture') and not element.Default:GetAtlas() then
+			element.Default:SetAtlas('QuestNormal')
 		end
 		if element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture() then
 			element.Skull:SetTexture(E.Media.Textures.SkullIcon)
