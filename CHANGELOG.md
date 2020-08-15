@@ -5,6 +5,13 @@ Bags Datatext is less weird now.
 Options Logo was animating a little too much.  
 Fixed an error which happened in the Options when UnitFrames were disabled.  
 Corrected a Style Filter error, also let entering and leaving combat trigger filters correctly (regardless of unit threat).  
+Data Broker tooltips will work correctly on DataTexts again.  
+Nameplate Castbar Time should fit better.  
+PVP Spec Icon looks better now.  
+Chat Panel Movers will update with the Panel resizing again.  
+Buff Indicator better supports Blizzard Cooldowns when our Cooldown module is disabled.  
+Adjusted Nameplate and Aurabars to hopefully better detect mind control, duels, and which the frame type should be.  
+Quest Icons code was slightly updated to improve locales and pick the correct icon to use, so now it might work on other languages better.  
 
 ___
 
