@@ -360,7 +360,6 @@ function S:BlizzardMiscFrames()
 	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
 	for _, btn in pairs(buttons) do
 		btn:Size(14, 18)
-
 		btn:ClearAllPoints()
 
 		if btn == StackSplitFrame.LeftButton then
@@ -369,7 +368,7 @@ function S:BlizzardMiscFrames()
 			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
 		end
 
-		S:HandleNextPrevButton(btn)
+		S:HandleNextPrevButton(btn, nil, nil, true)
 
 		if btn.SetTemplate then
 			btn:SetTemplate("NoBackdrop")
