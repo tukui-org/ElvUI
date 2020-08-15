@@ -3,7 +3,7 @@ local NP = E:GetModule("NamePlates")
 
 local _G = _G
 local strfind = strfind
-local pairs, unpack = pairs, unpack
+local ipairs, unpack = ipairs, unpack
 local CreateFrame = CreateFrame
 
 local questIconTypes = { "Default", "Item", "Skull", "Chat" }
@@ -14,7 +14,7 @@ function NP:Construct_QuestIcons(nameplate)
 	QuestIcons:Size(20)
 	QuestIcons:Hide()
 
-	for _, object in pairs(questIconTypes) do
+	for _, object in ipairs(questIconTypes) do
 		local icon = QuestIcons:CreateTexture(nil, "BORDER", nil, 1)
 		icon.Text = QuestIcons:CreateFontString(nil, "OVERLAY")
 		icon.Text:FontTemplate()
@@ -42,7 +42,7 @@ function NP:Update_QuestIcons(nameplate)
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:Point(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
 
-		for _, object in pairs(questIconTypes) do
+		for _, object in ipairs(questIconTypes) do
 			local icon = nameplate.QuestIcons[object]
 			icon:Size(db.size, db.size)
 			icon:SetAlpha(db.hideIcon and 0 or 1)
@@ -90,7 +90,7 @@ function NP:Construct_TargetIndicator(nameplate)
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
 	TargetIndicator.Shadow:Hide()
 
-	for _, object in pairs(targetIndicators) do
+	for _, object in ipairs(targetIndicators) do
 		local indicator = TargetIndicator:CreateTexture(nil, "BACKGROUND", nil, -5)
 		indicator:Hide()
 
