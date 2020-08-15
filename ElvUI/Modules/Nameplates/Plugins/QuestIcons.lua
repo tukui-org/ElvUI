@@ -13,7 +13,7 @@ local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
-local iconTypes = {"Item", "Loot", "Skull", "Chat"}
+local iconTypes = {"Default", "Item", "Skull", "Chat"}
 local activeQuests = {
 	--[questName] = questID
 }
@@ -145,7 +145,7 @@ local function GetQuests(unitID)
 					isPercent = percent,
 					itemTexture = texture,
 					objectiveCount = count,
-					questType = type or "LOOT",
+					questType = type or "DEFAULT",
 					-- below keys are currently unused
 					questLogIndex = index,
 					questID = activeID
@@ -202,11 +202,11 @@ local function Update(self, event, unit)
 
 		if isPercent or objectiveCount > 0 then
 			local icon
-
-			if questType == "KILL" then
+		
+			if questType == "DEFAULT" then
+			icon = element.Default
+			elseif questType == "KILL" then
 				icon = element.Skull
-			elseif questType == "LOOT" then
-				icon = element.Loot
 			elseif questType == "CHAT" then
 				icon = element.Chat
 			elseif questType == "QUEST_ITEM" then
@@ -255,8 +255,8 @@ local function Enable(self)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if element.Loot:IsObjectType('Texture') and not element.Loot:GetAtlas() then
-			element.Loot:SetAtlas('Banker')
+		if element.Default:IsObjectType('Texture') and not element.Default:GetAtlas() then
+			element.Default:SetAtlas('QuestNormal')
 		end
 		if element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture() then
 			element.Skull:SetTexture(E.Media.Textures.SkullIcon)
