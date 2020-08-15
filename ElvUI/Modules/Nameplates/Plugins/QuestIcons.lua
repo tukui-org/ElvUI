@@ -202,9 +202,8 @@ local function Update(self, event, unit)
 
 		if isPercent or objectiveCount > 0 then
 			local icon
-		
 			if questType == "DEFAULT" then
-			icon = element.Default
+				icon = element.Default
 			elseif questType == "KILL" then
 				icon = element.Skull
 			elseif questType == "CHAT" then
