@@ -255,7 +255,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		if element.Default:IsObjectType('Texture') and not element.Default:GetAtlas() then
-			element.Default:SetAtlas('QuestNormal')
+			element.Default:SetAtlas('SmallQuestBang')
 		end
 		if element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture() then
 			element.Skull:SetTexture(E.Media.Textures.SkullIcon)
