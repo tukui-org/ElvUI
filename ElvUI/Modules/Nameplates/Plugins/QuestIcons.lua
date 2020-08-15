@@ -229,7 +229,7 @@ local function Update(self, event, unit)
 				icon:ClearAllPoints()
 				icon:Point(newPosition, element, newPosition, (strmatch(setPosition, "LEFT") and -offset) or offset, 0)
 
-				if questType ~= "CHAT" and icon.Text then
+				if questType ~= "CHAT" and icon.Text and (not isPercent and objectiveCount > 1) then
 					icon.Text:SetText((isPercent and objectiveCount.."%") or objectiveCount)
 				end
 
