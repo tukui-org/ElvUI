@@ -621,7 +621,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			end
 		elseif nameplate.isPVPSanctuary then
 			nameplate.frameType = 'FRIENDLY_PLAYER'
-		elseif not nameplate.isEnemy and (not nameplate.reaction or nameplate.reaction > 4) then
+		elseif not nameplate.isEnemy and (not nameplate.reaction or nameplate.reaction > 4) then -- keep as: not isEnemy, dont switch to isFriend
 			nameplate.frameType = (nameplate.isPlayer and 'FRIENDLY_PLAYER') or 'FRIENDLY_NPC'
 		else
 			nameplate.frameType = (nameplate.isPlayer and 'ENEMY_PLAYER') or 'ENEMY_NPC'
