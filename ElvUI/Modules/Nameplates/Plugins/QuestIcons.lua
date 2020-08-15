@@ -6,14 +6,19 @@ local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumbe
 local strmatch, strlower, strfind = strmatch, strlower, strfind
 
 local GetLocale = GetLocale
-local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
+local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
+local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
+
 local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
 local iconTypes = {"Default", "Item", "Skull", "Chat"}
+local questIndexByID = {
+	--[questID] = questIndex
+}
 local activeQuests = {
 	--[questName] = questID
 }
@@ -64,12 +69,15 @@ local function QUEST_ACCEPTED(_, _, questLogIndex, questID)
 		local questName = C_QuestLog_GetTitleForLogIndex(questLogIndex)
 		if questName and (questID and questID > 0) then
 			activeQuests[questName] = questID
+			questIndexByID[questID] = questLogIndex
 		end
 	end
 end
 
 local function QUEST_REMOVED(_, _, questID)
 	if not questID then return end
+	questIndexByID[questID] = nil
+
 	for questName, id in pairs(activeQuests) do
 		if id == questID then
 			activeQuests[questName] = nil
@@ -109,10 +117,9 @@ local function GetQuests(unitID)
 			local count, percent = CheckTextForQuest(text)
 			if count then
 				local type, index, texture, _
-
 				local activeID = activeQuests[text]
 				if activeID then
-					index = GetQuestLogIndexByID(activeID)
+					index = questIndexByID[activeID]
 					_, texture = GetQuestLogSpecialItemInfo(index)
 				end
 
@@ -224,7 +231,7 @@ local function Update(self, event, unit)
 				icon:ClearAllPoints()
 				icon:SetPoint(newPosition, element, newPosition, (strmatch(setPosition, "LEFT") and -offset) or offset, 0)
 
-				if questType ~= "CHAT" and icon.Text then
+				if questType ~= "CHAT" and icon.Text and (not isPercent and objectiveCount > 1) then
 					icon.Text:SetText((isPercent and objectiveCount.."%") or objectiveCount)
 				end
 
@@ -255,7 +262,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		if element.Default:IsObjectType('Texture') and not element.Default:GetAtlas() then
-			element.Default:SetAtlas('QuestNormal')
+			element.Default:SetAtlas('SmallQuestBang')
 		end
 		if element.Skull:IsObjectType('Texture') and not element.Skull:GetTexture() then
 			element.Skull:SetTexture(E.Media.Textures.SkullIcon)
@@ -285,6 +292,16 @@ local function Disable(self)
 		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
 		self:UnregisterEvent('PLAYER_ENTERING_WORLD', Path)
+	end
+end
+
+--initial quest scan
+for i = 1, C_QuestLog_GetNumQuestLogEntries() do
+	local questID = C_QuestLog_GetQuestIDForLogIndex(i)
+	local questName = C_QuestLog_GetTitleForLogIndex(i)
+	if questName and (questID and questID > 0) then
+		activeQuests[questName] = questID
+		questIndexByID[questID] = i
 	end
 end
 
