@@ -361,7 +361,7 @@ function S:BlizzardMiscFrames()
 			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
 		end
 
-		S:HandleNextPrevButton(btn)
+		S:HandleNextPrevButton(btn, nil, nil, true)
 	end
 
 	--NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)
