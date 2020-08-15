@@ -4,8 +4,14 @@ local Skins = E:GetModule('Skins')
 
 local _G = _G
 local CreateFrame = CreateFrame
+local GetQuestLogRewardXP = GetQuestLogRewardXP
+local GetRewardXP = GetRewardXP
 local IsAddOnLoaded = IsAddOnLoaded
-local UnitXP, UnitXPMax, GetQuestLogRewardXP, GetRewardXP = UnitXP, UnitXPMax, GetQuestLogRewardXP, GetRewardXP
+local UnitXP = UnitXP
+local UnitXPMax = UnitXPMax
+local hooksecurefunc = hooksecurefunc
+local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
+local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 
 function B:Initialize()
 	B.Initialized = true
@@ -42,26 +48,22 @@ function B:Initialize()
 	end)
 
 	--Add (+X%) to quest rewards experience text
-	hooksecurefunc("QuestInfo_Display", function(template, parentFrame, acceptButton, material, mapView)
-		local xp = 0
-		local UnitXP, UnitXPMax = UnitXP("player"), UnitXPMax("player")
-		if ( _G.QuestInfoFrame.questLog ) then
-			if C_QuestLog.ShouldShowQuestRewards(C_QuestLog.GetSelectedQuest()) then
-				xp = GetQuestLogRewardXP()
-				if xp > 0 then
+	hooksecurefunc("QuestInfo_Display", function()
+		local unitXP, unitXPMax = UnitXP("player"), UnitXPMax("player")
+		if _G.QuestInfoFrame.questLog then
+			local selectedQuest = C_QuestLog_GetSelectedQuest()
+			if C_QuestLog_ShouldShowQuestRewards(selectedQuest) then
+				local xp = GetQuestLogRewardXP()
+				if xp and xp > 0 then
 					local text = _G.MapQuestInfoRewardsFrame.XPFrame.Name:GetText()
-					if text then
-						_G.MapQuestInfoRewardsFrame.XPFrame.Name:SetFormattedText("%s (|cff4beb2c+%.2f%%|r)", text, (((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))*100)
-					end
+					if text then _G.MapQuestInfoRewardsFrame.XPFrame.Name:SetFormattedText("%s (|cff4beb2c+%.2f%%|r)", text, (((unitXP + xp) / unitXPMax) - (unitXP / unitXPMax))*100) end
 				end
 			end
 		else
-			xp = GetRewardXP()
-			if xp > 0 then
+			local xp = GetRewardXP()
+			if xp and xp > 0 then
 				local text = _G.QuestInfoXPFrame.ValueText:GetText()
-				if text then
-					_G.QuestInfoXPFrame.ValueText:SetFormattedText("%s (|cff4beb2c+%.2f%%|r)", text, (((UnitXP + xp) / UnitXPMax) - (UnitXP / UnitXPMax))*100)
-				end
+				if text then _G.QuestInfoXPFrame.ValueText:SetFormattedText("%s (|cff4beb2c+%.2f%%|r)", text, (((unitXP + xp) / unitXPMax) - (unitXP / unitXPMax))*100) end
 			end
 		end
 	end)
