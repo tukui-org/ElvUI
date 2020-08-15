@@ -293,18 +293,14 @@ local function Disable(self)
 	end
 end
 
---more graceful way of doing this? it needs an initial scan of quests
-local f = CreateFrame("Frame")
-f:RegisterEvent("PLAYER_ENTERING_WORLD")
-f:SetScript("OnEvent", function()
-	for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-		local questID = C_QuestLog_GetQuestIDForLogIndex(i)
-		local questName = C_QuestLog_GetTitleForLogIndex(i)
-		if questName and (questID and questID > 0) then
-			activeQuests[questName] = questID
-			questIndexByID[questID] = i
-		end
+--initial quest scan
+for i = 1, C_QuestLog_GetNumQuestLogEntries() do
+	local questID = C_QuestLog_GetQuestIDForLogIndex(i)
+	local questName = C_QuestLog_GetTitleForLogIndex(i)
+	if questName and (questID and questID > 0) then
+		activeQuests[questName] = questID
+		questIndexByID[questID] = i
 	end
-end)
+end
 
 oUF:AddElement('QuestIcons', Path, Enable, Disable)
