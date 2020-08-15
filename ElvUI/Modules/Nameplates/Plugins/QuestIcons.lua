@@ -6,7 +6,6 @@ local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumbe
 local strmatch, strlower, strfind = strmatch, strlower, strfind
 
 local GetLocale = GetLocale
-local GetQuestLogIndexByID = GetQuestLogIndexByID
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local GetQuestLogTitle = GetQuestLogTitle
 local IsInInstance = IsInInstance
@@ -104,23 +103,23 @@ local function GetQuests(unitID)
 	E.ScanTooltip:Show()
 
 	local QuestList, notMyQuest
-	local type, index, texture, _
 	for i = 3, E.ScanTooltip:NumLines() do
 		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
 		local text = str and str:GetText()
 		if not text or text == '' then return end
-
-		local activeID = activeQuests[text]
-		if activeID then
-			index = questIndexByID[activeID]
-			_, texture = GetQuestLogSpecialItemInfo(index)
-		end
 
 		if UnitIsPlayer(text) then
 			notMyQuest = text ~= E.myname
 		elseif text and not notMyQuest then
 			local count, percent = CheckTextForQuest(text)
 			if count then
+				local type, index, texture, _
+				local activeID = activeQuests[text]
+				if activeID then
+					index = questIndexByID[activeID]
+					_, texture = GetQuestLogSpecialItemInfo(index)
+				end
+
 				if texture then
 					type = "QUEST_ITEM"
 				else
@@ -144,7 +143,7 @@ local function GetQuests(unitID)
 						end
 					end
 				end
-				
+
 				if not QuestList then QuestList = {} end
 				QuestList[#QuestList + 1] = {
 					isPercent = percent,
