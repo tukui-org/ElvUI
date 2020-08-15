@@ -623,10 +623,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.frameType = 'FRIENDLY_PLAYER'
 		elseif nameplate.isPlayer then
 			--nameplate.frameType = (not nameplate.isEnemy and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_PLAYER') or 'ENEMY_PLAYER' -- 9.0 breaks NP
-			nameplate.frameType = (nameplate.isFriend and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_PLAYER') or 'ENEMY_PLAYER'
+			nameplate.frameType = (nameplate.Friend and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_PLAYER') or 'ENEMY_PLAYER'
 		else -- must be an npc
 			--nameplate.frameType = (not nameplate.isEnemy and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_NPC') or 'ENEMY_NPC'  -- 9.0 breaks NP
-			nameplate.frameType = (nameplate.isFriend and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_NPC') or 'ENEMY_NPC'
+			nameplate.frameType = (nameplate.Friend and (not nameplate.reaction or nameplate.reaction > 3) and 'FRIENDLY_NPC') or 'ENEMY_NPC'
 
 		end
 
