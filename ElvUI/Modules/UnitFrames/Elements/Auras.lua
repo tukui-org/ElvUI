@@ -102,7 +102,8 @@ function UF:UpdateAuraSettings(auras, button)
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	button:SetSize((auras and auras.size) or 30)
+	local size = (auras and auras.size) or 30
+	button:SetSize(size, size)
 
 	button.needsUpdateCooldownPosition = true
 end

@@ -144,7 +144,8 @@ function UF:Configure_Castbar(frame)
 		if (not db.iconAttached) then
 			castbar.Icon.bg:SetSize(db.iconSize, db.iconSize)
 		else
-			castbar.Icon.bg:SetSize(db.height-frame.SPACING*2)
+			local size = db.height-frame.SPACING*2
+			castbar.Icon.bg:SetSize(size, size)
 			castbar:SetWidth(db.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*5))
 		end
 
@@ -180,7 +181,8 @@ function UF:Configure_Castbar(frame)
 			castbar:SetInside(anchor, 0, 0)
 		else
 			if castbar.Icon then
-				castbar.Icon.bg:SetSize(anchor:GetHeight() - frame.SPACING*2)
+				local size = anchor:GetHeight() - frame.SPACING*2
+				castbar.Icon.bg:SetSize(size, size)
 			end
 
 			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
