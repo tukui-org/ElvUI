@@ -497,7 +497,7 @@ function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = instanceType
 
 	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
-		NP:UpdatePlate(_G.ElvNP_Player)
+		NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED', 'player')
 	end
 end
 
@@ -586,8 +586,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		unit = unit or nameplate.unit
 
 		local blizzPlate = nameplate:GetParent().UnitFrame
-		nameplate.blizzPlate = blizzPlate
-		nameplate.widget = blizzPlate.WidgetContainer
+		if blizzPlate then
+			nameplate.blizzPlate = blizzPlate
+			nameplate.widget = blizzPlate.WidgetContainer
+		end
+
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
