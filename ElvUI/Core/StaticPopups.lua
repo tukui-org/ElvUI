@@ -178,8 +178,8 @@ E.PopupDialogs.DISABLE_INCOMPATIBLE_ADDON = {
 
 E.PopupDialogs.INCOMPATIBLE_ADDON = {
 	text = L["INCOMPATIBLE_ADDON"],
-	OnAccept = function() DisableAddOn(E.PopupDialogs.INCOMPATIBLE_ADDON.addon); ReloadUI(); end,
-	OnCancel = function() E.private[strlower(E.PopupDialogs.INCOMPATIBLE_ADDON.module)].enable = false; ReloadUI(); end,
+	OnAccept = function() E.private[strlower(E.PopupDialogs.INCOMPATIBLE_ADDON.module)].enable = false; ReloadUI(); end,
+	OnCancel = function() DisableAddOn(E.PopupDialogs.INCOMPATIBLE_ADDON.addon); ReloadUI(); end,
 	button3 = L["Disable Warning"],
 	OnAlt = function ()
 		E:StaticPopup_Hide('INCOMPATIBLE_ADDON')
