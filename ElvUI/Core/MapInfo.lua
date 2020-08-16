@@ -100,6 +100,8 @@ end
 -- Fix stolen from NDui (and modified by Simpy). Credit: siweia.
 local mapRects, tempVec2D = {}, CreateVector2D(0, 0)
 function E:GetPlayerMapPos(mapID)
+	if not mapID then return end
+
 	tempVec2D.x, tempVec2D.y = UnitPosition('player')
 	if not tempVec2D.x then return end
 
