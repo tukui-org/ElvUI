@@ -115,7 +115,7 @@ local function SkinBags()
 			container.backdrop:SetInside()
 			S:HandleCloseButton(_G[container:GetName().."CloseButton"])
 			S:HandleButton(container.PortraitButton)
-			container.PortraitButton:SetSize(35)
+			container.PortraitButton:SetSize(35, 35)
 			container.PortraitButton.Highlight:SetAlpha(0)
 			container:HookScript("OnShow", SkinContainer)
 

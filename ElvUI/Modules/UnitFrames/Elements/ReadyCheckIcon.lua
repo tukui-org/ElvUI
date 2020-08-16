@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 function UF:Construct_ReadyCheckIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY", nil, 7)
-	tex:SetSize(12)
+	tex:SetSize(12, 12)
 	tex:SetPoint("BOTTOM", frame.Health, "BOTTOM", 0, 2)
 
 	return tex

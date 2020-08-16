@@ -143,7 +143,7 @@ local function SkinFindGroupButton(block)
 	if block.hasGroupFinderButton and block.groupFinderButton then
 		if block.groupFinderButton and not block.groupFinderButton.skinned then
 			S:HandleButton(block.groupFinderButton)
-			block.groupFinderButton:SetSize(20)
+			block.groupFinderButton:SetSize(20, 20)
 			block.groupFinderButton.skinned = true
 		end
 	end

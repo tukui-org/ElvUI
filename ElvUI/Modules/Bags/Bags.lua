@@ -1711,7 +1711,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		for i = 1, MAX_WATCHED_TOKENS do
 			f.currencyButton[i] = CreateFrame('Button', f:GetName()..'CurrencyButton'..i, f.currencyButton, 'BackpackTokenTemplate, BackdropTemplate')
-			f.currencyButton[i]:SetSize(16)
+			f.currencyButton[i]:SetSize(16, 16)
 			f.currencyButton[i]:SetTemplate()
 			f.currencyButton[i]:SetID(i)
 			f.currencyButton[i].icon:SetInside()

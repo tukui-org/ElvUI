@@ -87,7 +87,7 @@ function M:LoadRaidMarker()
 
 	for i = 1, 8 do
 		local button = CreateFrame("Button", "RaidMarkIconButton"..i, marker);
-		button:SetSize(40);
+		button:SetSize(40, 40);
 		button:SetID(i);
 		button.Texture = button:CreateTexture(button:GetName().."NormalTexture", "ARTWORK");
 		button.Texture:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]]);

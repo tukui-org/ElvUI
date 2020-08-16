@@ -168,7 +168,7 @@ function S:Blizzard_Calendar()
 		local button = _G["CalendarClassButton"..i]
 		button:StripTextures()
 		button:CreateBackdrop()
-		button:SetSize(24)
+		button:SetSize(24, 24)
 	end
 
 	_G.CalendarClassTotalsButton:StripTextures()

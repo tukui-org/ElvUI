@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 function UF:Construct_ResurrectionIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
 	tex:SetPoint('CENTER', frame.Health, 'CENTER')
-	tex:SetSize(30)
+	tex:SetSize(30, 30)
 	tex:SetDrawLayer('OVERLAY', 7)
 
 	return tex

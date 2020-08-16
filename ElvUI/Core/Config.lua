@@ -511,7 +511,7 @@ function E:CreateMoverPopup()
 	upButton:SetScript('OnClick', function() E:NudgeMover(nil, 1) end)
 	S:HandleNextPrevButton(upButton)
 	S:HandleButton(upButton)
-	upButton:SetSize(22)
+	upButton:SetSize(22, 22)
 	nudgeFrame.upButton = upButton
 
 	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'BackdropTemplate')
@@ -519,7 +519,7 @@ function E:CreateMoverPopup()
 	downButton:SetScript('OnClick', function() E:NudgeMover(nil, -1) end)
 	S:HandleNextPrevButton(downButton)
 	S:HandleButton(downButton)
-	downButton:SetSize(22)
+	downButton:SetSize(22, 22)
 	nudgeFrame.downButton = downButton
 
 	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'BackdropTemplate')
@@ -527,7 +527,7 @@ function E:CreateMoverPopup()
 	leftButton:SetScript('OnClick', function() E:NudgeMover(-1) end)
 	S:HandleNextPrevButton(leftButton)
 	S:HandleButton(leftButton)
-	leftButton:SetSize(22)
+	leftButton:SetSize(22, 22)
 	nudgeFrame.leftButton = leftButton
 
 	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'BackdropTemplate')
@@ -535,7 +535,7 @@ function E:CreateMoverPopup()
 	rightButton:SetScript('OnClick', function() E:NudgeMover(1) end)
 	S:HandleNextPrevButton(rightButton)
 	S:HandleButton(rightButton)
-	rightButton:SetSize(22)
+	rightButton:SetSize(22, 22)
 	nudgeFrame.rightButton = rightButton
 end
 
@@ -1149,7 +1149,7 @@ function E:ToggleOptionsUI(msg)
 			close:SetScript("OnClick", E.Config_CloseClicked)
 			close:SetFrameLevel(1000)
 			close:SetPoint("TOPRIGHT", unskinned and -8 or 1, unskinned and -8 or 2)
-			close:SetSize(32)
+			close:SetSize(32, 32)
 			close.originalClose = frame.originalClose
 			frame.closeButton = close
 

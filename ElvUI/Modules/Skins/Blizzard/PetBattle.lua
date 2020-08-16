@@ -95,7 +95,7 @@ function S:PetBattleFrame()
 		infoBar.Name:ClearAllPoints()
 
 		infoBar.FirstAttack = infoBar:CreateTexture(nil, "ARTWORK")
-		infoBar.FirstAttack:SetSize(30)
+		infoBar.FirstAttack:SetSize(30, 30)
 		infoBar.FirstAttack:SetTexture([[Interface\PetBattles\PetBattle-StatIcons]])
 		if index == 1 then
 			infoBar.HealthBarBackdrop:SetPoint('TOPLEFT', infoBar.ActualHealthBar, 'TOPLEFT', -E.Border, E.Border)
@@ -285,7 +285,7 @@ function S:PetBattleFrame()
 		infoBar.BorderAlive:SetAlpha(0)
 		infoBar.HealthBarBG:SetAlpha(0)
 		infoBar.HealthDivider:SetAlpha(0)
-		infoBar:SetSize(40)
+		infoBar:SetSize(40, 40)
 		infoBar:CreateBackdrop()
 		infoBar:ClearAllPoints()
 

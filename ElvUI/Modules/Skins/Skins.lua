@@ -587,7 +587,7 @@ do
 		frame.forceSaturation = forceSaturation
 
 		if noBackdrop then
-			frame:SetSize(16)
+			frame:SetSize(16, 16)
 		else
 			frame:CreateBackdrop()
 			frame.backdrop:SetInside(nil, 4, 4)

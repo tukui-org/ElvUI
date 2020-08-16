@@ -125,7 +125,7 @@ local function JournalScrollButtons(frame)
 		end
 
 		local icon = bu.icon or bu.Icon
-		icon:SetSize(40)
+		icon:SetSize(40, 40)
 		icon:SetPoint('LEFT', -43, 0)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:CreateBackdrop(nil, nil, nil, true)
@@ -205,7 +205,7 @@ function S:Blizzard_Collections()
 
 	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon)
 	S:HandleCheckBox(MountJournal.MountDisplay.ModelScene.TogglePlayer)
-	MountJournal.MountDisplay.ModelScene.TogglePlayer:SetSize(22)
+	MountJournal.MountDisplay.ModelScene.TogglePlayer:SetSize(22, 22)
 
 	S:HandleButton(_G.MountJournalMountButton)
 	S:HandleEditBox(_G.MountJournalSearchBox)

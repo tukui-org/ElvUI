@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 function UF:Construct_RaidIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
 	tex:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
-	tex:SetSize(18)
+	tex:SetSize(18, 18)
 	tex:SetPoint("CENTER", frame.Health, "TOP", 0, 2)
 	tex.SetTexture = E.noop
 
