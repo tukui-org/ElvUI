@@ -18,7 +18,9 @@ function S:LossOfControlFrame()
 	LossOfControlFrame.Icon:SetTexCoord(.1, .9, .1, .9)
 	LossOfControlFrame:StripTextures()
 	LossOfControlFrame.AbilityName:ClearAllPoints()
-	LossOfControlFrame:Size(LossOfControlFrame.Icon:GetWidth() + 50)
+
+	local size = LossOfControlFrame.Icon:GetWidth() + 50
+	LossOfControlFrame:SetSize(size, size)
 
 	hooksecurefunc("LossOfControlFrame_SetUpDisplay", function(s)
 		s.Icon:ClearAllPoints()

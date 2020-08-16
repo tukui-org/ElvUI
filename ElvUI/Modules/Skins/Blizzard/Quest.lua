@@ -76,7 +76,7 @@ local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inse
 
 	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
 	scrollFrame.spellTex:SetPoint("TOPLEFT", inset and 1 or 0, inset and -1 or 0)
-	scrollFrame.spellTex:Size(widthOverride or 506, heightOverride or 615)
+	scrollFrame.spellTex:SetSize(widthOverride or 506, heightOverride or 615)
 	scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 end
 
@@ -102,14 +102,14 @@ function S:BlizzardQuestFrames()
 	local QuestInfoSkillPointFrame = _G.QuestInfoSkillPointFrame
 	QuestInfoSkillPointFrame:StripTextures()
 	QuestInfoSkillPointFrame:StyleButton()
-	QuestInfoSkillPointFrame:Width(QuestInfoSkillPointFrame:GetWidth() - 4)
+	QuestInfoSkillPointFrame:SetWidth(QuestInfoSkillPointFrame:GetWidth() - 4)
 	QuestInfoSkillPointFrame:SetFrameLevel(QuestInfoSkillPointFrame:GetFrameLevel() + 2)
 
 	local QuestInfoSkillPointFrameIconTexture = _G.QuestInfoSkillPointFrameIconTexture
 	QuestInfoSkillPointFrameIconTexture:SetTexCoord(unpack(E.TexCoords))
 	QuestInfoSkillPointFrameIconTexture:SetDrawLayer("OVERLAY")
 	QuestInfoSkillPointFrameIconTexture:SetPoint("TOPLEFT", 2, -2)
-	QuestInfoSkillPointFrameIconTexture:Size(QuestInfoSkillPointFrameIconTexture:GetWidth() - 2, QuestInfoSkillPointFrameIconTexture:GetHeight() - 2)
+	QuestInfoSkillPointFrameIconTexture:SetSize(QuestInfoSkillPointFrameIconTexture:GetWidth() - 2, QuestInfoSkillPointFrameIconTexture:GetHeight() - 2)
 	QuestInfoSkillPointFrame:CreateBackdrop()
 	_G.QuestInfoSkillPointFrameCount:SetDrawLayer("OVERLAY")
 
@@ -119,7 +119,7 @@ function S:BlizzardQuestFrames()
 	QuestInfoItemHighlight.backdrop:SetAllPoints()
 	QuestInfoItemHighlight.backdrop:SetBackdropBorderColor(1, 1, 0)
 	QuestInfoItemHighlight.backdrop:SetBackdropColor(0, 0, 0, 0)
-	QuestInfoItemHighlight:Size(142, 40)
+	QuestInfoItemHighlight:SetSize(142, 40)
 
 	hooksecurefunc("QuestInfoItem_OnClick", function(s)
 		QuestInfoItemHighlight:ClearAllPoints()
@@ -133,7 +133,7 @@ function S:BlizzardQuestFrames()
 	end)
 
 	_G.QuestRewardScrollFrame:CreateBackdrop()
-	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
+	_G.QuestRewardScrollFrame:SetHeight(_G.QuestRewardScrollFrame:GetHeight() - 2)
 
 	hooksecurefunc("QuestInfo_Display", function()
 		for i = 1, #_G.QuestInfoRewardsFrame.RewardButtons do
@@ -370,8 +370,8 @@ function S:BlizzardQuestFrames()
 		local icon = _G["QuestProgressItem"..i.."IconTexture"]
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:SetPoint("TOPLEFT", 2, -2)
-		icon:Size(icon:GetWidth() -3, icon:GetHeight() -3)
-		button:Width(button:GetWidth() -4)
+		icon:SetSize(icon:GetWidth() -3, icon:GetHeight() -3)
+		button:SetWidth(button:GetWidth() -4)
 		button:StripTextures()
 		button:SetFrameLevel(button:GetFrameLevel() +1)
 
@@ -410,13 +410,13 @@ function S:BlizzardQuestFrames()
 	_G.QuestLogPopupDetailFrameScrollFrame:HookScript('OnShow', function(s)
 		if not _G.QuestLogPopupDetailFrameScrollFrame.backdrop then
 			_G.QuestLogPopupDetailFrameScrollFrame:CreateBackdrop()
-			_G.QuestLogPopupDetailFrameScrollFrame:Height(s:GetHeight() - 2)
+			_G.QuestLogPopupDetailFrameScrollFrame:SetHeight(s:GetHeight() - 2)
 			if not E.private.skins.parchmentRemoverEnable then
 				StyleScrollFrame(_G.QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
 			end
 		end
 		if not E.private.skins.parchmentRemoverEnable then
-			_G.QuestLogPopupDetailFrameScrollFrame.spellTex:Height(s:GetHeight() + 217)
+			_G.QuestLogPopupDetailFrameScrollFrame.spellTex:SetHeight(s:GetHeight() + 217)
 		end
 	end)
 
@@ -424,7 +424,7 @@ function S:BlizzardQuestFrames()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)
 	QuestLogPopupDetailFrame.ShowMapButton.Text:ClearAllPoints()
 	QuestLogPopupDetailFrame.ShowMapButton.Text:SetPoint("CENTER")
-	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
+	QuestLogPopupDetailFrame.ShowMapButton:SetSize(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
 
 	-- Skin the +/- buttons in the QuestLog
 	hooksecurefunc("QuestLogQuests_Update", function()
@@ -432,7 +432,7 @@ function S:BlizzardQuestFrames()
 			local child = select(i, _G.QuestMapFrame.QuestsFrame.Contents:GetChildren())
 			if child and child.ButtonText and not child.Text then
 				if not child.buttonSized then
-					child:Size(16, 16)
+					child:SetSize(16, 16)
 					child.buttonSized = true
 				end
 

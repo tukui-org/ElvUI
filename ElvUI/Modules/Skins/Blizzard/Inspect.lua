@@ -22,12 +22,12 @@ function S:Blizzard_InspectUI()
 
 	_G.SpecializationRing:Hide()
 	S:HandleIcon(_G.SpecializationSpecIcon, true)
-	_G.SpecializationSpecIcon:Size(55, 55) -- 70, 70 default size
+	_G.SpecializationSpecIcon:SetSize(55, 55) -- 70, 70 default size
 
 	--Create portrait element for the PvP Frame so we can see prestige
 	local InspectPVPFrame = _G.InspectPVPFrame
 	local portrait = InspectPVPFrame:CreateTexture(nil, "OVERLAY")
-	portrait:Size(55, 55)
+	portrait:SetSize(55, 55)
 	portrait:SetPoint("CENTER", InspectPVPFrame.PortraitBackground, "CENTER", 0, 0)
 	InspectPVPFrame.PortraitBackground:Kill()
 	InspectPVPFrame.PortraitBackground:ClearAllPoints()

@@ -59,8 +59,8 @@ function E:DropDown(list, frame, xOffset, yOffset)
 		end
 
 		frame.buttons[i]:Show()
-		frame.buttons[i]:Height(BUTTON_HEIGHT)
-		frame.buttons[i]:Width(BUTTON_WIDTH)
+		frame.buttons[i]:SetHeight(BUTTON_HEIGHT)
+		frame.buttons[i]:SetWidth(BUTTON_WIDTH)
 		frame.buttons[i].text:SetText(list[i].text)
 		frame.buttons[i].func = list[i].func
 		frame.buttons[i]:SetScript('OnClick', OnClick)
@@ -72,8 +72,8 @@ function E:DropDown(list, frame, xOffset, yOffset)
 		end
 	end
 
-	frame:Height((#list * BUTTON_HEIGHT) + PADDING * 2)
-	frame:Width(BUTTON_WIDTH + PADDING * 2)
+	frame:SetHeight((#list * BUTTON_HEIGHT) + PADDING * 2)
+	frame:SetWidth(BUTTON_WIDTH + PADDING * 2)
 
 	local UIScale = _G.UIParent:GetScale()
 	local x, y = GetCursorPosition()

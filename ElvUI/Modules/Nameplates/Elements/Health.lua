@@ -122,7 +122,7 @@ function NP:Update_Health(nameplate, skipUpdate)
 
 	nameplate.Health.width = db.health.width
 	nameplate.Health.height = db.health.height
-	nameplate.Health:Height(db.health.height)
+	nameplate.Health:SetHeight(db.health.height)
 end
 
 local bars = { 'myBar', 'otherBar', 'absorbBar', 'healAbsorbBar' }
@@ -135,7 +135,7 @@ function NP:Construct_HealthPrediction(nameplate)
 		bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
 		bar:SetPoint('TOP')
 		bar:SetPoint('BOTTOM')
-		bar:Width(150)
+		bar:SetWidth(150)
 		HealthPrediction[name] = bar
 		NP.StatusBars[bar] = true
 	end

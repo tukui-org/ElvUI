@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 function UF:Construct_SummonIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
 	tex:SetPoint('CENTER', frame.Health, 'CENTER')
-	tex:Size(30)
+	tex:SetSize(30, 30)
 	tex:SetDrawLayer('OVERLAY', 7)
 
 	return tex
@@ -17,7 +17,7 @@ function UF:Configure_SummonIcon(frame)
 	if db.summonIcon.enable then
 		frame:EnableElement('SummonIndicator')
 		SI:Show()
-		SI:Size(db.summonIcon.size)
+		SI:SetSize(db.summonIcon.size, db.summonIcon.size)
 
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.summonIcon.attachToObject)
 		SI:ClearAllPoints()

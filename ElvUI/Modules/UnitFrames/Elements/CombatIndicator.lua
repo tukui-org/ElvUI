@@ -52,7 +52,7 @@ function UF:Configure_CombatIndicator(frame)
 
 	Icon:ClearAllPoints()
 	Icon:SetPoint("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
-	Icon:Size(db.size)
+	Icon:SetSize(db.size, db.size)
 
 	if db.defaultColor then
 		Icon:SetVertexColor(1, 1, 1, 1)

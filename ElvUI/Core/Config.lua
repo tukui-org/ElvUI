@@ -139,7 +139,7 @@ function E:Grid_Create()
 
 	grid.boxSize = E.db.gridSize
 	grid:SetPoint('CENTER', E.UIParent)
-	grid:Size(width, height)
+	grid:SetSize(width, height)
 	grid:Show()
 
 	for i = 0, E.db.gridSize do
@@ -257,8 +257,8 @@ function E:CreateMoverPopup()
 	f:SetMovable(true)
 	f:SetFrameLevel(99)
 	f:SetClampedToScreen(true)
-	f:Width(370)
-	f:Height(190)
+	f:SetWidth(370)
+	f:SetHeight(190)
 	f:SetTemplate('Transparent')
 	f:SetPoint('BOTTOM', _G.UIParent, 'CENTER', 0, 100)
 	f:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
@@ -268,7 +268,7 @@ function E:CreateMoverPopup()
 
 	local header = CreateFrame('Button', nil, f, 'BackdropTemplate')
 	header:SetTemplate(nil, true)
-	header:Width(100); header:Height(25)
+	header:SetWidth(100); header:SetHeight(25)
 	header:SetPoint('CENTER', f, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
 	header:EnableMouse(true)
@@ -312,8 +312,8 @@ function E:CreateMoverPopup()
 	end)
 
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate, BackdropTemplate')
-	align:Width(24)
-	align:Height(17)
+	align:SetWidth(24)
+	align:SetHeight(17)
 	align:SetAutoFocus(false)
 	align:SetScript('OnEscapePressed', function(eb)
 		eb:SetText(E.db.gridSize)
@@ -375,8 +375,8 @@ function E:CreateMoverPopup()
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent, 'BackdropTemplate')
 	nudgeFrame:SetFrameStrata('DIALOG')
-	nudgeFrame:Width(200)
-	nudgeFrame:Height(110)
+	nudgeFrame:SetWidth(200)
+	nudgeFrame:SetHeight(110)
 	nudgeFrame:SetTemplate('Transparent')
 	nudgeFrame:CreateShadow(5)
 	nudgeFrame:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
@@ -411,7 +411,7 @@ function E:CreateMoverPopup()
 
 	header = CreateFrame('Button', nil, nudgeFrame, 'BackdropTemplate')
 	header:SetTemplate(nil, true)
-	header:Width(100); header:Height(25)
+	header:SetWidth(100); header:SetHeight(25)
 	header:SetPoint('CENTER', nudgeFrame, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
 	header:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
@@ -425,8 +425,8 @@ function E:CreateMoverPopup()
 	nudgeFrame.title = title
 
 	local xOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'XEditBox', nudgeFrame, 'InputBoxTemplate')
-	xOffset:Width(50)
-	xOffset:Height(17)
+	xOffset:SetWidth(50)
+	xOffset:SetHeight(17)
 	xOffset:SetAutoFocus(false)
 	xOffset.currentValue = 0
 	xOffset:SetScript('OnEscapePressed', function(eb)
@@ -460,8 +460,8 @@ function E:CreateMoverPopup()
 	nudgeFrame.xOffset = xOffset
 
 	local yOffset = CreateFrame('EditBox', nudgeFrame:GetName()..'YEditBox', nudgeFrame, 'InputBoxTemplate')
-	yOffset:Width(50)
-	yOffset:Height(17)
+	yOffset:SetWidth(50)
+	yOffset:SetHeight(17)
 	yOffset:SetAutoFocus(false)
 	yOffset.currentValue = 0
 	yOffset:SetScript('OnEscapePressed', function(eb)
@@ -497,7 +497,7 @@ function E:CreateMoverPopup()
 	local resetButton = CreateFrame('Button', nudgeFrame:GetName()..'ResetButton', nudgeFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 	resetButton:SetText(RESET)
 	resetButton:SetPoint('TOP', nudgeFrame, 'CENTER', 0, 2)
-	resetButton:Size(100, 25)
+	resetButton:SetSize(100, 25)
 	resetButton:SetScript('OnClick', function()
 		if ElvUIMoverNudgeWindow.child.textString then
 			E:ResetMovers(ElvUIMoverNudgeWindow.child.textString)
@@ -511,7 +511,7 @@ function E:CreateMoverPopup()
 	upButton:SetScript('OnClick', function() E:NudgeMover(nil, 1) end)
 	S:HandleNextPrevButton(upButton)
 	S:HandleButton(upButton)
-	upButton:Size(22)
+	upButton:SetSize(22, 22)
 	nudgeFrame.upButton = upButton
 
 	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'BackdropTemplate')
@@ -519,7 +519,7 @@ function E:CreateMoverPopup()
 	downButton:SetScript('OnClick', function() E:NudgeMover(nil, -1) end)
 	S:HandleNextPrevButton(downButton)
 	S:HandleButton(downButton)
-	downButton:Size(22)
+	downButton:SetSize(22, 22)
 	nudgeFrame.downButton = downButton
 
 	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'BackdropTemplate')
@@ -527,7 +527,7 @@ function E:CreateMoverPopup()
 	leftButton:SetScript('OnClick', function() E:NudgeMover(-1) end)
 	S:HandleNextPrevButton(leftButton)
 	S:HandleButton(leftButton)
-	leftButton:Size(22)
+	leftButton:SetSize(22, 22)
 	nudgeFrame.leftButton = leftButton
 
 	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'BackdropTemplate')
@@ -535,7 +535,7 @@ function E:CreateMoverPopup()
 	rightButton:SetScript('OnClick', function() E:NudgeMover(1) end)
 	S:HandleNextPrevButton(rightButton)
 	S:HandleButton(rightButton)
-	rightButton:Size(22)
+	rightButton:SetSize(22, 22)
 	nudgeFrame.rightButton = rightButton
 end
 
@@ -664,7 +664,7 @@ function E:Config_CreateSeparatorLine(frame, lastButton)
 	local line = frame.leftHolder.buttons:CreateTexture()
 	line:SetTexture(E.Media.Textures.White8x8)
 	line:SetVertexColor(1, .82, 0, .4)
-	line:Size(179, 2)
+	line:SetSize(179, 2)
 	line:SetPoint("TOP", lastButton, "BOTTOM", 0, -6)
 	line.separator = true
 	return line
@@ -710,7 +710,7 @@ function E:Config_CreateButton(info, frame, unskinned, ...)
 	btn:HookScript('OnEnter', Config_ButtonOnEnter)
 	btn:HookScript('OnLeave', Config_ButtonOnLeave)
 	btn:SetScript('OnClick', info.func)
-	btn:Width(btn:GetTextWidth() + 40)
+	btn:SetWidth(btn:GetTextWidth() + 40)
 	btn.ignoreBorderColors = true
 
 	return btn
@@ -828,7 +828,7 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 		end
 
 		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate, BackdropTemplate')
-		btn:Width(177)
+		btn:SetWidth(177)
 
 		if not last then
 			btn:SetPoint("TOP", buttons, "TOP", 0, 0)
@@ -1142,14 +1142,14 @@ function E:ToggleOptionsUI(msg)
 			local bottom = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 			bottom:SetPoint("BOTTOMLEFT", 2, 2)
 			bottom:SetPoint("BOTTOMRIGHT", -2, 2)
-			bottom:Height(37)
+			bottom:SetHeight(37)
 			frame.bottomHolder = bottom
 
 			local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton, BackdropTemplate')
 			close:SetScript("OnClick", E.Config_CloseClicked)
 			close:SetFrameLevel(1000)
 			close:SetPoint("TOPRIGHT", unskinned and -8 or 1, unskinned and -8 or 2)
-			close:Size(32)
+			close:SetSize(32, 32)
 			close.originalClose = frame.originalClose
 			frame.closeButton = close
 
@@ -1163,19 +1163,19 @@ function E:ToggleOptionsUI(msg)
 			top.version = frame.obj.titletext
 			top:SetPoint("TOPRIGHT", frame, -2, 0)
 			top:SetPoint("TOPLEFT", left, "TOPRIGHT", 1, 0)
-			top:Height(24)
+			top:SetHeight(24)
 			frame.topHolder = top
 
 			local LogoBottom = left:CreateTexture()
 			LogoBottom:SetTexture(E.Media.Textures.LogoBottomSmall)
 			LogoBottom:SetPoint("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
-			LogoBottom:Size(128, 64)
+			LogoBottom:SetSize(128, 64)
 			left.LogoBottom = LogoBottom
 
 			local LogoTop = left:CreateTexture()
 			LogoTop:SetTexture(E.Media.Textures.LogoTopSmall)
 			LogoTop:SetPoint("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
-			LogoTop:Size(128, 64)
+			LogoTop:SetSize(128, 64)
 			left.LogoTop = LogoTop
 
 			local buttonsHolder = CreateFrame('Frame', nil, left)
@@ -1201,7 +1201,7 @@ function E:ToggleOptionsUI(msg)
 			slider:SetFrameLevel(4)
 			slider:SetValueStep(1)
 			slider:SetValue(0)
-			slider:Width(192)
+			slider:SetWidth(192)
 			slider:SetPoint("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
 			slider:SetPoint("TOPLEFT", buttons, "TOPLEFT", 0, 0)
 			slider.buttons = buttons

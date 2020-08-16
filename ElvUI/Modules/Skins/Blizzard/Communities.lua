@@ -41,7 +41,7 @@ local function HandleRoleChecks(button, ...)
 	button.bg:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	button.bg:SetTexCoord(...)
 	button.bg:SetPoint("CENTER")
-	button.bg:Size(40)
+	button.bg:SetSize(40, 40)
 	button.bg:SetAlpha(0.6)
 	S:HandleCheckBox(button.CheckBox)
 end
@@ -196,8 +196,8 @@ function S:Blizzard_Communities()
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 
 	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, "SetFilter", function(s)
-		s.ShowNotificationsButton:Size(20)
-		s.HideNotificationsButton:Size(20)
+		s.ShowNotificationsButton:SetSize(20, 20)
+		s.HideNotificationsButton:SetSize(20, 20)
 		S:HandleCheckBox(s.ShowNotificationsButton)
 		S:HandleCheckBox(s.HideNotificationsButton)
 	end)
@@ -211,7 +211,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.Chat.InsetFrame:CreateBackdrop("Transparent")
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
-	CommunitiesFrame.ChatEditBox:Size(120, 20)
+	CommunitiesFrame.ChatEditBox:SetSize(120, 20)
 
 	-- [[ GUILDFINDER FRAME ]]--
 	local ClubFinderGuildFinderFrame = _G.ClubFinderGuildFinderFrame
@@ -235,8 +235,8 @@ function S:Blizzard_Communities()
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubFilterDropdown)
 	S:HandleDropDownBox(ClubFinderGuildFinderFrame.OptionsList.ClubSizeDropdown)
 
-	ClubFinderGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)
-	ClubFinderGuildFinderFrame.OptionsList.Search:Size(118, 20)
+	ClubFinderGuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
+	ClubFinderGuildFinderFrame.OptionsList.Search:SetSize(118, 20)
 	ClubFinderGuildFinderFrame.OptionsList.Search:ClearAllPoints()
 	ClubFinderGuildFinderFrame.OptionsList.Search:SetPoint("TOP", ClubFinderGuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 1, -3)
 	S:HandleEditBox(ClubFinderGuildFinderFrame.OptionsList.SearchBox)
@@ -271,8 +271,8 @@ function S:Blizzard_Communities()
 	S:HandleButton(ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search)
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:ClearAllPoints()
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:SetPoint("TOP", ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 1, -3)
-	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:Size(118, 20)
-	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox:Size(118, 20)
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:SetSize(118, 20)
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
 	S:HandleEditBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox)
 
 	HandleRoleChecks(ClubFinderCommunityAndGuildFinderFrame.OptionsList.TankRoleFrame, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
@@ -293,7 +293,7 @@ function S:Blizzard_Communities()
 			for button in s.SpecsPool:EnumerateActive() do
 				if button.CheckBox then
 					S:HandleCheckBox(button.CheckBox)
-					button.CheckBox:Size(26, 26)
+					button.CheckBox:SetSize(26, 26)
 				end
 			end
 		end)
@@ -337,9 +337,9 @@ function S:Blizzard_Communities()
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildControlButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.GuildRecruitmentButton)
 	S:HandleButton(CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton)
-	CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton:Size(129, 19)
+	CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton:SetSize(129, 19)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
-	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25, 25)
+	CommunitiesFrame.MemberList.ShowOfflineButton:SetSize(25, 25)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, "RefreshListDisplay", function(s)
 		for i = 1, s.ColumnDisplay:GetNumChildren() do
@@ -644,7 +644,7 @@ function S:Blizzard_Communities()
 	EditStreamDialog.backdrop:SetAllPoints()
 
 	S:HandleEditBox(EditStreamDialog.NameEdit)
-	EditStreamDialog.NameEdit:Size(280, 20)
+	EditStreamDialog.NameEdit:SetSize(280, 20)
 	S:HandleEditBox(EditStreamDialog.Description)
 	S:HandleCheckBox(EditStreamDialog.TypeCheckBox)
 

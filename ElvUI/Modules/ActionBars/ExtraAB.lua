@@ -41,12 +41,16 @@ function AB:Extra_SetScale()
 
 	if _G.ExtraActionBarFrame then
 		_G.ExtraActionBarFrame:SetScale(scale)
-		ExtraActionBarHolder:Size(_G.ExtraActionBarFrame:GetWidth() * scale)
+
+		local size = _G.ExtraActionBarFrame:GetWidth() * scale
+		ExtraActionBarHolder:SetSize(size, size)
 	end
 
 	if _G.ZoneAbilityFrame then
 		_G.ZoneAbilityFrame:SetScale(scale)
-		ZoneAbilityHolder:Size(_G.ZoneAbilityFrame:GetWidth() * scale)
+
+		local size = _G.ZoneAbilityFrame:GetWidth() * scale
+		ZoneAbilityHolder:SetSize(size, size)
 	end
 end
 
@@ -57,7 +61,7 @@ function AB:SetupExtraButton()
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
 	ExtraActionBarHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
-	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
+	ExtraActionBarHolder:SetSize(ExtraActionBarFrame:GetSize())
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
@@ -72,7 +76,7 @@ function AB:SetupExtraButton()
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
-	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
+	ZoneAbilityHolder:SetSize(ExtraActionBarFrame:GetSize())
 
 	-- Please check this 9.0 Shadowlands
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)

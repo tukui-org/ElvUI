@@ -8,9 +8,9 @@ function UF:Construct_RaidRoleFrames(frame)
 	frame.LeaderIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.AssistantIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 
-	anchor:Size(24, 12)
-	frame.LeaderIndicator:Size(12)
-	frame.AssistantIndicator:Size(12)
+	anchor:SetSize(24, 12)
+	frame.LeaderIndicator:SetSize(12, 12)
+	frame.AssistantIndicator:SetSize(12, 12)
 
 	frame.LeaderIndicator.PostUpdate = UF.RaidRoleUpdate
 	frame.AssistantIndicator.PostUpdate = UF.RaidRoleUpdate

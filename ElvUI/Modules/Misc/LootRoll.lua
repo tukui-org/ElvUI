@@ -101,7 +101,7 @@ end
 local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...)
 	local f = CreateFrame("Button", nil, parent)
 	f:SetPoint(...)
-	f:Size(FRAME_HEIGHT - 4)
+	f:SetSize(FRAME_HEIGHT - 4, FRAME_HEIGHT - 4)
 	f:SetNormalTexture(ntex)
 	if ptex then f:SetPushedTexture(ptex) end
 	f:SetHighlightTexture(htex)
@@ -120,7 +120,7 @@ end
 
 function M:CreateRollFrame()
 	local frame = CreateFrame("Frame", nil, E.UIParent, 'BackdropTemplate')
-	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
+	frame:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
 	frame:SetTemplate()
 	frame:SetScript("OnEvent", OnEvent)
 	frame:SetFrameStrata("MEDIUM")
@@ -130,7 +130,7 @@ function M:CreateRollFrame()
 
 	local button = CreateFrame("Button", nil, frame)
 	button:SetPoint("RIGHT", frame, 'LEFT', -(E.Spacing*3), 0)
-	button:Size(FRAME_HEIGHT - (E.Border * 2))
+	button:SetSize(FRAME_HEIGHT - (E.Border * 2), FRAME_HEIGHT - (E.Border * 2))
 	button:CreateBackdrop()
 	button:SetScript("OnEnter", SetItemTip)
 	button:SetScript("OnLeave", HideTip2)
@@ -164,7 +164,7 @@ function M:CreateRollFrame()
 	status.bg:SetAllPoints()
 	status.bg:SetDrawLayer('BACKGROUND', 2)
 	local spark = frame:CreateTexture(nil, "OVERLAY")
-	spark:Size(14, FRAME_HEIGHT)
+	spark:SetSize(14, FRAME_HEIGHT)
 	spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	spark:SetBlendMode("ADD")
 	status.spark = spark
@@ -178,7 +178,7 @@ function M:CreateRollFrame()
 	frame.need, frame.greed, frame.pass, frame.disenchant = needtext, greedtext, passtext, detext
 
 	local bind = frame:CreateFontString(nil, "ARTWORK")
-	bind:Point("LEFT", pass, "RIGHT", 3, 1)
+	bind:SetPoint("LEFT", pass, "RIGHT", 3, 1)
 	bind:FontTemplate(nil, nil, "OUTLINE")
 	frame.fsbind = bind
 
@@ -186,7 +186,7 @@ function M:CreateRollFrame()
 	loot:FontTemplate(nil, nil, "OUTLINE")
 	loot:SetPoint("LEFT", bind, "RIGHT", 0, 0)
 	loot:SetPoint("RIGHT", frame, "RIGHT", -5, 0)
-	loot:Size(200, 10)
+	loot:SetSize(200, 10)
 	loot:SetJustifyH("LEFT")
 	frame.fsloot = loot
 

@@ -871,7 +871,7 @@ function B:CreateFilterIcon(parent)
 	parent.ElvUIFilterIcon:CreateBackdrop(nil, nil, nil, true)
 	parent.ElvUIFilterIcon:SetPoint('TOPLEFT', parent, 'TOPLEFT', E.Border, -E.Border)
 	parent.ElvUIFilterIcon:SetTexCoord(unpack(E.TexCoords))
-	parent.ElvUIFilterIcon:Size(18, 18)
+	parent.ElvUIFilterIcon:SetSize(18, 18)
 end
 
 function B:Layout(isBank)
@@ -889,9 +889,9 @@ function B:Layout(isBank)
 	local bagSpacing = B.db.split.bagSpacing
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
 
-	f.holderFrame:Width(holderWidth)
+	f.holderFrame:SetWidth(holderWidth)
 	if isBank then
-		f.reagentFrame:Width(holderWidth)
+		f.reagentFrame:SetWidth(holderWidth)
 	end
 
 	f.totalSlots = 0
@@ -899,8 +899,8 @@ function B:Layout(isBank)
 	local numContainerSlots = isBank and 8 or 5
 
 	f.totalSlots = 0
-	f.holderFrame:Width(holderWidth)
-	f.ContainerHolder:Size(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
+	f.holderFrame:SetWidth(holderWidth)
+	f.ContainerHolder:SetSize(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
 
 	if isBank and not f.fullBank then
 		f.fullBank = select(2, GetNumBankSlots())
@@ -933,7 +933,7 @@ function B:Layout(isBank)
 			end
 
 			assignedBag = B:GetBagAssignedInfo(f.ContainerHolder[i])
-			f.ContainerHolder[i]:Size(buttonSize)
+			f.ContainerHolder[i]:SetSize(buttonSize, buttonSize)
 		end
 
 		--Bag Slots
@@ -954,9 +954,9 @@ function B:Layout(isBank)
 				f.totalSlots = f.totalSlots + 1
 
 				f.Bags[bagID][slotID]:SetID(slotID)
-				f.Bags[bagID][slotID]:Size(buttonSize)
+				f.Bags[bagID][slotID]:SetSize(buttonSize, buttonSize)
 
-				f.Bags[bagID][slotID].JunkIcon:Size(buttonSize / 2)
+				f.Bags[bagID][slotID].JunkIcon:SetSize(buttonSize / 2, buttonSize / 2)
 
 				B:UpdateSlot(f, bagID, slotID)
 
@@ -1013,7 +1013,7 @@ function B:Layout(isBank)
 			totalSlots = totalSlots + 1
 
 			f.reagentFrame.slots[i]:ClearAllPoints()
-			f.reagentFrame.slots[i]:Size(buttonSize)
+			f.reagentFrame.slots[i]:SetSize(buttonSize, buttonSize)
 
 			if f.reagentFrame.slots[i-1] then
 				if(totalSlots - 1) % numContainerColumns == 0 then
@@ -1032,7 +1032,7 @@ function B:Layout(isBank)
 		end
 	end
 
-	f:Size(containerWidth, (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing) + (isSplit and (numBags * bagSpacing) or 0 ) + f.topOffset + f.bottomOffset); -- 8 is the cussion of the f.holderFrame
+	f:SetSize(containerWidth, (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing) + (isSplit and (numBags * bagSpacing) or 0 ) + f.topOffset + f.bottomOffset); -- 8 is the cussion of the f.holderFrame
 end
 
 function B:UpdateReagentSlot(slotID)
@@ -1430,7 +1430,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	--Sort Button
 	f.sortButton = CreateFrame('Button', name..'SortButton', f, 'BackdropTemplate')
-	f.sortButton:Size(16 + E.Border, 16 + E.Border)
+	f.sortButton:SetSize(16 + E.Border, 16 + E.Border)
 	f.sortButton:SetTemplate()
 	f.sortButton:SetNormalTexture('Interface/ICONS/INV_Pet_Broom')
 	f.sortButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
@@ -1451,7 +1451,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	--Toggle Bags Button
 	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame, 'BackdropTemplate')
-	f.bagsButton:Size(16 + E.Border, 16 + E.Border)
+	f.bagsButton:SetSize(16 + E.Border, 16 + E.Border)
 	f.bagsButton:SetTemplate()
 	f.bagsButton:SetNormalTexture('Interface/Buttons/Button-Backpack-Up')
 	f.bagsButton:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
@@ -1471,7 +1471,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2)
 	f.editBox:CreateBackdrop()
 	f.editBox.backdrop:SetPoint('TOPLEFT', f.editBox, 'TOPLEFT', -20, 2)
-	f.editBox:Height(15)
+	f.editBox:SetHeight(15)
 	f.editBox:SetAutoFocus(false)
 	f.editBox:SetScript('OnEscapePressed', B.ResetAndClear)
 	f.editBox:SetScript('OnEnterPressed', function(eb) eb:ClearFocus() end)
@@ -1483,7 +1483,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox.searchIcon = f.editBox:CreateTexture(nil, 'OVERLAY')
 	f.editBox.searchIcon:SetTexture('Interface/Common/UI-Searchbox-Icon')
 	f.editBox.searchIcon:SetPoint('LEFT', f.editBox.backdrop, 'LEFT', E.Border + 1, -1)
-	f.editBox.searchIcon:Size(15, 15)
+	f.editBox.searchIcon:SetSize(15, 15)
 
 	if isBank then
 		f.fullBank = select(2, GetNumBankSlots())
@@ -1509,8 +1509,8 @@ function B:ConstructContainerFrame(name, isBank)
 		f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
 
 		f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover, 'BackdropTemplate')
-		f.reagentFrame.cover.purchaseButton:Height(20)
-		f.reagentFrame.cover.purchaseButton:Width(150)
+		f.reagentFrame.cover.purchaseButton:SetHeight(20)
+		f.reagentFrame.cover.purchaseButton:SetWidth(150)
 		f.reagentFrame.cover.purchaseButton:SetPoint('CENTER', f.reagentFrame.cover, 'CENTER')
 		Skins:HandleButton(f.reagentFrame.cover.purchaseButton)
 		f.reagentFrame.cover.purchaseButton:SetFrameLevel(f.reagentFrame.cover.purchaseButton:GetFrameLevel() + 2)
@@ -1537,7 +1537,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.bagText:SetText(L["Bank"])
 
 		f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f, 'BackdropTemplate')
-		f.reagentToggle:Size(16 + E.Border, 16 + E.Border)
+		f.reagentToggle:SetSize(16 + E.Border, 16 + E.Border)
 		f.reagentToggle:SetTemplate()
 		f.reagentToggle:SetPoint('RIGHT', f.bagText, 'LEFT', -5, E.Border * 2)
 		f.reagentToggle:SetNormalTexture('Interface/ICONS/INV_Enchant_DustArcane')
@@ -1575,7 +1575,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		--Deposite Reagents Button
 		f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame, 'BackdropTemplate')
-		f.depositButton:Size(16 + E.Border, 16 + E.Border)
+		f.depositButton:SetSize(16 + E.Border, 16 + E.Border)
 		f.depositButton:SetTemplate()
 		f.depositButton:SetPoint('RIGHT', f.sortButton, 'LEFT', -5, 0)
 		f.depositButton:SetNormalTexture('Interface/ICONS/misc_arrowdown')
@@ -1594,7 +1594,7 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		f.depositButtonBank = CreateFrame('Button', name..'DepositButton', f.holderFrame, 'BackdropTemplate')
-		f.depositButtonBank:Size(16 + E.Border, 16 + E.Border)
+		f.depositButtonBank:SetSize(16 + E.Border, 16 + E.Border)
 		f.depositButtonBank:SetTemplate()
 		f.depositButtonBank:SetPoint('RIGHT', f.sortButton, 'LEFT', -5, 0)
 		f.depositButtonBank:SetNormalTexture('Interface/ICONS/misc_arrowdown')
@@ -1621,7 +1621,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame, 'BackdropTemplate')
 		f.purchaseBagButton:SetShown(not f.fullBank)
-		f.purchaseBagButton:Size(16 + E.Border, 16 + E.Border)
+		f.purchaseBagButton:SetSize(16 + E.Border, 16 + E.Border)
 		f.purchaseBagButton:SetTemplate()
 		f.purchaseBagButton:SetPoint('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.purchaseBagButton:SetNormalTexture('Interface/ICONS/INV_Misc_Coin_01')
@@ -1682,7 +1682,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 		--Vendor Grays
 		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame, 'BackdropTemplate')
-		f.vendorGraysButton:Size(16 + E.Border, 16 + E.Border)
+		f.vendorGraysButton:SetSize(16 + E.Border, 16 + E.Border)
 		f.vendorGraysButton:SetTemplate()
 		f.vendorGraysButton:SetPoint('RIGHT', f.bagsButton, 'LEFT', -5, 0)
 		f.vendorGraysButton:SetNormalTexture('Interface/ICONS/INV_Misc_Coin_01')
@@ -1707,11 +1707,11 @@ function B:ConstructContainerFrame(name, isBank)
 		f.currencyButton:SetPoint('TOPLEFT', f.holderFrame, 'BOTTOMLEFT', 0, 18)
 		f.currencyButton:SetPoint('TOPRIGHT', f.holderFrame, 'BOTTOMRIGHT', 0, 18)
 
-		f.currencyButton:Height(22)
+		f.currencyButton:SetHeight(22)
 
 		for i = 1, MAX_WATCHED_TOKENS do
 			f.currencyButton[i] = CreateFrame('Button', f:GetName()..'CurrencyButton'..i, f.currencyButton, 'BackpackTokenTemplate, BackdropTemplate')
-			f.currencyButton[i]:Size(16)
+			f.currencyButton[i]:SetSize(16, 16)
 			f.currencyButton[i]:SetTemplate()
 			f.currencyButton[i]:SetID(i)
 			f.currencyButton[i].icon:SetInside()
@@ -2021,7 +2021,7 @@ function B:GUILDBANKFRAME_OPENED(event)
 		local button = CreateFrame('Button', 'GuildSortButton', GuildBankFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 		button:StripTextures()
 		button:SetTemplate(nil, true)
-		button:Size(110, 20)
+		button:SetSize(110, 20)
 		button:SetPoint('RIGHT', GuildItemSearchBox, 'LEFT', -4, 0)
 		button:SetText(L["Sort Tab"])
 		button:SetScript('OnClick', function() B:CommandDecorator(B.SortBags, 'guild')() end)
@@ -2220,7 +2220,7 @@ end
 
 function B:CreateSellFrame()
 	B.SellFrame = CreateFrame('Frame', 'ElvUIVendorGraysFrame', E.UIParent)
-	B.SellFrame:Size(200,40)
+	B.SellFrame:SetSize(200,40)
 	B.SellFrame:SetPoint('CENTER', E.UIParent)
 	B.SellFrame:CreateBackdrop('Transparent')
 	B.SellFrame:SetAlpha(E.db.bags.vendorGrays.progressBar and 1 or 0)
@@ -2231,7 +2231,7 @@ function B:CreateSellFrame()
 	B.SellFrame.title:SetText(L["Vendoring Grays"])
 
 	B.SellFrame.statusbar = CreateFrame('StatusBar', 'ElvUIVendorGraysFrameStatusbar', B.SellFrame)
-	B.SellFrame.statusbar:Size(180, 16)
+	B.SellFrame.statusbar:SetSize(180, 16)
 	B.SellFrame.statusbar:SetPoint('BOTTOM', B.SellFrame, 'BOTTOM', 0, 4)
 	B.SellFrame.statusbar:SetStatusBarTexture(E.media.normTex)
 	B.SellFrame.statusbar:SetStatusBarColor(1, 0, 0)
@@ -2340,8 +2340,8 @@ function B:Initialize()
 
 	--Bag Mover (We want it created even if Bags module is disabled, so we can use it for default bags too)
 	local BagFrameHolder = CreateFrame('Frame', nil, E.UIParent)
-	BagFrameHolder:Width(200)
-	BagFrameHolder:Height(22)
+	BagFrameHolder:SetWidth(200)
+	BagFrameHolder:SetHeight(22)
 	BagFrameHolder:SetFrameLevel(BagFrameHolder:GetFrameLevel() + 400)
 
 	if not E.private.bags.enable then
@@ -2362,8 +2362,8 @@ function B:Initialize()
 
 	--Bank Mover
 	local BankFrameHolder = CreateFrame('Frame', nil, E.UIParent)
-	BankFrameHolder:Width(200)
-	BankFrameHolder:Height(22)
+	BankFrameHolder:SetWidth(200)
+	BankFrameHolder:SetHeight(22)
 	BankFrameHolder:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 0, 22 + E.Border*4 - E.Spacing*2)
 	BankFrameHolder:SetFrameLevel(BankFrameHolder:GetFrameLevel() + 400)
 	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')

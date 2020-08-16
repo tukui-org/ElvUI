@@ -104,7 +104,7 @@ local function anchorSlots(self)
 		end
 	end
 
-	self:Height(max(shownSlots * iconSize + 16, 20))
+	self:SetHeight(max(shownSlots * iconSize + 16, 20))
 end
 
 local function createSlot(id)
@@ -113,7 +113,7 @@ local function createSlot(id)
 	local frame = CreateFrame('Button', 'ElvLootSlot'..id, lootFrame)
 	frame:SetPoint('LEFT', 8, 0)
 	frame:SetPoint('RIGHT', -8, 0)
-	frame:Height(iconsize)
+	frame:SetHeight(iconsize)
 	frame:SetID(id)
 
 	frame:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
@@ -124,8 +124,8 @@ local function createSlot(id)
 	frame:SetScript('OnShow', OnShow)
 
 	local iconFrame = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-	iconFrame:Height(iconsize)
-	iconFrame:Width(iconsize)
+	iconFrame:SetHeight(iconsize)
+	iconFrame:SetWidth(iconsize)
 	iconFrame:SetPoint('RIGHT', frame)
 	iconFrame:SetTemplate()
 	frame.iconFrame = iconFrame
@@ -300,19 +300,19 @@ function M:LOOT_OPENED(_, autoloot)
 
 	local color = ITEM_QUALITY_COLORS[m]
 	lootFrame:SetBackdropBorderColor(color.r, color.g, color.b, .8)
-	lootFrame:Width(max(w, t))
+	lootFrame:SetWidth(max(w, t))
 end
 
 function M:LoadLoot()
 	if not E.private.general.loot then return end
 	lootFrameHolder = CreateFrame('Frame', 'ElvLootFrameHolder', E.UIParent)
 	lootFrameHolder:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 418, -186)
-	lootFrameHolder:Size(150, 22)
+	lootFrameHolder:SetSize(150, 22)
 
 	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder, 'BackdropTemplate')
 	lootFrame:SetClampedToScreen(true)
 	lootFrame:SetPoint('TOPLEFT')
-	lootFrame:Size(256, 64)
+	lootFrame:SetSize(256, 64)
 	lootFrame:SetTemplate('Transparent')
 	lootFrame:SetFrameStrata(_G.LootFrame:GetFrameStrata())
 	lootFrame:SetToplevel(true)

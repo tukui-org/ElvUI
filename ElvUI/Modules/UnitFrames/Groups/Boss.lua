@@ -77,7 +77,7 @@ function UF:Update_BossFrames(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)
 	UF:UpdateNameSettings(frame)
@@ -117,11 +117,11 @@ function UF:Update_BossFrames(frame, db)
 	end
 
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
-		BossHeader:Width(frame.UNIT_WIDTH)
-		BossHeader:Height(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
+		BossHeader:SetWidth(frame.UNIT_WIDTH)
+		BossHeader:SetHeight(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
-		BossHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
-		BossHeader:Height(frame.UNIT_HEIGHT)
+		BossHeader:SetWidth(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
+		BossHeader:SetHeight(frame.UNIT_HEIGHT)
 	end
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")

@@ -20,7 +20,7 @@ function S:Blizzard_AzeriteEssenceUI()
 	AzeriteEssenceUI.PowerLevelBadgeFrame.BackgroundBlack:Hide()
 
 	AzeriteEssenceUI.OrbBackground:SetAllPoints(AzeriteEssenceUI.ItemModelScene)
-	AzeriteEssenceUI.OrbRing:Size(483, 480)
+	AzeriteEssenceUI.OrbRing:SetSize(483, 480)
 
 	S:HandleScrollBar(AzeriteEssenceUI.EssenceList.ScrollBar)
 
