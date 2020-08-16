@@ -12,7 +12,7 @@ function S:Blizzard_MacroUI()
 
 	local MacroFrame = _G.MacroFrame
 	S:HandlePortraitFrame(MacroFrame, true)
-	MacroFrame:Width(360)
+	MacroFrame:SetWidth(360)
 
 	_G.MacroFrameTextBackground:StripTextures()
 	_G.MacroFrameTextBackground:SetTemplate()
@@ -39,18 +39,18 @@ function S:Blizzard_MacroUI()
 	end
 
 	_G.MacroNewButton:ClearAllPoints()
-	_G.MacroNewButton:Point("RIGHT", _G.MacroExitButton, "LEFT", -2 , 0)
+	_G.MacroNewButton:SetPoint("RIGHT", _G.MacroExitButton, "LEFT", -2 , 0)
 
 	for i = 1, 2 do
 		local tab = _G[format("MacroFrameTab%s", i)]
-		tab:Height(22)
+		tab:SetHeight(22)
 	end
-	_G.MacroFrameTab1:Point("TOPLEFT", MacroFrame, "TOPLEFT", 85, -39)
-	_G.MacroFrameTab2:Point("LEFT", _G.MacroFrameTab1, "RIGHT", 4, 0)
+	_G.MacroFrameTab1:SetPoint("TOPLEFT", MacroFrame, "TOPLEFT", 85, -39)
+	_G.MacroFrameTab2:SetPoint("LEFT", _G.MacroFrameTab1, "RIGHT", 4, 0)
 
 	--Reposition edit button
 	_G.MacroEditButton:ClearAllPoints()
-	_G.MacroEditButton:Point("BOTTOMLEFT", _G.MacroFrameSelectedMacroButton, "BOTTOMRIGHT", 10, 0)
+	_G.MacroEditButton:SetPoint("BOTTOMLEFT", _G.MacroFrameSelectedMacroButton, "BOTTOMRIGHT", 10, 0)
 
 	-- Regular scroll bar
 	S:HandleScrollBar(_G.MacroButtonScrollFrame)
@@ -61,8 +61,8 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
 	_G.MacroFrameSelectedMacroButton:SetTemplate()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
-	_G.MacroFrameSelectedMacroButtonIcon:Point("TOPLEFT", E.mult, -E.mult)
-	_G.MacroFrameSelectedMacroButtonIcon:Point("BOTTOMRIGHT", -E.mult, E.mult)
+	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("TOPLEFT", E.mult, -E.mult)
+	_G.MacroFrameSelectedMacroButtonIcon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
 
 	-- Skin all buttons
 	for i = 1, _G.MAX_ACCOUNT_MACROS do
@@ -77,8 +77,8 @@ function S:Blizzard_MacroUI()
 
 		if t then
 			t:SetTexCoord(unpack(E.TexCoords))
-			t:Point("TOPLEFT", E.mult, -E.mult)
-			t:Point("BOTTOMRIGHT", -E.mult, E.mult)
+			t:SetPoint("TOPLEFT", E.mult, -E.mult)
+			t:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
 		end
 	end
 
@@ -102,7 +102,7 @@ function S:Blizzard_MacroUI()
 
 	MacroPopupFrame:HookScript("OnShow", function(s)
 		s:ClearAllPoints()
-		s:Point("TOPLEFT", MacroFrame, "TOPRIGHT", 2, 0)
+		s:SetPoint("TOPLEFT", MacroFrame, "TOPRIGHT", 2, 0)
 	end)
 end
 

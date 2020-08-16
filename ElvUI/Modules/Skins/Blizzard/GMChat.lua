@@ -23,8 +23,8 @@ function S:Blizzard_GMChatUI()
 		select(i, eb:GetRegions()):SetAlpha(0)
 	end
 	eb:ClearAllPoints()
-	eb:Point("TOPLEFT", frame, "BOTTOMLEFT", 0, -7)
-	eb:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, -32)
+	eb:SetPoint("TOPLEFT", frame, "BOTTOMLEFT", 0, -7)
+	eb:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 0, -32)
 
 	hooksecurefunc("ChatEdit_DeactivateChat", function(editBox)
 		if editBox.isGM then eb.backdrop:Hide() end
@@ -36,22 +36,22 @@ function S:Blizzard_GMChatUI()
 	local lang = _G.GMChatFrameEditBoxLanguage
 	lang:GetRegions():SetAlpha(0)
 	lang:ClearAllPoints()
-	lang:Point("TOPLEFT", eb, "TOPRIGHT", 3, 0)
-	lang:Point("BOTTOMRIGHT", eb, "BOTTOMRIGHT", 28, 0)
+	lang:SetPoint("TOPLEFT", eb, "TOPRIGHT", 3, 0)
+	lang:SetPoint("BOTTOMRIGHT", eb, "BOTTOMRIGHT", 28, 0)
 
 	local tab = _G.GMChatTab
 	tab:StripTextures()
 	tab:CreateBackdrop("Transparent")
 	tab:SetBackdropColor(0, .6, 1, .3)
 	tab:ClearAllPoints()
-	tab:Point("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
-	tab:Point("TOPRIGHT", frame, "TOPRIGHT", 0, 28)
+	tab:SetPoint("BOTTOMLEFT", frame, "TOPLEFT", 0, 3)
+	tab:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 0, 28)
 	_G.GMChatTabIcon:SetTexture([[Interface\ChatFrame\UI-ChatIcon-Blizz]])
 
 	local close = _G.GMChatFrameCloseButton
 	S:HandleCloseButton(close)
 	close:ClearAllPoints()
-	close:Point("RIGHT", tab, -5, 0)
+	close:SetPoint("RIGHT", tab, -5, 0)
 end
 
 S:AddCallbackForAddon('Blizzard_GMChatUI')

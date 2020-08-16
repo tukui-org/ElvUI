@@ -40,11 +40,11 @@ function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRigh
 	if not (giveBorder or bgFile) then return end
 
 	if insetLeft or insetRight or insetTop or insetBottom then
-		frame.pixelBorders.CENTER:Point('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
-		frame.pixelBorders.CENTER:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', insetRight or 0, -insetBottom or 0)
+		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
+		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', insetRight or 0, -insetBottom or 0)
 	else
-		frame.pixelBorders.CENTER:Point('TOPLEFT', frame)
-		frame.pixelBorders.CENTER:Point('BOTTOMRIGHT', frame)
+		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame)
+		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame)
 	end
 
 	frame.pixelBorders.TOP:SetHeight(edgeSize)
@@ -114,17 +114,17 @@ function E:BuildPixelBorders(frame, noSecureHook)
 
 		borders.CENTER = frame:CreateTexture('$parentPixelBorderCENTER', 'BACKGROUND', nil, -1)
 
-		borders.TOP:Point('BOTTOMLEFT', borders.CENTER, 'TOPLEFT', 1, -1)
-		borders.TOP:Point('BOTTOMRIGHT', borders.CENTER, 'TOPRIGHT', -1, -1)
+		borders.TOP:SetPoint('BOTTOMLEFT', borders.CENTER, 'TOPLEFT', 1, -1)
+		borders.TOP:SetPoint('BOTTOMRIGHT', borders.CENTER, 'TOPRIGHT', -1, -1)
 
-		borders.BOTTOM:Point('TOPLEFT', borders.CENTER, 'BOTTOMLEFT', 1, 1)
-		borders.BOTTOM:Point('TOPRIGHT', borders.CENTER, 'BOTTOMRIGHT', -1, 1)
+		borders.BOTTOM:SetPoint('TOPLEFT', borders.CENTER, 'BOTTOMLEFT', 1, 1)
+		borders.BOTTOM:SetPoint('TOPRIGHT', borders.CENTER, 'BOTTOMRIGHT', -1, 1)
 
-		borders.LEFT:Point('TOPRIGHT', borders.TOP, 'TOPLEFT', 0, 0)
-		borders.LEFT:Point('BOTTOMRIGHT', borders.BOTTOM, 'BOTTOMLEFT', 0, 0)
+		borders.LEFT:SetPoint('TOPRIGHT', borders.TOP, 'TOPLEFT', 0, 0)
+		borders.LEFT:SetPoint('BOTTOMRIGHT', borders.BOTTOM, 'BOTTOMLEFT', 0, 0)
 
-		borders.RIGHT:Point('TOPLEFT', borders.TOP, 'TOPRIGHT', 0, 0)
-		borders.RIGHT:Point('BOTTOMLEFT', borders.BOTTOM, 'BOTTOMRIGHT', 0, 0)
+		borders.RIGHT:SetPoint('TOPLEFT', borders.TOP, 'TOPRIGHT', 0, 0)
+		borders.RIGHT:SetPoint('BOTTOMLEFT', borders.BOTTOM, 'BOTTOMRIGHT', 0, 0)
 
 		if not noSecureHook then
 			hooksecurefunc(frame, 'SetBackdropColor', E.HookedSetBackdropColor)
@@ -212,8 +212,8 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
 end
 
 local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
@@ -227,8 +227,8 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
 local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
@@ -494,8 +494,8 @@ do
 		if frame.CloseButton then return end
 
 		local CloseButton = CreateFrame('Button', nil, frame)
-		CloseButton:Size(size or 16)
-		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
+		CloseButton:SetSize(size or 16)
+		CloseButton:SetPoint('TOPRIGHT', offset or -6, offset or -6)
 		if backdrop then CloseButton:CreateBackdrop(nil, true) end
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')

@@ -57,7 +57,7 @@ function UF:Update_Raid40Header(header, db)
 
 	if not parent.positioned then
 		parent:ClearAllPoints()
-		parent:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, 482)
+		parent:SetPoint('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, 482)
 		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid-40 Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raid40,generalGroup')
 		parent.positioned = true
 	end
@@ -113,7 +113,7 @@ function UF:Update_Raid40Frames(frame, db)
 		frame:Disable()
 	end
 
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)

@@ -27,7 +27,7 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	frame.customTexts = {}
-	frame:Point('BOTTOM', UF.focus, 'TOP', 0, 7) --Set to default position
+	frame:SetPoint('BOTTOM', UF.focus, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["FocusTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,focustarget,generalGroup')
 
 	frame.unitframeType = "focustarget"
@@ -66,8 +66,8 @@ function UF:Update_FocusTargetFrame(frame, db)
 
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame.colors = ElvUF.colors
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:SetSize(frame:GetSize())
 	UF:Configure_InfoPanel(frame)
 	--Health
 	UF:Configure_HealthBar(frame)

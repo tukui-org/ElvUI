@@ -24,12 +24,12 @@ function S:AddonList()
 	S:HandleDropDownBox(AddonCharacterDropDown, 165)
 	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar)
 	S:HandleCheckBox(_G.AddonListForceLoad)
-	_G.AddonListForceLoad:Size(26, 26)
+	_G.AddonListForceLoad:SetSize(26, 26)
 
 	_G.AddonListScrollFrame:StripTextures()
 	_G.AddonListScrollFrame:CreateBackdrop('Transparent')
-	_G.AddonListScrollFrame.backdrop:Point('TOPLEFT', -14, 0)
-	_G.AddonListScrollFrame.backdrop:Point('BOTTOMRIGHT', 0, -1)
+	_G.AddonListScrollFrame.backdrop:SetPoint('TOPLEFT', -14, 0)
+	_G.AddonListScrollFrame.backdrop:SetPoint('BOTTOMRIGHT', 0, -1)
 
 	for i = 1, maxShown do
 		S:HandleCheckBox(_G["AddonListEntry"..i.."Enabled"], nil, nil, true)

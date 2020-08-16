@@ -263,12 +263,12 @@ end
 
 function M:SetupChallengeTimer()
 	local bar = CreateFrame("StatusBar", "ElvUI_ChallengeModeTimer", E.UIParent)
-	bar:Size(250, 20)
-	bar:Point("TOPLEFT", E.UIParent, "TOPLEFT", 10, -10)
+	bar:SetSize(250, 20)
+	bar:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 10, -10)
 	bar:CreateBackdrop("Transparent")
 	bar:SetStatusBarTexture(E.media.normTex)
 	bar.text = bar:CreateFontString(nil, "OVERLAY")
-	bar.text:Point("CENTER")
+	bar.text:SetPoint("CENTER")
 	bar.text:FontTemplate()
 
 	_G.ScenarioChallengeModeBlock.StatusBar:HookScript("OnValueChanged", OnValueChanged)
@@ -301,7 +301,7 @@ function M:QUEST_COMPLETE()
 	if not self.QuestRewardGoldIconFrame then
 		local frame = CreateFrame("Frame", nil, firstItem)
 		frame:SetFrameStrata("HIGH")
-		frame:Size(20)
+		frame:SetSize(20)
 		frame.Icon = frame:CreateTexture(nil, "OVERLAY")
 		frame.Icon:SetAllPoints(frame)
 		frame.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
@@ -330,7 +330,7 @@ function M:QUEST_COMPLETE()
 		local btn = _G['QuestInfoRewardsFrameQuestInfoItem'..bestItem]
 		if btn and btn.type == 'choice' then
 			self.QuestRewardGoldIconFrame:ClearAllPoints()
-			self.QuestRewardGoldIconFrame:Point("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
+			self.QuestRewardGoldIconFrame:SetPoint("TOPRIGHT", btn, "TOPRIGHT", -2, -2)
 			self.QuestRewardGoldIconFrame:Show()
 		end
 	end

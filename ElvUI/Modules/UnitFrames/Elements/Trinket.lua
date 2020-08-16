@@ -17,12 +17,12 @@ function UF:Configure_Trinket(frame)
 	local db = frame.db
 	local trinket = frame.Trinket
 
-	trinket.bg:Size(db.pvpTrinket.size)
+	trinket.bg:SetSize(db.pvpTrinket.size)
 	trinket.bg:ClearAllPoints()
 	if db.pvpTrinket.position == 'RIGHT' then
-		trinket.bg:Point('LEFT', frame, 'RIGHT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
+		trinket.bg:SetPoint('LEFT', frame, 'RIGHT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 	else
-		trinket.bg:Point('RIGHT', frame, 'LEFT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
+		trinket.bg:SetPoint('RIGHT', frame, 'LEFT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 	end
 
 	if db.pvpTrinket.enable and not frame:IsElementEnabled('Trinket') then

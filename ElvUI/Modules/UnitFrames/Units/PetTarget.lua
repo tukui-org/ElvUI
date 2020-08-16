@@ -26,7 +26,7 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
-	frame:Point('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
+	frame:SetPoint('BOTTOM', ElvUF_Pet, 'TOP', 0, 7) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["PetTarget Frame"], nil, -7, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,pettarget,generalGroup')
 
 	frame.unitframeType = "pettarget"
@@ -65,8 +65,8 @@ function UF:Update_PetTargetFrame(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:SetSize(frame:GetSize())
 
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)

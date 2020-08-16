@@ -90,11 +90,11 @@ function AB:HandleMicroButton(button)
 end
 
 function AB:MainMenuMicroButton_SetNormal()
-	_G.MainMenuBarPerformanceBar:Point("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 9, -36)
+	_G.MainMenuBarPerformanceBar:SetPoint("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 9, -36)
 end
 
 function AB:MainMenuMicroButton_SetPushed()
-	_G.MainMenuBarPerformanceBar:Point("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 8, -37)
+	_G.MainMenuBarPerformanceBar:SetPoint("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 8, -37)
 end
 
 function AB:UpdateMicroButtonsParent()
@@ -139,16 +139,16 @@ function AB:UpdateMicroPositionDimensions()
 		local lastColumnButton = i-self.db.microbar.buttonsPerRow
 		lastColumnButton = _G[__buttonIndex[lastColumnButton]] or _G[_G.MICRO_BUTTONS[lastColumnButton]]
 
-		button:Size(self.db.microbar.buttonSize, self.db.microbar.buttonSize * 1.4)
+		button:SetSize(self.db.microbar.buttonSize, self.db.microbar.buttonSize * 1.4)
 		button:ClearAllPoints()
 
 		if prevButton == ElvUI_MicroBar then
-			button:Point('TOPLEFT', prevButton, 'TOPLEFT', offset, -offset)
+			button:SetPoint('TOPLEFT', prevButton, 'TOPLEFT', offset, -offset)
 		elseif (i - 1) % self.db.microbar.buttonsPerRow == 0 then
-			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, -spacing)
+			button:SetPoint('TOP', lastColumnButton, 'BOTTOM', 0, -spacing)
 			numRows = numRows + 1
 		else
-			button:Point('LEFT', prevButton, 'RIGHT', spacing, 0)
+			button:SetPoint('LEFT', prevButton, 'RIGHT', spacing, 0)
 		end
 
 		prevButton = button
@@ -162,7 +162,7 @@ function AB:UpdateMicroPositionDimensions()
 
 	AB.MicroWidth = (((_G.CharacterMicroButton:GetWidth() + spacing) * self.db.microbar.buttonsPerRow) - spacing) + (offset * 2)
 	AB.MicroHeight = (((_G.CharacterMicroButton:GetHeight() + spacing) * numRows) - spacing) + (offset * 2)
-	ElvUI_MicroBar:Size(AB.MicroWidth, AB.MicroHeight)
+	ElvUI_MicroBar:SetSize(AB.MicroWidth, AB.MicroHeight)
 
 	if ElvUI_MicroBar.mover then
 		if self.db.microbar.enabled then
@@ -182,15 +182,15 @@ function AB:UpdateMicroButtons()
 	GuildMicroButtonTabard.background:SetInside(GuildMicroButton)
 	GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	GuildMicroButtonTabard.emblem:ClearAllPoints()
-	GuildMicroButtonTabard.emblem:Point("TOPLEFT", GuildMicroButton, "TOPLEFT", 4, -4)
-	GuildMicroButtonTabard.emblem:Point("BOTTOMRIGHT", GuildMicroButton, "BOTTOMRIGHT", -4, 8)
+	GuildMicroButtonTabard.emblem:SetPoint("TOPLEFT", GuildMicroButton, "TOPLEFT", 4, -4)
+	GuildMicroButtonTabard.emblem:SetPoint("BOTTOMRIGHT", GuildMicroButton, "BOTTOMRIGHT", -4, 8)
 
 	self:UpdateMicroPositionDimensions()
 end
 
 function AB:SetupMicroBar()
 	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
-	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
+	microBar:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
 	microBar:EnableMouse(false)
 
 	microBar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')

@@ -20,7 +20,7 @@ function UF:Construct_AltPowerBar(frame)
 	altpower.RaisedElementParent:SetAllPoints()
 
 	altpower.value = altpower.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-	altpower.value:Point("CENTER")
+	altpower.value:SetPoint("CENTER")
 	altpower.value:SetJustifyH("CENTER")
 	UF:Configure_FontString(altpower.value)
 

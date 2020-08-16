@@ -22,7 +22,7 @@ function S:TooltipFrames()
 	ItemTooltip:CreateBackdrop("Default")
 	ItemTooltip.backdrop:SetOutside(ItemTooltip.Icon)
 	ItemTooltip.Count:ClearAllPoints()
-	ItemTooltip.Count:Point('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
+	ItemTooltip.Count:SetPoint('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 	ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
 	ItemTooltip.IconBorder:SetAlpha(0)
 	hooksecurefunc(ItemTooltip.IconBorder, 'SetVertexColor', function(s, r, g, b)
@@ -44,8 +44,8 @@ function S:TooltipFrames()
 	embedded:SetTemplate("Transparent")
 
 	if reward and reward.backdrop then
-		reward.backdrop:Point("TOPLEFT", icon, "TOPLEFT", -2, 2)
-		reward.backdrop:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
+		reward.backdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", -2, 2)
+		reward.backdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
 	end
 
 	if icon then
@@ -67,8 +67,8 @@ function S:TooltipFrames()
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
 	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
 	_G.GameTooltipStatusBar:ClearAllPoints()
-	_G.GameTooltipStatusBar:Point("TOPLEFT", _G.GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	_G.GameTooltipStatusBar:Point("TOPRIGHT", _G.GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:SetPoint("TOPLEFT", _G.GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:SetPoint("TOPRIGHT", _G.GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 
 	-- Tooltip Styling

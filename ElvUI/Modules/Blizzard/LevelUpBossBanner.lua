@@ -9,24 +9,24 @@ local Holder
 local function Reanchor(frame, _, anchor)
 	if anchor and (anchor ~= Holder) then
 		frame:ClearAllPoints()
-		frame:Point("TOP", Holder)
+		frame:SetPoint("TOP", Holder)
 	end
 end
 
 function B:Handle_LevelUpDisplay_BossBanner()
 	if not Holder then
 		Holder = CreateFrame("Frame", "LevelUpBossBannerHolder", E.UIParent)
-		Holder:Size(200, 20)
-		Holder:Point("TOP", E.UIParent, "TOP", -1, -120)
+		Holder:SetSize(200, 20)
+		Holder:SetPoint("TOP", E.UIParent, "TOP", -1, -120)
 	end
 
 	E:CreateMover(Holder, "LevelUpBossBannerMover", L["Level Up Display / Boss Banner"])
 
 	_G.LevelUpDisplay:ClearAllPoints()
-	_G.LevelUpDisplay:Point("TOP", Holder)
+	_G.LevelUpDisplay:SetPoint("TOP", Holder)
 	hooksecurefunc(_G.LevelUpDisplay, "SetPoint", Reanchor)
 
 	_G.BossBanner:ClearAllPoints()
-	_G.BossBanner:Point("TOP", Holder)
+	_G.BossBanner:SetPoint("TOP", Holder)
 	hooksecurefunc(_G.BossBanner, "SetPoint", Reanchor)
 end

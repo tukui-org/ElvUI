@@ -75,7 +75,7 @@ function S:Ace3_EditBoxSetTextInsets(l, r, t, b)
 end
 
 function S:Ace3_EditBoxSetPoint(a, b, c, d, e)
-	if d == 7 then self:Point(a, b, c, 0, e) end
+	if d == 7 then self:SetPoint(a, b, c, 0, e) end
 end
 
 function S:Ace3_TabSetSelected(selected)
@@ -106,8 +106,8 @@ end
 function S:Ace3_SkinTab(tab)
 	tab:StripTextures()
 	tab:CreateBackdrop(nil, true, true)
-	tab.backdrop:Point('TOPLEFT', 10, -3)
-	tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
+	tab.backdrop:SetPoint('TOPLEFT', 10, -3)
+	tab.backdrop:SetPoint('BOTTOMRIGHT', -10, 0)
 	tab.text:SetPoint("LEFT", 14, -1)
 
 	hooksecurefunc(tab, 'SetSelected', S.Ace3_TabSetSelected)
@@ -121,11 +121,11 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleScrollBar(widget.scrollBar)
 
 		widget.scrollBG:SetTemplate()
-		widget.scrollBG:Point('TOPRIGHT', widget.scrollBar, 'TOPLEFT', -2, 19)
-		widget.scrollBG:Point('BOTTOMLEFT', widget.button, 'TOPLEFT')
+		widget.scrollBG:SetPoint('TOPRIGHT', widget.scrollBar, 'TOPLEFT', -2, 19)
+		widget.scrollBG:SetPoint('BOTTOMLEFT', widget.button, 'TOPLEFT')
 
-		widget.scrollBar:Point('RIGHT', frame, 'RIGHT', 0 -4)
-		widget.scrollFrame:Point('BOTTOMRIGHT', widget.scrollBG, 'BOTTOMRIGHT', -4, 8)
+		widget.scrollBar:SetPoint('RIGHT', frame, 'RIGHT', 0 -4)
+		widget.scrollFrame:SetPoint('BOTTOMRIGHT', widget.scrollBG, 'BOTTOMRIGHT', -4, 8)
 	elseif TYPE == 'CheckBox' then
 		local check = widget.check
 		local checkbg = widget.checkbg
@@ -164,21 +164,21 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleNextPrevButton(button, nil, {1, .8, 0})
 
 		frame:CreateBackdrop()
-		frame.backdrop:Point('TOPLEFT', 15, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
+		frame.backdrop:SetPoint('TOPLEFT', 15, -2)
+		frame.backdrop:SetPoint('BOTTOMRIGHT', -21, 0)
 		frame.backdrop:SetClipsChildren(true)
 
 		widget.label:ClearAllPoints()
-		widget.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
+		widget.label:SetPoint('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
 
 		button:ClearAllPoints()
-		button:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)
-		button:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
+		button:SetPoint('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)
+		button:SetPoint('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
 
 		text:ClearAllPoints()
 		text:SetJustifyH('RIGHT')
-		text:Point('RIGHT', button, 'LEFT', -3, 0)
-		text:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
+		text:SetPoint('RIGHT', button, 'LEFT', -3, 0)
+		text:SetPoint('LEFT', frame.backdrop, 'LEFT', 2, 0)
 
 		button:SetParent(frame.backdrop)
 		text:SetParent(frame.backdrop)
@@ -192,29 +192,29 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleNextPrevButton(button, nil, {1, .8, 0})
 
 		frame.label:ClearAllPoints()
-		frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
+		frame.label:SetPoint('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
 
 		frame.text:ClearAllPoints()
-		frame.text:Point('RIGHT', button, 'LEFT', -2, 0)
-		frame.text:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
+		frame.text:SetPoint('RIGHT', button, 'LEFT', -2, 0)
+		frame.text:SetPoint('LEFT', frame.backdrop, 'LEFT', 2, 0)
 
 		button:ClearAllPoints()
-		button:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)
-		button:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
+		button:SetPoint('TOPLEFT', frame.backdrop, 'TOPRIGHT', -22, -2)
+		button:SetPoint('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
 
-		frame.backdrop:Point('TOPLEFT', 0, -21)
-		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
+		frame.backdrop:SetPoint('TOPLEFT', 0, -21)
+		frame.backdrop:SetPoint('BOTTOMRIGHT', -4, -1)
 		frame.backdrop:SetClipsChildren(true)
 
 		if TYPE == 'LSM30_Sound' then
 			widget.soundbutton:SetParent(frame.backdrop)
 			widget.soundbutton:ClearAllPoints()
-			widget.soundbutton:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
+			widget.soundbutton:SetPoint('LEFT', frame.backdrop, 'LEFT', 2, 0)
 		elseif TYPE == 'LSM30_Statusbar' then
 			widget.bar:SetParent(frame.backdrop)
 			widget.bar:ClearAllPoints()
-			widget.bar:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
-			widget.bar:Point('BOTTOMRIGHT', button, 'BOTTOMLEFT', -1, 0)
+			widget.bar:SetPoint('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
+			widget.bar:SetPoint('BOTTOMRIGHT', button, 'BOTTOMLEFT', -1, 0)
 		end
 
 		button:SetParent(frame.backdrop)
@@ -226,13 +226,13 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleEditBox(frame)
 		S:HandleButton(button)
 
-		button:Point('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
+		button:SetPoint('RIGHT', frame.backdrop, 'RIGHT', -2, 0)
 
 		hooksecurefunc(frame, 'SetTextInsets', S.Ace3_EditBoxSetTextInsets)
 		hooksecurefunc(frame, 'SetPoint', S.Ace3_EditBoxSetPoint)
 
-		frame.backdrop:Point('TOPLEFT', 0, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
+		frame.backdrop:SetPoint('TOPLEFT', 0, -2)
+		frame.backdrop:SetPoint('BOTTOMRIGHT', -1, 0)
 	elseif (TYPE == 'Button' or TYPE == 'Button-ElvUI') then
 		local frame = widget.frame
 		S:HandleButton(frame, true, nil, true)
@@ -248,11 +248,11 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleSliderFrame(frame)
 
 		editbox:SetTemplate()
-		editbox:Height(15)
-		editbox:Point('TOP', frame, 'BOTTOM', 0, -1)
+		editbox:SetHeight(15)
+		editbox:SetPoint('TOP', frame, 'BOTTOM', 0, -1)
 
-		lowtext:Point('TOPLEFT', frame, 'BOTTOMLEFT', 2, -2)
-		hightext:Point('TOPRIGHT', frame, 'BOTTOMRIGHT', -2, -2)
+		lowtext:SetPoint('TOPLEFT', frame, 'BOTTOMLEFT', 2, -2)
+		hightext:SetPoint('TOPRIGHT', frame, 'BOTTOMRIGHT', -2, -2)
 	elseif TYPE == 'Keybinding' then
 		local button = widget.button
 		local msgframe = widget.msgframe
@@ -263,15 +263,15 @@ function S:Ace3_RegisterAsWidget(widget)
 		msgframe:StripTextures()
 		msgframe:SetTemplate('Transparent')
 		msgframe.msg:ClearAllPoints()
-		msgframe.msg:Point('CENTER')
+		msgframe.msg:SetPoint('CENTER')
 	elseif (TYPE == 'ColorPicker' or TYPE == 'ColorPicker-ElvUI') then
 		local frame = widget.frame
 		local colorSwatch = widget.colorSwatch
 
 		frame:CreateBackdrop()
-		frame.backdrop:Size(24, 16)
+		frame.backdrop:SetSize(24, 16)
 		frame.backdrop:ClearAllPoints()
-		frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
+		frame.backdrop:SetPoint('LEFT', frame, 'LEFT', 4, 0)
 
 		colorSwatch:SetTexture(E.Media.Textures.White8x8)
 		colorSwatch:ClearAllPoints()
@@ -315,14 +315,14 @@ function S:Ace3_RefreshTree(scrollToSelection)
 
 	self.border:ClearAllPoints()
 	if self.userdata and self.userdata.option and self.userdata.option.childGroups == 'ElvUI_HiddenTree' then
-		self.border:Point("TOPLEFT", self.treeframe, "TOPRIGHT", 1, 13)
-		self.border:Point("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", 6, 0)
+		self.border:SetPoint("TOPLEFT", self.treeframe, "TOPRIGHT", 1, 13)
+		self.border:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", 6, 0)
 		--self.userdata.rootframe.titletext:SetParent(self.border)
 		self.treeframe:Hide()
 		return
 	else
-		self.border:Point("TOPLEFT", self.treeframe, "TOPRIGHT")
-		self.border:Point("BOTTOMRIGHT", self.frame)
+		self.border:SetPoint("TOPLEFT", self.treeframe, "TOPRIGHT")
+		self.border:SetPoint("BOTTOMRIGHT", self.frame)
 		self.treeframe:Show()
 	end
 

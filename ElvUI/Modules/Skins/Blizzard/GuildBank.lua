@@ -22,7 +22,7 @@ function S:Blizzard_GuildBankUI()
 		local child = select(i, GuildBankFrame:GetChildren())
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
 			S:HandleCloseButton(child)
-			child:Point("TOPRIGHT", 0, 0)
+			child:SetPoint("TOPRIGHT", 0, 0)
 			child:SetFrameLevel(child:GetFrameLevel()+1)
 		end
 	end
@@ -32,16 +32,16 @@ function S:Blizzard_GuildBankUI()
 	S:HandleButton(_G.GuildBankInfoSaveButton, true)
 	S:HandleButton(_G.GuildBankFramePurchaseButton, true)
 
-	_G.GuildBankFrameWithdrawButton:Point("RIGHT", _G.GuildBankFrameDepositButton, "LEFT", -2, 0)
-	_G.GuildBankInfoScrollFrame:Point('TOPLEFT', _G.GuildBankInfo, 'TOPLEFT', -10, 12)
+	_G.GuildBankFrameWithdrawButton:SetPoint("RIGHT", _G.GuildBankFrameDepositButton, "LEFT", -2, 0)
+	_G.GuildBankInfoScrollFrame:SetPoint('TOPLEFT', _G.GuildBankInfo, 'TOPLEFT', -10, 12)
 	_G.GuildBankInfoScrollFrame:StripTextures()
-	_G.GuildBankInfoScrollFrame:Width(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
+	_G.GuildBankInfoScrollFrame:SetWidth(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
 	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
 	GuildBankFrame.inset:SetTemplate()
-	GuildBankFrame.inset:Point("TOPLEFT", 20, -58)
-	GuildBankFrame.inset:Point("BOTTOMRIGHT", -16, 60)
+	GuildBankFrame.inset:SetPoint("TOPLEFT", 20, -58)
+	GuildBankFrame.inset:SetPoint("BOTTOMRIGHT", -16, 60)
 
 	for i = 1, _G.NUM_GUILDBANK_COLUMNS do
 		_G["GuildBankColumn"..i]:StripTextures()
@@ -92,8 +92,8 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox.Right:Kill()
 	GuildItemSearchBox.searchIcon:Kill()
 	GuildItemSearchBox:CreateBackdrop("Overlay")
-	GuildItemSearchBox.backdrop:Point("TOPLEFT", 10, -1)
-	GuildItemSearchBox.backdrop:Point("BOTTOMRIGHT", -1, 1)
+	GuildItemSearchBox.backdrop:SetPoint("TOPLEFT", 10, -1)
+	GuildItemSearchBox.backdrop:SetPoint("BOTTOMRIGHT", -1, 1)
 
 	S:HandleScrollBar(_G.GuildBankTransactionsScrollFrameScrollBar)
 	S:HandleScrollBar(_G.GuildBankInfoScrollFrameScrollBar)

@@ -121,11 +121,11 @@ function A:CreateIcon(button)
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 
 	button.count = button:CreateFontString(nil, 'OVERLAY')
-	button.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 1 + A.db.countYOffset)
+	button.count:SetPoint('BOTTOMRIGHT', -1 + A.db.countXOffset, 1 + A.db.countYOffset)
 	button.count:FontTemplate(font, db.countFontSize, A.db.fontOutline)
 
 	button.text = button:CreateFontString(nil, 'OVERLAY')
-	button.text:Point('TOP', button, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
+	button.text:SetPoint('TOP', button, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
 
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	button.highlight:SetColorTexture(1, 1, 1, .45)
@@ -144,9 +144,9 @@ function A:CreateIcon(button)
 	local isOnLeft = pos == 'LEFT' and true or false
 	local isOnRight = pos == 'RIGHT' and true or false
 
-	button.statusBar:Width((isOnTop or isOnBottom) and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)))
-	button.statusBar:Height((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
-	button.statusBar:Point(E.InversePoints[pos], button, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
+	button.statusBar:SetWidth((isOnTop or isOnBottom) and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)))
+	button.statusBar:SetHeight((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
+	button.statusBar:SetPoint(E.InversePoints[pos], button, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
 	if isOnLeft or isOnRight then button.statusBar:SetOrientation('VERTICAL') end
 
 	E:SetUpAnimGroup(button)
@@ -374,7 +374,7 @@ function A:UpdateHeader(header)
 	local child = select(index, header:GetChildren())
 	while child do
 		if (floor(child:GetWidth() * 100 + 0.5) / 100) ~= db.size then
-			child:Size(db.size, db.size)
+			child:SetSize(db.size, db.size)
 		end
 
 		child.auraType = auraType -- used to update cooldown text
@@ -382,11 +382,11 @@ function A:UpdateHeader(header)
 		if child.text then
 			local font = LSM:Fetch('font', A.db.font)
 			child.text:ClearAllPoints()
-			child.text:Point('TOP', child, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
+			child.text:SetPoint('TOP', child, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
 			child.text:FontTemplate(font, db.durationFontSize, A.db.fontOutline)
 
 			child.count:ClearAllPoints()
-			child.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 0 + A.db.countYOffset)
+			child.count:SetPoint('BOTTOMRIGHT', -1 + A.db.countXOffset, 0 + A.db.countYOffset)
 			child.count:FontTemplate(font, db.countFontSize, A.db.fontOutline)
 		end
 
@@ -395,10 +395,10 @@ function A:UpdateHeader(header)
 			child:Hide()
 		end
 
-		child.statusBar:Width((isOnTop or isOnBottom) and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)))
-		child.statusBar:Height((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
+		child.statusBar:SetWidth((isOnTop or isOnBottom) and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)))
+		child.statusBar:SetHeight((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
 		child.statusBar:ClearAllPoints()
-		child.statusBar:Point(E.InversePoints[pos], child, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
+		child.statusBar:SetPoint(E.InversePoints[pos], child, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
 		child.statusBar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', A.db.barTexture))
 		if isOnLeft or isOnRight then
 			child.statusBar:SetOrientation('VERTICAL')
@@ -451,14 +451,14 @@ function A:Initialize()
 
 	if E.private.auras.buffsHeader then
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
-		A.BuffFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'TOPLEFT', -(6 + E.Border), -E.Border - E.Spacing)
+		A.BuffFrame:SetPoint('TOPRIGHT', _G.MMHolder or _G.Minimap, 'TOPLEFT', -(6 + E.Border), -E.Border - E.Spacing)
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 		if Masque and MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
 	end
 
 	if E.private.auras.debuffsHeader then
 		A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
-		A.DebuffFrame:Point('BOTTOMRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMLEFT', -(6 + E.Border), E.Border + E.Spacing)
+		A.DebuffFrame:SetPoint('BOTTOMRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMLEFT', -(6 + E.Border), E.Border + E.Spacing)
 		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
 		if Masque and MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
 	end

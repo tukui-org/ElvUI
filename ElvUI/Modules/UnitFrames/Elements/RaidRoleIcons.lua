@@ -8,9 +8,9 @@ function UF:Construct_RaidRoleFrames(frame)
 	frame.LeaderIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 	frame.AssistantIndicator = anchor:CreateTexture(nil, 'OVERLAY')
 
-	anchor:Size(24, 12)
-	frame.LeaderIndicator:Size(12)
-	frame.AssistantIndicator:Size(12)
+	anchor:SetSize(24, 12)
+	frame.LeaderIndicator:SetSize(12)
+	frame.AssistantIndicator:SetSize(12)
 
 	frame.LeaderIndicator.PostUpdate = UF.RaidRoleUpdate
 	frame.AssistantIndicator.PostUpdate = UF.RaidRoleUpdate
@@ -30,9 +30,9 @@ function UF:Configure_RaidRoleIcons(frame)
 
 		raidRoleFrameAnchor:ClearAllPoints()
 		if frame.db.raidRoleIcons.position == 'TOPLEFT' then
-			raidRoleFrameAnchor:Point('LEFT', frame, 'TOPLEFT', frame.db.raidRoleIcons.xOffset, frame.db.raidRoleIcons.yOffset)
+			raidRoleFrameAnchor:SetPoint('LEFT', frame, 'TOPLEFT', frame.db.raidRoleIcons.xOffset, frame.db.raidRoleIcons.yOffset)
 		else
-			raidRoleFrameAnchor:Point('RIGHT', frame, 'TOPRIGHT', -frame.db.raidRoleIcons.xOffset, frame.db.raidRoleIcons.yOffset)
+			raidRoleFrameAnchor:SetPoint('RIGHT', frame, 'TOPRIGHT', -frame.db.raidRoleIcons.xOffset, frame.db.raidRoleIcons.yOffset)
 		end
 	elseif frame:IsElementEnabled('LeaderIndicator') then
 		raidRoleFrameAnchor:Hide()
@@ -58,13 +58,13 @@ function UF:RaidRoleUpdate()
 
 	if db and db.raidRoleIcons then
 		if isLeader and db.raidRoleIcons.position == 'TOPLEFT' then
-			leader:Point('LEFT', anchor, 'LEFT', db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
+			leader:SetPoint('LEFT', anchor, 'LEFT', db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
 		elseif isLeader and db.raidRoleIcons.position == 'TOPRIGHT' then
-			leader:Point('RIGHT', anchor, 'RIGHT', -db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
+			leader:SetPoint('RIGHT', anchor, 'RIGHT', -db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
 		elseif isAssist and db.raidRoleIcons.position == 'TOPLEFT' then
-			assistant:Point('LEFT', anchor, 'LEFT', db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
+			assistant:SetPoint('LEFT', anchor, 'LEFT', db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
 		elseif isAssist and db.raidRoleIcons.position == 'TOPRIGHT' then
-			assistant:Point('RIGHT', anchor, 'RIGHT', -db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
+			assistant:SetPoint('RIGHT', anchor, 'RIGHT', -db.raidRoleIcons.xOffset, db.raidRoleIcons.yOffset)
 		end
 	end
 end

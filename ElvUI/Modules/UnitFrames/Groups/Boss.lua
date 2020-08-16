@@ -37,7 +37,7 @@ function UF:Construct_BossFrames(frame)
 	frame:SetAttribute("type2", "focus")
 	frame.customTexts = {}
 
-	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
+	BossHeader:SetPoint('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID', nil, 'unitframe,groupUnits,boss,generalGroup')
 	frame.mover = BossHeader.mover
 
@@ -77,7 +77,7 @@ function UF:Update_BossFrames(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)
 	UF:UpdateNameSettings(frame)
@@ -96,32 +96,32 @@ function UF:Update_BossFrames(frame, db)
 	frame:ClearAllPoints()
 	if frame.index == 1 then
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT')
+			frame:SetPoint('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT')
 		elseif db.growthDirection == 'RIGHT' then
-			frame:Point('LEFT', BossHeaderMover, 'LEFT')
+			frame:SetPoint('LEFT', BossHeaderMover, 'LEFT')
 		elseif db.growthDirection == 'LEFT' then
-			frame:Point('RIGHT', BossHeaderMover, 'RIGHT')
+			frame:SetPoint('RIGHT', BossHeaderMover, 'RIGHT')
 		else --Down
-			frame:Point('TOPRIGHT', BossHeaderMover, 'TOPRIGHT')
+			frame:SetPoint('TOPRIGHT', BossHeaderMover, 'TOPRIGHT')
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
+			frame:SetPoint('BOTTOMRIGHT', _G['ElvUF_Boss'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
 		elseif db.growthDirection == 'RIGHT' then
-			frame:Point('LEFT', _G['ElvUF_Boss'..frame.index-1], 'RIGHT', db.spacing, 0)
+			frame:SetPoint('LEFT', _G['ElvUF_Boss'..frame.index-1], 'RIGHT', db.spacing, 0)
 		elseif db.growthDirection == 'LEFT' then
-			frame:Point('RIGHT', _G['ElvUF_Boss'..frame.index-1], 'LEFT', -db.spacing, 0)
+			frame:SetPoint('RIGHT', _G['ElvUF_Boss'..frame.index-1], 'LEFT', -db.spacing, 0)
 		else --Down
-			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
+			frame:SetPoint('TOPRIGHT', _G['ElvUF_Boss'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
 
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
-		BossHeader:Width(frame.UNIT_WIDTH)
-		BossHeader:Height(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
+		BossHeader:SetWidth(frame.UNIT_WIDTH)
+		BossHeader:SetHeight(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
-		BossHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
-		BossHeader:Height(frame.UNIT_HEIGHT)
+		BossHeader:SetWidth(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
+		BossHeader:SetHeight(frame.UNIT_HEIGHT)
 	end
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")

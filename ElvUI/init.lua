@@ -202,8 +202,8 @@ function E:OnInitialize()
 	GameMenuFrame[E.name] = GameMenuButton
 
 	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
-		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
-		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+		GameMenuButton:SetSize(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+		GameMenuButton:SetPoint('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 
@@ -220,9 +220,9 @@ function E:PositionGameMenuButton()
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= button then
 		button:ClearAllPoints()
-		button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+		button:SetPoint('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
 		GameMenuButtonLogout:ClearAllPoints()
-		GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
+		GameMenuButtonLogout:SetPoint('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
 	end
 end
 

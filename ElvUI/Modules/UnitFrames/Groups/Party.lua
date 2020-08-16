@@ -83,7 +83,7 @@ function UF:Update_PartyHeader(header, db)
 
 	if not parent.positioned then
 		parent:ClearAllPoints()
-		parent:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 4, 248)
+		parent:SetPoint('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 4, 248)
 		E:CreateMover(parent, parent:GetName()..'Mover', L["Party Frames"], nil, nil, nil, 'ALL,PARTY,ARENA', nil, 'unitframe,groupUnits,party,generalGroup')
 		parent.positioned = true
 	end
@@ -154,13 +154,13 @@ function UF:Update_PartyFrames(frame, db)
 			frame.Health.colorPetByUnitClass = db.colorPetByUnitClass
 		end
 
-		frame:Size(db.width, db.height)
+		frame:SetSize(db.width, db.height)
 
 		if not InCombatLockdown() then
 			if db.enable then
 				frame:Enable()
 				frame:ClearAllPoints()
-				frame:Point(E.InversePoints[db.anchorPoint], frame.originalParent, db.anchorPoint, db.xOffset, db.yOffset)
+				frame:SetPoint(E.InversePoints[db.anchorPoint], frame.originalParent, db.anchorPoint, db.xOffset, db.yOffset)
 			else
 				frame:Disable()
 			end
@@ -168,7 +168,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		UF:Configure_HealthBar(frame)
 	else
-		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+		frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_AllAuras(frame)

@@ -34,8 +34,8 @@ function NP:Update_RaidTargetIndicator(nameplate)
 		end
 
 		nameplate.RaidTargetIndicator:ClearAllPoints()
-		nameplate.RaidTargetIndicator:Point(E.InversePoints[db.raidTargetIndicator.position], nameplate, db.raidTargetIndicator.position, db.raidTargetIndicator.xOffset, db.raidTargetIndicator.yOffset)
-		nameplate.RaidTargetIndicator:Size(db.raidTargetIndicator.size, db.raidTargetIndicator.size)
+		nameplate.RaidTargetIndicator:SetPoint(E.InversePoints[db.raidTargetIndicator.position], nameplate, db.raidTargetIndicator.position, db.raidTargetIndicator.xOffset, db.raidTargetIndicator.yOffset)
+		nameplate.RaidTargetIndicator:SetSize(db.raidTargetIndicator.size, db.raidTargetIndicator.size)
 	elseif nameplate:IsElementEnabled('RaidTargetIndicator') then
 		nameplate:DisableElement('RaidTargetIndicator')
 	end

@@ -258,8 +258,8 @@ function AFK:Initialize()
 	AFK.AFKMode:SetScript('OnKeyDown', OnKeyDown)
 
 	AFK.AFKMode.chat = CreateFrame('ScrollingMessageFrame', nil, AFK.AFKMode)
-	AFK.AFKMode.chat:Size(500, 200)
-	AFK.AFKMode.chat:Point('TOPLEFT', AFK.AFKMode, 'TOPLEFT', 4, -4)
+	AFK.AFKMode.chat:SetSize(500, 200)
+	AFK.AFKMode.chat:SetPoint('TOPLEFT', AFK.AFKMode, 'TOPLEFT', 4, -4)
 	AFK.AFKMode.chat:FontTemplate()
 	AFK.AFKMode.chat:SetJustifyH('LEFT')
 	AFK.AFKMode.chat:SetMaxLines(500)
@@ -276,18 +276,18 @@ function AFK:Initialize()
 	AFK.AFKMode.bottom = CreateFrame('Frame', nil, AFK.AFKMode)
 	AFK.AFKMode.bottom:SetFrameLevel(0)
 	AFK.AFKMode.bottom:SetTemplate('Transparent')
-	AFK.AFKMode.bottom:Point('BOTTOM', AFK.AFKMode, 'BOTTOM', 0, -E.Border)
-	AFK.AFKMode.bottom:Width(GetScreenWidth() + (E.Border*2))
-	AFK.AFKMode.bottom:Height(GetScreenHeight() * (1 / 10))
+	AFK.AFKMode.bottom:SetPoint('BOTTOM', AFK.AFKMode, 'BOTTOM', 0, -E.Border)
+	AFK.AFKMode.bottom:SetWidth(GetScreenWidth() + (E.Border*2))
+	AFK.AFKMode.bottom:SetHeight(GetScreenHeight() * (1 / 10))
 
 	AFK.AFKMode.bottom.LogoTop = AFK.AFKMode:CreateTexture(nil, 'OVERLAY')
-	AFK.AFKMode.bottom.LogoTop:Size(320, 150)
-	AFK.AFKMode.bottom.LogoTop:Point('CENTER', AFK.AFKMode.bottom, 'CENTER', 0, 50)
+	AFK.AFKMode.bottom.LogoTop:SetSize(320, 150)
+	AFK.AFKMode.bottom.LogoTop:SetPoint('CENTER', AFK.AFKMode.bottom, 'CENTER', 0, 50)
 	AFK.AFKMode.bottom.LogoTop:SetTexture(E.Media.Textures.LogoTop)
 
 	AFK.AFKMode.bottom.LogoBottom = AFK.AFKMode:CreateTexture(nil, 'OVERLAY')
-	AFK.AFKMode.bottom.LogoBottom:Size(320, 150)
-	AFK.AFKMode.bottom.LogoBottom:Point('CENTER', AFK.AFKMode.bottom, 'CENTER', 0, 50)
+	AFK.AFKMode.bottom.LogoBottom:SetSize(320, 150)
+	AFK.AFKMode.bottom.LogoBottom:SetPoint('CENTER', AFK.AFKMode.bottom, 'CENTER', 0, 50)
 	AFK.AFKMode.bottom.LogoBottom:SetTexture(E.Media.Textures.LogoBottom)
 
 	local factionGroup, size, offsetX, offsetY, nameOffsetX, nameOffsetY = E.myfaction, 140, -20, -16, -10, -28
@@ -296,37 +296,37 @@ function AFK:Initialize()
 	end
 
 	AFK.AFKMode.bottom.faction = AFK.AFKMode.bottom:CreateTexture(nil, 'OVERLAY')
-	AFK.AFKMode.bottom.faction:Point('BOTTOMLEFT', AFK.AFKMode.bottom, 'BOTTOMLEFT', offsetX, offsetY)
+	AFK.AFKMode.bottom.faction:SetPoint('BOTTOMLEFT', AFK.AFKMode.bottom, 'BOTTOMLEFT', offsetX, offsetY)
 	AFK.AFKMode.bottom.faction:SetTexture(format([[Interface\Timer\%s-Logo]], factionGroup))
-	AFK.AFKMode.bottom.faction:Size(size, size)
+	AFK.AFKMode.bottom.faction:SetSize(size, size)
 
 	local classColor = E:ClassColor(E.myclass)
 	AFK.AFKMode.bottom.name = AFK.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')
 	AFK.AFKMode.bottom.name:FontTemplate(nil, 20)
 	AFK.AFKMode.bottom.name:SetFormattedText('%s-%s', E.myname, E.myrealm)
-	AFK.AFKMode.bottom.name:Point('TOPLEFT', AFK.AFKMode.bottom.faction, 'TOPRIGHT', nameOffsetX, nameOffsetY)
+	AFK.AFKMode.bottom.name:SetPoint('TOPLEFT', AFK.AFKMode.bottom.faction, 'TOPRIGHT', nameOffsetX, nameOffsetY)
 	AFK.AFKMode.bottom.name:SetTextColor(classColor.r, classColor.g, classColor.b)
 
 	AFK.AFKMode.bottom.guild = AFK.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')
 	AFK.AFKMode.bottom.guild:FontTemplate(nil, 20)
 	AFK.AFKMode.bottom.guild:SetText(L["No Guild"])
-	AFK.AFKMode.bottom.guild:Point('TOPLEFT', AFK.AFKMode.bottom.name, 'BOTTOMLEFT', 0, -6)
+	AFK.AFKMode.bottom.guild:SetPoint('TOPLEFT', AFK.AFKMode.bottom.name, 'BOTTOMLEFT', 0, -6)
 	AFK.AFKMode.bottom.guild:SetTextColor(0.7, 0.7, 0.7)
 
 	AFK.AFKMode.bottom.time = AFK.AFKMode.bottom:CreateFontString(nil, 'OVERLAY')
 	AFK.AFKMode.bottom.time:FontTemplate(nil, 20)
 	AFK.AFKMode.bottom.time:SetText('00:00')
-	AFK.AFKMode.bottom.time:Point('TOPLEFT', AFK.AFKMode.bottom.guild, 'BOTTOMLEFT', 0, -6)
+	AFK.AFKMode.bottom.time:SetPoint('TOPLEFT', AFK.AFKMode.bottom.guild, 'BOTTOMLEFT', 0, -6)
 	AFK.AFKMode.bottom.time:SetTextColor(0.7, 0.7, 0.7)
 
 	--Use this frame to control position of the model
 	AFK.AFKMode.bottom.modelHolder = CreateFrame('Frame', nil, AFK.AFKMode.bottom)
-	AFK.AFKMode.bottom.modelHolder:Size(150, 150)
-	AFK.AFKMode.bottom.modelHolder:Point('BOTTOMRIGHT', AFK.AFKMode.bottom, 'BOTTOMRIGHT', -200, 220)
+	AFK.AFKMode.bottom.modelHolder:SetSize(150, 150)
+	AFK.AFKMode.bottom.modelHolder:SetPoint('BOTTOMRIGHT', AFK.AFKMode.bottom, 'BOTTOMRIGHT', -200, 220)
 
 	AFK.AFKMode.bottom.model = CreateFrame('PlayerModel', 'ElvUIAFKPlayerModel', AFK.AFKMode.bottom.modelHolder)
-	AFK.AFKMode.bottom.model:Point('CENTER', AFK.AFKMode.bottom.modelHolder, 'CENTER')
-	AFK.AFKMode.bottom.model:Size(GetScreenWidth() * 2, GetScreenHeight() * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
+	AFK.AFKMode.bottom.model:SetPoint('CENTER', AFK.AFKMode.bottom.modelHolder, 'CENTER')
+	AFK.AFKMode.bottom.model:SetSize(GetScreenWidth() * 2, GetScreenHeight() * 2) --YES, double screen size. This prevents clipping of models. Position is controlled with the helper frame.
 	AFK.AFKMode.bottom.model:SetCamDistanceScale(4.5) --Since the model frame is huge, we need to zoom out quite a bit.
 	AFK.AFKMode.bottom.model:SetFacing(6)
 	AFK.AFKMode.bottom.model:SetScript('OnUpdate', function(model)

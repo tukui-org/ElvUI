@@ -34,7 +34,7 @@ local function InitializeTalkingHead()
 
 	--Set default position
 	TalkingHeadFrame:ClearAllPoints()
-	TalkingHeadFrame:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 373)
+	TalkingHeadFrame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 373)
 
 	E:CreateMover(TalkingHeadFrame, "TalkingHeadFrameMover", L["Talking Head Frame"], nil, nil, nil, nil, nil, 'skins')
 
