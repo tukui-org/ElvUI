@@ -105,7 +105,7 @@ local function GetQuests(unitID)
 	E.ScanTooltip:SetUnit(unitID)
 	E.ScanTooltip:Show()
 
-	local QuestList, notMyQuest
+	local QuestList, notMyQuest, activeID
 	for i = 3, E.ScanTooltip:NumLines() do
 		local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
 		local text = str and str:GetText()
@@ -115,9 +115,13 @@ local function GetQuests(unitID)
 			notMyQuest = text ~= E.myname
 		elseif text and not notMyQuest then
 			local count, percent = CheckTextForQuest(text)
+
+			if activeQuests[text] then -- this line comes from one line up in the tooltip
+				activeID = activeQuests[text]
+			end
+
 			if count then
 				local type, index, texture, _
-				local activeID = activeQuests[text]
 				if activeID then
 					index = questIndexByID[activeID]
 					_, texture = GetQuestLogSpecialItemInfo(index)
