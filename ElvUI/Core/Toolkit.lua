@@ -77,8 +77,6 @@ local function Height(frame, height, ...)
 end
 
 local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
-	if arg2 == nil then arg2 = obj:GetParent() end
-
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
