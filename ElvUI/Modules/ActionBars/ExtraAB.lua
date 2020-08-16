@@ -41,12 +41,16 @@ function AB:Extra_SetScale()
 
 	if _G.ExtraActionBarFrame then
 		_G.ExtraActionBarFrame:SetScale(scale)
-		ExtraActionBarHolder:SetSize(_G.ExtraActionBarFrame:GetWidth() * scale)
+
+		local size = _G.ExtraActionBarFrame:GetWidth() * scale
+		ExtraActionBarHolder:SetSize(size, size)
 	end
 
 	if _G.ZoneAbilityFrame then
 		_G.ZoneAbilityFrame:SetScale(scale)
-		ZoneAbilityHolder:SetSize(_G.ZoneAbilityFrame:GetWidth() * scale)
+
+		local size = _G.ZoneAbilityFrame:GetWidth() * scale
+		ZoneAbilityHolder:SetSize(size, size)
 	end
 end
 

@@ -165,7 +165,8 @@ function NP:UpdateAuraSettings(button)
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	button:SetSize((button.db and button.db.size) or 26)
+	local size = (button.db and button.db.size) or 26
+	button:SetSize(size, size)
 
 	button.needsUpdateCooldownPosition = true
 end

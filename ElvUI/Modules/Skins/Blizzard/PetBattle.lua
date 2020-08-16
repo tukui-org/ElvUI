@@ -333,7 +333,7 @@ function S:PetBattleFrame()
 		end
 	end)
 
-	bf.TurnTimer:SetSize(bf.TurnTimer.SkipButton:GetWidth(), bf.TurnTimer.SkipButton:GetHeight())
+	bf.TurnTimer:SetSize(bf.TurnTimer.SkipButton:GetSize())
 	bf.TurnTimer:ClearAllPoints()
 	bf.TurnTimer:SetPoint("TOP", E.UIParent, "TOP", 0, -140)
 	bf.TurnTimer.TimerText:SetPoint("CENTER")

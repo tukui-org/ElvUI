@@ -101,7 +101,7 @@ end
 local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...)
 	local f = CreateFrame("Button", nil, parent)
 	f:SetPoint(...)
-	f:SetSize(FRAME_HEIGHT - 4)
+	f:SetSize(FRAME_HEIGHT - 4, FRAME_HEIGHT - 4)
 	f:SetNormalTexture(ntex)
 	if ptex then f:SetPushedTexture(ptex) end
 	f:SetHighlightTexture(htex)
@@ -130,7 +130,7 @@ function M:CreateRollFrame()
 
 	local button = CreateFrame("Button", nil, frame)
 	button:SetPoint("RIGHT", frame, 'LEFT', -(E.Spacing*3), 0)
-	button:SetSize(FRAME_HEIGHT - (E.Border * 2))
+	button:SetSize(FRAME_HEIGHT - (E.Border * 2), FRAME_HEIGHT - (E.Border * 2))
 	button:CreateBackdrop()
 	button:SetScript("OnEnter", SetItemTip)
 	button:SetScript("OnLeave", HideTip2)
