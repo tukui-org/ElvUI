@@ -19,7 +19,7 @@ function UF:Construct_Threat(frame)
 	threat.PowerGlow:Hide()
 
 	threat.TextureIcon = threat:CreateTexture(nil, 'OVERLAY')
-	threat.TextureIcon:Size(8)
+	threat.TextureIcon:SetSize(8)
 	threat.TextureIcon:SetTexture(E.media.blankTex)
 	threat.TextureIcon:Hide()
 

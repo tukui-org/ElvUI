@@ -40,7 +40,7 @@ function UF:Configure_RaidDebuffs(frame)
 		debuff.forceShow = frame.forceShowAuras
 		debuff.icon:SetTexCoord(unpack(E.TexCoords))
 		debuff:SetPoint('BOTTOM', frame, 'BOTTOM', db.xOffset, db.yOffset + frame.SPACING)
-		debuff:Size(db.size)
+		debuff:SetSize(db.size)
 
 		local font = UF.LSM:Fetch("font", db.font)
 		local stackColor = db.stack.color

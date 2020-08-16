@@ -71,8 +71,8 @@ function S:TooltipFrames()
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
 	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
 	_G.GameTooltipStatusBar:ClearAllPoints()
-	_G.GameTooltipStatusBar:Point("TOPLEFT", _G.GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	_G.GameTooltipStatusBar:Point("TOPRIGHT", _G.GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:SetPoint("TOPLEFT", _G.GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:SetPoint("TOPRIGHT", _G.GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
 	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 
 	-- Tooltip Styling

@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 function UF:Construct_RaidIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
 	tex:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
-	tex:Size(18)
+	tex:SetSize(18)
 	tex:SetPoint("CENTER", frame.Health, "TOP", 0, 2)
 	tex.SetTexture = E.noop
 
@@ -18,7 +18,7 @@ function UF:Configure_RaidIcon(frame)
 	if db.raidicon.enable then
 		frame:EnableElement('RaidTargetIndicator')
 		RI:Show()
-		RI:Size(db.raidicon.size)
+		RI:SetSize(db.raidicon.size)
 
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.raidicon.attachToObject)
 		RI:ClearAllPoints()

@@ -41,15 +41,15 @@ local function ColorizeStatPane(frame)
 
 	local r, g, b = 0.8, 0.8, 0.8
 	frame.leftGrad = frame:CreateTexture(nil, "BORDER")
-	frame.leftGrad:Width(80)
-	frame.leftGrad:Height(frame:GetHeight())
+	frame.leftGrad:SetWidth(80)
+	frame.leftGrad:SetHeight(frame:GetHeight())
 	frame.leftGrad:SetPoint("LEFT", frame, "CENTER")
 	frame.leftGrad:SetTexture(E.Media.Textures.White8x8)
 	frame.leftGrad:SetGradientAlpha("Horizontal", r, g, b, 0.25, r, g, b, 0)
 
 	frame.rightGrad = frame:CreateTexture(nil, "BORDER")
-	frame.rightGrad:Width(80)
-	frame.rightGrad:Height(frame:GetHeight())
+	frame.rightGrad:SetWidth(80)
+	frame.rightGrad:SetHeight(frame:GetHeight())
 	frame.rightGrad:SetPoint("RIGHT", frame, "CENTER")
 	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
 	frame.rightGrad:SetGradientAlpha("Horizontal", r, g, b, 0, r, g, b, 0.25)
@@ -61,8 +61,8 @@ local function StatsPane(which)
 	CharacterStatsPane[which]:CreateBackdrop("Transparent")
 	CharacterStatsPane[which].backdrop:ClearAllPoints()
 	CharacterStatsPane[which].backdrop:SetPoint("CENTER")
-	CharacterStatsPane[which].backdrop:Width(150)
-	CharacterStatsPane[which].backdrop:Height(18)
+	CharacterStatsPane[which].backdrop:SetWidth(150)
+	CharacterStatsPane[which].backdrop:SetHeight(18)
 end
 
 local function SkinItemFlyouts()
@@ -112,7 +112,7 @@ local function SkinItemFlyouts()
 	end
 
 	local width, height = buttonAnchor:GetSize()
-	buttonAnchor:Size(width+3, height)
+	buttonAnchor:SetSize(width+3, height)
 end
 
 local function FixSidebarTabCoords()
@@ -239,7 +239,7 @@ local function UpdateCurrencySkins()
 					-- these two only need to be called once
 					-- adding them here will prevent additional calls
 					button.expandIcon:SetPoint("LEFT", 4, 0)
-					button.expandIcon:Size(15, 15)
+					button.expandIcon:SetSize(15, 15)
 				end
 
 				if button.isHeader then
@@ -475,8 +475,8 @@ function S:CharacterFrame()
 	--Equipement Manager
 	S:HandleButton(_G.PaperDollEquipmentManagerPaneEquipSet)
 	S:HandleButton(_G.PaperDollEquipmentManagerPaneSaveSet)
-	_G.PaperDollEquipmentManagerPaneEquipSet:Width(_G.PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
-	_G.PaperDollEquipmentManagerPaneSaveSet:Width(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
+	_G.PaperDollEquipmentManagerPaneEquipSet:SetWidth(_G.PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
+	_G.PaperDollEquipmentManagerPaneSaveSet:SetWidth(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
 	_G.PaperDollEquipmentManagerPaneEquipSet:SetPoint("TOPLEFT", _G.PaperDollEquipmentManagerPane, "TOPLEFT", 8, 0)
 	_G.PaperDollEquipmentManagerPaneSaveSet:SetPoint("LEFT", _G.PaperDollEquipmentManagerPaneEquipSet, "RIGHT", 4, 0)
 
@@ -485,7 +485,7 @@ function S:CharacterFrame()
 		object.BgTop:SetTexture()
 		object.BgBottom:SetTexture()
 		object.BgMiddle:SetTexture()
-		object.icon:Size(36, 36)
+		object.icon:SetSize(36, 36)
 		object.icon:SetTexCoord(unpack(E.TexCoords))
 
 		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
@@ -497,7 +497,7 @@ function S:CharacterFrame()
 		end)
 		hooksecurefunc(object.icon, "SetSize", function(icn, width, height)
 			if width == 30 or height == 30 then
-				icn:Size(36, 36)
+				icn:SetSize(36, 36)
 			end
 		end)
 	end

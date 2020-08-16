@@ -60,13 +60,13 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 	OnShow = function(self)
 		self.editBox:SetAutoFocus(false)
 		self.editBox.width = self.editBox:GetWidth()
-		self.editBox:Width(220)
+		self.editBox:SetWidth(220)
 		self.editBox:SetText(DOWNLOAD_URL)
 		self.editBox:HighlightText()
 		ChatEdit_FocusActiveWindow()
 	end,
 	OnHide = function(self)
-		self.editBox:Width(self.editBox.width or 50)
+		self.editBox:SetWidth(self.editBox.width or 50)
 		self.editBox.width = nil
 	end,
 	hideOnEscape = 1,
@@ -102,7 +102,7 @@ E.PopupDialogs.ELVUI_EDITBOX = {
 	OnShow = function(self, data)
 		self.editBox:SetAutoFocus(false)
 		self.editBox.width = self.editBox:GetWidth()
-		self.editBox:Width(280)
+		self.editBox:SetWidth(280)
 		self.editBox:AddHistoryLine('text')
 		self.editBox.temptxt = data
 		self.editBox:SetText(data)
@@ -110,7 +110,7 @@ E.PopupDialogs.ELVUI_EDITBOX = {
 		self.editBox:SetJustifyH('CENTER')
 	end,
 	OnHide = function(self)
-		self.editBox:Width(self.editBox.width or 50)
+		self.editBox:SetWidth(self.editBox.width or 50)
 		self.editBox.width = nil
 		self.temptxt = nil
 	end,
@@ -798,7 +798,7 @@ function E:StaticPopup_Resize(dialog, which)
 	end
 
 	if ( width > maxWidthSoFar )  then
-		dialog:Width(width)
+		dialog:SetWidth(width)
 		dialog.maxWidthSoFar = width
 	end
 
@@ -818,7 +818,7 @@ function E:StaticPopup_Resize(dialog, which)
 	end
 
 	if ( height > maxHeightSoFar ) then
-		dialog:Height(height)
+		dialog:SetHeight(height)
 		dialog.maxHeightSoFar = height
 	end
 end
@@ -939,9 +939,9 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		end
 		editBox:SetText('')
 		if ( info.editBoxWidth ) then
-			editBox:Width(info.editBoxWidth)
+			editBox:SetWidth(info.editBoxWidth)
 		else
-			editBox:Width(130)
+			editBox:SetWidth(130)
 		end
 	else
 		editBox:Hide()
@@ -1041,9 +1041,9 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 
 			local width = tempButtonLocs[i]:GetTextWidth()
 			if ( width > 110 ) then
-				tempButtonLocs[i]:Width(width + 20)
+				tempButtonLocs[i]:SetWidth(width + 20)
 			else
-				tempButtonLocs[i]:Width(120)
+				tempButtonLocs[i]:SetWidth(120)
 			end
 			tempButtonLocs[i]:Enable()
 			tempButtonLocs[i]:Show()
@@ -1152,7 +1152,7 @@ function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
 	btn:SetAttribute('type', 'macro')
 	btn:SetAttribute('macrotext', macro)
 	btn:SetAllPoints(button)
-	btn:Size(button:GetSize())
+	btn:SetSize(button:GetSize())
 	btn:HookScript('OnEnter', SecureOnEnter)
 	btn:HookScript('OnLeave', SecureOnLeave)
 	Skins:HandleButton(btn)
@@ -1182,7 +1182,7 @@ end
 function E:StaticPopup_PositionSecureButton(popup, popupButton, secureButton)
 	secureButton:SetParent(popup)
 	secureButton:SetAllPoints(popupButton)
-	secureButton:Size(popupButton:GetSize())
+	secureButton:SetSize(popupButton:GetSize())
 end
 
 function E:StaticPopup_SetSecureButton(which, btn)
@@ -1227,7 +1227,7 @@ function E:Contruct_StaticPopups()
 			Skins:HandleButton(_G['ElvUI_StaticPopup'..index..'Button'..i])
 		end
 
-		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)
+		_G['ElvUI_StaticPopup'..index..'CheckButton']:SetSize(24)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate(nil, nil, '')
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetTextColor(1,0.17,0.26)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetPoint('LEFT', _G['ElvUI_StaticPopup'..index..'CheckButton'], 'RIGHT', 4, 1)

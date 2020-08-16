@@ -75,7 +75,7 @@ end
 
 function NP:Construct_ThreatIndicator(nameplate)
 	local ThreatIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
-	ThreatIndicator:Size(16, 16)
+	ThreatIndicator:SetSize(16, 16)
 	ThreatIndicator:Hide()
 	ThreatIndicator:SetPoint('CENTER', nameplate, 'TOPRIGHT')
 

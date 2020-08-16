@@ -437,7 +437,7 @@ function S:HandleRotateButton(btn)
 	if btn.isSkinned then return end
 
 	btn:CreateBackdrop()
-	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
+	btn:SetSize(btn:GetWidth() - 14, btn:GetHeight() - 14)
 
 	local normTex = btn:GetNormalTexture()
 	local pushTex = btn:GetPushedTexture()
@@ -467,7 +467,7 @@ do
 		for name, direction in pairs(btns) do
 			local button = frame[name]
 			if button then
-				button:Size(14, 14)
+				button:SetSize(14, 14)
 				button:ClearAllPoints()
 				button:SetPoint("CENTER")
 				button:SetHitRectInsets(1, 1, 1, 1)
@@ -587,7 +587,7 @@ do
 		frame.forceSaturation = forceSaturation
 
 		if noBackdrop then
-			frame:Size(16)
+			frame:SetSize(16)
 		else
 			frame:CreateBackdrop()
 			frame.backdrop:SetInside(nil, 4, 4)
@@ -667,14 +667,14 @@ function S:HandleRadioButton(Button)
 
 	local InsideMask = Button:CreateMaskTexture()
 	InsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-	InsideMask:Size(10, 10)
+	InsideMask:SetSize(10, 10)
 	InsideMask:SetPoint('CENTER')
 
 	Button.InsideMask = InsideMask
 
 	local OutsideMask = Button:CreateMaskTexture()
 	OutsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-	OutsideMask:Size(13, 13)
+	OutsideMask:SetSize(13, 13)
 	OutsideMask:SetPoint('CENTER')
 
 	Button.OutsideMask = OutsideMask
@@ -765,7 +765,7 @@ function S:HandleCloseButton(f, point, x, y)
 		f.Texture = f:CreateTexture(nil, 'OVERLAY')
 		f.Texture:SetPoint("CENTER")
 		f.Texture:SetTexture(E.Media.Textures.Close)
-		f.Texture:Size(12, 12)
+		f.Texture:SetSize(12, 12)
 		f:HookScript('OnEnter', handleCloseButtonOnEnter)
 		f:HookScript('OnLeave', handleCloseButtonOnLeave)
 		f:SetHitRectInsets(6, 6, 7, 7)
@@ -793,12 +793,12 @@ function S:HandleSliderFrame(frame)
 
 	local thumb = frame:GetThumbTexture()
 	thumb:SetVertexColor(1, .82, 0, 0.8)
-	thumb:Size(SIZE-2,SIZE-2)
+	thumb:SetSize(SIZE-2,SIZE-2)
 
 	if orientation == 'VERTICAL' then
-		frame:Width(SIZE)
+		frame:SetWidth(SIZE)
 	else
-		frame:Height(SIZE)
+		frame:SetHeight(SIZE)
 
 		for i=1, frame:GetNumRegions() do
 			local region = select(i, frame:GetRegions())
@@ -1087,8 +1087,8 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	editBox:DisableDrawLayer("BACKGROUND") -- Removes textures around it
 
 	frame:CreateBackdrop("Transparent")
-	frame:Height(frame:GetHeight() + 10)
-	scrollFrame:Height(scrollFrame:GetHeight() + 10)
+	frame:SetHeight(frame:GetHeight() + 10)
+	scrollFrame:SetHeight(scrollFrame:GetHeight() + 10)
 
 	for i = 1, numIcons do
 		local button = _G[buttonNameTemplate..i]
@@ -1141,13 +1141,13 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 	local Normal, Disabled, Pushed = btn:GetNormalTexture(), btn:GetDisabledTexture(), btn:GetPushedTexture()
 
 	if noBackdrop then
-		btn:Size(20, 20)
+		btn:SetSize(20, 20)
 		Disabled:SetVertexColor(.5, .5, .5)
 		btn.Texture = Normal
 		btn:HookScript("OnEnter", handleCloseButtonOnEnter)
 		btn:HookScript("OnLeave", handleCloseButtonOnLeave)
 	else
-		btn:Size(18, 18)
+		btn:SetSize(18, 18)
 		Disabled:SetVertexColor(.3, .3, .3)
 	end
 

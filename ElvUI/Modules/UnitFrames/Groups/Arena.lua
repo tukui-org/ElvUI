@@ -150,7 +150,7 @@ function UF:Update_ArenaFrames(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)
@@ -194,11 +194,11 @@ function UF:Update_ArenaFrames(frame, db)
 	end
 
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
-		ArenaHeader:Width(frame.UNIT_WIDTH)
-		ArenaHeader:Height(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * 4))
+		ArenaHeader:SetWidth(frame.UNIT_WIDTH)
+		ArenaHeader:SetHeight(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * 4))
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
-		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
-		ArenaHeader:Height(frame.UNIT_HEIGHT)
+		ArenaHeader:SetWidth(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
+		ArenaHeader:SetHeight(frame.UNIT_HEIGHT)
 	end
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")

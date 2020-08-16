@@ -115,7 +115,7 @@ local function SkinBags()
 			container.backdrop:SetInside()
 			S:HandleCloseButton(_G[container:GetName().."CloseButton"])
 			S:HandleButton(container.PortraitButton)
-			container.PortraitButton:Size(35)
+			container.PortraitButton:SetSize(35)
 			container.PortraitButton.Highlight:SetAlpha(0)
 			container:HookScript("OnShow", SkinContainer)
 
@@ -237,7 +237,7 @@ function S:ContainerFrame()
 
 	local BagItemSearchBox = _G.BagItemSearchBox
 	S:HandleEditBox(BagItemSearchBox)
-	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)
+	BagItemSearchBox:SetHeight(BagItemSearchBox:GetHeight() - 5)
 
 	local BankItemSearchBox = _G.BankItemSearchBox
 	BankItemSearchBox:StripTextures()

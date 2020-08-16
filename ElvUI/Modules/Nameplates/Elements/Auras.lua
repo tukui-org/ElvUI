@@ -14,7 +14,7 @@ function NP:Construct_Auras(nameplate)
 	local Buffs = CreateFrame('Frame', frameName..'Buffs', nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
-	Buffs:Size(300, 27)
+	Buffs:SetSize(300, 27)
 	Buffs.disableMouse = true
 	Buffs.size = 27
 	Buffs.num = 4
@@ -29,7 +29,7 @@ function NP:Construct_Auras(nameplate)
 	local Debuffs = CreateFrame('Frame', frameName..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
-	Debuffs:Size(300, 27)
+	Debuffs:SetSize(300, 27)
 	Debuffs.disableMouse = true
 	Debuffs.size = 27
 	Debuffs.num = 4
@@ -99,7 +99,7 @@ function NP:Configure_Auras(nameplate, auras, db)
 	end
 
 	local mult = floor((nameplate.width or 150) / db.size) < db.numAuras
-	auras:Size((nameplate.width or 150), (mult and 1 or 2) * db.size)
+	auras:SetSize((nameplate.width or 150), (mult and 1 or 2) * db.size)
 	auras:ClearAllPoints()
 	auras:SetPoint(E.InversePoints[db.anchorPoint] or 'TOPRIGHT', db.attachTo == 'BUFFS' and nameplate.Buffs or nameplate, db.anchorPoint or 'TOPRIGHT', db.xOffset, db.yOffset)
 end
@@ -165,7 +165,7 @@ function NP:UpdateAuraSettings(button)
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	button:Size((button.db and button.db.size) or 26)
+	button:SetSize((button.db and button.db.size) or 26)
 
 	button.needsUpdateCooldownPosition = true
 end

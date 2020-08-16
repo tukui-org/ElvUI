@@ -30,7 +30,7 @@ local function HandleSearchBarFrame(Frame)
 	S:HandleButton(Frame.SearchButton)
 	S:HandleEditBox(Frame.SearchBox)
 	S:HandleButton(Frame.FavoritesSearchButton)
-	Frame.FavoritesSearchButton:Size(22)
+	Frame.FavoritesSearchButton:SetSize(22)
 end
 
 local function HandleListIcon(frame)
@@ -87,7 +87,7 @@ local function SkinItemDisplay(frame)
 
 	-- We skin the new IconBorder from the AH, it looks really cool tbh.
 	ItemButton.Icon:SetTexCoord(.08, .92, .08, .92)
-	ItemButton.Icon:Size(44)
+	ItemButton.Icon:SetSize(44)
 	ItemButton.IconBorder:SetTexCoord(.08, .92, .08, .92)
 end
 
@@ -114,7 +114,7 @@ end
 
 local function HandleAuctionButtons(button)
 	S:HandleButton(button)
-	button:Size(22)
+	button:SetSize(22)
 end
 
 local function HandleSellFrame(frame)
@@ -149,7 +149,7 @@ local function HandleSellFrame(frame)
 
 	if frame.BuyoutModeCheckButton then
 		S:HandleCheckBox(frame.BuyoutModeCheckButton)
-		frame.BuyoutModeCheckButton:Size(20)
+		frame.BuyoutModeCheckButton:SetSize(20)
 	end
 end
 

@@ -14,7 +14,7 @@ function S:MerchantFrame()
 	MerchantFrame.backdrop:SetPoint("TOPLEFT", 6, 2)
 	MerchantFrame.backdrop:SetPoint("BOTTOMRIGHT", 2, -1)
 
-	MerchantFrame:Width(360)
+	MerchantFrame:SetWidth(360)
 
 	_G.MerchantBuyBackItem:StripTextures(true)
 	_G.MerchantBuyBackItem:CreateBackdrop("Transparent")

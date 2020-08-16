@@ -58,7 +58,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Spark_:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	castbar.Spark_:SetBlendMode('ADD')
 	castbar.Spark_:SetVertexColor(1, 1, 1)
-	castbar.Spark_:Size(20, 40)
+	castbar.Spark_:SetSize(20, 40)
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, "OVERLAY")
@@ -101,9 +101,9 @@ function UF:Configure_Castbar(frame)
 	local castbar = frame.Castbar
 	local db = frame.db.castbar
 
-	castbar:Width(db.width - ((frame.BORDER+frame.SPACING)*2))
-	castbar:Height(db.height - ((frame.BORDER+frame.SPACING)*2))
-	castbar.Holder:Size(db.width, db.height)
+	castbar:SetWidth(db.width - ((frame.BORDER+frame.SPACING)*2))
+	castbar:SetHeight(db.height - ((frame.BORDER+frame.SPACING)*2))
+	castbar.Holder:SetSize(db.width, db.height)
 
 	local oSC = castbar.Holder:GetScript('OnSizeChanged')
 	if oSC then oSC(castbar.Holder) end
@@ -142,10 +142,10 @@ function UF:Configure_Castbar(frame)
 		castbar.Icon:SetTexCoord(unpack(E.TexCoords))
 
 		if (not db.iconAttached) then
-			castbar.Icon.bg:Size(db.iconSize)
+			castbar.Icon.bg:SetSize(db.iconSize)
 		else
-			castbar.Icon.bg:Size(db.height-frame.SPACING*2)
-			castbar:Width(db.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*5))
+			castbar.Icon.bg:SetSize(db.height-frame.SPACING*2)
+			castbar:SetWidth(db.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*5))
 		end
 
 		castbar.Icon.bg:Show()
@@ -157,7 +157,7 @@ function UF:Configure_Castbar(frame)
 	if db.spark then
 		castbar.Spark = castbar.Spark_
 		castbar.Spark:SetPoint('CENTER', castbar:GetStatusBarTexture(), db.reverse and 'LEFT' or 'RIGHT', 0, 0)
-		castbar.Spark:Height(db.height * 2)
+		castbar.Spark:SetHeight(db.height * 2)
 	elseif castbar.Spark then
 		castbar.Spark:Hide()
 		castbar.Spark = nil
@@ -180,7 +180,7 @@ function UF:Configure_Castbar(frame)
 			castbar:SetInside(anchor, 0, 0)
 		else
 			if castbar.Icon then
-				castbar.Icon.bg:Size(anchor:GetHeight() - frame.SPACING*2)
+				castbar.Icon.bg:SetSize(anchor:GetHeight() - frame.SPACING*2)
 			end
 
 			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
@@ -194,7 +194,7 @@ function UF:Configure_Castbar(frame)
 		end
 
 		if db.spark then
-			castbar.Spark:Height(anchor:GetHeight() * 2)
+			castbar.Spark:SetHeight(anchor:GetHeight() * 2)
 		end
 	else
 		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
@@ -238,7 +238,7 @@ function UF:Configure_Castbar(frame)
 
 		for i = 1, #ticks do
 			ticks[i]:SetVertexColor(castbar.tickColor.r, castbar.tickColor.g, castbar.tickColor.b, castbar.tickColor.a)
-			ticks[i]:Width(castbar.tickWidth)
+			ticks[i]:SetWidth(castbar.tickWidth)
 		end
 	end
 
@@ -335,18 +335,18 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 			ticks[i]:SetTexture(E.media.normTex)
 			E:RegisterStatusBar(ticks[i])
 			ticks[i]:SetVertexColor(frame.tickColor.r, frame.tickColor.g, frame.tickColor.b, frame.tickColor.a)
-			ticks[i]:Width(frame.tickWidth)
+			ticks[i]:SetWidth(frame.tickWidth)
 		end
 
-		ticks[i]:Height(frame.tickHeight)
+		ticks[i]:SetHeight(frame.tickHeight)
 
 		--[[if(ms ~= 0) then
 			local perc = (w / frame.max) * (ms / 1e5)
 			if(perc > 1) then perc = 1 end
 
-			ticks[i]:Width((w * perc) / (numTicks + extraTickRatio))
+			ticks[i]:SetWidth((w * perc) / (numTicks + extraTickRatio))
 		else
-			ticks[i]:Width(1)
+			ticks[i]:SetWidth(1)
 		end]]
 
 		ticks[i]:ClearAllPoints()
@@ -374,10 +374,10 @@ function UF:PostCastStart(unit)
 		E:Delay(0.05, function() -- Delay may need tweaking
 			textWidth = self:GetWidth() - self.Time:GetStringWidth() - 10
 			textStringWidth = self.Text:GetStringWidth()
-			if textWidth > 0 then self.Text:Width(min(textWidth, textStringWidth)) end
+			if textWidth > 0 then self.Text:SetWidth(min(textWidth, textStringWidth)) end
 		end)
 	else
-		self.Text:Width(min(textWidth, textStringWidth))
+		self.Text:SetWidth(min(textWidth, textStringWidth))
 	end
 
 	self.unit = unit

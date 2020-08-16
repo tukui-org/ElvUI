@@ -11,7 +11,7 @@ local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
 
 local function HandlePushToTalkButton(button)
-	button:Size(button:GetSize())
+	button:SetSize(button:GetSize())
 
 	button.TopLeft:Hide()
 	button.TopRight:Hide()
@@ -179,8 +179,8 @@ function S:BlizzardOptions()
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
-	_G.ChatConfigMoveFilterUpButton:Size(19, 19)
-	_G.ChatConfigMoveFilterDownButton:Size(19, 19)
+	_G.ChatConfigMoveFilterUpButton:SetSize(19, 19)
+	_G.ChatConfigMoveFilterDownButton:SetSize(19, 19)
 	_G.ChatConfigMoveFilterUpButton:SetPoint("TOPLEFT", "$parent", "BOTTOMLEFT", 0, -3)
 	_G.ChatConfigMoveFilterDownButton:SetPoint("LEFT", _G.ChatConfigMoveFilterUpButton, "RIGHT", 3, 0)
 
@@ -337,7 +337,7 @@ function S:BlizzardOptions()
 
 		if newProfileDialog.editBox then
 			S:HandleEditBox(newProfileDialog.editBox)
-			newProfileDialog.editBox:Size(210, 25)
+			newProfileDialog.editBox:SetSize(210, 25)
 		end
 	end
 

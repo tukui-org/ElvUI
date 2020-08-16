@@ -83,11 +83,11 @@ function M:LoadRaidMarker()
 	local marker = CreateFrame("Frame", nil, E.UIParent);
 	marker:EnableMouse(true);
 	marker:SetFrameStrata("DIALOG");
-	marker:Size(100, 100);
+	marker:SetSize(100, 100);
 
 	for i = 1, 8 do
 		local button = CreateFrame("Button", "RaidMarkIconButton"..i, marker);
-		button:Size(40);
+		button:SetSize(40);
 		button:SetID(i);
 		button.Texture = button:CreateTexture(button:GetName().."NormalTexture", "ARTWORK");
 		button.Texture:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]]);

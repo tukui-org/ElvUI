@@ -34,7 +34,7 @@ local function HandleGoldIcon(button)
 	Button:CreateBackdrop()
 	Button.backdrop:ClearAllPoints()
 	Button.backdrop:SetPoint("LEFT", 1, 0)
-	Button.backdrop:Size(42)
+	Button.backdrop:SetSize(42)
 
 	iconTexture:SetTexCoord(unpack(E.TexCoords))
 	iconTexture:SetDrawLayer("OVERLAY")
@@ -45,7 +45,7 @@ local function HandleGoldIcon(button)
 	count:SetDrawLayer("OVERLAY")
 
 	nameFrame:SetTexture()
-	nameFrame:Size(118, 39)
+	nameFrame:SetSize(118, 39)
 end
 
 local function SkinItemButton(parentFrame, _, index)
@@ -55,7 +55,7 @@ local function SkinItemButton(parentFrame, _, index)
 		item:CreateBackdrop()
 		item.backdrop:ClearAllPoints()
 		item.backdrop:SetPoint("LEFT", 1, 0)
-		item.backdrop:Size(42)
+		item.backdrop:SetSize(42)
 
 		item.Icon:SetTexCoord(unpack(E.TexCoords))
 		item.Icon:SetDrawLayer("OVERLAY")
@@ -66,7 +66,7 @@ local function SkinItemButton(parentFrame, _, index)
 		item.Count:SetParent(item.backdrop)
 
 		item.NameFrame:SetTexture()
-		item.NameFrame:Size(118, 39)
+		item.NameFrame:SetSize(118, 39)
 
 		item.shortageBorder:SetTexture()
 
@@ -206,7 +206,7 @@ function S:LookingForGroupFrames()
 			local isLeader = roleButton:GetName() ~= nil and roleButton:GetName():find("Leader") or false
 			if(not isLeader) then
 				roleButton.background = roleButton:CreateTexture(nil, "BACKGROUND")
-				roleButton.background:Size(80, 80)
+				roleButton.background:SetSize(80, 80)
 				roleButton.background:SetPoint("CENTER")
 				roleButton.background:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 				roleButton.background:SetAlpha(0.65)
@@ -267,13 +267,13 @@ function S:LookingForGroupFrames()
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon = _G.LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.Leader)
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetPoint(_G.LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
-	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Size(50)
+	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetSize(50)
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
 
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon = _G.RaidFinderQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.Leader)
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetPoint(_G.RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
-	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Size(50)
+	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetSize(50)
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
 
 	hooksecurefunc('LFG_DisableRoleButton', function(button)
@@ -305,7 +305,7 @@ function S:LookingForGroupFrames()
 		bu.bg:Kill()
 		S:HandleButton(bu)
 
-		bu.icon:Size(45)
+		bu.icon:SetSize(45)
 		bu.icon:ClearAllPoints()
 		bu.icon:SetPoint("LEFT", 10, 0)
 		S:HandleIcon(bu.icon, true)
@@ -398,8 +398,8 @@ function S:LookingForGroupFrames()
 	_G.LFRQueueFrameSpecificListScrollFrameScrollBackgroundTopLeft:Hide()
 	_G.LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
 	_G.LFRQueueFrameCommentScrollFrame:CreateBackdrop()
-	_G.LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
-	_G.LFRBrowseFrameColumnHeader2:Width(38)
+	_G.LFRBrowseFrameColumnHeader1:SetWidth(94) --Fix the columns being slightly off
+	_G.LFRBrowseFrameColumnHeader2:SetWidth(38)
 
 	_G.RaidBrowserFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(_G.RaidBrowserFrameCloseButton)
@@ -567,7 +567,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
 	LFGListFrame.SearchPanel.FilterButton:SetPoint("LEFT", LFGListFrame.SearchPanel.SearchBox, "RIGHT", 5, 0)
 	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
-	LFGListFrame.SearchPanel.RefreshButton:Size(24)
+	LFGListFrame.SearchPanel.RefreshButton:SetSize(24)
 	LFGListFrame.SearchPanel.RefreshButton.Icon:SetPoint("CENTER")
 
 	hooksecurefunc("LFGListApplicationViewer_UpdateApplicant", function(button)
@@ -606,7 +606,7 @@ function S:LookingForGroupFrames()
 				button.moved = true
 			end
 		end
-		self.AutoCompleteFrame:Height(numResults * (self.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
+		self.AutoCompleteFrame:SetHeight(numResults * (self.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
 	end)
 
 	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
@@ -640,7 +640,7 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
-	LFGListFrame.ApplicationViewer.RefreshButton:Size(24, 24)
+	LFGListFrame.ApplicationViewer.RefreshButton:SetSize(24, 24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.RefreshButton:SetPoint("BOTTOMRIGHT", LFGListFrame.ApplicationViewer.Inset, "TOPRIGHT", 16, 4)
 
