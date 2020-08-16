@@ -53,8 +53,8 @@ function S:MerchantFrame()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()
-		icon:SetPoint("TOPLEFT", E.mult, -E.mult)
-		icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+		icon:SetPoint("TOPLEFT", 1, -1)
+		icon:SetPoint("BOTTOMRIGHT", -1, 1)
 
 		iconBorder:SetAlpha(0)
 		hooksecurefunc(iconBorder, 'SetVertexColor', function(s, r, g, b)
@@ -76,8 +76,8 @@ function S:MerchantFrame()
 
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("TOPLEFT", E.mult, -E.mult)
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("TOPLEFT", 1, -1)
+	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("BOTTOMRIGHT", -1, 1)
 
 	_G.MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
 	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'SetVertexColor', function(s, r, g, b)
