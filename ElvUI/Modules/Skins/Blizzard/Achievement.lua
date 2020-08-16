@@ -100,8 +100,8 @@ local function SkinSearchButton(self)
 
 	local hl = self:GetHighlightTexture()
 	hl:SetVertexColor(1, 1, 1, 0.3)
-	hl:SetPoint("TOPLEFT", E.mult, -E.mult)
-	hl:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+	hl:SetPoint("TOPLEFT", 1, -1)
+	hl:SetPoint("BOTTOMRIGHT", -1, 1)
 end
 
 function S:Blizzard_AchievementUI(event)

@@ -102,11 +102,11 @@ function AB:UpdatePet(event, unit)
 end
 
 function AB:PositionAndSizeBarPet()
-	local buttonSpacing = E:Scale(self.db.barPet.buttonspacing)
-	local backdropSpacing = E:Scale((self.db.barPet.backdropSpacing or self.db.barPet.buttonspacing))
+	local buttonSpacing = self.db.barPet.buttonspacing
+	local backdropSpacing = self.db.barPet.backdropSpacing or self.db.barPet.buttonspacing
 	local buttonsPerRow = self.db.barPet.buttonsPerRow
 	local numButtons = self.db.barPet.buttons
-	local size = E:Scale(self.db.barPet.buttonsize)
+	local size = self.db.barPet.buttonsize
 	local autoCastSize = (size / 2) - (size / 7.5)
 	local point = self.db.barPet.point
 	local numColumns = ceil(numButtons / buttonsPerRow)

@@ -170,7 +170,7 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 	if not frame.backdrop then frame.backdrop = backdrop end
 
 	if frame.forcePixelMode or forcePixelMode then
-		backdrop:SetOutside(frame, E.mult, E.mult)
+		backdrop:SetOutside(frame, 1, 1)
 	else
 		backdrop:SetOutside(frame)
 	end
@@ -195,7 +195,7 @@ local function CreateShadow(frame, size, pass)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, size or 3, size or 3)
-	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(size or 3)})
+	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = size or 3})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 
@@ -246,8 +246,8 @@ local function StripRegion(which, object, kill, alpha)
 	if kill then
 		object:Kill()
 	elseif which == STRIP_TEX then
-		if object:GetTexture() then object:SetTexture(nil) end
-		if object:GetAtlas() then object:SetAtlas(nil) end
+		object:SetTexture('')
+		object:SetAtlas('')
 	elseif which == STRIP_FONT then
 		object:SetText('')
 	end
@@ -313,8 +313,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	fs:SetFont(font, fontSize, fontStyle)
 
 	if fontStyle == 'NONE' then
-		local s = E.mult or 1
-		fs:SetShadowOffset(s, -s/2)
+		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else
 		fs:SetShadowOffset(0, 0)

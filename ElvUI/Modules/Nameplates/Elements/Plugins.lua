@@ -87,7 +87,7 @@ function NP:Construct_TargetIndicator(nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
 	TargetIndicator.Shadow = CreateFrame("Frame", nil, TargetIndicator, "BackdropTemplate")
-	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
+	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = 5})
 	TargetIndicator.Shadow:Hide()
 
 	for _, object in ipairs(targetIndicators) do
@@ -138,7 +138,7 @@ function NP:Update_TargetIndicator(nameplate)
 		end
 
 		if nameplate.TargetIndicator.Shadow and (GlowStyle == "style1" or GlowStyle == "style5" or GlowStyle == "style7") then
-			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
+			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E.PixelMode and 6 or 8, E.PixelMode and 6 or 8)
 			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
 			nameplate.TargetIndicator.Shadow:SetAlpha(Color.a)
 		end

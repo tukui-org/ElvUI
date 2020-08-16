@@ -241,7 +241,7 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = (nameplate == _G.ElvNP_Player and E.mult) or E.global.general.UIScale
+	local mult = (nameplate == _G.ElvNP_Player and 1) or E.global.general.UIScale
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
@@ -741,7 +741,7 @@ function NP:Initialize()
 	_G.ElvNP_Player:ClearAllPoints()
 	_G.ElvNP_Player:SetPoint('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-	_G.ElvNP_Player:SetScale(E.mult)
+	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
