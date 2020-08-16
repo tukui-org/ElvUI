@@ -176,6 +176,10 @@ function E:OnInitialize()
 	E.twoPixelsPlease = false
 	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
+
+	E.Spacing = E.PixelMode and 0 or 1
+	E.Border = (not E.twoPixelsPlease and E.PixelMode and 1) or 2
+
 	E:UIScale(true)
 	E:UpdateMedia()
 	E:Contruct_StaticPopups()
@@ -202,7 +206,7 @@ function E:OnInitialize()
 	GameMenuFrame[E.name] = GameMenuButton
 
 	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
-		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+		GameMenuButton:SetSize(GameMenuButtonLogout:GetSize())
 		GameMenuButton:SetPoint('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end

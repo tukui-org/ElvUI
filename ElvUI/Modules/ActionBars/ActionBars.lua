@@ -123,11 +123,11 @@ AB.customExitButton = {
 function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 
-	local buttonSpacing = E:Scale(db.buttonspacing)
-	local backdropSpacing = E:Scale(db.backdropSpacing or db.buttonspacing)
+	local buttonSpacing = db.buttonspacing
+	local backdropSpacing = db.backdropSpacing or db.buttonspacing
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
-	local size = E:Scale(db.buttonsize)
+	local size = db.buttonsize
 	local point = db.point
 	local numColumns = ceil(numButtons / buttonsPerRow)
 	local widthMult = db.widthMult
@@ -203,7 +203,7 @@ function AB:PositionAndSizeBar(barName)
 		button:SetParent(bar)
 		button:ClearAllPoints()
 		button:SetAttribute("showgrid", 1)
-		button:Size(size)
+		button:SetSize(size, size)
 		button:EnableMouse(not db.clickThrough)
 
 		if i == 1 then
@@ -376,7 +376,7 @@ function AB:CreateVehicleLeave()
 
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
 	holder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
-	holder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
+	holder:SetSize(_G.MainMenuBarVehicleLeaveButton:GetSize())
 	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,vehicleExitButton')
 
 	local Button = _G.MainMenuBarVehicleLeaveButton
@@ -412,10 +412,10 @@ end
 
 function AB:UpdateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
-	_G.MainMenuBarVehicleLeaveButton:Size(db.size)
+	_G.MainMenuBarVehicleLeaveButton:SetSize(db.size, db.size)
 	_G.MainMenuBarVehicleLeaveButton:SetFrameStrata(db.strata)
 	_G.MainMenuBarVehicleLeaveButton:SetFrameLevel(db.level)
-	_G.VehicleLeaveButtonHolder:Size(db.size)
+	_G.VehicleLeaveButtonHolder:SetSize(db.size, db.size)
 end
 
 function AB:ReassignBindings(event)
@@ -945,7 +945,7 @@ function AB:FixKeybindText(button)
 	end
 
 	if text then
-		
+
 		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
 		text = gsub(text, 'ALT%-', L["KEY_ALT"])
 		text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
@@ -1027,7 +1027,7 @@ function AB:SetupFlyoutButton(button)
 	end
 
 	if not InCombatLockdown() then
-		button:Size(AB.db.flyoutSize)
+		button:SetSize(AB.db.flyoutSize, AB.db.flyoutSize)
 	end
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then

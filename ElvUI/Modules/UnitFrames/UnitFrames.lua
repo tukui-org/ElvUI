@@ -326,7 +326,7 @@ function UF:GetAuraOffset(p1, p2)
 		y = 1
 	end
 
-	return E:Scale(x), E:Scale(y)
+	return x, y
 end
 
 function UF:GetAuraAnchorFrame(frame, attachTo)
@@ -750,7 +750,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 		end
 	end
 
-	Header:Size(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
+	Header:SetSize(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
 end
 
 function UF.groupPrototype:Update(Header)

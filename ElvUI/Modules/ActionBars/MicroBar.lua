@@ -130,15 +130,15 @@ function AB:UpdateMicroPositionDimensions()
 
 	local numRows = 1
 	local prevButton = ElvUI_MicroBar
-	local offset = E:Scale(E.PixelMode and 1 or 3)
-	local spacing = E:Scale(offset + self.db.microbar.buttonSpacing)
+	local offset = E.PixelMode and 1 or 3
+	local spacing = offset + self.db.microbar.buttonSpacing
 
 	for i=1, #_G.MICRO_BUTTONS-1 do
 		local button = _G[__buttonIndex[i]] or _G[_G.MICRO_BUTTONS[i]]
 		local lastColumnButton = i-self.db.microbar.buttonsPerRow
 		lastColumnButton = _G[__buttonIndex[lastColumnButton]] or _G[_G.MICRO_BUTTONS[lastColumnButton]]
 
-		button:Size(self.db.microbar.buttonSize, self.db.microbar.buttonSize * 1.4)
+		button:SetSize(self.db.microbar.buttonSize, self.db.microbar.buttonSize * 1.4)
 		button:ClearAllPoints()
 
 		if prevButton == ElvUI_MicroBar then
@@ -161,7 +161,7 @@ function AB:UpdateMicroPositionDimensions()
 
 	AB.MicroWidth = (((_G.CharacterMicroButton:GetWidth() + spacing) * self.db.microbar.buttonsPerRow) - spacing) + (offset * 2)
 	AB.MicroHeight = (((_G.CharacterMicroButton:GetHeight() + spacing) * numRows) - spacing) + (offset * 2)
-	ElvUI_MicroBar:Size(AB.MicroWidth, AB.MicroHeight)
+	ElvUI_MicroBar:SetSize(AB.MicroWidth, AB.MicroHeight)
 
 	if ElvUI_MicroBar.mover then
 		if self.db.microbar.enabled then

@@ -61,25 +61,12 @@ local function GetTemplate(template, isUnitFrameElement)
 	end
 end
 
+-- * WARNING * ~ Size, Width, Height, and Point APIs we provide will be removed during prepatch!!
+local function Width(frame, ...) frame:SetWidth(...) end
+local function Height(frame, ...) frame:SetHeight(...) end
+local function Point(frame, ...) frame:SetPoint(...) end
 local function Size(frame, width, height, ...)
-	assert(width)
 	frame:SetSize(width, height or width, ...)
-end
-
-local function Width(frame, width, ...)
-	assert(width)
-	frame:SetWidth(width, ...)
-end
-
-local function Height(frame, height, ...)
-	assert(height)
-	frame:SetHeight(height, ...)
-end
-
-local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
-	if arg2 == nil then arg2 = obj:GetParent() end
-
-	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
@@ -93,8 +80,8 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
 end
 
 local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
@@ -108,8 +95,8 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
 local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
@@ -183,7 +170,7 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 	if not frame.backdrop then frame.backdrop = backdrop end
 
 	if frame.forcePixelMode or forcePixelMode then
-		backdrop:SetOutside(frame, E.mult, E.mult)
+		backdrop:SetOutside(frame, 1, 1)
 	else
 		backdrop:SetOutside(frame)
 	end
@@ -259,8 +246,8 @@ local function StripRegion(which, object, kill, alpha)
 	if kill then
 		object:Kill()
 	elseif which == STRIP_TEX then
-		if object:GetTexture() then object:SetTexture(nil) end
-		if object:GetAtlas() then object:SetAtlas(nil) end
+		object:SetTexture('')
+		object:SetAtlas('')
 	elseif which == STRIP_FONT then
 		object:SetText('')
 	end
@@ -326,8 +313,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	fs:SetFont(font, fontSize, fontStyle)
 
 	if fontStyle == 'NONE' then
-		local s = E.mult or 1
-		fs:SetShadowOffset(s, -s/2)
+		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else
 		fs:SetShadowOffset(0, 0)
@@ -384,8 +370,8 @@ do
 		if frame.CloseButton then return end
 
 		local CloseButton = CreateFrame('Button', nil, frame)
-		CloseButton:Size(size or 16)
-		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
+		CloseButton:SetSize(size or 16, size or 16)
+		CloseButton:SetPoint('TOPRIGHT', offset or -6, offset or -6)
 		if backdrop then
 			CloseButton:CreateBackdrop(nil, true)
 		end

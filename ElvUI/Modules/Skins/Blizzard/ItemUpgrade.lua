@@ -38,7 +38,7 @@ function S:Blizzard_ItemUpgradeUI()
 	local TextFrame = ItemUpgradeFrame.TextFrame
 	TextFrame:StripTextures()
 	TextFrame:CreateBackdrop('Transparent')
-	TextFrame.backdrop:SetPoint("TOPLEFT", ItemButton.IconTexture, "TOPRIGHT", 3, E.mult)
+	TextFrame.backdrop:SetPoint("TOPLEFT", ItemButton.IconTexture, "TOPRIGHT", 3, 1)
 	TextFrame.backdrop:SetPoint("BOTTOMRIGHT", -6, 2)
 
 	_G.ItemUpgradeFrameMoneyFrame:StripTextures()

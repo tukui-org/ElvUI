@@ -58,7 +58,7 @@ function S:PetStableFrame()
 		local b = CreateFrame("Frame", nil, PetStableSelectedPetIcon:GetParent(), "BackdropTemplate")
 		b:SetPoint("TOPLEFT", PetStableSelectedPetIcon, -p, p)
 		b:SetPoint("BOTTOMRIGHT", PetStableSelectedPetIcon, p, -p)
-		PetStableSelectedPetIcon:Size(37,37)
+		PetStableSelectedPetIcon:SetSize(37,37)
 		PetStableSelectedPetIcon:SetParent(b)
 		b:SetTemplate()
 	end

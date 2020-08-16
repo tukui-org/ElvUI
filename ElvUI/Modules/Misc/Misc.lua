@@ -263,7 +263,7 @@ end
 
 function M:SetupChallengeTimer()
 	local bar = CreateFrame("StatusBar", "ElvUI_ChallengeModeTimer", E.UIParent)
-	bar:Size(250, 20)
+	bar:SetSize(250, 20)
 	bar:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 10, -10)
 	bar:CreateBackdrop("Transparent")
 	bar:SetStatusBarTexture(E.media.normTex)
@@ -301,7 +301,7 @@ function M:QUEST_COMPLETE()
 	if not self.QuestRewardGoldIconFrame then
 		local frame = CreateFrame("Frame", nil, firstItem)
 		frame:SetFrameStrata("HIGH")
-		frame:Size(20)
+		frame:SetSize(20, 20)
 		frame.Icon = frame:CreateTexture(nil, "OVERLAY")
 		frame.Icon:SetAllPoints(frame)
 		frame.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])

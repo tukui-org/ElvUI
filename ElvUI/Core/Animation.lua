@@ -114,13 +114,13 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		anim.in1 = anim:CreateAnimation('Translation')
 		anim.in1:SetDuration(0)
 		anim.in1:SetOrder(1)
-		anim.in1:SetOffset(E:Scale(x), E:Scale(y))
+		anim.in1:SetOffset(x, y)
 
 		anim.in2 = anim:CreateAnimation('Translation')
 		anim.in2:SetDuration(duration)
 		anim.in2:SetOrder(2)
 		anim.in2:SetSmoothing('OUT')
-		anim.in2:SetOffset(E:Scale(-x), E:Scale(-y))
+		anim.in2:SetOffset(-x, -y)
 
 		anim.out1 = obj:CreateAnimationGroup('Move_Out')
 		anim.out1:SetScript('OnFinished', function() obj:Hide() end)
@@ -129,7 +129,7 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		anim.out2:SetDuration(duration)
 		anim.out2:SetOrder(1)
 		anim.out2:SetSmoothing('IN')
-		anim.out2:SetOffset(E:Scale(x), E:Scale(y))
+		anim.out2:SetOffset(x, y)
 	end
 end
 

@@ -181,13 +181,13 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.castTimeFormat = db.castbar.castTimeFormat
 		nameplate.Castbar.channelTimeFormat = db.castbar.channelTimeFormat
 
-		nameplate.Castbar:Size(db.castbar.width, db.castbar.height)
+		nameplate.Castbar:SetSize(db.castbar.width, db.castbar.height)
 		nameplate.Castbar:SetPoint('CENTER', nameplate, 'CENTER', db.castbar.xOffset, db.castbar.yOffset)
 
 		if db.castbar.showIcon then
 			nameplate.Castbar.Button:ClearAllPoints()
 			nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'BOTTOMLEFT' or 'BOTTOMRIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'BOTTOMRIGHT' or 'BOTTOMLEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
-			nameplate.Castbar.Button:Size(db.castbar.iconSize, db.castbar.iconSize)
+			nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
 			nameplate.Castbar.Button:Show()
 		else
 			nameplate.Castbar.Button:Hide()

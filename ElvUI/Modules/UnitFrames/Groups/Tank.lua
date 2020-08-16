@@ -113,7 +113,7 @@ function UF:Update_TankFrames(frame, db)
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
 
-		frame:Size(childDB.width, childDB.height)
+		frame:SetSize(childDB.width, childDB.height)
 
 		if not InCombatLockdown() then
 			if childDB.enable then
@@ -125,7 +125,7 @@ function UF:Update_TankFrames(frame, db)
 			end
 		end
 	else
-		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+		frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
 
 	UF:Configure_HealthBar(frame)

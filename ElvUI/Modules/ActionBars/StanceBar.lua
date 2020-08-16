@@ -104,11 +104,11 @@ function AB:StyleShapeShift()
 end
 
 function AB:PositionAndSizeBarShapeShift()
-	local buttonSpacing = E:Scale(self.db.stanceBar.buttonspacing)
-	local backdropSpacing = E:Scale((self.db.stanceBar.backdropSpacing or self.db.stanceBar.buttonspacing))
+	local buttonSpacing = self.db.stanceBar.buttonspacing
+	local backdropSpacing = self.db.stanceBar.backdropSpacing or self.db.stanceBar.buttonspacing
 	local buttonsPerRow = self.db.stanceBar.buttonsPerRow
 	local numButtons = self.db.stanceBar.buttons
-	local size = E:Scale(self.db.stanceBar.buttonsize)
+	local size = self.db.stanceBar.buttonsize
 	local point = self.db.stanceBar.point
 	local widthMult = self.db.stanceBar.widthMult
 	local heightMult = self.db.stanceBar.heightMult
@@ -149,7 +149,7 @@ function AB:PositionAndSizeBarShapeShift()
 
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:Size(barWidth, barHeight)
+	bar:SetSize(barWidth, barHeight)
 
 	local horizontalGrowth, verticalGrowth
 	if point == "TOPLEFT" or point == "TOPRIGHT" then
@@ -191,7 +191,7 @@ function AB:PositionAndSizeBarShapeShift()
 		lastColumnButton = _G["ElvUI_StanceBarButton"..i-buttonsPerRow]
 		button:SetParent(bar)
 		button:ClearAllPoints()
-		button:Size(size)
+		button:SetSize(size, size)
 		button:EnableMouse(not self.db.stanceBar.clickThrough)
 
 		if i == 1 then

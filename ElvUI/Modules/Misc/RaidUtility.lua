@@ -49,8 +49,8 @@ end
 -- Function to create buttons in this module
 function RU:CreateUtilButton(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, text, texture)
 	local b = CreateFrame("Button", name, parent, template)
-	b:Width(width)
-	b:Height(height)
+	b:SetWidth(width)
+	b:SetHeight(height)
 	b:SetPoint(point, relativeto, point2, xOfs, yOfs)
 	b:HookScript("OnEnter", RU.ButtonEnter)
 	b:HookScript("OnLeave", RU.ButtonLeave)
@@ -67,8 +67,8 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	elseif texture then
 		local t = b:CreateTexture(nil, "OVERLAY")
 		t:SetTexture(texture)
-		t:SetPoint("TOPLEFT", b, "TOPLEFT", E.mult, -E.mult)
-		t:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -E.mult, E.mult)
+		t:SetPoint("TOPLEFT", b, "TOPLEFT", 1, -1)
+		t:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -1, 1)
 		t.tex = texture
 		b.texture = t
 	end
@@ -210,8 +210,8 @@ function RU:Initialize()
 	local RaidUtilityPanel = CreateFrame("Frame", "RaidUtilityPanel", E.UIParent, "SecureHandlerBaseTemplate, BackdropTemplate")
 	RaidUtilityPanel:SetScript("OnMouseUp", function(panel, ...) SecureHandler_OnClick(panel, "_onclick", ...) end)
 	RaidUtilityPanel:SetTemplate('Transparent')
-	RaidUtilityPanel:Width(230)
-	RaidUtilityPanel:Height(PANEL_HEIGHT)
+	RaidUtilityPanel:SetWidth(230)
+	RaidUtilityPanel:SetHeight(PANEL_HEIGHT)
 	RaidUtilityPanel:SetPoint('TOP', E.UIParent, 'TOP', -400, 1)
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
@@ -282,7 +282,7 @@ function RU:Initialize()
 
 	local RoleIcons = CreateFrame("Frame", "RaidUtilityRoleIcons", RaidUtilityPanel, "BackdropTemplate")
 	RoleIcons:SetPoint("LEFT", RaidUtilityPanel, "RIGHT", -1, 0)
-	RoleIcons:Size(36, PANEL_HEIGHT)
+	RoleIcons:SetSize(36, PANEL_HEIGHT)
 	RoleIcons:SetTemplate("Transparent")
 	RoleIcons:RegisterEvent("PLAYER_ENTERING_WORLD")
 	RoleIcons:RegisterEvent("GROUP_ROSTER_UPDATE")
@@ -314,7 +314,7 @@ function RU:Initialize()
 		frame.role = role
 		frame:SetScript("OnEnter", RU.RoleOnEnter)
 		frame:SetScript("OnLeave", GameTooltip_Hide)
-		frame:Size(28)
+		frame:SetSize(28, 28)
 
 		RoleIcons.icons[role] = frame
 	end
@@ -361,8 +361,8 @@ function RU:Initialize()
 		marker:ClearAllPoints()
 		marker:SetPoint("TOPRIGHT", _G.RoleCheckButton, "BOTTOMRIGHT", 0, -5)
 		marker:SetParent("RaidUtilityPanel")
-		marker:Height(18)
-		marker:Width(_G.RoleCheckButton:GetWidth() * 0.22)
+		marker:SetHeight(18)
+		marker:SetWidth(_G.RoleCheckButton:GetWidth() * 0.22)
 		marker:CreateBackdrop(nil, true)
 		self.MarkerButton = marker
 

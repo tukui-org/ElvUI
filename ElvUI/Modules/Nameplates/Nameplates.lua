@@ -210,7 +210,7 @@ end
 function NP:StyleTargetPlate(nameplate)
 	nameplate:ClearAllPoints()
 	nameplate:SetPoint('CENTER')
-	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	nameplate:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
@@ -241,7 +241,7 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = (nameplate == _G.ElvNP_Player and E.mult) or E.global.general.UIScale
+	local mult = (nameplate == _G.ElvNP_Player and 1) or E.global.general.UIScale
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
@@ -533,11 +533,11 @@ function NP:ConfigureAll()
 			NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
 			if nameplate.frameType == 'PLAYER' then
-				nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+				nameplate:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 			elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-				nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
+				nameplate:SetSize(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
 			else
-				nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
+				nameplate:SetSize(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
 			end
 
 			if nameplate.frameType == 'PLAYER' then
@@ -635,7 +635,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.width, nameplate.height = NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight
 		end
 
-		nameplate:Size(nameplate.width, nameplate.height)
+		nameplate:SetSize(nameplate.width, nameplate.height)
 
 		NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
 		nameplate.previousType = nameplate.frameType
@@ -740,8 +740,8 @@ function NP:Initialize()
 
 	_G.ElvNP_Player:ClearAllPoints()
 	_G.ElvNP_Player:SetPoint('TOP', _G.UIParent, 'CENTER', 0, -150)
-	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-	_G.ElvNP_Player:SetScale(E.mult)
+	_G.ElvNP_Player:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
 	E:CreateMover(_G.ElvNP_Player, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
@@ -764,7 +764,7 @@ function NP:Initialize()
 
 	_G.ElvNP_Test:ClearAllPoints()
 	_G.ElvNP_Test:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
-	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	_G.ElvNP_Test:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:SetMovable(true)
 	_G.ElvNP_Test:RegisterForDrag('LeftButton', 'RightButton')
@@ -777,7 +777,7 @@ function NP:Initialize()
 	oUF:Spawn('player', 'ElvNP_TargetClassPower')
 
 	_G.ElvNP_TargetClassPower:SetScale(1)
-	_G.ElvNP_TargetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	_G.ElvNP_TargetClassPower:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
 	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_TargetClassPower:ClearAllPoints()

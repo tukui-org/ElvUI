@@ -57,7 +57,7 @@ function S:Blizzard_TrainerUI()
 	S:HandleScrollBar(_G.ClassTrainerScrollFrameScrollBar, 5)
 	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown, 155)
 
-	ClassTrainerFrame:Height(ClassTrainerFrame:GetHeight() + 5)
+	ClassTrainerFrame:SetHeight(ClassTrainerFrame:GetHeight() + 5)
 	ClassTrainerFrame:CreateBackdrop("Transparent")
 	ClassTrainerFrame.backdrop:SetPoint("TOPLEFT", ClassTrainerFrame, "TOPLEFT")
 	ClassTrainerFrame.backdrop:SetPoint("BOTTOMRIGHT", ClassTrainerFrame, "BOTTOMRIGHT")

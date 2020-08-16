@@ -56,7 +56,7 @@ function S:Blizzard_Calendar()
 	S:HandleNextPrevButton(_G.CalendarNextMonthButton, nil, nil, true)
 
 	_G.CalendarFilterFrame:StripTextures()
-	_G.CalendarFilterFrame:Width(155)
+	_G.CalendarFilterFrame:SetWidth(155)
 
 	_G.CalendarFilterFrameText:ClearAllPoints()
 	_G.CalendarFilterFrameText:SetPoint("RIGHT", _G.CalendarFilterButton, "LEFT", -2, 0)
@@ -125,7 +125,7 @@ function S:Blizzard_Calendar()
 	S:HandleButton(_G.CalendarCreateEventMassInviteButton, true)
 	S:HandleButton(_G.CalendarCreateEventInviteButton, true)
 	_G.CalendarCreateEventInviteButton:SetPoint("TOPLEFT", _G.CalendarCreateEventInviteEdit, "TOPRIGHT", 4, 1)
-	_G.CalendarCreateEventInviteEdit:Width(_G.CalendarCreateEventInviteEdit:GetWidth() - 2)
+	_G.CalendarCreateEventInviteEdit:SetWidth(_G.CalendarCreateEventInviteEdit:GetWidth() - 2)
 
 	_G.CalendarCreateEventInviteList:StripTextures()
 	_G.CalendarCreateEventInviteList:CreateBackdrop()
@@ -162,18 +162,18 @@ function S:Blizzard_Calendar()
 		end
 	end)
 
-	_G.CalendarClassButton1:SetPoint("TOPLEFT", _G.CalendarClassButtonContainer, "TOPLEFT", E.PixelMode and E.mult*4 or E.mult*8, 0)
+	_G.CalendarClassButton1:SetPoint("TOPLEFT", _G.CalendarClassButtonContainer, "TOPLEFT", E.PixelMode and 4 or 8, 0)
 
 	for i = 1, #CLASS_SORT_ORDER do
 		local button = _G["CalendarClassButton"..i]
 		button:StripTextures()
 		button:CreateBackdrop()
-		button:Size(24)
+		button:SetSize(24, 24)
 	end
 
 	_G.CalendarClassTotalsButton:StripTextures()
 	_G.CalendarClassTotalsButton:CreateBackdrop()
-	_G.CalendarClassTotalsButton:Width(24)
+	_G.CalendarClassTotalsButton:SetWidth(24)
 
 	--Texture Picker Frame
 	_G.CalendarTexturePickerFrame:StripTextures()

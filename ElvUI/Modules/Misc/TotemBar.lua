@@ -34,7 +34,7 @@ function TOTEMS:PositionAndSize()
 	for i=1, MAX_TOTEMS do
 		local button = self.bar[i]
 		local prevButton = self.bar[i-1]
-		button:Size(self.db.size)
+		button:SetSize(self.db.size, self.db.size)
 		button:ClearAllPoints()
 		if self.db.growthDirection == 'HORIZONTAL' and self.db.sortDirection == 'ASCENDING' then
 			if i == 1 then
@@ -64,11 +64,11 @@ function TOTEMS:PositionAndSize()
 	end
 
 	if self.db.growthDirection == 'HORIZONTAL' then
-		self.bar:Width(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
-		self.bar:Height(self.db.size + self.db.spacing*2)
+		self.bar:SetWidth(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
+		self.bar:SetHeight(self.db.size + self.db.spacing*2)
 	else
-		self.bar:Height(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
-		self.bar:Width(self.db.size + self.db.spacing*2)
+		self.bar:SetHeight(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
+		self.bar:SetWidth(self.db.size + self.db.spacing*2)
 	end
 
 	self:Update()

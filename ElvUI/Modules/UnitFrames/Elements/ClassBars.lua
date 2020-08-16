@@ -55,8 +55,8 @@ function UF:Configure_ClassBar(frame, cur)
 		CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER + frame.SPACING)*2)
 	end
 
-	bars:Width(CLASSBAR_WIDTH)
-	bars:Height(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
+	bars:SetWidth(CLASSBAR_WIDTH)
+	bars:SetHeight(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
 
 	if (frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes') then
 		--This fixes issue with ComboPoints showing as active when they are not.
@@ -76,17 +76,17 @@ function UF:Configure_ClassBar(frame, cur)
 			if i <= frame.MAX_CLASS_BAR then
 				bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
-				bars[i]:Height(bars:GetHeight())
+				bars[i]:SetHeight(bars:GetHeight())
 				if frame.MAX_CLASS_BAR == 1 then
-					bars[i]:Width(CLASSBAR_WIDTH)
+					bars[i]:SetWidth(CLASSBAR_WIDTH)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
-						bars[i]:Width(CLASSBAR_WIDTH)
+						bars[i]:SetWidth(CLASSBAR_WIDTH)
 					else
-						bars[i]:Width((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
+						bars[i]:SetWidth((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 					end
 				elseif i ~= frame.MAX_CLASS_BAR then
-					bars[i]:Width((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
+					bars[i]:SetWidth((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
 				end
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -179,7 +179,7 @@ function UF:Configure_ClassBar(frame, cur)
 			bars.Holder.mover:SetAlpha(0)
 		end
 	elseif frame.CLASSBAR_DETACHED then
-		bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
+		bars.Holder:SetSize(db.classbar.detachedWidth, db.classbar.height)
 
 		if not bars.Holder.mover then
 			bars:ClearAllPoints()

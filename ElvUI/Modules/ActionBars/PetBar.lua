@@ -102,11 +102,11 @@ function AB:UpdatePet(event, unit)
 end
 
 function AB:PositionAndSizeBarPet()
-	local buttonSpacing = E:Scale(self.db.barPet.buttonspacing)
-	local backdropSpacing = E:Scale((self.db.barPet.backdropSpacing or self.db.barPet.buttonspacing))
+	local buttonSpacing = self.db.barPet.buttonspacing
+	local backdropSpacing = self.db.barPet.backdropSpacing or self.db.barPet.buttonspacing
 	local buttonsPerRow = self.db.barPet.buttonsPerRow
 	local numButtons = self.db.barPet.buttons
-	local size = E:Scale(self.db.barPet.buttonsize)
+	local size = self.db.barPet.buttonsize
 	local autoCastSize = (size / 2) - (size / 7.5)
 	local point = self.db.barPet.point
 	local numColumns = ceil(numButtons / buttonsPerRow)
@@ -140,7 +140,7 @@ function AB:PositionAndSizeBarPet()
 
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:Size(barWidth, barHeight)
+	bar:SetSize(barWidth, barHeight)
 
 	if self.db.barPet.enabled then
 		bar:SetScale(1)
@@ -195,7 +195,7 @@ function AB:PositionAndSizeBarPet()
 		button:SetParent(bar)
 		button:ClearAllPoints()
 		button:SetAttribute("showgrid", 1)
-		button:Size(size)
+		button:SetSize(size, size)
 		button:EnableMouse(not self.db.barPet.clickThrough)
 		autoCast:SetOutside(button, autoCastSize, autoCastSize)
 

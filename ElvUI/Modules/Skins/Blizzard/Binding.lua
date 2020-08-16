@@ -45,8 +45,8 @@ function S:Blizzard_BindingUI()
 		if not button.IsSkinned then
 			local selected = button.selectedHighlight
 			selected:SetTexture(E.media.normTex)
-			selected:SetPoint("TOPLEFT", E.mult, -E.mult)
-			selected:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+			selected:SetPoint("TOPLEFT", 1, -1)
+			selected:SetPoint("BOTTOMRIGHT", -1, 1)
 			selected:SetColorTexture(1, 1, 1, .25)
 			S:HandleButton(button)
 

@@ -14,7 +14,7 @@ function S:Blizzard_ItemInteractionUI()
 		ItemSlot:StripTextures()
 		ItemSlot:CreateBackdrop()
 
-		ItemSlot:Size(58)
+		ItemSlot:SetSize(58, 58)
 		ItemSlot:ClearAllPoints()
 		ItemSlot:SetPoint("TOPLEFT", 143, -97)
 

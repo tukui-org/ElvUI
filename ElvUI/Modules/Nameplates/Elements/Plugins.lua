@@ -11,7 +11,7 @@ local targetIndicators = { "Spark", "TopIndicator", "LeftIndicator", "RightIndic
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame("Frame", nameplate:GetName() .. "QuestIcons", nameplate)
-	QuestIcons:Size(20)
+	QuestIcons:SetSize(20, 20)
 	QuestIcons:Hide()
 
 	for _, object in ipairs(questIconTypes) do
@@ -44,7 +44,7 @@ function NP:Update_QuestIcons(nameplate)
 
 		for _, object in ipairs(questIconTypes) do
 			local icon = nameplate.QuestIcons[object]
-			icon:Size(db.size, db.size)
+			icon:SetSize(db.size, db.size)
 			icon:SetAlpha(db.hideIcon and 0 or 1)
 
 			local xoffset = strfind(db.textPosition, 'LEFT') and -2 or 2
@@ -75,7 +75,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 		end
 
 		nameplate.ClassificationIndicator:ClearAllPoints()
-		nameplate.ClassificationIndicator:Size(db.size, db.size)
+		nameplate.ClassificationIndicator:SetSize(db.size, db.size)
 		nameplate.ClassificationIndicator:SetPoint(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
 	elseif nameplate:IsElementEnabled("ClassificationIndicator") then
 		nameplate:DisableElement("ClassificationIndicator")
@@ -87,7 +87,7 @@ function NP:Construct_TargetIndicator(nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
 	TargetIndicator.Shadow = CreateFrame("Frame", nil, TargetIndicator, "BackdropTemplate")
-	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.LSM:Fetch("border", "ElvUI GlowBorder"), edgeSize = E:Scale(5)})
+	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(5)})
 	TargetIndicator.Shadow:Hide()
 
 	for _, object in ipairs(targetIndicators) do
@@ -138,7 +138,7 @@ function NP:Update_TargetIndicator(nameplate)
 		end
 
 		if nameplate.TargetIndicator.Shadow and (GlowStyle == "style1" or GlowStyle == "style5" or GlowStyle == "style7") then
-			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E:Scale(E.PixelMode and 6 or 8), E:Scale(E.PixelMode and 6 or 8))
+			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E.PixelMode and 6 or 8, E.PixelMode and 6 or 8)
 			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
 			nameplate.TargetIndicator.Shadow:SetAlpha(Color.a)
 		end
@@ -188,7 +188,7 @@ end
 
 function NP:Construct_PVPRole(nameplate)
 	local texture = nameplate:CreateTexture(nameplate:GetName() .. "PVPRole", "OVERLAY", nil, 1)
-	texture:Size(40, 40)
+	texture:SetSize(40, 40)
 	texture.HealerTexture = E.Media.Textures.Healer
 	texture.TankTexture = E.Media.Textures.Tank
 	texture:SetTexture(texture.HealerTexture)
@@ -323,7 +323,7 @@ function NP:Update_WidgetXPBar(nameplate)
 		bar:ClearAllPoints()
 		bar:SetPoint("TOPLEFT", nameplate, "BOTTOMLEFT", 0, db.widgetXPBar.yOffset)
 		bar:SetPoint("TOPRIGHT", nameplate, "BOTTOMRIGHT", 0, db.widgetXPBar.yOffset)
-		bar:Height(10)
+		bar:SetHeight(10)
 
 		bar.Rank:ClearAllPoints()
 		bar.Rank:SetPoint("RIGHT", bar, "LEFT", -4, 0)

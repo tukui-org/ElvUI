@@ -14,7 +14,7 @@ function S:MerchantFrame()
 	MerchantFrame.backdrop:SetPoint("TOPLEFT", 6, 2)
 	MerchantFrame.backdrop:SetPoint("BOTTOMRIGHT", 2, -1)
 
-	MerchantFrame:Width(360)
+	MerchantFrame:SetWidth(360)
 
 	_G.MerchantBuyBackItem:StripTextures(true)
 	_G.MerchantBuyBackItem:CreateBackdrop("Transparent")
@@ -53,8 +53,8 @@ function S:MerchantFrame()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()
-		icon:SetPoint("TOPLEFT", E.mult, -E.mult)
-		icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+		icon:SetPoint("TOPLEFT", 1, -1)
+		icon:SetPoint("BOTTOMRIGHT", -1, 1)
 
 		S:HandleIconBorder(iconBorder)
 
@@ -69,8 +69,8 @@ function S:MerchantFrame()
 
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("TOPLEFT", E.mult, -E.mult)
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("TOPLEFT", 1, -1)
+	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint("BOTTOMRIGHT", -1, 1)
 
 	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
 

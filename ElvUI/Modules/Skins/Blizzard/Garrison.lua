@@ -59,9 +59,9 @@ function S:Blizzard_GarrisonUI()
 
 			reward:ClearAllPoints()
 			if IsAddOnLoaded("GarrisonMissionManager") then -- otherwise we mess with this AddOn
-				reward:SetPoint("TOPRIGHT", -E.mult * 65 + (index * -65), -E.mult)
+				reward:SetPoint("TOPRIGHT", -65 + (index * -65), -1)
 			else
-				reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
+				reward:SetPoint("TOPRIGHT", -1 + (index * -65), -1)
 			end
 
 			if reward.IconBorder then
@@ -245,7 +245,7 @@ function S:Blizzard_GarrisonUI()
 
 		hooksecurefunc("GarrisonLandingPageReport_SetTab", function(s)
 			local unselectedTab = Report.unselectedTab
-			unselectedTab:Height(36)
+			unselectedTab:SetHeight(36)
 			unselectedTab:SetNormalTexture("")
 			unselectedTab.selectedTex:Hide()
 
@@ -415,7 +415,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
 	hooksecurefunc(FollowerList, "ShowFollower", showFollower)
 	FollowerTab:StripTextures()
-	FollowerTab.Class:Size(50, 43)
+	FollowerTab.Class:SetSize(50, 43)
 	FollowerTab.XPBar:StripTextures()
 	FollowerTab.XPBar:SetStatusBarTexture(E.media.normTex)
 	FollowerTab.XPBar:CreateBackdrop()
@@ -496,7 +496,7 @@ function S:Blizzard_GarrisonUI()
 	XPBar:SetStatusBarTexture(E.media.normTex)
 	XPBar:CreateBackdrop()
 
-	Class:Size(50, 43)
+	Class:SetSize(50, 43)
 
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame

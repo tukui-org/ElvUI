@@ -212,7 +212,7 @@ function DT:BuildPanelFrame(name, db, initLoad)
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
 	Panel:SetPoint('CENTER')
-	Panel:Size(db.width, db.height)
+	Panel:SetSize(db.width, db.height)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -472,7 +472,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
 		dt:SetShown(i <= numPoints)
-		dt:Size(width, height)
+		dt:SetSize(width, height)
 		dt:ClearAllPoints()
 		dt:SetPoint(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 		dt:UnregisterAllEvents()
@@ -540,7 +540,7 @@ function DT:PanelSizeChanged()
 	local width, height, vertical, numPoints = DT:GetTextAttributes(self, db)
 
 	for i, dt in ipairs(self.dataPanels) do
-		dt:Size(width, height)
+		dt:SetSize(width, height)
 		dt:ClearAllPoints()
 		dt:SetPoint(DT:GetDataPanelPoint(self, i, numPoints, vertical))
 	end
@@ -557,7 +557,7 @@ function DT:UpdatePanelAttributes(name, db)
 	Panel.yOff = db.tooltipYOffset
 	Panel.anchor = db.tooltipAnchor
 	Panel.vertical = db.growth == 'VERTICAL'
-	Panel:Size(db.width, db.height)
+	Panel:SetSize(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
 

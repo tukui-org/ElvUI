@@ -111,7 +111,7 @@ local function JournalScrollButtons(frame)
 	for i, bu in ipairs(frame.buttons) do
 		bu:StripTextures()
 		bu:CreateBackdrop('Transparent', nil, nil, true)
-		bu:Size(210, 42)
+		bu:SetSize(210, 42)
 		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
 		bu.backdrop:SetAllPoints()
 
@@ -125,7 +125,7 @@ local function JournalScrollButtons(frame)
 		end
 
 		local icon = bu.icon or bu.Icon
-		icon:Size(40)
+		icon:SetSize(40, 40)
 		icon:SetPoint('LEFT', -43, 0)
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:CreateBackdrop(nil, nil, nil, true)
@@ -168,7 +168,7 @@ local function JournalScrollButtons(frame)
 
 				bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
 				bu.favorite:SetPoint('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
-				bu.favorite:Size(32, 32)
+				bu.favorite:SetSize(32, 32)
 
 				hooksecurefunc(bu.name, 'SetFontObject', mountNameColor)
 				hooksecurefunc(bu.background, 'SetVertexColor', mountNameColor)
@@ -205,7 +205,7 @@ function S:Blizzard_Collections()
 
 	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon)
 	S:HandleCheckBox(MountJournal.MountDisplay.ModelScene.TogglePlayer)
-	MountJournal.MountDisplay.ModelScene.TogglePlayer:Size(22)
+	MountJournal.MountDisplay.ModelScene.TogglePlayer:SetSize(22, 22)
 
 	S:HandleButton(_G.MountJournalMountButton)
 	S:HandleEditBox(_G.MountJournalSearchBox)
@@ -247,7 +247,7 @@ function S:Blizzard_Collections()
 	_G.PetJournalSearchBox:ClearAllPoints()
 	_G.PetJournalSearchBox:SetPoint('TOPLEFT', _G.PetJournalLeftInset, 'TOPLEFT', (E.PixelMode and 13 or 10), -9)
 	S:HandleButton(_G.PetJournalFilterButton)
-	_G.PetJournalFilterButton:Height(E.PixelMode and 22 or 24)
+	_G.PetJournalFilterButton:SetHeight(E.PixelMode and 22 or 24)
 	_G.PetJournalFilterButton:ClearAllPoints()
 	_G.PetJournalFilterButton:SetPoint('TOPRIGHT', _G.PetJournalLeftInset, 'TOPRIGHT', -5, -(E.PixelMode and 8 or 7))
 	_G.PetJournalListScrollFrame:StripTextures()

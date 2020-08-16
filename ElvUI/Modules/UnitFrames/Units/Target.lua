@@ -78,8 +78,8 @@ function UF:Update_TargetFrame(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:SetSize(frame:GetSize())
 
 	if not IsAddOnLoaded("Clique") then
 		if db.middleClickFocus then
