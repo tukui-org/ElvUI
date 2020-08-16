@@ -175,23 +175,12 @@ local function GetTemplate(template, isUnitFrameElement)
 	end
 end
 
+-- * WARNING * ~ Size, Width, Height, and Point APIs we provide will be removed during prepatch!!
+local function Width(frame, ...) frame:SetWidth(...) end
+local function Height(frame, ...) frame:SetHeight(...) end
+local function Point(frame, ...) frame:SetPoint(...) end
 local function Size(frame, width, height, ...)
-	assert(width)
 	frame:SetSize(width, height or width, ...)
-end
-
-local function Width(frame, width, ...)
-	assert(width)
-	frame:SetWidth(width, ...)
-end
-
-local function Height(frame, height, ...)
-	assert(height)
-	frame:SetHeight(height, ...)
-end
-
-local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
-	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
