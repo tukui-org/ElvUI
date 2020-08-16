@@ -1,9 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-local select = select
 local pairs = pairs
 
-local Enum = Enum
 local IsFalling = IsFalling
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -14,7 +12,9 @@ local GetMinimapZoneText = GetMinimapZoneText
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
-local MapUtil = MapUtil
+
+local Enum_UIMapType = Enum.UIMapType
+local MapUtil_GetMapParentInfo = MapUtil.GetMapParentInfo
 
 E.MapInfo = {}
 
@@ -31,7 +31,7 @@ function E:MapInfo_Update()
 	E.MapInfo.subZoneText = GetMinimapZoneText() or nil
 	E.MapInfo.realZoneText = GetRealZoneText() or nil
 
-	local continent = mapID and MapUtil.GetMapParentInfo(mapID, Enum.UIMapType.Continent, true)
+	local continent = mapID and MapUtil_GetMapParentInfo(mapID, Enum_UIMapType.Continent, true)
 	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
 	E.MapInfo.continentMapType = (continent and continent.mapType) or nil
 	E.MapInfo.continentMapID = (continent and continent.mapID) or nil
@@ -100,16 +100,16 @@ end
 -- Fix stolen from NDui (and modified by Simpy). Credit: siweia.
 local mapRects, tempVec2D = {}, CreateVector2D(0, 0)
 function E:GetPlayerMapPos(mapID)
-	if not mapID then return end
-
 	tempVec2D.x, tempVec2D.y = UnitPosition('player')
 	if not tempVec2D.x then return end
 
 	local mapRect = mapRects[mapID]
 	if not mapRect then
-		mapRect = {
-			select(2, C_Map_GetWorldPosFromMapPos(mapID, CreateVector2D(0, 0))),
-			select(2, C_Map_GetWorldPosFromMapPos(mapID, CreateVector2D(1, 1)))}
+		local _, pos1 = C_Map_GetWorldPosFromMapPos(mapID, CreateVector2D(0, 0))
+		local _, pos2 = C_Map_GetWorldPosFromMapPos(mapID, CreateVector2D(1, 1))
+		if not pos1 or not pos2 then return end
+
+		mapRect = {pos1, pos2}
 		mapRect[2]:Subtract(mapRect[1])
 		mapRects[mapID] = mapRect
 	end
