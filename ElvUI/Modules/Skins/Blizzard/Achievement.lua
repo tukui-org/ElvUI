@@ -29,7 +29,9 @@ local function skinAch(Achievement, BiggerIcon)
 
 	if Achievement.highlight then
 		Achievement.highlight:StripTextures()
-		Achievement:HookScript('OnEnter', function(self) self.backdrop:SetBackdropBorderColor(1, 1, 0) end)
+		Achievement:HookScript('OnEnter', function(self)
+			self.backdrop:SetBackdropBorderColor(1, 1, 0)
+		end)
 		Achievement:HookScript('OnLeave', function(self)
 			if (self.player and self.player.accountWide or self.accountWide) then
 				self.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)

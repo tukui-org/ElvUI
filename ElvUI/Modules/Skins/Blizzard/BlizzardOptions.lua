@@ -191,9 +191,8 @@ function S:BlizzardOptions()
 	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:SetPoint("RIGHT", "$parentAddFilterButton", "LEFT", -2, 0)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
-		if ( not _G.FCF_GetCurrentChatFrame() ) then
-			return
-		end
+		if not _G.FCF_GetCurrentChatFrame() then return end
+
 		for index in ipairs(frame.checkBoxTable) do
 			local checkBoxNameString = frame:GetName().."CheckBox"
 			local checkBoxName = checkBoxNameString..index
@@ -213,10 +212,10 @@ function S:BlizzardOptions()
 	hooksecurefunc('ChatConfig_UpdateTieredCheckboxes', function(frame, index)
 		local group = frame.checkBoxTable[index]
 		local checkBox = _G[frame:GetName().."CheckBox"..index]
-		if ( checkBox ) then
+		if checkBox then
 			S:HandleCheckBox(checkBox)
 		end
-		if ( group.subTypes ) then
+		if group.subTypes then
 			for k in ipairs(group.subTypes) do
 				S:HandleCheckBox(_G[frame:GetName().."CheckBox"..index.."_"..k])
 			end
@@ -224,9 +223,8 @@ function S:BlizzardOptions()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateSwatches', function(frame)
-		if ( not _G.FCF_GetCurrentChatFrame() ) then
-			return
-		end
+		if not _G.FCF_GetCurrentChatFrame() then return end
+
 		for index in ipairs(frame.swatchTable) do
 			_G[frame:GetName().."Swatch"..index]:StripTextures()
 		end

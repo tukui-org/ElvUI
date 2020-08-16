@@ -44,6 +44,7 @@ function S:Blizzard_BlackMarketUI()
 		for _, button in pairs(_G.BlackMarketScrollFrame.buttons) do
 			if not button.skinned then
 				S:HandleItemButton(button.Item)
+
 				button:StripTextures()
 				button:StyleButton()
 

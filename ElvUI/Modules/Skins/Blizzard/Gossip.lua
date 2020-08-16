@@ -78,7 +78,6 @@ function S:GossipFrame()
 	NPCFriendshipStatusBar:StripTextures()
 	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
 	NPCFriendshipStatusBar:CreateBackdrop()
-
 	E:RegisterStatusBar(NPCFriendshipStatusBar)
 end
 

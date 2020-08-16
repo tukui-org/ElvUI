@@ -214,6 +214,7 @@ do --this can save some main file locals
 	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
 	local DeathlyH		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
+	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
 
 	--[[ Simpys Thing: new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
@@ -398,6 +399,10 @@ do --this can save some main file locals
 		["Vidiä-WyrmrestAccord"]		= DeathlyH,
 		-- Quickhanz (Nihilist's absolute bestie)
 		["Zandahanz-Area52"]			= GoldShield,
+		-- AcidWeb
+		["Livarax-BurningLegion"]		= Gem,
+		["Filevandrel-BurningLegion"]	= Gem,
+		["Akavaya-BurningLegion"]		= Gem,
 	}
 end
 
@@ -767,12 +772,7 @@ end
 
 local function colorizeLine(text, r, g, b)
 	local hexCode = E:RGBToHex(r, g, b)
-	local hexReplacement = format("|r%s", hexCode)
-
-	text = gsub(text, "|r", hexReplacement) --If the message contains color strings then we need to add message color hex code after every "|r"
-	text = format("%s%s|r", hexCode, text) --Add message color
-
-	return text
+	return format("%s%s|r", hexCode, text)
 end
 
 local copyLines = {}

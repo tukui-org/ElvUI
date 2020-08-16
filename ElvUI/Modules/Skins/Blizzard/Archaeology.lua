@@ -9,7 +9,6 @@ function S:Blizzard_ArchaeologyUI()
 
 	local ArchaeologyFrame = _G.ArchaeologyFrame
 	S:HandlePortraitFrame(ArchaeologyFrame, true)
-
 	S:HandleButton(ArchaeologyFrame.artifactPage.solveFrame.solveButton, true)
 	S:HandleButton(ArchaeologyFrame.artifactPage.backButton, true)
 

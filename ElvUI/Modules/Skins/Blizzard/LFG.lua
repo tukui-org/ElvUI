@@ -51,7 +51,6 @@ end
 local function SkinItemButton(parentFrame, _, index)
 	local parentName = parentFrame:GetName()
 	local item = _G[parentName.."Item"..index]
-
 	if item and not item.backdrop then
 		item:CreateBackdrop()
 		item.backdrop:ClearAllPoints()
@@ -473,6 +472,7 @@ function S:LookingForGroupFrames()
 			S:HandleButton(_G.LFRBrowseFrameRefreshButton)
 			S:HandleButton(_G.LFRBrowseFrameInviteButton)
 			S:HandleButton(_G.LFRBrowseFrameSendMessageButton)
+
 			_G.LFRQueueFrameSpecificListScrollFrameScrollBar.skinned = true
 		end
 	end)

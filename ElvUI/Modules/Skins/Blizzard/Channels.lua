@@ -12,7 +12,6 @@ function S:Blizzard_Channels()
 
 	S:HandlePortraitFrame(ChannelFrame, true)
 	CreateChannelPopup:StripTextures()
-
 	CreateChannelPopup:CreateBackdrop("Transparent")
 
 	S:HandleButton(ChannelFrame.NewButton)

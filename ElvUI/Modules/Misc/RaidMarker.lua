@@ -82,8 +82,8 @@ local ANG_RAD = rad(360) / 7
 function M:LoadRaidMarker()
 	local marker = CreateFrame("Frame", nil, E.UIParent);
 	marker:EnableMouse(true);
-	marker:SetSize(100, 100);
 	marker:SetFrameStrata("DIALOG");
+	marker:SetSize(100, 100);
 
 	for i = 1, 8 do
 		local button = CreateFrame("Button", "RaidMarkIconButton"..i, marker);

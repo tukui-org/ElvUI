@@ -74,8 +74,8 @@ function S:Blizzard_GuildControlUI()
 
 	local GuildControlUI = _G.GuildControlUI
 	GuildControlUI:StripTextures()
-	_G.GuildControlUIHbar:StripTextures()
 	GuildControlUI:SetTemplate("Transparent")
+	_G.GuildControlUIHbar:StripTextures()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
 	S:HandleCloseButton(_G.GuildControlUICloseButton)

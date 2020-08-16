@@ -49,6 +49,7 @@ S.Blizzard.Regions = {
 	'BottomRightTex',
 	'RightTex',
 	'MiddleTex',
+	'Center',
 }
 
 -- Depends on the arrow texture to be up by default.
@@ -339,7 +340,7 @@ do --Tab Regions
 	}
 
 	function S:HandleTab(tab, noBackdrop)
-		if (not tab) or (tab.backdrop and not noBackdrop) then return end
+		if not tab or (tab.backdrop and not noBackdrop) then return end
 
 		for _, object in pairs(tabs) do
 			local tex = _G[tab:GetName()..object]
@@ -709,6 +710,7 @@ function S:HandleSliderFrame(frame)
 
 	frame:StripTextures()
 	frame:SetThumbTexture(E.Media.Textures.Melli)
+
 	if not frame.backdrop then
 		frame:CreateBackdrop()
 		frame.backdrop:SetAllPoints()
@@ -1109,7 +1111,11 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 		Disabled:SetRotation(rotation)
 	end
 
-	Normal:SetVertexColor(unpack(color or {1, 1, 1}))
+	if color then
+		Normal:SetVertexColor(color.r, color.g, color.b)
+	else
+		Normal:SetVertexColor(1, 1, 1)
+	end
 
 	btn.isSkinned = true
 end
@@ -1344,7 +1350,7 @@ function S:Initialize()
 	end
 
 	-- Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)
-	if E.private.skins.ace3Enable then
+	if E.private.skins.ace3Enable and S.EarlyAceWidgets then
 		for _, n in next, S.EarlyAceWidgets do
 			if n.SetLayout then
 				S:Ace3_RegisterAsContainer(n)
@@ -1356,8 +1362,10 @@ function S:Initialize()
 			S:Ace3_SkinTooltip(_G.LibStub(n, true))
 		end
 	end
-	for _, n in next, S.EarlyDropdowns do
-		S:SkinLibDropDownMenu(n)
+	if S.EarlyDropdowns then
+		for _, n in next, S.EarlyDropdowns do
+			S:SkinLibDropDownMenu(n)
+		end
 	end
 
 	do -- Credits ShestakUI

@@ -113,6 +113,7 @@ function S:Ace3_SkinTab(tab)
 	hooksecurefunc(tab, 'SetSelected', S.Ace3_TabSetSelected)
 end
 
+local nextPrevColor = {r = 1, g = .8, b = 0}
 function S:Ace3_RegisterAsWidget(widget)
 	local TYPE = widget.type
 	if TYPE == 'MultiLineEditBox' or TYPE == 'MultiLineEditBox-ElvUI' then
@@ -160,13 +161,12 @@ function S:Ace3_RegisterAsWidget(widget)
 		local text = widget.text
 
 		frame:StripTextures()
-
-		S:HandleNextPrevButton(button, nil, {1, .8, 0})
-
 		frame:CreateBackdrop()
 		frame.backdrop:SetPoint('TOPLEFT', 15, -2)
 		frame.backdrop:SetPoint('BOTTOMRIGHT', -21, 0)
 		frame.backdrop:SetClipsChildren(true)
+
+		S:HandleNextPrevButton(button, nil, nextPrevColor)
 
 		widget.label:ClearAllPoints()
 		widget.label:SetPoint('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -186,10 +186,11 @@ function S:Ace3_RegisterAsWidget(widget)
 		local frame = widget.frame
 		local button = frame.dropButton
 		local text = frame.text
+
 		frame:StripTextures()
 		frame:CreateBackdrop()
 
-		S:HandleNextPrevButton(button, nil, {1, .8, 0})
+		S:HandleNextPrevButton(button, nil, nextPrevColor)
 
 		frame.label:ClearAllPoints()
 		frame.label:SetPoint('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -264,7 +265,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		msgframe:SetTemplate('Transparent')
 		msgframe.msg:ClearAllPoints()
 		msgframe.msg:SetPoint('CENTER')
-	elseif (TYPE == 'ColorPicker' or TYPE == 'ColorPicker-ElvUI') then
+	elseif TYPE == 'ColorPicker' or TYPE == 'ColorPicker-ElvUI' then
 		local frame = widget.frame
 		local colorSwatch = widget.colorSwatch
 
@@ -317,7 +318,6 @@ function S:Ace3_RefreshTree(scrollToSelection)
 	if self.userdata and self.userdata.option and self.userdata.option.childGroups == 'ElvUI_HiddenTree' then
 		self.border:SetPoint("TOPLEFT", self.treeframe, "TOPRIGHT", 1, 13)
 		self.border:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", 6, 0)
-		--self.userdata.rootframe.titletext:SetParent(self.border)
 		self.treeframe:Hide()
 		return
 	else
@@ -337,16 +337,19 @@ function S:Ace3_RefreshTree(scrollToSelection)
 	for i = offset + 1, #lines do
 		local button = buttons[i - offset]
 		if button then
-			button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
+			if button.highlight then
+				button.highlight:SetVertexColor(1.0, 0.9, 0.0, 0.8)
+			end
+
 			if groupstatus[lines[i].uniquevalue] then
 				button.toggle:SetNormalTexture(E.Media.Textures.Minus)
 				button.toggle:SetPushedTexture(E.Media.Textures.Minus)
-				button.toggle:SetHighlightTexture('')
 			else
 				button.toggle:SetNormalTexture(E.Media.Textures.Plus)
 				button.toggle:SetPushedTexture(E.Media.Textures.Plus)
-				button.toggle:SetHighlightTexture('')
 			end
+
+			button.toggle:SetHighlightTexture('')
 		end
 	end
 end

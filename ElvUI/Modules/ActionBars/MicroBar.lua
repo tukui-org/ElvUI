@@ -5,7 +5,6 @@ local _G = _G
 local pairs = pairs
 local assert = assert
 local unpack = unpack
-
 local CreateFrame = CreateFrame
 local C_StorePublic_IsEnabled = C_StorePublic.IsEnabled
 local UpdateMicroButtonsParent = UpdateMicroButtonsParent

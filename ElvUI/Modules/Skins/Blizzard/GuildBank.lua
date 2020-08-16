@@ -53,6 +53,7 @@ function S:Blizzard_GuildBankUI()
 			if texture then
 				texture:SetTexture()
 			end
+
 			button:StyleButton()
 			button:SetTemplate(nil, true)
 

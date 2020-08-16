@@ -3,7 +3,6 @@ local B = E:GetModule('Blizzard')
 
 local _G = _G
 local min = min
-
 local CreateFrame = CreateFrame
 local GetScreenHeight = GetScreenHeight
 local GetInstanceInfo = GetInstanceInfo

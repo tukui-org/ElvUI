@@ -5,7 +5,6 @@ local _G = _G
 local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
-
 local CreateFrame = CreateFrame
 local GetBagSlotFlag = GetBagSlotFlag
 local RegisterStateDriver = RegisterStateDriver

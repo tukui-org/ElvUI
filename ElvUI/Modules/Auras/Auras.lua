@@ -5,7 +5,6 @@ local LSM = E.Libs.LSM
 local _G = _G
 local floor, format, tinsert = floor, format, tinsert
 local select, unpack, strmatch = select, unpack, strmatch
-
 local CreateFrame = CreateFrame
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture

@@ -8,6 +8,8 @@ local InCombatLockdown = InCombatLockdown
 local GetCVarBool = GetCVarBool
 local StaticPopup_Hide = StaticPopup_Hide
 
+D.HideFrame = CreateFrame('Frame')
+
 local function UnHighlightText(self)
 	self:HighlightText(0, 0)
 end
@@ -111,10 +113,10 @@ end
 
 function D:Initialize()
 	self.Initialized = true
-	self.HideFrame = CreateFrame('Frame')
 	self.HideFrame:Hide()
 
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
+
 	self:SecureHookScript(ScriptErrorsFrame, 'OnShow', D.ModifyErrorFrame)
 	self:SecureHook(ScriptErrorsFrame, 'UpdateButtons', D.ScriptErrorsFrame_UpdateButtons)
 	self:SecureHook(ScriptErrorsFrame, 'OnError', D.ScriptErrorsFrame_OnError)

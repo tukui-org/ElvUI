@@ -5,7 +5,6 @@ local _G = _G
 local ceil = ceil
 local unpack = unpack
 local format, strfind = format, strfind
-
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey

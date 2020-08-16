@@ -3,9 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
-
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
+
 local UnitSex = UnitSex
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization

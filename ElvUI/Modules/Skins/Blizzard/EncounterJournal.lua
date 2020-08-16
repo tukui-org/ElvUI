@@ -412,21 +412,17 @@ function S:Blizzard_EncounterJournal()
 		-- Suggestion 2 and 3
 		for i = 2, 3 do
 			suggestion = suggestFrame["Suggestion"..i]
-
 			suggestion.bg:Hide()
 			suggestion:CreateBackdrop("Transparent")
-
 			suggestion.icon:SetPoint("TOPLEFT", 10, -10)
 
 			centerDisplay = suggestion.centerDisplay
-
 			centerDisplay:ClearAllPoints()
 			centerDisplay:SetPoint("TOPLEFT", 85, -10)
 			centerDisplay.title.text:SetTextColor(1, 1, 1)
 			centerDisplay.description.text:SetTextColor(.9, .9, .9)
 
 			reward = suggestion.reward
-
 			reward.iconRing:Hide()
 			reward.iconRingHighlight:SetTexture()
 		end

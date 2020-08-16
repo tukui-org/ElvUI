@@ -364,7 +364,9 @@ end
 function UF:PostUpdateAura(_, button)
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
-			if UF.db.colors.auraByType then button:SetBackdropBorderColor(.9, .1, .1) end
+			if UF.db.colors.auraByType then
+				button:SetBackdropBorderColor(.9, .1, .1)
+			end
 			button.icon:SetDesaturated(button.canDesaturate)
 		else
 			if UF.db.colors.auraByType then

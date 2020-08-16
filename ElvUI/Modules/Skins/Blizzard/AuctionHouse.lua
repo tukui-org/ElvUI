@@ -44,7 +44,10 @@ local function HandleListIcon(frame)
 				if cell and cell.Icon then
 					if not cell.IsSkinned then
 						S:HandleIcon(cell.Icon)
-						if cell.IconBorder then cell.IconBorder:SetAlpha(0) end
+
+						if cell.IconBorder then
+							cell.IconBorder:SetAlpha(0)
+						end
 
 						cell.IsSkinned = true
 					end

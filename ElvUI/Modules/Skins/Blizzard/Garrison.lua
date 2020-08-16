@@ -482,6 +482,7 @@ local function SkinAbilityTooltip(frame)
 	for i = 1, 9 do
 		select(i, frame:GetRegions()):Hide()
 	end
+
 	local icon = frame.Icon
 	icon:SetTexCoord(unpack(E.TexCoords))
 	if not frame.border then

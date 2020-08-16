@@ -25,7 +25,7 @@ local PlusButtonIDs = {
 }
 
 local function HandleReward(frame)
-	if (not frame) then return end
+	if not frame then return end
 
 	if frame.Icon then
 		frame.Icon:SetDrawLayer('ARTWORK')
@@ -263,8 +263,7 @@ function S:BlizzardQuestFrames()
 	-- Hook for WorldQuestRewards / QuestLogRewards
 	hooksecurefunc("QuestInfo_GetRewardButton", function(rewardsFrame, index)
 		local RewardButton = rewardsFrame.RewardButtons[index]
-
-		if (not RewardButton.Icon.backdrop) then
+		if not RewardButton.Icon.backdrop then
 			HandleReward(RewardButton)
 
 			RewardButton.IconBorder:SetAlpha(0)
