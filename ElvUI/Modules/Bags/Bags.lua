@@ -933,7 +933,7 @@ function B:Layout(isBank)
 			end
 
 			assignedBag = B:GetBagAssignedInfo(f.ContainerHolder[i])
-			f.ContainerHolder[i]:SetSize(buttonSize)
+			f.ContainerHolder[i]:SetSize(buttonSize, buttonSize)
 		end
 
 		--Bag Slots
@@ -954,9 +954,9 @@ function B:Layout(isBank)
 				f.totalSlots = f.totalSlots + 1
 
 				f.Bags[bagID][slotID]:SetID(slotID)
-				f.Bags[bagID][slotID]:SetSize(buttonSize)
+				f.Bags[bagID][slotID]:SetSize(buttonSize, buttonSize)
 
-				f.Bags[bagID][slotID].JunkIcon:SetSize(buttonSize / 2)
+				f.Bags[bagID][slotID].JunkIcon:SetSize(buttonSize / 2, buttonSize / 2)
 
 				B:UpdateSlot(f, bagID, slotID)
 
@@ -1013,7 +1013,7 @@ function B:Layout(isBank)
 			totalSlots = totalSlots + 1
 
 			f.reagentFrame.slots[i]:ClearAllPoints()
-			f.reagentFrame.slots[i]:SetSize(buttonSize)
+			f.reagentFrame.slots[i]:SetSize(buttonSize, buttonSize)
 
 			if f.reagentFrame.slots[i-1] then
 				if(totalSlots - 1) % numContainerColumns == 0 then

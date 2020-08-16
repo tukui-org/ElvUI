@@ -17,7 +17,7 @@ function UF:Configure_Trinket(frame)
 	local db = frame.db
 	local trinket = frame.Trinket
 
-	trinket.bg:SetSize(db.pvpTrinket.size)
+	trinket.bg:SetSize(db.pvpTrinket.size, db.pvpTrinket.size)
 	trinket.bg:ClearAllPoints()
 	if db.pvpTrinket.position == 'RIGHT' then
 		trinket.bg:SetPoint('LEFT', frame, 'RIGHT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)

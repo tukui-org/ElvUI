@@ -384,7 +384,7 @@ do
 		if frame.CloseButton then return end
 
 		local CloseButton = CreateFrame('Button', nil, frame)
-		CloseButton:SetSize(size or 16)
+		CloseButton:SetSize(size or 16, size or 16)
 		CloseButton:SetPoint('TOPRIGHT', offset or -6, offset or -6)
 		if backdrop then
 			CloseButton:CreateBackdrop(nil, true)

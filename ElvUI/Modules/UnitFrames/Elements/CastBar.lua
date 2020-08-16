@@ -142,7 +142,7 @@ function UF:Configure_Castbar(frame)
 		castbar.Icon:SetTexCoord(unpack(E.TexCoords))
 
 		if (not db.iconAttached) then
-			castbar.Icon.bg:SetSize(db.iconSize)
+			castbar.Icon.bg:SetSize(db.iconSize, db.iconSize)
 		else
 			castbar.Icon.bg:SetSize(db.height-frame.SPACING*2)
 			castbar:SetWidth(db.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*5))

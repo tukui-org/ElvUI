@@ -191,7 +191,7 @@ function AB:PositionAndSizeBarShapeShift()
 		lastColumnButton = _G["ElvUI_StanceBarButton"..i-buttonsPerRow]
 		button:SetParent(bar)
 		button:ClearAllPoints()
-		button:SetSize(size)
+		button:SetSize(size, size)
 		button:EnableMouse(not self.db.stanceBar.clickThrough)
 
 		if i == 1 then
