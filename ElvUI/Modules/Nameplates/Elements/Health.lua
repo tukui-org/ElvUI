@@ -12,6 +12,7 @@ local CreateFrame = CreateFrame
 
 function NP:Health_UpdateColor(_, unit)
 	if not unit or self.unit ~= unit then return end
+	if self.isPlayer == nil then self.isPlayer = UnitIsPlayer(unit) end
 	local element = self.Health
 	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
