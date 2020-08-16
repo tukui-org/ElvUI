@@ -195,7 +195,7 @@ function AB:PositionAndSizeBarPet()
 		button:SetParent(bar)
 		button:ClearAllPoints()
 		button:SetAttribute("showgrid", 1)
-		button:SetSize(size)
+		button:SetSize(size, size)
 		button:EnableMouse(not self.db.barPet.clickThrough)
 		autoCast:SetOutside(button, autoCastSize, autoCastSize)
 

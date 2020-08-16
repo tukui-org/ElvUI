@@ -17,7 +17,7 @@ function UF:Configure_SummonIcon(frame)
 	if db.summonIcon.enable then
 		frame:EnableElement('SummonIndicator')
 		SI:Show()
-		SI:SetSize(db.summonIcon.size)
+		SI:SetSize(db.summonIcon.size, db.summonIcon.size)
 
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.summonIcon.attachToObject)
 		SI:ClearAllPoints()

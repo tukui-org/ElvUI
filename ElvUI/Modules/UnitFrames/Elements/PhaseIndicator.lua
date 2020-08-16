@@ -33,7 +33,7 @@ function UF:Configure_PhaseIcon(frame)
 	PhaseIndicator:SetPoint(frame.db.phaseIndicator.anchorPoint, frame.Health, frame.db.phaseIndicator.anchorPoint, frame.db.phaseIndicator.xOffset, frame.db.phaseIndicator.yOffset)
 
 	local scale = frame.db.phaseIndicator.scale or 1
-	PhaseIndicator:SetSize(30 * scale)
+	PhaseIndicator:SetSize(30 * scale, 30 * scale)
 
 	if frame.db.phaseIndicator.enable and not frame:IsElementEnabled('PhaseIndicator') then
 		frame:EnableElement('PhaseIndicator')
