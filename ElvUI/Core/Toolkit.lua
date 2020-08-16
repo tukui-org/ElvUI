@@ -177,27 +177,20 @@ end
 
 local function Size(frame, width, height, ...)
 	assert(width)
-	frame:SetSize(E:Scale(width), E:Scale(height or width), ...)
+	frame:SetSize(width, height or width, ...)
 end
 
 local function Width(frame, width, ...)
 	assert(width)
-	frame:SetWidth(E:Scale(width), ...)
+	frame:SetWidth(width, ...)
 end
 
 local function Height(frame, height, ...)
 	assert(height)
-	frame:SetHeight(E:Scale(height), ...)
+	frame:SetHeight(height, ...)
 end
 
 local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
-	if arg2 == nil then arg2 = obj:GetParent() end
-
-	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
-	if type(arg3)=='number' then arg3 = E:Scale(arg3) end
-	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
-	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
-
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
@@ -321,7 +314,7 @@ local function CreateShadow(frame, size, pass)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, size or 3, size or 3)
-	shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(size or 3)})
+	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(size or 3)})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 
@@ -371,12 +364,15 @@ local STRIP_FONT = 'FontString'
 local function StripRegion(which, object, kill, alpha)
 	if kill then
 		object:Kill()
-	elseif alpha then
-		object:SetAlpha(0)
 	elseif which == STRIP_TEX then
-		object:SetTexture()
+		if object:GetTexture() then object:SetTexture(nil) end
+		if object:GetAtlas() then object:SetAtlas(nil) end
 	elseif which == STRIP_FONT then
 		object:SetText('')
+	end
+
+	if alpha then
+		object:SetAlpha(0)
 	end
 end
 
@@ -496,7 +492,9 @@ do
 		local CloseButton = CreateFrame('Button', nil, frame)
 		CloseButton:SetSize(size or 16)
 		CloseButton:SetPoint('TOPRIGHT', offset or -6, offset or -6)
-		if backdrop then CloseButton:CreateBackdrop(nil, true) end
+		if backdrop then
+			CloseButton:CreateBackdrop(nil, true)
+		end
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')
 		CloseButton.Texture:SetAllPoints()
@@ -563,9 +561,5 @@ while object do
 	object = EnumerateFrames(object)
 end
 
---Add API to `CreateFont` objects without actually creating one
-addapi(_G.GameFontNormal)
-
---Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the 'Frame' widget
-local scrollFrame = CreateFrame('ScrollFrame')
-addapi(scrollFrame)
+addapi(_G.GameFontNormal) --Add API to `CreateFont` objects without actually creating one
+addapi(CreateFrame('ScrollFrame')) --Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the 'Frame' widget
