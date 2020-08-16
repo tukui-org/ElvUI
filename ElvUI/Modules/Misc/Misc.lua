@@ -301,7 +301,7 @@ function M:QUEST_COMPLETE()
 	if not self.QuestRewardGoldIconFrame then
 		local frame = CreateFrame("Frame", nil, firstItem)
 		frame:SetFrameStrata("HIGH")
-		frame:SetSize(20)
+		frame:SetSize(20, 20)
 		frame.Icon = frame:CreateTexture(nil, "OVERLAY")
 		frame.Icon:SetAllPoints(frame)
 		frame.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])

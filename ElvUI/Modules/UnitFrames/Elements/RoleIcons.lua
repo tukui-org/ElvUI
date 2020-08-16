@@ -7,7 +7,7 @@ local UnitIsConnected = UnitIsConnected
 
 function UF:Construct_RoleIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "ARTWORK")
-	tex:SetSize(17)
+	tex:SetSize(17, 17)
 	tex:SetPoint("BOTTOM", frame.Health, "BOTTOM", 0, 2)
 	tex.Override = UF.UpdateRoleIcon
 	frame:RegisterEvent("UNIT_CONNECTION", UF.UpdateRoleIcon)

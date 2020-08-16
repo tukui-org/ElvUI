@@ -323,7 +323,7 @@ function LO:CreateChatPanels()
 	lchattbtex:SetRotation(E.Skins.ArrowRotation.left)
 	lchattbtex:ClearAllPoints()
 	lchattbtex:SetPoint('CENTER')
-	lchattbtex:SetSize(12)
+	lchattbtex:SetSize(12, 12)
 	lchattb.texture = lchattbtex
 	lchattb.OnEnter = ChatButton_OnEnter
 	lchattb.OnLeave = ChatButton_OnLeave
@@ -373,7 +373,7 @@ function LO:CreateChatPanels()
 	rchattbtex:SetRotation(E.Skins.ArrowRotation.right)
 	rchattbtex:ClearAllPoints()
 	rchattbtex:SetPoint('CENTER')
-	rchattbtex:SetSize(12)
+	rchattbtex:SetSize(12, 12)
 	rchattb.texture = rchattbtex
 	rchattb.parent = rchat
 

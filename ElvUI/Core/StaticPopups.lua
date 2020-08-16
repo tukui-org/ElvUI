@@ -1227,7 +1227,7 @@ function E:Contruct_StaticPopups()
 			Skins:HandleButton(_G['ElvUI_StaticPopup'..index..'Button'..i])
 		end
 
-		_G['ElvUI_StaticPopup'..index..'CheckButton']:SetSize(24)
+		_G['ElvUI_StaticPopup'..index..'CheckButton']:SetSize(24, 24)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:FontTemplate(nil, nil, '')
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetTextColor(1,0.17,0.26)
 		_G['ElvUI_StaticPopup'..index..'CheckButtonText']:SetPoint('LEFT', _G['ElvUI_StaticPopup'..index..'CheckButton'], 'RIGHT', 4, 1)

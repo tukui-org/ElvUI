@@ -41,7 +41,7 @@ function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
 	texture:SetPoint("BOTTOM", x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
-	texture:SetSize(14)
+	texture:SetSize(14, 14)
 
 	local backdrop = CreateFrame('Frame', nil, slot)
 	backdrop:SetTemplate(nil, nil, true)

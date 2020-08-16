@@ -313,7 +313,7 @@ function RU:Initialize()
 		frame.role = role
 		frame:SetScript("OnEnter", RU.RoleOnEnter)
 		frame:SetScript("OnLeave", GameTooltip_Hide)
-		frame:SetSize(28)
+		frame:SetSize(28, 28)
 
 		RoleIcons.icons[role] = frame
 	end
