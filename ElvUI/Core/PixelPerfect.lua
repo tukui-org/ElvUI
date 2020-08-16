@@ -31,8 +31,6 @@ function E:UIScale(init)
 		--Set variables for pixel scaling
 		local pixel, ratio = 1, 768 / E.screenheight
 		E.mult = (pixel / scale) - ((pixel - ratio) / scale)
-		E.Spacing = (E.PixelMode and 0) or E.mult
-		E.Border = ((not E.twoPixelsPlease) and E.PixelMode and E.mult) or E.mult*2
 	elseif InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 	else -- E.Initialize
@@ -83,6 +81,5 @@ function E:PixelScaleChanged(event)
 end
 
 function E:Scale(x)
-	local mult = E.mult
-	return mult * floor(x / mult + 0.5)
+	return E.mult * floor(x / E.mult + 0.5)
 end

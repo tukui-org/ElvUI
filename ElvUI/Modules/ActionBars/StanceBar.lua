@@ -104,11 +104,11 @@ function AB:StyleShapeShift()
 end
 
 function AB:PositionAndSizeBarShapeShift()
-	local buttonSpacing = E:Scale(self.db.stanceBar.buttonspacing)
-	local backdropSpacing = E:Scale((self.db.stanceBar.backdropSpacing or self.db.stanceBar.buttonspacing))
+	local buttonSpacing = self.db.stanceBar.buttonspacing
+	local backdropSpacing = self.db.stanceBar.backdropSpacing or self.db.stanceBar.buttonspacing
 	local buttonsPerRow = self.db.stanceBar.buttonsPerRow
 	local numButtons = self.db.stanceBar.buttons
-	local size = E:Scale(self.db.stanceBar.buttonsize)
+	local size = self.db.stanceBar.buttonsize
 	local point = self.db.stanceBar.point
 	local widthMult = self.db.stanceBar.widthMult
 	local heightMult = self.db.stanceBar.heightMult

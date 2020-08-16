@@ -123,11 +123,11 @@ AB.customExitButton = {
 function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 
-	local buttonSpacing = E:Scale(db.buttonspacing)
-	local backdropSpacing = E:Scale(db.backdropSpacing or db.buttonspacing)
+	local buttonSpacing = db.buttonspacing
+	local backdropSpacing = db.backdropSpacing or db.buttonspacing
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
-	local size = E:Scale(db.buttonsize)
+	local size = db.buttonsize
 	local point = db.point
 	local numColumns = ceil(numButtons / buttonsPerRow)
 	local widthMult = db.widthMult

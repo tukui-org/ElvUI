@@ -38,9 +38,9 @@ end
 function B:SizeAndPositionBagBar()
 	if not B.BagBar then return; end
 
-	local buttonSpacing = E:Scale(E.db.bags.bagBar.spacing)
-	local backdropSpacing = E:Scale(E.db.bags.bagBar.backdropSpacing)
-	local bagBarSize = E:Scale(E.db.bags.bagBar.size)
+	local buttonSpacing = E.db.bags.bagBar.spacing
+	local backdropSpacing = E.db.bags.bagBar.backdropSpacing
+	local bagBarSize = E.db.bags.bagBar.size
 	local showBackdrop = E.db.bags.bagBar.showBackdrop
 	local growthDirection = E.db.bags.bagBar.growthDirection
 	local sortDirection = E.db.bags.bagBar.sortDirection

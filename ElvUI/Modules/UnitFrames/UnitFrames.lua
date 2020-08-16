@@ -326,7 +326,7 @@ function UF:GetAuraOffset(p1, p2)
 		y = 1
 	end
 
-	return E:Scale(x), E:Scale(y)
+	return x, y
 end
 
 function UF:GetAuraAnchorFrame(frame, attachTo)
