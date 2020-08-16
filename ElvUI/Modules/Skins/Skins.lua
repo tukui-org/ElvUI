@@ -1045,8 +1045,8 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 			local icon = _G[buttonNameTemplate..i.."Icon"]
 			if icon then
 				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:SetPoint("TOPLEFT", E.mult, -E.mult)
-				icon:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
+				icon:SetPoint("TOPLEFT", 1, -1)
+				icon:SetPoint("BOTTOMRIGHT", -1, 1)
 			end
 		end
 	end

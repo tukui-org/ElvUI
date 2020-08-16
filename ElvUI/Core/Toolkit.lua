@@ -278,7 +278,7 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 	if not frame.backdrop then frame.backdrop = backdrop end
 
 	if frame.forcePixelMode or forcePixelMode then
-		backdrop:SetOutside(frame, E.mult, E.mult)
+		backdrop:SetOutside(frame, 1, 1)
 	else
 		backdrop:SetOutside(frame)
 	end
@@ -421,8 +421,7 @@ local function FontTemplate(fs, font, fontSize, fontStyle)
 	fs:SetFont(font, fontSize, fontStyle)
 
 	if fontStyle == 'NONE' then
-		local s = E.mult or 1
-		fs:SetShadowOffset(s, -s/2)
+		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else
 		fs:SetShadowOffset(0, 0)

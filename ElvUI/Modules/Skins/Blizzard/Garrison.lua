@@ -22,9 +22,9 @@ function S:Blizzard_GarrisonUI()
 
 			reward:ClearAllPoints()
 			if IsAddOnLoaded("GarrisonMissionManager") then -- otherwise we mess with this AddOn
-				reward:SetPoint("TOPRIGHT", -E.mult * 65 + (index * -65), -E.mult)
+				reward:SetPoint("TOPRIGHT", -65 + (index * -65), -1)
 			else
-				reward:SetPoint("TOPRIGHT", -E.mult + (index * -65), -E.mult)
+				reward:SetPoint("TOPRIGHT", -1 + (index * -65), -1)
 			end
 
 			if reward.IconBorder then

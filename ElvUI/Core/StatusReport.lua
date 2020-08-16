@@ -182,7 +182,7 @@ function E:CreateStatusFrame()
 
 	--Plugin frame
 	local PluginFrame = CreateFrame('Frame', 'ElvUIStatusPlugins', StatusFrame)
-	PluginFrame:SetPoint('TOPLEFT', StatusFrame, 'TOPRIGHT', E.mult + 2*E.Border, 0)
+	PluginFrame:SetPoint('TOPLEFT', StatusFrame, 'TOPRIGHT', E.Border * 2, 0)
 	PluginFrame:SetFrameStrata('HIGH')
 	PluginFrame:CreateBackdrop('Transparent', nil, true)
 	PluginFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)

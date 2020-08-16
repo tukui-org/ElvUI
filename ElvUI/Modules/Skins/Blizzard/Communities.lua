@@ -760,8 +760,8 @@ function S:Blizzard_Communities()
 		for i = 1, #buttons do
 			local button = buttons[i]
 			if not button.IsSkinned then
-				button:SetPoint("LEFT", ApplicantList.backdrop, E.mult, 0)
-				button:SetPoint("RIGHT", ApplicantList.backdrop, -E.mult, 0)
+				button:SetPoint("LEFT", ApplicantList.backdrop, 1, 0)
+				button:SetPoint("RIGHT", ApplicantList.backdrop, -1, 0)
 
 				button:SetHighlightTexture(E.media.normTex)
 				button:GetHighlightTexture():SetVertexColor(1, 1, 1, .25)

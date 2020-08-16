@@ -177,7 +177,7 @@ function S:Blizzard_Calendar()
 		end
 	end)
 
-	_G.CalendarClassButton1:SetPoint("TOPLEFT", _G.CalendarClassButtonContainer, "TOPLEFT", E.PixelMode and E.mult*4 or E.mult*8, 0)
+	_G.CalendarClassButton1:SetPoint("TOPLEFT", _G.CalendarClassButtonContainer, "TOPLEFT", E.PixelMode and 4 or 8, 0)
 
 	for i = 1, #CLASS_SORT_ORDER do
 		local button = _G["CalendarClassButton"..i]

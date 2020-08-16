@@ -66,8 +66,8 @@ function RU:CreateUtilButton(name, parent, template, width, height, point, relat
 	elseif texture then
 		local t = b:CreateTexture(nil, "OVERLAY")
 		t:SetTexture(texture)
-		t:SetPoint("TOPLEFT", b, "TOPLEFT", E.mult, -E.mult)
-		t:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -E.mult, E.mult)
+		t:SetPoint("TOPLEFT", b, "TOPLEFT", 1, -1)
+		t:SetPoint("BOTTOMRIGHT", b, "BOTTOMRIGHT", -1, 1)
 		t.tex = texture
 		b.texture = t
 	end

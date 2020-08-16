@@ -129,8 +129,8 @@ function E:Grid_Create()
 		end
 	end
 
-	local size = E.mult
 	local width, height = E.UIParent:GetSize()
+	local size, half = E.mult / 2, height / 2
 
 	local ratio = width / height
 	local hStepheight = height * ratio
@@ -152,8 +152,8 @@ function E:Grid_Create()
 			tx:SetDrawLayer('BACKGROUND', 0)
 		end
 		tx:ClearAllPoints()
-		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', i*wStep - (size/2), 0)
-		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + (size/2), 0)
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', i*wStep - size, 0)
+		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + size, 0)
 	end
 
 	do
@@ -161,8 +161,8 @@ function E:Grid_Create()
 		tx:SetColorTexture(1, 0, 0)
 		tx:SetDrawLayer('BACKGROUND', 1)
 		tx:ClearAllPoints()
-		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(height/2) + (size/2))
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2 + size/2))
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -half + size)
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half + size))
 	end
 
 	for i = 1, floor((height/2)/hStep) do
@@ -170,15 +170,15 @@ function E:Grid_Create()
 		tx:SetColorTexture(0, 0, 0)
 		tx:SetDrawLayer('BACKGROUND', 0)
 		tx:ClearAllPoints()
-		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(height/2+i*hStep) + (size/2))
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2+i*hStep + size/2))
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(half+i*hStep) + size)
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half+i*hStep + size))
 
 		tx = E:Grid_GetRegion()
 		tx:SetColorTexture(0, 0, 0)
 		tx:SetDrawLayer('BACKGROUND', 0)
 		tx:ClearAllPoints()
-		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(height/2-i*hStep) + (size/2))
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(height/2-i*hStep + size/2))
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(half-i*hStep) + size)
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half-i*hStep + size))
 	end
 end
 
