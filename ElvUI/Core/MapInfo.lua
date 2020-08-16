@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local pairs = pairs
-
 local IsFalling = IsFalling
 local CreateFrame = CreateFrame
 local UnitPosition = UnitPosition
@@ -9,6 +8,7 @@ local GetUnitSpeed = GetUnitSpeed
 local CreateVector2D = CreateVector2D
 local GetRealZoneText = GetRealZoneText
 local GetMinimapZoneText = GetMinimapZoneText
+
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
