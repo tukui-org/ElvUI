@@ -29,7 +29,7 @@ end
 local function SkinItemButton(_, block)
 	local item = block.itemButton
 	if item and not item.skinned then
-		item:Size(25, 25)
+		item:SetSize(25, 25)
 		item:SetTemplate("Transparent")
 		item:StyleButton()
 		item:SetNormalTexture(nil)
@@ -37,7 +37,7 @@ local function SkinItemButton(_, block)
 		item.icon:SetInside()
 		item.Cooldown:SetInside()
 		item.Count:ClearAllPoints()
-		item.Count:Point("TOPLEFT", 1, -1)
+		item.Count:SetPoint("TOPLEFT", 1, -1)
 		item.Count:FontTemplate(E.media.normFont, 14, "OUTLINE")
 		item.Count:SetShadowOffset(5, -5)
 		E:RegisterCooldown(item.Cooldown)
@@ -63,7 +63,7 @@ local function SkinProgressBars(_, _, line)
 		if bar.BorderRight then bar.BorderRight:SetAlpha(0) end
 		if bar.BorderMid then bar.BorderMid:SetAlpha(0) end
 
-		bar:Height(18)
+		bar:SetHeight(18)
 		bar:StripTextures()
 		bar:CreateBackdrop("Transparent")
 		bar:SetStatusBarTexture(E.media.normTex)
@@ -71,13 +71,13 @@ local function SkinProgressBars(_, _, line)
 
 		if label then
 			label:ClearAllPoints()
-			label:Point("CENTER", bar, 0, 1)
+			label:SetPoint("CENTER", bar, 0, 1)
 			label:FontTemplate(E.media.normFont, 14, "OUTLINE")
 		end
 
 		if icon then
 			icon:ClearAllPoints()
-			icon:Point("LEFT", bar, "RIGHT", E.PixelMode and 3 or 7, 0)
+			icon:SetPoint("LEFT", bar, "RIGHT", E.PixelMode and 3 or 7, 0)
 			icon:SetMask("")
 			icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -102,7 +102,7 @@ local function SkinTimerBars(_, _, line)
 	local bar = timerBar and timerBar.Bar
 
 	if not timerBar.isSkinned then
-		bar:Height(18)
+		bar:SetHeight(18)
 		bar:StripTextures()
 		bar:CreateBackdrop("Transparent")
 		bar:SetStatusBarTexture(E.media.normTex)
@@ -118,11 +118,11 @@ local function PositionFindGroupButton(block, button)
 		if block.groupFinderButton and b == block.groupFinderButton and block.itemButton and button == block.itemButton then
 			-- this fires when there is a group button and a item button to the left of it
 			-- we push the item button away from the group button (to the left)
-			button:Point(a, b, c, d-(E.PixelMode and -1 or 1), e);
+			button:SetPoint(a, b, c, d-(E.PixelMode and -1 or 1), e);
 		elseif b == block and block.groupFinderButton and button == block.groupFinderButton then
 			-- this fires when there is a group finder button
 			-- we push the group finder button down slightly
-			button:Point(a, b, c, d, e-(E.PixelMode and 2 or -1));
+			button:SetPoint(a, b, c, d, e-(E.PixelMode and 2 or -1));
 		end
 	end
 end
@@ -131,7 +131,7 @@ local function SkinFindGroupButton(block)
 	if block.hasGroupFinderButton and block.groupFinderButton then
 		if block.groupFinderButton and not block.groupFinderButton.skinned then
 			S:HandleButton(block.groupFinderButton)
-			block.groupFinderButton:Size(20)
+			block.groupFinderButton:SetSize(20, 20)
 			block.groupFinderButton.skinned = true
 		end
 	end
@@ -151,7 +151,7 @@ function S:ObjectiveTrackerFrame()
 
 	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
 	minimize:StripTextures()
-	minimize:Size(16, 16)
+	minimize:SetSize(16, 16)
 	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
 	minimize.tex = minimize:CreateTexture(nil, "OVERLAY")
 	minimize.tex:SetTexture(E.Media.Textures.MinusButton)

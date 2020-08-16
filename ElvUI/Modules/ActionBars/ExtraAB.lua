@@ -3,7 +3,6 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local unpack = unpack
-
 local CreateFrame = CreateFrame
 local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
@@ -39,12 +38,16 @@ function AB:Extra_SetScale()
 
 	if _G.ExtraActionBarFrame then
 		_G.ExtraActionBarFrame:SetScale(scale)
-		ExtraActionBarHolder:Size(_G.ExtraActionBarFrame:GetWidth() * scale)
+
+		local size = _G.ExtraActionBarFrame:GetWidth() * scale
+		ExtraActionBarHolder:SetSize(size, size)
 	end
 
 	if _G.ZoneAbilityFrame then
 		_G.ZoneAbilityFrame:SetScale(scale)
-		ZoneAbilityHolder:Size(_G.ZoneAbilityFrame:GetWidth() * scale)
+
+		local size = _G.ZoneAbilityFrame:GetWidth() * scale
+		ZoneAbilityHolder:SetSize(size, size)
 	end
 end
 
@@ -53,21 +56,21 @@ function AB:SetupExtraButton()
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
-	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
-	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
+	ExtraActionBarHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
+	ExtraActionBarHolder:SetSize(ExtraActionBarFrame:GetSize())
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
+	ExtraActionBarFrame:SetPoint('CENTER', ExtraActionBarHolder, 'CENTER')
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
-	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
-	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
+	ZoneAbilityHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
+	ZoneAbilityHolder:SetSize(ExtraActionBarFrame:GetSize())
 
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
-	ZoneAbilityFrame:Point('CENTER', ZoneAbilityHolder, 'CENTER')
+	ZoneAbilityFrame:SetPoint('CENTER', ZoneAbilityHolder, 'CENTER')
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do

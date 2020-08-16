@@ -105,7 +105,7 @@ function S:BlizzardMiscFrames()
 		_G.GameMenuFrame:SetTemplate("Transparent")
 		_G.GameMenuFrame.Header:StripTextures()
 		_G.GameMenuFrame.Header:ClearAllPoints()
-		_G.GameMenuFrame.Header:Point("TOP", _G.GameMenuFrame, 0, 7)
+		_G.GameMenuFrame.Header:SetPoint("TOP", _G.GameMenuFrame, 0, 7)
 	end
 
 	if IsAddOnLoaded("OptionHouse") then
@@ -150,7 +150,7 @@ function S:BlizzardMiscFrames()
 
 	for i = 1, #ChatMenus do
 		if _G[ChatMenus[i]] == _G.ChatMenu then
-			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:SetTemplate("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) s:ClearAllPoints() s:Point("BOTTOMLEFT", _G.ChatFrame1, "TOPLEFT", 0, 30) end)
+			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:SetTemplate("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) s:ClearAllPoints() s:SetPoint("BOTTOMLEFT", _G.ChatFrame1, "TOPLEFT", 0, 30) end)
 		else
 			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:SetTemplate("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
 		end
@@ -205,8 +205,8 @@ function S:BlizzardMiscFrames()
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameGold'])
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameSilver'])
 		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameCopper'])
-		_G['StaticPopup'..i..'EditBox'].backdrop:Point('TOPLEFT', -2, -4)
-		_G['StaticPopup'..i..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
+		_G['StaticPopup'..i..'EditBox'].backdrop:SetPoint('TOPLEFT', -2, -4)
+		_G['StaticPopup'..i..'EditBox'].backdrop:SetPoint('BOTTOMRIGHT', 2, 4)
 		_G['StaticPopup'..i..'ItemFrameNameFrame']:Kill()
 		_G['StaticPopup'..i..'ItemFrame']:SetTemplate()
 		_G['StaticPopup'..i..'ItemFrame']:StyleButton()
@@ -238,16 +238,16 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameLeft:SetAlpha(0)
 		_G.GhostFrame:StripTextures()
 		_G.GhostFrame:ClearAllPoints()
-		_G.GhostFrame:Point("TOP", E.UIParent, "TOP", 0, -150)
+		_G.GhostFrame:SetPoint("TOP", E.UIParent, "TOP", 0, -150)
 		_G.GhostFrameContentsFrame:SetTemplate("Transparent")
-		_G.GhostFrameContentsFrameText:Point("TOPLEFT", 53, 0)
+		_G.GhostFrameContentsFrameText:SetPoint("TOPLEFT", 53, 0)
 		_G.GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
-		_G.GhostFrameContentsFrameIcon:Point("RIGHT", _G.GhostFrameContentsFrameText, "LEFT", -12, 0)
+		_G.GhostFrameContentsFrameIcon:SetPoint("RIGHT", _G.GhostFrameContentsFrameText, "LEFT", -12, 0)
 		local b = CreateFrame("Frame", nil, _G.GhostFrameContentsFrameIcon:GetParent())
 		local p = E.PixelMode and 1 or 2
-		b:Point("TOPLEFT", _G.GhostFrameContentsFrameIcon, -p, p)
-		b:Point("BOTTOMRIGHT", _G.GhostFrameContentsFrameIcon, p, -p)
-		_G.GhostFrameContentsFrameIcon:Size(37,38)
+		b:SetPoint("TOPLEFT", _G.GhostFrameContentsFrameIcon, -p, p)
+		b:SetPoint("BOTTOMRIGHT", _G.GhostFrameContentsFrameIcon, p, -p)
+		_G.GhostFrameContentsFrameIcon:SetSize(37,38)
 		_G.GhostFrameContentsFrameIcon:SetParent(b)
 		b:SetTemplate()
 	end
@@ -265,7 +265,7 @@ function S:BlizzardMiscFrames()
 			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
 			normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			normTex:SetRotation(S.ArrowRotation.right)
-			expandArrow:Size(12, 12)
+			expandArrow:SetSize(12, 12)
 		end
 
 		local Backdrop = _G[listFrameName.."Backdrop"]
@@ -281,7 +281,7 @@ function S:BlizzardMiscFrames()
 		if texture:find("Divider") then
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			icon:SetColorTexture(r, g, b, 0.45)
-			icon:Height(1)
+			icon:SetHeight(1)
 		end
 	end)
 
@@ -315,13 +315,13 @@ function S:BlizzardMiscFrames()
 				if co == 0 then
 					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
 					check:SetVertexColor(r, g, b, 1)
-					check:Size(20, 20)
+					check:SetSize(20, 20)
 					check:SetDesaturated(true)
 					button.backdrop:SetInside(check, 4, 4)
 				else
 					check:SetTexture(E.media.normTex)
 					check:SetVertexColor(r, g, b, 1)
-					check:Size(10, 10)
+					check:SetSize(10, 10)
 					check:SetDesaturated(false)
 					button.backdrop:SetOutside(check)
 				end
@@ -329,7 +329,7 @@ function S:BlizzardMiscFrames()
 				button.backdrop:Show()
 				check:SetTexCoord(0, 1, 0, 1)
 			else
-				check:Size(16, 16)
+				check:SetSize(16, 16)
 			end
 		end
 	end)
@@ -350,8 +350,8 @@ function S:BlizzardMiscFrames()
 
 	StackSplitFrame.bg1 = CreateFrame("Frame", nil, StackSplitFrame)
 	StackSplitFrame.bg1:SetTemplate("Transparent")
-	StackSplitFrame.bg1:Point("TOPLEFT", 10, -15)
-	StackSplitFrame.bg1:Point("BOTTOMRIGHT", -10, 55)
+	StackSplitFrame.bg1:SetPoint("TOPLEFT", 10, -15)
+	StackSplitFrame.bg1:SetPoint("BOTTOMRIGHT", -10, 55)
 	StackSplitFrame.bg1:SetFrameLevel(StackSplitFrame.bg1:GetFrameLevel() - 1)
 
 	S:HandleButton(StackSplitFrame.OkayButton)
@@ -359,13 +359,13 @@ function S:BlizzardMiscFrames()
 
 	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
 	for _, btn in pairs(buttons) do
-		btn:Size(14, 18)
+		btn:SetSize(14, 18)
 		btn:ClearAllPoints()
 
 		if btn == StackSplitFrame.LeftButton then
-			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+			btn:SetPoint('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
 		else
-			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+			btn:SetPoint('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
 		end
 
 		S:HandleNextPrevButton(btn, nil, nil, true)

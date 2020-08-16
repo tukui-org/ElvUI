@@ -214,6 +214,7 @@ do --this can save some main file locals
 	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
 	local DeathlyH		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
+	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
 
 	--[[ Simpys Thing: new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
@@ -398,6 +399,10 @@ do --this can save some main file locals
 		["Vidiä-WyrmrestAccord"]		= DeathlyH,
 		-- Quickhanz (Nihilist's absolute bestie)
 		["Zandahanz-Area52"]			= GoldShield,
+		-- AcidWeb
+		["Livarax-BurningLegion"]		= Gem,
+		["Filevandrel-BurningLegion"]	= Gem,
+		["Akavaya-BurningLegion"]		= Gem,
 	}
 end
 
@@ -517,10 +522,10 @@ function CH:StyleChat(frame)
 	local charCount = editbox:CreateFontString(nil, "ARTWORK")
 	charCount:FontTemplate()
 	charCount:SetTextColor(190, 190, 190, 0.4)
-	charCount:Point("TOPRIGHT", editbox, "TOPRIGHT", -5, 0)
-	charCount:Point("BOTTOMRIGHT", editbox, "BOTTOMRIGHT", -5, 0)
+	charCount:SetPoint("TOPRIGHT", editbox, "TOPRIGHT", -5, 0)
+	charCount:SetPoint("BOTTOMRIGHT", editbox, "BOTTOMRIGHT", -5, 0)
 	charCount:SetJustifyH("CENTER")
-	charCount:Width(40)
+	charCount:SetWidth(40)
 	editbox.characterCount = charCount
 
 	for _, texName in pairs(tabTexs) do
@@ -539,13 +544,13 @@ function CH:StyleChat(frame)
 
 	if not tab.left then tab.left = _G[name.."TabLeft"] end
 	tab.Text:ClearAllPoints()
-	tab.Text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
-	tab:Height(22)
+	tab.Text:SetPoint('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
+	tab:SetHeight(22)
 
 
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
-		tab.conversationIcon:Point('RIGHT', tab.Text, 'LEFT', -1, 0)
+		tab.conversationIcon:SetPoint('RIGHT', tab.Text, 'LEFT', -1, 0)
 	end
 
 	local repeatedText
@@ -680,8 +685,8 @@ function CH:StyleChat(frame)
 	local copyButton = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
 	copyButton:EnableMouse(true)
 	copyButton:SetAlpha(0.35)
-	copyButton:Size(20, 22)
-	copyButton:Point('TOPRIGHT', 0, -4)
+	copyButton:SetSize(20, 22)
+	copyButton:SetPoint('TOPRIGHT', 0, -4)
 	copyButton:SetFrameLevel(frame:GetFrameLevel() + 5)
 	frame.copyButton = copyButton
 
@@ -767,12 +772,7 @@ end
 
 local function colorizeLine(text, r, g, b)
 	local hexCode = E:RGBToHex(r, g, b)
-	local hexReplacement = format("|r%s", hexCode)
-
-	text = gsub(text, "|r", hexReplacement) --If the message contains color strings then we need to add message color hex code after every "|r"
-	text = format("%s%s|r", hexCode, text) --Add message color
-
-	return text
+	return format("%s%s|r", hexCode, text)
 end
 
 local copyLines = {}
@@ -926,11 +926,11 @@ function CH:UpdateEditboxAnchors()
 		editbox:ClearAllPoints()
 
 		if CH.db.editBoxPosition == "BELOW_CHAT" then
-			editbox:Point("TOPLEFT", anchorTo, "BOTTOMLEFT", -width, topheight)
-			editbox:Point("BOTTOMRIGHT", anchorTo, "BOTTOMRIGHT", width, -(panel_height+bottomheight))
+			editbox:SetPoint("TOPLEFT", anchorTo, "BOTTOMLEFT", -width, topheight)
+			editbox:SetPoint("BOTTOMRIGHT", anchorTo, "BOTTOMRIGHT", width, -(panel_height+bottomheight))
 		else
-			editbox:Point("BOTTOMLEFT", anchorTo, "TOPLEFT", -width, topheight)
-			editbox:Point("TOPRIGHT", anchorTo, "TOPRIGHT", width, panel_height+bottomheight)
+			editbox:SetPoint("BOTTOMLEFT", anchorTo, "TOPLEFT", -width, topheight)
+			editbox:SetPoint("TOPRIGHT", anchorTo, "TOPRIGHT", width, panel_height+bottomheight)
 		end
 	end
 end
@@ -1088,15 +1088,15 @@ function CH:PositionChat(chat)
 	if chat == CH.LeftChatWindow then
 		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
-		chat:Point("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
-		chat:Size(CH.db.panelWidth - 10, CH.db.panelHeight - offset)
+		chat:SetPoint("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
+		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - offset)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
 		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.RightChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
-		chat:Point("BOTTOMLEFT", _G.RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
-		chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - offset)
+		chat:SetPoint("BOTTOMLEFT", _G.RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
+		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - offset)
 
 		CH:ShowBackground(chat.Background, false)
 	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
@@ -1117,11 +1117,11 @@ end
 function CH:PositionChats()
 	if not E.private.chat.enable then return end
 
-	_G.LeftChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
+	_G.LeftChatPanel:SetSize(CH.db.panelWidth, CH.db.panelHeight)
 	if CH.db.separateSizes then
-		_G.RightChatPanel:Size(CH.db.panelWidthRight, CH.db.panelHeightRight)
+		_G.RightChatPanel:SetSize(CH.db.panelWidthRight, CH.db.panelHeightRight)
 	else
-		_G.RightChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
+		_G.RightChatPanel:SetSize(CH.db.panelWidth, CH.db.panelHeight)
 	end
 
 	LO:RepositionChatDataPanels()
@@ -1958,16 +1958,16 @@ function CH:SetupChat()
 
 	local chat = _G.GeneralDockManager.primary
 	_G.GeneralDockManager:ClearAllPoints()
-	_G.GeneralDockManager:Point('BOTTOMLEFT', chat, 'TOPLEFT', 0, 2)
-	_G.GeneralDockManager:Point('BOTTOMRIGHT', chat, 'TOPRIGHT', 0, 2)
-	_G.GeneralDockManager:Height(22)
-	_G.GeneralDockManagerScrollFrame:Height(22)
-	_G.GeneralDockManagerScrollFrameChild:Height(22)
+	_G.GeneralDockManager:SetPoint('BOTTOMLEFT', chat, 'TOPLEFT', 0, 2)
+	_G.GeneralDockManager:SetPoint('BOTTOMRIGHT', chat, 'TOPRIGHT', 0, 2)
+	_G.GeneralDockManager:SetHeight(22)
+	_G.GeneralDockManagerScrollFrame:SetHeight(22)
+	_G.GeneralDockManagerScrollFrameChild:SetHeight(22)
 
 	CH:PositionChats()
 
 	if _G.CombatLogQuickButtonFrame_Custom then
-		_G.CombatLogQuickButtonFrame_Custom:Size(_G.LeftChatTab:GetSize())
+		_G.CombatLogQuickButtonFrame_Custom:SetSize(_G.LeftChatTab:GetSize())
 	end
 
 	if not CH.HookSecured then
@@ -2336,8 +2336,8 @@ function CH:FCFDock_UpdateTabs(dock)
 	if dock == _G.GeneralDockManager then
 		local logchat, logchattab = CH:GetCombatLog()
 		dock.scrollFrame:ClearAllPoints()
-		dock.scrollFrame:Point("RIGHT", dock.overflowButton, "LEFT")
-		dock.scrollFrame:Point("TOPLEFT", (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), "TOPRIGHT")
+		dock.scrollFrame:SetPoint("RIGHT", dock.overflowButton, "LEFT")
+		dock.scrollFrame:SetPoint("TOPLEFT", (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), "TOPRIGHT")
 	end
 end
 
@@ -2647,7 +2647,7 @@ end
 
 function CH:RepositionOverflowButton()
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
+	_G.GeneralDockManagerOverflowButton:SetPoint('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
 end
 
 function CH:UpdateVoiceChatIcons()
@@ -2668,9 +2668,9 @@ function CH:HandleChatVoiceIcons()
 			button:ClearAllPoints()
 
 			if index == 1 then
-				button:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', 2, 0)
+				button:SetPoint('RIGHT', _G.GeneralDockManager, 'RIGHT', 2, 0)
 			else
-				button:Point('RIGHT', channelButtons[index-1], 'LEFT')
+				button:SetPoint('RIGHT', channelButtons[index-1], 'LEFT')
 			end
 		end
 
@@ -2688,21 +2688,21 @@ function CH:HandleChatVoiceIcons()
 
 	if not CH.db.pinVoiceButtons then
 		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
+		_G.GeneralDockManagerOverflowButton:SetPoint('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
 	end
 end
 
 function CH:CreateChatVoicePanel()
 	local Holder = CreateFrame('Frame', 'ChatButtonHolder', E.UIParent)
 	Holder:ClearAllPoints()
-	Holder:Point("BOTTOMLEFT", _G.LeftChatPanel, "TOPLEFT", 0, 1)
-	Holder:Size(30, 86)
+	Holder:SetPoint("BOTTOMLEFT", _G.LeftChatPanel, "TOPLEFT", 0, 1)
+	Holder:SetSize(30, 86)
 	Holder:SetTemplate('Transparent', nil, true)
 	Holder:SetBackdropColor(CH.db.panelColor.r, CH.db.panelColor.g, CH.db.panelColor.b, CH.db.panelColor.a)
 	E:CreateMover(Holder, "SocialMenuMover", _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
 
 	channelButtons[1]:ClearAllPoints()
-	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
+	channelButtons[1]:SetPoint('TOP', Holder, 'TOP', 0, -2)
 
 	for _, button in ipairs(channelButtons) do
 		Skins:HandleButton(button, nil, nil, nil, true)
@@ -2712,15 +2712,15 @@ function CH:CreateChatVoicePanel()
 	end
 
 	_G.ChatAlertFrame:ClearAllPoints()
-	_G.ChatAlertFrame:Point("BOTTOM", channelButtons[1], "TOP", 1, 3)
+	_G.ChatAlertFrame:SetPoint("BOTTOM", channelButtons[1], "TOP", 1, 3)
 
 	-- Skin the QuickJoinToastButton
 	local Button = _G.QuickJoinToastButton
 	Button:SetTemplate()
 	Button:SetParent(Holder)
 	Button:ClearAllPoints()
-	Button:Point('BOTTOM', Holder, 'TOP', -E.Border, 2*E.Border)
-	Button:Size(30, 32)
+	Button:SetPoint('BOTTOM', Holder, 'TOP', -E.Border, 2*E.Border)
+	Button:SetSize(30, 32)
 	-- Button:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
 
 	-- Change the QuickJoin Textures. Looks better =)
@@ -2749,7 +2749,7 @@ function CH:CreateChatVoicePanel()
 
 	-- Skin the `QuickJoinToastButton.Toast`
 	Button.Toast:ClearAllPoints()
-	Button.Toast:Point('LEFT', Button, 'RIGHT', -6, 0)
+	Button.Toast:SetPoint('LEFT', Button, 'RIGHT', -6, 0)
 	Button.Toast.Background:SetTexture('')
 	Button.Toast:CreateBackdrop('Transparent')
 	Button.Toast.backdrop:Hide()
@@ -2762,8 +2762,8 @@ function CH:BuildCopyChatFrame()
 	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
 	tinsert(_G.UISpecialFrames, "CopyChatFrame")
 	frame:SetTemplate('Transparent')
-	frame:Size(700, 200)
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 3)
+	frame:SetSize(700, 200)
+	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 3)
 	frame:Hide()
 	frame:SetMovable(true)
 	frame:EnableMouse(true)
@@ -2797,12 +2797,12 @@ function CH:BuildCopyChatFrame()
 	frame:SetFrameStrata("DIALOG")
 
 	local scrollArea = CreateFrame("ScrollFrame", "CopyChatScrollFrame", frame, "UIPanelScrollFrameTemplate")
-	scrollArea:Point("TOPLEFT", frame, "TOPLEFT", 8, -30)
-	scrollArea:Point("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
+	scrollArea:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
+	scrollArea:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
 	Skins:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
 	scrollArea:SetScript("OnSizeChanged", function(scroll)
-		_G.CopyChatFrameEditBox:Width(scroll:GetWidth())
-		_G.CopyChatFrameEditBox:Height(scroll:GetHeight())
+		_G.CopyChatFrameEditBox:SetWidth(scroll:GetWidth())
+		_G.CopyChatFrameEditBox:SetHeight(scroll:GetHeight())
 	end)
 	scrollArea:HookScript("OnVerticalScroll", function(scroll, offset)
 		_G.CopyChatFrameEditBox:SetHitRectInsets(0, 0, offset, (_G.CopyChatFrameEditBox:GetHeight() - offset - scroll:GetHeight()))
@@ -2814,8 +2814,8 @@ function CH:BuildCopyChatFrame()
 	editBox:EnableMouse(true)
 	editBox:SetAutoFocus(false)
 	editBox:SetFontObject(_G.ChatFontNormal)
-	editBox:Width(scrollArea:GetWidth())
-	editBox:Height(200)
+	editBox:SetWidth(scrollArea:GetWidth())
+	editBox:SetHeight(200)
 	editBox:SetScript("OnEscapePressed", function() _G.CopyChatFrame:Hide() end)
 	scrollArea:SetScrollChild(editBox)
 	_G.CopyChatFrameEditBox:SetScript("OnTextChanged", function(_, userInput)
@@ -2827,7 +2827,7 @@ function CH:BuildCopyChatFrame()
 	end)
 
 	local close = CreateFrame("Button", "CopyChatFrameCloseButton", frame, "UIPanelCloseButton")
-	close:Point("TOPRIGHT")
+	close:SetPoint("TOPRIGHT")
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
 	Skins:HandleCloseButton(close)
@@ -2992,7 +2992,7 @@ function CH:SetChatHeadOrientation(position)
 
 	for i, ChatHead in ipairs(CH.ChatHeadFrame) do
 		ChatHead:ClearAllPoints()
-		ChatHead:Point(point, i == 1 and CH.ChatHeadFrame or CH.ChatHeadFrame[i - 1], relativePoint, 0, offset)
+		ChatHead:SetPoint(point, i == 1 and CH.ChatHeadFrame or CH.ChatHeadFrame[i - 1], relativePoint, 0, offset)
 	end
 end
 
@@ -3153,9 +3153,9 @@ function CH:Initialize()
 
 	--Chat Heads Frame
 	CH.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
-	CH.ChatHeadFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 368, -210)
-	CH.ChatHeadFrame:Height(20)
-	CH.ChatHeadFrame:Width(200)
+	CH.ChatHeadFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 368, -210)
+	CH.ChatHeadFrame:SetHeight(20)
+	CH.ChatHeadFrame:SetWidth(200)
 	E:CreateMover(CH.ChatHeadFrame, 'VOICECHAT', L["Voice Overlay"])
 	CH.maxHeads = 5
 	CH.volumeBarHeight = 3
@@ -3163,13 +3163,13 @@ function CH:Initialize()
 	local CHAT_HEAD_HEIGHT = 40
 	for i = 1, CH.maxHeads do
 		local chatHead = CreateFrame("Frame", "ElvUIChatHeadFrame"..i, CH.ChatHeadFrame)
-		chatHead:Width(CH.ChatHeadFrame:GetWidth())
-		chatHead:Height(CHAT_HEAD_HEIGHT)
+		chatHead:SetWidth(CH.ChatHeadFrame:GetWidth())
+		chatHead:SetHeight(CHAT_HEAD_HEIGHT)
 
 		chatHead.Portrait = CreateFrame("Frame", nil, chatHead)
-		chatHead.Portrait:Width(CHAT_HEAD_HEIGHT - CH.volumeBarHeight)
-		chatHead.Portrait:Height(CHAT_HEAD_HEIGHT - CH.volumeBarHeight - E.Border*2)
-		chatHead.Portrait:Point("TOPLEFT", chatHead, "TOPLEFT")
+		chatHead.Portrait:SetWidth(CHAT_HEAD_HEIGHT - CH.volumeBarHeight)
+		chatHead.Portrait:SetHeight(CHAT_HEAD_HEIGHT - CH.volumeBarHeight - E.Border*2)
+		chatHead.Portrait:SetPoint("TOPLEFT", chatHead, "TOPLEFT")
 		chatHead.Portrait:SetTemplate()
 		chatHead.Portrait.texture = chatHead.Portrait:CreateTexture(nil, "OVERLAY")
 		chatHead.Portrait.texture:SetTexCoord(0.15, 0.85, 0.15, 0.85)
@@ -3177,12 +3177,12 @@ function CH:Initialize()
 
 		chatHead.Name = chatHead:CreateFontString(nil, "OVERLAY")
 		chatHead.Name:FontTemplate(nil, 20)
-		chatHead.Name:Point("LEFT", chatHead.Portrait, "RIGHT", 2, 0)
+		chatHead.Name:SetPoint("LEFT", chatHead.Portrait, "RIGHT", 2, 0)
 
 		chatHead.StatusBar = CreateFrame("StatusBar", nil, chatHead)
-		chatHead.StatusBar:Point("TOPLEFT", chatHead.Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
-		chatHead.StatusBar:Width(CHAT_HEAD_HEIGHT - E.Border*2 - CH.volumeBarHeight)
-		chatHead.StatusBar:Height(CH.volumeBarHeight)
+		chatHead.StatusBar:SetPoint("TOPLEFT", chatHead.Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
+		chatHead.StatusBar:SetWidth(CHAT_HEAD_HEIGHT - E.Border*2 - CH.volumeBarHeight)
+		chatHead.StatusBar:SetHeight(CH.volumeBarHeight)
 		chatHead.StatusBar:CreateBackdrop()
 		chatHead.StatusBar:SetStatusBarTexture(E.media.normTex)
 		chatHead.StatusBar:SetMinMaxValues(0, 1)

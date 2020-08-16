@@ -1031,9 +1031,9 @@ end
 
 ElvUF.Tags.Events['title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['title'] = function(unit)
-    if UnitIsPlayer(unit) then
+	if UnitIsPlayer(unit) then
 		return GetTitleName(GetCurrentTitle())
-    end
+	end
 end
 
 ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'

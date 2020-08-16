@@ -19,9 +19,9 @@ local function skinAch(Achievement, BiggerIcon)
 	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
 	Achievement.icon:SetTemplate()
-	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
+	Achievement.icon:SetSize(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
 	Achievement.icon:ClearAllPoints()
-	Achievement.icon:Point("TOPLEFT", 8, -8)
+	Achievement.icon:SetPoint("TOPLEFT", 8, -8)
 	Achievement.icon.bling:Kill()
 	Achievement.icon.frame:Kill()
 	Achievement.icon.texture:SetTexCoord(unpack(E.TexCoords))
@@ -29,7 +29,9 @@ local function skinAch(Achievement, BiggerIcon)
 
 	if Achievement.highlight then
 		Achievement.highlight:StripTextures()
-		Achievement:HookScript('OnEnter', function(self) self.backdrop:SetBackdropBorderColor(1, 1, 0) end)
+		Achievement:HookScript('OnEnter', function(self)
+			self.backdrop:SetBackdropBorderColor(1, 1, 0)
+		end)
 		Achievement:HookScript('OnLeave', function(self)
 			if (self.player and self.player.accountWide or self.accountWide) then
 				self.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
@@ -59,9 +61,9 @@ local function skinAch(Achievement, BiggerIcon)
 	if Achievement.tracked then
 		Achievement.tracked:GetRegions():SetTextColor(1, 1, 1)
 		S:HandleCheckBox(Achievement.tracked, true)
-		Achievement.tracked:Size(14, 14)
+		Achievement.tracked:SetSize(14, 14)
 		Achievement.tracked:ClearAllPoints()
-		Achievement.tracked:Point('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
+		Achievement.tracked:SetPoint('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
 	end
 
 	Achievement.isSkinned = true
@@ -76,13 +78,13 @@ local function SkinStatusBar(bar)
 
 	local StatusBarName = bar:GetName()
 	if _G[StatusBarName.."Title"] then
-		_G[StatusBarName.."Title"]:Point("LEFT", 4, 0)
+		_G[StatusBarName.."Title"]:SetPoint("LEFT", 4, 0)
 	end
 	if _G[StatusBarName.."Label"] then
-		_G[StatusBarName.."Label"]:Point("LEFT", 4, 0)
+		_G[StatusBarName.."Label"]:SetPoint("LEFT", 4, 0)
 	end
 	if _G[StatusBarName.."Text"] then
-		_G[StatusBarName.."Text"]:Point("RIGHT", -4, 0)
+		_G[StatusBarName.."Text"]:SetPoint("RIGHT", -4, 0)
 	end
 end
 
@@ -214,23 +216,23 @@ function S:Blizzard_AchievementUI(event)
 
 	local AchievementFrame = _G.AchievementFrame
 	AchievementFrame:CreateBackdrop("Transparent")
-	AchievementFrame.backdrop:Point("TOPLEFT", 0, 7)
-	AchievementFrame.backdrop:Point("BOTTOMRIGHT")
+	AchievementFrame.backdrop:SetPoint("TOPLEFT", 0, 7)
+	AchievementFrame.backdrop:SetPoint("BOTTOMRIGHT")
 
 	_G.AchievementFrameHeaderTitle:ClearAllPoints()
-	_G.AchievementFrameHeaderTitle:Point("TOPLEFT", AchievementFrame.backdrop, "TOPLEFT", -45, -8)
+	_G.AchievementFrameHeaderTitle:SetPoint("TOPLEFT", AchievementFrame.backdrop, "TOPLEFT", -45, -8)
 
 	_G.AchievementFrameHeaderPoints:ClearAllPoints()
-	_G.AchievementFrameHeaderPoints:Point("LEFT", _G.AchievementFrameHeaderTitle, "RIGHT", 2, 0)
+	_G.AchievementFrameHeaderPoints:SetPoint("LEFT", _G.AchievementFrameHeaderTitle, "RIGHT", 2, 0)
 
 	--Backdrops
 	_G.AchievementFrameCategoriesContainer:CreateBackdrop("Transparent")
-	_G.AchievementFrameCategoriesContainer.backdrop:Point("TOPLEFT", 0, 4)
-	_G.AchievementFrameCategoriesContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
+	_G.AchievementFrameCategoriesContainer.backdrop:SetPoint("TOPLEFT", 0, 4)
+	_G.AchievementFrameCategoriesContainer.backdrop:SetPoint("BOTTOMRIGHT", -2, -3)
 
 	_G.AchievementFrameAchievementsContainer:CreateBackdrop("Transparent")
-	_G.AchievementFrameAchievementsContainer.backdrop:Point("TOPLEFT", -2, 2)
-	_G.AchievementFrameAchievementsContainer.backdrop:Point("BOTTOMRIGHT", -2, -3)
+	_G.AchievementFrameAchievementsContainer.backdrop:SetPoint("TOPLEFT", -2, 2)
+	_G.AchievementFrameAchievementsContainer.backdrop:SetPoint("BOTTOMRIGHT", -2, -3)
 
 	_G.AchievementFrameGuildEmblemRight:Kill()
 	_G.AchievementFrameGuildEmblemLeft:Kill()
@@ -239,13 +241,13 @@ function S:Blizzard_AchievementUI(event)
 
 	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
 	_G.AchievementFrameFilterDropDown:ClearAllPoints()
-	_G.AchievementFrameFilterDropDown:Point("TOPLEFT", _G.AchievementFrameAchievements, "TOPLEFT", -18, 24)
+	_G.AchievementFrameFilterDropDown:SetPoint("TOPLEFT", _G.AchievementFrameAchievements, "TOPLEFT", -18, 24)
 
 	S:HandleEditBox(AchievementFrame.searchBox)
-	AchievementFrame.searchBox.backdrop:Point("TOPLEFT", AchievementFrame.searchBox, "TOPLEFT", -3, -3)
-	AchievementFrame.searchBox.backdrop:Point("BOTTOMRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 0, 3)
+	AchievementFrame.searchBox.backdrop:SetPoint("TOPLEFT", AchievementFrame.searchBox, "TOPLEFT", -3, -3)
+	AchievementFrame.searchBox.backdrop:SetPoint("BOTTOMRIGHT", AchievementFrame.searchBox, "BOTTOMRIGHT", 0, 3)
 	AchievementFrame.searchBox:ClearAllPoints()
-	AchievementFrame.searchBox:Point("TOPRIGHT", AchievementFrame, "TOPRIGHT", -50, 8)
+	AchievementFrame.searchBox:SetPoint("TOPRIGHT", AchievementFrame, "TOPRIGHT", -50, 8)
 	AchievementFrame.searchBox:SetSize(107, 25)
 
 	local scrollBars = {
@@ -268,7 +270,7 @@ function S:Blizzard_AchievementUI(event)
 
 	AchievementFrame.searchPreviewContainer:StripTextures()
 	AchievementFrame.searchPreviewContainer:ClearAllPoints()
-	AchievementFrame.searchPreviewContainer:Point("TOPLEFT", AchievementFrame, "TOPRIGHT", 2, 6)
+	AchievementFrame.searchPreviewContainer:SetPoint("TOPLEFT", AchievementFrame, "TOPRIGHT", 2, 6)
 
 	for i = 1, 5 do
 		SkinSearchButton(AchievementFrame.searchPreviewContainer["searchPreview"..i])
@@ -329,8 +331,8 @@ function S:Blizzard_AchievementUI(event)
 	SkinStatusBar(_G.AchievementFrameComparisonSummaryPlayerStatusBar)
 	SkinStatusBar(_G.AchievementFrameComparisonSummaryFriendStatusBar)
 	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:ClearAllPoints()
-	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:Point("CENTER")
-	_G.AchievementFrameComparisonHeader:Point("BOTTOMRIGHT", _G.AchievementFrameComparison, "TOPRIGHT", 45, -20)
+	_G.AchievementFrameComparisonSummaryFriendStatusBar.text:SetPoint("CENTER")
+	_G.AchievementFrameComparisonHeader:SetPoint("BOTTOMRIGHT", _G.AchievementFrameComparison, "TOPRIGHT", 45, -20)
 
 	for i=1, 12 do
 		local frame = _G["AchievementFrameSummaryCategoriesCategory"..i]
@@ -366,8 +368,8 @@ function S:Blizzard_AchievementUI(event)
 			local prevFrame = _G["AchievementFrameSummaryAchievement"..i-1]
 			if i ~= 1 then
 				frame:ClearAllPoints()
-				frame:Point("TOPLEFT", prevFrame, "BOTTOMLEFT", 0, 1)
-				frame:Point("TOPRIGHT", prevFrame, "BOTTOMRIGHT", 0, 1)
+				frame:SetPoint("TOPLEFT", prevFrame, "BOTTOMLEFT", 0, 1)
+				frame:SetPoint("TOPRIGHT", prevFrame, "BOTTOMRIGHT", 0, 1)
 			end
 
 			if frame.accountWide then
@@ -407,15 +409,15 @@ function S:Blizzard_AchievementUI(event)
 				frame:SetStatusBarColor(4/255, 179/255, 30/255)
 				frame:CreateBackdrop("Transparent")
 				frame:SetFrameLevel(frame:GetFrameLevel() + 3)
-				frame:Height(frame:GetHeight() - 2)
+				frame:SetHeight(frame:GetHeight() - 2)
 
 				frame.text:ClearAllPoints()
-				frame.text:Point("CENTER", frame, "CENTER", 0, -1)
+				frame.text:SetPoint("CENTER", frame, "CENTER", 0, -1)
 				frame.text:SetJustifyH("CENTER")
 
 				if index > 1 then
 					frame:ClearAllPoints()
-					frame:Point("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5)
+					frame:SetPoint("TOP", _G["AchievementFrameProgressBar"..index-1], "BOTTOM", 0, -5)
 					frame.SetPoint = E.noop
 					frame.ClearAllPoints = E.noop
 				end

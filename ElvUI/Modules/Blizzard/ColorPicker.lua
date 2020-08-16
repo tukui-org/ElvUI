@@ -9,7 +9,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local strlen, strjoin, gsub = strlen, strjoin, gsub
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
-
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local IsControlKeyDown = IsControlKeyDown
@@ -161,14 +160,14 @@ function B:EnhanceColorPicker()
 
 	_G.ColorPickerFrame.Header:StripTextures()
 	_G.ColorPickerFrame.Header:ClearAllPoints()
-	_G.ColorPickerFrame.Header:Point("TOP", _G.ColorPickerFrame, 0, 0)
+	_G.ColorPickerFrame.Header:SetPoint("TOP", _G.ColorPickerFrame, 0, 0)
 
 	_G.ColorPickerCancelButton:ClearAllPoints()
 	_G.ColorPickerOkayButton:ClearAllPoints()
-	_G.ColorPickerCancelButton:Point("BOTTOMRIGHT", _G.ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
-	_G.ColorPickerCancelButton:Point("BOTTOMLEFT", _G.ColorPickerFrame, "BOTTOM", 0, 6)
-	_G.ColorPickerOkayButton:Point("BOTTOMLEFT", _G.ColorPickerFrame,"BOTTOMLEFT", 6,6)
-	_G.ColorPickerOkayButton:Point("RIGHT", _G.ColorPickerCancelButton,"LEFT", -4,0)
+	_G.ColorPickerCancelButton:SetPoint("BOTTOMRIGHT", _G.ColorPickerFrame, "BOTTOMRIGHT", -6, 6)
+	_G.ColorPickerCancelButton:SetPoint("BOTTOMLEFT", _G.ColorPickerFrame, "BOTTOM", 0, 6)
+	_G.ColorPickerOkayButton:SetPoint("BOTTOMLEFT", _G.ColorPickerFrame,"BOTTOMLEFT", 6,6)
+	_G.ColorPickerOkayButton:SetPoint("RIGHT", _G.ColorPickerCancelButton,"LEFT", -4,0)
 	S:HandleSliderFrame(_G.OpacitySliderFrame)
 	S:HandleButton(_G.ColorPickerOkayButton)
 	S:HandleButton(_G.ColorPickerCancelButton)
@@ -185,13 +184,13 @@ function B:EnhanceColorPicker()
 			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxA_SetFocus)
 			UpdateAlphaText()
 			UpdateColorTexts()
-			frame:Width(405)
+			frame:SetWidth(405)
 		else
 			_G.ColorPPBoxA:Hide()
 			_G.ColorPPBoxLabelA:Hide()
 			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxR_SetFocus)
 			UpdateColorTexts()
-			frame:Width(345)
+			frame:SetWidth(345)
 		end
 
 		-- Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
@@ -201,34 +200,34 @@ function B:EnhanceColorPicker()
 	end)
 
 	-- make the Color Picker dialog a bit taller, to make room for edit boxes
-	_G.ColorPickerFrame:Height(_G.ColorPickerFrame:GetHeight() + 40)
+	_G.ColorPickerFrame:SetHeight(_G.ColorPickerFrame:GetHeight() + 40)
 
 	-- move the Color Swatch
 	_G.ColorSwatch:ClearAllPoints()
-	_G.ColorSwatch:Point("TOPLEFT", _G.ColorPickerFrame, "TOPLEFT", 215, -45)
+	_G.ColorSwatch:SetPoint("TOPLEFT", _G.ColorPickerFrame, "TOPLEFT", 215, -45)
 
 	-- add Color Swatch for original color
 	local t = _G.ColorPickerFrame:CreateTexture("ColorPPOldColorSwatch")
 	local w, h = _G.ColorSwatch:GetSize()
-	t:Size(w*0.75,h*0.75)
+	t:SetSize(w*0.75,h*0.75)
 	t:SetColorTexture(0,0,0)
 	-- OldColorSwatch to appear beneath ColorSwatch
 	t:SetDrawLayer("BORDER")
-	t:Point("BOTTOMLEFT", "ColorSwatch", "TOPRIGHT", -(w/2), -(h/3))
+	t:SetPoint("BOTTOMLEFT", "ColorSwatch", "TOPRIGHT", -(w/2), -(h/3))
 
 	-- add Color Swatch for the copied color
 	t = _G.ColorPickerFrame:CreateTexture("ColorPPCopyColorSwatch")
 	t:SetColorTexture(0,0,0)
-	t:Size(w,h)
+	t:SetSize(w,h)
 	t:Hide()
 
 	-- add copy button to the _G.ColorPickerFrame
 	local b = CreateFrame("Button", "ColorPPCopy", _G.ColorPickerFrame, "UIPanelButtonTemplate")
 	S:HandleButton(b)
 	b:SetText(CALENDAR_COPY_EVENT)
-	b:Width(60)
-	b:Height(22)
-	b:Point("TOPLEFT", "ColorSwatch", "BOTTOMLEFT", 0, -5)
+	b:SetWidth(60)
+	b:SetHeight(22)
+	b:SetPoint("TOPLEFT", "ColorSwatch", "BOTTOMLEFT", 0, -5)
 
 	-- copy color into buffer on button click
 	b:SetScript("OnClick", function()
@@ -247,9 +246,9 @@ function B:EnhanceColorPicker()
 	b = CreateFrame('Button', 'ColorPPClass', _G.ColorPickerFrame, 'UIPanelButtonTemplate')
 	b:SetText(CLASS)
 	S:HandleButton(b)
-	b:Width(80)
-	b:Height(22)
-	b:Point("TOP", "ColorPPCopy", "BOTTOMRIGHT", 0, -7)
+	b:SetWidth(80)
+	b:SetHeight(22)
+	b:SetPoint("TOP", "ColorPPCopy", "BOTTOMRIGHT", 0, -7)
 
 	b:SetScript('OnClick', function()
 		local color = E:ClassColor(E.myclass, true)
@@ -264,9 +263,9 @@ function B:EnhanceColorPicker()
 	b = CreateFrame("Button", "ColorPPPaste", _G.ColorPickerFrame, "UIPanelButtonTemplate")
 	b:SetText(CALENDAR_PASTE_EVENT)
 	S:HandleButton(b)
-	b:Width(60)
-	b:Height(22)
-	b:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
+	b:SetWidth(60)
+	b:SetHeight(22)
+	b:SetPoint('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
 	b:Disable() -- enable when something has been copied
 
 	-- paste color on button click, updating frame components
@@ -284,9 +283,9 @@ function B:EnhanceColorPicker()
 	b = CreateFrame("Button", "ColorPPDefault", _G.ColorPickerFrame, "UIPanelButtonTemplate")
 	b:SetText(DEFAULT)
 	S:HandleButton(b)
-	b:Width(80)
-	b:Height(22)
-	b:Point("TOPLEFT", "ColorPPClass", "BOTTOMLEFT", 0, -7)
+	b:SetWidth(80)
+	b:SetHeight(22)
+	b:SetPoint("TOPLEFT", "ColorPPClass", "BOTTOMLEFT", 0, -7)
 	b:Disable() -- enable when something has been copied
 	b:SetScript("OnHide", function(btn)
 		if btn.colors then
@@ -314,41 +313,41 @@ function B:EnhanceColorPicker()
 	end)
 
 	-- position Color Swatch for copy color
-	_G.ColorPPCopyColorSwatch:Point("BOTTOM", "ColorPPPaste", "TOP", 0, 10)
+	_G.ColorPPCopyColorSwatch:SetPoint("BOTTOM", "ColorPPPaste", "TOP", 0, 10)
 
 	-- move the Opacity Slider Frame to align with bottom of Copy ColorSwatch
 	_G.OpacitySliderFrame:ClearAllPoints()
-	_G.OpacitySliderFrame:Point("BOTTOM", "ColorPPDefault", "BOTTOM", 0, 0)
-	_G.OpacitySliderFrame:Point("RIGHT", "ColorPickerFrame", "RIGHT", -35, 18)
+	_G.OpacitySliderFrame:SetPoint("BOTTOM", "ColorPPDefault", "BOTTOM", 0, 0)
+	_G.OpacitySliderFrame:SetPoint("RIGHT", "ColorPickerFrame", "RIGHT", -35, 18)
 
 	-- set up edit box frames and interior label and text areas
 	local boxes = { "R", "G", "B", "H", "A" }
 	for i = 1, #boxes do
 		local rgb = boxes[i]
 		local box = CreateFrame("EditBox", "ColorPPBox"..rgb, _G.ColorPickerFrame, "InputBoxTemplate")
-		box:Point("TOP", "ColorPickerWheel", "BOTTOM", 0, -15)
+		box:SetPoint("TOP", "ColorPickerWheel", "BOTTOM", 0, -15)
 		box:SetFrameStrata("DIALOG")
 		box:SetAutoFocus(false)
 		box:SetTextInsets(0,7,0,0)
 		box:SetJustifyH("RIGHT")
-		box:Height(24)
+		box:SetHeight(24)
 		box:SetID(i)
 		S:HandleEditBox(box)
 
 		-- hex entry box
 		if i == 4 then
 			box:SetMaxLetters(6)
-			box:Width(56)
+			box:SetWidth(56)
 			box:SetNumeric(false)
 		else
 			box:SetMaxLetters(3)
-			box:Width(40)
+			box:SetWidth(40)
 			box:SetNumeric(true)
 		end
 
 		-- label
 		local label = box:CreateFontString("ColorPPBoxLabel"..rgb, "ARTWORK", "GameFontNormalSmall")
-		label:Point("RIGHT", "ColorPPBox"..rgb, "LEFT", -5, 0)
+		label:SetPoint("RIGHT", "ColorPPBox"..rgb, "LEFT", -5, 0)
 		label:SetText(i == 4 and "#" or rgb)
 		label:SetTextColor(1, 1, 1)
 
@@ -384,11 +383,11 @@ function B:EnhanceColorPicker()
 	end
 
 	-- finish up with placement
-	_G.ColorPPBoxA:Point("RIGHT", "OpacitySliderFrame", "RIGHT", 10, 0)
-	_G.ColorPPBoxH:Point("RIGHT", "ColorPPDefault", "RIGHT", -10, 0)
-	_G.ColorPPBoxB:Point("RIGHT", "ColorPPDefault", "LEFT", -40, 0)
-	_G.ColorPPBoxG:Point("RIGHT", "ColorPPBoxB", "LEFT", -25, 0)
-	_G.ColorPPBoxR:Point("RIGHT", "ColorPPBoxG", "LEFT", -25, 0)
+	_G.ColorPPBoxA:SetPoint("RIGHT", "OpacitySliderFrame", "RIGHT", 10, 0)
+	_G.ColorPPBoxH:SetPoint("RIGHT", "ColorPPDefault", "RIGHT", -10, 0)
+	_G.ColorPPBoxB:SetPoint("RIGHT", "ColorPPDefault", "LEFT", -40, 0)
+	_G.ColorPPBoxG:SetPoint("RIGHT", "ColorPPBoxB", "LEFT", -25, 0)
+	_G.ColorPPBoxR:SetPoint("RIGHT", "ColorPPBoxG", "LEFT", -25, 0)
 
 	-- define the order of tab cursor movement
 	_G.ColorPPBoxR:SetScript("OnTabPressed", function() _G.ColorPPBoxG:SetFocus() end)
@@ -398,8 +397,8 @@ function B:EnhanceColorPicker()
 
 	-- make the color picker movable.
 	local mover = CreateFrame('Frame', nil, _G.ColorPickerFrame)
-	mover:Point('TOPLEFT', _G.ColorPickerFrame, 'TOP', -60, 0)
-	mover:Point('BOTTOMRIGHT', _G.ColorPickerFrame, 'TOP', 60, -15)
+	mover:SetPoint('TOPLEFT', _G.ColorPickerFrame, 'TOP', -60, 0)
+	mover:SetPoint('BOTTOMRIGHT', _G.ColorPickerFrame, 'TOP', 60, -15)
 	mover:SetScript('OnMouseDown', function() _G.ColorPickerFrame:StartMoving() end)
 	mover:SetScript('OnMouseUp', function() _G.ColorPickerFrame:StopMovingOrSizing() end)
 	mover:EnableMouse(true)

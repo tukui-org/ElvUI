@@ -49,13 +49,13 @@ function S:LootFrame()
 	LootHistoryFrame.ResizeButton.text = LootHistoryFrame.ResizeButton:CreateFontString(nil, 'OVERLAY')
 	LootHistoryFrame.ResizeButton.text:FontTemplate(nil, 16, 'OUTLINE')
 	LootHistoryFrame.ResizeButton.text:SetJustifyH('CENTER')
-	LootHistoryFrame.ResizeButton.text:Point('CENTER', LootHistoryFrame.ResizeButton)
+	LootHistoryFrame.ResizeButton.text:SetPoint('CENTER', LootHistoryFrame.ResizeButton)
 	LootHistoryFrame.ResizeButton.text:SetText("v v v v")
 	LootHistoryFrame.ResizeButton:SetTemplate()
-	LootHistoryFrame.ResizeButton:Width(LootHistoryFrame:GetWidth())
-	LootHistoryFrame.ResizeButton:Height(19)
+	LootHistoryFrame.ResizeButton:SetWidth(LootHistoryFrame:GetWidth())
+	LootHistoryFrame.ResizeButton:SetHeight(19)
 	LootHistoryFrame.ResizeButton:ClearAllPoints()
-	LootHistoryFrame.ResizeButton:Point("TOP", LootHistoryFrame, "BOTTOM", 0, -2)
+	LootHistoryFrame.ResizeButton:SetPoint("TOP", LootHistoryFrame, "BOTTOM", 0, -2)
 	_G.LootHistoryFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar)
 
@@ -121,8 +121,8 @@ function S:LootFrame()
 
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame)
 	BonusRollFrame.SpecIcon.b:SetTemplate()
-	BonusRollFrame.SpecIcon.b:Point("BOTTOMRIGHT", BonusRollFrame, -2, 2)
-	BonusRollFrame.SpecIcon.b:Size(BonusRollFrame.SpecIcon:GetSize())
+	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 2)
+	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
 	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
@@ -130,14 +130,14 @@ function S:LootFrame()
 	hooksecurefunc(BonusRollFrame.SpecIcon, "Hide", function(specIcon)
 		if specIcon.b and specIcon.b:IsShown() then
 			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
-			BonusRollFrame.CurrentCountFrame:Point("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
 			specIcon.b:Hide()
 		end
 	end)
 	hooksecurefunc(BonusRollFrame.SpecIcon, "Show", function(specIcon)
 		if specIcon.b and not specIcon.b:IsShown() and specIcon:GetTexture() ~= nil then
 			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
-			BonusRollFrame.CurrentCountFrame:Point("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+			BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
 			specIcon.b:Show()
 		end
 	end)
@@ -155,12 +155,12 @@ function S:LootFrame()
 		if BonusRollFrame.SpecIcon.b then
 			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil);
 			if BonusRollFrame.SpecIcon.b:IsShown() then
-				BonusRollFrame.CurrentCountFrame:Point("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+				BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
 			else
-				BonusRollFrame.CurrentCountFrame:Point("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+				BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
 			end
 		else
-			BonusRollFrame.CurrentCountFrame:Point("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
 		end
 
 		--skin currency icons
@@ -172,7 +172,7 @@ function S:LootFrame()
 
 	local LootFrame = _G.LootFrame
 	S:HandlePortraitFrame(LootFrame, true)
-	LootFrame:Height(LootFrame:GetHeight() - 30)
+	LootFrame:SetHeight(LootFrame:GetHeight() - 30)
 	_G.LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
 	for i=1, LootFrame:GetNumRegions() do
@@ -185,7 +185,7 @@ function S:LootFrame()
 	end
 
 	LootFrame.Title:ClearAllPoints()
-	LootFrame.Title:Point("TOPLEFT", LootFrame, "TOPLEFT", 4, -4)
+	LootFrame.Title:SetPoint("TOPLEFT", LootFrame, "TOPLEFT", 4, -4)
 	LootFrame.Title:SetJustifyH("LEFT")
 
 	for i=1, _G.LOOTFRAME_NUMBUTTONS do
@@ -205,7 +205,7 @@ function S:LootFrame()
 
 		local point, attachTo, point2, x, y = button:GetPoint()
 		button:ClearAllPoints()
-		button:Point(point, attachTo, point2, x, y+30)
+		button:SetPoint(point, attachTo, point2, x, y+30)
 	end
 
 	hooksecurefunc("LootFrame_UpdateButton", function(index)

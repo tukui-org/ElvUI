@@ -52,16 +52,16 @@ function UF:Configure_PowerPrediction(frame)
 
 		if orientation == "HORIZONTAL" then
 			local point = reverseFill and "LEFT" or "RIGHT"
-			mainBar:Point("TOP", power, "TOP")
-			mainBar:Point("BOTTOM", power, "BOTTOM")
-			mainBar:Point(point, powerBarTexture, point)
-			mainBar:Size(power:GetWidth(), 0)
+			mainBar:SetPoint("TOP", power, "TOP")
+			mainBar:SetPoint("BOTTOM", power, "BOTTOM")
+			mainBar:SetPoint(point, powerBarTexture, point)
+			mainBar:SetSize(power:GetWidth(), 0)
 		else
 			local point = reverseFill and "BOTTOM" or "TOP"
-			mainBar:Point("LEFT", power, "LEFT")
-			mainBar:Point("RIGHT", power, "RIGHT")
-			mainBar:Point(point, powerBarTexture, point)
-			mainBar:Size(0, power:GetHeight())
+			mainBar:SetPoint("LEFT", power, "LEFT")
+			mainBar:SetPoint("RIGHT", power, "RIGHT")
+			mainBar:SetPoint(point, powerBarTexture, point)
+			mainBar:SetSize(0, power:GetHeight())
 		end
 
 		if altBar then
@@ -74,15 +74,15 @@ function UF:Configure_PowerPrediction(frame)
 			altBar:SetOrientation((frame.db.classbar.verticalOrientation and 'VERTICAL') or 'HORIZONTAL')
 
 			if orientation == "HORIZONTAL" then
-				altBar:Point("TOP", altPower, "TOP")
-				altBar:Point("BOTTOM", altPower, "BOTTOM")
-				altBar:Point("RIGHT", altPowerBarTexture, "RIGHT")
-				altBar:Size(altPower:GetWidth(), 0)
+				altBar:SetPoint("TOP", altPower, "TOP")
+				altBar:SetPoint("BOTTOM", altPower, "BOTTOM")
+				altBar:SetPoint("RIGHT", altPowerBarTexture, "RIGHT")
+				altBar:SetSize(altPower:GetWidth(), 0)
 			else
-				altBar:Point("LEFT", altPower, "LEFT")
-				altBar:Point("RIGHT", altPower, "RIGHT")
-				altBar:Point("TOP", altPowerBarTexture, "TOP")
-				altBar:Size(0, altPower:GetHeight())
+				altBar:SetPoint("LEFT", altPower, "LEFT")
+				altBar:SetPoint("RIGHT", altPower, "RIGHT")
+				altBar:SetPoint("TOP", altPowerBarTexture, "TOP")
+				altBar:SetSize(0, altPower:GetHeight())
 			end
 		end
 	elseif frame:IsElementEnabled('PowerPrediction') then

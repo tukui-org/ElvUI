@@ -11,7 +11,7 @@ local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
 
 local function HandlePushToTalkButton(button)
-	button:Size(button:GetSize())
+	button:SetSize(button:GetSize())
 
 	button.TopLeft:Hide()
 	button.TopRight:Hide()
@@ -48,11 +48,11 @@ function S:BlizzardOptions()
 	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameYesButton:ClearAllPoints()
 	_G.ReadyCheckFrameNoButton:ClearAllPoints()
-	_G.ReadyCheckFrameYesButton:Point("TOPRIGHT", ReadyCheckFrame, "CENTER", -3, -5)
-	_G.ReadyCheckFrameNoButton:Point("TOPLEFT", ReadyCheckFrame, "CENTER", 3, -5)
+	_G.ReadyCheckFrameYesButton:SetPoint("TOPRIGHT", ReadyCheckFrame, "CENTER", -3, -5)
+	_G.ReadyCheckFrameNoButton:SetPoint("TOPLEFT", ReadyCheckFrame, "CENTER", 3, -5)
 	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameText:ClearAllPoints()
-	_G.ReadyCheckFrameText:Point("TOP", 0, -15)
+	_G.ReadyCheckFrameText:SetPoint("TOP", 0, -15)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript("OnShow", function(rcf)
@@ -82,7 +82,7 @@ function S:BlizzardOptions()
 	local ChatConfigFrame = _G.ChatConfigFrame
 	ChatConfigFrame.Header = ChatConfigFrame.Header
 	ChatConfigFrame.Header:StripTextures()
-	ChatConfigFrame.Header:Point("TOP", ChatConfigFrame, 0, 0)
+	ChatConfigFrame.Header:SetPoint("TOP", ChatConfigFrame, 0, 0)
 
 	hooksecurefunc(_G.ChatConfigFrameChatTabManager, "UpdateWidth", function(tm)
 		for tab in tm.tabPool:EnumerateActive() do
@@ -168,32 +168,31 @@ function S:BlizzardOptions()
 
 	for i in pairs(_G.COMBAT_CONFIG_TABS) do
 		S:HandleTab(_G["CombatConfigTab"..i])
-		_G["CombatConfigTab"..i].backdrop:Point("TOPLEFT", 0, -10)
-		_G["CombatConfigTab"..i].backdrop:Point("BOTTOMRIGHT", -2, 3)
-		_G["CombatConfigTab"..i.."Text"]:Point("BOTTOM", 0, 10)
+		_G["CombatConfigTab"..i].backdrop:SetPoint("TOPLEFT", 0, -10)
+		_G["CombatConfigTab"..i].backdrop:SetPoint("BOTTOMRIGHT", -2, 3)
+		_G["CombatConfigTab"..i.."Text"]:SetPoint("BOTTOM", 0, 10)
 	end
 
 	_G.CombatConfigTab1:ClearAllPoints()
-	_G.CombatConfigTab1:Point("BOTTOMLEFT", _G.ChatConfigBackgroundFrame, "TOPLEFT", 6, -2)
+	_G.CombatConfigTab1:SetPoint("BOTTOMLEFT", _G.ChatConfigBackgroundFrame, "TOPLEFT", 6, -2)
 
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
-	_G.ChatConfigMoveFilterUpButton:Size(19, 19)
-	_G.ChatConfigMoveFilterDownButton:Size(19, 19)
-	_G.ChatConfigMoveFilterUpButton:Point("TOPLEFT", "$parent", "BOTTOMLEFT", 0, -3)
-	_G.ChatConfigMoveFilterDownButton:Point("LEFT", _G.ChatConfigMoveFilterUpButton, "RIGHT", 3, 0)
+	_G.ChatConfigMoveFilterUpButton:SetSize(19, 19)
+	_G.ChatConfigMoveFilterDownButton:SetSize(19, 19)
+	_G.ChatConfigMoveFilterUpButton:SetPoint("TOPLEFT", "$parent", "BOTTOMLEFT", 0, -3)
+	_G.ChatConfigMoveFilterDownButton:SetPoint("LEFT", _G.ChatConfigMoveFilterUpButton, "RIGHT", 3, 0)
 
-	_G.ChatConfigFrameOkayButton:Point("RIGHT", "$parentCancelButton", "RIGHT", -1, -3)
-	_G.ChatConfigFrameDefaultButton:Point("BOTTOMLEFT", 12, 10)
-	_G.ChatConfigCombatSettingsFiltersDeleteButton:Point("TOPRIGHT", "$parent", "BOTTOMRIGHT", -3, -1)
-	_G.ChatConfigCombatSettingsFiltersAddFilterButton:Point("RIGHT", "$parentDeleteButton", "LEFT", -2, 0)
-	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:Point("RIGHT", "$parentAddFilterButton", "LEFT", -2, 0)
+	_G.ChatConfigFrameOkayButton:SetPoint("RIGHT", "$parentCancelButton", "RIGHT", -1, -3)
+	_G.ChatConfigFrameDefaultButton:SetPoint("BOTTOMLEFT", 12, 10)
+	_G.ChatConfigCombatSettingsFiltersDeleteButton:SetPoint("TOPRIGHT", "$parent", "BOTTOMRIGHT", -3, -1)
+	_G.ChatConfigCombatSettingsFiltersAddFilterButton:SetPoint("RIGHT", "$parentDeleteButton", "LEFT", -2, 0)
+	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:SetPoint("RIGHT", "$parentAddFilterButton", "LEFT", -2, 0)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
-		if ( not _G.FCF_GetCurrentChatFrame() ) then
-			return
-		end
+		if not _G.FCF_GetCurrentChatFrame() then return end
+
 		for index in ipairs(frame.checkBoxTable) do
 			local checkBoxNameString = frame:GetName().."CheckBox"
 			local checkBoxName = checkBoxNameString..index
@@ -213,10 +212,10 @@ function S:BlizzardOptions()
 	hooksecurefunc('ChatConfig_UpdateTieredCheckboxes', function(frame, index)
 		local group = frame.checkBoxTable[index]
 		local checkBox = _G[frame:GetName().."CheckBox"..index]
-		if ( checkBox ) then
+		if checkBox then
 			S:HandleCheckBox(checkBox)
 		end
-		if ( group.subTypes ) then
+		if group.subTypes then
 			for k in ipairs(group.subTypes) do
 				S:HandleCheckBox(_G[frame:GetName().."CheckBox"..index.."_"..k])
 			end
@@ -224,9 +223,8 @@ function S:BlizzardOptions()
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateSwatches', function(frame)
-		if ( not _G.FCF_GetCurrentChatFrame() ) then
-			return
-		end
+		if not _G.FCF_GetCurrentChatFrame() then return end
+
 		for index in ipairs(frame.swatchTable) do
 			_G[frame:GetName().."Swatch"..index]:StripTextures()
 		end
@@ -286,12 +284,12 @@ function S:BlizzardOptions()
 	InterfaceOptionsFrame.Header = InterfaceOptionsFrame.Header
 	InterfaceOptionsFrame.Header:StripTextures()
 	InterfaceOptionsFrame.Header:ClearAllPoints()
-	InterfaceOptionsFrame.Header:Point("TOP", InterfaceOptionsFrame, 0, 0)
+	InterfaceOptionsFrame.Header:SetPoint("TOP", InterfaceOptionsFrame, 0, 0)
 
 	local VideoOptionsFrame = _G.VideoOptionsFrame
 	VideoOptionsFrame.Header:StripTextures()
 	VideoOptionsFrame.Header:ClearAllPoints()
-	VideoOptionsFrame.Header:Point("TOP", VideoOptionsFrame, 0, 0)
+	VideoOptionsFrame.Header:SetPoint("TOP", VideoOptionsFrame, 0, 0)
 
 	for _, Frame in pairs(OptionsFrameBackdrops) do
 		Frame:StripTextures()
@@ -321,8 +319,8 @@ function S:BlizzardOptions()
 		end
 	end
 
-	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
-	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
+	_G.InterfaceOptionsFrameTab1:SetPoint('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
+	_G.InterfaceOptionsFrameTab2:SetPoint('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas("WoWShare-TwitterLogo")
 
 	--Create New Raid Profle
@@ -337,7 +335,7 @@ function S:BlizzardOptions()
 
 		if newProfileDialog.editBox then
 			S:HandleEditBox(newProfileDialog.editBox)
-			newProfileDialog.editBox:Size(210, 25)
+			newProfileDialog.editBox:SetSize(210, 25)
 		end
 	end
 
@@ -355,7 +353,7 @@ function S:BlizzardOptions()
 	AudioOptionsFrame.Header = AudioOptionsFrame.Header
 	AudioOptionsFrame.Header:SetAlpha(0)
 	AudioOptionsFrame.Header:ClearAllPoints()
-	AudioOptionsFrame.Header:Point("TOP", AudioOptionsFrame, 0, 0)
+	AudioOptionsFrame.Header:SetPoint("TOP", AudioOptionsFrame, 0, 0)
 
 	-- Toggle Test Audio Button - Wow 8.0
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)

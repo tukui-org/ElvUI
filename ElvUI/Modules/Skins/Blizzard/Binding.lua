@@ -26,7 +26,7 @@ function S:Blizzard_BindingUI()
 	S:HandleCheckBox(KeyBindingFrame.characterSpecificButton)
 	KeyBindingFrame.Header:StripTextures()
 	KeyBindingFrame.Header:ClearAllPoints()
-	KeyBindingFrame.Header:Point("TOP", KeyBindingFrame, "TOP", 0, -4)
+	KeyBindingFrame.Header:SetPoint("TOP", KeyBindingFrame, "TOP", 0, -4)
 	KeyBindingFrame:StripTextures()
 	KeyBindingFrame:SetTemplate("Transparent")
 
@@ -38,15 +38,15 @@ function S:Blizzard_BindingUI()
 	for i = 1, _G.KEY_BINDINGS_DISPLAYED, 1 do
 		local button1 = _G["KeyBindingFrameKeyBinding"..i.."Key1Button"]
 		local button2 = _G["KeyBindingFrameKeyBinding"..i.."Key2Button"]
-		button2:Point("LEFT", button1, "RIGHT", 1, 0) -- Needed for new Pixel Perfect
+		button2:SetPoint("LEFT", button1, "RIGHT", 1, 0) -- Needed for new Pixel Perfect
 	end
 
 	hooksecurefunc("BindingButtonTemplate_SetupBindingButton", function(_, button)
 		if not button.IsSkinned then
 			local selected = button.selectedHighlight
 			selected:SetTexture(E.media.normTex)
-			selected:Point("TOPLEFT", E.mult, -E.mult)
-			selected:Point("BOTTOMRIGHT", -E.mult, E.mult)
+			selected:SetPoint("TOPLEFT", E.mult, -E.mult)
+			selected:SetPoint("BOTTOMRIGHT", -E.mult, E.mult)
 			selected:SetColorTexture(1, 1, 1, .25)
 			S:HandleButton(button)
 
@@ -54,9 +54,9 @@ function S:Blizzard_BindingUI()
 		end
 	end)
 
-	KeyBindingFrame.okayButton:Point("BOTTOMLEFT", KeyBindingFrame.unbindButton, "BOTTOMRIGHT", 3, 0)
-	KeyBindingFrame.cancelButton:Point("BOTTOMLEFT", KeyBindingFrame.okayButton, "BOTTOMRIGHT", 3, 0)
-	KeyBindingFrame.unbindButton:Point("BOTTOMRIGHT", KeyBindingFrame, "BOTTOMRIGHT", -211, 16)
+	KeyBindingFrame.okayButton:SetPoint("BOTTOMLEFT", KeyBindingFrame.unbindButton, "BOTTOMRIGHT", 3, 0)
+	KeyBindingFrame.cancelButton:SetPoint("BOTTOMLEFT", KeyBindingFrame.okayButton, "BOTTOMRIGHT", 3, 0)
+	KeyBindingFrame.unbindButton:SetPoint("BOTTOMRIGHT", KeyBindingFrame, "BOTTOMRIGHT", -211, 16)
 end
 
 S:AddCallbackForAddon('Blizzard_BindingUI')

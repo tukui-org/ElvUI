@@ -25,7 +25,7 @@ function UF:Construct_Buffs(frame)
 	buffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
 	buffs.type = 'buffs'
 	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	buffs:Width(100)
+	buffs:SetWidth(100)
 
 	return buffs
 end
@@ -40,7 +40,7 @@ function UF:Construct_Debuffs(frame)
 	debuffs.type = 'debuffs'
 	debuffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
 	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	debuffs:Width(100)
+	debuffs:SetWidth(100)
 
 	return debuffs
 end
@@ -75,7 +75,7 @@ function UF:Construct_AuraIcon(button)
 	button.icon:SetDrawLayer('ARTWORK')
 
 	button.count:ClearAllPoints()
-	button.count:Point('BOTTOMRIGHT', 1, 1)
+	button.count:SetPoint('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 
 	button.overlay:SetTexture()
@@ -102,7 +102,8 @@ function UF:UpdateAuraSettings(auras, button)
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	button:Size((auras and auras.size) or 30)
+	local size = (auras and auras.size) or 30
+	button:SetSize(size, size)
 
 	button.needsUpdateCooldownPosition = true
 end
@@ -126,10 +127,10 @@ function UF:UpdateAuraCooldownPosition(button)
 	button.cd.timer.text:ClearAllPoints()
 	local point = (button.db and button.db.durationPosition) or 'CENTER'
 	if point == 'CENTER' then
-		button.cd.timer.text:Point(point, 1, 0)
+		button.cd.timer.text:SetPoint(point, 1, 0)
 	else
 		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-		button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
+		button.cd.timer.text:SetPoint(point, right and -1 or 1, bottom and 1 or -1)
 	end
 
 	button.needsUpdateCooldownPosition = nil
@@ -156,7 +157,7 @@ function UF:Configure_Auras(frame, which)
 			db.debuffs.attachTo = "FRAME"
 			frame.Debuffs.attachTo = frame
 			frame.Debuffs:ClearAllPoints()
-			frame.Debuffs:Point(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
+			frame.Debuffs:SetPoint(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
 		end
 		db.buffs.attachTo = "DEBUFFS"
 		frame.Buffs.attachTo = frame.Debuffs
@@ -168,7 +169,7 @@ function UF:Configure_Auras(frame, which)
 			db.buffs.attachTo = "FRAME"
 			frame.Buffs.attachTo = frame
 			frame.Buffs:ClearAllPoints()
-			frame.Buffs:Point(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
+			frame.Buffs:SetPoint(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
 		end
 		db.debuffs.attachTo = "BUFFS"
 		frame.Debuffs.attachTo = frame.Buffs
@@ -180,7 +181,7 @@ function UF:Configure_Auras(frame, which)
 			db.debuffs.attachTo = "FRAME"
 			frame.Debuffs.attachTo = frame
 			frame.Debuffs:ClearAllPoints()
-			frame.Debuffs:Point(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
+			frame.Debuffs:SetPoint(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
 		end
 		db.buffs.attachTo = "DEBUFFS"
 		frame.Buffs.attachTo = frame.Debuffs
@@ -192,7 +193,7 @@ function UF:Configure_Auras(frame, which)
 			db.buffs.attachTo = "FRAME"
 			frame.Buffs.attachTo = frame
 			frame.Buffs:ClearAllPoints()
-			frame.Buffs:Point(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
+			frame.Buffs:SetPoint(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
 		end
 		db.debuffs.attachTo = "BUFFS"
 		frame.Debuffs.attachTo = frame.Buffs
@@ -213,14 +214,14 @@ function UF:Configure_Auras(frame, which)
 	auras.attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo)
 
 	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
-		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
+		auras:SetWidth(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
 		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
 		if frame.USE_POWERBAR_OFFSET and not (auras.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
 			local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
 			totalWidth = totalWidth - powerOffset
 		end
-		auras:Width(totalWidth)
+		auras:SetWidth(totalWidth)
 	end
 
 	auras.num = auras.db.perrow * rows
@@ -257,8 +258,8 @@ function UF:Configure_Auras(frame, which)
 	end
 
 	auras:ClearAllPoints()
-	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
-	auras:Height(auras.size * rows)
+	auras:SetPoint(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
+	auras:SetHeight(auras.size * rows)
 
 	if auras.db.enable then
 		auras:Show()
@@ -363,7 +364,9 @@ end
 function UF:PostUpdateAura(_, button)
 	if button.isDebuff then
 		if(not button.isFriend and not button.isPlayer) then --[[and (not E.isDebuffWhiteList[name])]]
-			if UF.db.colors.auraByType then button:SetBackdropBorderColor(.9, .1, .1) end
+			if UF.db.colors.auraByType then
+				button:SetBackdropBorderColor(.9, .1, .1)
+			end
 			button.icon:SetDesaturated(button.canDesaturate)
 		else
 			if UF.db.colors.auraByType then
@@ -489,10 +492,10 @@ function UF:UpdateBuffsHeaderPosition()
 
 	if numDebuffs == 0 then
 		buffs:ClearAllPoints()
-		buffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		buffs:SetPoint(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	else
 		buffs:ClearAllPoints()
-		buffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		buffs:SetPoint(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	end
 end
 
@@ -504,10 +507,10 @@ function UF:UpdateDebuffsHeaderPosition()
 
 	if numBuffs == 0 then
 		debuffs:ClearAllPoints()
-		debuffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		debuffs:SetPoint(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	else
 		debuffs:ClearAllPoints()
-		debuffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		debuffs:SetPoint(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	end
 end
 
@@ -520,17 +523,17 @@ function UF:UpdateBuffsPositionAndDebuffHeight()
 
 	if numDebuffs == 0 then
 		buffs:ClearAllPoints()
-		buffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		buffs:SetPoint(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	else
 		buffs:ClearAllPoints()
-		buffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		buffs:SetPoint(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	end
 
 	if numDebuffs > 0 then
 		local numRows = ceil(numDebuffs/db.debuffs.perrow)
-		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
+		debuffs:SetHeight(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
 	else
-		debuffs:Height(debuffs.size)
+		debuffs:SetHeight(debuffs.size)
 	end
 end
 
@@ -543,17 +546,17 @@ function UF:UpdateDebuffsPositionAndBuffHeight()
 
 	if numBuffs == 0 then
 		debuffs:ClearAllPoints()
-		debuffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		debuffs:SetPoint(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	else
 		debuffs:ClearAllPoints()
-		debuffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		debuffs:SetPoint(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	end
 
 	if numBuffs > 0 then
 		local numRows = ceil(numBuffs/db.buffs.perrow)
-		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
+		buffs:SetHeight(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
 	else
-		buffs:Height(buffs.size)
+		buffs:SetHeight(buffs.size)
 	end
 end
 
@@ -565,11 +568,11 @@ function UF:UpdateBuffsHeight()
 
 	if numBuffs > 0 then
 		local numRows = ceil(numBuffs/db.buffs.perrow)
-		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
+		buffs:SetHeight(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
 	else
-		buffs:Height(buffs.size)
+		buffs:SetHeight(buffs.size)
 		-- Any way to get rid of the last row as well?
-		-- Using buffs:Height(0) makes frames anchored to this one disappear
+		-- Using buffs:SetHeight(0) makes frames anchored to this one disappear
 	end
 end
 
@@ -581,10 +584,10 @@ function UF:UpdateDebuffsHeight()
 
 	if numDebuffs > 0 then
 		local numRows = ceil(numDebuffs/db.debuffs.perrow)
-		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
+		debuffs:SetHeight(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
 	else
-		debuffs:Height(debuffs.size)
+		debuffs:SetHeight(debuffs.size)
 		-- Any way to get rid of the last row as well?
-		-- Using debuffs:Height(0) makes frames anchored to this one disappear
+		-- Using debuffs:SetHeight(0) makes frames anchored to this one disappear
 	end
 end

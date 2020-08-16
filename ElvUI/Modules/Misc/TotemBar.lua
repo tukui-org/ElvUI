@@ -34,41 +34,41 @@ function TOTEMS:PositionAndSize()
 	for i=1, MAX_TOTEMS do
 		local button = self.bar[i]
 		local prevButton = self.bar[i-1]
-		button:Size(self.db.size)
+		button:SetSize(self.db.size, self.db.size)
 		button:ClearAllPoints()
 		if self.db.growthDirection == 'HORIZONTAL' and self.db.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('LEFT', self.bar, 'LEFT', self.db.spacing, 0)
+				button:SetPoint('LEFT', self.bar, 'LEFT', self.db.spacing, 0)
 			elseif prevButton then
-				button:Point('LEFT', prevButton, 'RIGHT', self.db.spacing, 0)
+				button:SetPoint('LEFT', prevButton, 'RIGHT', self.db.spacing, 0)
 			end
 		elseif self.db.growthDirection == 'VERTICAL' and self.db.sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:Point('TOP', self.bar, 'TOP', 0, -self.db.spacing)
+				button:SetPoint('TOP', self.bar, 'TOP', 0, -self.db.spacing)
 			elseif prevButton then
-				button:Point('TOP', prevButton, 'BOTTOM', 0, -self.db.spacing)
+				button:SetPoint('TOP', prevButton, 'BOTTOM', 0, -self.db.spacing)
 			end
 		elseif self.db.growthDirection == 'HORIZONTAL' and self.db.sortDirection == 'DESCENDING' then
 			if i == 1 then
-				button:Point('RIGHT', self.bar, 'RIGHT', -self.db.spacing, 0)
+				button:SetPoint('RIGHT', self.bar, 'RIGHT', -self.db.spacing, 0)
 			elseif prevButton then
-				button:Point('RIGHT', prevButton, 'LEFT', -self.db.spacing, 0)
+				button:SetPoint('RIGHT', prevButton, 'LEFT', -self.db.spacing, 0)
 			end
 		else
 			if i == 1 then
-				button:Point('BOTTOM', self.bar, 'BOTTOM', 0, self.db.spacing)
+				button:SetPoint('BOTTOM', self.bar, 'BOTTOM', 0, self.db.spacing)
 			elseif prevButton then
-				button:Point('BOTTOM', prevButton, 'TOP', 0, self.db.spacing)
+				button:SetPoint('BOTTOM', prevButton, 'TOP', 0, self.db.spacing)
 			end
 		end
 	end
 
 	if self.db.growthDirection == 'HORIZONTAL' then
-		self.bar:Width(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
-		self.bar:Height(self.db.size + self.db.spacing*2)
+		self.bar:SetWidth(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
+		self.bar:SetHeight(self.db.size + self.db.spacing*2)
 	else
-		self.bar:Height(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
-		self.bar:Width(self.db.size + self.db.spacing*2)
+		self.bar:SetHeight(self.db.size*(MAX_TOTEMS) + self.db.spacing*(MAX_TOTEMS) + self.db.spacing)
+		self.bar:SetWidth(self.db.size + self.db.spacing*2)
 	end
 
 	self:Update()
@@ -82,7 +82,7 @@ function TOTEMS:Initialize()
 	self.db = E.db.general.totems
 
 	local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent)
-	bar:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 490, 4)
+	bar:SetPoint('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 490, 4)
 	self.bar = bar
 
 	for i=1, MAX_TOTEMS do

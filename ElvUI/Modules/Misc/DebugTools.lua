@@ -8,6 +8,8 @@ local InCombatLockdown = InCombatLockdown
 local GetCVarBool = GetCVarBool
 local StaticPopup_Hide = StaticPopup_Hide
 
+D.HideFrame = CreateFrame('Frame')
+
 local function UnHighlightText(self)
 	self:HighlightText(0, 0)
 end
@@ -27,8 +29,8 @@ function D:ModifyErrorFrame()
 	-- Unhighlight text when focus is hit
 	ScriptErrorsFrame.ScrollFrame.Text:HookScript("OnEscapePressed", UnHighlightText)
 
-	ScriptErrorsFrame:Size(500, 300)
-	ScriptErrorsFrame.ScrollFrame:Size(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
+	ScriptErrorsFrame:SetSize(500, 300)
+	ScriptErrorsFrame.ScrollFrame:SetSize(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
 
 	local BUTTON_WIDTH = 75
 	local BUTTON_HEIGHT = 23
@@ -36,10 +38,10 @@ function D:ModifyErrorFrame()
 
 	-- Add a first button
 	local firstButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	firstButton:Point("BOTTOMLEFT", ScriptErrorsFrame.Reload, "BOTTOMRIGHT", BUTTON_SPACING, 0)
+	firstButton:SetPoint("BOTTOMLEFT", ScriptErrorsFrame.Reload, "BOTTOMRIGHT", BUTTON_SPACING, 0)
 	firstButton:SetText("First")
-	firstButton:Height(BUTTON_HEIGHT)
-	firstButton:Width(BUTTON_WIDTH)
+	firstButton:SetHeight(BUTTON_HEIGHT)
+	firstButton:SetWidth(BUTTON_WIDTH)
 	firstButton:SetScript("OnClick", function()
 		ScriptErrorsFrame.index = 1
 		ScriptErrorsFrame:Update()
@@ -48,9 +50,9 @@ function D:ModifyErrorFrame()
 
 	-- Also add a Last button for errors
 	local lastButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	lastButton:Point("BOTTOMRIGHT", ScriptErrorsFrame.Close, "BOTTOMLEFT", -BUTTON_SPACING, 0)
-	lastButton:Height(BUTTON_HEIGHT)
-	lastButton:Width(BUTTON_WIDTH)
+	lastButton:SetPoint("BOTTOMRIGHT", ScriptErrorsFrame.Close, "BOTTOMLEFT", -BUTTON_SPACING, 0)
+	lastButton:SetHeight(BUTTON_HEIGHT)
+	lastButton:SetWidth(BUTTON_WIDTH)
 	lastButton:SetText("Last")
 	lastButton:SetScript("OnClick", function()
 		ScriptErrorsFrame.index = #(ScriptErrorsFrame.order)
@@ -111,10 +113,10 @@ end
 
 function D:Initialize()
 	self.Initialized = true
-	self.HideFrame = CreateFrame('Frame')
 	self.HideFrame:Hide()
 
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
+
 	self:SecureHookScript(ScriptErrorsFrame, 'OnShow', D.ModifyErrorFrame)
 	self:SecureHook(ScriptErrorsFrame, 'UpdateButtons', D.ScriptErrorsFrame_UpdateButtons)
 	self:SecureHook(ScriptErrorsFrame, 'OnError', D.ScriptErrorsFrame_OnError)

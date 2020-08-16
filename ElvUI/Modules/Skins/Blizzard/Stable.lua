@@ -25,8 +25,8 @@ local function PetButtons(btn, p)
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()
-		icon:Point("TOPLEFT", p, -p)
-		icon:Point("BOTTOMRIGHT", -p, p)
+		icon:SetPoint("TOPLEFT", p, -p)
+		icon:SetPoint("BOTTOMRIGHT", -p, p)
 
 		button:SetFrameLevel(button:GetFrameLevel() + 2)
 		if not button.backdrop then
@@ -56,9 +56,9 @@ function S:PetStableFrame()
 	if PetStableSelectedPetIcon then
 		PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
 		local b = CreateFrame("Frame", nil, PetStableSelectedPetIcon:GetParent())
-		b:Point("TOPLEFT", PetStableSelectedPetIcon, -p, p)
-		b:Point("BOTTOMRIGHT", PetStableSelectedPetIcon, p, -p)
-		PetStableSelectedPetIcon:Size(37,37)
+		b:SetPoint("TOPLEFT", PetStableSelectedPetIcon, -p, p)
+		b:SetPoint("BOTTOMRIGHT", PetStableSelectedPetIcon, p, -p)
+		PetStableSelectedPetIcon:SetSize(37,37)
 		PetStableSelectedPetIcon:SetParent(b)
 		b:SetTemplate()
 	end

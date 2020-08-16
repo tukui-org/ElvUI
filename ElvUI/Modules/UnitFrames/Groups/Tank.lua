@@ -62,7 +62,7 @@ function UF:Update_TankHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
+		header:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
 
 		local width, height = header:GetSize()
 		local minHeight = max(height, 2*db.height + db.verticalSpacing)
@@ -113,19 +113,19 @@ function UF:Update_TankFrames(frame, db)
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
 
-		frame:Size(childDB.width, childDB.height)
+		frame:SetSize(childDB.width, childDB.height)
 
 		if not InCombatLockdown() then
 			if childDB.enable then
 				frame:Enable()
 				frame:ClearAllPoints()
-				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
+				frame:SetPoint(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			else
 				frame:Disable()
 			end
 		end
 	else
-		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+		frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
 
 	UF:Configure_HealthBar(frame)

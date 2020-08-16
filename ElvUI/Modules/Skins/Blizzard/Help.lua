@@ -56,8 +56,8 @@ function S:HelpFrame()
 	local HelpFrameReportBugScrollFrame = _G.HelpFrameReportBugScrollFrame
 	HelpFrameReportBugScrollFrame:StripTextures()
 	HelpFrameReportBugScrollFrame:CreateBackdrop("Transparent")
-	HelpFrameReportBugScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
-	HelpFrameReportBugScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
+	HelpFrameReportBugScrollFrame.backdrop:SetPoint("TOPLEFT", -4, 4)
+	HelpFrameReportBugScrollFrame.backdrop:SetPoint("BOTTOMRIGHT", 6, -4)
 
 	for i = 1, _G.HelpFrameReportBug:GetNumChildren() do
 		local child = select(i, _G.HelpFrameReportBug:GetChildren())
@@ -71,8 +71,8 @@ function S:HelpFrame()
 	local HelpFrameSubmitSuggestionScrollFrame = _G.HelpFrameSubmitSuggestionScrollFrame
 	HelpFrameSubmitSuggestionScrollFrame:StripTextures()
 	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Transparent")
-	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("TOPLEFT", -4, 4)
-	HelpFrameSubmitSuggestionScrollFrame.backdrop:Point("BOTTOMRIGHT", 6, -4)
+	HelpFrameSubmitSuggestionScrollFrame.backdrop:SetPoint("TOPLEFT", -4, 4)
+	HelpFrameSubmitSuggestionScrollFrame.backdrop:SetPoint("BOTTOMRIGHT", 6, -4)
 	for i = 1, _G.HelpFrameSubmitSuggestion:GetNumChildren() do
 		local child = select(i, _G.HelpFrameSubmitSuggestion:GetChildren())
 		if not child:GetName() then
@@ -90,7 +90,7 @@ function S:HelpFrame()
 
 		if buttons[i].text then
 			buttons[i].text:ClearAllPoints()
-			buttons[i].text:Point("CENTER")
+			buttons[i].text:SetPoint("CENTER")
 			buttons[i].text:SetJustifyH("CENTER")
 		end
 	end
@@ -111,25 +111,25 @@ function S:HelpFrame()
 	--Navigation buttons
 	local HelpBrowserNavHome = _G.HelpBrowserNavHome
 	S:HandleButton(HelpBrowserNavHome)
-	HelpBrowserNavHome:Size(26)
+	HelpBrowserNavHome:SetSize(26, 26)
 	HelpBrowserNavHome:ClearAllPoints()
-	HelpBrowserNavHome:Point("BOTTOMLEFT", _G.HelpBrowser, "TOPLEFT", -5, 9)
+	HelpBrowserNavHome:SetPoint("BOTTOMLEFT", _G.HelpBrowser, "TOPLEFT", -5, 9)
 	S:HandleNextPrevButton(_G.HelpBrowserNavBack)
-	_G.HelpBrowserNavBack:Size(26)
+	_G.HelpBrowserNavBack:SetSize(26, 26)
 	S:HandleNextPrevButton(_G.HelpBrowserNavForward)
-	_G.HelpBrowserNavForward:Size(26)
+	_G.HelpBrowserNavForward:SetSize(26, 26)
 	S:HandleButton(_G.HelpBrowserNavReload)
-	_G.HelpBrowserNavReload:Size(26)
+	_G.HelpBrowserNavReload:SetSize(26, 26)
 	S:HandleButton(_G.HelpBrowserNavStop)
-	_G.HelpBrowserNavStop:Size(26)
+	_G.HelpBrowserNavStop:SetSize(26, 26)
 	S:HandleButton(_G.HelpBrowserBrowserSettings)
-	_G.HelpBrowserBrowserSettings:Size(26)
+	_G.HelpBrowserBrowserSettings:SetSize(26, 26)
 	_G.HelpBrowserBrowserSettings:ClearAllPoints()
-	_G.HelpBrowserBrowserSettings:Point("TOPRIGHT", _G.HelpFrameCloseButton, "TOPLEFT", -3, -8)
+	_G.HelpBrowserBrowserSettings:SetPoint("TOPRIGHT", _G.HelpFrameCloseButton, "TOPLEFT", -3, -8)
 
 	-- skin misc items
 	_G.HelpFrameKnowledgebaseSearchBox:ClearAllPoints()
-	_G.HelpFrameKnowledgebaseSearchBox:Point("TOPLEFT", _G.HelpFrameMainInset, "TOPLEFT", 13, -10)
+	_G.HelpFrameKnowledgebaseSearchBox:SetPoint("TOPLEFT", _G.HelpFrameMainInset, "TOPLEFT", 13, -10)
 	_G.HelpFrameKnowledgebaseNavBar:StripTextures()
 
 	local HelpFrame = _G.HelpFrame

@@ -211,8 +211,8 @@ function DT:BuildPanelFrame(name, db, initLoad)
 
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
-	Panel:Point('CENTER')
-	Panel:Size(db.width, db.height)
+	Panel:SetPoint('CENTER')
+	Panel:SetSize(db.width, db.height)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -473,9 +473,9 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
 		dt:SetShown(i <= numPoints)
-		dt:Size(width, height)
+		dt:SetSize(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
+		dt:SetPoint(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 		dt:UnregisterAllEvents()
 		dt:SetScript('OnUpdate', nil)
 		dt:SetScript('OnEvent', nil)
@@ -541,9 +541,9 @@ function DT:PanelSizeChanged()
 	local width, height, vertical, numPoints = DT:GetTextAttributes(self, db)
 
 	for i, dt in ipairs(self.dataPanels) do
-		dt:Size(width, height)
+		dt:SetSize(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(self, i, numPoints, vertical))
+		dt:SetPoint(DT:GetDataPanelPoint(self, i, numPoints, vertical))
 	end
 end
 
@@ -558,7 +558,7 @@ function DT:UpdatePanelAttributes(name, db)
 	Panel.yOff = db.tooltipYOffset
 	Panel.anchor = db.tooltipAnchor
 	Panel.vertical = db.growth == 'VERTICAL'
-	Panel:Size(db.width, db.height)
+	Panel:SetSize(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
 
@@ -591,20 +591,24 @@ function DT:GetMenuListCategory(category)
 	end
 end
 
-function DT:SortMenuList(list)
-	for _, menu in pairs(list) do
-		if menu.menuList then
-			DT:SortMenuList(menu.menuList)
-		end
-	end
-
-	sort(list, function(a, b)
+do
+	local function menuSort(a, b)
 		if a.order and b.order then
 			return a.order < b.order
 		end
 
 		return a.text < b.text
-	end)
+	end
+
+	function DT:SortMenuList(list)
+		for _, menu in pairs(list) do
+			if menu.menuList then
+				DT:SortMenuList(menu.menuList)
+			end
+		end
+
+		sort(list, menuSort)
+	end
 end
 
 function DT:HyperDT()
@@ -711,7 +715,9 @@ function DT:Initialize()
 		return dt and (DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value)
 	end
 
-	TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
+		TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
+	end
 
 	-- Ignore header font size on DatatextTooltip
 	local font = E.Libs.LSM:Fetch('font', E.db.tooltip.font)

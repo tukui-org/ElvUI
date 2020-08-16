@@ -6,7 +6,6 @@ assert(ElvUF, "ElvUI was unable to locate oUF.")
 
 local _G = _G
 local unpack = unpack
-
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
 local GetSpecializationInfoByID = GetSpecializationInfoByID
@@ -102,7 +101,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.ArenaPrepIcon:Hide()
 
 		frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, "OVERLAY")
-		frame.ArenaPrepSpec:Point("CENTER")
+		frame.ArenaPrepSpec:SetPoint("CENTER")
 		UF:Configure_FontString(frame.ArenaPrepSpec)
 
 		frame.Health.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation -- used to update arena prep info
@@ -111,7 +110,7 @@ function UF:Construct_ArenaFrames(frame)
 
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 
-	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
+	ArenaHeader:SetPoint('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA', nil, 'unitframe,groupUnits,arena,generalGroup')
 	frame.mover = ArenaHeader.mover
 end
@@ -151,7 +150,7 @@ function UF:Update_ArenaFrames(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)
@@ -174,32 +173,32 @@ function UF:Update_ArenaFrames(frame, db)
 	if frame.index == 1 then
 		local ArenaHeaderMover = _G.ArenaHeaderMover
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT')
+			frame:SetPoint('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT')
 		elseif db.growthDirection == 'RIGHT' then
-			frame:Point('LEFT', ArenaHeaderMover, 'LEFT')
+			frame:SetPoint('LEFT', ArenaHeaderMover, 'LEFT')
 		elseif db.growthDirection == 'LEFT' then
-			frame:Point('RIGHT', ArenaHeaderMover, 'RIGHT')
+			frame:SetPoint('RIGHT', ArenaHeaderMover, 'RIGHT')
 		else --Down
-			frame:Point('TOPRIGHT', ArenaHeaderMover, 'TOPRIGHT')
+			frame:SetPoint('TOPRIGHT', ArenaHeaderMover, 'TOPRIGHT')
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:Point('BOTTOMRIGHT', _G['ElvUF_Arena'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
+			frame:SetPoint('BOTTOMRIGHT', _G['ElvUF_Arena'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
 		elseif db.growthDirection == 'RIGHT' then
-			frame:Point('LEFT', _G['ElvUF_Arena'..frame.index-1], 'RIGHT', db.spacing, 0)
+			frame:SetPoint('LEFT', _G['ElvUF_Arena'..frame.index-1], 'RIGHT', db.spacing, 0)
 		elseif db.growthDirection == 'LEFT' then
-			frame:Point('RIGHT', _G['ElvUF_Arena'..frame.index-1], 'LEFT', -db.spacing, 0)
+			frame:SetPoint('RIGHT', _G['ElvUF_Arena'..frame.index-1], 'LEFT', -db.spacing, 0)
 		else --Down
-			frame:Point('TOPRIGHT', _G['ElvUF_Arena'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
+			frame:SetPoint('TOPRIGHT', _G['ElvUF_Arena'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
 
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
-		ArenaHeader:Width(frame.UNIT_WIDTH)
-		ArenaHeader:Height(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * 4))
+		ArenaHeader:SetWidth(frame.UNIT_WIDTH)
+		ArenaHeader:SetHeight(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * 4))
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
-		ArenaHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
-		ArenaHeader:Height(frame.UNIT_HEIGHT)
+		ArenaHeader:SetWidth(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * 4))
+		ArenaHeader:SetHeight(frame.UNIT_HEIGHT)
 	end
 
 	frame:UpdateAllElements("ElvUI_UpdateAllElements")

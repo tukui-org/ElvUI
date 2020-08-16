@@ -134,7 +134,7 @@ function NP:Update_Power(nameplate)
 			nameplate:EnableElement('Power')
 		end
 
-		nameplate.Power:Point('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
+		nameplate.Power:SetPoint('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
 
 		nameplate:SetPowerUpdateMethod(E.global.nameplate.effectivePower)
 		nameplate:SetPowerUpdateSpeed(E.global.nameplate.effectivePowerSpeed)
@@ -150,5 +150,5 @@ function NP:Update_Power(nameplate)
 	nameplate.Power.colorPower = not db.power.useClassColor
 	nameplate.Power.width = db.power.width
 	nameplate.Power.height = db.power.height
-	nameplate.Power:Size(db.power.width, db.power.height)
+	nameplate.Power:SetSize(db.power.width, db.power.height)
 end
