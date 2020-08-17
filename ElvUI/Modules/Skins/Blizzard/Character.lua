@@ -447,10 +447,24 @@ function S:CharacterFrame()
 	end
 
 	--Re-add the overlay texture which was removed right above via StripTextures
-	_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0,0,0)
+	_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0, 0, 0)
 	_G.CharacterModelFrame:CreateBackdrop()
 	_G.CharacterModelFrame.backdrop:SetPoint("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
 	_G.CharacterModelFrame.backdrop:SetPoint("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+
+	local controlButtons = {
+		"CharacterModelFrameControlFrameZoomInButton",
+		"CharacterModelFrameControlFrameZoomOutButton",
+		"CharacterModelFrameControlFrameRotateLeftButton",
+		"CharacterModelFrameControlFrameRotateRightButton",
+		"CharacterModelFrameControlFrameRotateResetButton",
+	}
+
+	_G.CharacterModelFrameControlFrame:StripTextures()
+
+	for _, button in pairs(controlButtons) do
+		S:HandleButton(_G[button])
+	end
 
 	--Titles
 	_G.PaperDollTitlesPane:HookScript("OnShow", function()
@@ -523,9 +537,6 @@ function S:CharacterFrame()
 	--Currency
 	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, "update", UpdateCurrencySkins)
-
-	-- Tutorials have a look for the new name on PTR 8.2.5
-	-- S:HandleCloseButton(_G.PaperDollItemsFrame.HelpTipBox.CloseButton)
 end
 
 S:AddCallback('CharacterFrame')
