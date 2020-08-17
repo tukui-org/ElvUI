@@ -1707,10 +1707,15 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 				type = "toggle",
 				name = L["Show Over Absorbs"],
 			},
-			reversedAbsorbs = {
+			absorbStyle = {
 				order = 3,
-				type = "toggle",
-				name = L["Reversed Absorbs"],
+				type = "select",
+				name = "Absorb Style", --L["Reversed Absorbs"],
+				values = {
+					REVERSED = "Reversed",
+					WRAPPED = "Wrapped",
+					OVERFLOW = "Overflow"
+				},
 				disabled = function() return not E.db.unitframe.units[groupName].healPrediction.showOverAbsorbs end,
 			},
 			height = {
@@ -2113,35 +2118,35 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	}
 
 	if hasDetatchOption then
-			config.args.detachFromFrame = {
-				type = 'toggle',
-				order = 90,
-				name = L["Detach From Frame"],
-			}
-			config.args.autoHide = {
-				order = 91,
-				type = 'toggle',
-				name = L["Auto-Hide"],
-				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-			}
-			config.args.detachedWidth = {
-				type = 'range',
-				order = 92,
-				name = L["Detached Width"],
-				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-				min = 15, max = 1000, step = 1,
-			}
-			config.args.parent = {
-				type = 'select',
-				order = 93,
-				name = L["Parent"],
-				desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
-				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-				values = {
-					FRAME = "FRAME",
-					UIPARENT = "UIPARENT",
-				},
-			}
+		config.args.detachFromFrame = {
+			type = 'toggle',
+			order = 90,
+			name = L["Detach From Frame"],
+		}
+		config.args.autoHide = {
+			order = 91,
+			type = 'toggle',
+			name = L["Auto-Hide"],
+			hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+		}
+		config.args.detachedWidth = {
+			type = 'range',
+			order = 92,
+			name = L["Detached Width"],
+			hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+			min = 15, max = 1000, step = 1,
+		}
+		config.args.parent = {
+			type = 'select',
+			order = 93,
+			name = L["Parent"],
+			desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
+			hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+			values = {
+				FRAME = "FRAME",
+				UIPARENT = "UIPARENT",
+			},
+		}
 	end
 
 	if hasStrataLevel then
