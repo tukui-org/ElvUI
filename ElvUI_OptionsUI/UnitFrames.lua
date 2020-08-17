@@ -1702,22 +1702,18 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 				type = "toggle",
 				name = L["Enable"],
 			},
-			showOverAbsorbs = {
-				order = 2,
-				type = "toggle",
-				name = L["Show Over Absorbs"],
-			},
 			absorbStyle = {
-				order = 3,
+				order = 2,
 				type = "select",
-				name = "Absorb Style", --L["Reversed Absorbs"],
+				name = L["Absorb Style"],
 				values = {
-					REVERSED = "Reversed",
-					WRAPPED = "Wrapped",
-					OVERFLOW = "Overflow"
+					NORMAL = L["Normal"],
+					REVERSED = L["Reversed"],
+					WRAPPED = L["Wrapped"],
+					OVERFLOW = L["Overflow"]
 				},
-				disabled = function() return not E.db.unitframe.units[groupName].healPrediction.showOverAbsorbs end,
 			},
+			spacer = ACH:Spacer(3),
 			height = {
 				type = 'range',
 				order = 4,
