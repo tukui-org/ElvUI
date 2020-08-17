@@ -212,8 +212,6 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 
 	local pred = frame.HealthPrediction
 	local colors = UF.db.colors.healPrediction
-	local maxOverflow = (colors.maxOverflow or 0)
-	local absorbBar = pred.absorbBar
 
 	-- handle over heal absorbs
 	if hasOverHealAbsorb then
@@ -231,6 +229,7 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	end
 
 	-- color absorb bar if in over state
+	local absorbBar = pred.absorbBar
 	if hasOverAbsorb then
 		absorbBar:SetStatusBarColor(colors.overabsorbs.r, colors.overabsorbs.g, colors.overabsorbs.b, colors.overabsorbs.a)
 	else
@@ -253,7 +252,7 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 			absorbBar:SetPoint(pred.anchor, frame.Health)
 			absorbBar:SetPoint(pred.anchor2, frame.Health, pred.anchor2)
 		elseif db.absorbStyle == 'OVERFLOW' then
-			absorbBar:SetValue(absorb * maxOverflow)
+			absorbBar:SetValue(absorb * (colors.maxOverflow or 0))
 		end
 	elseif db.absorbStyle == 'WRAPPED' then
 		absorbBar:SetReverseFill(pred.reverseFill)
