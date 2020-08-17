@@ -252,7 +252,12 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 			absorbBar:SetPoint(pred.anchor, frame.Health)
 			absorbBar:SetPoint(pred.anchor2, frame.Health, pred.anchor2)
 		elseif db.absorbStyle == 'OVERFLOW' then
-			absorbBar:SetValue(absorb * (colors.maxOverflow or 0))
+			local overflowAbsorb = absorb * (colors.maxOverflow or 0)
+			if health == maxHealth then
+				absorbBar:SetValue(overflowAbsorb)
+			else
+				absorbBar:SetValue((maxHealth - health) + overflowAbsorb)
+			end
 		end
 	elseif db.absorbStyle == 'WRAPPED' then
 		absorbBar:SetReverseFill(pred.reverseFill)
