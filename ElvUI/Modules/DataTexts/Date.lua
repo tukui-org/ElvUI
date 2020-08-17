@@ -3,9 +3,9 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local date = date
-
-local Locale = GetLocale()
 local InCombatLockdown = InCombatLockdown
+local FormatShortDate = FormatShortDate
+
 local hexColor, lastPanel
 
 local function Click()
@@ -13,10 +13,10 @@ local function Click()
 	_G.GameTimeFrame:Click()
 end
 
-local function OnEvent(self, event)
+local function OnEvent(self)
 	local dateTable = date('*t')
 
-	self.text:SetText(FormatShortDate(dateTable.day, dateTable.month, dateTable.year):gsub('%/', hexColor..'%/|r'):gsub('%.', hexColor..'%.|r'))
+	self.text:SetText(FormatShortDate(dateTable.day, dateTable.month, dateTable.year):gsub('([/.])', hexColor..'%1|r'))
 	lastPanel = self
 end
 
