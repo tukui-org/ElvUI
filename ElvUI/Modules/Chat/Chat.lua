@@ -406,35 +406,35 @@ do --this can save some main file locals
 	}
 end
 
-local function ChatFrame_OnMouseScroll(frame, delta)
+function CH:ChatFrame_OnMouseScroll(delta)
 	local numScrollMessages = CH.db.numScrollMessages or 3
 	if delta < 0 then
 		if IsShiftKeyDown() then
-			frame:ScrollToBottom()
+			self:ScrollToBottom()
 		elseif IsAltKeyDown() then
-			frame:ScrollDown()
+			self:ScrollDown()
 		else
 			for _ = 1, numScrollMessages do
-				frame:ScrollDown()
+				self:ScrollDown()
 			end
 		end
 	elseif delta > 0 then
 		if IsShiftKeyDown() then
-			frame:ScrollToTop()
+			self:ScrollToTop()
 		elseif IsAltKeyDown() then
-			frame:ScrollUp()
+			self:ScrollUp()
 		else
 			for _ = 1, numScrollMessages do
-				frame:ScrollUp()
+				self:ScrollUp()
 			end
 		end
 
 		if CH.db.scrollDownInterval ~= 0 then
-			if frame.ScrollTimer then
-				CH:CancelTimer(frame.ScrollTimer, true)
+			if self.ScrollTimer then
+				CH:CancelTimer(self.ScrollTimer, true)
 			end
 
-			frame.ScrollTimer = CH:ScheduleTimer('ScrollToBottom', CH.db.scrollDownInterval, frame)
+			self.ScrollTimer = CH:ScheduleTimer('ScrollToBottom', CH.db.scrollDownInterval, self)
 		end
 	end
 end
@@ -1944,9 +1944,9 @@ local function FloatingChatFrameOnEvent(...)
 	CH:FloatingChatFrame_OnEvent(...)
 end
 
-local function ChatFrame_SetScript(f, script, func)
-	if script == "OnMouseWheel" and func ~= ChatFrame_OnMouseScroll then
-		f:SetScript(script, ChatFrame_OnMouseScroll)
+function CH:ChatFrame_SetScript(script, func)
+	if script == "OnMouseWheel" and func ~= CH.ChatFrame_OnMouseScroll then
+		self:SetScript(script, CH.ChatFrame_OnMouseScroll)
 	end
 end
 
@@ -1977,8 +1977,8 @@ function CH:SetupChat()
 				frame:SetScript("OnEvent", FloatingChatFrameOnEvent)
 			end
 
-			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
-			hooksecurefunc(frame, "SetScript", ChatFrame_SetScript)
+			frame:SetScript("OnMouseWheel", CH.ChatFrame_OnMouseScroll)
+			hooksecurefunc(frame, "SetScript", CH.ChatFrame_SetScript)
 			frame.scriptsSet = true
 		end
 	end
