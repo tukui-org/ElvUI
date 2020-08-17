@@ -1702,8 +1702,21 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 				type = "toggle",
 				name = L["Enable"],
 			},
-			absorbStyle = {
+			height = {
+				type = 'range',
 				order = 2,
+				name = L["Height"],
+				min = -1, max = 500, step = 1,
+			},
+			colors = {
+				order = 3,
+				type = "execute",
+				name = L["COLORS"],
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
+				disabled = function() return not E.UnitFrames.Initialized end,
+			},
+			absorbStyle = {
+				order = 5,
 				type = "select",
 				name = L["Absorb Style"],
 				values = {
@@ -1713,15 +1726,8 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 					OVERFLOW = L["Overflow"]
 				},
 			},
-			spacer = ACH:Spacer(3),
-			height = {
-				type = 'range',
-				order = 4,
-				name = L["Height"],
-				min = -1, max = 500, step = 1,
-			},
 			anchorPoint = {
-				order = 5,
+				order = 6,
 				type = "select",
 				name = L["Anchor Point"],
 				values = {
@@ -1729,13 +1735,6 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 					BOTTOM = "BOTTOM",
 					CENTER = "CENTER"
 				}
-			},
-			colors = {
-				order = 6,
-				type = "execute",
-				name = L["COLORS"],
-				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
-				disabled = function() return not E.UnitFrames.Initialized end,
 			},
 		},
 	}
