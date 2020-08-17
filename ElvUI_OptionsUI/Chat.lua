@@ -114,16 +114,25 @@ E.Options.args.chat = {
 					name = L["Copy Chat Lines"],
 					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
 				},
-				spacer = ACH:Spacer(17, "full"),
+				hideCopyButton = {
+					order = 17,
+					type = 'toggle',
+					name = L["Hide Copy Button"],
+					set = function(self, value)
+						E.db.chat.hideCopyButton = value
+						CH:ToggleCopyChatButtons()
+					end,
+				},
+				spacer = ACH:Spacer(18, "full"),
 				numAllowedCombatRepeat = {
-					order = 18,
+					order = 19,
 					type = "range",
 					name = L["Allowed Combat Repeat"],
 					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
 					min = 2, max = 10, step = 1,
 				},
 				throttleInterval = {
-					order = 19,
+					order = 20,
 					type = 'range',
 					name = L["Spam Interval"],
 					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
@@ -136,40 +145,40 @@ E.Options.args.chat = {
 					end,
 				},
 				scrollDownInterval = {
-					order = 20,
+					order = 21,
 					type = 'range',
 					name = L["Scroll Interval"],
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
 					min = 0, max = 120, step = 5,
 				},
 				numScrollMessages = {
-					order = 21,
+					order = 22,
 					type = "range",
 					name = L["Scroll Messages"],
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
 				maxLines = {
-					order = 22,
+					order = 23,
 					type = 'range',
 					name = L["Max Lines"],
 					min = 10, max = 5000, step = 1,
 					set = function(info, value) E.db.chat[info[#info]] = value; CH:SetupChat() end,
 				},
 				editboxHistorySize = {
-					order = 23,
+					order = 24,
 					type = 'range',
 					name = L["Editbox History"],
 					min = 5, max = 50, step = 1,
 				},
 				resetHistory = {
-					order = 24,
+					order = 25,
 					type = "execute",
 					name = L['Reset Editbox History'],
 					func = function() CH:ResetEditboxHistory() end
 				},
 				editBoxPosition = {
-					order = 25,
+					order = 26,
 					type = 'select',
 					name = L["Chat EditBox Position"],
 					desc = L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."],
