@@ -1172,14 +1172,16 @@ local UF_Health = {
 
 local UF_HealthPrediction = {
 	enable = false,
-	showAbsorbAmount = false,
+	reversedAbsorbs = false,
 	showOverAbsorbs = true,
+	anchorPoint = 'BOTTOM',
+	height = -1
 }
 
 local UF_InfoPanel = {
 	enable = false,
-	height = 20,
 	transparent = false,
+	height = 20
 }
 
 local UF_Fader = {
