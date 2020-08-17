@@ -1702,25 +1702,32 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 				type = "toggle",
 				name = L["Enable"],
 			},
-			showOverAbsorbs = {
-				order = 2,
-				type = "toggle",
-				name = L["Show Over Absorbs"],
-			},
-			reversedAbsorbs = {
-				order = 3,
-				type = "toggle",
-				name = L["Reversed Absorbs"],
-				disabled = function() return not E.db.unitframe.units[groupName].healPrediction.showOverAbsorbs end,
-			},
 			height = {
 				type = 'range',
-				order = 4,
+				order = 2,
 				name = L["Height"],
 				min = -1, max = 500, step = 1,
 			},
-			anchorPoint = {
+			colors = {
+				order = 3,
+				type = "execute",
+				name = L["COLORS"],
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
+				disabled = function() return not E.UnitFrames.Initialized end,
+			},
+			absorbStyle = {
 				order = 5,
+				type = "select",
+				name = L["Absorb Style"],
+				values = {
+					NORMAL = L["Normal"],
+					REVERSED = L["Reversed"],
+					WRAPPED = L["Wrapped"],
+					OVERFLOW = L["Overflow"]
+				},
+			},
+			anchorPoint = {
+				order = 6,
 				type = "select",
 				name = L["Anchor Point"],
 				values = {
@@ -1728,13 +1735,6 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 					BOTTOM = "BOTTOM",
 					CENTER = "CENTER"
 				}
-			},
-			colors = {
-				order = 6,
-				type = "execute",
-				name = L["COLORS"],
-				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
-				disabled = function() return not E.UnitFrames.Initialized end,
 			},
 		},
 	}
@@ -2113,35 +2113,35 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	}
 
 	if hasDetatchOption then
-			config.args.detachFromFrame = {
-				type = 'toggle',
-				order = 90,
-				name = L["Detach From Frame"],
-			}
-			config.args.autoHide = {
-				order = 91,
-				type = 'toggle',
-				name = L["Auto-Hide"],
-				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-			}
-			config.args.detachedWidth = {
-				type = 'range',
-				order = 92,
-				name = L["Detached Width"],
-				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-				min = 15, max = 1000, step = 1,
-			}
-			config.args.parent = {
-				type = 'select',
-				order = 93,
-				name = L["Parent"],
-				desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
-				hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
-				values = {
-					FRAME = "FRAME",
-					UIPARENT = "UIPARENT",
-				},
-			}
+		config.args.detachFromFrame = {
+			type = 'toggle',
+			order = 90,
+			name = L["Detach From Frame"],
+		}
+		config.args.autoHide = {
+			order = 91,
+			type = 'toggle',
+			name = L["Auto-Hide"],
+			hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+		}
+		config.args.detachedWidth = {
+			type = 'range',
+			order = 92,
+			name = L["Detached Width"],
+			hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+			min = 15, max = 1000, step = 1,
+		}
+		config.args.parent = {
+			type = 'select',
+			order = 93,
+			name = L["Parent"],
+			desc = L["Choose UIPARENT to prevent it from hiding with the unitframe."],
+			hidden = function() return not E.db.unitframe.units[groupName].power.detachFromFrame end,
+			values = {
+				FRAME = "FRAME",
+				UIPARENT = "UIPARENT",
+			},
+		}
 	end
 
 	if hasStrataLevel then
@@ -4599,7 +4599,7 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'player'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'player'); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'player'),
 		RestIcon = {
@@ -4774,7 +4774,7 @@ E.Options.args.unitframe.args.individualUnits.args.target = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'target'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'target'); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'target'),
 		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'target'),
@@ -4840,7 +4840,7 @@ E.Options.args.unitframe.args.individualUnits.args.targettarget = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'targettarget'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'targettarget'); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettarget'),
 		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettarget'),
@@ -4898,7 +4898,7 @@ E.Options.args.unitframe.args.individualUnits.args.targettargettarget = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'targettargettarget'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'targettargettarget'); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettargettarget'),
 		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'targettargettarget'),
@@ -4956,7 +4956,7 @@ E.Options.args.unitframe.args.individualUnits.args.focus = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'focus'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'focus'); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focus'),
 		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'focus'),
@@ -5019,7 +5019,7 @@ E.Options.args.unitframe.args.individualUnits.args.focustarget = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'focustarget'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'focustarget'); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focustarget'),
 		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'focustarget'),
@@ -5077,7 +5077,7 @@ E.Options.args.unitframe.args.individualUnits.args.pet = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'pet'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'pet'); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pet'),
 		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'pet'),
@@ -5138,7 +5138,7 @@ E.Options.args.unitframe.args.individualUnits.args.pettarget = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = UF.units,
-			set = function(info, value) UF:MergeUnitSettings(value, 'pettarget'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'pettarget'); E:RefreshGUI(); end,
 		},
 		strataAndLevel = GetOptionsTable_StrataAndFrameLevel(UF.CreateAndUpdateUF, 'pettarget'),
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pettarget'),
@@ -5190,7 +5190,7 @@ E.Options.args.unitframe.args.groupUnits.args.boss = {
 			values = {
 				arena = L['Arena'],
 			},
-			set = function(info, value) UF:MergeUnitSettings(value, 'boss'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'boss'); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
 		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
@@ -5243,7 +5243,7 @@ E.Options.args.unitframe.args.groupUnits.args.arena = {
 			values = {
 				boss = L['Boss'],
 			},
-			set = function(info, value) UF:MergeUnitSettings(value, 'arena'); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'arena'); E:RefreshGUI(); end,
 		},
 		pvpTrinket = {
 			order = 4001,
@@ -5340,7 +5340,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 				raid = L["Raid Frames"],
 				raid40 = L["Raid40 Frames"],
 			},
-			set = function(info, value) UF:MergeUnitSettings(value, 'party', true); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'party', true); E:RefreshGUI(); end,
 		},
 		petsGroup = {
 			type = 'group',
@@ -5546,7 +5546,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid = {
 				party = L["Party Frames"],
 				raid40 = L["Raid40 Frames"],
 			},
-			set = function(info, value) UF:MergeUnitSettings(value, 'raid', true); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'raid', true); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'raid'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raid'),
@@ -5613,7 +5613,7 @@ E.Options.args.unitframe.args.groupUnits.args.raid40 = {
 				party = L["Party Frames"],
 				raid = L["Raid Frames"],
 			},
-			set = function(info, value) UF:MergeUnitSettings(value, 'raid40', true); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'raid40', true); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'raid40'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raid40'),
@@ -5680,7 +5680,7 @@ E.Options.args.unitframe.args.groupUnits.args.raidpet = {
 				party = L["Party Frames"],
 				raid = L["Raid Frames"],
 			},
-			set = function(info, value) UF:MergeUnitSettings(value, 'raidpet', true); end,
+			set = function(info, value) UF:MergeUnitSettings(value, 'raidpet', true); E:RefreshGUI(); end,
 		},
 		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'raidpet'),
 		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'raidpet'),

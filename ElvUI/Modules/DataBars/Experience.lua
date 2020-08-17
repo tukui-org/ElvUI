@@ -7,6 +7,7 @@ local min = min
 local format = format
 local GetPetExperience, UnitXP, UnitXPMax = GetPetExperience, UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 
@@ -23,7 +24,7 @@ function DB:UpdateExperience(event)
 	local bar = DB.expBar
 
 	if IsXPUserDisabled()
-	or (DB.db.experience.hideAtMaxLevel and E.mylevel == 60)
+	or (DB.db.experience.hideAtMaxLevel and IsPlayerAtEffectiveMaxLevel())
 	or (DB.db.experience.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
 		E:DisableMover(DB.expBar.mover:GetName())
 		bar:Hide()

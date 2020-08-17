@@ -111,7 +111,6 @@ local function Update(self, event, unit)
 
 		if(health < healAbsorb) then
 			hasOverHealAbsorb = true
-			healAbsorb = health
 		end
 	else
 		allIncomingHeal = allIncomingHeal - healAbsorb
@@ -129,12 +128,8 @@ local function Update(self, event, unit)
 	end
 
 	local hasOverAbsorb = false
-	if(health + allIncomingHeal + absorb >= maxHealth) then
-		if(absorb > 0) then
-			hasOverAbsorb = true
-		end
-
-		absorb = math.max(0, maxHealth - health - allIncomingHeal)
+	if(health + allIncomingHeal + absorb >= maxHealth) and (absorb > 0) then
+		hasOverAbsorb = true
 	end
 
 	if(element.myBar) then
@@ -190,7 +185,7 @@ local function Update(self, event, unit)
 	* hasOverHealAbsorb - indicates if the amount of heal absorb is higher than the unit's current health (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, myIncomingHeal, otherIncomingHeal, absorb, healAbsorb, hasOverAbsorb, hasOverHealAbsorb)
+		return element:PostUpdate(unit, myIncomingHeal, otherIncomingHeal, absorb, healAbsorb, hasOverAbsorb, hasOverHealAbsorb, health, maxHealth)
 	end
 end
 
