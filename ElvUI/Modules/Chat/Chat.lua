@@ -486,11 +486,6 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr
 end
 
-local editboxCharCount
-function CH:CountLinkCharacters()
-	editboxCharCount = editboxCharCount + (strlen(self) + 4) -- 4 is ending '|h|r'
-end
-
 function CH:CopyButtonMouseUp(btn)
 	local chat = self:GetParent()
 	if btn == "RightButton" and chat:GetID() == 1 then
@@ -520,6 +515,11 @@ function CH:ChatFrameTab_SetAlpha(_, skip)
 end
 
 do
+	local charCount
+	function CH:CountLinkCharacters()
+		charCount = charCount + (strlen(self) + 4) -- 4 is ending '|h|r'
+	end
+
 	local repeatedText
 	function CH:EditBoxOnTextChanged()
 		local text = self:GetText()
@@ -567,9 +567,9 @@ do
 		end
 
 		-- recalculate the character count correctly with hyperlinks in it, using gsub so it matches multiple without gmatch
-		editboxCharCount = 0
+		charCount = 0
 		gsub(text, '(|cff%x%x%x%x%x%x|H.-|h).-|h|r', CH.CountLinkCharacters)
-		if editboxCharCount ~= 0 then len = len - editboxCharCount end
+		if charCount ~= 0 then len = len - charCount end
 
 		self.characterCount:SetText(len > 0 and (255 - len) or '')
 
