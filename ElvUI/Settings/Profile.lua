@@ -3,6 +3,7 @@ local CopyTable = CopyTable -- Our function doesn't exist yet.
 
 P.gridSize = 64
 P.layoutSetting = 'tank'
+P.hideTutorial = true
 
 --Core
 P.general = {
