@@ -5,12 +5,13 @@ local _G = _G
 local format = format
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local displayString = ""
 
 local function OnEvent(self)
 	if IsXPUserDisabled() then
 		displayString = 'Disabled'
-	elseif E.mylevel == 60 then
+	elseif IsPlayerAtEffectiveMaxLevel() then
 		displayString = 'Max'
 	else
 		local cur, max = UnitXP('player'), UnitXPMax('player')
