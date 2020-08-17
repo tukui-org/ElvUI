@@ -907,6 +907,7 @@ P.chat = {
 	fadeTabsNoBackdrop = true,
 	fadeChatToggles = true,
 	hideChatToggles = false,
+	hideCopyButton = false,
 	useAltKey = false,
 	classColorMentionsChat = true,
 	numAllowedCombatRepeat = 5,

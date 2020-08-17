@@ -491,6 +491,142 @@ function CH:CountLinkCharacters()
 	editboxCharCount = editboxCharCount + (strlen(self) + 4) -- 4 is ending '|h|r'
 end
 
+function CH:CopyButtonMouseUp(btn)
+	local chat = self:GetParent()
+	if btn == "RightButton" and chat:GetID() == 1 then
+		ToggleFrame(_G.ChatMenu)
+	else
+		CH:CopyChat(chat)
+	end
+end
+
+function CH:CopyButtonOnEnter()
+	self:SetAlpha(1)
+end
+
+function CH:CopyButtonOnLeave()
+	local chat = self:GetParent()
+	if _G[chat:GetName().."TabText"]:IsShown() then
+		self:SetAlpha(0.35)
+	else
+		self:SetAlpha(0)
+	end
+end
+
+function CH:ChatFrameTab_SetAlpha(_, skip)
+	if skip then return end
+	local chat = CH:GetOwner(self)
+	self:SetAlpha((not chat.isDocked or self.selected) and 1 or 0.6, true)
+end
+
+do
+	local repeatedText
+	function CH:EditBoxOnTextChanged()
+		local text = self:GetText()
+		local len = strlen(text)
+
+		if (not repeatedText or not strfind(text, repeatedText, 1, true)) and InCombatLockdown() then
+			local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
+			if len > MIN_REPEAT_CHARACTERS then
+				local repeatChar = true
+				for i = 1, MIN_REPEAT_CHARACTERS, 1 do
+					local first = -1 - i
+					if strsub(text,-i,-i) ~= strsub(text,first,first) then
+						repeatChar = false
+						break
+					end
+				end
+				if repeatChar then
+					repeatedText = text
+					self:Hide()
+					return
+				end
+			end
+		end
+
+		if len == 4 then
+			if text == '/tt ' then
+				local Name, Realm = UnitName('target')
+				if Name then
+					Name = gsub(Name,'%s','')
+
+					if Realm and Realm ~= '' then
+						Name = format('%s-%s', Name, E:ShortenRealm(Realm))
+					end
+				end
+
+				if Name then
+					ChatFrame_SendTell(Name, self.chatFrame)
+				else
+					_G.UIErrorsFrame:AddMessage(E.InfoColor .. L["Invalid Target"])
+				end
+			elseif text == '/gr ' then
+				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
+				ChatEdit_ParseText(self, 0)
+			end
+		end
+
+		-- recalculate the character count correctly with hyperlinks in it, using gsub so it matches multiple without gmatch
+		editboxCharCount = 0
+		gsub(text, '(|cff%x%x%x%x%x%x|H.-|h).-|h|r', CH.CountLinkCharacters)
+		if editboxCharCount ~= 0 then len = len - editboxCharCount end
+
+		self.characterCount:SetText(len > 0 and (255 - len) or '')
+
+		if repeatedText then
+			repeatedText = nil
+		end
+	end
+end
+
+function CH:EditBoxOnKeyDown(key)
+	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
+	if (not self.historyLines) or #self.historyLines == 0 then
+		return
+	end
+
+	if key == "DOWN" then
+		self.historyIndex = self.historyIndex - 1
+
+		if self.historyIndex < 1 then
+			self.historyIndex = 0
+			self:SetText('')
+			return
+		end
+	elseif key == "UP" then
+		self.historyIndex = self.historyIndex + 1
+
+		if self.historyIndex > #self.historyLines then
+			self.historyIndex = #self.historyLines
+		end
+	else
+		return
+	end
+
+	self:SetText(strtrim(self.historyLines[#self.historyLines - (self.historyIndex - 1)]))
+end
+
+function CH:EditBoxFocusGained()
+	if not _G.LeftChatPanel:IsShown() then
+		_G.LeftChatPanel.editboxforced = true
+		_G.LeftChatToggleButton:OnEnter()
+		self:Show()
+	end
+end
+
+function CH:EditBoxFocusLost()
+	if _G.LeftChatPanel.editboxforced then
+		_G.LeftChatPanel.editboxforced = nil
+
+		if _G.LeftChatPanel:IsShown() then
+			_G.LeftChatToggleButton:OnLeave()
+			self:Hide()
+		end
+	end
+
+	self.historyIndex = 0
+end
+
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 	local tab = CH:GetTab(frame)
@@ -534,111 +670,18 @@ function CH:StyleChat(frame)
 		_G[name..'Tab'..texName..'Right']:SetTexture()
 	end
 
-	hooksecurefunc(tab, "SetAlpha", function(t, alpha)
-		if alpha ~= 1 and (not t.isDocked or _G.GeneralDockManager.selected:GetID() == t:GetID()) then
-			t:SetAlpha(1)
-		elseif alpha < 0.6 then
-			t:SetAlpha(0.6)
-		end
-	end)
+	hooksecurefunc(tab, "SetAlpha", CH.ChatFrameTab_SetAlpha)
 
 	if not tab.left then tab.left = _G[name.."TabLeft"] end
 	tab.Text:ClearAllPoints()
 	tab.Text:SetPoint('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
 	tab:SetHeight(22)
 
-
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
 		tab.conversationIcon:SetPoint('RIGHT', tab.Text, 'LEFT', -1, 0)
 	end
 
-	local repeatedText
-	local function OnTextChanged(editBox)
-		local text = editBox:GetText()
-		local len = strlen(text)
-
-		if (not repeatedText or not strfind(text, repeatedText, 1, true)) and InCombatLockdown() then
-			local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
-			if len > MIN_REPEAT_CHARACTERS then
-				local repeatChar = true
-				for i = 1, MIN_REPEAT_CHARACTERS, 1 do
-					local first = -1 - i
-					if strsub(text,-i,-i) ~= strsub(text,first,first) then
-						repeatChar = false
-						break
-					end
-				end
-				if repeatChar then
-					repeatedText = text
-					editBox:Hide()
-					return
-				end
-			end
-		end
-
-		if len == 4 then
-			if text == '/tt ' then
-				local Name, Realm = UnitName('target')
-				if Name then
-					Name = gsub(Name,'%s','')
-
-					if Realm and Realm ~= '' then
-						Name = format('%s-%s', Name, E:ShortenRealm(Realm))
-					end
-				end
-
-				if Name then
-					ChatFrame_SendTell(Name, editBox.chatFrame)
-				else
-					_G.UIErrorsFrame:AddMessage(E.InfoColor .. L["Invalid Target"])
-				end
-			elseif text == '/gr ' then
-				editBox:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
-				ChatEdit_ParseText(editBox, 0)
-			end
-		end
-
-		-- recalculate the character count correctly with hyperlinks in it, using gsub so it matches multiple without gmatch
-		editboxCharCount = 0
-		gsub(text, '(|cff%x%x%x%x%x%x|H.-|h).-|h|r', CH.CountLinkCharacters)
-		if editboxCharCount ~= 0 then len = len - editboxCharCount end
-
-		editbox.characterCount:SetText(len > 0 and (255 - len) or '')
-
-		if repeatedText then
-			repeatedText = nil
-		end
-	end
-
-	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
-	local function OnKeyDown(editBox, key)
-		if (not editBox.historyLines) or #editBox.historyLines == 0 then
-			return
-		end
-
-		if key == "DOWN" then
-			editBox.historyIndex = editBox.historyIndex - 1
-
-			if editBox.historyIndex < 1 then
-				editBox.historyIndex = 0
-				editBox:SetText('')
-				return
-			end
-		elseif key == "UP" then
-			editBox.historyIndex = editBox.historyIndex + 1
-
-			if editBox.historyIndex > #editBox.historyLines then
-				editBox.historyIndex = #editBox.historyLines
-			end
-		else
-			return
-		end
-
-		editBox:SetText(strtrim(editBox.historyLines[#editBox.historyLines - (editBox.historyIndex - 1)]))
-	end
-
-	local LeftChatPanel, LeftChatDataPanel, LeftChatToggleButton = _G.LeftChatPanel, _G.LeftChatDataPanel, _G.LeftChatToggleButton
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
 	_G[name.."EditBoxLeft"]:Kill()
 	_G[name.."EditBoxMid"]:Kill()
@@ -646,43 +689,25 @@ function CH:StyleChat(frame)
 
 	editbox:SetTemplate(nil, true)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
-	editbox:SetAllPoints(LeftChatDataPanel)
-	editbox:HookScript("OnTextChanged", OnTextChanged)
+	editbox:SetAllPoints(_G.LeftChatDataPanel)
+	editbox:HookScript("OnTextChanged", CH.EditBoxOnTextChanged)
 	CH:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
 
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
-	editbox:HookScript("OnKeyDown", OnKeyDown)
+	editbox:HookScript("OnKeyDown", CH.EditBoxOnKeyDown)
 	editbox:Hide()
 
-	editbox:HookScript("OnEditFocusGained", function(editBox)
-		if not LeftChatPanel:IsShown() then
-			LeftChatPanel.editboxforced = true
-			LeftChatToggleButton:OnEnter()
-			editBox:Show()
-		end
-	end)
-
-	editbox:HookScript("OnEditFocusLost", function(editBox)
-		if LeftChatPanel.editboxforced then
-			LeftChatPanel.editboxforced = nil
-
-			if LeftChatPanel:IsShown() then
-				LeftChatToggleButton:OnLeave()
-				editBox:Hide()
-			end
-		end
-
-		editBox.historyIndex = 0
-	end)
+	editbox:HookScript("OnEditFocusGained", CH.EditBoxFocusGained)
+	editbox:HookScript("OnEditFocusLost", CH.EditBoxFocusLost)
 
 	for _, text in pairs(editbox.historyLines) do
 		editbox:AddHistoryLine(text)
 	end
 
 	--copy chat button
-	local copyButton = CreateFrame('Frame', format("CopyChatButton%d", id), frame)
+	local copyButton = CreateFrame('Frame', format("ElvUI_CopyChatButton%d", id), frame)
 	copyButton:EnableMouse(true)
 	copyButton:SetAlpha(0.35)
 	copyButton:SetSize(20, 22)
@@ -695,22 +720,10 @@ function CH:StyleChat(frame)
 	copyTexture:SetTexture(E.Media.Textures.Copy)
 	copyButton.texture = copyTexture
 
-	copyButton:SetScript("OnMouseUp", function(_, btn)
-		if btn == "RightButton" and id == 1 then
-			ToggleFrame(_G.ChatMenu)
-		else
-			CH:CopyChat(frame)
-		end
-	end)
-
-	copyButton:SetScript("OnEnter", function(button) button:SetAlpha(1) end)
-	copyButton:SetScript("OnLeave", function(button)
-		if _G[button:GetParent():GetName().."TabText"]:IsShown() then
-			button:SetAlpha(0.35)
-		else
-			button:SetAlpha(0)
-		end
-	end)
+	copyButton:SetScript("OnMouseUp", CH.CopyButtonMouseUp)
+	copyButton:SetScript("OnEnter", CH.CopyButtonOnEnter)
+	copyButton:SetScript("OnLeave", CH.CopyButtonOnLeave)
+	CH:ToggleChatButton(copyButton)
 
 	_G.QuickJoinToastButton:Hide()
 	_G.GeneralDockManagerOverflowButtonList:SetTemplate("Transparent")
@@ -836,9 +849,11 @@ function CH:TabOnEnter(tab)
 		tab.conversationIcon:Show()
 	end
 
-	local chat = CH:GetOwner(tab)
-	if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
-		chat.copyButton:SetAlpha(0.35)
+	if not CH.db.hideCopyButton then
+		local chat = CH:GetOwner(tab)
+		if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
+			chat.copyButton:SetAlpha(0.35)
+		end
 	end
 end
 
@@ -849,9 +864,11 @@ function CH:TabOnLeave(tab)
 		tab.conversationIcon:Hide()
 	end
 
-	local chat = CH:GetOwner(tab)
-	if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
-		chat.copyButton:SetAlpha(0)
+	if not CH.db.hideCopyButton then
+		local chat = CH:GetOwner(tab)
+		if chat and chat.copyButton and GetMouseFocus() ~= chat.copyButton then
+			chat.copyButton:SetAlpha(0)
+		end
 	end
 end
 
@@ -1009,6 +1026,16 @@ end
 function CH:UpdateChatTabs()
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		CH:UpdateChatTab(_G[name])
+	end
+end
+
+function CH:ToggleChatButton(button)
+	button:SetShown(not CH.db.hideCopyButton)
+end
+
+function CH:ToggleCopyChatButtons()
+	for _, name in ipairs(_G.CHAT_FRAMES) do
+		CH:ToggleChatButton(_G[name].copyButton)
 	end
 end
 
@@ -1917,6 +1944,12 @@ local function FloatingChatFrameOnEvent(...)
 	CH:FloatingChatFrame_OnEvent(...)
 end
 
+local function ChatFrame_SetScript(f, script, func)
+	if script == "OnMouseWheel" and func ~= ChatFrame_OnMouseScroll then
+		f:SetScript(script, ChatFrame_OnMouseScroll)
+	end
+end
+
 function CH:SetupChat()
 	if not E.private.chat.enable then return end
 
@@ -1945,11 +1978,7 @@ function CH:SetupChat()
 			end
 
 			frame:SetScript("OnMouseWheel", ChatFrame_OnMouseScroll)
-			hooksecurefunc(frame, "SetScript", function(f, script, func)
-				if script == "OnMouseWheel" and func ~= ChatFrame_OnMouseScroll then
-					f:SetScript(script, ChatFrame_OnMouseScroll)
-				end
-			end)
+			hooksecurefunc(frame, "SetScript", ChatFrame_SetScript)
 			frame.scriptsSet = true
 		end
 	end
