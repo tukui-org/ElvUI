@@ -34,12 +34,10 @@ function UF:SetVisibility_HealComm(obj)
 	if obj.maxOverflow > 1 then
 		obj.myBar:SetParent(obj.health)
 		obj.otherBar:SetParent(obj.health)
-		obj.absorbBar:SetParent(obj.health)
 		obj.healAbsorbBar:SetParent(obj.health)
 	else
 		obj.myBar:SetParent(obj.parent)
 		obj.otherBar:SetParent(obj.parent)
-		obj.absorbBar:SetParent(obj.parent)
 		obj.healAbsorbBar:SetParent(obj.parent)
 	end
 end
@@ -211,6 +209,7 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 
 	local pred = frame.HealthPrediction
 	local colors = UF.db.colors.healPrediction
+	local maxOverflow = (colors.maxOverflow or 0)
 
 	-- handle over heal absorbs
 	local healAbsorbBar = pred.healAbsorbBar
@@ -240,27 +239,38 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 		if hasOverAbsorb and health == maxHealth then
 			absorbBar:SetValue(1.5)
 			absorbBar:SetMinMaxValues(0, 100)
+			absorbBar:SetParent(pred.health)
+		else
+			absorbBar:SetParent(pred.parent)
 		end
-	elseif hasOverAbsorb then -- non normal mode overflowing
-		if db.absorbStyle == 'WRAPPED' then -- engage backfilling
-			absorbBar:SetReverseFill(not pred.reverseFill)
+	else
+		if maxOverflow > 0 then
+			absorbBar:SetParent(pred.health)
+		else
+			absorbBar:SetParent(pred.parent)
+		end
+
+		if hasOverAbsorb then -- non normal mode overflowing
+			if db.absorbStyle == 'WRAPPED' then -- engage backfilling
+				absorbBar:SetReverseFill(not pred.reverseFill)
+
+				absorbBar:ClearAllPoints()
+				absorbBar:SetPoint(pred.anchor, pred.health)
+				absorbBar:SetPoint(pred.anchor2, pred.health, pred.anchor2)
+			elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
+				local overflowAbsorb = absorb * maxOverflow
+				if health == maxHealth then
+					absorbBar:SetValue(overflowAbsorb)
+				else -- fill the inner part along with the overflow amount so it smoothly transitions
+					absorbBar:SetValue((maxHealth - health) + overflowAbsorb)
+				end
+			end
+		elseif db.absorbStyle == 'WRAPPED' then -- restore wrapped to its forward filling state
+			absorbBar:SetReverseFill(pred.reverseFill)
 
 			absorbBar:ClearAllPoints()
-			absorbBar:SetPoint(pred.anchor, frame.Health)
-			absorbBar:SetPoint(pred.anchor2, frame.Health, pred.anchor2)
-		elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
-			local overflowAbsorb = absorb * (colors.maxOverflow or 0)
-			if health == maxHealth then
-				absorbBar:SetValue(overflowAbsorb)
-			else -- fill the inner part along with the overflow amount so it smoothly transitions
-				absorbBar:SetValue((maxHealth - health) + overflowAbsorb)
-			end
+			absorbBar:SetPoint(pred.anchor, pred.health)
+			absorbBar:SetPoint(pred.anchor1, pred.otherBarTexture, pred.anchor2)
 		end
-	elseif db.absorbStyle == 'WRAPPED' then -- restore wrapped to its forward filling state
-		absorbBar:SetReverseFill(pred.reverseFill)
-
-		absorbBar:ClearAllPoints()
-		absorbBar:SetPoint(pred.anchor, frame.Health)
-		absorbBar:SetPoint(pred.anchor1, pred.otherBarTexture, pred.anchor2)
 	end
 end
