@@ -1030,7 +1030,9 @@ function CH:UpdateChatTabs()
 end
 
 function CH:ToggleChatButton(button)
-	button:SetShown(not CH.db.hideCopyButton)
+	if button then
+		button:SetShown(not CH.db.hideCopyButton)
+	end
 end
 
 function CH:ToggleCopyChatButtons()
