@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames');
 
 local CreateFrame = CreateFrame
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
-local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 local UnitHealthMax = UnitHealthMax
 local UnitHealth = UnitHealth
 
@@ -115,12 +114,12 @@ function UF:Configure_HealComm(frame)
 
 		myBar:SetReverseFill(reverseFill)
 		otherBar:SetReverseFill(reverseFill)
-		healAbsorbBar:SetReverseFill(not pred.reverseFill)
+		healAbsorbBar:SetReverseFill(not reverseFill)
 
 		if absorbStyle == 'REVERSED' then
-			absorbBar:SetReverseFill(not pred.reverseFill)
+			absorbBar:SetReverseFill(not reverseFill)
 		else
-			absorbBar:SetReverseFill(pred.reverseFill)
+			absorbBar:SetReverseFill(reverseFill)
 		end
 
 		myBar:SetStatusBarColor(colors.personal.r, colors.personal.g, colors.personal.b, colors.personal.a)
