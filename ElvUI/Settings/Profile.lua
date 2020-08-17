@@ -1174,8 +1174,7 @@ local UF_Health = {
 
 local UF_HealthPrediction = {
 	enable = false,
-	reversedAbsorbs = false,
-	showOverAbsorbs = true,
+	absorbStyle = 'NORMAL',
 	anchorPoint = 'BOTTOM',
 	height = -1
 }

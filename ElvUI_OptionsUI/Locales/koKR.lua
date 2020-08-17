@@ -568,6 +568,7 @@ L["Hide Below Max Level"] = true
 L["Hide Both"] = "둘 다 숨기기"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = "재사용 깜빡임 끄기"
+L["Hide Copy Button"] = true
 L["Hide Delay"] = "숨김 지연"
 L["Hide Error Text"] = "전투중 에러 숨기기"
 L["Hide Frame"] = "프레임 숨김"

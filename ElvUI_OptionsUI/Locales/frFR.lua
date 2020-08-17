@@ -569,6 +569,7 @@ L["Hide Below Max Level"] = true
 L["Hide Both"] = "Masquer les deux"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = true
 L["Hide Cooldown Bling"] = "Masquer l'effet du temps de recharge"
+L["Hide Copy Button"] = true
 L["Hide Delay"] = true
 L["Hide Error Text"] = "Cacher les textes d'erreurs"
 L["Hide Frame"] = true

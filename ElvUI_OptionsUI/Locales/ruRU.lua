@@ -568,6 +568,7 @@ L["Hide Below Max Level"] = "Скрывать до максимального у
 L["Hide Both"] = "Скрыть оба"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = "Скрывать текст полосы заклинаний. Полезно, если у вас выставлена очень малая высота полосы или используется сдвиг ресурса."
 L["Hide Cooldown Bling"] = "Скрыть вспышку восстановления"
+L["Hide Copy Button"] = true
 L["Hide Delay"] = "Задержка скрытия"
 L["Hide Error Text"] = "Прятать сообщения об ошибках"
 L["Hide Frame"] = "Скрыть рамку"
