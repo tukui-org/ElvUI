@@ -100,7 +100,6 @@ function UF:Configure_HealComm(frame)
 		local orientation = health:GetOrientation()
 		local reverseFill = health:GetReverseFill()
 		local healthBarTexture = health:GetStatusBarTexture()
-		local absorbStyle = db.absorbStyle
 
 		pred.reverseFill = reverseFill
 		pred.healthBarTexture = healthBarTexture
@@ -113,7 +112,7 @@ function UF:Configure_HealComm(frame)
 		otherBar:SetReverseFill(reverseFill)
 		healAbsorbBar:SetReverseFill(not reverseFill)
 
-		if absorbStyle == 'REVERSED' then
+		if db.absorbStyle == 'REVERSED' then
 			absorbBar:SetReverseFill(not reverseFill)
 		else
 			absorbBar:SetReverseFill(reverseFill)
@@ -160,7 +159,7 @@ function UF:Configure_HealComm(frame)
 			absorbBar:SetSize(width, barHeight)
 			absorbBar:SetPoint(anchor, health)
 
-			if absorbStyle == 'REVERSED' then
+			if db.absorbStyle == 'REVERSED' then
 				absorbBar:SetPoint(p2, health, p2)
 			else
 				absorbBar:SetPoint(p1, pred.otherBarTexture, p2)
@@ -193,7 +192,7 @@ function UF:Configure_HealComm(frame)
 			absorbBar:SetSize(barWidth, height)
 			absorbBar:SetPoint(anchor, health)
 
-			if absorbStyle == 'REVERSED' then
+			if db.absorbStyle == 'REVERSED' then
 				absorbBar:SetPoint(p2, health, p2)
 			else
 				absorbBar:SetPoint(p1, pred.otherBarTexture, p2)
@@ -214,17 +213,18 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	local colors = UF.db.colors.healPrediction
 
 	-- handle over heal absorbs
-	pred.healAbsorbBar:ClearAllPoints()
-	pred.healAbsorbBar:SetPoint(pred.anchor, frame.Health)
+	local healAbsorbBar = pred.healAbsorbBar
+	healAbsorbBar:ClearAllPoints()
+	healAbsorbBar:SetPoint(pred.anchor, frame.Health)
 
 	if hasOverHealAbsorb then -- forward fill it when its greater than health so that you can still see this is being stolen
-		pred.healAbsorbBar:SetReverseFill(pred.reverseFill)
-		pred.healAbsorbBar:SetPoint(pred.anchor1, pred.healthBarTexture, pred.anchor2)
-		pred.healAbsorbBar:SetStatusBarColor(colors.overhealabsorbs.r, colors.overhealabsorbs.g, colors.overhealabsorbs.b, colors.overhealabsorbs.a)
+		healAbsorbBar:SetReverseFill(pred.reverseFill)
+		healAbsorbBar:SetPoint(pred.anchor1, pred.healthBarTexture, pred.anchor2)
+		healAbsorbBar:SetStatusBarColor(colors.overhealabsorbs.r, colors.overhealabsorbs.g, colors.overhealabsorbs.b, colors.overhealabsorbs.a)
 	else -- otherwise just let it backfill so that we know how much is being stolen
-		pred.healAbsorbBar:SetReverseFill(not pred.reverseFill)
-		pred.healAbsorbBar:SetPoint(pred.anchor2, pred.healthBarTexture, pred.anchor2)
-		pred.healAbsorbBar:SetStatusBarColor(colors.healAbsorbs.r, colors.healAbsorbs.g, colors.healAbsorbs.b, colors.healAbsorbs.a)
+		healAbsorbBar:SetReverseFill(not pred.reverseFill)
+		healAbsorbBar:SetPoint(pred.anchor2, pred.healthBarTexture, pred.anchor2)
+		healAbsorbBar:SetStatusBarColor(colors.healAbsorbs.r, colors.healAbsorbs.g, colors.healAbsorbs.b, colors.healAbsorbs.a)
 	end
 
 	-- color absorb bar if in over state
