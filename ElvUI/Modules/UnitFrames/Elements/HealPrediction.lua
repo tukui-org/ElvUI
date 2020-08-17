@@ -36,16 +36,16 @@ function UF:SetVisibility_HealComm(obj)
 		obj.allowClippingUpdate = true
 	end
 
-	-- always let these overflow now, we will control their visibility in the postupdate
-	obj.absorbBar:SetParent(obj.health)
-	obj.healAbsorbBar:SetParent(obj.health)
-
 	if obj.maxOverflow > 1 then
 		obj.myBar:SetParent(obj.health)
 		obj.otherBar:SetParent(obj.health)
+		obj.absorbBar:SetParent(obj.health)
+		obj.healAbsorbBar:SetParent(obj.health)
 	else
 		obj.myBar:SetParent(obj.parent)
 		obj.otherBar:SetParent(obj.parent)
+		obj.absorbBar:SetParent(obj.parent)
+		obj.healAbsorbBar:SetParent(obj.parent)
 	end
 end
 
