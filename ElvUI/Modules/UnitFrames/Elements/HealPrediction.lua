@@ -110,6 +110,7 @@ function UF:Configure_HealComm(frame)
 		local reverseFill = health:GetReverseFill()
 		local healthBarTexture = health:GetStatusBarTexture()
 		local reversedAbsorbs = db.reversedAbsorbs
+		local showOverAbsorbs = db.showOverAbsorbs
 
 		UF:SetTexture_HealComm(pred, UF.db.colors.transparentHealth and E.media.blankTex or healthBarTexture:GetTexture())
 
@@ -134,12 +135,16 @@ function UF:Configure_HealComm(frame)
 		overAbsorb:SetVertexColor(c.overabsorbs.r, c.overabsorbs.g, c.overabsorbs.b, c.overabsorbs.a)
 		overHealAbsorb:SetVertexColor(c.overhealabsorbs.r, c.overhealabsorbs.g, c.overhealabsorbs.b, c.overhealabsorbs.a)
 
-		if db.showOverAbsorbs and not reversedAbsorbs then
+		if showOverAbsorbs and not reversedAbsorbs then
 			pred.overAbsorb = overAbsorb
-			pred.overHealAbsorb = overHealAbsorb
 		elseif pred.overAbsorb then
 			pred.overAbsorb:Hide()
 			pred.overAbsorb = nil
+		end
+
+		if showOverAbsorbs then
+			pred.overHealAbsorb = overHealAbsorb
+		elseif pred.overHealAbsorb then
 			pred.overHealAbsorb:Hide()
 			pred.overHealAbsorb = nil
 		end
