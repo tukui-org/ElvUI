@@ -486,7 +486,7 @@ function CH:GetSmileyReplacementText(msg)
 	return outstr
 end
 
-function CH:CopyButtonMouseUp(btn)
+function CH:CopyButtonOnMouseUp(btn)
 	local chat = self:GetParent()
 	if btn == "RightButton" and chat:GetID() == 1 then
 		ToggleFrame(_G.ChatMenu)
@@ -720,7 +720,7 @@ function CH:StyleChat(frame)
 	copyTexture:SetTexture(E.Media.Textures.Copy)
 	copyButton.texture = copyTexture
 
-	copyButton:SetScript("OnMouseUp", CH.CopyButtonMouseUp)
+	copyButton:SetScript("OnMouseUp", CH.CopyButtonOnMouseUp)
 	copyButton:SetScript("OnEnter", CH.CopyButtonOnEnter)
 	copyButton:SetScript("OnLeave", CH.CopyButtonOnLeave)
 	CH:ToggleChatButton(copyButton)
