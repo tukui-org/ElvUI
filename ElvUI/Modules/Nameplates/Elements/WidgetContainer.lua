@@ -18,16 +18,16 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 	local totalWidth = 0
 	local totalHeight = 0
 
-	widgetContainerFrame.horizontalRowContainerPool:ReleaseAll();
+	widgetContainerFrame.horizontalRowContainerPool:ReleaseAll()
 
 	for index, widgetFrame in ipairs(sortedWidgets) do
 		widgetFrame:ClearAllPoints()
 
-		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == Enum.UIWidgetSetLayoutDirection.Vertical;
-		local widgetUsesVertical = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Vertical;
+		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == Enum.UIWidgetSetLayoutDirection.Vertical
+		local widgetUsesVertical = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Vertical
 
-		local useOverlapLayout = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Overlap;
-		local useVerticalLayout = widgetUsesVertical or (widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Default and widgetSetUsesVertical);
+		local useOverlapLayout = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Overlap
+		local useVerticalLayout = widgetUsesVertical or (widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Default and widgetSetUsesVertical)
 
 		if useOverlapLayout then
 			-- This widget uses overlap layout
@@ -87,7 +87,7 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 			local needNewRowContainer = not horizontalRowContainer or forceNewRow
 			if needNewRowContainer then
 				if horizontalRowContainer then
-					--horizontalRowContainer:Layout();
+					--horizontalRowContainer:Layout()
 					horizontalRowContainer:SetSize(horizontalRowWidth, horizontalRowHeight)
 					totalWidth = totalWidth + horizontalRowWidth
 					totalHeight = totalHeight + horizontalRowHeight
@@ -116,7 +116,7 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 				widgetFrame:SetParent(horizontalRowContainer)
 				widgetFrame:SetPoint(widgetContainerFrame.horizontalAnchorPoint, relative, widgetContainerFrame.horizontalRelativePoint, widgetContainerFrame.horizontalAnchorXOffset, 0)
 
-				horizontalRowWidth = horizontalRowWidth + widgetFrame:GetWidth() + widgetContainerFrame.horizontalAnchorXOffset;
+				horizontalRowWidth = horizontalRowWidth + widgetFrame:GetWidth() + widgetContainerFrame.horizontalAnchorXOffset
 			end
 
 			local widgetHeight = widgetFrame:GetHeight()
