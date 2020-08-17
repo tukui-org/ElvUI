@@ -239,9 +239,9 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 		if hasOverAbsorb and health == maxHealth then
 			absorbBar:SetValue(1.5)
 			absorbBar:SetMinMaxValues(0, 100)
-			absorbBar:SetParent(pred.health)
+			absorbBar:SetParent(pred.health) -- lets overflow happen
 		else
-			absorbBar:SetParent(pred.parent)
+			absorbBar:SetParent(pred.parent) -- prevents overflow
 		end
 	else
 		if maxOverflow > 0 then
