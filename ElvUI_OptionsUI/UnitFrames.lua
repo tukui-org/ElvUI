@@ -1710,15 +1710,25 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 				name = L["Height"],
 				min = -1, max = 500, step = 1,
 			},
-			colors = {
+			colorsButton = {
 				order = 3,
 				type = "execute",
 				name = L["COLORS"],
-				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup") end,
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "healPrediction") end,
 				disabled = function() return not E.UnitFrames.Initialized end,
 			},
-			absorbStyle = {
+			anchorPoint = {
 				order = 5,
+				type = "select",
+				name = L["Anchor Point"],
+				values = {
+					TOP = "TOP",
+					BOTTOM = "BOTTOM",
+					CENTER = "CENTER"
+				}
+			},
+			absorbStyle = {
+				order = 6,
 				type = "select",
 				name = L["Absorb Style"],
 				values = {
@@ -1729,16 +1739,19 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 					OVERFLOW = L["Overflow"]
 				},
 			},
-			anchorPoint = {
-				order = 6,
-				type = "select",
-				name = L["Anchor Point"],
-				values = {
-					TOP = "TOP",
-					BOTTOM = "BOTTOM",
-					CENTER = "CENTER"
-				}
+			overflowButton = {
+				order = 7,
+				type = "execute",
+				name = L["Max Overflow"],
+				func = function() ACD:SelectGroup("ElvUI", "unitframe", "generalOptionsGroup", "allColorsGroup", "healPrediction") end,
+				disabled = function() return not E.UnitFrames.Initialized end,
 			},
+			warning = ACH:Description(function()
+				if E.db.unitframe.colors.healPrediction.maxOverflow == 0 then
+					local text = L["Max Overflow is set to zero. Absorb Overflows will be hidden when using Overflow style.\nIf used together Max Overflow at zero and Overflow mode will act like Normal mode without the ending sliver of overflow."]
+					return text .. (E.db.unitframe.units[groupName].healPrediction.absorbStyle == 'OVERFLOW' and ' |cffFF9933You are using Overflow with Max Overflow at zero.|r ' or '')
+				end
+			end, 50, "medium", nil, nil, nil, nil, "full"),
 		},
 	}
 
