@@ -1486,21 +1486,21 @@ function E:DBConversions()
 			E.db.unitframe.units[unit].healPrediction.enable = enabled
 		else
 			local healPrediction = E.db.unitframe.units[unit].healPrediction
-			if healPrediction.reversedAbsorbs then -- convert the newer setting if it existed
+			if healPrediction.reversedAbsorbs ~= nil then -- convert the newer setting if it existed
 				healPrediction.reversedAbsorbs = nil
 				healPrediction.absorbStyle = 'REVERSED'
 
 				-- clear extras
 				healPrediction.showAbsorbAmount = nil
 				healPrediction.showOverAbsorbs = nil
-			elseif healPrediction.showAbsorbAmount then -- convert the old setting into the new wrapped setting
+			elseif healPrediction.showAbsorbAmount ~= nil then -- convert the old setting into the new wrapped setting
 				healPrediction.showAbsorbAmount = nil
 				healPrediction.absorbStyle = 'WRAPPED'
 
 				-- clear extras
 				healPrediction.showOverAbsorbs = nil
 			elseif healPrediction.showOverAbsorbs ~= nil then -- convert the over absorb toggle into the new setting
-				healPrediction.absorbStyle = (healPrediction.showOverAbsorbs and 'NORMAL') or 'NONE'
+				healPrediction.absorbStyle = 'NORMAL'
 				healPrediction.showOverAbsorbs = nil
 			end
 		end
