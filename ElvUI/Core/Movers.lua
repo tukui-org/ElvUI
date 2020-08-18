@@ -381,7 +381,7 @@ function E:ToggleMovers(show, which)
 	local lowerText = strlower(which)
 	for _, holder in pairs(E.CreatedMovers) do
 		if show then
-			if strlower(holder.mover.textString) == lowerText then
+			if (holder.mover.name == which) or strlower(holder.mover.textString) == lowerText then
 				holder.mover:Show()
 				break -- we just are doing one
 			elseif holder.types[upperText] then
