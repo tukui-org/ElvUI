@@ -15,7 +15,7 @@ function S:Blizzard_CovenantPreviewUI()
 	frame.InfoPanel.AbilitiesLabel:SetTextColor(1, .8, 0)
 
 	hooksecurefunc(frame, 'TryShow', function(covenantInfo)
-		if not covenantInfo and not frame.IsSkinned then
+		if covenantInfo and not frame.IsSkinned then
 			frame.Background:SetAlpha(0)
 			frame.BorderFrame:SetAlpha(0)
 
