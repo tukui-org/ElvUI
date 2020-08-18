@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local Sticky = E.Libs.SimpleSticky
 
 local _G = _G
-local type, unpack, pairs, error = type, unpack, pairs, error
-local format, split, find, ipairs = format, strsplit, strfind, ipairs
+local type, unpack, pairs, error, ipairs = type, unpack, pairs, error, ipairs
+local format, split, find, strupper, strlower = format, strsplit, strfind, strupper, strlower
 
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -374,12 +374,19 @@ function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, 
 	UpdateMover(name, parent, textString, overlay, snapoffset, postdrag, shouldDisable, configString, perferCorners, ignoreSizeChanged)
 end
 
-function E:ToggleMovers(show, moverType)
+function E:ToggleMovers(show, which)
 	self.configMode = show
 
+	local upperText = strupper(which)
+	local lowerText = strlower(which)
 	for _, holder in pairs(E.CreatedMovers) do
-		if show and holder.types[moverType] then
-			holder.mover:Show()
+		if show then
+			if (holder.mover.name == which) or strlower(holder.mover.textString) == lowerText then
+				holder.mover:Show()
+				break -- we just are doing one
+			elseif holder.types[upperText] then
+				holder.mover:Show() -- we are showing a group
+			end
 		else
 			holder.mover:Hide()
 		end
