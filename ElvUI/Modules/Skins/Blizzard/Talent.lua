@@ -25,6 +25,7 @@ function S:Blizzard_TalentUI()
 
 	if E.global.general.disableTutorialButtons then
 		_G.PlayerTalentFrameTalentsTutorialButton:Kill()
+		_G.PlayerTalentFrameSpecializationTutorialButton:Kill()
 	end
 
 	local buttons = {
