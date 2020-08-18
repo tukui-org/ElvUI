@@ -208,11 +208,20 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	if not db or not db.absorbStyle then return end
 
 	local pred = frame.HealthPrediction
+	local healAbsorbBar = pred.healAbsorbBar
+	local absorbBar = pred.absorbBar
+
+	-- absorbs is set to none so hide both and kill code execution
+	if db.absorbStyle == 'NONE' then
+		healAbsorbBar:Hide()
+		absorbBar:Hide()
+		return
+	end
+
 	local colors = UF.db.colors.healPrediction
-	local maxOverflow = (colors.maxOverflow or 0)
+	local maxOverflow = colors.maxOverflow or 0
 
 	-- handle over heal absorbs
-	local healAbsorbBar = pred.healAbsorbBar
 	healAbsorbBar:ClearAllPoints()
 	healAbsorbBar:SetPoint(pred.anchor, frame.Health)
 
@@ -227,7 +236,6 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	end
 
 	-- color absorb bar if in over state
-	local absorbBar = pred.absorbBar
 	if hasOverAbsorb then
 		absorbBar:SetStatusBarColor(colors.overabsorbs.r, colors.overabsorbs.g, colors.overabsorbs.b, colors.overabsorbs.a)
 	else

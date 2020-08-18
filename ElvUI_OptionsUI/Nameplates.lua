@@ -6469,6 +6469,7 @@ E.Options.args.nameplate = {
 						local filter = {}
 						NP:StyleFilterCopyDefaults(filter)
 						E.global.nameplate.filters[value] = filter
+						selectedNameplateFilter = value
 						UpdateFilterGroup()
 						NP:ConfigureAll()
 					end

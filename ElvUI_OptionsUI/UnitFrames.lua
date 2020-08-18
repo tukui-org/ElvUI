@@ -1476,6 +1476,8 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 
 					CreateCustomTextGroup(groupName, textName)
 					updateFunc(UF, groupName, numUnits)
+
+					E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'unitframe', individual[groupName] and 'individualUnits' or 'groupUnits', groupName, 'customText', textName)
 				end,
 			},
 		},
@@ -1720,6 +1722,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 				type = "select",
 				name = L["Absorb Style"],
 				values = {
+					NONE = L["NONE"],
 					NORMAL = L["Normal"],
 					REVERSED = L["Reversed"],
 					WRAPPED = L["Wrapped"],
