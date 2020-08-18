@@ -71,6 +71,7 @@ function E:ToggleMoveMode(which)
 		E.ConfigurationMode = mode
 		which = 'all'
 	else
+		E.ConfigurationMode = true
 		mode = true
 	end
 
