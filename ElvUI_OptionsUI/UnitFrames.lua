@@ -1722,6 +1722,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 				type = "select",
 				name = L["Absorb Style"],
 				values = {
+					NONE = L["NONE"],
 					NORMAL = L["Normal"],
 					REVERSED = L["Reversed"],
 					WRAPPED = L["Wrapped"],

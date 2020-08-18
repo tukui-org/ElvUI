@@ -1499,9 +1499,9 @@ function E:DBConversions()
 
 				-- clear extras
 				healPrediction.showOverAbsorbs = nil
-			elseif healPrediction.showOverAbsorbs then -- convert the over absorb toggle into normal mode
+			elseif healPrediction.showOverAbsorbs ~= nil then -- convert the over absorb toggle into the new setting
+				healPrediction.absorbStyle = (healPrediction.showOverAbsorbs and 'NORMAL') or 'NONE'
 				healPrediction.showOverAbsorbs = nil
-				healPrediction.absorbStyle = 'NORMAL'
 			end
 		end
 	end
