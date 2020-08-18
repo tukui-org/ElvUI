@@ -69,13 +69,13 @@ function E:ToggleMoveMode(which)
 
 	if not which or which == '' then
 		E.ConfigurationMode = mode
-		which = 'ALL'
+		which = 'all'
 	else
 		mode = true
-		which = strupper(which)
 	end
 
 	self:ToggleMovers(mode, which)
+
 	if mode then
 		E:Grid_Show()
 		_G.ElvUIGrid:SetAlpha(0.4)
@@ -85,7 +85,7 @@ function E:ToggleMoveMode(which)
 		end
 
 		ElvUIMoverPopupWindow:Show()
-		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, which)
+		_G.UIDropDownMenu_SetSelectedValue(ElvUIMoverPopupWindowDropDown, strupper(which))
 
 		if IsAddOnLoaded('ElvUI_OptionsUI') then
 			E:Config_CloseWindow()
