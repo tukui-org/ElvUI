@@ -142,10 +142,6 @@ local function ChatBubble_OnUpdate(eventFrame, elapsed)
 	if eventFrame.lastupdate < 0.1 then return end
 	eventFrame.lastupdate = 0
 
-	if E.private.general.chatBubbles == 'disabled' then
-		return
-	end
-
 	for _, frame in pairs(C_ChatBubbles_GetAllChatBubbles()) do
 		local backdrop = frame:GetChildren(1)
 		if backdrop and not backdrop:IsForbidden() and not frame.isSkinnedElvUI then
