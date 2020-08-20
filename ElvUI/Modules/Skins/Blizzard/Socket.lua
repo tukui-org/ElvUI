@@ -25,7 +25,7 @@ function S:Blizzard_ItemSocketingUI()
 		local button_icon = _G[("ItemSocketingSocket%dIconTexture"):format(i)]
 		button:StripTextures()
 		button:StyleButton(false)
-		button:SetTemplate(nil, true)
+		button:CreateBackdrop(nil, true)
 		button_bracket:Kill()
 		button_bg:Kill()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
