@@ -92,31 +92,4 @@ do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 			end
 		end)
 	end
-
-	-- 9.0 Shadowlands BackdropTemplate taint: https://github.com/Stanzilla/WoWUIBugs/issues/28
-	hooksecurefunc(NineSliceUtil, "ApplyLayout", function(frame, layout)
-		if not rawget(frame, "ApplyBackdrop") or rawget(layout, "setupPieceVisualsFunction") ~= BackdropTemplateMixin.SetupPieceVisuals then
-			-- Probably not a backdrop being applied.
-			return
-		end
-
-		for name, piece in pairs(layout) do
-			if type(piece) == "table" then
-				local key = next(piece)
-				while key do
-					if name ~= "Center" or key ~= "layer" then
-						piece[key] = nil
-					end
-
-					key = next(piece, key)
-				end
-
-				local i = 0
-
-				while not issecurevariable(piece, "mirrorLayout") do
-					i, piece["__detaint" .. i] = i + 1, nil
-				end
-			end
-		end
-	end)
 end
