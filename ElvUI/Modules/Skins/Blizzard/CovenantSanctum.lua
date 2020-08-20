@@ -49,11 +49,11 @@ function S:Blizzard_CovenantSanctum()
 			TalentList:CreateBackdrop('Transparent')
 			S:HandleButton(TalentList.UpgradeButton)
 
+			S:HandleCloseButton(_G.CovenantSanctumFrame.CloseButton)
+
 			hooksecurefunc(TalentList, "Refresh", ReskinTalents)
 		end
 	end)
-
-	S:HandleCloseButton(_G.CovenantSanctumFrame.CloseButton)
 
 	S:HandleTab(_G.CovenantSanctumFrameTab1)
 	S:HandleTab(_G.CovenantSanctumFrameTab2)
