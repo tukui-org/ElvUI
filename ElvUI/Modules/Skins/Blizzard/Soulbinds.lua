@@ -10,8 +10,10 @@ function S:Blizzard_Soulbinds()
 	local frame = _G.SoulbindViewer
 	frame:StripTextures()
 	frame:CreateBackdrop('Transparent')
+
 	S:HandleCloseButton(frame.CloseButton)
-	S:HandleButton(frame.ActivateButton)
+	S:HandleButton(frame.CommitConduitsButton)
+	S:HandleButton(frame.ActivateSoulbindButton)
 end
 
 S:AddCallbackForAddon('Blizzard_Soulbinds')
