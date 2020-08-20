@@ -127,17 +127,24 @@ function M:SkinBubble(frame, backdrop)
 	frame.isSkinnedElvUI = true
 end
 
-local function ChatBubble_OnEvent(_, _, msg, sender, _, _, _, _, _, _, _, _, _, guid)
-	if not E.private.general.chatBubbleName then return end
-
-	messageToGUID[msg] = guid
-	messageToSender[msg] = Ambiguate(sender, "none")
+local function ChatBubble_OnEvent(_, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
+	if event == 'PLAYER_ENTERING_WORLD' then --Clear caches
+		wipe(messageToGUID)
+		wipe(messageToSender)
+	elseif E.private.general.chatBubbleName then
+		messageToGUID[msg] = guid
+		messageToSender[msg] = Ambiguate(sender, "none")
+	end
 end
 
 local function ChatBubble_OnUpdate(eventFrame, elapsed)
 	eventFrame.lastupdate = (eventFrame.lastupdate or -2) + elapsed
 	if eventFrame.lastupdate < 0.1 then return end
 	eventFrame.lastupdate = 0
+
+	if E.private.general.chatBubbles == 'disabled' then
+		return
+	end
 
 	for _, frame in pairs(C_ChatBubbles_GetAllChatBubbles()) do
 		local backdrop = frame:GetChildren(1)
@@ -155,10 +162,6 @@ function M:ToggleChatBubbleScript()
 	else
 		M.BubbleFrame:SetScript('OnEvent', nil)
 		M.BubbleFrame:SetScript('OnUpdate', nil)
-
-		--Clear caches
-		wipe(messageToGUID)
-		wipe(messageToSender)
 	end
 end
 
@@ -169,4 +172,5 @@ function M:LoadChatBubbles()
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_SAY")
 	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_YELL")
+	self.BubbleFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 end
