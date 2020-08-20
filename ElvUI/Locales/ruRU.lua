@@ -70,6 +70,7 @@ L["Boss Button"] = "Кнопка босса"
 L["Boss Frames"] = "Боссы"
 L["Building(s) Report:"] = "Отчет зданий:"
 L["Calendar"] = "Календарь"
+L["Calling Quest(s) available."] = true
 L["Can't buy anymore slots!"] = "Невозможно приобрести больше слотов!"
 L["Can't Roll"] = "Не могу бросить кости"
 L["Caster DPS"] = "Заклинатель"

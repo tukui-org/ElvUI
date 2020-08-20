@@ -70,6 +70,7 @@ L["Boss Button"] = "特殊技能键"
 L["Boss Frames"] = "首领框架"
 L["Building(s) Report:"] = "建筑报告:"
 L["Calendar"] = "日历"
+L["Calling Quest(s) available."] = true
 L["Can't buy anymore slots!"] = "银行背包栏位已达最大值"
 L["Can't Roll"] = "无法需求此装备"
 L["Caster DPS"] = "法系输出"

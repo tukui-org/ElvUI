@@ -70,6 +70,7 @@ L["Boss Button"] = true
 L["Boss Frames"] = true
 L["Building(s) Report:"] = true
 L["Calendar"] = true
+L["Calling Quest(s) available."] = true
 L["Can't buy anymore slots!"] = true
 L["Can't Roll"] = true
 L["Caster DPS"] = true

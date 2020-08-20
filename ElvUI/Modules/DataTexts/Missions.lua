@@ -26,6 +26,8 @@ local C_Garrison_GetTalentTreeInfoForID = C_Garrison.GetTalentTreeInfoForID
 local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
+local C_CovenantCallings_AreCallingsUnlocked = C_CovenantCallings.AreCallingsUnlocked
+local CovenantCalling_Create = CovenantCalling_Create
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
 local GetQuestObjectiveInfo = GetQuestObjectiveInfo
 local SecondsToTime = SecondsToTime
@@ -65,6 +67,7 @@ local MAIN_CURRENCY = 1813
 local NAZJATAR_MAP_ID = 1355
 local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
 local numMissions = 0
+local callingsData = {}
 
 local Widget_IDs = {
 	Alliance = {
@@ -195,11 +198,23 @@ local function OnEnter()
 	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1813), nil, nil, nil, 1, 1, 1)
 	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_9_0)
 
-	-- TODO - Probably not needed in this expansion - Not sure yet.
-	-- AddFollowerInfo(LE_GARRISON_TYPE_9_0)
 	-- TODO - Every sanctum have 5 separate garrision talent trees that would be nice to monitor but for now I don't know a way to get talent tree IDs without talking to upgrade NPC. We always can hardcode all 20 ids.
 	-- C_CovenantSanctumUI.GetFeatures() -> C_Garrison.GetTalentTreeInfo(). C_Garrison.GetCurrentGarrTalentTreeID() return ID only of the Reservoir upgrades.
 	-- AddTalentInfo(LE_FOLLOWER_TYPE_GARRISON_9_0)
+
+	if C_CovenantCallings_AreCallingsUnlocked() then
+		local questNum = 0
+		for _, calling in ipairs(callingsData) do
+			local callingObj = CovenantCalling_Create(calling)
+			if callingObj:GetState() == 0 then
+				questNum = questNum + 1
+			end
+		end
+		if questNum > 0 then
+			DT.tooltip:AddLine(' ')
+			DT.tooltip:AddLine(format('%s %s', questNum, L['Calling Quest(s) available.']))
+		end
+	end
 
 	if IsShiftKeyDown() then
 		-- Battle for Azeroth
@@ -326,6 +341,11 @@ local function OnEvent(self, event, ...)
 		return
 	end
 
+	if event == 'COVENANT_CALLINGS_UPDATED' then
+		wipe(callingsData)
+		callingsData = ...
+	end
+
 	if event == 'GARRISON_SHIPMENT_RECEIVED' or (event == 'SHIPMENT_UPDATE' and select(1, ...) == true) then
 		C_Garrison_RequestLandingPageShipmentInfo()
 	end
@@ -355,4 +375,4 @@ local function OnEvent(self, event, ...)
 	end
 end
 
-DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_SHIPMENT_RECEIVED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_FINISHED', 'GARRISON_MISSION_NPC_CLOSED', 'GARRISON_MISSION_NPC_OPENED', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
+DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_SHIPMENT_RECEIVED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_FINISHED', 'GARRISON_MISSION_NPC_CLOSED', 'GARRISON_MISSION_NPC_OPENED', 'MODIFIER_STATE_CHANGED', 'COVENANT_CALLINGS_UPDATED'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
