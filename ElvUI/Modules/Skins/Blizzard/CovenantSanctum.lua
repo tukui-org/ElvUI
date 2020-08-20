@@ -53,7 +53,8 @@ function S:Blizzard_CovenantSanctum()
 		end
 	end)
 
-	S:HandleCloseButton(_G.CovenantSanctumFrameCloseButton)
+	S:HandleCloseButton(_G.CovenantSanctumFrame.CloseButton)
+
 	S:HandleTab(_G.CovenantSanctumFrameTab1)
 	S:HandleTab(_G.CovenantSanctumFrameTab2)
 	_G.CovenantSanctumFrameTab1:ClearAllPoints()
