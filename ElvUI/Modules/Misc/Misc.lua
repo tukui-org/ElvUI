@@ -241,7 +241,7 @@ end
 
 function M:PLAYER_ENTERING_WORLD()
 	self:ForceCVars()
-	--self:ToggleChatBubbleScript()
+	self:ToggleChatBubbleScript()
 end
 
 --[[local function OnValueChanged(self, value)
@@ -340,7 +340,7 @@ function M:Initialize()
 	self.Initialized = true
 	self:LoadRaidMarker()
 	self:LoadLootRoll()
-	--self:LoadChatBubbles()
+	self:LoadChatBubbles()
 	self:LoadLoot()
 	self:ToggleItemLevelInfo(true)
 	self:RegisterEvent('MERCHANT_SHOW')
