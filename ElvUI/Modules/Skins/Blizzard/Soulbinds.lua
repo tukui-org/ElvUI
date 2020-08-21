@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
+local select = select
 
 -- SHADOWLANDS
 function S:Blizzard_Soulbinds()
@@ -9,6 +10,7 @@ function S:Blizzard_Soulbinds()
 
 	local frame = _G.SoulbindViewer
 	frame:StripTextures()
+	select(2, frame.ConduitList.ScrollBox:GetChildren()):Hide() -- Weird shadow on the ScrollBox
 	frame:CreateBackdrop('Transparent')
 
 	S:HandleCloseButton(frame.CloseButton)
