@@ -493,12 +493,7 @@ function NP:GROUP_LEFT()
 end
 
 function NP:PLAYER_ENTERING_WORLD()
-	local _, instanceType = GetInstanceInfo()
-	NP.InstanceType = instanceType
-
-	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
-		NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED', 'player')
-	end
+	NP.InstanceType = select(2, GetInstanceInfo())
 end
 
 function NP:ConfigureAll()
@@ -513,21 +508,25 @@ function NP:ConfigureAll()
 
 	NP:PLAYER_REGEN_ENABLED()
 
-	if NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition then
+	local useStaticPosition = NP.db.units.PLAYER.useStaticPosition
+	local useStaticPlate = NP.db.units.PLAYER.enable and useStaticPosition
+	if useStaticPlate then
 		E:EnableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
-	else
+	elseif _G.ElvNP_StaticSecure:IsShown() then
 		E:DisableMover('ElvNP_PlayerMover')
-		NP:DisablePlate(_G.ElvNP_Player)
 		_G.ElvNP_Player:Disable()
 		_G.ElvNP_StaticSecure:Hide()
+
+		NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_REMOVED')
+		NP:DisablePlate(_G.ElvNP_Player)
 	end
 
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		if _G.ElvNP_Player ~= nameplate or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) then
+		if _G.ElvNP_Player ~= nameplate or useStaticPlate then
 			NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
 			if nameplate.frameType == 'PLAYER' then
@@ -540,14 +539,19 @@ function NP:ConfigureAll()
 
 			if nameplate.frameType == 'PLAYER' then
 				NP.PlayerNamePlateAnchor:ClearAllPoints()
-				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:SetParent(useStaticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:SetAllPoints(useStaticPosition and _G.ElvNP_Player or nameplate)
 				NP.PlayerNamePlateAnchor:Show()
 			end
 
-			NP:UpdatePlate(nameplate, true)
+			if useStaticPlate then
+				NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED', 'player')
+			else
+				NP:UpdatePlate(nameplate, true)
+				NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this after update plate
+			end
+
 			nameplate:UpdateAllElements('ForceUpdate')
-			NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this at the end of the loop
 		end
 	end
 
@@ -640,8 +644,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate:SetSize(nameplate.width, nameplate.height)
 
-		NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
-		nameplate.previousType = nameplate.frameType
+		if nameplate == _G.ElvNP_Player then
+			NP:UpdatePlate(nameplate, true)
+		else
+			NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
+			nameplate.previousType = nameplate.frameType
+		end
 
 		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
 			NP:PlateFade(nameplate, 1, 0, 1)
@@ -786,7 +794,9 @@ function NP:Initialize()
 	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 
-	oUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit) NP:NamePlateCallBack(nameplate, event, unit) end)
+	oUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
+		NP:NamePlateCallBack(nameplate, event, unit)
+	end)
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
