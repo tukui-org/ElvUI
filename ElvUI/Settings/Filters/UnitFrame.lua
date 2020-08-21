@@ -562,7 +562,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[202164] = Defaults(), -- Bounding Stride
 		[215572] = Defaults(), -- Frothing Berserker
 		[199203] = Defaults(), -- Thirst for Battle
-	-- Racial
+	-- Racials
 		[65116] = Defaults(), -- Stoneform
 		[59547] = Defaults(), -- Gift of the Naaru
 		[20572] = Defaults(), -- Blood Fury
@@ -1172,8 +1172,6 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
-
-		-- Raids
 	},
 }
 
