@@ -10,9 +10,11 @@ local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 
-local function FixExtraActionCD(cd)
-	local start, duration = GetActionCooldown(cd:GetParent().action)
-	E.OnSetCooldown(cd, start, duration)
+local function FixExtraActionCD(button)
+	if button.cooldown and button.action then
+		local start, duration = GetActionCooldown(button.action)
+		E.OnSetCooldown(button.cooldown, start, duration)
+	end
 end
 
 function AB:Extra_SetAlpha()
@@ -99,7 +101,7 @@ function AB:SetupExtraButton()
 			if button.cooldown then
 				button.cooldown.CooldownOverride = 'actionbar'
 				E:RegisterCooldown(button.cooldown)
-				button.cooldown:HookScript("OnShow", FixExtraActionCD)
+				button:HookScript("OnShow", FixExtraActionCD)
 			end
 		end
 	end
