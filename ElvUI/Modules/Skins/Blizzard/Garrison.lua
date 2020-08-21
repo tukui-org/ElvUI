@@ -353,6 +353,9 @@ function S:Blizzard_GarrisonUI()
 	S:HandleFollowerListOnUpdateData('GarrisonMissionFrameFollowers')
 	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to orderhall landing page
 
+	local FollowerTab = GarrisonLandingPage.FollowerTab
+	hooksecurefunc(FollowerTab, "UpdateCombatantStats", UpdateSpellAbilities)
+
 	-- Landing page: Fleet
 	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
 	ShipFollowerList.FollowerHeaderBar:Hide()
