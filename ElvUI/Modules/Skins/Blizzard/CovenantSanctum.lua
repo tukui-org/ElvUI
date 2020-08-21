@@ -14,6 +14,7 @@ local function ReskinTalents(self)
 
 			frame:CreateBackdrop('Transparent')
 			frame.backdrop:SetInside()
+			frame.backdrop:SetBackdropBorderColor(0, 1, 0)
 
 			frame.Highlight:SetColorTexture(1, 1, 1, .25)
 			frame.Highlight:SetInside(frame.backdrop)
@@ -35,6 +36,11 @@ function S:Blizzard_CovenantSanctum()
 			frame:CreateBackdrop('Transparent')
 			frame.NineSlice:SetAlpha(0)
 
+			frame.CloseButton.Border:SetAlpha(0)
+			S:HandleCloseButton(frame.CloseButton)
+			frame.CloseButton:ClearAllPoints()
+			frame.CloseButton:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 2, 2)
+
 			frame.LevelFrame.Background:SetAlpha(0)
 			frame.LevelFrame.Level:FontTemplate()
 
@@ -48,8 +54,6 @@ function S:Blizzard_CovenantSanctum()
 			TalentList.BackgroundTile:SetAlpha(0)
 			TalentList:CreateBackdrop('Transparent')
 			S:HandleButton(TalentList.UpgradeButton)
-
-			S:HandleCloseButton(_G.CovenantSanctumFrame.CloseButton)
 
 			hooksecurefunc(TalentList, "Refresh", ReskinTalents)
 		end
