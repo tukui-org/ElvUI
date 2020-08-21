@@ -976,6 +976,7 @@ P.datatexts = {
 	currencies = {
 		displayedCurrency = 'BACKPACK',
 		displayStyle = 'ICON',
+		tooltip = {},
 	},
 	---Durability
 	durability = {

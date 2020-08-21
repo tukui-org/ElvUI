@@ -27,6 +27,8 @@ local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
 local MISCELLANEOUS = MISCELLANEOUS
 
+local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
+local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
 local ActivateHyperMode
 local HyperList = {}
 
@@ -38,12 +40,8 @@ DT.HyperList = HyperList
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
 DT.LoadedInfo = {}
-DT.PanelPool = {
-	InUse = {},
-	Free = {},
-	Count = 0
-}
-
+DT.PanelPool = { InUse = {}, Free = {}, Count = 0 }
+DT.AssignedDatatexts = {}
 DT.UnitEvents = {
 	UNIT_AURA = true,
 	UNIT_RESISTANCES = true,
@@ -409,6 +407,19 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 end
 
+function DT:ForceUpdate_DataText(name)
+	for dtSlot, dtName in pairs(DT.AssignedDatatexts) do
+		if dtName.name == name then
+			if dtName.colorUpdate then
+				dtName.colorUpdate(E.media.hexvaluecolor)
+			end
+			if dtName.eventFunc then
+				dtName.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
+			end
+		end
+	end
+end
+
 function DT:GetTextAttributes(panel, db)
 	local panelWidth, panelHeight = panel:GetSize()
 	local numPoints = db and db.numPoints or panel.numPoints or 1
@@ -508,6 +519,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			tinsert(dt.MouseEnters, DT.HoverBattleStats)
 		else
 			local assigned = DT.RegisteredDataTexts[ DT.db.panels[panelName][i] ]
+			DT.AssignedDatatexts[dt] = assigned
 			if assigned then DT:AssignPanelToDataText(dt, assigned, ...) end
 		end
 	end
@@ -649,6 +661,7 @@ function DT:PopulateData()
 	local Collapsed = {}
 	local listSize, i = C_CurrencyInfo_GetCurrencyListSize(), 1
 
+	local headerIndex
 	while listSize >= i do
 		local info = C_CurrencyInfo_GetCurrencyListInfo(i)
 		if info.isHeader and not info.isHeaderExpanded then
@@ -656,11 +669,21 @@ function DT:PopulateData()
 			listSize = C_CurrencyInfo_GetCurrencyListSize()
 			Collapsed[info.name] = true
 		end
-		if not info.isHeader then
-			local currencyLink = C_CurrencyInfo_GetCurrencyListLink(i)
+		if isHeader then
+			P.datatexts.currencies.tooltip[i] = { name, nil, nil, (name == expansion or name == MISCELLANEOUS) or strfind(name, LFG_TYPE_DUNGEON) }
+			E.db.datatexts.currencies.tooltip[i] = E.db.datatexts.currencies.tooltip[i] or { name, nil, nil, P.datatexts.currencies.tooltip[i][4] }
+			E.db.datatexts.currencies.tooltip[i][1] = name
+
+			headerIndex = i
+		end
+		if not isHeader then
+			local currencyLink = GetCurrencyListLink(i)
 			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
 			if currencyID then
-				DT.CurrencyList[tostring(currencyID)] = info.name
+				DT.CurrencyList[tostring(currencyID)] = name
+				P.datatexts.currencies.tooltip[i] = { name, currencyID, headerIndex, P.datatexts.currencies.tooltip[headerIndex][4] }
+				E.db.datatexts.currencies.tooltip[i] = E.db.datatexts.currencies.tooltip[i] or { name, currencyID, headerIndex, P.datatexts.currencies.tooltip[headerIndex][4] }
+				E.db.datatexts.currencies.tooltip[i][1] = name
 			end
 		end
 		i = i + 1
@@ -762,7 +785,7 @@ end
 	localizedName - localized name of the datetext
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent
 ]]
-function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent)
+function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
 	if not name then error('Cannot register datatext no name was provided.') end
 	local data = {name = name, category = category}
 
@@ -793,6 +816,12 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 	if localizedName and type(localizedName) == 'string' then
 		data.localizedName = localizedName
 	end
+
+	if colorUpdate and type(colorUpdate) == 'function' then
+		data.colorUpdate = colorUpdate
+	end
+
+	G.datatexts.settings[name] = G.datatexts.settings[name] or { Label = '', NoLabel = false, Decimal = 0 }
 
 	DT.RegisteredDataTexts[name] = data
 

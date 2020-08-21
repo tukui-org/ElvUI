@@ -4,8 +4,8 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local pairs, strjoin = pairs, strjoin
 local IsShiftKeyDown = IsShiftKeyDown
-local ReloadUI = ReloadUI
 local InCombatLockdown = InCombatLockdown
+local ReloadUI = ReloadUI
 
 local displayString = ''
 local configText = 'ElvUI'

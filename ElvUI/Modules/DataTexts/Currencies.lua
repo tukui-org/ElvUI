@@ -41,7 +41,7 @@ end
 
 local goldText
 local function OnEvent(self)
-	goldText = E:FormatMoney(GetMoney(), E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins)
+	goldText = E:FormatMoney(GetMoney(), E.global.datatexts.settings.Currencies.goldFormat or 'BLIZZARD', not E.global.datatexts.settings.Currencies.goldCoins)
 
 	local displayed = E.db.datatexts.currencies.displayedCurrency
 	if displayed == 'BACKPACK' then
@@ -74,55 +74,35 @@ local function OnEvent(self)
 	end
 end
 
-local faction = (E.myfaction == 'Alliance' and 1717) or 1716
 local function OnEnter()
 	DT.tooltip:ClearLines()
-	DT.tooltip:AddDoubleLine(L["Gold"]..':', goldText, nil, nil, nil, 1, 1, 1)
-	DT.tooltip:AddLine(' ')
 
-	if GetServerExpansionLevel() < LE_EXPANSION_SHADOWLANDS then
-		DT.tooltip:AddLine(EXPANSION_NAME7) -- BfA
-		AddInfo(1710) -- SEAFARERS_DUBLOON
-		AddInfo(1580) -- SEAL_OF_WARTORN_FATE
-		AddInfo(1560) -- WAR_RESOURCES
-		AddInfo(faction) -- 7th Legion or Honorbound
-		AddInfo(1718) -- TITAN_RESIDUUM
-		AddInfo(1721) -- PRISMATIC_MANAPEARL
-		AddInfo(1719) -- CORRUPTED_MEMENTOS
-		AddInfo(1755) -- COALESCING_VISIONS
-		AddInfo(1803) -- ECHOES_OF_NYALOTHA
-		DT.tooltip:AddLine(' ')
-	else
-		DT.tooltip:AddLine(EXPANSION_NAME8) -- Shadowlands
-		AddInfo(1751) -- Freed Soul
-		AddInfo(1822) -- Renown
-		AddInfo(1813) -- Reservoir Anima
-		AddInfo(1810) -- Willing Soul
-		AddInfo(1828) -- Soul Ash
-		AddInfo(1820) -- Infused Ruby
-		DT.tooltip:AddLine(' ')
-	end
-
-	DT.tooltip:AddLine(OTHER)
-	AddInfo(515) -- DARKMOON_PRIZE_TICKET
-
-	-- If the 'Display In Tooltip' box is checked (on by default), then also display custom currencies in the tooltip.
-	local shouldAddHeader = true
-	for _, info in pairs(E.global.datatexts.customCurrencies) do
-		if info.DISPLAY_IN_MAIN_TOOLTIP then
-			if shouldAddHeader then
-				DT.tooltip:AddLine(' ')
-				DT.tooltip:AddLine(L["Custom Currency"])
-				shouldAddHeader = false
-			end
-
-			local id = info.ID
-			if id and type(id) == 'number' then
+	local addLine, goldSpace
+	for _, info in ipairs(E.db.datatexts.currencies.tooltip) do
+		local name, id, _, enabled = unpack(info)
+		if id and enabled then
+			if type(id) == 'number' then
 				AddInfo(id)
 			end
+
+			goldSpace = true
+		elseif enabled then
+			if addLine then
+				DT.tooltip:AddLine(' ')
+			else
+				addLine = true
+			end
+
+			DT.tooltip:AddLine(name)
+			goldSpace = true
 		end
 	end
 
+	if goldSpace then
+		DT.tooltip:AddLine(' ')
+	end
+
+	DT.tooltip:AddDoubleLine(L["Gold"]..':', goldText, nil, nil, nil, 1, 1, 1)
 	DT.tooltip:Show()
 end
 
