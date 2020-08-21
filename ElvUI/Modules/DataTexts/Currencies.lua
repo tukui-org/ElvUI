@@ -82,23 +82,25 @@ local function OnEnter()
 
 	if GetServerExpansionLevel() < LE_EXPANSION_SHADOWLANDS then
 		DT.tooltip:AddLine(EXPANSION_NAME7) -- BfA
-		AddInfo(1710) -- SEAFARERS_DUBLOON
-		AddInfo(1580) -- SEAL_OF_WARTORN_FATE
-		AddInfo(1560) -- WAR_RESOURCES
-		AddInfo(faction) -- 7th Legion or Honorbound
-		AddInfo(1718) -- TITAN_RESIDUUM
-		AddInfo(1721) -- PRISMATIC_MANAPEARL
-		AddInfo(1719) -- CORRUPTED_MEMENTOS
-		AddInfo(1755) -- COALESCING_VISIONS
-		AddInfo(1803) -- ECHOES_OF_NYALOTHA
+		AddInfo(1710)		-- SEAFARERS_DUBLOON
+		AddInfo(1580)		-- SEAL_OF_WARTORN_FATE
+		AddInfo(1560)		-- WAR_RESOURCES
+		AddInfo(faction)	-- 7th Legion or Honorbound
+		AddInfo(1718)		-- TITAN_RESIDUUM
+		AddInfo(1721)		-- PRISMATIC_MANAPEARL
+		AddInfo(1719)		-- CORRUPTED_MEMENTOS
+		AddInfo(1755)		-- COALESCING_VISIONS
+		AddInfo(1803)		-- ECHOES_OF_NYALOTHA
 		DT.tooltip:AddLine(' ')
 	else
 		DT.tooltip:AddLine(EXPANSION_NAME8) -- Shadowlands
-		AddInfo(1751) -- Freed Soul
-		AddInfo(1822) -- Renown
-		AddInfo(1813) -- Reservoir Anima
-		AddInfo(1810) -- Willing Soul
-		AddInfo(1828) -- Soul Ash
+		AddInfo(1751)		-- Freed Soul
+		AddInfo(1822)		-- Renown
+		AddInfo(1813)		-- Reservoir Anima
+		AddInfo(1810)		-- Willing Soul
+		AddInfo(1811)		-- Sanctum Architect
+		AddInfo(1812)		-- Sancturm Anima Weaver
+		AddInfo(1828)		-- Soul Ash
 		DT.tooltip:AddLine(' ')
 	end
 
