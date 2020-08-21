@@ -510,7 +510,7 @@ function S:Blizzard_GarrisonUI()
 	CovenantMissionFrame.BotRightCorner:Hide()
 	CovenantMissionFrame.BottomBorder:Hide()
 	CovenantMissionFrame.GarrCorners:Hide()
-	CovenantMissionFrame.BackgroundTile:Kill()
+	--CovenantMissionFrame.BackgroundTile:SetAlpha(0) -- Monitor this
 	CovenantMissionFrame.Left:Hide()
 	CovenantMissionFrame.Bottom:Hide()
 	CovenantMissionFrame.Top:Hide()
