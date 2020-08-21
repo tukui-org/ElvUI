@@ -81,7 +81,7 @@ local function SkinItemFlyouts()
 		end
 
 		if not button.isHooked then
-			button.isHooked = true
+			button:StripTextures()
 			button:StyleButton(false)
 			button:GetNormalTexture():SetTexture()
 
@@ -108,6 +108,8 @@ local function SkinItemFlyouts()
 					end)
 				end
 			end
+
+			button.isHooked = true
 		end
 	end
 
@@ -397,6 +399,8 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 
 	_G.EquipmentFlyoutFrameHighlight:Kill()
+	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
+	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer("ARTWORK")
 	_G.EquipmentFlyoutFrame.NavigationFrame:StripTextures()
 	_G.EquipmentFlyoutFrame.NavigationFrame:CreateBackdrop("Transparent")
 	_G.EquipmentFlyoutFrame.NavigationFrame:SetPoint("TOPLEFT", _G.EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -E.Border - E.Spacing)
@@ -406,16 +410,6 @@ function S:CharacterFrame()
 
 	--Swap item flyout frame (shown when holding alt over a slot)
 	hooksecurefunc("EquipmentFlyout_UpdateItems", SkinItemFlyouts)
-	hooksecurefunc("EquipmentFlyout_CreateButton", function()
-		local button = _G.EquipmentFlyoutFrame.buttons[#_G.EquipmentFlyoutFrame.buttons]
-
-		if not button.Eye then
-			button.Eye = button:CreateTexture()
-			button.Eye:SetAtlas("Nzoth-inventory-icon")
-			button.Eye:SetInside()
-		end
-	end)
-
 	hooksecurefunc("EquipmentFlyout_DisplayButton", function(button)
 		local location = button.location
 		local border = button.IconBorder
@@ -426,8 +420,6 @@ function S:CharacterFrame()
 		else
 			border:Show()
 		end
-
-		UpdateCorruption(button, location)
 	end)
 
 	--Icon in upper right corner of character frame
