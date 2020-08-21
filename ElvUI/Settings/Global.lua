@@ -13,7 +13,7 @@ G.general = {
 	fadeMapDuration = 0.2,
 	WorldMapCoordinates = {
 		enable = true,
-		position = "BOTTOMLEFT",
+		position = 'BOTTOMLEFT',
 		xOffset = 0,
 		yOffset = 0
 	},
@@ -23,7 +23,7 @@ G.general = {
 	},
 	disableTutorialButtons = true,
 	showMissingTalentAlert = false,
-	commandBarSetting = "ENABLED_RESIZEPARENT"
+	commandBarSetting = 'ENABLED_RESIZEPARENT'
 }
 
 G.classtimer = {}
@@ -58,9 +58,9 @@ G.datatexts = {
 		tooltipYOffset = 4,
 		fonts = {
 			enable = false,
-			font = "PT Sans Narrow",
+			font = 'PT Sans Narrow',
 			fontSize = 12,
-			fontOutline = "OUTLINE",
+			fontOutline = 'OUTLINE',
 		}
 	},
 }
@@ -107,8 +107,8 @@ G.unitframe = {
 	effectivePowerSpeed = 0.3,
 	effectiveAuraSpeed = 0.3,
 	raidDebuffIndicator = {
-		instanceFilter = "RaidDebuffs",
-		otherFilter = "CCDebuffs"
+		instanceFilter = 'RaidDebuffs',
+		otherFilter = 'CCDebuffs'
 	},
 	spellRangeCheck = {
 		PRIEST = {
@@ -289,7 +289,7 @@ G.unitframe = {
 
 G.profileCopy = {
 	--Specific values
-	selected = "Default",
+	selected = 'Default',
 	movers = {},
 	--Modules
 	actionbar = {
