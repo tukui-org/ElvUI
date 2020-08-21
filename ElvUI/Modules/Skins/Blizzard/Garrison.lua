@@ -45,6 +45,51 @@ local function SkinMissionBoard(board)
 	hooksecurefunc(board, "EnumerateFollowers", SkinFollowerBoard)
 end
 
+local function UpdateSpellAbilities(self, followerInfo)
+	local autoSpellInfo = followerInfo.autoSpellAbilities
+	for _ in ipairs(autoSpellInfo) do
+		local abilityFrame = self.autoSpellPool:Acquire()
+		if not abilityFrame.IsSkinned then
+			S:HandleIcon(abilityFrame.Icon, true)
+			abilityFrame.IsSkinned = true
+		end
+	end
+end
+
+-- TO DO: Extend this function
+local function SkinMissionFrame(frame, strip)
+	if strip then
+		frame:StripTextures()
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+	end
+
+	frame.CloseButton:StripTextures()
+	S:HandleCloseButton(frame.CloseButton)
+
+	if frame.GarrCorners then frame.GarrCorners:Hide() end
+	if frame.OverlayElements then frame.OverlayElements:SetAlpha(0) end
+
+	for i = 1, 3 do
+		local tab = _G[frame:GetName().."Tab"..i]
+		if tab then S:HandleTab(tab) end
+	end
+
+	if frame.MapTab then frame.MapTab.ScrollContainer.Child.TiledBackground:Hide() end
+
+	hooksecurefunc(frame.FollowerTab, "UpdateCombatantStats", UpdateSpellAbilities)
+
+	for _, item in pairs({frame.FollowerTab.ItemWeapon, frame.FollowerTab.ItemArmor}) do
+		if item then
+			local icon = item.Icon
+			item.Border:Hide()
+			S:HandleIcon(icon)
+		end
+	end
+end
+
 function S:Blizzard_GarrisonUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
@@ -500,28 +545,7 @@ function S:Blizzard_GarrisonUI()
 
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame
-	CovenantMissionFrame.OverlayElements:Hide()
-	CovenantMissionFrame.TopBorder:Hide()
-	CovenantMissionFrame.TopLeftCorner:Hide()
-	CovenantMissionFrame.TopRightCorner:Hide()
-	CovenantMissionFrame.RightBorder:Hide()
-	CovenantMissionFrame.LeftBorder:Hide()
-	CovenantMissionFrame.BotLeftCorner:Hide()
-	CovenantMissionFrame.BotRightCorner:Hide()
-	CovenantMissionFrame.BottomBorder:Hide()
-	CovenantMissionFrame.GarrCorners:Hide()
-	--CovenantMissionFrame.BackgroundTile:SetAlpha(0) -- Monitor this
-	CovenantMissionFrame.Left:Hide()
-	CovenantMissionFrame.Bottom:Hide()
-	CovenantMissionFrame.Top:Hide()
-	CovenantMissionFrame.Right:Hide()
-
-	CovenantMissionFrame:CreateBackdrop('Transparent')
-	S:HandleCloseButton(CovenantMissionFrame.CloseButton)
-
-	for i = 1, 2 do
-		S:HandleTab(_G["CovenantMissionFrameTab"..i])
-	end
+	SkinMissionFrame(CovenantMissionFrame) -- currently dont use StripTextures here, cause it seems blizzard fucks this up /shurg
 
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
 	S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar)
