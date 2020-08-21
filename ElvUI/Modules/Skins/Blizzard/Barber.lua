@@ -19,8 +19,8 @@ function S:Blizzard_BarbershopUI()
 
 		if selector then
 			selector:StripTextures()
-			S:HandleNextPrevButton(selector.Prev, "left")
-			S:HandleNextPrevButton(selector.Next, "right")
+			S:HandleNextPrevButton(selector.Prev)
+			S:HandleNextPrevButton(selector.Next)
 
 			if i ~= 1 then
 				selector:ClearAllPoints()
