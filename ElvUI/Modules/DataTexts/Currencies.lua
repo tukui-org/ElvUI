@@ -99,6 +99,7 @@ local function OnEnter()
 		AddInfo(1813) -- Reservoir Anima
 		AddInfo(1810) -- Willing Soul
 		AddInfo(1828) -- Soul Ash
+		AddInfo(1820) -- Infused Ruby
 		DT.tooltip:AddLine(' ')
 	end
 
