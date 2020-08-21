@@ -962,6 +962,18 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[293670] = Defaults(), -- Chain Blade
 
 	-- Castle Nathria
+		-- Shriekwing
+		[328897] = Defaults(), -- Exsanguinated
+		[330713] = Defaults(), -- Reverberating Pain
+		[329370] = Defaults(), -- Deadly Descent
+		[336494] = Defaults(), -- Echo Screech
+		-- Huntsman Altimor
+		[335304] = Defaults(), -- Sinseeker
+		[334971] = Defaults(), -- Jagged Claws
+		[335113] = Defaults(), -- Huntsman's Mark 1
+		[335112] = Defaults(), -- Huntsman's Mark 2
+		[335111] = Defaults(), -- Huntsman's Mark 3
+		[334945] = Defaults(), -- Bloody Thrash
 		-- Hungering Destroyer
 		[334228] = Defaults(), -- Volatile Ejection
 		[329298] = Defaults(), -- Gluttonous Miasma
@@ -976,20 +988,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[333002] = Defaults(), -- Vulgar Brand
 		[326078] = Defaults(), -- Infuser's Boon
 		[325251] = Defaults(), -- Sin of Pride
-		-- Sludgefist
-		[335470] = Defaults(), -- Chain Slam
-		[339181] = Defaults(), -- Chain Slam (Root)
-		[331209] = Defaults(), -- Hateful Gaze
-		[335293] = Defaults(), -- Chain Link
-		[335270] = Defaults(), -- Chain This One!
-		[335295] = Defaults(), -- Shattering Chain
-		-- Huntsman Altimor
-		[335304] = Defaults(), -- Sinseeker
-		[334971] = Defaults(), -- Jagged Claws
-		[335113] = Defaults(), -- Huntsman's Mark 1
-		[335112] = Defaults(), -- Huntsman's Mark 2
-		[335111] = Defaults(), -- Huntsman's Mark 3
-		[334945] = Defaults(), -- Bloody Thrash
+		-- Artificer Xy'mox
+		[327902] = Defaults(), -- Fixate
+		[326302] = Defaults(), -- Stasis Trap
+		[325236] = Defaults(), -- Glyph of Destruction
+		[327414] = Defaults(), -- Possession
 		-- The Council of Blood
 		[327773] = Defaults(), -- Drain Essence 1
 		[327052] = Defaults(), -- Drain Essence 2
@@ -998,11 +1001,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[331706] = Defaults(), -- Scarlet Letter
 		[331636] = Defaults(), -- Dark Recital 1
 		[331637] = Defaults(), -- Dark Recital 2
-		-- Shriekwing
-		[328897] = Defaults(), -- Exsanguinated
-		[330713] = Defaults(), -- Reverberating Pain
-		[329370] = Defaults(), -- Deadly Descent
-		[336494] = Defaults(), -- Echo Screech
+		-- Sludgefist
+		[335470] = Defaults(), -- Chain Slam
+		[339181] = Defaults(), -- Chain Slam (Root)
+		[331209] = Defaults(), -- Hateful Gaze
+		[335293] = Defaults(), -- Chain Link
+		[335270] = Defaults(), -- Chain This One!
+		[335295] = Defaults(), -- Shattering Chain
 		-- Stone Legion Generals
 		[334498] = Defaults(), -- Seismic Upheaval
 		[337643] = Defaults(), -- Unstable Footing
@@ -1010,11 +1015,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[333377] = Defaults(), -- Wicked Mark
 		[334616] = Defaults(), -- Petrified
 		[334541] = Defaults(), -- Curse of Petrification
-		-- Artificer Xy'mox
-		[327902] = Defaults(), -- Fixate
-		[326302] = Defaults(), -- Stasis Trap
-		[325236] = Defaults(), -- Glyph of Destruction
-		[327414] = Defaults(), -- Possession
 		-- Sire Denathrius
 		[326851] = Defaults(), -- Blood Price
 		[327798] = Defaults(), -- Night Hunter
