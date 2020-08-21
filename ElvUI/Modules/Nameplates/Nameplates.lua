@@ -512,11 +512,13 @@ function NP:ConfigureAll()
 
 	local useStaticPosition = NP.db.units.PLAYER.useStaticPosition
 	local useStaticPlate = NP.db.units.PLAYER.enable and useStaticPosition
-	if useStaticPlate then
+	local ssShown = _G.ElvNP_StaticSecure:IsShown()
+
+	if useStaticPlate and not ssShown then
 		E:EnableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
-	elseif _G.ElvNP_StaticSecure:IsShown() then
+	elseif ssShown then
 		E:DisableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Disable()
 		_G.ElvNP_StaticSecure:Hide()
