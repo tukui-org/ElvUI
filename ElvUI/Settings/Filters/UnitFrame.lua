@@ -1005,7 +1005,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[336494] = Defaults(), -- Echo Screech
 		-- Stone Legion Generals
 		[334498] = Defaults(), -- Seismic Upheaval
-		[333913] = Defaults(), -- Wicked Laceration
 		[337643] = Defaults(), -- Unstable Footing
 		[334765] = Defaults(), -- Stone Shatterer
 		[333377] = Defaults(), -- Wicked Mark
