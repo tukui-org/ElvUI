@@ -183,8 +183,8 @@ E.Options.args.chat = {
 					name = L["Chat EditBox Position"],
 					desc = L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."],
 					values = {
-						['BELOW_CHAT'] = L["Below Chat"],
-						['ABOVE_CHAT'] = L["Above Chat"],
+						BELOW_CHAT = L["Below Chat"],
+						ABOVE_CHAT = L["Above Chat"],
 					},
 					set = function(info, value)
 						E.db.chat[info[#info]] = value;
@@ -685,8 +685,8 @@ E.Options.args.chat = {
 							type = 'select',
 							name = L["Left Position"],
 							values = {
-								['BELOW_CHAT'] = L["Below Chat"],
-								['ABOVE_CHAT'] = L["Above Chat"],
+								BELOW_CHAT = L["Below Chat"],
+								ABOVE_CHAT = L["Above Chat"],
 							},
 							set = function(info, value) E.db.chat[info[#info]] = value; Layout:RepositionChatDataPanels() end,
 						},
@@ -695,8 +695,8 @@ E.Options.args.chat = {
 							type = 'select',
 							name = L["Right Position"],
 							values = {
-								['BELOW_CHAT'] = L["Below Chat"],
-								['ABOVE_CHAT'] = L["Above Chat"],
+								BELOW_CHAT = L["Below Chat"],
+								ABOVE_CHAT = L["Above Chat"],
 							},
 							set = function(info, value) E.db.chat[info[#info]] = value; Layout:RepositionChatDataPanels() end,
 						}
@@ -769,10 +769,10 @@ E.Options.args.chat = {
 							name = L["Panel Backdrop"],
 							desc = L["Toggle showing of the left and right chat panels."],
 							values = {
-								['HIDEBOTH'] = L["Hide Both"],
-								['SHOWBOTH'] = L["Show Both"],
-								['LEFT'] = L["Left Only"],
-								['RIGHT'] = L["Right Only"],
+								HIDEBOTH = L["Hide Both"],
+								SHOWBOTH = L["Show Both"],
+								LEFT = L["Left Only"],
+								RIGHT = L["Right Only"],
 							},
 							set = function(info, value)
 								E.db.chat.panelBackdrop = value

@@ -135,12 +135,12 @@ E.Options.args.general = {
 						E:StaticPopup_Show('CONFIG_RL')
 					end,
 					values = {
-						['TCHINESE'] = '萬, 億',
-						['CHINESE'] = '万, 亿',
-						['ENGLISH'] = 'K, M, B',
-						['GERMAN'] = 'Tsd, Mio, Mrd',
-						['KOREAN'] = '천, 만, 억',
-						['METRIC'] = 'k, M, G'
+						TCHINESE = '萬, 億',
+						CHINESE = '万, 亿',
+						ENGLISH = 'K, M, B',
+						GERMAN = 'Tsd, Mio, Mrd',
+						KOREAN = '천, 만, 억',
+						METRIC = 'k, M, G'
 					},
 				},
 				decimalLength = {
@@ -177,16 +177,16 @@ E.Options.args.general = {
 						E:StaticPopup_Show('CONFIG_RL')
 					end,
 					values = {
-						['deDE'] = 'Deutsch',
-						['enUS'] = 'English',
-						['esMX'] = 'Español',
-						['frFR'] = 'Français',
-						['ptBR'] = 'Português',
-						['ruRU'] = 'Русский',
-						['zhCN'] = '简体中文',
-						['zhTW'] = '正體中文',
-						['koKR'] = '한국어',
-						['itIT'] = 'Italiano',
+						deDE = 'Deutsch',
+						enUS = 'English',
+						esMX = 'Español',
+						frFR = 'Français',
+						ptBR = 'Português',
+						ruRU = 'Русский',
+						zhCN = '简体中文',
+						zhTW = '正體中文',
+						koKR = '한국어',
+						itIT = 'Italiano',
 					},
 				},
 				interruptAnnounce = {
@@ -195,13 +195,13 @@ E.Options.args.general = {
 					desc = L["Announce when you interrupt a spell to the specified chat channel."],
 					type = 'select',
 					values = {
-						['NONE'] = L["NONE"],
-						['SAY'] = L["SAY"],
-						['YELL'] = L["YELL"],
-						['PARTY'] = L["Party Only"],
-						['RAID'] = L["Party / Raid"],
-						['RAID_ONLY'] = L["Raid Only"],
-						['EMOTE'] = L["CHAT_MSG_EMOTE"],
+						NONE = L["NONE"],
+						SAY = L["SAY"],
+						YELL = L["YELL"],
+						PARTY = L["Party Only"],
+						RAID = L["Party / Raid"],
+						RAID_ONLY = L["Raid Only"],
+						EMOTE = L["CHAT_MSG_EMOTE"],
 					},
 					set = function(info, value)
 						E.db.general[info[#info]] = value
@@ -218,9 +218,9 @@ E.Options.args.general = {
 					desc = L["Automatically repair using the following method when visiting a merchant."],
 					type = 'select',
 					values = {
-						['NONE'] = L["NONE"],
-						['GUILD'] = L["GUILD"],
-						['PLAYER'] = L["PLAYER"],
+						NONE = L["NONE"],
+						GUILD = L["GUILD"],
+						PLAYER = L["PLAYER"],
 					},
 				},
 				autoTrackReputation = {
@@ -247,8 +247,8 @@ E.Options.args.general = {
 							name = L["Position"],
 							desc = L["Adjust the position of the threat bar to either the left or right datatext panels."],
 							values = {
-								['LEFTCHAT'] = L["Left Chat"],
-								['RIGHTCHAT'] = L["Right Chat"],
+								LEFTCHAT = L["Left Chat"],
+								RIGHTCHAT = L["Right Chat"],
 							},
 							set = function(info, value) E.db.general.threat.position = value; Threat:UpdatePosition() end,
 						},
@@ -303,8 +303,8 @@ E.Options.args.general = {
 							name = L["Sort Direction"],
 							disabled = function() return not E.private.general.totemBar end,
 							values = {
-								['ASCENDING'] = L["Ascending"],
-								['DESCENDING'] = L["Descending"],
+								ASCENDING = L["Ascending"],
+								DESCENDING = L["Descending"],
 							},
 						},
 						growthDirection = {
@@ -313,8 +313,8 @@ E.Options.args.general = {
 							name = L["Bar Direction"],
 							disabled = function() return not E.private.general.totemBar end,
 							values = {
-								['VERTICAL'] = L["Vertical"],
-								['HORIZONTAL'] = L["Horizontal"],
+								VERTICAL = L["Vertical"],
+								HORIZONTAL = L["Horizontal"],
 							},
 						},
 					},
@@ -768,9 +768,9 @@ E.Options.args.general = {
 					set = function(info, value) E.global.general.commandBarSetting = value; E:StaticPopup_Show('GLOBAL_RL') end,
 					width = 'normal',
 					values = {
-						['DISABLED'] = L["Disable"],
-						['ENABLED'] = L["Enable"],
-						['ENABLED_RESIZEPARENT'] = L["Enable + Adjust Movers"],
+						DISABLED = L["Disable"],
+						ENABLED = L["Enable"],
+						ENABLED_RESIZEPARENT = L["Enable + Adjust Movers"],
 					},
 				},
 				questRewardMostValueIcon = {
@@ -870,9 +870,9 @@ E.Options.args.general = {
 							name = L["Bonus Reward Position"],
 							desc = L["Position of bonus quest reward frame relative to the objective tracker."],
 							values = {
-								['RIGHT'] = L["Right"],
-								['LEFT'] = L["Left"],
-								['AUTO'] = L["Automatic"],
+								RIGHT = L["Right"],
+								LEFT = L["Left"],
+								AUTO = L["Automatic"],
 							},
 						},
 					},
@@ -891,10 +891,10 @@ E.Options.args.general = {
 							name = L["Chat Bubbles Style"],
 							desc = L["Skin the blizzard chat bubbles."],
 							values = {
-								['backdrop'] = L["Skin Backdrop"],
-								['nobackdrop'] = L["Remove Backdrop"],
-								['backdrop_noborder'] = L["Skin Backdrop (No Borders)"],
-								['disabled'] = L["DISABLE"],
+								backdrop = L["Skin Backdrop"],
+								nobackdrop = L["Remove Backdrop"],
+								backdrop_noborder = L["Skin Backdrop (No Borders)"],
+								disabled = L["DISABLE"],
 							}
 						},
 						chatBubbleFont = {

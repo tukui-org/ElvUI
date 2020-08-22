@@ -1929,7 +1929,7 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 				values = {
 					['2D'] = L["2D"],
 					['3D'] = L["3D"],
-					Class = L["Class"],
+					['Class'] = L["Class"],
 				},
 			},
 			width = {
@@ -2773,8 +2773,8 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 				order = 4,
 				name = L["Fill"],
 				values = {
-					['fill'] = L["Filled"],
-					['spaced'] = L["Spaced"],
+					fill = L["Filled"],
+					spaced = L["Spaced"],
 				},
 			},
 		},
@@ -3298,9 +3298,9 @@ local filterList = {}
 local function modifierList()
 	wipe(filterList)
 
-	filterList['NONE'] = L["NONE"]
-	filterList['Blacklist'] = L["Blacklist"]
-	filterList['Whitelist'] = L["Whitelist"]
+	filterList.NONE = L["NONE"]
+	filterList.Blacklist = L["Blacklist"]
+	filterList.Whitelist = L["Whitelist"]
 
 	local list = E.global.unitframe.aurafilters
 	if list then

@@ -60,8 +60,8 @@ E.Options.args.databars = {
 					name = L["Statusbar Fill Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
 					values = {
-						['HORIZONTAL'] = L["Horizontal"],
-						['VERTICAL'] = L["Vertical"]
+						HORIZONTAL = L["Horizontal"],
+						VERTICAL = L["Vertical"]
 					}
 				},
 				width = {
@@ -154,8 +154,8 @@ E.Options.args.databars = {
 					name = L["Statusbar Fill Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
 					values = {
-						['HORIZONTAL'] = L["Horizontal"],
-						['VERTICAL'] = L["Vertical"]
+						HORIZONTAL = L["Horizontal"],
+						VERTICAL = L["Vertical"]
 					}
 				},
 				width = {
@@ -260,8 +260,8 @@ E.Options.args.databars = {
 					name = L["Statusbar Fill Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
 					values = {
-						['HORIZONTAL'] = L["Horizontal"],
-						['VERTICAL'] = L["Vertical"]
+						HORIZONTAL = L["Horizontal"],
+						VERTICAL = L["Vertical"]
 					}
 				},
 				width = {
@@ -366,8 +366,8 @@ E.Options.args.databars = {
 					name = L["Statusbar Fill Orientation"],
 					desc = L["Direction the bar moves on gains/losses"],
 					values = {
-						['HORIZONTAL'] = L["Horizontal"],
-						['VERTICAL'] = L["Vertical"]
+						HORIZONTAL = L["Horizontal"],
+						VERTICAL = L["Vertical"]
 					}
 				},
 				width = {

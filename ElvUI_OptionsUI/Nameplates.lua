@@ -600,9 +600,9 @@ local function UpdateStyleLists()
 					name = spell,
 					type = 'select',
 					values = {
-						['DISABLED'] = _G.DISABLE,
-						['ONCD'] = L["On Cooldown"],
-						['OFFCD'] = L["Off Cooldown"]
+						DISABLED = _G.DISABLE,
+						ONCD = L["On Cooldown"],
+						OFFCD = L["Off Cooldown"]
 					},
 					order = -1,
 					get = function(info)
@@ -3173,11 +3173,11 @@ local function GetUnitSettings(unit, name)
 								type = 'select',
 								name = L["Position"],
 								values = {
-									['CENTER'] = 'CENTER',
-									['TOPLEFT'] = 'TOPLEFT',
-									['BOTTOMLEFT'] = 'BOTTOMLEFT',
-									['TOPRIGHT'] = 'TOPRIGHT',
-									['BOTTOMRIGHT'] = 'BOTTOMRIGHT'
+									CENTER = 'CENTER',
+									TOPLEFT = 'TOPLEFT',
+									BOTTOMLEFT = 'BOTTOMLEFT',
+									TOPRIGHT = 'TOPRIGHT',
+									BOTTOMRIGHT = 'BOTTOMRIGHT'
 								}
 							},
 							parent = {
@@ -3185,8 +3185,8 @@ local function GetUnitSettings(unit, name)
 								type = 'select',
 								name = L["Parent"],
 								values = {
-									['Nameplate'] = L["Nameplate"],
-									['Health'] = L["Health"]
+									Nameplate = L["Nameplate"],
+									Health = L["Health"]
 								}
 							},
 							xOffset = {
@@ -3364,11 +3364,11 @@ local function GetUnitSettings(unit, name)
 								type = 'select',
 								name = L["Position"],
 								values = {
-									['CENTER'] = 'CENTER',
-									['TOPLEFT'] = 'TOPLEFT',
-									['BOTTOMLEFT'] = 'BOTTOMLEFT',
-									['TOPRIGHT'] = 'TOPRIGHT',
-									['BOTTOMRIGHT'] = 'BOTTOMRIGHT'
+									CENTER = 'CENTER',
+									TOPLEFT = 'TOPLEFT',
+									BOTTOMLEFT = 'BOTTOMLEFT',
+									TOPRIGHT = 'TOPRIGHT',
+									BOTTOMRIGHT = 'BOTTOMRIGHT'
 								}
 							},
 							parent = {
@@ -3376,8 +3376,8 @@ local function GetUnitSettings(unit, name)
 								type = 'select',
 								name = L["Parent"],
 								values = {
-									['Nameplate'] = L["Nameplate"],
-									['Power'] = L["Power"]
+									Nameplate = L["Nameplate"],
+									Power = L["Power"]
 								}
 							},
 							xOffset = {
@@ -3558,9 +3558,9 @@ local function GetUnitSettings(unit, name)
 								name = L["Position"],
 								type = 'select',
 								values = {
-									['ONBAR'] = L["Cast Bar"],
-									['ABOVE'] = L["Above"],
-									['BELOW'] = L["Below"]
+									ONBAR = L["Cast Bar"],
+									ABOVE = L["Above"],
+									BELOW = L["Below"]
 								}
 							},
 							castTimeFormat = {
@@ -3568,10 +3568,10 @@ local function GetUnitSettings(unit, name)
 								type = 'select',
 								name = L["Cast Time Format"],
 								values = {
-									['CURRENT'] = L["Current"],
-									['CURRENTMAX'] = L["Current / Max"],
-									['REMAINING'] = L["Remaining"],
-									['REMAININGMAX'] = L["Remaining / Max"]
+									CURRENT = L["Current"],
+									CURRENTMAX = L["Current / Max"],
+									REMAINING = L["Remaining"],
+									REMAININGMAX = L["Remaining / Max"]
 								}
 							},
 							channelTimeFormat = {
@@ -3579,10 +3579,10 @@ local function GetUnitSettings(unit, name)
 								type = 'select',
 								name = L["Channel Time Format"],
 								values = {
-									['CURRENT'] = L["Current"],
-									['CURRENT_MAX'] = L["Current / Max"],
-									['REMAINING'] = L["Remaining"],
-									['REMAININGMAX'] = L["Remaining / Max"]
+									CURRENT = L["Current"],
+									CURRENT_MAX = L["Current / Max"],
+									REMAINING = L["Remaining"],
+									REMAININGMAX = L["Remaining / Max"]
 								}
 							}
 						}
@@ -3610,8 +3610,8 @@ local function GetUnitSettings(unit, name)
 								type = 'select',
 								name = L["Icon Position"],
 								values = {
-									['LEFT'] = L["Left"],
-									['RIGHT'] = L["Right"]
+									LEFT = L["Left"],
+									RIGHT = L["Right"]
 								}
 							},
 							iconSize = {
@@ -3755,8 +3755,8 @@ local function GetUnitSettings(unit, name)
 						order = 9,
 						name = L["Growth X-Direction"],
 						values = {
-							['LEFT'] = L["Left"],
-							['RIGHT'] = L["Right"]
+							LEFT = L["Left"],
+							RIGHT = L["Right"]
 						}
 					},
 					growthY = {
@@ -3764,8 +3764,8 @@ local function GetUnitSettings(unit, name)
 						order = 10,
 						name = L["Growth Y-Direction"],
 						values = {
-							['UP'] = L["Up"],
-							['DOWN'] = L["Down"]
+							UP = L["Up"],
+							DOWN = L["Down"]
 						}
 					},
 					stacks = {
@@ -3808,15 +3808,15 @@ local function GetUnitSettings(unit, name)
 								name = L["Position"],
 								type = 'select',
 								values = {
-									['TOP'] = 'TOP',
-									['LEFT'] = 'LEFT',
-									['BOTTOM'] = 'BOTTOM',
-									['CENTER'] = 'CENTER',
-									['TOPLEFT'] = 'TOPLEFT',
-									['BOTTOMLEFT'] = 'BOTTOMLEFT',
-									['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-									['RIGHT'] = 'RIGHT',
-									['TOPRIGHT'] = 'TOPRIGHT'
+									TOP = 'TOP',
+									LEFT = 'LEFT',
+									BOTTOM = 'BOTTOM',
+									CENTER = 'CENTER',
+									TOPLEFT = 'TOPLEFT',
+									BOTTOMLEFT = 'BOTTOMLEFT',
+									BOTTOMRIGHT = 'BOTTOMRIGHT',
+									RIGHT = 'RIGHT',
+									TOPRIGHT = 'TOPRIGHT'
 								}
 							}
 						}
@@ -3847,15 +3847,15 @@ local function GetUnitSettings(unit, name)
 								name = L["Position"],
 								type = 'select',
 								values = {
-									['TOP'] = 'TOP',
-									['LEFT'] = 'LEFT',
-									['BOTTOM'] = 'BOTTOM',
-									['CENTER'] = 'CENTER',
-									['TOPLEFT'] = 'TOPLEFT',
-									['BOTTOMLEFT'] = 'BOTTOMLEFT',
-									['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-									['RIGHT'] = 'RIGHT',
-									['TOPRIGHT'] = 'TOPRIGHT'
+									TOP = 'TOP',
+									LEFT = 'LEFT',
+									BOTTOM = 'BOTTOM',
+									CENTER = 'CENTER',
+									TOPLEFT = 'TOPLEFT',
+									BOTTOMLEFT = 'BOTTOMLEFT',
+									BOTTOMRIGHT = 'BOTTOMRIGHT',
+									RIGHT = 'RIGHT',
+									TOPRIGHT = 'TOPRIGHT'
 								}
 							}
 						}
@@ -4070,8 +4070,8 @@ local function GetUnitSettings(unit, name)
 						order = 9,
 						name = L["Growth X-Direction"],
 						values = {
-							['LEFT'] = L["Left"],
-							['RIGHT'] = L["Right"]
+							LEFT = L["Left"],
+							RIGHT = L["Right"]
 						}
 					},
 					growthY = {
@@ -4079,8 +4079,8 @@ local function GetUnitSettings(unit, name)
 						order = 10,
 						name = L["Growth Y-Direction"],
 						values = {
-							['UP'] = L["Up"],
-							['DOWN'] = L["Down"]
+							UP = L["Up"],
+							DOWN = L["Down"]
 						}
 					},
 					stacks = {
@@ -4123,15 +4123,15 @@ local function GetUnitSettings(unit, name)
 								name = L["Position"],
 								type = 'select',
 								values = {
-									['TOP'] = 'TOP',
-									['LEFT'] = 'LEFT',
-									['BOTTOM'] = 'BOTTOM',
-									['CENTER'] = 'CENTER',
-									['TOPLEFT'] = 'TOPLEFT',
-									['BOTTOMLEFT'] = 'BOTTOMLEFT',
-									['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-									['RIGHT'] = 'RIGHT',
-									['TOPRIGHT'] = 'TOPRIGHT'
+									TOP = 'TOP',
+									LEFT = 'LEFT',
+									BOTTOM = 'BOTTOM',
+									CENTER = 'CENTER',
+									TOPLEFT = 'TOPLEFT',
+									BOTTOMLEFT = 'BOTTOMLEFT',
+									BOTTOMRIGHT = 'BOTTOMRIGHT',
+									RIGHT = 'RIGHT',
+									TOPRIGHT = 'TOPRIGHT'
 								}
 							}
 						}
@@ -4162,15 +4162,15 @@ local function GetUnitSettings(unit, name)
 								name = L["Position"],
 								type = 'select',
 								values = {
-									['TOP'] = 'TOP',
-									['LEFT'] = 'LEFT',
-									['BOTTOM'] = 'BOTTOM',
-									['CENTER'] = 'CENTER',
-									['TOPLEFT'] = 'TOPLEFT',
-									['BOTTOMLEFT'] = 'BOTTOMLEFT',
-									['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-									['RIGHT'] = 'RIGHT',
-									['TOPRIGHT'] = 'TOPRIGHT'
+									TOP = 'TOP',
+									LEFT = 'LEFT',
+									BOTTOM = 'BOTTOM',
+									CENTER = 'CENTER',
+									TOPLEFT = 'TOPLEFT',
+									BOTTOMLEFT = 'BOTTOMLEFT',
+									BOTTOMRIGHT = 'BOTTOMRIGHT',
+									RIGHT = 'RIGHT',
+									TOPRIGHT = 'TOPRIGHT'
 								}
 							}
 						}
@@ -4347,11 +4347,11 @@ local function GetUnitSettings(unit, name)
 						type = 'select',
 						name = L["Icon Position"],
 						values = {
-							['LEFT'] = L["Left"],
-							['RIGHT'] = L["Right"],
-							['TOP'] = L["Top"],
-							['BOTTOM'] = L["Bottom"],
-							['CENTER'] = L["Center"]
+							LEFT = L["Left"],
+							RIGHT = L["Right"],
+							TOP = L["Top"],
+							BOTTOM = L["Bottom"],
+							CENTER = L["Center"]
 						}
 					},
 					xOffset = {
@@ -4399,11 +4399,11 @@ local function GetUnitSettings(unit, name)
 						type = 'select',
 						name = L["Position"],
 						values = {
-							['CENTER'] = 'CENTER',
-							['TOPLEFT'] = 'TOPLEFT',
-							['BOTTOMLEFT'] = 'BOTTOMLEFT',
-							['TOPRIGHT'] = 'TOPRIGHT',
-							['BOTTOMRIGHT'] = 'BOTTOMRIGHT'
+							CENTER = 'CENTER',
+							TOPLEFT = 'TOPLEFT',
+							BOTTOMLEFT = 'BOTTOMLEFT',
+							TOPRIGHT = 'TOPRIGHT',
+							BOTTOMRIGHT = 'BOTTOMRIGHT'
 						}
 					},
 					parent = {
@@ -4411,8 +4411,8 @@ local function GetUnitSettings(unit, name)
 						type = 'select',
 						name = L["Parent"],
 						values = {
-							['Nameplate'] = L["Nameplate"],
-							['Health'] = L["Health"]
+							Nameplate = L["Nameplate"],
+							Health = L["Health"]
 						}
 					},
 					xOffset = {
@@ -4497,11 +4497,11 @@ local function GetUnitSettings(unit, name)
 						type = 'select',
 						name = L["Position"],
 						values = {
-							['CENTER'] = 'CENTER',
-							['TOPLEFT'] = 'TOPLEFT',
-							['BOTTOMLEFT'] = 'BOTTOMLEFT',
-							['TOPRIGHT'] = 'TOPRIGHT',
-							['BOTTOMRIGHT'] = 'BOTTOMRIGHT'
+							CENTER = 'CENTER',
+							TOPLEFT = 'TOPLEFT',
+							BOTTOMLEFT = 'BOTTOMLEFT',
+							TOPRIGHT = 'TOPRIGHT',
+							BOTTOMRIGHT = 'BOTTOMRIGHT'
 						}
 					},
 					parent = {
@@ -4509,8 +4509,8 @@ local function GetUnitSettings(unit, name)
 						type = 'select',
 						name = L["Parent"],
 						values = {
-							['Nameplate'] = L["Nameplate"],
-							['Health'] = L["Health"]
+							Nameplate = L["Nameplate"],
+							Health = L["Health"]
 						}
 					},
 					xOffset = {
@@ -4605,11 +4605,11 @@ local function GetUnitSettings(unit, name)
 						type = 'select',
 						name = L["Icon Position"],
 						values = {
-							['LEFT'] = L["Left"],
-							['RIGHT'] = L["Right"],
-							['TOP'] = L["Top"],
-							['BOTTOM'] = L["Bottom"],
-							['CENTER'] = L["Center"]
+							LEFT = L["Left"],
+							RIGHT = L["Right"],
+							TOP = L["Top"],
+							BOTTOM = L["Bottom"],
+							CENTER = L["Center"]
 						}
 					},
 					xOffset = {
@@ -4660,11 +4660,11 @@ local function GetUnitSettings(unit, name)
 						type = 'select',
 						name = L["Icon Position"],
 						values = {
-							['LEFT'] = L["Left"],
-							['RIGHT'] = L["Right"],
-							['TOP'] = L["Top"],
-							['BOTTOM'] = L["Bottom"],
-							['CENTER'] = L["Center"]
+							LEFT = L["Left"],
+							RIGHT = L["Right"],
+							TOP = L["Top"],
+							BOTTOM = L["Bottom"],
+							CENTER = L["Center"]
 						}
 					},
 					xOffset = {
@@ -4774,9 +4774,9 @@ local function GetUnitSettings(unit, name)
 					type = 'select',
 					order = 7,
 					values = {
-						['asc'] = L["Ascending"],
-						['desc'] = L["Descending"],
-						['NONE'] = _G.NONE
+						asc = L["Ascending"],
+						desc = L["Descending"],
+						NONE = _G.NONE
 					},
 					hidden = function()
 						return (E.myclass ~= 'DEATHKNIGHT')
@@ -4885,13 +4885,13 @@ local function GetUnitSettings(unit, name)
 					type = 'select',
 					name = L["Icon Position"],
 					values = {
-						['CENTER'] = 'CENTER',
-						['TOPLEFT'] = 'TOPLEFT',
-						['BOTTOMLEFT'] = 'BOTTOMLEFT',
-						['TOPRIGHT'] = 'TOPRIGHT',
-						['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-						['LEFT'] = 'LEFT',
-						['RIGHT'] = 'RIGHT',
+						CENTER = 'CENTER',
+						TOPLEFT = 'TOPLEFT',
+						BOTTOMLEFT = 'BOTTOMLEFT',
+						TOPRIGHT = 'TOPRIGHT',
+						BOTTOMRIGHT = 'BOTTOMRIGHT',
+						LEFT = 'LEFT',
+						RIGHT = 'RIGHT',
 					},
 				},
 				xOffset = {
@@ -4986,13 +4986,13 @@ local function GetUnitSettings(unit, name)
 					type = 'select',
 					name = L["Icon Position"],
 					values = {
-						['CENTER'] = 'CENTER',
-						['TOPLEFT'] = 'TOPLEFT',
-						['BOTTOMLEFT'] = 'BOTTOMLEFT',
-						['TOPRIGHT'] = 'TOPRIGHT',
-						['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-						['LEFT'] = 'LEFT',
-						['RIGHT'] = 'RIGHT'
+						CENTER = 'CENTER',
+						TOPLEFT = 'TOPLEFT',
+						BOTTOMLEFT = 'BOTTOMLEFT',
+						TOPRIGHT = 'TOPRIGHT',
+						BOTTOMRIGHT = 'BOTTOMRIGHT',
+						LEFT = 'LEFT',
+						RIGHT = 'RIGHT'
 					}
 				},
 				textPosition = {
@@ -5000,15 +5000,15 @@ local function GetUnitSettings(unit, name)
 					type = 'select',
 					name = L["Text Position"],
 					values = {
-						['TOP'] = 'TOP',
-						['LEFT'] = 'LEFT',
-						['BOTTOM'] = 'BOTTOM',
-						['CENTER'] = 'CENTER',
-						['TOPLEFT'] = 'TOPLEFT',
-						['BOTTOMLEFT'] = 'BOTTOMLEFT',
-						['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
-						['RIGHT'] = 'RIGHT',
-						['TOPRIGHT'] = 'TOPRIGHT'
+						TOP = 'TOP',
+						LEFT = 'LEFT',
+						BOTTOM = 'BOTTOM',
+						CENTER = 'CENTER',
+						TOPLEFT = 'TOPLEFT',
+						BOTTOMLEFT = 'BOTTOMLEFT',
+						BOTTOMRIGHT = 'BOTTOMRIGHT',
+						RIGHT = 'RIGHT',
+						TOPRIGHT = 'TOPRIGHT'
 					}
 				}
 			}
@@ -5120,11 +5120,11 @@ local function GetUnitSettings(unit, name)
 					type = 'select',
 					name = L["Icon Position"],
 					values = {
-						['CENTER'] = 'CENTER',
-						['TOPLEFT'] = 'TOPLEFT',
-						['BOTTOMLEFT'] = 'BOTTOMLEFT',
-						['TOPRIGHT'] = 'TOPRIGHT',
-						['BOTTOMRIGHT'] = 'BOTTOMRIGHT'
+						CENTER = 'CENTER',
+						TOPLEFT = 'TOPLEFT',
+						BOTTOMLEFT = 'BOTTOMLEFT',
+						TOPRIGHT = 'TOPRIGHT',
+						BOTTOMRIGHT = 'BOTTOMRIGHT'
 					}
 				},
 				xOffset = {
@@ -5176,11 +5176,11 @@ local function GetUnitSettings(unit, name)
 					type = 'select',
 					name = L["Position"],
 					values = {
-						['CENTER'] = 'CENTER',
-						['TOPLEFT'] = 'TOPLEFT',
-						['BOTTOMLEFT'] = 'BOTTOMLEFT',
-						['TOPRIGHT'] = 'TOPRIGHT',
-						['BOTTOMRIGHT'] = 'BOTTOMRIGHT'
+						CENTER = 'CENTER',
+						TOPLEFT = 'TOPLEFT',
+						BOTTOMLEFT = 'BOTTOMLEFT',
+						TOPRIGHT = 'TOPRIGHT',
+						BOTTOMRIGHT = 'BOTTOMRIGHT'
 					}
 				},
 				parent = {
@@ -5188,8 +5188,8 @@ local function GetUnitSettings(unit, name)
 					type = 'select',
 					name = L["Parent"],
 					values = {
-						['Nameplate'] = L["Nameplate"],
-						['Health'] = L["Health"]
+						Nameplate = L["Nameplate"],
+						Health = L["Health"]
 					}
 				},
 				xOffset = {
@@ -5320,8 +5320,8 @@ E.Options.args.nameplate = {
 							name = L["UNIT_NAMEPLATES_TYPES"],
 							desc = L["Set to either stack nameplates vertically or allow them to overlap."],
 							values = {
-								['STACKED'] = L["UNIT_NAMEPLATES_TYPE_2"],
-								['OVERLAP'] = L["UNIT_NAMEPLATES_TYPE_1"]
+								STACKED = L["UNIT_NAMEPLATES_TYPE_2"],
+								OVERLAP = L["UNIT_NAMEPLATES_TYPE_1"]
 							}
 						},
 						showEnemyCombat = {
@@ -5330,9 +5330,9 @@ E.Options.args.nameplate = {
 							name = L["Enemy Combat Toggle"],
 							desc = L["Control enemy nameplates toggling on or off when in combat."],
 							values = {
-								['DISABLED'] = L["DISABLE"],
-								['TOGGLE_ON'] = L["Toggle On While In Combat"],
-								['TOGGLE_OFF'] = L["Toggle Off While In Combat"]
+								DISABLED = L["DISABLE"],
+								TOGGLE_ON = L["Toggle On While In Combat"],
+								TOGGLE_OFF = L["Toggle Off While In Combat"]
 							},
 							set = function(info, value)
 								E.db.nameplates[info[#info]] = value
@@ -5345,9 +5345,9 @@ E.Options.args.nameplate = {
 							name = L["Friendly Combat Toggle"],
 							desc = L["Control friendly nameplates toggling on or off when in combat."],
 							values = {
-								['DISABLED'] = L["DISABLE"],
-								['TOGGLE_ON'] = L["Toggle On While In Combat"],
-								['TOGGLE_OFF'] = L["Toggle Off While In Combat"]
+								DISABLED = L["DISABLE"],
+								TOGGLE_ON = L["Toggle On While In Combat"],
+								TOGGLE_OFF = L["Toggle Off While In Combat"]
 							},
 							set = function(info, value)
 								E.db.nameplates[info[#info]] = value
@@ -6416,22 +6416,22 @@ E.Options.args.nameplate = {
 								NP:ConfigureAll()
 							end,
 							args = {
-								['PALADIN'] = {
+								PALADIN = {
 									type = 'color',
 									order = 1,
 									name = L["HOLY_POWER"]
 								},
-								['MAGE'] = {
+								MAGE = {
 									type = 'color',
 									order = 2,
 									name = L["POWER_TYPE_ARCANE_CHARGES"]
 								},
-								['WARLOCK'] = {
+								WARLOCK = {
 									type = 'color',
 									order = 3,
 									name = L["SOUL_SHARDS"]
 								},
-								['DEATHKNIGHT'] = {
+								DEATHKNIGHT = {
 									type = 'color',
 									order = 4,
 									name = L["RUNES"]
@@ -6559,15 +6559,15 @@ E.Options.args.nameplate = {
 					customWidth = 225,
 					name = L["Target/Low Health Indicator"],
 					values = {
-						['none'] = L["NONE"],
-						['style1'] = L["Border Glow"],
-						['style2'] = L["Background Glow"],
-						['style3'] = L["Top Arrow"],
-						['style4'] = L["Side Arrows"],
-						['style5'] = L["Border Glow"] .. ' + ' .. L["Top Arrow"],
-						['style6'] = L["Background Glow"] .. ' + ' .. L["Top Arrow"],
-						['style7'] = L["Border Glow"] .. ' + ' .. L["Side Arrows"],
-						['style8'] = L["Background Glow"] .. ' + ' .. L["Side Arrows"]
+						none = L["NONE"],
+						style1 = L["Border Glow"],
+						style2 = L["Background Glow"],
+						style3 = L["Top Arrow"],
+						style4 = L["Side Arrows"],
+						style5 = L["Border Glow"] .. ' + ' .. L["Top Arrow"],
+						style6 = L["Background Glow"] .. ' + ' .. L["Top Arrow"],
+						style7 = L["Border Glow"] .. ' + ' .. L["Side Arrows"],
+						style8 = L["Background Glow"] .. ' + ' .. L["Side Arrows"]
 					}
 				},
 				nonTargetAlphaShortcut = {
@@ -6652,9 +6652,9 @@ E.Options.args.nameplate = {
 							desc = L["Defines the sort order of the selected sort method."],
 							type = 'select',
 							values = {
-								['asc'] = L["Ascending"],
-								['desc'] = L["Descending"],
-								['NONE'] = L["NONE"]
+								asc = L["Ascending"],
+								desc = L["Descending"],
+								NONE = L["NONE"]
 							},
 							hidden = function()
 								return (E.myclass ~= 'DEATHKNIGHT')
