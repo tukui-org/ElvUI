@@ -53,8 +53,7 @@ local function OnEvent(self)
 		maxMinDiff = 1
 	end
 
-	if isCapped and textFormat ~= 'NONE' then
-		-- show only name and standing on exalted
+	if isCapped then
 		text = format('%s: [%s]', name, isFriend and friendText or standingLabel)
 	else
 		if textFormat == 'PERCENT' then

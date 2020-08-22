@@ -63,7 +63,7 @@ end
 
 local function RegisterNewDT(currencyID)
 	local info = C_CurrencyInfo_GetCurrencyInfo(currencyID)
-	if info.isDiscovered then
+	if info.discovered then
 		local name = info.name
 
 		--Add to internal storage, stored with name as key

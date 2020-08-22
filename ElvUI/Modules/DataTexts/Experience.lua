@@ -16,7 +16,7 @@ local function OnEvent(self)
 	else
 		local cur, max = UnitXP('player'), UnitXPMax('player')
 		local rested = GetXPExhaustion()
-		local textFormat = E.DataBars.db.experience.textFormat
+		local textFormat = E.global.datatexts.settings.Experience.textFormat
 
 		if rested and rested > 0 then
 			if textFormat == 'PERCENT' then

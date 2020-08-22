@@ -44,7 +44,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', E.global.datatexts.settings.Versatility.NoLabel and '' or '%s: ', hex, '%.'..E.global.datatexts.settings.Versatility.Decimal..'f%%|r')
+	displayString = strjoin('', E.global.datatexts.settings.Versatility.NoLabel and '' or '%s: ', hex, '%.'..E.global.datatexts.settings.Versatility.decimalLength..'f%%|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end

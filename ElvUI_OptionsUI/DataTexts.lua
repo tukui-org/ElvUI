@@ -365,96 +365,86 @@ local function SetupCustomCurrencies()
 end
 
 local function CreateDTOptions(name, data)
-	E.Options.args.datatexts.args.settings.args[name] = {
+	local settings = E.global.datatexts.settings[name]
+	if not settings then return end
+
+	local optionTable = {
 		order = 1,
 		type = "group",
 		name = data.localizedName or name,
 		guiInline = false,
-		get = function(info) return E.global.datatexts.settings[name][info[#info]] end,
-		set = function(info, value) E.global.datatexts.settings[name][info[#info]] = value DT:ForceUpdate_DataText(name) end,
-		args = {
-			Label = {
-				order = 0,
-				type = 'input',
-				name = L['Label'],
-				get = function(info) return E.global.datatexts.settings[name][info[#info]] and gsub(E.global.datatexts.settings[name][info[#info]], "\124", "\124\124") end,
-				set = function(info, value)
-					E.global.datatexts.settings[name][info[#info]] = gsub(value, "\124\124+", "\124")
-				end,
-			},
-			NoLabel = {
-				order = 1,
-				type = 'toggle',
-				name = L['No Label'],
-			},
-			Decimal = {
-				order = 2,
+		get = function(info) return settings[info[#info]] end,
+		set = function(info, value) settings[info[#info]] = value DT:ForceUpdate_DataText(name) end,
+		args = {},
+	}
+
+	E.Options.args.datatexts.args.settings.args[name] = optionTable
+
+	for key in pairs(settings) do
+		if key == 'decimalLength' then
+			optionTable.args.decimalLength = {
 				type = 'range',
 				name = L['Decimal Length'],
 				min = 0, max = 5, step = 1,
-			},
-		},
-	}
+			}
+		elseif key == 'goldFormat' then
+			optionTable.args.goldFormat = {
+				type = 'select',
+				name = L["Gold Format"],
+				desc = L["The display format of the money text that is shown in the gold datatext and its tooltip."],
+				values = { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" },
+			}
+		elseif key == 'goldCoins' then
+			optionTable.args.goldCoins = {
+				type = 'toggle',
+				name = L["Show Coins"],
+				desc = L["Use coin icons instead of colored text."],
+			}
+		elseif key == 'Label' then
+			optionTable.args.Label = {
+				order = 0,
+				type = 'input',
+				name = L['Label'],
+				get = function(info) return settings[info[#info]] and gsub(settings[info[#info]], '\124', '\124\124') end,
+				set = function(info, value) settings[info[#info]] = gsub(value, '\124\124+', '\124') end,
+			}
+		elseif key == 'NoLabel' then
+			optionTable.args.NoLabel = {
+				type = 'toggle',
+				name = L['No Label'],
+			}
+		end
+	end
 
-	local optionTable = E.Options.args.datatexts.args.settings.args[name].args
-	if name == 'Gold' then
-		optionTable.goldFormat = {
-			order = 3,
-			type = 'select',
-			name = L["Gold Format"],
-			desc = L["The display format of the money text that is shown in the gold datatext and its tooltip."],
-			values = { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" },
-		}
-		optionTable.goldCoins = {
-			order = 4,
-			type = 'toggle',
-			name = L["Show Coins"],
-			desc = L["Use coin icons instead of colored text."],
-		}
-	elseif name == 'Currencies' then
-		optionTable.displayedCurrency = {
-			order = 2,
+	if name == 'Currencies' then
+		optionTable.args.displayedCurrency = {
 			type = "select",
 			name = L["Displayed Currency"],
 			values = function() return DT.CurrencyList end,
 			sortByValue = true,
 		}
-		optionTable.displayStyle = {
-			order = 3,
+		optionTable.args.displayStyle = {
 			type = "select",
 			name = L["Currency Format"],
-			hidden = function() return (E.db.datatexts.currencies.displayedCurrency == "GOLD") or (E.db.datatexts.currencies.displayedCurrency == "BACKPACK") end,
+			hidden = function() return (settings.displayedCurrency == "GOLD") or (settings.displayedCurrency == "BACKPACK") end,
 			values = {
 				ICON = L["Icons Only"],
 				ICON_TEXT = L["Icons and Text"],
 				ICON_TEXT_ABBR = L["Icons and Text (Short)"],
 			},
 		}
-		optionTable.goldFormat = {
-			order = 3,
-			type = 'select',
-			name = L["Gold Format"],
-			desc = L["The display format of the money text that is shown in the gold datatext and its tooltip."],
-			hidden = function() return (E.db.datatexts.currencies.displayedCurrency ~= "GOLD") end,
-			values = { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" },
-		}
-		optionTable.goldCoins = {
-			order = 4,
-			type = 'toggle',
-			name = L["Show Coins"],
-			desc = L["Use coin icons instead of colored text."],
-			hidden = function() return (E.db.datatexts.currencies.displayedCurrency ~= "GOLD") end,
-		}
-		optionTable.tooltipLines = {
-			order = 4,
+		optionTable.args.goldFormat.hidden = function() return (settings.displayedCurrency ~= "GOLD") end
+		optionTable.args.goldCoins.hidden = function() return (settings.displayedCurrency ~= "GOLD") end
+		optionTable.args.tooltipLines = {
+			order = -1,
 			type = 'group',
 			guiInline = true,
 			name = L["Tooltip Lines"],
 			args = {}
 		}
-		for i, info in ipairs(P.datatexts.currencies.tooltip) do
+		for i, info in ipairs(G.datatexts.settings.Currencies.tooltipData) do
 			if not info[2] then
-				optionTable.tooltipLines.args[tostring(i)] = {
+				optionTable.args.tooltipLines.args[tostring(i)] = {
 					order = i,
 					type = 'group',
 					guiInline = true,
@@ -464,71 +454,64 @@ local function CreateDTOptions(name, data)
 							order = i,
 							type = 'toggle',
 							name = "Header",
-							get = function() return E.db.datatexts.currencies.tooltip[i][4] end,
-							set = function(_, value) E.db.datatexts.currencies.tooltip[i][4] = value end,
+							get = function() return settings.tooltipData[i][4] end,
+							set = function(_, value) settings.tooltipData[i][4] = value end,
 						},
 					},
 				}
 			elseif info[3] then
-				optionTable.tooltipLines.args[tostring(info[3])].args[tostring(i)] = {
+				optionTable.args.tooltipLines.args[tostring(info[3])].args[tostring(i)] = {
 					order = i,
 					type = 'toggle',
 					name = info[1],
-					get = function() return E.db.datatexts.currencies.tooltip[i][4] end,
-					set = function(_, value) E.db.datatexts.currencies.tooltip[i][4] = value end,
+					get = function() return settings.tooltipData[i][4] end,
+					set = function(_, value) settings.tooltipData[i][4] = value end,
 				}
 			end
 		end
 	elseif name == 'Time' then
-		optionTable.time24 = {
-			order = 2,
+		optionTable.args.time24 = {
 			type = 'toggle',
 			name = L["24-Hour Time"],
 			desc = L["Toggle 24-hour mode for the time datatext."],
-			get = function() return E.db.datatexts.time24 end,
-			set = function(_, value) E.db.datatexts.time24 = value; DT:ForceUpdate_DataText(name) end,
 		}
-		optionTable.localtime = {
-			order = 3,
+		optionTable.args.localTime = {
 			type = 'toggle',
 			name = L["Local Time"],
 			desc = L["If not set to true then the server time will be displayed instead."],
-			get = function() return E.db.datatexts.localtime end,
-			set = function(_, value) E.db.datatexts.localtime = value; DT:ForceUpdate_DataText(name) end,
 		}
 	elseif name == 'Durability' then
-		optionTable.percThreshold = {
-			order = 1,
+		optionTable.args.percThreshold = {
 			type = "range",
 			name = L["Flash Threshold"],
 			desc = L["The durability percent that the datatext will start flashing.  Set to -1 to disable"],
 			min = -1, max = 99, step = 1,
-			get = function(info) return E.db.datatexts.durability[info[#info]] end,
-			set = function(info, value) E.db.datatexts.durability[info[#info]] = value; DT:ForceUpdate_DataText(name) end,
+			get = function(info) return settings[info[#info]] end,
+			set = function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end,
 		}
 	elseif name == 'Friends' then
-		optionTable.description = {
+		optionTable.args.description = {
 			order = 1,
 			type = "description",
 			name = L["Hide specific sections in the datatext tooltip."],
 		}
-		optionTable.hideGroup1 = {
+		optionTable.args.hideGroup1 = {
 			order = 2,
 			type = "multiselect",
 			name = L["Hide by Status"],
-			get = function(_, key) return E.db.datatexts.friends[key] end,
-			set = function(_, key, value) E.db.datatexts.friends[key] = value; DT:ForceUpdate_DataText(name) end,
+			get = function(_, key) return settings[key] end,
+			set = function(_, key, value) settings[key] = value; DT:ForceUpdate_DataText(name) end,
 			values = {
 				hideAFK = L["AFK"],
 				hideDND = L["DND"],
 			},
 		}
-		optionTable.hideGroup2 = {
+		optionTable.args.hideGroup2 = {
 			order = 2,
 			type = "multiselect",
 			name = L["Hide by Application"],
-			get = function(_, key) return E.db.datatexts.friends['hide'..key] end,
-			set = function(_, key, value) E.db.datatexts.friends['hide'..key] = value; DT:ForceUpdate_DataText(name) end,
+			get = function(_, key) return settings['hide'..key] end,
+			set = function(_, key, value) settings['hide'..key] = value; DT:ForceUpdate_DataText(name) end,
 			sortByValue = true,
 			values = {
 				WoW = "World of Warcraft",
@@ -546,13 +529,14 @@ local function CreateDTOptions(name, data)
 			},
 		}
 	elseif name == 'Reputation' or name == 'Experience' then
-		optionTable.textFormat = {
+		optionTable.args.textFormat = {
 			order = 13,
 			type = 'select',
 			name = L["Text Format"],
 			width = "double",
+			get = function(info) return settings[info[#info]] end,
+			set = function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end,
 			values = {
-				NONE = L["NONE"],
 				PERCENT = L["Percent"],
 				CUR = L["Current"],
 				REM = L["Remaining"],
@@ -877,6 +861,7 @@ E.Options.args.datatexts = {
 						DT:PanelLayoutOptions()
 						DT:LoadDataTexts()
 					end,
+					disabled = function() return not next(E.global.datatexts.customCurrencies) end,
 					values = function()
 						wipe(currencyList)
 

@@ -967,42 +967,6 @@ P.datatexts = {
 	battleground = true,
 	noCombatClick = false,
 	noCombatHover = false,
-
-	--Datatext Options
-	---General
-	goldFormat = 'BLIZZARD',
-	goldCoins = false,
-	---Currencies
-	currencies = {
-		displayedCurrency = 'BACKPACK',
-		displayStyle = 'ICON',
-		tooltip = {},
-	},
-	---Durability
-	durability = {
-		percThreshold = 30,
-	},
-	---Time
-	localtime = true,
-	time24 = _G.GetCurrentRegion() ~= 1, -- Non US region will default to the 24-hour clock
-	---Friends
-	friends = {
-		--status
-		hideAFK = false,
-		hideDND = false,
-		--clients
-		hideWoW = false,
-		hideD3 = false,
-		hideVIPR = false,
-		hideWTCG = false, --Hearthstone
-		hideHero = false, --Heros of the Storm
-		hidePro = false, --Overwatch
-		hideS1 = false,
-		hideS2 = false,
-		hideDST2 = false,
-		hideBSAp = false, --Mobile
-		hideApp = false, --Launcher
-	},
 }
 
 --Tooltip

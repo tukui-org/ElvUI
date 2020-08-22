@@ -68,7 +68,7 @@ local function OnEvent(self)
 	if E.global.datatexts.settings['Call to Arms'].NoLabel then
 		self.text:SetFormattedText(displayString, unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
 	else
-		self.text:SetFormattedText(displayString, E.global.datatexts.settings['Call to Arms'].Label ~= '' and E.global.datatexts.settings['Call to Arms'].Label or BATTLEGROUND_HOLIDAY..": ", unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings.CallToArms.Label ~= '' and E.global.datatexts.settings.CallToArms.Label or BATTLEGROUND_HOLIDAY..": ", unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
 	end
 	lastPanel = self
 end
@@ -78,7 +78,7 @@ local function OnClick()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', E.global.datatexts.settings['Call to Arms'].NoLabel and '' or '%s', hex, '%s|r')
+	displayString = strjoin('', E.global.datatexts.settings.CallToArms.NoLabel and '' or '%s', hex, '%s|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
@@ -170,4 +170,4 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-DT:RegisterDatatext('Call to Arms', nil, {"LFG_UPDATE_RANDOM_INFO"}, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ValueColorUpdate)
+DT:RegisterDatatext('CallToArms', nil, {"LFG_UPDATE_RANDOM_INFO"}, OnEvent, Update, OnClick, OnEnter, OnLeave, BATTLEGROUND_HOLIDAY, nil, ValueColorUpdate)

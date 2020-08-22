@@ -39,7 +39,43 @@ G.bags = {
 G.datatexts = {
 	customPanels = {},
 	customCurrencies = {},
-	settings = {},
+	settings = {
+		Agility = { Label = '', NoLabel = false },
+		Armor = { Label = '', NoLabel = false },
+		Avoidance = { Label = '', NoLabel = false, decimalLength = 1 },
+		CallToArms = { Label = '', NoLabel = false },
+		Crit = { Label = '', NoLabel = false, decimalLength = 1 },
+		Currencies = { goldFormat = 'BLIZZARD', goldCoins = true, displayedCurrency = 'BACKPACK', displayStyle = 'ICON', tooltipData = {} },
+		Durability = { Label = '', NoLabel = false, percThreshold = 30 },
+		Experience = { textFormat = 'CUR' },
+		Friends = {
+			Label = '', NoLabel = false,
+			--status
+			hideAFK = false,
+			hideDND = false,
+			--clients
+			hideWoW = false,
+			hideD3 = false,
+			hideVIPR = false,
+			hideWTCG = false, --Hearthstone
+			hideHero = false, --Heros of the Storm
+			hidePro = false, --Overwatch
+			hideS1 = false,
+			hideS2 = false,
+			hideDST2 = false,
+			hideBSAp = false, --Mobile
+			hideApp = false, --Launcher
+		},
+		Gold = { goldFormat = 'BLIZZARD', goldCoins = true },
+		Guild = { Label = '', NoLabel = false },
+		QuickJoin = { Label = '', NoLabel = false },
+		Reputation = { textFormat = 'CUR' },
+		Speed = { Label = '', NoLabel = false, decimalLength = 1 },
+		Stamina = { Label = '', NoLabel = false },
+		Strength = { Label = '', NoLabel = false },
+		Time = { time24 = _G.GetCurrentRegion() ~= 1, localTime = true },
+		Versatility = { Label = '', NoLabel = false, decimalLength = 1 },
+	},
 	newPanelInfo = {
 		name = '',
 		enable = true,

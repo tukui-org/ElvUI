@@ -669,21 +669,21 @@ function DT:PopulateData()
 			listSize = C_CurrencyInfo_GetCurrencyListSize()
 			Collapsed[info.name] = true
 		end
-		if isHeader then
-			P.datatexts.currencies.tooltip[i] = { name, nil, nil, (name == expansion or name == MISCELLANEOUS) or strfind(name, LFG_TYPE_DUNGEON) }
-			E.db.datatexts.currencies.tooltip[i] = E.db.datatexts.currencies.tooltip[i] or { name, nil, nil, P.datatexts.currencies.tooltip[i][4] }
-			E.db.datatexts.currencies.tooltip[i][1] = name
+		if info.isHeader then
+			G.datatexts.settings.Currencies.tooltipData[i] = { info.name, nil, nil, (info.name == expansion or info.name == MISCELLANEOUS) or strfind(info.name, LFG_TYPE_DUNGEON) }
+			E.global.datatexts.settings.Currencies.tooltipData[i] = E.global.datatexts.settings.Currencies.tooltipData[i] or { info.name, nil, nil, G.datatexts.settings.Currencies.tooltipData[i][4] }
+			E.global.datatexts.settings.Currencies.tooltipData[i][1] = info.name
 
 			headerIndex = i
 		end
-		if not isHeader then
-			local currencyLink = GetCurrencyListLink(i)
+		if not info.isHeader then
+			local currencyLink = C_CurrencyInfo_GetCurrencyListLink(i)
 			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
 			if currencyID then
-				DT.CurrencyList[tostring(currencyID)] = name
-				P.datatexts.currencies.tooltip[i] = { name, currencyID, headerIndex, P.datatexts.currencies.tooltip[headerIndex][4] }
-				E.db.datatexts.currencies.tooltip[i] = E.db.datatexts.currencies.tooltip[i] or { name, currencyID, headerIndex, P.datatexts.currencies.tooltip[headerIndex][4] }
-				E.db.datatexts.currencies.tooltip[i][1] = name
+				DT.CurrencyList[tostring(currencyID)] = info.name
+				G.datatexts.settings.Currencies.tooltipData[i] = { info.name, currencyID, headerIndex, G.datatexts.settings.Currencies.tooltipData[headerIndex][4] }
+				E.global.datatexts.settings.Currencies.tooltipData[i] = E.global.datatexts.settings.Currencies.tooltipData[i] or { info.name, currencyID, headerIndex, G.datatexts.settings.Currencies.tooltipData[headerIndex][4] }
+				E.global.datatexts.settings.Currencies.tooltipData[i][1] = info.name
 			end
 		end
 		i = i + 1
@@ -820,8 +820,6 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 	if colorUpdate and type(colorUpdate) == 'function' then
 		data.colorUpdate = colorUpdate
 	end
-
-	G.datatexts.settings[name] = G.datatexts.settings[name] or { Label = '', NoLabel = false, Decimal = 0 }
 
 	DT.RegisteredDataTexts[name] = data
 

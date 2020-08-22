@@ -43,7 +43,7 @@ local goldText
 local function OnEvent(self)
 	goldText = E:FormatMoney(GetMoney(), E.global.datatexts.settings.Currencies.goldFormat or 'BLIZZARD', not E.global.datatexts.settings.Currencies.goldCoins)
 
-	local displayed = E.db.datatexts.currencies.displayedCurrency
+	local displayed = E.global.datatexts.settings.Currencies.displayedCurrency
 	if displayed == 'BACKPACK' then
 		local displayString = ''
 		for i = 1, 3 do
@@ -63,7 +63,7 @@ local function OnEvent(self)
 		local name, num, icon = GetInfo(id)
 		if not name then return end
 
-		local style = E.db.datatexts.currencies.displayStyle
+		local style = E.global.datatexts.settings.Currencies.displayStyle
 		if style == 'ICON' then
 			self.text:SetFormattedText('%s %s', icon, E:ShortValue(num))
 		elseif style == 'ICON_TEXT' then
@@ -78,7 +78,7 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	local addLine, goldSpace
-	for _, info in ipairs(E.db.datatexts.currencies.tooltip) do
+	for _, info in ipairs(E.global.datatexts.settings.Currencies.tooltipData) do
 		local name, id, _, enabled = unpack(info)
 		if id and enabled then
 			if type(id) == 'number' then
