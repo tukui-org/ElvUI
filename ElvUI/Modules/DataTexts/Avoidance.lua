@@ -89,7 +89,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	local rightString = targetlv > 1 and strjoin('', ' (', L['lvl'], ' ', targetlv, ')') or targetlv == -1 and strjoin('', ' (', BOSS, ')') or strjoin('', ' (', L['lvl'], ' ', playerlv, ')')
+	local rightString = targetlv > 1 and strjoin('', ' (', L["lvl"], ' ', targetlv, ')') or targetlv == -1 and strjoin('', ' (', BOSS, ')') or strjoin('', ' (', L["lvl"], ' ', playerlv, ')')
 	DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], rightString)
 	DT.tooltip:AddLine(' ')
 

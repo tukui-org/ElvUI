@@ -47,7 +47,7 @@ local DTPanelOptions = {
 	templateGroup = {
 		order = 10,
 		type = "multiselect",
-		name = L['Template'],
+		name = L["Template"],
 		sortByValue = true,
 		values = {
 			backdrop = L["Backdrop"],
@@ -145,7 +145,7 @@ local function PanelGroup_Create(panel)
 			enable = {
 				order = 0,
 				type = 'toggle',
-				name = L['Enable'],
+				name = L["Enable"],
 			},
 			panelOptions = {
 				order = -1,
@@ -162,7 +162,7 @@ local function PanelGroup_Create(panel)
 					delete = {
 						order = -1,
 						type = 'execute',
-						name = L['Delete'],
+						name = L["Delete"],
 						width = 'full',
 						confirm = true,
 						func = function(info)
@@ -264,7 +264,7 @@ function DT:PanelLayoutOptions()
 				options[name].args.delete = {
 					order = -1,
 					type = 'execute',
-					name = L['Delete'],
+					name = L["Delete"],
 					func = function()
 						E.db.datatexts.panels[name] = nil
 						options[name] = nil
@@ -541,7 +541,7 @@ E.Options.args.datatexts = {
 				newPanel = {
 					order = 0,
 					type = 'group',
-					name = ColorizeName(L['New Panel'], '33ff33'),
+					name = ColorizeName(L["New Panel"], '33ff33'),
 					get = function(info) return E.global.datatexts.newPanelInfo[info[#info]] end,
 					set = function(info, value) E.global.datatexts.newPanelInfo[info[#info]] = value end,
 					args = {
@@ -549,15 +549,15 @@ E.Options.args.datatexts = {
 							order = 0,
 							type = 'input',
 							width = 'full',
-							name = L['Name'],
+							name = L["Name"],
 							validate = function(_, value)
-								return E.global.datatexts.customPanels[value] and L['Name Taken'] or true
+								return E.global.datatexts.customPanels[value] and L["Name Taken"] or true
 							end,
 						},
 						add = {
 							order = 1,
 							type = 'execute',
-							name = L['Add'],
+							name = L["Add"],
 							width = 'full',
 							hidden = function()
 								return E.global.datatexts.newPanelInfo.name == ''
@@ -591,7 +591,7 @@ E.Options.args.datatexts = {
 					args = {
 						enable = {
 							order = 0,
-							name = L['Enable'],
+							name = L["Enable"],
 							type = 'toggle',
 							set = function(info, value)
 								E.db.datatexts.panels[info[#info - 1]][info[#info]] = value
@@ -633,7 +633,7 @@ E.Options.args.datatexts = {
 					args = {
 						enable = {
 							order = 0,
-							name = L['Enable'],
+							name = L["Enable"],
 							type = 'toggle',
 							set = function(info, value)
 								E.db.datatexts.panels[info[#info - 1]][info[#info]] = value
@@ -675,7 +675,7 @@ E.Options.args.datatexts = {
 					args = {
 						enable = {
 							order = 0,
-							name = L['Enable'],
+							name = L["Enable"],
 							type = 'toggle',
 							set = function(info, value)
 								E.db.datatexts.panels[info[#info - 1]][info[#info]] = value

@@ -813,7 +813,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
 				set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
 				args = {
-					header = ACH:Description(L['|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click "Configure Auras" and change that specific Auras settings. If "Profile Specific" is selected it will apply to that filter set.'], 1),
+					header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1),
 					style = {
 						name = L["Style"],
 						order = 2,
@@ -5204,7 +5204,7 @@ E.Options.args.unitframe.args.groupUnits.args.boss = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
-				arena = L['Arena'],
+				arena = L["Arena"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'boss'); E:RefreshGUI(); end,
 		},
@@ -5257,7 +5257,7 @@ E.Options.args.unitframe.args.groupUnits.args.arena = {
 			name = L["Copy From"],
 			desc = L["Select a unit to copy settings from."],
 			values = {
-				boss = L['Boss'],
+				boss = L["Boss"],
 			},
 			set = function(info, value) UF:MergeUnitSettings(value, 'arena'); E:RefreshGUI(); end,
 		},

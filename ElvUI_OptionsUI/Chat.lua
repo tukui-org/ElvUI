@@ -174,7 +174,7 @@ E.Options.args.chat = {
 				resetHistory = {
 					order = 25,
 					type = "execute",
-					name = L['Reset Editbox History'],
+					name = L["Reset Editbox History"],
 					func = function() CH:ResetEditboxHistory() end
 				},
 				editBoxPosition = {
@@ -283,7 +283,7 @@ E.Options.args.chat = {
 						resetHistory = {
 							order = 2,
 							type = "execute",
-							name = L['Reset History'],
+							name = L["Reset History"],
 							func = function() CH:ResetHistory() end
 						},
 						historySize = {
