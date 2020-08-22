@@ -233,7 +233,7 @@ function NP:Update_Fader(nameplate)
 			nameplate:EnableElement('Fader')
 
 			nameplate.Fader:SetOption('MinAlpha', 0)
-			nameplate.Fader:SetOption('Smooth', 0.5)
+			nameplate.Fader:SetOption('Smooth', 0.3)
 			nameplate.Fader:SetOption('Hover', (nameplate == _G.ElvNP_Player and _G.ElvNP_StaticSecure) or true)
 			nameplate.Fader:SetOption('Power', true)
 			nameplate.Fader:SetOption('Health', true)
@@ -242,6 +242,7 @@ function NP:Update_Fader(nameplate)
 
 		nameplate.Fader:SetOption('PlayerTarget', db.visibility.showWithTarget)
 		nameplate.Fader:SetOption('Combat', db.visibility.showInCombat)
+		nameplate.Fader:SetOption('DelayAlpha', db.visibility.alphaDelay)
 		nameplate.Fader:SetOption('Delay', db.visibility.hideDelay)
 
 		nameplate.Fader:ForceUpdate()

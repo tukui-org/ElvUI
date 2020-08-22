@@ -138,7 +138,8 @@ function NP:SetCVars()
 	SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
 	SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
 	SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
-	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
+	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.alphaDelay)
+	SetCVar('NameplatePersonalHideDelaySeconds', NP.db.units.PLAYER.visibility.hideDelay)
 
 	-- the order of these is important !!
 	SetCVar('nameplateShowAll', NP.db.visibility.showAll and 1 or 0)
@@ -513,13 +514,12 @@ function NP:ConfigureAll()
 	local playerEnabled = NP.db.units.PLAYER.enable
 	local staticPosition = NP.db.units.PLAYER.useStaticPosition
 	local staticPlate = playerEnabled and staticPosition
-	local secureShown = _G.ElvNP_StaticSecure:IsShown()
 
-	if staticPlate and not secureShown then
+	if staticPlate then
 		E:EnableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
-	elseif secureShown then
+	else
 		NP:DisablePlate(_G.ElvNP_Player)
 		E:DisableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Disable()
@@ -651,7 +651,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.previousType = nameplate.frameType
 		end
 
-		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
+		if NP.db.fadeIn and nameplate.frameType ~= 'PLAYER' then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
@@ -768,6 +768,7 @@ function NP:Initialize()
 	StaticSecure:ClearAllPoints()
 	StaticSecure:SetPoint('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
 	StaticSecure:SetPoint('TOPLEFT', _G.ElvNP_PlayerMover)
+	StaticSecure:Hide()
 	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
 
 	oUF:Spawn('player', 'ElvNP_Test')

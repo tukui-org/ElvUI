@@ -5521,7 +5521,20 @@ E.Options.args.nameplate = {
 											name = L["Hide Delay"],
 											min = 0,
 											max = 20,
-											step = 1,
+											step = 0.01,
+											bigStep = 1,
+											disabled = function()
+												return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways
+											end
+										},
+										alphaDelay = {
+											order = 5,
+											type = 'range',
+											name = L["Delay Alpha"],
+											min = 0,
+											max = 1,
+											step = 0.01,
+											bigStep = 0.1,
 											disabled = function()
 												return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways
 											end
