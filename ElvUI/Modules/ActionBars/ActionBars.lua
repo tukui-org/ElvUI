@@ -36,9 +36,9 @@ local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
 local Masque = E.Masque
-local MasqueGroup = Masque and Masque:Group("ElvUI", "ActionBars")
+local MasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBars')
 
-local hiddenParent = CreateFrame("Frame", nil, _G.UIParent)
+local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
@@ -48,39 +48,39 @@ AB.handledbuttons = {} --List of all buttons that have been modified.
 AB.barDefaults = {
 	bar1 = {
 		page = 1,
-		bindButtons = "ACTIONBUTTON",
+		bindButtons = 'ACTIONBUTTON',
 		conditions = format("[overridebar] %d; [vehicleui] %d; [possessbar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;", GetOverrideBarIndex(), GetVehicleBarIndex(), GetVehicleBarIndex()),
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,191',
 	},
 	bar2 = {
 		page = 5,
-		bindButtons = "MULTIACTIONBAR2BUTTON",
-		conditions = "",
+		bindButtons = 'MULTIACTIONBAR2BUTTON',
+		conditions = '',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
 	},
 	bar3 = {
 		page = 6,
-		bindButtons = "MULTIACTIONBAR1BUTTON",
-		conditions = "",
+		bindButtons = 'MULTIACTIONBAR1BUTTON',
+		conditions = '',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,139',
 	},
 	bar4 = {
 		page = 4,
-		bindButtons = "MULTIACTIONBAR4BUTTON",
-		conditions = "",
-		position = "RIGHT,ElvUIParent,RIGHT,-4,0",
+		bindButtons = 'MULTIACTIONBAR4BUTTON',
+		conditions = '',
+		position = 'RIGHT,ElvUIParent,RIGHT,-4,0',
 	},
 	bar5 = {
 		page = 3,
-		bindButtons = "MULTIACTIONBAR3BUTTON",
-		conditions = "",
+		bindButtons = 'MULTIACTIONBAR3BUTTON',
+		conditions = '',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-92,57',
 	},
 	bar6 = {
 		page = 2,
-		bindButtons = "ELVUIBAR6BUTTON",
-		conditions = "",
-		position = "BOTTOM,ElvUI_Bar2,TOP,0,2",
+		bindButtons = 'ELVUIBAR6BUTTON',
+		conditions = '',
+		position = 'BOTTOM,ElvUI_Bar2,TOP,0,2',
 	},
 	bar7 = {
 		page = 7,
@@ -166,16 +166,16 @@ function AB:PositionAndSizeBar(barName)
 	bar:SetSize(barWidth, barHeight)
 
 	local horizontalGrowth, verticalGrowth
-	if point == "TOPLEFT" or point == "TOPRIGHT" then
-		verticalGrowth = "DOWN"
+	if point == 'TOPLEFT' or point == 'TOPRIGHT' then
+		verticalGrowth = 'DOWN'
 	else
-		verticalGrowth = "UP"
+		verticalGrowth = 'UP'
 	end
 
-	if point == "BOTTOMLEFT" or point == "TOPLEFT" then
-		horizontalGrowth = "RIGHT"
+	if point == 'BOTTOMLEFT' or point == 'TOPLEFT' then
+		horizontalGrowth = 'RIGHT'
 	else
-		horizontalGrowth = "LEFT"
+		horizontalGrowth = 'LEFT'
 	end
 
 	bar.mouseover = db.mouseover
@@ -202,17 +202,17 @@ function AB:PositionAndSizeBar(barName)
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
 		button:SetParent(bar)
 		button:ClearAllPoints()
-		button:SetAttribute("showgrid", 1)
+		button:SetAttribute('showgrid', 1)
 		button:SetSize(size, size)
 		button:EnableMouse(not db.clickThrough)
 
 		if i == 1 then
 			local x, y
-			if point == "BOTTOMLEFT" then
+			if point == 'BOTTOMLEFT' then
 				x, y = sideSpacing, sideSpacing
-			elseif point == "TOPRIGHT" then
+			elseif point == 'TOPRIGHT' then
 				x, y = -sideSpacing, -sideSpacing
-			elseif point == "TOPLEFT" then
+			elseif point == 'TOPLEFT' then
 				x, y = sideSpacing, -sideSpacing
 			else
 				x, y = -sideSpacing, sideSpacing
@@ -221,20 +221,20 @@ function AB:PositionAndSizeBar(barName)
 			button:SetPoint(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local y = -buttonSpacing
-			local buttonPoint, anchorPoint = "TOP", "BOTTOM"
+			local buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
 			if verticalGrowth == 'UP' then
 				y = buttonSpacing
-				buttonPoint = "BOTTOM"
-				anchorPoint = "TOP"
+				buttonPoint = 'BOTTOM'
+				anchorPoint = 'TOP'
 			end
 			button:SetPoint(buttonPoint, lastColumnButton, anchorPoint, 0, y)
 		else
 			local x = buttonSpacing
-			local buttonPoint, anchorPoint = "LEFT", "RIGHT"
+			local buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
 			if horizontalGrowth == 'LEFT' then
 				x = -buttonSpacing
-				buttonPoint = "RIGHT"
-				anchorPoint = "LEFT"
+				buttonPoint = 'RIGHT'
+				anchorPoint = 'LEFT'
 			end
 
 			button:SetPoint(buttonPoint, lastButton, anchorPoint, x, 0)
@@ -251,16 +251,16 @@ function AB:PositionAndSizeBar(barName)
 
 	if db.enabled or not bar.initialized then
 		if AB.barDefaults['bar'..bar.id].conditions:find("[form,noform]") then
-			bar:SetAttribute("newCondition", gsub(AB.barDefaults['bar'..bar.id].conditions, " %[form,noform%] 0; ", ""))
-			bar:SetAttribute("hasTempBar", true)
+			bar:SetAttribute('newCondition', gsub(AB.barDefaults['bar'..bar.id].conditions, " %[form,noform%] 0; ", ""))
+			bar:SetAttribute('hasTempBar', true)
 		else
-			bar:SetAttribute("hasTempBar", false)
+			bar:SetAttribute('hasTempBar', false)
 		end
 
 		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
-		RegisterStateDriver(bar, "visibility", visibility)
-		RegisterStateDriver(bar, "page", page)
-		bar:SetAttribute("page", page)
+		RegisterStateDriver(bar, 'visibility', visibility)
+		RegisterStateDriver(bar, 'page', page)
+		bar:SetAttribute('page', page)
 		bar:Show()
 
 		if not bar.initialized then
@@ -272,7 +272,7 @@ function AB:PositionAndSizeBar(barName)
 		E:EnableMover(bar.mover:GetName())
 	else
 		E:DisableMover(bar.mover:GetName())
-		UnregisterStateDriver(bar, "visibility")
+		UnregisterStateDriver(bar, 'visibility')
 		bar:Hide()
 	end
 
@@ -285,17 +285,17 @@ end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
-	bar:SetFrameRef("MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
+	bar:SetFrameRef('MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 
 	local point, anchor, attachTo, x, y = strsplit(',', AB.barDefaults['bar'..id].position)
 	bar:SetPoint(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
-	bar:SetFrameStrata("LOW")
+	bar:SetFrameStrata('LOW')
 
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
-	bar.backdrop:SetPoint("TOPLEFT", bar, "TOPLEFT", E.Spacing, -E.Spacing)
-	bar.backdrop:SetPoint("BOTTOMRIGHT", bar, "BOTTOMRIGHT", -E.Spacing, E.Spacing)
+	bar.backdrop:SetPoint('TOPLEFT', bar, 'TOPLEFT', E.Spacing, -E.Spacing)
+	bar.backdrop:SetPoint('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
 
 	bar.buttons = {}
 	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons
@@ -303,14 +303,14 @@ function AB:CreateBar(id)
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
 	for i = 1, 12 do
-		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName().."Button%d", i), bar, nil)
-		bar.buttons[i]:SetState(0, "action", i)
+		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName()..'Button%d', i), bar, nil)
+		bar.buttons[i]:SetState(0, 'action', i)
 		for k = 1, 14 do
-			bar.buttons[i]:SetState(k, "action", (k - 1) * 12 + i)
+			bar.buttons[i]:SetState(k, 'action', (k - 1) * 12 + i)
 		end
 
 		if i == 12 then
-			bar.buttons[i]:SetState(12, "custom", AB.customExitButton)
+			bar.buttons[i]:SetState(12, 'custom', AB.customExitButton)
 		end
 
 		if MasqueGroup and E.private.actionbar.masque.actionbars then
@@ -322,13 +322,13 @@ function AB:CreateBar(id)
 	end
 	AB:UpdateButtonConfig(bar, bar.bindButtons)
 
-	if AB.barDefaults['bar'..id].conditions:find("[form]") then
-		bar:SetAttribute("hasTempBar", true)
+	if AB.barDefaults['bar'..id].conditions:find('[form]') then
+		bar:SetAttribute('hasTempBar', true)
 	else
-		bar:SetAttribute("hasTempBar", false)
+		bar:SetAttribute('hasTempBar', false)
 	end
 
-	bar:SetAttribute("_onstate-page", [[
+	bar:SetAttribute('_onstate-page', [[
 		if HasTempShapeshiftActionBar() and self:GetAttribute("hasTempBar") then
 			newstate = GetTempShapeshiftBarIndex() or newstate
 		end
@@ -419,12 +419,12 @@ function AB:UpdateVehicleLeave()
 end
 
 function AB:ReassignBindings(event)
-	if event == "UPDATE_BINDINGS" then
+	if event == 'UPDATE_BINDINGS' then
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings()
 	end
 
-	AB:UnregisterEvent("PLAYER_REGEN_DISABLED")
+	AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
 
 	if InCombatLockdown() then return end
 
@@ -454,7 +454,7 @@ function AB:RemoveBindings()
 		end
 	end
 
-	AB:RegisterEvent("PLAYER_REGEN_DISABLED", "ReassignBindings")
+	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'ReassignBindings')
 end
 
 function AB:UpdateBar1Paging()

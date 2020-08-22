@@ -22,7 +22,7 @@ function AB:Extra_SetAlpha()
 	local alpha = E.db.actionbar.extraActionButton.alpha
 
 	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
-		local button = _G["ExtraActionButton"..i]
+		local button = _G['ExtraActionButton'..i]
 		if button then
 			button:SetAlpha(alpha)
 		end
@@ -76,7 +76,7 @@ function AB:SetupExtraButton()
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
-		local button = _G["ExtraActionButton"..i]
+		local button = _G['ExtraActionButton'..i]
 		if button then
 			button.noResize = true
 			button.pushed = true
@@ -101,7 +101,7 @@ function AB:SetupExtraButton()
 			if button.cooldown then
 				button.cooldown.CooldownOverride = 'actionbar'
 				E:RegisterCooldown(button.cooldown)
-				button:HookScript("OnShow", FixExtraActionCD)
+				button:HookScript('OnShow', FixExtraActionCD)
 			end
 		end
 	end
