@@ -142,8 +142,8 @@ function S:UpdateRecapButton()
 	-- we need to reset it with ours. blizzard will replace it when the button
 	-- is disabled. so, we don't have to worry about anything else.
 	if self and self.button4 and self.button4:IsEnabled() then
-		self.button4:SetScript("OnEnter", S.SetModifiedBackdrop)
-		self.button4:SetScript("OnLeave", S.SetOriginalBackdrop)
+		self.button4:SetScript('OnEnter', S.SetModifiedBackdrop)
+		self.button4:SetScript('OnLeave', S.SetOriginalBackdrop)
 	end
 end
 
@@ -171,13 +171,13 @@ function S:SkinPVPHonorXPBar(frame)
 			end
 			if XPBar.Bar.OverlayFrame and XPBar.Bar.OverlayFrame.Text then
 				XPBar.Bar.OverlayFrame.Text:ClearAllPoints()
-				XPBar.Bar.OverlayFrame.Text:SetPoint("CENTER", XPBar.Bar)
+				XPBar.Bar.OverlayFrame.Text:SetPoint('CENTER', XPBar.Bar)
 			end
 		end
 
 		if XPBar.PrestigeReward and XPBar.PrestigeReward.Accept then
 			XPBar.PrestigeReward.Accept:ClearAllPoints()
-			XPBar.PrestigeReward.Accept:SetPoint("TOP", XPBar.PrestigeReward, "BOTTOM", 0, 0)
+			XPBar.PrestigeReward.Accept:SetPoint('TOP', XPBar.PrestigeReward, 'BOTTOM', 0, 0)
 			if not XPBar.PrestigeReward.Accept.template then
 				S:HandleButton(XPBar.PrestigeReward.Accept)
 			end
@@ -186,20 +186,20 @@ function S:SkinPVPHonorXPBar(frame)
 		if XPBar.NextAvailable then
 			if XPBar.Bar then
 				XPBar.NextAvailable:ClearAllPoints()
-				XPBar.NextAvailable:SetPoint("LEFT", XPBar.Bar, "RIGHT", 0, -2)
+				XPBar.NextAvailable:SetPoint('LEFT', XPBar.Bar, 'RIGHT', 0, -2)
 			end
 
 			if not XPBar.NextAvailable.backdrop then
 				XPBar.NextAvailable:StripTextures()
 				XPBar.NextAvailable:CreateBackdrop()
 				if XPBar.NextAvailable.Icon then
-					XPBar.NextAvailable.backdrop:SetPoint("TOPLEFT", XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
-					XPBar.NextAvailable.backdrop:SetPoint("BOTTOMRIGHT", XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+					XPBar.NextAvailable.backdrop:SetPoint('TOPLEFT', XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
+					XPBar.NextAvailable.backdrop:SetPoint('BOTTOMRIGHT', XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
 				end
 			end
 
 			if XPBar.NextAvailable.Icon then
-				XPBar.NextAvailable.Icon:SetDrawLayer("ARTWORK")
+				XPBar.NextAvailable.Icon:SetDrawLayer('ARTWORK')
 				XPBar.NextAvailable.Icon:SetTexCoord(unpack(E.TexCoords))
 			end
 		end
@@ -237,9 +237,9 @@ end
 function S:SkinTalentListButtons(frame)
 	local name = frame and frame.GetName and frame:GetName()
 	if name then
-		local bcl = _G[name.."BtnCornerLeft"]
-		local bcr = _G[name.."BtnCornerRight"]
-		local bbb = _G[name.."ButtonBottomBorder"]
+		local bcl = _G[name..'BtnCornerLeft']
+		local bcr = _G[name..'BtnCornerRight']
+		local bbb = _G[name..'ButtonBottomBorder']
 		if bcl then bcl:SetTexture() end
 		if bcr then bcr:SetTexture() end
 		if bbb then bbb:SetTexture() end
@@ -248,8 +248,8 @@ function S:SkinTalentListButtons(frame)
 	if frame.Inset then
 		S:HandleInsetFrame(frame.Inset)
 
-		frame.Inset:SetPoint("TOPLEFT", 4, -60)
-		frame.Inset:SetPoint("BOTTOMRIGHT", -6, 26)
+		frame.Inset:SetPoint('TOPLEFT', 4, -60)
+		frame.Inset:SetPoint('BOTTOMRIGHT', -6, 26)
 	end
 end
 
@@ -311,10 +311,10 @@ function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, st
 
 	if button.isSkinned then return end
 
-	if button.SetNormalTexture then button:SetNormalTexture("") end
-	if button.SetHighlightTexture then button:SetHighlightTexture("") end
-	if button.SetPushedTexture then button:SetPushedTexture("") end
-	if button.SetDisabledTexture then button:SetDisabledTexture("") end
+	if button.SetNormalTexture then button:SetNormalTexture('') end
+	if button.SetHighlightTexture then button:SetHighlightTexture('') end
+	if button.SetPushedTexture then button:SetPushedTexture('') end
+	if button.SetDisabledTexture then button:SetDisabledTexture('') end
 
 	if strip then button:StripTextures() end
 	S:HandleBlizzardRegions(button)
@@ -400,12 +400,12 @@ end
 
 do --Tab Regions
 	local tabs = {
-		"LeftDisabled",
-		"MiddleDisabled",
-		"RightDisabled",
-		"Left",
-		"Middle",
-		"Right"
+		'LeftDisabled',
+		'MiddleDisabled',
+		'RightDisabled',
+		'Left',
+		'Middle',
+		'Right'
 	}
 
 	function S:HandleTab(tab, noBackdrop)
@@ -427,8 +427,8 @@ do --Tab Regions
 
 		if not noBackdrop then
 			tab:CreateBackdrop()
-			tab.backdrop:SetPoint("TOPLEFT", 10, E.PixelMode and -1 or -3)
-			tab.backdrop:SetPoint("BOTTOMRIGHT", -10, 3)
+			tab.backdrop:SetPoint('TOPLEFT', 10, E.PixelMode and -1 or -3)
+			tab.backdrop:SetPoint('BOTTOMRIGHT', -10, 3)
 		end
 	end
 end
@@ -458,7 +458,7 @@ end
 do
 	local btns = {MaximizeButton = 'up', MinimizeButton = 'down'}
 	function S:HandleMaxMinFrame(frame)
-		assert(frame, "does not exist.")
+		assert(frame, 'does not exist.')
 
 		if frame.isSkinned then return end
 
@@ -469,17 +469,17 @@ do
 			if button then
 				button:SetSize(14, 14)
 				button:ClearAllPoints()
-				button:SetPoint("CENTER")
+				button:SetPoint('CENTER')
 				button:SetHitRectInsets(1, 1, 1, 1)
 				button:GetHighlightTexture():Kill()
 
-				button:SetScript("OnEnter", function(btn)
+				button:SetScript('OnEnter', function(btn)
 					local r,g,b = unpack(E.media.rgbvaluecolor)
 					btn:GetNormalTexture():SetVertexColor(r,g,b)
 					btn:GetPushedTexture():SetVertexColor(r,g,b)
 				end)
 
-				button:SetScript("OnLeave", function(btn)
+				button:SetScript('OnLeave', function(btn)
 					btn:GetNormalTexture():SetVertexColor(1, 1, 1)
 					btn:GetPushedTexture():SetVertexColor(1, 1, 1)
 				end)
@@ -511,7 +511,7 @@ function S:HandleBlizzardRegions(frame, name, kill)
 end
 
 function S:HandleEditBox(frame)
-	assert(frame, "doesnt exist!")
+	assert(frame, 'doesnt exist!')
 
 	if frame.backdrop then return end
 
@@ -526,11 +526,11 @@ function S:HandleEditBox(frame)
 end
 
 function S:HandleDropDownBox(frame, width, pos)
-	assert(frame, "doesnt exist!")
+	assert(frame, 'doesnt exist!')
 
 	local frameName = frame.GetName and frame:GetName()
-	local button = frame.Button or frameName and (_G[frameName.."Button"] or _G[frameName.."_Button"])
-	local text = frameName and _G[frameName.."Text"] or frame.Text
+	local button = frame.Button or frameName and (_G[frameName..'Button'] or _G[frameName..'_Button'])
+	local text = frameName and _G[frameName..'Text'] or frame.Text
 	local icon = frame.Icon
 
 	if not width then
@@ -542,15 +542,15 @@ function S:HandleDropDownBox(frame, width, pos)
 
 	frame:CreateBackdrop()
 	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-	frame.backdrop:SetPoint("TOPLEFT", 20, -2)
-	frame.backdrop:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
+	frame.backdrop:SetPoint('TOPLEFT', 20, -2)
+	frame.backdrop:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
 
 	button:ClearAllPoints()
 
 	if pos then
-		button:SetPoint("TOPRIGHT", frame.Right, -20, -21)
+		button:SetPoint('TOPRIGHT', frame.Right, -20, -21)
 	else
-		button:SetPoint("RIGHT", frame, "RIGHT", -10, 3)
+		button:SetPoint('RIGHT', frame, 'RIGHT', -10, 3)
 	end
 
 	button.SetPoint = E.noop
@@ -558,11 +558,11 @@ function S:HandleDropDownBox(frame, width, pos)
 
 	if text then
 		text:ClearAllPoints()
-		text:SetPoint("RIGHT", button, "LEFT", -2, 0)
+		text:SetPoint('RIGHT', button, 'LEFT', -2, 0)
 	end
 
 	if icon then
-		icon:SetPoint("LEFT", 23, 0)
+		icon:SetPoint('LEFT', 23, 0)
 	end
 end
 
@@ -635,20 +635,20 @@ do
 						checkbox:SetDisabledTexture(disabled)
 					end
 				else
-					checkbox:SetDisabledTexture("")
+					checkbox:SetDisabledTexture('')
 				end
 			end)
 
-			hooksecurefunc(frame, "SetNormalTexture", function(checkbox, texPath)
-				if texPath ~= "" then checkbox:SetNormalTexture("") end
+			hooksecurefunc(frame, 'SetNormalTexture', function(checkbox, texPath)
+				if texPath ~= '' then checkbox:SetNormalTexture('') end
 			end)
-			hooksecurefunc(frame, "SetPushedTexture", function(checkbox, texPath)
-				if texPath ~= "" then checkbox:SetPushedTexture("") end
+			hooksecurefunc(frame, 'SetPushedTexture', function(checkbox, texPath)
+				if texPath ~= '' then checkbox:SetPushedTexture('') end
 			end)
-			hooksecurefunc(frame, "SetHighlightTexture", function(checkbox, texPath)
-				if texPath ~= "" then checkbox:SetHighlightTexture("") end
+			hooksecurefunc(frame, 'SetHighlightTexture', function(checkbox, texPath)
+				if texPath ~= '' then checkbox:SetHighlightTexture('') end
 			end)
-			hooksecurefunc(frame, "SetCheckedTexture", function(checkbox, texPath)
+			hooksecurefunc(frame, 'SetCheckedTexture', function(checkbox, texPath)
 				if texPath == E.Media.Textures.Melli or texPath == check then return end
 				if E.private.skins.checkBoxSkin then
 					checkbox:SetCheckedTexture(E.Media.Textures.Melli)
@@ -705,10 +705,10 @@ function S:HandleRadioButton(Button)
 	Disabled:SetVertexColor(.3, .3, .3)
 	Disabled:AddMaskTexture(OutsideMask)
 
-	hooksecurefunc(Button, "SetNormalTexture", function(f, t) if t ~= "" then f:SetNormalTexture("") end end)
-	hooksecurefunc(Button, "SetPushedTexture", function(f, t) if t ~= "" then f:SetPushedTexture("") end end)
-	hooksecurefunc(Button, "SetHighlightTexture", function(f, t) if t ~= "" then f:SetHighlightTexture("") end end)
-	hooksecurefunc(Button, "SetDisabledTexture", function(f, t) if t ~= "" then f:SetDisabledTexture("") end end)
+	hooksecurefunc(Button, 'SetNormalTexture', function(f, t) if t ~= '' then f:SetNormalTexture('') end end)
+	hooksecurefunc(Button, 'SetPushedTexture', function(f, t) if t ~= '' then f:SetPushedTexture('') end end)
+	hooksecurefunc(Button, 'SetHighlightTexture', function(f, t) if t ~= '' then f:SetHighlightTexture('') end end)
+	hooksecurefunc(Button, 'SetDisabledTexture', function(f, t) if t ~= '' then f:SetDisabledTexture('') end end)
 
 	Button.isSkinned = true
 end
@@ -757,13 +757,13 @@ local handleCloseButtonOnEnter = function(btn) if btn.Texture then btn.Texture:S
 local handleCloseButtonOnLeave = function(btn) if btn.Texture then btn.Texture:SetVertexColor(1, 1, 1) end end
 
 function S:HandleCloseButton(f, point, x, y)
-	assert(f, "doenst exist!")
+	assert(f, 'doenst exist!')
 
 	f:StripTextures()
 
 	if not f.Texture then
 		f.Texture = f:CreateTexture(nil, 'OVERLAY')
-		f.Texture:SetPoint("CENTER")
+		f.Texture:SetPoint('CENTER')
 		f.Texture:SetTexture(E.Media.Textures.Close)
 		f.Texture:SetSize(12, 12)
 		f:HookScript('OnEnter', handleCloseButtonOnEnter)
@@ -772,7 +772,7 @@ function S:HandleCloseButton(f, point, x, y)
 	end
 
 	if point then
-		f:SetPoint("TOPRIGHT", point, "TOPRIGHT", x or 2, y or 2)
+		f:SetPoint('TOPRIGHT', point, 'TOPRIGHT', x or 2, y or 2)
 	end
 end
 
@@ -877,7 +877,7 @@ function S:HandleShipFollowerPage(followerTab)
 	for i = 1, #equipment do
 		local icon = equipment[i].Icon
 		local border = equipment[i].Border
-		border:SetAtlas("ShipMission_ShipFollower-TypeFrame") -- This border is ugly though, use the traits border instead
+		border:SetAtlas('ShipMission_ShipFollower-TypeFrame') -- This border is ugly though, use the traits border instead
 		-- The landing page icons display inner borders
 		if followerTab.isLandingPage then
 			icon:SetTexCoord(unpack(E.TexCoords))
@@ -898,7 +898,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 
 				if button.Category then
 					button.Category:ClearAllPoints()
-					button.Category:SetPoint("TOP", button, "TOP", 0, -4)
+					button.Category:SetPoint('TOP', button, 'TOP', 0, -4)
 				end
 
 				if fl and not fl.backdrop then
@@ -912,8 +912,8 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 					local hl = fl:GetHighlightTexture()
 					hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 					hl:ClearAllPoints()
-					hl:SetPoint("TOPLEFT", 1, -1)
-					hl:SetPoint("BOTTOMRIGHT", -1, 1)
+					hl:SetPoint('TOPLEFT', 1, -1)
+					hl:SetPoint('BOTTOMRIGHT', -1, 1)
 
 					if fl.Counters then
 						for y = 1, #fl.Counters do
@@ -970,7 +970,7 @@ function S:HandleFollowerListOnUpdateData(frame)
 	S.FollowerListUpdateDataFrames[frame] = 0 -- use this variable to reduce calls to HandleFollowerListOnUpdateDataFunc
 
 	local FollowerListUpdateDataLastOffset = nil
-	hooksecurefunc(_G[frame], "UpdateData", function(dataFrame)
+	hooksecurefunc(_G[frame], 'UpdateData', function(dataFrame)
 		if not S.FollowerListUpdateDataFrames[frame] or (not dataFrame or not dataFrame.listScroll) then return end
 		local offset = _G.HybridScrollFrame_GetOffset(dataFrame.listScroll)
 		local Buttons = dataFrame.listScroll.buttons
@@ -1073,13 +1073,13 @@ function S:HandleTooltipBorderedFrame(frame)
 end
 
 function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)
-	assert(frame, "HandleIconSelectionFrame: frame argument missing")
-	assert(numIcons and type(numIcons) == "number", "HandleIconSelectionFrame: numIcons argument missing or not a number")
-	assert(buttonNameTemplate and type(buttonNameTemplate) == "string", "HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string")
+	assert(frame, 'HandleIconSelectionFrame: frame argument missing')
+	assert(numIcons and type(numIcons) == 'number', 'HandleIconSelectionFrame: numIcons argument missing or not a number')
+	assert(buttonNameTemplate and type(buttonNameTemplate) == 'string', 'HandleIconSelectionFrame: buttonNameTemplate argument missing or not a string')
 
 	local frameName = frameNameOverride or frame:GetName() --We need override in case Blizzard fucks up the naming (guild bank)
-	local scrollFrame = _G[frameName.."ScrollFrame"]
-	local editBox = _G[frameName.."EditBox"]
+	local scrollFrame = _G[frameName..'ScrollFrame']
+	local editBox = _G[frameName..'EditBox']
 
 	frame:StripTextures()
 	frame.BorderBox:StripTextures()
@@ -1097,11 +1097,11 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 			button:CreateBackdrop()
 			button:StyleButton(true)
 
-			local icon = _G[buttonNameTemplate..i.."Icon"]
+			local icon = _G[buttonNameTemplate..i..'Icon']
 			if icon then
 				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:SetPoint("TOPLEFT", 1, -1)
-				icon:SetPoint("BOTTOMRIGHT", -1, 1)
+				icon:SetPoint('TOPLEFT', 1, -1)
+				icon:SetPoint('BOTTOMRIGHT', -1, 1)
 			end
 		end
 	end
@@ -1144,8 +1144,8 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 		btn:SetSize(20, 20)
 		Disabled:SetVertexColor(.5, .5, .5)
 		btn.Texture = Normal
-		btn:HookScript("OnEnter", handleCloseButtonOnEnter)
-		btn:HookScript("OnLeave", handleCloseButtonOnLeave)
+		btn:HookScript('OnEnter', handleCloseButtonOnEnter)
+		btn:HookScript('OnLeave', handleCloseButtonOnLeave)
 	else
 		btn:SetSize(18, 18)
 		Disabled:SetVertexColor(.3, .3, .3)
@@ -1203,8 +1203,8 @@ function S:SkinStatusBarWidget(widgetFrame)
 			bar:CreateBackdrop()
 		end
 
-		bar.backdrop:SetPoint("TOPLEFT", -2, 2)
-		bar.backdrop:SetPoint("BOTTOMRIGHT", 2, -2)
+		bar.backdrop:SetPoint('TOPLEFT', -2, 2)
+		bar.backdrop:SetPoint('BOTTOMRIGHT', 2, -2)
 
 		bar.IsSkinned = true
 	end
@@ -1267,8 +1267,8 @@ function S:SkinSpellDisplay(widgetFrame)
 
 		local x = E.PixelMode and 1 or 2
 		spell.Icon.backdrop:ClearAllPoints()
-		spell.Icon.backdrop:SetPoint("TOPLEFT", spell.Icon, -x, x)
-		spell.Icon.backdrop:SetPoint("BOTTOMRIGHT", spell.Icon, x, -x)
+		spell.Icon.backdrop:SetPoint('TOPLEFT', spell.Icon, -x, x)
+		spell.Icon.backdrop:SetPoint('BOTTOMRIGHT', spell.Icon, x, -x)
 	end
 end
 
@@ -1287,24 +1287,24 @@ end
 do
 	local W = Enum.UIWidgetVisualizationType
 	S.WidgetSkinningFuncs = {
-		[W.IconAndText] = "SkinIconAndTextWidget",
-		[W.CaptureBar] = "SkinCaptureBarWidget",
-		[W.StatusBar] = "SkinStatusBarWidget",
-		[W.DoubleStatusBar] = "SkinDoubleStatusBarWidget",
-		[W.IconTextAndBackground] = "SkinIconTextAndBackgroundWidget",
-		[W.DoubleIconAndText] = "SkinDoubleIconAndTextWidget",
-		[W.StackedResourceTracker] = "SkinStackedResourceTrackerWidget",
-		[W.IconTextAndCurrencies] = "SkinIconTextAndCurrenciesWidget",
-		[W.TextWithState] = "SkinTextWithStateWidget",
-		[W.HorizontalCurrencies] = "SkinHorizontalCurrenciesWidget",
-		[W.BulletTextList] = "SkinBulletTextListWidget",
-		[W.ScenarioHeaderCurrenciesAndBackground] = "SkinScenarioHeaderCurrenciesAndBackgroundWidget",
-		[W.TextureAndText] = "SkinTextureAndTextWidget",
-		[W.SpellDisplay] = "SkinSpellDisplay",
-		[W.DoubleStateIconRow] = "SkinDoubleStateIconRow",
-		[W.TextureAndTextRow] = "SkinTextureAndTextRowWidget",
-		[W.ZoneControl] = "SkinZoneControl",
-		[W.CaptureZone] = "SkinCaptureZone"
+		[W.IconAndText] = 'SkinIconAndTextWidget',
+		[W.CaptureBar] = 'SkinCaptureBarWidget',
+		[W.StatusBar] = 'SkinStatusBarWidget',
+		[W.DoubleStatusBar] = 'SkinDoubleStatusBarWidget',
+		[W.IconTextAndBackground] = 'SkinIconTextAndBackgroundWidget',
+		[W.DoubleIconAndText] = 'SkinDoubleIconAndTextWidget',
+		[W.StackedResourceTracker] = 'SkinStackedResourceTrackerWidget',
+		[W.IconTextAndCurrencies] = 'SkinIconTextAndCurrenciesWidget',
+		[W.TextWithState] = 'SkinTextWithStateWidget',
+		[W.HorizontalCurrencies] = 'SkinHorizontalCurrenciesWidget',
+		[W.BulletTextList] = 'SkinBulletTextListWidget',
+		[W.ScenarioHeaderCurrenciesAndBackground] = 'SkinScenarioHeaderCurrenciesAndBackgroundWidget',
+		[W.TextureAndText] = 'SkinTextureAndTextWidget',
+		[W.SpellDisplay] = 'SkinSpellDisplay',
+		[W.DoubleStateIconRow] = 'SkinDoubleStateIconRow',
+		[W.TextureAndTextRow] = 'SkinTextureAndTextRowWidget',
+		[W.ZoneControl] = 'SkinZoneControl',
+		[W.CaptureZone] = 'SkinCaptureZone'
 	}
 end
 
@@ -1424,7 +1424,7 @@ function S:Initialize()
 	end
 
 	do -- Credits ShestakUI
-		hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, "Setup", function(widgetInfo)
+		hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', function(widgetInfo)
 			widgetInfo.LeftLine:SetAlpha(0)
 			widgetInfo.RightLine:SetAlpha(0)
 			widgetInfo.BarBackground:SetAlpha(0)
@@ -1442,8 +1442,8 @@ function S:Initialize()
 
 			if not widgetInfo.backdrop then
 				widgetInfo:CreateBackdrop()
-				widgetInfo.backdrop:SetPoint("TOPLEFT", widgetInfo.LeftBar, -2, 2)
-				widgetInfo.backdrop:SetPoint("BOTTOMRIGHT", widgetInfo.RightBar, 2, -2)
+				widgetInfo.backdrop:SetPoint('TOPLEFT', widgetInfo.LeftBar, -2, 2)
+				widgetInfo.backdrop:SetPoint('BOTTOMRIGHT', widgetInfo.RightBar, 2, -2)
 			end
 		end)
 
@@ -1463,7 +1463,7 @@ function S:Initialize()
 							bar.SparkGlow:SetAlpha(0)
 							bar.BorderGlow:SetAlpha(0)
 
-							bar:CreateBackdrop("Transparent")
+							bar:CreateBackdrop('Transparent')
 
 							bar.IsSkinned = true
 						end

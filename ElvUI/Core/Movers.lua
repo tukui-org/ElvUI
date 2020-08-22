@@ -440,7 +440,7 @@ function E:EnableMover(name)
 end
 
 function E:ResetMovers(arg)
-	local all = not arg or arg == ""
+	local all = not arg or arg == ''
 	if all then self.db.movers = nil end
 
 	for name, holder in pairs(E.CreatedMovers) do

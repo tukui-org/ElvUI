@@ -13,16 +13,16 @@ local displayString, lastPanel = ''
 local movementSpeedText, beforeFalling = L["Mov. Speed:"]
 
 local function OnEvent(self)
-	local _, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed("player")
+	local _, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed('player')
 
 	local speed = runSpeed
-	if IsSwimming("player") then
+	if IsSwimming('player') then
 		speed = swimSpeed
-	elseif IsFlying("player") then
+	elseif IsFlying('player') then
 		speed = flightSpeed
 	end
 
-	if IsFalling("player") then
+	if IsFalling('player') then
 		speed = beforeFalling or speed
 	else
 		beforeFalling = speed
@@ -33,10 +33,10 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s ", hex, "%.0f%%|r")
+	displayString = strjoin('', '%s ', hex, '%.0f%%|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Movement Speed', STAT_CATEGORY_ENHANCEMENTS, {"UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "UNIT_SPELL_HASTE"}, OnEvent, nil, nil, nil, nil, _G.STAT_MOVEMENT_SPEED)
+DT:RegisterDatatext('Movement Speed', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE', 'UNIT_SPELL_HASTE'}, OnEvent, nil, nil, nil, nil, _G.STAT_MOVEMENT_SPEED)

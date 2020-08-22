@@ -36,7 +36,7 @@ end
 function S:BlizzardOptions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
-	-- here we reskin all "normal" buttons
+	-- here we reskin all 'normal' buttons
 	S:HandleButton(_G.ReadyCheckFrameYesButton)
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 	S:HandleButton(_G.RolePollPopupAcceptButton)
@@ -48,16 +48,16 @@ function S:BlizzardOptions()
 	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameYesButton:ClearAllPoints()
 	_G.ReadyCheckFrameNoButton:ClearAllPoints()
-	_G.ReadyCheckFrameYesButton:SetPoint("TOPRIGHT", ReadyCheckFrame, "CENTER", -3, -5)
-	_G.ReadyCheckFrameNoButton:SetPoint("TOPLEFT", ReadyCheckFrame, "CENTER", 3, -5)
+	_G.ReadyCheckFrameYesButton:SetPoint('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
+	_G.ReadyCheckFrameNoButton:SetPoint('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
 	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameText:ClearAllPoints()
-	_G.ReadyCheckFrameText:SetPoint("TOP", 0, -15)
+	_G.ReadyCheckFrameText:SetPoint('TOP', 0, -15)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript("OnShow", function(rcf)
+	ReadyCheckFrame:HookScript('OnShow', function(rcf)
 		-- bug fix, don't show it if player is initiator
-		if rcf.initiator and UnitIsUnit("player", rcf.initiator) then
+		if rcf.initiator and UnitIsUnit('player', rcf.initiator) then
 			rcf:Hide()
 		end
 	end)
@@ -67,13 +67,13 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrame:SetClampedToScreen(true)
 	_G.InterfaceOptionsFrame:SetMovable(true)
 	_G.InterfaceOptionsFrame:EnableMouse(true)
-	_G.InterfaceOptionsFrame:RegisterForDrag("LeftButton", "RightButton")
-	_G.InterfaceOptionsFrame:SetScript("OnDragStart", function(iof)
+	_G.InterfaceOptionsFrame:RegisterForDrag('LeftButton', 'RightButton')
+	_G.InterfaceOptionsFrame:SetScript('OnDragStart', function(iof)
 		if InCombatLockdown() then return end
 		iof:StartMoving()
 		iof.isMoving = true
 	end)
-	_G.InterfaceOptionsFrame:SetScript("OnDragStop", function(iof)
+	_G.InterfaceOptionsFrame:SetScript('OnDragStop', function(iof)
 		iof:StopMovingOrSizing()
 		iof.isMoving = false
 	end)
@@ -82,9 +82,9 @@ function S:BlizzardOptions()
 	local ChatConfigFrame = _G.ChatConfigFrame
 	ChatConfigFrame.Header = ChatConfigFrame.Header
 	ChatConfigFrame.Header:StripTextures()
-	ChatConfigFrame.Header:SetPoint("TOP", ChatConfigFrame, 0, 0)
+	ChatConfigFrame.Header:SetPoint('TOP', ChatConfigFrame, 0, 0)
 
-	hooksecurefunc(_G.ChatConfigFrameChatTabManager, "UpdateWidth", function(tm)
+	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(tm)
 		for tab in tm.tabPool:EnumerateActive() do
 			if not tab.IsSkinned then
 				tab:StripTextures()
@@ -167,42 +167,42 @@ function S:BlizzardOptions()
 	end
 
 	for i in pairs(_G.COMBAT_CONFIG_TABS) do
-		S:HandleTab(_G["CombatConfigTab"..i])
-		_G["CombatConfigTab"..i].backdrop:SetPoint("TOPLEFT", 0, -10)
-		_G["CombatConfigTab"..i].backdrop:SetPoint("BOTTOMRIGHT", -2, 3)
-		_G["CombatConfigTab"..i.."Text"]:SetPoint("BOTTOM", 0, 10)
+		S:HandleTab(_G['CombatConfigTab'..i])
+		_G['CombatConfigTab'..i].backdrop:SetPoint('TOPLEFT', 0, -10)
+		_G['CombatConfigTab'..i].backdrop:SetPoint('BOTTOMRIGHT', -2, 3)
+		_G['CombatConfigTab'..i..'Text']:SetPoint('BOTTOM', 0, 10)
 	end
 
 	_G.CombatConfigTab1:ClearAllPoints()
-	_G.CombatConfigTab1:SetPoint("BOTTOMLEFT", _G.ChatConfigBackgroundFrame, "TOPLEFT", 6, -2)
+	_G.CombatConfigTab1:SetPoint('BOTTOMLEFT', _G.ChatConfigBackgroundFrame, 'TOPLEFT', 6, -2)
 
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
 	_G.ChatConfigMoveFilterUpButton:SetSize(19, 19)
 	_G.ChatConfigMoveFilterDownButton:SetSize(19, 19)
-	_G.ChatConfigMoveFilterUpButton:SetPoint("TOPLEFT", "$parent", "BOTTOMLEFT", 0, -3)
-	_G.ChatConfigMoveFilterDownButton:SetPoint("LEFT", _G.ChatConfigMoveFilterUpButton, "RIGHT", 3, 0)
+	_G.ChatConfigMoveFilterUpButton:SetPoint('TOPLEFT', '$parent', 'BOTTOMLEFT', 0, -3)
+	_G.ChatConfigMoveFilterDownButton:SetPoint('LEFT', _G.ChatConfigMoveFilterUpButton, 'RIGHT', 3, 0)
 
-	_G.ChatConfigFrameOkayButton:SetPoint("RIGHT", "$parentCancelButton", "RIGHT", -1, -3)
-	_G.ChatConfigFrameDefaultButton:SetPoint("BOTTOMLEFT", 12, 10)
-	_G.ChatConfigCombatSettingsFiltersDeleteButton:SetPoint("TOPRIGHT", "$parent", "BOTTOMRIGHT", -3, -1)
-	_G.ChatConfigCombatSettingsFiltersAddFilterButton:SetPoint("RIGHT", "$parentDeleteButton", "LEFT", -2, 0)
-	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:SetPoint("RIGHT", "$parentAddFilterButton", "LEFT", -2, 0)
+	_G.ChatConfigFrameOkayButton:SetPoint('RIGHT', '$parentCancelButton', 'RIGHT', -1, -3)
+	_G.ChatConfigFrameDefaultButton:SetPoint('BOTTOMLEFT', 12, 10)
+	_G.ChatConfigCombatSettingsFiltersDeleteButton:SetPoint('TOPRIGHT', '$parent', 'BOTTOMRIGHT', -3, -1)
+	_G.ChatConfigCombatSettingsFiltersAddFilterButton:SetPoint('RIGHT', '$parentDeleteButton', 'LEFT', -2, 0)
+	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:SetPoint('RIGHT', '$parentAddFilterButton', 'LEFT', -2, 0)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
 		if not _G.FCF_GetCurrentChatFrame() then return end
 
 		for index in ipairs(frame.checkBoxTable) do
-			local checkBoxNameString = frame:GetName().."CheckBox"
+			local checkBoxNameString = frame:GetName()..'CheckBox'
 			local checkBoxName = checkBoxNameString..index
 			local checkBox = _G[checkBoxName]
-			local check = _G[checkBoxName.."Check"]
+			local check = _G[checkBoxName..'Check']
 			if checkBox and not checkBox.isSkinned then
 				checkBox:StripTextures()
 				S:HandleCheckBox(check)
-				if _G[checkBoxName.."ColorClasses"] then
-					S:HandleCheckBox(_G[checkBoxName.."ColorClasses"])
+				if _G[checkBoxName..'ColorClasses'] then
+					S:HandleCheckBox(_G[checkBoxName..'ColorClasses'])
 				end
 				checkBox.isSkinned = true
 			end
@@ -211,13 +211,13 @@ function S:BlizzardOptions()
 
 	hooksecurefunc('ChatConfig_UpdateTieredCheckboxes', function(frame, index)
 		local group = frame.checkBoxTable[index]
-		local checkBox = _G[frame:GetName().."CheckBox"..index]
+		local checkBox = _G[frame:GetName()..'CheckBox'..index]
 		if checkBox then
 			S:HandleCheckBox(checkBox)
 		end
 		if group.subTypes then
 			for k in ipairs(group.subTypes) do
-				S:HandleCheckBox(_G[frame:GetName().."CheckBox"..index.."_"..k])
+				S:HandleCheckBox(_G[frame:GetName()..'CheckBox'..index..'_'..k])
 			end
 		end
 	end)
@@ -226,7 +226,7 @@ function S:BlizzardOptions()
 		if not _G.FCF_GetCurrentChatFrame() then return end
 
 		for index in ipairs(frame.swatchTable) do
-			_G[frame:GetName().."Swatch"..index]:StripTextures()
+			_G[frame:GetName()..'Swatch'..index]:StripTextures()
 		end
 	end)
 
@@ -284,12 +284,12 @@ function S:BlizzardOptions()
 	InterfaceOptionsFrame.Header = InterfaceOptionsFrame.Header
 	InterfaceOptionsFrame.Header:StripTextures()
 	InterfaceOptionsFrame.Header:ClearAllPoints()
-	InterfaceOptionsFrame.Header:SetPoint("TOP", InterfaceOptionsFrame, 0, 0)
+	InterfaceOptionsFrame.Header:SetPoint('TOP', InterfaceOptionsFrame, 0, 0)
 
 	local VideoOptionsFrame = _G.VideoOptionsFrame
 	VideoOptionsFrame.Header:StripTextures()
 	VideoOptionsFrame.Header:ClearAllPoints()
-	VideoOptionsFrame.Header:SetPoint("TOP", VideoOptionsFrame, 0, 0)
+	VideoOptionsFrame.Header:SetPoint('TOP', VideoOptionsFrame, 0, 0)
 
 	for _, Frame in pairs(OptionsFrameBackdrops) do
 		Frame:StripTextures()
@@ -355,7 +355,7 @@ function S:BlizzardOptions()
 	AudioOptionsFrame.Header = AudioOptionsFrame.Header
 	AudioOptionsFrame.Header:SetAlpha(0)
 	AudioOptionsFrame.Header:ClearAllPoints()
-	AudioOptionsFrame.Header:SetPoint("TOP", AudioOptionsFrame, 0, 0)
+	AudioOptionsFrame.Header:SetPoint('TOP', AudioOptionsFrame, 0, 0)
 
 	-- Toggle Test Audio Button - Wow 8.0
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
@@ -367,11 +367,11 @@ function S:BlizzardOptions()
 	E:RegisterStatusBar(VUMeter.Status)
 
 	-- PushToTalk KeybindButton - Wow 8.0
-	hooksecurefunc("AudioOptionsVoicePanel_InitializeCommunicationModeUI", S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
+	hooksecurefunc('AudioOptionsVoicePanel_InitializeCommunicationModeUI', S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
 
 	--What's New
 	local SplashFrame = _G.SplashFrame
-	SplashFrame:CreateBackdrop("Transparent")
+	SplashFrame:CreateBackdrop('Transparent')
 	SplashFrame.Header:FontTemplate(nil, 22)
 	S:HandleButton(SplashFrame.BottomCloseButton)
 	S:HandleCloseButton(SplashFrame.TopCloseButton)

@@ -28,11 +28,11 @@ local function UIWidgets()
 	local belowMiniMapcontainer = _G.UIWidgetBelowMinimapContainerFrame
 
 	local topCenterHolder = CreateFrame('Frame', 'TopCenterContainerHolder', E.UIParent)
-	topCenterHolder:SetPoint("TOP", E.UIParent, "TOP", 0, -30)
+	topCenterHolder:SetPoint('TOP', E.UIParent, 'TOP', 0, -30)
 	topCenterHolder:SetSize(10, 58)
 
 	local belowMiniMapHolder = CreateFrame('Frame', 'BelowMinimapContainerHolder', E.UIParent)
-	belowMiniMapHolder:SetPoint("TOPRIGHT", _G.Minimap, "BOTTOMRIGHT", 0, -16)
+	belowMiniMapHolder:SetPoint('TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16)
 	belowMiniMapHolder:SetSize(128, 40)
 
 	E:CreateMover(topCenterHolder, 'TopCenterContainerMover', L["UIWidgetTopContainer"], nil, nil, nil,'ALL,SOLO')

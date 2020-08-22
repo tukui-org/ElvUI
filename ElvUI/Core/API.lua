@@ -228,7 +228,7 @@ do
 
 		local rank, maxRank
 		if widget.overrideBarText then
-			rank = tonumber(strmatch(widget.overrideBarText, "%d+"))
+			rank = tonumber(strmatch(widget.overrideBarText, '%d+'))
 			maxRank = rank == E.MaxWidgetInfoRank
 		end
 

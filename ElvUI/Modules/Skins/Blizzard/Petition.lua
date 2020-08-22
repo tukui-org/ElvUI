@@ -24,13 +24,13 @@ function S:PetitionFrame()
 	_G.PetitionFrameMemberTitle:SetTextColor(1, 1, 0)
 
 	for i = 1, 9 do
-		_G["PetitionFrameMemberName"..i]:SetTextColor(1, 1, 1)
+		_G['PetitionFrameMemberName'..i]:SetTextColor(1, 1, 1)
 	end
 
 	_G.PetitionFrameInstructions:SetTextColor(1, 1, 1)
 
-	_G.PetitionFrameRenameButton:SetPoint("LEFT", _G.PetitionFrameRequestButton, "RIGHT", 3, 0)
-	_G.PetitionFrameRenameButton:SetPoint("RIGHT", _G.PetitionFrameCancelButton, "LEFT", -3, 0)
+	_G.PetitionFrameRenameButton:SetPoint('LEFT', _G.PetitionFrameRequestButton, 'RIGHT', 3, 0)
+	_G.PetitionFrameRenameButton:SetPoint('RIGHT', _G.PetitionFrameCancelButton, 'LEFT', -3, 0)
 end
 
 S:AddCallback('PetitionFrame')

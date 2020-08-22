@@ -130,9 +130,9 @@ function UF:Configure_HealComm(frame)
 		if not width or width <= 0 then width = health.WIDTH end
 		if not height or height <= 0 then height = health.HEIGHT end
 
-		if orientation == "HORIZONTAL" then
-			local p1 = reverseFill and "RIGHT" or "LEFT"
-			local p2 = reverseFill and "LEFT" or "RIGHT"
+		if orientation == 'HORIZONTAL' then
+			local p1 = reverseFill and 'RIGHT' or 'LEFT'
+			local p2 = reverseFill and 'LEFT' or 'RIGHT'
 
 			local barHeight = db.height
 			local anchor = db.anchorPoint
@@ -164,11 +164,11 @@ function UF:Configure_HealComm(frame)
 			end
 
 		else
-			local p1 = reverseFill and "TOP" or "BOTTOM"
-			local p2 = reverseFill and "BOTTOM" or "TOP"
+			local p1 = reverseFill and 'TOP' or 'BOTTOM'
+			local p2 = reverseFill and 'BOTTOM' or 'TOP'
 
 			local barWidth = db.height -- this is really width now not height
-			local anchor = (db.anchorPoint == "BOTTOM" and "RIGHT") or (db.anchorPoint == "TOP" and "LEFT") or db.anchorPoint -- convert this for vertical too
+			local anchor = (db.anchorPoint == 'BOTTOM' and 'RIGHT') or (db.anchorPoint == 'TOP' and 'LEFT') or db.anchorPoint -- convert this for vertical too
 			if barWidth == -1 or barWidth > width then barWidth = width end
 			pred.anchor, pred.anchor1, pred.anchor2 = anchor, p1, p2
 

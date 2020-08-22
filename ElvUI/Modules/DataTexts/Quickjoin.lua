@@ -21,7 +21,7 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddLine(QUICK_JOIN, nil, nil, nil, true)
-	DT.tooltip:AddLine(" ")
+	DT.tooltip:AddLine(' ')
 
 	for name, activity in pairs(quickJoin) do
 		DT.tooltip:AddDoubleLine(name, activity, nil, nil, nil, 1, 1, 1)
@@ -64,7 +64,7 @@ local function Update(lastPanel)
 
 				activity = activityName or UNKNOWN
 				if numQueues > 1 then
-					activity = format("[+%s]%s", numQueues - 1, activity)
+					activity = format('[+%s]%s', numQueues - 1, activity)
 				end
 			elseif firstQueue then
 				local output, queueCount = '', 0
@@ -83,7 +83,7 @@ local function Update(lastPanel)
 				end
 				if output ~= '' then
 					if queueCount > 0 then
-						activity = format("%s[+%s]", output, queueCount)
+						activity = format('%s[+%s]', output, queueCount)
 					else
 						activity = output
 					end
@@ -112,9 +112,9 @@ local function OnEvent(self, event)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%s|r")
+	displayString = strjoin('', '%s: ', hex, '%s|r')
 	if lastPanel then OnEvent(lastPanel) end
 end
 
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
-DT:RegisterDatatext('Quick Join', _G.SOCIAL_LABEL, {"SOCIAL_QUEUE_UPDATE"}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)
+DT:RegisterDatatext('Quick Join', _G.SOCIAL_LABEL, {'SOCIAL_QUEUE_UPDATE'}, OnEvent, nil, ToggleQuickJoinPanel, OnEnter, nil, QUICK_JOIN)

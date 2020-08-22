@@ -9,7 +9,7 @@ function S:Blizzard_AzeriteUI()
 	_G.AzeriteEmpoweredItemUI:StripTextures()
 	_G.AzeriteEmpoweredItemUIPortrait:Hide()
 	_G.AzeriteEmpoweredItemUI.ClipFrame.BackgroundFrame.Bg:Hide()
-	_G.AzeriteEmpoweredItemUI:CreateBackdrop("Transparent")
+	_G.AzeriteEmpoweredItemUI:CreateBackdrop('Transparent')
 	S:HandleCloseButton(_G.AzeriteEmpoweredItemUICloseButton)
 end
 

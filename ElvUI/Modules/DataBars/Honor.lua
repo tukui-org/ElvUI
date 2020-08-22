@@ -16,12 +16,12 @@ local HONOR = HONOR
 
 function DB:UpdateHonor(event, unit)
 	if not DB.db.honor.enable then return end
-	if event == "PLAYER_FLAGS_CHANGED" and unit ~= "player" then return end
+	if event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player' then return end
 
 	local bar = DB.honorBar
 
-	if (DB.db.honor.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) or
-		(DB.db.honor.hideOutsidePvP and not UnitIsPVP("player")) or (DB.db.honor.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
+	if (DB.db.honor.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or
+		(DB.db.honor.hideOutsidePvP and not UnitIsPVP('player')) or (DB.db.honor.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
 		bar:Hide()
 	else
 		bar:Show()
@@ -32,8 +32,8 @@ function DB:UpdateHonor(event, unit)
 			E:UnregisterObjectForVehicleLock(bar)
 		end
 
-		local cur = UnitHonor("player")
-		local max = UnitHonorMax("player")
+		local cur = UnitHonor('player')
+		local max = UnitHonorMax('player')
 
 		--Guard against division by zero, which appears to be an issue when zoning in/out of dungeons
 		if max == 0 then max = 1 end
@@ -73,9 +73,9 @@ function DB:HonorBar_OnEnter()
 	GameTooltip:ClearLines()
 	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
-	local cur = UnitHonor("player")
-	local max = UnitHonorMax("player")
-	local level = UnitHonorLevel("player")
+	local cur = UnitHonor('player')
+	local max = UnitHonorMax('player')
+	local level = UnitHonorLevel('player')
 
 	GameTooltip:AddLine(HONOR)
 
@@ -97,9 +97,9 @@ function DB:UpdateHonorDimensions()
 	DB.honorBar:SetHeight(DB.db.honor.height)
 	DB.honorBar.statusBar:SetOrientation(DB.db.honor.orientation)
 	DB.honorBar.statusBar:SetReverseFill(DB.db.honor.reverseFill)
-	DB.honorBar.text:FontTemplate(LSM:Fetch("font", DB.db.honor.font), DB.db.honor.textSize, DB.db.honor.fontOutline)
+	DB.honorBar.text:FontTemplate(LSM:Fetch('font', DB.db.honor.font), DB.db.honor.textSize, DB.db.honor.fontOutline)
 
-	if DB.db.honor.orientation == "HORIZONTAL" then
+	if DB.db.honor.orientation == 'HORIZONTAL' then
 		DB.honorBar.statusBar:SetRotatesTexture(false)
 	else
 		DB.honorBar.statusBar:SetRotatesTexture(true)
@@ -114,11 +114,11 @@ end
 
 function DB:EnableDisable_HonorBar()
 	if DB.db.honor.enable then
-		DB:RegisterEvent("HONOR_XP_UPDATE", "UpdateHonor")
+		DB:RegisterEvent('HONOR_XP_UPDATE', 'UpdateHonor')
 		DB:UpdateHonor()
 		E:EnableMover(DB.honorBar.mover:GetName())
 	else
-		DB:UnregisterEvent("HONOR_XP_UPDATE")
+		DB:UnregisterEvent('HONOR_XP_UPDATE')
 		DB.honorBar:Hide()
 		E:DisableMover(DB.honorBar.mover:GetName())
 	end
@@ -129,15 +129,15 @@ function DB:LoadHonorBar()
 	DB.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
 	DB.honorBar.statusBar:SetMinMaxValues(0, 325)
 
-	DB.honorBar.eventFrame = CreateFrame("Frame")
+	DB.honorBar.eventFrame = CreateFrame('Frame')
 	DB.honorBar.eventFrame:Hide()
-	DB.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
-	DB.honorBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	DB.honorBar.eventFrame:RegisterEvent("PLAYER_FLAGS_CHANGED")
-	DB.honorBar.eventFrame:SetScript("OnEvent", function(self, event, unit) DB:UpdateHonor(event, unit) end)
+	DB.honorBar.eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
+	DB.honorBar.eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
+	DB.honorBar.eventFrame:RegisterEvent('PLAYER_FLAGS_CHANGED')
+	DB.honorBar.eventFrame:SetScript('OnEvent', function(self, event, unit) DB:UpdateHonor(event, unit) end)
 
 	DB:UpdateHonorDimensions()
-	E:CreateMover(DB.honorBar, "HonorBarMover", L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
+	E:CreateMover(DB.honorBar, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 
 	DB:EnableDisable_HonorBar()
 end

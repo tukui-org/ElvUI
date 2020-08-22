@@ -27,17 +27,17 @@ local function SkinDungeons()
 		HandleButton(b1)
 		b1.bgImage:SetInside()
 		b1.bgImage:SetTexCoord(.08, .6, .08, .6)
-		b1.bgImage:SetDrawLayer("ARTWORK")
+		b1.bgImage:SetDrawLayer('ARTWORK')
 		b1.isSkinned = true
 	end
 
 	for i = 1, 100 do
-		local b = _G["EncounterJournalInstanceSelectScrollFrameinstance"..i]
+		local b = _G['EncounterJournalInstanceSelectScrollFrameinstance'..i]
 		if b and not b.isSkinned then
 			HandleButton(b)
 			b.bgImage:SetInside()
 			b.bgImage:SetTexCoord(0.08,.6,0.08,.6)
-			b.bgImage:SetDrawLayer("ARTWORK")
+			b.bgImage:SetDrawLayer('ARTWORK')
 			b.isSkinned = true
 		end
 	end
@@ -49,11 +49,11 @@ local function SkinBosses()
 	local bossButton;
 
 	while bossID do
-		bossButton = _G["EncounterJournalBossButton"..bossIndex];
+		bossButton = _G['EncounterJournalBossButton'..bossIndex];
 		if bossButton and not bossButton.isSkinned then
 			HandleButton(bossButton)
 			bossButton.creature:ClearAllPoints()
-			bossButton.creature:SetPoint("TOPLEFT", 1, -4)
+			bossButton.creature:SetPoint('TOPLEFT', 1, -4)
 			bossButton.isSkinned = true
 		end
 
@@ -99,17 +99,17 @@ end
 local function HandleTabs(tab)
 	tab:StripTextures()
 	tab:SetText(tab.tooltip)
-	tab:GetFontString():FontTemplate(nil, nil, "")
+	tab:GetFontString():FontTemplate(nil, nil, '')
 	tab:CreateBackdrop()
-	tab:SetScript("OnEnter", E.noop)
-	tab:SetScript("OnLeave", E.noop)
+	tab:SetScript('OnEnter', E.noop)
+	tab:SetScript('OnLeave', E.noop)
 	tab:SetSize(tab:GetFontString():GetStringWidth()*1.5, 20)
 	tab.SetPoint = E.noop
 end
 
 local function SkinAbilitiesInfo()
 	local index = 1
-	local header = _G["EncounterJournalInfoHeader"..index]
+	local header = _G['EncounterJournalInfoHeader'..index]
 	while header do
 		if not header.isSkinned then
 			header.flashAnim.Play = E.noop
@@ -163,20 +163,20 @@ function S:Blizzard_EncounterJournal()
 	EJ.navBar.overlay:StripTextures(true)
 
 	EJ.navBar:CreateBackdrop()
-	EJ.navBar.backdrop:SetPoint("TOPLEFT", -2, 0)
-	EJ.navBar.backdrop:SetPoint("BOTTOMRIGHT")
+	EJ.navBar.backdrop:SetPoint('TOPLEFT', -2, 0)
+	EJ.navBar.backdrop:SetPoint('BOTTOMRIGHT')
 	HandleButton(EJ.navBar.home, true)
 	EJ.navBar.home.xoffset = 1
 
 	S:HandleEditBox(EJ.searchBox)
 	EJ.searchBox:ClearAllPoints()
-	EJ.searchBox:SetPoint("TOPLEFT", EJ.navBar, "TOPRIGHT", 4, 0)
+	EJ.searchBox:SetPoint('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
 	local InstanceSelect = EJ.instanceSelect
 
 	EJ.instanceSelect.bg:Kill()
 	S:HandleDropDownBox(InstanceSelect.tierDropDown)
-	EJ.instanceSelect.tierDropDown:HookScript("OnShow", function(s)
+	EJ.instanceSelect.tierDropDown:HookScript('OnShow', function(s)
 		local text = s.Text
 		local a, b, c, d, e = text:GetPoint()
 		text:SetPoint(a, b, c, d + 10, e - 4)
@@ -204,14 +204,14 @@ function S:Blizzard_EncounterJournal()
 		local text = tab:GetFontString()
 
 		text:FontTemplate()
-		text:SetPoint("CENTER")
+		text:SetPoint('CENTER')
 	end
 
 	_G.EncounterJournalEncounterFrameInfoInstanceButton:Kill()
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
-	EncounterInfo:CreateBackdrop("Transparent")
+	EncounterInfo:CreateBackdrop('Transparent')
 	EncounterInfo.backdrop:SetOutside(_G.EncounterJournalEncounterFrameInfoBG)
 
 	EncounterInfo.encounterTitle:Kill()
@@ -224,10 +224,10 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournalEncounterFrameInfoModelFrameShadow:Kill()
 
 	EncounterInfo.instanceButton:ClearAllPoints()
-	EncounterInfo.instanceButton:SetPoint("TOPLEFT", EncounterInfo, "TOPLEFT", 0, 15)
+	EncounterInfo.instanceButton:SetPoint('TOPLEFT', EncounterInfo, 'TOPLEFT', 0, 15)
 
 	EncounterInfo.instanceTitle:ClearAllPoints()
-	EncounterInfo.instanceTitle:SetPoint("BOTTOM", EncounterInfo.bossesScroll, "TOP", 10, 15)
+	EncounterInfo.instanceTitle:SetPoint('BOTTOM', EncounterInfo.bossesScroll, 'TOP', 10, 15)
 
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameClassFilterClearFrame:GetRegions():SetAlpha(0)
 
@@ -236,19 +236,19 @@ function S:Blizzard_EncounterJournal()
 
 	--buttons
 	EncounterInfo.difficulty:ClearAllPoints()
-	EncounterInfo.difficulty:SetPoint("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoBG, "TOPRIGHT", -1, 5)
+	EncounterInfo.difficulty:SetPoint('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -1, 5)
 	HandleButton(EncounterInfo.reset)
 	HandleButton(EncounterInfo.difficulty)
 	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
 	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle, true)
 
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:SetPoint("BOTTOMLEFT", EncounterInfo.backdrop, "TOP", 0, 4)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:SetPoint('BOTTOMLEFT', EncounterInfo.backdrop, 'TOP', 0, 4)
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:SetPoint("LEFT", _G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, "RIGHT", 4, 0)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:SetPoint('LEFT', _G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, 'RIGHT', 4, 0)
 
 	EncounterInfo.reset:ClearAllPoints()
-	EncounterInfo.reset:SetPoint("TOPRIGHT", EncounterInfo.difficulty, "TOPLEFT", -10, 0)
+	EncounterInfo.reset:SetPoint('TOPRIGHT', EncounterInfo.difficulty, 'TOPLEFT', -10, 0)
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
 	_G.EncounterJournalEncounterFrameInfoResetButtonTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
 
@@ -256,11 +256,11 @@ function S:Blizzard_EncounterJournal()
 	S:HandleScrollBar(_G.EncounterJournalEncounterFrameInstanceFrameLoreScrollFrameScrollBar)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.85)
 	_G.EncounterJournalEncounterFrameInstanceFrameBG:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetPoint("CENTER", 0, 40)
+	_G.EncounterJournalEncounterFrameInstanceFrameBG:SetPoint('CENTER', 0, 40)
 	_G.EncounterJournalEncounterFrameInstanceFrameTitle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetPoint("TOP", 0, -105)
+	_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetPoint('TOP', 0, -105)
 	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetPoint("LEFT", 55, -56)
+	_G.EncounterJournalEncounterFrameInstanceFrameMapButton:SetPoint('LEFT', 55, -56)
 
 	S:HandleScrollBar(EncounterInfo.overviewScroll.ScrollBar, 4)
 	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar, 4)
@@ -271,8 +271,8 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.overviewScroll:SetHeight(360)
 	EncounterInfo.bossesScroll:SetHeight(360)
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetHeight(360)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetPoint("TOPLEFT", _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), "TOP", 20, -70)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetPoint("BOTTOMRIGHT", _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), "BOTTOMRIGHT", -10, 5)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetPoint('TOPLEFT', _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), 'TOP', 20, -70)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetPoint('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), 'BOTTOMRIGHT', -10, 5)
 
 	--Tabs
 	local tabs = {
@@ -292,13 +292,13 @@ function S:Blizzard_EncounterJournal()
 		if i == 4 then
 			tab:SetPoint('TOPRIGHT', _G.EncounterJournal, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
 		else
-			tab:SetPoint("RIGHT", tabs[i+1], "LEFT", -4, 0)
+			tab:SetPoint('RIGHT', tabs[i+1], 'LEFT', -4, 0)
 		end
 
 		HandleTabs(tab)
 	end
 
-	hooksecurefunc("EncounterJournal_SetTabEnabled", function(tab, enabled)
+	hooksecurefunc('EncounterJournal_SetTabEnabled', function(tab, enabled)
 		if enabled then
 			tab:GetFontString():SetTextColor(1, 1, 1)
 		else
@@ -315,23 +315,23 @@ function S:Blizzard_EncounterJournal()
 		item.bosslessTexture:SetAlpha(0)
 
 		item.icon:SetSize(32, 32)
-		item.icon:SetPoint("TOPLEFT", E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
-		item.icon:SetDrawLayer("ARTWORK")
+		item.icon:SetPoint('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
+		item.icon:SetDrawLayer('ARTWORK')
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 
 		item.IconBackdrop = CreateFrame("Frame", nil, item, "BackdropTemplate")
 		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
-		item.IconBackdrop:SetPoint("TOPLEFT", item.icon, -1, 1)
-		item.IconBackdrop:SetPoint("BOTTOMRIGHT", item.icon, 1, -1)
+		item.IconBackdrop:SetPoint('TOPLEFT', item.icon, -1, 1)
+		item.IconBackdrop:SetPoint('BOTTOMRIGHT', item.icon, 1, -1)
 		item.IconBackdrop:SetTemplate()
 
 		item.name:ClearAllPoints()
-		item.name:SetPoint("TOPLEFT", item.icon, "TOPRIGHT", 6, -2)
-		item.name:SetFontObject("QuestFont_Large")
+		item.name:SetPoint('TOPLEFT', item.icon, 'TOPRIGHT', 6, -2)
+		item.name:SetFontObject('QuestFont_Large')
 		item.boss:ClearAllPoints()
-		item.boss:SetPoint("BOTTOMLEFT", 4, 6)
+		item.boss:SetPoint('BOTTOMLEFT', 4, 6)
 		item.slot:ClearAllPoints()
-		item.slot:SetPoint("TOPLEFT", item.name, "BOTTOMLEFT", 0, -3)
+		item.slot:SetPoint('TOPLEFT', item.name, 'BOTTOMLEFT', 0, -3)
 
 		item.armorType:ClearAllPoints()
 		item.armorType:SetPoint("RIGHT", item, "RIGHT", -10, 0)
@@ -346,7 +346,7 @@ function S:Blizzard_EncounterJournal()
 
 		if i == 1 then
 			item:ClearAllPoints()
-			item:SetPoint("TOPLEFT", EncounterInfo.lootScroll.scrollChild, "TOPLEFT", 5, 0)
+			item:SetPoint('TOPLEFT', EncounterInfo.lootScroll.scrollChild, 'TOPLEFT', 5, 0)
 		end
 	end
 
@@ -377,7 +377,7 @@ function S:Blizzard_EncounterJournal()
 		-- Suggestion 1
 		local suggestion = suggestFrame.Suggestion1
 		suggestion.bg:Hide()
-		suggestion:CreateBackdrop("Transparent")
+		suggestion:CreateBackdrop('Transparent')
 
 		local centerDisplay = suggestion.centerDisplay
 		centerDisplay.title.text:SetTextColor(1, 1, 1)
@@ -390,14 +390,14 @@ function S:Blizzard_EncounterJournal()
 
 		-- Suggestion 2 and 3
 		for i = 2, 3 do
-			suggestion = suggestFrame["Suggestion"..i]
+			suggestion = suggestFrame['Suggestion'..i]
 			suggestion.bg:Hide()
-			suggestion:CreateBackdrop("Transparent")
-			suggestion.icon:SetPoint("TOPLEFT", 10, -10)
+			suggestion:CreateBackdrop('Transparent')
+			suggestion.icon:SetPoint('TOPLEFT', 10, -10)
 
 			centerDisplay = suggestion.centerDisplay
 			centerDisplay:ClearAllPoints()
-			centerDisplay:SetPoint("TOPLEFT", 85, -10)
+			centerDisplay:SetPoint('TOPLEFT', 85, -10)
 			centerDisplay.title.text:SetTextColor(1, 1, 1)
 			centerDisplay.description.text:SetTextColor(.9, .9, .9)
 
@@ -422,7 +422,7 @@ function S:Blizzard_EncounterJournal()
 			end
 		end)
 
-		hooksecurefunc("EJSuggestFrame_UpdateRewards", function(sugg)
+		hooksecurefunc('EJSuggestFrame_UpdateRewards', function(sugg)
 			local rewardData = sugg.reward.data
 			if rewardData then
 				if not sugg.reward.icon.backdrop then
@@ -451,7 +451,7 @@ function S:Blizzard_EncounterJournal()
 		local tooltip = _G.EncounterJournalTooltip
 		local item1 = tooltip.Item1
 		local item2 = tooltip.Item2
-		tooltip:SetTemplate("Transparent")
+		tooltip:SetTemplate('Transparent')
 		S:HandleIcon(item1.icon)
 		S:HandleIcon(item2.icon)
 		item1.IconBorder:Kill()
@@ -459,21 +459,21 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	--Dungeon/raid selection buttons (From AddOnSkins)
-	hooksecurefunc("EncounterJournal_ListInstances", SkinDungeons)
+	hooksecurefunc('EncounterJournal_ListInstances', SkinDungeons)
 	_G.EncounterJournal_ListInstances()
 
 	if E.private.skins.parchmentRemoverEnable then
 		--Boss selection buttons
-		hooksecurefunc("EncounterJournal_DisplayInstance", SkinBosses)
+		hooksecurefunc('EncounterJournal_DisplayInstance', SkinBosses)
 
 		--Overview Info (From Aurora)
-		hooksecurefunc("EncounterJournal_SetUpOverview", SkinOverviewInfo)
+		hooksecurefunc('EncounterJournal_SetUpOverview', SkinOverviewInfo)
 
 		--Overview Info Bullets (From Aurora)
-		hooksecurefunc("EncounterJournal_SetBullets", SkinOverviewInfoBullets)
+		hooksecurefunc('EncounterJournal_SetBullets', SkinOverviewInfoBullets)
 
 		--Abilities Info (From Aurora)
-		hooksecurefunc("EncounterJournal_ToggleHeaders", SkinAbilitiesInfo)
+		hooksecurefunc('EncounterJournal_ToggleHeaders', SkinAbilitiesInfo)
 
 		_G.EncounterJournalEncounterFrameInfoBG:Kill()
 

@@ -35,4 +35,4 @@ end
 	localizedName - localized name of the datetext
 ]]
 
-DT:RegisterDatatext('DTName', 'Category', {"EVENT1", "EVENT2", "EVENT3"}, OnEvent, Update, Click, OnEnter)
+DT:RegisterDatatext('DTName', 'Category', {'EVENT1', 'EVENT2', 'EVENT3'}, OnEvent, Update, Click, OnEnter)

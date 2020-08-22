@@ -30,12 +30,12 @@ function S:TradeFrame()
 	_G.TradeRecipientMoneyBg:Kill()
 
 	for i = 1, _G.MAX_TRADE_ITEMS do
-		local player = _G["TradePlayerItem"..i]
-		local recipient = _G["TradeRecipientItem"..i]
-		local player_button = _G["TradePlayerItem"..i.."ItemButton"]
-		local recipient_button = _G["TradeRecipientItem"..i.."ItemButton"]
-		local player_button_icon = _G["TradePlayerItem"..i.."ItemButtonIconTexture"]
-		local recipient_button_icon = _G["TradeRecipientItem"..i.."ItemButtonIconTexture"]
+		local player = _G['TradePlayerItem'..i]
+		local recipient = _G['TradeRecipientItem'..i]
+		local player_button = _G['TradePlayerItem'..i..'ItemButton']
+		local recipient_button = _G['TradeRecipientItem'..i..'ItemButton']
+		local player_button_icon = _G['TradePlayerItem'..i..'ItemButtonIconTexture']
+		local recipient_button_icon = _G['TradeRecipientItem'..i..'ItemButtonIconTexture']
 
 		if player_button and recipient_button then
 			player:StripTextures()
@@ -50,8 +50,8 @@ function S:TradeFrame()
 			player_button.IconBorder:Kill()
 			player_button.bg = CreateFrame("Frame", nil, player_button, "BackdropTemplate")
 			player_button.bg:SetTemplate()
-			player_button.bg:SetPoint("TOPLEFT", player_button, "TOPRIGHT", 4, 0)
-			player_button.bg:SetPoint("BOTTOMRIGHT", _G["TradePlayerItem"..i.."NameFrame"], "BOTTOMRIGHT", 0, 14)
+			player_button.bg:SetPoint('TOPLEFT', player_button, 'TOPRIGHT', 4, 0)
+			player_button.bg:SetPoint('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
 			player_button.bg:SetFrameLevel(player_button:GetFrameLevel() - 3)
 			player_button.backdrop:SetFrameLevel(player_button:GetFrameLevel() - 1)
 			player_button:SetFrameLevel(player_button:GetFrameLevel() - 1)
@@ -63,8 +63,8 @@ function S:TradeFrame()
 			recipient_button.IconBorder:Kill()
 			recipient_button.bg = CreateFrame("Frame", nil, recipient_button, "BackdropTemplate")
 			recipient_button.bg:SetTemplate()
-			recipient_button.bg:SetPoint("TOPLEFT", recipient_button, "TOPRIGHT", 4, 0)
-			recipient_button.bg:SetPoint("BOTTOMRIGHT", _G["TradeRecipientItem"..i.."NameFrame"], "BOTTOMRIGHT", 0, 14)
+			recipient_button.bg:SetPoint('TOPLEFT', recipient_button, 'TOPRIGHT', 4, 0)
+			recipient_button.bg:SetPoint('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
 			recipient_button.bg:SetFrameLevel(recipient_button:GetFrameLevel() - 3)
 			recipient_button:SetFrameLevel(recipient_button:GetFrameLevel() - 1)
 
@@ -76,22 +76,22 @@ function S:TradeFrame()
 	_G.TradeHighlightPlayerTop:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightPlayerBottom:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightPlayerMiddle:SetColorTexture(0, 1, 0, 0.2)
-	_G.TradeHighlightPlayer:SetFrameStrata("HIGH")
+	_G.TradeHighlightPlayer:SetFrameStrata('HIGH')
 
 	_G.TradeHighlightPlayerEnchantTop:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightPlayerEnchantBottom:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightPlayerEnchantMiddle:SetColorTexture(0, 1, 0, 0.2)
-	_G.TradeHighlightPlayerEnchant:SetFrameStrata("HIGH")
+	_G.TradeHighlightPlayerEnchant:SetFrameStrata('HIGH')
 
 	_G.TradeHighlightRecipientTop:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightRecipientBottom:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightRecipientMiddle:SetColorTexture(0, 1, 0, 0.2)
-	_G.TradeHighlightRecipient:SetFrameStrata("HIGH")
+	_G.TradeHighlightRecipient:SetFrameStrata('HIGH')
 
 	_G.TradeHighlightRecipientEnchantTop:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightRecipientEnchantBottom:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightRecipientEnchantMiddle:SetColorTexture(0, 1, 0, 0.2)
-	_G.TradeHighlightRecipientEnchant:SetFrameStrata("HIGH")
+	_G.TradeHighlightRecipientEnchant:SetFrameStrata('HIGH')
 end
 
 S:AddCallback('TradeFrame')

@@ -16,7 +16,7 @@ local CombatTextures = {
 }
 
 function UF:Construct_CombatIndicator(frame)
-	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
+	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
 end
 
 local TestingTimer
@@ -51,7 +51,7 @@ function UF:Configure_CombatIndicator(frame)
 	local db = frame.db.CombatIcon
 
 	Icon:ClearAllPoints()
-	Icon:SetPoint("CENTER", frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
+	Icon:SetPoint('CENTER', frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
 	Icon:SetSize(db.size, db.size)
 
 	if db.defaultColor then
@@ -62,10 +62,10 @@ function UF:Configure_CombatIndicator(frame)
 		Icon:SetDesaturated(true)
 	end
 
-	if db.texture == "CUSTOM" and db.customTexture then
+	if db.texture == 'CUSTOM' and db.customTexture then
 		Icon:SetTexture(db.customTexture)
 		Icon:SetTexCoord(0, 1, 0, 1)
-	elseif db.texture ~= "DEFAULT" and CombatTextures[db.texture] then
+	elseif db.texture ~= 'DEFAULT' and CombatTextures[db.texture] then
 		Icon:SetTexture(CombatTextures[db.texture])
 		Icon:SetTexCoord(0, 1, 0, 1)
 	else

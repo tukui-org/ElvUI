@@ -59,13 +59,13 @@ function S:Blizzard_BattlefieldMap()
 	S:HandleCloseButton(BattlefieldMapFrame.BorderFrame.CloseButton)
 	BattlefieldMapTab:Kill()
 
-	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseUp", function(_, btn)
-		if btn == "LeftButton" then
+	BattlefieldMapFrame.ScrollContainer:HookScript('OnMouseUp', function(_, btn)
+		if btn == 'LeftButton' then
 			BattlefieldMapTab:StopMovingOrSizing()
 			if not _G.BattlefieldMapOptions.position then _G.BattlefieldMapOptions.position = {} end
 			_G.BattlefieldMapOptions.position.x, _G.BattlefieldMapOptions.position.y = BattlefieldMapTab:GetCenter()
-		elseif btn == "RightButton" then
-			_G.UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, "MENU")
+		elseif btn == 'RightButton' then
+			_G.UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, 'MENU')
 			_G.ToggleDropDownMenu(1, nil, BattlefieldMapTab.OptionsDropDown, BattlefieldMapFrame:GetName(), 0, -4)
 		end
 
@@ -74,14 +74,14 @@ function S:Blizzard_BattlefieldMap()
 		end
 	end)
 
-	BattlefieldMapFrame.ScrollContainer:HookScript("OnMouseDown", function(_, btn)
-		if btn == "LeftButton" and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
+	BattlefieldMapFrame.ScrollContainer:HookScript('OnMouseDown', function(_, btn)
+		if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
 			BattlefieldMapTab:StartMoving()
 		end
 	end)
 
-	hooksecurefunc(BattlefieldMapFrame, "SetGlobalAlpha", setBackdropAlpha)
-	hooksecurefunc(BattlefieldMapFrame, "RefreshAlpha", refreshAlpha)
+	hooksecurefunc(BattlefieldMapFrame, 'SetGlobalAlpha', setBackdropAlpha)
+	hooksecurefunc(BattlefieldMapFrame, 'RefreshAlpha', refreshAlpha)
 
 	BattlefieldMapFrame:HookScript('OnShow', setBackdropAlpha)
 	BattlefieldMapFrame.ScrollContainer:HookScript('OnLeave', setOldAlpha)

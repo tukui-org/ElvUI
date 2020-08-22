@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local CreateFrame = CreateFrame
@@ -34,14 +34,14 @@ function UF:Construct_BossFrames(frame)
 	frame.MouseGlow = UF:Construct_MouseGlow(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
-	frame:SetAttribute("type2", "focus")
+	frame:SetAttribute('type2', 'focus')
 	frame.customTexts = {}
 
 	BossHeader:SetPoint('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID', nil, 'unitframe,groupUnits,boss,generalGroup')
 	frame.mover = BossHeader.mover
 
-	frame.unitframeType = "boss"
+	frame.unitframeType = 'boss'
 end
 
 function UF:Update_BossFrames(frame, db)
@@ -60,18 +60,18 @@ function UF:Update_BossFrames(frame, db)
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
 		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (frame.BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2)))
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
-		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
+		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == 'MIDDLE')
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
-	if not IsAddOnLoaded("Clique") then
+	if not IsAddOnLoaded('Clique') then
 		if db.middleClickFocus then
-			frame:SetAttribute("type3", "focus")
-		elseif frame:GetAttribute("type3") == "focus" then
-			frame:SetAttribute("type3", nil)
+			frame:SetAttribute('type3', 'focus')
+		elseif frame:GetAttribute('type3') == 'focus' then
+			frame:SetAttribute('type3', nil)
 		end
 	end
 
@@ -124,7 +124,7 @@ function UF:Update_BossFrames(frame, db)
 		BossHeader:SetHeight(frame.UNIT_HEIGHT)
 	end
 
-	frame:UpdateAllElements("ElvUI_UpdateAllElements")
+	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 UF.unitgroupstoload.boss = {MAX_BOSS_FRAMES}

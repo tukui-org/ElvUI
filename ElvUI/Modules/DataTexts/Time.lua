@@ -33,19 +33,19 @@ local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS
 
 local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
 local ukDisplayFormat, europeDisplayFormat = '', ''
-local europeDisplayFormat_nocolor = strjoin("", "%02d", ":|r%02d")
-local ukDisplayFormat_nocolor = strjoin("", "", "%d", ":|r%02d", " %s|r")
-local lockoutInfoFormat = "%s%s %s |cffaaaaaa(%s, %s/%s)"
-local lockoutInfoFormatNoEnc = "%s%s %s |cffaaaaaa(%s)"
-local formatBattleGroundInfo = "%s: "
+local europeDisplayFormat_nocolor = strjoin('', '%02d', ':|r%02d')
+local ukDisplayFormat_nocolor = strjoin('', '', '%d', ':|r%02d', ' %s|r')
+local lockoutInfoFormat = '%s%s %s |cffaaaaaa(%s, %s/%s)'
+local lockoutInfoFormatNoEnc = '%s%s %s |cffaaaaaa(%s)'
+local formatBattleGroundInfo = '%s: '
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
 local enteredFrame, curHr, curMin, curAmPm = false
 
 local Update, lastPanel
 
 local function ValueColorUpdate(hex)
-	europeDisplayFormat = strjoin("", "%02d", hex, ":|r%02d")
-	ukDisplayFormat = strjoin("", "", "%d", hex, ":|r%02d", hex, " %s|r")
+	europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
+	ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
 
 	if lastPanel ~= nil then
 		Update(lastPanel, 20000)
@@ -73,7 +73,7 @@ local function CalculateTimeValues(tooltip)
 	if (tooltip and E.db.datatexts.localtime) or (not tooltip and not E.db.datatexts.localtime) then
 		return ConvertTime(GetGameTime())
 	else
-		local dateTable = date("*t")
+		local dateTable = date('*t')
 		return ConvertTime(dateTable.hour, dateTable.min)
 	end
 end
@@ -90,14 +90,14 @@ end
 local InstanceNameByID = {
 	-- NOTE: for some reason the instanceID from EJ_GetInstanceByIndex doesn't match,
 	-- the instanceID from GetInstanceInfo, so use the collectIDs to find the ID to add.
-	[749] = C_Map_GetAreaInfo(3845) -- "The Eye" -> "Tempest Keep"
+	[749] = C_Map_GetAreaInfo(3845) -- 'The Eye' -> 'Tempest Keep'
 }
 
 local locale = GetLocale()
 if locale == 'deDE' then -- O.O
-	InstanceNameByID[1023] = "Belagerung von Boralus"	-- "Die Belagerung von Boralus"
-	InstanceNameByID[1041] = "Königsruh"				-- "Die Königsruh"
-	InstanceNameByID[1021] = "Kronsteiganwesen"			-- "Das Kronsteiganwesen"
+	InstanceNameByID[1023] = 'Belagerung von Boralus'	-- 'Die Belagerung von Boralus'
+	InstanceNameByID[1041] = 'Königsruh'				-- 'Die Königsruh'
+	InstanceNameByID[1021] = 'Kronsteiganwesen'			-- 'Das Kronsteiganwesen'
 end
 
 local instanceIconByName = {}
@@ -119,7 +119,7 @@ local function GetInstanceImages(index, raid)
 	end
 end
 
-local krcntw = locale == "koKR" or locale == "zhCN" or locale == "zhTW"
+local krcntw = locale == 'koKR' or locale == 'zhCN' or locale == 'zhTW'
 local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
 	(krcntw and _G.PLAYER_DIFFICULTY3) or utf8sub(_G.PLAYER_DIFFICULTY3, 1, 1), -- R
 	(krcntw and _G.PLAYER_DIFFICULTY1) or utf8sub(_G.PLAYER_DIFFICULTY1, 1, 1), -- N
@@ -192,7 +192,7 @@ local function OnEnter()
 			local _, _, isHeroic, _, displayHeroic, displayMythic = GetDifficultyInfo(difficulty)
 			local sortName = name .. (displayMythic and 4 or (isHeroic or displayHeroic) and 3 or isLFR and 1 or 2)
 			local difficultyLetter = (displayMythic and difficultyTag[4] or (isHeroic or displayHeroic) and difficultyTag[3] or isLFR and difficultyTag[1] or difficultyTag[2])
-			local buttonImg = instanceIconByName[name] and format("|T%s:16:16:0:0:96:96:0:64:0:64|t ", instanceIconByName[name]) or ""
+			local buttonImg = instanceIconByName[name] and format('|T%s:16:16:0:0:96:96:0:64:0:64|t ', instanceIconByName[name]) or ''
 
 			if isRaid then
 				tinsert(lockedInstances.raids, {sortName, difficultyLetter, buttonImg, {GetSavedInstanceInfo(i)}})
@@ -204,7 +204,7 @@ local function OnEnter()
 
 	if next(lockedInstances.raids) then
 		if DT.tooltip:NumLines() > 0 then
-			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(' ')
 		end
 		DT.tooltip:AddLine(L["Saved Raid(s)"])
 
@@ -226,7 +226,7 @@ local function OnEnter()
 
 	if next(lockedInstances.dungeons) then
 		if DT.tooltip:NumLines() > 0 then
-			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(' ')
 		end
 		DT.tooltip:AddLine(L["Saved Dungeon(s)"])
 
@@ -258,7 +258,7 @@ local function OnEnter()
 		if(reset) then
 			if(not addedLine) then
 				if DT.tooltip:NumLines() > 0 then
-					DT.tooltip:AddLine(" ")
+					DT.tooltip:AddLine(' ')
 				end
 				DT.tooltip:AddLine(WORLD_BOSSES_TEXT)
 				addedLine = true
@@ -269,7 +269,7 @@ local function OnEnter()
 
 	local Hr, Min, AmPm = CalculateTimeValues(true)
 	if DT.tooltip:NumLines() > 0 then
-		DT.tooltip:AddLine(" ")
+		DT.tooltip:AddLine(' ')
 	end
 	if AmPm == -1 then
 		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
@@ -281,7 +281,7 @@ local function OnEnter()
 end
 
 local function OnEvent(self, event)
-	if event == "UPDATE_INSTANCE_INFO" and enteredFrame then
+	if event == 'UPDATE_INSTANCE_INFO' and enteredFrame then
 		OnEnter(self)
 	end
 end
@@ -323,4 +323,4 @@ function Update(self, t)
 	int = 5
 end
 
-DT:RegisterDatatext('Time', nil, {"UPDATE_INSTANCE_INFO"}, OnEvent, Update, Click, OnEnter, OnLeave)
+DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, Update, Click, OnEnter, OnLeave)

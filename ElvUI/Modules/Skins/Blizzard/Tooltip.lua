@@ -9,7 +9,7 @@ local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
 	self:SetBackdrop(nil)
-	self:SetTemplate("Transparent", nil, true)
+	self:SetTemplate('Transparent', nil, true)
 end
 
 function S:StyleTooltips()
@@ -44,7 +44,7 @@ function S:TooltipFrames()
 
 	-- Skin Blizzard Tooltips
 	local ItemTooltip = _G.GameTooltip.ItemTooltip
-	ItemTooltip:CreateBackdrop("Default")
+	ItemTooltip:CreateBackdrop('Default')
 	ItemTooltip.backdrop:SetOutside(ItemTooltip.Icon)
 	ItemTooltip.Count:ClearAllPoints()
 	ItemTooltip.Count:SetPoint('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
@@ -63,16 +63,16 @@ function S:TooltipFrames()
 		S:HandleIcon(embedded.ItemTooltip.Icon, true)
 	end
 
-	embedded:HookScript("OnShow", function(tt)
-		tt:SetTemplate("Transparent")
+	embedded:HookScript('OnShow', function(tt)
+		tt:SetTemplate('Transparent')
 	end)
 
 	-- Skin GameTooltip Status Bar
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
 	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
 	_G.GameTooltipStatusBar:ClearAllPoints()
-	_G.GameTooltipStatusBar:SetPoint("TOPLEFT", _G.GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	_G.GameTooltipStatusBar:SetPoint("TOPRIGHT", _G.GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:SetPoint('TOPLEFT', _G.GameTooltip, 'BOTTOMLEFT', E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:SetPoint('TOPRIGHT', _G.GameTooltip, 'BOTTOMRIGHT', -E.Border, -(E.Spacing * 3))
 	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 
 	-- Tooltip Styling
@@ -82,8 +82,8 @@ function S:TooltipFrames()
 	TT:SecureHook('SharedTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
 
 	-- Used for Island Skin
-	TT:RegisterEvent("ADDON_LOADED", function(event, addon)
-		if addon == "Blizzard_IslandsQueueUI" then
+	TT:RegisterEvent('ADDON_LOADED', function(event, addon)
+		if addon == 'Blizzard_IslandsQueueUI' then
 			local tt = _G.IslandsQueueFrameTooltip:GetParent()
 			tt:GetParent():HookScript("OnShow", IslandTooltipStyle)
 			tt.IconBorder:Kill()

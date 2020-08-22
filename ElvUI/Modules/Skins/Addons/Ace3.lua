@@ -113,7 +113,7 @@ function S:Ace3_SkinTab(tab)
 	tab:CreateBackdrop(nil, true, true)
 	tab.backdrop:SetPoint('TOPLEFT', 10, -3)
 	tab.backdrop:SetPoint('BOTTOMRIGHT', -10, 0)
-	tab.text:SetPoint("LEFT", 14, -1)
+	tab.text:SetPoint('LEFT', 14, -1)
 
 	hooksecurefunc(tab, 'SetSelected', S.Ace3_TabSetSelected)
 end
@@ -320,13 +320,13 @@ function S:Ace3_RefreshTree(scrollToSelection)
 
 	self.border:ClearAllPoints()
 	if self.userdata and self.userdata.option and self.userdata.option.childGroups == 'ElvUI_HiddenTree' then
-		self.border:SetPoint("TOPLEFT", self.treeframe, "TOPRIGHT", 1, 13)
-		self.border:SetPoint("BOTTOMRIGHT", self.frame, "BOTTOMRIGHT", 6, 0)
+		self.border:SetPoint('TOPLEFT', self.treeframe, 'TOPRIGHT', 1, 13)
+		self.border:SetPoint('BOTTOMRIGHT', self.frame, 'BOTTOMRIGHT', 6, 0)
 		self.treeframe:Hide()
 		return
 	else
-		self.border:SetPoint("TOPLEFT", self.treeframe, "TOPRIGHT")
-		self.border:SetPoint("BOTTOMRIGHT", self.frame)
+		self.border:SetPoint('TOPLEFT', self.treeframe, 'TOPRIGHT')
+		self.border:SetPoint('BOTTOMRIGHT', self.frame)
 		self.treeframe:Show()
 	end
 
@@ -417,7 +417,7 @@ function S:Ace3_RegisterAsContainer(widget)
 	if widget.sizer_se then
 		for i = 1, widget.sizer_se:GetNumRegions() do
 			local Region = select(i, widget.sizer_se:GetRegions())
-			if Region and Region:IsObjectType("Texture") then
+			if Region and Region:IsObjectType('Texture') then
 				Region:SetTexture(137057) -- Interface\Tooltips\UI-Tooltip-Border
 			end
 		end

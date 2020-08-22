@@ -55,18 +55,18 @@ function S:LootFrame()
 	LootHistoryFrame.ResizeButton:SetWidth(LootHistoryFrame:GetWidth())
 	LootHistoryFrame.ResizeButton:SetHeight(19)
 	LootHistoryFrame.ResizeButton:ClearAllPoints()
-	LootHistoryFrame.ResizeButton:SetPoint("TOP", LootHistoryFrame, "BOTTOM", 0, -2)
+	LootHistoryFrame.ResizeButton:SetPoint('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
 	_G.LootHistoryFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar)
 
-	hooksecurefunc("LootHistoryFrame_FullUpdate", UpdateLoots)
+	hooksecurefunc('LootHistoryFrame_FullUpdate', UpdateLoots)
 
 	-- Master Loot
 	local MasterLooterFrame = _G.MasterLooterFrame
 	MasterLooterFrame:StripTextures()
 	MasterLooterFrame:CreateBackdrop()
 
-	hooksecurefunc("MasterLooterFrame_Show", function()
+	hooksecurefunc('MasterLooterFrame_Show', function()
 		local b = MasterLooterFrame.Item
 		if b then
 			local i = b.Icon
@@ -121,28 +121,28 @@ function S:LootFrame()
 
 	BonusRollFrame.SpecIcon.b = CreateFrame("Frame", nil, BonusRollFrame, "BackdropTemplate")
 	BonusRollFrame.SpecIcon.b:SetTemplate()
-	BonusRollFrame.SpecIcon.b:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 2)
+	BonusRollFrame.SpecIcon.b:SetPoint('BOTTOMRIGHT', BonusRollFrame, -2, 2)
 	BonusRollFrame.SpecIcon.b:SetSize(BonusRollFrame.SpecIcon:GetSize())
 	BonusRollFrame.SpecIcon.b:SetFrameLevel(6)
 	BonusRollFrame.SpecIcon:SetParent(BonusRollFrame.SpecIcon.b)
 	BonusRollFrame.SpecIcon:SetTexCoord(unpack(E.TexCoords))
 	BonusRollFrame.SpecIcon:SetInside()
-	hooksecurefunc(BonusRollFrame.SpecIcon, "Hide", function(specIcon)
+	hooksecurefunc(BonusRollFrame.SpecIcon, 'Hide', function(specIcon)
 		if specIcon.b and specIcon.b:IsShown() then
 			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
-			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			BonusRollFrame.CurrentCountFrame:SetPoint('BOTTOMRIGHT', BonusRollFrame, -2, 1)
 			specIcon.b:Hide()
 		end
 	end)
-	hooksecurefunc(BonusRollFrame.SpecIcon, "Show", function(specIcon)
+	hooksecurefunc(BonusRollFrame.SpecIcon, 'Show', function(specIcon)
 		if specIcon.b and not specIcon.b:IsShown() and specIcon:GetTexture() ~= nil then
 			BonusRollFrame.CurrentCountFrame:ClearAllPoints()
-			BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+			BonusRollFrame.CurrentCountFrame:SetPoint('RIGHT', BonusRollFrame.SpecIcon.b, 'LEFT', -2, -2)
 			specIcon.b:Show()
 		end
 	end)
 
-	hooksecurefunc("BonusRollFrame_StartBonusRoll", function()
+	hooksecurefunc('BonusRollFrame_StartBonusRoll', function()
 		--keep the status bar a frame above but its increased 1 extra beacuse mera has a grid layer
 		local BonusRollFrameLevel = BonusRollFrame:GetFrameLevel();
 		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+2);
@@ -155,12 +155,12 @@ function S:LootFrame()
 		if BonusRollFrame.SpecIcon.b then
 			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil);
 			if BonusRollFrame.SpecIcon.b:IsShown() then
-				BonusRollFrame.CurrentCountFrame:SetPoint("RIGHT", BonusRollFrame.SpecIcon.b, "LEFT", -2, -2)
+				BonusRollFrame.CurrentCountFrame:SetPoint('RIGHT', BonusRollFrame.SpecIcon.b, 'LEFT', -2, -2)
 			else
-				BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+				BonusRollFrame.CurrentCountFrame:SetPoint('BOTTOMRIGHT', BonusRollFrame, -2, 1)
 			end
 		else
-			BonusRollFrame.CurrentCountFrame:SetPoint("BOTTOMRIGHT", BonusRollFrame, -2, 1)
+			BonusRollFrame.CurrentCountFrame:SetPoint('BOTTOMRIGHT', BonusRollFrame, -2, 1)
 		end
 
 		--skin currency icons
@@ -185,13 +185,13 @@ function S:LootFrame()
 	end
 
 	LootFrame.Title:ClearAllPoints()
-	LootFrame.Title:SetPoint("TOPLEFT", LootFrame, "TOPLEFT", 4, -4)
-	LootFrame.Title:SetJustifyH("LEFT")
+	LootFrame.Title:SetPoint('TOPLEFT', LootFrame, 'TOPLEFT', 4, -4)
+	LootFrame.Title:SetJustifyH('LEFT')
 
 	for i=1, _G.LOOTFRAME_NUMBUTTONS do
-		local button = _G["LootButton"..i]
-		_G["LootButton"..i.."NameFrame"]:Hide()
-		_G["LootButton"..i.."IconQuestTexture"]:SetParent(E.HiddenFrame)
+		local button = _G['LootButton'..i]
+		_G['LootButton'..i..'NameFrame']:Hide()
+		_G['LootButton'..i..'IconQuestTexture']:SetParent(E.HiddenFrame)
 		S:HandleItemButton(button, true)
 		S:HandleIconBorder(button.IconBorder)
 
@@ -200,7 +200,7 @@ function S:LootFrame()
 		button:SetPoint(point, attachTo, point2, x, y+30)
 	end
 
-	hooksecurefunc("LootFrame_UpdateButton", function(index)
+	hooksecurefunc('LootFrame_UpdateButton', function(index)
 		local numLootItems = LootFrame.numLootItems;
 		--Logic to determine how many items to show per page
 		local numLootToShow = _G.LOOTFRAME_NUMBUTTONS;
@@ -211,7 +211,7 @@ function S:LootFrame()
 			numLootToShow = numLootToShow - 1; -- make space for the page buttons
 		end
 
-		local button = _G["LootButton"..index];
+		local button = _G['LootButton'..index];
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
 		if(button and button:IsShown()) then
 			local texture, _, isQuestItem, questId, isActive;
@@ -242,11 +242,11 @@ function S:LootFrame()
 		end
 	end)
 
-	LootFrame:HookScript("OnShow", function(s)
+	LootFrame:HookScript('OnShow', function(s)
 		if IsFishingLoot() then
 			s.Title:SetText(L["Fishy Loot"])
-		elseif(not UnitIsFriend("player", "target") and UnitIsDead"target") then
-			s.Title:SetText(UnitName("target"))
+		elseif(not UnitIsFriend('player', 'target') and UnitIsDead'target') then
+			s.Title:SetText(UnitName('target'))
 		else
 			s.Title:SetText(LOOT)
 		end

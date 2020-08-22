@@ -6,18 +6,18 @@ local _G = _G
 --Just some test code
 --[[
 local talkingHeadTextureKitRegionFormatStrings = {
-	TextBackground = "%s-TextBackground",
-	Portrait = "%s-PortraitFrame",
+	TextBackground = '%s-TextBackground',
+	Portrait = '%s-PortraitFrame',
 }
 local talkingHeadDefaultAtlases = {
-	TextBackground = "TalkingHeads-TextBackground",
-	Portrait = "TalkingHeads-Alliance-PortraitFrame",
+	TextBackground = 'TalkingHeads-TextBackground',
+	Portrait = 'TalkingHeads-Alliance-PortraitFrame',
 }
 local talkingHeadFontColor = {
-	["TalkingHeads-Horde"] = {Name = CreateColor(0.28, 0.02, 0.02), Text = CreateColor(0.0, 0.0, 0.0), Shadow = CreateColor(0.0, 0.0, 0.0, 0.0)},
-	["TalkingHeads-Alliance"] = {Name = CreateColor(0.02, 0.17, 0.33), Text = CreateColor(0.0, 0.0, 0.0), Shadow = CreateColor(0.0, 0.0, 0.0, 0.0)},
-	["TalkingHeads-Neutral"] = {Name = CreateColor(0.33, 0.16, 0.02), Text = CreateColor(0.0, 0.0, 0.0), Shadow = CreateColor(0.0, 0.0, 0.0, 0.0)},
-	["Normal"] = {Name = CreateColor(1, 0.82, 0.02), Text = CreateColor(1, 1, 1), Shadow = CreateColor(0.0, 0.0, 0.0, 1.0)},
+	['TalkingHeads-Horde'] = {Name = CreateColor(0.28, 0.02, 0.02), Text = CreateColor(0.0, 0.0, 0.0), Shadow = CreateColor(0.0, 0.0, 0.0, 0.0)},
+	['TalkingHeads-Alliance'] = {Name = CreateColor(0.02, 0.17, 0.33), Text = CreateColor(0.0, 0.0, 0.0), Shadow = CreateColor(0.0, 0.0, 0.0, 0.0)},
+	['TalkingHeads-Neutral'] = {Name = CreateColor(0.33, 0.16, 0.02), Text = CreateColor(0.0, 0.0, 0.0), Shadow = CreateColor(0.0, 0.0, 0.0, 0.0)},
+	['Normal'] = {Name = CreateColor(1, 0.82, 0.02), Text = CreateColor(1, 1, 1), Shadow = CreateColor(0.0, 0.0, 0.0, 1.0)},
 }
 
 --test
@@ -43,8 +43,8 @@ function TestTalkingHead()
 	duration = 20.220001220703
 	lineNumber = 0
 	numLines = 4
-	name = "Some Ugly Woman"
-	text = "Testing this sheet out Testing this sheet out Testing this sheet out Testing this sheet out Testing this sheet out Testing this sheet out Testing this sheet out "
+	name = 'Some Ugly Woman'
+	text = 'Testing this sheet out Testing this sheet out Testing this sheet out Testing this sheet out Testing this sheet out Testing this sheet out Testing this sheet out '
 	isNewTalkingHead = true
 	textureKitID = 0
 
@@ -58,7 +58,7 @@ function TestTalkingHead()
 		else
 			SetupAtlasesOnRegions(frame.BackgroundFrame, talkingHeadDefaultAtlases, true);
 			SetupAtlasesOnRegions(frame.PortraitFrame, talkingHeadDefaultAtlases, true);
-			textureKit = "Normal";
+			textureKit = 'Normal';
 		end
 		local nameColor = talkingHeadFontColor[textureKit].Name;
 		local textColor = talkingHeadFontColor[textureKit].Text;
@@ -100,7 +100,7 @@ function TestTalkingHead()
 			end
 		end
 
-		local success, voHandle = PlaySound(vo, "Talking Head", true, true);
+		local success, voHandle = PlaySound(vo, 'Talking Head', true, true);
 		if ( success ) then
 			frame.voHandle = voHandle;
 		end
@@ -120,16 +120,16 @@ function S:Blizzard_TalkingHeadUI()
 	if E.db.general.talkingHeadFrameBackdrop then
 		TalkingHeadFrame:StripTextures()
 		TalkingHeadFrame.MainFrame:StripTextures()
-		TalkingHeadFrame:CreateBackdrop("Transparent")
+		TalkingHeadFrame:CreateBackdrop('Transparent')
 
 		local button = TalkingHeadFrame.MainFrame.CloseButton
 		S:HandleCloseButton(button)
 		button:ClearAllPoints()
 		button:SetPoint('TOPRIGHT', TalkingHeadFrame.BackgroundFrame, 'TOPRIGHT', 0, -2)
 	else
-		TalkingHeadFrame.MainFrame.Model:CreateBackdrop("Transparent")
+		TalkingHeadFrame.MainFrame.Model:CreateBackdrop('Transparent')
 		TalkingHeadFrame.MainFrame.Model.backdrop:ClearAllPoints()
-		TalkingHeadFrame.MainFrame.Model.backdrop:SetPoint("CENTER")
+		TalkingHeadFrame.MainFrame.Model.backdrop:SetPoint('CENTER')
 		TalkingHeadFrame.MainFrame.Model.backdrop:SetSize(120, 119)
 
 		TalkingHeadFrame.MainFrame.CloseButton:Kill()

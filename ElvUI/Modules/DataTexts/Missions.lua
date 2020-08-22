@@ -54,7 +54,7 @@ local LE_GARRISON_TYPE_7_0 = Enum.GarrisonType.Type_7_0
 local LE_GARRISON_TYPE_8_0 = Enum.GarrisonType.Type_8_0
 local LE_GARRISON_TYPE_9_0 = Enum.GarrisonType.Type_9_0
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
-local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- "Completed: |cFF33FF33%s|r"
+local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- 'Completed: |cFF33FF33%s|r'
 local TALENTS = TALENTS
 
 local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. " %d (%d/%d)"
@@ -65,7 +65,7 @@ local EXPANSION_NAME8 = EXPANSION_NAME8 -- "Shadowlands"
 
 local MAIN_CURRENCY = 1813
 local NAZJATAR_MAP_ID = 1355
-local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
+local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local numMissions = 0
 local callingsData = {}
 
@@ -143,7 +143,7 @@ local function AddFollowerInfo(garrisonType)
 			local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(followerShipments)
 			if name and shipmentsReady and shipmentsTotal then
 				if timeleftString then
-					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. " " .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. ' ' .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
 				else
 					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
 				end
@@ -168,7 +168,7 @@ local function AddTalentInfo(garrisonType)
 				local _, _, tree = C_Garrison_GetTalentTreeInfoForID(treeID)
 				for _, talent in ipairs(tree) do
 					if talent.isBeingResearched or talent.id == completeTalentID then
-						DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- "Research Time:"
+						DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- 'Research Time:'
 						if talent.researchTimeRemaining and talent.researchTimeRemaining == 0 then
 							DT.tooltip:AddDoubleLine(talent.name, GOAL_COMPLETED, 1, 1, 1, GREEN_FONT_COLOR:GetRGB())
 						else
@@ -279,7 +279,7 @@ local function OnEnter()
 				local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
 				if name then
 					if timeleftString then
-						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. " " .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
+						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. ' ' .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
 					else
 						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
 					end
@@ -314,7 +314,7 @@ local function OnEnter()
 					end
 
 					if timeleftString then
-						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. " " .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
+						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. ' ' .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
 					else
 						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
 					end
@@ -323,7 +323,7 @@ local function OnEnter()
 		end
 	else
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine("Hold Shift - Show Previous Expansion", .66, .66, .66)
+		DT.tooltip:AddLine('Hold Shift - Show Previous Expansion', .66, .66, .66)
 	end
 
 	DT.tooltip:Show()
@@ -333,7 +333,7 @@ local function OnClick(self)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 
 	DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-	_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
+	_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
 end
 
 local function OnEvent(self, event, ...)

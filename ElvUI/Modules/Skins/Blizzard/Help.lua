@@ -14,12 +14,12 @@ end
 
 local function HandleTabButton(button)
 	button.selected:SetColorTexture(1, 1, 1, 0.3)
-	button.selected:SetDrawLayer("BACKGROUND")
+	button.selected:SetDrawLayer('BACKGROUND')
 
 	S:HandleButton(button)
 
-	button:SetScript("OnEnter", OnEnter)
-	button:SetScript("OnLeave", OnLeave)
+	button:SetScript('OnEnter', OnEnter)
+	button:SetScript('OnLeave', OnLeave)
 end
 
 function S:HelpFrame()
@@ -44,7 +44,7 @@ function S:HelpFrame()
 
 	for i = 1, #frames do
 		frames[i]:StripTextures(true)
-		frames[i]:CreateBackdrop("Transparent")
+		frames[i]:CreateBackdrop('Transparent')
 	end
 
 	local Header = _G.HelpFrame.Header
@@ -55,9 +55,9 @@ function S:HelpFrame()
 
 	local HelpFrameReportBugScrollFrame = _G.HelpFrameReportBugScrollFrame
 	HelpFrameReportBugScrollFrame:StripTextures()
-	HelpFrameReportBugScrollFrame:CreateBackdrop("Transparent")
-	HelpFrameReportBugScrollFrame.backdrop:SetPoint("TOPLEFT", -4, 4)
-	HelpFrameReportBugScrollFrame.backdrop:SetPoint("BOTTOMRIGHT", 6, -4)
+	HelpFrameReportBugScrollFrame:CreateBackdrop('Transparent')
+	HelpFrameReportBugScrollFrame.backdrop:SetPoint('TOPLEFT', -4, 4)
+	HelpFrameReportBugScrollFrame.backdrop:SetPoint('BOTTOMRIGHT', 6, -4)
 
 	for i = 1, _G.HelpFrameReportBug:GetNumChildren() do
 		local child = select(i, _G.HelpFrameReportBug:GetChildren())
@@ -70,9 +70,9 @@ function S:HelpFrame()
 
 	local HelpFrameSubmitSuggestionScrollFrame = _G.HelpFrameSubmitSuggestionScrollFrame
 	HelpFrameSubmitSuggestionScrollFrame:StripTextures()
-	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop("Transparent")
-	HelpFrameSubmitSuggestionScrollFrame.backdrop:SetPoint("TOPLEFT", -4, 4)
-	HelpFrameSubmitSuggestionScrollFrame.backdrop:SetPoint("BOTTOMRIGHT", 6, -4)
+	HelpFrameSubmitSuggestionScrollFrame:CreateBackdrop('Transparent')
+	HelpFrameSubmitSuggestionScrollFrame.backdrop:SetPoint('TOPLEFT', -4, 4)
+	HelpFrameSubmitSuggestionScrollFrame.backdrop:SetPoint('BOTTOMRIGHT', 6, -4)
 	for i = 1, _G.HelpFrameSubmitSuggestion:GetNumChildren() do
 		local child = select(i, _G.HelpFrameSubmitSuggestion:GetChildren())
 		if not child:GetName() then
@@ -90,20 +90,20 @@ function S:HelpFrame()
 
 		if buttons[i].text then
 			buttons[i].text:ClearAllPoints()
-			buttons[i].text:SetPoint("CENTER")
-			buttons[i].text:SetJustifyH("CENTER")
+			buttons[i].text:SetPoint('CENTER')
+			buttons[i].text:SetJustifyH('CENTER')
 		end
 	end
 
 	-- skin main buttons
 	for i = 1, 6 do
-		HandleTabButton(_G["HelpFrameButton"..i])
+		HandleTabButton(_G['HelpFrameButton'..i])
 	end
 	HandleTabButton(_G.HelpFrameButton16)
 
 	-- skin table options
 	for i = 1, _G.HelpFrameKnowledgebaseScrollFrameScrollChild:GetNumChildren() do
-		local b = _G["HelpFrameKnowledgebaseScrollFrameButton"..i]
+		local b = _G['HelpFrameKnowledgebaseScrollFrameButton'..i]
 		b:StripTextures(true)
 		S:HandleButton(b, true)
 	end
@@ -113,7 +113,7 @@ function S:HelpFrame()
 	S:HandleButton(HelpBrowserNavHome)
 	HelpBrowserNavHome:SetSize(26, 26)
 	HelpBrowserNavHome:ClearAllPoints()
-	HelpBrowserNavHome:SetPoint("BOTTOMLEFT", _G.HelpBrowser, "TOPLEFT", -5, 9)
+	HelpBrowserNavHome:SetPoint('BOTTOMLEFT', _G.HelpBrowser, 'TOPLEFT', -5, 9)
 	S:HandleNextPrevButton(_G.HelpBrowserNavBack)
 	_G.HelpBrowserNavBack:SetSize(26, 26)
 	S:HandleNextPrevButton(_G.HelpBrowserNavForward)
@@ -125,11 +125,11 @@ function S:HelpFrame()
 	S:HandleButton(_G.HelpBrowserBrowserSettings)
 	_G.HelpBrowserBrowserSettings:SetSize(26, 26)
 	_G.HelpBrowserBrowserSettings:ClearAllPoints()
-	_G.HelpBrowserBrowserSettings:SetPoint("TOPRIGHT", _G.HelpFrameCloseButton, "TOPLEFT", -3, -8)
+	_G.HelpBrowserBrowserSettings:SetPoint('TOPRIGHT', _G.HelpFrameCloseButton, 'TOPLEFT', -3, -8)
 
 	-- skin misc items
 	_G.HelpFrameKnowledgebaseSearchBox:ClearAllPoints()
-	_G.HelpFrameKnowledgebaseSearchBox:SetPoint("TOPLEFT", _G.HelpFrameMainInset, "TOPLEFT", 13, -10)
+	_G.HelpFrameKnowledgebaseSearchBox:SetPoint('TOPLEFT', _G.HelpFrameMainInset, 'TOPLEFT', 13, -10)
 	_G.HelpFrameKnowledgebaseNavBar:StripTextures()
 
 	local HelpFrame = _G.HelpFrame

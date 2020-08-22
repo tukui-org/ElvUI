@@ -25,12 +25,12 @@ C.Values = {
 }
 
 C.StateSwitchGetText = function(_, TEXT)
-	local friend, enemy = strmatch(TEXT, "^Friendly:([^,]*)"), strmatch(TEXT, "^Enemy:([^,]*)")
+	local friend, enemy = strmatch(TEXT, '^Friendly:([^,]*)'), strmatch(TEXT, '^Enemy:([^,]*)')
 	local text, blockB, blockS, blockT = friend or enemy or TEXT
 	local SF, localized = E.global.unitframe.specialFilters[text], L[text]
-	if SF and localized and text:match("^block") then blockB, blockS, blockT = localized:match("^%[(.-)](%s?)(.+)") end
-	local filterText = (blockB and format("|cFF999999%s|r%s%s", blockB, blockS, blockT)) or localized or text
-	return (friend and format("|cFF33FF33%s|r %s", _G.FRIEND, filterText)) or (enemy and format("|cFFFF3333%s|r %s", _G.ENEMY, filterText)) or filterText
+	if SF and localized and text:match('^block') then blockB, blockS, blockT = localized:match('^%[(.-)](%s?)(.+)') end
+	local filterText = (blockB and format('|cFF999999%s|r%s%s', blockB, blockS, blockT)) or localized or text
+	return (friend and format('|cFF33FF33%s|r %s', _G.FRIEND, filterText)) or (enemy and format('|cFFFF3333%s|r %s', _G.ENEMY, filterText)) or filterText
 end
 
 E:AddLib('AceGUI', 'AceGUI-3.0')
@@ -412,10 +412,10 @@ E.Options.args.profiles.args.profile.order = 1
 E.Options.args.profiles.args.private.name = L["Private"]
 E.Options.args.profiles.args.private.order = 2
 
-E.Libs.AceConfig:RegisterOptionsTable("ElvProfiles", E.Options.args.profiles.args.profile)
+E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
 E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
 
-E.Libs.AceConfig:RegisterOptionsTable("ElvPrivates", E.Options.args.profiles.args.private)
+E.Libs.AceConfig:RegisterOptionsTable('ElvPrivates', E.Options.args.profiles.args.private)
 
 E.Options.args.profiles.args.private.args.choose.confirm = function(_, value)
 	return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)

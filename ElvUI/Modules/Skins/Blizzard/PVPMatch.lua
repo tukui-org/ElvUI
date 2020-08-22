@@ -10,7 +10,7 @@ function S:Blizzard_PVPMatch()
 	-- Macro to show the PVPMatchScoreboard: /run PVPMatchScoreboard:Show()
 	local PVPMatchScoreboard = _G.PVPMatchScoreboard
 	PVPMatchScoreboard:StripTextures()
-	PVPMatchScoreboard:DisableDrawLayer("BORDER")
+	PVPMatchScoreboard:DisableDrawLayer('BORDER')
 	PVPMatchScoreboard:CreateBackdrop('Transparent')
 
 	PVPMatchScoreboard.Content:StripTextures()
@@ -35,7 +35,7 @@ function S:Blizzard_PVPMatch()
 	-- Macro to show the PVPMatchResults: /run PVPMatchResults:Show()
 	local PVPMatchResults = _G.PVPMatchResults
 	PVPMatchResults:StripTextures()
-	PVPMatchResults:DisableDrawLayer("BORDER")
+	PVPMatchResults:DisableDrawLayer('BORDER')
 	PVPMatchResults:CreateBackdrop('Transparent')
 
 	PVPMatchResults.content:StripTextures()
