@@ -233,7 +233,7 @@ function NP:Update_Fader(nameplate)
 			nameplate:EnableElement('Fader')
 
 			nameplate.Fader:SetOption('MinAlpha', 0)
-			nameplate.Fader:SetOption('Smooth', 0.5)
+			nameplate.Fader:SetOption('Smooth', 0.3)
 			nameplate.Fader:SetOption('Hover', (nameplate == _G.ElvNP_Player and _G.ElvNP_StaticSecure) or true)
 			nameplate.Fader:SetOption('Power', true)
 			nameplate.Fader:SetOption('Health', true)
