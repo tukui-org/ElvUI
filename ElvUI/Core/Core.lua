@@ -522,6 +522,9 @@ function E:CheckIncompatible()
 		if E:IsAddOnEnabled('Chatter') then
 			E:IncompatibleAddOn('Chatter', 'Chat')
 		end
+		if E:IsAddOnEnabled('Glass') then
+			E:IncompatibleAddOn('Glass', 'Chat')
+		end
 	end
 
 	if E.private.nameplates.enable then
