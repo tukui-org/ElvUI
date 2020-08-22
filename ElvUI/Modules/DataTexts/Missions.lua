@@ -22,10 +22,11 @@ local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageS
 local C_Garrison_GetCompleteMissions = C_Garrison.GetCompleteMissions
 local C_Garrison_GetLooseShipments = C_Garrison.GetLooseShipments
 local C_Garrison_GetTalentTreeIDsByClassID = C_Garrison.GetTalentTreeIDsByClassID
-local C_Garrison_GetTalentTreeInfoForID = C_Garrison.GetTalentTreeInfoForID
+local C_Garrison_GetTalentTreeInfo = C_Garrison.GetTalentTreeInfo
 local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
+local C_Covenants_GetActiveCovenantID = C_Covenants.GetActiveCovenantID
 local C_CovenantCallings_AreCallingsUnlocked = C_CovenantCallings.AreCallingsUnlocked
 local CovenantCalling_Create = CovenantCalling_Create
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
@@ -55,9 +56,7 @@ local LE_GARRISON_TYPE_8_0 = Enum.GarrisonType.Type_8_0
 local LE_GARRISON_TYPE_9_0 = Enum.GarrisonType.Type_9_0
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- 'Completed: |cFF33FF33%s|r'
-local TALENTS = TALENTS
-
-local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. ' %d (%d/%d)'
+local BODYGUARD_LEVEL_XP_FORMAT = L['Rank'] .. ' %d (%d/%d)'
 local EXPANSION_NAME5 = EXPANSION_NAME5 -- 'Warlords of Draenor'
 local EXPANSION_NAME6 = EXPANSION_NAME6 -- 'Legion'
 local EXPANSION_NAME7 = EXPANSION_NAME7 -- 'Battle for Azeroth'
@@ -69,19 +68,25 @@ local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local numMissions = 0
 local callingsData = {}
 
-local Widget_IDs = {
+local widgetIDs = {
 	Alliance = {
 		56156, -- A Tempered Blade
-		{L["Farseer Ori"], 1940},
-		{L["Hunter Akana"], 1613},
-		{L["Bladesman Inowari"], 1966}
+		{L['Farseer Ori'], 1940},
+		{L['Hunter Akana'], 1613},
+		{L['Bladesman Inowari'], 1966}
 	},
 	Horde = {
 		55500, -- Save a Friend
-		{L["Neri Sharpfin"], 1621},
-		{L["Poen Gillbrack"], 1622},
-		{L["Vim Brineheart"], 1920}
+		{L['Neri Sharpfin'], 1621},
+		{L['Poen Gillbrack'], 1622},
+		{L['Vim Brineheart'], 1920}
 	}
+}
+local covenantTreeIDs = {
+	[1] = {308, 312, 316, 320, 327},
+	[2] = {309, 314, 317, 324, 326},
+	[3] = {307, 311, 315, 319, 328},
+	[4] = {310, 313, 318, 321, 329}
 }
 
 local function sortFunction(a, b)
@@ -152,27 +157,32 @@ local function AddFollowerInfo(garrisonType)
 	end
 end
 
-local function AddTalentInfo(garrisonType)
+local function AddTalentInfo(garrisonType, currentCovenant)
+	local treeInfo = {}
 	wipe(data)
 
-	data = C_Garrison_GetTalentTreeIDsByClassID(garrisonType, E.myClassID)
+	if garrisonType == LE_GARRISON_TYPE_9_0 then
+		data = {unpack(covenantTreeIDs[currentCovenant])}
+	else
+		data = C_Garrison_GetTalentTreeIDsByClassID(garrisonType, E.myClassID)
+	end
 
 	if next(data) then
 		-- this is a talent that has completed, but has not been seen in the talent UI yet.
 		local completeTalentID = C_Garrison_GetCompleteTalent(garrisonType)
 		if completeTalentID > 0 then
 			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(TALENTS)
+			DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- 'Research Time:'
 
 			for _, treeID in ipairs(data) do
-				local _, _, tree = C_Garrison_GetTalentTreeInfoForID(treeID)
-				for _, talent in ipairs(tree) do
+				wipe(treeInfo)
+				treeInfo = C_Garrison_GetTalentTreeInfo(treeID)
+				for _, talent in ipairs(treeInfo.talents) do
 					if talent.isBeingResearched or talent.id == completeTalentID then
-						DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- 'Research Time:'
-						if talent.researchTimeRemaining and talent.researchTimeRemaining == 0 then
+						if talent.timeRemaining and talent.timeRemaining == 0 then
 							DT.tooltip:AddDoubleLine(talent.name, GOAL_COMPLETED, 1, 1, 1, GREEN_FONT_COLOR:GetRGB())
 						else
-							DT.tooltip:AddDoubleLine(talent.name, SecondsToTime(talent.researchTimeRemaining), 1, 1, 1, 1, 1, 1)
+							DT.tooltip:AddDoubleLine(talent.name, SecondsToTime(talent.timeRemaining), 1, 1, 1, 1, 1, 1)
 						end
 					end
 				end
@@ -195,12 +205,8 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddLine(EXPANSION_NAME8, 1, .5, 0)
-	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1813), nil, nil, nil, 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L['Mission(s) Report:'], AddInfo(1813), nil, nil, nil, 1, 1, 1)
 	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_9_0)
-
-	-- TODO - Every sanctum have 5 separate garrision talent trees that would be nice to monitor but for now I don't know a way to get talent tree IDs without talking to upgrade NPC. We always can hardcode all 20 ids.
-	-- C_CovenantSanctumUI.GetFeatures() -> C_Garrison.GetTalentTreeInfo(). C_Garrison.GetCurrentGarrTalentTreeID() return ID only of the Reservoir upgrades.
-	-- AddTalentInfo(LE_FOLLOWER_TYPE_GARRISON_9_0)
 
 	if C_CovenantCallings_AreCallingsUnlocked() then
 		local questNum = 0
@@ -216,11 +222,16 @@ local function OnEnter()
 		end
 	end
 
+	local currentCovenant = C_Covenants_GetActiveCovenantID()
+	if currentCovenant and currentCovenant > 0 then
+		AddTalentInfo(LE_GARRISON_TYPE_9_0, currentCovenant)
+	end
+
 	if IsShiftKeyDown() then
 		-- Battle for Azeroth
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(EXPANSION_NAME7, 1, .5, 0)
-		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1560), nil, nil, nil, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L['Mission(s) Report:'], AddInfo(1560), nil, nil, nil, 1, 1, 1)
 		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_8_0)
 
 		-- Island Expeditions
@@ -244,16 +255,16 @@ local function OnEnter()
 			end
 		end
 
-		local widgetGroup = Widget_IDs[E.myfaction]
+		local widgetGroup = widgetIDs[E.myfaction]
 		if E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and C_QuestLog_IsQuestFlaggedCompleted(widgetGroup[1]) then
 			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(L["Nazjatar Follower XP"])
+			DT.tooltip:AddLine(L['Nazjatar Follower XP'])
 
 			for i = 2, 4 do
 				local npcName, widgetID = unpack(widgetGroup[i])
 				local cur, toNext, _, rank, maxRank = E:GetWidgetInfoBase(widgetID)
 				if npcName and rank then
-					DT.tooltip:AddDoubleLine(npcName, (maxRank and L["Max Rank"]) or BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, toNext), 1, 1, 1)
+					DT.tooltip:AddDoubleLine(npcName, (maxRank and L['Max Rank']) or BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, toNext), 1, 1, 1)
 				end
 			end
 		end
@@ -264,7 +275,7 @@ local function OnEnter()
 		-- Legion
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(EXPANSION_NAME6, 1, .5, 0)
-		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1220), nil, nil, nil, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L['Mission(s) Report:'], AddInfo(1220), nil, nil, nil, 1, 1, 1)
 
 		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 		AddFollowerInfo(LE_GARRISON_TYPE_7_0)
@@ -292,11 +303,11 @@ local function OnEnter()
 		-- Warlords of Draenor
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(EXPANSION_NAME5, 1, .5, 0)
-		DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(824), nil, nil, nil, 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L['Mission(s) Report:'], AddInfo(824), nil, nil, nil, 1, 1, 1)
 		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_0)
 
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddDoubleLine(L["Naval Mission(s) Report:"], AddInfo(1101), nil, nil, nil, 1, 1 , 1)
+		DT.tooltip:AddDoubleLine(L['Naval Mission(s) Report:'], AddInfo(1101), nil, nil, nil, 1, 1 , 1)
 		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_2)
 
 		--Buildings
@@ -309,7 +320,7 @@ local function OnEnter()
 				if name and shipmentsTotal then
 					if AddLine then
 						DT.tooltip:AddLine(' ')
-						DT.tooltip:AddLine(L["Building(s) Report:"])
+						DT.tooltip:AddLine(L['Building(s) Report:'])
 						AddLine = false
 					end
 
