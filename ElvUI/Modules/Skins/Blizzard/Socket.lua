@@ -12,37 +12,37 @@ function S:Blizzard_ItemSocketingUI()
 	local ItemSocketingFrame = _G.ItemSocketingFrame
 	S:HandlePortraitFrame(ItemSocketingFrame)
 
-	_G.ItemSocketingDescription:DisableDrawLayer("BORDER")
-	_G.ItemSocketingDescription:DisableDrawLayer("BACKGROUND")
+	_G.ItemSocketingDescription:DisableDrawLayer('BORDER')
+	_G.ItemSocketingDescription:DisableDrawLayer('BACKGROUND')
 	_G.ItemSocketingScrollFrame:StripTextures()
-	_G.ItemSocketingScrollFrame:CreateBackdrop("Transparent")
+	_G.ItemSocketingScrollFrame:CreateBackdrop('Transparent')
 	S:HandleScrollBar(_G.ItemSocketingScrollFrameScrollBar, 2)
 
 	for i = 1, _G.MAX_NUM_SOCKETS  do
-		local button = _G[("ItemSocketingSocket%d"):format(i)]
-		local button_bracket = _G[("ItemSocketingSocket%dBracketFrame"):format(i)]
-		local button_bg = _G[("ItemSocketingSocket%dBackground"):format(i)]
-		local button_icon = _G[("ItemSocketingSocket%dIconTexture"):format(i)]
+		local button = _G[('ItemSocketingSocket%d'):format(i)]
+		local button_bracket = _G[('ItemSocketingSocket%dBracketFrame'):format(i)]
+		local button_bg = _G[('ItemSocketingSocket%dBackground'):format(i)]
+		local button_icon = _G[('ItemSocketingSocket%dIconTexture'):format(i)]
 		button:StripTextures()
 		button:StyleButton(false)
-		button:SetTemplate(nil, true)
+		button:CreateBackdrop(nil, true)
 		button_bracket:Kill()
 		button_bg:Kill()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
 		button_icon:SetInside()
 	end
 
-	hooksecurefunc("ItemSocketingFrame_Update", function()
+	hooksecurefunc('ItemSocketingFrame_Update', function()
 		for i, socket in ipairs(_G.ItemSocketingFrame.Sockets) do
 			local gemColor = GetSocketTypes(i)
 			local color = E.GemTypeInfo[gemColor]
-			socket:SetBackdropBorderColor(color.r, color.g, color.b)
+			socket.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
 	end)
 
 	_G.ItemSocketingFramePortrait:Kill()
 	_G.ItemSocketingSocketButton:ClearAllPoints()
-	_G.ItemSocketingSocketButton:SetPoint("BOTTOMRIGHT", ItemSocketingFrame, "BOTTOMRIGHT", -5, 5)
+	_G.ItemSocketingSocketButton:SetPoint('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
 	S:HandleButton(_G.ItemSocketingSocketButton)
 end
 

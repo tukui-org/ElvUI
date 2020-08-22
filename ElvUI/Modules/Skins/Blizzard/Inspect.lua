@@ -26,19 +26,19 @@ function S:Blizzard_InspectUI()
 
 	--Create portrait element for the PvP Frame so we can see prestige
 	local InspectPVPFrame = _G.InspectPVPFrame
-	local portrait = InspectPVPFrame:CreateTexture(nil, "OVERLAY")
+	local portrait = InspectPVPFrame:CreateTexture(nil, 'OVERLAY')
 	portrait:SetSize(55, 55)
-	portrait:SetPoint("CENTER", InspectPVPFrame.PortraitBackground, "CENTER", 0, 0)
+	portrait:SetPoint('CENTER', InspectPVPFrame.PortraitBackground, 'CENTER', 0, 0)
 	InspectPVPFrame.PortraitBackground:Kill()
 	InspectPVPFrame.PortraitBackground:ClearAllPoints()
-	InspectPVPFrame.PortraitBackground:SetPoint("TOPLEFT", 5, -5)
+	InspectPVPFrame.PortraitBackground:SetPoint('TOPLEFT', 5, -5)
 	InspectPVPFrame.SmallWreath:ClearAllPoints()
-	InspectPVPFrame.SmallWreath:SetPoint("TOPLEFT", -2, -25)
+	InspectPVPFrame.SmallWreath:SetPoint('TOPLEFT', -2, -25)
 
 	-- PVE Talents
 	for i = 1, 7 do
 		for j = 1, 3 do
-			local button = _G["TalentsTalentRow"..i.."Talent"..j]
+			local button = _G['TalentsTalentRow'..i..'Talent'..j]
 
 			button:StripTextures()
 			S:HandleIcon(button.icon, true)
@@ -54,20 +54,20 @@ function S:Blizzard_InspectUI()
 	end
 
 	for i = 1, 3 do
-		SkinPvpTalents(InspectPVPFrame["TalentSlot"..i])
+		SkinPvpTalents(InspectPVPFrame['TalentSlot'..i])
 	end
 
 	SkinPvpTalents(InspectPVPFrame.TrinketSlot)
 
 	for i = 1, 4 do
-		S:HandleTab(_G["InspectFrameTab"..i])
+		S:HandleTab(_G['InspectFrameTab'..i])
 	end
 
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
 	InspectModelFrame:CreateBackdrop()
-	InspectModelFrame.backdrop:SetPoint("TOPLEFT", E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-	InspectModelFrame.backdrop:SetPoint("BOTTOMRIGHT", E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+	InspectModelFrame.backdrop:SetPoint('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	InspectModelFrame.backdrop:SetPoint('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
 	_G.InspectModelFrameBorderTopLeft:Kill()
 	_G.InspectModelFrameBorderTopRight:Kill()
@@ -83,12 +83,12 @@ function S:Blizzard_InspectUI()
 	InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0)
 
 	-- Give inspect frame model backdrop it's color back
-	for _, corner in pairs({"TopLeft","TopRight","BotLeft","BotRight"}) do
-		local bg = _G["InspectModelFrameBackground"..corner];
+	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
+		local bg = _G['InspectModelFrameBackground'..corner];
 		if bg then
 			bg:SetDesaturated(false);
 			bg.ignoreDesaturated = true; -- so plugins can prevent this if they want.
-			hooksecurefunc(bg, "SetDesaturated", function(bckgnd, value)
+			hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
 				if value and bckgnd.ignoreDesaturated then
 					bckgnd:SetDesaturated(false);
 				end
@@ -97,7 +97,7 @@ function S:Blizzard_InspectUI()
 	end
 
 	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
-		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
+		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon, true)
 			Slot.icon:SetInside()
 			Slot:StripTextures()
@@ -106,7 +106,7 @@ function S:Blizzard_InspectUI()
 
 			if not Slot.Eye then
 				Slot.Eye = Slot:CreateTexture()
-				Slot.Eye:SetAtlas("Nzoth-inventory-icon")
+				Slot.Eye:SetAtlas('Nzoth-inventory-icon')
 				Slot.Eye:SetInside()
 			end
 		end
@@ -116,7 +116,7 @@ function S:Blizzard_InspectUI()
 	_G.InspectGuildFrameBG:Kill()
 	_G.InspectTalentFrame:StripTextures()
 
-	hooksecurefunc("InspectPaperDollItemSlotButton_Update", function(button)
+	hooksecurefunc('InspectPaperDollItemSlotButton_Update', function(button)
 		UpdateCorruption(button)
 	end)
 end

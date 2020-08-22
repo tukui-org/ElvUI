@@ -28,7 +28,7 @@ end
 
 local function GetSelectedSpell()
 	if selectedSpell and selectedSpell ~= '' then
-		local spell = strmatch(selectedSpell, " %((%d+)%)$") or selectedSpell
+		local spell = strmatch(selectedSpell, ' %((%d+)%)$') or selectedSpell
 		if spell then
 			return tonumber(spell) or spell
 		end
@@ -36,35 +36,35 @@ local function GetSelectedSpell()
 end
 
 local function filterMatch(s,v)
-	local m1, m2, m3, m4 = "^"..v.."$", "^"..v..",", ","..v.."$", ","..v..","
-	return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..",")
+	local m1, m2, m3, m4 = '^'..v..'$', '^'..v..',', ','..v..'$', ','..v..','
+	return (strmatch(s, m1) and m1) or (strmatch(s, m2) and m2) or (strmatch(s, m3) and m3) or (strmatch(s, m4) and v..',')
 end
 
 local function removePriority(value)
 	if not value then return end
 	local x,y,z=E.db.unitframe.units,E.db.nameplates.units;
 	for n, t in pairs(x) do
-		if t and t.buffs and t.buffs.priority and t.buffs.priority ~= "" then
+		if t and t.buffs and t.buffs.priority and t.buffs.priority ~= '' then
 			z = filterMatch(t.buffs.priority, E:EscapeString(value))
-			if z then E.db.unitframe.units[n].buffs.priority = gsub(t.buffs.priority, z, "") end
+			if z then E.db.unitframe.units[n].buffs.priority = gsub(t.buffs.priority, z, '') end
 		end
-		if t and t.debuffs and t.debuffs.priority and t.debuffs.priority ~= "" then
+		if t and t.debuffs and t.debuffs.priority and t.debuffs.priority ~= '' then
 			z = filterMatch(t.debuffs.priority, E:EscapeString(value))
-			if z then E.db.unitframe.units[n].debuffs.priority = gsub(t.debuffs.priority, z, "") end
+			if z then E.db.unitframe.units[n].debuffs.priority = gsub(t.debuffs.priority, z, '') end
 		end
-		if t and t.aurabar and t.aurabar.priority and t.aurabar.priority ~= "" then
+		if t and t.aurabar and t.aurabar.priority and t.aurabar.priority ~= '' then
 			z = filterMatch(t.aurabar.priority, E:EscapeString(value))
-			if z then E.db.unitframe.units[n].aurabar.priority = gsub(t.aurabar.priority, z, "") end
+			if z then E.db.unitframe.units[n].aurabar.priority = gsub(t.aurabar.priority, z, '') end
 		end
 	end
 	for n, t in pairs(y) do
-		if t and t.buffs and t.buffs.priority and t.buffs.priority ~= "" then
+		if t and t.buffs and t.buffs.priority and t.buffs.priority ~= '' then
 			z = filterMatch(t.buffs.priority, E:EscapeString(value))
-			if z then E.db.nameplates.units[n].buffs.priority = gsub(t.buffs.priority, z, "") end
+			if z then E.db.nameplates.units[n].buffs.priority = gsub(t.buffs.priority, z, '') end
 		end
-		if t and t.debuffs and t.debuffs.priority and t.debuffs.priority ~= "" then
+		if t and t.debuffs and t.debuffs.priority and t.debuffs.priority ~= '' then
 			z = filterMatch(t.debuffs.priority, E:EscapeString(value))
-			if z then E.db.nameplates.units[n].debuffs.priority = gsub(t.debuffs.priority, z, "") end
+			if z then E.db.nameplates.units[n].debuffs.priority = gsub(t.debuffs.priority, z, '') end
 		end
 	end
 end
@@ -129,7 +129,7 @@ local function SetSpellList()
 		end
 
 		local spellName = tonumber(filter) and GetSpellInfo(filter)
-		local name = (spellName and format("%s |cFF888888(%s)|r", spellName, filter)) or tostring(filter)
+		local name = (spellName and format('%s |cFF888888(%s)|r', spellName, filter)) or tostring(filter)
 
 		if name:lower():find(searchText) then
 			spellList[filter] = name
@@ -153,16 +153,16 @@ E.Options.args.filters = {
 			name = L["Create Filter"],
 			desc = L["Create a filter, once created a filter can be set inside the buffs/debuffs section of each unit."],
 			type = 'input',
-			get = function(info) return "" end,
+			get = function(info) return '' end,
 			set = function(info, value)
-				if strmatch(value, "^[%s%p]-$") then
+				if strmatch(value, '^[%s%p]-$') then
 					return
 				end
-				if strmatch(value, ",") then
+				if strmatch(value, ',') then
 					E:Print(L["Filters are not allowed to have commas in their name. Stripping commas from filter name."])
-					value = gsub(value, ",", "")
+					value = gsub(value, ',', '')
 				end
-				if strmatch(value, "^Friendly:") or strmatch(value, "^Enemy:") then
+				if strmatch(value, '^Friendly:') or strmatch(value, '^Enemy:') then
 					return --dont allow people to create Friendly: or Enemy: filters
 				end
 				if G.unitframe.specialFilters[value] or E.global.unitframe.aurafilters[value] then
@@ -217,7 +217,7 @@ E.Options.args.filters = {
 			end,
 		},
 		resetGroup = {
-			type = "select",
+			type = 'select',
 			name = L["Reset Filter"],
 			order = 4,
 			desc = L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."],
@@ -250,12 +250,12 @@ E.Options.args.filters = {
 			guiInline = true,
 			order = 10,
 			args = {
-				selectSpellheader = ACH:Description(L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, "medium", nil, function() return not E.db.unitframe.smartRaidFilter end),
+				selectSpellheader = ACH:Description(L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, 'medium', nil, function() return not E.db.unitframe.smartRaidFilter end),
 				selectSpell = {
 					name = L["Select Spell"],
 					type = 'select',
 					order = 1,
-					width = "double",
+					width = 'double',
 					get = function(info) return selectedSpell or '' end,
 					set = function(info, value)
 						selectedSpell = (value ~= '' and value) or nil
@@ -266,7 +266,7 @@ E.Options.args.filters = {
 					order = 2,
 					name = L["Filter Search"],
 					desc = L["Search for a spell name inside of a filter."],
-					type = "input",
+					type = 'input',
 					get = function() return quickSearchText end,
 					set = function(info,value) quickSearchText = value end,
 				},
@@ -324,7 +324,7 @@ E.Options.args.filters = {
 					type = 'select',
 					confirm = function(info, value)
 						local spellName = tonumber(value) and GetSpellInfo(value)
-						local name = (spellName and format("%s |cFF888888(%s)|r", spellName, value)) or tostring(value)
+						local name = (spellName and format('%s |cFF888888(%s)|r', spellName, value)) or tostring(value)
 						return 'Remove Spell - '..name
 					end,
 					get = function(info) return '' end,
@@ -446,7 +446,7 @@ E.Options.args.filters = {
 				},
 				sizeOffset = {
 					order = 5,
-					type = "range",
+					type = 'range',
 					name = L["Size Offset"],
 					desc = L["This changes the size of the Aura Icon by this value."],
 					min = -25, max = 25, step = 1,
@@ -502,7 +502,7 @@ E.Options.args.filters = {
 			},
 		},
 		spellGroup = {
-			type = "group",
+			type = 'group',
 			name = function()
 				local spell = GetSelectedSpell()
 				local spellName = spell and GetSpellInfo(spell)
@@ -622,14 +622,14 @@ E.Options.args.filters = {
 				},
 				forDebuffIndicator = {
 					order = 4,
-					type = "group",
+					type = 'group',
 					name = L["Used as RaidDebuff Indicator"],
 					guiInline = true,
 					hidden = function() return (selectedFilter == 'Debuff Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') end,
 					args = {
 						priority = {
 							order = 1,
-							type = "range",
+							type = 'range',
 							name = L["Priority"],
 							desc = L["Set the priority order of the spell, please note that prioritys are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."],
 							min = 0, max = 99, step = 1,
@@ -651,7 +651,7 @@ E.Options.args.filters = {
 						},
 						stackThreshold = {
 							order = 2,
-							type = "range",
+							type = 'range',
 							name = L["Stack Threshold"],
 							desc = L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."],
 							min = 0, max = 99, step = 1,
@@ -682,5 +682,5 @@ function E:SetToFilterConfig(filter)
 	selectedSpell = nil
 	quickSearchText = ''
 	selectedFilter = filter or ''
-	E.Libs.AceConfigDialog:SelectGroup("ElvUI", "filters")
+	E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'filters')
 end

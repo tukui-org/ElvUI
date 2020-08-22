@@ -10,12 +10,13 @@ local HasExtraActionBar = HasExtraActionBar
 local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
-
 local ExtraButtons = {}
 
-local function FixExtraActionCD(cd)
-	local start, duration = GetActionCooldown(cd:GetParent().action)
-	E.OnSetCooldown(cd, start, duration)
+local function FixExtraActionCD(button)
+	if button.cooldown and button.action then
+		local start, duration = GetActionCooldown(button.action)
+		E.OnSetCooldown(button.cooldown, start, duration)
+	end
 end
 
 function AB:Extra_SetAlpha()
@@ -23,7 +24,7 @@ function AB:Extra_SetAlpha()
 	local alpha = E.db.actionbar.extraActionButton.alpha
 
 	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
-		local button = _G["ExtraActionButton"..i]
+		local button = _G['ExtraActionButton'..i]
 		if button then
 			button:SetAlpha(alpha)
 		end
@@ -85,7 +86,7 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame.Style:SetAlpha(0)
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
-	hooksecurefunc(ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(button)
+	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(button)
 		for spellButton in button.SpellButtonContainer:EnumerateActive() do
 			if spellButton and not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
@@ -111,7 +112,7 @@ function AB:SetupExtraButton()
 	end)
 
 	-- Sometimes the ZoneButtons anchor it to the ExtraAbilityContainer, we dont want this.
-	hooksecurefunc(ZoneAbilityFrame, "SetParent", function(self, parent)
+	hooksecurefunc(ZoneAbilityFrame, 'SetParent', function(self, parent)
 		if parent == ExtraAbilityContainer then
 			self:SetParent(ZoneAbilityHolder)
 		end
@@ -119,7 +120,7 @@ function AB:SetupExtraButton()
 
 	-- 9.0 Shadowlands - Cooldowntext is not working on ExtraAB
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
-		local button = _G["ExtraActionButton"..i]
+		local button = _G['ExtraActionButton'..i]
 		if button then
 			button.noResize = true
 			button.pushed = true
@@ -141,13 +142,13 @@ function AB:SetupExtraButton()
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
 
-			button.HotKey:SetText(GetBindingKey("ExtraActionButton"..i))
+			button.HotKey:SetText(GetBindingKey('ExtraActionButton'..i))
 			tinsert(ExtraButtons, button)
 
 			if button.cooldown then
 				button.cooldown.CooldownOverride = 'actionbar'
 				E:RegisterCooldown(button.cooldown)
-				button.cooldown:HookScript("OnShow", FixExtraActionCD)
+				button:HookScript('OnShow', FixExtraActionCD)
 			end
 		end
 	end

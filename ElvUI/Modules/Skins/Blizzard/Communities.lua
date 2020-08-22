@@ -34,13 +34,13 @@ end
 
 local function HandleRoleChecks(button, ...)
 	button:StripTextures()
-	button:DisableDrawLayer("ARTWORK")
-	button:DisableDrawLayer("OVERLAY")
+	button:DisableDrawLayer('ARTWORK')
+	button:DisableDrawLayer('OVERLAY')
 
 	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
 	button.bg:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	button.bg:SetTexCoord(...)
-	button.bg:SetPoint("CENTER")
+	button.bg:SetPoint('CENTER')
 	button.bg:SetSize(40, 40)
 	button.bg:SetAlpha(0.6)
 	S:HandleCheckBox(button.CheckBox)
@@ -53,14 +53,14 @@ local function HandleCommunitiesButtons(self, color)
 
 	S:HandleIcon(self.Icon)
 	self.Icon:ClearAllPoints()
-	self.Icon:SetPoint("TOPLEFT", 15, -18)
+	self.Icon:SetPoint('TOPLEFT', 15, -18)
 	self.IconRing:Hide()
 
 	if not self.bg then
-		self.bg = CreateFrame("Frame", nil, self)
-		self.bg:CreateBackdrop("Transparent")
-		self.bg:SetPoint("TOPLEFT", 7, -16)
-		self.bg:SetPoint("BOTTOMRIGHT", -10, 12)
+		self.bg = CreateFrame('Frame', nil, self)
+		self.bg:CreateBackdrop('Transparent')
+		self.bg:SetPoint('TOPLEFT', 7, -16)
+		self.bg:SetPoint('BOTTOMRIGHT', -10, 12)
 	end
 
 	if self.IconBorder then
@@ -112,31 +112,31 @@ function S:Blizzard_Communities()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
 	_G.CommunitiesFrameCommunitiesListListScrollFrame:StripTextures()
 
-	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetClubInfo", function(s, clubInfo, isInvitation, isTicket)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetClubInfo', function(s, clubInfo, isInvitation, isTicket)
 		if clubInfo then
 			s.Background:Hide()
 			s.CircleMask:Hide()
 
 			s.Icon:ClearAllPoints()
-			s.Icon:SetPoint("TOPLEFT", 8, -17)
+			s.Icon:SetPoint('TOPLEFT', 8, -17)
 			S:HandleIcon(s.Icon)
 			s.IconRing:Hide()
 
 			if not s.IconBorder then
-				s.IconBorder = s:CreateTexture(nil, "BORDER")
+				s.IconBorder = s:CreateTexture(nil, 'BORDER')
 				s.IconBorder:SetOutside(s.Icon)
 				s.IconBorder:Hide()
 			end
 
-			s.GuildTabardBackground:SetPoint("TOPLEFT", 6, -17)
-			s.GuildTabardEmblem:SetPoint("TOPLEFT", 13, -17)
-			s.GuildTabardBorder:SetPoint("TOPLEFT", 6, -17)
+			s.GuildTabardBackground:SetPoint('TOPLEFT', 6, -17)
+			s.GuildTabardEmblem:SetPoint('TOPLEFT', 13, -17)
+			s.GuildTabardBorder:SetPoint('TOPLEFT', 6, -17)
 
 			if not s.bg then
-				s.bg = CreateFrame("Frame", nil, s)
-				s.bg:CreateBackdrop("Transparent")
-				s.bg:SetPoint("TOPLEFT", 7, -16)
-				s.bg:SetPoint("BOTTOMRIGHT", -10, 12)
+				s.bg = CreateFrame('Frame', nil, s)
+				s.bg:CreateBackdrop('Transparent')
+				s.bg:SetPoint('TOPLEFT', 7, -16)
+				s.bg:SetPoint('BOTTOMRIGHT', -10, 12)
 			end
 
 			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
@@ -170,9 +170,9 @@ function S:Blizzard_Communities()
 	end)
 
 	-- Add Community Button
-	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetAddCommunity", function(s) HandleCommunitiesButtons(s, 1) end)
-	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetFindCommunity", function(s) HandleCommunitiesButtons(s, 2) end)
-	hooksecurefunc(_G.CommunitiesListEntryMixin, "SetGuildFinder", function(s) HandleCommunitiesButtons(s, 1) end)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetAddCommunity', function(s) HandleCommunitiesButtons(s, 1) end)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetFindCommunity', function(s) HandleCommunitiesButtons(s, 2) end)
+	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetGuildFinder', function(s) HandleCommunitiesButtons(s, 1) end)
 
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
 	CommunitiesFrame.ChatTab:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
@@ -183,7 +183,7 @@ function S:Blizzard_Communities()
 	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
 	CommunitiesFrame.MaximizeMinimizeFrame:ClearAllPoints()
-	CommunitiesFrame.MaximizeMinimizeFrame:SetPoint("RIGHT", CommunitiesFrame.CloseButton, "LEFT", 12, 0)
+	CommunitiesFrame.MaximizeMinimizeFrame:SetPoint('RIGHT', CommunitiesFrame.CloseButton, 'LEFT', 12, 0)
 
 	S:HandleButton(CommunitiesFrame.InviteButton)
 	S:HandleNextPrevButton(CommunitiesFrame.AddToChatButton)
@@ -195,7 +195,7 @@ function S:Blizzard_Communities()
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropDownMenu)
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropDownMenu)
 
-	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, "SetFilter", function(s)
+	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(s)
 		s.ShowNotificationsButton:SetSize(20, 20)
 		s.HideNotificationsButton:SetSize(20, 20)
 		S:HandleCheckBox(s.ShowNotificationsButton)
@@ -208,7 +208,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.MemberList.WatermarkFrame:Hide()
 
 	CommunitiesFrame.Chat:StripTextures()
-	CommunitiesFrame.Chat.InsetFrame:CreateBackdrop("Transparent")
+	CommunitiesFrame.Chat.InsetFrame:CreateBackdrop('Transparent')
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:SetSize(120, 20)
@@ -226,7 +226,7 @@ function S:Blizzard_Communities()
 		if not card.isSkinned then
 			card.CardBackground:Hide()
 			card:CreateBackdrop()
-			card.GuildBannerEmblemLogo:SetDrawLayer("OVERLAY")
+			card.GuildBannerEmblemLogo:SetDrawLayer('OVERLAY')
 			S:HandleButton(card.RequestJoin)
 			card.isSkinned = true
 		end
@@ -238,7 +238,7 @@ function S:Blizzard_Communities()
 	ClubFinderGuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
 	ClubFinderGuildFinderFrame.OptionsList.Search:SetSize(118, 20)
 	ClubFinderGuildFinderFrame.OptionsList.Search:ClearAllPoints()
-	ClubFinderGuildFinderFrame.OptionsList.Search:SetPoint("TOP", ClubFinderGuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 1, -3)
+	ClubFinderGuildFinderFrame.OptionsList.Search:SetPoint('TOP', ClubFinderGuildFinderFrame.OptionsList.SearchBox, 'BOTTOM', 1, -3)
 	S:HandleEditBox(ClubFinderGuildFinderFrame.OptionsList.SearchBox)
 	S:HandleButton(ClubFinderGuildFinderFrame.OptionsList.Search)
 
@@ -270,7 +270,7 @@ function S:Blizzard_Communities()
 
 	S:HandleButton(ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search)
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:ClearAllPoints()
-	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:SetPoint("TOP", ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox, "BOTTOM", 1, -3)
+	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:SetPoint('TOP', ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox, 'BOTTOM', 1, -3)
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.Search:SetSize(118, 20)
 	ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox:SetSize(118, 20)
 	S:HandleEditBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SearchBox)
@@ -287,7 +287,7 @@ function S:Blizzard_Communities()
 
 	for _, t in ipairs({ClubFinderGuildFinderFrame.RequestToJoinFrame, ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame}) do
 		t:StripTextures()
-		t:CreateBackdrop("Transparent")
+		t:CreateBackdrop('Transparent')
 
 		hooksecurefunc(t, 'Initialize', function(s)
 			for button in s.SpecsPool:EnumerateActive() do
@@ -309,18 +309,18 @@ function S:Blizzard_Communities()
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
-	CommunitiesFrame.GuildMemberDetailFrame:CreateBackdrop("Transparent")
+	CommunitiesFrame.GuildMemberDetailFrame:CreateBackdrop('Transparent')
 
-	CommunitiesFrame.GuildMemberDetailFrame.NoteBackground:SetTemplate("Transparent")
-	CommunitiesFrame.GuildMemberDetailFrame.OfficerNoteBackground:SetTemplate("Transparent")
+	CommunitiesFrame.GuildMemberDetailFrame.NoteBackground:SetTemplate('Transparent')
+	CommunitiesFrame.GuildMemberDetailFrame.OfficerNoteBackground:SetTemplate('Transparent')
 	S:HandleCloseButton(CommunitiesFrame.GuildMemberDetailFrame.CloseButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.RemoveButton)
 	S:HandleButton(CommunitiesFrame.GuildMemberDetailFrame.GroupInviteButton)
 
 	local DropDown = CommunitiesFrame.GuildMemberDetailFrame.RankDropdown
 	S:HandleDropDownBox(DropDown, 160)
-	DropDown.backdrop:SetPoint("TOPLEFT", 0, -6)
-	DropDown.backdrop:SetPoint("BOTTOMRIGHT", -12, 6)
+	DropDown.backdrop:SetPoint('TOPLEFT', 0, -6)
+	DropDown.backdrop:SetPoint('BOTTOMRIGHT', -12, 6)
 	DropDown:SetPoint('LEFT', CommunitiesFrame.GuildMemberDetailFrame.RankLabel, 'RIGHT', 2, 0)
 
 	-- [[ ROSTER TAB ]]
@@ -341,23 +341,23 @@ function S:Blizzard_Communities()
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:SetSize(25, 25)
 
-	hooksecurefunc(CommunitiesFrame.MemberList, "RefreshListDisplay", function(s)
+	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(s)
 		for i = 1, s.ColumnDisplay:GetNumChildren() do
 			local child = select(i, s.ColumnDisplay:GetChildren())
 			child:StripTextures()
-			child:CreateBackdrop("Transparent")
+			child:CreateBackdrop('Transparent')
 		end
 
 		for _, button in ipairs(s.ListScrollFrame.buttons or {}) do
 			if button and not button.hooked then
-				hooksecurefunc(button, "RefreshExpandedColumns", UpdateNames)
+				hooksecurefunc(button, 'RefreshExpandedColumns', UpdateNames)
 				if button.ProfessionHeader then
 					local header = button.ProfessionHeader
 					for i = 1, 3 do
 						select(i, header:GetRegions()):Hide()
 					end
 
-					header:CreateBackdrop("Transparent")
+					header:CreateBackdrop('Transparent')
 				end
 
 				button.hooked = true
@@ -384,9 +384,9 @@ function S:Blizzard_Communities()
 	GuildBenefitsFrame.Perks.TitleText:FontTemplate(nil, 14)
 
 	for i = 1, 5 do
-		local button = _G["CommunitiesFrameContainerButton"..i]
-		button:DisableDrawLayer("BACKGROUND")
-		button:DisableDrawLayer("BORDER")
+		local button = _G['CommunitiesFrameContainerButton'..i]
+		button:DisableDrawLayer('BACKGROUND')
+		button:DisableDrawLayer('BORDER')
 		button:CreateBackdrop()
 
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -403,8 +403,8 @@ function S:Blizzard_Communities()
 			button:CreateBackdrop()
 		end
 
-		button:SetNormalTexture("")
-		button:SetHighlightTexture("")
+		button:SetNormalTexture('')
+		button:SetHighlightTexture('')
 
 		if not button.hover then
 			local hover = button:CreateTexture()
@@ -422,7 +422,7 @@ function S:Blizzard_Communities()
 		end
 	end
 
-	hooksecurefunc("CommunitiesGuildRewards_Update", function()
+	hooksecurefunc('CommunitiesGuildRewards_Update', function()
 		for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
 			if button.index then
 				local _, itemID = GetGuildRewardInfo(button.index)
@@ -447,9 +447,9 @@ function S:Blizzard_Communities()
 	StatusBar.Progress:SetAllPoints()
 	E:RegisterStatusBar(StatusBar)
 
-	local bg = CreateFrame("Frame", nil, StatusBar)
-	bg:SetPoint("TOPLEFT", 0, -3)
-	bg:SetPoint("BOTTOMRIGHT", 0, 1)
+	local bg = CreateFrame('Frame', nil, StatusBar)
+	bg:SetPoint('TOPLEFT', 0, -3)
+	bg:SetPoint('BOTTOMRIGHT', 0, 1)
 	bg:SetFrameLevel(StatusBar:GetFrameLevel())
 	bg:CreateBackdrop()
 
@@ -466,9 +466,9 @@ function S:Blizzard_Communities()
 	GuildDetails.InsetBorderTopLeft2:Hide()
 
 	local striptextures = {
-		"CommunitiesFrameGuildDetailsFrameInfo",
-		"CommunitiesFrameGuildDetailsFrameNews",
-		"CommunitiesGuildNewsFiltersFrame",
+		'CommunitiesFrameGuildDetailsFrameInfo',
+		'CommunitiesFrameGuildDetailsFrameNews',
+		'CommunitiesGuildNewsFiltersFrame',
 	}
 
 	for _, frame in pairs(striptextures) do
@@ -477,7 +477,7 @@ function S:Blizzard_Communities()
 
 	S:HandleScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfoMOTDScrollFrameScrollBar)
 
-	hooksecurefunc("GuildNewsButton_SetNews", function(button, news_id)
+	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
 		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
 		if newsInfo then
 			if button.header:IsShown() then
@@ -488,32 +488,32 @@ function S:Blizzard_Communities()
 
 	-- Guild Challenges Background
 	local GuildDetailsFrameInfo = _G.CommunitiesFrameGuildDetailsFrameInfo
-	local backdrop1 = CreateFrame("Frame", nil, GuildDetailsFrameInfo, "BackdropTemplate")
-	backdrop1:SetTemplate("Transparent")
+	local backdrop1 = CreateFrame('Frame', nil, GuildDetailsFrameInfo, 'BackdropTemplate')
+	backdrop1:SetTemplate('Transparent')
 	backdrop1:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
-	backdrop1:SetPoint("TOPLEFT", GuildDetailsFrameInfo, "TOPLEFT", 14, -22)
-	backdrop1:SetPoint("BOTTOMRIGHT", GuildDetailsFrameInfo, "BOTTOMRIGHT", 0, 200)
+	backdrop1:SetPoint('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -22)
+	backdrop1:SetPoint('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 200)
 
 	-- Guild MOTD Background
-	local backdrop2 = CreateFrame("Frame", nil, GuildDetailsFrameInfo, "BackdropTemplate")
-	backdrop2:SetTemplate("Transparent")
+	local backdrop2 = CreateFrame('Frame', nil, GuildDetailsFrameInfo, 'BackdropTemplate')
+	backdrop2:SetTemplate('Transparent')
 	backdrop2:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
-	backdrop2:SetPoint("TOPLEFT", GuildDetailsFrameInfo, "TOPLEFT", 14, -158)
-	backdrop2:SetPoint("BOTTOMRIGHT", GuildDetailsFrameInfo, "BOTTOMRIGHT", 0, 118)
+	backdrop2:SetPoint('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -158)
+	backdrop2:SetPoint('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 118)
 
 	-- Guild Information Background
-	local backdrop3 = CreateFrame("Frame", nil, GuildDetailsFrameInfo, "BackdropTemplate")
-	backdrop3:SetTemplate("Transparent")
+	local backdrop3 = CreateFrame('Frame', nil, GuildDetailsFrameInfo, 'BackdropTemplate')
+	backdrop3:SetTemplate('Transparent')
 	backdrop3:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
-	backdrop3:SetPoint("TOPLEFT", GuildDetailsFrameInfo, "TOPLEFT", 14, -236)
-	backdrop3:SetPoint("BOTTOMRIGHT", GuildDetailsFrameInfo, "BOTTOMRIGHT", -7, 1)
+	backdrop3:SetPoint('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -236)
+	backdrop3:SetPoint('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', -7, 1)
 
 	-- Guild News Background
-	local backdrop4 = CreateFrame("Frame", nil, GuildDetailsFrameInfo, "BackdropTemplate")
-	backdrop4:SetTemplate("Transparent")
+	local backdrop4 = CreateFrame('Frame', nil, GuildDetailsFrameInfo, 'BackdropTemplate')
+	backdrop4:SetTemplate('Transparent')
 	backdrop4:SetFrameLevel(GuildDetailsFrameInfo:GetFrameLevel() - 1)
-	backdrop4:SetPoint("TOPLEFT", GuildDetailsFrameInfo, "TOPLEFT", 591, -22)
-	backdrop4:SetPoint("BOTTOMRIGHT", GuildDetailsFrameInfo, "BOTTOMRIGHT", 18, 1)
+	backdrop4:SetPoint('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 591, -22)
+	backdrop4:SetPoint('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 18, 1)
 
 	_G.CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
@@ -525,12 +525,12 @@ function S:Blizzard_Communities()
 	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel
 	BossModel:StripTextures()
 	BossModel.TextFrame:StripTextures()
-	BossModel:CreateBackdrop("Transparent")
-	BossModel.TextFrame:CreateBackdrop("Transparent")
+	BossModel:CreateBackdrop('Transparent')
+	BossModel.TextFrame:CreateBackdrop('Transparent')
 
 	-- Filters Frame
 	local FiltersFrame = _G.CommunitiesGuildNewsFiltersFrame
-	FiltersFrame:CreateBackdrop("Transparent")
+	FiltersFrame:CreateBackdrop('Transparent')
 	S:HandleCheckBox(FiltersFrame.GuildAchievement)
 	S:HandleCheckBox(FiltersFrame.Achievement)
 	S:HandleCheckBox(FiltersFrame.DungeonEncounter)
@@ -543,8 +543,8 @@ function S:Blizzard_Communities()
 	-- Guild Message EditBox
 	local EditFrame = _G.CommunitiesGuildTextEditFrame
 	EditFrame:StripTextures()
-	EditFrame:CreateBackdrop("Transparent")
-	EditFrame.Container:CreateBackdrop("Transparent")
+	EditFrame:CreateBackdrop('Transparent')
+	EditFrame.Container:CreateBackdrop('Transparent')
 	S:HandleScrollBar(_G.CommunitiesGuildTextEditFrameScrollBar)
 	S:HandleButton(_G.CommunitiesGuildTextEditFrameAcceptButton)
 
@@ -556,7 +556,7 @@ function S:Blizzard_Communities()
 	local GuildLogFrame = _G.CommunitiesGuildLogFrame
 	GuildLogFrame:StripTextures()
 	GuildLogFrame.Container:StripTextures()
-	GuildLogFrame:CreateBackdrop("Transparent")
+	GuildLogFrame:CreateBackdrop('Transparent')
 
 	S:HandleScrollBar(_G.CommunitiesGuildLogFrameScrollBar, 4)
 	S:HandleCloseButton(_G.CommunitiesGuildLogFrameCloseButton)
@@ -566,13 +566,13 @@ function S:Blizzard_Communities()
 	-- Recruitment Info
 	local RecruitmentFrame = _G.CommunitiesGuildRecruitmentFrame
 	RecruitmentFrame:StripTextures()
-	RecruitmentFrame:CreateBackdrop("Transparent")
+	RecruitmentFrame:CreateBackdrop('Transparent')
 	_G.CommunitiesGuildRecruitmentFrameInset:StripTextures(false)
 
 	-- Recruitment Dialog
 	local RecruitmentDialog = _G.CommunitiesFrame.RecruitmentDialog
 	RecruitmentDialog:StripTextures()
-	RecruitmentDialog:CreateBackdrop("Transparent")
+	RecruitmentDialog:CreateBackdrop('Transparent')
 	S:HandleCheckBox(RecruitmentDialog.ShouldListClub.Button)
 	S:HandleDropDownBox(RecruitmentDialog.ClubFocusDropdown, 220)
 	S:HandleDropDownBox(RecruitmentDialog.LookingForDropdown, 220)
@@ -607,7 +607,7 @@ function S:Blizzard_Communities()
 
 	-- Tabs
 	for i = 1, 2 do
-		S:HandleTab(_G["CommunitiesGuildRecruitmentFrameTab"..i])
+		S:HandleTab(_G['CommunitiesGuildRecruitmentFrameTab'..i])
 	end
 
 	CommunitiesGuildRecruitmentFrameRecruitment.CommentFrame.CommentInputFrame:StripTextures()
@@ -620,13 +620,13 @@ function S:Blizzard_Communities()
 	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.DeclineButton)
 
 	for i = 1, 5 do
-		_G["CommunitiesGuildRecruitmentFrameApplicantsContainerButton"..i]:SetBackdrop(nil)
+		_G['CommunitiesGuildRecruitmentFrameApplicantsContainerButton'..i]:SetBackdrop(nil)
 	end
 
 	-- Notification Settings Dialog
 	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
 	NotificationSettings:StripTextures()
-	NotificationSettings:CreateBackdrop("Transparent")
+	NotificationSettings:CreateBackdrop('Transparent')
 	NotificationSettings.backdrop:SetAllPoints()
 
 	S:HandleDropDownBox(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
@@ -640,7 +640,7 @@ function S:Blizzard_Communities()
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
 	EditStreamDialog:StripTextures()
-	EditStreamDialog:CreateBackdrop("Transparent")
+	EditStreamDialog:CreateBackdrop('Transparent')
 	EditStreamDialog.backdrop:SetAllPoints()
 
 	S:HandleEditBox(EditStreamDialog.NameEdit)
@@ -654,7 +654,7 @@ function S:Blizzard_Communities()
 	-- Communities Settings
 	local Settings = _G.CommunitiesSettingsDialog
 	Settings.BG:Hide()
-	Settings:CreateBackdrop("Transparent")
+	Settings:CreateBackdrop('Transparent')
 	Settings.backdrop:SetAllPoints()
 	S:HandleIcon(Settings.IconPreview)
 	Settings.IconPreviewRing:Hide()
@@ -672,7 +672,7 @@ function S:Blizzard_Communities()
 	-- Avatar Picker
 	local Avatar = _G.CommunitiesAvatarPickerDialog
 	Avatar:StripTextures()
-	Avatar:CreateBackdrop("Transparent")
+	Avatar:CreateBackdrop('Transparent')
 	Avatar.backdrop:SetAllPoints()
 
 	Avatar.ScrollFrame:StripTextures()
@@ -691,7 +691,7 @@ function S:Blizzard_Communities()
 	-- TO DO: Fix the Tabs
 	TicketManager.InviteManager.ListScrollFrame:StripTextures()
 
-	TicketManager:CreateBackdrop("Transparent")
+	TicketManager:CreateBackdrop('Transparent')
 	TicketManager.backdrop:SetAllPoints()
 
 	S:HandleButton(TicketManager.LinkToChat)
@@ -714,7 +714,7 @@ function S:Blizzard_Communities()
 	S:HandleButton(ClubFinderInvitationFrame.ApplyButton)
 
 	ClubFinderInvitationFrame.WarningDialog:StripTextures()
-	ClubFinderInvitationFrame.WarningDialog:CreateBackdrop("Transparent")
+	ClubFinderInvitationFrame.WarningDialog:CreateBackdrop('Transparent')
 	S:HandleButton(ClubFinderInvitationFrame.WarningDialog.Accept)
 	S:HandleButton(ClubFinderInvitationFrame.WarningDialog.Cancel)
 
@@ -731,10 +731,10 @@ function S:Blizzard_Communities()
 	S:HandleScrollBar(ApplicantList.ListScrollFrame.scrollBar)
 
 	ApplicantList:CreateBackdrop()
-	ApplicantList.backdrop:SetPoint("TOPLEFT", 0, 0)
-	ApplicantList.backdrop:SetPoint("BOTTOMRIGHT", -15, 0)
+	ApplicantList.backdrop:SetPoint('TOPLEFT', 0, 0)
+	ApplicantList.backdrop:SetPoint('BOTTOMRIGHT', -15, 0)
 
-	hooksecurefunc(ApplicantList, "BuildList", function(self)
+	hooksecurefunc(ApplicantList, 'BuildList', function(self)
 		local columnDisplay = self.ColumnDisplay
 		for i = 1, columnDisplay:GetNumChildren() do
 			local child = select(i, columnDisplay:GetChildren())
@@ -742,8 +742,8 @@ function S:Blizzard_Communities()
 				child:StripTextures()
 
 				child:CreateBackdrop()
-				child.backdrop:SetPoint("TOPLEFT", 4, -2)
-				child.backdrop:SetPoint("BOTTOMRIGHT", 0, 2)
+				child.backdrop:SetPoint('TOPLEFT', 4, -2)
+				child.backdrop:SetPoint('BOTTOMRIGHT', 0, 2)
 
 				child:SetHighlightTexture(E.media.normTex)
 				local hl = child:GetHighlightTexture()
@@ -758,8 +758,8 @@ function S:Blizzard_Communities()
 		for i = 1, #buttons do
 			local button = buttons[i]
 			if not button.IsSkinned then
-				button:SetPoint("LEFT", ApplicantList.backdrop, 1, 0)
-				button:SetPoint("RIGHT", ApplicantList.backdrop, -1, 0)
+				button:SetPoint('LEFT', ApplicantList.backdrop, 1, 0)
+				button:SetPoint('RIGHT', ApplicantList.backdrop, -1, 0)
 
 				button:SetHighlightTexture(E.media.normTex)
 				button:GetHighlightTexture():SetVertexColor(1, 1, 1, .25)
@@ -769,7 +769,7 @@ function S:Blizzard_Communities()
 				S:HandleButton(button.InviteButton)
 				S:HandleButton(button.CancelInvitationButton)
 
-				hooksecurefunc(button, "UpdateMemberInfo", ColorMemberName)
+				hooksecurefunc(button, 'UpdateMemberInfo', ColorMemberName)
 
 				button.IsSkinned = true
 			end

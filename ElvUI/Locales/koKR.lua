@@ -70,6 +70,7 @@ L["Boss Button"] = "특수능력 버튼"
 L["Boss Frames"] = "보스 프레임"
 L["Building(s) Report:"] = "건축 보고서"
 L["Calendar"] = "달력"
+L["Calling Quest(s) available."] = true
 L["Can't buy anymore slots!"] = "더 이상 가방 칸을 늘릴 수 없습니다."
 L["Can't Roll"] = "주사위를 굴릴 수 없습니다."
 L["Caster DPS"] = "원거리 딜러"

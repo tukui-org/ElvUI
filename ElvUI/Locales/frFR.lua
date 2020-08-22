@@ -70,6 +70,7 @@ L["Boss Button"] = "Bouton du Boss"
 L["Boss Frames"] = "Cadre du Boss"
 L["Building(s) Report:"] = "Rapport des bâtiments :"
 L["Calendar"] = "Calendrier"
+L["Calling Quest(s) available."] = true
 L["Can't buy anymore slots!"] = "Impossible d'acheter plus emplacements !"
 L["Can't Roll"] = "Ne peut pas jeter les dés"
 L["Caster DPS"] = "DPS distance"

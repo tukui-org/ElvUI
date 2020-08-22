@@ -13,7 +13,7 @@ local function SkinActivityFrame(frame, isObject)
 		else
 			frame.Border:SetTexCoord(.926, 1, 0, 1)
 			frame.Border:SetSize(25, 137)
-			frame.Border:SetPoint("LEFT", frame, "RIGHT", 3, 0)
+			frame.Border:SetPoint('LEFT', frame, 'RIGHT', 3, 0)
 		end
 	end
 
@@ -25,7 +25,7 @@ end
 function S:Blizzard_WeeklyRewards()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.weeklyRewards) then return end
 
-	-- /run UIParent_OnEvent({}, "WEEKLY_REWARDS_SHOW")
+	-- /run UIParent_OnEvent({}, 'WEEKLY_REWARDS_SHOW')
 	local frame = _G.WeeklyRewardsFrame
 	local header = frame.HeaderFrame
 

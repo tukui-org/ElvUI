@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local max = max
@@ -26,21 +26,21 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Debuffs = UF:Construct_Debuffs(frame)
 	frame.Castbar = UF:Construct_Castbar(frame, L["Player Castbar"])
 
-	--Create a holder frame all "classbars" can be positioned into
-	frame.ClassBarHolder = CreateFrame("Frame", nil, frame)
-	frame.ClassBarHolder:SetPoint("BOTTOM", E.UIParent, "BOTTOM", 0, 150)
+	--Create a holder frame all 'classbars' can be positioned into
+	frame.ClassBarHolder = CreateFrame('Frame', nil, frame)
+	frame.ClassBarHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 
 	--Combo points was moved to the ClassPower element, so all classes need to have a ClassBar now.
 	frame.ClassPower = UF:Construct_ClassBar(frame)
 	frame.ClassBar = 'ClassPower'
 
 	--Some classes need another set of different classbars.
-	if E.myclass == "DEATHKNIGHT" then
+	if E.myclass == 'DEATHKNIGHT' then
 		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
-	elseif E.myclass == "DRUID" then
+	elseif E.myclass == 'DRUID' then
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
-	elseif E.myclass == "MONK" then
+	elseif E.myclass == 'MONK' then
 		frame.Stagger = UF:Construct_Stagger(frame)
 	elseif E.myclass == 'PRIEST' then
 		frame.AdditionalPower = UF:Construct_AdditionalPowerBar(frame)
@@ -70,7 +70,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,generalGroup')
 
-	frame.unitframeType = "player"
+	frame.unitframeType = 'player'
 end
 
 function UF:Update_PlayerFrame(frame, db)
@@ -89,16 +89,16 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
 		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (frame.BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2)))
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
-		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
+		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == 'MIDDLE')
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 		frame.CAN_HAVE_CLASSBAR = true --Combo points are in ClassPower now, so all classes need access to ClassBar
 		frame.MAX_CLASS_BAR = frame.MAX_CLASS_BAR or max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS) --only set this initially
 		frame.USE_CLASSBAR = db.classbar.enable and frame.CAN_HAVE_CLASSBAR
 		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame[frame.ClassBar]:IsShown()
 		frame.CLASSBAR_DETACHED = db.classbar.detachFromFrame
-		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR
+		frame.USE_MINI_CLASSBAR = db.classbar.fill == 'spaced' and frame.USE_CLASSBAR
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
-		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == "MIDDLE" and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
+		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == 'MIDDLE' and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
 		--If formula for frame.CLASSBAR_YOFFSET changes, then remember to update it in classbars.lua too
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
@@ -156,12 +156,12 @@ function UF:Update_PlayerFrame(frame, db)
 
 	--We need to update Target AuraBars if attached to Player AuraBars
 	--mainly because of issues when using power offset on player and switching to/from middle orientation
-	if E.db.unitframe.units.target.aurabar.attachTo == "PLAYER_AURABARS" and UF.target then
+	if E.db.unitframe.units.target.aurabar.attachTo == 'PLAYER_AURABARS' and UF.target then
 		UF:Configure_AuraBars(UF.target)
 	end
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
-	frame:UpdateAllElements("ElvUI_UpdateAllElements")
+	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 tinsert(UF.unitstoload, 'player')

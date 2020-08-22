@@ -1302,7 +1302,7 @@ end
 function B:ConstructContainerFrame(name, isBank)
 	local strata = E.db.bags.strata or 'HIGH'
 
-	local f = CreateFrame('Button', name, E.UIParent, "BackdropTemplate")
+	local f = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
 	f:SetTemplate('Transparent')
 	f:SetFrameStrata(strata)
 	B:SetupItemGlow(f)

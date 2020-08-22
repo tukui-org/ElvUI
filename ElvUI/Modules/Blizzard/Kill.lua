@@ -8,7 +8,7 @@ function B:KillBlizzard()
 		_G.HelpPlate:Kill()
 		_G.HelpPlateTooltip:Kill()
 
-		hooksecurefunc(_G.HelpTip, "Show", function(tip, parent, info)
+		hooksecurefunc(_G.HelpTip, 'Show', function(tip, parent, info)
 			tip:Hide(parent, info.text)
 		end)
 	end

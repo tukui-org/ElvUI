@@ -13,23 +13,23 @@ local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 
 local InspectItems = {
-	"HeadSlot",
-	"NeckSlot",
-	"ShoulderSlot",
-	"",
-	"ChestSlot",
-	"WaistSlot",
-	"LegsSlot",
-	"FeetSlot",
-	"WristSlot",
-	"HandsSlot",
-	"Finger0Slot",
-	"Finger1Slot",
-	"Trinket0Slot",
-	"Trinket1Slot",
-	"BackSlot",
-	"MainHandSlot",
-	"SecondaryHandSlot",
+	'HeadSlot',
+	'NeckSlot',
+	'ShoulderSlot',
+	'',
+	'ChestSlot',
+	'WaistSlot',
+	'LegsSlot',
+	'FeetSlot',
+	'WristSlot',
+	'HandsSlot',
+	'Finger0Slot',
+	'Finger1Slot',
+	'Trinket0Slot',
+	'Trinket1Slot',
+	'BackSlot',
+	'MainHandSlot',
+	'SecondaryHandSlot',
 }
 
 local whileOpenEvents = {
@@ -39,11 +39,11 @@ local whileOpenEvents = {
 
 function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
-	texture:SetPoint("BOTTOM", x, y)
+	texture:SetPoint('BOTTOM', x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
 	texture:SetSize(14, 14)
 
-	local backdrop = CreateFrame('Frame', nil, slot, "BackdropTemplate")
+	local backdrop = CreateFrame('Frame', nil, slot, 'BackdropTemplate')
 	backdrop:SetTemplate(nil, nil, true)
 	backdrop:SetBackdropColor(0,0,0,0)
 	backdrop:SetOutside(texture)
@@ -56,11 +56,11 @@ function M:GetInspectPoints(id)
 	if not id then return end
 
 	if id <= 5 or (id == 9 or id == 15) then
-		return 40, 3, 18, "BOTTOMLEFT" -- Left side
+		return 40, 3, 18, 'BOTTOMLEFT' -- Left side
 	elseif (id >= 6 and id <= 8) or (id >= 10 and id <= 14) then
-		return -40, 3, 18, "BOTTOMRIGHT" -- Right side
+		return -40, 3, 18, 'BOTTOMRIGHT' -- Right side
 	else
-		return 0, 45, 60, "BOTTOM"
+		return 0, 45, 60, 'BOTTOM'
 	end
 end
 
@@ -152,9 +152,9 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 
 	local gemStep, essenceStep = 1, 1
 	for x = 1, 10 do
-		local texture = inspectItem["textureSlot"..x]
-		local backdrop = inspectItem["textureSlotBackdrop"..x]
-		local essenceType = inspectItem["textureSlotEssenceType"..x]
+		local texture = inspectItem['textureSlot'..x]
+		local backdrop = inspectItem['textureSlotBackdrop'..x]
+		local essenceType = inspectItem['textureSlotEssenceType'..x]
 		if essenceType then essenceType:Hide() end
 
 		local gem = slotInfo.gems and slotInfo.gems[gemStep]
@@ -179,10 +179,10 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 				essenceType:SetTexture(2907423)
 				essenceType:SetRotation(rad(90))
 				essenceType:SetParent(backdrop)
-				inspectItem["textureSlotEssenceType"..x] = essenceType
+				inspectItem['textureSlotEssenceType'..x] = essenceType
 			end
 
-			essenceType:SetPoint("BOTTOM", texture, "TOP", 0, -9)
+			essenceType:SetPoint('BOTTOM', texture, 'TOP', 0, -9)
 			essenceType:SetAtlas(gsub(essence[2], '^tooltip%-(heartofazeroth)essence', '%1-list-selected'))
 			essenceType:SetSize(13, 17)
 			essenceType:Show()
@@ -279,11 +279,11 @@ function M:CreateSlotStrings(frame, which)
 	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
 
 	if which == 'Inspect' then
-		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, "ARTWORK")
-		frame.ItemLevelText:SetPoint("BOTTOMRIGHT", -6, 6)
+		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, 'ARTWORK')
+		frame.ItemLevelText:SetPoint('BOTTOMRIGHT', -6, 6)
 	else
-		frame.ItemLevelText = _G.CharacterStatsPane.ItemLevelFrame:CreateFontString(nil, "ARTWORK")
-		frame.ItemLevelText:SetPoint("BOTTOM", _G.CharacterStatsPane.ItemLevelFrame.Value, "BOTTOM", 0, 0)
+		frame.ItemLevelText = _G.CharacterStatsPane.ItemLevelFrame:CreateFontString(nil, 'ARTWORK')
+		frame.ItemLevelText:SetPoint('BOTTOM', _G.CharacterStatsPane.ItemLevelFrame.Value, 'BOTTOM', 0, 0)
 	end
 	frame.ItemLevelText:FontTemplate(nil, which == 'Inspect' and 12 or 20)
 
@@ -291,23 +291,23 @@ function M:CreateSlotStrings(frame, which)
 		if i ~= 4 then
 			local slot = _G[which..s]
 			local x, y, z, justify = M:GetInspectPoints(i)
-			slot.iLvlText = slot:CreateFontString(nil, "OVERLAY")
-			slot.iLvlText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
-			slot.iLvlText:SetPoint("BOTTOM", slot, x, y)
+			slot.iLvlText = slot:CreateFontString(nil, 'OVERLAY')
+			slot.iLvlText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
+			slot.iLvlText:SetPoint('BOTTOM', slot, x, y)
 
-			slot.enchantText = slot:CreateFontString(nil, "OVERLAY")
-			slot.enchantText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
+			slot.enchantText = slot:CreateFontString(nil, 'OVERLAY')
+			slot.enchantText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
 
 			if i == 16 or i == 17 then
-				slot.enchantText:SetPoint(i==16 and "BOTTOMRIGHT" or "BOTTOMLEFT", slot, i==16 and -40 or 40, 3)
+				slot.enchantText:SetPoint(i==16 and 'BOTTOMRIGHT' or 'BOTTOMLEFT', slot, i==16 and -40 or 40, 3)
 			else
-				slot.enchantText:SetPoint(justify, slot, x + (justify == "BOTTOMLEFT" and 5 or -5), z)
+				slot.enchantText:SetPoint(justify, slot, x + (justify == 'BOTTOMLEFT' and 5 or -5), z)
 			end
 
 			for u=1, 10 do
 				local offset = 8+(u*16)
-				local newX = ((justify == "BOTTOMLEFT" or i == 17) and x+offset) or x-offset
-				slot["textureSlot"..u], slot["textureSlotBackdrop"..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
+				local newX = ((justify == 'BOTTOMLEFT' or i == 17) and x+offset) or x-offset
+				slot['textureSlot'..u], slot['textureSlotBackdrop'..u] = M:CreateInspectTexture(slot, newX, --[[newY or]] y)
 			end
 		end
 	end
@@ -326,8 +326,8 @@ function M:UpdateInspectPageFonts(which)
 		if i ~= 4 then
 			local slot = _G[which..s]
 			if slot then
-				slot.iLvlText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
-				slot.enchantText:FontTemplate(LSM:Fetch("font", itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
+				slot.iLvlText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
+				slot.enchantText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
 			end
 		end
 	end

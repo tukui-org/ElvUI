@@ -24,7 +24,7 @@ local function onUpdate(self, elapsed)
 	if watcher > 0.1 then
 		if not self:IsMouseOver() then
 			self.IsMouseOvered = nil
-			self:SetScript("OnUpdate", nil)
+			self:SetScript('OnUpdate', nil)
 			onLeaveBar()
 		end
 		watcher = 0
@@ -36,7 +36,7 @@ end
 local function onEnter(button)
 	if AB.db.microbar.mouseover and not ElvUI_MicroBar.IsMouseOvered then
 		ElvUI_MicroBar.IsMouseOvered = true
-		ElvUI_MicroBar:SetScript("OnUpdate", onUpdate)
+		ElvUI_MicroBar:SetScript('OnUpdate', onUpdate)
 		E:UIFrameFadeIn(ElvUI_MicroBar, 0.2, ElvUI_MicroBar:GetAlpha(), AB.db.microbar.alpha)
 	end
 
@@ -58,9 +58,9 @@ function AB:HandleMicroButton(button)
 	local normal = button:GetNormalTexture()
 	local disabled = button:GetDisabledTexture()
 
-	local f = CreateFrame("Frame", nil, button, 'BackdropTemplate')
+	local f = CreateFrame('Frame', nil, button, 'BackdropTemplate')
 	f:SetFrameLevel(1)
-	f:SetFrameStrata("BACKGROUND")
+	f:SetFrameStrata('BACKGROUND')
 	f:SetTemplate(nil, true)
 	f:SetOutside(button)
 	button.backdrop = f
@@ -89,11 +89,11 @@ function AB:HandleMicroButton(button)
 end
 
 function AB:MainMenuMicroButton_SetNormal()
-	_G.MainMenuBarPerformanceBar:SetPoint("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 9, -36)
+	_G.MainMenuBarPerformanceBar:SetPoint('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 9, -36)
 end
 
 function AB:MainMenuMicroButton_SetPushed()
-	_G.MainMenuBarPerformanceBar:SetPoint("TOPLEFT", _G.MainMenuMicroButton, "TOPLEFT", 8, -37)
+	_G.MainMenuBarPerformanceBar:SetPoint('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 8, -37)
 end
 
 function AB:UpdateMicroButtonsParent()
@@ -104,10 +104,10 @@ end
 
 -- we use this table to sort the micro buttons on our bar to match Blizzard's button placements.
 local __buttonIndex = {
-	[8] = "CollectionsMicroButton",
-	[9] = "EJMicroButton",
-	[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == "CN") and "HelpMicroButton" or "StoreMicroButton",
-	[11] = "MainMenuMicroButton"
+	[8] = 'CollectionsMicroButton',
+	[9] = 'EJMicroButton',
+	[10] = (not C_StorePublic_IsEnabled() and GetCurrentRegionName() == 'CN') and 'HelpMicroButton' or 'StoreMicroButton',
+	[11] = 'MainMenuMicroButton'
 }
 
 function AB:UpdateMicroBarVisibility()
@@ -122,7 +122,7 @@ function AB:UpdateMicroBarVisibility()
 		visibility = visibility:gsub('[\n\r]','')
 	end
 
-	RegisterStateDriver(ElvUI_MicroBar.visibility, "visibility", (self.db.microbar.enabled and visibility) or "hide")
+	RegisterStateDriver(ElvUI_MicroBar.visibility, 'visibility', (self.db.microbar.enabled and visibility) or 'hide')
 end
 
 function AB:UpdateMicroPositionDimensions()
@@ -181,8 +181,8 @@ function AB:UpdateMicroButtons()
 	GuildMicroButtonTabard.background:SetInside(GuildMicroButton)
 	GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	GuildMicroButtonTabard.emblem:ClearAllPoints()
-	GuildMicroButtonTabard.emblem:SetPoint("TOPLEFT", GuildMicroButton, "TOPLEFT", 4, -4)
-	GuildMicroButtonTabard.emblem:SetPoint("BOTTOMRIGHT", GuildMicroButton, "BOTTOMRIGHT", -4, 8)
+	GuildMicroButtonTabard.emblem:SetPoint('TOPLEFT', GuildMicroButton, 'TOPLEFT', 4, -4)
+	GuildMicroButtonTabard.emblem:SetPoint('BOTTOMRIGHT', GuildMicroButton, 'BOTTOMRIGHT', -4, 8)
 
 	self:UpdateMicroPositionDimensions()
 end
@@ -193,8 +193,8 @@ function AB:SetupMicroBar()
 	microBar:EnableMouse(false)
 
 	microBar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')
-	microBar.visibility:SetScript("OnShow", function() microBar:Show() end)
-	microBar.visibility:SetScript("OnHide", function() microBar:Hide() end)
+	microBar.visibility:SetScript('OnShow', function() microBar:Show() end)
+	microBar.visibility:SetScript('OnHide', function() microBar:Hide() end)
 
 	E.FrameLocks.ElvUI_MicroBar = true
 	for _, x in pairs(_G.MICRO_BUTTONS) do

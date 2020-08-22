@@ -27,11 +27,11 @@ function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
 	_G.ItemTextFrame:StripTextures(true)
-	_G.ItemTextFrame:CreateBackdrop("Transparent")
+	_G.ItemTextFrame:CreateBackdrop('Transparent')
 
 	_G.ItemTextScrollFrame:StripTextures()
 
-	_G.GossipFrame:CreateBackdrop("Transparent")
+	_G.GossipFrame:CreateBackdrop('Transparent')
 	_G.GossipFramePortrait:Kill()
 
 	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
@@ -43,13 +43,13 @@ function S:GossipFrame()
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 
 	_G.ItemTextPageText:SetTextColor(1, 1, 1)
-	hooksecurefunc(_G.ItemTextPageText, "SetTextColor", function(pageText, headerType, r, g, b)
+	hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', function(pageText, headerType, r, g, b)
 		if r ~= 1 or g ~= 1 or b ~= 1 then
 			pageText:SetTextColor(headerType, 1, 1, 1)
 		end
 	end)
 
-	local StripAllTextures = { "GossipFrameGreetingPanel", "GossipGreetingScrollFrame" }
+	local StripAllTextures = { 'GossipFrameGreetingPanel', 'GossipGreetingScrollFrame' }
 
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
@@ -62,13 +62,13 @@ function S:GossipFrame()
 	GossipGreetingScrollFrame:CreateBackdrop()
 
 	if E.private.skins.parchmentRemoverEnable then
-		hooksecurefunc("GossipFrameUpdate", handleGossipText)
+		hooksecurefunc('GossipFrameUpdate', handleGossipText)
 		_G.GossipGreetingText:SetTextColor(1, 1, 1)
 		handleGossipText()
 	else
 		GossipGreetingScrollFrame.spellTex = GossipGreetingScrollFrame:CreateTexture(nil, 'ARTWORK')
 		GossipGreetingScrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-		GossipGreetingScrollFrame.spellTex:SetPoint("TOPLEFT", 2, -2)
+		GossipGreetingScrollFrame.spellTex:SetPoint('TOPLEFT', 2, -2)
 		GossipGreetingScrollFrame.spellTex:SetSize(506, 615)
 		GossipGreetingScrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 	end
@@ -77,7 +77,7 @@ function S:GossipFrame()
 	S:HandleButton(_G.GossipFrameGreetingGoodbyeButton)
 
 	for i = 1, 4 do
-		local notch = _G["NPCFriendshipStatusBarNotch"..i]
+		local notch = _G['NPCFriendshipStatusBarNotch'..i]
 		if notch then
 			notch:SetColorTexture(0, 0, 0)
 			notch:SetSize(E.mult, 16)
@@ -91,7 +91,7 @@ function S:GossipFrame()
 	E:RegisterStatusBar(NPCFriendshipStatusBar)
 
 	NPCFriendshipStatusBar.icon:ClearAllPoints()
-	NPCFriendshipStatusBar.icon:SetPoint("RIGHT", NPCFriendshipStatusBar, "LEFT", 0, -3)
+	NPCFriendshipStatusBar.icon:SetPoint('RIGHT', NPCFriendshipStatusBar, 'LEFT', 0, -3)
 	S:HandleIcon(NPCFriendshipStatusBar.icon)
 end
 

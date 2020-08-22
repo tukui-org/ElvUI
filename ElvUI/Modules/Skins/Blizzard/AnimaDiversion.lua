@@ -28,9 +28,10 @@ function S:Blizzard_AnimaDiversionUI()
 	local InfoFrame = frame.SelectPinInfoFrame
 	InfoFrame:StripTextures()
 	InfoFrame:CreateBackdrop()
+	S:HandleButton(InfoFrame.SelectButton)
 	S:HandleCloseButton(InfoFrame.CloseButton)
 
-	hooksecurefunc(InfoFrame, "SetupCosts", function(frame)
+	hooksecurefunc(InfoFrame, 'SetupCosts', function(frame)
 		for currency in frame.currencyPool:EnumerateActive() do
 			if not currency.IsSkinned then
 				S:HandleIcon(currency.CurrencyIcon)

@@ -550,6 +550,9 @@ function E:CheckIncompatible()
 		if E:IsAddOnEnabled('Bartender4') then
 			E:IncompatibleAddOn('Bartender4', 'ActionBar')
 		end
+		if E:IsAddOnEnabled('Dominos') then
+			E:IncompatibleAddOn('Dominos', 'ActionBar')
+		end
 	end
 end
 

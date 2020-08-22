@@ -22,10 +22,13 @@ local C_Garrison_RequestLandingPageShipmentInfo = C_Garrison.RequestLandingPageS
 local C_Garrison_GetCompleteMissions = C_Garrison.GetCompleteMissions
 local C_Garrison_GetLooseShipments = C_Garrison.GetLooseShipments
 local C_Garrison_GetTalentTreeIDsByClassID = C_Garrison.GetTalentTreeIDsByClassID
-local C_Garrison_GetTalentTreeInfoForID = C_Garrison.GetTalentTreeInfoForID
+local C_Garrison_GetTalentTreeInfo = C_Garrison.GetTalentTreeInfo
 local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local C_IslandsQueue_GetIslandsWeeklyQuestID = C_IslandsQueue.GetIslandsWeeklyQuestID
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
+local C_Covenants_GetActiveCovenantID = C_Covenants.GetActiveCovenantID
+local C_CovenantCallings_AreCallingsUnlocked = C_CovenantCallings.AreCallingsUnlocked
+local CovenantCalling_Create = CovenantCalling_Create
 local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
 local GetQuestObjectiveInfo = GetQuestObjectiveInfo
 local SecondsToTime = SecondsToTime
@@ -52,21 +55,20 @@ local LE_GARRISON_TYPE_7_0 = Enum.GarrisonType.Type_7_0
 local LE_GARRISON_TYPE_8_0 = Enum.GarrisonType.Type_8_0
 local LE_GARRISON_TYPE_9_0 = Enum.GarrisonType.Type_9_0
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
-local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- "Completed: |cFF33FF33%s|r"
-local TALENTS = TALENTS
-
-local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. " %d (%d/%d)"
-local EXPANSION_NAME5 = EXPANSION_NAME5 -- "Warlords of Draenor"
-local EXPANSION_NAME6 = EXPANSION_NAME6 -- "Legion"
-local EXPANSION_NAME7 = EXPANSION_NAME7 -- "Battle for Azeroth"
-local EXPANSION_NAME8 = EXPANSION_NAME8 -- "Shadowlands"
+local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- 'Completed: |cFF33FF33%s|r'
+local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. ' %d (%d/%d)'
+local EXPANSION_NAME5 = EXPANSION_NAME5 -- 'Warlords of Draenor'
+local EXPANSION_NAME6 = EXPANSION_NAME6 -- 'Legion'
+local EXPANSION_NAME7 = EXPANSION_NAME7 -- 'Battle for Azeroth'
+local EXPANSION_NAME8 = EXPANSION_NAME8 -- 'Shadowlands'
 
 local MAIN_CURRENCY = 1813
 local NAZJATAR_MAP_ID = 1355
-local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
+local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local numMissions = 0
+local callingsData = {}
 
-local Widget_IDs = {
+local widgetIDs = {
 	Alliance = {
 		56156, -- A Tempered Blade
 		{L["Farseer Ori"], 1940},
@@ -79,6 +81,12 @@ local Widget_IDs = {
 		{L["Poen Gillbrack"], 1622},
 		{L["Vim Brineheart"], 1920}
 	}
+}
+local covenantTreeIDs = {
+	[1] = {308, 312, 316, 320, 327},
+	[2] = {309, 314, 317, 324, 326},
+	[3] = {307, 311, 315, 319, 328},
+	[4] = {310, 313, 318, 321, 329}
 }
 
 local function sortFunction(a, b)
@@ -135,12 +143,12 @@ local function AddFollowerInfo(garrisonType)
 
 	if next(data) then
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- "Troops"
+		DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- 'Troops'
 		for _, followerShipments in ipairs(data) do
 			local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(followerShipments)
 			if name and shipmentsReady and shipmentsTotal then
 				if timeleftString then
-					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. " " .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
+					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. ' ' .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
 				else
 					DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
 				end
@@ -149,27 +157,32 @@ local function AddFollowerInfo(garrisonType)
 	end
 end
 
-local function AddTalentInfo(garrisonType)
+local function AddTalentInfo(garrisonType, currentCovenant)
+	local treeInfo = {}
 	wipe(data)
 
-	data = C_Garrison_GetTalentTreeIDsByClassID(garrisonType, E.myClassID)
+	if garrisonType == LE_GARRISON_TYPE_9_0 then
+		data = {unpack(covenantTreeIDs[currentCovenant])}
+	else
+		data = C_Garrison_GetTalentTreeIDsByClassID(garrisonType, E.myClassID)
+	end
 
 	if next(data) then
 		-- this is a talent that has completed, but has not been seen in the talent UI yet.
 		local completeTalentID = C_Garrison_GetCompleteTalent(garrisonType)
 		if completeTalentID > 0 then
 			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(TALENTS)
+			DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- 'Research Time:'
 
 			for _, treeID in ipairs(data) do
-				local _, _, tree = C_Garrison_GetTalentTreeInfoForID(treeID)
-				for _, talent in ipairs(tree) do
+				wipe(treeInfo)
+				treeInfo = C_Garrison_GetTalentTreeInfo(treeID)
+				for _, talent in ipairs(treeInfo.talents) do
 					if talent.isBeingResearched or talent.id == completeTalentID then
-						DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- "Research Time:"
-						if talent.researchTimeRemaining and talent.researchTimeRemaining == 0 then
+						if talent.timeRemaining and talent.timeRemaining == 0 then
 							DT.tooltip:AddDoubleLine(talent.name, GOAL_COMPLETED, 1, 1, 1, GREEN_FONT_COLOR:GetRGB())
 						else
-							DT.tooltip:AddDoubleLine(talent.name, SecondsToTime(talent.researchTimeRemaining), 1, 1, 1, 1, 1, 1)
+							DT.tooltip:AddDoubleLine(talent.name, SecondsToTime(talent.timeRemaining), 1, 1, 1, 1, 1, 1)
 						end
 					end
 				end
@@ -195,11 +208,24 @@ local function OnEnter()
 	DT.tooltip:AddDoubleLine(L["Mission(s) Report:"], AddInfo(1813), nil, nil, nil, 1, 1, 1)
 	AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_9_0)
 
-	-- TODO - Probably not needed in this expansion - Not sure yet.
-	-- AddFollowerInfo(LE_GARRISON_TYPE_9_0)
-	-- TODO - Every sanctum have 5 separate garrision talent trees that would be nice to monitor but for now I don't know a way to get talent tree IDs without talking to upgrade NPC. We always can hardcode all 20 ids.
-	-- C_CovenantSanctumUI.GetFeatures() -> C_Garrison.GetTalentTreeInfo(). C_Garrison.GetCurrentGarrTalentTreeID() return ID only of the Reservoir upgrades.
-	-- AddTalentInfo(LE_FOLLOWER_TYPE_GARRISON_9_0)
+	if C_CovenantCallings_AreCallingsUnlocked() then
+		local questNum = 0
+		for _, calling in ipairs(callingsData) do
+			local callingObj = CovenantCalling_Create(calling)
+			if callingObj:GetState() == 0 then
+				questNum = questNum + 1
+			end
+		end
+		if questNum > 0 then
+			DT.tooltip:AddLine(' ')
+			DT.tooltip:AddLine(format('%s %s', questNum, L["Calling Quest(s) available."]))
+		end
+	end
+
+	local currentCovenant = C_Covenants_GetActiveCovenantID()
+	if currentCovenant and currentCovenant > 0 then
+		AddTalentInfo(LE_GARRISON_TYPE_9_0, currentCovenant)
+	end
 
 	if IsShiftKeyDown() then
 		-- Battle for Azeroth
@@ -223,15 +249,15 @@ local function OnEnter()
 					r1, g1, b1 = 1, 1, 1
 				end
 
-				DT.tooltip:AddLine(" ")
-				DT.tooltip:AddLine(ISLANDS_HEADER .. ":")
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(ISLANDS_HEADER .. ':')
 				DT.tooltip:AddDoubleLine(ISLANDS_QUEUE_FRAME_TITLE, text, 1, 1, 1, r1, g1, b1)
 			end
 		end
 
-		local widgetGroup = Widget_IDs[E.myfaction]
+		local widgetGroup = widgetIDs[E.myfaction]
 		if E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and C_QuestLog_IsQuestFlaggedCompleted(widgetGroup[1]) then
-			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(L["Nazjatar Follower XP"])
 
 			for i = 2, 4 do
@@ -254,17 +280,17 @@ local function OnEnter()
 		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 		AddFollowerInfo(LE_GARRISON_TYPE_7_0)
 
-		-- "Loose Work Orders" (i.e. research, equipment)
+		-- 'Loose Work Orders' (i.e. research, equipment)
 		wipe(data)
 		data = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
 		if #data > 0 then
-			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
+			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- 'Work Orders'
 
 			for _, looseShipments in ipairs(data) do
 				local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)
 				if name then
 					if timeleftString then
-						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. " " .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
+						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. ' ' .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
 					else
 						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
 					end
@@ -299,7 +325,7 @@ local function OnEnter()
 					end
 
 					if timeleftString then
-						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. " " .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
+						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal) .. ' ' .. format(GARRISON_LANDING_NEXT,timeleftString), 1, 1, 1, 1, 1, 1)
 					else
 						DT.tooltip:AddDoubleLine(name, format(GARRISON_LANDING_SHIPMENT_COUNT, shipmentsReady, shipmentsTotal), 1, 1, 1, 1, 1, 1)
 					end
@@ -308,7 +334,7 @@ local function OnEnter()
 		end
 	else
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine("Hold Shift - Show Previous Expansion", .66, .66, .66)
+		DT.tooltip:AddLine('Hold Shift - Show Previous Expansion', .66, .66, .66)
 	end
 
 	DT.tooltip:Show()
@@ -318,12 +344,17 @@ local function OnClick(self)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 
 	DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-	_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
+	_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
 end
 
 local function OnEvent(self, event, ...)
 	if event == 'CURRENCY_DISPLAY_UPDATE' and select(1, ...) ~= MAIN_CURRENCY then
 		return
+	end
+
+	if event == 'COVENANT_CALLINGS_UPDATED' then
+		wipe(callingsData)
+		callingsData = ...
 	end
 
 	if event == 'GARRISON_SHIPMENT_RECEIVED' or (event == 'SHIPMENT_UPDATE' and select(1, ...) == true) then
@@ -355,4 +386,4 @@ local function OnEvent(self, event, ...)
 	end
 end
 
-DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_SHIPMENT_RECEIVED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_FINISHED', 'GARRISON_MISSION_NPC_CLOSED', 'GARRISON_MISSION_NPC_OPENED', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)
+DT:RegisterDatatext('Missions', nil, {'CURRENCY_DISPLAY_UPDATE', 'GARRISON_LANDINGPAGE_SHIPMENTS', 'GARRISON_TALENT_UPDATE', 'GARRISON_TALENT_COMPLETE', 'GARRISON_SHIPMENT_RECEIVED', 'SHIPMENT_UPDATE', 'GARRISON_MISSION_FINISHED', 'GARRISON_MISSION_NPC_CLOSED', 'GARRISON_MISSION_NPC_OPENED', 'MODIFIER_STATE_CHANGED', 'COVENANT_CALLINGS_UPDATED'}, OnEvent, nil, OnClick, OnEnter, nil, _G.GARRISON_MISSIONS)

@@ -24,7 +24,7 @@ local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Data: Hold Shift +
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 
-local iconString = "|T%s:16:16:0:0:64:64:4:60:4:60|t"
+local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
 local menuList = {}
 
@@ -94,7 +94,7 @@ local function Click(self, btn)
 			end
 
 			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-			_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
+			_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
 		elseif IsControlKeyDown() then
 			Profit = 0
 			Spent = 0
@@ -180,7 +180,7 @@ local function OnEnter()
 				DT.tooltip:AddLine(CURRENCY)
 			end
 			if info.quantity then
-				DT.tooltip:AddDoubleLine(format("%s %s", format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
+				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
 			end
 		end
 	end
@@ -191,4 +191,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Gold', nil, {"PLAYER_MONEY", "SEND_MAIL_MONEY_CHANGED", "SEND_MAIL_COD_CHANGED", "PLAYER_TRADE_MONEY", "TRADE_MONEY_CHANGED"}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])
+DT:RegisterDatatext('Gold', nil, {'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED'}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])

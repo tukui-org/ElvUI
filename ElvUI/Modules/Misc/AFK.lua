@@ -221,13 +221,13 @@ local function Chat_OnEvent(self, event, arg1, arg2, arg3, arg4, arg5, arg6, arg
 	end
 
 	local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
-	local typeID = ChatHistory_GetAccessID(type, chatTarget, arg12 == "" and arg13 or arg12)
+	local typeID = ChatHistory_GetAccessID(type, chatTarget, arg12 == '' and arg13 or arg12)
 	if CH.db.shortChannels then
 		body = body:gsub('|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
 		body = body:gsub('^(.-|h) '..L["whispers"], '%1')
 		body = body:gsub('<'..AFKstr..'>', '[|cffFF0000'..L["AFK"]..'|r] ')
 		body = body:gsub('<'..DNDstr..'>', '[|cffE7E716'..L["DND"]..'|r] ')
-		body = body:gsub('%[BN_CONVERSATION:', '%['.."")
+		body = body:gsub('%[BN_CONVERSATION:', '%['..'')
 	end
 
 	self:AddMessage(body, info.r, info.g, info.b, info.id, false, accessID, typeID)
@@ -272,7 +272,7 @@ function AFK:Initialize()
 	AFK.AFKMode.chat:SetScript('OnMouseWheel', Chat_OnMouseWheel)
 	AFK.AFKMode.chat:SetScript('OnEvent', Chat_OnEvent)
 
-	AFK.AFKMode.bottom = CreateFrame('Frame', nil, AFK.AFKMode, "BackdropTemplate")
+	AFK.AFKMode.bottom = CreateFrame('Frame', nil, AFK.AFKMode, 'BackdropTemplate')
 	AFK.AFKMode.bottom:SetFrameLevel(0)
 	AFK.AFKMode.bottom:SetTemplate('Transparent')
 	AFK.AFKMode.bottom:SetPoint('BOTTOM', AFK.AFKMode, 'BOTTOM', 0, -E.Border)

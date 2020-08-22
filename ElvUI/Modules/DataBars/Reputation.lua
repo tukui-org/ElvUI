@@ -6,6 +6,7 @@ local _G = _G
 local format = format
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetFriendshipReputation = GetFriendshipReputation
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local InCombatLockdown = InCombatLockdown
@@ -13,7 +14,6 @@ local ToggleCharacter = ToggleCharacter
 local CreateFrame = CreateFrame
 local REPUTATION = REPUTATION
 local STANDING = STANDING
-local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 
 function DB:UpdateReputation(event)
 	if not DB.db.reputation.enable then return end
@@ -21,7 +21,7 @@ function DB:UpdateReputation(event)
 	local bar = self.repBar
 	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
 
-	if not name or (DB.db.reputation.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) or (DB.db.reputation.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
+	if not name or (DB.db.reputation.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
 		bar:Hide()
 	else
 		bar:Show()
@@ -135,7 +135,7 @@ function DB:ReputationBar_OnEnter()
 end
 
 function DB:ReputationBar_OnClick()
-	ToggleCharacter("ReputationFrame")
+	ToggleCharacter('ReputationFrame')
 end
 
 function DB:UpdateReputationDimensions()
@@ -143,9 +143,9 @@ function DB:UpdateReputationDimensions()
 	DB.repBar:SetHeight(DB.db.reputation.height)
 	DB.repBar.statusBar:SetOrientation(DB.db.reputation.orientation)
 	DB.repBar.statusBar:SetReverseFill(DB.db.reputation.reverseFill)
-	DB.repBar.text:FontTemplate(LSM:Fetch("font", DB.db.reputation.font), DB.db.reputation.textSize, DB.db.reputation.fontOutline)
+	DB.repBar.text:FontTemplate(LSM:Fetch('font', DB.db.reputation.font), DB.db.reputation.textSize, DB.db.reputation.fontOutline)
 
-	if DB.db.reputation.orientation == "HORIZONTAL" then
+	if DB.db.reputation.orientation == 'HORIZONTAL' then
 		DB.repBar.statusBar:SetRotatesTexture(false)
 	else
 		DB.repBar.statusBar:SetRotatesTexture(true)
@@ -174,17 +174,17 @@ function DB:LoadReputationBar()
 	DB.repBar = DB:CreateBar('ElvUI_ReputationBar', DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264)
 	E:RegisterStatusBar(DB.repBar.statusBar)
 
-	DB.repBar.eventFrame = CreateFrame("Frame")
+	DB.repBar.eventFrame = CreateFrame('Frame')
 	DB.repBar.eventFrame:Hide()
-	DB.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
-	DB.repBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	DB.repBar.eventFrame:RegisterEvent("COMBAT_TEXT_UPDATE")
-	DB.repBar.eventFrame:SetScript("OnEvent", function(_, event, ...)
+	DB.repBar.eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
+	DB.repBar.eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
+	DB.repBar.eventFrame:RegisterEvent('COMBAT_TEXT_UPDATE')
+	DB.repBar.eventFrame:SetScript('OnEvent', function(_, event, ...)
 		DB:UpdateReputation(event, ...)
 	end)
 
 	DB:UpdateReputationDimensions()
 
-	E:CreateMover(DB.repBar, "ReputationBarMover", L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
+	E:CreateMover(DB.repBar, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
 	DB:EnableDisable_ReputationBar()
 end

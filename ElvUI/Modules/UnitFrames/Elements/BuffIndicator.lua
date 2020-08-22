@@ -5,7 +5,7 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
-	local auras = CreateFrame("Frame", frame:GetName() .. 'AuraWatch', frame)
+	local auras = CreateFrame('Frame', frame:GetName() .. 'AuraWatch', frame)
 	auras:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
 	auras:SetInside(frame.Health)
 	auras.presentAlpha = 1
@@ -49,7 +49,7 @@ function UF:BuffIndicator_PostCreateIcon(button)
 
 	button.overlay:Hide()
 
-	button.icon.border = button:CreateTexture(nil, "BACKGROUND");
+	button.icon.border = button:CreateTexture(nil, 'BACKGROUND');
 	button.icon.border:SetOutside(button.icon, 1, 1)
 	button.icon.border:SetTexture(E.media.blankTex)
 	button.icon.border:SetVertexColor(0, 0, 0)
@@ -111,7 +111,7 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 			button.icon:SetTexCoord(unpack(E.TexCoords))
 		end
 
-		if textureIcon and button.filter == "HARMFUL" then
+		if textureIcon and button.filter == 'HARMFUL' then
 			button.icon.border:SetVertexColor(1, 0, 0)
 		else
 			button.icon.border:SetVertexColor(0, 0, 0)

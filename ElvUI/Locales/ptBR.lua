@@ -70,6 +70,7 @@ L["Boss Button"] = "Botão de Chefe"
 L["Boss Frames"] = "Quadros dos Chefes"
 L["Building(s) Report:"] = "Relatório de Construções:"
 L["Calendar"] = "Calendário"
+L["Calling Quest(s) available."] = true
 L["Can't buy anymore slots!"] = "Não é possível comprar mais espaços!"
 L["Can't Roll"] = "Não pode rolar"
 L["Caster DPS"] = "DPS Lançador"

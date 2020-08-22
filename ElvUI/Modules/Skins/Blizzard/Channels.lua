@@ -12,7 +12,7 @@ function S:Blizzard_Channels()
 
 	S:HandlePortraitFrame(ChannelFrame)
 	CreateChannelPopup:StripTextures()
-	CreateChannelPopup:CreateBackdrop("Transparent")
+	CreateChannelPopup:CreateBackdrop('Transparent')
 
 	S:HandleButton(ChannelFrame.NewButton)
 	S:HandleButton(ChannelFrame.SettingsButton)
@@ -32,13 +32,13 @@ function S:Blizzard_Channels()
 	S:HandleEditBox(CreateChannelPopup.Password)
 
 	_G.VoiceChatPromptActivateChannel:StripTextures()
-	_G.VoiceChatPromptActivateChannel:CreateBackdrop("Transparent")
+	_G.VoiceChatPromptActivateChannel:CreateBackdrop('Transparent')
 	S:HandleButton(_G.VoiceChatPromptActivateChannel.AcceptButton)
 	S:HandleCloseButton(_G.VoiceChatPromptActivateChannel.CloseButton)
 
 	-- Hide the Channel Header Textures
-	hooksecurefunc(_G.ChannelButtonHeaderMixin, "Update", function(s)
-		s:CreateBackdrop("Transparent")
+	hooksecurefunc(_G.ChannelButtonHeaderMixin, 'Update', function(s)
+		s:CreateBackdrop('Transparent')
 		s.NormalTexture:SetTexture()
 	end)
 end

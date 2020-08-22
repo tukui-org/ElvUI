@@ -6,10 +6,12 @@ local type = type
 local format, pairs, tonumber = format, pairs, tonumber
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetMoney = GetMoney
+local GetServerExpansionLevel = GetServerExpansionLevel
 
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
+local LE_EXPANSION_SHADOWLANDS = LE_EXPANSION_SHADOWLANDS
 local EXPANSION_NAME7 = EXPANSION_NAME7
 local EXPANSION_NAME8 = EXPANSION_NAME8
 local OTHER = OTHER
@@ -78,26 +80,28 @@ local function OnEnter()
 	DT.tooltip:AddDoubleLine(L["Gold"]..':', goldText, nil, nil, nil, 1, 1, 1)
 	DT.tooltip:AddLine(' ')
 
-	DT.tooltip:AddLine(EXPANSION_NAME7) -- BfA
-	AddInfo(1710) -- SEAFARERS_DUBLOON
-	AddInfo(1580) -- SEAL_OF_WARTORN_FATE
-	AddInfo(1560) -- WAR_RESOURCES
-	AddInfo(faction) -- 7th Legion or Honorbound
-	AddInfo(1718) -- TITAN_RESIDUUM
-	AddInfo(1721) -- PRISMATIC_MANAPEARL
-	AddInfo(1719) -- CORRUPTED_MEMENTOS
-	AddInfo(1755) -- COALESCING_VISIONS
-	AddInfo(1803) -- ECHOES_OF_NYALOTHA
-
-	DT.tooltip:AddLine(EXPANSION_NAME8) -- Shadowlands
-	AddInfo(1751) -- Freed Soul
-	AddInfo(1822) -- Renown
-	AddInfo(1813) -- Reservoir Anima
-	AddInfo(1812) -- Sanctum Anima Weaver
-	AddInfo(1811) -- Sanctum Architect
-	AddInfo(1810) -- Sanctum Artisan
-	AddInfo(1828) -- Soul Ash
-	DT.tooltip:AddLine(' ')
+	if GetServerExpansionLevel() < LE_EXPANSION_SHADOWLANDS then
+		DT.tooltip:AddLine(EXPANSION_NAME7) -- BfA
+		AddInfo(1710) -- SEAFARERS_DUBLOON
+		AddInfo(1580) -- SEAL_OF_WARTORN_FATE
+		AddInfo(1560) -- WAR_RESOURCES
+		AddInfo(faction) -- 7th Legion or Honorbound
+		AddInfo(1718) -- TITAN_RESIDUUM
+		AddInfo(1721) -- PRISMATIC_MANAPEARL
+		AddInfo(1719) -- CORRUPTED_MEMENTOS
+		AddInfo(1755) -- COALESCING_VISIONS
+		AddInfo(1803) -- ECHOES_OF_NYALOTHA
+		DT.tooltip:AddLine(' ')
+	else
+		DT.tooltip:AddLine(EXPANSION_NAME8) -- Shadowlands
+		AddInfo(1751) -- Freed Soul
+		AddInfo(1822) -- Renown
+		AddInfo(1813) -- Reservoir Anima
+		AddInfo(1810) -- Willing Soul
+		AddInfo(1828) -- Soul Ash
+		AddInfo(1820) -- Infused Ruby
+		DT.tooltip:AddLine(' ')
+	end
 
 	DT.tooltip:AddLine(OTHER)
 	AddInfo(515) -- DARKMOON_PRIZE_TICKET

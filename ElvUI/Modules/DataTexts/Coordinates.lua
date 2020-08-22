@@ -5,7 +5,7 @@ local _G = _G
 local strjoin = strjoin
 local InCombatLockdown = InCombatLockdown
 
-local displayString = ""
+local displayString = ''
 local inRestrictedArea = false
 local mapInfo = E.MapInfo
 
@@ -36,8 +36,8 @@ local function Click()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", hex, "%.2f|r", " | ", hex, "%.2f|r")
+	displayString = strjoin('', hex, '%.2f|r', ' | ', hex, '%.2f|r')
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Coords', nil, {"LOADING_SCREEN_DISABLED", "ZONE_CHANGED", "ZONE_CHANGED_INDOORS", "ZONE_CHANGED_NEW_AREA"}, OnEvent, Update, Click, nil, nil, L["Coords"], mapInfo)
+DT:RegisterDatatext('Coords', nil, {'LOADING_SCREEN_DISABLED', 'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA'}, OnEvent, Update, Click, nil, nil, L["Coords"], mapInfo)

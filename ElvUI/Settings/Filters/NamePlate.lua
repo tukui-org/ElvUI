@@ -49,7 +49,7 @@ G.nameplate.filters = {
 				enemyNPC = true
 			},
 			names = {
-				["120651"] = true
+				['120651'] = true
 			}
 		},
 		actions = {
@@ -107,7 +107,7 @@ E.StyleFilterDefaults = {
 			skull = false
 		},
 		talent = {
-			type = "normal",
+			type = 'normal',
 			enabled = false,
 			requireAll = false,
 			tier1enabled = false,
@@ -155,15 +155,15 @@ E.StyleFilterDefaults = {
 			Demon = false,
 			Dragonkin = false,
 			Elemental = false,
-			["Gas Cloud"] = false,
+			['Gas Cloud'] = false,
 			Giant = false,
 			Humanoid = false,
 			Mechanical = false,
-			["Not specified"] = false,
+			['Not specified'] = false,
 			Totem = false,
 			Undead = false,
-			["Wild Pet"] = false,
-			["Non-combat Pet"] = false
+			['Wild Pet'] = false,
+			['Non-combat Pet'] = false
 		},
 		nameplateType = {
 			enable = false,
@@ -221,7 +221,7 @@ E.StyleFilterDefaults = {
 				normal = false,
 				heroic = false,
 				mythic = false,
-				["mythic+"] = false,
+				['mythic+'] = false,
 				timewalking = false
 			},
 			raid = {
@@ -289,7 +289,7 @@ E.StyleFilterDefaults = {
 		},
 		texture = {
 			enable = false,
-			texture = "ElvUI Norm"
+			texture = 'ElvUI Norm'
 		},
 		flash = {
 			enable = false,
