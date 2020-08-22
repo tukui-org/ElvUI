@@ -512,46 +512,40 @@ function E:IsAddOnEnabled(addon)
 	return GetAddOnEnableState(E.myname, addon) == 2
 end
 
-function E:CheckIncompatible()
-	if E.global.ignoreIncompatible then return end
-
-	if E.private.chat.enable then
-		if E:IsAddOnEnabled('Prat-3.0') then
-			E:IncompatibleAddOn('Prat-3.0', 'Chat')
-		end
-		if E:IsAddOnEnabled('Chatter') then
-			E:IncompatibleAddOn('Chatter', 'Chat')
-		end
-		if E:IsAddOnEnabled('Glass') then
-			E:IncompatibleAddOn('Glass', 'Chat')
+function E:IsIncompatible(module, addons)
+	for _, addon in ipairs(addons) do
+		if E:IsAddOnEnabled(addon) then
+			E:IncompatibleAddOn(addon, module)
+			break
 		end
 	end
+end
 
-	if E.private.nameplates.enable then
-		if E:IsAddOnEnabled('TidyPlates') then
-			E:IncompatibleAddOn('TidyPlates', 'NamePlates')
-		end
-		if E:IsAddOnEnabled('Aloft') then
-			E:IncompatibleAddOn('Aloft', 'NamePlates')
-		end
-		if E:IsAddOnEnabled('Healers-Have-To-Die') then
-			E:IncompatibleAddOn('Healers-Have-To-Die', 'NamePlates')
-		end
-		if E:IsAddOnEnabled('Plater') then
-			E:IncompatibleAddOn('Plater', 'NamePlates')
-		end
-		if E:IsAddOnEnabled('Kui_Nameplates') then
-			E:IncompatibleAddOn('Kui_Nameplates', 'NamePlates')
-		end
-	end
+do
+	local ADDONS_CHAT = {
+		'Prat-3.0',
+		'Chatter',
+		'Glass'
+	}
 
-	if E.private.actionbar.enable then
-		if E:IsAddOnEnabled('Bartender4') then
-			E:IncompatibleAddOn('Bartender4', 'ActionBar')
-		end
-		if E:IsAddOnEnabled('Dominos') then
-			E:IncompatibleAddOn('Dominos', 'ActionBar')
-		end
+	local ADDONS_NAMEPLATE = {
+		'TidyPlates',
+		'Healers-Have-To-Die',
+		'Kui_Nameplates',
+		'Plater',
+		'Aloft'
+	}
+
+	local ADDONS_ACTIONBAR = {
+		'Bartender4',
+		'Dominos'
+	}
+
+	function E:CheckIncompatible()
+		if E.global.ignoreIncompatible then return end
+		if E.private.chat.enable then E:IsIncompatible('Chat', ADDONS_CHAT) end
+		if E.private.nameplates.enable then E:IsIncompatible('NamePlates', ADDONS_NAMEPLATE) end
+		if E.private.actionbar.enable then E:IsIncompatible('ActionBar', ADDONS_ACTIONBAR) end
 	end
 end
 
