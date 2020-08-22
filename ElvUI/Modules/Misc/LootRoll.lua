@@ -9,6 +9,7 @@ local CreateFrame = CreateFrame
 local CursorOnUpdate = CursorOnUpdate
 local DressUpItemLink = DressUpItemLink
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
 local GetLootRollTimeLeft = GetLootRollTimeLeft
@@ -24,7 +25,6 @@ local C_LootHistoryGetItem = C_LootHistory.GetItem
 local C_LootHistoryGetPlayerInfo = C_LootHistory.GetPlayerInfo
 local GREED = GREED
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local NEED = NEED
 local PASS = PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
@@ -263,7 +263,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 		end
 	end
 
-	if E.db.general.autoRoll and E.mylevel == MAX_PLAYER_LEVEL and quality == 2 and not bop then
+	if E.db.general.autoRoll and IsPlayerAtEffectiveMaxLevel() and quality == 2 and not bop then
 		if canDisenchant then
 			RollOnLoot(rollID, 3)
 		else

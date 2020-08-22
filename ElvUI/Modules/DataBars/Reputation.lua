@@ -6,6 +6,7 @@ local _G = _G
 local format = format
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetFriendshipReputation = GetFriendshipReputation
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local InCombatLockdown = InCombatLockdown
@@ -13,7 +14,6 @@ local ToggleCharacter = ToggleCharacter
 local CreateFrame = CreateFrame
 local REPUTATION = REPUTATION
 local STANDING = STANDING
-local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 
 function DB:UpdateReputation(event)
 	if not DB.db.reputation.enable then return end
@@ -21,7 +21,7 @@ function DB:UpdateReputation(event)
 	local bar = self.repBar
 	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
 
-	if not name or (DB.db.reputation.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or (DB.db.reputation.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
+	if not name or (DB.db.reputation.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
 		bar:Hide()
 	else
 		bar:Show()

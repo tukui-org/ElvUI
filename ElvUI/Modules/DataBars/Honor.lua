@@ -11,7 +11,7 @@ local UnitIsPVP = UnitIsPVP
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local TogglePVPUI = TogglePVPUI
-local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local HONOR = HONOR
 
 function DB:UpdateHonor(event, unit)
@@ -21,7 +21,7 @@ function DB:UpdateHonor(event, unit)
 	local bar = DB.honorBar
 
 	if (DB.db.honor.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or
-		(DB.db.honor.hideOutsidePvP and not UnitIsPVP('player')) or (DB.db.honor.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
+		(DB.db.honor.hideOutsidePvP and not UnitIsPVP('player')) or (DB.db.honor.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
 		bar:Hide()
 	else
 		bar:Show()

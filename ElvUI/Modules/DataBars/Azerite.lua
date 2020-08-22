@@ -6,20 +6,21 @@ local _G = _G
 local floor = floor
 local format = format
 
-local C_ArtifactUI_IsEquippedArtifactDisabled = C_ArtifactUI.IsEquippedArtifactDisabled
-local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
-local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
-local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
-local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLevel
 local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
-local ARTIFACT_POWER = ARTIFACT_POWER
-local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local HasArtifactEquipped = HasArtifactEquipped
 local SocketInventoryItem = SocketInventoryItem
 local UIParentLoadAddOn = UIParentLoadAddOn
 local ToggleFrame = ToggleFrame
 local Item = Item
+
+local C_ArtifactUI_IsEquippedArtifactDisabled = C_ArtifactUI.IsEquippedArtifactDisabled
+local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
+local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
+local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
+local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLevel
+local ARTIFACT_POWER = ARTIFACT_POWER
 
 function DB:UpdateAzerite(event, unit)
 	if not DB.db.azerite.enable then return end
@@ -35,7 +36,7 @@ function DB:UpdateAzerite(event, unit)
 	local bar = DB.azeriteBar
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel())
-	or (DB.db.azerite.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or (DB.db.azerite.hideBelowMaxLevel and E.mylevel < MAX_PLAYER_LEVEL) then
+	or (DB.db.azerite.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or (DB.db.azerite.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
 		E:DisableMover(bar.mover:GetName())
 		bar:Hide()
 	else

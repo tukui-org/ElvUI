@@ -3,8 +3,7 @@ local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local min = min
-local format = format
+local min, format = min, format
 local GetPetExperience, UnitXP, UnitXPMax = GetPetExperience, UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
@@ -145,7 +144,7 @@ function DB:UpdateExperienceDimensions()
 end
 
 function DB:EnableDisable_ExperienceBar()
-	if DB.db.experience.enable and (E.mylevel ~= 60 or not DB.db.experience.hideAtMaxLevel) then
+	if DB.db.experience.enable and (not IsPlayerAtEffectiveMaxLevel() or not DB.db.experience.hideAtMaxLevel) then
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
 		DB:RegisterEvent('DISABLE_XP_GAIN', 'UpdateExperience')
 		DB:RegisterEvent('ENABLE_XP_GAIN', 'UpdateExperience')
