@@ -508,27 +508,25 @@ function NP:ConfigureAll()
 
 	NP:PLAYER_REGEN_ENABLED()
 
-	local useStaticPosition = NP.db.units.PLAYER.useStaticPosition
-	local useStaticPlate = NP.db.units.PLAYER.enable and useStaticPosition
-	local ssShown = _G.ElvNP_StaticSecure:IsShown()
+	local playerEnabled = NP.db.units.PLAYER.enable
+	local staticPosition = NP.db.units.PLAYER.useStaticPosition
+	local staticPlate = playerEnabled and staticPosition
 
-	if useStaticPlate and not ssShown then
+	if staticPlate then
 		E:EnableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
-	elseif ssShown then
+	else
+		NP:DisablePlate(_G.ElvNP_Player)
 		E:DisableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Disable()
 		_G.ElvNP_StaticSecure:Hide()
-
-		NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_REMOVED')
-		NP:DisablePlate(_G.ElvNP_Player)
 	end
 
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		if _G.ElvNP_Player ~= nameplate or useStaticPlate then
+		if _G.ElvNP_Player ~= nameplate or staticPlate then
 			NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
 			if nameplate.frameType == 'PLAYER' then
@@ -541,12 +539,14 @@ function NP:ConfigureAll()
 
 			if nameplate.frameType == 'PLAYER' then
 				NP.PlayerNamePlateAnchor:ClearAllPoints()
-				NP.PlayerNamePlateAnchor:SetParent(useStaticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:SetAllPoints(useStaticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:SetParent(staticPosition and _G.ElvNP_Player or nameplate)
+				NP.PlayerNamePlateAnchor:SetAllPoints(staticPosition and _G.ElvNP_Player or nameplate)
 				NP.PlayerNamePlateAnchor:Show()
+
+				SetCVar('nameplateShowSelf', (staticPosition or not playerEnabled) and 0 or 1)
 			end
 
-			if useStaticPlate then
+			if staticPlate then
 				NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED', 'player')
 			else
 				NP:UpdatePlate(nameplate, true)
