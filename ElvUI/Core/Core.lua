@@ -1724,7 +1724,6 @@ function E:Initialize()
 	E.db = E.data.profile
 	E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 
-	E:CheckIncompatible()
 	E:DBConversions()
 	E:UIScale()
 	E:BuildPrefixValues()
