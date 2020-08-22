@@ -129,13 +129,13 @@ do
 end
 
 do
-	DisableAddOn("ElvUI_VisualAuraTimers")
-	DisableAddOn("ElvUI_ExtraActionBars")
-	DisableAddOn("ElvUI_CastBarOverlay")
-	DisableAddOn("ElvUI_EverySecondCounts")
-	DisableAddOn("ElvUI_AuraBarsMovers")
-	DisableAddOn("ElvUI_CustomTweaks")
-	DisableAddOn("ElvUI_DTBars2")
+	DisableAddOn('ElvUI_VisualAuraTimers')
+	DisableAddOn('ElvUI_ExtraActionBars')
+	DisableAddOn('ElvUI_CastBarOverlay')
+	DisableAddOn('ElvUI_EverySecondCounts')
+	DisableAddOn('ElvUI_AuraBarsMovers')
+	DisableAddOn('ElvUI_CustomTweaks')
+	DisableAddOn('ElvUI_DTBars2')
 end
 
 function E:OnEnable()

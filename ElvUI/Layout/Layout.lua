@@ -223,7 +223,7 @@ function LO:RepositionChatDataPanels()
 end
 
 function LO:SetChatTabStyle()
-	local tabStyle = (E.db.chat.panelTabTransparency and "Transparent") or nil
+	local tabStyle = (E.db.chat.panelTabTransparency and 'Transparent') or nil
 	local glossTex = (not tabStyle and true) or nil
 
 	_G.LeftChatTab:SetTemplate(tabStyle, glossTex)
