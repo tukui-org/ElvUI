@@ -170,7 +170,7 @@ local historyTypes = { -- the events set on the chats are still in FindURL_Event
 }
 
 local canChangeMessage = function(arg1, id)
-	if id and arg1 == "" then return id end
+	if id and arg1 == '' then return id end
 end
 
 function CH:MessageIsProtected(message)
@@ -190,9 +190,9 @@ function CH:AddSmiley(key, texture)
 end
 
 local rolePaths = {
-	TANK = E:TextureString(E.Media.Textures.Tank, ":15:15:0:0:64:64:2:56:2:56"),
-	HEALER = E:TextureString(E.Media.Textures.Healer, ":15:15:0:0:64:64:2:56:2:56"),
-	DAMAGER = E:TextureString(E.Media.Textures.DPS, ":15:15")
+	TANK = E:TextureString(E.Media.Textures.Tank, ':15:15:0:0:64:64:2:56:2:56'),
+	HEALER = E:TextureString(E.Media.Textures.Healer, ':15:15:0:0:64:64:2:56:2:56'),
+	DAMAGER = E:TextureString(E.Media.Textures.DPS, ':15:15')
 }
 
 local specialChatIcons
@@ -246,163 +246,163 @@ do --this can save some main file locals
 		itsElv = function() return ElvBlue, ElvColors end
 		itsMel = function() return Hibiscus, MelColors end
 		itsMis = function() return Rainbow, MisColors end
-		itsTheFlyestNihilist = function(class) local icon, prettyText = E:TextureString(E.Media.ChatLogos["Fox"..class],x), NihiColors(strupper(class)) return function() return icon, prettyText end end
+		itsTheFlyestNihilist = function(class) local icon, prettyText = E:TextureString(E.Media.ChatLogos['Fox'..class],x), NihiColors(strupper(class)) return function() return icon, prettyText end end
 	end
 
 	specialChatIcons = {
 		-- Elv
-		["Elv-Spirestone"]			= itsElv,
-		["Elvz-Spirestone"]			= itsElv,
-		["Fleshlite-Spirestone"]	= itsElv,
-		["Elvidan-Spirestone"]		= itsElv,
-		["Elvilas-Spirestone"]		= itsElv,
-		["Fraku-Spirestone"]		= itsElv,
-		["Jarvix-Spirestone"]		= itsElv,
-		["Watermelon-Spirestone"]	= itsElv,
-		["Zinxbe-Spirestone"]		= itsElv,
-		["Whorlock-Spirestone"]		= itsElv,
+		['Elv-Spirestone']			= itsElv,
+		['Elvz-Spirestone']			= itsElv,
+		['Fleshlite-Spirestone']	= itsElv,
+		['Elvidan-Spirestone']		= itsElv,
+		['Elvilas-Spirestone']		= itsElv,
+		['Fraku-Spirestone']		= itsElv,
+		['Jarvix-Spirestone']		= itsElv,
+		['Watermelon-Spirestone']	= itsElv,
+		['Zinxbe-Spirestone']		= itsElv,
+		['Whorlock-Spirestone']		= itsElv,
 		-- Blazeflack
-		["Blazii-Silvermoon"]	= ElvBlue, -- Priest
-		["Chazii-Silvermoon"]	= ElvBlue, -- Shaman
+		['Blazii-Silvermoon']	= ElvBlue, -- Priest
+		['Chazii-Silvermoon']	= ElvBlue, -- Shaman
 		-- Affinity
-		["Affinichi-Illidan"]	= Bathrobe,
-		["Affinitii-Illidan"]	= Bathrobe,
-		["Affinity-Illidan"]	= Bathrobe,
-		["Uplift-Illidan"]		= Bathrobe,
+		['Affinichi-Illidan']	= Bathrobe,
+		['Affinitii-Illidan']	= Bathrobe,
+		['Affinity-Illidan']	= Bathrobe,
+		['Uplift-Illidan']		= Bathrobe,
 		-- Tirain (NOTE: lol)
-		["Tierone-Spirestone"]	= "Dr. ",
-		["Tirain-Spirestone"]	= MrHankey,
-		["Sinth-Spirestone"]	= MrHankey,
-		["Tee-Spirestone"]		= MrHankey,
+		['Tierone-Spirestone']	= 'Dr. ',
+		['Tirain-Spirestone']	= MrHankey,
+		['Sinth-Spirestone']	= MrHankey,
+		['Tee-Spirestone']		= MrHankey,
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
-		["Misdîrect-Spirestone"]	= itsMis,
-		["Misoracle-Spirestone"]	= itsMis,
-		["MisLight-Spirestone"]		= itsMis,
-		["MisDivine-Spirestone"]	= itsMis,
-		["MisMayhem-Spirestone"]	= itsMis,
-		["Mismonk-Spirestone"]		= itsMis,
-		["Misillidan-Spirestone"]	= itsMis,
-		["Mispel-Spirestone"]		= itsMis,
-		["Misdecay-Spirestone"]		= itsMis,
-		["Mislust-Spirestone"] 		= itsMis,
-		["Misdivine-Spirestone"]	= itsMis,
-		["Mislight-Spirestone"]		= itsMis,
+		['Misdîrect-Spirestone']	= itsMis,
+		['Misoracle-Spirestone']	= itsMis,
+		['MisLight-Spirestone']		= itsMis,
+		['MisDivine-Spirestone']	= itsMis,
+		['MisMayhem-Spirestone']	= itsMis,
+		['Mismonk-Spirestone']		= itsMis,
+		['Misillidan-Spirestone']	= itsMis,
+		['Mispel-Spirestone']		= itsMis,
+		['Misdecay-Spirestone']		= itsMis,
+		['Mislust-Spirestone'] 		= itsMis,
+		['Misdivine-Spirestone']	= itsMis,
+		['Mislight-Spirestone']		= itsMis,
 		-- Luckyone
-		["Luckyone-LaughingSkull"]		= Clover,
-		["Luckypriest-LaughingSkull"]	= Clover,
-		["Luckymonkas-LaughingSkull"]	= Clover,
-		["Luckydk-LaughingSkull"]		= Clover,
-		["Luckyhunter-LaughingSkull"]	= Clover,
-		["Unluckyone-LaughingSkull"]	= Clover,
-		["Notlucky-LaughingSkull"]		= Clover,
-		["Luckymage-LaughingSkull"]		= Clover,
-		["Luckydh-LaughingSkull"]		= Clover,
-		["Luckywl-LaughingSkull"]		= Clover,
-		["Luckyrogue-LaughingSkull"]	= Clover,
-		["Luckypala-LaughingSkull"]		= Clover,
-		["Luckysabers-Blackrock"]		= Clover,
-		["Luckydemon-Blackrock"]		= Clover,
-		["Luckymage-Blackrock"]			= Clover,
-		["Luckyshaman-Blackrock"]		= Clover,
-		["Luckylockx-Blackrock"]		= Clover,
-		["Luckybow-Blackrock"]			= Clover,
-		["Luckypepega-Blackrock"]		= Clover,
-		["Luckypoggers-Blackrock"]		= Clover,
-		["Luckyclap-Blackrock"]			= Clover,
+		['Luckyone-LaughingSkull']		= Clover,
+		['Luckypriest-LaughingSkull']	= Clover,
+		['Luckymonkas-LaughingSkull']	= Clover,
+		['Luckydk-LaughingSkull']		= Clover,
+		['Luckyhunter-LaughingSkull']	= Clover,
+		['Unluckyone-LaughingSkull']	= Clover,
+		['Notlucky-LaughingSkull']		= Clover,
+		['Luckymage-LaughingSkull']		= Clover,
+		['Luckydh-LaughingSkull']		= Clover,
+		['Luckywl-LaughingSkull']		= Clover,
+		['Luckyrogue-LaughingSkull']	= Clover,
+		['Luckypala-LaughingSkull']		= Clover,
+		['Luckysabers-Blackrock']		= Clover,
+		['Luckydemon-Blackrock']		= Clover,
+		['Luckymage-Blackrock']			= Clover,
+		['Luckyshaman-Blackrock']		= Clover,
+		['Luckylockx-Blackrock']		= Clover,
+		['Luckybow-Blackrock']			= Clover,
+		['Luckypepega-Blackrock']		= Clover,
+		['Luckypoggers-Blackrock']		= Clover,
+		['Luckyclap-Blackrock']			= Clover,
 		-- NihilisticPandemonium
-		["Dirishia-WyrmrestAccord"]		= itsTheFlyestNihilist("Warlock"),
-		["Xanikani-WyrmrestAccord"]		= itsTheFlyestNihilist("Mage"),
-		["Rikanza-WyrmrestAccord"]		= itsTheFlyestNihilist("Monk"),
-		["Onaguda-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
-		["Cerishia-WyrmrestAccord"]		= itsTheFlyestNihilist("Priest"),
-		["Vellilara-WyrmrestAccord"]	= itsTheFlyestNihilist("DemonHunter"),
-		["Sayalia-WyrmrestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
-		["Pakasta-WyrmrestAccord"]		= itsTheFlyestNihilist("Paladin"),
-		["Orlyrala-WyrmrestAccord"]		= itsTheFlyestNihilist("Shaman"),
-		["Scerila-WyrmrestAccord"]		= itsTheFlyestNihilist("Rogue"),
-		["Ralaniki-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
-		["Moyanza-WyrmrestAccord"]		= itsTheFlyestNihilist("Warrior"),
-		["Erasaya-WyrmrestAccord"]		= itsTheFlyestNihilist("DeathKnight"),
-		["Linabla-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
-		["Dirikoa-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
-		["Elaedarel-WyrmrestAccord"]	= itsTheFlyestNihilist("Warlock"),
-		["Alydrer-WyrmrestAccord"]		= itsTheFlyestNihilist("Warlock"),
-		["Issia-WyrmrestAccord"]		= itsTheFlyestNihilist("Priest"),
-		["Leitara-WyrmrestAccord"]		= itsTheFlyestNihilist("Warrior"),
-		["Cherlyth-WyrmrestAccord"]		= itsTheFlyestNihilist("Druid"),
-		["Tokashami-WyrmrestAccord"]	= itsTheFlyestNihilist("Shaman"),
-		["Millop-WyrmrestAccord"]		= itsTheFlyestNihilist("Hunter"),
-		["Aeondalew-WyrmrestAccord"]	= itsTheFlyestNihilist("DeathKnight"),
+		['Dirishia-WyrmrestAccord']		= itsTheFlyestNihilist('Warlock'),
+		['Xanikani-WyrmrestAccord']		= itsTheFlyestNihilist('Mage'),
+		['Rikanza-WyrmrestAccord']		= itsTheFlyestNihilist('Monk'),
+		['Onaguda-WyrmrestAccord']		= itsTheFlyestNihilist('Druid'),
+		['Cerishia-WyrmrestAccord']		= itsTheFlyestNihilist('Priest'),
+		['Vellilara-WyrmrestAccord']	= itsTheFlyestNihilist('DemonHunter'),
+		['Sayalia-WyrmrestAccord']		= itsTheFlyestNihilist('DeathKnight'),
+		['Pakasta-WyrmrestAccord']		= itsTheFlyestNihilist('Paladin'),
+		['Orlyrala-WyrmrestAccord']		= itsTheFlyestNihilist('Shaman'),
+		['Scerila-WyrmrestAccord']		= itsTheFlyestNihilist('Rogue'),
+		['Ralaniki-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
+		['Moyanza-WyrmrestAccord']		= itsTheFlyestNihilist('Warrior'),
+		['Erasaya-WyrmrestAccord']		= itsTheFlyestNihilist('DeathKnight'),
+		['Linabla-WyrmrestAccord']		= itsTheFlyestNihilist('Druid'),
+		['Dirikoa-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
+		['Elaedarel-WyrmrestAccord']	= itsTheFlyestNihilist('Warlock'),
+		['Alydrer-WyrmrestAccord']		= itsTheFlyestNihilist('Warlock'),
+		['Issia-WyrmrestAccord']		= itsTheFlyestNihilist('Priest'),
+		['Leitara-WyrmrestAccord']		= itsTheFlyestNihilist('Warrior'),
+		['Cherlyth-WyrmrestAccord']		= itsTheFlyestNihilist('Druid'),
+		['Tokashami-WyrmrestAccord']	= itsTheFlyestNihilist('Shaman'),
+		['Millop-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
+		['Aeondalew-WyrmrestAccord']	= itsTheFlyestNihilist('DeathKnight'),
 		-- Merathilis
-		["Asragoth-Shattrath"]			= ElvPurple,	-- [Alliance] Warlock
-		["Brítt-Shattrath"] 			= ElvBlue,		-- [Alliance] Warrior
-		["Damará-Shattrath"]			= ElvRed,		-- [Alliance] Paladin
-		["Jazira-Shattrath"]			= ElvBlue,		-- [Alliance] Priest
-		["Jústice-Shattrath"]			= ElvYellow,	-- [Alliance] Rogue
-		["Maithilis-Shattrath"]			= ElvGreen,		-- [Alliance] Monk
-		["Mattdemôn-Shattrath"]			= ElvPurple,	-- [Alliance] DH
-		["Melisendra-Shattrath"]		= ElvBlue,		-- [Alliance] Mage
-		["Merathilis-Shattrath"]		= ElvOrange,	-- [Alliance] Druid
-		["Merathilîs-Shattrath"]		= ElvBlue,		-- [Alliance] Shaman
-		["Róhal-Shattrath"]				= ElvGreen,		-- [Alliance] Hunter
+		['Asragoth-Shattrath']			= ElvPurple,	-- [Alliance] Warlock
+		['Brítt-Shattrath'] 			= ElvBlue,		-- [Alliance] Warrior
+		['Damará-Shattrath']			= ElvRed,		-- [Alliance] Paladin
+		['Jazira-Shattrath']			= ElvBlue,		-- [Alliance] Priest
+		['Jústice-Shattrath']			= ElvYellow,	-- [Alliance] Rogue
+		['Maithilis-Shattrath']			= ElvGreen,		-- [Alliance] Monk
+		['Mattdemôn-Shattrath']			= ElvPurple,	-- [Alliance] DH
+		['Melisendra-Shattrath']		= ElvBlue,		-- [Alliance] Mage
+		['Merathilis-Shattrath']		= ElvOrange,	-- [Alliance] Druid
+		['Merathilîs-Shattrath']		= ElvBlue,		-- [Alliance] Shaman
+		['Róhal-Shattrath']				= ElvGreen,		-- [Alliance] Hunter
 		-- Simpy
-		["Arieva-Cenarius"]				= itsSimpy, -- Hunter
-		["Buddercup-Cenarius"]			= itsSimpy, -- Rogue
-		["Cutepally-Cenarius"]			= itsSimpy, -- Paladin
-		["Ezek-Cenarius"]				= itsSimpy, -- DK
-		["Glice-Cenarius"]				= itsSimpy, -- Warrior
-		["Kalline-Cenarius"]			= itsSimpy, -- Shaman
-		["Puttietat-Cenarius"]			= itsSimpy, -- Druid
-		["Simpy-Cenarius"]				= itsSimpy, -- Warlock
-		["Twigly-Cenarius"]				= itsSimpy, -- Monk
-		["Imsobeefy-Cenarius"]			= itsSimpy, -- [Horde] Shaman
-		["Imsocheesy-Cenarius"]			= itsSimpy, -- [Horde] Priest
-		["Imsojelly-Cenarius"]			= itsSimpy, -- [Horde] DK
-		["Imsojuicy-Cenarius"]			= itsSimpy, -- [Horde] Druid
-		["Imsopeachy-Cenarius"]			= itsSimpy, -- [Horde] DH
-		["Imsosalty-Cenarius"]			= itsSimpy, -- [Horde] Paladin
-		["Imsospicy-Cenarius"]			= itsSimpy, -- [Horde] Mage
-		["Bunne-CenarionCircle"]		= itsSimpy, -- [RP] Warrior
-		["Loppie-CenarionCircle"]		= itsSimpy, -- [RP] Hunter
-		["Loppybunny-CenarionCircle"]	= itsSimpy, -- [RP] Mage
-		["Rubee-CenarionCircle"]		= itsSimpy, -- [RP] DH
-		["Wennie-CenarionCircle"]		= itsSimpy, -- [RP] Priest
+		['Arieva-Cenarius']				= itsSimpy, -- Hunter
+		['Buddercup-Cenarius']			= itsSimpy, -- Rogue
+		['Cutepally-Cenarius']			= itsSimpy, -- Paladin
+		['Ezek-Cenarius']				= itsSimpy, -- DK
+		['Glice-Cenarius']				= itsSimpy, -- Warrior
+		['Kalline-Cenarius']			= itsSimpy, -- Shaman
+		['Puttietat-Cenarius']			= itsSimpy, -- Druid
+		['Simpy-Cenarius']				= itsSimpy, -- Warlock
+		['Twigly-Cenarius']				= itsSimpy, -- Monk
+		['Imsobeefy-Cenarius']			= itsSimpy, -- [Horde] Shaman
+		['Imsocheesy-Cenarius']			= itsSimpy, -- [Horde] Priest
+		['Imsojelly-Cenarius']			= itsSimpy, -- [Horde] DK
+		['Imsojuicy-Cenarius']			= itsSimpy, -- [Horde] Druid
+		['Imsopeachy-Cenarius']			= itsSimpy, -- [Horde] DH
+		['Imsosalty-Cenarius']			= itsSimpy, -- [Horde] Paladin
+		['Imsospicy-Cenarius']			= itsSimpy, -- [Horde] Mage
+		['Bunne-CenarionCircle']		= itsSimpy, -- [RP] Warrior
+		['Loppie-CenarionCircle']		= itsSimpy, -- [RP] Hunter
+		['Loppybunny-CenarionCircle']	= itsSimpy, -- [RP] Mage
+		['Rubee-CenarionCircle']		= itsSimpy, -- [RP] DH
+		['Wennie-CenarionCircle']		= itsSimpy, -- [RP] Priest
 		-- Melbelle (Simpys Bestie)
-		["Deathchaser-Bladefist"]		= itsMel, -- DH
-		["Melbelle-Bladefist"]			= itsMel, -- Hunter
-		["Alykins-Cenarius"]			= itsMel, -- DH
-		["Alyosha-Cenarius"]			= itsMel, -- Warrior
-		["Alytotes-Cenarius"]			= itsMel, -- Shaman
-		["Dãwn-Cenarius"]				= itsMel, -- Paladin
-		["Freckles-Cenarius"]			= itsMel, -- DK
-		["Lõvi-Cenarius"]				= itsMel, -- Priest
-		["Melbelle-Cenarius"]			= itsMel, -- Druid
-		["Perìwìnkle-Cenarius"]			= itsMel, -- Shaman
-		["Pìper-Cenarius"]				= itsMel, -- Warlock
-		["Spãrkles-Cenarius"]			= itsMel, -- Mage
+		['Deathchaser-Bladefist']		= itsMel, -- DH
+		['Melbelle-Bladefist']			= itsMel, -- Hunter
+		['Alykins-Cenarius']			= itsMel, -- DH
+		['Alyosha-Cenarius']			= itsMel, -- Warrior
+		['Alytotes-Cenarius']			= itsMel, -- Shaman
+		['Dãwn-Cenarius']				= itsMel, -- Paladin
+		['Freckles-Cenarius']			= itsMel, -- DK
+		['Lõvi-Cenarius']				= itsMel, -- Priest
+		['Melbelle-Cenarius']			= itsMel, -- Druid
+		['Perìwìnkle-Cenarius']			= itsMel, -- Shaman
+		['Pìper-Cenarius']				= itsMel, -- Warlock
+		['Spãrkles-Cenarius']			= itsMel, -- Mage
 		-- Lulupeep (Nihilist's wife)
-		["Arïä-WyrmrestAccord"] 		= DeathlyH,
-		["Belladonnä-WyrmrestAccord"] 	= DeathlyH,
-		["Cadense-WyrmrestAccord"]		= DeathlyH,
-		["Cäydence-WyrmrestAccord"] 	= DeathlyH,
-		["Esmæ-WyrmrestAccord"]			= DeathlyH,
-		["Falorya-WyrmrestAccord"]		= DeathlyH,
-		["Fufus-WyrmrestAccord"]		= DeathlyH,
-		["Gemmä-WyrmrestAccord"]		= DeathlyH,
-		["Lilliës-WyrmrestAccord"]		= DeathlyH,
-		["Louisianagrl-WyrmrestAccord"]	= DeathlyH,
-		["Lulupeep-WyrmrestAccord"]		= DeathlyH,
-		["Nolalove-WyrmrestAccord"]		= DeathlyH,
-		["Onyxnovä-WyrmrestAccord"]		= DeathlyH,
-		["Rukíá-WyrmrestAccord"]		= DeathlyH,
-		["Songbïrd-WyrmrestAccord"]		= DeathlyH,
-		["Vidiä-WyrmrestAccord"]		= DeathlyH,
+		['Arïä-WyrmrestAccord'] 		= DeathlyH,
+		['Belladonnä-WyrmrestAccord'] 	= DeathlyH,
+		['Cadense-WyrmrestAccord']		= DeathlyH,
+		['Cäydence-WyrmrestAccord'] 	= DeathlyH,
+		['Esmæ-WyrmrestAccord']			= DeathlyH,
+		['Falorya-WyrmrestAccord']		= DeathlyH,
+		['Fufus-WyrmrestAccord']		= DeathlyH,
+		['Gemmä-WyrmrestAccord']		= DeathlyH,
+		['Lilliës-WyrmrestAccord']		= DeathlyH,
+		['Louisianagrl-WyrmrestAccord']	= DeathlyH,
+		['Lulupeep-WyrmrestAccord']		= DeathlyH,
+		['Nolalove-WyrmrestAccord']		= DeathlyH,
+		['Onyxnovä-WyrmrestAccord']		= DeathlyH,
+		['Rukíá-WyrmrestAccord']		= DeathlyH,
+		['Songbïrd-WyrmrestAccord']		= DeathlyH,
+		['Vidiä-WyrmrestAccord']		= DeathlyH,
 		-- Quickhanz (Nihilist's absolute bestie)
-		["Zandahanz-Area52"]			= GoldShield,
+		['Zandahanz-Area52']			= GoldShield,
 		-- AcidWeb
-		["Livarax-BurningLegion"]		= Gem,
-		["Filevandrel-BurningLegion"]	= Gem,
-		["Akavaya-BurningLegion"]		= Gem,
+		['Livarax-BurningLegion']		= Gem,
+		['Filevandrel-BurningLegion']	= Gem,
+		['Akavaya-BurningLegion']		= Gem,
 	}
 end
 
@@ -441,14 +441,14 @@ end
 
 function CH:GetGroupDistribution()
 	local _, instanceType = GetInstanceInfo()
-	if instanceType == "pvp" then return "/bg " end
-	if IsInRaid() then return "/ra " end
-	if IsInGroup() then return "/p " end
-	return "/s "
+	if instanceType == 'pvp' then return '/bg ' end
+	if IsInRaid() then return '/ra ' end
+	if IsInGroup() then return '/p ' end
+	return '/s '
 end
 
 function CH:InsertEmotions(msg)
-	for word in gmatch(msg, "%s-%S+%s*") do
+	for word in gmatch(msg, '%s-%S+%s*') do
 		word = strtrim(word)
 		local pattern = E:EscapeString(word)
 		local emoji = CH.Smileys[pattern]
@@ -463,18 +463,18 @@ end
 
 function CH:GetSmileyReplacementText(msg)
 	if not msg or not CH.db.emotionIcons or strfind(msg, '/run') or strfind(msg, '/dump') or strfind(msg, '/script') then return msg end
-	local outstr = ""
+	local outstr = ''
 	local origlen = strlen(msg)
 	local startpos = 1
 	local endpos, _
 
 	while(startpos <= origlen) do
-		local pos = strfind(msg,"|H",startpos,true)
+		local pos = strfind(msg,'|H',startpos,true)
 		endpos = pos or origlen
 		outstr = outstr .. CH:InsertEmotions(strsub(msg,startpos,endpos)) --run replacement on this bit
 		startpos = endpos + 1
 		if pos ~= nil then
-			_, endpos = strfind(msg,"|h.-|h",startpos)
+			_, endpos = strfind(msg,'|h.-|h',startpos)
 			endpos = endpos or origlen
 			if startpos < endpos then
 				outstr = outstr .. strsub(msg,startpos,endpos) --don't run replacement on this bit
@@ -488,7 +488,7 @@ end
 
 function CH:CopyButtonOnMouseUp(btn)
 	local chat = self:GetParent()
-	if btn == "RightButton" and chat:GetID() == 1 then
+	if btn == 'RightButton' and chat:GetID() == 1 then
 		ToggleFrame(_G.ChatMenu)
 	else
 		CH:CopyChat(chat)
@@ -501,7 +501,7 @@ end
 
 function CH:CopyButtonOnLeave()
 	local chat = self:GetParent()
-	if _G[chat:GetName().."TabText"]:IsShown() then
+	if _G[chat:GetName()..'TabText']:IsShown() then
 		self:SetAlpha(0.35)
 	else
 		self:SetAlpha(0)
@@ -585,7 +585,7 @@ function CH:EditBoxOnKeyDown(key)
 		return
 	end
 
-	if key == "DOWN" then
+	if key == 'DOWN' then
 		self.historyIndex = self.historyIndex - 1
 
 		if self.historyIndex < 1 then
@@ -593,7 +593,7 @@ function CH:EditBoxOnKeyDown(key)
 			self:SetText('')
 			return
 		end
-	elseif key == "UP" then
+	elseif key == 'UP' then
 		self.historyIndex = self.historyIndex + 1
 
 		if self.historyIndex > #self.historyLines then
@@ -631,7 +631,7 @@ function CH:StyleChat(frame)
 	local name = frame:GetName()
 	local tab = CH:GetTab(frame)
 
-	tab.Text:FontTemplate(LSM:Fetch("font", CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
+	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
 	if frame.styled then return end
 
@@ -640,10 +640,10 @@ function CH:StyleChat(frame)
 	frame:SetClampedToScreen(false)
 	frame:StripTextures(true)
 
-	_G[name.."ButtonFrame"]:Kill()
+	_G[name..'ButtonFrame']:Kill()
 
 	local id = frame:GetID()
-	local scrollTex = _G[name.."ThumbTexture"]
+	local scrollTex = _G[name..'ThumbTexture']
 	local scrollToBottom = frame.ScrollToBottomButton
 	local scroll = frame.ScrollBar
 	local editbox = frame.editBox
@@ -655,12 +655,12 @@ function CH:StyleChat(frame)
 	end
 
 	--Character count
-	local charCount = editbox:CreateFontString(nil, "ARTWORK")
+	local charCount = editbox:CreateFontString(nil, 'ARTWORK')
 	charCount:FontTemplate()
 	charCount:SetTextColor(190, 190, 190, 0.4)
-	charCount:SetPoint("TOPRIGHT", editbox, "TOPRIGHT", -5, 0)
-	charCount:SetPoint("BOTTOMRIGHT", editbox, "BOTTOMRIGHT", -5, 0)
-	charCount:SetJustifyH("CENTER")
+	charCount:SetPoint('TOPRIGHT', editbox, 'TOPRIGHT', -5, 0)
+	charCount:SetPoint('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', -5, 0)
+	charCount:SetJustifyH('CENTER')
 	charCount:SetWidth(40)
 	editbox.characterCount = charCount
 
@@ -670,9 +670,9 @@ function CH:StyleChat(frame)
 		_G[name..'Tab'..texName..'Right']:SetTexture()
 	end
 
-	hooksecurefunc(tab, "SetAlpha", CH.ChatFrameTab_SetAlpha)
+	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
 
-	if not tab.left then tab.left = _G[name.."TabLeft"] end
+	if not tab.left then tab.left = _G[name..'TabLeft'] end
 	tab.Text:ClearAllPoints()
 	tab.Text:SetPoint('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
 	tab:SetHeight(22)
@@ -683,31 +683,31 @@ function CH:StyleChat(frame)
 	end
 
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()
-	_G[name.."EditBoxLeft"]:Kill()
-	_G[name.."EditBoxMid"]:Kill()
-	_G[name.."EditBoxRight"]:Kill()
+	_G[name..'EditBoxLeft']:Kill()
+	_G[name..'EditBoxMid']:Kill()
+	_G[name..'EditBoxRight']:Kill()
 
 	editbox:SetTemplate(nil, true)
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(_G.LeftChatDataPanel)
-	editbox:HookScript("OnTextChanged", CH.EditBoxOnTextChanged)
-	CH:SecureHook(editbox, "AddHistoryLine", "ChatEdit_AddHistory")
+	editbox:HookScript('OnTextChanged', CH.EditBoxOnTextChanged)
+	CH:SecureHook(editbox, 'AddHistoryLine', 'ChatEdit_AddHistory')
 
 	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
-	editbox:HookScript("OnKeyDown", CH.EditBoxOnKeyDown)
+	editbox:HookScript('OnKeyDown', CH.EditBoxOnKeyDown)
 	editbox:Hide()
 
-	editbox:HookScript("OnEditFocusGained", CH.EditBoxFocusGained)
-	editbox:HookScript("OnEditFocusLost", CH.EditBoxFocusLost)
+	editbox:HookScript('OnEditFocusGained', CH.EditBoxFocusGained)
+	editbox:HookScript('OnEditFocusLost', CH.EditBoxFocusLost)
 
 	for _, text in pairs(editbox.historyLines) do
 		editbox:AddHistoryLine(text)
 	end
 
 	--copy chat button
-	local copyButton = CreateFrame('Frame', format("ElvUI_CopyChatButton%d", id), frame)
+	local copyButton = CreateFrame('Frame', format('ElvUI_CopyChatButton%d', id), frame)
 	copyButton:EnableMouse(true)
 	copyButton:SetAlpha(0.35)
 	copyButton:SetSize(20, 22)
@@ -720,21 +720,21 @@ function CH:StyleChat(frame)
 	copyTexture:SetTexture(E.Media.Textures.Copy)
 	copyButton.texture = copyTexture
 
-	copyButton:SetScript("OnMouseUp", CH.CopyButtonOnMouseUp)
-	copyButton:SetScript("OnEnter", CH.CopyButtonOnEnter)
-	copyButton:SetScript("OnLeave", CH.CopyButtonOnLeave)
+	copyButton:SetScript('OnMouseUp', CH.CopyButtonOnMouseUp)
+	copyButton:SetScript('OnEnter', CH.CopyButtonOnEnter)
+	copyButton:SetScript('OnLeave', CH.CopyButtonOnLeave)
 	CH:ToggleChatButton(copyButton)
 
 	_G.QuickJoinToastButton:Hide()
-	_G.GeneralDockManagerOverflowButtonList:SetTemplate("Transparent")
-	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
+	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
 
 	frame.styled = true
 end
 
 function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHistory, historyTime)
 	local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
-	if isHistory == "ElvUI_ChatHistory" then historyTimestamp = historyTime end
+	if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
 
 	if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
 		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or time())
@@ -744,14 +744,14 @@ function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHis
 		if CH.db.useCustomTimeColor then
 			local color = CH.db.customTimeColor
 			local hexColor = E:RGBToHex(color.r, color.g, color.b)
-			msg = format("%s[%s]|r %s", hexColor, timeStamp, msg)
+			msg = format('%s[%s]|r %s', hexColor, timeStamp, msg)
 		else
-			msg = format("[%s] %s", timeStamp, msg)
+			msg = format('[%s] %s', timeStamp, msg)
 		end
 	end
 
 	if CH.db.copyChatLines then
-		msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), E:TextureString(E.Media.Textures.ArrowRight, ":14"), msg)
+		msg = format('|Hcpl:%s|h%s|h %s', self:GetID(), E:TextureString(E.Media.Textures.ArrowRight, ':14'), msg)
 	end
 
 	self.OldAddMessage(self, msg, infoR, infoG, infoB, infoID, accessID, typeID)
@@ -765,27 +765,27 @@ end
 
 local removeIconFromLine
 do
-	local raidIconFunc = function(x) x = x~="" and _G["RAID_TARGET_"..x];return x and ("{"..strlower(x).."}") or "" end
-	local stripTextureFunc = function(w, x, y) if x=="" then return (w~="" and w) or (y~="" and y) or "" end end
-	local hyperLinkFunc = function(w, x, y) if w~="" then return end
-		local emoji = (x~="" and x) and strmatch(x, 'elvmoji:%%(.+)')
+	local raidIconFunc = function(x) x = x~='' and _G['RAID_TARGET_'..x];return x and ('{'..strlower(x)..'}') or '' end
+	local stripTextureFunc = function(w, x, y) if x=='' then return (w~='' and w) or (y~='' and y) or '' end end
+	local hyperLinkFunc = function(w, x, y) if w~='' then return end
+		local emoji = (x~='' and x) and strmatch(x, 'elvmoji:%%(.+)')
 		return (emoji and E.Libs.Base64:Decode(emoji)) or y
 	end
 	local fourString = function(v, w, x, y)
-		return format('%s%s%s', v, w, (v and v == "1" and x) or y)
+		return format('%s%s%s', v, w, (v and v == '1' and x) or y)
 	end
 	removeIconFromLine = function(text)
 		text = gsub(text, [[|TInterface\TargetingFrame\UI%-RaidTargetingIcon_(%d+):0|t]], raidIconFunc) --converts raid icons into {star} etc, if possible.
-		text = gsub(text, "(%s?)(|?)|[TA].-|[ta](%s?)", stripTextureFunc) --strip any other texture out but keep a single space from the side(s).
-		text = gsub(text, "(|?)|H(.-)|h(.-)|h", hyperLinkFunc) --strip hyperlink data only keeping the actual text.
-		text = gsub(text, "(%d+)(.-)|4(.-):(.-);", fourString) --stuff where it goes 'day' or 'days' like played; tech this is wrong but okayish
+		text = gsub(text, '(%s?)(|?)|[TA].-|[ta](%s?)', stripTextureFunc) --strip any other texture out but keep a single space from the side(s).
+		text = gsub(text, '(|?)|H(.-)|h(.-)|h', hyperLinkFunc) --strip hyperlink data only keeping the actual text.
+		text = gsub(text, '(%d+)(.-)|4(.-):(.-);', fourString) --stuff where it goes 'day' or 'days' like played; tech this is wrong but okayish
 		return text
 	end
 end
 
 local function colorizeLine(text, r, g, b)
 	local hexCode = E:RGBToHex(r, g, b)
-	return format("%s%s|r", hexCode, text)
+	return format('%s%s|r', hexCode, text)
 end
 
 local copyLines = {}
@@ -818,7 +818,7 @@ function CH:CopyChat(frame)
 		FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		_G.CopyChatFrame:Show()
 		local lineCt = CH:GetLines(frame)
-		local text = tconcat(copyLines, " \n", 1, lineCt)
+		local text = tconcat(copyLines, ' \n', 1, lineCt)
 		FCF_SetChatWindowFontSize(frame, frame, fontSize)
 		_G.CopyChatFrameEditBox:SetText(text)
 	else
@@ -942,12 +942,12 @@ function CH:UpdateEditboxAnchors()
 		local anchorTo = leftChat or frame
 		editbox:ClearAllPoints()
 
-		if CH.db.editBoxPosition == "BELOW_CHAT" then
-			editbox:SetPoint("TOPLEFT", anchorTo, "BOTTOMLEFT", -width, topheight)
-			editbox:SetPoint("BOTTOMRIGHT", anchorTo, "BOTTOMRIGHT", width, -(panel_height+bottomheight))
+		if CH.db.editBoxPosition == 'BELOW_CHAT' then
+			editbox:SetPoint('TOPLEFT', anchorTo, 'BOTTOMLEFT', -width, topheight)
+			editbox:SetPoint('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', width, -(panel_height+bottomheight))
 		else
-			editbox:SetPoint("BOTTOMLEFT", anchorTo, "TOPLEFT", -width, topheight)
-			editbox:SetPoint("TOPRIGHT", anchorTo, "TOPRIGHT", width, panel_height+bottomheight)
+			editbox:SetPoint('BOTTOMLEFT', anchorTo, 'TOPLEFT', -width, topheight)
+			editbox:SetPoint('TOPRIGHT', anchorTo, 'TOPRIGHT', width, panel_height+bottomheight)
 		end
 	end
 end
@@ -1117,14 +1117,14 @@ function CH:PositionChat(chat)
 	if chat == CH.LeftChatWindow then
 		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
-		chat:SetPoint("BOTTOMLEFT", _G.LeftChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
+		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, E.PixelMode and 2 or 4)
 		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - offset)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
 		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.RightChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
-		chat:SetPoint("BOTTOMLEFT", _G.RightChatPanel, "BOTTOMLEFT", 5, E.PixelMode and 2 or 4)
+		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, E.PixelMode and 2 or 4)
 		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - offset)
 
 		CH:ShowBackground(chat.Background, false)
@@ -1185,7 +1185,7 @@ function CH:ScrollToBottom(frame)
 end
 
 function CH:PrintURL(url)
-	return "|cFFFFFFFF[|Hurl:"..url.."|h"..url.."|h]|r "
+	return '|cFFFFFFFF[|Hurl:'..url..'|h'..url..'|h]|r '
 end
 
 function CH:FindURL(event, msg, author, ...)
@@ -1197,24 +1197,24 @@ function CH:FindURL(event, msg, author, ...)
 
 	local text, tag = msg, strmatch(msg, '{(.-)}')
 	if tag and _G.ICON_TAG_LIST[strlower(tag)] then
-		text = gsub(gsub(text, "(%S)({.-})", '%1 %2'), "({.-})(%S)", '%1 %2')
+		text = gsub(gsub(text, '(%S)({.-})', '%1 %2'), '({.-})(%S)', '%1 %2')
 	end
 
-	text = gsub(gsub(text, "(%S)(|c.-|H.-|h.-|h|r)", '%1 %2'), "(|c.-|H.-|h.-|h|r)(%S)", '%1 %2')
+	text = gsub(gsub(text, '(%S)(|c.-|H.-|h.-|h|r)', '%1 %2'), '(|c.-|H.-|h.-|h|r)(%S)', '%1 %2')
 	-- http://example.com
-	local newMsg, found = gsub(text, "(%a+)://(%S+)%s?", CH:PrintURL("%1://%2"))
+	local newMsg, found = gsub(text, '(%a+)://(%S+)%s?', CH:PrintURL('%1://%2'))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- www.example.com
-	newMsg, found = gsub(text, "www%.([_A-Za-z0-9-]+)%.(%S+)%s?", CH:PrintURL("www.%1.%2"))
+	newMsg, found = gsub(text, 'www%.([_A-Za-z0-9-]+)%.(%S+)%s?', CH:PrintURL('www.%1.%2'))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- example@example.com
-	newMsg, found = gsub(text, "([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?", CH:PrintURL("%1@%2%3%4"))
+	newMsg, found = gsub(text, '([_A-Za-z0-9-%.]+)@([_A-Za-z0-9-]+)(%.+)([_A-Za-z0-9-%.]+)%s?', CH:PrintURL('%1@%2%3%4'))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- IP address with port 1.1.1.1:1
-	newMsg, found = gsub(text, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)(:%d+)%s?", CH:PrintURL("%1.%2.%3.%4%5"))
+	newMsg, found = gsub(text, '(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)(:%d+)%s?', CH:PrintURL('%1.%2.%3.%4%5'))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 	-- IP address 1.1.1.1
-	newMsg, found = gsub(text, "(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?", CH:PrintURL("%1.%2.%3.%4"))
+	newMsg, found = gsub(text, '(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%.(%d%d?%d?)%s?', CH:PrintURL('%1.%2.%3.%4'))
 	if found > 0 then return false, CH:GetSmileyReplacementText(CH:CheckKeyword(newMsg, author)), author, ... end
 
 	msg = CH:CheckKeyword(msg, author)
@@ -1230,7 +1230,7 @@ function CH:SetChatEditBoxMessage(message)
 	if not editBoxShown then
 		ChatEdit_ActivateChat(ChatFrameEditBox)
 	end
-	if editBoxText and editBoxText ~= "" then
+	if editBoxText and editBoxText ~= '' then
 		ChatFrameEditBox:SetText('')
 	end
 	ChatFrameEditBox:Insert(message)
@@ -1238,9 +1238,9 @@ function CH:SetChatEditBoxMessage(message)
 end
 
 local function HyperLinkedCPL(data)
-	if strsub(data, 1, 3) == "cpl" then
+	if strsub(data, 1, 3) == 'cpl' then
 		local chatID = strsub(data, 5)
-		local chat = _G[format("ChatFrame%d", chatID)]
+		local chat = _G[format('ChatFrame%d', chatID)]
 		if not chat then return end
 		local scale = chat:GetEffectiveScale() --blizzard does this with `scale = UIParent:GetScale()`
 		local cursorX, cursorY = GetCursorPosition()
@@ -1249,7 +1249,7 @@ local function HyperLinkedCPL(data)
 		if lineIndex then
 			local visibleLine = chat.visibleLines and chat.visibleLines[lineIndex]
 			local message = visibleLine and visibleLine.messageInfo and visibleLine.messageInfo.message
-			if message and message ~= "" then
+			if message and message ~= '' then
 				message = gsub(message, '|c%x%x%x%x%x%x%x%x(.-)|r', '%1')
 				message = strtrim(removeIconFromLine(message))
 				if not CH:MessageIsProtected(message) then
@@ -1261,7 +1261,7 @@ local function HyperLinkedCPL(data)
 end
 
 local function HyperLinkedSQU(data)
-	if strsub(data, 1, 3) == "squ" then
+	if strsub(data, 1, 3) == 'squ' then
 		if not _G.QuickJoinFrame:IsShown() then
 			ToggleQuickJoinPanel()
 		end
@@ -1274,9 +1274,9 @@ local function HyperLinkedSQU(data)
 end
 
 local function HyperLinkedURL(data)
-	if strsub(data, 1, 3) == "url" then
+	if strsub(data, 1, 3) == 'url' then
 		local currentLink = strsub(data, 5)
-		if currentLink and currentLink ~= "" then
+		if currentLink and currentLink ~= '' then
 			CH:SetChatEditBoxMessage(currentLink)
 		end
 	end
@@ -1284,11 +1284,11 @@ end
 
 local SetHyperlink = _G.ItemRefTooltip.SetHyperlink
 function _G.ItemRefTooltip:SetHyperlink(data, ...)
-	if strsub(data, 1, 3) == "cpl" then
+	if strsub(data, 1, 3) == 'cpl' then
 		HyperLinkedCPL(data)
-	elseif strsub(data, 1, 3) == "squ" then
+	elseif strsub(data, 1, 3) == 'squ' then
 		HyperLinkedSQU(data)
-	elseif strsub(data, 1, 3) == "url" then
+	elseif strsub(data, 1, 3) == 'url' then
 		HyperLinkedURL(data)
 	else
 		SetHyperlink(self, data, ...)
@@ -1298,9 +1298,9 @@ end
 local hyperLinkEntered
 function CH:OnHyperlinkEnter(frame, refString)
 	if InCombatLockdown() then return end
-	local linkToken = strmatch(refString, "^([^:]+)")
+	local linkToken = strmatch(refString, '^([^:]+)')
 	if hyperlinkTypes[linkToken] then
-		_G.GameTooltip:SetOwner(frame, "ANCHOR_CURSOR")
+		_G.GameTooltip:SetOwner(frame, 'ANCHOR_CURSOR')
 		_G.GameTooltip:SetHyperlink(refString)
 		_G.GameTooltip:Show()
 		hyperLinkEntered = frame
@@ -1342,18 +1342,18 @@ function CH:DisableChatThrottle()
 end
 
 function CH:ShortChannel()
-	return format("|Hchannel:%s|h[%s]|h", self, DEFAULT_STRINGS[strupper(self)] or gsub(self, "channel:", ""))
+	return format('|Hchannel:%s|h[%s]|h', self, DEFAULT_STRINGS[strupper(self)] or gsub(self, 'channel:', ''))
 end
 
 function CH:HandleShortChannels(msg)
-	msg = gsub(msg, "|Hchannel:(.-)|h%[(.-)%]|h", CH.ShortChannel)
-	msg = gsub(msg, "CHANNEL:", "")
-	msg = gsub(msg, "^(.-|h) "..L["whispers"], "%1")
-	msg = gsub(msg, "^(.-|h) "..L["says"], "%1")
-	msg = gsub(msg, "^(.-|h) "..L["yells"], "%1")
-	msg = gsub(msg, "<".._G.AFK..">", "[|cffFF0000"..L["AFK"].."|r] ")
-	msg = gsub(msg, "<".._G.DND..">", "[|cffE7E716"..L["DND"].."|r] ")
-	msg = gsub(msg, "^%[".._G.RAID_WARNING.."%]", "["..L["RW"].."]")
+	msg = gsub(msg, '|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
+	msg = gsub(msg, 'CHANNEL:', '')
+	msg = gsub(msg, '^(.-|h) '..L["whispers"], '%1')
+	msg = gsub(msg, '^(.-|h) '..L["says"], '%1')
+	msg = gsub(msg, '^(.-|h) '..L["yells"], '%1')
+	msg = gsub(msg, '<'.._G.AFK..'>', '[|cffFF0000'..L["AFK"]..'|r] ')
+	msg = gsub(msg, '<'.._G.DND..'>', '[|cffE7E716'..L["DND"]..'|r] ')
+	msg = gsub(msg, '^%['.._G.RAID_WARNING..'%]', '['..L["RW"].."]")
 	return msg
 end
 
@@ -1412,7 +1412,7 @@ end
 function CH:GetPluginIcon(sender)
 	for _, func in ipairs(PluginIconsCalls) do
 		local icon = func(sender)
-		if icon and icon ~= "" then
+		if icon and icon ~= '' then
 			return icon
 		end
 	end
@@ -1431,21 +1431,21 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	local chatType = strsub(event, 10)
 
 	local subType = strsub(chatType, 1, 7)
-	if subType == "WHISPER" then
-		chatType = "WHISPER"
-	elseif subType == "CHANNEL" then
-		chatType = "CHANNEL"..arg8
+	if subType == 'WHISPER' then
+		chatType = 'WHISPER'
+	elseif subType == 'CHANNEL' then
+		chatType = 'CHANNEL'..arg8
 	end
 
 	--ambiguate guild chat names
-	arg2 = Ambiguate(arg2, (chatType == "GUILD" and "guild") or "none")
+	arg2 = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
 
 	local info = arg12 and _G.ChatTypeInfo[chatType]
 	if info and Chat_ShouldColorChatByClass(info) then
 		local data = CH:GetPlayerInfoByGUID(arg12)
 		local classColor = data and data.classColor
 		if classColor then
-			return format("\124cff%.2x%.2x%.2x%s\124r", classColor.r*255, classColor.g*255, classColor.b*255, arg2)
+			return format('\124cff%.2x%.2x%.2x%s\124r', classColor.r*255, classColor.g*255, classColor.b*255, arg2)
 		end
 	end
 
@@ -1458,26 +1458,26 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 	wipe(seenGroups)
 
 	local ICON_LIST, ICON_TAG_LIST, GROUP_TAG_LIST = _G.ICON_LIST, _G.ICON_TAG_LIST, _G.GROUP_TAG_LIST
-	for tag in gmatch(message, "%b{}") do
-		local term = strlower(gsub(tag, "[{}]", ""))
+	for tag in gmatch(message, '%b{}') do
+		local term = strlower(gsub(tag, '[{}]', ''))
 		if not noIconReplacement and ICON_TAG_LIST[term] and ICON_LIST[ICON_TAG_LIST[term]] then
-			message = gsub(message, tag, ICON_LIST[ICON_TAG_LIST[term]] .. "0|t")
+			message = gsub(message, tag, ICON_LIST[ICON_TAG_LIST[term]] .. '0|t')
 		elseif not noGroupReplacement and GROUP_TAG_LIST[term] then
 			local groupIndex = GROUP_TAG_LIST[term]
 			if not seenGroups[groupIndex] then
 				seenGroups[groupIndex] = true
-				local groupList = "["
+				local groupList = '['
 				for i = 1, GetNumGroupMembers() do
 					local name, _, subgroup, _, _, classFileName = GetRaidRosterInfo(i)
 					if name and subgroup == groupIndex then
 						local classColorTable = E:ClassColor(classFileName)
 						if classColorTable then
-							name = format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
+							name = format('\124cff%.2x%.2x%.2x%s\124r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
 						end
-						groupList = groupList..(groupList == "[" and "" or _G.PLAYER_LIST_DELIMITER)..name
+						groupList = groupList..(groupList == '[' and '' or _G.PLAYER_LIST_DELIMITER)..name
 					end
 				end
-				if groupList ~= "[" then
+				if groupList ~= '[' then
 					groupList = groupList.."]"
 					message = gsub(message, tag, groupList, 1)
 				end
@@ -1492,11 +1492,11 @@ E.NameReplacements = {}
 function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, _, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
 	-- ElvUI Chat History Note: isHistory, historyTime, historyName, and historyBTag are passed from CH:DisplayChatHistory() and need to be on the end to prevent issues in other addons that listen on ChatFrame_MessageEventHandler.
 	-- we also send isHistory and historyTime into CH:AddMessage so that we don't have to override the timestamp.
-	if strsub(event, 1, 8) == "CHAT_MSG" then
+	if strsub(event, 1, 8) == 'CHAT_MSG' then
 		if arg16 then return true end -- hiding sender in letterbox: do NOT even show in chat window (only shows in cinematic frame)
 
 		local notChatHistory, historySavedName --we need to extend the arguments on CH.ChatFrame_MessageEventHandler so we can properly handle saved names without overriding
-		if isHistory == "ElvUI_ChatHistory" then
+		if isHistory == 'ElvUI_ChatHistory' then
 			if historyBTag then arg2 = historyBTag end -- swap arg2 (which is a |k string) to btag name
 			historySavedName = historyName
 		else
@@ -1533,9 +1533,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
-		if (chatType == "COMMUNITIES_CHANNEL") or ((strsub(chatType, 1, 7) == "CHANNEL") and (chatType ~= "CHANNEL_LIST") and ((arg1 ~= "INVITE") or (chatType ~= "CHANNEL_NOTICE_USER"))) then
-			if arg1 == "WRONG_PASSWORD" then
-				local staticPopup = _G[StaticPopup_Visible("CHAT_CHANNEL_PASSWORD") or ""]
+		if (chatType == 'COMMUNITIES_CHANNEL') or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
+			if arg1 == 'WRONG_PASSWORD' then
+				local staticPopup = _G[StaticPopup_Visible('CHAT_CHANNEL_PASSWORD') or '']
 				if staticPopup and strupper(staticPopup.data) == strupper(arg9) then
 					-- Don't display invalid password messages if we're going to prompt for a password (bug 102312)
 					return
@@ -1548,9 +1548,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					-- arg9 is the channel name without the number in front...
 					if ((arg7 > 0) and (frame.zoneChannelList[index] == arg7)) or (strupper(value) == strupper(arg9)) then
 						found = 1
-						infoType = "CHANNEL"..arg8
+						infoType = 'CHANNEL'..arg8
 						info = _G.ChatTypeInfo[infoType]
-						if (chatType == "CHANNEL_NOTICE") and (arg1 == "YOU_LEFT") then
+						if (chatType == 'CHANNEL_NOTICE') and (arg1 == 'YOU_LEFT') then
 							frame.channelList[index] = nil
 							frame.zoneChannelList[index] = nil
 						end
@@ -1565,10 +1565,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		local chatGroup = Chat_GetChatCategory(chatType)
 		local chatTarget
-		if chatGroup == "CHANNEL" then
+		if chatGroup == 'CHANNEL' then
 			chatTarget = tostring(arg8)
-		elseif chatGroup == "WHISPER" or chatGroup == "BN_WHISPER" then
-			if not(strsub(arg2, 1, 2) == "|K") then
+		elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
+			if not(strsub(arg2, 1, 2) == '|K') then
 				chatTarget = strupper(arg2)
 			else
 				chatTarget = arg2
@@ -1579,22 +1579,22 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			return true
 		end
 
-		if chatGroup == "WHISPER" or chatGroup == "BN_WHISPER" then
+		if chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
 			if frame.privateMessageList and not frame.privateMessageList[strlower(arg2)] then
 				return true
-			elseif frame.excludePrivateMessageList and frame.excludePrivateMessageList[strlower(arg2)] and ((chatGroup == "WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline") or (chatGroup == "BN_WHISPER" and GetCVar("whisperMode") ~= "popout_and_inline")) then
+			elseif frame.excludePrivateMessageList and frame.excludePrivateMessageList[strlower(arg2)] and ((chatGroup == 'WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline') or (chatGroup == 'BN_WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline')) then
 				return true
 			end
 		end
 
 		if frame.privateMessageList then
 			-- Dedicated BN whisper windows need online/offline messages for only that player
-			if (chatGroup == "BN_INLINE_TOAST_ALERT" or chatGroup == "BN_WHISPER_PLAYER_OFFLINE") and not frame.privateMessageList[strlower(arg2)] then
+			if (chatGroup == 'BN_INLINE_TOAST_ALERT' or chatGroup == 'BN_WHISPER_PLAYER_OFFLINE') and not frame.privateMessageList[strlower(arg2)] then
 				return true
 			end
 
 			-- HACK to put certain system messages into dedicated whisper windows
-			if chatGroup == "SYSTEM" then
+			if chatGroup == 'SYSTEM' then
 				local matchFound = false
 				local message = strlower(arg1)
 				for playerName in pairs(frame.privateMessageList) do
@@ -1613,87 +1613,87 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 		end
 
-		if ( chatType == "SYSTEM" or chatType == "SKILL" or chatType == "CURRENCY" or chatType == "MONEY" or
-			chatType == "OPENING" or chatType == "TRADESKILLS" or chatType == "PET_INFO" or chatType == "TARGETICONS" or chatType == "BN_WHISPER_PLAYER_OFFLINE") then
+		if ( chatType == 'SYSTEM' or chatType == 'SKILL' or chatType == 'CURRENCY' or chatType == 'MONEY' or
+			chatType == 'OPENING' or chatType == 'TRADESKILLS' or chatType == 'PET_INFO' or chatType == 'TARGETICONS' or chatType == 'BN_WHISPER_PLAYER_OFFLINE') then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif chatType == "LOOT" then
+		elseif chatType == 'LOOT' then
 			-- Append [Share] hyperlink if this is a valid social item and you are the looter.
 			if arg12 == E.myguid and C_SocialIsSocialEnabled() then
 				local itemID, creationContext = GetItemInfoFromHyperlink(arg1)
 				if itemID and C_SocialGetLastItem() == itemID then
-					arg1 = arg1 .. " " .. Social_GetShareItemLink(creationContext, true)
+					arg1 = arg1 .. ' ' .. Social_GetShareItemLink(creationContext, true)
 				end
 			end
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif strsub(chatType,1,7) == "COMBAT_" then
+		elseif strsub(chatType,1,7) == 'COMBAT_' then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif strsub(chatType,1,6) == "SPELL_" then
+		elseif strsub(chatType,1,6) == 'SPELL_' then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif strsub(chatType,1,10) == "BG_SYSTEM_" then
+		elseif strsub(chatType,1,10) == 'BG_SYSTEM_' then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif strsub(chatType,1,11) == "ACHIEVEMENT" then
+		elseif strsub(chatType,1,11) == 'ACHIEVEMENT' then
 			-- Append [Share] hyperlink
 			if arg12 == E.myguid and C_SocialIsSocialEnabled() then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1)
 				if achieveID then
-					arg1 = arg1 .. " " .. Social_GetShareAchievementLink(achieveID, true)
+					arg1 = arg1 .. ' ' .. Social_GetShareAchievementLink(achieveID, true)
 				end
 			end
-			frame:AddMessage(format(arg1, GetPlayerLink(arg2, ("[%s]"):format(coloredName))), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif strsub(chatType,1,18) == "GUILD_ACHIEVEMENT" then
-			local message = format(arg1, GetPlayerLink(arg2, ("[%s]"):format(coloredName)))
+			frame:AddMessage(format(arg1, GetPlayerLink(arg2, ('[%s]'):format(coloredName))), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
+		elseif strsub(chatType,1,18) == 'GUILD_ACHIEVEMENT' then
+			local message = format(arg1, GetPlayerLink(arg2, ('[%s]'):format(coloredName)))
 			if C_SocialIsSocialEnabled() then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1)
 				if achieveID then
 					local isGuildAchievement = select(12, GetAchievementInfo(achieveID))
 					if isGuildAchievement then
-						message = message .. " " .. Social_GetShareAchievementLink(achieveID, true)
+						message = message .. ' ' .. Social_GetShareAchievementLink(achieveID, true)
 					end
 				end
 			end
 			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif chatType == "IGNORED" then
+		elseif chatType == 'IGNORED' then
 			frame:AddMessage(format(_G.CHAT_IGNORED, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif chatType == "FILTERED" then
+		elseif chatType == 'FILTERED' then
 			frame:AddMessage(format(_G.CHAT_FILTERED, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif chatType == "RESTRICTED" then
+		elseif chatType == 'RESTRICTED' then
 			frame:AddMessage(_G.CHAT_RESTRICTED_TRIAL, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif chatType == "CHANNEL_LIST" then
+		elseif chatType == 'CHANNEL_LIST' then
 			if channelLength > 0 then
-				frame:AddMessage(format(_G["CHAT_"..chatType.."_GET"]..arg1, tonumber(arg8), arg4), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
+				frame:AddMessage(format(_G['CHAT_'..chatType..'_GET']..arg1, tonumber(arg8), arg4), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			else
 				frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
-		elseif chatType == "CHANNEL_NOTICE_USER" then
-			local globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"]
+		elseif chatType == 'CHANNEL_NOTICE_USER' then
+			local globalstring = _G['CHAT_'..arg1..'_NOTICE_BN']
 			if not globalstring then
-				globalstring = _G["CHAT_"..arg1.."_NOTICE"]
+				globalstring = _G['CHAT_'..arg1..'_NOTICE']
 			end
 			if not globalstring then
-				GMError(("Missing global string for %q"):format("CHAT_"..arg1.."_NOTICE_BN"))
+				GMError(('Missing global string for %q'):format('CHAT_'..arg1..'_NOTICE_BN'))
 				return
 			end
-			if arg5 ~= "" then
+			if arg5 ~= '' then
 				-- TWO users in this notice (E.G. x kicked y)
 				frame:AddMessage(format(globalstring, arg8, arg4, arg2, arg5), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-			elseif arg1 == "INVITE" then
+			elseif arg1 == 'INVITE' then
 				frame:AddMessage(format(globalstring, arg4, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			else
 				frame:AddMessage(format(globalstring, arg8, arg4, arg2), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
-			if arg1 == "INVITE" and GetCVarBool("blockChannelInvites") then
+			if arg1 == 'INVITE' and GetCVarBool('blockChannelInvites') then
 				frame:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
-		elseif chatType == "CHANNEL_NOTICE" then
+		elseif chatType == 'CHANNEL_NOTICE' then
 			local globalstring
-			if arg1 == "TRIAL_RESTRICTED" then
+			if arg1 == 'TRIAL_RESTRICTED' then
 				globalstring = _G.CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL
 			else
-				globalstring = _G["CHAT_"..arg1.."_NOTICE_BN"]
+				globalstring = _G['CHAT_'..arg1..'_NOTICE_BN']
 				if not globalstring then
-					globalstring = _G["CHAT_"..arg1.."_NOTICE"]
+					globalstring = _G['CHAT_'..arg1..'_NOTICE']
 					if not globalstring then
-						GMError(("Missing global string for %q"):format("CHAT_"..arg1.."_NOTICE"))
+						GMError(('Missing global string for %q'):format('CHAT_'..arg1..'_NOTICE'))
 						return
 					end
 				end
@@ -1701,63 +1701,63 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(chatType), arg8)
 			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12)
 			frame:AddMessage(format(globalstring, arg8, ChatFrame_ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime)
-		elseif chatType == "BN_INLINE_TOAST_ALERT" then
-			local globalstring = _G["BN_INLINE_TOAST_"..arg1]
+		elseif chatType == 'BN_INLINE_TOAST_ALERT' then
+			local globalstring = _G['BN_INLINE_TOAST_'..arg1]
 			if not globalstring then
-				GMError(("Missing global string for %q"):format("BN_INLINE_TOAST_"..arg1))
+				GMError(('Missing global string for %q'):format('BN_INLINE_TOAST_'..arg1))
 				return
 			end
 			local message
-			if arg1 == "FRIEND_REQUEST" then
+			if arg1 == 'FRIEND_REQUEST' then
 				message = globalstring
-			elseif arg1 == "FRIEND_PENDING" then
+			elseif arg1 == 'FRIEND_PENDING' then
 				message = format(_G.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites())
-			elseif arg1 == "FRIEND_REMOVED" or arg1 == "BATTLETAG_FRIEND_REMOVED" then
+			elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
 				message = format(globalstring, arg2)
-			elseif arg1 == "FRIEND_ONLINE" or arg1 == "FRIEND_OFFLINE" then
+			elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
 				local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
 				if not accountInfo then return end
 				local client = accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.clientProgram
-				if client and client ~= "" then
-					local characterName = BNet_GetValidatedCharacterName(accountInfo.gameAccountInfo.characterName, accountInfo.battleTag, client) or ""
+				if client and client ~= '' then
+					local characterName = BNet_GetValidatedCharacterName(accountInfo.gameAccountInfo.characterName, accountInfo.battleTag, client) or ''
 					local characterNameText = BNet_GetClientEmbeddedTexture(client, 14)..characterName
-					local linkDisplayText = ("[%s] (%s)"):format(arg2, characterNameText)
+					local linkDisplayText = ('[%s] (%s)'):format(arg2, characterNameText)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(chatType), 0)
 					message = format(globalstring, playerLink)
 				else
-					local linkDisplayText = ("[%s]"):format(arg2)
+					local linkDisplayText = ('[%s]'):format(arg2)
 					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(chatType), 0)
 					message = format(globalstring, playerLink)
 				end
 			else
-				local linkDisplayText = ("[%s]"):format(arg2)
+				local linkDisplayText = ('[%s]'):format(arg2)
 				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(chatType), 0)
 				message = format(globalstring, playerLink)
 			end
 			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
-		elseif chatType == "BN_INLINE_TOAST_BROADCAST" then
-			if arg1 ~= "" then
+		elseif chatType == 'BN_INLINE_TOAST_BROADCAST' then
+			if arg1 ~= '' then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1))
-				local linkDisplayText = ("[%s]"):format(arg2)
+				local linkDisplayText = ('[%s]'):format(arg2)
 				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(chatType), 0)
 				frame:AddMessage(format(_G.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
-		elseif chatType == "BN_INLINE_TOAST_BROADCAST_INFORM" then
-			if arg1 ~= "" then
+		elseif chatType == 'BN_INLINE_TOAST_BROADCAST_INFORM' then
+			if arg1 ~= '' then
 				frame:AddMessage(_G.BN_INLINE_TOAST_BROADCAST_INFORM, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
 		else
 			local body
 
-			if chatType == "WHISPER_INFORM" and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) then
+			if chatType == 'WHISPER_INFORM' and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) then
 				return
 			end
 
 			local showLink = 1
-			if strsub(chatType, 1, 7) == "MONSTER" or strsub(chatType, 1, 9) == "RAID_BOSS" then
+			if strsub(chatType, 1, 7) == 'MONSTER' or strsub(chatType, 1, 9) == 'RAID_BOSS' then
 				showLink = nil
 			else
-				arg1 = gsub(arg1, "%%", "%%%%")
+				arg1 = gsub(arg1, '%%', '%%%%')
 			end
 
 			-- Search for icon links and replace them with texture links.
@@ -1767,24 +1767,24 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			arg1 = RemoveExtraSpaces(arg1)
 
 			--ElvUI: Get class colored name for BattleNet friend
-			if chatType == "BN_WHISPER" or chatType == "BN_WHISPER_INFORM" then
+			if chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then
 				coloredName = historySavedName or CH:GetBNFriendColor(arg2, arg13)
 			end
 
 			local playerLink
 			local playerLinkDisplayText = coloredName
 			local relevantDefaultLanguage = frame.defaultLanguage
-			if chatType == "SAY" or chatType == "YELL" then
+			if chatType == 'SAY' or chatType == 'YELL' then
 				relevantDefaultLanguage = frame.alternativeDefaultLanguage
 			end
-			local usingDifferentLanguage = (arg3 ~= "") and (arg3 ~= relevantDefaultLanguage)
-			local usingEmote = (chatType == "EMOTE") or (chatType == "TEXT_EMOTE")
+			local usingDifferentLanguage = (arg3 ~= '') and (arg3 ~= relevantDefaultLanguage)
+			local usingEmote = (chatType == 'EMOTE') or (chatType == 'TEXT_EMOTE')
 
 			if usingDifferentLanguage or not usingEmote then
-				playerLinkDisplayText = ("[%s]"):format(coloredName)
+				playerLinkDisplayText = ('[%s]'):format(coloredName)
 			end
 
-			local isCommunityType = chatType == "COMMUNITIES_CHANNEL"
+			local isCommunityType = chatType == 'COMMUNITIES_CHANNEL'
 			local playerName, lineID, bnetIDAccount = arg2, arg11, arg13
 			if isCommunityType then
 				local isBattleNetCommunity = bnetIDAccount ~= nil and bnetIDAccount ~= 0
@@ -1800,9 +1800,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					playerLink = playerLinkDisplayText
 				end
 			else
-				if chatType == "BN_WHISPER" or chatType == "BN_WHISPER_INFORM" then
+				if chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then
 					playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
-				elseif ((chatType == "GUILD" or chatType == "TEXT_EMOTE") or arg14) and (nameWithRealm and nameWithRealm ~= playerName) then
+				elseif ((chatType == 'GUILD' or chatType == 'TEXT_EMOTE') or arg14) and (nameWithRealm and nameWithRealm ~= playerName) then
 					playerName = nameWithRealm
 					playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
 				else
@@ -1816,7 +1816,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			-- Player Flags
-			local pflag, chatIcon, pluginChatIcon = "", specialChatIcons[playerName], CH:GetPluginIcon(playerName)
+			local pflag, chatIcon, pluginChatIcon = '', specialChatIcons[playerName], CH:GetPluginIcon(playerName)
 			if type(chatIcon) == 'function' then
 				local icon, prettify = chatIcon()
 				if prettify and not CH:MessageIsProtected(message) then
@@ -1825,16 +1825,16 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				chatIcon = icon or ''
 			end
 
-			if arg6 ~= "" then -- Blizzard Flags
-				if arg6 == "GM" or arg6 == "DEV" then -- Blizzard Icon, this was sent by a GM or Dev.
+			if arg6 ~= '' then -- Blizzard Flags
+				if arg6 == 'GM' or arg6 == 'DEV' then -- Blizzard Icon, this was sent by a GM or Dev.
 					pflag = [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t]]
 				else -- Away/Busy
-					pflag = _G["CHAT_FLAG_"..arg6] or ""
+					pflag = _G['CHAT_FLAG_'..arg6] or ''
 				end
 			end
 			-- LFG Role Flags
 			local lfgRole = lfgRoles[playerName]
-			if lfgRole and (chatType == "PARTY_LEADER" or chatType == "PARTY" or chatType == "RAID" or chatType == "RAID_LEADER" or chatType == "INSTANCE_CHAT" or chatType == "INSTANCE_CHAT_LEADER") then
+			if lfgRole and (chatType == 'PARTY_LEADER' or chatType == 'PARTY' or chatType == 'RAID' or chatType == 'RAID_LEADER' or chatType == 'INSTANCE_CHAT' or chatType == 'INSTANCE_CHAT_LEADER') then
 				pflag = pflag..lfgRole
 			end
 			-- Special Chat Icon
@@ -1847,44 +1847,44 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			if usingDifferentLanguage then
-				local languageHeader = "["..arg3.."] "
-				if showLink and (arg2 ~= "") then
-					body = format(_G["CHAT_"..chatType.."_GET"]..languageHeader..message, pflag..playerLink)
+				local languageHeader = '['..arg3.."] "
+				if showLink and (arg2 ~= '') then
+					body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..playerLink)
 				else
-					body = format(_G["CHAT_"..chatType.."_GET"]..languageHeader..message, pflag..arg2)
+					body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..arg2)
 				end
 			else
-				if not showLink or arg2 == "" then
-					if chatType == "TEXT_EMOTE" then
+				if not showLink or arg2 == '' then
+					if chatType == 'TEXT_EMOTE' then
 						body = message
 					else
-						body = format(_G["CHAT_"..chatType.."_GET"]..message, pflag..arg2, arg2)
+						body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..arg2, arg2)
 					end
 				else
-					if chatType == "EMOTE" then
-						body = format(_G["CHAT_"..chatType.."_GET"]..message, pflag..playerLink)
-					elseif chatType == "TEXT_EMOTE" and realm then
+					if chatType == 'EMOTE' then
+						body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..playerLink)
+					elseif chatType == 'TEXT_EMOTE' and realm then
 						if info.colorNameByClass then
-							body = gsub(message, arg2.."%-"..realm, pflag..gsub(playerLink, "(|h|c.-)|r|h$","%1-"..realm.."|r|h"), 1)
+							body = gsub(message, arg2..'%-'..realm, pflag..gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h'), 1)
 						else
-							body = gsub(message, arg2.."%-"..realm, pflag..gsub(playerLink, "(|h.-)|h$","%1-"..realm.."|h"), 1)
+							body = gsub(message, arg2..'%-'..realm, pflag..gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'), 1)
 						end
-					elseif chatType == "TEXT_EMOTE" then
+					elseif chatType == 'TEXT_EMOTE' then
 						body = gsub(message, arg2, pflag..playerLink, 1)
-					elseif chatType == "GUILD_ITEM_LOOTED" then
-						body = gsub(message, "$s", GetPlayerLink(arg2, playerLinkDisplayText))
+					elseif chatType == 'GUILD_ITEM_LOOTED' then
+						body = gsub(message, '$s', GetPlayerLink(arg2, playerLinkDisplayText))
 					else
-						body = format(_G["CHAT_"..chatType.."_GET"]..message, pflag..playerLink)
+						body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..playerLink)
 					end
 				end
 			end
 
 			-- Add Channel
 			if channelLength > 0 then
-				body = "|Hchannel:channel:"..arg8.."|h["..ChatFrame_ResolvePrefixedChannelName(arg4).."]|h "..body
+				body = '|Hchannel:channel:'..arg8..'|h['..ChatFrame_ResolvePrefixedChannelName(arg4).."]|h "..body
 			end
 
-			if CH.db.shortChannels and (chatType ~= "EMOTE" and chatType ~= "TEXT_EMOTE") then
+			if CH.db.shortChannels and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') then
 				body = CH:HandleShortChannels(body)
 			end
 
@@ -1895,23 +1895,23 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
 			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
 
-			local alertType = notChatHistory and not CH.SoundTimer and not strfind(event, "_INFORM") and CH.db.channelAlerts[historyTypes[event]]
-			if alertType and alertType ~= "None" and arg2 ~= PLAYER_NAME and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
+			local alertType = notChatHistory and not CH.SoundTimer and not strfind(event, '_INFORM') and CH.db.channelAlerts[historyTypes[event]]
+			if alertType and alertType ~= 'None' and arg2 ~= PLAYER_NAME and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
 				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
-				PlaySoundFile(LSM:Fetch("sound", alertType), "Master")
+				PlaySoundFile(LSM:Fetch('sound', alertType), 'Master')
 			end
 
 			frame:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime)
 		end
 
-		if notChatHistory and (chatType == "WHISPER" or chatType == "BN_WHISPER") then
+		if notChatHistory and (chatType == 'WHISPER' or chatType == 'BN_WHISPER') then
 			ChatEdit_SetLastTellTarget(arg2, chatType)
 			FlashClientIcon()
 		end
 
 		if notChatHistory and not frame:IsShown() then
 			if (frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab) then
-				if not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == "WHISPER" or chatType == "BN_WHISPER" then --BN_WHISPER FIXME
+				if not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == 'WHISPER' or chatType == 'BN_WHISPER' then --BN_WHISPER FIXME
 					if not FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
 						FCF_StartAlertFlash(frame) --This would taint if we were not using LibChatAnims
 					end
@@ -1947,7 +1947,7 @@ local function FloatingChatFrameOnEvent(...)
 end
 
 function CH:ChatFrame_SetScript(script, func)
-	if script == "OnMouseWheel" and func ~= CH.ChatFrame_OnMouseScroll then
+	if script == 'OnMouseWheel' and func ~= CH.ChatFrame_OnMouseScroll then
 		self:SetScript(script, CH.ChatFrame_OnMouseScroll)
 	end
 end
@@ -1962,7 +1962,7 @@ function CH:SetupChat()
 		CH:StyleChat(frame)
 		FCFTab_UpdateAlpha(frame)
 
-		frame:FontTemplate(LSM:Fetch("font", CH.db.font), fontSize, CH.db.fontOutline)
+		frame:FontTemplate(LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline)
 		frame:SetTimeVisible(CH.db.inactivityTimer)
 		frame:SetMaxLines(CH.db.maxLines)
 		frame:SetFading(CH.db.fade)
@@ -1976,11 +1976,11 @@ function CH:SetupChat()
 
 		if not frame.scriptsSet then
 			if id ~= 2 then
-				frame:SetScript("OnEvent", FloatingChatFrameOnEvent)
+				frame:SetScript('OnEvent', FloatingChatFrameOnEvent)
 			end
 
-			frame:SetScript("OnMouseWheel", CH.ChatFrame_OnMouseScroll)
-			hooksecurefunc(frame, "SetScript", CH.ChatFrame_SetScript)
+			frame:SetScript('OnMouseWheel', CH.ChatFrame_OnMouseScroll)
+			hooksecurefunc(frame, 'SetScript', CH.ChatFrame_SetScript)
 			frame.scriptsSet = true
 		end
 	end
@@ -2069,14 +2069,14 @@ function CH:CheckKeyword(message, author)
 	local letInCombat = not CH.db.noAlertInCombat or not InCombatLockdown()
 	local letSound = not CH.SoundTimer and (CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME) and letInCombat
 
-	for hyperLink in gmatch(message, "|%x+|H.-|h.-|h|r") do
+	for hyperLink in gmatch(message, '|%x+|H.-|h.-|h|r') do
 		protectLinks[hyperLink] = gsub(hyperLink,'%s','|s')
 
 		if letSound then
 			for keyword in pairs(CH.Keywords) do
 				if hyperLink == keyword then
 					CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
-					PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
+					PlaySoundFile(LSM:Fetch('sound', CH.db.keywordSound), 'Master')
 					letSound = false -- dont let a second sound fire below
 					break
 				end
@@ -2090,25 +2090,25 @@ function CH:CheckKeyword(message, author)
 
 	local rebuiltString
 	local isFirstWord = true
-	for word in gmatch(message, "%s-%S+%s*") do
-		if not next(protectLinks) or not protectLinks[gsub(gsub(word,"%s",""),"|s"," ")] then
-			local tempWord = gsub(word, "[%s%p]", "")
+	for word in gmatch(message, '%s-%S+%s*') do
+		if not next(protectLinks) or not protectLinks[gsub(gsub(word,'%s',''),'|s',' ')] then
+			local tempWord = gsub(word, '[%s%p]', '')
 			local lowerCaseWord = strlower(tempWord)
 
 			for keyword in pairs(CH.Keywords) do
 				if lowerCaseWord == strlower(keyword) then
-					word = gsub(word, tempWord, format("%s%s|r", E.media.hexvaluecolor, tempWord))
+					word = gsub(word, tempWord, format('%s%s|r', E.media.hexvaluecolor, tempWord))
 
 					if letSound then -- dont break because it's recoloring all found
 						CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
-						PlaySoundFile(LSM:Fetch("sound", CH.db.keywordSound), "Master")
+						PlaySoundFile(LSM:Fetch('sound', CH.db.keywordSound), 'Master')
 						letSound = false -- but dont let additional hits call the sound
 					end
 				end
 			end
 
 			if CH.db.classColorMentionsChat then
-				tempWord = gsub(word,"^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
+				tempWord = gsub(word,'^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$','%1%2')
 				lowerCaseWord = strlower(tempWord)
 
 				local classMatch = CH.ClassNames[lowerCaseWord]
@@ -2117,7 +2117,7 @@ function CH:CheckKeyword(message, author)
 				if wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch] then
 					local classColorTable = E:ClassColor(classMatch)
 					if classColorTable then
-						word = gsub(word, gsub(tempWord, "%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+						word = gsub(word, gsub(tempWord, '%-','%%-'), format('\124cff%.2x%.2x%.2x%s\124r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 					end
 				end
 			end
@@ -2140,7 +2140,7 @@ function CH:CheckKeyword(message, author)
 end
 
 function CH:AddLines(lines, ...)
-	for i = select("#", ...), 1, -1 do
+	for i = select('#', ...), 1, -1 do
 	local x = select(i, ...)
 		if x:IsObjectType('FontString') and not x:GetName() then
 			tinsert(lines, x:GetText())
@@ -2151,11 +2151,11 @@ end
 function CH:ChatEdit_OnEnterPressed(editBox)
 	editBox:ClearHistory() -- we will use our own editbox history so keeping them populated on blizzards end is pointless
 
-	local chatType = editBox:GetAttribute("chatType")
+	local chatType = editBox:GetAttribute('chatType')
 	local chatFrame = chatType and editBox:GetParent()
 	if chatFrame and (not chatFrame.isTemporary) and (_G.ChatTypeInfo[chatType].sticky == 1) then
 		if not CH.db.sticky then chatType = 'SAY' end
-		editBox:SetAttribute("chatType", chatType)
+		editBox:SetAttribute('chatType', chatType)
 	end
 end
 
@@ -2163,7 +2163,7 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	if not chatFrame then chatFrame = FCF_GetCurrentChatFrame() end
 	if not fontSize then fontSize = dropDown.value end
 
-	chatFrame:FontTemplate(LSM:Fetch("font", CH.db.font), fontSize, CH.db.fontOutline)
+	chatFrame:FontTemplate(LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline)
 end
 
 CH.SecureSlashCMD = {
@@ -2215,7 +2215,7 @@ function CH:UpdateChatKeywords()
 	local keywords = CH.db.keywords
 	keywords = gsub(keywords,',%s',',')
 
-	for stringValue in gmatch(keywords, "[^,]+") do
+	for stringValue in gmatch(keywords, '[^,]+') do
 		if stringValue ~= '' then
 			CH.Keywords[stringValue] = true
 		end
@@ -2281,7 +2281,7 @@ function CH:DisplayChatHistory()
 					end
 					if not skip and gsub(strsub(d[50],10),'_INFORM','') == messageType then
 						if d[1] and not CH:MessageIsProtected(d[1]) then
-							CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],"ElvUI_ChatHistory",d[51],d[52],d[53])
+							CH:ChatFrame_MessageEventHandler(_G[chat],d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],'ElvUI_ChatHistory',d[51],d[52],d[53])
 						end
 					end
 				end
@@ -2367,8 +2367,8 @@ function CH:FCFDock_UpdateTabs(dock)
 	if dock == _G.GeneralDockManager then
 		local logchat, logchattab = CH:GetCombatLog()
 		dock.scrollFrame:ClearAllPoints()
-		dock.scrollFrame:SetPoint("RIGHT", dock.overflowButton, "LEFT")
-		dock.scrollFrame:SetPoint("TOPLEFT", (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), "TOPRIGHT")
+		dock.scrollFrame:SetPoint('RIGHT', dock.overflowButton, 'LEFT')
+		dock.scrollFrame:SetPoint('TOPLEFT', (logchat.isDocked and logchattab) or CH:GetTab(dock.primary), 'TOPRIGHT')
 	end
 end
 
@@ -2380,14 +2380,14 @@ function CH:CheckLFGRoles()
 	if not CH.db.lfgIcons or not IsInGroup() then return end
 	wipe(lfgRoles)
 
-	local playerRole = UnitGroupRolesAssigned("player")
+	local playerRole = UnitGroupRolesAssigned('player')
 	if playerRole then
 		lfgRoles[PLAYER_NAME] = rolePaths[playerRole]
 	end
 
-	local unit = (IsInRaid() and "raid" or "party")
+	local unit = (IsInRaid() and 'raid' or 'party')
 	for i = 1, GetNumGroupMembers() do
-		if UnitExists(unit..i) and not UnitIsUnit(unit..i, "player") then
+		if UnitExists(unit..i) and not UnitIsUnit(unit..i, 'player') then
 			local role = UnitGroupRolesAssigned(unit..i)
 			local name, realm = UnitName(unit..i)
 
@@ -2524,28 +2524,28 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 end
 
 local FindURL_Events = {
-	"CHAT_MSG_WHISPER",
-	"CHAT_MSG_WHISPER_INFORM",
-	"CHAT_MSG_BN_WHISPER",
-	"CHAT_MSG_BN_WHISPER_INFORM",
-	"CHAT_MSG_BN_INLINE_TOAST_BROADCAST",
-	"CHAT_MSG_GUILD_ACHIEVEMENT",
-	"CHAT_MSG_GUILD",
-	"CHAT_MSG_OFFICER",
-	"CHAT_MSG_PARTY",
-	"CHAT_MSG_PARTY_LEADER",
-	"CHAT_MSG_RAID",
-	"CHAT_MSG_RAID_LEADER",
-	"CHAT_MSG_RAID_WARNING",
-	"CHAT_MSG_INSTANCE_CHAT",
-	"CHAT_MSG_INSTANCE_CHAT_LEADER",
-	"CHAT_MSG_CHANNEL",
-	"CHAT_MSG_SAY",
-	"CHAT_MSG_YELL",
-	"CHAT_MSG_EMOTE",
-	"CHAT_MSG_AFK",
-	"CHAT_MSG_DND",
-	"CHAT_MSG_COMMUNITIES_CHANNEL",
+	'CHAT_MSG_WHISPER',
+	'CHAT_MSG_WHISPER_INFORM',
+	'CHAT_MSG_BN_WHISPER',
+	'CHAT_MSG_BN_WHISPER_INFORM',
+	'CHAT_MSG_BN_INLINE_TOAST_BROADCAST',
+	'CHAT_MSG_GUILD_ACHIEVEMENT',
+	'CHAT_MSG_GUILD',
+	'CHAT_MSG_OFFICER',
+	'CHAT_MSG_PARTY',
+	'CHAT_MSG_PARTY_LEADER',
+	'CHAT_MSG_RAID',
+	'CHAT_MSG_RAID_LEADER',
+	'CHAT_MSG_RAID_WARNING',
+	'CHAT_MSG_INSTANCE_CHAT',
+	'CHAT_MSG_INSTANCE_CHAT_LEADER',
+	'CHAT_MSG_CHANNEL',
+	'CHAT_MSG_SAY',
+	'CHAT_MSG_YELL',
+	'CHAT_MSG_EMOTE',
+	'CHAT_MSG_AFK',
+	'CHAT_MSG_DND',
+	'CHAT_MSG_COMMUNITIES_CHANNEL',
 }
 
 function CH:DefaultSmileys()
@@ -2706,8 +2706,8 @@ function CH:HandleChatVoiceIcons()
 		end
 
 		CH:RepositionOverflowButton()
-		channelButtons[3]:HookScript("OnShow", CH.RepositionOverflowButton)
-		channelButtons[3]:HookScript("OnHide", CH.RepositionOverflowButton)
+		channelButtons[3]:HookScript('OnShow', CH.RepositionOverflowButton)
+		channelButtons[3]:HookScript('OnHide', CH.RepositionOverflowButton)
 	else
 		CH:CreateChatVoicePanel()
 	end
@@ -2726,11 +2726,11 @@ end
 function CH:CreateChatVoicePanel()
 	local Holder = CreateFrame('Frame', 'ChatButtonHolder', E.UIParent)
 	Holder:ClearAllPoints()
-	Holder:SetPoint("BOTTOMLEFT", _G.LeftChatPanel, "TOPLEFT", 0, 1)
+	Holder:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'TOPLEFT', 0, 1)
 	Holder:SetSize(30, 86)
 	Holder:SetTemplate('Transparent', nil, true)
 	Holder:SetBackdropColor(CH.db.panelColor.r, CH.db.panelColor.g, CH.db.panelColor.b, CH.db.panelColor.a)
-	E:CreateMover(Holder, "SocialMenuMover", _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
+	E:CreateMover(Holder, 'SocialMenuMover', _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
 
 	channelButtons[1]:ClearAllPoints()
 	channelButtons[1]:SetPoint('TOP', Holder, 'TOP', 0, -2)
@@ -2743,7 +2743,7 @@ function CH:CreateChatVoicePanel()
 	end
 
 	_G.ChatAlertFrame:ClearAllPoints()
-	_G.ChatAlertFrame:SetPoint("BOTTOM", channelButtons[1], "TOP", 1, 3)
+	_G.ChatAlertFrame:SetPoint('BOTTOM', channelButtons[1], 'TOP', 1, 3)
 
 	-- Skin the QuickJoinToastButton
 	local Button = _G.QuickJoinToastButton
@@ -2785,13 +2785,13 @@ function CH:CreateChatVoicePanel()
 	Button.Toast:CreateBackdrop('Transparent')
 	Button.Toast.backdrop:Hide()
 
-	hooksecurefunc(Button, "ShowToast", function() Button.Toast.backdrop:Show() end)
-	hooksecurefunc(Button, "HideToast", function() Button.Toast.backdrop:Hide() end)
+	hooksecurefunc(Button, 'ShowToast', function() Button.Toast.backdrop:Show() end)
+	hooksecurefunc(Button, 'HideToast', function() Button.Toast.backdrop:Hide() end)
 end
 
 function CH:BuildCopyChatFrame()
-	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent)
-	tinsert(_G.UISpecialFrames, "CopyChatFrame")
+	local frame = CreateFrame('Frame', 'CopyChatFrame', E.UIParent)
+	tinsert(_G.UISpecialFrames, 'CopyChatFrame')
 	frame:SetTemplate('Transparent')
 	frame:SetSize(700, 200)
 	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 3)
@@ -2800,46 +2800,46 @@ function CH:BuildCopyChatFrame()
 	frame:EnableMouse(true)
 	frame:SetResizable(true)
 	frame:SetMinResize(350, 100)
-	frame:SetScript("OnMouseDown", function(copyChat, button)
-		if button == "LeftButton" and not copyChat.isMoving then
+	frame:SetScript('OnMouseDown', function(copyChat, button)
+		if button == 'LeftButton' and not copyChat.isMoving then
 			copyChat:StartMoving()
 			copyChat.isMoving = true
-		elseif button == "RightButton" and not copyChat.isSizing then
+		elseif button == 'RightButton' and not copyChat.isSizing then
 			copyChat:StartSizing()
 			copyChat.isSizing = true
 		end
 	end)
-	frame:SetScript("OnMouseUp", function(copyChat, button)
-		if button == "LeftButton" and copyChat.isMoving then
+	frame:SetScript('OnMouseUp', function(copyChat, button)
+		if button == 'LeftButton' and copyChat.isMoving then
 			copyChat:StopMovingOrSizing()
 			copyChat.isMoving = false
-		elseif button == "RightButton" and copyChat.isSizing then
+		elseif button == 'RightButton' and copyChat.isSizing then
 			copyChat:StopMovingOrSizing()
 			copyChat.isSizing = false
 		end
 	end)
-	frame:SetScript("OnHide", function(copyChat)
+	frame:SetScript('OnHide', function(copyChat)
 		if copyChat.isMoving or copyChat.isSizing then
 			copyChat:StopMovingOrSizing()
 			copyChat.isMoving = false
 			copyChat.isSizing = false
 		end
 	end)
-	frame:SetFrameStrata("DIALOG")
+	frame:SetFrameStrata('DIALOG')
 
-	local scrollArea = CreateFrame("ScrollFrame", "CopyChatScrollFrame", frame, "UIPanelScrollFrameTemplate")
-	scrollArea:SetPoint("TOPLEFT", frame, "TOPLEFT", 8, -30)
-	scrollArea:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -30, 8)
+	local scrollArea = CreateFrame('ScrollFrame', 'CopyChatScrollFrame', frame, 'UIPanelScrollFrameTemplate')
+	scrollArea:SetPoint('TOPLEFT', frame, 'TOPLEFT', 8, -30)
+	scrollArea:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -30, 8)
 	Skins:HandleScrollBar(_G.CopyChatScrollFrameScrollBar)
-	scrollArea:SetScript("OnSizeChanged", function(scroll)
+	scrollArea:SetScript('OnSizeChanged', function(scroll)
 		_G.CopyChatFrameEditBox:SetWidth(scroll:GetWidth())
 		_G.CopyChatFrameEditBox:SetHeight(scroll:GetHeight())
 	end)
-	scrollArea:HookScript("OnVerticalScroll", function(scroll, offset)
+	scrollArea:HookScript('OnVerticalScroll', function(scroll, offset)
 		_G.CopyChatFrameEditBox:SetHitRectInsets(0, 0, offset, (_G.CopyChatFrameEditBox:GetHeight() - offset - scroll:GetHeight()))
 	end)
 
-	local editBox = CreateFrame("EditBox", "CopyChatFrameEditBox", frame)
+	local editBox = CreateFrame('EditBox', 'CopyChatFrameEditBox', frame)
 	editBox:SetMultiLine(true)
 	editBox:SetMaxLetters(99999)
 	editBox:EnableMouse(true)
@@ -2847,9 +2847,9 @@ function CH:BuildCopyChatFrame()
 	editBox:SetFontObject(_G.ChatFontNormal)
 	editBox:SetWidth(scrollArea:GetWidth())
 	editBox:SetHeight(200)
-	editBox:SetScript("OnEscapePressed", function() _G.CopyChatFrame:Hide() end)
+	editBox:SetScript('OnEscapePressed', function() _G.CopyChatFrame:Hide() end)
 	scrollArea:SetScrollChild(editBox)
-	_G.CopyChatFrameEditBox:SetScript("OnTextChanged", function(_, userInput)
+	_G.CopyChatFrameEditBox:SetScript('OnTextChanged', function(_, userInput)
 		if userInput then return end
 		local _, Max = _G.CopyChatScrollFrameScrollBar:GetMinMaxValues()
 		for _ = 1, Max do
@@ -2857,8 +2857,8 @@ function CH:BuildCopyChatFrame()
 		end
 	end)
 
-	local close = CreateFrame("Button", "CopyChatFrameCloseButton", frame, "UIPanelCloseButton")
-	close:SetPoint("TOPRIGHT")
+	local close = CreateFrame('Button', 'CopyChatFrameCloseButton', frame, 'UIPanelCloseButton')
+	close:SetPoint('TOPRIGHT')
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
 	Skins:HandleCloseButton(close)
@@ -2902,7 +2902,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 		local name = chat.name
 
 		if whisper and not tab.whisperName then
-			tab.whisperName = gsub(E:StripMyRealm(name), "([%S]-)%-[%S]+", "%1|cFF999999*|r")
+			tab.whisperName = gsub(E:StripMyRealm(name), '([%S]-)%-[%S]+', '%1|cFF999999*|r')
 		end
 
 		if selected then
@@ -2971,7 +2971,7 @@ function CH:ConfigureHead(memberID, channelID)
 
 	local memberName = C_VoiceChat_GetMemberName(memberID, channelID)
 	local r, g, b = Voice_GetVoiceChannelNotificationColor(channelID)
-	frame.Name:SetText(memberName or "")
+	frame.Name:SetText(memberName or '')
 	frame.Name:SetVertexColor(r, g, b, 1)
 	frame:Show()
 end
@@ -2986,7 +2986,7 @@ function CH:DeconfigureHead(memberID) -- memberID, channelID
 end
 
 function CH:VoiceOverlay(event, ...)
-	if event == "VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED" then
+	if event == 'VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED' then
 		local memberID, channelID, isTalking = ...
 
 		if isTalking then
@@ -2996,7 +2996,7 @@ function CH:VoiceOverlay(event, ...)
 			CH.TalkingList[memberID] = nil
 			CH:DeconfigureHead(memberID, channelID)
 		end
-	elseif event == "VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED" then
+	elseif event == 'VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED' then
 		local memberID, channelID, volume = ...
 		local frame = CH:GetHeadByID(memberID)
 		if frame and channelID == frame.channelID then
@@ -3005,7 +3005,7 @@ function CH:VoiceOverlay(event, ...)
 
 			frame.StatusBar:SetStatusBarColor(E:ColorGradient(volume, 1, 0, 0, 1, 1, 0, 0, 1, 0))
 		end
-	--[[elseif event == "VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED" then
+	--[[elseif event == 'VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED' then
 		local channelID, isTransmitting = ...
 		local localPlayerMemberID = C_VoiceChat.GetLocalPlayerMemberID(channelID)
 		if isTransmitting and not CH.TalkingList[localPlayerMemberID] then
@@ -3139,7 +3139,7 @@ function CH:Initialize()
 	end
 
 	if _G.WIM then
-		_G.WIM.RegisterWidgetTrigger("chat_display", "whisper,chat,w2w,demo", "OnHyperlinkClick", function(frame) CH.clickedframe = frame end)
+		_G.WIM.RegisterWidgetTrigger('chat_display', 'whisper,chat,w2w,demo', 'OnHyperlinkClick', function(frame) CH.clickedframe = frame end)
 		_G.WIM.RegisterItemRefHandler('url', HyperLinkedURL)
 		_G.WIM.RegisterItemRefHandler('squ', HyperLinkedSQU)
 		_G.WIM.RegisterItemRefHandler('cpl', HyperLinkedCPL)
@@ -3157,20 +3157,20 @@ function CH:Initialize()
 	CH:BuildCopyChatFrame()
 
 	-- Editbox Backdrop Color
-	hooksecurefunc("ChatEdit_UpdateHeader", function(editbox)
-		local chatType = editbox:GetAttribute("chatType")
+	hooksecurefunc('ChatEdit_UpdateHeader', function(editbox)
+		local chatType = editbox:GetAttribute('chatType')
 		if not chatType then return end
 
 		local ChatTypeInfo = _G.ChatTypeInfo
 		local info = ChatTypeInfo[chatType]
-		local chanTarget = editbox:GetAttribute("channelTarget")
+		local chanTarget = editbox:GetAttribute('channelTarget')
 		local chanName = chanTarget and GetChannelName(chanTarget)
 
 		--Increase inset on right side to make room for character count text
 		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
 
-		if chanName and (chatType == "CHANNEL") then
+		if chanName and (chatType == 'CHANNEL') then
 			if chanName == 0 then
 				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			else
@@ -3183,8 +3183,8 @@ function CH:Initialize()
 	end)
 
 	--Chat Heads Frame
-	CH.ChatHeadFrame = CreateFrame("Frame", "ElvUIChatHeadFrame", E.UIParent)
-	CH.ChatHeadFrame:SetPoint("TOPLEFT", E.UIParent, "TOPLEFT", 368, -210)
+	CH.ChatHeadFrame = CreateFrame('Frame', 'ElvUIChatHeadFrame', E.UIParent)
+	CH.ChatHeadFrame:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 368, -210)
 	CH.ChatHeadFrame:SetHeight(20)
 	CH.ChatHeadFrame:SetWidth(200)
 	E:CreateMover(CH.ChatHeadFrame, 'VOICECHAT', L["Voice Overlay"])
@@ -3193,25 +3193,25 @@ function CH:Initialize()
 
 	local CHAT_HEAD_HEIGHT = 40
 	for i = 1, CH.maxHeads do
-		local chatHead = CreateFrame("Frame", "ElvUIChatHeadFrame"..i, CH.ChatHeadFrame)
+		local chatHead = CreateFrame('Frame', 'ElvUIChatHeadFrame'..i, CH.ChatHeadFrame)
 		chatHead:SetWidth(CH.ChatHeadFrame:GetWidth())
 		chatHead:SetHeight(CHAT_HEAD_HEIGHT)
 
-		chatHead.Portrait = CreateFrame("Frame", nil, chatHead)
+		chatHead.Portrait = CreateFrame('Frame', nil, chatHead)
 		chatHead.Portrait:SetWidth(CHAT_HEAD_HEIGHT - CH.volumeBarHeight)
 		chatHead.Portrait:SetHeight(CHAT_HEAD_HEIGHT - CH.volumeBarHeight - E.Border*2)
-		chatHead.Portrait:SetPoint("TOPLEFT", chatHead, "TOPLEFT")
+		chatHead.Portrait:SetPoint('TOPLEFT', chatHead, 'TOPLEFT')
 		chatHead.Portrait:SetTemplate()
-		chatHead.Portrait.texture = chatHead.Portrait:CreateTexture(nil, "OVERLAY")
+		chatHead.Portrait.texture = chatHead.Portrait:CreateTexture(nil, 'OVERLAY')
 		chatHead.Portrait.texture:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 		chatHead.Portrait.texture:SetInside(chatHead.Portrait)
 
-		chatHead.Name = chatHead:CreateFontString(nil, "OVERLAY")
+		chatHead.Name = chatHead:CreateFontString(nil, 'OVERLAY')
 		chatHead.Name:FontTemplate(nil, 20)
-		chatHead.Name:SetPoint("LEFT", chatHead.Portrait, "RIGHT", 2, 0)
+		chatHead.Name:SetPoint('LEFT', chatHead.Portrait, 'RIGHT', 2, 0)
 
-		chatHead.StatusBar = CreateFrame("StatusBar", nil, chatHead)
-		chatHead.StatusBar:SetPoint("TOPLEFT", chatHead.Portrait, "BOTTOMLEFT", E.Border, -E.Spacing*3)
+		chatHead.StatusBar = CreateFrame('StatusBar', nil, chatHead)
+		chatHead.StatusBar:SetPoint('TOPLEFT', chatHead.Portrait, 'BOTTOMLEFT', E.Border, -E.Spacing*3)
 		chatHead.StatusBar:SetWidth(CHAT_HEAD_HEIGHT - E.Border*2 - CH.volumeBarHeight)
 		chatHead.StatusBar:SetHeight(CH.volumeBarHeight)
 		chatHead.StatusBar:CreateBackdrop()
@@ -3219,14 +3219,14 @@ function CH:Initialize()
 		chatHead.StatusBar:SetMinMaxValues(0, 1)
 
 		chatHead.StatusBar.anim = _G.CreateAnimationGroup(chatHead.StatusBar)
-		chatHead.StatusBar.anim.progress = chatHead.StatusBar.anim:CreateAnimation("Progress")
-		chatHead.StatusBar.anim.progress:SetEasing("Out")
+		chatHead.StatusBar.anim.progress = chatHead.StatusBar.anim:CreateAnimation('Progress')
+		chatHead.StatusBar.anim.progress:SetEasing('Out')
 		chatHead.StatusBar.anim.progress:SetDuration(.3)
 
 		chatHead:Hide()
 		CH.ChatHeadFrame[i] = chatHead
 	end
-	CH:SetChatHeadOrientation("TOP")
+	CH:SetChatHeadOrientation('TOP')
 end
 
 E:RegisterModule(CH:GetName())

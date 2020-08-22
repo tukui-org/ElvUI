@@ -29,15 +29,15 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	local text, tooltip
-	if E.role == "Caster" then
-		text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, SPELL_CRIT_CHANCE).." "..format("%.2F%%", GetSpellCritChance(1))..FONT_COLOR_CODE_CLOSE
+	if E.role == 'Caster' then
+		text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, SPELL_CRIT_CHANCE)..' '..format('%.2F%%', GetSpellCritChance(1))..FONT_COLOR_CODE_CLOSE
 		tooltip = format(CR_CRIT_SPELL_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_CRIT_SPELL)), GetCombatRatingBonus(CR_CRIT_SPELL))
 	else
-		if E.myclass == "HUNTER" then
-			text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, RANGED_CRIT_CHANCE).." "..format("%.2F%%", GetRangedCritChance())..FONT_COLOR_CODE_CLOSE
+		if E.myclass == 'HUNTER' then
+			text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, RANGED_CRIT_CHANCE)..' '..format('%.2F%%', GetRangedCritChance())..FONT_COLOR_CODE_CLOSE
 			tooltip = format(CR_CRIT_RANGED_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_CRIT_RANGED)), GetCombatRatingBonus(CR_CRIT_RANGED))
 		else
-			text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MELEE_CRIT_CHANCE).." "..format("%.2F%%", GetCritChance())..FONT_COLOR_CODE_CLOSE
+			text = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, MELEE_CRIT_CHANCE)..' '..format('%.2F%%', GetCritChance())..FONT_COLOR_CODE_CLOSE
 			tooltip = format(CR_CRIT_MELEE_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(CR_CRIT_MELEE)), GetCombatRatingBonus(CR_CRIT_MELEE))
 		end
 	end
@@ -49,10 +49,10 @@ end
 
 local function OnEvent(self)
 	local critRating
-	if E.role == "Caster" then
+	if E.role == 'Caster' then
 		critRating = GetSpellCritChance(1)
 	else
-		if E.myclass == "HUNTER" then
+		if E.myclass == 'HUNTER' then
 			critRating = GetRangedCritChance()
 		else
 			critRating = GetCritChance()
@@ -65,10 +65,10 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
+	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Crit Chance', STAT_CATEGORY_ENHANCEMENTS, {"UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", "PLAYER_DAMAGE_DONE_MODS"}, OnEvent, nil, nil, OnEnter, nil, _G.STAT_CRITICAL_STRIKE)
+DT:RegisterDatatext('Crit Chance', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_STATS', 'UNIT_AURA', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, _G.STAT_CRITICAL_STRIKE)

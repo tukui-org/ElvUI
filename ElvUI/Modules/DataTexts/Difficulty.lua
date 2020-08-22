@@ -12,7 +12,7 @@ local C_ChallengeMode_GetActiveKeystoneInfo = C_ChallengeMode.GetActiveKeystoneI
 local C_ChallengeMode_IsChallengeModeActive = C_ChallengeMode.IsChallengeModeActive
 local C_MythicPlus_IsMythicPlusActive = C_MythicPlus.IsMythicPlusActive
 
-local DungeonTexture, RaidTexture, LegacyTexture = CreateAtlasMarkup("Dungeon", 20, 20), CreateAtlasMarkup("Raid", 20, 20), CreateAtlasMarkup("worldquest-icon-raid", 20, 20)
+local DungeonTexture, RaidTexture, LegacyTexture = CreateAtlasMarkup('Dungeon', 20, 20), CreateAtlasMarkup('Raid', 20, 20), CreateAtlasMarkup('worldquest-icon-raid', 20, 20)
 local DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), GetLegacyRaidDifficultyID()
 
 local RightClickMenu, DiffLabel = {
@@ -102,7 +102,7 @@ end
 
 local function OnClick(self)
 	DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-	_G.EasyMenu(RightClickMenu, DT.EasyMenu, nil, nil, nil, "MENU")
+	_G.EasyMenu(RightClickMenu, DT.EasyMenu, nil, nil, nil, 'MENU')
 end
 
 local function OnEvent(self)

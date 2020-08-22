@@ -8,7 +8,7 @@ function S:TaxiFrame()
 
 	local TaxiFrame = _G.TaxiFrame
 	TaxiFrame:StripTextures()
-	TaxiFrame:CreateBackdrop("Transparent")
+	TaxiFrame:CreateBackdrop('Transparent')
 	_G.TaxiRouteMap:CreateBackdrop()
 
 	S:HandleCloseButton(TaxiFrame.CloseButton)

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local unpack = unpack
@@ -21,7 +21,7 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 	frame.forceInRange = show -- used to force unitframe range
 
 	if show then -- during `PostUpdateArenaPreparation` this means spec class and name exist
-		frame.ArenaPrepSpec:SetText(specName.."  -  "..LOCALIZED_CLASS_NAMES_MALE[specClass])
+		frame.ArenaPrepSpec:SetText(specName..'  -  '..LOCALIZED_CLASS_NAMES_MALE[specClass])
 		frame.Health.value:Hide()
 
 		if specIcon then
@@ -83,11 +83,11 @@ function UF:Construct_ArenaFrames(frame)
 		frame.PVPSpecIcon = UF:Construct_PVPSpecIcon(frame)
 		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()
-		frame:SetAttribute("type2", "focus")
+		frame:SetAttribute('type2', 'focus')
 
 		frame.customTexts = {}
 		frame.InfoPanel = UF:Construct_InfoPanel(frame)
-		frame.unitframeType = "arena"
+		frame.unitframeType = 'arena'
 
 		-- Arena Preparation
 		frame.ArenaPrepIcon = frame:CreateTexture(nil, 'OVERLAY')
@@ -100,8 +100,8 @@ function UF:Construct_ArenaFrames(frame)
 		frame.ArenaPrepIcon.bg:Hide()
 		frame.ArenaPrepIcon:Hide()
 
-		frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, "OVERLAY")
-		frame.ArenaPrepSpec:SetPoint("CENTER")
+		frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, 'OVERLAY')
+		frame.ArenaPrepSpec:SetPoint('CENTER')
 		UF:Configure_FontString(frame.ArenaPrepSpec)
 
 		frame.Health.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation -- used to update arena prep info
@@ -140,11 +140,11 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.PVPINFO_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
 	end
 
-	if not IsAddOnLoaded("Clique") then
+	if not IsAddOnLoaded('Clique') then
 		if db.middleClickFocus then
-			frame:SetAttribute("type3", "focus")
-		elseif frame:GetAttribute("type3") == "focus" then
-			frame:SetAttribute("type3", nil)
+			frame:SetAttribute('type3', 'focus')
+		elseif frame:GetAttribute('type3') == 'focus' then
+			frame:SetAttribute('type3', nil)
 		end
 	end
 
@@ -201,7 +201,7 @@ function UF:Update_ArenaFrames(frame, db)
 		ArenaHeader:SetHeight(frame.UNIT_HEIGHT)
 	end
 
-	frame:UpdateAllElements("ElvUI_UpdateAllElements")
+	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 UF.unitgroupstoload.arena = {5, 'ELVUI_UNITTARGET'}

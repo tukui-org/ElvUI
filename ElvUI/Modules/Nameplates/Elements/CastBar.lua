@@ -35,23 +35,23 @@ end
 function NP:Castbar_CustomDelayText(duration)
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText("%.1f |cffaf5050%.1f|r", abs(duration - self.max), self.delay)
+			self.Time:SetFormattedText('%.1f |cffaf5050%.1f|r', abs(duration - self.max), self.delay)
 		elseif self.channelTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%.1f|r", duration, self.max, self.delay)
+			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%.1f|r', duration, self.max, self.delay)
 		elseif self.channelTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText("%.1f |cffaf5050%.1f|r", duration, self.delay)
+			self.Time:SetFormattedText('%.1f |cffaf5050%.1f|r', duration, self.delay)
 		elseif self.channelTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%.1f|r", abs(duration - self.max), self.max, self.delay)
+			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%.1f|r', abs(duration - self.max), self.max, self.delay)
 		end
 	else
 		if self.castTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText("%.1f |cffaf5050%s %.1f|r", duration, "+", self.delay)
+			self.Time:SetFormattedText('%.1f |cffaf5050%s %.1f|r', duration, '+', self.delay)
 		elseif self.castTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%s %.1f|r", duration, self.max, "+", self.delay)
+			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%s %.1f|r', duration, self.max, '+', self.delay)
 		elseif self.castTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText("%.1f |cffaf5050%s %.1f|r", abs(duration - self.max), "+", self.delay)
+			self.Time:SetFormattedText('%.1f |cffaf5050%s %.1f|r', abs(duration - self.max), '+', self.delay)
 		elseif self.castTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%s %.1f|r", abs(duration - self.max), self.max, "+", self.delay)
+			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%s %.1f|r', abs(duration - self.max), self.max, '+', self.delay)
 		end
 	end
 end
@@ -59,23 +59,23 @@ end
 function NP:Castbar_CustomTimeText(duration)
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText("%.1f", abs(duration - self.max))
+			self.Time:SetFormattedText('%.1f', abs(duration - self.max))
 		elseif self.channelTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f", abs(duration - self.max), self.max)
+			self.Time:SetFormattedText('%.1f / %.1f', abs(duration - self.max), self.max)
 		elseif self.channelTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText("%.1f", duration)
+			self.Time:SetFormattedText('%.1f', duration)
 		elseif self.channelTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f", duration, self.max)
+			self.Time:SetFormattedText('%.1f / %.1f', duration, self.max)
 		end
 	else
 		if self.castTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText("%.1f", duration)
+			self.Time:SetFormattedText('%.1f', duration)
 		elseif self.castTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f", duration, self.max)
+			self.Time:SetFormattedText('%.1f / %.1f', duration, self.max)
 		elseif self.castTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText("%.1f", abs(duration - self.max))
+			self.Time:SetFormattedText('%.1f', abs(duration - self.max))
 		elseif self.castTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f", abs(duration - self.max), self.max)
+			self.Time:SetFormattedText('%.1f / %.1f', abs(duration - self.max), self.max)
 		end
 	end
 end
@@ -146,7 +146,7 @@ end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
-	if (event == 'SPELL_INTERRUPT' or event == 'SPELL_PERIODIC_INTERRUPT') and targetGUID and (sourceName and sourceName ~= "") then
+	if (event == 'SPELL_INTERRUPT' or event == 'SPELL_PERIODIC_INTERRUPT') and targetGUID and (sourceName and sourceName ~= '') then
 		local plate, classColor = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
 			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
@@ -159,9 +159,9 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 							classColor = data.classColor.colorStr
 						end
 
-						plate.Castbar.Text:SetFormattedText("%s > %s", INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
+						plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
 					else
-						plate.Castbar.Text:SetFormattedText("%s > %s", INTERRUPTED, name)
+						plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, name)
 					end
 				end
 			end
@@ -196,10 +196,10 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.Time:ClearAllPoints()
 		nameplate.Castbar.Text:ClearAllPoints()
 
-		if db.castbar.textPosition == "BELOW" then
+		if db.castbar.textPosition == 'BELOW' then
 			nameplate.Castbar.Time:SetPoint('TOPRIGHT', nameplate.Castbar, 'BOTTOMRIGHT')
 			nameplate.Castbar.Text:SetPoint('TOPLEFT', nameplate.Castbar, 'BOTTOMLEFT')
-		elseif db.castbar.textPosition == "ABOVE" then
+		elseif db.castbar.textPosition == 'ABOVE' then
 			nameplate.Castbar.Time:SetPoint('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
 			nameplate.Castbar.Text:SetPoint('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
 		else

@@ -22,12 +22,12 @@ function D:ModifyErrorFrame()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame.ScrollFrame.Text.cursorOffset = 0
 	ScriptErrorsFrame.ScrollFrame.Text.cursorHeight = 0
-	ScriptErrorsFrame.ScrollFrame.Text:SetScript("OnEditFocusGained", nil)
+	ScriptErrorsFrame.ScrollFrame.Text:SetScript('OnEditFocusGained', nil)
 
 	hooksecurefunc(ScriptErrorsFrame, 'Update', ScriptErrors_UnHighlightText)
 
 	-- Unhighlight text when focus is hit
-	ScriptErrorsFrame.ScrollFrame.Text:HookScript("OnEscapePressed", UnHighlightText)
+	ScriptErrorsFrame.ScrollFrame.Text:HookScript('OnEscapePressed', UnHighlightText)
 
 	ScriptErrorsFrame:SetSize(500, 300)
 	ScriptErrorsFrame.ScrollFrame:SetSize(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
@@ -37,24 +37,24 @@ function D:ModifyErrorFrame()
 	local BUTTON_SPACING = 2
 
 	-- Add a first button
-	local firstButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	firstButton:SetPoint("BOTTOMLEFT", ScriptErrorsFrame.Reload, "BOTTOMRIGHT", BUTTON_SPACING, 0)
-	firstButton:SetText("First")
+	local firstButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate')
+	firstButton:SetPoint('BOTTOMLEFT', ScriptErrorsFrame.Reload, 'BOTTOMRIGHT', BUTTON_SPACING, 0)
+	firstButton:SetText('First')
 	firstButton:SetHeight(BUTTON_HEIGHT)
 	firstButton:SetWidth(BUTTON_WIDTH)
-	firstButton:SetScript("OnClick", function()
+	firstButton:SetScript('OnClick', function()
 		ScriptErrorsFrame.index = 1
 		ScriptErrorsFrame:Update()
 	end)
 	ScriptErrorsFrame.firstButton = firstButton
 
 	-- Also add a Last button for errors
-	local lastButton = CreateFrame("Button", nil, ScriptErrorsFrame, "UIPanelButtonTemplate")
-	lastButton:SetPoint("BOTTOMRIGHT", ScriptErrorsFrame.Close, "BOTTOMLEFT", -BUTTON_SPACING, 0)
+	local lastButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate')
+	lastButton:SetPoint('BOTTOMRIGHT', ScriptErrorsFrame.Close, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
 	lastButton:SetHeight(BUTTON_HEIGHT)
 	lastButton:SetWidth(BUTTON_WIDTH)
-	lastButton:SetText("Last")
-	lastButton:SetScript("OnClick", function()
+	lastButton:SetText('Last')
+	lastButton:SetScript('OnClick', function()
 		ScriptErrorsFrame.index = #(ScriptErrorsFrame.order)
 		ScriptErrorsFrame:Update()
 	end)
@@ -102,11 +102,11 @@ end
 
 function D:TaintError(event, addonName, addonFunc)
 	if GetCVarBool('scriptErrors') ~= true or E.db.general.taintLog ~= true then return end
-	_G.ScriptErrorsFrame:OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or "<name>", addonFunc or "<func>"), false, false)
+	_G.ScriptErrorsFrame:OnError(L["%s: %s tried to call the protected function '%s'."]:format(event, addonName or '<name>', addonFunc or '<func>'), false, false)
 end
 
 function D:StaticPopup_Show(name)
-	if(name == "ADDON_ACTION_FORBIDDEN") then
+	if(name == 'ADDON_ACTION_FORBIDDEN') then
 		StaticPopup_Hide(name);
 	end
 end
@@ -123,8 +123,8 @@ function D:Initialize()
 	self:SecureHook('StaticPopup_Show')
 	self:RegisterEvent('PLAYER_REGEN_DISABLED')
 	self:RegisterEvent('PLAYER_REGEN_ENABLED')
-	self:RegisterEvent("ADDON_ACTION_BLOCKED", "TaintError")
-	self:RegisterEvent("ADDON_ACTION_FORBIDDEN", "TaintError")
+	self:RegisterEvent('ADDON_ACTION_BLOCKED', 'TaintError')
+	self:RegisterEvent('ADDON_ACTION_FORBIDDEN', 'TaintError')
 end
 
 E:RegisterModule(D:GetName())

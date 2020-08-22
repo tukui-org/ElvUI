@@ -148,12 +148,12 @@ local function Enable(self)
 		if not element.HealerTexture then element.HealerTexture = E.Media.Textures.Healer end
 		if not element.TankTexture then element.TankTexture = E.Media.Textures.Tank end
 
-		self:RegisterEvent("UNIT_TARGET", Path)
-		self:RegisterEvent("PLAYER_TARGET_CHANGED", Path, true)
-		self:RegisterEvent("UNIT_NAME_UPDATE", Path)
-		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Event, true)
-		self:RegisterEvent("UPDATE_BATTLEFIELD_SCORE", Event, true)
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", WipeTable, true)
+		self:RegisterEvent('UNIT_TARGET', Path)
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
+		self:RegisterEvent('UNIT_NAME_UPDATE', Path)
+		self:RegisterEvent('ARENA_OPPONENT_UPDATE', Event, true)
+		self:RegisterEvent('UPDATE_BATTLEFIELD_SCORE', Event, true)
+		self:RegisterEvent('PLAYER_ENTERING_WORLD', WipeTable, true)
 
 		return true
 	end
@@ -164,12 +164,12 @@ local function Disable(self)
 	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent("UNIT_NAME_UPDATE", Path)
-		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Event)
-		self:UnregisterEvent("UPDATE_BATTLEFIELD_SCORE", Event)
-		self:UnregisterEvent("UNIT_TARGET", Path)
-		self:UnregisterEvent("PLAYER_TARGET_CHANGED", Path)
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD", WipeTable)
+		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
+		self:UnregisterEvent('ARENA_OPPONENT_UPDATE', Event)
+		self:UnregisterEvent('UPDATE_BATTLEFIELD_SCORE', Event)
+		self:UnregisterEvent('UNIT_TARGET', Path)
+		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
+		self:UnregisterEvent('PLAYER_ENTERING_WORLD', WipeTable)
 	end
 end
 

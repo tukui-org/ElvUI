@@ -27,20 +27,20 @@ local InCombatLockdown = InCombatLockdown
 local UNKNOWN = UNKNOWN
 
 local statusColors = {
-	"|cff0CD809",
-	"|cffE8DA0F",
-	"|cffFF9000",
-	"|cffD80909"
+	'|cff0CD809',
+	'|cffE8DA0F',
+	'|cffFF9000',
+	'|cffD80909'
 }
 
 local enteredFrame = false
-local bandwidthString = "%.2f Mbps"
-local percentageString = "%.2f%%"
-local homeLatencyString = "%d ms"
-local kiloByteString = "%d kb"
-local megaByteString = "%.2f mb"
+local bandwidthString = '%.2f Mbps'
+local percentageString = '%.2f%%'
+local homeLatencyString = '%d ms'
+local kiloByteString = '%d kb'
+local megaByteString = '%.2f mb'
 local profilingString = '%s%s|r |cffffffff/|r %s%s|r'
-local cpuProfiling = GetCVar("scriptProfile") == "1"
+local cpuProfiling = GetCVar('scriptProfile') == '1'
 
 local CombineAddOns = {
 	['DBM-Core'] = '^<DBM>',
@@ -72,7 +72,7 @@ local function BuildAddonList()
 
 	for i = 1, addOnCount do
 		local name, title, _, loadable, reason = GetAddOnInfo(i)
-		if loadable or reason == "DEMAND_LOADED" then
+		if loadable or reason == 'DEMAND_LOADED' then
 			tinsert(infoTable, {name = name, index = i, title = title})
 		end
 	end
@@ -80,7 +80,7 @@ end
 
 local function Click()
 	if IsModifierKeyDown() then
-		collectgarbage("collect")
+		collectgarbage('collect')
 		ResetCPUUsage()
 	end
 end
@@ -89,7 +89,7 @@ local function displaySort(a, b)
 	return a.sort > b.sort
 end
 
-local infoDisplay, ipTypes = {}, {"IPv4", "IPv6"}
+local infoDisplay, ipTypes = {}, {'IPv4', 'IPv6'}
 local function OnEnter(_, slow)
 	DT.tooltip:ClearLines()
 	enteredFrame = true
@@ -98,7 +98,7 @@ local function OnEnter(_, slow)
 	DT.tooltip:AddDoubleLine(L["Home Latency:"], format(homeLatencyString, homePing), .69, .31, .31, .84, .75, .65)
 	DT.tooltip:AddDoubleLine(L["World Latency:"], format(homeLatencyString, worldPing), .69, .31, .31, .84, .75, .65)
 
-	if GetCVarBool("useIPv6") then
+	if GetCVarBool('useIPv6') then
 		local ipTypeHome, ipTypeWorld = GetNetIpTypes()
 		DT.tooltip:AddDoubleLine(L["Home Protocol:"], ipTypes[ipTypeHome or 0] or UNKNOWN, .69, .31, .31, .84, .75, .65)
 		DT.tooltip:AddDoubleLine(L["World Protocol:"], ipTypes[ipTypeWorld or 0] or UNKNOWN, .69, .31, .31, .84, .75, .65)
@@ -108,7 +108,7 @@ local function OnEnter(_, slow)
 	if Downloading then
 		DT.tooltip:AddDoubleLine(L["Bandwidth"] , format(bandwidthString, GetAvailableBandwidth()), .69, .31, .31, .84, .75, .65)
 		DT.tooltip:AddDoubleLine(L["Download"] , format(percentageString, GetDownloadedPercentage() * 100), .69, .31, .31, .84, .75, .65)
-		DT.tooltip:AddLine(" ")
+		DT.tooltip:AddLine(' ')
 	end
 
 	if slow == 1 or not slow then
@@ -149,7 +149,7 @@ local function OnEnter(_, slow)
 		DT.tooltip:AddDoubleLine(L["Total CPU:"], format(homeLatencyString, totalCPU), .69, .31, .31, .84, .75, .65)
 	end
 
-	DT.tooltip:AddLine(" ")
+	DT.tooltip:AddLine(' ')
 
 	for addon, searchString in pairs(CombineAddOns) do
 		local addonIndex, memoryUsage, cpuUsage = 0, 0, 0
@@ -205,7 +205,7 @@ local function OnEnter(_, slow)
 		end
 	end
 
-	DT.tooltip:AddLine(" ")
+	DT.tooltip:AddLine(' ')
 	if showByCPU then
 		DT.tooltip:AddLine(L["(Hold Shift) Memory Usage"])
 	end
@@ -229,7 +229,7 @@ local function Update(self, elapsed)
 
 		local fps = framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4
 		local ping = latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4
-		self.text:SetFormattedText("FPS: %s%d|r MS: %s%d|r", statusColors[fps], framerate, statusColors[ping], latency)
+		self.text:SetFormattedText('FPS: %s%d|r MS: %s%d|r', statusColors[fps], framerate, statusColors[ping], latency)
 
 		if not enteredFrame then return end
 

@@ -317,7 +317,7 @@ function mod:StyleFilterAuraCheck(frame, names, auras, mustHaveAll, missing, min
 					if button then
 						if button:IsShown() then
 							local spell, stacks, failed = strmatch(name, mod.StyleFilterStackPattern)
-							if stacks ~= "" then failed = not (button.stackCount and button.stackCount >= tonumber(stacks)) end
+							if stacks ~= '' then failed = not (button.stackCount and button.stackCount >= tonumber(stacks)) end
 							if not failed and ((button.name and button.name == spell) or (button.spellID and button.spellID == tonumber(spell))) then
 								local hasMinTime = minTimeLeft and minTimeLeft ~= 0
 								local hasMaxTime = maxTimeLeft and maxTimeLeft ~= 0
@@ -695,7 +695,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Unit Owned By Player
 	if trigger.isOwnedByPlayer or trigger.isNotOwnedByPlayer then
-		local ownedByPlayer = UnitIsOwnerOrControllerOfUnit("player", frame.unit)
+		local ownedByPlayer = UnitIsOwnerOrControllerOfUnit('player', frame.unit)
 		if (trigger.isOwnedByPlayer and ownedByPlayer or trigger.isNotOwnedByPlayer and not ownedByPlayer) then passed = true else return end
 	end
 
@@ -724,7 +724,7 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 	-- Player Can Attack
 	if trigger.playerCanAttack or trigger.playerCanNotAttack then
-		local canAttack = UnitCanAttack("player", frame.unit)
+		local canAttack = UnitCanAttack('player', frame.unit)
 		if (trigger.playerCanAttack and canAttack) or (trigger.playerCanNotAttack and not canAttack) then passed = true else return end
 	end
 

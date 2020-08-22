@@ -8,8 +8,8 @@ local CreateFrame = CreateFrame
 function UF:Construct_AuraBars(statusBar)
 	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	statusBar:SetScript('OnMouseDown', UF.Aura_OnClick)
-	statusBar:SetPoint("LEFT")
-	statusBar:SetPoint("RIGHT")
+	statusBar:SetPoint('LEFT')
+	statusBar:SetPoint('RIGHT')
 
 	statusBar.icon:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 	UF.statusbars[statusBar] = true
@@ -23,7 +23,7 @@ function UF:Construct_AuraBars(statusBar)
 
 	statusBar.nameText:SetJustifyH('LEFT')
 	statusBar.nameText:SetJustifyV('MIDDLE')
-	statusBar.nameText:SetPoint("RIGHT", statusBar.timeText, "LEFT", -4, 0)
+	statusBar.nameText:SetPoint('RIGHT', statusBar.timeText, 'LEFT', -4, 0)
 	statusBar.nameText:SetWordWrap(false)
 
 	statusBar.bg = statusBar:CreateTexture(nil, 'BORDER')
@@ -116,17 +116,17 @@ function UF:Configure_AuraBars(frame)
 
 		if not auraBars.Holder then
 			local holder = CreateFrame('Frame', nil, auraBars)
-			holder:SetPoint("BOTTOM", frame, "TOP", 0, 0)
+			holder:SetPoint('BOTTOM', frame, 'TOP', 0, 0)
 			holder:SetSize(db.aurabar.detachedWidth, 20)
 
-			if frame.unitframeType == "player" then
-				E:CreateMover(holder, 'ElvUF_PlayerAuraMover', "Player Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,aurabar')
-			elseif frame.unitframeType == "target" then
-				E:CreateMover(holder, 'ElvUF_TargetAuraMover', "Target Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,aurabar')
-			elseif frame.unitframeType == "pet" then
-				E:CreateMover(holder, 'ElvUF_PetAuraMover', "Pet Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,pet,aurabar')
-			elseif frame.unitframeType == "focus" then
-				E:CreateMover(holder, 'ElvUF_FocusAuraMover', "Focus Aura Bars", nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,focus,aurabar')
+			if frame.unitframeType == 'player' then
+				E:CreateMover(holder, 'ElvUF_PlayerAuraMover', 'Player Aura Bars', nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,aurabar')
+			elseif frame.unitframeType == 'target' then
+				E:CreateMover(holder, 'ElvUF_TargetAuraMover', 'Target Aura Bars', nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,aurabar')
+			elseif frame.unitframeType == 'pet' then
+				E:CreateMover(holder, 'ElvUF_PetAuraMover', 'Pet Aura Bars', nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,pet,aurabar')
+			elseif frame.unitframeType == 'focus' then
+				E:CreateMover(holder, 'ElvUF_FocusAuraMover', 'Focus Aura Bars', nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,focus,aurabar')
 			end
 
 			auraBars.Holder = holder
@@ -134,7 +134,7 @@ function UF:Configure_AuraBars(frame)
 
 		auraBars.Holder:SetSize(db.aurabar.detachedWidth, 20)
 
-		if db.aurabar.attachTo ~= "DETACHED" then
+		if db.aurabar.attachTo ~= 'DETACHED' then
 			E:DisableMover(auraBars.Holder.mover:GetName())
 		end
 
@@ -142,9 +142,9 @@ function UF:Configure_AuraBars(frame)
 			attachTo = frame.Buffs
 		elseif db.aurabar.attachTo == 'DEBUFFS' then
 			attachTo = frame.Debuffs
-		elseif db.aurabar.attachTo == "PLAYER_AURABARS" and _G.ElvUF_Player then
+		elseif db.aurabar.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
 			attachTo = _G.ElvUF_Player.AuraBars
-		elseif db.aurabar.attachTo == "DETACHED" then
+		elseif db.aurabar.attachTo == 'DETACHED' then
 			attachTo = auraBars.Holder
 			E:EnableMover(auraBars.Holder.mover:GetName())
 			auraBars.width = db.aurabar.detachedWidth - db.aurabar.height
@@ -156,8 +156,8 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		local yOffset
-		local spacing = (((db.aurabar.attachTo == "FRAME" and 3) or (db.aurabar.attachTo == "PLAYER_AURABARS" and 4) or 2) * frame.SPACING)
-		local border = (((db.aurabar.attachTo == "FRAME" or db.aurabar.attachTo == "PLAYER_AURABARS") and 0 or 1) * frame.BORDER)
+		local spacing = (((db.aurabar.attachTo == 'FRAME' and 3) or (db.aurabar.attachTo == 'PLAYER_AURABARS' and 4) or 2) * frame.SPACING)
+		local border = (((db.aurabar.attachTo == 'FRAME' or db.aurabar.attachTo == 'PLAYER_AURABARS') and 0 or 1) * frame.BORDER)
 
 		if db.aurabar.anchorPoint == 'BELOW' then
 			yOffset = -spacing + border - (not db.aurabar.yOffset and 0 or db.aurabar.yOffset)
@@ -165,13 +165,13 @@ function UF:Configure_AuraBars(frame)
 			yOffset = spacing - border + (not db.aurabar.yOffset and 0 or db.aurabar.yOffset)
 		end
 
-		local xOffset = (db.aurabar.attachTo == "FRAME" and frame.SPACING or 0)
-		local offsetLeft = xOffset + ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "LEFT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "LEFT"))) and frame.POWERBAR_OFFSET or 0)
-		local offsetRight = -xOffset - ((db.aurabar.attachTo == "FRAME" and ((anchorTo == "TOP" and frame.ORIENTATION ~= "RIGHT") or (anchorTo == "BOTTOM" and frame.ORIENTATION == "RIGHT"))) and frame.POWERBAR_OFFSET or 0)
+		local xOffset = (db.aurabar.attachTo == 'FRAME' and frame.SPACING or 0)
+		local offsetLeft = xOffset + ((db.aurabar.attachTo == 'FRAME' and ((anchorTo == 'TOP' and frame.ORIENTATION ~= 'LEFT') or (anchorTo == 'BOTTOM' and frame.ORIENTATION == 'LEFT'))) and frame.POWERBAR_OFFSET or 0)
+		local offsetRight = -xOffset - ((db.aurabar.attachTo == 'FRAME' and ((anchorTo == 'TOP' and frame.ORIENTATION ~= 'RIGHT') or (anchorTo == 'BOTTOM' and frame.ORIENTATION == 'RIGHT'))) and frame.POWERBAR_OFFSET or 0)
 
 		auraBars:ClearAllPoints()
-		auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, db.aurabar.attachTo == "DETACHED" and 0 or yOffset)
-		auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, db.aurabar.attachTo == "DETACHED" and 0 or yOffset)
+		auraBars:SetPoint(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', offsetLeft, db.aurabar.attachTo == 'DETACHED' and 0 or yOffset)
+		auraBars:SetPoint(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', offsetRight, db.aurabar.attachTo == 'DETACHED' and 0 or yOffset)
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
 		auraBars:Hide()

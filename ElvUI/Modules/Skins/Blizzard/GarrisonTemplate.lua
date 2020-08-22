@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...))
-local S = E:GetModule("Skins")
+local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
@@ -9,7 +9,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 function S:Blizzard_GarrisonTemplates()
 	if E.private.skins.blizzard.enable ~= true or (E.private.skins.blizzard.orderhall ~= true or E.private.skins.blizzard.garrison ~= true) then return end
 
-	hooksecurefunc(_G.GarrisonFollowerTabMixin, "ShowFollower", function(s, followerID)
+	hooksecurefunc(_G.GarrisonFollowerTabMixin, 'ShowFollower', function(s, followerID)
 		local followerInfo = followerID and C_Garrison_GetFollowerInfo(followerID)
 		if not followerInfo then return end
 
@@ -27,7 +27,7 @@ function S:Blizzard_GarrisonTemplates()
 		end
 
 		s.XPBar:ClearAllPoints()
-		s.XPBar:SetPoint("BOTTOMLEFT", s.PortraitFrame, "BOTTOMRIGHT", 7, -15)
+		s.XPBar:SetPoint('BOTTOMLEFT', s.PortraitFrame, 'BOTTOMRIGHT', 7, -15)
 	end)
 end
 

@@ -64,7 +64,7 @@ SlashCmdList.FRAMELIST = function(msg)
 
 	print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 	for i = 2, _G.FrameStackTooltip:NumLines() do
-		local text = _G["FrameStackTooltipTextLeft"..i]:GetText()
+		local text = _G['FrameStackTooltipTextLeft'..i]:GetText()
 		if(text and text ~= '') then
 			print(text)
 		end

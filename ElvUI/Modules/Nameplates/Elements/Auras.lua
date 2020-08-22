@@ -83,8 +83,8 @@ function NP:Configure_Auras(nameplate, auras, db)
 	auras.num = db.numAuras
 	auras.onlyShowPlayer = false
 	auras.spacing = db.spacing
-	auras["growth-y"] = db.growthY
-	auras["growth-x"] = db.growthX
+	auras['growth-y'] = db.growthY
+	auras['growth-x'] = db.growthX
 	auras.initialAnchor = E.InversePoints[db.anchorPoint]
 
 	local index = 1

@@ -22,11 +22,11 @@ function B:Initialize()
 	B:Handle_UIWidgets()
 	B:GarrisonDropDown()
 
-	if not IsAddOnLoaded("DugisGuideViewerZ") then
+	if not IsAddOnLoaded('DugisGuideViewerZ') then
 		B:MoveObjectiveFrame()
 	end
 
-	if not IsAddOnLoaded("SimplePowerBar") then
+	if not IsAddOnLoaded('SimplePowerBar') then
 		B:PositionAltPowerBar()
 		B:SkinAltPowerBar()
 	end
@@ -34,7 +34,7 @@ function B:Initialize()
 	E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
 	-- Quick Join Bug
-	CreateFrame("Frame"):SetScript("OnUpdate", function()
+	CreateFrame('Frame'):SetScript('OnUpdate', function()
 		if _G.LFRBrowseFrame.timeToClear then
 			_G.LFRBrowseFrame.timeToClear = nil
 		end
@@ -45,15 +45,15 @@ function B:Initialize()
 	if TalentMicroButtonAlert then -- why do we need to check this?
 		if E.global.general.showMissingTalentAlert then
 			TalentMicroButtonAlert:ClearAllPoints()
-			TalentMicroButtonAlert:SetPoint("CENTER", E.UIParent, "TOP", 0, -75)
+			TalentMicroButtonAlert:SetPoint('CENTER', E.UIParent, 'TOP', 0, -75)
 			TalentMicroButtonAlert:StripTextures()
 			TalentMicroButtonAlert.Arrow:Hide()
 			TalentMicroButtonAlert.Text:FontTemplate()
-			TalentMicroButtonAlert:CreateBackdrop("Transparent")
+			TalentMicroButtonAlert:CreateBackdrop('Transparent')
 			Skins:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
 
-			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, "OVERLAY")
-			TalentMicroButtonAlert.tex:SetPoint("RIGHT", -10, 0)
+			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, 'OVERLAY')
+			TalentMicroButtonAlert.tex:SetPoint('RIGHT', -10, 0)
 			TalentMicroButtonAlert.tex:SetTexture([[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]])
 			TalentMicroButtonAlert.tex:SetSize(32, 32)
 		else

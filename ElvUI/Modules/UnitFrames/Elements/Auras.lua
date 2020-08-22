@@ -16,9 +16,9 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
 function UF:Construct_Buffs(frame)
-	local buffs = CreateFrame('Frame', "$parentBuffs", frame)
+	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
 	buffs.spacing = E.Spacing
-	buffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
+	buffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.CustomFilter = self.AuraFilter
@@ -31,9 +31,9 @@ function UF:Construct_Buffs(frame)
 end
 
 function UF:Construct_Debuffs(frame)
-	local debuffs = CreateFrame('Frame', "$parentDebuffs", frame)
+	local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
 	debuffs.spacing = E.Spacing
-	debuffs.PreSetPosition = (not frame:GetScript("OnUpdate")) and self.SortAuras or nil
+	debuffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
@@ -151,51 +151,51 @@ function UF:Configure_Auras(frame, which)
 	auras.db = db[auraType]
 
 	local position = db.smartAuraPosition
-	if position == "BUFFS_ON_DEBUFFS" then
-		if db.debuffs.attachTo == "BUFFS" then
+	if position == 'BUFFS_ON_DEBUFFS' then
+		if db.debuffs.attachTo == 'BUFFS' then
 			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
-			db.debuffs.attachTo = "FRAME"
+			db.debuffs.attachTo = 'FRAME'
 			frame.Debuffs.attachTo = frame
 			frame.Debuffs:ClearAllPoints()
 			frame.Debuffs:SetPoint(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
 		end
-		db.buffs.attachTo = "DEBUFFS"
+		db.buffs.attachTo = 'DEBUFFS'
 		frame.Buffs.attachTo = frame.Debuffs
 		frame.Buffs.PostUpdate = nil
 		frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
-	elseif position == "DEBUFFS_ON_BUFFS" then
-		if db.buffs.attachTo == "DEBUFFS" then
+	elseif position == 'DEBUFFS_ON_BUFFS' then
+		if db.buffs.attachTo == 'DEBUFFS' then
 			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
-			db.buffs.attachTo = "FRAME"
+			db.buffs.attachTo = 'FRAME'
 			frame.Buffs.attachTo = frame
 			frame.Buffs:ClearAllPoints()
 			frame.Buffs:SetPoint(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
 		end
-		db.debuffs.attachTo = "BUFFS"
+		db.debuffs.attachTo = 'BUFFS'
 		frame.Debuffs.attachTo = frame.Buffs
 		frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
 		frame.Debuffs.PostUpdate = nil
-	elseif position == "FLUID_BUFFS_ON_DEBUFFS" then
-		if db.debuffs.attachTo == "BUFFS" then
+	elseif position == 'FLUID_BUFFS_ON_DEBUFFS' then
+		if db.debuffs.attachTo == 'BUFFS' then
 			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
-			db.debuffs.attachTo = "FRAME"
+			db.debuffs.attachTo = 'FRAME'
 			frame.Debuffs.attachTo = frame
 			frame.Debuffs:ClearAllPoints()
 			frame.Debuffs:SetPoint(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
 		end
-		db.buffs.attachTo = "DEBUFFS"
+		db.buffs.attachTo = 'DEBUFFS'
 		frame.Buffs.attachTo = frame.Debuffs
 		frame.Buffs.PostUpdate = UF.UpdateBuffsHeight
 		frame.Debuffs.PostUpdate = UF.UpdateBuffsPositionAndDebuffHeight
-	elseif position == "FLUID_DEBUFFS_ON_BUFFS" then
-		if db.buffs.attachTo == "DEBUFFS" then
+	elseif position == 'FLUID_DEBUFFS_ON_BUFFS' then
+		if db.buffs.attachTo == 'DEBUFFS' then
 			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
-			db.buffs.attachTo = "FRAME"
+			db.buffs.attachTo = 'FRAME'
 			frame.Buffs.attachTo = frame
 			frame.Buffs:ClearAllPoints()
 			frame.Buffs:SetPoint(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
 		end
-		db.debuffs.attachTo = "BUFFS"
+		db.debuffs.attachTo = 'BUFFS'
 		frame.Debuffs.attachTo = frame.Buffs
 		frame.Buffs.PostUpdate = UF.UpdateDebuffsPositionAndBuffHeight
 		frame.Debuffs.PostUpdate = UF.UpdateDebuffsHeight
@@ -217,8 +217,8 @@ function UF:Configure_Auras(frame, which)
 		auras:SetWidth(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
 		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
-		if frame.USE_POWERBAR_OFFSET and not (auras.attachTo == "POWER" and frame.ORIENTATION == "MIDDLE") then
-			local powerOffset = ((frame.ORIENTATION == "MIDDLE" and 2 or 1) * frame.POWERBAR_OFFSET)
+		if frame.USE_POWERBAR_OFFSET and not (auras.attachTo == 'POWER' and frame.ORIENTATION == 'MIDDLE') then
+			local powerOffset = ((frame.ORIENTATION == 'MIDDLE' and 2 or 1) * frame.POWERBAR_OFFSET)
 			totalWidth = totalWidth - powerOffset
 		end
 		auras:SetWidth(totalWidth)
@@ -230,13 +230,13 @@ function UF:Configure_Auras(frame, which)
 	auras.disableMouse = auras.db.clickThrough
 	auras.anchorPoint = auras.db.anchorPoint
 	auras.initialAnchor = E.InversePoints[auras.anchorPoint]
-	auras["growth-y"] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
-	auras["growth-x"] = auras.anchorPoint == 'LEFT' and 'LEFT' or  auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
+	auras['growth-y'] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
+	auras['growth-x'] = auras.anchorPoint == 'LEFT' and 'LEFT' or  auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 
 	local x, y = E:GetXYOffset(auras.anchorPoint, frame.SPACING) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
-	if auras.attachTo == "FRAME" then
+	if auras.attachTo == 'FRAME' then
 		y = 0
-	elseif auras.attachTo == "HEALTH" or auras.attachTo == "POWER" then
+	elseif auras.attachTo == 'HEALTH' or auras.attachTo == 'POWER' then
 		x = E:GetXYOffset(auras.anchorPoint, -frame.BORDER)
 		y = select(2, E:GetXYOffset(auras.anchorPoint, (frame.BORDER + frame.SPACING)))
 	else
@@ -275,7 +275,7 @@ local function SortAurasByTime(a, b)
 			local aTime = a.noTime and huge or a.expiration or -1
 			local bTime = b.noTime and huge or b.expiration or -1
 			if (aTime and bTime) then
-				if(sortDirection == "DESCENDING") then
+				if(sortDirection == 'DESCENDING') then
 					return aTime < bTime
 				else
 					return aTime > bTime
@@ -291,10 +291,10 @@ local function SortAurasByName(a, b)
 	if (a and b and a:GetParent().db) then
 		if a:IsShown() and b:IsShown() then
 			local sortDirection = a:GetParent().db.sortDirection
-			local aName = a.spell or ""
-			local bName = b.spell or ""
+			local aName = a.spell or ''
+			local bName = b.spell or ''
 			if (aName and bName) then
-				if(sortDirection == "DESCENDING") then
+				if(sortDirection == 'DESCENDING') then
 					return aName < bName
 				else
 					return aName > bName
@@ -313,7 +313,7 @@ local function SortAurasByDuration(a, b)
 			local aTime = a.noTime and huge or a.duration or -1
 			local bTime = b.noTime and huge or b.duration or -1
 			if (aTime and bTime) then
-				if(sortDirection == "DESCENDING") then
+				if(sortDirection == 'DESCENDING') then
 					return aTime < bTime
 				else
 					return aTime > bTime
@@ -331,7 +331,7 @@ local function SortAurasByCaster(a, b)
 			local sortDirection = a:GetParent().db.sortDirection
 			local aPlayer = a.isPlayer or false
 			local bPlayer = b.isPlayer or false
-			if(sortDirection == "DESCENDING") then
+			if(sortDirection == 'DESCENDING') then
 				return (aPlayer and not bPlayer)
 			else
 				return (not aPlayer and bPlayer)
@@ -346,13 +346,13 @@ function UF:SortAuras()
 	if not self.db then return end
 
 	--Sorting by Index is Default
-	if self.db.sortMethod == "TIME_REMAINING" then
+	if self.db.sortMethod == 'TIME_REMAINING' then
 		sort(self, SortAurasByTime)
-	elseif self.db.sortMethod == "NAME" then
+	elseif self.db.sortMethod == 'NAME' then
 		sort(self, SortAurasByName)
-	elseif self.db.sortMethod == "DURATION" then
+	elseif self.db.sortMethod == 'DURATION' then
 		sort(self, SortAurasByDuration)
-	elseif self.db.sortMethod == "PLAYER" then
+	elseif self.db.sortMethod == 'PLAYER' then
 		sort(self, SortAurasByCaster)
 	end
 
@@ -397,7 +397,7 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 
 	for i = 1, select('#', ...) do
 		local name = select(i, ...)
-		local check = (isFriend and strmatch(name, "^Friendly:([^,]*)")) or (not isFriend and strmatch(name, "^Enemy:([^,]*)")) or nil
+		local check = (isFriend and strmatch(name, '^Friendly:([^,]*)')) or (not isFriend and strmatch(name, '^Enemy:([^,]*)')) or nil
 		if check ~= false then
 			if check ~= nil and (special[check] or filters[check]) then
 				name = check -- this is for our filters to handle Friendly and Enemy

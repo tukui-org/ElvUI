@@ -41,9 +41,9 @@ function M:UpdateBubbleBorder()
 
 	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
 		local isFirstWord, rebuiltString
-		if text and text:match("%s-%S+%s*") then
-			for word in text:gmatch("%s-%S+%s*") do
-				local tempWord = word:gsub("^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$","%1%2")
+		if text and text:match('%s-%S+%s*') then
+			for word in text:gmatch('%s-%S+%s*') do
+				local tempWord = word:gsub('^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$','%1%2')
 				local lowerCaseWord = tempWord:lower()
 
 				local classMatch = CH.ClassNames[lowerCaseWord]
@@ -52,7 +52,7 @@ function M:UpdateBubbleBorder()
 				if wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch] then
 					local classColorTable = E:ClassColor(classMatch)
 					if classColorTable then
-						word = word:gsub(tempWord:gsub("%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+						word = word:gsub(tempWord:gsub('%-','%%-'), format('\124cff%.2x%.2x%.2x%s\124r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 					end
 				end
 
@@ -60,7 +60,7 @@ function M:UpdateBubbleBorder()
 					rebuiltString = word
 					isFirstWord = true
 				else
-					rebuiltString = format("%s%s", rebuiltString, word)
+					rebuiltString = format('%s%s', rebuiltString, word)
 				end
 			end
 
@@ -75,12 +75,12 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	if not name then return end
 
 	local color = PRIEST_COLOR
-	local data = guid and guid ~= "" and CH:GetPlayerInfoByGUID(guid)
+	local data = guid and guid ~= '' and CH:GetPlayerInfoByGUID(guid)
 	if data and data.classColor then
 		color = data.classColor
 	end
 
-	chatBubble.Name:SetFormattedText("|c%s%s|r", color.colorStr, name)
+	chatBubble.Name:SetFormattedText('|c%s%s|r', color.colorStr, name)
 	chatBubble.Name:SetWidth(chatBubble:GetWidth()-10)
 end
 
@@ -97,11 +97,11 @@ function M:SkinBubble(frame)
 		end
 	end
 
-	local name = frame:CreateFontString(nil, "BORDER")
+	local name = frame:CreateFontString(nil, 'BORDER')
 	name:SetHeight(10) --Width set in M:AddChatBubbleName()
-	name:SetPoint("BOTTOM", frame, "TOP", 0, yOffset)
-	name:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
-	name:SetJustifyH("LEFT")
+	name:SetPoint('BOTTOM', frame, 'TOP', 0, yOffset)
+	name:FontTemplate(E.Libs.LSM:Fetch('font', E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
+	name:SetJustifyH('LEFT')
 	frame.Name = name
 
 	if E.private.general.chatBubbles == 'backdrop' then
@@ -124,83 +124,83 @@ function M:SkinBubble(frame)
 			frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
 			frame.backdrop:SetAllPoints(frame)
 			frame.backdrop:SetColorTexture(unpack(E.media.backdropfadecolor))
-			frame.backdrop:SetDrawLayer("ARTWORK", -8)
+			frame.backdrop:SetDrawLayer('ARTWORK', -8)
 
-			frame.bordertop = frame:CreateTexture(nil, "ARTWORK")
-			frame.bordertop:SetPoint("TOPLEFT", frame, "TOPLEFT", -2, 2)
-			frame.bordertop:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 2, 2)
+			frame.bordertop = frame:CreateTexture(nil, 'ARTWORK')
+			frame.bordertop:SetPoint('TOPLEFT', frame, 'TOPLEFT', -2, 2)
+			frame.bordertop:SetPoint('TOPRIGHT', frame, 'TOPRIGHT', 2, 2)
 			frame.bordertop:SetHeight(1)
 			frame.bordertop:SetColorTexture(r, g, b)
-			frame.bordertop:SetDrawLayer("ARTWORK", -6)
+			frame.bordertop:SetDrawLayer('ARTWORK', -6)
 
-			frame.bordertop.backdrop = frame:CreateTexture(nil, "ARTWORK")
-			frame.bordertop.backdrop:SetPoint("TOPLEFT", frame.bordertop, "TOPLEFT", -1, 1)
-			frame.bordertop.backdrop:SetPoint("TOPRIGHT", frame.bordertop, "TOPRIGHT", 1, 1)
+			frame.bordertop.backdrop = frame:CreateTexture(nil, 'ARTWORK')
+			frame.bordertop.backdrop:SetPoint('TOPLEFT', frame.bordertop, 'TOPLEFT', -1, 1)
+			frame.bordertop.backdrop:SetPoint('TOPRIGHT', frame.bordertop, 'TOPRIGHT', 1, 1)
 			frame.bordertop.backdrop:SetHeight(1 * 3)
 			frame.bordertop.backdrop:SetColorTexture(0, 0, 0)
-			frame.bordertop.backdrop:SetDrawLayer("ARTWORK", -7)
+			frame.bordertop.backdrop:SetDrawLayer('ARTWORK', -7)
 
-			frame.borderbottom = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderbottom:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", -2, -2)
-			frame.borderbottom:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", 2, -2)
+			frame.borderbottom = frame:CreateTexture(nil, 'ARTWORK')
+			frame.borderbottom:SetPoint('BOTTOMLEFT', frame, 'BOTTOMLEFT', -2, -2)
+			frame.borderbottom:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 2, -2)
 			frame.borderbottom:SetHeight(1)
 			frame.borderbottom:SetColorTexture(r, g, b)
-			frame.borderbottom:SetDrawLayer("ARTWORK", -6)
+			frame.borderbottom:SetDrawLayer('ARTWORK', -6)
 
-			frame.borderbottom.backdrop = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderbottom.backdrop:SetPoint("BOTTOMLEFT", frame.borderbottom, "BOTTOMLEFT", -1, -1)
-			frame.borderbottom.backdrop:SetPoint("BOTTOMRIGHT", frame.borderbottom, "BOTTOMRIGHT", 1, -1)
+			frame.borderbottom.backdrop = frame:CreateTexture(nil, 'ARTWORK')
+			frame.borderbottom.backdrop:SetPoint('BOTTOMLEFT', frame.borderbottom, 'BOTTOMLEFT', -1, -1)
+			frame.borderbottom.backdrop:SetPoint('BOTTOMRIGHT', frame.borderbottom, 'BOTTOMRIGHT', 1, -1)
 			frame.borderbottom.backdrop:SetHeight(1 * 3)
 			frame.borderbottom.backdrop:SetColorTexture(0, 0, 0)
-			frame.borderbottom.backdrop:SetDrawLayer("ARTWORK", -7)
+			frame.borderbottom.backdrop:SetDrawLayer('ARTWORK', -7)
 
-			frame.borderleft = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderleft:SetPoint("TOPLEFT", frame, "TOPLEFT", -2, 2)
-			frame.borderleft:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT", 2, -2)
+			frame.borderleft = frame:CreateTexture(nil, 'ARTWORK')
+			frame.borderleft:SetPoint('TOPLEFT', frame, 'TOPLEFT', -2, 2)
+			frame.borderleft:SetPoint('BOTTOMLEFT', frame, 'BOTTOMLEFT', 2, -2)
 			frame.borderleft:SetWidth(1)
 			frame.borderleft:SetColorTexture(r, g, b)
-			frame.borderleft:SetDrawLayer("ARTWORK", -6)
+			frame.borderleft:SetDrawLayer('ARTWORK', -6)
 
-			frame.borderleft.backdrop = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderleft.backdrop:SetPoint("TOPLEFT", frame.borderleft, "TOPLEFT", -1, 1)
-			frame.borderleft.backdrop:SetPoint("BOTTOMLEFT", frame.borderleft, "BOTTOMLEFT", -1, -1)
+			frame.borderleft.backdrop = frame:CreateTexture(nil, 'ARTWORK')
+			frame.borderleft.backdrop:SetPoint('TOPLEFT', frame.borderleft, 'TOPLEFT', -1, 1)
+			frame.borderleft.backdrop:SetPoint('BOTTOMLEFT', frame.borderleft, 'BOTTOMLEFT', -1, -1)
 			frame.borderleft.backdrop:SetWidth(1 * 3)
 			frame.borderleft.backdrop:SetColorTexture(0, 0, 0)
-			frame.borderleft.backdrop:SetDrawLayer("ARTWORK", -7)
+			frame.borderleft.backdrop:SetDrawLayer('ARTWORK', -7)
 
-			frame.borderright = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderright:SetPoint("TOPRIGHT", frame, "TOPRIGHT", 2, 2)
-			frame.borderright:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -2, -2)
+			frame.borderright = frame:CreateTexture(nil, 'ARTWORK')
+			frame.borderright:SetPoint('TOPRIGHT', frame, 'TOPRIGHT', 2, 2)
+			frame.borderright:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, -2)
 			frame.borderright:SetWidth(1)
 			frame.borderright:SetColorTexture(r, g, b)
-			frame.borderright:SetDrawLayer("ARTWORK", -6)
+			frame.borderright:SetDrawLayer('ARTWORK', -6)
 
-			frame.borderright.backdrop = frame:CreateTexture(nil, "ARTWORK")
-			frame.borderright.backdrop:SetPoint("TOPRIGHT", frame.borderright, "TOPRIGHT", 1, 1)
-			frame.borderright.backdrop:SetPoint("BOTTOMRIGHT", frame.borderright, "BOTTOMRIGHT", 1, -1)
+			frame.borderright.backdrop = frame:CreateTexture(nil, 'ARTWORK')
+			frame.borderright.backdrop:SetPoint('TOPRIGHT', frame.borderright, 'TOPRIGHT', 1, 1)
+			frame.borderright.backdrop:SetPoint('BOTTOMRIGHT', frame.borderright, 'BOTTOMRIGHT', 1, -1)
 			frame.borderright.backdrop:SetWidth(1 * 3)
 			frame.borderright.backdrop:SetColorTexture(0, 0, 0)
-			frame.borderright.backdrop:SetDrawLayer("ARTWORK", -7)
+			frame.borderright.backdrop:SetDrawLayer('ARTWORK', -7)
 		end
 
-		frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
+		frame.text:FontTemplate(E.Libs.LSM:Fetch('font', E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
 		frame:SetBackdrop(nil)
 		frame.backdrop = frame:CreateTexture(nil, 'ARTWORK')
 		frame.backdrop:SetInside(frame, 4, 4)
 		frame.backdrop:SetColorTexture(unpack(E.media.backdropfadecolor))
-		frame.backdrop:SetDrawLayer("ARTWORK", -8)
-		frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
+		frame.backdrop:SetDrawLayer('ARTWORK', -8)
+		frame.text:FontTemplate(E.Libs.LSM:Fetch('font', E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 		frame:SetClampedToScreen(false)
 	elseif E.private.general.chatBubbles == 'nobackdrop' then
 		frame:SetBackdrop(nil)
-		frame.text:FontTemplate(E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
+		frame.text:FontTemplate(E.Libs.LSM:Fetch('font', E.private.general.chatBubbleFont), E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 		frame:SetClampedToScreen(false)
 		frame.Name:Hide()
 	end
 
 	frame:HookScript('OnShow', M.UpdateBubbleBorder)
-	frame:SetFrameStrata("DIALOG") --Doesn't work currently in Legion due to a bug on Blizzards end
+	frame:SetFrameStrata('DIALOG') --Doesn't work currently in Legion due to a bug on Blizzards end
 	M.UpdateBubbleBorder(frame)
 
 	frame.isSkinnedElvUI = true
@@ -210,7 +210,7 @@ local function ChatBubble_OnEvent(_, _, msg, sender, _, _, _, _, _, _, _, _, _, 
 	if not E.private.general.chatBubbleName then return end
 
 	messageToGUID[msg] = guid
-	messageToSender[msg] = Ambiguate(sender, "none")
+	messageToSender[msg] = Ambiguate(sender, 'none')
 end
 
 local function ChatBubble_OnUpdate(frame, elapsed)
@@ -227,7 +227,7 @@ end
 
 function M:ToggleChatBubbleScript()
 	local _, instanceType = GetInstanceInfo()
-	if instanceType == "none" and E.private.general.chatBubbles ~= "disabled" then
+	if instanceType == 'none' and E.private.general.chatBubbles ~= 'disabled' then
 		M.BubbleFrame:SetScript('OnEvent', ChatBubble_OnEvent)
 		M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
 	else
@@ -241,10 +241,10 @@ function M:ToggleChatBubbleScript()
 end
 
 function M:LoadChatBubbles()
-	yOffset = E.private.general.chatBubbles == "backdrop" and 2 or E.private.general.chatBubbles == "backdrop_noborder" and -2 or 0
-	self.BubbleFrame = CreateFrame("Frame")
-	self.BubbleFrame:RegisterEvent("CHAT_MSG_SAY")
-	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")
-	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_SAY")
-	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_YELL")
+	yOffset = E.private.general.chatBubbles == 'backdrop' and 2 or E.private.general.chatBubbles == 'backdrop_noborder' and -2 or 0
+	self.BubbleFrame = CreateFrame('Frame')
+	self.BubbleFrame:RegisterEvent('CHAT_MSG_SAY')
+	self.BubbleFrame:RegisterEvent('CHAT_MSG_YELL')
+	self.BubbleFrame:RegisterEvent('CHAT_MSG_MONSTER_SAY')
+	self.BubbleFrame:RegisterEvent('CHAT_MSG_MONSTER_YELL')
 end

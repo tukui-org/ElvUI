@@ -43,7 +43,7 @@ function S:Blizzard_TrainerUI()
 	S:HandlePortraitFrame(ClassTrainerFrame, true)
 
 	for i= 1, #ClassTrainerFrame.scrollFrame.buttons do
-		local button = _G["ClassTrainerScrollFrameButton"..i]
+		local button = _G['ClassTrainerScrollFrameButton'..i]
 		button:StripTextures()
 		button:StyleButton()
 		button.icon:SetTexCoord(unpack(E.TexCoords))
@@ -58,9 +58,9 @@ function S:Blizzard_TrainerUI()
 	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown, 155)
 
 	ClassTrainerFrame:SetHeight(ClassTrainerFrame:GetHeight() + 5)
-	ClassTrainerFrame:CreateBackdrop("Transparent")
-	ClassTrainerFrame.backdrop:SetPoint("TOPLEFT", ClassTrainerFrame, "TOPLEFT")
-	ClassTrainerFrame.backdrop:SetPoint("BOTTOMRIGHT", ClassTrainerFrame, "BOTTOMRIGHT")
+	ClassTrainerFrame:CreateBackdrop('Transparent')
+	ClassTrainerFrame.backdrop:SetPoint('TOPLEFT', ClassTrainerFrame, 'TOPLEFT')
+	ClassTrainerFrame.backdrop:SetPoint('BOTTOMRIGHT', ClassTrainerFrame, 'BOTTOMRIGHT')
 
 	local ClassTrainerFrameSkillStepButton = _G.ClassTrainerFrameSkillStepButton
 	ClassTrainerFrameSkillStepButton.icon:SetTexCoord(unpack(E.TexCoords))
@@ -75,7 +75,7 @@ function S:Blizzard_TrainerUI()
 	ClassTrainerStatusBar:SetStatusBarTexture(E.media.normTex)
 	ClassTrainerStatusBar:CreateBackdrop()
 	ClassTrainerStatusBar.rankText:ClearAllPoints()
-	ClassTrainerStatusBar.rankText:SetPoint("CENTER", ClassTrainerStatusBar, "CENTER")
+	ClassTrainerStatusBar.rankText:SetPoint('CENTER', ClassTrainerStatusBar, 'CENTER')
 	E:RegisterStatusBar(ClassTrainerStatusBar)
 end
 

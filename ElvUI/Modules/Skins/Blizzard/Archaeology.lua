@@ -14,7 +14,7 @@ function S:Blizzard_ArchaeologyUI()
 
 	S:HandleDropDownBox(_G.ArchaeologyFrame.raceFilterDropDown)
 	_G.ArchaeologyFrame.raceFilterDropDown.Text:ClearAllPoints()
-	_G.ArchaeologyFrame.raceFilterDropDown.Text:SetPoint("LEFT", _G.ArchaeologyFrame.raceFilterDropDown.backdrop, "LEFT", 4, 0)
+	_G.ArchaeologyFrame.raceFilterDropDown.Text:SetPoint('LEFT', _G.ArchaeologyFrame.raceFilterDropDown.backdrop, 'LEFT', 4, 0)
 
 	if E.private.skins.parchmentRemoverEnable then
 		_G.ArchaeologyFrameBgLeft:Kill()
@@ -43,7 +43,7 @@ function S:Blizzard_ArchaeologyUI()
 		for _, Frame in pairs({ ArchaeologyFrame.completedPage, ArchaeologyFrame.summaryPage }) do
 			for i = 1, Frame:GetNumRegions() do
 				local Region = select(i, Frame:GetRegions())
-				if Region:IsObjectType("FontString") then
+				if Region:IsObjectType('FontString') then
 					Region:SetTextColor(1, .8, .1)
 				end
 			end
@@ -67,11 +67,11 @@ function S:Blizzard_ArchaeologyUI()
 	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	_G.ArcheologyDigsiteProgressBar:ClearAllPoints()
-	_G.ArcheologyDigsiteProgressBar:SetPoint("TOP", _G.UIParent, "TOP", 0, -400)
+	_G.ArcheologyDigsiteProgressBar:SetPoint('TOP', _G.UIParent, 'TOP', 0, -400)
 	E:RegisterStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar)
 
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ArcheologyDigsiteProgressBar = nil
-	E:CreateMover(_G.ArcheologyDigsiteProgressBar, "DigSiteProgressBarMover", L["Archeology Progress Bar"])
+	E:CreateMover(_G.ArcheologyDigsiteProgressBar, 'DigSiteProgressBarMover', L["Archeology Progress Bar"])
 end
 
 S:AddCallbackForAddon('Blizzard_ArchaeologyUI')

@@ -30,15 +30,15 @@ local function SkinItemButton(_, block)
 	local item = block.itemButton
 	if item and not item.skinned then
 		item:SetSize(25, 25)
-		item:SetTemplate("Transparent")
+		item:SetTemplate('Transparent')
 		item:StyleButton()
 		item:SetNormalTexture(nil)
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 		item.icon:SetInside()
 		item.Cooldown:SetInside()
 		item.Count:ClearAllPoints()
-		item.Count:SetPoint("TOPLEFT", 1, -1)
-		item.Count:FontTemplate(E.media.normFont, 14, "OUTLINE")
+		item.Count:SetPoint('TOPLEFT', 1, -1)
+		item.Count:FontTemplate(E.media.normFont, 14, 'OUTLINE')
 		item.Count:SetShadowOffset(5, -5)
 		E:RegisterCooldown(item.Cooldown)
 		item.skinned = true
@@ -65,20 +65,20 @@ local function SkinProgressBars(_, _, line)
 
 		bar:SetHeight(18)
 		bar:StripTextures()
-		bar:CreateBackdrop("Transparent")
+		bar:CreateBackdrop('Transparent')
 		bar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(bar)
 
 		if label then
 			label:ClearAllPoints()
-			label:SetPoint("CENTER", bar, 0, 1)
-			label:FontTemplate(E.media.normFont, 14, "OUTLINE")
+			label:SetPoint('CENTER', bar, 0, 1)
+			label:FontTemplate(E.media.normFont, 14, 'OUTLINE')
 		end
 
 		if icon then
 			icon:ClearAllPoints()
-			icon:SetPoint("LEFT", bar, "RIGHT", E.PixelMode and 3 or 7, 0)
-			icon:SetMask("")
+			icon:SetPoint('LEFT', bar, 'RIGHT', E.PixelMode and 3 or 7, 0)
+			icon:SetMask('')
 			icon:SetTexCoord(unpack(E.TexCoords))
 
 			if not progressBar.backdrop then
@@ -104,7 +104,7 @@ local function SkinTimerBars(_, _, line)
 	if not timerBar.isSkinned then
 		bar:SetHeight(18)
 		bar:StripTextures()
-		bar:CreateBackdrop("Transparent")
+		bar:CreateBackdrop('Transparent')
 		bar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(bar)
 
@@ -152,28 +152,28 @@ function S:ObjectiveTrackerFrame()
 	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
 	minimize:StripTextures()
 	minimize:SetSize(16, 16)
-	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
-	minimize.tex = minimize:CreateTexture(nil, "OVERLAY")
+	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
+	minimize.tex = minimize:CreateTexture(nil, 'OVERLAY')
 	minimize.tex:SetTexture(E.Media.Textures.MinusButton)
 	minimize.tex:SetInside()
 
-	hooksecurefunc("ObjectiveTracker_Expand",TrackerStateChanged)
-	hooksecurefunc("ObjectiveTracker_Collapse",TrackerStateChanged)
-	hooksecurefunc("BonusObjectiveTrackerProgressBar_SetValue",ColorProgressBars)			--[Color]: Bonus Objective Progress Bar
-	hooksecurefunc("ObjectiveTrackerProgressBar_SetValue",ColorProgressBars)				--[Color]: Quest Progress Bar
-	hooksecurefunc("ScenarioTrackerProgressBar_SetValue",ColorProgressBars)					--[Color]: Scenario Progress Bar
-	hooksecurefunc("QuestObjectiveSetupBlockButton_AddRightButton",PositionFindGroupButton)	--[Move]: The eye & quest item to the left of the eye
-	hooksecurefunc("ObjectiveTracker_Update",SkinOjectiveTrackerHeaders)					--[Skin]: Module Headers
-	hooksecurefunc("QuestObjectiveSetupBlockButton_FindGroup",SkinFindGroupButton)			--[Skin]: The eye
-	hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)		--[Skin]: Bonus Objective Progress Bar
-	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)			--[Skin]: World Quest Progress Bar
-	hooksecurefunc(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)	--[Skin]: Quest Progress Bar
-	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,"AddProgressBar",SkinProgressBars)			--[Skin]: Scenario Progress Bar
-	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)						--[Skin]: Quest Timer Bar
-	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)					--[Skin]: Scenario Timer Bar
-	hooksecurefunc(_G.ACHIEVEMENT_TRACKER_MODULE,"AddTimerBar",SkinTimerBars)				--[Skin]: Achievement Timer Bar
-	hooksecurefunc(_G.QUEST_TRACKER_MODULE,"SetBlockHeader",SkinItemButton)					--[Skin]: Quest Item Buttons
-	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,"AddObjective",SkinItemButton)				--[Skin]: World Quest Item Buttons
+	hooksecurefunc('ObjectiveTracker_Expand',TrackerStateChanged)
+	hooksecurefunc('ObjectiveTracker_Collapse',TrackerStateChanged)
+	hooksecurefunc('BonusObjectiveTrackerProgressBar_SetValue',ColorProgressBars)			--[Color]: Bonus Objective Progress Bar
+	hooksecurefunc('ObjectiveTrackerProgressBar_SetValue',ColorProgressBars)				--[Color]: Quest Progress Bar
+	hooksecurefunc('ScenarioTrackerProgressBar_SetValue',ColorProgressBars)					--[Color]: Scenario Progress Bar
+	hooksecurefunc('QuestObjectiveSetupBlockButton_AddRightButton',PositionFindGroupButton)	--[Move]: The eye & quest item to the left of the eye
+	hooksecurefunc('ObjectiveTracker_Update',SkinOjectiveTrackerHeaders)					--[Skin]: Module Headers
+	hooksecurefunc('QuestObjectiveSetupBlockButton_FindGroup',SkinFindGroupButton)			--[Skin]: The eye
+	hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)		--[Skin]: Bonus Objective Progress Bar
+	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)			--[Skin]: World Quest Progress Bar
+	hooksecurefunc(_G.DEFAULT_OBJECTIVE_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)	--[Skin]: Quest Progress Bar
+	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,'AddProgressBar',SkinProgressBars)			--[Skin]: Scenario Progress Bar
+	hooksecurefunc(_G.QUEST_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)						--[Skin]: Quest Timer Bar
+	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)					--[Skin]: Scenario Timer Bar
+	hooksecurefunc(_G.ACHIEVEMENT_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)				--[Skin]: Achievement Timer Bar
+	hooksecurefunc(_G.QUEST_TRACKER_MODULE,'SetBlockHeader',SkinItemButton)					--[Skin]: Quest Item Buttons
+	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,'AddObjective',SkinItemButton)				--[Skin]: World Quest Item Buttons
 end
 
 S:AddCallback('ObjectiveTrackerFrame')

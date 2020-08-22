@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames');
 
 local CreateFrame = CreateFrame
 function UF:Construct_AltPowerBar(frame)
-	local altpower = CreateFrame("StatusBar", "$parent_AlternativePower", frame)
+	local altpower = CreateFrame('StatusBar', '$parent_AlternativePower', frame)
 	altpower:SetStatusBarTexture(E.media.blankTex)
 	altpower:SetStatusBarColor(.7, .7, .6)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
@@ -19,12 +19,12 @@ function UF:Construct_AltPowerBar(frame)
 	altpower.RaisedElementParent:SetAllPoints()
 
 	altpower.value = altpower.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-	altpower.value:SetPoint("CENTER")
-	altpower.value:SetJustifyH("CENTER")
+	altpower.value:SetPoint('CENTER')
+	altpower.value:SetJustifyH('CENTER')
 	UF:Configure_FontString(altpower.value)
 
-	altpower:SetScript("OnShow", UF.ToggleResourceBar)
-	altpower:SetScript("OnHide", UF.ToggleResourceBar)
+	altpower:SetScript('OnShow', UF.ToggleResourceBar)
+	altpower:SetScript('OnHide', UF.ToggleResourceBar)
 	altpower:Hide()
 
 	return altpower

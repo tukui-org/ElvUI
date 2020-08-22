@@ -42,7 +42,7 @@ function UF:Configure_RaidDebuffs(frame)
 		debuff:SetPoint('BOTTOM', frame, 'BOTTOM', db.xOffset, db.yOffset + frame.SPACING)
 		debuff:SetSize(db.size, db.size)
 
-		local font = UF.LSM:Fetch("font", db.font)
+		local font = UF.LSM:Fetch('font', db.font)
 		local stackColor = db.stack.color
 		debuff.count:FontTemplate(font, db.fontSize, db.fontOutline)
 		debuff.count:ClearAllPoints()

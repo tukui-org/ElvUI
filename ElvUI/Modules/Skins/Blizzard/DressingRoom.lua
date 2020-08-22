@@ -15,24 +15,24 @@ function S:DressUpFrame()
 	local DressUpFrameOutfitDropDown = _G.DressUpFrameOutfitDropDown
 	S:HandleDropDownBox(DressUpFrameOutfitDropDown)
 	S:HandleButton(DressUpFrameOutfitDropDown.SaveButton)
-	DressUpFrameOutfitDropDown.SaveButton:SetPoint("LEFT", DressUpFrameOutfitDropDown, "RIGHT", -7, 3)
-	DressUpFrameOutfitDropDown.backdrop:SetPoint("TOPLEFT", -25, 3)
+	DressUpFrameOutfitDropDown.SaveButton:SetPoint('LEFT', DressUpFrameOutfitDropDown, 'RIGHT', -7, 3)
+	DressUpFrameOutfitDropDown.backdrop:SetPoint('TOPLEFT', -25, 3)
 
 	S:HandleMaxMinFrame(DressUpFrame.MaximizeMinimizeFrame)
-	_G.DressUpFrameResetButton:SetPoint("RIGHT", _G.DressUpFrameCancelButton, "LEFT", -2, 0)
+	_G.DressUpFrameResetButton:SetPoint('RIGHT', _G.DressUpFrameCancelButton, 'LEFT', -2, 0)
 
 	-- Wardrobe edit frame
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures(true)
-	WardrobeOutfitFrame:SetTemplate("Transparent")
+	WardrobeOutfitFrame:SetTemplate('Transparent')
 
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
 	WardrobeOutfitEditFrame:StripTextures(true)
-	WardrobeOutfitEditFrame:SetTemplate("Transparent")
+	WardrobeOutfitEditFrame:SetTemplate('Transparent')
 	WardrobeOutfitEditFrame.EditBox:StripTextures()
 	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
-	WardrobeOutfitEditFrame.EditBox.backdrop:SetPoint("TOPLEFT", WardrobeOutfitEditFrame.EditBox, "TOPLEFT", -5, -5)
-	WardrobeOutfitEditFrame.EditBox.backdrop:SetPoint("BOTTOMRIGHT", WardrobeOutfitEditFrame.EditBox, "BOTTOMRIGHT", 0, 5)
+	WardrobeOutfitEditFrame.EditBox.backdrop:SetPoint('TOPLEFT', WardrobeOutfitEditFrame.EditBox, 'TOPLEFT', -5, -5)
+	WardrobeOutfitEditFrame.EditBox.backdrop:SetPoint('BOTTOMRIGHT', WardrobeOutfitEditFrame.EditBox, 'BOTTOMRIGHT', 0, 5)
 	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
 	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
 	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)

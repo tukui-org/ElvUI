@@ -30,11 +30,11 @@ function S:Blizzard_AzeriteEssenceUI()
 		button:StyleButton()
 
 		S:HandleIcon(button.Icon)
-		button.Icon:SetPoint("LEFT", button, "LEFT", 6, 0)
+		button.Icon:SetPoint('LEFT', button, 'LEFT', 6, 0)
 
 		button:CreateBackdrop()
-		button.backdrop:SetPoint("TOPLEFT", 2, -3)
-		button.backdrop:SetPoint("BOTTOMRIGHT", -2, 3)
+		button.backdrop:SetPoint('TOPLEFT', 2, -3)
+		button.backdrop:SetPoint('BOTTOMRIGHT', -2, 3)
 	end
 
 	-- Header on the Essence List

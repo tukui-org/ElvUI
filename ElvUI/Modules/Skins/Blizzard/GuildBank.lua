@@ -12,7 +12,7 @@ function S:Blizzard_GuildBankUI()
 
 	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:StripTextures()
-	GuildBankFrame:SetTemplate("Transparent")
+	GuildBankFrame:SetTemplate('Transparent')
 	_G.GuildBankEmblemFrame:StripTextures(true)
 	_G.GuildBankMoneyFrameBackground:Kill()
 	S:HandleScrollBar(_G.GuildBankPopupScrollFrameScrollBar)
@@ -22,7 +22,7 @@ function S:Blizzard_GuildBankUI()
 		local child = select(i, GuildBankFrame:GetChildren())
 		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
 			S:HandleCloseButton(child)
-			child:SetPoint("TOPRIGHT", 0, 0)
+			child:SetPoint('TOPRIGHT', 0, 0)
 			child:SetFrameLevel(child:GetFrameLevel()+1)
 		end
 	end
@@ -32,24 +32,24 @@ function S:Blizzard_GuildBankUI()
 	S:HandleButton(_G.GuildBankInfoSaveButton, true)
 	S:HandleButton(_G.GuildBankFramePurchaseButton, true)
 
-	_G.GuildBankFrameWithdrawButton:SetPoint("RIGHT", _G.GuildBankFrameDepositButton, "LEFT", -2, 0)
+	_G.GuildBankFrameWithdrawButton:SetPoint('RIGHT', _G.GuildBankFrameDepositButton, 'LEFT', -2, 0)
 	_G.GuildBankInfoScrollFrame:SetPoint('TOPLEFT', _G.GuildBankInfo, 'TOPLEFT', -10, 12)
 	_G.GuildBankInfoScrollFrame:StripTextures()
 	_G.GuildBankInfoScrollFrame:SetWidth(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
-	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame)
+	GuildBankFrame.inset = CreateFrame('Frame', nil, GuildBankFrame)
 	GuildBankFrame.inset:SetTemplate()
-	GuildBankFrame.inset:SetPoint("TOPLEFT", 20, -58)
-	GuildBankFrame.inset:SetPoint("BOTTOMRIGHT", -16, 60)
+	GuildBankFrame.inset:SetPoint('TOPLEFT', 20, -58)
+	GuildBankFrame.inset:SetPoint('BOTTOMRIGHT', -16, 60)
 
 	for i = 1, _G.NUM_GUILDBANK_COLUMNS do
-		_G["GuildBankColumn"..i]:StripTextures()
+		_G['GuildBankColumn'..i]:StripTextures()
 
 		for x = 1, _G.NUM_SLOTS_PER_GUILDBANK_GROUP do
-			local button = _G["GuildBankColumn"..i.."Button"..x]
-			local icon = _G["GuildBankColumn"..i.."Button"..x.."IconTexture"]
-			local texture = _G["GuildBankColumn"..i.."Button"..x.."NormalTexture"]
+			local button = _G['GuildBankColumn'..i..'Button'..x]
+			local icon = _G['GuildBankColumn'..i..'Button'..x..'IconTexture']
+			local texture = _G['GuildBankColumn'..i..'Button'..x..'NormalTexture']
 			if texture then
 				texture:SetTexture()
 			end
@@ -71,9 +71,9 @@ function S:Blizzard_GuildBankUI()
 	end
 
 	for i = 1, _G.MAX_GUILDBANK_TABS do
-		local button = _G["GuildBankTab"..i.."Button"]
-		local texture = _G["GuildBankTab"..i.."ButtonIconTexture"]
-		_G["GuildBankTab"..i]:StripTextures(true)
+		local button = _G['GuildBankTab'..i..'Button']
+		local texture = _G['GuildBankTab'..i..'ButtonIconTexture']
+		_G['GuildBankTab'..i]:StripTextures(true)
 
 		button:StripTextures()
 		button:StyleButton(true)
@@ -84,7 +84,7 @@ function S:Blizzard_GuildBankUI()
 	end
 
 	for i = 1, 4 do
-		S:HandleTab(_G["GuildBankFrameTab"..i])
+		S:HandleTab(_G['GuildBankFrameTab'..i])
 	end
 
 	local GuildItemSearchBox = _G.GuildItemSearchBox
@@ -92,9 +92,9 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox.Middle:Kill()
 	GuildItemSearchBox.Right:Kill()
 	GuildItemSearchBox.searchIcon:Kill()
-	GuildItemSearchBox:CreateBackdrop("Overlay")
-	GuildItemSearchBox.backdrop:SetPoint("TOPLEFT", 10, -1)
-	GuildItemSearchBox.backdrop:SetPoint("BOTTOMRIGHT", -1, 1)
+	GuildItemSearchBox:CreateBackdrop('Overlay')
+	GuildItemSearchBox.backdrop:SetPoint('TOPLEFT', 10, -1)
+	GuildItemSearchBox.backdrop:SetPoint('BOTTOMRIGHT', -1, 1)
 
 	S:HandleScrollBar(_G.GuildBankTransactionsScrollFrameScrollBar)
 	S:HandleScrollBar(_G.GuildBankInfoScrollFrameScrollBar)
@@ -102,7 +102,7 @@ function S:Blizzard_GuildBankUI()
 	--Popup
 	_G.GuildBankPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
 	_G.GuildBankPopupFrame:Hide()
-	S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, _G.NUM_GUILDBANK_ICONS_SHOWN, "GuildBankPopupButton", "GuildBankPopup")
+	S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, _G.NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
 end
 
 S:AddCallbackForAddon('Blizzard_GuildBankUI')

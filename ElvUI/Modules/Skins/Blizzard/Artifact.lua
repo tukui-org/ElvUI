@@ -11,27 +11,27 @@ function S:Blizzard_ArtifactUI()
 
 	local ArtifactFrame = _G.ArtifactFrame
 	ArtifactFrame:StripTextures()
-	ArtifactFrame:CreateBackdrop("Transparent")
+	ArtifactFrame:CreateBackdrop('Transparent')
 	ArtifactFrame.BorderFrame:StripTextures()
 	S:HandleCloseButton(ArtifactFrame.CloseButton)
 
 	for i = 1, 2 do
-		S:HandleTab(_G["ArtifactFrameTab" .. i])
+		S:HandleTab(_G['ArtifactFrameTab' .. i])
 	end
 
 	local ArtifactFrameTab1 = _G.ArtifactFrameTab1
 	ArtifactFrameTab1:ClearAllPoints()
-	ArtifactFrameTab1:SetPoint("TOPLEFT", ArtifactFrame, "BOTTOMLEFT", 0, 0)
+	ArtifactFrameTab1:SetPoint('TOPLEFT', ArtifactFrame, 'BOTTOMLEFT', 0, 0)
 
 	ArtifactFrame.ForgeBadgeFrame.ItemIcon:Hide()
 	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
-	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint("TOPLEFT", ArtifactFrame)
+	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:SetPoint('TOPLEFT', ArtifactFrame)
 
-	ArtifactFrame.AppearancesTab:HookScript("OnShow", function(s)
+	ArtifactFrame.AppearancesTab:HookScript('OnShow', function(s)
 		for i=1, s:GetNumChildren() do
 			local child = select(i, s:GetChildren())
 			if child and child.appearanceID and not child.backdrop then
-				child:CreateBackdrop("Transparent")
+				child:CreateBackdrop('Transparent')
 				child.SwatchTexture:SetTexCoord(.20,.80,.20,.80)
 				child.SwatchTexture:SetInside(child.backdrop)
 				child.Border:SetAlpha(0)
@@ -43,7 +43,7 @@ function S:Blizzard_ArtifactUI()
 				end
 				child.Selected:SetAlpha(0)
 				child.Selected.SetAlpha = E.noop
-				hooksecurefunc(child.Selected, "SetShown", function(_, isActive)
+				hooksecurefunc(child.Selected, 'SetShown', function(_, isActive)
 					if isActive then
 						child.backdrop:SetBackdropBorderColor(1,1,1)
 					else

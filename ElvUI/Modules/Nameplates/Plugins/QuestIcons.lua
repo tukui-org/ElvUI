@@ -13,7 +13,7 @@ local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
-local iconTypes = {"Default", "Item", "Skull", "Chat"}
+local iconTypes = {'Default', 'Item', 'Skull', 'Chat'}
 local questIndexByID = {
 	--[questID] = questIndex
 }
@@ -23,40 +23,40 @@ local activeQuests = {
 
 local typesLocalized = {
 	enUS = {
-		KILL = {"slain", "destroy", "eliminate", "repel", "kill", "defeat"},
-		CHAT = {"speak", "ask", "talk", "build"}
+		KILL = {'slain', 'destroy', 'eliminate', 'repel', 'kill', 'defeat'},
+		CHAT = {'speak', 'ask', 'talk', 'build'}
 	},
 	deDE = {
-		KILL = {"besiegen", "besiegt", "getötet", "töten", "tötet", "zerstört", "genährt"},
-		CHAT = {"befragt", "sprecht"}
+		KILL = {'besiegen', 'besiegt', 'getötet', 'töten', 'tötet', 'zerstört', 'genährt'},
+		CHAT = {'befragt', 'sprecht'}
 	},
 	ruRU = {
-		KILL = {"убит", "уничтож", "разбомблен", "разбит", "сразит"},
-		CHAT = {"поговорит", "спрашивать", "строить"}
+		KILL = {'убит', 'уничтож', 'разбомблен', 'разбит', 'сразит'},
+		CHAT = {'поговорит', 'спрашивать', 'строить'}
 	},
 	esMX = {
-		KILL = {"matar", "destruir", "eliminar", "repeler", "derrotar"},
-		CHAT = {"hablar", "preguntar", "construir"}
+		KILL = {'matar', 'destruir', 'eliminar', 'repeler', 'derrotar'},
+		CHAT = {'hablar', 'preguntar', 'construir'}
 	},
 	ptBR = {
-		KILL = {"matar", "destruir", "eliminar", "repelir", "derrotar"},
-		CHAT = {"falar", "perguntar", "construir"}
+		KILL = {'matar', 'destruir', 'eliminar', 'repelir', 'derrotar'},
+		CHAT = {'falar', 'perguntar', 'construir'}
 	},
 	frFR = {
-		KILL = {"tuer", "détruire", "éliminer", "repousser", "tuer", "vaincre"},
-		CHAT = {"parler", "demander", "construire"}
+		KILL = {'tuer', 'détruire', 'éliminer', 'repousser', 'tuer', 'vaincre'},
+		CHAT = {'parler', 'demander', 'construire'}
 	},
 	koKR = {
-		KILL = {"살인", "멸하다", "제거", "죽이다", "격퇴하다", "죽임", "패배"},
-		CHAT = {"말하다", "질문하다", "구축하다"}
+		KILL = {'살인', '멸하다', '제거', '죽이다', '격퇴하다', '죽임', '패배'},
+		CHAT = {'말하다', '질문하다', '구축하다'}
 	},
 	zhCN = {
-		KILL = {"消灭", "摧毁", "获得", "击败", "被杀", "毁灭", "击退", "杀死"},
-		CHAT = {"交谈", "说话", "询问", "建立"}
+		KILL = {'消灭', '摧毁', '获得', '击败', '被杀', '毁灭', '击退', '杀死'},
+		CHAT = {'交谈', '说话', '询问', '建立'}
 	},
 	zhTW = {
-		KILL = {"被殺", "毀滅", "消除", "擊退", "殺死", "打败"},
-		CHAT = {"說話", "詢問", "交談", "建立", "建设"}
+		KILL = {'被殺', '毀滅', '消除', '擊退', '殺死', '打败'},
+		CHAT = {'說話', '詢問', '交談', '建立', '建设'}
 	},
 }
 
@@ -99,7 +99,7 @@ end
 local function GetQuests(unitID)
 	if IsInInstance() then return end
 
-	E.ScanTooltip:SetOwner(_G.UIParent, "ANCHOR_NONE")
+	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
 	E.ScanTooltip:SetUnit(unitID)
 	E.ScanTooltip:Show()
 
@@ -126,14 +126,14 @@ local function GetQuests(unitID)
 				end
 
 				if texture then
-					type = "QUEST_ITEM"
+					type = 'QUEST_ITEM'
 				else
 					local lowerText = strlower(text)
 
 					-- check chat type first
 					for _, listText in ipairs(questTypes.CHAT) do
 						if strfind(lowerText, listText, nil, true) then
-							type = "CHAT"
+							type = 'CHAT'
 							break
 						end
 					end
@@ -142,7 +142,7 @@ local function GetQuests(unitID)
 					if not type then
 						for _, listText in ipairs(questTypes.KILL) do
 							if strfind(lowerText, listText, nil, true) then
-								type = "KILL"
+								type = 'KILL'
 								break
 							end
 						end
@@ -154,7 +154,7 @@ local function GetQuests(unitID)
 					isPercent = percent,
 					itemTexture = texture,
 					objectiveCount = count,
-					questType = type or "DEFAULT",
+					questType = type or 'DEFAULT',
 					-- below keys are currently unused
 					questLogIndex = index,
 					questID = activeID
@@ -182,7 +182,7 @@ local function Update(self, event, unit)
 	local element = self.QuestIcons
 	if not element then return end
 
-	if event ~= "UNIT_NAME_UPDATE" then
+	if event ~= 'UNIT_NAME_UPDATE' then
 		unit = self.unit
 	end
 
@@ -211,13 +211,13 @@ local function Update(self, event, unit)
 
 		if isPercent or objectiveCount > 0 then
 			local icon
-			if questType == "DEFAULT" then
+			if questType == 'DEFAULT' then
 				icon = element.Default
-			elseif questType == "KILL" then
+			elseif questType == 'KILL' then
 				icon = element.Skull
-			elseif questType == "CHAT" then
+			elseif questType == 'CHAT' then
 				icon = element.Chat
-			elseif questType == "QUEST_ITEM" then
+			elseif questType == 'QUEST_ITEM' then
 				icon = element.Item
 			end
 
@@ -225,19 +225,19 @@ local function Update(self, event, unit)
 				shownCount = (shownCount and shownCount + 1) or 0
 
 				local size = icon.size or 25
-				local setPosition = icon.position or "TOPLEFT"
+				local setPosition = icon.position or 'TOPLEFT'
 				local newPosition = E.InversePoints[setPosition]
 				local offset = shownCount * (5 + size)
 
 				icon:Show()
 				icon:ClearAllPoints()
-				icon:SetPoint(newPosition, element, newPosition, (strmatch(setPosition, "LEFT") and -offset) or offset, 0)
+				icon:SetPoint(newPosition, element, newPosition, (strmatch(setPosition, 'LEFT') and -offset) or offset, 0)
 
-				if questType ~= "CHAT" and icon.Text and (isPercent or objectiveCount > 1) then
-					icon.Text:SetText((isPercent and objectiveCount.."%") or objectiveCount)
+				if questType ~= 'CHAT' and icon.Text and (isPercent or objectiveCount > 1) then
+					icon.Text:SetText((isPercent and objectiveCount..'%') or objectiveCount)
 				end
 
-				if questType == "QUEST_ITEM" then
+				if questType == 'QUEST_ITEM' then
 					element.Item:SetTexture(quest.itemTexture)
 				end
 			end

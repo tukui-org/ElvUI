@@ -27,4 +27,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Date', nil, {"UPDATE_INSTANCE_INFO"}, OnEvent, nil, Click, nil, nil)
+DT:RegisterDatatext('Date', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, nil, Click, nil, nil)

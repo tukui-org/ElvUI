@@ -12,16 +12,16 @@ local GameTooltip = _G.GameTooltip
 -- GLOBALS: NUM_ACTIONBAR_BUTTONS, NUM_PET_ACTION_SLOTS, LOCK_ACTIONBAR, MICRO_BUTTONS, AceGUIWidgetLSMlists
 
 local points = {
-	TOPLEFT = "TOPLEFT",
-	TOPRIGHT = "TOPRIGHT",
-	BOTTOMLEFT = "BOTTOMLEFT",
-	BOTTOMRIGHT = "BOTTOMRIGHT",
+	TOPLEFT = 'TOPLEFT',
+	TOPRIGHT = 'TOPRIGHT',
+	BOTTOMLEFT = 'BOTTOMLEFT',
+	BOTTOMRIGHT = 'BOTTOMRIGHT',
 }
 
 E.Options.args.actionbar = {
-	type = "group",
+	type = 'group',
 	name = L["ActionBars"],
-	childGroups = "tab",
+	childGroups = 'tab',
 	order = 2,
 	get = function(info) return E.db.actionbar[info[#info]] end,
 	set = function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end,
@@ -29,20 +29,20 @@ E.Options.args.actionbar = {
 		intro = ACH:Description(L["ACTIONBARS_DESC"], 0),
 		enable = {
 			order = 1,
-			type = "toggle",
+			type = 'toggle',
 			name = L["Enable"],
 			get = function(info) return E.private.actionbar[info[#info]] end,
-			set = function(info, value) E.private.actionbar[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end
+			set = function(info, value) E.private.actionbar[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end
 		},
 		general = {
 			order = 3,
-			type = "group",
+			type = 'group',
 			name = L["General"],
 			disabled = function() return not E.ActionBars.Initialized; end,
 			args = {
 				toggleKeybind = {
 					order = 0,
-					type = "execute",
+					type = 'execute',
 					name = L["Keybind Mode"],
 					func = function() AB:ActivateBindMode(); E:ToggleOptionsUI(); GameTooltip:Hide(); end,
 					disabled = function() return not E.private.actionbar.enable end,
@@ -62,7 +62,7 @@ E.Options.args.actionbar = {
 				},
 				flyoutSize = {
 					order = 2,
-					type = "range",
+					type = 'range',
 					name = L["Flyout Button Size"],
 					min = 15, max = 60, step = 1,
 				},
@@ -77,7 +77,7 @@ E.Options.args.actionbar = {
 				},
 				generalGroup = {
 					order = 20,
-					type = "group",
+					type = 'group',
 					name = L["General"],
 					args = {
 						keyDown = {
@@ -89,7 +89,7 @@ E.Options.args.actionbar = {
 						},
 						lockActionBars = {
 							order = 14,
-							type = "toggle",
+							type = 'toggle',
 							name = L["LOCK_ACTIONBAR_TEXT"],
 							desc = L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."],
 							set = function(info, value)
@@ -98,12 +98,12 @@ E.Options.args.actionbar = {
 
 								--Make it work for PetBar too
 								SetCVar('lockActionBars', (value == true and 1 or 0))
-								LOCK_ACTIONBAR = (value == true and "1" or "0")
+								LOCK_ACTIONBAR = (value == true and '1' or '0')
 							end,
 						},
 						hideCooldownBling = {
 							order = 15,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Hide Cooldown Bling"],
 							desc = L["Hides the bling animation on buttons at the end of the global cooldown."],
 							get = function(info) return E.db.actionbar.hideCooldownBling end,
@@ -116,14 +116,14 @@ E.Options.args.actionbar = {
 						},
 						addNewSpells = {
 							order = 16,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Auto Add New Spells"],
 							desc = L["Allow newly learned spells to be automatically placed on an empty actionbar slot."],
 							set = function(info, value) E.db.actionbar.addNewSpells = value; AB:IconIntroTracker_Toggle() end,
 						},
 						rightClickSelfCast = {
 							order = 17,
-							type = "toggle",
+							type = 'toggle',
 							name = L["RightClick Self-Cast"],
 							set = function(info, value)
 								E.db.actionbar.rightClickSelfCast = value;
@@ -134,7 +134,7 @@ E.Options.args.actionbar = {
 						},
 						useDrawSwipeOnCharges = {
 							order = 18,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Charge Draw Swipe"],
 							desc = L["Shows a swipe animation when a spell is recharging but still has charges left."],
 							get = function(info) return E.db.actionbar.useDrawSwipeOnCharges end,
@@ -146,7 +146,7 @@ E.Options.args.actionbar = {
 						},
 						chargeCooldown = {
 							order = 19,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Charge Cooldown Text"],
 							set = function(info, value)
 								E.db.actionbar.chargeCooldown = value;
@@ -155,7 +155,7 @@ E.Options.args.actionbar = {
 						},
 						desaturateOnCooldown = {
 							order = 20,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Desaturate Cooldowns"],
 							set = function(info, value)
 								E.db.actionbar.desaturateOnCooldown = value;
@@ -164,47 +164,47 @@ E.Options.args.actionbar = {
 						},
 						transparent = {
 							order = 21,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Transparent"],
 							set = function(info, value)
 								E.db.actionbar.transparent = value
-								E:StaticPopup_Show("PRIVATE_RL")
+								E:StaticPopup_Show('PRIVATE_RL')
 							end,
 						},
 						flashAnimation = {
 							order = 22,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Button Flash"],
 							desc = L["Use a more visible flash animation for Auto Attacks."],
 							set = function(info, value)
 								E.db.actionbar.flashAnimation = value
-								E:StaticPopup_Show("PRIVATE_RL")
+								E:StaticPopup_Show('PRIVATE_RL')
 							end,
 						},
 						equippedItem = {
 							order = 23,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Equipped Item"],
 							get = function(info) return E.db.actionbar[info[#info]] end,
 							set = function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end
 						},
 						macrotext = {
 							order = 24,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Macro Text"],
 							desc = L["Display macro names on action buttons."],
 							disabled = function() return not E.private.actionbar.enable end,
 						},
 						hotkeytext = {
 							order = 25,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Keybind Text"],
 							desc = L["Display bind names on action buttons."],
 							disabled = function() return not E.private.actionbar.enable end,
 						},
 						useRangeColorText = {
 							order = 26,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Color Keybind Text"],
 							desc = L["Color Keybind Text when Out of Range, instead of the button."],
 						},
@@ -212,7 +212,7 @@ E.Options.args.actionbar = {
 				},
 				colorGroup = {
 					order = 30,
-					type = "group",
+					type = 'group',
 					name = L["COLORS"],
 					get = function(info)
 						local t = E.db.actionbar[info[#info]]
@@ -268,7 +268,7 @@ E.Options.args.actionbar = {
 						},
 						equippedItemColor = {
 							order = 7,
-							type = "color",
+							type = 'color',
 							name = L["Equipped Item Color"]
 						},
 					},
@@ -280,7 +280,7 @@ E.Options.args.actionbar = {
 					name = L["Fonts"],
 					args = {
 						font = {
-							type = "select", dialogControl = 'LSM30_Font',
+							type = 'select', dialogControl = 'LSM30_Font',
 							order = 2,
 							name = L["Font"],
 							values = AceGUIWidgetLSMlists.font,
@@ -288,14 +288,14 @@ E.Options.args.actionbar = {
 						fontSize = {
 							order = 3,
 							name = L["FONT_SIZE"],
-							type = "range",
+							type = 'range',
 							min = 4, max = 212, step = 1,
 						},
 						fontOutline = {
 							order = 4,
 							name = L["Font Outline"],
 							desc = L["Set the font outline."],
-							type = "select",
+							type = 'select',
 							values = C.Values.FontFlags,
 						},
 					},
@@ -359,26 +359,26 @@ E.Options.args.actionbar = {
 				},
 				masqueGroup = {
 					order = 60,
-					type = "group",
+					type = 'group',
 					name = L["Masque Support"],
 					get = function(info) return E.private.actionbar.masque[info[#info]] end,
-					set = function(info, value) E.private.actionbar.masque[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end,
+					set = function(info, value) E.private.actionbar.masque[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end,
 					disabled = function() return not E.Masque or not E.private.actionbar.enable end,
 					--hidden = function() return not E.Masque end,
 					args = {
 						actionbars = {
 							order = 1,
-							type = "toggle",
+							type = 'toggle',
 							name = L["ActionBars"]
 						},
 						petBar = {
 							order = 1,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Pet Bar"]
 						},
 						stanceBar = {
 							order = 1,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Stance Bar"]
 						}
 					}
@@ -527,12 +527,12 @@ E.Options.args.actionbar = {
 					name = L["Anchor Point"],
 					desc = L["The first button anchors itself to this point on the bar."],
 					values = {
-						["TOPLEFT"] = "TOPLEFT",
-						["TOPRIGHT"] = "TOPRIGHT",
-						["BOTTOMLEFT"] = "BOTTOMLEFT",
-						["BOTTOMRIGHT"] = "BOTTOMRIGHT",
-						["BOTTOM"] = "BOTTOM",
-						["TOP"] = "TOP",
+						['TOPLEFT'] = 'TOPLEFT',
+						['TOPRIGHT'] = 'TOPRIGHT',
+						['BOTTOMLEFT'] = 'BOTTOMLEFT',
+						['BOTTOMRIGHT'] = 'BOTTOMRIGHT',
+						['BOTTOM'] = 'BOTTOM',
+						['TOP'] = 'TOP',
 					},
 				},
 				generalOptions = {
@@ -635,7 +635,7 @@ E.Options.args.actionbar = {
 			},
 		},
 		microbar = {
-			type = "group",
+			type = 'group',
 			name = L["Micro Bar"],
 			order = 16,
 			disabled = function() return not E.ActionBars.Initialized; end,
@@ -644,14 +644,14 @@ E.Options.args.actionbar = {
 			args = {
 				enabled = {
 					order = 1,
-					type = "toggle",
+					type = 'toggle',
 					name = L["Enable"],
 				},
 				mouseover = {
 					order = 2,
 					name = L["Mouse Over"],
 					desc = L["The frame is not shown unless you mouse over the frame."],
-					type = "toggle",
+					type = 'toggle',
 				},
 				alpha = {
 					order = 3,
@@ -700,7 +700,7 @@ E.Options.args.actionbar = {
 			},
 		},
 		extraActionButton = {
-			type = "group",
+			type = 'group',
 			name = L["Boss Button"],
 			order = 17,
 			disabled = function() return not E.ActionBars.Initialized; end,
@@ -717,7 +717,7 @@ E.Options.args.actionbar = {
 				},
 				scale = {
 					order = 2,
-					type = "range",
+					type = 'range',
 					name = L["Scale"],
 					isPercent = true,
 					min = 0.2, max = 2, step = 0.01,
@@ -726,7 +726,7 @@ E.Options.args.actionbar = {
 			},
 		},
 		vehicleExitButton = {
-			type = "group",
+			type = 'group',
 			name = L["Vehicle Exit"],
 			order = 18,
 			disabled = function() return not E.ActionBars.Initialized; end,
@@ -737,7 +737,7 @@ E.Options.args.actionbar = {
 					order = 1,
 					type = 'toggle',
 					name = L["Enable"],
-					set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end
+					set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end
 				},
 				size = {
 					order = 2,
@@ -747,21 +747,21 @@ E.Options.args.actionbar = {
 				},
 				level = {
 					order = 3,
-					type = "range",
+					type = 'range',
 					name = L["Frame Level"],
 					min = 1, max = 128, step = 1,
 				},
 				strata = {
 					order = 4,
-					type = "select",
+					type = 'select',
 					name = L["Frame Strata"],
 					values = {
-						["BACKGROUND"] = "BACKGROUND",
-						["LOW"] = "LOW",
-						["MEDIUM"] = "MEDIUM",
-						["HIGH"] = "HIGH",
-						["DIALOG"] = "DIALOG",
-						["TOOLTIP"] = "TOOLTIP",
+						['BACKGROUND'] = 'BACKGROUND',
+						['LOW'] = 'LOW',
+						['MEDIUM'] = 'MEDIUM',
+						['HIGH'] = 'HIGH',
+						['DIALOG'] = 'DIALOG',
+						['TOOLTIP'] = 'TOOLTIP',
 					},
 				},
 			},
@@ -769,8 +769,8 @@ E.Options.args.actionbar = {
 		playerBars = {
 			order = 4,
 			name = L["Player Bars"],
-			type = "group",
-			childGroups = "tree",
+			type = 'group',
+			childGroups = 'tree',
 			args = {},
 		},
 	},
@@ -825,15 +825,15 @@ for i = 1, 10 do
 			},
 			flyoutDirection = {
 				order = 5,
-				type = "select",
+				type = 'select',
 				name = L["Flyout Direction"],
-				set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value; AB:PositionAndSizeBar('bar'..i); AB:UpdateButtonSettingsForBar("bar"..i) end,
+				set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value; AB:PositionAndSizeBar('bar'..i); AB:UpdateButtonSettingsForBar('bar'..i) end,
 				values = {
-					["UP"] = L["Up"],
-					["DOWN"] = L["Down"],
-					["LEFT"] = L["Left"],
-					["RIGHT"] = L["Right"],
-					["AUTOMATIC"] = L["Automatic"],
+					['UP'] = L["Up"],
+					['DOWN'] = L["Down"],
+					['LEFT'] = L["Left"],
+					['RIGHT'] = L["Right"],
+					['AUTOMATIC'] = L["Automatic"],
 				},
 			},
 			buttons = {
@@ -952,9 +952,9 @@ E.Options.args.actionbar.args.playerBars.args.bar1.args.pagingReset = {
 
 E.Options.args.actionbar.args.playerBars.args.bar6.args.enabled.set = function(info, value)
 	E.db.actionbar.bar6.enabled = value;
-	AB:PositionAndSizeBar("bar6")
+	AB:PositionAndSizeBar('bar6')
 
 	--Update Bar 1 paging when Bar 6 is enabled/disabled
 	AB:UpdateBar1Paging()
-	AB:PositionAndSizeBar("bar1")
+	AB:PositionAndSizeBar('bar1')
 end

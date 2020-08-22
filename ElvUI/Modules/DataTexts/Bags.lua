@@ -46,8 +46,8 @@ local function OnEnter()
 			local r, g, b, icon
 
 			if i > 0 then
-				r, g, b = GetItemQualityColor(GetInventoryItemQuality("player", sumNum) or 1)
-				icon = GetInventoryItemTexture("player", sumNum)
+				r, g, b = GetItemQualityColor(GetInventoryItemQuality('player', sumNum) or 1)
+				icon = GetInventoryItemTexture('player', sumNum)
 			end
 
 			DT.tooltip:AddDoubleLine(format(iconString, icon or bagIcon, bagName), format('%d / %d', usedSlots, numSlots), r or 1, g or 1, b or 1, r2, g2, b2)
@@ -57,9 +57,9 @@ local function OnEnter()
 	for i = 1, MAX_WATCHED_TOKENS do
 		local name, count, icon = GetBackpackCurrencyInfo(i)
 		if name and i == 1 then
-			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(CURRENCY)
-			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(' ')
 		end
 		if name and count then
 			DT.tooltip:AddDoubleLine(format(iconString, icon, name), count, 1, 1, 1, 1, 1, 1)
@@ -70,10 +70,10 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s", hex, "%d/%d|r")
+	displayString = strjoin('', '%s', hex, '%d/%d|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Bags', nil, {"BAG_UPDATE"}, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"])
+DT:RegisterDatatext('Bags', nil, {'BAG_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"])

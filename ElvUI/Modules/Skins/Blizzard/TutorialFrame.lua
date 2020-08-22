@@ -7,15 +7,15 @@ function S:TutorialFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Tutorials) then return end
 
 	-- Dont use :StripTextures() here
-	_G.TutorialFrame:CreateBackdrop("Transparent")
+	_G.TutorialFrame:CreateBackdrop('Transparent')
 	_G.TutorialFrameBackground:Hide()
 	_G.TutorialFrameBackground.Show = E.noop
-	_G.TutorialFrame:DisableDrawLayer("BORDER")
+	_G.TutorialFrame:DisableDrawLayer('BORDER')
 
 	S:HandleCloseButton(_G.TutorialFrameCloseButton)
 	S:HandleButton(_G.TutorialFrameOkayButton)
-	S:HandleNextPrevButton(_G.TutorialFramePrevButton, "left")
-	S:HandleNextPrevButton(_G.TutorialFrameNextButton, "right")
+	S:HandleNextPrevButton(_G.TutorialFramePrevButton, 'left')
+	S:HandleNextPrevButton(_G.TutorialFrameNextButton, 'right')
 end
 
 S:AddCallback('TutorialFrame')

@@ -108,7 +108,7 @@ function DT:ToggleBattleStats()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%s|r")
+	displayString = strjoin('', '%s: ', hex, '%s|r')
 
 	if DT.ShowingBattleStats then
 		DT:UpdateBattlePanel('LEFT')

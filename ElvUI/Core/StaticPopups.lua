@@ -767,7 +767,7 @@ function E:StaticPopup_FindVisible(which, data)
 		return nil
 	end
 	for index = 1, MAX_STATIC_POPUPS, 1 do
-		local frame = _G["ElvUI_StaticPopup"..index]
+		local frame = _G['ElvUI_StaticPopup'..index]
 		if ( frame and frame:IsShown() and (frame.which == which) and (not info.multiple or (frame.data == data)) ) then
 			return frame
 		end
@@ -851,7 +851,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 
 	if ( info.cancels ) then
 		for index = 1, MAX_STATIC_POPUPS, 1 do
-			local frame = _G["ElvUI_StaticPopup"..index]
+			local frame = _G['ElvUI_StaticPopup'..index]
 			if ( frame:IsShown() and (frame.which == info.cancels) ) then
 				frame:Hide()
 				local OnCancel = E.PopupDialogs[frame.which].OnCancel
@@ -880,7 +880,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 			index = info.preferredIndex
 		end
 		for i = index, MAX_STATIC_POPUPS do
-			local frame = _G["ElvUI_StaticPopup"..i]
+			local frame = _G['ElvUI_StaticPopup'..i]
 			if ( frame and  not frame:IsShown() ) then
 				dialog = frame
 				break
@@ -890,7 +890,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		--If dialog not found and there's a preferredIndex then try to find an available frame before the preferredIndex
 		if ( not dialog and info.preferredIndex ) then
 			for i = 1, info.preferredIndex do
-				local frame = _G["ElvUI_StaticPopup"..i]
+				local frame = _G['ElvUI_StaticPopup'..i]
 				if ( frame and not frame:IsShown() ) then
 					dialog = frame
 					break
@@ -1013,7 +1013,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 
 		for i=#tempButtonLocs, 1, -1 do
 			--Do this stuff before we move it. (This is why we go back-to-front)
-			tempButtonLocs[i]:SetText(info["button"..i])
+			tempButtonLocs[i]:SetText(info['button'..i])
 			tempButtonLocs[i]:Hide()
 			tempButtonLocs[i]:ClearAllPoints()
 			--Now we possibly remove it.
@@ -1122,7 +1122,7 @@ end
 
 function E:StaticPopup_Hide(which, data)
 	for index = 1, MAX_STATIC_POPUPS, 1 do
-		local dialog = _G["ElvUI_StaticPopup"..index]
+		local dialog = _G['ElvUI_StaticPopup'..index]
 		if ( (dialog.which == which) and (not data or (data == dialog.data)) ) then
 			dialog:Hide()
 		end

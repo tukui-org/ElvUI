@@ -9,7 +9,7 @@ local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
 	self:SetBackdrop(nil)
-	self:SetTemplate("Transparent", nil, true)
+	self:SetTemplate('Transparent', nil, true)
 end
 
 function S:TooltipFrames()
@@ -19,7 +19,7 @@ function S:TooltipFrames()
 
 	-- Skin Blizzard Tooltips
 	local ItemTooltip = _G.GameTooltip.ItemTooltip
-	ItemTooltip:CreateBackdrop("Default")
+	ItemTooltip:CreateBackdrop('Default')
 	ItemTooltip.backdrop:SetOutside(ItemTooltip.Icon)
 	ItemTooltip.Count:ClearAllPoints()
 	ItemTooltip.Count:SetPoint('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
@@ -41,34 +41,34 @@ function S:TooltipFrames()
 	local embedded = _G.EmbeddedItemTooltip
 	local reward = embedded.ItemTooltip
 	local icon = reward.Icon
-	embedded:SetTemplate("Transparent")
+	embedded:SetTemplate('Transparent')
 
 	if reward and reward.backdrop then
-		reward.backdrop:SetPoint("TOPLEFT", icon, "TOPLEFT", -2, 2)
-		reward.backdrop:SetPoint("BOTTOMRIGHT", icon, "BOTTOMRIGHT", 2, -2)
+		reward.backdrop:SetPoint('TOPLEFT', icon, 'TOPLEFT', -2, 2)
+		reward.backdrop:SetPoint('BOTTOMRIGHT', icon, 'BOTTOMRIGHT', 2, -2)
 	end
 
 	if icon then
 		S:HandleIcon(icon, true)
-		hooksecurefunc(reward.IconBorder, "SetVertexColor", function(border, r, g, b)
+		hooksecurefunc(reward.IconBorder, 'SetVertexColor', function(border, r, g, b)
 			border:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
 			border:SetTexture()
 		end)
-		hooksecurefunc(reward.IconBorder, "Hide", function(border)
+		hooksecurefunc(reward.IconBorder, 'Hide', function(border)
 			border:GetParent().Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end)
 	end
 
-	embedded:HookScript("OnShow", function(tt)
-		tt:SetTemplate("Transparent")
+	embedded:HookScript('OnShow', function(tt)
+		tt:SetTemplate('Transparent')
 	end)
 
 	-- Skin GameTooltip Status Bar
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
 	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
 	_G.GameTooltipStatusBar:ClearAllPoints()
-	_G.GameTooltipStatusBar:SetPoint("TOPLEFT", _G.GameTooltip, "BOTTOMLEFT", E.Border, -(E.Spacing * 3))
-	_G.GameTooltipStatusBar:SetPoint("TOPRIGHT", _G.GameTooltip, "BOTTOMRIGHT", -E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:SetPoint('TOPLEFT', _G.GameTooltip, 'BOTTOMLEFT', E.Border, -(E.Spacing * 3))
+	_G.GameTooltipStatusBar:SetPoint('TOPRIGHT', _G.GameTooltip, 'BOTTOMRIGHT', -E.Border, -(E.Spacing * 3))
 	E:RegisterStatusBar(_G.GameTooltipStatusBar)
 
 	-- Tooltip Styling
@@ -99,10 +99,10 @@ function S:TooltipFrames()
 	TT:SecureHookScript(_G.GameTooltip, 'OnUpdate', 'CheckBackdropColor')
 
 	-- Used for Island Skin
-	TT:RegisterEvent("ADDON_LOADED", function(event, addon)
-		if addon == "Blizzard_IslandsQueueUI" then
+	TT:RegisterEvent('ADDON_LOADED', function(event, addon)
+		if addon == 'Blizzard_IslandsQueueUI' then
 			local tt = _G.IslandsQueueFrameTooltip:GetParent()
-			tt:GetParent():HookScript("OnShow", IslandTooltipStyle)
+			tt:GetParent():HookScript('OnShow', IslandTooltipStyle)
 			tt.IconBorder:SetAlpha(0)
 			tt.Icon:SetTexCoord(unpack(E.TexCoords))
 			TT:UnregisterEvent(event)

@@ -11,7 +11,7 @@ local MAX_TOTEMS = MAX_TOTEMS
 
 function TOTEMS:Update()
 	for i=1, MAX_TOTEMS do
-		local button = _G["TotemFrameTotem"..i];
+		local button = _G['TotemFrameTotem'..i];
 		local _, _, startTime, duration, icon = GetTotemInfo(button.slot);
 
 		if button:IsShown() then
