@@ -522,32 +522,37 @@ function E:IsIncompatible(module, addons)
 end
 
 do
-	local ADDONS_CHAT = {
-		'Prat-3.0',
-		'Chatter',
-		'Glass'
+	local ADDONS = {
+		Chat = {
+			ModuleEnabled = function() return E.private.chat.enable end,
+			'Prat-3.0',
+			'Chatter',
+			'Glass'
+		},
+		NamePlates = {
+			ModuleEnabled = function() return E.private.nameplates.enable end,
+			'TidyPlates',
+			'Healers-Have-To-Die',
+			'Kui_Nameplates',
+			'Plater',
+			'Aloft'
+		},
+		ActionBar = {
+			ModuleEnabled = function() return E.private.actionbar.enable end,
+			'Bartender4',
+			'Dominos'
+		}
 	}
 
-	local ADDONS_NAMEPLATE = {
-		'TidyPlates',
-		'Healers-Have-To-Die',
-		'Kui_Nameplates',
-		'Plater',
-		'Aloft'
-	}
-
-	local ADDONS_ACTIONBAR = {
-		'Bartender4',
-		'Dominos'
-	}
-
+	E.INCOMPATIBLE_ADDONS = ADDONS -- let addons have the ability to alter this list to trigger our popup if they want
 	function E:CheckIncompatible()
 		if E.global.ignoreIncompatible then return end
 
-		local skip -- so we dont attempt to call incompatibility popup twice
-		if E.private.chat.enable then skip = E:IsIncompatible('Chat', ADDONS_CHAT) end
-		if not skip and E.private.nameplates.enable then skip = E:IsIncompatible('NamePlates', ADDONS_NAMEPLATE) end
-		if not skip and E.private.actionbar.enable then E:IsIncompatible('ActionBar', ADDONS_ACTIONBAR) end
+		for module, addons in pairs(ADDONS) do
+			if addons.ModuleEnabled() and E:IsIncompatible(module, addons) then
+				break
+			end
+		end
 	end
 end
 
