@@ -217,8 +217,9 @@ end
 
 function NP:Update_Fader(nameplate)
 	local db = NP:PlateDB(nameplate)
+	local vis = db.visibility
 
-	if (not db.visibility) or db.visibility.showAlways then
+	if not vis or vis.showAlways then
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
 
@@ -234,16 +235,16 @@ function NP:Update_Fader(nameplate)
 
 			nameplate.Fader:SetOption('MinAlpha', 0)
 			nameplate.Fader:SetOption('Smooth', 0.3)
-			nameplate.Fader:SetOption('Hover', (nameplate == _G.ElvNP_Player and _G.ElvNP_StaticSecure) or true)
+			nameplate.Fader:SetOption('Hover', true)
 			nameplate.Fader:SetOption('Power', true)
 			nameplate.Fader:SetOption('Health', true)
 			nameplate.Fader:SetOption('Casting', true)
 		end
 
-		nameplate.Fader:SetOption('PlayerTarget', db.visibility.showWithTarget)
-		nameplate.Fader:SetOption('Combat', db.visibility.showInCombat)
-		nameplate.Fader:SetOption('DelayAlpha', db.visibility.alphaDelay)
-		nameplate.Fader:SetOption('Delay', db.visibility.hideDelay)
+		nameplate.Fader:SetOption('Combat', vis.showInCombat)
+		nameplate.Fader:SetOption('PlayerTarget', vis.showWithTarget)
+		nameplate.Fader:SetOption('DelayAlpha', (vis.alphaDelay > 0 and vis.alphaDelay) or nil)
+		nameplate.Fader:SetOption('Delay', (vis.hideDelay > 0 and vis.hideDelay) or nil)
 
 		nameplate.Fader:ForceUpdate()
 	end
