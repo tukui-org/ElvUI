@@ -363,7 +363,7 @@ do --this can save some main file locals
 		['Imsosalty-Cenarius']			= itsSimpy, -- [Horde] Paladin
 		['Imsospicy-Cenarius']			= itsSimpy, -- [Horde] Mage
 		['Bunne-CenarionCircle']		= itsSimpy, -- [RP] Warrior
-		['Loppie-CenarionCircle']		= itsSimpy, -- [RP] Hunter
+		['Loppie-CenarionCircle']		= itsSimpy, -- [RP] Monk
 		['Loppybunny-CenarionCircle']	= itsSimpy, -- [RP] Mage
 		['Rubee-CenarionCircle']		= itsSimpy, -- [RP] DH
 		['Wennie-CenarionCircle']		= itsSimpy, -- [RP] Priest
