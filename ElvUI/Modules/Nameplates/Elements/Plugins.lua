@@ -242,6 +242,7 @@ function NP:Update_Fader(nameplate)
 
 		nameplate.Fader:SetOption('PlayerTarget', db.visibility.showWithTarget)
 		nameplate.Fader:SetOption('Combat', db.visibility.showInCombat)
+		nameplate.Fader:SetOption('DelayAlpha', db.visibility.alphaDelay)
 		nameplate.Fader:SetOption('Delay', db.visibility.hideDelay)
 
 		nameplate.Fader:ForceUpdate()

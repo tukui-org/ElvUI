@@ -137,7 +137,8 @@ function NP:SetCVars()
 	SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
 	SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
 	SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
-	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.hideDelay)
+	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.alphaDelay)
+	SetCVar('NameplatePersonalHideDelaySeconds', NP.db.units.PLAYER.visibility.hideDelay)
 
 	-- the order of these is important !!
 	SetCVar('nameplateShowAll', NP.db.visibility.showAll and 1 or 0)
@@ -654,7 +655,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.previousType = nameplate.frameType
 		end
 
-		if NP.db.fadeIn and (nameplate ~= _G.ElvNP_Player or (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition)) then
+		if NP.db.fadeIn and nameplate.frameType ~= 'PLAYER' then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 

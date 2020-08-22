@@ -622,6 +622,7 @@ P.nameplates = {
 				yOffset = 10,
 			},
 			visibility = {
+				alphaDelay = 1,
 				hideDelay = 3,
 				showAlways = false,
 				showInCombat = true,

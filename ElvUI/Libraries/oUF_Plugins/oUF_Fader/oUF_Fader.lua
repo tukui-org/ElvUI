@@ -94,6 +94,10 @@ local function Update(self, _, unit)
 		ToggleAlpha(self, element, element.MaxAlpha)
 	else
 		if element.Delay then
+			if element.DelayAlpha then
+				ToggleAlpha(self, element, element.DelayAlpha)
+			end
+
 			element:ClearTimers()
 			element.delayTimer = E:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
 		else
@@ -264,6 +268,7 @@ local options = {
 		end
 	},
 	Smooth = {countIgnored = true},
+	DelayAlpha = {countIgnored = true},
 	Delay = {countIgnored = true},
 }
 
