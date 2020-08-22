@@ -1353,7 +1353,7 @@ function CH:HandleShortChannels(msg)
 	msg = gsub(msg, '^(.-|h) '..L["yells"], '%1')
 	msg = gsub(msg, '<'.._G.AFK..'>', '[|cffFF0000'..L["AFK"]..'|r] ')
 	msg = gsub(msg, '<'.._G.DND..'>', '[|cffE7E716'..L["DND"]..'|r] ')
-	msg = gsub(msg, '^%['.._G.RAID_WARNING..'%]', '['..L["RW"].."]")
+	msg = gsub(msg, '^%['.._G.RAID_WARNING..'%]', '['..L["RW"]..']')
 	return msg
 end
 
@@ -1478,7 +1478,7 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 					end
 				end
 				if groupList ~= '[' then
-					groupList = groupList.."]"
+					groupList = groupList..']'
 					message = gsub(message, tag, groupList, 1)
 				end
 			end
@@ -1847,7 +1847,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			if usingDifferentLanguage then
-				local languageHeader = '['..arg3.."] "
+				local languageHeader = '['..arg3..'] '
 				if showLink and (arg2 ~= '') then
 					body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..playerLink)
 				else
@@ -1881,7 +1881,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- Add Channel
 			if channelLength > 0 then
-				body = '|Hchannel:channel:'..arg8..'|h['..ChatFrame_ResolvePrefixedChannelName(arg4).."]|h "..body
+				body = '|Hchannel:channel:'..arg8..'|h['..ChatFrame_ResolvePrefixedChannelName(arg4)..']|h '..body
 			end
 
 			if CH.db.shortChannels and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') then
