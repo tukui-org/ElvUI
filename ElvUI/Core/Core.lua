@@ -516,7 +516,7 @@ function E:IsIncompatible(module, addons)
 	for _, addon in ipairs(addons) do
 		if E:IsAddOnEnabled(addon) then
 			E:IncompatibleAddOn(addon, module)
-			break
+			return true
 		end
 	end
 end
@@ -543,9 +543,11 @@ do
 
 	function E:CheckIncompatible()
 		if E.global.ignoreIncompatible then return end
-		if E.private.chat.enable then E:IsIncompatible('Chat', ADDONS_CHAT) end
-		if E.private.nameplates.enable then E:IsIncompatible('NamePlates', ADDONS_NAMEPLATE) end
-		if E.private.actionbar.enable then E:IsIncompatible('ActionBar', ADDONS_ACTIONBAR) end
+
+		local skip -- so we dont attempt to call incompatibility popup twice
+		if E.private.chat.enable then skip = E:IsIncompatible('Chat', ADDONS_CHAT) end
+		if not skip and E.private.nameplates.enable then skip = E:IsIncompatible('NamePlates', ADDONS_NAMEPLATE) end
+		if not skip and E.private.actionbar.enable then E:IsIncompatible('ActionBar', ADDONS_ACTIONBAR) end
 	end
 end
 
