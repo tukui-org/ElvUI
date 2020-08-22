@@ -946,7 +946,6 @@ function AB:FixKeybindText(button)
 	end
 
 	if text then
-
 		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
 		text = gsub(text, 'ALT%-', L["KEY_ALT"])
 		text = gsub(text, 'CTRL%-', L["KEY_CTRL"])

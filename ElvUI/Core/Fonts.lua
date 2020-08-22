@@ -16,7 +16,7 @@ function E:UpdateBlizzardFonts()
 	local NUMBER		= E.media.normFont
 	local COMBAT		= LSM:Fetch('font', E.private.general.dmgfont)
 	local NAMEFONT		= LSM:Fetch('font', E.private.general.namefont)
-	--local BUBBLE		= LSM:Fetch('font', E.private.general.chatBubbleFont)
+	local BUBBLE		= LSM:Fetch('font', E.private.general.chatBubbleFont)
 	local SHADOWCOLOR	= _G.SHADOWCOLOR
 	local NORMALOFFSET	= _G.NORMALOFFSET
 	local BIGOFFSET		= _G.BIGOFFSET
@@ -51,7 +51,7 @@ function E:UpdateBlizzardFonts()
 		--SetFont(_G.GameFontNormalSmall,					NORMAL, 12, nil, nil, nil, nil, nil, nil, nil, unpack(E.media.rgbvaluecolor))
 		SetFont(_G.AchievementFont_Small,				NORMAL, E.db.general.fontSize)			-- Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)									-- Talent Title
-		--SetFont(_G.ChatBubbleFont,						BUBBLE, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
+		SetFont(_G.ChatBubbleFont,						BUBBLE, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 		SetFont(_G.CoreAbilityFont,						NORMAL, 26)									-- Core abilities(title)
 		SetFont(_G.DestinyFontHuge,						NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Garrison Mission Report
 		SetFont(_G.DestinyFontMed,						NORMAL, 14)									-- Added in 7.3.5 used for ?
