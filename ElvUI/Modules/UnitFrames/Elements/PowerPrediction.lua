@@ -50,16 +50,16 @@ function UF:Configure_PowerPrediction(frame)
 		mainBar:SetReverseFill(not reverseFill)
 		mainBar:SetStatusBarTexture(UF.db.colors.transparentPower and E.media.blankTex or powerBarTexture:GetTexture())
 
-		if orientation == "HORIZONTAL" then
-			local point = reverseFill and "LEFT" or "RIGHT"
-			mainBar:SetPoint("TOP", power, "TOP")
-			mainBar:SetPoint("BOTTOM", power, "BOTTOM")
+		if orientation == 'HORIZONTAL' then
+			local point = reverseFill and 'LEFT' or 'RIGHT'
+			mainBar:SetPoint('TOP', power, 'TOP')
+			mainBar:SetPoint('BOTTOM', power, 'BOTTOM')
 			mainBar:SetPoint(point, powerBarTexture, point)
 			mainBar:SetSize(power:GetWidth(), 0)
 		else
-			local point = reverseFill and "BOTTOM" or "TOP"
-			mainBar:SetPoint("LEFT", power, "LEFT")
-			mainBar:SetPoint("RIGHT", power, "RIGHT")
+			local point = reverseFill and 'BOTTOM' or 'TOP'
+			mainBar:SetPoint('LEFT', power, 'LEFT')
+			mainBar:SetPoint('RIGHT', power, 'RIGHT')
 			mainBar:SetPoint(point, powerBarTexture, point)
 			mainBar:SetSize(0, power:GetHeight())
 		end
@@ -73,15 +73,15 @@ function UF:Configure_PowerPrediction(frame)
 			altBar:SetStatusBarTexture(UF.db.colors.transparentPower and E.media.blankTex or altPowerBarTexture:GetTexture())
 			altBar:SetOrientation((frame.db.classbar.verticalOrientation and 'VERTICAL') or 'HORIZONTAL')
 
-			if orientation == "HORIZONTAL" then
-				altBar:SetPoint("TOP", altPower, "TOP")
-				altBar:SetPoint("BOTTOM", altPower, "BOTTOM")
-				altBar:SetPoint("RIGHT", altPowerBarTexture, "RIGHT")
+			if orientation == 'HORIZONTAL' then
+				altBar:SetPoint('TOP', altPower, 'TOP')
+				altBar:SetPoint('BOTTOM', altPower, 'BOTTOM')
+				altBar:SetPoint('RIGHT', altPowerBarTexture, 'RIGHT')
 				altBar:SetSize(altPower:GetWidth(), 0)
 			else
-				altBar:SetPoint("LEFT", altPower, "LEFT")
-				altBar:SetPoint("RIGHT", altPower, "RIGHT")
-				altBar:SetPoint("TOP", altPowerBarTexture, "TOP")
+				altBar:SetPoint('LEFT', altPower, 'LEFT')
+				altBar:SetPoint('RIGHT', altPower, 'RIGHT')
+				altBar:SetPoint('TOP', altPowerBarTexture, 'TOP')
 				altBar:SetSize(0, altPower:GetHeight())
 			end
 		end

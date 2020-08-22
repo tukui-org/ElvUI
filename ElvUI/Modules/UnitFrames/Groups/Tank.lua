@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local max = max
@@ -36,9 +36,9 @@ function UF:Construct_TankFrames()
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.AuraHighlight = UF:Construct_AuraHighlight(self)
 
-		self.unitframeType = "tank"
+		self.unitframeType = 'tank'
 	else
-		self.unitframeType = "tanktarget"
+		self.unitframeType = 'tanktarget'
 	end
 
 	self.originalParent = self:GetParent()
@@ -136,11 +136,11 @@ function UF:Update_TankFrames(frame, db)
 	UF:Configure_RaidIcon(frame)
 
 	if not frame.isChild then
-		if not IsAddOnLoaded("Clique") then
+		if not IsAddOnLoaded('Clique') then
 			if db.middleClickFocus then
-				frame:SetAttribute("type3", "focus")
-			elseif frame:GetAttribute("type3") == "focus" then
-				frame:SetAttribute("type3", nil)
+				frame:SetAttribute('type3', 'focus')
+			elseif frame:GetAttribute('type3') == 'focus' then
+				frame:SetAttribute('type3', nil)
 			end
 		end
 
@@ -151,7 +151,7 @@ function UF:Update_TankFrames(frame, db)
 		UF:Configure_AuraWatch(frame)
 	end
 
-	frame:UpdateAllElements("ElvUI_UpdateAllElements")
+	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 UF.headerstoload.tank = {'MAINTANK', 'ELVUI_UNITTARGET'}

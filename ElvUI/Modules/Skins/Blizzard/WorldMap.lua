@@ -27,12 +27,12 @@ function S:WorldMapFrame()
 	WorldMapFrame.BorderFrame.NineSlice:Hide()
 	WorldMapFrame.NavBar:StripTextures()
 	WorldMapFrame.NavBar.overlay:StripTextures()
-	WorldMapFrame.NavBar:SetPoint("TOPLEFT", 1, -40)
+	WorldMapFrame.NavBar:SetPoint('TOPLEFT', 1, -40)
 
 	WorldMapFrame.ScrollContainer:CreateBackdrop()
-	WorldMapFrame:CreateBackdrop("Transparent")
-	WorldMapFrame.backdrop:SetPoint("TOPLEFT", WorldMapFrame, "TOPLEFT", -8, 0)
-	WorldMapFrame.backdrop:SetPoint("BOTTOMRIGHT", WorldMapFrame, "BOTTOMRIGHT", 0, -9)
+	WorldMapFrame:CreateBackdrop('Transparent')
+	WorldMapFrame.backdrop:SetPoint('TOPLEFT', WorldMapFrame, 'TOPLEFT', -8, 0)
+	WorldMapFrame.backdrop:SetPoint('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 0, -9)
 
 	S:HandleButton(WorldMapFrame.NavBar.homeButton)
 	WorldMapFrame.NavBar.homeButton.xoffset = 1
@@ -73,8 +73,8 @@ function S:WorldMapFrame()
 
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
-	QuestScrollFrameScrollBar:SetPoint("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPRIGHT", 1, -15)
-	QuestScrollFrameScrollBar:SetPoint("BOTTOMLEFT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", 6, 10)
+	QuestScrollFrameScrollBar:SetPoint('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPRIGHT', 1, -15)
+	QuestScrollFrameScrollBar:SetPoint('BOTTOMLEFT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', 6, 10)
 
 	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton, true)
 	QuestMapFrame.DetailsFrame.BackButton:SetFrameLevel(5)
@@ -98,27 +98,27 @@ function S:WorldMapFrame()
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, "left")
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, "right")
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right')
 
 	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
 	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:ClearAllPoints()
-	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:SetPoint("RIGHT", WorldMapFrame.BorderFrame.CloseButton, "LEFT", 12, 0)
+	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:SetPoint('RIGHT', WorldMapFrame.BorderFrame.CloseButton, 'LEFT', 12, 0)
 
 	if E.global.general.disableTutorialButtons then
 		WorldMapFrame.BorderFrame.Tutorial:Kill()
 	end
 
 	-- Add a hook to adjust the OverlayFrames
-	hooksecurefunc(WorldMapFrame, "AddOverlayFrame", S.WorldMapMixin_AddOverlayFrame)
+	hooksecurefunc(WorldMapFrame, 'AddOverlayFrame', S.WorldMapMixin_AddOverlayFrame)
 
 	-- Elements
 	S:HandleDropDownBox(WorldMapFrame.overlayFrames[1]) -- NavBar handled in ElvUI/modules/skins/misc
 
 	WorldMapFrame.overlayFrames[2]:StripTextures()
 	WorldMapFrame.overlayFrames[2].Icon:SetTexture([[Interface\Minimap\Tracking\None]])
-	WorldMapFrame.overlayFrames[2]:SetHighlightTexture([[Interface\Minimap\Tracking\None]], "ADD")
+	WorldMapFrame.overlayFrames[2]:SetHighlightTexture([[Interface\Minimap\Tracking\None]], 'ADD')
 	WorldMapFrame.overlayFrames[2]:GetHighlightTexture():SetAllPoints(WorldMapFrame.overlayFrames[2].Icon)
 
 	-- 8.2.5 Party Sync | Credits Aurora/Shestak
@@ -128,20 +128,20 @@ function S:WorldMapFrame()
 	ExecuteSessionCommand:CreateBackdrop()
 	ExecuteSessionCommand:StyleButton()
 
-	local icon = ExecuteSessionCommand:CreateTexture(nil, "ARTWORK")
-	icon:SetPoint("TOPLEFT", 0, 0)
-	icon:SetPoint("BOTTOMRIGHT", 0, 0)
+	local icon = ExecuteSessionCommand:CreateTexture(nil, 'ARTWORK')
+	icon:SetPoint('TOPLEFT', 0, 0)
+	icon:SetPoint('BOTTOMRIGHT', 0, 0)
 	ExecuteSessionCommand.normalIcon = icon
 
 	local sessionCommandToButtonAtlas = {
-		[_G.Enum.QuestSessionCommand.Start] = "QuestSharing-DialogIcon",
-		[_G.Enum.QuestSessionCommand.Stop] = "QuestSharing-Stop-DialogIcon"
+		[_G.Enum.QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
+		[_G.Enum.QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
 	}
 
-	hooksecurefunc(QuestMapFrame.QuestSessionManagement, "UpdateExecuteCommandAtlases", function(s, command)
-		s.ExecuteSessionCommand:SetNormalTexture("")
-		s.ExecuteSessionCommand:SetPushedTexture("")
-		s.ExecuteSessionCommand:SetDisabledTexture("")
+	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', function(s, command)
+		s.ExecuteSessionCommand:SetNormalTexture('')
+		s.ExecuteSessionCommand:SetPushedTexture('')
+		s.ExecuteSessionCommand:SetDisabledTexture('')
 
 		local atlas = sessionCommandToButtonAtlas[command]
 		if atlas then
@@ -149,20 +149,20 @@ function S:WorldMapFrame()
 		end
 	end)
 
-	hooksecurefunc(_G.QuestSessionManager, "NotifyDialogShow", function(_, dialog)
+	hooksecurefunc(_G.QuestSessionManager, 'NotifyDialogShow', function(_, dialog)
 		if not dialog.isSkinned then
 			dialog:StripTextures()
-			dialog:CreateBackdrop("Transparent")
+			dialog:CreateBackdrop('Transparent')
 			S:HandleButton(dialog.ButtonContainer.Confirm)
 			S:HandleButton(dialog.ButtonContainer.Decline)
 			if dialog.MinimizeButton then
 				dialog.MinimizeButton:StripTextures()
 				dialog.MinimizeButton:SetSize(16, 16)
 
-				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, "OVERLAY")
+				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, 'OVERLAY')
 				dialog.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)
 				dialog.MinimizeButton.tex:SetInside()
-				dialog.MinimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
+				dialog.MinimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
 			end
 			dialog.isSkinned = true
 		end

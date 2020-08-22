@@ -25,7 +25,7 @@ local function OnEnter()
 			DT.tooltip:AddSpellByID(masterySpell)
 		end
 		if masterySpell2 then
-			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddSpellByID(masterySpell2)
 		end
 
@@ -34,10 +34,10 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s: ", hex, "%.2f%%|r")
+	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {"MASTERY_UPDATE"}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY)
+DT:RegisterDatatext('Mastery', STAT_CATEGORY_ENHANCEMENTS, {'MASTERY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, STAT_MASTERY)

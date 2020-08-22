@@ -122,14 +122,14 @@ function DB:UpdateExperienceDimensions()
 	DB.expBar:SetWidth(DB.db.experience.width)
 	DB.expBar:SetHeight(DB.db.experience.height)
 
-	DB.expBar.text:FontTemplate(LSM:Fetch("font", DB.db.experience.font), DB.db.experience.textSize, DB.db.experience.fontOutline)
+	DB.expBar.text:FontTemplate(LSM:Fetch('font', DB.db.experience.font), DB.db.experience.textSize, DB.db.experience.fontOutline)
 	DB.expBar.rested:SetOrientation(DB.db.experience.orientation)
 	DB.expBar.statusBar:SetReverseFill(DB.db.experience.reverseFill)
 
 	DB.expBar.statusBar:SetOrientation(DB.db.experience.orientation)
 	DB.expBar.rested:SetReverseFill(DB.db.experience.reverseFill)
 
-	if DB.db.experience.orientation == "HORIZONTAL" then
+	if DB.db.experience.orientation == 'HORIZONTAL' then
 		DB.expBar.rested:SetRotatesTexture(false)
 		DB.expBar.statusBar:SetRotatesTexture(false)
 	else
@@ -147,18 +147,18 @@ end
 function DB:EnableDisable_ExperienceBar()
 	if DB.db.experience.enable and (E.mylevel ~= 60 or not DB.db.experience.hideAtMaxLevel) then
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'UpdateExperience')
-		DB:RegisterEvent("DISABLE_XP_GAIN", 'UpdateExperience')
-		DB:RegisterEvent("ENABLE_XP_GAIN", 'UpdateExperience')
+		DB:RegisterEvent('DISABLE_XP_GAIN', 'UpdateExperience')
+		DB:RegisterEvent('ENABLE_XP_GAIN', 'UpdateExperience')
 		DB:RegisterEvent('UPDATE_EXHAUSTION', 'UpdateExperience')
-		DB:UnregisterEvent("UPDATE_EXPANSION_LEVEL")
+		DB:UnregisterEvent('UPDATE_EXPANSION_LEVEL')
 		DB:UpdateExperience()
 		E:EnableMover(DB.expBar.mover:GetName())
 	else
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')
-		DB:UnregisterEvent("DISABLE_XP_GAIN")
-		DB:UnregisterEvent("ENABLE_XP_GAIN")
+		DB:UnregisterEvent('DISABLE_XP_GAIN')
+		DB:UnregisterEvent('ENABLE_XP_GAIN')
 		DB:UnregisterEvent('UPDATE_EXHAUSTION')
-		DB:RegisterEvent("UPDATE_EXPANSION_LEVEL", "EnableDisable_ExperienceBar")
+		DB:RegisterEvent('UPDATE_EXPANSION_LEVEL', 'EnableDisable_ExperienceBar')
 		DB.expBar:Hide()
 		E:DisableMover(DB.expBar.mover:GetName())
 	end
@@ -173,16 +173,16 @@ function DB:LoadExperienceBar()
 	E:RegisterStatusBar(DB.expBar.rested)
 	DB.expBar.rested:SetStatusBarColor(1, 0, 1, 0.2)
 
-	DB.expBar.eventFrame = CreateFrame("Frame")
+	DB.expBar.eventFrame = CreateFrame('Frame')
 	DB.expBar.eventFrame:Hide()
-	DB.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
-	DB.expBar.eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-	DB.expBar.eventFrame:SetScript("OnEvent", function(_, event)
+	DB.expBar.eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
+	DB.expBar.eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
+	DB.expBar.eventFrame:SetScript('OnEvent', function(_, event)
 		DB:UpdateExperience(event)
 	end)
 
 	DB:UpdateExperienceDimensions()
 
-	E:CreateMover(DB.expBar, "ExperienceBarMover", L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
+	E:CreateMover(DB.expBar, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
 	DB:EnableDisable_ExperienceBar()
 end

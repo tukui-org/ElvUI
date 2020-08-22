@@ -86,7 +86,7 @@ do --taint workarounds by townlong-yak.com (rearranged by Simpy)
 	end
 
 	if _G.IOFRAME_SELECTION_PATCH_VERSION == 1 then
-		_G.InterfaceOptionsFrame:HookScript("OnHide", function()
+		_G.InterfaceOptionsFrame:HookScript('OnHide', function()
 			if _G.IOFRAME_SELECTION_PATCH_VERSION == 1 then
 				_G.InterfaceOptionsFrameCategories.selection = nil
 			end

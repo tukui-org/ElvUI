@@ -48,8 +48,8 @@ local function SkinItemButton(_, block)
 		item.icon:SetInside()
 		item.Cooldown:SetInside()
 		item.Count:ClearAllPoints()
-		item.Count:SetPoint("TOPLEFT", 1, -1)
-		item.Count:FontTemplate(E.media.normFont, 14, "OUTLINE")
+		item.Count:SetPoint('TOPLEFT', 1, -1)
+		item.Count:FontTemplate(E.media.normFont, 14, 'OUTLINE')
 		item.Count:SetShadowOffset(5, -5)
 		E:RegisterCooldown(item.Cooldown)
 		item.skinned = true
@@ -77,20 +77,20 @@ local function SkinProgressBars(_, _, line)
 
 		bar:SetHeight(18)
 		bar:StripTextures()
-		bar:CreateBackdrop("Transparent")
+		bar:CreateBackdrop('Transparent')
 		bar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(bar)
 
 		if label then
 			label:ClearAllPoints()
-			label:SetPoint("CENTER", bar, 0, 1)
-			label:FontTemplate(E.media.normFont, 14, "OUTLINE")
+			label:SetPoint('CENTER', bar, 0, 1)
+			label:FontTemplate(E.media.normFont, 14, 'OUTLINE')
 		end
 
 		if icon then
 			icon:ClearAllPoints()
-			icon:SetPoint("LEFT", bar, "RIGHT", E.PixelMode and 3 or 7, 0)
-			icon:SetMask("")
+			icon:SetPoint('LEFT', bar, 'RIGHT', E.PixelMode and 3 or 7, 0)
+			icon:SetMask('')
 			icon:SetTexCoord(unpack(E.TexCoords))
 
 			if not progressBar.backdrop then
@@ -116,7 +116,7 @@ local function SkinTimerBars(_, _, line)
 	if not timerBar.isSkinned then
 		bar:SetHeight(18)
 		bar:StripTextures()
-		bar:CreateBackdrop("Transparent")
+		bar:CreateBackdrop('Transparent')
 		bar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(bar)
 
@@ -172,8 +172,8 @@ function S:ObjectiveTrackerFrame()
 	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
 	minimize:StripTextures()
 	minimize:SetSize(16, 16)
-	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], "ADD")
-	minimize.tex = minimize:CreateTexture(nil, "OVERLAY")
+	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
+	minimize.tex = minimize:CreateTexture(nil, 'OVERLAY')
 	minimize.tex:SetTexture(E.Media.Textures.MinusButton)
 	minimize.tex:SetInside()
 

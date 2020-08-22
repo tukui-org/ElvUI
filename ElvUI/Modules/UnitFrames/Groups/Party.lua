@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local CreateFrame = CreateFrame
@@ -29,12 +29,12 @@ function UF:Construct_PartyFrames()
 
 		self.originalParent = self:GetParent()
 
-		self.childType = "pet"
+		self.childType = 'pet'
 		if self == _G[self.originalParent:GetName()..'Target'] then
-			self.childType = "target"
+			self.childType = 'target'
 		end
 
-		self.unitframeType = "party"..self.childType
+		self.unitframeType = 'party'..self.childType
 	else
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
 		self.Power = UF:Construct_PowerBar(self, true, true, 'LEFT')
@@ -64,11 +64,11 @@ function UF:Construct_PartyFrames()
 		self.ClassBar = 'AlternativePower'
 		self.customTexts = {}
 
-		self.Sparkle = CreateFrame("Frame", nil, self)
+		self.Sparkle = CreateFrame('Frame', nil, self)
 		self.Sparkle:SetAllPoints(self.Health)
 		self.Castbar = UF:Construct_Castbar(self)
 
-		self.unitframeType = "party"
+		self.unitframeType = 'party'
 	end
 
 	self.Fader = UF:Construct_Fader()
@@ -116,16 +116,16 @@ function UF:Update_PartyFrames(frame, db)
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
 		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (frame.BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2)))
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
-		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
+		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == 'MIDDLE')
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 		frame.CAN_HAVE_CLASSBAR = not frame.isChild
 		frame.MAX_CLASS_BAR = 1
 		frame.USE_CLASSBAR = db.classbar.enable and frame.CAN_HAVE_CLASSBAR
 		frame.CLASSBAR_SHOWN = frame.CAN_HAVE_CLASSBAR and frame[frame.ClassBar] and frame[frame.ClassBar]:IsShown()
 		frame.CLASSBAR_DETACHED = false
-		frame.USE_MINI_CLASSBAR = db.classbar.fill == "spaced" and frame.USE_CLASSBAR
+		frame.USE_MINI_CLASSBAR = db.classbar.fill == 'spaced' and frame.USE_CLASSBAR
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
-		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == "MIDDLE" and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
+		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == 'MIDDLE' and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
@@ -147,7 +147,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		frame.BOTTOM_OFFSET = 0
 
-		frame.db = frame.childType == "target" and db.targetsGroup or db.petsGroup
+		frame.db = frame.childType == 'target' and db.targetsGroup or db.petsGroup
 		db = frame.db
 
 		if frame.childType == 'pet' then
@@ -198,7 +198,7 @@ function UF:Update_PartyFrames(frame, db)
 	UF:Configure_Fader(frame)
 	UF:Configure_Cutaway(frame)
 
-	frame:UpdateAllElements("ElvUI_UpdateAllElements")
+	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 UF.headerstoload.party = {nil, 'ELVUI_UNITPET, ELVUI_UNITTARGET'}

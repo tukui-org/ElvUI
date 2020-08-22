@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='Achievement.lua'/>
 	<Script file='Addonmanager.lua'/>
 	<Script file='AdventureMap.lua'/>

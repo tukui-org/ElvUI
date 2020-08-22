@@ -94,7 +94,7 @@ function S:Blizzard_GarrisonUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
 	--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
-	hooksecurefunc("GarrisonMissionButton_SetRewards", function(s)
+	hooksecurefunc('GarrisonMissionButton_SetRewards', function(s)
 		--Set border color according to rarity of item
 		local firstRegion, r, g, b
 		local index = 0
@@ -103,10 +103,10 @@ function S:Blizzard_GarrisonUI()
 			if firstRegion then firstRegion:Hide() end
 
 			reward:ClearAllPoints()
-			if IsAddOnLoaded("GarrisonMissionManager") then -- otherwise we mess with this AddOn
-				reward:SetPoint("TOPRIGHT", -65 + (index * -65), -1)
+			if IsAddOnLoaded('GarrisonMissionManager') then -- otherwise we mess with this AddOn
+				reward:SetPoint('TOPRIGHT', -65 + (index * -65), -1)
 			else
-				reward:SetPoint("TOPRIGHT", -1 + (index * -65), -1)
+				reward:SetPoint('TOPRIGHT', -1 + (index * -65), -1)
 			end
 
 			if reward.IconBorder then
@@ -128,7 +128,7 @@ function S:Blizzard_GarrisonUI()
 		end
 	end)
 
-	hooksecurefunc("GarrisonMissionPage_SetReward", function(frame)
+	hooksecurefunc('GarrisonMissionPage_SetReward', function(frame)
 		frame.BG:SetTexture()
 		if not frame.backdrop then
 			S:HandleIcon(frame.Icon)
@@ -137,7 +137,7 @@ function S:Blizzard_GarrisonUI()
 			frame.IconBorder:SetTexture()
 		end
 
-		frame.Icon:SetDrawLayer("BORDER", 0)
+		frame.Icon:SetDrawLayer('BORDER', 0)
 	end)
 
 	hooksecurefunc("GarrisonMissionPortrait_SetFollowerPortrait", function(portraitFrame, followerInfo)
@@ -155,7 +155,7 @@ function S:Blizzard_GarrisonUI()
 	local GarrisonBuildingFrame = _G.GarrisonBuildingFrame
 	GarrisonBuildingFrame:StripTextures(true)
 	GarrisonBuildingFrame.TitleText:Show()
-	GarrisonBuildingFrame:CreateBackdrop("Transparent")
+	GarrisonBuildingFrame:CreateBackdrop('Transparent')
 
 	S:HandleCloseButton(GarrisonBuildingFrame.CloseButton, GarrisonBuildingFrame.backdrop)
 	if E.private.skins.blizzard.tooltip then
@@ -168,7 +168,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 
 	FollowerList:ClearAllPoints()
-	FollowerList:SetPoint("BOTTOMLEFT", 24, 34)
+	FollowerList:SetPoint('BOTTOMLEFT', 24, 34)
 
 	local scrollFrame = FollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
@@ -187,7 +187,7 @@ function S:Blizzard_GarrisonUI()
 	CapacitiveDisplay.ShipmentIconFrame.Icon:SetTexCoord(unpack(E.TexCoords))
 	CapacitiveDisplay.ShipmentIconFrame.Icon:SetInside()
 	--Fix unitframes appearing above work orders
-	GarrisonCapacitiveDisplayFrame:SetFrameStrata("MEDIUM")
+	GarrisonCapacitiveDisplayFrame:SetFrameStrata('MEDIUM')
 	GarrisonCapacitiveDisplayFrame:SetFrameLevel(45)
 
 	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(s)
@@ -211,20 +211,20 @@ function S:Blizzard_GarrisonUI()
 	local GarrisonMissionFrame = _G.GarrisonMissionFrame
 	GarrisonMissionFrame:StripTextures(true)
 	GarrisonMissionFrame.TitleText:Show()
-	GarrisonMissionFrame:CreateBackdrop("Transparent")
+	GarrisonMissionFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(GarrisonMissionFrame.CloseButton, GarrisonMissionFrame.backdrop)
 
 	for i = 1,2 do
-		S:HandleTab(_G["GarrisonMissionFrameTab"..i])
+		S:HandleTab(_G['GarrisonMissionFrameTab'..i])
 	end
 
 	_G.GarrisonMissionFrameTab1:ClearAllPoints()
-	_G.GarrisonMissionFrameTab1:SetPoint("BOTTOMLEFT", 11, -40)
+	_G.GarrisonMissionFrameTab1:SetPoint('BOTTOMLEFT', 11, -40)
 	GarrisonMissionFrame.GarrCorners:Hide()
 
 	-- Follower list
 	FollowerList = GarrisonMissionFrame.FollowerList
-	FollowerList:DisableDrawLayer("BORDER")
+	FollowerList:DisableDrawLayer('BORDER')
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
@@ -234,7 +234,7 @@ function S:Blizzard_GarrisonUI()
 	local MissionTab = GarrisonMissionFrame.MissionTab
 	local MissionList = MissionTab.MissionList
 	local MissionPage = GarrisonMissionFrame.MissionTab.MissionPage
-	MissionList:DisableDrawLayer("BORDER")
+	MissionList:DisableDrawLayer('BORDER')
 	S:HandleScrollBar(MissionList.listScroll.scrollBar)
 	S:HandleCloseButton(MissionPage.CloseButton)
 	MissionPage.CloseButton:SetFrameLevel(MissionPage:GetFrameLevel() + 2)
@@ -250,13 +250,13 @@ function S:Blizzard_GarrisonUI()
 	-- Landing page
 	local GarrisonLandingPage = _G.GarrisonLandingPage
 	local Report = GarrisonLandingPage.Report
-	GarrisonLandingPage:CreateBackdrop("Transparent")
+	GarrisonLandingPage:CreateBackdrop('Transparent')
 	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
 	S:HandleTab(_G.GarrisonLandingPageTab1)
 	S:HandleTab(_G.GarrisonLandingPageTab2)
 	S:HandleTab(_G.GarrisonLandingPageTab3)
 	_G.GarrisonLandingPageTab1:ClearAllPoints()
-	_G.GarrisonLandingPageTab1:SetPoint("TOPLEFT", GarrisonLandingPage, "BOTTOMLEFT", 70, 2)
+	_G.GarrisonLandingPageTab1:SetPoint('TOPLEFT', GarrisonLandingPage, 'BOTTOMLEFT', 70, 2)
 
 	if E.private.skins.parchmentRemoverEnable then
 		for i = 1, 10 do
@@ -264,15 +264,15 @@ function S:Blizzard_GarrisonUI()
 		end
 
 		for _, tab in pairs({Report.InProgress, Report.Available}) do
-			tab:SetHighlightTexture("")
+			tab:SetHighlightTexture('')
 			tab.Text:ClearAllPoints()
-			tab.Text:SetPoint("CENTER")
+			tab.Text:SetPoint('CENTER')
 
-			local bg = CreateFrame("Frame", nil, tab)
+			local bg = CreateFrame('Frame', nil, tab)
 			bg:SetFrameLevel(tab:GetFrameLevel() - 1)
-			bg:CreateBackdrop("Transparent")
+			bg:CreateBackdrop('Transparent')
 
-			local selectedTex = bg:CreateTexture(nil, "BACKGROUND")
+			local selectedTex = bg:CreateTexture(nil, 'BACKGROUND')
 			selectedTex:SetAllPoints()
 			selectedTex:SetColorTexture(unpack(E.media.rgbvaluecolor))
 			selectedTex:SetAlpha(0.25)
@@ -280,21 +280,21 @@ function S:Blizzard_GarrisonUI()
 			tab.selectedTex = selectedTex
 
 			if tab == Report.InProgress then
-				bg:SetPoint("TOPLEFT", 5, 0)
-				bg:SetPoint("BOTTOMRIGHT")
+				bg:SetPoint('TOPLEFT', 5, 0)
+				bg:SetPoint('BOTTOMRIGHT')
 			else
-				bg:SetPoint("TOPLEFT")
-				bg:SetPoint("BOTTOMRIGHT", -7, 0)
+				bg:SetPoint('TOPLEFT')
+				bg:SetPoint('BOTTOMRIGHT', -7, 0)
 			end
 		end
 
-		hooksecurefunc("GarrisonLandingPageReport_SetTab", function(s)
+		hooksecurefunc('GarrisonLandingPageReport_SetTab', function(s)
 			local unselectedTab = Report.unselectedTab
 			unselectedTab:SetHeight(36)
-			unselectedTab:SetNormalTexture("")
+			unselectedTab:SetNormalTexture('')
 			unselectedTab.selectedTex:Hide()
 
-			s:SetNormalTexture("")
+			s:SetNormalTexture('')
 			s.selectedTex:Show()
 		end)
 	end
@@ -310,22 +310,22 @@ function S:Blizzard_GarrisonUI()
 		for _, reward in pairs(button.Rewards) do
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
 			if not reward.border then
-				reward.border = CreateFrame("Frame", nil, reward)
+				reward.border = CreateFrame('Frame', nil, reward)
 				S:HandleIcon(reward.Icon, reward.border)
 				reward.Quantity:SetParent(reward.border)
 				reward.IconBorder:Kill()
 				-- For some reason, this fix icon border in 8.1
 				reward:ClearAllPoints()
-				reward:SetPoint("TOPRIGHT", -5, -5)
+				reward:SetPoint('TOPRIGHT', -5, -5)
 
 				if E.private.skins.parchmentRemoverEnable then
 					button.BG:Hide()
 
-					local bg = CreateFrame("Frame", nil, button)
-					bg:SetPoint("TOPLEFT")
-					bg:SetPoint("BOTTOMRIGHT", 0, 1)
+					local bg = CreateFrame('Frame', nil, button)
+					bg:SetPoint('TOPLEFT')
+					bg:SetPoint('BOTTOMRIGHT', 0, 1)
 					bg:SetFrameLevel(button:GetFrameLevel() - 1)
-					bg:CreateBackdrop("Transparent")
+					bg:CreateBackdrop('Transparent')
 				end
 			end
 		end
@@ -341,7 +341,7 @@ function S:Blizzard_GarrisonUI()
 
 	hooksecurefunc(FollowerList, "ShowFollower", showFollower)
 
-	hooksecurefunc("GarrisonFollowerButton_AddAbility", function(s, index)
+	hooksecurefunc('GarrisonFollowerButton_AddAbility', function(s, index)
 		local ability = s.Abilities[index]
 		if not ability.styled then
 			S:HandleIcon(ability.Icon, ability)
@@ -368,7 +368,7 @@ function S:Blizzard_GarrisonUI()
 	local GarrisonShipyardFrame = _G.GarrisonShipyardFrame
 	GarrisonShipyardFrame:StripTextures(true)
 	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
-	GarrisonShipyardFrame:CreateBackdrop("Transparent")
+	GarrisonShipyardFrame:CreateBackdrop('Transparent')
 	GarrisonShipyardFrame.backdrop:SetOutside(GarrisonShipyardFrame.BorderFrame)
 	GarrisonShipyardFrame.BorderFrame.GarrCorners:Hide()
 	S:HandleCloseButton(GarrisonShipyardFrame.BorderFrame.CloseButton2)
@@ -378,7 +378,7 @@ function S:Blizzard_GarrisonUI()
 	-- ShipYard: Naval Map
 	MissionTab = GarrisonShipyardFrame.MissionTab
 	MissionList = MissionTab.MissionList
-	MissionList:CreateBackdrop("Transparent")
+	MissionList:CreateBackdrop('Transparent')
 	MissionList.backdrop:SetOutside(MissionList.MapTexture)
 	MissionList.CompleteDialog.BorderFrame:StripTextures()
 	MissionList.CompleteDialog.BorderFrame:CreateBackdrop("Transparent")
@@ -404,7 +404,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleScrollBar(scrollFrame.scrollBar)
 	S:HandleEditBox(FollowerList.SearchBox)
 	FollowerList.MaterialFrame:StripTextures()
-	FollowerList.MaterialFrame.Icon:SetAtlas("ShipMission_CurrencyIcon-Oil", false) --Re-add the material icon
+	FollowerList.MaterialFrame.Icon:SetAtlas('ShipMission_CurrencyIcon-Oil', false) --Re-add the material icon
 	-- HandleShipFollowerPage(FollowerList.followerTab)
 
 	if E.private.skins.blizzard.tooltip ~= true then return end
@@ -432,12 +432,12 @@ function S:Blizzard_GarrisonUI()
 	OrderHallMissionFrame.ClassHallIcon:Kill()
 	OrderHallMissionFrame:StripTextures()
 	OrderHallMissionFrame.GarrCorners:Hide()
-	OrderHallMissionFrame:CreateBackdrop("Transparent")
+	OrderHallMissionFrame:CreateBackdrop('Transparent')
 	OrderHallMissionFrame.backdrop:SetOutside(OrderHallMissionFrame.BorderFrame)
 	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
 
 	for i = 1, 3 do
-		S:HandleTab(_G["OrderHallMissionFrameTab" .. i])
+		S:HandleTab(_G['OrderHallMissionFrameTab' .. i])
 	end
 
 	for _, Button in pairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
@@ -510,12 +510,12 @@ function S:Blizzard_GarrisonUI()
 	MissionFrame.Top:Hide()
 	MissionFrame.Right:Hide()
 
-	MissionFrame:CreateBackdrop("Transparent")
+	MissionFrame:CreateBackdrop('Transparent')
 
 	S:HandleCloseButton(MissionFrame.CloseButton)
 	S:HandleButton(MissionFrame.MissionComplete.NextMissionButton)
 	for i = 1, 3 do
-		S:HandleTab(_G["BFAMissionFrameTab"..i])
+		S:HandleTab(_G['BFAMissionFrameTab'..i])
 	end
 
 	-- Missions
@@ -538,7 +538,7 @@ function S:Blizzard_GarrisonUI()
 	hooksecurefunc(Follower, "ShowFollower", showFollower)
 	S:HandleScrollBar(_G.BFAMissionFrameFollowersListScrollFrameScrollBar)
 
-	S:HandleFollowerListOnUpdateData("BFAMissionFrameFollowers") -- The function needs to be updated for BFA
+	S:HandleFollowerListOnUpdateData('BFAMissionFrameFollowers') -- The function needs to be updated for BFA
 
 	XPBar:StripTextures()
 	XPBar:SetStatusBarTexture(E.media.normTex)
@@ -603,7 +603,7 @@ local function SkinAbilityTooltip(frame)
 	local icon = frame.Icon
 	icon:SetTexCoord(unpack(E.TexCoords))
 	if not frame.border then
-		frame.border = CreateFrame("Frame", nil, frame)
+		frame.border = CreateFrame('Frame', nil, frame)
 		S:HandleIcon(frame.Icon, frame.border)
 	end
 
@@ -629,7 +629,7 @@ function S:GarrisonTooltips()
 	S:HandleCloseButton(_G.FloatingGarrisonMissionTooltip.CloseButton)
 	S:HandleCloseButton(_G.FloatingGarrisonShipyardFollowerTooltip.CloseButton)
 
-	hooksecurefunc("GarrisonFollowerTooltipTemplate_SetGarrisonFollower", function(tooltipFrame)
+	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetGarrisonFollower', function(tooltipFrame)
 		-- Abilities
 		if tooltipFrame.numAbilitiesStyled == nil then
 			tooltipFrame.numAbilitiesStyled = 1
@@ -641,7 +641,7 @@ function S:GarrisonTooltips()
 			local icon = ability.Icon
 			icon:SetTexCoord(unpack(E.TexCoords))
 			if not ability.border then
-				ability.border = CreateFrame("Frame", nil, ability)
+				ability.border = CreateFrame('Frame', nil, ability)
 				S:HandleIcon(ability.Icon, ability.border)
 			end
 
@@ -661,7 +661,7 @@ function S:GarrisonTooltips()
 			local icon = trait.Icon
 			icon:SetTexCoord(unpack(E.TexCoords))
 			if not trait.border then
-				trait.border = CreateFrame("Frame", nil, trait)
+				trait.border = CreateFrame('Frame', nil, trait)
 				S:HandleIcon(trait.Icon, trait.border)
 			end
 
@@ -671,7 +671,7 @@ function S:GarrisonTooltips()
 		tooltipFrame.numTraitsStyled = numTraitsStyled
 	end)
 
-	hooksecurefunc("GarrisonFollowerTooltipTemplate_SetShipyardFollower", function(tooltipFrame)
+	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetShipyardFollower', function(tooltipFrame)
 		-- Properties
 		if tooltipFrame.numPropertiesStyled == nil then
 			tooltipFrame.numPropertiesStyled = 1
@@ -683,7 +683,7 @@ function S:GarrisonTooltips()
 			local icon = property.Icon
 			icon:SetTexCoord(unpack(E.TexCoords))
 			if not property.border then
-				property.border = CreateFrame("Frame", nil, property)
+				property.border = CreateFrame('Frame', nil, property)
 				S:HandleIcon(property.Icon, property.border)
 			end
 

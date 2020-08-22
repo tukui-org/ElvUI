@@ -56,7 +56,7 @@ function M:UpdateBubbleBorder()
 					rebuiltString = word
 					isFirstWord = true
 				else
-					rebuiltString = format("%s%s", rebuiltString, word)
+					rebuiltString = format('%s%s', rebuiltString, word)
 				end
 			end
 
@@ -71,12 +71,12 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	if not name then return end
 
 	local color = PRIEST_COLOR
-	local data = guid and guid ~= "" and CH:GetPlayerInfoByGUID(guid)
+	local data = guid and guid ~= '' and CH:GetPlayerInfoByGUID(guid)
 	if data and data.classColor then
 		color = data.classColor
 	end
 
-	chatBubble.Name:SetFormattedText("|c%s%s|r", color.colorStr, name)
+	chatBubble.Name:SetFormattedText('|c%s%s|r', color.colorStr, name)
 	chatBubble.Name:SetWidth(chatBubble:GetWidth()-10)
 end
 
@@ -152,7 +152,7 @@ end
 
 function M:ToggleChatBubbleScript()
 	local _, instanceType = GetInstanceInfo()
-	if instanceType == "none" and E.private.general.chatBubbles ~= "disabled" then
+	if instanceType == 'none' and E.private.general.chatBubbles ~= 'disabled' then
 		M.BubbleFrame:SetScript('OnEvent', ChatBubble_OnEvent)
 		M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
 	else

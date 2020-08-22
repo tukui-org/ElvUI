@@ -21,9 +21,9 @@ function B:ScaleTalkingHeadFrame()
 	end
 
 	--Use this to prevent the frame from auto closing, so you have time to test things.
-	-- TalkingHeadFrame:UnregisterEvent("SOUNDKIT_FINISHED")
-	-- TalkingHeadFrame:UnregisterEvent("TALKINGHEAD_CLOSE")
-	-- TalkingHeadFrame:UnregisterEvent("LOADING_SCREEN_ENABLED")
+	-- TalkingHeadFrame:UnregisterEvent('SOUNDKIT_FINISHED')
+	-- TalkingHeadFrame:UnregisterEvent('TALKINGHEAD_CLOSE')
+	-- TalkingHeadFrame:UnregisterEvent('LOADING_SCREEN_ENABLED')
 end
 
 local function InitializeTalkingHead()
@@ -36,7 +36,7 @@ local function InitializeTalkingHead()
 	TalkingHeadFrame:ClearAllPoints()
 	TalkingHeadFrame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 373)
 
-	E:CreateMover(TalkingHeadFrame, "TalkingHeadFrameMover", L["Talking Head Frame"], nil, nil, nil, nil, nil, 'skins')
+	E:CreateMover(TalkingHeadFrame, 'TalkingHeadFrameMover', L["Talking Head Frame"], nil, nil, nil, nil, nil, 'skins')
 
 	--Iterate through all alert subsystems in order to find the one created for TalkingHeadFrame, and then remove it.
 	--We do this to prevent alerts from anchoring to this frame when it is shown.
@@ -48,13 +48,13 @@ local function InitializeTalkingHead()
 end
 
 function B:PositionTalkingHead()
-	if IsAddOnLoaded("Blizzard_TalkingHeadUI") then
+	if IsAddOnLoaded('Blizzard_TalkingHeadUI') then
 		InitializeTalkingHead()
 		B:ScaleTalkingHeadFrame()
 	else --We want the mover to be available immediately, so we load it ourselves
-		local f = CreateFrame("Frame")
-		f:RegisterEvent("PLAYER_ENTERING_WORLD")
-		f:SetScript("OnEvent", function(frame, event)
+		local f = CreateFrame('Frame')
+		f:RegisterEvent('PLAYER_ENTERING_WORLD')
+		f:SetScript('OnEvent', function(frame, event)
 			frame:UnregisterEvent(event)
 			_G.TalkingHead_LoadUI()
 			InitializeTalkingHead()

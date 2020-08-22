@@ -52,7 +52,7 @@ function DB:PLAYER_LEVEL_UP(level)
 	end
 
 	if(self.db.honor.enable) then
-		DB:UpdateHonor("PLAYER_LEVEL_UP", level)
+		DB:UpdateHonor('PLAYER_LEVEL_UP', level)
 	else
 		self.honorBar:Hide()
 	end
@@ -68,7 +68,7 @@ function DB:Initialize()
 	--DB:LoadArtifactBar()
 	DB:LoadAzeriteBar()
 
-	DB:RegisterEvent("PLAYER_LEVEL_UP")
+	DB:RegisterEvent('PLAYER_LEVEL_UP')
 end
 
 E:RegisterModule(DB:GetName())

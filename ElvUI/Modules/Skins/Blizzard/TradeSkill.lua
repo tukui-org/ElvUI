@@ -73,7 +73,7 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillFrame.DetailsInset:StripTextures()
 	TradeSkillFrame.DetailsFrame.Background:Hide()
 	S:HandleEditBox(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox)
-	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox:DisableDrawLayer("BACKGROUND")
+	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox:DisableDrawLayer('BACKGROUND')
 
 	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateAllButton)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.CreateButton)
@@ -83,9 +83,9 @@ function S:Blizzard_TradeSkillUI()
 
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton)
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton)
-	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:SetPoint("LEFT", TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, "RIGHT", 4, 0)
+	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:SetPoint('LEFT', TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, 'RIGHT', 4, 0)
 
-	hooksecurefunc(TradeSkillFrame.DetailsFrame, "RefreshDisplay", function()
+	hooksecurefunc(TradeSkillFrame.DetailsFrame, 'RefreshDisplay', function()
 		local ResultIcon = TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 		ResultIcon:StyleButton()
 		if ResultIcon:GetNormalTexture() then
@@ -102,7 +102,7 @@ function S:Blizzard_TradeSkillUI()
 			local Count = Button.Count
 
 			Icon:SetTexCoord(unpack(E.TexCoords))
-			Icon:SetDrawLayer("OVERLAY")
+			Icon:SetDrawLayer('OVERLAY')
 			if not Icon.backdrop then
 				Icon.backdrop = CreateFrame("Frame", nil, Button, "BackdropTemplate")
 				Icon.backdrop:SetFrameLevel(Button:GetFrameLevel() - 1)
@@ -112,7 +112,7 @@ function S:Blizzard_TradeSkillUI()
 
 			Icon:SetParent(Icon.backdrop)
 			Count:SetParent(Icon.backdrop)
-			Count:SetDrawLayer("OVERLAY")
+			Count:SetDrawLayer('OVERLAY')
 
 			Button.NameFrame:Kill()
 		end
@@ -143,10 +143,10 @@ function S:Blizzard_TradeSkillUI()
 		end
 	end)
 
-	hooksecurefunc(TradeSkillFrame.RecipeList, "Refresh", function()
+	hooksecurefunc(TradeSkillFrame.RecipeList, 'Refresh', function()
 		for _, tradeSkillButton in ipairs(TradeSkillFrame.RecipeList.buttons) do
 			if not tradeSkillButton.headerIsHooked then
-				hooksecurefunc(tradeSkillButton, "SetUpHeader", SkinRecipeList)
+				hooksecurefunc(tradeSkillButton, 'SetUpHeader', SkinRecipeList)
 				tradeSkillButton.headerIsHooked = true
 			end
 		end

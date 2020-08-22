@@ -6,11 +6,11 @@ local _G = _G
 local format = format
 
 E.Options.args.tagGroup = ACH:Group(L["Available Tags"], nil, 3, 'tab')
-E.Options.args.tagGroup.args.GuideLink = ACH:Input(L["Guide:"], nil, 1, nil, nil, function() return "https://www.tukui.org/forum/viewtopic.php?f=9&t=6" end)
+E.Options.args.tagGroup.args.GuideLink = ACH:Input(L["Guide:"], nil, 1, nil, nil, function() return 'https://www.tukui.org/forum/viewtopic.php?f=9&t=6' end)
 E.Options.args.tagGroup.args.GuideLink.customWidth = 310
-E.Options.args.tagGroup.args.WikiLink = ACH:Input(L["Wiki:"], nil, 2, nil, nil, function() return "https://git.tukui.org/elvui/elvui/-/wikis/home" end)
+E.Options.args.tagGroup.args.WikiLink = ACH:Input(L["Wiki:"], nil, 2, nil, nil, function() return 'https://git.tukui.org/elvui/elvui/-/wikis/home' end)
 E.Options.args.tagGroup.args.WikiLink.customWidth = 290
-E.Options.args.tagGroup.args.ColorWheel = ACH:Execute(L["Color Picker"], nil, 3, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata("FULLSCREEN_DIALOG") _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end)
+E.Options.args.tagGroup.args.ColorWheel = ACH:Execute(L["Color Picker"], nil, 3, function() _G.ColorPickerFrame:Show() _G.ColorPickerFrame:SetFrameStrata('FULLSCREEN_DIALOG') _G.ColorPickerFrame:SetClampedToScreen(true) _G.ColorPickerFrame:Raise() end)
 E.Options.args.tagGroup.args.ColorWheel.customWidth = 120
 E.Options.args.tagGroup.args.Colors = ACH:Group(L["Colors"])
 E.Options.args.tagGroup.args.Colors.args.customTagColorInfo  = ACH:Input('Custom color your Text: replace the XXXXXX with a Hex color code', nil, 1, nil, 'full', function() return '||cffXXXXXX [tags] or text here ||r' end)
@@ -29,13 +29,13 @@ for _, Table in pairs({'Events', 'Methods'}) do
 		if not E.Options.args.tagGroup.args[E.TagInfo[Tag].category] then
 			E.Options.args.tagGroup.args[E.TagInfo[Tag].category] = {
 				name = E.TagInfo[Tag].category,
-				type = "group",
+				type = 'group',
 				args = {}
 			}
 		end
 
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] = E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] or {}
-		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].type = "input"
+		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].type = 'input'
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].name = E.TagInfo[Tag].description or ''
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].order = E.TagInfo[Tag].order or nil
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].width = 'full'

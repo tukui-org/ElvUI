@@ -37,14 +37,14 @@ function B:SetObjectiveFrameAutoHide()
 	if not _G.ObjectiveTrackerFrame.AutoHider then return end --Kaliel's Tracker prevents B:MoveObjectiveFrame() from executing
 
 	if E.db.general.objectiveFrameAutoHide then
-		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider", "[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0")
+		RegisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, 'objectiveHider', '[@arena1,exists][@arena2,exists][@arena3,exists][@arena4,exists][@arena5,exists][@boss1,exists][@boss2,exists][@boss3,exists][@boss4,exists] 1;0')
 	else
-		UnregisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, "objectiveHider")
+		UnregisterStateDriver(_G.ObjectiveTrackerFrame.AutoHider, 'objectiveHider')
 	end
 end
 
 function B:MoveObjectiveFrame()
-	local ObjectiveFrameHolder = CreateFrame("Frame", "ObjectiveFrameHolder", E.UIParent)
+	local ObjectiveFrameHolder = CreateFrame('Frame', 'ObjectiveFrameHolder', E.UIParent)
 	ObjectiveFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 	ObjectiveFrameHolder:SetSize(130, 22)
 
@@ -62,13 +62,13 @@ function B:MoveObjectiveFrame()
 	local function RewardsFrame_SetPosition(block)
 		local rewardsFrame = _G.ObjectiveTrackerBonusRewardsFrame
 		rewardsFrame:ClearAllPoints()
-		if E.db.general.bonusObjectivePosition == "RIGHT" or (E.db.general.bonusObjectivePosition == "AUTO" and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
-			rewardsFrame:SetPoint("TOPLEFT", block, "TOPRIGHT", -10, -4)
+		if E.db.general.bonusObjectivePosition == 'RIGHT' or (E.db.general.bonusObjectivePosition == 'AUTO' and IsFramePositionedLeft(ObjectiveTrackerFrame)) then
+			rewardsFrame:SetPoint('TOPLEFT', block, 'TOPRIGHT', -10, -4)
 		else
-			rewardsFrame:SetPoint("TOPRIGHT", block, "TOPLEFT", 10, -4)
+			rewardsFrame:SetPoint('TOPRIGHT', block, 'TOPLEFT', 10, -4)
 		end
 	end
-	hooksecurefunc("BonusObjectiveTracker_AnimateReward", RewardsFrame_SetPosition)
+	hooksecurefunc('BonusObjectiveTracker_AnimateReward', RewardsFrame_SetPosition)
 
 	-- objectiveFrameAutoHide
 	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')

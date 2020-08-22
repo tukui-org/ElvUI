@@ -72,7 +72,7 @@ function NP:Construct_Health(nameplate)
 	clipFrame:EnableMouse(false)
 	Health.ClipFrame = clipFrame
 
-	--[[Health.bg = Health:CreateTexture(nil, "BACKGROUND")
+	--[[Health.bg = Health:CreateTexture(nil, 'BACKGROUND')
 	Health.bg:SetAllPoints()
 	Health.bg:SetTexture(E.media.blankTex)
 	Health.bg.multiplier = 0.2]]
@@ -80,10 +80,10 @@ function NP:Construct_Health(nameplate)
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
-	local healthFlashTexture = Health:CreateTexture(nameplate:GetName()..'FlashTexture', "OVERLAY")
-	healthFlashTexture:SetTexture(E.Libs.LSM:Fetch("background", "ElvUI Blank"))
-	healthFlashTexture:SetPoint("BOTTOMLEFT", statusBarTexture, "BOTTOMLEFT")
-	healthFlashTexture:SetPoint("TOPRIGHT", statusBarTexture, "TOPRIGHT")
+	local healthFlashTexture = Health:CreateTexture(nameplate:GetName()..'FlashTexture', 'OVERLAY')
+	healthFlashTexture:SetTexture(E.Libs.LSM:Fetch('background', 'ElvUI Blank'))
+	healthFlashTexture:SetPoint('BOTTOMLEFT', statusBarTexture, 'BOTTOMLEFT')
+	healthFlashTexture:SetPoint('TOPRIGHT', statusBarTexture, 'TOPRIGHT')
 	healthFlashTexture:Hide()
 	nameplate.HealthFlashTexture = healthFlashTexture
 

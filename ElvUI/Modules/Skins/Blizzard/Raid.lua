@@ -5,14 +5,14 @@ local _G = _G
 local pairs = pairs
 
 local StripAllTextures = {
-	"RaidGroup1",
-	"RaidGroup2",
-	"RaidGroup3",
-	"RaidGroup4",
-	"RaidGroup5",
-	"RaidGroup6",
-	"RaidGroup7",
-	"RaidGroup8",
+	'RaidGroup1',
+	'RaidGroup2',
+	'RaidGroup3',
+	'RaidGroup4',
+	'RaidGroup5',
+	'RaidGroup6',
+	'RaidGroup7',
+	'RaidGroup8',
 }
 
 function S:Blizzard_RaidUI()
