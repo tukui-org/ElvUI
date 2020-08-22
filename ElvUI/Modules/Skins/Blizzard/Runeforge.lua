@@ -14,8 +14,6 @@ function S:Blizzard_RuneforgeUI()
 	S:HandleButton(frame.CreateFrame.CloseButton)
 
 	local powerFrame = frame.CraftingFrame.PowerFrame
-	powerFrame:StripTextures()
-	powerFrame:CreateBackdrop()
 
 	local pageControl = powerFrame.PageControl
 	S:HandleNextPrevButton(pageControl.BackwardButton)
