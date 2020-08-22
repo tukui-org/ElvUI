@@ -20,8 +20,8 @@ local function HandleOptionButton(button)
 	button:CreateBackdrop()
 	button.backdrop:SetAllPoints()
 
-	button:HookScript("OnEnter", S.SetModifiedBackdrop)
-	button:HookScript("OnLeave", S.SetOriginalBackdrop)
+	button:HookScript('OnEnter', S.SetModifiedBackdrop)
+	button:HookScript('OnLeave', S.SetOriginalBackdrop)
 
 	button.IsSkinned = true
 end
@@ -73,7 +73,7 @@ function S:Blizzard_PlayerChoiceUI()
 
 					if child.Spell then
 						if not child.Spell.isSkinned then
-							child.Spell.Border:SetTexture("")
+							child.Spell.Border:SetTexture('')
 							child.Spell.IconMask:Hide()
 
 							S:HandleIcon(child.Spell.Icon)

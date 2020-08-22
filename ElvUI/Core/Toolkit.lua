@@ -126,7 +126,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 
 		if not E.PixelMode and not frame.forcePixelMode then
 			if not frame.iborder then
-				local border = CreateFrame('Frame', nil, frame, "BackdropTemplate")
+				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 				border:SetInside(frame, E.mult, E.mult)
 				border:SetBackdrop({
 					edgeFile = E.media.blankTex, edgeSize = E.mult,
@@ -138,7 +138,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			end
 
 			if not frame.oborder then
-				local border = CreateFrame('Frame', nil, frame, "BackdropTemplate")
+				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 				border:SetOutside(frame, E.mult, E.mult)
 				border:SetBackdrop({
 					edgeFile = E.media.blankTex, edgeSize = E.mult,
@@ -166,7 +166,7 @@ end
 
 local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
-	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, "BackdropTemplate")
+	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
 	if frame.forcePixelMode or forcePixelMode then
@@ -191,7 +191,7 @@ local function CreateShadow(frame, size, pass)
 
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
-	local shadow = CreateFrame('Frame', nil, frame, "BackdropTemplate")
+	local shadow = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, size or 3, size or 3)

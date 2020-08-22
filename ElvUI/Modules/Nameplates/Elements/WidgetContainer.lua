@@ -106,7 +106,7 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 
 					totalHeight = totalHeight + widgetContainerFrame.verticalAnchorYOffset
 				end
-				widgetFrame:SetPoint("TOPLEFT", newHorizontalRowContainer)
+				widgetFrame:SetPoint('TOPLEFT', newHorizontalRowContainer)
 				widgetFrame:SetParent(newHorizontalRowContainer)
 
 				horizontalRowWidth = horizontalRowWidth + widgetFrame:GetWidth()
