@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
+local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
 -- 9.0 SHADOWLANDS
@@ -22,6 +23,24 @@ local function ReskinTalents(self)
 			frame.Icon:SetPoint('TOPLEFT', 7, -7)
 
 			frame.IsSkinned = true
+		end
+	end
+end
+
+local function HideRenownLevelBorder(frame)
+	if not frame.IsSkinned then
+		frame.Divider:SetAlpha(0)
+		frame.BackgroundTile:SetAlpha(0)
+		frame.Background:CreateBackdrop()
+
+		frame.IsSkinned = true
+	end
+
+	for button in frame.milestonesPool:EnumerateActive() do
+		if not button.IsSkinned then
+			button.LevelBorder:SetAlpha(0)
+
+			button.IsSkinned = true
 		end
 	end
 end
@@ -48,6 +67,9 @@ function S:Blizzard_CovenantSanctum()
 			UpgradesTab.Background:SetAlpha(0)
 			UpgradesTab.Background:CreateBackdrop('Transparent')
 			S:HandleButton(UpgradesTab.DepositButton)
+			for _, frame in ipairs(UpgradesTab.Upgrades) do
+				frame.RankBorder:SetAlpha(0)
+			end
 
 			local TalentList = frame.UpgradesTab.TalentsList
 			TalentList.Divider:SetAlpha(0)
@@ -56,6 +78,7 @@ function S:Blizzard_CovenantSanctum()
 			S:HandleButton(TalentList.UpgradeButton)
 
 			hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
+			hooksecurefunc(frame.RenownTab, "Refresh", HideRenownLevelBorder)
 		end
 	end)
 
