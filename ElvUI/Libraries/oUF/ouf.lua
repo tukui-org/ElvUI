@@ -24,21 +24,21 @@ PetBattleFrameHider:SetAllPoints()
 PetBattleFrameHider:SetFrameStrata('LOW')
 RegisterStateDriver(PetBattleFrameHider, 'visibility', '[petbattle] hide; show')
 
--- updating of "invalid" units.
+-- updating of "invalid" units, edited by ElvUI to fire only on GUID change and to allow faster update.
 local function enableTargetUpdate(object)
-	object.onUpdateFrequency = object.onUpdateFrequency or .5
 	object.__eventless = true
-
-	local total = 0
 	object:SetScript('OnUpdate', function(self, elapsed)
-		if(not self.unit) then
-			return
-		elseif(total > self.onUpdateFrequency) then
-			self:UpdateAllElements('OnUpdate')
-			total = 0
-		end
+		if self.elapsed and self.elapsed > 0.1 then
+			local unitGUID = self.unit and UnitGUID(self.unit)
+			if unitGUID and unitGUID ~= self.unitGUID then
+				self.unitGUID = unitGUID
+				self:UpdateAllElements('OnUpdate')
+			end
 
-		total = total + elapsed
+			self.elapsed = 0
+		else
+			self.elapsed = (self.elapsed or 0) + elapsed
+		end
 	end)
 end
 Private.enableTargetUpdate = enableTargetUpdate
