@@ -61,7 +61,7 @@ S.ArrowRotation = {
 }
 
 function S:HandleInsetFrame(frame)
-	assert(frame, "doesn't exist!")
+	assert(frame, 'doesnt exist!')
 
 	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
 	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
@@ -79,7 +79,7 @@ end
 
 -- All frames that have a Portrait
 function S:HandlePortraitFrame(frame, setBackdrop)
-	assert(frame, "doesn't exist!")
+	assert(frame, 'doesnt exist!')
 
 	local name = frame and frame.GetName and frame:GetName()
 	local insetFrame = name and _G[name..'Inset'] or frame.Inset
@@ -241,7 +241,7 @@ function S:SkinTalentListButtons(frame)
 end
 
 function S:HandleButton(button, strip, isDeclineButton, useCreateBackdrop, noSetTemplate)
-	assert(button, "doesnt exist!")
+	assert(button, 'doesnt exist!')
 
 	if button.isSkinned then return end
 
@@ -294,7 +294,7 @@ do
 	end
 
 	function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
-		assert(frame, "doesnt exist!")
+		assert(frame, 'doesnt exist!')
 
 		if frame.backdrop then return end
 		local parent = frame:GetParent()
@@ -703,7 +703,7 @@ function S:HandleCloseButton(f, point, x, y)
 end
 
 function S:HandleSliderFrame(frame)
-	assert(frame, "doesn't exist!")
+	assert(frame, 'doesnt exist!')
 
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
@@ -999,7 +999,7 @@ end
 
 -- Interface\SharedXML\SharedUIPanelTemplatex.xml - line 780
 function S:HandleTooltipBorderedFrame(frame)
-	assert(frame, "doesn't exist!")
+	assert(frame, 'doesnt exist!')
 
 	if frame.BorderTopLeft then frame.BorderTopLeft:Hide() end
 	if frame.BorderTopRight then frame.BorderTopRight:Hide() end
