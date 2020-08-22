@@ -396,8 +396,6 @@ function RU:Initialize()
 
 		f:SetHighlightTexture('')
 		f:SetDisabledTexture('')
-		f:HookScript('OnEnter', RU.ButtonEnter)
-		f:HookScript('OnLeave', RU.ButtonLeave)
 	end
 
 	--Automatically show/hide the frame if we have RaidLeader or RaidOfficer
