@@ -21,6 +21,7 @@ E.Options.args.skins.args.talkingHead.args.talkingHeadFrameScale = ACH:Range(L["
 E.Options.args.skins.args.talkingHead.args.talkingHeadFrameBackdrop = ACH:Toggle(L["Talking Head Backdrop"], nil, 2, nil, nil, nil, nil, function(_, value) E.db.general.talkingHeadFrameBackdrop = value; E:StaticPopup_Show('CONFIG_RL') end)
 
 E.Options.args.skins.args.blizzard = ACH:MultiSelect(L["Blizzard"], nil, 3, nil, nil, nil, function(_, key) return E.private.skins.blizzard[key] end, function(_, key, value) E.private.skins.blizzard[key] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.private.skins.blizzard.enable end)
+E.Options.args.skins.args.blizzard.sortByValue = true
 E.Options.args.skins.args.blizzard.values = {
 	achievement = L["ACHIEVEMENTS"],
 	addonManager = L["AddOn Manager"],
