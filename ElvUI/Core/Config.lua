@@ -23,7 +23,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
-local ConfigTooltip = CreateFrame("GameTooltip", "ElvUIConfigTooltip", E.UIParent, "GameTooltipTemplate")
+local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'GameTooltipTemplate')
 
 local grid
 E.ConfigModeLayouts = {
@@ -599,7 +599,7 @@ end
 local function Config_ButtonOnEnter(self)
 	if ConfigTooltip:IsForbidden() or not self.desc then return end
 
-	ConfigTooltip:SetOwner(self, "ANCHOR_TOPRIGHT", 0, 2)
+	ConfigTooltip:SetOwner(self, 'ANCHOR_TOPRIGHT', 0, 2)
 	ConfigTooltip:AddLine(self.desc, 1, 1, 1, true)
 	ConfigTooltip:Show()
 end
@@ -637,12 +637,12 @@ local function ConfigSliderOnMouseWheel(self, offset)
 	if newValue > maxValue then return end
 
 	self:SetValue(newValue)
-	self.buttons:SetPoint("TOPLEFT", 0, newValue * 36)
+	self.buttons:SetPoint('TOPLEFT', 0, newValue * 36)
 end
 
 local function ConfigSliderOnValueChanged(self, value)
 	self:SetValue(value)
-	self.buttons:SetPoint("TOPLEFT", 0, value * 36)
+	self.buttons:SetPoint('TOPLEFT', 0, value * 36)
 end
 
 function E:Config_SetButtonText(btn, noColor)
@@ -661,7 +661,7 @@ function E:Config_CreateSeparatorLine(frame, lastButton)
 	line:SetTexture(E.Media.Textures.White8x8)
 	line:SetVertexColor(1, .82, 0, .4)
 	line:SetSize(179, 2)
-	line:SetPoint("TOP", lastButton, "BOTTOM", 0, -6)
+	line:SetPoint('TOP', lastButton, 'BOTTOM', 0, -6)
 	line.separator = true
 	return line
 end
@@ -746,7 +746,7 @@ function E:Config_UpdateLeftScroller(frame)
 	local btns = left.buttons
 	local bottom = btns:GetBottom()
 	if not bottom then return end
-	btns:SetPoint("TOPLEFT", 0, 0)
+	btns:SetPoint('TOPLEFT', 0, 0)
 
 	local max = 0
 	for _, btn in ipairs(btns) do
@@ -820,16 +820,16 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 		info.key = key
 		info.func = function()
 			local ACD = E.Libs.AceConfigDialog
-			if ACD then ACD:SelectGroup("ElvUI", key) end
+			if ACD then ACD:SelectGroup('ElvUI', key) end
 		end
 
 		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
 		btn:SetWidth(177)
 
 		if not last then
-			btn:SetPoint("TOP", buttons, "TOP", 0, 0)
+			btn:SetPoint('TOP', buttons, 'TOP', 0, 0)
 		else
-			btn:SetPoint("TOP", last, "BOTTOM", 0, (last.separator and -6) or -4)
+			btn:SetPoint('TOP', last, 'BOTTOM', 0, (last.separator and -6) or -4)
 		end
 
 		buttons[index] = btn
@@ -919,20 +919,20 @@ function E:Config_WindowOpened(frame)
 		local version = frame.topHolder.version
 		E:Config_SaveOldPosition(version)
 		version:ClearAllPoints()
-		version:SetPoint("LEFT", frame.topHolder, "LEFT", unskinned and 8 or 6, unskinned and -4 or 0)
+		version:SetPoint('LEFT', frame.topHolder, 'LEFT', unskinned and 8 or 6, unskinned and -4 or 0)
 
 		local holderHeight = frame.bottomHolder:GetHeight()
 		local content = frame.obj.content
 		E:Config_SaveOldPosition(content)
 		content:ClearAllPoints()
-		content:SetPoint("TOPLEFT", frame, "TOPLEFT", offset, -(unskinned and 50 or 40))
-		content:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -offset, holderHeight + 3)
+		content:SetPoint('TOPLEFT', frame, 'TOPLEFT', offset, -(unskinned and 50 or 40))
+		content:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -offset, holderHeight + 3)
 
 		local titlebg = frame.obj.titlebg
 		E:Config_SaveOldPosition(titlebg)
 		titlebg:ClearAllPoints()
-		titlebg:SetPoint("TOPLEFT", frame)
-		titlebg:SetPoint("TOPRIGHT", frame)
+		titlebg:SetPoint('TOPLEFT', frame)
+		titlebg:SetPoint('TOPRIGHT', frame)
 	end
 end
 
@@ -994,10 +994,10 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 		local offset = unskinned and 14 or 8
 
 		if not last then
-			btn:SetPoint("BOTTOMLEFT", frame.bottomHolder, "BOTTOMLEFT", unskinned and 24 or offset, offset)
+			btn:SetPoint('BOTTOMLEFT', frame.bottomHolder, 'BOTTOMLEFT', unskinned and 24 or offset, offset)
 			last = btn
 		else
-			btn:SetPoint("LEFT", last, "RIGHT", 4, 0)
+			btn:SetPoint('LEFT', last, 'RIGHT', 4, 0)
 			last = btn
 		end
 
@@ -1136,83 +1136,83 @@ function E:ToggleOptionsUI(msg)
 			end
 
 			local bottom = CreateFrame('Frame', nil, frame)
-			bottom:SetPoint("BOTTOMLEFT", 2, 2)
-			bottom:SetPoint("BOTTOMRIGHT", -2, 2)
+			bottom:SetPoint('BOTTOMLEFT', 2, 2)
+			bottom:SetPoint('BOTTOMRIGHT', -2, 2)
 			bottom:SetHeight(37)
 			frame.bottomHolder = bottom
 
 			local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton')
-			close:SetScript("OnClick", E.Config_CloseClicked)
+			close:SetScript('OnClick', E.Config_CloseClicked)
 			close:SetFrameLevel(1000)
-			close:SetPoint("TOPRIGHT", unskinned and -8 or 1, unskinned and -8 or 2)
+			close:SetPoint('TOPRIGHT', unskinned and -8 or 1, unskinned and -8 or 2)
 			close:SetSize(32, 32)
 			close.originalClose = frame.originalClose
 			frame.closeButton = close
 
 			local left = CreateFrame('Frame', nil, frame)
-			left:SetPoint("BOTTOMRIGHT", bottom, "BOTTOMLEFT", 181, 0)
-			left:SetPoint("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
-			left:SetPoint("TOPLEFT", unskinned and 10 or 2, unskinned and -6 or -2)
+			left:SetPoint('BOTTOMRIGHT', bottom, 'BOTTOMLEFT', 181, 0)
+			left:SetPoint('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
+			left:SetPoint('TOPLEFT', unskinned and 10 or 2, unskinned and -6 or -2)
 			frame.leftHolder = left
 
 			local top = CreateFrame('Frame', nil, frame)
 			top.version = frame.obj.titletext
-			top:SetPoint("TOPRIGHT", frame, -2, 0)
-			top:SetPoint("TOPLEFT", left, "TOPRIGHT", 1, 0)
+			top:SetPoint('TOPRIGHT', frame, -2, 0)
+			top:SetPoint('TOPLEFT', left, 'TOPRIGHT', 1, 0)
 			top:SetHeight(24)
 			frame.topHolder = top
 
 			local LogoBottom = left:CreateTexture()
 			LogoBottom:SetTexture(E.Media.Textures.LogoBottomSmall)
-			LogoBottom:SetPoint("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
+			LogoBottom:SetPoint('CENTER', left, 'TOP', unskinned and 10 or 0, unskinned and -40 or -36)
 			LogoBottom:SetSize(128, 64)
 			left.LogoBottom = LogoBottom
 
 			local LogoTop = left:CreateTexture()
 			LogoTop:SetTexture(E.Media.Textures.LogoTopSmall)
-			LogoTop:SetPoint("CENTER", left, "TOP", unskinned and 10 or 0, unskinned and -40 or -36)
+			LogoTop:SetPoint('CENTER', left, 'TOP', unskinned and 10 or 0, unskinned and -40 or -36)
 			LogoTop:SetSize(128, 64)
 			left.LogoTop = LogoTop
 
 			local buttonsHolder = CreateFrame('Frame', nil, left)
-			buttonsHolder:SetPoint("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
-			buttonsHolder:SetPoint("TOPLEFT", left, "TOPLEFT", 0, -70)
-			buttonsHolder:SetPoint("BOTTOMRIGHT")
+			buttonsHolder:SetPoint('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
+			buttonsHolder:SetPoint('TOPLEFT', left, 'TOPLEFT', 0, -70)
+			buttonsHolder:SetPoint('BOTTOMRIGHT')
 			buttonsHolder:SetFrameLevel(5)
 			buttonsHolder:SetClipsChildren(true)
 			left.buttonsHolder = buttonsHolder
 
 			local buttons = CreateFrame('Frame', nil, buttonsHolder)
-			buttons:SetPoint("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
-			buttons:SetPoint("BOTTOMRIGHT")
-			buttons:SetPoint("TOPLEFT", 0, 0)
+			buttons:SetPoint('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
+			buttons:SetPoint('BOTTOMRIGHT')
+			buttons:SetPoint('TOPLEFT', 0, 0)
 			left.buttons = buttons
 
 			local slider = CreateFrame('Slider', nil, frame)
 			slider:SetThumbTexture(E.Media.Textures.White8x8)
 			slider:SetScript('OnMouseWheel', ConfigSliderOnMouseWheel)
 			slider:SetScript('OnValueChanged', ConfigSliderOnValueChanged)
-			slider:SetOrientation("VERTICAL")
+			slider:SetOrientation('VERTICAL')
 			slider:SetObeyStepOnDrag(true)
 			slider:SetFrameLevel(4)
 			slider:SetValueStep(1)
 			slider:SetValue(0)
 			slider:SetWidth(192)
-			slider:SetPoint("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
-			slider:SetPoint("TOPLEFT", buttons, "TOPLEFT", 0, 0)
+			slider:SetPoint('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
+			slider:SetPoint('TOPLEFT', buttons, 'TOPLEFT', 0, 0)
 			slider.buttons = buttons
 			left.slider = slider
 
 			local thumb = slider:GetThumbTexture()
-			thumb:SetPoint("LEFT", left, "RIGHT", 2, 0)
+			thumb:SetPoint('LEFT', left, 'RIGHT', 2, 0)
 			thumb:SetVertexColor(1, 1, 1, 0.5)
 			thumb:SetSize(8, 12)
 			left.slider.thumb = thumb
 
 			if not unskinned then
-				bottom:SetTemplate("Transparent")
-				left:SetTemplate("Transparent")
-				top:SetTemplate("Transparent")
+				bottom:SetTemplate('Transparent')
+				left:SetTemplate('Transparent')
+				top:SetTemplate('Transparent')
 				E.Skins:HandleCloseButton(close)
 			end
 
