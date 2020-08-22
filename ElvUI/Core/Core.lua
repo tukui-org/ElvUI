@@ -19,6 +19,7 @@ local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
 local UnitFactionGroup = UnitFactionGroup
+local DisableAddOn = DisableAddOn
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
 local IsInRaid = IsInRaid
@@ -500,12 +501,23 @@ function E:UpdateStatusBars()
 	end
 end
 
-function E:IncompatibleAddOn(addon, module)
-	E.PopupDialogs.INCOMPATIBLE_ADDON.button1 = addon
-	E.PopupDialogs.INCOMPATIBLE_ADDON.button2 = 'ElvUI '..module
-	E.PopupDialogs.INCOMPATIBLE_ADDON.addon = addon
-	E.PopupDialogs.INCOMPATIBLE_ADDON.module = module
-	E:StaticPopup_Show('INCOMPATIBLE_ADDON', addon, module)
+do
+	local cancel = function(popup)
+		DisableAddOn(popup.addon)
+		ReloadUI()
+	end
+
+	function E:IncompatibleAddOn(addon, module, info)
+		local popup = E.PopupDialogs.INCOMPATIBLE_ADDON
+		popup.button2 = info.name or module
+		popup.button1 = addon
+		popup.module = module
+		popup.addon = addon
+		popup.accept = info.accept
+		popup.cancel = info.cancel or cancel
+
+		E:StaticPopup_Show('INCOMPATIBLE_ADDON', popup.button1, popup.button2)
+	end
 end
 
 function E:IsAddOnEnabled(addon)
@@ -515,7 +527,7 @@ end
 function E:IsIncompatible(module, addons)
 	for _, addon in ipairs(addons) do
 		if E:IsAddOnEnabled(addon) then
-			E:IncompatibleAddOn(addon, module)
+			E:IncompatibleAddOn(addon, module, addons.info)
 			return true
 		end
 	end
@@ -523,33 +535,53 @@ end
 
 do
 	local ADDONS = {
+		ActionBar = {
+			info = {
+				enabled = function() return E.private.actionbar.enable end,
+				accept = function() E.private.actionbar.enable = false; ReloadUI() end,
+				name = 'ElvUI ActionBars'
+			},
+			'Bartender4',
+			'Dominos'
+		},
 		Chat = {
-			ModuleEnabled = function() return E.private.chat.enable end,
+			info = {
+				enabled = function() return E.private.chat.enable end,
+				accept = function() E.private.chat.enable = false; ReloadUI() end,
+				name = 'ElvUI Chat'
+			},
 			'Prat-3.0',
 			'Chatter',
 			'Glass'
 		},
 		NamePlates = {
-			ModuleEnabled = function() return E.private.nameplates.enable end,
+			info = {
+				enabled = function() return E.private.nameplates.enable end,
+				accept = function() E.private.nameplates.enable = false; ReloadUI() end,
+				name = 'ElvUI NamePlates'
+			},
 			'TidyPlates',
 			'Healers-Have-To-Die',
 			'Kui_Nameplates',
 			'Plater',
 			'Aloft'
-		},
-		ActionBar = {
-			ModuleEnabled = function() return E.private.actionbar.enable end,
-			'Bartender4',
-			'Dominos'
 		}
 	}
 
 	E.INCOMPATIBLE_ADDONS = ADDONS -- let addons have the ability to alter this list to trigger our popup if they want
+	function E:AddIncompatible(module, addonName)
+		if ADDONS[module] then
+			tinsert(ADDONS[module], addonName)
+		else
+			print(module, 'is not in the incompatibility list.')
+		end
+	end
+
 	function E:CheckIncompatible()
 		if E.global.ignoreIncompatible then return end
 
 		for module, addons in pairs(ADDONS) do
-			if addons.ModuleEnabled() and E:IsIncompatible(module, addons) then
+			if addons[1] and addons.info.enabled() and E:IsIncompatible(module, addons) then
 				break
 			end
 		end
