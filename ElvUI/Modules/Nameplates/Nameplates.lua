@@ -511,12 +511,13 @@ function NP:ConfigureAll()
 	local playerEnabled = NP.db.units.PLAYER.enable
 	local staticPosition = NP.db.units.PLAYER.useStaticPosition
 	local staticPlate = playerEnabled and staticPosition
+	local secureShown = _G.ElvNP_StaticSecure:IsShown()
 
-	if staticPlate then
+	if staticPlate and not secureShown then
 		E:EnableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
-	else
+	elseif secureShown then
 		NP:DisablePlate(_G.ElvNP_Player)
 		E:DisableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Disable()
@@ -767,7 +768,6 @@ function NP:Initialize()
 	StaticSecure:SetPoint('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
 	StaticSecure:SetPoint('TOPLEFT', _G.ElvNP_PlayerMover)
 	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
-	StaticSecure:Hide()
 
 	oUF:Spawn('player', 'ElvNP_Test')
 
