@@ -5536,10 +5536,7 @@ E.Options.args.nameplate = {
 											step = 0.01,
 											bigStep = 0.1,
 											disabled = function()
-												return E.db.nameplates.units.PLAYER.visibility.showAlways
-											end,
-											hidden = function()
-												return not E.db.nameplates.units.PLAYER.enable or not E.db.nameplates.units.PLAYER.useStaticPosition
+												return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways
 											end
 										}
 									}
