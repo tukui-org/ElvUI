@@ -45,7 +45,7 @@ function S:MailFrame()
 		t:SetTexCoord(unpack(E.TexCoords))
 		t:SetInside()
 
-		S:HandleIconBorder(_G["MailItem"..i.."ButtonIconBorder"])
+		S:HandleIconBorder(_G['MailItem'..i..'ButtonIconBorder'])
 	end
 
 	_G.InboxFrame:CreateBackdrop('Transparent')
@@ -90,7 +90,7 @@ function S:MailFrame()
 
 	-- open mail (cod)
 	_G.OpenMailFrame:StripTextures(true)
-	_G.OpenMailFrame:CreateBackdrop("Transparent")
+	_G.OpenMailFrame:CreateBackdrop('Transparent')
 	_G.OpenMailFrameInset:Kill()
 
 	S:HandleCloseButton(_G.OpenMailFrameCloseButton)

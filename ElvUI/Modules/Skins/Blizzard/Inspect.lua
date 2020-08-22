@@ -97,7 +97,7 @@ function S:Blizzard_InspectUI()
 	end
 
 	for _, Slot in pairs({_G.InspectPaperDollItemsFrame:GetChildren()}) do
-		if Slot:IsObjectType("Button") or Slot:IsObjectType("ItemButton") then
+		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon, true)
 			Slot.icon:SetInside()
 			Slot:StripTextures()

@@ -726,8 +726,8 @@ function CH:StyleChat(frame)
 	CH:ToggleChatButton(copyButton)
 
 	_G.QuickJoinToastButton:Hide()
-	_G.GeneralDockManagerOverflowButtonList:CreateBackdrop("Transparent")
-	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, "down", nil, true)
+	_G.GeneralDockManagerOverflowButtonList:CreateBackdrop('Transparent')
+	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
 
 	frame.styled = true
 end
@@ -2795,8 +2795,8 @@ function CH:CreateChatVoicePanel()
 end
 
 function CH:BuildCopyChatFrame()
-	local frame = CreateFrame("Frame", "CopyChatFrame", E.UIParent, 'BackdropTemplate')
-	tinsert(_G.UISpecialFrames, "CopyChatFrame")
+	local frame = CreateFrame('Frame', 'CopyChatFrame', E.UIParent, 'BackdropTemplate')
+	tinsert(_G.UISpecialFrames, 'CopyChatFrame')
 	frame:SetTemplate('Transparent')
 	frame:SetSize(700, 200)
 	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 3)
@@ -2862,8 +2862,8 @@ function CH:BuildCopyChatFrame()
 		end
 	end)
 
-	local close = CreateFrame("Button", "CopyChatFrameCloseButton", frame, "UIPanelCloseButton, BackdropTemplate")
-	close:SetPoint("TOPRIGHT")
+	local close = CreateFrame('Button', 'CopyChatFrameCloseButton', frame, 'UIPanelCloseButton, BackdropTemplate')
+	close:SetPoint('TOPRIGHT')
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
 	Skins:HandleCloseButton(close)
@@ -3202,7 +3202,7 @@ function CH:Initialize()
 		chatHead:SetWidth(CH.ChatHeadFrame:GetWidth())
 		chatHead:SetHeight(CHAT_HEAD_HEIGHT)
 
-		chatHead.Portrait = CreateFrame("Frame", nil, chatHead, 'BackdropTemplate')
+		chatHead.Portrait = CreateFrame('Frame', nil, chatHead, 'BackdropTemplate')
 		chatHead.Portrait:SetWidth(CHAT_HEAD_HEIGHT - CH.volumeBarHeight)
 		chatHead.Portrait:SetHeight(CHAT_HEAD_HEIGHT - CH.volumeBarHeight - E.Border*2)
 		chatHead.Portrait:SetPoint('TOPLEFT', chatHead, 'TOPLEFT')

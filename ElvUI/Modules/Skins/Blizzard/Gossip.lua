@@ -27,11 +27,11 @@ function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
 	_G.ItemTextFrame:StripTextures(true)
-	_G.ItemTextFrame:CreateBackdrop("Transparent")
+	_G.ItemTextFrame:CreateBackdrop('Transparent')
 
 	_G.ItemTextScrollFrame:StripTextures()
 
-	_G.GossipFrame:CreateBackdrop("Transparent")
+	_G.GossipFrame:CreateBackdrop('Transparent')
 	_G.GossipFramePortrait:Kill()
 
 	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
@@ -62,7 +62,7 @@ function S:GossipFrame()
 	GossipGreetingScrollFrame:CreateBackdrop()
 
 	if E.private.skins.parchmentRemoverEnable then
-		hooksecurefunc("GossipFrameUpdate", handleGossipText)
+		hooksecurefunc('GossipFrameUpdate', handleGossipText)
 		_G.GossipGreetingText:SetTextColor(1, 1, 1)
 		handleGossipText()
 	else
@@ -77,7 +77,7 @@ function S:GossipFrame()
 	S:HandleButton(_G.GossipFrameGreetingGoodbyeButton)
 
 	for i = 1, 4 do
-		local notch = _G["NPCFriendshipStatusBarNotch"..i]
+		local notch = _G['NPCFriendshipStatusBarNotch'..i]
 		if notch then
 			notch:SetColorTexture(0, 0, 0)
 			notch:SetSize(E.mult, 16)
@@ -91,7 +91,7 @@ function S:GossipFrame()
 	E:RegisterStatusBar(NPCFriendshipStatusBar)
 
 	NPCFriendshipStatusBar.icon:ClearAllPoints()
-	NPCFriendshipStatusBar.icon:SetPoint("RIGHT", NPCFriendshipStatusBar, "LEFT", 0, -3)
+	NPCFriendshipStatusBar.icon:SetPoint('RIGHT', NPCFriendshipStatusBar, 'LEFT', 0, -3)
 	S:HandleIcon(NPCFriendshipStatusBar.icon)
 end
 

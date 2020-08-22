@@ -75,7 +75,7 @@ local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inse
 	end
 
 	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-	scrollFrame.spellTex:SetPoint("TOPLEFT", inset and 1 or 0, inset and -1 or 0)
+	scrollFrame.spellTex:SetPoint('TOPLEFT', inset and 1 or 0, inset and -1 or 0)
 	scrollFrame.spellTex:SetSize(widthOverride or 506, heightOverride or 615)
 	scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 end
@@ -186,9 +186,9 @@ function S:BlizzardQuestFrames()
 
 					local level = followerReward.PortraitFrame.Level
 					level:ClearAllPoints()
-					level:SetPoint("BOTTOM", followerReward.PortraitFrame, 0, 3)
+					level:SetPoint('BOTTOM', followerReward.PortraitFrame, 0, 3)
 
-					local squareBG = CreateFrame("Frame", nil, followerReward.PortraitFrame, "BackdropTemplate")
+					local squareBG = CreateFrame('Frame', nil, followerReward.PortraitFrame, 'BackdropTemplate')
 					squareBG:SetFrameLevel(followerReward.PortraitFrame:GetFrameLevel()-1)
 					squareBG:SetPoint('TOPLEFT', 2, -2)
 					squareBG:SetPoint('BOTTOMRIGHT', -2, 2)
@@ -218,7 +218,7 @@ function S:BlizzardQuestFrames()
 
 			-- 9.0 Shadowlands Objective Text Colors
 			for i = 1, 3 do -- Maybe more
-				local text = _G["QuestInfoObjective"..i]
+				local text = _G['QuestInfoObjective'..i]
 				if text then
 					text:SetTextColor(1, 1, 1)
 				end
@@ -375,7 +375,7 @@ function S:BlizzardQuestFrames()
 		button:StripTextures()
 		button:SetFrameLevel(button:GetFrameLevel() +1)
 
-		local frame = CreateFrame("Frame", nil, button, "BackdropTemplate")
+		local frame = CreateFrame('Frame', nil, button, 'BackdropTemplate')
 		frame:SetFrameLevel(button:GetFrameLevel() -1)
 		frame:SetTemplate('Transparent', nil, true)
 		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -405,7 +405,7 @@ function S:BlizzardQuestFrames()
 	S:HandleButton(_G.QuestLogPopupDetailFrameTrackButton)
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.QuestLogPopupDetailFrameScrollFrameScrollBar)
-	QuestLogPopupDetailFrame:CreateBackdrop("Transparent")
+	QuestLogPopupDetailFrame:CreateBackdrop('Transparent')
 
 	_G.QuestLogPopupDetailFrameScrollFrame:HookScript('OnShow', function(s)
 		if not _G.QuestLogPopupDetailFrameScrollFrame.backdrop then
@@ -454,7 +454,7 @@ function S:BlizzardQuestFrames()
 	end)
 
 	-- +/- Buttons for the CampaignHeaders in the QuestLog
-	hooksecurefunc(_G.CampaignCollapseButtonMixin, "UpdateState", function(button, isCollapsed)
+	hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', function(button, isCollapsed)
 		if isCollapsed then
 			button:SetNormalTexture(E.Media.Textures.PlusButton)
 		else
@@ -462,7 +462,7 @@ function S:BlizzardQuestFrames()
 		end
 
 		button:SetSize(16, 16)
-		button:SetPushedTexture("")
+		button:SetPushedTexture('')
 	end)
 end
 

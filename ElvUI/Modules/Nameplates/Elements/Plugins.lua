@@ -86,7 +86,7 @@ function NP:Construct_TargetIndicator(nameplate)
 	local TargetIndicator = CreateFrame('Frame', nameplate:GetName() .. 'TargetIndicator', nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
-	TargetIndicator.Shadow = CreateFrame("Frame", nil, TargetIndicator, "BackdropTemplate")
+	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator, 'BackdropTemplate')
 	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(5)})
 	TargetIndicator.Shadow:Hide()
 

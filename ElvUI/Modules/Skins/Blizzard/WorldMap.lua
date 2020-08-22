@@ -67,8 +67,8 @@ function S:WorldMapFrame()
 	local QuestScrollFrameScrollBar = _G.QuestScrollFrame.ScrollBar
 	QuestScrollFrame.DetailFrame:CreateBackdrop()
 	QuestScrollFrame.DetailFrame.backdrop:SetFrameLevel(1)
-	QuestScrollFrame.DetailFrame.backdrop:SetPoint("TOPLEFT", QuestScrollFrame.DetailFrame, "TOPLEFT", 3, 1)
-	QuestScrollFrame.DetailFrame.backdrop:SetPoint("BOTTOMRIGHT", QuestScrollFrame.DetailFrame, "BOTTOMRIGHT", -2, -7)
+	QuestScrollFrame.DetailFrame.backdrop:SetPoint('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPLEFT', 3, 1)
+	QuestScrollFrame.DetailFrame.backdrop:SetPoint('BOTTOMRIGHT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', -2, -7)
 	QuestMapFrame.Background:SetInside(QuestScrollFrame.DetailFrame.backdrop)
 
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
@@ -92,8 +92,8 @@ function S:WorldMapFrame()
 	S:HandleScrollBar(_G.QuestMapFrameScrollBar)
 
 	if E.private.skins.blizzard.tooltip then
-		QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate("Transparent")
-		--QuestScrollFrame.WarCampaignTooltip:SetTemplate("Transparent")
+		QuestMapFrame.QuestsFrame.StoryTooltip:SetTemplate('Transparent')
+		--QuestScrollFrame.WarCampaignTooltip:SetTemplate('Transparent')
 	end
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
@@ -168,7 +168,7 @@ function S:WorldMapFrame()
 		end
 	end)
 
-	hooksecurefunc("QuestLogQuests_Update", function()
+	hooksecurefunc('QuestLogQuests_Update', function()
 		for header in QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
 			SkinHeaders(header)
 		end

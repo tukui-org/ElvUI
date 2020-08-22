@@ -74,7 +74,7 @@ function S:Blizzard_GuildControlUI()
 
 	local GuildControlUI = _G.GuildControlUI
 	GuildControlUI:StripTextures()
-	GuildControlUI:CreateBackdrop("Transparent")
+	GuildControlUI:CreateBackdrop('Transparent')
 	_G.GuildControlUIHbar:StripTextures()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()

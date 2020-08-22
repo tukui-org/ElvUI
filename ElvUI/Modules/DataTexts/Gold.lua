@@ -180,7 +180,7 @@ local function OnEnter()
 				DT.tooltip:AddLine(CURRENCY)
 			end
 			if info.quantity then
-				DT.tooltip:AddDoubleLine(format("%s %s", format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
+				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
 			end
 		end
 	end

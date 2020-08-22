@@ -28,7 +28,7 @@ function B:SkinBag(bag)
 	bag:StyleButton(true)
 	bag.IconBorder:Kill()
 
-	local icon = _G[bag:GetName().."IconTexture"]
+	local icon = _G[bag:GetName()..'IconTexture']
 	icon:SetInside()
 	icon:SetTexture(bag.oldTex)
 	icon:SetTexCoord(unpack(E.TexCoords))

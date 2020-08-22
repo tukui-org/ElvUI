@@ -18,6 +18,7 @@ local RegisterStateDriver = RegisterStateDriver
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
 local SetModifiedClick = SetModifiedClick
+local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
@@ -285,7 +286,7 @@ end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
-	SecureHandlerSetFrameRef(bar, "MainMenuBarArtFrame", _G.MainMenuBarArtFrame)
+	SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 
 	local point, anchor, attachTo, x, y = strsplit(',', AB.barDefaults['bar'..id].position)
 	bar:SetPoint(point, anchor, attachTo, x, y)
@@ -753,7 +754,7 @@ function AB:SetNoopsi(frame)
 	end
 end
 
-local SpellBookTooltip = CreateFrame("GameTooltip", "ElvUISpellBookTooltip", E.UIParent, "GameTooltipTemplate, BackdropTemplate")
+local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'GameTooltipTemplate, BackdropTemplate')
 function AB:SpellBookTooltipOnUpdate(elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed < TOOLTIP_UPDATE_TIME then return end

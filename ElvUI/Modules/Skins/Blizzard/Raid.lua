@@ -24,10 +24,10 @@ function S:Blizzard_RaidUI()
 			obj:StripTextures()
 
 			for j=1,5 do
-				local slot = _G[object.."Slot"..j]
+				local slot = _G[object..'Slot'..j]
 				if slot then
 					slot:StripTextures()
-					slot:CreateBackdrop("Transparent")
+					slot:CreateBackdrop('Transparent')
 					slot.backdrop:SetAllPoints()
 				end
 			end
@@ -35,7 +35,7 @@ function S:Blizzard_RaidUI()
 	end
 
 	for i=1, _G.MAX_RAID_GROUPS*5 do
-		S:HandleButton(_G["RaidGroupButton"..i], true)
+		S:HandleButton(_G['RaidGroupButton'..i], true)
 	end
 end
 

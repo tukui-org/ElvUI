@@ -49,7 +49,7 @@ local function SkinPetTooltip(tt)
 	tt.BorderBottom:SetTexture()
 	tt.BorderBottomRight:SetTexture()
 	tt.BorderBottomLeft:SetTexture()
-	tt:CreateBackdrop("Transparent")
+	tt:CreateBackdrop('Transparent')
 end
 
 function S:PetBattleFrame()
@@ -72,14 +72,14 @@ function S:PetBattleFrame()
 		infoBar.Border2:SetAlpha(0)
 		infoBar.healthBarWidth = 300
 
-		infoBar.IconBackdrop = CreateFrame("Frame", nil, infoBar, "BackdropTemplate")
+		infoBar.IconBackdrop = CreateFrame('Frame', nil, infoBar, 'BackdropTemplate')
 		infoBar.IconBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.IconBackdrop:SetOutside(infoBar.Icon)
 		infoBar.IconBackdrop:SetTemplate()
 		infoBar.BorderFlash:Kill()
 		infoBar.HealthBarBG:Kill()
 		infoBar.HealthBarFrame:Kill()
-		infoBar.HealthBarBackdrop = CreateFrame("Frame", nil, infoBar, "BackdropTemplate")
+		infoBar.HealthBarBackdrop = CreateFrame('Frame', nil, infoBar, 'BackdropTemplate')
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.HealthBarBackdrop:SetTemplate('Transparent')
 		infoBar.HealthBarBackdrop:SetWidth(infoBar.healthBarWidth + (E.Border * 2))
@@ -291,9 +291,9 @@ function S:PetBattleFrame()
 
 		infoBar.healthBarWidth = 40
 		infoBar.ActualHealthBar:ClearAllPoints()
-		infoBar.ActualHealthBar:SetPoint("TOPLEFT", infoBar.backdrop, 'BOTTOMLEFT', E.Border, -3)
+		infoBar.ActualHealthBar:SetPoint('TOPLEFT', infoBar.backdrop, 'BOTTOMLEFT', E.Border, -3)
 
-		infoBar.HealthBarBackdrop = CreateFrame("Frame", nil, infoBar, "BackdropTemplate")
+		infoBar.HealthBarBackdrop = CreateFrame('Frame', nil, infoBar, 'BackdropTemplate')
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.HealthBarBackdrop:SetTemplate()
 		infoBar.HealthBarBackdrop:SetWidth(infoBar.healthBarWidth + (E.Border*2))
@@ -310,7 +310,7 @@ function S:PetBattleFrame()
 	-- PET BATTLE ACTION BAR SETUP --
 	---------------------------------
 
-	local bar = CreateFrame("Frame", "ElvUIPetBattleActionBar", f, "BackdropTemplate")
+	local bar = CreateFrame('Frame', 'ElvUIPetBattleActionBar', f, 'BackdropTemplate')
 	bar:Size (52*6 + 7*10, 52 * 1 + 10*2)
 	bar:EnableMouse(true)
 	bar:SetTemplate()
@@ -401,7 +401,7 @@ function S:PetBattleFrame()
 
 	local PetBattleQueueReadyFrame = _G.PetBattleQueueReadyFrame
 	PetBattleQueueReadyFrame:StripTextures()
-	PetBattleQueueReadyFrame:CreateBackdrop("Transparent")
+	PetBattleQueueReadyFrame:CreateBackdrop('Transparent')
 	S:HandleButton(PetBattleQueueReadyFrame.AcceptButton)
 	S:HandleButton(PetBattleQueueReadyFrame.DeclineButton)
 	PetBattleQueueReadyFrame.Art:SetTexture([[Interface\PetBattles\PetBattlesQueue]])

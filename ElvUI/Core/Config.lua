@@ -23,7 +23,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local RESET = RESET
 -- GLOBALS: ElvUIMoverPopupWindow, ElvUIMoverNudgeWindow, ElvUIMoverPopupWindowDropDown
 
-local ConfigTooltip = CreateFrame("GameTooltip", "ElvUIConfigTooltip", E.UIParent, "GameTooltipTemplate, BackdropTemplate")
+local ConfigTooltip = CreateFrame('GameTooltip', 'ElvUIConfigTooltip', E.UIParent, 'GameTooltipTemplate, BackdropTemplate')
 
 local grid
 E.ConfigModeLayouts = {
@@ -1136,13 +1136,13 @@ function E:ToggleOptionsUI(msg)
 			end
 
 			local bottom = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-			bottom:SetPoint("BOTTOMLEFT", 2, 2)
-			bottom:SetPoint("BOTTOMRIGHT", -2, 2)
+			bottom:SetPoint('BOTTOMLEFT', 2, 2)
+			bottom:SetPoint('BOTTOMRIGHT', -2, 2)
 			bottom:SetHeight(37)
 			frame.bottomHolder = bottom
 
 			local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton, BackdropTemplate')
-			close:SetScript("OnClick", E.Config_CloseClicked)
+			close:SetScript('OnClick', E.Config_CloseClicked)
 			close:SetFrameLevel(1000)
 			close:SetPoint('TOPRIGHT', unskinned and -8 or 1, unskinned and -8 or 2)
 			close:SetSize(32, 32)
@@ -1150,9 +1150,9 @@ function E:ToggleOptionsUI(msg)
 			frame.closeButton = close
 
 			local left = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-			left:SetPoint("BOTTOMRIGHT", bottom, "BOTTOMLEFT", 181, 0)
-			left:SetPoint("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
-			left:SetPoint("TOPLEFT", unskinned and 10 or 2, unskinned and -6 or -2)
+			left:SetPoint('BOTTOMRIGHT', bottom, 'BOTTOMLEFT', 181, 0)
+			left:SetPoint('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
+			left:SetPoint('TOPLEFT', unskinned and 10 or 2, unskinned and -6 or -2)
 			frame.leftHolder = left
 
 			local top = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
@@ -1183,9 +1183,9 @@ function E:ToggleOptionsUI(msg)
 			left.buttonsHolder = buttonsHolder
 
 			local buttons = CreateFrame('Frame', nil, buttonsHolder, 'BackdropTemplate')
-			buttons:SetPoint("BOTTOMLEFT", bottom, "TOPLEFT", 0, 1)
-			buttons:SetPoint("BOTTOMRIGHT")
-			buttons:SetPoint("TOPLEFT", 0, 0)
+			buttons:SetPoint('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
+			buttons:SetPoint('BOTTOMRIGHT')
+			buttons:SetPoint('TOPLEFT', 0, 0)
 			left.buttons = buttons
 
 			local slider = CreateFrame('Slider', nil, frame, 'BackdropTemplate')

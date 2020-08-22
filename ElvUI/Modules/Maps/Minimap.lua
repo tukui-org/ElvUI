@@ -36,11 +36,11 @@ local ElvUIMiniMapTrackingDropDown = CreateFrame('Frame', 'ElvUIMiniMapTrackingD
 ElvUIMiniMapTrackingDropDown:SetID(1)
 ElvUIMiniMapTrackingDropDown:SetClampedToScreen(true)
 ElvUIMiniMapTrackingDropDown:Hide()
-_G.UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, _G.MiniMapTrackingDropDown_Initialize, "MENU")
+_G.UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, _G.MiniMapTrackingDropDown_Initialize, 'MENU')
 ElvUIMiniMapTrackingDropDown.noResize = true
 
 --Create the minimap micro menu
-local menuFrame = CreateFrame("Frame", "MinimapRightClickMenu", E.UIParent, "BackdropTemplate")
+local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'BackdropTemplate')
 local menuList = {
 	{text = _G.CHARACTER_BUTTON,
 	func = function() ToggleCharacter('PaperDollFrame') end},
@@ -121,7 +121,7 @@ function M:HandleGarrisonButton()
 	local button = _G.GarrisonLandingPageMinimapButton
 	if button then
 		local db = E.db.general.minimap.icons.classHall
-		local scale, pos = db.scale or 1, db.position or "TOPLEFT"
+		local scale, pos = db.scale or 1, db.position or 'TOPLEFT'
 		button:ClearAllPoints()
 		button:SetPoint(pos, Minimap, pos, db.xOffset or 0, db.yOffset or 0)
 		button:SetScale(scale)
@@ -173,8 +173,8 @@ function M:Minimap_OnMouseDown(btn)
 		else
 			E:DropDown(menuList, menuFrame, -160, 0)
 		end
-	elseif btn == "RightButton" then
-		_G.ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, "cursor")
+	elseif btn == 'RightButton' then
+		_G.ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, 'cursor')
 	else
 		_G.Minimap_OnClick(self)
 	end
@@ -190,7 +190,7 @@ end
 
 function M:Update_ZoneText()
 	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
-	Minimap.location:FontTemplate(E.Libs.LSM:Fetch("font", E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+	Minimap.location:FontTemplate(E.Libs.LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
@@ -215,7 +215,7 @@ do
 			E:Delay(E.db.general.minimap.resetZoom.time, ResetZoom)
 		end
 	end
-	hooksecurefunc(Minimap, "SetZoom", SetupZoomReset)
+	hooksecurefunc(Minimap, 'SetZoom', SetupZoomReset)
 end
 
 function M:UpdateSettings()
@@ -399,7 +399,7 @@ function M:Initialize()
 	_G.MiniMapMailIcon:SetTexture(E.Media.Textures.Mail)
 
 	-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
-	hooksecurefunc("GarrisonLandingPageMinimapButton_UpdateIcon", M.HandleGarrisonButton)
+	hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
 
 	--Hide the BlopRing on Minimap
 	Minimap:SetArchBlobRingScalar(0)

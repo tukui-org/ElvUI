@@ -70,7 +70,7 @@ S.ArrowRotation = {
 }
 
 function S:HandleInsetFrame(frame)
-	assert(frame, "doesn't exist!")
+	assert(frame, 'doesnt exist!')
 
 	if frame.InsetBorderTop then frame.InsetBorderTop:Hide() end
 	if frame.InsetBorderTopLeft then frame.InsetBorderTopLeft:Hide() end
@@ -88,7 +88,7 @@ end
 
 -- All frames that have a Portrait
 function S:HandlePortraitFrame(frame, setTemplate)
-	assert(frame, "doesn't exist!")
+	assert(frame, 'doesnt exist!')
 
 	local name = frame and frame.GetName and frame:GetName()
 	local insetFrame = name and _G[name..'Inset'] or frame.Inset
@@ -307,7 +307,7 @@ do
 end
 
 function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, styleTemplate, noGlossTex)
-	assert(button, "doesn't exist!")
+	assert(button, 'doesnt exist!')
 
 	if button.isSkinned then return end
 
@@ -342,8 +342,8 @@ function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, st
 			button.backdrop:SetAllPoints()
 		end
 
-		button:HookScript("OnEnter", S.SetModifiedBackdrop)
-		button:HookScript("OnLeave", S.SetOriginalBackdrop)
+		button:HookScript('OnEnter', S.SetModifiedBackdrop)
+		button:HookScript('OnLeave', S.SetOriginalBackdrop)
 	end
 
 	button.isSkinned = true
@@ -356,7 +356,7 @@ do
 	end
 
 	function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
-		assert(frame, "doesnt exist!")
+		assert(frame, 'doesnt exist!')
 
 		if frame.backdrop then return end
 		local parent = frame:GetParent()
@@ -520,8 +520,8 @@ function S:HandleEditBox(frame)
 	S:HandleBlizzardRegions(frame)
 
 	local EditBoxName = frame:GetName()
-	if EditBoxName and (strfind(EditBoxName, "Silver") or strfind(EditBoxName, "Copper")) then
-		frame.backdrop:SetPoint("BOTTOMRIGHT", -12, -2)
+	if EditBoxName and (strfind(EditBoxName, 'Silver') or strfind(EditBoxName, 'Copper')) then
+		frame.backdrop:SetPoint('BOTTOMRIGHT', -12, -2)
 	end
 end
 
@@ -777,7 +777,7 @@ function S:HandleCloseButton(f, point, x, y)
 end
 
 function S:HandleSliderFrame(frame)
-	assert(frame, "doesn't exist!")
+	assert(frame, 'doesnt exist!')
 
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
@@ -857,7 +857,7 @@ function S:HandleFollowerAbilities(followerList)
 	if xpbar and not xpbar.backdrop then
 		xpbar:StripTextures()
 		xpbar:SetStatusBarTexture(E.media.normTex)
-		xpbar:CreateBackdrop("Transparent")
+		xpbar:CreateBackdrop('Transparent')
 	end
 end
 
@@ -934,7 +934,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 					if fl.PortraitFrame and not fl.PortraitFrameStyled then
 						S:HandleGarrisonPortrait(fl.PortraitFrame)
 						fl.PortraitFrame:ClearAllPoints()
-						fl.PortraitFrame:SetPoint("TOPLEFT", 3, -3)
+						fl.PortraitFrame:SetPoint('TOPLEFT', 3, -3)
 						fl.PortraitFrameStyled = true
 					end
 				end
@@ -992,13 +992,13 @@ end
 
 -- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
 local AtlasToRoleTex = {
-	["Adventures-Tank"] = {.5, .75, 0, 1},
-	["Adventures-Healer"] = {.75, 1, 0, 1},
-	["Adventures-DPS"] = {.25, .5, 0, 1},
+	['Adventures-Tank'] = {.5, .75, 0, 1},
+	['Adventures-Healer'] = {.75, 1, 0, 1},
+	['Adventures-DPS'] = {.25, .5, 0, 1},
 }
 
 local function HandleFollowerRole(roleIcon, atlas)
-	roleIcon:SetTexture("Interface\\LFGFrame\\LFGROLE")
+	roleIcon:SetTexture('Interface\\LFGFrame\\LFGROLE')
 	roleIcon:SetSize(18, 18)
 	local texcoord = AtlasToRoleTex[atlas]
 	if texcoord then
@@ -1012,7 +1012,7 @@ function S:HandleGarrisonPortrait(portrait)
 	local level = portrait.Level or portrait.LevelText
 	if level then
 		level:ClearAllPoints()
-		level:SetPoint("BOTTOM", portrait, 0, 12)
+		level:SetPoint('BOTTOM', portrait, 0, 12)
 		level:FontTemplate(nil, 12, 'OUTLINE')
 		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
 		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
@@ -1022,7 +1022,7 @@ function S:HandleGarrisonPortrait(portrait)
 
 	if portrait.PortraitRing then
 		portrait.PortraitRing:Hide()
-		portrait.PortraitRingQuality:SetTexture("")
+		portrait.PortraitRingQuality:SetTexture('')
 		portrait.PortraitRingCover:SetColorTexture(0, 0, 0)
 		portrait.PortraitRingCover:SetAllPoints(portrait.Portrait.backdrop)
 	end
@@ -1040,21 +1040,21 @@ function S:HandleGarrisonPortrait(portrait)
 
 		local roleIcon = portrait.HealthBar.RoleIcon
 		roleIcon:ClearAllPoints()
-		roleIcon:SetPoint("TOPRIGHT", portrait.Portrait.backdrop, 5, 5)
-		hooksecurefunc(roleIcon, "SetAtlas", HandleFollowerRole)
+		roleIcon:SetPoint('TOPRIGHT', portrait.Portrait.backdrop, 5, 5)
+		hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
 
 		local background = portrait.HealthBar.Background
 		background:SetAlpha(0)
 		background:ClearAllPoints()
-		background:SetPoint("TOPLEFT", portrait.Portrait.backdrop, "BOTTOMLEFT", E.mult, 6)
-		background:SetPoint("BOTTOMRIGHT", portrait.Portrait.backdrop, "BOTTOMRIGHT", -E.mult, E.mult)
+		background:SetPoint('TOPLEFT', portrait.Portrait.backdrop, 'BOTTOMLEFT', E.mult, 6)
+		background:SetPoint('BOTTOMRIGHT', portrait.Portrait.backdrop, 'BOTTOMRIGHT', -E.mult, E.mult)
 		portrait.HealthBar.Health:SetTexture(E.media.normTex)
 	end
 end
 
 -- Interface\SharedXML\SharedUIPanelTemplatex.xml - line 780
 function S:HandleTooltipBorderedFrame(frame)
-	assert(frame, "doesn't exist!")
+	assert(frame, 'doesnt exist!')
 
 	if frame.BorderTopLeft then frame.BorderTopLeft:Hide() end
 	if frame.BorderTopRight then frame.BorderTopRight:Hide() end
@@ -1069,7 +1069,7 @@ function S:HandleTooltipBorderedFrame(frame)
 
 	if frame.Background then frame.Background:Hide() end
 
-	frame:CreateBackdrop("Transparent")
+	frame:CreateBackdrop('Transparent')
 end
 
 function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNameOverride)
@@ -1084,9 +1084,9 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	frame:StripTextures()
 	frame.BorderBox:StripTextures()
 	scrollFrame:StripTextures()
-	editBox:DisableDrawLayer("BACKGROUND") -- Removes textures around it
+	editBox:DisableDrawLayer('BACKGROUND') -- Removes textures around it
 
-	frame:CreateBackdrop("Transparent")
+	frame:CreateBackdrop('Transparent')
 	frame:SetHeight(frame:GetHeight() + 10)
 	scrollFrame:SetHeight(scrollFrame:GetHeight() + 10)
 
@@ -1473,7 +1473,7 @@ function S:Initialize()
 		end)
 	end
 
-	--[[hooksecurefunc("TriStateCheckbox_SetState", function(_, checkButton)
+	--[[hooksecurefunc('TriStateCheckbox_SetState', function(_, checkButton)
 		if checkButton.forceSaturation then
 			local tex = checkButton:GetCheckedTexture()
 			if checkButton.state == 2 then

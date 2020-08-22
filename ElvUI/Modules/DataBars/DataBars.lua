@@ -46,7 +46,7 @@ end
 
 function DB:PLAYER_LEVEL_UP(level)
 	if (level ~= 60 or not self.db.experience.hideAtMaxLevel) and DB.db.experience.enable then
-		DB:UpdateExperience("PLAYER_LEVEL_UP", level)
+		DB:UpdateExperience('PLAYER_LEVEL_UP', level)
 	else
 		self.expBar:Hide()
 	end

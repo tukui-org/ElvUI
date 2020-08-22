@@ -57,7 +57,7 @@ function S:TooltipFrames()
 
 	-- EmbeddedItemTooltip (also Paragon Reputation)
 	local embedded = _G.EmbeddedItemTooltip
-	embedded:SetTemplate("Transparent")
+	embedded:SetTemplate('Transparent')
 
 	if embedded.ItemTooltip.Icon then
 		S:HandleIcon(embedded.ItemTooltip.Icon, true)
@@ -85,7 +85,7 @@ function S:TooltipFrames()
 	TT:RegisterEvent('ADDON_LOADED', function(event, addon)
 		if addon == 'Blizzard_IslandsQueueUI' then
 			local tt = _G.IslandsQueueFrameTooltip:GetParent()
-			tt:GetParent():HookScript("OnShow", IslandTooltipStyle)
+			tt:GetParent():HookScript('OnShow', IslandTooltipStyle)
 			tt.IconBorder:Kill()
 			tt.Icon:SetTexCoord(unpack(E.TexCoords))
 			TT:UnregisterEvent(event)

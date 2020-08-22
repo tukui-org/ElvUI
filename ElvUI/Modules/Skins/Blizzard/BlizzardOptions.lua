@@ -22,11 +22,11 @@ local function HandlePushToTalkButton(button)
 	button.MiddleRight:Hide()
 	button.BottomMiddle:Hide()
 	button.MiddleMiddle:Hide()
-	button:SetHighlightTexture("")
+	button:SetHighlightTexture('')
 
 	button:CreateBackdrop(nil, true)
-	button:HookScript("OnEnter", S.SetModifiedBackdrop)
-	button:HookScript("OnLeave", S.SetOriginalBackdrop)
+	button:HookScript('OnEnter', S.SetModifiedBackdrop)
+	button:HookScript('OnLeave', S.SetOriginalBackdrop)
 end
 
 function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(btn)
@@ -62,7 +62,7 @@ function S:BlizzardOptions()
 		end
 	end)
 
-	_G.RolePollPopup:CreateBackdrop("Transparent")
+	_G.RolePollPopup:CreateBackdrop('Transparent')
 
 	_G.InterfaceOptionsFrame:SetClampedToScreen(true)
 	_G.InterfaceOptionsFrame:SetMovable(true)
@@ -323,7 +323,7 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrameTab1:StripTextures()
 	_G.InterfaceOptionsFrameTab2:SetPoint('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
 	_G.InterfaceOptionsFrameTab2:StripTextures()
-	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas("WoWShare-TwitterLogo")
+	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
 	--Create New Raid Profle
 	local newProfileDialog = _G.CompactUnitFrameProfilesNewProfileDialog

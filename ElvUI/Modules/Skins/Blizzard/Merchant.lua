@@ -49,7 +49,7 @@ function S:MerchantFrame()
 		button:StripTextures()
 		button:StyleButton(false)
 		button:CreateBackdrop(nil, true)
-		button:SetPoint("TOPLEFT", item, "TOPLEFT", 4, -4)
+		button:SetPoint('TOPLEFT', item, 'TOPLEFT', 4, -4)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()

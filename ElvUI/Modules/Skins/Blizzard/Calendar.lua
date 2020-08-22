@@ -81,8 +81,8 @@ function S:Blizzard_Calendar()
 
 	--Boost frame levels
 	for i = 1, 42 do
-		_G["CalendarDayButton"..i.."DarkFrame"]:SetAlpha(.5)
-		local bu = _G["CalendarDayButton"..i]
+		_G['CalendarDayButton'..i..'DarkFrame']:SetAlpha(.5)
+		local bu = _G['CalendarDayButton'..i]
 
 		if E.private.skins.parchmentRemoverEnable then
 			bu:DisableDrawLayer('BACKGROUND') -- This would remove the 'Parchement'
@@ -103,7 +103,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarWeekdaySelectedTexture:SetDesaturated(true)
 	_G.CalendarWeekdaySelectedTexture:SetVertexColor(1, 1, 1, 0.6)
 
-	hooksecurefunc("CalendarFrame_SetToday", function()
+	hooksecurefunc('CalendarFrame_SetToday', function()
 		_G.CalendarTodayFrame:SetAllPoints()
 	end)
 
@@ -178,7 +178,7 @@ function S:Blizzard_Calendar()
 	--Texture Picker Frame
 	_G.CalendarTexturePickerFrame:StripTextures()
 	_G.CalendarTexturePickerFrame.Header:StripTextures()
-	_G.CalendarTexturePickerFrame:CreateBackdrop("Transparent")
+	_G.CalendarTexturePickerFrame:CreateBackdrop('Transparent')
 
 	S:HandleScrollBar(_G.CalendarTexturePickerScrollBar)
 	S:HandleButton(_G.CalendarTexturePickerAcceptButton, true)
@@ -188,7 +188,7 @@ function S:Blizzard_Calendar()
 
 	--Mass Invite Frame
 	_G.CalendarMassInviteFrame:StripTextures()
-	_G.CalendarMassInviteFrame:CreateBackdrop("Transparent")
+	_G.CalendarMassInviteFrame:CreateBackdrop('Transparent')
 	_G.CalendarMassInviteFrame.Header:StripTextures()
 
 	S:HandleCloseButton(_G.CalendarMassInviteCloseButton)
@@ -214,9 +214,9 @@ function S:Blizzard_Calendar()
 	_G.CalendarViewEventFrame.Header:StripTextures()
 	_G.CalendarViewHolidayFrame.Header:StripTextures()
 	_G.CalendarViewEventDescriptionContainer:StripTextures()
-	_G.CalendarViewEventDescriptionContainer:CreateBackdrop("Transparent")
+	_G.CalendarViewEventDescriptionContainer:CreateBackdrop('Transparent')
 	_G.CalendarViewEventInviteList:StripTextures()
-	_G.CalendarViewEventInviteList:CreateBackdrop("Transparent")
+	_G.CalendarViewEventInviteList:CreateBackdrop('Transparent')
 	_G.CalendarViewEventInviteListSection:StripTextures()
 	S:HandleCloseButton(_G.CalendarViewEventCloseButton)
 	S:HandleScrollBar(_G.CalendarViewEventInviteListScrollFrameScrollBar)
@@ -229,7 +229,7 @@ function S:Blizzard_Calendar()
 	--Event Picker Frame
 	_G.CalendarEventPickerFrame:StripTextures()
 	_G.CalendarEventPickerFrame.Header:StripTextures()
-	_G.CalendarEventPickerFrame:CreateBackdrop("Transparent")
+	_G.CalendarEventPickerFrame:CreateBackdrop('Transparent')
 
 	S:HandleScrollBar(_G.CalendarEventPickerScrollBar)
 	S:HandleButton(_G.CalendarEventPickerCloseButton, true)

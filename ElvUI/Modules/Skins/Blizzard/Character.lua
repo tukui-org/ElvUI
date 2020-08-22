@@ -72,7 +72,7 @@ local function SkinItemFlyouts()
 
 	if not buttonAnchor.backdrop then
 		buttonAnchor:StripTextures()
-		buttonAnchor:CreateBackdrop("Transparent")
+		buttonAnchor:CreateBackdrop('Transparent')
 	end
 
 	for i, button in ipairs(buttons) do
@@ -400,17 +400,17 @@ function S:CharacterFrame()
 
 	_G.EquipmentFlyoutFrameHighlight:Kill()
 	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
-	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer("ARTWORK")
+	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer('ARTWORK')
 	_G.EquipmentFlyoutFrame.NavigationFrame:StripTextures()
-	_G.EquipmentFlyoutFrame.NavigationFrame:CreateBackdrop("Transparent")
-	_G.EquipmentFlyoutFrame.NavigationFrame:SetPoint("TOPLEFT", _G.EquipmentFlyoutFrameButtons, "BOTTOMLEFT", 0, -E.Border - E.Spacing)
-	_G.EquipmentFlyoutFrame.NavigationFrame:SetPoint("TOPRIGHT", _G.EquipmentFlyoutFrameButtons, "BOTTOMRIGHT", 0, -E.Border - E.Spacing)
+	_G.EquipmentFlyoutFrame.NavigationFrame:CreateBackdrop('Transparent')
+	_G.EquipmentFlyoutFrame.NavigationFrame:SetPoint('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
+	_G.EquipmentFlyoutFrame.NavigationFrame:SetPoint('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	--Swap item flyout frame (shown when holding alt over a slot)
-	hooksecurefunc("EquipmentFlyout_UpdateItems", SkinItemFlyouts)
-	hooksecurefunc("EquipmentFlyout_DisplayButton", function(button)
+	hooksecurefunc('EquipmentFlyout_UpdateItems', SkinItemFlyouts)
+	hooksecurefunc('EquipmentFlyout_DisplayButton', function(button)
 		local location = button.location
 		local border = button.IconBorder
 		if not location or not border then return end
@@ -445,11 +445,11 @@ function S:CharacterFrame()
 	_G.CharacterModelFrame.backdrop:SetPoint('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
 	local controlButtons = {
-		"CharacterModelFrameControlFrameZoomInButton",
-		"CharacterModelFrameControlFrameZoomOutButton",
-		"CharacterModelFrameControlFrameRotateLeftButton",
-		"CharacterModelFrameControlFrameRotateRightButton",
-		"CharacterModelFrameControlFrameRotateResetButton",
+		'CharacterModelFrameControlFrameZoomInButton',
+		'CharacterModelFrameControlFrameZoomOutButton',
+		'CharacterModelFrameControlFrameRotateLeftButton',
+		'CharacterModelFrameControlFrameRotateRightButton',
+		'CharacterModelFrameControlFrameRotateResetButton',
 	}
 
 	_G.CharacterModelFrameControlFrame:StripTextures()
@@ -527,8 +527,8 @@ function S:CharacterFrame()
 	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
 
 	--Currency
-	hooksecurefunc("TokenFrame_Update", UpdateCurrencySkins)
-	hooksecurefunc(_G.TokenFrameContainer, "update", UpdateCurrencySkins)
+	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
+	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
 end
 
 S:AddCallback('CharacterFrame')

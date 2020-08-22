@@ -58,9 +58,9 @@ local function OnEnter()
 		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
 		if info then
 			if i == 1 then
-				DT.tooltip:AddLine(" ")
+				DT.tooltip:AddLine(' ')
 				DT.tooltip:AddLine(CURRENCY)
-				DT.tooltip:AddLine(" ")
+				DT.tooltip:AddLine(' ')
 			end
 			if info.quantity then
 				DT.tooltip:AddDoubleLine(format(iconString, info.iconFileID, info.name), info.quantity, 1, 1, 1, 1, 1, 1)

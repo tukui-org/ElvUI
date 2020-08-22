@@ -51,9 +51,9 @@ end
 
 local function SkinTableAttributeDisplay(frame)
 	frame:StripTextures()
-	frame:CreateBackdrop("Transparent")
+	frame:CreateBackdrop('Transparent')
 	frame.ScrollFrameArt:StripTextures()
-	frame.ScrollFrameArt:CreateBackdrop("Transparent")
+	frame.ScrollFrameArt:CreateBackdrop('Transparent')
 	S:HandleCloseButton(frame.CloseButton)
 	frame.OpenParentButton:ClearAllPoints()
 	frame.OpenParentButton:SetPoint('TOPLEFT', frame, 'TOPLEFT', 2, -2)
@@ -92,15 +92,15 @@ function S:Blizzard_DebugTools()
 
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
-		_G.FrameStackTooltip:CreateBackdrop("Transparent")
-		_G.EventTraceTooltip:CreateBackdrop("Transparent")
+		_G.FrameStackTooltip:CreateBackdrop('Transparent')
+		_G.EventTraceTooltip:CreateBackdrop('Transparent')
 	end
 
 	for i=1, #FrameTexs do
 		_G['EventTraceFrame'..FrameTexs[i]]:SetTexture()
 	end
 
-	_G.EventTraceFrame:CreateBackdrop("Transparent")
+	_G.EventTraceFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(_G.EventTraceFrameCloseButton)
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])

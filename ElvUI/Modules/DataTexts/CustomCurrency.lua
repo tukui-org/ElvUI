@@ -17,23 +17,23 @@ local function OnEvent(self)
 		local info = C_CurrencyInfo_GetCurrencyInfo(currency.ID)
 		if not info then return end
 
-		if currency.DISPLAY_STYLE == "ICON" then
+		if currency.DISPLAY_STYLE == 'ICON' then
 			if currency.SHOW_MAX then
-				self.text:SetFormattedText("%s %d / %d", currency.ICON, info.quantity, info.maxQuantity)
+				self.text:SetFormattedText('%s %d / %d', currency.ICON, info.quantity, info.maxQuantity)
 			else
-				self.text:SetFormattedText("%s %d", currency.ICON, info.quantity)
+				self.text:SetFormattedText('%s %d', currency.ICON, info.quantity)
 			end
 		elseif currency.DISPLAY_STYLE == 'ICON_TEXT' then
 			if currency.SHOW_MAX then
-				self.text:SetFormattedText("%s %s %d / %d", currency.ICON, currency.NAME, info.quantity, info.maxQuantity)
+				self.text:SetFormattedText('%s %s %d / %d', currency.ICON, currency.NAME, info.quantity, info.maxQuantity)
 			else
-				self.text:SetFormattedText("%s %s %d", currency.ICON, currency.NAME, info.quantity)
+				self.text:SetFormattedText('%s %s %d', currency.ICON, currency.NAME, info.quantity)
 			end
 		else --ICON_TEXT_ABBR
 			if currency.SHOW_MAX then
-				self.text:SetFormattedText("%s %s %d / %d", currency.ICON, E:AbbreviateString(currency.NAME), info.quantity, info.maxQuantity)
+				self.text:SetFormattedText('%s %s %d / %d', currency.ICON, E:AbbreviateString(currency.NAME), info.quantity, info.maxQuantity)
 			else
-				self.text:SetFormattedText("%s %s %d", currency.ICON, E:AbbreviateString(currency.NAME), info.quantity)
+				self.text:SetFormattedText('%s %s %d', currency.ICON, E:AbbreviateString(currency.NAME), info.quantity)
 			end
 		end
 	end
@@ -67,7 +67,7 @@ local function RegisterNewDT(currencyID)
 		local name = info.name
 
 		--Add to internal storage, stored with name as key
-		CustomCurrencies[name] = {NAME = name, ID = currencyID, ICON = format("|T%s:16:16:0:0:64:64:4:60:4:60|t", info.iconFileID), DISPLAY_STYLE = "ICON", USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true}
+		CustomCurrencies[name] = {NAME = name, ID = currencyID, ICON = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.iconFileID), DISPLAY_STYLE = 'ICON', USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true}
 		--Register datatext
 		DT:RegisterDatatext(name, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, name)
 		--Save info to persistent storage, stored with ID as key

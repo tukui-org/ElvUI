@@ -9,7 +9,7 @@ function S:Blizzard_DeathRecap()
 
 	local DeathRecapFrame = _G.DeathRecapFrame
 	DeathRecapFrame:StripTextures()
-	DeathRecapFrame:CreateBackdrop("Transparent")
+	DeathRecapFrame:CreateBackdrop('Transparent')
 	DeathRecapFrame.CloseButton:SetFrameLevel(5)
 	S:HandleCloseButton(DeathRecapFrame.CloseXButton)
 	S:HandleButton(DeathRecapFrame.CloseButton)

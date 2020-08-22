@@ -86,7 +86,7 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame.Style:SetAlpha(0)
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
-	hooksecurefunc(ZoneAbilityFrame, "UpdateDisplayedZoneAbilities", function(button)
+	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(button)
 		for spellButton in button.SpellButtonContainer:EnumerateActive() do
 			if spellButton and not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
@@ -112,7 +112,7 @@ function AB:SetupExtraButton()
 	end)
 
 	-- Sometimes the ZoneButtons anchor it to the ExtraAbilityContainer, we dont want this.
-	hooksecurefunc(ZoneAbilityFrame, "SetParent", function(self, parent)
+	hooksecurefunc(ZoneAbilityFrame, 'SetParent', function(self, parent)
 		if parent == ExtraAbilityContainer then
 			self:SetParent(ZoneAbilityHolder)
 		end
@@ -142,7 +142,7 @@ function AB:SetupExtraButton()
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
 
-			button.HotKey:SetText(GetBindingKey("ExtraActionButton"..i))
+			button.HotKey:SetText(GetBindingKey('ExtraActionButton'..i))
 			tinsert(ExtraButtons, button)
 
 			if button.cooldown then

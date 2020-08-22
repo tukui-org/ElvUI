@@ -37,8 +37,8 @@ function S:Blizzard_Channels()
 	S:HandleCloseButton(_G.VoiceChatPromptActivateChannel.CloseButton)
 
 	-- Hide the Channel Header Textures
-	hooksecurefunc(_G.ChannelButtonHeaderMixin, "Update", function(s)
-		s:CreateBackdrop("Transparent")
+	hooksecurefunc(_G.ChannelButtonHeaderMixin, 'Update', function(s)
+		s:CreateBackdrop('Transparent')
 		s.NormalTexture:SetTexture()
 	end)
 end

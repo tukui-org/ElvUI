@@ -41,8 +41,8 @@ local function SkinFollowerBoard(self)
 end
 
 local function SkinMissionBoard(board)
-	board:HookScript("OnShow", SkinEnemyBoard)
-	hooksecurefunc(board, "EnumerateFollowers", SkinFollowerBoard)
+	board:HookScript('OnShow', SkinEnemyBoard)
+	hooksecurefunc(board, 'EnumerateFollowers', SkinFollowerBoard)
 end
 
 local function UpdateSpellAbilities(self, followerInfo)
@@ -73,13 +73,13 @@ local function SkinMissionFrame(frame, strip)
 	if frame.OverlayElements then frame.OverlayElements:SetAlpha(0) end
 
 	for i = 1, 3 do
-		local tab = _G[frame:GetName().."Tab"..i]
+		local tab = _G[frame:GetName()..'Tab'..i]
 		if tab then S:HandleTab(tab) end
 	end
 
 	if frame.MapTab then frame.MapTab.ScrollContainer.Child.TiledBackground:Hide() end
 
-	hooksecurefunc(frame.FollowerTab, "UpdateCombatantStats", UpdateSpellAbilities)
+	hooksecurefunc(frame.FollowerTab, 'UpdateCombatantStats', UpdateSpellAbilities)
 
 	for _, item in pairs({frame.FollowerTab.ItemWeapon, frame.FollowerTab.ItemArmor}) do
 		if item then
@@ -140,7 +140,7 @@ function S:Blizzard_GarrisonUI()
 		frame.Icon:SetDrawLayer('BORDER', 0)
 	end)
 
-	hooksecurefunc("GarrisonMissionPortrait_SetFollowerPortrait", function(portraitFrame, followerInfo)
+	hooksecurefunc('GarrisonMissionPortrait_SetFollowerPortrait', function(portraitFrame, followerInfo)
 		if not portraitFrame.IsSkinned then
 			S:HandleGarrisonPortrait(portraitFrame)
 			portraitFrame.IsSkinned = true
@@ -228,7 +228,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
-	hooksecurefunc(FollowerList, "ShowFollower", showFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
 
 	-- Mission list
 	local MissionTab = GarrisonMissionFrame.MissionTab
@@ -339,7 +339,7 @@ function S:Blizzard_GarrisonUI()
 	scrollFrame = FollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
 
-	hooksecurefunc(FollowerList, "ShowFollower", showFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
 
 	hooksecurefunc('GarrisonFollowerButton_AddAbility', function(s, index)
 		local ability = s.Abilities[index]
@@ -354,7 +354,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to orderhall landing page
 
 	local FollowerTab = GarrisonLandingPage.FollowerTab
-	hooksecurefunc(FollowerTab, "UpdateCombatantStats", UpdateSpellAbilities)
+	hooksecurefunc(FollowerTab, 'UpdateCombatantStats', UpdateSpellAbilities)
 
 	-- Landing page: Fleet
 	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
@@ -381,7 +381,7 @@ function S:Blizzard_GarrisonUI()
 	MissionList:CreateBackdrop('Transparent')
 	MissionList.backdrop:SetOutside(MissionList.MapTexture)
 	MissionList.CompleteDialog.BorderFrame:StripTextures()
-	MissionList.CompleteDialog.BorderFrame:CreateBackdrop("Transparent")
+	MissionList.CompleteDialog.BorderFrame:CreateBackdrop('Transparent')
 
 	-- ShipYard: Mission
 	MissionPage = MissionTab.MissionPage
@@ -411,7 +411,7 @@ function S:Blizzard_GarrisonUI()
 
 	-- ShipYard: Mission Tooltip
 	local tooltip = _G.GarrisonShipyardMapMissionTooltip
-	tooltip:CreateBackdrop("Transparent")
+	tooltip:CreateBackdrop('Transparent')
 	local reward = tooltip.ItemTooltip
 	local icon = reward.Icon
 	if icon then
@@ -423,8 +423,8 @@ function S:Blizzard_GarrisonUI()
 	if bonusIcon then S:HandleIcon(bonusIcon) end
 
 	-- Threat Counter Tooltips
-	_G.GarrisonMissionMechanicFollowerCounterTooltip:CreateBackdrop("Transparent")
-	_G.GarrisonMissionMechanicTooltip:CreateBackdrop("Transparent")
+	_G.GarrisonMissionMechanicFollowerCounterTooltip:CreateBackdrop('Transparent')
+	_G.GarrisonMissionMechanicTooltip:CreateBackdrop('Transparent')
 
 	-- MissionFrame
 	local OrderHallMissionFrame = _G.OrderHallMissionFrame
@@ -456,12 +456,12 @@ function S:Blizzard_GarrisonUI()
 	FollowerList = OrderHallMissionFrame.FollowerList -- swap
 	local FollowerTab = OrderHallMissionFrame.FollowerTab
 	Follower:StripTextures()
-	Follower:CreateBackdrop("Transparent")
+	Follower:CreateBackdrop('Transparent')
 	FollowerList:StripTextures()
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
-	hooksecurefunc(FollowerList, "ShowFollower", showFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
 	FollowerTab:StripTextures()
 	FollowerTab.Class:SetSize(50, 43)
 	FollowerTab.XPBar:StripTextures()
@@ -480,7 +480,7 @@ function S:Blizzard_GarrisonUI()
 	local ZoneSupportMissionPage = MissionTab.ZoneSupportMissionPage
 	S:HandleScrollBar(MissionList.listScroll.scrollBar)
 	MissionList.CompleteDialog:StripTextures()
-	MissionList.CompleteDialog:CreateBackdrop("Transparent")
+	MissionList.CompleteDialog:CreateBackdrop('Transparent')
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	MissionList:StripTextures()
 	MissionList.listScroll:StripTextures()
@@ -533,9 +533,9 @@ function S:Blizzard_GarrisonUI()
 	local XPBar = MissionFrame.FollowerTab.XPBar
 	local Class = MissionFrame.FollowerTab.Class
 	Follower:StripTextures()
-	Follower:CreateBackdrop("Transparent")
+	Follower:CreateBackdrop('Transparent')
 	S:HandleEditBox(Follower.SearchBox)
-	hooksecurefunc(Follower, "ShowFollower", showFollower)
+	hooksecurefunc(Follower, 'ShowFollower', showFollower)
 	S:HandleScrollBar(_G.BFAMissionFrameFollowersListScrollFrameScrollBar)
 
 	S:HandleFollowerListOnUpdateData('BFAMissionFrameFollowers') -- The function needs to be updated for BFA
@@ -607,7 +607,7 @@ local function SkinAbilityTooltip(frame)
 		S:HandleIcon(frame.Icon, frame.border)
 	end
 
-	frame:CreateBackdrop("Transparent")
+	frame:CreateBackdrop('Transparent')
 end
 
 function S:GarrisonTooltips()

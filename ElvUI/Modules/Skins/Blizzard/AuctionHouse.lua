@@ -193,7 +193,7 @@ local function HandleSellList(frame, hasHeader)
 		frame.ScrollFrame:CreateBackdrop('Transparent')
 		hooksecurefunc(frame, 'RefreshScrollFrame', HandleHeaders)
 	else
-		hooksecurefunc(frame, "RefreshListDisplay", HandleSummaryIcons)
+		hooksecurefunc(frame, 'RefreshListDisplay', HandleSummaryIcons)
 	end
 end
 

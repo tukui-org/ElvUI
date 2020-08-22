@@ -49,7 +49,7 @@ function S:BlizzardMiscFrames()
 
 	for i = 1, #skins do
 		_G[skins[i]]:StripTextures()
-		_G[skins[i]]:CreateBackdrop("Transparent")
+		_G[skins[i]]:CreateBackdrop('Transparent')
 	end
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
@@ -102,7 +102,7 @@ function S:BlizzardMiscFrames()
 		end
 
 		_G.GameMenuFrame:StripTextures()
-		_G.GameMenuFrame:CreateBackdrop("Transparent")
+		_G.GameMenuFrame:CreateBackdrop('Transparent')
 		_G.GameMenuFrame.Header:StripTextures()
 		_G.GameMenuFrame.Header:ClearAllPoints()
 		_G.GameMenuFrame.Header:SetPoint('TOP', _G.GameMenuFrame, 0, 7)
@@ -150,9 +150,9 @@ function S:BlizzardMiscFrames()
 
 	for i = 1, #ChatMenus do
 		if _G[ChatMenus[i]] == _G.ChatMenu then
-			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:CreateBackdrop("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) s:ClearAllPoints() s:SetPoint("BOTTOMLEFT", _G.ChatFrame1, "TOPLEFT", 0, 30) end)
+			_G[ChatMenus[i]]:HookScript('OnShow', function(s) s:CreateBackdrop('Transparent', true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) s:ClearAllPoints() s:SetPoint('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
 		else
-			_G[ChatMenus[i]]:HookScript("OnShow", function(s) s:CreateBackdrop("Transparent", true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
+			_G[ChatMenus[i]]:HookScript('OnShow', function(s) s:CreateBackdrop('Transparent', true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
 		end
 	end
 
@@ -164,7 +164,7 @@ function S:BlizzardMiscFrames()
 	}
 
 	_G.LFDRoleCheckPopup:StripTextures()
-	_G.LFDRoleCheckPopup:CreateBackdrop("Transparent")
+	_G.LFDRoleCheckPopup:CreateBackdrop('Transparent')
 	S:HandleButton(_G.LFDRoleCheckPopupAcceptButton)
 	S:HandleButton(_G.LFDRoleCheckPopupDeclineButton)
 
@@ -231,12 +231,12 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameLeft:SetAlpha(0)
 		_G.GhostFrame:StripTextures()
 		_G.GhostFrame:ClearAllPoints()
-		_G.GhostFrame:SetPoint("TOP", E.UIParent, "TOP", 0, -150)
-		_G.GhostFrameContentsFrame:CreateBackdrop("Transparent")
-		_G.GhostFrameContentsFrameText:SetPoint("TOPLEFT", 53, 0)
+		_G.GhostFrame:SetPoint('TOP', E.UIParent, 'TOP', 0, -150)
+		_G.GhostFrameContentsFrame:CreateBackdrop('Transparent')
+		_G.GhostFrameContentsFrameText:SetPoint('TOPLEFT', 53, 0)
 		_G.GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
-		_G.GhostFrameContentsFrameIcon:SetPoint("RIGHT", _G.GhostFrameContentsFrameText, "LEFT", -12, 0)
-		local b = CreateFrame("Frame", nil, _G.GhostFrameContentsFrameIcon:GetParent(), "BackdropTemplate")
+		_G.GhostFrameContentsFrameIcon:SetPoint('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
+		local b = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent(), 'BackdropTemplate')
 		local p = E.PixelMode and 1 or 2
 		b:SetPoint('TOPLEFT', _G.GhostFrameContentsFrameIcon, -p, p)
 		b:SetPoint('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, p, -p)
@@ -246,7 +246,7 @@ function S:BlizzardMiscFrames()
 	end
 
 	_G.OpacityFrame:StripTextures()
-	_G.OpacityFrame:CreateBackdrop("Transparent")
+	_G.OpacityFrame:CreateBackdrop('Transparent')
 
 	--DropDownMenu
 	hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index)
@@ -263,11 +263,11 @@ function S:BlizzardMiscFrames()
 
 		local Backdrop = _G[listFrameName..'Backdrop']
 		if not Backdrop.template then Backdrop:StripTextures() end
-		Backdrop:CreateBackdrop("Transparent")
+		Backdrop:CreateBackdrop('Transparent')
 
 		local menuBackdrop = _G[listFrameName..'MenuBackdrop']
 		if not menuBackdrop.template then menuBackdrop:StripTextures() end
-		menuBackdrop:CreateBackdrop("Transparent")
+		menuBackdrop:CreateBackdrop('Transparent')
 	end)
 
 	hooksecurefunc('UIDropDownMenu_SetIconImage', function(icon, texture)
@@ -334,17 +334,17 @@ function S:BlizzardMiscFrames()
 	SideDressUpFrame:StripTextures()
 	SideDressUpFrame.BGTopLeft:Hide()
 	SideDressUpFrame.BGBottomLeft:Hide()
-	SideDressUpFrame:CreateBackdrop("Transparent")
+	SideDressUpFrame:CreateBackdrop('Transparent')
 
 	-- StackSplit
 	local StackSplitFrame = _G.StackSplitFrame
 	StackSplitFrame:StripTextures()
-	StackSplitFrame:CreateBackdrop("Transparent")
+	StackSplitFrame:CreateBackdrop('Transparent')
 
-	StackSplitFrame.bg1 = CreateFrame("Frame", nil, StackSplitFrame, "BackdropTemplate")
-	StackSplitFrame.bg1:SetTemplate("Transparent")
-	StackSplitFrame.bg1:SetPoint("TOPLEFT", 10, -15)
-	StackSplitFrame.bg1:SetPoint("BOTTOMRIGHT", -10, 55)
+	StackSplitFrame.bg1 = CreateFrame('Frame', nil, StackSplitFrame, 'BackdropTemplate')
+	StackSplitFrame.bg1:SetTemplate('Transparent')
+	StackSplitFrame.bg1:SetPoint('TOPLEFT', 10, -15)
+	StackSplitFrame.bg1:SetPoint('BOTTOMRIGHT', -10, 55)
 	StackSplitFrame.bg1:SetFrameLevel(StackSplitFrame.bg1:GetFrameLevel() - 1)
 
 	S:HandleButton(StackSplitFrame.OkayButton)

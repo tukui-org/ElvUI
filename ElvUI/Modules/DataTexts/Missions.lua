@@ -57,11 +57,11 @@ local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- 'Completed: |cFF33FF33%s|r'
 local TALENTS = TALENTS
 
-local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. " %d (%d/%d)"
-local EXPANSION_NAME5 = EXPANSION_NAME5 -- "Warlords of Draenor"
-local EXPANSION_NAME6 = EXPANSION_NAME6 -- "Legion"
-local EXPANSION_NAME7 = EXPANSION_NAME7 -- "Battle for Azeroth"
-local EXPANSION_NAME8 = EXPANSION_NAME8 -- "Shadowlands"
+local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. ' %d (%d/%d)'
+local EXPANSION_NAME5 = EXPANSION_NAME5 -- 'Warlords of Draenor'
+local EXPANSION_NAME6 = EXPANSION_NAME6 -- 'Legion'
+local EXPANSION_NAME7 = EXPANSION_NAME7 -- 'Battle for Azeroth'
+local EXPANSION_NAME8 = EXPANSION_NAME8 -- 'Shadowlands'
 
 local MAIN_CURRENCY = 1813
 local NAZJATAR_MAP_ID = 1355
@@ -138,7 +138,7 @@ local function AddFollowerInfo(garrisonType)
 
 	if next(data) then
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- "Troops"
+		DT.tooltip:AddLine(FOLLOWERLIST_LABEL_TROOPS) -- 'Troops'
 		for _, followerShipments in ipairs(data) do
 			local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(followerShipments)
 			if name and shipmentsReady and shipmentsTotal then
@@ -238,15 +238,15 @@ local function OnEnter()
 					r1, g1, b1 = 1, 1, 1
 				end
 
-				DT.tooltip:AddLine(" ")
-				DT.tooltip:AddLine(ISLANDS_HEADER .. ":")
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(ISLANDS_HEADER .. ':')
 				DT.tooltip:AddDoubleLine(ISLANDS_QUEUE_FRAME_TITLE, text, 1, 1, 1, r1, g1, b1)
 			end
 		end
 
 		local widgetGroup = Widget_IDs[E.myfaction]
 		if E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and C_QuestLog_IsQuestFlaggedCompleted(widgetGroup[1]) then
-			DT.tooltip:AddLine(" ")
+			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(L["Nazjatar Follower XP"])
 
 			for i = 2, 4 do
@@ -269,11 +269,11 @@ local function OnEnter()
 		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_7_0)
 		AddFollowerInfo(LE_GARRISON_TYPE_7_0)
 
-		-- "Loose Work Orders" (i.e. research, equipment)
+		-- 'Loose Work Orders' (i.e. research, equipment)
 		wipe(data)
 		data = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
 		if #data > 0 then
-			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- "Work Orders"
+			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- 'Work Orders'
 
 			for _, looseShipments in ipairs(data) do
 				local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfoByContainerID(looseShipments)

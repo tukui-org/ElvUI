@@ -37,9 +37,9 @@ function M:UpdateBubbleBorder()
 
 	if E.private.chat.enable and E.private.general.classColorMentionsSpeech then
 		local isFirstWord, rebuiltString
-		if text and strmatch(text, "%s-%S+%s*") then
-			for word in gmatch(text, "%s-%S+%s*") do
-				local tempWord = gsub(word, "^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$", "%1%2")
+		if text and strmatch(text, '%s-%S+%s*') then
+			for word in gmatch(text, '%s-%S+%s*') do
+				local tempWord = gsub(word, '^[%s%p]-([^%s%p]+)([%-]?[^%s%p]-)[%s%p]*$', '%1%2')
 				local lowerCaseWord = strlower(tempWord)
 
 				local classMatch = CH.ClassNames[lowerCaseWord]
@@ -48,7 +48,7 @@ function M:UpdateBubbleBorder()
 				if wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch] then
 					local classColorTable = E:ClassColor(classMatch)
 					if classColorTable then
-						word = gsub(word, gsub(tempWord, "%-","%%-"), format("\124cff%.2x%.2x%.2x%s\124r", classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+						word = gsub(word, gsub(tempWord, '%-','%%-'), format('\124cff%.2x%.2x%.2x%s\124r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
 					end
 				end
 
@@ -82,7 +82,7 @@ end
 
 local yOffset --Value set in M:LoadChatBubbles()
 function M:SkinBubble(frame, backdrop)
-	local bubbleFont = E.Libs.LSM:Fetch("font", E.private.general.chatBubbleFont)
+	local bubbleFont = E.Libs.LSM:Fetch('font', E.private.general.chatBubbleFont)
 	if backdrop.String then
 		backdrop.String:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	end
@@ -105,11 +105,11 @@ function M:SkinBubble(frame, backdrop)
 	end
 
 	if not frame.Name then
-		local name = frame:CreateFontString(nil, "BORDER")
+		local name = frame:CreateFontString(nil, 'BORDER')
 		name:SetHeight(10) --Width set in M:AddChatBubbleName()
-		name:SetPoint("BOTTOM", frame, "TOP", 0, yOffset)
+		name:SetPoint('BOTTOM', frame, 'TOP', 0, yOffset)
 		name:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
-		name:SetJustifyH("LEFT")
+		name:SetJustifyH('LEFT')
 		frame.Name = name
 	end
 
@@ -133,7 +133,7 @@ local function ChatBubble_OnEvent(_, event, msg, sender, _, _, _, _, _, _, _, _,
 		wipe(messageToSender)
 	elseif E.private.general.chatBubbleName then
 		messageToGUID[msg] = guid
-		messageToSender[msg] = Ambiguate(sender, "none")
+		messageToSender[msg] = Ambiguate(sender, 'none')
 	end
 end
 
@@ -162,11 +162,11 @@ function M:ToggleChatBubbleScript()
 end
 
 function M:LoadChatBubbles()
-	yOffset = (E.private.general.chatBubbles == "backdrop" and 2) or (E.private.general.chatBubbles == "backdrop_noborder" and -2) or 0
-	self.BubbleFrame = CreateFrame("Frame")
-	self.BubbleFrame:RegisterEvent("CHAT_MSG_SAY")
-	self.BubbleFrame:RegisterEvent("CHAT_MSG_YELL")
-	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_SAY")
-	self.BubbleFrame:RegisterEvent("CHAT_MSG_MONSTER_YELL")
-	self.BubbleFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+	yOffset = (E.private.general.chatBubbles == 'backdrop' and 2) or (E.private.general.chatBubbles == 'backdrop_noborder' and -2) or 0
+	self.BubbleFrame = CreateFrame('Frame')
+	self.BubbleFrame:RegisterEvent('CHAT_MSG_SAY')
+	self.BubbleFrame:RegisterEvent('CHAT_MSG_YELL')
+	self.BubbleFrame:RegisterEvent('CHAT_MSG_MONSTER_SAY')
+	self.BubbleFrame:RegisterEvent('CHAT_MSG_MONSTER_YELL')
+	self.BubbleFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 end

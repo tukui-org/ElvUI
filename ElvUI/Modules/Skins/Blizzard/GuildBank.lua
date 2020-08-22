@@ -38,7 +38,7 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankInfoScrollFrame:SetWidth(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
-	GuildBankFrame.inset = CreateFrame("Frame", nil, GuildBankFrame, "BackdropTemplate")
+	GuildBankFrame.inset = CreateFrame('Frame', nil, GuildBankFrame, 'BackdropTemplate')
 	GuildBankFrame.inset:SetTemplate()
 	GuildBankFrame.inset:SetPoint('TOPLEFT', 20, -58)
 	GuildBankFrame.inset:SetPoint('BOTTOMRIGHT', -16, 60)

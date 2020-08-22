@@ -128,7 +128,7 @@ local function SkinAbilitiesInfo()
 
 			HandleButton(header.button)
 
-			header.button.bg = CreateFrame("Frame", nil, header.button, "BackdropTemplate")
+			header.button.bg = CreateFrame('Frame', nil, header.button, 'BackdropTemplate')
 			header.button.bg:SetTemplate()
 			header.button.bg:SetOutside(header.button.abilityIcon)
 			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
@@ -144,7 +144,7 @@ local function SkinAbilitiesInfo()
 		end
 
 		index = index + 1
-		header = _G["EncounterJournalInfoHeader"..index]
+		header = _G['EncounterJournalInfoHeader'..index]
 	end
 end
 
@@ -190,13 +190,13 @@ function S:Blizzard_EncounterJournal()
 
 	InstanceSelect.suggestTab:ClearAllPoints()
 	InstanceSelect.suggestTab:SetWidth(175)
-	InstanceSelect.suggestTab:SetPoint("BOTTOMLEFT", InstanceSelect, "TOPLEFT", 2, -43)
+	InstanceSelect.suggestTab:SetPoint('BOTTOMLEFT', InstanceSelect, 'TOPLEFT', 2, -43)
 	InstanceSelect.dungeonsTab:ClearAllPoints()
 	InstanceSelect.dungeonsTab:SetWidth(125)
-	InstanceSelect.dungeonsTab:SetPoint("BOTTOMLEFT", InstanceSelect.suggestTab, "BOTTOMRIGHT", 2, 0)
+	InstanceSelect.dungeonsTab:SetPoint('BOTTOMLEFT', InstanceSelect.suggestTab, 'BOTTOMRIGHT', 2, 0)
 	InstanceSelect.raidsTab:ClearAllPoints()
 	InstanceSelect.raidsTab:SetWidth(125)
-	InstanceSelect.raidsTab:SetPoint("BOTTOMLEFT", InstanceSelect.dungeonsTab, "BOTTOMRIGHT", 2, 0)
+	InstanceSelect.raidsTab:SetPoint('BOTTOMLEFT', InstanceSelect.dungeonsTab, 'BOTTOMRIGHT', 2, 0)
 
 	--Skin the tab text
 	for i = 1, #InstanceSelect.Tabs do
@@ -319,7 +319,7 @@ function S:Blizzard_EncounterJournal()
 		item.icon:SetDrawLayer('ARTWORK')
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 
-		item.IconBackdrop = CreateFrame("Frame", nil, item, "BackdropTemplate")
+		item.IconBackdrop = CreateFrame('Frame', nil, item, 'BackdropTemplate')
 		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
 		item.IconBackdrop:SetPoint('TOPLEFT', item.icon, -1, 1)
 		item.IconBackdrop:SetPoint('BOTTOMRIGHT', item.icon, 1, -1)
@@ -334,7 +334,7 @@ function S:Blizzard_EncounterJournal()
 		item.slot:SetPoint('TOPLEFT', item.name, 'BOTTOMLEFT', 0, -3)
 
 		item.armorType:ClearAllPoints()
-		item.armorType:SetPoint("RIGHT", item, "RIGHT", -10, 0)
+		item.armorType:SetPoint('RIGHT', item, 'RIGHT', -10, 0)
 
 		S:HandleIconBorder(item.IconBorder, item.IconBackdrop)
 
@@ -360,7 +360,7 @@ function S:Blizzard_EncounterJournal()
 
 	--Suggestions
 	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
-		local suggestion = _G.EncounterJournal.suggestFrame["Suggestion"..i]
+		local suggestion = _G.EncounterJournal.suggestFrame['Suggestion'..i]
 		if i == 1 then
 			HandleButton(suggestion.button)
 			suggestion.button:SetFrameLevel(4)
@@ -406,15 +406,15 @@ function S:Blizzard_EncounterJournal()
 			reward.iconRingHighlight:SetTexture()
 		end
 
-		hooksecurefunc("EJSuggestFrame_RefreshDisplay", function()
+		hooksecurefunc('EJSuggestFrame_RefreshDisplay', function()
 			for i, data in ipairs(suggestFrame.suggestions) do
-				local sugg = next(data) and suggestFrame["Suggestion"..i]
+				local sugg = next(data) and suggestFrame['Suggestion'..i]
 				if sugg then
 					if not sugg.icon.backdrop then
 						sugg.icon:CreateBackdrop()
 					end
 
-					sugg.icon:SetMask("")
+					sugg.icon:SetMask('')
 					sugg.icon:SetTexture(data.iconPath)
 					sugg.icon:SetTexCoord(unpack(E.TexCoords))
 					sugg.iconRing:Hide()
@@ -430,7 +430,7 @@ function S:Blizzard_EncounterJournal()
 					sugg.reward.icon.backdrop:SetFrameLevel(3)
 				end
 
-				sugg.reward.icon:SetMask("")
+				sugg.reward.icon:SetMask('')
 				sugg.reward.icon:SetTexture(rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]])
 				sugg.reward.icon:SetTexCoord(unpack(E.TexCoords))
 

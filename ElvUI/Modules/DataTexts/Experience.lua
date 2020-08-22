@@ -6,7 +6,7 @@ local format = format
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
-local displayString = ""
+local displayString = ''
 
 local function OnEvent(self)
 	if IsXPUserDisabled() then

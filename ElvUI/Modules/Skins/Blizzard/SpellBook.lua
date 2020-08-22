@@ -26,7 +26,7 @@ function S:SpellBookFrame()
 		_G.SpellBookPage2:SetAlpha(0)
 		_G.SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
 	else
-		local pagebackdrop = CreateFrame("Frame", nil, SpellBookFrame, "BackdropTemplate")
+		local pagebackdrop = CreateFrame('Frame', nil, SpellBookFrame, 'BackdropTemplate')
 		pagebackdrop:SetTemplate()
 		pagebackdrop:SetPoint('TOPLEFT', _G.SpellBookPage1, 'TOPLEFT', -2, 2)
 		pagebackdrop:SetPoint('BOTTOMRIGHT', SpellBookFrame, 'BOTTOMRIGHT', -8, 4)
@@ -59,7 +59,7 @@ function S:SpellBookFrame()
 		end
 
 		S:HandleIcon(icon)
-		E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
+		E:RegisterCooldown(_G['SpellButton'..i..'Cooldown'])
 		button:CreateBackdrop(nil, true)
 		icon:SetInside(button.backdrop)
 
@@ -85,7 +85,7 @@ function S:SpellBookFrame()
 
 	hooksecurefunc('SpellButton_UpdateButton', function()
 		for i = 1, _G.SPELLS_PER_PAGE do
-			local button = _G["SpellButton"..i]
+			local button = _G['SpellButton'..i]
 			if button.SpellHighlightTexture then
 				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
 				button.SpellHighlightTexture:SetInside(button.backdrop)

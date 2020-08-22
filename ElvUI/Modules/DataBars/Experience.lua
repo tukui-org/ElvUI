@@ -25,7 +25,7 @@ function DB:UpdateExperience(event)
 
 	if IsXPUserDisabled()
 	or (DB.db.experience.hideAtMaxLevel and IsPlayerAtEffectiveMaxLevel())
-	or (DB.db.experience.hideInCombat and (event == "PLAYER_REGEN_DISABLED" or InCombatLockdown())) then
+	or (DB.db.experience.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) then
 		E:DisableMover(DB.expBar.mover:GetName())
 		bar:Hide()
 	else
