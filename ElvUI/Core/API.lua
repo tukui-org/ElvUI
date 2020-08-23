@@ -515,11 +515,15 @@ function E:RequestBGInfo()
 	RequestBattlefieldScoreData()
 end
 
-function E:PLAYER_ENTERING_WORLD(_, initLogin)
+function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	self:CheckRole()
 
 	if initLogin or not ElvDB.LuaErrorDisabledAddOns then
 		ElvDB.LuaErrorDisabledAddOns = {}
+	end
+
+	if initLogin or isReload then
+		self:CheckIncompatible()
 	end
 
 	if not self.MediaUpdated then

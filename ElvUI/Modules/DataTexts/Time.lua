@@ -55,7 +55,7 @@ E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 local function ConvertTime(h, m)
 	local AmPm
-	if E.db.datatexts.time24 == true then
+	if E.global.datatexts.settings.Time.time24 == true then
 		return h, m, -1
 	else
 		if h >= 12 then
@@ -70,7 +70,7 @@ local function ConvertTime(h, m)
 end
 
 local function CalculateTimeValues(tooltip)
-	if (tooltip and E.db.datatexts.localtime) or (not tooltip and not E.db.datatexts.localtime) then
+	if (tooltip and E.global.datatexts.settings.Time.localTime) or (not tooltip and not E.global.datatexts.settings.Time.localTime) then
 		return ConvertTime(GetGameTime())
 	else
 		local dateTable = date('*t')
@@ -272,9 +272,9 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 	end
 	if AmPm == -1 then
-		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
-		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
 	DT.tooltip:Show()
@@ -323,4 +323,4 @@ function Update(self, t)
 	int = 5
 end
 
-DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, Update, Click, OnEnter, OnLeave)
+DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, Update, Click, OnEnter, OnLeave, nil, nil, ValueColorUpdate)

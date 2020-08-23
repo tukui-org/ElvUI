@@ -10,8 +10,8 @@ local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemInfo = GetItemInfo
 local GetParryChance = GetParryChance
 local UnitLevel = UnitLevel
-local BLOCK_CHANCE = BLOCK_CHANCE
 local BOSS = BOSS
+local BLOCK_CHANCE = BLOCK_CHANCE
 local DODGE_CHANCE = DODGE_CHANCE
 local MISS_CHANCE = MISS_CHANCE
 local PARRY_CHANCE = PARRY_CHANCE
@@ -46,15 +46,15 @@ local function OnEvent(self)
 	end
 
 	if leveldifference >= 0 then
-		dodge = (GetDodgeChance() - leveldifference*AVD_DECAY_RATE)
-		parry = (GetParryChance() - leveldifference*AVD_DECAY_RATE)
-		block = (GetBlockChance() - leveldifference*AVD_DECAY_RATE)
-		basemisschance = (basemisschance - leveldifference*AVD_DECAY_RATE)
+		dodge = (GetDodgeChance() - leveldifference * AVD_DECAY_RATE)
+		parry = (GetParryChance() - leveldifference * AVD_DECAY_RATE)
+		block = (GetBlockChance() - leveldifference * AVD_DECAY_RATE)
+		basemisschance = (basemisschance - leveldifference * AVD_DECAY_RATE)
 	else
-		dodge = (GetDodgeChance() + abs(leveldifference*AVD_DECAY_RATE))
-		parry = (GetParryChance() + abs(leveldifference*AVD_DECAY_RATE))
-		block = (GetBlockChance() + abs(leveldifference*AVD_DECAY_RATE))
-		basemisschance = (basemisschance+ abs(leveldifference*AVD_DECAY_RATE))
+		dodge = (GetDodgeChance() + abs(leveldifference * AVD_DECAY_RATE))
+		parry = (GetParryChance() + abs(leveldifference * AVD_DECAY_RATE))
+		block = (GetBlockChance() + abs(leveldifference * AVD_DECAY_RATE))
+		basemisschance = (basemisschance+ abs(leveldifference * AVD_DECAY_RATE))
 	end
 
 	local unhittableMax = 100
@@ -80,7 +80,11 @@ local function OnEvent(self)
 	local avoidance = (avoided+blocked)
 	unhittable = avoidance - unhittableMax
 
-	self.text:SetFormattedText(displayString, L["AVD: "], avoidance)
+	if E.global.datatexts.settings.Avoidance.NoLabel then
+		self.text:SetFormattedText(displayString, avoidance)
+	else
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Avoidance.Label ~= '' and E.global.datatexts.settings.Avoidance.Label or L["AVD: "], avoidance)
+	end
 
 	--print(unhittableMax) -- should report 102.4 for a level differance of +3 for shield classes, 101.2 for druids, 101.8 for monks and dks
 	lastPanel = self
@@ -104,10 +108,10 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', '%s', hex, '%.2f%%|r')
+	displayString = strjoin('', E.global.datatexts.settings.Avoidance.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Avoidance.decimalLength..'f%%|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Avoidance', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_TARGET', 'UNIT_STATS', 'UNIT_AURA', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE', 'PLAYER_EQUIPMENT_CHANGED'}, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"])
+DT:RegisterDatatext('Avoidance', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_TARGET', 'UNIT_STATS', 'UNIT_AURA', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE', 'PLAYER_EQUIPMENT_CHANGED'}, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"], nil, ValueColorUpdate)

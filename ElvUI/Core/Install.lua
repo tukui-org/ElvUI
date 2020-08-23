@@ -277,7 +277,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.chat.panelWidth = 472
 			E.db.chat.tabFontSize = 10
 		--DataTexts
-			E.db.datatexts.panels.LeftChatDataPanel[3] = 'Quick Join'
+			E.db.datatexts.panels.LeftChatDataPanel[3] = 'QuickJoin'
 		--General
 			E.db.general.bonusObjectivePosition = 'AUTO'
 			E.db.general.minimap.size = 220
