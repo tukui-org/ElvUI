@@ -16,19 +16,20 @@ function S:Blizzard_CovenantPreviewUI()
 
 	hooksecurefunc(frame, 'TryShow', function(covenantInfo)
 		if covenantInfo and not frame.IsSkinned then
-			frame.Background:SetAlpha(0)
-			frame.BorderFrame:SetAlpha(0)
-
 			frame:CreateBackdrop('Transparent')
 
-			frame.Title:DisableDrawLayer('BACKGROUND')
 			frame.Title.Text:SetTextColor(1, .8, 0)
 			frame.Title:CreateBackdrop('Transparent')
 
 			frame.ModelSceneContainer.ModelSceneBorder:SetAlpha(0)
-
-			frame.InfoPanel.Parchment:SetAlpha(0)
 			frame.InfoPanel:CreateBackdrop('Transparent')
+
+			if E.private.skins.parchmentRemoverEnable then
+				frame.Title:DisableDrawLayer('BACKGROUND')
+				frame.Background:SetAlpha(0)
+				frame.BorderFrame:SetAlpha(0)
+				frame.InfoPanel.Parchment:SetAlpha(0)
+			end
 
 			S:HandleCloseButton(frame.CloseButton)
 			S:HandleButton(frame.SelectButton)
