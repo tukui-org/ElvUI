@@ -512,6 +512,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		local text = dt.text
 		text:FontTemplate(font, fontSize, fontOutline)
 		text:SetWordWrap(DT.db.wordWrap)
+		text:SetJustifyH(db.textJustify or 'CENTER')
 		text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
 
 		if battlePanel then
