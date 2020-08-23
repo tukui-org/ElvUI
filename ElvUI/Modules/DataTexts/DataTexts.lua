@@ -760,14 +760,16 @@ end
 	localizedName - localized name of the datetext
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent
 ]]
-function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent)
-	if not name then error('Cannot register datatext no name was provided.') end
-	local data = {name = name, category = category}
+function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+	if not name then return end
+	if type(category) ~= 'string' and category ~= nil then return E:Print(format('%s is an invalid DataText.', name)) end
 
-	if type(events) ~= 'table' and events ~= nil then
-		error('Events must be registered as a table.')
+	local data = { name = name, category = category }
+
+	if type(events) == 'function' then
+		return E:Print(format('%s is an invalid DataText. Events must be registered as a table or a string.', name))
 	else
-		data.events = events
+		data.events = type(events) == 'string' and { strsplit('[, ]', events) } or events
 		data.eventFunc = eventFunc
 		data.objectEvent = objectEvent
 	end

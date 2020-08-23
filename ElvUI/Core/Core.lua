@@ -184,7 +184,7 @@ do
 end
 
 function E:Print(...)
-	(_G[E.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME):AddMessage(strjoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)) -- I put DEFAULT_CHAT_FRAME as a fail safe.
+	(E.db and _G[E.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME):AddMessage(strjoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)) -- I put DEFAULT_CHAT_FRAME as a fail safe.
 end
 
 function E:GrabColorPickerValues(r, g, b)
