@@ -24,6 +24,7 @@ local function SkinConduitList(frame)
 		header:CreateBackdrop('Transparent')
 		header.backdrop:SetPoint('TOPLEFT', 2, 0)
 		header.backdrop:SetPoint('BOTTOMRIGHT', 15, 0)
+		header.backdrop:SetBackdropColor(1, 0, 0, .35)
 
 		header.styled = true
 	end
