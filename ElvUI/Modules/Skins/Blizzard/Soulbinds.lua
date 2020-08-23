@@ -54,7 +54,9 @@ function S:Blizzard_Soulbinds()
 
 	S:HandleCloseButton(frame.CloseButton)
 	S:HandleButton(frame.CommitConduitsButton)
+	frame.CommitConduitsButton:SetFrameLevel(10)
 	S:HandleButton(frame.ActivateSoulbindButton)
+	frame.ActivateSoulbindButton:SetFrameLevel(10)
 
 	local scrollBox = frame.ConduitList.ScrollBox
 	select(2, scrollBox:GetChildren()):Hide() -- Weird shadow on the ScrollBox
