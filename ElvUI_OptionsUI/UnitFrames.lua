@@ -3999,11 +3999,11 @@ E.Options.args.unitframe = {
 							get = function(info)
 								local t = E.db.unitframe.colors[info[#info]]
 								local d = P.unitframe.colors[info[#info]]
-								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 							end,
-							set = function(info, r, g, b)
+							set = function(info, r, g, b, a)
 								local t = E.db.unitframe.colors[info[#info]]
-								t.r, t.g, t.b = r, g, b
+								t.r, t.g, t.b, t.a = r, g, b, a
 								UF:Update_AllFrames()
 							end,
 							args = {
