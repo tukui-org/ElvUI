@@ -60,22 +60,26 @@ function S:Blizzard_CovenantSanctum()
 			frame.CloseButton:ClearAllPoints()
 			frame.CloseButton:SetPoint('TOPRIGHT', frame, 'TOPRIGHT', 2, 2)
 
-			frame.LevelFrame.Background:SetAlpha(0)
 			frame.LevelFrame.Level:FontTemplate()
 
 			local UpgradesTab = frame.UpgradesTab
-			UpgradesTab.Background:SetAlpha(0)
 			UpgradesTab.Background:CreateBackdrop('Transparent')
 			S:HandleButton(UpgradesTab.DepositButton)
-			for _, frame in ipairs(UpgradesTab.Upgrades) do
-				frame.RankBorder:SetAlpha(0)
-			end
 
 			local TalentList = frame.UpgradesTab.TalentsList
-			TalentList.Divider:SetAlpha(0)
-			TalentList.BackgroundTile:SetAlpha(0)
 			TalentList:CreateBackdrop('Transparent')
 			S:HandleButton(TalentList.UpgradeButton)
+
+			if E.private.skins.parchmentRemoverEnable then
+				frame.LevelFrame.Background:SetAlpha(0)
+				UpgradesTab.Background:SetAlpha(0)
+				TalentList.Divider:SetAlpha(0)
+				TalentList.BackgroundTile:SetAlpha(0)
+
+				for _, frame in ipairs(UpgradesTab.Upgrades) do
+					frame.RankBorder:SetAlpha(0)
+				end
+			end
 
 			hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
 			hooksecurefunc(frame.RenownTab, "Refresh", HideRenownLevelBorder)
