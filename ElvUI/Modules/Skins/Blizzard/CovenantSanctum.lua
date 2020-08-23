@@ -65,10 +65,12 @@ function S:Blizzard_CovenantSanctum()
 			local UpgradesTab = frame.UpgradesTab
 			UpgradesTab.Background:CreateBackdrop('Transparent')
 			S:HandleButton(UpgradesTab.DepositButton)
+			UpgradesTab.DepositButton:SetFrameLevel(10)
 
 			local TalentList = frame.UpgradesTab.TalentsList
 			TalentList:CreateBackdrop('Transparent')
 			S:HandleButton(TalentList.UpgradeButton)
+			TalentList.UpgradeButton:SetFrameLevel(10)
 
 			if E.private.skins.parchmentRemoverEnable then
 				frame.LevelFrame.Background:SetAlpha(0)
