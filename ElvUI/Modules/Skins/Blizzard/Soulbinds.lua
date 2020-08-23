@@ -65,3 +65,18 @@ function S:Blizzard_Soulbinds()
 end
 
 S:AddCallbackForAddon('Blizzard_Soulbinds')
+
+-- ToDo: Find a way to skin me :thinking:
+function S:Blizzard_LandingSoulbinds()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.soulbinds) then return end
+
+	hooksecurefunc(_G.LandingPageSoulbindButtonMixin, 'SetSoulbind', function(button, soulbindData)
+		if not button.IsSkinned then
+			button:StyleButton()
+
+			button.IsSkinned = true
+		end
+	end)
+end
+
+--S:AddCallbackForAddon('Blizzard_LandingSoulbinds')
