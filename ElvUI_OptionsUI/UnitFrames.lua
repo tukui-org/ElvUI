@@ -4054,7 +4054,8 @@ E.Options.args.unitframe = {
 									type = 'color',
 									name = L["Custom Backdrop"],
 									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
-									disabled = function() return not E.db.unitframe.colors.customcastbarbackdrop end
+									disabled = function() return not E.db.unitframe.colors.customcastbarbackdrop end,
+									hasAlpha = true,
 								},
 								spacer2 = ACH:Spacer(8, 'full'),
 								castColor = {

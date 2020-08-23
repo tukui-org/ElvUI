@@ -1402,7 +1402,7 @@ P.unitframe = {
 		health = { r = .31, g = .31, b = .31 },
 		health_backdrop = { r = .8, g = .01, b = .01 },
 		health_backdrop_dead = { r = .8, g = .01, b = .01 },
-		castbar_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
+		castbar_backdrop = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 		classpower_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
 		aurabar_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
 		power_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
