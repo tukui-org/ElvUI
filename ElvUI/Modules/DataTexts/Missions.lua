@@ -169,7 +169,7 @@ local function AddTalentInfo(garrisonType, currentCovenant)
 
 	if next(data) then
 		-- This is a talent that has completed, but has not been seen in the talent UI yet.
-		-- No longer provide reveant output in SL. Still used by old content.
+		-- No longer provide relevant output in SL. Still used by old content.
 		local completeTalentID = C_Garrison_GetCompleteTalent(garrisonType)
 		if completeTalentID > 0 then
 			DT.tooltip:AddLine(' ')
