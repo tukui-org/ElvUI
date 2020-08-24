@@ -168,7 +168,8 @@ local function AddTalentInfo(garrisonType, currentCovenant)
 	end
 
 	if next(data) then
-		-- this is a talent that has completed, but has not been seen in the talent UI yet.
+		-- This is a talent that has completed, but has not been seen in the talent UI yet.
+		-- No longer provide reveant output in SL. Still used by old content.
 		local completeTalentID = C_Garrison_GetCompleteTalent(garrisonType)
 		if completeTalentID > 0 then
 			DT.tooltip:AddLine(' ')
@@ -178,7 +179,7 @@ local function AddTalentInfo(garrisonType, currentCovenant)
 				wipe(treeInfo)
 				treeInfo = C_Garrison_GetTalentTreeInfo(treeID)
 				for _, talent in ipairs(treeInfo.talents) do
-					if talent.isBeingResearched or talent.id == completeTalentID then
+					if talent.isBeingResearched or (talent.id == completeTalentID and garrisonType ~= LE_GARRISON_TYPE_9_0)then
 						if talent.timeRemaining and talent.timeRemaining == 0 then
 							DT.tooltip:AddDoubleLine(talent.name, GOAL_COMPLETED, 1, 1, 1, GREEN_FONT_COLOR:GetRGB())
 						else
