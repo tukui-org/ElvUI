@@ -1370,7 +1370,7 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 		local nn = n;n=m;m=nn
 	end
 
-	if self.isTransparent and not self.custom_backdrop then
+	if self.isTransparent then
 		if self.backdrop then
 			local _, _, _, a = E:GetBackdropColor(self.backdrop)
 			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a)
@@ -1446,12 +1446,12 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 	else
 		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate(nil, nil, nil, not statusBar.PostCastStart and UF.thinBorders, true)
+			statusBar.backdrop:SetTemplate(nil, nil, nil, not statusBar.PostCastStart and self.thinBorders, true)
 		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate(nil, nil, nil, UF.thinBorders, true)
+			statusBar:GetParent():SetTemplate(nil, nil, nil, self.thinBorders, true)
 		end
 
-		local texture = LSM:Fetch('statusbar', UF.db.statusbar)
+		local texture = LSM:Fetch('statusbar', self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)
 
