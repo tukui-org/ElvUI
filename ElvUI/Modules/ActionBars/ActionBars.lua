@@ -827,6 +827,7 @@ function AB:DisableBlizzard()
 	_G.StatusTrackingBarManager:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- these are needed to let the ExtraActionButton show
+	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for ExtraActionBar cooldown
 	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show

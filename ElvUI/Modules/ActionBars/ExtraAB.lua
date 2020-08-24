@@ -4,16 +4,14 @@ local AB = E:GetModule('ActionBars')
 local _G = _G
 local unpack = unpack
 local CreateFrame = CreateFrame
-local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
 local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 
-local function FixExtraActionCD(button)
-	if button.cooldown and button.action then
-		local start, duration = GetActionCooldown(button.action)
-		E.OnSetCooldown(button.cooldown, start, duration)
+local function stripStyle(btn, tex)
+	if tex ~= nil then
+		btn:SetTexture()
 	end
 end
 
@@ -78,38 +76,29 @@ function AB:SetupExtraButton()
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G['ExtraActionButton'..i]
 		if button then
-			button.noResize = true
 			button.pushed = true
 			button.checked = true
 
-			self:StyleButton(button, true)
-			button:SetTemplate()
+			self:StyleButton(button, true) -- registers cooldown too
 			button.icon:SetDrawLayer('ARTWORK')
+			button:SetTemplate()
 
 			if E.private.skins.cleanBossButton and button.style then -- Hide the Artwork
 				button.style:SetTexture()
-				hooksecurefunc(button.style, 'SetTexture', function(btn, tex)
-					if tex ~= nil then btn:SetTexture() end
-				end)
+				hooksecurefunc(button.style, 'SetTexture', stripStyle)
 			end
 
 			local tex = button:CreateTexture(nil, 'OVERLAY')
 			tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
-
-			if button.cooldown then
-				button.cooldown.CooldownOverride = 'actionbar'
-				E:RegisterCooldown(button.cooldown)
-				button:HookScript('OnShow', FixExtraActionCD)
-			end
 		end
 	end
 
 	local button = ZoneAbilityFrame.SpellButton
 	if button then
 		button:SetNormalTexture('')
-		button:StyleButton(nil, nil, nil, true)
+		button:StyleButton()
 		button:SetTemplate()
 		button.Icon:SetDrawLayer('ARTWORK')
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -117,9 +106,7 @@ function AB:SetupExtraButton()
 
 		if E.private.skins.cleanBossButton and button.Style then -- Hide the Artwork
 			button.Style:SetTexture()
-			hooksecurefunc(button.Style, 'SetTexture', function(btn, tex)
-				if tex ~= nil then btn:SetTexture() end
-			end)
+			hooksecurefunc(button.Style, 'SetTexture', stripStyle)
 		end
 
 		if button.Cooldown then
