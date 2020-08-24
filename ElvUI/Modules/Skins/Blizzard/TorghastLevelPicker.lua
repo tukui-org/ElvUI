@@ -7,10 +7,11 @@ function S:Blizzard_TorghastLevelPicker()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.torghastLevelPicker) then return end
 
 	local frame = _G.TorghastLevelPickerFrame
+	frame.Title:FontTemplate(nil, 24)
 
 	S:HandleCloseButton(frame.CloseButton)
-	S:HandleNextPrevButton(frame.PreviousPage)
-	S:HandleNextPrevButton(frame.NextPage)
+	S:HandleNextPrevButton(frame.Pager.PreviousPage)
+	S:HandleNextPrevButton(frame.Pager.NextPage)
 	S:HandleButton(frame.OpenPortalButton)
 end
 
