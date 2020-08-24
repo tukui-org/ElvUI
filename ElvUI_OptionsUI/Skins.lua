@@ -101,6 +101,7 @@ E.Options.args.skins.args.blizzard.values = {
 	taxi = L["FLIGHT_MAP"],
 	timemanager = L["TIMEMANAGER_TITLE"],
 	tooltip = L["Tooltip"],
+	torghastLevelPicker = L["Torghast Level Picker"],
 	trade = L["TRADE"],
 	tradeskill = L["TRADESKILLS"],
 	trainer = L["Trainer Frame"],
