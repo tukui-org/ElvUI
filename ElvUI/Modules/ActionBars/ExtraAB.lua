@@ -89,7 +89,7 @@ function AB:SetupExtraButton()
 			if spellButton and not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
 				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
-				spellButton:StyleButton(nil, nil, nil, true)
+				spellButton:StyleButton(nil, true)
 				spellButton:CreateBackdrop()
 				spellButton.Icon:SetDrawLayer('ARTWORK')
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -125,7 +125,7 @@ function AB:SetupExtraButton()
 
 			self:StyleButton(button, true) -- registers cooldown too
 			button.icon:SetDrawLayer('ARTWORK')
-			button:SetTemplate()
+			button:CreateBackdrop()
 
 			if E.private.skins.cleanBossButton and button.style then -- Hide the Artwork
 				button.style:SetTexture()
@@ -139,12 +139,6 @@ function AB:SetupExtraButton()
 
 			button.HotKey:SetText(GetBindingKey('ExtraActionButton'..i))
 			tinsert(ExtraButtons, button)
-
-			if button.cooldown then
-				button.cooldown.CooldownOverride = 'actionbar'
-				E:RegisterCooldown(button.cooldown)
-				button:HookScript('OnShow', FixExtraActionCD)
-			end
 		end
 	end
 
