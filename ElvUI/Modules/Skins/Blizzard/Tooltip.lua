@@ -40,7 +40,7 @@ function S:TooltipFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 
 	S:StyleTooltips()
-	S:HandleCloseButton(_G.ItemRefCloseButton)
+	--S:HandleCloseButton(_G.ItemRefCloseButton)
 
 	-- Skin Blizzard Tooltips
 	local ItemTooltip = _G.GameTooltip.ItemTooltip
