@@ -587,7 +587,7 @@ E.Options.args.datatexts = {
 								DT:PanelLayoutOptions()
 
 								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name)
-								DT:Panel_DefaultGlobalSettings(name, nil, true)
+								E.global.datatexts.newPanelInfo = DT:Panel_DefaultGlobalSettings(name, nil, true)
 							end,
 						},
 					},
