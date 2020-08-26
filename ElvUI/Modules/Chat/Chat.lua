@@ -674,7 +674,7 @@ function CH:StyleChat(frame)
 
 	if not tab.left then tab.left = _G[name..'TabLeft'] end
 	tab.Text:ClearAllPoints()
-	tab.Text:SetPoint('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
+	tab.Text:SetPoint('LEFT', tab, 'LEFT', tab.left:GetWidth(), -2)
 	tab:SetHeight(22)
 
 	if tab.conversationIcon then
@@ -1111,11 +1111,6 @@ function CH:PositionChat(chat)
 
 	CH:UpdateChatTab(chat)
 
-	if chat.FontStringContainer then
-		chat.FontStringContainer:ClearAllPoints()
-		chat.FontStringContainer:SetAllPoints()
-	end
-
 	if chat:IsMovable() then
 		chat:SetUserPlaced(true)
 	end
@@ -1128,17 +1123,17 @@ function CH:PositionChat(chat)
 		chat:Show()
 	end
 
-	local BASE_OFFSET = 28 - 2
+	local BASE_OFFSET = 28
 	if chat == CH.LeftChatWindow then
 		chat:ClearAllPoints()
-		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 4, 2)
-		chat:SetSize(CH.db.panelWidth - 8, CH.db.panelHeight - BASE_OFFSET)
+		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 2)
+		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
 		chat:ClearAllPoints()
-		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 4, 2)
-		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 8, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET)
+		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 2)
+		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
@@ -1992,8 +1987,8 @@ function CH:SetupChat()
 
 	local chat = _G.GeneralDockManager.primary
 	_G.GeneralDockManager:ClearAllPoints()
-	_G.GeneralDockManager:SetPoint('BOTTOMLEFT', chat, 'TOPLEFT', 0, 2)
-	_G.GeneralDockManager:SetPoint('BOTTOMRIGHT', chat, 'TOPRIGHT', 0, 2)
+	_G.GeneralDockManager:SetPoint('BOTTOMLEFT', chat, 'TOPLEFT', 0, 3)
+	_G.GeneralDockManager:SetPoint('BOTTOMRIGHT', chat, 'TOPRIGHT', 0, 3)
 	_G.GeneralDockManager:SetHeight(22)
 	_G.GeneralDockManagerScrollFrame:SetHeight(22)
 	_G.GeneralDockManagerScrollFrameChild:SetHeight(22)
