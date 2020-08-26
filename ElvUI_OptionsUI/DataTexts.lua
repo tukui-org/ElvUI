@@ -561,6 +561,7 @@ E.Options.args.datatexts = {
 							type = 'input',
 							width = 'full',
 							name = L["Name"],
+							get = function() return E.global.datatexts.newPanelInfo.name or '' end,
 							validate = function(_, value)
 								return E.global.datatexts.customPanels[value] and L["Name Taken"] or true
 							end,
@@ -571,13 +572,14 @@ E.Options.args.datatexts = {
 							name = L["Add"],
 							width = 'full',
 							hidden = function()
-								return E.global.datatexts.newPanelInfo.name == ''
+								local name = E.global.datatexts.newPanelInfo.name
+								return not name or name == ''
 							end,
 							func = function()
 								local name = E.global.datatexts.newPanelInfo.name
-								DT:Panel_DefaultGlobalSettings(name, E.global.datatexts.newPanelInfo)
-
+								E.global.datatexts.customPanels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo)
 								E.db.datatexts.panels[name] = { enable = true }
+
 								for i = 1, E.global.datatexts.newPanelInfo.numPoints do
 									E.db.datatexts.panels[name][i] = ''
 								end
@@ -587,7 +589,7 @@ E.Options.args.datatexts = {
 								DT:PanelLayoutOptions()
 
 								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name)
-								E.global.datatexts.newPanelInfo = DT:Panel_DefaultGlobalSettings(name, nil, true)
+								E.global.datatexts.newPanelInfo = E:CopyTable({}, G.datatexts.newPanelInfo)
 							end,
 						},
 					},
