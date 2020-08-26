@@ -1,6 +1,6 @@
 ### Version 11.50 [ ETA: 🍨 ]
 
-**Dreams:**
+**Hopes and Dreams:**
 Unitframes and Datatexts were sometimes failing to display their text, hopefully this is corrected now!  
 Adjusted Nameplate and Aurabars to hopefully better detect mind control, duels, and which the frame type should be.  
 
@@ -24,7 +24,7 @@ Added Interrupted Color for castbar on Unitframes.
 
 **NamePlates:**
 Castbar Time should fit better.  
-Fixed Player being weird half the time.  
+Fixed Player Nameplate being weird half of the time.  
 Quest Icons also shows the quest ! texture now in some cases, and wont show 1 on the icon anymore.  
 Quest Icons code was slightly updated to improve locales and pick the correct icon to use, so now it might work on other languages better.  
 Corrected a Style Filter error, also let entering and leaving combat trigger filters correctly (regardless of unit threat).  
@@ -36,7 +36,7 @@ Added option to hide the Copy Button.
 
 **ActionBars:**
 Equipped Item border wasn't updating correctly.  
-Extra Action Button cooldown was not showing when it should. 
+Extra Action Button cooldown was not showing when it should.  
 
 ___
 
