@@ -417,6 +417,25 @@ function DT:GetTextAttributes(panel, db)
 	return width, height, vertical, numPoints
 end
 
+-- this is used to make texts show on init load, when the font was added after elvui but registers
+-- during the load screen, for some reason blizzard doesnt render the font unless we change the
+-- text after the first frame? its probably related to the texture not inheriting alpha problem. ~Simpy
+local RerenderFont = function(fs)
+	local text = fs:GetText()
+	fs:SetText('\10')
+	fs:SetText(text)
+end
+
+local FixFonts = CreateFrame('Frame')
+FixFonts:Hide()
+FixFonts:SetScript('OnUpdate', function(self)
+	for fs in pairs(DT.FontStrings) do
+		RerenderFont(fs)
+	end
+
+	self:Hide()
+end)
+
 function DT:UpdatePanelInfo(panelName, panel, ...)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
 	local db = panel.db or P.datatexts.panels[panelName] and DT.db.panels[panelName]
@@ -499,6 +518,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
+		RerenderFont(dt.text) -- SetJustifyH wont update without a rerender?
 
 		if battlePanel then
 			dt:SetScript('OnClick', DT.ToggleBattleStats)
@@ -692,21 +712,6 @@ function DT:CURRENCY_DISPLAY_UPDATE(_, currencyType)
 		DT.CurrencyList[tostring(currencyType)] = GetCurrencyInfo(currencyType)
 	end
 end
-
--- this is used to make texts show on init load, when the font was added after elvui but registers
--- during the load screen, for some reason blizzard doesnt render the font unless we change the
--- text after the first frame? its probably related to the texture not inheriting alpha problem. ~Simpy
-local FixFonts = CreateFrame('Frame')
-FixFonts:Hide()
-FixFonts:SetScript('OnUpdate', function(self)
-	for fs in pairs(DT.FontStrings) do
-		local text = fs:GetText()
-		fs:SetText('\10')
-		fs:SetText(text)
-	end
-
-	self:Hide()
-end)
 
 function DT:PLAYER_ENTERING_WORLD(_, initLogin)
 	DT:LoadDataTexts()
