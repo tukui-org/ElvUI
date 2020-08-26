@@ -1098,10 +1098,22 @@ end
 
 function CH:PositionChat(chat)
 	CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows()
+
+	local docker = _G.GeneralDockManager.primary
+	if chat == docker then
+		local iconParent, chatParent = CH:GetAnchorParents(chat)
+		_G.GeneralDockManager:SetParent(chatParent)
+
+		if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
+			CH:ReparentVoiceChatIcon(iconParent or chatParent)
+		end
+	end
+
 	CH:UpdateChatTab(chat)
 
 	if chat.FontStringContainer then
-		chat.FontStringContainer:SetOutside(chat)
+		chat.FontStringContainer:ClearAllPoints()
+		chat.FontStringContainer:SetAllPoints()
 	end
 
 	if chat:IsMovable() then
@@ -1116,33 +1128,21 @@ function CH:PositionChat(chat)
 		chat:Show()
 	end
 
-	local docker = _G.GeneralDockManager.primary
-	local BASE_OFFSET = 28 + (E.PixelMode and 0 or 4)
+	local BASE_OFFSET = 28 - 2
 	if chat == CH.LeftChatWindow then
-		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
-		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, E.PixelMode and 2 or 4)
-		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - offset)
+		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 4, 2)
+		chat:SetSize(CH.db.panelWidth - 8, CH.db.panelHeight - BASE_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
-		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.RightChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
-		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, E.PixelMode and 2 or 4)
-		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - offset)
+		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 4, 2)
+		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 8, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
 		CH:ShowBackground(chat.Background, CH:IsUndocked(chat, docker))
-	end
-
-	if chat == docker then
-		local iconParent, chatParent = CH:GetAnchorParents(chat)
-		_G.GeneralDockManager:SetParent(chatParent)
-
-		if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
-			CH:ReparentVoiceChatIcon(iconParent or chatParent)
-		end
 	end
 end
 
