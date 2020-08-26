@@ -419,7 +419,8 @@ end
 
 -- this is used to make texts show on init load, when the font was added after elvui but registers
 -- during the load screen, for some reason blizzard doesnt render the font unless we change the
--- text after the first frame? its probably related to the texture not inheriting alpha problem. ~Simpy
+-- text after the first frame? its probably related to the texture not inheriting alpha problem.
+-- also, this seems to be a problem with SetJustifyH not triggering a rerender too. ~Simpy
 local RerenderFont = function(fs)
 	local text = fs:GetText()
 	fs:SetText('\10')
