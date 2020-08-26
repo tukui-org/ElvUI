@@ -1002,9 +1002,13 @@ function CH:UpdateChatTab(chat)
 
 	if chat == CH.LeftChatWindow then
 		CH:GetTab(chat):SetParent(_G.LeftChatPanel or _G.UIParent)
+		chat:SetParent(_G.LeftChatPanel or _G.UIParent)
+
 		CH:HandleFadeTabs(chat, fadeLeft)
 	elseif chat == CH.RightChatWindow then
 		CH:GetTab(chat):SetParent(_G.RightChatPanel or _G.UIParent)
+		chat:SetParent(_G.RightChatPanel or _G.UIParent)
+
 		CH:HandleFadeTabs(chat, fadeRight)
 	else
 		local docker = _G.GeneralDockManager.primary
@@ -1012,6 +1016,7 @@ function CH:UpdateChatTab(chat)
 
 		-- we need to update the tab parent to mimic the docker
 		CH:GetTab(chat):SetParent(parent or _G.UIParent)
+		chat:SetParent(parent or _G.UIParent)
 
 		if parent and docker == CH.LeftChatWindow then
 			CH:HandleFadeTabs(chat, fadeLeft)
@@ -1091,7 +1096,6 @@ function CH:ShowBackground(background, show)
 	end
 end
 
-local dockHolder = CreateFrame('Frame')
 function CH:PositionChat(chat)
 	CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows()
 	CH:UpdateChatTab(chat)
@@ -1114,7 +1118,6 @@ function CH:PositionChat(chat)
 
 	local docker = _G.GeneralDockManager.primary
 	local BASE_OFFSET = 28 + (E.PixelMode and 0 or 4)
-	local iconParent, chatParent = CH:GetAnchorParents(chat)
 	if chat == CH.LeftChatWindow then
 		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
@@ -1133,14 +1136,9 @@ function CH:PositionChat(chat)
 		CH:ShowBackground(chat.Background, CH:IsUndocked(chat, docker))
 	end
 
-	if chat.isDocked then
-		chat:SetParent(dockHolder)
-	else
-		chat:SetParent(chatParent)
-	end
-
 	if chat == docker then
-		dockHolder:SetParent(chatParent)
+		local iconParent, chatParent = CH:GetAnchorParents(chat)
+		_G.GeneralDockManager:SetParent(chatParent)
 
 		if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
 			CH:ReparentVoiceChatIcon(iconParent or chatParent)
@@ -1996,7 +1994,6 @@ function CH:SetupChat()
 	_G.GeneralDockManager:ClearAllPoints()
 	_G.GeneralDockManager:SetPoint('BOTTOMLEFT', chat, 'TOPLEFT', 0, 2)
 	_G.GeneralDockManager:SetPoint('BOTTOMRIGHT', chat, 'TOPRIGHT', 0, 2)
-	_G.GeneralDockManager:SetParent(dockHolder)
 	_G.GeneralDockManager:SetHeight(22)
 	_G.GeneralDockManagerScrollFrame:SetHeight(22)
 	_G.GeneralDockManagerScrollFrameChild:SetHeight(22)
