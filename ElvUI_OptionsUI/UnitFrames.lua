@@ -1372,6 +1372,7 @@ local function CreateCustomTextGroup(unit, objectName)
 				order = 4,
 				name = L["Font"],
 				values = _G.AceGUIWidgetLSMlists.font,
+				width = 'double',
 			},
 			size = {
 				order = 5,
@@ -2952,6 +2953,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = smartAuraPositionValues,
+			width = 'double',
 		}
 	end
 
@@ -3022,6 +3024,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 					desc = L["Growth direction from the first unitframe."],
 					type = 'select',
 					values = growthDirectionValues,
+					width = 'double',
 				},
 				numGroups = {
 					order = 7,
@@ -3117,6 +3120,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 					desc = L["Set the order that the group will sort."],
 					customWidth = 250,
 					type = 'select',
+					width = 'double',
 					values = {
 						CLASS = L["CLASS"],
 						CLASSROLE = L["CLASS"]..' & '..L["ROLE"],
