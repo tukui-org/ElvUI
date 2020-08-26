@@ -52,6 +52,7 @@ G.datatexts = {
 		panelTransparency = false,
 		mouseover = false,
 		border = true,
+		textJustify = 'CENTER',
 		visibility = '[petbattle] hide;show',
 		tooltipAnchor = 'ANCHOR_TOPLEFT',
 		tooltipXOffset = -17,

@@ -498,6 +498,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		end
 
 		dt.text:FontTemplate(font, fontSize, fontOutline)
+		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
 
 		if battlePanel then
