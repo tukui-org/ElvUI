@@ -7,7 +7,7 @@ local LSM = E.Libs.LSM
 local _G = _G
 local tostring, format, type, pcall = tostring, format, type, pcall
 local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
-local next, strfind, strsplit = next, strfind, strsplit
+local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
 local EasyMenu = EasyMenu
@@ -251,7 +251,7 @@ function DT:BuildPanelFunctions(name, obj)
 	end
 
 	local function UpdateText(_, Name, _, Value)
-		if not Value or (Value == Name or LDBna[Value]) then
+		if not Value or (strlen(Value) >= 3) or (Value == Name or LDBna[Value]) then
 			panel.text:SetText((not LDBna[Value] and Value) or Name)
 		else
 			panel.text:SetFormattedText('%s: %s%s|r', Name, LDBhex, Value)
