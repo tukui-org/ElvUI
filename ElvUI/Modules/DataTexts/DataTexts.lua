@@ -450,7 +450,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 			local text = dt:CreateFontString(nil, 'ARTWORK')
 			text:SetAllPoints()
-			text:SetJustifyH('CENTER')
 			text:SetJustifyV('MIDDLE')
 			dt.text = text
 			DT.FontStrings[text] = true
