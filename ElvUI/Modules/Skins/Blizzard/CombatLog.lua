@@ -17,7 +17,7 @@ function S:Blizzard_CombatLog()
 	local FontContainer = _G.ChatFrame2.FontStringContainer
 	if FontContainer then
 		Button:ClearAllPoints()
-		Button:SetPoint('BOTTOMLEFT', FontContainer, 'TOPLEFT', -3, 1)
+		Button:SetPoint('BOTTOMLEFT', FontContainer, 'TOPLEFT', -3, 0)
 		Button:SetPoint('BOTTOMRIGHT', FontContainer, 'TOPRIGHT', 3 or 3, 0)
 	end
 
