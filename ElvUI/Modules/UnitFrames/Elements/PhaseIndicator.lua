@@ -17,8 +17,8 @@ end
 
 function UF:Construct_PhaseIcon(frame)
 	local PhaseIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK', nil, 1)
-	PhaseIndicator:Size(30, 30)
-	PhaseIndicator:Point('CENTER', frame.Health, 'CENTER')
+	PhaseIndicator:SetSize(30, 30)
+	PhaseIndicator:SetPoint('CENTER', frame.Health, 'CENTER')
 	PhaseIndicator:SetTexture(E.Media.Textures.PhaseIcons)
 	PhaseIndicator:SetDrawLayer('OVERLAY', 7)
 
@@ -30,10 +30,10 @@ end
 function UF:Configure_PhaseIcon(frame)
 	local PhaseIndicator = frame.PhaseIndicator
 	PhaseIndicator:ClearAllPoints()
-	PhaseIndicator:Point(frame.db.phaseIndicator.anchorPoint, frame.Health, frame.db.phaseIndicator.anchorPoint, frame.db.phaseIndicator.xOffset, frame.db.phaseIndicator.yOffset)
+	PhaseIndicator:SetPoint(frame.db.phaseIndicator.anchorPoint, frame.Health, frame.db.phaseIndicator.anchorPoint, frame.db.phaseIndicator.xOffset, frame.db.phaseIndicator.yOffset)
 
 	local scale = frame.db.phaseIndicator.scale or 1
-	PhaseIndicator:Size(30 * scale)
+	PhaseIndicator:SetSize(30 * scale, 30 * scale)
 
 	if frame.db.phaseIndicator.enable and not frame:IsElementEnabled('PhaseIndicator') then
 		frame:EnableElement('PhaseIndicator')

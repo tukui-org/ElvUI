@@ -12,13 +12,13 @@ function S:LookingForGuildFrame()
 	S:HandlePortraitFrame(LookingForGuildFrame, true)
 
 	local checkbox = {
-		"LookingForGuildPvPButton",
-		"LookingForGuildWeekendsButton",
-		"LookingForGuildWeekdaysButton",
-		"LookingForGuildRPButton",
-		"LookingForGuildRaidButton",
-		"LookingForGuildQuestButton",
-		"LookingForGuildDungeonButton",
+		'LookingForGuildPvPButton',
+		'LookingForGuildWeekendsButton',
+		'LookingForGuildWeekdaysButton',
+		'LookingForGuildRPButton',
+		'LookingForGuildRaidButton',
+		'LookingForGuildQuestButton',
+		'LookingForGuildDungeonButton',
 	}
 
 	-- skin checkboxes
@@ -40,17 +40,17 @@ function S:LookingForGuildFrame()
 
 	-- skin container buttons on browse and request page
 	for i = 1, 5 do
-		_G["LookingForGuildBrowseFrameContainerButton"..i]:SetBackdrop(nil)
-		_G["LookingForGuildAppsFrameContainerButton"..i]:SetBackdrop(nil)
+		_G['LookingForGuildBrowseFrameContainerButton'..i]:SetBackdrop(nil)
+		_G['LookingForGuildAppsFrameContainerButton'..i]:SetBackdrop(nil)
 	end
 
 	-- skin tabs
 	for i= 1, 3 do
-		S:HandleTab(_G["LookingForGuildFrameTab"..i])
+		S:HandleTab(_G['LookingForGuildFrameTab'..i])
 	end
 
 	_G.GuildFinderRequestMembershipFrame:StripTextures(true)
-	_G.GuildFinderRequestMembershipFrame:SetTemplate("Transparent")
+	_G.GuildFinderRequestMembershipFrame:SetTemplate('Transparent')
 	S:HandleButton(_G.GuildFinderRequestMembershipFrameAcceptButton)
 	S:HandleButton(_G.GuildFinderRequestMembershipFrameCancelButton)
 	_G.GuildFinderRequestMembershipFrameInputFrame:StripTextures()

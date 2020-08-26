@@ -35,19 +35,19 @@ local GUILD = GUILD
 
 local tthead, ttsubh, ttoff = {r=0.4, g=0.78, b=1}, {r=0.75, g=0.9, b=1}, {r=.3,g=1,b=.3}
 local activezone, inactivezone = {r=0.3, g=1.0, b=0.3}, {r=0.65, g=0.65, b=0.65}
-local displayString = ""
-local noGuildString = ""
-local guildInfoString = "%s"
-local guildInfoString2 = GUILD..": %d/%d"
-local guildMotDString = "%s |cffaaaaaa- |cffffffff%s"
-local levelNameString = "|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r"
-local levelNameStatusString = "|cff%02x%02x%02x%d|r %s%s %s"
-local nameRankString = "%s |cff999999-|cffffffff %s"
-local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b).."%s:|r |cFFFFFFFF%s/%s (%s%%)"
-local moreMembersOnlineString = strjoin("", "+ %d ", _G.FRIENDS_LIST_ONLINE, "...")
-local noteString = strjoin("", "|cff999999   ", _G.LABEL_NOTE, ":|r %s")
-local officerNoteString = strjoin("", "|cff999999   ", _G.GUILD_RANK1_DESC, ":|r %s")
-local guildTable, guildMotD, lastPanel = {}, ""
+local displayString = ''
+local noGuildString = ''
+local guildInfoString = '%s'
+local guildInfoString2 = GUILD..': %d/%d'
+local guildMotDString = '%s |cffaaaaaa- |cffffffff%s'
+local levelNameString = '|cff%02x%02x%02x%d|r |cff%02x%02x%02x%s|r'
+local levelNameStatusString = '|cff%02x%02x%02x%d|r %s%s %s'
+local nameRankString = '%s |cff999999-|cffffffff %s'
+local standingString = E:RGBToHex(ttsubh.r, ttsubh.g, ttsubh.b)..'%s:|r |cFFFFFFFF%s/%s (%s%%)'
+local moreMembersOnlineString = strjoin('', '+ %d ', _G.FRIENDS_LIST_ONLINE, '...')
+local noteString = strjoin('', '|cff999999   ', _G.LABEL_NOTE, ':|r %s')
+local officerNoteString = strjoin('', '|cff999999   ', _G.GUILD_RANK1_DESC, ':|r %s')
+local guildTable, guildMotD, lastPanel = {}, ''
 
 local function sortByRank(a, b)
 	if a and b then
@@ -72,7 +72,7 @@ local function SortGuildTable(shift)
 	end
 end
 
-local onlinestatusstring = "|cffFFFFFF[|r|cffFF0000%s|r|cffFFFFFF]|r"
+local onlinestatusstring = '|cffFFFFFF[|r|cffFF0000%s|r|cffFFFFFF]|r'
 local onlinestatus = {
 	[0] = '',
 	[1] = format(onlinestatusstring, L["AFK"]),
@@ -85,7 +85,7 @@ local mobilestatus = {
 }
 
 local function inGroup(name)
-	return (UnitInParty(name) or UnitInRaid(name)) and "|cffaaaaaa*|r" or ""
+	return (UnitInParty(name) or UnitInRaid(name)) and '|cffaaaaaa*|r' or ''
 end
 
 local function BuildGuildTable()
@@ -122,7 +122,7 @@ local function UpdateGuildMessage()
 	guildMotD = GetGuildRosterMOTD()
 end
 
-local FRIEND_ONLINE = select(2, strsplit(" ", _G.ERR_FRIEND_ONLINE_SS, 2))
+local FRIEND_ONLINE = select(2, strsplit(' ', _G.ERR_FRIEND_ONLINE_SS, 2))
 local resendRequest = false
 local eventHandlers = {
 	PLAYER_GUILD_UPDATE = C_GuildInfo_GuildRoster,
@@ -135,7 +135,7 @@ local eventHandlers = {
 	-- load guild frame, update guild message and guild xp
 	PLAYER_ENTERING_WORLD = function()
 		if not _G.GuildFrame and IsInGuild() then
-			LoadAddOn("Blizzard_GuildUI")
+			LoadAddOn('Blizzard_GuildUI')
 			C_GuildInfo_GuildRoster()
 		end
 	end,
@@ -148,7 +148,7 @@ local eventHandlers = {
 			BuildGuildTable()
 			UpdateGuildMessage()
 			if GetMouseFocus() == self then
-				self:GetScript("OnEnter")(self, nil, true)
+				self:GetScript('OnEnter')(self, nil, true)
 			end
 		end
 	end,
@@ -167,13 +167,13 @@ local menuList = {
 local function inviteClick(_, name, guid)
 	DT.EasyMenu:Hide()
 
-	if not (name and name ~= "") then return end
+	if not (name and name ~= '') then return end
 
 	if guid then
 		local inviteType = GetDisplayedInviteType(guid)
-		if inviteType == "INVITE" or inviteType == "SUGGEST_INVITE" then
+		if inviteType == 'INVITE' or inviteType == 'SUGGEST_INVITE' then
 			C_PartyInfo_InviteUnit(name)
-		elseif inviteType == "REQUEST_INVITE" then
+		elseif inviteType == 'REQUEST_INVITE' then
 			C_PartyInfo_RequestInviteFromUnit(name)
 		end
 	else
@@ -185,11 +185,11 @@ end
 
 local function whisperClick(_, playerName)
 	DT.EasyMenu:Hide()
-	SetItemRef( "player:"..playerName, format("|Hplayer:%1$s|h[%1$s]|h",playerName), "LeftButton" )
+	SetItemRef( 'player:'..playerName, format('|Hplayer:%1$s|h[%1$s]|h',playerName), 'LeftButton' )
 end
 
 local function Click(self, btn)
-	if btn == "RightButton" and IsInGuild() then
+	if btn == 'RightButton' and IsInGuild() then
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
 
@@ -202,8 +202,8 @@ local function Click(self, btn)
 				if not classc then classc = levelc end
 
 				local name = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info.level, classc.r*255,classc.g*255,classc.b*255, info.name)
-				if inGroup(info.name) ~= "" then
-					name = name.." |cffaaaaaa*|r"
+				if inGroup(info.name) ~= '' then
+					name = name..' |cffaaaaaa*|r'
 				elseif not (info.isMobile and info.zone == REMOTE_CHAT) then
 					menuCountInvites = menuCountInvites + 1
 					menuList[2].menuList[menuCountInvites] = {text = name, arg1 = info.name, arg2 = info.guid, notCheckable=true, func = inviteClick}
@@ -215,7 +215,7 @@ local function Click(self, btn)
 		end
 
 		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, "MENU")
+		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
 	elseif InCombatLockdown() then
 		_G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT)
 	else
@@ -240,7 +240,7 @@ local function OnEnter(_, _, noUpdate)
 		DT.tooltip:AddLine(guildRank, unpack(tthead))
 	end
 
-	if guildMotD ~= "" then
+	if guildMotD ~= '' then
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddLine(format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1)
 	end
@@ -269,10 +269,10 @@ local function OnEnter(_, _, noUpdate)
 
 		if IsShiftKeyDown() then
 			DT.tooltip:AddDoubleLine(format(nameRankString, info.name, info.rank), info.zone, classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
-			if info.note ~= "" then DT.tooltip:AddLine(format(noteString, info.note), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
-			if info.officerNote ~= "" then DT.tooltip:AddLine(format(officerNoteString, info.officerNote), ttoff.r, ttoff.g, ttoff.b, 1) end
+			if info.note ~= '' then DT.tooltip:AddLine(format(noteString, info.note), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
+			if info.officerNote ~= '' then DT.tooltip:AddLine(format(officerNoteString, info.officerNote), ttoff.r, ttoff.g, ttoff.b, 1) end
 		else
-			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strmatch(info.name,"([^%-]+).*"), inGroup(info.name), info.status), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
+			DT.tooltip:AddDoubleLine(format(levelNameStatusString, levelc.r*255, levelc.g*255, levelc.b*255, info.level, strmatch(info.name,'([^%-]+).*'), inGroup(info.name), info.status), info.zone, classc.r,classc.g,classc.b, zonec.r,zonec.g,zonec.b)
 		end
 	end
 
@@ -301,7 +301,7 @@ local function OnEvent(self, event, ...)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", GUILD, ": ", hex, "%d|r")
+	displayString = strjoin('', GUILD, ': ', hex, '%d|r')
 	noGuildString = hex..L["No Guild"]
 
 	if lastPanel then

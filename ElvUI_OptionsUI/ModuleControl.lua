@@ -16,7 +16,7 @@ end
 
 --Actionbars
 local function CreateActionbarsConfig()
-	local config = MC:CreateModuleConfigGroup(L["ActionBars"], "actionbar")
+	local config = MC:CreateModuleConfigGroup(L["ActionBars"], 'actionbar')
 	local order = 3
 
 	MC:AddConfigOptions(P.actionbar, config)
@@ -25,8 +25,8 @@ local function CreateActionbarsConfig()
 	config.args.cooldown.order = 2
 
 	for i = 1, 10 do
-		config.args["bar"..i].name = L["Bar "]..i
-		config.args["bar"..i].order = order
+		config.args['bar'..i].name = L["Bar "]..i
+		config.args['bar'..i].order = order
 		order = order + 1
 	end
 
@@ -41,7 +41,7 @@ end
 
 --Auras
 local function CreateAurasConfig()
-	local config = MC:CreateModuleConfigGroup(L["Auras"], "auras")
+	local config = MC:CreateModuleConfigGroup(L["Auras"], 'auras')
 
 	MC:AddConfigOptions(P.auras, config)
 
@@ -56,7 +56,7 @@ end
 
 --Bags
 local function CreateBagsConfig()
-	local config = MC:CreateModuleConfigGroup(L["Bags"], "bags")
+	local config = MC:CreateModuleConfigGroup(L["Bags"], 'bags')
 
 	MC:AddConfigOptions(P.bags, config)
 
@@ -74,12 +74,12 @@ end
 
 --Chat
 local function CreateChatConfig()
-	return MC:CreateModuleConfigGroup(L["Chat"], "chat")
+	return MC:CreateModuleConfigGroup(L["Chat"], 'chat')
 end
 
 --Cooldowns
 local function CreateCooldownConfig()
-	local config = MC:CreateModuleConfigGroup(L["Cooldown Text"], "cooldown")
+	local config = MC:CreateModuleConfigGroup(L["Cooldown Text"], 'cooldown')
 	config.args.fonts = ACH:Toggle(L["Fonts"], nil, 2)
 
 	return config
@@ -87,7 +87,7 @@ end
 
 --DataBars
 local function CreateDatatbarsConfig()
-	local config = MC:CreateModuleConfigGroup(L["DataBars"], "databars")
+	local config = MC:CreateModuleConfigGroup(L["DataBars"], 'databars')
 
 	MC:AddConfigOptions(P.databars, config)
 
@@ -101,7 +101,7 @@ end
 
 --DataTexts
 local function CreateDatatextsConfig()
-	local config = MC:CreateModuleConfigGroup(L["DataTexts"], "datatexts")
+	local config = MC:CreateModuleConfigGroup(L["DataTexts"], 'datatexts')
 	config.args.panels = ACH:Toggle(L["Panels"], nil, 2)
 
 	return config
@@ -109,7 +109,7 @@ end
 
 --General
 local function CreateGeneralConfig()
-	local config = MC:CreateModuleConfigGroup(L["General"], "general")
+	local config = MC:CreateModuleConfigGroup(L["General"], 'general')
 
 	MC:AddConfigOptions(P.general, config)
 
@@ -124,7 +124,7 @@ end
 
 --NamePlates
 local function CreateNamePlatesConfig()
-	local config = MC:CreateModuleConfigGroup(L["NamePlates"], "nameplates")
+	local config = MC:CreateModuleConfigGroup(L["NamePlates"], 'nameplates')
 
 	MC:AddConfigOptions(P.nameplates, config)
 
@@ -159,7 +159,7 @@ end
 
 --Tooltip
 local function CreateTooltipConfig()
-	local config = MC:CreateModuleConfigGroup(L["Tooltip"], "tooltip")
+	local config = MC:CreateModuleConfigGroup(L["Tooltip"], 'tooltip')
 
 	MC:AddConfigOptions(P.tooltip, config)
 
@@ -172,7 +172,7 @@ end
 
 --UnitFrames
 local function CreateUnitframesConfig()
-	local config = MC:CreateModuleConfigGroup(L["UnitFrames"], "unitframe")
+	local config = MC:CreateModuleConfigGroup(L["UnitFrames"], 'unitframe')
 	config.args.cooldown = ACH:Toggle(L["Cooldown Text"], nil, 2, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end)
 	config.args.colors = ACH:Group(L["COLORS"], nil, 3, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
 	config.args.colors.guiInline = true
@@ -217,8 +217,8 @@ end
 E.Options.args.modulecontrol= ACH:Group(L["Module Control"], nil, 3, 'tab')
 E.Options.args.modulecontrol.args.modulecopy = ACH:Group(L["Module Copy"], nil, 1, 'tab')
 E.Options.args.modulecontrol.args.modulecopy.handler = E.Options.args.profiles.handler
-E.Options.args.modulecontrol.args.modulecopy.args.intro = ACH:Description(L["This section will allow you to copy settings to a select module from or to a different profile."], 1, "medium")
-E.Options.args.modulecontrol.args.modulecopy.args.pluginInfo = ACH:Description(L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."], 2, "medium")
+E.Options.args.modulecontrol.args.modulecopy.args.intro = ACH:Description(L["This section will allow you to copy settings to a select module from or to a different profile."], 1, 'medium')
+E.Options.args.modulecontrol.args.modulecopy.args.pluginInfo = ACH:Description(L["If you have any plugins supporting this feature installed you can find them in the selection dropdown to the right."], 2, 'medium')
 E.Options.args.modulecontrol.args.modulecopy.args.profile = ACH:Select(L["Profile"], L["Select a profile to copy from/to."], 3, function() local tbl = {} for profile in pairs(E.data.profiles) do tbl[profile] = profile end return tbl end, nil, nil, function() return E.global.profileCopy.selected end, function(_, value) E.global.profileCopy.selected = value end)
 E.Options.args.modulecontrol.args.modulecopy.args.elvui = ACH:Group('ElvUI', L["Core |cff1784d1ElvUI|r options."], 10, 'tree')
 E.Options.args.modulecontrol.args.modulecopy.args.elvui.args.header = ACH:Header(L["Core |cff1784d1ElvUI|r options."], 0)

@@ -1,24 +1,23 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local LSM = E.Libs.LSM
 
 local _G = _G
 local unpack, type, select, getmetatable, assert, pairs, pcall = unpack, type, select, getmetatable, assert, pairs, pcall
-local tonumber = tonumber
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local EnumerateFrames = EnumerateFrames
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 -- 8.2 restricted frame check
-function E:PointsRestricted(frame)
+function E:SetPointsRestricted(frame)
 	if frame and not pcall(frame.GetPoint, frame) then
 		return true
 	end
 end
 
 function E:SafeGetPoint(frame)
-	if frame and frame.GetPoint and not E:PointsRestricted(frame) then
+	if frame and frame.GetPoint and not E:SetPointsRestricted(frame) then
 		return frame:GetPoint()
 	end
 end
@@ -40,11 +39,11 @@ function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRigh
 	if not (giveBorder or bgFile) then return end
 
 	if insetLeft or insetRight or insetTop or insetBottom then
-		frame.pixelBorders.CENTER:Point('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
-		frame.pixelBorders.CENTER:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', insetRight or 0, -insetBottom or 0)
+		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
+		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', insetRight or 0, -insetBottom or 0)
 	else
-		frame.pixelBorders.CENTER:Point('TOPLEFT', frame)
-		frame.pixelBorders.CENTER:Point('BOTTOMRIGHT', frame)
+		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame)
+		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame)
 	end
 
 	frame.pixelBorders.TOP:SetHeight(edgeSize)
@@ -114,17 +113,17 @@ function E:BuildPixelBorders(frame, noSecureHook)
 
 		borders.CENTER = frame:CreateTexture('$parentPixelBorderCENTER', 'BACKGROUND', nil, -1)
 
-		borders.TOP:Point('BOTTOMLEFT', borders.CENTER, 'TOPLEFT', 1, -1)
-		borders.TOP:Point('BOTTOMRIGHT', borders.CENTER, 'TOPRIGHT', -1, -1)
+		borders.TOP:SetPoint('BOTTOMLEFT', borders.CENTER, 'TOPLEFT', 1, -1)
+		borders.TOP:SetPoint('BOTTOMRIGHT', borders.CENTER, 'TOPRIGHT', -1, -1)
 
-		borders.BOTTOM:Point('TOPLEFT', borders.CENTER, 'BOTTOMLEFT', 1, 1)
-		borders.BOTTOM:Point('TOPRIGHT', borders.CENTER, 'BOTTOMRIGHT', -1, 1)
+		borders.BOTTOM:SetPoint('TOPLEFT', borders.CENTER, 'BOTTOMLEFT', 1, 1)
+		borders.BOTTOM:SetPoint('TOPRIGHT', borders.CENTER, 'BOTTOMRIGHT', -1, 1)
 
-		borders.LEFT:Point('TOPRIGHT', borders.TOP, 'TOPLEFT', 0, 0)
-		borders.LEFT:Point('BOTTOMRIGHT', borders.BOTTOM, 'BOTTOMLEFT', 0, 0)
+		borders.LEFT:SetPoint('TOPRIGHT', borders.TOP, 'TOPLEFT', 0, 0)
+		borders.LEFT:SetPoint('BOTTOMRIGHT', borders.BOTTOM, 'BOTTOMLEFT', 0, 0)
 
-		borders.RIGHT:Point('TOPLEFT', borders.TOP, 'TOPRIGHT', 0, 0)
-		borders.RIGHT:Point('BOTTOMLEFT', borders.BOTTOM, 'BOTTOMRIGHT', 0, 0)
+		borders.RIGHT:SetPoint('TOPLEFT', borders.TOP, 'TOPRIGHT', 0, 0)
+		borders.RIGHT:SetPoint('BOTTOMLEFT', borders.BOTTOM, 'BOTTOMRIGHT', 0, 0)
 
 		if not noSecureHook then
 			hooksecurefunc(frame, 'SetBackdropColor', E.HookedSetBackdropColor)
@@ -175,30 +174,12 @@ local function GetTemplate(template, isUnitFrameElement)
 	end
 end
 
+-- * WARNING * ~ Size, Width, Height, and Point APIs we provide will be removed during prepatch!!
+local function Width(frame, ...) frame:SetWidth(...) end
+local function Height(frame, ...) frame:SetHeight(...) end
+local function Point(frame, ...) frame:SetPoint(...) end
 local function Size(frame, width, height, ...)
-	assert(width)
-	frame:SetSize(E:Scale(width), E:Scale(height or width), ...)
-end
-
-local function Width(frame, width, ...)
-	assert(width)
-	frame:SetWidth(E:Scale(width), ...)
-end
-
-local function Height(frame, height, ...)
-	assert(height)
-	frame:SetHeight(E:Scale(height), ...)
-end
-
-local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
-	if arg2 == nil then arg2 = obj:GetParent() end
-
-	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
-	if type(arg3)=='number' then arg3 = E:Scale(arg3) end
-	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
-	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
-
-	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
+	frame:SetSize(width, height or width, ...)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
@@ -207,13 +188,13 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	anchor = anchor or obj:GetParent()
 
 	assert(anchor)
-	if E:PointsRestricted(obj) or obj:GetPoint() then
+	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
 end
 
 local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
@@ -222,13 +203,13 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	anchor = anchor or obj:GetParent()
 
 	assert(anchor)
-	if E:PointsRestricted(obj) or obj:GetPoint() then
+	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
 local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
@@ -296,7 +277,7 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 	if not frame.backdrop then frame.backdrop = backdrop end
 
 	if frame.forcePixelMode or forcePixelMode then
-		backdrop:SetOutside(frame, E.mult, E.mult)
+		backdrop:SetOutside(frame, 1, 1)
 	else
 		backdrop:SetOutside(frame)
 	end
@@ -321,7 +302,7 @@ local function CreateShadow(frame, size, pass)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, size or 3, size or 3)
-	shadow:SetBackdrop({edgeFile = LSM:Fetch('border', 'ElvUI GlowBorder'), edgeSize = E:Scale(size or 3)})
+	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(size or 3)})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 
@@ -371,12 +352,15 @@ local STRIP_FONT = 'FontString'
 local function StripRegion(which, object, kill, alpha)
 	if kill then
 		object:Kill()
-	elseif alpha then
-		object:SetAlpha(0)
 	elseif which == STRIP_TEX then
-		object:SetTexture()
+		object:SetTexture('')
+		object:SetAtlas('')
 	elseif which == STRIP_FONT then
 		object:SetText('')
+	end
+
+	if alpha then
+		object:SetAlpha(0)
 	end
 end
 
@@ -413,31 +397,12 @@ local function StripTexts(object, kill, alpha)
 	StripType(STRIP_FONT, object, kill, alpha)
 end
 
-local function FontTemplate(fs, font, fontSize, fontStyle)
-	if type(fontSize) == 'string' then
-		fontSize = tonumber(fontSize)
-	end
+local function FontTemplate(fs, font, size, style)
+	fs.font, fs.fontSize, fs.fontStyle = font or E.media.normFont, size or E.db.general.fontSize, style or E.db.general.fontStyle
+	fs:SetFont(fs.font, fs.fontSize, fs.fontStyle)
 
-	fs.font, fs.fontSize, fs.fontStyle = font, fontSize, fontStyle
-
-	font = font or LSM:Fetch('font', E.db.general.font)
-	fontStyle = fontStyle or E.db.general.fontStyle
-
-	if fontSize and fontSize > 0 then
-		fontSize = fontSize
-	else
-		fontSize = E.db.general.fontSize
-	end
-
-	if fontStyle == 'OUTLINE' and E.db.general.font == 'Homespun' and (fontSize > 10 and not fs.fontSize) then
-		fontSize, fontStyle = 10, 'MONOCHROMEOUTLINE'
-	end
-
-	fs:SetFont(font, fontSize, fontStyle)
-
-	if fontStyle == 'NONE' then
-		local s = E.mult or 1
-		fs:SetShadowOffset(s, -s/2)
+	if style == 'NONE' then
+		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else
 		fs:SetShadowOffset(0, 0)
@@ -494,9 +459,11 @@ do
 		if frame.CloseButton then return end
 
 		local CloseButton = CreateFrame('Button', nil, frame)
-		CloseButton:Size(size or 16)
-		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
-		if backdrop then CloseButton:CreateBackdrop(nil, true) end
+		CloseButton:SetSize(size or 16, size or 16)
+		CloseButton:SetPoint('TOPRIGHT', offset or -6, offset or -6)
+		if backdrop then
+			CloseButton:CreateBackdrop(nil, true)
+		end
 
 		CloseButton.Texture = CloseButton:CreateTexture(nil, 'OVERLAY')
 		CloseButton.Texture:SetAllPoints()
@@ -534,7 +501,7 @@ local function addapi(object)
 	if not object.StyleButton then mt.StyleButton = StyleButton end
 	if not object.CreateCloseButton then mt.CreateCloseButton = CreateCloseButton end
 	if not object.GetNamedChild then mt.GetNamedChild = GetNamedChild end
-	if not object.DisabledPixelSnap then
+	if not object.DisabledPixelSnap and (mt.SetSnapToPixelGrid or mt.SetStatusBarTexture or mt.SetColorTexture or mt.SetVertexColor or mt.CreateTexture or mt.SetTexCoord or mt.SetTexture) then
 		if mt.SetSnapToPixelGrid then hooksecurefunc(mt, 'SetSnapToPixelGrid', WatchPixelSnap) end
 		if mt.SetStatusBarTexture then hooksecurefunc(mt, 'SetStatusBarTexture', DisablePixelSnap) end
 		if mt.SetColorTexture then hooksecurefunc(mt, 'SetColorTexture', DisablePixelSnap) end
@@ -563,9 +530,5 @@ while object do
 	object = EnumerateFrames(object)
 end
 
---Add API to `CreateFont` objects without actually creating one
-addapi(_G.GameFontNormal)
-
---Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the 'Frame' widget
-local scrollFrame = CreateFrame('ScrollFrame')
-addapi(scrollFrame)
+addapi(_G.GameFontNormal) --Add API to `CreateFont` objects without actually creating one
+addapi(CreateFrame('ScrollFrame')) --Hacky fix for issue on 7.1 PTR where scroll frames no longer seem to inherit the methods from the 'Frame' widget

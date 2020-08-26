@@ -570,6 +570,7 @@ L["Hide Below Max Level"] = "Esconder abaixo do level máximo"
 L["Hide Both"] = "Esconder Ambos"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = "Esconder texto na barra de cast. Útil quando a altura do seu Poder é muito pequena ou se você usa deslocamento de Poder."
 L["Hide Cooldown Bling"] = true
+L["Hide Copy Button"] = true
 L["Hide Delay"] = "Esconder Delay"
 L["Hide Error Text"] = "Esconder Texto de Erro"
 L["Hide Frame"] = "Esconder Quadro"

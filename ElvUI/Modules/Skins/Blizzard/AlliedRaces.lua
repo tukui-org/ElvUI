@@ -19,7 +19,7 @@ function S:Blizzard_AlliedRacesUI()
 		S:HandleScrollBar(scrollFrame.ScrollBar)
 
 		scrollFrame.Child.ObjectivesFrame:StripTextures()
-		scrollFrame.Child.ObjectivesFrame:CreateBackdrop("Transparent")
+		scrollFrame.Child.ObjectivesFrame:CreateBackdrop('Transparent')
 
 		AlliedRacesFrame.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(1, .8, 0)
 		scrollFrame.Child.RaceDescriptionText:SetTextColor(1, 1, 1)
@@ -31,7 +31,7 @@ function S:Blizzard_AlliedRacesUI()
 		AlliedRacesFrame.TitleBg:SetAlpha(0)
 		AlliedRacesFrame.ModelFrame:StripTextures()
 
-		AlliedRacesFrame:CreateBackdrop("Transparent")
+		AlliedRacesFrame:CreateBackdrop('Transparent')
 
 		local scrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame
 		scrollFrame.ScrollBar.Border:Hide()
@@ -42,10 +42,11 @@ function S:Blizzard_AlliedRacesUI()
 		S:HandleCloseButton(_G.AlliedRacesFrameCloseButton)
 	end
 
-	AlliedRacesFrame:HookScript("OnShow", function(s)
+	AlliedRacesFrame:HookScript('OnShow', function(s)
 		for button in s.abilityPool:EnumerateActive() do
 			select(3, button:GetRegions()):Hide()
 			S:HandleIcon(button.Icon, true)
+
 			if E.private.skins.parchmentRemoverEnable then
 				button.Text:SetTextColor(1, 1, 1)
 			end

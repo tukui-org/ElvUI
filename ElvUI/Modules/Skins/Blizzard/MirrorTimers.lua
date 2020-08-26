@@ -11,9 +11,9 @@ local function MirrorTimer_OnUpdate(frame, elapsed)
 		local text = frame.label:GetText()
 
 		if frame.value > 0 then
-			frame.TimerText:SetFormattedText("%s (%d:%02d)", text, minutes, seconds)
+			frame.TimerText:SetFormattedText('%s (%d:%02d)', text, minutes, seconds)
 		else
-			frame.TimerText:SetFormattedText("%s (0:00)", text)
+			frame.TimerText:SetFormattedText('%s (0:00)', text)
 		end
 
 		frame.timeSinceUpdate = 0
@@ -29,26 +29,26 @@ function S:MirrorTimers()
 	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
 		local mirrorTimer = _G['MirrorTimer'..i]
 		local statusBar = _G['MirrorTimer'..i..'StatusBar']
-		local text = _G['MirrorTimer'..i.."Text"]
+		local text = _G['MirrorTimer'..i..'Text']
 
 		mirrorTimer:StripTextures()
-		mirrorTimer:Size(222, 18)
+		mirrorTimer:SetSize(222, 18)
 		mirrorTimer.label = text
 		statusBar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(statusBar)
 		statusBar:CreateBackdrop()
-		statusBar:Size(222, 18)
+		statusBar:SetSize(222, 18)
 		text:Hide()
 
 		local TimerText = mirrorTimer:CreateFontString(nil, 'OVERLAY')
 		TimerText:FontTemplate()
-		TimerText:Point("CENTER", statusBar, "CENTER", 0, 0)
+		TimerText:SetPoint('CENTER', statusBar, 'CENTER', 0, 0)
 		mirrorTimer.TimerText = TimerText
 
 		mirrorTimer.timeSinceUpdate = 0.3 --Make sure timer value updates right away on first show
-		mirrorTimer:HookScript("OnUpdate", MirrorTimer_OnUpdate)
+		mirrorTimer:HookScript('OnUpdate', MirrorTimer_OnUpdate)
 
-		E:CreateMover(mirrorTimer, "MirrorTimer"..i.."Mover", L["MirrorTimer"]..i, nil, nil, nil, "ALL,SOLO")
+		E:CreateMover(mirrorTimer, 'MirrorTimer'..i..'Mover', L["MirrorTimer"]..i, nil, nil, nil, 'ALL,SOLO')
 	end
 end
 

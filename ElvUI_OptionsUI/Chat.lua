@@ -16,9 +16,9 @@ local GameTooltip = _G.GameTooltip
 local tabSelectorTable = {}
 
 E.Options.args.chat = {
-	type = "group",
+	type = 'group',
 	name = L["Chat"],
-	childGroups = "tab",
+	childGroups = 'tab',
 	order = 2,
 	get = function(info) return E.db.chat[info[#info]] end,
 	set = function(info, value) E.db.chat[info[#info]] = value end,
@@ -26,14 +26,14 @@ E.Options.args.chat = {
 		intro = ACH:Description(L["CHAT_DESC"], 1),
 		enable = {
 			order = 2,
-			type = "toggle",
+			type = 'toggle',
 			name = L["Enable"],
 			get = function() return E.private.chat.enable end,
-			set = function(_, value) E.private.chat.enable = value; E:StaticPopup_Show("PRIVATE_RL") end
+			set = function(_, value) E.private.chat.enable = value; E:StaticPopup_Show('PRIVATE_RL') end
 		},
 		general = {
 			order = 3,
-			type = "group",
+			type = 'group',
 			name = L["General"],
 			disabled = function() return not E.Chat.Initialized; end,
 			args = {
@@ -83,7 +83,7 @@ E.Options.args.chat = {
 				},
 				useAltKey = {
 					order = 12,
-					type = "toggle",
+					type = 'toggle',
 					name = L["Use Alt Key"],
 					desc = L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."],
 					set = function(self, value)
@@ -93,37 +93,46 @@ E.Options.args.chat = {
 				},
 				autoClosePetBattleLog = {
 					order = 13,
-					type = "toggle",
+					type = 'toggle',
 					name = L["Auto-Close Pet Battle Log"],
 				},
 				useBTagName = {
 					order = 14,
-					type = "toggle",
+					type = 'toggle',
 					name = L["Use Real ID BattleTag"],
 					desc = L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."],
 				},
 				socialQueueMessages = {
 					order = 15,
-					type = "toggle",
+					type = 'toggle',
 					name = L["Quick Join Messages"],
 					desc = L["Show clickable Quick Join messages inside of the chat."],
 				},
 				copyChatLines = {
 					order = 16,
-					type = "toggle",
+					type = 'toggle',
 					name = L["Copy Chat Lines"],
 					desc = L["Adds an arrow infront of the chat lines to copy the entire line."],
 				},
-				spacer = ACH:Spacer(17, "full"),
+				hideCopyButton = {
+					order = 17,
+					type = 'toggle',
+					name = L["Hide Copy Button"],
+					set = function(self, value)
+						E.db.chat.hideCopyButton = value
+						CH:ToggleCopyChatButtons()
+					end,
+				},
+				spacer = ACH:Spacer(18, 'full'),
 				numAllowedCombatRepeat = {
-					order = 18,
-					type = "range",
+					order = 19,
+					type = 'range',
 					name = L["Allowed Combat Repeat"],
 					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
 					min = 2, max = 10, step = 1,
 				},
 				throttleInterval = {
-					order = 19,
+					order = 20,
 					type = 'range',
 					name = L["Spam Interval"],
 					desc = L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."],
@@ -136,46 +145,46 @@ E.Options.args.chat = {
 					end,
 				},
 				scrollDownInterval = {
-					order = 20,
+					order = 21,
 					type = 'range',
 					name = L["Scroll Interval"],
 					desc = L["Number of time in seconds to scroll down to the bottom of the chat window if you are not scrolled down completely."],
 					min = 0, max = 120, step = 5,
 				},
 				numScrollMessages = {
-					order = 21,
-					type = "range",
+					order = 22,
+					type = 'range',
 					name = L["Scroll Messages"],
 					desc = L["Number of messages you scroll for each step."],
 					min = 1, max = 10, step = 1,
 				},
 				maxLines = {
-					order = 22,
+					order = 23,
 					type = 'range',
 					name = L["Max Lines"],
 					min = 10, max = 5000, step = 1,
 					set = function(info, value) E.db.chat[info[#info]] = value; CH:SetupChat() end,
 				},
 				editboxHistorySize = {
-					order = 23,
+					order = 24,
 					type = 'range',
 					name = L["Editbox History"],
 					min = 5, max = 50, step = 1,
 				},
 				resetHistory = {
-					order = 24,
-					type = "execute",
-					name = L['Reset Editbox History'],
+					order = 25,
+					type = 'execute',
+					name = L["Reset Editbox History"],
 					func = function() CH:ResetEditboxHistory() end
 				},
 				editBoxPosition = {
-					order = 25,
+					order = 26,
 					type = 'select',
 					name = L["Chat EditBox Position"],
 					desc = L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."],
 					values = {
-						['BELOW_CHAT'] = L["Below Chat"],
-						['ABOVE_CHAT'] = L["Above Chat"],
+						BELOW_CHAT = L["Below Chat"],
+						ABOVE_CHAT = L["Above Chat"],
 					},
 					set = function(info, value)
 						E.db.chat[info[#info]] = value;
@@ -184,7 +193,7 @@ E.Options.args.chat = {
 				},
 				tabSelection = {
 					order = 65,
-					type = "group",
+					type = 'group',
 					name = L["Tab Selector"],
 					set = function(info, value)
 						E.db.chat[info[#info]] = value;
@@ -198,7 +207,7 @@ E.Options.args.chat = {
 						},
 						tabSelectedTextColor = {
 							order = 2,
-							type = "color",
+							type = 'color',
 							hasAlpha = false,
 							name = L["Selected Text Color"],
 							disabled = function() return not E.db.chat.tabSelectedTextEnabled end,
@@ -242,10 +251,10 @@ E.Options.args.chat = {
 						},
 						tabSelectorColor = {
 							order = 4,
-							type = "color",
+							type = 'color',
 							hasAlpha = false,
 							name = L["Selector Color"],
-							disabled = function() return E.db.chat.tabSelector == "NONE" end,
+							disabled = function() return E.db.chat.tabSelector == 'NONE' end,
 							get = function()
 								local t = E.db.chat.tabSelectorColor
 								local d = P.chat.tabSelectorColor
@@ -261,7 +270,7 @@ E.Options.args.chat = {
 				},
 				historyGroup = {
 					order = 70,
-					type = "group",
+					type = 'group',
 					name = L["History"],
 					set = function(info, value) E.db.chat[info[#info]] = value end,
 					args = {
@@ -273,8 +282,8 @@ E.Options.args.chat = {
 						},
 						resetHistory = {
 							order = 2,
-							type = "execute",
-							name = L['Reset History'],
+							type = 'execute',
+							name = L["Reset History"],
 							func = function() CH:ResetHistory() end
 						},
 						historySize = {
@@ -312,20 +321,20 @@ E.Options.args.chat = {
 				},
 				fadingGroup = {
 					order = 75,
-					type = "group",
+					type = 'group',
 					name = L["Text Fade"],
 					disabled = function() return not E.Chat.Initialized; end,
 					set = function(info, value) E.db.chat[info[#info]] = value; CH:UpdateFading() end,
 					args = {
 						fade = {
 							order = 1,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Enable"],
 							desc = L["Fade the chat text when there is no activity."],
 						},
 						inactivityTimer = {
 							order = 2,
-							type = "range",
+							type = 'range',
 							name = L["Inactivity Timer"],
 							desc = L["Controls how many seconds of inactivity has to pass before chat is faded."],
 							disabled = function() return not CH.db.fade end,
@@ -341,7 +350,7 @@ E.Options.args.chat = {
 					set = function(info, value) E.db.chat[info[#info]] = value; CH:SetupChat() end,
 					args = {
 						font = {
-							type = "select", dialogControl = 'LSM30_Font',
+							type = 'select', dialogControl = 'LSM30_Font',
 							order = 1,
 							name = L["Font"],
 							values = AceGUIWidgetLSMlists.font,
@@ -350,11 +359,11 @@ E.Options.args.chat = {
 							order = 2,
 							name = L["Font Outline"],
 							desc = L["Set the font outline."],
-							type = "select",
+							type = 'select',
 							values = C.Values.FontFlags,
 						},
 						tabFont = {
-							type = "select", dialogControl = 'LSM30_Font',
+							type = 'select', dialogControl = 'LSM30_Font',
 							order = 4,
 							name = L["Tab Font"],
 							values = AceGUIWidgetLSMlists.font,
@@ -362,14 +371,14 @@ E.Options.args.chat = {
 						tabFontSize = {
 							order = 5,
 							name = L["Tab Font Size"],
-							type = "range",
+							type = 'range',
 							min = 4, max = 212, step = 1,
 						},
 						tabFontOutline = {
 							order = 6,
 							name = L["Tab Font Outline"],
 							desc = L["Set the font outline."],
-							type = "select",
+							type = 'select',
 							values = C.Values.FontFlags,
 						},
 					},
@@ -382,7 +391,7 @@ E.Options.args.chat = {
 					args = {
 						noAlertInCombat = {
 							order = 1,
-							type = "toggle",
+							type = 'toggle',
 							name = L["No Alert In Combat"],
 						},
 						keywordAlerts = {
@@ -463,28 +472,28 @@ E.Options.args.chat = {
 					args = {
 						hideVoiceButtons = {
 							order = 1,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Hide Voice Buttons"],
 							desc = L["Completely hide the voice buttons."],
 							set = function(info, value)
 								E.db.chat[info[#info]] = value
-								E:StaticPopup_Show("CONFIG_RL")
+								E:StaticPopup_Show('CONFIG_RL')
 							end,
 						},
 						pinVoiceButtons = {
 							order = 2,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Pin Voice Buttons"],
 							desc = L["This will pin the voice buttons to the chat's tab panel. Unchecking it will create a voice button panel with a mover."],
 							disabled = function() return E.db.chat.hideVoiceButtons end,
 							set = function(info, value)
 								E.db.chat[info[#info]] = value
-								E:StaticPopup_Show("CONFIG_RL")
+								E:StaticPopup_Show('CONFIG_RL')
 							end,
 						},
 						desaturateVoiceIcons = {
 							order = 3,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Desaturate Voice Icons"],
 							disabled = function() return E.db.chat.hideVoiceButtons end,
 							set = function(info, value)
@@ -501,16 +510,16 @@ E.Options.args.chat = {
 					args = {
 						useCustomTimeColor = {
 							order = 1,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Custom Timestamp Color"],
-							disabled = function() return not E.db.chat.timeStampFormat == "NONE" end,
+							disabled = function() return not E.db.chat.timeStampFormat == 'NONE' end,
 						},
 						customTimeColor = {
 							order = 2,
-							type = "color",
+							type = 'color',
 							hasAlpha = false,
 							name = L["Timestamp Color"],
-							disabled = function() return (not E.db.chat.timeStampFormat == "NONE" or not E.db.chat.useCustomTimeColor) end,
+							disabled = function() return (not E.db.chat.timeStampFormat == 'NONE' or not E.db.chat.useCustomTimeColor) end,
 							get = function(info)
 								local t = E.db.chat.customTimeColor
 								local d = P.chat.customTimeColor
@@ -528,25 +537,25 @@ E.Options.args.chat = {
 							desc = L["OPTION_TOOLTIP_TIMESTAMPS"],
 							values = {
 								['NONE'] = L["NONE"],
-								["%I:%M "] = "03:27",
-								["%I:%M:%S "] = "03:27:32",
-								["%I:%M %p "] = "03:27 PM",
-								["%I:%M:%S %p "] = "03:27:32 PM",
-								["%H:%M "] = "15:27",
-								["%H:%M:%S "] =	"15:27:32"
+								['%I:%M '] = '03:27',
+								['%I:%M:%S '] = '03:27:32',
+								['%I:%M %p '] = '03:27 PM',
+								['%I:%M:%S %p '] = '03:27:32 PM',
+								['%H:%M '] = '15:27',
+								['%H:%M:%S '] =	'15:27:32'
 							},
 						},
 					},
 				},
 				classColorMentionGroup = {
 					order = 100,
-					type = "group",
+					type = 'group',
 					name = L["Class Color Mentions"],
 					disabled = function() return not E.Chat.Initialized; end,
 					args = {
 						classColorMentionsChat = {
 							order = 1,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Chat"],
 							desc = L["Use class color for the names of players when they are mentioned."],
 							get = function(info) return E.db.chat.classColorMentionsChat end,
@@ -555,27 +564,27 @@ E.Options.args.chat = {
 						},
 						classColorMentionsSpeech = {
 							order = 2,
-							type = "toggle",
+							type = 'toggle',
 							name = L["Chat Bubbles"],
 							desc = L["Use class color for the names of players when they are mentioned."],
 							get = function(info) return E.private.general.classColorMentionsSpeech end,
-							set = function(info, value) E.private.general.classColorMentionsSpeech = value; E:StaticPopup_Show("PRIVATE_RL") end,
-							disabled = function() return (E.private.general.chatBubbles == "disabled" or not E.private.chat.enable) end,
+							set = function(info, value) E.private.general.classColorMentionsSpeech = value; E:StaticPopup_Show('PRIVATE_RL') end,
+							disabled = function() return (E.private.general.chatBubbles == 'disabled' or not E.private.chat.enable) end,
 						},
 						classColorMentionExcludeName = {
 							order = 21,
 							name = L["Exclude Name"],
 							desc = L["Excluded names will not be class colored."],
 							type = 'input',
-							get = function(info) return "" end,
+							get = function(info) return '' end,
 							set = function(info, value)
-								if value == "" or gsub(value, "%s+", "") == "" then return; end --Don't allow empty entries
+								if value == '' or gsub(value, '%s+', '') == '' then return; end --Don't allow empty entries
 								E.global.chat.classColorMentionExcludedNames[strlower(value)] = value
 							end,
 						},
 						classColorMentionExcludedNames = {
 							order = 22,
-							type = "multiselect",
+							type = 'multiselect',
 							name = L["Excluded Names"],
 							values = function() return E.global.chat.classColorMentionExcludedNames end,
 							get = function(info, value)	return E.global.chat.classColorMentionExcludedNames[value] end,
@@ -676,8 +685,8 @@ E.Options.args.chat = {
 							type = 'select',
 							name = L["Left Position"],
 							values = {
-								['BELOW_CHAT'] = L["Below Chat"],
-								['ABOVE_CHAT'] = L["Above Chat"],
+								BELOW_CHAT = L["Below Chat"],
+								ABOVE_CHAT = L["Above Chat"],
 							},
 							set = function(info, value) E.db.chat[info[#info]] = value; Layout:RepositionChatDataPanels() end,
 						},
@@ -686,8 +695,8 @@ E.Options.args.chat = {
 							type = 'select',
 							name = L["Right Position"],
 							values = {
-								['BELOW_CHAT'] = L["Below Chat"],
-								['ABOVE_CHAT'] = L["Above Chat"],
+								BELOW_CHAT = L["Below Chat"],
+								ABOVE_CHAT = L["Above Chat"],
 							},
 							set = function(info, value) E.db.chat[info[#info]] = value; Layout:RepositionChatDataPanels() end,
 						}
@@ -701,7 +710,7 @@ E.Options.args.chat = {
 					args = {
 						panelColor = {
 							order = 1,
-							type = "color",
+							type = 'color',
 							name = L["Backdrop Color"],
 							hasAlpha = true,
 							get = function(info)
@@ -760,10 +769,10 @@ E.Options.args.chat = {
 							name = L["Panel Backdrop"],
 							desc = L["Toggle showing of the left and right chat panels."],
 							values = {
-								['HIDEBOTH'] = L["Hide Both"],
-								['SHOWBOTH'] = L["Show Both"],
-								['LEFT'] = L["Left Only"],
-								['RIGHT'] = L["Right Only"],
+								HIDEBOTH = L["Hide Both"],
+								SHOWBOTH = L["Show Both"],
+								LEFT = L["Left Only"],
+								RIGHT = L["Right Only"],
 							},
 							set = function(info, value)
 								E.db.chat.panelBackdrop = value

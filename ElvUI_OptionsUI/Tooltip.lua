@@ -16,9 +16,9 @@ local modifierValues = {
 	ALT		= L["ALT_KEY_TEXT"],
 }
 
-E.Options.args.tooltip = ACH:Group(L["Tooltip"], nil, 2, "tree", function(info) return E.db.tooltip[info[#info]] end, function(info, value) E.db.tooltip[info[#info]] = value; end)
+E.Options.args.tooltip = ACH:Group(L["Tooltip"], nil, 2, 'tree', function(info) return E.db.tooltip[info[#info]] end, function(info, value) E.db.tooltip[info[#info]] = value; end)
 E.Options.args.tooltip.args.intro = ACH:Description(L["TOOLTIP_DESC"], 1)
-E.Options.args.tooltip.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return E.private.tooltip[info[#info]] end, function(info, value) E.private.tooltip[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL") end)
+E.Options.args.tooltip.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, nil, nil, function(info) return E.private.tooltip[info[#info]] end, function(info, value) E.private.tooltip[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
 E.Options.args.tooltip.args.role = ACH:Toggle(L["ROLE"], L["Display the unit role in the tooltip."], 3)
 E.Options.args.tooltip.args.targetInfo = ACH:Toggle(L["Target Info"], L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."], 4)
 E.Options.args.tooltip.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 5, modifierValues)
@@ -31,8 +31,8 @@ E.Options.args.tooltip.args.itemCount = ACH:Select(L["Item Count"], L["Display h
 E.Options.args.tooltip.args.colorAlpha = ACH:Range(L["OPACITY"], nil, 12, { isPercent = true, min = 0, max = 1, step = 0.01 })
 E.Options.args.tooltip.args.cursorAnchor = ACH:Toggle(L["Cursor Anchor"], L["Should tooltip be anchored to mouse cursor"], 13)
 E.Options.args.tooltip.args.cursorAnchorType = ACH:Select(L["Cursor Anchor Type"], nil, 14, { ANCHOR_CURSOR = L["ANCHOR_CURSOR"], ANCHOR_CURSOR_LEFT = L["ANCHOR_CURSOR_LEFT"], ANCHOR_CURSOR_RIGHT = L["ANCHOR_CURSOR_RIGHT"] }, nil, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) end)
-E.Options.args.tooltip.args.cursorAnchorX = ACH:Range(L["Cursor Anchor Offset X"], nil, 15, { min = -128, max = 128, step = 1 }, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end)
-E.Options.args.tooltip.args.cursorAnchorY = ACH:Range(L["Cursor Anchor Offset Y"], nil, 16, { min = -128, max = 128, step = 1 }, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == "ANCHOR_CURSOR") end)
+E.Options.args.tooltip.args.cursorAnchorX = ACH:Range(L["Cursor Anchor Offset X"], nil, 15, { min = -128, max = 128, step = 1 }, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == 'ANCHOR_CURSOR') end)
+E.Options.args.tooltip.args.cursorAnchorY = ACH:Range(L["Cursor Anchor Offset Y"], nil, 16, { min = -128, max = 128, step = 1 }, nil, nil, nil, nil, function() return (not E.db.tooltip.cursorAnchor) or (E.db.tooltip.cursorAnchorType == 'ANCHOR_CURSOR') end)
 
 E.Options.args.tooltip.args.fontGroup = ACH:Group(L["Font"], nil, nil, nil, function(info) return E.db.tooltip[info[#info]] end, function(info, value) E.db.tooltip[info[#info]] = value; TT:SetTooltipFonts() end)
 E.Options.args.tooltip.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
@@ -49,16 +49,16 @@ E.Options.args.tooltip.args.visibility.args.unitFrames = ACH:Select(L["UnitFrame
 E.Options.args.tooltip.args.visibility.args.combatOverride = ACH:Select(L["Combat Override Key"], L["Choose when you want the tooltip to show in combat. If a modifer is chosen, then you need to hold that down to show the tooltip."], 4, modifierValues)
 
 E.Options.args.tooltip.args.healthBar = ACH:Group(L["Health Bar"], nil, nil, nil, function(info) return E.db.tooltip.healthBar[info[#info]] end, function(info, value) E.db.tooltip.healthBar[info[#info]] = value; end)
-E.Options.args.tooltip.args.healthBar.args.height = ACH:Range(L["Height"], nil, 1, { min = 1, max = 15, step = 1 }, nil, nil, function(_, value) E.db.tooltip.healthBar.height = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar:Height(value); end end)
+E.Options.args.tooltip.args.healthBar.args.height = ACH:Range(L["Height"], nil, 1, { min = 1, max = 15, step = 1 }, nil, nil, function(_, value) E.db.tooltip.healthBar.height = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar:SetHeight(value); end end)
 E.Options.args.tooltip.args.healthBar.args.statusPosition = ACH:Select(L["Position"], nil, 2, { BOTTOM = L["Bottom"], TOP = L["Top"] })
 E.Options.args.tooltip.args.healthBar.args.text = ACH:Toggle(L["Text"], nil, 3, nil, nil, nil, nil, function(_, value) E.db.tooltip.healthBar.text = value; if not GameTooltip:IsForbidden() then if value then GameTooltipStatusBar.text:Show(); else GameTooltipStatusBar.text:Hide() end end end)
-E.Options.args.tooltip.args.healthBar.args.font = ACH:SharedMediaFont(L["Font"], nil, 4, nil, nil, function(_, value) E.db.tooltip.healthBar.font = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text end)
-E.Options.args.tooltip.args.healthBar.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 5, C.Values.FontSize, nil, nil, function(_, value) E.db.tooltip.healthBar.fontSize = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text end)
-E.Options.args.tooltip.args.healthBar.args.fontOutline = ACH:Select(L["Font Outline"], nil, 6, C.Values.FontFlags, nil, nil, nil, function(_, value) E.db.tooltip.healthBar.fontOutline = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch("font", E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text end)
+E.Options.args.tooltip.args.healthBar.args.font = ACH:SharedMediaFont(L["Font"], nil, 4, nil, nil, function(_, value) E.db.tooltip.healthBar.font = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text end)
+E.Options.args.tooltip.args.healthBar.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 5, C.Values.FontSize, nil, nil, function(_, value) E.db.tooltip.healthBar.fontSize = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text end)
+E.Options.args.tooltip.args.healthBar.args.fontOutline = ACH:Select(L["Font Outline"], nil, 6, C.Values.FontFlags, nil, nil, nil, function(_, value) E.db.tooltip.healthBar.fontOutline = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text end)
 
 E.Options.args.tooltip.args.factionColors = ACH:Group(L["Custom Faction Colors"], nil, nil, nil, function(info) local v = tonumber(info[#info]) local t = E.db.tooltip.factionColors[v] local d = P.tooltip.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local v = tonumber(info[#info]); local t = E.db.tooltip.factionColors[v]; t.r, t.g, t.b = r, g, b end)
 E.Options.args.tooltip.args.factionColors.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], nil, 0, nil, nil, nil, function() return E.db.tooltip.useCustomFactionColors end, function(_, value) E.db.tooltip.useCustomFactionColors = value; end)
 
 for i = 1, 8 do
-	E.Options.args.tooltip.args.factionColors.args[""..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true, nil, nil, nil, function() return not E.Tooltip.Initialized or not E.db.tooltip.useCustomFactionColors end)
+	E.Options.args.tooltip.args.factionColors.args[''..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true, nil, nil, nil, function() return not E.Tooltip.Initialized or not E.db.tooltip.useCustomFactionColors end)
 end

@@ -100,20 +100,20 @@ local function anchorSlots(self)
 		if frame:IsShown() then
 			shownSlots = shownSlots + 1
 
-			frame:Point('TOP', lootFrame, 4, (-8 + iconSize) - (shownSlots * iconSize))
+			frame:SetPoint('TOP', lootFrame, 4, (-8 + iconSize) - (shownSlots * iconSize))
 		end
 	end
 
-	self:Height(max(shownSlots * iconSize + 16, 20))
+	self:SetHeight(max(shownSlots * iconSize + 16, 20))
 end
 
 local function createSlot(id)
 	local iconsize = (iconSize - 2)
 
 	local frame = CreateFrame('Button', 'ElvLootSlot'..id, lootFrame)
-	frame:Point('LEFT', 8, 0)
-	frame:Point('RIGHT', -8, 0)
-	frame:Height(iconsize)
+	frame:SetPoint('LEFT', 8, 0)
+	frame:SetPoint('RIGHT', -8, 0)
+	frame:SetHeight(iconsize)
 	frame:SetID(id)
 
 	frame:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
@@ -124,9 +124,9 @@ local function createSlot(id)
 	frame:SetScript('OnShow', OnShow)
 
 	local iconFrame = CreateFrame('Frame', nil, frame)
-	iconFrame:Height(iconsize)
-	iconFrame:Width(iconsize)
-	iconFrame:Point('RIGHT', frame)
+	iconFrame:SetHeight(iconsize)
+	iconFrame:SetWidth(iconsize)
+	iconFrame:SetPoint('RIGHT', frame)
 	iconFrame:SetTemplate()
 	frame.iconFrame = iconFrame
 	E.frames[iconFrame] = nil
@@ -138,23 +138,23 @@ local function createSlot(id)
 
 	local count = iconFrame:CreateFontString(nil, 'OVERLAY')
 	count:SetJustifyH'RIGHT'
-	count:Point('BOTTOMRIGHT', iconFrame, -2, 2)
+	count:SetPoint('BOTTOMRIGHT', iconFrame, -2, 2)
 	count:FontTemplate(nil, nil, 'OUTLINE')
 	count:SetText(1)
 	frame.count = count
 
 	local name = frame:CreateFontString(nil, 'OVERLAY')
 	name:SetJustifyH('LEFT')
-	name:Point('LEFT', frame)
-	name:Point('RIGHT', icon, 'LEFT')
+	name:SetPoint('LEFT', frame)
+	name:SetPoint('RIGHT', icon, 'LEFT')
 	name:SetNonSpaceWrap(true)
 	name:FontTemplate(nil, nil, 'OUTLINE')
 	frame.name = name
 
 	local drop = frame:CreateTexture(nil, 'ARTWORK')
 	drop:SetTexture([[Interface\QuestFrame\UI-QuestLogTitleHighlight]])
-	drop:Point('LEFT', icon, 'RIGHT', 0, 0)
-	drop:Point('RIGHT', frame)
+	drop:SetPoint('LEFT', icon, 'RIGHT', 0, 0)
+	drop:SetPoint('RIGHT', frame)
 	drop:SetAllPoints(frame)
 	drop:SetAlpha(.3)
 	frame.drop = drop
@@ -210,13 +210,13 @@ function M:LOOT_OPENED(_, autoloot)
 		y = y / lootFrame:GetEffectiveScale()
 
 		lootFrame:ClearAllPoints()
-		lootFrame:Point('TOPLEFT', _G.UIParent, 'BOTTOMLEFT', x - 40, y + 20)
+		lootFrame:SetPoint('TOPLEFT', _G.UIParent, 'BOTTOMLEFT', x - 40, y + 20)
 		lootFrame:GetCenter()
 		lootFrame:Raise()
 		E:DisableMover('LootFrameMover')
 	else
 		lootFrame:ClearAllPoints()
-		lootFrame:Point('TOPLEFT', lootFrameHolder, 'TOPLEFT')
+		lootFrame:SetPoint('TOPLEFT', lootFrameHolder, 'TOPLEFT')
 		E:EnableMover('LootFrameMover')
 	end
 
@@ -300,25 +300,25 @@ function M:LOOT_OPENED(_, autoloot)
 
 	local color = ITEM_QUALITY_COLORS[m]
 	lootFrame:SetBackdropBorderColor(color.r, color.g, color.b, .8)
-	lootFrame:Width(max(w, t))
+	lootFrame:SetWidth(max(w, t))
 end
 
 function M:LoadLoot()
 	if not E.private.general.loot then return end
 	lootFrameHolder = CreateFrame('Frame', 'ElvLootFrameHolder', E.UIParent)
-	lootFrameHolder:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 418, -186)
-	lootFrameHolder:Size(150, 22)
+	lootFrameHolder:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 418, -186)
+	lootFrameHolder:SetSize(150, 22)
 
 	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
 	lootFrame:SetClampedToScreen(true)
-	lootFrame:Point('TOPLEFT')
-	lootFrame:Size(256, 64)
+	lootFrame:SetPoint('TOPLEFT')
+	lootFrame:SetSize(256, 64)
 	lootFrame:SetTemplate('Transparent')
 	lootFrame:SetFrameStrata(_G.LootFrame:GetFrameStrata())
 	lootFrame:SetToplevel(true)
 	lootFrame.title = lootFrame:CreateFontString(nil, 'OVERLAY')
 	lootFrame.title:FontTemplate(nil, nil, 'OUTLINE')
-	lootFrame.title:Point('BOTTOMLEFT', lootFrame, 'TOPLEFT', 0,  1)
+	lootFrame.title:SetPoint('BOTTOMLEFT', lootFrame, 'TOPLEFT', 0,  1)
 	lootFrame.slots = {}
 	lootFrame:SetScript('OnHide', function()
 		StaticPopup_Hide('CONFIRM_LOOT_DISTRIBUTION')

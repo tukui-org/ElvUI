@@ -19,22 +19,22 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel, targetlv, playerlv
 local basemisschance, leveldifference, dodge, parry, block, unhittable
-local AVD_DECAY_RATE, chanceString = 1.5, "%.2f%%"
+local AVD_DECAY_RATE, chanceString = 1.5, '%.2f%%'
 
 local function IsWearingShield()
-	local slotID = GetInventorySlotInfo("SecondaryHandSlot")
+	local slotID = GetInventorySlotInfo('SecondaryHandSlot')
 	local itemID = GetInventoryItemID('player', slotID)
 
 	if itemID then
 		local _, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(itemID)
-		return itemEquipLoc == "INVTYPE_SHIELD"
+		return itemEquipLoc == 'INVTYPE_SHIELD'
 	end
 end
 
 local function OnEvent(self)
-	targetlv, playerlv = UnitLevel("target"), E.mylevel
+	targetlv, playerlv = UnitLevel('target'), E.mylevel
 
-	basemisschance = E.myrace == "NightElf" and 7 or 5
+	basemisschance = E.myrace == 'NightElf' and 7 or 5
 	if targetlv == -1 then
 		leveldifference = 3
 	elseif targetlv > playerlv then
@@ -63,7 +63,7 @@ local function OnEvent(self)
 	if parry <= 0 then parry = 0 end
 	if block <= 0 then block = 0 end
 
-	if E.myclass == "DRUID" and GetBonusBarOffset() == 3 then
+	if E.myclass == 'DRUID' and GetBonusBarOffset() == 3 then
 		parry = 0
 		numAvoidances = numAvoidances - 1
 	end
@@ -89,7 +89,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	local rightString = targetlv > 1 and strjoin('', ' (', L['lvl'], ' ', targetlv, ')') or targetlv == -1 and strjoin('', ' (', BOSS, ')') or strjoin('', ' (', L['lvl'], ' ', playerlv, ')')
+	local rightString = targetlv > 1 and strjoin('', ' (', L["lvl"], ' ', targetlv, ')') or targetlv == -1 and strjoin('', ' (', BOSS, ')') or strjoin('', ' (', L["lvl"], ' ', playerlv, ')')
 	DT.tooltip:AddDoubleLine(L["Avoidance Breakdown"], rightString)
 	DT.tooltip:AddLine(' ')
 
@@ -104,10 +104,10 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin("", "%s", hex, "%.2f%%|r")
+	displayString = strjoin('', '%s', hex, '%.2f%%|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Avoidance', STAT_CATEGORY_ENHANCEMENTS, {"UNIT_TARGET", "UNIT_STATS", "UNIT_AURA", "ACTIVE_TALENT_GROUP_CHANGED", "PLAYER_TALENT_UPDATE", 'PLAYER_EQUIPMENT_CHANGED'}, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"])
+DT:RegisterDatatext('Avoidance', STAT_CATEGORY_ENHANCEMENTS, {'UNIT_TARGET', 'UNIT_STATS', 'UNIT_AURA', 'ACTIVE_TALENT_GROUP_CHANGED', 'PLAYER_TALENT_UPDATE', 'PLAYER_EQUIPMENT_CHANGED'}, OnEvent, nil, nil, OnEnter, nil, L["Avoidance Breakdown"])

@@ -5,9 +5,9 @@ local LDB = E.Libs.LDB
 local LSM = E.Libs.LSM
 
 local _G = _G
-local tostring = tostring
-local tinsert, wipe, sort, type, error, pcall = tinsert, wipe, sort, type, error, pcall
-local ipairs, pairs, next, strlen, strfind = ipairs, pairs, next, strlen, strfind
+local tostring, format, type, pcall = tostring, format, type, pcall
+local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
+local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
 local EasyMenu = EasyMenu
@@ -44,6 +44,7 @@ DT.PanelPool = {
 	Count = 0
 }
 
+DT.FontStrings = {}
 DT.UnitEvents = {
 	UNIT_AURA = true,
 	UNIT_RESISTANCES = true,
@@ -185,10 +186,6 @@ function DT:EmptyPanel(panel)
 		dt:SetScript('OnEnter', nil)
 		dt:SetScript('OnLeave', nil)
 		dt:SetScript('OnClick', nil)
-
-		if dt.text:GetText() then
-			dt.text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
-		end
 	end
 
 	UnregisterStateDriver(panel, 'visibility')
@@ -206,13 +203,13 @@ function DT:ReleasePanel(givenName)
 	end
 end
 
-function DT:BuildPanelFrame(name, db, initLoad)
+function DT:BuildPanelFrame(name, db, fromInit)
 	db = db or E.global.datatexts.customPanels[name] or DT:Panel_DefaultGlobalSettings(name)
 
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
-	Panel:Point('CENTER')
-	Panel:Size(db.width, db.height)
+	Panel:SetPoint('CENTER')
+	Panel:SetSize(db.width, db.height)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -227,18 +224,20 @@ function DT:BuildPanelFrame(name, db, initLoad)
 
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
 
-	if not initLoad then
+	if not fromInit then
 		DT:UpdatePanelAttributes(name, db)
 	end
 end
 
-local LDBHex = '|cffFFFFFF'
+local LDBhex, LDBna = '|cffFFFFFF', {['N/A'] = true, ['n/a'] = true, ['N/a'] = true}
 function DT:BuildPanelFunctions(name, obj)
 	local panel
 
 	local function OnEnter(dt)
+		DT.tooltip:ClearLines()
 		if obj.OnTooltipShow then obj.OnTooltipShow(DT.tooltip) end
 		if obj.OnEnter then obj.OnEnter(dt) end
+		DT.tooltip:Show()
 	end
 
 	local function OnLeave(dt)
@@ -252,16 +251,16 @@ function DT:BuildPanelFunctions(name, obj)
 	end
 
 	local function UpdateText(_, Name, _, Value)
-		if Value == nil or (strlen(Value) >= 3) or Value == 'n/a' or Name == Value then
-			panel.text:SetText(Value ~= 'n/a' and Value or Name)
+		if not Value or (strlen(Value) >= 3) or (Value == Name or LDBna[Value]) then
+			panel.text:SetText((not LDBna[Value] and Value) or Name)
 		else
-			panel.text:SetFormattedText('%s: %s%s|r', Name, LDBHex, Value)
+			panel.text:SetFormattedText('%s: %s%s|r', Name, LDBhex, Value)
 		end
 	end
 
-	local function OnCallback(newHex)
+	local function OnCallback(Hex)
 		if name and obj then
-			LDBHex = newHex
+			LDBhex = Hex
 			LDB.callbacks:Fire('LibDataBroker_AttributeChanged_'..name..'_text', name, nil, obj.text, obj)
 		end
 	end
@@ -270,7 +269,7 @@ function DT:BuildPanelFunctions(name, obj)
 		panel = dt
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_text', UpdateText)
 		LDB:RegisterCallback('LibDataBroker_AttributeChanged_'..name..'_value', UpdateText)
-		OnCallback(LDBHex)
+		OnCallback(LDBhex)
 	end
 
 	return OnEnter, OnLeave, OnClick, OnCallback, OnEvent, UpdateText
@@ -342,8 +341,6 @@ end
 
 function DT:Panel_DefaultGlobalSettings(name)
 	local db = E:CopyTable({}, G.datatexts.newPanelInfo)
-	db.enable = nil
-	db.name = nil
 
 	E.global.datatexts.customPanels[name] = db
 
@@ -418,6 +415,26 @@ function DT:GetTextAttributes(panel, db)
 	return width, height, vertical, numPoints
 end
 
+-- this is used to make texts show on init load, when the font was added after elvui but registers
+-- during the load screen, for some reason blizzard doesnt render the font unless we change the
+-- text after the first frame? its probably related to the texture not inheriting alpha problem.
+-- also, this seems to be a problem with SetJustifyH not triggering a rerender too. ~Simpy
+local RerenderFont = function(fs)
+	local text = fs:GetText()
+	fs:SetText('\10')
+	fs:SetText(text)
+end
+
+local FixFonts = CreateFrame('Frame')
+FixFonts:Hide()
+FixFonts:SetScript('OnUpdate', function(self)
+	for fs in pairs(DT.FontStrings) do
+		RerenderFont(fs)
+	end
+
+	self:Hide()
+end)
+
 function DT:UpdatePanelInfo(panelName, panel, ...)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
 	local db = panel.db or P.datatexts.panels[panelName] and DT.db.panels[panelName]
@@ -451,9 +468,9 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 			local text = dt:CreateFontString(nil, 'ARTWORK')
 			text:SetAllPoints()
-			text:SetJustifyH('CENTER')
 			text:SetJustifyV('MIDDLE')
 			dt.text = text
+			DT.FontStrings[text] = true
 
 			local overlay = dt:CreateTexture(nil, 'OVERLAY')
 			overlay:SetTexture(E.media.blankTex)
@@ -471,9 +488,9 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
 		dt:SetShown(i <= numPoints)
-		dt:Size(width, height)
+		dt:SetSize(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
+		dt:SetPoint(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 		dt:UnregisterAllEvents()
 		dt:SetScript('OnUpdate', nil)
 		dt:SetScript('OnEvent', nil)
@@ -497,10 +514,10 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			dt.objectEvent, dt.objectEventFunc = nil, nil
 		end
 
-		local text = dt.text
-		text:FontTemplate(font, fontSize, fontOutline)
-		text:SetWordWrap(DT.db.wordWrap)
-		text:SetText(' ') -- Keep this as a space, it fixes init load in with a custom font added by a plugin. ~Simpy
+		dt.text:FontTemplate(font, fontSize, fontOutline)
+		dt.text:SetJustifyH(db.textJustify or 'CENTER')
+		dt.text:SetWordWrap(DT.db.wordWrap)
+		RerenderFont(dt.text) -- SetJustifyH wont update without a rerender?
 
 		if battlePanel then
 			dt:SetScript('OnClick', DT.ToggleBattleStats)
@@ -519,11 +536,12 @@ function DT:LoadDataTexts(...)
 	data.isInBattle = data.inInstance and (data.instanceType == 'pvp' or data.instanceType == 'arena')
 
 	for panel, db in pairs(E.global.datatexts.customPanels) do
-		DT:UpdatePanelAttributes(panel, db)
+		DT:UpdatePanelAttributes(panel, db, true)
 	end
 
 	for panelName, panel in pairs(DT.RegisteredPanels) do
-		if not E.global.datatexts.customPanels[panelName] or DT.db.panels[panelName].enable then
+		local db = DT.db.panels[panelName]
+		if db and db.enable then
 			DT:UpdatePanelInfo(panelName, panel, ...)
 		end
 	end
@@ -539,13 +557,13 @@ function DT:PanelSizeChanged()
 	local width, height, vertical, numPoints = DT:GetTextAttributes(self, db)
 
 	for i, dt in ipairs(self.dataPanels) do
-		dt:Size(width, height)
+		dt:SetSize(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(self, i, numPoints, vertical))
+		dt:SetPoint(DT:GetDataPanelPoint(self, i, numPoints, vertical))
 	end
 end
 
-function DT:UpdatePanelAttributes(name, db)
+function DT:UpdatePanelAttributes(name, db, fromLoad)
 	local Panel = DT.PanelPool.InUse[name]
 	DT.OnLeave(Panel)
 
@@ -556,7 +574,7 @@ function DT:UpdatePanelAttributes(name, db)
 	Panel.yOff = db.tooltipYOffset
 	Panel.anchor = db.tooltipAnchor
 	Panel.vertical = db.growth == 'VERTICAL'
-	Panel:Size(db.width, db.height)
+	Panel:SetSize(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
 
@@ -575,7 +593,10 @@ function DT:UpdatePanelAttributes(name, db)
 	if DT.db.panels[name].enable then
 		E:EnableMover(Panel.moverName)
 		RegisterStateDriver(Panel, 'visibility', db.visibility)
-		DT:UpdatePanelInfo(name, Panel)
+
+		if not fromLoad then
+			DT:UpdatePanelInfo(name, Panel)
+		end
 	else
 		DT:EmptyPanel(Panel)
 	end
@@ -589,20 +610,24 @@ function DT:GetMenuListCategory(category)
 	end
 end
 
-function DT:SortMenuList(list)
-	for _, menu in pairs(list) do
-		if menu.menuList then
-			DT:SortMenuList(menu.menuList)
-		end
-	end
-
-	sort(list, function(a, b)
+do
+	local function menuSort(a, b)
 		if a.order and b.order then
 			return a.order < b.order
 		end
 
 		return a.text < b.text
-	end)
+	end
+
+	function DT:SortMenuList(list)
+		for _, menu in pairs(list) do
+			if menu.menuList then
+				DT:SortMenuList(menu.menuList)
+			end
+		end
+
+		sort(list, menuSort)
+	end
 end
 
 function DT:HyperDT()
@@ -688,6 +713,14 @@ function DT:CURRENCY_DISPLAY_UPDATE(_, currencyType)
 	end
 end
 
+function DT:PLAYER_ENTERING_WORLD(_, initLogin)
+	DT:LoadDataTexts()
+
+	if initLogin then
+		FixFonts:Show()
+	end
+end
+
 function DT:Initialize()
 	DT.Initialized = true
 	DT.db = E.db.datatexts
@@ -709,7 +742,9 @@ function DT:Initialize()
 		return dt and (DT.db.panels[dt.parentName] and DT.db.panels[dt.parentName][dt.pointIndex] == value)
 	end
 
-	TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
+		TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
+	end
 
 	-- Ignore header font size on DatatextTooltip
 	local font = E.Libs.LSM:Fetch('font', E.db.tooltip.font)
@@ -731,11 +766,10 @@ function DT:Initialize()
 		DT.BattleStats.RIGHT.panel = _G.RightChatDataPanel.dataPanels
 	end
 
-	DT:RegisterEvent('PLAYER_ENTERING_WORLD', 'LoadDataTexts')
-	DT:RegisterEvent('CURRENCY_DISPLAY_UPDATE')
-
 	DT:PopulateData()
 	DT:RegisterHyperDT()
+	DT:RegisterEvent('PLAYER_ENTERING_WORLD')
+	DT:RegisterEvent('CURRENCY_DISPLAY_UPDATE')
 end
 
 --[[
@@ -751,15 +785,18 @@ end
 	onLeaveFunc - function to fire OnLeave, if not provided one will be set for you that hides the tooltip.
 	localizedName - localized name of the datetext
 	objectEvent - register events on an object, using E.RegisterEventForObject instead of panel.RegisterEvent
+	colorUpdate - function that fires when called from the config when you change the dt options.
 ]]
-function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent)
-	if not name then error('Cannot register datatext no name was provided.') end
-	local data = {name = name, category = category}
+function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clickFunc, onEnterFunc, onLeaveFunc, localizedName, objectEvent, colorUpdate)
+	if not name then return end
+	if type(category) ~= 'string' and category ~= nil then return E:Print(format('%s is an invalid DataText.', name)) end
 
-	if type(events) ~= 'table' and events ~= nil then
-		error('Events must be registered as a table.')
+	local data = { name = name, category = category }
+
+	if type(events) == 'function' then
+		return E:Print(format('%s is an invalid DataText. Events must be registered as a table or a string.', name))
 	else
-		data.events = events
+		data.events = type(events) == 'string' and { strsplit('[, ]', events) } or events
 		data.eventFunc = eventFunc
 		data.objectEvent = objectEvent
 	end
@@ -782,6 +819,10 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 
 	if localizedName and type(localizedName) == 'string' then
 		data.localizedName = localizedName
+	end
+
+	if colorUpdate and type(colorUpdate) == 'function' then
+		data.colorUpdate = colorUpdate
 	end
 
 	DT.RegisteredDataTexts[name] = data

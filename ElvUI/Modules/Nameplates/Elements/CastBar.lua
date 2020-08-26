@@ -35,23 +35,23 @@ end
 function NP:Castbar_CustomDelayText(duration)
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText("%.1f |cffaf5050%.1f|r", abs(duration - self.max), self.delay)
+			self.Time:SetFormattedText('%.1f |cffaf5050%.1f|r', abs(duration - self.max), self.delay)
 		elseif self.channelTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%.1f|r", duration, self.max, self.delay)
+			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%.1f|r', duration, self.max, self.delay)
 		elseif self.channelTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText("%.1f |cffaf5050%.1f|r", duration, self.delay)
+			self.Time:SetFormattedText('%.1f |cffaf5050%.1f|r', duration, self.delay)
 		elseif self.channelTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%.1f|r", abs(duration - self.max), self.max, self.delay)
+			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%.1f|r', abs(duration - self.max), self.max, self.delay)
 		end
 	else
 		if self.castTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText("%.1f |cffaf5050%s %.1f|r", duration, "+", self.delay)
+			self.Time:SetFormattedText('%.1f |cffaf5050%s %.1f|r', duration, '+', self.delay)
 		elseif self.castTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%s %.1f|r", duration, self.max, "+", self.delay)
+			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%s %.1f|r', duration, self.max, '+', self.delay)
 		elseif self.castTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText("%.1f |cffaf5050%s %.1f|r", abs(duration - self.max), "+", self.delay)
+			self.Time:SetFormattedText('%.1f |cffaf5050%s %.1f|r', abs(duration - self.max), '+', self.delay)
 		elseif self.castTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f |cffaf5050%s %.1f|r", abs(duration - self.max), self.max, "+", self.delay)
+			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%s %.1f|r', abs(duration - self.max), self.max, '+', self.delay)
 		end
 	end
 end
@@ -59,23 +59,23 @@ end
 function NP:Castbar_CustomTimeText(duration)
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText("%.1f", abs(duration - self.max))
+			self.Time:SetFormattedText('%.1f', abs(duration - self.max))
 		elseif self.channelTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f", abs(duration - self.max), self.max)
+			self.Time:SetFormattedText('%.1f / %.1f', abs(duration - self.max), self.max)
 		elseif self.channelTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText("%.1f", duration)
+			self.Time:SetFormattedText('%.1f', duration)
 		elseif self.channelTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f", duration, self.max)
+			self.Time:SetFormattedText('%.1f / %.1f', duration, self.max)
 		end
 	else
 		if self.castTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText("%.1f", duration)
+			self.Time:SetFormattedText('%.1f', duration)
 		elseif self.castTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f", duration, self.max)
+			self.Time:SetFormattedText('%.1f / %.1f', duration, self.max)
 		elseif self.castTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText("%.1f", abs(duration - self.max))
+			self.Time:SetFormattedText('%.1f', abs(duration - self.max))
 		elseif self.castTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText("%.1f / %.1f", abs(duration - self.max), self.max)
+			self.Time:SetFormattedText('%.1f / %.1f', abs(duration - self.max), self.max)
 		end
 	end
 end
@@ -115,7 +115,7 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Icon:SetInside()
 
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
-	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
+	Castbar.Time:SetPoint('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
 	Castbar.Time:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
@@ -146,7 +146,7 @@ end
 
 function NP:COMBAT_LOG_EVENT_UNFILTERED()
 	local _, event, _, sourceGUID, sourceName, _, _, targetGUID = CombatLogGetCurrentEventInfo()
-	if (event == 'SPELL_INTERRUPT' or event == 'SPELL_PERIODIC_INTERRUPT') and targetGUID and (sourceName and sourceName ~= "") then
+	if (event == 'SPELL_INTERRUPT' or event == 'SPELL_PERIODIC_INTERRUPT') and targetGUID and (sourceName and sourceName ~= '') then
 		local plate, classColor = NP.PlateGUID[targetGUID]
 		if plate and plate.Castbar then
 			local db = plate.frameType and self.db and self.db.units and self.db.units[plate.frameType]
@@ -159,9 +159,9 @@ function NP:COMBAT_LOG_EVENT_UNFILTERED()
 							classColor = data.classColor.colorStr
 						end
 
-						plate.Castbar.Text:SetFormattedText("%s > %s", INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
+						plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, classColor and strjoin('', '|c', classColor, name) or name)
 					else
-						plate.Castbar.Text:SetFormattedText("%s > %s", INTERRUPTED, name)
+						plate.Castbar.Text:SetFormattedText('%s > %s', INTERRUPTED, name)
 					end
 				end
 			end
@@ -181,13 +181,13 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.castTimeFormat = db.castbar.castTimeFormat
 		nameplate.Castbar.channelTimeFormat = db.castbar.channelTimeFormat
 
-		nameplate.Castbar:Size(db.castbar.width, db.castbar.height)
-		nameplate.Castbar:Point('CENTER', nameplate, 'CENTER', db.castbar.xOffset, db.castbar.yOffset)
+		nameplate.Castbar:SetSize(db.castbar.width, db.castbar.height)
+		nameplate.Castbar:SetPoint('CENTER', nameplate, 'CENTER', db.castbar.xOffset, db.castbar.yOffset)
 
 		if db.castbar.showIcon then
 			nameplate.Castbar.Button:ClearAllPoints()
-			nameplate.Castbar.Button:Point(db.castbar.iconPosition == 'RIGHT' and 'BOTTOMLEFT' or 'BOTTOMRIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'BOTTOMRIGHT' or 'BOTTOMLEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
-			nameplate.Castbar.Button:Size(db.castbar.iconSize, db.castbar.iconSize)
+			nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'BOTTOMLEFT' or 'BOTTOMRIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'BOTTOMRIGHT' or 'BOTTOMLEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
+			nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
 			nameplate.Castbar.Button:Show()
 		else
 			nameplate.Castbar.Button:Hide()
@@ -196,17 +196,18 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.Time:ClearAllPoints()
 		nameplate.Castbar.Text:ClearAllPoints()
 
-		if db.castbar.textPosition == "BELOW" then
-			nameplate.Castbar.Time:Point('TOPRIGHT', nameplate.Castbar, 'BOTTOMRIGHT')
-			nameplate.Castbar.Text:Point('TOPLEFT', nameplate.Castbar, 'BOTTOMLEFT')
-		elseif db.castbar.textPosition == "ABOVE" then
-			nameplate.Castbar.Time:Point('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
-			nameplate.Castbar.Text:Point('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
+		if db.castbar.textPosition == 'BELOW' then
+			nameplate.Castbar.Time:SetPoint('TOPRIGHT', nameplate.Castbar, 'BOTTOMRIGHT')
+			nameplate.Castbar.Text:SetPoint('TOPLEFT', nameplate.Castbar, 'BOTTOMLEFT')
+		elseif db.castbar.textPosition == 'ABOVE' then
+			nameplate.Castbar.Time:SetPoint('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
+			nameplate.Castbar.Text:SetPoint('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
 		else
-			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
+			nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -1, 0)
+			nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
 		end
 
-		nameplate.Castbar.Text:Point('RIGHT', nameplate.Castbar, 'RIGHT', -20, 0)
+		nameplate.Castbar.Text:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -20, 0)
 
 		if db.castbar.hideTime then
 			nameplate.Castbar.Time:Hide()

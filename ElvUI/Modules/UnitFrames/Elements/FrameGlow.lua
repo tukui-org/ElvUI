@@ -88,11 +88,11 @@ function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScri
 
 	local portrait = (frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY) and (frame.Portrait and frame.Portrait.backdrop)
 	if (power and power.backdrop and power:IsVisible()) and ((power == frame.AlternativePower and not frame.USE_MINI_CLASSBAR) or not (frame.CLASSBAR_DETACHED or frame.USE_MINI_CLASSBAR)) then
-		glow:Point('TOPLEFT', (frame.ORIENTATION == "LEFT" and portrait) or power.backdrop, -offset, offset)
-		glow:Point('TOPRIGHT', (frame.ORIENTATION == "RIGHT" and portrait) or power.backdrop, offset, offset)
+		glow:SetPoint('TOPLEFT', (frame.ORIENTATION == 'LEFT' and portrait) or power.backdrop, -offset, offset)
+		glow:SetPoint('TOPRIGHT', (frame.ORIENTATION == 'RIGHT' and portrait) or power.backdrop, offset, offset)
 	elseif frame.Health and frame.Health.backdrop then
-		glow:Point('TOPLEFT', (frame.ORIENTATION == "LEFT" and portrait) or frame.Health.backdrop, -offset, offset)
-		glow:Point('TOPRIGHT', (frame.ORIENTATION == "RIGHT" and portrait) or frame.Health.backdrop, offset, offset)
+		glow:SetPoint('TOPLEFT', (frame.ORIENTATION == 'LEFT' and portrait) or frame.Health.backdrop, -offset, offset)
+		glow:SetPoint('TOPRIGHT', (frame.ORIENTATION == 'RIGHT' and portrait) or frame.Health.backdrop, offset, offset)
 	end
 end
 
@@ -109,24 +109,24 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	local offset = (E.PixelMode and 3) or 4 -- edgeSize is 3
 
 	mainGlow:ClearAllPoints()
-	mainGlow:Point('TOPLEFT', (frame.ORIENTATION == "LEFT" and portrait) or health, -offset, offset)
-	mainGlow:Point('TOPRIGHT', (frame.ORIENTATION == "RIGHT" and portrait) or health, offset, offset)
+	mainGlow:SetPoint('TOPLEFT', (frame.ORIENTATION == 'LEFT' and portrait) or health, -offset, offset)
+	mainGlow:SetPoint('TOPRIGHT', (frame.ORIENTATION == 'RIGHT' and portrait) or health, offset, offset)
 
 	if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
-		mainGlow:Point('BOTTOMLEFT', health, -offset, -offset)
-		mainGlow:Point('BOTTOMRIGHT', health, offset, -offset)
+		mainGlow:SetPoint('BOTTOMLEFT', health, -offset, -offset)
+		mainGlow:SetPoint('BOTTOMRIGHT', health, offset, -offset)
 	else
 		--offset is set because its one pixel off for some reason
-		mainGlow:Point('BOTTOMLEFT', frame, -offset, -(E.PixelMode and offset or offset-1))
-		mainGlow:Point('BOTTOMRIGHT', frame, offset, -(E.PixelMode and offset or offset-1))
+		mainGlow:SetPoint('BOTTOMLEFT', frame, -offset, -(E.PixelMode and offset or offset-1))
+		mainGlow:SetPoint('BOTTOMRIGHT', frame, offset, -(E.PixelMode and offset or offset-1))
 	end
 
 	if powerGlow then
 		powerGlow:ClearAllPoints()
-		powerGlow:Point('TOPLEFT', power, -offset, offset)
-		powerGlow:Point('TOPRIGHT', power, offset, offset)
-		powerGlow:Point('BOTTOMLEFT', power, -offset, -offset)
-		powerGlow:Point('BOTTOMRIGHT', power, offset, -offset)
+		powerGlow:SetPoint('TOPLEFT', power, -offset, offset)
+		powerGlow:SetPoint('TOPRIGHT', power, offset, offset)
+		powerGlow:SetPoint('BOTTOMLEFT', power, -offset, -offset)
+		powerGlow:SetPoint('BOTTOMRIGHT', power, offset, -offset)
 	end
 
 	if classPower then
@@ -135,8 +135,8 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 		UF:FrameGlow_ClassGlowPosition(frame, 'AlternativePower', mainGlow, offset)
 	elseif pvpSpec and pvpSpec:IsShown() then
 		local shownPanel = (infoPanel and infoPanel:IsShown() and infoPanel.backdrop)
-		mainGlow:Point('TOPLEFT', pvpSpec.bg, -offset, offset)
-		mainGlow:Point('BOTTOMLEFT', shownPanel or pvpSpec.bg, -offset, -offset)
+		mainGlow:SetPoint('TOPLEFT', pvpSpec.bg, -offset, offset)
+		mainGlow:SetPoint('BOTTOMLEFT', shownPanel or pvpSpec.bg, -offset, -offset)
 	end
 end
 
@@ -338,8 +338,8 @@ end
 function UF:FrameGlow_PositionTexture(frame)
 	if frame.FrameGlow and frame.FrameGlow.texture then
 		frame.FrameGlow.texture:ClearAllPoints()
-		frame.FrameGlow.texture:Point('TOPLEFT', frame.Health, 'TOPLEFT')
-		frame.FrameGlow.texture:Point('BOTTOMRIGHT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+		frame.FrameGlow.texture:SetPoint('TOPLEFT', frame.Health, 'TOPLEFT')
+		frame.FrameGlow.texture:SetPoint('BOTTOMRIGHT', frame.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 	end
 end
 

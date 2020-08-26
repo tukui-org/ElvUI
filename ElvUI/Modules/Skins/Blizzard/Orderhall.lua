@@ -14,10 +14,10 @@ function S:Blizzard_OrderHallUI()
 	-- CommandBar
 	local OrderHallCommandBar = _G.OrderHallCommandBar
 	OrderHallCommandBar:StripTextures()
-	OrderHallCommandBar:CreateBackdrop("Transparent")
+	OrderHallCommandBar:CreateBackdrop('Transparent')
 	OrderHallCommandBar.ClassIcon:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
-	OrderHallCommandBar.ClassIcon:Size(46, 20)
-	OrderHallCommandBar.CurrencyIcon:SetAtlas("legionmission-icon-currency", false)
+	OrderHallCommandBar.ClassIcon:SetSize(46, 20)
+	OrderHallCommandBar.CurrencyIcon:SetAtlas('legionmission-icon-currency', false)
 	OrderHallCommandBar.AreaName:SetVertexColor(classColor.r, classColor.g, classColor.b)
 	OrderHallCommandBar.WorldMapButton:Hide()
 
@@ -28,7 +28,7 @@ function S:Blizzard_OrderHallUI()
 	S:HandleIcon(OrderHallTalentFrame.Currency.Icon)
 	OrderHallTalentFrame.OverlayElements:SetAlpha(0)
 
-	hooksecurefunc(OrderHallTalentFrame, "RefreshAllData", function(frame)
+	hooksecurefunc(OrderHallTalentFrame, 'RefreshAllData', function(frame)
 		-- We need to hide the objects again after an update is happen.
 		if frame.CloseButton.Border then frame.CloseButton.Border:SetAlpha(0) end
 		if frame.CurrencyBG then frame.CurrencyBG:SetAlpha(0) end

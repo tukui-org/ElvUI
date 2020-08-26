@@ -3,6 +3,7 @@ local CopyTable = CopyTable -- Our function doesn't exist yet.
 
 P.gridSize = 64
 P.layoutSetting = 'tank'
+P.hideTutorial = true
 
 --Core
 P.general = {
@@ -621,6 +622,7 @@ P.nameplates = {
 				yOffset = 10,
 			},
 			visibility = {
+				alphaDelay = 1,
 				hideDelay = 3,
 				showAlways = false,
 				showInCombat = true,
@@ -641,7 +643,7 @@ P.nameplates = {
 		},
 		TARGET = {
 			enable = true,
-			glowStyle = 'style4',
+			glowStyle = 'style2',
 			classpower = {
 				enable = false,
 				classColor = false,
@@ -907,6 +909,7 @@ P.chat = {
 	fadeTabsNoBackdrop = true,
 	fadeChatToggles = true,
 	hideChatToggles = false,
+	hideCopyButton = false,
 	useAltKey = false,
 	classColorMentionsChat = true,
 	numAllowedCombatRepeat = 5,
@@ -1172,13 +1175,15 @@ local UF_Health = {
 
 local UF_HealthPrediction = {
 	enable = false,
-	showOverAbsorbs = true,
+	absorbStyle = 'NORMAL',
+	anchorPoint = 'BOTTOM',
+	height = -1
 }
 
 local UF_InfoPanel = {
 	enable = false,
-	height = 20,
 	transparent = false,
+	height = 20
 }
 
 local UF_Fader = {
@@ -1365,7 +1370,6 @@ local UF_ClassBar = {
 	height = 10,
 	autoHide = false,
 	sortDirection = 'asc',
-	additionalPowerText = false,
 	altPowerColor = { r = 0.2, g = 0.4, b = 0.8 },
 	altPowerTextFormat = '[altpower:current]',
 	detachFromFrame = false,
@@ -1427,12 +1431,13 @@ P.unitframe = {
 		invertClasspower = false,
 		castColor = { r = .31, g = .31, b = .31 },
 		castNoInterrupt = { r = 0.78, g = 0.25, b = 0.25 },
+		castInterruptedColor = {r = 0.30, g = 0.30, b = 0.30},
 		castClassColor = false,
 		castReactionColor = false,
 		health = { r = .31, g = .31, b = .31 },
 		health_backdrop = { r = .8, g = .01, b = .01 },
 		health_backdrop_dead = { r = .8, g = .01, b = .01 },
-		castbar_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
+		castbar_backdrop = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 		classpower_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
 		aurabar_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
 		power_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
@@ -1838,7 +1843,6 @@ P.unitframe.units.player.aurabar.maxDuration = 120
 P.unitframe.units.player.aurabar.priority = 'Blacklist,blockNoDuration,Personal,Boss,RaidDebuffs,PlayerBuffs'
 P.unitframe.units.player.buffs.attachTo = 'DEBUFFS'
 P.unitframe.units.player.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Whitelist,blockNoDuration,nonPersonal'
-P.unitframe.units.player.classbar.additionalPowerText = true
 P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,nonPersonal'
 P.unitframe.units.player.fader.enable = false

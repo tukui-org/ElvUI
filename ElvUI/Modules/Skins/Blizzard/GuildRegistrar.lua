@@ -26,10 +26,10 @@ function S:GuildRegistrarFrame()
 		end
 	end
 
-	_G.GuildRegistrarFrameEditBox:Height(20)
+	_G.GuildRegistrarFrameEditBox:SetHeight(20)
 
 	for i=1, 2 do
-		_G["GuildRegistrarButton"..i]:GetFontString():SetTextColor(1, 1, 1)
+		_G['GuildRegistrarButton'..i]:GetFontString():SetTextColor(1, 1, 1)
 	end
 
 	_G.GuildRegistrarPurchaseText:SetTextColor(1, 1, 1)

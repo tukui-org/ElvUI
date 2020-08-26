@@ -90,8 +90,8 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		button.filter = filter
 		button.isDebuff = isDebuff
 		button.debuffType = debuffType
-		button.isPlayer = caster == 'player'
 		button.spellID = spellID
+		button.isPlayer = caster == 'player'
 
 		local show = (element.CustomFilter or customFilter) (element, unit, button, name, texture,
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID,
@@ -147,7 +147,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 
 			return VISIBLE
 		else
-
 			button.isFiltered = true
 			return HIDDEN
 		end

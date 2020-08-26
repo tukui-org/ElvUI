@@ -116,14 +116,14 @@ function DB:AzeriteBar_OnClick()
 	if HasArtifactEquipped() and not C_ArtifactUI_IsEquippedArtifactDisabled() then
 		SocketInventoryItem(_G.INVSLOT_MAINHAND)
 	elseif C_AzeriteItem_FindActiveAzeriteItem() then
-		UIParentLoadAddOn("Blizzard_AzeriteEssenceUI")
+		UIParentLoadAddOn('Blizzard_AzeriteEssenceUI')
 		ToggleFrame(_G.AzeriteEssenceUI)
 	end
 end
 
 function DB:UpdateAzeriteDimensions()
-	DB.azeriteBar:Width(DB.db.azerite.width)
-	DB.azeriteBar:Height(DB.db.azerite.height)
+	DB.azeriteBar:SetWidth(DB.db.azerite.width)
+	DB.azeriteBar:SetHeight(DB.db.azerite.height)
 	DB.azeriteBar.statusBar:SetOrientation(DB.db.azerite.orientation)
 	DB.azeriteBar.statusBar:SetReverseFill(DB.db.azerite.reverseFill)
 

@@ -129,13 +129,13 @@ do
 end
 
 do
-	DisableAddOn("ElvUI_VisualAuraTimers")
-	DisableAddOn("ElvUI_ExtraActionBars")
-	DisableAddOn("ElvUI_CastBarOverlay")
-	DisableAddOn("ElvUI_EverySecondCounts")
-	DisableAddOn("ElvUI_AuraBarsMovers")
-	DisableAddOn("ElvUI_CustomTweaks")
-	DisableAddOn("ElvUI_DTBars2")
+	DisableAddOn('ElvUI_VisualAuraTimers')
+	DisableAddOn('ElvUI_ExtraActionBars')
+	DisableAddOn('ElvUI_CastBarOverlay')
+	DisableAddOn('ElvUI_EverySecondCounts')
+	DisableAddOn('ElvUI_AuraBarsMovers')
+	DisableAddOn('ElvUI_CustomTweaks')
+	DisableAddOn('ElvUI_DTBars2')
 end
 
 function E:OnEnable()
@@ -176,6 +176,10 @@ function E:OnInitialize()
 	E.twoPixelsPlease = false
 	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
+
+	E.Spacing = E.PixelMode and 0 or 1
+	E.Border = (not E.twoPixelsPlease and E.PixelMode and 1) or 2
+
 	E:UIScale(true)
 	E:UpdateMedia()
 	E:Contruct_StaticPopups()
@@ -202,8 +206,8 @@ function E:OnInitialize()
 	GameMenuFrame[E.name] = GameMenuButton
 
 	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
-		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
-		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+		GameMenuButton:SetSize(GameMenuButtonLogout:GetSize())
+		GameMenuButton:SetPoint('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 
@@ -220,9 +224,9 @@ function E:PositionGameMenuButton()
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= button then
 		button:ClearAllPoints()
-		button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+		button:SetPoint('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
 		GameMenuButtonLogout:ClearAllPoints()
-		GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
+		GameMenuButtonLogout:SetPoint('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
 	end
 end
 

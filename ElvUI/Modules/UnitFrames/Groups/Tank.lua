@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local max = max
@@ -36,9 +36,9 @@ function UF:Construct_TankFrames()
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.AuraHighlight = UF:Construct_AuraHighlight(self)
 
-		self.unitframeType = "tank"
+		self.unitframeType = 'tank'
 	else
-		self.unitframeType = "tanktarget"
+		self.unitframeType = 'tanktarget'
 	end
 
 	self.originalParent = self:GetParent()
@@ -62,7 +62,7 @@ function UF:Update_TankHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
+		header:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
 
 		local width, height = header:GetSize()
 		local minHeight = max(height, 2*db.height + db.verticalSpacing)
@@ -113,19 +113,19 @@ function UF:Update_TankFrames(frame, db)
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
 
-		frame:Size(childDB.width, childDB.height)
+		frame:SetSize(childDB.width, childDB.height)
 
 		if not InCombatLockdown() then
 			if childDB.enable then
 				frame:Enable()
 				frame:ClearAllPoints()
-				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
+				frame:SetPoint(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			else
 				frame:Disable()
 			end
 		end
 	else
-		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+		frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
 
 	UF:Configure_HealthBar(frame)
@@ -136,11 +136,11 @@ function UF:Update_TankFrames(frame, db)
 	UF:Configure_RaidIcon(frame)
 
 	if not frame.isChild then
-		if not IsAddOnLoaded("Clique") then
+		if not IsAddOnLoaded('Clique') then
 			if db.middleClickFocus then
-				frame:SetAttribute("type3", "focus")
-			elseif frame:GetAttribute("type3") == "focus" then
-				frame:SetAttribute("type3", nil)
+				frame:SetAttribute('type3', 'focus')
+			elseif frame:GetAttribute('type3') == 'focus' then
+				frame:SetAttribute('type3', nil)
 			end
 		end
 
@@ -151,7 +151,7 @@ function UF:Update_TankFrames(frame, db)
 		UF:Configure_AuraWatch(frame)
 	end
 
-	frame:UpdateAllElements("ElvUI_UpdateAllElements")
+	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 UF.headerstoload.tank = {'MAINTANK', 'ELVUI_UNITTARGET'}

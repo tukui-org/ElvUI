@@ -3,10 +3,9 @@ local M = E:GetModule('WorldMap')
 
 local _G = _G
 local strfind = strfind
-
 local CreateFrame = CreateFrame
 local SetUIPanelAttribute = SetUIPanelAttribute
-local MOUSE_LABEL = MOUSE_LABEL:gsub("|[TA].-|[ta]","")
+local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
 local PLAYER = PLAYER
 local hooksecurefunc = hooksecurefunc
 local IsPlayerMoving = IsPlayerMoving
@@ -14,12 +13,12 @@ local PlayerMovementFrameFader = PlayerMovementFrameFader
 -- GLOBALS: CoordsHolder
 
 local INVERTED_POINTS = {
-	TOPLEFT = "BOTTOMLEFT",
-	TOPRIGHT = "BOTTOMRIGHT",
-	BOTTOMLEFT = "TOPLEFT",
-	BOTTOMRIGHT = "TOPRIGHT",
-	TOP = "BOTTOM",
-	BOTTOM = "TOP",
+	TOPLEFT = 'BOTTOMLEFT',
+	TOPRIGHT = 'BOTTOMRIGHT',
+	BOTTOMLEFT = 'TOPLEFT',
+	BOTTOMRIGHT = 'TOPRIGHT',
+	TOP = 'BOTTOM',
+	BOTTOM = 'TOP',
 }
 
 -- this will be updated later
@@ -32,11 +31,11 @@ function M:SetLargeWorldMap()
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-		SetUIPanelAttribute(WorldMapFrame, "area", "center");
+		SetUIPanelAttribute(WorldMapFrame, 'area', 'center');
 	end
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
-		SetUIPanelAttribute(WorldMapFrame, "allowOtherPanels", true)
+		SetUIPanelAttribute(WorldMapFrame, 'allowOtherPanels', true)
 	end
 
 	WorldMapFrame:OnFrameSizeChanged()
@@ -49,14 +48,14 @@ function M:UpdateMaximizedSize()
 	local WorldMapFrame = _G.WorldMapFrame
 	local width, height = WorldMapFrame:GetSize()
 	local magicNumber = (1 - smallerMapScale) * 100
-	WorldMapFrame:Size((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
+	WorldMapFrame:SetSize((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
 end
 
 function M:SynchronizeDisplayState()
 	local WorldMapFrame = _G.WorldMapFrame
 	if WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:Point("CENTER", E.UIParent)
+		WorldMapFrame:SetPoint('CENTER', E.UIParent)
 	end
 end
 
@@ -64,7 +63,7 @@ function M:SetSmallWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	if not WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:Point("TOPLEFT", E.UIParent, "TOPLEFT", 16, -94)
+		WorldMapFrame:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 16, -94)
 	end
 end
 
@@ -74,7 +73,7 @@ function M:UpdateRestrictedArea()
 		inRestrictedArea = false
 	else
 		inRestrictedArea = true
-		CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
+		CoordsHolder.playerCoords:SetFormattedText('%s:   %s', PLAYER, 'N/A')
 	end
 end
 
@@ -85,7 +84,7 @@ function M:UpdateCoords(OnShow)
 	if WorldMapFrame.ScrollContainer:IsMouseOver() then
 		local x, y = WorldMapFrame.ScrollContainer:GetNormalizedCursorPosition()
 		if x and y and x >= 0 and y >= 0 then
-			CoordsHolder.mouseCoords:SetFormattedText("%s:   %.2f, %.2f", MOUSE_LABEL, x * 100, y * 100)
+			CoordsHolder.mouseCoords:SetFormattedText('%s:   %.2f, %.2f', MOUSE_LABEL, x * 100, y * 100)
 		else
 			CoordsHolder.mouseCoords:SetText('')
 		end
@@ -95,9 +94,9 @@ function M:UpdateCoords(OnShow)
 
 	if not inRestrictedArea and (OnShow or E.MapInfo.coordsWatching) then
 		if E.MapInfo.x and E.MapInfo.y then
-			CoordsHolder.playerCoords:SetFormattedText("%s:   %.2f, %.2f", PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
+			CoordsHolder.playerCoords:SetFormattedText('%s:   %.2f, %.2f', PLAYER, (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
-			CoordsHolder.playerCoords:SetFormattedText("%s:   %s", PLAYER, "N/A")
+			CoordsHolder.playerCoords:SetFormattedText('%s:   %s', PLAYER, 'N/A')
 		end
 	end
 end
@@ -109,13 +108,13 @@ function M:PositionCoords()
 	local yOffset = db.yOffset
 
 	local x, y = 5, 5
-	if strfind(position, "RIGHT") then	x = -5 end
-	if strfind(position, "TOP") then y = -5 end
+	if strfind(position, 'RIGHT') then	x = -5 end
+	if strfind(position, 'TOP') then y = -5 end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
-	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
+	CoordsHolder.playerCoords:SetPoint(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
-	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
+	CoordsHolder.mouseCoords:SetPoint(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
 function M:MapShouldFade()
@@ -158,9 +157,9 @@ end
 
 function M:EnableMapFading(frame)
 	if not fadeFrame then
-		fadeFrame = CreateFrame("FRAME")
-		fadeFrame:SetScript("OnUpdate", M.MapFadeOnUpdate)
-		frame:HookScript("OnHide", M.StopMapFromFading)
+		fadeFrame = CreateFrame('FRAME')
+		fadeFrame:SetScript('OnUpdate', M.MapFadeOnUpdate)
+		frame:HookScript('OnHide', M.StopMapFromFading)
 	end
 
 	if not fadeFrame.FadeObject then fadeFrame.FadeObject = {} end
@@ -204,26 +203,26 @@ function M:Initialize()
 		CoordsHolder.mouseCoords:SetTextColor(1, 1 ,0)
 		CoordsHolder.playerCoords:SetFontObject(_G.NumberFontNormal)
 		CoordsHolder.mouseCoords:SetFontObject(_G.NumberFontNormal)
-		CoordsHolder.playerCoords:SetText(PLAYER..":   0, 0")
-		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..":   0, 0")
+		CoordsHolder.playerCoords:SetText(PLAYER..':   0, 0')
+		CoordsHolder.mouseCoords:SetText(MOUSE_LABEL..':   0, 0')
 
-		WorldMapFrame:HookScript("OnShow", function()
+		WorldMapFrame:HookScript('OnShow', function()
 			if not M.CoordsTimer then
 				M:UpdateCoords(true)
 				M.CoordsTimer = M:ScheduleRepeatingTimer('UpdateCoords', 0.1)
 			end
 		end)
-		WorldMapFrame:HookScript("OnHide", function()
+		WorldMapFrame:HookScript('OnHide', function()
 			M:CancelTimer(M.CoordsTimer)
 			M.CoordsTimer = nil
 		end)
 
 		M:PositionCoords()
 
-		E:RegisterEventForObject("LOADING_SCREEN_DISABLED", E.MapInfo, M.UpdateRestrictedArea)
-		E:RegisterEventForObject("ZONE_CHANGED_NEW_AREA", E.MapInfo, M.UpdateRestrictedArea)
-		E:RegisterEventForObject("ZONE_CHANGED_INDOORS", E.MapInfo, M.UpdateRestrictedArea)
-		E:RegisterEventForObject("ZONE_CHANGED", E.MapInfo, M.UpdateRestrictedArea)
+		E:RegisterEventForObject('LOADING_SCREEN_DISABLED', E.MapInfo, M.UpdateRestrictedArea)
+		E:RegisterEventForObject('ZONE_CHANGED_NEW_AREA', E.MapInfo, M.UpdateRestrictedArea)
+		E:RegisterEventForObject('ZONE_CHANGED_INDOORS', E.MapInfo, M.UpdateRestrictedArea)
+		E:RegisterEventForObject('ZONE_CHANGED', E.MapInfo, M.UpdateRestrictedArea)
 	end
 
 	if E.global.general.smallerWorldMap then
@@ -250,12 +249,12 @@ function M:Initialize()
 	end
 
 	-- This lets us control the maps fading function
-	hooksecurefunc(PlayerMovementFrameFader, "AddDeferredFrame", M.UpdateMapFade)
+	hooksecurefunc(PlayerMovementFrameFader, 'AddDeferredFrame', M.UpdateMapFade)
 
 	-- Enable/Disable map fading when moving
 	-- currently we dont need to touch this cvar because we have our own control for this currently
 	-- see the comment in `M:UpdateMapFade` about `durationSec` for more information
-	-- SetCVar("mapFade", E.global.general.fadeMapWhenMoving and 1 or 0)
+	-- SetCVar('mapFade', E.global.general.fadeMapWhenMoving and 1 or 0)
 end
 
 E:RegisterInitialModule(M:GetName())

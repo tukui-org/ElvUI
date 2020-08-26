@@ -4,9 +4,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local floor = floor
 local format = format
-
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 local UnitPowerMax = UnitPowerMax
 local UnitPower = UnitPower
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
@@ -57,11 +55,11 @@ end
 
 function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
-	holder:Point('TOP', E.UIParent, 'TOP', -1, -36)
-	holder:Size(128, 50)
+	holder:SetPoint('TOP', E.UIParent, 'TOP', -1, -36)
+	holder:SetSize(128, 50)
 
 	_G.PlayerPowerBarAlt:ClearAllPoints()
-	_G.PlayerPowerBarAlt:Point('CENTER', holder, 'CENTER')
+	_G.PlayerPowerBarAlt:SetPoint('CENTER', holder, 'CENTER')
 	_G.PlayerPowerBarAlt:SetParent(holder)
 	_G.PlayerPowerBarAlt:SetMovable(true)
 	_G.PlayerPowerBarAlt:SetUserPlaced(true)
@@ -98,14 +96,14 @@ function B:UpdateAltPowerBarSettings()
 	local bar = _G.ElvUI_AltPowerBar
 	local db = E.db.general.altPowerBar
 
-	bar:Size(db.width or 250, db.height or 20)
-	bar:SetStatusBarTexture(E.Libs.LSM:Fetch("statusbar", db.statusBar))
-	bar.text:FontTemplate(E.Libs.LSM:Fetch("font", db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
-	_G.AltPowerBarHolder:Size(bar.backdrop:GetSize())
+	bar:SetSize(db.width or 250, db.height or 20)
+	bar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', db.statusBar))
+	bar.text:FontTemplate(E.Libs.LSM:Fetch('font', db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
+	_G.AltPowerBarHolder:SetSize(bar.backdrop:GetSize())
 
 	E:SetSmoothing(bar, db.smoothbars)
 
-	B:SetAltPowerBarText(bar.text, bar.powerName or "", bar.powerValue or 0, bar.powerMaxValue or 0, bar.powerPercent or 0)
+	B:SetAltPowerBarText(bar.text, bar.powerName or '', bar.powerValue or 0, bar.powerMaxValue or 0, bar.powerPercent or 0)
 end
 
 function B:UpdateAltPowerBar()
@@ -145,7 +143,7 @@ function B:UpdateAltPowerBar()
 			self:SetStatusBarColor(r, g, b)
 		end
 
-		B:SetAltPowerBarText(self.text, powerName or "", power or 0, maxPower, perc)
+		B:SetAltPowerBarText(self.text, powerName or '', power or 0, maxPower, perc)
 	else
 		self.powerMaxValue = nil
 		self.powerName = nil
@@ -161,23 +159,23 @@ end
 function B:SkinAltPowerBar()
 	if not E.db.general.altPowerBar.enable then return end
 
-	local powerbar = CreateFrame("StatusBar", "ElvUI_AltPowerBar", E.UIParent)
+	local powerbar = CreateFrame('StatusBar', 'ElvUI_AltPowerBar', E.UIParent)
 	powerbar:CreateBackdrop(nil, true)
 	powerbar:SetMinMaxValues(0, 200)
-	powerbar:Point("CENTER", _G.AltPowerBarHolder)
+	powerbar:SetPoint('CENTER', _G.AltPowerBarHolder)
 	powerbar:Hide()
 
-	powerbar:SetScript("OnEnter", onEnter)
-	powerbar:SetScript("OnLeave", onLeave)
+	powerbar:SetScript('OnEnter', onEnter)
+	powerbar:SetScript('OnLeave', onLeave)
 
-	powerbar.text = powerbar:CreateFontString(nil, "OVERLAY")
-	powerbar.text:Point("CENTER", powerbar, "CENTER")
-	powerbar.text:SetJustifyH("CENTER")
+	powerbar.text = powerbar:CreateFontString(nil, 'OVERLAY')
+	powerbar.text:SetPoint('CENTER', powerbar, 'CENTER')
+	powerbar.text:SetJustifyH('CENTER')
 
 	do -- NZoth textures
-		local texTop = powerbar:CreateTexture(nil, "OVERLAY")
-		local texBotomLeft = powerbar:CreateTexture(nil, "OVERLAY")
-		local texBottomRight = powerbar:CreateTexture(nil, "OVERLAY")
+		local texTop = powerbar:CreateTexture(nil, 'OVERLAY')
+		local texBotomLeft = powerbar:CreateTexture(nil, 'OVERLAY')
+		local texBottomRight = powerbar:CreateTexture(nil, 'OVERLAY')
 
 		powerbar.textures = {
 			TOP = texTop, BOTTOMLEFT = texBotomLeft, BOTTOMRIGHT = texBottomRight,
@@ -186,20 +184,20 @@ function B:SkinAltPowerBar()
 		}
 
 		texTop:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothTop]])
-		texTop:Point("CENTER", powerbar, "TOP", 0, -19)
+		texTop:SetPoint('CENTER', powerbar, 'TOP', 0, -19)
 		texBotomLeft:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothBottomLeft]])
-		texBotomLeft:Point("BOTTOMLEFT", powerbar, "BOTTOMLEFT", -7, -10)
+		texBotomLeft:SetPoint('BOTTOMLEFT', powerbar, 'BOTTOMLEFT', -7, -10)
 		texBottomRight:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NZothBottomRight]])
-		texBottomRight:Point("BOTTOMRIGHT", powerbar, "BOTTOMRIGHT", 7, -10)
+		texBottomRight:SetPoint('BOTTOMRIGHT', powerbar, 'BOTTOMRIGHT', 7, -10)
 	end
 
 	B:UpdateAltPowerBarSettings()
 	B:UpdateAltPowerBarColors()
 
 	--Event handling
-	powerbar:RegisterEvent("UNIT_POWER_UPDATE")
-	powerbar:RegisterEvent("UNIT_POWER_BAR_SHOW")
-	powerbar:RegisterEvent("UNIT_POWER_BAR_HIDE")
-	powerbar:RegisterEvent("PLAYER_ENTERING_WORLD")
-	powerbar:SetScript("OnEvent", B.UpdateAltPowerBar)
+	powerbar:RegisterEvent('UNIT_POWER_UPDATE')
+	powerbar:RegisterEvent('UNIT_POWER_BAR_SHOW')
+	powerbar:RegisterEvent('UNIT_POWER_BAR_HIDE')
+	powerbar:RegisterEvent('PLAYER_ENTERING_WORLD')
+	powerbar:SetScript('OnEvent', B.UpdateAltPowerBar)
 end

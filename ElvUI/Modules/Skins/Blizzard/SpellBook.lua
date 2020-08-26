@@ -13,7 +13,7 @@ function S:SpellBookFrame()
 	local SpellBookFrame = _G.SpellBookFrame
 	S:HandlePortraitFrame(SpellBookFrame, true)
 
-	for _, object in pairs({ "SpellBookSpellIconsFrame", "SpellBookSideTabsFrame", "SpellBookPageNavigationFrame" }) do
+	for _, object in pairs({ 'SpellBookSpellIconsFrame', 'SpellBookSideTabsFrame', 'SpellBookPageNavigationFrame' }) do
 		_G[object]:StripTextures()
 	end
 
@@ -26,10 +26,10 @@ function S:SpellBookFrame()
 		_G.SpellBookPage2:SetAlpha(0)
 		_G.SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
 	else
-		local pagebackdrop = CreateFrame("Frame", nil, SpellBookFrame)
+		local pagebackdrop = CreateFrame('Frame', nil, SpellBookFrame)
 		pagebackdrop:SetTemplate()
-		pagebackdrop:Point("TOPLEFT", _G.SpellBookPage1, "TOPLEFT", -2, 2)
-		pagebackdrop:Point("BOTTOMRIGHT", SpellBookFrame, "BOTTOMRIGHT", -8, 4)
+		pagebackdrop:SetPoint('TOPLEFT', _G.SpellBookPage1, 'TOPLEFT', -2, 2)
+		pagebackdrop:SetPoint('BOTTOMRIGHT', SpellBookFrame, 'BOTTOMRIGHT', -8, 4)
 		SpellBookFrame.pagebackdrop = pagebackdrop
 		for i = 1, 2 do
 			_G['SpellBookPage'..i]:SetParent(pagebackdrop)
@@ -41,16 +41,16 @@ function S:SpellBookFrame()
 	S:HandleNextPrevButton(_G.SpellBookNextPageButton, nil, nil, true)
 
 	_G.SpellBookPageText:ClearAllPoints()
-	_G.SpellBookPageText:Point("RIGHT", _G.SpellBookPrevPageButton, "LEFT", -5, 0)
+	_G.SpellBookPageText:SetPoint('RIGHT', _G.SpellBookPrevPageButton, 'LEFT', -5, 0)
 
 	for i = 1, _G.SPELLS_PER_PAGE do
-		local button = _G["SpellButton"..i]
-		local icon = _G["SpellButton"..i.."IconTexture"]
-		local highlight =_G["SpellButton"..i.."Highlight"]
+		local button = _G['SpellButton'..i]
+		local icon = _G['SpellButton'..i..'IconTexture']
+		local highlight =_G['SpellButton'..i..'Highlight']
 
 		for j = 1, button:GetNumRegions() do
 			local region = select(j, button:GetRegions())
-			if region:IsObjectType("Texture") then
+			if region:IsObjectType('Texture') then
 				if region ~= button.FlyoutArrow and region ~= button.GlyphIcon and region ~= button.GlyphActivate
 					and region ~= button.AbilityHighlight and region ~= button.SpellHighlightTexture then
 					region:SetTexture()
@@ -60,7 +60,7 @@ function S:SpellBookFrame()
 
 		S:HandleIcon(icon)
 		icon:SetInside()
-		E:RegisterCooldown(_G["SpellButton"..i.."Cooldown"])
+		E:RegisterCooldown(_G['SpellButton'..i..'Cooldown'])
 		button:SetTemplate(nil, true)
 
 		if button.SpellHighlightTexture then
@@ -73,22 +73,22 @@ function S:SpellBookFrame()
 
 		if button.shine then
 			button.shine:ClearAllPoints()
-			button.shine:Point('TOPLEFT', button, 'TOPLEFT', -3, 3)
-			button.shine:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
+			button.shine:SetPoint('TOPLEFT', button, 'TOPLEFT', -3, 3)
+			button.shine:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
 		end
 
 		highlight:SetAllPoints(icon)
-		hooksecurefunc(highlight, "SetTexture", function(s, texture)
+		hooksecurefunc(highlight, 'SetTexture', function(s, texture)
 			if texture == [[Interface\Buttons\ButtonHilight-Square]] then
 				s:SetColorTexture(1, 1, 1, 0.3)
 			end
 		end)
 	end
 
-	hooksecurefunc("SpellButton_UpdateButton", function()
+	hooksecurefunc('SpellButton_UpdateButton', function()
 		for i = 1, _G.SPELLS_PER_PAGE do
-			local button = _G["SpellButton"..i]
-			local icon = _G["SpellButton"..i.."IconTexture"]
+			local button = _G['SpellButton'..i]
+			local icon = _G['SpellButton'..i..'IconTexture']
 
 			if button.SpellHighlightTexture then
 				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
@@ -111,18 +111,18 @@ function S:SpellBookFrame()
 		end
 	end)
 
-	_G.SpellBookSkillLineTab1:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
+	_G.SpellBookSkillLineTab1:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
 
 	for i = 1, 8 do
-		local Tab = _G["SpellBookSkillLineTab"..i]
+		local Tab = _G['SpellBookSkillLineTab'..i]
 		Tab:StripTextures()
 		Tab:SetTemplate()
 		Tab:StyleButton(nil, true)
 	end
 
-	hooksecurefunc("SpellBookFrame_UpdateSkillLineTabs", function()
+	hooksecurefunc('SpellBookFrame_UpdateSkillLineTabs', function()
 		for i = 1, 8 do
-			local Tab = _G["SpellBookSkillLineTab"..i]
+			local Tab = _G['SpellBookSkillLineTab'..i]
 			if Tab:GetNormalTexture() then
 				S:HandleIcon(Tab:GetNormalTexture())
 				Tab:GetNormalTexture():SetInside()
@@ -141,17 +141,17 @@ function S:SpellBookFrame()
 		end
 
 		S:HandleStatusBar(Frame.statusBar, {0, .86, 0})
-		Frame.statusBar.rankText:Point("CENTER")
+		Frame.statusBar.rankText:SetPoint('CENTER')
 
 		local a, b, c, _, e = Frame.statusBar:GetPoint()
-		Frame.statusBar:Point(a, b, c, 0, e)
+		Frame.statusBar:SetPoint(a, b, c, 0, e)
 
 		if a == 'BOTTOMLEFT' then
-			Frame.rank:Point("BOTTOMLEFT", Frame.statusBar, "TOPLEFT", 0, 4)
+			Frame.rank:SetPoint('BOTTOMLEFT', Frame.statusBar, 'TOPLEFT', 0, 4)
 		end
 
 		if Frame.icon then
-			Frame.professionName:Point("TOPLEFT", 100, -4)
+			Frame.professionName:SetPoint('TOPLEFT', 100, -4)
 			Frame:StripTextures()
 			S:HandleIcon(Frame.icon, true)
 			Frame.icon:SetAlpha(1)
@@ -168,7 +168,7 @@ function S:SpellBookFrame()
 			end
 
 			Frame['button'..i].highlightTexture:SetInside()
-			hooksecurefunc(Frame['button'..i].highlightTexture, "SetTexture", function(s, texture)
+			hooksecurefunc(Frame['button'..i].highlightTexture, 'SetTexture', function(s, texture)
 				if texture == [[Interface\Buttons\ButtonHilight-Square]] then
 					s:SetColorTexture(1, 1, 1, 0.3)
 				end
@@ -178,14 +178,14 @@ function S:SpellBookFrame()
 
 	--Bottom Tabs
 	for i = 1, 5 do
-		S:HandleTab(_G["SpellBookFrameTabButton"..i])
+		S:HandleTab(_G['SpellBookFrameTabButton'..i])
 	end
 
 	_G.SpellBookFrameTabButton1:ClearAllPoints()
-	_G.SpellBookFrameTabButton1:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
+	_G.SpellBookFrameTabButton1:SetPoint('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
 
 	-- Some Texture Magic
-	hooksecurefunc("FormatProfession", function(frame, id)
+	hooksecurefunc('FormatProfession', function(frame, id)
 		if not (id and frame and frame.icon) then return end
 
 		local texture = select(2, GetProfessionInfo(id))

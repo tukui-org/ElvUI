@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 local _, ns = ...
 local ElvUF = ns.oUF
-assert(ElvUF, "ElvUI was unable to locate oUF.")
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local tinsert = tinsert
@@ -39,10 +39,10 @@ function UF:Construct_TargetFrame(frame)
 	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
 
 	frame.customTexts = {}
-	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 342, 139)
+	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 342, 139)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,generalGroup')
 
-	frame.unitframeType = "target"
+	frame.unitframeType = 'target'
 end
 
 function UF:Update_TargetFrame(frame, db)
@@ -61,7 +61,7 @@ function UF:Update_TargetFrame(frame, db)
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
 		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (frame.BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2)))
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
-		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == "MIDDLE")
+		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == 'MIDDLE')
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
@@ -78,14 +78,14 @@ function UF:Update_TargetFrame(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
+	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:SetSize(frame:GetSize())
 
-	if not IsAddOnLoaded("Clique") then
+	if not IsAddOnLoaded('Clique') then
 		if db.middleClickFocus then
-			frame:SetAttribute("type3", "focus")
-		elseif frame:GetAttribute("type3") == "focus" then
-			frame:SetAttribute("type3", nil)
+			frame:SetAttribute('type3', 'focus')
+		elseif frame:GetAttribute('type3') == 'focus' then
+			frame:SetAttribute('type3', nil)
 		end
 	end
 
@@ -113,7 +113,7 @@ function UF:Update_TargetFrame(frame, db)
 	UF:Configure_CombatIndicator(frame)
 
 	E:SetMoverSnapOffset(frame:GetName()..'Mover', -(12 + db.castbar.height))
-	frame:UpdateAllElements("ElvUI_UpdateAllElements")
+	frame:UpdateAllElements('ElvUI_UpdateAllElements')
 end
 
 tinsert(UF.unitstoload, 'target')

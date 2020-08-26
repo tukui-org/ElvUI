@@ -9,11 +9,11 @@ local function Update(self)
 	end
 
 	local classification = self.classification
-	if classification == "elite" or classification == "worldboss" then
-		element:SetAtlas("nameplates-icon-elite-gold")
+	if classification == 'elite' or classification == 'worldboss' then
+		element:SetAtlas('nameplates-icon-elite-gold')
 		element:Show()
-	elseif classification == "rareelite" or classification == 'rare' then
-		element:SetAtlas("nameplates-icon-elite-silver")
+	elseif classification == 'rareelite' or classification == 'rare' then
+		element:SetAtlas('nameplates-icon-elite-silver')
 		element:Show()
 	else
 		element:Hide()
@@ -42,7 +42,7 @@ local function Enable(self)
 			element:SetTexture([[Interface\TARGETINGFRAME\Nameplates]])
 		end
 
-		self:RegisterEvent("UNIT_CLASSIFICATION_CHANGED", Path)
+		self:RegisterEvent('UNIT_CLASSIFICATION_CHANGED', Path)
 
 		return true
 	end
@@ -53,7 +53,7 @@ local function Disable(self)
 	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent("UNIT_CLASSIFICATION_CHANGED", Path)
+		self:UnregisterEvent('UNIT_CLASSIFICATION_CHANGED', Path)
 	end
 end
 

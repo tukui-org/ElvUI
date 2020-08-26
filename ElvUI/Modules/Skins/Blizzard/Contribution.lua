@@ -17,7 +17,7 @@ function S:Blizzard_Contribution()
 		--Reward Tooltip
 		local ContributionBuffTooltip = _G.ContributionBuffTooltip
 		ContributionBuffTooltip:StripTextures()
-		ContributionBuffTooltip:SetTemplate("Transparent")
+		ContributionBuffTooltip:SetTemplate('Transparent')
 		ContributionBuffTooltip:CreateBackdrop()
 		ContributionBuffTooltip:StyleButton()
 		ContributionBuffTooltip.Border:SetAlpha(0)
@@ -26,7 +26,7 @@ function S:Blizzard_Contribution()
 	end
 
 	local ContributionMixin = _G.ContributionMixin
-	hooksecurefunc(ContributionMixin, "SetupContributeButton", function(s)
+	hooksecurefunc(ContributionMixin, 'SetupContributeButton', function(s)
 		-- Skin the Contribute Buttons
 		if (not s.isSkinned) then
 			S:HandleButton(s.ContributeButton)
@@ -44,14 +44,14 @@ function S:Blizzard_Contribution()
 	end)
 
 	--Skin the reward icons
-	hooksecurefunc(ContributionMixin, "AddReward", function(s, _, rewardID)
+	hooksecurefunc(ContributionMixin, 'AddReward', function(s, _, rewardID)
 		local reward = s:FindOrAcquireReward(rewardID);
 		if (reward and not reward.isSkinned) then
 			reward:SetFrameLevel(5)
 			reward:CreateBackdrop()
 			reward:StyleButton()
 			reward.Border:SetAlpha(0)
-			reward.Icon:SetDrawLayer("OVERLAY")
+			reward.Icon:SetDrawLayer('OVERLAY')
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
 			reward.backdrop:SetOutside(reward.Icon)
 			reward.isSkinned = true

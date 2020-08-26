@@ -3,9 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, select, unpack = pairs, select, unpack
-
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
+
 local UnitSex = UnitSex
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecialization = GetSpecialization
@@ -49,7 +49,7 @@ function S:Blizzard_TalentUI()
 		Frame:StripTextures()
 
 		for _, Child in pairs({Frame:GetChildren()}) do
-			if Child:IsObjectType("Frame") and not Child:GetName() then
+			if Child:IsObjectType('Frame') and not Child:GetName() then
 				Child:StripTextures()
 			end
 		end
@@ -58,13 +58,13 @@ function S:Blizzard_TalentUI()
 			local Button = Frame['specButton'..i]
 			local _, _, _, icon = GetSpecializationInfo(i, false, Frame.isPet)
 
-			_G["PlayerTalentFrameSpecializationSpecButton"..i.."Glow"]:Kill()
+			_G['PlayerTalentFrameSpecializationSpecButton'..i..'Glow']:Kill()
 
 			Button:CreateBackdrop()
-			Button.backdrop:Point("TOPLEFT", 8, 2)
-			Button.backdrop:Point("BOTTOMRIGHT", 10, -2)
-			Button.specIcon:Size(50, 50)
-			Button.specIcon:Point("LEFT", Button, "LEFT", 15, 0)
+			Button.backdrop:SetPoint('TOPLEFT', 8, 2)
+			Button.backdrop:SetPoint('BOTTOMRIGHT', 10, -2)
+			Button.specIcon:SetSize(50, 50)
+			Button.specIcon:SetPoint('LEFT', Button, 'LEFT', 15, 0)
 			Button.specIcon:SetDrawLayer('ARTWORK', 2)
 			Button.roleIcon:SetDrawLayer('ARTWORK', 2)
 
@@ -132,17 +132,17 @@ function S:Blizzard_TalentUI()
 			local row = _G.PlayerTalentFrameTalents['tier'..i]
 			row:StripTextures()
 
-			row.TopLine:Point("TOP", 0, 4)
-			row.BottomLine:Point("BOTTOM", 0, -4)
+			row.TopLine:SetPoint('TOP', 0, 4)
+			row.BottomLine:SetPoint('BOTTOM', 0, -4)
 
 			row.transition = _G.CreateAnimationGroup(row)
 			row.transition:SetLooping(true)
 
-			row.transition.color = row.transition:CreateAnimation("Color")
+			row.transition.color = row.transition:CreateAnimation('Color')
 			row.transition.color:SetDuration(0.7)
-			row.transition.color:SetColorType("border")
+			row.transition.color:SetColorType('border')
 			row.transition.color:SetChange(unpack(E.media.rgbvaluecolor))
-			row.transition.color:SetScript("OnFinished", onFinished)
+			row.transition.color:SetScript('OnFinished', onFinished)
 
 			row.GlowFrame:StripTextures()
 			row.GlowFrame:HookScript('OnShow', onShow)
@@ -154,21 +154,21 @@ function S:Blizzard_TalentUI()
 				bu:StripTextures()
 				bu:SetFrameLevel(bu:GetFrameLevel() + 5)
 				bu.knownSelection:SetAlpha(0)
-				bu.icon:SetDrawLayer("OVERLAY", 1)
+				bu.icon:SetDrawLayer('OVERLAY', 1)
 				S:HandleIcon(bu.icon, true)
 
-				bu.bg = CreateFrame("Frame", nil, bu)
-				bu.bg:CreateBackdrop("Overlay")
+				bu.bg = CreateFrame('Frame', nil, bu)
+				bu.bg:CreateBackdrop('Overlay')
 				bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
-				bu.bg:Point("TOPLEFT", 15, -1)
-				bu.bg:Point("BOTTOMRIGHT", -10, 1)
+				bu.bg:SetPoint('TOPLEFT', 15, -1)
+				bu.bg:SetPoint('BOTTOMRIGHT', -10, 1)
 				row.transition.color:AddChild(bu.bg.backdrop)
 
 				bu.GlowFrame:Kill()
 
 				bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
-				bu.bg.SelectedTexture:Point("TOPLEFT", bu, "TOPLEFT", 15, -1)
-				bu.bg.SelectedTexture:Point("BOTTOMRIGHT", bu, "BOTTOMRIGHT", -10, 1)
+				bu.bg.SelectedTexture:SetPoint('TOPLEFT', bu, 'TOPLEFT', 15, -1)
+				bu.bg.SelectedTexture:SetPoint('BOTTOMRIGHT', bu, 'BOTTOMRIGHT', -10, 1)
 				bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 
 				bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, 2)
@@ -177,7 +177,7 @@ function S:Blizzard_TalentUI()
 		end
 	end
 
-	hooksecurefunc("TalentFrame_Update", function(s)
+	hooksecurefunc('TalentFrame_Update', function(s)
 		for i = 1, _G.MAX_TALENT_TIERS do
 			for j = 1, _G.NUM_TALENT_COLUMNS do
 				local bu = s['tier'..i]['talent'..j]
@@ -196,11 +196,11 @@ function S:Blizzard_TalentUI()
 		end
 	end)
 
-	hooksecurefunc("PlayerTalentFrame_UpdateSpecFrame", function(s, spec)
+	hooksecurefunc('PlayerTalentFrame_UpdateSpecFrame', function(s, spec)
 		local playerTalentSpec = GetSpecialization(nil, s.isPet, _G.PlayerSpecTab2:GetChecked() and 2 or 1)
 		local shownSpec = spec or playerTalentSpec or 1
 		local numSpecs = GetNumSpecializations(nil, s.isPet)
-		local sex = s.isPet and UnitSex("pet") or UnitSex("player")
+		local sex = s.isPet and UnitSex('pet') or UnitSex('player')
 		local id, _, _, icon = GetSpecializationInfo(shownSpec, nil, s.isPet, nil, sex)
 		if not id then return end
 
@@ -224,7 +224,7 @@ function S:Blizzard_TalentUI()
 		end
 
 		for i = 1, numSpecs do
-			local bu = s["specButton"..i]
+			local bu = s['specButton'..i]
 			bu.SelectedTexture:SetInside(bu.backdrop)
 			if bu.selected then
 				bu.SelectedTexture:Show()
@@ -235,7 +235,7 @@ function S:Blizzard_TalentUI()
 
 		if bonuses then
 			for i = 1, #bonuses, bonusesIncrement do
-				local frame = scrollChild["abilityButton"..index]
+				local frame = scrollChild['abilityButton'..index]
 				if frame then
 					local _, spellTex = GetSpellTexture(bonuses[i])
 					if spellTex then
@@ -246,7 +246,7 @@ function S:Blizzard_TalentUI()
 						frame.reskinned = true
 						frame.ring:Hide()
 						frame.icon:SetTexCoord(unpack(E.TexCoords))
-						frame.icon:Size(40, 40)
+						frame.icon:SetSize(40, 40)
 						frame:CreateBackdrop()
 						frame.backdrop:SetOutside(frame.icon)
 					end
@@ -270,7 +270,7 @@ function S:Blizzard_TalentUI()
 		button.Arrow:SetAlpha(0)
 		button.Border:Hide()
 
-		hooksecurefunc(button, "Update", function(s)
+		hooksecurefunc(button, 'Update', function(s)
 			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(s.slotIndex);
 			if not slotInfo then return end
 
@@ -293,37 +293,37 @@ function S:Blizzard_TalentUI()
 	end
 
 	PvpTalentFrame.TalentList:StripTextures()
-	PvpTalentFrame.TalentList:CreateBackdrop("Transparent")
+	PvpTalentFrame.TalentList:CreateBackdrop('Transparent')
 
-	PvpTalentFrame.TalentList:Point("BOTTOMLEFT", PlayerTalentFrame, "BOTTOMRIGHT", 5, 26)
+	PvpTalentFrame.TalentList:SetPoint('BOTTOMLEFT', PlayerTalentFrame, 'BOTTOMRIGHT', 5, 26)
 	S:SkinTalentListButtons(PvpTalentFrame.TalentList)
 
 	local TalentList_CloseButton = select(4, _G.PlayerTalentFrameTalents.PvpTalentFrame.TalentList:GetChildren())
-	if TalentList_CloseButton and TalentList_CloseButton:HasScript("OnClick") then
+	if TalentList_CloseButton and TalentList_CloseButton:HasScript('OnClick') then
 		S:HandleButton(TalentList_CloseButton, true)
 	end
 
-	PvpTalentFrame.TalentList.ScrollFrame:Point("TOPLEFT", 5, -5)
-	PvpTalentFrame.TalentList.ScrollFrame:Point("BOTTOMRIGHT", -21, 32)
+	PvpTalentFrame.TalentList.ScrollFrame:SetPoint('TOPLEFT', 5, -5)
+	PvpTalentFrame.TalentList.ScrollFrame:SetPoint('BOTTOMRIGHT', -21, 32)
 	PvpTalentFrame.OrbModelScene:SetAlpha(0)
 
-	PvpTalentFrame:Size(131, 379)
-	PvpTalentFrame:Point("LEFT", _G.PlayerTalentFrameTalents, "RIGHT", -135, 0)
-	PvpTalentFrame.Swords:Point("BOTTOM", 0, 30)
-	PvpTalentFrame.Label:Point("BOTTOM", 0, 104)
+	PvpTalentFrame:SetSize(131, 379)
+	PvpTalentFrame:SetPoint('LEFT', _G.PlayerTalentFrameTalents, 'RIGHT', -135, 0)
+	PvpTalentFrame.Swords:SetPoint('BOTTOM', 0, 30)
+	PvpTalentFrame.Label:SetPoint('BOTTOM', 0, 104)
 	PvpTalentFrame.InvisibleWarmodeButton:SetAllPoints(PvpTalentFrame.Swords)
 
-	PvpTalentFrame.Swords:Size(72, 67)
+	PvpTalentFrame.Swords:SetSize(72, 67)
 	PvpTalentFrame.Orb:Hide()
 	PvpTalentFrame.Ring:Hide()
 
-	PvpTalentFrame.TrinketSlot:Point("TOP", 0, -16)
-	PvpTalentFrame.TalentSlot1:Point("TOP", PvpTalentFrame.TrinketSlot, "BOTTOM", 0, -16)
-	PvpTalentFrame.TalentSlot2:Point("TOP", PvpTalentFrame.TalentSlot1, "BOTTOM", 0, -10)
-	PvpTalentFrame.TalentSlot3:Point("TOP", PvpTalentFrame.TalentSlot2, "BOTTOM", 0, -10)
+	PvpTalentFrame.TrinketSlot:SetPoint('TOP', 0, -16)
+	PvpTalentFrame.TalentSlot1:SetPoint('TOP', PvpTalentFrame.TrinketSlot, 'BOTTOM', 0, -16)
+	PvpTalentFrame.TalentSlot2:SetPoint('TOP', PvpTalentFrame.TalentSlot1, 'BOTTOM', 0, -10)
+	PvpTalentFrame.TalentSlot3:SetPoint('TOP', PvpTalentFrame.TalentSlot2, 'BOTTOM', 0, -10)
 
 	for _, Button in pairs(PvpTalentFrame.TalentList.ScrollFrame.buttons) do
-		Button:DisableDrawLayer("BACKGROUND")
+		Button:DisableDrawLayer('BACKGROUND')
 		S:HandleIcon(Button.Icon)
 		Button:StyleButton()
 		Button:CreateBackdrop()
@@ -336,7 +336,7 @@ function S:Blizzard_TalentUI()
 		Button.selectedTexture:SetShown(Button.Selected:IsShown())
 	end
 
-	hooksecurefunc(PvpTalentFrame.TalentList, "Update", function()
+	hooksecurefunc(PvpTalentFrame.TalentList, 'Update', function()
 		for _, Button in pairs(PvpTalentFrame.TalentList.ScrollFrame.buttons) do
 			if not Button.selectedTexture then return end
 			if Button.Selected:IsShown() then

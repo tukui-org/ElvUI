@@ -13,12 +13,12 @@ function S:BattleNetFrames()
 	}
 
 	for i = 1, #skins do
-		skins[i]:SetTemplate("Transparent")
+		skins[i]:SetTemplate('Transparent')
 	end
 
 	local ReportFrame = _G.PlayerReportFrame
 	ReportFrame:StripTextures()
-	ReportFrame:CreateBackdrop("Transparent")
+	ReportFrame:CreateBackdrop('Transparent')
 	ReportFrame.Comment:StripTextures()
 	S:HandleEditBox(ReportFrame.Comment)
 	S:HandleButton(ReportFrame.ReportButton)
@@ -29,12 +29,12 @@ function S:BattleNetFrames()
 	_G.ReportCheatingDialogCommentFrame:StripTextures()
 	S:HandleButton(_G.ReportCheatingDialogReportButton)
 	S:HandleButton(_G.ReportCheatingDialogCancelButton)
-	ReportCheatingDialog:CreateBackdrop("Transparent")
+	ReportCheatingDialog:CreateBackdrop('Transparent')
 	S:HandleEditBox(_G.ReportCheatingDialogCommentFrameEditBox)
 
 	local BattleTagInviteFrame = _G.BattleTagInviteFrame
 	BattleTagInviteFrame:StripTextures()
-	BattleTagInviteFrame:CreateBackdrop("Transparent")
+	BattleTagInviteFrame:CreateBackdrop('Transparent')
 
 	for i=1, BattleTagInviteFrame:GetNumChildren() do
 		local child = select(i, BattleTagInviteFrame:GetChildren())

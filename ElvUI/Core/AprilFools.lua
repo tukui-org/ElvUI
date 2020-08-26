@@ -266,11 +266,11 @@ do
 			return
 		end
 		local helloKittyLeft = CreateFrame('Frame', 'HelloKittyLeft', _G.UIParent)
-		helloKittyLeft:Size(120, 128)
+		helloKittyLeft:SetSize(120, 128)
 		helloKittyLeft:SetMovable(true)
 		helloKittyLeft:EnableMouse(true)
 		helloKittyLeft:RegisterForDrag('LeftButton')
-		helloKittyLeft:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMRIGHT', 2, -4)
+		helloKittyLeft:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMRIGHT', 2, -4)
 		helloKittyLeft.tex = helloKittyLeft:CreateTexture(nil, 'OVERLAY')
 		helloKittyLeft.tex:SetAllPoints()
 		helloKittyLeft.tex:SetTexture(E.Media.Textures.HelloKitty)
@@ -283,11 +283,11 @@ do
 		helloKittyLeft:SetScript('OnUpdate', OnUpdate)
 
 		local helloKittyRight = CreateFrame('Frame', 'HelloKittyRight', _G.UIParent)
-		helloKittyRight:Size(120, 128)
+		helloKittyRight:SetSize(120, 128)
 		helloKittyRight:SetMovable(true)
 		helloKittyRight:EnableMouse(true)
 		helloKittyRight:RegisterForDrag('LeftButton')
-		helloKittyRight:Point('BOTTOMRIGHT', _G.RightChatPanel, 'BOTTOMLEFT', -2, -4)
+		helloKittyRight:SetPoint('BOTTOMRIGHT', _G.RightChatPanel, 'BOTTOMLEFT', -2, -4)
 		helloKittyRight.tex = helloKittyRight:CreateTexture(nil, 'OVERLAY')
 		helloKittyRight.tex:SetAllPoints()
 		helloKittyRight.tex:SetTexture(E.Media.Textures.HelloKitty)

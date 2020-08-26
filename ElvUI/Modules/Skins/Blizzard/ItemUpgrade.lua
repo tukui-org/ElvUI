@@ -16,8 +16,8 @@ function S:Blizzard_ItemUpgradeUI()
 	local ItemButton = ItemUpgradeFrame.ItemButton
 	ItemButton:CreateBackdrop()
 	ItemButton.backdrop:SetAllPoints()
-	ItemButton.Frame:SetTexture("")
-	ItemButton:SetPushedTexture("")
+	ItemButton.Frame:SetTexture('')
+	ItemButton:SetPushedTexture('')
 	S:HandleItemButton(ItemButton)
 
 	local Highlight = ItemButton:GetHighlightTexture()
@@ -30,7 +30,7 @@ function S:Blizzard_ItemUpgradeUI()
 			local color = BAG_ITEM_QUALITY_COLORS[quality or 1]
 			ItemButton.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		else
-			ItemButton.IconTexture:SetTexture("")
+			ItemButton.IconTexture:SetTexture('')
 			ItemButton.backdrop:SetBackdropBorderColor(0, 0, 0)
 		end
 	end)
@@ -38,8 +38,8 @@ function S:Blizzard_ItemUpgradeUI()
 	local TextFrame = ItemUpgradeFrame.TextFrame
 	TextFrame:StripTextures()
 	TextFrame:CreateBackdrop('Transparent')
-	TextFrame.backdrop:Point("TOPLEFT", ItemButton.IconTexture, "TOPRIGHT", 3, E.mult)
-	TextFrame.backdrop:Point("BOTTOMRIGHT", -6, 2)
+	TextFrame.backdrop:SetPoint('TOPLEFT', ItemButton.IconTexture, 'TOPRIGHT', 3, 1)
+	TextFrame.backdrop:SetPoint('BOTTOMRIGHT', -6, 2)
 
 	_G.ItemUpgradeFrameMoneyFrame:StripTextures()
 	S:HandleIcon(_G.ItemUpgradeFrameMoneyFrame.Currency.icon)

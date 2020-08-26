@@ -5,7 +5,6 @@ local _G = _G
 local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
-
 local CreateFrame = CreateFrame
 local GetBagSlotFlag = GetBagSlotFlag
 local RegisterStateDriver = RegisterStateDriver
@@ -24,7 +23,7 @@ local function OnLeave()
 end
 
 function B:SkinBag(bag)
-	local icon = _G[bag:GetName().."IconTexture"]
+	local icon = _G[bag:GetName()..'IconTexture']
 	bag.oldTex = icon:GetTexture()
 	bag.IconBorder:SetAlpha(0)
 
@@ -39,9 +38,9 @@ end
 function B:SizeAndPositionBagBar()
 	if not B.BagBar then return; end
 
-	local buttonSpacing = E:Scale(E.db.bags.bagBar.spacing)
-	local backdropSpacing = E:Scale(E.db.bags.bagBar.backdropSpacing)
-	local bagBarSize = E:Scale(E.db.bags.bagBar.size)
+	local buttonSpacing = E.db.bags.bagBar.spacing
+	local backdropSpacing = E.db.bags.bagBar.backdropSpacing
+	local bagBarSize = E.db.bags.bagBar.size
 	local showBackdrop = E.db.bags.bagBar.showBackdrop
 	local growthDirection = E.db.bags.bagBar.growthDirection
 	local sortDirection = E.db.bags.bagBar.sortDirection
@@ -51,7 +50,7 @@ function B:SizeAndPositionBagBar()
 		visibility = visibility:gsub('[\n\r]','')
 	end
 
-	RegisterStateDriver(B.BagBar, "visibility", visibility)
+	RegisterStateDriver(B.BagBar, 'visibility', visibility)
 	B.BagBar:SetAlpha(E.db.bags.bagBar.mouseover and 0 or 1)
 	B.BagBar.backdrop:SetShown(showBackdrop)
 
@@ -120,20 +119,20 @@ end
 function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
-	B.BagBar = CreateFrame("Frame", "ElvUIBags", E.UIParent)
-	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
+	B.BagBar = CreateFrame('Frame', 'ElvUIBags', E.UIParent)
+	B.BagBar:SetPoint('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	B.BagBar.buttons = {}
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent')
 	B.BagBar.backdrop:SetAllPoints()
 	B.BagBar:EnableMouse(true)
-	B.BagBar:SetScript("OnEnter", OnEnter)
-	B.BagBar:SetScript("OnLeave", OnLeave)
+	B.BagBar:SetScript('OnEnter', OnEnter)
+	B.BagBar:SetScript('OnLeave', OnLeave)
 
 	_G.MainMenuBarBackpackButton:SetParent(B.BagBar)
 	_G.MainMenuBarBackpackButton:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:Point("BOTTOMRIGHT", _G.MainMenuBarBackpackButton, "BOTTOMRIGHT", -1, 4)
+	_G.MainMenuBarBackpackButtonCount:SetPoint('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
 	_G.MainMenuBarBackpackButton:HookScript('OnEnter', OnEnter)
 	_G.MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
 
@@ -141,7 +140,7 @@ function B:LoadBagBar()
 	B:SkinBag(_G.MainMenuBarBackpackButton)
 
 	for i = 0, NUM_BAG_FRAMES-1 do
-		local b = _G["CharacterBag"..i.."Slot"]
+		local b = _G['CharacterBag'..i..'Slot']
 		b:SetParent(B.BagBar)
 		b:HookScript('OnEnter', OnEnter)
 		b:HookScript('OnLeave', OnLeave)
@@ -155,10 +154,10 @@ function B:LoadBagBar()
 		B:CreateFilterIcon(bagButton)
 		bagButton.id = (i - 1)
 
-		bagButton:SetScript("OnClick", function(holder, button)
-			if button == "RightButton" then
+		bagButton:SetScript('OnClick', function(holder, button)
+			if button == 'RightButton' then
 				B.AssignBagDropdown.holder = holder
-				_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, "cursor")
+				_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 			else
 				if holder.id == 0 then
 					_G.MainMenuBarBackpackButton_OnClick(holder)

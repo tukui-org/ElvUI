@@ -2,10 +2,10 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 function UF:Construct_RaidIcon(frame)
-	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, "OVERLAY")
+	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
 	tex:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
-	tex:Size(18)
-	tex:Point("CENTER", frame.Health, "TOP", 0, 2)
+	tex:SetSize(18, 18)
+	tex:SetPoint('CENTER', frame.Health, 'TOP', 0, 2)
 	tex.SetTexture = E.noop
 
 	return tex
@@ -18,11 +18,11 @@ function UF:Configure_RaidIcon(frame)
 	if db.raidicon.enable then
 		frame:EnableElement('RaidTargetIndicator')
 		RI:Show()
-		RI:Size(db.raidicon.size)
+		RI:SetSize(db.raidicon.size, db.raidicon.size)
 
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.raidicon.attachToObject)
 		RI:ClearAllPoints()
-		RI:Point(db.raidicon.attachTo, attachPoint, db.raidicon.attachTo, db.raidicon.xOffset, db.raidicon.yOffset)
+		RI:SetPoint(db.raidicon.attachTo, attachPoint, db.raidicon.attachTo, db.raidicon.xOffset, db.raidicon.yOffset)
 	else
 		frame:DisableElement('RaidTargetIndicator')
 		RI:Hide()

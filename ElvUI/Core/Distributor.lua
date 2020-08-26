@@ -35,10 +35,10 @@ function D:Initialize()
 	self.statusBar:CreateBackdrop()
 	self.statusBar:SetStatusBarTexture(E.media.normTex)
 	self.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)
-	self.statusBar:Size(250, 18)
+	self.statusBar:SetSize(250, 18)
 	self.statusBar.text = self.statusBar:CreateFontString(nil, 'OVERLAY')
 	self.statusBar.text:FontTemplate()
-	self.statusBar.text:Point('CENTER')
+	self.statusBar.text:SetPoint('CENTER')
 	self.statusBar:Hide()
 end
 

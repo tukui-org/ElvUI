@@ -569,6 +569,7 @@ L["Hide Below Max Level"] = "滿等前隱藏"
 L["Hide Both"] = "全部隱藏"
 L["Hide Castbar text. Useful if your power height is very low or if you use power offset."] = "隱藏施法條文字"
 L["Hide Cooldown Bling"] = "隱藏冷卻閃光"
+L["Hide Copy Button"] = true
 L["Hide Delay"] = "隱藏延遲"
 L["Hide Error Text"] = "隱藏錯誤文字"
 L["Hide Frame"] = "隱藏框架"

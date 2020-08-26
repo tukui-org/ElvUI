@@ -17,7 +17,7 @@ end
 
 function DB:CreateBar(name, onEnter, onClick, ...)
 	local bar = CreateFrame('Button', name, E.UIParent)
-	bar:Point(...)
+	bar:SetPoint(...)
 	bar:SetScript('OnEnter', onEnter)
 	bar:SetScript('OnLeave', DB.OnLeave)
 	bar:SetScript('OnMouseDown', onClick)
@@ -31,7 +31,7 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 	E:RegisterStatusBar(bar.statusBar)
 	bar.text = bar.statusBar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
-	bar.text:Point('CENTER')
+	bar.text:SetPoint('CENTER')
 
 	E.FrameLocks[name] = true
 
@@ -49,13 +49,13 @@ end
 function DB:PLAYER_LEVEL_UP(level)
 	local maxLevel = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]
 	if (level ~= maxLevel or not self.db.experience.hideAtMaxLevel) and DB.db.experience.enable then
-		DB:UpdateExperience("PLAYER_LEVEL_UP", level)
+		DB:UpdateExperience('PLAYER_LEVEL_UP', level)
 	else
 		self.expBar:Hide()
 	end
 
 	if(self.db.honor.enable) then
-		DB:UpdateHonor("PLAYER_LEVEL_UP", level)
+		DB:UpdateHonor('PLAYER_LEVEL_UP', level)
 	else
 		self.honorBar:Hide()
 	end
@@ -71,7 +71,7 @@ function DB:Initialize()
 	--DB:LoadArtifactBar()
 	DB:LoadAzeriteBar()
 
-	DB:RegisterEvent("PLAYER_LEVEL_UP")
+	DB:RegisterEvent('PLAYER_LEVEL_UP')
 end
 
 E:RegisterModule(DB:GetName())

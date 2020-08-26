@@ -19,18 +19,18 @@ function E:RandomAnimShake(index)
 end
 
 --TEST
---[[local t = UIParent:CreateFontString("FontString","OVERLAY","GameTooltipText")
+--[[local t = UIParent:CreateFontString(nil, 'OVERLAY', 'GameTooltipText')
 t:SetText(0)
-t:SetPoint("CENTER")
+t:SetPoint('CENTER')
 t:FontTemplate(nil, 20)
-E:SetUpAnimGroup(t, "Number", 10, 5)
+E:SetUpAnimGroup(t, 'Number', 10, 5)
 
-local b = CreateFrame("BUTTON", nil, UIParent)
-b:SetPoint("CENTER", 0, -100)
+local b = CreateFrame('BUTTON', nil, UIParent)
+b:SetPoint('CENTER', 0, -100)
 b:SetTemplate()
 b:SetSize(40,30)
 b:EnableMouse(true)
-b:SetScript("OnClick", function()
+b:SetScript('OnClick', function()
 	if t:GetText() == 10 then
 		t.NumberAnim:SetChange(0)
 		t.NumberAnimGroup:Play()
@@ -81,7 +81,7 @@ function E:SetUpAnimGroup(obj, Type, ...)
 				shake.path[i]:SetOffset(E.AnimShakeH[i], 0)
 			end
 		end
-	elseif Type == "Elastic" then
+	elseif Type == 'Elastic' then
 		local width, height, duration, loop = ...
 		obj.elastic = _G.CreateAnimationGroup(obj)
 
@@ -97,7 +97,7 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		obj.elastic[3]:SetScript('OnFinished', function(anim) anim:Stop() obj.elastic[4]:Play() end)
 		obj.elastic[2]:SetScript('OnFinished', function(anim) anim:Stop() if loop then obj.elastic[1]:Play() end end)
 		obj.elastic[4]:SetScript('OnFinished', function(anim) anim:Stop() if loop then obj.elastic[3]:Play() end end)
-	elseif Type == "Number" then
+	elseif Type == 'Number' then
 		local endingNumber, duration = ...
 		obj.NumberAnimGroup = _G.CreateAnimationGroup(obj)
 		obj.NumberAnim = obj.NumberAnimGroup:CreateAnimation('number')
@@ -114,13 +114,13 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		anim.in1 = anim:CreateAnimation('Translation')
 		anim.in1:SetDuration(0)
 		anim.in1:SetOrder(1)
-		anim.in1:SetOffset(E:Scale(x), E:Scale(y))
+		anim.in1:SetOffset(x, y)
 
 		anim.in2 = anim:CreateAnimation('Translation')
 		anim.in2:SetDuration(duration)
 		anim.in2:SetOrder(2)
 		anim.in2:SetSmoothing('OUT')
-		anim.in2:SetOffset(E:Scale(-x), E:Scale(-y))
+		anim.in2:SetOffset(-x, -y)
 
 		anim.out1 = obj:CreateAnimationGroup('Move_Out')
 		anim.out1:SetScript('OnFinished', function() obj:Hide() end)
@@ -129,7 +129,7 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		anim.out2:SetDuration(duration)
 		anim.out2:SetOrder(1)
 		anim.out2:SetSmoothing('IN')
-		anim.out2:SetOffset(E:Scale(x), E:Scale(y))
+		anim.out2:SetOffset(x, y)
 	end
 end
 

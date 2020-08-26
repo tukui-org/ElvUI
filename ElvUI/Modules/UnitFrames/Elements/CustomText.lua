@@ -7,9 +7,11 @@ function UF:Configure_CustomTexts(frame)
 	local frameDB = frame.db
 
 	--Make sure CustomTexts are hidden if they don't exist in current profile
-	for name, object in pairs(frame.customTexts) do
-		if not frameDB.customTexts or not frameDB.customTexts[name] then
-			object:Hide()
+	if frame.customTexts then
+		for name, object in pairs(frame.customTexts) do
+			if not frameDB.customTexts or not frameDB.customTexts[name] then
+				object:Hide()
+			end
 		end
 	end
 
@@ -30,7 +32,7 @@ function UF:Configure_CustomTexts(frame)
 			object:FontTemplate(tagFont or font, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
 			object:SetJustifyH(db.justifyH or 'CENTER')
 			object:ClearAllPoints()
-			object:Point(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
+			object:SetPoint(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
 
 			if db.attachTextTo == 'Power' and frame.Power then
 				object:SetParent(frame.Power.RaisedElementParent)

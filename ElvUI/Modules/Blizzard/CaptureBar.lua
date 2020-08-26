@@ -8,15 +8,15 @@ local function CaptureUpdate()
 	if _G.NUM_EXTENDED_UI_FRAMES then
 		local captureBar
 		for i=1, _G.NUM_EXTENDED_UI_FRAMES do
-			captureBar = _G["WorldStateCaptureBar" .. i]
+			captureBar = _G['WorldStateCaptureBar' .. i]
 
 			if captureBar and captureBar:IsVisible() then
 				captureBar:ClearAllPoints()
 
 				if( i == 1 ) then
-					captureBar:Point("TOP", E.UIParent, "TOP", 0, -170)
+					captureBar:SetPoint('TOP', E.UIParent, 'TOP', 0, -170)
 				else
-					captureBar:Point("TOPLEFT", _G["WorldStateCaptureBar" .. i - 1], "TOPLEFT", 0, -45)
+					captureBar:SetPoint('TOPLEFT', _G['WorldStateCaptureBar' .. i - 1], 'TOPLEFT', 0, -45)
 				end
 			end
 		end
@@ -24,5 +24,5 @@ local function CaptureUpdate()
 end
 
 function B:PositionCaptureBar()
-	hooksecurefunc("UIParent_ManageFramePositions", CaptureUpdate)
+	hooksecurefunc('UIParent_ManageFramePositions', CaptureUpdate)
 end

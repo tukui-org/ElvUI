@@ -36,31 +36,31 @@ function S:TabardFrame()
 	end
 
 	for i=1, 5 do
-		local custom = "TabardFrameCustomization"..i
+		local custom = 'TabardFrameCustomization'..i
 		_G[custom]:StripTextures()
-		S:HandleNextPrevButton(_G[custom.."LeftButton"])
-		S:HandleNextPrevButton(_G[custom.."RightButton"])
+		S:HandleNextPrevButton(_G[custom..'LeftButton'])
+		S:HandleNextPrevButton(_G[custom..'RightButton'])
 
 		if i > 1 then
 			_G[custom]:ClearAllPoints()
-			_G[custom]:Point("TOP", _G["TabardFrameCustomization"..i-1], "BOTTOM", 0, -6)
+			_G[custom]:SetPoint('TOP', _G['TabardFrameCustomization'..i-1], 'BOTTOM', 0, -6)
 		else
 			local point, anchor, point2, x, y = _G[custom]:GetPoint()
-			_G[custom]:Point(point, anchor, point2, x, y+4)
+			_G[custom]:SetPoint(point, anchor, point2, x, y+4)
 		end
 	end
 
-	_G.TabardCharacterModelRotateLeftButton:Point("BOTTOMLEFT", 4, 4)
-	_G.TabardCharacterModelRotateRightButton:Point("TOPLEFT", _G.TabardCharacterModelRotateLeftButton, "TOPRIGHT", 4, 0)
-	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, "SetPoint", function(s, point, _, _, xOffset, yOffset)
-		if point ~= "BOTTOMLEFT" or xOffset ~= 4 or yOffset ~= 4 then
-			s:SetPoint("BOTTOMLEFT", 4, 4)
+	_G.TabardCharacterModelRotateLeftButton:SetPoint('BOTTOMLEFT', 4, 4)
+	_G.TabardCharacterModelRotateRightButton:SetPoint('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
+	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, 'SetPoint', function(s, point, _, _, xOffset, yOffset)
+		if point ~= 'BOTTOMLEFT' or xOffset ~= 4 or yOffset ~= 4 then
+			s:SetPoint('BOTTOMLEFT', 4, 4)
 		end
 	end)
 
-	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, "SetPoint", function(s, point, _, _, xOffset, yOffset)
-		if point ~= "TOPLEFT" or xOffset ~= 4 or yOffset ~= 0 then
-			s:SetPoint("TOPLEFT", _G.TabardCharacterModelRotateLeftButton, "TOPRIGHT", 4, 0)
+	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, 'SetPoint', function(s, point, _, _, xOffset, yOffset)
+		if point ~= 'TOPLEFT' or xOffset ~= 4 or yOffset ~= 0 then
+			s:SetPoint('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
 		end
 	end)
 end

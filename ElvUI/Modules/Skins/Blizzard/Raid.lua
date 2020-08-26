@@ -5,14 +5,14 @@ local _G = _G
 local pairs = pairs
 
 local StripAllTextures = {
-	"RaidGroup1",
-	"RaidGroup2",
-	"RaidGroup3",
-	"RaidGroup4",
-	"RaidGroup5",
-	"RaidGroup6",
-	"RaidGroup7",
-	"RaidGroup8",
+	'RaidGroup1',
+	'RaidGroup2',
+	'RaidGroup3',
+	'RaidGroup4',
+	'RaidGroup5',
+	'RaidGroup6',
+	'RaidGroup7',
+	'RaidGroup8',
 }
 
 function S:Blizzard_RaidUI()
@@ -28,13 +28,13 @@ function S:Blizzard_RaidUI()
 	end
 
 	for i=1, _G.MAX_RAID_GROUPS*5 do
-		S:HandleButton(_G["RaidGroupButton"..i], true)
+		S:HandleButton(_G['RaidGroupButton'..i], true)
 	end
 
 	for i=1,8 do
 		for j=1,5 do
-			_G["RaidGroup"..i.."Slot"..j]:StripTextures()
-			_G["RaidGroup"..i.."Slot"..j]:SetTemplate("Transparent")
+			_G['RaidGroup'..i..'Slot'..j]:StripTextures()
+			_G['RaidGroup'..i..'Slot'..j]:SetTemplate('Transparent')
 		end
 	end
 end

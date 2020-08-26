@@ -3,17 +3,16 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local unpack = unpack
-
 local CreateFrame = CreateFrame
-local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
 local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 
-local function FixExtraActionCD(cd)
-	local start, duration = GetActionCooldown(cd:GetParent().action)
-	E.OnSetCooldown(cd, start, duration)
+local function stripStyle(btn, tex)
+	if tex ~= nil then
+		btn:SetTexture()
+	end
 end
 
 function AB:Extra_SetAlpha()
@@ -21,7 +20,7 @@ function AB:Extra_SetAlpha()
 	local alpha = E.db.actionbar.extraActionButton.alpha
 
 	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
-		local button = _G["ExtraActionButton"..i]
+		local button = _G['ExtraActionButton'..i]
 		if button then
 			button:SetAlpha(alpha)
 		end
@@ -39,12 +38,16 @@ function AB:Extra_SetScale()
 
 	if _G.ExtraActionBarFrame then
 		_G.ExtraActionBarFrame:SetScale(scale)
-		ExtraActionBarHolder:Size(_G.ExtraActionBarFrame:GetWidth() * scale)
+
+		local size = _G.ExtraActionBarFrame:GetWidth() * scale
+		ExtraActionBarHolder:SetSize(size, size)
 	end
 
 	if _G.ZoneAbilityFrame then
 		_G.ZoneAbilityFrame:SetScale(scale)
-		ZoneAbilityHolder:Size(_G.ZoneAbilityFrame:GetWidth() * scale)
+
+		local size = _G.ZoneAbilityFrame:GetWidth() * scale
+		ZoneAbilityHolder:SetSize(size, size)
 	end
 end
 
@@ -53,58 +56,49 @@ function AB:SetupExtraButton()
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
-	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
-	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
+	ExtraActionBarHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
+	ExtraActionBarHolder:SetSize(ExtraActionBarFrame:GetSize())
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
+	ExtraActionBarFrame:SetPoint('CENTER', ExtraActionBarHolder, 'CENTER')
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
-	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
-	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
+	ZoneAbilityHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
+	ZoneAbilityHolder:SetSize(ExtraActionBarFrame:GetSize())
 
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
-	ZoneAbilityFrame:Point('CENTER', ZoneAbilityHolder, 'CENTER')
+	ZoneAbilityFrame:SetPoint('CENTER', ZoneAbilityHolder, 'CENTER')
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
-		local button = _G["ExtraActionButton"..i]
+		local button = _G['ExtraActionButton'..i]
 		if button then
-			button.noResize = true
 			button.pushed = true
 			button.checked = true
 
-			self:StyleButton(button, true)
-			button:SetTemplate()
+			self:StyleButton(button, true) -- registers cooldown too
 			button.icon:SetDrawLayer('ARTWORK')
+			button:SetTemplate()
 
 			if E.private.skins.cleanBossButton and button.style then -- Hide the Artwork
 				button.style:SetTexture()
-				hooksecurefunc(button.style, 'SetTexture', function(btn, tex)
-					if tex ~= nil then btn:SetTexture() end
-				end)
+				hooksecurefunc(button.style, 'SetTexture', stripStyle)
 			end
 
 			local tex = button:CreateTexture(nil, 'OVERLAY')
 			tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 			tex:SetInside()
 			button:SetCheckedTexture(tex)
-
-			if button.cooldown then
-				button.cooldown.CooldownOverride = 'actionbar'
-				E:RegisterCooldown(button.cooldown)
-				button.cooldown:HookScript("OnShow", FixExtraActionCD)
-			end
 		end
 	end
 
 	local button = ZoneAbilityFrame.SpellButton
 	if button then
 		button:SetNormalTexture('')
-		button:StyleButton(nil, nil, nil, true)
+		button:StyleButton()
 		button:SetTemplate()
 		button.Icon:SetDrawLayer('ARTWORK')
 		button.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -112,9 +106,7 @@ function AB:SetupExtraButton()
 
 		if E.private.skins.cleanBossButton and button.Style then -- Hide the Artwork
 			button.Style:SetTexture()
-			hooksecurefunc(button.Style, 'SetTexture', function(btn, tex)
-				if tex ~= nil then btn:SetTexture() end
-			end)
+			hooksecurefunc(button.Style, 'SetTexture', stripStyle)
 		end
 
 		if button.Cooldown then
