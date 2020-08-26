@@ -575,6 +575,7 @@ E.Options.args.datatexts = {
 							end,
 							func = function()
 								local name = E.global.datatexts.newPanelInfo.name
+								E.global.datatexts.customPanels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo)
 								E.db.datatexts.panels[name] = { enable = true }
 
 								for i = 1, E.global.datatexts.newPanelInfo.numPoints do
@@ -582,7 +583,7 @@ E.Options.args.datatexts = {
 								end
 
 								PanelGroup_Create(name)
-								DT:BuildPanelFrame(name)
+								DT:BuildPanelFrame(name, E.global.datatexts.customPanels[name])
 								DT:PanelLayoutOptions()
 
 								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name)
