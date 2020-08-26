@@ -542,7 +542,8 @@ function DT:LoadDataTexts(...)
 	end
 
 	for panelName, panel in pairs(DT.RegisteredPanels) do
-		if DT.db.panels[panelName].enable then
+		local db = DT.db.panels[panelName]
+		if db and db.enable then
 			DT:UpdatePanelInfo(panelName, panel, ...)
 		end
 	end
