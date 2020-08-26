@@ -32,23 +32,24 @@ local ticks = {}
 function UF:Construct_Castbar(frame, moverName)
 	local castbar = CreateFrame('StatusBar', '$parent_CastBar', frame)
 	castbar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 30) --Make it appear above everything else
-	self.statusbars[castbar] = true
-	castbar.CustomDelayText = self.CustomCastDelayText
-	castbar.CustomTimeText = self.CustomTimeText
-	castbar.PostCastStart = self.PostCastStart
-	castbar.PostCastStop = self.PostCastStop
-	castbar.PostCastInterruptible = self.PostCastInterruptible
+	UF.statusbars[castbar] = true
+	castbar.CustomDelayText = UF.CustomCastDelayText
+	castbar.CustomTimeText = UF.CustomTimeText
+	castbar.PostCastStart = UF.PostCastStart
+	castbar.PostCastStop = UF.PostCastStop
+	castbar.PostCastInterruptible = UF.PostCastInterruptible
+	castbar.PostCastFail = UF.PostCastFail
 	castbar:SetClampedToScreen(true)
-	castbar:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+	castbar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
 
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
-	self:Configure_FontString(castbar.Time)
+	UF:Configure_FontString(castbar.Time)
 	castbar.Time:SetPoint('RIGHT', castbar, 'RIGHT', -4, 0)
 	castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Time:SetJustifyH('RIGHT')
 
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
-	self:Configure_FontString(castbar.Text)
+	UF:Configure_FontString(castbar.Text)
 	castbar.Text:SetPoint('LEFT', castbar, 'LEFT', 4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Text:SetJustifyH('LEFT')
@@ -72,7 +73,7 @@ function UF:Construct_Castbar(frame, moverName)
 
 	local button = CreateFrame('Frame', nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
-	button:SetTemplate(nil, nil, nil, self.thinBorders, true)
+	button:SetTemplate(nil, nil, nil, UF.thinBorders, true)
 
 	castbar.Holder = holder
 	--these are placeholder so the mover can be created.. it will be changed.
@@ -450,6 +451,9 @@ function UF:PostCastStart(unit)
 		if t then r, g, b = t[1], t[2], t[3] end
 	end
 
+	if self.SafeZone then
+		self.SafeZone:Show()
+	end
 	self:SetStatusBarColor(r, g, b)
 end
 
@@ -457,6 +461,13 @@ function UF:PostCastStop(unit)
 	if self.hadTicks and unit == 'player' then
 		UF:HideTicks()
 		self.hadTicks = false
+	end
+end
+
+function UF:PostCastFail()
+	self:SetStatusBarColor(UF.db.colors.castInterruptedColor.r, UF.db.colors.castInterruptedColor.g, UF.db.colors.castInterruptedColor.b)
+	if self.SafeZone then
+		self.SafeZone:Hide()
 	end
 end
 
