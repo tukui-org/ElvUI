@@ -575,9 +575,9 @@ E.Options.args.datatexts = {
 							end,
 							func = function()
 								local name = E.global.datatexts.newPanelInfo.name
-								E.global.datatexts.customPanels[name] = E:CopyTable({}, E.global.datatexts.newPanelInfo)
-								E.db.datatexts.panels[name] = { enable = true }
+								DT:Panel_DefaultGlobalSettings(name, E.global.datatexts.newPanelInfo)
 
+								E.db.datatexts.panels[name] = { enable = true }
 								for i = 1, E.global.datatexts.newPanelInfo.numPoints do
 									E.db.datatexts.panels[name][i] = ''
 								end
@@ -587,7 +587,7 @@ E.Options.args.datatexts = {
 								DT:PanelLayoutOptions()
 
 								E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name)
-								E.global.datatexts.newPanelInfo = E:CopyTable({}, G.datatexts.newPanelInfo)
+								DT:Panel_DefaultGlobalSettings(name, nil, true)
 							end,
 						},
 					},

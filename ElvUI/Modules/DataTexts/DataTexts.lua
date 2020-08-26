@@ -339,14 +339,16 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	panel.vertical = vertical
 end
 
-function DT:Panel_DefaultGlobalSettings(name)
-	local db = E:CopyTable({}, G.datatexts.newPanelInfo)
-	db.enable = nil
-	db.name = nil
+function DT:Panel_DefaultGlobalSettings(name, db, skip)
+	local settings = E:CopyTable({}, db or G.datatexts.newPanelInfo)
+	settings.enable = nil
+	settings.name = nil
 
-	E.global.datatexts.customPanels[name] = db
+	if not skip then
+		E.global.datatexts.customPanels[name] = settings
+	end
 
-	return db
+	return settings
 end
 
 function DT:AssignPanelToDataText(dt, data, event, ...)
