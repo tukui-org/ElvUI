@@ -344,8 +344,6 @@ end
 
 function DT:Panel_DefaultGlobalSettings(name)
 	local db = E:CopyTable({}, G.datatexts.newPanelInfo)
-	db.enable = nil
-	db.name = nil
 
 	E.global.datatexts.customPanels[name] = db
 

@@ -77,8 +77,6 @@ G.datatexts = {
 		Versatility = { Label = '', NoLabel = false, decimalLength = 1 },
 	},
 	newPanelInfo = {
-		name = '',
-		enable = true,
 		growth = 'HORIZONTAL',
 		width = 300,
 		height = 22,
