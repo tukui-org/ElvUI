@@ -17,8 +17,8 @@ function S:Blizzard_CombatLog()
 	local FontContainer = _G.ChatFrame2.FontStringContainer
 	if FontContainer then
 		Button:ClearAllPoints()
-		Button:SetPoint('BOTTOMLEFT', FontContainer, 'TOPLEFT', -2, -1)
-		Button:SetPoint('BOTTOMRIGHT', FontContainer, 'TOPRIGHT', 2, 1)
+		Button:SetPoint('BOTTOMLEFT', FontContainer, 'TOPLEFT', -3, 1)
+		Button:SetPoint('BOTTOMRIGHT', FontContainer, 'TOPRIGHT', 3 or 3, 0)
 	end
 
 	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', function()
