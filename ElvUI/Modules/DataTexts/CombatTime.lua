@@ -38,11 +38,8 @@ local function OnEvent(self, event, _, timeSeconds)
 	elseif event == 'PLAYER_REGEN_DISABLED' and not isInArena then
 		timerText, timer, startTime = L["Combat"], 0, GetTime()
 		self:SetScript('OnUpdate', OnUpdate)
-	else
-		local txt = self.text:GetText()
-		if not txt or txt == ' ' then
-			self.text:SetFormattedText(displayString, timerText, UpdateText())
-		end
+	elseif not self.text:GetText() then
+		self.text:SetFormattedText(displayString, timerText, UpdateText())
 	end
 
 	lastPanel = self
