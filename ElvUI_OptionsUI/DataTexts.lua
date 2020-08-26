@@ -561,7 +561,6 @@ E.Options.args.datatexts = {
 							type = 'input',
 							width = 'full',
 							name = L["Name"],
-							get = function() return E.global.datatexts.newPanelInfo.name or '' end,
 							validate = function(_, value)
 								return E.global.datatexts.customPanels[value] and L["Name Taken"] or true
 							end,
