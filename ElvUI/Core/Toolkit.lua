@@ -1,9 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local LSM = E.Libs.LSM
 
 local _G = _G
 local unpack, type, select, getmetatable = unpack, type, select, getmetatable
-local assert, pairs, pcall, tonumber = assert, pairs, pcall, tonumber
+local assert, pairs, pcall = assert, pairs, pcall
+local EnumerateFrames = EnumerateFrames
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
@@ -290,29 +290,11 @@ local function StripTexts(object, kill, alpha)
 	StripType(STRIP_FONT, object, kill, alpha)
 end
 
-local function FontTemplate(fs, font, fontSize, fontStyle)
-	if type(fontSize) == 'string' then
-		fontSize = tonumber(fontSize)
-	end
+local function FontTemplate(fs, font, size, style)
+	fs.font, fs.fontSize, fs.fontStyle = font or E.media.normFont, size or E.db.general.fontSize, style or E.db.general.fontStyle
+	fs:SetFont(fs.font, fs.fontSize, fs.fontStyle)
 
-	fs.font, fs.fontSize, fs.fontStyle = font, fontSize, fontStyle
-
-	font = font or LSM:Fetch('font', E.db.general.font)
-	fontStyle = fontStyle or E.db.general.fontStyle
-
-	if fontSize and fontSize > 0 then
-		fontSize = fontSize
-	else
-		fontSize = E.db.general.fontSize
-	end
-
-	if fontStyle == 'OUTLINE' and E.db.general.font == 'Homespun' and (fontSize > 10 and not fs.fontSize) then
-		fontSize, fontStyle = 10, 'MONOCHROMEOUTLINE'
-	end
-
-	fs:SetFont(font, fontSize, fontStyle)
-
-	if fontStyle == 'NONE' then
+	if style == 'NONE' then
 		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else
@@ -412,7 +394,7 @@ local function addapi(object)
 	if not object.StyleButton then mt.StyleButton = StyleButton end
 	if not object.CreateCloseButton then mt.CreateCloseButton = CreateCloseButton end
 	if not object.GetNamedChild then mt.GetNamedChild = GetNamedChild end
-	if not object.DisabledPixelSnap then
+	if not object.DisabledPixelSnap and (mt.SetSnapToPixelGrid or mt.SetStatusBarTexture or mt.SetColorTexture or mt.SetVertexColor or mt.CreateTexture or mt.SetTexCoord or mt.SetTexture) then
 		if mt.SetSnapToPixelGrid then hooksecurefunc(mt, 'SetSnapToPixelGrid', WatchPixelSnap) end
 		if mt.SetStatusBarTexture then hooksecurefunc(mt, 'SetStatusBarTexture', DisablePixelSnap) end
 		if mt.SetColorTexture then hooksecurefunc(mt, 'SetColorTexture', DisablePixelSnap) end

@@ -674,7 +674,7 @@ function CH:StyleChat(frame)
 
 	if not tab.left then tab.left = _G[name..'TabLeft'] end
 	tab.Text:ClearAllPoints()
-	tab.Text:SetPoint('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
+	tab.Text:SetPoint('LEFT', tab, 'LEFT', tab.left:GetWidth(), -2)
 	tab:SetHeight(22)
 
 	if tab.conversationIcon then
@@ -1002,9 +1002,13 @@ function CH:UpdateChatTab(chat)
 
 	if chat == CH.LeftChatWindow then
 		CH:GetTab(chat):SetParent(_G.LeftChatPanel or _G.UIParent)
+		chat:SetParent(_G.LeftChatPanel or _G.UIParent)
+
 		CH:HandleFadeTabs(chat, fadeLeft)
 	elseif chat == CH.RightChatWindow then
 		CH:GetTab(chat):SetParent(_G.RightChatPanel or _G.UIParent)
+		chat:SetParent(_G.RightChatPanel or _G.UIParent)
+
 		CH:HandleFadeTabs(chat, fadeRight)
 	else
 		local docker = _G.GeneralDockManager.primary
@@ -1012,6 +1016,7 @@ function CH:UpdateChatTab(chat)
 
 		-- we need to update the tab parent to mimic the docker
 		CH:GetTab(chat):SetParent(parent or _G.UIParent)
+		chat:SetParent(parent or _G.UIParent)
 
 		if parent and docker == CH.LeftChatWindow then
 			CH:HandleFadeTabs(chat, fadeLeft)
@@ -1093,11 +1098,18 @@ end
 
 function CH:PositionChat(chat)
 	CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows()
-	CH:UpdateChatTab(chat)
 
-	if chat.FontStringContainer then
-		chat.FontStringContainer:SetOutside(chat)
+	local docker = _G.GeneralDockManager.primary
+	if chat == docker then
+		local iconParent, chatParent = CH:GetAnchorParents(chat)
+		_G.GeneralDockManager:SetParent(chatParent)
+
+		if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
+			CH:ReparentVoiceChatIcon(iconParent or chatParent)
+		end
 	end
+
+	CH:UpdateChatTab(chat)
 
 	if chat:IsMovable() then
 		chat:SetUserPlaced(true)
@@ -1111,35 +1123,21 @@ function CH:PositionChat(chat)
 		chat:Show()
 	end
 
-	local docker = _G.GeneralDockManager.primary
-	local BASE_OFFSET = 28 + (E.PixelMode and 0 or 4)
-	local iconParent, chatParent = CH:GetAnchorParents(chat)
+	local BASE_OFFSET = 28
 	if chat == CH.LeftChatWindow then
-		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
-		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, E.PixelMode and 2 or 4)
-		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - offset)
+		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 3)
+		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
-		local offset = BASE_OFFSET + (chat:GetID() == 2 and (_G.RightChatTab:GetHeight() + 2) or 0)
 		chat:ClearAllPoints()
-		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, E.PixelMode and 2 or 4)
-		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - offset)
+		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 3)
+		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
 		CH:ShowBackground(chat.Background, CH:IsUndocked(chat, docker))
-	end
-
-	chat:SetParent(chatParent)
-
-	if chat == docker then
-		_G.GeneralDockManager:SetParent(chatParent)
-
-		if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
-			CH:ReparentVoiceChatIcon(iconParent or chatParent)
-		end
 	end
 end
 
@@ -1994,8 +1992,8 @@ function CH:SetupChat()
 
 	local chat = _G.GeneralDockManager.primary
 	_G.GeneralDockManager:ClearAllPoints()
-	_G.GeneralDockManager:SetPoint('BOTTOMLEFT', chat, 'TOPLEFT', 0, 2)
-	_G.GeneralDockManager:SetPoint('BOTTOMRIGHT', chat, 'TOPRIGHT', 0, 2)
+	_G.GeneralDockManager:SetPoint('BOTTOMLEFT', chat, 'TOPLEFT', 0, 3)
+	_G.GeneralDockManager:SetPoint('BOTTOMRIGHT', chat, 'TOPRIGHT', 0, 3)
 	_G.GeneralDockManager:SetHeight(22)
 	_G.GeneralDockManagerScrollFrame:SetHeight(22)
 	_G.GeneralDockManagerScrollFrameChild:SetHeight(22)
@@ -2677,7 +2675,7 @@ function CH:ReparentVoiceChatIcon(parent)
 	end
 
 	for _, button in pairs(channelButtons) do
-		button.Icon:SetParent(parent)
+		button:SetParent(parent)
 	end
 end
 
