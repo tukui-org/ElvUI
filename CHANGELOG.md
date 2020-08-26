@@ -1,6 +1,13 @@
-### Version 11.50 [ ETA: 🍨 ]
+### Version 11.51 [ ETA: 🍨 ]
 
-**Hopes and Dreams:**
+**Shiny:**  
+
+
+___
+
+### Version 11.50 [ August 26th 2020 ]
+
+**Hopes and Dreams:**  
 Unitframes and Datatexts were sometimes failing to display their text, hopefully this is corrected now!  
 Adjusted Nameplate and Aurabars to hopefully better detect mind control, duels, and which the frame type should be.  
 
