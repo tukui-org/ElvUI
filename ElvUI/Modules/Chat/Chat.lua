@@ -1132,7 +1132,11 @@ function CH:PositionChat(chat)
 		CH:ShowBackground(chat.Background, CH:IsUndocked(chat, docker))
 	end
 
-	chat:SetParent(chatParent)
+	if chat.isDocked then
+		chat:SetParent(_G.GeneralDockManager)
+	else
+		chat:SetParent(chatParent)
+	end
 
 	if chat == docker then
 		_G.GeneralDockManager:SetParent(chatParent)
@@ -2672,7 +2676,7 @@ function CH:ReparentVoiceChatIcon(parent)
 	end
 
 	for _, button in pairs(channelButtons) do
-		button.Icon:SetParent(parent)
+		button:SetParent(parent)
 	end
 end
 

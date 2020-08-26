@@ -57,52 +57,53 @@ local function finishFade(self)
 	end
 end
 
-local function ChatButton_OnEnter(self)
-	if E.db[self.parent:GetName()..'Faded'] then
+local function fadeChatPanel(self, duration, alpha)
+	if alpha == 1 then
 		self.parent:Show()
-		E:UIFrameFadeIn(self.parent, 0.25, self.parent:GetAlpha(), 1)
-		if E.db.chat.fadeChatToggles then
-			E:UIFrameFadeIn(self, 0.25, self:GetAlpha(), 1)
-		end
 	end
 
-	if not self.parent.editboxforced then
-		local GameTooltip = _G.GameTooltip
-		GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
-		GameTooltip:ClearLines()
-		GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
-		GameTooltip:Show()
+	E:UIFrameFadeOut(self.parent, duration, self.parent:GetAlpha(), alpha)
+
+	if E.db.chat.fadeChatToggles then
+		E:UIFrameFadeOut(self, duration, self:GetAlpha(), alpha)
+	end
+end
+
+local function ChatButton_OnEnter(self)
+	if E.db[self.parent:GetName()..'Faded'] then
+		fadeChatPanel(self, 0.3, 1)
+	end
+
+	if not _G.GameTooltip:IsForbidden() then
+		_G.GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT', 0, 4)
+		_G.GameTooltip:ClearLines()
+		_G.GameTooltip:AddDoubleLine(L["Left Click:"], L["Toggle Chat Frame"], 1, 1, 1)
+		_G.GameTooltip:Show()
 	end
 end
 
 local function ChatButton_OnLeave(self)
 	if E.db[self.parent:GetName()..'Faded'] then
-		E:UIFrameFadeOut(self.parent, 0.25, self.parent:GetAlpha(), 0)
-		if E.db.chat.fadeChatToggles then
-			E:UIFrameFadeOut(self, 0.25, self:GetAlpha(), 0)
-		end
+		fadeChatPanel(self, 0.3, 0)
 	end
 
-	_G.GameTooltip:Hide()
+	if not _G.GameTooltip:IsForbidden() then
+		_G.GameTooltip:Hide()
+	end
 end
 
 local function ChatButton_OnClick(self)
-	_G.GameTooltip:Hide()
-
-	local fadeToggle = E.db.chat.fadeChatToggles
 	local name = self.parent:GetName()..'Faded'
 	if E.db[name] then
 		E.db[name] = nil
-		E:UIFrameFadeIn(self.parent, 0.2, self.parent:GetAlpha(), 1)
-		if fadeToggle then
-			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-		end
+		fadeChatPanel(self, 0.2, 1)
 	else
 		E.db[name] = true
-		E:UIFrameFadeOut(self.parent, 0.2, self.parent:GetAlpha(), 0)
-		if fadeToggle then
-			E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), 0)
-		end
+		fadeChatPanel(self, 0.2, 0)
+	end
+
+	if not _G.GameTooltip:IsForbidden() then
+		_G.GameTooltip:Hide()
 	end
 end
 
