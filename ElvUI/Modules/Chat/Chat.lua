@@ -1091,6 +1091,7 @@ function CH:ShowBackground(background, show)
 	end
 end
 
+local dockHolder = CreateFrame('Frame')
 function CH:PositionChat(chat)
 	CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows()
 	CH:UpdateChatTab(chat)
@@ -1133,13 +1134,13 @@ function CH:PositionChat(chat)
 	end
 
 	if chat.isDocked then
-		chat:SetParent(_G.GeneralDockManager)
+		chat:SetParent(dockHolder)
 	else
 		chat:SetParent(chatParent)
 	end
 
 	if chat == docker then
-		_G.GeneralDockManager:SetParent(chatParent)
+		dockHolder:SetParent(chatParent)
 
 		if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
 			CH:ReparentVoiceChatIcon(iconParent or chatParent)
@@ -1995,6 +1996,7 @@ function CH:SetupChat()
 	_G.GeneralDockManager:ClearAllPoints()
 	_G.GeneralDockManager:SetPoint('BOTTOMLEFT', chat, 'TOPLEFT', 0, 2)
 	_G.GeneralDockManager:SetPoint('BOTTOMRIGHT', chat, 'TOPRIGHT', 0, 2)
+	_G.GeneralDockManager:SetParent(dockHolder)
 	_G.GeneralDockManager:SetHeight(22)
 	_G.GeneralDockManagerScrollFrame:SetHeight(22)
 	_G.GeneralDockManagerScrollFrameChild:SetHeight(22)
