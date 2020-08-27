@@ -189,7 +189,7 @@ function M:Minimap_OnMouseWheel(d)
 end
 
 function M:Update_ZoneText()
-	if E.db.general.minimap.locationText == 'HIDE' or not E.private.general.minimap.enable then return; end
+	if E.db.general.minimap.locationText == 'HIDE' then return end
 	Minimap.location:FontTemplate(E.Libs.LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
@@ -219,12 +219,13 @@ do
 end
 
 function M:UpdateSettings()
+	if not E.private.general.minimap.enable then return end
 	if InCombatLockdown() then
 		self:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return
 	end
 
-	E.MinimapSize = (E.private.general.minimap.enable and E.db.general.minimap.size) or Minimap:GetWidth()
+	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
 	local MinimapPanel, MMHolder = _G.MinimapPanel, _G.MMHolder
 	MinimapPanel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
@@ -241,14 +242,11 @@ function M:UpdateSettings()
 	Minimap:SetSize(E.MinimapSize, E.MinimapSize)
 
 	Minimap.location:SetWidth(E.MinimapSize)
-	if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
+	if E.db.general.minimap.locationText ~= 'SHOW' then
 		Minimap.location:Hide()
 	else
 		Minimap.location:Show()
 	end
-
-	-- Stop here if ElvUI Minimap is disabled.
-	if not E.private.general.minimap.enable then return end
 
 	M.HandleGarrisonButton()
 
@@ -353,15 +351,8 @@ function M:Initialize()
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
 	Minimap:ClearAllPoints()
 	Minimap:SetPoint('TOPRIGHT', mmholder, 'TOPRIGHT', -E.Border, -E.Border)
-	Minimap:HookScript('OnEnter', function(mm)
-		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
-		mm.location:Show()
-	end)
-
-	Minimap:HookScript('OnLeave', function(mm)
-		if E.db.general.minimap.locationText ~= 'MOUSEOVER' or not E.private.general.minimap.enable then return; end
-		mm.location:Hide()
-	end)
+	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
+	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
 
 	--Fix spellbook taint
 	ShowUIPanel(_G.SpellBookFrame)
@@ -372,7 +363,7 @@ function M:Initialize()
 	Minimap.location:SetPoint('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
-	if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
+	if E.db.general.minimap.locationText ~= 'SHOW' then
 		Minimap.location:Hide()
 	end
 
