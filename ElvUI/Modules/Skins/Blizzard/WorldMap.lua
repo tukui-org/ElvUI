@@ -96,6 +96,8 @@ function S:WorldMapFrame()
 		--QuestScrollFrame.WarCampaignTooltip:SetTemplate('Transparent')
 	end
 
+	S:HandleScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar)
+
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
