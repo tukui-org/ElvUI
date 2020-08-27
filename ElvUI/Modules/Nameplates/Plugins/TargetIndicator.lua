@@ -121,7 +121,7 @@ local function Enable(self)
 
 		if element.Shadow then
 			if element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() == nil then
-				element.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(5)})
+				element.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = 5})
 			end
 		end
 
