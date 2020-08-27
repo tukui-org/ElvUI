@@ -1125,15 +1125,19 @@ function CH:PositionChat(chat)
 
 	local BASE_OFFSET = 28
 	if chat == CH.LeftChatWindow then
+		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0
+
 		chat:ClearAllPoints()
 		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 3)
-		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET)
+		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
+		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0
+
 		chat:ClearAllPoints()
 		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 3)
-		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET)
+		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
