@@ -44,6 +44,17 @@ local DTPanelOptions = {
 		name = L["Height"],
 		min = 12, max = E.screenheight, step = 1,
 	},
+	textJustify = {
+		order = 6,
+		type = 'select',
+		name = L["Text Justify"],
+		desc = L["Sets the font instance's horizontal text alignment style."],
+		values = {
+			CENTER = L["Center"],
+			LEFT = L["Left"],
+			RIGHT = L["Right"],
+		},
+	},
 	templateGroup = {
 		order = 10,
 		type = 'multiselect',
@@ -671,7 +682,8 @@ E.Options.args.datatexts = {
 							name = L["Add"],
 							width = 'full',
 							hidden = function()
-								return E.global.datatexts.newPanelInfo.name == ''
+								local name = E.global.datatexts.newPanelInfo.name
+								return not name or name == ''
 							end,
 							func = function()
 								local name = E.global.datatexts.newPanelInfo.name

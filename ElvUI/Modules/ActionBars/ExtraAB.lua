@@ -5,17 +5,15 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local CreateFrame = CreateFrame
-local GetActionCooldown = GetActionCooldown
 local HasExtraActionBar = HasExtraActionBar
 local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 local ExtraButtons = {}
 
-local function FixExtraActionCD(button)
-	if button.cooldown and button.action then
-		local start, duration = GetActionCooldown(button.action)
-		E.OnSetCooldown(button.cooldown, start, duration)
+local function stripStyle(btn, tex)
+	if tex ~= nil then
+		btn:SetTexture()
 	end
 end
 
@@ -91,7 +89,7 @@ function AB:SetupExtraButton()
 			if spellButton and not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
 				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
-				spellButton:StyleButton(nil, nil, nil, true)
+				spellButton:StyleButton(nil, true)
 				spellButton:CreateBackdrop()
 				spellButton.Icon:SetDrawLayer('ARTWORK')
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -122,19 +120,16 @@ function AB:SetupExtraButton()
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G['ExtraActionButton'..i]
 		if button then
-			button.noResize = true
 			button.pushed = true
 			button.checked = true
 
-			self:StyleButton(button, true)
-			button:CreateBackdrop()
+			self:StyleButton(button, true) -- registers cooldown too
 			button.icon:SetDrawLayer('ARTWORK')
+			button:CreateBackdrop()
 
 			if E.private.skins.cleanBossButton and button.style then -- Hide the Artwork
 				button.style:SetTexture()
-				hooksecurefunc(button.style, 'SetTexture', function(btn, tex)
-					if tex ~= nil then btn:SetTexture() end
-				end)
+				hooksecurefunc(button.style, 'SetTexture', stripStyle)
 			end
 
 			local tex = button:CreateTexture(nil, 'OVERLAY')
@@ -144,12 +139,6 @@ function AB:SetupExtraButton()
 
 			button.HotKey:SetText(GetBindingKey('ExtraActionButton'..i))
 			tinsert(ExtraButtons, button)
-
-			if button.cooldown then
-				button.cooldown.CooldownOverride = 'actionbar'
-				E:RegisterCooldown(button.cooldown)
-				button:HookScript('OnShow', FixExtraActionCD)
-			end
 		end
 	end
 

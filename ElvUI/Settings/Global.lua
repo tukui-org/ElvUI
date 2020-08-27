@@ -77,8 +77,6 @@ G.datatexts = {
 		Versatility = { Label = '', NoLabel = false, decimalLength = 1 },
 	},
 	newPanelInfo = {
-		name = '',
-		enable = true,
 		growth = 'HORIZONTAL',
 		width = 300,
 		height = 22,
@@ -89,6 +87,7 @@ G.datatexts = {
 		panelTransparency = false,
 		mouseover = false,
 		border = true,
+		textJustify = 'CENTER',
 		visibility = '[petbattle] hide;show',
 		tooltipAnchor = 'ANCHOR_TOPLEFT',
 		tooltipXOffset = -17,

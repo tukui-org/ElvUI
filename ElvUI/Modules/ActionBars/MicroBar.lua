@@ -203,8 +203,8 @@ function AB:SetupMicroBar()
 
 	_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton.backdrop)
 
-	self:SecureHook('MainMenuMicroButton_SetPushed')
-	self:SecureHook('MainMenuMicroButton_SetNormal')
+	--self:SecureHook('MainMenuMicroButton_SetPushed')
+	--self:SecureHook('MainMenuMicroButton_SetNormal')
 	self:SecureHook('UpdateMicroButtonsParent')
 	self:SecureHook('MoveMicroButtons', 'UpdateMicroPositionDimensions')
 	self:SecureHook('UpdateMicroButtons')

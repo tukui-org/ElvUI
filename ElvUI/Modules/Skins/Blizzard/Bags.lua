@@ -19,13 +19,13 @@ local QUESTS_LABEL = QUESTS_LABEL
 local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 
 local function UpdateBorderColors(button)
-	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
 	if button.type and button.type == QUESTS_LABEL then
-		button:SetBackdropBorderColor(1, 0.2, 0.2)
+		button.backdrop:SetBackdropBorderColor(1, 0.2, 0.2)
 	elseif button.quality and button.quality > 1 then
 		local r, g, b = GetItemQualityColor(button.quality)
-		button:SetBackdropBorderColor(r, g, b)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -38,7 +38,7 @@ local function SkinButton(button)
 			end
 		end
 
-		button:SetTemplate(nil, true)
+		button:CreateBackdrop()
 		button:StyleButton()
 		button.IconBorder:Kill()
 
@@ -247,7 +247,8 @@ function S:ContainerFrame()
 
 	local AutoSort = _G.BagItemAutoSortButton
 	AutoSort:StripTextures()
-	AutoSort:SetTemplate()
+	--AutoSort:SetTemplate()
+	AutoSort:CreateBackdrop()
 	AutoSort.Icon = AutoSort:CreateTexture()
 	AutoSort.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
 	AutoSort.Icon:SetTexCoord(unpack(E.TexCoords))

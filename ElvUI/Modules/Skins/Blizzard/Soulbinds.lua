@@ -7,16 +7,6 @@ local hooksecurefunc = hooksecurefunc
 
 -- Credits: siweia - Aurora Classic
 
-local function UpdateButtonRank(button)
-	if not button.levelText then
-		button.levelText = button:CreateFontString(nil, 'OVERLAY')
-		button.levelText:FontTemplate(nil, 14)
-		button.levelText:ClearAllPoints()
-		button.levelText:SetPoint('BOTTOMLEFT', button.Icon)
-	end
-	button.levelText:SetText(button.conduitData.conduitRank)
-end
-
 local function SkinConduitList(frame)
 	local header = frame.CategoryButton.Container
 	if not header.styled then
@@ -24,6 +14,7 @@ local function SkinConduitList(frame)
 		header:CreateBackdrop('Transparent')
 		header.backdrop:SetPoint('TOPLEFT', 2, 0)
 		header.backdrop:SetPoint('BOTTOMRIGHT', 15, 0)
+		header.backdrop:SetBackdropColor(1, 0, 0, .35)
 
 		header.styled = true
 	end
@@ -34,9 +25,6 @@ local function SkinConduitList(frame)
 				element:SetColorTexture(1, 1, 1, .25)
 			end
 			button.PendingBackground:SetColorTexture(1, .8, 0, .25)
-
-			UpdateButtonRank(button)
-			hooksecurefunc(button, 'UpdateVisuals', UpdateButtonRank)
 
 			button.styled = true
 		end
@@ -53,7 +41,9 @@ function S:Blizzard_Soulbinds()
 
 	S:HandleCloseButton(frame.CloseButton)
 	S:HandleButton(frame.CommitConduitsButton)
+	frame.CommitConduitsButton:SetFrameLevel(10)
 	S:HandleButton(frame.ActivateSoulbindButton)
+	frame.ActivateSoulbindButton:SetFrameLevel(10)
 
 	local scrollBox = frame.ConduitList.ScrollBox
 	select(2, scrollBox:GetChildren()):Hide() -- Weird shadow on the ScrollBox
@@ -64,3 +54,18 @@ function S:Blizzard_Soulbinds()
 end
 
 S:AddCallbackForAddon('Blizzard_Soulbinds')
+
+-- ToDo: Find a way to skin me :thinking:
+function S:Blizzard_LandingSoulbinds()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.soulbinds) then return end
+
+	hooksecurefunc(_G.LandingPageSoulbindButtonMixin, 'SetSoulbind', function(button, soulbindData)
+		if not button.IsSkinned then
+			button:StyleButton()
+
+			button.IsSkinned = true
+		end
+	end)
+end
+
+--S:AddCallbackForAddon('Blizzard_LandingSoulbinds')

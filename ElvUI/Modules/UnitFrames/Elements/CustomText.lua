@@ -7,9 +7,11 @@ function UF:Configure_CustomTexts(frame)
 	local frameDB = frame.db
 
 	--Make sure CustomTexts are hidden if they don't exist in current profile
-	for name, object in pairs(frame.customTexts) do
-		if not frameDB.customTexts or not frameDB.customTexts[name] then
-			object:Hide()
+	if frame.customTexts then
+		for name, object in pairs(frame.customTexts) do
+			if not frameDB.customTexts or not frameDB.customTexts[name] then
+				object:Hide()
+			end
 		end
 	end
 

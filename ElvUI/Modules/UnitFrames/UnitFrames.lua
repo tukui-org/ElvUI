@@ -31,14 +31,14 @@ local SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
+local _, ns = ...
+local ElvUF = ns.oUF
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
+
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
 local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
-
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 UF.headerstoload = {}
 UF.unitgroupstoload = {}
@@ -890,10 +890,26 @@ function UF:ZONE_CHANGED_NEW_AREA()
 	end
 end
 
+-- note in datatext file, same name.
+local FixFonts = CreateFrame('Frame')
+FixFonts:Hide()
+FixFonts:SetScript('OnUpdate', function(self)
+	for fs in pairs(UF.fontstrings) do
+		local text = fs:GetText()
+		fs:SetText('\10')
+		fs:SetText(text)
+	end
+
+	self:Hide()
+end)
+
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:RegisterRaidDebuffIndicator()
 
-	if initLogin or isReload then
+	if initLogin then
+		FixFonts:Show()
+		UF:Update_AllFrames()
+	elseif isReload then
 		UF:Update_AllFrames()
 	elseif UF.db.smartRaidFilter then
 		UF:HandleSmartVisibility(true)
@@ -1386,9 +1402,9 @@ function UF:UpdateBackdropTextureColor(r, g, b)
 	local bg = self.bg or self.BG
 	if bg and bg:IsObjectType('Texture') and not bg.multiplier then
 		if self.custom_backdrop then
-			bg:SetVertexColor(self.custom_backdrop.r, self.custom_backdrop.g, self.custom_backdrop.b)
+			bg:SetVertexColor(self.custom_backdrop.r, self.custom_backdrop.g, self.custom_backdrop.b, self.custom_backdrop.a or 1)
 		else
-			bg:SetVertexColor(r * m, g * m, b * m)
+			bg:SetVertexColor(r * m, g * m, b * m, 1)
 		end
 	end
 end

@@ -1372,6 +1372,7 @@ local function CreateCustomTextGroup(unit, objectName)
 				order = 4,
 				name = L["Font"],
 				values = _G.AceGUIWidgetLSMlists.font,
+				width = 'double',
 			},
 			size = {
 				order = 5,
@@ -2952,6 +2953,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			name = L["Smart Aura Position"],
 			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
 			values = smartAuraPositionValues,
+			width = 'double',
 		}
 	end
 
@@ -3022,6 +3024,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 					desc = L["Growth direction from the first unitframe."],
 					type = 'select',
 					values = growthDirectionValues,
+					width = 'double',
 				},
 				numGroups = {
 					order = 7,
@@ -3117,6 +3120,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 					desc = L["Set the order that the group will sort."],
 					customWidth = 250,
 					type = 'select',
+					width = 'double',
 					values = {
 						CLASS = L["CLASS"],
 						CLASSROLE = L["CLASS"]..' & '..L["ROLE"],
@@ -3999,11 +4003,11 @@ E.Options.args.unitframe = {
 							get = function(info)
 								local t = E.db.unitframe.colors[info[#info]]
 								local d = P.unitframe.colors[info[#info]]
-								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 							end,
-							set = function(info, r, g, b)
+							set = function(info, r, g, b, a)
 								local t = E.db.unitframe.colors[info[#info]]
-								t.r, t.g, t.b = r, g, b
+								t.r, t.g, t.b, t.a = r, g, b, a
 								UF:Update_AllFrames()
 							end,
 							args = {
@@ -4054,7 +4058,8 @@ E.Options.args.unitframe = {
 									type = 'color',
 									name = L["Custom Backdrop"],
 									desc = L["Use the custom backdrop color instead of a multiple of the main color."],
-									disabled = function() return not E.db.unitframe.colors.customcastbarbackdrop end
+									disabled = function() return not E.db.unitframe.colors.customcastbarbackdrop end,
+									hasAlpha = true,
 								},
 								spacer2 = ACH:Spacer(8, 'full'),
 								castColor = {
@@ -4065,6 +4070,11 @@ E.Options.args.unitframe = {
 								castNoInterrupt = {
 									order = 10,
 									name = L["Non-Interruptible"],
+									type = 'color',
+								},
+								castInterruptedColor = {
+									name = L["Interrupted"],
+									order = 11,
 									type = 'color',
 								},
 							},

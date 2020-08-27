@@ -75,7 +75,7 @@ P.general = {
 		icons = {
 			classHall = {
 				scale = 0.8,
-				position = 'TOPLEFT',
+				position = 'BOTTOMLEFT',
 				xOffset = 0,
 				yOffset = 0,
 				hide = false,
@@ -1396,12 +1396,13 @@ P.unitframe = {
 		invertClasspower = false,
 		castColor = { r = .31, g = .31, b = .31 },
 		castNoInterrupt = { r = 0.78, g = 0.25, b = 0.25 },
+		castInterruptedColor = {r = 0.30, g = 0.30, b = 0.30},
 		castClassColor = false,
 		castReactionColor = false,
 		health = { r = .31, g = .31, b = .31 },
 		health_backdrop = { r = .8, g = .01, b = .01 },
 		health_backdrop_dead = { r = .8, g = .01, b = .01 },
-		castbar_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
+		castbar_backdrop = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 		classpower_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
 		aurabar_backdrop = { r = 0.5, g = 0.5, b = 0.5 },
 		power_backdrop = { r = 0.5, g = 0.5, b = 0.5 },

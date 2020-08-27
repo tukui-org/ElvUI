@@ -109,12 +109,10 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
-	S:HandleScrollBar(_G.ScenarioQueueFrameRandomScrollFrameScrollBar);
 
 	_G.GroupFinderFrame.groupButton1.icon:SetTexture([[Interface\Icons\INV_Helmet_08]])
 	_G.GroupFinderFrame.groupButton2.icon:SetTexture([[Interface\LFGFrame\UI-LFR-PORTRAIT]])
 	_G.GroupFinderFrame.groupButton3.icon:SetTexture([[Interface\Icons\Icon_Scenarios]])
-	_G.GroupFinderFrame.groupButton4.icon:SetTexture([[Interface\Icons\Achievement_General_StayClassy]])
 
 	_G.LFGDungeonReadyDialogBackground:Kill()
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
@@ -299,7 +297,7 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	for i = 1, 4 do
+	for i = 1, 3 do
 		local bu = _G.GroupFinderFrame['groupButton'..i]
 		bu.ring:Kill()
 		bu.bg:Kill()
@@ -324,7 +322,6 @@ function S:LookingForGroupFrames()
 
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
 	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
-	HandleGoldIcon('ScenarioQueueFrameRandomScrollFrameChildFrameMoneyReward')
 
 	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
 		S:HandleCheckBox(_G['LFDQueueFrameSpecificListButton'..i].enableButton, nil, true)
@@ -340,26 +337,10 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	hooksecurefunc('ScenarioQueueFrameSpecific_Update', function()
-		for i = 1, _G.NUM_SCENARIO_CHOICE_BUTTONS do
-			local button = _G['ScenarioQueueFrameSpecificButton'..i]
-
-			if button and not button.skinned then
-				S:HandleCheckBox(button.enableButton, nil, true)
-				button.skinned = true;
-			end
-		end
-	end)
-
 	for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
 		local bu = _G['LFRQueueFrameSpecificListButton'..i].enableButton
 		S:HandleCheckBox(bu, nil, true)
 	end
-
-	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
-	_G.ScenarioQueueFrame:StripTextures()
-	_G.ScenarioFinderFrameInset:StripTextures()
-	S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
 
 	-- Raid Finder
 	_G.RaidFinderFrame:StripTextures()
@@ -371,17 +352,8 @@ function S:LookingForGroupFrames()
 	_G.RaidFinderQueueFrameScrollFrameScrollBar:StripTextures()
 	S:HandleScrollBar(_G.RaidFinderQueueFrameScrollFrameScrollBar)
 
-	-- Scenario finder
-	_G.ScenarioFinderFrameInset:DisableDrawLayer('BORDER')
-	_G.ScenarioQueueFrame.Bg:Hide()
-	_G.ScenarioFinderFrameInset:GetRegions():Hide()
-
 	--Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
-
-	_G.ScenarioQueueFrameFindGroupButton:StripTextures()
-	S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
-	S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropDown)
 
 	-- Looking for raid
 	_G.LFRBrowseFrameListScrollFrame:StripTextures()
@@ -474,12 +446,8 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
-	S:HandleButton(_G[_G.ScenarioQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
-	S:HandleButton(_G[_G.ScenarioQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	_G.LFDQueueFrameRandomScrollFrameScrollBar:StripTextures()
-	_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.LFDQueueFrameRandomScrollFrameScrollBar)
-	S:HandleScrollBar(_G.ScenarioQueueFrameSpecificScrollFrameScrollBar)
 
 	--LFGListFrame
 	local LFGListFrame = _G.LFGListFrame

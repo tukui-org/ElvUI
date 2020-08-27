@@ -1,17 +1,42 @@
 ### Version 11.50 [ ETA: 🍨 ]
 
-**Shiny:**  
-Bags Datatext is less weird now.  
-Options Logo was animating a little too much.  
-Fixed an error which happened in the Options when UnitFrames were disabled.  
-Corrected a Style Filter error, also let entering and leaving combat trigger filters correctly (regardless of unit threat).  
-Data Broker tooltips will work correctly on DataTexts again.  
-Nameplate Castbar Time should fit better.  
-PVP Spec Icon looks better now.  
-Chat Panel Movers will update with the Panel resizing again.  
-Buff Indicator better supports Blizzard Cooldowns when our Cooldown module is disabled.  
+**Hopes and Dreams:**
+Unitframes and Datatexts were sometimes failing to display their text, hopefully this is corrected now!  
 Adjusted Nameplate and Aurabars to hopefully better detect mind control, duels, and which the frame type should be.  
+
+**Datatexts:**  
+Data Broker tooltips were brokenish.  
+Bags Datatext is a little less weird now.  
+Added Text Justify setting, so text can hug left/right if you want.  
+New datatext for Date, incase you aren't sure.  
+
+**Config:**
+Style Filters and Custom Texts will be automatically selected when created now.  
+Options Logo was animating a little too much, someone gave it too much candy.  
+Copy From should update the config to match now.  
+Skin options are again sorted in order.  
+
+**UnitFrames:**
+Buff Indicator better supports Blizzard Cooldowns when our Cooldown module is disabled.  
+Added some new Absorb settings (aka one is old but readded now).   
+Party Pets and Party Targets can now display Aura Highlight.  
+Added Interrupted Color for castbar on Unitframes.  
+
+**NamePlates:**
+Castbar Time should fit better.  
+Fixed Player Nameplate being weird half of the time.  
+Quest Icons also shows the quest ! texture now in some cases, and wont show 1 on the icon anymore.  
 Quest Icons code was slightly updated to improve locales and pick the correct icon to use, so now it might work on other languages better.  
+Corrected a Style Filter error, also let entering and leaving combat trigger filters correctly (regardless of unit threat).  
+
+**Chat:**
+Panel Movers will update with the Panel resizing again.  
+Docked chats werent fading correctly.  
+Added option to hide the Copy Button.  
+
+**ActionBars:**
+Equipped Item border wasn't updating correctly.  
+Extra Action Button cooldown was not showing when it should.  
 
 ___
 

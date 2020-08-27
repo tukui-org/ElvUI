@@ -121,7 +121,7 @@ function M:HandleGarrisonButton()
 	local button = _G.GarrisonLandingPageMinimapButton
 	if button then
 		local db = E.db.general.minimap.icons.classHall
-		local scale, pos = db.scale or 1, db.position or 'TOPLEFT'
+		local scale, pos = db.scale or 1, db.position or 'BOTTOMLEFT'
 		button:ClearAllPoints()
 		button:SetPoint(pos, Minimap, pos, db.xOffset or 0, db.yOffset or 0)
 		button:SetScale(scale)
