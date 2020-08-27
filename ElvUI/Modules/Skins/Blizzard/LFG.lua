@@ -342,6 +342,8 @@ function S:LookingForGroupFrames()
 		S:HandleCheckBox(bu, nil, true)
 	end
 
+	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
+
 	-- Raid Finder
 	_G.RaidFinderFrame:StripTextures()
 	_G.RaidFinderFrameRoleInset:StripTextures()
