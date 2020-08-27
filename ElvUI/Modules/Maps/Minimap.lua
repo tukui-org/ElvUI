@@ -224,32 +224,28 @@ function M:UpdateSettings()
 		return
 	end
 
-	E.MinimapSize = E.private.general.minimap.enable and E.db.general.minimap.size or Minimap:GetWidth() + 10
-	E.MinimapWidth, E.MinimapHeight = E.MinimapSize, E.MinimapSize
+	E.MinimapSize = (E.private.general.minimap.enable and E.db.general.minimap.size) or Minimap:GetWidth()
 
-	Minimap:SetSize(E.MinimapSize, E.MinimapSize)
-
-	local MinimapPanel = _G.MinimapPanel
-	local MMHolder = _G.MMHolder
-
-	MMHolder:SetWidth((Minimap:GetWidth() + E.Border + E.Spacing*3))
+	local MinimapPanel, MMHolder = _G.MinimapPanel, _G.MMHolder
 	MinimapPanel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
 
-	if E.db.datatexts.panels.MinimapPanel.enable then
-		MMHolder:SetHeight(Minimap:GetHeight() + (MinimapPanel and (MinimapPanel:GetHeight() + E.Border) or 24) + E.Spacing*3)
-	else
-		MMHolder:SetHeight(Minimap:GetHeight() + E.Border + E.Spacing*3)
-	end
+	local borderWidth, borderHeight = E.PixelMode and 2 or 6, E.PixelMode and 2 or 8
+	local panelSize, joinPanel = (MinimapPanel:IsShown() and MinimapPanel:GetHeight()) or (E.PixelMode and 1 or -1), 1
+	local height, width = E.MinimapSize + (panelSize - joinPanel), E.MinimapSize
+	MMHolder:SetSize(width + borderWidth, height + borderHeight)
+	_G.MinimapMover:SetSize(MMHolder:GetSize())
+
+	local mmOffset = E.PixelMode and 1 or 3
+	Minimap:ClearAllPoints()
+	Minimap:SetPoint('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset, -mmOffset)
+	Minimap:SetSize(E.MinimapSize, E.MinimapSize)
 
 	Minimap.location:SetWidth(E.MinimapSize)
-
 	if E.db.general.minimap.locationText ~= 'SHOW' or not E.private.general.minimap.enable then
 		Minimap.location:Hide()
 	else
 		Minimap.location:Show()
 	end
-
-	_G.MinimapMover:SetSize(MMHolder:GetSize())
 
 	-- Stop here if ElvUI Minimap is disabled.
 	if not E.private.general.minimap.enable then return end
@@ -349,8 +345,7 @@ function M:Initialize()
 
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
-	mmholder:SetWidth((Minimap:GetWidth() + 29))
-	mmholder:SetHeight(Minimap:GetHeight() + 53)
+	mmholder:SetSize(Minimap:GetSize())
 
 	Minimap:SetQuestBlobRingAlpha(0)
 	Minimap:SetArchBlobRingAlpha(0)
