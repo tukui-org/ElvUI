@@ -991,6 +991,7 @@ function S:HandleFollowerListOnUpdateData(frame)
 end
 
 -- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
+-- 9.0 Shadowland: Needs Update
 local AtlasToRoleTex = {
 	['Adventures-Tank'] = {.5, .75, 0, 1},
 	['Adventures-Healer'] = {.75, 1, 0, 1},
@@ -1000,6 +1001,7 @@ local AtlasToRoleTex = {
 local function HandleFollowerRole(roleIcon, atlas)
 	roleIcon:SetTexture('Interface\\LFGFrame\\LFGROLE')
 	roleIcon:SetSize(18, 18)
+
 	local texcoord = AtlasToRoleTex[atlas]
 	if texcoord then
 		roleIcon:SetTexCoord(unpack(texcoord))
@@ -1041,7 +1043,7 @@ function S:HandleGarrisonPortrait(portrait)
 		local roleIcon = portrait.HealthBar.RoleIcon
 		roleIcon:ClearAllPoints()
 		roleIcon:SetPoint('TOPRIGHT', portrait.Portrait.backdrop, 5, 5)
-		hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
+		--hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
 
 		local background = portrait.HealthBar.Background
 		background:SetAlpha(0)
