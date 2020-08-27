@@ -25,7 +25,7 @@ Skin options are again sorted in order.
 
 **UnitFrames:**
 Buff Indicator better supports Blizzard Cooldowns when our Cooldown module is disabled.  
-Added some new Absorb settings (aka one is old but readded now).   
+Added some new Absorb settings (aka one is old but readded now).  
 Party Pets and Party Targets can now display Aura Highlight.  
 Added Interrupted Color for castbar on Unitframes.  
 
