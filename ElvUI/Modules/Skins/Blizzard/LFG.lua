@@ -196,7 +196,7 @@ function S:LookingForGroupFrames()
 	}
 
 	for _, roleButton in pairs(RoleButtons1) do
-		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, true)
+		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton)
 		roleButton:DisableDrawLayer('ARTWORK')
 		roleButton:DisableDrawLayer('OVERLAY')
 
