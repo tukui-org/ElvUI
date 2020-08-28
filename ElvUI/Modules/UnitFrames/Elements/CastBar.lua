@@ -47,7 +47,6 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Time:SetPoint('RIGHT', castbar, 'RIGHT', -4, 0)
 	castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Time:SetJustifyH('RIGHT')
-	castbar.Time:SetWidth(25)
 
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(castbar.Text)
@@ -319,6 +318,8 @@ function UF:CustomTimeText(duration)
 			self.Time:SetFormattedText('%.1f / %.1f', abs(duration - self.max), self.max)
 		end
 	end
+
+	self.Time:SetWidth(self.Time:GetStringWidth())
 end
 
 function UF:HideTicks()
