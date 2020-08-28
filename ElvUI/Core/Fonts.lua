@@ -77,7 +77,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game60Font,							NORMAL, 60)
 		SetFont(_G.Game72Font,							NORMAL, 72)
 		SetFont(_G.Game120Font,							NORMAL, 120)
-		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, 'OUTLINE')						-- Used at the install steps
+		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15)									-- Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, E.db.general.fontSize)				-- Skill or Recipe description on TradeSkill frame
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, 24)									-- Mythic weekly best dungeon name

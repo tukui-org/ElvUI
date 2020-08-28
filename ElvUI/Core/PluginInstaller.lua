@@ -245,7 +245,7 @@ function PI:CreateFrame()
 	f.Status.anim.progress:SetDuration(.3)
 
 	f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')
-	f.Status.text:FontTemplate()
+	f.Status.text:FontTemplate(nil, 14, 'OUTLINE')
 	f.Status.text:SetPoint('CENTER')
 
 	f.Option1 = CreateFrame('Button', 'PluginInstallOption1Button', f, 'UIPanelButtonTemplate')
