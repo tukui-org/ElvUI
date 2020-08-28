@@ -1,7 +1,16 @@
-### Version 11.51 [ ETA: 🍨 ]
+### Version 11.52 [ ETA: 🍨 ]
 
 **Shiny:**  
 
+___
+
+### Version 11.51 [ August 27th 2020 ]
+
+**Changed:**  
+Chat Panels were not sized correctly when Chat was disabled.  
+Tooltip was erroring when Minimap was disabled.  
+Minimap mover wasn't placed correctly.  
+Shadows were scaling a little strange.  
 
 ___
 
