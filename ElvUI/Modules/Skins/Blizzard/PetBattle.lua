@@ -206,7 +206,7 @@ function S:PetBattleFrame()
 				end
 
 				-- move duration and change font
-				frame.Duration:FontTemplate(E.media.normFont, 12, 'OUTLINE')
+				frame.Duration:FontTemplate(nil, 12, 'OUTLINE')
 				frame.Duration:ClearAllPoints()
 				frame.Duration:SetPoint('TOP', frame.Icon, 'BOTTOM', 1, -4)
 				if turnsRemaining > 0 then
