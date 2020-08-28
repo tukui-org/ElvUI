@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
-local _G = _G
 local strfind = strfind
 local ipairs, unpack = ipairs, unpack
 local CreateFrame = CreateFrame
@@ -87,7 +86,7 @@ function NP:Construct_TargetIndicator(nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
 	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator, 'BackdropTemplate')
-	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(5)})
+	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = 5})
 	TargetIndicator.Shadow:Hide()
 
 	for _, object in ipairs(targetIndicators) do

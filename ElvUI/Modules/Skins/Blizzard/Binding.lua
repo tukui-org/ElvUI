@@ -13,6 +13,7 @@ function S:Blizzard_BindingUI()
 		'unbindButton',
 		'okayButton',
 		'cancelButton',
+		'quickKeybindButton'
 	}
 
 	local KeyBindingFrame = _G.KeyBindingFrame
@@ -54,9 +55,23 @@ function S:Blizzard_BindingUI()
 		end
 	end)
 
-	KeyBindingFrame.okayButton:SetPoint('BOTTOMLEFT', KeyBindingFrame.unbindButton, 'BOTTOMRIGHT', 3, 0)
-	KeyBindingFrame.cancelButton:SetPoint('BOTTOMLEFT', KeyBindingFrame.okayButton, 'BOTTOMRIGHT', 3, 0)
-	KeyBindingFrame.unbindButton:SetPoint('BOTTOMRIGHT', KeyBindingFrame, 'BOTTOMRIGHT', -211, 16)
+	-- QuickKeybind
+	local Quickie = _G.QuickKeybindFrame
+	Quickie:StripTextures()
+	Quickie.Header:StripTextures()
+	Quickie:CreateBackdrop('Transparent')
+
+	local buttons = {
+		'okayButton',
+		'defaultsButton',
+		'cancelButton'
+	}
+
+	for _, v in pairs(buttons) do
+		S:HandleButton(Quickie[v])
+	end
+
+	S:HandleCheckBox(Quickie.characterSpecificButton)
 end
 
 S:AddCallbackForAddon('Blizzard_BindingUI')

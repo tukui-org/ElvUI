@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local LSM = E.LSM
 
 local UnitHealth = UnitHealth
 local UnitIsUnit = UnitIsUnit
@@ -122,7 +121,7 @@ local function Enable(self)
 
 		if element.Shadow then
 			if element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() == nil then
-				element.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(5)})
+				element.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = 5})
 			end
 		end
 

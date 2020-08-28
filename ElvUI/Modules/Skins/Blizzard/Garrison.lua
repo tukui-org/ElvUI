@@ -572,7 +572,7 @@ function S:Blizzard_GarrisonUI()
 
 	FollowerTab:StripTextures()
 	S:HandleScrollBar(_G.CovenantMissionFrameFollowersListScrollFrameScrollBar)
-	S:HandleIcon(CovenantMissionFrame.FollowerTab.CostFrame.CostIcon)
+	S:HandleIcon(CovenantMissionFrame.FollowerTab.HealFollowerFrame.CostFrame.CostIcon)
 
 	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
 

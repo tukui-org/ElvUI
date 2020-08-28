@@ -1,6 +1,22 @@
-### Version 11.50 [ ETA: 🍨 ]
+### Version 11.52 [ ETA: 🍨 ]
 
-**Hopes and Dreams:**
+**Shiny:**  
+
+___
+
+### Version 11.51 [ August 27th 2020 ]
+
+**Changed:**  
+Chat Panels were not sized correctly when Chat was disabled.  
+Tooltip was erroring when Minimap was disabled.  
+Minimap mover wasn't placed correctly.  
+Shadows were scaling a little strange.  
+
+___
+
+### Version 11.50 [ August 26th 2020 ]
+
+**Hopes and Dreams:**  
 Unitframes and Datatexts were sometimes failing to display their text, hopefully this is corrected now!  
 Adjusted Nameplate and Aurabars to hopefully better detect mind control, duels, and which the frame type should be.  
 
@@ -18,7 +34,7 @@ Skin options are again sorted in order.
 
 **UnitFrames:**
 Buff Indicator better supports Blizzard Cooldowns when our Cooldown module is disabled.  
-Added some new Absorb settings (aka one is old but readded now).   
+Added some new Absorb settings (aka one is old but readded now).  
 Party Pets and Party Targets can now display Aura Highlight.  
 Added Interrupted Color for castbar on Unitframes.  
 
