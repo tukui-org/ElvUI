@@ -861,8 +861,15 @@ E.Options.args.general = {
 							disabled = function() return IsAddOnLoaded('!KalielsTracker') end,
 							set = function(info, value) E.db.general.objectiveFrameAutoHide = value; Blizzard:SetObjectiveFrameAutoHide(); end,
 						},
-						objectiveFrameHeight = {
+						objectiveFrameAutoHideInKeystone = {
 							order = 32,
+							type = 'toggle',
+							name = L["Hide In Keystone"],
+							hidden = function() return not E.db.general.objectiveFrameAutoHide end,
+							set = function(info, value) E.db.general.objectiveFrameAutoHideInKeystone = value end,
+						},
+						objectiveFrameHeight = {
+							order = 33,
 							type = 'range',
 							name = L["Objective Frame Height"],
 							desc = L["Height of the objective tracker. Increase size to be able to see more objectives."],
@@ -870,7 +877,7 @@ E.Options.args.general = {
 							set = function(info, value) E.db.general.objectiveFrameHeight = value; Blizzard:SetObjectiveFrameHeight(); end,
 						},
 						bonusObjectivePosition = {
-							order = 33,
+							order = 34,
 							type = 'select',
 							name = L["Bonus Reward Position"],
 							desc = L["Position of bonus quest reward frame relative to the objective tracker."],
