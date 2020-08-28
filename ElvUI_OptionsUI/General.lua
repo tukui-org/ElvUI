@@ -346,7 +346,6 @@ E.Options.args.general = {
 									desc = L["The font that the core of the UI will use."],
 									values = AceGUIWidgetLSMlists.font,
 									set = function(info, value) E.db.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
-									width = 'double',
 								},
 								fontSize = {
 									order = 2,
@@ -396,7 +395,6 @@ E.Options.args.general = {
 							values = AceGUIWidgetLSMlists.font,
 							get = function(info) return E.private.general[info[#info]] end,
 							set = function(info, value) E.private.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show('PRIVATE_RL'); end,
-							width = 'double',
 						},
 						replaceNameFont = {
 							order = 8,
@@ -414,7 +412,6 @@ E.Options.args.general = {
 							values = AceGUIWidgetLSMlists.font,
 							get = function(info) return E.private.general[info[#info]] end,
 							set = function(info, value) E.private.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); E:StaticPopup_Show('PRIVATE_RL'); end,
-							width = 'double',
 						},
 					},
 				},
@@ -431,7 +428,6 @@ E.Options.args.general = {
 							name = L["Primary Texture"],
 							desc = L["The texture that will be used mainly for statusbars."],
 							values = AceGUIWidgetLSMlists.statusbar,
-							width = 'double',
 							set = function(info, value)
 								local previousValue = E.private.general[info[#info]]
 								E.private.general[info[#info]] = value;
@@ -452,7 +448,6 @@ E.Options.args.general = {
 							name = L["Secondary Texture"],
 							desc = L["This texture will get used on objects like chat windows and dropdown menus."],
 							values = AceGUIWidgetLSMlists.statusbar,
-							width = 'double',
 							set = function(info, value)
 								E.private.general[info[#info]] = value;
 								E:UpdateMedia()
