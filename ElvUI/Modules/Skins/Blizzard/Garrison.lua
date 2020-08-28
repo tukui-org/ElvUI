@@ -549,6 +549,7 @@ function S:Blizzard_GarrisonUI()
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame
 	SkinMissionFrame(CovenantMissionFrame) -- currently dont use StripTextures here, cause it seems blizzard fucks this up /shurg
+	CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
 
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
 	S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar)
@@ -571,6 +572,7 @@ function S:Blizzard_GarrisonUI()
 	Follower:CreateBackdrop('Transparent')
 
 	FollowerTab:StripTextures()
+	FollowerTab.RaisedFrameEdges:SetAlpha(0)
 	S:HandleScrollBar(_G.CovenantMissionFrameFollowersListScrollFrameScrollBar)
 	S:HandleIcon(CovenantMissionFrame.FollowerTab.HealFollowerFrame.CostFrame.CostIcon)
 
