@@ -1146,8 +1146,6 @@ function CH:PositionChat(chat)
 end
 
 function CH:PositionChats()
-	if not E.private.chat.enable then return end
-
 	_G.LeftChatPanel:SetSize(CH.db.panelWidth, CH.db.panelHeight)
 	if CH.db.separateSizes then
 		_G.RightChatPanel:SetSize(CH.db.panelWidthRight, CH.db.panelHeightRight)
@@ -1156,6 +1154,9 @@ function CH:PositionChats()
 	end
 
 	LO:RepositionChatDataPanels()
+
+	-- dont proceed when chat is disabled
+	if not E.private.chat.enable then return end
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		CH:PositionChat(_G[name])
@@ -3085,14 +3086,15 @@ function CH:Initialize()
 
 	CH:DelayGuildMOTD() -- Keep this before `is Chat Enabled` check
 
+	CH.db = E.db.chat
 	if not E.private.chat.enable then
 		-- if the chat module is off we still need to spawn the dts for the panels
 		-- if we are going to have the panels show even when it's disabled
-		LO:RepositionChatDataPanels()
+		CH:PositionChats()
+		CH:Panels_ColorUpdate()
 		return
 	end
 	CH.Initialized = true
-	CH.db = E.db.chat
 
 	if not ElvCharacterDB.ChatEditHistory then ElvCharacterDB.ChatEditHistory = {} end
 	if not ElvCharacterDB.ChatHistoryLog or not CH.db.chatHistory then ElvCharacterDB.ChatHistoryLog = {} end

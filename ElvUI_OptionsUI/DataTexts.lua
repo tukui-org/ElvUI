@@ -612,7 +612,10 @@ E.Options.args.datatexts = {
 									_G.HideLeftChat()
 								end
 
-								Chat:UpdateEditboxAnchors()
+								if E.private.chat.enable then
+									Chat:UpdateEditboxAnchors()
+								end
+
 								Layout:ToggleChatPanels()
 								Layout:SetDataPanelStyle()
 								DT:UpdatePanelInfo('LeftChatDataPanel')
@@ -654,7 +657,10 @@ E.Options.args.datatexts = {
 									_G.HideRightChat()
 								end
 
-								Chat:UpdateEditboxAnchors()
+								if E.private.chat.enable then
+									Chat:UpdateEditboxAnchors()
+								end
+
 								Layout:ToggleChatPanels()
 								Layout:SetDataPanelStyle()
 								DT:UpdatePanelInfo('RightChatDataPanel')
