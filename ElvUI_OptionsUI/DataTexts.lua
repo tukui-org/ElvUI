@@ -612,7 +612,10 @@ E.Options.args.datatexts = {
 									_G.HideLeftChat()
 								end
 
-								Chat:UpdateEditboxAnchors()
+								if E.private.chat.enable then
+									Chat:UpdateEditboxAnchors()
+								end
+
 								Layout:ToggleChatPanels()
 								Layout:SetDataPanelStyle()
 								DT:UpdatePanelInfo('LeftChatDataPanel')
@@ -654,7 +657,10 @@ E.Options.args.datatexts = {
 									_G.HideRightChat()
 								end
 
-								Chat:UpdateEditboxAnchors()
+								if E.private.chat.enable then
+									Chat:UpdateEditboxAnchors()
+								end
+
 								Layout:ToggleChatPanels()
 								Layout:SetDataPanelStyle()
 								DT:UpdatePanelInfo('RightChatDataPanel')
@@ -683,6 +689,7 @@ E.Options.args.datatexts = {
 					desc = L["Display minimap panels below the minimap, used for datatexts."],
 					get = function(info) return E.db.datatexts.panels.MinimapPanel[info[#info]] end,
 					set = function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') end,
+					hidden = function() return not E.private.general.minimap.enable end,
 					order = 4,
 					args = {
 						enable = {
@@ -692,7 +699,10 @@ E.Options.args.datatexts = {
 							set = function(info, value)
 								E.db.datatexts.panels[info[#info - 1]][info[#info]] = value
 								DT:UpdatePanelInfo('MinimapPanel')
-								Minimap:UpdateSettings()
+
+								if E.private.general.minimap.enable then
+									Minimap:UpdateSettings()
+								end
 							end,
 						},
 						numPoints = {
