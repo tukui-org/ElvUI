@@ -1,6 +1,8 @@
 ### Version 11.52 [ ETA: 🍨 ]
 
 **Shiny:**  
+Objective Tracker option to hide while in Mythic Keystone runs.  
+Config button border color wasn't updating when changing border color.  
 
 ___
 
