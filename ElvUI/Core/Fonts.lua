@@ -48,8 +48,8 @@ function E:UpdateBlizzardFonts()
 		_G.STANDARD_TEXT_FONT	= NORMAL
 
 		--SetFont(_G.NumberFontNormal,					LSM:Fetch('font', 'Homespun'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)
-		--SetFont(_G.GameFontNormalSmall,					NORMAL, 12, nil, nil, nil, nil, nil, nil, nil, unpack(E.media.rgbvaluecolor))
-		SetFont(_G.AchievementFont_Small,				NORMAL, E.db.general.fontSize)			-- Achiev dates
+		--SetFont(_G.GameFontNormalSmall,				NORMAL, 12, nil, nil, nil, nil, nil, nil, nil, unpack(E.media.rgbvaluecolor))
+		SetFont(_G.AchievementFont_Small,				NORMAL, E.db.general.fontSize)				-- Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)									-- Talent Title
 		SetFont(_G.ChatBubbleFont,						BUBBLE, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 		SetFont(_G.CoreAbilityFont,						NORMAL, 26)									-- Core abilities(title)
@@ -77,24 +77,24 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game60Font,							NORMAL, 60)
 		SetFont(_G.Game72Font,							NORMAL, 72)
 		SetFont(_G.Game120Font,							NORMAL, 120)
-		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, nil, SHADOWCOLOR, BIGOFFSET)	-- Used at the install steps
+		SetFont(_G.GameFont_Gigantic,					NORMAL, 32, 'OUTLINE')						-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15)									-- Fix QuestLog Title mouseover
-		SetFont(_G.GameFontHighlightSmall2,				NORMAL, E.db.general.fontSize)			-- Skill or Recipe description on TradeSkill frame
+		SetFont(_G.GameFontHighlightSmall2,				NORMAL, E.db.general.fontSize)				-- Skill or Recipe description on TradeSkill frame
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, 24)									-- Mythic weekly best dungeon name
 		SetFont(_G.GameFontNormalLarge2,				NORMAL, 15) 								-- Garrison Follower Names
 		SetFont(_G.GameFontNormalMed1,					NORMAL, 14)									-- WoW Token Info
-		SetFont(_G.GameFontNormalMed2,					NORMAL, E.db.general.fontSize*1.1)		-- Quest tracker
+		SetFont(_G.GameFontNormalMed2,					NORMAL, E.db.general.fontSize*1.1)			-- Quest tracker
 		SetFont(_G.GameFontNormalMed3,					NORMAL, 15)
 		SetFont(_G.GameFontNormalSmall2,				NORMAL, 12)									-- MissionUI Followers names
 		SetFont(_G.GameTooltipHeader,					NORMAL, E.db.general.fontSize)
 		SetFont(_G.InvoiceFont_Med,						NORMAL, 12)									-- Mail
-		SetFont(_G.InvoiceFont_Small,					NORMAL, E.db.general.fontSize)			-- Mail
+		SetFont(_G.InvoiceFont_Small,					NORMAL, E.db.general.fontSize)				-- Mail
 		SetFont(_G.MailFont_Large,						NORMAL, 14)									-- Mail
 		SetFont(_G.NumberFont_Outline_Huge,				NUMBER, 28, MONOCHROME..'THICKOUTLINE', 28)
 		SetFont(_G.NumberFont_Outline_Large,			NUMBER, 15, MONOCHROME..'OUTLINE')
 		SetFont(_G.NumberFont_Outline_Med,				NUMBER, E.db.general.fontSize*1.1, 'OUTLINE')
 		SetFont(_G.NumberFont_OutlineThick_Mono_Small,	NUMBER, E.db.general.fontSize, 'OUTLINE')
-		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, E.db.general.fontSize)			-- Chat EditBox
+		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, E.db.general.fontSize)				-- Chat EditBox
 		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, E.db.general.fontSize)
 		SetFont(_G.NumberFontNormalSmall,				NORMAL, 11, 'OUTLINE')						-- Calendar, EncounterJournal
 		SetFont(_G.Number11Font,						NORMAL, 11)
@@ -110,7 +110,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.QuestFont_Shadow_Huge,				NORMAL, 15, nil, SHADOWCOLOR, NORMALOFFSET) -- Quest Title
 		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, 14, nil, SHADOWCOLOR, NORMALOFFSET)
 		SetFont(_G.QuestFont_Super_Huge,				NORMAL, 22, nil, SHADOWCOLOR, BIGOFFSET)
-		SetFont(_G.ReputationDetailFont,				NORMAL, E.db.general.fontSize)			-- Rep Desc when clicking a rep
+		SetFont(_G.ReputationDetailFont,				NORMAL, E.db.general.fontSize)				-- Rep Desc when clicking a rep
 		SetFont(_G.SubZoneTextFont,						NORMAL, 24, MONOCHROME..'OUTLINE')			-- World Map(SubZone)
 		SetFont(_G.SubZoneTextString,					NORMAL, 25, MONOCHROME..'OUTLINE')
 		SetFont(_G.SystemFont_Huge1, 					NORMAL, 20)									-- Garrison Mission XP
