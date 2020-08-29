@@ -78,12 +78,12 @@ local function OnEvent(self)
 	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins))
 end
 
-local function deleteCharacter(self, name)
-	ElvDB.gold[E.myrealm][name] = nil
-	ElvDB.class[E.myrealm][name] = nil
-	ElvDB.faction[E.myrealm][name] = nil
+local function deleteCharacter(self, realm, name)
+	ElvDB.gold[realm][name] = nil
+	ElvDB.class[realm][name] = nil
+	ElvDB.faction[realm][name] = nil
 
-	if name == E.myname then
+	if name == E.myname and realm == E.myrealm then
 		OnEvent(self)
 	end
 end
@@ -93,8 +93,17 @@ local function Click(self, btn)
 		if IsShiftKeyDown() then
 			wipe(menuList)
 			tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
-			for name in pairs(ElvDB.gold[E.myrealm]) do
-				tinsert(menuList, { text = name, notCheckable = true, func = function() deleteCharacter(self, name) end })
+
+			for realm in pairs(ElvDB.serverID[E.serverID]) do
+				for name in pairs(ElvDB.gold[realm]) do
+					tinsert(menuList, {
+						text = format('%s - %s', name, realm),
+						notCheckable = true,
+						func = function()
+							deleteCharacter(self, realm, name)
+						end
+					})
+				end
 			end
 
 			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
