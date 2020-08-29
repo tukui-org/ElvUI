@@ -9,9 +9,9 @@ function S:Blizzard_RuneforgeUI()
 
 	local frame = _G.RuneforgeFrame
 	frame.Title:FontTemplate(nil, 22)
+	S:HandleCloseButton(frame.CloseButton)
 
 	S:HandleButton(frame.CreateFrame.CraftItemButton)
-	S:HandleButton(frame.CreateFrame.CloseButton)
 
 	local powerFrame = frame.CraftingFrame.PowerFrame
 

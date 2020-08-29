@@ -711,6 +711,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[314411] = Defaults(), -- Lingering Doubt
 		[314565] = Defaults(), -- Defiled Ground
 		[314392] = Defaults(), -- Vile Corruption
+		-- Shadowlands
+		[342494] = Defaults(), -- Belligerent Boast (Prideful)
 
 	-- Shadowlands Dungeons
 		-- Halls of Atonement
@@ -1332,6 +1334,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
+		-- Shadowlands
+		[343502] = Defaults(), -- Inspiring
+		[342332] = Defaults(), -- Bursting With Pride (Prideful)
+		[340880] = Defaults(), -- Prideful
 	},
 }
 
@@ -1377,7 +1383,7 @@ G.unitframe.buffwatch = {
 		[155777] = UF:AuraWatch_AddSpell(155777, 'RIGHT', {0.8, 0.4, 0.8}), 			-- Germination
 		[8936]   = UF:AuraWatch_AddSpell(8936, 'BOTTOMLEFT', {0.2, 0.8, 0.2}),			-- Regrowth
 		[33763]  = UF:AuraWatch_AddSpell(33763, 'TOPLEFT', {0.4, 0.8, 0.2}), 			-- Lifebloom (Normal version)
-		[188550]  = UF:AuraWatch_AddSpell(188550, 'TOPLEFT', {0.4, 0.8, 0.2}),			-- Lifebloom (Legendary version)
+		[188550] = UF:AuraWatch_AddSpell(188550, 'TOPLEFT', {0.4, 0.8, 0.2}),			-- Lifebloom (Legendary version)
 		[48438]  = UF:AuraWatch_AddSpell(48438, 'BOTTOMRIGHT', {0.8, 0.4, 0}),			-- Wild Growth
 		[207386] = UF:AuraWatch_AddSpell(207386, 'TOP', {0.4, 0.2, 0.8}), 				-- Spring Blossoms
 		[102351] = UF:AuraWatch_AddSpell(102351, 'LEFT', {0.2, 0.8, 0.8}),				-- Cenarion Ward (Initial Buff)
@@ -1396,7 +1402,7 @@ G.unitframe.buffwatch = {
 	},
 	SHAMAN = {
 		[61295]  = UF:AuraWatch_AddSpell(61295, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Riptide
-		[974] = UF:AuraWatch_AddSpell(974, 'BOTTOMRIGHT', {0.2, 0.2, 1}),				-- Earth Shield
+		[974]    = UF:AuraWatch_AddSpell(974, 'BOTTOMRIGHT', {0.2, 0.2, 1}),				-- Earth Shield
 	},
 	MONK = {
 		[119611] = UF:AuraWatch_AddSpell(119611, 'TOPLEFT', {0.3, 0.8, 0.6}),			-- Renewing Mist
@@ -1405,7 +1411,7 @@ G.unitframe.buffwatch = {
 		[191840] = UF:AuraWatch_AddSpell(191840, 'BOTTOMRIGHT', {0.27, 0.62, 0.7}),		-- Essence Font
 	},
 	ROGUE = {
-		[57934] = UF:AuraWatch_AddSpell(57934, 'TOPRIGHT', {0.89, 0.09, 0.05}),			-- Tricks of the Trade
+		[57934]  = UF:AuraWatch_AddSpell(57934, 'TOPRIGHT', {0.89, 0.09, 0.05}),			-- Tricks of the Trade
 	},
 	WARRIOR = {
 		[114030] = UF:AuraWatch_AddSpell(114030, 'TOPLEFT', {0.2, 0.2, 1}),				-- Vigilance
@@ -1416,7 +1422,7 @@ G.unitframe.buffwatch = {
 		[193396] = UF:AuraWatch_AddSpell(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true),	-- Demonic Empowerment
 		-- Hunter Pets
 		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
-		[136]   = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)			-- Mend Pet
+		[136]    = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)			-- Mend Pet
 	},
 	HUNTER = {}, -- Keep even if it's an empty table, so a reference to G.unitframe.buffwatch[E.myclass][SomeValue] doesn't trigger error
 	DEMONHUNTER = {},
@@ -1439,8 +1445,8 @@ G.unitframe.ChannelTicks = {
 	-- Priest
 	[64843]  = 4, -- Divine Hymn
 	[15407]  = 4, -- Mind Flay
-	[48045] = 5, -- Mind Sear
-	[47757] = 5, -- Penance (it seems, that this spell have on own ID for channeling. Its not the actual spell itself)
+	[48045]  = 5, -- Mind Sear
+	[47757]  = 5, -- Penance (it seems, that this spell have on own ID for channeling. Its not the actual spell itself)
 	-- Mage
 	[5143]   = 5,  -- Arcane Missiles
 	[12051]  = 3,  -- Evocation
