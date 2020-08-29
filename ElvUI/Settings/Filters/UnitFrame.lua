@@ -711,6 +711,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[314411] = Defaults(), -- Lingering Doubt
 		[314565] = Defaults(), -- Defiled Ground
 		[314392] = Defaults(), -- Vile Corruption
+		-- Shadowlands
+		[342494] = Defaults(), -- Belligerent Boast (Prideful)
 
 	-- Shadowlands Dungeons
 		-- Halls of Atonement
@@ -1334,6 +1336,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[226510] = Defaults(), -- Sanguine
 		-- Shadowlands
 		[343502] = Defaults(), -- Inspiring
+		[342332] = Defaults(), -- Bursting With Pride (Prideful)
+		[340880] = Defaults(), -- Prideful
 	},
 }
 
