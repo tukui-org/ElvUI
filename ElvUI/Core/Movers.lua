@@ -380,13 +380,10 @@ function E:ToggleMovers(show, which)
 	local upperText = strupper(which)
 	local lowerText = strlower(which)
 	for _, holder in pairs(E.CreatedMovers) do
-		if show then
-			if (holder.mover.name == which) or strlower(holder.mover.textString) == lowerText then
-				holder.mover:Show()
-				break -- we just are doing one
-			elseif holder.types[upperText] then
-				holder.mover:Show() -- we are showing a group
-			end
+		local single = (holder.mover.name == which) or strlower(holder.mover.textString) == lowerText
+		local group = holder.types[upperText]
+		if show and (single or group) then
+			holder.mover:Show()
 		else
 			holder.mover:Hide()
 		end
