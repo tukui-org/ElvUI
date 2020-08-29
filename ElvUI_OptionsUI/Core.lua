@@ -9,7 +9,14 @@ local C, L = Engine[1], Engine[2]
 local _G, format, sort, tinsert, strmatch = _G, format, sort, tinsert, strmatch
 
 C.Values = {
-	FontFlags = { NONE = L["NONE"], OUTLINE = 'OUTLINE', MONOCHROMEOUTLINE = 'MONOCROMEOUTLINE', THICKOUTLINE = 'THICKOUTLINE' },
+	FontFlags = {
+		NONE = L["NONE"],
+		OUTLINE = 'Outline',
+		THICKOUTLINE = 'Thick',
+		MONOCHROME = '|cffaaaaaaMono|r',
+		MONOCHROMEOUTLINE = '|cffaaaaaaMono|r Outline',
+		MONOCHROMETHICKOUTLINE = '|cffaaaaaaMono|r Thick',
+	},
 	FontSize = { min = 8, max = 64, step = 1 },
 	Strata = { BACKGROUND = 'BACKGROUND', LOW = 'LOW', MEDIUM = 'MEDIUM', HIGH = 'HIGH', DIALOG = 'DIALOG', TOOLTIP = 'TOOLTIP' },
 	GrowthDirection = {

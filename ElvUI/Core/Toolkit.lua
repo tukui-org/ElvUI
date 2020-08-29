@@ -290,9 +290,12 @@ local function StripTexts(object, kill, alpha)
 	StripType(STRIP_FONT, object, kill, alpha)
 end
 
-local function FontTemplate(fs, font, size, style)
-	fs.font, fs.fontSize, fs.fontStyle = font or E.media.normFont, size or E.db.general.fontSize, style or E.db.general.fontStyle
-	fs:SetFont(fs.font, fs.fontSize, fs.fontStyle)
+local function FontTemplate(fs, font, size, style, skip)
+	if not skip then -- ignore updates from UpdateFontTemplates
+		fs.font, fs.fontSize, fs.fontStyle = font, size, style
+	end
+
+	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, style or E.db.general.fontStyle)
 
 	if style == 'NONE' then
 		fs:SetShadowOffset(1, -0.5)
