@@ -1,8 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local unpack, tonumber = unpack, tonumber
-local abs, min = abs, min
+local unpack, tonumber, abs = unpack, tonumber, abs
 
 local CreateFrame = CreateFrame
 local UnitSpellHaste = UnitSpellHaste
