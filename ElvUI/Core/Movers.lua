@@ -3,7 +3,7 @@ local Sticky = E.Libs.SimpleSticky
 
 local _G = _G
 local type, unpack, pairs, error, ipairs = type, unpack, pairs, error, ipairs
-local format, split, find, strupper, strlower = format, strsplit, strfind, strupper, strlower
+local format, split, find, strupper = format, strsplit, strfind, strupper
 
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -378,11 +378,9 @@ function E:ToggleMovers(show, which)
 	self.configMode = show
 
 	local upperText = strupper(which)
-	local lowerText = strlower(which)
 	for _, holder in pairs(E.CreatedMovers) do
-		local single = (holder.mover.name == which) or strlower(holder.mover.textString) == lowerText
-		local group = holder.types[upperText]
-		if show and (single or group) then
+		local isName = (holder.mover.name == which) or strupper(holder.mover.textString) == upperText
+		if show and (isName or holder.types[upperText]) then
 			holder.mover:Show()
 		else
 			holder.mover:Hide()
