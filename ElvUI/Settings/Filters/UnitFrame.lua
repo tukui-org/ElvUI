@@ -1332,6 +1332,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
+		-- Shadowlands
+		[343502] = Defaults(), -- Inspiring
 	},
 }
 
