@@ -53,6 +53,10 @@ local function OnEvent(self)
 	ElvDB.faction[E.myrealm] = ElvDB.faction[E.myrealm] or {}
 	ElvDB.faction[E.myrealm][E.myname] = E.myfaction
 
+	ElvDB.serverID = ElvDB.serverID or {}
+	ElvDB.serverID[E.serverID] = ElvDB.serverID[E.serverID] or {}
+	ElvDB.serverID[E.serverID][E.myrealm] = true
+
 	--prevent an error possibly from really old profiles
 	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
 	if oldMoney and type(oldMoney) ~= 'number' then
@@ -125,27 +129,30 @@ local function OnEnter()
 	DT.tooltip:AddLine(L["Character: "])
 
 	wipe(myGold)
-	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
-		if ElvDB.gold[E.myrealm][k] then
-			local color = E:ClassColor(ElvDB.class[E.myrealm][k]) or PRIEST_COLOR
-			tinsert(myGold,
-				{
-					name = k,
-					amount = ElvDB.gold[E.myrealm][k],
-					amountText = E:FormatMoney(ElvDB.gold[E.myrealm][k], E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins),
-					faction = ElvDB.faction[E.myrealm][k] or '',
-					r = color.r, g = color.g, b = color.b,
-				}
-			)
-		end
+	for realm in pairs(ElvDB.serverID[E.serverID]) do
+		for k, _ in pairs(ElvDB.gold[realm]) do
+			if ElvDB.gold[realm][k] then
+				local color = E:ClassColor(ElvDB.class[realm][k]) or PRIEST_COLOR
+				tinsert(myGold,
+					{
+						name = k,
+						realm = realm,
+						amount = ElvDB.gold[realm][k],
+						amountText = E:FormatMoney(ElvDB.gold[realm][k], E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins),
+						faction = ElvDB.faction[realm][k] or '',
+						r = color.r, g = color.g, b = color.b,
+					}
+				)
+			end
 
-		if ElvDB.faction[E.myrealm][k] == 'Alliance' then
-			totalAlliance = totalAlliance+ElvDB.gold[E.myrealm][k]
-		elseif ElvDB.faction[E.myrealm][k] == 'Horde' then
-			totalHorde = totalHorde+ElvDB.gold[E.myrealm][k]
-		end
+			if ElvDB.faction[realm][k] == 'Alliance' then
+				totalAlliance = totalAlliance+ElvDB.gold[realm][k]
+			elseif ElvDB.faction[realm][k] == 'Horde' then
+				totalHorde = totalHorde+ElvDB.gold[realm][k]
+			end
 
-		totalGold = totalGold+ElvDB.gold[E.myrealm][k]
+			totalGold = totalGold+ElvDB.gold[realm][k]
+		end
 	end
 
 	sort(myGold, sortFunction)
@@ -156,9 +163,8 @@ local function OnEnter()
 			nameLine = format('|TInterface/FriendsFrame/PlusManz-%s:14|t ', g.faction)
 		end
 
-		nameLine = g.name == E.myname and nameLine..g.name..' |TInterface/COMMON/Indicator-Green:14|t' or nameLine..g.name
-
-		DT.tooltip:AddDoubleLine(nameLine, g.amountText, g.r, g.g, g.b, 1, 1, 1)
+		local toonName = format('%s%s%s', nameLine, g.name, (g.realm and g.realm ~= E.myrealm and ' - '..g.realm) or '')
+		DT.tooltip:AddDoubleLine((g.name == E.myname and toonName..' |TInterface/COMMON/Indicator-Green:14|t') or toonName, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')
