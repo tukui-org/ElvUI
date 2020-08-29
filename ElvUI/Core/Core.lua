@@ -484,7 +484,7 @@ end
 function E:UpdateFontTemplates()
 	for text in pairs(E.texts) do
 		if text then
-			text:FontTemplate(text.font, text.fontSize, text.fontStyle)
+			text:FontTemplate(text.font, text.fontSize, text.fontStyle, true)
 		else
 			E.texts[text] = nil
 		end

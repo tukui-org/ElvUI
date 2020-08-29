@@ -255,7 +255,7 @@ E.Options.args.filters = {
 					name = L["Select Spell"],
 					type = 'select',
 					order = 1,
-					width = 'double',
+					customWidth = 350,
 					get = function(info) return selectedSpell or '' end,
 					set = function(info, value)
 						selectedSpell = (value ~= '' and value) or nil
@@ -267,6 +267,7 @@ E.Options.args.filters = {
 					name = L["Filter Search"],
 					desc = L["Search for a spell name inside of a filter."],
 					type = 'input',
+					customWidth = 200,
 					get = function() return quickSearchText end,
 					set = function(info,value) quickSearchText = value end,
 				},
@@ -283,42 +284,8 @@ E.Options.args.filters = {
 					set = function(info, value) E.global.unitframe.aurafilters[selectedFilter].type = value; UF:Update_AllFrames(); end,
 					hidden = function() return (selectedFilter == 'Debuff Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' or selectedFilter == 'Whitelist' or selectedFilter == 'Blacklist') end,
 				},
-				addSpell = {
-					order = 4,
-					name = L["Add SpellID"],
-					desc = L["Add a spell to the filter."],
-					type = 'input',
-					get = function(info) return '' end,
-					set = function(info, value)
-						value = tonumber(value)
-						if not value then return end
-
-						local spellName = GetSpellInfo(value)
-						selectedSpell = (spellName and value) or nil
-						if not selectedSpell then return end
-
-						if selectedFilter == 'Debuff Highlight' then
-							if not E.global.unitframe.DebuffHighlightColors[value] then
-								E.global.unitframe.DebuffHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85} }
-							end
-						elseif selectedFilter == 'AuraBar Colors' then
-							if not E.global.unitframe.AuraBarColors[value] then
-								E.global.unitframe.AuraBarColors[value] = E:CopyTable({}, auraBarDefaults)
-							end
-						elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
-							local selectedTable = GetSelectedFilters()
-							if not selectedTable[value] then
-								selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
-							end
-						elseif not E.global.unitframe.aurafilters[selectedFilter].spells[value] then
-							E.global.unitframe.aurafilters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
-						end
-
-						UF:Update_AllFrames()
-					end,
-				},
 				removeSpell = {
-					order = 5,
+					order = 4,
 					name = L["Remove Spell"],
 					desc = L["Remove a spell from the filter. Use the spell ID if you see the ID as part of the spell name in the filter."],
 					type = 'select',
@@ -327,6 +294,7 @@ E.Options.args.filters = {
 						local name = (spellName and format('%s |cFF888888(%s)|r', spellName, value)) or tostring(value)
 						return 'Remove Spell - '..name
 					end,
+					customWidth = 350,
 					get = function(info) return '' end,
 					set = function(info, value)
 						if not value then return end
@@ -357,6 +325,41 @@ E.Options.args.filters = {
 						UF:Update_AllFrames();
 					end,
 					values = SetSpellList,
+				},
+				addSpell = {
+					order = 5,
+					name = L["Add SpellID"],
+					desc = L["Add a spell to the filter."],
+					type = 'input',
+					customWidth = 200,
+					get = function(info) return '' end,
+					set = function(info, value)
+						value = tonumber(value)
+						if not value then return end
+
+						local spellName = GetSpellInfo(value)
+						selectedSpell = (spellName and value) or nil
+						if not selectedSpell then return end
+
+						if selectedFilter == 'Debuff Highlight' then
+							if not E.global.unitframe.DebuffHighlightColors[value] then
+								E.global.unitframe.DebuffHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85} }
+							end
+						elseif selectedFilter == 'AuraBar Colors' then
+							if not E.global.unitframe.AuraBarColors[value] then
+								E.global.unitframe.AuraBarColors[value] = E:CopyTable({}, auraBarDefaults)
+							end
+						elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
+							local selectedTable = GetSelectedFilters()
+							if not selectedTable[value] then
+								selectedTable[value] = UF:AuraWatch_AddSpell(value, 'TOPRIGHT')
+							end
+						elseif not E.global.unitframe.aurafilters[selectedFilter].spells[value] then
+							E.global.unitframe.aurafilters[selectedFilter].spells[value] = { enable = true, priority = 0, stackThreshold = 0 }
+						end
+
+						UF:Update_AllFrames()
+					end,
 				},
 			},
 		},
