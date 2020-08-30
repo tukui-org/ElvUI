@@ -45,6 +45,7 @@ E.Options.args.skins.args.blizzard.values = {
 	calendar = L["Calendar Frame"],
 	channels  = L["CHANNELS"],
 	character = L["Character Frame"],
+	chromieTime = L["Chromie Time Frame"],
 	collections = L["COLLECTIONS"],
 	communities = L["COMMUNITIES"],
 	contribution = L["Contribution"],
