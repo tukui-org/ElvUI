@@ -363,13 +363,13 @@ local function Click(self, btn)
 		menuList[2].menuList = {}
 		menuList[3].menuList = {}
 
-		if not E.db.datatexts.friends.hideWoW then
+		if not E.global.datatexts.settings.Friends.hideWoW then
 			for _, info in ipairs(friendTable) do
 				if info.online then
 					local shouldSkip = false
-					if (info.status == statusTable.AFK) and E.db.datatexts.friends.hideAFK then
+					if (info.status == statusTable.AFK) and E.global.datatexts.settings.Friends.hideAFK then
 						shouldSkip = true
-					elseif (info.status == statusTable.DND) and E.db.datatexts.friends.hideDND then
+					elseif (info.status == statusTable.DND) and E.global.datatexts.settings.Friends.hideDND then
 						shouldSkip = true
 					end
 					if not shouldSkip then
@@ -391,12 +391,12 @@ local function Click(self, btn)
 		for _, info in ipairs(BNTable) do
 			if info.isOnline then
 				local shouldSkip = false
-				if (info.isBnetAFK == true) and E.db.datatexts.friends.hideAFK then
+				if (info.isBnetAFK == true) and E.global.datatexts.settings.Friends.hideAFK then
 					shouldSkip = true
-				elseif (info.isBnetDND == true) and E.db.datatexts.friends.hideDND then
+				elseif (info.isBnetDND == true) and E.global.datatexts.settings.Friends.hideDND then
 					shouldSkip = true
 				end
-				if info.client and E.db.datatexts.friends['hide'..info.client] then
+				if info.client and E.global.datatexts.settings.Friends['hide'..info.client] then
 					shouldSkip = true
 				end
 				if not shouldSkip then
@@ -470,13 +470,13 @@ local function OnEnter()
 	local zonec, classc, levelc, realmc
 
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
-	if (onlineFriends > 0) and not E.db.datatexts.friends.hideWoW then
+	if (onlineFriends > 0) and not E.global.datatexts.settings.Friends.hideWoW then
 		for _, info in ipairs(friendTable) do
 			if info.online then
 				local shouldSkip = false
-				if (info.status == statusTable.AFK) and E.db.datatexts.friends.hideAFK then
+				if (info.status == statusTable.AFK) and E.global.datatexts.settings.Friends.hideAFK then
 					shouldSkip = true
-				elseif (info.status == statusTable.DND) and E.db.datatexts.friends.hideDND then
+				elseif (info.status == statusTable.DND) and E.global.datatexts.settings.Friends.hideDND then
 					shouldSkip = true
 				end
 				if not shouldSkip then
@@ -494,18 +494,18 @@ local function OnEnter()
 		local status
 		for _, client in ipairs(clientSorted) do
 			local Table = tableList[client]
-			local shouldSkip = E.db.datatexts.friends['hide'..client]
+			local shouldSkip = E.global.datatexts.settings.Friends['hide'..client]
 			if not shouldSkip then
 				for _, info in ipairs(Table) do
 					if info.isOnline then
 						shouldSkip = false
 						if info.isBnetAFK == true then
-							if E.db.datatexts.friends.hideAFK then
+							if E.global.datatexts.settings.Friends.hideAFK then
 								shouldSkip = true
 							end
 							status = statusTable.AFK
 						elseif info.isBnetDND == true then
-							if E.db.datatexts.friends.hideDND then
+							if E.global.datatexts.settings.Friends.hideDND then
 								shouldSkip = true
 							end
 							status = statusTable.DND
