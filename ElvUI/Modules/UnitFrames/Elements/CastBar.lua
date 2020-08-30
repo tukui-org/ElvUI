@@ -289,6 +289,8 @@ function UF:CustomCastDelayText(duration)
 			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%s %.1f|r', abs(duration - self.max), self.max, '+', self.delay)
 		end
 	end
+
+	self.Time:SetWidth(self.Time:GetStringWidth())
 end
 
 function UF:CustomTimeText(duration)
