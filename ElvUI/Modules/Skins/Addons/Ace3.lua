@@ -531,8 +531,6 @@ function S:HookAce3(lib, minor, earlyLoad) -- lib: AceGUI
 
 	if earlyContainer then lib.RegisterAsContainer = earlyContainer end
 	if earlyWidget then lib.RegisterAsWidget = earlyWidget end
-
-	S:Ace3_SkinTooltip(lib)
 end
 
 do -- Early Skin Loading
@@ -559,6 +557,11 @@ do -- Early Skin Loading
 		if Libraries[n] then
 			if n == 'AceGUI' then
 				S:HookAce3(LibStub.libs[major], LibStub.minors[major], earlyLoad)
+				if earlyLoad then
+					tinsert(S.EarlyAceTooltips, major)
+				else
+					S:Ace3_SkinTooltip(LibStub.libs[major])
+				end
 			elseif n == 'AceConfigDialog' or n == 'AceConfigDialog-3.0-ElvUI' then
 				if earlyLoad then
 					tinsert(S.EarlyAceTooltips, major)
