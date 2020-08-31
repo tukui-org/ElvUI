@@ -133,28 +133,33 @@ function E:Grid_Create()
 	local width, height = E.UIParent:GetSize()
 	local size, half = E.mult / 2, height / 2
 
-	local ratio = width / height
-	local hStepheight = height * ratio
-	local wStep = width / E.db.gridSize
-	local hStep = hStepheight / E.db.gridSize
+	local gSize = E.db.gridSize
+	local gHalf = gSize / 2
 
-	grid.boxSize = E.db.gridSize
+	local ratio = width / height
+	local hHeight = height * ratio
+	local wStep = width / gSize
+	local hStep = hHeight / gSize
+
+	grid.boxSize = gSize
 	grid:SetPoint('CENTER', E.UIParent)
 	grid:SetSize(width, height)
 	grid:Show()
 
-	for i = 0, E.db.gridSize do
+	for i = 0, gSize do
 		local tx = E:Grid_GetRegion()
-		if i == E.db.gridSize / 2 then
+		if i == gHalf then
 			tx:SetColorTexture(1, 0, 0)
 			tx:SetDrawLayer('BACKGROUND', 1)
 		else
 			tx:SetColorTexture(0, 0, 0)
 			tx:SetDrawLayer('BACKGROUND', 0)
 		end
+
+		local iwStep = i*wStep
 		tx:ClearAllPoints()
-		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', i*wStep - size, 0)
-		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', i*wStep + size, 0)
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', iwStep - size, 0)
+		tx:SetPoint('BOTTOMRIGHT', grid, 'BOTTOMLEFT', iwStep + size, 0)
 	end
 
 	do
@@ -166,20 +171,23 @@ function E:Grid_Create()
 		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half + size))
 	end
 
-	for i = 1, floor((height/2)/hStep) do
+	local hSteps = floor((height/2)/hStep)
+	for i = 1, hSteps do
+		local ihStep = i*hStep
+
 		local tx = E:Grid_GetRegion()
 		tx:SetColorTexture(0, 0, 0)
 		tx:SetDrawLayer('BACKGROUND', 0)
 		tx:ClearAllPoints()
-		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(half+i*hStep) + size)
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half+i*hStep + size))
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(half+ihStep) + size)
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half+ihStep + size))
 
 		tx = E:Grid_GetRegion()
 		tx:SetColorTexture(0, 0, 0)
 		tx:SetDrawLayer('BACKGROUND', 0)
 		tx:ClearAllPoints()
-		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(half-i*hStep) + size)
-		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half-i*hStep + size))
+		tx:SetPoint('TOPLEFT', grid, 'TOPLEFT', 0, -(half-ihStep) + size)
+		tx:SetPoint('BOTTOMRIGHT', grid, 'TOPRIGHT', 0, -(half-ihStep + size))
 	end
 end
 
