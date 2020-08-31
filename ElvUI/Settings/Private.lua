@@ -145,6 +145,7 @@ V.skins = {
 
 		-- 9.0
 		animaDiversion = true,
+		chromieTime = true,
 		covenantPreview = true,
 		covenantSanctum = true,
 		guide = true,
