@@ -49,8 +49,7 @@ end
 -- Function to create buttons in this module
 function RU:CreateUtilButton(name, parent, template, width, height, point, relativeto, point2, xOfs, yOfs, text, texture)
 	local b = CreateFrame('Button', name, parent, template)
-	b:SetWidth(width)
-	b:SetHeight(height)
+	b:Size(width, height)
 	b:SetPoint(point, relativeto, point2, xOfs, yOfs)
 	b:HookScript('OnEnter', RU.ButtonEnter)
 	b:HookScript('OnLeave', RU.ButtonLeave)
@@ -210,8 +209,7 @@ function RU:Initialize()
 	local RaidUtilityPanel = CreateFrame('Frame', 'RaidUtilityPanel', E.UIParent, 'SecureHandlerBaseTemplate, BackdropTemplate')
 	RaidUtilityPanel:SetScript('OnMouseUp', function(panel, ...) SecureHandler_OnClick(panel, '_onclick', ...) end)
 	RaidUtilityPanel:SetTemplate('Transparent')
-	RaidUtilityPanel:SetWidth(230)
-	RaidUtilityPanel:SetHeight(PANEL_HEIGHT)
+	RaidUtilityPanel:Size(230, PANEL_HEIGHT)
 	RaidUtilityPanel:SetPoint('TOP', E.UIParent, 'TOP', -400, 1)
 	RaidUtilityPanel:SetFrameLevel(3)
 	RaidUtilityPanel.toggled = false
@@ -281,8 +279,8 @@ function RU:Initialize()
 	SecureHandlerSetFrameRef(RaidUtilityPanel, 'RaidUtility_CloseButton', CloseButton)
 
 	local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel, 'BackdropTemplate')
-	RoleIcons:SetPoint('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
-	RoleIcons:SetSize(36, PANEL_HEIGHT)
+	RoleIcons:Point('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
+	RoleIcons:Size(36, PANEL_HEIGHT)
 	RoleIcons:SetTemplate('Transparent')
 	RoleIcons:RegisterEvent('PLAYER_ENTERING_WORLD')
 	RoleIcons:RegisterEvent('GROUP_ROSTER_UPDATE')
@@ -314,7 +312,7 @@ function RU:Initialize()
 		frame.role = role
 		frame:SetScript('OnEnter', RU.RoleOnEnter)
 		frame:SetScript('OnLeave', GameTooltip_Hide)
-		frame:SetSize(28, 28)
+		frame:Size(28)
 
 		RoleIcons.icons[role] = frame
 	end
@@ -359,10 +357,10 @@ function RU:Initialize()
 		tinsert(buttons, 'CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton')
 		local marker = _G.CompactRaidFrameManagerDisplayFrameLeaderOptionsRaidWorldMarkerButton
 		marker:ClearAllPoints()
-		marker:SetPoint('TOPRIGHT', _G.RoleCheckButton, 'BOTTOMRIGHT', 0, -5)
+		marker:Point('TOPRIGHT', _G.RoleCheckButton, 'BOTTOMRIGHT', 0, -5)
 		marker:SetParent('RaidUtilityPanel')
-		marker:SetHeight(18)
-		marker:SetWidth(_G.RoleCheckButton:GetWidth() * 0.22)
+		marker:Height(18)
+		marker:Width(_G.RoleCheckButton:GetWidth() * 0.22)
 		marker:CreateBackdrop(nil, true)
 		self.MarkerButton = marker
 

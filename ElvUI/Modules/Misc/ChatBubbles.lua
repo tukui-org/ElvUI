@@ -77,7 +77,7 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 	end
 
 	chatBubble.Name:SetFormattedText('|c%s%s|r', color.colorStr, name)
-	chatBubble.Name:SetWidth(chatBubble:GetWidth()-10)
+	chatBubble.Name:Width(chatBubble:GetWidth()-10)
 end
 
 local yOffset --Value set in M:LoadChatBubbles()
@@ -106,8 +106,8 @@ function M:SkinBubble(frame, backdrop)
 
 	if not frame.Name then
 		local name = frame:CreateFontString(nil, 'BORDER')
-		name:SetHeight(10) --Width set in M:AddChatBubbleName()
-		name:SetPoint('BOTTOM', frame, 'TOP', 0, yOffset)
+		name:Height(10) --Width set in M:AddChatBubbleName()
+		name:Point('BOTTOM', frame, 'TOP', 0, yOffset)
 		name:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize * 0.85, E.private.general.chatBubbleFontOutline)
 		name:SetJustifyH('LEFT')
 		frame.Name = name

@@ -253,7 +253,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		S:HandleSliderFrame(frame)
 
 		editbox:SetTemplate()
-		editbox:SetHeight(15)
+		editbox:Height(15)
 		editbox:SetPoint('TOP', frame, 'BOTTOM', 0, -1)
 
 		lowtext:SetPoint('TOPLEFT', frame, 'BOTTOMLEFT', 2, -2)
@@ -274,7 +274,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		local colorSwatch = widget.colorSwatch
 
 		frame:CreateBackdrop()
-		frame.backdrop:SetSize(24, 16)
+		frame.backdrop:Size(24, 16)
 		frame.backdrop:ClearAllPoints()
 		frame.backdrop:SetPoint('LEFT', frame, 'LEFT', 4, 0)
 

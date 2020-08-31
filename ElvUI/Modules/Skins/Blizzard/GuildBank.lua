@@ -35,7 +35,7 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankFrameWithdrawButton:SetPoint('RIGHT', _G.GuildBankFrameDepositButton, 'LEFT', -2, 0)
 	_G.GuildBankInfoScrollFrame:SetPoint('TOPLEFT', _G.GuildBankInfo, 'TOPLEFT', -10, 12)
 	_G.GuildBankInfoScrollFrame:StripTextures()
-	_G.GuildBankInfoScrollFrame:SetWidth(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
+	_G.GuildBankInfoScrollFrame:Width(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
 	GuildBankFrame.inset = CreateFrame('Frame', nil, GuildBankFrame, 'BackdropTemplate')

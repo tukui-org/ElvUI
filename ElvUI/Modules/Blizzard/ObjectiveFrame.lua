@@ -18,7 +18,7 @@ function B:SetObjectiveFrameHeight()
 	local maxHeight = screenHeight - gapFromTop
 	local objectiveFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
-	_G.ObjectiveTrackerFrame:SetHeight(objectiveFrameHeight)
+	_G.ObjectiveTrackerFrame:Height(objectiveFrameHeight)
 end
 
 local function IsFramePositionedLeft(frame)
@@ -46,7 +46,7 @@ end
 function B:MoveObjectiveFrame()
 	local ObjectiveFrameHolder = CreateFrame('Frame', 'ObjectiveFrameHolder', E.UIParent)
 	ObjectiveFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
-	ObjectiveFrameHolder:SetSize(130, 22)
+	ObjectiveFrameHolder:Size(130, 22)
 
 	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
 	ObjectiveFrameHolder:SetAllPoints(_G.ObjectiveFrameMover)

@@ -56,9 +56,9 @@ function S:PetStableFrame()
 	if PetStableSelectedPetIcon then
 		PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
 		local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent(), 'BackdropTemplate')
-		b:SetPoint('TOPLEFT', PetStableSelectedPetIcon, -p, p)
-		b:SetPoint('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
-		PetStableSelectedPetIcon:SetSize(37,37)
+		b:Point('TOPLEFT', PetStableSelectedPetIcon, -p, p)
+		b:Point('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
+		PetStableSelectedPetIcon:Size(37,37)
 		PetStableSelectedPetIcon:SetParent(b)
 		b:SetTemplate()
 	end

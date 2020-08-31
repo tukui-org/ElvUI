@@ -56,7 +56,7 @@ end
 function B:PositionAltPowerBar()
 	local holder = CreateFrame('Frame', 'AltPowerBarHolder', E.UIParent)
 	holder:SetPoint('TOP', E.UIParent, 'TOP', -1, -36)
-	holder:SetSize(128, 50)
+	holder:Size(128, 50)
 
 	_G.PlayerPowerBarAlt:ClearAllPoints()
 	_G.PlayerPowerBarAlt:SetPoint('CENTER', holder, 'CENTER')
@@ -96,10 +96,10 @@ function B:UpdateAltPowerBarSettings()
 	local bar = _G.ElvUI_AltPowerBar
 	local db = E.db.general.altPowerBar
 
-	bar:SetSize(db.width or 250, db.height or 20)
+	bar:Size(db.width or 250, db.height or 20)
 	bar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', db.statusBar))
 	bar.text:FontTemplate(E.Libs.LSM:Fetch('font', db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
-	_G.AltPowerBarHolder:SetSize(bar.backdrop:GetSize())
+	_G.AltPowerBarHolder:Size(bar.backdrop:GetSize())
 
 	E:SetSmoothing(bar, db.smoothbars)
 

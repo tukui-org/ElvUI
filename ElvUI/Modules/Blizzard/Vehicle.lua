@@ -15,15 +15,15 @@ local function VehicleSeatIndicator_SetPosition(_,_, parent)
 end
 
 local function VehicleSetUp(vehicleID)
-	_G.VehicleSeatIndicator:SetSize(E.db.general.vehicleSeatIndicatorSize, E.db.general.vehicleSeatIndicatorSize)
+	_G.VehicleSeatIndicator:Size(E.db.general.vehicleSeatIndicatorSize, E.db.general.vehicleSeatIndicatorSize)
 	local _, numSeatIndicators = GetVehicleUIIndicator(vehicleID)
 	if numSeatIndicators then
 		for i = 1, numSeatIndicators do
 			local button = _G['VehicleSeatIndicatorButton'..i]
-			button:SetSize(E.db.general.vehicleSeatIndicatorSize / 4, E.db.general.vehicleSeatIndicatorSize / 4)
+			button:Size(E.db.general.vehicleSeatIndicatorSize / 4, E.db.general.vehicleSeatIndicatorSize / 4)
 			local _, xOffset, yOffset = GetVehicleUIIndicatorSeat(vehicleID, i)
 			button:ClearAllPoints()
-			button:SetPoint('CENTER', button:GetParent(), 'TOPLEFT', xOffset * E.db.general.vehicleSeatIndicatorSize, -yOffset * E.db.general.vehicleSeatIndicatorSize)
+			button:Point('CENTER', button:GetParent(), 'TOPLEFT', xOffset * E.db.general.vehicleSeatIndicatorSize, -yOffset * E.db.general.vehicleSeatIndicatorSize)
 		end
 	end
 end
@@ -41,7 +41,7 @@ function B:PositionVehicleFrame()
 		VehicleSeatIndicator.PositionVehicleFrameHooked = true
 	end
 
-	VehicleSeatIndicator:SetSize(E.db.general.vehicleSeatIndicatorSize, E.db.general.vehicleSeatIndicatorSize)
+	VehicleSeatIndicator:Size(E.db.general.vehicleSeatIndicatorSize, E.db.general.vehicleSeatIndicatorSize)
 
     if VehicleSeatIndicator.currSkin then
 		VehicleSetUp(VehicleSeatIndicator.currSkin)

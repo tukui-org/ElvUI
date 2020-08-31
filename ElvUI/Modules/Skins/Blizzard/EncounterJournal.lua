@@ -103,7 +103,7 @@ local function HandleTabs(tab)
 	tab:CreateBackdrop()
 	tab:SetScript('OnEnter', E.noop)
 	tab:SetScript('OnLeave', E.noop)
-	tab:SetSize(tab:GetFontString():GetStringWidth()*1.5, 20)
+	tab:Size(tab:GetFontString():GetStringWidth()*1.5, 20)
 	tab.SetPoint = E.noop
 end
 
@@ -180,7 +180,7 @@ function S:Blizzard_EncounterJournal()
 		local text = s.Text
 		local a, b, c, d, e = text:GetPoint()
 		text:SetPoint(a, b, c, d + 10, e - 4)
-		text:SetWidth(s:GetWidth() / 1.4)
+		text:Width(s:GetWidth() / 1.4)
 	end)
 
 	S:HandleScrollBar(InstanceSelect.scroll.ScrollBar, 6)
@@ -189,14 +189,14 @@ function S:Blizzard_EncounterJournal()
 	HandleTopTabs(InstanceSelect.raidsTab)
 
 	InstanceSelect.suggestTab:ClearAllPoints()
-	InstanceSelect.suggestTab:SetWidth(175)
-	InstanceSelect.suggestTab:SetPoint('BOTTOMLEFT', InstanceSelect, 'TOPLEFT', 2, -43)
+	InstanceSelect.suggestTab:Width(175)
+	InstanceSelect.suggestTab:Point('BOTTOMLEFT', InstanceSelect, 'TOPLEFT', 2, -43)
 	InstanceSelect.dungeonsTab:ClearAllPoints()
-	InstanceSelect.dungeonsTab:SetWidth(125)
-	InstanceSelect.dungeonsTab:SetPoint('BOTTOMLEFT', InstanceSelect.suggestTab, 'BOTTOMRIGHT', 2, 0)
+	InstanceSelect.dungeonsTab:Width(125)
+	InstanceSelect.dungeonsTab:Point('BOTTOMLEFT', InstanceSelect.suggestTab, 'BOTTOMRIGHT', 2, 0)
 	InstanceSelect.raidsTab:ClearAllPoints()
-	InstanceSelect.raidsTab:SetWidth(125)
-	InstanceSelect.raidsTab:SetPoint('BOTTOMLEFT', InstanceSelect.dungeonsTab, 'BOTTOMRIGHT', 2, 0)
+	InstanceSelect.raidsTab:Width(125)
+	InstanceSelect.raidsTab:Point('BOTTOMLEFT', InstanceSelect.dungeonsTab, 'BOTTOMRIGHT', 2, 0)
 
 	--Skin the tab text
 	for i = 1, #InstanceSelect.Tabs do
@@ -217,7 +217,7 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.encounterTitle:Kill()
 
 	--_G.EncounterJournalEncounterFrameInfoBG:Kill()
-	_G.EncounterJournalEncounterFrameInfoBG:SetHeight(385)
+	_G.EncounterJournalEncounterFrameInfoBG:Height(385)
 	EncounterInfo.leftShadow:Kill()
 	EncounterInfo.rightShadow:Kill()
 	EncounterInfo.model.dungeonBG:Kill()
@@ -266,13 +266,13 @@ function S:Blizzard_EncounterJournal()
 	S:HandleScrollBar(EncounterInfo.detailsScroll.ScrollBar, 4)
 	S:HandleScrollBar(EncounterInfo.lootScroll.scrollBar, 4)
 
-	EncounterInfo.detailsScroll:SetHeight(360)
-	EncounterInfo.lootScroll:SetHeight(360)
-	EncounterInfo.overviewScroll:SetHeight(360)
-	EncounterInfo.bossesScroll:SetHeight(360)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetHeight(360)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetPoint('TOPLEFT', _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), 'TOP', 20, -70)
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:SetPoint('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), 'BOTTOMRIGHT', -10, 5)
+	EncounterInfo.detailsScroll:Height(360)
+	EncounterInfo.lootScroll:Height(360)
+	EncounterInfo.overviewScroll:Height(360)
+	EncounterInfo.bossesScroll:Height(360)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:Height(360)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:Point('TOPLEFT', _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), 'TOP', 20, -70)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrame:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoLootScrollFrame:GetParent(), 'BOTTOMRIGHT', -10, 5)
 
 	--Tabs
 	local tabs = {
@@ -314,8 +314,8 @@ function S:Blizzard_EncounterJournal()
 		item.bossTexture:SetAlpha(0)
 		item.bosslessTexture:SetAlpha(0)
 
-		item.icon:SetSize(32, 32)
-		item.icon:SetPoint('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
+		item.icon:Size(32, 32)
+		item.icon:Point('TOPLEFT', E.PixelMode and 3 or 4, -(E.PixelMode and 7 or 8))
 		item.icon:SetDrawLayer('ARTWORK')
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 

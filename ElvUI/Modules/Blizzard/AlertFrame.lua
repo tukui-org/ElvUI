@@ -124,7 +124,7 @@ function B:GroupLootContainer_Update()
 	end
 
 	if ( lastIdx ) then
-		self:SetHeight(self.reservedSize * lastIdx)
+		self:Height(self.reservedSize * lastIdx)
 		self:Show()
 	else
 		self:Hide()
@@ -143,8 +143,7 @@ end
 
 function B:AlertMovers()
 	local AlertFrameHolder = CreateFrame('Frame', 'AlertFrameHolder', E.UIParent)
-	AlertFrameHolder:SetWidth(180)
-	AlertFrameHolder:SetHeight(20)
+	AlertFrameHolder:Size(180, 20)
 	AlertFrameHolder:SetPoint('TOP', E.UIParent, 'TOP', -1, -18)
 
 	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.

@@ -29,8 +29,8 @@ function D:ModifyErrorFrame()
 	-- Unhighlight text when focus is hit
 	ScriptErrorsFrame.ScrollFrame.Text:HookScript('OnEscapePressed', UnHighlightText)
 
-	ScriptErrorsFrame:SetSize(500, 300)
-	ScriptErrorsFrame.ScrollFrame:SetSize(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
+	ScriptErrorsFrame:Size(500, 300)
+	ScriptErrorsFrame.ScrollFrame:Size(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
 
 	local BUTTON_WIDTH = 75
 	local BUTTON_HEIGHT = 23
@@ -40,8 +40,7 @@ function D:ModifyErrorFrame()
 	local firstButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 	firstButton:SetPoint('BOTTOMLEFT', ScriptErrorsFrame.Reload, 'BOTTOMRIGHT', BUTTON_SPACING, 0)
 	firstButton:SetText('First')
-	firstButton:SetHeight(BUTTON_HEIGHT)
-	firstButton:SetWidth(BUTTON_WIDTH)
+	firstButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
 	firstButton:SetScript('OnClick', function()
 		ScriptErrorsFrame.index = 1
 		ScriptErrorsFrame:Update()
@@ -51,8 +50,7 @@ function D:ModifyErrorFrame()
 	-- Also add a Last button for errors
 	local lastButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 	lastButton:SetPoint('BOTTOMRIGHT', ScriptErrorsFrame.Close, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
-	lastButton:SetHeight(BUTTON_HEIGHT)
-	lastButton:SetWidth(BUTTON_WIDTH)
+	lastButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
 	lastButton:SetText('Last')
 	lastButton:SetScript('OnClick', function()
 		ScriptErrorsFrame.index = #(ScriptErrorsFrame.order)

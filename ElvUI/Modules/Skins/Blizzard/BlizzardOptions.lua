@@ -11,7 +11,7 @@ local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
 
 local function HandlePushToTalkButton(button)
-	button:SetSize(button:GetSize())
+	button:Size(button:GetSize())
 
 	button.TopLeft:Hide()
 	button.TopRight:Hide()
@@ -179,16 +179,16 @@ function S:BlizzardOptions()
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
-	_G.ChatConfigMoveFilterUpButton:SetSize(19, 19)
-	_G.ChatConfigMoveFilterDownButton:SetSize(19, 19)
-	_G.ChatConfigMoveFilterUpButton:SetPoint('TOPLEFT', '$parent', 'BOTTOMLEFT', 0, -3)
-	_G.ChatConfigMoveFilterDownButton:SetPoint('LEFT', _G.ChatConfigMoveFilterUpButton, 'RIGHT', 3, 0)
+	_G.ChatConfigMoveFilterUpButton:Size(19, 19)
+	_G.ChatConfigMoveFilterDownButton:Size(19, 19)
+	_G.ChatConfigMoveFilterUpButton:Point('TOPLEFT', '$parent', 'BOTTOMLEFT', 0, -3)
+	_G.ChatConfigMoveFilterDownButton:Point('LEFT', _G.ChatConfigMoveFilterUpButton, 'RIGHT', 3, 0)
 
-	_G.ChatConfigFrameOkayButton:SetPoint('RIGHT', '$parentCancelButton', 'RIGHT', -1, -3)
-	_G.ChatConfigFrameDefaultButton:SetPoint('BOTTOMLEFT', 12, 10)
-	_G.ChatConfigCombatSettingsFiltersDeleteButton:SetPoint('TOPRIGHT', '$parent', 'BOTTOMRIGHT', -3, -1)
-	_G.ChatConfigCombatSettingsFiltersAddFilterButton:SetPoint('RIGHT', '$parentDeleteButton', 'LEFT', -2, 0)
-	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:SetPoint('RIGHT', '$parentAddFilterButton', 'LEFT', -2, 0)
+	_G.ChatConfigFrameOkayButton:Point('RIGHT', '$parentCancelButton', 'RIGHT', -1, -3)
+	_G.ChatConfigFrameDefaultButton:Point('BOTTOMLEFT', 12, 10)
+	_G.ChatConfigCombatSettingsFiltersDeleteButton:Point('TOPRIGHT', '$parent', 'BOTTOMRIGHT', -3, -1)
+	_G.ChatConfigCombatSettingsFiltersAddFilterButton:Point('RIGHT', '$parentDeleteButton', 'LEFT', -2, 0)
+	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:Point('RIGHT', '$parentAddFilterButton', 'LEFT', -2, 0)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
 		if not _G.FCF_GetCurrentChatFrame() then return end
@@ -337,7 +337,7 @@ function S:BlizzardOptions()
 
 		if newProfileDialog.editBox then
 			S:HandleEditBox(newProfileDialog.editBox)
-			newProfileDialog.editBox:SetSize(210, 25)
+			newProfileDialog.editBox:Size(210, 25)
 		end
 	end
 

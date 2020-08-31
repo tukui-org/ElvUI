@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames');
 function UF:Construct_ResurrectionIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
 	tex:SetPoint('CENTER', frame.Health, 'CENTER')
-	tex:SetSize(30, 30)
+	tex:Size(30)
 	tex:SetDrawLayer('OVERLAY', 7)
 
 	return tex
@@ -17,7 +17,7 @@ function UF:Configure_ResurrectionIcon(frame)
 	if db.resurrectIcon.enable then
 		frame:EnableElement('ResurrectIndicator')
 		RI:Show()
-		RI:SetSize(db.resurrectIcon.size, db.resurrectIcon.size)
+		RI:Size(db.resurrectIcon.size)
 
 		local attachPoint = self:GetObjectAnchorPoint(frame, db.resurrectIcon.attachToObject)
 		RI:ClearAllPoints()

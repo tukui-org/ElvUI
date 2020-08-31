@@ -150,5 +150,5 @@ function NP:Update_Power(nameplate)
 	nameplate.Power.colorPower = not db.power.useClassColor
 	nameplate.Power.width = db.power.width
 	nameplate.Power.height = db.power.height
-	nameplate.Power:SetSize(db.power.width, db.power.height)
+	nameplate.Power:Size(db.power.width, db.power.height)
 end

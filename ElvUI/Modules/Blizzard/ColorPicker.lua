@@ -184,13 +184,13 @@ function B:EnhanceColorPicker()
 			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxA_SetFocus)
 			UpdateAlphaText()
 			UpdateColorTexts()
-			frame:SetWidth(405)
+			frame:Width(405)
 		else
 			_G.ColorPPBoxA:Hide()
 			_G.ColorPPBoxLabelA:Hide()
 			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxR_SetFocus)
 			UpdateColorTexts()
-			frame:SetWidth(345)
+			frame:Width(345)
 		end
 
 		-- Memory Fix, Colorpicker will call the self.func() 100x per second, causing fps/memory issues,
@@ -200,7 +200,7 @@ function B:EnhanceColorPicker()
 	end)
 
 	-- make the Color Picker dialog a bit taller, to make room for edit boxes
-	_G.ColorPickerFrame:SetHeight(_G.ColorPickerFrame:GetHeight() + 40)
+	_G.ColorPickerFrame:Height(_G.ColorPickerFrame:GetHeight() + 40)
 
 	-- move the Color Swatch
 	_G.ColorSwatch:ClearAllPoints()
@@ -209,7 +209,7 @@ function B:EnhanceColorPicker()
 	-- add Color Swatch for original color
 	local t = _G.ColorPickerFrame:CreateTexture('ColorPPOldColorSwatch')
 	local w, h = _G.ColorSwatch:GetSize()
-	t:SetSize(w*0.75,h*0.75)
+	t:Size(w*0.75,h*0.75)
 	t:SetColorTexture(0,0,0)
 	-- OldColorSwatch to appear beneath ColorSwatch
 	t:SetDrawLayer('BORDER')
@@ -218,16 +218,15 @@ function B:EnhanceColorPicker()
 	-- add Color Swatch for the copied color
 	t = _G.ColorPickerFrame:CreateTexture('ColorPPCopyColorSwatch')
 	t:SetColorTexture(0,0,0)
-	t:SetSize(w,h)
+	t:Size(w,h)
 	t:Hide()
 
 	-- add copy button to the _G.ColorPickerFrame
 	local b = CreateFrame('Button', 'ColorPPCopy', _G.ColorPickerFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 	S:HandleButton(b)
 	b:SetText(CALENDAR_COPY_EVENT)
-	b:SetWidth(60)
-	b:SetHeight(22)
-	b:SetPoint('TOPLEFT', 'ColorSwatch', 'BOTTOMLEFT', 0, -5)
+	b:Size(60, 22)
+	b:Point('TOPLEFT', 'ColorSwatch', 'BOTTOMLEFT', 0, -5)
 
 	-- copy color into buffer on button click
 	b:SetScript('OnClick', function()
@@ -246,9 +245,8 @@ function B:EnhanceColorPicker()
 	b = CreateFrame('Button', 'ColorPPClass', _G.ColorPickerFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 	b:SetText(CLASS)
 	S:HandleButton(b)
-	b:SetWidth(80)
-	b:SetHeight(22)
-	b:SetPoint('TOP', 'ColorPPCopy', 'BOTTOMRIGHT', 0, -7)
+	b:Size(80, 22)
+	b:Point('TOP', 'ColorPPCopy', 'BOTTOMRIGHT', 0, -7)
 
 	b:SetScript('OnClick', function()
 		local color = E:ClassColor(E.myclass, true)
@@ -263,9 +261,8 @@ function B:EnhanceColorPicker()
 	b = CreateFrame('Button', 'ColorPPPaste', _G.ColorPickerFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 	b:SetText(CALENDAR_PASTE_EVENT)
 	S:HandleButton(b)
-	b:SetWidth(60)
-	b:SetHeight(22)
-	b:SetPoint('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
+	b:Size(60, 22)
+	b:Point('TOPLEFT', 'ColorPPCopy', 'TOPRIGHT', 2, 0)
 	b:Disable() -- enable when something has been copied
 
 	-- paste color on button click, updating frame components
@@ -283,9 +280,8 @@ function B:EnhanceColorPicker()
 	b = CreateFrame('Button', 'ColorPPDefault', _G.ColorPickerFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 	b:SetText(DEFAULT)
 	S:HandleButton(b)
-	b:SetWidth(80)
-	b:SetHeight(22)
-	b:SetPoint('TOPLEFT', 'ColorPPClass', 'BOTTOMLEFT', 0, -7)
+	b:Size(80, 22)
+	b:Point('TOPLEFT', 'ColorPPClass', 'BOTTOMLEFT', 0, -7)
 	b:Disable() -- enable when something has been copied
 	b:SetScript('OnHide', function(btn)
 		if btn.colors then
@@ -330,18 +326,18 @@ function B:EnhanceColorPicker()
 		box:SetAutoFocus(false)
 		box:SetTextInsets(0,7,0,0)
 		box:SetJustifyH('RIGHT')
-		box:SetHeight(24)
+		box:Height(24)
 		box:SetID(i)
 		S:HandleEditBox(box)
 
 		-- hex entry box
 		if i == 4 then
 			box:SetMaxLetters(6)
-			box:SetWidth(56)
+			box:Width(56)
 			box:SetNumeric(false)
 		else
 			box:SetMaxLetters(3)
-			box:SetWidth(40)
+			box:Width(40)
 			box:SetNumeric(true)
 		end
 

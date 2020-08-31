@@ -7,8 +7,8 @@ local UnitIsConnected = UnitIsConnected
 
 function UF:Construct_RoleIcon(frame)
 	local tex = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK')
-	tex:SetSize(17, 17)
-	tex:SetPoint('BOTTOM', frame.Health, 'BOTTOM', 0, 2)
+	tex:Size(17, 17)
+	tex:Point('BOTTOM', frame.Health, 'BOTTOM', 0, 2)
 	tex.Override = UF.UpdateRoleIcon
 	frame:RegisterEvent('UNIT_CONNECTION', UF.UpdateRoleIcon)
 
@@ -61,7 +61,7 @@ function UF:Configure_RoleIcon(frame)
 
 		role:ClearAllPoints()
 		role:SetPoint(db.roleIcon.position, attachPoint, db.roleIcon.position, db.roleIcon.xOffset, db.roleIcon.yOffset)
-		role:SetSize(db.roleIcon.size, db.roleIcon.size)
+		role:Size(db.roleIcon.size)
 
 		if db.roleIcon.combatHide then
 			E:RegisterEventForObject('PLAYER_REGEN_ENABLED', frame, UF.UpdateRoleIcon)

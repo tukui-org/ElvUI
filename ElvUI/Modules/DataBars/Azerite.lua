@@ -123,8 +123,8 @@ function DB:AzeriteBar_OnClick()
 end
 
 function DB:UpdateAzeriteDimensions()
-	DB.azeriteBar:SetWidth(DB.db.azerite.width)
-	DB.azeriteBar:SetHeight(DB.db.azerite.height)
+	DB.azeriteBar:Width(DB.db.azerite.width)
+	DB.azeriteBar:Height(DB.db.azerite.height)
 	DB.azeriteBar.statusBar:SetOrientation(DB.db.azerite.orientation)
 	DB.azeriteBar.statusBar:SetReverseFill(DB.db.azerite.reverseFill)
 

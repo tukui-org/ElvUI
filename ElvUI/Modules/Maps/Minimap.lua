@@ -233,13 +233,13 @@ function M:UpdateSettings()
 	local borderWidth, borderHeight = E.PixelMode and 2 or 6, E.PixelMode and 2 or 8
 	local panelSize, joinPanel = (MinimapPanel:IsShown() and MinimapPanel:GetHeight()) or (E.PixelMode and 1 or -1), 1
 	local height, width = E.MinimapSize + (panelSize - joinPanel), E.MinimapSize
-	MMHolder:SetSize(width + borderWidth, height + borderHeight)
+	MMHolder:Size(width + borderWidth, height + borderHeight)
 	_G.MinimapMover:SetSize(MMHolder:GetSize())
 
 	local mmOffset = E.PixelMode and 1 or 3
 	Minimap:ClearAllPoints()
-	Minimap:SetPoint('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset, -mmOffset)
-	Minimap:SetSize(E.MinimapSize, E.MinimapSize)
+	Minimap:Point('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset, -mmOffset)
+	Minimap:Size(E.MinimapSize, E.MinimapSize)
 
 	Minimap.location:SetWidth(E.MinimapSize)
 	if E.db.general.minimap.locationText ~= 'SHOW' then
@@ -332,7 +332,7 @@ end
 
 function M:SetGetMinimapShape()
 	GetMinimapShape = M.GetMinimapShape --This is just to support for other mods
-	Minimap:SetSize(E.db.general.minimap.size, E.db.general.minimap.size)
+	Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
 end
 
 function M:Initialize()
@@ -342,7 +342,7 @@ function M:Initialize()
 	menuFrame:SetTemplate('Transparent', true)
 
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
-	mmholder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
+	mmholder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
 	mmholder:SetSize(Minimap:GetSize())
 
 	Minimap:SetQuestBlobRingAlpha(0)

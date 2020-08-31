@@ -93,8 +93,8 @@ function DB:HonorBar_OnClick()
 end
 
 function DB:UpdateHonorDimensions()
-	DB.honorBar:SetWidth(DB.db.honor.width)
-	DB.honorBar:SetHeight(DB.db.honor.height)
+	DB.honorBar:Width(DB.db.honor.width)
+	DB.honorBar:Height(DB.db.honor.height)
 	DB.honorBar.statusBar:SetOrientation(DB.db.honor.orientation)
 	DB.honorBar.statusBar:SetReverseFill(DB.db.honor.reverseFill)
 	DB.honorBar.text:FontTemplate(LSM:Fetch('font', DB.db.honor.font), DB.db.honor.textSize, DB.db.honor.fontOutline)

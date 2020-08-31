@@ -21,7 +21,7 @@ local function HandleRoleChecks(button, ...)
 	button.bg:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	button.bg:SetTexCoord(...)
 	button.bg:SetPoint('CENTER')
-	button.bg:SetSize(40, 40)
+	button.bg:Size(40, 40)
 	button.bg:SetAlpha(0.6)
 	S:HandleCheckBox(button.checkButton)
 end
@@ -41,7 +41,7 @@ function S:Blizzard_PVPUI()
 		bu.Background:Kill()
 		S:HandleButton(bu)
 
-		bu.Icon:SetSize(45, 45)
+		bu.Icon:Size(45)
 		bu.Icon:ClearAllPoints()
 		bu.Icon:SetPoint('LEFT', 10, 0)
 		S:HandleIcon(bu.Icon, true)
@@ -90,8 +90,8 @@ function S:Blizzard_PVPUI()
 
 		reward.EnlistmentBonus:StripTextures()
 		reward.EnlistmentBonus:CreateBackdrop()
-		reward.EnlistmentBonus:SetSize(20, 20)
-		reward.EnlistmentBonus:SetPoint('TOPRIGHT', 2, 2)
+		reward.EnlistmentBonus:Size(20, 20)
+		reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
 
 		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
 		EnlistmentBonusIcon:SetPoint('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
@@ -245,7 +245,7 @@ function S:PVPReadyDialog()
 		end
 
 		if queueType == 'ARENA' then
-			s:SetHeight(100)
+			s:Height(100)
 		end
 
 		s.background:Hide()

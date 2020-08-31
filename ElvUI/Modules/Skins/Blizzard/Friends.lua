@@ -144,7 +144,7 @@ function S:FriendsFrame()
 	local button = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)
 	button:SetPoint('TOPLEFT', FriendsFrameBattlenetFrame, 'TOPLEFT')
 	button:SetPoint('BOTTOMRIGHT', FriendsFrameBattlenetFrame, 'BOTTOMRIGHT')
-	button:SetSize(FriendsFrameBattlenetFrame:GetSize())
+	button:Size(FriendsFrameBattlenetFrame:GetSize())
 	button:CreateBackdrop()
 	button.backdrop:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -187,7 +187,7 @@ function S:FriendsFrame()
 	for i = 1, 17 do
 		local level = _G['WhoFrameButton'..i..'Level']
 		if level then
-			level:SetWidth(level:GetWidth() + 5)
+			level:Width(level:GetWidth() + 5)
 		end
 	end
 
@@ -217,7 +217,7 @@ function S:FriendsFrame()
 	local QuickJoinRoleSelectionFrame = _G.QuickJoinRoleSelectionFrame
 	S:HandleScrollBar(_G.QuickJoinScrollFrame.scrollBar, 5)
 	S:HandleButton(_G.QuickJoinFrame.JoinQueueButton)
-	QuickJoinFrame.JoinQueueButton:SetSize(131, 21)  --Match button on other tab
+	QuickJoinFrame.JoinQueueButton:Size(131, 21)  --Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
 	QuickJoinFrame.JoinQueueButton:SetPoint('BOTTOMRIGHT', QuickJoinFrame, 'BOTTOMRIGHT', -6, 4)
 	_G.QuickJoinScrollFrameTop:SetTexture()
@@ -237,7 +237,7 @@ function S:FriendsFrame()
 		local btn = _G['FriendsListFrameScrollFrameButton'..i]
 		local icon = _G['FriendsListFrameScrollFrameButton'..i..'GameIcon']
 
-		icon:SetSize(22, 22)
+		icon:Size(22, 22)
 		icon:SetTexCoord(.15, .85, .15, .85)
 
 		icon:ClearAllPoints()

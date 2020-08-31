@@ -52,7 +52,7 @@ function S:Blizzard_TimeManager()
 	local StopwatchPlayPauseButton = _G.StopwatchPlayPauseButton
 	local StopwatchResetButton = _G.StopwatchResetButton
 	StopwatchPlayPauseButton:CreateBackdrop(nil, true)
-	StopwatchPlayPauseButton:SetSize(12, 12)
+	StopwatchPlayPauseButton:Size(12, 12)
 	StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
 	StopwatchPlayPauseButton:SetHighlightTexture('')
 	StopwatchPlayPauseButton.backdrop:SetOutside(StopwatchPlayPauseButton, 2, 2)
@@ -60,7 +60,7 @@ function S:Blizzard_TimeManager()
 	StopwatchPlayPauseButton:HookScript('OnLeave', S.SetOriginalBackdrop)
 	StopwatchPlayPauseButton:SetPoint('RIGHT', StopwatchResetButton, 'LEFT', -4, 0)
 	S:HandleButton(StopwatchResetButton)
-	StopwatchResetButton:SetSize(16,16)
+	StopwatchResetButton:Size(16,16)
 	StopwatchResetButton:SetNormalTexture(E.Media.Textures.Reset)
 	StopwatchResetButton:SetPoint('BOTTOMRIGHT', StopwatchFrame, 'BOTTOMRIGHT', -4, 6)
 

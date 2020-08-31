@@ -136,9 +136,9 @@ function S:Blizzard_GuildUI()
 	hooksecurefunc(GuildMemberDetailFrame, 'SetHeight', function(_, _, breakLoop)
 		if breakLoop then return; end
 		if C_GuildInfo_CanViewOfficerNote() then
-			GuildMemberDetailFrame:SetHeight(_G.GUILD_DETAIL_OFFICER_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
+			GuildMemberDetailFrame:Height(_G.GUILD_DETAIL_OFFICER_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
 		else
-			GuildMemberDetailFrame:SetHeight(_G.GUILD_DETAIL_NORM_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
+			GuildMemberDetailFrame:Height(_G.GUILD_DETAIL_NORM_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
 		end
 	end)
 
@@ -262,9 +262,9 @@ function S:GuildInviteFrame()
 	GuildInviteFrame.Points:SetPoint('TOP', GuildInviteFrame, 'CENTER', 15, -25)
 	S:HandleButton(_G.GuildInviteFrameJoinButton)
 	S:HandleButton(_G.GuildInviteFrameDeclineButton)
-	GuildInviteFrame:SetHeight(225)
+	GuildInviteFrame:Height(225)
 	GuildInviteFrame:HookScript('OnEvent', function()
-		GuildInviteFrame:SetHeight(225)
+		GuildInviteFrame:Height(225)
 	end)
 
 	_G.GuildInviteFrameWarningText:Kill()

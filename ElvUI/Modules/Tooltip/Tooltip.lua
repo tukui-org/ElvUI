@@ -806,7 +806,7 @@ function TT:Initialize()
 	TT.Initialized = true
 
 	GameTooltip.StatusBar = GameTooltipStatusBar
-	GameTooltip.StatusBar:SetHeight(TT.db.healthBar.height)
+	GameTooltip.StatusBar:Height(TT.db.healthBar.height)
 	GameTooltip.StatusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
 	GameTooltip.StatusBar.text = GameTooltip.StatusBar:CreateFontString(nil, 'OVERLAY')
 	GameTooltip.StatusBar.text:SetPoint('CENTER', GameTooltip.StatusBar, 0, 0)
@@ -823,7 +823,7 @@ function TT:Initialize()
 
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
 	GameTooltipAnchor:SetPoint('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
-	GameTooltipAnchor:SetSize(130, 20)
+	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 400)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip,general')
 

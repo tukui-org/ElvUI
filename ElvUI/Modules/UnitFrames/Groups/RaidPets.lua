@@ -87,7 +87,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	end
 
 	frame.Health.colorPetByUnitClass = db.health.colorPetByUnitClass
-	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:Configure_HealthBar(frame)
 	UF:UpdateNameSettings(frame)

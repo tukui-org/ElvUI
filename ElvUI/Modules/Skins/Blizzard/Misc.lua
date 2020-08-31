@@ -238,9 +238,9 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameContentsFrameIcon:SetPoint('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
 		local b = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent(), 'BackdropTemplate')
 		local p = E.PixelMode and 1 or 2
-		b:SetPoint('TOPLEFT', _G.GhostFrameContentsFrameIcon, -p, p)
-		b:SetPoint('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, p, -p)
-		_G.GhostFrameContentsFrameIcon:SetSize(37,38)
+		b:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -p, p)
+		b:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, p, -p)
+		_G.GhostFrameContentsFrameIcon:Size(37,38)
 		_G.GhostFrameContentsFrameIcon:SetParent(b)
 		b:CreateBackdrop()
 	end
@@ -258,7 +258,7 @@ function S:BlizzardMiscFrames()
 			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
 			normTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			normTex:SetRotation(S.ArrowRotation.right)
-			expandArrow:SetSize(12, 12)
+			expandArrow:Size(12, 12)
 		end
 
 		local Backdrop = _G[listFrameName..'Backdrop']
@@ -274,7 +274,7 @@ function S:BlizzardMiscFrames()
 		if texture:find('Divider') then
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			icon:SetColorTexture(r, g, b, 0.45)
-			icon:SetHeight(1)
+			icon:Height(1)
 		end
 	end)
 
@@ -308,13 +308,13 @@ function S:BlizzardMiscFrames()
 				if co == 0 then
 					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
 					check:SetVertexColor(r, g, b, 1)
-					check:SetSize(20, 20)
+					check:Size(20, 20)
 					check:SetDesaturated(true)
 					button.backdrop:SetInside(check, 4, 4)
 				else
 					check:SetTexture(E.media.normTex)
 					check:SetVertexColor(r, g, b, 1)
-					check:SetSize(10, 10)
+					check:Size(10, 10)
 					check:SetDesaturated(false)
 					button.backdrop:SetOutside(check)
 				end
@@ -322,7 +322,7 @@ function S:BlizzardMiscFrames()
 				button.backdrop:Show()
 				check:SetTexCoord(0, 1, 0, 1)
 			else
-				check:SetSize(16, 16)
+				check:Size(16, 16)
 			end
 		end
 	end)
@@ -352,13 +352,13 @@ function S:BlizzardMiscFrames()
 
 	local buttons = {StackSplitFrame.LeftButton, StackSplitFrame.RightButton}
 	for _, btn in pairs(buttons) do
-		btn:SetSize(14, 18)
+		btn:Size(14, 18)
 		btn:ClearAllPoints()
 
 		if btn == StackSplitFrame.LeftButton then
-			btn:SetPoint('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
 		else
-			btn:SetPoint('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
 		end
 
 		S:HandleNextPrevButton(btn, nil, nil, true)

@@ -25,7 +25,7 @@ function UF:Construct_Buffs(frame)
 	buffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
 	buffs.type = 'buffs'
 	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	buffs:SetWidth(100)
+	buffs:Width(100)
 
 	return buffs
 end
@@ -40,7 +40,7 @@ function UF:Construct_Debuffs(frame)
 	debuffs.type = 'debuffs'
 	debuffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
 	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	debuffs:SetWidth(100)
+	debuffs:Width(100)
 
 	return debuffs
 end
@@ -102,8 +102,7 @@ function UF:UpdateAuraSettings(auras, button)
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	local size = (auras and auras.size) or 30
-	button:SetSize(size, size)
+	button:Size((auras and auras.size) or 30)
 
 	button.needsUpdateCooldownPosition = true
 end
@@ -214,14 +213,14 @@ function UF:Configure_Auras(frame, which)
 	auras.attachTo = self:GetAuraAnchorFrame(frame, auras.db.attachTo)
 
 	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
-		auras:SetWidth(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
+		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
 		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
 		if frame.USE_POWERBAR_OFFSET and not (auras.attachTo == 'POWER' and frame.ORIENTATION == 'MIDDLE') then
 			local powerOffset = ((frame.ORIENTATION == 'MIDDLE' and 2 or 1) * frame.POWERBAR_OFFSET)
 			totalWidth = totalWidth - powerOffset
 		end
-		auras:SetWidth(totalWidth)
+		auras:Width(totalWidth)
 	end
 
 	auras.num = auras.db.perrow * rows
@@ -259,7 +258,7 @@ function UF:Configure_Auras(frame, which)
 
 	auras:ClearAllPoints()
 	auras:SetPoint(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
-	auras:SetHeight(auras.size * rows)
+	auras:Height(auras.size * rows)
 
 	if auras.db.enable then
 		auras:Show()
@@ -531,9 +530,9 @@ function UF:UpdateBuffsPositionAndDebuffHeight()
 
 	if numDebuffs > 0 then
 		local numRows = ceil(numDebuffs/db.debuffs.perrow)
-		debuffs:SetHeight(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
+		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
 	else
-		debuffs:SetHeight(debuffs.size)
+		debuffs:Height(debuffs.size)
 	end
 end
 
@@ -554,9 +553,9 @@ function UF:UpdateDebuffsPositionAndBuffHeight()
 
 	if numBuffs > 0 then
 		local numRows = ceil(numBuffs/db.buffs.perrow)
-		buffs:SetHeight(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
+		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
 	else
-		buffs:SetHeight(buffs.size)
+		buffs:Height(buffs.size)
 	end
 end
 
@@ -568,11 +567,11 @@ function UF:UpdateBuffsHeight()
 
 	if numBuffs > 0 then
 		local numRows = ceil(numBuffs/db.buffs.perrow)
-		buffs:SetHeight(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
+		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
 	else
-		buffs:SetHeight(buffs.size)
+		buffs:Height(buffs.size)
 		-- Any way to get rid of the last row as well?
-		-- Using buffs:SetHeight(0) makes frames anchored to this one disappear
+		-- Using buffs:Height(0) makes frames anchored to this one disappear
 	end
 end
 
@@ -584,10 +583,10 @@ function UF:UpdateDebuffsHeight()
 
 	if numDebuffs > 0 then
 		local numRows = ceil(numDebuffs/db.debuffs.perrow)
-		debuffs:SetHeight(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
+		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
 	else
-		debuffs:SetHeight(debuffs.size)
+		debuffs:Height(debuffs.size)
 		-- Any way to get rid of the last row as well?
-		-- Using debuffs:SetHeight(0) makes frames anchored to this one disappear
+		-- Using debuffs:Height(0) makes frames anchored to this one disappear
 	end
 end

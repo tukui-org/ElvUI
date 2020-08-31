@@ -40,7 +40,7 @@ end
 local function SkinItemButton(_, block)
 	local item = block.itemButton
 	if item and not item.skinned then
-		item:SetSize(25, 25)
+		item:Size(25, 25)
 		item:CreateBackdrop('Transparent')
 		item:StyleButton()
 		item:SetNormalTexture(nil)
@@ -75,7 +75,7 @@ local function SkinProgressBars(_, _, line)
 		if bar.BorderRight then bar.BorderRight:SetAlpha(0) end
 		if bar.BorderMid then bar.BorderMid:SetAlpha(0) end
 
-		bar:SetHeight(18)
+		bar:Height(18)
 		bar:StripTextures()
 		bar:CreateBackdrop('Transparent')
 		bar:SetStatusBarTexture(E.media.normTex)
@@ -114,7 +114,7 @@ local function SkinTimerBars(_, _, line)
 	local bar = timerBar and timerBar.Bar
 
 	if not timerBar.isSkinned then
-		bar:SetHeight(18)
+		bar:Height(18)
 		bar:StripTextures()
 		bar:CreateBackdrop('Transparent')
 		bar:SetStatusBarTexture(E.media.normTex)
@@ -143,7 +143,7 @@ local function SkinFindGroupButton(block)
 	if block.hasGroupFinderButton and block.groupFinderButton then
 		if block.groupFinderButton and not block.groupFinderButton.skinned then
 			S:HandleButton(block.groupFinderButton)
-			block.groupFinderButton:SetSize(20, 20)
+			block.groupFinderButton:Size(20)
 			block.groupFinderButton.skinned = true
 		end
 	end
@@ -171,7 +171,7 @@ function S:ObjectiveTrackerFrame()
 
 	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
 	minimize:StripTextures()
-	minimize:SetSize(16, 16)
+	minimize:Size(16, 16)
 	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
 	minimize.tex = minimize:CreateTexture(nil, 'OVERLAY')
 	minimize.tex:SetTexture(E.Media.Textures.MinusButton)

@@ -130,7 +130,7 @@ function S:Blizzard_TalkingHeadUI()
 		TalkingHeadFrame.MainFrame.Model:CreateBackdrop('Transparent')
 		TalkingHeadFrame.MainFrame.Model.backdrop:ClearAllPoints()
 		TalkingHeadFrame.MainFrame.Model.backdrop:SetPoint('CENTER')
-		TalkingHeadFrame.MainFrame.Model.backdrop:SetSize(120, 119)
+		TalkingHeadFrame.MainFrame.Model.backdrop:Size(120, 119)
 
 		TalkingHeadFrame.MainFrame.CloseButton:Kill()
 	end

@@ -139,8 +139,8 @@ function DB:ReputationBar_OnClick()
 end
 
 function DB:UpdateReputationDimensions()
-	DB.repBar:SetWidth(DB.db.reputation.width)
-	DB.repBar:SetHeight(DB.db.reputation.height)
+	DB.repBar:Width(DB.db.reputation.width)
+	DB.repBar:Height(DB.db.reputation.height)
 	DB.repBar.statusBar:SetOrientation(DB.db.reputation.orientation)
 	DB.repBar.statusBar:SetReverseFill(DB.db.reputation.reverseFill)
 	DB.repBar.text:FontTemplate(LSM:Fetch('font', DB.db.reputation.font), DB.db.reputation.textSize, DB.db.reputation.fontOutline)

@@ -108,7 +108,7 @@ function B:Initialize()
 			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, 'OVERLAY')
 			TalentMicroButtonAlert.tex:SetPoint('RIGHT', -10, 0)
 			TalentMicroButtonAlert.tex:SetTexture([[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]])
-			TalentMicroButtonAlert.tex:SetSize(32, 32)
+			TalentMicroButtonAlert.tex:Size(32, 32)
 		else
 			TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show
 		end

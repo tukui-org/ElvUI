@@ -55,13 +55,13 @@ function UF:Configure_PowerPrediction(frame)
 			mainBar:SetPoint('TOP', power, 'TOP')
 			mainBar:SetPoint('BOTTOM', power, 'BOTTOM')
 			mainBar:SetPoint(point, powerBarTexture, point)
-			mainBar:SetSize(power:GetWidth(), 0)
+			mainBar:Size(power:GetWidth(), 0)
 		else
 			local point = reverseFill and 'BOTTOM' or 'TOP'
 			mainBar:SetPoint('LEFT', power, 'LEFT')
 			mainBar:SetPoint('RIGHT', power, 'RIGHT')
 			mainBar:SetPoint(point, powerBarTexture, point)
-			mainBar:SetSize(0, power:GetHeight())
+			mainBar:Size(0, power:GetHeight())
 		end
 
 		if altBar then
@@ -77,12 +77,12 @@ function UF:Configure_PowerPrediction(frame)
 				altBar:SetPoint('TOP', altPower, 'TOP')
 				altBar:SetPoint('BOTTOM', altPower, 'BOTTOM')
 				altBar:SetPoint('RIGHT', altPowerBarTexture, 'RIGHT')
-				altBar:SetSize(altPower:GetWidth(), 0)
+				altBar:Size(altPower:GetWidth(), 0)
 			else
 				altBar:SetPoint('LEFT', altPower, 'LEFT')
 				altBar:SetPoint('RIGHT', altPower, 'RIGHT')
 				altBar:SetPoint('TOP', altPowerBarTexture, 'TOP')
-				altBar:SetSize(0, altPower:GetHeight())
+				altBar:Size(0, altPower:GetHeight())
 			end
 		end
 	elseif frame:IsElementEnabled('PowerPrediction') then

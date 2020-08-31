@@ -74,8 +74,8 @@ function UF:Update_FocusFrame(frame, db)
 
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 	frame.colors = ElvUF.colors
-	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	_G[frame:GetName()..'Mover']:SetSize(frame:GetSize())
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)

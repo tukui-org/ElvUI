@@ -88,8 +88,8 @@ function S:Blizzard_GuildControlUI()
 
 	S:HandleDropDownBox(_G.GuildControlUINavigationDropDown)
 	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropDown, 180)
-	_G.GuildControlUINavigationDropDownButton:SetWidth(20)
-	_G.GuildControlUIRankSettingsFrameRankDropDownButton:SetWidth(20)
+	_G.GuildControlUINavigationDropDownButton:Width(20)
+	_G.GuildControlUIRankSettingsFrameRankDropDownButton:Width(20)
 
 	for i=1, _G.NUM_RANK_FLAGS do
 		if _G['GuildControlUIRankSettingsFrameCheckbox'..i] then
@@ -137,7 +137,7 @@ function S:Blizzard_GuildControlUI()
 	end)
 
 	S:HandleDropDownBox(_G.GuildControlUIRankBankFrameRankDropDown, 180)
-	_G.GuildControlUIRankBankFrameRankDropDownButton:SetWidth(20)
+	_G.GuildControlUIRankBankFrameRankDropDownButton:Width(20)
 end
 
 S:AddCallbackForAddon('Blizzard_GuildControlUI')

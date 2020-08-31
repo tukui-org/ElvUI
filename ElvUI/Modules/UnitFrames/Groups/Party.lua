@@ -155,7 +155,7 @@ function UF:Update_PartyFrames(frame, db)
 			frame.Health.colorPetByUnitClass = db.colorPetByUnitClass
 		end
 
-		frame:SetSize(db.width, db.height)
+		frame:Size(db.width, db.height)
 
 		if not InCombatLockdown() then
 			if db.enable then
@@ -169,7 +169,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		UF:Configure_HealthBar(frame)
 	else
-		frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_AllAuras(frame)

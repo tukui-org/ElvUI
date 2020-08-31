@@ -26,8 +26,8 @@ function NP:Update_PvPIndicator(nameplate)
 			nameplate:EnableElement('PvPIndicator')
 		end
 
-		nameplate.PvPIndicator:SetSize(db.pvpindicator.size, db.pvpindicator.size)
-		nameplate.PvPIndicator.Badge_:SetSize(db.pvpindicator.size + 14, db.pvpindicator.size + 16)
+		nameplate.PvPIndicator:Size(db.pvpindicator.size, db.pvpindicator.size)
+		nameplate.PvPIndicator.Badge_:Size(db.pvpindicator.size + 14, db.pvpindicator.size + 16)
 
 		nameplate.PvPIndicator.Badge = nil
 

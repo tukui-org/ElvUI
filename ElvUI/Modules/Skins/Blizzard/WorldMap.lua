@@ -159,7 +159,7 @@ function S:WorldMapFrame()
 			S:HandleButton(dialog.ButtonContainer.Decline)
 			if dialog.MinimizeButton then
 				dialog.MinimizeButton:StripTextures()
-				dialog.MinimizeButton:SetSize(16, 16)
+				dialog.MinimizeButton:Size(16, 16)
 
 				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, 'OVERLAY')
 				dialog.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)

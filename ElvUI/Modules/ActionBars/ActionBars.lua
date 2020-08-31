@@ -212,7 +212,7 @@ function AB:PositionAndSizeBar(barName)
 		button:SetParent(bar)
 		button:ClearAllPoints()
 		button:SetAttribute('showgrid', 1)
-		button:SetSize(size, size)
+		button:Size(size)
 		button:EnableMouse(not db.clickThrough)
 
 		if i == 1 then
@@ -385,7 +385,7 @@ function AB:CreateVehicleLeave()
 
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
 	holder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
-	holder:SetSize(_G.MainMenuBarVehicleLeaveButton:GetSize())
+	holder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
 	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,vehicleExitButton')
 
 	local Button = _G.MainMenuBarVehicleLeaveButton
@@ -421,10 +421,10 @@ end
 
 function AB:UpdateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
-	_G.MainMenuBarVehicleLeaveButton:SetSize(db.size, db.size)
+	_G.MainMenuBarVehicleLeaveButton:Size(db.size)
 	_G.MainMenuBarVehicleLeaveButton:SetFrameStrata(db.strata)
 	_G.MainMenuBarVehicleLeaveButton:SetFrameLevel(db.level)
-	_G.VehicleLeaveButtonHolder:SetSize(db.size, db.size)
+	_G.VehicleLeaveButtonHolder:Size(db.size)
 end
 
 function AB:ReassignBindings(event)
@@ -1052,7 +1052,7 @@ function AB:SetupFlyoutButton(button)
 	end
 
 	if not InCombatLockdown() then
-		button:SetSize(AB.db.flyoutSize, AB.db.flyoutSize)
+		button:Size(AB.db.flyoutSize)
 	end
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then

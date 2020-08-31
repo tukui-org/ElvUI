@@ -290,7 +290,7 @@ function S:Blizzard_GarrisonUI()
 
 		hooksecurefunc('GarrisonLandingPageReport_SetTab', function(s)
 			local unselectedTab = Report.unselectedTab
-			unselectedTab:SetHeight(36)
+			unselectedTab:Height(36)
 			unselectedTab:SetNormalTexture('')
 			unselectedTab.selectedTex:Hide()
 
@@ -463,7 +463,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
 	FollowerTab:StripTextures()
-	FollowerTab.Class:SetSize(50, 43)
+	FollowerTab.Class:Size(50, 43)
 	FollowerTab.XPBar:StripTextures()
 	FollowerTab.XPBar:SetStatusBarTexture(E.media.normTex)
 	FollowerTab.XPBar:CreateBackdrop()
@@ -544,7 +544,7 @@ function S:Blizzard_GarrisonUI()
 	XPBar:SetStatusBarTexture(E.media.normTex)
 	XPBar:CreateBackdrop()
 
-	Class:SetSize(50, 43)
+	Class:Size(50, 43)
 
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame

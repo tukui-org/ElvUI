@@ -140,21 +140,21 @@ function UF:Configure_HealComm(frame)
 			pred.anchor, pred.anchor1, pred.anchor2 = anchor, p1, p2
 
 			myBar:ClearAllPoints()
-			myBar:SetSize(width, barHeight)
+			myBar:Size(width, barHeight)
 			myBar:SetPoint(anchor, health)
 			myBar:SetPoint(p1, healthBarTexture, p2)
 
 			otherBar:ClearAllPoints()
-			otherBar:SetSize(width, barHeight)
+			otherBar:Size(width, barHeight)
 			otherBar:SetPoint(anchor, health)
 			otherBar:SetPoint(p1, pred.myBarTexture, p2)
 
 			healAbsorbBar:ClearAllPoints()
-			healAbsorbBar:SetSize(width, barHeight)
+			healAbsorbBar:Size(width, barHeight)
 			healAbsorbBar:SetPoint(anchor, health)
 
 			absorbBar:ClearAllPoints()
-			absorbBar:SetSize(width, barHeight)
+			absorbBar:Size(width, barHeight)
 			absorbBar:SetPoint(anchor, health)
 
 			if db.absorbStyle == 'REVERSED' then
@@ -173,21 +173,21 @@ function UF:Configure_HealComm(frame)
 			pred.anchor, pred.anchor1, pred.anchor2 = anchor, p1, p2
 
 			myBar:ClearAllPoints()
-			myBar:SetSize(barWidth, height)
+			myBar:Size(barWidth, height)
 			myBar:SetPoint(anchor, health)
 			myBar:SetPoint(p1, healthBarTexture, p2)
 
 			otherBar:ClearAllPoints()
-			otherBar:SetSize(barWidth, height)
+			otherBar:Size(barWidth, height)
 			otherBar:SetPoint(anchor, health)
 			otherBar:SetPoint(p1, pred.myBarTexture, p2)
 
 			healAbsorbBar:ClearAllPoints()
-			healAbsorbBar:SetSize(barWidth, height)
+			healAbsorbBar:Size(barWidth, height)
 			healAbsorbBar:SetPoint(anchor, health)
 
 			absorbBar:ClearAllPoints()
-			absorbBar:SetSize(barWidth, height)
+			absorbBar:Size(barWidth, height)
 			absorbBar:SetPoint(anchor, health)
 
 			if db.absorbStyle == 'REVERSED' then

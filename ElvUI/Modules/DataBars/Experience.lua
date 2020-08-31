@@ -118,8 +118,8 @@ end
 function DB:ExperienceBar_OnClick() end
 
 function DB:UpdateExperienceDimensions()
-	DB.expBar:SetWidth(DB.db.experience.width)
-	DB.expBar:SetHeight(DB.db.experience.height)
+	DB.expBar:Width(DB.db.experience.width)
+	DB.expBar:Height(DB.db.experience.height)
 
 	DB.expBar.text:FontTemplate(LSM:Fetch('font', DB.db.experience.font), DB.db.experience.textSize, DB.db.experience.fontOutline)
 	DB.expBar.rested:SetOrientation(DB.db.experience.orientation)

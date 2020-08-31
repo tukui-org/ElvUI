@@ -12,7 +12,7 @@ function S:Blizzard_MacroUI()
 
 	local MacroFrame = _G.MacroFrame
 	S:HandlePortraitFrame(MacroFrame)
-	MacroFrame:SetWidth(360)
+	MacroFrame:Width(360)
 
 	_G.MacroFrameTextBackground:StripTextures()
 	_G.MacroFrameTextBackground:SetTemplate('Transparent')
@@ -43,7 +43,7 @@ function S:Blizzard_MacroUI()
 
 	for i = 1, 2 do
 		local tab = _G[format('MacroFrameTab%s', i)]
-		tab:SetHeight(22)
+		tab:Height(22)
 	end
 	_G.MacroFrameTab1:SetPoint('TOPLEFT', MacroFrame, 'TOPLEFT', 85, -39)
 	_G.MacroFrameTab2:SetPoint('LEFT', _G.MacroFrameTab1, 'RIGHT', 4, 0)

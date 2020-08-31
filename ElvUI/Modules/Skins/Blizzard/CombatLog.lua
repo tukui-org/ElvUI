@@ -39,7 +39,7 @@ function S:Blizzard_CombatLog()
 
 	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
 
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetSize(20, 22)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetPoint('TOPRIGHT', Button, 'TOPRIGHT', 0, -1)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 end

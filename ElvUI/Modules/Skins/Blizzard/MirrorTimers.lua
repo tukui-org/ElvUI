@@ -32,12 +32,12 @@ function S:MirrorTimers()
 		local text = _G['MirrorTimer'..i..'Text']
 
 		mirrorTimer:StripTextures()
-		mirrorTimer:SetSize(222, 18)
+		mirrorTimer:Size(222, 18)
 		mirrorTimer.label = text
 		statusBar:SetStatusBarTexture(E.media.normTex)
 		E:RegisterStatusBar(statusBar)
 		statusBar:CreateBackdrop()
-		statusBar:SetSize(222, 18)
+		statusBar:Size(222, 18)
 		text:Hide()
 
 		local TimerText = mirrorTimer:CreateFontString(nil, 'OVERLAY')

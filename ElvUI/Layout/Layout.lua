@@ -26,7 +26,7 @@ function LO:Initialize()
 	LO.BottomPanel:SetTemplate('Transparent')
 	LO.BottomPanel:SetPoint('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', -1, -1)
 	LO.BottomPanel:SetPoint('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
-	LO.BottomPanel:SetHeight(BAR_HEIGHT)
+	LO.BottomPanel:Height(BAR_HEIGHT)
 	LO.BottomPanel:SetScript('OnShow', Panel_OnShow)
 	E.FrameLocks.ElvUI_BottomPanel = true
 	Panel_OnShow(LO.BottomPanel)
@@ -36,7 +36,7 @@ function LO:Initialize()
 	LO.TopPanel:SetTemplate('Transparent')
 	LO.TopPanel:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
 	LO.TopPanel:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
-	LO.TopPanel:SetHeight(BAR_HEIGHT)
+	LO.TopPanel:Height(BAR_HEIGHT)
 	LO.TopPanel:SetScript('OnShow', Panel_OnShow)
 	Panel_OnShow(LO.TopPanel)
 	E.FrameLocks.ElvUI_TopPanel = true
@@ -164,11 +164,11 @@ function LO:RefreshChatMovers()
 	end
 
 	-- mover sizes: same as in CH.PositionChats for panels but including the datatext bar height
-	LeftChatMover:SetSize(E.db.chat.panelWidth, E.db.chat.panelHeight + (showLeftPanel and barHeight or 0))
+	LeftChatMover:Size(E.db.chat.panelWidth, E.db.chat.panelHeight + (showLeftPanel and barHeight or 0))
 	if E.db.chat.separateSizes then
-		RightChatMover:SetSize(E.db.chat.panelWidthRight, E.db.chat.panelHeightRight + (showRightPanel and barHeight or 0))
+		RightChatMover:Size(E.db.chat.panelWidthRight, E.db.chat.panelHeightRight + (showRightPanel and barHeight or 0))
 	else
-		RightChatMover:SetSize(E.db.chat.panelWidth, E.db.chat.panelHeight + (showRightPanel and barHeight or 0))
+		RightChatMover:Size(E.db.chat.panelWidth, E.db.chat.panelHeight + (showRightPanel and barHeight or 0))
 	end
 end
 
@@ -284,8 +284,8 @@ function LO:CreateChatPanels()
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent, 'BackdropTemplate')
 	lchat:SetFrameStrata('BACKGROUND')
 	lchat:SetFrameLevel(300)
-	lchat:SetSize(100, 100)
-	lchat:SetPoint('BOTTOMLEFT', E.UIParent, 4, 4)
+	lchat:Size(100, 100)
+	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
 	lchat:CreateBackdrop('Transparent')
 	lchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
 	lchat.backdrop:SetAllPoints()
@@ -324,7 +324,7 @@ function LO:CreateChatPanels()
 	lchattbtex:SetRotation(E.Skins.ArrowRotation.left)
 	lchattbtex:ClearAllPoints()
 	lchattbtex:SetPoint('CENTER')
-	lchattbtex:SetSize(12, 12)
+	lchattbtex:Size(12)
 	lchattb.texture = lchattbtex
 	lchattb.OnEnter = ChatButton_OnEnter
 	lchattb.OnLeave = ChatButton_OnLeave
@@ -334,8 +334,8 @@ function LO:CreateChatPanels()
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent, 'BackdropTemplate')
 	rchat:SetFrameStrata('BACKGROUND')
 	rchat:SetFrameLevel(300)
-	rchat:SetSize(100, 100)
-	rchat:SetPoint('BOTTOMRIGHT', E.UIParent, -4, 4)
+	rchat:Size(100, 100)
+	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
 	rchat:CreateBackdrop('Transparent')
 	rchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
 	rchat.backdrop:SetAllPoints()
@@ -374,7 +374,7 @@ function LO:CreateChatPanels()
 	rchattbtex:SetRotation(E.Skins.ArrowRotation.right)
 	rchattbtex:ClearAllPoints()
 	rchattbtex:SetPoint('CENTER')
-	rchattbtex:SetSize(12, 12)
+	rchattbtex:Size(12)
 	rchattb.texture = rchattbtex
 	rchattb.parent = rchat
 

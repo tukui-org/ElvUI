@@ -10,7 +10,7 @@ local targetIndicators = { 'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndic
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate:GetName() .. 'QuestIcons', nameplate)
-	QuestIcons:SetSize(20, 20)
+	QuestIcons:Size(20)
 	QuestIcons:Hide()
 
 	for _, object in ipairs(questIconTypes) do
@@ -43,7 +43,7 @@ function NP:Update_QuestIcons(nameplate)
 
 		for _, object in ipairs(questIconTypes) do
 			local icon = nameplate.QuestIcons[object]
-			icon:SetSize(db.size, db.size)
+			icon:Size(db.size, db.size)
 			icon:SetAlpha(db.hideIcon and 0 or 1)
 
 			local xoffset = strfind(db.textPosition, 'LEFT') and -2 or 2
@@ -74,7 +74,7 @@ function NP:Update_ClassificationIndicator(nameplate)
 		end
 
 		nameplate.ClassificationIndicator:ClearAllPoints()
-		nameplate.ClassificationIndicator:SetSize(db.size, db.size)
+		nameplate.ClassificationIndicator:Size(db.size, db.size)
 		nameplate.ClassificationIndicator:SetPoint(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
 	elseif nameplate:IsElementEnabled('ClassificationIndicator') then
 		nameplate:DisableElement('ClassificationIndicator')
@@ -187,7 +187,7 @@ end
 
 function NP:Construct_PVPRole(nameplate)
 	local texture = nameplate:CreateTexture(nameplate:GetName() .. 'PVPRole', 'OVERLAY', nil, 1)
-	texture:SetSize(40, 40)
+	texture:Size(40)
 	texture.HealerTexture = E.Media.Textures.Healer
 	texture.TankTexture = E.Media.Textures.Tank
 	texture:SetTexture(texture.HealerTexture)
@@ -322,9 +322,9 @@ function NP:Update_WidgetXPBar(nameplate)
 
 		local bar = nameplate.WidgetXPBar
 		bar:ClearAllPoints()
-		bar:SetPoint('TOPLEFT', nameplate, 'BOTTOMLEFT', 0, db.widgetXPBar.yOffset)
-		bar:SetPoint('TOPRIGHT', nameplate, 'BOTTOMRIGHT', 0, db.widgetXPBar.yOffset)
-		bar:SetHeight(10)
+		bar:Point('TOPLEFT', nameplate, 'BOTTOMLEFT', 0, db.widgetXPBar.yOffset)
+		bar:Point('TOPRIGHT', nameplate, 'BOTTOMRIGHT', 0, db.widgetXPBar.yOffset)
+		bar:Height(10)
 
 		bar.Rank:ClearAllPoints()
 		bar.Rank:SetPoint('RIGHT', bar, 'LEFT', -4, 0)

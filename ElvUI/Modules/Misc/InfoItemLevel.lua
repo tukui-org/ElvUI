@@ -41,7 +41,7 @@ function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
 	texture:SetPoint('BOTTOM', x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
-	texture:SetSize(14, 14)
+	texture:Size(14)
 
 	local backdrop = CreateFrame('Frame', nil, slot, 'BackdropTemplate')
 	backdrop:SetTemplate(nil, nil, true)
@@ -184,7 +184,7 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 
 			essenceType:SetPoint('BOTTOM', texture, 'TOP', 0, -9)
 			essenceType:SetAtlas(gsub(essence[2], '^tooltip%-(heartofazeroth)essence', '%1-list-selected'))
-			essenceType:SetSize(13, 17)
+			essenceType:Size(13, 17)
 			essenceType:Show()
 
 			local selected = essence[1]
