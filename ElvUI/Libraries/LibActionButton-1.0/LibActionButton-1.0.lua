@@ -1463,7 +1463,7 @@ hooksecurefunc("ClearNewActionHighlight", function(action, preventIdenticalActio
 	ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, nil)
 end)
 
-local function UpdateSpellHighlight(self, shown)
+UpdateSpellHighlight = function(self, shown)
 	if ( shown ) then
 		self.SpellHighlightTexture:Show();
 		self.SpellHighlightAnim:Play();
