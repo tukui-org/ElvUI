@@ -301,7 +301,7 @@ end
 do
 	local function NameHealthColor(tags,hex,unit,default)
 		if hex == 'class' or hex == 'reaction' then
-			return tags.namecolor(unit)
+			return tags.namecolor(unit) or default
 		elseif hex and strmatch(hex, '^%x%x%x%x%x%x$') then
 			return '|cFF'..hex
 		end
@@ -533,13 +533,11 @@ ElvUF.Tags.Events['namecolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNT
 ElvUF.Tags.Methods['namecolor'] = function(unit)
 	if UnitIsPlayer(unit) then
 		local _, unitClass = UnitClass(unit)
-		local class = ElvUF.colors.class[unitClass]
-		if class then
-			return Hex(class[1], class[2], class[3])
-		end
+		local cs = ElvUF.colors.class[unitClass]
+		return (cs and Hex(cs[1], cs[2], cs[3])) or '|cFFcccccc'
 	else
-		local color = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
-		return (color and Hex(color[1], color[2], color[3])) or '|cFFC2C2C2'
+		local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
+		return (cr and Hex(cr[1], cr[2], cr[3])) or '|cFFcccccc'
 	end
 end
 

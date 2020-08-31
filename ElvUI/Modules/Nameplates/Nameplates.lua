@@ -589,7 +589,7 @@ function NP:UpdatePlateGUID(nameplate, guid)
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'NAME_PLATE_UNIT_ADDED' then
+	if event == 'NAME_PLATE_UNIT_ADDED' or (event == 'UNIT_FACTION' and nameplate) then
 		local updateBase = NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		unit = unit or nameplate.unit
@@ -651,7 +651,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.previousType = nameplate.frameType
 		end
 
-		if NP.db.fadeIn and nameplate.frameType ~= 'PLAYER' then
+		if NP.db.fadeIn and (event == 'NAME_PLATE_UNIT_ADDED' and nameplate.frameType ~= 'PLAYER') then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
