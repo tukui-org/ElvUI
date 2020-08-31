@@ -85,7 +85,7 @@ function UF:Update_AssistFrames(frame, db)
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		if(UF.thinBorders) then
 			frame.SPACING = 0
-			frame.BORDER = E.mult
+			frame.BORDER = 1
 		else
 			frame.BORDER = E.Border
 			frame.SPACING = E.Spacing

@@ -258,7 +258,7 @@ function UF:Construct_UF(frame, unit)
 
 	if(self.thinBorders) then
 		frame.SPACING = 0
-		frame.BORDER = E.mult
+		frame.BORDER = 1
 	else
 		frame.BORDER = E.Border
 		frame.SPACING = E.Spacing

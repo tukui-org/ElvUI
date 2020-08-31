@@ -62,18 +62,15 @@ local function GetTemplate(template, isUnitFrameElement)
 end
 
 local function Size(frame, width, height, ...)
-	assert(width)
-	frame:SetSize(width, height or width, ...)
+	frame:SetSize(E:Scale(width), E:Scale(height or width), ...)
 end
 
 local function Width(frame, width, ...)
-	assert(width)
-	frame:SetWidth(width, ...)
+	frame:SetWidth(E:Scale(width), ...)
 end
 
 local function Height(frame, height, ...)
-	assert(height)
-	frame:SetHeight(height, ...)
+	frame:SetHeight(E:Scale(height), ...)
 end
 
 local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
@@ -87,14 +84,13 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
 	yOffset = yOffset or E.Border
 	anchor = anchor or obj:GetParent()
 
-	assert(anchor)
 	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
+	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -E:Scale(xOffset), E:Scale(yOffset))
+	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', E:Scale(xOffset), -E:Scale(yOffset))
 end
 
 local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
@@ -108,8 +104,8 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
+	obj:Point('TOPLEFT', anchor, 'TOPLEFT', E:Scale(xOffset), -E:Scale(yOffset))
+	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -E:Scale(xOffset), E:Scale(yOffset))
 end
 
 local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
