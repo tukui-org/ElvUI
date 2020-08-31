@@ -13,17 +13,17 @@ function S:Blizzard_ChromieTimeUI()
 	if E.private.skins.parchmentRemoverEnable then
 		frame:StripTextures()
 		frame.Background:Hide()
-		frame.Title:StripTextures()
-		frame.CurrentlySelectedExpansionInfoFrame.Background:Hide()
-
 		frame:CreateBackdrop('Transparent')
-		frame.Title:CreateBackdrop('Transparent')
-		frame.CurrentlySelectedExpansionInfoFrame:CreateBackdrop('Transparent')
 
-		frame.CurrentlySelectedExpansionInfoFrame.Name:SetTextColor(1, 1, 1)
-		frame.CurrentlySelectedExpansionInfoFrame.Description:SetTextColor(1, 1, 1)
+		local Title = frame.Title
+		Title:DisableDrawLayer('BACKGROUND')
+		Title:CreateBackdrop('Transparent')
 
-		-- ToDo: Make the option button pretty!
+		local InfoFrame = frame.CurrentlySelectedExpansionInfoFrame
+		InfoFrame:DisableDrawLayer('BACKGROUND')
+		InfoFrame:CreateBackdrop('Transparent')
+		InfoFrame.Name:SetTextColor(1, .8, 0)
+		InfoFrame.Description:SetTextColor(1, 1, 1)
 	end
 end
 
