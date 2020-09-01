@@ -119,9 +119,9 @@ local function JournalScrollButtons(frame)
 		bu:ClearAllPoints()
 
 		if i == 1 then
-			bu:SetPoint(point, relativeTo, relativePoint, 44, yOffset)
+			bu:Point(point, relativeTo, relativePoint, 44, yOffset)
 		else
-			bu:SetPoint(point, relativeTo, relativePoint, xOffset, -2)
+			bu:Point(point, relativeTo, relativePoint, xOffset, -2)
 		end
 
 		local icon = bu.icon or bu.Icon
@@ -582,7 +582,7 @@ function S:Blizzard_Collections()
 	WardrobeOutfitFrame:CreateBackdrop('Transparent')
 	S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
 	S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
-	_G.WardrobeOutfitDropDown:SetHeight(34)
+	_G.WardrobeOutfitDropDown:Height(34)
 	_G.WardrobeOutfitDropDown.SaveButton:ClearAllPoints()
 	_G.WardrobeOutfitDropDown.SaveButton:Point('TOPLEFT', _G.WardrobeOutfitDropDown, 'TOPRIGHT', -2, -2)
 

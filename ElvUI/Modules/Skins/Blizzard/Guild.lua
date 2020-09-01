@@ -50,7 +50,7 @@ function S:Blizzard_GuildUI()
 
 	_G.GuildNewsBossModel:CreateBackdrop('Transparent')
 	_G.GuildNewsBossModelTextFrame:CreateBackdrop()
-	_G.GuildNewsBossModelTextFrame.backdrop:SetPoint('TOPLEFT', _G.GuildNewsBossModel.backdrop, 'BOTTOMLEFT', 0, -1)
+	_G.GuildNewsBossModelTextFrame.backdrop:Point('TOPLEFT', _G.GuildNewsBossModel.backdrop, 'BOTTOMLEFT', 0, -1)
 	_G.GuildNewsBossModel:Point('TOPLEFT', GuildFrame, 'TOPRIGHT', 4, -43)
 
 	local buttons = {

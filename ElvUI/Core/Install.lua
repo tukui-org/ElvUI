@@ -776,7 +776,7 @@ function E:Install()
 
 		f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')
 		f.Status.text:FontTemplate(nil, 14, 'OUTLINE')
-		f.Status.text:SetPoint('CENTER')
+		f.Status.text:Point('CENTER')
 		f.Status.text:SetText(CURRENT_PAGE..' / '..MAX_PAGE)
 
 		f.Slider = CreateFrame('Slider', 'InstallSlider', f, 'BackdropTemplate')

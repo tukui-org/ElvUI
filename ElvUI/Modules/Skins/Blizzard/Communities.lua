@@ -758,14 +758,14 @@ function S:Blizzard_Communities()
 		for i = 1, #buttons do
 			local button = buttons[i]
 			if not button.IsSkinned then
-				button:SetPoint('LEFT', ApplicantList.backdrop, 1, 0)
-				button:SetPoint('RIGHT', ApplicantList.backdrop, -1, 0)
+				button:Point('LEFT', ApplicantList.backdrop, 1, 0)
+				button:Point('RIGHT', ApplicantList.backdrop, -1, 0)
 
 				button:SetHighlightTexture(E.media.normTex)
 				button:GetHighlightTexture():SetVertexColor(1, 1, 1, .25)
 
-				button.InviteButton:SetSize(66, 18)
-				button.CancelInvitationButton:SetSize(20, 18)
+				button.InviteButton:Size(66, 18)
+				button.CancelInvitationButton:Size(20, 18)
 				S:HandleButton(button.InviteButton)
 				S:HandleButton(button.CancelInvitationButton)
 

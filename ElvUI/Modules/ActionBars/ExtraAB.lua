@@ -66,7 +66,7 @@ function AB:SetupExtraButton()
 	-- Please check this 9.0 Shadowlands
 	ExtraAbilityContainer:SetParent(ExtraActionBarHolder)
 	ExtraAbilityContainer:ClearAllPoints()
-	ExtraAbilityContainer:SetPoint('CENTER', ExtraActionBarHolder, 'CENTER')
+	ExtraAbilityContainer:Point('CENTER', ExtraActionBarHolder, 'CENTER')
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)

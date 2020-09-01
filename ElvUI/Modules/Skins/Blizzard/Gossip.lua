@@ -80,7 +80,7 @@ function S:GossipFrame()
 		local notch = _G['NPCFriendshipStatusBarNotch'..i]
 		if notch then
 			notch:SetColorTexture(0, 0, 0)
-			notch:SetSize(E.mult, 16)
+			notch:Size(1, 16)
 		end
 	end
 

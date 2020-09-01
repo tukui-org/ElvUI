@@ -461,7 +461,7 @@ function S:BlizzardQuestFrames()
 			button:SetNormalTexture(E.Media.Textures.MinusButton)
 		end
 
-		button:SetSize(16, 16)
+		button:Size(16, 16)
 		button:SetPushedTexture('')
 	end)
 end

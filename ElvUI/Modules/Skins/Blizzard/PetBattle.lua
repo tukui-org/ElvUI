@@ -336,7 +336,7 @@ function S:PetBattleFrame()
 	bf.TurnTimer:Size(bf.TurnTimer.SkipButton:GetWidth(), bf.TurnTimer.SkipButton:GetHeight())
 	bf.TurnTimer:ClearAllPoints()
 	bf.TurnTimer:Point('TOP', E.UIParent, 'TOP', 0, -140)
-	bf.TurnTimer.TimerText:SetPoint('CENTER')
+	bf.TurnTimer.TimerText:Point('CENTER')
 
 	bf.FlowFrame:StripTextures()
 	bf.MicroButtonFrame:Kill()

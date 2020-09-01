@@ -29,7 +29,7 @@ local function PostBNToastMove(mover)
 	mover.anchorPoint = anchorPoint
 
 	_G.BNToastFrame:ClearAllPoints()
-	_G.BNToastFrame:SetPoint(anchorPoint, mover)
+	_G.BNToastFrame:Point(anchorPoint, mover)
 end
 
 function B:Initialize()
@@ -60,9 +60,9 @@ function B:Initialize()
 	E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 
 	-- Battle.Net Frame
-	_G.BNToastFrame:SetPoint('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -10)
+	_G.BNToastFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMRIGHT', 0, -10)
 	E:CreateMover(_G.BNToastFrame, 'BNETMover', L["BNet Frame"], nil, nil, PostBNToastMove)
-	_G.BNToastFrame.mover:SetSize(_G.BNToastFrame:GetSize())
+	_G.BNToastFrame.mover:Size(_G.BNToastFrame:GetSize())
 	TT:SecureHook(_G.BNToastFrame, 'SetPoint', 'RepositionBNET')
 
 	-- Quick Join Bug

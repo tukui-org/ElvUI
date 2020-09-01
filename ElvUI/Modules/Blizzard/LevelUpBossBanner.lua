@@ -23,10 +23,10 @@ function B:Handle_LevelUpDisplay_BossBanner()
 	E:CreateMover(Holder, 'LevelUpBossBannerMover', L["Level Up Display / Boss Banner"])
 
 	_G.LevelUpDisplay:ClearAllPoints()
-	_G.LevelUpDisplay:SetPoint('TOP', Holder)
+	_G.LevelUpDisplay:Point('TOP', Holder)
 	hooksecurefunc(_G.LevelUpDisplay, 'SetPoint', Reanchor)
 
 	_G.BossBanner:ClearAllPoints()
-	_G.BossBanner:SetPoint('TOP', Holder)
+	_G.BossBanner:Point('TOP', Holder)
 	hooksecurefunc(_G.BossBanner, 'SetPoint', Reanchor)
 end

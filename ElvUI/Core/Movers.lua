@@ -17,17 +17,17 @@ E.DisabledMovers = {}
 
 local function SizeChanged(frame, width, height)
 	if InCombatLockdown() then return end
-	frame.mover:SetSize(width, height)
+	frame.mover:Size(width, height)
 end
 
 local function WidthChanged(frame, width)
 	if InCombatLockdown() then return end
-	frame.mover:SetWidth(width)
+	frame.mover:Width(width)
 end
 
 local function HeightChanged(frame, height)
 	if InCombatLockdown() then return end
-	frame.mover:SetHeight(height)
+	frame.mover:Height(height)
 end
 
 local function GetPoint(obj)
@@ -241,7 +241,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	local fs = f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
-	fs:SetPoint('CENTER')
+	fs:Point('CENTER')
 	fs:SetText(textString or name)
 	fs:SetJustifyH('CENTER')
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))

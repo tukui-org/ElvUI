@@ -18,8 +18,8 @@ function S:Blizzard_AnimaDiversionUI()
 
 	frame.AnimaDiversionCurrencyFrame.Background:SetAlpha(0)
 	frame.AnimaDiversionCurrencyFrame.Background:CreateBackdrop('Transparent')
-	frame.AnimaDiversionCurrencyFrame.Background.backdrop:SetPoint('TOPLEFT', frame.AnimaDiversionCurrencyFrame, 'TOPLEFT', 0, -7)
-	frame.AnimaDiversionCurrencyFrame.Background.backdrop:SetPoint('BOTTOMRIGHT', frame.AnimaDiversionCurrencyFrame, 'BOTTOMRIGHT', 0, 7)
+	frame.AnimaDiversionCurrencyFrame.Background.backdrop:Point('TOPLEFT', frame.AnimaDiversionCurrencyFrame, 'TOPLEFT', 0, -7)
+	frame.AnimaDiversionCurrencyFrame.Background.backdrop:Point('BOTTOMRIGHT', frame.AnimaDiversionCurrencyFrame, 'BOTTOMRIGHT', 0, 7)
 	S:HandleIcon(frame.AnimaDiversionCurrencyFrame.CurrencyFrame.CurrencyIcon)
 
 	S:HandleButton(frame.ReinforceInfoFrame.AnimaNodeReinforceButton)

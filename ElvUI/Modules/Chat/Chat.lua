@@ -658,10 +658,10 @@ function CH:StyleChat(frame)
 	local charCount = editbox:CreateFontString(nil, 'ARTWORK')
 	charCount:FontTemplate()
 	charCount:SetTextColor(190, 190, 190, 0.4)
-	charCount:SetPoint('TOPRIGHT', editbox, 'TOPRIGHT', -5, 0)
-	charCount:SetPoint('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', -5, 0)
+	charCount:Point('TOPRIGHT', editbox, 'TOPRIGHT', -5, 0)
+	charCount:Point('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', -5, 0)
 	charCount:SetJustifyH('CENTER')
-	charCount:SetWidth(40)
+	charCount:Width(40)
 	editbox.characterCount = charCount
 
 	for _, texName in pairs(tabTexs) do
@@ -674,12 +674,12 @@ function CH:StyleChat(frame)
 
 	if not tab.left then tab.left = _G[name..'TabLeft'] end
 	tab.Text:ClearAllPoints()
-	tab.Text:SetPoint('LEFT', tab, 'LEFT', tab.left:GetWidth(), -2)
-	tab:SetHeight(22)
+	tab.Text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), -2)
+	tab:Height(22)
 
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
-		tab.conversationIcon:SetPoint('RIGHT', tab.Text, 'LEFT', -1, 0)
+		tab.conversationIcon:Point('RIGHT', tab.Text, 'LEFT', -1, 0)
 	end
 
 	local a, b, c = select(6, editbox:GetRegions()); a:Kill(); b:Kill(); c:Kill()

@@ -180,9 +180,9 @@ function S:Blizzard_TradeSkillUI()
 		frame:DisableDrawLayer('ARTWORK')
 
 		S:HandleIcon(frame.Icon, true)
-		frame.Icon:SetSize(32, 32)
+		frame.Icon:Size(32, 32)
 		frame.Icon:ClearAllPoints()
-		frame.Icon:SetPoint('TOPLEFT', frame, 'TOPLEFT', 3, -3)
+		frame.Icon:Point('TOPLEFT', frame, 'TOPLEFT', 3, -3)
 
 		if frame.Icon.backdrop then
 			frame.Icon.backdrop:SetAllPoints(frame.Icon)

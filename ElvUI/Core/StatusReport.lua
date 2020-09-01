@@ -129,8 +129,8 @@ end
 function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent, anchor1, anchorTo, anchor2, yOffset)
 	local parentWidth, parentHeight = parent:GetSize()
 
-	if width > parentWidth then parent:SetWidth(width + 25) end
-	if height then parent:SetHeight(parentHeight + height) end
+	if width > parentWidth then parent:Width(width + 25) end
+	if height then parent:Height(parentHeight + height) end
 
 	local section = CreateFrame('Frame', nil, parent)
 	section:Size(width, height or 0)
@@ -177,16 +177,16 @@ function E:CreateStatusFrame()
 	StatusFrame:CreateBackdrop('Transparent', nil, true)
 	StatusFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)
 	StatusFrame:SetMovable(true)
-	StatusFrame:SetSize(0, 35)
+	StatusFrame:Size(0, 35)
 	StatusFrame:Hide()
 
 	--Plugin frame
 	local PluginFrame = CreateFrame('Frame', 'ElvUIStatusPlugins', StatusFrame)
-	PluginFrame:SetPoint('TOPLEFT', StatusFrame, 'TOPRIGHT', E.Border * 2, 0)
+	PluginFrame:Point('TOPLEFT', StatusFrame, 'TOPRIGHT', E.Border * 2, 0)
 	PluginFrame:SetFrameStrata('HIGH')
 	PluginFrame:CreateBackdrop('Transparent', nil, true)
 	PluginFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)
-	PluginFrame:SetSize(0, 25)
+	PluginFrame:Size(0, 25)
 	StatusFrame.PluginFrame = PluginFrame
 
 	--Close button and script to retoggle the options.
@@ -303,7 +303,7 @@ function E:UpdateStatusFrame()
 			end
 
 			PluginFrame.SectionP:Height(count * 20)
-			PluginFrame:SetHeight(PluginSection.Content:GetHeight() + 50)
+			PluginFrame:Height(PluginSection.Content:GetHeight() + 50)
 			PluginFrame:Show()
 		else
 			PluginFrame:Hide()

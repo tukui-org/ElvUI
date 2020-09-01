@@ -64,9 +64,9 @@ local function UpdateSize(self, element, curV, maxV)
 	local c = max(element.cur - curV, 0)
 	local mm = c * oum
 	if isVertical then
-		element:SetHeight(mm)
+		element:Height(mm)
 	else
-		element:SetWidth(mm)
+		element:Width(mm)
 	end
 end
 

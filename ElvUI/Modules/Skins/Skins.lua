@@ -538,7 +538,7 @@ function S:HandleDropDownBox(frame, width, pos)
 	end
 
 	frame:StripTextures()
-	frame:SetWidth(width)
+	frame:Width(width)
 
 	frame:CreateBackdrop()
 	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
@@ -1001,7 +1001,7 @@ local AtlasToRoleTex = {
 
 local function HandleFollowerRole(roleIcon, atlas)
 	roleIcon:SetTexture('Interface\\LFGFrame\\LFGROLE')
-	roleIcon:SetSize(18, 18)
+	roleIcon:Size(18, 18)
 
 	local texcoord = AtlasToRoleTex[atlas]
 	if texcoord then
@@ -1015,7 +1015,7 @@ function S:HandleGarrisonPortrait(portrait)
 	local level = portrait.Level or portrait.LevelText
 	if level then
 		level:ClearAllPoints()
-		level:SetPoint('BOTTOM', portrait, 0, 12)
+		level:Point('BOTTOM', portrait, 0, 12)
 		level:FontTemplate(nil, 12, 'OUTLINE')
 		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
 		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
@@ -1043,14 +1043,14 @@ function S:HandleGarrisonPortrait(portrait)
 
 		local roleIcon = portrait.HealthBar.RoleIcon
 		roleIcon:ClearAllPoints()
-		roleIcon:SetPoint('TOPRIGHT', portrait.Portrait.backdrop, 5, 5)
+		roleIcon:Point('TOPRIGHT', portrait.Portrait.backdrop, 5, 5)
 		--hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
 
 		local background = portrait.HealthBar.Background
 		background:SetAlpha(0)
 		background:ClearAllPoints()
-		background:SetPoint('TOPLEFT', portrait.Portrait.backdrop, 'BOTTOMLEFT', E.mult, 6)
-		background:SetPoint('BOTTOMRIGHT', portrait.Portrait.backdrop, 'BOTTOMRIGHT', -E.mult, E.mult)
+		background:Point('TOPLEFT', portrait.Portrait.backdrop, 'BOTTOMLEFT', 1, 6)
+		background:Point('BOTTOMRIGHT', portrait.Portrait.backdrop, 'BOTTOMRIGHT', -1, 1)
 		portrait.HealthBar.Health:SetTexture(E.media.normTex)
 	end
 end

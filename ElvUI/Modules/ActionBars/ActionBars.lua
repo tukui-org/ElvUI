@@ -172,7 +172,7 @@ function AB:PositionAndSizeBar(barName)
 	--Size of all buttons + Spacing between all buttons + Spacing between additional rows of buttons + Spacing between backdrop and buttons + Spacing on end borders with non-thin borders
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult - 1)) + (sideSpacing*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult - 1)) + (sideSpacing*2)
-	bar:SetSize(barWidth, barHeight)
+	bar:Size(barWidth, barHeight)
 
 	local horizontalGrowth, verticalGrowth
 	if point == 'TOPLEFT' or point == 'TOPRIGHT' then
@@ -303,8 +303,8 @@ function AB:CreateBar(id)
 	bar:SetFrameStrata('LOW')
 
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
-	bar.backdrop:SetPoint('TOPLEFT', bar, 'TOPLEFT', E.Spacing, -E.Spacing)
-	bar.backdrop:SetPoint('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
+	bar.backdrop:Point('TOPLEFT', bar, 'TOPLEFT', E.Spacing, -E.Spacing)
+	bar.backdrop:Point('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
 
 	bar.buttons = {}
 	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons
@@ -391,7 +391,7 @@ function AB:CreateVehicleLeave()
 	local Button = _G.MainMenuBarVehicleLeaveButton
 	Button:ClearAllPoints()
 	Button:SetParent(_G.UIParent)
-	Button:SetPoint('CENTER', holder, 'CENTER')
+	Button:Point('CENTER', holder, 'CENTER')
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		Button:StyleButton(true, true, true)
@@ -402,11 +402,11 @@ function AB:CreateVehicleLeave()
 		Button:StyleButton(nil, true, true)
 	end
 
-	hooksecurefunc(Button, 'SetPoint', function(_, _, parent)
+	hooksecurefunc(Button, 'Point', function(_, _, parent)
 		if parent ~= holder then
 			Button:ClearAllPoints()
 			Button:SetParent(_G.UIParent)
-			Button:SetPoint('CENTER', holder, 'CENTER')
+			Button:Point('CENTER', holder, 'CENTER')
 		end
 	end)
 
@@ -753,7 +753,7 @@ function AB:IconIntroTracker_Toggle()
 end
 
 -- these calls are tainted when accessed by ValidateActionBarTransition
-local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown', 'SetSize' }
+local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown' }
 function AB:SetNoopsi(frame)
 	for _, func in pairs(noops) do
 		if frame[func] ~= E.noop then
@@ -859,7 +859,7 @@ function AB:DisableBlizzard()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
 	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
-	_G.VerticalMultiBarsContainer:SetSize(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
+	_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
 	AB:SetNoopsi(_G.VerticalMultiBarsContainer)
 
 	-- hide some interface options we dont use

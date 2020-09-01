@@ -70,7 +70,7 @@ function UF:Update_TankHeader(header, db)
 		header:SetAttribute('minWidth', width)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,tank,generalGroup')
-		header.mover:SetSize(width, minHeight)
+		header.mover:Size(width, minHeight)
 
 		header.positioned = true
 	end

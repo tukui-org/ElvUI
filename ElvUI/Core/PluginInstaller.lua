@@ -260,8 +260,8 @@ function PI:CreateFrame()
 	f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45)
 	f.Option2:SetText('')
 	f.Option2:Hide()
-	f.Option2:SetScript('OnShow', function() f.Option1:SetWidth(110); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
-	f.Option2:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45) end)
+	f.Option2:SetScript('OnShow', function() f.Option1:Width(110); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45) end)
+	f.Option2:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45) end)
 	S:HandleButton(f.Option2)
 
 	f.Option3 = CreateFrame('Button', 'PluginInstallOption3Button', f, 'UIPanelButtonTemplate, BackdropTemplate')
@@ -269,8 +269,8 @@ function PI:CreateFrame()
 	f.Option3:Point('LEFT', f.Option2, 'RIGHT', 4, 0)
 	f.Option3:SetText('')
 	f.Option3:Hide()
-	f.Option3:SetScript('OnShow', function() f.Option1:SetWidth(100); f.Option1:ClearAllPoints(); f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); f.Option2:SetWidth(100); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOM', f, 'BOTTOM', 0, 45)  end)
-	f.Option3:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
+	f.Option3:SetScript('OnShow', function() f.Option1:Width(100); f.Option1:ClearAllPoints(); f.Option1:Point('RIGHT', f.Option2, 'LEFT', -4, 0); f.Option2:Width(100); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOM', f, 'BOTTOM', 0, 45)  end)
+	f.Option3:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45); f.Option2:Width(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
 	S:HandleButton(f.Option3)
 
 	f.Option4 = CreateFrame('Button', 'PluginInstallOption4Button', f, 'UIPanelButtonTemplate, BackdropTemplate')
@@ -287,7 +287,7 @@ function PI:CreateFrame()
 		f.Option2:ClearAllPoints()
 		f.Option2:Point('BOTTOMRIGHT', f, 'BOTTOM', -4, 45)
 	end)
-	f.Option4:SetScript('OnHide', function() f.Option1:SetWidth(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45); f.Option2:SetWidth(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
+	f.Option4:SetScript('OnHide', function() f.Option1:Width(160); f.Option1:ClearAllPoints(); f.Option1:Point('BOTTOM', 0, 45); f.Option2:Width(110); f.Option2:ClearAllPoints(); f.Option2:Point('BOTTOMLEFT', f, 'BOTTOM', 4, 45) end)
 	S:HandleButton(f.Option4)
 
 	f.SubTitle = f:CreateFontString(nil, 'OVERLAY')
@@ -470,12 +470,12 @@ function PI:RunInstall()
 
 		if db.StepTitles and #db.StepTitles == f.MaxPage then
 			f:Point('CENTER', E.UIParent, 'CENTER', -((db.StepTitleWidth or 140)/2), 0)
-			f.side:SetWidth(db.StepTitleWidth or 140)
+			f.side:Width(db.StepTitleWidth or 140)
 			f.side:Show()
 
 			for i = 1, #f.side.Lines do
 				if db.StepTitles[i] then
-					f.side.Lines[i]:SetWidth(db.StepTitleButtonWidth or 130)
+					f.side.Lines[i]:Width(db.StepTitleButtonWidth or 130)
 					f.side.Lines[i].text:SetJustifyH(db.StepTitleTextJustification or 'CENTER')
 					f.side.Lines[i]:Show()
 				end

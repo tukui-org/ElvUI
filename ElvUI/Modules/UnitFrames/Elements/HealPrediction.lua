@@ -223,15 +223,15 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 
 	-- handle over heal absorbs
 	healAbsorbBar:ClearAllPoints()
-	healAbsorbBar:SetPoint(pred.anchor, frame.Health)
+	healAbsorbBar:Point(pred.anchor, frame.Health)
 
 	if hasOverHealAbsorb then -- forward fill it when its greater than health so that you can still see this is being stolen
 		healAbsorbBar:SetReverseFill(pred.reverseFill)
-		healAbsorbBar:SetPoint(pred.anchor1, pred.healthBarTexture, pred.anchor2)
+		healAbsorbBar:Point(pred.anchor1, pred.healthBarTexture, pred.anchor2)
 		healAbsorbBar:SetStatusBarColor(colors.overhealabsorbs.r, colors.overhealabsorbs.g, colors.overhealabsorbs.b, colors.overhealabsorbs.a)
 	else -- otherwise just let it backfill so that we know how much is being stolen
 		healAbsorbBar:SetReverseFill(not pred.reverseFill)
-		healAbsorbBar:SetPoint(pred.anchor2, pred.healthBarTexture, pred.anchor2)
+		healAbsorbBar:Point(pred.anchor2, pred.healthBarTexture, pred.anchor2)
 		healAbsorbBar:SetStatusBarColor(colors.healAbsorbs.r, colors.healAbsorbs.g, colors.healAbsorbs.b, colors.healAbsorbs.a)
 	end
 
@@ -263,8 +263,8 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 				absorbBar:SetReverseFill(not pred.reverseFill)
 
 				absorbBar:ClearAllPoints()
-				absorbBar:SetPoint(pred.anchor, pred.health)
-				absorbBar:SetPoint(pred.anchor2, pred.health, pred.anchor2)
+				absorbBar:Point(pred.anchor, pred.health)
+				absorbBar:Point(pred.anchor2, pred.health, pred.anchor2)
 			elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
 				local overflowAbsorb = absorb * maxOverflow
 				if health == maxHealth then
@@ -277,8 +277,8 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 			absorbBar:SetReverseFill(pred.reverseFill)
 
 			absorbBar:ClearAllPoints()
-			absorbBar:SetPoint(pred.anchor, pred.health)
-			absorbBar:SetPoint(pred.anchor1, pred.otherBarTexture, pred.anchor2)
+			absorbBar:Point(pred.anchor, pred.health)
+			absorbBar:Point(pred.anchor1, pred.otherBarTexture, pred.anchor2)
 		end
 	end
 end
