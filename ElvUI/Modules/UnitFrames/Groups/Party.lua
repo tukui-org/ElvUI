@@ -84,7 +84,7 @@ function UF:Update_PartyHeader(header, db)
 
 	if not parent.positioned then
 		parent:ClearAllPoints()
-		parent:SetPoint('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 4, 248)
+		parent:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 4, 248)
 		E:CreateMover(parent, parent:GetName()..'Mover', L["Party Frames"], nil, nil, nil, 'ALL,PARTY,ARENA', nil, 'unitframe,groupUnits,party,generalGroup')
 		parent.positioned = true
 	end
@@ -161,7 +161,7 @@ function UF:Update_PartyFrames(frame, db)
 			if db.enable then
 				frame:Enable()
 				frame:ClearAllPoints()
-				frame:SetPoint(E.InversePoints[db.anchorPoint], frame.originalParent, db.anchorPoint, db.xOffset, db.yOffset)
+				frame:Point(E.InversePoints[db.anchorPoint], frame.originalParent, db.anchorPoint, db.xOffset, db.yOffset)
 			else
 				frame:Disable()
 			end

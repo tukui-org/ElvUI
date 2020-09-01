@@ -16,11 +16,11 @@ function S:Blizzard_ItemInteractionUI()
 
 		ItemSlot:Size(58)
 		ItemSlot:ClearAllPoints()
-		ItemSlot:SetPoint('TOPLEFT', 143, -97)
+		ItemSlot:Point('TOPLEFT', 143, -97)
 
 		ItemSlot.Icon:ClearAllPoints()
-		ItemSlot.Icon:SetPoint('TOPLEFT', 1, -1)
-		ItemSlot.Icon:SetPoint('BOTTOMRIGHT', -1, 1)
+		ItemSlot.Icon:Point('TOPLEFT', 1, -1)
+		ItemSlot.Icon:Point('BOTTOMRIGHT', -1, 1)
 		S:HandleIcon(ItemSlot.Icon)
 
 		ItemSlot.GlowOverlay:SetAlpha(0)
@@ -33,8 +33,8 @@ function S:Blizzard_ItemInteractionUI()
 	ButtonFrame.ButtonBorder:Hide()
 	ButtonFrame.ButtonBottomBorder:Hide()
 
-	ButtonFrame.Currency:SetPoint('BOTTOMRIGHT', ButtonFrame.MoneyFrameEdge, -9, 4)
-	ButtonFrame.MoneyFrame:SetPoint('BOTTOMRIGHT', ButtonFrame.MoneyFrameEdge, 7, 5)
+	ButtonFrame.Currency:Point('BOTTOMRIGHT', ButtonFrame.MoneyFrameEdge, -9, 4)
+	ButtonFrame.MoneyFrame:Point('BOTTOMRIGHT', ButtonFrame.MoneyFrameEdge, 7, 5)
 
 	S:HandleIcon(ButtonFrame.Currency.icon)
 	S:HandleButton(ButtonFrame.ActionButton)

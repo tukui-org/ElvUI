@@ -14,7 +14,7 @@ function S:Blizzard_AnimaDiversionUI()
 
 	S:HandleCloseButton(frame.CloseButton)
 	frame.CloseButton:ClearAllPoints()
-	frame.CloseButton:SetPoint('TOPRIGHT', frame, 'TOPRIGHT', 4, 4) --default is -5, -5
+	frame.CloseButton:Point('TOPRIGHT', frame, 'TOPRIGHT', 4, 4) --default is -5, -5
 
 	frame.AnimaDiversionCurrencyFrame.Background:SetAlpha(0)
 	frame.AnimaDiversionCurrencyFrame.Background:CreateBackdrop('Transparent')

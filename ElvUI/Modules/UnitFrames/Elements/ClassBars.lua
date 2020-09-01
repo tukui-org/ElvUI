@@ -92,19 +92,19 @@ function UF:Configure_ClassBar(frame, cur)
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then
-					bars[i]:SetPoint('LEFT', bars)
+					bars[i]:Point('LEFT', bars)
 				else
 					if frame.USE_MINI_CLASSBAR then
 						if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
-							bars[i]:SetPoint('BOTTOM', bars[i-1], 'TOP', 0, (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2))
+							bars[i]:Point('BOTTOM', bars[i-1], 'TOP', 0, (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2))
 						else
-							bars[i]:SetPoint('LEFT', bars[i-1], 'RIGHT', (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
+							bars[i]:Point('LEFT', bars[i-1], 'RIGHT', (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
 						end
 					elseif i == frame.MAX_CLASS_BAR then
-						bars[i]:SetPoint('LEFT', bars[i-1], 'RIGHT', frame.BORDER-frame.SPACING, 0)
-						bars[i]:SetPoint('RIGHT', bars)
+						bars[i]:Point('LEFT', bars[i-1], 'RIGHT', frame.BORDER-frame.SPACING, 0)
+						bars[i]:Point('RIGHT', bars)
 					else
-						bars[i]:SetPoint('LEFT', bars[i-1], 'RIGHT', frame.BORDER-frame.SPACING, 0)
+						bars[i]:Point('LEFT', bars[i-1], 'RIGHT', frame.BORDER-frame.SPACING, 0)
 					end
 				end
 
@@ -170,7 +170,7 @@ function UF:Configure_ClassBar(frame, cur)
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
-		bars:SetPoint('CENTER', frame.Health.backdrop, 'TOP', 0, 0)
+		bars:Point('CENTER', frame.Health.backdrop, 'TOP', 0, 0)
 
 		bars:SetFrameLevel(50) --RaisedElementParent uses 100, we want it lower than this
 
@@ -183,11 +183,11 @@ function UF:Configure_ClassBar(frame, cur)
 
 		if not bars.Holder.mover then
 			bars:ClearAllPoints()
-			bars:SetPoint('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
+			bars:Point('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
 			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')
 		else
 			bars:ClearAllPoints()
-			bars:SetPoint('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
+			bars:Point('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
 			bars.Holder.mover:SetScale(1)
 			bars.Holder.mover:SetAlpha(1)
 		end
@@ -206,9 +206,9 @@ function UF:Configure_ClassBar(frame, cur)
 	else
 		bars:ClearAllPoints()
 		if frame.ORIENTATION == 'RIGHT' then
-			bars:SetPoint('BOTTOMRIGHT', frame.Health.backdrop, 'TOPRIGHT', -frame.BORDER, frame.SPACING*3)
+			bars:Point('BOTTOMRIGHT', frame.Health.backdrop, 'TOPRIGHT', -frame.BORDER, frame.SPACING*3)
 		else
-			bars:SetPoint('BOTTOMLEFT', frame.Health.backdrop, 'TOPLEFT', frame.BORDER, frame.SPACING*3)
+			bars:Point('BOTTOMLEFT', frame.Health.backdrop, 'TOPLEFT', frame.BORDER, frame.SPACING*3)
 		end
 
 		bars:SetFrameStrata('LOW')

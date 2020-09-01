@@ -169,7 +169,7 @@ function E:CreateCooldownTimer(parent)
 	parent.timer = timer
 
 	local text = timer:CreateFontString(nil, 'OVERLAY')
-	text:SetPoint('CENTER', 1, 1)
+	text:Point('CENTER', 1, 1)
 	text:SetJustifyH('CENTER')
 	timer.text = text
 

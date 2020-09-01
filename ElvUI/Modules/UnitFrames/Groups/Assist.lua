@@ -62,7 +62,7 @@ function UF:Update_AssistHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -248)
+		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -248)
 
 		local width, height = header:GetSize()
 		local minHeight = max(height, 2 * db.height + db.verticalSpacing)
@@ -118,7 +118,7 @@ function UF:Update_AssistFrames(frame, db)
 			if childDB.enable then
 				frame:Enable()
 				frame:ClearAllPoints()
-				frame:SetPoint(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
+				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			else
 				frame:Disable()
 			end

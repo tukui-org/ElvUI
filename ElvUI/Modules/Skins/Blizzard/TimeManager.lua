@@ -35,15 +35,15 @@ function S:Blizzard_TimeManager()
 
 	local hover = TimeManagerStopwatchCheck:CreateTexture() -- hover
 	hover:SetColorTexture(1,1,1,0.3)
-	hover:SetPoint('TOPLEFT',TimeManagerStopwatchCheck,2,-2)
-	hover:SetPoint('BOTTOMRIGHT',TimeManagerStopwatchCheck,-2,2)
+	hover:Point('TOPLEFT',TimeManagerStopwatchCheck,2,-2)
+	hover:Point('BOTTOMRIGHT',TimeManagerStopwatchCheck,-2,2)
 	TimeManagerStopwatchCheck:SetHighlightTexture(hover)
 
 	local StopwatchFrame = _G.StopwatchFrame
 	StopwatchFrame:StripTextures()
 	StopwatchFrame:CreateBackdrop('Transparent')
-	StopwatchFrame.backdrop:SetPoint('TOPLEFT', 0, -17)
-	StopwatchFrame.backdrop:SetPoint('BOTTOMRIGHT', 0, 2)
+	StopwatchFrame.backdrop:Point('TOPLEFT', 0, -17)
+	StopwatchFrame.backdrop:Point('BOTTOMRIGHT', 0, 2)
 
 	_G.StopwatchTabFrame:StripTextures()
 	S:HandleCloseButton(_G.StopwatchCloseButton)
@@ -58,11 +58,11 @@ function S:Blizzard_TimeManager()
 	StopwatchPlayPauseButton.backdrop:SetOutside(StopwatchPlayPauseButton, 2, 2)
 	StopwatchPlayPauseButton:HookScript('OnEnter', S.SetModifiedBackdrop)
 	StopwatchPlayPauseButton:HookScript('OnLeave', S.SetOriginalBackdrop)
-	StopwatchPlayPauseButton:SetPoint('RIGHT', StopwatchResetButton, 'LEFT', -4, 0)
+	StopwatchPlayPauseButton:Point('RIGHT', StopwatchResetButton, 'LEFT', -4, 0)
 	S:HandleButton(StopwatchResetButton)
 	StopwatchResetButton:Size(16,16)
 	StopwatchResetButton:SetNormalTexture(E.Media.Textures.Reset)
-	StopwatchResetButton:SetPoint('BOTTOMRIGHT', StopwatchFrame, 'BOTTOMRIGHT', -4, 6)
+	StopwatchResetButton:Point('BOTTOMRIGHT', StopwatchFrame, 'BOTTOMRIGHT', -4, 6)
 
 	hooksecurefunc('Stopwatch_Play', SetPauseTexture)
 	hooksecurefunc('Stopwatch_Pause', SetPlayTexture)

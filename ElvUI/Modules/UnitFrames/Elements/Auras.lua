@@ -75,7 +75,7 @@ function UF:Construct_AuraIcon(button)
 	button.icon:SetDrawLayer('ARTWORK')
 
 	button.count:ClearAllPoints()
-	button.count:SetPoint('BOTTOMRIGHT', 1, 1)
+	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 
 	button.overlay:SetTexture()
@@ -126,10 +126,10 @@ function UF:UpdateAuraCooldownPosition(button)
 	button.cd.timer.text:ClearAllPoints()
 	local point = (button.db and button.db.durationPosition) or 'CENTER'
 	if point == 'CENTER' then
-		button.cd.timer.text:SetPoint(point, 1, 0)
+		button.cd.timer.text:Point(point, 1, 0)
 	else
 		local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-		button.cd.timer.text:SetPoint(point, right and -1 or 1, bottom and 1 or -1)
+		button.cd.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
 	end
 
 	button.needsUpdateCooldownPosition = nil
@@ -156,7 +156,7 @@ function UF:Configure_Auras(frame, which)
 			db.debuffs.attachTo = 'FRAME'
 			frame.Debuffs.attachTo = frame
 			frame.Debuffs:ClearAllPoints()
-			frame.Debuffs:SetPoint(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
+			frame.Debuffs:Point(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
 		end
 		db.buffs.attachTo = 'DEBUFFS'
 		frame.Buffs.attachTo = frame.Debuffs
@@ -168,7 +168,7 @@ function UF:Configure_Auras(frame, which)
 			db.buffs.attachTo = 'FRAME'
 			frame.Buffs.attachTo = frame
 			frame.Buffs:ClearAllPoints()
-			frame.Buffs:SetPoint(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
+			frame.Buffs:Point(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
 		end
 		db.debuffs.attachTo = 'BUFFS'
 		frame.Debuffs.attachTo = frame.Buffs
@@ -180,7 +180,7 @@ function UF:Configure_Auras(frame, which)
 			db.debuffs.attachTo = 'FRAME'
 			frame.Debuffs.attachTo = frame
 			frame.Debuffs:ClearAllPoints()
-			frame.Debuffs:SetPoint(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
+			frame.Debuffs:Point(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
 		end
 		db.buffs.attachTo = 'DEBUFFS'
 		frame.Buffs.attachTo = frame.Debuffs
@@ -192,7 +192,7 @@ function UF:Configure_Auras(frame, which)
 			db.buffs.attachTo = 'FRAME'
 			frame.Buffs.attachTo = frame
 			frame.Buffs:ClearAllPoints()
-			frame.Buffs:SetPoint(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
+			frame.Buffs:Point(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
 		end
 		db.debuffs.attachTo = 'BUFFS'
 		frame.Debuffs.attachTo = frame.Buffs
@@ -257,7 +257,7 @@ function UF:Configure_Auras(frame, which)
 	end
 
 	auras:ClearAllPoints()
-	auras:SetPoint(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
+	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 	auras:Height(auras.size * rows)
 
 	if auras.db.enable then
@@ -491,10 +491,10 @@ function UF:UpdateBuffsHeaderPosition()
 
 	if numDebuffs == 0 then
 		buffs:ClearAllPoints()
-		buffs:SetPoint(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		buffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	else
 		buffs:ClearAllPoints()
-		buffs:SetPoint(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		buffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	end
 end
 
@@ -506,10 +506,10 @@ function UF:UpdateDebuffsHeaderPosition()
 
 	if numBuffs == 0 then
 		debuffs:ClearAllPoints()
-		debuffs:SetPoint(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		debuffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	else
 		debuffs:ClearAllPoints()
-		debuffs:SetPoint(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		debuffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	end
 end
 
@@ -522,10 +522,10 @@ function UF:UpdateBuffsPositionAndDebuffHeight()
 
 	if numDebuffs == 0 then
 		buffs:ClearAllPoints()
-		buffs:SetPoint(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		buffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	else
 		buffs:ClearAllPoints()
-		buffs:SetPoint(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		buffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	end
 
 	if numDebuffs > 0 then
@@ -545,10 +545,10 @@ function UF:UpdateDebuffsPositionAndBuffHeight()
 
 	if numBuffs == 0 then
 		debuffs:ClearAllPoints()
-		debuffs:SetPoint(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		debuffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
 	else
 		debuffs:ClearAllPoints()
-		debuffs:SetPoint(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+		debuffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
 	end
 
 	if numBuffs > 0 then

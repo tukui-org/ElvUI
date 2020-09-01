@@ -185,13 +185,13 @@ function S:ContainerFrame()
 
 			BankFrame.backdrop2 = CreateFrame('Frame', nil, _G.BankSlotsFrame, 'BackdropTemplate')
 			BankFrame.backdrop2:SetTemplate()
-			BankFrame.backdrop2:SetPoint('TOPLEFT', _G.BankFrameItem1, 'TOPLEFT', -6, 6)
-			BankFrame.backdrop2:SetPoint('BOTTOMRIGHT', _G.BankFrameItem28, 'BOTTOMRIGHT', 6, -6)
+			BankFrame.backdrop2:Point('TOPLEFT', _G.BankFrameItem1, 'TOPLEFT', -6, 6)
+			BankFrame.backdrop2:Point('BOTTOMRIGHT', _G.BankFrameItem28, 'BOTTOMRIGHT', 6, -6)
 
 			BankFrame.backdrop3 = CreateFrame('Frame', nil, _G.BankSlotsFrame, 'BackdropTemplate')
 			BankFrame.backdrop3:SetTemplate()
-			BankFrame.backdrop3:SetPoint('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
-			BankFrame.backdrop3:SetPoint('BOTTOMRIGHT', _G.BankSlotsFrame.Bag7, 'BOTTOMRIGHT', 6, -6)
+			BankFrame.backdrop3:Point('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
+			BankFrame.backdrop3:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag7, 'BOTTOMRIGHT', 6, -6)
 
 			_G.BankFrameMoneyFrameInset:Kill()
 			_G.BankFrameMoneyFrameBorder:Kill()
@@ -242,8 +242,8 @@ function S:ContainerFrame()
 	local BankItemSearchBox = _G.BankItemSearchBox
 	BankItemSearchBox:StripTextures()
 	BankItemSearchBox:CreateBackdrop('Overlay')
-	BankItemSearchBox.backdrop:SetPoint('TOPLEFT', 10, -1)
-	BankItemSearchBox.backdrop:SetPoint('BOTTOMRIGHT', 4, 1)
+	BankItemSearchBox.backdrop:Point('TOPLEFT', 10, -1)
+	BankItemSearchBox.backdrop:Point('BOTTOMRIGHT', 4, 1)
 
 	local AutoSort = _G.BagItemAutoSortButton
 	AutoSort:StripTextures()

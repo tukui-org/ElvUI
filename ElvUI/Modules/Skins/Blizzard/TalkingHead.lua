@@ -125,11 +125,11 @@ function S:Blizzard_TalkingHeadUI()
 		local button = TalkingHeadFrame.MainFrame.CloseButton
 		S:HandleCloseButton(button)
 		button:ClearAllPoints()
-		button:SetPoint('TOPRIGHT', TalkingHeadFrame.BackgroundFrame, 'TOPRIGHT', 0, -2)
+		button:Point('TOPRIGHT', TalkingHeadFrame.BackgroundFrame, 'TOPRIGHT', 0, -2)
 	else
 		TalkingHeadFrame.MainFrame.Model:CreateBackdrop('Transparent')
 		TalkingHeadFrame.MainFrame.Model.backdrop:ClearAllPoints()
-		TalkingHeadFrame.MainFrame.Model.backdrop:SetPoint('CENTER')
+		TalkingHeadFrame.MainFrame.Model.backdrop:Point('CENTER')
 		TalkingHeadFrame.MainFrame.Model.backdrop:Size(120, 119)
 
 		TalkingHeadFrame.MainFrame.CloseButton:Kill()

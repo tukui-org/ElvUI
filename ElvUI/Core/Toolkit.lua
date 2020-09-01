@@ -76,6 +76,11 @@ end
 local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 	if arg2 == nil then arg2 = obj:GetParent() end
 
+	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
+	if type(arg3)=='number' then arg3 = E:Scale(arg3) end
+	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
+	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
+
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 

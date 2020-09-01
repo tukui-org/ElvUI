@@ -9,7 +9,7 @@ local function topCenterPosition(self, _, b)
 	local holder = _G.TopCenterContainerHolder
 	if b and (b ~= holder) then
 		self:ClearAllPoints()
-		self:SetPoint('CENTER', holder)
+		self:Point('CENTER', holder)
 		self:SetParent(holder)
 	end
 end
@@ -18,7 +18,7 @@ local function belowMinimapPosition(self, _, b)
 	local holder = _G.BelowMinimapContainerHolder
 	if b and (b ~= holder) then
 		self:ClearAllPoints()
-		self:SetPoint('CENTER', holder, 'CENTER')
+		self:Point('CENTER', holder, 'CENTER')
 		self:SetParent(holder)
 	end
 end
@@ -39,10 +39,10 @@ local function UIWidgets()
 	E:CreateMover(belowMiniMapHolder, 'BelowMinimapContainerMover', L["UIWidgetBelowMinimapContainer"], nil, nil, nil,'ALL,SOLO')
 
 	topCenterContainer:ClearAllPoints()
-	topCenterContainer:SetPoint('CENTER', topCenterHolder)
+	topCenterContainer:Point('CENTER', topCenterHolder)
 
 	belowMiniMapcontainer:ClearAllPoints()
-	belowMiniMapcontainer:SetPoint('CENTER', belowMiniMapHolder, 'CENTER')
+	belowMiniMapcontainer:Point('CENTER', belowMiniMapHolder, 'CENTER')
 
 	hooksecurefunc(topCenterContainer, 'SetPoint', topCenterPosition)
 	hooksecurefunc(belowMiniMapcontainer, 'SetPoint', belowMinimapPosition)

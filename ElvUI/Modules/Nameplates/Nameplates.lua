@@ -210,7 +210,7 @@ end
 
 function NP:StyleTargetPlate(nameplate)
 	nameplate:ClearAllPoints()
-	nameplate:SetPoint('CENTER')
+	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	nameplate:SetScale(E.global.general.UIScale)
 
@@ -262,7 +262,7 @@ end
 
 function NP:StylePlate(nameplate)
 	nameplate:ClearAllPoints()
-	nameplate:SetPoint('CENTER')
+	nameplate:Point('CENTER')
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.StyleFilterChanges = {}
@@ -391,22 +391,22 @@ function NP:DisablePlate(nameplate, nameOnly)
 
 		-- The position values here are forced on purpose.
 		nameplate.Name:ClearAllPoints()
-		nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
+		nameplate.Name:Point('CENTER', nameplate, 'CENTER', 0, 0)
 
 		nameplate.RaidTargetIndicator:ClearAllPoints()
-		nameplate.RaidTargetIndicator:SetPoint('BOTTOM', nameplate, 'TOP', 0, 0)
+		nameplate.RaidTargetIndicator:Point('BOTTOM', nameplate, 'TOP', 0, 0)
 
 		nameplate.Portrait:ClearAllPoints()
-		nameplate.Portrait:SetPoint('RIGHT', nameplate.Name, 'LEFT', -6, 0)
+		nameplate.Portrait:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.PVPRole:ClearAllPoints()
-		nameplate.PVPRole:SetPoint('RIGHT', (nameplate.Portrait:IsShown() and nameplate.Portrait) or nameplate.Name, 'LEFT', -6, 0)
+		nameplate.PVPRole:Point('RIGHT', (nameplate.Portrait:IsShown() and nameplate.Portrait) or nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.QuestIcons:ClearAllPoints()
-		nameplate.QuestIcons:SetPoint('LEFT', nameplate.Name, 'RIGHT', 6, 0)
+		nameplate.QuestIcons:Point('LEFT', nameplate.Name, 'RIGHT', 6, 0)
 
 		nameplate.Title:ClearAllPoints()
-		nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
+		nameplate.Title:Point('TOP', nameplate.Name, 'BOTTOM', 0, -2)
 	else
 		for _, element in ipairs(NP.DisableInNotNameOnly) do
 			if nameplate:IsElementEnabled(element) then
@@ -432,17 +432,17 @@ function NP:SetupTarget(nameplate, removed)
 	if TCP.ClassPower then
 		TCP.ClassPower:SetParent(moveToPlate)
 		TCP.ClassPower:ClearAllPoints()
-		TCP.ClassPower:SetPoint('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.ClassPower:Point('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 	if TCP.Runes then
 		TCP.Runes:SetParent(moveToPlate)
 		TCP.Runes:ClearAllPoints()
-		TCP.Runes:SetPoint('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.Runes:Point('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 	if TCP.Stagger then
 		TCP.Stagger:SetParent(moveToPlate)
 		TCP.Stagger:ClearAllPoints()
-		TCP.Stagger:SetPoint('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.Stagger:Point('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 end
 
@@ -750,7 +750,7 @@ function NP:Initialize()
 	oUF:Spawn('player', 'ElvNP_Player', '')
 
 	_G.ElvNP_Player:ClearAllPoints()
-	_G.ElvNP_Player:SetPoint('TOP', _G.UIParent, 'CENTER', 0, -150)
+	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
 	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Player:SetScale(E.mult)
 	_G.ElvNP_Player.frameType = 'PLAYER'
@@ -766,15 +766,15 @@ function NP:Initialize()
 	StaticSecure:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 	StaticSecure:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 	StaticSecure:ClearAllPoints()
-	StaticSecure:SetPoint('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
-	StaticSecure:SetPoint('TOPLEFT', _G.ElvNP_PlayerMover)
+	StaticSecure:Point('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
+	StaticSecure:Point('TOPLEFT', _G.ElvNP_PlayerMover)
 	StaticSecure:Hide()
 	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
 
 	oUF:Spawn('player', 'ElvNP_Test')
 
 	_G.ElvNP_Test:ClearAllPoints()
-	_G.ElvNP_Test:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
+	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
 	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:SetMovable(true)
@@ -792,7 +792,7 @@ function NP:Initialize()
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
 	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_TargetClassPower:ClearAllPoints()
-	_G.ElvNP_TargetClassPower:SetPoint('TOP', E.UIParent, 'BOTTOM', 0, -500)
+	_G.ElvNP_TargetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
 
 	NP.PlayerNamePlateAnchor = CreateFrame('Frame', 'ElvUIPlayerNamePlateAnchor', E.UIParent)
 	NP.PlayerNamePlateAnchor:EnableMouse(false)

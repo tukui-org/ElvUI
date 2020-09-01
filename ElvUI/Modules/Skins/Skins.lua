@@ -171,13 +171,13 @@ function S:SkinPVPHonorXPBar(frame)
 			end
 			if XPBar.Bar.OverlayFrame and XPBar.Bar.OverlayFrame.Text then
 				XPBar.Bar.OverlayFrame.Text:ClearAllPoints()
-				XPBar.Bar.OverlayFrame.Text:SetPoint('CENTER', XPBar.Bar)
+				XPBar.Bar.OverlayFrame.Text:Point('CENTER', XPBar.Bar)
 			end
 		end
 
 		if XPBar.PrestigeReward and XPBar.PrestigeReward.Accept then
 			XPBar.PrestigeReward.Accept:ClearAllPoints()
-			XPBar.PrestigeReward.Accept:SetPoint('TOP', XPBar.PrestigeReward, 'BOTTOM', 0, 0)
+			XPBar.PrestigeReward.Accept:Point('TOP', XPBar.PrestigeReward, 'BOTTOM', 0, 0)
 			if not XPBar.PrestigeReward.Accept.template then
 				S:HandleButton(XPBar.PrestigeReward.Accept)
 			end
@@ -186,15 +186,15 @@ function S:SkinPVPHonorXPBar(frame)
 		if XPBar.NextAvailable then
 			if XPBar.Bar then
 				XPBar.NextAvailable:ClearAllPoints()
-				XPBar.NextAvailable:SetPoint('LEFT', XPBar.Bar, 'RIGHT', 0, -2)
+				XPBar.NextAvailable:Point('LEFT', XPBar.Bar, 'RIGHT', 0, -2)
 			end
 
 			if not XPBar.NextAvailable.backdrop then
 				XPBar.NextAvailable:StripTextures()
 				XPBar.NextAvailable:CreateBackdrop()
 				if XPBar.NextAvailable.Icon then
-					XPBar.NextAvailable.backdrop:SetPoint('TOPLEFT', XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
-					XPBar.NextAvailable.backdrop:SetPoint('BOTTOMRIGHT', XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+					XPBar.NextAvailable.backdrop:Point('TOPLEFT', XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
+					XPBar.NextAvailable.backdrop:Point('BOTTOMRIGHT', XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
 				end
 			end
 
@@ -248,8 +248,8 @@ function S:SkinTalentListButtons(frame)
 	if frame.Inset then
 		S:HandleInsetFrame(frame.Inset)
 
-		frame.Inset:SetPoint('TOPLEFT', 4, -60)
-		frame.Inset:SetPoint('BOTTOMRIGHT', -6, 26)
+		frame.Inset:Point('TOPLEFT', 4, -60)
+		frame.Inset:Point('BOTTOMRIGHT', -6, 26)
 	end
 end
 
@@ -366,8 +366,8 @@ do
 
 		frame:StripTextures()
 		frame:CreateBackdrop()
-		frame.backdrop:SetPoint('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
-		frame.backdrop:SetPoint('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
+		frame.backdrop:Point('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
+		frame.backdrop:Point('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
 		frame.backdrop:SetFrameLevel(frame.backdrop:GetFrameLevel() + 1)
 
 		if frame.ScrollUpBorder then
@@ -388,8 +388,8 @@ do
 			Thumb:CreateBackdrop(nil, true, true)
 			if not thumbTrimY then thumbTrimY = 3 end
 			if not thumbTrimX then thumbTrimX = 2 end
-			Thumb.backdrop:SetPoint('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
-			Thumb.backdrop:SetPoint('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
+			Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
+			Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
 			Thumb.backdrop:SetFrameLevel(Thumb.backdrop:GetFrameLevel() + 2)
 			Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
 
@@ -427,8 +427,8 @@ do --Tab Regions
 
 		if not noBackdrop then
 			tab:CreateBackdrop()
-			tab.backdrop:SetPoint('TOPLEFT', 10, E.PixelMode and -1 or -3)
-			tab.backdrop:SetPoint('BOTTOMRIGHT', -10, 3)
+			tab.backdrop:Point('TOPLEFT', 10, E.PixelMode and -1 or -3)
+			tab.backdrop:Point('BOTTOMRIGHT', -10, 3)
 		end
 	end
 end
@@ -469,7 +469,7 @@ do
 			if button then
 				button:Size(14, 14)
 				button:ClearAllPoints()
-				button:SetPoint('CENTER')
+				button:Point('CENTER')
 				button:SetHitRectInsets(1, 1, 1, 1)
 				button:GetHighlightTexture():Kill()
 
@@ -521,7 +521,7 @@ function S:HandleEditBox(frame)
 
 	local EditBoxName = frame:GetName()
 	if EditBoxName and (strfind(EditBoxName, 'Silver') or strfind(EditBoxName, 'Copper')) then
-		frame.backdrop:SetPoint('BOTTOMRIGHT', -12, -2)
+		frame.backdrop:Point('BOTTOMRIGHT', -12, -2)
 	end
 end
 
@@ -542,15 +542,15 @@ function S:HandleDropDownBox(frame, width, pos)
 
 	frame:CreateBackdrop()
 	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
-	frame.backdrop:SetPoint('TOPLEFT', 20, -2)
-	frame.backdrop:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
+	frame.backdrop:Point('TOPLEFT', 20, -2)
+	frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
 
 	button:ClearAllPoints()
 
 	if pos then
-		button:SetPoint('TOPRIGHT', frame.Right, -20, -21)
+		button:Point('TOPRIGHT', frame.Right, -20, -21)
 	else
-		button:SetPoint('RIGHT', frame, 'RIGHT', -10, 3)
+		button:Point('RIGHT', frame, 'RIGHT', -10, 3)
 	end
 
 	button.SetPoint = E.noop
@@ -558,11 +558,11 @@ function S:HandleDropDownBox(frame, width, pos)
 
 	if text then
 		text:ClearAllPoints()
-		text:SetPoint('RIGHT', button, 'LEFT', -2, 0)
+		text:Point('RIGHT', button, 'LEFT', -2, 0)
 	end
 
 	if icon then
-		icon:SetPoint('LEFT', 23, 0)
+		icon:Point('LEFT', 23, 0)
 	end
 end
 
@@ -668,14 +668,14 @@ function S:HandleRadioButton(Button)
 	local InsideMask = Button:CreateMaskTexture()
 	InsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
 	InsideMask:Size(10, 10)
-	InsideMask:SetPoint('CENTER')
+	InsideMask:Point('CENTER')
 
 	Button.InsideMask = InsideMask
 
 	local OutsideMask = Button:CreateMaskTexture()
 	OutsideMask:SetTexture([[Interface\Minimap\UI-Minimap-Background]], 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
 	OutsideMask:Size(13, 13)
-	OutsideMask:SetPoint('CENTER')
+	OutsideMask:Point('CENTER')
 
 	Button.OutsideMask = OutsideMask
 
@@ -763,7 +763,7 @@ function S:HandleCloseButton(f, point, x, y)
 
 	if not f.Texture then
 		f.Texture = f:CreateTexture(nil, 'OVERLAY')
-		f.Texture:SetPoint('CENTER')
+		f.Texture:Point('CENTER')
 		f.Texture:SetTexture(E.Media.Textures.Close)
 		f.Texture:Size(12, 12)
 		f:HookScript('OnEnter', handleCloseButtonOnEnter)
@@ -772,7 +772,7 @@ function S:HandleCloseButton(f, point, x, y)
 	end
 
 	if point then
-		f:SetPoint('TOPRIGHT', point, 'TOPRIGHT', x or 2, y or 2)
+		f:Point('TOPRIGHT', point, 'TOPRIGHT', x or 2, y or 2)
 	end
 end
 
@@ -805,7 +805,7 @@ function S:HandleSliderFrame(frame)
 			if region and region:IsObjectType('FontString') then
 				local point, anchor, anchorPoint, x, y = region:GetPoint()
 				if strfind(anchorPoint, 'BOTTOM') then
-					region:SetPoint(point, anchor, anchorPoint, x, y - 4)
+					region:Point(point, anchor, anchorPoint, x, y - 4)
 				end
 			end
 		end
@@ -898,7 +898,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 
 				if button.Category then
 					button.Category:ClearAllPoints()
-					button.Category:SetPoint('TOP', button, 'TOP', 0, -4)
+					button.Category:Point('TOP', button, 'TOP', 0, -4)
 				end
 
 				if fl and not fl.backdrop then
@@ -912,8 +912,8 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 					local hl = fl:GetHighlightTexture()
 					hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 					hl:ClearAllPoints()
-					hl:SetPoint('TOPLEFT', 1, -1)
-					hl:SetPoint('BOTTOMRIGHT', -1, 1)
+					hl:Point('TOPLEFT', 1, -1)
+					hl:Point('BOTTOMRIGHT', -1, 1)
 
 					if fl.Counters then
 						for y = 1, #fl.Counters do
@@ -934,7 +934,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 					if fl.PortraitFrame and not fl.PortraitFrameStyled then
 						S:HandleGarrisonPortrait(fl.PortraitFrame)
 						fl.PortraitFrame:ClearAllPoints()
-						fl.PortraitFrame:SetPoint('TOPLEFT', 3, -3)
+						fl.PortraitFrame:Point('TOPLEFT', 3, -3)
 						fl.PortraitFrameStyled = true
 					end
 				end
@@ -1103,8 +1103,8 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 			local icon = _G[buttonNameTemplate..i..'Icon']
 			if icon then
 				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:SetPoint('TOPLEFT', 1, -1)
-				icon:SetPoint('BOTTOMRIGHT', -1, 1)
+				icon:Point('TOPLEFT', 1, -1)
+				icon:Point('BOTTOMRIGHT', -1, 1)
 			end
 		end
 	end
@@ -1206,8 +1206,8 @@ function S:SkinStatusBarWidget(widgetFrame)
 			bar:CreateBackdrop()
 		end
 
-		bar.backdrop:SetPoint('TOPLEFT', -2, 2)
-		bar.backdrop:SetPoint('BOTTOMRIGHT', 2, -2)
+		bar.backdrop:Point('TOPLEFT', -2, 2)
+		bar.backdrop:Point('BOTTOMRIGHT', 2, -2)
 
 		bar.IsSkinned = true
 	end
@@ -1270,8 +1270,8 @@ function S:SkinSpellDisplay(widgetFrame)
 
 		local x = E.PixelMode and 1 or 2
 		spell.Icon.backdrop:ClearAllPoints()
-		spell.Icon.backdrop:SetPoint('TOPLEFT', spell.Icon, -x, x)
-		spell.Icon.backdrop:SetPoint('BOTTOMRIGHT', spell.Icon, x, -x)
+		spell.Icon.backdrop:Point('TOPLEFT', spell.Icon, -x, x)
+		spell.Icon.backdrop:Point('BOTTOMRIGHT', spell.Icon, x, -x)
 	end
 end
 
@@ -1445,8 +1445,8 @@ function S:Initialize()
 
 			if not widgetInfo.backdrop then
 				widgetInfo:CreateBackdrop()
-				widgetInfo.backdrop:SetPoint('TOPLEFT', widgetInfo.LeftBar, -2, 2)
-				widgetInfo.backdrop:SetPoint('BOTTOMRIGHT', widgetInfo.RightBar, 2, -2)
+				widgetInfo.backdrop:Point('TOPLEFT', widgetInfo.LeftBar, -2, 2)
+				widgetInfo.backdrop:Point('BOTTOMRIGHT', widgetInfo.RightBar, 2, -2)
 			end
 		end)
 

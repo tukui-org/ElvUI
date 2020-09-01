@@ -37,7 +37,7 @@ function UF:Construct_BossFrames(frame)
 	frame:SetAttribute('type2', 'focus')
 	frame.customTexts = {}
 
-	BossHeader:SetPoint('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
+	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID', nil, 'unitframe,groupUnits,boss,generalGroup')
 	frame.mover = BossHeader.mover
 
@@ -96,23 +96,23 @@ function UF:Update_BossFrames(frame, db)
 	frame:ClearAllPoints()
 	if frame.index == 1 then
 		if db.growthDirection == 'UP' then
-			frame:SetPoint('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT')
+			frame:Point('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT')
 		elseif db.growthDirection == 'RIGHT' then
-			frame:SetPoint('LEFT', BossHeaderMover, 'LEFT')
+			frame:Point('LEFT', BossHeaderMover, 'LEFT')
 		elseif db.growthDirection == 'LEFT' then
-			frame:SetPoint('RIGHT', BossHeaderMover, 'RIGHT')
+			frame:Point('RIGHT', BossHeaderMover, 'RIGHT')
 		else --Down
-			frame:SetPoint('TOPRIGHT', BossHeaderMover, 'TOPRIGHT')
+			frame:Point('TOPRIGHT', BossHeaderMover, 'TOPRIGHT')
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:SetPoint('BOTTOMRIGHT', _G['ElvUF_Boss'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
 		elseif db.growthDirection == 'RIGHT' then
-			frame:SetPoint('LEFT', _G['ElvUF_Boss'..frame.index-1], 'RIGHT', db.spacing, 0)
+			frame:Point('LEFT', _G['ElvUF_Boss'..frame.index-1], 'RIGHT', db.spacing, 0)
 		elseif db.growthDirection == 'LEFT' then
-			frame:SetPoint('RIGHT', _G['ElvUF_Boss'..frame.index-1], 'LEFT', -db.spacing, 0)
+			frame:Point('RIGHT', _G['ElvUF_Boss'..frame.index-1], 'LEFT', -db.spacing, 0)
 		else --Down
-			frame:SetPoint('TOPRIGHT', _G['ElvUF_Boss'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
+			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
 

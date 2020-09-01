@@ -143,7 +143,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.bindstring = 'SPELL '..bind.button.name
 
 		GameTooltip:SetOwner(bind, 'ANCHOR_TOP')
-		GameTooltip:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+		GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
 		bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 			if #bind.button.bindings == 0 then
@@ -164,7 +164,7 @@ function AB:BindUpdate(button, spellmacro)
 		GameTooltip:Show()
 		GameTooltip:SetScript('OnHide', function(tt)
 			tt:SetOwner(bind, 'ANCHOR_TOP')
-			tt:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+			tt:Point('BOTTOM', bind, 'TOP', 0, 1)
 			tt:AddLine(bind.button.name, 1, 1, 1)
 			bind.button.bindings = {GetBindingKey(spellmacro..' '..bind.button.name)}
 			if #bind.button.bindings == 0 then
@@ -186,7 +186,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.name = GetMacroInfo(bind.button.id)
 
 		GameTooltip:SetOwner(bind, 'ANCHOR_TOP')
-		GameTooltip:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+		GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
 
 		bind.button.bindings = {GetBindingKey(spellmacro..' '..bind.button.name)}
@@ -208,12 +208,12 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.bindstring = (spellmacro=='STANCE' and 'SHAPESHIFTBUTTON' or 'BONUSACTIONBUTTON')..bind.button.id
 
 		GameTooltip:SetOwner(bind, 'ANCHOR_NONE')
-		GameTooltip:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+		GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
 		GameTooltip:Show()
 		GameTooltip:SetScript('OnHide', function(tt)
 			tt:SetOwner(bind, 'ANCHOR_NONE')
-			tt:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+			tt:Point('BOTTOM', bind, 'TOP', 0, 1)
 			tt:AddLine(bind.button.name, 1, 1, 1)
 			bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 			if #bind.button.bindings == 0 then
@@ -256,7 +256,7 @@ function AB:BindUpdate(button, spellmacro)
 		GameTooltip:Show()
 		GameTooltip:SetScript('OnHide', function(tt)
 			tt:SetOwner(bind, 'ANCHOR_TOP')
-			tt:SetPoint('BOTTOM', bind, 'TOP', 0, 4)
+			tt:Point('BOTTOM', bind, 'TOP', 0, 4)
 			tt:AddLine(bind.button.name, 1, 1, 1)
 			bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 			if #bind.button.bindings == 0 then
@@ -402,8 +402,8 @@ function AB:LoadKeyBinder()
 	Popup.desc:SetFontObject('GameFontHighlight')
 	Popup.desc:SetJustifyV('TOP')
 	Popup.desc:SetJustifyH('LEFT')
-	Popup.desc:SetPoint('TOPLEFT', 18, -32)
-	Popup.desc:SetPoint('BOTTOMRIGHT', -18, 48)
+	Popup.desc:Point('TOPLEFT', 18, -32)
+	Popup.desc:Point('BOTTOMRIGHT', -18, 48)
 	Popup.desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."])
 
 	Popup.save = CreateFrame('Button', Popup:GetName()..'SaveButton', Popup, 'OptionsButtonTemplate, BackdropTemplate')

@@ -43,14 +43,14 @@ function UF:Construct_Castbar(frame, moverName)
 
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(castbar.Time)
-	castbar.Time:SetPoint('RIGHT', castbar, 'RIGHT', -4, 0)
+	castbar.Time:Point('RIGHT', castbar, 'RIGHT', -4, 0)
 	castbar.Time:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Time:SetJustifyH('RIGHT')
 
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(castbar.Text)
-	castbar.Text:SetPoint('LEFT', castbar, 'LEFT', 4, 0)
-	castbar.Text:SetPoint('RIGHT', castbar.Time, 'LEFT', -4, 0)
+	castbar.Text:Point('LEFT', castbar, 'LEFT', 4, 0)
+	castbar.Text:Point('RIGHT', castbar.Time, 'LEFT', -4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Text:SetJustifyH('LEFT')
 	castbar.Text:SetWordWrap(false)
@@ -77,9 +77,9 @@ function UF:Construct_Castbar(frame, moverName)
 
 	castbar.Holder = holder
 	--these are placeholder so the mover can be created.. it will be changed.
-	castbar.Holder:SetPoint('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(frame.BORDER - frame.SPACING))
-	castbar:SetPoint('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER, frame.BORDER)
-	button:SetPoint('RIGHT', castbar, 'LEFT', -E.Spacing*3, 0)
+	castbar.Holder:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(frame.BORDER - frame.SPACING))
+	castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER, frame.BORDER)
+	button:Point('RIGHT', castbar, 'LEFT', -E.Spacing*3, 0)
 
 	if moverName then
 		local name = frame:GetName()
@@ -134,8 +134,8 @@ function UF:Configure_Castbar(frame)
 	castbar.Text:SetTextColor(textColor.r, textColor.g, textColor.b)
 	castbar.Time:SetTextColor(textColor.r, textColor.g, textColor.b)
 
-	castbar.Text:SetPoint('LEFT', castbar, 'LEFT', db.xOffsetText, db.yOffsetText)
-	castbar.Time:SetPoint('RIGHT', castbar, 'RIGHT', db.xOffsetTime, db.yOffsetTime)
+	castbar.Text:Point('LEFT', castbar, 'LEFT', db.xOffsetText, db.yOffsetText)
+	castbar.Time:Point('RIGHT', castbar, 'RIGHT', db.xOffsetTime, db.yOffsetTime)
 
 	--Icon
 	if db.icon then
@@ -157,7 +157,7 @@ function UF:Configure_Castbar(frame)
 
 	if db.spark then
 		castbar.Spark = castbar.Spark_
-		castbar.Spark:SetPoint('CENTER', castbar:GetStatusBarTexture(), db.reverse and 'LEFT' or 'RIGHT', 0, 0)
+		castbar.Spark:Point('CENTER', castbar:GetStatusBarTexture(), db.reverse and 'LEFT' or 'RIGHT', 0, 0)
 		castbar.Spark:Height(db.height * 2)
 	elseif castbar.Spark then
 		castbar.Spark:Hide()
@@ -186,11 +186,11 @@ function UF:Configure_Castbar(frame)
 
 			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
 			if frame.ORIENTATION == 'RIGHT' then
-				castbar:SetPoint('TOPLEFT', anchor, 'TOPLEFT')
-				castbar:SetPoint('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - frame.SPACING*3, 0)
+				castbar:Point('TOPLEFT', anchor, 'TOPLEFT')
+				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - frame.SPACING*3, 0)
 			else
-				castbar:SetPoint('TOPLEFT', anchor, 'TOPLEFT',  iconWidth + frame.SPACING*3, 0)
-				castbar:SetPoint('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
+				castbar:Point('TOPLEFT', anchor, 'TOPLEFT',  iconWidth + frame.SPACING*3, 0)
+				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
 			end
 		end
 
@@ -203,15 +203,15 @@ function UF:Configure_Castbar(frame)
 
 		if db.positionsGroup then
 			castbar.Holder:ClearAllPoints()
-			castbar.Holder:SetPoint(INVERT_ANCHORPOINT[db.positionsGroup.anchorPoint], frame, db.positionsGroup.anchorPoint, db.positionsGroup.xOffset, db.positionsGroup.yOffset)
+			castbar.Holder:Point(INVERT_ANCHORPOINT[db.positionsGroup.anchorPoint], frame, db.positionsGroup.anchorPoint, db.positionsGroup.xOffset, db.positionsGroup.yOffset)
 		end
 
 		if frame.ORIENTATION ~= 'RIGHT' then
-			castbar:SetPoint('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
-			if not isMoved then castbar.Holder.mover:SetPoint('TOPRIGHT', frame, 'BOTTOMRIGHT', 0, -(frame.BORDER - frame.SPACING)) end
+			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
+			if not isMoved then castbar.Holder.mover:Point('TOPRIGHT', frame, 'BOTTOMRIGHT', 0, -(frame.BORDER - frame.SPACING)) end
 		else
-			castbar:SetPoint('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
-			if not isMoved then castbar.Holder.mover:SetPoint('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(frame.BORDER - frame.SPACING)) end
+			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
+			if not isMoved then castbar.Holder.mover:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(frame.BORDER - frame.SPACING)) end
 		end
 	end
 
@@ -219,13 +219,13 @@ function UF:Configure_Castbar(frame)
 		local attachPoint = db.iconAttachedTo == 'Frame' and frame or frame.Castbar
 		local anchorPoint = db.iconPosition
 		castbar.Icon.bg:ClearAllPoints()
-		castbar.Icon.bg:SetPoint(INVERT_ANCHORPOINT[anchorPoint], attachPoint, anchorPoint, db.iconXOffset, db.iconYOffset)
+		castbar.Icon.bg:Point(INVERT_ANCHORPOINT[anchorPoint], attachPoint, anchorPoint, db.iconXOffset, db.iconYOffset)
 	elseif(db.icon) then
 		castbar.Icon.bg:ClearAllPoints()
 		if frame.ORIENTATION == 'RIGHT' then
-			castbar.Icon.bg:SetPoint('LEFT', castbar, 'RIGHT', frame.SPACING*3, 0)
+			castbar.Icon.bg:Point('LEFT', castbar, 'RIGHT', frame.SPACING*3, 0)
 		else
-			castbar.Icon.bg:SetPoint('RIGHT', castbar, 'LEFT', -frame.SPACING*3, 0)
+			castbar.Icon.bg:Point('RIGHT', castbar, 'LEFT', -frame.SPACING*3, 0)
 		end
 	end
 
@@ -288,7 +288,7 @@ function UF:CustomCastDelayText(duration)
 		end
 	end
 
-	self.Time:SetWidth(self.Time:GetStringWidth())
+	self.Time:Width(self.Time:GetStringWidth())
 end
 
 function UF:CustomTimeText(duration)
@@ -318,7 +318,7 @@ function UF:CustomTimeText(duration)
 		end
 	end
 
-	self.Time:SetWidth(self.Time:GetStringWidth())
+	self.Time:Width(self.Time:GetStringWidth())
 end
 
 function UF:HideTicks()

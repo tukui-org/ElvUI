@@ -101,7 +101,7 @@ function UF:Construct_ArenaFrames(frame)
 		frame.ArenaPrepIcon:Hide()
 
 		frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, 'OVERLAY')
-		frame.ArenaPrepSpec:SetPoint('CENTER')
+		frame.ArenaPrepSpec:Point('CENTER')
 		UF:Configure_FontString(frame.ArenaPrepSpec)
 
 		frame.Health.PostUpdateArenaPreparation = self.PostUpdateArenaPreparation -- used to update arena prep info
@@ -110,7 +110,7 @@ function UF:Construct_ArenaFrames(frame)
 
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 
-	ArenaHeader:SetPoint('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
+	ArenaHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(ArenaHeader, ArenaHeader:GetName()..'Mover', L["Arena Frames"], nil, nil, nil, 'ALL,ARENA', nil, 'unitframe,groupUnits,arena,generalGroup')
 	frame.mover = ArenaHeader.mover
 end
@@ -173,23 +173,23 @@ function UF:Update_ArenaFrames(frame, db)
 	if frame.index == 1 then
 		local ArenaHeaderMover = _G.ArenaHeaderMover
 		if db.growthDirection == 'UP' then
-			frame:SetPoint('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT')
+			frame:Point('BOTTOMRIGHT', ArenaHeaderMover, 'BOTTOMRIGHT')
 		elseif db.growthDirection == 'RIGHT' then
-			frame:SetPoint('LEFT', ArenaHeaderMover, 'LEFT')
+			frame:Point('LEFT', ArenaHeaderMover, 'LEFT')
 		elseif db.growthDirection == 'LEFT' then
-			frame:SetPoint('RIGHT', ArenaHeaderMover, 'RIGHT')
+			frame:Point('RIGHT', ArenaHeaderMover, 'RIGHT')
 		else --Down
-			frame:SetPoint('TOPRIGHT', ArenaHeaderMover, 'TOPRIGHT')
+			frame:Point('TOPRIGHT', ArenaHeaderMover, 'TOPRIGHT')
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:SetPoint('BOTTOMRIGHT', _G['ElvUF_Arena'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Arena'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
 		elseif db.growthDirection == 'RIGHT' then
-			frame:SetPoint('LEFT', _G['ElvUF_Arena'..frame.index-1], 'RIGHT', db.spacing, 0)
+			frame:Point('LEFT', _G['ElvUF_Arena'..frame.index-1], 'RIGHT', db.spacing, 0)
 		elseif db.growthDirection == 'LEFT' then
-			frame:SetPoint('RIGHT', _G['ElvUF_Arena'..frame.index-1], 'LEFT', -db.spacing, 0)
+			frame:Point('RIGHT', _G['ElvUF_Arena'..frame.index-1], 'LEFT', -db.spacing, 0)
 		else --Down
-			frame:SetPoint('TOPRIGHT', _G['ElvUF_Arena'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
+			frame:Point('TOPRIGHT', _G['ElvUF_Arena'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
 

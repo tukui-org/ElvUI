@@ -123,7 +123,7 @@ function M:HandleGarrisonButton()
 		local db = E.db.general.minimap.icons.classHall
 		local scale, pos = db.scale or 1, db.position or 'BOTTOMLEFT'
 		button:ClearAllPoints()
-		button:SetPoint(pos, Minimap, pos, db.xOffset or 0, db.yOffset or 0)
+		button:Point(pos, Minimap, pos, db.xOffset or 0, db.yOffset or 0)
 		button:SetScale(scale)
 
 		local box = _G.GarrisonLandingPageTutorialBox
@@ -258,7 +258,7 @@ function M:UpdateSettings()
 			local pos = E.db.general.minimap.icons.calendar.position or 'TOPRIGHT'
 			local scale = E.db.general.minimap.icons.calendar.scale or 1
 			GameTimeFrame:ClearAllPoints()
-			GameTimeFrame:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.calendar.xOffset or 0, E.db.general.minimap.icons.calendar.yOffset or 0)
+			GameTimeFrame:Point(pos, Minimap, pos, E.db.general.minimap.icons.calendar.xOffset or 0, E.db.general.minimap.icons.calendar.yOffset or 0)
 			GameTimeFrame:SetScale(scale)
 			GameTimeFrame:Show()
 		end
@@ -269,7 +269,7 @@ function M:UpdateSettings()
 		local pos = E.db.general.minimap.icons.mail.position or 'TOPRIGHT'
 		local scale = E.db.general.minimap.icons.mail.scale or 1
 		MiniMapMailFrame:ClearAllPoints()
-		MiniMapMailFrame:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.mail.xOffset or 3, E.db.general.minimap.icons.mail.yOffset or 4)
+		MiniMapMailFrame:Point(pos, Minimap, pos, E.db.general.minimap.icons.mail.xOffset or 3, E.db.general.minimap.icons.mail.yOffset or 4)
 		MiniMapMailFrame:SetScale(scale)
 	end
 
@@ -278,7 +278,7 @@ function M:UpdateSettings()
 		local pos = E.db.general.minimap.icons.lfgEye.position or 'BOTTOMRIGHT'
 		local scale = E.db.general.minimap.icons.lfgEye.scale or 1
 		QueueStatusMinimapButton:ClearAllPoints()
-		QueueStatusMinimapButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
+		QueueStatusMinimapButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.lfgEye.xOffset or 3, E.db.general.minimap.icons.lfgEye.yOffset or 0)
 		QueueStatusMinimapButton:SetScale(scale)
 		_G.QueueStatusFrame:SetScale(scale)
 	end
@@ -291,10 +291,10 @@ function M:UpdateSettings()
 		local x = E.db.general.minimap.icons.difficulty.xOffset or 0
 		local y = E.db.general.minimap.icons.difficulty.yOffset or 0
 		MiniMapInstanceDifficulty:ClearAllPoints()
-		MiniMapInstanceDifficulty:SetPoint(pos, Minimap, pos, x, y)
+		MiniMapInstanceDifficulty:Point(pos, Minimap, pos, x, y)
 		MiniMapInstanceDifficulty:SetScale(scale)
 		GuildInstanceDifficulty:ClearAllPoints()
-		GuildInstanceDifficulty:SetPoint(pos, Minimap, pos, x, y)
+		GuildInstanceDifficulty:Point(pos, Minimap, pos, x, y)
 		GuildInstanceDifficulty:SetScale(scale)
 	end
 
@@ -303,7 +303,7 @@ function M:UpdateSettings()
 		local pos = E.db.general.minimap.icons.challengeMode.position or 'TOPLEFT'
 		local scale = E.db.general.minimap.icons.challengeMode.scale or 1
 		MiniMapChallengeMode:ClearAllPoints()
-		MiniMapChallengeMode:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.challengeMode.xOffset or 8, E.db.general.minimap.icons.challengeMode.yOffset or -8)
+		MiniMapChallengeMode:Point(pos, Minimap, pos, E.db.general.minimap.icons.challengeMode.xOffset or 8, E.db.general.minimap.icons.challengeMode.yOffset or -8)
 		MiniMapChallengeMode:SetScale(scale)
 	end
 
@@ -316,8 +316,8 @@ function M:UpdateSettings()
 
 		_G.HelpOpenTicketButton:ClearAllPoints()
 		_G.HelpOpenWebTicketButton:ClearAllPoints()
-		_G.HelpOpenTicketButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
-		_G.HelpOpenWebTicketButton:SetPoint(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
+		_G.HelpOpenTicketButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
+		_G.HelpOpenWebTicketButton:Point(pos, Minimap, pos, E.db.general.minimap.icons.ticket.xOffset or 0, E.db.general.minimap.icons.ticket.yOffset or 0)
 	end
 end
 
@@ -343,14 +343,14 @@ function M:Initialize()
 
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
-	mmholder:SetSize(Minimap:GetSize())
+	mmholder:Size(Minimap:GetSize())
 
 	Minimap:SetQuestBlobRingAlpha(0)
 	Minimap:SetArchBlobRingAlpha(0)
 	Minimap:CreateBackdrop()
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
 	Minimap:ClearAllPoints()
-	Minimap:SetPoint('TOPRIGHT', mmholder, 'TOPRIGHT', -E.Border, -E.Border)
+	Minimap:Point('TOPRIGHT', mmholder, 'TOPRIGHT', -E.Border, -E.Border)
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
 
@@ -360,7 +360,7 @@ function M:Initialize()
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
-	Minimap.location:SetPoint('TOP', Minimap, 'TOP', 0, -2)
+	Minimap.location:Point('TOP', Minimap, 'TOP', 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
 	if E.db.general.minimap.locationText ~= 'SHOW' then

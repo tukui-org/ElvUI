@@ -206,7 +206,7 @@ function AB:PositionAndSizeBarShapeShift()
 				x, y = -firstButtonSpacing, firstButtonSpacing
 			end
 
-			button:SetPoint(point, bar, point, x, y)
+			button:Point(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0
 			local y = -buttonSpacing
@@ -216,7 +216,7 @@ function AB:PositionAndSizeBarShapeShift()
 				buttonPoint = 'BOTTOM'
 				anchorPoint = 'TOP'
 			end
-			button:SetPoint(buttonPoint, lastColumnButton, anchorPoint, x, y)
+			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y)
 		else
 			local x = buttonSpacing
 			local y = 0
@@ -227,7 +227,7 @@ function AB:PositionAndSizeBarShapeShift()
 				anchorPoint = 'LEFT'
 			end
 
-			button:SetPoint(buttonPoint, lastButton, anchorPoint, x, y)
+			button:Point(buttonPoint, lastButton, anchorPoint, x, y)
 		end
 
 		if i > numButtons then
@@ -333,7 +333,7 @@ end
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar.backdrop:SetAllPoints()
-	bar:SetPoint('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
+	bar:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')

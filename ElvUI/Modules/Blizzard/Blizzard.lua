@@ -98,7 +98,7 @@ function B:Initialize()
 	if TalentMicroButtonAlert then -- why do we need to check this?
 		if E.global.general.showMissingTalentAlert then
 			TalentMicroButtonAlert:ClearAllPoints()
-			TalentMicroButtonAlert:SetPoint('CENTER', E.UIParent, 'TOP', 0, -75)
+			TalentMicroButtonAlert:Point('CENTER', E.UIParent, 'TOP', 0, -75)
 			TalentMicroButtonAlert:StripTextures()
 			TalentMicroButtonAlert.Arrow:Hide()
 			TalentMicroButtonAlert.Text:FontTemplate()
@@ -106,7 +106,7 @@ function B:Initialize()
 			Skins:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
 
 			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, 'OVERLAY')
-			TalentMicroButtonAlert.tex:SetPoint('RIGHT', -10, 0)
+			TalentMicroButtonAlert.tex:Point('RIGHT', -10, 0)
 			TalentMicroButtonAlert.tex:SetTexture([[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]])
 			TalentMicroButtonAlert.tex:Size(32, 32)
 		else

@@ -104,9 +104,9 @@ function S:Blizzard_GarrisonUI()
 
 			reward:ClearAllPoints()
 			if IsAddOnLoaded('GarrisonMissionManager') then -- otherwise we mess with this AddOn
-				reward:SetPoint('TOPRIGHT', -65 + (index * -65), -1)
+				reward:Point('TOPRIGHT', -65 + (index * -65), -1)
 			else
-				reward:SetPoint('TOPRIGHT', -1 + (index * -65), -1)
+				reward:Point('TOPRIGHT', -1 + (index * -65), -1)
 			end
 
 			if reward.IconBorder then
@@ -168,7 +168,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 
 	FollowerList:ClearAllPoints()
-	FollowerList:SetPoint('BOTTOMLEFT', 24, 34)
+	FollowerList:Point('BOTTOMLEFT', 24, 34)
 
 	local scrollFrame = FollowerList.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
@@ -219,7 +219,7 @@ function S:Blizzard_GarrisonUI()
 	end
 
 	_G.GarrisonMissionFrameTab1:ClearAllPoints()
-	_G.GarrisonMissionFrameTab1:SetPoint('BOTTOMLEFT', 11, -40)
+	_G.GarrisonMissionFrameTab1:Point('BOTTOMLEFT', 11, -40)
 	GarrisonMissionFrame.GarrCorners:Hide()
 
 	-- Follower list
@@ -256,7 +256,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleTab(_G.GarrisonLandingPageTab2)
 	S:HandleTab(_G.GarrisonLandingPageTab3)
 	_G.GarrisonLandingPageTab1:ClearAllPoints()
-	_G.GarrisonLandingPageTab1:SetPoint('TOPLEFT', GarrisonLandingPage, 'BOTTOMLEFT', 70, 2)
+	_G.GarrisonLandingPageTab1:Point('TOPLEFT', GarrisonLandingPage, 'BOTTOMLEFT', 70, 2)
 
 	if E.private.skins.parchmentRemoverEnable then
 		for i = 1, 10 do
@@ -266,7 +266,7 @@ function S:Blizzard_GarrisonUI()
 		for _, tab in pairs({Report.InProgress, Report.Available}) do
 			tab:SetHighlightTexture('')
 			tab.Text:ClearAllPoints()
-			tab.Text:SetPoint('CENTER')
+			tab.Text:Point('CENTER')
 
 			local bg = CreateFrame('Frame', nil, tab)
 			bg:SetFrameLevel(tab:GetFrameLevel() - 1)
@@ -280,11 +280,11 @@ function S:Blizzard_GarrisonUI()
 			tab.selectedTex = selectedTex
 
 			if tab == Report.InProgress then
-				bg:SetPoint('TOPLEFT', 5, 0)
-				bg:SetPoint('BOTTOMRIGHT')
+				bg:Point('TOPLEFT', 5, 0)
+				bg:Point('BOTTOMRIGHT')
 			else
-				bg:SetPoint('TOPLEFT')
-				bg:SetPoint('BOTTOMRIGHT', -7, 0)
+				bg:Point('TOPLEFT')
+				bg:Point('BOTTOMRIGHT', -7, 0)
 			end
 		end
 
@@ -316,14 +316,14 @@ function S:Blizzard_GarrisonUI()
 				reward.IconBorder:Kill()
 				-- For some reason, this fix icon border in 8.1
 				reward:ClearAllPoints()
-				reward:SetPoint('TOPRIGHT', -5, -5)
+				reward:Point('TOPRIGHT', -5, -5)
 
 				if E.private.skins.parchmentRemoverEnable then
 					button.BG:Hide()
 
 					local bg = CreateFrame('Frame', nil, button)
-					bg:SetPoint('TOPLEFT')
-					bg:SetPoint('BOTTOMRIGHT', 0, 1)
+					bg:Point('TOPLEFT')
+					bg:Point('BOTTOMRIGHT', 0, 1)
 					bg:SetFrameLevel(button:GetFrameLevel() - 1)
 					bg:CreateBackdrop('Transparent')
 				end

@@ -89,11 +89,11 @@ function AB:HandleMicroButton(button)
 end
 
 function AB:MainMenuMicroButton_SetNormal()
-	_G.MainMenuBarPerformanceBar:SetPoint('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 9, -36)
+	_G.MainMenuBarPerformanceBar:Point('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 9, -36)
 end
 
 function AB:MainMenuMicroButton_SetPushed()
-	_G.MainMenuBarPerformanceBar:SetPoint('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 8, -37)
+	_G.MainMenuBarPerformanceBar:Point('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 8, -37)
 end
 
 function AB:UpdateMicroButtonsParent()
@@ -142,12 +142,12 @@ function AB:UpdateMicroPositionDimensions()
 		button:ClearAllPoints()
 
 		if prevButton == ElvUI_MicroBar then
-			button:SetPoint('TOPLEFT', prevButton, 'TOPLEFT', offset, -offset)
+			button:Point('TOPLEFT', prevButton, 'TOPLEFT', offset, -offset)
 		elseif (i - 1) % self.db.microbar.buttonsPerRow == 0 then
-			button:SetPoint('TOP', lastColumnButton, 'BOTTOM', 0, -spacing)
+			button:Point('TOP', lastColumnButton, 'BOTTOM', 0, -spacing)
 			numRows = numRows + 1
 		else
-			button:SetPoint('LEFT', prevButton, 'RIGHT', spacing, 0)
+			button:Point('LEFT', prevButton, 'RIGHT', spacing, 0)
 		end
 
 		prevButton = button
@@ -181,15 +181,15 @@ function AB:UpdateMicroButtons()
 	GuildMicroButtonTabard.background:SetInside(GuildMicroButton)
 	GuildMicroButtonTabard.background:SetTexCoord(0.17, 0.87, 0.5, 0.908)
 	GuildMicroButtonTabard.emblem:ClearAllPoints()
-	GuildMicroButtonTabard.emblem:SetPoint('TOPLEFT', GuildMicroButton, 'TOPLEFT', 4, -4)
-	GuildMicroButtonTabard.emblem:SetPoint('BOTTOMRIGHT', GuildMicroButton, 'BOTTOMRIGHT', -4, 8)
+	GuildMicroButtonTabard.emblem:Point('TOPLEFT', GuildMicroButton, 'TOPLEFT', 4, -4)
+	GuildMicroButtonTabard.emblem:Point('BOTTOMRIGHT', GuildMicroButton, 'BOTTOMRIGHT', -4, 8)
 
 	self:UpdateMicroPositionDimensions()
 end
 
 function AB:SetupMicroBar()
 	local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
-	microBar:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
+	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
 	microBar:EnableMouse(false)
 
 	microBar.visibility = CreateFrame('Frame', nil, E.UIParent, 'SecureHandlerStateTemplate')

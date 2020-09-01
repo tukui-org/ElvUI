@@ -38,7 +38,7 @@ function D:ModifyErrorFrame()
 
 	-- Add a first button
 	local firstButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate, BackdropTemplate')
-	firstButton:SetPoint('BOTTOMLEFT', ScriptErrorsFrame.Reload, 'BOTTOMRIGHT', BUTTON_SPACING, 0)
+	firstButton:Point('BOTTOMLEFT', ScriptErrorsFrame.Reload, 'BOTTOMRIGHT', BUTTON_SPACING, 0)
 	firstButton:SetText('First')
 	firstButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
 	firstButton:SetScript('OnClick', function()
@@ -49,7 +49,7 @@ function D:ModifyErrorFrame()
 
 	-- Also add a Last button for errors
 	local lastButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate, BackdropTemplate')
-	lastButton:SetPoint('BOTTOMRIGHT', ScriptErrorsFrame.Close, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
+	lastButton:Point('BOTTOMRIGHT', ScriptErrorsFrame.Close, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
 	lastButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
 	lastButton:SetText('Last')
 	lastButton:SetScript('OnClick', function()

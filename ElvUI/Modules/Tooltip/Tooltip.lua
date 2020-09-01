@@ -109,17 +109,17 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		if TT.db.healthBar.statusPosition == 'BOTTOM' then
 			if tt.StatusBar.anchoredToTop then
 				tt.StatusBar:ClearAllPoints()
-				tt.StatusBar:SetPoint('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -(E.Spacing * 3))
-				tt.StatusBar:SetPoint('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -(E.Spacing * 3))
-				tt.StatusBar.text:SetPoint('CENTER', tt.StatusBar, 0, 0)
+				tt.StatusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -(E.Spacing * 3))
+				tt.StatusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -(E.Spacing * 3))
+				tt.StatusBar.text:Point('CENTER', tt.StatusBar, 0, 0)
 				tt.StatusBar.anchoredToTop = nil
 			end
 		else
 			if not tt.StatusBar.anchoredToTop then
 				tt.StatusBar:ClearAllPoints()
-				tt.StatusBar:SetPoint('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, (E.Spacing * 3))
-				tt.StatusBar:SetPoint('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, (E.Spacing * 3))
-				tt.StatusBar.text:SetPoint('CENTER', tt.StatusBar, 0, 0)
+				tt.StatusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, (E.Spacing * 3))
+				tt.StatusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, (E.Spacing * 3))
+				tt.StatusBar.text:Point('CENTER', tt.StatusBar, 0, 0)
 				tt.StatusBar.anchoredToTop = true
 			end
 		end
@@ -143,22 +143,22 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		tt:ClearAllPoints()
 		if (not E:HasMoverBeenMoved('TooltipMover')) then
 			if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
-				tt:SetPoint('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)
+				tt:Point('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)
 			elseif RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() then
-				tt:SetPoint('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)
+				tt:Point('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)
 			else
-				tt:SetPoint('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, 18)
+				tt:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, 18)
 			end
 		else
 			local point = E:GetScreenQuadrant(TooltipMover)
 			if point == 'TOPLEFT' then
-				tt:SetPoint('TOPLEFT', TooltipMover, 'BOTTOMLEFT', 1, -4)
+				tt:Point('TOPLEFT', TooltipMover, 'BOTTOMLEFT', 1, -4)
 			elseif point == 'TOPRIGHT' then
-				tt:SetPoint('TOPRIGHT', TooltipMover, 'BOTTOMRIGHT', -1, -4)
+				tt:Point('TOPRIGHT', TooltipMover, 'BOTTOMRIGHT', -1, -4)
 			elseif point == 'BOTTOMLEFT' or point == 'LEFT' then
-				tt:SetPoint('BOTTOMLEFT', TooltipMover, 'TOPLEFT', 1, 18)
+				tt:Point('BOTTOMLEFT', TooltipMover, 'TOPLEFT', 1, 18)
 			else
-				tt:SetPoint('BOTTOMRIGHT', TooltipMover, 'TOPRIGHT', -1, 18)
+				tt:Point('BOTTOMRIGHT', TooltipMover, 'TOPRIGHT', -1, 18)
 			end
 		end
 	end
@@ -751,7 +751,7 @@ end
 function TT:RepositionBNET(frame, _, anchor)
 	if anchor ~= _G.BNETMover then
 		frame:ClearAllPoints()
-		frame:SetPoint(_G.BNETMover.anchorPoint or 'TOPLEFT', _G.BNETMover, _G.BNETMover.anchorPoint or 'TOPLEFT');
+		frame:Point(_G.BNETMover.anchorPoint or 'TOPLEFT', _G.BNETMover, _G.BNETMover.anchorPoint or 'TOPLEFT');
 	end
 end
 
@@ -809,7 +809,7 @@ function TT:Initialize()
 	GameTooltip.StatusBar:Height(TT.db.healthBar.height)
 	GameTooltip.StatusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
 	GameTooltip.StatusBar.text = GameTooltip.StatusBar:CreateFontString(nil, 'OVERLAY')
-	GameTooltip.StatusBar.text:SetPoint('CENTER', GameTooltip.StatusBar, 0, 0)
+	GameTooltip.StatusBar.text:Point('CENTER', GameTooltip.StatusBar, 0, 0)
 	GameTooltip.StatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
 
 	--Tooltip Fonts
@@ -822,7 +822,7 @@ function TT:Initialize()
 	TT:SetTooltipFonts()
 
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
-	GameTooltipAnchor:SetPoint('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
+	GameTooltipAnchor:Point('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 400)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip,general')

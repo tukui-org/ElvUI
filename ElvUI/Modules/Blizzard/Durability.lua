@@ -8,7 +8,7 @@ local CreateFrame = CreateFrame
 local function SetPosition(frame, _, parent)
 	if parent ~= _G.DurabilityFrameHolder then
 		frame:ClearAllPoints()
-		frame:SetPoint('CENTER', _G.DurabilityFrameHolder, 'CENTER')
+		frame:Point('CENTER', _G.DurabilityFrameHolder, 'CENTER')
 	end
 end
 

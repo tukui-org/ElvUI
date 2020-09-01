@@ -57,7 +57,7 @@ function NP:Update_Portrait(nameplate)
 		-- These values are forced in name only mode inside of DisablePlate
 		if not (db.nameOnly or sf.NameOnly) then
 			nameplate.Portrait:ClearAllPoints()
-			nameplate.Portrait:SetPoint(E.InversePoints[db.portrait.position], nameplate, db.portrait.position, db.portrait.xOffset, db.portrait.yOffset)
+			nameplate.Portrait:Point(E.InversePoints[db.portrait.position], nameplate, db.portrait.position, db.portrait.xOffset, db.portrait.yOffset)
 		end
 	elseif nameplate:IsElementEnabled('Portrait') then
 		nameplate:DisableElement('Portrait')

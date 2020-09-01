@@ -48,7 +48,7 @@ local function SkinItemButton(_, block)
 		item.icon:SetInside()
 		item.Cooldown:SetInside()
 		item.Count:ClearAllPoints()
-		item.Count:SetPoint('TOPLEFT', 1, -1)
+		item.Count:Point('TOPLEFT', 1, -1)
 		item.Count:FontTemplate(nil, 14, 'OUTLINE')
 		item.Count:SetShadowOffset(5, -5)
 		E:RegisterCooldown(item.Cooldown)
@@ -83,13 +83,13 @@ local function SkinProgressBars(_, _, line)
 
 		if label then
 			label:ClearAllPoints()
-			label:SetPoint('CENTER', bar, 0, 1)
+			label:Point('CENTER', bar, 0, 1)
 			label:FontTemplate(nil, 14, 'OUTLINE')
 		end
 
 		if icon then
 			icon:ClearAllPoints()
-			icon:SetPoint('LEFT', bar, 'RIGHT', E.PixelMode and 3 or 7, 0)
+			icon:Point('LEFT', bar, 'RIGHT', E.PixelMode and 3 or 7, 0)
 			icon:SetMask('')
 			icon:SetTexCoord(unpack(E.TexCoords))
 
@@ -130,11 +130,11 @@ local function PositionFindGroupButton(block, button)
 		if block.groupFinderButton and b == block.groupFinderButton and block.itemButton and button == block.itemButton then
 			-- this fires when there is a group button and a item button to the left of it
 			-- we push the item button away from the group button (to the left)
-			button:SetPoint(a, b, c, d-(E.PixelMode and -1 or 1), e);
+			button:Point(a, b, c, d-(E.PixelMode and -1 or 1), e);
 		elseif b == block and block.groupFinderButton and button == block.groupFinderButton then
 			-- this fires when there is a group finder button
 			-- we push the group finder button down slightly
-			button:SetPoint(a, b, c, d, e-(E.PixelMode and 2 or -1));
+			button:Point(a, b, c, d, e-(E.PixelMode and 2 or -1));
 		end
 	end
 end

@@ -230,7 +230,7 @@ function E:NudgeMover(nudgeX, nudgeY)
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 
 	mover:ClearAllPoints()
-	mover:SetPoint(point, E.UIParent, point, x, y)
+	mover:Point(point, E.UIParent, point, x, y)
 	E:SaveMoverPosition(mover.name)
 
 	--Update coordinates in Nudge Window
@@ -268,7 +268,7 @@ function E:CreateMoverPopup()
 	f:SetClampedToScreen(true)
 	f:Size(370, 190)
 	f:SetTemplate('Transparent')
-	f:SetPoint('BOTTOM', _G.UIParent, 'CENTER', 0, 100)
+	f:Point('BOTTOM', _G.UIParent, 'CENTER', 0, 100)
 	f:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	f:SetScript('OnShow', E.MoverPopupOnShow)
 	f:CreateShadow(5)
@@ -288,15 +288,15 @@ function E:CreateMoverPopup()
 
 	local title = header:CreateFontString(nil, 'OVERLAY')
 	title:FontTemplate()
-	title:SetPoint('CENTER', header, 'CENTER')
+	title:Point('CENTER', header, 'CENTER')
 	title:SetText('ElvUI')
 
 	local desc = f:CreateFontString(nil, 'ARTWORK')
 	desc:SetFontObject('GameFontHighlight')
 	desc:SetJustifyV('TOP')
 	desc:SetJustifyH('LEFT')
-	desc:SetPoint('TOPLEFT', 18, -20)
-	desc:SetPoint('BOTTOMRIGHT', -18, 48)
+	desc:Point('TOPLEFT', 18, -20)
+	desc:Point('BOTTOMRIGHT', -18, 48)
 	desc:SetText(L["DESC_MOVERCONFIG"])
 
 	local snapping = CreateFrame('CheckButton', f:GetName()..'CheckButton', f, 'OptionsCheckButtonTemplate')
@@ -350,13 +350,13 @@ function E:CreateMoverPopup()
 	end)
 
 	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	align.text:SetPoint('RIGHT', align, 'LEFT', -4, 0)
+	align.text:Point('RIGHT', align, 'LEFT', -4, 0)
 	align.text:SetText(L["Grid Size:"])
 
 	--position buttons
-	snapping:SetPoint('BOTTOMLEFT', 14, 10)
-	lock:SetPoint('BOTTOMRIGHT', -14, 14)
-	align:SetPoint('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
+	snapping:Point('BOTTOMLEFT', 14, 10)
+	lock:Point('BOTTOMRIGHT', -14, 14)
+	align:Point('TOPRIGHT', lock, 'TOPLEFT', -4, -2)
 
 	S:HandleCheckBox(snapping)
 	S:HandleButton(lock)
@@ -372,10 +372,10 @@ function E:CreateMoverPopup()
 	end)
 
 	local configMode = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
-	configMode:SetPoint('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
+	configMode:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
 	S:HandleDropDownBox(configMode, 165)
 	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	configMode.text:SetPoint('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
+	configMode.text:Point('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
 	configMode.text:SetText(L["Config Mode:"])
 
 	_G.UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize)
@@ -410,8 +410,8 @@ function E:CreateMoverPopup()
 	desc:SetFontObject('GameFontHighlight')
 	desc:SetJustifyV('TOP')
 	desc:SetJustifyH('LEFT')
-	desc:SetPoint('TOPLEFT', 18, -15)
-	desc:SetPoint('BOTTOMRIGHT', -18, 28)
+	desc:Point('TOPLEFT', 18, -15)
+	desc:Point('BOTTOMRIGHT', -18, 28)
 	desc:SetJustifyH('CENTER')
 	nudgeFrame.title = desc
 
@@ -426,7 +426,7 @@ function E:CreateMoverPopup()
 
 	title = header:CreateFontString(nil, 'OVERLAY')
 	title:FontTemplate()
-	title:SetPoint('CENTER', header, 'CENTER')
+	title:Point('CENTER', header, 'CENTER')
 	title:SetText(L["Nudge"])
 	nudgeFrame.title = title
 
@@ -458,9 +458,9 @@ function E:CreateMoverPopup()
 	end)
 
 	xOffset.text = xOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	xOffset.text:SetPoint('RIGHT', xOffset, 'LEFT', -4, 0)
+	xOffset.text:Point('RIGHT', xOffset, 'LEFT', -4, 0)
 	xOffset.text:SetText('X:')
-	xOffset:SetPoint('BOTTOMRIGHT', nudgeFrame, 'CENTER', -6, 8)
+	xOffset:Point('BOTTOMRIGHT', nudgeFrame, 'CENTER', -6, 8)
 	S:HandleEditBox(xOffset)
 	nudgeFrame.xOffset = xOffset
 
@@ -492,15 +492,15 @@ function E:CreateMoverPopup()
 	end)
 
 	yOffset.text = yOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	yOffset.text:SetPoint('RIGHT', yOffset, 'LEFT', -4, 0)
+	yOffset.text:Point('RIGHT', yOffset, 'LEFT', -4, 0)
 	yOffset.text:SetText('Y:')
-	yOffset:SetPoint('BOTTOMLEFT', nudgeFrame, 'CENTER', 16, 8)
+	yOffset:Point('BOTTOMLEFT', nudgeFrame, 'CENTER', 16, 8)
 	S:HandleEditBox(yOffset)
 	nudgeFrame.yOffset = yOffset
 
 	local resetButton = CreateFrame('Button', nudgeFrame:GetName()..'ResetButton', nudgeFrame, 'UIPanelButtonTemplate, BackdropTemplate')
 	resetButton:SetText(RESET)
-	resetButton:SetPoint('TOP', nudgeFrame, 'CENTER', 0, 2)
+	resetButton:Point('TOP', nudgeFrame, 'CENTER', 0, 2)
 	resetButton:Size(100, 25)
 	resetButton:SetScript('OnClick', function()
 		if ElvUIMoverNudgeWindow.child.textString then
@@ -511,7 +511,7 @@ function E:CreateMoverPopup()
 	nudgeFrame.resetButton = resetButton
 
 	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame, 'BackdropTemplate')
-	upButton:SetPoint('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
+	upButton:Point('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
 	upButton:SetScript('OnClick', function() E:NudgeMover(nil, 1) end)
 	S:HandleNextPrevButton(upButton)
 	S:HandleButton(upButton)
@@ -519,7 +519,7 @@ function E:CreateMoverPopup()
 	nudgeFrame.upButton = upButton
 
 	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'BackdropTemplate')
-	downButton:SetPoint('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
+	downButton:Point('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
 	downButton:SetScript('OnClick', function() E:NudgeMover(nil, -1) end)
 	S:HandleNextPrevButton(downButton)
 	S:HandleButton(downButton)
@@ -527,7 +527,7 @@ function E:CreateMoverPopup()
 	nudgeFrame.downButton = downButton
 
 	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'BackdropTemplate')
-	leftButton:SetPoint('RIGHT', upButton, 'LEFT', -6, 0)
+	leftButton:Point('RIGHT', upButton, 'LEFT', -6, 0)
 	leftButton:SetScript('OnClick', function() E:NudgeMover(-1) end)
 	S:HandleNextPrevButton(leftButton)
 	S:HandleButton(leftButton)
@@ -535,7 +535,7 @@ function E:CreateMoverPopup()
 	nudgeFrame.leftButton = leftButton
 
 	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'BackdropTemplate')
-	rightButton:SetPoint('LEFT', downButton, 'RIGHT', 6, 0)
+	rightButton:Point('LEFT', downButton, 'RIGHT', 6, 0)
 	rightButton:SetScript('OnClick', function() E:NudgeMover(1) end)
 	S:HandleNextPrevButton(rightButton)
 	S:HandleButton(rightButton)
@@ -645,12 +645,12 @@ local function ConfigSliderOnMouseWheel(self, offset)
 	if newValue > maxValue then return end
 
 	self:SetValue(newValue)
-	self.buttons:SetPoint('TOPLEFT', 0, newValue * 36)
+	self.buttons:Point('TOPLEFT', 0, newValue * 36)
 end
 
 local function ConfigSliderOnValueChanged(self, value)
 	self:SetValue(value)
-	self.buttons:SetPoint('TOPLEFT', 0, value * 36)
+	self.buttons:Point('TOPLEFT', 0, value * 36)
 end
 
 function E:Config_SetButtonText(btn, noColor)
@@ -669,7 +669,7 @@ function E:Config_CreateSeparatorLine(frame, lastButton)
 	line:SetTexture(E.Media.Textures.White8x8)
 	line:SetVertexColor(1, .82, 0, .4)
 	line:Size(179, 2)
-	line:SetPoint('TOP', lastButton, 'BOTTOM', 0, -6)
+	line:Point('TOP', lastButton, 'BOTTOM', 0, -6)
 	line.separator = true
 	return line
 end
@@ -753,7 +753,7 @@ function E:Config_UpdateLeftScroller(frame)
 	local btns = left.buttons
 	local bottom = btns:GetBottom()
 	if not bottom then return end
-	btns:SetPoint('TOPLEFT', 0, 0)
+	btns:Point('TOPLEFT', 0, 0)
 
 	local max = 0
 	for _, btn in ipairs(btns) do
@@ -796,7 +796,7 @@ function E:Config_RestoreOldPosition(frame)
 	if position then
 		frame:ClearAllPoints()
 		for i = 1, #position do
-			frame:SetPoint(unpack(position[i]))
+			frame:Point(unpack(position[i]))
 		end
 	end
 end
@@ -834,9 +834,9 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 		btn:Width(177)
 
 		if not last then
-			btn:SetPoint('TOP', buttons, 'TOP', 0, 0)
+			btn:Point('TOP', buttons, 'TOP', 0, 0)
 		else
-			btn:SetPoint('TOP', last, 'BOTTOM', 0, (last.separator and -6) or -4)
+			btn:Point('TOP', last, 'BOTTOM', 0, (last.separator and -6) or -4)
 		end
 
 		buttons[index] = btn
@@ -926,14 +926,14 @@ function E:Config_WindowOpened(frame)
 		local version = frame.topHolder.version
 		E:Config_SaveOldPosition(version)
 		version:ClearAllPoints()
-		version:SetPoint('LEFT', frame.topHolder, 'LEFT', unskinned and 8 or 6, unskinned and -4 or 0)
+		version:Point('LEFT', frame.topHolder, 'LEFT', unskinned and 8 or 6, unskinned and -4 or 0)
 
 		local holderHeight = frame.bottomHolder:GetHeight()
 		local content = frame.obj.content
 		E:Config_SaveOldPosition(content)
 		content:ClearAllPoints()
-		content:SetPoint('TOPLEFT', frame, 'TOPLEFT', offset, -(unskinned and 50 or 40))
-		content:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -offset, holderHeight + 3)
+		content:Point('TOPLEFT', frame, 'TOPLEFT', offset, -(unskinned and 50 or 40))
+		content:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -offset, holderHeight + 3)
 
 		local titlebg = frame.obj.titlebg
 		E:Config_SaveOldPosition(titlebg)
@@ -1001,10 +1001,10 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 		local offset = unskinned and 14 or 8
 
 		if not last then
-			btn:SetPoint('BOTTOMLEFT', frame.bottomHolder, 'BOTTOMLEFT', unskinned and 24 or offset, offset)
+			btn:Point('BOTTOMLEFT', frame.bottomHolder, 'BOTTOMLEFT', unskinned and 24 or offset, offset)
 			last = btn
 		else
-			btn:SetPoint('LEFT', last, 'RIGHT', 4, 0)
+			btn:Point('LEFT', last, 'RIGHT', 4, 0)
 			last = btn
 		end
 

@@ -27,7 +27,7 @@ function S:Blizzard_GarrisonTemplates()
 		end
 
 		s.XPBar:ClearAllPoints()
-		s.XPBar:SetPoint('BOTTOMLEFT', s.PortraitFrame, 'BOTTOMRIGHT', 7, -15)
+		s.XPBar:Point('BOTTOMLEFT', s.PortraitFrame, 'BOTTOMRIGHT', 7, -15)
 	end)
 end
 

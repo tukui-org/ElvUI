@@ -48,11 +48,11 @@ function S:BlizzardOptions()
 	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameYesButton:ClearAllPoints()
 	_G.ReadyCheckFrameNoButton:ClearAllPoints()
-	_G.ReadyCheckFrameYesButton:SetPoint('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
-	_G.ReadyCheckFrameNoButton:SetPoint('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
+	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
+	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
 	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameText:ClearAllPoints()
-	_G.ReadyCheckFrameText:SetPoint('TOP', 0, -15)
+	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript('OnShow', function(rcf)
@@ -82,7 +82,7 @@ function S:BlizzardOptions()
 	local ChatConfigFrame = _G.ChatConfigFrame
 	ChatConfigFrame.Header = ChatConfigFrame.Header
 	ChatConfigFrame.Header:StripTextures()
-	ChatConfigFrame.Header:SetPoint('TOP', ChatConfigFrame, 0, 0)
+	ChatConfigFrame.Header:Point('TOP', ChatConfigFrame, 0, 0)
 
 	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(tm)
 		for tab in tm.tabPool:EnumerateActive() do
@@ -168,13 +168,13 @@ function S:BlizzardOptions()
 
 	for i in pairs(_G.COMBAT_CONFIG_TABS) do
 		S:HandleTab(_G['CombatConfigTab'..i])
-		_G['CombatConfigTab'..i].backdrop:SetPoint('TOPLEFT', 0, -10)
-		_G['CombatConfigTab'..i].backdrop:SetPoint('BOTTOMRIGHT', -2, 3)
-		_G['CombatConfigTab'..i..'Text']:SetPoint('BOTTOM', 0, 10)
+		_G['CombatConfigTab'..i].backdrop:Point('TOPLEFT', 0, -10)
+		_G['CombatConfigTab'..i].backdrop:Point('BOTTOMRIGHT', -2, 3)
+		_G['CombatConfigTab'..i..'Text']:Point('BOTTOM', 0, 10)
 	end
 
 	_G.CombatConfigTab1:ClearAllPoints()
-	_G.CombatConfigTab1:SetPoint('BOTTOMLEFT', _G.ChatConfigBackgroundFrame, 'TOPLEFT', 6, -2)
+	_G.CombatConfigTab1:Point('BOTTOMLEFT', _G.ChatConfigBackgroundFrame, 'TOPLEFT', 6, -2)
 
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
@@ -284,12 +284,12 @@ function S:BlizzardOptions()
 	InterfaceOptionsFrame.Header = InterfaceOptionsFrame.Header
 	InterfaceOptionsFrame.Header:StripTextures()
 	InterfaceOptionsFrame.Header:ClearAllPoints()
-	InterfaceOptionsFrame.Header:SetPoint('TOP', InterfaceOptionsFrame, 0, 0)
+	InterfaceOptionsFrame.Header:Point('TOP', InterfaceOptionsFrame, 0, 0)
 
 	local VideoOptionsFrame = _G.VideoOptionsFrame
 	VideoOptionsFrame.Header:StripTextures()
 	VideoOptionsFrame.Header:ClearAllPoints()
-	VideoOptionsFrame.Header:SetPoint('TOP', VideoOptionsFrame, 0, 0)
+	VideoOptionsFrame.Header:Point('TOP', VideoOptionsFrame, 0, 0)
 
 	for _, Frame in pairs(OptionsFrameBackdrops) do
 		Frame:StripTextures()
@@ -319,9 +319,9 @@ function S:BlizzardOptions()
 		end
 	end
 
-	_G.InterfaceOptionsFrameTab1:SetPoint('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
+	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
 	_G.InterfaceOptionsFrameTab1:StripTextures()
-	_G.InterfaceOptionsFrameTab2:SetPoint('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
+	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
 	_G.InterfaceOptionsFrameTab2:StripTextures()
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
@@ -355,7 +355,7 @@ function S:BlizzardOptions()
 	AudioOptionsFrame.Header = AudioOptionsFrame.Header
 	AudioOptionsFrame.Header:SetAlpha(0)
 	AudioOptionsFrame.Header:ClearAllPoints()
-	AudioOptionsFrame.Header:SetPoint('TOP', AudioOptionsFrame, 0, 0)
+	AudioOptionsFrame.Header:Point('TOP', AudioOptionsFrame, 0, 0)
 
 	-- Toggle Test Audio Button - Wow 8.0
 	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)

@@ -10,7 +10,7 @@ local VehicleSeatIndicator_SetUpVehicle = VehicleSeatIndicator_SetUpVehicle
 local function VehicleSeatIndicator_SetPosition(_,_, parent)
 	if parent == 'MinimapCluster' or parent == _G.MinimapCluster then
 		_G.VehicleSeatIndicator:ClearAllPoints()
-		_G.VehicleSeatIndicator:SetPoint('TOPLEFT', _G.VehicleSeatMover, 'TOPLEFT', 0, 0)
+		_G.VehicleSeatIndicator:Point('TOPLEFT', _G.VehicleSeatMover, 'TOPLEFT', 0, 0)
 	end
 end
 

@@ -25,8 +25,8 @@ local function PetButtons(btn, p)
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()
-		icon:SetPoint('TOPLEFT', p, -p)
-		icon:SetPoint('BOTTOMRIGHT', -p, p)
+		icon:Point('TOPLEFT', p, -p)
+		icon:Point('BOTTOMRIGHT', -p, p)
 
 		button:SetFrameLevel(button:GetFrameLevel() + 2)
 		if not button.backdrop then

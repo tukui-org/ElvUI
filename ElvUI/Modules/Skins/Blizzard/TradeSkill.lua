@@ -83,7 +83,7 @@ function S:Blizzard_TradeSkillUI()
 
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton)
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton)
-	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:SetPoint('LEFT', TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, 'RIGHT', 4, 0)
+	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:Point('LEFT', TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, 'RIGHT', 4, 0)
 
 	hooksecurefunc(TradeSkillFrame.DetailsFrame, 'RefreshDisplay', function()
 		local ResultIcon = TradeSkillFrame.DetailsFrame.Contents.ResultIcon

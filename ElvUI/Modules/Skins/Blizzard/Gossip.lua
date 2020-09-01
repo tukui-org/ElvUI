@@ -91,7 +91,7 @@ function S:GossipFrame()
 	E:RegisterStatusBar(NPCFriendshipStatusBar)
 
 	NPCFriendshipStatusBar.icon:ClearAllPoints()
-	NPCFriendshipStatusBar.icon:SetPoint('RIGHT', NPCFriendshipStatusBar, 'LEFT', 0, -3)
+	NPCFriendshipStatusBar.icon:Point('RIGHT', NPCFriendshipStatusBar, 'LEFT', 0, -3)
 	S:HandleIcon(NPCFriendshipStatusBar.icon)
 end
 

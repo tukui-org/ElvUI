@@ -38,7 +38,7 @@ local function HandleReward(frame)
 	if frame.Count then
 		frame.Count:SetDrawLayer('OVERLAY')
 		frame.Count:ClearAllPoints()
-		frame.Count:SetPoint('BOTTOMRIGHT', frame.Icon, 'BOTTOMRIGHT', 0, 0)
+		frame.Count:Point('BOTTOMRIGHT', frame.Icon, 'BOTTOMRIGHT', 0, 0)
 	end
 
 	if frame.NameFrame then
@@ -143,11 +143,11 @@ function S:BlizzardQuestFrames()
 			local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
 			if point and relativeTo and relativePoint then
 				if i == 1 then
-					questItem:SetPoint(point, relativeTo, relativePoint, 0, y)
+					questItem:Point(point, relativeTo, relativePoint, 0, y)
 				elseif relativePoint == 'BOTTOMLEFT' then
-					questItem:SetPoint(point, relativeTo, relativePoint, 0, -4)
+					questItem:Point(point, relativeTo, relativePoint, 0, -4)
 				else
-					questItem:SetPoint(point, relativeTo, relativePoint, 4, 0)
+					questItem:Point(point, relativeTo, relativePoint, 4, 0)
 				end
 			end
 
@@ -172,12 +172,12 @@ function S:BlizzardQuestFrames()
 				if not followerReward.isSkinned then
 					followerReward:CreateBackdrop()
 					followerReward.backdrop:SetAllPoints(followerReward.BG)
-					followerReward.backdrop:SetPoint('TOPLEFT', 40, -5)
-					followerReward.backdrop:SetPoint('BOTTOMRIGHT', 2, 5)
+					followerReward.backdrop:Point('TOPLEFT', 40, -5)
+					followerReward.backdrop:Point('BOTTOMRIGHT', 2, 5)
 					followerReward.BG:Hide()
 
 					followerReward.PortraitFrame:ClearAllPoints()
-					followerReward.PortraitFrame:SetPoint('RIGHT', followerReward.backdrop, 'LEFT', -2, 0)
+					followerReward.PortraitFrame:Point('RIGHT', followerReward.backdrop, 'LEFT', -2, 0)
 
 					followerReward.PortraitFrame.PortraitRing:Hide()
 					followerReward.PortraitFrame.PortraitRingQuality:SetTexture()
@@ -186,12 +186,12 @@ function S:BlizzardQuestFrames()
 
 					local level = followerReward.PortraitFrame.Level
 					level:ClearAllPoints()
-					level:SetPoint('BOTTOM', followerReward.PortraitFrame, 0, 3)
+					level:Point('BOTTOM', followerReward.PortraitFrame, 0, 3)
 
 					local squareBG = CreateFrame('Frame', nil, followerReward.PortraitFrame, 'BackdropTemplate')
 					squareBG:SetFrameLevel(followerReward.PortraitFrame:GetFrameLevel()-1)
-					squareBG:SetPoint('TOPLEFT', 2, -2)
-					squareBG:SetPoint('BOTTOMRIGHT', -2, 2)
+					squareBG:Point('TOPLEFT', 2, -2)
+					squareBG:Point('BOTTOMRIGHT', -2, 2)
 					squareBG:SetTemplate()
 					followerReward.PortraitFrame.squareBG = squareBG
 
@@ -369,7 +369,7 @@ function S:BlizzardQuestFrames()
 		local button = _G['QuestProgressItem'..i]
 		local icon = _G['QuestProgressItem'..i..'IconTexture']
 		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetPoint('TOPLEFT', 2, -2)
+		icon:Point('TOPLEFT', 2, -2)
 		icon:Size(icon:GetWidth() -3, icon:GetHeight() -3)
 		button:Width(button:GetWidth() -4)
 		button:StripTextures()
@@ -392,7 +392,7 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestModelScene:StripTextures()
 	_G.QuestModelScene:CreateBackdrop('Transparent')
-	_G.QuestModelScene:SetPoint('TOPLEFT', _G.QuestLogDetailFrame, 'TOPRIGHT', 4, -34)
+	_G.QuestModelScene:Point('TOPLEFT', _G.QuestLogDetailFrame, 'TOPRIGHT', 4, -34)
 	_G.QuestNPCModelTextFrame:StripTextures()
 	_G.QuestNPCModelTextFrame:CreateBackdrop('Transparent')
 	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
@@ -423,7 +423,7 @@ function S:BlizzardQuestFrames()
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)
 	QuestLogPopupDetailFrame.ShowMapButton.Text:ClearAllPoints()
-	QuestLogPopupDetailFrame.ShowMapButton.Text:SetPoint('CENTER')
+	QuestLogPopupDetailFrame.ShowMapButton.Text:Point('CENTER')
 	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
 
 	-- Skin the +/- buttons in the QuestLog

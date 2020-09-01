@@ -98,7 +98,7 @@ function NP:Update_ClassPower(nameplate)
 		end
 
 		nameplate.ClassPower:ClearAllPoints()
-		nameplate.ClassPower:SetPoint('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 
 		local maxClassBarButtons = nameplate.ClassPower.__max
 
@@ -120,16 +120,16 @@ function NP:Update_ClassPower(nameplate)
 				nameplate.ClassPower[i].bg:Size(Width - (maxClassBarButtons == 6 and 2 or 0), db.classpower.height)
 
 				nameplate.ClassPower[i]:ClearAllPoints()
-				nameplate.ClassPower[i]:SetPoint('LEFT', nameplate.ClassPower, 'LEFT', 0, 0)
+				nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower, 'LEFT', 0, 0)
 			else
 				nameplate.ClassPower[i]:Size(Width - 1, db.classpower.height)
 				nameplate.ClassPower[i].bg:Size(Width - 1, db.classpower.height)
 
 				nameplate.ClassPower[i]:ClearAllPoints()
-				nameplate.ClassPower[i]:SetPoint('LEFT', nameplate.ClassPower[i - 1], 'RIGHT', 1, 0)
+				nameplate.ClassPower[i]:Point('LEFT', nameplate.ClassPower[i - 1], 'RIGHT', 1, 0)
 
 				if i == maxClassBarButtons then
-					nameplate.ClassPower[i]:SetPoint('RIGHT', nameplate.ClassPower)
+					nameplate.ClassPower[i]:Point('RIGHT', nameplate.ClassPower)
 				end
 			end
 		end
@@ -189,7 +189,7 @@ function NP:Update_Runes(nameplate)
 
 		nameplate.Runes:Show()
 		nameplate.Runes:ClearAllPoints()
-		nameplate.Runes:SetPoint('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 
 		nameplate.Runes.sortOrder = db.classpower.sortDirection
 
@@ -206,16 +206,16 @@ function NP:Update_Runes(nameplate)
 				nameplate.Runes[i].bg:Size(width, db.classpower.height)
 
 				nameplate.Runes[i]:ClearAllPoints()
-				nameplate.Runes[i]:SetPoint('LEFT', nameplate.Runes, 'LEFT', 0, 0)
+				nameplate.Runes[i]:Point('LEFT', nameplate.Runes, 'LEFT', 0, 0)
 			else
 				nameplate.Runes[i]:Size(width - 1, db.classpower.height)
 				nameplate.Runes[i].bg:Size(width - 1, db.classpower.height)
 
 				nameplate.Runes[i]:ClearAllPoints()
-				nameplate.Runes[i]:SetPoint('LEFT', nameplate.Runes[i-1], 'RIGHT', 1, 0)
+				nameplate.Runes[i]:Point('LEFT', nameplate.Runes[i-1], 'RIGHT', 1, 0)
 
 				if i == 6 then
-					nameplate.Runes[6]:SetPoint('RIGHT', nameplate.Runes)
+					nameplate.Runes[6]:Point('RIGHT', nameplate.Runes)
 				end
 			end
 		end
@@ -250,7 +250,7 @@ function NP:Update_Stagger(nameplate)
 		end
 
 		nameplate.Stagger:ClearAllPoints()
-		nameplate.Stagger:SetPoint('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		nameplate.Stagger:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.Stagger:Size(db.classpower.width, db.classpower.height)
 	elseif nameplate:IsElementEnabled('Stagger') then
 		nameplate:DisableElement('Stagger')

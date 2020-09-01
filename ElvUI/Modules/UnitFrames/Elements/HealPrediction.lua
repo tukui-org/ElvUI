@@ -141,26 +141,26 @@ function UF:Configure_HealComm(frame)
 
 			myBar:ClearAllPoints()
 			myBar:Size(width, barHeight)
-			myBar:SetPoint(anchor, health)
-			myBar:SetPoint(p1, healthBarTexture, p2)
+			myBar:Point(anchor, health)
+			myBar:Point(p1, healthBarTexture, p2)
 
 			otherBar:ClearAllPoints()
 			otherBar:Size(width, barHeight)
-			otherBar:SetPoint(anchor, health)
-			otherBar:SetPoint(p1, pred.myBarTexture, p2)
+			otherBar:Point(anchor, health)
+			otherBar:Point(p1, pred.myBarTexture, p2)
 
 			healAbsorbBar:ClearAllPoints()
 			healAbsorbBar:Size(width, barHeight)
-			healAbsorbBar:SetPoint(anchor, health)
+			healAbsorbBar:Point(anchor, health)
 
 			absorbBar:ClearAllPoints()
 			absorbBar:Size(width, barHeight)
-			absorbBar:SetPoint(anchor, health)
+			absorbBar:Point(anchor, health)
 
 			if db.absorbStyle == 'REVERSED' then
-				absorbBar:SetPoint(p2, health, p2)
+				absorbBar:Point(p2, health, p2)
 			else
-				absorbBar:SetPoint(p1, pred.otherBarTexture, p2)
+				absorbBar:Point(p1, pred.otherBarTexture, p2)
 			end
 
 		else
@@ -174,26 +174,26 @@ function UF:Configure_HealComm(frame)
 
 			myBar:ClearAllPoints()
 			myBar:Size(barWidth, height)
-			myBar:SetPoint(anchor, health)
-			myBar:SetPoint(p1, healthBarTexture, p2)
+			myBar:Point(anchor, health)
+			myBar:Point(p1, healthBarTexture, p2)
 
 			otherBar:ClearAllPoints()
 			otherBar:Size(barWidth, height)
-			otherBar:SetPoint(anchor, health)
-			otherBar:SetPoint(p1, pred.myBarTexture, p2)
+			otherBar:Point(anchor, health)
+			otherBar:Point(p1, pred.myBarTexture, p2)
 
 			healAbsorbBar:ClearAllPoints()
 			healAbsorbBar:Size(barWidth, height)
-			healAbsorbBar:SetPoint(anchor, health)
+			healAbsorbBar:Point(anchor, health)
 
 			absorbBar:ClearAllPoints()
 			absorbBar:Size(barWidth, height)
-			absorbBar:SetPoint(anchor, health)
+			absorbBar:Point(anchor, health)
 
 			if db.absorbStyle == 'REVERSED' then
-				absorbBar:SetPoint(p2, health, p2)
+				absorbBar:Point(p2, health, p2)
 			else
-				absorbBar:SetPoint(p1, pred.otherBarTexture, p2)
+				absorbBar:Point(p1, pred.otherBarTexture, p2)
 			end
 
 		end

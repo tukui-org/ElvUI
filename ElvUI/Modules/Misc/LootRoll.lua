@@ -90,7 +90,7 @@ local function StatusUpdate(frame)
 	if not frame.parent.rollID then return end
 	local t = GetLootRollTimeLeft(frame.parent.rollID)
 	local perc = t / frame.parent.time
-	frame.spark:SetPoint('CENTER', frame, 'LEFT', perc * frame:GetWidth(), 0)
+	frame.spark:Point('CENTER', frame, 'LEFT', perc * frame:GetWidth(), 0)
 	frame:SetValue(t)
 
 	if t > 1000000000 then
@@ -100,7 +100,7 @@ end
 
 local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...)
 	local f = CreateFrame('Button', nil, parent)
-	f:SetPoint(...)
+	f:Point(...)
 	f:Size(FRAME_HEIGHT - 4)
 	f:SetNormalTexture(ntex)
 	if ptex then f:SetPushedTexture(ptex) end
@@ -114,7 +114,7 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 	f:SetMotionScriptsWhileDisabled(true)
 	local txt = f:CreateFontString(nil, 'ARTWORK')
 	txt:FontTemplate(nil, nil, 'OUTLINE')
-	txt:SetPoint('CENTER', 0, rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0)
+	txt:Point('CENTER', 0, rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0)
 	return f, txt
 end
 
@@ -143,8 +143,8 @@ function M:CreateRollFrame()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 
 	local tfade = frame:CreateTexture(nil, 'BORDER')
-	tfade:SetPoint('TOPLEFT', frame, 'TOPLEFT', 4, 0)
-	tfade:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -4, 0)
+	tfade:Point('TOPLEFT', frame, 'TOPLEFT', 4, 0)
+	tfade:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -4, 0)
 	tfade:SetTexture([[Interface\ChatFrame\ChatFrameBackground]])
 	tfade:SetBlendMode('ADD')
 	tfade:SetGradientAlpha('VERTICAL', .1, .1, .1, 0, .1, .1, .1, 0)
@@ -202,9 +202,9 @@ local function GetFrame()
 
 	local f = M:CreateRollFrame()
 	if pos == 'TOP' then
-		f:SetPoint('TOP', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'BOTTOM', 0, -4)
+		f:Point('TOP', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'BOTTOM', 0, -4)
 	else
-		f:SetPoint('BOTTOM', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'TOP', 0, 4)
+		f:Point('BOTTOM', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'TOP', 0, 4)
 	end
 	tinsert(M.RollBars, f)
 	return f
@@ -246,7 +246,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.status:SetMinMaxValues(0, time)
 	f.status:SetValue(time)
 
-	f:SetPoint('CENTER', _G.WorldFrame, 'CENTER')
+	f:Point('CENTER', _G.WorldFrame, 'CENTER')
 	f:Show()
 	_G.AlertFrame:UpdateAnchors()
 

@@ -17,8 +17,8 @@ function S:Blizzard_CombatLog()
 	local FontContainer = _G.ChatFrame2.FontStringContainer
 	if FontContainer then
 		Button:ClearAllPoints()
-		Button:SetPoint('BOTTOMLEFT', FontContainer, 'TOPLEFT', -3, 0)
-		Button:SetPoint('BOTTOMRIGHT', FontContainer, 'TOPRIGHT', 3 or 3, 0)
+		Button:Point('BOTTOMLEFT', FontContainer, 'TOPLEFT', -3, 0)
+		Button:Point('BOTTOMRIGHT', FontContainer, 'TOPRIGHT', 3 or 3, 0)
 	end
 
 	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', function()
@@ -40,7 +40,7 @@ function S:Blizzard_CombatLog()
 	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
 
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetPoint('TOPRIGHT', Button, 'TOPRIGHT', 0, -1)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point('TOPRIGHT', Button, 'TOPRIGHT', 0, -1)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 end
 
