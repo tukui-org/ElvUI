@@ -176,8 +176,7 @@ function UF:Configure_ClassBar(frame, cur)
 		bars:SetFrameLevel(50) --RaisedElementParent uses 100, we want it lower than this
 
 		if bars.Holder and bars.Holder.mover then
-			bars.Holder.mover:SetScale(0.0001)
-			bars.Holder.mover:SetAlpha(0)
+			bars.Holder:Hide()
 		end
 	elseif frame.CLASSBAR_DETACHED then
 		bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
@@ -189,8 +188,7 @@ function UF:Configure_ClassBar(frame, cur)
 		else
 			bars:ClearAllPoints()
 			bars:Point('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
-			bars.Holder.mover:SetScale(1)
-			bars.Holder.mover:SetAlpha(1)
+			bars.Holder:Show()
 		end
 
 		if not db.classbar.strataAndLevel.useCustomStrata then
@@ -216,8 +214,7 @@ function UF:Configure_ClassBar(frame, cur)
 		bars:SetFrameLevel(frame.Health:GetFrameLevel() + 10) --Health uses 10, Power uses (Health + 5) when attached
 
 		if bars.Holder and bars.Holder.mover then
-			bars.Holder.mover:SetScale(0.0001)
-			bars.Holder.mover:SetAlpha(0)
+			bars.Holder:Hide()
 		end
 	end
 

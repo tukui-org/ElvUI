@@ -1439,42 +1439,45 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	statusBar.invertColors = invertColors
 	statusBar.backdropTex = backdropTex
 
-	local statusBarTex = statusBar:GetStatusBarTexture()
-	local statusBarOrientation = statusBar:GetOrientation()
-
 	if not statusBar.hookedColor then
 		hooksecurefunc(statusBar, 'SetStatusBarColor', UF.UpdateBackdropTextureColor)
 		statusBar.hookedColor = true
 	end
 
+	local parent = statusBar:GetParent()
+	local orientation = statusBar:GetOrientation()
 	if isTransparent then
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate('Transparent', nil, nil, nil, true)
-		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate('Transparent', nil, nil, nil, true)
+		elseif parent.template then
+			parent:SetTemplate('Transparent', nil, nil, nil, true)
 		end
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, E.media.blankTex)
 
-		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end --Needed for Power element
+		local barTexture = statusBar:GetStatusBarTexture()
+		if statusBar.texture then statusBar.texture = barTexture end --Needed for Power element
+		barTexture:SetInside(nil, 0, 0) --This fixes Center Pixel offset problem
 
-		UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
+		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 	else
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate(nil, nil, nil, not statusBar.PostCastStart and self.thinBorders, true)
-		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate(nil, nil, nil, self.thinBorders, true)
+		elseif parent.template then
+			parent:SetTemplate(nil, nil, nil, self.thinBorders, true)
 		end
 
 		local texture = LSM:Fetch('statusbar', self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)
 
-		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end
+		local barTexture = statusBar:GetStatusBarTexture()
+		if statusBar.texture then statusBar.texture = barTexture end
+		barTexture:SetInside(nil, 0, 0)
 
 		if adjustBackdropPoints then
-			UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
+			UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 		end
 	end
 end
