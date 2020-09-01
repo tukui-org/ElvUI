@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local next = next
+local next, wipe, ipairs = next, wipe, ipairs
 local format, sort, select = format, sort, select
-local wipe, unpack, ipairs = wipe, unpack, ipairs
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
