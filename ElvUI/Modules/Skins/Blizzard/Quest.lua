@@ -217,12 +217,33 @@ function S:BlizzardQuestFrames()
 			_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
 
 			-- 9.0 Shadowlands Objective Text Colors
-			for i = 1, 3 do -- Maybe more
-				local text = _G['QuestInfoObjective'..i]
-				if text then
-					text:SetTextColor(1, 1, 1)
+			hooksecurefunc('QuestInfo_ShowObjectives', function()
+				local numObjectives = GetNumQuestLeaderBoards()
+				local questID = Quest_GetQuestID()
+				local numVisibleObjectives = 0
+
+				local waypointText = C_QuestLog_GetNextWaypointText(questID)
+				if waypointText then
+					numVisibleObjectives = numVisibleObjectives + 1
+					local objective = _G['QuestInfoObjective'..numVisibleObjectives]
+					objective:SetTextColor(1, .8, .1)
 				end
-			end
+
+				for i = 1, numObjectives do
+					local _, _, finished = GetQuestLogLeaderBoard(i)
+					if type ~= 'spell' and type ~= 'log' and numVisibleObjectives < _G.MAX_OBJECTIVES then
+						numVisibleObjectives = numVisibleObjectives + 1
+						local objective = _G['QuestInfoObjective'..numVisibleObjectives]
+						if objective then
+							if finished then
+								objective:SetTextColor(1, .8, .1)
+							else
+								objective:SetTextColor(1, 1, 1)
+							end
+						end
+					end
+				end
+			end)
 
 			if _G.QuestInfoRewardsFrame.SpellLearnText then
 				_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
@@ -230,32 +251,6 @@ function S:BlizzardQuestFrames()
 
 			_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(1, 1, 1)
 			_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(1, 1, 1)
-
-			local questID = Quest_GetQuestID()
-			local numObjectives = GetNumQuestLeaderBoards()
-			local numVisibleObjectives = 0
-
-			local waypointText = C_QuestLog_GetNextWaypointText(questID)
-			if waypointText then
-				numVisibleObjectives = numVisibleObjectives + 1
-				local objective = _G['QuestInfoObjective'..numVisibleObjectives]
-				objective:SetTextColor(1, .8, .1)
-			end
-
-			for i = 1, numObjectives do
-				local _, _, finished = GetQuestLogLeaderBoard(i)
-				if (type ~= 'spell' and type ~= 'log' and numVisibleObjectives < _G.MAX_OBJECTIVES) then
-					numVisibleObjectives = numVisibleObjectives + 1
-					local objective = _G['QuestInfoObjective'..numVisibleObjectives]
-					if objective then
-						if finished then
-							objective:SetTextColor(1, .8, .1)
-						else
-							objective:SetTextColor(.63, .09, .09)
-						end
-					end
-				end
-			end
 		end
 	end)
 
