@@ -7,7 +7,7 @@ local EnumerateFrames = EnumerateFrames
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local templateBackdrop, innerOuterBackdrop = {}, {}
+local templateBackdrop, innerOuterBackdrop, shadowBackdrop = {}, {}, {}
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 -- 8.2 restricted frame check
@@ -86,34 +86,38 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
 end
 
-local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
+local function SetOutside(obj, anchor, xOffset, yOffset, anchor2, noScale)
 	if not anchor then anchor = obj:GetParent() end
 
-	xOffset = E:Scale(xOffset or E.Border)
-	yOffset = E:Scale(yOffset or E.Border)
+	if not xOffset then xOffset = E.Border end
+	if not yOffset then yOffset = E.Border end
+	local x = (noScale and xOffset) or E:Scale(xOffset)
+	local y = (noScale and yOffset) or E:Scale(yOffset)
 
 	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -x, y)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', x, -y)
 end
 
-local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
+local function SetInside(obj, anchor, xOffset, yOffset, anchor2, noScale)
 	if not anchor then anchor = obj:GetParent() end
 
-	xOffset = E:Scale(xOffset or E.Border)
-	yOffset = E:Scale(yOffset or E.Border)
+	if not xOffset then xOffset = E.Border end
+	if not yOffset then yOffset = E.Border end
+	local x = (noScale and xOffset) or E:Scale(xOffset)
+	local y = (noScale and yOffset) or E:Scale(yOffset)
 
 	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', x, -y)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -x, y)
 end
 
 local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
@@ -199,14 +203,20 @@ end
 
 local function CreateShadow(frame, size, pass)
 	if not pass and frame.shadow then return end
+	if not size then size = (E.PixelMode and 3) or 4 end
 
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
+
+	shadowBackdrop.edgeFile = E.Media.Textures.GlowTex
+	if not shadowBackdrop.edgeSize then
+		shadowBackdrop.edgeSize = E:Scale(size)
+	end
 
 	local shadow = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
-	shadow:SetOutside(frame, size or 3, size or 3)
-	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(size or 3)})
+	shadow:SetOutside(frame, size, size, nil, true)
+	shadow:SetBackdrop(shadowBackdrop)
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 
