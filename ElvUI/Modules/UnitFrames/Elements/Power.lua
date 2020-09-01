@@ -141,7 +141,9 @@ function UF:Configure_Power(frame)
 		local OFFSET = (frame.BORDER + frame.SPACING)*2
 
 		if frame.POWERBAR_DETACHED then
-			if not power.Holder or (power.Holder and not power.Holder.mover) then
+			if power.Holder and power.Holder.mover then
+				E:EnableMover(power.Holder.mover:GetName())
+			else
 				power.Holder = CreateFrame('Frame', nil, power)
 				power.Holder:Point('BOTTOM', frame, 'BOTTOM', 0, -20)
 
@@ -153,7 +155,6 @@ function UF:Configure_Power(frame)
 				end
 			end
 
-			power.Holder:Show()
 			power.Holder:Size(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
 			power:Point('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
 			power:Size(frame.POWERBAR_WIDTH - OFFSET, frame.POWERBAR_HEIGHT - OFFSET)
@@ -199,10 +200,8 @@ function UF:Configure_Power(frame)
 		end
 
 		--Hide mover until we detach again
-		if not frame.POWERBAR_DETACHED then
-			if power.Holder and power.Holder.mover then
-				power.Holder:Hide()
-			end
+		if not frame.POWERBAR_DETACHED and power.Holder and power.Holder.mover then
+			E:DisableMover(power.Holder.mover:GetName())
 		end
 
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata then
