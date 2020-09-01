@@ -5,8 +5,9 @@ local strfind = strfind
 local ipairs, unpack = ipairs, unpack
 local CreateFrame = CreateFrame
 
-local questIconTypes = { 'Default', 'Item', 'Skull', 'Chat' }
-local targetIndicators = { 'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator' }
+local questIconTypes = {'Default', 'Item', 'Skull', 'Chat'}
+local targetIndicators = {'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}
+local templateBackdrop = {}
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate:GetName() .. 'QuestIcons', nameplate)
@@ -85,8 +86,11 @@ function NP:Construct_TargetIndicator(nameplate)
 	local TargetIndicator = CreateFrame('Frame', nameplate:GetName() .. 'TargetIndicator', nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
+	if not templateBackdrop.edgeFile then templateBackdrop.edgeFile = E.Media.Textures.GlowTex end
+	if not templateBackdrop.edgeSize then templateBackdrop.edgeSize = E:Scale(5) end
+
 	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator, 'BackdropTemplate')
-	TargetIndicator.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(5)})
+	TargetIndicator.Shadow:SetBackdrop(templateBackdrop)
 	TargetIndicator.Shadow:Hide()
 
 	for _, object in ipairs(targetIndicators) do

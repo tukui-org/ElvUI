@@ -82,7 +82,7 @@ function UF:Update_TankFrames(frame, db)
 	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		if(UF.thinBorders) then
+		if UF.thinBorders then
 			frame.SPACING = 0
 			frame.BORDER = 1
 		else
