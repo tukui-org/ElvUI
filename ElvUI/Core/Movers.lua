@@ -17,17 +17,17 @@ E.DisabledMovers = {}
 
 local function SizeChanged(frame, width, height)
 	if InCombatLockdown() then return end
-	frame.mover:SetSize(width, height)
+	frame.mover:Size(width, height)
 end
 
 local function WidthChanged(frame, width)
 	if InCombatLockdown() then return end
-	frame.mover:SetWidth(width)
+	frame.mover:Width(width)
 end
 
 local function HeightChanged(frame, height)
 	if InCombatLockdown() then return end
-	frame.mover:SetHeight(height)
+	frame.mover:Height(height)
 end
 
 local function GetPoint(obj)
@@ -68,12 +68,12 @@ function E:SetMoverPoints(name, parent)
 
 	if point2 then
 		holder.mover:ClearAllPoints()
-		holder.mover:SetPoint(point2, relativeTo2, relativePoint2, xOffset2, yOffset2)
+		holder.mover:Point(point2, relativeTo2, relativePoint2, xOffset2, yOffset2)
 	end
 
 	if parent then
 		parent:ClearAllPoints()
-		parent:SetPoint(point1, parent.mover, 0, 0)
+		parent:Point(point1, parent.mover, 0, 0)
 	end
 end
 
@@ -125,7 +125,7 @@ local function OnDragStop(self)
 
 	local x2, y2, p2 = E:CalculateMoverPoints(self)
 	self:ClearAllPoints()
-	self:SetPoint(p2, E.UIParent, p2, x2, y2)
+	self:Point(p2, E.UIParent, p2, x2, y2)
 
 	E:SaveMoverPosition(self.name)
 
@@ -236,12 +236,12 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 	f:EnableMouseWheel(true)
 	f:SetMovable(true)
 	f:SetTemplate('Transparent', nil, nil, true)
-	f:SetSize(parent:GetSize())
+	f:Size(parent:GetSize())
 	f:Hide()
 
 	local fs = f:CreateFontString(nil, 'OVERLAY')
 	fs:FontTemplate()
-	fs:SetPoint('CENTER')
+	fs:Point('CENTER')
 	fs:SetText(textString or name)
 	fs:SetJustifyH('CENTER')
 	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
@@ -445,7 +445,7 @@ function E:ResetMovers(arg)
 			local frame = holder.mover
 			if point then
 				frame:ClearAllPoints()
-				frame:SetPoint(point, anchor, secondaryPoint, x, y)
+				frame:Point(point, anchor, secondaryPoint, x, y)
 			end
 
 			HandlePostDrag(frame)
