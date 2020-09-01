@@ -138,9 +138,11 @@ local function AddFollowerInfo(garrisonType)
 	end
 end
 
+local covenantInfo = {}
 local function AddTalentInfo(garrisonType, currentCovenant)
 	if garrisonType == LE_GARRISON_TYPE_9_0 then
-		data = E:CopyTable({}, covenantTreeIDs[currentCovenant])
+		wipe(covenantInfo)
+		data = E:CopyTable(covenantInfo, covenantTreeIDs[currentCovenant])
 	else
 		data = C_Garrison_GetTalentTreeIDsByClassID(garrisonType, E.myClassID)
 	end
