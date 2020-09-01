@@ -8,8 +8,9 @@ if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 local _G, pairs = _G, pairs
 local GetCursorInfo, GetSpellInfo, ClearCursor = GetCursorInfo, GetSpellInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
-local indent = _G.ElvUI[1].Libs.indent -- ElvUI
 -- GLOBALS: ACCEPT, ChatFontNormal, BackdropTemplateMixin
+
+local indent = _G.ElvUI[1].Libs.indent -- ElvUI
 
 --[[-----------------------------------------------------------------------------
 Support functions
