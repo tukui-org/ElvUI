@@ -12,8 +12,8 @@ local function SkinConduitList(frame)
 	if not header.styled then
 		header:DisableDrawLayer('BACKGROUND')
 		header:CreateBackdrop('Transparent')
-		header.backdrop:SetPoint('TOPLEFT', 2, 0)
-		header.backdrop:SetPoint('BOTTOMRIGHT', 15, 0)
+		header.backdrop:Point('TOPLEFT', 2, 0)
+		header.backdrop:Point('BOTTOMRIGHT', 15, 0)
 		header.backdrop:SetBackdropColor(1, 0, 0, .35)
 
 		header.styled = true
