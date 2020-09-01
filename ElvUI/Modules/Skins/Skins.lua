@@ -1427,26 +1427,26 @@ function S:Initialize()
 	end
 
 	do -- Credits ShestakUI
-		hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', function(widgetInfo)
-			widgetInfo.LeftLine:SetAlpha(0)
-			widgetInfo.RightLine:SetAlpha(0)
-			widgetInfo.BarBackground:SetAlpha(0)
-			widgetInfo.Glow1:SetAlpha(0)
-			widgetInfo.Glow2:SetAlpha(0)
-			widgetInfo.Glow3:SetAlpha(0)
+		hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', function(info)
+			info.LeftLine:SetAlpha(0)
+			info.RightLine:SetAlpha(0)
+			info.BarBackground:SetAlpha(0)
+			info.Glow1:SetAlpha(0)
+			info.Glow2:SetAlpha(0)
+			info.Glow3:SetAlpha(0)
 
-			widgetInfo.LeftBar:SetTexture(E.media.normTex)
-			widgetInfo.NeutralBar:SetTexture(E.media.normTex)
-			widgetInfo.RightBar:SetTexture(E.media.normTex)
+			info.LeftBar:SetTexture(E.media.normTex)
+			info.NeutralBar:SetTexture(E.media.normTex)
+			info.RightBar:SetTexture(E.media.normTex)
 
-			widgetInfo.LeftBar:SetVertexColor(0.2, 0.6, 1)
-			widgetInfo.NeutralBar:SetVertexColor(0.8, 0.8, 0.8)
-			widgetInfo.RightBar:SetVertexColor(0.9, 0.2, 0.2)
+			info.LeftBar:SetVertexColor(0.2, 0.6, 1)
+			info.NeutralBar:SetVertexColor(0.8, 0.8, 0.8)
+			info.RightBar:SetVertexColor(0.9, 0.2, 0.2)
 
-			if not widgetInfo.backdrop then
-				widgetInfo:CreateBackdrop()
-				widgetInfo.backdrop:Point('TOPLEFT', widgetInfo.LeftBar, -2, 2)
-				widgetInfo.backdrop:Point('BOTTOMRIGHT', widgetInfo.RightBar, 2, -2)
+			if not info.backdrop then
+				info:CreateBackdrop()
+				info.backdrop:Point('TOPLEFT', info.LeftBar, -2, 2)
+				info.backdrop:Point('BOTTOMRIGHT', info.RightBar, 2, -2)
 			end
 		end)
 
