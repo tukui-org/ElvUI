@@ -1,12 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local _G = _G
+local pairs, pcall = pairs, pcall
 local unpack, type, select, getmetatable = unpack, type, select, getmetatable
-local assert, pairs, pcall = assert, pairs, pcall
 local EnumerateFrames = EnumerateFrames
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
+local templateBackdrop, innerOuterBackdrop = {}, {}
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 -- 8.2 restricted frame check
@@ -62,7 +63,8 @@ local function GetTemplate(template, isUnitFrameElement)
 end
 
 local function Size(frame, width, height, ...)
-	frame:SetSize(E:Scale(width), E:Scale(height or width), ...)
+	local w = E:Scale(width)
+	frame:SetSize(w, (height and E:Scale(height)) or w, ...)
 end
 
 local function Width(frame, width, ...)
@@ -74,7 +76,7 @@ local function Height(frame, height, ...)
 end
 
 local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
-	if arg2 == nil then arg2 = obj:GetParent() end
+	if not arg2 then arg2 = obj:GetParent() end
 
 	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
 	if type(arg3)=='number' then arg3 = E:Scale(arg3) end
@@ -85,32 +87,33 @@ local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
 end
 
 local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
-	xOffset = xOffset or E.Border
-	yOffset = yOffset or E.Border
-	anchor = anchor or obj:GetParent()
+	if not anchor then anchor = obj:GetParent() end
+
+	xOffset = E:Scale(xOffset or E.Border)
+	yOffset = E:Scale(yOffset or E.Border)
 
 	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -E:Scale(xOffset), E:Scale(yOffset))
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', E:Scale(xOffset), -E:Scale(yOffset))
+	obj:Point('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
+	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
 end
 
 local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
-	xOffset = xOffset or E.Border
-	yOffset = yOffset or E.Border
-	anchor = anchor or obj:GetParent()
+	if not anchor then anchor = obj:GetParent() end
 
-	assert(anchor)
+	xOffset = E:Scale(xOffset or E.Border)
+	yOffset = E:Scale(yOffset or E.Border)
+
 	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:Point('TOPLEFT', anchor, 'TOPLEFT', E:Scale(xOffset), -E:Scale(yOffset))
-	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -E:Scale(xOffset), E:Scale(yOffset))
+	obj:Point('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
+	obj:Point('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
 end
 
 local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
@@ -125,12 +128,11 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	if template == 'NoBackdrop' then
 		frame:SetBackdrop()
 	else
-		frame:SetBackdrop({
-			edgeFile = E.media.blankTex,
-			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
-			tile = false, tileSize = 0, edgeSize = (not E.twoPixelsPlease and E.mult) or E.mult*2,
-			insets = {left = 0, right = 0, top = 0, bottom = 0}
-		})
+		templateBackdrop.edgeFile = E.media.blankTex
+		templateBackdrop.bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex
+		if not templateBackdrop.edgeSize then templateBackdrop.edgeSize = E:Scale(not E.twoPixelsPlease and 1 or 2) end
+
+		frame:SetBackdrop(templateBackdrop)
 
 		if frame.callbackBackdropColor then
 			frame:callbackBackdropColor()
@@ -139,27 +141,22 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 		end
 
 		if not E.PixelMode and not frame.forcePixelMode then
+			innerOuterBackdrop.edgeFile = E.media.blankTex
+			if not innerOuterBackdrop.edgeSize then innerOuterBackdrop.edgeSize = E:Scale(1) end
+
 			if not frame.iborder then
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-				border:SetInside(frame, 1, 1)
-				border:SetBackdrop({
-					edgeFile = E.media.blankTex, edgeSize = E.mult,
-					insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-				})
-
+				border:SetBackdrop(innerOuterBackdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
+				border:SetInside(frame, 1, 1)
 				frame.iborder = border
 			end
 
 			if not frame.oborder then
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-				border:SetOutside(frame, 1, 1)
-				border:SetBackdrop({
-					edgeFile = E.media.blankTex, edgeSize = E.mult,
-					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
-				})
-
+				border:SetBackdrop(innerOuterBackdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
+				border:SetOutside(frame, 1, 1)
 				frame.oborder = border
 			end
 		end
