@@ -31,6 +31,7 @@ local UnitReaction = UnitReaction
 local UnitWidgetSet = UnitWidgetSet
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
+local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
@@ -290,7 +291,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
-	nameplate.WidgetXPBar = NP:Construct_WidgetXPBar(nameplate)
 	nameplate.WidgetContainer = NP:Construct_WidgetContainer(nameplate)
 
 	NP:Construct_Auras(nameplate)
@@ -309,7 +309,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
-	NP:Update_WidgetXPBar(nameplate)
 
 	local db = NP:PlateDB(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
@@ -551,7 +550,7 @@ function NP:ConfigureAll()
 
 			if staticPlate then
 				NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED', 'player')
-			else
+			elseif not nameplate.widgetsOnly then
 				NP:UpdatePlate(nameplate, true)
 				NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this after update plate
 			end
@@ -596,6 +595,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
+		nameplate.widgetsOnly = UnitNameplateShowsWidgetsOnly(unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
 		nameplate.isMe = UnitIsUnit(unit, 'player')
@@ -644,7 +644,9 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate:Size(nameplate.width, nameplate.height)
 
-		if nameplate == _G.ElvNP_Player then
+		if nameplate.widgetsOnly then
+			NP:DisablePlate(nameplate)
+		elseif nameplate == _G.ElvNP_Player then
 			NP:UpdatePlate(nameplate, true)
 		else
 			NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
@@ -672,12 +674,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateGUID(nameplate)
 		end
 
-		-- Vars that we need to keep in a nonstale state
-		--- Cutaway
-		nameplate.Health.cur = nil
-		nameplate.Power.cur = nil
-		--- WidgetXPBar
-		nameplate.npcID = nil
+		-- vars that we need to keep in a nonstale state
+		nameplate.Health.cur = nil -- cutaway
+		nameplate.Power.cur = nil -- cutaway
+		nameplate.npcID = nil -- just cause
 
 		nameplate.WidgetContainer:UnregisterForWidgetSet()
 
