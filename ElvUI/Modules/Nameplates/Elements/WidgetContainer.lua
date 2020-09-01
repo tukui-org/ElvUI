@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local NP = E:GetModule('NamePlates')
 
 local ipairs = ipairs
+local UIWidgetSetLayoutDirection = Enum.UIWidgetSetLayoutDirection
+local UIWidgetLayoutDirection = Enum.UIWidgetLayoutDirection
 
 function NP:Construct_WidgetContainer(nameplate)
 	local WidgetContainer = CreateFrame('Frame', nil, nameplate, 'UIWidgetContainerTemplate')
@@ -23,11 +25,11 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 	for index, widgetFrame in ipairs(sortedWidgets) do
 		widgetFrame:ClearAllPoints()
 
-		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == Enum.UIWidgetSetLayoutDirection.Vertical
-		local widgetUsesVertical = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Vertical
+		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == UIWidgetSetLayoutDirection.Vertical
+		local widgetUsesVertical = widgetFrame.layoutDirection == UIWidgetLayoutDirection.Vertical
 
-		local useOverlapLayout = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Overlap
-		local useVerticalLayout = widgetUsesVertical or (widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Default and widgetSetUsesVertical)
+		local useOverlapLayout = widgetFrame.layoutDirection == UIWidgetLayoutDirection.Overlap
+		local useVerticalLayout = widgetUsesVertical or (widgetFrame.layoutDirection == UIWidgetLayoutDirection.Default and widgetSetUsesVertical)
 
 		if useOverlapLayout then
 			-- This widget uses overlap layout
@@ -83,7 +85,7 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 			end
 			totalHeight = totalHeight + height
 		else
-			local forceNewRow = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.HorizontalForceNewRow
+			local forceNewRow = widgetFrame.layoutDirection == UIWidgetLayoutDirection.HorizontalForceNewRow
 			local needNewRowContainer = not horizontalRowContainer or forceNewRow
 			if needNewRowContainer then
 				if horizontalRowContainer then
