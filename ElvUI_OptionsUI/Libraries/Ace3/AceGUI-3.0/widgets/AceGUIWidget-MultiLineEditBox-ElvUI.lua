@@ -5,20 +5,11 @@ local Type, Version = "MultiLineEditBox-ElvUI", 29
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
--- Lua APIs
-local pairs = pairs
-
--- WoW APIs
+local _G, pairs = _G, pairs
 local GetCursorInfo, GetSpellInfo, ClearCursor = GetCursorInfo, GetSpellInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
-local _G = _G
--- ElvUI block
-local indent = _G.ElvUI[1].Libs.indent
--- End ElvUI block
-
--- Global vars/functions that we don't upvalue since they might get hooked, or upgraded
--- List them here for Mikk's FindGlobals script
--- GLOBALS: ACCEPT, ChatFontNormal
+local indent = _G.ElvUI[1].Libs.indent -- ElvUI
+-- GLOBALS: ACCEPT, ChatFontNormal, BackdropTemplateMixin
 
 --[[-----------------------------------------------------------------------------
 Support functions
