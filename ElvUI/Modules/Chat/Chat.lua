@@ -688,6 +688,7 @@ function CH:StyleChat(frame)
 	_G[name..'EditBoxRight']:Kill()
 
 	editbox:CreateBackdrop(nil, true)
+	editbox.backdrop:SetAllPoints()
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(_G.LeftChatDataPanel)
 	editbox:HookScript('OnTextChanged', CH.EditBoxOnTextChanged)
