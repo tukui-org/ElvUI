@@ -3,7 +3,8 @@ local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
-local select, tonumber, pairs, floor, format = select, tonumber, pairs, floor, format
+local strfind, format = strfind, format
+local select, tonumber, pairs, floor = select, tonumber, pairs, floor
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local IsAddOnLoaded = IsAddOnLoaded
@@ -66,17 +67,19 @@ end
 function AB:BindListener(key)
 	AB.bindingsChanged = true
 	if key == 'ESCAPE' then
-
 		if bind.button.bindings then
 			for i = 1, #bind.button.bindings do
 				SetBinding(bind.button.bindings[i])
 			end
 		end
+
 		E:Print(format(L["All keybindings cleared for |cff00ff00%s|r."], bind.button.name))
 		self:BindUpdate(bind.button, bind.spellmacro)
+
 		if bind.spellmacro~='MACRO' and not _G.GameTooltip:IsForbidden() then
 			_G.GameTooltip:Hide()
 		end
+
 		return
 	end
 
@@ -273,17 +276,16 @@ function AB:BindUpdate(button, spellmacro)
 	end
 end
 
-function AB:RegisterButton(b)
-	local stance = _G.StanceButton1:GetScript('OnClick')
-	local pet = _G.PetActionButton1:GetScript('OnClick')
-	if b.IsProtected and b.IsObjectType and b.GetScript and b:IsObjectType('CheckButton') and b:IsProtected() then
-		local script = b:GetScript('OnClick')
-		if script==pet then
-			b:HookScript('OnEnter', function(s) self:BindUpdate(s, 'PET'); end)
-		elseif script==stance then
-			b:HookScript('OnEnter', function(s) self:BindUpdate(s, 'STANCE'); end)
-		else
-			b:HookScript('OnEnter', function(s) self:BindUpdate(s); end)
+do
+	local bindUpdate = function(button)
+		local stance = button.commandName and strfind(button.commandName, '^SHAPESHIFT') and 'STANCE'
+		local pet = button.commandName and strfind(button.commandName, '^BONUSACTION') and 'PET'
+		AB:BindUpdate(button, stance or pet or nil)
+	end
+
+	function AB:RegisterButton(b)
+		if b.IsProtected and b:IsProtected() and b.IsObjectType and b:IsObjectType('CheckButton') then
+			b:HookScript('OnEnter', bindUpdate)
 		end
 	end
 end

@@ -302,6 +302,11 @@ function AB:AdjustMaxStanceButtons(event)
 			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
 		end
 
+		local blizz = _G[format('StanceButton%d', i)]
+		if blizz and blizz.commandName then
+			bar.buttons[i].commandName = blizz.commandName
+		end
+
 		if i <= numButtons then
 			bar.buttons[i]:Show()
 			bar.LastButton = i
