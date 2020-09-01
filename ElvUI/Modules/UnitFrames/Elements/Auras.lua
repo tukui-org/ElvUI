@@ -216,7 +216,7 @@ function UF:Configure_Auras(frame, which)
 		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
 		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
-		if frame.USE_POWERBAR_OFFSET and not (auras.attachTo == 'POWER' and frame.ORIENTATION == 'MIDDLE') then
+		if frame.USE_POWERBAR_OFFSET and not (auras.db.attachTo == 'POWER' and frame.ORIENTATION == 'MIDDLE') then
 			local powerOffset = ((frame.ORIENTATION == 'MIDDLE' and 2 or 1) * frame.POWERBAR_OFFSET)
 			totalWidth = totalWidth - powerOffset
 		end
@@ -232,15 +232,15 @@ function UF:Configure_Auras(frame, which)
 	auras['growth-y'] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
 	auras['growth-x'] = auras.anchorPoint == 'LEFT' and 'LEFT' or  auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 
-	local x, y = E:GetXYOffset(auras.anchorPoint, frame.SPACING) --Use frame.SPACING override since it may be different from E.Spacing due to forced thin borders
-	if auras.attachTo == 'FRAME' then
-		y = 0
-	elseif auras.attachTo == 'HEALTH' or auras.attachTo == 'POWER' then
-		x = E:GetXYOffset(auras.anchorPoint, -frame.BORDER)
-		y = select(2, E:GetXYOffset(auras.anchorPoint, (frame.BORDER + frame.SPACING)))
+	local SPACE, x, y = UF.thinBorders and 1 or 2
+	local OFFSET = (frame.ORIENTATION ~= 'RIGHT' and frame.POWERBAR_OFFSET) or 0
+	local BORDER = frame.BORDER + OFFSET
+	if auras.db.attachTo == 'HEALTH' or auras.db.attachTo == 'POWER' then
+		x, y = E:GetXYOffset(auras.anchorPoint, -BORDER, (frame.BORDER*2) - SPACE)
 	else
-		x = 0
+		x, y = E:GetXYOffset(auras.anchorPoint, BORDER - 1, frame.BORDER - SPACE)
 	end
+
 	auras.xOffset = x + auras.db.xOffset
 	auras.yOffset = y + auras.db.yOffset
 

@@ -256,7 +256,7 @@ function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)
 
-	if(self.thinBorders) then
+	if self.thinBorders then
 		frame.SPACING = 0
 		frame.BORDER = 1
 	else
