@@ -199,24 +199,24 @@ function LO:RepositionChatDataPanels()
 	if E.db.chat.LeftChatDataPanelAnchor == 'ABOVE_CHAT' then
 		LeftChatDataPanel:Point('BOTTOMRIGHT', LeftChatPanel, 'TOPRIGHT', 0, -SPACING)
 		LeftChatDataPanel:Point('TOPLEFT', LeftChatPanel, 'TOPLEFT', sideButton, barHeight)
-		LeftChatToggleButton:Point('BOTTOMRIGHT', LeftChatDataPanel, 'BOTTOMLEFT', 1, 0)
+		LeftChatToggleButton:Point('BOTTOMRIGHT', LeftChatDataPanel, 'BOTTOMLEFT', SPACING, 0)
 		LeftChatToggleButton:Point('TOPLEFT', LeftChatDataPanel, 'TOPLEFT', -toggleWidth, 0)
 	else
 		LeftChatDataPanel:Point('TOPRIGHT', LeftChatPanel, 'BOTTOMRIGHT', 0, SPACING)
 		LeftChatDataPanel:Point('BOTTOMLEFT', LeftChatPanel, 'BOTTOMLEFT', sideButton, -barHeight)
-		LeftChatToggleButton:Point('TOPRIGHT', LeftChatDataPanel, 'TOPLEFT', 1, 0)
+		LeftChatToggleButton:Point('TOPRIGHT', LeftChatDataPanel, 'TOPLEFT', SPACING, 0)
 		LeftChatToggleButton:Point('BOTTOMLEFT', LeftChatDataPanel, 'BOTTOMLEFT', -toggleWidth, 0)
 	end
 
 	if E.db.chat.RightChatDataPanelAnchor == 'ABOVE_CHAT' then
 		RightChatDataPanel:Point('BOTTOMLEFT', RightChatPanel, 'TOPLEFT', 0, -SPACING)
 		RightChatDataPanel:Point('TOPRIGHT', RightChatPanel, 'TOPRIGHT', -sideButton, barHeight)
-		RightChatToggleButton:Point('BOTTOMLEFT', RightChatDataPanel, 'BOTTOMRIGHT', -1, 0)
+		RightChatToggleButton:Point('BOTTOMLEFT', RightChatDataPanel, 'BOTTOMRIGHT', -SPACING, 0)
 		RightChatToggleButton:Point('TOPRIGHT', RightChatDataPanel, 'TOPRIGHT', toggleWidth, 0)
 	else
 		RightChatDataPanel:Point('TOPLEFT', RightChatPanel, 'BOTTOMLEFT', 0, SPACING)
 		RightChatDataPanel:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', -sideButton, -barHeight)
-		RightChatToggleButton:Point('TOPLEFT', RightChatDataPanel, 'TOPRIGHT', -1, 0)
+		RightChatToggleButton:Point('TOPLEFT', RightChatDataPanel, 'TOPRIGHT', -SPACING, 0)
 		RightChatToggleButton:Point('BOTTOMRIGHT', RightChatDataPanel, 'BOTTOMRIGHT', toggleWidth, 0)
 	end
 
