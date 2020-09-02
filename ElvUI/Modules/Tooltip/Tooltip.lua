@@ -83,6 +83,7 @@ local GameTooltip, GameTooltipStatusBar = _G.GameTooltip, _G.GameTooltipStatusBa
 local targetList, TAPPED_COLOR, keybindFrame = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
+local genderTable = { ' '.._G.UNKNOWN, ' '.._G.MALE, ' '.._G.FEMALE }
 
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
@@ -189,12 +190,6 @@ function TT:GetLevelLine(tt, offset)
 	end
 end
 
-local genderTable = {
-	_G.UNKNOWN or '',
-	_G.MALE,
-	_G.FEMALE,
-}
-
 function TT:SetUnitText(tt, unit)
 	local name, realm = UnitName(unit)
 
@@ -204,7 +199,7 @@ function TT:SetUnitText(tt, unit)
 
 		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
-		local pvpName = UnitPVPName(unit)
+		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
 		local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
@@ -250,18 +245,11 @@ function TT:SetUnitText(tt, unit)
 			local _, localizedFaction = E:GetUnitBattlefieldFaction(unit)
 			if localizedFaction and englishRace == 'Pandaren' then race = localizedFaction..' '..race end
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
+			local unitGender = TT.db.gender and genderTable[gender]
 			if level < realLevel then
-				if TT.db.gender then
-					levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s %s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, genderTable[UnitSex(unit)], race or '', nameColor.colorStr, localeClass)
-				else
-					levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, race or '', nameColor.colorStr, localeClass)
-				end
+				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '', nameColor.colorStr, localeClass)
 			else
-				if TT.db.gender then
-					levelLine:SetFormattedText('%s%s|r %s %s |c%s%s|r', hexColor, level > 0 and level or '??', genderTable[UnitSex(unit)], race or '', nameColor.colorStr, localeClass)
-				else
-					levelLine:SetFormattedText('%s%s|r %s |c%s%s|r', hexColor, level > 0 and level or '??', race, nameColor.colorStr, localeClass)
-				end
+				levelLine:SetFormattedText('%s%s|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', unitGender or '', race or '', nameColor.colorStr, localeClass)
 			end
 		end
 
