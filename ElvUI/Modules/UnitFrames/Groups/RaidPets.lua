@@ -46,7 +46,7 @@ function UF:Update_RaidpetHeader(header, db)
 
 	if not parent.positioned then
 		parent:ClearAllPoints()
-		parent:SetPoint('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, 737)
+		parent:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, 737)
 		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid Pet Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raidpet,generalGroup')
 		parent.positioned = true
 	end
@@ -61,7 +61,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	do
 		if UF.thinBorders then
 			frame.SPACING = 0
-			frame.BORDER = E.mult
+			frame.BORDER = 1
 		else
 			frame.BORDER = E.Border
 			frame.SPACING = E.Spacing
@@ -87,7 +87,7 @@ function UF:Update_RaidpetFrames(frame, db)
 	end
 
 	frame.Health.colorPetByUnitClass = db.health.colorPetByUnitClass
-	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:Configure_HealthBar(frame)
 	UF:UpdateNameSettings(frame)

@@ -207,36 +207,6 @@ do
 end
 
 do
-	function E:GetWidgetInfoID(guid)
-		return E.global.nameplate.widgetMap[guid]
-	end
-
-	function E:SetWidgetInfoID(guid, widgetID)
-		if widgetID then
-			E.global.nameplate.widgetMap[guid] = widgetID
-		end
-	end
-
-	E.MaxWidgetInfoRank = 30
-	function E:GetWidgetInfoBase(widgetID)
-		local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
-		if not widget then return end
-
-		local cur = widget.barValue - widget.barMin
-		local toNext = widget.barMax - widget.barMin
-		local total = widget.barValue
-
-		local rank, maxRank
-		if widget.overrideBarText then
-			rank = tonumber(strmatch(widget.overrideBarText, '%d+'))
-			maxRank = rank == E.MaxWidgetInfoRank
-		end
-
-		return cur, toNext, total, rank, maxRank
-	end
-end
-
-do
 	local Masque = E.Libs.Masque
 	local MasqueGroupState = {}
 	local MasqueGroupToTableElement = {

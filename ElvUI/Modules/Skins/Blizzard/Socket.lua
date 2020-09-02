@@ -42,7 +42,7 @@ function S:Blizzard_ItemSocketingUI()
 
 	_G.ItemSocketingFramePortrait:Kill()
 	_G.ItemSocketingSocketButton:ClearAllPoints()
-	_G.ItemSocketingSocketButton:SetPoint('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
+	_G.ItemSocketingSocketButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
 	S:HandleButton(_G.ItemSocketingSocketButton)
 end
 

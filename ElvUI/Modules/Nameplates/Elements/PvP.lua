@@ -26,8 +26,8 @@ function NP:Update_PvPIndicator(nameplate)
 			nameplate:EnableElement('PvPIndicator')
 		end
 
-		nameplate.PvPIndicator:SetSize(db.pvpindicator.size, db.pvpindicator.size)
-		nameplate.PvPIndicator.Badge_:SetSize(db.pvpindicator.size + 14, db.pvpindicator.size + 16)
+		nameplate.PvPIndicator:Size(db.pvpindicator.size, db.pvpindicator.size)
+		nameplate.PvPIndicator.Badge_:Size(db.pvpindicator.size + 14, db.pvpindicator.size + 16)
 
 		nameplate.PvPIndicator.Badge = nil
 
@@ -36,7 +36,7 @@ function NP:Update_PvPIndicator(nameplate)
 		end
 
 		nameplate.PvPIndicator:ClearAllPoints()
-		nameplate.PvPIndicator:SetPoint(E.InversePoints[db.pvpindicator.position], nameplate, db.pvpindicator.position, db.pvpindicator.xOffset, db.pvpindicator.yOffset)
+		nameplate.PvPIndicator:Point(E.InversePoints[db.pvpindicator.position], nameplate, db.pvpindicator.position, db.pvpindicator.xOffset, db.pvpindicator.yOffset)
 	elseif nameplate:IsElementEnabled('PvPIndicator') then
 		nameplate:DisableElement('PvPIndicator')
 	end
@@ -56,8 +56,8 @@ function NP:Update_PvPClassificationIndicator(nameplate)
 		end
 
 		nameplate.PvPClassificationIndicator:ClearAllPoints()
-		nameplate.PvPClassificationIndicator:SetPoint(E.InversePoints[db.pvpclassificationindicator.position], nameplate, db.pvpclassificationindicator.position, db.pvpclassificationindicator.xOffset, db.pvpclassificationindicator.yOffset)
-		nameplate.PvPClassificationIndicator:SetSize(db.pvpclassificationindicator.size, db.pvpclassificationindicator.size)
+		nameplate.PvPClassificationIndicator:Point(E.InversePoints[db.pvpclassificationindicator.position], nameplate, db.pvpclassificationindicator.position, db.pvpclassificationindicator.xOffset, db.pvpclassificationindicator.yOffset)
+		nameplate.PvPClassificationIndicator:Size(db.pvpclassificationindicator.size)
 	elseif nameplate:IsElementEnabled('PvPClassificationIndicator') then
 		nameplate:DisableElement('PvPClassificationIndicator')
 	end

@@ -39,9 +39,9 @@ local whileOpenEvents = {
 
 function M:CreateInspectTexture(slot, x, y)
 	local texture = slot:CreateTexture()
-	texture:SetPoint('BOTTOM', x, y)
+	texture:Point('BOTTOM', x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
-	texture:SetSize(14, 14)
+	texture:Size(14)
 
 	local backdrop = CreateFrame('Frame', nil, slot, 'BackdropTemplate')
 	backdrop:SetTemplate(nil, nil, true)
@@ -182,9 +182,9 @@ function M:UpdatePageStrings(i, iLevelDB, inspectItem, slotInfo, which) -- `whic
 				inspectItem['textureSlotEssenceType'..x] = essenceType
 			end
 
-			essenceType:SetPoint('BOTTOM', texture, 'TOP', 0, -9)
+			essenceType:Point('BOTTOM', texture, 'TOP', 0, -9)
 			essenceType:SetAtlas(gsub(essence[2], '^tooltip%-(heartofazeroth)essence', '%1-list-selected'))
-			essenceType:SetSize(13, 17)
+			essenceType:Size(13, 17)
 			essenceType:Show()
 
 			local selected = essence[1]
@@ -280,10 +280,10 @@ function M:CreateSlotStrings(frame, which)
 
 	if which == 'Inspect' then
 		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, 'ARTWORK')
-		frame.ItemLevelText:SetPoint('BOTTOMRIGHT', -6, 6)
+		frame.ItemLevelText:Point('BOTTOMRIGHT', -6, 6)
 	else
 		frame.ItemLevelText = _G.CharacterStatsPane.ItemLevelFrame:CreateFontString(nil, 'ARTWORK')
-		frame.ItemLevelText:SetPoint('BOTTOM', _G.CharacterStatsPane.ItemLevelFrame.Value, 'BOTTOM', 0, 0)
+		frame.ItemLevelText:Point('BOTTOM', _G.CharacterStatsPane.ItemLevelFrame.Value, 'BOTTOM', 0, 0)
 	end
 	frame.ItemLevelText:FontTemplate(nil, which == 'Inspect' and 12 or 20)
 
@@ -293,15 +293,15 @@ function M:CreateSlotStrings(frame, which)
 			local x, y, z, justify = M:GetInspectPoints(i)
 			slot.iLvlText = slot:CreateFontString(nil, 'OVERLAY')
 			slot.iLvlText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
-			slot.iLvlText:SetPoint('BOTTOM', slot, x, y)
+			slot.iLvlText:Point('BOTTOM', slot, x, y)
 
 			slot.enchantText = slot:CreateFontString(nil, 'OVERLAY')
 			slot.enchantText:FontTemplate(LSM:Fetch('font', itemLevelFont), itemLevelFontSize, itemLevelFontOutline)
 
 			if i == 16 or i == 17 then
-				slot.enchantText:SetPoint(i==16 and 'BOTTOMRIGHT' or 'BOTTOMLEFT', slot, i==16 and -40 or 40, 3)
+				slot.enchantText:Point(i==16 and 'BOTTOMRIGHT' or 'BOTTOMLEFT', slot, i==16 and -40 or 40, 3)
 			else
-				slot.enchantText:SetPoint(justify, slot, x + (justify == 'BOTTOMLEFT' and 5 or -5), z)
+				slot.enchantText:Point(justify, slot, x + (justify == 'BOTTOMLEFT' and 5 or -5), z)
 			end
 
 			for u=1, 10 do

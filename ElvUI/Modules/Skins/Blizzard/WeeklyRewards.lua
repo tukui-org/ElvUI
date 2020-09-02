@@ -12,8 +12,8 @@ local function SkinActivityFrame(frame, isObject)
 			frame.Border:SetAlpha(0)
 		else
 			frame.Border:SetTexCoord(.926, 1, 0, 1)
-			frame.Border:SetSize(25, 137)
-			frame.Border:SetPoint('LEFT', frame, 'RIGHT', 3, 0)
+			frame.Border:Size(25, 137)
+			frame.Border:Point('LEFT', frame, 'RIGHT', 3, 0)
 		end
 	end
 
@@ -36,7 +36,7 @@ function S:Blizzard_WeeklyRewards()
 
 	frame:CreateBackdrop('Transparent')
 	header:CreateBackdrop('Transparent')
-	header:SetPoint('TOP', 1, -42)
+	header:Point('TOP', 1, -42)
 
 	S:HandleCloseButton(frame.CloseButton)
 

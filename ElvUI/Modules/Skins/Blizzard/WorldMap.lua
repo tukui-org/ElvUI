@@ -27,12 +27,12 @@ function S:WorldMapFrame()
 	WorldMapFrame.BorderFrame.NineSlice:Hide()
 	WorldMapFrame.NavBar:StripTextures()
 	WorldMapFrame.NavBar.overlay:StripTextures()
-	WorldMapFrame.NavBar:SetPoint('TOPLEFT', 1, -40)
+	WorldMapFrame.NavBar:Point('TOPLEFT', 1, -40)
 
 	WorldMapFrame.ScrollContainer:CreateBackdrop()
 	WorldMapFrame:CreateBackdrop('Transparent')
-	WorldMapFrame.backdrop:SetPoint('TOPLEFT', WorldMapFrame, 'TOPLEFT', -8, 0)
-	WorldMapFrame.backdrop:SetPoint('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 0, -9)
+	WorldMapFrame.backdrop:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', -8, 0)
+	WorldMapFrame.backdrop:Point('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 0, -9)
 
 	S:HandleButton(WorldMapFrame.NavBar.homeButton)
 	WorldMapFrame.NavBar.homeButton.xoffset = 1
@@ -45,8 +45,8 @@ function S:WorldMapFrame()
 	if E.private.skins.parchmentRemoverEnable then
 		QuestMapFrame.DetailsFrame:StripTextures(true)
 		QuestMapFrame.DetailsFrame:CreateBackdrop()
-		QuestMapFrame.DetailsFrame.backdrop:SetPoint('TOPLEFT', 0, 0)
-		QuestMapFrame.DetailsFrame.backdrop:SetPoint('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', 0, 1)
+		QuestMapFrame.DetailsFrame.backdrop:Point('TOPLEFT', 0, 0)
+		QuestMapFrame.DetailsFrame.backdrop:Point('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', 0, 1)
 		QuestMapFrame.DetailsFrame.RewardsFrame:StripTextures()
 		QuestMapFrame.DetailsFrame.RewardsFrame:CreateBackdrop()
 
@@ -67,14 +67,14 @@ function S:WorldMapFrame()
 	local QuestScrollFrameScrollBar = _G.QuestScrollFrame.ScrollBar
 	QuestScrollFrame.DetailFrame:CreateBackdrop()
 	QuestScrollFrame.DetailFrame.backdrop:SetFrameLevel(1)
-	QuestScrollFrame.DetailFrame.backdrop:SetPoint('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPLEFT', 3, 1)
-	QuestScrollFrame.DetailFrame.backdrop:SetPoint('BOTTOMRIGHT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', -2, -7)
+	QuestScrollFrame.DetailFrame.backdrop:Point('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPLEFT', 3, 1)
+	QuestScrollFrame.DetailFrame.backdrop:Point('BOTTOMRIGHT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', -2, -7)
 	QuestMapFrame.Background:SetInside(QuestScrollFrame.DetailFrame.backdrop)
 
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
-	QuestScrollFrameScrollBar:SetPoint('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPRIGHT', 1, -15)
-	QuestScrollFrameScrollBar:SetPoint('BOTTOMLEFT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', 6, 10)
+	QuestScrollFrameScrollBar:Point('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPRIGHT', 1, -15)
+	QuestScrollFrameScrollBar:Point('BOTTOMLEFT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', 6, 10)
 
 	S:HandleButton(QuestMapFrame.DetailsFrame.BackButton, true)
 	QuestMapFrame.DetailsFrame.BackButton:SetFrameLevel(5)
@@ -106,7 +106,7 @@ function S:WorldMapFrame()
 	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
 	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:ClearAllPoints()
-	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:SetPoint('RIGHT', WorldMapFrame.BorderFrame.CloseButton, 'LEFT', 12, 0)
+	WorldMapFrame.BorderFrame.MaximizeMinimizeFrame:Point('RIGHT', WorldMapFrame.BorderFrame.CloseButton, 'LEFT', 12, 0)
 
 	if E.global.general.disableTutorialButtons then
 		WorldMapFrame.BorderFrame.Tutorial:Kill()
@@ -131,8 +131,8 @@ function S:WorldMapFrame()
 	ExecuteSessionCommand:StyleButton()
 
 	local icon = ExecuteSessionCommand:CreateTexture(nil, 'ARTWORK')
-	icon:SetPoint('TOPLEFT', 0, 0)
-	icon:SetPoint('BOTTOMRIGHT', 0, 0)
+	icon:Point('TOPLEFT', 0, 0)
+	icon:Point('BOTTOMRIGHT', 0, 0)
 	ExecuteSessionCommand.normalIcon = icon
 
 	local sessionCommandToButtonAtlas = {
@@ -159,7 +159,7 @@ function S:WorldMapFrame()
 			S:HandleButton(dialog.ButtonContainer.Decline)
 			if dialog.MinimizeButton then
 				dialog.MinimizeButton:StripTextures()
-				dialog.MinimizeButton:SetSize(16, 16)
+				dialog.MinimizeButton:Size(16, 16)
 
 				dialog.MinimizeButton.tex = dialog.MinimizeButton:CreateTexture(nil, 'OVERLAY')
 				dialog.MinimizeButton.tex:SetTexture(E.Media.Textures.MinusButton)

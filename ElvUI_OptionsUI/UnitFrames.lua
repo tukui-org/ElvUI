@@ -3336,49 +3336,48 @@ E.Options.args.unitframe = {
 			childGroups = 'tab',
 			name = L["General"],
 			args = {
-				resetFilters = {
-					order = 1,
-					name = L["Reset Aura Filters"],
-					type = 'execute',
-					func = function(info)
-						E:StaticPopup_Show('RESET_UF_AF') --reset unitframe aurafilters
-					end,
-				},
 				generalGroup = {
 					order = 2,
 					type = 'group',
 					name = L["General"],
 					disabled = function() return not E.UnitFrames.Initialized end,
 					args = {
-						thinBorders = {
+						resetFilters = {
 							order = 1,
-							name = L["Thin Borders"],
-							desc = L["Use thin borders on certain unitframe elements."],
-							type = 'toggle',
-							disabled = function() return E.private.general.pixelPerfect end,
-							set = function(info, value) E.db.unitframe[info[#info]] = value; E:StaticPopup_Show('CONFIG_RL') end,
+							name = L["Reset Aura Filters"],
+							type = 'execute',
+							func = function(info)
+								E:StaticPopup_Show('RESET_UF_AF') --reset unitframe aurafilters
+							end,
 						},
-						smartRaidFilter = {
+						borderOptions = {
 							order = 2,
+							name = L["Border Options"],
+							type = 'execute',
+							func = function() ACD:SelectGroup('ElvUI', 'general', 'media') end,
+						},
+						spacer1 = ACH:Spacer(6, 'full'),
+						smartRaidFilter = {
+							order = 7,
 							name = L["Smart Raid Filter"],
 							desc = L["Override any custom visibility setting in certain situations, EX: Only show groups 1 and 2 inside a 10 man instance."],
 							type = 'toggle',
 							set = function(info, value) E.db.unitframe[info[#info]] = value; UF:UpdateAllHeaders(value) end
 						},
 						targetOnMouseDown = {
-							order = 3,
+							order = 8,
 							name = L["Target On Mouse-Down"],
 							desc = L["Target units on mouse down rather than mouse up. |n|n|cffFF0000Warning: If you are using the addon Clique you may have to adjust your Clique settings when changing this."],
 							type = 'toggle',
 						},
 						targetSound = {
-							order = 4,
+							order = 9,
 							type = 'toggle',
 							name = L["Targeting Sound"],
 							desc = L["Enable a sound if you select a unit."],
 						},
 						effectiveGroup = {
-							order = 5,
+							order = 50,
 							type = 'group',
 							guiInline = true,
 							name = L["Effective Updates"],
@@ -3438,7 +3437,7 @@ E.Options.args.unitframe = {
 						modifiers = {
 							type = 'group',
 							name = L["Filter Modifiers"],
-							order = 6,
+							order = 60,
 							guiInline = true,
 							get = function(info) return E.db.unitframe.modifiers[info[#info]] end,
 							set = function(info, value) E.db.unitframe.modifiers[info[#info]] = value end,
@@ -3464,7 +3463,7 @@ E.Options.args.unitframe = {
 							},
 						},
 						barGroup = {
-							order = 20,
+							order = 70,
 							type = 'group',
 							guiInline = true,
 							name = L["Bars"],
@@ -3487,7 +3486,7 @@ E.Options.args.unitframe = {
 							},
 						},
 						fontGroup = {
-							order = 30,
+							order = 80,
 							type = 'group',
 							guiInline = true,
 							name = L["Fonts"],
@@ -3723,22 +3722,6 @@ E.Options.args.unitframe = {
 					set = function(info, value) E.db.unitframe.colors[info[#info]] = value; UF:Update_AllFrames() end,
 					disabled = function() return not E.UnitFrames.Initialized end,
 					args = {
-						borderColor = {
-							order = 1,
-							type = 'color',
-							name = L["Border Color"],
-							get = function(info)
-								local t = E.db.unitframe.colors.borderColor
-								local d = P.unitframe.colors.borderColor
-								return t.r, t.g, t.b, t.a, d.r, d.g, d.b
-							end,
-							set = function(info, r, g, b)
-								local t = E.db.unitframe.colors.borderColor
-								t.r, t.g, t.b = r, g, b
-								E:UpdateMedia()
-								E:UpdateBorderColors()
-							end,
-						},
 						healthGroup = {
 							order = 2,
 							type = 'group',

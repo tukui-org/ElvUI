@@ -419,6 +419,7 @@ L["Display tick marks on the castbar for channelled spells. This will adjust aut
 L["Displayed Currency"] = "Moeda mostrada"
 L["Displays a detailed report of every item sold when enabled."] = "Mostra um relatório detalhado de cada item vendido quando habilitado."
 L["Displays item level on equippable items."] = "Mostra o item level de itens equipáveis."
+L["Displays the gender of players."] = true
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = "Não mostrar auras que são maiores que esta duração (em segundos). Coloque zero para desabilitar."
 L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = "Não mostrar auras que são menores que esta duração (em segundos). Coloque zero para desabilitar."
 L["Donations:"] = "Doações:"
@@ -518,6 +519,7 @@ L["Friendly"] = "Aliado"
 L["Full Overlay"] = true
 L["Full"] = "Cheio"
 L["Gems"] = "Gemas"
+L["Gender"] = true
 L["General"] = "Geral"
 L["Global (Account Settings)"] = "Global (configurações da conta)"
 L["Global Fade Transparency"] = "Transparência de desvanecimento global"

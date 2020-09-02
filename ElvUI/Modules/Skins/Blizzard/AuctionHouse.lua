@@ -30,7 +30,7 @@ local function HandleSearchBarFrame(Frame)
 	S:HandleButton(Frame.SearchButton)
 	S:HandleEditBox(Frame.SearchBox)
 	S:HandleButton(Frame.FavoritesSearchButton)
-	Frame.FavoritesSearchButton:SetSize(22, 22)
+	Frame.FavoritesSearchButton:Size(22)
 end
 
 local function HandleListIcon(frame)
@@ -79,15 +79,15 @@ local function SkinItemDisplay(frame)
 	local ItemDisplay = frame.ItemDisplay
 	ItemDisplay:StripTextures()
 	ItemDisplay:CreateBackdrop('Transparent')
-	ItemDisplay.backdrop:SetPoint('TOPLEFT', 3, -3)
-	ItemDisplay.backdrop:SetPoint('BOTTOMRIGHT', -3, 0)
+	ItemDisplay.backdrop:Point('TOPLEFT', 3, -3)
+	ItemDisplay.backdrop:Point('BOTTOMRIGHT', -3, 0)
 
 	local ItemButton = ItemDisplay.ItemButton
 	ItemButton.CircleMask:Hide()
 
 	-- We skin the new IconBorder from the AH, it looks really cool tbh.
 	ItemButton.Icon:SetTexCoord(.08, .92, .08, .92)
-	ItemButton.Icon:SetSize(44, 44)
+	ItemButton.Icon:Size(44)
 	ItemButton.IconBorder:SetTexCoord(.08, .92, .08, .92)
 end
 
@@ -105,7 +105,7 @@ local function HandleHeaders(frame)
 		end
 
 		if header.backdrop then
-			header.backdrop:SetPoint('BOTTOMRIGHT', i < maxHeaders and -5 or 0, -2)
+			header.backdrop:Point('BOTTOMRIGHT', i < maxHeaders and -5 or 0, -2)
 		end
 	end
 
@@ -114,7 +114,7 @@ end
 
 local function HandleAuctionButtons(button)
 	S:HandleButton(button)
-	button:SetSize(22, 22)
+	button:Size(22)
 end
 
 local function HandleSellFrame(frame)
@@ -149,7 +149,7 @@ local function HandleSellFrame(frame)
 
 	if frame.BuyoutModeCheckButton then
 		S:HandleCheckBox(frame.BuyoutModeCheckButton)
-		frame.BuyoutModeCheckButton:SetSize(20, 20)
+		frame.BuyoutModeCheckButton:Size(20)
 	end
 end
 
@@ -217,7 +217,7 @@ local function LoadSkin()
 	end
 
 	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
-	_G.AuctionHouseFrameBuyTab:SetPoint('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -32)
+	_G.AuctionHouseFrameBuyTab:Point('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -32)
 
 	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)
@@ -301,7 +301,7 @@ local function LoadSkin()
 
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
 	ItemBuyFrame.BidFrame.BidButton:ClearAllPoints()
-	ItemBuyFrame.BidFrame.BidButton:SetPoint('LEFT', ItemBuyFrame.BidFrame.BidAmount, 'RIGHT', 2, -2)
+	ItemBuyFrame.BidFrame.BidButton:Point('LEFT', ItemBuyFrame.BidFrame.BidAmount, 'RIGHT', 2, -2)
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
 
 	--[[ Item Sell Frame | TAB 2 ]]--

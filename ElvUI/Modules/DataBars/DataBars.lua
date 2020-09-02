@@ -15,7 +15,7 @@ end
 
 function DB:CreateBar(name, onEnter, onClick, ...)
 	local bar = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
-	bar:SetPoint(...)
+	bar:Point(...)
 	bar:SetScript('OnEnter', onEnter)
 	bar:SetScript('OnLeave', DB.OnLeave)
 	bar:SetScript('OnMouseDown', onClick)
@@ -29,7 +29,7 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 	E:RegisterStatusBar(bar.statusBar)
 	bar.text = bar.statusBar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
-	bar.text:SetPoint('CENTER')
+	bar.text:Point('CENTER')
 
 	E.FrameLocks[name] = true
 

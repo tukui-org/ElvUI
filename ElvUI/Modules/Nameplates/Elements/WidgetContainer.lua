@@ -2,11 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local NP = E:GetModule('NamePlates')
 
 local ipairs = ipairs
+local UIWidgetSetLayoutDirection = Enum.UIWidgetSetLayoutDirection
+local UIWidgetLayoutDirection = Enum.UIWidgetLayoutDirection
 
 function NP:Construct_WidgetContainer(nameplate)
 	local WidgetContainer = CreateFrame('Frame', nil, nameplate, 'UIWidgetContainerTemplate')
 	WidgetContainer:Hide()
-	WidgetContainer:SetPoint('BOTTOM', nameplate, 'TOP')
+	WidgetContainer:Point('BOTTOM', nameplate, 'TOP')
 
 	return WidgetContainer
 end
@@ -23,27 +25,27 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 	for index, widgetFrame in ipairs(sortedWidgets) do
 		widgetFrame:ClearAllPoints()
 
-		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == Enum.UIWidgetSetLayoutDirection.Vertical
-		local widgetUsesVertical = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Vertical
+		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == UIWidgetSetLayoutDirection.Vertical
+		local widgetUsesVertical = widgetFrame.layoutDirection == UIWidgetLayoutDirection.Vertical
 
-		local useOverlapLayout = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Overlap
-		local useVerticalLayout = widgetUsesVertical or (widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.Default and widgetSetUsesVertical)
+		local useOverlapLayout = widgetFrame.layoutDirection == UIWidgetLayoutDirection.Overlap
+		local useVerticalLayout = widgetUsesVertical or (widgetFrame.layoutDirection == UIWidgetLayoutDirection.Default and widgetSetUsesVertical)
 
 		if useOverlapLayout then
 			-- This widget uses overlap layout
 
 			if index == 1 then
 				if widgetSetUsesVertical then
-					widgetFrame:SetPoint(widgetContainerFrame.verticalAnchorPoint, widgetContainerFrame)
+					widgetFrame:Point(widgetContainerFrame.verticalAnchorPoint, widgetContainerFrame)
 				else
-					widgetFrame:SetPoint(widgetContainerFrame.horizontalAnchorPoint, widgetContainerFrame)
+					widgetFrame:Point(widgetContainerFrame.horizontalAnchorPoint, widgetContainerFrame)
 				end
 			else
 				local relative = sortedWidgets[index - 1]
 				if widgetSetUsesVertical then
-					widgetFrame:SetPoint(widgetContainerFrame.verticalAnchorPoint, relative, widgetContainerFrame.verticalAnchorPoint, 0, 0)
+					widgetFrame:Point(widgetContainerFrame.verticalAnchorPoint, relative, widgetContainerFrame.verticalAnchorPoint, 0, 0)
 				else
-					widgetFrame:SetPoint(widgetContainerFrame.horizontalAnchorPoint, relative, widgetContainerFrame.horizontalAnchorPoint, 0, 0)
+					widgetFrame:Point(widgetContainerFrame.horizontalAnchorPoint, relative, widgetContainerFrame.horizontalAnchorPoint, 0, 0)
 				end
 			end
 
@@ -58,13 +60,13 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 			widgetFrame:SetParent(widgetContainerFrame)
 		elseif useVerticalLayout then
 			if index == 1 then
-				widgetFrame:SetPoint(widgetContainerFrame.verticalAnchorPoint, widgetContainerFrame)
+				widgetFrame:Point(widgetContainerFrame.verticalAnchorPoint, widgetContainerFrame)
 			else
 				local relative = horizontalRowContainer or sortedWidgets[index - 1]
-				widgetFrame:SetPoint(widgetContainerFrame.verticalAnchorPoint, relative, widgetContainerFrame.verticalRelativePoint, 0, widgetContainerFrame.verticalAnchorYOffset)
+				widgetFrame:Point(widgetContainerFrame.verticalAnchorPoint, relative, widgetContainerFrame.verticalRelativePoint, 0, widgetContainerFrame.verticalAnchorYOffset)
 
 				if horizontalRowContainer then
-					horizontalRowContainer:SetSize(horizontalRowWidth, horizontalRowHeight)
+					horizontalRowContainer:Size(horizontalRowWidth, horizontalRowHeight)
 					totalWidth = totalWidth + horizontalRowWidth
 					totalHeight = totalHeight + horizontalRowHeight
 					horizontalRowHeight = 0
@@ -83,12 +85,12 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 			end
 			totalHeight = totalHeight + height
 		else
-			local forceNewRow = widgetFrame.layoutDirection == Enum.UIWidgetLayoutDirection.HorizontalForceNewRow
+			local forceNewRow = widgetFrame.layoutDirection == UIWidgetLayoutDirection.HorizontalForceNewRow
 			local needNewRowContainer = not horizontalRowContainer or forceNewRow
 			if needNewRowContainer then
 				if horizontalRowContainer then
 					--horizontalRowContainer:Layout()
-					horizontalRowContainer:SetSize(horizontalRowWidth, horizontalRowHeight)
+					horizontalRowContainer:Size(horizontalRowWidth, horizontalRowHeight)
 					totalWidth = totalWidth + horizontalRowWidth
 					totalHeight = totalHeight + horizontalRowHeight
 					horizontalRowHeight = 0
@@ -99,14 +101,14 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 				newHorizontalRowContainer:Show()
 
 				if index == 1 then
-					newHorizontalRowContainer:SetPoint(widgetContainerFrame.verticalAnchorPoint, widgetContainerFrame, widgetContainerFrame.verticalAnchorPoint)
+					newHorizontalRowContainer:Point(widgetContainerFrame.verticalAnchorPoint, widgetContainerFrame, widgetContainerFrame.verticalAnchorPoint)
 				else
 					local relative = horizontalRowContainer or sortedWidgets[index - 1]
-					newHorizontalRowContainer:SetPoint(widgetContainerFrame.verticalAnchorPoint, relative, widgetContainerFrame.verticalRelativePoint, 0, widgetContainerFrame.verticalAnchorYOffset)
+					newHorizontalRowContainer:Point(widgetContainerFrame.verticalAnchorPoint, relative, widgetContainerFrame.verticalRelativePoint, 0, widgetContainerFrame.verticalAnchorYOffset)
 
 					totalHeight = totalHeight + widgetContainerFrame.verticalAnchorYOffset
 				end
-				widgetFrame:SetPoint('TOPLEFT', newHorizontalRowContainer)
+				widgetFrame:Point('TOPLEFT', newHorizontalRowContainer)
 				widgetFrame:SetParent(newHorizontalRowContainer)
 
 				horizontalRowWidth = horizontalRowWidth + widgetFrame:GetWidth()
@@ -114,7 +116,7 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 			else
 				local relative = sortedWidgets[index - 1]
 				widgetFrame:SetParent(horizontalRowContainer)
-				widgetFrame:SetPoint(widgetContainerFrame.horizontalAnchorPoint, relative, widgetContainerFrame.horizontalRelativePoint, widgetContainerFrame.horizontalAnchorXOffset, 0)
+				widgetFrame:Point(widgetContainerFrame.horizontalAnchorPoint, relative, widgetContainerFrame.horizontalRelativePoint, widgetContainerFrame.horizontalAnchorXOffset, 0)
 
 				horizontalRowWidth = horizontalRowWidth + widgetFrame:GetWidth() + widgetContainerFrame.horizontalAnchorXOffset
 			end
@@ -127,12 +129,10 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 	end
 
 	if horizontalRowContainer then
-		horizontalRowContainer:SetSize(horizontalRowWidth, horizontalRowHeight)
+		horizontalRowContainer:Size(horizontalRowWidth, horizontalRowHeight)
 		totalWidth = totalWidth + horizontalRowWidth
 		totalHeight = totalHeight + horizontalRowHeight
-		horizontalRowHeight = 0
-		horizontalRowWidth = 0
 	end
 
-	widgetContainerFrame:SetSize(totalWidth, totalHeight)
+	widgetContainerFrame:Size(totalWidth, totalHeight)
 end

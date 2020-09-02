@@ -173,11 +173,10 @@ function E:OnInitialize()
 		end
 	end
 
-	E.twoPixelsPlease = false
+	E.twoPixelsPlease = false -- changing this option is not supported! :P
 	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
-
-	E.Spacing = E.PixelMode and 0 or 1
+	E.Spacing = (E.PixelMode and 0) or 1
 	E.Border = (not E.twoPixelsPlease and E.PixelMode and 1) or 2
 
 	E:UIScale(true)
@@ -206,8 +205,8 @@ function E:OnInitialize()
 	GameMenuFrame[E.name] = GameMenuButton
 
 	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
-		GameMenuButton:SetSize(GameMenuButtonLogout:GetSize())
-		GameMenuButton:SetPoint('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 
@@ -216,7 +215,7 @@ end
 
 function E:PositionGameMenuButton()
 	GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
-	GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
+	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 
 	local button = GameMenuFrame[E.name]
 	button:SetText(format('%s%s|r', E.media.hexvaluecolor, E.name))
@@ -224,9 +223,9 @@ function E:PositionGameMenuButton()
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= button then
 		button:ClearAllPoints()
-		button:SetPoint('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+		button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
 		GameMenuButtonLogout:ClearAllPoints()
-		GameMenuButtonLogout:SetPoint('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
+		GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
 	end
 end
 

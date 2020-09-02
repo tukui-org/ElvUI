@@ -60,32 +60,32 @@ function B:SizeAndPositionBagBar()
 
 	for i, button in ipairs(B.BagBar.buttons) do
 		local prevButton = B.BagBar.buttons[i-1]
-		button:SetSize(bagBarSize, bagBarSize)
+		button:Size(bagBarSize, bagBarSize)
 		button:ClearAllPoints()
 
 		if growthDirection == 'HORIZONTAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:SetPoint('LEFT', B.BagBar, 'LEFT', bdpSpacing, 0)
+				button:Point('LEFT', B.BagBar, 'LEFT', bdpSpacing, 0)
 			elseif prevButton then
-				button:SetPoint('LEFT', prevButton, 'RIGHT', btnSpacing, 0)
+				button:Point('LEFT', prevButton, 'RIGHT', btnSpacing, 0)
 			end
 		elseif growthDirection == 'VERTICAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
-				button:SetPoint('TOP', B.BagBar, 'TOP', 0, -bdpSpacing)
+				button:Point('TOP', B.BagBar, 'TOP', 0, -bdpSpacing)
 			elseif prevButton then
-				button:SetPoint('TOP', prevButton, 'BOTTOM', 0, -btnSpacing)
+				button:Point('TOP', prevButton, 'BOTTOM', 0, -btnSpacing)
 			end
 		elseif growthDirection == 'HORIZONTAL' and sortDirection == 'DESCENDING' then
 			if i == 1 then
-				button:SetPoint('RIGHT', B.BagBar, 'RIGHT', -bdpSpacing, 0)
+				button:Point('RIGHT', B.BagBar, 'RIGHT', -bdpSpacing, 0)
 			elseif prevButton then
-				button:SetPoint('RIGHT', prevButton, 'LEFT', -btnSpacing, 0)
+				button:Point('RIGHT', prevButton, 'LEFT', -btnSpacing, 0)
 			end
 		else
 			if i == 1 then
-				button:SetPoint('BOTTOM', B.BagBar, 'BOTTOM', 0, bdpSpacing)
+				button:Point('BOTTOM', B.BagBar, 'BOTTOM', 0, bdpSpacing)
 			elseif prevButton then
-				button:SetPoint('BOTTOM', prevButton, 'TOP', 0, btnSpacing)
+				button:Point('BOTTOM', prevButton, 'TOP', 0, btnSpacing)
 			end
 		end
 		for j = LE_BAG_FILTER_FLAG_EQUIPMENT, NUM_LE_BAG_FILTER_FLAGS do
@@ -109,11 +109,11 @@ function B:SizeAndPositionBagBar()
 	local bdpDoubled = bdpSpacing * 2
 
 	if growthDirection == 'HORIZONTAL' then
-		B.BagBar:SetWidth(btnSize + btnSpace + bdpDoubled)
-		B.BagBar:SetHeight(bagBarSize + bdpDoubled)
+		B.BagBar:Width(btnSize + btnSpace + bdpDoubled)
+		B.BagBar:Height(bagBarSize + bdpDoubled)
 	else
-		B.BagBar:SetHeight(btnSize + btnSpace + bdpDoubled)
-		B.BagBar:SetWidth(bagBarSize + bdpDoubled)
+		B.BagBar:Height(btnSize + btnSpace + bdpDoubled)
+		B.BagBar:Width(bagBarSize + bdpDoubled)
 	end
 end
 
@@ -121,7 +121,7 @@ function B:LoadBagBar()
 	if not E.private.bags.bagBar then return end
 
 	B.BagBar = CreateFrame('Frame', 'ElvUIBags', E.UIParent)
-	B.BagBar:SetPoint('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
+	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	B.BagBar.buttons = {}
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent')
 	B.BagBar.backdrop:SetAllPoints()
@@ -133,7 +133,7 @@ function B:LoadBagBar()
 	_G.MainMenuBarBackpackButton:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(nil, 10)
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:SetPoint('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
+	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 'BOTTOMRIGHT', -1, 4)
 	_G.MainMenuBarBackpackButton:HookScript('OnEnter', OnEnter)
 	_G.MainMenuBarBackpackButton:HookScript('OnLeave', OnLeave)
 

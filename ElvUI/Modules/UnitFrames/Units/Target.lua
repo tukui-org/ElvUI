@@ -39,7 +39,7 @@ function UF:Construct_TargetFrame(frame)
 	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
 
 	frame.customTexts = {}
-	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 342, 139)
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 342, 139)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,generalGroup')
 
 	frame.unitframeType = 'target'
@@ -78,8 +78,8 @@ function UF:Update_TargetFrame(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	_G[frame:GetName()..'Mover']:SetSize(frame:GetSize())
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	if not IsAddOnLoaded('Clique') then
 		if db.middleClickFocus then

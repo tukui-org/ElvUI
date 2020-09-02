@@ -12,6 +12,7 @@ local GetCVarDefault = GetCVarDefault
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
+local InCombatLockdown = InCombatLockdown
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local SetCVar = SetCVar
 local UnitClass = UnitClass
@@ -31,6 +32,7 @@ local UnitReaction = UnitReaction
 local UnitWidgetSet = UnitWidgetSet
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
+local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
@@ -210,8 +212,8 @@ end
 
 function NP:StyleTargetPlate(nameplate)
 	nameplate:ClearAllPoints()
-	nameplate:SetPoint('CENTER')
-	nameplate:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	nameplate:Point('CENTER')
+	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
@@ -262,7 +264,7 @@ end
 
 function NP:StylePlate(nameplate)
 	nameplate:ClearAllPoints()
-	nameplate:SetPoint('CENTER')
+	nameplate:Point('CENTER')
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.StyleFilterChanges = {}
@@ -290,7 +292,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
-	nameplate.WidgetXPBar = NP:Construct_WidgetXPBar(nameplate)
 	nameplate.WidgetContainer = NP:Construct_WidgetContainer(nameplate)
 
 	NP:Construct_Auras(nameplate)
@@ -309,7 +310,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
-	NP:Update_WidgetXPBar(nameplate)
 
 	local db = NP:PlateDB(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
@@ -391,22 +391,22 @@ function NP:DisablePlate(nameplate, nameOnly)
 
 		-- The position values here are forced on purpose.
 		nameplate.Name:ClearAllPoints()
-		nameplate.Name:SetPoint('CENTER', nameplate, 'CENTER', 0, 0)
+		nameplate.Name:Point('CENTER', nameplate, 'CENTER', 0, 0)
 
 		nameplate.RaidTargetIndicator:ClearAllPoints()
-		nameplate.RaidTargetIndicator:SetPoint('BOTTOM', nameplate, 'TOP', 0, 0)
+		nameplate.RaidTargetIndicator:Point('BOTTOM', nameplate, 'TOP', 0, 0)
 
 		nameplate.Portrait:ClearAllPoints()
-		nameplate.Portrait:SetPoint('RIGHT', nameplate.Name, 'LEFT', -6, 0)
+		nameplate.Portrait:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.PVPRole:ClearAllPoints()
-		nameplate.PVPRole:SetPoint('RIGHT', (nameplate.Portrait:IsShown() and nameplate.Portrait) or nameplate.Name, 'LEFT', -6, 0)
+		nameplate.PVPRole:Point('RIGHT', (nameplate.Portrait:IsShown() and nameplate.Portrait) or nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.QuestIcons:ClearAllPoints()
-		nameplate.QuestIcons:SetPoint('LEFT', nameplate.Name, 'RIGHT', 6, 0)
+		nameplate.QuestIcons:Point('LEFT', nameplate.Name, 'RIGHT', 6, 0)
 
 		nameplate.Title:ClearAllPoints()
-		nameplate.Title:SetPoint('TOP', nameplate.Name, 'BOTTOM', 0, -2)
+		nameplate.Title:Point('TOP', nameplate.Name, 'BOTTOM', 0, -2)
 	else
 		for _, element in ipairs(NP.DisableInNotNameOnly) do
 			if nameplate:IsElementEnabled(element) then
@@ -432,17 +432,17 @@ function NP:SetupTarget(nameplate, removed)
 	if TCP.ClassPower then
 		TCP.ClassPower:SetParent(moveToPlate)
 		TCP.ClassPower:ClearAllPoints()
-		TCP.ClassPower:SetPoint('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.ClassPower:Point('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 	if TCP.Runes then
 		TCP.Runes:SetParent(moveToPlate)
 		TCP.Runes:ClearAllPoints()
-		TCP.Runes:SetPoint('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.Runes:Point('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 	if TCP.Stagger then
 		TCP.Stagger:SetParent(moveToPlate)
 		TCP.Stagger:ClearAllPoints()
-		TCP.Stagger:SetPoint('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.Stagger:Point('CENTER', moveToPlate, 'CENTER', cp.xOffset, cp.yOffset)
 	end
 end
 
@@ -503,19 +503,13 @@ function NP:ConfigureAll()
 	if E.private.nameplates.enable ~= true then return end
 	NP:StyleFilterConfigure() -- keep this at the top
 
-	local Scale = E.global.general.UIScale
-
-	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * Scale, NP.db.plateSize.personalHeight * Scale)
-	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * Scale, NP.db.plateSize.enemyHeight * Scale)
-	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * Scale, NP.db.plateSize.friendlyHeight * Scale)
-
+	NP:SetNamePlateSizes()
 	NP:PLAYER_REGEN_ENABLED()
 
 	local playerEnabled = NP.db.units.PLAYER.enable
-	local staticPosition = NP.db.units.PLAYER.useStaticPosition
-	local staticPlate = playerEnabled and staticPosition
+	local isStatic = NP.db.units.PLAYER.useStaticPosition
 
-	if staticPlate then
+	if playerEnabled and isStatic then
 		E:EnableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
@@ -529,35 +523,27 @@ function NP:ConfigureAll()
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		if _G.ElvNP_Player ~= nameplate or staticPlate then
-			NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
+		NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
-			if nameplate.frameType == 'PLAYER' then
-				nameplate:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-			elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-				nameplate:SetSize(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
-			else
-				nameplate:SetSize(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
-			end
+		if nameplate.frameType == 'PLAYER' then
+			nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+			SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
+		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
+			nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
+		else
+			nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
+		end
 
-			if nameplate.frameType == 'PLAYER' then
-				NP.PlayerNamePlateAnchor:ClearAllPoints()
-				NP.PlayerNamePlateAnchor:SetParent(staticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:SetAllPoints(staticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:Show()
-
-				SetCVar('nameplateShowSelf', (staticPosition or not playerEnabled) and 0 or 1)
-			end
-
-			if staticPlate then
-				NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED', 'player')
-			else
+		if nameplate == _G.ElvNP_Player then
+			NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+		elseif not nameplate.widgetsOnly then
+			if nameplate.frameType ~= 'PLAYER' or playerEnabled then
 				NP:UpdatePlate(nameplate, true)
 				NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this after update plate
 			end
-
-			nameplate:UpdateAllElements('ForceUpdate')
 		end
+
+		nameplate:UpdateAllElements('ForceUpdate')
 	end
 
 	NP:Update_StatusBars()
@@ -596,6 +582,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
+		nameplate.widgetsOnly = UnitNameplateShowsWidgetsOnly(unit)
+		nameplate.widgetSet = UnitWidgetSet(unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
 		nameplate.isMe = UnitIsUnit(unit, 'player')
@@ -620,7 +608,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if nameplate.isMe then
 			nameplate.frameType = 'PLAYER'
 
-			if NP.db.units.PLAYER.enable then
+			if NP.db.units.PLAYER.enable and (nameplate ~= _G.ElvNP_Test) then
 				NP.PlayerNamePlateAnchor:ClearAllPoints()
 				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
 				NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
@@ -642,9 +630,11 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.width, nameplate.height = NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight
 		end
 
-		nameplate:SetSize(nameplate.width, nameplate.height)
+		nameplate:Size(nameplate.width, nameplate.height)
 
-		if nameplate == _G.ElvNP_Player then
+		if nameplate.widgetsOnly then
+			NP:DisablePlate(nameplate)
+		elseif nameplate == _G.ElvNP_Player then
 			NP:UpdatePlate(nameplate, true)
 		else
 			NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
@@ -655,7 +645,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
-		nameplate.WidgetContainer:RegisterForWidgetSet(UnitWidgetSet(unit), NP.Widget_DefaultLayout, nil, unit)
+		nameplate.WidgetContainer:RegisterForWidgetSet(nameplate.widgetSet, NP.Widget_DefaultLayout, nil, unit)
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
@@ -672,12 +662,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateGUID(nameplate)
 		end
 
-		-- Vars that we need to keep in a nonstale state
-		--- Cutaway
-		nameplate.Health.cur = nil
-		nameplate.Power.cur = nil
-		--- WidgetXPBar
-		nameplate.npcID = nil
+		-- vars that we need to keep in a nonstale state
+		nameplate.Health.cur = nil -- cutaway
+		nameplate.Power.cur = nil -- cutaway
+		nameplate.npcID = nil -- just cause
 
 		nameplate.WidgetContainer:UnregisterForWidgetSet()
 
@@ -706,6 +694,15 @@ function NP:HideInterfaceOptions()
 	end
 end
 
+function NP:SetNamePlateSizes()
+	if InCombatLockdown() then return end
+
+	local scale = E.global.general.UIScale
+	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * scale, NP.db.plateSize.personalHeight * scale)
+	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * scale, NP.db.plateSize.enemyHeight * scale)
+	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * scale, NP.db.plateSize.friendlyHeight * scale)
+end
+
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
@@ -727,13 +724,7 @@ function NP:Initialize()
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
-	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', function()
-		local Scale = E.global.general.UIScale
-		C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * Scale, NP.db.plateSize.personalHeight * Scale)
-		C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * Scale, NP.db.plateSize.enemyHeight * Scale)
-		C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * Scale, NP.db.plateSize.friendlyHeight * Scale)
-	end)
-
+	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', NP.SetNamePlateSizes)
 	hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
 		if not frame or frame:IsForbidden() then
 			return
@@ -750,8 +741,8 @@ function NP:Initialize()
 	oUF:Spawn('player', 'ElvNP_Player', '')
 
 	_G.ElvNP_Player:ClearAllPoints()
-	_G.ElvNP_Player:SetPoint('TOP', _G.UIParent, 'CENTER', 0, -150)
-	_G.ElvNP_Player:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
+	_G.ElvNP_Player:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Player:SetScale(1)
 	_G.ElvNP_Player.frameType = 'PLAYER'
 
@@ -766,16 +757,16 @@ function NP:Initialize()
 	StaticSecure:SetScript('OnEnter', _G.UnitFrame_OnEnter)
 	StaticSecure:SetScript('OnLeave', _G.UnitFrame_OnLeave)
 	StaticSecure:ClearAllPoints()
-	StaticSecure:SetPoint('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
-	StaticSecure:SetPoint('TOPLEFT', _G.ElvNP_PlayerMover)
+	StaticSecure:Point('BOTTOMRIGHT', _G.ElvNP_PlayerMover)
+	StaticSecure:Point('TOPLEFT', _G.ElvNP_PlayerMover)
 	StaticSecure:Hide()
 	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
 
 	oUF:Spawn('player', 'ElvNP_Test')
 
 	_G.ElvNP_Test:ClearAllPoints()
-	_G.ElvNP_Test:SetPoint('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
-	_G.ElvNP_Test:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
+	_G.ElvNP_Test:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_Test:SetScale(1)
 	_G.ElvNP_Test:SetMovable(true)
 	_G.ElvNP_Test:RegisterForDrag('LeftButton', 'RightButton')
@@ -788,11 +779,11 @@ function NP:Initialize()
 	oUF:Spawn('player', 'ElvNP_TargetClassPower')
 
 	_G.ElvNP_TargetClassPower:SetScale(1)
-	_G.ElvNP_TargetClassPower:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	_G.ElvNP_TargetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 	_G.ElvNP_TargetClassPower.frameType = 'TARGET'
 	_G.ElvNP_TargetClassPower:SetAttribute('toggleForVehicle', true)
 	_G.ElvNP_TargetClassPower:ClearAllPoints()
-	_G.ElvNP_TargetClassPower:SetPoint('TOP', E.UIParent, 'BOTTOM', 0, -500)
+	_G.ElvNP_TargetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
 
 	NP.PlayerNamePlateAnchor = CreateFrame('Frame', 'ElvUIPlayerNamePlateAnchor', E.UIParent)
 	NP.PlayerNamePlateAnchor:EnableMouse(false)

@@ -17,7 +17,7 @@ function NP:Update_TagText(nameplate, element, db, hide)
 		element:UpdateTag()
 
 		element:ClearAllPoints()
-		element:SetPoint(E.InversePoints[db.position], db.parent == 'Nameplate' and nameplate or nameplate[db.parent], db.position, db.xOffset, db.yOffset)
+		element:Point(E.InversePoints[db.position], db.parent == 'Nameplate' and nameplate or nameplate[db.parent], db.position, db.xOffset, db.yOffset)
 		element:Show()
 	else
 		nameplate:Untag(element)

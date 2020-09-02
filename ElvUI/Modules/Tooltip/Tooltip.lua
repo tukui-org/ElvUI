@@ -61,6 +61,7 @@ local UnitPVPName = UnitPVPName
 local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
+local UnitSex = UnitSex
 
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
@@ -82,6 +83,7 @@ local GameTooltip, GameTooltipStatusBar = _G.GameTooltip, _G.GameTooltipStatusBa
 local targetList, TAPPED_COLOR, keybindFrame = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
+local genderTable = { ' '.._G.UNKNOWN, ' '.._G.MALE, ' '.._G.FEMALE }
 
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
@@ -109,17 +111,17 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		if TT.db.healthBar.statusPosition == 'BOTTOM' then
 			if tt.StatusBar.anchoredToTop then
 				tt.StatusBar:ClearAllPoints()
-				tt.StatusBar:SetPoint('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -(E.Spacing * 3))
-				tt.StatusBar:SetPoint('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -(E.Spacing * 3))
-				tt.StatusBar.text:SetPoint('CENTER', tt.StatusBar, 0, 0)
+				tt.StatusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -(E.Spacing * 3))
+				tt.StatusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -(E.Spacing * 3))
+				tt.StatusBar.text:Point('CENTER', tt.StatusBar, 0, 0)
 				tt.StatusBar.anchoredToTop = nil
 			end
 		else
 			if not tt.StatusBar.anchoredToTop then
 				tt.StatusBar:ClearAllPoints()
-				tt.StatusBar:SetPoint('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, (E.Spacing * 3))
-				tt.StatusBar:SetPoint('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, (E.Spacing * 3))
-				tt.StatusBar.text:SetPoint('CENTER', tt.StatusBar, 0, 0)
+				tt.StatusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, (E.Spacing * 3))
+				tt.StatusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, (E.Spacing * 3))
+				tt.StatusBar.text:Point('CENTER', tt.StatusBar, 0, 0)
 				tt.StatusBar.anchoredToTop = true
 			end
 		end
@@ -143,22 +145,22 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		tt:ClearAllPoints()
 		if (not E:HasMoverBeenMoved('TooltipMover')) then
 			if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
-				tt:SetPoint('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)
+				tt:Point('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)
 			elseif RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() then
-				tt:SetPoint('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)
+				tt:Point('BOTTOMRIGHT', RightChatPanel, 'TOPRIGHT', 0, 18)
 			else
-				tt:SetPoint('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, 18)
+				tt:Point('BOTTOMRIGHT', RightChatPanel, 'BOTTOMRIGHT', 0, 18)
 			end
 		else
 			local point = E:GetScreenQuadrant(TooltipMover)
 			if point == 'TOPLEFT' then
-				tt:SetPoint('TOPLEFT', TooltipMover, 'BOTTOMLEFT', 1, -4)
+				tt:Point('TOPLEFT', TooltipMover, 'BOTTOMLEFT', 1, -4)
 			elseif point == 'TOPRIGHT' then
-				tt:SetPoint('TOPRIGHT', TooltipMover, 'BOTTOMRIGHT', -1, -4)
+				tt:Point('TOPRIGHT', TooltipMover, 'BOTTOMRIGHT', -1, -4)
 			elseif point == 'BOTTOMLEFT' or point == 'LEFT' then
-				tt:SetPoint('BOTTOMLEFT', TooltipMover, 'TOPLEFT', 1, 18)
+				tt:Point('BOTTOMLEFT', TooltipMover, 'TOPLEFT', 1, 18)
 			else
-				tt:SetPoint('BOTTOMRIGHT', TooltipMover, 'TOPRIGHT', -1, 18)
+				tt:Point('BOTTOMRIGHT', TooltipMover, 'TOPRIGHT', -1, 18)
 			end
 		end
 	end
@@ -197,7 +199,7 @@ function TT:SetUnitText(tt, unit)
 
 		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
-		local pvpName = UnitPVPName(unit)
+		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
 		local level, realLevel = UnitEffectiveLevel(unit), UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
@@ -243,10 +245,11 @@ function TT:SetUnitText(tt, unit)
 			local _, localizedFaction = E:GetUnitBattlefieldFaction(unit)
 			if localizedFaction and englishRace == 'Pandaren' then race = localizedFaction..' '..race end
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
+			local unitGender = TT.db.gender and genderTable[gender]
 			if level < realLevel then
-				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, race or '', nameColor.colorStr, localeClass)
+				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '', nameColor.colorStr, localeClass)
 			else
-				levelLine:SetFormattedText('%s%s|r %s |c%s%s|r', hexColor, level > 0 and level or '??', race or '', nameColor.colorStr, localeClass)
+				levelLine:SetFormattedText('%s%s|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', unitGender or '', race or '', nameColor.colorStr, localeClass)
 			end
 		end
 
@@ -751,7 +754,7 @@ end
 function TT:RepositionBNET(frame, _, anchor)
 	if anchor ~= _G.BNETMover then
 		frame:ClearAllPoints()
-		frame:SetPoint(_G.BNETMover.anchorPoint or 'TOPLEFT', _G.BNETMover, _G.BNETMover.anchorPoint or 'TOPLEFT');
+		frame:Point(_G.BNETMover.anchorPoint or 'TOPLEFT', _G.BNETMover, _G.BNETMover.anchorPoint or 'TOPLEFT');
 	end
 end
 
@@ -806,10 +809,10 @@ function TT:Initialize()
 	TT.Initialized = true
 
 	GameTooltip.StatusBar = GameTooltipStatusBar
-	GameTooltip.StatusBar:SetHeight(TT.db.healthBar.height)
+	GameTooltip.StatusBar:Height(TT.db.healthBar.height)
 	GameTooltip.StatusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
 	GameTooltip.StatusBar.text = GameTooltip.StatusBar:CreateFontString(nil, 'OVERLAY')
-	GameTooltip.StatusBar.text:SetPoint('CENTER', GameTooltip.StatusBar, 0, 0)
+	GameTooltip.StatusBar.text:Point('CENTER', GameTooltip.StatusBar, 0, 0)
 	GameTooltip.StatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
 
 	--Tooltip Fonts
@@ -822,8 +825,8 @@ function TT:Initialize()
 	TT:SetTooltipFonts()
 
 	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
-	GameTooltipAnchor:SetPoint('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
-	GameTooltipAnchor:SetSize(130, 20)
+	GameTooltipAnchor:Point('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
+	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 400)
 	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip,general')
 

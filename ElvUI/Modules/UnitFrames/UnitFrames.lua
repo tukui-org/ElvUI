@@ -256,9 +256,9 @@ function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)
 
-	if(self.thinBorders) then
+	if self.thinBorders then
 		frame.SPACING = 0
-		frame.BORDER = E.mult
+		frame.BORDER = 1
 	else
 		frame.BORDER = E.Border
 		frame.SPACING = E.Spacing
@@ -715,30 +715,30 @@ function UF.groupPrototype:Configure_Groups(Header)
 
 		if (i - 1) % groupsPerRowCol == 0 then
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
-				if group then group:SetPoint(point, Header, point, 0, height * yMult) end
+				if group then group:Point(point, Header, point, 0, height * yMult) end
 				height = height + UNIT_HEIGHT + verticalSpacing + groupSpacing
 				newRows = newRows + 1
 			else
-				if group then group:SetPoint(point, Header, point, width * xMult, 0) end
+				if group then group:Point(point, Header, point, width * xMult, 0) end
 				width = width + dbWidth + horizontalSpacing + groupSpacing
 				newCols = newCols + 1
 			end
 		else
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if newRows == 1 then
-					if group then group:SetPoint(point, Header, point, width * xMult, 0) end
+					if group then group:Point(point, Header, point, width * xMult, 0) end
 					width = width + ((dbWidth + horizontalSpacing) * 5) + groupSpacing
 					newCols = newCols + 1
 				elseif group then
-					group:SetPoint(point, Header, point, ((((dbWidth + horizontalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * xMult, (((UNIT_HEIGHT + verticalSpacing+groupSpacing) * (newRows - 1))) * yMult)
+					group:Point(point, Header, point, ((((dbWidth + horizontalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * xMult, (((UNIT_HEIGHT + verticalSpacing+groupSpacing) * (newRows - 1))) * yMult)
 				end
 			else
 				if newCols == 1 then
-					if group then group:SetPoint(point, Header, point, 0, height * yMult) end
+					if group then group:Point(point, Header, point, 0, height * yMult) end
 					height = height + ((UNIT_HEIGHT + verticalSpacing) * 5) + groupSpacing
 					newRows = newRows + 1
 				elseif group then
-					group:SetPoint(point, Header, point, (((dbWidth + horizontalSpacing +groupSpacing) * (newCols - 1))) * xMult, ((((UNIT_HEIGHT + verticalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * yMult)
+					group:Point(point, Header, point, (((dbWidth + horizontalSpacing +groupSpacing) * (newCols - 1))) * xMult, ((((UNIT_HEIGHT + verticalSpacing) * 5) * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * yMult)
 				end
 			end
 		end
@@ -750,7 +750,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 		end
 	end
 
-	Header:SetSize(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
+	Header:Size(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
 end
 
 function UF.groupPrototype:Update(Header)
@@ -1413,23 +1413,23 @@ function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, sta
 	backdropTex:ClearAllPoints()
 	if statusBarOrientation == 'VERTICAL' then
 		if reverseFill then
-			backdropTex:SetPoint('BOTTOMRIGHT', statusBar, 'BOTTOMRIGHT')
-			backdropTex:SetPoint('TOPRIGHT', statusBarTex, 'BOTTOMRIGHT')
-			backdropTex:SetPoint('TOPLEFT', statusBarTex, 'BOTTOMLEFT')
+			backdropTex:Point('BOTTOMRIGHT', statusBar, 'BOTTOMRIGHT')
+			backdropTex:Point('TOPRIGHT', statusBarTex, 'BOTTOMRIGHT')
+			backdropTex:Point('TOPLEFT', statusBarTex, 'BOTTOMLEFT')
 		else
-			backdropTex:SetPoint('TOPLEFT', statusBar, 'TOPLEFT')
-			backdropTex:SetPoint('BOTTOMLEFT', statusBarTex, 'TOPLEFT')
-			backdropTex:SetPoint('BOTTOMRIGHT', statusBarTex, 'TOPRIGHT')
+			backdropTex:Point('TOPLEFT', statusBar, 'TOPLEFT')
+			backdropTex:Point('BOTTOMLEFT', statusBarTex, 'TOPLEFT')
+			backdropTex:Point('BOTTOMRIGHT', statusBarTex, 'TOPRIGHT')
 		end
 	else
 		if reverseFill then
-			backdropTex:SetPoint('TOPRIGHT', statusBarTex, 'TOPLEFT')
-			backdropTex:SetPoint('BOTTOMRIGHT', statusBarTex, 'BOTTOMLEFT')
-			backdropTex:SetPoint('BOTTOMLEFT', statusBar, 'BOTTOMLEFT')
+			backdropTex:Point('TOPRIGHT', statusBarTex, 'TOPLEFT')
+			backdropTex:Point('BOTTOMRIGHT', statusBarTex, 'BOTTOMLEFT')
+			backdropTex:Point('BOTTOMLEFT', statusBar, 'BOTTOMLEFT')
 		else
-			backdropTex:SetPoint('TOPLEFT', statusBarTex, 'TOPRIGHT')
-			backdropTex:SetPoint('BOTTOMLEFT', statusBarTex, 'BOTTOMRIGHT')
-			backdropTex:SetPoint('BOTTOMRIGHT', statusBar, 'BOTTOMRIGHT')
+			backdropTex:Point('TOPLEFT', statusBarTex, 'TOPRIGHT')
+			backdropTex:Point('BOTTOMLEFT', statusBarTex, 'BOTTOMRIGHT')
+			backdropTex:Point('BOTTOMRIGHT', statusBar, 'BOTTOMRIGHT')
 		end
 	end
 end
@@ -1439,42 +1439,45 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	statusBar.invertColors = invertColors
 	statusBar.backdropTex = backdropTex
 
-	local statusBarTex = statusBar:GetStatusBarTexture()
-	local statusBarOrientation = statusBar:GetOrientation()
-
 	if not statusBar.hookedColor then
 		hooksecurefunc(statusBar, 'SetStatusBarColor', UF.UpdateBackdropTextureColor)
 		statusBar.hookedColor = true
 	end
 
+	local parent = statusBar:GetParent()
+	local orientation = statusBar:GetOrientation()
 	if isTransparent then
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate('Transparent', nil, nil, nil, true)
-		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate('Transparent', nil, nil, nil, true)
+		elseif parent.template then
+			parent:SetTemplate('Transparent', nil, nil, nil, true)
 		end
 
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, E.media.blankTex)
 
-		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end --Needed for Power element
+		local barTexture = statusBar:GetStatusBarTexture()
+		if statusBar.texture then statusBar.texture = barTexture end --Needed for Power element
+		barTexture:SetInside(nil, 0, 0) --This fixes Center Pixel offset problem
 
-		UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
+		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 	else
 		if statusBar.backdrop then
 			statusBar.backdrop:SetTemplate(nil, nil, nil, not statusBar.PostCastStart and self.thinBorders, true)
-		elseif statusBar:GetParent().template then
-			statusBar:GetParent():SetTemplate(nil, nil, nil, self.thinBorders, true)
+		elseif parent.template then
+			parent:SetTemplate(nil, nil, nil, self.thinBorders, true)
 		end
 
 		local texture = LSM:Fetch('statusbar', self.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)
 
-		if statusBar.texture then statusBar.texture = statusBar:GetStatusBarTexture() end
+		local barTexture = statusBar:GetStatusBarTexture()
+		if statusBar.texture then statusBar.texture = barTexture end
+		barTexture:SetInside(nil, 0, 0)
 
 		if adjustBackdropPoints then
-			UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
+			UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 		end
 	end
 end

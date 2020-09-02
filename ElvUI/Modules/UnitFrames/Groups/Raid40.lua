@@ -57,7 +57,7 @@ function UF:Update_Raid40Header(header, db)
 
 	if not parent.positioned then
 		parent:ClearAllPoints()
-		parent:SetPoint('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, 482)
+		parent:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, 482)
 		E:CreateMover(parent, parent:GetName()..'Mover', L["Raid-40 Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,raid40,generalGroup')
 		parent.positioned = true
 	end
@@ -72,7 +72,7 @@ function UF:Update_Raid40Frames(frame, db)
 	do
 		if(self.thinBorders) then
 			frame.SPACING = 0
-			frame.BORDER = E.mult
+			frame.BORDER = 1
 		else
 			frame.BORDER = E.Border
 			frame.SPACING = E.Spacing
@@ -100,7 +100,7 @@ function UF:Update_Raid40Frames(frame, db)
 		frame.CLASSBAR_DETACHED = false
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == 'spaced' and frame.USE_CLASSBAR
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
-		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == 'MIDDLE' and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
+		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - frame.PORTRAIT_WIDTH - (frame.ORIENTATION == 'MIDDLE' and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
@@ -113,7 +113,7 @@ function UF:Update_Raid40Frames(frame, db)
 		frame:Disable()
 	end
 
-	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 	UF:EnableDisable_Auras(frame)
 	UF:Configure_AllAuras(frame)

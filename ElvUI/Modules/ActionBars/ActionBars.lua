@@ -172,7 +172,7 @@ function AB:PositionAndSizeBar(barName)
 	--Size of all buttons + Spacing between all buttons + Spacing between additional rows of buttons + Spacing between backdrop and buttons + Spacing on end borders with non-thin borders
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult - 1)) + (sideSpacing*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult - 1)) + (sideSpacing*2)
-	bar:SetSize(barWidth, barHeight)
+	bar:Size(barWidth, barHeight)
 
 	local horizontalGrowth, verticalGrowth
 	if point == 'TOPLEFT' or point == 'TOPRIGHT' then
@@ -212,7 +212,7 @@ function AB:PositionAndSizeBar(barName)
 		button:SetParent(bar)
 		button:ClearAllPoints()
 		button:SetAttribute('showgrid', 1)
-		button:SetSize(size, size)
+		button:Size(size)
 		button:EnableMouse(not db.clickThrough)
 
 		if i == 1 then
@@ -227,7 +227,7 @@ function AB:PositionAndSizeBar(barName)
 				x, y = -sideSpacing, sideSpacing
 			end
 
-			button:SetPoint(point, bar, point, x, y)
+			button:Point(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local y = -buttonSpacing
 			local buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
@@ -236,7 +236,7 @@ function AB:PositionAndSizeBar(barName)
 				buttonPoint = 'BOTTOM'
 				anchorPoint = 'TOP'
 			end
-			button:SetPoint(buttonPoint, lastColumnButton, anchorPoint, 0, y)
+			button:Point(buttonPoint, lastColumnButton, anchorPoint, 0, y)
 		else
 			local x = buttonSpacing
 			local buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
@@ -246,7 +246,7 @@ function AB:PositionAndSizeBar(barName)
 				anchorPoint = 'LEFT'
 			end
 
-			button:SetPoint(buttonPoint, lastButton, anchorPoint, x, 0)
+			button:Point(buttonPoint, lastButton, anchorPoint, x, 0)
 		end
 
 		if i > numButtons then
@@ -297,14 +297,14 @@ function AB:CreateBar(id)
 	SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 
 	local point, anchor, attachTo, x, y = strsplit(',', AB.barDefaults['bar'..id].position)
-	bar:SetPoint(point, anchor, attachTo, x, y)
+	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
 	bar:SetFrameStrata('LOW')
 
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
-	bar.backdrop:SetPoint('TOPLEFT', bar, 'TOPLEFT', E.Spacing, -E.Spacing)
-	bar.backdrop:SetPoint('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
+	bar.backdrop:Point('TOPLEFT', bar, 'TOPLEFT', E.Spacing, -E.Spacing)
+	bar.backdrop:Point('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
 
 	bar.buttons = {}
 	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons
@@ -384,14 +384,14 @@ function AB:CreateVehicleLeave()
 	if not db.enable then return end
 
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
-	holder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
-	holder:SetSize(_G.MainMenuBarVehicleLeaveButton:GetSize())
+	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
+	holder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
 	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,vehicleExitButton')
 
 	local Button = _G.MainMenuBarVehicleLeaveButton
 	Button:ClearAllPoints()
 	Button:SetParent(_G.UIParent)
-	Button:SetPoint('CENTER', holder, 'CENTER')
+	Button:Point('CENTER', holder, 'CENTER')
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		Button:StyleButton(true, true, true)
@@ -402,11 +402,11 @@ function AB:CreateVehicleLeave()
 		Button:StyleButton(nil, true, true)
 	end
 
-	hooksecurefunc(Button, 'SetPoint', function(_, _, parent)
+	hooksecurefunc(Button, 'Point', function(_, _, parent)
 		if parent ~= holder then
 			Button:ClearAllPoints()
 			Button:SetParent(_G.UIParent)
-			Button:SetPoint('CENTER', holder, 'CENTER')
+			Button:Point('CENTER', holder, 'CENTER')
 		end
 	end)
 
@@ -421,10 +421,10 @@ end
 
 function AB:UpdateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
-	_G.MainMenuBarVehicleLeaveButton:SetSize(db.size, db.size)
+	_G.MainMenuBarVehicleLeaveButton:Size(db.size)
 	_G.MainMenuBarVehicleLeaveButton:SetFrameStrata(db.strata)
 	_G.MainMenuBarVehicleLeaveButton:SetFrameLevel(db.level)
-	_G.VehicleLeaveButtonHolder:SetSize(db.size, db.size)
+	_G.VehicleLeaveButtonHolder:Size(db.size)
 end
 
 function AB:ReassignBindings(event)
@@ -558,14 +558,14 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if count then
 		count:ClearAllPoints()
-		count:SetPoint(countPosition, countXOffset, countYOffset)
+		count:Point(countPosition, countXOffset, countYOffset)
 		count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		count:SetTextColor(color.r, color.g, color.b)
 	end
 
 	if macroText then
 		macroText:ClearAllPoints()
-		macroText:SetPoint('BOTTOM', 0, 1)
+		macroText:Point('BOTTOM', 0, 1)
 		macroText:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		macroText:SetTextColor(color.r, color.g, color.b)
 	end
@@ -753,7 +753,7 @@ function AB:IconIntroTracker_Toggle()
 end
 
 -- these calls are tainted when accessed by ValidateActionBarTransition
-local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown', 'SetSize' }
+local noops = { 'ClearAllPoints', 'SetPoint', 'SetScale', 'SetShown' }
 function AB:SetNoopsi(frame)
 	for _, func in pairs(noops) do
 		if frame[func] ~= E.noop then
@@ -859,7 +859,7 @@ function AB:DisableBlizzard()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
 	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
-	_G.VerticalMultiBarsContainer:SetSize(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
+	_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
 	AB:SetNoopsi(_G.VerticalMultiBarsContainer)
 
 	-- hide some interface options we dont use
@@ -995,7 +995,7 @@ function AB:FixKeybindText(button)
 
 	if not button.useMasque then
 		hotkey:ClearAllPoints()
-		hotkey:SetPoint(hotkeyPosition, hotkeyXOffset, hotkeyYOffset)
+		hotkey:Point(hotkeyPosition, hotkeyXOffset, hotkeyYOffset)
 	end
 end
 
@@ -1052,7 +1052,7 @@ function AB:SetupFlyoutButton(button)
 	end
 
 	if not InCombatLockdown() then
-		button:SetSize(AB.db.flyoutSize, AB.db.flyoutSize)
+		button:Size(AB.db.flyoutSize)
 	end
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
@@ -1091,22 +1091,22 @@ function AB:StyleFlyout(button)
 		local noCombat = not InCombatLockdown()
 		if direction == 'DOWN' or (point and strfind(point, 'TOP')) then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:SetPoint('BOTTOM', button, 'BOTTOM', 0, -arrowDistance)
+			button.FlyoutArrow:Point('BOTTOM', button, 'BOTTOM', 0, -arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 180)
 			if noCombat then button:SetAttribute('flyoutDirection', 'DOWN') end
 		elseif direction == 'LEFT' or point == 'RIGHT' then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:SetPoint('LEFT', button, 'LEFT', -arrowDistance, 0)
+			button.FlyoutArrow:Point('LEFT', button, 'LEFT', -arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 270)
 			if noCombat then button:SetAttribute('flyoutDirection', 'LEFT') end
 		elseif direction == 'RIGHT' or point == 'LEFT' then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:SetPoint('RIGHT', button, 'RIGHT', arrowDistance, 0)
+			button.FlyoutArrow:Point('RIGHT', button, 'RIGHT', arrowDistance, 0)
 			SetClampedTextureRotation(button.FlyoutArrow, 90)
 			if noCombat then button:SetAttribute('flyoutDirection', 'RIGHT') end
 		elseif direction == 'UP' or point == 'CENTER' or (point and strfind(point, 'BOTTOM')) then
 			button.FlyoutArrow:ClearAllPoints()
-			button.FlyoutArrow:SetPoint('TOP', button, 'TOP', 0, arrowDistance)
+			button.FlyoutArrow:Point('TOP', button, 'TOP', 0, arrowDistance)
 			SetClampedTextureRotation(button.FlyoutArrow, 0)
 			if noCombat then button:SetAttribute('flyoutDirection', 'UP') end
 		end

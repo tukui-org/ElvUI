@@ -51,8 +51,8 @@ function UF:Configure_CombatIndicator(frame)
 	local db = frame.db.CombatIcon
 
 	Icon:ClearAllPoints()
-	Icon:SetPoint('CENTER', frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
-	Icon:SetSize(db.size, db.size)
+	Icon:Point('CENTER', frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
+	Icon:Size(db.size)
 
 	if db.defaultColor then
 		Icon:SetVertexColor(1, 1, 1, 1)

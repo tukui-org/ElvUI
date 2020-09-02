@@ -140,27 +140,27 @@ function UF:Configure_HealComm(frame)
 			pred.anchor, pred.anchor1, pred.anchor2 = anchor, p1, p2
 
 			myBar:ClearAllPoints()
-			myBar:SetSize(width, barHeight)
-			myBar:SetPoint(anchor, health)
-			myBar:SetPoint(p1, healthBarTexture, p2)
+			myBar:Size(width, barHeight)
+			myBar:Point(anchor, health)
+			myBar:Point(p1, healthBarTexture, p2)
 
 			otherBar:ClearAllPoints()
-			otherBar:SetSize(width, barHeight)
-			otherBar:SetPoint(anchor, health)
-			otherBar:SetPoint(p1, pred.myBarTexture, p2)
+			otherBar:Size(width, barHeight)
+			otherBar:Point(anchor, health)
+			otherBar:Point(p1, pred.myBarTexture, p2)
 
 			healAbsorbBar:ClearAllPoints()
-			healAbsorbBar:SetSize(width, barHeight)
-			healAbsorbBar:SetPoint(anchor, health)
+			healAbsorbBar:Size(width, barHeight)
+			healAbsorbBar:Point(anchor, health)
 
 			absorbBar:ClearAllPoints()
-			absorbBar:SetSize(width, barHeight)
-			absorbBar:SetPoint(anchor, health)
+			absorbBar:Size(width, barHeight)
+			absorbBar:Point(anchor, health)
 
 			if db.absorbStyle == 'REVERSED' then
-				absorbBar:SetPoint(p2, health, p2)
+				absorbBar:Point(p2, health, p2)
 			else
-				absorbBar:SetPoint(p1, pred.otherBarTexture, p2)
+				absorbBar:Point(p1, pred.otherBarTexture, p2)
 			end
 
 		else
@@ -173,27 +173,27 @@ function UF:Configure_HealComm(frame)
 			pred.anchor, pred.anchor1, pred.anchor2 = anchor, p1, p2
 
 			myBar:ClearAllPoints()
-			myBar:SetSize(barWidth, height)
-			myBar:SetPoint(anchor, health)
-			myBar:SetPoint(p1, healthBarTexture, p2)
+			myBar:Size(barWidth, height)
+			myBar:Point(anchor, health)
+			myBar:Point(p1, healthBarTexture, p2)
 
 			otherBar:ClearAllPoints()
-			otherBar:SetSize(barWidth, height)
-			otherBar:SetPoint(anchor, health)
-			otherBar:SetPoint(p1, pred.myBarTexture, p2)
+			otherBar:Size(barWidth, height)
+			otherBar:Point(anchor, health)
+			otherBar:Point(p1, pred.myBarTexture, p2)
 
 			healAbsorbBar:ClearAllPoints()
-			healAbsorbBar:SetSize(barWidth, height)
-			healAbsorbBar:SetPoint(anchor, health)
+			healAbsorbBar:Size(barWidth, height)
+			healAbsorbBar:Point(anchor, health)
 
 			absorbBar:ClearAllPoints()
-			absorbBar:SetSize(barWidth, height)
-			absorbBar:SetPoint(anchor, health)
+			absorbBar:Size(barWidth, height)
+			absorbBar:Point(anchor, health)
 
 			if db.absorbStyle == 'REVERSED' then
-				absorbBar:SetPoint(p2, health, p2)
+				absorbBar:Point(p2, health, p2)
 			else
-				absorbBar:SetPoint(p1, pred.otherBarTexture, p2)
+				absorbBar:Point(p1, pred.otherBarTexture, p2)
 			end
 
 		end
@@ -223,15 +223,15 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 
 	-- handle over heal absorbs
 	healAbsorbBar:ClearAllPoints()
-	healAbsorbBar:SetPoint(pred.anchor, frame.Health)
+	healAbsorbBar:Point(pred.anchor, frame.Health)
 
 	if hasOverHealAbsorb then -- forward fill it when its greater than health so that you can still see this is being stolen
 		healAbsorbBar:SetReverseFill(pred.reverseFill)
-		healAbsorbBar:SetPoint(pred.anchor1, pred.healthBarTexture, pred.anchor2)
+		healAbsorbBar:Point(pred.anchor1, pred.healthBarTexture, pred.anchor2)
 		healAbsorbBar:SetStatusBarColor(colors.overhealabsorbs.r, colors.overhealabsorbs.g, colors.overhealabsorbs.b, colors.overhealabsorbs.a)
 	else -- otherwise just let it backfill so that we know how much is being stolen
 		healAbsorbBar:SetReverseFill(not pred.reverseFill)
-		healAbsorbBar:SetPoint(pred.anchor2, pred.healthBarTexture, pred.anchor2)
+		healAbsorbBar:Point(pred.anchor2, pred.healthBarTexture, pred.anchor2)
 		healAbsorbBar:SetStatusBarColor(colors.healAbsorbs.r, colors.healAbsorbs.g, colors.healAbsorbs.b, colors.healAbsorbs.a)
 	end
 
@@ -263,8 +263,8 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 				absorbBar:SetReverseFill(not pred.reverseFill)
 
 				absorbBar:ClearAllPoints()
-				absorbBar:SetPoint(pred.anchor, pred.health)
-				absorbBar:SetPoint(pred.anchor2, pred.health, pred.anchor2)
+				absorbBar:Point(pred.anchor, pred.health)
+				absorbBar:Point(pred.anchor2, pred.health, pred.anchor2)
 			elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
 				local overflowAbsorb = absorb * maxOverflow
 				if health == maxHealth then
@@ -277,8 +277,8 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 			absorbBar:SetReverseFill(pred.reverseFill)
 
 			absorbBar:ClearAllPoints()
-			absorbBar:SetPoint(pred.anchor, pred.health)
-			absorbBar:SetPoint(pred.anchor1, pred.otherBarTexture, pred.anchor2)
+			absorbBar:Point(pred.anchor, pred.health)
+			absorbBar:Point(pred.anchor1, pred.otherBarTexture, pred.anchor2)
 		end
 	end
 end

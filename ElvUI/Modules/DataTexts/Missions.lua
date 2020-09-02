@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local next = next
+local next, wipe, ipairs = next, wipe, ipairs
 local format, sort, select = format, sort, select
-local wipe, unpack, ipairs = wipe, unpack, ipairs
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
@@ -56,32 +55,15 @@ local LE_GARRISON_TYPE_8_0 = Enum.GarrisonType.Type_8_0
 local LE_GARRISON_TYPE_9_0 = Enum.GarrisonType.Type_9_0
 local RESEARCH_TIME_LABEL = RESEARCH_TIME_LABEL
 local DATE_COMPLETED = DATE_COMPLETED:gsub('(%%s)', '|cFF33FF33%1|r') -- 'Completed: |cFF33FF33%s|r'
-local BODYGUARD_LEVEL_XP_FORMAT = L["Rank"] .. ' %d (%d/%d)'
 local EXPANSION_NAME5 = EXPANSION_NAME5 -- 'Warlords of Draenor'
 local EXPANSION_NAME6 = EXPANSION_NAME6 -- 'Legion'
 local EXPANSION_NAME7 = EXPANSION_NAME7 -- 'Battle for Azeroth'
 local EXPANSION_NAME8 = EXPANSION_NAME8 -- 'Shadowlands'
 
 local MAIN_CURRENCY = 1813
-local NAZJATAR_MAP_ID = 1355
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local numMissions = 0
 local callingsData = {}
-
-local widgetIDs = {
-	Alliance = {
-		56156, -- A Tempered Blade
-		{L["Farseer Ori"], 1940},
-		{L["Hunter Akana"], 1613},
-		{L["Bladesman Inowari"], 1966}
-	},
-	Horde = {
-		55500, -- Save a Friend
-		{L["Neri Sharpfin"], 1621},
-		{L["Poen Gillbrack"], 1622},
-		{L["Vim Brineheart"], 1920}
-	}
-}
 local covenantTreeIDs = {
 	[1] = {308, 312, 316, 320, 327},
 	[2] = {309, 314, 317, 324, 326},
@@ -137,8 +119,6 @@ local function AddInProgressMissions(garrisonType)
 end
 
 local function AddFollowerInfo(garrisonType)
-	wipe(data)
-
 	data = C_Garrison_GetFollowerShipments(garrisonType)
 
 	if next(data) then
@@ -157,12 +137,16 @@ local function AddFollowerInfo(garrisonType)
 	end
 end
 
+local covenantInfo = {}
 local function AddTalentInfo(garrisonType, currentCovenant)
-	local treeInfo = {}
-	wipe(data)
-
 	if garrisonType == LE_GARRISON_TYPE_9_0 then
-		data = {unpack(covenantTreeIDs[currentCovenant])}
+		local current = covenantTreeIDs[currentCovenant]
+		if current then
+			wipe(covenantInfo)
+			data = E:CopyTable(covenantInfo, current)
+		else
+			wipe(data)
+		end
 	else
 		data = C_Garrison_GetTalentTreeIDsByClassID(garrisonType, E.myClassID)
 	end
@@ -176,8 +160,7 @@ local function AddTalentInfo(garrisonType, currentCovenant)
 			DT.tooltip:AddLine(RESEARCH_TIME_LABEL) -- 'Research Time:'
 
 			for _, treeID in ipairs(data) do
-				wipe(treeInfo)
-				treeInfo = C_Garrison_GetTalentTreeInfo(treeID)
+				local treeInfo = C_Garrison_GetTalentTreeInfo(treeID)
 				for _, talent in ipairs(treeInfo.talents) do
 					if talent.isBeingResearched or (talent.id == completeTalentID and garrisonType ~= LE_GARRISON_TYPE_9_0)then
 						if talent.timeRemaining and talent.timeRemaining == 0 then
@@ -256,20 +239,6 @@ local function OnEnter()
 			end
 		end
 
-		local widgetGroup = widgetIDs[E.myfaction]
-		if E.MapInfo.mapID == NAZJATAR_MAP_ID and widgetGroup and C_QuestLog_IsQuestFlaggedCompleted(widgetGroup[1]) then
-			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(L["Nazjatar Follower XP"])
-
-			for i = 2, 4 do
-				local npcName, widgetID = unpack(widgetGroup[i])
-				local cur, toNext, _, rank, maxRank = E:GetWidgetInfoBase(widgetID)
-				if npcName and rank then
-					DT.tooltip:AddDoubleLine(npcName, (maxRank and L["Max Rank"]) or BODYGUARD_LEVEL_XP_FORMAT:format(rank, cur, toNext), 1, 1, 1)
-				end
-			end
-		end
-
 		AddFollowerInfo(LE_GARRISON_TYPE_7_0)
 		AddTalentInfo(LE_GARRISON_TYPE_7_0)
 
@@ -282,9 +251,8 @@ local function OnEnter()
 		AddFollowerInfo(LE_GARRISON_TYPE_7_0)
 
 		-- 'Loose Work Orders' (i.e. research, equipment)
-		wipe(data)
 		data = C_Garrison_GetLooseShipments(LE_GARRISON_TYPE_7_0)
-		if #data > 0 then
+		if next(data) then
 			DT.tooltip:AddLine(CAPACITANCE_WORK_ORDERS) -- 'Work Orders'
 
 			for _, looseShipments in ipairs(data) do
@@ -312,9 +280,8 @@ local function OnEnter()
 		AddInProgressMissions(LE_FOLLOWER_TYPE_GARRISON_6_2)
 
 		--Buildings
-		wipe(data)
 		data = C_Garrison_GetBuildings(LE_GARRISON_TYPE_6_0)
-		if #data > 0 then
+		if next(data) then
 			local AddLine = true
 			for _, buildings in ipairs(data) do
 				local name, _, _, shipmentsReady, shipmentsTotal, _, _, timeleftString = C_Garrison_GetLandingPageShipmentInfo(buildings.buildingID)

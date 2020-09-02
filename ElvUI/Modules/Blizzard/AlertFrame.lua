@@ -38,15 +38,15 @@ function E:PostAlertMove()
 			frame:ClearAllPoints()
 			if i ~= 1 then
 				if POSITION == 'TOP' then
-					frame:SetPoint('TOP', lastframe, 'BOTTOM', 0, -4)
+					frame:Point('TOP', lastframe, 'BOTTOM', 0, -4)
 				else
-					frame:SetPoint('BOTTOM', lastframe, 'TOP', 0, 4)
+					frame:Point('BOTTOM', lastframe, 'TOP', 0, 4)
 				end
 			else
 				if POSITION == 'TOP' then
-					frame:SetPoint('TOP', AlertFrameHolder, 'BOTTOM', 0, -4)
+					frame:Point('TOP', AlertFrameHolder, 'BOTTOM', 0, -4)
 				else
-					frame:SetPoint('BOTTOM', AlertFrameHolder, 'TOP', 0, 4)
+					frame:Point('BOTTOM', AlertFrameHolder, 'TOP', 0, 4)
 				end
 			end
 			lastframe = frame
@@ -60,10 +60,10 @@ function E:PostAlertMove()
 		GroupLootContainer:ClearAllPoints()
 		if lastShownFrame then
 			AlertFrame:SetAllPoints(lastShownFrame)
-			GroupLootContainer:SetPoint(POSITION, lastShownFrame, ANCHOR_POINT, 0, YOFFSET)
+			GroupLootContainer:Point(POSITION, lastShownFrame, ANCHOR_POINT, 0, YOFFSET)
 		else
 			AlertFrame:SetAllPoints(AlertFrameHolder)
-			GroupLootContainer:SetPoint(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
+			GroupLootContainer:Point(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
 		end
 		if GroupLootContainer:IsShown() then
 			B.GroupLootContainer_Update(GroupLootContainer)
@@ -72,7 +72,7 @@ function E:PostAlertMove()
 		AlertFrame:ClearAllPoints()
 		AlertFrame:SetAllPoints(AlertFrameHolder)
 		GroupLootContainer:ClearAllPoints()
-		GroupLootContainer:SetPoint(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
+		GroupLootContainer:Point(POSITION, AlertFrameHolder, ANCHOR_POINT, 0, YOFFSET)
 		if GroupLootContainer:IsShown() then
 			B.GroupLootContainer_Update(GroupLootContainer)
 		end
@@ -82,7 +82,7 @@ end
 function B:AdjustAnchors(relativeAlert)
 	if self.alertFrame:IsShown() then
 		self.alertFrame:ClearAllPoints()
-		self.alertFrame:SetPoint(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
+		self.alertFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
 		return self.alertFrame
 	end
 	return relativeAlert
@@ -91,7 +91,7 @@ end
 function B:AdjustAnchorsNonAlert(relativeAlert)
 	if self.anchorFrame:IsShown() then
 		self.anchorFrame:ClearAllPoints()
-		self.anchorFrame:SetPoint(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
+		self.anchorFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
 		return self.anchorFrame
 	end
 	return relativeAlert
@@ -100,7 +100,7 @@ end
 function B:AdjustQueuedAnchors(relativeAlert)
 	for alertFrame in self.alertFramePool:EnumerateActive() do
 		alertFrame:ClearAllPoints()
-		alertFrame:SetPoint(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
+		alertFrame:Point(POSITION, relativeAlert, ANCHOR_POINT, 0, YOFFSET)
 		relativeAlert = alertFrame
 	end
 	return relativeAlert
@@ -115,16 +115,16 @@ function B:GroupLootContainer_Update()
 		if ( frame ) then
 			frame:ClearAllPoints()
 			if prevFrame and not (prevFrame == frame) then
-				frame:SetPoint(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET)
+				frame:Point(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET)
 			else
-				frame:SetPoint(POSITION, self, POSITION, 0, self.reservedSize * (i-1 + 0.5))
+				frame:Point(POSITION, self, POSITION, 0, self.reservedSize * (i-1 + 0.5))
 			end
 			lastIdx = i
 		end
 	end
 
 	if ( lastIdx ) then
-		self:SetHeight(self.reservedSize * lastIdx)
+		self:Height(self.reservedSize * lastIdx)
 		self:Show()
 	else
 		self:Hide()
@@ -143,9 +143,8 @@ end
 
 function B:AlertMovers()
 	local AlertFrameHolder = CreateFrame('Frame', 'AlertFrameHolder', E.UIParent)
-	AlertFrameHolder:SetWidth(180)
-	AlertFrameHolder:SetHeight(20)
-	AlertFrameHolder:SetPoint('TOP', E.UIParent, 'TOP', -1, -18)
+	AlertFrameHolder:Size(180, 20)
+	AlertFrameHolder:Point('TOP', E.UIParent, 'TOP', -1, -18)
 
 	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil

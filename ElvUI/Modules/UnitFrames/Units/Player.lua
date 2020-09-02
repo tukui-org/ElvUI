@@ -28,7 +28,7 @@ function UF:Construct_PlayerFrame(frame)
 
 	--Create a holder frame all 'classbars' can be positioned into
 	frame.ClassBarHolder = CreateFrame('Frame', nil, frame)
-	frame.ClassBarHolder:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
+	frame.ClassBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 150)
 
 	--Combo points was moved to the ClassPower element, so all classes need to have a ClassBar now.
 	frame.ClassPower = UF:Construct_ClassBar(frame)
@@ -67,7 +67,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.customTexts = {}
 
-	frame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
+	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,generalGroup')
 
 	frame.unitframeType = 'player'
@@ -98,7 +98,7 @@ function UF:Update_PlayerFrame(frame, db)
 		frame.CLASSBAR_DETACHED = db.classbar.detachFromFrame
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == 'spaced' and frame.USE_CLASSBAR
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
-		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == 'MIDDLE' and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
+		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - frame.PORTRAIT_WIDTH - (frame.ORIENTATION == 'MIDDLE' and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
 		--If formula for frame.CLASSBAR_YOFFSET changes, then remember to update it in classbars.lua too
 		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
@@ -116,8 +116,8 @@ function UF:Update_PlayerFrame(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	_G[frame:GetName()..'Mover']:SetSize(frame:GetSize())
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	_G[frame:GetName()..'Mover']:Size(frame:GetSize())
 
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_Threat(frame)

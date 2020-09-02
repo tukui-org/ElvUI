@@ -41,16 +41,14 @@ local function ColorizeStatPane(frame)
 
 	local r, g, b = 0.8, 0.8, 0.8
 	frame.leftGrad = frame:CreateTexture(nil, 'BORDER')
-	frame.leftGrad:SetWidth(80)
-	frame.leftGrad:SetHeight(frame:GetHeight())
-	frame.leftGrad:SetPoint('LEFT', frame, 'CENTER')
+	frame.leftGrad:Size(80, frame:GetHeight())
+	frame.leftGrad:Point('LEFT', frame, 'CENTER')
 	frame.leftGrad:SetTexture(E.Media.Textures.White8x8)
 	frame.leftGrad:SetGradientAlpha('Horizontal', r, g, b, 0.25, r, g, b, 0)
 
 	frame.rightGrad = frame:CreateTexture(nil, 'BORDER')
-	frame.rightGrad:SetWidth(80)
-	frame.rightGrad:SetHeight(frame:GetHeight())
-	frame.rightGrad:SetPoint('RIGHT', frame, 'CENTER')
+	frame.rightGrad:Size(80, frame:GetHeight())
+	frame.rightGrad:Point('RIGHT', frame, 'CENTER')
 	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
 	frame.rightGrad:SetGradientAlpha('Horizontal', r, g, b, 0, r, g, b, 0.25)
 end
@@ -60,9 +58,8 @@ local function StatsPane(which)
 	CharacterStatsPane[which]:StripTextures()
 	CharacterStatsPane[which]:CreateBackdrop('Transparent')
 	CharacterStatsPane[which].backdrop:ClearAllPoints()
-	CharacterStatsPane[which].backdrop:SetPoint('CENTER')
-	CharacterStatsPane[which].backdrop:SetWidth(150)
-	CharacterStatsPane[which].backdrop:SetHeight(18)
+	CharacterStatsPane[which].backdrop:Point('CENTER')
+	CharacterStatsPane[which].backdrop:Size(150, 18)
 end
 
 local function SkinItemFlyouts()
@@ -114,7 +111,7 @@ local function SkinItemFlyouts()
 	end
 
 	local width, height = buttonAnchor:GetSize()
-	buttonAnchor:SetSize(width+3, height)
+	buttonAnchor:Size(width+3, height)
 end
 
 local function FixSidebarTabCoords()
@@ -194,7 +191,7 @@ local function UpdateFactionSkins()
 	local ReputationDetailFrame = _G.ReputationDetailFrame
 	ReputationDetailFrame:StripTextures()
 	ReputationDetailFrame:ClearAllPoints()
-	ReputationDetailFrame:SetPoint('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', 4, -28)
+	ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', 4, -28)
 	if not ReputationDetailFrame.backdrop then
 		ReputationDetailFrame:CreateBackdrop('Transparent')
 	end
@@ -206,7 +203,7 @@ local function UpdateCurrencySkins()
 	if TokenFramePopup then
 		TokenFramePopup:StripTextures()
 		TokenFramePopup:ClearAllPoints()
-		TokenFramePopup:SetPoint('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 4, -28)
+		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 4, -28)
 		if not TokenFramePopup.backdrop then
 			TokenFramePopup:CreateBackdrop('Transparent')
 		end
@@ -240,8 +237,8 @@ local function UpdateCurrencySkins()
 
 					-- these two only need to be called once
 					-- adding them here will prevent additional calls
-					button.expandIcon:SetPoint('LEFT', 4, 0)
-					button.expandIcon:SetSize(15, 15)
+					button.expandIcon:Point('LEFT', 4, 0)
+					button.expandIcon:Size(15, 15)
 				end
 
 				if button.isHeader then
@@ -309,9 +306,9 @@ function S:CharacterFrame()
 			S:HandleIconBorder(Slot.IconBorder)
 
 			if Slot.popoutButton:GetPoint() == 'TOP' then
-				Slot.popoutButton:SetPoint('TOP', Slot, 'BOTTOM', 0, 2)
+				Slot.popoutButton:Point('TOP', Slot, 'BOTTOM', 0, 2)
 			else
-				Slot.popoutButton:SetPoint('LEFT', Slot, 'RIGHT', -2, 0)
+				Slot.popoutButton:Point('LEFT', Slot, 'RIGHT', -2, 0)
 			end
 
 			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown'])
@@ -351,7 +348,7 @@ function S:CharacterFrame()
 
 	--Corruption 8.3
 	_G.CharacterStatsPane.ItemLevelFrame.Corruption:ClearAllPoints()
-	_G.CharacterStatsPane.ItemLevelFrame.Corruption:SetPoint('RIGHT', _G.CharacterStatsPane.ItemLevelFrame, 'RIGHT', 22, -8)
+	_G.CharacterStatsPane.ItemLevelFrame.Corruption:Point('RIGHT', _G.CharacterStatsPane.ItemLevelFrame, 'RIGHT', 22, -8)
 
 	hooksecurefunc('PaperDollFrame_UpdateStats', function()
 		if IsAddOnLoaded('DejaCharacterStats') then return end
@@ -403,8 +400,8 @@ function S:CharacterFrame()
 	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer('ARTWORK')
 	_G.EquipmentFlyoutFrame.NavigationFrame:StripTextures()
 	_G.EquipmentFlyoutFrame.NavigationFrame:CreateBackdrop('Transparent')
-	_G.EquipmentFlyoutFrame.NavigationFrame:SetPoint('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
-	_G.EquipmentFlyoutFrame.NavigationFrame:SetPoint('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
+	_G.EquipmentFlyoutFrame.NavigationFrame:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
+	_G.EquipmentFlyoutFrame.NavigationFrame:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
@@ -441,8 +438,8 @@ function S:CharacterFrame()
 	--Re-add the overlay texture which was removed right above via StripTextures
 	_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0, 0, 0)
 	_G.CharacterModelFrame:CreateBackdrop()
-	_G.CharacterModelFrame.backdrop:SetPoint('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-	_G.CharacterModelFrame.backdrop:SetPoint('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+	_G.CharacterModelFrame.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	_G.CharacterModelFrame.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
 
 	local controlButtons = {
 		'CharacterModelFrameControlFrameZoomInButton',
@@ -481,29 +478,29 @@ function S:CharacterFrame()
 	--Equipement Manager
 	S:HandleButton(_G.PaperDollEquipmentManagerPaneEquipSet)
 	S:HandleButton(_G.PaperDollEquipmentManagerPaneSaveSet)
-	_G.PaperDollEquipmentManagerPaneEquipSet:SetWidth(_G.PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
-	_G.PaperDollEquipmentManagerPaneSaveSet:SetWidth(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
-	_G.PaperDollEquipmentManagerPaneEquipSet:SetPoint('TOPLEFT', _G.PaperDollEquipmentManagerPane, 'TOPLEFT', 8, 0)
-	_G.PaperDollEquipmentManagerPaneSaveSet:SetPoint('LEFT', _G.PaperDollEquipmentManagerPaneEquipSet, 'RIGHT', 4, 0)
+	_G.PaperDollEquipmentManagerPaneEquipSet:Width(_G.PaperDollEquipmentManagerPaneEquipSet:GetWidth() - 8)
+	_G.PaperDollEquipmentManagerPaneSaveSet:Width(_G.PaperDollEquipmentManagerPaneSaveSet:GetWidth() - 8)
+	_G.PaperDollEquipmentManagerPaneEquipSet:Point('TOPLEFT', _G.PaperDollEquipmentManagerPane, 'TOPLEFT', 8, 0)
+	_G.PaperDollEquipmentManagerPaneSaveSet:Point('LEFT', _G.PaperDollEquipmentManagerPaneEquipSet, 'RIGHT', 4, 0)
 
 	--Itemset buttons
 	for _, object in pairs(_G.PaperDollEquipmentManagerPane.buttons) do
 		object.BgTop:SetTexture()
 		object.BgBottom:SetTexture()
 		object.BgMiddle:SetTexture()
-		object.icon:SetSize(36, 36)
+		object.icon:Size(36, 36)
 		object.icon:SetTexCoord(unpack(E.TexCoords))
 
 		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
-		object.icon:SetPoint('LEFT', object, 'LEFT', 4, 0)
+		object.icon:Point('LEFT', object, 'LEFT', 4, 0)
 		hooksecurefunc(object.icon, 'SetPoint', function(icn, _, _, _, _, _, forced)
 			if forced ~= true then
-				icn:SetPoint('LEFT', object, 'LEFT', 4, 0, true)
+				icn:Point('LEFT', object, 'LEFT', 4, 0, true)
 			end
 		end)
 		hooksecurefunc(object.icon, 'SetSize', function(icn, width, height)
 			if width == 30 or height == 30 then
-				icn:SetSize(36, 36)
+				icn:Size(36, 36)
 			end
 		end)
 	end

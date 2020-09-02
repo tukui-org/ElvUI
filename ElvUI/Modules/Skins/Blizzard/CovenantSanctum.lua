@@ -20,7 +20,7 @@ local function ReskinTalents(self)
 			frame.Highlight:SetColorTexture(1, 1, 1, .25)
 			frame.Highlight:SetInside(frame.backdrop)
 			S:HandleIcon(frame.Icon, true)
-			frame.Icon:SetPoint('TOPLEFT', 7, -7)
+			frame.Icon:Point('TOPLEFT', 7, -7)
 
 			frame.IsSkinned = true
 		end
@@ -58,7 +58,7 @@ function S:Blizzard_CovenantSanctum()
 			frame.CloseButton.Border:SetAlpha(0)
 			S:HandleCloseButton(frame.CloseButton)
 			frame.CloseButton:ClearAllPoints()
-			frame.CloseButton:SetPoint('TOPRIGHT', frame, 'TOPRIGHT', 2, 2)
+			frame.CloseButton:Point('TOPRIGHT', frame, 'TOPRIGHT', 2, 2)
 
 			frame.LevelFrame.Level:FontTemplate()
 
@@ -91,7 +91,7 @@ function S:Blizzard_CovenantSanctum()
 	S:HandleTab(_G.CovenantSanctumFrameTab1)
 	S:HandleTab(_G.CovenantSanctumFrameTab2)
 	_G.CovenantSanctumFrameTab1:ClearAllPoints()
-	_G.CovenantSanctumFrameTab1:SetPoint('BOTTOMLEFT', frame, 23, -32) --default is: 23, 9
+	_G.CovenantSanctumFrameTab1:Point('BOTTOMLEFT', frame, 23, -32) --default is: 23, 9
 end
 
 S:AddCallbackForAddon('Blizzard_CovenantSanctum')

@@ -1,12 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local _G = _G
+local pairs, pcall = pairs, pcall
 local unpack, type, select, getmetatable = unpack, type, select, getmetatable
-local assert, pairs, pcall = assert, pairs, pcall
 local EnumerateFrames = EnumerateFrames
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
+local templateBackdrop, innerOuterBackdrop, shadowBackdrop = {}, {}, {}
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 -- 8.2 restricted frame check
@@ -61,42 +62,62 @@ local function GetTemplate(template, isUnitFrameElement)
 	end
 end
 
--- * WARNING * ~ Size, Width, Height, and Point APIs we provide will be removed during prepatch!!
-local function Width(frame, ...) frame:SetWidth(...) end
-local function Height(frame, ...) frame:SetHeight(...) end
-local function Point(frame, ...) frame:SetPoint(...) end
 local function Size(frame, width, height, ...)
-	frame:SetSize(width, height or width, ...)
+	local w = E:Scale(width)
+	frame:SetSize(w, (height and E:Scale(height)) or w, ...)
 end
 
-local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
-	xOffset = xOffset or E.Border
-	yOffset = yOffset or E.Border
-	anchor = anchor or obj:GetParent()
+local function Width(frame, width, ...)
+	frame:SetWidth(E:Scale(width), ...)
+end
 
-	assert(anchor)
+local function Height(frame, height, ...)
+	frame:SetHeight(E:Scale(height), ...)
+end
+
+local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
+	if not arg2 then arg2 = obj:GetParent() end
+
+	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
+	if type(arg3)=='number' then arg3 = E:Scale(arg3) end
+	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
+	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
+
+	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
+end
+
+local function SetOutside(obj, anchor, xOffset, yOffset, anchor2, noScale)
+	if not anchor then anchor = obj:GetParent() end
+
+	if not xOffset then xOffset = E.Border end
+	if not yOffset then yOffset = E.Border end
+	local x = (noScale and xOffset) or E:Scale(xOffset)
+	local y = (noScale and yOffset) or E:Scale(yOffset)
+
 	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -x, y)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', x, -y)
 end
 
-local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
-	xOffset = xOffset or E.Border
-	yOffset = yOffset or E.Border
-	anchor = anchor or obj:GetParent()
+local function SetInside(obj, anchor, xOffset, yOffset, anchor2, noScale)
+	if not anchor then anchor = obj:GetParent() end
 
-	assert(anchor)
+	if not xOffset then xOffset = E.Border end
+	if not yOffset then yOffset = E.Border end
+	local x = (noScale and xOffset) or E:Scale(xOffset)
+	local y = (noScale and yOffset) or E:Scale(yOffset)
+
 	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', x, -y)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -x, y)
 end
 
 local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
@@ -111,12 +132,11 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	if template == 'NoBackdrop' then
 		frame:SetBackdrop()
 	else
-		frame:SetBackdrop({
-			edgeFile = E.media.blankTex,
-			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
-			tile = false, tileSize = 0, edgeSize = (not E.twoPixelsPlease and E.mult) or E.mult*2,
-			insets = {left = 0, right = 0, top = 0, bottom = 0}
-		})
+		templateBackdrop.edgeFile = E.media.blankTex
+		templateBackdrop.bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex
+		if not templateBackdrop.edgeSize then templateBackdrop.edgeSize = E:Scale(not E.twoPixelsPlease and 1 or 2) end
+
+		frame:SetBackdrop(templateBackdrop)
 
 		if frame.callbackBackdropColor then
 			frame:callbackBackdropColor()
@@ -125,27 +145,22 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 		end
 
 		if not E.PixelMode and not frame.forcePixelMode then
+			innerOuterBackdrop.edgeFile = E.media.blankTex
+			if not innerOuterBackdrop.edgeSize then innerOuterBackdrop.edgeSize = E:Scale(1) end
+
 			if not frame.iborder then
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-				border:SetInside(frame, E.mult, E.mult)
-				border:SetBackdrop({
-					edgeFile = E.media.blankTex, edgeSize = E.mult,
-					insets = {left = -E.mult, right = -E.mult, top = -E.mult, bottom = -E.mult}
-				})
-
+				border:SetBackdrop(innerOuterBackdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
+				border:SetInside(frame, 1, 1)
 				frame.iborder = border
 			end
 
 			if not frame.oborder then
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-				border:SetOutside(frame, E.mult, E.mult)
-				border:SetBackdrop({
-					edgeFile = E.media.blankTex, edgeSize = E.mult,
-					insets = {left = E.mult, right = E.mult, top = E.mult, bottom = E.mult}
-				})
-
+				border:SetBackdrop(innerOuterBackdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
+				border:SetOutside(frame, 1, 1)
 				frame.oborder = border
 			end
 		end
@@ -188,14 +203,19 @@ end
 
 local function CreateShadow(frame, size, pass)
 	if not pass and frame.shadow then return end
+	if not size then size = 3 end
 
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
+	shadowBackdrop.edgeFile = E.Media.Textures.GlowTex
+	shadowBackdrop.edgeSize = E:Scale(size)
+
+	local offset = (E.PixelMode and size) or (size + 1)
 	local shadow = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
-	shadow:SetOutside(frame, size or 3, size or 3)
-	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = size or 3})
+	shadow:SetOutside(frame, offset, offset, nil, true)
+	shadow:SetBackdrop(shadowBackdrop)
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 
@@ -355,8 +375,8 @@ do
 		if frame.CloseButton then return end
 
 		local CloseButton = CreateFrame('Button', nil, frame)
-		CloseButton:SetSize(size or 16, size or 16)
-		CloseButton:SetPoint('TOPRIGHT', offset or -6, offset or -6)
+		CloseButton:Size(size or 16)
+		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
 		if backdrop then
 			CloseButton:CreateBackdrop(nil, true)
 		end

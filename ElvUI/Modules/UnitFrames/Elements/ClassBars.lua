@@ -39,6 +39,7 @@ function UF:Configure_ClassBar(frame, cur)
 
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
+	local SPACING = (frame.BORDER + frame.SPACING)*2
 
 	local color = E.db.unitframe.colors.borderColor
 	if not bars.backdrop.ignoreBorderColors then
@@ -52,11 +53,11 @@ function UF:Configure_ClassBar(frame, cur)
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
 		end
 	elseif frame.CLASSBAR_DETACHED then --Detached
-		CLASSBAR_WIDTH = db.classbar.detachedWidth - ((frame.BORDER + frame.SPACING)*2)
+		CLASSBAR_WIDTH = db.classbar.detachedWidth
 	end
 
-	bars:SetWidth(CLASSBAR_WIDTH)
-	bars:SetHeight(frame.CLASSBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
+	bars:Width(CLASSBAR_WIDTH - SPACING)
+	bars:Height(frame.CLASSBAR_HEIGHT - SPACING)
 
 	if (frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes') then
 		--This fixes issue with ComboPoints showing as active when they are not.
@@ -76,35 +77,35 @@ function UF:Configure_ClassBar(frame, cur)
 			if i <= frame.MAX_CLASS_BAR then
 				bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
-				bars[i]:SetHeight(bars:GetHeight())
+				bars[i]:Height(bars:GetHeight())
 				if frame.MAX_CLASS_BAR == 1 then
-					bars[i]:SetWidth(CLASSBAR_WIDTH)
+					bars[i]:Width(CLASSBAR_WIDTH)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
-						bars[i]:SetWidth(CLASSBAR_WIDTH)
+						bars[i]:Width(CLASSBAR_WIDTH)
 					else
-						bars[i]:SetWidth((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
+						bars[i]:Width((CLASSBAR_WIDTH - ((5 + (frame.BORDER*2 + frame.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 					end
 				elseif i ~= frame.MAX_CLASS_BAR then
-					bars[i]:SetWidth((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
+					bars[i]:Width((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(frame.BORDER-frame.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
 				end
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 				if i == 1 then
-					bars[i]:SetPoint('LEFT', bars)
+					bars[i]:Point('LEFT', bars)
 				else
 					if frame.USE_MINI_CLASSBAR then
 						if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
-							bars[i]:SetPoint('BOTTOM', bars[i-1], 'TOP', 0, (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2))
+							bars[i]:Point('BOTTOM', bars[i-1], 'TOP', 0, (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2))
 						else
-							bars[i]:SetPoint('LEFT', bars[i-1], 'RIGHT', (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
+							bars[i]:Point('LEFT', bars[i-1], 'RIGHT', (db.classbar.spacing + frame.BORDER*2 + frame.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
 						end
 					elseif i == frame.MAX_CLASS_BAR then
-						bars[i]:SetPoint('LEFT', bars[i-1], 'RIGHT', frame.BORDER-frame.SPACING, 0)
-						bars[i]:SetPoint('RIGHT', bars)
+						bars[i]:Point('LEFT', bars[i-1], 'RIGHT', frame.BORDER-frame.SPACING, 0)
+						bars[i]:Point('RIGHT', bars)
 					else
-						bars[i]:SetPoint('LEFT', bars[i-1], 'RIGHT', frame.BORDER-frame.SPACING, 0)
+						bars[i]:Point('LEFT', bars[i-1], 'RIGHT', frame.BORDER-frame.SPACING, 0)
 					end
 				end
 
@@ -170,26 +171,23 @@ function UF:Configure_ClassBar(frame, cur)
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
-		bars:SetPoint('CENTER', frame.Health.backdrop, 'TOP', 0, 0)
+		bars:Point('CENTER', frame.Health.backdrop, 'TOP', 0, 0)
 
 		bars:SetFrameLevel(50) --RaisedElementParent uses 100, we want it lower than this
 
 		if bars.Holder and bars.Holder.mover then
-			bars.Holder.mover:SetScale(0.0001)
-			bars.Holder.mover:SetAlpha(0)
+			E:DisableMover(bars.Holder.mover:GetName())
 		end
 	elseif frame.CLASSBAR_DETACHED then
-		bars.Holder:SetSize(db.classbar.detachedWidth, db.classbar.height)
+		bars.Holder:Size(db.classbar.detachedWidth, db.classbar.height)
+
+		bars:ClearAllPoints()
+		bars:Point('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
 
 		if not bars.Holder.mover then
-			bars:ClearAllPoints()
-			bars:SetPoint('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
 			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')
 		else
-			bars:ClearAllPoints()
-			bars:SetPoint('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING)
-			bars.Holder.mover:SetScale(1)
-			bars.Holder.mover:SetAlpha(1)
+			E:EnableMover(bars.Holder.mover:GetName())
 		end
 
 		if not db.classbar.strataAndLevel.useCustomStrata then
@@ -206,17 +204,16 @@ function UF:Configure_ClassBar(frame, cur)
 	else
 		bars:ClearAllPoints()
 		if frame.ORIENTATION == 'RIGHT' then
-			bars:SetPoint('BOTTOMRIGHT', frame.Health.backdrop, 'TOPRIGHT', -frame.BORDER, frame.SPACING*3)
+			bars:Point('BOTTOMRIGHT', frame.Health.backdrop, 'TOPRIGHT', -frame.BORDER, frame.SPACING*3)
 		else
-			bars:SetPoint('BOTTOMLEFT', frame.Health.backdrop, 'TOPLEFT', frame.BORDER, frame.SPACING*3)
+			bars:Point('BOTTOMLEFT', frame.Health.backdrop, 'TOPLEFT', frame.BORDER, frame.SPACING*3)
 		end
 
 		bars:SetFrameStrata('LOW')
 		bars:SetFrameLevel(frame.Health:GetFrameLevel() + 10) --Health uses 10, Power uses (Health + 5) when attached
 
 		if bars.Holder and bars.Holder.mover then
-			bars.Holder.mover:SetScale(0.0001)
-			bars.Holder.mover:SetAlpha(0)
+			E:DisableMover(bars.Holder.mover:GetName())
 		end
 	end
 

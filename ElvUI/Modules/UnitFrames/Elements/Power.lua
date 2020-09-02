@@ -47,7 +47,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 			x = 2
 		end
 
-		power.value:SetPoint(textPos, frame.Health, textPos, x, 0)
+		power.value:Point(textPos, frame.Health, textPos, x, 0)
 	end
 
 	power.useAtlas = false
@@ -86,7 +86,7 @@ function UF:Configure_Power(frame)
 		--Text
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo)
 		power.value:ClearAllPoints()
-		power.value:SetPoint(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
+		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
 
 		if db.power.attachTextTo == 'Power' then
@@ -138,76 +138,70 @@ function UF:Configure_Power(frame)
 
 		--Position
 		power:ClearAllPoints()
+		local OFFSET = (frame.BORDER + frame.SPACING)*2
+
 		if frame.POWERBAR_DETACHED then
-			power:SetWidth(frame.POWERBAR_WIDTH - ((frame.BORDER + frame.SPACING)*2))
-			power:SetHeight(frame.POWERBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
-			if not power.Holder or (power.Holder and not power.Holder.mover) then
+			if power.Holder and power.Holder.mover then
+				E:EnableMover(power.Holder.mover:GetName())
+			else
 				power.Holder = CreateFrame('Frame', nil, power)
-				power.Holder:SetSize(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
-				power.Holder:SetPoint('BOTTOM', frame, 'BOTTOM', 0, -20)
-				power:ClearAllPoints()
-				power:SetPoint('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
+				power.Holder:Point('BOTTOM', frame, 'BOTTOM', 0, -20)
+
 				--Currently only Player and Target can detach power bars, so doing it this way is okay for now
 				if frame.unitframeType and frame.unitframeType == 'player' then
 					E:CreateMover(power.Holder, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,power')
 				elseif frame.unitframeType and frame.unitframeType == 'target' then
 					E:CreateMover(power.Holder, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,power')
 				end
-			else
-				power.Holder:SetSize(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
-				power:ClearAllPoints()
-				power:SetPoint('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
-				power.Holder.mover:SetScale(1)
-				power.Holder.mover:SetAlpha(1)
 			end
 
+			power.Holder:Size(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
+			power:Point('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
+			power:Size(frame.POWERBAR_WIDTH - OFFSET, frame.POWERBAR_HEIGHT - OFFSET)
 			power:SetFrameLevel(50) --RaisedElementParent uses 100, we want lower value to allow certain icons and texts to appear above power
 		elseif frame.USE_POWERBAR_OFFSET then
 			if frame.ORIENTATION == 'LEFT' then
-				power:SetPoint('TOPRIGHT', frame.Health, 'TOPRIGHT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
-				power:SetPoint('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('TOPRIGHT', frame.Health, 'TOPRIGHT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			elseif frame.ORIENTATION == 'MIDDLE' then
-				power:SetPoint('TOPLEFT', frame, 'TOPLEFT', frame.BORDER + frame.SPACING, -frame.POWERBAR_OFFSET -frame.CLASSBAR_YOFFSET)
-				power:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.BORDER - frame.SPACING, frame.BORDER)
+				power:Point('TOPLEFT', frame, 'TOPLEFT', frame.BORDER + frame.SPACING, -frame.POWERBAR_OFFSET -frame.CLASSBAR_YOFFSET)
+				power:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.BORDER - frame.SPACING, frame.BORDER)
 			else
-				power:SetPoint('TOPLEFT', frame.Health, 'TOPLEFT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
-				power:SetPoint('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('TOPLEFT', frame.Health, 'TOPLEFT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			end
 			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5) --Health uses 10
 		elseif frame.USE_INSET_POWERBAR then
-			power:SetHeight(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
-			power:SetPoint('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.BORDER + (frame.BORDER*2), frame.BORDER + (frame.BORDER*2))
-			power:SetPoint('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -(frame.BORDER + (frame.BORDER*2)), frame.BORDER + (frame.BORDER*2))
+			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
+			power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.BORDER + (frame.BORDER*2), frame.BORDER + (frame.BORDER*2))
+			power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -(frame.BORDER + (frame.BORDER*2)), frame.BORDER + (frame.BORDER*2))
 			power:SetFrameLevel(50)
 		elseif frame.USE_MINI_POWERBAR then
-			power:SetHeight(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
+			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
 
 			if frame.ORIENTATION == 'LEFT' then
-				power:SetWidth(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:SetPoint('RIGHT', frame, 'BOTTOMRIGHT', -(frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
 			elseif frame.ORIENTATION == 'RIGHT' then
-				power:SetWidth(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:SetPoint('LEFT', frame, 'BOTTOMLEFT', (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
+				power:Point('LEFT', frame, 'BOTTOMLEFT', (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
 			else
-				power:SetPoint('LEFT', frame, 'BOTTOMLEFT', (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
-				power:SetPoint('RIGHT', frame, 'BOTTOMRIGHT', -(frame.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Point('LEFT', frame, 'BOTTOMLEFT', (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(frame.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
 			end
 
 			power:SetFrameLevel(50)
 		else
-			power:SetPoint('TOPRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', -frame.BORDER,  -frame.SPACING*3)
-			power:SetPoint('TOPLEFT', frame.Health.backdrop, 'BOTTOMLEFT', frame.BORDER, -frame.SPACING*3)
-			power:SetHeight(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
+			power:Point('TOPRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', -frame.BORDER, -frame.SPACING*3)
+			power:Point('TOPLEFT', frame.Health.backdrop, 'BOTTOMLEFT', frame.BORDER, -frame.SPACING*3)
+			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
 
 			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
 		end
 
 		--Hide mover until we detach again
-		if not frame.POWERBAR_DETACHED then
-			if power.Holder and power.Holder.mover then
-				power.Holder.mover:SetScale(0.0001)
-				power.Holder.mover:SetAlpha(0)
-			end
+		if not frame.POWERBAR_DETACHED and power.Holder and power.Holder.mover then
+			E:DisableMover(power.Holder.mover:GetName())
 		end
 
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata then

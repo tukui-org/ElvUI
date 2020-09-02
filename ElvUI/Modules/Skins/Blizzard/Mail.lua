@@ -49,8 +49,8 @@ function S:MailFrame()
 	end
 
 	_G.InboxFrame:CreateBackdrop('Transparent')
-	_G.InboxFrame.backdrop:SetPoint('TOPLEFT', _G.MailItem1, 'TOPLEFT')
-	_G.InboxFrame.backdrop:SetPoint('BOTTOMRIGHT', _G.MailItem7, 'BOTTOMRIGHT')
+	_G.InboxFrame.backdrop:Point('TOPLEFT', _G.MailItem1, 'TOPLEFT')
+	_G.InboxFrame.backdrop:Point('BOTTOMRIGHT', _G.MailItem7, 'BOTTOMRIGHT')
 
 	S:HandleNextPrevButton(_G.InboxPrevPageButton, nil, nil, true)
 	S:HandleNextPrevButton(_G.InboxNextPageButton, nil, nil, true)
@@ -75,9 +75,9 @@ function S:MailFrame()
 	S:HandleEditBox(_G.SendMailMoneyCopper)
 	_G.SendMailMoneyBg:Kill()
 	_G.SendMailMoneyInset:StripTextures()
-	_G.SendMailSubjectEditBox:SetPoint('TOPLEFT', _G.SendMailNameEditBox, 'BOTTOMLEFT', 0, -10)
-	_G.SendMailSubjectEditBox:SetHeight(18)
-	_G.SendMailNameEditBox:SetHeight(18)
+	_G.SendMailSubjectEditBox:Point('TOPLEFT', _G.SendMailNameEditBox, 'BOTTOMLEFT', 0, -10)
+	_G.SendMailSubjectEditBox:Height(18)
+	_G.SendMailNameEditBox:Height(18)
 	_G.SendMailFrame:StripTextures()
 
 	hooksecurefunc('SendMailFrame_Update', MailFrameSkin)
@@ -108,8 +108,8 @@ function S:MailFrame()
 
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
-	_G.InboxPrevPageButton:SetPoint('BOTTOMLEFT', 30, 100)
-	_G.InboxNextPageButton:SetPoint('BOTTOMRIGHT', -80, 100)
+	_G.InboxPrevPageButton:Point('BOTTOMLEFT', 30, 100)
+	_G.InboxNextPageButton:Point('BOTTOMRIGHT', -80, 100)
 	_G.InvoiceTextFontNormal:FontTemplate(nil, 13)
 	_G.MailTextFontNormal:FontTemplate(nil, 13)
 	_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
@@ -143,9 +143,9 @@ function S:MailFrame()
 		end
 	end
 
-	_G.OpenMailReplyButton:SetPoint('RIGHT', _G.OpenMailDeleteButton, 'LEFT', -2, 0)
-	_G.OpenMailDeleteButton:SetPoint('RIGHT', _G.OpenMailCancelButton, 'LEFT', -2, 0)
-	_G.SendMailMailButton:SetPoint('RIGHT', _G.SendMailCancelButton, 'LEFT', -2, 0)
+	_G.OpenMailReplyButton:Point('RIGHT', _G.OpenMailDeleteButton, 'LEFT', -2, 0)
+	_G.OpenMailDeleteButton:Point('RIGHT', _G.OpenMailCancelButton, 'LEFT', -2, 0)
+	_G.SendMailMailButton:Point('RIGHT', _G.SendMailCancelButton, 'LEFT', -2, 0)
 end
 
 S:AddCallback('MailFrame')

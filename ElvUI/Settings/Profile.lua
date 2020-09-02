@@ -58,7 +58,7 @@ P.general = {
 	fontSize = 12,
 	font = 'PT Sans Narrow',
 	fontStyle = 'OUTLINE',
-	bordercolor = { r = 0.1, g = 0.1, b = 0.1 },
+	bordercolor = { r = 0, g = 0, b = 0 }, -- updated in E.Initialize
 	backdropcolor = { r = 0.1, g = 0.1, b = 0.1 },
 	backdropfadecolor = { r = .06, g = .06, b = .06, a = 0.8 },
 	valuecolor = {r = 23/255, g = 132/255, b = 209/255},
@@ -697,15 +697,6 @@ P.nameplates = {
 			enable = true,
 			showTitle = true,
 			nameOnly = true,
-			widgetXPBar = {
-				enable = true,
-				yOffset = -4,
-				color = {
-					r = 0.529,
-					g = 0.808,
-					b = 0.922
-				}
-			},
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
 			debuffs = CopyTable(NP_Auras),
@@ -724,15 +715,6 @@ P.nameplates = {
 			enable = true,
 			showTitle = true,
 			nameOnly = false,
-			widgetXPBar = {
-				enable = true,
-				yOffset = -4,
-				color = {
-					r = 0.529,
-					g = 0.808,
-					b = 0.922
-				}
-			},
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
 			debuffs = CopyTable(NP_Auras),
@@ -985,6 +967,7 @@ P.tooltip = {
 	showMount = true,
 	modifierID = 'SHOW',
 	role = true,
+	gender = false,
 	font = 'PT Sans Narrow',
 	fontOutline = 'NONE',
 	headerFontSize = 12,
@@ -1365,7 +1348,7 @@ P.unitframe = {
 	thinBorders = false,
 	targetSound = false,
 	colors = {
-		borderColor = {r = 0, g = 0, b = 0},
+		borderColor = {r = 0, g = 0, b = 0}, -- updated in E.Initialize
 		healthclass = false,
 		--healththreat = false,
 		healthselection = false,

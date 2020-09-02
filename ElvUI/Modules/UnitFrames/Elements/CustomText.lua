@@ -32,7 +32,7 @@ function UF:Configure_CustomTexts(frame)
 			object:FontTemplate(tagFont or font, db.size or UF.db.fontSize, db.fontOutline or UF.db.fontOutline)
 			object:SetJustifyH(db.justifyH or 'CENTER')
 			object:ClearAllPoints()
-			object:SetPoint(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
+			object:Point(db.justifyH or 'CENTER', attachPoint, db.justifyH or 'CENTER', db.xOffset, db.yOffset)
 
 			if db.attachTextTo == 'Power' and frame.Power then
 				object:SetParent(frame.Power.RaisedElementParent)

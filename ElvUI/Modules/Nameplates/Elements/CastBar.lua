@@ -115,7 +115,7 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Icon:SetInside()
 
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
-	Castbar.Time:SetPoint('RIGHT', Castbar, 'RIGHT', -4, 0)
+	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
 	Castbar.Time:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
@@ -181,13 +181,13 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.castTimeFormat = db.castbar.castTimeFormat
 		nameplate.Castbar.channelTimeFormat = db.castbar.channelTimeFormat
 
-		nameplate.Castbar:SetSize(db.castbar.width, db.castbar.height)
-		nameplate.Castbar:SetPoint('CENTER', nameplate, 'CENTER', db.castbar.xOffset, db.castbar.yOffset)
+		nameplate.Castbar:Size(db.castbar.width, db.castbar.height)
+		nameplate.Castbar:Point('CENTER', nameplate, 'CENTER', db.castbar.xOffset, db.castbar.yOffset)
 
 		if db.castbar.showIcon then
 			nameplate.Castbar.Button:ClearAllPoints()
-			nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'BOTTOMLEFT' or 'BOTTOMRIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'BOTTOMRIGHT' or 'BOTTOMLEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
-			nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
+			nameplate.Castbar.Button:Point(db.castbar.iconPosition == 'RIGHT' and 'BOTTOMLEFT' or 'BOTTOMRIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'BOTTOMRIGHT' or 'BOTTOMLEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
+			nameplate.Castbar.Button:Size(db.castbar.iconSize, db.castbar.iconSize)
 			nameplate.Castbar.Button:Show()
 		else
 			nameplate.Castbar.Button:Hide()
@@ -197,17 +197,17 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.Text:ClearAllPoints()
 
 		if db.castbar.textPosition == 'BELOW' then
-			nameplate.Castbar.Time:SetPoint('TOPRIGHT', nameplate.Castbar, 'BOTTOMRIGHT')
-			nameplate.Castbar.Text:SetPoint('TOPLEFT', nameplate.Castbar, 'BOTTOMLEFT')
+			nameplate.Castbar.Time:Point('TOPRIGHT', nameplate.Castbar, 'BOTTOMRIGHT')
+			nameplate.Castbar.Text:Point('TOPLEFT', nameplate.Castbar, 'BOTTOMLEFT')
 		elseif db.castbar.textPosition == 'ABOVE' then
-			nameplate.Castbar.Time:SetPoint('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
-			nameplate.Castbar.Text:SetPoint('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
+			nameplate.Castbar.Time:Point('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
+			nameplate.Castbar.Text:Point('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
 		else
-			nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -1, 0)
-			nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
+			nameplate.Castbar.Time:Point('RIGHT', nameplate.Castbar, 'RIGHT', -1, 0)
+			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
 		end
 
-		nameplate.Castbar.Text:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -20, 0)
+		nameplate.Castbar.Text:Point('RIGHT', nameplate.Castbar, 'RIGHT', -20, 0)
 
 		if db.castbar.hideTime then
 			nameplate.Castbar.Time:Hide()

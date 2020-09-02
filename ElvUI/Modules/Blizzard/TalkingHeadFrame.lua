@@ -10,7 +10,7 @@ function B:ScaleTalkingHeadFrame()
 	local scale = E.db.general.talkingHeadFrameScale or 1
 	local TalkingHeadFrame = _G.TalkingHeadFrame
 	local width, height = TalkingHeadFrame:GetSize()
-	TalkingHeadFrame.mover:SetSize(width * scale, height * scale)
+	TalkingHeadFrame.mover:Size(width * scale, height * scale)
 	TalkingHeadFrame:SetScale(scale)
 
 	--Reset Model Camera
@@ -34,7 +34,7 @@ local function InitializeTalkingHead()
 
 	--Set default position
 	TalkingHeadFrame:ClearAllPoints()
-	TalkingHeadFrame:SetPoint('BOTTOM', E.UIParent, 'BOTTOM', -1, 373)
+	TalkingHeadFrame:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 373)
 
 	E:CreateMover(TalkingHeadFrame, 'TalkingHeadFrameMover', L["Talking Head Frame"], nil, nil, nil, nil, nil, 'skins')
 

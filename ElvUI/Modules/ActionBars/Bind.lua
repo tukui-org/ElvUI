@@ -3,7 +3,8 @@ local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
-local select, tonumber, pairs, floor, format = select, tonumber, pairs, floor, format
+local strfind, format = strfind, format
+local select, tonumber, pairs, floor = select, tonumber, pairs, floor
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local IsAddOnLoaded = IsAddOnLoaded
@@ -66,17 +67,19 @@ end
 function AB:BindListener(key)
 	AB.bindingsChanged = true
 	if key == 'ESCAPE' then
-
 		if bind.button.bindings then
 			for i = 1, #bind.button.bindings do
 				SetBinding(bind.button.bindings[i])
 			end
 		end
+
 		E:Print(format(L["All keybindings cleared for |cff00ff00%s|r."], bind.button.name))
 		self:BindUpdate(bind.button, bind.spellmacro)
+
 		if bind.spellmacro~='MACRO' and not _G.GameTooltip:IsForbidden() then
 			_G.GameTooltip:Hide()
 		end
+
 		return
 	end
 
@@ -143,7 +146,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.bindstring = 'SPELL '..bind.button.name
 
 		GameTooltip:SetOwner(bind, 'ANCHOR_TOP')
-		GameTooltip:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+		GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
 		bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 			if #bind.button.bindings == 0 then
@@ -164,7 +167,7 @@ function AB:BindUpdate(button, spellmacro)
 		GameTooltip:Show()
 		GameTooltip:SetScript('OnHide', function(tt)
 			tt:SetOwner(bind, 'ANCHOR_TOP')
-			tt:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+			tt:Point('BOTTOM', bind, 'TOP', 0, 1)
 			tt:AddLine(bind.button.name, 1, 1, 1)
 			bind.button.bindings = {GetBindingKey(spellmacro..' '..bind.button.name)}
 			if #bind.button.bindings == 0 then
@@ -186,7 +189,7 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.name = GetMacroInfo(bind.button.id)
 
 		GameTooltip:SetOwner(bind, 'ANCHOR_TOP')
-		GameTooltip:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+		GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
 
 		bind.button.bindings = {GetBindingKey(spellmacro..' '..bind.button.name)}
@@ -208,12 +211,12 @@ function AB:BindUpdate(button, spellmacro)
 		bind.button.bindstring = (spellmacro=='STANCE' and 'SHAPESHIFTBUTTON' or 'BONUSACTIONBUTTON')..bind.button.id
 
 		GameTooltip:SetOwner(bind, 'ANCHOR_NONE')
-		GameTooltip:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+		GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
 		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
 		GameTooltip:Show()
 		GameTooltip:SetScript('OnHide', function(tt)
 			tt:SetOwner(bind, 'ANCHOR_NONE')
-			tt:SetPoint('BOTTOM', bind, 'TOP', 0, 1)
+			tt:Point('BOTTOM', bind, 'TOP', 0, 1)
 			tt:AddLine(bind.button.name, 1, 1, 1)
 			bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 			if #bind.button.bindings == 0 then
@@ -256,7 +259,7 @@ function AB:BindUpdate(button, spellmacro)
 		GameTooltip:Show()
 		GameTooltip:SetScript('OnHide', function(tt)
 			tt:SetOwner(bind, 'ANCHOR_TOP')
-			tt:SetPoint('BOTTOM', bind, 'TOP', 0, 4)
+			tt:Point('BOTTOM', bind, 'TOP', 0, 4)
 			tt:AddLine(bind.button.name, 1, 1, 1)
 			bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 			if #bind.button.bindings == 0 then
@@ -273,17 +276,16 @@ function AB:BindUpdate(button, spellmacro)
 	end
 end
 
-function AB:RegisterButton(b)
-	local stance = _G.StanceButton1:GetScript('OnClick')
-	local pet = _G.PetActionButton1:GetScript('OnClick')
-	if b.IsProtected and b.IsObjectType and b.GetScript and b:IsObjectType('CheckButton') and b:IsProtected() then
-		local script = b:GetScript('OnClick')
-		if script==pet then
-			b:HookScript('OnEnter', function(s) self:BindUpdate(s, 'PET'); end)
-		elseif script==stance then
-			b:HookScript('OnEnter', function(s) self:BindUpdate(s, 'STANCE'); end)
-		else
-			b:HookScript('OnEnter', function(s) self:BindUpdate(s); end)
+do
+	local bindUpdate = function(button)
+		local stance = button.commandName and strfind(button.commandName, '^SHAPESHIFT') and 'STANCE'
+		local pet = button.commandName and strfind(button.commandName, '^BONUSACTION') and 'PET'
+		AB:BindUpdate(button, stance or pet or nil)
+	end
+
+	function AB:RegisterButton(b)
+		if b.IsProtected and b:IsProtected() and b.IsObjectType and b:IsObjectType('CheckButton') then
+			b:HookScript('OnEnter', bindUpdate)
 		end
 	end
 end
@@ -383,7 +385,7 @@ function AB:LoadKeyBinder()
 	Popup:SetMovable(true)
 	Popup:SetFrameLevel(99)
 	Popup:SetClampedToScreen(true)
-	Popup:SetSize(360, 130)
+	Popup:Size(360, 130)
 	Popup:SetTemplate('Transparent')
 	Popup:RegisterForDrag('AnyUp', 'AnyDown')
 	Popup:SetScript('OnMouseDown', Popup.StartMoving)
@@ -391,8 +393,8 @@ function AB:LoadKeyBinder()
 	Popup:Hide()
 
 	Popup.header = CreateFrame('Button', nil, Popup, 'OptionsButtonTemplate, BackdropTemplate')
-	Popup.header:SetSize(100, 25)
-	Popup.header:SetPoint('CENTER', Popup, 'TOP')
+	Popup.header:Size(100, 25)
+	Popup.header:Point('CENTER', Popup, 'TOP')
 	Popup.header:RegisterForClicks('AnyUp', 'AnyDown')
 	Popup.header:SetScript('OnMouseDown', function() Popup:StartMoving() end)
 	Popup.header:SetScript('OnMouseUp', function() Popup:StopMovingOrSizing() end)
@@ -402,17 +404,17 @@ function AB:LoadKeyBinder()
 	Popup.desc:SetFontObject('GameFontHighlight')
 	Popup.desc:SetJustifyV('TOP')
 	Popup.desc:SetJustifyH('LEFT')
-	Popup.desc:SetPoint('TOPLEFT', 18, -32)
-	Popup.desc:SetPoint('BOTTOMRIGHT', -18, 48)
+	Popup.desc:Point('TOPLEFT', 18, -32)
+	Popup.desc:Point('BOTTOMRIGHT', -18, 48)
 	Popup.desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."])
 
 	Popup.save = CreateFrame('Button', Popup:GetName()..'SaveButton', Popup, 'OptionsButtonTemplate, BackdropTemplate')
 	Popup.save:SetText(L["Save"])
-	Popup.save:SetWidth(150)
+	Popup.save:Width(150)
 	Popup.save:SetScript('OnClick', function() AB:DeactivateBindMode(true) end)
 
 	Popup.discard = CreateFrame('Button', Popup:GetName()..'DiscardButton', Popup, 'OptionsButtonTemplate, BackdropTemplate')
-	Popup.discard:SetWidth(150)
+	Popup.discard:Width(150)
 	Popup.discard:SetText(L["Discard"])
 	Popup.discard:SetScript('OnClick', function() AB:DeactivateBindMode(false) end)
 
@@ -434,9 +436,9 @@ function AB:LoadKeyBinder()
 	end)
 
 	--position buttons
-	Popup.perCharCheck:SetPoint('BOTTOMLEFT', Popup.discard, 'TOPLEFT', 0, 2)
-	Popup.save:SetPoint('BOTTOMRIGHT', -14, 10)
-	Popup.discard:SetPoint('BOTTOMLEFT', 14, 10)
+	Popup.perCharCheck:Point('BOTTOMLEFT', Popup.discard, 'TOPLEFT', 0, 2)
+	Popup.save:Point('BOTTOMRIGHT', -14, 10)
+	Popup.discard:Point('BOTTOMLEFT', 14, 10)
 
 	Skins:HandleCheckBox(Popup.perCharCheck)
 	Skins:HandleButton(Popup.save)
