@@ -967,6 +967,7 @@ P.tooltip = {
 	showMount = true,
 	modifierID = 'SHOW',
 	role = true,
+	gender = false,
 	font = 'PT Sans Narrow',
 	fontOutline = 'NONE',
 	headerFontSize = 12,

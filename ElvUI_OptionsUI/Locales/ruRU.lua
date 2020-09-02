@@ -417,6 +417,8 @@ L["Display the upgrade icon on items that WoW considers an upgrade for your char
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Отображать метки тиков на полосе заклинаний для поддерживаемых заклинаний. Они будут автоматически масштабироваться для заклинаний вроде Похищения души и добавлять новые тики, основываясь на показателе скорости."
 L["Displayed Currency"] = "Отображаемая валюта"
 L["Displays a detailed report of every item sold when enabled."] = "Показывать подробный отчет по каждому проданному серому предмету."
+L["Displays item level on equippable items."] = true
+L["Displays the gender of players."] = true
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = "Не отображать ауры длительностью более этого значения (в секундах). Установите на 0 для отключения."
 L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = "Не отображать ауры длительностью менее этого значения (в секундах). Установите на 0 для отключения."
 L["Donations:"] = "Финансовая поддержка:"

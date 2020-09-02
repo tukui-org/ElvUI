@@ -419,6 +419,7 @@ L["Display tick marks on the castbar for channelled spells. This will adjust aut
 L["Displayed Currency"] = "显示的货币"
 L["Displays a detailed report of every item sold when enabled."] = "启用后显示包含每个物品金额的详细报告"
 L["Displays item level on equippable items."] = "显示可装备物品的物品等级"
+L["Displays the gender of players."] = true
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = "不显示高于此时间(单位:秒)的光环.设置为0以禁用"
 L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = "不显示低于此时间(单位:秒)的光环.设置为0以禁用"
 L["Donations:"] = "捐款:"
@@ -520,6 +521,7 @@ L["Friendly"] = "友好"
 L["Full Overlay"] = "全覆盖"
 L["Full"] = "满"
 L["Gems"] = "珠宝"
+L["Gender"] = true
 L["General"] = "一般"
 L["Global (Account Settings)"] = "全局(账号设置)"
 L["Global Fade Transparency"] = "全局透明渐隐"

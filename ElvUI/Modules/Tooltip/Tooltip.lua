@@ -251,9 +251,17 @@ function TT:SetUnitText(tt, unit)
 			if localizedFaction and englishRace == 'Pandaren' then race = localizedFaction..' '..race end
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			if level < realLevel then
-				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s %s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, genderTable[UnitSex(unit)], race or '', nameColor.colorStr, localeClass)
+				if TT.db.gender then
+					levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s %s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, genderTable[UnitSex(unit)], race or '', nameColor.colorStr, localeClass)
+				else
+					levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, race or '', nameColor.colorStr, localeClass)
+				end
 			else
-				levelLine:SetFormattedText('%s%s|r %s %s |c%s%s|r', hexColor, level > 0 and level or '??', genderTable[UnitSex(unit)], race or '', nameColor.colorStr, localeClass)
+				if TT.db.gender then
+					levelLine:SetFormattedText('%s%s|r %s %s |c%s%s|r', hexColor, level > 0 and level or '??', genderTable[UnitSex(unit)], race or '', nameColor.colorStr, localeClass)
+				else
+					levelLine:SetFormattedText('%s%s|r %s |c%s%s|r', hexColor, level > 0 and level or '??', race, nameColor.colorStr, localeClass)
+				end
 			end
 		end
 

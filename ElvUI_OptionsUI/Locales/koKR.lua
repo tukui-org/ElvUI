@@ -418,6 +418,7 @@ L["Display tick marks on the castbar for channelled spells. This will adjust aut
 L["Displayed Currency"] = "표시된 화폐"
 L["Displays a detailed report of every item sold when enabled."] = "활성화하면 판매된 모든 아이템의 상세보고를 표시합니다."
 L["Displays item level on equippable items."] = "착용 가능한 아이템의 경우 아이템 슬롯에 템렙을 표시합니다."
+L["Displays the gender of players."] = true
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = "이 값보다 긴 시간(초단위)의 효과들을 표시하지 않습니다.|n|n0으로 설정하면 이 기능을 사용하지 않습니다."
 L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = "이 값보다 짧은 시간(초단위)의 효과들을 표시하지 않습니다.|n|n0으로 설정하면 이 기능을 사용하지 않습니다."
 L["Donations:"] = "|cff2eb7e4< 기부자 >|r"
@@ -516,6 +517,7 @@ L["Friendly"] = "아군"
 L["Full Overlay"] = true
 L["Full"] = "전체"
 L["Gems"] = true
+L["Gender"] = true
 L["General"] = "일반"
 L["Global (Account Settings)"] = "전역 (계정 설정)"
 L["Global Fade Transparency"] = "전역 흐려짐 투명도"
