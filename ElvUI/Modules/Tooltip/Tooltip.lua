@@ -190,7 +190,7 @@ function TT:GetLevelLine(tt, offset)
 end
 
 local genderTable = {
-	L["Neuter or Unknown"],
+	_G.UNKNOWN or '',
 	_G.MALE,
 	_G.FEMALE,
 }
