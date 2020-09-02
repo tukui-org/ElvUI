@@ -62,7 +62,10 @@ E.Options.args.general = {
 					desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
 					type = 'toggle',
 					get = function(info) return E.private.general.pixelPerfect end,
-					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show('PRIVATE_RL') end
+					set = function(info, value)
+						E.private.general.pixelPerfect = value
+						E:StaticPopup_Show('PRIVATE_RL')
+					end
 				},
 				loginmessage = {
 					order = 4,
