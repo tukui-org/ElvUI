@@ -173,7 +173,7 @@ function E:OnInitialize()
 		end
 	end
 
-	E.twoPixelsPlease = false
+	E.twoPixelsPlease = false -- changing this option is not supported! :P
 	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
 	E.Spacing = (E.PixelMode and 0) or 1
