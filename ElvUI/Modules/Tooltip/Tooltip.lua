@@ -61,6 +61,7 @@ local UnitPVPName = UnitPVPName
 local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
+local UnitSex = UnitSex
 
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
@@ -188,6 +189,12 @@ function TT:GetLevelLine(tt, offset)
 	end
 end
 
+local genderTable = {
+	L["Neuter or Unknown"],
+	_G.MALE,
+	_G.FEMALE,
+}
+
 function TT:SetUnitText(tt, unit)
 	local name, realm = UnitName(unit)
 
@@ -244,9 +251,9 @@ function TT:SetUnitText(tt, unit)
 			if localizedFaction and englishRace == 'Pandaren' then race = localizedFaction..' '..race end
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			if level < realLevel then
-				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, race or '', nameColor.colorStr, localeClass)
+				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s %s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, genderTable[UnitSex(unit)], race or '', nameColor.colorStr, localeClass)
 			else
-				levelLine:SetFormattedText('%s%s|r %s |c%s%s|r', hexColor, level > 0 and level or '??', race or '', nameColor.colorStr, localeClass)
+				levelLine:SetFormattedText('%s%s|r %s %s |c%s%s|r', hexColor, level > 0 and level or '??', genderTable[UnitSex(unit)], race or '', nameColor.colorStr, localeClass)
 			end
 		end
 
