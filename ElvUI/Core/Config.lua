@@ -209,22 +209,6 @@ local function ConfigMode_Initialize()
 	_G.UIDropDownMenu_SetSelectedValue(dd, dd.selectedValue or 'ALL')
 end
 
-function E:MoverNudgeOnShow()
-	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-end
-
-function E:MoverNudgeHeaderOnShow()
-	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-end
-
-function E:MoverPopupOnShow()
-	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-end
-
-function E:MoverPopupHeaderOnShow()
-	self:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-end
-
 function E:NudgeMover(nudgeX, nudgeY)
 	local mover = ElvUIMoverNudgeWindow.child
 	local x, y, point = E:CalculateMoverPoints(mover, nudgeX, nudgeY)
@@ -259,6 +243,8 @@ function E:AssignFrameToNudge()
 end
 
 function E:CreateMoverPopup()
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+
 	local f = CreateFrame('Frame', 'ElvUIMoverPopupWindow', _G.UIParent, 'BackdropTemplate')
 	f:SetFrameStrata('DIALOG')
 	f:SetToplevel(true)
@@ -269,9 +255,8 @@ function E:CreateMoverPopup()
 	f:Size(370, 190)
 	f:SetTemplate('Transparent')
 	f:Point('BOTTOM', _G.UIParent, 'CENTER', 0, 100)
-	f:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-	f:SetScript('OnShow', E.MoverPopupOnShow)
-	f:CreateShadow()
+	f:CreateShadow(4)
+	f.shadow:SetBackdropBorderColor(r, g, b, 0.9)
 	f:Hide()
 
 	local header = CreateFrame('Button', nil, f, 'BackdropTemplate')
@@ -283,13 +268,13 @@ function E:CreateMoverPopup()
 	header:RegisterForClicks('AnyUp', 'AnyDown')
 	header:SetScript('OnMouseDown', function() f:StartMoving() end)
 	header:SetScript('OnMouseUp', function() f:StopMovingOrSizing() end)
-	header:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-	header:SetScript('OnShow', E.MoverPopupHeaderOnShow)
+	f.header = header
 
 	local title = header:CreateFontString(nil, 'OVERLAY')
 	title:FontTemplate()
 	title:Point('CENTER', header, 'CENTER')
 	title:SetText('ElvUI')
+	f.title = title
 
 	local desc = f:CreateFontString(nil, 'ARTWORK')
 	desc:SetFontObject('GameFontHighlight')
@@ -298,15 +283,18 @@ function E:CreateMoverPopup()
 	desc:Point('TOPLEFT', 18, -20)
 	desc:Point('BOTTOMRIGHT', -18, 48)
 	desc:SetText(L["DESC_MOVERCONFIG"])
+	f.desc = desc
 
-	local snapping = CreateFrame('CheckButton', f:GetName()..'CheckButton', f, 'OptionsCheckButtonTemplate')
-	_G[snapping:GetName() .. 'Text']:SetText(L["Sticky Frames"])
-
+	local snapName = f:GetName()..'CheckButton'
+	local snapping = CreateFrame('CheckButton', snapName, f, 'OptionsCheckButtonTemplate')
 	snapping:SetScript('OnShow', function(cb) cb:SetChecked(E.db.general.stickyFrames) end)
 	snapping:SetScript('OnClick', function(cb) E.db.general.stickyFrames = cb:GetChecked() end)
+	snapping.text = _G[snapName..'Text']
+	snapping.text:SetText(L["Sticky Frames"])
+	f.snapping = snapping
 
 	local lock = CreateFrame('Button', f:GetName()..'CloseButton', f, 'OptionsButtonTemplate, BackdropTemplate')
-	_G[lock:GetName() .. 'Text']:SetText(L["Lock"])
+	lock.Text:SetText(L["Lock"])
 	lock:SetScript('OnClick', function()
 		E:ToggleMoveMode()
 
@@ -318,6 +306,7 @@ function E:CreateMoverPopup()
 			end
 		end
 	end)
+	f.lock = lock
 
 	local align = CreateFrame('EditBox', f:GetName()..'EditBox', f, 'InputBoxTemplate, BackdropTemplate')
 	align:Size(24, 17)
@@ -352,6 +341,7 @@ function E:CreateMoverPopup()
 	align.text = align:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
 	align.text:Point('RIGHT', align, 'LEFT', -4, 0)
 	align.text:SetText(L["Grid Size:"])
+	f.align = align
 
 	--position buttons
 	snapping:Point('BOTTOMLEFT', 14, 10)
@@ -371,26 +361,26 @@ function E:CreateMoverPopup()
 		end
 	end)
 
-	local configMode = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
-	configMode:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
-	S:HandleDropDownBox(configMode, 165)
-	configMode.text = configMode:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
-	configMode.text:Point('RIGHT', configMode.backdrop, 'LEFT', -2, 0)
-	configMode.text:SetText(L["Config Mode:"])
+	local dropDown = CreateFrame('Frame', f:GetName()..'DropDown', f, 'UIDropDownMenuTemplate')
+	dropDown:Point('BOTTOMRIGHT', lock, 'TOPRIGHT', 8, -5)
+	S:HandleDropDownBox(dropDown, 165)
+	dropDown.text = dropDown:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+	dropDown.text:Point('RIGHT', dropDown.backdrop, 'LEFT', -2, 0)
+	dropDown.text:SetText(L["Config Mode:"])
+	f.dropDown = dropDown
 
-	_G.UIDropDownMenu_Initialize(configMode, ConfigMode_Initialize)
+	_G.UIDropDownMenu_Initialize(dropDown, ConfigMode_Initialize)
 
 	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent, 'BackdropTemplate')
 	nudgeFrame:SetFrameStrata('DIALOG')
 	nudgeFrame:Size(200, 110)
 	nudgeFrame:SetTemplate('Transparent')
-	nudgeFrame:CreateShadow()
-	nudgeFrame:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	nudgeFrame:CreateShadow(4)
+	nudgeFrame.shadow:SetBackdropBorderColor(r, g, b, 0.9)
 	nudgeFrame:SetFrameLevel(500)
 	nudgeFrame:EnableMouse(true)
 	nudgeFrame:SetClampedToScreen(true)
 	nudgeFrame:SetPropagateKeyboardInput(true)
-	nudgeFrame:SetScript('OnShow', E.MoverNudgeOnShow)
 	nudgeFrame:SetScript('OnKeyDown', function(_, btn)
 		local Mod = IsAltKeyDown() or IsControlKeyDown()
 		if btn == 'NUMPAD4' then
@@ -413,15 +403,13 @@ function E:CreateMoverPopup()
 	desc:Point('TOPLEFT', 18, -15)
 	desc:Point('BOTTOMRIGHT', -18, 28)
 	desc:SetJustifyH('CENTER')
-	nudgeFrame.title = desc
+	nudgeFrame.desc = desc
 
 	header = CreateFrame('Button', nil, nudgeFrame, 'BackdropTemplate')
 	header:SetTemplate(nil, true)
 	header:Size(100, 25)
 	header:SetPoint('CENTER', nudgeFrame, 'TOP')
 	header:SetFrameLevel(header:GetFrameLevel() + 2)
-	header:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-	header:SetScript('OnShow', E.MoverNudgeHeaderOnShow)
 	nudgeFrame.header = header
 
 	title = header:CreateFontString(nil, 'OVERLAY')
@@ -877,9 +865,16 @@ function E:Config_GetWindow()
 end
 
 local ConfigLogoTop
-E.valueColorUpdateFuncs[function(_, r, b, g)
+E.valueColorUpdateFuncs[function(_, r, g, b)
 	if ConfigLogoTop then
-		ConfigLogoTop:SetVertexColor(r, b, g)
+		ConfigLogoTop:SetVertexColor(r, g, b)
+	end
+
+	if ElvUIMoverPopupWindow and ElvUIMoverPopupWindow.shadow then
+		ElvUIMoverPopupWindow.shadow:SetBackdropBorderColor(r, g, b, 0.9)
+	end
+	if ElvUIMoverNudgeWindow and ElvUIMoverNudgeWindow.shadow then
+		ElvUIMoverNudgeWindow.shadow:SetBackdropBorderColor(r, g, b, 0.9)
 	end
 end] = true
 

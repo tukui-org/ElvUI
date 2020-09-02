@@ -210,12 +210,6 @@ local function UpdateColors()
 	for _, holder in pairs(E.CreatedMovers) do
 		OnShow(holder.mover, r, g, b)
 	end
-
-	local nudge = _G.ElvUIMoverNudgeWindow
-	if nudge then
-		nudge:SetBackdropBorderColor(r, g, b)
-		nudge.header:SetBackdropBorderColor(r, g, b)
-	end
 end
 E.valueColorUpdateFuncs[UpdateColors] = true
 

@@ -106,7 +106,7 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 	local power = frame.Power and frame.Power.backdrop
 	local health = frame.Health and frame.Health.backdrop
 	local portrait = (frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY) and (frame.Portrait and frame.Portrait.backdrop)
-	local offset = (UF.thinBorders and 3) or 4 -- edgeSize is 3
+	local offset = (UF.thinBorders and 4) or 5 -- edgeSize is 3
 
 	mainGlow:ClearAllPoints()
 	mainGlow:SetPoint('TOPLEFT', (frame.ORIENTATION == 'LEFT' and portrait) or health, -offset, offset)
@@ -117,8 +117,8 @@ function UF:FrameGlow_PositionGlow(frame, mainGlow, powerGlow)
 		mainGlow:SetPoint('BOTTOMRIGHT', health, offset, -offset)
 	else
 		--offset is set because its one pixel off for some reason
-		mainGlow:Point('BOTTOMLEFT', frame, -offset, -(E.PixelMode and offset or offset-1))
-		mainGlow:Point('BOTTOMRIGHT', frame, offset, -(E.PixelMode and offset or offset-1))
+		mainGlow:SetPoint('BOTTOMLEFT', frame, -offset, -(UF.thinBorders and offset or offset-1))
+		mainGlow:SetPoint('BOTTOMRIGHT', frame, offset, -(UF.thinBorders and offset or offset-1))
 	end
 
 	if powerGlow then
@@ -142,12 +142,12 @@ end
 
 function UF:FrameGlow_CreateGlow(frame, which)
 	-- Main Glow to wrap the health frame to it's best ability
-	local mainGlow = frame:CreateShadow(nil, true)
+	local mainGlow = frame:CreateShadow(4, true)
 	mainGlow:SetFrameStrata('BACKGROUND')
 	mainGlow:Hide()
 
 	-- Secondary Glow for power frame when using power offset or mini power
-	local powerGlow = frame:CreateShadow(nil, true)
+	local powerGlow = frame:CreateShadow(4, true)
 	powerGlow:SetFrameStrata('BACKGROUND')
 	powerGlow:Hide()
 

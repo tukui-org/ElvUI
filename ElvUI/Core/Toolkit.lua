@@ -203,19 +203,18 @@ end
 
 local function CreateShadow(frame, size, pass)
 	if not pass and frame.shadow then return end
-	if not size then size = (E.PixelMode and 3) or 4 end
+	if not size then size = 3 end
 
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
 	shadowBackdrop.edgeFile = E.Media.Textures.GlowTex
-	if not shadowBackdrop.edgeSize then
-		shadowBackdrop.edgeSize = E:Scale(size)
-	end
+	shadowBackdrop.edgeSize = E:Scale(size)
 
+	local offset = (E.PixelMode and size) or (size + 1)
 	local shadow = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
-	shadow:SetOutside(frame, size, size, nil, true)
+	shadow:SetOutside(frame, offset, offset, nil, true)
 	shadow:SetBackdrop(shadowBackdrop)
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
