@@ -12,6 +12,7 @@ local GetCVarDefault = GetCVarDefault
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
+local InCombatLockdown = InCombatLockdown
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local SetCVar = SetCVar
 local UnitClass = UnitClass
@@ -502,12 +503,7 @@ function NP:ConfigureAll()
 	if E.private.nameplates.enable ~= true then return end
 	NP:StyleFilterConfigure() -- keep this at the top
 
-	local Scale = E.global.general.UIScale
-
-	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * Scale, NP.db.plateSize.personalHeight * Scale)
-	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * Scale, NP.db.plateSize.enemyHeight * Scale)
-	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * Scale, NP.db.plateSize.friendlyHeight * Scale)
-
+	NP:SetNamePlateSizes()
 	NP:PLAYER_REGEN_ENABLED()
 
 	local playerEnabled = NP.db.units.PLAYER.enable
@@ -698,6 +694,15 @@ function NP:HideInterfaceOptions()
 	end
 end
 
+function NP:SetNamePlateSizes()
+	if InCombatLockdown() then return end
+
+	local scale = E.global.general.UIScale
+	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * scale, NP.db.plateSize.personalHeight * scale)
+	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * scale, NP.db.plateSize.enemyHeight * scale)
+	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * scale, NP.db.plateSize.friendlyHeight * scale)
+end
+
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
@@ -719,13 +724,7 @@ function NP:Initialize()
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
-	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', function()
-		local Scale = E.global.general.UIScale
-		C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * Scale, NP.db.plateSize.personalHeight * Scale)
-		C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * Scale, NP.db.plateSize.enemyHeight * Scale)
-		C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * Scale, NP.db.plateSize.friendlyHeight * Scale)
-	end)
-
+	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', NP.SetNamePlateSizes)
 	hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
 		if not frame or frame:IsForbidden() then
 			return
