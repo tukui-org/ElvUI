@@ -530,24 +530,16 @@ function NP:ConfigureAll()
 
 		if nameplate.frameType == 'PLAYER' then
 			nameplate:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+			SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
 		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
 			nameplate:SetSize(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
 		else
 			nameplate:SetSize(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
 		end
 
-		if nameplate.frameType == 'PLAYER' then
-			NP.PlayerNamePlateAnchor:ClearAllPoints()
-			NP.PlayerNamePlateAnchor:SetParent(isStatic and _G.ElvNP_Player or nameplate)
-			NP.PlayerNamePlateAnchor:SetAllPoints(isStatic and _G.ElvNP_Player or nameplate)
-			NP.PlayerNamePlateAnchor:Show()
-
-			SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
-		end
-
 		if nameplate == _G.ElvNP_Player then
-			NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED', 'player')
-		else
+			NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+		elseif nameplate.frameType ~= 'PLAYER' or playerEnabled then
 			NP:UpdatePlate(nameplate, true)
 			NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this after update plate
 		end
@@ -620,7 +612,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if nameplate.isMe then
 			nameplate.frameType = 'PLAYER'
 
-			if NP.db.units.PLAYER.enable then
+			if NP.db.units.PLAYER.enable and (nameplate ~= _G.ElvNP_Test) then
 				NP.PlayerNamePlateAnchor:ClearAllPoints()
 				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
 				NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
