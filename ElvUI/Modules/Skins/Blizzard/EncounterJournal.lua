@@ -148,6 +148,25 @@ local function SkinAbilitiesInfo()
 	end
 end
 
+local function PowersFrame(_, button)
+	local frame = button:GetParent()
+
+	if not button.Icon.backdrop then
+		S:HandleIcon(button.Icon, true)
+		button.Border:SetAlpha(0)
+
+		if E.private.skins.parchmentRemoverEnable then
+			frame:StripTextures()
+			frame.ItemLevel:SetTextColor(1, 1, 1)
+			frame:CreateBackdrop('Transparent')
+			frame.backdrop:SetPoint('BOTTOMLEFT')
+			frame.backdrop:SetPoint('TOPLEFT', 10, 0)
+		end
+	end
+
+	button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
+end
+
 local function HandleTopTabs(tab)
 	S:HandleTab(tab)
 	tab:SetHitRectInsets(0, 0, 0, 0)
@@ -187,6 +206,7 @@ function S:Blizzard_EncounterJournal()
 	HandleTopTabs(InstanceSelect.suggestTab)
 	HandleTopTabs(InstanceSelect.dungeonsTab)
 	HandleTopTabs(InstanceSelect.raidsTab)
+	HandleTopTabs(InstanceSelect.LootJournalTab)
 
 	InstanceSelect.suggestTab:ClearAllPoints()
 	InstanceSelect.suggestTab:Width(175)
@@ -197,6 +217,9 @@ function S:Blizzard_EncounterJournal()
 	InstanceSelect.raidsTab:ClearAllPoints()
 	InstanceSelect.raidsTab:Width(125)
 	InstanceSelect.raidsTab:Point('BOTTOMLEFT', InstanceSelect.dungeonsTab, 'BOTTOMRIGHT', 2, 0)
+	InstanceSelect.LootJournalTab:ClearAllPoints()
+	InstanceSelect.LootJournalTab:Width(125)
+	InstanceSelect.LootJournalTab:Point('BOTTOMLEFT', InstanceSelect.raidsTab, 'BOTTOMRIGHT', 2, 0)
 
 	--Skin the tab text
 	for i = 1, #InstanceSelect.Tabs do
@@ -458,6 +481,18 @@ function S:Blizzard_EncounterJournal()
 		item2.IconBorder:Kill()
 	end
 
+	--Powers
+	local LootJournal = EJ.LootJournal
+	HandleButton(LootJournal.ClassDropDownButton, true)
+	LootJournal.ClassDropDownButton:SetFrameLevel(10)
+
+	_G.EncounterJournal.LootJournal:CreateBackdrop('Transparent')
+	local parch = _G.EncounterJournal.LootJournal:GetRegions()
+	_G.EncounterJournal.LootJournal.backdrop:SetOutside(parch)
+
+	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
+	--hooksecurefunc(LootJournal.PowersFrame, 'ConfigureItemButton', PowersFrame) -- ToDO: Skin the LootJournalMixin
+
 	--Dungeon/raid selection buttons (From AddOnSkins)
 	hooksecurefunc('EncounterJournal_ListInstances', SkinDungeons)
 	_G.EncounterJournal_ListInstances()
@@ -490,6 +525,8 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:SetAlpha(0)
+
+		parch:Kill()
 	end
 end
 

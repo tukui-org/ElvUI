@@ -9,8 +9,9 @@
 
 local _G = _G
 local unpack = unpack
-local format, gsub, type = format, gsub, type
+local format, gsub, pairs, type = format, gsub, pairs, type
 
+local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
@@ -70,6 +71,16 @@ E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
 E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
 E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
 E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+
+-- Item Qualitiy stuff - used by MerathilisUI
+E.QualityColors = {}
+local qualityColors = BAG_ITEM_QUALITY_COLORS
+for index, value in pairs(qualityColors) do
+	E.QualityColors[index] = {r = value.r, g = value.g, b = value.b}
+end
+E.QualityColors[-1] = {r = 0, g = 0, b = 0}
+E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
+E.QualityColors[Enum.ItemQuality.Common] = {r = 0, g = 0, b = 0}
 
 do
 	local locale = GetLocale()
