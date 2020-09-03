@@ -145,9 +145,9 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			frame:SetBackdropColor(backdropr, backdropg, backdropb, frame.customBackdropAlpha or (template == 'Transparent' and backdropa) or 1)
 		end
 
-		local pixelMode = not isUnitFrameElement and not E.PixelMode
-		local thinBorders = isUnitFrameElement and not UF.thinBorders
-		if (pixelMode or thinBorders) and not frame.forcePixelMode then
+		local notPixelMode = not isUnitFrameElement and not E.PixelMode
+		local notThinBorders = isUnitFrameElement and not UF.thinBorders
+		if (notPixelMode or notThinBorders) and not frame.forcePixelMode then
 			innerOuterBackdrop.edgeFile = E.media.blankTex
 			if not innerOuterBackdrop.edgeSize then innerOuterBackdrop.edgeSize = E:Scale(1) end
 
