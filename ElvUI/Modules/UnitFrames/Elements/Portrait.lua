@@ -22,7 +22,7 @@ function UF:Construct_Portrait(frame, type)
 		portrait.backdrop = backdrop
 	else
 		portrait = CreateFrame('PlayerModel', nil, frame)
-		portrait:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+		portrait:CreateBackdrop(nil, nil, nil, nil, true)
 	end
 
 	portrait.PostUpdate = self.PortraitUpdate

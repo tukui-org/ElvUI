@@ -6,12 +6,12 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraBars(statusBar)
-	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+	statusBar:CreateBackdrop(nil, nil, nil, nil, true)
 	statusBar:SetScript('OnMouseDown', UF.Aura_OnClick)
 	statusBar:Point('LEFT')
 	statusBar:Point('RIGHT')
 
-	statusBar.icon:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+	statusBar.icon:CreateBackdrop(nil, nil, nil, nil, true)
 	UF.statusbars[statusBar] = true
 	UF:Update_StatusBar(statusBar)
 

@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
 local _G = _G
 local pairs, pcall = pairs, pcall
@@ -144,7 +145,9 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			frame:SetBackdropColor(backdropr, backdropg, backdropb, frame.customBackdropAlpha or (template == 'Transparent' and backdropa) or 1)
 		end
 
-		if not E.PixelMode and not frame.forcePixelMode then
+		local pixelMode = not isUnitFrameElement and not E.PixelMode
+		local thinBorders = isUnitFrameElement and not UF.thinBorders
+		if (pixelMode or thinBorders) and not frame.forcePixelMode then
 			innerOuterBackdrop.edgeFile = E.media.blankTex
 			if not innerOuterBackdrop.edgeSize then innerOuterBackdrop.edgeSize = E:Scale(1) end
 
@@ -184,8 +187,10 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
-	if frame.forcePixelMode or forcePixelMode then
+	if frame.forcePixelMode or forcePixelMode or (isUnitFrameElement and UF.thinBorders) then
 		backdrop:SetOutside(frame, 1, 1)
+	elseif isUnitFrameElement and not UF.thinBorders then
+		backdrop:SetOutside(frame, UF.BORDER, UF.BORDER)
 	else
 		backdrop:SetOutside(frame)
 	end

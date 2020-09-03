@@ -6,10 +6,10 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_RaidDebuffs(frame)
 	local debuff = CreateFrame('Frame', nil, frame.RaisedElementParent, 'BackdropTemplate')
-	debuff:SetTemplate(nil, nil, nil, UF.thinBorders, true)
+	debuff:SetTemplate(nil, nil, nil, nil, true)
 	debuff:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 20) --Make them appear above regular buffs or debuffs
 
-	local offset = UF.thinBorders and 1 or E.Border
+	local offset = UF.thinBorders and 1 or 2
 	debuff.icon = debuff:CreateTexture(nil, 'OVERLAY')
 	debuff.icon:SetInside(debuff, offset, offset)
 

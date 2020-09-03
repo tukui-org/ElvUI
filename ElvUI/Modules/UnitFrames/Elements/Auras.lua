@@ -17,7 +17,7 @@ local UnitIsUnit = UnitIsUnit
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
-	buffs.spacing = E.Spacing
+	buffs.spacing = frame.SPACING
 	buffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
@@ -32,7 +32,7 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
-	debuffs.spacing = E.Spacing
+	debuffs.spacing = frame.SPACING
 	debuffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
@@ -64,8 +64,8 @@ function UF:Aura_OnClick()
 end
 
 function UF:Construct_AuraIcon(button)
-	local offset = UF.thinBorders and 1 or E.Border
-	button:SetTemplate(nil, nil, nil, UF.thinBorders, true)
+	local offset = UF.thinBorders and 1 or 2
+	button:SetTemplate(nil, nil, nil, nil, true)
 
 	button.cd:SetReverse(true)
 	button.cd:SetDrawEdge(false)

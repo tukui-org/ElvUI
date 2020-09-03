@@ -53,7 +53,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.useAtlas = false
 	power.colorDisconnected = false
 	power.colorTapping = false
-	power:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+	power:CreateBackdrop(nil, nil, nil, nil, true)
 
 	local clipFrame = CreateFrame('Frame', nil, power)
 	clipFrame:SetClipsChildren(true)
@@ -121,11 +121,11 @@ function UF:Configure_Power(frame)
 
 		--Fix height in case it is lower than the theme allows
 		local heightChanged = false
-		if (not self.thinBorders and not E.PixelMode) and frame.POWERBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
+		if not UF.thinBorders and frame.POWERBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 7
 			db.power.height = 7
 			heightChanged = true
-		elseif (self.thinBorders or E.PixelMode) and frame.POWERBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
+		elseif UF.thinBorders and frame.POWERBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 3
 			db.power.height = 3
 			heightChanged = true

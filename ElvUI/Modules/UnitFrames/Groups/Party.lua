@@ -15,8 +15,8 @@ function UF:Construct_PartyFrames()
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
-	self.BORDER = E.Border
-	self.SPACING = E.Spacing
+	self.BORDER = UF.BORDER
+	self.SPACING = UF.SPACING
 	self.SHADOW_SPACING = 3
 
 	if self.isChild then
@@ -97,13 +97,8 @@ function UF:Update_PartyFrames(frame, db)
 	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		if UF.thinBorders then
-			frame.SPACING = 0
-			frame.BORDER = 1
-		else
-			frame.BORDER = E.Border
-			frame.SPACING = E.Spacing
-		end
+		frame.SPACING = UF.SPACING
+		frame.BORDER = UF.BORDER
 
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width

@@ -21,11 +21,11 @@ function UF:Configure_ClassBar(frame, cur)
 	bars.origParent = frame
 
 	--Fix height in case it is lower than the theme allows, or in case it's higher than 30px when not detached
-	if (not self.thinBorders and not E.PixelMode) and frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
+	if not UF.thinBorders and (frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 7) then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 		frame.CLASSBAR_HEIGHT = 7
 		if db.classbar then db.classbar.height = 7 end
 		UF.ToggleResourceBar(bars) --Trigger update to health if needed
-	elseif (self.thinBorders or E.PixelMode) and frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
+	elseif UF.thinBorders and (frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 3) then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
 		frame.CLASSBAR_HEIGHT = 3
 		if db.classbar then db.classbar.height = 3 end
 		UF.ToggleResourceBar(bars)  --Trigger update to health if needed
@@ -287,7 +287,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 -------------------------------------------------------------
 function UF:Construct_ClassBar(frame)
 	local bars = CreateFrame('Frame', '$parent_ClassBar', frame, 'BackdropTemplate')
-	bars:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+	bars:CreateBackdrop(nil, nil, nil, nil, true)
 	bars:Hide()
 
 	local maxBars = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
@@ -297,7 +297,7 @@ function UF:Construct_ClassBar(frame)
 		bars[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF.statusbars[bars[i]] = true
 
-		bars[i]:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+		bars[i]:CreateBackdrop(nil, nil, nil, nil, true)
 		bars[i].backdrop:SetParent(bars)
 
 		bars[i].bg = bars:CreateTexture(nil, 'BORDER')
@@ -383,7 +383,7 @@ end
 
 function UF:Construct_DeathKnightResourceBar(frame)
 	local runes = CreateFrame('Frame', '$parent_Runes', frame)
-	runes:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+	runes:CreateBackdrop(nil, nil, nil, nil, true)
 	runes.backdrop:Hide()
 
 	for i = 1, UF.classMaxResourceBar[E.myclass] do
@@ -392,7 +392,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		runes[i]:GetStatusBarTexture():SetHorizTile(false)
 		UF.statusbars[runes[i]] = true
 
-		runes[i]:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+		runes[i]:CreateBackdrop(nil, nil, nil, nil, true)
 		runes[i].backdrop:SetParent(runes)
 
 		runes[i].bg = runes[i]:CreateTexture(nil, 'BORDER')
@@ -441,7 +441,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
 	additionalPower.PostUpdateColor = UF.PostColorAdditionalPower
 	additionalPower.PostUpdateVisibility = UF.PostVisibilityAdditionalPower
-	additionalPower:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+	additionalPower:CreateBackdrop(nil, nil, nil, nil, true)
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
 	UF.statusbars[additionalPower] = true
 
@@ -503,7 +503,7 @@ end
 -----------------------------------------------------------
 function UF:Construct_Stagger(frame)
 	local stagger = CreateFrame('Statusbar', '$parent_Stagger', frame)
-	stagger:CreateBackdrop(nil,nil, nil, self.thinBorders, true)
+	stagger:CreateBackdrop(nil,nil, nil, nil, true)
 	stagger.PostUpdate = UF.PostUpdateStagger
 	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
 	UF.statusbars[stagger] = true

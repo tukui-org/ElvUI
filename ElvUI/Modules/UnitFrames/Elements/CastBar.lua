@@ -39,7 +39,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.PostCastInterruptible = UF.PostCastInterruptible
 	castbar.PostCastFail = UF.PostCastFail
 	castbar:SetClampedToScreen(true)
-	castbar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+	castbar:CreateBackdrop(nil, nil, nil, nil, true)
 
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(castbar.Time)
@@ -73,13 +73,13 @@ function UF:Construct_Castbar(frame, moverName)
 
 	local button = CreateFrame('Frame', nil, castbar, 'BackdropTemplate')
 	local holder = CreateFrame('Frame', nil, castbar)
-	button:SetTemplate(nil, nil, nil, UF.thinBorders, true)
+	button:SetTemplate(nil, nil, nil, nil, true)
 
 	castbar.Holder = holder
 	--these are placeholder so the mover can be created.. it will be changed.
 	castbar.Holder:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(frame.BORDER - frame.SPACING))
 	castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER, frame.BORDER)
-	button:Point('RIGHT', castbar, 'LEFT', -E.Spacing*3, 0)
+	button:Point('RIGHT', castbar, 'LEFT', -frame.SPACING*3, 0)
 
 	if moverName then
 		local name = frame:GetName()
@@ -88,8 +88,7 @@ function UF:Construct_Castbar(frame, moverName)
 	end
 
 	local icon = button:CreateTexture(nil, 'ARTWORK')
-	local offset = frame.BORDER --use frame.BORDER since it may be different from E.Border due to forced thin borders
-	icon:SetInside(nil, offset, offset)
+	icon:SetInside(nil, frame.BORDER, frame.BORDER)
 	icon.bg = button
 
 	--Set to castbar.Icon

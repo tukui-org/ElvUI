@@ -48,7 +48,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 
 	health.colorTapping = true
 	health.colorDisconnected = true
-	health:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+	health:CreateBackdrop(nil, nil, nil, nil, true)
 
 	local clipFrame = CreateFrame('Frame', nil, health)
 	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
