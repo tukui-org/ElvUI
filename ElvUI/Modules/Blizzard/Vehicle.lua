@@ -7,23 +7,28 @@ local GetVehicleUIIndicator = GetVehicleUIIndicator
 local GetVehicleUIIndicatorSeat = GetVehicleUIIndicatorSeat
 local VehicleSeatIndicator_SetUpVehicle = VehicleSeatIndicator_SetUpVehicle
 
-local function VehicleSeatIndicator_SetPosition(_,_, parent)
-	if parent == 'MinimapCluster' or parent == _G.MinimapCluster then
+local function VehicleSeatIndicator_SetPosition(_,_,anchor)
+	if anchor == 'MinimapCluster' or anchor == _G.MinimapCluster then
 		_G.VehicleSeatIndicator:ClearAllPoints()
 		_G.VehicleSeatIndicator:Point('TOPLEFT', _G.VehicleSeatMover, 'TOPLEFT', 0, 0)
 	end
 end
 
 local function VehicleSetUp(vehicleID)
-	_G.VehicleSeatIndicator:Size(E.db.general.vehicleSeatIndicatorSize, E.db.general.vehicleSeatIndicatorSize)
+	local size = E.db.general.vehicleSeatIndicatorSize
+	_G.VehicleSeatIndicator:Size(size)
+
 	local _, numSeatIndicators = GetVehicleUIIndicator(vehicleID)
 	if numSeatIndicators then
+		local fourth = size / 4
+
 		for i = 1, numSeatIndicators do
 			local button = _G['VehicleSeatIndicatorButton'..i]
-			button:Size(E.db.general.vehicleSeatIndicatorSize / 4, E.db.general.vehicleSeatIndicatorSize / 4)
+			button:Size(fourth)
+
 			local _, xOffset, yOffset = GetVehicleUIIndicatorSeat(vehicleID, i)
 			button:ClearAllPoints()
-			button:Point('CENTER', button:GetParent(), 'TOPLEFT', xOffset * E.db.general.vehicleSeatIndicatorSize, -yOffset * E.db.general.vehicleSeatIndicatorSize)
+			button:Point('CENTER', button:GetParent(), 'TOPLEFT', xOffset * size, -yOffset * size)
 		end
 	end
 end
