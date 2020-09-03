@@ -82,9 +82,6 @@ function UF:Update_TankFrames(frame, db)
 	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		frame.SPACING = UF.SPACING
-		frame.BORDER = UF.BORDER
-
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.SHADOW_SPACING = 3
 		frame.UNIT_WIDTH = db.width

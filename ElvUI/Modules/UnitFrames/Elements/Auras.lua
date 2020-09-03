@@ -17,7 +17,7 @@ local UnitIsUnit = UnitIsUnit
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
-	buffs.spacing = frame.SPACING
+	buffs.spacing = UF.SPACING
 	buffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
@@ -32,7 +32,7 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
-	debuffs.spacing = frame.SPACING
+	debuffs.spacing = UF.SPACING
 	debuffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
@@ -215,7 +215,7 @@ function UF:Configure_Auras(frame, which)
 	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
 		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
-		local totalWidth = frame.UNIT_WIDTH - frame.SPACING*2
+		local totalWidth = frame.UNIT_WIDTH - UF.SPACING*2
 		if frame.USE_POWERBAR_OFFSET and not (auras.db.attachTo == 'POWER' and frame.ORIENTATION == 'MIDDLE') then
 			local powerOffset = ((frame.ORIENTATION == 'MIDDLE' and 2 or 1) * frame.POWERBAR_OFFSET)
 			totalWidth = totalWidth - powerOffset
@@ -234,11 +234,11 @@ function UF:Configure_Auras(frame, which)
 
 	local SPACE, x, y = UF.thinBorders and 1 or 2
 	local OFFSET = (frame.ORIENTATION ~= 'RIGHT' and frame.POWERBAR_OFFSET) or 0
-	local BORDER = frame.BORDER + OFFSET
+	local BORDER = UF.BORDER + OFFSET
 	if auras.db.attachTo == 'HEALTH' or auras.db.attachTo == 'POWER' then
-		x, y = E:GetXYOffset(auras.anchorPoint, -BORDER, (frame.BORDER*2) - SPACE)
+		x, y = E:GetXYOffset(auras.anchorPoint, -BORDER, (UF.BORDER*2) - SPACE)
 	else
-		x, y = E:GetXYOffset(auras.anchorPoint, BORDER - 1, frame.BORDER - SPACE)
+		x, y = E:GetXYOffset(auras.anchorPoint, BORDER - 1, UF.BORDER - SPACE)
 	end
 
 	auras.xOffset = x + auras.db.xOffset

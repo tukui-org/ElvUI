@@ -39,7 +39,7 @@ function UF:Configure_RaidDebuffs(frame)
 		debuff.onlyMatchSpellID = db.onlyMatchSpellID
 		debuff.forceShow = frame.forceShowAuras
 		debuff.icon:SetTexCoord(unpack(E.TexCoords))
-		debuff:Point('BOTTOM', frame, 'BOTTOM', db.xOffset, db.yOffset + frame.SPACING)
+		debuff:Point('BOTTOM', frame, 'BOTTOM', db.xOffset, db.yOffset + UF.SPACING)
 		debuff:Size(db.size)
 
 		local font = UF.LSM:Fetch('font', db.font)

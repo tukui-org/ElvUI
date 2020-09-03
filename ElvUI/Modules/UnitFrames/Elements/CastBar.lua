@@ -77,9 +77,9 @@ function UF:Construct_Castbar(frame, moverName)
 
 	castbar.Holder = holder
 	--these are placeholder so the mover can be created.. it will be changed.
-	castbar.Holder:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(frame.BORDER - frame.SPACING))
-	castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER, frame.BORDER)
-	button:Point('RIGHT', castbar, 'LEFT', -frame.SPACING*3, 0)
+	castbar.Holder:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(UF.BORDER - UF.SPACING))
+	castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', UF.BORDER, UF.BORDER)
+	button:Point('RIGHT', castbar, 'LEFT', -UF.SPACING*3, 0)
 
 	if moverName then
 		local name = frame:GetName()
@@ -88,7 +88,7 @@ function UF:Construct_Castbar(frame, moverName)
 	end
 
 	local icon = button:CreateTexture(nil, 'ARTWORK')
-	icon:SetInside(nil, frame.BORDER, frame.BORDER)
+	icon:SetInside(nil, UF.BORDER, UF.BORDER)
 	icon.bg = button
 
 	--Set to castbar.Icon
@@ -101,8 +101,8 @@ function UF:Configure_Castbar(frame)
 	local castbar = frame.Castbar
 	local db = frame.db.castbar
 
-	castbar:Width(db.width - ((frame.BORDER+frame.SPACING)*2))
-	castbar:Height(db.height - ((frame.BORDER+frame.SPACING)*2))
+	castbar:Width(db.width - ((UF.BORDER+UF.SPACING)*2))
+	castbar:Height(db.height - ((UF.BORDER+UF.SPACING)*2))
 	castbar.Holder:Size(db.width, db.height)
 
 	local oSC = castbar.Holder:GetScript('OnSizeChanged')
@@ -144,8 +144,8 @@ function UF:Configure_Castbar(frame)
 		if (not db.iconAttached) then
 			castbar.Icon.bg:Size(db.iconSize)
 		else
-			castbar.Icon.bg:Size(db.height-frame.SPACING*2)
-			castbar:Width(db.width - castbar.Icon.bg:GetWidth() - (frame.BORDER + frame.SPACING*5))
+			castbar.Icon.bg:Size(db.height-UF.SPACING*2)
+			castbar:Width(db.width - castbar.Icon.bg:GetWidth() - (UF.BORDER + UF.SPACING*5))
 		end
 
 		castbar.Icon.bg:Show()
@@ -180,15 +180,15 @@ function UF:Configure_Castbar(frame)
 			castbar:SetInside(anchor, 0, 0)
 		else
 			if castbar.Icon then
-				castbar.Icon.bg:Size(anchor:GetHeight() - frame.SPACING*2)
+				castbar.Icon.bg:Size(anchor:GetHeight() - UF.SPACING*2)
 			end
 
-			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - frame.BORDER) or 0
+			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - UF.BORDER) or 0
 			if frame.ORIENTATION == 'RIGHT' then
 				castbar:Point('TOPLEFT', anchor, 'TOPLEFT')
-				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - frame.SPACING*3, 0)
+				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - UF.SPACING*3, 0)
 			else
-				castbar:Point('TOPLEFT', anchor, 'TOPLEFT',  iconWidth + frame.SPACING*3, 0)
+				castbar:Point('TOPLEFT', anchor, 'TOPLEFT',  iconWidth + UF.SPACING*3, 0)
 				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
 			end
 		end
@@ -206,11 +206,11 @@ function UF:Configure_Castbar(frame)
 		end
 
 		if frame.ORIENTATION ~= 'RIGHT' then
-			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(frame.BORDER+frame.SPACING), frame.BORDER+frame.SPACING)
-			if not isMoved then castbar.Holder.mover:Point('TOPRIGHT', frame, 'BOTTOMRIGHT', 0, -(frame.BORDER - frame.SPACING)) end
+			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(UF.BORDER+UF.SPACING), UF.BORDER+UF.SPACING)
+			if not isMoved then castbar.Holder.mover:Point('TOPRIGHT', frame, 'BOTTOMRIGHT', 0, -(UF.BORDER - UF.SPACING)) end
 		else
-			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
-			if not isMoved then castbar.Holder.mover:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(frame.BORDER - frame.SPACING)) end
+			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', UF.BORDER+UF.SPACING, UF.BORDER+UF.SPACING)
+			if not isMoved then castbar.Holder.mover:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(UF.BORDER - UF.SPACING)) end
 		end
 	end
 
@@ -222,9 +222,9 @@ function UF:Configure_Castbar(frame)
 	elseif(db.icon) then
 		castbar.Icon.bg:ClearAllPoints()
 		if frame.ORIENTATION == 'RIGHT' then
-			castbar.Icon.bg:Point('LEFT', castbar, 'RIGHT', frame.SPACING*3, 0)
+			castbar.Icon.bg:Point('LEFT', castbar, 'RIGHT', UF.SPACING*3, 0)
 		else
-			castbar.Icon.bg:Point('RIGHT', castbar, 'LEFT', -frame.SPACING*3, 0)
+			castbar.Icon.bg:Point('RIGHT', castbar, 'LEFT', -UF.SPACING*3, 0)
 		end
 	end
 

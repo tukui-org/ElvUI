@@ -138,7 +138,7 @@ function UF:Configure_Power(frame)
 
 		--Position
 		power:ClearAllPoints()
-		local OFFSET = (frame.BORDER + frame.SPACING)*2
+		local OFFSET = (UF.BORDER + UF.SPACING)*2
 
 		if frame.POWERBAR_DETACHED then
 			if power.Holder and power.Holder.mover then
@@ -156,7 +156,7 @@ function UF:Configure_Power(frame)
 			end
 
 			power.Holder:Size(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
-			power:Point('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
+			power:Point('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', UF.BORDER+UF.SPACING, UF.BORDER+UF.SPACING)
 			power:Size(frame.POWERBAR_WIDTH - OFFSET, frame.POWERBAR_HEIGHT - OFFSET)
 			power:SetFrameLevel(50) --RaisedElementParent uses 100, we want lower value to allow certain icons and texts to appear above power
 		elseif frame.USE_POWERBAR_OFFSET then
@@ -164,8 +164,8 @@ function UF:Configure_Power(frame)
 				power:Point('TOPRIGHT', frame.Health, 'TOPRIGHT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 				power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			elseif frame.ORIENTATION == 'MIDDLE' then
-				power:Point('TOPLEFT', frame, 'TOPLEFT', frame.BORDER + frame.SPACING, -frame.POWERBAR_OFFSET -frame.CLASSBAR_YOFFSET)
-				power:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.BORDER - frame.SPACING, frame.BORDER)
+				power:Point('TOPLEFT', frame, 'TOPLEFT', UF.BORDER + UF.SPACING, -frame.POWERBAR_OFFSET -frame.CLASSBAR_YOFFSET)
+				power:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -UF.BORDER - UF.SPACING, UF.BORDER)
 			else
 				power:Point('TOPLEFT', frame.Health, 'TOPLEFT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 				power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
@@ -173,27 +173,27 @@ function UF:Configure_Power(frame)
 			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5) --Health uses 10
 		elseif frame.USE_INSET_POWERBAR then
 			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
-			power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.BORDER + (frame.BORDER*2), frame.BORDER + (frame.BORDER*2))
-			power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -(frame.BORDER + (frame.BORDER*2)), frame.BORDER + (frame.BORDER*2))
+			power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', UF.BORDER + (UF.BORDER*2), UF.BORDER + (UF.BORDER*2))
+			power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -(UF.BORDER + (UF.BORDER*2)), UF.BORDER + (UF.BORDER*2))
 			power:SetFrameLevel(50)
 		elseif frame.USE_MINI_POWERBAR then
 			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
 
 			if frame.ORIENTATION == 'LEFT' then
-				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Width(frame.POWERBAR_WIDTH - UF.BORDER*2)
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
 			elseif frame.ORIENTATION == 'RIGHT' then
-				power:Width(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:Point('LEFT', frame, 'BOTTOMLEFT', (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Width(frame.POWERBAR_WIDTH - UF.BORDER*2)
+				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
 			else
-				power:Point('LEFT', frame, 'BOTTOMLEFT', (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
-				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(frame.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
 			end
 
 			power:SetFrameLevel(50)
 		else
-			power:Point('TOPRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', -frame.BORDER, -frame.SPACING*3)
-			power:Point('TOPLEFT', frame.Health.backdrop, 'BOTTOMLEFT', frame.BORDER, -frame.SPACING*3)
+			power:Point('TOPRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', -UF.BORDER, -UF.SPACING*3)
+			power:Point('TOPLEFT', frame.Health.backdrop, 'BOTTOMLEFT', UF.BORDER, -UF.SPACING*3)
 			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
 
 			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10

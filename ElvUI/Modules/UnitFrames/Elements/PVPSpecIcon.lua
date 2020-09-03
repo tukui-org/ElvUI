@@ -18,18 +18,18 @@ function UF:Configure_PVPSpecIcon(frame)
 
 	specIcon.bg:ClearAllPoints()
 	if frame.ORIENTATION == 'LEFT' then
-		specIcon.bg:Point('TOPRIGHT', frame, 'TOPRIGHT', -frame.SPACING, -frame.SPACING)
+		specIcon.bg:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.SPACING, -UF.SPACING)
 		if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or frame.USE_INSET_POWERBAR then
-			specIcon.bg:Point('BOTTOMLEFT', frame.Health.backdrop, 'BOTTOMRIGHT', (-frame.BORDER + frame.SPACING*3) + frame.PORTRAIT_WIDTH, 0)
+			specIcon.bg:Point('BOTTOMLEFT', frame.Health.backdrop, 'BOTTOMRIGHT', (-UF.BORDER + UF.SPACING*3) + frame.PORTRAIT_WIDTH, 0)
 		else
-			specIcon.bg:Point('BOTTOMLEFT', frame.Power.backdrop, 'BOTTOMRIGHT', (-frame.BORDER + frame.SPACING*3) + frame.PORTRAIT_WIDTH, 0)
+			specIcon.bg:Point('BOTTOMLEFT', frame.Power.backdrop, 'BOTTOMRIGHT', (-UF.BORDER + UF.SPACING*3) + frame.PORTRAIT_WIDTH, 0)
 		end
 	else
-		specIcon.bg:Point('TOPLEFT', frame, 'TOPLEFT', frame.SPACING, -frame.SPACING)
+		specIcon.bg:Point('TOPLEFT', frame, 'TOPLEFT', UF.SPACING, -UF.SPACING)
 		if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or frame.USE_INSET_POWERBAR then
-			specIcon.bg:Point('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMLEFT', (frame.BORDER - frame.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
+			specIcon.bg:Point('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMLEFT', (UF.BORDER - UF.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
 		else
-			specIcon.bg:Point('BOTTOMRIGHT', frame.Power.backdrop, 'BOTTOMLEFT', (frame.BORDER - frame.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
+			specIcon.bg:Point('BOTTOMRIGHT', frame.Power.backdrop, 'BOTTOMLEFT', (UF.BORDER - UF.SPACING*3) - frame.PORTRAIT_WIDTH, 0)
 		end
 	end
 	if frame.db.pvpSpecIcon and not frame:IsElementEnabled('PVPSpecIcon') then
