@@ -261,6 +261,18 @@ function S:BlizzardQuestFrames()
 
 			_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(1, 1, 1)
 			_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(1, 1, 1)
+		else
+			_G.QuestInfoTitleHeader:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoDescriptionHeader:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoObjectivesHeader:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoRewardsFrame.Header:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoDescriptionText:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoObjectivesText:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoGroupSize:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoRewardText:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoQuestType:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoRewardsFrame.ItemChooseText:SetShadowColor(0, 0, 0, 0)
+			_G.QuestInfoRewardsFrame.ItemReceiveText:SetShadowColor(0, 0, 0, 0)
 		end
 	end)
 
