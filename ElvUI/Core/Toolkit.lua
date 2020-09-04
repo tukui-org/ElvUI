@@ -135,7 +135,9 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	else
 		templateBackdrop.edgeFile = E.media.blankTex
 		templateBackdrop.bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex
-		if not templateBackdrop.edgeSize then templateBackdrop.edgeSize = E:Scale(not E.twoPixelsPlease and 1 or 2) end
+		if not templateBackdrop.edgeSize then
+			templateBackdrop.edgeSize = E:Scale(E.twoPixelsPlease and 2 or 1)
+		end
 
 		frame:SetBackdrop(templateBackdrop)
 
@@ -187,9 +189,9 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
-	if frame.forcePixelMode or forcePixelMode or (isUnitFrameElement and UF.thinBorders) then
+	if frame.forcePixelMode or forcePixelMode then
 		backdrop:SetOutside(frame, 1, 1)
-	elseif isUnitFrameElement and not UF.thinBorders then
+	elseif isUnitFrameElement then
 		backdrop:SetOutside(frame, UF.BORDER, UF.BORDER)
 	else
 		backdrop:SetOutside(frame)

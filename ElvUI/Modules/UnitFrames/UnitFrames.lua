@@ -1518,8 +1518,8 @@ function UF:Initialize()
 	UF.db = E.db.unitframe
 	UF.thinBorders = UF.db.thinBorders
 
-	UF.SPACING = UF.thinBorders and 0 or 1
-	UF.BORDER = UF.thinBorders and 1 or 2
+	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
+	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2
 
 	if E.private.unitframe.enable ~= true then return end
 	UF.Initialized = true

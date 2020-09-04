@@ -64,14 +64,13 @@ function UF:Aura_OnClick()
 end
 
 function UF:Construct_AuraIcon(button)
-	local offset = UF.thinBorders and 1 or 2
 	button:SetTemplate(nil, nil, nil, nil, true)
 
 	button.cd:SetReverse(true)
 	button.cd:SetDrawEdge(false)
-	button.cd:SetInside(button, offset, offset)
+	button.cd:SetInside(button, UF.BORDER, UF.BORDER)
 
-	button.icon:SetInside(button, offset, offset)
+	button.icon:SetInside(button, UF.BORDER, UF.BORDER)
 	button.icon:SetDrawLayer('ARTWORK')
 
 	button.count:ClearAllPoints()
@@ -232,13 +231,12 @@ function UF:Configure_Auras(frame, which)
 	auras['growth-y'] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
 	auras['growth-x'] = auras.anchorPoint == 'LEFT' and 'LEFT' or  auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 
-	local SPACE, x, y = UF.thinBorders and 1 or 2
 	local OFFSET = (frame.ORIENTATION ~= 'RIGHT' and frame.POWERBAR_OFFSET) or 0
-	local BORDER = UF.BORDER + OFFSET
+	local BORDER, x, y = UF.BORDER + OFFSET
 	if auras.db.attachTo == 'HEALTH' or auras.db.attachTo == 'POWER' then
-		x, y = E:GetXYOffset(auras.anchorPoint, -BORDER, (UF.BORDER*2) - SPACE)
+		x, y = E:GetXYOffset(auras.anchorPoint, -BORDER, UF.BORDER)
 	else
-		x, y = E:GetXYOffset(auras.anchorPoint, BORDER - 1, UF.BORDER - SPACE)
+		x, y = E:GetXYOffset(auras.anchorPoint, BORDER - 1, 0)
 	end
 
 	auras.xOffset = x + auras.db.xOffset
