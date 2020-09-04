@@ -125,10 +125,10 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	GetTemplate(template, isUnitFrameElement)
 
 	frame.template = template or 'Default'
-	if glossTex then frame.glossTex = glossTex end
-	if ignoreUpdates then frame.ignoreUpdates = ignoreUpdates end
-	if forcePixelMode then frame.forcePixelMode = forcePixelMode end
-	if isUnitFrameElement then frame.isUnitFrameElement = isUnitFrameElement end
+	frame.glossTex = glossTex
+	frame.ignoreUpdates = ignoreUpdates
+	frame.forcePixelMode = forcePixelMode
+	frame.isUnitFrameElement = isUnitFrameElement
 
 	if template == 'NoBackdrop' then
 		frame:SetBackdrop()
@@ -149,7 +149,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 
 		local notPixelMode = not isUnitFrameElement and not E.PixelMode
 		local notThinBorders = isUnitFrameElement and not UF.thinBorders
-		if (notPixelMode or notThinBorders) and not frame.forcePixelMode then
+		if (notPixelMode or notThinBorders) and not forcePixelMode then
 			innerOuterBackdrop.edgeFile = E.media.blankTex
 			if not innerOuterBackdrop.edgeSize then innerOuterBackdrop.edgeSize = E:Scale(1) end
 
@@ -189,8 +189,8 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
-	if frame.forcePixelMode or forcePixelMode then
-		backdrop:SetOutside(frame, 1, 1)
+	if forcePixelMode then
+		backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
 	elseif isUnitFrameElement then
 		backdrop:SetOutside(frame, UF.BORDER, UF.BORDER)
 	else
