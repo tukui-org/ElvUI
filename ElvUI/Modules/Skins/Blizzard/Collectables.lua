@@ -156,7 +156,8 @@ local function JournalScrollButtons(frame)
 				bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
 				bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
 
-				bu.dragButton.ActiveTexture:SetAlpha(0)
+				bu.dragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
+				bu.dragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
 				bu.dragButton.levelBG:SetTexture()
 
 				S:HandleIconBorder(bu.iconBorder, nil, petNameColor)
@@ -165,6 +166,9 @@ local function JournalScrollButtons(frame)
 				bu.factionIcon:SetDrawLayer('OVERLAY')
 				bu.factionIcon:Point('TOPRIGHT', -1, -1)
 				bu.factionIcon:Point('BOTTOMRIGHT', -1, 1)
+
+				bu.DragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
+				bu.DragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
 
 				bu.favorite:SetTexture([[Interface\COMMON\FavoritesIcon]])
 				bu.favorite:Point('TOPLEFT', bu.DragButton, 'TOPLEFT' , -8, 8)
@@ -489,15 +493,12 @@ function S:Blizzard_Collections()
 				Model.TransmogStateTexture:SetAlpha(0)
 
 				local border = CreateFrame('Frame', nil, Model, 'BackdropTemplate')
-				border:SetOutside(Model)
+				border.callbackBackdropColor = E.noop -- ignore backdrop colors
 				border:SetTemplate()
+				border:ClearAllPoints()
+				border:SetPoint('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
+				border:SetPoint('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
-
-				local background = CreateFrame('Frame', nil, Model, 'BackdropTemplate')
-				background:SetAllPoints(Model)
-				background:SetTemplate()
-				background:SetFrameLevel(3)
-				background:SetBackdropColor(0, 0, 0, 1)
 
 				for i=1, Model:GetNumRegions() do
 				local region = select(i, Model:GetRegions())
