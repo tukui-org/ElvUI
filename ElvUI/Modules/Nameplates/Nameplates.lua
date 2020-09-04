@@ -12,6 +12,7 @@ local GetCVarDefault = GetCVarDefault
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
+local InCombatLockdown = InCombatLockdown
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local SetCVar = SetCVar
 local UnitClass = UnitClass
@@ -501,19 +502,13 @@ function NP:ConfigureAll()
 	if E.private.nameplates.enable ~= true then return end
 	NP:StyleFilterConfigure() -- keep this at the top
 
-	local Scale = E.global.general.UIScale
-
-	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * Scale, NP.db.plateSize.personalHeight * Scale)
-	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * Scale, NP.db.plateSize.enemyHeight * Scale)
-	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * Scale, NP.db.plateSize.friendlyHeight * Scale)
-
+	NP:SetNamePlateSizes()
 	NP:PLAYER_REGEN_ENABLED()
 
 	local playerEnabled = NP.db.units.PLAYER.enable
-	local staticPosition = NP.db.units.PLAYER.useStaticPosition
-	local staticPlate = playerEnabled and staticPosition
+	local isStatic = NP.db.units.PLAYER.useStaticPosition
 
-	if staticPlate then
+	if playerEnabled and isStatic then
 		E:EnableMover('ElvNP_PlayerMover')
 		_G.ElvNP_Player:Enable()
 		_G.ElvNP_StaticSecure:Show()
@@ -527,35 +522,25 @@ function NP:ConfigureAll()
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		if _G.ElvNP_Player ~= nameplate or staticPlate then
-			NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
+		NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
-			if nameplate.frameType == 'PLAYER' then
-				nameplate:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-			elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-				nameplate:SetSize(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
-			else
-				nameplate:SetSize(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
-			end
-
-			if nameplate.frameType == 'PLAYER' then
-				NP.PlayerNamePlateAnchor:ClearAllPoints()
-				NP.PlayerNamePlateAnchor:SetParent(staticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:SetAllPoints(staticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:Show()
-
-				SetCVar('nameplateShowSelf', (staticPosition or not playerEnabled) and 0 or 1)
-			end
-
-			if staticPlate then
-				NP:NamePlateCallBack(_G.ElvNP_Player, 'NAME_PLATE_UNIT_ADDED', 'player')
-			else
-				NP:UpdatePlate(nameplate, true)
-				NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this after update plate
-			end
-
-			nameplate:UpdateAllElements('ForceUpdate')
+		if nameplate.frameType == 'PLAYER' then
+			nameplate:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+			SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
+		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
+			nameplate:SetSize(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
+		else
+			nameplate:SetSize(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
 		end
+
+		if nameplate == _G.ElvNP_Player then
+			NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+		elseif nameplate.frameType ~= 'PLAYER' or playerEnabled then
+			NP:UpdatePlate(nameplate, true)
+			NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this after update plate
+		end
+
+		nameplate:UpdateAllElements('ForceUpdate')
 	end
 
 	NP:Update_StatusBars()
@@ -587,7 +572,7 @@ function NP:UpdatePlateGUID(nameplate, guid)
 end
 
 function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'NAME_PLATE_UNIT_ADDED' then
+	if event == 'NAME_PLATE_UNIT_ADDED' or (event == 'UNIT_FACTION' and nameplate) then
 		local updateBase = NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		unit = unit or nameplate.unit
@@ -623,7 +608,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if nameplate.isMe then
 			nameplate.frameType = 'PLAYER'
 
-			if NP.db.units.PLAYER.enable then
+			if NP.db.units.PLAYER.enable and (nameplate ~= _G.ElvNP_Test) then
 				NP.PlayerNamePlateAnchor:ClearAllPoints()
 				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
 				NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
@@ -654,7 +639,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.previousType = nameplate.frameType
 		end
 
-		if NP.db.fadeIn and nameplate.frameType ~= 'PLAYER' then
+		if NP.db.fadeIn and (event == 'NAME_PLATE_UNIT_ADDED' and nameplate.frameType ~= 'PLAYER') then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
@@ -705,6 +690,15 @@ function NP:HideInterfaceOptions()
 	end
 end
 
+function NP:SetNamePlateSizes()
+	if InCombatLockdown() then return end
+
+	local scale = E.global.general.UIScale
+	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * scale, NP.db.plateSize.personalHeight * scale)
+	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * scale, NP.db.plateSize.enemyHeight * scale)
+	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * scale, NP.db.plateSize.friendlyHeight * scale)
+end
+
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
@@ -726,13 +720,7 @@ function NP:Initialize()
 		BlizzPlateManaBar:UnregisterAllEvents()
 	end
 
-	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', function()
-		local Scale = E.global.general.UIScale
-		C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * Scale, NP.db.plateSize.personalHeight * Scale)
-		C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * Scale, NP.db.plateSize.enemyHeight * Scale)
-		C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * Scale, NP.db.plateSize.friendlyHeight * Scale)
-	end)
-
+	hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', NP.SetNamePlateSizes)
 	hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', function(frame)
 		if not frame or frame:IsForbidden() then
 			return

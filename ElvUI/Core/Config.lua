@@ -707,7 +707,6 @@ function E:Config_CreateButton(info, frame, unskinned, ...)
 	btn:HookScript('OnLeave', Config_ButtonOnLeave)
 	btn:SetScript('OnClick', info.func)
 	btn:SetWidth(btn:GetTextWidth() + 40)
-	btn.ignoreBorderColors = true
 
 	return btn
 end

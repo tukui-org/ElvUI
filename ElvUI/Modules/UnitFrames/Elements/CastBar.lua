@@ -1,8 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
-local unpack, tonumber = unpack, tonumber
-local abs, min = abs, min
+local unpack, tonumber, abs = unpack, tonumber, abs
 
 local CreateFrame = CreateFrame
 local UnitSpellHaste = UnitSpellHaste
@@ -51,6 +50,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(castbar.Text)
 	castbar.Text:SetPoint('LEFT', castbar, 'LEFT', 4, 0)
+	castbar.Text:SetPoint('RIGHT', castbar.Time, 'LEFT', -4, 0)
 	castbar.Text:SetTextColor(0.84, 0.75, 0.65)
 	castbar.Text:SetJustifyH('LEFT')
 	castbar.Text:SetWordWrap(false)
@@ -289,6 +289,8 @@ function UF:CustomCastDelayText(duration)
 			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%s %.1f|r', abs(duration - self.max), self.max, '+', self.delay)
 		end
 	end
+
+	self.Time:SetWidth(self.Time:GetStringWidth())
 end
 
 function UF:CustomTimeText(duration)
@@ -317,6 +319,8 @@ function UF:CustomTimeText(duration)
 			self.Time:SetFormattedText('%.1f / %.1f', abs(duration - self.max), self.max)
 		end
 	end
+
+	self.Time:SetWidth(self.Time:GetStringWidth())
 end
 
 function UF:HideTicks()
@@ -341,19 +345,9 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 			ticks[i]:SetWidth(frame.tickWidth)
 		end
 
-		ticks[i]:SetHeight(frame.tickHeight)
-
-		--[[if(ms ~= 0) then
-			local perc = (w / frame.max) * (ms / 1e5)
-			if(perc > 1) then perc = 1 end
-
-			ticks[i]:SetWidth((w * perc) / (numTicks + extraTickRatio))
-		else
-			ticks[i]:SetWidth(1)
-		end]]
-
 		ticks[i]:ClearAllPoints()
 		ticks[i]:SetPoint('RIGHT', frame, 'LEFT', d * i, 0)
+		ticks[i]:SetHeight(frame.tickHeight)
 		ticks[i]:Show()
 	end
 end
@@ -364,37 +358,15 @@ function UF:PostCastStart(unit)
 
 	if unit == 'vehicle' then unit = 'player' end
 
+	self.unit = unit
+
 	if db.castbar.displayTarget and self.curTarget then
 		self.Text:SetText(self.spellName..' > '..self.curTarget)
 	end
 
-	-- Get length of Time, then calculate available length for Text
-	local timeWidth = self.Time:GetStringWidth()
-	local textWidth = self:GetWidth() - timeWidth - 10
-	local textStringWidth = self.Text:GetStringWidth()
-
-	if timeWidth == 0 or textStringWidth == 0 then
-		E:Delay(0.05, function() -- Delay may need tweaking
-			textWidth = self:GetWidth() - self.Time:GetStringWidth() - 10
-			textStringWidth = self.Text:GetStringWidth()
-			if textWidth > 0 then self.Text:SetWidth(min(textWidth, textStringWidth)) end
-		end)
-	else
-		self.Text:SetWidth(min(textWidth, textStringWidth))
-	end
-
-	self.unit = unit
-
 	if self.channeling and db.castbar.ticks and unit == 'player' then
 		local unitframe = E.global.unitframe
 		local baseTicks = unitframe.ChannelTicks[self.spellID]
-		---- Detect channeling spell and if it's the same as the previously channeled one
-		--if baseTicks and self.spellID == self.prevSpellCast then
-		--	self.chainChannel = true
-		--elseif baseTicks then
-		--	self.chainChannel = nil
-		--	self.prevSpellCast = self.spellID
-		--end
 
 		if baseTicks and unitframe.ChannelTicksSize[self.spellID] and unitframe.HastedChannelTicks[self.spellID] then
 			local tickIncRate = 1 / baseTicks

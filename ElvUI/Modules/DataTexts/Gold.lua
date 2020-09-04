@@ -20,8 +20,8 @@ local Ticker
 local CURRENCY = CURRENCY
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local Profit, Spent = 0, 0
-local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Counters: Hold Ctrl + Right Click"], '|r')
-local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Data: Hold Shift + Right Click"], '|r')
+local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Session Data: Hold Ctrl + Right Click"], '|r')
+local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Character Data: Hold Shift + Right Click"], '|r')
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
@@ -53,6 +53,10 @@ local function OnEvent(self)
 	ElvDB.faction[E.myrealm] = ElvDB.faction[E.myrealm] or {}
 	ElvDB.faction[E.myrealm][E.myname] = E.myfaction
 
+	ElvDB.serverID = ElvDB.serverID or {}
+	ElvDB.serverID[E.serverID] = ElvDB.serverID[E.serverID] or {}
+	ElvDB.serverID[E.serverID][E.myrealm] = true
+
 	--prevent an error possibly from really old profiles
 	local oldMoney = ElvDB.gold[E.myrealm][E.myname]
 	if oldMoney and type(oldMoney) ~= 'number' then
@@ -74,12 +78,12 @@ local function OnEvent(self)
 	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins))
 end
 
-local function deleteCharacter(self, name)
-	ElvDB.gold[E.myrealm][name] = nil
-	ElvDB.class[E.myrealm][name] = nil
-	ElvDB.faction[E.myrealm][name] = nil
+local function deleteCharacter(self, realm, name)
+	ElvDB.gold[realm][name] = nil
+	ElvDB.class[realm][name] = nil
+	ElvDB.faction[realm][name] = nil
 
-	if name == E.myname then
+	if name == E.myname and realm == E.myrealm then
 		OnEvent(self)
 	end
 end
@@ -89,8 +93,17 @@ local function Click(self, btn)
 		if IsShiftKeyDown() then
 			wipe(menuList)
 			tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
-			for name in pairs(ElvDB.gold[E.myrealm]) do
-				tinsert(menuList, { text = name, notCheckable = true, func = function() deleteCharacter(self, name) end })
+
+			for realm in pairs(ElvDB.serverID[E.serverID]) do
+				for name in pairs(ElvDB.gold[realm]) do
+					tinsert(menuList, {
+						text = format('%s - %s', name, realm),
+						notCheckable = true,
+						func = function()
+							deleteCharacter(self, realm, name)
+						end
+					})
+				end
 			end
 
 			DT:SetEasyMenuAnchor(DT.EasyMenu, self)
@@ -125,27 +138,30 @@ local function OnEnter()
 	DT.tooltip:AddLine(L["Character: "])
 
 	wipe(myGold)
-	for k,_ in pairs(ElvDB.gold[E.myrealm]) do
-		if ElvDB.gold[E.myrealm][k] then
-			local color = E:ClassColor(ElvDB.class[E.myrealm][k]) or PRIEST_COLOR
-			tinsert(myGold,
-				{
-					name = k,
-					amount = ElvDB.gold[E.myrealm][k],
-					amountText = E:FormatMoney(ElvDB.gold[E.myrealm][k], E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins),
-					faction = ElvDB.faction[E.myrealm][k] or '',
-					r = color.r, g = color.g, b = color.b,
-				}
-			)
-		end
+	for realm in pairs(ElvDB.serverID[E.serverID]) do
+		for k, _ in pairs(ElvDB.gold[realm]) do
+			if ElvDB.gold[realm][k] then
+				local color = E:ClassColor(ElvDB.class[realm][k]) or PRIEST_COLOR
+				tinsert(myGold,
+					{
+						name = k,
+						realm = realm,
+						amount = ElvDB.gold[realm][k],
+						amountText = E:FormatMoney(ElvDB.gold[realm][k], E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins),
+						faction = ElvDB.faction[realm][k] or '',
+						r = color.r, g = color.g, b = color.b,
+					}
+				)
+			end
 
-		if ElvDB.faction[E.myrealm][k] == 'Alliance' then
-			totalAlliance = totalAlliance+ElvDB.gold[E.myrealm][k]
-		elseif ElvDB.faction[E.myrealm][k] == 'Horde' then
-			totalHorde = totalHorde+ElvDB.gold[E.myrealm][k]
-		end
+			if ElvDB.faction[realm][k] == 'Alliance' then
+				totalAlliance = totalAlliance+ElvDB.gold[realm][k]
+			elseif ElvDB.faction[realm][k] == 'Horde' then
+				totalHorde = totalHorde+ElvDB.gold[realm][k]
+			end
 
-		totalGold = totalGold+ElvDB.gold[E.myrealm][k]
+			totalGold = totalGold+ElvDB.gold[realm][k]
+		end
 	end
 
 	sort(myGold, sortFunction)
@@ -156,9 +172,8 @@ local function OnEnter()
 			nameLine = format('|TInterface/FriendsFrame/PlusManz-%s:14|t ', g.faction)
 		end
 
-		nameLine = g.name == E.myname and nameLine..g.name..' |TInterface/COMMON/Indicator-Green:14|t' or nameLine..g.name
-
-		DT.tooltip:AddDoubleLine(nameLine, g.amountText, g.r, g.g, g.b, 1, 1, 1)
+		local toonName = format('%s%s%s', nameLine, g.name, (g.realm and g.realm ~= E.myrealm and ' - '..g.realm) or '')
+		DT.tooltip:AddDoubleLine((g.name == E.myname and toonName..' |TInterface/COMMON/Indicator-Green:14|t') or toonName, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')

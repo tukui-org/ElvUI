@@ -775,7 +775,7 @@ function E:Install()
 		f.Status.anim.progress:SetDuration(.3)
 
 		f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')
-		f.Status.text:FontTemplate()
+		f.Status.text:FontTemplate(nil, 14, 'OUTLINE')
 		f.Status.text:SetPoint('CENTER')
 		f.Status.text:SetText(CURRENT_PAGE..' / '..MAX_PAGE)
 

@@ -27,6 +27,14 @@ local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnregisterStateDriver = UnregisterStateDriver
 local VehicleExit = VehicleExit
+local GetSpellBookItemInfo = GetSpellBookItemInfo
+local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
+local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
+local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
+local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
+local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
+local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
+
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
@@ -775,6 +783,19 @@ function AB:SpellButtonOnEnter(_, tt)
 	local slot = _G.SpellBook_GetSpellBookSlot(self)
 	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
 
+	ClearOnBarHighlightMarks()
+	ClearPetActionHighlightMarks()
+
+	local slotType, actionID = GetSpellBookItemInfo(slot, _G.SpellBookFrame.bookType)
+	if slotType == 'SPELL' then
+		UpdateOnBarHighlightMarksBySpell(actionID)
+	elseif slotType == 'FLYOUT' then
+		UpdateOnBarHighlightMarksByFlyout(actionID)
+	elseif slotType == 'PETACTION' then
+		UpdateOnBarHighlightMarksByPetAction(actionID)
+		UpdatePetActionHighlightMarks(actionID)
+	end
+
 	local highlight = self.SpellHighlightTexture
 	if highlight and highlight:IsShown() then
 		local color = _G.LIGHTBLUE_FONT_COLOR
@@ -795,6 +816,9 @@ function AB:UpdateSpellBookTooltip(event)
 end
 
 function AB:SpellButtonOnLeave()
+	ClearOnBarHighlightMarks()
+	ClearPetActionHighlightMarks()
+
 	SpellBookTooltip:Hide()
 	SpellBookTooltip:SetScript('OnUpdate', nil)
 end

@@ -38,7 +38,7 @@ local function SkinItemButton(_, block)
 		item.Cooldown:SetInside()
 		item.Count:ClearAllPoints()
 		item.Count:SetPoint('TOPLEFT', 1, -1)
-		item.Count:FontTemplate(E.media.normFont, 14, 'OUTLINE')
+		item.Count:FontTemplate(nil, 14, 'OUTLINE')
 		item.Count:SetShadowOffset(5, -5)
 		E:RegisterCooldown(item.Cooldown)
 		item.skinned = true
@@ -72,7 +72,7 @@ local function SkinProgressBars(_, _, line)
 		if label then
 			label:ClearAllPoints()
 			label:SetPoint('CENTER', bar, 0, 1)
-			label:FontTemplate(E.media.normFont, 14, 'OUTLINE')
+			label:FontTemplate(nil, 14, 'OUTLINE')
 		end
 
 		if icon then

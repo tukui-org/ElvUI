@@ -27,11 +27,10 @@ local Uploads = {}
 
 function D:Initialize()
 	self.Initialized = true
-	self:RegisterComm(REQUEST_PREFIX)
-	self:RegisterEvent('CHAT_MSG_ADDON')
+
+	D:UpdateSettings()
 
 	self.statusBar = CreateFrame('StatusBar', 'ElvUI_Download', E.UIParent)
-	E:RegisterStatusBar(self.statusBar)
 	self.statusBar:CreateBackdrop()
 	self.statusBar:SetStatusBarTexture(E.media.normTex)
 	self.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)
@@ -40,6 +39,17 @@ function D:Initialize()
 	self.statusBar.text:FontTemplate()
 	self.statusBar.text:SetPoint('CENTER')
 	self.statusBar:Hide()
+	E:RegisterStatusBar(self.statusBar)
+end
+
+function D:UpdateSettings()
+	if E.global.general.allowDistributor then
+		self:RegisterComm(REQUEST_PREFIX)
+		self:RegisterEvent('CHAT_MSG_ADDON')
+	else
+		self:UnregisterComm(REQUEST_PREFIX)
+		self:UnregisterEvent('CHAT_MSG_ADDON')
+	end
 end
 
 -- Used to start uploads
@@ -123,7 +133,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			end,
 			button1 = ACCEPT,
 			button2 = CANCEL,
-			timeout = 32,
+			timeout = 30,
 			whileDead = 1,
 			hideOnEscape = 1,
 		}
@@ -250,7 +260,8 @@ local blacklistedKeys = {
 			version = true,
 			eyefinity = true,
 			disableTutorialButtons = true,
-			showMissingTalentAlert = true
+			showMissingTalentAlert = true,
+			allowDistributor = true
 		},
 		chat = {
 			classColorMentionExcludedNames = true
@@ -556,7 +567,7 @@ E.PopupDialogs.DISTRIBUTOR_WAITING = {
 	text = L["Profile request sent. Waiting for response from player."],
 	whileDead = 1,
 	hideOnEscape = 1,
-	timeout = 35,
+	timeout = 20,
 }
 
 E.PopupDialogs.DISTRIBUTOR_REQUEST_DENIED = {

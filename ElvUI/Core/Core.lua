@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local strjoin, twipe, tinsert, tremove, tContains = strjoin, wipe, tinsert, tremove, tContains
+local strsplit, strjoin, twipe, tinsert, tremove, tContains = strsplit, strjoin, wipe, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
@@ -480,7 +480,7 @@ end
 function E:UpdateFontTemplates()
 	for text in pairs(E.texts) do
 		if text then
-			text:FontTemplate(text.font, text.fontSize, text.fontStyle)
+			text:FontTemplate(text.font, text.fontSize, text.fontStyle, true)
 		else
 			E.texts[text] = nil
 		end
@@ -1710,7 +1710,11 @@ function E:Initialize()
 	twipe(E.global)
 	twipe(E.private)
 
-	E.myguid = UnitGUID('player')
+	local playerGUID = UnitGUID('player')
+	local _, serverID = strsplit('-', playerGUID)
+	E.serverID = tonumber(serverID)
+	E.myguid = playerGUID
+
 	E.data = E.Libs.AceDB:New('ElvDB', E.DF, true)
 	E.data.RegisterCallback(E, 'OnProfileChanged', 'StaggeredUpdateAll')
 	E.data.RegisterCallback(E, 'OnProfileCopied', 'StaggeredUpdateAll')
