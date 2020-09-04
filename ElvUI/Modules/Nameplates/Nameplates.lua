@@ -526,12 +526,12 @@ function NP:ConfigureAll()
 		NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
 
 		if nameplate.frameType == 'PLAYER' then
-			nameplate:SetSize(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+			nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 			SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
 		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-			nameplate:SetSize(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
+			nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
 		else
-			nameplate:SetSize(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
+			nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
 		end
 
 		if nameplate == _G.ElvNP_Player then
