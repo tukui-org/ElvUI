@@ -1345,7 +1345,7 @@ P.unitframe = {
 		CTRL = 'NONE',
 		ALT = 'NONE',
 	},
-	thinBorders = false,
+	thinBorders = true,
 	targetSound = false,
 	colors = {
 		borderColor = {r = 0, g = 0, b = 0}, -- updated in E.Initialize
