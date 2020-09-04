@@ -491,7 +491,27 @@ function S:Blizzard_EncounterJournal()
 	_G.EncounterJournal.LootJournal.backdrop:SetOutside(parch)
 
 	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
-	--hooksecurefunc(LootJournal.PowersFrame, 'ConfigureItemButton', PowersFrame) -- ToDO: Skin the LootJournalMixin
+
+	local IconColor = E.QualityColors[Enum.ItemQuality.Legendary or 5] -- legendary color
+	hooksecurefunc(LootJournal.PowersFrame, "RefreshListDisplay", function(button)
+		if not button.elements then return end
+
+		for i = 1, button:GetNumElementFrames() do
+			local button = button.elements[i]
+			if button and not button.IsSkinned then
+				button.Background:SetAlpha(0)
+				button.CircleMask:Hide()
+				S:HandleIcon(button.Icon, true)
+				button.Icon.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
+
+				button:CreateBackdrop('Transparent')
+				button.backdrop:Point('TOPLEFT', 3, 0)
+				button.backdrop:Point('BOTTOMRIGHT', -2, 1)
+
+				button.IsSkinned = true
+			end
+		end
+	end)
 
 	--Dungeon/raid selection buttons (From AddOnSkins)
 	hooksecurefunc('EncounterJournal_ListInstances', SkinDungeons)
