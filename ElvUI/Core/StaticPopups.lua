@@ -12,13 +12,13 @@ local format, error = format, error
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
-local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
-local GetBindingFromClick, RunBinding = GetBindingFromClick, RunBinding
-local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost
 local MoneyFrame_Update = MoneyFrame_Update
+local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
+local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost
 local SetCVar, EnableAddOn, DisableAddOn = SetCVar, EnableAddOn, DisableAddOn
 local ReloadUI, PlaySound, StopMusic = ReloadUI, PlaySound, StopMusic
 local StaticPopup_Resize = StaticPopup_Resize
+local GetBindingFromClick = GetBindingFromClick
 local AutoCompleteEditBox_OnEnterPressed = AutoCompleteEditBox_OnEnterPressed
 local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
 local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
@@ -502,13 +502,13 @@ function E:StaticPopup_OnShow()
 	local dialog = E.PopupDialogs[self.which]
 	local OnShow = dialog.OnShow
 
-	if ( OnShow ) then
+	if OnShow then
 		OnShow(self, self.data)
 	end
-	if ( dialog.hasMoneyInputFrame ) then
+	if dialog.hasMoneyInputFrame then
 		_G[self:GetName()..'MoneyInputFrameGold']:SetFocus()
 	end
-	if ( dialog.enterClicksFirstButton or dialog.hideOnEscape ) then
+	if dialog.enterClicksFirstButton or dialog.hideOnEscape then
 		self:SetScript('OnKeyDown', E.StaticPopup_OnKeyDown)
 	end
 
@@ -602,30 +602,23 @@ function E:StaticPopup_IsLastDisplayedFrame(frame)
 end
 
 function E:StaticPopup_OnKeyDown(key)
-	if ( GetBindingFromClick(key) == 'TOGGLEGAMEMENU' ) then
+	if GetBindingFromClick(key) == 'TOGGLEGAMEMENU' then
 		return E:StaticPopup_EscapePressed()
-	elseif ( GetBindingFromClick(key) == 'SCREENSHOT' ) then
-		RunBinding('SCREENSHOT')
-		return
 	end
 
 	local dialog = E.PopupDialogs[self.which]
-	if ( dialog ) then
-		if ( key == 'ENTER' and dialog.enterClicksFirstButton ) then
-			local frameName = self:GetName()
-			local button
-			local i = 1
-			while ( true ) do
-				button = _G[frameName..'Button'..i]
-				if ( button ) then
-					if ( button:IsShown() ) then
-						E:StaticPopup_OnClick(self, i)
-						return
-					end
-					i = i + 1
-				else
-					break
+	if dialog then
+		if key == 'ENTER' and dialog.enterClicksFirstButton then
+			local i, frameName = 1, self:GetName()
+			local button = _G[frameName..'Button'..i]
+			while button do
+				if button:IsShown() then
+					E:StaticPopup_OnClick(self, i)
+					return
 				end
+
+				i = i + 1
+				button = _G[frameName..'Button'..i]
 			end
 		end
 	end
@@ -638,11 +631,11 @@ function E:StaticPopup_OnHide()
 
 	local dialog = E.PopupDialogs[self.which]
 	local OnHide = dialog.OnHide
-	if ( OnHide ) then
+	if OnHide then
 		OnHide(self, self.data)
 	end
 	self.extraFrame:Hide()
-	if ( dialog.enterClicksFirstButton ) then
+	if dialog.enterClicksFirstButton then
 		self:SetScript('OnKeyDown', nil)
 	end
 

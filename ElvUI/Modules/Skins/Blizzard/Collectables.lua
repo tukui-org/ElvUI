@@ -493,12 +493,12 @@ function S:Blizzard_Collections()
 				Model.TransmogStateTexture:SetAlpha(0)
 
 				local border = CreateFrame('Frame', nil, Model, 'BackdropTemplate')
-				border.callbackBackdropColor = E.noop -- ignore backdrop colors
 				border:SetTemplate()
 				border:ClearAllPoints()
 				border:SetPoint('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
 				border:SetPoint('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
+				border.ignoreBackdropColor = true
 
 				for i=1, Model:GetNumRegions() do
 				local region = select(i, Model:GetRegions())
