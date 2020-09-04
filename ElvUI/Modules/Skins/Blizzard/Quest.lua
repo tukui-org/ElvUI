@@ -68,16 +68,26 @@ local function HandleReward(frame)
 end
 
 local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
-	scrollFrame:CreateBackdrop()
+	if not scrollFrame.backdrop then
+		scrollFrame:CreateBackdrop()
+	end
 
 	if not scrollFrame.spellTex then
 		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
 	end
 
-	scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-	scrollFrame.spellTex:Point('TOPLEFT', inset and 1 or 0, inset and -1 or 0)
-	scrollFrame.spellTex:Size(widthOverride or 506, heightOverride or 615)
-	scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
+	local parent = scrollFrame:GetParent()
+	if parent.SealMaterialBG and parent.SealMaterialBG:IsShown() then
+		scrollFrame.spellTex:Hide()
+		scrollFrame.backdrop:Hide()
+	else
+		scrollFrame.backdrop:Show()
+		scrollFrame.spellTex:Show()
+		scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
+		scrollFrame.spellTex:Point('TOPLEFT', inset and 1 or 0, inset and -1 or 0)
+		scrollFrame.spellTex:Size(widthOverride or 506, heightOverride or 615)
+		scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
+	end
 end
 
 -- Quest objective text color
@@ -337,12 +347,10 @@ function S:BlizzardQuestFrames()
 			_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
 		end
 	else
-		StyleScrollFrame(_G.QuestDetailScrollFrame, 506, 615, true)
 		StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
 		StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
-		_G.QuestRewardScrollFrame:HookScript('OnShow', function(s)
-			StyleScrollFrame(s, 506, 615, true)
-		end)
+		_G.QuestFrameDetailPanel:HookScript('OnShow', function(s) StyleScrollFrame(s.ScrollFrame, 506, 615, true) end)
+		_G.QuestRewardScrollFrame:HookScript('OnShow', function(s) StyleScrollFrame(s, 506, 615, true) end)
 	end
 
 	_G.QuestFrameGreetingPanel:StripTextures(true)
