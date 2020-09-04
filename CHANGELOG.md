@@ -1,8 +1,23 @@
-### Version 11.52 [ ETA: 🍨 ]
+### Version 11.53 [ ETA: 🍨 ]
 
 **Shiny:**  
-Objective Tracker option to hide while in Mythic Keystone runs.  
-Config button border color wasn't updating when changing border color.  
+
+
+___
+
+### Version 11.52 [ September 4th 2020 ]
+
+**Shiny:**  
+Config button borders werent updating when changing border color.  
+Objective Tracker optional setting to hide while in Mythic Keystone runs.  
+New option to Allow Profile Sharing (off by default) in profile section.  
+Updated Font Outline options and fixed it not working when adjusting.  
+A wild error appeared with [name:health] tag which is resolved now.  
+Friends Datatext will show characters on connected realms too.  
+Player Nameplate should behave more often now.. I hope.  
+SetNamePlateSelfSize error was removed from the code.  
+Dropdown during Toggle Anchors was busted.  
+Castbar text was getting cut off.  
 
 ___
 
