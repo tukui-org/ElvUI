@@ -128,7 +128,7 @@ function NP:Update_TargetIndicator(nameplate)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
-		if (nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator) and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
+		if nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
 			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', -3, 0)
 			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', 3, 0)
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)

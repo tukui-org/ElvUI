@@ -279,7 +279,7 @@ function S:BlizzardMiscFrames()
 	end)
 
 	hooksecurefunc('ToggleDropDownMenu', function(level)
-		if ( not level ) then
+		if not level then
 			level = 1;
 		end
 

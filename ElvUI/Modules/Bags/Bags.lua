@@ -569,7 +569,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 				if not line or line == '' then break end
 				if line == _G.ITEM_SOULBOUND or line == _G.ITEM_ACCOUNTBOUND or line == _G.ITEM_BNETACCOUNTBOUND then break end
 				BoE, BoU = line == _G.ITEM_BIND_ON_EQUIP, line == _G.ITEM_BIND_ON_USE
-				if (BoE or BoU) then break end
+				if BoE or BoU then break end
 			end
 
 			E.ScanTooltip:Hide()
@@ -585,7 +585,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
 			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
 			slot.ignoreBorderColors = true
-			if(slot.questIcon) then
+			if slot.questIcon then
 				slot.questIcon:Show()
 			end
 		elseif questId or isQuestItem then
@@ -813,11 +813,11 @@ function B:AssignBagFlagMenu()
 			SetBagSlotFlag(holder.id, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP, not value)
 		end
 	end
-	if (holder.id == -1) then
+	if holder.id == -1 then
 		info.checked = GetBankAutosortDisabled()
-	elseif (holder.id == 0) then
+	elseif holder.id == 0 then
 		info.checked = GetBackpackAutosortDisabled()
-	elseif (holder.id > NUM_BAG_SLOTS) then
+	elseif holder.id > NUM_BAG_SLOTS then
 		info.checked = GetBankBagSlotFlag(holder.id - NUM_BAG_SLOTS, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
 	else
 		info.checked = GetBagSlotFlag(holder.id, LE_BAG_FILTER_FLAG_IGNORE_CLEANUP)
@@ -919,7 +919,7 @@ function B:Layout(isBank)
 
 		do --Bag Containers
 			if isBank then
-				if (bagID ~= -1) then
+				if bagID ~= -1 then
 					BankFrameItemButton_Update(f.ContainerHolder[i])
 					BankFrameItemButton_UpdateLocked(f.ContainerHolder[i])
 				end
@@ -1075,7 +1075,7 @@ function B:UpdateReagentSlot(slotID)
 			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
 			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
 			slot.ignoreBorderColors = true
-			if (slot.questIcon) then
+			if slot.questIcon then
 				slot.questIcon:Show()
 			end
 		elseif questId or isQuestItem then
@@ -1238,7 +1238,7 @@ function B:GetGraysValue()
 				if itemPrice then
 					local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 					local stackPrice = itemPrice * stackCount
-					if (rarity and rarity == 0) and (itype and itype ~= 'Quest') and (stackPrice > 0) then
+					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (stackPrice > 0) then
 						value = value + stackPrice
 					end
 				end
@@ -1262,15 +1262,15 @@ function B:VendorGrays(delete)
 			if itemID then
 				local _, link, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
 
-				if (rarity and rarity == 0) and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
+				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
 					tinsert(B.SellFrame.Info.itemList, {bag,slot,itemPrice,link})
 				end
 			end
 		end
 	end
 
-	if (not B.SellFrame.Info.itemList) then return; end
-	if (tmaxn(B.SellFrame.Info.itemList) < 1) then return; end
+	if not B.SellFrame.Info.itemList then return; end
+	if tmaxn(B.SellFrame.Info.itemList) < 1 then return; end
 	--Resetting stuff
 	B.SellFrame.Info.delete = delete or false
 	B.SellFrame.Info.ProgressTimer = 0
@@ -1446,7 +1446,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.sortButton:StyleButton(nil, true)
 	f.sortButton:SetScript('OnEnter', _G.BagItemAutoSortButton:GetScript('OnEnter'))
 
-	if (isBank and E.db.bags.disableBankSort) or (not isBank and E.db.bags.disableBagSort) then
+	if isBank and E.db.bags.disableBankSort or (not isBank and E.db.bags.disableBagSort) then
 		f.sortButton:Disable()
 	end
 
@@ -2201,11 +2201,11 @@ end
 
 function B:VendorGreys_OnUpdate(elapsed)
 	B.SellFrame.Info.ProgressTimer = B.SellFrame.Info.ProgressTimer - elapsed
-	if (B.SellFrame.Info.ProgressTimer > 0) then return; end
+	if B.SellFrame.Info.ProgressTimer > 0 then return; end
 	B.SellFrame.Info.ProgressTimer = B.SellFrame.Info.SellInterval
 
 	local goldGained, lastItem = B:ProgressQuickVendor()
-	if (goldGained) then
+	if goldGained then
 		B.SellFrame.Info.goldGained = B.SellFrame.Info.goldGained + goldGained
 		B.SellFrame.Info.itemsSold = B.SellFrame.Info.itemsSold + 1
 		B.SellFrame.statusbar:SetValue(B.SellFrame.Info.itemsSold)

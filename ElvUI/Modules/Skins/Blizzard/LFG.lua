@@ -200,9 +200,9 @@ function S:LookingForGroupFrames()
 		roleButton:DisableDrawLayer('ARTWORK')
 		roleButton:DisableDrawLayer('OVERLAY')
 
-		if(not roleButton.background) then
+		if not roleButton.background then
 			local isLeader = roleButton:GetName() ~= nil and roleButton:GetName():find('Leader') or false
-			if(not isLeader) then
+			if not isLeader then
 				roleButton.background = roleButton:CreateTexture(nil, 'BACKGROUND')
 				roleButton.background:Size(80, 80)
 				roleButton.background:Point('CENTER')
@@ -233,30 +233,30 @@ function S:LookingForGroupFrames()
 		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
 
 		local avail1, avail2
-		if ( availTank ) then
+		if availTank then
 			avail1 = self.TankButton
 		end
-		if ( availHealer ) then
-			if ( avail1 ) then
+		if availHealer then
+			if avail1 then
 				avail2 = self.HealerButton
 			else
 				avail1 = self.HealerButton
 			end
 		end
-		if ( availDPS ) then
-			if ( avail1 ) then
+		if availDPS then
+			if avail1 then
 				avail2 = self.DamagerButton
 			else
 				avail1 = self.DamagerButton
 			end
 		end
 
-		if ( avail2 ) then
+		if avail2 then
 			avail1:ClearAllPoints();
 			avail1:Point('TOPRIGHT', self, 'TOP', -40, -35)
 			avail2:ClearAllPoints()
 			avail2:Point('TOPLEFT', self, 'TOP', 40, -35)
-		elseif ( avail1 ) then
+		elseif avail1 then
 			avail1:ClearAllPoints()
 			avail1:Point('TOP', self, 'TOP', 0, -35)
 		end

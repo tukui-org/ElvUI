@@ -761,7 +761,7 @@ function UF.groupPrototype:AdjustVisibility(Header)
 		local numGroups = Header.numGroups
 		for i=1, #Header.groups do
 			local group = Header.groups[i]
-			if (i <= numGroups) and ((Header.db.raidWideSorting and i <= 1) or not Header.db.raidWideSorting) then
+			if i <= numGroups and ((Header.db.raidWideSorting and i <= 1) or not Header.db.raidWideSorting) then
 				group:Show()
 			else
 				if group.forceShow then
@@ -1129,49 +1129,49 @@ end
 
 local HandleFrame = function(baseName, doNotReparent)
 	local frame
-	if (type(baseName) == 'string') then
+	if type(baseName) == 'string' then
 		frame = _G[baseName]
 	else
 		frame = baseName
 	end
 
-	if (frame) then
+	if frame then
 		frame:UnregisterAllEvents()
 		frame:Hide()
 
-		if(not doNotReparent) then
+		if not doNotReparent then
 			frame:SetParent(hiddenParent)
 		end
 
 		local health = frame.healthBar or frame.healthbar
-		if (health) then
+		if health then
 			health:UnregisterAllEvents()
 		end
 
 		local power = frame.manabar
-		if (power) then
+		if power then
 			power:UnregisterAllEvents()
 		end
 
 		local spell = frame.castBar or frame.spellbar
-		if (spell) then
+		if spell then
 			spell:UnregisterAllEvents()
 		end
 
 		local altpowerbar = frame.powerBarAlt
-		if (altpowerbar) then
+		if altpowerbar then
 			altpowerbar:UnregisterAllEvents()
 		end
 
 		local buffFrame = frame.BuffFrame
-		if (buffFrame) then
+		if buffFrame then
 			buffFrame:UnregisterAllEvents()
 		end
 	end
 end
 
 function ElvUF:DisableBlizzard(unit)
-	if(not unit) then return end
+	if not unit then return end
 
 	if (unit == 'player') and E.private.unitframe.disabledBlizzardFrames.player then
 		local PlayerFrame = _G.PlayerFrame
@@ -1200,7 +1200,7 @@ function ElvUF:DisableBlizzard(unit)
 		HandleFrame(_G.TargetFrameToT)
 	elseif (unit:match('boss%d?$')) and E.private.unitframe.disabledBlizzardFrames.boss then
 		local id = unit:match('boss(%d)')
-		if (id) then
+		if id then
 			HandleFrame('Boss' .. id .. 'TargetFrame')
 		else
 			for i = 1, _G.MAX_BOSS_FRAMES do
@@ -1209,7 +1209,7 @@ function ElvUF:DisableBlizzard(unit)
 		end
 	elseif (unit:match('party%d?$')) and E.private.unitframe.disabledBlizzardFrames.party then
 		local id = unit:match('party(%d)')
-		if (id) then
+		if id then
 			HandleFrame('PartyMemberFrame' .. id)
 		else
 			for i=1, 4 do
@@ -1219,7 +1219,7 @@ function ElvUF:DisableBlizzard(unit)
 		HandleFrame(_G.PartyMemberBackground)
 	elseif (unit:match('arena%d?$')) and E.private.unitframe.disabledBlizzardFrames.arena then
 		local id = unit:match('arena(%d)')
-		if (id) then
+		if id then
 			HandleFrame('ArenaEnemyFrame' .. id)
 		else
 			for i = 1, _G.MAX_ARENA_ENEMIES do
@@ -1230,10 +1230,10 @@ function ElvUF:DisableBlizzard(unit)
 		-- Blizzard_ArenaUI should not be loaded
 		Arena_LoadUI = E.noop
 		SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
-	elseif (unit:match('nameplate%d+$')) then
+	elseif unit:match('nameplate%d+$') then
 		local frame = C_NamePlate_GetNamePlateForUnit(unit)
-		if (frame and frame.UnitFrame) then
-			if(not frame.UnitFrame.isHooked) then
+		if frame and frame.UnitFrame then
+			if not frame.UnitFrame.isHooked then
 				frame.UnitFrame:HookScript('OnShow', insecureOnShow)
 				frame.UnitFrame.isHooked = true
 			end

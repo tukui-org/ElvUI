@@ -51,7 +51,7 @@ function DB:PLAYER_LEVEL_UP(level)
 		self.expBar:Hide()
 	end
 
-	if(self.db.honor.enable) then
+	if self.db.honor.enable then
 		DB:UpdateHonor('PLAYER_LEVEL_UP', level)
 	else
 		self.honorBar:Hide()

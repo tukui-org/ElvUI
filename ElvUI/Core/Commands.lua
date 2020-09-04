@@ -43,7 +43,7 @@ function E:LuaError(msg)
 	if switch == 'on' or switch == '1' then
 		for i=1, GetNumAddOns() do
 			local name = GetAddOnInfo(i)
-			if (name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI') and E:IsAddOnEnabled(name) then
+			if name ~= 'ElvUI' and name ~= 'ElvUI_OptionsUI' and E:IsAddOnEnabled(name) then
 				DisableAddOn(name, E.myname)
 				ElvDB.LuaErrorDisabledAddOns[name] = i
 			end
@@ -77,7 +77,7 @@ end
 function E:DelayScriptCall(msg)
 	local secs, command = msg:match('^(%S+)%s+(.*)$')
 	secs = tonumber(secs)
-	if (not secs) or (#command == 0) then
+	if not secs or (#command == 0) then
 		self:Print('usage: /in <seconds> <command>')
 		self:Print('example: /in 1.5 /say hi')
 	else

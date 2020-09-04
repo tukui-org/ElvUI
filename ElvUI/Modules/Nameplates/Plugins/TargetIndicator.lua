@@ -23,7 +23,7 @@ local templateBackdrop = {}
 local function Update(self)
 	local element = self.TargetIndicator
 
-	if (element.PreUpdate) then
+	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
@@ -38,7 +38,7 @@ local function Update(self)
 			element.TopIndicator:Show()
 		end
 
-		if (element.LeftIndicator and element.RightIndicator) and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
+		if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
 			element.RightIndicator:Show()
 			element.LeftIndicator:Show()
 		end
@@ -57,7 +57,7 @@ local function Update(self)
 	if UnitIsUnit(self.unit, 'target') then
 		showIndicator = true
 		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
-	elseif (not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0) then
+	elseif not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0 then
 		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 		local perc = (maxHealth > 0 and health/maxHealth) or 0
 
@@ -77,7 +77,7 @@ local function Update(self)
 			element.TopIndicator:SetVertexColor(r, g, b)
 		end
 
-		if (element.LeftIndicator and element.RightIndicator) and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
+		if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
 			element.RightIndicator:SetVertexColor(r, g, b)
 			element.LeftIndicator:SetVertexColor(r, g, b)
 		end
@@ -93,7 +93,7 @@ local function Update(self)
 		end
 	end
 
-	if (element.PostUpdate) then
+	if element.PostUpdate then
 		return element:PostUpdate(self.unit)
 	end
 end
@@ -108,7 +108,7 @@ end
 
 local function Enable(self)
 	local element = self.TargetIndicator
-	if (element) then
+	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
@@ -163,7 +163,7 @@ end
 
 local function Disable(self)
 	local element = self.TargetIndicator
-	if (element) then
+	if element then
 		if element.TopIndicator then element.TopIndicator:Hide() end
 		if element.LeftIndicator then element.LeftIndicator:Hide() end
 		if element.RightIndicator then element.RightIndicator:Hide() end

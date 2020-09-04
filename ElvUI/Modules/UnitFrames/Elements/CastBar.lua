@@ -141,7 +141,7 @@ function UF:Configure_Castbar(frame)
 		castbar.Icon = castbar.ButtonIcon
 		castbar.Icon:SetTexCoord(unpack(E.TexCoords))
 
-		if (not db.iconAttached) then
+		if not db.iconAttached then
 			castbar.Icon.bg:Size(db.iconSize)
 		else
 			castbar.Icon.bg:Size(db.height-UF.SPACING*2)
@@ -176,7 +176,7 @@ function UF:Configure_Castbar(frame)
 	if db.overlayOnFrame ~= 'None' then
 		local anchor = frame[db.overlayOnFrame]
 
-		if (not db.iconAttached) then
+		if not db.iconAttached then
 			castbar:SetInside(anchor, 0, 0)
 		else
 			if castbar.Icon then
@@ -219,7 +219,7 @@ function UF:Configure_Castbar(frame)
 		local anchorPoint = db.iconPosition
 		castbar.Icon.bg:ClearAllPoints()
 		castbar.Icon.bg:Point(INVERT_ANCHORPOINT[anchorPoint], attachPoint, anchorPoint, db.iconXOffset, db.iconYOffset)
-	elseif(db.icon) then
+	elseif db.icon then
 		castbar.Icon.bg:ClearAllPoints()
 		if frame.ORIENTATION == 'RIGHT' then
 			castbar.Icon.bg:Point('LEFT', castbar, 'RIGHT', UF.SPACING*3, 0)
@@ -408,7 +408,7 @@ function UF:PostCastStart(unit)
 	local colors = ElvUF.colors
 	local r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
 
-	if (self.notInterruptible and unit ~= 'player') and UnitCanAttack('player', unit) then
+	if self.notInterruptible and unit ~= 'player' and UnitCanAttack('player', unit) then
 		r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
 	elseif UF.db.colors.castClassColor and UnitIsPlayer(unit) then
 		local _, Class = UnitClass(unit)

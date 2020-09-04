@@ -48,7 +48,7 @@ function E:ClassColor(class, usePriestColor)
 		color.colorStr = 'ff'..color.colorStr
 	end
 
-	if (usePriestColor and class == 'PRIEST') and tonumber(color.colorStr, 16) > tonumber(E.PriestColors.colorStr, 16) then
+	if usePriestColor and class == 'PRIEST' and tonumber(color.colorStr, 16) > tonumber(E.PriestColors.colorStr, 16) then
 		return E.PriestColors
 	else
 		return color
@@ -290,7 +290,7 @@ do
 		if module == 'all' then
 			for moduName, modu in pairs(self.modules) do
 				for funcName, func in pairs(modu) do
-					if (funcName ~= 'GetModule') and (type(func) == 'function') then
+					if funcName ~= 'GetModule' and type(func) == 'function' then
 						CPU_USAGE[moduName..':'..funcName] = GetFunctionCPUUsage(func, true)
 					end
 				end

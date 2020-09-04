@@ -26,7 +26,7 @@ function UF:UpdateRoleIcon(event)
 	if not self.db then return; end
 	local db = self.db.roleIcon;
 
-	if (not db) or (db and not db.enable) then
+	if not db or not db.enable then
 		lfdrole:Hide()
 		return
 	end

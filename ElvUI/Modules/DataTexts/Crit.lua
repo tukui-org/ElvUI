@@ -35,15 +35,15 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	local tooltip, critText
-	if (spellCrit >= rangedCrit and spellCrit >= meleeCrit) then
+	if spellCrit >= rangedCrit and spellCrit >= meleeCrit then
 		critText = SPELL_CRIT_CHANCE
-	elseif (rangedCrit >= meleeCrit) then
+	elseif rangedCrit >= meleeCrit then
 		critText = RANGED_CRIT_CHANCE
 	else
 		critText = MELEE_CRIT_CHANCE;
 	end
 
-	if (GetCritChanceProvidesParryEffect()) then
+	if GetCritChanceProvidesParryEffect() then
 		tooltip = format(CR_CRIT_PARRY_RATING_TOOLTIP, BreakUpLargeNumbers(extraCritRating), extraCritChance, GetCombatRatingBonusForCombatRatingValue(CR_PARRY, extraCritRating));
 	else
 		tooltip = format(CR_CRIT_TOOLTIP, BreakUpLargeNumbers(extraCritRating), extraCritChance);
@@ -64,10 +64,10 @@ local function OnEvent(self)
 	rangedCrit = GetRangedCritChance();
 	meleeCrit = GetCritChance();
 
-	if (spellCrit >= rangedCrit and spellCrit >= meleeCrit) then
+	if spellCrit >= rangedCrit and spellCrit >= meleeCrit then
 		critChance = spellCrit;
 		rating = CR_CRIT_SPELL;
-	elseif (rangedCrit >= meleeCrit) then
+	elseif rangedCrit >= meleeCrit then
 		critChance = rangedCrit;
 		rating = CR_CRIT_RANGED;
 	else

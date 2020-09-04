@@ -295,7 +295,7 @@ function AB:Tooltip_OnUpdate(tooltip, e)
 	if tooltip:IsForbidden() then return; end
 
 	elapsed = elapsed + e
-	if (elapsed < .2) then return else elapsed = 0 end
+	if elapsed < .2 then return else elapsed = 0 end
 
 	local compareItems = IsModifiedClick('COMPAREITEMS')
 	if not tooltip.comparing and compareItems and tooltip:GetItem() then

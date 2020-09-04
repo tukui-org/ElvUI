@@ -313,7 +313,7 @@ function UF:FrameGlow_CheckMouseover(frame)
 		if frame.FrameGlow and not frame.FrameGlow:IsShown() then
 			frame.FrameGlow:Show()
 		end
-		if (shouldShow == 'both' or shouldShow == 'frame') then
+		if shouldShow == 'both' or shouldShow == 'frame' then
 			if frame.MouseGlow.powerGlow then
 				if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
 					frame.MouseGlow.powerGlow:Show()
@@ -323,7 +323,7 @@ function UF:FrameGlow_CheckMouseover(frame)
 			end
 			frame.MouseGlow:Show()
 
-			if (shouldShow == 'frame') and frame.FrameGlow.texture and frame.FrameGlow.texture:IsShown() then
+			if shouldShow == 'frame' and frame.FrameGlow.texture and frame.FrameGlow.texture:IsShown() then
 				frame.FrameGlow.texture:Hide()
 			end
 		end

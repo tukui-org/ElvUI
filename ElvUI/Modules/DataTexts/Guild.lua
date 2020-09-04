@@ -141,7 +141,7 @@ local eventHandlers = {
 	end,
 	-- Guild Roster updated, so rebuild the guild table
 	GUILD_ROSTER_UPDATE = function(self)
-		if(resendRequest) then
+		if resendRequest then
 			resendRequest = false
 			return C_GuildInfo_GuildRoster()
 		else

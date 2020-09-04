@@ -112,7 +112,7 @@ function B:GroupLootContainer_Update()
 	for i=1, self.maxIndex do
 		local frame = self.rollFrames[i]
 		local prevFrame = self.rollFrames[i-1]
-		if ( frame ) then
+		if frame then
 			frame:ClearAllPoints()
 			if prevFrame and not (prevFrame == frame) then
 				frame:Point(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET)
@@ -123,7 +123,7 @@ function B:GroupLootContainer_Update()
 		end
 	end
 
-	if ( lastIdx ) then
+	if lastIdx then
 		self:Height(self.reservedSize * lastIdx)
 		self:Show()
 	else

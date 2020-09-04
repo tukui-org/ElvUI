@@ -177,8 +177,8 @@ function S:LootFrame()
 
 	for i=1, LootFrame:GetNumRegions() do
 		local region = select(i, LootFrame:GetRegions());
-		if(region:IsObjectType('FontString')) then
-			if(region:GetText() == ITEMS) then
+		if region:IsObjectType('FontString') then
+			if region:GetText() == ITEMS then
 				LootFrame.Title = region
 			end
 		end
@@ -213,11 +213,11 @@ function S:LootFrame()
 
 		local button = _G['LootButton'..index];
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
-		if(button and button:IsShown()) then
+		if button and button:IsShown() then
 			local texture, _, isQuestItem, questId, isActive;
-			if (LootFrame.AutoLootTable) then
+			if LootFrame.AutoLootTable then
 				local entry = LootFrame.AutoLootTable[slot];
-				if( entry.hide ) then
+				if entry.hide then
 					button:Hide();
 					return;
 				else
@@ -230,10 +230,10 @@ function S:LootFrame()
 				texture, _, _, _, _, isQuestItem, questId, isActive = GetLootSlotInfo(slot);
 			end
 
-			if(texture) then
-				if ( questId and not isActive ) then
+			if texture then
+				if questId and not isActive then
 					LBG.ShowOverlayGlow(button)
-				elseif ( questId or isQuestItem ) then
+				elseif questId or isQuestItem then
 					LBG.ShowOverlayGlow(button)
 				else
 					LBG.HideOverlayGlow(button)
@@ -245,7 +245,7 @@ function S:LootFrame()
 	LootFrame:HookScript('OnShow', function(s)
 		if IsFishingLoot() then
 			s.Title:SetText(L["Fishy Loot"])
-		elseif(not UnitIsFriend('player', 'target') and UnitIsDead'target') then
+		elseif not UnitIsFriend('player', 'target') and UnitIsDead('target') then
 			s.Title:SetText(UnitName('target'))
 		else
 			s.Title:SetText(LOOT)

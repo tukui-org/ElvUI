@@ -21,7 +21,7 @@ local function OnEvent(self)
 	if friendshipID then
 		local _, friendRep, _, _, _, _, friendTextLevel, friendThreshold, nextFriendThreshold = GetFriendshipReputation(factionID);
 		isFriend, reaction, friendText = true, 5, friendTextLevel
-		if ( nextFriendThreshold ) then
+		if nextFriendThreshold then
 			min, max, value = friendThreshold, nextFriendThreshold, friendRep;
 		else
 			isCapped = true;
@@ -49,7 +49,7 @@ local function OnEvent(self)
 
 	--Prevent a division by zero
 	local maxMinDiff = max - min
-	if (maxMinDiff == 0) then
+	if maxMinDiff == 0 then
 		maxMinDiff = 1
 	end
 
