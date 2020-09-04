@@ -592,10 +592,6 @@ function S:Blizzard_GarrisonUI()
 	_G.CombatLog.CombatLogMessageFrame:StripTextures()
 	_G.CombatLog.ElevatedFrame:SetAlpha(0)
 	_G.CombatLog.CombatLogMessageFrame:CreateBackdrop('Transparent')
-	S:HandleButton(CovenantMissionFrame.MissionComplete.CompleteFrame.SpeedButton)
-	S:HandleButton(CovenantMissionFrame.MissionComplete.CompleteFrame.ContinueButton)
-
-	S:HandleButton(CovenantMissionFrame.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton)
 
 	-- Adventures / Follower Tab
 	-- TODO: Quality Border!?
