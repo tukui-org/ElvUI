@@ -402,7 +402,7 @@ function AB:CreateVehicleLeave()
 		Button:StyleButton(nil, true, true)
 	end
 
-	hooksecurefunc(Button, 'Point', function(_, _, parent)
+	hooksecurefunc(Button, 'SetPoint', function(_, _, parent)
 		if parent ~= holder then
 			Button:ClearAllPoints()
 			Button:SetParent(_G.UIParent)

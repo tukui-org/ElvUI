@@ -59,14 +59,6 @@ function UF:Update_RaidpetFrames(frame, db)
 	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		if UF.thinBorders then
-			frame.SPACING = 0
-			frame.BORDER = 1
-		else
-			frame.BORDER = E.Border
-			frame.SPACING = E.Spacing
-		end
-
 		frame.SHADOW_SPACING = 3
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width

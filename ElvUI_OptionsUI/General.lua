@@ -485,7 +485,6 @@ E.Options.args.general = {
 							name = L["Unitframe Thin Borders"],
 							desc = L["Use thin borders on certain unitframe elements."],
 							type = 'toggle',
-							disabled = function() return E.private.general.pixelPerfect end,
 							get = function(info) return E.db.unitframe.thinBorders end,
 							set = function(info, value)
 								E.db.unitframe.thinBorders = value

@@ -255,8 +255,6 @@ function E:CreateMoverPopup()
 	f:Size(370, 190)
 	f:SetTemplate('Transparent')
 	f:Point('BOTTOM', _G.UIParent, 'CENTER', 0, 100)
-	f:CreateShadow(4)
-	f.shadow:SetBackdropBorderColor(r, g, b, 0.9)
 	f:Hide()
 
 	local header = CreateFrame('Button', nil, f, 'BackdropTemplate')
@@ -375,7 +373,7 @@ function E:CreateMoverPopup()
 	nudgeFrame:SetFrameStrata('DIALOG')
 	nudgeFrame:Size(200, 110)
 	nudgeFrame:SetTemplate('Transparent')
-	nudgeFrame:CreateShadow(4)
+	nudgeFrame:CreateShadow(5)
 	nudgeFrame.shadow:SetBackdropBorderColor(r, g, b, 0.9)
 	nudgeFrame:SetFrameLevel(500)
 	nudgeFrame:EnableMouse(true)
@@ -870,9 +868,6 @@ E.valueColorUpdateFuncs[function(_, r, g, b)
 		ConfigLogoTop:SetVertexColor(r, g, b)
 	end
 
-	if ElvUIMoverPopupWindow and ElvUIMoverPopupWindow.shadow then
-		ElvUIMoverPopupWindow.shadow:SetBackdropBorderColor(r, g, b, 0.9)
-	end
 	if ElvUIMoverNudgeWindow and ElvUIMoverNudgeWindow.shadow then
 		ElvUIMoverNudgeWindow.shadow:SetBackdropBorderColor(r, g, b, 0.9)
 	end

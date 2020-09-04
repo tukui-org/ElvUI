@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
 local _G = _G
 local pairs, pcall = pairs, pcall
@@ -124,17 +125,19 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	GetTemplate(template, isUnitFrameElement)
 
 	frame.template = template or 'Default'
-	if glossTex then frame.glossTex = glossTex end
-	if ignoreUpdates then frame.ignoreUpdates = ignoreUpdates end
-	if forcePixelMode then frame.forcePixelMode = forcePixelMode end
-	if isUnitFrameElement then frame.isUnitFrameElement = isUnitFrameElement end
+	frame.glossTex = glossTex
+	frame.ignoreUpdates = ignoreUpdates
+	frame.forcePixelMode = forcePixelMode
+	frame.isUnitFrameElement = isUnitFrameElement
 
 	if template == 'NoBackdrop' then
 		frame:SetBackdrop()
 	else
 		templateBackdrop.edgeFile = E.media.blankTex
 		templateBackdrop.bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex
-		if not templateBackdrop.edgeSize then templateBackdrop.edgeSize = E:Scale(not E.twoPixelsPlease and 1 or 2) end
+		if not templateBackdrop.edgeSize then
+			templateBackdrop.edgeSize = E:Scale(E.twoPixelsPlease and 2 or 1)
+		end
 
 		frame:SetBackdrop(templateBackdrop)
 
@@ -144,7 +147,9 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			frame:SetBackdropColor(backdropr, backdropg, backdropb, frame.customBackdropAlpha or (template == 'Transparent' and backdropa) or 1)
 		end
 
-		if not E.PixelMode and not frame.forcePixelMode then
+		local notPixelMode = not isUnitFrameElement and not E.PixelMode
+		local notThinBorders = isUnitFrameElement and not UF.thinBorders
+		if (notPixelMode or notThinBorders) and not forcePixelMode then
 			innerOuterBackdrop.edgeFile = E.media.blankTex
 			if not innerOuterBackdrop.edgeSize then innerOuterBackdrop.edgeSize = E:Scale(1) end
 
@@ -184,8 +189,10 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
-	if frame.forcePixelMode or forcePixelMode then
-		backdrop:SetOutside(frame, 1, 1)
+	if forcePixelMode then
+		backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
+	elseif isUnitFrameElement then
+		backdrop:SetOutside(frame, UF.BORDER, UF.BORDER)
 	else
 		backdrop:SetOutside(frame)
 	end

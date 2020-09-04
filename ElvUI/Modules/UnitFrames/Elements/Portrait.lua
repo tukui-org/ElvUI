@@ -22,7 +22,7 @@ function UF:Construct_Portrait(frame, type)
 		portrait.backdrop = backdrop
 	else
 		portrait = CreateFrame('PlayerModel', nil, frame)
-		portrait:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+		portrait:CreateBackdrop(nil, nil, nil, nil, true)
 	end
 
 	portrait.PostUpdate = self.PortraitUpdate
@@ -86,23 +86,23 @@ function UF:Configure_Portrait(frame)
 		else
 			portrait:SetAlpha(1)
 			portrait.backdrop:Show()
-			portrait:SetInside(portrait.backdrop, frame.BORDER)
+			portrait:SetInside(portrait.backdrop, UF.BORDER)
 
 			if frame.ORIENTATION == 'LEFT' then
-				portrait.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
+				portrait.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', UF.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+UF.SPACING) or -UF.SPACING)
 
 				if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR or frame.POWERBAR_DETACHED then
-					portrait.backdrop:Point('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMLEFT', frame.BORDER - frame.SPACING*3, 0)
+					portrait.backdrop:Point('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMLEFT', UF.BORDER - UF.SPACING*3, 0)
 				else
-					portrait.backdrop:Point('BOTTOMRIGHT', frame.Power.backdrop, 'BOTTOMLEFT', frame.BORDER - frame.SPACING*3, 0)
+					portrait.backdrop:Point('BOTTOMRIGHT', frame.Power.backdrop, 'BOTTOMLEFT', UF.BORDER - UF.SPACING*3, 0)
 				end
 			elseif frame.ORIENTATION == 'RIGHT' then
-				portrait.backdrop:Point('TOPRIGHT', frame, 'TOPRIGHT', -frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
+				portrait.backdrop:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+UF.SPACING) or -UF.SPACING)
 
 				if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR or frame.POWERBAR_DETACHED then
-					portrait.backdrop:Point('BOTTOMLEFT', frame.Health.backdrop, 'BOTTOMRIGHT', -frame.BORDER + frame.SPACING*3, 0)
+					portrait.backdrop:Point('BOTTOMLEFT', frame.Health.backdrop, 'BOTTOMRIGHT', -UF.BORDER + UF.SPACING*3, 0)
 				else
-					portrait.backdrop:Point('BOTTOMLEFT', frame.Power.backdrop, 'BOTTOMRIGHT', -frame.BORDER + frame.SPACING*3, 0)
+					portrait.backdrop:Point('BOTTOMLEFT', frame.Power.backdrop, 'BOTTOMRIGHT', -UF.BORDER + UF.SPACING*3, 0)
 				end
 			end
 		end

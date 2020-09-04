@@ -48,7 +48,7 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 
 	health.colorTapping = true
 	health.colorDisconnected = true
-	health:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+	health:CreateBackdrop(nil, nil, nil, nil, true)
 
 	local clipFrame = CreateFrame('Frame', nil, health)
 	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
@@ -114,79 +114,79 @@ function UF:Configure_HealthBar(frame)
 	health.HEIGHT = db.height
 
 	if frame.ORIENTATION == 'LEFT' then
-		health:Point('TOPRIGHT', frame, 'TOPRIGHT', -frame.BORDER - frame.SPACING - (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.BORDER - UF.SPACING - (frame.PVPINFO_WIDTH or 0), -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
 
 		if frame.USE_POWERBAR_OFFSET then
-			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
-			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
+			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.BORDER - UF.SPACING - frame.POWERBAR_OFFSET, -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET)
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET) - (frame.BORDER + frame.SPACING + frame.PORTRAIT_WIDTH)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET)
 		elseif frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
-			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0)) - (frame.BORDER + frame.SPACING + frame.PORTRAIT_WIDTH)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 		elseif frame.USE_MINI_POWERBAR then
-			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.SPACING + (frame.POWERBAR_HEIGHT/2))
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + UF.BORDER + UF.SPACING, UF.SPACING + (frame.POWERBAR_HEIGHT/2))
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0)) - (frame.BORDER + frame.SPACING + frame.PORTRAIT_WIDTH)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.SPACING + frame.POWERBAR_HEIGHT / 2)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.SPACING + frame.POWERBAR_HEIGHT / 2)
 		else
-			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0)) - (frame.BORDER + frame.SPACING + frame.PORTRAIT_WIDTH)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 		end
 	elseif frame.ORIENTATION == 'RIGHT' then
-		health:Point('TOPLEFT', frame, 'TOPLEFT', frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point('TOPLEFT', frame, 'TOPLEFT', UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0), -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
 
 		if frame.USE_POWERBAR_OFFSET then
-			health:Point('TOPLEFT', frame, 'TOPLEFT', frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
-			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
+			health:Point('TOPLEFT', frame, 'TOPLEFT', UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET, -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.PORTRAIT_WIDTH - UF.BORDER - UF.SPACING, UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET)
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET) - (frame.BORDER + frame.SPACING + frame.PORTRAIT_WIDTH)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET)
 		elseif frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
-			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.PORTRAIT_WIDTH - UF.BORDER - UF.SPACING, UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0)) - (frame.BORDER + frame.SPACING + frame.PORTRAIT_WIDTH)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 		elseif frame.USE_MINI_POWERBAR then
-			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.SPACING + (frame.POWERBAR_HEIGHT/2))
+			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.PORTRAIT_WIDTH - UF.BORDER - UF.SPACING, UF.SPACING + (frame.POWERBAR_HEIGHT/2))
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0)) - (frame.BORDER + frame.SPACING + frame.PORTRAIT_WIDTH)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.SPACING + frame.POWERBAR_HEIGHT / 2)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.SPACING + frame.POWERBAR_HEIGHT / 2)
 		else
-			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.PORTRAIT_WIDTH - frame.BORDER - frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.PORTRAIT_WIDTH - UF.BORDER - UF.SPACING, UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0)) - (frame.BORDER + frame.SPACING + frame.PORTRAIT_WIDTH)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 		end
 	elseif frame.ORIENTATION == 'MIDDLE' then
-		health:Point('TOPRIGHT', frame, 'TOPRIGHT', -frame.BORDER - frame.SPACING - (frame.PVPINFO_WIDTH or 0), -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
+		health:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.BORDER - UF.SPACING - (frame.PVPINFO_WIDTH or 0), -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
 
 		if frame.USE_POWERBAR_OFFSET then
-			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -frame.BORDER - frame.SPACING - frame.POWERBAR_OFFSET, -frame.BORDER - frame.SPACING - frame.CLASSBAR_YOFFSET)
-			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET, frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
+			health:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.BORDER - UF.SPACING - frame.POWERBAR_OFFSET, -UF.BORDER - UF.SPACING - frame.CLASSBAR_YOFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET, UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET)
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET) - (frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.BORDER + frame.SPACING + frame.POWERBAR_OFFSET)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET) - (UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.POWERBAR_OFFSET)
 		elseif frame.POWERBAR_DETACHED or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR then
-			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0)) - (frame.BORDER + frame.SPACING)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 		elseif frame.USE_MINI_POWERBAR then
-			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.BORDER + frame.SPACING, frame.SPACING + (frame.POWERBAR_HEIGHT/2))
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, UF.SPACING + (frame.POWERBAR_HEIGHT/2))
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0)) - (frame.BORDER + frame.SPACING)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.SPACING + frame.POWERBAR_HEIGHT / 2)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.SPACING + frame.POWERBAR_HEIGHT / 2)
 		else
-			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + frame.BORDER + frame.SPACING, frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health:Point('BOTTOMLEFT', frame, 'BOTTOMLEFT', frame.PORTRAIT_WIDTH + UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 
-			health.WIDTH = health.WIDTH - (frame.BORDER + frame.SPACING + (frame.PVPINFO_WIDTH or 0)) - (frame.BORDER + frame.SPACING + frame.PORTRAIT_WIDTH)
-			health.HEIGHT = health.HEIGHT - (frame.BORDER + frame.SPACING + frame.CLASSBAR_YOFFSET) - (frame.BORDER + frame.SPACING + frame.BOTTOM_OFFSET)
+			health.WIDTH = health.WIDTH - (UF.BORDER + UF.SPACING + (frame.PVPINFO_WIDTH or 0)) - (UF.BORDER + UF.SPACING + frame.PORTRAIT_WIDTH)
+			health.HEIGHT = health.HEIGHT - (UF.BORDER + UF.SPACING + frame.CLASSBAR_YOFFSET) - (UF.BORDER + UF.SPACING + frame.BOTTOM_OFFSET)
 		end
 	end
 
@@ -213,10 +213,10 @@ end
 function UF:GetHealthBottomOffset(frame)
 	local bottomOffset = 0
 	if frame.USE_POWERBAR and not frame.POWERBAR_DETACHED and not frame.USE_INSET_POWERBAR then
-		bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (frame.BORDER-frame.SPACING)
+		bottomOffset = bottomOffset + frame.POWERBAR_HEIGHT - (UF.BORDER-UF.SPACING)
 	end
 	if frame.USE_INFO_PANEL then
-		bottomOffset = bottomOffset + frame.INFO_PANEL_HEIGHT - (frame.BORDER-frame.SPACING)
+		bottomOffset = bottomOffset + frame.INFO_PANEL_HEIGHT - (UF.BORDER-UF.SPACING)
 	end
 
 	return bottomOffset

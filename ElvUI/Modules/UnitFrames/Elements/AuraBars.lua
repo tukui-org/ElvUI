@@ -6,12 +6,12 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraBars(statusBar)
-	statusBar:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+	statusBar:CreateBackdrop(nil, nil, nil, nil, true)
 	statusBar:SetScript('OnMouseDown', UF.Aura_OnClick)
 	statusBar:Point('LEFT')
 	statusBar:Point('RIGHT')
 
-	statusBar.icon:CreateBackdrop(nil, nil, nil, UF.thinBorders, true)
+	statusBar.icon:CreateBackdrop(nil, nil, nil, nil, true)
 	UF.statusbars[statusBar] = true
 	UF:Update_StatusBar(statusBar)
 
@@ -143,11 +143,11 @@ function UF:Configure_AuraBars(frame)
 		if db.aurabar.attachTo == 'DETACHED' then
 			E:EnableMover(auraBars.Holder.mover:GetName())
 
-			local OFFSET = frame.BORDER + frame.SPACING
+			local OFFSET = UF.BORDER + UF.SPACING
 			auraBars.Holder:Size(db.aurabar.detachedWidth, db.aurabar.height + (OFFSET*2))
 
 			if db.aurabar.anchorPoint == 'BELOW' then
-				yOffset = OFFSET + (frame.BORDER - frame.SPACING)
+				yOffset = OFFSET + (UF.BORDER - UF.SPACING)
 			else
 				yOffset = -(db.aurabar.height + OFFSET)
 			end
@@ -168,7 +168,7 @@ function UF:Configure_AuraBars(frame)
 		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', -(LEFT_OFFSET + BORDER_OFFSET), yOffset)
 		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -(RIGHT_OFFSET + BORDER_OFFSET + (UF.thinBorders and 0 or 3)), yOffset)
 
-		local SPACING = (frame.BORDER + frame.SPACING)*4
+		local SPACING = (UF.BORDER + UF.SPACING)*4
 		auraBars.width = E:Scale((db.aurabar.attachTo == 'DETACHED' and db.aurabar.detachedWidth or frame.UNIT_WIDTH) - auraBars.height - (POWER_OFFSET or 0) - SPACING + 1) -- 1 is to account for joining the icons by a pixel
 		auraBars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then

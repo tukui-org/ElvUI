@@ -2,14 +2,41 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
+local pairs, unpack = pairs, unpack
+local hooksecurefunc = hooksecurefunc
 
 -- Credits Siweia | AuroraClassic
+
+local function UpdateSelection(frame, state)
+	if not frame.backdrop then return end
+
+	if frame.SelectedTexture:IsShown() then
+		frame.backdrop:SetBackdropBorderColor(1, .8, 0)
+	else
+		frame.backdrop:SetBackdropBorderColor(0, 0, 0)
+	end
+end
+
+local IconColor = E.QualityColors[Enum.ItemQuality.Epic or 4] -- epic color only
+local function SkinRewardIcon(itemFrame)
+	if not itemFrame.IsSkinned then
+		itemFrame:CreateBackdrop('Transparent')
+		itemFrame:DisableDrawLayer('BORDER')
+		itemFrame.Icon:SetPoint('LEFT', 6, 0)
+		S:HandleIcon(itemFrame.Icon, true)
+		itemFrame.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
+		itemFrame.IsSkinned = true
+	end
+end
 
 local function SkinActivityFrame(frame, isObject)
 	if frame.Border then
 		if isObject then
 			frame.Border:SetAlpha(0)
+			frame.SelectedTexture:SetAlpha(0)
+			frame.LockIcon:SetVertexColor(unpack(E.media.rgbvaluecolor))
+			hooksecurefunc(frame, "SetSelectionState", UpdateSelection)
+			hooksecurefunc(frame.ItemFrame, 'SetDisplayedItem', SkinRewardIcon)
 		else
 			frame.Border:SetTexCoord(.926, 1, 0, 1)
 			frame.Border:Size(25, 137)
@@ -17,8 +44,8 @@ local function SkinActivityFrame(frame, isObject)
 		end
 	end
 
-	if not frame.backdrop then
-		frame:CreateBackdrop()
+	if frame.Background then
+		frame.Background:CreateBackdrop()
 	end
 end
 
@@ -39,6 +66,7 @@ function S:Blizzard_WeeklyRewards()
 	header:Point('TOP', 1, -42)
 
 	S:HandleCloseButton(frame.CloseButton)
+	S:HandleButton(frame.SelectRewardButton)
 
 	SkinActivityFrame(frame.RaidFrame)
 	SkinActivityFrame(frame.MythicFrame)
@@ -47,6 +75,13 @@ function S:Blizzard_WeeklyRewards()
 	for _, activity in pairs(frame.Activities) do
 		SkinActivityFrame(activity, true)
 	end
+
+	--[[
+	local ConfirmItemFrame = _G.WeeklyRewardConfirmSelectionFrame.ItemFrame
+	S:HandleIcon(ConfirmItemFrame.Icon)
+	S:HandleIconBorder(ConfirmItemFrame.IconBorder)
+	_G.WeeklyRewardConfirmSelectionFrameNameFrame:Hide()
+	]]
 end
 
 S:AddCallbackForAddon('Blizzard_WeeklyRewards')

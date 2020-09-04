@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 UF.LSM = E.Libs.LSM
 
@@ -256,26 +256,18 @@ function UF:Construct_UF(frame, unit)
 	frame:SetScript('OnEnter', UnitFrame_OnEnter)
 	frame:SetScript('OnLeave', UnitFrame_OnLeave)
 
-	if self.thinBorders then
-		frame.SPACING = 0
-		frame.BORDER = 1
-	else
-		frame.BORDER = E.Border
-		frame.SPACING = E.Spacing
-	end
-
 	frame.SHADOW_SPACING = 3
-	frame.CLASSBAR_YOFFSET = 0	--placeholder
+	frame.CLASSBAR_YOFFSET = 0 --placeholder
 	frame.BOTTOM_OFFSET = 0 --placeholder
 
 	frame.RaisedElementParent = CreateFrame('Frame', nil, frame)
 	frame.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, frame.RaisedElementParent)
 	frame.RaisedElementParent:SetFrameLevel(frame:GetFrameLevel() + 100)
 
-	if not self.groupunits[unit] then
-		UF['Construct_'..gsub(E:StringTitle(unit), 't(arget)', 'T%1')..'Frame'](self, frame, unit)
+	if not UF.groupunits[unit] then
+		UF['Construct_'..gsub(E:StringTitle(unit), 't(arget)', 'T%1')..'Frame'](UF, frame, unit)
 	else
-		UF['Construct_'..E:StringTitle(self.groupunits[unit])..'Frames'](self, frame, unit)
+		UF['Construct_'..E:StringTitle(UF.groupunits[unit])..'Frames'](UF, frame, unit)
 	end
 
 	return frame
@@ -1463,9 +1455,9 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 	else
 		if statusBar.backdrop then
-			statusBar.backdrop:SetTemplate(nil, nil, nil, not statusBar.PostCastStart and self.thinBorders, true)
+			statusBar.backdrop:SetTemplate(nil, nil, nil, nil, true)
 		elseif parent.template then
-			parent:SetTemplate(nil, nil, nil, self.thinBorders, true)
+			parent:SetTemplate(nil, nil, nil, nil, true)
 		end
 
 		local texture = LSM:Fetch('statusbar', self.db.statusbar)
@@ -1524,7 +1516,11 @@ end
 
 function UF:Initialize()
 	UF.db = E.db.unitframe
-	UF.thinBorders = UF.db.thinBorders or E.PixelMode
+	UF.thinBorders = UF.db.thinBorders
+
+	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
+	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2
+
 	if E.private.unitframe.enable ~= true then return end
 	UF.Initialized = true
 

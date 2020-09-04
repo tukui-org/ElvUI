@@ -3,11 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs = pairs
-local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_VoidStorageUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.voidstorage) then return end
-	local CanUseVoidStorage = CanUseVoidStorage
 
 	local StripAllTextures = {
 		'VoidStorageBorderFrame',
@@ -46,14 +44,6 @@ function S:Blizzard_VoidStorageUI()
 	S:HandleButton(_G.VoidStoragePurchaseButton)
 	S:HandleButton(_G.VoidStorageTransferButton)
 	S:HandleEditBox(_G.VoidItemSearchBox)
-
-	hooksecurefunc(_G, 'VoidStorageFrame_Update', function()
-		if CanUseVoidStorage() then
-			_G.VoidStorageBorderFrameMouseBlockFrame:Hide()
-			_G.VoidStoragePurchaseFrame:Hide()
-			_G.VoidStorageBorderFrame.Bg:Hide()
-		end
-	end)
 
 	for StorageType, NumSlots  in pairs({ Deposit = 9, Withdraw = 9, Storage = 80 }) do
 		for i = 1, NumSlots do
