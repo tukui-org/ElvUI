@@ -12,8 +12,8 @@ local allowTipsFrom = {
 
 function B:KillBlizzard()
 	if E.global.general.disableTutorialButtons then
-		_G.HelpPlate:Kill()
-		_G.HelpPlateTooltip:Kill()
+		_G.TutorialFrame:UnregisterAllEvents()
+		_G.HelpTip:ForceHideAll()
 
 		hooksecurefunc(_G.HelpTip, 'Show', function(tip, parent, info)
 			local parentName = parent.GetName and parent:GetName()
