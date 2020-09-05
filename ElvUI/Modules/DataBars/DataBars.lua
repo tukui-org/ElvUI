@@ -52,10 +52,10 @@ function DB:UpdateAll()
 			E:UnregisterObjectForVehicleLock(bar)
 		end
 
-		if bar.rested then
-			bar.rested:SetOrientation(bar.db.orientation)
-			bar.rested:SetReverseFill(bar.db.reverseFill)
-			bar.rested:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
+		if bar.Rested then
+			bar.Rested:SetOrientation(bar.db.orientation)
+			bar.Rested:SetReverseFill(bar.db.reverseFill)
+			bar.Rested:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
 		end
 	end
 
