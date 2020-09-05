@@ -57,8 +57,6 @@ function S:Blizzard_InspectUI()
 		SkinPvpTalents(InspectPVPFrame['TalentSlot'..i])
 	end
 
-	SkinPvpTalents(InspectPVPFrame.TrinketSlot)
-
 	for i = 1, 4 do
 		S:HandleTab(_G['InspectFrameTab'..i])
 	end
