@@ -946,34 +946,6 @@ ElvUF.Tags.Methods['target:translit'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['npctitle'] = function(unit)
-	if UnitIsPlayer(unit) then return end
-
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
-
-	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-	if Title and not strfind(Title, '^'..LEVEL) then
-		return Title
-	end
-end
-
-ElvUF.Tags.Events['npctitle:brackets'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['npctitle:brackets'] = function(unit)
-	if UnitIsPlayer(unit) then return end
-
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
-
-	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-	if Title and not strfind(Title, '^'..LEVEL) then
-		return format('<%s>', Title)
-	end
-end
-
 ElvUF.Tags.Events['guild:rank'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['guild:rank'] = function(unit)
 	if UnitIsPlayer(unit) then
@@ -1032,6 +1004,32 @@ ElvUF.Tags.Events['title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['title'] = function(unit)
 	if UnitIsPlayer(unit) then
 		return GetTitleName(GetCurrentTitle())
+	end
+end
+
+do
+	local function GetTitleNPC(unit, frmt)
+		if UnitIsPlayer(unit) then return end
+
+		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetUnit(unit)
+		E.ScanTooltip:Show()
+
+		local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
+		if Title and not strfind(Title, '^'..LEVEL) then
+			return frmt and format(frmt, Title) or Title
+		end
+	end
+	E.TagFunctions.GetTitleNPC = GetTitleNPC
+
+	ElvUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
+	ElvUF.Tags.Methods['npctitle'] = function(unit)
+		return GetTitleNPC(unit)
+	end
+
+	ElvUF.Tags.Events['npctitle:brackets'] = 'UNIT_NAME_UPDATE'
+	ElvUF.Tags.Methods['npctitle:brackets'] = function(unit)
+		return GetTitleNPC(unit, '<%s>')
 	end
 end
 
