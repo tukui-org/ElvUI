@@ -6,7 +6,7 @@ local translitMark = '!'
 
 local _G = _G
 local tonumber, next = tonumber, next
-local gmatch, gsub, format, select = gmatch, gsub, format, select
+local gmatch, gsub, format = gmatch, gsub, format
 local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
@@ -955,7 +955,7 @@ ElvUF.Tags.Methods['npctitle'] = function(unit)
 	E.ScanTooltip:Show()
 
 	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-	if Title and not Title:find('^'..LEVEL) then
+	if Title and not strfind(Title, '^'..LEVEL) then
 		return Title
 	end
 end
@@ -969,7 +969,7 @@ ElvUF.Tags.Methods['npctitle:brackets'] = function(unit)
 	E.ScanTooltip:Show()
 
 	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-	if Title and not Title:find('^'..LEVEL) then
+	if Title and not strfind(Title, '^'..LEVEL) then
 		return format('<%s>', Title)
 	end
 end
