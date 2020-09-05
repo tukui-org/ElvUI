@@ -26,11 +26,12 @@ function S:Blizzard_CharacterCustomize()
 
 	local frame = _G.CharCustomizeFrame
 
-	S:HandleButton(frame.SmallButtons.ResetCameraButton)
-	S:HandleButton(frame.SmallButtons.ZoomOutButton)
-	S:HandleButton(frame.SmallButtons.ZoomInButton)
-	S:HandleButton(frame.SmallButtons.RotateLeftButton)
-	S:HandleButton(frame.SmallButtons.RotateRightButton)
+	-- backdrop is ugly, so dont use a style
+	S:HandleButton(frame.SmallButtons.ResetCameraButton, nil, nil, true)
+	S:HandleButton(frame.SmallButtons.ZoomOutButton, nil, nil, true)
+	S:HandleButton(frame.SmallButtons.ZoomInButton, nil, nil, true)
+	S:HandleButton(frame.SmallButtons.RotateLeftButton, nil, nil, true)
+	S:HandleButton(frame.SmallButtons.RotateRightButton, nil, nil, true)
 
 	hooksecurefunc(frame, 'SetSelectedCatgory', function(self)
 		for button in self.selectionPopoutPool:EnumerateActive() do
