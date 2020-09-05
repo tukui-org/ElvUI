@@ -562,7 +562,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 			E.ScanTooltip:Show()
 
-			local bindTypeLines = (GetCVarBool('colorblindmode') and 4) or 3
+			local bindTypeLines = (GetCVarBool('colorblindmode') and 5) or 4
 			for i = 2, bindTypeLines do
 				local line = _G['ElvUI_ScanTooltipTextLeft'..i]:GetText()
 				if not line or line == '' then break end
