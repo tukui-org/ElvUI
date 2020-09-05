@@ -349,9 +349,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 		index = index + 1
 	end
 
-	-- ElvUI changed block
-	visible = visible - created
-	-- end block
+	visible = visible - created -- ElvUI changed
 
 	if(not dontHide) then
 		for i = visible + offset + 1, #element do
@@ -511,25 +509,14 @@ end
 local function Update(self, event, unit)
 	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (self.unit ~= unit) then return end -- ElvUI changed
 
-	UpdateAuras(self, event, unit)
-
 	-- Assume no event means someone wants to re-anchor things. This is usually done by UpdateAllElements and :ForceUpdate.
-	if event == 'ForceUpdate' or event == 'ElvUI_UpdateAllElements' or not event then -- ElvUI changed
-		local buffs = self.Buffs
-		if(buffs) then
-			(buffs.SetPosition or SetPosition) (buffs, 1, buffs.createdIcons)
-		end
-
-		local debuffs = self.Debuffs
-		if(debuffs) then
-			(debuffs.SetPosition or SetPosition) (debuffs, 1, debuffs.createdIcons)
-		end
-
-		local auras = self.Auras
-		if(auras) then
-			(auras.SetPosition or SetPosition) (auras, 1, auras.createdIcons)
-		end
+	if not event or event == 'ForceUpdate' or event == 'ElvUI_UpdateAllElements' then -- ElvUI changed
+		if self.Buffs then self.Buffs.anchoredIcons = 0 end
+		if self.Debuffs then self.Debuffs.anchoredIcons = 0 end
+		if self.Auras then self.Auras.anchoredIcons = 0 end
 	end
+
+	UpdateAuras(self, event, unit)
 end
 
 local function ForceUpdate(element)
