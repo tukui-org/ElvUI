@@ -100,6 +100,7 @@ function DB:Initialize()
 	DB:ReputationBar()
 	DB:HonorBar()
 	DB:AzeriteBar()
+	DB:ThreatBar()
 
 	DB:UpdateAll()
 
