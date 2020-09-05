@@ -1,143 +1,97 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
-local LSM = E.Libs.LSM
 
-local _G = _G
 local format = format
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
-local UnitIsPVP = UnitIsPVP
-local CreateFrame = CreateFrame
-local InCombatLockdown = InCombatLockdown
 local TogglePVPUI = TogglePVPUI
-local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local HONOR = HONOR
 
-function DB:UpdateHonor(event, unit)
+function DB:HonorBar_Update(event, unit)
 	if not DB.db.honor.enable then return end
+	local bar = DB.StatusBars.Honor
+
 	if event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player' then return end
 
-	local bar = DB.honorBar
+	local cur, max = UnitHonor('player'), UnitHonorMax('player')
 
-	if (DB.db.honor.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or
-		(DB.db.honor.hideOutsidePvP and not UnitIsPVP('player')) or (DB.db.honor.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
-		bar:Hide()
-	else
-		bar:Show()
+	--Guard against division by zero, which appears to be an issue when zoning in/out of dungeons
+	if max == 0 then max = 1 end
 
-		if DB.db.honor.hideInVehicle then
-			E:RegisterObjectForVehicleLock(bar, E.UIParent)
-		else
-			E:UnregisterObjectForVehicleLock(bar)
-		end
+	bar:SetMinMaxValues(0, max)
+	bar:SetValue(cur)
+	local color = DB.db.colors.honor
+	bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 
-		local cur = UnitHonor('player')
-		local max = UnitHonorMax('player')
+	local text = ''
+	local textFormat = DB.db.honor.textFormat
 
-		--Guard against division by zero, which appears to be an issue when zoning in/out of dungeons
-		if max == 0 then max = 1 end
-
-		bar.statusBar:SetMinMaxValues(0, max)
-		bar.statusBar:SetValue(cur)
-
-		local text = ''
-		local textFormat = DB.db.honor.textFormat
-
-		if textFormat == 'PERCENT' then
-			text = format('%d%%', cur / max * 100)
-		elseif textFormat == 'CURMAX' then
-			text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max))
-		elseif textFormat == 'CURPERC' then
-			text = format('%s - %d%%', E:ShortValue(cur), cur / max * 100)
-		elseif textFormat == 'CUR' then
-			text = format('%s', E:ShortValue(cur))
-		elseif textFormat == 'REM' then
-			text = format('%s', E:ShortValue(max - cur))
-		elseif textFormat == 'CURREM' then
-			text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max - cur))
-		elseif textFormat == 'CURPERCREM' then
-			text = format('%s - %d%% (%s)', E:ShortValue(cur), cur / max * 100, E:ShortValue(max - cur))
-		end
-
-		bar.text:SetText(text)
+	if textFormat == 'PERCENT' then
+		text = format('%d%%', cur / max * 100)
+	elseif textFormat == 'CURMAX' then
+		text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max))
+	elseif textFormat == 'CURPERC' then
+		text = format('%s - %d%%', E:ShortValue(cur), cur / max * 100)
+	elseif textFormat == 'CUR' then
+		text = format('%s', E:ShortValue(cur))
+	elseif textFormat == 'REM' then
+		text = format('%s', E:ShortValue(max - cur))
+	elseif textFormat == 'CURREM' then
+		text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max - cur))
+	elseif textFormat == 'CURPERCREM' then
+		text = format('%s - %d%% (%s)', E:ShortValue(cur), cur / max * 100, E:ShortValue(max - cur))
 	end
+
+	bar.text:SetText(text)
 end
 
 function DB:HonorBar_OnEnter()
-	local GameTooltip = _G.GameTooltip
-	if DB.db.honor.mouseover then
-		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
+	if self.db.mouseover then
+		E:UIFrameFadeIn(self, .4, self:GetAlpha(), 1)
 	end
 
-	GameTooltip:ClearLines()
-	GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+	_G.GameTooltip:ClearLines()
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
-	local cur = UnitHonor('player')
-	local max = UnitHonorMax('player')
-	local level = UnitHonorLevel('player')
+	local cur, max, level = UnitHonor('player'), UnitHonorMax('player'), UnitHonorLevel('player')
 
-	GameTooltip:AddLine(HONOR)
+	_G.GameTooltip:AddLine(HONOR)
 
-	GameTooltip:AddDoubleLine(L["Current Level:"], level, 1, 1, 1)
-	GameTooltip:AddLine(' ')
+	_G.GameTooltip:AddDoubleLine(L["Current Level:"], level, 1, 1, 1)
+	_G.GameTooltip:AddLine(' ')
 
-	GameTooltip:AddDoubleLine(L["Honor XP:"], format(' %d / %d (%d%%)', cur, max, cur/max * 100), 1, 1, 1)
-	GameTooltip:AddDoubleLine(L["Honor Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', max - cur, (max - cur) / max * 100, 20 * (max - cur) / max), 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(L["Honor XP:"], format(' %d / %d (%d%%)', cur, max, cur/max * 100), 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(L["Honor Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', max - cur, (max - cur) / max * 100, 20 * (max - cur) / max), 1, 1, 1)
 
-	GameTooltip:Show()
+	_G.GameTooltip:Show()
 end
 
 function DB:HonorBar_OnClick()
 	TogglePVPUI()
 end
 
-function DB:UpdateHonorDimensions()
-	DB.honorBar:Width(DB.db.honor.width)
-	DB.honorBar:Height(DB.db.honor.height)
-	DB.honorBar.statusBar:SetOrientation(DB.db.honor.orientation)
-	DB.honorBar.statusBar:SetReverseFill(DB.db.honor.reverseFill)
-	DB.honorBar.text:FontTemplate(LSM:Fetch('font', DB.db.honor.font), DB.db.honor.textSize, DB.db.honor.fontOutline)
+function DB:HonorBar_EnableDisable()
+	local bar = DB.StatusBars.Honor
+	bar:SetShown(bar.db.enable)
 
-	if DB.db.honor.orientation == 'HORIZONTAL' then
-		DB.honorBar.statusBar:SetRotatesTexture(false)
-	else
-		DB.honorBar.statusBar:SetRotatesTexture(true)
-	end
-
-	if DB.db.honor.mouseover then
-		DB.honorBar:SetAlpha(0)
-	else
-		DB.honorBar:SetAlpha(1)
-	end
-end
-
-function DB:EnableDisable_HonorBar()
-	if DB.db.honor.enable then
-		DB:RegisterEvent('HONOR_XP_UPDATE', 'UpdateHonor')
-		DB:UpdateHonor()
-		E:EnableMover(DB.honorBar.mover:GetName())
+	if bar.db.enable then
+		DB:RegisterEvent('HONOR_XP_UPDATE', 'HonorBar_Update')
+		DB:RegisterEvent('PLAYER_FLAGS_CHANGED', 'HonorBar_Update')
+		DB:HonorBar_Update()
+		E:EnableMover(bar.mover:GetName())
 	else
 		DB:UnregisterEvent('HONOR_XP_UPDATE')
-		DB.honorBar:Hide()
-		E:DisableMover(DB.honorBar.mover:GetName())
+		DB:UnregisterEvent('PLAYER_FLAGS_CHANGED')
+		E:DisableMover(bar.mover:GetName())
 	end
 end
 
-function DB:LoadHonorBar()
-	DB.honorBar = DB:CreateBar('ElvUI_HonorBar', DB.HonorBar_OnEnter, DB.HonorBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255)
-	DB.honorBar.statusBar:SetStatusBarColor(240/255, 114/255, 65/255)
-	DB.honorBar.statusBar:SetMinMaxValues(0, 325)
+function DB:HonorBar()
+	DB.StatusBars.Honor = DB:CreateBar('ElvUI_HonorBar', DB.HonorBar_OnEnter, DB.HonorBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255)
+	DB.StatusBars.Honor.db = DB.db.honor
 
-	DB.honorBar.eventFrame = CreateFrame('Frame')
-	DB.honorBar.eventFrame:Hide()
-	DB.honorBar.eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
-	DB.honorBar.eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
-	DB.honorBar.eventFrame:RegisterEvent('PLAYER_FLAGS_CHANGED')
-	DB.honorBar.eventFrame:SetScript('OnEvent', function(self, event, unit) DB:UpdateHonor(event, unit) end)
+	E:CreateMover(DB.StatusBars.Honor, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 
-	DB:UpdateHonorDimensions()
-	E:CreateMover(DB.honorBar, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
-
-	DB:EnableDisable_HonorBar()
+	DB:HonorBar_EnableDisable()
 end

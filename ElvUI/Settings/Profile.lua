@@ -120,12 +120,6 @@ P.general = {
 			},
 		}
 	},
-	threat = {
-		enable = true,
-		position = 'RIGHTCHAT',
-		textSize = 12,
-		textOutline = 'NONE',
-	},
 	totems = {
 		enable = true,
 		growthDirection = 'VERTICAL',
@@ -136,15 +130,35 @@ P.general = {
 	kittys = false
 };
 
-P.databars = {}
+P.databars = {
+	transparent = true,
+	statusbar = 'ElvUI Norm',
+	colors = {
+		experience = { r = 0, g = .4, b = 1, a = .8 },
+		rested = { r = 1, g = 0, b = 1, a = .2},
+		honor = { r = .94, g = .45, b = .25, a = 1 },
+		azerite = { r = .901, g = .8, b = .601, a = 1 },
+		useCustomFactionColors = false,
+		factionColors = {
+			[1] = { r = .8, g = .3, b = .22},
+			[2] = { r = .8, g = .3, b = .22},
+			[3] = { r = .75, g = .27, b = 0},
+			[4] = { r = .9, g = .7, b = 0},
+			[5] = { r = 0, g = .6, b = .1},
+			[6] = { r = 0, g = .6, b = .1},
+			[7] = { r = 0, g = .6, b = .1},
+			[8] = { r = 0, g = .6, b = .1},
+		}
+	}
+}
 
-for _, databar in pairs({'experience', 'reputation', 'honor', 'azerite'}) do
+for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite'}) do
 	P.databars[databar] = {
 		enable = true,
 		width = 222,
 		height = 10,
 		textFormat = 'NONE',
-		textSize = 11,
+		fontSize = 11,
 		font = 'PT Sans Narrow',
 		fontOutline = 'NONE',
 		mouseover = false,
@@ -154,24 +168,16 @@ for _, databar in pairs({'experience', 'reputation', 'honor', 'azerite'}) do
 end
 
 P.databars.experience.hideAtMaxLevel = true
-P.databars.experience.hideInVehicle = false
-P.databars.experience.hideInCombat = false
 P.databars.experience.width = 348
-P.databars.experience.textSize = 12
+P.databars.experience.fontSize = 12
 
 P.databars.reputation.enable = false
-P.databars.reputation.hideInVehicle = false
-P.databars.reputation.hideInCombat = false
 P.databars.reputation.hideBelowMaxLevel = false
 
-P.databars.honor.hideInVehicle = false
-P.databars.honor.hideInCombat = false
 P.databars.honor.hideOutsidePvP = false
 P.databars.honor.hideBelowMaxLevel = false
 
 P.databars.azerite.hideAtMaxLevel = true
-P.databars.azerite.hideInVehicle = false
-P.databars.azerite.hideInCombat = false
 P.databars.azerite.hideBelowMaxLevel = false
 
 --Bags

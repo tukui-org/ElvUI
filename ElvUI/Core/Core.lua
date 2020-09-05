@@ -1038,7 +1038,7 @@ function E:UpdateDataBars(skipCallback)
 	DataBars:EnableDisable_ExperienceBar()
 	DataBars:EnableDisable_HonorBar()
 	DataBars:EnableDisable_ReputationBar()
-	DataBars:UpdateDataBarDimensions()
+	DataBars:UpdateAll()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
