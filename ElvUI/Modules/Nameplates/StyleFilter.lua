@@ -895,16 +895,19 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
-	-- Has Stealable
-	if frame.Buffs and trigger.buffs and (trigger.buffs.hasStealable or trigger.buffs.hasNoStealable) then
-		if (trigger.buffs.hasStealable and frame.Buffs.hasStealable) or (trigger.buffs.hasNoStealable and not frame.Buffs.hasStealable) then passed = true else return end
-	end
-
 	-- Buffs
-	if frame.Buffs and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
-		if buff ~= nil then -- ignore if none are selected
-			if buff then passed = true else return end
+	if frame.Buffs and trigger.buffs then
+		-- Has Stealable
+		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
+			if (trigger.buffs.hasStealable and frame.Buffs.hasStealable) or (trigger.buffs.hasNoStealable and not frame.Buffs.hasStealable) then passed = true else return end
+		end
+
+		-- Names / Spell IDs
+		if trigger.buffs.names and next(trigger.buffs.names) then
+			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+			if buff ~= nil then -- ignore if none are selected
+				if buff then passed = true else return end
+			end
 		end
 	end
 
