@@ -136,7 +136,7 @@ function UF:Update_PlayerFrame(frame, db)
 	frame:DisableElement('Castbar')
 	UF:Configure_Castbar(frame)
 
-	if (not db.enable and not E.private.unitframe.disabledBlizzardFrames.player) then
+	if not db.enable and not E.private.unitframe.disabledBlizzardFrames.player then
 		CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
 		CastingBarFrame_OnLoad(_G.PetCastingBarFrame)
 	elseif not db.enable and E.private.unitframe.disabledBlizzardFrames.player or (db.enable and not db.castbar.enable) then

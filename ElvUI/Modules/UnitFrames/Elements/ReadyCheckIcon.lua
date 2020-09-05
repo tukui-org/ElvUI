@@ -13,7 +13,7 @@ function UF:Configure_ReadyCheckIcon(frame)
 	local ReadyCheckIndicator = frame.ReadyCheckIndicator
 	local db = frame.db
 
-	if (db.readycheckIcon.enable) then
+	if db.readycheckIcon.enable then
 		if not frame:IsElementEnabled('ReadyCheckIndicator') then
 			frame:EnableElement('ReadyCheckIndicator')
 		end

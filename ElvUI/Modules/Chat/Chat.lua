@@ -1376,7 +1376,7 @@ function CH:GetBNFirstToonClassColor(id)
 				for y = 1, numGameAccounts do
 					local gameAccountInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
 					local className = gameAccountInfo and gameAccountInfo.className
-					if (className and className ~= '') and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) then
+					if className and className ~= '' and (gameAccountInfo.clientProgram == BNET_CLIENT_WOW) then
 						return className --return the first toon's class
 					end
 				end
@@ -1542,7 +1542,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
-		if (chatType == 'COMMUNITIES_CHANNEL') or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
+		if chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
 			if arg1 == 'WRONG_PASSWORD' then
 				local staticPopup = _G[StaticPopup_Visible('CHAT_CHANNEL_PASSWORD') or '']
 				if staticPopup and strupper(staticPopup.data) == strupper(arg9) then
@@ -1559,7 +1559,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 						found = 1
 						infoType = 'CHANNEL'..arg8
 						info = _G.ChatTypeInfo[infoType]
-						if (chatType == 'CHANNEL_NOTICE') and (arg1 == 'YOU_LEFT') then
+						if chatType == 'CHANNEL_NOTICE' and (arg1 == 'YOU_LEFT') then
 							frame.channelList[index] = nil
 							frame.zoneChannelList[index] = nil
 						end
@@ -2351,7 +2351,7 @@ function CH:SaveChatHistory(event, ...)
 		tempHistory[i] = select(i, ...) or false
 	end
 
-	if (#tempHistory > 0) and not CH:MessageIsProtected(tempHistory[1]) then
+	if #tempHistory > 0 and not CH:MessageIsProtected(tempHistory[1]) then
 		tempHistory[50] = event
 		tempHistory[51] = time()
 

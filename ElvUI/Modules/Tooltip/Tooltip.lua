@@ -141,9 +141,9 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	local TooltipMover = _G.TooltipMover
 	local _, anchor = tt:GetPoint()
 
-	if (anchor == nil or (ElvUI_ContainerFrame and anchor == ElvUI_ContainerFrame) or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.UIParent or anchor == E.UIParent) then
+	if anchor == nil or (ElvUI_ContainerFrame and anchor == ElvUI_ContainerFrame) or anchor == RightChatPanel or anchor == TooltipMover or anchor == _G.UIParent or anchor == E.UIParent then
 		tt:ClearAllPoints()
-		if (not E:HasMoverBeenMoved('TooltipMover')) then
+		if not E:HasMoverBeenMoved('TooltipMover') then
 			if ElvUI_ContainerFrame and ElvUI_ContainerFrame:IsShown() then
 				tt:Point('BOTTOMRIGHT', ElvUI_ContainerFrame, 'TOPRIGHT', 0, 18)
 			elseif RightChatPanel:GetAlpha() == 1 and RightChatPanel:IsShown() then
@@ -213,9 +213,9 @@ function TT:SetUnitText(tt, unit)
 		if realm and realm ~= '' then
 			if isShiftKeyDown or TT.db.alwaysShowRealm then
 				name = name..'-'..realm
-			elseif(relationship == _G.LE_REALM_RELATION_COALESCED) then
+			elseif relationship == _G.LE_REALM_RELATION_COALESCED then
 				name = name.._G.FOREIGN_SERVER_LABEL
-			elseif(relationship == _G.LE_REALM_RELATION_VIRTUAL) then
+			elseif relationship == _G.LE_REALM_RELATION_VIRTUAL then
 				name = name.._G.INTERACTIVE_SERVER_LABEL
 			end
 		end
@@ -310,7 +310,7 @@ function TT:SetUnitText(tt, unit)
 				pvpFlag = format(' (%s)', _G.PVP)
 			end
 
-			if (creatureClassification == 'rare' or creatureClassification == 'elite' or creatureClassification == 'rareelite' or creatureClassification == 'worldboss') then
+			if creatureClassification == 'rare' or creatureClassification == 'elite' or creatureClassification == 'rareelite' or creatureClassification == 'worldboss' then
 				classificationString = format('%s %s|r', ElvUF.Tags.Methods['classificationcolor'](unit), ElvUF.Tags.Methods['classification'](unit))
 			end
 
@@ -491,14 +491,14 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		if TT.db.targetInfo and IsInGroup() then
 			for i = 1, GetNumGroupMembers() do
 				local groupUnit = (IsInRaid() and 'raid'..i or 'party'..i);
-				if (UnitIsUnit(groupUnit..'target', unit)) and (not UnitIsUnit(groupUnit,'player')) then
+				if UnitIsUnit(groupUnit..'target', unit) and not UnitIsUnit(groupUnit,'player') then
 					local _, class = UnitClass(groupUnit);
 					local classColor = E:ClassColor(class) or PRIEST_COLOR
 					tinsert(targetList, format('|c%s%s|r', classColor.colorStr, UnitName(groupUnit)))
 				end
 			end
 			local numList = #targetList
-			if (numList > 0) then
+			if numList > 0 then
 				tt:AddLine(format('%s (|cffffffff%d|r): %s', L["Targeted By:"], numList, tconcat(targetList, ', ')), nil, nil, nil, true);
 				wipe(targetList);
 			end
@@ -535,18 +535,18 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	if tt:IsForbidden() then return end
 	if not value or not TT.db.healthBar.text or not tt.text then return end
 	local unit = select(2, tt:GetParent():GetUnit())
-	if(not unit) then
+	if not unit then
 		local GMF = GetMouseFocus()
-		if(GMF and GMF.GetAttribute and GMF:GetAttribute('unit')) then
+		if GMF and GMF.GetAttribute and GMF:GetAttribute('unit') then
 			unit = GMF:GetAttribute('unit')
 		end
 	end
 
 	local _, max = tt:GetMinMaxValues()
-	if(value > 0 and max == 1) then
+	if value > 0 and max == 1 then
 		tt.text:SetFormattedText('%d%%', floor(value * 100))
 		tt:SetStatusBarColor(TAPPED_COLOR.r, TAPPED_COLOR.g, TAPPED_COLOR.b) --most effeciant?
-	elseif(value == 0 or (unit and UnitIsDeadOrGhost(unit))) then
+	elseif value == 0 or (unit and UnitIsDeadOrGhost(unit)) then
 		tt.text:SetText(_G.DEAD)
 	else
 		tt.text:SetText(E:ShortValue(value)..' / '..E:ShortValue(max))

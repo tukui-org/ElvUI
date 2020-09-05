@@ -29,7 +29,7 @@ function UF:Configure_ClassBar(frame, cur)
 		frame.CLASSBAR_HEIGHT = 3
 		if db.classbar then db.classbar.height = 3 end
 		UF.ToggleResourceBar(bars)  --Trigger update to health if needed
-	elseif (not frame.CLASSBAR_DETACHED and frame.CLASSBAR_HEIGHT > 30) then
+	elseif not frame.CLASSBAR_DETACHED and frame.CLASSBAR_HEIGHT > 30 then
 		frame.CLASSBAR_HEIGHT = 10
 		if db.classbar then db.classbar.height = 10 end
 		--Override visibility if Classbar is Additional Power in order to fix a bug when Auto Hide is enabled, height is higher than 30 and it goes from detached to not detached
@@ -59,7 +59,7 @@ function UF:Configure_ClassBar(frame, cur)
 	bars:Width(CLASSBAR_WIDTH - SPACING)
 	bars:Height(frame.CLASSBAR_HEIGHT - SPACING)
 
-	if (frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes') then
+	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' then
 		--This fixes issue with ComboPoints showing as active when they are not.
 		if frame.ClassBar == 'ClassPower' and not cur then
 			cur = 0
@@ -161,7 +161,7 @@ function UF:Configure_ClassBar(frame, cur)
 		else
 			bars.backdrop:Hide()
 		end
-	elseif (frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower') then
+	elseif frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
 		if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
 			bars:SetOrientation('VERTICAL')
 		else

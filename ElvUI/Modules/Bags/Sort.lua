@@ -146,7 +146,7 @@ local function IsGuildBankBag(bagid)
 end
 
 local function UpdateLocation(from, to)
-	if (bagIDs[from] == bagIDs[to]) and (bagStacks[to] < bagMaxStacks[to]) then
+	if bagIDs[from] == bagIDs[to] and (bagStacks[to] < bagMaxStacks[to]) then
 		local stackSize = bagMaxStacks[to]
 		if (bagStacks[to] + bagStacks[from]) > stackSize then
 			bagStacks[from] = bagStacks[from] - (stackSize - bagStacks[to])
@@ -186,7 +186,7 @@ local function DefaultSort(a, b)
 	local aID = bagIDs[a]
 	local bID = bagIDs[b]
 
-	if (not aID) or (not bID) then return aID end
+	if not aID or not bID then return aID end
 
 	if bagPetIDs[a] and bagPetIDs[b] then
 		local aName, _, aType = C_PetJournalGetPetInfoBySpeciesID(aID)
@@ -253,7 +253,7 @@ local function DefaultSort(a, b)
 			return aEquipLoc < bEquipLoc
 		end
 	end
-	if (aItemClassId == bItemClassId) and (aItemSubClassId == bItemSubClassId) then
+	if aItemClassId == bItemClassId and (aItemSubClassId == bItemSubClassId) then
 		return PrimarySort(a, b)
 	end
 
@@ -794,7 +794,7 @@ function B:DoMove(move)
 	end
 
 	local stackSize = select(8, GetItemInfo(sourceItemID))
-	if (sourceItemID == targetItemID) and (targetCount ~= stackSize) and ((targetCount + sourceCount) > stackSize) then
+	if sourceItemID == targetItemID and (targetCount ~= stackSize) and ((targetCount + sourceCount) > stackSize) then
 		B:SplitItem(sourceBag, sourceSlot, stackSize - targetCount)
 	else
 		B:PickupItem(sourceBag, sourceSlot)

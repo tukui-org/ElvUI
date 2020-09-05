@@ -28,7 +28,7 @@ function S:Blizzard_Contribution()
 	local ContributionMixin = _G.ContributionMixin
 	hooksecurefunc(ContributionMixin, 'SetupContributeButton', function(s)
 		-- Skin the Contribute Buttons
-		if (not s.isSkinned) then
+		if not s.isSkinned then
 			S:HandleButton(s.ContributeButton)
 			s.isSkinned = true
 		end
@@ -46,7 +46,7 @@ function S:Blizzard_Contribution()
 	--Skin the reward icons
 	hooksecurefunc(ContributionMixin, 'AddReward', function(s, _, rewardID)
 		local reward = s:FindOrAcquireReward(rewardID);
-		if (reward and not reward.isSkinned) then
+		if reward and not reward.isSkinned then
 			reward:SetFrameLevel(5)
 			reward:CreateBackdrop()
 			reward:StyleButton()

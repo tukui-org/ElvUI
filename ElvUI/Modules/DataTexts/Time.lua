@@ -216,7 +216,7 @@ local function OnEnter()
 			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.raids[i][4])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
+			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
@@ -238,7 +238,7 @@ local function OnEnter()
 			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.dungeons[i][4])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
+			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
@@ -255,8 +255,8 @@ local function OnEnter()
 	sort(worldbossLockoutList, sortFunc)
 	for i = 1,#worldbossLockoutList do
 		local name, reset = unpack(worldbossLockoutList[i])
-		if(reset) then
-			if(not addedLine) then
+		if reset then
+			if not addedLine then
 				if DT.tooltip:NumLines() > 0 then
 					DT.tooltip:AddLine(' ')
 				end
@@ -305,7 +305,7 @@ function Update(self, t)
 	local Hr, Min, AmPm = CalculateTimeValues(false)
 
 	-- no update quick exit
-	if (Hr == curHr and Min == curMin and AmPm == curAmPm) and not (int < -15000) then
+	if Hr == curHr and Min == curMin and AmPm == curAmPm and not (int < -15000) then
 		int = 5
 		return
 	end

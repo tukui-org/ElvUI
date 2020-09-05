@@ -21,7 +21,7 @@ local function PostBNToastMove(mover)
 	local screenWidth = E.UIParent:GetRight()
 
 	local anchorPoint
-	if (y > (screenHeight / 2)) then
+	if y > (screenHeight / 2) then
 		anchorPoint = (x > (screenWidth/2)) and 'TOPRIGHT' or 'TOPLEFT'
 	else
 		anchorPoint = (x > (screenWidth/2)) and 'BOTTOMRIGHT' or 'BOTTOMLEFT'

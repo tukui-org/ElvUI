@@ -56,6 +56,38 @@ local function UpdateSpellAbilities(self, followerInfo)
 	end
 end
 
+local function ReskinMissionComplete(frame)
+	local missionComplete = frame.MissionComplete
+	local bonusRewards = missionComplete.BonusRewards
+	if bonusRewards then
+		select(11, bonusRewards:GetRegions()):SetTextColor(1, .8, 0)
+		bonusRewards.Saturated:StripTextures()
+		for i = 1, 9 do
+			select(i, bonusRewards:GetRegions()):SetAlpha(0)
+		end
+		bonusRewards:CreateBackdrop()
+	end
+	if missionComplete.NextMissionButton then
+		S:HandleButton(missionComplete.NextMissionButton)
+	end
+	if missionComplete.CompleteFrame then
+		if E.private.skins.parchmentRemoverEnable then
+			missionComplete:StripTextures()
+		end
+
+		missionComplete:CreateBackdrop('Transparent')
+		missionComplete.backdrop:SetPoint("TOPLEFT", 3, 2)
+		missionComplete.backdrop:SetPoint("BOTTOMRIGHT", -3, -10)
+
+		if E.private.skins.parchmentRemoverEnable then
+			missionComplete.CompleteFrame:StripTextures()
+		end
+		S:HandleButton(missionComplete.CompleteFrame.ContinueButton)
+		S:HandleButton(missionComplete.CompleteFrame.SpeedButton)
+		S:HandleButton(missionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton)
+	end
+end
+
 -- TO DO: Extend this function
 local function SkinMissionFrame(frame, strip)
 	if strip then
@@ -78,6 +110,8 @@ local function SkinMissionFrame(frame, strip)
 	end
 
 	if frame.MapTab then frame.MapTab.ScrollContainer.Child.TiledBackground:Hide() end
+
+	ReskinMissionComplete(frame)
 
 	hooksecurefunc(frame.FollowerTab, 'UpdateCombatantStats', UpdateSpellAbilities)
 
@@ -549,18 +583,15 @@ function S:Blizzard_GarrisonUI()
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame
 	SkinMissionFrame(CovenantMissionFrame) -- currently dont use StripTextures here, cause it seems blizzard fucks this up /shurg
-	CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
+	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
 
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
 	S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar)
 
 	-- Complete Missions
 	_G.CombatLog.CombatLogMessageFrame:StripTextures()
-	S:HandleScrollBar(_G.CombatLog.CombatLogMessageFrame.ScrollBar)
-	S:HandleButton(CovenantMissionFrame.MissionComplete.CompleteFrame.SpeedButton)
-	S:HandleButton(CovenantMissionFrame.MissionComplete.CompleteFrame.ContinueButton)
-
-	S:HandleButton(CovenantMissionFrame.MissionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton)
+	_G.CombatLog.ElevatedFrame:SetAlpha(0)
+	_G.CombatLog.CombatLogMessageFrame:CreateBackdrop('Transparent')
 
 	-- Adventures / Follower Tab
 	-- TODO: Quality Border!?
@@ -573,7 +604,6 @@ function S:Blizzard_GarrisonUI()
 
 	FollowerTab:StripTextures()
 	FollowerTab.RaisedFrameEdges:SetAlpha(0)
-	S:HandleScrollBar(_G.CovenantMissionFrameFollowersListScrollFrameScrollBar)
 	S:HandleIcon(CovenantMissionFrame.FollowerTab.HealFollowerFrame.CostFrame.CostIcon)
 
 	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')

@@ -205,7 +205,7 @@ end
 
 E.RegisteredCooldowns = {}
 function E:OnSetCooldown(start, duration)
-	if (not self.forceDisabled) and (start and duration) and (duration > MIN_DURATION) then
+	if not self.forceDisabled and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
@@ -265,7 +265,7 @@ end
 
 function E:UpdateCooldownOverride(module)
 	local cooldowns = (module and E.RegisteredCooldowns[module])
-	if (not cooldowns) or not next(cooldowns) then return end
+	if not cooldowns or not next(cooldowns) then return end
 
 	local blizzText
 	for _, parent in ipairs(cooldowns) do

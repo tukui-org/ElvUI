@@ -76,12 +76,21 @@ function S:Blizzard_WeeklyRewards()
 		SkinActivityFrame(activity, true)
 	end
 
-	--[[
-	local ConfirmItemFrame = _G.WeeklyRewardConfirmSelectionFrame.ItemFrame
-	S:HandleIcon(ConfirmItemFrame.Icon)
-	S:HandleIconBorder(ConfirmItemFrame.IconBorder)
-	_G.WeeklyRewardConfirmSelectionFrameNameFrame:Hide()
-	]]
+	hooksecurefunc(frame, 'SelectReward', function(self)
+		local confirmSelectionFrame = self.confirmSelectionFrame
+		if confirmSelectionFrame and not confirmSelectionFrame.IsSkinned then
+			local itemFrame = confirmSelectionFrame.ItemFrame
+			S:HandleIcon(itemFrame.Icon, true)
+			S:HandleIconBorder(itemFrame.IconBorder)
+
+			local nameframe = _G[confirmSelectionFrame:GetName()..'NameFrame']
+			if nameframe then
+				nameframe:Hide() --Monitor this
+			end
+
+			confirmSelectionFrame.IsSkinned = true
+		end
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_WeeklyRewards')

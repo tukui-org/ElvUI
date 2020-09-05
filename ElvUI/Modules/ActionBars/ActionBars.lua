@@ -897,14 +897,14 @@ function AB:ToggleCountDownNumbers(bar, button, cd)
 			b.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(cd, cd.timer, true)
 		end
 	elseif button then -- ref: AB:UpdateButtonConfig
-		if (button.cooldown and button.cooldown.timer) and (bar and bar.buttonConfig) then
+		if button.cooldown and button.cooldown.timer and (bar and bar.buttonConfig) then
 			-- button.config will get updated from `button:UpdateConfig` in `AB:UpdateButtonConfig`
 			bar.buttonConfig.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(button.cooldown, button.cooldown.timer, true)
 		end
 	elseif bar then -- ref: E:UpdateCooldownOverride
 		if bar.buttons then
 			for _, btn in pairs(bar.buttons) do
-				if (btn and btn.config) and (btn.cooldown and btn.cooldown.timer) then
+				if btn and btn.config and (btn.cooldown and btn.cooldown.timer) then
 					-- update the buttons config
 					btn.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
 				end

@@ -33,7 +33,7 @@ local function skinAch(Achievement, BiggerIcon)
 			self.backdrop:SetBackdropBorderColor(1, 1, 0)
 		end)
 		Achievement:HookScript('OnLeave', function(self)
-			if (self.player and self.player.accountWide or self.accountWide) then
+			if self.player and self.player.accountWide or self.accountWide then
 				self.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
 			else
 				self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -432,13 +432,13 @@ function S:Blizzard_AchievementUI(event)
 		for i = 1, numCriteria do
 			local _, criteriaType, completed, _, _, _, _, assetID = GetAchievementCriteriaInfo(id, i)
 
-			if ( criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT and assetID ) then
+			if criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT and assetID then
 				metas = metas + 1;
 				local metaCriteria = _G.AchievementButton_GetMeta(metas);
-				if ( objectivesFrame.completed and completed ) then
+				if objectivesFrame.completed and completed then
 					metaCriteria.label:SetShadowOffset(0, 0)
 					metaCriteria.label:SetTextColor(1, 1, 1, 1);
-				elseif ( completed ) then
+				elseif completed then
 					metaCriteria.label:SetShadowOffset(1, -1)
 					metaCriteria.label:SetTextColor(0, 1, 0, 1);
 				else
@@ -448,10 +448,10 @@ function S:Blizzard_AchievementUI(event)
 			elseif criteriaType ~= 1 then
 				textStrings = textStrings + 1;
 				local criteria = _G.AchievementButton_GetCriteria(textStrings);
-				if ( objectivesFrame.completed and completed ) then
+				if objectivesFrame.completed and completed then
 					criteria.name:SetTextColor(1, 1, 1, 1);
 					criteria.name:SetShadowOffset(0, 0);
-				elseif ( completed ) then
+				elseif completed then
 					criteria.name:SetTextColor(0, 1, 0, 1);
 					criteria.name:SetShadowOffset(1, -1);
 				else

@@ -240,7 +240,7 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame.backdrop:Point('TOPLEFT', 0, -2)
 		frame.backdrop:Point('BOTTOMRIGHT', -1, 0)
-	elseif (TYPE == 'Button' or TYPE == 'Button-ElvUI') then
+	elseif TYPE == 'Button' or TYPE == 'Button-ElvUI' then
 		local frame = widget.frame
 		S:HandleButton(frame, true)
 		frame.backdrop:SetInside()
