@@ -47,7 +47,7 @@ function DB:ExperienceBar_Update()
 			text = text..format(' R:%d%%', rested / max * 100)
 		elseif textFormat == 'CURPERC' then
 			text = text..format(' R:%s [%d%%]', E:ShortValue(rested), rested / max * 100)
-		else
+		elseif textFormat ~= 'NONE' then
 			text = text..format(' R:%s', E:ShortValue(rested))
 		end
 	else
