@@ -895,6 +895,11 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
+	-- Has Stealable
+	if frame.Buffs and trigger.buffs and (trigger.buffs.hasStealable or trigger.buffs.hasNoStealable) then
+		if (trigger.buffs.hasStealable and frame.Buffs.hasStealable) or (trigger.buffs.hasNoStealable and not frame.Buffs.hasStealable) then passed = true else return end
+	end
+
 	-- Buffs
 	if frame.Buffs and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
 		local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
@@ -1153,14 +1158,18 @@ function mod:StyleFilterConfigure()
 							break
 				end end end
 
-				if t.buffs and t.buffs.names and next(t.buffs.names) then
+				if t.buffs and (t.buffs.hasStealable or t.buffs.hasNoStealable) then
+					events.UNIT_AURA = 1
+				end
+
+				if not events.UNIT_AURA and t.buffs and t.buffs.names and next(t.buffs.names) then
 					for _, value in pairs(t.buffs.names) do
 						if value then
 							events.UNIT_AURA = 1
 							break
 				end end end
 
-				if t.debuffs and t.debuffs.names and next(t.debuffs.names) then
+				if not events.UNIT_AURA and t.debuffs and t.debuffs.names and next(t.debuffs.names) then
 					for _, value in pairs(t.debuffs.names) do
 						if value then
 							events.UNIT_AURA = 1

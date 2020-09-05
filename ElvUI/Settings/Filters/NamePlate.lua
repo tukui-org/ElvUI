@@ -245,7 +245,9 @@ E.StyleFilterDefaults = {
 			missing = false,
 			names = {},
 			minTimeLeft = 0,
-			maxTimeLeft = 0
+			maxTimeLeft = 0,
+			hasStealable = false,
+			hasNoStealable = false
 		},
 		debuffs = {
 			mustHaveAll = false,

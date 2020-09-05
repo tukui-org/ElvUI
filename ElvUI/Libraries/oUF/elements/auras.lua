@@ -171,6 +171,10 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, isBossDebuff = 5, "Magic", 0, 60, "player", nil, nil, nil
 		end
 	end
+
+	if isStealable then
+		element.hasStealable = true -- for Style Filters
+	end
 	-- end Block
 
 	if(name) then
@@ -324,9 +328,9 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	local index = 1
 	local visible = 0
 	local hidden = 0
-	-- ElvUI changed block
-	local created = 0
-	-- end block
+	local created = 0 -- ElvUI
+	element.hasStealable = nil -- ElvUI
+
 	while(visible < limit) do
 		local result = updateIcon(element, unit, index, offset, filter, isDebuff, visible)
 		if(not result) then

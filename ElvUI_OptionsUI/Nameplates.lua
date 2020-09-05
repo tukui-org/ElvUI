@@ -1740,11 +1740,23 @@ local function UpdateFilterGroup()
 							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
 							type = 'toggle'
 						},
+						hasStealable = {
+							order = 5,
+							type = "toggle",
+							name = L["Has Stealable"],
+							desc = L["If enabled then the filter will only activate when the unit has a stealable buff(s)."]
+						},
+						hasNoStealable = {
+							order = 6,
+							type = "toggle",
+							name = L["Has No Stealable"],
+							desc = L["If enabled then the filter will only activate when the unit has no stealable buff(s)."],
+						},
 						changeList = {
 							type = 'group',
 							guiInline = true,
 							name = L["Add / Remove"],
-							order = 5,
+							order = 10,
 							args = {
 								addBuff = {
 									order = 1,
@@ -1863,7 +1875,7 @@ local function UpdateFilterGroup()
 							type = 'group',
 							guiInline = true,
 							name = L["Add / Remove"],
-							order = 5,
+							order = 10,
 							args = {
 								addDebuff = {
 									order = 6,
