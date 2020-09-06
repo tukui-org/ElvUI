@@ -1441,7 +1441,7 @@ G.unitframe.buffwatch = {
 		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
 		[136]    = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)		-- Mend Pet
 	},
-	HUNTER = {}, -- Reference to G.unitframe.buffwatch[E.myclass][SomeValue]
+	HUNTER = {}, -- Keep for reference to G.unitframe.buffwatch[E.myclass][SomeValue]
 	DEMONHUNTER = {},
 	WARLOCK = {},
 	MAGE = {},
