@@ -423,6 +423,15 @@ local function CreateDTOptions(name, data)
 				type = 'toggle',
 				name = L['No Label'],
 			}
+		elseif key == 'textFormat' then
+			optionTable.args.textFormat = {
+				type = 'select',
+				name = L["Text Format"],
+				width = "double",
+				get = function(info) return settings[info[#info]] end,
+				set = function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end,
+				values = {},
+			}
 		end
 	end
 
@@ -539,22 +548,21 @@ local function CreateDTOptions(name, data)
 			},
 		}
 	elseif name == 'Reputation' or name == 'Experience' then
-		optionTable.args.textFormat = {
-			order = 13,
-			type = 'select',
-			name = L["Text Format"],
-			width = "double",
-			get = function(info) return settings[info[#info]] end,
-			set = function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end,
-			values = {
-				PERCENT = L["Percent"],
-				CUR = L["Current"],
-				REM = L["Remaining"],
-				CURMAX = L["Current - Max"],
-				CURPERC = L["Current - Percent"],
-				CURREM = L["Current - Remaining"],
-				CURPERCREM = L["Current - Percent (Remaining)"],
-			},
+		optionTable.args.textFormat.values = {
+			PERCENT = L["Percent"],
+			CUR = L["Current"],
+			REM = L["Remaining"],
+			CURMAX = L["Current - Max"],
+			CURPERC = L["Current - Percent"],
+			CURREM = L["Current - Remaining"],
+			CURPERCREM = L["Current - Percent (Remaining)"],
+		}
+	elseif name == 'Bags' then
+		optionTable.args.textFormat.values = {
+			["FREE"] = L["Only Free Slots"],
+			["USED"] = L["Only Used Slots"],
+			["FREE_TOTAL"] = L["Free/Total"],
+			["USED_TOTAL"] = L["Used/Total"],
 		}
 	end
 end

@@ -70,6 +70,7 @@ G.datatexts = {
 		Gold = { goldFormat = 'BLIZZARD', goldCoins = true },
 		Guild = { Label = '', NoLabel = false },
 		QuickJoin = { Label = '', NoLabel = false },
+		Bags = { textFormat = 'USED_TOTAL' },
 		Reputation = { textFormat = 'CUR' },
 		Speed = { Label = '', NoLabel = false, decimalLength = 1 },
 		Stamina = { Label = '', NoLabel = false },

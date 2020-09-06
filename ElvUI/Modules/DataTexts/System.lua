@@ -78,7 +78,7 @@ local function BuildAddonList()
 	end
 end
 
-local function Click()
+local function OnClick()
 	if IsModifierKeyDown() then
 		collectgarbage('collect')
 		ResetCPUUsage()
@@ -218,7 +218,7 @@ local function OnLeave()
 end
 
 local wait, count = 10, 0 -- initial delay for update (let the ui load)
-local function Update(self, elapsed)
+local function OnUpdate(self, elapsed)
 	wait = wait - elapsed
 
 	if wait < 0 then
@@ -247,4 +247,4 @@ local function Update(self, elapsed)
 	end
 end
 
-DT:RegisterDatatext('System', nil, nil, BuildAddonList, Update, Click, OnEnter, OnLeave, L["System"])
+DT:RegisterDatatext('System', nil, nil, BuildAddonList, OnUpdate, OnClick, OnEnter, OnLeave, L["System"])
