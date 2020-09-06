@@ -5,7 +5,6 @@ local strfind = strfind
 local ipairs, unpack = ipairs, unpack
 local CreateFrame = CreateFrame
 
-local questIconTypes = {'Default', 'Item', 'Skull', 'Chat'}
 local targetIndicators = {'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}
 
 function NP:Construct_QuestIcons(nameplate)
@@ -13,7 +12,7 @@ function NP:Construct_QuestIcons(nameplate)
 	QuestIcons:Size(20)
 	QuestIcons:Hide()
 
-	for _, object in ipairs(questIconTypes) do
+	for _, object in ipairs(NP.QuestIcons.iconTypes) do
 		local icon = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
 		icon.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
 		icon.Text:FontTemplate()
@@ -41,7 +40,7 @@ function NP:Update_QuestIcons(nameplate)
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:Point(E.InversePoints[db.position], nameplate, db.position, db.xOffset, db.yOffset)
 
-		for _, object in ipairs(questIconTypes) do
+		for _, object in ipairs(NP.QuestIcons.iconTypes) do
 			local icon = nameplate.QuestIcons[object]
 			icon:Size(db.size, db.size)
 			icon:SetAlpha(db.hideIcon and 0 or 1)

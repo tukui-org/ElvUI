@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
 local Translit = E.Libs.Translit
@@ -16,12 +17,9 @@ local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
-local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetPVPTimer = GetPVPTimer
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
-local C_QuestLog_QuestInfo = C_QuestLog.QuestInfo
-local GetQuestLogTitle = GetQuestLogTitle
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
@@ -65,6 +63,9 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
+
+local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
+local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 
 local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
 local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
@@ -1008,7 +1009,7 @@ ElvUF.Tags.Methods['title'] = function(unit)
 end
 
 do
-	local function GetTitleNPC(unit, frmt)
+	local function GetTitleNPC(unit, custom)
 		if UnitIsPlayer(unit) then return end
 
 		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
@@ -1017,7 +1018,7 @@ do
 
 		local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
 		if Title and not strfind(Title, '^'..LEVEL) then
-			return frmt and format(frmt, Title) or Title
+			return custom and format(custom, Title) or Title
 		end
 	end
 	E.TagFunctions.GetTitleNPC = GetTitleNPC
@@ -1033,65 +1034,91 @@ do
 	end
 end
 
-ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
-ElvUF.Tags.Methods['quest:title'] = function(unit)
-	if UnitIsPlayer(unit) then return end
+do
+	local function GetQuestData(unit, which, Hex)
+		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetUnit(unit)
+		E.ScanTooltip:Show()
 
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
+		local notMyQuest, activeID
+		if E.ScanTooltip:NumLines() >= 3 then
+			for i = 3, E.ScanTooltip:NumLines() do
+				local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
+				local text = str and str:GetText()
+				if not text or text == '' then return end
 
-	local QuestName
-	if E.ScanTooltip:NumLines() >= 3 then
-		for i = 3, E.ScanTooltip:NumLines() do
-			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
-			local QuestLineText = QuestLine and QuestLine:GetText()
-			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
+				if UnitIsPlayer(text) then
+					notMyQuest = text ~= E.myname
+				elseif text and not notMyQuest then
+					local count, percent = NP.QuestIcons.CheckTextForQuest(text)
 
-			if ProgressText and (not PlayerName or PlayerName == '' or PlayerName == UnitName('player')) then
-				QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
-			end
-		end
+					-- this line comes from one line up in the tooltip
+					local activeQuest = NP.QuestIcons.activeQuests[text]
+					if activeQuest then activeID = activeQuest end
 
-		if QuestName then
-			for i = 1, GetNumQuestLogEntries() do
-				local title, level, _, isHeader = GetQuestLogTitle(i) -- 9.0 mew API, please check this either: use C_QuestLog.QuestInfo or C_QuestLog.GetTitleForLogIndex or GetTitleForQuestID
-				if not isHeader and title == QuestName then
-					local colors = GetQuestDifficultyColor(level)
-					return Hex(colors.r, colors.g, colors.b)..QuestName..'|r'
+					if count then
+						if which == 'text' then
+							return text
+						elseif which == 'count' then
+							return percent and format('%s%%', count) or count
+						elseif which == 'title' and activeID then
+							local title = C_QuestLog_GetTitleForQuestID(activeID)
+							local level = C_QuestLog_GetQuestDifficultyLevel(activeID)
+							if level then
+								local colors = GetQuestDifficultyColor(level)
+								title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
+							end
+
+							return title
+						elseif (which == 'info' or which == 'full') and activeID then
+							local title = C_QuestLog_GetTitleForQuestID(activeID)
+							local level = C_QuestLog_GetQuestDifficultyLevel(activeID)
+							if level then
+								local colors = GetQuestDifficultyColor(level)
+								title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
+							end
+
+							if which == 'full' then
+								return format('%s: %s', title, text)
+							else
+								return format(percent and '%s: %s%%' or '%s: %s', title, count)
+							end
+						end
+					end
 				end
 			end
 		end
 	end
-end
+	E.TagFunctions.GetQuestData = GetQuestData
 
-ElvUF.Tags.Events['quest:info'] = 'QUEST_LOG_UPDATE'
-ElvUF.Tags.Methods['quest:info'] = function(unit)
-	if UnitIsPlayer(unit) then return end
+	ElvUF.Tags.Events['quest:full'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:full'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, 'full', Hex)
+	end
 
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
+	ElvUF.Tags.Events['quest:info'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:info'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, 'info', Hex)
+	end
 
-	local QuestName
-	if E.ScanTooltip:NumLines() >= 3 then
-		for i = 3, E.ScanTooltip:NumLines() do
-			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
-			local QuestLineText = QuestLine and QuestLine:GetText()
-			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
-			if ProgressText and (not PlayerName or PlayerName == '' or PlayerName == UnitName('player')) then
-				if not QuestName then
-					QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
-				end
+	ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:title'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, 'title', Hex)
+	end
 
-				local x, y = strmatch(ProgressText, '(%d+)/(%d+)')
-				if x and y and (y - x) > 0 then
-					return ProgressText
-				elseif QuestName then
-					return QuestName .. ': ' .. ProgressText
-				end
-			end
-		end
+	ElvUF.Tags.Events['quest:text'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:text'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, 'text', Hex)
+	end
+
+	ElvUF.Tags.Events['quest:count'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:count'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, 'count', Hex)
 	end
 end
 
