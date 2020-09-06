@@ -1,10 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
 
+local _G = _G
 local min, format = min, format
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local IsXPUserDisabled = IsXPUserDisabled
 local CreateFrame = CreateFrame
 
 function DB:ExperienceBar_Update()
@@ -82,11 +84,14 @@ end
 
 function DB:ExperienceBar_OnClick() end
 
+function DB:ExperienceBar_ShouldBeVisable()
+	return not IsPlayerAtEffectiveMaxLevel() and not IsXPUserDisabled()
+end
+
 function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
-	local isMaxLevel = IsPlayerAtEffectiveMaxLevel()
 
-	if bar.db.enable and (not (bar.db.hideAtMaxLevel and isMaxLevel) or not IsXPUserDisabled()) then
+	if bar.db.enable and (not (bar.db.hideAtMaxLevel and DB:ExperienceBar_ShouldBeVisable())) then
 		bar:Show()
 		E:EnableMover(bar.mover:GetName())
 
@@ -105,7 +110,7 @@ function DB:ExperienceBar_Toggle()
 		DB:UnregisterEvent('DISABLE_XP_GAIN')
 		DB:UnregisterEvent('ENABLE_XP_GAIN')
 		DB:UnregisterEvent('UPDATE_EXHAUSTION')
-		if not isMaxLevel then
+		if not DB:ExperienceBar_ShouldBeVisable() then
 			DB:RegisterEvent('UPDATE_EXPANSION_LEVEL', 'ExperienceBar_Toggle')
 		end
 	end
