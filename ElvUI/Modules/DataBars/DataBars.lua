@@ -39,7 +39,7 @@ function DB:UpdateAll()
 		bar:SetReverseFill(bar.db.reverseFill)
 		bar:SetOrientation(bar.db.orientation)
 		bar:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
-		bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+		bar:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
 		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.text:FontTemplate(E.Libs.LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
 		if bar.db.enable then

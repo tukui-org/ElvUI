@@ -133,6 +133,7 @@ P.general = {
 P.databars = {
 	transparent = true,
 	statusbar = 'ElvUI Norm',
+	customTexture = false,
 	colors = {
 		experience = { r = 0, g = .4, b = 1, a = .8 },
 		rested = { r = 1, g = 0, b = 1, a = .2},
