@@ -2886,26 +2886,6 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		type = 'group',
 		name = L["General"],
 		args = {
-			width = {
-				order = 3,
-				name = L["Width"],
-				type = 'range',
-				min = 50, max = 1000, step = 1,
-				set = function(info, value)
-					if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then
-						E.db.unitframe.units[groupName].castbar.width = value;
-					end
-
-					E.db.unitframe.units[groupName][info[#info]] = value;
-					updateFunc(UF, groupName, numUnits)
-				end,
-			},
-			height = {
-				order = 4,
-				name = L["Height"],
-				type = 'range',
-				min = 5, max = 500, step = 1,
-			},
 			orientation = {
 				order = 9,
 				type = 'select',
@@ -2933,6 +2913,29 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			},
 		},
 	}
+
+	if groupName == 'tank' or groupName == 'assist' or groupName == 'arena' or groupName == 'boss' then
+		config.args.width = {
+			order = 3,
+			name = L["Width"],
+			type = 'range',
+			min = 50, max = 1000, step = 1,
+			set = function(info, value)
+				if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then
+					E.db.unitframe.units[groupName].castbar.width = value;
+				end
+
+				E.db.unitframe.units[groupName][info[#info]] = value;
+				updateFunc(UF, groupName, numUnits)
+			end,
+		}
+		config.args.height = {
+			order = 4,
+			name = L["Height"],
+			type = 'range',
+			min = 5, max = 500, step = 1,
+		}
+	end
 
 	if groupName ~= 'tank' and groupName ~= 'assist' then
 		config.args.hideonnpc = {
