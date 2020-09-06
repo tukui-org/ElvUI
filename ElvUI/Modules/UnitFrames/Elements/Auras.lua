@@ -214,12 +214,18 @@ function UF:Configure_Auras(frame, which)
 	if auras.db.sizeOverride and auras.db.sizeOverride > 0 then
 		auras:Width(auras.db.perrow * auras.db.sizeOverride + ((auras.db.perrow - 1) * auras.spacing))
 	else
-		local totalWidth = frame.UNIT_WIDTH - UF.SPACING*2
-		if frame.USE_POWERBAR_OFFSET and not (auras.db.attachTo == 'POWER' and frame.ORIENTATION == 'MIDDLE') then
-			local powerOffset = ((frame.ORIENTATION == 'MIDDLE' and 2 or 1) * frame.POWERBAR_OFFSET)
-			totalWidth = totalWidth - powerOffset
+		local xOffset = 0
+		if frame.USE_POWERBAR_OFFSET then
+			if frame.ORIENTATION == 'MIDDLE' then
+				if auras.db.attachTo ~= 'POWER' then
+					xOffset = frame.POWERBAR_OFFSET * 2
+				end -- if its middle and power we dont want an offset.
+			else
+				xOffset = frame.POWERBAR_OFFSET
+			end
 		end
-		auras:Width(totalWidth)
+
+		auras:Width((frame.UNIT_WIDTH - UF.SPACING*2) - xOffset)
 	end
 
 	auras.num = auras.db.perrow * rows
@@ -231,15 +237,14 @@ function UF:Configure_Auras(frame, which)
 	auras['growth-y'] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
 	auras['growth-x'] = auras.anchorPoint == 'LEFT' and 'LEFT' or  auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 
-	local OFFSET = (frame.ORIENTATION ~= 'RIGHT' and frame.POWERBAR_OFFSET) or 0
-	local BORDER, x, y = UF.BORDER + OFFSET
+	local x, y
 	if auras.db.attachTo == 'HEALTH' or auras.db.attachTo == 'POWER' then
-		x, y = E:GetXYOffset(auras.anchorPoint, -BORDER, UF.BORDER)
+		x, y = E:GetXYOffset(auras.anchorPoint, -UF.BORDER, UF.BORDER)
 	else
-		x, y = E:GetXYOffset(auras.anchorPoint, BORDER - 1, 0)
+		x, y = E:GetXYOffset(auras.anchorPoint, UF.BORDER - 1, 0)
 	end
 
-	auras.xOffset = x + auras.db.xOffset
+	auras.xOffset = x + auras.db.xOffset + (auras.db.attachTo == 'FRAME' and frame.ORIENTATION ~= 'LEFT' and frame.POWERBAR_OFFSET or 0)
 	auras.yOffset = y + auras.db.yOffset
 
 	local index = 1
