@@ -185,7 +185,7 @@ local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUni
 	}
 
 	if subGroup then
-		config.guiInline = true
+		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].strataAndLevel[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].strataAndLevel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end
 	end
@@ -318,7 +318,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 			},
 			filters = {
 				name = L["FILTERS"],
-				guiInline = true,
+				inline = true,
 				type = 'group',
 				order = 500,
 				args = {
@@ -549,7 +549,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 				type = 'group',
 				order = 14,
 				name = L["Stack Counter"],
-				guiInline = true,
+				inline = true,
 				get = function(info, value) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
 				set = function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 				args = {
@@ -578,7 +578,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 				type = 'group',
 				order = 15,
 				name = L["Duration"],
-				guiInline = true,
+				inline = true,
 				get = function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
 				set = function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 				args = {
@@ -606,7 +606,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 			},
 			filters = {
 				name = L["FILTERS"],
-				guiInline = true,
+				inline = true,
 				type = 'group',
 				order = 500,
 				args = {
@@ -807,7 +807,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 			},
 			applyToAll = {
 				name = ' ',
-				guiInline = true,
+				inline = true,
 				type = 'group',
 				order = 50,
 				get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
@@ -992,7 +992,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				order = 16,
 				type = 'group',
 				name = L["Text"],
-				guiInline = true,
+				inline = true,
 				get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 				set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 				args = {
@@ -1022,7 +1022,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						order = 2,
 						type = 'group',
 						name = L["Text Options"],
-						guiInline = true,
+						inline = true,
 						get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 						set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 						args = {
@@ -1044,7 +1044,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						order = 3,
 						type = 'group',
 						name = L["Time Options"],
-						guiInline = true,
+						inline = true,
 						get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 						set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 						args = {
@@ -1068,7 +1068,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				order = 17,
 				type = 'group',
 				name = L["Icon"],
-				guiInline = true,
+				inline = true,
 				get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 				set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 				args = {
@@ -1136,7 +1136,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			name = L["Position"],
 			get = function(info) return E.db.unitframe.units[groupName].castbar.positionsGroup[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units[groupName].castbar.positionsGroup[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-			guiInline = true,
+			inline = true,
 			args = {
 				anchorPoint = {
 					type = 'select',
@@ -1167,7 +1167,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 		config.args.ticks = {
 			order = 20,
 			type = 'group',
-			guiInline = true,
+			inline = true,
 			name = L["Ticks"],
 			args = {
 				ticks = {
@@ -1214,7 +1214,7 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 			health = {
 				order = 1,
 				type = 'group',
-				guiInline = true,
+				inline = true,
 				name = L["Health"],
 				get = function(info) return E.db.unitframe.units[groupName].cutaway.health[info[#info]] end,
 				set = function(info, value) E.db.unitframe.units[groupName].cutaway.health[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
@@ -1257,7 +1257,7 @@ local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
 			order = 2,
 			type = 'group',
 			name = L["Power"],
-			guiInline = true,
+			inline = true,
 			get = function(info) return E.db.unitframe.units[groupName].cutaway.power[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units[groupName].cutaway.power[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 			args = {
@@ -1633,7 +1633,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 			textGroup = {
 				type = 'group',
 				name = L["Text Options"],
-				guiInline = true,
+				inline = true,
 				args = {
 					position = {
 						type = 'select',
@@ -1833,7 +1833,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits, subGroup)
 
 
 	if subGroup then
-		config.guiInline = true
+		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].name[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].name[info[#info]] = value; updateFunc(UF, groupName, numUnits) end
 	end
@@ -2094,7 +2094,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 			textGroup = {
 				type = 'group',
 				name = L["Text Options"],
-				guiInline = true,
+				inline = true,
 				args = {
 					position = {
 						type = 'select',
@@ -2346,7 +2346,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 			duration = {
 				order = 11,
 				type = 'group',
-				guiInline = true,
+				inline = true,
 				name = L["Duration Text"],
 				get = function(info) return E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] end,
 				set = function(info, value) E.db.unitframe.units[groupName].rdebuffs.duration[info[#info]] = value; updateFunc(UF, groupName) end,
@@ -2390,7 +2390,7 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 			stack = {
 				order = 12,
 				type = 'group',
-				guiInline = true,
+				inline = true,
 				name = L["Stack Counter"],
 				get = function(info) return E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] end,
 				set = function(info, value) E.db.unitframe.units[groupName].rdebuffs.stack[info[#info]] = value; updateFunc(UF, groupName) end,
@@ -2485,7 +2485,7 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits, subGrou
 
 
 	if subGroup then
-		config.guiInline = true
+		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].raidicon[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].raidicon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end
 	end
@@ -2818,7 +2818,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 			get = function(info) return E.db.unitframe.units.player.classbar[info[#info]] end,
 			set = function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value; UF:CreateAndUpdateUF('player') end,
 			hidden = groupName ~= 'player',
-			guiInline = true,
+			inline = true,
 			args = {
 				detachFromFrame = {
 					type = 'toggle',
@@ -2956,7 +2956,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			order = 100,
 			name = L["Size and Positions"],
 			type = 'group',
-			guiInline = true,
+			inline = true,
 			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 			args = {
 				width = {
@@ -3015,7 +3015,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			order = 100,
 			name = L["Size and Positions"],
 			type = 'group',
-			guiInline = true,
+			inline = true,
 			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 			args = {
 				width = {
@@ -3093,7 +3093,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			order = 200,
 			name = L["Visibility"],
 			type = 'group',
-			guiInline = true,
+			inline = true,
 			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 			args = {
 				showPlayer = {
@@ -3124,7 +3124,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.sortingGroup = {
 			order = 300,
 			type = 'group',
-			guiInline = true,
+			inline = true,
 			name = L["Grouping & Sorting"],
 			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 			args = {
@@ -3387,7 +3387,7 @@ E.Options.args.unitframe = {
 						effectiveGroup = {
 							order = 50,
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Effective Updates"],
 							args = {
 								warning = ACH:Description(L["|cffFF0000Warning:|r This causes updates to happen at a fraction of a second."]..'\n'..L["Enabling this has the potential to make updates faster, though setting a speed value that is too high may cause it to actually run slower than the default scheme, which use Blizzard events only with no update loops provided."], 0, 'medium'),
@@ -3446,7 +3446,7 @@ E.Options.args.unitframe = {
 							type = 'group',
 							name = L["Filter Modifiers"],
 							order = 60,
-							guiInline = true,
+							inline = true,
 							get = function(info) return E.db.unitframe.modifiers[info[#info]] end,
 							set = function(info, value) E.db.unitframe.modifiers[info[#info]] = value end,
 							args = {
@@ -3473,7 +3473,7 @@ E.Options.args.unitframe = {
 						barGroup = {
 							order = 70,
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Bars"],
 							args = {
 								smoothbars = {
@@ -3496,7 +3496,7 @@ E.Options.args.unitframe = {
 						fontGroup = {
 							order = 80,
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Fonts"],
 							args = {
 								font = {
@@ -3537,7 +3537,7 @@ E.Options.args.unitframe = {
 						mainGlow = {
 							order = 1,
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Mouseover Glow"],
 							get = function(info)
 								local t = E.db.unitframe.colors.frameGlow.mainGlow[info[#info]]
@@ -3580,7 +3580,7 @@ E.Options.args.unitframe = {
 						targetGlow = {
 							order = 3,
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Targeted Glow"],
 							get = function(info)
 								local t = E.db.unitframe.colors.frameGlow.targetGlow[info[#info]]
@@ -3623,7 +3623,7 @@ E.Options.args.unitframe = {
 						focusGlow = {
 							order = 4,
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Focused Glow"],
 							get = function(info)
 								local t = E.db.unitframe.colors.frameGlow.focusGlow[info[#info]]
@@ -3666,7 +3666,7 @@ E.Options.args.unitframe = {
 						mouseoverGlow = {
 							order = 5,
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Mouseover Highlight"],
 							get = function(info)
 								local t = E.db.unitframe.colors.frameGlow.mouseoverGlow[info[#info]]
@@ -5407,7 +5407,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 				name = {
 					order = 8,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					get = function(info) return E.db.unitframe.units.party.petsGroup.name[info[#info]] end,
 					set = function(info, value) E.db.unitframe.units.party.petsGroup.name[info[#info]] = value; UF:CreateAndUpdateHeaderGroup('party') end,
 					name = L["Name"],
@@ -5517,8 +5517,8 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 	},
 }
 E.Options.args.unitframe.args.groupUnits.args.party.args.classbar.name = L["Alternative Power"]
-E.Options.args.unitframe.args.groupUnits.args.party.args.targetsGroup.args.name.guiInline = true
-E.Options.args.unitframe.args.groupUnits.args.party.args.targetsGroup.args.raidicon.guiInline = true
+E.Options.args.unitframe.args.groupUnits.args.party.args.targetsGroup.args.name.inline = true
+E.Options.args.unitframe.args.groupUnits.args.party.args.targetsGroup.args.raidicon.inline = true
 
 --Raid Frames
 E.Options.args.unitframe.args.groupUnits.args.raid = {
@@ -5794,8 +5794,8 @@ E.Options.args.unitframe.args.groupUnits.args.tank.args.name.args.attachTextTo.v
 E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
 E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.tank.targetsGroup.name[info[#info]] end
 E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.tank.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'tank') end
-E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.guiInline = true
-E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.raidicon.guiInline = true
+E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.name.inline = true
+E.Options.args.unitframe.args.groupUnits.args.tank.args.targetsGroup.args.raidicon.inline = true
 
 --Assist Frames
 E.Options.args.unitframe.args.groupUnits.args.assist = {
@@ -5880,8 +5880,8 @@ E.Options.args.unitframe.args.groupUnits.args.assist.args.name.args.attachTextTo
 E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
 E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.get = function(info) return E.db.unitframe.units.assist.targetsGroup.name[info[#info]] end
 E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.set = function(info, value) E.db.unitframe.units.assist.targetsGroup.name[info[#info]] = value; UF.CreateAndUpdateHeaderGroup(UF, 'assist') end
-E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.guiInline = true
-E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.raidicon.guiInline = true
+E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.name.inline = true
+E.Options.args.unitframe.args.groupUnits.args.assist.args.targetsGroup.args.raidicon.inline = true
 
 --MORE COLORING STUFF YAY
 E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup = {

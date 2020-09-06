@@ -187,7 +187,7 @@ function lib:GetPluginOptions()
 		order = 3,
 		type = "group",
 		name = L["Plugins"],
-		guiInline = false,
+		inline = false,
 		args = {
 			pluginheader = E.Libs.ACH:Header(format(HDR_INFORMATION, MINOR), 1),
 			plugins = {
