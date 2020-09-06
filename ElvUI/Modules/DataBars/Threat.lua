@@ -99,7 +99,7 @@ function DB:ThreatBar_Update()
 	wipe(bar.list)
 end
 
-function DB:ThreatBar_EnableDisable()
+function DB:ThreatBar_Toggle()
 	if DB.db.threat.enable then
 		DB:RegisterEvent('PLAYER_TARGET_CHANGED', 'ThreatBar_Update')
 		DB:RegisterEvent('UNIT_THREAT_LIST_UPDATE', 'ThreatBar_Update')
@@ -122,5 +122,5 @@ function DB:ThreatBar()
 	DB.StatusBars.Threat.db = DB.db.threat
 
 	E:CreateMover(DB.StatusBars.Threat, 'ThreatBarMover', L["Threat Bar"], nil, nil, nil, nil, nil, 'databars,threat')
-	DB:ThreatBar_EnableDisable()
+	DB:ThreatBar_Toggle()
 end

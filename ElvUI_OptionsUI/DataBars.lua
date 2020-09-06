@@ -37,7 +37,7 @@ E.Options.args.databars.args.colorGroup.args.azerite = ACH:Color(L["Azerite"], n
 
 E.Options.args.databars.args.experience = ACH:Group(L["Experience"], nil, 5, nil, function(info) return DB.db.experience[info[#info]] end, function(info, value) DB.db.experience[info[#info]] = value DB:UpdateAll() end)
 E.Options.args.databars.args.experience.args = CopyTable(SharedOptions)
-E.Options.args.databars.args.experience.args.enable.set = function(info, value) DB.db.experience[info[#info]] = value; DB:ExperienceBar_EnableDisable() DB:UpdateAll() end
+E.Options.args.databars.args.experience.args.enable.set = function(info, value) DB.db.experience[info[#info]] = value; DB:ExperienceBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.experience.args.textFormat.set = function(info, value) DB.db.experience[info[#info]] = value; DB:ExperienceBar_Update() end
 E.Options.args.databars.args.experience.args.hideAtMaxLevel = ACH:Toggle(L["Hide At Max Level"], nil, 8)
 E.Options.args.databars.args.experience.args.hideInVehicle = ACH:Toggle(L["Hide In Vehicle"], nil, 9)
@@ -45,14 +45,14 @@ E.Options.args.databars.args.experience.args.hideInCombat = ACH:Toggle(L["Hide I
 
 E.Options.args.databars.args.reputation = ACH:Group(L["REPUTATION"], nil, 6, nil, function(info) return DB.db.reputation[info[#info]] end, function(info, value) DB.db.reputation[info[#info]] = value DB:UpdateAll() end)
 E.Options.args.databars.args.reputation.args = CopyTable(SharedOptions)
-E.Options.args.databars.args.reputation.args.enable.set = function(info, value) DB.db.reputation[info[#info]] = value; DB:ReputationBar_EnableDisable() DB:UpdateAll() end
+E.Options.args.databars.args.reputation.args.enable.set = function(info, value) DB.db.reputation[info[#info]] = value; DB:ReputationBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.reputation.args.textFormat.set = function(info, value) DB.db.reputation[info[#info]] = value; DB:ReputationBar_Update() end
 E.Options.args.databars.args.reputation.args.hideInVehicle = ACH:Toggle(L["Hide In Vehicle"], nil, 8)
 E.Options.args.databars.args.reputation.args.hideInCombat = ACH:Toggle(L["Hide In Combat"], nil, 9)
 
 E.Options.args.databars.args.honor = ACH:Group(L["Honor"], nil, 7, nil, function(info) return DB.db.honor[info[#info]] end, function(info, value) DB.db.honor[info[#info]] = value DB:UpdateAll() end)
 E.Options.args.databars.args.honor.args = CopyTable(SharedOptions)
-E.Options.args.databars.args.honor.args.enable.set = function(info, value) DB.db.honor[info[#info]] = value; DB:HonorBar_EnableDisable() DB:UpdateAll() end
+E.Options.args.databars.args.honor.args.enable.set = function(info, value) DB.db.honor[info[#info]] = value; DB:HonorBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.honor.args.textFormat.set = function(info, value) DB.db.honor[info[#info]] = value; DB:HonorBar_Update() end
 E.Options.args.databars.args.honor.args.hideInVehicle = ACH:Toggle(L["Hide In Vehicle"], nil, 8)
 E.Options.args.databars.args.honor.args.hideInCombat = ACH:Toggle(L["Hide In Combat"], nil, 9)
@@ -61,12 +61,12 @@ E.Options.args.databars.args.honor.args.hideBelowMaxLevel = ACH:Toggle(L["Hide B
 
 E.Options.args.databars.args.threat = ACH:Group(L["Threat"], nil, 8, nil, function(info) return DB.db.threat[info[#info]] end, function(info, value) DB.db.threat[info[#info]] = value DB:UpdateAll() end)
 E.Options.args.databars.args.threat.args = CopyTable(SharedOptions)
-E.Options.args.databars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value; DB:ThreatBar_EnableDisable() DB:UpdateAll() end
+E.Options.args.databars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value; DB:ThreatBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.threat.args.textFormat.set = function(info, value) DB.db.threat[info[#info]] = value; DB:ThreatBar_Update() end
 
 E.Options.args.databars.args.azerite = ACH:Group(L["Azerite"], nil, 9, nil, function(info) return DB.db.azerite[info[#info]] end, function(info, value) DB.db.azerite[info[#info]] = value DB:UpdateAll() end)
 E.Options.args.databars.args.azerite.args = CopyTable(SharedOptions)
-E.Options.args.databars.args.azerite.args.enable.set = function(info, value) DB.db.azerite[info[#info]] = value; DB:AzeriteBar_EnableDisable() DB:UpdateAll() end
+E.Options.args.databars.args.azerite.args.enable.set = function(info, value) DB.db.azerite[info[#info]] = value; DB:AzeriteBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.azerite.args.textFormat.set = function(info, value) DB.db.azerite[info[#info]] = value; DB:AzeriteBar_Update() end
 E.Options.args.databars.args.azerite.args.hideInVehicle = ACH:Toggle(L["Hide In Vehicle"], nil, 8)
 E.Options.args.databars.args.azerite.args.hideInCombat = ACH:Toggle(L["Hide In Combat"], nil, 9)

@@ -127,7 +127,7 @@ function DB:ReputationBar_OnClick()
 	ToggleCharacter('ReputationFrame')
 end
 
-function DB:ReputationBar_EnableDisable()
+function DB:ReputationBar_Toggle()
 	local bar = DB.StatusBars.Reputation
 
 	bar:SetShown(bar.db.enable)
@@ -148,5 +148,5 @@ function DB:ReputationBar()
 	DB.StatusBars.Reputation.db = DB.db.reputation
 
 	E:CreateMover(DB.StatusBars.Reputation, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
-	DB:ReputationBar_EnableDisable()
+	DB:ReputationBar_Toggle()
 end

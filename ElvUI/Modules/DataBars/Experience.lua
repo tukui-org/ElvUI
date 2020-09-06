@@ -82,7 +82,7 @@ end
 
 function DB:ExperienceBar_OnClick() end
 
-function DB:ExperienceBar_EnableDisable()
+function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
 	local isMaxLevel = IsPlayerAtEffectiveMaxLevel()
 
@@ -106,7 +106,7 @@ function DB:ExperienceBar_EnableDisable()
 		DB:UnregisterEvent('ENABLE_XP_GAIN')
 		DB:UnregisterEvent('UPDATE_EXHAUSTION')
 		if not isMaxLevel then
-			DB:RegisterEvent('UPDATE_EXPANSION_LEVEL', 'ExperienceBar_EnableDisable')
+			DB:RegisterEvent('UPDATE_EXPANSION_LEVEL', 'ExperienceBar_Toggle')
 		end
 	end
 end
@@ -119,5 +119,5 @@ function DB:ExperienceBar()
 	DB.StatusBars.Experience.Rested:SetInside()
 
 	E:CreateMover(DB.StatusBars.Experience, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
-	DB:ExperienceBar_EnableDisable()
+	DB:ExperienceBar_Toggle()
 end

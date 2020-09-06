@@ -1032,11 +1032,11 @@ function E:UpdateChat(skipCallback)
 end
 
 function E:UpdateDataBars(skipCallback)
-	DataBars:AzeriteBar_EnableDisable()
-	DataBars:ExperienceBar_EnableDisable()
-	DataBars:HonorBar_EnableDisable()
-	DataBars:ReputationBar_EnableDisable()
-	DataBars:ThreatBar_EnableDisable()
+	DataBars:AzeriteBar_Toggle()
+	DataBars:ExperienceBar_Toggle()
+	DataBars:HonorBar_Toggle()
+	DataBars:ReputationBar_Toggle()
+	DataBars:ThreatBar_Toggle()
 	DataBars:UpdateAll()
 
 	if not skipCallback then

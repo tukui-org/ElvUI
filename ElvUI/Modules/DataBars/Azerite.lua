@@ -107,7 +107,7 @@ function DB:AzeriteBar_OnClick()
 	end
 end
 
-function DB:AzeriteBar_EnableDisable()
+function DB:AzeriteBar_Toggle()
 	local bar = DB.StatusBars.Azerite
 
 	bar:SetShown(bar.db.enable)
@@ -129,5 +129,5 @@ function DB:AzeriteBar()
 	DB.StatusBars.Azerite.db = DB.db.azerite
 
 	E:CreateMover(DB.StatusBars.Azerite, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
-	DB:AzeriteBar_EnableDisable()
+	DB:AzeriteBar_Toggle()
 end

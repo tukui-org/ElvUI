@@ -71,7 +71,7 @@ function DB:HonorBar_OnClick()
 	TogglePVPUI()
 end
 
-function DB:HonorBar_EnableDisable()
+function DB:HonorBar_Toggle()
 	local bar = DB.StatusBars.Honor
 	bar:SetShown(bar.db.enable)
 
@@ -93,5 +93,5 @@ function DB:HonorBar()
 
 	E:CreateMover(DB.StatusBars.Honor, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 
-	DB:HonorBar_EnableDisable()
+	DB:HonorBar_Toggle()
 end
