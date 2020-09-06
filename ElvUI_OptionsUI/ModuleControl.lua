@@ -91,10 +91,11 @@ local function CreateDatatbarsConfig()
 
 	MC:AddConfigOptions(P.databars, config)
 
-	config.args.experience.name = L["XPBAR_LABEL"]
-	config.args.reputation.name = L["REPUTATION"]
-	config.args.honor.name = L["HONOR"]
-	config.args.azerite.name = L["Azerite Bar"]
+	config.args.experience.name = L["Experience"]
+	config.args.reputation.name = L["Reputation"]
+	config.args.honor.name = L["Honor"]
+	config.args.threat.name = L["Threat"]
+	config.args.azerite.name = L["Azerite"]
 
 	return config
 end
@@ -115,7 +116,6 @@ local function CreateGeneralConfig()
 
 	config.args.altPowerBar.name = L["Alternative Power"]
 	config.args.minimap.name = L["MINIMAP_LABEL"]
-	config.args.threat.name = L["Threat"]
 	config.args.totems.name = L["Class Totems"]
 	config.args.itemLevel.name = L["Item Level"]
 

@@ -1173,6 +1173,33 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when the unit can not be attacked by the active player."],
 									order = 23
 								},
+								spacer3 = ACH:Spacer(24, 'full'),
+								hasTitleNPC = {
+									type = 'toggle',
+									name = L["Has NPC Title"],
+									order = 25
+								},
+								noTitleNPC = {
+									type = 'toggle',
+									name = L["No NPC Title"],
+									order = 26
+								},
+								spacer4 = ACH:Spacer(27, 'full'),
+								isQuest = {
+									type = 'toggle',
+									name = L["Quest Unit"],
+									order = 28
+								},
+								notQuest = {
+									type = 'toggle',
+									name = L["Not Quest Unit"],
+									order = 29
+								},
+								questBoss = {
+									type = 'toggle',
+									name = L["Quest Boss"],
+									order = 30,
+								}
 							}
 						}
 					}
@@ -1299,23 +1326,6 @@ local function UpdateFilterGroup()
 									order = 7,
 									name = L["Minus"]
 								},
-								questBoss = {
-									name = L["Quest Boss"],
-									order = 8,
-									type = 'toggle',
-									disabled = function()
-										return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
-											E.db.nameplates.filters[selectedNameplateFilter].triggers and
-											E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
-									end,
-									get = function(info)
-										return E.global.nameplate.filters[selectedNameplateFilter].triggers.questBoss
-									end,
-									set = function(info, value)
-										E.global.nameplate.filters[selectedNameplateFilter].triggers.questBoss = value
-										NP:ConfigureAll()
-									end
-								}
 							}
 						}
 					}
@@ -1740,11 +1750,23 @@ local function UpdateFilterGroup()
 							desc = L["If enabled then it checks if auras are missing instead of being present on the unit."],
 							type = 'toggle'
 						},
+						hasStealable = {
+							order = 5,
+							type = "toggle",
+							name = L["Has Stealable"],
+							desc = L["If enabled then the filter will only activate when the unit has a stealable buff(s)."]
+						},
+						hasNoStealable = {
+							order = 6,
+							type = "toggle",
+							name = L["Has No Stealable"],
+							desc = L["If enabled then the filter will only activate when the unit has no stealable buff(s)."],
+						},
 						changeList = {
 							type = 'group',
 							guiInline = true,
 							name = L["Add / Remove"],
-							order = 5,
+							order = 10,
 							args = {
 								addBuff = {
 									order = 1,
@@ -1863,7 +1885,7 @@ local function UpdateFilterGroup()
 							type = 'group',
 							guiInline = true,
 							name = L["Add / Remove"],
-							order = 5,
+							order = 10,
 							args = {
 								addDebuff = {
 									order = 6,

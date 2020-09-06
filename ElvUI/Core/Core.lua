@@ -45,7 +45,6 @@ local DataTexts = E:GetModule('DataTexts')
 local Layout = E:GetModule('Layout')
 local Minimap = E:GetModule('Minimap')
 local NamePlates = E:GetModule('NamePlates')
-local Threat = E:GetModule('Threat')
 local Tooltip = E:GetModule('Tooltip')
 local Totems = E:GetModule('Totems')
 local UnitFrames = E:GetModule('UnitFrames')
@@ -941,7 +940,6 @@ function E:UpdateDB()
 	NamePlates.db = E.db.nameplates
 	Tooltip.db = E.db.tooltip
 	UnitFrames.db = E.db.unitframe
-	Threat.db = E.db.general.threat
 	Totems.db = E.db.general.totems
 
 	--Not part of staggered update
@@ -1034,11 +1032,12 @@ function E:UpdateChat(skipCallback)
 end
 
 function E:UpdateDataBars(skipCallback)
-	DataBars:EnableDisable_AzeriteBar()
-	DataBars:EnableDisable_ExperienceBar()
-	DataBars:EnableDisable_HonorBar()
-	DataBars:EnableDisable_ReputationBar()
-	DataBars:UpdateDataBarDimensions()
+	DataBars:AzeriteBar_Toggle()
+	DataBars:ExperienceBar_Toggle()
+	DataBars:HonorBar_Toggle()
+	DataBars:ReputationBar_Toggle()
+	DataBars:ThreatBar_Toggle()
+	DataBars:UpdateAll()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
@@ -1073,9 +1072,6 @@ end
 function E:UpdateMisc(skipCallback)
 	AFK:Toggle()
 	Blizzard:SetObjectiveFrameHeight()
-
-	Threat:ToggleEnable()
-	Threat:UpdatePosition()
 
 	Totems:PositionAndSize()
 

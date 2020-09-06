@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local NP = E:GetModule('NamePlates')
 local oUF = E.oUF
 
 local _G = _G
@@ -6,22 +7,23 @@ local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumbe
 local strmatch, strlower, strfind = strmatch, strlower, strfind
 
 local GetLocale = GetLocale
+local IsInInstance = IsInInstance
+local UnitIsPlayer = UnitIsPlayer
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
+local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
+local C_QuestLog_GetLogIndexForQuestID = C_QuestLog.GetLogIndexForQuestID
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
-
-local IsInInstance = IsInInstance
-local UnitIsPlayer = UnitIsPlayer
 local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 
-local iconTypes = {'Default', 'Item', 'Skull', 'Chat'}
-local questIndexByID = {
-	--[questID] = questIndex
+local questIcons = {
+	iconTypes = { 'Default', 'Item', 'Skull', 'Chat' },
+	indexByID = {}, --[questID] = questIndex
+	activeQuests = {} --[questTitle] = questID
 }
-local activeQuests = {
-	--[questName] = questID
-}
+
+NP.QuestIcons = questIcons
 
 local typesLocalized = {
 	enUS = {
@@ -64,28 +66,6 @@ local typesLocalized = {
 
 local questTypes = typesLocalized[GetLocale()] or typesLocalized.enUS
 
-local function QUEST_ACCEPTED(_, _, questLogIndex, questID)
-	if questLogIndex and questLogIndex > 0 then
-		local questName = C_QuestLog_GetTitleForLogIndex(questLogIndex)
-		if questName and (questID and questID > 0) then
-			activeQuests[questName] = questID
-			questIndexByID[questID] = questLogIndex
-		end
-	end
-end
-
-local function QUEST_REMOVED(_, _, questID)
-	if not questID then return end
-	questIndexByID[questID] = nil
-
-	for questName, id in pairs(activeQuests) do
-		if id == questID then
-			activeQuests[questName] = nil
-			break
-		end
-	end
-end
-
 local function CheckTextForQuest(text)
 	local x, y = strmatch(text, '(%d+)/(%d+)')
 	if x and y then
@@ -97,6 +77,7 @@ local function CheckTextForQuest(text)
 		end
 	end
 end
+NP.QuestIcons.CheckTextForQuest = CheckTextForQuest
 
 local function GetQuests(unitID)
 	if IsInInstance() then return end
@@ -116,14 +97,14 @@ local function GetQuests(unitID)
 		elseif text and not notMyQuest then
 			local count, percent = CheckTextForQuest(text)
 
-			if activeQuests[text] then -- this line comes from one line up in the tooltip
-				activeID = activeQuests[text]
-			end
+			-- this line comes from one line up in the tooltip
+			local activeQuest = NP.QuestIcons.activeQuests[text]
+			if activeQuest then activeID = activeQuest end
 
 			if count then
 				local type, index, texture, _
 				if activeID then
-					index = questIndexByID[activeID]
+					index = questIcons.indexByID[activeID]
 					_, texture = GetQuestLogSpecialItemInfo(index)
 				end
 
@@ -170,7 +151,7 @@ local function GetQuests(unitID)
 end
 
 local function hideIcons(element)
-	for _, object in pairs(iconTypes) do
+	for _, object in pairs(questIcons.iconTypes) do
 		local icon = element[object]
 		icon:Hide()
 
@@ -180,14 +161,11 @@ local function hideIcons(element)
 	end
 end
 
-local function Update(self, event, unit)
+local function Update(self, event, arg1)
 	local element = self.QuestIcons
 	if not element then return end
 
-	if event ~= 'UNIT_NAME_UPDATE' then
-		unit = self.unit
-	end
-
+	local unit = (event == 'UNIT_NAME_UPDATE' and arg1) or self.unit
 	if unit ~= self.unit then return end
 
 	if element.PreUpdate then
@@ -275,8 +253,6 @@ local function Enable(self)
 			element.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
 		end
 
-		self:RegisterEvent('QUEST_ACCEPTED', QUEST_ACCEPTED, true)
-		self:RegisterEvent('QUEST_REMOVED', QUEST_REMOVED, true)
 		self:RegisterEvent('QUEST_LOG_UPDATE', Path, true)
 		self:RegisterEvent('UNIT_NAME_UPDATE', Path, true)
 		self:RegisterEvent('PLAYER_ENTERING_WORLD', Path, true)
@@ -291,22 +267,50 @@ local function Disable(self)
 		element:Hide()
 		hideIcons(element)
 
-		self:UnregisterEvent('QUEST_ACCEPTED', QUEST_ACCEPTED)
-		self:UnregisterEvent('QUEST_REMOVED', QUEST_REMOVED)
 		self:UnregisterEvent('QUEST_LOG_UPDATE', Path)
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)
 		self:UnregisterEvent('PLAYER_ENTERING_WORLD', Path)
 	end
 end
 
---initial quest scan
-for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-	local questID = C_QuestLog_GetQuestIDForLogIndex(i)
-	local questName = C_QuestLog_GetTitleForLogIndex(i)
-	if questName and (questID and questID > 0) then
-		activeQuests[questName] = questID
-		questIndexByID[questID] = i
+local frame = CreateFrame('Frame')
+frame:RegisterEvent('QUEST_ACCEPTED')
+frame:RegisterEvent('QUEST_REMOVED')
+frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+frame:SetScript('OnEvent', function(self, event, questID)
+	if event == 'PLAYER_ENTERING_WORLD' then
+		for i = 1, C_QuestLog_GetNumQuestLogEntries() do
+			local id = C_QuestLog_GetQuestIDForLogIndex(i)
+			if id and id > 0 then
+				questIcons.indexByID[id] = i
+
+				local title = C_QuestLog_GetTitleForLogIndex(i)
+				if title then questIcons.activeQuests[title] = id end
+			end
+		end
+
+		self:UnregisterEvent(event)
+	elseif event == 'QUEST_ACCEPTED' then
+		if questID and questID > 0 then
+			local index = C_QuestLog_GetLogIndexForQuestID(questID)
+			if index and index > 0 then
+				questIcons.indexByID[questID] = index
+
+				local title = C_QuestLog_GetTitleForQuestID(questID)
+				if title then questIcons.activeQuests[title] = questID end
+			end
+		end
+	elseif event == 'QUEST_REMOVED' then
+		if not questID then return end
+		questIcons.indexByID[questID] = nil
+
+		for title, id in pairs(questIcons.activeQuests) do
+			if id == questID then
+				questIcons.activeQuests[title] = nil
+				break
+			end
+		end
 	end
-end
+end)
 
 oUF:AddElement('QuestIcons', Path, Enable, Disable)

@@ -223,46 +223,6 @@ E.Options.args.general = {
 						E:PixelScaleChanged()
 					end,
 				},
-				threatGroup = {
-					order = 50,
-					type = 'group',
-					guiInline = true,
-					name = L["Threat"],
-					get = function(info) return E.db.general.threat[info[#info]] end,
-					args = {
-						enable = {
-							order = 41,
-							type = 'toggle',
-							name = L["Enable"],
-							set = function(info, value) E.db.general.threat.enable = value; Threat:ToggleEnable() end,
-						},
-						position = {
-							order = 42,
-							type = 'select',
-							name = L["Position"],
-							desc = L["Adjust the position of the threat bar to either the left or right datatext panels."],
-							values = {
-								LEFTCHAT = L["Left Chat"],
-								RIGHTCHAT = L["Right Chat"],
-							},
-							set = function(info, value) E.db.general.threat.position = value; Threat:UpdatePosition() end,
-						},
-						textSize = {
-							order = 43,
-							name = L["FONT_SIZE"],
-							type = 'range',
-							min = 6, max = 22, step = 1,
-							set = function(info, value) E.db.general.threat.textSize = value; Threat:UpdatePosition() end,
-						},
-						textOutline = {
-							order = 44,
-							type = 'select',
-							name = L["Font Outline"],
-							set = function(info, value) E.db.general.threat.textOutline = value; Threat:UpdatePosition() end,
-							values = C.Values.FontFlags,
-						},
-					},
-				},
 				totems = {
 					order = 55,
 					type = 'group',

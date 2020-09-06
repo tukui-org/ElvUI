@@ -1,14 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local floor = floor
 local format = format
 
 local InCombatLockdown = InCombatLockdown
-local CreateFrame = CreateFrame
-local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local HasArtifactEquipped = HasArtifactEquipped
 local SocketInventoryItem = SocketInventoryItem
 local UIParentLoadAddOn = UIParentLoadAddOn
@@ -22,38 +19,28 @@ local C_AzeriteItem_GetPowerLevel = C_AzeriteItem.GetPowerLevel
 local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLevel
 local ARTIFACT_POWER = ARTIFACT_POWER
 
-function DB:UpdateAzerite(event, unit)
+function DB:AzeriteBar_Update(event, unit)
 	if not DB.db.azerite.enable then return end
 
 	if event == 'UNIT_INVENTORY_CHANGED' and unit ~= 'player' then
 		return
 	end
 
-	if event == 'PLAYER_ENTERING_WORLD' then
-		DB.azeriteBar.eventFrame:UnregisterEvent('PLAYER_ENTERING_WORLD')
-	end
+	local bar = DB.StatusBars.Azerite
 
-	local bar = DB.azeriteBar
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel())
-	or (DB.db.azerite.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or (DB.db.azerite.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
-		E:DisableMover(bar.mover:GetName())
+
+	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) then
 		bar:Hide()
 	else
-		E:EnableMover(bar.mover:GetName())
 		bar:Show()
-
-		if DB.db.azerite.hideInVehicle then
-			E:RegisterObjectForVehicleLock(bar, E.UIParent)
-		else
-			E:UnregisterObjectForVehicleLock(bar)
-		end
-
 		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 
-		bar.statusBar:SetMinMaxValues(0, max)
-		bar.statusBar:SetValue(cur)
+		bar:SetMinMaxValues(0, max)
+		bar:SetValue(cur)
+		local color = DB.db.colors.azerite
+		bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 
 		local textFormat = DB.db.azerite.textFormat
 		if textFormat == 'NONE' then
@@ -105,8 +92,6 @@ do
 
 			azeriteItem = Item:CreateFromItemLocation(azeriteItemLocation)
 			azeriteItem:ContinueWithCancelOnItemLoad(dataLoadedCancelFunc)
-		else
-			_G.GameTooltip:Hide()
 		end
 	end
 end
@@ -122,56 +107,27 @@ function DB:AzeriteBar_OnClick()
 	end
 end
 
-function DB:UpdateAzeriteDimensions()
-	DB.azeriteBar:Width(DB.db.azerite.width)
-	DB.azeriteBar:Height(DB.db.azerite.height)
-	DB.azeriteBar.statusBar:SetOrientation(DB.db.azerite.orientation)
-	DB.azeriteBar.statusBar:SetReverseFill(DB.db.azerite.reverseFill)
+function DB:AzeriteBar_Toggle()
+	local bar = DB.StatusBars.Azerite
 
-	if DB.db.azerite.orientation == 'HORIZONTAL' then
-		DB.azeriteBar.statusBar:SetRotatesTexture(false)
-	else
-		DB.azeriteBar.statusBar:SetRotatesTexture(true)
-	end
+	bar:SetShown(bar.db.enable)
 
-	DB.azeriteBar.text:FontTemplate(LSM:Fetch('font', DB.db.azerite.font), DB.db.azerite.textSize, DB.db.azerite.fontOutline)
-	if DB.db.azerite.mouseover then
-		DB.azeriteBar:SetAlpha(0)
-	else
-		DB.azeriteBar:SetAlpha(1)
-	end
-end
-
-function DB:EnableDisable_AzeriteBar()
-	if DB.db.azerite.enable then
-		DB:RegisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED', 'UpdateAzerite')
-		DB:RegisterEvent('UNIT_INVENTORY_CHANGED', 'UpdateAzerite')
-
-		DB:UpdateAzerite()
-		E:EnableMover(DB.azeriteBar.mover:GetName())
+	if bar.db.enable then
+		DB:RegisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED', 'AzeriteBar_Update')
+		DB:RegisterEvent('UNIT_INVENTORY_CHANGED', 'AzeriteBar_Update')
+		DB:AzeriteBar_Update()
+		E:EnableMover(bar.mover:GetName())
 	else
 		DB:UnregisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED')
 		DB:UnregisterEvent('UNIT_INVENTORY_CHANGED')
-
-		DB.azeriteBar:Hide()
-		E:DisableMover(DB.azeriteBar.mover:GetName())
+		E:DisableMover(bar.mover:GetName())
 	end
 end
 
-function DB:LoadAzeriteBar()
-	DB.azeriteBar = DB:CreateBar('ElvUI_AzeriteBar', DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245)
-	DB.azeriteBar.statusBar:SetStatusBarColor(.901, .8, .601)
-	DB.azeriteBar.statusBar:SetMinMaxValues(0, 325)
-	DB.azeriteBar.statusBar:SetFrameLevel(DB.azeriteBar:GetFrameLevel() + 2)
+function DB:AzeriteBar()
+	DB.StatusBars.Azerite = DB:CreateBar('ElvUI_AzeriteBar', DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245)
+	DB.StatusBars.Azerite.db = DB.db.azerite
 
-	DB.azeriteBar.eventFrame = CreateFrame('Frame')
-	DB.azeriteBar.eventFrame:RegisterEvent('PLAYER_REGEN_DISABLED')
-	DB.azeriteBar.eventFrame:RegisterEvent('PLAYER_REGEN_ENABLED')
-	DB.azeriteBar.eventFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
-	DB.azeriteBar.eventFrame:SetScript('OnEvent', DB.UpdateAzerite)
-	DB.azeriteBar.eventFrame:Hide()
-
-	DB:UpdateAzeriteDimensions()
-	E:CreateMover(DB.azeriteBar, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
-	DB:EnableDisable_AzeriteBar()
+	E:CreateMover(DB.StatusBars.Azerite, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
+	DB:AzeriteBar_Toggle()
 end

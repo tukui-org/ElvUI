@@ -57,6 +57,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[102359] = Defaults(1), -- Mass Entanglement
 		[339]    = Defaults(1), -- Entangling Roots
 		[2637]   = Defaults(1), -- Hibernate
+		[102793] = Defaults(1), -- Ursol's Vortex
 	-- Hunter
 		[202933] = Defaults(2), -- Spider Sting (it's this one or the other)
 		[233022] = Defaults(2), -- Spider Sting
@@ -627,6 +628,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[171438] = Defaults(), -- Porous Weightstone
 		[171437] = Defaults(), -- Shaded Sharpening Stone
 		[171439] = Defaults(), -- Shaded Weightstone
+		[171301] = Defaults(), -- Spiritual Anti-Venom
+		[173067] = Defaults(), -- Vantus Rune: Castle Nathria
 	},
 }
 
@@ -665,29 +668,39 @@ G.unitframe.aurafilters.Blacklist = {
 		[287825] = Defaults(), -- Lethargy debuff (fight or flight)
 		[206662] = Defaults(), -- Experience Eliminated (in range)
 		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
+		[206151] = Defaults(), -- Challenger's Burden
 	},
 }
 
---[[
-	This should be a list of important buffs that we always want to see when they are active
-	bloodlust, paladin hand spells, raid cooldowns, etc..
-]]
+-- A list of important buffs that we always want to see
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
-		[31821]  = Defaults(), -- Devotion Aura
+		-- Bloodlust effects
 		[2825]   = Defaults(), -- Bloodlust
 		[32182]  = Defaults(), -- Heroism
 		[80353]  = Defaults(), -- Time Warp
 		[90355]  = Defaults(), -- Ancient Hysteria
-		[47788]  = Defaults(), -- Guardian Spirit
-		[33206]  = Defaults(), -- Pain Suppression
-		[116849] = Defaults(), -- Life Cocoon
-		[22812]  = Defaults(), -- Barkskin
-		[102342] = Defaults(), -- Ironbark
+		-- Paladin
+		[31821]  = Defaults(), -- Aura Mastery
 		[1022]   = Defaults(), -- Blessing of Protection
 		[204018] = Defaults(), -- Blessing of Spellwarding
 		[6940]   = Defaults(), -- Blessing of Sacrifice
+		[1044]   = Defaults(), -- Blessing of Freedom
+		-- Priest
+		[47788]  = Defaults(), -- Guardian Spirit
+		[33206]  = Defaults(), -- Pain Suppression
+		[62618]  = Defaults(), -- Power Word: Barrier
+		-- Monk
+		[116849] = Defaults(), -- Life Cocoon
+		-- Druid
+		[102342] = Defaults(), -- Ironbark
+		-- Shaman
+		[98008]  = Defaults(), -- Spirit Link Totem
+		[20608]  = Defaults(), -- Reincarnation
+		-- Other
+		[97462]  = Defaults(), -- Rallying Cry
+		[196718] = Defaults(), -- Darkness
 	},
 }
 
@@ -769,6 +782,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[334913] = Defaults(), -- Master of Death
 		[325725] = Defaults(), -- Cosmic Artifice
 		[328987] = Defaults(), -- Zealous
+		[334496] = Defaults(), -- Soporific Shimmerdust
+		[339978] = Defaults(), -- Pacifying Mists
+		[323692] = Defaults(), -- Arcane Vulnerability
+		[333250] = Defaults(), -- Reaver
 
 	-- BFA Dungeons
 		-- Freehold
@@ -1424,7 +1441,7 @@ G.unitframe.buffwatch = {
 		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
 		[136]    = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)		-- Mend Pet
 	},
-	HUNTER = {}, -- Keep even if it's an empty table, so a reference to G.unitframe.buffwatch[E.myclass][SomeValue] doesn't trigger error
+	HUNTER = {}, -- Reference to G.unitframe.buffwatch[E.myclass][SomeValue]
 	DEMONHUNTER = {},
 	WARLOCK = {},
 	MAGE = {},
@@ -1439,25 +1456,25 @@ P.unitframe.filters = {
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	-- Warlock
-	[198590] = 5, -- Drain Soul
-	[755]    = 6, -- Health Funnel
-	[234153] = 6, -- Drain Life
+	[198590] = 5,	-- Drain Soul
+	[755]    = 6,	-- Health Funnel
+	[234153] = 6,	-- Drain Life
 	-- Priest
-	[64843]  = 4, -- Divine Hymn
-	[15407]  = 4, -- Mind Flay
-	[48045]  = 5, -- Mind Sear
-	[47757]  = 5, -- Penance (it seems, that this spell have on own ID for channeling. Its not the actual spell itself)
+	[64843]  = 4,	-- Divine Hymn
+	[15407]  = 4,	-- Mind Flay
+	[48045]  = 5,	-- Mind Sear
+	[47757]  = 5,	-- Penance
 	-- Mage
-	[5143]   = 5,  -- Arcane Missiles
-	[12051]  = 3,  -- Evocation
-	[205021] = 10, -- Ray of Frost
+	[5143]   = 5,	-- Arcane Missiles
+	[12051]  = 3,	-- Evocation
+	[205021] = 10,	-- Ray of Frost
 	-- Druid
-	[740]    = 4, -- Tranquility
+	[740]    = 4,	-- Tranquility
 }
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
-	[198590] = 1, -- Drain Soul
+	[198590] = 1,	-- Drain Soul
 }
 
 -- Spells Effected By Haste

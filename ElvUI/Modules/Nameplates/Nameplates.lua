@@ -323,7 +323,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:Update_Power(nameplate)
 		NP:Update_Castbar(nameplate)
 		NP:Update_ClassPower(nameplate)
-		NP:Update_Auras(nameplate, true)
+		NP:Update_Auras(nameplate)
 		NP:Update_ClassificationIndicator(nameplate)
 		NP:Update_PvPIndicator(nameplate) -- Horde / Alliance / HonorInfo
 		NP:Update_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
