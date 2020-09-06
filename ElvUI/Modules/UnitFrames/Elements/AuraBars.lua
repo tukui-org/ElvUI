@@ -139,37 +139,44 @@ function UF:Configure_AuraBars(frame)
 			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 		end
 
-		local yOffset = db.aurabar.yOffset + (UF.thinBorders and 0 or 2)
+		local BORDER, SPACING, yOffset = UF.BORDER + UF.SPACING
 		if db.aurabar.attachTo == 'DETACHED' then
 			E:EnableMover(auraBars.Holder.mover:GetName())
+			SPACING = UF.thinBorders and 1 or 5
 
-			local OFFSET = UF.BORDER + UF.SPACING
-			auraBars.Holder:Size(db.aurabar.detachedWidth, db.aurabar.height + (OFFSET*2))
+			auraBars.Holder:Size(db.aurabar.detachedWidth, db.aurabar.height + (BORDER * 2))
 
 			if db.aurabar.anchorPoint == 'BELOW' then
-				yOffset = OFFSET + (UF.BORDER - UF.SPACING)
+				yOffset = BORDER + (UF.BORDER - UF.SPACING)
 			else
-				yOffset = -(db.aurabar.height + OFFSET)
+				yOffset = -(db.aurabar.height + BORDER)
 			end
 		else
 			E:DisableMover(auraBars.Holder.mover:GetName())
+			SPACING = UF.thinBorders and 1 or 4
 
+			local offset = db.aurabar.yOffset + (UF.thinBorders and 0 or 2)
 			if db.aurabar.anchorPoint == 'BELOW' then
-				yOffset = -yOffset
+				yOffset = -(db.aurabar.height + offset)
+			else
+				yOffset = offset + 1 -- 1 is connecting pixel
 			end
 		end
 
-		local BORDER_OFFSET = UF.thinBorders and 2 or 5
-		local POWER_OFFSET = db.aurabar.attachTo == 'FRAME' and frame.POWERBAR_OFFSET
-		local LEFT_OFFSET = ((anchorTo == 'TOP' and frame.ORIENTATION ~= 'LEFT') or (anchorTo == 'BOTTOM' and frame.ORIENTATION == 'LEFT')) and POWER_OFFSET or 0
-		local RIGHT_OFFSET = ((anchorTo == 'TOP' and frame.ORIENTATION ~= 'RIGHT') or (anchorTo == 'BOTTOM' and frame.ORIENTATION == 'RIGHT')) and POWER_OFFSET or 0
+		local POWER_OFFSET = 0
+		if db.aurabar.attachTo ~= 'DETACHED' and db.aurabar.attachTo ~= 'FRAME' then
+			POWER_OFFSET = frame.POWERBAR_OFFSET
+
+			if frame.ORIENTATION == 'MIDDLE' then
+				POWER_OFFSET = POWER_OFFSET * 2
+			end
+		end
 
 		auraBars:ClearAllPoints()
-		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', -(LEFT_OFFSET + BORDER_OFFSET), yOffset)
-		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -(RIGHT_OFFSET + BORDER_OFFSET + (UF.thinBorders and 0 or 3)), yOffset)
+		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', -SPACING, yOffset)
+		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -(SPACING + BORDER), yOffset)
 
-		local SPACING = (UF.BORDER + UF.SPACING)*4
-		auraBars.width = E:Scale((db.aurabar.attachTo == 'DETACHED' and db.aurabar.detachedWidth or frame.UNIT_WIDTH) - auraBars.height - (POWER_OFFSET or 0) - SPACING + 1) -- 1 is to account for joining the icons by a pixel
+		auraBars.width = E:Scale((db.aurabar.attachTo == 'DETACHED' and db.aurabar.detachedWidth or frame.UNIT_WIDTH) - (BORDER * 4) - auraBars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
 		auraBars:Show()
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')
