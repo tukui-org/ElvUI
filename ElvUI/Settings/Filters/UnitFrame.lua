@@ -665,6 +665,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[287825] = Defaults(), -- Lethargy debuff (fight or flight)
 		[206662] = Defaults(), -- Experience Eliminated (in range)
 		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
+		[206151] = Defaults(), -- Challenger's Burden
 	},
 }
 
@@ -769,6 +770,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[334913] = Defaults(), -- Master of Death
 		[325725] = Defaults(), -- Cosmic Artifice
 		[328987] = Defaults(), -- Zealous
+		[334496] = Defaults(), -- Soporific Shimmerdust
+		[339978] = Defaults(), -- Pacifying Mists
+		[323692] = Defaults(), -- Arcane Vulnerability
+		[333250] = Defaults(), -- Reaver
 
 	-- BFA Dungeons
 		-- Freehold
