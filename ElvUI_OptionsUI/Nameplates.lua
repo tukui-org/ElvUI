@@ -1183,6 +1183,22 @@ local function UpdateFilterGroup()
 									type = 'toggle',
 									name = L["No NPC Title"],
 									order = 26
+								},
+								spacer4 = ACH:Spacer(27, 'full'),
+								isQuest = {
+									type = 'toggle',
+									name = L["Quest Unit"],
+									order = 28
+								},
+								notQuest = {
+									type = 'toggle',
+									name = L["Not Quest Unit"],
+									order = 29
+								},
+								questBoss = {
+									type = 'toggle',
+									name = L["Quest Boss"],
+									order = 30,
 								}
 							}
 						}
@@ -1310,23 +1326,6 @@ local function UpdateFilterGroup()
 									order = 7,
 									name = L["Minus"]
 								},
-								questBoss = {
-									name = L["Quest Boss"],
-									order = 8,
-									type = 'toggle',
-									disabled = function()
-										return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
-											E.db.nameplates.filters[selectedNameplateFilter].triggers and
-											E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
-									end,
-									get = function(info)
-										return E.global.nameplate.filters[selectedNameplateFilter].triggers.questBoss
-									end,
-									set = function(info, value)
-										E.global.nameplate.filters[selectedNameplateFilter].triggers.questBoss = value
-										NP:ConfigureAll()
-									end
-								}
 							}
 						}
 					}

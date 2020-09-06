@@ -70,7 +70,6 @@ E.StyleFilterDefaults = {
 		isTarget = false,
 		notTarget = false,
 		requireTarget = false,
-		questBoss = false,
 		level = false,
 		casting = {
 			isCasting = false,
@@ -271,6 +270,9 @@ E.StyleFilterDefaults = {
 		playerCanNotAttack = false,
 		hasTitleNPC = false,
 		noTitleNPC = false,
+		isQuest = false,
+		notQuest = false,
+		questBoss = false,
 		-- combat
 		inCombat = false,
 		outOfCombat = false,

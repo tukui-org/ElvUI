@@ -1057,13 +1057,13 @@ do
 					if activeQuest then activeID = activeQuest end
 
 					if count then
-						if which == 'text' then
+						if not which then
 							return text
 						elseif which == 'count' then
 							return percent and format('%s%%', count) or count
 						elseif which == 'title' and activeID then
 							local title = C_QuestLog_GetTitleForQuestID(activeID)
-							local level = C_QuestLog_GetQuestDifficultyLevel(activeID)
+							local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
 							if level then
 								local colors = GetQuestDifficultyColor(level)
 								title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
@@ -1072,7 +1072,7 @@ do
 							return title
 						elseif (which == 'info' or which == 'full') and activeID then
 							local title = C_QuestLog_GetTitleForQuestID(activeID)
-							local level = C_QuestLog_GetQuestDifficultyLevel(activeID)
+							local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
 							if level then
 								local colors = GetQuestDifficultyColor(level)
 								title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
@@ -1091,6 +1091,12 @@ do
 	end
 	E.TagFunctions.GetQuestData = GetQuestData
 
+	ElvUF.Tags.Events['quest:text'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:text'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, nil, Hex)
+	end
+
 	ElvUF.Tags.Events['quest:full'] = 'QUEST_LOG_UPDATE'
 	ElvUF.Tags.Methods['quest:full'] = function(unit)
 		if UnitIsPlayer(unit) then return end
@@ -1107,12 +1113,6 @@ do
 	ElvUF.Tags.Methods['quest:title'] = function(unit)
 		if UnitIsPlayer(unit) then return end
 		return GetQuestData(unit, 'title', Hex)
-	end
-
-	ElvUF.Tags.Events['quest:text'] = 'QUEST_LOG_UPDATE'
-	ElvUF.Tags.Methods['quest:text'] = function(unit)
-		if UnitIsPlayer(unit) then return end
-		return GetQuestData(unit, 'text', Hex)
 	end
 
 	ElvUF.Tags.Events['quest:count'] = 'QUEST_LOG_UPDATE'

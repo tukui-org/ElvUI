@@ -650,6 +650,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
 	end
 
+	-- Quest Unit
+	if trigger.isQuest or trigger.notQuest then
+		local quest = E.TagFunctions.GetQuestData(frame.unit)
+		if (trigger.isQuest and quest) or (trigger.notQuest and not quest) then passed = true else return end
+	end
+
 	-- Require Target
 	if trigger.requireTarget then
 		if UnitExists('target') then passed = true else return end
@@ -1054,6 +1060,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'PLAYER_TARGET_CHANGED',
 	'PLAYER_UPDATE_RESTING',
 	'RAID_TARGET_UPDATE',
+	'QUEST_LOG_UPDATE',
 	'SPELL_UPDATE_COOLDOWN',
 	'UNIT_ENTERED_VEHICLE',
 	'UNIT_EXITED_VEHICLE',
@@ -1151,6 +1158,10 @@ function mod:StyleFilterConfigure()
 						events.ZONE_CHANGED_INDOORS = 1
 						events.ZONE_CHANGED = 1
 					end
+				end
+
+				if t.isQuest or t.notQuest then
+					events.QUEST_LOG_UPDATE = 1
 				end
 
 				if t.hasTitleNPC or t.noTitleNPC then
@@ -1300,6 +1311,7 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
 	mod:StyleFilterRegister(nameplate,'RAID_TARGET_UPDATE', true)
 	mod:StyleFilterRegister(nameplate,'SPELL_UPDATE_COOLDOWN', true)
+	mod:StyleFilterRegister(nameplate,'QUEST_LOG_UPDATE', true)
 	mod:StyleFilterRegister(nameplate,'UNIT_ENTERED_VEHICLE')
 	mod:StyleFilterRegister(nameplate,'UNIT_EXITED_VEHICLE')
 	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
