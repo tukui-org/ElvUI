@@ -73,8 +73,9 @@ end
 
 function DB:HonorBar_Toggle()
 	local bar = DB.StatusBars.Honor
-	bar:SetShown(bar.db.enable)
+	bar.db = DB.db.honor
 
+	bar:SetShown(bar.db.enable)
 	if bar.db.enable then
 		DB:RegisterEvent('HONOR_XP_UPDATE', 'HonorBar_Update')
 		DB:RegisterEvent('PLAYER_FLAGS_CHANGED', 'HonorBar_Update')
@@ -89,7 +90,6 @@ end
 
 function DB:HonorBar()
 	DB.StatusBars.Honor = DB:CreateBar('ElvUI_HonorBar', DB.HonorBar_OnEnter, DB.HonorBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255)
-	DB.StatusBars.Honor.db = DB.db.honor
 
 	E:CreateMover(DB.StatusBars.Honor, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 
