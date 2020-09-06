@@ -676,19 +676,31 @@ G.unitframe.aurafilters.Blacklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
-		[31821]  = Defaults(), -- Devotion Aura
+		-- Bloodlust effects
 		[2825]   = Defaults(), -- Bloodlust
 		[32182]  = Defaults(), -- Heroism
 		[80353]  = Defaults(), -- Time Warp
 		[90355]  = Defaults(), -- Ancient Hysteria
-		[47788]  = Defaults(), -- Guardian Spirit
-		[33206]  = Defaults(), -- Pain Suppression
-		[116849] = Defaults(), -- Life Cocoon
-		[22812]  = Defaults(), -- Barkskin
-		[102342] = Defaults(), -- Ironbark
+		-- Paladin
+		[31821]  = Defaults(), -- Aura Mastery
 		[1022]   = Defaults(), -- Blessing of Protection
 		[204018] = Defaults(), -- Blessing of Spellwarding
 		[6940]   = Defaults(), -- Blessing of Sacrifice
+		[1044]   = Defaults(), -- Blessing of Freedom
+		-- Priest
+		[47788]  = Defaults(), -- Guardian Spirit
+		[33206]  = Defaults(), -- Pain Suppression
+		[62618]  = Defaults(), -- Power Word: Barrier
+		-- Monk
+		[116849] = Defaults(), -- Life Cocoon
+		-- Druid
+		[102342] = Defaults(), -- Ironbark
+		-- Shaman
+		[98008]  = Defaults(), -- Spirit Link Totem
+		[20608]  = Defaults(), -- Reincarnation
+		-- Other
+		[97462]  = Defaults(), -- Rallying Cry
+		[196718] = Defaults(), -- Darkness
 	},
 }
 
