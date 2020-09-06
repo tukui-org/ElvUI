@@ -57,6 +57,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[102359] = Defaults(1), -- Mass Entanglement
 		[339]    = Defaults(1), -- Entangling Roots
 		[2637]   = Defaults(1), -- Hibernate
+		[102793] = Defaults(1), -- Ursol's Vortex
 	-- Hunter
 		[202933] = Defaults(2), -- Spider Sting (it's this one or the other)
 		[233022] = Defaults(2), -- Spider Sting
@@ -627,6 +628,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[171438] = Defaults(), -- Porous Weightstone
 		[171437] = Defaults(), -- Shaded Sharpening Stone
 		[171439] = Defaults(), -- Shaded Weightstone
+		[171301] = Defaults(), -- Spiritual Anti-Venom
+		[173067] = Defaults(), -- Vantus Rune: Castle Nathria
 	},
 }
 
@@ -669,10 +672,7 @@ G.unitframe.aurafilters.Blacklist = {
 	},
 }
 
---[[
-	This should be a list of important buffs that we always want to see when they are active
-	bloodlust, paladin hand spells, raid cooldowns, etc..
-]]
+-- A list of important buffs that we always want to see
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
@@ -1441,7 +1441,7 @@ G.unitframe.buffwatch = {
 		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
 		[136]    = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)		-- Mend Pet
 	},
-	HUNTER = {}, -- Keep even if it's an empty table, so a reference to G.unitframe.buffwatch[E.myclass][SomeValue] doesn't trigger error
+	HUNTER = {}, -- Reference to G.unitframe.buffwatch[E.myclass][SomeValue]
 	DEMONHUNTER = {},
 	WARLOCK = {},
 	MAGE = {},
@@ -1456,25 +1456,25 @@ P.unitframe.filters = {
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	-- Warlock
-	[198590] = 5, -- Drain Soul
-	[755]    = 6, -- Health Funnel
-	[234153] = 6, -- Drain Life
+	[198590] = 5,	-- Drain Soul
+	[755]    = 6,	-- Health Funnel
+	[234153] = 6,	-- Drain Life
 	-- Priest
-	[64843]  = 4, -- Divine Hymn
-	[15407]  = 4, -- Mind Flay
-	[48045]  = 5, -- Mind Sear
-	[47757]  = 5, -- Penance (it seems, that this spell have on own ID for channeling. Its not the actual spell itself)
+	[64843]  = 4,	-- Divine Hymn
+	[15407]  = 4,	-- Mind Flay
+	[48045]  = 5,	-- Mind Sear
+	[47757]  = 5,	-- Penance
 	-- Mage
-	[5143]   = 5,  -- Arcane Missiles
-	[12051]  = 3,  -- Evocation
-	[205021] = 10, -- Ray of Frost
+	[5143]   = 5,	-- Arcane Missiles
+	[12051]  = 3,	-- Evocation
+	[205021] = 10,	-- Ray of Frost
 	-- Druid
-	[740]    = 4, -- Tranquility
+	[740]    = 4,	-- Tranquility
 }
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
-	[198590] = 1, -- Drain Soul
+	[198590] = 1,	-- Drain Soul
 }
 
 -- Spells Effected By Haste
