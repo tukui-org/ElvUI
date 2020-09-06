@@ -1177,7 +1177,7 @@ E.TagInfo = {
 	['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	['difficultycolor'] = { category = 'Colors', description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" },
 	['healthcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's current health" },
-	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: ['namecolor']['name'])" },
+	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: [namecolor][name])" },
 	['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
 	['reactioncolor'] = { category = 'Colors', description = "Colors names by NPC reaction (Bad/Neutral/Good)" },
 	['threatcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's threat situation" },
@@ -1227,7 +1227,7 @@ E.TagInfo = {
 	['incomingheals'] = { category = 'Health', description = "Displays all incoming heals" },
 	['maxhp'] = { category = 'Health', description = "Displays max HP without decimals" },
 	['missinghp'] = { category = 'Health', description = "Displays the missing health of the unit in whole numbers, when not at full health" },
-	['perhp'] = { category = 'Health', description = "Displays percentage HP without decimals or the % sign.  You can display the percent sign by adjusting the tag to [perhp<%]." },
+	['perhp'] = { category = 'Health', description = "Displays percentage HP without decimals or the % sign. You can display the percent sign by adjusting the tag to [perhp<%]." },
 	--Level
 	['level'] = { category = 'Level', description = "Displays the level of the unit" },
 	['smartlevel'] = { category = 'Level', description = "Only display the unit's level if it is not the same as yours" },
@@ -1301,8 +1301,8 @@ E.TagInfo = {
 	--PvP
 	['arena:number'] = { category = 'PvP', description = "Displays the arena number 1-5" },
 	['arenaspec'] = { category = 'PvP', description = "Displays the area spec of an unit" },
-	['faction:icon'] = { category = 'PvP', description = "Displays 'Alliance' or 'Horde' Texture" },
-	['faction'] = { category = 'PvP', description = "Displays 'Aliance' or 'Horde'" },
+	['faction:icon'] = { category = 'PvP', description = "Displays the 'Alliance' or 'Horde' texture" },
+	['faction'] = { category = 'PvP', description = "Displays 'Alliance' or 'Horde'" },
 	['pvp'] = { category = 'PvP', description = "Displays 'PvP' if the unit is pvp flagged" },
 	['pvptimer'] = { category = 'PvP', description = "Displays remaining time on pvp-flagged status" },
 	--Quest
@@ -1330,7 +1330,7 @@ E.TagInfo = {
 	--Status
 	['afk'] = { category = 'Status', description = "Displays <AFK> if the unit is afk" },
 	['dead'] = { category = 'Status', description = "Displays <DEAD> if the unit is dead" },
-	['ElvUI-Users'] = { category = 'Status', description = "Displays current ElvUI users." },
+	['ElvUI-Users'] = { category = 'Status', description = "Displays current ElvUI users" },
 	['offline'] = { category = 'Status', description = "Displays 'OFFLINE' if the unit is disconnected" },
 	['resting'] = { category = 'Status', description = "Displays 'zzz' if the unit is resting" },
 	['status:icon'] = { category = 'Status', description = "Displays AFK/DND as an orange(afk) / red(dnd) icon" },
