@@ -269,6 +269,8 @@ E.StyleFilterDefaults = {
 		isNotTapDenied = false,
 		playerCanAttack = false,
 		playerCanNotAttack = false,
+		hasTitleNPC = false,
+		noTitleNPC = false,
 		-- combat
 		inCombat = false,
 		outOfCombat = false,

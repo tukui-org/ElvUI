@@ -1173,6 +1173,17 @@ local function UpdateFilterGroup()
 									desc = L["If enabled then the filter will only activate when the unit can not be attacked by the active player."],
 									order = 23
 								},
+								spacer3 = ACH:Spacer(24, 'full'),
+								hasTitleNPC = {
+									type = 'toggle',
+									name = L["Has NPC Title"],
+									order = 25
+								},
+								noTitleNPC = {
+									type = 'toggle',
+									name = L["No NPC Title"],
+									order = 26
+								}
 							}
 						}
 					}

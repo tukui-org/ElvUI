@@ -728,6 +728,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if (trigger.playerCanAttack and canAttack) or (trigger.playerCanNotAttack and not canAttack) then passed = true else return end
 	end
 
+	-- NPC Title
+	if trigger.hasTitleNPC or trigger.noTitleNPC then
+		local npcTitle = E.TagFunctions.GetTitleNPC(frame.unit)
+		if (trigger.hasTitleNPC and npcTitle) or (trigger.noTitleNPC and not npcTitle) then passed = true else return end
+	end
+
 	-- Classification
 	if trigger.classification.worldboss or trigger.classification.rareelite or trigger.classification.elite or trigger.classification.rare or trigger.classification.normal or trigger.classification.trivial or trigger.classification.minus then
 		if trigger.classification[frame.classification] then passed = true else return end
@@ -1147,7 +1153,11 @@ function mod:StyleFilterConfigure()
 					end
 				end
 
-				if t.names and next(t.names) then
+				if t.hasTitleNPC or t.noTitleNPC then
+					events.UNIT_NAME_UPDATE = 1
+				end
+
+				if not events.UNIT_NAME_UPDATE and t.names and next(t.names) then
 					for _, value in pairs(t.names) do
 						if value then
 							events.UNIT_NAME_UPDATE = 1
