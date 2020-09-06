@@ -6,7 +6,6 @@ local min, format = min, format
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
-local IsXPUserDisabled = IsXPUserDisabled
 local CreateFrame = CreateFrame
 
 function DB:ExperienceBar_Update()
