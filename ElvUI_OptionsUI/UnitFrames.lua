@@ -2914,29 +2914,6 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		},
 	}
 
-	if groupName == 'tank' or groupName == 'assist' or groupName == 'arena' or groupName == 'boss' then
-		config.args.width = {
-			order = 3,
-			name = L["Width"],
-			type = 'range',
-			min = 50, max = 1000, step = 1,
-			set = function(info, value)
-				if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then
-					E.db.unitframe.units[groupName].castbar.width = value;
-				end
-
-				E.db.unitframe.units[groupName][info[#info]] = value;
-				updateFunc(UF, groupName, numUnits)
-			end,
-		}
-		config.args.height = {
-			order = 4,
-			name = L["Height"],
-			type = 'range',
-			min = 5, max = 500, step = 1,
-		}
-	end
-
 	if groupName ~= 'tank' and groupName ~= 'assist' then
 		config.args.hideonnpc = {
 			type = 'toggle',
@@ -2965,38 +2942,75 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			name = L["Threat Display Mode"],
 			values = threatValues,
 		}
+	else
+		config.args.pvpSpecIcon = {
+			order = 21,
+			name = L["Spec Icon"],
+			desc = L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."],
+			type = 'toggle',
+		}
 	end
 
-	if groupName == 'boss' or groupName == 'arena' then
-		config.args.spacing = {
-			order = 11,
-			type = 'range',
-			name = L["Spacing"],
-			min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 400, step = 1,
-		}
-		config.args.growthDirection = {
-			order = 4,
-			type = 'select',
-			name = L["Growth Direction"],
-			values = {
-				UP = L["Bottom to Top"],
-				DOWN = L["Top to Bottom"],
-				LEFT = L["Right to Left"],
-				RIGHT = L["Left to Right"],
+	if groupName == 'tank' or groupName == 'assist' or groupName == 'arena' or groupName == 'boss' then
+		config.args.positionsGroup = {
+			order = 100,
+			name = L["Size and Positions"],
+			type = 'group',
+			guiInline = true,
+			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+			args = {
+				width = {
+					order = 1,
+					name = L["Width"],
+					type = 'range',
+					min = 50, max = 1000, step = 1,
+					set = function(info, value)
+						if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then
+							E.db.unitframe.units[groupName].castbar.width = value;
+						end
+
+						E.db.unitframe.units[groupName][info[#info]] = value;
+						updateFunc(UF, groupName, numUnits)
+					end,
+				},
+				height = {
+					order = 2,
+					name = L["Height"],
+					type = 'range',
+					min = 5, max = 500, step = 1,
+				},
 			},
 		}
 
-		if groupName == 'arena' then
-			config.args.pvpSpecIcon = {
-				order = 21,
-				name = L["Spec Icon"],
-				desc = L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."],
-				type = 'toggle',
+		if groupName == 'boss' or groupName == 'arena' then
+			config.args.positionsGroup.args.spacing = {
+				order = 3,
+				type = 'range',
+				name = L["Spacing"],
+				min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 400, step = 1,
+			}
+			config.args.positionsGroup.args.growthDirection = {
+				order = 4,
+				type = 'select',
+				name = L["Growth Direction"],
+				values = {
+					UP = L["Bottom to Top"],
+					DOWN = L["Top to Bottom"],
+					LEFT = L["Right to Left"],
+					RIGHT = L["Left to Right"],
+				},
 			}
 		end
-	end
 
-	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
+		if groupName == 'tank' or groupName == 'assist' then
+			config.args.positionsGroup.args.verticalSpacing = {
+				order = 3,
+				type = 'range',
+				name = L["Vertical Spacing"],
+				min = 0, max = 100, step = 1,
+			}
+		end
+	elseif groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
 		config.args.positionsGroup = {
 			order = 100,
 			name = L["Size and Positions"],
@@ -3184,15 +3198,6 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			name = L["Middle Click - Set Focus"],
 			desc = L["Middle clicking the unit frame will cause your focus to match the unit."],
 			type = 'toggle',
-		}
-	end
-
-	if groupName == 'tank' or groupName == 'assist' then
-		config.args.verticalSpacing = {
-			order = 5,
-			type = 'range',
-			name = L["Vertical Spacing"],
-			min = 0, max = 100, step = 1,
 		}
 	end
 
