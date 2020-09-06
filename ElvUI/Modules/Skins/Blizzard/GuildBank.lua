@@ -12,7 +12,7 @@ function S:Blizzard_GuildBankUI()
 
 	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:StripTextures()
-	GuildBankFrame:SetTemplate('Transparent')
+	GuildBankFrame:CreateBackdrop('Transparent')
 	_G.GuildBankEmblemFrame:StripTextures(true)
 	_G.GuildBankMoneyFrameBackground:Kill()
 	S:HandleScrollBar(_G.GuildBankPopupScrollFrameScrollBar)
@@ -70,7 +70,7 @@ function S:Blizzard_GuildBankUI()
 
 		button:StripTextures()
 		button:StyleButton(true)
-		button:SetTemplate(nil, true)
+		button:CreateBackdrop(nil, true)
 
 		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))
