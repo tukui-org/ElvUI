@@ -240,8 +240,10 @@ function UF:Configure_Auras(frame, which)
 	local x, y
 	if auras.db.attachTo == 'HEALTH' or auras.db.attachTo == 'POWER' then
 		x, y = E:GetXYOffset(auras.anchorPoint, -UF.BORDER, UF.BORDER)
+	elseif auras.db.attachTo == 'FRAME' then
+		x, y = E:GetXYOffset(auras.anchorPoint, UF.SPACING, 0)
 	else
-		x, y = E:GetXYOffset(auras.anchorPoint, UF.BORDER - 1, 0)
+		x, y = E:GetXYOffset(auras.anchorPoint, 0, UF.SPACING)
 	end
 
 	auras.xOffset = x + auras.db.xOffset + (auras.db.attachTo == 'FRAME' and frame.ORIENTATION ~= 'LEFT' and frame.POWERBAR_OFFSET or 0)
