@@ -8,14 +8,15 @@ function UF:Construct_Threat(frame)
 	local threat = CreateFrame('Frame', nil, frame)
 
 	--Main ThreatGlow
-	threat.MainGlow = frame:CreateShadow(nil, true)
+	threat.MainGlow = frame:CreateShadow(4, true)
+	threat.MainGlow:SetFrameStrata('BACKGROUND')
 	threat.MainGlow:SetParent(frame)
 	threat.MainGlow:Hide()
 
 	--Secondary ThreatGlow, for power frame when using power offset
-	threat.PowerGlow = frame:CreateShadow(nil, true)
-	threat.PowerGlow:SetParent(frame)
+	threat.PowerGlow = frame:CreateShadow(4, true)
 	threat.PowerGlow:SetFrameStrata('BACKGROUND')
+	threat.PowerGlow:SetParent(frame)
 	threat.PowerGlow:Hide()
 
 	threat.TextureIcon = threat:CreateTexture(nil, 'OVERLAY')
@@ -39,26 +40,12 @@ function UF:Configure_Threat(frame)
 
 		if threatStyle == 'GLOW' then
 			threat:SetFrameStrata('BACKGROUND')
-			threat.MainGlow:SetFrameStrata('BACKGROUND')
 			threat.MainGlow:ClearAllPoints()
+			threat.MainGlow:SetAllPoints(frame.TargetGlow)
 
 			if frame.USE_POWERBAR_OFFSET then
-				threat.MainGlow:Point('TOPLEFT', frame.Health.backdrop, 'TOPLEFT', -frame.SHADOW_SPACING - UF.SPACING, frame.SHADOW_SPACING + UF.SPACING + (frame.USE_CLASSBAR and (frame.USE_MINI_CLASSBAR and 0 or frame.CLASSBAR_HEIGHT) or 0))
-				threat.MainGlow:Point('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', frame.SHADOW_SPACING + UF.SPACING, -frame.SHADOW_SPACING - UF.SPACING)
-
 				threat.PowerGlow:ClearAllPoints()
-				threat.PowerGlow:Point('TOPLEFT', frame.Power.backdrop, 'TOPLEFT', -frame.SHADOW_SPACING - UF.SPACING, frame.SHADOW_SPACING + UF.SPACING)
-				threat.PowerGlow:Point('BOTTOMRIGHT', frame.Power.backdrop, 'BOTTOMRIGHT', frame.SHADOW_SPACING + UF.SPACING, -frame.SHADOW_SPACING - UF.SPACING)
-			else
-				threat.MainGlow:Point('TOPLEFT', -frame.SHADOW_SPACING, frame.SHADOW_SPACING-(frame.USE_MINI_CLASSBAR and frame.CLASSBAR_YOFFSET or 0))
-
-				if frame.USE_MINI_POWERBAR then
-					threat.MainGlow:Point('BOTTOMLEFT', -frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
-					threat.MainGlow:Point('BOTTOMRIGHT', frame.SHADOW_SPACING, -frame.SHADOW_SPACING + (frame.POWERBAR_HEIGHT/2))
-				else
-					threat.MainGlow:Point('BOTTOMLEFT', -frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
-					threat.MainGlow:Point('BOTTOMRIGHT', frame.SHADOW_SPACING, -frame.SHADOW_SPACING)
-				end
+				threat.PowerGlow:SetAllPoints(frame.TargetGlow.powerGlow)
 			end
 		elseif threatStyle:match('^ICON') then
 			threat:SetFrameStrata('LOW')
