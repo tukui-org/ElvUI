@@ -1041,48 +1041,46 @@ do
 		E.ScanTooltip:Show()
 
 		local notMyQuest, activeID
-		if E.ScanTooltip:NumLines() >= 3 then
-			for i = 3, E.ScanTooltip:NumLines() do
-				local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
-				local text = str and str:GetText()
-				if not text or text == '' then return end
+		for i = 3, E.ScanTooltip:NumLines() do
+			local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
+			local text = str and str:GetText()
+			if not text or text == '' then return end
 
-				if UnitIsPlayer(text) then
-					notMyQuest = text ~= E.myname
-				elseif text and not notMyQuest then
-					local count, percent = NP.QuestIcons.CheckTextForQuest(text)
+			if UnitIsPlayer(text) then
+				notMyQuest = text ~= E.myname
+			elseif text and not notMyQuest then
+				local count, percent = NP.QuestIcons.CheckTextForQuest(text)
 
-					-- this line comes from one line up in the tooltip
-					local activeQuest = NP.QuestIcons.activeQuests[text]
-					if activeQuest then activeID = activeQuest end
+				-- this line comes from one line up in the tooltip
+				local activeQuest = NP.QuestIcons.activeQuests[text]
+				if activeQuest then activeID = activeQuest end
 
-					if count then
-						if not which then
-							return text
-						elseif which == 'count' then
-							return percent and format('%s%%', count) or count
-						elseif which == 'title' and activeID then
-							local title = C_QuestLog_GetTitleForQuestID(activeID)
-							local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
-							if level then
-								local colors = GetQuestDifficultyColor(level)
-								title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
-							end
+				if count then
+					if not which then
+						return text
+					elseif which == 'count' then
+						return percent and format('%s%%', count) or count
+					elseif which == 'title' and activeID then
+						local title = C_QuestLog_GetTitleForQuestID(activeID)
+						local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
+						if level then
+							local colors = GetQuestDifficultyColor(level)
+							title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
+						end
 
-							return title
-						elseif (which == 'info' or which == 'full') and activeID then
-							local title = C_QuestLog_GetTitleForQuestID(activeID)
-							local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
-							if level then
-								local colors = GetQuestDifficultyColor(level)
-								title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
-							end
+						return title
+					elseif (which == 'info' or which == 'full') and activeID then
+						local title = C_QuestLog_GetTitleForQuestID(activeID)
+						local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
+						if level then
+							local colors = GetQuestDifficultyColor(level)
+							title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
+						end
 
-							if which == 'full' then
-								return format('%s: %s', title, text)
-							else
-								return format(percent and '%s: %s%%' or '%s: %s', title, count)
-							end
+						if which == 'full' then
+							return format('%s: %s', title, text)
+						else
+							return format(percent and '%s: %s%%' or '%s: %s', title, count)
 						end
 					end
 				end
