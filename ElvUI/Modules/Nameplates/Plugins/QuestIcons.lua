@@ -20,7 +20,7 @@ local ThreatTooltip = THREAT_TOOLTIP:gsub('%%d', '%%d-')
 local questIcons = {
 	iconTypes = { 'Default', 'Item', 'Skull', 'Chat' },
 	indexByID = {}, --[questID] = questIndex
-	activeQuests = {} --[questName] = questID
+	activeQuests = {} --[questTitle] = questID
 }
 
 NP.QuestIcons = questIcons
@@ -277,36 +277,36 @@ local frame = CreateFrame('Frame')
 frame:RegisterEvent('QUEST_ACCEPTED')
 frame:RegisterEvent('QUEST_REMOVED')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-frame:SetScript('OnEvent', function(self, event, arg1)
+frame:SetScript('OnEvent', function(self, event, questID)
 	if event == 'PLAYER_ENTERING_WORLD' then
 		for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-			local questID = C_QuestLog_GetQuestIDForLogIndex(i)
-			local questName = C_QuestLog_GetTitleForLogIndex(i)
-			if questName and (questID and questID > 0) then
-				questIcons.activeQuests[questName] = questID
-				questIcons.indexByID[questID] = i
+			local id = C_QuestLog_GetQuestIDForLogIndex(i)
+			if id and id > 0 then
+				questIcons.indexByID[id] = i
+
+				local title = C_QuestLog_GetTitleForLogIndex(i)
+				if title then questIcons.activeQuests[title] = id end
 			end
 		end
 
 		self:UnregisterEvent(event)
 	elseif event == 'QUEST_ACCEPTED' then
-		if arg1 and arg1 > 0 then
-			local questName = C_QuestLog_GetTitleForQuestID(arg1)
-			if questName then
-				local index = C_QuestLog_GetLogIndexForQuestID(arg1)
-				if index and index > 0 then
-					questIcons.activeQuests[questName] = arg1
-					questIcons.indexByID[arg1] = index
-				end
+		if questID and questID > 0 then
+			local index = C_QuestLog_GetLogIndexForQuestID(questID)
+			if index and index > 0 then
+				questIcons.indexByID[questID] = index
+
+				local title = C_QuestLog_GetTitleForQuestID(questID)
+				if title then questIcons.activeQuests[title] = questID end
 			end
 		end
 	elseif event == 'QUEST_REMOVED' then
-		if not arg1 then return end
-		questIcons.indexByID[arg1] = nil
+		if not questID then return end
+		questIcons.indexByID[questID] = nil
 
-		for questName, id in pairs(questIcons.activeQuests) do
-			if id == arg1 then
-				questIcons.activeQuests[questName] = nil
+		for title, id in pairs(questIcons.activeQuests) do
+			if id == questID then
+				questIcons.activeQuests[title] = nil
 				break
 			end
 		end
