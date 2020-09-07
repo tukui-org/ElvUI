@@ -2964,35 +2964,6 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		}
 	end
 
-	if groupName == 'boss' or groupName == 'arena' then
-		config.args.spacing = {
-			order = 11,
-			type = 'range',
-			name = L["Spacing"],
-			min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 400, step = 1,
-		}
-		config.args.growthDirection = {
-			order = 4,
-			type = 'select',
-			name = L["Growth Direction"],
-			values = {
-				UP = L["Bottom to Top"],
-				DOWN = L["Top to Bottom"],
-				LEFT = L["Right to Left"],
-				RIGHT = L["Left to Right"],
-			},
-		}
-
-		if groupName == 'arena' then
-			config.args.pvpSpecIcon = {
-				order = 21,
-				name = L["Spec Icon"],
-				desc = L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."],
-				type = 'toggle',
-			}
-		end
-	end
-
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
 		config.args.positionsGroup = {
 			order = 100,
@@ -3160,6 +3131,65 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 				},
 			},
 		}
+	else
+		config.args.positionsGroup = {
+			order = 100,
+			name = L["Size and Positions"],
+			type = 'group',
+			inline = true,
+			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+			args = {
+				width = {
+					order = 1,
+					name = L["Width"],
+					type = 'range',
+					min = 50, max = 1000, step = 1,
+					set = function(info, value)
+						if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then
+							E.db.unitframe.units[groupName].castbar.width = value;
+						end
+
+						E.db.unitframe.units[groupName][info[#info]] = value;
+						updateFunc(UF, groupName, numUnits)
+					end,
+				},
+				height = {
+					order = 2,
+					name = L["Height"],
+					type = 'range',
+					min = 5, max = 500, step = 1,
+				},
+			},
+		}
+
+		if groupName == 'boss' or groupName == 'arena' then
+			config.args.positionsGroup.args.spacing = {
+				order = 3,
+				type = 'range',
+				name = L["Spacing"],
+				min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 400, step = 1,
+			}
+			config.args.positionsGroup.args.growthDirection = {
+				order = 4,
+				type = 'select',
+				name = L["Growth Direction"],
+				values = {
+					UP = L["Bottom to Top"],
+					DOWN = L["Top to Bottom"],
+					LEFT = L["Right to Left"],
+					RIGHT = L["Left to Right"],
+				},
+			}
+		end
+
+		if groupName == 'tank' or groupName == 'assist' then
+			config.args.positionsGroup.args.verticalSpacing = {
+				order = 3,
+				type = 'range',
+				name = L["Vertical Spacing"],
+				min = 0, max = 100, step = 1,
+			}
+		end
 	end
 
 	if groupName == 'party' then
