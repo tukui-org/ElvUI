@@ -425,8 +425,12 @@ E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvPrivates', E.Options.args.profiles.args.private)
 
-E.Options.args.profiles.args.private.args.choose.confirm = function(_, value)
-	return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
+E.Options.args.profiles.args.private.args.choose.confirm = function(info, value)
+	if info[#info-1] == 'private' then
+		return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
+	else
+		return false
+	end
 end
 
 E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)
