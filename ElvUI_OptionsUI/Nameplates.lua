@@ -2123,7 +2123,7 @@ local function UpdateFilterGroup()
 							type = 'toggle'
 						},
 						reputation = {
-							name = L["REPUTATION"],
+							name = L["Reputation"],
 							desc = L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."],
 							order = 1,
 							type = 'toggle',
