@@ -27,11 +27,9 @@ function E:UpdateBlizzardFonts()
 	if E.private.general.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
 	if E.private.general.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
 	if E.private.general.replaceBlizzFonts then
-		--_G.NAMEPLATE_FONT		= NAMEFONT
 		_G.STANDARD_TEXT_FONT	= NORMAL
+		--_G.NAMEPLATE_FONT		= NAMEFONT
 
-		--SetFont(_G.NumberFontNormal,					LSM:Fetch('font', 'Homespun'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)
-		--SetFont(_G.GameFontNormalSmall,				NORMAL, 12, nil, nil, nil, nil, nil, nil, nil, unpack(E.media.rgbvaluecolor))
 		SetFont(_G.AchievementFont_Small,				NORMAL, E.db.general.fontSize)				-- Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)									-- Talent Title
 		SetFont(_G.ChatBubbleFont,						BUBBLE, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
@@ -135,6 +133,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Number18FontWhite,					NUMBER, 18)
 		SetFont(_G.FriendsFont_11,						NORMAL, 11)
 		SetFont(_G.SpellFont_Small,						NORMAL, 10)
-		SetFont(_G.SubSpellFont,						NORMAL, 10) -- Spellbook Sub Names
+		SetFont(_G.SubSpellFont,						NORMAL, 10)									-- Spellbook Sub Names
 	end
 end
