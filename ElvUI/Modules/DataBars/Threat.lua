@@ -100,16 +100,22 @@ function DB:ThreatBar_Update()
 end
 
 function DB:ThreatBar_Toggle()
-	DB.StatusBars.Threat.db = DB.db.threat
+	local bar = DB.StatusBars.Threat
+	bar.db = DB.db.threat
 
-	if DB.db.threat.enable then
+	if bar.db.enable then
+		E:EnableMover(bar.mover:GetName())
+
 		DB:RegisterEvent('PLAYER_TARGET_CHANGED', 'ThreatBar_Update')
 		DB:RegisterEvent('UNIT_THREAT_LIST_UPDATE', 'ThreatBar_Update')
 		DB:RegisterEvent('GROUP_ROSTER_UPDATE', 'ThreatBar_Update')
 		DB:RegisterEvent('UNIT_PET', 'ThreatBar_Update')
+
 		DB:ThreatBar_Update()
 	else
-		DB.StatusBars.Threat:Hide()
+		bar:Hide()
+		E:DisableMover(bar.mover:GetName())
+
 		DB:UnregisterEvent('PLAYER_TARGET_CHANGED')
 		DB:UnregisterEvent('UNIT_THREAT_LIST_UPDATE')
 		DB:UnregisterEvent('GROUP_ROSTER_UPDATE')
