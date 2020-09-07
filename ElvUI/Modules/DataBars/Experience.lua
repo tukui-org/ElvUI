@@ -34,36 +34,40 @@ function DB:ExperienceBar_Update()
 
 	local text, textFormat = '', DB.db.experience.textFormat
 
-	if textFormat == 'PERCENT' then
-		text = format('%d%%', cur / max * 100)
-	elseif textFormat == 'CURMAX' then
-		text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max))
-	elseif textFormat == 'CURPERC' then
-		text = format('%s - %d%%', E:ShortValue(cur), cur / max * 100)
-	elseif textFormat == 'CUR' then
-		text = format('%s', E:ShortValue(cur))
-	elseif textFormat == 'REM' then
-		text = format('%s', E:ShortValue(max - cur))
-	elseif textFormat == 'CURREM' then
-		text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max - cur))
-	elseif textFormat == 'CURPERCREM' then
-		text = format('%s - %d%% (%s)', E:ShortValue(cur), cur / max * 100, E:ShortValue(max - cur))
-	end
-
-	if rested and rested > 0 then
-		bar.Rested:SetMinMaxValues(0, max)
-		bar.Rested:SetValue(min(cur + rested, max))
-
-		if textFormat == 'PERCENT' then
-			text = text..format(' R:%d%%', rested / max * 100)
-		elseif textFormat == 'CURPERC' then
-			text = text..format(' R:%s [%d%%]', E:ShortValue(rested), rested / max * 100)
-		elseif textFormat ~= 'NONE' then
-			text = text..format(' R:%s', E:ShortValue(rested))
-		end
+	if not DB:ExperienceBar_ShouldBeVisable() then
+		text = L['Max Level']
 	else
-		bar.Rested:SetMinMaxValues(0, 1)
-		bar.Rested:SetValue(0)
+		if textFormat == 'PERCENT' then
+			text = format('%d%%', cur / max * 100)
+		elseif textFormat == 'CURMAX' then
+			text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max))
+		elseif textFormat == 'CURPERC' then
+			text = format('%s - %d%%', E:ShortValue(cur), cur / max * 100)
+		elseif textFormat == 'CUR' then
+			text = format('%s', E:ShortValue(cur))
+		elseif textFormat == 'REM' then
+			text = format('%s', E:ShortValue(max - cur))
+		elseif textFormat == 'CURREM' then
+			text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max - cur))
+		elseif textFormat == 'CURPERCREM' then
+			text = format('%s - %d%% (%s)', E:ShortValue(cur), cur / max * 100, E:ShortValue(max - cur))
+		end
+
+		if rested and rested > 0 then
+			bar.Rested:SetMinMaxValues(0, max)
+			bar.Rested:SetValue(min(cur + rested, max))
+
+			if textFormat == 'PERCENT' then
+				text = text..format(' R:%d%%', rested / max * 100)
+			elseif textFormat == 'CURPERC' then
+				text = text..format(' R:%s [%d%%]', E:ShortValue(rested), rested / max * 100)
+			elseif textFormat ~= 'NONE' then
+				text = text..format(' R:%s', E:ShortValue(rested))
+			end
+		else
+			bar.Rested:SetMinMaxValues(0, 1)
+			bar.Rested:SetValue(0)
+		end
 	end
 
 	bar.text:SetText(text)

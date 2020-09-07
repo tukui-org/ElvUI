@@ -7,7 +7,7 @@ local SharedOptions = {
 	enable = ACH:Toggle(L["Enable"], nil, 1),
 	mouseover = ACH:Toggle(L["Mouseover"], nil, 2),
 	reverseFill = ACH:Toggle(L["Reverse Fill Direction"], nil, 3),
-	orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the bar moves on gains/losses"], 4, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] }),
+	orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the bar moves on gains/losses"], 4, { AUTOMATIC = L["Automatic"], HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] }),
 	width = ACH:Range(L["Width"], nil, 5, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 }),
 	height = ACH:Range(L["Height"], nil, 6, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 }),
 	textFormat = ACH:Select(L["Text Format"], nil, 7, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
@@ -33,8 +33,16 @@ E.Options.args.databars.args.colorGroup = ACH:Group(L["COLORS"], nil, 4, nil, fu
 E.Options.args.databars.args.colorGroup.inline = true
 E.Options.args.databars.args.colorGroup.args.experience = ACH:Color(L["Experience"], nil, 1, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
 E.Options.args.databars.args.colorGroup.args.rested = ACH:Color(L["Rested Experience"], nil, 2, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
-E.Options.args.databars.args.colorGroup.args.honor = ACH:Color(L["Honor"], nil, 2, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:HonorBar_Update() end)
-E.Options.args.databars.args.colorGroup.args.azerite = ACH:Color(L["Azerite"], nil, 2, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:AzeriteBar_Update() end)
+E.Options.args.databars.args.colorGroup.args.honor = ACH:Color(L["Honor"], nil, 3, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:HonorBar_Update() end)
+E.Options.args.databars.args.colorGroup.args.azerite = ACH:Color(L["Azerite"], nil, 4, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:AzeriteBar_Update() end)
+E.Options.args.databars.args.colorGroup.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], L['Reputation'], 5, nil, nil, nil, function() return E.db.databars.colors.useCustomFactionColors end, function(_, value) E.db.databars.colors.useCustomFactionColors = value end)
+
+E.Options.args.databars.args.colorGroup.args.factionColors = ACH:Group(L["Custom Faction Colors"], nil, nil, nil, function(info) local v = tonumber(info[#info]) local t = E.db.databars.colors.factionColors[v] local d = P.databars.colors.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local v = tonumber(info[#info]); local t = E.db.databars.colors.factionColors[v]; t.r, t.g, t.b = r, g, b end, nil, function() return not E.db.databars.colors.useCustomFactionColors end)
+E.Options.args.databars.args.colorGroup.args.factionColors.inline = true
+
+for i = 1, 8 do
+	E.Options.args.databars.args.colorGroup.args.factionColors.args[""..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true)
+end
 
 E.Options.args.databars.args.experience = ACH:Group(L["Experience"], nil, nil, nil, function(info) return DB.db.experience[info[#info]] end, function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Update() DB:UpdateAll() end)
 E.Options.args.databars.args.experience.args = CopyTable(SharedOptions)
@@ -44,7 +52,7 @@ E.Options.args.databars.args.experience.args.hideAtMaxLevel = ACH:Toggle(L["Hide
 E.Options.args.databars.args.experience.args.hideInVehicle = ACH:Toggle(L["Hide In Vehicle"], nil, 9)
 E.Options.args.databars.args.experience.args.hideInCombat = ACH:Toggle(L["Hide In Combat"], nil, 10)
 
-E.Options.args.databars.args.reputation = ACH:Group(L["REPUTATION"], nil, nil, nil, function(info) return DB.db.reputation[info[#info]] end, function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() DB:UpdateAll() end)
+E.Options.args.databars.args.reputation = ACH:Group(L["Reputation"], nil, nil, nil, function(info) return DB.db.reputation[info[#info]] end, function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() DB:UpdateAll() end)
 E.Options.args.databars.args.reputation.args = CopyTable(SharedOptions)
 E.Options.args.databars.args.reputation.args.enable.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.reputation.args.textFormat.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
