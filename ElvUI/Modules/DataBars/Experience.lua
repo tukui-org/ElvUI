@@ -97,7 +97,7 @@ function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
 	bar.db = DB.db.experience
 
-	if bar.db.enable and (not bar.db.hideAtMaxLevel and DB:ExperienceBar_ShouldBeVisable()) then
+	if bar.db.enable and not (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisable()) then
 		bar:Show()
 		E:EnableMover(bar.mover:GetName())
 
