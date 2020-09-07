@@ -114,14 +114,18 @@ function DB:AzeriteBar_Toggle()
 	bar:SetShown(bar.db.enable)
 
 	if bar.db.enable then
+		E:EnableMover(bar.mover:GetName())
+
 		DB:RegisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED', 'AzeriteBar_Update')
 		DB:RegisterEvent('UNIT_INVENTORY_CHANGED', 'AzeriteBar_Update')
+
 		DB:AzeriteBar_Update()
-		E:EnableMover(bar.mover:GetName())
 	else
+		bar:Hide()
+		E:DisableMover(bar.mover:GetName())
+
 		DB:UnregisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED')
 		DB:UnregisterEvent('UNIT_INVENTORY_CHANGED')
-		E:DisableMover(bar.mover:GetName())
 	end
 end
 

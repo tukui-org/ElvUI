@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
 
+local _G = _G
 local format = format
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
@@ -76,15 +77,20 @@ function DB:HonorBar_Toggle()
 	bar.db = DB.db.honor
 
 	bar:SetShown(bar.db.enable)
+
 	if bar.db.enable then
+		E:EnableMover(bar.mover:GetName())
+
 		DB:RegisterEvent('HONOR_XP_UPDATE', 'HonorBar_Update')
 		DB:RegisterEvent('PLAYER_FLAGS_CHANGED', 'HonorBar_Update')
+
 		DB:HonorBar_Update()
-		E:EnableMover(bar.mover:GetName())
 	else
+		bar:Hide()
+		E:DisableMover(bar.mover:GetName())
+
 		DB:UnregisterEvent('HONOR_XP_UPDATE')
 		DB:UnregisterEvent('PLAYER_FLAGS_CHANGED')
-		E:DisableMover(bar.mover:GetName())
 	end
 end
 
