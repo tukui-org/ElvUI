@@ -3194,15 +3194,6 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		}
 	end
 
-	if groupName == 'tank' or groupName == 'assist' then
-		config.args.verticalSpacing = {
-			order = 5,
-			type = 'range',
-			name = L["Vertical Spacing"],
-			min = 0, max = 100, step = 1,
-		}
-	end
-
 	return config
 end
 
