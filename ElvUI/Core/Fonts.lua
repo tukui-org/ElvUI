@@ -5,7 +5,6 @@ local _G = _G
 local strmatch = strmatch
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
-	if not obj then return end -- Reports of commenting out the SetFont at the time this was added caused error pls check simpy
 	obj:SetFont(font, size, style)
 	if sr and sg and sb then obj:SetShadowColor(sr, sg, sb, sa) end
 	if sox and soy then obj:SetShadowOffset(sox, soy) end
@@ -109,7 +108,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, 32, MONOCHROME..'OUTLINE')			-- World Map
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, MONOCHROME..'OUTLINE')			-- Raid Warning, Boss emote frame too
 		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22)									-- FlightMap
-		-- SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)								-- Was Erroring out, had to comment out, dbl check simpy
+		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)
 		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
 		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')
 		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, E.db.general.fontSize)
