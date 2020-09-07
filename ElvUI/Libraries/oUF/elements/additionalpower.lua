@@ -261,7 +261,7 @@ local function ElementDisable(self)
 		element:PostUpdateVisibility(false, element.isEnabled)
 	end
 
-	element.isEnabled = nil
+	element.isEnabled = false
 	-- end block
 
 	Path(self, 'ElementDisable', 'player', ADDITIONAL_POWER_BAR_NAME)
