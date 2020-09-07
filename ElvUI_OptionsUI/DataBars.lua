@@ -63,7 +63,7 @@ E.Options.args.databars.args.honor.args.hideBelowMaxLevel = ACH:Toggle(L["Hide B
 E.Options.args.databars.args.threat = ACH:Group(L["Threat"], nil, nil, nil, function(info) return DB.db.threat[info[#info]] end, function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Update() DB:UpdateAll() end)
 E.Options.args.databars.args.threat.args = CopyTable(SharedOptions)
 E.Options.args.databars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Toggle() DB:UpdateAll() end
-E.Options.args.databars.args.threat.args.textFormat.set = function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Update() end
+E.Options.args.databars.args.threat.args.textFormat = nil
 
 E.Options.args.databars.args.azerite = ACH:Group(L["Azerite"], nil, nil, nil, function(info) return DB.db.azerite[info[#info]] end, function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() DB:UpdateAll() end)
 E.Options.args.databars.args.azerite.args = CopyTable(SharedOptions)
