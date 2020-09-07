@@ -2,9 +2,11 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DB = E:GetModule('DataBars')
 
 local _G = _G
+local pairs, select = pairs, select
 local CreateFrame = CreateFrame
-
+local GetInstanceInfo = GetInstanceInfo
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 
 function DB:OnLeave()
 	if self.db.mouseover then
@@ -42,6 +44,7 @@ function DB:UpdateAll()
 		bar:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
 		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.text:FontTemplate(E.Libs.LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
+
 		if bar.db.enable then
 			bar:SetAlpha(bar.db.mouseover and 0 or 1)
 		end
@@ -82,7 +85,8 @@ end
 
 function DB:PvPCheck()
 	local PvPInstance = select(2, GetInstanceInfo()) == 'pvp'
-	local WarMode = C_PvP.IsWarModeActive()
+	local WarMode = C_PvP_IsWarModeActive()
+
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable and bar.db.hideOutsidePvP then
 			bar:SetShown(not (PvPInstance or WarMode))
