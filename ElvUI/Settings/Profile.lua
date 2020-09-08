@@ -137,6 +137,7 @@ P.databars = {
 	colors = {
 		experience = { r = 0, g = .4, b = 1, a = .8 },
 		rested = { r = 1, g = 0, b = 1, a = .2},
+		quest = { r = 0, g = 1, b = 0, a = .5},
 		honor = { r = .94, g = .45, b = .25, a = 1 },
 		azerite = { r = .901, g = .8, b = .601, a = 1 },
 		useCustomFactionColors = false,
@@ -171,6 +172,8 @@ end
 P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.width = 348
 P.databars.experience.fontSize = 12
+P.databars.experience.questCompletedOnly = false
+P.databars.experience.questCurrentZoneOnly = false
 
 P.databars.reputation.enable = false
 P.databars.reputation.hideBelowMaxLevel = false

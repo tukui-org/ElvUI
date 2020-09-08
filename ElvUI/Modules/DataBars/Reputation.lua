@@ -50,7 +50,7 @@ function DB:ReputationBar_Update()
 
 	bar:SetMinMaxValues(Min, Max)
 	bar:SetValue(value)
-	local color = _G.FACTION_BAR_COLORS[reaction]
+	local color = DB.db.colors.useCustomFactionColors and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
 	bar:SetStatusBarColor(color.r, color.g, color.b)
 
 	standingLabel = _G['FACTION_STANDING_LABEL'..reaction]

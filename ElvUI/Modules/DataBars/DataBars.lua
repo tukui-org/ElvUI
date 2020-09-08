@@ -39,7 +39,7 @@ function DB:UpdateAll()
 		bar:SetWidth(bar.db.width)
 		bar:SetHeight(bar.db.height)
 		bar:SetReverseFill(bar.db.reverseFill)
-		bar:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+		bar:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex, 'OVERLAY', 7)
 		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.text:FontTemplate(E.Libs.LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
 
@@ -61,10 +61,14 @@ function DB:UpdateAll()
 			bar:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
 		end
 
-		if bar.Rested then
-			bar.Rested:SetOrientation(bar:GetOrientation())
-			bar.Rested:SetRotatesTexture(bar:GetRotatesTexture())
-			bar.Rested:SetReverseFill(bar:GetReverseFill())
+		for i = 1, bar:GetNumChildren() do
+			local child = select(i, bar:GetChildren())
+			if child:IsObjectType('StatusBar') then
+				child:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex, 'OVERLAY', -i)
+				child:SetOrientation(bar:GetOrientation())
+				child:SetRotatesTexture(bar:GetRotatesTexture())
+				child:SetReverseFill(bar:GetReverseFill())
+			end
 		end
 	end
 
