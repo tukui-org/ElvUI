@@ -8,6 +8,7 @@ local format = format
 local InCombatLockdown = InCombatLockdown
 local HasArtifactEquipped = HasArtifactEquipped
 local SocketInventoryItem = SocketInventoryItem
+local UnitLevel = UnitLevel
 local UIParentLoadAddOn = UIParentLoadAddOn
 local ToggleFrame = ToggleFrame
 local Item = Item
@@ -30,7 +31,7 @@ function DB:AzeriteBar_Update(event, unit)
 
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 
-	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) then
+	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or UnitLevel('player') > 50 then
 		bar:Hide()
 	else
 		bar:Show()
