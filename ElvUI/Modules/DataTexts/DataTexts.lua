@@ -596,7 +596,7 @@ function DT:UpdatePanelAttributes(name, db, fromLoad)
 
 	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
 
-	if not DT.db.panels[name] then
+	if not DT.db.panels[name] or type(DT.db.panels[name]) ~= 'table' then
 		DT.db.panels[name] = { enable = false }
 	end
 
