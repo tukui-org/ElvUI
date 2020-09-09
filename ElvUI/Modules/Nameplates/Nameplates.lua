@@ -292,7 +292,7 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
-	--nameplate.WidgetContainer = NP:Construct_WidgetContainer(nameplate)
+	nameplate.WidgetContainer = NP:Construct_WidgetContainer(nameplate)
 
 	NP:Construct_Auras(nameplate)
 
@@ -645,6 +645,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
+		nameplate.WidgetContainer:RegisterForWidgetSet(nameplate.widgetSet, NP.Widget_DefaultLayout, nil, unit)
+
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		if nameplate.frameType == 'PLAYER' and (nameplate ~= _G.ElvNP_Test) then
@@ -664,6 +666,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.Health.cur = nil -- cutaway
 		nameplate.Power.cur = nil -- cutaway
 		nameplate.npcID = nil -- just cause
+
+		nameplate.WidgetContainer:UnregisterForWidgetSet()
 
 		NP:StyleFilterClearVariables(nameplate) -- keep this at the end
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
