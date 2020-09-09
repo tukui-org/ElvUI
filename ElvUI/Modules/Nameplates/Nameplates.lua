@@ -583,7 +583,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.widgetsOnly = UnitNameplateShowsWidgetsOnly(unit)
-		nameplate.widgetSet = UnitWidgetSet(unit) -- keep this for now
+		nameplate.widgetSet = UnitWidgetSet(unit)
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
 		nameplate.isMe = UnitIsUnit(unit, 'player')
