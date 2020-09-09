@@ -47,7 +47,7 @@ G.datatexts = {
 		CallToArms = { Label = '', NoLabel = false },
 		Crit = { Label = '', NoLabel = false, decimalLength = 1 },
 		Currencies = { goldFormat = 'BLIZZARD', goldCoins = true, displayedCurrency = 'BACKPACK', displayStyle = 'ICON', tooltipData = {} },
-		Durability = { Label = '', NoLabel = false, percThreshold = 30 },
+		Durability = { percThreshold = 30 },
 		Experience = { textFormat = 'CUR' },
 		Friends = {
 			Label = '', NoLabel = false,
