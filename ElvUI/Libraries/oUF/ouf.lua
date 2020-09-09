@@ -835,6 +835,12 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 				Private.UpdateUnits(nameplate.unitFrame, unit)
 			end
 
+			if widgets then
+				nameplate.unitFrame:SetAlpha(0)
+			else
+				nameplate.unitFrame:SetAlpha(1)
+			end
+
 			nameplate.unitFrame:SetAttribute('unit', unit)
 
 			if(nameplateCallback) then
