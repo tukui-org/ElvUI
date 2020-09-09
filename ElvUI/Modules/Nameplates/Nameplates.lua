@@ -583,7 +583,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.widgetsOnly = UnitNameplateShowsWidgetsOnly(unit)
-		nameplate.widgetSet = UnitWidgetSet(unit)
+		nameplate.widgetSet = UnitWidgetSet(unit) -- keep this for now
 		nameplate.classification = UnitClassification(unit)
 		nameplate.creatureType = UnitCreatureType(unit)
 		nameplate.isMe = UnitIsUnit(unit, 'player')
@@ -645,8 +645,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
-		--nameplate.WidgetContainer:RegisterForWidgetSet(nameplate.widgetSet, NP.Widget_DefaultLayout, nil, unit)
-
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		if nameplate.frameType == 'PLAYER' and (nameplate ~= _G.ElvNP_Test) then
@@ -666,8 +664,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.Health.cur = nil -- cutaway
 		nameplate.Power.cur = nil -- cutaway
 		nameplate.npcID = nil -- just cause
-
-		--nameplate.WidgetContainer:UnregisterForWidgetSet()
 
 		NP:StyleFilterClearVariables(nameplate) -- keep this at the end
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
