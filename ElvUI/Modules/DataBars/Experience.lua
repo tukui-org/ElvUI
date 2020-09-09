@@ -85,6 +85,7 @@ function DB:ExperienceBar_Update()
 end
 
 function DB:ExperienceBar_QuestXP()
+	if not DB:ExperienceBar_ShouldBeVisable() then return end
 	local bar = DB.StatusBars.Experience
 
 	QuestLogXP = 0
@@ -128,6 +129,8 @@ function DB:ExperienceBar_OnEnter()
 	if self.db.mouseover then
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
+
+	if not DB:ExperienceBar_ShouldBeVisable() then return end
 
 	_G.GameTooltip:ClearLines()
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
