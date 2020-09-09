@@ -600,7 +600,7 @@ function DT:UpdatePanelAttributes(name, db, fromLoad)
 		DT.db.panels[name] = { enable = false }
 	end
 
-	for i = 1, E.global.datatexts.customPanels[name].numPoints do
+	for i = 1, (E.global.datatexts.customPanels[name].numPoints or 1) do
 		if not DT.db.panels[name][i] then
 			DT.db.panels[name][i] = ''
 		end
