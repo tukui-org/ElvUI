@@ -51,6 +51,9 @@ local function UpdateSpellAbilities(self, followerInfo)
 		local abilityFrame = self.autoSpellPool:Acquire()
 		if not abilityFrame.IsSkinned then
 			S:HandleIcon(abilityFrame.Icon, true)
+			if abilityFrame.SpellBorder then
+				abilityFrame.SpellBorder:Hide()
+			end
 			abilityFrame.IsSkinned = true
 		end
 	end
@@ -135,13 +138,6 @@ function S:Blizzard_GarrisonUI()
 		for _, reward in pairs(s.Rewards) do
 			firstRegion = reward.GetRegions and reward:GetRegions()
 			if firstRegion then firstRegion:Hide() end
-
-			reward:ClearAllPoints()
-			if IsAddOnLoaded('GarrisonMissionManager') then -- otherwise we mess with this AddOn
-				reward:Point('TOPRIGHT', -65 + (index * -65), -1)
-			else
-				reward:Point('TOPRIGHT', -1 + (index * -65), -1)
-			end
 
 			if reward.IconBorder then
 				reward.IconBorder:SetTexture()
