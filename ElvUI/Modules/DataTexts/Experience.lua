@@ -21,7 +21,7 @@ local function OnEvent(self)
 
 		local remainPercent = E:Round(RemainXP / XPToLevel)
 		-- values we also use in OnEnter
-		PercentXP = E:Round(CurrentXP / XPToLevel * 100)
+		PercentXP = E:Round(CurrentXP / XPToLevel) * 100
 		RemainXP = E:ShortValue(XPToLevel - CurrentXP)
 		RemainTotal, RemainBars = remainPercent * 100, remainPercent * 20
 
@@ -43,7 +43,7 @@ local function OnEvent(self)
 		end
 
 		if RestedXP and RestedXP > 0 then
-			PercentRested = E:Round(RestedXP / XPToLevel * 100)
+			PercentRested = E:Round(RestedXP / XPToLevel) * 100
 
 			if textFormat == 'PERCENT' then
 				displayString = displayString..format(' R:%d%%', PercentRested)
