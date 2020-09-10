@@ -20,13 +20,13 @@ local GetQuestLogRewardXP = GetQuestLogRewardXP
 
 local CurrentXP, XPToLevel, RestedXP, QuestLogXP = 0, 0, 0
 
-function DB:ExperienceBar_ShouldBeVisable()
+function DB:ExperienceBar_ShouldBeVisible()
 	return not IsPlayerAtEffectiveMaxLevel() and not IsXPUserDisabled()
 end
 
 function DB:ExperienceBar_Update()
 	local bar = DB.StatusBars.Experience
-	if not DB.db.experience.enable or (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisable()) then
+	if not DB.db.experience.enable or (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
 		bar:Hide()
 		return
 	else
@@ -45,7 +45,7 @@ function DB:ExperienceBar_Update()
 
 	local text, textFormat = '', DB.db.experience.textFormat
 
-	if not DB:ExperienceBar_ShouldBeVisable() then
+	if not DB:ExperienceBar_ShouldBeVisible() then
 		text = L['Max Level']
 	else
 		if textFormat == 'PERCENT' then
@@ -85,6 +85,7 @@ function DB:ExperienceBar_Update()
 end
 
 function DB:ExperienceBar_QuestXP()
+	if not DB:ExperienceBar_ShouldBeVisible() then return end
 	local bar = DB.StatusBars.Experience
 
 	QuestLogXP = 0
@@ -129,6 +130,8 @@ function DB:ExperienceBar_OnEnter()
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 
+	if not DB:ExperienceBar_ShouldBeVisible() then return end
+
 	_G.GameTooltip:ClearLines()
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
@@ -139,7 +142,7 @@ function DB:ExperienceBar_OnEnter()
 	_G.GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%.2f%% - %.2f '..L["Bars"]..')', XPToLevel - CurrentXP, (XPToLevel - CurrentXP) / XPToLevel * 100, 20 * (XPToLevel - CurrentXP) / XPToLevel), 1, 1, 1)
 	_G.GameTooltip:AddDoubleLine(L["Quest Log XP:"], QuestLogXP, 1, 1, 1)
 
-	if RestedXP then
+	if RestedXP and RestedXP > 0 then
 		_G.GameTooltip:AddDoubleLine(L["Rested:"], format('+%d (%.2f%%)', RestedXP, RestedXP / XPToLevel * 100), 1, 1, 1)
 	end
 
@@ -152,7 +155,7 @@ function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
 	bar.db = DB.db.experience
 
-	if bar.db.enable and not (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisable()) then
+	if bar.db.enable and not (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
 		bar:Show()
 		E:EnableMover(bar.mover:GetName())
 
