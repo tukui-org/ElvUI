@@ -8,8 +8,8 @@ local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local displayString = ''
 
-local CurrentXP, XPToLevel, RestedXP, RemainXP
-local PercentXP, PercentRested, RemainTotal, RemainBars
+local CurrentXP, XPToLevel, RestedXP, PercentRested
+local PercentXP, RemainXP, RemainTotal, RemainBars
 
 local function OnEvent(self)
 	if IsXPUserDisabled() then
@@ -23,9 +23,8 @@ local function OnEvent(self)
 		local remainPercent = E:Round(remainXP / XPToLevel)
 
 		-- values we also use in OnEnter
-		PercentXP = E:Round(CurrentXP / XPToLevel) * 100
-		RemainXP = E:ShortValue(remainXP)
 		RemainTotal, RemainBars = remainPercent * 100, remainPercent * 20
+		PercentXP, RemainXP = E:Round(CurrentXP / XPToLevel) * 100, E:ShortValue(remainXP)
 
 		local textFormat = E.global.datatexts.settings.Experience.textFormat
 		if textFormat == 'PERCENT' then
