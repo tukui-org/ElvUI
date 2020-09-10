@@ -19,10 +19,12 @@ local function OnEvent(self)
 	else
 		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
 
+		local remainXP = XPToLevel - CurrentXP
+		local remainPercent = E:Round(remainXP / XPToLevel)
+
 		-- values we also use in OnEnter
 		PercentXP = E:Round(CurrentXP / XPToLevel) * 100
-		RemainXP = E:ShortValue(XPToLevel - CurrentXP)
-		local remainPercent = E:Round(RemainXP / XPToLevel)
+		RemainXP = E:ShortValue(remainXP)
 		RemainTotal, RemainBars = remainPercent * 100, remainPercent * 20
 
 		local textFormat = E.global.datatexts.settings.Experience.textFormat
