@@ -55,11 +55,11 @@ local function OnEnter()
 	DT.tooltip:AddLine(L["Experience"])
 	DT.tooltip:AddLine(' ')
 
-	DT.tooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, CurrentXP/XPToLevel * 100), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(L["Remaining:"], format(' %d (%.2f%% - %.2f '..L["Bars"]..')', XPToLevel - CurrentXP, (XPToLevel - CurrentXP) / XPToLevel * 100, 20 * (XPToLevel - CurrentXP) / XPToLevel), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, E:Round(CurrentXP/XPToLevel * 100)), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Remaining:"], format(' %d (%.2f%% - %.2f '..L["Bars"]..')', XPToLevel - CurrentXP, E:Round((XPToLevel - CurrentXP) / XPToLevel * 100), 20 * (XPToLevel - CurrentXP) / XPToLevel), 1, 1, 1)
 
 	if RestedXP then
-		DT.tooltip:AddDoubleLine(L["Rested:"], format('+%d (%.2f%%)', RestedXP, RestedXP / XPToLevel * 100), 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L["Rested:"], format('+%d (%.2f%%)', RestedXP, E:Round(RestedXP / XPToLevel * 100)), 1, 1, 1)
 	end
 
 	DT.tooltip:Show()
