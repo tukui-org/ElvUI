@@ -7,7 +7,9 @@ local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local displayString = ''
-local CurrentXP, XPToLevel, RestedXP
+
+local CurrentXP, XPToLevel, RestedXP, RemainXP
+local PercentXP, PercentRested, RemainTotal, RemainBars
 
 local function OnEvent(self)
 	if IsXPUserDisabled() then
@@ -16,29 +18,37 @@ local function OnEvent(self)
 		displayString = L['Max Level']
 	else
 		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
-		local textFormat = E.global.datatexts.settings.Experience.textFormat
 
+		local remainPercent = E:Round(RemainXP / XPToLevel)
+		-- values we also use in OnEnter
+		PercentXP = E:Round(CurrentXP / XPToLevel * 100)
+		RemainXP = E:ShortValue(XPToLevel - CurrentXP)
+		RemainTotal, RemainBars = remainPercent * 100, remainPercent * 20
+
+		local textFormat = E.global.datatexts.settings.Experience.textFormat
 		if textFormat == 'PERCENT' then
-			displayString = format('%d%%', CurrentXP / XPToLevel * 100)
+			displayString = format('%d%%', PercentXP)
 		elseif textFormat == 'CURMAX' then
 			displayString = format('%s - %s', E:ShortValue(CurrentXP), E:ShortValue(XPToLevel))
 		elseif textFormat == 'CURPERC' then
-			displayString = format('%s - %d%%', E:ShortValue(CurrentXP), CurrentXP / XPToLevel * 100)
+			displayString = format('%s - %d%%', E:ShortValue(CurrentXP), PercentXP)
 		elseif textFormat == 'CUR' then
 			displayString = format('%s', E:ShortValue(CurrentXP))
 		elseif textFormat == 'REM' then
-			displayString = format('%s', E:ShortValue(XPToLevel - CurrentXP))
+			displayString = format('%s', RemainXP)
 		elseif textFormat == 'CURREM' then
-			displayString = format('%s - %s', E:ShortValue(CurrentXP), E:ShortValue(XPToLevel - CurrentXP))
+			displayString = format('%s - %s', E:ShortValue(CurrentXP), RemainXP)
 		elseif textFormat == 'CURPERCREM' then
-			displayString = format('%s - %d%% (%s)', E:ShortValue(CurrentXP), CurrentXP / XPToLevel * 100, E:ShortValue(XPToLevel - CurrentXP))
+			displayString = format('%s - %d%% (%s)', E:ShortValue(CurrentXP), PercentXP, RemainXP)
 		end
 
 		if RestedXP and RestedXP > 0 then
+			PercentRested = E:Round(RestedXP / XPToLevel * 100)
+
 			if textFormat == 'PERCENT' then
-				displayString = displayString..format(' R:%d%%', RestedXP / XPToLevel * 100)
+				displayString = displayString..format(' R:%d%%', PercentRested)
 			elseif textFormat == 'CURPERC' then
-				displayString = displayString..format(' R:%s [%d%%]', E:ShortValue(RestedXP), RestedXP / XPToLevel * 100)
+				displayString = displayString..format(' R:%s [%d%%]', E:ShortValue(RestedXP), PercentRested)
 			elseif textFormat ~= 'NONE' then
 				displayString = displayString..format(' R:%s', E:ShortValue(RestedXP))
 			end
@@ -49,17 +59,17 @@ local function OnEvent(self)
 end
 
 local function OnEnter()
-	if (IsXPUserDisabled() or IsPlayerAtEffectiveMaxLevel()) then return end
+	if IsXPUserDisabled() or IsPlayerAtEffectiveMaxLevel() then return end
 
 	DT.tooltip:ClearLines()
 	DT.tooltip:AddLine(L["Experience"])
 	DT.tooltip:AddLine(' ')
 
-	DT.tooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, E:Round(CurrentXP/XPToLevel * 100)), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(L["Remaining:"], format(' %d (%.2f%% - %.2f '..L["Bars"]..')', XPToLevel - CurrentXP, E:Round((XPToLevel - CurrentXP) / XPToLevel * 100), 20 * (XPToLevel - CurrentXP) / XPToLevel), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Remaining:"], format(' %d (%.2f%% - %.2f '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
 
 	if RestedXP then
-		DT.tooltip:AddDoubleLine(L["Rested:"], format('+%d (%.2f%%)', RestedXP, E:Round(RestedXP / XPToLevel * 100)), 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L["Rested:"], format('+%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)
 	end
 
 	DT.tooltip:Show()
