@@ -52,11 +52,12 @@ local typesLocalized = {
 		CHAT = {'falar', 'pedir'}
 	},
 	frFR = {
+		-- abattu: abattus, abattue
 		-- tué: tué, tués, tuée, tuées
 		-- détrui: détruite, détruire, détruit, détruits, détruites
 		-- élimin: éliminer, éliminé, éliminés, éliminée, éliminées
 		-- repouss: repousser, repoussés, repoussée, repoussées
-		KILL = {'tué', 'tue', 'attaqué', 'attaque', 'détrui', 'élimin', 'répouss', 'repouss', 'vaincu', 'vaincre'},
+		KILL = {'tué', 'tuer', 'attaqué', 'attaque', 'abattre', 'abattu', 'détrui', 'élimin', 'répouss', 'repouss', 'vaincu', 'vaincre'},
 		CHAT = {'parler', 'demander'}
 	},
 	koKR = {
