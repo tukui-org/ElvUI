@@ -37,11 +37,11 @@ local typesLocalized = {
 		CHAT = {'поговорит', 'спрашивать'}
 	},
 	esMX = {
-		-- derrota: derrotar, derrotado, derrotados, derrotada, derrotadas
-		-- repel: repele, repelido, repelidos, repelida, repelidas
-		-- elimin: eliminar, elimine, eliminadas, eliminada, eliminados, eliminado
 		-- asesinad: asesinado, asesinados, asesinada, asesinadas
+		-- derrota: derrotar, derrotado, derrotados, derrotada, derrotadas
 		-- destrui: destruir, destruido, destruidos, destruida, destruidas
+		-- elimin: eliminar, elimine, eliminadas, eliminada, eliminados, eliminado
+		-- repel: repele, repelido, repelidos, repelida, repelidas
 		KILL = {'asesinad', 'destrui', 'elimin', 'repel', 'derrota'},
 		CHAT = {'habla', 'pídele'}
 	},
@@ -52,14 +52,14 @@ local typesLocalized = {
 		CHAT = {'falar', 'pedir'}
 	},
 	frFR = {
-		-- abattu: abattus, abattue
 		-- tué: tués, tuée, tuées
+		-- abattu: abattus, abattue
 		-- détrui: détruite, détruire, détruit, détruits, détruites
-		-- élimin: éliminer, éliminé, éliminés, éliminée, éliminées
 		-- repouss: repousser, repoussés, repoussée, repoussées
-		KILL = {'tué', 'tuer', 'attaqué', 'attaque', 'abattre', 'abattu', 'détrui', 'élimin', 'répouss', 'repouss', 'vaincu', 'vaincre'},
-		-- parle: parler, parlez
+		-- élimin: éliminer, éliminé, éliminés, éliminée, éliminées
+		KILL = {'tué', 'tuer', 'attaqué', 'attaque', 'abattre', 'abattu', 'détrui', 'élimin', 'repouss', 'vaincu', 'vaincre'},
 		-- demande: demander, demandez
+		-- parle: parler, parlez
 		CHAT = {'parle', 'demande'}
 	},
 	koKR = {
