@@ -53,7 +53,7 @@ local typesLocalized = {
 	},
 	frFR = {
 		-- abattu: abattus, abattue
-		-- tué: tué, tués, tuée, tuées
+		-- tué: tués, tuée, tuées
 		-- détrui: détruite, détruire, détruit, détruits, détruites
 		-- élimin: éliminer, éliminé, éliminés, éliminée, éliminées
 		-- repouss: repousser, repoussés, repoussée, repoussées
@@ -67,7 +67,7 @@ local typesLocalized = {
 		CHAT = {'대화'}
 	},
 	zhCN = {
-		KILL = {'消灭', '摧毁', '获得', '击败', '毁灭', '击退'},
+		KILL = {'消灭', '摧毁', '击败', '毁灭', '击退'},
 		CHAT = {'交谈', '谈一谈'}
 	},
 	zhTW = {
