@@ -634,11 +634,21 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.widgetsOnly then
 			NP:DisablePlate(nameplate)
-		elseif nameplate == _G.ElvNP_Player then
-			NP:UpdatePlate(nameplate, true)
+
+			if nameplate.RaisedElement:IsShown() then
+				nameplate.RaisedElement:Hide()
+			end
 		else
-			NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
-			nameplate.previousType = nameplate.frameType
+			if not nameplate.RaisedElement:IsShown() then
+				nameplate.RaisedElement:Show()
+			end
+
+			if nameplate == _G.ElvNP_Player then
+				NP:UpdatePlate(nameplate, true)
+			else
+				NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
+				nameplate.previousType = nameplate.frameType
+			end
 		end
 
 		if NP.db.fadeIn and (event == 'NAME_PLATE_UNIT_ADDED' and nameplate.frameType ~= 'PLAYER') then
