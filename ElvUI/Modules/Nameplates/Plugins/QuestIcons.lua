@@ -27,40 +27,56 @@ NP.QuestIcons = questIcons
 
 local typesLocalized = {
 	enUS = {
+		--- short matching applies here so,
+		-- kill: killed, destory: destoryed, etc ...
 		KILL = {'slain', 'destroy', 'eliminate', 'repel', 'kill', 'defeat'},
-		CHAT = {'speak', 'ask', 'talk', 'build'}
+		CHAT = {'speak', 'talk'}
 	},
 	deDE = {
-		KILL = {'besiegen', 'besiegt', 'getötet', 'töten', 'tötet', 'zerstört', 'genährt'},
+		KILL = {'besiegen', 'besiegt', 'getötet', 'töten', 'tötet', 'vernichtet', 'zerstört', 'genährt'},
 		CHAT = {'befragt', 'sprecht'}
 	},
 	ruRU = {
 		KILL = {'убит', 'уничтож', 'разбомблен', 'разбит', 'сразит'},
-		CHAT = {'поговорит', 'спрашивать', 'строить'}
+		CHAT = {'поговорит', 'спрашивать'}
 	},
 	esMX = {
-		KILL = {'matar', 'destruir', 'eliminar', 'repeler', 'derrotar'},
-		CHAT = {'hablar', 'preguntar', 'construir'}
+		-- derrota: derrotar, derrotado, derrotados, derrotada, derrotadas
+		-- repel: repele, repelido, repelidos, repelida, repelidas
+		-- elimin: eliminar, elimine, eliminadas, eliminada, eliminados, eliminado
+		-- asesinad: asesinado, asesinados, asesinada, asesinadas
+		-- destrui: destruir, destruido, destruidos, destruida, destruidas
+		KILL = {'asesinad', 'destrui', 'elimin', 'repel', 'derrota'},
+		CHAT = {'habla', 'pídele'}
 	},
 	ptBR = {
-		KILL = {'matar', 'destruir', 'eliminar', 'repelir', 'derrotar'},
-		CHAT = {'falar', 'perguntar', 'construir'}
+		-- destrui: above but also destruição
+		-- repel: repelir, repelido, repelidos, repelida, repelidas
+		KILL = {'morto', 'morta', 'matar', 'destrui', 'elimin', 'repel', 'derrota'},
+		CHAT = {'falar', 'pedir'}
 	},
 	frFR = {
-		KILL = {'tuer', 'détruire', 'éliminer', 'repousser', 'tuer', 'vaincre'},
-		CHAT = {'parler', 'demander', 'construire'}
+		-- abattu: abattus, abattue
+		-- tué: tués, tuée, tuées
+		-- détrui: détruite, détruire, détruit, détruits, détruites
+		-- élimin: éliminer, éliminé, éliminés, éliminée, éliminées
+		-- repouss: repousser, repoussés, repoussée, repoussées
+		KILL = {'tué', 'tuer', 'attaqué', 'attaque', 'abattre', 'abattu', 'détrui', 'élimin', 'répouss', 'repouss', 'vaincu', 'vaincre'},
+		-- parle: parler, parlez
+		-- demande: demander, demandez
+		CHAT = {'parle', 'demande'}
 	},
 	koKR = {
-		KILL = {'살인', '멸하다', '제거', '죽이다', '격퇴하다', '죽임', '패배'},
-		CHAT = {'말하다', '질문하다', '구축하다'}
+		KILL = {'쓰러뜨리기', '물리치기', '공격', '파괴'},
+		CHAT = {'대화'}
 	},
 	zhCN = {
-		KILL = {'消灭', '摧毁', '获得', '击败', '被杀', '毁灭', '击退', '杀死'},
-		CHAT = {'交谈', '说话', '询问', '建立'}
+		KILL = {'消灭', '摧毁', '击败', '毁灭', '击退'},
+		CHAT = {'交谈', '谈一谈'}
 	},
 	zhTW = {
-		KILL = {'被殺', '毀滅', '消除', '擊退', '殺死', '打败'},
-		CHAT = {'說話', '詢問', '交談', '建立', '建设'}
+		KILL = {'毀滅', '擊退', '殺死'},
+		CHAT = {'交談', '說話'}
 	},
 }
 
