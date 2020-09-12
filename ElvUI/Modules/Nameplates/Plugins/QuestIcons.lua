@@ -58,7 +58,9 @@ local typesLocalized = {
 		-- élimin: éliminer, éliminé, éliminés, éliminée, éliminées
 		-- repouss: repousser, repoussés, repoussée, repoussées
 		KILL = {'tué', 'tuer', 'attaqué', 'attaque', 'abattre', 'abattu', 'détrui', 'élimin', 'répouss', 'repouss', 'vaincu', 'vaincre'},
-		CHAT = {'parler', 'demander'}
+		-- parle: parler, parlez
+		-- demande: demander, demandez
+		CHAT = {'parle', 'demande'}
 	},
 	koKR = {
 		KILL = {'쓰러뜨리기', '물리치기', '공격', '파괴'},
