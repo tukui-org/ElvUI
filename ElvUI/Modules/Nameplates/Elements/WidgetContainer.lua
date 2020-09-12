@@ -26,7 +26,7 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 		widgetFrame:ClearAllPoints()
 
 		if widgetFrame.Bar and not widgetFrame.Bar.backdrop then
-			widgetFrame.Bar:CreateBackdrop("Transparent")
+			widgetFrame.Bar:CreateBackdrop('Transparent')
 		end
 
 		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == UIWidgetSetLayoutDirection.Vertical
