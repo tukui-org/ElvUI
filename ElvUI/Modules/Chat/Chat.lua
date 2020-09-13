@@ -687,8 +687,6 @@ function CH:StyleChat(frame)
 	_G[name..'EditBoxMid']:Kill()
 	_G[name..'EditBoxRight']:Kill()
 
-	editbox:CreateBackdrop(nil, true)
-	editbox.backdrop:SetAllPoints()
 	editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 	editbox:SetAllPoints(_G.LeftChatDataPanel)
 	editbox:HookScript('OnTextChanged', CH.EditBoxOnTextChanged)
@@ -3179,6 +3177,11 @@ function CH:Initialize()
 		--Increase inset on right side to make room for character count text
 		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
+
+		if not editbox.backdrop then
+			editbox:CreateBackdrop(nil, true)
+			editbox.backdrop:SetAllPoints()
+		end
 
 		if chanName and (chatType == 'CHANNEL') then
 			if chanName == 0 then
