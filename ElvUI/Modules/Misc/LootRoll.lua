@@ -235,7 +235,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	if canGreed then f.greedbutt:SetAlpha(1) else f.greedbutt:SetAlpha(0.2) end
 	if canDisenchant then f.disenchantbutt:SetAlpha(1) else f.disenchantbutt:SetAlpha(0.2) end
 
-	f.fsbind:SetText(bop and 'BoP' or 'BoE')
+	f.fsbind:SetText(bop and L["BoP"] or L["BoE"])
 	f.fsbind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
 
 	local color = ITEM_QUALITY_COLORS[quality]

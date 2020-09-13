@@ -5,6 +5,9 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "koKR")
 local COLOR1 = '|cFF1784d1'
 local COLOR2 = '|cfd9b9b9b'
 
+L["BoP"] = true
+L["BoE"] = true
+L["BoU"] = true
 L[" |cff00ff00bound to |r"] = " 키로 다음의 행동을 실행합니다: |cff2eb7e4"
 L["(Hold Shift) Memory Usage"] = "Shift: 메모리 사용량"
 L["(Modifer Click) Collect Garbage"] = true

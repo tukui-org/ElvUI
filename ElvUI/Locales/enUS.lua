@@ -5,6 +5,9 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "enUS", true, true)
 local COLOR1 = '|cFF1784d1'
 local COLOR2 = '|cfd9b9b9b'
 
+L["BoP"] = true
+L["BoE"] = true
+L["BoU"] = true
 L[" |cff00ff00bound to |r"] = true
 L["(Hold Shift) Memory Usage"] = true
 L["(Modifer Click) Collect Garbage"] = true

@@ -5,6 +5,9 @@ local L = E.Libs.ACL:NewLocale("ElvUI", "zhCN")
 local COLOR1 = '|cFF1784d1'
 local COLOR2 = '|cfd9b9b9b'
 
+L["BoP"] = true
+L["BoE"] = true
+L["BoU"] = true
 L[" |cff00ff00bound to |r"] = " |cff00ff00绑定到 |r"
 L["(Hold Shift) Memory Usage"] = "(按住Shift) 内存占用"
 L["(Modifer Click) Collect Garbage"] = "(按住修饰键并点击) 垃圾回收"
