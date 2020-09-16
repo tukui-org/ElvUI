@@ -3,23 +3,35 @@ local DB = E:GetModule('DataBars')
 
 local _G = _G
 local min, format = min, format
-local UnitXP, UnitXPMax = UnitXP, UnitXPMax
-local GetXPExhaustion = GetXPExhaustion
-local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local CreateFrame = CreateFrame
+local GetXPExhaustion = GetXPExhaustion
 local IsXPUserDisabled = IsXPUserDisabled
-local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
+local GetQuestLogRewardXP = GetQuestLogRewardXP
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
-local C_QuestLog_GetQuestsOnMap = C_QuestLog.GetQuestsOnMap
 local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_SetSelectedQuest = C_QuestLog.SetSelectedQuest
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
+local C_QuestLog_GetQuestsOnMap = C_QuestLog.GetQuestsOnMap
+local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 
-local GetQuestLogRewardXP = GetQuestLogRewardXP
-
-local CurrentXP, XPToLevel, RestedXP, PercentRested, QuestLogXP
+local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
+local QuestLogXP = 0
+
+function DB:ExperienceBar_CheckQuests(questID, completedOnly)
+	if not questID then return end
+
+	C_QuestLog_SetSelectedQuest(questID)
+
+	if C_QuestLog_ShouldShowQuestRewards(questID) then
+		local isCompleted = C_QuestLog_ReadyForTurnIn(questID)
+		if completedOnly and isCompleted or (not completedOnly and not isCompleted) then
+			QuestLogXP = QuestLogXP + GetQuestLogRewardXP()
+		end
+	end
+end
 
 function DB:ExperienceBar_ShouldBeVisible()
 	return not IsPlayerAtEffectiveMaxLevel() and not IsXPUserDisabled()
@@ -51,10 +63,12 @@ function DB:ExperienceBar_Update()
 	if not DB:ExperienceBar_ShouldBeVisible() then
 		bar:SetMinMaxValues(0, 1)
 		bar:SetValue(1)
-		displayString = IsXPUserDisabled() and L['Disabled'] or L['Max Level']
+
+		displayString = IsXPUserDisabled() and L["Disabled"] or L["Max Level"]
 	else
 		bar:SetMinMaxValues(0, XPToLevel)
 		bar:SetValue(CurrentXP)
+
 		if textFormat == 'PERCENT' then
 			displayString = format('%d%%', PercentXP)
 		elseif textFormat == 'CURMAX' then
@@ -78,11 +92,11 @@ function DB:ExperienceBar_Update()
 			PercentRested = E:Round(RestedXP / XPToLevel) * 100
 
 			if textFormat == 'PERCENT' then
-				displayString = displayString..format(' R:%d%%', PercentRested)
+				displayString = format('%s R:%d%%', displayString, PercentRested)
 			elseif textFormat == 'CURPERC' then
-				displayString = displayString..format(' R:%s [%d%%]', E:ShortValue(RestedXP), PercentRested)
+				displayString = format('%s R:%s [%d%%]', displayString, E:ShortValue(RestedXP), PercentRested)
 			elseif textFormat ~= 'NONE' then
-				displayString = displayString..format(' R:%s', E:ShortValue(RestedXP))
+				displayString = format('%s R:%s', displayString, E:ShortValue(RestedXP))
 			end
 		else
 			bar.Rested:Hide()
@@ -98,28 +112,19 @@ function DB:ExperienceBar_QuestXP()
 
 	QuestLogXP = 0
 
+	local completedOnly = bar.db.questCompletedOnly
 	if bar.db.questCurrentZoneOnly then
-		local mapQuests = C_QuestLog_GetQuestsOnMap(C_Map_GetBestMapForUnit("player"))
-
-		for _, v in ipairs(mapQuests) do
-			if v.type == -1 then
-				C_QuestLog_SetSelectedQuest(v.questID)
-				local rewards = C_QuestLog_ShouldShowQuestRewards(v.questID)
-				local isCompleted = C_QuestLog_ReadyForTurnIn(v.questID)
-				if rewards and (bar.db.questCompletedOnly and isCompleted or (not bar.db.questCompletedOnly and not isCompleted) ) then
-					QuestLogXP = QuestLogXP + GetQuestLogRewardXP()
+		local mapID = E.MapInfo.mapID
+		if mapID then
+			for _, v in ipairs(C_QuestLog_GetQuestsOnMap(mapID)) do
+				if v.type == -1 then
+					DB:ExperienceBar_CheckQuests(v.questID, completedOnly)
 				end
 			end
 		end
 	else
 		for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-			local questID = C_QuestLog_GetQuestIDForLogIndex(i)
-			C_QuestLog_SetSelectedQuest(questID)
-			local rewards = C_QuestLog_ShouldShowQuestRewards(questID)
-			local isCompleted = C_QuestLog_ReadyForTurnIn(questID)
-			if rewards and (bar.db.questCompletedOnly and isCompleted or (not bar.db.questCompletedOnly and not isCompleted) ) then
-				QuestLogXP = QuestLogXP + GetQuestLogRewardXP()
-			end
+			DB:ExperienceBar_CheckQuests(C_QuestLog_GetQuestIDForLogIndex(i), completedOnly)
 		end
 	end
 

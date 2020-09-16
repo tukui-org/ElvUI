@@ -394,7 +394,7 @@ local function CreateDTOptions(name, data)
 		if key == 'decimalLength' then
 			optionTable.args.decimalLength = {
 				type = 'range',
-				name = L['Decimal Length'],
+				name = L["Decimal Length"],
 				min = 0, max = 5, step = 1,
 			}
 		elseif key == 'goldFormat' then
@@ -414,14 +414,14 @@ local function CreateDTOptions(name, data)
 			optionTable.args.Label = {
 				order = 0,
 				type = 'input',
-				name = L['Label'],
+				name = L["Label"],
 				get = function(info) return settings[info[#info]] and gsub(settings[info[#info]], '\124', '\124\124') end,
 				set = function(info, value) settings[info[#info]] = gsub(value, '\124\124+', '\124') end,
 			}
 		elseif key == 'NoLabel' then
 			optionTable.args.NoLabel = {
 				type = 'toggle',
-				name = L['No Label'],
+				name = L["No Label"],
 			}
 		elseif key == 'textFormat' then
 			optionTable.args.textFormat = {

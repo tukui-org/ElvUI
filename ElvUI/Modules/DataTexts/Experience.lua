@@ -13,9 +13,9 @@ local PercentXP, RemainXP, RemainTotal, RemainBars
 
 local function OnEvent(self)
 	if IsXPUserDisabled() then
-		displayString = 'Disabled'
+		displayString = L["Disabled"]
 	elseif IsPlayerAtEffectiveMaxLevel() then
-		displayString = L['Max Level']
+		displayString = L["Max Level"]
 	else
 		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
 		if XPToLevel <= 0 then XPToLevel = 1 end
@@ -48,11 +48,11 @@ local function OnEvent(self)
 			PercentRested = E:Round(RestedXP / XPToLevel) * 100
 
 			if textFormat == 'PERCENT' then
-				displayString = displayString..format(' R:%d%%', PercentRested)
+				displayString = format('%s R:%d%%', displayString, PercentRested)
 			elseif textFormat == 'CURPERC' then
-				displayString = displayString..format(' R:%s [%d%%]', E:ShortValue(RestedXP), PercentRested)
+				displayString = format('%s R:%s [%d%%]', displayString, E:ShortValue(RestedXP), PercentRested)
 			elseif textFormat ~= 'NONE' then
-				displayString = displayString..format(' R:%s', E:ShortValue(RestedXP))
+				displayString = format('%s R:%s', displayString, E:ShortValue(RestedXP))
 			end
 		end
 	end
