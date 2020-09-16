@@ -1176,7 +1176,7 @@ local UF_Health = {
 
 local UF_HealthPrediction = {
 	enable = false,
-	absorbStyle = 'NORMAL',
+	absorbStyle = 'OVERFLOW',
 	anchorPoint = 'BOTTOM',
 	height = -1
 }
