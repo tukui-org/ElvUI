@@ -18,6 +18,7 @@ local function OnEvent(self)
 		displayString = L['Max Level']
 	else
 		CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
+		if XPToLevel <= 0 then XPToLevel = 1 end
 
 		local remainXP = XPToLevel - CurrentXP
 		local remainPercent = E:Round(remainXP / XPToLevel)
@@ -69,7 +70,7 @@ local function OnEnter()
 	DT.tooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
 	DT.tooltip:AddDoubleLine(L["Remaining:"], format(' %d (%.2f%% - %.2f '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
 
-	if RestedXP then
+	if RestedXP and RestedXP > 0 then
 		DT.tooltip:AddDoubleLine(L["Rested:"], format('+%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)
 	end
 
