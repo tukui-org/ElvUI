@@ -441,6 +441,7 @@ function S:BlizzardQuestFrames()
 	QuestLogPopupDetailFrame.ShowMapButton.Text:Point('CENTER')
 	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
 
+	-- 9.0 Needs Update for ShadowLands
 	-- Skin the +/- buttons in the QuestLog
 	hooksecurefunc('QuestLogQuests_Update', function()
 		for i = 6, _G.QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
