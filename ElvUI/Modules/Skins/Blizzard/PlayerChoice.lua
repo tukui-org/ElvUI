@@ -52,8 +52,16 @@ function S:Blizzard_PlayerChoiceUI()
 
 		for i = 1, frame:GetNumOptions() do
 			local option = frame.Options[i]
-			option.Header.Text:SetTextColor(1, .8, 0)
-			option.OptionText:SetTextColor(1, 1, 1)
+			if E.private.skins.parchmentRemoverEnable then
+				option.Header.Text:SetTextColor(1, .8, 0)
+				option.OptionText:SetTextColor(1, 1, 1)
+
+				option.Background:StripTextures()
+				option.Header.Ribbon:StripTextures()
+
+				option.Background:CreateBackdrop('Transparent')
+				option.Header.Text:Point('TOPLEFT', 0, -5)
+			end
 
 			-- for some reason the buttons are different. W T F
 			if IsInJailersTower() then
@@ -68,7 +76,9 @@ function S:Blizzard_PlayerChoiceUI()
 				local child = select(i, option.WidgetContainer:GetChildren())
 				if child then
 					if child.Text then
-						child.Text:SetTextColor(1, 1, 1)
+						if E.private.skins.parchmentRemoverEnable then
+							child.Text:SetTextColor(1, 1, 1)
+						end
 					end
 
 					if child.Spell then
@@ -81,7 +91,9 @@ function S:Blizzard_PlayerChoiceUI()
 							child.Spell.isSkinned = true
 						end
 
-						child.Spell.Text:SetTextColor(1, 1, 1)
+						if E.private.skins.parchmentRemoverEnable then
+							child.Spell.Text:SetTextColor(1, 1, 1)
+						end
 					end
 
 					for j = 1, child:GetNumChildren() do
