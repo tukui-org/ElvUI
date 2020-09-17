@@ -22,7 +22,7 @@ local function HandleTabButton(button)
 	button:SetScript('OnLeave', OnLeave)
 end
 
-function S:HelpFrame()
+--[[function S:HelpFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.help) then return end
 
 	local frames = {
@@ -155,6 +155,6 @@ function S:HelpFrame()
 			child:CreateBackdrop()
 		end
 	end
-end
+end]]--
 
 S:AddCallback('HelpFrame')
