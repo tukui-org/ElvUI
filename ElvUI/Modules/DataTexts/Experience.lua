@@ -6,12 +6,12 @@ local format = format
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 local IsXPUserDisabled, GetXPExhaustion = IsXPUserDisabled, GetXPExhaustion
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
-local displayString = ''
 
 local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
 
 local function OnEvent(self)
+	local displayString = ''
 	if IsXPUserDisabled() then
 		displayString = L["Disabled"]
 	elseif IsPlayerAtEffectiveMaxLevel() then

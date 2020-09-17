@@ -85,10 +85,10 @@ function DB:ExperienceBar_Update()
 			displayString = format('%s - %d%% (%s)', E:ShortValue(CurrentXP), PercentXP, RemainXP)
 		end
 
-		if RestedXP and RestedXP > 0 then
+		local isRested = RestedXP and RestedXP > 0
+		if isRested then
 			bar.Rested:SetMinMaxValues(0, XPToLevel)
 			bar.Rested:SetValue(min(CurrentXP + RestedXP, XPToLevel))
-			bar.Rested:Show()
 
 			PercentRested = E:Round(RestedXP / XPToLevel) * 100
 
@@ -99,9 +99,9 @@ function DB:ExperienceBar_Update()
 			elseif textFormat ~= 'NONE' then
 				displayString = format('%s R:%s', displayString, E:ShortValue(RestedXP))
 			end
-		else
-			bar.Rested:Hide()
 		end
+
+		bar.Rested:SetShown(isRested)
 	end
 
 	bar.text:SetText(displayString)
