@@ -56,11 +56,8 @@ function S:Blizzard_PlayerChoiceUI()
 				option.Header.Text:SetTextColor(1, .8, 0)
 				option.OptionText:SetTextColor(1, 1, 1)
 
-				option.Background:StripTextures()
-				option.Header.Ribbon:StripTextures()
-
-				option.Background:CreateBackdrop('Transparent')
-				option.Header.Text:Point('TOPLEFT', 0, -5)
+				option.Background:SetAlpha(0)
+				option.Header.Ribbon:SetAlpha(0)
 			end
 
 			-- for some reason the buttons are different. W T F
