@@ -35,11 +35,13 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 end
 
 function DB:UpdateAll()
+	local customStatusBar = E.LSM:Fetch('statusbar', DB.db.statusbar)
+
 	for _, bar in pairs(DB.StatusBars) do
 		bar:SetWidth(bar.db.width)
 		bar:SetHeight(bar.db.height)
 		bar:SetReverseFill(bar.db.reverseFill)
-		bar:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex, 'OVERLAY', 7)
+		bar:SetStatusBarTexture(DB.db.customTexture and customStatusBar or E.media.normTex, 'ARTWORK', 7)
 		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.text:FontTemplate(E.Libs.LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
 
@@ -64,7 +66,7 @@ function DB:UpdateAll()
 		for i = 1, bar:GetNumChildren() do
 			local child = select(i, bar:GetChildren())
 			if child:IsObjectType('StatusBar') then
-				child:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex, 'OVERLAY', -i)
+				child:SetStatusBarTexture(DB.db.customTexture and customStatusBar or E.media.normTex, 'ARTWORK', -i)
 				child:SetOrientation(bar:GetOrientation())
 				child:SetRotatesTexture(bar:GetRotatesTexture())
 				child:SetReverseFill(bar:GetReverseFill())
