@@ -49,8 +49,9 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game15Font_o1,						NORMAL, 15)									-- CharacterStatsPane (ItemLevelFrame)
 		SetFont(_G.Game16Font,							NORMAL, 16)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game18Font,							NORMAL, 18)									-- MissionUI Bonus Chance
-		SetFont(_G.Game24Font, 							NORMAL, 24)									-- Garrison Mission level (in detail frame)
+		SetFont(_G.Game24Font,							NORMAL, 24)									-- Garrison Mission level (in detail frame)
 		SetFont(_G.Game30Font,							NORMAL, 30)									-- Mission Level
+		SetFont(_G.Game40Font,							NORMAL, 40)
 		SetFont(_G.Game42Font,							NORMAL, 42)									-- PVP Stuff
 		SetFont(_G.Game46Font,							NORMAL, 46)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game48Font,							NORMAL, 48)
@@ -96,7 +97,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SubZoneTextFont,						NORMAL, 24, MONOCHROME..'OUTLINE')			-- World Map(SubZone)
 		SetFont(_G.SubZoneTextString,					NORMAL, 25, MONOCHROME..'OUTLINE')
 		SetFont(_G.SystemFont_Huge1, 					NORMAL, 20)									-- Garrison Mission XP
-		SetFont(_G.SystemFont_Huge1_Outline, 			NORMAL, 18, MONOCHROME..'OUTLINE')			-- Garrison Mission Chance
+		SetFont(_G.SystemFont_Huge1_Outline,			NORMAL, 18, MONOCHROME..'OUTLINE')			-- Garrison Mission Chance
 		SetFont(_G.SystemFont_Large,					NORMAL, 15)
 		SetFont(_G.SystemFont_Med1,						NORMAL, E.db.general.fontSize)
 		SetFont(_G.SystemFont_Med3,						NORMAL, E.db.general.fontSize*1.1)
