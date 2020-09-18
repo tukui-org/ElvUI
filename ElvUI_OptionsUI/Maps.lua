@@ -99,9 +99,3 @@ E.Options.args.maps.args.minimap.args.icons.args.challengeMode.args.position = A
 E.Options.args.maps.args.minimap.args.icons.args.challengeMode.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
 E.Options.args.maps.args.minimap.args.icons.args.challengeMode.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
 E.Options.args.maps.args.minimap.args.icons.args.challengeMode.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
-
-E.Options.args.maps.args.minimap.args.icons.args.ticket = ACH:Group(L["Open Ticket"], nil, 8)
-E.Options.args.maps.args.minimap.args.icons.args.ticket.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
-E.Options.args.maps.args.minimap.args.icons.args.ticket.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
-E.Options.args.maps.args.minimap.args.icons.args.ticket.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
-E.Options.args.maps.args.minimap.args.icons.args.ticket.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)

@@ -220,7 +220,6 @@ function S:Blizzard_PVPUI()
 	RewardFrame.CircleMask:Hide()
 	RewardFrame.Ring:Hide()
 	RewardFrame.Icon:SetTexCoord(unpack(E.TexCoords))
-	select(3, RewardFrame:GetRegions()):SetTextColor(1, 0, 0)
 end
 
 function S:PVPReadyDialog()

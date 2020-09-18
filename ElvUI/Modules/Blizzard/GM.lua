@@ -20,7 +20,4 @@ function B:PositionGMFrames()
 
 	--Blizzard repositions this frame now in UIParent_UpdateTopFramePositions
 	hooksecurefunc(TicketStatusFrame, 'SetPoint', SetPosition)
-
-	--_G.HelpOpenTicketButton:SetParent(_G.Minimap)
-	--_G.HelpOpenWebTicketButton:SetParent(_G.Minimap)
 end

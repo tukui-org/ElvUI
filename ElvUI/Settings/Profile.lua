@@ -112,12 +112,6 @@ P.general = {
 				xOffset = 8,
 				yOffset = -8,
 			},
-			ticket = {
-				scale = 1,
-				position = 'TOPRIGHT',
-				xOffset = 0,
-				yOffset = 0,
-			},
 		}
 	},
 	totems = {
