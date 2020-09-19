@@ -67,6 +67,7 @@ function DB:UpdateAll()
 			local child = select(i, bar:GetChildren())
 			if child:IsObjectType('StatusBar') then
 				child:SetStatusBarTexture(DB.db.customTexture and customStatusBar or E.media.normTex, 'ARTWORK', -i)
+				child:SetFrameLevel(bar:GetFrameLevel())
 				child:SetOrientation(bar:GetOrientation())
 				child:SetRotatesTexture(bar:GetRotatesTexture())
 				child:SetReverseFill(bar:GetReverseFill())

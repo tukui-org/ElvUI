@@ -207,7 +207,7 @@ function DB:ExperienceBar()
 	DB.StatusBars.Experience.Rested:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
 	DB.StatusBars.Experience.Rested:SetAllPoints()
 
-	DB.StatusBars.Experience.Quest = CreateFrame('StatusBar', '$parent_Rested', DB.StatusBars.Experience)
+	DB.StatusBars.Experience.Quest = CreateFrame('StatusBar', '$parent_Quest', DB.StatusBars.Experience)
 	DB.StatusBars.Experience.Quest:Hide()
 	DB.StatusBars.Experience.Quest:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
 	DB.StatusBars.Experience.Quest:SetAllPoints()
