@@ -96,6 +96,7 @@ end
 
 function DB:HonorBar()
 	DB.StatusBars.Honor = DB:CreateBar('ElvUI_HonorBar', DB.HonorBar_OnEnter, DB.HonorBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255)
+	DB.StatusBars.Honor.Update = DB.HonorBar_Update
 
 	E:CreateMover(DB.StatusBars.Honor, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 

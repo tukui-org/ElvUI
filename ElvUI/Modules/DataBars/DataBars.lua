@@ -90,9 +90,13 @@ function DB:PLAYER_LEVEL_UP()
 end
 
 function DB:CombatCheck(event)
+	local notInCombat = event == 'PLAYER_REGEN_ENABLED'
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable and bar.db.hideInCombat then
-			bar:SetShown(event == 'PLAYER_REGEN_ENABLED')
+			bar:SetShown(notInCombat)
+			if notInCombat and bar.Update then
+				bar:Update()
+			end
 		end
 	end
 end
