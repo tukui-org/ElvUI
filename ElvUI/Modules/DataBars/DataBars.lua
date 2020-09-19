@@ -42,6 +42,7 @@ function DB:UpdateAll()
 		bar:SetHeight(bar.db.height)
 		bar:SetReverseFill(bar.db.reverseFill)
 		bar:SetStatusBarTexture(DB.db.customTexture and customStatusBar or E.media.normTex, 'ARTWORK', 7)
+		bar:EnableMouse(not bar.db.clickThrough)
 		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.text:FontTemplate(E.Libs.LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
 

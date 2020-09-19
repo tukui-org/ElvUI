@@ -5,14 +5,19 @@ local ACH = E.Libs.ACH
 
 local SharedOptions = {
 	enable = ACH:Toggle(L["Enable"], nil, 1),
-	mouseover = ACH:Toggle(L["Mouseover"], nil, 2),
-	reverseFill = ACH:Toggle(L["Reverse Fill Direction"], nil, 3),
-	orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the bar moves on gains/losses"], 4, { AUTOMATIC = L["Automatic"], HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] }),
-	width = ACH:Range(L["Width"], nil, 5, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 }),
-	height = ACH:Range(L["Height"], nil, 6, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 }),
-	textFormat = ACH:Select(L["Text Format"], nil, 7, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
-	fontGroup = ACH:Group(L["Fonts"], nil, -1),
+	textFormat = ACH:Select(L["Text Format"], nil, 2, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
+	mouseover = ACH:Toggle(L["Mouseover"], nil, 3),
+	clickThrough = ACH:Toggle(L["Click Through"], nil, 4),
+	sizeGroup = ACH:Group(L["Size"], nil, 5),
+	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, 6),
+	fontGroup = ACH:Group(L["Fonts"], nil, 7),
 }
+
+SharedOptions.sizeGroup.inline = true
+SharedOptions.sizeGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })
+SharedOptions.sizeGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })
+SharedOptions.sizeGroup.args.orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the bar moves on gains/losses"], 3, { AUTOMATIC = L["Automatic"], HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
+SharedOptions.sizeGroup.args.reverseFill = ACH:Toggle(L["Reverse Fill Direction"], nil, 4)
 
 SharedOptions.fontGroup.inline = true
 SharedOptions.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
@@ -49,38 +54,55 @@ E.Options.args.databars.args.experience = ACH:Group(L["Experience"], nil, 1, nil
 E.Options.args.databars.args.experience.args = CopyTable(SharedOptions)
 E.Options.args.databars.args.experience.args.enable.set = function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.experience.args.textFormat.set = function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Update() end
-E.Options.args.databars.args.experience.args.questCurrentZoneOnly = ACH:Toggle(L["Quests in Current Zone Only"], nil, 8)
-E.Options.args.databars.args.experience.args.questCompletedOnly = ACH:Toggle(L["Completed Quests Only"], nil, 9)
-E.Options.args.databars.args.experience.args.hideAtMaxLevel = ACH:Toggle(L["Hide At Max Level"], nil, 10)
-E.Options.args.databars.args.experience.args.hideInVehicle = ACH:Toggle(L["Hide In Vehicle"], nil, 11)
-E.Options.args.databars.args.experience.args.hideInCombat = ACH:Toggle(L["Hide In Combat"], nil, 12)
+E.Options.args.databars.args.experience.args.conditionGroup.get = function(_, key) return DB.db.experience[key] end
+E.Options.args.databars.args.experience.args.conditionGroup.set = function(_, key, value) DB.db.experience[key] = value DB:ExperienceBar_Update() DB:ExperienceBar_QuestXP() DB:UpdateAll() end
+E.Options.args.databars.args.experience.args.conditionGroup.values = {
+	questCurrentZoneOnly = L["Quests in Current Zone Only"],
+	questCompletedOnly = L["Completed Quests Only"],
+	hideAtMaxLevel = L["Hide At Max Level"],
+	hideInVehicle = L["Hide In Vehicle"],
+	hideInCombat = L["Hide In Combat"],
+}
 
 E.Options.args.databars.args.reputation = ACH:Group(L["Reputation"], nil, 2, nil, function(info) return DB.db.reputation[info[#info]] end, function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() DB:UpdateAll() end)
 E.Options.args.databars.args.reputation.args = CopyTable(SharedOptions)
 E.Options.args.databars.args.reputation.args.enable.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.reputation.args.textFormat.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
-E.Options.args.databars.args.reputation.args.hideInVehicle = ACH:Toggle(L["Hide In Vehicle"], nil, 8)
-E.Options.args.databars.args.reputation.args.hideInCombat = ACH:Toggle(L["Hide In Combat"], nil, 9)
+E.Options.args.databars.args.reputation.args.conditionGroup.get = function(_, key) return DB.db.reputation[key] end
+E.Options.args.databars.args.reputation.args.conditionGroup.set = function(_, key, value) DB.db.reputation[key] = value DB:ReputationBar_Update() DB:UpdateAll() end
+E.Options.args.databars.args.reputation.args.conditionGroup.values = {
+	hideInVehicle = L["Hide In Vehicle"],
+	hideInCombat = L["Hide In Combat"],
+}
 
 E.Options.args.databars.args.honor = ACH:Group(L["Honor"], nil, 3, nil, function(info) return DB.db.honor[info[#info]] end, function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() DB:UpdateAll() end)
 E.Options.args.databars.args.honor.args = CopyTable(SharedOptions)
 E.Options.args.databars.args.honor.args.enable.set = function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.honor.args.textFormat.set = function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() end
-E.Options.args.databars.args.honor.args.hideInVehicle = ACH:Toggle(L["Hide In Vehicle"], nil, 8)
-E.Options.args.databars.args.honor.args.hideInCombat = ACH:Toggle(L["Hide In Combat"], nil, 9)
-E.Options.args.databars.args.honor.args.hideOutsidePvP = ACH:Toggle(L["Hide Outside PvP"], nil, 10)
-E.Options.args.databars.args.honor.args.hideBelowMaxLevel = ACH:Toggle(L["Hide Below Max Level"], nil, 11)
+E.Options.args.databars.args.honor.args.conditionGroup.get = function(_, key) return DB.db.honor[key] end
+E.Options.args.databars.args.honor.args.conditionGroup.set = function(_, key, value) DB.db.honor[key] = value DB:HonorBar_Update() DB:UpdateAll() end
+E.Options.args.databars.args.honor.args.conditionGroup.values = {
+	hideInVehicle = L["Hide In Vehicle"],
+	hideInCombat = L["Hide In Combat"],
+	hideOutsidePvP = L["Hide Outside PvP"],
+	hideBelowMaxLevel = L["Hide Below Max Level"],
+}
 
 E.Options.args.databars.args.threat = ACH:Group(L["Threat"], nil, 4, nil, function(info) return DB.db.threat[info[#info]] end, function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Update() DB:UpdateAll() end)
 E.Options.args.databars.args.threat.args = CopyTable(SharedOptions)
 E.Options.args.databars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.threat.args.textFormat = nil
+E.Options.args.databars.args.threat.args.conditionGroup = nil
 
 E.Options.args.databars.args.azerite = ACH:Group(L["Azerite"], nil, 5, nil, function(info) return DB.db.azerite[info[#info]] end, function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() DB:UpdateAll() end)
 E.Options.args.databars.args.azerite.args = CopyTable(SharedOptions)
 E.Options.args.databars.args.azerite.args.enable.set = function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.azerite.args.textFormat.set = function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() end
-E.Options.args.databars.args.azerite.args.hideInVehicle = ACH:Toggle(L["Hide In Vehicle"], nil, 8)
-E.Options.args.databars.args.azerite.args.hideInCombat = ACH:Toggle(L["Hide In Combat"], nil, 9)
-E.Options.args.databars.args.azerite.args.hideAtMaxLevel = ACH:Toggle(L["Hide At Max Level"], nil, 10)
-E.Options.args.databars.args.azerite.args.hideBelowMaxLevel = ACH:Toggle(L["Hide Below Max Level"], nil, 11)
+E.Options.args.databars.args.azerite.args.conditionGroup.get = function(_, key) return DB.db.azerite[key] end
+E.Options.args.databars.args.azerite.args.conditionGroup.set = function(_, key, value) DB.db.azerite[key] = value DB:AzeriteBar_Update() DB:UpdateAll() end
+E.Options.args.databars.args.azerite.args.conditionGroup.values = {
+	hideInVehicle = L["Hide In Vehicle"],
+	hideInCombat = L["Hide In Combat"],
+	hideAtMaxLevel = L["Hide At Max Level"],
+	hideBelowMaxLevel = L["Hide Below Max Level"],
+}

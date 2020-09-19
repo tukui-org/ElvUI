@@ -158,6 +158,7 @@ for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite
 		font = 'PT Sans Narrow',
 		fontOutline = 'NONE',
 		mouseover = false,
+		clickThrough = false,
 		orientation = 'AUTOMATIC',
 		reverseFill = false,
 	}
