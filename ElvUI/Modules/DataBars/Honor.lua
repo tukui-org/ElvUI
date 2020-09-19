@@ -23,7 +23,7 @@ function DB:HonorBar_Update(event, unit)
 	if MaxHonor == 0 then MaxHonor = 1 end
 
 	bar:SetMinMaxValues(0, MaxHonor)
-	bar:SetValue(MaxHonor)
+	bar:SetValue(CurrentHonor)
 	local color = DB.db.colors.honor
 	bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 
