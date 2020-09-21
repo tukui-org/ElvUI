@@ -300,13 +300,11 @@ do --this can save some main file locals
 		['Luckywl-LaughingSkull']		= Clover,
 		['Luckyrogue-LaughingSkull']	= Clover,
 		['Luckypala-LaughingSkull']		= Clover,
-		['Luckysabers-Blackrock']		= Clover,
 		['Luckydemon-Blackrock']		= Clover,
 		['Luckymage-Blackrock']			= Clover,
 		['Luckyshaman-Blackrock']		= Clover,
 		['Luckylockx-Blackrock']		= Clover,
 		['Luckybow-Blackrock']			= Clover,
-		['Luckypepega-Blackrock']		= Clover,
 		['Luckypoggers-Blackrock']		= Clover,
 		['Luckyclap-Blackrock']			= Clover,
 		-- NihilisticPandemonium
