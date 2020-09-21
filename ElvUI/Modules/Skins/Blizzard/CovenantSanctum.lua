@@ -2,15 +2,29 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs = ipairs
+local strmatch = strmatch
+local gsub, ipairs = gsub, ipairs
 local hooksecurefunc = hooksecurefunc
 
 -- 9.0 SHADOWLANDS
+
+local function HandleIconString(self, text)
+	if self.isSetting then return end
+	self.isSetting = true
+
+	text = text or self:GetText()
+	if strmatch(text, '|T.+|t') then
+		self:SetText(gsub(text, '|T(.-):[%d+:]+|t', '|T%1:14:14:0:0:64:64:5:59:5:59|t'))
+	end
+
+	self.isSetting = nil
+end
 
 local function ReskinTalents(self)
 	for frame in self.talentPool:EnumerateActive() do
 		if not frame.IsSkinned then
 			frame.Border:SetAlpha(0)
+			frame.IconBorder:SetAlpha(0)
 			frame.Background:SetAlpha(0)
 
 			frame:CreateBackdrop('Transparent')
@@ -21,6 +35,9 @@ local function ReskinTalents(self)
 			frame.Highlight:SetInside(frame.backdrop)
 			S:HandleIcon(frame.Icon, true)
 			frame.Icon:Point('TOPLEFT', 7, -7)
+
+			HandleIconString(frame.InfoText)
+			hooksecurefunc(frame.InfoText, "SetText", HandleIconString)
 
 			frame.IsSkinned = true
 		end
@@ -41,6 +58,17 @@ local function HideRenownLevelBorder(frame)
 			button.LevelBorder:SetAlpha(0)
 
 			button.IsSkinned = true
+		end
+	end
+end
+
+local function ReplaceCurrencies(displayGroup)
+	for frame in displayGroup.currencyFramePool:EnumerateActive() do
+		if not frame.IsSkinned then
+			HandleIconString(frame.Text)
+			hooksecurefunc(frame.Text, 'SetText', HandleIconString)
+
+			frame.IsSkinned = true
 		end
 	end
 end
@@ -84,6 +112,9 @@ function S:Blizzard_CovenantSanctum()
 					end
 				end
 			end
+
+			UpgradesTab.CurrencyBackground:SetAlpha(0)
+			ReplaceCurrencies(UpgradesTab.CurrencyDisplayGroup)
 
 			hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
 			hooksecurefunc(frame.RenownTab, "Refresh", HideRenownLevelBorder)
