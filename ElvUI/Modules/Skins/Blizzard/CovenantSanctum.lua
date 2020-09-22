@@ -12,7 +12,7 @@ local function HandleIconString(self, text)
 	if not text or text == '' then return end
 
 	local new, count = gsub(text, '|T([^:]-):[%d+:]+|t', '|T%1:14:14:0:0:64:64:5:59:5:59|t')
-	if count > 0 then self:SetFormattedText(new) end
+	if count > 0 then self:SetFormattedText('%s', new) end
 end
 
 local function ReskinTalents(self)
