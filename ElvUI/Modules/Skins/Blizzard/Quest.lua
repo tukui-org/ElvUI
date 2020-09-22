@@ -16,13 +16,6 @@ local GetNumQuestLogRewardSpells = GetNumQuestLogRewardSpells
 local GetNumRewardSpells = GetNumRewardSpells
 local hooksecurefunc = hooksecurefunc
 
-local PlusButtonIDs = {
-	[130835] = 'interface/buttons/ui-plusbutton-disabled.blp',
-	[130836] = 'interface/buttons/ui-plusbutton-down.blp',
-	[130837] = 'interface/buttons/ui-plusbutton-hilight.blp',
-	[130838] = 'interface/buttons/ui-plusbutton-up.blp'
-}
-
 local function HandleReward(frame)
 	if not frame then return end
 
@@ -462,7 +455,6 @@ function S:BlizzardQuestFrames()
 							tex:SetTexture(E.Media.Textures.MinusButton)
 						end
 					end
-
 				end
 			end
 		end
