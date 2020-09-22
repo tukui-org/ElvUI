@@ -2,22 +2,17 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local strmatch = strmatch
 local gsub, ipairs = gsub, ipairs
 local hooksecurefunc = hooksecurefunc
 
 -- 9.0 SHADOWLANDS
 
 local function HandleIconString(self, text)
-	if self.isSetting then return end
-	self.isSetting = true
+	if not text then text = self:GetText() end
+	if not text or text == '' then return end
 
-	text = text or self:GetText()
-	if strmatch(text, '|T.+|t') then
-		self:SetText(gsub(text, '|T(.-):[%d+:]+|t', '|T%1:14:14:0:0:64:64:5:59:5:59|t'))
-	end
-
-	self.isSetting = nil
+	local new, count = gsub(text, '|T([^:]-):[%d+:]+|t', '|T%1:14:14:0:0:64:64:5:59:5:59|t')
+	if count > 0 then self:SetFormattedText(new) end
 end
 
 local function ReskinTalents(self)
@@ -37,7 +32,7 @@ local function ReskinTalents(self)
 			frame.Icon:Point('TOPLEFT', 7, -7)
 
 			HandleIconString(frame.InfoText)
-			hooksecurefunc(frame.InfoText, "SetText", HandleIconString)
+			hooksecurefunc(frame.InfoText, 'SetText', HandleIconString)
 
 			frame.IsSkinned = true
 		end
@@ -117,7 +112,7 @@ function S:Blizzard_CovenantSanctum()
 			ReplaceCurrencies(UpgradesTab.CurrencyDisplayGroup)
 
 			hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
-			hooksecurefunc(frame.RenownTab, "Refresh", HideRenownLevelBorder)
+			hooksecurefunc(frame.RenownTab, 'Refresh', HideRenownLevelBorder)
 		end
 	end)
 
