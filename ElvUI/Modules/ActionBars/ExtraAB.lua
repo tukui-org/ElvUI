@@ -34,18 +34,29 @@ function AB:Extra_SetAlpha()
 	end
 end
 
+local function ZoneContainerScale(scale)
+	if not scale then scale = E.db.actionbar.extraActionButton.scale end
+
+	local zoneContainer = _G.ZoneAbilityFrame and _G.ZoneAbilityFrame.SpellButtonContainer
+	if zoneContainer then
+		zoneContainer:SetScale(scale)
+
+		local width, height = zoneContainer:GetSize()
+		ZoneAbilityHolder:SetSize(width * scale, height * scale)
+	end
+end
+
 function AB:Extra_SetScale()
-	if not E.private.actionbar.enable then return; end
+	if not E.private.actionbar.enable then return end
 	local scale = E.db.actionbar.extraActionButton.scale
+
+	ZoneContainerScale(scale)
 
 	if _G.ExtraActionBarFrame then
 		_G.ExtraActionBarFrame:SetScale(scale)
-		ExtraActionBarHolder:Size(_G.ExtraActionBarFrame:GetWidth() * scale)
-	end
 
-	if _G.ZoneAbilityFrame then
-		_G.ZoneAbilityFrame:SetScale(scale)
-		ZoneAbilityHolder:Size(_G.ZoneAbilityFrame:GetWidth() * scale)
+		local width, height = _G.ExtraActionBarFrame.button:GetSize()
+		ExtraActionBarHolder:SetSize(width * scale, height * scale)
 	end
 end
 
@@ -56,7 +67,6 @@ function AB:SetupExtraButton()
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
 	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
-	ExtraActionBarHolder:Size(ExtraActionBarFrame:GetSize())
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
@@ -71,7 +81,6 @@ function AB:SetupExtraButton()
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
-	ZoneAbilityHolder:Size(ExtraActionBarFrame:GetSize())
 
 	-- Please check this 9.0 Shadowlands
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
@@ -81,12 +90,15 @@ function AB:SetupExtraButton()
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(button)
+		ZoneContainerScale()
+
 		for spellButton in button.SpellButtonContainer:EnumerateActive() do
 			if spellButton and not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
 				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 				spellButton:StyleButton(nil, true)
 				spellButton:CreateBackdrop()
+				spellButton.backdrop:SetAllPoints()
 				spellButton.Icon:SetDrawLayer('ARTWORK')
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
 				spellButton.Icon:SetInside()
@@ -112,7 +124,6 @@ function AB:SetupExtraButton()
 		end
 	end)
 
-	-- 9.0 Shadowlands - Cooldowntext is not working on ExtraAB
 	for i = 1, ExtraActionBarFrame:GetNumChildren() do
 		local button = _G['ExtraActionButton'..i]
 		if button then
@@ -122,6 +133,7 @@ function AB:SetupExtraButton()
 			self:StyleButton(button, true) -- registers cooldown too
 			button.icon:SetDrawLayer('ARTWORK')
 			button:CreateBackdrop()
+			button.backdrop:SetAllPoints()
 
 			if E.private.skins.cleanBossButton and button.style then -- Hide the Artwork
 				button.style:SetTexture()
@@ -143,11 +155,11 @@ function AB:SetupExtraButton()
 		ExtraAbilityContainer:Show()
 	end
 
-	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraActionButton')
-	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS')
-
 	AB:Extra_SetAlpha()
 	AB:Extra_SetScale()
+
+	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraActionButton')
+	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS')
 end
 
 function AB:UpdateExtraBindings()
