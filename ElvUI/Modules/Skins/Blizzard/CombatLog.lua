@@ -5,42 +5,43 @@ local _G = _G
 local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
--- credit: Aftermathh
+local function StyleButtons()
+	for index in ipairs(_G.Blizzard_CombatLog_Filters.filters) do
+		local button = _G['CombatLogQuickButtonFrameButton'..index]
+		local text = button and button:GetFontString()
+		if text then
+			text:FontTemplate(nil, nil, 'OUTLINE')
+		end
+	end
+end
+
+-- credit: Aftermathh, edited by Simpy
 function S:Blizzard_CombatLog()
 	if E.private.chat.enable ~= true then return end
 	-- this is always on with the chat module, it's only handle the top bar in combat log chat frame
 
-	local Button = _G.CombatLogQuickButtonFrame_Custom
-	Button:StripTextures()
-	Button:CreateBackdrop('Transparent')
+	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', StyleButtons)
+	StyleButtons()
 
-	local FontContainer = _G.ChatFrame2.FontStringContainer
-	if FontContainer then
-		Button:ClearAllPoints()
-		Button:Point('BOTTOMLEFT', FontContainer, 'TOPLEFT', -3, 0)
-		Button:Point('BOTTOMRIGHT', FontContainer, 'TOPRIGHT', 3 or 3, 0)
-	end
+	local bar = _G.CombatLogQuickButtonFrame_Custom
+	bar:StripTextures()
+	bar:CreateBackdrop('Transparent')
+	bar.backdrop:SetAllPoints()
 
-	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', function()
-		for index in ipairs(_G.Blizzard_CombatLog_Filters.filters) do
-			local button = _G['CombatLogQuickButtonFrameButton'..index]
-			if button then
-				local text = button:GetFontString()
-				if text then
-					text:FontTemplate(nil, nil, 'OUTLINE')
-				end
-			end
-		end
-	end)
+	bar:ClearAllPoints()
+	bar:Point('BOTTOMLEFT', _G.ChatFrame2, 'TOPLEFT', -3, 5)
+	bar:Point('BOTTOMRIGHT', _G.ChatFrame2, 'TOPRIGHT', 3, 0)
 
-	local ProgressBar = _G.CombatLogQuickButtonFrame_CustomProgressBar
-	ProgressBar:SetStatusBarTexture(E.media.normTex)
-	ProgressBar:SetInside(Button)
+	local progress = _G.CombatLogQuickButtonFrame_CustomProgressBar
+	progress:SetStatusBarTexture(E.media.normTex)
+	progress:SetInside(bar.backdrop)
 
 	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
-
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20, 22)
-	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point('TOPRIGHT', Button, 'TOPRIGHT', 0, -1)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:ClearAllPoints()
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point('TOPRIGHT', bar, 'TOPRIGHT', -2, -2)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetHitRectInsets(0,0,0,0)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetFrameLevel(bar:GetFrameLevel() + 3)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 end
 

@@ -2006,10 +2006,6 @@ function CH:SetupChat()
 
 	CH:PositionChats()
 
-	if _G.CombatLogQuickButtonFrame_Custom then
-		_G.CombatLogQuickButtonFrame_Custom:Size(_G.LeftChatTab:GetSize())
-	end
-
 	if not CH.HookSecured then
 		CH:SecureHook('FCF_OpenTemporaryWindow', 'SetupChat')
 		CH.HookSecured = true
