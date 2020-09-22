@@ -440,10 +440,7 @@ function S:BlizzardQuestFrames()
 		for i = 1, _G.QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
 			local child = select(i, _G.QuestMapFrame.QuestsFrame.Contents:GetChildren())
 			if child and child.ButtonText and not child.questID then
-				if not child.buttonSized then
-					child:Size(16, 16)
-					child.buttonSized = true
-				end
+				child:Size(16, 16)
 
 				for x = 1, child:GetNumRegions() do
 					local tex = select(x, child:GetRegions())
@@ -464,12 +461,13 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', function(button, isCollapsed)
 		if isCollapsed then
 			button:SetNormalTexture(E.Media.Textures.PlusButton)
+			button:SetPushedTexture(E.Media.Textures.PlusButton)
 		else
 			button:SetNormalTexture(E.Media.Textures.MinusButton)
+			button:SetPushedTexture(E.Media.Textures.MinusButton)
 		end
 
 		button:Size(16, 16)
-		button:SetPushedTexture('')
 	end)
 end
 
