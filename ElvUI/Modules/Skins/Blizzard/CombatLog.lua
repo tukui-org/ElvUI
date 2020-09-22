@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local CH = E:GetModule('Chat')
 
 local _G = _G
 local ipairs = ipairs
@@ -10,7 +11,7 @@ local function StyleButtons()
 		local button = _G['CombatLogQuickButtonFrameButton'..index]
 		local text = button and button:GetFontString()
 		if text then
-			text:FontTemplate(nil, nil, 'OUTLINE')
+			text:FontTemplate(E.LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 		end
 	end
 end
