@@ -13,39 +13,16 @@ local tinsert, tremove, tconcat = tinsert, tremove, table.concat
 
 local Ambiguate = Ambiguate
 local BetterDate = BetterDate
-local BNet_GetClientEmbeddedTexture = BNet_GetClientEmbeddedTexture
-local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local BNGetNumFriendInvites = BNGetNumFriendInvites
 local BNGetNumFriends = BNGetNumFriends
-local Chat_GetChatCategory = Chat_GetChatCategory
-local Chat_ShouldColorChatByClass = Chat_ShouldColorChatByClass
-local ChatEdit_ActivateChat = ChatEdit_ActivateChat
-local ChatEdit_ChooseBoxForSend = ChatEdit_ChooseBoxForSend
-local ChatEdit_ParseText = ChatEdit_ParseText
-local ChatEdit_SetLastTellTarget = ChatEdit_SetLastTellTarget
-local ChatFrame_CanChatGroupPerformExpressionExpansion = ChatFrame_CanChatGroupPerformExpressionExpansion
-local ChatFrame_ConfigEventHandler = ChatFrame_ConfigEventHandler
-local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
-local ChatFrame_ResolvePrefixedChannelName = ChatFrame_ResolvePrefixedChannelName
-local ChatFrame_SendTell = ChatFrame_SendTell
-local ChatFrame_SystemEventHandler = ChatFrame_SystemEventHandler
-local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local CreateFrame = CreateFrame
-local FCF_Close = FCF_Close
-local FCF_GetChatWindowInfo = FCF_GetChatWindowInfo
-local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
-local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
-local FCF_StartAlertFlash = FCF_StartAlertFlash
-local FCFManager_ShouldSuppressMessage = FCFManager_ShouldSuppressMessage
-local FCFManager_ShouldSuppressMessageFlash = FCFManager_ShouldSuppressMessageFlash
-local FCFTab_UpdateAlpha = FCFTab_UpdateAlpha
 local FlashClientIcon = FlashClientIcon
-local FloatingChatFrame_OnEvent = FloatingChatFrame_OnEvent
 local GetAchievementInfo = GetAchievementInfo
 local GetAchievementInfoFromHyperlink = GetAchievementInfoFromHyperlink
 local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
 local GetBNPlayerLink = GetBNPlayerLink
 local GetChannelName = GetChannelName
+local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
 local GetCVar, GetCVarBool = GetCVar, GetCVarBool
 local GetGuildRosterMOTD = GetGuildRosterMOTD
@@ -57,10 +34,12 @@ local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetPlayerLink = GetPlayerLink
 local GetRaidRosterInfo = GetRaidRosterInfo
-local GMError = GMError
 local GMChatFrame_IsGM = GMChatFrame_IsGM
+local GMError = GMError
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
+local IsActivePlayerMentor = IsActivePlayerMentor
+local IsActivePlayerNewcomer = IsActivePlayerNewcomer
 local IsAltKeyDown = IsAltKeyDown
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local IsShiftKeyDown = IsShiftKeyDown
@@ -68,29 +47,17 @@ local PlaySound = PlaySound
 local PlaySoundFile = PlaySoundFile
 local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
-local ScrollFrameTemplate_OnMouseWheel = ScrollFrameTemplate_OnMouseWheel
-local Social_GetShareAchievementLink = Social_GetShareAchievementLink
-local Social_GetShareItemLink = Social_GetShareItemLink
-local SocialQueueUtil_GetQueueName = SocialQueueUtil_GetQueueName
-local SocialQueueUtil_GetRelationshipInfo = SocialQueueUtil_GetRelationshipInfo
-local StaticPopup_Visible = StaticPopup_Visible
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local GetChatWindowInfo = GetChatWindowInfo
 local UnitName = UnitName
-local IsActivePlayerNewcomer = IsActivePlayerNewcomer
-local IsActivePlayerMentor = IsActivePlayerMentor
-local Voice_GetVoiceChannelNotificationColor = Voice_GetVoiceChannelNotificationColor
 
-local ChatChannelRuleset_Mentor = Enum.ChatChannelRuleset.Mentor
-local ChatEdit_UpdateNewcomerEditBoxHint = ChatEdit_UpdateNewcomerEditBoxHint
-local ChatFrame_UpdateDefaultChatTarget = ChatFrame_UpdateDefaultChatTarget
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
 local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
 local C_BattleNet_GetFriendNumGameAccounts = C_BattleNet.GetFriendNumGameAccounts
+local C_ChatInfo_GetChannelRuleset = C_ChatInfo.GetChannelRulesete
 local C_Club_GetInfoFromLastCommunityChatLine = C_Club.GetInfoFromLastCommunityChatLine
 local C_LFGList_GetActivityInfo = C_LFGList.GetActivityInfo
 local C_LFGList_GetSearchResultInfo = C_LFGList.GetSearchResultInfo
@@ -100,7 +67,7 @@ local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTextur
-local C_ChatInfo_GetChannelRuleset = C_ChatInfo.GetChannelRulesete
+local ChatChannelRuleset_Mentor = Enum.ChatChannelRuleset.Mentor
 
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
@@ -560,13 +527,13 @@ do
 				end
 
 				if Name then
-					ChatFrame_SendTell(Name, self.chatFrame)
+					_G.ChatFrame_SendTell(Name, self.chatFrame)
 				else
 					_G.UIErrorsFrame:AddMessage(E.InfoColor .. L["Invalid Target"])
 				end
 			elseif text == '/gr ' then
 				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
-				ChatEdit_ParseText(self, 0)
+				_G.ChatEdit_ParseText(self, 0)
 			end
 		end
 
@@ -816,13 +783,13 @@ end
 
 function CH:CopyChat(frame)
 	if not _G.CopyChatFrame:IsShown() then
-		local _, fontSize = FCF_GetChatWindowInfo(frame:GetID())
+		local _, fontSize = _G.FCF_GetChatWindowInfo(frame:GetID())
 		if fontSize < 10 then fontSize = 12 end
-		FCF_SetChatWindowFontSize(frame, frame, 0.01)
+		_G.FCF_SetChatWindowFontSize(frame, frame, 0.01)
 		_G.CopyChatFrame:Show()
 		local lineCt = CH:GetLines(frame)
 		local text = tconcat(copyLines, ' \n', 1, lineCt)
-		FCF_SetChatWindowFontSize(frame, frame, fontSize)
+		_G.FCF_SetChatWindowFontSize(frame, frame, fontSize)
 		_G.CopyChatFrameEditBox:SetText(text)
 	else
 		_G.CopyChatFrame:Hide()
@@ -1239,11 +1206,11 @@ function CH:FindURL(event, msg, author, ...)
 end
 
 function CH:SetChatEditBoxMessage(message)
-	local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
+	local ChatFrameEditBox = _G.ChatEdit_ChooseBoxForSend()
 	local editBoxShown = ChatFrameEditBox:IsShown()
 	local editBoxText = ChatFrameEditBox:GetText()
 	if not editBoxShown then
-		ChatEdit_ActivateChat(ChatFrameEditBox)
+		_G.ChatEdit_ActivateChat(ChatFrameEditBox)
 	end
 	if editBoxText and editBoxText ~= '' then
 		ChatFrameEditBox:SetText('')
@@ -1456,7 +1423,7 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	arg2 = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
 
 	local info = arg12 and _G.ChatTypeInfo[chatType]
-	if info and Chat_ShouldColorChatByClass(info) then
+	if info and _G.Chat_ShouldColorChatByClass(info) then
 		local data = CH:GetPlayerInfoByGUID(arg12)
 		local classColor = data and data.classColor
 		if classColor then
@@ -1579,10 +1546,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local infoType = chatType
 		if chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
 			if arg1 == 'WRONG_PASSWORD' then
-				local staticPopup = _G[StaticPopup_Visible('CHAT_CHANNEL_PASSWORD') or '']
-				if staticPopup and strupper(staticPopup.data) == strupper(arg9) then
-					-- Don't display invalid password messages if we're going to prompt for a password (bug 102312)
-					return
+				local _, popup = _G.StaticPopup_Visible('CHAT_CHANNEL_PASSWORD')
+				if popup and strupper(popup.data) == strupper(arg9) then
+					return -- Don't display invalid password messages if we're going to prompt for a password (bug 102312)
 				end
 			end
 
@@ -1607,7 +1573,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 		end
 
-		local chatGroup = Chat_GetChatCategory(chatType)
+		local chatGroup = _G.Chat_GetChatCategory(chatType)
 		local chatTarget
 		if chatGroup == 'CHANNEL' then
 			chatTarget = tostring(arg8)
@@ -1619,7 +1585,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 		end
 
-		if FCFManager_ShouldSuppressMessage(frame, chatGroup, chatTarget) then
+		if _G.FCFManager_ShouldSuppressMessage(frame, chatGroup, chatTarget) then
 			return true
 		end
 
@@ -1665,7 +1631,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if arg12 == E.myguid and C_SocialIsSocialEnabled() then
 				local itemID, creationContext = GetItemInfoFromHyperlink(arg1)
 				if itemID and C_SocialGetLastItem() == itemID then
-					arg1 = arg1 .. ' ' .. Social_GetShareItemLink(creationContext, true)
+					arg1 = arg1 .. ' ' .. _G.Social_GetShareItemLink(creationContext, true)
 				end
 			end
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
@@ -1680,7 +1646,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if arg12 == E.myguid and C_SocialIsSocialEnabled() then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1)
 				if achieveID then
-					arg1 = arg1 .. ' ' .. Social_GetShareAchievementLink(achieveID, true)
+					arg1 = arg1 .. ' ' .. _G.Social_GetShareAchievementLink(achieveID, true)
 				end
 			end
 			frame:AddMessage(format(arg1, GetPlayerLink(arg2, ('[%s]'):format(coloredName))), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
@@ -1691,7 +1657,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				if achieveID then
 					local isGuildAchievement = select(12, GetAchievementInfo(achieveID))
 					if isGuildAchievement then
-						message = message .. ' ' .. Social_GetShareAchievementLink(achieveID, true)
+						message = message .. ' ' .. _G.Social_GetShareAchievementLink(achieveID, true)
 					end
 				end
 			end
@@ -1729,15 +1695,15 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE' then
-			local accessID = ChatHistory_GetAccessID(Chat_GetChatCategory(type), arg8);
-			local typeID = ChatHistory_GetAccessID(infoType, arg8, arg12);
+			local accessID = _G.ChatHistory_GetAccessID(_G.Chat_GetChatCategory(type), arg8);
+			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12);
 
 			if arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == ChatChannelRuleset_Mentor then
-				ChatFrame_UpdateDefaultChatTarget(self)
-				ChatEdit_UpdateNewcomerEditBoxHint(self.editBox)
+				_G.ChatFrame_UpdateDefaultChatTarget(self)
+				_G.ChatEdit_UpdateNewcomerEditBoxHint(self.editBox)
 			else
 				if arg1 == 'YOU_LEFT' then
-					ChatEdit_UpdateNewcomerEditBoxHint(self.editBox, arg8)
+					_G.ChatEdit_UpdateNewcomerEditBoxHint(self.editBox, arg8)
 				end
 
 				local globalstring
@@ -1754,7 +1720,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					end
 				end
 
-				frame:AddMessage(format(globalstring, arg8, ChatFrame_ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime)
+				frame:AddMessage(format(globalstring, arg8, _G.ChatFrame_ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_ALERT' then
 			local globalstring = _G['BN_INLINE_TOAST_'..arg1]
@@ -1775,19 +1741,19 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				if not accountInfo then return end
 				local client = accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.clientProgram
 				if client and client ~= '' then
-					local characterName = BNet_GetValidatedCharacterName(accountInfo.gameAccountInfo.characterName, accountInfo.battleTag, client) or ''
-					local characterNameText = BNet_GetClientEmbeddedTexture(client, 14)..characterName
+					local characterName = _G.BNet_GetValidatedCharacterName(accountInfo.gameAccountInfo.characterName, accountInfo.battleTag, client) or ''
+					local characterNameText = _G.BNet_GetClientEmbeddedTexture(client, 14)..characterName
 					local linkDisplayText = ('[%s] (%s)'):format(arg2, characterNameText)
-					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(chatType), 0)
+					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(chatType), 0)
 					message = format(globalstring, playerLink)
 				else
 					local linkDisplayText = ('[%s]'):format(arg2)
-					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(chatType), 0)
+					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(chatType), 0)
 					message = format(globalstring, playerLink)
 				end
 			else
 				local linkDisplayText = ('[%s]'):format(arg2)
-				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(chatType), 0)
+				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(chatType), 0)
 				message = format(globalstring, playerLink)
 			end
 			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
@@ -1795,7 +1761,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if arg1 ~= '' then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1))
 				local linkDisplayText = ('[%s]'):format(arg2)
-				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, Chat_GetChatCategory(chatType), 0)
+				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(chatType), 0)
 				frame:AddMessage(format(_G.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST_INFORM' then
@@ -1817,7 +1783,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 
 			-- Search for icon links and replace them with texture links.
-			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)) -- If arg17 is true, don't convert to raid icons
+			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)) -- If arg17 is true, don't convert to raid icons
 
 			--Remove groups of many spaces
 			arg1 = RemoveExtraSpaces(arg1)
@@ -1868,7 +1834,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			local message = arg1
 			if arg14 then --isMobile
-				message = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message
+				message = _G.ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..message
 			end
 
 			-- Player Flags
@@ -1931,7 +1897,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- Add Channel
 			if channelLength > 0 then
-				body = '|Hchannel:channel:'..arg8..'|h['..ChatFrame_ResolvePrefixedChannelName(arg4)..']|h '..body
+				body = '|Hchannel:channel:'..arg8..'|h['.._G.ChatFrame_ResolvePrefixedChannelName(arg4)..']|h '..body
 			end
 
 			if CH.db.shortChannels and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') then
@@ -1942,8 +1908,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				body = filter(body)
 			end
 
-			local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
-			local typeID = ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
+			local accessID = _G.ChatHistory_GetAccessID(chatGroup, chatTarget)
+			local typeID = _G.ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
 
 			local alertType = notChatHistory and not CH.SoundTimer and not strfind(event, '_INFORM') and CH.db.channelAlerts[historyTypes[event]]
 			if alertType and alertType ~= 'None' and arg2 ~= PLAYER_NAME and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
@@ -1955,15 +1921,15 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		end
 
 		if notChatHistory and (chatType == 'WHISPER' or chatType == 'BN_WHISPER') then
-			ChatEdit_SetLastTellTarget(arg2, chatType)
+			_G.ChatEdit_SetLastTellTarget(arg2, chatType)
 			FlashClientIcon()
 		end
 
 		if notChatHistory and not frame:IsShown() then
 			if (frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab) then
 				if not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == 'WHISPER' or chatType == 'BN_WHISPER' then --BN_WHISPER FIXME
-					if not FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
-						FCF_StartAlertFlash(frame) --This would taint if we were not using LibChatAnims
+					if not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
+						_G.FCF_StartAlertFlash(frame) --This would taint if we were not using LibChatAnims
 					end
 				end
 			end
@@ -1974,11 +1940,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 end
 
 function CH:ChatFrame_ConfigEventHandler(...)
-	return ChatFrame_ConfigEventHandler(...)
+	return _G.ChatFrame_ConfigEventHandler(...)
 end
 
 function CH:ChatFrame_SystemEventHandler(frame, event, message, ...)
-	return ChatFrame_SystemEventHandler(frame, event, message, ...)
+	return _G.ChatFrame_SystemEventHandler(frame, event, message, ...)
 end
 
 function CH:ChatFrame_OnEvent(...)
@@ -1989,7 +1955,7 @@ end
 
 function CH:FloatingChatFrame_OnEvent(...)
 	CH:ChatFrame_OnEvent(...)
-	FloatingChatFrame_OnEvent(...)
+	_G.FloatingChatFrame_OnEvent(...)
 end
 
 local function FloatingChatFrameOnEvent(...)
@@ -2008,9 +1974,9 @@ function CH:SetupChat()
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		local id = frame:GetID()
-		local _, fontSize = FCF_GetChatWindowInfo(id)
+		local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 		CH:StyleChat(frame)
-		FCFTab_UpdateAlpha(frame)
+		_G.FCFTab_UpdateAlpha(frame)
 
 		frame:FontTemplate(LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline)
 		frame:SetTimeVisible(CH.db.inactivityTimer)
@@ -2206,7 +2172,7 @@ function CH:ChatEdit_OnEnterPressed(editBox)
 end
 
 function CH:SetChatFont(dropDown, chatFrame, fontSize)
-	if not chatFrame then chatFrame = FCF_GetCurrentChatFrame() end
+	if not chatFrame then chatFrame = _G.FCF_GetCurrentChatFrame() end
 	if not fontSize then fontSize = dropDown.value end
 
 	chatFrame:FontTemplate(LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline)
@@ -2285,7 +2251,7 @@ function CH:PET_BATTLE_CLOSE()
 		local tab = CH:GetTab(chat)
 		local text = tab and tab.Text:GetText()
 		if text and strmatch(text, DEFAULT_STRINGS.PET_BATTLE_COMBAT_LOG) then
-			FCF_Close(chat)
+			_G.FCF_Close(chat)
 			break -- we found it, dont gotta keep lookin'
 		end
 	end
@@ -2513,7 +2479,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 	if not players then return end
 
 	local firstMember, numMembers, extraCount, coloredName = players[1], #players, ''
-	local playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
+	local playerName, nameColor = _G.SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 	if numMembers > 1 then
 		extraCount = format(' +%s', numMembers - 1)
 	end
@@ -2551,7 +2517,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 		local output, outputCount, queueCount = '', '', 0
 		for _, queue in pairs(queues) do
 			if type(queue) == 'table' and queue.eligible then
-				local queueName = (queue.queueData and SocialQueueUtil_GetQueueName(queue.queueData)) or ''
+				local queueName = (queue.queueData and _G.SocialQueueUtil_GetQueueName(queue.queueData)) or ''
 				if queueName ~= '' then
 					if output == '' then
 						output = gsub(queueName, '\n.+','') -- grab only the first queue name
@@ -2899,7 +2865,7 @@ function CH:BuildCopyChatFrame()
 		if userInput then return end
 		local _, Max = _G.CopyChatScrollFrameScrollBar:GetMinMaxValues()
 		for _ = 1, Max do
-			ScrollFrameTemplate_OnMouseWheel(_G.CopyChatScrollFrame, -1)
+			_G.ScrollFrameTemplate_OnMouseWheel(_G.CopyChatScrollFrame, -1)
 		end
 	end)
 
@@ -3016,7 +2982,7 @@ function CH:ConfigureHead(memberID, channelID)
 	C_VoiceChat_SetPortraitTexture(frame.Portrait.texture, memberID, channelID)
 
 	local memberName = C_VoiceChat_GetMemberName(memberID, channelID)
-	local r, g, b = Voice_GetVoiceChannelNotificationColor(channelID)
+	local r, g, b = _G.Voice_GetVoiceChannelNotificationColor(channelID)
 	frame.Name:SetText(memberName or '')
 	frame.Name:SetVertexColor(r, g, b, 1)
 	frame:Show()
