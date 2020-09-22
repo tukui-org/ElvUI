@@ -38,10 +38,12 @@ function DB:UpdateAll()
 	local customStatusBar = E.LSM:Fetch('statusbar', DB.db.statusbar)
 
 	for _, bar in pairs(DB.StatusBars) do
+		local barTexture = DB.db.customTexture and customStatusBar or E.media.normTex
+
 		bar:SetWidth(bar.db.width)
 		bar:SetHeight(bar.db.height)
 		bar:SetReverseFill(bar.db.reverseFill)
-		bar:SetStatusBarTexture(DB.db.customTexture and customStatusBar or E.media.normTex, 'ARTWORK', 7)
+		bar:SetStatusBarTexture(barTexture, 'ARTWORK', 7)
 		bar:EnableMouse(not bar.db.clickThrough)
 		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.text:FontTemplate(E.Libs.LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
@@ -64,14 +66,19 @@ function DB:UpdateAll()
 			bar:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
 		end
 
+		local frameLevel = bar:GetFrameLevel()
+		local orientation = bar:GetOrientation()
+		local rotatesTexture = bar:GetRotatesTexture()
+		local reverseFill = bar:GetReverseFill()
+
 		for i = 1, bar:GetNumChildren() do
 			local child = select(i, bar:GetChildren())
 			if child:IsObjectType('StatusBar') then
-				child:SetStatusBarTexture(DB.db.customTexture and customStatusBar or E.media.normTex, 'ARTWORK', -i)
-				child:SetFrameLevel(bar:GetFrameLevel())
-				child:SetOrientation(bar:GetOrientation())
-				child:SetRotatesTexture(bar:GetRotatesTexture())
-				child:SetReverseFill(bar:GetReverseFill())
+				child:SetStatusBarTexture(barTexture, 'ARTWORK', -i)
+				child:SetFrameLevel(frameLevel)
+				child:SetOrientation(orientation)
+				child:SetRotatesTexture(rotatesTexture)
+				child:SetReverseFill(reverseFill)
 			end
 		end
 	end
