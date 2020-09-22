@@ -1695,7 +1695,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE' then
-			local accessID = _G.ChatHistory_GetAccessID(_G.Chat_GetChatCategory(type), arg8);
+			local accessID = _G.ChatHistory_GetAccessID(_G.Chat_GetChatCategory(chatType), arg8);
 			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12);
 
 			if arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == ChatChannelRuleset_Mentor then
