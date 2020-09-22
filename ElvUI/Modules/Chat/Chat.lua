@@ -1695,7 +1695,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE' then
-			local accessID = _G.ChatHistory_GetAccessID(_G.Chat_GetChatCategory(chatType), arg8);
+			local accessID = _G.ChatHistory_GetAccessID(chatGroup, arg8);
 			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12);
 
 			if arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == ChatChannelRuleset_Mentor then
@@ -1744,16 +1744,16 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					local characterName = _G.BNet_GetValidatedCharacterName(accountInfo.gameAccountInfo.characterName, accountInfo.battleTag, client) or ''
 					local characterNameText = _G.BNet_GetClientEmbeddedTexture(client, 14)..characterName
 					local linkDisplayText = ('[%s] (%s)'):format(arg2, characterNameText)
-					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(chatType), 0)
+					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
 				else
 					local linkDisplayText = ('[%s]'):format(arg2)
-					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(chatType), 0)
+					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
 				end
 			else
 				local linkDisplayText = ('[%s]'):format(arg2)
-				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(chatType), 0)
+				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 				message = format(globalstring, playerLink)
 			end
 			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
@@ -1761,7 +1761,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if arg1 ~= '' then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1))
 				local linkDisplayText = ('[%s]'):format(arg2)
-				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, _G.Chat_GetChatCategory(chatType), 0)
+				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 				frame:AddMessage(format(_G.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST_INFORM' then
