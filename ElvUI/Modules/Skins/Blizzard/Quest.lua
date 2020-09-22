@@ -452,18 +452,17 @@ function S:BlizzardQuestFrames()
 					child.buttonSized = true
 				end
 
-				local tex = select(2, child:GetRegions())
-				if tex and tex.GetTexture then
-					local texture = tex:GetTexture()
-					local texType = type(texture)
-					if texType == 'number' or texType == 'string' then
-						if (texType == 'number' and PlusButtonIDs[texture])
-						or (texType == 'string' and strfind(texture, 'PlusButton')) then
+				for x = 1, child:GetNumRegions() do
+					local tex = select(x, child:GetRegions())
+					if tex and tex.GetAtlas then
+						local atlas = tex:GetAtlas()
+						if atlas == 'Campaign_HeaderIcon_Closed' or atlas == 'Campaign_HeaderIcon_ClosedPressed' then
 							tex:SetTexture(E.Media.Textures.PlusButton)
-						else
+						elseif atlas == 'Campaign_HeaderIcon_Open' or atlas == 'Campaign_HeaderIcon_OpenPressed' then
 							tex:SetTexture(E.Media.Textures.MinusButton)
 						end
 					end
+
 				end
 			end
 		end
