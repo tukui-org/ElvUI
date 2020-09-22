@@ -437,9 +437,9 @@ function S:BlizzardQuestFrames()
 	-- 9.0 Needs Update for ShadowLands
 	-- Skin the +/- buttons in the QuestLog
 	hooksecurefunc('QuestLogQuests_Update', function()
-		for i = 6, _G.QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
+		for i = 1, _G.QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
 			local child = select(i, _G.QuestMapFrame.QuestsFrame.Contents:GetChildren())
-			if child and child.ButtonText and not child.Text then
+			if child and child.ButtonText and not child.questID then
 				if not child.buttonSized then
 					child:Size(16, 16)
 					child.buttonSized = true
