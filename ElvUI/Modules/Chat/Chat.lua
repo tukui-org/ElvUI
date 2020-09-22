@@ -645,7 +645,7 @@ function CH:StyleChat(frame)
 
 	if not tab.left then tab.left = _G[name..'TabLeft'] end
 	tab.Text:ClearAllPoints()
-	tab.Text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), -2)
+	tab.Text:Point('LEFT', tab, 'LEFT', tab.left:GetWidth(), 0)
 	tab:Height(22)
 
 	if tab.conversationIcon then
@@ -1097,9 +1097,9 @@ function CH:PositionChat(chat)
 		chat:Show()
 	end
 
-	local BASE_OFFSET = 28
+	local BASE_OFFSET = 32
 	if chat == CH.LeftChatWindow then
-		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0
+		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
 
 		chat:ClearAllPoints()
 		chat:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 5)
@@ -1107,7 +1107,7 @@ function CH:PositionChat(chat)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
-		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0
+		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
 
 		chat:ClearAllPoints()
 		chat:Point('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 5)
