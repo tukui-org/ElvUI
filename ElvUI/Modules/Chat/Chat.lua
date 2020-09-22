@@ -1112,6 +1112,10 @@ function CH:PositionChat(chat)
 		chat:SetUserPlaced(true)
 	end
 
+	if chat.FontStringContainer then
+		chat.FontStringContainer:SetOutside(chat, 3, 3)
+	end
+
 	if chat:IsShown() then
 		-- that chat font container leaks outside of its frame
 		-- we cant clip it, so lets force that leak sooner so
@@ -1125,7 +1129,7 @@ function CH:PositionChat(chat)
 		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0
 
 		chat:ClearAllPoints()
-		chat:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 3)
+		chat:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 5)
 		chat:Size(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
@@ -1133,7 +1137,7 @@ function CH:PositionChat(chat)
 		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 2) or 0
 
 		chat:ClearAllPoints()
-		chat:Point('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 3)
+		chat:Point('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 5)
 		chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
