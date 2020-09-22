@@ -3,8 +3,11 @@ local B = E:GetModule('Blizzard')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
 
 local function AcknowledgeTips()
+	if InCombatLockdown() then return end -- just incase cause this code path will call SetCVar
+
 	for frame in _G.HelpTip.framePool:EnumerateActive() do
 		frame:Acknowledge()
 	end
