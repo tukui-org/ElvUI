@@ -4,22 +4,15 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
--- these have a block frame until you do the little tutorial
-local allowTipsFrom = {
-	GarrisonMissionTutorialFrame = true,
-	VoidStorageFrame = true
-}
-
-function B:KillBlizzard()
-	if E.global.general.disableTutorialButtons then
-		_G.TutorialFrame:UnregisterAllEvents()
-		_G.HelpTip:ForceHideAll()
-
-		hooksecurefunc(_G.HelpTip, 'Show', function(tip, parent, info)
-			local parentName = parent.GetName and parent:GetName()
-			if not allowTipsFrom[parentName] then
-				tip:Hide(parent, info.text)
-			end
-		end)
+local function AcknowledgeTips()
+	for frame in _G.HelpTip.framePool:EnumerateActive() do
+		frame:Acknowledge()
 	end
+end
+
+function B:DisableHelpTip()
+	if not E.global.general.disableTutorialButtons then return end
+
+	AcknowledgeTips()
+	hooksecurefunc(_G.HelpTip, 'Show', AcknowledgeTips)
 end
