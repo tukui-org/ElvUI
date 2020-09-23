@@ -70,11 +70,11 @@ function DB:ExperienceBar_Update()
 		bar:SetValue(CurrentXP)
 
 		if textFormat == 'PERCENT' then
-			displayString = format('%d%%', PercentXP)
+			displayString = format('%.2f%%', PercentXP)
 		elseif textFormat == 'CURMAX' then
 			displayString = format('%s - %s', E:ShortValue(CurrentXP), E:ShortValue(XPToLevel))
 		elseif textFormat == 'CURPERC' then
-			displayString = format('%s - %d%%', E:ShortValue(CurrentXP), PercentXP)
+			displayString = format('%s - %.2f%%', E:ShortValue(CurrentXP), PercentXP)
 		elseif textFormat == 'CUR' then
 			displayString = format('%s', E:ShortValue(CurrentXP))
 		elseif textFormat == 'REM' then
@@ -82,7 +82,7 @@ function DB:ExperienceBar_Update()
 		elseif textFormat == 'CURREM' then
 			displayString = format('%s - %s', E:ShortValue(CurrentXP), RemainXP)
 		elseif textFormat == 'CURPERCREM' then
-			displayString = format('%s - %d%% (%s)', E:ShortValue(CurrentXP), PercentXP, RemainXP)
+			displayString = format('%s - %.2f%% (%s)', E:ShortValue(CurrentXP), PercentXP, RemainXP)
 		end
 
 		local isRested = RestedXP and RestedXP > 0
@@ -93,9 +93,9 @@ function DB:ExperienceBar_Update()
 			PercentRested = E:Round(RestedXP / XPToLevel) * 100
 
 			if textFormat == 'PERCENT' then
-				displayString = format('%s R:%d%%', displayString, PercentRested)
+				displayString = format('%s R:%.2f%%', displayString, PercentRested)
 			elseif textFormat == 'CURPERC' then
-				displayString = format('%s R:%s [%d%%]', displayString, E:ShortValue(RestedXP), PercentRested)
+				displayString = format('%s R:%s [%.2f%%]', displayString, E:ShortValue(RestedXP), PercentRested)
 			elseif textFormat ~= 'NONE' then
 				displayString = format('%s R:%s', displayString, E:ShortValue(RestedXP))
 			end
