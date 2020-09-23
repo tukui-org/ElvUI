@@ -33,6 +33,8 @@ local oUF = ns.oUF
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 local function updateTooltip(self)
+	if _G.GameTooltip:IsForbidden() then return end
+
 	local name, tooltip = GetUnitPowerBarStringsByID(self.__barID)
 	GameTooltip:SetText(name or '', 1, 1, 1)
 	GameTooltip:AddLine(tooltip or '', nil, nil, nil, true)
@@ -40,7 +42,7 @@ local function updateTooltip(self)
 end
 
 local function onEnter(self)
-	if (not self:IsVisible()) or GameTooltip:IsForbidden() then return end
+	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
 	GameTooltip:ClearAllPoints()
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)
@@ -48,6 +50,8 @@ local function onEnter(self)
 end
 
 local function onLeave()
+	if _G.GameTooltip:IsForbidden() then return end
+
 	GameTooltip:Hide()
 end
 

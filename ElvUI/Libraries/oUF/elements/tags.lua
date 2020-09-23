@@ -705,7 +705,8 @@ local function getTagFunc(tagstr)
 			-- end block
 		end
 
-		if numTags ~= -1 then -- ElvUI replaced
+		-- ElvUI changed
+		if numTags ~= -1 then
 			func = function(self)
 				local parent = self.parent
 				local unit = parent.unit
@@ -722,10 +723,7 @@ local function getTagFunc(tagstr)
 				-- We do 1, numTags because tmp can hold several unneeded variables.
 				self:SetFormattedText(frmt, unpack(tmp, 1, numTags))
 			end
-		end
 
-		-- ElvUI added check
-		if numTags ~= -1 then
 			tagPool[tagstr] = func
 		end
 		-- end block

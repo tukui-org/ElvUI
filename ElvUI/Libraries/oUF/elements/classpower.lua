@@ -242,7 +242,7 @@ do
 
 		self.ClassPower.__isEnabled = true
 
-		if UnitHasVehicleUI('player') then
+		if(UnitHasVehicleUI('player')) then
 			Path(self, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
 		else
 			Path(self, 'ClassPowerEnable', 'player', ClassPowerType)

@@ -89,17 +89,20 @@ local floor, min = math.floor, math.min
 -- ElvUI adds IsForbidden checks
 local function UpdateTooltip(self)
 	if _G.GameTooltip:IsForbidden() then return end
+
 	_G.GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local function onEnter(self)
 	if _G.GameTooltip:IsForbidden() or not self:IsVisible() then return end
+
 	_G.GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
 	self:UpdateTooltip()
 end
 
 local function onLeave()
 	if _G.GameTooltip:IsForbidden() then return end
+
 	_G.GameTooltip:Hide()
 end
 
