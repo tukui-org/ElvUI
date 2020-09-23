@@ -36,13 +36,16 @@ OnEnter and/or OnLeave handlers.
 local _, ns = ...
 local oUF = ns.oUF
 
+local GameTooltip = GameTooltip
+
 --[[ Override: PhaseIndicator:UpdateTooltip()
 Used to populate the tooltip when the widget is hovered.
 
 * self - the PhaseIndicator widget
 --]]
 local function UpdateTooltip(element)
-	if _G.GameTooltip:IsForbidden() then return end
+	if GameTooltip:IsForbidden() then return end
+
 	local unit = element.__owner.unit
 	local reason = UnitPhaseReason(unit)
 	local text = reason and PartyUtil.GetPhasedReasonString(reason, unit) or ''
@@ -52,14 +55,15 @@ local function UpdateTooltip(element)
 end
 
 local function onEnter(element)
-	if _G.GameTooltip:IsForbidden() or not element:IsVisible() then return end
+	if GameTooltip:IsForbidden() or not element:IsVisible() then return end
 
 	GameTooltip:SetOwner(element, 'ANCHOR_BOTTOMRIGHT')
 	element:UpdateTooltip()
 end
 
 local function onLeave()
-	if _G.GameTooltip:IsForbidden() then return end
+	if GameTooltip:IsForbidden() then return end
+
 	GameTooltip:Hide()
 end
 
