@@ -171,7 +171,6 @@ function S:Ace3_RegisterAsWidget(widget)
 		frame:CreateBackdrop()
 		frame.backdrop:Point('TOPLEFT', 15, -2)
 		frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
-		frame.backdrop:SetClipsChildren(true)
 
 		S:HandleNextPrevButton(button, nil, nextPrevColor)
 
@@ -198,7 +197,6 @@ function S:Ace3_RegisterAsWidget(widget)
 		frame:CreateBackdrop()
 		frame.backdrop:Point('TOPLEFT', 0, -21)
 		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
-		frame.backdrop:SetClipsChildren(true)
 		frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
 
 		frame.label:ClearAllPoints()
