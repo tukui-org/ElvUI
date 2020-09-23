@@ -50,9 +50,9 @@ function DB:ExperienceBar_Update()
 	if XPToLevel <= 0 then XPToLevel = 1 end
 
 	local remainXP = XPToLevel - CurrentXP
-	local remainPercent = E:Round(remainXP / XPToLevel)
+	local remainPercent = remainXP / XPToLevel
 	RemainTotal, RemainBars = remainPercent * 100, remainPercent * 20
-	PercentXP, RemainXP = E:Round(CurrentXP / XPToLevel) * 100, E:ShortValue(remainXP)
+	PercentXP, RemainXP = (CurrentXP / XPToLevel) * 100, E:ShortValue(remainXP)
 
 	local expColor, restedColor = DB.db.colors.experience, DB.db.colors.rested
 	bar:SetStatusBarColor(expColor.r, expColor.g, expColor.b, expColor.a)
@@ -153,7 +153,7 @@ function DB:ExperienceBar_OnEnter()
 	_G.GameTooltip:AddLine(' ')
 
 	_G.GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
-	_G.GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%.2f%% - %.2f '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %.2f '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
 	_G.GameTooltip:AddDoubleLine(L["Quest Log XP:"], QuestLogXP, 1, 1, 1)
 
 	if RestedXP and RestedXP > 0 then
