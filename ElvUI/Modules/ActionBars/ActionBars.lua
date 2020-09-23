@@ -139,7 +139,7 @@ do
 	function AB:SetBarSize(bar, size, btnSpacing, sideSpacing, widthMult, heightMult, buttonsPerRow, numColumns)
 		local width = barSize(size, btnSpacing, sideSpacing, widthMult, buttonsPerRow)
 		local height = barSize(size, btnSpacing, sideSpacing, heightMult, numColumns)
-		bar:Size(width, height)
+		bar:SetSize(width, height)
 	end
 end
 
@@ -199,7 +199,7 @@ function AB:PositionAndSizeBar(barName)
 		button:ClearAllPoints()
 		button:SetAttribute('showgrid', 1)
 		button:EnableMouse(not db.clickThrough)
-		button:Size(size)
+		button:SetSize(size, size)
 
 		if i == 1 then
 			local x, y
@@ -213,7 +213,7 @@ function AB:PositionAndSizeBar(barName)
 				x, y = -sideSpacing, sideSpacing
 			end
 
-			button:Point(point, bar, point, x, y)
+			button:SetPoint(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local y = -buttonSpacing
 			local buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
@@ -222,7 +222,7 @@ function AB:PositionAndSizeBar(barName)
 				buttonPoint = 'BOTTOM'
 				anchorPoint = 'TOP'
 			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, 0, y)
+			button:SetPoint(buttonPoint, lastColumnButton, anchorPoint, 0, y)
 		else
 			local x = buttonSpacing
 			local buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
@@ -232,7 +232,7 @@ function AB:PositionAndSizeBar(barName)
 				anchorPoint = 'LEFT'
 			end
 
-			button:Point(buttonPoint, lastButton, anchorPoint, x, 0)
+			button:SetPoint(buttonPoint, lastButton, anchorPoint, x, 0)
 		end
 
 		if i > numButtons then
@@ -283,14 +283,14 @@ function AB:CreateBar(id)
 	SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 
 	local point, anchor, attachTo, x, y = strsplit(',', AB.barDefaults['bar'..id].position)
-	bar:Point(point, anchor, attachTo, x, y)
+	bar:SetPoint(point, anchor, attachTo, x, y)
 	bar:SetFrameStrata('LOW')
 	bar.id = id
 
 	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
 	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
-	bar.backdrop:Point('TOPLEFT', bar, 'TOPLEFT', E.Spacing, -E.Spacing)
-	bar.backdrop:Point('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
+	bar.backdrop:SetPoint('TOPLEFT', bar, 'TOPLEFT', E.Spacing, -E.Spacing)
+	bar.backdrop:SetPoint('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
 
 	bar.buttons = {}
 	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons
