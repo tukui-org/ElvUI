@@ -201,8 +201,6 @@ function S:Ace3_RegisterAsWidget(widget)
 		frame.backdrop:SetClipsChildren(true)
 		frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
 
-		S:HandleNextPrevButton(button, nil, nextPrevColor)
-
 		frame.label:ClearAllPoints()
 		frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
 
@@ -218,11 +216,17 @@ function S:Ace3_RegisterAsWidget(widget)
 			widget.soundbutton:SetParent(frame.backdrop)
 			widget.soundbutton:ClearAllPoints()
 			widget.soundbutton:Point('LEFT', frame.backdrop, 'LEFT', 2, 0)
+
+			S:HandleNextPrevButton(button, nil, nextPrevColor)
 		elseif TYPE == 'LSM30_Statusbar' then
 			widget.bar:SetParent(frame.backdrop)
 			widget.bar:ClearAllPoints()
-			widget.bar:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
-			widget.bar:Point('BOTTOMRIGHT', button, 'BOTTOMLEFT', -1, 0)
+			widget.bar:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 1, -1)
+			widget.bar:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -1, 1)
+
+			S:HandleNextPrevButton(button, nil, nextPrevColor, true)
+		else
+			S:HandleNextPrevButton(button, nil, nextPrevColor)
 		end
 
 		button:SetParent(frame.backdrop)

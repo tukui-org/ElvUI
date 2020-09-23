@@ -1147,8 +1147,11 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 		btn:Size(20, 20)
 		Disabled:SetVertexColor(.5, .5, .5)
 		btn.Texture = Normal
-		btn:HookScript('OnEnter', handleCloseButtonOnEnter)
-		btn:HookScript('OnLeave', handleCloseButtonOnLeave)
+
+		if not color then
+			btn:HookScript('OnEnter', handleCloseButtonOnEnter)
+			btn:HookScript('OnLeave', handleCloseButtonOnLeave)
+		end
 	else
 		btn:Size(18, 18)
 		Disabled:SetVertexColor(.3, .3, .3)
