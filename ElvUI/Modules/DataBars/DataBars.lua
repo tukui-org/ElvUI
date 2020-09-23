@@ -35,11 +35,9 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 end
 
 function DB:UpdateAll()
-	local customStatusBar = E.LSM:Fetch('statusbar', DB.db.statusbar)
+	local barTexture = DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
 
 	for _, bar in pairs(DB.StatusBars) do
-		local barTexture = DB.db.customTexture and customStatusBar or E.media.normTex
-
 		bar:SetWidth(bar.db.width)
 		bar:SetHeight(bar.db.height)
 		bar:SetReverseFill(bar.db.reverseFill)
