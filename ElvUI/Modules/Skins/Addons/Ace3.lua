@@ -413,6 +413,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		local frame = widget.content:GetParent()
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:SetFrameLevel(widget.content:GetFrameLevel())
+		frame.backdrop:SetAllPoints()
 		frame.callbackBackdropColor = S.Ace3_BackdropColor
 		S.Ace3_BackdropColor(frame)
 	end
