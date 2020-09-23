@@ -22,15 +22,6 @@ local rawset = rawset
 -- versions of AceGUI and AceConfigDialog.
 local minorGUI, minorConfigDialog = 36, 76
 
-local dropdownTextures = {}
-local function UpdateColors()
-	local r, g, b = unpack(E.media.rgbvaluecolor)
-	for _, tex in ipairs(dropdownTextures) do
-		tex:SetVertexColor(r, g, b)
-	end
-end
-E.valueColorUpdateFuncs[UpdateColors] = true
-
 function S:Ace3_BackdropColor()
 	local backdrop = self.backdrop or self
 	backdrop:SetBackdropColor(0, 0, 0, 0.25)
@@ -230,11 +221,8 @@ function S:Ace3_RegisterAsWidget(widget)
 		elseif TYPE == 'LSM30_Statusbar' then
 			widget.bar:SetParent(frame.backdrop)
 			widget.bar:ClearAllPoints()
-			widget.bar:SetVertexColor(unpack(E.media.rgbvaluecolor))
 			widget.bar:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
 			widget.bar:Point('BOTTOMRIGHT', button, 'BOTTOMLEFT', -1, 0)
-
-			tinsert(dropdownTextures, widget.bar)
 		end
 
 		button:SetParent(frame.backdrop)
