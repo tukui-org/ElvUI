@@ -313,7 +313,13 @@ function NP:UpdatePlate(nameplate, updateBase)
 
 	local db = NP:PlateDB(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
-	if sf.Visibility or sf.NameOnly or db.nameOnly or not db.enable then
+	if not db.enable then
+		NP:DisablePlate(nameplate)
+
+		if nameplate.RaisedElement:IsShown() then
+			nameplate.RaisedElement:Hide()
+		end
+	elseif sf.Visibility or sf.NameOnly or db.nameOnly then
 		NP:DisablePlate(nameplate, sf.NameOnly or (db.nameOnly and not sf.Visibility))
 	elseif updateBase then
 		NP:Update_Tags(nameplate)
