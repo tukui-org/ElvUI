@@ -21,19 +21,19 @@ local function OnEvent(self)
 		if XPToLevel <= 0 then XPToLevel = 1 end
 
 		local remainXP = XPToLevel - CurrentXP
-		local remainPercent = E:Round(remainXP / XPToLevel)
+		local remainPercent = remainXP / XPToLevel
 
 		-- values we also use in OnEnter
 		RemainTotal, RemainBars = remainPercent * 100, remainPercent * 20
-		PercentXP, RemainXP = E:Round(CurrentXP / XPToLevel) * 100, E:ShortValue(remainXP)
+		PercentXP, RemainXP = (CurrentXP / XPToLevel) * 100, E:ShortValue(remainXP)
 
 		local textFormat = E.global.datatexts.settings.Experience.textFormat
 		if textFormat == 'PERCENT' then
-			displayString = format('%d%%', PercentXP)
+			displayString = format('%.2f%%', PercentXP)
 		elseif textFormat == 'CURMAX' then
 			displayString = format('%s - %s', E:ShortValue(CurrentXP), E:ShortValue(XPToLevel))
 		elseif textFormat == 'CURPERC' then
-			displayString = format('%s - %d%%', E:ShortValue(CurrentXP), PercentXP)
+			displayString = format('%s - %.2f%%', E:ShortValue(CurrentXP), PercentXP)
 		elseif textFormat == 'CUR' then
 			displayString = format('%s', E:ShortValue(CurrentXP))
 		elseif textFormat == 'REM' then
@@ -41,16 +41,16 @@ local function OnEvent(self)
 		elseif textFormat == 'CURREM' then
 			displayString = format('%s - %s', E:ShortValue(CurrentXP), RemainXP)
 		elseif textFormat == 'CURPERCREM' then
-			displayString = format('%s - %d%% (%s)', E:ShortValue(CurrentXP), PercentXP, RemainXP)
+			displayString = format('%s - %.2f%% (%s)', E:ShortValue(CurrentXP), PercentXP, RemainXP)
 		end
 
 		if RestedXP and RestedXP > 0 then
-			PercentRested = E:Round(RestedXP / XPToLevel) * 100
+			PercentRested = (RestedXP / XPToLevel) * 100
 
 			if textFormat == 'PERCENT' then
-				displayString = format('%s R:%d%%', displayString, PercentRested)
+				displayString = format('%s R:%.2f%%', displayString, PercentRested)
 			elseif textFormat == 'CURPERC' then
-				displayString = format('%s R:%s [%d%%]', displayString, E:ShortValue(RestedXP), PercentRested)
+				displayString = format('%s R:%s [%.2f%%]', displayString, E:ShortValue(RestedXP), PercentRested)
 			elseif textFormat ~= 'NONE' then
 				displayString = format('%s R:%s', displayString, E:ShortValue(RestedXP))
 			end
@@ -68,7 +68,7 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 
 	DT.tooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
-	DT.tooltip:AddDoubleLine(L["Remaining:"], format(' %d (%.2f%% - %.2f '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
+	DT.tooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %.2f '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
 
 	if RestedXP and RestedXP > 0 then
 		DT.tooltip:AddDoubleLine(L["Rested:"], format('+%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)

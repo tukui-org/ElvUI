@@ -90,7 +90,7 @@ function DB:ExperienceBar_Update()
 			bar.Rested:SetMinMaxValues(0, XPToLevel)
 			bar.Rested:SetValue(min(CurrentXP + RestedXP, XPToLevel))
 
-			PercentRested = E:Round(RestedXP / XPToLevel) * 100
+			PercentRested = (RestedXP / XPToLevel) * 100
 
 			if textFormat == 'PERCENT' then
 				displayString = format('%s R:%.2f%%', displayString, PercentRested)
