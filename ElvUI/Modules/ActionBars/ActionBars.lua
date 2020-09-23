@@ -158,15 +158,10 @@ function AB:PositionAndSizeBar(barName)
 
 	bar.db = db
 	bar.db.position = nil --Depreciated
+	bar.backdrop:SetShown(db.backdrop)
 
 	if visibility and visibility:match('[\n\r]') then
 		visibility = visibility:gsub('[\n\r]','')
-	end
-
-	if db.backdrop then
-		bar.backdrop:Show()
-	else
-		bar.backdrop:Hide()
 	end
 
 	if numColumns < 1 then numColumns = 1 end
