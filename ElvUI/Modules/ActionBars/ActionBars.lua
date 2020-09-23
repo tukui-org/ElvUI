@@ -129,6 +129,20 @@ AB.customExitButton = {
 	tooltip = _G.LEAVE_VEHICLE,
 }
 
+do
+	local function barSize(size, btnSpacing, sideSpacing, mult, num)
+		local allButtons = size * (num * mult)
+		local allSpacing = (btnSpacing * (num - 1)) + sideSpacing
+		return allButtons + allSpacing
+	end
+
+	function AB:SetBarSize(bar, size, btnSpacing, sideSpacing, widthMult, heightMult, buttonsPerRow, numColumns)
+		local width = barSize(size, btnSpacing, sideSpacing, widthMult, buttonsPerRow)
+		local height = barSize(size, btnSpacing, sideSpacing, heightMult, numColumns)
+		bar:Size(width, height)
+	end
+end
+
 function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 
@@ -149,28 +163,17 @@ function AB:PositionAndSizeBar(barName)
 		visibility = visibility:gsub('[\n\r]','')
 	end
 
-	if numButtons < buttonsPerRow then
-		buttonsPerRow = numButtons
-	end
-
-	if numColumns < 1 then
-		numColumns = 1
-	end
-
-	local widthMult, heightMult
 	if db.backdrop then
 		bar.backdrop:Show()
-		widthMult, heightMult = db.widthMult, db.heightMult
 	else
 		bar.backdrop:Hide()
-		widthMult, heightMult = 1, 1
 	end
 
+	if numColumns < 1 then numColumns = 1 end
+	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
+
 	local sideSpacing = db.backdrop and (E.Border + backdropSpacing) or E.Spacing
-	--Size of all buttons + Spacing between all buttons + Spacing between additional rows of buttons + Spacing between backdrop and buttons + Spacing on end borders with non-thin borders
-	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult - 1)) + (sideSpacing*2)
-	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult - 1)) + (sideSpacing*2)
-	bar:Size(barWidth, barHeight)
+	AB:SetBarSize(bar, size, buttonSpacing, sideSpacing * 2, db.backdrop and db.widthMult or 1, db.backdrop and db.heightMult or 1, buttonsPerRow, numColumns)
 
 	bar.mouseover = db.mouseover
 	if bar.mouseover then
