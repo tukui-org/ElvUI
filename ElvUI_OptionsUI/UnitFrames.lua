@@ -2942,13 +2942,6 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			name = L["Threat Display Mode"],
 			values = threatValues,
 		}
-	else
-		config.args.pvpSpecIcon = {
-			order = 21,
-			name = L["Spec Icon"],
-			desc = L["Display icon on arena frame indicating the units talent specialization or the units faction if inside a battleground."],
-			type = 'toggle',
-		}
 	end
 
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
