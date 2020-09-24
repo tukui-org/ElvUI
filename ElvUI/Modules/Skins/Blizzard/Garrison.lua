@@ -595,10 +595,9 @@ function S:Blizzard_GarrisonUI()
 	_G.CombatLog.CombatLogMessageFrame:CreateBackdrop('Transparent')
 
 	-- Adventures / Follower Tab
-	-- TODO: Quality Border!?
 	Follower = _G.CovenantMissionFrameFollowers -- swap
 	FollowerTab = CovenantMissionFrame.FollowerTab
-	-- Simpy, please check this, probably our functions needs to be rewritten for this!?
+
 	hooksecurefunc(Follower, 'ShowFollower', showFollower)
 	Follower:StripTextures()
 	Follower:CreateBackdrop('Transparent')
@@ -616,8 +615,8 @@ function S:Blizzard_GarrisonUI()
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
 	S:HandleIcon(CovenantMissionFrame.MissionTab.MissionPage.CostFrame.CostIcon)
 
-	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript("OnShow", SkinMissionBoards)
-	CovenantMissionFrame.MissionComplete.Board:HookScript("OnShow", SkinMissionBoards)
+	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript('OnShow', SkinMissionBoards)
+	CovenantMissionFrame.MissionComplete.Board:HookScript('OnShow', SkinMissionBoards)
 end
 
 local function SkinFollowerTooltip(frame)
