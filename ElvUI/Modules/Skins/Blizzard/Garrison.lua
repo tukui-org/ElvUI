@@ -37,6 +37,8 @@ local function SkinFollowerBoard(self, group)
 
 			if frame.SetFollowerGUID then
 				hooksecurefunc(frame, 'SetFollowerGUID', UpdateFollowerColorOnBoard)
+			end
+			if frame.SetEmpty then
 				hooksecurefunc(frame, 'SetEmpty', ResetFollowerColorOnBoard)
 			end
 
@@ -56,6 +58,7 @@ local function UpdateSpellAbilities(spell, followerInfo)
 		local abilityFrame = spell.autoSpellPool:Acquire()
 		if not abilityFrame.IsSkinned then
 			S:HandleIcon(abilityFrame.Icon, true)
+
 			if abilityFrame.SpellBorder then
 				abilityFrame.SpellBorder:Hide()
 			end
