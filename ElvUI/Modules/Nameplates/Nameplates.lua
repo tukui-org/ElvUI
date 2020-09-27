@@ -537,7 +537,9 @@ function NP:ConfigureAll()
 		if nameplate == _G.ElvNP_Player then
 			NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
 		else
+			nameplate.noFade = true
 			NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
+			nameplate.noFade = nil
 		end
 	end
 
@@ -646,7 +648,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			end
 		end
 
-		if NP.db.fadeIn and (event == 'NAME_PLATE_UNIT_ADDED' and nameplate.frameType ~= 'PLAYER') then
+		if NP.db.fadeIn and (event == 'NAME_PLATE_UNIT_ADDED' and nameplate.frameType ~= 'PLAYER') and not nameplate.noFade then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
