@@ -310,6 +310,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
+	NP:Update_Tags(nameplate, true) -- update fonts
 
 	local db = NP:PlateDB(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
@@ -322,7 +323,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	elseif sf.Visibility or sf.NameOnly or db.nameOnly then
 		NP:DisablePlate(nameplate, sf.NameOnly or (db.nameOnly and not sf.Visibility))
 	elseif updateBase then
-		NP:Update_Tags(nameplate)
+		NP:Update_Tags(nameplate) -- update tags
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
 		NP:Update_Highlight(nameplate)
@@ -392,7 +393,6 @@ function NP:DisablePlate(nameplate, nameOnly)
 	end
 
 	if nameOnly then
-		NP:Update_Tags(nameplate)
 		NP:Update_Highlight(nameplate)
 
 		-- The position values here are forced on purpose.
@@ -501,13 +501,8 @@ function NP:GROUP_LEFT()
 	wipe(NP.GroupRoles)
 end
 
-local setPreviousType = false
-function NP:PLAYER_ENTERING_WORLD(_, initLogin)
+function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, GetInstanceInfo())
-
-	if initLogin then
-		setPreviousType = true
-	end
 end
 
 function NP:ConfigureAll()
@@ -658,10 +653,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				NP:UpdatePlate(nameplate, true)
 			else
 				NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
-
-				if setPreviousType then
-					nameplate.previousType = nameplate.frameType
-				end
+				nameplate.previousType = nameplate.frameType
 			end
 		end
 
