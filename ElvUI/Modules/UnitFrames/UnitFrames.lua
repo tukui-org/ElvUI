@@ -883,13 +883,17 @@ function UF:ZONE_CHANGED_NEW_AREA()
 end
 
 -- note in datatext file, same name.
+local RerenderFont = function(fs)
+	local text = fs:GetText()
+	fs:SetText('\10')
+	fs:SetText(text)
+end
+
 local FixFonts = CreateFrame('Frame')
 FixFonts:Hide()
 FixFonts:SetScript('OnUpdate', function(self)
 	for fs in pairs(UF.fontstrings) do
-		local text = fs:GetText()
-		fs:SetText('\10')
-		fs:SetText(text)
+		RerenderFont(fs)
 	end
 
 	self:Hide()
