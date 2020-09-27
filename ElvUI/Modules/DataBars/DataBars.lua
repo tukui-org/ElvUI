@@ -38,7 +38,7 @@ function DB:UpdateAll()
 	local barTexture = DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
 
 	for _, bar in pairs(DB.StatusBars) do
-		bar:SetSize(bar.db.width, bar.db.height)
+		bar:Size(bar.db.width, bar.db.height)
 		bar:SetReverseFill(bar.db.reverseFill)
 		bar:SetStatusBarTexture(barTexture, 'ARTWORK', 7)
 		bar:EnableMouse(not bar.db.clickThrough)
