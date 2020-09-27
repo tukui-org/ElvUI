@@ -217,11 +217,6 @@ function NP:StyleTargetPlate(nameplate)
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
-
-	--nameplate.Power = NP:Construct_Power(nameplate)
-
-	--nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
-
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then
@@ -529,8 +524,6 @@ function NP:ConfigureAll()
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 
 	for nameplate in pairs(NP.Plates) do
-		NP:StyleFilterClear(nameplate) -- keep this at the top of the loop
-
 		if nameplate.frameType == 'PLAYER' then
 			nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 			SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
@@ -542,14 +535,9 @@ function NP:ConfigureAll()
 
 		if nameplate == _G.ElvNP_Player then
 			NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
-		elseif not nameplate.widgetsOnly then
-			if nameplate.frameType ~= 'PLAYER' or playerEnabled then
-				NP:UpdatePlate(nameplate, true)
-				NP:StyleFilterUpdate(nameplate, 'NAME_PLATE_UNIT_ADDED') -- keep this after update plate
-			end
+		else
+			NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 		end
-
-		nameplate:UpdateAllElements('ForceUpdate')
 	end
 
 	NP:Update_StatusBars()
