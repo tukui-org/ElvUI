@@ -27,12 +27,14 @@ function NP:Update_Tags(nameplate, fonts)
 	if not db then return end
 
 	if fonts then
-		local font, size, outline = E.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline
-		nameplate.Name:FontTemplate(font, size, outline)
-		nameplate.Title:FontTemplate(font, size, outline)
-		nameplate.Level:FontTemplate(font, size, outline)
-		nameplate.Health.Text:FontTemplate(font, size, outline)
-		nameplate.Power.Text:FontTemplate(font, size, outline)
+		if db.font then
+			local font, size, outline = E.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline
+			nameplate.Name:FontTemplate(font, size, outline)
+			nameplate.Title:FontTemplate(font, size, outline)
+			nameplate.Level:FontTemplate(font, size, outline)
+			nameplate.Health.Text:FontTemplate(font, size, outline)
+			nameplate.Power.Text:FontTemplate(font, size, outline)
+		end
 	else
 		local sf = NP:StyleFilterChanges(nameplate)
 		local hide = db.nameOnly or sf.NameOnly

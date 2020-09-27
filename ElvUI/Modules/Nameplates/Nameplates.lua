@@ -217,11 +217,6 @@ function NP:StyleTargetPlate(nameplate)
 	nameplate:SetScale(E.global.general.UIScale)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
-
-	--nameplate.Power = NP:Construct_Power(nameplate)
-
-	--nameplate.Power.Text = NP:Construct_TagText(nameplate.RaisedElement)
-
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
 
 	if E.myclass == 'DEATHKNIGHT' then
