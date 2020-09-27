@@ -501,13 +501,8 @@ function NP:GROUP_LEFT()
 	wipe(NP.GroupRoles)
 end
 
-local setPreviousType = false
-function NP:PLAYER_ENTERING_WORLD(_, initLogin)
+function NP:PLAYER_ENTERING_WORLD()
 	NP.InstanceType = select(2, GetInstanceInfo())
-
-	if initLogin then
-		setPreviousType = true
-	end
 end
 
 function NP:ConfigureAll()
@@ -658,10 +653,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				NP:UpdatePlate(nameplate, true)
 			else
 				NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
-
-				if setPreviousType then
-					nameplate.previousType = nameplate.frameType
-				end
+				nameplate.previousType = nameplate.frameType
 			end
 		end
 
