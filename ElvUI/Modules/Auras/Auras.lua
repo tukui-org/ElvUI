@@ -295,6 +295,12 @@ function A:UpdateTempEnchant(button, index)
 		A:ClearAuraTime(button)
 	end
 
+	if A.db.showDuration then
+		button.text:Show()
+	else
+		button.text:Hide()
+	end
+
 	if (A.db.barShow and remaining > 0) or (A.db.barShow and A.db.barNoDuration and not expiration) then
 		button.statusBar:Show()
 	else
