@@ -549,6 +549,7 @@ function NP:ConfigureAll(skipUpdate)
 			if nameplate == _G.ElvNP_Player then
 				NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
 			else
+				nameplate.previousType = nil -- we still need a full update
 				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 			end
 		end
