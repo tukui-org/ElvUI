@@ -8,13 +8,12 @@ function NP:Construct_TagText(nameplate)
 	return Text
 end
 
-function NP:Update_TagText(nameplate, element, db, hide, fonts)
+function NP:Update_TagText(nameplate, element, db, hide)
 	if not db then return end
 
-	if fonts then
-		element:FontTemplate(E.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-	elseif db.enable and not hide then
+	if db.enable and not hide then
 		nameplate:Tag(element, db.format or '')
+		element:FontTemplate(E.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 		element:UpdateTag()
 
 		element:ClearAllPoints()
@@ -26,14 +25,14 @@ function NP:Update_TagText(nameplate, element, db, hide, fonts)
 	end
 end
 
-function NP:Update_Tags(nameplate, fonts)
+function NP:Update_Tags(nameplate)
 	local db = NP:PlateDB(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
 	local hide = db.nameOnly or sf.NameOnly
 
-	NP:Update_TagText(nameplate, nameplate.Name, db.name, nil, fonts)
-	NP:Update_TagText(nameplate, nameplate.Title, db.title, nil, fonts)
-	NP:Update_TagText(nameplate, nameplate.Level, db.level, hide, fonts)
-	NP:Update_TagText(nameplate, nameplate.Health.Text, db.health and db.health.text, hide, fonts)
-	NP:Update_TagText(nameplate, nameplate.Power.Text, db.power and db.power.text, hide, fonts)
+	NP:Update_TagText(nameplate, nameplate.Name, db.name)
+	NP:Update_TagText(nameplate, nameplate.Title, db.title)
+	NP:Update_TagText(nameplate, nameplate.Level, db.level, hide)
+	NP:Update_TagText(nameplate, nameplate.Health.Text, db.health and db.health.text, hide)
+	NP:Update_TagText(nameplate, nameplate.Power.Text, db.power and db.power.text, hide)
 end
