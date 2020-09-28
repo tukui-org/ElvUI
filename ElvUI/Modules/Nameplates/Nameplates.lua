@@ -527,7 +527,11 @@ function NP:ConfigureAll()
 	for nameplate in pairs(NP.Plates) do
 		if nameplate.frameType == 'PLAYER' then
 			nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-			SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
+
+			local showSelf = (isStatic or not playerEnabled) and '0' or '1'
+			if GetCVar('nameplateShowSelf') ~= showSelf then
+				SetCVar('nameplateShowSelf', showSelf)
+			end
 		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
 			nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
 		else
