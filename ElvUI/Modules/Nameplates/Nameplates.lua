@@ -816,7 +816,6 @@ function NP:Initialize()
 	NP:HideInterfaceOptions()
 	NP:GROUP_ROSTER_UPDATE()
 	NP:SetCVars()
-	NP:ConfigureAll()
 end
 
 E:RegisterModule(NP:GetName())
