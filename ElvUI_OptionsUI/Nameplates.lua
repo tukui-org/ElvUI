@@ -6557,8 +6557,20 @@ E.Options.args.nameplate = {
 						style8 = L["Background Glow"] .. ' + ' .. L["Side Arrows"]
 					}
 				},
-				nonTargetAlphaShortcut = {
+				arrow = {
 					order = 2,
+					type = 'select',
+					sortByValue = true,
+					name = L["Arrow Texture"],
+					values = {
+						ArrowUp = E:TextureString(E.Media.Textures.ArrowUp, ':14:14'),
+						Arrow1 = E:TextureString(E.Media.Textures.Arrow1, ':14:14'),
+						Arrow2 = E:TextureString(E.Media.Textures.Arrow2, ':14:14')
+					},
+				},
+				spacer1 = ACH:Spacer(3, 'full'),
+				nonTargetAlphaShortcut = {
+					order = 5,
 					type = 'execute',
 					name = L["Non-Target Alpha"],
 					func = function()
@@ -6568,7 +6580,7 @@ E.Options.args.nameplate = {
 					end
 				},
 				targetScaleShortcut = {
-					order = 3,
+					order = 6,
 					type = 'execute',
 					name = L["Scale"],
 					func = function()
@@ -6577,9 +6589,9 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup()
 					end
 				},
-				spacer1 = ACH:Spacer(4, 'full'),
+				spacer2 = ACH:Spacer(10, 'full'),
 				classBarGroup = {
-					order = 10,
+					order = 15,
 					type = 'group',
 					name = L["Classbar"],
 					inline = true,

@@ -649,6 +649,7 @@ P.nameplates = {
 		},
 		TARGET = {
 			enable = true,
+			arrow = 'Arrow1',
 			glowStyle = 'style2',
 			classpower = {
 				enable = false,

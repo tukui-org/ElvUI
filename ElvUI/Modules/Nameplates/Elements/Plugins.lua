@@ -111,6 +111,7 @@ function NP:Update_TargetIndicator(nameplate)
 		nameplate:EnableElement('TargetIndicator')
 	end
 
+	nameplate.TargetIndicator.arrow = E.Media.Textures[NP.db.units.TARGET.arrow]
 	nameplate.TargetIndicator.style = NP.db.units.TARGET.glowStyle
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 
@@ -123,13 +124,13 @@ function NP:Update_TargetIndicator(nameplate)
 		end
 
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
-			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, -6)
+			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, 9)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
-			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', -3, 0)
-			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', 3, 0)
+			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', 3, 0)
+			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', -3, 0)
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
