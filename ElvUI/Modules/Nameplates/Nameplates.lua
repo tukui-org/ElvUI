@@ -92,97 +92,103 @@ do
 	end
 end
 
+function NP:SetCVar(cvar, value)
+	if GetCVar(cvar) ~= tostring(value) then
+		SetCVar(cvar, value)
+	end
+end
+
 function NP:CVarReset()
-	SetCVar('nameplateMinAlpha', 1)
-	SetCVar('nameplateMaxAlpha', 1)
-	SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
-	SetCVar('nameplateGlobalScale', 1)
-	SetCVar('NamePlateHorizontalScale', 1)
-	SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
-	SetCVar('nameplateLargerScale', 1)
-	SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
-	SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
-	SetCVar('nameplateMaxScale', 1)
-	SetCVar('nameplateMaxScaleDistance', 40)
-	SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
-	SetCVar('nameplateMinScale', 1)
-	SetCVar('nameplateMinScaleDistance', 0)
-	SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
-	SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
-	SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
-	SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
-	SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
-	SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
-	SetCVar('nameplateSelectedAlpha', 1)
-	SetCVar('nameplateSelectedScale', 1)
-	SetCVar('nameplateSelfAlpha', 1)
-	SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
-	SetCVar('nameplateSelfScale', 1)
-	SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
-	SetCVar('nameplateTargetBehindMaxDistance', 40)
+	NP:SetCVar('nameplateMinAlpha', 1)
+	NP:SetCVar('nameplateMaxAlpha', 1)
+	NP:SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
+	NP:SetCVar('nameplateGlobalScale', 1)
+	NP:SetCVar('NamePlateHorizontalScale', 1)
+	NP:SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
+	NP:SetCVar('nameplateLargerScale', 1)
+	NP:SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
+	NP:SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
+	NP:SetCVar('nameplateMaxScale', 1)
+	NP:SetCVar('nameplateMaxScaleDistance', 40)
+	NP:SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
+	NP:SetCVar('nameplateMinScale', 1)
+	NP:SetCVar('nameplateMinScaleDistance', 0)
+	NP:SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
+	NP:SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
+	NP:SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
+	NP:SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'))
+	NP:SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'))
+	NP:SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
+	NP:SetCVar('nameplateSelectedAlpha', 1)
+	NP:SetCVar('nameplateSelectedScale', 1)
+	NP:SetCVar('nameplateSelfAlpha', 1)
+	NP:SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
+	NP:SetCVar('nameplateSelfScale', 1)
+	NP:SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
+	NP:SetCVar('nameplateTargetBehindMaxDistance', 40)
 end
 
 function NP:SetCVars()
 	if NP.db.units.ENEMY_NPC.questIcon.enable or NP.db.units.FRIENDLY_NPC.questIcon.enable then
-		SetCVar('showQuestTrackingTooltips', 1)
+		NP:SetCVar('showQuestTrackingTooltips', 1)
 	end
 
 	if NP.db.clampToScreen then
-		SetCVar('nameplateOtherTopInset', 0.08)
-		SetCVar('nameplateOtherBottomInset', 0.1)
+		NP:SetCVar('nameplateOtherTopInset', 0.08)
+		NP:SetCVar('nameplateOtherBottomInset', 0.1)
 	elseif GetCVar('nameplateOtherTopInset') == '0.08' and GetCVar('nameplateOtherBottomInset') == '0.1' then
-		SetCVar('nameplateOtherTopInset', -1)
-		SetCVar('nameplateOtherBottomInset', -1)
+		NP:SetCVar('nameplateOtherTopInset', -1)
+		NP:SetCVar('nameplateOtherBottomInset', -1)
 	end
 
-	SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
+	NP:SetCVar('nameplateMotion', NP.db.motionType == 'STACKED' and 1 or 0)
 
-	SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
-	SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
-	SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
-	SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.alphaDelay)
-	SetCVar('NameplatePersonalHideDelaySeconds', NP.db.units.PLAYER.visibility.hideDelay)
+	NP:SetCVar('NameplatePersonalShowAlways', NP.db.units.PLAYER.visibility.showAlways and 1 or 0)
+	NP:SetCVar('NameplatePersonalShowInCombat', NP.db.units.PLAYER.visibility.showInCombat and 1 or 0)
+	NP:SetCVar('NameplatePersonalShowWithTarget', NP.db.units.PLAYER.visibility.showWithTarget and 1 or 0)
+	NP:SetCVar('NameplatePersonalHideDelayAlpha', NP.db.units.PLAYER.visibility.alphaDelay)
+	NP:SetCVar('NameplatePersonalHideDelaySeconds', NP.db.units.PLAYER.visibility.hideDelay)
 
 	-- the order of these is important !!
-	SetCVar('nameplateShowAll', NP.db.visibility.showAll and 1 or 0)
-	SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition or not NP.db.units.PLAYER.enable) and 0 or 1)
-	SetCVar('nameplateShowEnemyMinions', NP.db.visibility.enemy.minions and 1 or 0)
-	SetCVar('nameplateShowEnemyGuardians', NP.db.visibility.enemy.guardians and 1 or 0)
-	SetCVar('nameplateShowEnemyMinus', NP.db.visibility.enemy.minus and 1 or 0)
-	SetCVar('nameplateShowEnemyPets', NP.db.visibility.enemy.pets and 1 or 0)
-	SetCVar('nameplateShowEnemyTotems', NP.db.visibility.enemy.totems and 1 or 0)
-	SetCVar('nameplateShowFriendlyMinions', NP.db.visibility.friendly.minions and 1 or 0)
-	SetCVar('nameplateShowFriendlyGuardians', NP.db.visibility.friendly.guardians and 1 or 0)
-	SetCVar('nameplateShowFriendlyNPCs', NP.db.visibility.friendly.npcs and 1 or 0)
-	SetCVar('nameplateShowFriendlyPets', NP.db.visibility.friendly.pets and 1 or 0)
-	SetCVar('nameplateShowFriendlyTotems', NP.db.visibility.friendly.totems and 1 or 0)
+	NP:SetCVar('nameplateShowAll', NP.db.visibility.showAll and 1 or 0)
+	NP:SetCVar('nameplateShowSelf', (NP.db.units.PLAYER.useStaticPosition or not NP.db.units.PLAYER.enable) and 0 or 1)
+	NP:SetCVar('nameplateShowEnemyMinions', NP.db.visibility.enemy.minions and 1 or 0)
+	NP:SetCVar('nameplateShowEnemyGuardians', NP.db.visibility.enemy.guardians and 1 or 0)
+	NP:SetCVar('nameplateShowEnemyMinus', NP.db.visibility.enemy.minus and 1 or 0)
+	NP:SetCVar('nameplateShowEnemyPets', NP.db.visibility.enemy.pets and 1 or 0)
+	NP:SetCVar('nameplateShowEnemyTotems', NP.db.visibility.enemy.totems and 1 or 0)
+	NP:SetCVar('nameplateShowFriendlyMinions', NP.db.visibility.friendly.minions and 1 or 0)
+	NP:SetCVar('nameplateShowFriendlyGuardians', NP.db.visibility.friendly.guardians and 1 or 0)
+	NP:SetCVar('nameplateShowFriendlyNPCs', NP.db.visibility.friendly.npcs and 1 or 0)
+	NP:SetCVar('nameplateShowFriendlyPets', NP.db.visibility.friendly.pets and 1 or 0)
+	NP:SetCVar('nameplateShowFriendlyTotems', NP.db.visibility.friendly.totems and 1 or 0)
 end
 
 function NP:PLAYER_REGEN_DISABLED()
 	if NP.db.showFriendlyCombat == 'TOGGLE_ON' then
-		SetCVar('nameplateShowFriends', 1)
+		NP:SetCVar('nameplateShowFriends', 1)
 	elseif NP.db.showFriendlyCombat == 'TOGGLE_OFF' then
-		SetCVar('nameplateShowFriends', 0)
+		NP:SetCVar('nameplateShowFriends', 0)
 	end
 
 	if NP.db.showEnemyCombat == 'TOGGLE_ON' then
-		SetCVar('nameplateShowEnemies', 1)
+		NP:SetCVar('nameplateShowEnemies', 1)
 	elseif NP.db.showEnemyCombat == 'TOGGLE_OFF' then
-		SetCVar('nameplateShowEnemies', 0)
+		NP:SetCVar('nameplateShowEnemies', 0)
 	end
 end
 
 function NP:PLAYER_REGEN_ENABLED()
 	if NP.db.showFriendlyCombat == 'TOGGLE_ON' then
-		SetCVar('nameplateShowFriends', 0)
+		NP:SetCVar('nameplateShowFriends', 0)
 	elseif NP.db.showFriendlyCombat == 'TOGGLE_OFF' then
-		SetCVar('nameplateShowFriends', 1)
+		NP:SetCVar('nameplateShowFriends', 1)
 	end
 
 	if NP.db.showEnemyCombat == 'TOGGLE_ON' then
-		SetCVar('nameplateShowEnemies', 0)
+		NP:SetCVar('nameplateShowEnemies', 0)
 	elseif NP.db.showEnemyCombat == 'TOGGLE_OFF' then
-		SetCVar('nameplateShowEnemies', 1)
+		NP:SetCVar('nameplateShowEnemies', 1)
 	end
 end
 
@@ -530,10 +536,7 @@ function NP:ConfigureAll(skipUpdate)
 		_G.ElvNP_StaticSecure:Hide()
 	end
 
-	local showSelf = (isStatic or not playerEnabled) and '0' or '1'
-	if GetCVar('nameplateShowSelf') ~= showSelf then
-		SetCVar('nameplateShowSelf', showSelf)
-	end
+	NP:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
 
 	if skipUpdate then -- since this is a fake plate, we actually need to trigger this always
 		NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
