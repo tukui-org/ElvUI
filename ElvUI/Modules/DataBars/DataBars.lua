@@ -31,6 +31,8 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 	bar.text:FontTemplate()
 	bar.text:Point('CENTER')
 
+	E.FrameLocks[name] = true
+
 	return bar
 end
 
