@@ -537,8 +537,6 @@ function NP:ConfigureAll(skipUpdate)
 	if not skipUpdate then
 		NP.SkipFading = true
 		for nameplate in pairs(NP.Plates) do
-			nameplate.previousType = nil -- let the plate accept a full update
-
 			if nameplate.frameType == 'PLAYER' then
 				nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
 			elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
