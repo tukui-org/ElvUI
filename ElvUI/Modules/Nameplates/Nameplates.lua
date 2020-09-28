@@ -449,6 +449,8 @@ function NP:SetupTarget(nameplate, removed)
 end
 
 function NP:SetNamePlateClickThrough()
+	if InCombatLockdown() then return end
+
 	self:SetNamePlateSelfClickThrough()
 	self:SetNamePlateFriendlyClickThrough()
 	self:SetNamePlateEnemyClickThrough()
@@ -497,16 +499,22 @@ function NP:GROUP_LEFT()
 	wipe(NP.GroupRoles)
 end
 
-function NP:PLAYER_ENTERING_WORLD()
+function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	NP.InstanceType = select(2, GetInstanceInfo())
+
+	if initLogin or isReload then
+		NP:ConfigureAll(true)
+	end
 end
 
-function NP:ConfigureAll()
+function NP:ConfigureAll(skipUpdate)
 	if E.private.nameplates.enable ~= true then return end
 	NP:StyleFilterConfigure() -- keep this at the top
-
+	NP:SetNamePlateClickThrough()
 	NP:SetNamePlateSizes()
 	NP:PLAYER_REGEN_ENABLED()
+	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
+	NP:Update_StatusBars()
 
 	local playerEnabled = NP.db.units.PLAYER.enable
 	local isStatic = NP.db.units.PLAYER.useStaticPosition
@@ -522,33 +530,30 @@ function NP:ConfigureAll()
 		_G.ElvNP_StaticSecure:Hide()
 	end
 
-	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
-
-	NP.SkipFading = true
-	for nameplate in pairs(NP.Plates) do
-		if nameplate.frameType == 'PLAYER' then
-			nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-
-			local showSelf = (isStatic or not playerEnabled) and '0' or '1'
-			if GetCVar('nameplateShowSelf') ~= showSelf then
-				SetCVar('nameplateShowSelf', showSelf)
-			end
-		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-			nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
-		else
-			nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
-		end
-
-		if nameplate == _G.ElvNP_Player then
-			NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
-		else
-			NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
-		end
+	local showSelf = (isStatic or not playerEnabled) and '0' or '1'
+	if GetCVar('nameplateShowSelf') ~= showSelf then
+		SetCVar('nameplateShowSelf', showSelf)
 	end
-	NP.SkipFading = nil
 
-	NP:Update_StatusBars()
-	NP:SetNamePlateClickThrough()
+	if not skipUpdate then
+		NP.SkipFading = true
+		for nameplate in pairs(NP.Plates) do
+			if nameplate.frameType == 'PLAYER' then
+				nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+			elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
+				nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
+			else
+				nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
+			end
+
+			if nameplate == _G.ElvNP_Player then
+				NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+			else
+				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
+			end
+		end
+		NP.SkipFading = nil
+	end
 end
 
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
