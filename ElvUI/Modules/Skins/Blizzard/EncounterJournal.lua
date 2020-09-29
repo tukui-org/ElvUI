@@ -350,9 +350,10 @@ function S:Blizzard_EncounterJournal()
 
 		item.name:ClearAllPoints()
 		item.name:Point('TOPLEFT', item.icon, 'TOPRIGHT', 6, -2)
-		item.name:SetFontObject('QuestFont_Large')
+
 		item.boss:ClearAllPoints()
 		item.boss:Point('BOTTOMLEFT', 4, 6)
+
 		item.slot:ClearAllPoints()
 		item.slot:Point('TOPLEFT', item.name, 'BOTTOMLEFT', 0, -3)
 
