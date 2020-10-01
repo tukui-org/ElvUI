@@ -11,8 +11,13 @@ function S:Blizzard_CovenantPreviewUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantPreview) then return end
 
 	local frame = _G.CovenantPreviewFrame
-	frame.InfoPanel.Description:SetTextColor(1, 1, 1)
-	frame.InfoPanel.AbilitiesLabel:SetTextColor(1, .8, 0)
+
+	if E.private.skins.parchmentRemoverEnable then
+		frame.InfoPanel.Name:SetTextColor(1, 1, 1)
+		frame.InfoPanel.Location:SetTextColor(1, 1, 1)
+		frame.InfoPanel.Description:SetTextColor(1, 1, 1)
+		frame.InfoPanel.AbilitiesLabel:SetTextColor(1, .8, 0)
+	end
 
 	hooksecurefunc(frame, 'TryShow', function(covenantInfo)
 		if covenantInfo and not frame.IsSkinned then
@@ -31,6 +36,7 @@ function S:Blizzard_CovenantPreviewUI()
 				frame.InfoPanel.Parchment:SetAlpha(0)
 			end
 
+			frame.CloseButton.Border:Kill()
 			S:HandleCloseButton(frame.CloseButton)
 			S:HandleButton(frame.SelectButton)
 
