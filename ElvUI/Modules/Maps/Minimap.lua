@@ -326,7 +326,7 @@ function M:Initialize()
 	if not E.private.general.minimap.enable then return end
 	self.Initialized = true
 
-	menuFrame:SetTemplate('Transparent', true)
+	menuFrame:SetTemplate('Transparent')
 
 	local mmholder = CreateFrame('Frame', 'MMHolder', Minimap)
 	mmholder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
