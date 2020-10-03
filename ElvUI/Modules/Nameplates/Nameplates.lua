@@ -509,11 +509,11 @@ function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	NP.InstanceType = select(2, GetInstanceInfo())
 
 	if initLogin or isReload then
-		NP:ConfigureAll()
+		NP:ConfigureAll(true)
 	end
 end
 
-function NP:ConfigureAll()
+function NP:ConfigureAll(skipUpdate)
 	if E.private.nameplates.enable ~= true then return end
 	NP:StyleFilterConfigure() -- keep this at the top
 	NP:SetNamePlateClickThrough()
@@ -537,26 +537,29 @@ function NP:ConfigureAll()
 	end
 
 	NP:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
-	NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
 
-	NP.SkipFading = true
-	for nameplate in pairs(NP.Plates) do
-		if nameplate.frameType == 'PLAYER' then
-			nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-		elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-			nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
-		else
-			nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
-		end
+	if skipUpdate then -- since this is a fake plate, we actually need to trigger this always
+		NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+	else -- however, these only need to happen when changing options
+		NP.SkipFading = true
+		for nameplate in pairs(NP.Plates) do
+			if nameplate.frameType == 'PLAYER' then
+				nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+			elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
+				nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
+			else
+				nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
+			end
 
-		if nameplate == _G.ElvNP_Player then
-			NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
-		else
-			nameplate.previousType = nil -- we still need a full update
-			NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
+			if nameplate == _G.ElvNP_Player then
+				NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+			else
+				nameplate.previousType = nil -- we still need a full update
+				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
+			end
 		end
+		NP.SkipFading = nil
 	end
-	NP.SkipFading = nil
 end
 
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
