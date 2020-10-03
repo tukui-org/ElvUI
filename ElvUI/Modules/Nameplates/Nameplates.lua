@@ -505,30 +505,10 @@ function NP:GROUP_LEFT()
 	wipe(NP.GroupRoles)
 end
 
--- note in datatext file, same name.
-local RerenderFont = function(fs)
-	local text = fs:GetText()
-	fs:SetText('\10')
-	fs:SetText(text)
-end
-
-local FixFonts = CreateFrame('Frame')
-FixFonts:Hide()
-FixFonts:SetScript('OnUpdate', function(self)
-	for fs in pairs(NP.FontStrings) do
-		RerenderFont(fs)
-	end
-
-	self:Hide()
-end)
-
 function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	NP.InstanceType = select(2, GetInstanceInfo())
 
-	if initLogin then
-		FixFonts:Show()
-		NP:ConfigureAll(true)
-	elseif isReload then
+	if initLogin or isReload then
 		NP:ConfigureAll(true)
 	end
 end
@@ -758,7 +738,6 @@ function NP:Initialize()
 	NP.PlateGUID = {}
 	NP.StatusBars = {}
 	NP.GroupRoles = {}
-	NP.FontStrings = {}
 	NP.multiplier = 0.35
 
 	local BlizzPlateManaBar = _G.NamePlateDriverFrame.classNamePlatePowerBar
