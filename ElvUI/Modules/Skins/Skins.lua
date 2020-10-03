@@ -1040,7 +1040,7 @@ function S:HandleGarrisonPortrait(portrait)
 
 		local roleIcon = portrait.HealthBar.RoleIcon
 		roleIcon:ClearAllPoints()
-		roleIcon:SetPoint('CENTER', portrait.Portrait.backdrop, 'TOPRIGHT')
+		roleIcon:Point('CENTER', portrait.Portrait.backdrop, 'TOPRIGHT')
 		hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
 
 		local background = portrait.HealthBar.Background
