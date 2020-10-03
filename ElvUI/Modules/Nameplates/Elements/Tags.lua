@@ -4,6 +4,7 @@ local NP = E:GetModule('NamePlates')
 function NP:Construct_TagText(nameplate)
 	local Text = nameplate:CreateFontString(nil, 'OVERLAY')
 	Text:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	NP.FontStrings[Text] = true
 
 	return Text
 end
