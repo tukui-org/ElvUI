@@ -537,6 +537,7 @@ function NP:ConfigureAll()
 	end
 
 	NP:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
+	NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
 
 	NP.SkipFading = true
 	for nameplate in pairs(NP.Plates) do
