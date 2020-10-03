@@ -149,11 +149,11 @@ function S:BlizzardMiscFrames()
 	}
 
 	for i = 1, #ChatMenus do
+		_G[ChatMenus[i]]:StripTextures()
+
 		if _G[ChatMenus[i]] == _G.ChatMenu then
-			_G[ChatMenus[i]]:StripTextures()
 			_G[ChatMenus[i]]:HookScript('OnShow', function(s) s:CreateBackdrop('Transparent', true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) s:ClearAllPoints() s:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
 		else
-			_G[ChatMenus[i]]:StripTextures()
 			_G[ChatMenus[i]]:HookScript('OnShow', function(s) s:CreateBackdrop('Transparent', true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
 		end
 	end
