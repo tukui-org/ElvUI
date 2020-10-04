@@ -196,8 +196,6 @@ function NP:PLAYER_REGEN_ENABLED()
 end
 
 function NP:Style(frame, unit)
-	--if not unit then return end
-
 	frame.isNamePlate = true
 
 	if frame:GetName() == 'ElvNP_TargetClassPower' then
