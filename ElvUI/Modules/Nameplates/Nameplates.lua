@@ -507,11 +507,20 @@ function NP:GROUP_LEFT()
 	wipe(NP.GroupRoles)
 end
 
+local FixFonts = CreateFrame('Frame')
+FixFonts:Hide()
+FixFonts:SetScript('OnUpdate', function(self)
+	print('first frame')
+
+	self:Hide()
+end)
+
 function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	NP.InstanceType = select(2, GetInstanceInfo())
 
 	if initLogin or isReload then
 		NP:ConfigureAll(true)
+		FixFonts:Show()
 	end
 end
 
@@ -727,9 +736,14 @@ function NP:SetNamePlateSizes()
 	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * scale, NP.db.plateSize.friendlyHeight * scale)
 end
 
+local test123
 function NP:AfterStyleCallback()
 	if self.isNamePlate then
 		NP:Update_Tags(self)
+		if not test123 then
+			test123 = true
+			print('AfterStyleCallback')
+		end
 	end
 end
 
