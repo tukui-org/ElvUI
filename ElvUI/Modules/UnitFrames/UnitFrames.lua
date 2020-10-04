@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
+UF.LSM = LSM
 
 local ElvUF = E.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
