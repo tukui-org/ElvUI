@@ -30,11 +30,6 @@ function NP:Update_Tags(nameplate)
 	NP:Update_TagText(nameplate, nameplate.Name, db.name)
 	NP:Update_TagText(nameplate, nameplate.Title, db.title)
 	NP:Update_TagText(nameplate, nameplate.Level, db.level, hide)
-
-	if nameplate.Health then
-		NP:Update_TagText(nameplate, nameplate.Health.Text, db.health and db.health.text, hide)
-	end
-	if nameplate.Power then
-		NP:Update_TagText(nameplate, nameplate.Power.Text, db.power and db.power.text, hide)
-	end
+	NP:Update_TagText(nameplate, nameplate.Health.Text, db.health and db.health.text, hide)
+	NP:Update_TagText(nameplate, nameplate.Power.Text, db.power and db.power.text, hide)
 end
