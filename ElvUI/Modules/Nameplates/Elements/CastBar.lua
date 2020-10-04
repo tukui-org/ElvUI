@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 local CH = E:GetModule('Chat')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local abs = abs
@@ -103,7 +104,7 @@ function NP:Construct_Castbar(nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
 	Castbar:SetFrameLevel(5)
 	Castbar:CreateBackdrop('Transparent')
-	Castbar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+	Castbar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
 	NP.StatusBars[Castbar] = true
 
@@ -117,11 +118,11 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
-	Castbar.Time:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	Castbar.Time:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Text:SetJustifyH('LEFT')
-	Castbar.Text:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	Castbar.Text:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	Castbar.Text:SetWordWrap(false)
 
 	Castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
@@ -212,14 +213,14 @@ function NP:Update_Castbar(nameplate)
 		if db.castbar.hideTime then
 			nameplate.Castbar.Time:Hide()
 		else
-			nameplate.Castbar.Time:FontTemplate(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
+			nameplate.Castbar.Time:FontTemplate(LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Time:Show()
 		end
 
 		if db.castbar.hideSpellName then
 			nameplate.Castbar.Text:Hide()
 		else
-			nameplate.Castbar.Text:FontTemplate(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
+			nameplate.Castbar.Text:FontTemplate(LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Text:Show()
 		end
 	elseif nameplate:IsElementEnabled('Castbar') then

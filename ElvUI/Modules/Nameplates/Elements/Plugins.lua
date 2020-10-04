@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 
 local strfind = strfind
 local ipairs, unpack = ipairs, unpack
@@ -49,7 +50,7 @@ function NP:Update_QuestIcons(nameplate)
 			local yoffset = strfind(db.textPosition, 'BOTTOM') and 2 or -2
 			icon.Text:ClearAllPoints()
 			icon.Text:Point('CENTER', icon, db.textPosition, xoffset, yoffset)
-			icon.Text:FontTemplate(E.Libs.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			icon.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 			icon.Text:SetJustifyH('CENTER')
 
 			icon.size, icon.position = db.size, db.position
@@ -281,13 +282,13 @@ function NP:Update_Cutaway(nameplate)
 		if NP.db.cutaway.health.forceBlankTexture then
 			nameplate.Cutaway.Health:SetTexture(E.media.blankTex)
 		else
-			nameplate.Cutaway.Health:SetTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+			nameplate.Cutaway.Health:SetTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		end
 
 		if NP.db.cutaway.power.forceBlankTexture then
 			nameplate.Cutaway.Power:SetTexture(E.media.blankTex)
 		else
-			nameplate.Cutaway.Power:SetTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+			nameplate.Cutaway.Power:SetTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		end
 	end
 end

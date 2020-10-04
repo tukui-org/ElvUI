@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local pairs, select = pairs, select
@@ -37,7 +38,7 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 end
 
 function DB:UpdateAll()
-	local barTexture = DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
+	local barTexture = DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
 
 	for _, bar in pairs(DB.StatusBars) do
 		bar:Size(bar.db.width, bar.db.height)
@@ -45,7 +46,7 @@ function DB:UpdateAll()
 		bar:SetStatusBarTexture(barTexture, 'ARTWORK', 7)
 		bar:EnableMouse(not bar.db.clickThrough)
 		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
-		bar.text:FontTemplate(E.Libs.LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
+		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
 
 		if bar.db.enable then
 			bar:SetAlpha(bar.db.mouseover and 0 or 1)

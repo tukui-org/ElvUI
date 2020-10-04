@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 
 function NP:Construct_TagText(nameplate)
 	return nameplate:CreateFontString(nil, 'OVERLAY')
@@ -9,7 +10,7 @@ function NP:Update_TagText(nameplate, element, db, hide)
 	if not db then return end
 
 	if db.enable and not hide then
-		element:FontTemplate(E.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+		element:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 		nameplate:Tag(element, db.format or '')
 		element:UpdateTag()
 

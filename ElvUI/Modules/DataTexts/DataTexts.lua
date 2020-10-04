@@ -777,7 +777,7 @@ function DT:Initialize()
 	end
 
 	-- Ignore header font size on DatatextTooltip
-	local font = E.Libs.LSM:Fetch('font', E.db.tooltip.font)
+	local font = LSM:Fetch('font', E.db.tooltip.font)
 	local fontOutline = E.db.tooltip.fontOutline
 	local textSize = E.db.tooltip.textFontSize
 	_G.DataTextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)

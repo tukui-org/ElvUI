@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local floor = floor
@@ -97,8 +98,8 @@ function B:UpdateAltPowerBarSettings()
 	local db = E.db.general.altPowerBar
 
 	bar:Size(db.width or 250, db.height or 20)
-	bar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', db.statusBar))
-	bar.text:FontTemplate(E.Libs.LSM:Fetch('font', db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
+	bar:SetStatusBarTexture(LSM:Fetch('statusbar', db.statusBar))
+	bar.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
 	_G.AltPowerBarHolder:Size(bar.backdrop:GetSize())
 
 	E:SetSmoothing(bar, db.smoothbars)

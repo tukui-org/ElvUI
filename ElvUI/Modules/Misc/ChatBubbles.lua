@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc')
 local CH = E:GetModule('Chat')
+local LSM = E.Libs.LSM
 
 local format, wipe, unpack, pairs = format, wipe, unpack, pairs
 local strmatch, strlower, gmatch, gsub = strmatch, strlower, gmatch, gsub
@@ -82,7 +83,7 @@ end
 
 local yOffset --Value set in M:LoadChatBubbles()
 function M:SkinBubble(frame, backdrop)
-	local bubbleFont = E.Libs.LSM:Fetch('font', E.private.general.chatBubbleFont)
+	local bubbleFont = LSM:Fetch('font', E.private.general.chatBubbleFont)
 	if backdrop.String then
 		backdrop.String:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	end

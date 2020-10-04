@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Minimap')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local pairs = pairs
@@ -190,7 +191,7 @@ end
 
 function M:Update_ZoneText()
 	if E.db.general.minimap.locationText == 'HIDE' then return end
-	Minimap.location:FontTemplate(E.Libs.LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
+	Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end

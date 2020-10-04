@@ -1,7 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
+local LSM = E.Libs.LSM
 
 local _G = _G
+local ipairs = ipairs
 local min, format = min, format
 local CreateFrame = CreateFrame
 local GetXPExhaustion = GetXPExhaustion
@@ -205,12 +207,12 @@ function DB:ExperienceBar()
 
 	DB.StatusBars.Experience.Rested = CreateFrame('StatusBar', '$parent_Rested', DB.StatusBars.Experience)
 	DB.StatusBars.Experience.Rested:Hide()
-	DB.StatusBars.Experience.Rested:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+	DB.StatusBars.Experience.Rested:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
 	DB.StatusBars.Experience.Rested:SetAllPoints()
 
 	DB.StatusBars.Experience.Quest = CreateFrame('StatusBar', '$parent_Quest', DB.StatusBars.Experience)
 	DB.StatusBars.Experience.Quest:Hide()
-	DB.StatusBars.Experience.Quest:SetStatusBarTexture(DB.db.customTexture and E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+	DB.StatusBars.Experience.Quest:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
 	DB.StatusBars.Experience.Quest:SetAllPoints()
 
 	E:CreateMover(DB.StatusBars.Experience, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')

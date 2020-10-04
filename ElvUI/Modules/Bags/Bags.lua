@@ -3,6 +3,7 @@ local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
 local Search = E.Libs.ItemSearch
+local LSM = E.Libs.LSM
 
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
@@ -306,7 +307,7 @@ function B:UpdateItemLevelDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.itemLevel then
-					slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+					slot.itemLevel:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 				end
 			end
 		end
@@ -323,7 +324,7 @@ function B:UpdateCountDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.Count then
-					slot.Count:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+					slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 				end
 			end
 		end
@@ -336,7 +337,7 @@ function B:UpdateCountDisplay()
 		for i = 1, B.REAGENTBANK_SIZE do
 			local slot = B.BankFrame.reagentFrame.slots[i]
 			if slot then
-				slot.Count:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+				slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 				B:UpdateReagentSlot(i)
 			end
 		end
@@ -1756,7 +1757,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	slot.Count:ClearAllPoints()
 	slot.Count:Point('BOTTOMRIGHT', 0, 2)
-	slot.Count:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+	slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 
 	if not (slot.questIcon) then
 		slot.questIcon = _G[slot:GetName()..'IconQuestTexture'] or _G[slot:GetName()].IconQuestTexture
@@ -1805,11 +1806,11 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY', nil, 1)
 	slot.itemLevel:Point('BOTTOMRIGHT', 0, 2)
-	slot.itemLevel:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+	slot.itemLevel:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
 	slot.bindType = slot:CreateFontString(nil, 'OVERLAY', nil, 1)
 	slot.bindType:Point('TOP', 0, -2)
-	slot.bindType:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+	slot.bindType:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
 	if slot.BattlepayItemTexture then
 		slot.BattlepayItemTexture:Hide()
@@ -1842,7 +1843,7 @@ function B:ConstructReagentSlot(f, slotID)
 
 	slot.Count:ClearAllPoints()
 	slot.Count:Point('BOTTOMRIGHT', 0, 2)
-	slot.Count:FontTemplate(E.Libs.LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+	slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 
 	slot.searchOverlay:SetAllPoints()
 

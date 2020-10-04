@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 local oUF = E.oUF
 
 local _G = _G
@@ -59,7 +60,7 @@ function NP:Construct_ClassPower(nameplate)
 	ClassPower:SetFrameLevel(5)
 
 	local Max = max(MAX_POINTS[E.myclass] or 0, _G.MAX_COMBO_POINTS)
-	local texture = E.LSM:Fetch('statusbar', NP.db.statusbar)
+	local texture = LSM:Fetch('statusbar', NP.db.statusbar)
 
 	for i = 1, Max do
 		ClassPower[i] = CreateFrame('StatusBar', frameName..'ClassPower'..i, ClassPower)
@@ -161,7 +162,7 @@ function NP:Construct_Runes(nameplate)
 	Runes.UpdateColor = E.noop
 	Runes.PostUpdate = NP.Runes_PostUpdate
 
-	local texture = E.LSM:Fetch('statusbar', NP.db.statusbar)
+	local texture = LSM:Fetch('statusbar', NP.db.statusbar)
 	local color = NP.db.colors.classResources.DEATHKNIGHT
 
 	for i = 1, 6 do
@@ -232,7 +233,7 @@ function NP:Construct_Stagger(nameplate)
     local Stagger = CreateFrame('StatusBar', nameplate:GetName()..'Stagger', nameplate)
 	Stagger:SetFrameStrata(nameplate:GetFrameStrata())
 	Stagger:SetFrameLevel(5)
-	Stagger:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+	Stagger:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 	Stagger:CreateBackdrop('Transparent')
 	Stagger:Hide()
 
