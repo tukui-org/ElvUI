@@ -311,7 +311,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
-	NP:Update_Tags(nameplate, true) -- update fonts
 
 	local db = NP:PlateDB(nameplate)
 	local sf = NP:StyleFilterChanges(nameplate)
@@ -324,7 +323,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	elseif sf.Visibility or sf.NameOnly or db.nameOnly then
 		NP:DisablePlate(nameplate, sf.NameOnly or (db.nameOnly and not sf.Visibility))
 	elseif updateBase then
-		NP:Update_Tags(nameplate) -- update tags
+		NP:Update_Tags(nameplate)
 		NP:Update_Health(nameplate)
 		NP:Update_HealthPrediction(nameplate)
 		NP:Update_Highlight(nameplate)
