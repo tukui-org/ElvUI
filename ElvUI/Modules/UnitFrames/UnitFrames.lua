@@ -1087,7 +1087,7 @@ function UF:LoadUnits()
 end
 
 function UF:RegisterRaidDebuffIndicator()
-	local ORD = ns.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
+	local ORD = E.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if ORD then
 		ORD:ResetDebuffData()
 
@@ -1564,7 +1564,7 @@ function UF:Initialize()
 
 	UF:UpdateRangeCheckSpells()
 
-	local ORD = ns.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
+	local ORD = E.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if not ORD then return end
 	ORD.ShowDispellableDebuff = true
 	ORD.FilterDispellableDebuff = true
