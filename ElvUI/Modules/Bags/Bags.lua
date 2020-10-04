@@ -1334,8 +1334,17 @@ function B:ConstructContainerFrame(name, isBank)
 	f:SetScript('OnDragStart', function(frame) if IsShiftKeyDown() then frame:StartMoving() end end)
 	f:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
 	f:SetScript('OnClick', function(frame) if IsControlKeyDown() then B.PostBagMove(frame.mover) end end)
-	f:SetScript('OnLeave', GameTooltip_Hide)
-	f:SetScript('OnEnter', function(frame)
+
+	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton, BackdropTemplate')
+	f.closeButton:Point('TOPRIGHT', 5, 5)
+
+	f.helpButton = CreateFrame('Button', name..'HelpButton', f, 'BackdropTemplate')
+	f.helpButton:Point('RIGHT', f.closeButton, 'LEFT', 0, 0)
+	f.helpButton:Size(16)
+	f.helpButton:SetNormalTexture(E.Media.Textures.Help)
+	f.helpButton:SetPushedTexture(E.Media.Textures.Help)
+	f.helpButton:SetScript('OnLeave', GameTooltip_Hide)
+	f.helpButton:SetScript('OnEnter', function(frame)
 		local GameTooltip = _G.GameTooltip
 		GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT', 0, 4)
 		GameTooltip:ClearLines()
@@ -1343,9 +1352,6 @@ function B:ConstructContainerFrame(name, isBank)
 		GameTooltip:AddDoubleLine(L["Hold Control + Right Click:"], L["Reset Position"], 1, 1, 1)
 		GameTooltip:Show()
 	end)
-
-	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton, BackdropTemplate')
-	f.closeButton:Point('TOPRIGHT', 5, 5)
 
 	Skins:HandleCloseButton(f.closeButton)
 
@@ -1446,6 +1452,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.sortButton:GetDisabledTexture():SetDesaturated(1)
 	f.sortButton:StyleButton(nil, true)
 	f.sortButton:SetScript('OnEnter', _G.BagItemAutoSortButton:GetScript('OnEnter'))
+	f.sortButton:SetScript('OnLeave', GameTooltip_Hide)
 
 	if isBank and E.db.bags.disableBankSort or (not isBank and E.db.bags.disableBagSort) then
 		f.sortButton:Disable()
