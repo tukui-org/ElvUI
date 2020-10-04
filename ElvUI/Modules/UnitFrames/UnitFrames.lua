@@ -1,7 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
-UF.LSM = E.Libs.LSM
+
+local ElvUF = E.oUF
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local select, type, unpack, assert, tostring = select, type, unpack, assert, tostring
@@ -30,10 +32,6 @@ local SOUNDKIT_IG_CHARACTER_NPC_SELECT = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
-
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
 local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)

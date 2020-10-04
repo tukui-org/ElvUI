@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
-local oUF = E.oUF
+local LSM = E.Libs.LSM
+
+local ElvUF = E.oUF
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
@@ -478,7 +481,7 @@ function NP:Update_StatusBars()
 	for bar in pairs(NP.StatusBars) do
 		local sf = NP:StyleFilterChanges(bar:GetParent())
 		if not sf.HealthTexture then
-			bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex)
+			bar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex)
 		end
 	end
 end
@@ -504,22 +507,11 @@ function NP:GROUP_LEFT()
 	wipe(NP.GroupRoles)
 end
 
-local FixFonts = CreateFrame('Frame')
-FixFonts:Hide()
-FixFonts:SetScript('OnUpdate', function(self)
-	for nameplate in pairs(NP.Plates) do
-		NP:Update_Tags(nameplate)
-	end
-
-	self:Hide()
-end)
-
 function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	NP.InstanceType = select(2, GetInstanceInfo())
 
 	if initLogin or isReload then
 		NP:ConfigureAll(true)
-		FixFonts:Show()
 	end
 end
 
@@ -735,14 +727,21 @@ function NP:SetNamePlateSizes()
 	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * scale, NP.db.plateSize.friendlyHeight * scale)
 end
 
+function NP:AfterStyleCallback()
+	if self.isNamePlate then
+		NP:Update_Tags(self)
+	end
+end
+
 function NP:Initialize()
 	NP.db = E.db.nameplates
 
 	if E.private.nameplates.enable ~= true then return end
 	NP.Initialized = true
 
-	oUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
-	oUF:SetActiveStyle('ElvNP')
+	ElvUF:RegisterInitCallback(NP.AfterStyleCallback)
+	ElvUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
+	ElvUF:SetActiveStyle('ElvNP')
 
 	NP.Plates = {}
 	NP.PlateGUID = {}
@@ -770,7 +769,7 @@ function NP:Initialize()
 		end
 	end)
 
-	oUF:Spawn('player', 'ElvNP_Player', '')
+	ElvUF:Spawn('player', 'ElvNP_Player', '')
 
 	_G.ElvNP_Player:ClearAllPoints()
 	_G.ElvNP_Player:Point('TOP', _G.UIParent, 'CENTER', 0, -150)
@@ -794,7 +793,7 @@ function NP:Initialize()
 	StaticSecure:Hide()
 	StaticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
 
-	oUF:Spawn('player', 'ElvNP_Test')
+	ElvUF:Spawn('player', 'ElvNP_Test')
 
 	_G.ElvNP_Test:ClearAllPoints()
 	_G.ElvNP_Test:Point('BOTTOM', _G.UIParent, 'BOTTOM', 0, 250)
@@ -808,7 +807,7 @@ function NP:Initialize()
 	_G.ElvNP_Test:Disable()
 	NP:DisablePlate(_G.ElvNP_Test)
 
-	oUF:Spawn('player', 'ElvNP_TargetClassPower')
+	ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
 
 	_G.ElvNP_TargetClassPower:SetScale(1)
 	_G.ElvNP_TargetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
@@ -821,7 +820,7 @@ function NP:Initialize()
 	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 
-	oUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
+	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
 		NP:NamePlateCallBack(nameplate, event, unit)
 	end)
 
