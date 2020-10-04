@@ -504,11 +504,22 @@ function NP:GROUP_LEFT()
 	wipe(NP.GroupRoles)
 end
 
+local FixFonts = CreateFrame('Frame')
+FixFonts:Hide()
+FixFonts:SetScript('OnUpdate', function(self)
+	for nameplate in pairs(NP.Plates) do
+		NP:Update_Tags(nameplate)
+	end
+
+	self:Hide()
+end)
+
 function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	NP.InstanceType = select(2, GetInstanceInfo())
 
 	if initLogin or isReload then
 		NP:ConfigureAll(true)
+		FixFonts:Show()
 	end
 end
 
