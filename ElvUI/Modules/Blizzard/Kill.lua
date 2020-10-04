@@ -19,3 +19,9 @@ function B:DisableHelpTip()
 	AcknowledgeTips()
 	hooksecurefunc(_G.HelpTip, 'Show', AcknowledgeTips)
 end
+
+function B:KillBlizzard()
+	_G.Display_UIScaleSlider:Kill()
+	_G.Display_UseUIScale:Kill()
+end
+

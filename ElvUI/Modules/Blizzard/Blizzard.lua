@@ -36,6 +36,7 @@ function B:Initialize()
 	B.Initialized = true
 
 	B:EnhanceColorPicker()
+	B:KillBlizzard()
 	B:DisableHelpTip()
 	B:AlertMovers()
 	B:PositionCaptureBar()
