@@ -76,31 +76,34 @@ local HIDDEN = 0
 -- ElvUI changed block
 local CREATED = 2
 
-local _G = _G
 local pcall = pcall
 local tinsert = tinsert
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
+local GameTooltip = GameTooltip
 local floor, min = math.floor, math.min
 -- end block
 
 -- ElvUI adds IsForbidden checks
 local function UpdateTooltip(self)
-	if _G.GameTooltip:IsForbidden() then return end
-	_G.GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
+	if GameTooltip:IsForbidden() then return end
+
+	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local function onEnter(self)
-	if _G.GameTooltip:IsForbidden() or not self:IsVisible() then return end
-	_G.GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
+	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
+
+	GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
 	self:UpdateTooltip()
 end
 
 local function onLeave()
-	if _G.GameTooltip:IsForbidden() then return end
-	_G.GameTooltip:Hide()
+	if GameTooltip:IsForbidden() then return end
+
+	GameTooltip:Hide()
 end
 
 local function createAuraIcon(element, index)

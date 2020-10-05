@@ -5,7 +5,7 @@ local _G = _G
 local strmatch = strmatch
 
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
-	if not obj then return end -- Reports of commenting out the SetFont at the time this was added caused error pls check simpy
+	if not obj then return end
 	obj:SetFont(font, size, style)
 	if sr and sg and sb then obj:SetShadowColor(sr, sg, sb, sa) end
 	if sox and soy then obj:SetShadowOffset(sox, soy) end
@@ -28,11 +28,9 @@ function E:UpdateBlizzardFonts()
 	if E.private.general.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
 	if E.private.general.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
 	if E.private.general.replaceBlizzFonts then
-		--_G.NAMEPLATE_FONT		= NAMEFONT
 		_G.STANDARD_TEXT_FONT	= NORMAL
+		--_G.NAMEPLATE_FONT		= NAMEFONT
 
-		--SetFont(_G.NumberFontNormal,					LSM:Fetch('font', 'Homespun'), 10, 'MONOCHROMEOUTLINE', 1, 1, 1, 0, 0, 0)
-		--SetFont(_G.GameFontNormalSmall,				NORMAL, 12, nil, nil, nil, nil, nil, nil, nil, unpack(E.media.rgbvaluecolor))
 		SetFont(_G.AchievementFont_Small,				NORMAL, E.db.general.fontSize)				-- Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)									-- Talent Title
 		SetFont(_G.ChatBubbleFont,						BUBBLE, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
@@ -52,8 +50,9 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game15Font_o1,						NORMAL, 15)									-- CharacterStatsPane (ItemLevelFrame)
 		SetFont(_G.Game16Font,							NORMAL, 16)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game18Font,							NORMAL, 18)									-- MissionUI Bonus Chance
-		SetFont(_G.Game24Font, 							NORMAL, 24)									-- Garrison Mission level (in detail frame)
+		SetFont(_G.Game24Font,							NORMAL, 24)									-- Garrison Mission level (in detail frame)
 		SetFont(_G.Game30Font,							NORMAL, 30)									-- Mission Level
+		SetFont(_G.Game40Font,							NORMAL, 40)
 		SetFont(_G.Game42Font,							NORMAL, 42)									-- PVP Stuff
 		SetFont(_G.Game46Font,							NORMAL, 46)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game48Font,							NORMAL, 48)
@@ -65,6 +64,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15)									-- Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, E.db.general.fontSize)				-- Skill or Recipe description on TradeSkill frame
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, 24)									-- Mythic weekly best dungeon name
+		SetFont(_G.GameFontNormalLarge,					NORMAL, 16)
 		SetFont(_G.GameFontNormalLarge2,				NORMAL, 15) 								-- Garrison Follower Names
 		SetFont(_G.GameFontNormalMed1,					NORMAL, 14)									-- WoW Token Info
 		SetFont(_G.GameFontNormalMed2,					NORMAL, E.db.general.fontSize*1.1)			-- Quest tracker
@@ -98,7 +98,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SubZoneTextFont,						NORMAL, 24, MONOCHROME..'OUTLINE')			-- World Map(SubZone)
 		SetFont(_G.SubZoneTextString,					NORMAL, 25, MONOCHROME..'OUTLINE')
 		SetFont(_G.SystemFont_Huge1, 					NORMAL, 20)									-- Garrison Mission XP
-		SetFont(_G.SystemFont_Huge1_Outline, 			NORMAL, 18, MONOCHROME..'OUTLINE')			-- Garrison Mission Chance
+		SetFont(_G.SystemFont_Huge1_Outline,			NORMAL, 18, MONOCHROME..'OUTLINE')			-- Garrison Mission Chance
 		SetFont(_G.SystemFont_Large,					NORMAL, 15)
 		SetFont(_G.SystemFont_Med1,						NORMAL, E.db.general.fontSize)
 		SetFont(_G.SystemFont_Med3,						NORMAL, E.db.general.fontSize*1.1)
@@ -108,7 +108,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, 32, MONOCHROME..'OUTLINE')			-- World Map
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, MONOCHROME..'OUTLINE')			-- Raid Warning, Boss emote frame too
 		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22)									-- FlightMap
-		-- SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)								-- Was Erroring out, had to comment out, dbl check simpy
+		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)
 		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
 		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')
 		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, E.db.general.fontSize)
@@ -135,6 +135,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Number18FontWhite,					NUMBER, 18)
 		SetFont(_G.FriendsFont_11,						NORMAL, 11)
 		SetFont(_G.SpellFont_Small,						NORMAL, 10)
-		SetFont(_G.SubSpellFont,						NORMAL, 10) -- Spellbook Sub Names
+		SetFont(_G.SubSpellFont,						NORMAL, 10)									-- Spellbook Sub Names
 	end
 end

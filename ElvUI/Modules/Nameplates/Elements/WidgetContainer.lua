@@ -7,8 +7,8 @@ local UIWidgetLayoutDirection = Enum.UIWidgetLayoutDirection
 
 function NP:Construct_WidgetContainer(nameplate)
 	local WidgetContainer = CreateFrame('Frame', nil, nameplate, 'UIWidgetContainerTemplate')
-	WidgetContainer:Hide()
 	WidgetContainer:Point('BOTTOM', nameplate, 'TOP')
+	WidgetContainer:Hide()
 
 	return WidgetContainer
 end
@@ -24,6 +24,10 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 
 	for index, widgetFrame in ipairs(sortedWidgets) do
 		widgetFrame:ClearAllPoints()
+
+		if widgetFrame.Bar and not widgetFrame.Bar.backdrop then
+			widgetFrame.Bar:CreateBackdrop('Transparent')
+		end
 
 		local widgetSetUsesVertical = widgetContainerFrame.widgetSetLayoutDirection == UIWidgetSetLayoutDirection.Vertical
 		local widgetUsesVertical = widgetFrame.layoutDirection == UIWidgetLayoutDirection.Vertical

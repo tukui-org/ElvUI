@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 
 local unpack = unpack
 local UnitPlayerControlled = UnitPlayerControlled
@@ -106,7 +107,7 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
-	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+	Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
 	local clipFrame = CreateFrame('Frame', nil, Power)
 	clipFrame:SetClipsChildren(true)

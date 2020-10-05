@@ -229,7 +229,12 @@ local function ElementEnable(self)
 		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 	end
 
-	self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+	if(element.frequentUpdates) then
+		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+	else
+		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+	end
+
 	self:RegisterEvent('UNIT_MAXPOWER', Path)
 
 	element:Show()
@@ -247,6 +252,7 @@ end
 
 local function ElementDisable(self)
 	self:UnregisterEvent('UNIT_MAXPOWER', Path)
+	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 	self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
 	self:UnregisterEvent('UNIT_FACTION', ColorPath)
@@ -261,7 +267,7 @@ local function ElementDisable(self)
 		element:PostUpdateVisibility(false, element.isEnabled)
 	end
 
-	element.isEnabled = nil
+	element.isEnabled = false
 	-- end block
 
 	Path(self, 'ElementDisable', 'player', ADDITIONAL_POWER_BAR_NAME)
@@ -370,6 +376,25 @@ local function SetColorThreat(element, state)
 	end
 end
 
+--[[ Power:SetFrequentUpdates(state)
+Used to toggle frequent updates.
+
+* self  - the Power element
+* state - the desired state (boolean)
+--]]
+local function SetFrequentUpdates(element, state)
+	if(element.frequentUpdates ~= state) then
+		element.frequentUpdates = state
+		if(element.frequentUpdates) then
+			element.__owner:UnregisterEvent('UNIT_POWER_UPDATE', Path)
+			element.__owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+		else
+			element.__owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+			element.__owner:RegisterEvent('UNIT_POWER_UPDATE', Path)
+		end
+	end
+end
+
 local function Enable(self, unit)
 	local element = self.AdditionalPower
 	if(element and UnitIsUnit(unit, 'player')) then
@@ -379,8 +404,8 @@ local function Enable(self, unit)
 		element.SetColorSelection = SetColorSelection
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
+		element.SetFrequentUpdates = SetFrequentUpdates
 
-		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 
 		if(not element.displayPairs) then
@@ -400,7 +425,6 @@ local function Disable(self)
 	if(element) then
 		ElementDisable(self)
 
-		self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 	end
 end

@@ -8,7 +8,7 @@ local FormatShortDate = FormatShortDate
 
 local hexColor, lastPanel
 
-local function Click()
+local function OnClick()
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 	_G.GameTimeFrame:Click()
 end
@@ -27,4 +27,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Date', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, nil, Click, nil, nil)
+DT:RegisterDatatext('Date', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, nil, OnClick, nil, nil, nil, nil, ValueColorUpdate)

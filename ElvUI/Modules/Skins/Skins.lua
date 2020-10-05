@@ -992,20 +992,17 @@ end
 
 -- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
 -- 9.0 Shadowland: Needs Update
-local AtlasToRoleTex = {
-	['Adventures-Tank'] = {.5, .75, 0, 1},
-	['Adventures-Healer'] = {.75, 1, 0, 1},
-	['Adventures-DPS'] = {.25, .5, 0, 1},
-	['Adventures-DPS-Ranged'] = {.25, .5, 0, 1},
+local ReplacedRoleTex = {
+	['Adventures-Tank'] = 'Soulbinds_Tree_Conduit_Icon_Protect',
+	['Adventures-Healer'] = 'ui_adv_health',
+	['Adventures-DPS'] = 'ui_adv_atk',
+	['Adventures-DPS-Ranged'] = 'Soulbinds_Tree_Conduit_Icon_Utility',
 }
 
 local function HandleFollowerRole(roleIcon, atlas)
-	roleIcon:SetTexture('Interface\\LFGFrame\\LFGROLE')
-	roleIcon:Size(18, 18)
-
-	local texcoord = AtlasToRoleTex[atlas]
-	if texcoord then
-		roleIcon:SetTexCoord(unpack(texcoord))
+	local newAtlas = ReplacedRoleTex[atlas]
+	if newAtlas then
+		roleIcon:SetAtlas(newAtlas)
 	end
 end
 
@@ -1043,8 +1040,8 @@ function S:HandleGarrisonPortrait(portrait)
 
 		local roleIcon = portrait.HealthBar.RoleIcon
 		roleIcon:ClearAllPoints()
-		roleIcon:Point('TOPRIGHT', portrait.Portrait.backdrop, 5, 5)
-		--hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
+		roleIcon:Point('CENTER', portrait.Portrait.backdrop, 'TOPRIGHT')
+		hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
 
 		local background = portrait.HealthBar.Background
 		background:SetAlpha(0)
@@ -1147,8 +1144,11 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 		btn:Size(20, 20)
 		Disabled:SetVertexColor(.5, .5, .5)
 		btn.Texture = Normal
-		btn:HookScript('OnEnter', handleCloseButtonOnEnter)
-		btn:HookScript('OnLeave', handleCloseButtonOnLeave)
+
+		if not color then
+			btn:HookScript('OnEnter', handleCloseButtonOnEnter)
+			btn:HookScript('OnLeave', handleCloseButtonOnLeave)
+		end
 	else
 		btn:Size(18, 18)
 		Disabled:SetVertexColor(.3, .3, .3)

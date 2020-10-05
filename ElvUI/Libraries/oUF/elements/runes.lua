@@ -86,7 +86,7 @@ local function UpdateColor(self, event)
 	local spec = GetSpecialization() or 0
 
 	local color
-	if(spec ~= 0 and element.colorSpec) then
+	if(spec > 0 and spec < 4 and element.colorSpec) then
 		color = self.colors.runes[spec]
 	else
 		color = self.colors.power.RUNES

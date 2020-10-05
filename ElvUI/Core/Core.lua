@@ -491,11 +491,15 @@ function E:UpdateFontTemplates()
 end
 
 function E:RegisterStatusBar(statusBar)
-	tinsert(E.statusBars, statusBar)
+	E.statusBars[statusBar] = true
+end
+
+function E:UnregisterStatusBar(statusBar)
+	E.statusBars[statusBar] = nil
 end
 
 function E:UpdateStatusBars()
-	for _, statusBar in pairs(E.statusBars) do
+	for statusBar in pairs(E.statusBars) do
 		if statusBar and statusBar:IsObjectType('StatusBar') then
 			statusBar:SetStatusBarTexture(E.media.normTex)
 		elseif statusBar and statusBar:IsObjectType('Texture') then

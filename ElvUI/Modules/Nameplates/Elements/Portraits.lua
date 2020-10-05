@@ -50,6 +50,7 @@ function NP:Update_Portrait(nameplate)
 	if sf.Portrait or (db.portrait and db.portrait.enable) then
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
+			nameplate.Portrait:ForceUpdate()
 		end
 
 		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)

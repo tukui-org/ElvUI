@@ -12,45 +12,56 @@ local function showFollower(s)
 	S:HandleFollowerAbilities(s)
 end
 
-local function SkinEnemyBoard(self)
-	for socketTexture in self.enemySocketFramePool:EnumerateActive() do
-		socketTexture:SetAlpha(0) -- looks ugly
+local function UpdateFollowerColorOnBoard(self, _, info)
+	if self.Portrait.backdrop then
+		local color = E.QualityColors[info.quality or 0]
+		self.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	end
+end
+
+local function ResetFollowerColorOnBoard(self)
+	if self.Portrait.backdrop then
+		self.Portrait.backdrop:SetBackdropBorderColor(0, 0, 0)
+	end
+end
+
+local function SkinFollowerBoard(self, group)
+	for socketTexture in self[group..'SocketFramePool']:EnumerateActive() do
+		socketTexture:DisableDrawLayer('BACKGROUND')
 	end
 
-	for enemyFrame in self.enemyFramePool:EnumerateActive() do
-		if not enemyFrame.IsSkinned then
-			S:HandleGarrisonPortrait(enemyFrame)
+	for frame in self[group..'FramePool']:EnumerateActive() do
+		if not frame.IsSkinned then
+			S:HandleGarrisonPortrait(frame)
+			frame.PuckShadow:SetAlpha(0)
 
-			enemyFrame.IsSkinned = true
+			if frame.SetFollowerGUID then
+				hooksecurefunc(frame, 'SetFollowerGUID', UpdateFollowerColorOnBoard)
+			end
+			if frame.SetEmpty then
+				hooksecurefunc(frame, 'SetEmpty', ResetFollowerColorOnBoard)
+			end
+
+			frame.IsSkinned = true
 		end
 	end
 end
 
-local function SkinFollowerBoard(self)
-	for socketTexture in self.followerSocketFramePool:EnumerateActive() do
-		socketTexture:SetAlpha(0) -- looks ugly
-	end
-
-	for followerFrame in self.followerFramePool:EnumerateActive() do
-		if not followerFrame.IsSkinned then
-			S:HandleGarrisonPortrait(followerFrame)
-
-			followerFrame.IsSkinned = true
-		end
-	end
+local function SkinMissionBoards(board)
+	SkinFollowerBoard(board, 'enemy')
+	SkinFollowerBoard(board, 'follower')
 end
 
-local function SkinMissionBoard(board)
-	board:HookScript('OnShow', SkinEnemyBoard)
-	hooksecurefunc(board, 'EnumerateFollowers', SkinFollowerBoard)
-end
-
-local function UpdateSpellAbilities(self, followerInfo)
+local function UpdateSpellAbilities(spell, followerInfo)
 	local autoSpellInfo = followerInfo.autoSpellAbilities
 	for _ in ipairs(autoSpellInfo) do
-		local abilityFrame = self.autoSpellPool:Acquire()
+		local abilityFrame = spell.autoSpellPool:Acquire()
 		if not abilityFrame.IsSkinned then
 			S:HandleIcon(abilityFrame.Icon, true)
+
+			if abilityFrame.SpellBorder then
+				abilityFrame.SpellBorder:Hide()
+			end
 			abilityFrame.IsSkinned = true
 		end
 	end
@@ -135,13 +146,6 @@ function S:Blizzard_GarrisonUI()
 		for _, reward in pairs(s.Rewards) do
 			firstRegion = reward.GetRegions and reward:GetRegions()
 			if firstRegion then firstRegion:Hide() end
-
-			reward:ClearAllPoints()
-			if IsAddOnLoaded('GarrisonMissionManager') then -- otherwise we mess with this AddOn
-				reward:Point('TOPRIGHT', -65 + (index * -65), -1)
-			else
-				reward:Point('TOPRIGHT', -1 + (index * -65), -1)
-			end
 
 			if reward.IconBorder then
 				reward.IconBorder:SetTexture()
@@ -594,10 +598,9 @@ function S:Blizzard_GarrisonUI()
 	_G.CombatLog.CombatLogMessageFrame:CreateBackdrop('Transparent')
 
 	-- Adventures / Follower Tab
-	-- TODO: Quality Border!?
 	Follower = _G.CovenantMissionFrameFollowers -- swap
 	FollowerTab = CovenantMissionFrame.FollowerTab
-	-- Simpy, please check this, probably our functions needs to be rewritten for this!?
+
 	hooksecurefunc(Follower, 'ShowFollower', showFollower)
 	Follower:StripTextures()
 	Follower:CreateBackdrop('Transparent')
@@ -615,8 +618,8 @@ function S:Blizzard_GarrisonUI()
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
 	S:HandleIcon(CovenantMissionFrame.MissionTab.MissionPage.CostFrame.CostIcon)
 
-	SkinMissionBoard(CovenantMissionFrame.MissionTab.MissionPage.Board)
-	SkinMissionBoard(CovenantMissionFrame.MissionComplete.Board)
+	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript('OnShow', SkinMissionBoards)
+	CovenantMissionFrame.MissionComplete.Board:HookScript('OnShow', SkinMissionBoards)
 end
 
 local function SkinFollowerTooltip(frame)

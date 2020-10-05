@@ -1,7 +1,9 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
-UF.LSM = E.Libs.LSM
+
+local ElvUF = E.oUF
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local select, type, unpack, assert, tostring = select, type, unpack, assert, tostring
@@ -30,10 +32,6 @@ local SOUNDKIT_IG_CHARACTER_NPC_SELECT = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
-
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
 local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
@@ -883,13 +881,17 @@ function UF:ZONE_CHANGED_NEW_AREA()
 end
 
 -- note in datatext file, same name.
+local RerenderFont = function(fs)
+	local text = fs:GetText()
+	fs:SetText('\10')
+	fs:SetText(text)
+end
+
 local FixFonts = CreateFrame('Frame')
 FixFonts:Hide()
 FixFonts:SetScript('OnUpdate', function(self)
 	for fs in pairs(UF.fontstrings) do
-		local text = fs:GetText()
-		fs:SetText('\10')
-		fs:SetText(text)
+		RerenderFont(fs)
 	end
 
 	self:Hide()
@@ -1084,7 +1086,7 @@ function UF:LoadUnits()
 end
 
 function UF:RegisterRaidDebuffIndicator()
-	local ORD = ns.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
+	local ORD = E.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if ORD then
 		ORD:ResetDebuffData()
 
@@ -1561,7 +1563,7 @@ function UF:Initialize()
 
 	UF:UpdateRangeCheckSpells()
 
-	local ORD = ns.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
+	local ORD = E.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if not ORD then return end
 	ORD.ShowDispellableDebuff = true
 	ORD.FilterDispellableDebuff = true

@@ -75,11 +75,14 @@ local function Update(self)
 	if showIndicator then
 		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 			element.TopIndicator:SetVertexColor(r, g, b)
+			element.TopIndicator:SetTexture(element.arrow)
 		end
 
 		if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
-			element.RightIndicator:SetVertexColor(r, g, b)
 			element.LeftIndicator:SetVertexColor(r, g, b)
+			element.RightIndicator:SetVertexColor(r, g, b)
+			element.LeftIndicator:SetTexture(element.arrow)
+			element.RightIndicator:SetTexture(element.arrow)
 		end
 
 		if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
@@ -120,39 +123,29 @@ local function Enable(self)
 			element.lowHealthThreshold = .4
 		end
 
-		if element.Shadow then
-			if element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() then
-				if not templateBackdrop.edgeFile then templateBackdrop.edgeFile = E.Media.Textures.GlowTex end
-				if not templateBackdrop.edgeSize then templateBackdrop.edgeSize = E:Scale(5) end
-				element.Shadow:SetBackdrop(templateBackdrop)
-			end
+		if element.Shadow and element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() then
+			if not templateBackdrop.edgeFile then templateBackdrop.edgeFile = E.Media.Textures.GlowTex end
+			if not templateBackdrop.edgeSize then templateBackdrop.edgeSize = E:Scale(5) end
+			element.Shadow:SetBackdrop(templateBackdrop)
 		end
 
-		if element.Spark then
-			if element.Spark:IsObjectType('Texture') and not element.Spark:GetTexture() then
-				element.Spark:SetTexture(E.Media.Textures.Spark)
-			end
+		if element.Spark and element.Spark:IsObjectType('Texture') and not element.Spark:GetTexture() then
+			element.Spark:SetTexture(E.Media.Textures.Spark)
 		end
 
-		if element.TopIndicator then
-			if element.TopIndicator:IsObjectType('Texture') and not element.TopIndicator:GetTexture() then
-				element.TopIndicator:SetTexture(E.Media.Textures.ArrowUp)
-				element.TopIndicator:SetRotation(3.14)
-			end
+		if element.TopIndicator and element.TopIndicator:IsObjectType('Texture') and not element.TopIndicator:GetTexture() then
+			element.TopIndicator:SetTexture(E.Media.Textures.ArrowUp)
+			element.TopIndicator:SetRotation(3.14)
 		end
 
-		if element.LeftIndicator then
-			if element.LeftIndicator:IsObjectType('Texture') and not element.LeftIndicator:GetTexture() then
-				element.LeftIndicator:SetTexture(E.Media.Textures.ArrowUp)
-				element.LeftIndicator:SetRotation(1.57)
-			end
+		if element.LeftIndicator and element.LeftIndicator:IsObjectType('Texture') and not element.LeftIndicator:GetTexture() then
+			element.LeftIndicator:SetTexture(E.Media.Textures.ArrowUp)
+			element.LeftIndicator:SetRotation(1.57)
 		end
 
-		if element.RightIndicator then
-			if element.RightIndicator:IsObjectType('Texture') and not element.RightIndicator:GetTexture() then
-				element.RightIndicator:SetTexture(E.Media.Textures.ArrowUp)
-				element.RightIndicator:SetRotation(-1.57)
-			end
+		if element.RightIndicator and element.RightIndicator:IsObjectType('Texture') and not element.RightIndicator:GetTexture() then
+			element.RightIndicator:SetTexture(E.Media.Textures.ArrowUp)
+			element.RightIndicator:SetRotation(-1.57)
 		end
 
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)

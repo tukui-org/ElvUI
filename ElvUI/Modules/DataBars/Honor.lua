@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
 
+local _G = _G
 local format = format
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
@@ -8,42 +9,44 @@ local UnitHonorMax = UnitHonorMax
 local TogglePVPUI = TogglePVPUI
 local HONOR = HONOR
 
+local CurrentHonor, MaxHonor, CurrentLevel, PercentHonor, RemainingHonor
+
 function DB:HonorBar_Update(event, unit)
 	if not DB.db.honor.enable then return end
 	local bar = DB.StatusBars.Honor
 
 	if event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player' then return end
 
-	local cur, max = UnitHonor('player'), UnitHonorMax('player')
+	CurrentHonor, MaxHonor, CurrentLevel = UnitHonor('player'), UnitHonorMax('player'), UnitHonorLevel('player')
 
 	--Guard against division by zero, which appears to be an issue when zoning in/out of dungeons
-	if max == 0 then max = 1 end
+	if MaxHonor == 0 then MaxHonor = 1 end
 
-	bar:SetMinMaxValues(0, max)
-	bar:SetValue(cur)
+	bar:SetMinMaxValues(0, MaxHonor)
+	bar:SetValue(CurrentHonor)
 	local color = DB.db.colors.honor
 	bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 
-	local text = ''
-	local textFormat = DB.db.honor.textFormat
+	local displayString, textFormat = '', DB.db.honor.textFormat
 
+	PercentHonor, RemainingHonor = (CurrentHonor / MaxHonor) * 100, MaxHonor - CurrentHonor
 	if textFormat == 'PERCENT' then
-		text = format('%d%%', cur / max * 100)
+		displayString = format('%d%%', PercentHonor)
 	elseif textFormat == 'CURMAX' then
-		text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max))
+		displayString = format('%s - %s', E:ShortValue(CurrentHonor), E:ShortValue(MaxHonor))
 	elseif textFormat == 'CURPERC' then
-		text = format('%s - %d%%', E:ShortValue(cur), cur / max * 100)
+		displayString = format('%s - %d%%', E:ShortValue(CurrentHonor), PercentHonor)
 	elseif textFormat == 'CUR' then
-		text = format('%s', E:ShortValue(cur))
+		displayString = format('%s', E:ShortValue(CurrentHonor))
 	elseif textFormat == 'REM' then
-		text = format('%s', E:ShortValue(max - cur))
+		displayString = format('%s', E:ShortValue(RemainingHonor))
 	elseif textFormat == 'CURREM' then
-		text = format('%s - %s', E:ShortValue(cur), E:ShortValue(max - cur))
+		displayString = format('%s - %s', E:ShortValue(CurrentHonor), E:ShortValue(RemainingHonor))
 	elseif textFormat == 'CURPERCREM' then
-		text = format('%s - %d%% (%s)', E:ShortValue(cur), cur / max * 100, E:ShortValue(max - cur))
+		displayString = format('%s - %d%% (%s)', E:ShortValue(CurrentHonor), CurrentHonor, E:ShortValue(RemainingHonor))
 	end
 
-	bar.text:SetText(text)
+	bar.text:SetText(displayString)
 end
 
 function DB:HonorBar_OnEnter()
@@ -54,15 +57,13 @@ function DB:HonorBar_OnEnter()
 	_G.GameTooltip:ClearLines()
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
 
-	local cur, max, level = UnitHonor('player'), UnitHonorMax('player'), UnitHonorLevel('player')
-
 	_G.GameTooltip:AddLine(HONOR)
 
-	_G.GameTooltip:AddDoubleLine(L["Current Level:"], level, 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(L["Current Level:"], CurrentLevel, 1, 1, 1)
 	_G.GameTooltip:AddLine(' ')
 
-	_G.GameTooltip:AddDoubleLine(L["Honor XP:"], format(' %d / %d (%d%%)', cur, max, cur/max * 100), 1, 1, 1)
-	_G.GameTooltip:AddDoubleLine(L["Honor Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', max - cur, (max - cur) / max * 100, 20 * (max - cur) / max), 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(L["Honor XP:"], format(' %d / %d (%d%%)', CurrentHonor, MaxHonor, PercentHonor), 1, 1, 1)
+	_G.GameTooltip:AddDoubleLine(L["Honor Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', RemainingHonor, (RemainingHonor) / MaxHonor * 100, 20 * (RemainingHonor) / MaxHonor), 1, 1, 1)
 
 	_G.GameTooltip:Show()
 end
@@ -73,23 +74,29 @@ end
 
 function DB:HonorBar_Toggle()
 	local bar = DB.StatusBars.Honor
+	bar.db = DB.db.honor
+
 	bar:SetShown(bar.db.enable)
 
 	if bar.db.enable then
+		E:EnableMover(bar.mover:GetName())
+
 		DB:RegisterEvent('HONOR_XP_UPDATE', 'HonorBar_Update')
 		DB:RegisterEvent('PLAYER_FLAGS_CHANGED', 'HonorBar_Update')
+
 		DB:HonorBar_Update()
-		E:EnableMover(bar.mover:GetName())
 	else
+		bar:Hide()
+		E:DisableMover(bar.mover:GetName())
+
 		DB:UnregisterEvent('HONOR_XP_UPDATE')
 		DB:UnregisterEvent('PLAYER_FLAGS_CHANGED')
-		E:DisableMover(bar.mover:GetName())
 	end
 end
 
 function DB:HonorBar()
 	DB.StatusBars.Honor = DB:CreateBar('ElvUI_HonorBar', DB.HonorBar_OnEnter, DB.HonorBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255)
-	DB.StatusBars.Honor.db = DB.db.honor
+	DB.StatusBars.Honor.Update = DB.HonorBar_Update
 
 	E:CreateMover(DB.StatusBars.Honor, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 

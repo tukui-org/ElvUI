@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
+local LSM = E.Libs.LSM
 
 local next, ipairs, pairs = next, ipairs, pairs
 local floor, tinsert = floor, tinsert
@@ -150,7 +151,7 @@ function E:Cooldown_Options(timer, db, parent)
 		end
 
 		if fonts and fonts.enable then
-			timer.customFont = E.Libs.LSM:Fetch('font', fonts.font)
+			timer.customFont = LSM:Fetch('font', fonts.font)
 			timer.customFontSize = fonts.fontSize
 			timer.customFontOutline = fonts.fontOutline
 		else
@@ -290,7 +291,7 @@ function E:UpdateCooldownOverride(module)
 					cd.text:FontTemplate(cd.customFont, cd.customFontSize, cd.customFontOutline)
 				elseif parent.CooldownOverride == 'auras' then
 					-- parent.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
-					local font = E.Libs.LSM:Fetch('font', db.font)
+					local font = LSM:Fetch('font', db.font)
 					if font and parent.auraType then
 						local fontSize = db[parent.auraType] and db[parent.auraType].durationFontSize
 						if fontSize then

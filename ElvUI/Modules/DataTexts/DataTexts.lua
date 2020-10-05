@@ -222,7 +222,7 @@ function DT:BuildPanelFrame(name, db, fromInit)
 	if holder then
 		E:SetMoverPoints(MoverName, Panel)
 	else
-		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'general,solo')
+		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'datatexts,panels')
 	end
 
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
@@ -596,11 +596,11 @@ function DT:UpdatePanelAttributes(name, db, fromLoad)
 
 	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
 
-	if not DT.db.panels[name] then
+	if not DT.db.panels[name] or type(DT.db.panels[name]) ~= 'table' then
 		DT.db.panels[name] = { enable = false }
 	end
 
-	for i = 1, E.global.datatexts.customPanels[name].numPoints do
+	for i = 1, (E.global.datatexts.customPanels[name].numPoints or 1) do
 		if not DT.db.panels[name][i] then
 			DT.db.panels[name][i] = ''
 		end
@@ -777,7 +777,7 @@ function DT:Initialize()
 	end
 
 	-- Ignore header font size on DatatextTooltip
-	local font = E.Libs.LSM:Fetch('font', E.db.tooltip.font)
+	local font = LSM:Fetch('font', E.db.tooltip.font)
 	local fontOutline = E.db.tooltip.fontOutline
 	local textSize = E.db.tooltip.textFontSize
 	_G.DataTextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)

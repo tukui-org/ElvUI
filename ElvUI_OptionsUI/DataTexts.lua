@@ -71,7 +71,7 @@ local DTPanelOptions = {
 		order = 15,
 		type = 'group',
 		name = L["Strata and Level"],
-		guiInline = true,
+		inline = true,
 		args = {
 			frameStrata = {
 				order = 2,
@@ -91,7 +91,7 @@ local DTPanelOptions = {
 		order = 20,
 		type = 'group',
 		name = L["Tooltip"],
-		guiInline = true,
+		inline = true,
 		args = {
 			tooltipXOffset = {
 				order = 1,
@@ -161,7 +161,7 @@ local function PanelGroup_Create(panel)
 				order = -1,
 				name = L["Panel Options"],
 				type = 'group',
-				guiInline = true,
+				inline = true,
 				get = function(info) return E.global.datatexts.customPanels[panel][info[#info]] end,
 				set = function(info, value)
 					E.global.datatexts.customPanels[panel][info[#info]] = value
@@ -188,7 +188,7 @@ local function PanelGroup_Create(panel)
 						order = 10,
 						type = 'group',
 						name = L["Fonts"],
-						guiInline = true,
+						inline = true,
 						get = function(info)
 							local settings = E.global.datatexts.customPanels[panel]
 							if not settings.fonts then settings.fonts = E:CopyTable({}, G.datatexts.newPanelInfo.fonts) end
@@ -313,7 +313,7 @@ local function CreateCustomCurrencyOptions(currencyID)
 			order = 1,
 			type = 'group',
 			name = currency.NAME,
-			guiInline = false,
+			inline = false,
 			args = {
 				displayStyle = {
 					order = 1,
@@ -382,7 +382,7 @@ local function CreateDTOptions(name, data)
 		order = 1,
 		type = "group",
 		name = data.localizedName or name,
-		guiInline = false,
+		inline = false,
 		get = function(info) return settings[info[#info]] end,
 		set = function(info, value) settings[info[#info]] = value DT:ForceUpdate_DataText(name) end,
 		args = {},
@@ -394,7 +394,7 @@ local function CreateDTOptions(name, data)
 		if key == 'decimalLength' then
 			optionTable.args.decimalLength = {
 				type = 'range',
-				name = L['Decimal Length'],
+				name = L["Decimal Length"],
 				min = 0, max = 5, step = 1,
 			}
 		elseif key == 'goldFormat' then
@@ -414,14 +414,23 @@ local function CreateDTOptions(name, data)
 			optionTable.args.Label = {
 				order = 0,
 				type = 'input',
-				name = L['Label'],
+				name = L["Label"],
 				get = function(info) return settings[info[#info]] and gsub(settings[info[#info]], '\124', '\124\124') end,
 				set = function(info, value) settings[info[#info]] = gsub(value, '\124\124+', '\124') end,
 			}
 		elseif key == 'NoLabel' then
 			optionTable.args.NoLabel = {
 				type = 'toggle',
-				name = L['No Label'],
+				name = L["No Label"],
+			}
+		elseif key == 'textFormat' then
+			optionTable.args.textFormat = {
+				type = 'select',
+				name = L["Text Format"],
+				width = "double",
+				get = function(info) return settings[info[#info]] end,
+				set = function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end,
+				values = {},
 			}
 		end
 	end
@@ -448,7 +457,7 @@ local function CreateDTOptions(name, data)
 		optionTable.args.tooltipLines = {
 			order = -1,
 			type = 'group',
-			guiInline = true,
+			inline = true,
 			name = L["Tooltip Lines"],
 			args = {}
 		}
@@ -457,7 +466,7 @@ local function CreateDTOptions(name, data)
 				optionTable.args.tooltipLines.args[tostring(i)] = {
 					order = i,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = info[1],
 					args = {
 						header = {
@@ -539,22 +548,21 @@ local function CreateDTOptions(name, data)
 			},
 		}
 	elseif name == 'Reputation' or name == 'Experience' then
-		optionTable.args.textFormat = {
-			order = 13,
-			type = 'select',
-			name = L["Text Format"],
-			width = "double",
-			get = function(info) return settings[info[#info]] end,
-			set = function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end,
-			values = {
-				PERCENT = L["Percent"],
-				CUR = L["Current"],
-				REM = L["Remaining"],
-				CURMAX = L["Current - Max"],
-				CURPERC = L["Current - Percent"],
-				CURREM = L["Current - Remaining"],
-				CURPERCREM = L["Current - Percent (Remaining)"],
-			},
+		optionTable.args.textFormat.values = {
+			PERCENT = L["Percent"],
+			CUR = L["Current"],
+			REM = L["Remaining"],
+			CURMAX = L["Current - Max"],
+			CURPERC = L["Current - Percent"],
+			CURREM = L["Current - Remaining"],
+			CURPERCREM = L["Current - Percent (Remaining)"],
+		}
+	elseif name == 'Bags' then
+		optionTable.args.textFormat.values = {
+			["FREE"] = L["Only Free Slots"],
+			["USED"] = L["Only Used Slots"],
+			["FREE_TOTAL"] = L["Free/Total"],
+			["USED_TOTAL"] = L["Used/Total"],
 		}
 	end
 end
@@ -597,7 +605,7 @@ E.Options.args.datatexts = {
 				generalGroup = {
 					order = 2,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = L["General"],
 					args = {
 						battleground = {
@@ -623,7 +631,7 @@ E.Options.args.datatexts = {
 				fontGroup = {
 					order = 3,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = L["Fonts"],
 					args = {
 						font = {

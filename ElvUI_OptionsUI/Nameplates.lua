@@ -122,7 +122,7 @@ local function UpdateClassSpec(classTag, enabled)
 			order = specListOrder,
 			type = 'group',
 			name = classTable[classTag].name,
-			guiInline = true,
+			inline = true,
 			args = {}
 		}
 	end
@@ -303,7 +303,7 @@ local function UpdateTalentSection()
 				type = 'group',
 				order = 4,
 				name = L["Tiers"],
-				guiInline = true,
+				inline = true,
 				disabled = function()
 					return not E.global.nameplate.filters[selectedNameplateFilter].triggers.talent.enabled
 				end,
@@ -331,7 +331,7 @@ local function UpdateTalentSection()
 				E.Options.args.nameplate.args.filters.args.triggers.args.talent.args.tiers.args['tier' .. i] = {
 					type = 'group',
 					order = order,
-					guiInline = true,
+					inline = true,
 					name = L["Tier " .. i],
 					args = {
 						missing = {
@@ -381,7 +381,7 @@ local function UpdateInstanceDifficulty()
 			type = 'group',
 			name = L["DUNGEON_DIFFICULTY"],
 			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
-			guiInline = true,
+			inline = true,
 			order = 10,
 			get = function(info)
 				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]]
@@ -428,7 +428,7 @@ local function UpdateInstanceDifficulty()
 			type = 'group',
 			name = L["Raid Difficulty"],
 			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
-			guiInline = true,
+			inline = true,
 			order = 11,
 			get = function(info)
 				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[info[#info]]
@@ -499,7 +499,7 @@ local function UpdateStyleLists()
 			order = 50,
 			type = 'group',
 			name = '',
-			guiInline = true,
+			inline = true,
 			args = {}
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.names) then
@@ -529,7 +529,7 @@ local function UpdateStyleLists()
 			order = 50,
 			type = 'group',
 			name = '',
-			guiInline = true,
+			inline = true,
 			args = {}
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells) then
@@ -575,7 +575,7 @@ local function UpdateStyleLists()
 			order = 50,
 			type = 'group',
 			name = '',
-			guiInline = true,
+			inline = true,
 			args = {}
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) then
@@ -626,7 +626,7 @@ local function UpdateStyleLists()
 			order = 50,
 			type = 'group',
 			name = '',
-			guiInline = true,
+			inline = true,
 			args = {}
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) then
@@ -672,7 +672,7 @@ local function UpdateStyleLists()
 			order = 50,
 			type = 'group',
 			name = '',
-			guiInline = true,
+			inline = true,
 			args = {}
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) then
@@ -869,7 +869,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 2,
 							args = {
 								isTarget = {
@@ -938,7 +938,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 1,
 							args = {
 								interruptible = {
@@ -1042,7 +1042,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 2,
 							args = {
 								inCombat = {
@@ -1246,7 +1246,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 2,
 							args = {
 								tank = {
@@ -1288,7 +1288,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 2,
 							args = {
 								worldboss = {
@@ -1486,7 +1486,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 1,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.keyMod[info[#info]]
@@ -1764,7 +1764,7 @@ local function UpdateFilterGroup()
 						},
 						changeList = {
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Add / Remove"],
 							order = 10,
 							args = {
@@ -1883,7 +1883,7 @@ local function UpdateFilterGroup()
 						},
 						changeList = {
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Add / Remove"],
 							order = 10,
 							args = {
@@ -1970,7 +1970,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 1,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.threat[info[#info]]
@@ -2054,7 +2054,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 1,
 							get = function(info)
 								return E.global.nameplate.filters[selectedNameplateFilter].triggers.nameplateType[info[#info]]
@@ -2123,7 +2123,7 @@ local function UpdateFilterGroup()
 							type = 'toggle'
 						},
 						reputation = {
-							name = L["REPUTATION"],
+							name = L["Reputation"],
 							desc = L["If this is enabled then the reaction check will use your reputation with the faction the unit belongs to."],
 							order = 1,
 							type = 'toggle',
@@ -2137,7 +2137,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 2,
 							disabled = function()
 								return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2251,7 +2251,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 2,
 							disabled = function()
 								return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2283,7 +2283,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 2,
 							args = {
 								none = {
@@ -2356,7 +2356,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 2,
 							args = {
 								mapIDEnabled = {
@@ -2544,7 +2544,7 @@ local function UpdateFilterGroup()
 						},
 						btns = {
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							name = L["Add Current"],
 							order = 2,
 							args = {
@@ -2630,7 +2630,7 @@ local function UpdateFilterGroup()
 						types = {
 							name = '',
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							order = 2,
 							args = {
 								star = {
@@ -2765,7 +2765,7 @@ local function UpdateFilterGroup()
 						E.global.nameplate.filters[selectedNameplateFilter].actions.color[info[#info]] = value
 						NP:ConfigureAll()
 					end,
-					guiInline = true,
+					inline = true,
 					disabled = function()
 						return E.global.nameplate.filters[selectedNameplateFilter].actions.hide
 					end,
@@ -2854,7 +2854,7 @@ local function UpdateFilterGroup()
 						E.global.nameplate.filters[selectedNameplateFilter].actions.texture[info[#info]] = value
 						NP:ConfigureAll()
 					end,
-					guiInline = true,
+					inline = true,
 					disabled = function()
 						return E.global.nameplate.filters[selectedNameplateFilter].actions.hide
 					end,
@@ -2880,7 +2880,7 @@ local function UpdateFilterGroup()
 					order = 30,
 					type = 'group',
 					name = L["Flash"],
-					guiInline = true,
+					inline = true,
 					disabled = function()
 						return E.global.nameplate.filters[selectedNameplateFilter].actions.hide
 					end,
@@ -2938,7 +2938,7 @@ local function UpdateFilterGroup()
 				text_format = {
 					order = 40,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = L["Text Format"],
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].actions.tags[info[#info]]
@@ -3171,7 +3171,7 @@ local function GetUnitSettings(unit, name)
 						order = 200,
 						type = 'group',
 						name = L["Text"],
-						guiInline = true,
+						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].health.text[info[#info]]
 						end,
@@ -3231,7 +3231,7 @@ local function GetUnitSettings(unit, name)
 								type = 'group',
 								order = 7,
 								name = '',
-								guiInline = true,
+								inline = true,
 								get = function(info)
 									return E.db.nameplates.units[unit].health.text[info[#info]]
 								end,
@@ -3362,7 +3362,7 @@ local function GetUnitSettings(unit, name)
 						order = 200,
 						type = 'group',
 						name = L["Text"],
-						guiInline = true,
+						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].power.text[info[#info]]
 						end,
@@ -3422,7 +3422,7 @@ local function GetUnitSettings(unit, name)
 								type = 'group',
 								order = 7,
 								name = '',
-								guiInline = true,
+								inline = true,
 								get = function(info)
 									return E.db.nameplates.units[unit].power.text[info[#info]]
 								end,
@@ -3563,7 +3563,7 @@ local function GetUnitSettings(unit, name)
 							E.db.nameplates.units[unit].castbar[info[#info]] = value
 							NP:ConfigureAll()
 						end,
-						guiInline = true,
+						inline = true,
 						args = {
 							hideSpellName = {
 								order = 1,
@@ -3620,7 +3620,7 @@ local function GetUnitSettings(unit, name)
 							E.db.nameplates.units[unit].castbar[info[#info]] = value
 							NP:ConfigureAll()
 						end,
-						guiInline = true,
+						inline = true,
 						args = {
 							showIcon = {
 								order = 11,
@@ -3666,7 +3666,7 @@ local function GetUnitSettings(unit, name)
 						type = 'group',
 						order = 30,
 						name = L["Font"],
-						guiInline = true,
+						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].castbar[info[#info]]
 						end,
@@ -3794,7 +3794,7 @@ local function GetUnitSettings(unit, name)
 						type = 'group',
 						order = 11,
 						name = L["Stack Counter"],
-						guiInline = true,
+						inline = true,
 						get = function(info, value)
 							return E.db.nameplates.units[unit].buffs[info[#info]]
 						end,
@@ -3847,7 +3847,7 @@ local function GetUnitSettings(unit, name)
 						type = 'group',
 						order = 12,
 						name = L["Duration"],
-						guiInline = true,
+						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].buffs[info[#info]]
 						end,
@@ -3886,7 +3886,7 @@ local function GetUnitSettings(unit, name)
 						name = L["FILTERS"],
 						order = 13,
 						type = 'group',
-						guiInline = true,
+						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].buffs[info[#info]]
 						end,
@@ -4109,7 +4109,7 @@ local function GetUnitSettings(unit, name)
 						type = 'group',
 						order = 11,
 						name = L["Stack Counter"],
-						guiInline = true,
+						inline = true,
 						get = function(info, value)
 							return E.db.nameplates.units[unit].debuffs[info[#info]]
 						end,
@@ -4162,7 +4162,7 @@ local function GetUnitSettings(unit, name)
 						type = 'group',
 						order = 12,
 						name = L["Duration"],
-						guiInline = true,
+						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].debuffs[info[#info]]
 						end,
@@ -4208,7 +4208,7 @@ local function GetUnitSettings(unit, name)
 							E.db.nameplates.units[unit].debuffs[info[#info]] = value
 							NP:ConfigureAll()
 						end,
-						guiInline = true,
+						inline = true,
 						args = {
 							minDuration = {
 								order = 1,
@@ -4457,7 +4457,7 @@ local function GetUnitSettings(unit, name)
 						type = 'group',
 						order = 7,
 						name = '',
-						guiInline = true,
+						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].level[info[#info]]
 						end,
@@ -4555,7 +4555,7 @@ local function GetUnitSettings(unit, name)
 						type = 'group',
 						order = 7,
 						name = L["Font"],
-						guiInline = true,
+						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].name[info[#info]]
 						end,
@@ -5186,7 +5186,7 @@ local function GetUnitSettings(unit, name)
 					type = 'group',
 					order = 7,
 					name = L["Font"],
-					guiInline = true,
+					inline = true,
 					get = function(info)
 						return E.db.nameplates.units[unit].title[info[#info]]
 					end,
@@ -5461,7 +5461,7 @@ E.Options.args.nameplate = {
 								playerVisibility = {
 									order = 2,
 									type = 'group',
-									guiInline = true,
+									inline = true,
 									name = L["Player"],
 									get = function(info)
 										return E.db.nameplates.units.PLAYER.visibility[info[#info]]
@@ -5518,7 +5518,7 @@ E.Options.args.nameplate = {
 								enemyVisibility = {
 									type = 'group',
 									order = 3,
-									guiInline = true,
+									inline = true,
 									name = L["Enemy"],
 									disabled = function()
 										return not E.db.nameplates.visibility.showAll
@@ -5562,7 +5562,7 @@ E.Options.args.nameplate = {
 								friendlyVisibility = {
 									type = 'group',
 									order = 4,
-									guiInline = true,
+									inline = true,
 									name = L["Friendly"],
 									disabled = function()
 										return not E.db.nameplates.visibility.showAll
@@ -5716,7 +5716,7 @@ E.Options.args.nameplate = {
 								personal = {
 									order = 1,
 									type = 'group',
-									guiInline = true,
+									inline = true,
 									name = L["Personal"],
 									get = function(info)
 										return E.db.nameplates.plateSize[info[#info]]
@@ -5749,7 +5749,7 @@ E.Options.args.nameplate = {
 								friendly = {
 									order = 2,
 									type = 'group',
-									guiInline = true,
+									inline = true,
 									name = L["Friendly"],
 									get = function(info)
 										return E.db.nameplates.plateSize[info[#info]]
@@ -5782,7 +5782,7 @@ E.Options.args.nameplate = {
 								enemy = {
 									order = 3,
 									type = 'group',
-									guiInline = true,
+									inline = true,
 									name = L["Enemy"],
 									get = function(info)
 										return E.db.nameplates.plateSize[info[#info]]
@@ -5823,7 +5823,7 @@ E.Options.args.nameplate = {
 								health = {
 									order = 1,
 									type = 'group',
-									guiInline = true,
+									inline = true,
 									name = L["Health"],
 									get = function(info)
 										return E.db.nameplates.cutaway.health[info[#info]]
@@ -5873,7 +5873,7 @@ E.Options.args.nameplate = {
 									order = 2,
 									type = 'group',
 									name = L["Power"],
-									guiInline = true,
+									inline = true,
 									get = function(info)
 										return E.db.nameplates.cutaway.power[info[#info]]
 									end,
@@ -6000,7 +6000,7 @@ E.Options.args.nameplate = {
 							order = 1,
 							type = 'group',
 							name = L["General"],
-							guiInline = true,
+							inline = true,
 							get = function(info)
 								local t = E.db.nameplates.colors[info[#info]]
 								local d = P.nameplates.colors[info[#info]]
@@ -6024,7 +6024,7 @@ E.Options.args.nameplate = {
 							order = 2,
 							type = 'group',
 							name = L["Threat"],
-							guiInline = true,
+							inline = true,
 							get = function(info)
 								local t = E.db.nameplates.colors.threat[info[#info]]
 								local d = P.nameplates.colors.threat[info[#info]]
@@ -6105,7 +6105,7 @@ E.Options.args.nameplate = {
 							order = 3,
 							type = 'group',
 							name = L["Cast Bar"],
-							guiInline = true,
+							inline = true,
 							get = function(info)
 								local t = E.db.nameplates.colors[info[#info]]
 								local d = P.nameplates.colors[info[#info]]
@@ -6154,7 +6154,7 @@ E.Options.args.nameplate = {
 							order = 4,
 							type = 'group',
 							name = L["Selection"],
-							guiInline = true,
+							inline = true,
 							get = function(info)
 								local n = tonumber(info[#info])
 								local t = E.db.nameplates.colors.selection[n]
@@ -6224,7 +6224,7 @@ E.Options.args.nameplate = {
 							order = 5,
 							type = 'group',
 							name = L["Reaction Colors"],
-							guiInline = true,
+							inline = true,
 							get = function(info)
 								local t = E.db.nameplates.colors.reactions[info[#info]]
 								local d = P.nameplates.colors.reactions[info[#info]]
@@ -6276,7 +6276,7 @@ E.Options.args.nameplate = {
 							order = 6,
 							name = L["Heal Prediction"],
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							get = function(info)
 								local t = E.db.nameplates.colors.healPrediction[info[#info]]
 								local d = P.nameplates.colors.healPrediction[info[#info]]
@@ -6318,7 +6318,7 @@ E.Options.args.nameplate = {
 							order = 7,
 							name = L["Power Color"],
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							get = function(info)
 								local t = E.db.nameplates.colors.power[info[#info]]
 								local d = P.nameplates.colors.power[info[#info]]
@@ -6391,7 +6391,7 @@ E.Options.args.nameplate = {
 							order = 8,
 							name = L["Class Resources"],
 							type = 'group',
-							guiInline = true,
+							inline = true,
 							get = function(info)
 								local t = E.db.nameplates.colors.classResources[info[#info]]
 								local d = P.nameplates.colors.classResources[info[#info]]
@@ -6557,8 +6557,20 @@ E.Options.args.nameplate = {
 						style8 = L["Background Glow"] .. ' + ' .. L["Side Arrows"]
 					}
 				},
-				nonTargetAlphaShortcut = {
+				arrow = {
 					order = 2,
+					type = 'select',
+					sortByValue = true,
+					name = L["Arrow Texture"],
+					values = {
+						ArrowUp = E:TextureString(E.Media.Textures.ArrowUp, ':14:14'),
+						Arrow1 = E:TextureString(E.Media.Textures.Arrow1, ':14:14'),
+						Arrow2 = E:TextureString(E.Media.Textures.Arrow2, ':14:14')
+					},
+				},
+				spacer1 = ACH:Spacer(3, 'full'),
+				nonTargetAlphaShortcut = {
+					order = 5,
 					type = 'execute',
 					name = L["Non-Target Alpha"],
 					func = function()
@@ -6568,7 +6580,7 @@ E.Options.args.nameplate = {
 					end
 				},
 				targetScaleShortcut = {
-					order = 3,
+					order = 6,
 					type = 'execute',
 					name = L["Scale"],
 					func = function()
@@ -6577,12 +6589,12 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup()
 					end
 				},
-				spacer1 = ACH:Spacer(4, 'full'),
+				spacer2 = ACH:Spacer(10, 'full'),
 				classBarGroup = {
-					order = 10,
+					order = 15,
 					type = 'group',
 					name = L["Classbar"],
-					guiInline = true,
+					inline = true,
 					get = function(info)
 						return E.db.nameplates.units.TARGET.classpower[info[#info]]
 					end,

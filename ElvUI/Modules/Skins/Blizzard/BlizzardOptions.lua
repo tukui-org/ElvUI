@@ -189,6 +189,7 @@ function S:BlizzardOptions()
 	_G.ChatConfigCombatSettingsFiltersDeleteButton:Point('TOPRIGHT', '$parent', 'BOTTOMRIGHT', -3, -1)
 	_G.ChatConfigCombatSettingsFiltersAddFilterButton:Point('RIGHT', '$parentDeleteButton', 'LEFT', -2, 0)
 	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:Point('RIGHT', '$parentAddFilterButton', 'LEFT', -2, 0)
+	S:HandleScrollBar(_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar)
 
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
 		if not _G.FCF_GetCurrentChatFrame() then return end

@@ -141,18 +141,33 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	local ChatMenus = {
-		'ChatMenu',
-		'EmoteMenu',
-		'LanguageMenu',
-		'VoiceMacroMenu',
-	}
+	do
+		local ChatMenus = {
+			_G.ChatMenu,
+			_G.EmoteMenu,
+			_G.LanguageMenu,
+			_G.VoiceMacroMenu,
+		}
 
-	for i = 1, #ChatMenus do
-		if _G[ChatMenus[i]] == _G.ChatMenu then
-			_G[ChatMenus[i]]:HookScript('OnShow', function(s) s:CreateBackdrop('Transparent', true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) s:ClearAllPoints() s:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30) end)
-		else
-			_G[ChatMenus[i]]:HookScript('OnShow', function(s) s:CreateBackdrop('Transparent', true) s:SetBackdropColor(unpack(E.media.backdropfadecolor)) end)
+		local menuBackdrop = function(s)
+			s:SetTemplate('Transparent')
+		end
+
+		local chatMenuBackdrop = function(s)
+			s:SetTemplate('Transparent')
+
+			s:ClearAllPoints()
+			s:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30)
+		end
+
+		for index, menu in ipairs(ChatMenus) do
+			menu:StripTextures()
+
+			if index == 1 then -- ChatMenu
+				menu:HookScript('OnShow', chatMenuBackdrop)
+			else
+				menu:HookScript('OnShow', menuBackdrop)
+			end
 		end
 	end
 

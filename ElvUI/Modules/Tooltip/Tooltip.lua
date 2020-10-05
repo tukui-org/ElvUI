@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local TT = E:GetModule('Tooltip')
 local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local unpack, select, ipairs = unpack, select, ipairs
@@ -759,7 +760,7 @@ function TT:RepositionBNET(frame, _, anchor)
 end
 
 function TT:SetTooltipFonts()
-	local font = E.Libs.LSM:Fetch('font', TT.db.font)
+	local font = LSM:Fetch('font', TT.db.font)
 	local fontOutline = TT.db.fontOutline
 	local headerSize = TT.db.headerFontSize
 	local smallTextSize = TT.db.smallTextFontSize
@@ -813,7 +814,7 @@ function TT:Initialize()
 	GameTooltip.StatusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
 	GameTooltip.StatusBar.text = GameTooltip.StatusBar:CreateFontString(nil, 'OVERLAY')
 	GameTooltip.StatusBar.text:Point('CENTER', GameTooltip.StatusBar, 0, 0)
-	GameTooltip.StatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+	GameTooltip.StatusBar.text:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
 
 	--Tooltip Fonts
 	if not GameTooltip.hasMoney then
@@ -828,7 +829,7 @@ function TT:Initialize()
 	GameTooltipAnchor:Point('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
 	GameTooltipAnchor:Size(130, 20)
 	GameTooltipAnchor:SetFrameLevel(GameTooltipAnchor:GetFrameLevel() + 400)
-	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip,general')
+	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip')
 
 	TT:SecureHook('SetItemRef')
 	TT:SecureHook('GameTooltip_SetDefaultAnchor')

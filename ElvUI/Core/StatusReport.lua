@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local LSM = E.Libs.LSM
 
 local wipe, sort, unpack = wipe, sort, unpack
 local next, pairs, tinsert = next, pairs, tinsert
@@ -93,7 +94,7 @@ function E:CreateStatusContent(num, width, parent, anchorTo, content)
 	content:Size(width, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
 	content:Point('TOP', anchorTo, 'BOTTOM')
 
-	local font = E.Libs.LSM:Fetch('font', 'Expressway')
+	local font = LSM:Fetch('font', 'Expressway')
 	for i = 1, num do
 		if not content['Line'..i] then
 			local line = CreateFrame('Frame', nil, content)
@@ -141,7 +142,7 @@ function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent,
 	header:Point('TOP', section)
 	section.Header = header
 
-	local font = E.Libs.LSM:Fetch('font', 'Expressway')
+	local font = LSM:Fetch('font', 'Expressway')
 	local text = section.Header:CreateFontString(nil, 'ARTWORK')
 	text:Point('TOP')
 	text:Point('BOTTOM')

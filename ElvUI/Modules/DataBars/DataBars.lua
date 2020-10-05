@@ -1,10 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
+local LSM = E.Libs.LSM
 
 local _G = _G
+local pairs, select = pairs, select
 local CreateFrame = CreateFrame
-
+local GetInstanceInfo = GetInstanceInfo
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 
 function DB:OnLeave()
 	if self.db.mouseover then
@@ -29,19 +32,22 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 	bar.text:FontTemplate()
 	bar.text:Point('CENTER')
 
+	E.FrameLocks[name] = true
+
 	return bar
 end
 
 function DB:UpdateAll()
+	local barTexture = DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
+
 	for _, bar in pairs(DB.StatusBars) do
-		bar:SetWidth(bar.db.width)
-		bar:SetHeight(bar.db.height)
+		bar:Size(bar.db.width, bar.db.height)
 		bar:SetReverseFill(bar.db.reverseFill)
-		bar:SetOrientation(bar.db.orientation)
-		bar:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
-		bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+		bar:SetStatusBarTexture(barTexture, 'ARTWORK', 7)
+		bar:EnableMouse(not bar.db.clickThrough)
 		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
-		bar.text:FontTemplate(E.Libs.LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
+		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
+
 		if bar.db.enable then
 			bar:SetAlpha(bar.db.mouseover and 0 or 1)
 		end
@@ -52,10 +58,28 @@ function DB:UpdateAll()
 			E:UnregisterObjectForVehicleLock(bar)
 		end
 
-		if bar.Rested then
-			bar.Rested:SetOrientation(bar.db.orientation)
-			bar.Rested:SetReverseFill(bar.db.reverseFill)
-			bar.Rested:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
+		if bar.db.orientation == 'AUTOMATIC' then
+			bar:SetOrientation(bar.db.height > bar.db.width and 'VERTICAL' or 'HORIZONTAL')
+			bar:SetRotatesTexture(bar.db.height > bar.db.width)
+		else
+			bar:SetOrientation(bar.db.orientation)
+			bar:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
+		end
+
+		local frameLevel = bar:GetFrameLevel()
+		local orientation = bar:GetOrientation()
+		local rotatesTexture = bar:GetRotatesTexture()
+		local reverseFill = bar:GetReverseFill()
+
+		for i = 1, bar:GetNumChildren() do
+			local child = select(i, bar:GetChildren())
+			if child:IsObjectType('StatusBar') then
+				child:SetStatusBarTexture(barTexture, 'ARTWORK', -i)
+				child:SetFrameLevel(frameLevel)
+				child:SetOrientation(orientation)
+				child:SetRotatesTexture(rotatesTexture)
+				child:SetReverseFill(reverseFill)
+			end
 		end
 	end
 
@@ -73,16 +97,21 @@ function DB:PLAYER_LEVEL_UP()
 end
 
 function DB:CombatCheck(event)
+	local notInCombat = event == 'PLAYER_REGEN_ENABLED'
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable and bar.db.hideInCombat then
-			bar:SetShown(event == 'PLAYER_REGEN_ENABLED')
+			bar:SetShown(notInCombat)
+			if notInCombat and bar.Update then
+				bar:Update()
+			end
 		end
 	end
 end
 
 function DB:PvPCheck()
 	local PvPInstance = select(2, GetInstanceInfo()) == 'pvp'
-	local WarMode = C_PvP.IsWarModeActive()
+	local WarMode = C_PvP_IsWarModeActive()
+
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable and bar.db.hideOutsidePvP then
 			bar:SetShown(not (PvPInstance or WarMode))

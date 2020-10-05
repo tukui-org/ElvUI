@@ -5,7 +5,7 @@ local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 
 local _G = _G
-local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
+local tonumber, type, gsub, pairs, pcall, loadstring = tonumber, type, gsub, pairs, pcall, loadstring
 local len, format, split, find = strlen, format, strsplit, strfind
 
 local CreateFrame = CreateFrame

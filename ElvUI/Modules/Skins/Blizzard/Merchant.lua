@@ -91,6 +91,8 @@ function S:MerchantFrame()
 
 	S:HandleNextPrevButton(_G.MerchantNextPageButton, nil, nil, true, true)
 	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, true, true)
+	_G.MerchantNextPageButton:ClearAllPoints() -- Monitor this
+	_G.MerchantNextPageButton:Point('LEFT', _G.MerchantPageText, 'RIGHT', 100, 4)
 end
 
 S:AddCallback('MerchantFrame')

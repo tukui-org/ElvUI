@@ -107,18 +107,20 @@ function B:AdjustQueuedAnchors(relativeAlert)
 end
 
 function B:GroupLootContainer_Update()
-	local lastIdx = nil
+	local lastIdx
 
 	for i=1, self.maxIndex do
 		local frame = self.rollFrames[i]
-		local prevFrame = self.rollFrames[i-1]
 		if frame then
 			frame:ClearAllPoints()
-			if prevFrame and not (prevFrame == frame) then
+
+			local prevFrame = self.rollFrames[i-1]
+			if prevFrame and prevFrame ~= frame then
 				frame:Point(POSITION, prevFrame, ANCHOR_POINT, 0, YOFFSET)
 			else
-				frame:Point(POSITION, self, POSITION, 0, self.reservedSize * (i-1 + 0.5))
+				frame:Point(POSITION, self, POSITION, 0, YOFFSET)
 			end
+
 			lastIdx = i
 		end
 	end
@@ -187,6 +189,7 @@ function B:AlertMovers()
 		/run DigsiteCompleteAlertSystem:AddAlert('Human')
 
 		--Bonus Rolls
+		/run BonusRollFrame_CloseBonusRoll()
 		/run BonusRollFrame_StartBonusRoll(242969,'test',10,515,1273,14) --515 is darkmoon token, change to another currency id you have
 	]=]
 end

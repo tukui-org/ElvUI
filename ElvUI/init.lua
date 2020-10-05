@@ -126,6 +126,7 @@ do
 
 	-- backwards compatible for plugins
 	E.LSM = E.Libs.LSM
+	E.UnitFrames.LSM = E.Libs.LSM
 	E.Masque = E.Libs.Masque
 end
 

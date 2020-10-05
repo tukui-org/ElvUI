@@ -247,7 +247,7 @@ E.Options.args.filters = {
 			type = 'group',
 			name = function() return selectedFilter end,
 			hidden = function() return not selectedFilter end,
-			guiInline = true,
+			inline = true,
 			order = 10,
 			args = {
 				selectSpellheader = ACH:Description(L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, 'medium', nil, function() return not E.db.unitframe.smartRaidFilter end),
@@ -387,7 +387,7 @@ E.Options.args.filters = {
 				UF:Update_AllFrames()
 			end,
 			order = -10,
-			guiInline = true,
+			inline = true,
 			args = {
 				enabled = {
 					name = L["Enable"],
@@ -513,7 +513,7 @@ E.Options.args.filters = {
 			end,
 			hidden = function() return not selectedSpell or (selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') end,
 			order = -15,
-			guiInline = true,
+			inline = true,
 			args = {
 				enabled = {
 					name = L["Enable"],
@@ -627,7 +627,7 @@ E.Options.args.filters = {
 					order = 4,
 					type = 'group',
 					name = L["Used as RaidDebuff Indicator"],
-					guiInline = true,
+					inline = true,
 					hidden = function() return (selectedFilter == 'Debuff Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') end,
 					args = {
 						priority = {

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local gsub = gsub
@@ -36,7 +37,7 @@ function S:AddonList()
 		S:HandleButton(_G['AddonListEntry'..i].LoadAddonButton)
 	end
 
-	local font = E.Libs.LSM:Fetch('font', 'Expressway')
+	local font = LSM:Fetch('font', 'Expressway')
 	hooksecurefunc('AddonList_Update', function()
 		local numEntrys = GetNumAddOns()
 		for i = 1, maxShown do

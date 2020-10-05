@@ -30,7 +30,7 @@ function DB:AzeriteBar_Update(event, unit)
 
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 
-	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) then
+	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or E.mylevel > 50 then
 		bar:Hide()
 	else
 		bar:Show()
@@ -109,24 +109,29 @@ end
 
 function DB:AzeriteBar_Toggle()
 	local bar = DB.StatusBars.Azerite
+	bar.db = DB.db.azerite
 
 	bar:SetShown(bar.db.enable)
 
 	if bar.db.enable then
+		E:EnableMover(bar.mover:GetName())
+
 		DB:RegisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED', 'AzeriteBar_Update')
 		DB:RegisterEvent('UNIT_INVENTORY_CHANGED', 'AzeriteBar_Update')
+
 		DB:AzeriteBar_Update()
-		E:EnableMover(bar.mover:GetName())
 	else
+		bar:Hide()
+		E:DisableMover(bar.mover:GetName())
+
 		DB:UnregisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED')
 		DB:UnregisterEvent('UNIT_INVENTORY_CHANGED')
-		E:DisableMover(bar.mover:GetName())
 	end
 end
 
 function DB:AzeriteBar()
 	DB.StatusBars.Azerite = DB:CreateBar('ElvUI_AzeriteBar', DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245)
-	DB.StatusBars.Azerite.db = DB.db.azerite
+	DB.StatusBars.Azerite.Update = DB.AzeriteBar_Update
 
 	E:CreateMover(DB.StatusBars.Azerite, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
 	DB:AzeriteBar_Toggle()

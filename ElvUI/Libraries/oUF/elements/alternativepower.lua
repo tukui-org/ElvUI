@@ -31,15 +31,19 @@ local oUF = ns.oUF
 
 -- sourced from FrameXML/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
+local GameTooltip = GameTooltip
 
 local function updateTooltip(self)
-	GameTooltip:SetText(self.powerName, 1, 1, 1)
-	GameTooltip:AddLine(self.powerTooltip, nil, nil, nil, 1)
+	if GameTooltip:IsForbidden() then return end
+
+	local name, tooltip = GetUnitPowerBarStringsByID(self.__barID)
+	GameTooltip:SetText(name or '', 1, 1, 1)
+	GameTooltip:AddLine(tooltip or '', nil, nil, nil, true)
 	GameTooltip:Show()
 end
 
 local function onEnter(self)
-	if (not self:IsVisible()) or GameTooltip:IsForbidden() then return end
+	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
 	GameTooltip:ClearAllPoints()
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)
@@ -47,6 +51,8 @@ local function onEnter(self)
 end
 
 local function onLeave()
+	if GameTooltip:IsForbidden() then return end
+
 	GameTooltip:Hide()
 end
 
@@ -64,14 +70,14 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate()
 	end
 
-	local cur, max
-	local barInfo = GetUnitPowerBarInfo(unit);
+	local cur, max, min
+	local barInfo = element.__barInfo
+
 	if(barInfo) then
-		element.barType = barInfo.barType
-		element.powerName, element.powerTooltip = GetUnitPowerBarStrings(unit);
 		cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
 		max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
-		element:SetMinMaxValues(barInfo.minPower, max)
+		min = barInfo.minPower
+		element:SetMinMaxValues(min, max)
 		element:SetValue(cur)
 	end
 
@@ -80,9 +86,9 @@ local function Update(self, event, unit, powerType)
 
 	* self - the AlternativePower element
 	* unit - the unit for which the update has been triggered (string)
-	* cur  - the current value of the unit's alternative power (number)
-	* min  - the minimum value of the unit's alternative power (number)
-	* max  - the maximum value of the unit's alternative power (number)
+	* cur  - the current value of the unit's alternative power (number?)
+	* min  - the minimum value of the unit's alternative power (number?)
+	* max  - the maximum value of the unit's alternative power (number?)
 	--]]
 	if(element.PostUpdate) then
 		return element:PostUpdate(unit, cur, barInfo and barInfo.minPower or 0, max)
@@ -105,11 +111,14 @@ local function Visibility(self, event, unit)
 	if(unit ~= self.unit) then return end
 	local element = self.AlternativePower
 
-	local barInfo = GetUnitPowerBarInfo(unit)
-	if barInfo and barInfo.showOnRaid and (not barInfo.hideFromOthers
-		or UnitIsUnit(unit, 'player') or (UnitInParty(unit) or UnitInRaid(unit))
-		or (self.realUnit and UnitIsUnit(self.realUnit, 'player'))) then
-
+	local barID = UnitPowerBarID(unit)
+	local barInfo = GetUnitPowerBarInfoByID(barID)
+	element.__barID = barID
+	element.__barInfo = barInfo
+	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit))
+		or not barInfo.hideFromOthers or UnitIsUnit(unit, 'player')
+		or UnitIsUnit(self.realUnit, 'player')))
+	then
 		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 

@@ -1,5 +1,6 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local pairs = pairs
@@ -345,7 +346,7 @@ end
 
 function UF:Configure_FrameGlow(frame)
 	if frame.FrameGlow and frame.FrameGlow.texture then
-		local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
+		local dbTexture = LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
 		frame.FrameGlow.texture:SetTexture(dbTexture)
 	end
 end
@@ -418,7 +419,7 @@ function UF:FrameGlow_CheckChildren(frame, dbTexture)
 end
 
 function UF:FrameGlow_UpdateFrames()
-	local dbTexture = UF.LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
+	local dbTexture = LSM:Fetch('statusbar', E.db.unitframe.colors.frameGlow.mouseoverGlow.texture)
 
 	-- focus, focustarget, pet, pettarget, player, target, targettarget, targettargettarget
 	for unit in pairs(self.units) do

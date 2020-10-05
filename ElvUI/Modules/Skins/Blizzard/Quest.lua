@@ -16,13 +16,6 @@ local GetNumQuestLogRewardSpells = GetNumQuestLogRewardSpells
 local GetNumRewardSpells = GetNumRewardSpells
 local hooksecurefunc = hooksecurefunc
 
-local PlusButtonIDs = {
-	[130835] = 'interface/buttons/ui-plusbutton-disabled.blp',
-	[130836] = 'interface/buttons/ui-plusbutton-down.blp',
-	[130837] = 'interface/buttons/ui-plusbutton-hilight.blp',
-	[130838] = 'interface/buttons/ui-plusbutton-up.blp'
-}
-
 local function HandleReward(frame)
 	if not frame then return end
 
@@ -441,25 +434,21 @@ function S:BlizzardQuestFrames()
 	QuestLogPopupDetailFrame.ShowMapButton.Text:Point('CENTER')
 	QuestLogPopupDetailFrame.ShowMapButton:Size(QuestLogPopupDetailFrame.ShowMapButton:GetWidth() - 30, QuestLogPopupDetailFrame.ShowMapButton:GetHeight(), - 40)
 
+	-- 9.0 Needs Update for ShadowLands
 	-- Skin the +/- buttons in the QuestLog
 	hooksecurefunc('QuestLogQuests_Update', function()
-		for i = 6, _G.QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
+		for i = 1, _G.QuestMapFrame.QuestsFrame.Contents:GetNumChildren() do
 			local child = select(i, _G.QuestMapFrame.QuestsFrame.Contents:GetChildren())
-			if child and child.ButtonText and not child.Text then
-				if not child.buttonSized then
-					child:Size(16, 16)
-					child.buttonSized = true
-				end
+			if child and child.ButtonText and not child.questID then
+				child:Size(16, 16)
 
-				local tex = select(2, child:GetRegions())
-				if tex and tex.GetTexture then
-					local texture = tex:GetTexture()
-					local texType = type(texture)
-					if texType == 'number' or texType == 'string' then
-						if (texType == 'number' and PlusButtonIDs[texture])
-						or (texType == 'string' and strfind(texture, 'PlusButton')) then
+				for x = 1, child:GetNumRegions() do
+					local tex = select(x, child:GetRegions())
+					if tex and tex.GetAtlas then
+						local atlas = tex:GetAtlas()
+						if atlas == 'Campaign_HeaderIcon_Closed' or atlas == 'Campaign_HeaderIcon_ClosedPressed' then
 							tex:SetTexture(E.Media.Textures.PlusButton)
-						else
+						elseif atlas == 'Campaign_HeaderIcon_Open' or atlas == 'Campaign_HeaderIcon_OpenPressed' then
 							tex:SetTexture(E.Media.Textures.MinusButton)
 						end
 					end
@@ -472,12 +461,13 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', function(button, isCollapsed)
 		if isCollapsed then
 			button:SetNormalTexture(E.Media.Textures.PlusButton)
+			button:SetPushedTexture(E.Media.Textures.PlusButton)
 		else
 			button:SetNormalTexture(E.Media.Textures.MinusButton)
+			button:SetPushedTexture(E.Media.Textures.MinusButton)
 		end
 
 		button:Size(16, 16)
-		button:SetPushedTexture('')
 	end)
 end
 

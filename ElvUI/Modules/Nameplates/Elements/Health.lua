@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 
 local ipairs = ipairs
 local unpack = unpack
@@ -64,7 +65,7 @@ function NP:Construct_Health(nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(5)
 	Health:CreateBackdrop('Transparent')
-	Health:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+	Health:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
 	local clipFrame = CreateFrame('Frame', nil, Health)
 	clipFrame:SetClipsChildren(true)
@@ -81,7 +82,7 @@ function NP:Construct_Health(nameplate)
 
 	local statusBarTexture = Health:GetStatusBarTexture()
 	local healthFlashTexture = Health:CreateTexture(nameplate:GetName()..'FlashTexture', 'OVERLAY')
-	healthFlashTexture:SetTexture(E.Libs.LSM:Fetch('background', 'ElvUI Blank'))
+	healthFlashTexture:SetTexture(LSM:Fetch('background', 'ElvUI Blank'))
 	healthFlashTexture:Point('BOTTOMLEFT', statusBarTexture, 'BOTTOMLEFT')
 	healthFlashTexture:Point('TOPRIGHT', statusBarTexture, 'TOPRIGHT')
 	healthFlashTexture:Hide()
@@ -132,7 +133,7 @@ function NP:Construct_HealthPrediction(nameplate)
 	for _, name in ipairs(bars) do
 		local bar = CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)
 		bar:SetFrameStrata(nameplate:GetFrameStrata())
-		bar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+		bar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		bar:Point('TOP')
 		bar:Point('BOTTOM')
 		bar:Width(150)

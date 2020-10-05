@@ -37,6 +37,7 @@ function B:Initialize()
 
 	B:EnhanceColorPicker()
 	B:KillBlizzard()
+	B:DisableHelpTip()
 	B:AlertMovers()
 	B:PositionCaptureBar()
 	B:PositionDurabilityFrame()

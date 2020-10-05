@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 
 local strfind = strfind
 local ipairs, unpack = ipairs, unpack
@@ -49,7 +50,7 @@ function NP:Update_QuestIcons(nameplate)
 			local yoffset = strfind(db.textPosition, 'BOTTOM') and 2 or -2
 			icon.Text:ClearAllPoints()
 			icon.Text:Point('CENTER', icon, db.textPosition, xoffset, yoffset)
-			icon.Text:FontTemplate(E.Libs.LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			icon.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 			icon.Text:SetJustifyH('CENTER')
 
 			icon.size, icon.position = db.size, db.position
@@ -111,6 +112,7 @@ function NP:Update_TargetIndicator(nameplate)
 		nameplate:EnableElement('TargetIndicator')
 	end
 
+	nameplate.TargetIndicator.arrow = E.Media.Textures[NP.db.units.TARGET.arrow]
 	nameplate.TargetIndicator.style = NP.db.units.TARGET.glowStyle
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 
@@ -123,13 +125,13 @@ function NP:Update_TargetIndicator(nameplate)
 		end
 
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
-			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, -6)
+			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, 9)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
 
 		if nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
-			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', -3, 0)
-			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', 3, 0)
+			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', 3, 0)
+			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', -3, 0)
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 		end
@@ -280,13 +282,13 @@ function NP:Update_Cutaway(nameplate)
 		if NP.db.cutaway.health.forceBlankTexture then
 			nameplate.Cutaway.Health:SetTexture(E.media.blankTex)
 		else
-			nameplate.Cutaway.Health:SetTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+			nameplate.Cutaway.Health:SetTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		end
 
 		if NP.db.cutaway.power.forceBlankTexture then
 			nameplate.Cutaway.Power:SetTexture(E.media.blankTex)
 		else
-			nameplate.Cutaway.Power:SetTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+			nameplate.Cutaway.Power:SetTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		end
 	end
 end

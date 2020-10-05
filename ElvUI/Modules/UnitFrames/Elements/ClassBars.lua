@@ -434,7 +434,7 @@ end]]
 -- ALTERNATIVE MANA BAR
 -------------------------------------------------------------
 function UF:Construct_AdditionalPowerBar(frame)
-	local additionalPower = CreateFrame('StatusBar', 'AdditionalPowerBar', frame)
+	local additionalPower = CreateFrame('StatusBar', '$parent_AdditionalPowerBar', frame)
 	additionalPower:SetFrameLevel(additionalPower:GetFrameLevel() + 1)
 	additionalPower.colorPower = true
 	additionalPower.frequentUpdates = true

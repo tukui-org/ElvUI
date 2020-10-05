@@ -112,12 +112,6 @@ P.general = {
 				xOffset = 8,
 				yOffset = -8,
 			},
-			ticket = {
-				scale = 1,
-				position = 'TOPRIGHT',
-				xOffset = 0,
-				yOffset = 0,
-			},
 		}
 	},
 	totems = {
@@ -133,9 +127,11 @@ P.general = {
 P.databars = {
 	transparent = true,
 	statusbar = 'ElvUI Norm',
+	customTexture = false,
 	colors = {
 		experience = { r = 0, g = .4, b = 1, a = .8 },
 		rested = { r = 1, g = 0, b = 1, a = .2},
+		quest = { r = 0, g = 1, b = 0, a = .5},
 		honor = { r = .94, g = .45, b = .25, a = 1 },
 		azerite = { r = .901, g = .8, b = .601, a = 1 },
 		useCustomFactionColors = false,
@@ -162,7 +158,8 @@ for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite
 		font = 'PT Sans Narrow',
 		fontOutline = 'NONE',
 		mouseover = false,
-		orientation = 'HORIZONTAL',
+		clickThrough = false,
+		orientation = 'AUTOMATIC',
 		reverseFill = false,
 	}
 end
@@ -170,6 +167,8 @@ end
 P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.width = 348
 P.databars.experience.fontSize = 12
+P.databars.experience.questCompletedOnly = false
+P.databars.experience.questCurrentZoneOnly = false
 
 P.databars.reputation.enable = false
 P.databars.reputation.hideBelowMaxLevel = false
@@ -650,6 +649,7 @@ P.nameplates = {
 		},
 		TARGET = {
 			enable = true,
+			arrow = 'Arrow1',
 			glowStyle = 'style2',
 			classpower = {
 				enable = false,
@@ -1130,7 +1130,7 @@ local UF_Health = {
 
 local UF_HealthPrediction = {
 	enable = false,
-	absorbStyle = 'NORMAL',
+	absorbStyle = 'OVERFLOW',
 	anchorPoint = 'BOTTOM',
 	height = -1
 }

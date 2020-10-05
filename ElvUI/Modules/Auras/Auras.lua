@@ -133,7 +133,7 @@ function A:CreateIcon(button)
 	button.statusBar = CreateFrame('StatusBar', nil, button)
 	button.statusBar:SetFrameLevel(button:GetFrameLevel())
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
-	button.statusBar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', A.db.barTexture))
+	button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', A.db.barTexture))
 	button.statusBar:CreateBackdrop()
 	E:SetSmoothing(button.statusBar)
 
@@ -295,6 +295,12 @@ function A:UpdateTempEnchant(button, index)
 		A:ClearAuraTime(button)
 	end
 
+	if A.db.showDuration then
+		button.text:Show()
+	else
+		button.text:Hide()
+	end
+
 	if (A.db.barShow and remaining > 0) or (A.db.barShow and A.db.barNoDuration and not expiration) then
 		button.statusBar:Show()
 	else
@@ -398,7 +404,7 @@ function A:UpdateHeader(header)
 		child.statusBar:Height((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
 		child.statusBar:ClearAllPoints()
 		child.statusBar:Point(E.InversePoints[pos], child, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
-		child.statusBar:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', A.db.barTexture))
+		child.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', A.db.barTexture))
 		if isOnLeft or isOnRight then
 			child.statusBar:SetOrientation('VERTICAL')
 		else
