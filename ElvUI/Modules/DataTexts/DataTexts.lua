@@ -222,7 +222,7 @@ function DT:BuildPanelFrame(name, db, fromInit)
 	if holder then
 		E:SetMoverPoints(MoverName, Panel)
 	else
-		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'general,solo')
+		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'datatexts,panels')
 	end
 
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
