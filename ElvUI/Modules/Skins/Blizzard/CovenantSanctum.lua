@@ -94,6 +94,7 @@ function S:Blizzard_CovenantSanctum()
 			TalentList:CreateBackdrop('Transparent')
 			S:HandleButton(TalentList.UpgradeButton)
 			TalentList.UpgradeButton:SetFrameLevel(10)
+			TalentList.IntroBox.Background:Hide()
 
 			if E.private.skins.parchmentRemoverEnable then
 				frame.LevelFrame.Background:SetAlpha(0)
