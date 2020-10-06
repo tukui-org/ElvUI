@@ -25,6 +25,8 @@ local function SkinConduitList(frame)
 				element:SetColorTexture(1, 1, 1, .25)
 			end
 			button.PendingBackground:SetColorTexture(1, .8, 0, .25)
+			button.Spec.IconOverlay:Hide()
+			S:HandleIcon(button.Spec.Icon)
 
 			button.styled = true
 		end
