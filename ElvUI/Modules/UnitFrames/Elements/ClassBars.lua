@@ -473,29 +473,27 @@ function UF:PostColorAdditionalPower()
 	end
 end
 
-function UF:PostUpdateAdditionalPower(_, MIN, MAX, event)
+function UF:PostUpdateAdditionalPower(CUR, MAX, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if frame.USE_CLASSBAR and event ~= 'ElementDisable' and (MIN ~= MAX or not db.classbar.autoHide) then
+	if frame.USE_CLASSBAR and event ~= 'ElementDisable' and (CUR ~= MAX or not db.classbar.autoHide) then
 		self:Show()
 	else
 		self:Hide()
 	end
 end
 
-function UF:PostVisibilityAdditionalPower(enabled, stateChanged)
+function UF:PostVisibilityAdditionalPower(enabled)
 	local frame = self.origParent or self:GetParent()
 
 	frame.ClassBar = (enabled and 'AdditionalPower') or 'ClassPower'
 
-	if stateChanged then
-		ToggleResourceBar(frame[frame.ClassBar])
-		UF:Configure_ClassBar(frame)
-		UF:Configure_HealthBar(frame)
-		UF:Configure_Power(frame)
-		UF:Configure_InfoPanel(frame)
-	end
+	ToggleResourceBar(frame[frame.ClassBar])
+	UF:Configure_ClassBar(frame)
+	UF:Configure_HealthBar(frame)
+	UF:Configure_Power(frame)
+	UF:Configure_InfoPanel(frame)
 end
 
 -----------------------------------------------------------

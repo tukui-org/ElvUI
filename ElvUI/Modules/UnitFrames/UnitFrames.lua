@@ -445,7 +445,6 @@ function UF:Update_StatusBars()
 			if statusbar:IsObjectType('StatusBar') then
 				if not useBlank then
 					statusbar:SetStatusBarTexture(statusBarTexture)
-					if statusbar.texture then statusbar.texture = statusBarTexture end --Update .texture on oUF Power element
 				end
 			elseif statusbar:IsObjectType('Texture') then
 				statusbar:SetTexture(statusBarTexture)
@@ -1451,7 +1450,6 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, E.media.blankTex)
 
 		local barTexture = statusBar:GetStatusBarTexture()
-		if statusBar.texture then statusBar.texture = barTexture end --Needed for Power element
 		barTexture:SetInside(nil, 0, 0) --This fixes Center Pixel offset problem
 
 		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
@@ -1467,7 +1465,6 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)
 
 		local barTexture = statusBar:GetStatusBarTexture()
-		if statusBar.texture then statusBar.texture = barTexture end
 		barTexture:SetInside(nil, 0, 0)
 
 		if adjustBackdropPoints then
