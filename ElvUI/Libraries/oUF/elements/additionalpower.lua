@@ -139,7 +139,11 @@ local function Update(self, event, unit, powerType)
 	local cur, max = UnitPower('player', ADDITIONAL_POWER_BAR_INDEX), UnitPowerMax('player', ADDITIONAL_POWER_BAR_INDEX)
 	element:SetMinMaxValues(0, max)
 
-	element:SetValue(cur)
+	if not UnitIsConnected(unit) then
+		element:SetValue(max)
+	else
+		element:SetValue(cur)
+	end
 
 	element.cur = cur
 	element.max = max
