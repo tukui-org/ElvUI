@@ -21,8 +21,6 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
                                     bar (boolean)
 .displayAltPower                  - Use this to let the widget display alternate power if the unit has one. If no
                                     alternate power the display will fall back to primary power (boolean)
-.useAtlas                         - Use this to let the widget use an atlas for its texture if an atlas is present in
-                                    `self.colors.power` for the appropriate power type (boolean)
 .smoothGradient                   - 9 color values to be used with the .colorSmooth option (table)
 .considerSelectionInCombatHostile - Indicates whether selection should be considered hostile while the unit is in
                                     combat with the player (boolean)
@@ -56,6 +54,9 @@ The following options are listed by priority. The first check that returns true 
 
 .multiplier - A multiplier used to tint the background based on the main widgets R, G and B values. Defaults to 1
               (number)[0-1]
+
+## Attributes
+.disconnected - Indicates whether the unit is disconnected (boolean)
 
 ## Examples
 
@@ -96,9 +97,20 @@ local unitSelectionType = Private.unitSelectionType
 -- sourced from FrameXML/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
-local function getDisplayPower(unit)
+--[[ Override: Power:GetDisplayPower()
+Used to get info on the unit's alternative power, if any.
+Should return the power type index (see [Enum.PowerType.Alternate](https://wow.gamepedia.com/Enum_Unit.PowerType))
+and the minimum value for the given power type (see [info.minPower](https://wow.gamepedia.com/API_GetUnitPowerBarInfo))
+or nil if the unit has no alternative (alternate) power or it should not be
+displayed. In case of a nil return, the element defaults to the primary power
+type and zero for the minimum value.
+
+* self - the Power element
+--]]
+local function GetDisplayPower(element)
+	local unit = element.__owner.unit
 	local barInfo = GetUnitPowerBarInfo(unit)
-	if barInfo then
+	if(barInfo and barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit))) then
 		return ALTERNATE_POWER_INDEX, barInfo.minPower
 	end
 end
@@ -109,8 +121,8 @@ local function UpdateColor(self, event, unit)
 
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 
-	local r, g, b, t, atlas
-	if(element.colorDisconnected and not UnitIsConnected(unit)) then
+	local r, g, b, t
+	if(element.colorDisconnected and element.disconnected) then
 		t = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		t = self.colors.tapped
@@ -133,13 +145,9 @@ local function UpdateColor(self, event, unit)
 		else
 			t = self.colors.power[ALTERNATE_POWER_INDEX]
 		end
-
-		if(element.useAtlas and t and t.atlas) then
-			atlas = t.atlas
-		end
-	elseif(element.colorClass and UnitIsPlayer(unit)) or
-		(element.colorClassNPC and not UnitIsPlayer(unit)) or
-		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
+	elseif(element.colorClass and UnitIsPlayer(unit))
+		or (element.colorClassNPC and not UnitIsPlayer(unit))
+		or (element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
@@ -155,23 +163,25 @@ local function UpdateColor(self, event, unit)
 		r, g, b = t[1], t[2], t[3]
 	end
 
-	if(atlas) then
-		element:SetStatusBarAtlas(atlas)
-		element:SetStatusBarColor(1, 1, 1)
-	else
-		element:SetStatusBarTexture(element.texture)
+	if(b) then
+		element:SetStatusBarColor(r, g, b)
 
-		if(b) then
-			element:SetStatusBarColor(r, g, b)
+		local bg = element.bg
+		if(bg) then
+			local mu = bg.multiplier or 1
+			bg:SetVertexColor(r * mu, g * mu, b * mu)
 		end
 	end
 
-	local bg = element.bg
-	if(bg and b) then
-		local mu = bg.multiplier or 1
-		bg:SetVertexColor(r * mu, g * mu, b * mu)
-	end
+	--[[ Callback: Power:PostUpdateColor(unit, r, g, b)
+	Called after the element color has been updated.
 
+	* self - the Power element
+	* unit - the unit for which the update has been triggered (string)
+	* r    - the red component of the used color (number)[0-1]
+	* g    - the green component of the used color (number)[0-1]
+	* b    - the blue component of the used color (number)[0-1]
+	--]]
 	if(element.PostUpdateColor) then
 		element:PostUpdateColor(unit, r, g, b)
 	end
@@ -204,15 +214,14 @@ local function Update(self, event, unit)
 
 	local displayType, min
 	if(element.displayAltPower) then
-		displayType, min = getDisplayPower(unit)
+		displayType, min = element:GetDisplayPower(unit)
 	end
 
 	local cur, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
 	if not min then min = 0 end
 
-	element:SetMinMaxValues(min, max)
-
-	if not UnitIsConnected(unit) then
+	local disconnected = not UnitIsConnected(unit)
+	if(disconnected) then
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
@@ -222,10 +231,10 @@ local function Update(self, event, unit)
 	element.min = min
 	element.max = max
 	element.displayType = displayType
+	element.disconnected = disconnected
 
 	--[[ Callback: Power:PostUpdate(unit, cur, min, max)
 	Called after the element has been updated.
-
 	* self - the Power element
 	* unit - the unit for which the update has been triggered (string)
 	* cur  - the unit's current power value (number)
@@ -415,13 +424,23 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 
+		if(element.frequentUpdates) then
+			self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+		else
+			self:RegisterEvent('UNIT_POWER_UPDATE', Path)
+		end
+
 		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
+		self:RegisterEvent('UNIT_MAXPOWER', Path)
 		self:RegisterEvent('UNIT_POWER_BAR_HIDE', Path)
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', Path)
 
-		if(element:IsObjectType('StatusBar')) then
-			element.texture = element:GetStatusBarTexture() and element:GetStatusBarTexture():GetTexture() or [[Interface\TargetingFrame\UI-StatusBar]]
-			element:SetStatusBarTexture(element.texture)
+		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
+			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+		end
+
+		if(not element.GetDisplayPower) then
+			element.GetDisplayPower = GetDisplayPower
 		end
 
 		element:Show()

@@ -88,6 +88,14 @@ local function UpdateColor(self, event, unit)
 		end
 	end
 
+	--[[ Callback: Stagger:PostUpdateColor(r, g, b)
+	Called after the element color has been updated.
+
+	* self - the Stagger element
+	* r    - the red component of the used color (number)[0-1]
+	* g    - the green component of the used color (number)[0-1]
+	* b    - the blue component of the used color (number)[0-1]
+	--]]
 	if(element.PostUpdateColor) then
 		element:PostUpdateColor(r, g, b)
 	end
@@ -200,7 +208,7 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
 
-		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
+		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 

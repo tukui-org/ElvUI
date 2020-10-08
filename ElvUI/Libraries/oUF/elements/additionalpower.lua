@@ -138,8 +138,15 @@ local function UpdateColor(self, event, unit, powertype)
 		end
 	end
 
+	--[[ Callback: AdditionalPower:PostUpdateColor(r, g, b)
+	Called after the element color has been updated.
+	* self - the AdditionalPower element
+	* r    - the red component of the used color (number)[0-1]
+	* g    - the green component of the used color (number)[0-1]
+	* b    - the blue component of the used color (number)[0-1]
+	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(unit, r, g, b)
+		element:PostUpdateColor(r, g, b)
 	end
 end
 
@@ -183,16 +190,15 @@ local function Update(self, event, unit, powertype)
 	element.cur = cur
 	element.max = max
 
-	--[[ Callback: AdditionalPower:PostUpdate(unit, cur, max)
+	--[[ Callback: AdditionalPower:PostUpdate(cur, max)
 	Called after the element has been updated.
 
 	* self - the AdditionalPower element
-	* unit - the unit for which the update has been triggered (string)
 	* cur  - the current value of the player's additional power (number)
 	* max  - the maximum value of the player's additional power (number)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, max, event) -- ElvUI adds event
+		return element:PostUpdate(cur, max, event) -- ElvUI adds event
 	end
 end
 
@@ -213,22 +219,6 @@ end
 local function ElementEnable(self)
 	local element = self.AdditionalPower
 
-	if(element.colorDisconnected) then
-		self:RegisterEvent('UNIT_CONNECTION', ColorPath)
-	end
-
-	if(element.colorSelection) then
-		self:RegisterEvent('UNIT_FLAGS', ColorPath)
-	end
-
-	if(element.colorTapping) then
-		self:RegisterEvent('UNIT_FACTION', ColorPath)
-	end
-
-	if(element.colorThreat) then
-		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
-	end
-
 	if(element.frequentUpdates) then
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 	else
@@ -247,10 +237,13 @@ local function ElementEnable(self)
 	element.isEnabled = true
 	-- end block
 
+	element.__isEnabled = true
 	Path(self, 'ElementEnable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end
 
 local function ElementDisable(self)
+	local element = self.AdditionalPower
+
 	self:UnregisterEvent('UNIT_MAXPOWER', Path)
 	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	self:UnregisterEvent('UNIT_POWER_UPDATE', Path)
@@ -270,6 +263,7 @@ local function ElementDisable(self)
 	element.isEnabled = false
 	-- end block
 
+	element.__isEnabled = false
 	Path(self, 'ElementDisable', 'player', ADDITIONAL_POWER_BAR_NAME)
 end
 
@@ -286,10 +280,27 @@ local function Visibility(self, event, unit)
 		end
 	end
 
-	if(shouldEnable) then
+	local isEnabled = element.__isEnabled
+
+	if(shouldEnable and not isEnabled) then
 		ElementEnable(self)
-	else
+
+		--[[ Callback: AdditionalPower:PostVisibility(isVisible)
+		Called after the element's visibility has been changed.
+		* self      - the AdditionalPower element
+		* isVisible - the current visibility state of the element (boolean)
+		--]]
+		if(element.PostVisibility) then
+			element:PostVisibility(true)
+		end
+	elseif(not shouldEnable and (isEnabled or isEnabled == nil)) then
 		ElementDisable(self)
+
+		if(element.PostVisibility) then
+			element:PostVisibility(false)
+		end
+	elseif(shouldEnable and isEnabled) then
+		Path(self, event, unit, ADDITIONAL_POWER_BAR_NAME)
 	end
 end
 
@@ -376,11 +387,12 @@ local function SetColorThreat(element, state)
 	end
 end
 
---[[ Power:SetFrequentUpdates(state)
+--[[ Power:SetFrequentUpdates(state, isForced)
 Used to toggle frequent updates.
 
 * self  - the Power element
 * state - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
 local function SetFrequentUpdates(element, state)
 	if(element.frequentUpdates ~= state) then
