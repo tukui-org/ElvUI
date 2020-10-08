@@ -147,12 +147,16 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate()
 	end
 
-	local cur, max, min
+	local min, max, cur = 0
 	local barInfo = element.__barInfo
 	if(barInfo) then
 		cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
 		max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
-		min = barInfo.minPower
+
+		if barInfo.minPower then
+			min = barInfo.minPower
+		end
+
 		element:SetMinMaxValues(min, max)
 		element:SetValue(cur)
 	end
@@ -171,7 +175,7 @@ local function Update(self, event, unit, powerType)
 	* max  - the maximum value of the unit's alternative power (number?)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, min or 0, max)
+		return element:PostUpdate(unit, cur, min, max)
 	end
 end
 
