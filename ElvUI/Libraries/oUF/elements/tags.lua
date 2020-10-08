@@ -12,15 +12,15 @@ A FontString to hold a tag string. Unlike other elements, this widget must not h
 ## Notes
 
 A `Tag` is a Lua string consisting of a function name surrounded by square brackets. The tag will be replaced by the
-output of the function and displayed as text on the font string widget with that the tag has been registered. Literals
-can be pre- or appended by separating them with a `>` before or `<` after the function name. The literals will be only
+output of the function and displayed as text on the font string widget with that the tag has been registered.
+Literals can be pre or appended by separating them with a `>` before or `<` after the function name. The literals will be only
 displayed when the function returns a non-nil value. I.e. `"[perhp<%]"` will display the current health as a percentage
 of the maximum health followed by the % sign.
 
-A `Tag String` is a Lua string consisting of one or multiple tags with optional literals between them. Each tag will be
-updated individually and the output will follow the tags order. Literals will be displayed in the output string
-regardless of whether the surrounding tag functions return a value. I.e. `"[curhp]/[maxhp]"` will resolve to something
-like `2453/5000`.
+A `Tag String` is a Lua string consisting of one or multiple tags with optional literals between them.
+Each tag will be updated individually and the output will follow the tags order. Literals will be displayed in the
+output string regardless of whether the surrounding tag functions return a value. I.e. `"[curhp]/[maxhp]"` will resolve
+to something like `2453/5000`.
 
 A `Tag Function` is used to replace a single tag in a tag string by its output. A tag function receives only two
 arguments - the unit and the realUnit of the unit frame used to register the tag (see Options for further details). The
@@ -37,9 +37,9 @@ in the `oUF.Tags.SharedEvents` table as follows: `oUF.Tags.SharedEvents.EVENT_NA
 .overrideUnit    - if specified on the font string widget, the frame's realUnit will be passed as the second argument to
                    every tag function whose name is contained in the relevant tag string. Otherwise the second argument
                    is always nil (boolean)
-.frequentUpdates - defines how often the correspondig tag function(s) should be called. This will override the events for
-                   the tag(s), if any. If the value is a number, it is taken as a time interval in seconds. If the value
-                   is a boolean, the time interval is set to 0.5 seconds (number or boolean)
+.frequentUpdates - defines how often the corresponding tag function(s) should be called. This will override the events
+                   for the tag(s), if any. If the value is a number, it is taken as a time interval in seconds. If the
+                   value is a boolean, the time interval is set to 0.5 seconds (number or boolean)
 
 ## Attributes
 
@@ -934,6 +934,8 @@ oUF.Tags = {
 
 		funcPool['[' .. tag .. ']'] = nil
 
+		-- If a tag's name contains magic chars, there's a chance that
+		-- string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr, func in next, tagPool do
 			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then
@@ -954,6 +956,8 @@ oUF.Tags = {
 	RefreshEvents = function(self, tag)
 		if(not tag) then return end
 
+		-- If a tag's name contains magic chars, there's a chance that
+		-- string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr in next, tagPool do
 			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then

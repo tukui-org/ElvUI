@@ -218,8 +218,6 @@ local function Enable(self, unit)
 		MonkStaggerBar:UnregisterEvent('UNIT_EXITED_VEHICLE')
 		MonkStaggerBar:UnregisterEvent('UPDATE_VEHICLE_ACTIONBAR')
 
-		element:Hide()
-
 		return true
 	end
 end

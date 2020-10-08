@@ -14,10 +14,13 @@ If mouse interactivity is enabled for the widget, `OnEnter` and/or `OnLeave` han
 A default texture will be applied if the widget is a StatusBar and doesn't have a texture set.
 
 ## Options
+
 .smoothGradient                   - 9 color values to be used with the .colorSmooth option (table)
 .considerSelectionInCombatHostile - Indicates whether selection should be considered hostile while the unit is in
                                     combat with the player (boolean)
+
 The following options are listed by priority. The first check that returns true decides the color of the bar.
+
 .colorThreat       - Use `self.colors.threat[threat]` to color the bar based on the unit's threat status. `threat` is
                      defined by the first return of [UnitThreatSituation](https://wow.gamepedia.com/API_UnitThreatSituation) (boolean)
 .colorPower        - Use `self.colors.power[token]` to color the bar based on the unit's alternative power type
@@ -137,6 +140,7 @@ local function Update(self, event, unit, powerType)
 
 	--[[ Callback: AlternativePower:PreUpdate()
 	Called before the element has been updated.
+
 	* self - the AlternativePower element
 	--]]
 	if(element.PreUpdate) then
@@ -159,6 +163,7 @@ local function Update(self, event, unit, powerType)
 
 	--[[ Callback: AlternativePower:PostUpdate(unit, cur, min, max)
 	Called after the element has been updated.
+
 	* self - the AlternativePower element
 	* unit - the unit for which the update has been triggered (string)
 	* cur  - the current value of the unit's alternative power (number?)
@@ -166,13 +171,14 @@ local function Update(self, event, unit, powerType)
 	* max  - the maximum value of the unit's alternative power (number?)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, min, max)
+		return element:PostUpdate(unit, cur, min or 0, max)
 	end
 end
 
 local function Path(self, ...)
 	--[[ Override: AlternativePower.Override(self, event, unit, ...)
 	Used to completely override the element's update process.
+
 	* self  - the parent object
 	* event - the event triggering the update (string)
 	* unit  - the unit accompanying the event (string)
@@ -182,6 +188,7 @@ local function Path(self, ...)
 
 	--[[ Override: AlternativePower.UpdateColor(self, event, unit, ...)
 	Used to completely override the internal function for updating the widgets' colors.
+
 	* self  - the parent object
 	* event - the event triggering the update (string)
 	* unit  - the unit accompanying the event (string)
@@ -241,9 +248,8 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', VisibilityPath)
 		self:RegisterEvent('UNIT_POWER_BAR_HIDE', VisibilityPath)
 
-		if(element:IsObjectType('StatusBar')) then
-			element.texture = element:GetStatusBarTexture() and element:GetStatusBarTexture():GetTexture() or [[Interface\TargetingFrame\UI-StatusBar]]
-			element:SetStatusBarTexture(element.texture)
+		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
+			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
 		if(element:IsMouseEnabled()) then

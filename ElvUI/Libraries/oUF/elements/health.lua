@@ -162,10 +162,9 @@ local function Update(self, event, unit)
 	end
 
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
-	local disconnected = not UnitIsConnected(unit)
-
 	element:SetMinMaxValues(0, max)
 
+	local disconnected = not UnitIsConnected(unit)
 	if(disconnected) then
 		element:SetValue(max)
 	else
@@ -207,16 +206,17 @@ local function ForceUpdate(element)
 	Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
---[[ Health:SetColorDisconnected(state)
+--[[ Health:SetColorDisconnected(state, isForced)
 Used to toggle coloring if the unit is offline.
 
-* self  - the Health element
-* state - the desired state (boolean)
+* self     - the Health element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
-local function SetColorDisconnected(element, state)
-	if(element.colorDisconnected ~= state) then
+local function SetColorDisconnected(element, state, isForced)
+	if(element.colorDisconnected ~= state or isForced) then
 		element.colorDisconnected = state
-		if(element.colorDisconnected) then
+		if(state) then
 			element.__owner:RegisterEvent('UNIT_CONNECTION', ColorPath)
 			element.__owner:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
 			element.__owner:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
@@ -228,16 +228,17 @@ local function SetColorDisconnected(element, state)
 	end
 end
 
---[[ Health:SetColorSelection(state)
+--[[ Health:SetColorSelection(state, isForced)
 Used to toggle coloring by the unit's selection.
 
-* self  - the Health element
-* state - the desired state (boolean)
+* self     - the Health element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
-local function SetColorSelection(element, state)
-	if(element.colorSelection ~= state) then
+local function SetColorSelection(element, state, isForced)
+	if(element.colorSelection ~= state or isForced) then
 		element.colorSelection = state
-		if(element.colorSelection) then
+		if(state) then
 			element.__owner:RegisterEvent('UNIT_FLAGS', ColorPath)
 		else
 			element.__owner:UnregisterEvent('UNIT_FLAGS', ColorPath)
@@ -245,16 +246,17 @@ local function SetColorSelection(element, state)
 	end
 end
 
---[[ Health:SetColorTapping(state)
+--[[ Health:SetColorTapping(state, isForced)
 Used to toggle coloring if the unit isn't tapped by the player.
 
-* self  - the Health element
-* state - the desired state (boolean)
+* self     - the Health element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
-local function SetColorTapping(element, state)
-	if(element.colorTapping ~= state) then
+local function SetColorTapping(element, state, isForced)
+	if(element.colorTapping ~= state or isForced) then
 		element.colorTapping = state
-		if(element.colorTapping) then
+		if(state) then
 			element.__owner:RegisterEvent('UNIT_FACTION', ColorPath)
 		else
 			element.__owner:UnregisterEvent('UNIT_FACTION', ColorPath)
@@ -262,16 +264,17 @@ local function SetColorTapping(element, state)
 	end
 end
 
---[[ Health:SetColorThreat(state)
+--[[ Health:SetColorThreat(state, isForced)
 Used to toggle coloring by the unit's threat status.
 
-* self  - the Health element
-* state - the desired state (boolean)
+* self     - the Health element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
-local function SetColorThreat(element, state)
-	if(element.colorThreat ~= state) then
+local function SetColorThreat(element, state, isForced)
+	if(element.colorThreat ~= state or isForced) then
 		element.colorThreat = state
-		if(element.colorThreat) then
+		if(state) then
 			element.__owner:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		else
 			element.__owner:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
@@ -364,7 +367,6 @@ local function Disable(self)
 		element:SetScript('OnUpdate', nil) -- ElvUI changed
 		self:UnregisterEvent('UNIT_HEALTH', Path)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
-
 		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
 		self:UnregisterEvent('UNIT_FACTION', ColorPath)
 		self:UnregisterEvent('UNIT_FLAGS', ColorPath)
