@@ -66,7 +66,7 @@ function S:Blizzard_PlayerChoiceUI()
 				HandleOptionButton(option.OptionButtonsContainer.button2)
 			else
 				S:HandleButton(option.OptionButtonsContainer.button1)
-				--S:HandleButton(option.OptionButtonsContainer.button2)
+				S:HandleButton(option.OptionButtonsContainer.button2)
 			end
 
 			for i = 1, option.WidgetContainer:GetNumChildren() do
