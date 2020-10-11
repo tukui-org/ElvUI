@@ -25,16 +25,19 @@ function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	holder:SetScript('OnEnter', onEnter)
 	holder:SetScript('OnLeave', DB.OnLeave)
 	holder:SetScript('OnMouseDown', onClick)
-	holder:ClearAllPoints()
-	holder:Point(unpack(points))
+
+	if points then
+		holder:ClearAllPoints()
+		holder:Point(unpack(points))
+	end
 
 	local bar = CreateFrame('StatusBar', name, holder)
 	bar:SetStatusBarTexture(E.media.normTex)
 	bar:EnableMouse(false)
 	bar:SetInside()
 	bar:Hide()
-	bar.barTexture = bar:GetStatusBarTexture()
 
+	bar.barTexture = bar:GetStatusBarTexture()
 	bar.text = bar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
 	bar.text:Point('CENTER')
