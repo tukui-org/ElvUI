@@ -66,7 +66,9 @@ function DB:ExperienceBar_Update()
 		bar:SetMinMaxValues(0, 1)
 		bar:SetValue(1)
 
-		displayString = textFormat ~= 'NONE' and (IsXPUserDisabled() and L["Disabled"] or L["Max Level"])
+		if textFormat ~= 'NONE' then
+			displayString = IsXPUserDisabled() and L["Disabled"] or L["Max Level"]
+		end
 	else
 		bar:SetMinMaxValues(0, XPToLevel)
 		bar:SetValue(CurrentXP)
