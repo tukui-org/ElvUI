@@ -173,7 +173,7 @@ function DB:ExperienceBar_Toggle()
 
 	if bar.db.enable and not (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
 		bar:Show()
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.holder.mover:GetName())
 
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_Update')
 		DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Update')
@@ -188,7 +188,7 @@ function DB:ExperienceBar_Toggle()
 		DB:ExperienceBar_Update()
 	else
 		bar:Hide()
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')
 		DB:UnregisterEvent('DISABLE_XP_GAIN')
@@ -205,16 +205,18 @@ function DB:ExperienceBar()
 	DB.StatusBars.Experience = DB:CreateBar('ElvUI_ExperienceBar', DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, 'BOTTOM', E.UIParent, 'BOTTOM', 0, 43)
 	DB.StatusBars.Experience.Update = DB.ExperienceBar_Update
 
-	DB.StatusBars.Experience.Rested = CreateFrame('StatusBar', '$parent_Rested', DB.StatusBars.Experience)
-	DB.StatusBars.Experience.Rested:Hide()
+	DB.StatusBars.Experience.Rested = CreateFrame('StatusBar', '$parent_Rested', DB.StatusBars.Experience.holder)
 	DB.StatusBars.Experience.Rested:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
-	DB.StatusBars.Experience.Rested:SetAllPoints()
+	DB.StatusBars.Experience.Rested:EnableMouse(false)
+	DB.StatusBars.Experience.Rested:SetInside()
+	DB.StatusBars.Experience.Rested:Hide()
 
-	DB.StatusBars.Experience.Quest = CreateFrame('StatusBar', '$parent_Quest', DB.StatusBars.Experience)
-	DB.StatusBars.Experience.Quest:Hide()
+	DB.StatusBars.Experience.Quest = CreateFrame('StatusBar', '$parent_Quest', DB.StatusBars.Experience.holder)
 	DB.StatusBars.Experience.Quest:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
-	DB.StatusBars.Experience.Quest:SetAllPoints()
+	DB.StatusBars.Experience.Quest:EnableMouse(false)
+	DB.StatusBars.Experience.Quest:SetInside()
+	DB.StatusBars.Experience.Quest:Hide()
 
-	E:CreateMover(DB.StatusBars.Experience, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
+	E:CreateMover(DB.StatusBars.Experience.holder, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
 	DB:ExperienceBar_Toggle()
 end

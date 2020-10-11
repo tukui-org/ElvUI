@@ -133,11 +133,11 @@ function DB:ReputationBar_Toggle()
 		DB:RegisterEvent('UPDATE_FACTION', 'ReputationBar_Update')
 		DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')
 		DB:ReputationBar_Update()
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.holder.mover:GetName())
 	else
 		DB:UnregisterEvent('UPDATE_FACTION')
 		DB:UnregisterEvent('COMBAT_TEXT_UPDATE')
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.holder.mover:GetName())
 	end
 end
 
@@ -145,6 +145,6 @@ function DB:ReputationBar()
 	DB.StatusBars.Reputation = DB:CreateBar('ElvUI_ReputationBar', DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264)
 	DB.StatusBars.Reputation.Update = DB.ReputationBar_Update
 
-	E:CreateMover(DB.StatusBars.Reputation, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
+	E:CreateMover(DB.StatusBars.Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
 	DB:ReputationBar_Toggle()
 end

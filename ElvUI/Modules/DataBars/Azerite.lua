@@ -114,7 +114,7 @@ function DB:AzeriteBar_Toggle()
 	bar:SetShown(bar.db.enable)
 
 	if bar.db.enable then
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.holder.mover:GetName())
 
 		DB:RegisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED', 'AzeriteBar_Update')
 		DB:RegisterEvent('UNIT_INVENTORY_CHANGED', 'AzeriteBar_Update')
@@ -122,7 +122,7 @@ function DB:AzeriteBar_Toggle()
 		DB:AzeriteBar_Update()
 	else
 		bar:Hide()
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED')
 		DB:UnregisterEvent('UNIT_INVENTORY_CHANGED')
@@ -133,6 +133,6 @@ function DB:AzeriteBar()
 	DB.StatusBars.Azerite = DB:CreateBar('ElvUI_AzeriteBar', DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245)
 	DB.StatusBars.Azerite.Update = DB.AzeriteBar_Update
 
-	E:CreateMover(DB.StatusBars.Azerite, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
+	E:CreateMover(DB.StatusBars.Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
 	DB:AzeriteBar_Toggle()
 end

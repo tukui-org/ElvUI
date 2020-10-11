@@ -18,21 +18,27 @@ function DB:OnLeave()
 end
 
 function DB:CreateBar(name, onEnter, onClick, ...)
-	local bar = CreateFrame('StatusBar', name, E.UIParent, 'BackdropTemplate')
-	bar:SetTemplate(DB.db.transparent and 'Transparent')
-	bar:Point(...)
-	bar:SetScript('OnEnter', onEnter)
-	bar:SetScript('OnLeave', DB.OnLeave)
-	bar:SetScript('OnMouseDown', onClick)
-	bar:SetFrameStrata('LOW')
+	local holder = CreateFrame('Frame', name..'Holder', E.UIParent, 'BackdropTemplate')
+	holder:SetTemplate(DB.db.transparent and 'Transparent')
+	holder:SetScript('OnEnter', onEnter)
+	holder:SetScript('OnLeave', DB.OnLeave)
+	holder:SetScript('OnMouseDown', onClick)
+	holder:ClearAllPoints()
+	holder:Point(...)
+
+	local bar = CreateFrame('StatusBar', name, holder)
 	bar:SetStatusBarTexture(E.media.normTex)
+	bar:EnableMouse(false)
+	bar:SetInside()
 	bar:Hide()
 
 	bar.text = bar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
 	bar.text:Point('CENTER')
 
-	E.FrameLocks[name] = true
+	bar.holder = holder
+
+	E.FrameLocks[holder] = true
 
 	return bar
 end
@@ -41,21 +47,22 @@ function DB:UpdateAll()
 	local barTexture = DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
 
 	for _, bar in pairs(DB.StatusBars) do
-		bar:Size(bar.db.width, bar.db.height)
-		bar:SetReverseFill(bar.db.reverseFill)
-		bar:SetStatusBarTexture(barTexture, 'ARTWORK', 7)
-		bar:EnableMouse(not bar.db.clickThrough)
+		bar.holder.db = bar.db
+		bar.holder:Size(bar.db.width, bar.db.height)
+		bar.holder:SetTemplate(DB.db.transparent and 'Transparent')
+		bar.holder:EnableMouse(not bar.db.clickThrough)
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
-		bar:SetTemplate(DB.db.transparent and 'Transparent')
+		bar:SetStatusBarTexture(barTexture, 'ARTWORK', 7)
+		bar:SetReverseFill(bar.db.reverseFill)
 
 		if bar.db.enable then
-			bar:SetAlpha(bar.db.mouseover and 0 or 1)
+			bar.holder:SetAlpha(bar.db.mouseover and 0 or 1)
 		end
 
 		if bar.db.hideInVehicle then
-			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+			E:RegisterObjectForVehicleLock(bar.holder, E.UIParent)
 		else
-			E:UnregisterObjectForVehicleLock(bar)
+			E:UnregisterObjectForVehicleLock(bar.holder)
 		end
 
 		if bar.db.orientation == 'AUTOMATIC' then
@@ -79,8 +86,6 @@ function DB:UpdateAll()
 				child:SetOrientation(orientation)
 				child:SetRotatesTexture(rotatesTexture)
 				child:SetReverseFill(reverseFill)
-				child:ClearAllPoints()
-				child:SetInside(bar)
 			end
 		end
 	end
