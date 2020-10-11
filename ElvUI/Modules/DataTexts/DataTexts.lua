@@ -496,7 +496,16 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 	panel.ignoreBorderColors = not db.border or nil
 	panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
-	if panel.ignoreBorderColors then panel:SetBackdropBorderColor(0,0,0,0) end
+
+	if panel.ignoreBorderColors then
+		panel:SetBackdropBorderColor(0,0,0,0)
+
+		if panel.iborder then panel.iborder:SetBackdropBorderColor(0,0,0,0) end
+		if panel.oborder then panel.oborder:SetBackdropBorderColor(0,0,0,0) end
+	else
+		if panel.iborder then panel.iborder:SetBackdropBorderColor(0,0,0,1) end
+		if panel.oborder then panel.oborder:SetBackdropBorderColor(0,0,0,1) end
+	end
 
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
