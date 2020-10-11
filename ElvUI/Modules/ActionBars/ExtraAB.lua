@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
-local S = E:GetModule('Skins')
 
 local _G = _G
 local tinsert = tinsert
@@ -13,7 +12,7 @@ local ExtraActionBarHolder, ZoneAbilityHolder
 local ExtraButtons = {}
 
 function AB:Extra_SetAlpha()
-	if not E.private.actionbar.enable then return; end
+	if not E.private.actionbar.enable then return end
 	local alpha = E.db.actionbar.extraActionButton.alpha
 
 	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
