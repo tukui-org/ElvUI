@@ -110,7 +110,7 @@ type and zero for the minimum value.
 local function GetDisplayPower(element)
 	local unit = element.__owner.unit
 	local barInfo = GetUnitPowerBarInfo(unit)
-	if barInfo then
+	if(barInfo and barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit))) then
 		return ALTERNATE_POWER_INDEX, barInfo.minPower
 	end
 end
