@@ -3,7 +3,9 @@ local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
+local tinsert = tinsert
+local unpack, pairs = unpack, pairs
+local GetBindingKey = GetBindingKey
 local CreateFrame = CreateFrame
 local HasExtraActionBar = HasExtraActionBar
 local hooksecurefunc = hooksecurefunc
