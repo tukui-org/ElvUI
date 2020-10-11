@@ -137,6 +137,7 @@ function AB:SetupExtraButton()
 			button.icon:SetDrawLayer('ARTWORK')
 			button:CreateBackdrop()
 			button.backdrop:SetAllPoints()
+			button.backdrop:SetFrameLevel(button:GetFrameLevel())
 
 			if button.style then
 				if E.private.skins.cleanBossButton then
