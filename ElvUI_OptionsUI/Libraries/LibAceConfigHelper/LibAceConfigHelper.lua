@@ -1,5 +1,5 @@
 local LibStub = LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 1
+local MAJOR, MINOR = 'LibAceConfigHelper', 2
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -142,4 +142,17 @@ end
 
 function ACH:SharedMediaBorder(name, desc, order, width, get, set, disabled, hidden)
 	return SharedMediaSelect('LSM30_Border', name, desc, order, function() return LSM:HashTable('border') end, width, get, set, disabled, hidden)
+end
+
+local FontFlagValues = {
+	NONE = NONE,
+	OUTLINE = 'Outline',
+	THICKOUTLINE = 'Thick',
+	MONOCHROME = 'Monochrome',
+	MONOCHROMEOUTLINE = 'Monochrome Outline',
+	MONOCHROMETHICKOUTLINE = 'Monochrome Thick',
+}
+
+function ACH:FontFlags(name, desc, order, width, get, set, disabled, hidden)
+	return { type = 'select', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden, values = FontFlagValues }
 end
