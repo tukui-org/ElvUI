@@ -72,9 +72,9 @@ end
 local function SetFilterList()
 	wipe(filterList)
 
-	filterList['Buff Indicator'] = 'Buff Indicator'
-	filterList['Buff Indicator (Pet)'] = 'Buff Indicator (Pet)'
-	filterList['Buff Indicator (Profile)'] = 'Buff Indicator (Profile)'
+	filterList['Aura Indicator'] = 'Aura Indicator'
+	filterList['Aura Indicator (Pet)'] = 'Aura Indicator (Pet)'
+	filterList['Aura Indicator (Profile)'] = 'Aura Indicator (Profile)'
 	filterList['AuraBar Colors'] = 'AuraBar Colors'
 	filterList['Aura Highlight'] = 'Aura Highlight'
 
@@ -91,9 +91,9 @@ end
 local function DeleteFilterList()
 	wipe(filterList)
 
-	filterList['Buff Indicator'] = 'Buff Indicator'
-	filterList['Buff Indicator (Pet)'] = 'Buff Indicator (Pet)'
-	filterList['Buff Indicator (Profile)'] = 'Buff Indicator (Profile)'
+	filterList['Aura Indicator'] = 'Aura Indicator'
+	filterList['Aura Indicator (Pet)'] = 'Aura Indicator (Pet)'
+	filterList['Aura Indicator (Profile)'] = 'Aura Indicator (Profile)'
 	filterList['AuraBar Colors'] = 'AuraBar Colors'
 	filterList['Aura Highlight'] = 'Aura Highlight'
 
@@ -229,7 +229,7 @@ E.Options.args.filters = {
 					E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
 				elseif value == 'AuraBar Colors' then
 					E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
-				elseif value == 'Buff Indicator (Pet)' or value == 'Buff Indicator (Profile)' or value == 'Buff Indicator' then
+				elseif value == 'Aura Indicator (Pet)' or value == 'Aura Indicator (Profile)' or value == 'Aura Indicator' then
 					local selectedTable, defaultTable = GetSelectedFilters()
 					wipe(selectedTable)
 					E:CopyTable(selectedTable, defaultTable)
@@ -370,7 +370,7 @@ E.Options.args.filters = {
 				local spellName = spell and GetSpellInfo(spell)
 				return (spellName and spellName..' |cFF888888('..spell..')|r') or spell or ' '
 			end,
-			hidden = function() return not selectedSpell or (selectedFilter ~= 'Buff Indicator (Pet)' and selectedFilter ~= 'Buff Indicator (Profile)' and selectedFilter ~= 'Buff Indicator') end,
+			hidden = function() return not selectedSpell or (selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator') end,
 			get = function(info)
 				local spell = GetSelectedSpell()
 				if not spell then return end
@@ -572,7 +572,7 @@ E.Options.args.filters = {
 					type = 'color',
 					order = 2,
 					hasAlpha = function() return selectedFilter ~= 'AuraBar Colors' end,
-					hidden = function() return (selectedFilter ~= 'Aura Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Buff Indicator (Pet)' and selectedFilter ~= 'Buff Indicator (Profile)' and selectedFilter ~= 'Buff Indicator') end,
+					hidden = function() return (selectedFilter ~= 'Aura Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator') end,
 					get = function(info)
 						local spell = GetSelectedSpell()
 						if not spell then return end
