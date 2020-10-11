@@ -12,24 +12,25 @@ local HONOR = HONOR
 local CurrentHonor, MaxHonor, CurrentLevel, PercentHonor, RemainingHonor
 
 function DB:HonorBar_Update(event, unit)
-	if not DB.db.honor.enable then return end
-	local bar = DB.StatusBars.Honor
-
-	if event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player' then return end
+	if not DB.db.honor.enable or (event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player') then
+		return
+	end
 
 	CurrentHonor, MaxHonor, CurrentLevel = UnitHonor('player'), UnitHonorMax('player'), UnitHonorLevel('player')
 
 	--Guard against division by zero, which appears to be an issue when zoning in/out of dungeons
 	if MaxHonor == 0 then MaxHonor = 1 end
 
-	bar:SetMinMaxValues(0, MaxHonor)
-	bar:SetValue(CurrentHonor)
-	local color = DB.db.colors.honor
-	bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+	PercentHonor, RemainingHonor = (CurrentHonor / MaxHonor) * 100, MaxHonor - CurrentHonor
 
 	local displayString, textFormat = '', DB.db.honor.textFormat
+	local bar = DB.StatusBars.Honor
+	local color = DB.db.colors.honor
 
-	PercentHonor, RemainingHonor = (CurrentHonor / MaxHonor) * 100, MaxHonor - CurrentHonor
+	bar:SetMinMaxValues(0, MaxHonor)
+	bar:SetValue(CurrentHonor)
+	bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+
 	if textFormat == 'PERCENT' then
 		displayString = format('%d%%', PercentHonor)
 	elseif textFormat == 'CURMAX' then

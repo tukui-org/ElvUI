@@ -188,7 +188,6 @@ function DB:ExperienceBar_Toggle()
 		DB:RegisterEvent('QUEST_LOG_UPDATE', 'ExperienceBar_QuestXP')
 		DB:RegisterEvent('ZONE_CHANGED', 'ExperienceBar_QuestXP')
 		DB:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'ExperienceBar_QuestXP')
-
 		DB:UnregisterEvent('UPDATE_EXPANSION_LEVEL')
 
 		DB:ExperienceBar_Update()
@@ -224,5 +223,6 @@ function DB:ExperienceBar()
 	DB.StatusBars.Experience.Quest:Hide()
 
 	E:CreateMover(DB.StatusBars.Experience.holder, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
+
 	DB:ExperienceBar_Toggle()
 end

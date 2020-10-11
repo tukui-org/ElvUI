@@ -131,5 +131,6 @@ function DB:ThreatBar()
 	DB.StatusBars.Threat.list = {}
 
 	E:CreateMover(DB.StatusBars.Threat.holder, 'ThreatBarMover', L["Threat Bar"], nil, nil, nil, nil, nil, 'databars,threat')
+
 	DB:ThreatBar_Toggle()
 end
