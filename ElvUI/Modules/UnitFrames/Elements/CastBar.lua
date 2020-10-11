@@ -197,9 +197,6 @@ function UF:Configure_Castbar(frame)
 			castbar.Spark:Height(anchor:GetHeight() * 2)
 		end
 	else
-		local isMoved = E:HasMoverBeenMoved(frame:GetName()..'CastbarMover') or not castbar.Holder.mover
-		if not isMoved then castbar.Holder.mover:ClearAllPoints() end
-
 		if db.positionsGroup then
 			castbar.Holder:ClearAllPoints()
 			castbar.Holder:Point(INVERT_ANCHORPOINT[db.positionsGroup.anchorPoint], frame, db.positionsGroup.anchorPoint, db.positionsGroup.xOffset, db.positionsGroup.yOffset)
@@ -207,10 +204,8 @@ function UF:Configure_Castbar(frame)
 
 		if frame.ORIENTATION ~= 'RIGHT' then
 			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(UF.BORDER+UF.SPACING), UF.BORDER+UF.SPACING)
-			if not isMoved then castbar.Holder.mover:Point('TOPRIGHT', frame, 'BOTTOMRIGHT', 0, -(UF.BORDER - UF.SPACING)) end
 		else
 			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', UF.BORDER+UF.SPACING, UF.BORDER+UF.SPACING)
-			if not isMoved then castbar.Holder.mover:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -(UF.BORDER - UF.SPACING)) end
 		end
 	end
 
