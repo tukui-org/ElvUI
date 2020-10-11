@@ -12,8 +12,12 @@ local HONOR = HONOR
 local CurrentHonor, MaxHonor, CurrentLevel, PercentHonor, RemainingHonor
 
 function DB:HonorBar_Update(event, unit)
+	local bar = DB.StatusBars.Honor
 	if not DB.db.honor.enable or (event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player') then
+		bar:Hide()
 		return
+	else
+		bar:Show()
 	end
 
 	CurrentHonor, MaxHonor, CurrentLevel = UnitHonor('player'), UnitHonorMax('player'), UnitHonorLevel('player')
@@ -24,7 +28,6 @@ function DB:HonorBar_Update(event, unit)
 	PercentHonor, RemainingHonor = (CurrentHonor / MaxHonor) * 100, MaxHonor - CurrentHonor
 
 	local displayString, textFormat = '', DB.db.honor.textFormat
-	local bar = DB.StatusBars.Honor
 	local color = DB.db.colors.honor
 
 	bar:SetMinMaxValues(0, MaxHonor)

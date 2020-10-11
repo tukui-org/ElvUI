@@ -17,8 +17,10 @@ function DB:ReputationBar_Update()
 	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
 
 	if not name or (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
-		bar.holder:Hide()
+		bar:Hide()
 		return
+	else
+		bar:Show()
 	end
 
 	local displayString, textFormat = '', DB.db.reputation.textFormat
@@ -83,7 +85,6 @@ function DB:ReputationBar_Update()
 	end
 
 	bar.text:SetText(displayString)
-	bar.holder:Show()
 end
 
 function DB:ReputationBar_OnEnter()
