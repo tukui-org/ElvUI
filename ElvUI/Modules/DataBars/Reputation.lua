@@ -83,7 +83,7 @@ function DB:ReputationBar_Update()
 	end
 
 	bar.text:SetText(displayString)
-	bar:Show()
+	bar.holder:Show()
 end
 
 function DB:ReputationBar_OnEnter()
