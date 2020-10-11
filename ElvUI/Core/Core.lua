@@ -1380,6 +1380,11 @@ function E:DBConversions()
 		E.db.actionbar.extraActionButton.clean = E.private.skins.cleanBossButton
 		E.private.skins.cleanBossButton = nil
 	end
+
+	if E.global.unitframe.DebuffHighlightColors then
+		E.global.unitframe.AuraHighlightColors = E:CopyTable(E.global.unitframe.AuraHighlightColors, E.global.unitframe.DebuffHighlightColors)
+		E.global.unitframe.DebuffHighlightColors = nil
+	end
 end
 
 function E:RefreshModulesDB()
