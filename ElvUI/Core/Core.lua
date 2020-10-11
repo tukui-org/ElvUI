@@ -1671,7 +1671,7 @@ function E:DBConversions()
 	end
 
 	if E.global.unitframe.DebuffHighlightColors then
-		E.global.unitframe.AuraHighlightColors = E:CopyTable(E.global.unitframe.AuraHighlightColors, E.global.unitframe.DebuffHighlightColors)
+		E:CopyTable(E.global.unitframe.AuraHighlightColors, E.global.unitframe.DebuffHighlightColors)
 		E.global.unitframe.DebuffHighlightColors = nil
 	end
 end
