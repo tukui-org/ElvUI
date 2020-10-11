@@ -68,7 +68,7 @@ function AB:SetupExtraButton()
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
-	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
+	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 290)
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
@@ -120,9 +120,16 @@ function AB:SetupExtraButton()
 	end)
 
 	-- Sometimes the ZoneButtons anchor it to the ExtraAbilityContainer, we dont want this.
-	hooksecurefunc(ZoneAbilityFrame, 'SetParent', function(self, parent)
-		if parent == ExtraAbilityContainer then
-			self:SetParent(ZoneAbilityHolder)
+	hooksecurefunc(ZoneAbilityFrame, 'SetParent', function(frame, parent)
+		if parent ~= ZoneAbilityHolder then
+			frame:SetParent(ZoneAbilityHolder)
+		end
+	end)
+
+	-- Also track the parent for the Boss Button
+	hooksecurefunc(ExtraActionBarFrame, 'SetParent', function(frame, parent)
+		if parent ~= ExtraActionBarHolder then
+			frame:SetParent(ExtraActionBarHolder)
 		end
 	end)
 
