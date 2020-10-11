@@ -64,35 +64,35 @@ end
 
 function AB:SetupExtraButton()
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
-	local ExtraAbilityContainer = _G.ExtraAbilityContainer -- 9.0 Shadowlands?
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
-	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 290)
+	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -200, 300)
 
-	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:Point('CENTER', ExtraActionBarHolder, 'CENTER')
+	ExtraActionBarFrame:SetPoint('TOPLEFT', ExtraActionBarHolder, 'TOPLEFT', E.Spacing, -E.Spacing)
+	ExtraActionBarFrame:SetPoint('BOTTOMRIGHT', ExtraActionBarHolder, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
+	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
-	-- Please check this 9.0 Shadowlands
-	ExtraAbilityContainer:SetParent(ExtraActionBarHolder)
-	ExtraAbilityContainer:ClearAllPoints()
-	ExtraAbilityContainer:Point('CENTER', ExtraActionBarHolder, 'CENTER')
-	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
-
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
-	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -1, 293)
+	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 200, 300)
 
 	-- Please check this 9.0 Shadowlands
-	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
-	ZoneAbilityFrame:Point('CENTER', ZoneAbilityHolder, 'CENTER')
-	ZoneAbilityFrame.Style:SetAlpha(0)
+	ZoneAbilityFrame:SetPoint('TOPLEFT', ZoneAbilityHolder, 'TOPLEFT', E.Border, -E.Border)
+	ZoneAbilityFrame:SetPoint('BOTTOMRIGHT', ZoneAbilityHolder, 'BOTTOMRIGHT', -E.Border, E.Border)
+	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(button)
 		ZoneContainerScale()
+
+		if E.private.skins.cleanZoneButton then
+			ZoneAbilityFrame.Style:SetAlpha(0)
+		else
+			ZoneAbilityFrame.Style:SetAlpha(1)
+		end
 
 		for spellButton in button.SpellButtonContainer:EnumerateActive() do
 			if spellButton and not spellButton.IsSkinned then
@@ -161,7 +161,6 @@ function AB:SetupExtraButton()
 
 	if HasExtraActionBar() then
 		ExtraActionBarFrame:Show()
-		ExtraAbilityContainer:Show()
 	end
 
 	AB:Extra_SetAlpha()
