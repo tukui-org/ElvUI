@@ -78,8 +78,8 @@ function DB:UpdateAll()
 		local rotatesTexture = bar:GetRotatesTexture()
 		local reverseFill = bar:GetReverseFill()
 
-		for i = 1, bar:GetNumChildren() do
-			local child = select(i, bar:GetChildren())
+		for i = 1, bar.holder:GetNumChildren() do
+			local child = select(i, bar.holder:GetChildren())
 			if child:IsObjectType('StatusBar') then
 				child:SetStatusBarTexture(barTexture, 'ARTWORK', -i)
 				child:SetFrameLevel(frameLevel)
