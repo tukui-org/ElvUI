@@ -37,13 +37,16 @@ function AB:Extra_SetAlpha()
 end
 
 local function ZoneContainerScale(scale)
+	if not _G.ZoneAbilityFrame then return end
 	if not scale then scale = E.db.actionbar.extraActionButton.scale end
 
-	local zoneContainer = _G.ZoneAbilityFrame and _G.ZoneAbilityFrame.SpellButtonContainer
-	if zoneContainer then
-		zoneContainer:SetScale(scale)
+	_G.ZoneAbilityFrame.Style:SetScale(scale)
 
-		local width, height = zoneContainer:GetSize()
+	local container = _G.ZoneAbilityFrame.SpellButtonContainer
+	if container then
+		container:SetScale(scale)
+
+		local width, height = container:GetSize()
 		ZoneAbilityHolder:SetSize(width * scale, height * scale)
 	end
 end
