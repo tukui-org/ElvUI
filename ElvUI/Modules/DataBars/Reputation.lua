@@ -103,9 +103,9 @@ function DB:ReputationBar_OnEnter()
 		end
 	end
 
-	if name then
+	if name and not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:ClearLines()
-		_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+		_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 		_G.GameTooltip:AddLine(name)
 		_G.GameTooltip:AddLine(' ')
 

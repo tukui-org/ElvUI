@@ -152,10 +152,10 @@ function DB:ExperienceBar_OnEnter()
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 
-	if not DB:ExperienceBar_ShouldBeVisible() then return end
+	if _G.GameTooltip:IsForbidden() or not DB:ExperienceBar_ShouldBeVisible() then return end
 
 	_G.GameTooltip:ClearLines()
-	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 
 	_G.GameTooltip:AddLine(L["Experience"])
 	_G.GameTooltip:AddLine(' ')

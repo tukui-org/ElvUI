@@ -68,6 +68,8 @@ end
 do
 	local azeriteItem, currentLevel, curXP, maxXP
 	local function dataLoadedCancelFunc()
+		if _G.GameTooltip:IsForbidden() then return end
+
 		_G.GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItem:GetItemName()..' ('..currentLevel..')', nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
 		_G.GameTooltip:AddLine(' ')
 
@@ -84,8 +86,10 @@ do
 				E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 			end
 
-			_G.GameTooltip:ClearLines()
-			_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+			if not _G.GameTooltip:IsForbidden() then
+				_G.GameTooltip:ClearLines()
+				_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
+			end
 
 			curXP, maxXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 			currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)

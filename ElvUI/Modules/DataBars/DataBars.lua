@@ -14,7 +14,9 @@ function DB:OnLeave()
 		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)
 	end
 
-	_G.GameTooltip:Hide()
+	if not _G.GameTooltip:IsForbidden() then
+		_G.GameTooltip:Hide()
+	end
 end
 
 function DB:CreateBar(name, onEnter, onClick, ...)
@@ -52,7 +54,7 @@ function DB:UpdateAll()
 		bar.holder:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.holder:EnableMouse(not bar.db.clickThrough)
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
-		bar:SetStatusBarTexture(barTexture, 'ARTWORK', 7)
+		bar:SetStatusBarTexture(barTexture)
 		bar:SetReverseFill(bar.db.reverseFill)
 
 		if bar.db.enable then
@@ -73,7 +75,6 @@ function DB:UpdateAll()
 			bar:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
 		end
 
-		local frameLevel = bar:GetFrameLevel()
 		local orientation = bar:GetOrientation()
 		local rotatesTexture = bar:GetRotatesTexture()
 		local reverseFill = bar:GetReverseFill()
@@ -81,8 +82,7 @@ function DB:UpdateAll()
 		for i = 1, bar.holder:GetNumChildren() do
 			local child = select(i, bar.holder:GetChildren())
 			if child:IsObjectType('StatusBar') then
-				child:SetStatusBarTexture(barTexture, 'ARTWORK', -i)
-				child:SetFrameLevel(frameLevel)
+				child:SetStatusBarTexture(barTexture)
 				child:SetOrientation(orientation)
 				child:SetRotatesTexture(rotatesTexture)
 				child:SetReverseFill(reverseFill)

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
 
-local _G = _G
 local pairs, select, wipe = pairs, select, wipe
 
 local GetThreatStatusColor = GetThreatStatusColor

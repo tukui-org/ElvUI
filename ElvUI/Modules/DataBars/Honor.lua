@@ -54,8 +54,10 @@ function DB:HonorBar_OnEnter()
 		E:UIFrameFadeIn(self, .4, self:GetAlpha(), 1)
 	end
 
+	if _G.GameTooltip:IsForbidden() then return end
+
 	_G.GameTooltip:ClearLines()
-	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 
 	_G.GameTooltip:AddLine(HONOR)
 
