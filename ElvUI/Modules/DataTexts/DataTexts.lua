@@ -497,6 +497,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	panel.ignoreBorderColors = not db.border or nil
 	panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
 
+	--Show Border option
 	if panel.iborder then panel.iborder:SetShown(not panel.ignoreBorderColors) end
 	if panel.oborder then panel.oborder:SetShown(not panel.ignoreBorderColors) end
 	if panel.ignoreBorderColors then panel:SetBackdropBorderColor(0,0,0,0) end
