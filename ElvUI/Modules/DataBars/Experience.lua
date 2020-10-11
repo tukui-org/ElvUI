@@ -209,6 +209,7 @@ end
 function DB:ExperienceBar()
 	DB.StatusBars.Experience = DB:CreateBar('ElvUI_ExperienceBar', DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, 'BOTTOM', E.UIParent, 'BOTTOM', 0, 43)
 	DB.StatusBars.Experience.Update = DB.ExperienceBar_Update
+	DB.StatusBars.Experience:SetFrameLevel(4)
 
 	DB.StatusBars.Experience.Rested = CreateFrame('StatusBar', '$parent_Rested', DB.StatusBars.Experience.holder)
 	DB.StatusBars.Experience.Rested:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
@@ -218,6 +219,7 @@ function DB:ExperienceBar()
 
 	DB.StatusBars.Experience.Quest = CreateFrame('StatusBar', '$parent_Quest', DB.StatusBars.Experience.holder)
 	DB.StatusBars.Experience.Quest:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+	DB.StatusBars.Experience.Rested:SetFrameLevel(3)
 	DB.StatusBars.Experience.Quest:EnableMouse(false)
 	DB.StatusBars.Experience.Quest:SetInside()
 	DB.StatusBars.Experience.Quest:Hide()
