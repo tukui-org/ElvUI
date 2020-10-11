@@ -76,7 +76,7 @@ local function SetFilterList()
 	filterList['Buff Indicator (Pet)'] = 'Buff Indicator (Pet)'
 	filterList['Buff Indicator (Profile)'] = 'Buff Indicator (Profile)'
 	filterList['AuraBar Colors'] = 'AuraBar Colors'
-	filterList['Debuff Highlight'] = 'Debuff Highlight'
+	filterList['Aura Highlight'] = 'Aura Highlight'
 
 	local list = E.global.unitframe.aurafilters
 	if list then
@@ -95,7 +95,7 @@ local function DeleteFilterList()
 	filterList['Buff Indicator (Pet)'] = 'Buff Indicator (Pet)'
 	filterList['Buff Indicator (Profile)'] = 'Buff Indicator (Profile)'
 	filterList['AuraBar Colors'] = 'AuraBar Colors'
-	filterList['Debuff Highlight'] = 'Debuff Highlight'
+	filterList['Aura Highlight'] = 'Aura Highlight'
 
 	local list = G.unitframe.aurafilters
 	if list then
@@ -109,8 +109,8 @@ end
 
 local function SetSpellList()
 	local list
-	if selectedFilter == 'Debuff Highlight' then
-		list = E.global.unitframe.DebuffHighlightColors
+	if selectedFilter == 'Aura Highlight' then
+		list = E.global.unitframe.AuraHighlightColors
 	elseif selectedFilter == 'AuraBar Colors' then
 		list = E.global.unitframe.AuraBarColors
 	elseif selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' then
@@ -225,8 +225,8 @@ E.Options.args.filters = {
 				return 'Reset Filter - '..value
 			end,
 			set = function(info, value)
-				if value == 'Debuff Highlight' then
-					E.global.unitframe.DebuffHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
+				if value == 'Aura Highlight' then
+					E.global.unitframe.AuraHighlightColors = E:CopyTable({}, G.unitframe.DebuffHighlightColors)
 				elseif value == 'AuraBar Colors' then
 					E.global.unitframe.AuraBarColors = E:CopyTable({}, G.unitframe.AuraBarColors)
 				elseif value == 'Buff Indicator (Pet)' or value == 'Buff Indicator (Profile)' or value == 'Buff Indicator' then
@@ -282,7 +282,7 @@ E.Options.args.filters = {
 					},
 					get = function() return E.global.unitframe.aurafilters[selectedFilter].type end,
 					set = function(info, value) E.global.unitframe.aurafilters[selectedFilter].type = value; UF:Update_AllFrames(); end,
-					hidden = function() return (selectedFilter == 'Debuff Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' or selectedFilter == 'Whitelist' or selectedFilter == 'Blacklist') end,
+					hidden = function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator' or selectedFilter == 'Whitelist' or selectedFilter == 'Blacklist') end,
 				},
 				removeSpell = {
 					order = 4,
@@ -300,8 +300,8 @@ E.Options.args.filters = {
 						if not value then return end
 						selectedSpell = nil
 
-						if selectedFilter == 'Debuff Highlight' then
-							E.global.unitframe.DebuffHighlightColors[value] = nil;
+						if selectedFilter == 'Aura Highlight' then
+							E.global.unitframe.AuraHighlightColors[value] = nil;
 						elseif selectedFilter == 'AuraBar Colors' then
 							if G.unitframe.AuraBarColors[value] then
 								E.global.unitframe.AuraBarColors[value].enable = false;
@@ -341,9 +341,9 @@ E.Options.args.filters = {
 						selectedSpell = (spellName and value) or nil
 						if not selectedSpell then return end
 
-						if selectedFilter == 'Debuff Highlight' then
-							if not E.global.unitframe.DebuffHighlightColors[value] then
-								E.global.unitframe.DebuffHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85} }
+						if selectedFilter == 'Aura Highlight' then
+							if not E.global.unitframe.AuraHighlightColors[value] then
+								E.global.unitframe.AuraHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85} }
 							end
 						elseif selectedFilter == 'AuraBar Colors' then
 							if not E.global.unitframe.AuraBarColors[value] then
@@ -524,8 +524,8 @@ E.Options.args.filters = {
 						local spell = GetSelectedSpell()
 						if not spell then return end
 
-						if selectedFilter == 'Debuff Highlight' then
-							return E.global.unitframe.DebuffHighlightColors[spell].enable
+						if selectedFilter == 'Aura Highlight' then
+							return E.global.unitframe.AuraHighlightColors[spell].enable
 						elseif selectedFilter == 'AuraBar Colors' then
 							return E.global.unitframe.AuraBarColors[spell].enable
 						else
@@ -536,8 +536,8 @@ E.Options.args.filters = {
 						local spell = GetSelectedSpell()
 						if not spell then return end
 
-						if selectedFilter == 'Debuff Highlight' then
-							E.global.unitframe.DebuffHighlightColors[spell].enable = value
+						if selectedFilter == 'Aura Highlight' then
+							E.global.unitframe.AuraHighlightColors[spell].enable = value
 						elseif selectedFilter == 'AuraBar Colors' then
 							E.global.unitframe.AuraBarColors[spell].enable = value
 						else
@@ -552,18 +552,18 @@ E.Options.args.filters = {
 					type = 'select',
 					order = 1,
 					values = { GLOW = L["Glow"], FILL = L["Fill"] },
-					hidden = function() return selectedFilter ~= 'Debuff Highlight' end,
+					hidden = function() return selectedFilter ~= 'Aura Highlight' end,
 					get = function(info)
 						local spell = GetSelectedSpell()
 						if not spell then return end
 
-						return E.global.unitframe.DebuffHighlightColors[spell].style
+						return E.global.unitframe.AuraHighlightColors[spell].style
 					end,
 					set = function(info, value)
 						local spell = GetSelectedSpell()
 						if not spell then return end
 
-						E.global.unitframe.DebuffHighlightColors[spell].style = value
+						E.global.unitframe.AuraHighlightColors[spell].style = value
 						UF:Update_AllFrames()
 					end,
 				},
@@ -572,14 +572,14 @@ E.Options.args.filters = {
 					type = 'color',
 					order = 2,
 					hasAlpha = function() return selectedFilter ~= 'AuraBar Colors' end,
-					hidden = function() return (selectedFilter ~= 'Debuff Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Buff Indicator (Pet)' and selectedFilter ~= 'Buff Indicator (Profile)' and selectedFilter ~= 'Buff Indicator') end,
+					hidden = function() return (selectedFilter ~= 'Aura Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Buff Indicator (Pet)' and selectedFilter ~= 'Buff Indicator (Profile)' and selectedFilter ~= 'Buff Indicator') end,
 					get = function(info)
 						local spell = GetSelectedSpell()
 						if not spell then return end
 
 						local t
-						if selectedFilter == 'Debuff Highlight' then
-							t = E.global.unitframe.DebuffHighlightColors[spell].color
+						if selectedFilter == 'Aura Highlight' then
+							t = E.global.unitframe.AuraHighlightColors[spell].color
 						elseif selectedFilter == 'AuraBar Colors' then
 							t = E.global.unitframe.AuraBarColors[spell].color
 						end
@@ -593,8 +593,8 @@ E.Options.args.filters = {
 						if not spell then return end
 
 						local t
-						if selectedFilter == 'Debuff Highlight' then
-							t = E.global.unitframe.DebuffHighlightColors[spell].color
+						if selectedFilter == 'Aura Highlight' then
+							t = E.global.unitframe.AuraHighlightColors[spell].color
 						elseif selectedFilter == 'AuraBar Colors' then
 							t = E.global.unitframe.AuraBarColors[spell].color
 						end
@@ -628,7 +628,7 @@ E.Options.args.filters = {
 					type = 'group',
 					name = L["Used as RaidDebuff Indicator"],
 					guiInline = true,
-					hidden = function() return (selectedFilter == 'Debuff Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') end,
+					hidden = function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Buff Indicator (Pet)' or selectedFilter == 'Buff Indicator (Profile)' or selectedFilter == 'Buff Indicator') end,
 					args = {
 						priority = {
 							order = 1,
