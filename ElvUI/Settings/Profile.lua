@@ -130,8 +130,8 @@ P.databars = {
 	customTexture = false,
 	colors = {
 		experience = { r = 0, g = .4, b = 1, a = .8 },
-		rested = { r = 1, g = 0, b = 1, a = .2},
-		quest = { r = 0, g = 1, b = 0, a = .5},
+		rested = { r = 1, g = 0, b = 1, a = .4},
+		quest = { r = 0, g = 1, b = 0, a = .4},
 		honor = { r = .94, g = .45, b = .25, a = 1 },
 		azerite = { r = .901, g = .8, b = .601, a = 1 },
 		useCustomFactionColors = false,
