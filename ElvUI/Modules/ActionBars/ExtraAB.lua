@@ -105,6 +105,7 @@ function AB:SetupExtraButton()
 				if spellButton.Cooldown then
 					spellButton.Cooldown.CooldownOverride = 'actionbar'
 					E:RegisterCooldown(spellButton.Cooldown)
+					spellButton.Cooldown:SetInside(spellButton)
 				end
 
 				spellButton.IsSkinned = true
