@@ -66,7 +66,7 @@ function DB:ExperienceBar_Update()
 		bar:SetMinMaxValues(0, 1)
 		bar:SetValue(1)
 
-		displayString = IsXPUserDisabled() and L["Disabled"] or L["Max Level"]
+		displayString = textFormat ~= 'NONE' and (IsXPUserDisabled() and L["Disabled"] or L["Max Level"])
 	else
 		bar:SetMinMaxValues(0, XPToLevel)
 		bar:SetValue(CurrentXP)
@@ -101,6 +101,10 @@ function DB:ExperienceBar_Update()
 			elseif textFormat ~= 'NONE' then
 				displayString = format('%s R:%s', displayString, E:ShortValue(RestedXP))
 			end
+		end
+
+		if bar.db.showLevel then
+			displayString = format('%s %s : %s', L['Level'], E.mylevel, displayString)
 		end
 
 		bar.Rested:SetShown(isRested)
