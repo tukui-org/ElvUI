@@ -125,12 +125,11 @@ function DB:ThreatBar_Toggle()
 end
 
 function DB:ThreatBar()
-	DB.StatusBars.Threat = DB:CreateBar('ElvUI_ThreatBar', nil, nil, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245)
-	DB.StatusBars.Threat.Update = DB.ThreatBar_Update
-	DB.StatusBars.Threat:SetMinMaxValues(0, 100)
-	DB.StatusBars.Threat.list = {}
+	local Threat = DB:CreateBar('ElvUI_ThreatBar', 'Threat', DB.ThreatBar_Update, nil, nil, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
+	Threat:SetMinMaxValues(0, 100)
+	Threat.list = {}
 
-	E:CreateMover(DB.StatusBars.Threat.holder, 'ThreatBarMover', L["Threat Bar"], nil, nil, nil, nil, nil, 'databars,threat')
+	E:CreateMover(Threat.holder, 'ThreatBarMover', L["Threat Bar"], nil, nil, nil, nil, nil, 'databars,threat')
 
 	DB:ThreatBar_Toggle()
 end

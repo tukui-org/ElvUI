@@ -207,27 +207,28 @@ function DB:ExperienceBar_Toggle()
 end
 
 function DB:ExperienceBar()
-	DB.StatusBars.Experience = DB:CreateBar('ElvUI_ExperienceBar', DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, 'BOTTOM', E.UIParent, 'BOTTOM', 0, 43)
-	DB.StatusBars.Experience.Update = DB.ExperienceBar_Update
-	DB.StatusBars.Experience.barTexture:SetDrawLayer('ARTWORK', 4)
+	local Experience = DB:CreateBar('ElvUI_ExperienceBar', 'Experience', DB.ExperienceBar_Update, DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, {'BOTTOM', E.UIParent, 'BOTTOM', 0, 43})
+	Experience.barTexture:SetDrawLayer('ARTWORK', 4)
 
-	DB.StatusBars.Experience.Rested = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Rested', DB.StatusBars.Experience.holder)
-	DB.StatusBars.Experience.Rested:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
-	DB.StatusBars.Experience.Rested:EnableMouse(false)
-	DB.StatusBars.Experience.Rested:SetInside()
-	DB.StatusBars.Experience.Rested:Hide()
-	DB.StatusBars.Experience.Rested.barTexture = DB.StatusBars.Experience.Rested:GetStatusBarTexture()
-	DB.StatusBars.Experience.Rested.barTexture:SetDrawLayer('ARTWORK', 2)
+	local Rested = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Rested', Experience.holder)
+	Rested:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+	Rested:EnableMouse(false)
+	Rested:SetInside()
+	Rested:Hide()
+	Rested.barTexture = Rested:GetStatusBarTexture()
+	Rested.barTexture:SetDrawLayer('ARTWORK', 2)
+	Experience.Rested = Rested
 
-	DB.StatusBars.Experience.Quest = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Quest', DB.StatusBars.Experience.holder)
-	DB.StatusBars.Experience.Quest:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
-	DB.StatusBars.Experience.Quest:EnableMouse(false)
-	DB.StatusBars.Experience.Quest:SetInside()
-	DB.StatusBars.Experience.Quest:Hide()
-	DB.StatusBars.Experience.Quest.barTexture = DB.StatusBars.Experience.Quest:GetStatusBarTexture()
-	DB.StatusBars.Experience.Quest.barTexture:SetDrawLayer('ARTWORK', 3)
+	local Quest = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Quest', Experience.holder)
+	Quest:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+	Quest:EnableMouse(false)
+	Quest:SetInside()
+	Quest:Hide()
+	Quest.barTexture = Quest:GetStatusBarTexture()
+	Quest.barTexture:SetDrawLayer('ARTWORK', 3)
+	Experience.Quest = Quest
 
-	E:CreateMover(DB.StatusBars.Experience.holder, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
+	E:CreateMover(Experience.holder, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
 
 	DB:ExperienceBar_Toggle()
 end

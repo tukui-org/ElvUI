@@ -97,10 +97,9 @@ function DB:HonorBar_Toggle()
 end
 
 function DB:HonorBar()
-	DB.StatusBars.Honor = DB:CreateBar('ElvUI_HonorBar', DB.HonorBar_OnEnter, DB.HonorBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255)
-	DB.StatusBars.Honor.Update = DB.HonorBar_Update
+	local Honor = DB:CreateBar('ElvUI_HonorBar', 'Honor', DB.HonorBar_Update, DB.HonorBar_OnEnter, DB.HonorBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255})
 
-	E:CreateMover(DB.StatusBars.Honor.holder, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
+	E:CreateMover(Honor.holder, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 
 	DB:HonorBar_Toggle()
 end

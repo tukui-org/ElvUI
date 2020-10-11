@@ -131,10 +131,9 @@ function DB:AzeriteBar_Toggle()
 end
 
 function DB:AzeriteBar()
-	DB.StatusBars.Azerite = DB:CreateBar('ElvUI_AzeriteBar', DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245)
-	DB.StatusBars.Azerite.Update = DB.AzeriteBar_Update
+	local Azerite = DB:CreateBar('ElvUI_AzeriteBar', 'Azerite', DB.AzeriteBar_Update, DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
 
-	E:CreateMover(DB.StatusBars.Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
+	E:CreateMover(Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
 
 	DB:AzeriteBar_Toggle()
 end

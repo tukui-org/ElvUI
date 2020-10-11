@@ -146,10 +146,9 @@ function DB:ReputationBar_Toggle()
 end
 
 function DB:ReputationBar()
-	DB.StatusBars.Reputation = DB:CreateBar('ElvUI_ReputationBar', DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264)
-	DB.StatusBars.Reputation.Update = DB.ReputationBar_Update
+	local Reputation = DB:CreateBar('ElvUI_ReputationBar', 'Reputation', DB.ReputationBar_Update, DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264})
 
-	E:CreateMover(DB.StatusBars.Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
+	E:CreateMover(Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
 
 	DB:ReputationBar_Toggle()
 end

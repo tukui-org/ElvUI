@@ -19,14 +19,14 @@ function DB:OnLeave()
 	end
 end
 
-function DB:CreateBar(name, onEnter, onClick, ...)
+function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	local holder = CreateFrame('Frame', name..'Holder', E.UIParent, 'BackdropTemplate')
 	holder:SetTemplate(DB.db.transparent and 'Transparent')
 	holder:SetScript('OnEnter', onEnter)
 	holder:SetScript('OnLeave', DB.OnLeave)
 	holder:SetScript('OnMouseDown', onClick)
 	holder:ClearAllPoints()
-	holder:Point(...)
+	holder:Point(unpack(points))
 
 	local bar = CreateFrame('StatusBar', name, holder)
 	bar:SetStatusBarTexture(E.media.normTex)
@@ -40,8 +40,10 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 	bar.text:Point('CENTER')
 
 	bar.holder = holder
+	bar.Update = updateFunc
 
 	E.FrameLocks[holder] = true
+	DB.StatusBars[key] = bar
 
 	return bar
 end
