@@ -31,9 +31,9 @@ function DB:AzeriteBar_Update(event, unit)
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 
 	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or E.mylevel > 50 then
-		bar:Hide()
+		bar.holder:Hide()
 	else
-		bar:Show()
+		bar.holder:Show()
 		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 
@@ -111,7 +111,7 @@ function DB:AzeriteBar_Toggle()
 	local bar = DB.StatusBars.Azerite
 	bar.db = DB.db.azerite
 
-	bar:SetShown(bar.db.enable)
+	bar.holder:SetShown(bar.db.enable)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -121,7 +121,6 @@ function DB:AzeriteBar_Toggle()
 
 		DB:AzeriteBar_Update()
 	else
-		bar:Hide()
 		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED')

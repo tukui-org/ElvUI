@@ -17,7 +17,7 @@ function DB:ReputationBar_Update()
 	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
 
 	if not name or (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
-		bar:Hide()
+		bar.holder:Hide()
 		return
 	end
 
@@ -128,7 +128,8 @@ function DB:ReputationBar_Toggle()
 	local bar = DB.StatusBars.Reputation
 	bar.db = DB.db.reputation
 
-	bar:SetShown(bar.db.enable)
+	bar.holder:SetShown(bar.db.enable)
+
 	if bar.db.enable then
 		DB:RegisterEvent('UPDATE_FACTION', 'ReputationBar_Update')
 		DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')

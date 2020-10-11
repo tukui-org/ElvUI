@@ -76,7 +76,7 @@ function DB:HonorBar_Toggle()
 	local bar = DB.StatusBars.Honor
 	bar.db = DB.db.honor
 
-	bar:SetShown(bar.db.enable)
+	bar.holder:SetShown(bar.db.enable)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -86,7 +86,6 @@ function DB:HonorBar_Toggle()
 
 		DB:HonorBar_Update()
 	else
-		bar:Hide()
 		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('HONOR_XP_UPDATE')

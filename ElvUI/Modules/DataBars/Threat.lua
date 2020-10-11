@@ -49,7 +49,8 @@ function DB:ThreatBar_Update()
 	local bar = DB.StatusBars.Threat
 	if percent and percent > 0 and (isInGroup or petExists) then
 		local name = UnitName('target')
-		bar:Show()
+		bar.holder:Show()
+
 		if percent == 100 then
 			--Build threat list
 			if petExists then
@@ -93,7 +94,7 @@ function DB:ThreatBar_Update()
 			bar:SetValue(percent)
 		end
 	else
-		bar:Hide()
+		bar.holder:Hide()
 	end
 
 	wipe(bar.list)
@@ -102,6 +103,8 @@ end
 function DB:ThreatBar_Toggle()
 	local bar = DB.StatusBars.Threat
 	bar.db = DB.db.threat
+
+	bar.holder:SetShown(bar.db.enable)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -113,7 +116,6 @@ function DB:ThreatBar_Toggle()
 
 		DB:ThreatBar_Update()
 	else
-		bar:Hide()
 		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('PLAYER_TARGET_CHANGED')
