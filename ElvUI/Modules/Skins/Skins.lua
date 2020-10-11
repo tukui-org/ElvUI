@@ -306,12 +306,12 @@ do
 	end
 end
 
-function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, styleTemplate, noGlossTex)
+function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, styleTemplate, noGlossTex, override)
 	assert(button, 'doesnt exist!')
 
 	if button.isSkinned then return end
 
-	if button.SetNormalTexture then button:SetNormalTexture('') end
+	if button.SetNormalTexture and not override then button:SetNormalTexture('') end
 	if button.SetHighlightTexture then button:SetHighlightTexture('') end
 	if button.SetPushedTexture then button:SetPushedTexture('') end
 	if button.SetDisabledTexture then button:SetDisabledTexture('') end
