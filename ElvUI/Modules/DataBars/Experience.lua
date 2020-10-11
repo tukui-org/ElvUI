@@ -219,7 +219,7 @@ function DB:ExperienceBar()
 
 	DB.StatusBars.Experience.Quest = CreateFrame('StatusBar', '$parent_Quest', DB.StatusBars.Experience.holder)
 	DB.StatusBars.Experience.Quest:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
-	DB.StatusBars.Experience.Rested:SetFrameLevel(3)
+	DB.StatusBars.Experience.Quest:SetFrameLevel(3)
 	DB.StatusBars.Experience.Quest:EnableMouse(false)
 	DB.StatusBars.Experience.Quest:SetInside()
 	DB.StatusBars.Experience.Quest:Hide()
