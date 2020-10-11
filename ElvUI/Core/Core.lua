@@ -1385,6 +1385,16 @@ function E:DBConversions()
 		E:CopyTable(E.global.unitframe.AuraHighlightColors, E.global.unitframe.DebuffHighlightColors)
 		E.global.unitframe.DebuffHighlightColors = nil
 	end
+
+	if E.db.unitframe.filters.buffwatch then
+		E.db.unitframe.filters.aurawatch = E:CopyTable({}, E.db.unitframe.filters.buffwatch)
+		E.db.unitframe.filters.buffwatch = nil
+	end
+
+	if E.global.unitframe.buffwatch then
+		E:CopyTable(E.global.unitframe.aurawatch, E.global.unitframe.buffwatch)
+		E.global.unitframe.buffwatch = nil
+	end
 end
 
 function E:RefreshModulesDB()
