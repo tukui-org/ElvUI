@@ -4407,7 +4407,7 @@ E.Options.args.unitframe = {
 						},
 						debuffHighlight = {
 							order = 11,
-							name = L["Debuffs"],
+							name = L["Debuff Highlighting"],
 							type = 'group',
 							get = function(info)
 								local t = E.db.unitframe.colors.debuffHighlight[info[#info]]
@@ -4422,7 +4422,7 @@ E.Options.args.unitframe = {
 							args = {
 								debuffHighlighting = {
 									order = 1,
-									name = L["Debuff Color Style"],
+									name = L["Highlight Color Style"],
 									desc = L["Color the unit healthbar if there is a debuff that can be dispelled by you."], -- NEEDS UPDATED
 									type = 'select',
 									get = function(info) return E.db.unitframe[info[#info]] end,
