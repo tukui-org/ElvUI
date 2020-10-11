@@ -126,10 +126,7 @@ function UF:Configure_HealComm(frame)
 		absorbBar:SetOrientation(orientation)
 		healAbsorbBar:SetOrientation(orientation)
 
-		local width, height = health:GetSize()
-		if not width or width <= 0 then width = health.WIDTH end
-		if not height or height <= 0 then height = health.HEIGHT end
-
+		local width, height = health.WIDTH, health.HEIGHT
 		if orientation == 'HORIZONTAL' then
 			local p1 = reverseFill and 'RIGHT' or 'LEFT'
 			local p2 = reverseFill and 'LEFT' or 'RIGHT'
