@@ -5,15 +5,11 @@ local _G = _G
 local unpack, select = unpack, select
 local pairs, ipairs, type = pairs, ipairs, type
 
-local EquipmentManager_UnpackLocation = EquipmentManager_UnpackLocation
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
-local GetContainerItemLink = GetContainerItemLink
-local GetInventoryItemLink = GetInventoryItemLink
 local GetFactionInfo = GetFactionInfo
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
-local IsCorruptedItem = IsCorruptedItem
 
 local PLACEINBAGS_LOCATION = 0xFFFFFFFF
 local IGNORESLOT_LOCATION = 0xFFFFFFFE
@@ -259,27 +255,6 @@ local function UpdateCurrencySkins()
 	end
 end
 
-local function CorruptionIcon(self)
-	local itemLink = GetInventoryItemLink('player', self:GetID())
-	self.IconOverlay:SetShown(itemLink and IsCorruptedItem(itemLink))
-end
-
-local function UpdateCorruption(button, location)
-	local _, _, bags, voidStorage, slot, bag = EquipmentManager_UnpackLocation(location)
-	if voidStorage then
-		button.Eye:Hide()
-		return
-	end
-
-	local itemLink
-	if bags then
-		itemLink = GetContainerItemLink(bag, slot)
-	else
-		itemLink = GetInventoryItemLink('player', slot)
-	end
-	button.Eye:SetShown(itemLink and IsCorruptedItem(itemLink))
-end
-
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -314,9 +289,6 @@ function S:CharacterFrame()
 			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown'])
 			hooksecurefunc(Slot, 'DisplayAsAzeriteItem', UpdateAzeriteItem)
 			hooksecurefunc(Slot, 'DisplayAsAzeriteEmpoweredItem', UpdateAzeriteEmpoweredItem)
-
-			Slot:HookScript('OnShow', CorruptionIcon)
-			Slot:HookScript('OnEvent', CorruptionIcon)
 		end
 	end
 
@@ -345,10 +317,6 @@ function S:CharacterFrame()
 	_G.CharacterStatsPane.ItemLevelFrame.Value:FontTemplate(nil, 20)
 	_G.CharacterStatsPane.ItemLevelFrame.Background:SetAlpha(0)
 	ColorizeStatPane(_G.CharacterStatsPane.ItemLevelFrame)
-
-	--Corruption 8.3
-	_G.CharacterStatsPane.ItemLevelFrame.Corruption:ClearAllPoints()
-	_G.CharacterStatsPane.ItemLevelFrame.Corruption:Point('RIGHT', _G.CharacterStatsPane.ItemLevelFrame, 'RIGHT', 22, -8)
 
 	hooksecurefunc('PaperDollFrame_UpdateStats', function()
 		if IsAddOnLoaded('DejaCharacterStats') then return end

@@ -2,16 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
+local pairs = pairs
 local hooksecurefunc = hooksecurefunc
-local GetInventoryItemLink = GetInventoryItemLink
-local IsCorruptedItem = IsCorruptedItem
-
-local function UpdateCorruption(self)
-	local unit = _G.InspectFrame.unit
-	local itemLink = unit and GetInventoryItemLink(unit, self:GetID())
-	self.Eye:SetShown(itemLink and IsCorruptedItem(itemLink))
-end
 
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
@@ -113,10 +105,6 @@ function S:Blizzard_InspectUI()
 	InspectPVPFrame.BG:Kill()
 	_G.InspectGuildFrameBG:Kill()
 	_G.InspectTalentFrame:StripTextures()
-
-	hooksecurefunc('InspectPaperDollItemSlotButton_Update', function(button)
-		UpdateCorruption(button)
-	end)
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')
