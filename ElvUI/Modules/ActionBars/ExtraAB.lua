@@ -7,17 +7,10 @@ local tinsert = tinsert
 local unpack, pairs = unpack, pairs
 local GetBindingKey = GetBindingKey
 local CreateFrame = CreateFrame
-local HasExtraActionBar = HasExtraActionBar
 local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 local ExtraButtons = {}
-
-local function stripStyle(btn, tex)
-	if tex ~= nil then
-		btn:SetTexture()
-	end
-end
 
 function AB:Extra_SetAlpha()
 	if not E.private.actionbar.enable then return; end
@@ -72,20 +65,17 @@ function AB:SetupExtraButton()
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
 	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -200, 300)
 
-	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:SetPoint('TOPLEFT', ExtraActionBarHolder, 'TOPLEFT', E.Spacing, -E.Spacing)
-	ExtraActionBarFrame:SetPoint('BOTTOMRIGHT', ExtraActionBarHolder, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
+	ExtraActionBarFrame:ClearAllPoints()
+	ExtraActionBarFrame:SetAllPoints()
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 200, 300)
 
-	-- Please check this 9.0 Shadowlands
-	ZoneAbilityFrame:ClearAllPoints()
-	ZoneAbilityFrame:SetPoint('TOPLEFT', ZoneAbilityHolder, 'TOPLEFT', E.Border, -E.Border)
-	ZoneAbilityFrame:SetPoint('BOTTOMRIGHT', ZoneAbilityHolder, 'BOTTOMRIGHT', -E.Border, E.Border)
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
+	ZoneAbilityFrame:ClearAllPoints()
+	ZoneAbilityFrame:SetAllPoints()
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(button)
@@ -147,9 +137,12 @@ function AB:SetupExtraButton()
 			button:CreateBackdrop()
 			button.backdrop:SetAllPoints()
 
-			if E.private.skins.cleanBossButton and button.style then -- Hide the Artwork
-				button.style:SetTexture()
-				hooksecurefunc(button.style, 'SetTexture', stripStyle)
+			if button.style then
+				if E.private.skins.cleanBossButton then
+					button.style:SetAlpha(0)
+				else
+					button.style:SetAlpha(1)
+				end
 			end
 
 			local tex = button:CreateTexture(nil, 'OVERLAY')
@@ -160,10 +153,6 @@ function AB:SetupExtraButton()
 			button.HotKey:SetText(GetBindingKey('ExtraActionButton'..i))
 			tinsert(ExtraButtons, button)
 		end
-	end
-
-	if HasExtraActionBar() then
-		ExtraActionBarFrame:Show()
 	end
 
 	AB:Extra_SetAlpha()
