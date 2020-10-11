@@ -42,10 +42,10 @@ end
 function DB:ExperienceBar_Update()
 	local bar = DB.StatusBars.Experience
 	if not DB.db.experience.enable or (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
-		bar.holder:Hide()
+		bar:Hide()
 		return
 	else
-		bar.holder:Show()
+		bar:Show()
 	end
 
 	CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
