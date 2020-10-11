@@ -18,14 +18,14 @@ function DB:OnLeave()
 end
 
 function DB:CreateBar(name, onEnter, onClick, ...)
-	local bar = CreateFrame('StatusBar', name, E.UIParent)
+	local bar = CreateFrame('StatusBar', name, E.UIParent, 'BackdropTemplate')
+	bar:SetTemplate(DB.db.transparent and 'Transparent')
 	bar:Point(...)
 	bar:SetScript('OnEnter', onEnter)
 	bar:SetScript('OnLeave', DB.OnLeave)
 	bar:SetScript('OnMouseDown', onClick)
 	bar:SetFrameStrata('LOW')
 	bar:SetStatusBarTexture(E.media.normTex)
-	bar:CreateBackdrop(DB.db.transparent and 'Transparent')
 	bar:Hide()
 
 	bar.text = bar:CreateFontString(nil, 'OVERLAY')
@@ -45,8 +45,8 @@ function DB:UpdateAll()
 		bar:SetReverseFill(bar.db.reverseFill)
 		bar:SetStatusBarTexture(barTexture, 'ARTWORK', 7)
 		bar:EnableMouse(not bar.db.clickThrough)
-		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
+		bar:SetTemplate(DB.db.transparent and 'Transparent')
 
 		if bar.db.enable then
 			bar:SetAlpha(bar.db.mouseover and 0 or 1)
@@ -79,6 +79,8 @@ function DB:UpdateAll()
 				child:SetOrientation(orientation)
 				child:SetRotatesTexture(rotatesTexture)
 				child:SetReverseFill(reverseFill)
+				child:ClearAllPoints()
+				child:SetInside(bar)
 			end
 		end
 	end
