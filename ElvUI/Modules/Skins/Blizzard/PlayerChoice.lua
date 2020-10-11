@@ -62,11 +62,19 @@ function S:Blizzard_PlayerChoiceUI()
 
 			-- for some reason the buttons are different. W T F
 			if IsInJailersTower() then
-				HandleOptionButton(option.OptionButtonsContainer.button1)
-				HandleOptionButton(option.OptionButtonsContainer.button2)
+				if option.OptionButtonsContainer.button1 then
+					HandleOptionButton(option.OptionButtonsContainer.button1)
+				end
+				if option.OptionButtonsContainer.button2 then
+					HandleOptionButton(option.OptionButtonsContainer.button2)
+				end
 			else
-				S:HandleButton(option.OptionButtonsContainer.button1)
-				S:HandleButton(option.OptionButtonsContainer.button2)
+				if option.OptionButtonsContainer.button1 then
+					S:HandleButton(option.OptionButtonsContainer.button1)
+				end
+				if option.OptionButtonsContainer.button2 then
+					S:HandleButton(option.OptionButtonsContainer.button2)
+				end
 			end
 
 			for i = 1, option.WidgetContainer:GetNumChildren() do
