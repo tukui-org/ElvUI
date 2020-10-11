@@ -33,6 +33,7 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 	bar:EnableMouse(false)
 	bar:SetInside()
 	bar:Hide()
+	bar.barTexture = bar:GetStatusBarTexture()
 
 	bar.text = bar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
@@ -46,7 +47,7 @@ function DB:CreateBar(name, onEnter, onClick, ...)
 end
 
 function DB:UpdateAll()
-	local barTexture = DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
+	local texture = DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
 
 	for _, bar in pairs(DB.StatusBars) do
 		bar.holder.db = bar.db
@@ -54,7 +55,7 @@ function DB:UpdateAll()
 		bar.holder:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.holder:EnableMouse(not bar.db.clickThrough)
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
-		bar:SetStatusBarTexture(barTexture)
+		bar:SetStatusBarTexture(texture)
 		bar:SetReverseFill(bar.db.reverseFill)
 
 		if bar.db.enable then
@@ -82,7 +83,7 @@ function DB:UpdateAll()
 		for i = 1, bar.holder:GetNumChildren() do
 			local child = select(i, bar.holder:GetChildren())
 			if child:IsObjectType('StatusBar') then
-				child:SetStatusBarTexture(barTexture)
+				child:SetStatusBarTexture(texture)
 				child:SetOrientation(orientation)
 				child:SetRotatesTexture(rotatesTexture)
 				child:SetReverseFill(reverseFill)
