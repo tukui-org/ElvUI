@@ -441,15 +441,11 @@ local RerenderFont = function(fs)
 	fs:SetText(text)
 end
 
-local FixFonts = CreateFrame('Frame')
-FixFonts:Hide()
-FixFonts:SetScript('OnUpdate', function(self)
-	for fs in pairs(DT.FontStrings) do
+local FixFonts = function(fontStrings)
+	for fs in pairs(fontStrings) do
 		RerenderFont(fs)
 	end
-
-	self:Hide()
-end)
+end
 
 function DT:UpdatePanelInfo(panelName, panel, ...)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
@@ -532,6 +528,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
+		dt.text:SetText()
+
 		RerenderFont(dt.text) -- SetJustifyH wont update without a rerender?
 
 		if battlePanel then
@@ -747,7 +745,7 @@ function DT:PLAYER_ENTERING_WORLD(_, initLogin)
 	DT:LoadDataTexts()
 
 	if initLogin then
-		FixFonts:Show()
+		E:Delay(1, FixFonts, DT.FontStrings)
 	end
 end
 

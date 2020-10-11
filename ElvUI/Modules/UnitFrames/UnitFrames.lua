@@ -879,28 +879,25 @@ function UF:ZONE_CHANGED_NEW_AREA()
 	end
 end
 
--- note in datatext file, same name.
+-- note in datatext file, same functions.
 local RerenderFont = function(fs)
 	local text = fs:GetText()
 	fs:SetText('\10')
 	fs:SetText(text)
 end
 
-local FixFonts = CreateFrame('Frame')
-FixFonts:Hide()
-FixFonts:SetScript('OnUpdate', function(self)
-	for fs in pairs(UF.fontstrings) do
+local FixFonts = function(fontStrings)
+	for fs in pairs(fontStrings) do
 		RerenderFont(fs)
 	end
-
-	self:Hide()
-end)
+end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:RegisterRaidDebuffIndicator()
 
 	if initLogin then
-		FixFonts:Show()
+		E:Delay(1, FixFonts, UF.fontstrings)
+
 		UF:Update_AllFrames()
 	elseif isReload then
 		UF:Update_AllFrames()
