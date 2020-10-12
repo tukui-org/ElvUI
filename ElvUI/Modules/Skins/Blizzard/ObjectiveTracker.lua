@@ -3,6 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
+
+local C_Spell_GetMawPowerBorderAtlasBySpellID = C_Spell.GetMawPowerBorderAtlasBySpellID
 local hooksecurefunc = hooksecurefunc
 
 local headers = {
@@ -166,6 +168,28 @@ local function UpdateMinimizeButton(button, collapsed)
 	end
 end
 
+local AtlasToQuality = {
+	["jailerstower-animapowerlist-powerborder-white"] = Enum.ItemQuality.Common,
+	["jailerstower-animapowerlist-powerborder-green"] = Enum.ItemQuality.Uncommon,
+	["jailerstower-animapowerlist-powerborder-blue"] = Enum.ItemQuality.Rare,
+	["jailerstower-animapowerlist-powerborder-purple"] = Enum.ItemQuality.Epic,
+}
+
+local function UpdateMawBuffQuality(button, spellID)
+	if not spellID then return end
+
+	local atlas = C_Spell_GetMawPowerBorderAtlasBySpellID(spellID)
+	local quality = AtlasToQuality[atlas]
+	local color = E.QualityColors[quality or 1]
+	if button.Icon.backdrop then
+		button.Icon.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	end
+end
+
+local function UpdateMawBuffInfo(button, buffInfo)
+	UpdateMawBuffQuality(button, buffInfo.spellID)
+end
+
 function S:ObjectiveTrackerFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
@@ -215,13 +239,17 @@ function S:ObjectiveTrackerFrame()
 	-- The Maw - Torghast: Scenario Tracker Buff Block
 	_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:HookScript('OnShow', function(frame)
 		if not frame.buffPool then return end
+
 		for mawBuff in frame.buffPool:EnumerateActive() do
 			if mawBuff:IsShown() and not mawBuff.IsSkinned then
 				mawBuff.Border:SetAlpha(0)
 				mawBuff.CircleMask:Hide()
 				mawBuff.CountRing:SetAlpha(0)
 				mawBuff.HighlightBorder:SetColorTexture(1, 1, 1, .25)
-				S:HandleIcon(mawBuff.Icon)
+				S:HandleIcon(mawBuff.Icon, true)
+
+				UpdateMawBuffQuality(mawBuff, mawBuff.spellID)
+				hooksecurefunc(mawBuff, 'SetBuffInfo', UpdateMawBuffInfo)
 
 				mawBuff.IsSkinned = true
 			end
