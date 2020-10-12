@@ -39,7 +39,7 @@ local function OnEvent(self, event, _, timeSeconds)
 		timerText, timer, startTime = L["Combat"], 0, GetTime()
 		self:SetScript('OnUpdate', OnUpdate)
 	elseif not self.text:GetText() then
-		self.text:SetFormattedText(displayString, timerText, UpdateText())
+		self.text:SetFormattedText(displayString, timerText, 'N/A')
 	end
 
 	lastPanel = self

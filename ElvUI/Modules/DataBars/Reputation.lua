@@ -19,11 +19,14 @@ function DB:ReputationBar_Update()
 	if not name or (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
 		bar:Hide()
 		return
+	else
+		bar:Show()
 	end
 
 	local displayString, textFormat = '', DB.db.reputation.textFormat
 	local isCapped, isFriend, friendText, standingLabel
 	local friendshipID = GetFriendshipReputation(factionID)
+	local color = DB.db.colors.useCustomFactionColors and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
 
 	if friendshipID then
 		local _, friendRep, _, _, _, _, friendTextLevel, friendThreshold, nextFriendThreshold = GetFriendshipReputation(factionID)
@@ -50,7 +53,6 @@ function DB:ReputationBar_Update()
 
 	bar:SetMinMaxValues(Min, Max)
 	bar:SetValue(value)
-	local color = DB.db.colors.useCustomFactionColors and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
 	bar:SetStatusBarColor(color.r, color.g, color.b)
 
 	standingLabel = _G['FACTION_STANDING_LABEL'..reaction]
@@ -83,7 +85,6 @@ function DB:ReputationBar_Update()
 	end
 
 	bar.text:SetText(displayString)
-	bar:Show()
 end
 
 function DB:ReputationBar_OnEnter()
@@ -103,9 +104,9 @@ function DB:ReputationBar_OnEnter()
 		end
 	end
 
-	if name then
+	if name and not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:ClearLines()
-		_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+		_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 		_G.GameTooltip:AddLine(name)
 		_G.GameTooltip:AddLine(' ')
 
@@ -128,23 +129,27 @@ function DB:ReputationBar_Toggle()
 	local bar = DB.StatusBars.Reputation
 	bar.db = DB.db.reputation
 
-	bar:SetShown(bar.db.enable)
+	bar.holder:SetShown(bar.db.enable)
+
 	if bar.db.enable then
+		E:EnableMover(bar.holder.mover:GetName())
+
 		DB:RegisterEvent('UPDATE_FACTION', 'ReputationBar_Update')
 		DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')
+
 		DB:ReputationBar_Update()
-		E:EnableMover(bar.mover:GetName())
 	else
+		E:DisableMover(bar.holder.mover:GetName())
+
 		DB:UnregisterEvent('UPDATE_FACTION')
 		DB:UnregisterEvent('COMBAT_TEXT_UPDATE')
-		E:DisableMover(bar.mover:GetName())
 	end
 end
 
 function DB:ReputationBar()
-	DB.StatusBars.Reputation = DB:CreateBar('ElvUI_ReputationBar', DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264)
-	DB.StatusBars.Reputation.Update = DB.ReputationBar_Update
+	local Reputation = DB:CreateBar('ElvUI_ReputationBar', 'Reputation', DB.ReputationBar_Update, DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264})
 
-	E:CreateMover(DB.StatusBars.Reputation, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
+	E:CreateMover(Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
+
 	DB:ReputationBar_Toggle()
 end

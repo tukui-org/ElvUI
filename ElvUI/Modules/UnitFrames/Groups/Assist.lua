@@ -70,7 +70,7 @@ function UF:Update_AssistHeader(header, db)
 		header:SetAttribute('minWidth', width)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,assist,generalGroup')
-		header.mover:Size(width, minHeight)
+		header.mover:SetSize(width, minHeight)
 
 		header.positioned = true
 	end

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
 
-local _G = _G
 local pairs, select, wipe = pairs, select, wipe
 
 local GetThreatStatusColor = GetThreatStatusColor
@@ -50,6 +49,7 @@ function DB:ThreatBar_Update()
 	if percent and percent > 0 and (isInGroup or petExists) then
 		local name = UnitName('target')
 		bar:Show()
+
 		if percent == 100 then
 			--Build threat list
 			if petExists then
@@ -103,8 +103,10 @@ function DB:ThreatBar_Toggle()
 	local bar = DB.StatusBars.Threat
 	bar.db = DB.db.threat
 
+	bar.holder:SetShown(bar.db.enable)
+
 	if bar.db.enable then
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.holder.mover:GetName())
 
 		DB:RegisterEvent('PLAYER_TARGET_CHANGED', 'ThreatBar_Update')
 		DB:RegisterEvent('UNIT_THREAT_LIST_UPDATE', 'ThreatBar_Update')
@@ -113,8 +115,7 @@ function DB:ThreatBar_Toggle()
 
 		DB:ThreatBar_Update()
 	else
-		bar:Hide()
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('PLAYER_TARGET_CHANGED')
 		DB:UnregisterEvent('UNIT_THREAT_LIST_UPDATE')
@@ -124,11 +125,11 @@ function DB:ThreatBar_Toggle()
 end
 
 function DB:ThreatBar()
-	DB.StatusBars.Threat = DB:CreateBar('ElvUI_ThreatBar', nil, nil, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245)
-	DB.StatusBars.Threat.Update = DB.ThreatBar_Update
-	DB.StatusBars.Threat:SetMinMaxValues(0, 100)
-	DB.StatusBars.Threat.list = {}
+	local Threat = DB:CreateBar('ElvUI_ThreatBar', 'Threat', DB.ThreatBar_Update, nil, nil, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
+	Threat:SetMinMaxValues(0, 100)
+	Threat.list = {}
 
-	E:CreateMover(DB.StatusBars.Threat, 'ThreatBarMover', L["Threat Bar"], nil, nil, nil, nil, nil, 'databars,threat')
+	E:CreateMover(Threat.holder, 'ThreatBarMover', L["Threat Bar"], nil, nil, nil, nil, nil, 'databars,threat')
+
 	DB:ThreatBar_Toggle()
 end

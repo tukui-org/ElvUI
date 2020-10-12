@@ -79,10 +79,22 @@ local function UpdateColor(element, powerType)
 			bg:SetVertexColor(r * mu, g * mu, b * mu)
 		end
 	end
+
+	--[[ Callback: ClassPower:PostUpdateColor(r, g, b)
+	Called after the element color has been updated.
+
+	* self - the ClassPower element
+	* r    - the red component of the used color (number)[0-1]
+	* g    - the green component of the used color (number)[0-1]
+	* b    - the blue component of the used color (number)[0-1]
+	--]]
+	if(element.PostUpdateColor) then
+		element:PostUpdateColor(r, g, b)
+	end
 end
 
 local function Update(self, event, unit, powerType)
-	if(not (unit and (UnitIsUnit(unit, 'player') and powerType == ClassPowerType
+	if(not (unit and (UnitIsUnit(unit, 'player') and (not powerType or powerType == ClassPowerType)
 		or unit == 'vehicle' and powerType == 'COMBO_POINTS'))) then
 		return
 	end
@@ -98,7 +110,7 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate()
 	end
 
-	local cur, max, mod, oldMax
+	local cur, max, mod, oldMax, chargedIndex
 	if(event ~= 'ClassPowerDisable') then
 		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or ClassPowerID
 		cur = UnitPower(unit, powerID, true)
@@ -111,6 +123,12 @@ local function Update(self, event, unit, powerType)
 		-- BUG: Destruction is supposed to show partial soulshards, but Affliction and Demonology should only show full ones
 		if(ClassPowerType == 'SOUL_SHARDS' and GetSpecialization() ~= SPEC_WARLOCK_DESTRUCTION) then
 			cur = cur - cur % 1
+		end
+
+		if(PlayerClass == 'ROGUE') then
+			local chargedPoints = GetUnitChargedPowerPoints(unit)
+			-- according to Blizzard there will only be one
+			chargedIndex = chargedPoints and chargedPoints[1]
 		end
 
 		local numActive = cur + 0.9
@@ -144,9 +162,10 @@ local function Update(self, event, unit, powerType)
 	* max           - the maximum amount of power (number)
 	* hasMaxChanged - indicates whether the maximum amount has changed since the last update (boolean)
 	* powerType     - the active power type (string)
+	* chargedIndex  - the index of the currently charged power point (number?)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(cur, max, oldMax ~= max, powerType)
+		return element:PostUpdate(cur, max, oldMax ~= max, powerType, chargedIndex)
 	end
 end
 
@@ -240,6 +259,10 @@ do
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
+		if(PlayerClass == 'ROGUE') then
+			self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+		end
+
 		self.ClassPower.__isEnabled = true
 
 		if(UnitHasVehicleUI('player')) then
@@ -252,6 +275,7 @@ do
 	function ClassPowerDisable(self)
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
+		self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 
 		local element = self.ClassPower
 		for i = 1, #element do
@@ -308,7 +332,7 @@ local function Enable(self, unit)
 		for i = 1, #element do
 			local bar = element[i]
 			if(bar:IsObjectType('StatusBar')) then
-				if(not bar:GetStatusBarTexture()) then
+				if(not (bar:GetStatusBarTexture() or bar:GetStatusBarAtlas())) then
 					bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 				end
 

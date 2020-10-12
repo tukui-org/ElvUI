@@ -14,7 +14,7 @@ end
 
 local function UpdateFollowerColorOnBoard(self, _, info)
 	if self.Portrait.backdrop then
-		local color = E.QualityColors[info.quality or 0]
+		local color = E.QualityColors[info.quality or 1]
 		self.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 end

@@ -66,7 +66,9 @@ function DB:ExperienceBar_Update()
 		bar:SetMinMaxValues(0, 1)
 		bar:SetValue(1)
 
-		displayString = IsXPUserDisabled() and L["Disabled"] or L["Max Level"]
+		if textFormat ~= 'NONE' then
+			displayString = IsXPUserDisabled() and L["Disabled"] or L["Max Level"]
+		end
 	else
 		bar:SetMinMaxValues(0, XPToLevel)
 		bar:SetValue(CurrentXP)
@@ -101,6 +103,10 @@ function DB:ExperienceBar_Update()
 			elseif textFormat ~= 'NONE' then
 				displayString = format('%s R:%s', displayString, E:ShortValue(RestedXP))
 			end
+		end
+
+		if bar.db.showLevel then
+			displayString = format('%s %s : %s', L['Level'], E.mylevel, displayString)
 		end
 
 		bar.Rested:SetShown(isRested)
@@ -146,10 +152,10 @@ function DB:ExperienceBar_OnEnter()
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 
-	if not DB:ExperienceBar_ShouldBeVisible() then return end
+	if _G.GameTooltip:IsForbidden() or not DB:ExperienceBar_ShouldBeVisible() then return end
 
 	_G.GameTooltip:ClearLines()
-	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 
 	_G.GameTooltip:AddLine(L["Experience"])
 	_G.GameTooltip:AddLine(' ')
@@ -172,8 +178,8 @@ function DB:ExperienceBar_Toggle()
 	bar.db = DB.db.experience
 
 	if bar.db.enable and not (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
-		bar:Show()
-		E:EnableMover(bar.mover:GetName())
+		bar.holder:Show()
+		E:EnableMover(bar.holder.mover:GetName())
 
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_Update')
 		DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Update')
@@ -182,13 +188,12 @@ function DB:ExperienceBar_Toggle()
 		DB:RegisterEvent('QUEST_LOG_UPDATE', 'ExperienceBar_QuestXP')
 		DB:RegisterEvent('ZONE_CHANGED', 'ExperienceBar_QuestXP')
 		DB:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'ExperienceBar_QuestXP')
-
 		DB:UnregisterEvent('UPDATE_EXPANSION_LEVEL')
 
 		DB:ExperienceBar_Update()
 	else
-		bar:Hide()
-		E:DisableMover(bar.mover:GetName())
+		bar.holder:Hide()
+		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')
 		DB:UnregisterEvent('DISABLE_XP_GAIN')
@@ -202,19 +207,28 @@ function DB:ExperienceBar_Toggle()
 end
 
 function DB:ExperienceBar()
-	DB.StatusBars.Experience = DB:CreateBar('ElvUI_ExperienceBar', DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, 'BOTTOM', E.UIParent, 'BOTTOM', 0, 43)
-	DB.StatusBars.Experience.Update = DB.ExperienceBar_Update
+	local Experience = DB:CreateBar('ElvUI_ExperienceBar', 'Experience', DB.ExperienceBar_Update, DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, {'BOTTOM', E.UIParent, 'BOTTOM', 0, 43})
+	Experience.barTexture:SetDrawLayer('ARTWORK', 4)
 
-	DB.StatusBars.Experience.Rested = CreateFrame('StatusBar', '$parent_Rested', DB.StatusBars.Experience)
-	DB.StatusBars.Experience.Rested:Hide()
-	DB.StatusBars.Experience.Rested:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
-	DB.StatusBars.Experience.Rested:SetAllPoints()
+	local Rested = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Rested', Experience.holder)
+	Rested:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+	Rested:EnableMouse(false)
+	Rested:SetInside()
+	Rested:Hide()
+	Rested.barTexture = Rested:GetStatusBarTexture()
+	Rested.barTexture:SetDrawLayer('ARTWORK', 2)
+	Experience.Rested = Rested
 
-	DB.StatusBars.Experience.Quest = CreateFrame('StatusBar', '$parent_Quest', DB.StatusBars.Experience)
-	DB.StatusBars.Experience.Quest:Hide()
-	DB.StatusBars.Experience.Quest:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
-	DB.StatusBars.Experience.Quest:SetAllPoints()
+	local Quest = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Quest', Experience.holder)
+	Quest:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
+	Quest:EnableMouse(false)
+	Quest:SetInside()
+	Quest:Hide()
+	Quest.barTexture = Quest:GetStatusBarTexture()
+	Quest.barTexture:SetDrawLayer('ARTWORK', 3)
+	Experience.Quest = Quest
 
-	E:CreateMover(DB.StatusBars.Experience, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
+	E:CreateMover(Experience.holder, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
+
 	DB:ExperienceBar_Toggle()
 end

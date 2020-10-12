@@ -58,6 +58,7 @@ V.skins = {
 	ace3Enable = true,
 	checkBoxSkin = true,
 	cleanBossButton = false,
+	cleanZoneButton = false,
 	parchmentRemoverEnable = false,
 	blizzard = {
 		enable = true,

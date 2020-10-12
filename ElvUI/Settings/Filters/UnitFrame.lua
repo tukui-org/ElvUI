@@ -1375,7 +1375,7 @@ function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displ
 	}
 end
 
-G.unitframe.buffwatch = {
+G.unitframe.aurawatch = {
 	PRIEST = {
 		[194384] = UF:AuraWatch_AddSpell(194384, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement
 		[214206] = UF:AuraWatch_AddSpell(214206, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement (PvP)
@@ -1482,7 +1482,7 @@ G.unitframe.AuraBarColors = {
 	[90355] = { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
 }
 
-G.unitframe.DebuffHighlightColors = {}
+G.unitframe.AuraHighlightColors = {}
 
 G.unitframe.specialFilters = {
 	-- Whitelists

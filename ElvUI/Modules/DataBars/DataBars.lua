@@ -14,48 +14,63 @@ function DB:OnLeave()
 		E:UIFrameFadeOut(self, 1, self:GetAlpha(), 0)
 	end
 
-	_G.GameTooltip:Hide()
+	if not _G.GameTooltip:IsForbidden() then
+		_G.GameTooltip:Hide()
+	end
 end
 
-function DB:CreateBar(name, onEnter, onClick, ...)
-	local bar = CreateFrame('StatusBar', name, E.UIParent)
-	bar:Point(...)
-	bar:SetScript('OnEnter', onEnter)
-	bar:SetScript('OnLeave', DB.OnLeave)
-	bar:SetScript('OnMouseDown', onClick)
-	bar:SetFrameStrata('LOW')
+function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
+	local holder = CreateFrame('Frame', name..'Holder', E.UIParent, 'BackdropTemplate')
+	holder:SetTemplate(DB.db.transparent and 'Transparent')
+	holder:SetScript('OnEnter', onEnter)
+	holder:SetScript('OnLeave', DB.OnLeave)
+	holder:SetScript('OnMouseDown', onClick)
+
+	if points then
+		holder:ClearAllPoints()
+		holder:Point(unpack(points))
+	end
+
+	local bar = CreateFrame('StatusBar', name, holder)
 	bar:SetStatusBarTexture(E.media.normTex)
-	bar:CreateBackdrop(DB.db.transparent and 'Transparent')
+	bar:EnableMouse(false)
+	bar:SetInside()
 	bar:Hide()
 
+	bar.barTexture = bar:GetStatusBarTexture()
 	bar.text = bar:CreateFontString(nil, 'OVERLAY')
 	bar.text:FontTemplate()
 	bar.text:Point('CENTER')
 
-	E.FrameLocks[name] = true
+	bar.holder = holder
+	bar.Update = updateFunc
+
+	E.FrameLocks[holder] = true
+	DB.StatusBars[key] = bar
 
 	return bar
 end
 
 function DB:UpdateAll()
-	local barTexture = DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
+	local texture = DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
 
 	for _, bar in pairs(DB.StatusBars) do
-		bar:Size(bar.db.width, bar.db.height)
-		bar:SetReverseFill(bar.db.reverseFill)
-		bar:SetStatusBarTexture(barTexture, 'ARTWORK', 7)
-		bar:EnableMouse(not bar.db.clickThrough)
-		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
+		bar.holder.db = bar.db
+		bar.holder:Size(bar.db.width, bar.db.height)
+		bar.holder:SetTemplate(DB.db.transparent and 'Transparent')
+		bar.holder:EnableMouse(not bar.db.clickThrough)
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
+		bar:SetStatusBarTexture(texture)
+		bar:SetReverseFill(bar.db.reverseFill)
 
 		if bar.db.enable then
-			bar:SetAlpha(bar.db.mouseover and 0 or 1)
+			bar.holder:SetAlpha(bar.db.mouseover and 0 or 1)
 		end
 
 		if bar.db.hideInVehicle then
-			E:RegisterObjectForVehicleLock(bar, E.UIParent)
+			E:RegisterObjectForVehicleLock(bar.holder, E.UIParent)
 		else
-			E:UnregisterObjectForVehicleLock(bar)
+			E:UnregisterObjectForVehicleLock(bar.holder)
 		end
 
 		if bar.db.orientation == 'AUTOMATIC' then
@@ -66,16 +81,14 @@ function DB:UpdateAll()
 			bar:SetRotatesTexture(bar.db.orientation ~= 'HORIZONTAL')
 		end
 
-		local frameLevel = bar:GetFrameLevel()
 		local orientation = bar:GetOrientation()
 		local rotatesTexture = bar:GetRotatesTexture()
 		local reverseFill = bar:GetReverseFill()
 
-		for i = 1, bar:GetNumChildren() do
-			local child = select(i, bar:GetChildren())
+		for i = 1, bar.holder:GetNumChildren() do
+			local child = select(i, bar.holder:GetChildren())
 			if child:IsObjectType('StatusBar') then
-				child:SetStatusBarTexture(barTexture, 'ARTWORK', -i)
-				child:SetFrameLevel(frameLevel)
+				child:SetStatusBarTexture(texture)
 				child:SetOrientation(orientation)
 				child:SetRotatesTexture(rotatesTexture)
 				child:SetReverseFill(reverseFill)

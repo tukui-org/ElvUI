@@ -700,72 +700,152 @@ E.Options.args.actionbar = {
 				},
 			},
 		},
-		extraActionButton = {
+		extraButtons = {
 			type = 'group',
-			name = L["Boss Button"],
-			order = 17,
-			disabled = function() return not E.ActionBars.Initialized; end,
-			get = function(info) return E.db.actionbar.extraActionButton[info[#info]] end,
-			args = {
-				alpha = {
-					order = 1,
-					type = 'range',
-					name = L["Alpha"],
-					desc = L["Change the alpha level of the frame."],
-					isPercent = true,
-					min = 0, max = 1, step = 0.01,
-					set = function(info, value) E.db.actionbar.extraActionButton[info[#info]] = value; AB:Extra_SetAlpha() end,
-				},
-				scale = {
-					order = 2,
-					type = 'range',
-					name = L["Scale"],
-					isPercent = true,
-					min = 0.2, max = 2, step = 0.01,
-					set = function(info, value) E.db.actionbar.extraActionButton[info[#info]] = value; AB:Extra_SetScale() end,
-				},
-			},
-		},
-		vehicleExitButton = {
-			type = 'group',
-			name = L["Vehicle Exit"],
 			order = 18,
-			disabled = function() return not E.ActionBars.Initialized; end,
-			get = function(info) return E.db.actionbar.vehicleExitButton[info[#info]] end,
-			set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end,
+			name = L["Extra Buttons"],
 			args = {
-				enable = {
+				extraActionButton = {
+					type = 'group',
+					inline = true,
+					name = L["Boss Button"],
 					order = 1,
-					type = 'toggle',
-					name = L["Enable"],
-					set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end
-				},
-				size = {
-					order = 2,
-					type = 'range',
-					name = L["Size"],
-					min = 16, max = 50, step = 1,
-				},
-				level = {
-					order = 3,
-					type = 'range',
-					name = L["Frame Level"],
-					min = 1, max = 128, step = 1,
-				},
-				strata = {
-					order = 4,
-					type = 'select',
-					name = L["Frame Strata"],
-					values = {
-						BACKGROUND = 'BACKGROUND',
-						LOW = 'LOW',
-						MEDIUM = 'MEDIUM',
-						HIGH = 'HIGH',
-						DIALOG = 'DIALOG',
-						TOOLTIP = 'TOOLTIP',
+					disabled = function() return not E.ActionBars.Initialized end,
+					get = function(info)
+						return E.db.actionbar.extraActionButton[info[#info]]
+					end,
+					set = function(info, value)
+						local key = info[#info]
+						E.db.actionbar.extraActionButton[key] = value;
+
+						if key == 'inheritGlobalFade' then
+							AB:ExtraButtons_GlobalFade()
+						elseif key == 'scale' then
+							AB:ExtraButtons_UpdateScale()
+						else
+							AB:ExtraButtons_UpdateAlpha()
+						end
+					end,
+					args = {
+						alpha = {
+							order = 1,
+							type = 'range',
+							name = L["Alpha"],
+							desc = L["Change the alpha level of the frame."],
+							isPercent = true,
+							min = 0, max = 1, step = 0.01
+						},
+						scale = {
+							order = 2,
+							type = 'range',
+							name = L["Scale"],
+							isPercent = true,
+							min = 0.2, max = 2, step = 0.01
+						},
+						inheritGlobalFade = {
+							order = 3,
+							type = 'toggle',
+							name = L["Inherit Global Fade"]
+						},
+						clean = {
+							order = 4,
+							type = 'toggle',
+							name = L["Clean Button"]
+						}
 					},
 				},
-			},
+				zoneButton = {
+					type = 'group',
+					inline = true,
+					name = L["Zone Button"],
+					order = 2,
+					disabled = function() return not E.ActionBars.Initialized end,
+					get = function(info)
+						return E.db.actionbar.zoneActionButton[info[#info]]
+					end,
+					set = function(info, value)
+						local key = info[#info]
+						E.db.actionbar.zoneActionButton[key] = value;
+
+						if key == 'inheritGlobalFade' then
+							AB:ExtraButtons_GlobalFade()
+						elseif key == 'scale' then
+							AB:ExtraButtons_UpdateScale()
+						else
+							AB:ExtraButtons_UpdateAlpha()
+						end
+					end,
+					args = {
+						alpha = {
+							order = 1,
+							type = 'range',
+							name = L["Alpha"],
+							desc = L["Change the alpha level of the frame."],
+							isPercent = true,
+							min = 0, max = 1, step = 0.01
+						},
+						scale = {
+							order = 2,
+							type = 'range',
+							name = L["Scale"],
+							isPercent = true,
+							min = 0.2, max = 2, step = 0.01
+						},
+						inheritGlobalFade = {
+							order = 3,
+							type = 'toggle',
+							name = L["Inherit Global Fade"]
+						},
+						clean = {
+							order = 4,
+							type = 'toggle',
+							name = L["Clean Button"]
+						}
+					},
+				},
+				vehicleExitButton = {
+					type = 'group',
+					inline = true,
+					name = L["Vehicle Exit"],
+					order = 3,
+					disabled = function() return not E.ActionBars.Initialized; end,
+					get = function(info) return E.db.actionbar.vehicleExitButton[info[#info]] end,
+					set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end,
+					args = {
+						enable = {
+							order = 1,
+							type = 'toggle',
+							name = L["Enable"],
+							set = function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end
+						},
+						size = {
+							order = 2,
+							type = 'range',
+							name = L["Size"],
+							min = 16, max = 50, step = 1,
+						},
+						level = {
+							order = 3,
+							type = 'range',
+							name = L["Frame Level"],
+							min = 1, max = 128, step = 1,
+						},
+						strata = {
+							order = 4,
+							type = 'select',
+							name = L["Frame Strata"],
+							values = {
+								BACKGROUND = 'BACKGROUND',
+								LOW = 'LOW',
+								MEDIUM = 'MEDIUM',
+								HIGH = 'HIGH',
+								DIALOG = 'DIALOG',
+								TOOLTIP = 'TOOLTIP',
+							},
+						},
+					},
+				},
+			}
 		},
 		playerBars = {
 			order = 4,

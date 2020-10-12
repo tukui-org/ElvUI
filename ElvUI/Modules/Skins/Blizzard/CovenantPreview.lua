@@ -16,21 +16,22 @@ function S:Blizzard_CovenantPreviewUI()
 		frame.InfoPanel.Name:SetTextColor(1, 1, 1)
 		frame.InfoPanel.Location:SetTextColor(1, 1, 1)
 		frame.InfoPanel.Description:SetTextColor(1, 1, 1)
-		frame.InfoPanel.AbilitiesLabel:SetTextColor(1, .8, 0)
+		frame.InfoPanel.AbilitiesFrame.AbilitiesLabel:SetTextColor(1, .8, 0)
+		frame.InfoPanel.SoulbindsFrame.SoulbindsLabel:SetTextColor(1, .8, 0)
+		frame.InfoPanel.CovenantFeatureFrame.Label:SetTextColor(1, .8, 0)
 	end
 
 	hooksecurefunc(frame, 'TryShow', function(covenantInfo)
 		if covenantInfo and not frame.IsSkinned then
 			frame:CreateBackdrop('Transparent')
 
-			frame.Title.Text:SetTextColor(1, .8, 0)
-			frame.Title:CreateBackdrop('Transparent')
-
 			frame.ModelSceneContainer.ModelSceneBorder:SetAlpha(0)
 			frame.InfoPanel:CreateBackdrop('Transparent')
 
 			if E.private.skins.parchmentRemoverEnable then
 				frame.Title:DisableDrawLayer('BACKGROUND')
+				frame.Title.Text:SetTextColor(1, .8, 0)
+				frame.Title:CreateBackdrop('Transparent')
 				frame.Background:SetAlpha(0)
 				frame.BorderFrame:SetAlpha(0)
 				frame.InfoPanel.Parchment:SetAlpha(0)
@@ -41,23 +42,6 @@ function S:Blizzard_CovenantPreviewUI()
 			S:HandleButton(frame.SelectButton)
 
 			frame.IsSkinned = true
-		end
-	end)
-
-	hooksecurefunc(_G.CovenantAbilityButtonMixin, 'SetupButton', function(button)
-		if not button.bg then
-			button.bg = CreateFrame('Frame', nil, button, 'BackdropTemplate')
-			S:HandleIcon(button.Icon, button.bg)
-		end
-
-		if button.CircleMask then
-			button.CircleMask:Hide()
-		end
-		if button.Background then
-			button.Background:SetAlpha(0)
-		end
-		if button.IconBorder then
-			button.IconBorder:StripTextures()
 		end
 	end)
 

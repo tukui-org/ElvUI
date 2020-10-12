@@ -287,10 +287,8 @@ function AB:CreateBar(id)
 	bar:SetFrameStrata('LOW')
 	bar.id = id
 
-	--Use this method instead of :SetAllPoints, as the size of the mover would otherwise be incorrect
 	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
-	bar.backdrop:Point('TOPLEFT', bar, 'TOPLEFT', E.Spacing, -E.Spacing)
-	bar.backdrop:Point('BOTTOMRIGHT', bar, 'BOTTOMRIGHT', -E.Spacing, E.Spacing)
+	bar.backdrop:SetAllPoints()
 
 	bar.buttons = {}
 	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons

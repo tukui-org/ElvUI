@@ -20,27 +20,25 @@ local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLe
 local ARTIFACT_POWER = ARTIFACT_POWER
 
 function DB:AzeriteBar_Update(event, unit)
-	if not DB.db.azerite.enable then return end
-
-	if event == 'UNIT_INVENTORY_CHANGED' and unit ~= 'player' then
+	if not DB.db.azerite.enable or (event == 'UNIT_INVENTORY_CHANGED' and unit ~= 'player') then
 		return
 	end
 
 	local bar = DB.StatusBars.Azerite
-
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 
 	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or E.mylevel > 50 then
 		bar:Hide()
 	else
 		bar:Show()
+
 		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
+		local color = DB.db.colors.azerite
 
+		bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 		bar:SetMinMaxValues(0, max)
 		bar:SetValue(cur)
-		local color = DB.db.colors.azerite
-		bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 
 		local textFormat = DB.db.azerite.textFormat
 		if textFormat == 'NONE' then
@@ -68,6 +66,8 @@ end
 do
 	local azeriteItem, currentLevel, curXP, maxXP
 	local function dataLoadedCancelFunc()
+		if _G.GameTooltip:IsForbidden() then return end
+
 		_G.GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItem:GetItemName()..' ('..currentLevel..')', nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
 		_G.GameTooltip:AddLine(' ')
 
@@ -84,8 +84,10 @@ do
 				E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 			end
 
-			_G.GameTooltip:ClearLines()
-			_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR', 0, -4)
+			if not _G.GameTooltip:IsForbidden() then
+				_G.GameTooltip:ClearLines()
+				_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
+			end
 
 			curXP, maxXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 			currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
@@ -111,18 +113,17 @@ function DB:AzeriteBar_Toggle()
 	local bar = DB.StatusBars.Azerite
 	bar.db = DB.db.azerite
 
-	bar:SetShown(bar.db.enable)
+	bar.holder:SetShown(bar.db.enable)
 
 	if bar.db.enable then
-		E:EnableMover(bar.mover:GetName())
+		E:EnableMover(bar.holder.mover:GetName())
 
 		DB:RegisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED', 'AzeriteBar_Update')
 		DB:RegisterEvent('UNIT_INVENTORY_CHANGED', 'AzeriteBar_Update')
 
 		DB:AzeriteBar_Update()
 	else
-		bar:Hide()
-		E:DisableMover(bar.mover:GetName())
+		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED')
 		DB:UnregisterEvent('UNIT_INVENTORY_CHANGED')
@@ -130,9 +131,9 @@ function DB:AzeriteBar_Toggle()
 end
 
 function DB:AzeriteBar()
-	DB.StatusBars.Azerite = DB:CreateBar('ElvUI_AzeriteBar', DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245)
-	DB.StatusBars.Azerite.Update = DB.AzeriteBar_Update
+	local Azerite = DB:CreateBar('ElvUI_AzeriteBar', 'Azerite', DB.AzeriteBar_Update, DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
 
-	E:CreateMover(DB.StatusBars.Azerite, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
+	E:CreateMover(Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
+
 	DB:AzeriteBar_Toggle()
 end

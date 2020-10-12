@@ -18,7 +18,6 @@ local RAID_FINDER = RAID_FINDER
 local TANK_ICON = E:TextureString(E.Media.Textures.Tank, ':14:14')
 local HEALER_ICON = E:TextureString(E.Media.Textures.Healer, ':14:14')
 local DPS_ICON = E:TextureString(E.Media.Textures.DPS, ':14:14')
-local NOBONUSREWARDS = BATTLEGROUND_HOLIDAY..': N/A'
 local enteredFrame, lastPanel = false
 local displayString = ''
 
@@ -65,7 +64,7 @@ local function OnEvent(self)
 		end
 	end
 
-	if E.global.datatexts.settings['Call to Arms'].NoLabel then
+	if E.global.datatexts.settings.CallToArms.NoLabel then
 		self.text:SetFormattedText(displayString, unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
 	else
 		self.text:SetFormattedText(displayString, E.global.datatexts.settings.CallToArms.Label ~= '' and E.global.datatexts.settings.CallToArms.Label or BATTLEGROUND_HOLIDAY..": ", unavailable and 'N/A' or MakeIconString(tankReward, healerReward, dpsReward))
