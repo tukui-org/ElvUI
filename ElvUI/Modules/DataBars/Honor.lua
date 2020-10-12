@@ -15,9 +15,11 @@ function DB:HonorBar_Update(event, unit)
 	local bar = DB.StatusBars.Honor
 	if not DB.db.honor.enable or (event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player') then
 		bar:Hide()
+		bar.holder:Hide()
 		return
 	else
 		bar:Show()
+		bar.holder:Show()
 	end
 
 	CurrentHonor, MaxHonor, CurrentLevel = UnitHonor('player'), UnitHonorMax('player'), UnitHonorLevel('player')
