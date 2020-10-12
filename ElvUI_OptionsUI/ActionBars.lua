@@ -740,15 +740,15 @@ E.Options.args.actionbar = {
 							isPercent = true,
 							min = 0.2, max = 2, step = 0.01
 						},
-						clean = {
+						inheritGlobalFade = {
 							order = 3,
 							type = 'toggle',
-							name = L["Clean Button"]
+							name = L["Inherit Global Fade"]
 						},
-						inheritGlobalFade = {
+						clean = {
 							order = 4,
 							type = 'toggle',
-							name = L["Inherit Global Fade"]
+							name = L["Clean Button"]
 						}
 					},
 				},
@@ -787,15 +787,15 @@ E.Options.args.actionbar = {
 							isPercent = true,
 							min = 0.2, max = 2, step = 0.01
 						},
-						clean = {
+						inheritGlobalFade = {
 							order = 3,
 							type = 'toggle',
-							name = L["Clean Button"]
+							name = L["Inherit Global Fade"]
 						},
-						inheritGlobalFade = {
+						clean = {
 							order = 4,
 							type = 'toggle',
-							name = L["Inherit Global Fade"]
+							name = L["Clean Button"]
 						}
 					},
 				},
