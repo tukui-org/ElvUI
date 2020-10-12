@@ -155,7 +155,7 @@ function M:GetLocTextColor()
 end
 
 function M:SetupHybridMinimap()
-	_G.HybridMinimap.MapCanvas:SetMaskTexture('Interface/Buttons/WHITE8X8')
+	_G.HybridMinimap.MapCanvas:SetMaskTexture(E.Media.Textures.White8x8)
 end
 
 function M:ADDON_LOADED(_, addon)
