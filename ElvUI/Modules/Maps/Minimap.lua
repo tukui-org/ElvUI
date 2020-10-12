@@ -399,6 +399,7 @@ function M:Initialize()
 
 	if _G.TimeManagerClockButton then _G.TimeManagerClockButton:Kill() end
 	if _G.FeedbackUIButton then _G.FeedbackUIButton:Kill() end
+	if _G.HybridMinimap then M:SetupHybridMinimap() end
 
 	E:CreateMover(_G.MMHolder, 'MinimapMover', L["Minimap"], nil, nil, MinimapPostDrag, nil, nil, 'maps,minimap')
 
