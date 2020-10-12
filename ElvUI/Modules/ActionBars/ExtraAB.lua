@@ -4,8 +4,8 @@ local AB = E:GetModule('ActionBars')
 local _G = _G
 local tinsert = tinsert
 local unpack, pairs = unpack, pairs
-local GetBindingKey = GetBindingKey
 local CreateFrame = CreateFrame
+local GetBindingKey = GetBindingKey
 local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
@@ -28,33 +28,27 @@ function AB:Extra_SetAlpha()
 	end
 end
 
-local function ZoneContainerScale(scale)
-	if not _G.ZoneAbilityFrame then return end
-	if not scale then scale = E.db.actionbar.extraActionButton.scale end
-
-	_G.ZoneAbilityFrame.Style:SetScale(scale)
-
-	local container = _G.ZoneAbilityFrame.SpellButtonContainer
-	if container then
-		container:SetScale(scale)
-
-		local width, height = container:GetSize()
-		ZoneAbilityHolder:SetSize(width * scale, height * scale)
-	end
-end
-
 function AB:Extra_SetScale()
 	if not E.private.actionbar.enable then return end
+
+	AB.Zone_SetScale(_G.ZoneAbilityFrame.SpellButtonContainer)
+
 	local scale = E.db.actionbar.extraActionButton.scale
+	_G.ExtraActionBarFrame:SetScale(scale)
 
-	ZoneContainerScale(scale)
+	local width, height = _G.ExtraActionBarFrame.button:GetSize()
+	ExtraActionBarHolder:SetSize(width * scale, height * scale)
+end
 
-	if _G.ExtraActionBarFrame then
-		_G.ExtraActionBarFrame:SetScale(scale)
+function AB:Zone_SetScale()
+	if not E.private.actionbar.enable or not _G.ZoneAbilityFrame then return end
 
-		local width, height = _G.ExtraActionBarFrame.button:GetSize()
-		ExtraActionBarHolder:SetSize(width * scale, height * scale)
-	end
+	local scale = E.db.actionbar.extraActionButton.scale
+	_G.ZoneAbilityFrame.Style:SetScale(scale)
+	self:SetScale(scale)
+
+	local width, height = self:GetSize()
+	ZoneAbilityHolder:SetSize(width * scale, height * scale)
 end
 
 function AB:SetupExtraButton()
@@ -77,9 +71,8 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame:SetAllPoints()
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
+	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.Zone_SetScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(button)
-		ZoneContainerScale()
-
 		if E.private.skins.cleanZoneButton then
 			ZoneAbilityFrame.Style:SetAlpha(0)
 		else
