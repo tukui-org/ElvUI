@@ -323,6 +323,21 @@ function M:SetGetMinimapShape()
 	Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
 end
 
+function M:SetupHybridMinimap()
+	local MapCanvas = _G.HybridMinimap.MapCanvas
+	MapCanvas:SetMaskTexture('Interface\\Buttons\\WHITE8X8')
+	MapCanvas:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
+	MapCanvas:SetScript('OnMouseDown', M.Minimap_OnMouseDown) -- HybridMinimap seems not able to use ping see: Blizzard_HybridMinimap @Simpy
+	MapCanvas:SetScript('OnMouseUp', E.noop)
+end
+
+function M:HybridMinimapOnLoad(addon)
+	if addon == 'Blizzard_HybridMinimap' then
+		M:SetupHybridMinimap()
+		E:UnregisterEvent(self, M.HybridMinimapOnLoad)
+	end
+end
+
 function M:Initialize()
 	if not E.private.general.minimap.enable then return end
 	self.Initialized = true
@@ -407,6 +422,7 @@ function M:Initialize()
 	self:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
 	self:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
 	self:RegisterEvent('ADDON_LOADED')
+	self:RegisterEvent('ADDON_LOADED', M.HybridMinimapOnLoad)
 	self:UpdateSettings()
 end
 
