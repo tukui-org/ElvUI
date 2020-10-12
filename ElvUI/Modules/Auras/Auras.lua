@@ -207,6 +207,7 @@ function A:ClearAuraTime(button, expired)
 	end
 
 	button.endTime = nil
+	button.timeLeft = nil
 	button.text:SetText('')
 	button:SetScript('OnUpdate', nil)
 end
