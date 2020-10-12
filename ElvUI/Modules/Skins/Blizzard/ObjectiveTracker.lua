@@ -3,8 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
-
-local C_Spell_GetMawPowerBorderAtlasBySpellID = C_Spell.GetMawPowerBorderAtlasBySpellID
 local hooksecurefunc = hooksecurefunc
 
 local headers = {
