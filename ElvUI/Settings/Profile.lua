@@ -2190,11 +2190,15 @@ P.actionbar = {
 	},
 	extraActionButton = {
 		alpha = 1,
-		scale = 1
+		scale = 1,
+		clean = false,
+		inheritGlobalFade = false,
 	},
 	zoneActionButton = {
 		alpha = 1,
-		scale = 1
+		scale = 1,
+		clean = false,
+		inheritGlobalFade = false,
 	},
 	vehicleExitButton = {
 		enable = true,

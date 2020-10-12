@@ -711,7 +711,13 @@ E.Options.args.actionbar = {
 					name = L["Boss Button"],
 					order = 1,
 					disabled = function() return not E.ActionBars.Initialized end,
-					get = function(info) return E.db.actionbar.extraActionButton[info[#info]] end,
+					get = function(info)
+						return E.db.actionbar.extraActionButton[info[#info]]
+					end,
+					set = function(info, value)
+						E.db.actionbar.extraActionButton[info[#info]] = value;
+						AB:Extra_SetAlpha()
+					end,
 					args = {
 						alpha = {
 							order = 1,
@@ -719,23 +725,20 @@ E.Options.args.actionbar = {
 							name = L["Alpha"],
 							desc = L["Change the alpha level of the frame."],
 							isPercent = true,
-							min = 0, max = 1, step = 0.01,
-							set = function(info, value)
-								E.db.actionbar.extraActionButton[info[#info]] = value;
-								AB:Extra_SetAlpha()
-							end,
+							min = 0, max = 1, step = 0.01
 						},
 						scale = {
 							order = 2,
 							type = 'range',
 							name = L["Scale"],
 							isPercent = true,
-							min = 0.2, max = 2, step = 0.01,
-							set = function(info, value)
-								E.db.actionbar.extraActionButton[info[#info]] = value;
-								AB:Extra_SetScale()
-							end,
+							min = 0.2, max = 2, step = 0.01
 						},
+						clean = {
+							order = 3,
+							type = 'toggle',
+							name = L["Clean Button"]
+						}
 					},
 				},
 				zoneButton = {
@@ -744,7 +747,13 @@ E.Options.args.actionbar = {
 					name = L["Zone Button"],
 					order = 2,
 					disabled = function() return not E.ActionBars.Initialized end,
-					get = function(info) return E.db.actionbar.zoneActionButton[info[#info]] end,
+					get = function(info)
+						return E.db.actionbar.zoneActionButton[info[#info]]
+					end,
+					set = function(info, value)
+						E.db.actionbar.zoneActionButton[info[#info]] = value;
+						AB:Extra_SetAlpha()
+					end,
 					args = {
 						alpha = {
 							order = 1,
@@ -752,23 +761,20 @@ E.Options.args.actionbar = {
 							name = L["Alpha"],
 							desc = L["Change the alpha level of the frame."],
 							isPercent = true,
-							min = 0, max = 1, step = 0.01,
-							set = function(info, value)
-								E.db.actionbar.zoneActionButton[info[#info]] = value;
-								AB:Extra_SetAlpha()
-							end,
+							min = 0, max = 1, step = 0.01
 						},
 						scale = {
 							order = 2,
 							type = 'range',
 							name = L["Scale"],
 							isPercent = true,
-							min = 0.2, max = 2, step = 0.01,
-							set = function(info, value)
-								E.db.actionbar.zoneActionButton[info[#info]] = value;
-								AB:Extra_SetScale()
-							end,
+							min = 0.2, max = 2, step = 0.01
 						},
+						clean = {
+							order = 3,
+							type = 'toggle',
+							name = L["Clean Button"]
+						}
 					},
 				},
 				vehicleExitButton = {

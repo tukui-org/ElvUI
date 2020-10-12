@@ -13,12 +13,12 @@ local ExtraButtons = {}
 
 local function handleBossStyle(button)
 	if not button.style then return end
-	button.style:SetAlpha(not E.private.skins.cleanBossButton and E.db.actionbar.extraActionButton.alpha or 0)
+	button.style:SetAlpha(not E.db.actionbar.extraActionButton.clean and E.db.actionbar.extraActionButton.alpha or 0)
 end
 
 local function handleZoneStyle(style)
 	if not style then return end
-	style:SetAlpha(not E.private.skins.cleanZoneButton and E.db.actionbar.zoneActionButton.alpha or 0)
+	style:SetAlpha(not E.db.actionbar.zoneActionButton.clean and E.db.actionbar.zoneActionButton.alpha or 0)
 end
 
 function AB:Extra_SetAlpha()
