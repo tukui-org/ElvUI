@@ -3,6 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
+
+local C_Spell_GetMawPowerBorderAtlasBySpellID = C_Spell.GetMawPowerBorderAtlasBySpellID
 local hooksecurefunc = hooksecurefunc
 
 local headers = {
@@ -211,22 +213,6 @@ function S:ObjectiveTrackerFrame()
 			hooksecurefunc(minimize, 'SetCollapsed', UpdateMinimizeButton)
 		end
 	end
-
-	-- The Maw - Torghast: Scenario Tracker Buff Block
-	_G.ScenarioBlocksFrame.MawBuffsBlock.Container.List:HookScript('OnShow', function(frame)
-		if not frame.buffPool then return end
-		for mawBuff in frame.buffPool:EnumerateActive() do
-			if mawBuff:IsShown() and not mawBuff.IsSkinned then
-				mawBuff.Border:SetAlpha(0)
-				mawBuff.CircleMask:Hide()
-				mawBuff.CountRing:SetAlpha(0)
-				mawBuff.HighlightBorder:SetColorTexture(1, 1, 1, .25)
-				S:HandleIcon(mawBuff.Icon)
-
-				mawBuff.IsSkinned = true
-			end
-		end
-	end)
 end
 
 S:AddCallback('ObjectiveTrackerFrame')

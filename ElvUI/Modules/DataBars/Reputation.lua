@@ -18,9 +18,11 @@ function DB:ReputationBar_Update()
 
 	if not name or (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
 		bar:Hide()
+		bar.holder:Hide()
 		return
 	else
 		bar:Show()
+		bar.holder:Show()
 	end
 
 	local displayString, textFormat = '', DB.db.reputation.textFormat
