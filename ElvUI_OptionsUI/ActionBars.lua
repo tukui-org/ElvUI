@@ -738,6 +738,11 @@ E.Options.args.actionbar = {
 							order = 3,
 							type = 'toggle',
 							name = L["Clean Button"]
+						},
+						inheritGlobalFade = {
+							order = 4,
+							type = 'toggle',
+							name = L["Inherit Global Fade"]
 						}
 					},
 				},
@@ -774,6 +779,11 @@ E.Options.args.actionbar = {
 							order = 3,
 							type = 'toggle',
 							name = L["Clean Button"]
+						},
+						inheritGlobalFade = {
+							order = 4,
+							type = 'toggle',
+							name = L["Inherit Global Fade"]
 						}
 					},
 				},
