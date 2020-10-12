@@ -11,6 +11,16 @@ local hooksecurefunc = hooksecurefunc
 local ExtraActionBarHolder, ZoneAbilityHolder
 local ExtraButtons = {}
 
+local function handleBossStyle(button)
+	if not button.style then return end
+	button.style:SetAlpha(not E.private.skins.cleanBossButton and E.db.actionbar.extraActionButton.alpha or 0)
+end
+
+local function handleZoneStyle(style)
+	if not style then return end
+	style:SetAlpha(not E.private.skins.cleanZoneButton and E.db.actionbar.extraActionButton.alpha or 0)
+end
+
 function AB:Extra_SetAlpha()
 	if not E.private.actionbar.enable then return end
 	local alpha = E.db.actionbar.extraActionButton.alpha
@@ -19,11 +29,13 @@ function AB:Extra_SetAlpha()
 		local button = _G['ExtraActionButton'..i]
 		if button then
 			button:SetAlpha(alpha)
+			handleBossStyle(button)
 		end
 	end
 
-	local button = _G.ZoneAbilityFrame.SpellButton
-	if button then
+	handleZoneStyle(_G.ZoneAbilityFrame.Style)
+
+	for button in _G.ZoneAbilityFrame.SpellButtonContainer:EnumerateActive() do
 		button:SetAlpha(alpha)
 	end
 end
@@ -31,7 +43,7 @@ end
 function AB:Extra_SetScale()
 	if not E.private.actionbar.enable then return end
 
-	AB.Zone_SetScale(_G.ZoneAbilityFrame.SpellButtonContainer)
+	AB:Zone_SetScale()
 
 	local scale = E.db.actionbar.extraActionButton.scale
 	_G.ExtraActionBarFrame:SetScale(scale)
@@ -41,13 +53,13 @@ function AB:Extra_SetScale()
 end
 
 function AB:Zone_SetScale()
-	if not E.private.actionbar.enable or not _G.ZoneAbilityFrame then return end
+	if not E.private.actionbar.enable then return end
 
 	local scale = E.db.actionbar.extraActionButton.scale
 	_G.ZoneAbilityFrame.Style:SetScale(scale)
-	self:SetScale(scale)
+	_G.ZoneAbilityFrame.SpellButtonContainer:SetScale(scale)
 
-	local width, height = self:GetSize()
+	local width, height = _G.ZoneAbilityFrame.SpellButtonContainer:GetSize()
 	ZoneAbilityHolder:SetSize(width * scale, height * scale)
 end
 
@@ -72,14 +84,10 @@ function AB:SetupExtraButton()
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.Zone_SetScale)
-	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(button)
-		if E.private.skins.cleanZoneButton then
-			ZoneAbilityFrame.Style:SetAlpha(0)
-		else
-			ZoneAbilityFrame.Style:SetAlpha(1)
-		end
+	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
+		handleZoneStyle(_G.ZoneAbilityFrame.Style)
 
-		for spellButton in button.SpellButtonContainer:EnumerateActive() do
+		for spellButton in frame.SpellButtonContainer:EnumerateActive() do
 			if spellButton and not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
 				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
@@ -131,13 +139,7 @@ function AB:SetupExtraButton()
 			button.backdrop:SetAllPoints()
 			button.backdrop:SetFrameLevel(button:GetFrameLevel())
 
-			if button.style then
-				if E.private.skins.cleanBossButton then
-					button.style:SetAlpha(0)
-				else
-					button.style:SetAlpha(1)
-				end
-			end
+			handleBossStyle(button)
 
 			local tex = button:CreateTexture(nil, 'OVERLAY')
 			tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)

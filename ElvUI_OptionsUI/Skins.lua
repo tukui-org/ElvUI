@@ -1,11 +1,33 @@
 local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
+local AB = E:GetModule('ActionBars')
 local B = E:GetModule('Blizzard')
 local ACH = E.Libs.ACH
 
 E.Options.args.skins = ACH:Group(L["Skins"], nil, 2, 'tab')
 E.Options.args.skins.args.intro = ACH:Description(L["SKINS_DESC"], 0)
-E.Options.args.skins.args.general = ACH:MultiSelect(L["General"], nil, 1, nil, nil, nil, function(_, key) if key == 'blizzardEnable' then return E.private.skins.blizzard.enable else return E.private.skins[key] end end, function(_, key, value) if key == 'blizzardEnable' then E.private.skins.blizzard.enable = value else E.private.skins[key] = value end E:StaticPopup_Show('PRIVATE_RL') end)
+E.Options.args.skins.args.general = ACH:MultiSelect(L["General"], nil, 1, nil, nil, nil,
+	function(_, key)
+		if key == 'blizzardEnable' then
+			return E.private.skins.blizzard.enable
+		else
+			return E.private.skins[key] end
+		end,
+	function(_, key, value)
+		if key == 'cleanBossButton' or key == 'cleanZoneButton' then
+			E.private.skins[key] = value
+
+			AB:Extra_SetAlpha()
+		else
+			if key == 'blizzardEnable' then
+				E.private.skins.blizzard.enable = value
+			else
+				E.private.skins[key] = value
+			end
+
+			E:StaticPopup_Show('PRIVATE_RL')
+		end
+	end)
 E.Options.args.skins.args.general.sortByValue = true
 E.Options.args.skins.args.general.values = {
 	ace3Enable = 'Ace3',
