@@ -60,7 +60,7 @@ end
 function AB:ExtraButtons_UpdateScale()
 	if not E.private.actionbar.enable then return end
 
-	AB:Zone_SetScale()
+	AB:ExtraButtons_ZoneScale()
 
 	local scale = E.db.actionbar.extraActionButton.scale
 	_G.ExtraActionBarFrame:SetScale(scale)
@@ -69,7 +69,7 @@ function AB:ExtraButtons_UpdateScale()
 	ExtraActionBarHolder:SetSize(width * scale, height * scale)
 end
 
-function AB:Zone_SetScale()
+function AB:ExtraButtons_ZoneScale()
 	if not E.private.actionbar.enable then return end
 
 	local scale = E.db.actionbar.zoneActionButton.scale
@@ -104,7 +104,7 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
-	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.Zone_SetScale)
+	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
 		AB:ExtraButtons_ZoneStyle()
 

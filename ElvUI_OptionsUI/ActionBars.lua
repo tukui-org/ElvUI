@@ -720,6 +720,8 @@ E.Options.args.actionbar = {
 
 						if key == 'inheritGlobalFade' then
 							AB:ExtraButtons_GlobalFade()
+						elseif key == 'scale' then
+							AB:ExtraButtons_UpdateScale()
 						else
 							AB:ExtraButtons_UpdateAlpha()
 						end
@@ -767,6 +769,8 @@ E.Options.args.actionbar = {
 
 						if key == 'inheritGlobalFade' then
 							AB:ExtraButtons_GlobalFade()
+						elseif key == 'scale' then
+							AB:ExtraButtons_UpdateScale()
 						else
 							AB:ExtraButtons_UpdateAlpha()
 						end
