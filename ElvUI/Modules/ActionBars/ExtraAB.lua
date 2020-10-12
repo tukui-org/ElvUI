@@ -18,25 +18,26 @@ end
 
 local function handleZoneStyle(style)
 	if not style then return end
-	style:SetAlpha(not E.private.skins.cleanZoneButton and E.db.actionbar.extraActionButton.alpha or 0)
+	style:SetAlpha(not E.private.skins.cleanZoneButton and E.db.actionbar.zoneActionButton.alpha or 0)
 end
 
 function AB:Extra_SetAlpha()
 	if not E.private.actionbar.enable then return end
-	local alpha = E.db.actionbar.extraActionButton.alpha
+	local bossAlpha = E.db.actionbar.extraActionButton.alpha
 
 	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
 		local button = _G['ExtraActionButton'..i]
 		if button then
-			button:SetAlpha(alpha)
+			button:SetAlpha(bossAlpha)
 			handleBossStyle(button)
 		end
 	end
 
 	handleZoneStyle(_G.ZoneAbilityFrame.Style)
 
+	local zoneAlpha = E.db.actionbar.zoneActionButton.alpha
 	for button in _G.ZoneAbilityFrame.SpellButtonContainer:EnumerateActive() do
-		button:SetAlpha(alpha)
+		button:SetAlpha(zoneAlpha)
 	end
 end
 
@@ -55,7 +56,7 @@ end
 function AB:Zone_SetScale()
 	if not E.private.actionbar.enable then return end
 
-	local scale = E.db.actionbar.extraActionButton.scale
+	local scale = E.db.actionbar.zoneActionButton.scale
 	_G.ZoneAbilityFrame.Style:SetScale(scale)
 	_G.ZoneAbilityFrame.SpellButtonContainer:SetScale(scale)
 
