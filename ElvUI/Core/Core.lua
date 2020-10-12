@@ -991,6 +991,7 @@ end
 function E:UpdateActionBars(skipCallback)
 	ActionBars:ExtraButtons_UpdateAlpha()
 	ActionBars:ExtraButtons_UpdateScale()
+	ActionBars:ExtraButtons_GlobalFade()
 	ActionBars:ToggleCooldownOptions()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroPositionDimensions()
