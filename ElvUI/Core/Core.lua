@@ -989,8 +989,8 @@ function E:UpdateLayout(skipCallback)
 end
 
 function E:UpdateActionBars(skipCallback)
-	ActionBars:Extra_SetAlpha()
-	ActionBars:Extra_SetScale()
+	ActionBars:ExtraButtons_UpdateAlpha()
+	ActionBars:ExtraButtons_UpdateScale()
 	ActionBars:ToggleCooldownOptions()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroPositionDimensions()

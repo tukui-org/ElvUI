@@ -11,17 +11,38 @@ local hooksecurefunc = hooksecurefunc
 local ExtraActionBarHolder, ZoneAbilityHolder
 local ExtraButtons = {}
 
-local function handleBossStyle(button)
+function AB:ExtraButtons_BossStyle(button)
 	if not button.style then return end
 	button.style:SetAlpha(not E.db.actionbar.extraActionButton.clean and E.db.actionbar.extraActionButton.alpha or 0)
 end
 
-local function handleZoneStyle(style)
-	if not style then return end
-	style:SetAlpha(not E.db.actionbar.zoneActionButton.clean and E.db.actionbar.zoneActionButton.alpha or 0)
+function AB:ExtraButtons_ZoneStyle()
+	local zoneAlpha = E.db.actionbar.zoneActionButton.alpha
+	_G.ZoneAbilityFrame.Style:SetAlpha(not E.db.actionbar.zoneActionButton.clean and zoneAlpha or 0)
+
+	for button in _G.ZoneAbilityFrame.SpellButtonContainer:EnumerateActive() do
+		button:SetAlpha(zoneAlpha)
+	end
 end
 
-function AB:Extra_SetAlpha()
+function AB:ExtraButtons_OnEnter()
+	if self.holder and self.holder:GetParent() == AB.fadeParent and not AB.fadeParent.mouseLock then
+		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
+	end
+end
+
+function AB:ExtraButtons_OnLeave()
+	if self.holder and self.holder:GetParent() == AB.fadeParent and not AB.fadeParent.mouseLock then
+		E:UIFrameFadeOut(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1 - AB.db.globalFadeAlpha)
+	end
+end
+
+function AB:ExtraButtons_GlobalFade()
+	ExtraActionBarHolder:SetParent(E.db.actionbar.extraActionButton.inheritGlobalFade and AB.fadeParent or E.UIParent)
+	ZoneAbilityHolder:SetParent(E.db.actionbar.zoneActionButton.inheritGlobalFade and AB.fadeParent or E.UIParent)
+end
+
+function AB:ExtraButtons_UpdateAlpha()
 	if not E.private.actionbar.enable then return end
 	local bossAlpha = E.db.actionbar.extraActionButton.alpha
 
@@ -29,19 +50,14 @@ function AB:Extra_SetAlpha()
 		local button = _G['ExtraActionButton'..i]
 		if button then
 			button:SetAlpha(bossAlpha)
-			handleBossStyle(button)
+			AB:ExtraButtons_BossStyle(button)
 		end
 	end
 
-	handleZoneStyle(_G.ZoneAbilityFrame.Style)
-
-	local zoneAlpha = E.db.actionbar.zoneActionButton.alpha
-	for button in _G.ZoneAbilityFrame.SpellButtonContainer:EnumerateActive() do
-		button:SetAlpha(zoneAlpha)
-	end
+	AB:ExtraButtons_ZoneStyle()
 end
 
-function AB:Extra_SetScale()
+function AB:ExtraButtons_UpdateScale()
 	if not E.private.actionbar.enable then return end
 
 	AB:Zone_SetScale()
@@ -84,9 +100,13 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame:SetAllPoints()
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
+	ZoneAbilityFrame.SpellButtonContainer.holder = ZoneAbilityHolder
+	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
+	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.Zone_SetScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
-		handleZoneStyle(_G.ZoneAbilityFrame.Style)
+		AB:ExtraButtons_ZoneStyle()
 
 		for spellButton in frame.SpellButtonContainer:EnumerateActive() do
 			if spellButton and not spellButton.IsSkinned then
@@ -102,6 +122,10 @@ function AB:SetupExtraButton()
 				--check these
 				--spellButton.HotKey:SetText(GetBindingKey(spellButton:GetName()))
 				--tinsert(ExtraButtons, spellButton)
+
+				spellButton.holder = ZoneAbilityHolder
+				spellButton:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
+				spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 				if spellButton.Cooldown then
 					spellButton.Cooldown.CooldownOverride = 'actionbar'
@@ -140,7 +164,11 @@ function AB:SetupExtraButton()
 			button.backdrop:SetAllPoints()
 			button.backdrop:SetFrameLevel(button:GetFrameLevel())
 
-			handleBossStyle(button)
+			AB:ExtraButtons_BossStyle(button)
+
+			button.holder = ExtraActionBarHolder
+			button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
+			button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 			local tex = button:CreateTexture(nil, 'OVERLAY')
 			tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
@@ -152,8 +180,9 @@ function AB:SetupExtraButton()
 		end
 	end
 
-	AB:Extra_SetAlpha()
-	AB:Extra_SetScale()
+	AB:ExtraButtons_UpdateAlpha()
+	AB:ExtraButtons_UpdateScale()
+	AB:ExtraButtons_GlobalFade()
 
 	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraActionButton')
 	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS')

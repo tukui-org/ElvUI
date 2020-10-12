@@ -715,8 +715,14 @@ E.Options.args.actionbar = {
 						return E.db.actionbar.extraActionButton[info[#info]]
 					end,
 					set = function(info, value)
-						E.db.actionbar.extraActionButton[info[#info]] = value;
-						AB:Extra_SetAlpha()
+						local key = info[#info]
+						E.db.actionbar.extraActionButton[key] = value;
+
+						if key == 'inheritGlobalFade' then
+							AB:ExtraButtons_GlobalFade()
+						else
+							AB:ExtraButtons_UpdateAlpha()
+						end
 					end,
 					args = {
 						alpha = {
@@ -756,8 +762,14 @@ E.Options.args.actionbar = {
 						return E.db.actionbar.zoneActionButton[info[#info]]
 					end,
 					set = function(info, value)
-						E.db.actionbar.zoneActionButton[info[#info]] = value;
-						AB:Extra_SetAlpha()
+						local key = info[#info]
+						E.db.actionbar.zoneActionButton[key] = value;
+
+						if key == 'inheritGlobalFade' then
+							AB:ExtraButtons_GlobalFade()
+						else
+							AB:ExtraButtons_UpdateAlpha()
+						end
 					end,
 					args = {
 						alpha = {
