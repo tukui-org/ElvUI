@@ -1376,28 +1376,6 @@ function E:InitializeModules()
 	end
 end
 
-local function buffwatchConvert(spell)
-	if spell.sizeOverride then spell.sizeOverride = nil end
-	if spell.size then spell.size = nil end
-
-	if not spell.sizeOffset then
-		spell.sizeOffset = 0
-	end
-
-	if spell.styleOverride then
-		spell.style = spell.styleOverride
-		spell.styleOverride = nil
-	elseif not spell.style then
-		spell.style = 'coloredIcon'
-	end
-end
-
-local ttModSwap
-do -- tooltip convert
-	local swap = {ALL = 'HIDE',NONE = 'SHOW'}
-	ttModSwap = function(val) return swap[val] end
-end
-
 function E:DBConversions()
 	if E.private.skins.cleanBossButton ~= nil then
 		E.db.actionbar.extraActionButton.clean = E.private.skins.cleanBossButton
