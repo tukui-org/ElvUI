@@ -8,9 +8,7 @@ local texCoords = {
 }
 
 function UF:PostUpdate_PhaseIcon(isPhased)
-	if isPhased then
-		self:SetTexCoord(unpack(texCoords[isPhased == 2 and 2 or 1]))
-	end
+	self:SetTexCoord(unpack(texCoords[isPhased == 2 and 2 or 1]))
 end
 
 function UF:Construct_PhaseIcon(frame)
