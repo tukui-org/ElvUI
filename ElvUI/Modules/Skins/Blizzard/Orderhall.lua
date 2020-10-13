@@ -16,14 +16,14 @@ function S:Blizzard_OrderHallUI()
 	OrderHallCommandBar:StripTextures()
 	OrderHallCommandBar:CreateBackdrop('Transparent')
 	OrderHallCommandBar.ClassIcon:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
-	OrderHallCommandBar.ClassIcon:SetSize(46, 20)
+	OrderHallCommandBar.ClassIcon:Size(46, 20)
 	OrderHallCommandBar.CurrencyIcon:SetAtlas('legionmission-icon-currency', false)
 	OrderHallCommandBar.AreaName:SetVertexColor(classColor.r, classColor.g, classColor.b)
 	OrderHallCommandBar.WorldMapButton:Hide()
 
 	local OrderHallTalentFrame = _G.OrderHallTalentFrame
 
-	S:HandlePortraitFrame(OrderHallTalentFrame, true)
+	S:HandlePortraitFrame(OrderHallTalentFrame)
 	S:HandleButton(OrderHallTalentFrame.BackButton)
 	S:HandleIcon(OrderHallTalentFrame.Currency.Icon)
 	OrderHallTalentFrame.OverlayElements:SetAlpha(0)

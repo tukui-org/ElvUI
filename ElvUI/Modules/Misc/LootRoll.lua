@@ -9,6 +9,7 @@ local CreateFrame = CreateFrame
 local CursorOnUpdate = CursorOnUpdate
 local DressUpItemLink = DressUpItemLink
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
 local GetLootRollTimeLeft = GetLootRollTimeLeft
@@ -24,7 +25,6 @@ local C_LootHistoryGetItem = C_LootHistory.GetItem
 local C_LootHistoryGetPlayerInfo = C_LootHistory.GetPlayerInfo
 local GREED = GREED
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local NEED = NEED
 local PASS = PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
@@ -90,7 +90,7 @@ local function StatusUpdate(frame)
 	if not frame.parent.rollID then return end
 	local t = GetLootRollTimeLeft(frame.parent.rollID)
 	local perc = t / frame.parent.time
-	frame.spark:SetPoint('CENTER', frame, 'LEFT', perc * frame:GetWidth(), 0)
+	frame.spark:Point('CENTER', frame, 'LEFT', perc * frame:GetWidth(), 0)
 	frame:SetValue(t)
 
 	if t > 1000000000 then
@@ -100,8 +100,8 @@ end
 
 local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...)
 	local f = CreateFrame('Button', nil, parent)
-	f:SetPoint(...)
-	f:SetSize(FRAME_HEIGHT - 4, FRAME_HEIGHT - 4)
+	f:Point(...)
+	f:Size(FRAME_HEIGHT - 4)
 	f:SetNormalTexture(ntex)
 	if ptex then f:SetPushedTexture(ptex) end
 	f:SetHighlightTexture(htex)
@@ -114,13 +114,13 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 	f:SetMotionScriptsWhileDisabled(true)
 	local txt = f:CreateFontString(nil, 'ARTWORK')
 	txt:FontTemplate(nil, nil, 'OUTLINE')
-	txt:SetPoint('CENTER', 0, rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0)
+	txt:Point('CENTER', 0, rolltype == 2 and 1 or rolltype == 0 and -1.2 or 0)
 	return f, txt
 end
 
 function M:CreateRollFrame()
-	local frame = CreateFrame('Frame', nil, E.UIParent)
-	frame:SetSize(FRAME_WIDTH, FRAME_HEIGHT)
+	local frame = CreateFrame('Frame', nil, E.UIParent, 'BackdropTemplate')
+	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
 	frame:SetTemplate()
 	frame:SetScript('OnEvent', OnEvent)
 	frame:SetFrameStrata('MEDIUM')
@@ -129,8 +129,8 @@ function M:CreateRollFrame()
 	frame:Hide()
 
 	local button = CreateFrame('Button', nil, frame)
-	button:SetPoint('RIGHT', frame, 'LEFT', -(E.Spacing*3), 0)
-	button:SetSize(FRAME_HEIGHT - (E.Border * 2), FRAME_HEIGHT - (E.Border * 2))
+	button:Point('RIGHT', frame, 'LEFT', -(E.Spacing*3), 0)
+	button:Size(FRAME_HEIGHT - (E.Border * 2), FRAME_HEIGHT - (E.Border * 2))
 	button:CreateBackdrop()
 	button:SetScript('OnEnter', SetItemTip)
 	button:SetScript('OnLeave', HideTip2)
@@ -143,8 +143,8 @@ function M:CreateRollFrame()
 	button.icon:SetTexCoord(unpack(E.TexCoords))
 
 	local tfade = frame:CreateTexture(nil, 'BORDER')
-	tfade:SetPoint('TOPLEFT', frame, 'TOPLEFT', 4, 0)
-	tfade:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -4, 0)
+	tfade:Point('TOPLEFT', frame, 'TOPLEFT', 4, 0)
+	tfade:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -4, 0)
 	tfade:SetTexture([[Interface\ChatFrame\ChatFrameBackground]])
 	tfade:SetBlendMode('ADD')
 	tfade:SetGradientAlpha('VERTICAL', .1, .1, .1, 0, .1, .1, .1, 0)
@@ -164,7 +164,7 @@ function M:CreateRollFrame()
 	status.bg:SetAllPoints()
 	status.bg:SetDrawLayer('BACKGROUND', 2)
 	local spark = frame:CreateTexture(nil, 'OVERLAY')
-	spark:SetSize(14, FRAME_HEIGHT)
+	spark:Size(14, FRAME_HEIGHT)
 	spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
 	spark:SetBlendMode('ADD')
 	status.spark = spark
@@ -178,15 +178,15 @@ function M:CreateRollFrame()
 	frame.need, frame.greed, frame.pass, frame.disenchant = needtext, greedtext, passtext, detext
 
 	local bind = frame:CreateFontString(nil, 'ARTWORK')
-	bind:SetPoint('LEFT', pass, 'RIGHT', 3, 1)
+	bind:Point('LEFT', pass, 'RIGHT', 3, 1)
 	bind:FontTemplate(nil, nil, 'OUTLINE')
 	frame.fsbind = bind
 
 	local loot = frame:CreateFontString(nil, 'ARTWORK')
 	loot:FontTemplate(nil, nil, 'OUTLINE')
-	loot:SetPoint('LEFT', bind, 'RIGHT', 0, 0)
-	loot:SetPoint('RIGHT', frame, 'RIGHT', -5, 0)
-	loot:SetSize(200, 10)
+	loot:Point('LEFT', bind, 'RIGHT', 0, 0)
+	loot:Point('RIGHT', frame, 'RIGHT', -5, 0)
+	loot:Size(200, 10)
 	loot:SetJustifyH('LEFT')
 	frame.fsloot = loot
 
@@ -202,9 +202,9 @@ local function GetFrame()
 
 	local f = M:CreateRollFrame()
 	if pos == 'TOP' then
-		f:SetPoint('TOP', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'BOTTOM', 0, -4)
+		f:Point('TOP', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'BOTTOM', 0, -4)
 	else
-		f:SetPoint('BOTTOM', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'TOP', 0, 4)
+		f:Point('BOTTOM', next(M.RollBars) and M.RollBars[#M.RollBars] or _G.AlertFrameHolder, 'TOP', 0, 4)
 	end
 	tinsert(M.RollBars, f)
 	return f
@@ -235,7 +235,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	if canGreed then f.greedbutt:SetAlpha(1) else f.greedbutt:SetAlpha(0.2) end
 	if canDisenchant then f.disenchantbutt:SetAlpha(1) else f.disenchantbutt:SetAlpha(0.2) end
 
-	f.fsbind:SetText(bop and 'BoP' or 'BoE')
+	f.fsbind:SetText(bop and L["BoP"] or L["BoE"])
 	f.fsbind:SetVertexColor(bop and 1 or .3, bop and .3 or 1, bop and .1 or .3)
 
 	local color = ITEM_QUALITY_COLORS[quality]
@@ -246,7 +246,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	f.status:SetMinMaxValues(0, time)
 	f.status:SetValue(time)
 
-	f:SetPoint('CENTER', _G.WorldFrame, 'CENTER')
+	f:Point('CENTER', _G.WorldFrame, 'CENTER')
 	f:Show()
 	_G.AlertFrame:UpdateAnchors()
 
@@ -263,7 +263,7 @@ function M:START_LOOT_ROLL(_, rollID, time)
 		end
 	end
 
-	if E.db.general.autoRoll and E.mylevel == MAX_PLAYER_LEVEL and quality == 2 and not bop then
+	if E.db.general.autoRoll and IsPlayerAtEffectiveMaxLevel() and quality == 2 and not bop then
 		if canDisenchant then
 			RollOnLoot(rollID, 3)
 		else

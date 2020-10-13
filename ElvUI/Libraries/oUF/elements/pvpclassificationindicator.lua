@@ -31,17 +31,17 @@ local oUF = ns.oUF
 
 -- sourced from FrameXML/CompactUnitFrame.lua
 local ICONS = {
-	[Enum.PvpUnitClassification.FlagCarrierHorde or 0] = "nameplates-icon-flag-horde",
-	[Enum.PvpUnitClassification.FlagCarrierAlliance or 1] = "nameplates-icon-flag-alliance",
-	[Enum.PvpUnitClassification.FlagCarrierNeutral or 2] = "nameplates-icon-flag-neutral",
-	[Enum.PvpUnitClassification.CartRunnerHorde or 3] = "nameplates-icon-cart-horde",
-	[Enum.PvpUnitClassification.CartRunnerAlliance or 4] = "nameplates-icon-cart-alliance",
-	[Enum.PvpUnitClassification.AssassinHorde or 5] = "nameplates-icon-bounty-horde",
-	[Enum.PvpUnitClassification.AssassinAlliance or 6] = "nameplates-icon-bounty-alliance",
-	[Enum.PvpUnitClassification.OrbCarrierBlue or 7] = "nameplates-icon-orb-blue",
-	[Enum.PvpUnitClassification.OrbCarrierGreen or 8] = "nameplates-icon-orb-green",
-	[Enum.PvpUnitClassification.OrbCarrierOrange or 9] = "nameplates-icon-orb-orange",
-	[Enum.PvpUnitClassification.OrbCarrierPurple or 10] = "nameplates-icon-orb-purple",
+	[Enum.PvPUnitClassification.FlagCarrierHorde or 0] = "nameplates-icon-flag-horde",
+	[Enum.PvPUnitClassification.FlagCarrierAlliance or 1] = "nameplates-icon-flag-alliance",
+	[Enum.PvPUnitClassification.FlagCarrierNeutral or 2] = "nameplates-icon-flag-neutral",
+	[Enum.PvPUnitClassification.CartRunnerHorde or 3] = "nameplates-icon-cart-horde",
+	[Enum.PvPUnitClassification.CartRunnerAlliance or 4] = "nameplates-icon-cart-alliance",
+	[Enum.PvPUnitClassification.AssassinHorde or 5] = "nameplates-icon-bounty-horde",
+	[Enum.PvPUnitClassification.AssassinAlliance or 6] = "nameplates-icon-bounty-alliance",
+	[Enum.PvPUnitClassification.OrbCarrierBlue or 7] = "nameplates-icon-orb-blue",
+	[Enum.PvPUnitClassification.OrbCarrierGreen or 8] = "nameplates-icon-orb-green",
+	[Enum.PvPUnitClassification.OrbCarrierOrange or 9] = "nameplates-icon-orb-orange",
+	[Enum.PvPUnitClassification.OrbCarrierPurple or 10] = "nameplates-icon-orb-purple",
 }
 
 local function Update(self, event, unit)

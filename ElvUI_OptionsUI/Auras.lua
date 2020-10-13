@@ -39,7 +39,7 @@ E.Options.args.auras.args.general.args.countXOffset = ACH:Range(L["Count xOffset
 E.Options.args.auras.args.general.args.countYOffset = ACH:Range(L["Count yOffset"], nil, 8, { min = -60, max = 60, step = 1 })
 
 E.Options.args.auras.args.general.args.statusBar = ACH:Group(L["Statusbar"], nil, 9, nil, nil, nil, function() return not E.db.auras.barShow end)
-E.Options.args.auras.args.general.args.statusBar.guiInline = true
+E.Options.args.auras.args.general.args.statusBar.inline = true
 E.Options.args.auras.args.general.args.statusBar.args.barShow = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, false)
 E.Options.args.auras.args.general.args.statusBar.args.barNoDuration = ACH:Toggle(L["No Duration"], nil, 2)
 E.Options.args.auras.args.general.args.statusBar.args.barTexture = ACH:SharedMediaStatusbar(L["Texture"], nil, 3)

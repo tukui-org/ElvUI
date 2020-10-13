@@ -9,12 +9,12 @@ function S:MerchantFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
 
 	local MerchantFrame = _G.MerchantFrame
-	S:HandlePortraitFrame(MerchantFrame, true)
+	S:HandlePortraitFrame(MerchantFrame)
 
-	MerchantFrame.backdrop:SetPoint('TOPLEFT', 6, 2)
-	MerchantFrame.backdrop:SetPoint('BOTTOMRIGHT', 2, -1)
+	MerchantFrame.backdrop:Point('TOPLEFT', 6, 2)
+	MerchantFrame.backdrop:Point('BOTTOMRIGHT', 2, -1)
 
-	MerchantFrame:SetWidth(360)
+	MerchantFrame:Width(360)
 
 	_G.MerchantBuyBackItem:StripTextures(true)
 	_G.MerchantBuyBackItem:CreateBackdrop('Transparent')
@@ -24,13 +24,13 @@ function S:MerchantFrame()
 
 	_G.MerchantMoneyBg:StripTextures()
 	_G.MerchantMoneyInset:StripTextures()
-	_G.MerchantBuyBackItem.backdrop:SetPoint('TOPLEFT', -6, 6)
-	_G.MerchantBuyBackItem.backdrop:SetPoint('BOTTOMRIGHT', 6, -6)
+	_G.MerchantBuyBackItem.backdrop:Point('TOPLEFT', -6, 6)
+	_G.MerchantBuyBackItem.backdrop:Point('BOTTOMRIGHT', 6, -6)
 
 	S:HandleDropDownBox(_G.MerchantFrameLootFilter)
 
 	-- Center the columns on the frame
-	_G.MerchantItem1:SetPoint('TOPLEFT', _G.MerchantFrame, 'TOPLEFT', 24, -69)
+	_G.MerchantItem1:Point('TOPLEFT', _G.MerchantFrame, 'TOPLEFT', 24, -69)
 
 	-- skin tabs
 	for i = 1, 2 do
@@ -48,45 +48,31 @@ function S:MerchantFrame()
 
 		button:StripTextures()
 		button:StyleButton(false)
-		button:SetTemplate(nil, true)
-		button:SetPoint('TOPLEFT', item, 'TOPLEFT', 4, -4)
+		button:CreateBackdrop(nil, true)
+		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -4)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()
-		icon:SetPoint('TOPLEFT', 1, -1)
-		icon:SetPoint('BOTTOMRIGHT', -1, 1)
+		icon:Point('TOPLEFT', 1, -1)
+		icon:Point('BOTTOMRIGHT', -1, 1)
 
-		iconBorder:SetAlpha(0)
-		hooksecurefunc(iconBorder, 'SetVertexColor', function(s, r, g, b)
-			s:GetParent():SetBackdropBorderColor(r, g, b)
-			s:SetTexture()
-		end)
-		hooksecurefunc(iconBorder, 'Hide', function(s)
-			s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
+		S:HandleIconBorder(iconBorder)
 
 		_G['MerchantItem'..i..'MoneyFrame']:ClearAllPoints()
-		_G['MerchantItem'..i..'MoneyFrame']:SetPoint('BOTTOMLEFT', button, 'BOTTOMRIGHT', 3, 0)
+		_G['MerchantItem'..i..'MoneyFrame']:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 3, 0)
 	end
 
 	-- Skin buyback item frame + icon
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton(false)
-	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
+	_G.MerchantBuyBackItemItemButton:CreateBackdrop(nil, true)
 
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint('TOPLEFT', 1, -1)
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetPoint('BOTTOMRIGHT', -1, 1)
+	_G.MerchantBuyBackItemItemButtonIconTexture:Point('TOPLEFT', 1, -1)
+	_G.MerchantBuyBackItemItemButtonIconTexture:Point('BOTTOMRIGHT', -1, 1)
 
-	_G.MerchantBuyBackItemItemButton.IconBorder:SetAlpha(0)
-	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'SetVertexColor', function(s, r, g, b)
-		s:GetParent():SetBackdropBorderColor(r, g, b)
-		s:SetTexture()
-	end)
-	hooksecurefunc(_G.MerchantBuyBackItemItemButton.IconBorder, 'Hide', function(s)
-		s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end)
+	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
 
 	S:HandleButton(_G.MerchantRepairItemButton)
 	_G.MerchantRepairItemButton:StyleButton(false)
@@ -105,6 +91,8 @@ function S:MerchantFrame()
 
 	S:HandleNextPrevButton(_G.MerchantNextPageButton, nil, nil, true, true)
 	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, true, true)
+	_G.MerchantNextPageButton:ClearAllPoints() -- Monitor this
+	_G.MerchantNextPageButton:Point('LEFT', _G.MerchantPageText, 'RIGHT', 100, 4)
 end
 
 S:AddCallback('MerchantFrame')

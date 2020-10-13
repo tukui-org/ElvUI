@@ -105,7 +105,7 @@ end
 local function Update(self)
 	local element, isShown = self.PVPRole
 
-	if (element.PreUpdate) then
+	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
@@ -115,10 +115,10 @@ local function Update(self)
 		realm = (realm and realm ~= '') and E:ShortenRealm(realm)
 		if realm then name = name..'-'..realm end
 
-		if (Healers[name] and element.ShowHealers) then
+		if Healers[name] and element.ShowHealers then
 			element:SetTexture(element.HealerTexture)
 			isShown = true
-		elseif (Tanks[name] and element.ShowTanks) then
+		elseif Tanks[name] and element.ShowTanks then
 			element:SetTexture(element.TankTexture)
 			isShown = true
 		end
@@ -126,7 +126,7 @@ local function Update(self)
 
 	element:SetShown(isShown)
 
-	if (element.PostUpdate) then
+	if element.PostUpdate then
 		return element:PostUpdate(instanceType)
 	end
 end
@@ -141,7 +141,7 @@ end
 
 local function Enable(self)
 	local element = self.PVPRole
-	if (element) then
+	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
@@ -161,7 +161,7 @@ end
 
 local function Disable(self)
 	local element = self.PVPRole
-	if (element) then
+	if element then
 		element:Hide()
 
 		self:UnregisterEvent('UNIT_NAME_UPDATE', Path)

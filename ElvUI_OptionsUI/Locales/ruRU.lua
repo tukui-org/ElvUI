@@ -1,6 +1,8 @@
 -- Russian localization file for ruRU.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "ruRU")
 
+L["Copy Primary Texture"] = true
+L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = true
 L["# Displayed Auras"] = "Кол-во аур"
 L["%s and then %s"] = "%s, а затем %s"
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
@@ -168,7 +170,6 @@ L["Block Mouseover Glow"] = "Блокировать подсветку наве�
 L["Block Target Glow"] = "Блокировать подсветку цели."
 L["Blocks all click events while in combat."] = "Блокирует действия по клику в бою."
 L["Blocks datatext tooltip from showing in combat."] = "Скрывает подсказки инфо-текстов в бою."
-L["BoE"] = "ПпН"
 L["Bonus Reward Position"] = "Позиция бонусной награды"
 L["Border Color"] = "Цвет окантовки"
 L["Border Glow"] = "Свечение границы"
@@ -181,7 +182,6 @@ L["Bottom Panel"] = "Нижняя панель"
 L["Bottom Right"] = "Внизу справа"
 L["Bottom to Top"] = "Снизу вверх"
 L["Bottom"] = "Внизу"
-L["BoU"] = "ПпИ"
 L["Buff Indicator"] = "Индикатор баффов"
 L["Buffs"] = "Баффы"
 L["Button Flash"] = "Мигание кнопок"
@@ -417,6 +417,8 @@ L["Display the upgrade icon on items that WoW considers an upgrade for your char
 L["Display tick marks on the castbar for channelled spells. This will adjust automatically for spells like Drain Soul and add additional ticks based on haste."] = "Отображать метки тиков на полосе заклинаний для поддерживаемых заклинаний. Они будут автоматически масштабироваться для заклинаний вроде Похищения души и добавлять новые тики, основываясь на показателе скорости."
 L["Displayed Currency"] = "Отображаемая валюта"
 L["Displays a detailed report of every item sold when enabled."] = "Показывать подробный отчет по каждому проданному серому предмету."
+L["Displays item level on equippable items."] = true
+L["Displays the gender of players."] = true
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = "Не отображать ауры длительностью более этого значения (в секундах). Установите на 0 для отключения."
 L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = "Не отображать ауры длительностью менее этого значения (в секундах). Установите на 0 для отключения."
 L["Donations:"] = "Финансовая поддержка:"
@@ -1623,7 +1625,7 @@ L["RAID_TARGET_6"] = "Квадрат";
 L["RAID_TARGET_7"] = "Крест";
 L["RAID_TARGET_8"] = "Череп";
 L["RAID"] = "Рейд";
-L["REPUTATION"] = "Репутация";
+L["Reputation"] = "Репутация";
 L["REVERSE_NEW_LOOT_TEXT"] = "Собирать добычу в самую левую сумку";
 L["ROLE"] = "Роль";
 L["RUNES"] = "Руны";

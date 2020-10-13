@@ -19,8 +19,8 @@ local function SkinGuildRanks()
 			end
 
 			rankFrame.nameBox.backdrop:ClearAllPoints()
-			rankFrame.nameBox.backdrop:SetPoint('TOPLEFT', -2, -4)
-			rankFrame.nameBox.backdrop:SetPoint('BOTTOMRIGHT', -4, 4)
+			rankFrame.nameBox.backdrop:Point('TOPLEFT', -2, -4)
+			rankFrame.nameBox.backdrop:Point('BOTTOMRIGHT', -4, 4)
 		end
 	end
 end
@@ -34,26 +34,26 @@ local function fixSkin(frame)
 		frame.bg1:SetTexture(E.media.normTex) --Default TukUI users this is normTex, normTex doesn't exist
 		E:RegisterStatusBar(frame.bg1)
 		frame.bg1:SetVertexColor(unpack(E.media.backdropcolor))
-		frame.bg1:SetPoint('TOPLEFT', frame.backdrop, 'TOPLEFT', 4, -4)
-		frame.bg1:SetPoint('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -4, 4)
+		frame.bg1:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 4, -4)
+		frame.bg1:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -4, 4)
 
 		frame.bg2 = frame:CreateTexture(nil, 'BACKGROUND')
 		frame.bg2:SetDrawLayer('BACKGROUND', 3)
 		frame.bg2:SetColorTexture(0,0,0)
-		frame.bg2:SetPoint('TOPLEFT', frame.backdrop, 'TOPLEFT', 3, -3)
-		frame.bg2:SetPoint('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -3, 3)
+		frame.bg2:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 3, -3)
+		frame.bg2:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -3, 3)
 
 		frame.bg3 = frame:CreateTexture(nil, 'BACKGROUND')
 		frame.bg3:SetDrawLayer('BACKGROUND', 2)
 		frame.bg3:SetColorTexture(unpack(E.media.bordercolor))
-		frame.bg3:SetPoint('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
-		frame.bg3:SetPoint('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
+		frame.bg3:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 2, -2)
+		frame.bg3:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -2, 2)
 
 		frame.bg4 = frame:CreateTexture(nil, 'BACKGROUND')
 		frame.bg4:SetDrawLayer('BACKGROUND', 1)
 		frame.bg4:SetColorTexture(0,0,0)
-		frame.bg4:SetPoint('TOPLEFT', frame.backdrop, 'TOPLEFT', 1, -1)
-		frame.bg4:SetPoint('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -1, 1)
+		frame.bg4:Point('TOPLEFT', frame.backdrop, 'TOPLEFT', 1, -1)
+		frame.bg4:Point('BOTTOMRIGHT', frame.backdrop, 'BOTTOMRIGHT', -1, 1)
 	else
 		frame.bg1 = frame:CreateTexture(nil, 'BACKGROUND')
 		frame.bg1:SetDrawLayer('BACKGROUND', 4)
@@ -74,7 +74,7 @@ function S:Blizzard_GuildControlUI()
 
 	local GuildControlUI = _G.GuildControlUI
 	GuildControlUI:StripTextures()
-	GuildControlUI:SetTemplate('Transparent')
+	GuildControlUI:CreateBackdrop('Transparent')
 	_G.GuildControlUIHbar:StripTextures()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
@@ -88,8 +88,8 @@ function S:Blizzard_GuildControlUI()
 
 	S:HandleDropDownBox(_G.GuildControlUINavigationDropDown)
 	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropDown, 180)
-	_G.GuildControlUINavigationDropDownButton:SetWidth(20)
-	_G.GuildControlUIRankSettingsFrameRankDropDownButton:SetWidth(20)
+	_G.GuildControlUINavigationDropDownButton:Width(20)
+	_G.GuildControlUIRankSettingsFrameRankDropDownButton:Width(20)
 
 	for i=1, _G.NUM_RANK_FLAGS do
 		if _G['GuildControlUIRankSettingsFrameCheckbox'..i] then
@@ -101,8 +101,8 @@ function S:Blizzard_GuildControlUI()
 
 	local GuildControlUIRankSettingsFrameGoldBox = _G.GuildControlUIRankSettingsFrameGoldBox
 	S:HandleEditBox(GuildControlUIRankSettingsFrameGoldBox)
-	GuildControlUIRankSettingsFrameGoldBox.backdrop:SetPoint('TOPLEFT', -2, -4)
-	GuildControlUIRankSettingsFrameGoldBox.backdrop:SetPoint('BOTTOMRIGHT', 2, 4)
+	GuildControlUIRankSettingsFrameGoldBox.backdrop:Point('TOPLEFT', -2, -4)
+	GuildControlUIRankSettingsFrameGoldBox.backdrop:Point('BOTTOMRIGHT', 2, 4)
 	GuildControlUIRankSettingsFrameGoldBox:StripTextures()
 
 	_G.GuildControlUIRankBankFrame:StripTextures()
@@ -137,7 +137,7 @@ function S:Blizzard_GuildControlUI()
 	end)
 
 	S:HandleDropDownBox(_G.GuildControlUIRankBankFrameRankDropDown, 180)
-	_G.GuildControlUIRankBankFrameRankDropDownButton:SetWidth(20)
+	_G.GuildControlUIRankBankFrameRankDropDownButton:Width(20)
 end
 
 S:AddCallbackForAddon('Blizzard_GuildControlUI')

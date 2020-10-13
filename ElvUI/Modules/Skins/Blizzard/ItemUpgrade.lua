@@ -11,7 +11,7 @@ function S:Blizzard_ItemUpgradeUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemUpgrade) then return end
 
 	local ItemUpgradeFrame = _G.ItemUpgradeFrame
-	S:HandlePortraitFrame(ItemUpgradeFrame, true)
+	S:HandlePortraitFrame(ItemUpgradeFrame)
 
 	local ItemButton = ItemUpgradeFrame.ItemButton
 	ItemButton:CreateBackdrop()
@@ -38,8 +38,8 @@ function S:Blizzard_ItemUpgradeUI()
 	local TextFrame = ItemUpgradeFrame.TextFrame
 	TextFrame:StripTextures()
 	TextFrame:CreateBackdrop('Transparent')
-	TextFrame.backdrop:SetPoint('TOPLEFT', ItemButton.IconTexture, 'TOPRIGHT', 3, 1)
-	TextFrame.backdrop:SetPoint('BOTTOMRIGHT', -6, 2)
+	TextFrame.backdrop:Point('TOPLEFT', ItemButton.IconTexture, 'TOPRIGHT', 3, 1)
+	TextFrame.backdrop:Point('BOTTOMRIGHT', -6, 2)
 
 	_G.ItemUpgradeFrameMoneyFrame:StripTextures()
 	S:HandleIcon(_G.ItemUpgradeFrameMoneyFrame.Currency.icon)

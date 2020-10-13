@@ -210,12 +210,6 @@ local function UpdateColors()
 	for _, holder in pairs(E.CreatedMovers) do
 		OnShow(holder.mover, r, g, b)
 	end
-
-	local nudge = _G.ElvUIMoverNudgeWindow
-	if nudge then
-		nudge:SetBackdropBorderColor(r, g, b)
-		nudge.header:SetBackdropBorderColor(r, g, b)
-	end
 end
 E.valueColorUpdateFuncs[UpdateColors] = true
 
@@ -228,7 +222,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	if overlay == nil then overlay = true end
 
-	local f = CreateFrame('Button', name, E.UIParent)
+	local f = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)

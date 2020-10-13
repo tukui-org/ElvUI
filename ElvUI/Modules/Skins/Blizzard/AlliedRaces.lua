@@ -5,11 +5,11 @@ local _G = _G
 local select = select
 
 function S:Blizzard_AlliedRacesUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.AlliedRaces) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.alliedRaces) then return end
 
 	local AlliedRacesFrame = _G.AlliedRacesFrame
 	if E.private.skins.parchmentRemoverEnable then
-		S:HandlePortraitFrame(AlliedRacesFrame, true)
+		S:HandlePortraitFrame(AlliedRacesFrame)
 		select(2, AlliedRacesFrame.ModelFrame:GetRegions()):Hide()
 
 		local scrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame

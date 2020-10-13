@@ -69,12 +69,12 @@ function UF:Configure_RestingIndicator(frame)
 			Icon:SetTexCoord(0, .5, 0, .421875)
 		end
 
-		Icon:SetSize(db.size, db.size)
+		Icon:Size(db.size)
 		Icon:ClearAllPoints()
 		if frame.ORIENTATION ~= 'RIGHT' and (frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY) then
-			Icon:SetPoint('CENTER', frame.Portrait, db.anchorPoint, db.xOffset, db.yOffset)
+			Icon:Point('CENTER', frame.Portrait, db.anchorPoint, db.xOffset, db.yOffset)
 		else
-			Icon:SetPoint('CENTER', frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
+			Icon:Point('CENTER', frame.Health, db.anchorPoint, db.xOffset, db.yOffset)
 		end
 	elseif frame:IsElementEnabled('RestingIndicator') then
 		frame:DisableElement('RestingIndicator')

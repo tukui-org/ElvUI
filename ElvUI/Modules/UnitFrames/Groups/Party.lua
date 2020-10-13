@@ -15,8 +15,8 @@ function UF:Construct_PartyFrames()
 	self.RaisedElementParent = CreateFrame('Frame', nil, self)
 	self.RaisedElementParent.TextureParent = CreateFrame('Frame', nil, self.RaisedElementParent)
 	self.RaisedElementParent:SetFrameLevel(self:GetFrameLevel() + 100)
-	self.BORDER = E.Border
-	self.SPACING = E.Spacing
+	self.BORDER = UF.BORDER
+	self.SPACING = UF.SPACING
 	self.SHADOW_SPACING = 3
 
 	if self.isChild then
@@ -84,7 +84,7 @@ function UF:Update_PartyHeader(header, db)
 
 	if not parent.positioned then
 		parent:ClearAllPoints()
-		parent:SetPoint('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 4, 248)
+		parent:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', 4, 248)
 		E:CreateMover(parent, parent:GetName()..'Mover', L["Party Frames"], nil, nil, nil, 'ALL,PARTY,ARENA', nil, 'unitframe,groupUnits,party,generalGroup')
 		parent.positioned = true
 	end
@@ -97,14 +97,6 @@ function UF:Update_PartyFrames(frame, db)
 	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		if UF.thinBorders then
-			frame.SPACING = 0
-			frame.BORDER = E.mult
-		else
-			frame.BORDER = E.Border
-			frame.SPACING = E.Spacing
-		end
-
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.infoPanel.enable and (db.height + db.infoPanel.height) or db.height
@@ -115,7 +107,7 @@ function UF:Update_PartyFrames(frame, db)
 		frame.USE_POWERBAR_OFFSET = (db.power.width == 'offset' and db.power.offset ~= 0) and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
 		frame.POWERBAR_OFFSET = frame.USE_POWERBAR_OFFSET and db.power.offset or 0
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
-		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (frame.BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2)))
+		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (UF.BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((UF.BORDER+UF.SPACING)*2)))
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == 'MIDDLE')
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
@@ -126,8 +118,8 @@ function UF:Update_PartyFrames(frame, db)
 		frame.CLASSBAR_DETACHED = false
 		frame.USE_MINI_CLASSBAR = db.classbar.fill == 'spaced' and frame.USE_CLASSBAR
 		frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and db.classbar.height or 0
-		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2) - frame.PORTRAIT_WIDTH  -(frame.ORIENTATION == 'MIDDLE' and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
-		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (frame.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (frame.BORDER-frame.SPACING)))
+		frame.CLASSBAR_WIDTH = frame.UNIT_WIDTH - frame.PORTRAIT_WIDTH - (frame.ORIENTATION == 'MIDDLE' and (frame.POWERBAR_OFFSET*2) or frame.POWERBAR_OFFSET)
+		frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and (UF.SPACING+(frame.CLASSBAR_HEIGHT/2)) or (frame.CLASSBAR_HEIGHT - (UF.BORDER-UF.SPACING)))
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable
 		frame.INFO_PANEL_HEIGHT = frame.USE_INFO_PANEL and db.infoPanel.height or 0
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
@@ -155,13 +147,13 @@ function UF:Update_PartyFrames(frame, db)
 			frame.Health.colorPetByUnitClass = db.colorPetByUnitClass
 		end
 
-		frame:SetSize(db.width, db.height)
+		frame:Size(db.width, db.height)
 
 		if not InCombatLockdown() then
 			if db.enable then
 				frame:Enable()
 				frame:ClearAllPoints()
-				frame:SetPoint(E.InversePoints[db.anchorPoint], frame.originalParent, db.anchorPoint, db.xOffset, db.yOffset)
+				frame:Point(E.InversePoints[db.anchorPoint], frame.originalParent, db.anchorPoint, db.xOffset, db.yOffset)
 			else
 				frame:Disable()
 			end
@@ -169,7 +161,7 @@ function UF:Update_PartyFrames(frame, db)
 
 		UF:Configure_HealthBar(frame)
 	else
-		frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
 		UF:EnableDisable_Auras(frame)
 		UF:Configure_AllAuras(frame)

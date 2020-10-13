@@ -58,7 +58,7 @@ function UF:BuffIndicator_PostCreateIcon(button)
 	UF:Update_FontString(button.count)
 
 	button.count:ClearAllPoints()
-	button.count:SetPoint('BOTTOMRIGHT', 1, 1)
+	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
 end
 

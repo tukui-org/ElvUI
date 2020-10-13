@@ -76,35 +76,38 @@ local HIDDEN = 0
 -- ElvUI changed block
 local CREATED = 2
 
-local _G = _G
 local pcall = pcall
 local tinsert = tinsert
 local CreateFrame = CreateFrame
 local GetSpellInfo = GetSpellInfo
 local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
+local GameTooltip = GameTooltip
 local floor, min = math.floor, math.min
 -- end block
 
 -- ElvUI adds IsForbidden checks
 local function UpdateTooltip(self)
-	if _G.GameTooltip:IsForbidden() then return end
-	_G.GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
+	if GameTooltip:IsForbidden() then return end
+
+	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local function onEnter(self)
-	if _G.GameTooltip:IsForbidden() or not self:IsVisible() then return end
-	_G.GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
+	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
+
+	GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
 	self:UpdateTooltip()
 end
 
 local function onLeave()
-	if _G.GameTooltip:IsForbidden() then return end
-	_G.GameTooltip:Hide()
+	if GameTooltip:IsForbidden() then return end
+
+	GameTooltip:Hide()
 end
 
 local function createAuraIcon(element, index)
-	local button = CreateFrame('Button', element:GetName() .. 'Button' .. index, element)
+	local button = CreateFrame('Button', element:GetName() .. 'Button' .. index, element, "BackdropTemplate")
 	button:RegisterForClicks('RightButtonUp')
 
 	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
@@ -170,6 +173,10 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		if element.forceShow then
 			count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, isBossDebuff = 5, "Magic", 0, 60, "player", nil, nil, nil
 		end
+	end
+
+	if isStealable then
+		element.hasStealable = true -- for Style Filters
 	end
 	-- end Block
 
@@ -324,9 +331,9 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	local index = 1
 	local visible = 0
 	local hidden = 0
-	-- ElvUI changed block
-	local created = 0
-	-- end block
+	local created = 0 -- ElvUI
+	element.hasStealable = nil -- ElvUI
+
 	while(visible < limit) do
 		local result = updateIcon(element, unit, index, offset, filter, isDebuff, visible)
 		if(not result) then
@@ -345,9 +352,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 		index = index + 1
 	end
 
-	-- ElvUI changed block
-	visible = visible - created
-	-- end block
+	visible = visible - created -- ElvUI changed
 
 	if(not dontHide) then
 		for i = visible + offset + 1, #element do
@@ -507,25 +512,14 @@ end
 local function Update(self, event, unit)
 	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (self.unit ~= unit) then return end -- ElvUI changed
 
-	UpdateAuras(self, event, unit)
-
 	-- Assume no event means someone wants to re-anchor things. This is usually done by UpdateAllElements and :ForceUpdate.
-	if event == 'ForceUpdate' or event == 'ElvUI_UpdateAllElements' or not event then -- ElvUI changed
-		local buffs = self.Buffs
-		if(buffs) then
-			(buffs.SetPosition or SetPosition) (buffs, 1, buffs.createdIcons)
-		end
-
-		local debuffs = self.Debuffs
-		if(debuffs) then
-			(debuffs.SetPosition or SetPosition) (debuffs, 1, debuffs.createdIcons)
-		end
-
-		local auras = self.Auras
-		if(auras) then
-			(auras.SetPosition or SetPosition) (auras, 1, auras.createdIcons)
-		end
+	if not event or event == 'ForceUpdate' or event == 'ElvUI_UpdateAllElements' then -- ElvUI changed
+		if self.Buffs then self.Buffs.anchoredIcons = 0 end
+		if self.Debuffs then self.Debuffs.anchoredIcons = 0 end
+		if self.Auras then self.Auras.anchoredIcons = 0 end
 	end
+
+	UpdateAuras(self, event, unit)
 end
 
 local function ForceUpdate(element)

@@ -4,7 +4,7 @@ local oUF = E.oUF
 local function Update(self)
 	local element = self.ClassificationIndicator
 
-	if (element.PreUpdate) then
+	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
@@ -19,7 +19,7 @@ local function Update(self)
 		element:Hide()
 	end
 
-	if (element.PostUpdate) then
+	if element.PostUpdate then
 		return element:PostUpdate(classification)
 	end
 end
@@ -34,11 +34,11 @@ end
 
 local function Enable(self)
 	local element = self.ClassificationIndicator
-	if (element) then
+	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if (element:IsObjectType('Texture') and not element:GetTexture()) then
+		if element:IsObjectType('Texture') and not element:GetTexture() then
 			element:SetTexture([[Interface\TARGETINGFRAME\Nameplates]])
 		end
 
@@ -50,7 +50,7 @@ end
 
 local function Disable(self)
 	local element = self.ClassificationIndicator
-	if (element) then
+	if element then
 		element:Hide()
 
 		self:UnregisterEvent('UNIT_CLASSIFICATION_CHANGED', Path)

@@ -34,9 +34,9 @@ function S:Blizzard_TradeSkillUI()
 
 	-- MainFrame
 	local TradeSkillFrame = _G.TradeSkillFrame
-	S:HandlePortraitFrame(TradeSkillFrame, true)
+	S:HandlePortraitFrame(TradeSkillFrame)
 
-	TradeSkillFrame:SetHeight(TradeSkillFrame:GetHeight() + 12)
+	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
 	TradeSkillFrame.RankFrame:StripTextures()
 	TradeSkillFrame.RankFrame:CreateBackdrop()
 	TradeSkillFrame.RankFrame:SetStatusBarTexture(E.media.normTex)
@@ -47,17 +47,17 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillFrame.LinkToButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
 	TradeSkillFrame.LinkToButton:GetHighlightTexture():Kill()
 	TradeSkillFrame.LinkToButton:CreateBackdrop()
-	TradeSkillFrame.LinkToButton:SetSize(17, 14)
-	TradeSkillFrame.LinkToButton:SetPoint('BOTTOMRIGHT', TradeSkillFrame.FilterButton, 'TOPRIGHT', -2, 4)
-	TradeSkillFrame.bg1 = CreateFrame('Frame', nil, TradeSkillFrame)
+	TradeSkillFrame.LinkToButton:Size(17, 14)
+	TradeSkillFrame.LinkToButton:Point('BOTTOMRIGHT', TradeSkillFrame.FilterButton, 'TOPRIGHT', -2, 4)
+	TradeSkillFrame.bg1 = CreateFrame('Frame', nil, TradeSkillFrame, 'BackdropTemplate')
 	TradeSkillFrame.bg1:SetTemplate('Transparent')
-	TradeSkillFrame.bg1:SetPoint('TOPLEFT', 4, -81)
-	TradeSkillFrame.bg1:SetPoint('BOTTOMRIGHT', -340, 4)
+	TradeSkillFrame.bg1:Point('TOPLEFT', 4, -81)
+	TradeSkillFrame.bg1:Point('BOTTOMRIGHT', -340, 4)
 	TradeSkillFrame.bg1:SetFrameLevel(TradeSkillFrame.bg1:GetFrameLevel() - 1)
-	TradeSkillFrame.bg2 = CreateFrame('Frame', nil, TradeSkillFrame)
+	TradeSkillFrame.bg2 = CreateFrame('Frame', nil, TradeSkillFrame, 'BackdropTemplate')
 	TradeSkillFrame.bg2:SetTemplate('Transparent')
-	TradeSkillFrame.bg2:SetPoint('TOPLEFT', TradeSkillFrame.bg1, 'TOPRIGHT', 1, 0)
-	TradeSkillFrame.bg2:SetPoint('BOTTOMRIGHT', TradeSkillFrame, 'BOTTOMRIGHT', -4, 4)
+	TradeSkillFrame.bg2:Point('TOPLEFT', TradeSkillFrame.bg1, 'TOPRIGHT', 1, 0)
+	TradeSkillFrame.bg2:Point('BOTTOMRIGHT', TradeSkillFrame, 'BOTTOMRIGHT', -4, 4)
 	TradeSkillFrame.bg2:SetFrameLevel(TradeSkillFrame.bg2:GetFrameLevel() - 1)
 
 	S:HandleEditBox(TradeSkillFrame.SearchBox)
@@ -66,6 +66,7 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillFrame.RecipeInset:StripTextures()
 	TradeSkillFrame.RecipeList.LearnedTab:StripTextures()
 	TradeSkillFrame.RecipeList.UnlearnedTab:StripTextures()
+	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 
 	-- DetailsFrame
 	TradeSkillFrame.DetailsFrame:StripTextures()
@@ -82,7 +83,7 @@ function S:Blizzard_TradeSkillUI()
 
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.DecrementButton)
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton)
-	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:SetPoint('LEFT', TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, 'RIGHT', 4, 0)
+	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:Point('LEFT', TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, 'RIGHT', 4, 0)
 
 	hooksecurefunc(TradeSkillFrame.DetailsFrame, 'RefreshDisplay', function()
 		local ResultIcon = TradeSkillFrame.DetailsFrame.Contents.ResultIcon
@@ -91,7 +92,7 @@ function S:Blizzard_TradeSkillUI()
 			ResultIcon:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 			ResultIcon:GetNormalTexture():SetInside()
 		end
-		ResultIcon:SetTemplate()
+		ResultIcon:CreateBackdrop()
 		ResultIcon.IconBorder:SetTexture()
 		ResultIcon.ResultBorder:SetTexture()
 
@@ -103,7 +104,7 @@ function S:Blizzard_TradeSkillUI()
 			Icon:SetTexCoord(unpack(E.TexCoords))
 			Icon:SetDrawLayer('OVERLAY')
 			if not Icon.backdrop then
-				Icon.backdrop = CreateFrame('Frame', nil, Button)
+				Icon.backdrop = CreateFrame('Frame', nil, Button, 'BackdropTemplate')
 				Icon.backdrop:SetFrameLevel(Button:GetFrameLevel() - 1)
 				Icon.backdrop:SetTemplate()
 				Icon.backdrop:SetOutside(Icon)
@@ -112,6 +113,31 @@ function S:Blizzard_TradeSkillUI()
 			Icon:SetParent(Icon.backdrop)
 			Count:SetParent(Icon.backdrop)
 			Count:SetDrawLayer('OVERLAY')
+
+			Button.NameFrame:Kill()
+		end
+
+		-- 9.0 Shadowlands
+		for i = 1, #TradeSkillFrame.DetailsFrame.Contents.OptionalReagents do
+			local Button = TradeSkillFrame.DetailsFrame.Contents.OptionalReagents[i]
+			local Icon = Button.Icon
+
+			Icon:SetTexCoord(unpack(E.TexCoords))
+			Icon:SetDrawLayer('OVERLAY')
+			if not Icon.backdrop then
+				Icon.backdrop = CreateFrame('Frame', nil, Button, 'BackdropTemplate')
+				Icon.backdrop:SetFrameLevel(Button:GetFrameLevel() - 1)
+				Icon.backdrop:SetTemplate()
+				Icon.backdrop:SetOutside(Icon)
+			end
+
+			Button.SocketGlow:SetAtlas(nil)
+			Button.SocketGlow:SetColorTexture(0, 1, 0)
+			Button.SocketGlow:SetInside(Icon.backdrop)
+
+			Button.SelectedTexture:SetAtlas(nil)
+			Button.SelectedTexture:SetColorTexture(0.9, 0.8, 0.1)
+			Button.SelectedTexture:SetOutside(Icon.backdrop)
 
 			Button.NameFrame:Kill()
 		end
@@ -130,11 +156,44 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleCloseButton(TradeSkillFrame.DetailsFrame.GuildFrame.CloseButton)
 	S:HandleButton(TradeSkillFrame.DetailsFrame.ViewGuildCraftersButton)
 	TradeSkillFrame.DetailsFrame.GuildFrame:StripTextures()
-	TradeSkillFrame.DetailsFrame.GuildFrame:SetTemplate('Transparent')
+	TradeSkillFrame.DetailsFrame.GuildFrame:CreateBackdrop('Transparent')
 	TradeSkillFrame.DetailsFrame.GuildFrame.Container:StripTextures()
-	TradeSkillFrame.DetailsFrame.GuildFrame.Container:SetTemplate('Transparent')
-	-- S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
+	TradeSkillFrame.DetailsFrame.GuildFrame.Container:CreateBackdrop('Transparent')
+	--S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
+
+	-- 9.0 Shadowlands
+	local OptionalReagents = TradeSkillFrame.OptionalReagentList
+	OptionalReagents:StripTextures()
+	OptionalReagents:CreateBackdrop('Transparent')
+
+	OptionalReagents.ScrollList:StripTextures()
+	OptionalReagents.ScrollList:CreateBackdrop('Transparent')
+
+	S:HandleCheckBox(OptionalReagents.HideUnownedButton)
+	S:HandleScrollBar(OptionalReagents.ScrollList.ScrollFrame.scrollBar)
+	S:HandleButton(OptionalReagents.CloseButton)
+
+	-- Needs probably updates - or/also a different way
+	hooksecurefunc(_G.OptionalReagentListLineMixin, 'UpdateDisplay', function(frame)
+		frame.NameFrame:Kill()
+		frame:DisableDrawLayer('ARTWORK')
+
+		S:HandleIcon(frame.Icon, true)
+		frame.Icon:Size(32, 32)
+		frame.Icon:ClearAllPoints()
+		frame.Icon:Point('TOPLEFT', frame, 'TOPLEFT', 3, -3)
+
+		if frame.Icon.backdrop then
+			frame.Icon.backdrop:SetAllPoints(frame.Icon)
+			S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
+		end
+
+		if not frame.backdrop then
+			frame:CreateBackdrop()
+			frame.backdrop:SetAllPoints()
+		end
+	end)
 end
 
 S:AddCallbackForAddon('Blizzard_TradeSkillUI')

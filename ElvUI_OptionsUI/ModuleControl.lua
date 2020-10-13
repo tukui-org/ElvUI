@@ -91,10 +91,11 @@ local function CreateDatatbarsConfig()
 
 	MC:AddConfigOptions(P.databars, config)
 
-	config.args.experience.name = L["XPBAR_LABEL"]
-	config.args.reputation.name = L["REPUTATION"]
-	config.args.honor.name = L["HONOR"]
-	config.args.azerite.name = L["Azerite Bar"]
+	config.args.experience.name = L["Experience"]
+	config.args.reputation.name = L["Reputation"]
+	config.args.honor.name = L["Honor"]
+	config.args.threat.name = L["Threat"]
+	config.args.azerite.name = L["Azerite"]
 
 	return config
 end
@@ -115,7 +116,6 @@ local function CreateGeneralConfig()
 
 	config.args.altPowerBar.name = L["Alternative Power"]
 	config.args.minimap.name = L["MINIMAP_LABEL"]
-	config.args.threat.name = L["Threat"]
 	config.args.totems.name = L["Class Totems"]
 	config.args.itemLevel.name = L["Item Level"]
 
@@ -142,7 +142,7 @@ local function CreateNamePlatesConfig()
 	-- Modify Tables
 	config.args.filters = nil
 	config.args.units = ACH:Group(L["NamePlates"], nil, -5, nil, function(info) return E.global.profileCopy.nameplates[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.nameplates[info[#info-1]][info[#info]] = value; end)
-	config.args.units.guiInline = true
+	config.args.units.inline = true
 
 	MC:AddConfigOptions(P.nameplates.units, config.args.units)
 
@@ -175,7 +175,7 @@ local function CreateUnitframesConfig()
 	local config = MC:CreateModuleConfigGroup(L["UnitFrames"], 'unitframe')
 	config.args.cooldown = ACH:Toggle(L["Cooldown Text"], nil, 2, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end)
 	config.args.colors = ACH:Group(L["COLORS"], nil, 3, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
-	config.args.colors.guiInline = true
+	config.args.colors.inline = true
 
 	MC:AddConfigOptions(P.unitframe.colors, config.args.colors)
 
@@ -190,7 +190,7 @@ local function CreateUnitframesConfig()
 	config.args.colors.args.threat.name = L["Threat"]
 
 	config.args.units = ACH:Group(L["UnitFrames"], nil, 4, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
-	config.args.units.guiInline = true
+	config.args.units.inline = true
 
 	MC:AddConfigOptions(P.unitframe.units, config.args.units)
 

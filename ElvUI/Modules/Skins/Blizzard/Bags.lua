@@ -19,13 +19,13 @@ local QUESTS_LABEL = QUESTS_LABEL
 local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 
 local function UpdateBorderColors(button)
-	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
 	if button.type and button.type == QUESTS_LABEL then
-		button:SetBackdropBorderColor(1, 0.2, 0.2)
+		button.backdrop:SetBackdropBorderColor(1, 0.2, 0.2)
 	elseif button.quality and button.quality > 1 then
 		local r, g, b = GetItemQualityColor(button.quality)
-		button:SetBackdropBorderColor(r, g, b)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -38,9 +38,9 @@ local function SkinButton(button)
 			end
 		end
 
-		button:SetTemplate(nil, true)
+		button:CreateBackdrop()
 		button:StyleButton()
-		button.IconBorder:SetAlpha(0)
+		button.IconBorder:Kill()
 
 		local icon = button.icon
 		icon:SetInside()
@@ -115,7 +115,7 @@ local function SkinBags()
 			container.backdrop:SetInside()
 			S:HandleCloseButton(_G[container:GetName()..'CloseButton'])
 			S:HandleButton(container.PortraitButton)
-			container.PortraitButton:SetSize(35, 35)
+			container.PortraitButton:Size(35)
 			container.PortraitButton.Highlight:SetAlpha(0)
 			container:HookScript('OnShow', SkinContainer)
 
@@ -183,15 +183,15 @@ function S:ContainerFrame()
 			S:HandleButton(_G.BankFramePurchaseButton, true)
 			S:HandleCloseButton(_G.BankFrameCloseButton)
 
-			BankFrame.backdrop2 = CreateFrame('Frame', nil, _G.BankSlotsFrame)
+			BankFrame.backdrop2 = CreateFrame('Frame', nil, _G.BankSlotsFrame, 'BackdropTemplate')
 			BankFrame.backdrop2:SetTemplate()
-			BankFrame.backdrop2:SetPoint('TOPLEFT', _G.BankFrameItem1, 'TOPLEFT', -6, 6)
-			BankFrame.backdrop2:SetPoint('BOTTOMRIGHT', _G.BankFrameItem28, 'BOTTOMRIGHT', 6, -6)
+			BankFrame.backdrop2:Point('TOPLEFT', _G.BankFrameItem1, 'TOPLEFT', -6, 6)
+			BankFrame.backdrop2:Point('BOTTOMRIGHT', _G.BankFrameItem28, 'BOTTOMRIGHT', 6, -6)
 
-			BankFrame.backdrop3 = CreateFrame('Frame', nil, _G.BankSlotsFrame)
+			BankFrame.backdrop3 = CreateFrame('Frame', nil, _G.BankSlotsFrame, 'BackdropTemplate')
 			BankFrame.backdrop3:SetTemplate()
-			BankFrame.backdrop3:SetPoint('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
-			BankFrame.backdrop3:SetPoint('BOTTOMRIGHT', _G.BankSlotsFrame.Bag7, 'BOTTOMRIGHT', 6, -6)
+			BankFrame.backdrop3:Point('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
+			BankFrame.backdrop3:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag7, 'BOTTOMRIGHT', 6, -6)
 
 			_G.BankFrameMoneyFrameInset:Kill()
 			_G.BankFrameMoneyFrameBorder:Kill()
@@ -237,17 +237,18 @@ function S:ContainerFrame()
 
 	local BagItemSearchBox = _G.BagItemSearchBox
 	S:HandleEditBox(BagItemSearchBox)
-	BagItemSearchBox:SetHeight(BagItemSearchBox:GetHeight() - 5)
+	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)
 
 	local BankItemSearchBox = _G.BankItemSearchBox
 	BankItemSearchBox:StripTextures()
 	BankItemSearchBox:CreateBackdrop('Overlay')
-	BankItemSearchBox.backdrop:SetPoint('TOPLEFT', 10, -1)
-	BankItemSearchBox.backdrop:SetPoint('BOTTOMRIGHT', 4, 1)
+	BankItemSearchBox.backdrop:Point('TOPLEFT', 10, -1)
+	BankItemSearchBox.backdrop:Point('BOTTOMRIGHT', 4, 1)
 
 	local AutoSort = _G.BagItemAutoSortButton
 	AutoSort:StripTextures()
-	AutoSort:SetTemplate()
+	--AutoSort:SetTemplate()
+	AutoSort:CreateBackdrop()
 	AutoSort.Icon = AutoSort:CreateTexture()
 	AutoSort.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
 	AutoSort.Icon:SetTexCoord(unpack(E.TexCoords))

@@ -33,8 +33,8 @@ local function HandleGoldIcon(button)
 
 	Button:CreateBackdrop()
 	Button.backdrop:ClearAllPoints()
-	Button.backdrop:SetPoint('LEFT', 1, 0)
-	Button.backdrop:SetSize(42, 42)
+	Button.backdrop:Point('LEFT', 1, 0)
+	Button.backdrop:Size(42)
 
 	iconTexture:SetTexCoord(unpack(E.TexCoords))
 	iconTexture:SetDrawLayer('OVERLAY')
@@ -45,7 +45,7 @@ local function HandleGoldIcon(button)
 	count:SetDrawLayer('OVERLAY')
 
 	nameFrame:SetTexture()
-	nameFrame:SetSize(118, 39)
+	nameFrame:Size(118, 39)
 end
 
 local function SkinItemButton(parentFrame, _, index)
@@ -54,38 +54,26 @@ local function SkinItemButton(parentFrame, _, index)
 	if item and not item.backdrop then
 		item:CreateBackdrop()
 		item.backdrop:ClearAllPoints()
-		item.backdrop:SetPoint('LEFT', 1, 0)
-		item.backdrop:SetSize(42, 42)
+		item.backdrop:Point('LEFT', 1, 0)
+		item.backdrop:Size(42)
 
 		item.Icon:SetTexCoord(unpack(E.TexCoords))
 		item.Icon:SetDrawLayer('OVERLAY')
 		item.Icon:SetParent(item.backdrop)
 		item.Icon:SetInside()
 
-		hooksecurefunc(item.IconBorder, 'SetVertexColor', function(self, r, g, b)
-			self:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-			self:SetTexture()
-		end)
-		hooksecurefunc(item.IconBorder, 'Hide', function(self)
-			self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
-
-		local r, g, b, a = item.IconBorder:GetVertexColor()
-		if r then
-			item.IconBorder:SetTexture()
-			item.backdrop:SetBackdropBorderColor(r, g, b, a)
-		end
-
 		item.Count:SetDrawLayer('OVERLAY')
 		item.Count:SetParent(item.backdrop)
 
 		item.NameFrame:SetTexture()
-		item.NameFrame:SetSize(118, 39)
+		item.NameFrame:Size(118, 39)
 
 		item.shortageBorder:SetTexture()
 
 		item.roleIcon1:SetParent(item.backdrop)
 		item.roleIcon2:SetParent(item.backdrop)
+
+		S:HandleIconBorder(item.IconBorder)
 	end
 end
 
@@ -113,7 +101,7 @@ function S:LookingForGroupFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	local PVEFrame = _G.PVEFrame
-	S:HandlePortraitFrame(PVEFrame, true)
+	S:HandlePortraitFrame(PVEFrame)
 
 	_G.RaidFinderQueueFrame:StripTextures(true)
 	_G.PVEFrameBg:Hide()
@@ -121,28 +109,24 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
-	S:HandleButton(_G.LFDQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
-	S:HandleButton(_G.ScenarioQueueFrameRandomScrollFrameChildFrameBonusRepFrame.ChooseButton)
-	S:HandleScrollBar(_G.ScenarioQueueFrameRandomScrollFrameScrollBar);
 
 	_G.GroupFinderFrame.groupButton1.icon:SetTexture([[Interface\Icons\INV_Helmet_08]])
 	_G.GroupFinderFrame.groupButton2.icon:SetTexture([[Interface\LFGFrame\UI-LFR-PORTRAIT]])
 	_G.GroupFinderFrame.groupButton3.icon:SetTexture([[Interface\Icons\Icon_Scenarios]])
-	_G.GroupFinderFrame.groupButton4.icon:SetTexture([[Interface\Icons\Achievement_General_StayClassy]])
 
 	_G.LFGDungeonReadyDialogBackground:Kill()
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
 	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
 	_G.LFGDungeonReadyDialog:StripTextures()
-	_G.LFGDungeonReadyDialog:SetTemplate('Transparent')
+	_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent')
 	_G.LFGDungeonReadyStatus:StripTextures()
-	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
+	_G.LFGDungeonReadyStatus:CreateBackdrop('Transparent')
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
 
 	hooksecurefunc(_G.LFGDungeonReadyDialog, 'SetBackdrop', function(frame, backdrop)
-		if backdrop ~= nil then frame:SetBackdrop(nil) end
+		if backdrop ~= nil then frame:SetBackdrop() end
 	end)
 
 	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
@@ -212,16 +196,16 @@ function S:LookingForGroupFrames()
 	}
 
 	for _, roleButton in pairs(RoleButtons1) do
-		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, true)
+		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton)
 		roleButton:DisableDrawLayer('ARTWORK')
 		roleButton:DisableDrawLayer('OVERLAY')
 
-		if(not roleButton.background) then
+		if not roleButton.background then
 			local isLeader = roleButton:GetName() ~= nil and roleButton:GetName():find('Leader') or false
-			if(not isLeader) then
+			if not isLeader then
 				roleButton.background = roleButton:CreateTexture(nil, 'BACKGROUND')
-				roleButton.background:SetSize(80, 80)
-				roleButton.background:SetPoint('CENTER')
+				roleButton.background:Size(80, 80)
+				roleButton.background:Point('CENTER')
 				roleButton.background:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
 				roleButton.background:SetAlpha(0.65)
 
@@ -243,51 +227,54 @@ function S:LookingForGroupFrames()
 	}
 	for _, checkButton in pairs(repositionCheckButtons) do
 		checkButton:ClearAllPoints()
-		checkButton:SetPoint('BOTTOMLEFT', 0, 0)
+		checkButton:Point('BOTTOMLEFT', 0, 0)
 	end
 	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', function(self) --Copy from Blizzard, we just fix position
 		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
 
 		local avail1, avail2
-		if ( availTank ) then
+		if availTank then
 			avail1 = self.TankButton
 		end
-		if ( availHealer ) then
-			if ( avail1 ) then
+		if availHealer then
+			if avail1 then
 				avail2 = self.HealerButton
 			else
 				avail1 = self.HealerButton
 			end
 		end
-		if ( availDPS ) then
-			if ( avail1 ) then
+		if availDPS then
+			if avail1 then
 				avail2 = self.DamagerButton
 			else
 				avail1 = self.DamagerButton
 			end
 		end
 
-		if ( avail2 ) then
+		if avail2 then
 			avail1:ClearAllPoints();
-			avail1:SetPoint('TOPRIGHT', self, 'TOP', -40, -35)
+			avail1:Point('TOPRIGHT', self, 'TOP', -40, -35)
 			avail2:ClearAllPoints()
-			avail2:SetPoint('TOPLEFT', self, 'TOP', 40, -35)
-		elseif ( avail1 ) then
+			avail2:Point('TOPLEFT', self, 'TOP', 40, -35)
+		elseif avail1 then
 			avail1:ClearAllPoints()
-			avail1:SetPoint('TOP', self, 'TOP', 0, -35)
+			avail1:Point('TOP', self, 'TOP', 0, -35)
 		end
 	end)
 
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon = _G.LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
-	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.Leader)
-	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetPoint(_G.LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
-	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetSize(50, 50)
+	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.LeaderHQ)
+	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Point(_G.LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
+	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Size(50)
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
+	_G.LFDQueueFrameRoleButtonTankBackground:SetTexture(E.Media.Textures.RolesHQ)
+	_G.LFDQueueFrameRoleButtonHealerBackground:SetTexture(E.Media.Textures.RolesHQ)
+	_G.LFDQueueFrameRoleButtonDPSBackground:SetTexture(E.Media.Textures.RolesHQ)
 
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon = _G.RaidFinderQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
-	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.Leader)
-	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetPoint(_G.RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
-	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetSize(50, 50)
+	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.LeaderHQ)
+	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Point(_G.RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
+	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Size(50)
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
 
 	hooksecurefunc('LFG_DisableRoleButton', function(button)
@@ -313,22 +300,22 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	for i = 1, 4 do
+	for i = 1, 3 do
 		local bu = _G.GroupFinderFrame['groupButton'..i]
 		bu.ring:Kill()
 		bu.bg:Kill()
 		S:HandleButton(bu)
 
-		bu.icon:SetSize(45, 45)
+		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
-		bu.icon:SetPoint('LEFT', 10, 0)
+		bu.icon:Point('LEFT', 10, 0)
 		S:HandleIcon(bu.icon, true)
 	end
 
 	for i = 1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
 	end
-	_G.PVEFrameTab1:SetPoint('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
+	_G.PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
 
 	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
@@ -338,7 +325,6 @@ function S:LookingForGroupFrames()
 
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
 	HandleGoldIcon('RaidFinderQueueFrameScrollFrameChildFrameMoneyReward')
-	HandleGoldIcon('ScenarioQueueFrameRandomScrollFrameChildFrameMoneyReward')
 
 	for i = 1, _G.NUM_LFD_CHOICE_BUTTONS do
 		S:HandleCheckBox(_G['LFDQueueFrameSpecificListButton'..i].enableButton, nil, true)
@@ -354,26 +340,12 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	hooksecurefunc('ScenarioQueueFrameSpecific_Update', function()
-		for i = 1, _G.NUM_SCENARIO_CHOICE_BUTTONS do
-			local button = _G['ScenarioQueueFrameSpecificButton'..i]
-
-			if button and not button.skinned then
-				S:HandleCheckBox(button.enableButton, nil, true)
-				button.skinned = true;
-			end
-		end
-	end)
-
 	for i = 1, _G.NUM_LFR_CHOICE_BUTTONS do
 		local bu = _G['LFRQueueFrameSpecificListButton'..i].enableButton
 		S:HandleCheckBox(bu, nil, true)
 	end
 
 	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
-	_G.ScenarioQueueFrame:StripTextures()
-	_G.ScenarioFinderFrameInset:StripTextures()
-	S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
 
 	-- Raid Finder
 	_G.RaidFinderFrame:StripTextures()
@@ -385,17 +357,8 @@ function S:LookingForGroupFrames()
 	_G.RaidFinderQueueFrameScrollFrameScrollBar:StripTextures()
 	S:HandleScrollBar(_G.RaidFinderQueueFrameScrollFrameScrollBar)
 
-	-- Scenario finder
-	_G.ScenarioFinderFrameInset:DisableDrawLayer('BORDER')
-	_G.ScenarioQueueFrame.Bg:Hide()
-	_G.ScenarioFinderFrameInset:GetRegions():Hide()
-
 	--Skin Reward Items (This works for all frames, LFD, Raid, Scenario)
 	hooksecurefunc('LFGRewardsFrame_SetItemButton', SkinItemButton)
-
-	_G.ScenarioQueueFrameFindGroupButton:StripTextures()
-	S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
-	S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropDown)
 
 	-- Looking for raid
 	_G.LFRBrowseFrameListScrollFrame:StripTextures()
@@ -412,8 +375,8 @@ function S:LookingForGroupFrames()
 	_G.LFRQueueFrameSpecificListScrollFrameScrollBackgroundTopLeft:Hide()
 	_G.LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
 	_G.LFRQueueFrameCommentScrollFrame:CreateBackdrop()
-	_G.LFRBrowseFrameColumnHeader1:SetWidth(94) --Fix the columns being slightly off
-	_G.LFRBrowseFrameColumnHeader2:SetWidth(38)
+	_G.LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
+	_G.LFRBrowseFrameColumnHeader2:Width(38)
 
 	_G.RaidBrowserFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(_G.RaidBrowserFrameCloseButton)
@@ -446,19 +409,19 @@ function S:LookingForGroupFrames()
 				tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 				tab:GetNormalTexture():SetInside()
 
-				tab.pushed = true;
+				tab.pushed = true
 				tab:CreateBackdrop()
 				tab.backdrop:SetAllPoints()
 				tab:StyleButton(true)
-				hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(self, texPath)
+				hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(highlight, texPath)
 					if texPath ~= nil then
-						self:SetTexture();
+						highlight:SetTexture()
 					end
 				end)
 
-				hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', function(self, texPath)
+				hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', function(highlight, texPath)
 					if texPath ~= nil then
-						self:SetTexture();
+						highlight:SetTexture()
 					end
 				end)
 			end
@@ -480,7 +443,7 @@ function S:LookingForGroupFrames()
 	--[[LFGInvitePopup_Update('Elvz', true, true, true)
 	StaticPopupSpecial_Show(LFGInvitePopup);]]
 	_G.LFGInvitePopup:StripTextures()
-	_G.LFGInvitePopup:SetTemplate('Transparent')
+	_G.LFGInvitePopup:CreateBackdrop('Transparent')
 	S:HandleButton(_G.LFGInvitePopupAcceptButton)
 	S:HandleButton(_G.LFGInvitePopupDeclineButton)
 
@@ -488,12 +451,8 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
 	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
-	S:HandleButton(_G[_G.ScenarioQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
-	S:HandleButton(_G[_G.ScenarioQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
 	_G.LFDQueueFrameRandomScrollFrameScrollBar:StripTextures()
-	_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.LFDQueueFrameRandomScrollFrameScrollBar)
-	S:HandleScrollBar(_G.ScenarioQueueFrameSpecificScrollFrameScrollBar)
 
 	--LFGListFrame
 	local LFGListFrame = _G.LFGListFrame
@@ -501,17 +460,17 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
 	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
 	LFGListFrame.CategorySelection.StartGroupButton:ClearAllPoints()
-	LFGListFrame.CategorySelection.StartGroupButton:SetPoint('BOTTOMLEFT', -1, 3)
+	LFGListFrame.CategorySelection.StartGroupButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
-	LFGListFrame.CategorySelection.FindGroupButton:SetPoint('BOTTOMRIGHT', -6, 3)
+	LFGListFrame.CategorySelection.FindGroupButton:Point('BOTTOMRIGHT', -6, 3)
 
 	LFGListFrame.EntryCreation.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.EntryCreation.CancelButton)
 	S:HandleButton(LFGListFrame.EntryCreation.ListGroupButton)
 	LFGListFrame.EntryCreation.CancelButton:ClearAllPoints()
-	LFGListFrame.EntryCreation.CancelButton:SetPoint('BOTTOMLEFT', -1, 3)
+	LFGListFrame.EntryCreation.CancelButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.EntryCreation.ListGroupButton:ClearAllPoints()
-	LFGListFrame.EntryCreation.ListGroupButton:SetPoint('BOTTOMRIGHT', -6, 3)
+	LFGListFrame.EntryCreation.ListGroupButton:Point('BOTTOMRIGHT', -6, 3)
 	S:HandleEditBox(LFGListFrame.EntryCreation.Description)
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.Name)
@@ -529,9 +488,9 @@ function S:LookingForGroupFrames()
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
 
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog:CreateBackdrop('Transparent')
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate('Transparent')
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:CreateBackdrop('Transparent')
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
 	S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
@@ -539,13 +498,13 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
 
 	_G.LFGListApplicationDialog:StripTextures()
-	_G.LFGListApplicationDialog:SetTemplate('Transparent')
+	_G.LFGListApplicationDialog:CreateBackdrop('Transparent')
 	S:HandleButton(_G.LFGListApplicationDialog.SignUpButton)
 	S:HandleButton(_G.LFGListApplicationDialog.CancelButton)
 	S:HandleEditBox(_G.LFGListApplicationDialogDescription)
 
 	_G.LFGListInviteDialog:StripTextures()
-	_G.LFGListInviteDialog:SetTemplate('Transparent')
+	_G.LFGListInviteDialog:CreateBackdrop('Transparent')
 	S:HandleButton(_G.LFGListInviteDialog.AcknowledgeButton)
 	S:HandleButton(_G.LFGListInviteDialog.AcceptButton)
 	S:HandleButton(_G.LFGListInviteDialog.DeclineButton)
@@ -572,17 +531,17 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
 	S:HandleButton(_G.LFGListSearchPanelScrollFrame.StartGroupButton)
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
-	LFGListFrame.SearchPanel.BackButton:SetPoint('BOTTOMLEFT', -1, 3)
+	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
-	LFGListFrame.SearchPanel.SignUpButton:SetPoint('BOTTOMRIGHT', -6, 3)
+	LFGListFrame.SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
 	S:HandleScrollBar(_G.LFGListSearchPanelScrollFrameScrollBar)
 
 	S:HandleButton(LFGListFrame.SearchPanel.FilterButton)
-	LFGListFrame.SearchPanel.FilterButton:SetPoint('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
+	LFGListFrame.SearchPanel.FilterButton:Point('LEFT', LFGListFrame.SearchPanel.SearchBox, 'RIGHT', 5, 0)
 	S:HandleButton(LFGListFrame.SearchPanel.RefreshButton)
-	LFGListFrame.SearchPanel.RefreshButton:SetSize(24, 24)
-	LFGListFrame.SearchPanel.RefreshButton.Icon:SetPoint('CENTER')
+	LFGListFrame.SearchPanel.RefreshButton:Size(24)
+	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
 		if not button.DeclineButton.template then
@@ -615,21 +574,21 @@ function S:LookingForGroupFrames()
 		for i = 2, numResults do
 			local button = self.AutoCompleteFrame.Results[i]
 			if button and not button.moved then
-				button:SetPoint('TOPLEFT', self.AutoCompleteFrame.Results[i-1], 'BOTTOMLEFT', 0, -2)
-				button:SetPoint('TOPRIGHT', self.AutoCompleteFrame.Results[i-1], 'BOTTOMRIGHT', 0, -2)
+				button:Point('TOPLEFT', self.AutoCompleteFrame.Results[i-1], 'BOTTOMLEFT', 0, -2)
+				button:Point('TOPRIGHT', self.AutoCompleteFrame.Results[i-1], 'BOTTOMRIGHT', 0, -2)
 				button.moved = true
 			end
 		end
-		self.AutoCompleteFrame:SetHeight(numResults * (self.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
+		self.AutoCompleteFrame:Height(numResults * (self.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
 	end)
 
 	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:CreateBackdrop('Transparent')
-	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:SetPoint('TOPLEFT', LFGListFrame.SearchPanel.AutoCompleteFrame, 'TOPLEFT', 0, 3)
-	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:SetPoint('BOTTOMRIGHT', LFGListFrame.SearchPanel.AutoCompleteFrame, 'BOTTOMRIGHT', 6, 3)
+	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:Point('TOPLEFT', LFGListFrame.SearchPanel.AutoCompleteFrame, 'TOPLEFT', 0, 3)
+	LFGListFrame.SearchPanel.AutoCompleteFrame.backdrop:Point('BOTTOMRIGHT', LFGListFrame.SearchPanel.AutoCompleteFrame, 'BOTTOMRIGHT', 6, 3)
 
-	LFGListFrame.SearchPanel.AutoCompleteFrame:SetPoint('TOPLEFT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMLEFT', -2, -8)
-	LFGListFrame.SearchPanel.AutoCompleteFrame:SetPoint('TOPRIGHT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMRIGHT', -4, -8)
+	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPLEFT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMLEFT', -2, -8)
+	LFGListFrame.SearchPanel.AutoCompleteFrame:Point('TOPRIGHT', LFGListFrame.SearchPanel.SearchBox, 'BOTTOMRIGHT', -4, -8)
 
 	--ApplicationViewer (Custom Groups)
 	LFGListFrame.ApplicationViewer.EntryName:FontTemplate()
@@ -637,45 +596,46 @@ function S:LookingForGroupFrames()
 	S:HandleCheckBox(LFGListFrame.ApplicationViewer.AutoAcceptButton)
 
 	LFGListFrame.ApplicationViewer.Inset:StripTextures()
-	LFGListFrame.ApplicationViewer.Inset:SetTemplate('Transparent')
+	LFGListFrame.ApplicationViewer.Inset:CreateBackdrop('Transparent')
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.NameColumnHeader, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.RoleColumnHeader, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.ItemLevelColumnHeader, true)
 	LFGListFrame.ApplicationViewer.NameColumnHeader:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.NameColumnHeader:SetPoint('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPLEFT', 0, 1)
+	LFGListFrame.ApplicationViewer.NameColumnHeader:Point('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPLEFT', 0, 1)
 	LFGListFrame.ApplicationViewer.NameColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.RoleColumnHeader:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RoleColumnHeader:SetPoint('LEFT', LFGListFrame.ApplicationViewer.NameColumnHeader, 'RIGHT', 1, 0)
+	LFGListFrame.ApplicationViewer.RoleColumnHeader:Point('LEFT', LFGListFrame.ApplicationViewer.NameColumnHeader, 'RIGHT', 1, 0)
 	LFGListFrame.ApplicationViewer.RoleColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:SetPoint('LEFT', LFGListFrame.ApplicationViewer.RoleColumnHeader, 'RIGHT', 1, 0)
+	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:Point('LEFT', LFGListFrame.ApplicationViewer.RoleColumnHeader, 'RIGHT', 1, 0)
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
-	LFGListFrame.ApplicationViewer.RefreshButton:SetSize(24, 24)
+	LFGListFrame.ApplicationViewer.RefreshButton:Size(24, 24)
 	LFGListFrame.ApplicationViewer.RefreshButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RefreshButton:SetPoint('BOTTOMRIGHT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 16, 4)
+	LFGListFrame.ApplicationViewer.RefreshButton:Point('BOTTOMRIGHT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 16, 4)
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RemoveEntryButton, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.EditButton, true)
 	LFGListFrame.ApplicationViewer.RemoveEntryButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.RemoveEntryButton:SetPoint('BOTTOMLEFT', -1, 3)
+	LFGListFrame.ApplicationViewer.RemoveEntryButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.ApplicationViewer.EditButton:ClearAllPoints()
-	LFGListFrame.ApplicationViewer.EditButton:SetPoint('BOTTOMRIGHT', -6, 3)
+	LFGListFrame.ApplicationViewer.EditButton:Point('BOTTOMRIGHT', -6, 3)
 
 	local LFGListApplicationViewerScrollFrameScrollBar = _G.LFGListApplicationViewerScrollFrameScrollBar
 	S:HandleScrollBar(LFGListApplicationViewerScrollFrameScrollBar)
 	LFGListApplicationViewerScrollFrameScrollBar:ClearAllPoints()
-	LFGListApplicationViewerScrollFrameScrollBar:SetPoint('TOPLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 0, -14)
-	LFGListApplicationViewerScrollFrameScrollBar:SetPoint('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'BOTTOMRIGHT', 0, 14)
+	LFGListApplicationViewerScrollFrameScrollBar:Point('TOPLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 0, -14)
+	LFGListApplicationViewerScrollFrameScrollBar:Point('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'BOTTOMRIGHT', 0, 14)
 
 	hooksecurefunc('LFGListCategorySelection_AddButton', function(self, btnIndex, categoryID, filters)
 		local button = self.CategoryButtons[btnIndex]
-		if(button) then
+		if button then
 			if not button.isSkinned then
-				button:SetTemplate()
+				button:CreateBackdrop()
+				button.backdrop:SetAllPoints()
 				button.Icon:SetDrawLayer('BACKGROUND', 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()
@@ -689,16 +649,13 @@ function S:LookingForGroupFrames()
 
 			button.SelectedTexture:Hide()
 			local selected = self.selectedCategory == categoryID and self.selectedFilters == filters
-			if(selected) then
-				button:SetBackdropBorderColor(1, 1, 0)
+			if selected then
+				button.backdrop:SetBackdropBorderColor(1, 1, 0)
 			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)
-
-	-- Tutorial
-	S:HandleCloseButton(_G.PremadeGroupsPvETutorialAlert.CloseButton)
 end
 
 function S:Blizzard_ChallengesUI()

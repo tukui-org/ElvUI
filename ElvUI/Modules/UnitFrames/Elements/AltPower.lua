@@ -9,7 +9,7 @@ function UF:Construct_AltPowerBar(frame)
 	altpower:GetStatusBarTexture():SetHorizTile(false)
 	UF.statusbars[altpower] = true
 
-	altpower:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+	altpower:CreateBackdrop(nil, nil, nil, nil, true)
 	altpower.BG = altpower:CreateTexture(nil, 'BORDER')
 	altpower.BG:SetAllPoints()
 	altpower.BG:SetTexture(E.media.blankTex)
@@ -19,7 +19,7 @@ function UF:Construct_AltPowerBar(frame)
 	altpower.RaisedElementParent:SetAllPoints()
 
 	altpower.value = altpower.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
-	altpower.value:SetPoint('CENTER')
+	altpower.value:Point('CENTER')
 	altpower.value:SetJustifyH('CENTER')
 	UF:Configure_FontString(altpower.value)
 

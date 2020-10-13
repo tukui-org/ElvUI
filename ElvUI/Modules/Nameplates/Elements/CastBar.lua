@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 local CH = E:GetModule('Chat')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local abs = abs
@@ -103,11 +104,11 @@ function NP:Construct_Castbar(nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
 	Castbar:SetFrameLevel(5)
 	Castbar:CreateBackdrop('Transparent')
-	Castbar:SetStatusBarTexture(E.LSM:Fetch('statusbar', NP.db.statusbar))
+	Castbar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
 	NP.StatusBars[Castbar] = true
 
-	Castbar.Button = CreateFrame('Frame', nil, Castbar)
+	Castbar.Button = CreateFrame('Frame', nil, Castbar, 'BackdropTemplate')
 	Castbar.Button:SetTemplate()
 
 	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')
@@ -115,13 +116,11 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Icon:SetInside()
 
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
-	Castbar.Time:SetPoint('RIGHT', Castbar, 'RIGHT', -4, 0)
+	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
-	Castbar.Time:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Text:SetJustifyH('LEFT')
-	Castbar.Text:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	Castbar.Text:SetWordWrap(false)
 
 	Castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
@@ -134,11 +133,9 @@ function NP:Construct_Castbar(nameplate)
 
 	if nameplate == _G.ElvNP_Test then
 		Castbar.Hide = Castbar.Show
-		Castbar:Show()
-		Castbar.Text:SetText('Casting')
-		Castbar.Time:SetText('3.1')
 		Castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
 		Castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
+		Castbar:Show()
 	end
 
 	return Castbar
@@ -181,13 +178,13 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.castTimeFormat = db.castbar.castTimeFormat
 		nameplate.Castbar.channelTimeFormat = db.castbar.channelTimeFormat
 
-		nameplate.Castbar:SetSize(db.castbar.width, db.castbar.height)
-		nameplate.Castbar:SetPoint('CENTER', nameplate, 'CENTER', db.castbar.xOffset, db.castbar.yOffset)
+		nameplate.Castbar:Size(db.castbar.width, db.castbar.height)
+		nameplate.Castbar:Point('CENTER', nameplate, 'CENTER', db.castbar.xOffset, db.castbar.yOffset)
 
 		if db.castbar.showIcon then
 			nameplate.Castbar.Button:ClearAllPoints()
-			nameplate.Castbar.Button:SetPoint(db.castbar.iconPosition == 'RIGHT' and 'BOTTOMLEFT' or 'BOTTOMRIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'BOTTOMRIGHT' or 'BOTTOMLEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
-			nameplate.Castbar.Button:SetSize(db.castbar.iconSize, db.castbar.iconSize)
+			nameplate.Castbar.Button:Point(db.castbar.iconPosition == 'RIGHT' and 'BOTTOMLEFT' or 'BOTTOMRIGHT', nameplate.Castbar, db.castbar.iconPosition == 'RIGHT' and 'BOTTOMRIGHT' or 'BOTTOMLEFT', db.castbar.iconOffsetX, db.castbar.iconOffsetY)
+			nameplate.Castbar.Button:Size(db.castbar.iconSize, db.castbar.iconSize)
 			nameplate.Castbar.Button:Show()
 		else
 			nameplate.Castbar.Button:Hide()
@@ -197,30 +194,38 @@ function NP:Update_Castbar(nameplate)
 		nameplate.Castbar.Text:ClearAllPoints()
 
 		if db.castbar.textPosition == 'BELOW' then
-			nameplate.Castbar.Time:SetPoint('TOPRIGHT', nameplate.Castbar, 'BOTTOMRIGHT')
-			nameplate.Castbar.Text:SetPoint('TOPLEFT', nameplate.Castbar, 'BOTTOMLEFT')
+			nameplate.Castbar.Time:Point('TOPRIGHT', nameplate.Castbar, 'BOTTOMRIGHT')
+			nameplate.Castbar.Text:Point('TOPLEFT', nameplate.Castbar, 'BOTTOMLEFT')
 		elseif db.castbar.textPosition == 'ABOVE' then
-			nameplate.Castbar.Time:SetPoint('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
-			nameplate.Castbar.Text:SetPoint('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
+			nameplate.Castbar.Time:Point('BOTTOMRIGHT', nameplate.Castbar, 'TOPRIGHT')
+			nameplate.Castbar.Text:Point('BOTTOMLEFT', nameplate.Castbar, 'TOPLEFT')
 		else
-			nameplate.Castbar.Time:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -1, 0)
-			nameplate.Castbar.Text:SetPoint('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
+			nameplate.Castbar.Time:Point('RIGHT', nameplate.Castbar, 'RIGHT', -1, 0)
+			nameplate.Castbar.Text:Point('LEFT', nameplate.Castbar, 'LEFT', 1, 0)
 		end
 
-		nameplate.Castbar.Text:SetPoint('RIGHT', nameplate.Castbar, 'RIGHT', -20, 0)
+		nameplate.Castbar.Text:Point('RIGHT', nameplate.Castbar, 'RIGHT', -20, 0)
 
 		if db.castbar.hideTime then
 			nameplate.Castbar.Time:Hide()
 		else
-			nameplate.Castbar.Time:FontTemplate(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
+			nameplate.Castbar.Time:FontTemplate(LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Time:Show()
+
+			if nameplate == _G.ElvNP_Test then
+				nameplate.Castbar.Time:SetText('3.1')
+			end
 		end
 
 		if db.castbar.hideSpellName then
 			nameplate.Castbar.Text:Hide()
 		else
-			nameplate.Castbar.Text:FontTemplate(E.LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
+			nameplate.Castbar.Text:FontTemplate(LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Text:Show()
+
+			if nameplate == _G.ElvNP_Test then
+				nameplate.Castbar.Text:SetText('Casting')
+			end
 		end
 	elseif nameplate:IsElementEnabled('Castbar') then
 		nameplate:DisableElement('Castbar')

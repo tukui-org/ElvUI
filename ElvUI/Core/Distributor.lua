@@ -5,7 +5,7 @@ local LibCompress = E.Libs.Compress
 local LibBase64 = E.Libs.Base64
 
 local _G = _G
-local tonumber, type, gsub, pcall, loadstring = tonumber, type, gsub, pcall, loadstring
+local tonumber, type, gsub, pairs, pcall, loadstring = tonumber, type, gsub, pairs, pcall, loadstring
 local len, format, split, find = strlen, format, strsplit, strfind
 
 local CreateFrame = CreateFrame
@@ -34,10 +34,10 @@ function D:Initialize()
 	self.statusBar:CreateBackdrop()
 	self.statusBar:SetStatusBarTexture(E.media.normTex)
 	self.statusBar:SetStatusBarColor(0.95, 0.15, 0.15)
-	self.statusBar:SetSize(250, 18)
+	self.statusBar:Size(250, 18)
 	self.statusBar.text = self.statusBar:CreateFontString(nil, 'OVERLAY')
 	self.statusBar.text:FontTemplate()
-	self.statusBar.text:SetPoint('CENTER')
+	self.statusBar.text:Point('CENTER')
 	self.statusBar:Hide()
 	E:RegisterStatusBar(self.statusBar)
 end

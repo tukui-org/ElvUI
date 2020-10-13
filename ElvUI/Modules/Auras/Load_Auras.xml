@@ -1,5 +1,5 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Button name='ElvUIAuraTemplate' inherits='SecureActionButtonTemplate' virtual='true' framelevel='4'>
+	<Button name='ElvUIAuraTemplate' inherits='SecureActionButtonTemplate, BackdropTemplate' virtual='true' framelevel='4'>
 		<!-- framelevel 4 for Masque support -->
 		<Size x='26' y='26'/>
 		<Attributes>
@@ -12,9 +12,9 @@
 			</OnLoad>
 			<OnEnter>
 				GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMLEFT', -5, -5)
-				if(self:GetAttribute'index') then
+				if self:GetAttribute('index') then
 					GameTooltip:SetUnitAura(SecureButton_GetUnit(self:GetParent()), self:GetID(), self:GetParent():GetAttribute('filter'))
-				elseif(self:GetAttribute'target-slot') then
+				elseif self:GetAttribute('target-slot') then
 					GameTooltip:SetInventoryItem('player', self:GetID())
 				end
 			</OnEnter>

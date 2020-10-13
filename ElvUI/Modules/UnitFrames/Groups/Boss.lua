@@ -37,7 +37,7 @@ function UF:Construct_BossFrames(frame)
 	frame:SetAttribute('type2', 'focus')
 	frame.customTexts = {}
 
-	BossHeader:SetPoint('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
+	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(BossHeader, BossHeader:GetName()..'Mover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID', nil, 'unitframe,groupUnits,boss,generalGroup')
 	frame.mover = BossHeader.mover
 
@@ -58,7 +58,7 @@ function UF:Update_BossFrames(frame, db)
 		frame.USE_POWERBAR_OFFSET = (db.power.width == 'offset' and db.power.offset ~= 0) and frame.USE_POWERBAR and not frame.POWERBAR_DETACHED
 		frame.POWERBAR_OFFSET = frame.USE_POWERBAR_OFFSET and db.power.offset or 0
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
-		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (frame.BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((frame.BORDER+frame.SPACING)*2)))
+		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (UF.BORDER*2))/2 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((UF.BORDER+UF.SPACING)*2)))
 		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == 'MIDDLE')
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
@@ -77,7 +77,7 @@ function UF:Update_BossFrames(frame, db)
 
 	frame.colors = ElvUF.colors
 	frame:RegisterForClicks(self.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
-	frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+	frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	UF:Configure_InfoPanel(frame)
 	UF:Configure_HealthBar(frame)
 	UF:UpdateNameSettings(frame)
@@ -96,32 +96,32 @@ function UF:Update_BossFrames(frame, db)
 	frame:ClearAllPoints()
 	if frame.index == 1 then
 		if db.growthDirection == 'UP' then
-			frame:SetPoint('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT')
+			frame:Point('BOTTOMRIGHT', BossHeaderMover, 'BOTTOMRIGHT')
 		elseif db.growthDirection == 'RIGHT' then
-			frame:SetPoint('LEFT', BossHeaderMover, 'LEFT')
+			frame:Point('LEFT', BossHeaderMover, 'LEFT')
 		elseif db.growthDirection == 'LEFT' then
-			frame:SetPoint('RIGHT', BossHeaderMover, 'RIGHT')
+			frame:Point('RIGHT', BossHeaderMover, 'RIGHT')
 		else --Down
-			frame:SetPoint('TOPRIGHT', BossHeaderMover, 'TOPRIGHT')
+			frame:Point('TOPRIGHT', BossHeaderMover, 'TOPRIGHT')
 		end
 	else
 		if db.growthDirection == 'UP' then
-			frame:SetPoint('BOTTOMRIGHT', _G['ElvUF_Boss'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
+			frame:Point('BOTTOMRIGHT', _G['ElvUF_Boss'..frame.index-1], 'TOPRIGHT', 0, db.spacing)
 		elseif db.growthDirection == 'RIGHT' then
-			frame:SetPoint('LEFT', _G['ElvUF_Boss'..frame.index-1], 'RIGHT', db.spacing, 0)
+			frame:Point('LEFT', _G['ElvUF_Boss'..frame.index-1], 'RIGHT', db.spacing, 0)
 		elseif db.growthDirection == 'LEFT' then
-			frame:SetPoint('RIGHT', _G['ElvUF_Boss'..frame.index-1], 'LEFT', -db.spacing, 0)
+			frame:Point('RIGHT', _G['ElvUF_Boss'..frame.index-1], 'LEFT', -db.spacing, 0)
 		else --Down
-			frame:SetPoint('TOPRIGHT', _G['ElvUF_Boss'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
+			frame:Point('TOPRIGHT', _G['ElvUF_Boss'..frame.index-1], 'BOTTOMRIGHT', 0, -db.spacing)
 		end
 	end
 
 	if db.growthDirection == 'UP' or db.growthDirection == 'DOWN' then
-		BossHeader:SetWidth(frame.UNIT_WIDTH)
-		BossHeader:SetHeight(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
+		BossHeader:Width(frame.UNIT_WIDTH)
+		BossHeader:Height(frame.UNIT_HEIGHT + ((frame.UNIT_HEIGHT + db.spacing) * (MAX_BOSS_FRAMES -1)))
 	elseif db.growthDirection == 'LEFT' or db.growthDirection == 'RIGHT' then
-		BossHeader:SetWidth(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
-		BossHeader:SetHeight(frame.UNIT_HEIGHT)
+		BossHeader:Width(frame.UNIT_WIDTH + ((frame.UNIT_WIDTH + db.spacing) * (MAX_BOSS_FRAMES -1)))
+		BossHeader:Height(frame.UNIT_HEIGHT)
 	end
 
 	frame:UpdateAllElements('ElvUI_UpdateAllElements')

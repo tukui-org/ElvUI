@@ -22,7 +22,7 @@ local oUF = ns.oUF
 local function Update(self)
 	local element = self.TargetIndicator
 
-	if (element.PreUpdate) then
+	if element.PreUpdate then
 		element:PreUpdate()
 	end
 
@@ -37,7 +37,7 @@ local function Update(self)
 			element.TopIndicator:Show()
 		end
 
-		if (element.LeftIndicator and element.RightIndicator) and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
+		if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
 			element.RightIndicator:Show()
 			element.LeftIndicator:Show()
 		end
@@ -56,7 +56,7 @@ local function Update(self)
 	if UnitIsUnit(self.unit, 'target') then
 		showIndicator = true
 		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
-	elseif (not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0) then
+	elseif not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0 then
 		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 		local perc = (maxHealth > 0 and health/maxHealth) or 0
 
@@ -74,11 +74,14 @@ local function Update(self)
 	if showIndicator then
 		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 			element.TopIndicator:SetVertexColor(r, g, b)
+			element.TopIndicator:SetTexture(element.arrow)
 		end
 
-		if (element.LeftIndicator and element.RightIndicator) and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
-			element.RightIndicator:SetVertexColor(r, g, b)
+		if element.LeftIndicator and element.RightIndicator and (element.style == 'style4' or element.style == 'style7' or element.style == 'style8') then
 			element.LeftIndicator:SetVertexColor(r, g, b)
+			element.RightIndicator:SetVertexColor(r, g, b)
+			element.LeftIndicator:SetTexture(element.arrow)
+			element.RightIndicator:SetTexture(element.arrow)
 		end
 
 		if element.Shadow and (element.style == 'style1' or element.style == 'style5' or element.style == 'style7') then
@@ -92,7 +95,7 @@ local function Update(self)
 		end
 	end
 
-	if (element.PostUpdate) then
+	if element.PostUpdate then
 		return element:PostUpdate(self.unit)
 	end
 end
@@ -107,7 +110,7 @@ end
 
 local function Enable(self)
 	local element = self.TargetIndicator
-	if (element) then
+	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
@@ -119,41 +122,30 @@ local function Enable(self)
 			element.lowHealthThreshold = .4
 		end
 
-		if element.Shadow then
-			if element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() == nil then
-				element.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = 5})
-			end
+		if element.Shadow and element.Shadow:IsObjectType('Frame') and not element.Shadow:GetBackdrop() then
+			element.Shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(5)})
 		end
 
-		if element.Spark then
-			if element.Spark:IsObjectType('Texture') and not element.Spark:GetTexture() then
-				element.Spark:SetTexture(E.Media.Textures.Spark)
-			end
+		if element.Spark and element.Spark:IsObjectType('Texture') and not element.Spark:GetTexture() then
+			element.Spark:SetTexture(E.Media.Textures.Spark)
 		end
 
-		if element.TopIndicator then
-			if element.TopIndicator:IsObjectType('Texture') and not element.TopIndicator:GetTexture() then
-				element.TopIndicator:SetTexture(E.Media.Textures.ArrowUp)
-				element.TopIndicator:SetRotation(3.14)
-			end
+		if element.TopIndicator and element.TopIndicator:IsObjectType('Texture') and not element.TopIndicator:GetTexture() then
+			element.TopIndicator:SetTexture(E.Media.Textures.ArrowUp)
+			element.TopIndicator:SetRotation(3.14)
 		end
 
-		if element.LeftIndicator then
-			if element.LeftIndicator:IsObjectType('Texture') and not element.LeftIndicator:GetTexture() then
-				element.LeftIndicator:SetTexture(E.Media.Textures.ArrowUp)
-				element.LeftIndicator:SetRotation(1.57)
-			end
+		if element.LeftIndicator and element.LeftIndicator:IsObjectType('Texture') and not element.LeftIndicator:GetTexture() then
+			element.LeftIndicator:SetTexture(E.Media.Textures.ArrowUp)
+			element.LeftIndicator:SetRotation(1.57)
 		end
 
-		if element.RightIndicator then
-			if element.RightIndicator:IsObjectType('Texture') and not element.RightIndicator:GetTexture() then
-				element.RightIndicator:SetTexture(E.Media.Textures.ArrowUp)
-				element.RightIndicator:SetRotation(-1.57)
-			end
+		if element.RightIndicator and element.RightIndicator:IsObjectType('Texture') and not element.RightIndicator:GetTexture() then
+			element.RightIndicator:SetTexture(E.Media.Textures.ArrowUp)
+			element.RightIndicator:SetRotation(-1.57)
 		end
 
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
-		self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 
 		return true
 	end
@@ -161,7 +153,7 @@ end
 
 local function Disable(self)
 	local element = self.TargetIndicator
-	if (element) then
+	if element then
 		if element.TopIndicator then element.TopIndicator:Hide() end
 		if element.LeftIndicator then element.LeftIndicator:Hide() end
 		if element.RightIndicator then element.RightIndicator:Hide() end
@@ -169,7 +161,6 @@ local function Disable(self)
 		if element.Spark then element.Spark:Hide() end
 
 		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
-		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 	end
 end
 

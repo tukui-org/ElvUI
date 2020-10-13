@@ -8,7 +8,7 @@ local CreateFrame = CreateFrame
 local function SetPosition(frame, _, parent)
 	if parent ~= _G.DurabilityFrameHolder then
 		frame:ClearAllPoints()
-		frame:SetPoint('CENTER', _G.DurabilityFrameHolder, 'CENTER')
+		frame:Point('CENTER', _G.DurabilityFrameHolder, 'CENTER')
 	end
 end
 
@@ -18,8 +18,8 @@ function B:PositionDurabilityFrame()
 	local Scale = E.db.general.durabilityScale or 1
 
 	local DurabilityFrameHolder = CreateFrame('Frame', 'DurabilityFrameHolder', E.UIParent)
-	DurabilityFrameHolder:SetSize(DurabilityFrame:GetSize())
-	DurabilityFrameHolder:SetPoint('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
+	DurabilityFrameHolder:Size(DurabilityFrame:GetSize())
+	DurabilityFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 
 	E:CreateMover(DurabilityFrameHolder, 'DurabilityFrameMover', L["Durability Frame"], nil, nil, nil, nil, nil, 'all,general')
 

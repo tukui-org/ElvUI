@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local LSM = E.Libs.LSM
 
 local wipe, sort, unpack = wipe, sort, unpack
 local next, pairs, tinsert = next, pairs, tinsert
@@ -90,14 +91,14 @@ end
 
 function E:CreateStatusContent(num, width, parent, anchorTo, content)
 	if not content then content = CreateFrame('Frame', nil, parent) end
-	content:SetSize(width, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
-	content:SetPoint('TOP', anchorTo, 'BOTTOM')
+	content:Size(width, (num * 20) + ((num-1)*5)) --20 height and 5 spacing
+	content:Point('TOP', anchorTo, 'BOTTOM')
 
-	local font = E.Libs.LSM:Fetch('font', 'Expressway')
+	local font = LSM:Fetch('font', 'Expressway')
 	for i = 1, num do
 		if not content['Line'..i] then
 			local line = CreateFrame('Frame', nil, content)
-			line:SetSize(width, 20)
+			line:Size(width, 20)
 
 			local text = line:CreateFontString(nil, 'ARTWORK')
 			text:SetAllPoints()
@@ -107,9 +108,9 @@ function E:CreateStatusContent(num, width, parent, anchorTo, content)
 			line.Text = text
 
 			if i == 1 then
-				line:SetPoint('TOP', content, 'TOP')
+				line:Point('TOP', content, 'TOP')
 			else
-				line:SetPoint('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
+				line:Point('TOP', content['Line'..(i-1)], 'BOTTOM', 0, -5)
 			end
 
 			content['Line'..i] = line
@@ -129,39 +130,39 @@ end
 function E:CreateStatusSection(width, height, headerWidth, headerHeight, parent, anchor1, anchorTo, anchor2, yOffset)
 	local parentWidth, parentHeight = parent:GetSize()
 
-	if width > parentWidth then parent:SetWidth(width + 25) end
-	if height then parent:SetHeight(parentHeight + height) end
+	if width > parentWidth then parent:Width(width + 25) end
+	if height then parent:Height(parentHeight + height) end
 
 	local section = CreateFrame('Frame', nil, parent)
-	section:SetSize(width, height or 0)
-	section:SetPoint(anchor1, anchorTo, anchor2, 0, yOffset)
+	section:Size(width, height or 0)
+	section:Point(anchor1, anchorTo, anchor2, 0, yOffset)
 
 	local header = CreateFrame('Frame', nil, section)
-	header:SetSize(headerWidth or width, headerHeight)
-	header:SetPoint('TOP', section)
+	header:Size(headerWidth or width, headerHeight)
+	header:Point('TOP', section)
 	section.Header = header
 
-	local font = E.Libs.LSM:Fetch('font', 'Expressway')
+	local font = LSM:Fetch('font', 'Expressway')
 	local text = section.Header:CreateFontString(nil, 'ARTWORK')
-	text:SetPoint('TOP')
-	text:SetPoint('BOTTOM')
+	text:Point('TOP')
+	text:Point('BOTTOM')
 	text:SetJustifyH('CENTER')
 	text:SetJustifyV('MIDDLE')
 	text:FontTemplate(font, 18, 'OUTLINE')
 	section.Header.Text = text
 
 	local leftDivider = section.Header:CreateTexture(nil, 'ARTWORK')
-	leftDivider:SetHeight(8)
-	leftDivider:SetPoint('LEFT', section.Header, 'LEFT', 5, 0)
-	leftDivider:SetPoint('RIGHT', section.Header.Text, 'LEFT', -5, 0)
+	leftDivider:Height(8)
+	leftDivider:Point('LEFT', section.Header, 'LEFT', 5, 0)
+	leftDivider:Point('RIGHT', section.Header.Text, 'LEFT', -5, 0)
 	leftDivider:SetTexture([[Interface\Tooltips\UI-Tooltip-Border]])
 	leftDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 	section.Header.LeftDivider = leftDivider
 
 	local rightDivider = section.Header:CreateTexture(nil, 'ARTWORK')
-	rightDivider:SetHeight(8)
-	rightDivider:SetPoint('RIGHT', section.Header, 'RIGHT', -5, 0)
-	rightDivider:SetPoint('LEFT', section.Header.Text, 'RIGHT', 5, 0)
+	rightDivider:Height(8)
+	rightDivider:Point('RIGHT', section.Header, 'RIGHT', -5, 0)
+	rightDivider:Point('LEFT', section.Header.Text, 'RIGHT', 5, 0)
 	rightDivider:SetTexture([[Interface\Tooltips\UI-Tooltip-Border]])
 	rightDivider:SetTexCoord(0.81, 0.94, 0.5, 1)
 	section.Header.RightDivider = rightDivider
@@ -172,21 +173,21 @@ end
 function E:CreateStatusFrame()
 	--Main frame
 	local StatusFrame = CreateFrame('Frame', 'ElvUIStatusReport', E.UIParent)
-	StatusFrame:SetPoint('CENTER', E.UIParent, 'CENTER')
+	StatusFrame:Point('CENTER', E.UIParent, 'CENTER')
 	StatusFrame:SetFrameStrata('HIGH')
 	StatusFrame:CreateBackdrop('Transparent', nil, true)
 	StatusFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)
 	StatusFrame:SetMovable(true)
-	StatusFrame:SetSize(0, 35)
+	StatusFrame:Size(0, 35)
 	StatusFrame:Hide()
 
 	--Plugin frame
 	local PluginFrame = CreateFrame('Frame', 'ElvUIStatusPlugins', StatusFrame)
-	PluginFrame:SetPoint('TOPLEFT', StatusFrame, 'TOPRIGHT', E.Border * 2, 0)
+	PluginFrame:Point('TOPLEFT', StatusFrame, 'TOPRIGHT', E.Border * 2, 0)
 	PluginFrame:SetFrameStrata('HIGH')
 	PluginFrame:CreateBackdrop('Transparent', nil, true)
 	PluginFrame.backdrop:SetBackdropColor(0, 0, 0, 0.6)
-	PluginFrame:SetSize(0, 25)
+	PluginFrame:Size(0, 25)
 	StatusFrame.PluginFrame = PluginFrame
 
 	--Close button and script to retoggle the options.
@@ -195,20 +196,20 @@ function E:CreateStatusFrame()
 
 	--Title logo (drag to move frame)
 	local titleLogoFrame = CreateFrame('Frame', nil, StatusFrame, 'TitleDragAreaTemplate')
-	titleLogoFrame:SetPoint('CENTER', StatusFrame, 'TOP')
-	titleLogoFrame:SetSize(240, 80)
+	titleLogoFrame:Point('CENTER', StatusFrame, 'TOP')
+	titleLogoFrame:Size(240, 80)
 	StatusFrame.TitleLogoFrame = titleLogoFrame
 
 	local LogoTop = StatusFrame.TitleLogoFrame:CreateTexture(nil, 'ARTWORK')
-	LogoTop:SetPoint('CENTER', titleLogoFrame, 'TOP', 0, -36)
+	LogoTop:Point('CENTER', titleLogoFrame, 'TOP', 0, -36)
 	LogoTop:SetTexture(E.Media.Textures.LogoTopSmall)
-	LogoTop:SetSize(128, 64)
+	LogoTop:Size(128, 64)
 	titleLogoFrame.LogoTop = LogoTop
 
 	local LogoBottom = StatusFrame.TitleLogoFrame:CreateTexture(nil, 'ARTWORK')
-	LogoBottom:SetPoint('CENTER', titleLogoFrame, 'TOP', 0, -36)
+	LogoBottom:Point('CENTER', titleLogoFrame, 'TOP', 0, -36)
 	LogoBottom:SetTexture(E.Media.Textures.LogoBottomSmall)
-	LogoBottom:SetSize(128, 64)
+	LogoBottom:Size(128, 64)
 	titleLogoFrame.LogoBottom = LogoBottom
 
 	--Sections
@@ -223,8 +224,8 @@ function E:CreateStatusFrame()
 	StatusFrame.Section2.Content = E:CreateStatusContent(5, 260, StatusFrame.Section2, StatusFrame.Section2.Header)
 	StatusFrame.Section3.Content = E:CreateStatusContent(6, 260, StatusFrame.Section3, StatusFrame.Section3.Header)
 	--StatusFrame.Section4.Content = CreateFrame('Frame', nil, StatusFrame.Section4)
-	--StatusFrame.Section4.Content:SetSize(240, 25)
-	--StatusFrame.Section4.Content:SetPoint('TOP', StatusFrame.Section4.Header, 'BOTTOM', 0, 0)
+	--StatusFrame.Section4.Content:Size(240, 25)
+	--StatusFrame.Section4.Content:Point('TOP', StatusFrame.Section4.Header, 'BOTTOM', 0, 0)
 
 	--Content lines
 	StatusFrame.Section1.Content.Line3.Text:SetFormattedText('Recommended Scale: |cff4beb2c%s|r', E:PixelBestSize())
@@ -238,13 +239,13 @@ function E:CreateStatusFrame()
 
 	--[[Export buttons
 	StatusFrame.Section4.Content.Button1 = CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
-	StatusFrame.Section4.Content.Button1:SetSize(100, 25)
-	StatusFrame.Section4.Content.Button1:SetPoint('LEFT', StatusFrame.Section4.Content, 'LEFT')
+	StatusFrame.Section4.Content.Button1:Size(100, 25)
+	StatusFrame.Section4.Content.Button1:Point('LEFT', StatusFrame.Section4.Content, 'LEFT')
 	StatusFrame.Section4.Content.Button1:SetText('Forum')
 	StatusFrame.Section4.Content.Button1:SetButtonState('DISABLED')
 	StatusFrame.Section4.Content.Button2 = CreateFrame('Button', nil, StatusFrame.Section4.Content, 'UIPanelButtonTemplate')
-	StatusFrame.Section4.Content.Button2:SetSize(100, 25)
-	StatusFrame.Section4.Content.Button2:SetPoint('RIGHT', StatusFrame.Section4.Content, 'RIGHT')
+	StatusFrame.Section4.Content.Button2:Size(100, 25)
+	StatusFrame.Section4.Content.Button2:Point('RIGHT', StatusFrame.Section4.Content, 'RIGHT')
 	StatusFrame.Section4.Content.Button2:SetText('Ticket')
 	StatusFrame.Section4.Content.Button2:SetButtonState('DISABLED')
 	Skins:HandleButton(StatusFrame.Section4.Content.Button1, true)
@@ -302,8 +303,8 @@ function E:UpdateStatusFrame()
 				PluginSection.Content['Line'..i].Text:SetFormattedText('%s |cff888888v|r|cff%s%s|r', data.title or data.name, color, data.version)
 			end
 
-			PluginFrame.SectionP:SetHeight(count * 20)
-			PluginFrame:SetHeight(PluginSection.Content:GetHeight() + 50)
+			PluginFrame.SectionP:Height(count * 20)
+			PluginFrame:Height(PluginSection.Content:GetHeight() + 50)
 			PluginFrame:Show()
 		else
 			PluginFrame:Hide()

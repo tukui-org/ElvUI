@@ -21,7 +21,7 @@ function S:Blizzard_BlackMarketUI()
 
 	local BlackMarketFrame = _G.BlackMarketFrame
 	BlackMarketFrame:StripTextures()
-	BlackMarketFrame:SetTemplate('Transparent')
+	BlackMarketFrame:CreateBackdrop('Transparent')
 	BlackMarketFrame.Inset:StripTextures()
 
 	S:HandleCloseButton(BlackMarketFrame.CloseButton)
@@ -35,8 +35,8 @@ function S:Blizzard_BlackMarketUI()
 
 	BlackMarketFrame.MoneyFrameBorder:StripTextures()
 	S:HandleEditBox(_G.BlackMarketBidPriceGold)
-	_G.BlackMarketBidPriceGold.backdrop:SetPoint('TOPLEFT', -2, 0)
-	_G.BlackMarketBidPriceGold.backdrop:SetPoint('BOTTOMRIGHT', -2, 0)
+	_G.BlackMarketBidPriceGold.backdrop:Point('TOPLEFT', -2, 0)
+	_G.BlackMarketBidPriceGold.backdrop:Point('BOTTOMRIGHT', -2, 0)
 
 	S:HandleButton(BlackMarketFrame.BidButton)
 
@@ -44,23 +44,10 @@ function S:Blizzard_BlackMarketUI()
 		for _, button in pairs(_G.BlackMarketScrollFrame.buttons) do
 			if not button.skinned then
 				S:HandleItemButton(button.Item)
+				S:HandleIconBorder(button.Item.IconBorder)
 
 				button:StripTextures()
 				button:StyleButton()
-
-				local cR, cG, cB = button.Item.IconBorder:GetVertexColor()
-				if not cR then cR, cG, cB = unpack(E.media.bordercolor) end
-				button.Item.backdrop:SetBackdropBorderColor(cR, cG, cB)
-				button.Item.IconBorder:SetTexture()
-
-				hooksecurefunc(button.Item.IconBorder, 'SetVertexColor', function(s, r, g, b)
-					s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-					s:SetTexture()
-				end)
-				hooksecurefunc(button.Item.IconBorder, 'Hide', function(s)
-					s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end)
-
 				button.skinned = true
 			end
 		end
@@ -68,13 +55,13 @@ function S:Blizzard_BlackMarketUI()
 
 	BlackMarketFrame.HotDeal:StripTextures()
 	BlackMarketFrame.HotDeal.Item.IconTexture:SetTexCoord(unpack(E.TexCoords))
-	BlackMarketFrame.HotDeal.Item.IconBorder:SetAlpha(0)
+	BlackMarketFrame.HotDeal.Item.IconBorder:Kill()
 
 	for i=1, BlackMarketFrame:GetNumRegions() do
 		local region = select(i, BlackMarketFrame:GetRegions())
 		if region and region:IsObjectType('FontString') and region:GetText() == _G.BLACK_MARKET_TITLE then
 			region:ClearAllPoints()
-			region:SetPoint('TOP', BlackMarketFrame, 'TOP', 0, -4)
+			region:Point('TOP', BlackMarketFrame, 'TOP', 0, -4)
 		end
 	end
 

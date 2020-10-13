@@ -437,7 +437,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		c.Visibility = true
 		mod:DisablePlate(frame) -- disable the plate elements
 		frame:ClearAllPoints() -- lets still move the frame out cause its clickable otherwise
-		frame:SetPoint('TOP', E.UIParent, 'BOTTOM', 0, -500)
+		frame:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
 		return -- We hide it. Lets not do other things (no point)
 	end
 	if HealthColor then
@@ -542,7 +542,7 @@ function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor,
 	if Visibility then
 		mod:StyleFilterUpdatePlate(frame, updateBase)
 		frame:ClearAllPoints() -- pull the frame back in
-		frame:SetPoint('CENTER')
+		frame:Point('CENTER')
 	end
 	if HealthColor then
 		local h = frame.Health
@@ -650,6 +650,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if UnitIsQuestBoss(frame.unit) then passed = true else return end
 	end
 
+	-- Quest Unit
+	if trigger.isQuest or trigger.notQuest then
+		local quest = E.TagFunctions.GetQuestData(frame.unit)
+		if (trigger.isQuest and quest) or (trigger.notQuest and not quest) then passed = true else return end
+	end
+
 	-- Require Target
 	if trigger.requireTarget then
 		if UnitExists('target') then passed = true else return end
@@ -726,6 +732,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	if trigger.playerCanAttack or trigger.playerCanNotAttack then
 		local canAttack = UnitCanAttack('player', frame.unit)
 		if (trigger.playerCanAttack and canAttack) or (trigger.playerCanNotAttack and not canAttack) then passed = true else return end
+	end
+
+	-- NPC Title
+	if trigger.hasTitleNPC or trigger.noTitleNPC then
+		local npcTitle = E.TagFunctions.GetTitleNPC(frame.unit)
+		if (trigger.hasTitleNPC and npcTitle) or (trigger.noTitleNPC and not npcTitle) then passed = true else return end
 	end
 
 	-- Classification
@@ -896,10 +908,18 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 	end
 
 	-- Buffs
-	if frame.Buffs and trigger.buffs and trigger.buffs.names and next(trigger.buffs.names) then
-		local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
-		if buff ~= nil then -- ignore if none are selected
-			if buff then passed = true else return end
+	if frame.Buffs and trigger.buffs then
+		-- Has Stealable
+		if trigger.buffs.hasStealable or trigger.buffs.hasNoStealable then
+			if (trigger.buffs.hasStealable and frame.Buffs.hasStealable) or (trigger.buffs.hasNoStealable and not frame.Buffs.hasStealable) then passed = true else return end
+		end
+
+		-- Names / Spell IDs
+		if trigger.buffs.names and next(trigger.buffs.names) then
+			local buff = mod:StyleFilterAuraCheck(frame, trigger.buffs.names, frame.Buffs, trigger.buffs.mustHaveAll, trigger.buffs.missing, trigger.buffs.minTimeLeft, trigger.buffs.maxTimeLeft)
+			if buff ~= nil then -- ignore if none are selected
+				if buff then passed = true else return end
+			end
 		end
 	end
 
@@ -1028,11 +1048,9 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'UNIT_DISPLAYPOWER',
 	'UNIT_FACTION',
 	'UNIT_HEALTH',
-	'UNIT_HEALTH_FREQUENT',
 	'UNIT_MAXHEALTH',
 	'UNIT_NAME_UPDATE',
 	'UNIT_PET',
-	'UNIT_POWER_FREQUENT',
 	'UNIT_POWER_UPDATE',
 	-- list of events added during StyleFilterEvents
 	'MODIFIER_STATE_CHANGED',
@@ -1042,6 +1060,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	'PLAYER_TARGET_CHANGED',
 	'PLAYER_UPDATE_RESTING',
 	'RAID_TARGET_UPDATE',
+	'QUEST_LOG_UPDATE',
 	'SPELL_UPDATE_COOLDOWN',
 	'UNIT_ENTERED_VEHICLE',
 	'UNIT_EXITED_VEHICLE',
@@ -1110,12 +1129,10 @@ function mod:StyleFilterConfigure()
 				if t.healthThreshold then
 					events.UNIT_HEALTH = 1
 					events.UNIT_MAXHEALTH = 1
-					events.UNIT_HEALTH_FREQUENT = 1
 				end
 
 				if t.powerThreshold then
 					events.UNIT_POWER_UPDATE = 1
-					events.UNIT_POWER_FREQUENT = 1
 					events.UNIT_DISPLAYPOWER = 1
 				end
 
@@ -1143,7 +1160,15 @@ function mod:StyleFilterConfigure()
 					end
 				end
 
-				if t.names and next(t.names) then
+				if t.isQuest or t.notQuest then
+					events.QUEST_LOG_UPDATE = 1
+				end
+
+				if t.hasTitleNPC or t.noTitleNPC then
+					events.UNIT_NAME_UPDATE = 1
+				end
+
+				if not events.UNIT_NAME_UPDATE and t.names and next(t.names) then
 					for _, value in pairs(t.names) do
 						if value then
 							events.UNIT_NAME_UPDATE = 1
@@ -1157,14 +1182,18 @@ function mod:StyleFilterConfigure()
 							break
 				end end end
 
-				if t.buffs and t.buffs.names and next(t.buffs.names) then
+				if t.buffs and (t.buffs.hasStealable or t.buffs.hasNoStealable) then
+					events.UNIT_AURA = 1
+				end
+
+				if not events.UNIT_AURA and t.buffs and t.buffs.names and next(t.buffs.names) then
 					for _, value in pairs(t.buffs.names) do
 						if value then
 							events.UNIT_AURA = 1
 							break
 				end end end
 
-				if t.debuffs and t.debuffs.names and next(t.debuffs.names) then
+				if not events.UNIT_AURA and t.debuffs and t.debuffs.names and next(t.debuffs.names) then
 					for _, value in pairs(t.debuffs.names) do
 						if value then
 							events.UNIT_AURA = 1
@@ -1282,6 +1311,7 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
 	mod:StyleFilterRegister(nameplate,'RAID_TARGET_UPDATE', true)
 	mod:StyleFilterRegister(nameplate,'SPELL_UPDATE_COOLDOWN', true)
+	mod:StyleFilterRegister(nameplate,'QUEST_LOG_UPDATE', true)
 	mod:StyleFilterRegister(nameplate,'UNIT_ENTERED_VEHICLE')
 	mod:StyleFilterRegister(nameplate,'UNIT_EXITED_VEHICLE')
 	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')

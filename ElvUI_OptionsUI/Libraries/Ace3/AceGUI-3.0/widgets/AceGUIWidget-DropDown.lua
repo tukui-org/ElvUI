@@ -39,7 +39,7 @@ end
 
 do
 	local widgetType = "Dropdown-Pullout"
-	local widgetVersion = 3
+	local widgetVersion = 5
 
 	--[[ Static data ]]--
 
@@ -193,12 +193,7 @@ do
 
 		local height = 8
 		for i, item in pairs(items) do
-			if i == 1 then
-				item:SetPoint("TOP", itemFrame, "TOP", 0, -2)
-			else
-				item:SetPoint("TOP", items[i-1].frame, "BOTTOM", 0, 1)
-			end
-
+			item:SetPoint("TOP", itemFrame, "TOP", 0, -2 + (i - 1) * -16)
 			item:Show()
 
 			height = height + 16
@@ -258,7 +253,7 @@ do
 
 	local function Constructor()
 		local count = AceGUI:GetNextWidgetNum(widgetType)
-		local frame = CreateFrame("Frame", "AceGUI30Pullout"..count, UIParent)
+		local frame = CreateFrame("Frame", "AceGUI30Pullout"..count, UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
 		local self = {}
 		self.count = count
 		self.type = widgetType
@@ -309,7 +304,7 @@ do
 		scrollFrame.obj = self
 		itemFrame.obj = self
 
-		local slider = CreateFrame("Slider", "AceGUI30PulloutScrollbar"..count, scrollFrame)
+		local slider = CreateFrame("Slider", "AceGUI30PulloutScrollbar"..count, scrollFrame, BackdropTemplateMixin and "BackdropTemplate" or nil)
 		slider:SetOrientation("VERTICAL")
 		slider:SetHitRectInsets(0, 0, -10, 0)
 		slider:SetBackdrop(sliderBackdrop)
@@ -356,7 +351,7 @@ end
 
 do
 	local widgetType = "Dropdown"
-	local widgetVersion = 34
+	local widgetVersion = 35
 
 	--[[ Static data ]]--
 
@@ -465,6 +460,7 @@ do
 		self:SetWidth(200)
 		self:SetLabel()
 		self:SetPulloutWidth(nil)
+		self.list = {}
 	end
 
 	-- exported, AceGUI callback
@@ -535,9 +531,7 @@ do
 
 	-- exported
 	local function SetValue(self, value)
-		if self.list then
-			self:SetText(self.list[value] or "")
-		end
+		self:SetText(self.list[value] or "")
 		self.value = value
 	end
 
@@ -615,7 +609,7 @@ do
 	end
 
 	local function SetList(self, list, order, itemType, sortByValue)
-		self.list = list
+		self.list = list or {}
 		self.pullout:Clear()
 		self.hasClose = nil
 		if not list then return end
@@ -655,10 +649,8 @@ do
 
 	-- exported
 	local function AddItem(self, value, text, itemType)
-		if self.list then
-			self.list[value] = text
-			AddListItem(self, value, text, itemType)
-		end
+		self.list[value] = text
+		AddListItem(self, value, text, itemType)
 	end
 
 	-- exported

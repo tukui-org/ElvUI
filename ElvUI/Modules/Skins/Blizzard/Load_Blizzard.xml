@@ -12,7 +12,6 @@
 	<Script file='AzeriteRespec.lua'/>
 	<Script file='Bags.lua'/>
 	<Script file='Battlenet.lua'/>
-	<Script file='Barber.lua'/>
 	<Script file='BGMap.lua'/>
 	<Script file='Binding.lua'/>
 	<Script file='BlackMarket.lua'/>
@@ -82,4 +81,17 @@
 	<Script file='Warboard.lua'/>
 	<Script file='WarfrontPartyPose.lua'/>
 	<Script file='WorldMap.lua'/>
+
+	<!--9.0-->
+	<Script file='AnimaDiversion.lua'/>
+	<Script file='Barber.lua'/>
+	<Script file='CovenantPreview.lua'/>
+	<Script file='CovenantSanctum.lua'/>
+	<Script file='ChromieTime.lua'/>
+	<Script file='Guide.lua'/>
+	<Script file='PlayerChoice.lua'/>
+	<Script file='Runeforge.lua'/>
+	<Script file='Soulbinds.lua'/>
+	<Script file='TorghastLevelPicker.lua'/>
+	<Script file='WeeklyRewards.lua'/>
 </Ui>

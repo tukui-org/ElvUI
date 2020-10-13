@@ -29,19 +29,18 @@ function D:ModifyErrorFrame()
 	-- Unhighlight text when focus is hit
 	ScriptErrorsFrame.ScrollFrame.Text:HookScript('OnEscapePressed', UnHighlightText)
 
-	ScriptErrorsFrame:SetSize(500, 300)
-	ScriptErrorsFrame.ScrollFrame:SetSize(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
+	ScriptErrorsFrame:Size(500, 300)
+	ScriptErrorsFrame.ScrollFrame:Size(ScriptErrorsFrame:GetWidth() - 45, ScriptErrorsFrame:GetHeight() - 71)
 
 	local BUTTON_WIDTH = 75
 	local BUTTON_HEIGHT = 23
 	local BUTTON_SPACING = 2
 
 	-- Add a first button
-	local firstButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate')
-	firstButton:SetPoint('BOTTOMLEFT', ScriptErrorsFrame.Reload, 'BOTTOMRIGHT', BUTTON_SPACING, 0)
+	local firstButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate, BackdropTemplate')
+	firstButton:Point('BOTTOMLEFT', ScriptErrorsFrame.Reload, 'BOTTOMRIGHT', BUTTON_SPACING, 0)
 	firstButton:SetText('First')
-	firstButton:SetHeight(BUTTON_HEIGHT)
-	firstButton:SetWidth(BUTTON_WIDTH)
+	firstButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
 	firstButton:SetScript('OnClick', function()
 		ScriptErrorsFrame.index = 1
 		ScriptErrorsFrame:Update()
@@ -49,10 +48,9 @@ function D:ModifyErrorFrame()
 	ScriptErrorsFrame.firstButton = firstButton
 
 	-- Also add a Last button for errors
-	local lastButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate')
-	lastButton:SetPoint('BOTTOMRIGHT', ScriptErrorsFrame.Close, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
-	lastButton:SetHeight(BUTTON_HEIGHT)
-	lastButton:SetWidth(BUTTON_WIDTH)
+	local lastButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate, BackdropTemplate')
+	lastButton:Point('BOTTOMRIGHT', ScriptErrorsFrame.Close, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
+	lastButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
 	lastButton:SetText('Last')
 	lastButton:SetScript('OnClick', function()
 		ScriptErrorsFrame.index = #(ScriptErrorsFrame.order)
@@ -70,11 +68,11 @@ function D:ScriptErrorsFrame_UpdateButtons()
 
 	local numErrors = #ScriptErrorsFrame.order;
 	local index = ScriptErrorsFrame.index;
-	if ( index == 0 ) then
+	if index == 0 then
 		ScriptErrorsFrame.lastButton:Disable()
 		ScriptErrorsFrame.firstButton:Disable()
 	else
-		if ( numErrors == 1 ) then
+		if numErrors == 1 then
 			ScriptErrorsFrame.lastButton:Disable()
 			ScriptErrorsFrame.firstButton:Disable()
 		else
@@ -106,7 +104,7 @@ function D:TaintError(event, addonName, addonFunc)
 end
 
 function D:StaticPopup_Show(name)
-	if(name == 'ADDON_ACTION_FORBIDDEN') then
+	if name == 'ADDON_ACTION_FORBIDDEN' then
 		StaticPopup_Hide(name);
 	end
 end

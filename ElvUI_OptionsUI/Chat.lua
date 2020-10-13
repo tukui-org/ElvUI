@@ -368,18 +368,18 @@ E.Options.args.chat = {
 							name = L["Tab Font"],
 							values = AceGUIWidgetLSMlists.font,
 						},
-						tabFontSize = {
-							order = 5,
-							name = L["Tab Font Size"],
-							type = 'range',
-							min = 4, max = 212, step = 1,
-						},
 						tabFontOutline = {
-							order = 6,
+							order = 5,
 							name = L["Tab Font Outline"],
 							desc = L["Set the font outline."],
 							type = 'select',
 							values = C.Values.FontFlags,
+						},
+						tabFontSize = {
+							order = 6,
+							name = L["Tab Font Size"],
+							type = 'range',
+							min = 4, max = 60, step = 1,
 						},
 					},
 				},
@@ -398,7 +398,7 @@ E.Options.args.chat = {
 							order = 2,
 							type = 'group',
 							name = L["Keyword Alerts"],
-							guiInline = true,
+							inline = true,
 							args = {
 								keywordSound = {
 									order = 1,
@@ -421,7 +421,7 @@ E.Options.args.chat = {
 							order = 3,
 							type = 'group',
 							name = L["Channel Alerts"],
-							guiInline = true,
+							inline = true,
 							get = function(info) return E.db.chat.channelAlerts[info[#info]] end,
 							set = function(info, value) E.db.chat.channelAlerts[info[#info]] = value end,
 							args = {
@@ -648,7 +648,7 @@ E.Options.args.chat = {
 				tabGroup = {
 					order = 10,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = L["Tab Panels"],
 					hidden = function() return not E.Chat.Initialized end,
 					args = {
@@ -679,7 +679,7 @@ E.Options.args.chat = {
 				datatextGroup = {
 					order = 15,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = L["DataText Panels"],
 					args = {
 						LeftChatDataPanelAnchor = {
@@ -707,7 +707,7 @@ E.Options.args.chat = {
 				panels = {
 					order = 20,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = L["Chat Panels"],
 					args = {
 						panelColor = {

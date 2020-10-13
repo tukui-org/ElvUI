@@ -2,7 +2,7 @@
 Label Widget
 Displays text and optionally an icon.
 -------------------------------------------------------------------------------]]
-local Type, Version = "Label", 26
+local Type, Version = "Label", 27
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -130,6 +130,7 @@ local methods = {
 
 	["SetFont"] = function(self, font, height, flags)
 		self.label:SetFont(font, height, flags)
+		UpdateImageAnchor(self)
 	end,
 
 	["SetFontObject"] = function(self, font)

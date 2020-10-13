@@ -17,16 +17,18 @@ local MouseIsOver = MouseIsOver
 local RegisterStateDriver = RegisterStateDriver
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 local UnregisterStateDriver = UnregisterStateDriver
-local MISCELLANEOUS = MISCELLANEOUS
-local GetCurrencyInfo = GetCurrencyInfo
-local GetCurrencyListInfo = GetCurrencyListInfo
-local GetCurrencyListSize = GetCurrencyListSize
-local GetCurrencyListLink = GetCurrencyListLink
+local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
+local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
+local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
+local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetCurrencyIDFromLink = C_CurrencyInfo.GetCurrencyIDFromLink
-local ExpandCurrencyList = ExpandCurrencyList
+local C_CurrencyInfo_ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList
 local GetNumSpecializations = GetNumSpecializations
 local GetSpecializationInfo = GetSpecializationInfo
+local MISCELLANEOUS = MISCELLANEOUS
 
+local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
+local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
 local ActivateHyperMode
 local HyperList = {}
 
@@ -45,6 +47,7 @@ DT.PanelPool = {
 }
 
 DT.FontStrings = {}
+DT.AssignedDatatexts = {}
 DT.UnitEvents = {
 	UNIT_AURA = true,
 	UNIT_RESISTANCES = true,
@@ -167,7 +170,7 @@ function DT:FetchFrame(givenName)
 		frame = poolFrame
 		DT.PanelPool.Free[poolName] = nil
 	else
-		frame = CreateFrame('Frame', name, E.UIParent)
+		frame = CreateFrame('Frame', name, E.UIParent, 'BackdropTemplate')
 		DT.PanelPool.Count = DT.PanelPool.Count + 1
 	end
 
@@ -208,8 +211,8 @@ function DT:BuildPanelFrame(name, db, fromInit)
 
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
-	Panel:SetPoint('CENTER')
-	Panel:SetSize(db.width, db.height)
+	Panel:Point('CENTER')
+	Panel:Size(db.width, db.height)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -219,7 +222,7 @@ function DT:BuildPanelFrame(name, db, fromInit)
 	if holder then
 		E:SetMoverPoints(MoverName, Panel)
 	else
-		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'general,solo')
+		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'datatexts,panels')
 	end
 
 	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
@@ -404,6 +407,19 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 end
 
+function DT:ForceUpdate_DataText(name)
+	for dtSlot, dtName in pairs(DT.AssignedDatatexts) do
+		if dtName.name == name then
+			if dtName.colorUpdate then
+				dtName.colorUpdate(E.media.hexvaluecolor)
+			end
+			if dtName.eventFunc then
+				dtName.eventFunc(dtSlot, 'ELVUI_FORCE_UPDATE')
+			end
+		end
+	end
+end
+
 function DT:GetTextAttributes(panel, db)
 	local panelWidth, panelHeight = panel:GetSize()
 	local numPoints = db and db.numPoints or panel.numPoints or 1
@@ -425,15 +441,11 @@ local RerenderFont = function(fs)
 	fs:SetText(text)
 end
 
-local FixFonts = CreateFrame('Frame')
-FixFonts:Hide()
-FixFonts:SetScript('OnUpdate', function(self)
-	for fs in pairs(DT.FontStrings) do
+local FixFonts = function(fontStrings)
+	for fs in pairs(fontStrings) do
 		RerenderFont(fs)
 	end
-
-	self:Hide()
-end)
+end
 
 function DT:UpdatePanelInfo(panelName, panel, ...)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
@@ -482,15 +494,20 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		end
 	end
 
+	panel.ignoreBorderColors = not db.border or nil
 	panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
-	E:TogglePixelBorders(panel, db.border)
+
+	--Show Border option
+	if panel.iborder then panel.iborder:SetShown(not panel.ignoreBorderColors) end
+	if panel.oborder then panel.oborder:SetShown(not panel.ignoreBorderColors) end
+	if panel.ignoreBorderColors then panel:SetBackdropBorderColor(0,0,0,0) end
 
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
 		dt:SetShown(i <= numPoints)
-		dt:SetSize(width, height)
+		dt:Size(width, height)
 		dt:ClearAllPoints()
-		dt:SetPoint(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
+		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 		dt:UnregisterAllEvents()
 		dt:SetScript('OnUpdate', nil)
 		dt:SetScript('OnEvent', nil)
@@ -517,6 +534,8 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:FontTemplate(font, fontSize, fontOutline)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
+		dt.text:SetText()
+
 		RerenderFont(dt.text) -- SetJustifyH wont update without a rerender?
 
 		if battlePanel then
@@ -524,6 +543,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			tinsert(dt.MouseEnters, DT.HoverBattleStats)
 		else
 			local assigned = DT.RegisteredDataTexts[ DT.db.panels[panelName][i] ]
+			DT.AssignedDatatexts[dt] = assigned
 			if assigned then DT:AssignPanelToDataText(dt, assigned, ...) end
 		end
 	end
@@ -557,9 +577,9 @@ function DT:PanelSizeChanged()
 	local width, height, vertical, numPoints = DT:GetTextAttributes(self, db)
 
 	for i, dt in ipairs(self.dataPanels) do
-		dt:SetSize(width, height)
+		dt:Size(width, height)
 		dt:ClearAllPoints()
-		dt:SetPoint(DT:GetDataPanelPoint(self, i, numPoints, vertical))
+		dt:Point(DT:GetDataPanelPoint(self, i, numPoints, vertical))
 	end
 end
 
@@ -574,17 +594,17 @@ function DT:UpdatePanelAttributes(name, db, fromLoad)
 	Panel.yOff = db.tooltipYOffset
 	Panel.anchor = db.tooltipAnchor
 	Panel.vertical = db.growth == 'VERTICAL'
-	Panel:SetSize(db.width, db.height)
+	Panel:Size(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
 
 	E:UIFrameFadeIn(Panel, 0.2, Panel:GetAlpha(), db.mouseover and 0 or 1)
 
-	if not DT.db.panels[name] then
+	if not DT.db.panels[name] or type(DT.db.panels[name]) ~= 'table' then
 		DT.db.panels[name] = { enable = false }
 	end
 
-	for i = 1, E.global.datatexts.customPanels[name].numPoints do
+	for i = 1, (E.global.datatexts.customPanels[name].numPoints or 1) do
 		if not DT.db.panels[name][i] then
 			DT.db.panels[name][i] = ''
 		end
@@ -667,31 +687,42 @@ end
 
 function DT:PopulateData()
 	local Collapsed = {}
-	local listSize, i = GetCurrencyListSize(), 1
+	local listSize, i = C_CurrencyInfo_GetCurrencyListSize(), 1
 
+	local headerIndex
 	while listSize >= i do
-		local name, isHeader, isExpanded = GetCurrencyListInfo(i)
-		if isHeader and not isExpanded then
-			ExpandCurrencyList(i, 1);
-			listSize = GetCurrencyListSize()
-			Collapsed[name] = true
+		local info = C_CurrencyInfo_GetCurrencyListInfo(i)
+		if info.isHeader and not info.isHeaderExpanded then
+			C_CurrencyInfo_ExpandCurrencyList(i, true)
+			listSize = C_CurrencyInfo_GetCurrencyListSize()
+			Collapsed[info.name] = true
 		end
-		if not isHeader then
-			local currencyLink = GetCurrencyListLink(i)
+		if info.isHeader then
+			G.datatexts.settings.Currencies.tooltipData[i] = { info.name, nil, nil, (info.name == expansion or info.name == MISCELLANEOUS) or strfind(info.name, LFG_TYPE_DUNGEON) }
+			E.global.datatexts.settings.Currencies.tooltipData[i] = E.global.datatexts.settings.Currencies.tooltipData[i] or { info.name, nil, nil, G.datatexts.settings.Currencies.tooltipData[i][4] }
+			E.global.datatexts.settings.Currencies.tooltipData[i][1] = info.name
+
+			headerIndex = i
+		end
+		if not info.isHeader then
+			local currencyLink = C_CurrencyInfo_GetCurrencyListLink(i)
 			local currencyID = currencyLink and C_CurrencyInfo_GetCurrencyIDFromLink(currencyLink)
 			if currencyID then
-				DT.CurrencyList[tostring(currencyID)] = name
+				DT.CurrencyList[tostring(currencyID)] = info.name
+				G.datatexts.settings.Currencies.tooltipData[i] = { info.name, currencyID, headerIndex, G.datatexts.settings.Currencies.tooltipData[headerIndex][4] }
+				E.global.datatexts.settings.Currencies.tooltipData[i] = E.global.datatexts.settings.Currencies.tooltipData[i] or { info.name, currencyID, headerIndex, G.datatexts.settings.Currencies.tooltipData[headerIndex][4] }
+				E.global.datatexts.settings.Currencies.tooltipData[i][1] = info.name
 			end
 		end
 		i = i + 1
 	end
 
 	for k = 1, listSize do
-		local name, isHeader, isExpanded = GetCurrencyListInfo(k)
-		if not name then
+		local info = C_CurrencyInfo_GetCurrencyListInfo(k)
+		if not info then
 			break
-		elseif isHeader and isExpanded and Collapsed[name] then
-			ExpandCurrencyList(k, 0);
+		elseif info.isHeader and info.isHeaderExpanded and Collapsed[info.name] then
+			C_CurrencyInfo_ExpandCurrencyList(k, false)
 		end
 	end
 
@@ -709,7 +740,10 @@ end
 
 function DT:CURRENCY_DISPLAY_UPDATE(_, currencyType)
 	if currencyType and not DT.CurrencyList[tostring(currencyType)] then
-		DT.CurrencyList[tostring(currencyType)] = GetCurrencyInfo(currencyType)
+		local info = C_CurrencyInfo_GetCurrencyInfo(currencyType)
+		if info and info.name then
+			DT.CurrencyList[tostring(currencyType)] = info.name
+		end
 	end
 end
 
@@ -717,7 +751,7 @@ function DT:PLAYER_ENTERING_WORLD(_, initLogin)
 	DT:LoadDataTexts()
 
 	if initLogin then
-		FixFonts:Show()
+		E:Delay(1, FixFonts, DT.FontStrings)
 	end
 end
 
@@ -743,11 +777,11 @@ function DT:Initialize()
 	end
 
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
-		TT:HookScript(DT.tooltip, 'OnShow', 'SetStyle')
+		TT:SetStyle(DT.tooltip)
 	end
 
 	-- Ignore header font size on DatatextTooltip
-	local font = E.Libs.LSM:Fetch('font', E.db.tooltip.font)
+	local font = LSM:Fetch('font', E.db.tooltip.font)
 	local fontOutline = E.db.tooltip.fontOutline
 	local textSize = E.db.tooltip.textFontSize
 	_G.DataTextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)

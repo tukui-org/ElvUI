@@ -5,7 +5,6 @@ local _G = _G
 local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
 local format, strjoin, tinsert = format, strjoin, tinsert
 
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local GetMoney = GetMoney
 local IsControlKeyDown = IsControlKeyDown
 local IsLoggedIn = IsLoggedIn
@@ -23,6 +22,7 @@ local Profit, Spent = 0, 0
 local resetCountersFormatter = strjoin('', '|cffaaaaaa', L["Reset Session Data: Hold Ctrl + Right Click"], '|r')
 local resetInfoFormatter = strjoin('', '|cffaaaaaa', L["Reset Character Data: Hold Shift + Right Click"], '|r')
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 
 local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 
@@ -75,7 +75,7 @@ local function OnEvent(self)
 		Profit = Profit + Change
 	end
 
-	self.text:SetText(E:FormatMoney(NewMoney, E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins))
+	self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or "BLIZZARD", not E.global.datatexts.settings.Gold.goldCoins))
 end
 
 local function deleteCharacter(self, realm, name)
@@ -121,8 +121,8 @@ local myGold = {}
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	local textOnly = not E.db.datatexts.goldCoins and true or false
-	local style = E.db.datatexts.goldFormat or 'BLIZZARD'
+	local textOnly = not E.global.datatexts.settings.Gold.goldCoins and true or false
+	local style = E.global.datatexts.settings.Gold.goldFormat or 'BLIZZARD'
 
 	DT.tooltip:AddLine(L["Session:"])
 	DT.tooltip:AddDoubleLine(L["Earned:"], E:FormatMoney(Profit, style, textOnly), 1, 1, 1, 1, 1, 1)
@@ -188,12 +188,16 @@ local function OnEnter()
 	DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 
 	for i = 1, MAX_WATCHED_TOKENS do
-		local name, count, icon = GetBackpackCurrencyInfo(i)
-		if name and i == 1 then
-			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(CURRENCY)
+		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
+		if info then
+			if i == 1 then
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(CURRENCY)
+			end
+			if info.quantity then
+				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
+			end
 		end
-		if name and count then DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, icon), name), BreakUpLargeNumbers(count), 1, 1, 1, 1, 1, 1) end
 	end
 
 	DT.tooltip:AddLine(' ')

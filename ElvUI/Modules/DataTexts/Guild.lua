@@ -141,7 +141,7 @@ local eventHandlers = {
 	end,
 	-- Guild Roster updated, so rebuild the guild table
 	GUILD_ROSTER_UPDATE = function(self)
-		if(resendRequest) then
+		if resendRequest then
 			resendRequest = false
 			return C_GuildInfo_GuildRoster()
 		else
@@ -227,10 +227,11 @@ local function OnEnter(_, _, noUpdate)
 	if not IsInGuild() then return end
 	DT.tooltip:ClearLines()
 
+	local shiftDown = IsShiftKeyDown()
 	local total, _, online = GetNumGuildMembers()
 	if #guildTable == 0 then BuildGuildTable() end
 
-	SortGuildTable(IsShiftKeyDown())
+	SortGuildTable(shiftDown)
 
 	local guildName, guildRank = GetGuildInfo('player')
 	local applicants = GetNumGuildApplicants()
@@ -267,7 +268,7 @@ local function OnEnter(_, _, noUpdate)
 		local classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
 		if not classc then classc = levelc end
 
-		if IsShiftKeyDown() then
+		if shiftDown then
 			DT.tooltip:AddDoubleLine(format(nameRankString, info.name, info.rank), info.zone, classc.r, classc.g, classc.b, zonec.r, zonec.g, zonec.b)
 			if info.note ~= '' then DT.tooltip:AddLine(format(noteString, info.note), ttsubh.r, ttsubh.g, ttsubh.b, 1) end
 			if info.officerNote ~= '' then DT.tooltip:AddLine(format(officerNoteString, info.officerNote), ttoff.r, ttoff.g, ttoff.b, 1) end
@@ -310,4 +311,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Guild', _G.SOCIAL_LABEL, {'CHAT_MSG_SYSTEM', 'GUILD_ROSTER_UPDATE', 'PLAYER_GUILD_UPDATE', 'GUILD_MOTD', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, Click, OnEnter, nil, GUILD)
+DT:RegisterDatatext('Guild', _G.SOCIAL_LABEL, {'CHAT_MSG_SYSTEM', 'GUILD_ROSTER_UPDATE', 'PLAYER_GUILD_UPDATE', 'GUILD_MOTD', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, Click, OnEnter, nil, GUILD, nil, ValueColorUpdate)

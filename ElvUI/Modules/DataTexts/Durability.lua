@@ -57,7 +57,7 @@ local function OnEvent(self)
 	local hex = E:RGBToHex(r, g, b)
 	self.text:SetFormattedText(displayString, hex, totalDurability)
 
-	if totalDurability <= E.db.datatexts.durability.percThreshold then
+	if totalDurability <= E.global.datatexts.settings.Durability.percThreshold then
 		E:Flash(self, 0.53, true)
 	else
 		E:StopFlash(self)
