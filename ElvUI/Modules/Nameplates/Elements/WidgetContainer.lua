@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local NP = E:GetModule('NamePlates')
 
 local ipairs = ipairs
+local CreateFrame = CreateFrame
 local UIWidgetSetLayoutDirection = Enum.UIWidgetSetLayoutDirection
 local UIWidgetLayoutDirection = Enum.UIWidgetLayoutDirection
 

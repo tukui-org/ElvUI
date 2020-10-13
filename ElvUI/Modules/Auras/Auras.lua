@@ -5,13 +5,13 @@ local LSM = E.Libs.LSM
 local _G = _G
 local floor, format, tinsert = floor, format, tinsert
 local select, unpack, strmatch = select, unpack, strmatch
-local CreateFrame = CreateFrame
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetItemQualityColor = GetItemQualityColor
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
 local RegisterStateDriver = RegisterStateDriver
+local CreateFrame = CreateFrame
 local UnitAura = UnitAura
 local GetTime = GetTime
 

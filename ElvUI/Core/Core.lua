@@ -12,7 +12,6 @@ local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
-local GetSpellInfo = GetSpellInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization = GetSpecialization
 local hooksecurefunc = hooksecurefunc

@@ -6,7 +6,6 @@ local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local IsAddOnLoaded = IsAddOnLoaded
 
 local function showFollower(s)
 	S:HandleFollowerAbilities(s)

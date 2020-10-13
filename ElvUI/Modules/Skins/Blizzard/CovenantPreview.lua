@@ -3,9 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
-
--- 9.0 SHADOWLANDS
 
 function S:Blizzard_CovenantPreviewUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantPreview) then return end

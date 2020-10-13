@@ -19,9 +19,9 @@ local GetNumGuildMembers = GetNumGuildMembers
 local GuildControlGetNumRanks = GuildControlGetNumRanks
 local GuildControlGetRankName = GuildControlGetRankName
 local GuildUninvite = GuildUninvite
-local ReloadUI = ReloadUI
 local ResetCPUUsage = ResetCPUUsage
 local SendChatMessage = SendChatMessage
+local ReloadUI = ReloadUI
 local SetCVar = SetCVar
 local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 -- GLOBALS: ElvUIGrid, ElvDB

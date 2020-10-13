@@ -30,7 +30,6 @@ local UnitIsMercenary = UnitIsMercenary
 local UnitStat = UnitStat
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
-local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 local FACTION_HORDE = FACTION_HORDE
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
