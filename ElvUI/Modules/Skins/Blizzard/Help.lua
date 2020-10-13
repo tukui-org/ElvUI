@@ -4,11 +4,15 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 local function OnEnter(f)
-	f.text:SetTextColor(1, 1, 1)
+	if f.selected:IsShown() or f:IsEnabled() then
+		f.text:SetTextColor(1, 1, 1)
+	end
 end
 
 local function OnLeave(f)
-	f.text:SetTextColor(1, .8, 0)
+	if f.selected:IsShown() or f:IsEnabled() then
+		f.text:SetTextColor(1, .8, 0)
+	end
 end
 
 local function HandleTabButton(button)
