@@ -8,7 +8,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
-	self:SetBackdrop(nil)
+	self:SetBackdrop()
 	self:SetTemplate('Transparent', nil, true)
 end
 

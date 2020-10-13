@@ -782,7 +782,7 @@ function S:HandleSliderFrame(frame)
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
 
-	frame:SetBackdrop(nil)
+	frame:SetBackdrop()
 	frame:StripTextures()
 	frame:SetThumbTexture(E.Media.Textures.Melli)
 

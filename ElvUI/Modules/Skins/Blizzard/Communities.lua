@@ -620,7 +620,7 @@ function S:Blizzard_Communities()
 	S:HandleButton(CommunitiesGuildRecruitmentFrameApplicants.DeclineButton)
 
 	for i = 1, 5 do
-		_G['CommunitiesGuildRecruitmentFrameApplicantsContainerButton'..i]:SetBackdrop(nil)
+		_G['CommunitiesGuildRecruitmentFrameApplicantsContainerButton'..i]:SetBackdrop()
 	end
 
 	-- Notification Settings Dialog

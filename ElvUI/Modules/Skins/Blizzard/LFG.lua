@@ -126,7 +126,7 @@ function S:LookingForGroupFrames()
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
 
 	hooksecurefunc(_G.LFGDungeonReadyDialog, 'SetBackdrop', function(frame, backdrop)
-		if backdrop ~= nil then frame:SetBackdrop(nil) end
+		if backdrop ~= nil then frame:SetBackdrop() end
 	end)
 
 	hooksecurefunc('LFGDungeonReadyPopup_Update', function()

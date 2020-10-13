@@ -8,7 +8,6 @@ local EnumerateFrames = EnumerateFrames
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local templateBackdrop, innerOuterBackdrop, shadowBackdrop = {}, {}, {}
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
 -- 8.2 restricted frame check
@@ -133,13 +132,11 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	if template == 'NoBackdrop' then
 		frame:SetBackdrop()
 	else
-		templateBackdrop.edgeFile = E.media.blankTex
-		templateBackdrop.bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex
-		if not templateBackdrop.edgeSize then
-			templateBackdrop.edgeSize = E:Scale(E.twoPixelsPlease and 2 or 1)
-		end
-
-		frame:SetBackdrop(templateBackdrop)
+		frame:SetBackdrop({
+			edgeFile = E.media.blankTex,
+			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
+			edgeSize = E:Scale(E.twoPixelsPlease and 2 or 1)
+		})
 
 		if frame.callbackBackdropColor then
 			frame:callbackBackdropColor()
@@ -150,12 +147,14 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 		local notPixelMode = not isUnitFrameElement and not E.PixelMode
 		local notThinBorders = isUnitFrameElement and not UF.thinBorders
 		if (notPixelMode or notThinBorders) and not forcePixelMode then
-			innerOuterBackdrop.edgeFile = E.media.blankTex
-			if not innerOuterBackdrop.edgeSize then innerOuterBackdrop.edgeSize = E:Scale(1) end
+			local backdrop = {
+				edgeFile = E.media.blankTex,
+				edgeSize = E:Scale(1)
+			}
 
 			if not frame.iborder then
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-				border:SetBackdrop(innerOuterBackdrop)
+				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetInside(frame, 1, 1)
 				frame.iborder = border
@@ -163,7 +162,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 
 			if not frame.oborder then
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-				border:SetBackdrop(innerOuterBackdrop)
+				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetOutside(frame, 1, 1)
 				frame.oborder = border
@@ -214,15 +213,12 @@ local function CreateShadow(frame, size, pass)
 
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
-	shadowBackdrop.edgeFile = E.Media.Textures.GlowTex
-	shadowBackdrop.edgeSize = E:Scale(size)
-
 	local offset = (E.PixelMode and size) or (size + 1)
 	local shadow = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, offset, offset, nil, true)
-	shadow:SetBackdrop(shadowBackdrop)
+	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(size)})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 

@@ -192,7 +192,7 @@ function S:Blizzard_GuildUI()
 	for _, button in next, _G.GuildInfoFrameApplicantsContainer.buttons do
 		button.selectedTex:Kill()
 		button:GetHighlightTexture():Kill()
-		button:SetBackdrop(nil)
+		button:SetBackdrop()
 	end
 
 	--Text Edit Frame
