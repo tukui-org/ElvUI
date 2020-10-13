@@ -229,7 +229,7 @@ function S:BlizzardQuestFrames()
 				if waypointText then
 					numVisibleObjectives = numVisibleObjectives + 1
 					local objective = _G['QuestInfoObjective'..numVisibleObjectives]
-					objective:SetTextColor(.2, 1, 1)
+					objective:SetTextColor(.4, 1, 1)
 				end
 
 				for i = 1, numObjectives do
@@ -240,7 +240,7 @@ function S:BlizzardQuestFrames()
 						local objective = _G['QuestInfoObjective'..numVisibleObjectives]
 						if objective then
 							if isCompleted then
-								objective:SetTextColor(1, .8, .1)
+								objective:SetTextColor(.2, 1, .2)
 							else
 								objective:SetTextColor(1, 1, 1)
 							end
