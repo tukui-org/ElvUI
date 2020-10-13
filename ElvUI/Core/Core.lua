@@ -870,22 +870,15 @@ do
 				local inCombat = InCombatLockdown()
 
 				E.UserList[E:StripMyRealm(sender)] = msg
-				if ver ~= G.general.version then
-					if not E.shownUpdatedWhileRunningPopup and not inCombat then
-						E:StaticPopup_Show('ELVUI_UPDATED_WHILE_RUNNING', nil, nil, {mismatch = ver > G.general.version})
 
-						E.shownUpdatedWhileRunningPopup = true
+				if msg and (msg > ver) and not E.recievedOutOfDateMessage then -- you're outdated D:
+					E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
+
+					if msg and ((msg - ver) >= 0.05) and not inCombat then
+						E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')
 					end
-				elseif msg and (msg > ver) then -- you're outdated D:
-					if not E.recievedOutOfDateMessage then
-						E:Print(L["ElvUI is out of date. You can download the newest version from www.tukui.org. Get premium membership and have ElvUI automatically updated with the Tukui Client!"])
 
-						if msg and ((msg - ver) >= 0.05) and not inCombat then
-							E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')
-						end
-
-						E.recievedOutOfDateMessage = true
-					end
+					E.recievedOutOfDateMessage = true
 				end
 			end
 		elseif event == 'GROUP_ROSTER_UPDATE' then

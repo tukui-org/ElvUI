@@ -123,7 +123,6 @@ L["ElvUI is out of date. You can download the newest version from www.tukui.org.
 L["ElvUI needs to perform database optimizations please be patient."] = "ElvUI muss eine Datenbank Optimierung durchführen. Bitte warte eine Moment."
 L["ElvUI Plugin Installation"] = true --No need to translate
 L["ElvUI Status"] = true --No need to translate
-L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = "ElvUI wurde upgedated während das Spiel noch läuft. Bitte starte das Spiel neu, damit alle Dateien richtig geupdated werden."
 L["Empty Slot"] = "Leerer Platz"
 L["Enable"] = "Eingeschaltet"
 L["Error resetting UnitFrame."] = "Fehler beim Zurücksetzen des Einheitenfesters."
