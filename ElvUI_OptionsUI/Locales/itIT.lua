@@ -1,6 +1,8 @@
 -- Italian localization file for enUS and enGB.
 local L = ElvUI[1].Libs.ACL:NewLocale("ElvUI", "itIT")
 
+L["Copy Primary Texture"] = true
+L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."] = true
 L["# Displayed Auras"] = true
 L["%s and then %s"] = true
 L["|cffFF0000Warning:|r Click the arrow on the dropdown box to see a list of spells."] = true
