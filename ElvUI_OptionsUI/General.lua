@@ -412,13 +412,14 @@ E.Options.args.general = {
 						applyTextureToAll = {
 							order = 3,
 							type = 'execute',
-							name = L["Apply Texture To All"],
-							desc = L["Applies the primary texture to all statusbars."],
+							name = L["Copy Primary Texture"],
+							desc = L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."],
 							func = function()
-								local texture = E.private.general.normTex
-								E.db.unitframe.statusbar = texture
-								E.db.nameplates.statusbar = texture
-								E:StaggeredUpdateAll(nil, true)
+								E.db.unitframe.statusbar = E.private.general.normTex
+								E:UpdateUnitFrames()
+
+								E.db.nameplates.statusbar = E.private.general.normTex
+								E:UpdateNamePlates()
 							end,
 						},
 					},
