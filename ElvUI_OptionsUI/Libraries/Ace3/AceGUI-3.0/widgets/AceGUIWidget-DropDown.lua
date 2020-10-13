@@ -39,7 +39,7 @@ end
 
 do
 	local widgetType = "Dropdown-Pullout"
-	local widgetVersion = 4
+	local widgetVersion = 5
 
 	--[[ Static data ]]--
 
@@ -193,12 +193,7 @@ do
 
 		local height = 8
 		for i, item in pairs(items) do
-			if i == 1 then
-				item:SetPoint("TOP", itemFrame, "TOP", 0, -2)
-			else
-				item:SetPoint("TOP", items[i-1].frame, "BOTTOM", 0, 1)
-			end
-
+			item:SetPoint("TOP", itemFrame, "TOP", 0, -2 + (i - 1) * -16)
 			item:Show()
 
 			height = height + 16
