@@ -610,8 +610,12 @@ function S:Blizzard_GarrisonUI()
 
 	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
 
-	S:HandleButton(Follower.HealAllButton)
-	S:HandleButton(_G.HealFollowerButtonTemplate)
+	if Follower.HealAllButton then
+		S:HandleButton(Follower.HealAllButton)
+	end
+	if _G.HealFollowerButtonTemplate then
+		S:HandleButton(_G.HealFollowerButtonTemplate)
+	end
 
 	-- Mission Tab
 	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
