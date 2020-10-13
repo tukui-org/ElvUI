@@ -234,7 +234,7 @@ function S:BlizzardQuestFrames()
 
 				for i = 1, numObjectives do
 					local _, objectiveType, isCompleted = GetQuestLogLeaderBoard(i)
-					if objectiveType ~= 'spell' and objectiveType ~= 'log' and numVisibleObjectives < _G.MAX_OBJECTIVES then
+					if objectiveType ~= 'spell' and numVisibleObjectives < _G.MAX_OBJECTIVES then
 						numVisibleObjectives = numVisibleObjectives + 1
 
 						local objective = _G['QuestInfoObjective'..numVisibleObjectives]
