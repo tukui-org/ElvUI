@@ -7,7 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 -- Credits Siweia | AuroraClassic
 
-local function UpdateSelection(frame, state)
+local function UpdateSelection(frame)
 	if not frame.backdrop then return end
 
 	if frame.SelectedTexture:IsShown() then

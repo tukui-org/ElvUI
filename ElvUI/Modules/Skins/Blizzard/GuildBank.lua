@@ -3,9 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local select, unpack = select, unpack
-
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_GuildBankUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end

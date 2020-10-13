@@ -7,12 +7,11 @@ local Minimap = E:GetModule('Minimap')
 local ACH = E.Libs.ACH
 
 local _G = _G
-local wipe = wipe
+local type, pairs, ipairs = type, pairs, ipairs
+local gsub, next, wipe = gsub, next, wipe
 local tonumber = tonumber
 local tostring = tostring
 local format = format
-local pairs = pairs
-local type = type
 
 -- GLOBALS: AceGUIWidgetLSMlists
 local currencyList = {}

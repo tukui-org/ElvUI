@@ -209,14 +209,26 @@ function S:Blizzard_PVPUI()
 	NewSeasonPopup:StripTextures()
 	NewSeasonPopup:CreateBackdrop('Overlay')
 	NewSeasonPopup:SetFrameLevel(5)
-	NewSeasonPopup.NewSeason:SetTextColor(1, .8, 0)
-	NewSeasonPopup.NewSeason:SetShadowOffset(1, -1)
-	NewSeasonPopup.SeasonRewardText:SetTextColor(1, .8, 0)
-	NewSeasonPopup.SeasonRewardText:SetShadowOffset(1, -1)
-	NewSeasonPopup.SeasonDescription:SetTextColor(1, 1, 1)
-	NewSeasonPopup.SeasonDescription:SetShadowOffset(1, -1)
-	NewSeasonPopup.SeasonDescription2:SetTextColor(1, 1, 1)
-	NewSeasonPopup.SeasonDescription2:SetShadowOffset(1, -1)
+
+	if NewSeasonPopup.NewSeason then
+		NewSeasonPopup.NewSeason:SetTextColor(1, .8, 0)
+		NewSeasonPopup.NewSeason:SetShadowOffset(1, -1)
+	end
+
+	if NewSeasonPopup.SeasonRewardText then
+		NewSeasonPopup.SeasonRewardText:SetTextColor(1, .8, 0)
+		NewSeasonPopup.SeasonRewardText:SetShadowOffset(1, -1)
+	end
+
+	if NewSeasonPopup.SeasonDescription then
+		NewSeasonPopup.SeasonDescription:SetTextColor(1, 1, 1)
+		NewSeasonPopup.SeasonDescription:SetShadowOffset(1, -1)
+	end
+
+	if NewSeasonPopup.SeasonDescription2 then
+		NewSeasonPopup.SeasonDescription2:SetTextColor(1, 1, 1)
+		NewSeasonPopup.SeasonDescription2:SetShadowOffset(1, -1)
+	end
 
 	local RewardFrame = NewSeasonPopup.SeasonRewardFrame
 	RewardFrame.CircleMask:Hide()

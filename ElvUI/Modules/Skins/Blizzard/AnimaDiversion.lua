@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
--- SHADOWLANDS
 function S:Blizzard_AnimaDiversionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.animaDiversion) then return end
 
