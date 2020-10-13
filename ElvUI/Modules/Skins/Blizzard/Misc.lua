@@ -206,10 +206,10 @@ function S:BlizzardMiscFrames()
 			S:HandleButton(button)
 
 			button.Flash:Hide()
-
 			button:CreateShadow(5)
 			button.shadow:SetAlpha(0)
 			button.shadow:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+			button:SetFrameLevel(button:GetFrameLevel() + 1)
 
 			local anim1, anim2 = button.PulseAnim:GetAnimations()
 			anim1:SetTarget(button.shadow)
