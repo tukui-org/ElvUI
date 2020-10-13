@@ -62,7 +62,9 @@ function S:BlizzardOptions()
 		end
 	end)
 
+	_G.RolePollPopup:StripTextures()
 	_G.RolePollPopup:CreateBackdrop('Transparent')
+	S:HandleCloseButton(_G.RolePollPopupCloseButton)
 
 	_G.InterfaceOptionsFrame:SetClampedToScreen(true)
 	_G.InterfaceOptionsFrame:SetMovable(true)
