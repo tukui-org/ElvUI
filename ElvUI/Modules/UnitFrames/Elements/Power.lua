@@ -1,14 +1,16 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+local _, ns = ...
+local ElvUF = ns.oUF
+assert(ElvUF, 'ElvUI was unable to locate oUF.')
+
 local random = random
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local hooksecurefunc = hooksecurefunc
-
-local _, ns = ...
-local ElvUF = ns.oUF
-assert(ElvUF, 'ElvUI was unable to locate oUF.')
+local GetUnitPowerBarInfo = GetUnitPowerBarInfo
+local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
 function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', '$parent_PowerBar', frame)
@@ -31,6 +33,7 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 
 	power.PostUpdate = self.PostUpdatePower
 	power.PostUpdateColor = self.PostUpdatePowerColor
+	power.GetDisplayPower = self.GetDisplayPower
 
 	if bg then
 		power.BG = power:CreateTexture(nil, 'BORDER')
@@ -47,13 +50,13 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 			x = 2
 		end
 
-		power.value:SetPoint(textPos, frame.Health, textPos, x, 0)
+		power.value:Point(textPos, frame.Health, textPos, x, 0)
 	end
 
 	power.useAtlas = false
 	power.colorDisconnected = false
 	power.colorTapping = false
-	power:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+	power:CreateBackdrop(nil, nil, nil, nil, true)
 
 	local clipFrame = CreateFrame('Frame', nil, power)
 	clipFrame:SetClipsChildren(true)
@@ -86,7 +89,7 @@ function UF:Configure_Power(frame)
 		--Text
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo)
 		power.value:ClearAllPoints()
-		power.value:SetPoint(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
+		power.value:Point(db.power.position, attachPoint, db.power.position, db.power.xOffset, db.power.yOffset)
 		frame:Tag(power.value, db.power.text_format)
 
 		if db.power.attachTextTo == 'Power' then
@@ -121,11 +124,11 @@ function UF:Configure_Power(frame)
 
 		--Fix height in case it is lower than the theme allows
 		local heightChanged = false
-		if (not self.thinBorders and not E.PixelMode) and frame.POWERBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
+		if not UF.thinBorders and frame.POWERBAR_HEIGHT < 7 then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 7
 			db.power.height = 7
 			heightChanged = true
-		elseif (self.thinBorders or E.PixelMode) and frame.POWERBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
+		elseif UF.thinBorders and frame.POWERBAR_HEIGHT < 3 then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
 			frame.POWERBAR_HEIGHT = 3
 			db.power.height = 3
 			heightChanged = true
@@ -138,76 +141,70 @@ function UF:Configure_Power(frame)
 
 		--Position
 		power:ClearAllPoints()
+		local OFFSET = (UF.BORDER + UF.SPACING)*2
+
 		if frame.POWERBAR_DETACHED then
-			power:SetWidth(frame.POWERBAR_WIDTH - ((frame.BORDER + frame.SPACING)*2))
-			power:SetHeight(frame.POWERBAR_HEIGHT - ((frame.BORDER + frame.SPACING)*2))
-			if not power.Holder or (power.Holder and not power.Holder.mover) then
+			if power.Holder and power.Holder.mover then
+				E:EnableMover(power.Holder.mover:GetName())
+			else
 				power.Holder = CreateFrame('Frame', nil, power)
-				power.Holder:SetSize(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
-				power.Holder:SetPoint('BOTTOM', frame, 'BOTTOM', 0, -20)
-				power:ClearAllPoints()
-				power:SetPoint('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
+				power.Holder:Point('BOTTOM', frame, 'BOTTOM', 0, -20)
+
 				--Currently only Player and Target can detach power bars, so doing it this way is okay for now
 				if frame.unitframeType and frame.unitframeType == 'player' then
 					E:CreateMover(power.Holder, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,power')
 				elseif frame.unitframeType and frame.unitframeType == 'target' then
 					E:CreateMover(power.Holder, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,power')
 				end
-			else
-				power.Holder:SetSize(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
-				power:ClearAllPoints()
-				power:SetPoint('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', frame.BORDER+frame.SPACING, frame.BORDER+frame.SPACING)
-				power.Holder.mover:SetScale(1)
-				power.Holder.mover:SetAlpha(1)
 			end
 
+			power.Holder:Size(frame.POWERBAR_WIDTH, frame.POWERBAR_HEIGHT)
+			power:Point('BOTTOMLEFT', power.Holder, 'BOTTOMLEFT', UF.BORDER+UF.SPACING, UF.BORDER+UF.SPACING)
+			power:Size(frame.POWERBAR_WIDTH - OFFSET, frame.POWERBAR_HEIGHT - OFFSET)
 			power:SetFrameLevel(50) --RaisedElementParent uses 100, we want lower value to allow certain icons and texts to appear above power
 		elseif frame.USE_POWERBAR_OFFSET then
 			if frame.ORIENTATION == 'LEFT' then
-				power:SetPoint('TOPRIGHT', frame.Health, 'TOPRIGHT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
-				power:SetPoint('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('TOPRIGHT', frame.Health, 'TOPRIGHT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			elseif frame.ORIENTATION == 'MIDDLE' then
-				power:SetPoint('TOPLEFT', frame, 'TOPLEFT', frame.BORDER + frame.SPACING, -frame.POWERBAR_OFFSET -frame.CLASSBAR_YOFFSET)
-				power:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -frame.BORDER - frame.SPACING, frame.BORDER)
+				power:Point('TOPLEFT', frame, 'TOPLEFT', UF.BORDER + UF.SPACING, -frame.POWERBAR_OFFSET -frame.CLASSBAR_YOFFSET)
+				power:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -UF.BORDER - UF.SPACING, UF.BORDER)
 			else
-				power:SetPoint('TOPLEFT', frame.Health, 'TOPLEFT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
-				power:SetPoint('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('TOPLEFT', frame.Health, 'TOPLEFT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
+				power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -frame.POWERBAR_OFFSET, -frame.POWERBAR_OFFSET)
 			end
 			power:SetFrameLevel(frame.Health:GetFrameLevel() - 5) --Health uses 10
 		elseif frame.USE_INSET_POWERBAR then
-			power:SetHeight(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
-			power:SetPoint('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', frame.BORDER + (frame.BORDER*2), frame.BORDER + (frame.BORDER*2))
-			power:SetPoint('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -(frame.BORDER + (frame.BORDER*2)), frame.BORDER + (frame.BORDER*2))
+			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
+			power:Point('BOTTOMLEFT', frame.Health, 'BOTTOMLEFT', UF.BORDER + (UF.BORDER*2), UF.BORDER + (UF.BORDER*2))
+			power:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT', -(UF.BORDER + (UF.BORDER*2)), UF.BORDER + (UF.BORDER*2))
 			power:SetFrameLevel(50)
 		elseif frame.USE_MINI_POWERBAR then
-			power:SetHeight(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
+			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
 
 			if frame.ORIENTATION == 'LEFT' then
-				power:SetWidth(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:SetPoint('RIGHT', frame, 'BOTTOMRIGHT', -(frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Width(frame.POWERBAR_WIDTH - UF.BORDER*2)
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
 			elseif frame.ORIENTATION == 'RIGHT' then
-				power:SetWidth(frame.POWERBAR_WIDTH - frame.BORDER*2)
-				power:SetPoint('LEFT', frame, 'BOTTOMLEFT', (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Width(frame.POWERBAR_WIDTH - UF.BORDER*2)
+				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
 			else
-				power:SetPoint('LEFT', frame, 'BOTTOMLEFT', (frame.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
-				power:SetPoint('RIGHT', frame, 'BOTTOMRIGHT', -(frame.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-frame.BORDER)/2))
+				power:Point('LEFT', frame, 'BOTTOMLEFT', (UF.BORDER*2 + 4), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
+				power:Point('RIGHT', frame, 'BOTTOMRIGHT', -(UF.BORDER*2 + 4 + (frame.PVPINFO_WIDTH or 0)), ((frame.POWERBAR_HEIGHT-UF.BORDER)/2))
 			end
 
 			power:SetFrameLevel(50)
 		else
-			power:SetPoint('TOPRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', -frame.BORDER,  -frame.SPACING*3)
-			power:SetPoint('TOPLEFT', frame.Health.backdrop, 'BOTTOMLEFT', frame.BORDER, -frame.SPACING*3)
-			power:SetHeight(frame.POWERBAR_HEIGHT  - ((frame.BORDER + frame.SPACING)*2))
+			power:Point('TOPRIGHT', frame.Health.backdrop, 'BOTTOMRIGHT', -UF.BORDER, -UF.SPACING*3)
+			power:Point('TOPLEFT', frame.Health.backdrop, 'BOTTOMLEFT', UF.BORDER, -UF.SPACING*3)
+			power:Height(frame.POWERBAR_HEIGHT - OFFSET)
 
 			power:SetFrameLevel(frame.Health:GetFrameLevel() + 5) --Health uses 10
 		end
 
 		--Hide mover until we detach again
-		if not frame.POWERBAR_DETACHED then
-			if power.Holder and power.Holder.mover then
-				power.Holder.mover:SetScale(0.0001)
-				power.Holder.mover:SetAlpha(0)
-			end
+		if not frame.POWERBAR_DETACHED and power.Holder and power.Holder.mover then
+			E:DisableMover(power.Holder.mover:GetName())
 		end
 
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata then
@@ -237,6 +234,13 @@ function UF:Configure_Power(frame)
 	frame.Power.custom_backdrop = UF.db.colors.custompowerbackdrop and UF.db.colors.power_backdrop
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.BG, nil, UF.db.colors.invertPower, db.power.reverseFill)
+end
+
+function UF:GetDisplayPower()
+	local barInfo = GetUnitPowerBarInfo(self.__owner.unit)
+	if barInfo then
+		return ALTERNATE_POWER_INDEX, barInfo.minPower
+	end
 end
 
 local tokens = {[0]='MANA','RAGE','FOCUS','ENERGY','RUNIC_POWER'}

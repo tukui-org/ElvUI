@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
+local LSM = E.Libs.LSM
 
 local next, ipairs, pairs = next, ipairs, pairs
 local floor, tinsert = floor, tinsert
@@ -150,7 +151,7 @@ function E:Cooldown_Options(timer, db, parent)
 		end
 
 		if fonts and fonts.enable then
-			timer.customFont = E.Libs.LSM:Fetch('font', fonts.font)
+			timer.customFont = LSM:Fetch('font', fonts.font)
 			timer.customFontSize = fonts.fontSize
 			timer.customFontOutline = fonts.fontOutline
 		else
@@ -169,7 +170,7 @@ function E:CreateCooldownTimer(parent)
 	parent.timer = timer
 
 	local text = timer:CreateFontString(nil, 'OVERLAY')
-	text:SetPoint('CENTER', 1, 1)
+	text:Point('CENTER', 1, 1)
 	text:SetJustifyH('CENTER')
 	timer.text = text
 
@@ -205,7 +206,7 @@ end
 
 E.RegisteredCooldowns = {}
 function E:OnSetCooldown(start, duration)
-	if (not self.forceDisabled) and (start and duration) and (duration > MIN_DURATION) then
+	if not self.forceDisabled and (start and duration) and (duration > MIN_DURATION) then
 		local timer = self.timer or E:CreateCooldownTimer(self)
 		timer.start = start
 		timer.duration = duration
@@ -265,7 +266,7 @@ end
 
 function E:UpdateCooldownOverride(module)
 	local cooldowns = (module and E.RegisteredCooldowns[module])
-	if (not cooldowns) or not next(cooldowns) then return end
+	if not cooldowns or not next(cooldowns) then return end
 
 	local blizzText
 	for _, parent in ipairs(cooldowns) do
@@ -290,7 +291,7 @@ function E:UpdateCooldownOverride(module)
 					cd.text:FontTemplate(cd.customFont, cd.customFontSize, cd.customFontOutline)
 				elseif parent.CooldownOverride == 'auras' then
 					-- parent.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
-					local font = E.Libs.LSM:Fetch('font', db.font)
+					local font = LSM:Fetch('font', db.font)
 					if font and parent.auraType then
 						local fontSize = db[parent.auraType] and db[parent.auraType].durationFontSize
 						if fontSize then

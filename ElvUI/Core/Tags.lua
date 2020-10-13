@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
 local Translit = E.Libs.Translit
@@ -6,7 +7,7 @@ local translitMark = '!'
 
 local _G = _G
 local tonumber, next = tonumber, next
-local gmatch, gsub, format, select = gmatch, gsub, format, select
+local gmatch, gsub, format = gmatch, gsub, format
 local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8lower, utf8sub, utf8len = string.utf8lower, string.utf8sub, string.utf8len
@@ -16,11 +17,9 @@ local GetCVarBool = GetCVarBool
 local GetGuildInfo = GetGuildInfo
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
-local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetPVPTimer = GetPVPTimer
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
-local GetQuestLogTitle = GetQuestLogTitle
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
@@ -64,6 +63,9 @@ local UnitReaction = UnitReaction
 local UnitStagger = UnitStagger
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
+
+local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
+local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 
 local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
 local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
@@ -249,7 +251,7 @@ do
 	end
 end
 
-ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Events['healthcolor'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['healthcolor'] = function(unit)
 	if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
 		return Hex(0.84, 0.75, 0.65)
@@ -310,7 +312,7 @@ do
 	E.TagFunctions.NameHealthColor = NameHealthColor
 
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
-	ElvUF.Tags.Events['name:health'] = 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+	ElvUF.Tags.Events['name:health'] = 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH UNIT_MAXHEALTH'
 	ElvUF.Tags.Methods['name:health'] = function(unit, _, args)
 		local name = UnitName(unit)
 		if not name then return '' end
@@ -325,7 +327,7 @@ do
 	end
 end
 
-ElvUF.Tags.Events['health:deficit-percent:nostatus'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+ElvUF.Tags.Events['health:deficit-percent:nostatus'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
 	local min, max = UnitHealth(unit), UnitHealthMax(unit)
 	local deficit = (min / max) - 1
@@ -336,7 +338,7 @@ end
 
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagTextFormat = strlower(gsub(textFormat, '_', '-'))
-	ElvUF.Tags.Events[format('health:%s', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+	ElvUF.Tags.Events[format('health:%s', tagTextFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 	ElvUF.Tags.Methods[format('health:%s', tagTextFormat)] = function(unit)
 		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		if status then
@@ -346,7 +348,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		end
 	end
 
-	ElvUF.Tags.Events[format('health:%s-nostatus', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+	ElvUF.Tags.Events[format('health:%s-nostatus', tagTextFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 	ElvUF.Tags.Methods[format('health:%s-nostatus', tagTextFormat)] = function(unit)
 		return E:GetFormattedText(textFormat, UnitHealth(unit), UnitHealthMax(unit))
 	end
@@ -398,7 +400,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 end
 
 for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 20}) do
-	ElvUF.Tags.Events[format('health:deficit-percent:name-%s', textFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
+	ElvUF.Tags.Events[format('health:deficit-percent:name-%s', textFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE'
 	ElvUF.Tags.Methods[format('health:deficit-percent:name-%s', textFormat)] = function(unit)
 		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 		local deficit = max - cur
@@ -430,7 +432,7 @@ for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 
 		end
 	end
 
-	ElvUF.Tags.Events[format('name:%s:status', textFormat)] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH_FREQUENT INSTANCE_ENCOUNTER_ENGAGE_UNIT'
+	ElvUF.Tags.Events[format('name:%s:status', textFormat)] = 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 	ElvUF.Tags.Methods[format('name:%s:status', textFormat)] = function(unit)
 		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		local name = UnitName(unit)
@@ -472,7 +474,7 @@ ElvUF.Tags.Methods['health:max'] = function(unit)
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
-ElvUF.Tags.Events['health:percent-with-absorbs'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+ElvUF.Tags.Events['health:percent-with-absorbs'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
@@ -489,7 +491,7 @@ ElvUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
 	return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
 end
 
-ElvUF.Tags.Events['health:deficit-percent:name'] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_NAME_UPDATE'
+ElvUF.Tags.Events['health:deficit-percent:name'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['health:deficit-percent:name'] = function(unit)
 	local currentHealth = UnitHealth(unit)
 	local deficit = UnitHealthMax(unit) - currentHealth
@@ -945,34 +947,6 @@ ElvUF.Tags.Methods['target:translit'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['npctitle'] = function(unit)
-	if UnitIsPlayer(unit) then return end
-
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
-
-	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-	if Title and not Title:find('^'..LEVEL) then
-		return Title
-	end
-end
-
-ElvUF.Tags.Events['npctitle:brackets'] = 'UNIT_NAME_UPDATE'
-ElvUF.Tags.Methods['npctitle:brackets'] = function(unit)
-	if UnitIsPlayer(unit) then return end
-
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
-
-	local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
-	if Title and not Title:find('^'..LEVEL) then
-		return format('<%s>', Title)
-	end
-end
-
 ElvUF.Tags.Events['guild:rank'] = 'UNIT_NAME_UPDATE'
 ElvUF.Tags.Methods['guild:rank'] = function(unit)
 	if UnitIsPlayer(unit) then
@@ -1034,65 +1008,115 @@ ElvUF.Tags.Methods['title'] = function(unit)
 	end
 end
 
-ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
-ElvUF.Tags.Methods['quest:title'] = function(unit)
-	if UnitIsPlayer(unit) then return end
+do
+	local function GetTitleNPC(unit, custom)
+		if UnitIsPlayer(unit) then return end
 
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
+		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetUnit(unit)
+		E.ScanTooltip:Show()
 
-	local QuestName
-	if E.ScanTooltip:NumLines() >= 3 then
-		for i = 3, E.ScanTooltip:NumLines() do
-			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
-			local QuestLineText = QuestLine and QuestLine:GetText()
-			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
-
-			if ProgressText and (not PlayerName or PlayerName == '' or PlayerName == UnitName('player')) then
-				QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
-			end
+		local Title = _G[format('ElvUI_ScanTooltipTextLeft%d', GetCVarBool('colorblindmode') and 3 or 2)]:GetText()
+		if Title and not strfind(Title, '^'..LEVEL) then
+			return custom and format(custom, Title) or Title
 		end
+	end
+	E.TagFunctions.GetTitleNPC = GetTitleNPC
 
-		if QuestName then
-			for i = 1, GetNumQuestLogEntries() do
-				local title, level, _, isHeader = GetQuestLogTitle(i)
-				if not isHeader and title == QuestName then
-					local colors = GetQuestDifficultyColor(level)
-					return Hex(colors.r, colors.g, colors.b)..QuestName..'|r'
+	ElvUF.Tags.Events['npctitle'] = 'UNIT_NAME_UPDATE'
+	ElvUF.Tags.Methods['npctitle'] = function(unit)
+		return GetTitleNPC(unit)
+	end
+
+	ElvUF.Tags.Events['npctitle:brackets'] = 'UNIT_NAME_UPDATE'
+	ElvUF.Tags.Methods['npctitle:brackets'] = function(unit)
+		return GetTitleNPC(unit, '<%s>')
+	end
+end
+
+do
+	local function GetQuestData(unit, which, Hex)
+		E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
+		E.ScanTooltip:SetUnit(unit)
+		E.ScanTooltip:Show()
+
+		local notMyQuest, activeID
+		for i = 3, E.ScanTooltip:NumLines() do
+			local str = _G['ElvUI_ScanTooltipTextLeft' .. i]
+			local text = str and str:GetText()
+			if not text or text == '' then return end
+
+			if UnitIsPlayer(text) then
+				notMyQuest = text ~= E.myname
+			elseif text and not notMyQuest then
+				local count, percent = NP.QuestIcons.CheckTextForQuest(text)
+
+				-- this line comes from one line up in the tooltip
+				local activeQuest = NP.QuestIcons.activeQuests[text]
+				if activeQuest then activeID = activeQuest end
+
+				if count then
+					if not which then
+						return text
+					elseif which == 'count' then
+						return percent and format('%s%%', count) or count
+					elseif which == 'title' and activeID then
+						local title = C_QuestLog_GetTitleForQuestID(activeID)
+						local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
+						if level then
+							local colors = GetQuestDifficultyColor(level)
+							title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
+						end
+
+						return title
+					elseif (which == 'info' or which == 'full') and activeID then
+						local title = C_QuestLog_GetTitleForQuestID(activeID)
+						local level = Hex and C_QuestLog_GetQuestDifficultyLevel(activeID)
+						if level then
+							local colors = GetQuestDifficultyColor(level)
+							title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
+						end
+
+						if which == 'full' then
+							return format('%s: %s', title, text)
+						else
+							return format(percent and '%s: %s%%' or '%s: %s', title, count)
+						end
+					end
 				end
 			end
 		end
 	end
-end
+	E.TagFunctions.GetQuestData = GetQuestData
 
-ElvUF.Tags.Events['quest:info'] = 'QUEST_LOG_UPDATE'
-ElvUF.Tags.Methods['quest:info'] = function(unit)
-	if UnitIsPlayer(unit) then return end
+	ElvUF.Tags.Events['quest:text'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:text'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, nil, Hex)
+	end
 
-	E.ScanTooltip:SetOwner(_G.UIParent, 'ANCHOR_NONE')
-	E.ScanTooltip:SetUnit(unit)
-	E.ScanTooltip:Show()
+	ElvUF.Tags.Events['quest:full'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:full'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, 'full', Hex)
+	end
 
-	local QuestName
-	if E.ScanTooltip:NumLines() >= 3 then
-		for i = 3, E.ScanTooltip:NumLines() do
-			local QuestLine = _G['ElvUI_ScanTooltipTextLeft' .. i]
-			local QuestLineText = QuestLine and QuestLine:GetText()
-			local PlayerName, ProgressText = strmatch(QuestLineText, '^ ([^ ]-) ?%- (.+)$')
-			if ProgressText and (not PlayerName or PlayerName == '' or PlayerName == UnitName('player')) then
-				if not QuestName then
-					QuestName = _G['ElvUI_ScanTooltipTextLeft' .. i - 1]:GetText()
-				end
+	ElvUF.Tags.Events['quest:info'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:info'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, 'info', Hex)
+	end
 
-				local x, y = strmatch(ProgressText, '(%d+)/(%d+)')
-				if x and y and (y - x) > 0 then
-					return ProgressText
-				elseif QuestName then
-					return QuestName .. ': ' .. ProgressText
-				end
-			end
-		end
+	ElvUF.Tags.Events['quest:title'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:title'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, 'title', Hex)
+	end
+
+	ElvUF.Tags.Events['quest:count'] = 'QUEST_LOG_UPDATE'
+	ElvUF.Tags.Methods['quest:count'] = function(unit)
+		if UnitIsPlayer(unit) then return end
+		return GetQuestData(unit, 'count', Hex)
 	end
 end
 
@@ -1151,7 +1175,7 @@ E.TagInfo = {
 	['difficulty'] = { category = 'Colors', description = "Changes color of the next tag based on how difficult the unit is compared to the players level" },
 	['difficultycolor'] = { category = 'Colors', description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" },
 	['healthcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's current health" },
-	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: ['namecolor']['name'])" },
+	['namecolor'] = { category = 'Colors', description = "Colors names by player class or NPC reaction (Ex: [namecolor][name])" },
 	['powercolor'] = { category = 'Colors', description = "Colors the power text based upon its type" },
 	['reactioncolor'] = { category = 'Colors', description = "Colors names by NPC reaction (Bad/Neutral/Good)" },
 	['threatcolor'] = { category = 'Colors', description = "Changes the text color, depending on the unit's threat situation" },
@@ -1201,7 +1225,7 @@ E.TagInfo = {
 	['incomingheals'] = { category = 'Health', description = "Displays all incoming heals" },
 	['maxhp'] = { category = 'Health', description = "Displays max HP without decimals" },
 	['missinghp'] = { category = 'Health', description = "Displays the missing health of the unit in whole numbers, when not at full health" },
-	['perhp'] = { category = 'Health', description = "Displays percentage HP without decimals or the % sign.  You can display the percent sign by adjusting the tag to [perhp<%]." },
+	['perhp'] = { category = 'Health', description = "Displays percentage HP without decimals or the % sign. You can display the percent sign by adjusting the tag to [perhp<%]." },
 	--Level
 	['level'] = { category = 'Level', description = "Displays the level of the unit" },
 	['smartlevel'] = { category = 'Level', description = "Only display the unit's level if it is not the same as yours" },
@@ -1275,8 +1299,8 @@ E.TagInfo = {
 	--PvP
 	['arena:number'] = { category = 'PvP', description = "Displays the arena number 1-5" },
 	['arenaspec'] = { category = 'PvP', description = "Displays the area spec of an unit" },
-	['faction:icon'] = { category = 'PvP', description = "Displays 'Alliance' or 'Horde' Texture" },
-	['faction'] = { category = 'PvP', description = "Displays 'Aliance' or 'Horde'" },
+	['faction:icon'] = { category = 'PvP', description = "Displays the 'Alliance' or 'Horde' texture" },
+	['faction'] = { category = 'PvP', description = "Displays 'Alliance' or 'Horde'" },
 	['pvp'] = { category = 'PvP', description = "Displays 'PvP' if the unit is pvp flagged" },
 	['pvptimer'] = { category = 'PvP', description = "Displays remaining time on pvp-flagged status" },
 	--Quest
@@ -1304,7 +1328,7 @@ E.TagInfo = {
 	--Status
 	['afk'] = { category = 'Status', description = "Displays <AFK> if the unit is afk" },
 	['dead'] = { category = 'Status', description = "Displays <DEAD> if the unit is dead" },
-	['ElvUI-Users'] = { category = 'Status', description = "Displays current ElvUI users." },
+	['ElvUI-Users'] = { category = 'Status', description = "Displays current ElvUI users" },
 	['offline'] = { category = 'Status', description = "Displays 'OFFLINE' if the unit is disconnected" },
 	['resting'] = { category = 'Status', description = "Displays 'zzz' if the unit is resting" },
 	['status:icon'] = { category = 'Status', description = "Displays AFK/DND as an orange(afk) / red(dnd) icon" },

@@ -4,13 +4,12 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 
 function S:TradeFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trade) then return end
 
 	local TradeFrame = _G.TradeFrame
-	S:HandlePortraitFrame(TradeFrame, true)
+	S:HandlePortraitFrame(TradeFrame)
 
 	TradeFrame.RecipientOverlay.portrait:SetAlpha(0)
 	TradeFrame.RecipientOverlay.portraitFrame:SetAlpha(0)
@@ -45,44 +44,31 @@ function S:TradeFrame()
 
 			player_button_icon:SetInside(player_button)
 			player_button_icon:SetTexCoord(unpack(E.TexCoords))
-			player_button:SetTemplate(nil, true)
+			player_button:CreateBackdrop(nil, true)
 			player_button:StyleButton()
-			player_button.IconBorder:SetAlpha(0)
-			player_button.bg = CreateFrame('Frame', nil, player_button)
+			player_button.IconBorder:Kill()
+			player_button.bg = CreateFrame('Frame', nil, player_button, 'BackdropTemplate')
 			player_button.bg:SetTemplate()
-			player_button.bg:SetPoint('TOPLEFT', player_button, 'TOPRIGHT', 4, 0)
-			player_button.bg:SetPoint('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
+			player_button.bg:Point('TOPLEFT', player_button, 'TOPRIGHT', 4, 0)
+			player_button.bg:Point('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
 			player_button.bg:SetFrameLevel(player_button:GetFrameLevel() - 3)
+			player_button.backdrop:SetFrameLevel(player_button:GetFrameLevel() - 1)
 			player_button:SetFrameLevel(player_button:GetFrameLevel() - 1)
 
 			recipient_button_icon:SetInside(recipient_button)
 			recipient_button_icon:SetTexCoord(unpack(E.TexCoords))
-			recipient_button:SetTemplate(nil, true)
+			recipient_button:CreateBackdrop(nil, true)
 			recipient_button:StyleButton()
-			recipient_button.IconBorder:SetAlpha(0)
-			recipient_button.bg = CreateFrame('Frame', nil, recipient_button)
+			recipient_button.IconBorder:Kill()
+			recipient_button.bg = CreateFrame('Frame', nil, recipient_button, 'BackdropTemplate')
 			recipient_button.bg:SetTemplate()
-			recipient_button.bg:SetPoint('TOPLEFT', recipient_button, 'TOPRIGHT', 4, 0)
-			recipient_button.bg:SetPoint('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
+			recipient_button.bg:Point('TOPLEFT', recipient_button, 'TOPRIGHT', 4, 0)
+			recipient_button.bg:Point('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
 			recipient_button.bg:SetFrameLevel(recipient_button:GetFrameLevel() - 3)
 			recipient_button:SetFrameLevel(recipient_button:GetFrameLevel() - 1)
 
-			-- Player Icon Border
-			hooksecurefunc(player_button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-				s:GetParent():SetBackdropBorderColor(r, g, b)
-				s:SetTexture()
-			end)
-			hooksecurefunc(player_button.IconBorder, 'Hide', function(s)
-				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
-			-- Recipient Icon Border
-			hooksecurefunc(recipient_button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-				s:GetParent():SetBackdropBorderColor(r, g, b)
-				s:SetTexture()
-			end)
-			hooksecurefunc(recipient_button.IconBorder, 'Hide', function(s)
-				s:GetParent():SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end)
+			S:HandleIconBorder(player_button.IconBorder)
+			S:HandleIconBorder(recipient_button.IconBorder)
 		end
 	end
 

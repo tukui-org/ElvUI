@@ -10,7 +10,6 @@ assert(oUF, "oUF_Cutaway was unable to locate oUF install.")
 ]]
 -- GLOBALS: ElvUI
 
-local _G = _G
 local max = math.max
 local assert = assert
 local hooksecurefunc = hooksecurefunc
@@ -20,10 +19,10 @@ local UnitIsTapDenied = UnitIsTapDenied
 local UnitGUID = UnitGUID
 
 local E -- placeholder
-
 local function checkElvUI()
 	if not E then
-		E = _G.ElvUI[1]
+		E = ElvUI and ElvUI[1]
+
 		assert(E, "oUF_Cutaway was not able to locate ElvUI and it is required.")
 	end
 end
@@ -48,31 +47,33 @@ end
 
 local function Shared_PreUpdate(self, element, unit)
 	element.unit = unit
+
 	local oldGUID, newGUID = element.guid, UnitGUID(unit)
 	element.guid = newGUID
-	if (not oldGUID or oldGUID ~= newGUID) then
+
+	if not oldGUID or oldGUID ~= newGUID then
 		return
 	end
+
 	element.cur = self.cur
 	element.ready = true
 end
 
 local function UpdateSize(self, element, curV, maxV)
-	local isVertical = self:GetOrientation() == "VERTICAL"
+	local isVertical = self:GetOrientation() == 'VERTICAL'
 	local pm = (isVertical and self:GetHeight()) or self:GetWidth()
 	local oum = (1 / maxV) * pm
 	local c = max(element.cur - curV, 0)
 	local mm = c * oum
+
 	if isVertical then
-		element:SetHeight(mm)
+		element:Height(mm)
 	else
-		element:SetWidth(mm)
+		element:Width(mm)
 	end
 end
 
-local PRE = 0
-local POST = 1
-
+local PRE, POST = 0, 1
 local function Shared_UpdateCheckReturn(self, element, updateType, ...)
 	if not element:IsVisible() then
 		return true
@@ -102,7 +103,9 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	if Shared_UpdateCheckReturn(self, element, POST, curHealth, maxHealth, unit) then
 		return
 	end
+
 	UpdateSize(self, element, curHealth, maxHealth)
+
 	if element.playing then
 		return
 	end
@@ -138,7 +141,9 @@ local function Power_PostUpdate(self, unit, curPower, _, maxPower)
 	if Shared_UpdateCheckReturn(self, element, POST, curPower, maxPower, unit) then
 		return
 	end
+
 	UpdateSize(self, element, curPower, maxPower)
+
 	if element.playing then
 		return
 	end
@@ -174,12 +179,13 @@ local defaults = {
 
 local function UpdateConfigurationValues(self, db)
 	local hs, ps = false, false
-	if (self.Health) then
+	if self.Health then
 		local health = self.Health
 		local hdb = db.health
 		hs = hdb.enabled
 		health.enabled = hs
-		if (hs) then
+
+		if hs then
 			health.lengthBeforeFade = hdb.lengthBeforeFade
 			health.fadeOutTime = hdb.fadeOutTime
 			health:Show()
@@ -187,12 +193,14 @@ local function UpdateConfigurationValues(self, db)
 			health:Hide()
 		end
 	end
-	if (self.Power) then
+
+	if self.Power then
 		local power = self.Power
 		local pdb = db.power
 		ps = pdb.enabled
 		power.enabled = ps
-		if (ps) then
+
+		if ps then
 			power.lengthBeforeFade = pdb.lengthBeforeFade
 			power.fadeOutTime = pdb.fadeOutTime
 			power:Show()
@@ -200,23 +208,24 @@ local function UpdateConfigurationValues(self, db)
 			power:Hide()
 		end
 	end
+
 	return hs, ps
 end
 
 local function Enable(self)
 	local element = self and self.Cutaway
-	if (element) then
+	if element then
 		checkElvUI()
 
-		if (element.Health and element.Health:IsObjectType("Texture") and not element.Health:GetTexture()) then
+		if element.Health and element.Health:IsObjectType("Texture") and not element.Health:GetTexture() then
 			element.Health:SetTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
-		if (element.Power and element.Power:IsObjectType("Texture") and not element.Power:GetTexture()) then
+		if element.Power and element.Power:IsObjectType("Texture") and not element.Power:GetTexture() then
 			element.Power:SetTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
-		if (not element.defaultsSet) then
+		if not element.defaultsSet then
 			UpdateConfigurationValues(element, defaults)
 			element.defaultsSet = true
 		end
@@ -269,7 +278,7 @@ local function Enable(self)
 			end
 		end
 
-		if not (element.UpdateConfigurationValues) then
+		if not element.UpdateConfigurationValues then
 			element.UpdateConfigurationValues = UpdateConfigurationValues
 		end
 

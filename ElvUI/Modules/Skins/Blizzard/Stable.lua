@@ -25,8 +25,8 @@ local function PetButtons(btn, p)
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:ClearAllPoints()
-		icon:SetPoint('TOPLEFT', p, -p)
-		icon:SetPoint('BOTTOMRIGHT', -p, p)
+		icon:Point('TOPLEFT', p, -p)
+		icon:Point('BOTTOMRIGHT', -p, p)
 
 		button:SetFrameLevel(button:GetFrameLevel() + 2)
 		if not button.backdrop then
@@ -40,11 +40,11 @@ function S:PetStableFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end
 
 	local PetStableFrame = _G.PetStableFrame
-	S:HandlePortraitFrame(PetStableFrame, true)
+	S:HandlePortraitFrame(PetStableFrame)
 
 	_G.PetStableLeftInset:StripTextures()
 	_G.PetStableBottomInset:StripTextures()
-	_G.PetStableFrameInset:SetTemplate('Transparent')
+	_G.PetStableFrameInset:CreateBackdrop('Transparent')
 
 	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
 	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
@@ -55,10 +55,10 @@ function S:PetStableFrame()
 	local PetStableSelectedPetIcon = _G.PetStableSelectedPetIcon
 	if PetStableSelectedPetIcon then
 		PetStableSelectedPetIcon:SetTexCoord(unpack(E.TexCoords))
-		local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent())
-		b:SetPoint('TOPLEFT', PetStableSelectedPetIcon, -p, p)
-		b:SetPoint('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
-		PetStableSelectedPetIcon:SetSize(37,37)
+		local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent(), 'BackdropTemplate')
+		b:Point('TOPLEFT', PetStableSelectedPetIcon, -p, p)
+		b:Point('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
+		PetStableSelectedPetIcon:Size(37,37)
 		PetStableSelectedPetIcon:SetParent(b)
 		b:SetTemplate()
 	end

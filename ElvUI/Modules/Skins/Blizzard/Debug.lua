@@ -20,7 +20,7 @@ local FrameTexs = {
 local function SkinOnShow()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame:SetParent(E.UIParent)
-	ScriptErrorsFrame:SetTemplate('Transparent')
+	ScriptErrorsFrame:CreateBackdrop('Transparent')
 	S:HandleScrollBar(_G.ScriptErrorsFrameScrollBar)
 	S:HandleCloseButton(_G.ScriptErrorsFrameClose)
 	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
@@ -50,30 +50,30 @@ end
 
 local function SkinTableAttributeDisplay(frame)
 	frame:StripTextures()
-	frame:SetTemplate('Transparent')
+	frame:CreateBackdrop('Transparent')
 	frame.ScrollFrameArt:StripTextures()
-	frame.ScrollFrameArt:SetTemplate('Transparent')
+	frame.ScrollFrameArt:CreateBackdrop('Transparent')
 	S:HandleCloseButton(frame.CloseButton)
 	frame.OpenParentButton:ClearAllPoints()
-	frame.OpenParentButton:SetPoint('TOPLEFT', frame, 'TOPLEFT', 2, -2)
+	frame.OpenParentButton:Point('TOPLEFT', frame, 'TOPLEFT', 2, -2)
 	S:HandleNextPrevButton(frame.OpenParentButton, 'up')
-	frame.OpenParentButton:SetSize(17, 17)
+	frame.OpenParentButton:Size(17)
 	frame.DuplicateButton:ClearAllPoints()
-	frame.DuplicateButton:SetPoint('LEFT', frame.NavigateForwardButton, 'RIGHT')
+	frame.DuplicateButton:Point('LEFT', frame.NavigateForwardButton, 'RIGHT')
 	S:HandleCheckBox(frame.VisibilityButton)
-	frame.VisibilityButton:SetSize(28, 28)
+	frame.VisibilityButton:Size(28)
 	S:HandleCheckBox(frame.HighlightButton)
-	frame.HighlightButton:SetSize(28, 28)
+	frame.HighlightButton:Size(28)
 	S:HandleCheckBox(frame.DynamicUpdateButton)
-	frame.DynamicUpdateButton:SetSize(28, 28)
+	frame.DynamicUpdateButton:Size(28)
 	frame.NavigateBackwardButton:ClearAllPoints()
-	frame.NavigateBackwardButton:SetPoint('LEFT', frame.OpenParentButton, 'RIGHT', 2, 0)
+	frame.NavigateBackwardButton:Point('LEFT', frame.OpenParentButton, 'RIGHT', 2, 0)
 	frame.NavigateForwardButton:ClearAllPoints()
-	frame.NavigateForwardButton:SetPoint('LEFT', frame.NavigateBackwardButton, 'RIGHT', 2, 0)
+	frame.NavigateForwardButton:Point('LEFT', frame.NavigateBackwardButton, 'RIGHT', 2, 0)
 	frame.DuplicateButton:ClearAllPoints()
-	frame.DuplicateButton:SetPoint('LEFT', frame.NavigateForwardButton, 'RIGHT', 2, 0)
+	frame.DuplicateButton:Point('LEFT', frame.NavigateForwardButton, 'RIGHT', 2, 0)
 	S:HandleNextPrevButton(frame.DuplicateButton)
-	frame.DuplicateButton:SetSize(17, 17)
+	frame.DuplicateButton:Size(17)
 	S:HandleNextPrevButton(frame.NavigateBackwardButton)
 	S:HandleNextPrevButton(frame.NavigateForwardButton)
 	S:HandleEditBox(frame.FilterBox)
@@ -91,22 +91,17 @@ function S:Blizzard_DebugTools()
 
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
-		_G.FrameStackTooltip:HookScript('OnShow', function(s)
-			if not s.template then
-				s:SetTemplate('Transparent')
-			end
-		end)
-
-		_G.EventTraceTooltip:HookScript('OnShow', function(s)
-			s:SetTemplate('Transparent', nil, true)
-		end)
+		_G.FrameStackTooltip:CreateBackdrop('Transparent')
+		_G.FrameStackTooltip.backdrop:SetAllPoints()
+		_G.EventTraceTooltip:CreateBackdrop('Transparent')
+		_G.FrameStackTooltip.backdrop:SetAllPoints()
 	end
 
 	for i=1, #FrameTexs do
 		_G['EventTraceFrame'..FrameTexs[i]]:SetTexture()
 	end
 
-	_G.EventTraceFrame:SetTemplate('Transparent')
+	_G.EventTraceFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(_G.EventTraceFrameCloseButton)
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
+
 local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
@@ -62,7 +63,7 @@ function UF:Update_TankHeader(header, db)
 
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
+		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -186)
 
 		local width, height = header:GetSize()
 		local minHeight = max(height, 2*db.height + db.verticalSpacing)
@@ -82,14 +83,6 @@ function UF:Update_TankFrames(frame, db)
 	frame:RegisterForClicks(UF.db.targetOnMouseDown and 'AnyDown' or 'AnyUp')
 
 	do
-		if(UF.thinBorders) then
-			frame.SPACING = 0
-			frame.BORDER = E.mult
-		else
-			frame.BORDER = E.Border
-			frame.SPACING = E.Spacing
-		end
-
 		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
 		frame.SHADOW_SPACING = 3
 		frame.UNIT_WIDTH = db.width
@@ -113,19 +106,19 @@ function UF:Update_TankFrames(frame, db)
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
 
-		frame:SetSize(childDB.width, childDB.height)
+		frame:Size(childDB.width, childDB.height)
 
 		if not InCombatLockdown() then
 			if childDB.enable then
 				frame:Enable()
 				frame:ClearAllPoints()
-				frame:SetPoint(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
+				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			else
 				frame:Disable()
 			end
 		end
 	else
-		frame:SetSize(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
 
 	UF:Configure_HealthBar(frame)

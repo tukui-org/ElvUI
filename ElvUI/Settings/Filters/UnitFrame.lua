@@ -57,6 +57,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[102359] = Defaults(1), -- Mass Entanglement
 		[339]    = Defaults(1), -- Entangling Roots
 		[2637]   = Defaults(1), -- Hibernate
+		[102793] = Defaults(1), -- Ursol's Vortex
 	-- Hunter
 		[202933] = Defaults(2), -- Spider Sting (it's this one or the other)
 		[233022] = Defaults(2), -- Spider Sting
@@ -588,6 +589,39 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[298837] = Defaults(), -- Greater Flask of Endless Fathoms
 		[298839] = Defaults(), -- Greater Flask of the Vast Horizon
 		[298841] = Defaults(), -- Greater Flask of the Undertow
+	-- Shadowlands Consumables
+		[307159] = Defaults(), -- Potion of Spectral Agility
+		[307160] = Defaults(), -- Potion of Hardened Shadows
+		[307161] = Defaults(), -- Potion of Spiritual Clarity
+		[307162] = Defaults(), -- Potion of Spectral Intellect
+		[307163] = Defaults(), -- Potion of Spectral Stamina
+		[307164] = Defaults(), -- Potion of Spectral Strength
+		[307165] = Defaults(), -- Spiritual Anti-Venom
+		[307185] = Defaults(), -- Spectral Flask of Power
+		[307187] = Defaults(), -- Spectral Flask of Stamina
+		[307195] = Defaults(), -- Potion of Hidden Spirit
+		[307196] = Defaults(), -- Potion of Shaded Sight
+		[307199] = Defaults(), -- Potion of Soul Purity
+		[307494] = Defaults(), -- Potion of Empowered Exorcisms
+		[307495] = Defaults(), -- Potion of Phantom Fire
+		[307496] = Defaults(), -- Potion of Divine Awakening
+		[307497] = Defaults(), -- Potion of Deathly Fixation
+		[307501] = Defaults(), -- Potion of Specter Swiftness
+		[308397] = Defaults(), -- Butterscotch Marinated Ribs
+		[308402] = Defaults(), -- Surprisingly Palatable Feast
+		[308404] = Defaults(), -- Cinnamon Bonefish Stew
+		[308412] = Defaults(), -- Meaty Apple Dumplings
+		[308425] = Defaults(), -- Sweet Silvergrill Sausages
+		[308434] = Defaults(), -- Phantasmal Souffle and Fries
+		[308488] = Defaults(), -- Tenebrous Crown Roast Aspic
+		[308506] = Defaults(), -- Crawler Ravioli with Apple Sauce
+		[308514] = Defaults(), -- Steak a la Mode
+		[308525] = Defaults(), -- Banana Beef Pudding
+		[308637] = Defaults(), -- Smothered Shank
+		[322302] = Defaults(), -- Potion of Sacrificial Anima
+		[327708] = Defaults(), -- Feast of Gluttonous Hedonism
+		[327715] = Defaults(), -- Fried Bonefish
+		[327851] = Defaults(), -- Seraph Tenders
 	},
 }
 
@@ -626,25 +660,39 @@ G.unitframe.aurafilters.Blacklist = {
 		[287825] = Defaults(), -- Lethargy debuff (fight or flight)
 		[206662] = Defaults(), -- Experience Eliminated (in range)
 		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
+		[206151] = Defaults(), -- Challenger's Burden
 	},
 }
 
---[[
-	This should be a list of important buffs that we always want to see when they are active
-	bloodlust, paladin hand spells, raid cooldowns, etc..
-]]
+-- A list of important buffs that we always want to see
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	spells = {
-		[31821]  = Defaults(), -- Devotion Aura
+		-- Bloodlust effects
 		[2825]   = Defaults(), -- Bloodlust
 		[32182]  = Defaults(), -- Heroism
 		[80353]  = Defaults(), -- Time Warp
 		[90355]  = Defaults(), -- Ancient Hysteria
+		-- Paladin
+		[31821]  = Defaults(), -- Aura Mastery
+		[1022]   = Defaults(), -- Blessing of Protection
+		[204018] = Defaults(), -- Blessing of Spellwarding
+		[6940]   = Defaults(), -- Blessing of Sacrifice
+		[1044]   = Defaults(), -- Blessing of Freedom
+		-- Priest
 		[47788]  = Defaults(), -- Guardian Spirit
 		[33206]  = Defaults(), -- Pain Suppression
+		[62618]  = Defaults(), -- Power Word: Barrier
+		-- Monk
 		[116849] = Defaults(), -- Life Cocoon
-		[22812]  = Defaults(), -- Barkskin
+		-- Druid
+		[102342] = Defaults(), -- Ironbark
+		-- Shaman
+		[98008]  = Defaults(), -- Spirit Link Totem
+		[20608]  = Defaults(), -- Reincarnation
+		-- Other
+		[97462]  = Defaults(), -- Rallying Cry
+		[196718] = Defaults(), -- Darkness
 	},
 }
 
@@ -653,11 +701,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
 	-- Mythic+ Dungeons
+		-- General Affix
 		[209858] = Defaults(), -- Necrotic
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
-		[196376] = Defaults(), -- Grievous Tear
 		-- 8.3 Affix
 		[314531] = Defaults(), -- Tear Flesh
 		[314308] = Defaults(), -- Spirit Breaker
@@ -668,6 +716,68 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[314411] = Defaults(), -- Lingering Doubt
 		[314565] = Defaults(), -- Defiled Ground
 		[314392] = Defaults(), -- Vile Corruption
+		-- Shadowlands
+		[342494] = Defaults(), -- Belligerent Boast (Prideful)
+
+	-- Shadowlands Dungeons
+		-- Halls of Atonement
+		[335338] = Defaults(), -- Ritual of Woe
+		[326891] = Defaults(), -- Anguish
+		[329321] = Defaults(), -- Jagged Swipe
+		[319603] = Defaults(), -- Curse of Stone
+		[319611] = Defaults(), -- Turned to Stone
+		[325876] = Defaults(), -- Curse of Obliteration
+		[326632] = Defaults(), -- Stony Veins
+		[323650] = Defaults(), -- Haunting Fixation
+		[326874] = Defaults(), -- Ankle Bites
+		-- Mists of Tirna Scithe
+		[325027] = Defaults(), -- Bramble Burst
+		[323043] = Defaults(), -- Bloodletting
+		[322557] = Defaults(), -- Soul Split
+		[331172] = Defaults(), -- Mind Link
+		[322563] = Defaults(), -- Marked Prey
+		-- Plaguefall
+		[336258] = Defaults(), -- Solitary Prey
+		[331818] = Defaults(), -- Shadow Ambush
+		[329110] = Defaults(), -- Slime Injection
+		[325552] = Defaults(), -- Cytotoxic Slash
+		[336301] = Defaults(), -- Web Wrap
+		-- The Necrotic Wake
+		[321821] = Defaults(), -- Disgusting Guts
+		[323365] = Defaults(), -- Clinging Darkness
+		[338353] = Defaults(), -- Goresplatter
+		[333485] = Defaults(), -- Disease Cloud
+		[338357] = Defaults(), -- Tenderize
+		[328181] = Defaults(), -- Frigid Cold
+		[320170] = Defaults(), -- Necrotic Bolt
+		[323464] = Defaults(), -- Dark Ichor
+		[323198] = Defaults(), -- Dark Exile
+		-- Theater of Pain
+		[333299] = Defaults(), -- Curse of Desolation
+		[319539] = Defaults(), -- Soulless
+		[326892] = Defaults(), -- Fixate
+		[321768] = Defaults(), -- On the Hook
+		[323825] = Defaults(), -- Grasping Rift
+		-- Sanguine Depths
+		[326827] = Defaults(), -- Dread Bindings
+		[326836] = Defaults(), -- Curse of Suppression
+		[322554] = Defaults(), -- Castigate
+		[321038] = Defaults(), -- Burden Soul
+		-- Spires of Ascension
+		[338729] = Defaults(), -- Charged Stomp
+		[338747] = Defaults(), -- Purifying Blast
+		[327481] = Defaults(), -- Dark Lance
+		[322818] = Defaults(), -- Lost Confidence
+		[322817] = Defaults(), -- Lingering Doubt
+		-- De Other Side
+		[320786] = Defaults(), -- Power Overwhelming
+		[334913] = Defaults(), -- Master of Death
+		[325725] = Defaults(), -- Cosmic Artifice
+		[328987] = Defaults(), -- Zealous
+		[334496] = Defaults(), -- Soporific Shimmerdust
+		[339978] = Defaults(), -- Pacifying Mists
+		[323692] = Defaults(), -- Arcane Vulnerability
+		[333250] = Defaults(), -- Reaver
 
 	-- BFA Dungeons
 		-- Freehold
@@ -862,6 +972,67 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[299475] = Defaults(), -- B.O.R.K
 		[293670] = Defaults(), -- Chain Blade
 
+	-- Castle Nathria
+		-- Shriekwing
+		[328897] = Defaults(), -- Exsanguinated
+		[330713] = Defaults(), -- Reverberating Pain
+		[329370] = Defaults(), -- Deadly Descent
+		[336494] = Defaults(), -- Echo Screech
+		-- Huntsman Altimor
+		[335304] = Defaults(), -- Sinseeker
+		[334971] = Defaults(), -- Jagged Claws
+		[335113] = Defaults(), -- Huntsman's Mark 1
+		[335112] = Defaults(), -- Huntsman's Mark 2
+		[335111] = Defaults(), -- Huntsman's Mark 3
+		[334945] = Defaults(), -- Bloody Thrash
+		-- Hungering Destroyer
+		[334228] = Defaults(), -- Volatile Ejection
+		[329298] = Defaults(), -- Gluttonous Miasma
+		-- Lady Inerva Darkvein
+		[325936] = Defaults(), -- Shared Cognition
+		[335396] = Defaults(), -- Hidden Desire
+		[324983] = Defaults(), -- Shared Suffering
+		[324982] = Defaults(), -- Shared Suffering Partner
+		[332664] = Defaults(), -- Concentrate Anima
+		[325382] = Defaults(), -- Warped Desires
+		-- Sun King's Salvation
+		[333002] = Defaults(), -- Vulgar Brand
+		[326078] = Defaults(), -- Infuser's Boon
+		[325251] = Defaults(), -- Sin of Pride
+		-- Artificer Xy'mox
+		[327902] = Defaults(), -- Fixate
+		[326302] = Defaults(), -- Stasis Trap
+		[325236] = Defaults(), -- Glyph of Destruction
+		[327414] = Defaults(), -- Possession
+		-- The Council of Blood
+		[327773] = Defaults(), -- Drain Essence 1
+		[327052] = Defaults(), -- Drain Essence 2
+		[328334] = Defaults(), -- Tactical Advance
+		[330848] = Defaults(), -- Wrong Moves
+		[331706] = Defaults(), -- Scarlet Letter
+		[331636] = Defaults(), -- Dark Recital 1
+		[331637] = Defaults(), -- Dark Recital 2
+		-- Sludgefist
+		[335470] = Defaults(), -- Chain Slam
+		[339181] = Defaults(), -- Chain Slam (Root)
+		[331209] = Defaults(), -- Hateful Gaze
+		[335293] = Defaults(), -- Chain Link
+		[335270] = Defaults(), -- Chain This One!
+		[335295] = Defaults(), -- Shattering Chain
+		-- Stone Legion Generals
+		[334498] = Defaults(), -- Seismic Upheaval
+		[337643] = Defaults(), -- Unstable Footing
+		[334765] = Defaults(), -- Stone Shatterer
+		[333377] = Defaults(), -- Wicked Mark
+		[334616] = Defaults(), -- Petrified
+		[334541] = Defaults(), -- Curse of Petrification
+		-- Sire Denathrius
+		[326851] = Defaults(), -- Blood Price
+		[327798] = Defaults(), -- Night Hunter
+		[327992] = Defaults(), -- Desolation
+		[328276] = Defaults(), -- March of the Penitent
+		[326699] = Defaults(), -- Burden of Sin
+
 	-- Uldir
 		-- MOTHER
 		[268277] = Defaults(), -- Purifying Flame
@@ -905,7 +1076,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[265360] = Defaults(), -- Roiling Deceit
 		[265662] = Defaults(), -- Corruptor's Pact
 		[265646] = Defaults(), -- Will of the Corruptor
-		-- Ghuun
+		-- G'huun
 		[263436] = Defaults(), -- Imperfect Physiology
 		[263227] = Defaults(), -- Putrid Blood
 		[263372] = Defaults(), -- Power Matrix
@@ -915,8 +1086,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[263235] = Defaults(), -- Blood Feast
 		[270287] = Defaults(), -- Blighted Ground
 
-	-- Siege of Zuldazar
-		-- Rawani Kanae / Frida Ironbellows
+	-- Battle of Dazar'alor
+		-- Champions of the Light
 		[283573] = Defaults(), -- Sacred Blade
 		[283617] = Defaults(), -- Wave of Light
 		[283651] = Defaults(), -- Blinding Faith
@@ -998,7 +1169,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[282432] = Defaults(), -- Crushing Doubt
 		[282589] = Defaults(), -- Mind Scramble
 		[292826] = Defaults(), -- Mind Scramble
-		-- Fathuul the Feared
+		-- Uu'nat
 		[284851] = Defaults(), -- Touch of the End
 		[286459] = Defaults(), -- Feedback: Void
 		[286457] = Defaults(), -- Feedback: Ocean
@@ -1082,7 +1253,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[298014] = Defaults(), -- Cold Blast
 		[298018] = Defaults(), -- Frozen
 
-	-- Nyalotha
+	-- Ny'alotha
 		-- Wrathion
 		[313255] = Defaults(), -- Creeping Madness (Slow Effect)
 		[306163] = Defaults(), -- Incineration
@@ -1172,6 +1343,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
+		-- Shadowlands
+		[343502] = Defaults(), -- Inspiring
+		[342332] = Defaults(), -- Bursting With Pride (Prideful)
+		[340880] = Defaults(), -- Prideful
 	},
 }
 
@@ -1200,64 +1375,65 @@ function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displ
 	}
 end
 
-G.unitframe.buffwatch = {
+G.unitframe.aurawatch = {
 	PRIEST = {
-		[194384] = UF:AuraWatch_AddSpell(194384, 'TOPRIGHT', {1, 1, 0.66}),          -- Atonement
-		[214206] = UF:AuraWatch_AddSpell(214206, 'TOPRIGHT', {1, 1, 0.66}),          -- Atonement (PvP)
-		[41635]  = UF:AuraWatch_AddSpell(41635, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}),     -- Prayer of Mending
-		[193065] = UF:AuraWatch_AddSpell(193065, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}), -- Masochism
-		[139]    = UF:AuraWatch_AddSpell(139, 'BOTTOMLEFT', {0.4, 0.7, 0.2}),        -- Renew
-		[6788]   = UF:AuraWatch_AddSpell(6788, 'BOTTOMLEFT', {0.89, 0.1, 0.1}),       -- Weakened Soul
-		[17]     = UF:AuraWatch_AddSpell(17, 'TOPLEFT', {0.7, 0.7, 0.7}, true),      -- Power Word: Shield
-		[47788]  = UF:AuraWatch_AddSpell(47788, 'LEFT', {0.86, 0.45, 0}, true),      -- Guardian Spirit
-		[33206]  = UF:AuraWatch_AddSpell(33206, 'LEFT', {0.47, 0.35, 0.74}, true),   -- Pain Suppression
+		[194384] = UF:AuraWatch_AddSpell(194384, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement
+		[214206] = UF:AuraWatch_AddSpell(214206, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement (PvP)
+		[41635]  = UF:AuraWatch_AddSpell(41635, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}),		-- Prayer of Mending
+		[193065] = UF:AuraWatch_AddSpell(193065, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}),	-- Masochism
+		[139]    = UF:AuraWatch_AddSpell(139, 'BOTTOMLEFT', {0.4, 0.7, 0.2}),			-- Renew
+		[6788]   = UF:AuraWatch_AddSpell(6788, 'BOTTOMLEFT', {0.89, 0.1, 0.1}), 		-- Weakened Soul
+		[17]     = UF:AuraWatch_AddSpell(17, 'TOPLEFT', {0.7, 0.7, 0.7}, true), 		-- Power Word: Shield
+		[47788]  = UF:AuraWatch_AddSpell(47788, 'LEFT', {0.86, 0.45, 0}, true), 		-- Guardian Spirit
+		[33206]  = UF:AuraWatch_AddSpell(33206, 'LEFT', {0.47, 0.35, 0.74}, true),		-- Pain Suppression
 	},
 	DRUID = {
-		[774]    = UF:AuraWatch_AddSpell(774, 'TOPRIGHT', {0.8, 0.4, 0.8}),   		-- Rejuvenation
-		[155777] = UF:AuraWatch_AddSpell(155777, 'RIGHT', {0.8, 0.4, 0.8}),   		-- Germination
-		[8936]   = UF:AuraWatch_AddSpell(8936, 'BOTTOMLEFT', {0.2, 0.8, 0.2}),		-- Regrowth
-		[33763]  = UF:AuraWatch_AddSpell(33763, 'TOPLEFT', {0.4, 0.8, 0.2}),  		-- Lifebloom
-		[48438]  = UF:AuraWatch_AddSpell(48438, 'BOTTOMRIGHT', {0.8, 0.4, 0}),		-- Wild Growth
-		[207386] = UF:AuraWatch_AddSpell(207386, 'TOP', {0.4, 0.2, 0.8}),     		-- Spring Blossoms
-		[102351] = UF:AuraWatch_AddSpell(102351, 'LEFT', {0.2, 0.8, 0.8}),    		-- Cenarion Ward (Initial Buff)
-		[102352] = UF:AuraWatch_AddSpell(102352, 'LEFT', {0.2, 0.8, 0.8}),    		-- Cenarion Ward (HoT)
-		[200389] = UF:AuraWatch_AddSpell(200389, 'BOTTOM', {1, 1, 0.4}),      		-- Cultivation
+		[774]    = UF:AuraWatch_AddSpell(774, 'TOPRIGHT', {0.8, 0.4, 0.8}), 			-- Rejuvenation
+		[155777] = UF:AuraWatch_AddSpell(155777, 'RIGHT', {0.8, 0.4, 0.8}), 			-- Germination
+		[8936]   = UF:AuraWatch_AddSpell(8936, 'BOTTOMLEFT', {0.2, 0.8, 0.2}),			-- Regrowth
+		[33763]  = UF:AuraWatch_AddSpell(33763, 'TOPLEFT', {0.4, 0.8, 0.2}), 			-- Lifebloom (Normal version)
+		[188550] = UF:AuraWatch_AddSpell(188550, 'TOPLEFT', {0.4, 0.8, 0.2}),			-- Lifebloom (Legendary version)
+		[48438]  = UF:AuraWatch_AddSpell(48438, 'BOTTOMRIGHT', {0.8, 0.4, 0}),			-- Wild Growth
+		[207386] = UF:AuraWatch_AddSpell(207386, 'TOP', {0.4, 0.2, 0.8}), 				-- Spring Blossoms
+		[102351] = UF:AuraWatch_AddSpell(102351, 'LEFT', {0.2, 0.8, 0.8}),				-- Cenarion Ward (Initial Buff)
+		[102352] = UF:AuraWatch_AddSpell(102352, 'LEFT', {0.2, 0.8, 0.8}),				-- Cenarion Ward (HoT)
+		[200389] = UF:AuraWatch_AddSpell(200389, 'BOTTOM', {1, 1, 0.4}),				-- Cultivation
 	},
 	PALADIN = {
-		[53563]  = UF:AuraWatch_AddSpell(53563, 'TOPRIGHT', {0.7, 0.3, 0.7}),          -- Beacon of Light
-		[156910] = UF:AuraWatch_AddSpell(156910, 'TOPRIGHT', {0.7, 0.3, 0.7}),         -- Beacon of Faith
-		[200025] = UF:AuraWatch_AddSpell(200025, 'TOPRIGHT', {0.7, 0.3, 0.7}),         -- Beacon of Virtue
-		[1022]   = UF:AuraWatch_AddSpell(1022, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true),    -- Hand of Protection
-		[1044]   = UF:AuraWatch_AddSpell(1044, 'BOTTOMRIGHT', {0.89, 0.45, 0}, true),  -- Hand of Freedom
-		[6940]   = UF:AuraWatch_AddSpell(6940, 'BOTTOMRIGHT', {0.89, 0.1, 0.1}, true), -- Hand of Sacrifice
-		[223306] = UF:AuraWatch_AddSpell(223306, 'BOTTOMLEFT', {0.7, 0.7, 0.3}),       -- Bestow Faith
-		[287280] = UF:AuraWatch_AddSpell(287280, 'TOPLEFT', {0.2, 0.8, 0.2}),          -- Glimmer of Light (Artifact HoT)
+		[53563]  = UF:AuraWatch_AddSpell(53563, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Light
+		[156910] = UF:AuraWatch_AddSpell(156910, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Faith
+		[200025] = UF:AuraWatch_AddSpell(200025, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Virtue
+		[1022]   = UF:AuraWatch_AddSpell(1022, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true), 	-- Hand of Protection
+		[1044]   = UF:AuraWatch_AddSpell(1044, 'BOTTOMRIGHT', {0.89, 0.45, 0}, true),	-- Hand of Freedom
+		[6940]   = UF:AuraWatch_AddSpell(6940, 'BOTTOMRIGHT', {0.89, 0.1, 0.1}, true),	-- Hand of Sacrifice
+		[223306] = UF:AuraWatch_AddSpell(223306, 'BOTTOMLEFT', {0.7, 0.7, 0.3}),		-- Bestow Faith
+		[287280] = UF:AuraWatch_AddSpell(287280, 'TOPLEFT', {0.2, 0.8, 0.2}),			-- Glimmer of Light (Artifact HoT)
 	},
 	SHAMAN = {
-		[61295]  = UF:AuraWatch_AddSpell(61295, 'TOPRIGHT', {0.7, 0.3, 0.7}),   	 -- Riptide
-		[974] = UF:AuraWatch_AddSpell(974, 'BOTTOMRIGHT', {0.2, 0.2, 1}), 	 -- Earth Shield
+		[61295]  = UF:AuraWatch_AddSpell(61295, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Riptide
+		[974]    = UF:AuraWatch_AddSpell(974, 'BOTTOMRIGHT', {0.2, 0.2, 1}),			-- Earth Shield
 	},
 	MONK = {
-		[119611] = UF:AuraWatch_AddSpell(119611, 'TOPLEFT', {0.3, 0.8, 0.6}),        -- Renewing Mist
-		[116849] = UF:AuraWatch_AddSpell(116849, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Life Cocoon
-		[124682] = UF:AuraWatch_AddSpell(124682, 'BOTTOMLEFT', {0.8, 0.8, 0.25}),    -- Enveloping Mist
-		[191840] = UF:AuraWatch_AddSpell(191840, 'BOTTOMRIGHT', {0.27, 0.62, 0.7}),  -- Essence Font
+		[119611] = UF:AuraWatch_AddSpell(119611, 'TOPLEFT', {0.3, 0.8, 0.6}),			-- Renewing Mist
+		[116849] = UF:AuraWatch_AddSpell(116849, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Life Cocoon
+		[124682] = UF:AuraWatch_AddSpell(124682, 'BOTTOMLEFT', {0.8, 0.8, 0.25}),		-- Enveloping Mist
+		[191840] = UF:AuraWatch_AddSpell(191840, 'BOTTOMRIGHT', {0.27, 0.62, 0.7}),		-- Essence Font
 	},
 	ROGUE = {
-		[57934] = UF:AuraWatch_AddSpell(57934, 'TOPRIGHT', {0.89, 0.09, 0.05}),		 -- Tricks of the Trade
+		[57934]  = UF:AuraWatch_AddSpell(57934, 'TOPRIGHT', {0.89, 0.09, 0.05}),		-- Tricks of the Trade
 	},
 	WARRIOR = {
-		[114030] = UF:AuraWatch_AddSpell(114030, 'TOPLEFT', {0.2, 0.2, 1}),     	 -- Vigilance
-		[3411]   = UF:AuraWatch_AddSpell(3411, 'TOPRIGHT', {0.89, 0.09, 0.05}), 	 -- Intervene
+		[114030] = UF:AuraWatch_AddSpell(114030, 'TOPLEFT', {0.2, 0.2, 1}),				-- Vigilance
+		[3411]   = UF:AuraWatch_AddSpell(3411, 'TOPRIGHT', {0.89, 0.09, 0.05}),			-- Intervene
 	},
 	PET = {
 		-- Warlock Pets
-		[193396] = UF:AuraWatch_AddSpell(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true), -- Demonic Empowerment
+		[193396] = UF:AuraWatch_AddSpell(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true),	-- Demonic Empowerment
 		-- Hunter Pets
-		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Frenzy
-		[136]   = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)      -- Mend Pet
+		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
+		[136]    = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)		-- Mend Pet
 	},
-	HUNTER = {}, -- Keep even if it's an empty table, so a reference to G.unitframe.buffwatch[E.myclass][SomeValue] doesn't trigger error
+	HUNTER = {}, -- Keep for reference to G.unitframe.buffwatch[E.myclass][SomeValue]
 	DEMONHUNTER = {},
 	WARLOCK = {},
 	MAGE = {},
@@ -1272,25 +1448,25 @@ P.unitframe.filters = {
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	-- Warlock
-	[198590] = 5, -- Drain Soul
-	[755]    = 6, -- Health Funnel
-	[234153] = 6, -- Drain Life
+	[198590] = 5,	-- Drain Soul
+	[755]    = 6,	-- Health Funnel
+	[234153] = 6,	-- Drain Life
 	-- Priest
-	[64843]  = 4, -- Divine Hymn
-	[15407]  = 4, -- Mind Flay
-	[48045] = 5, -- Mind Sear
-	[47757] = 5, -- Penance (it seems, that this spell have on own ID for channeling. Its not the actual spell itself)
+	[64843]  = 4,	-- Divine Hymn
+	[15407]  = 4,	-- Mind Flay
+	[48045]  = 5,	-- Mind Sear
+	[47757]  = 5,	-- Penance
 	-- Mage
-	[5143]   = 5,  -- Arcane Missiles
-	[12051]  = 3,  -- Evocation
-	[205021] = 10, -- Ray of Frost
+	[5143]   = 5,	-- Arcane Missiles
+	[12051]  = 3,	-- Evocation
+	[205021] = 10,	-- Ray of Frost
 	-- Druid
-	[740]    = 4, -- Tranquility
+	[740]    = 4,	-- Tranquility
 }
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
-	[198590] = 1, -- Drain Soul
+	[198590] = 1,	-- Drain Soul
 }
 
 -- Spells Effected By Haste
@@ -1306,7 +1482,7 @@ G.unitframe.AuraBarColors = {
 	[90355] = { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
 }
 
-G.unitframe.DebuffHighlightColors = {}
+G.unitframe.AuraHighlightColors = {}
 
 G.unitframe.specialFilters = {
 	-- Whitelists

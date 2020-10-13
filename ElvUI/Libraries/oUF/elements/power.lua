@@ -19,8 +19,9 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 .frequentUpdates                  - Indicates whether to use UNIT_POWER_FREQUENT instead UNIT_POWER_UPDATE to update the
                                     bar (boolean)
-.displayAltPower                  - Use this to let the widget display alternate power if the unit has one. If no
-                                    alternate power the display will fall back to primary power (boolean)
+.displayAltPower                  - Use this to let the widget display alternative power, if the unit has one.
+                                    By default, it does so only for raid and party units. If none, the display will fall
+                                    back to the primary power (boolean)
 .useAtlas                         - Use this to let the widget use an atlas for its texture if an atlas is present in
                                     `self.colors.power` for the appropriate power type (boolean)
 .smoothGradient                   - 9 color values to be used with the .colorSmooth option (table)
@@ -96,9 +97,20 @@ local unitSelectionType = Private.unitSelectionType
 -- sourced from FrameXML/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 
-local function getDisplayPower(unit)
+--[[ Override: Power:GetDisplayPower()
+Used to get info on the unit's alternative power, if any.
+Should return the power type index (see [Enum.PowerType.Alternate](https://wow.gamepedia.com/Enum_Unit.PowerType))
+and the minimum value for the given power type (see [info.minPower](https://wow.gamepedia.com/API_GetUnitPowerBarInfo))
+or nil if the unit has no alternative (alternate) power or it should not be
+displayed. In case of a nil return, the element defaults to the primary power
+type and zero for the minimum value.
+
+* self - the Power element
+--]]
+local function GetDisplayPower(element)
+	local unit = element.__owner.unit
 	local barInfo = GetUnitPowerBarInfo(unit)
-	if barInfo then
+	if(barInfo and barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit))) then
 		return ALTERNATE_POWER_INDEX, barInfo.minPower
 	end
 end
@@ -137,9 +149,9 @@ local function UpdateColor(self, event, unit)
 		if(element.useAtlas and t and t.atlas) then
 			atlas = t.atlas
 		end
-	elseif(element.colorClass and UnitIsPlayer(unit)) or
-		(element.colorClassNPC and not UnitIsPlayer(unit)) or
-		(element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
+	elseif(element.colorClass and UnitIsPlayer(unit))
+		or (element.colorClassNPC and not UnitIsPlayer(unit))
+		or (element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
 		t = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
@@ -158,19 +170,25 @@ local function UpdateColor(self, event, unit)
 	if(atlas) then
 		element:SetStatusBarAtlas(atlas)
 		element:SetStatusBarColor(1, 1, 1)
-	else
-		element:SetStatusBarTexture(element.texture)
+	elseif(b) then
+		element:SetStatusBarColor(r, g, b)
 
-		if(b) then
-			element:SetStatusBarColor(r, g, b)
+		local bg = element.bg
+		if(bg) then
+			local mu = bg.multiplier or 1
+			bg:SetVertexColor(r * mu, g * mu, b * mu)
 		end
 	end
+
+	--[[ Callback: Power:PostUpdateColor(unit, r, g, b)
+	Called after the element color has been updated.
 
 	local bg = element.bg
 	if(bg and b) then
 		local mu = bg.multiplier or 1
 		bg:SetVertexColor(r * mu, g * mu, b * mu)
 	end
+	--]]
 
 	if(element.PostUpdateColor) then
 		element:PostUpdateColor(unit, r, g, b)
@@ -204,7 +222,7 @@ local function Update(self, event, unit)
 
 	local displayType, min
 	if(element.displayAltPower) then
-		displayType, min = getDisplayPower(unit)
+		displayType, min = element:GetDisplayPower()
 	end
 
 	local cur, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
@@ -257,16 +275,17 @@ local function ForceUpdate(element)
 	Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
---[[ Power:SetColorDisconnected(state)
+--[[ Power:SetColorDisconnected(state, isForced)
 Used to toggle coloring if the unit is offline.
 
-* self  - the Power element
-* state - the desired state (boolean)
+* self     - the Power element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
-local function SetColorDisconnected(element, state)
-	if(element.colorDisconnected ~= state) then
+local function SetColorDisconnected(element, state, isForced)
+	if(element.colorDisconnected ~= state or isForced) then
 		element.colorDisconnected = state
-		if(element.colorDisconnected) then
+		if(state) then
 			element.__owner:RegisterEvent('UNIT_CONNECTION', ColorPath)
 		else
 			element.__owner:UnregisterEvent('UNIT_CONNECTION', ColorPath)
@@ -274,16 +293,17 @@ local function SetColorDisconnected(element, state)
 	end
 end
 
---[[ Power:SetColorSelection(state)
+--[[ Power:SetColorSelection(state, isForced)
 Used to toggle coloring by the unit's selection.
 
-* self  - the Power element
-* state - the desired state (boolean)
+* self     - the Power element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
-local function SetColorSelection(element, state)
-	if(element.colorSelection ~= state) then
+local function SetColorSelection(element, state, isForced)
+	if(element.colorSelection ~= state or isForced) then
 		element.colorSelection = state
-		if(element.colorSelection) then
+		if(state) then
 			element.__owner:RegisterEvent('UNIT_FLAGS', ColorPath)
 		else
 			element.__owner:UnregisterEvent('UNIT_FLAGS', ColorPath)
@@ -291,16 +311,17 @@ local function SetColorSelection(element, state)
 	end
 end
 
---[[ Power:SetColorTapping(state)
+--[[ Power:SetColorTapping(state, isForced)
 Used to toggle coloring if the unit isn't tapped by the player.
 
-* self  - the Power element
-* state - the desired state (boolean)
+* self     - the Power element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
-local function SetColorTapping(element, state)
-	if(element.colorTapping ~= state) then
+local function SetColorTapping(element, state, isForced)
+	if(element.colorTapping ~= state or isForced) then
 		element.colorTapping = state
-		if(element.colorTapping) then
+		if(state) then
 			element.__owner:RegisterEvent('UNIT_FACTION', ColorPath)
 		else
 			element.__owner:UnregisterEvent('UNIT_FACTION', ColorPath)
@@ -308,16 +329,17 @@ local function SetColorTapping(element, state)
 	end
 end
 
---[[ Power:SetColorThreat(state)
+--[[ Power:SetColorThreat(state, isForced)
 Used to toggle coloring by the unit's threat status.
 
-* self  - the Power element
-* state - the desired state (boolean)
+* self     - the Power element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
-local function SetColorThreat(element, state)
-	if(element.colorThreat ~= state) then
+local function SetColorThreat(element, state, isForced)
+	if(element.colorThreat ~= state or isForced) then
 		element.colorThreat = state
-		if(element.colorThreat) then
+		if(state) then
 			element.__owner:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		else
 			element.__owner:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
@@ -325,16 +347,17 @@ local function SetColorThreat(element, state)
 	end
 end
 
---[[ Power:SetFrequentUpdates(state)
+--[[ Power:SetFrequentUpdates(state, isForced)
 Used to toggle frequent updates.
 
-* self  - the Power element
-* state - the desired state (boolean)
+* self     - the Power element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
 --]]
-local function SetFrequentUpdates(element, state)
-	if(element.frequentUpdates ~= state) then
+local function SetFrequentUpdates(element, state, isForced)
+	if(element.frequentUpdates ~= state or isForced) then
 		element.frequentUpdates = state
-		if(element.frequentUpdates) then
+		if(state) then
 			element.__owner:UnregisterEvent('UNIT_POWER_UPDATE', Path)
 			element.__owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 		else
@@ -419,9 +442,12 @@ local function Enable(self)
 		self:RegisterEvent('UNIT_POWER_BAR_HIDE', Path)
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', Path)
 
-		if(element:IsObjectType('StatusBar')) then
-			element.texture = element:GetStatusBarTexture() and element:GetStatusBarTexture():GetTexture() or [[Interface\TargetingFrame\UI-StatusBar]]
-			element:SetStatusBarTexture(element.texture)
+		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
+			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+		end
+
+		if(not element.GetDisplayPower) then
+			element.GetDisplayPower = GetDisplayPower
 		end
 
 		element:Show()

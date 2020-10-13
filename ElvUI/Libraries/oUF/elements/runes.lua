@@ -86,7 +86,7 @@ local function UpdateColor(self, event)
 	local spec = GetSpecialization() or 0
 
 	local color
-	if(spec ~= 0 and element.colorSpec) then
+	if(spec > 0 and spec < 4 and element.colorSpec) then
 		color = self.colors.runes[spec]
 	else
 		color = self.colors.power.RUNES
@@ -104,6 +104,14 @@ local function UpdateColor(self, event)
 		end
 	end
 
+	--[[ Callback: Runes:PostUpdateColor(r, g, b)
+	Called after the element color has been updated.
+
+	* self - the Runes element
+	* r    - the red component of the used color (number)[0-1]
+	* g    - the green component of the used color (number)[0-1]
+	* b    - the blue component of the used color (number)[0-1]
+	--]]
 	if(element.PostUpdateColor) then
 		element:PostUpdateColor(r, g, b)
 	end
@@ -180,6 +188,11 @@ local function Path(self, ...)
 	(self.Runes.Override or Update) (self, ...)
 end
 
+local function AllPath(...)
+	Path(...)
+	ColorPath(...)
+end
+
 local function ForceUpdate(element)
 	Path(element.__owner, 'ForceUpdate')
 	ColorPath(element.__owner, 'ForceUpdate')
@@ -193,7 +206,7 @@ local function Enable(self, unit)
 
 		for i = 1, #element do
 			local rune = element[i]
-			if(rune:IsObjectType('StatusBar') and not rune:GetStatusBarTexture()) then
+			if(rune:IsObjectType('StatusBar') and not (rune:GetStatusBarTexture() or rune:GetStatusBarAtlas())) then
 				rune:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 			end
 		end
@@ -229,4 +242,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('Runes', Path, Enable, Disable)
+oUF:AddElement('Runes', AllPath, Enable, Disable)

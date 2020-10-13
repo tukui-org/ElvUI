@@ -10,7 +10,7 @@ end
 
 -- GLOBALS: ElvUI
 
-local Updater = CreateFrame("StatusBar")
+local Updater = CreateFrame("StatusBar", nil, nil, "BackdropTemplate")
 local Texture = Updater:CreateTexture()
 local FontString = Updater:CreateFontString()
 local Initialize, Update, Easing = {}, {}, {}
@@ -44,37 +44,9 @@ local GetColor = function(p, r1, g1, b1, r2, g2, b2)
 	return r1 + (r2 - r1) * p, g1 + (g2 - g1) * p, b1 + (b2 - b1) * p
 end
 
-local ElvToolkit = {
-	GetBackdropColor = function(parent)
-		local E = ElvUI and ElvUI[1]
-		if E then
-			return E:GetBackdropColor(parent)
-		else
-			return parent:GetBackdropColor()
-		end
-	end,
-	GetBackdropBorderColor = function(parent)
-		local E = ElvUI and ElvUI[1]
-		if E then
-			return E:GetBackdropBorderColor(parent)
-		else
-			return parent:GetBackdropBorderColor()
-		end
-	end,
-
-	-- we dont need these because of our api calls,
-	-- we just need an uncached version to use our injected api on the elements.
-	SetBackdropColor = function(parent, ...)
-		parent:SetBackdropColor(...)
-	end,
-	SetBackdropBorderColor = function(parent, ...)
-		parent:SetBackdropBorderColor(...)
-	end
-}
-
 local Set = {
-	backdrop = ElvToolkit.SetBackdropColor,
-	border = ElvToolkit.SetBackdropBorderColor,
+	backdrop = Updater.SetBackdropColor,
+	border = Updater.SetBackdropBorderColor,
 	statusbar = Updater.SetStatusBarColor,
 	text = FontString.SetTextColor,
 	texture = Texture.SetTexture,
@@ -82,8 +54,8 @@ local Set = {
 }
 
 local Get = {
-	backdrop = ElvToolkit.GetBackdropColor,
-	border = ElvToolkit.GetBackdropBorderColor,
+	backdrop = Updater.GetBackdropColor,
+	border = Updater.GetBackdropBorderColor,
 	statusbar = Updater.GetStatusBarColor,
 	text = FontString.GetTextColor,
 	texture = Texture.GetVertexColor,

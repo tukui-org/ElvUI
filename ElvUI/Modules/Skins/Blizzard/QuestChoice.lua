@@ -14,7 +14,7 @@ function S:Blizzard_QuestChoice()
 		local icon = item.Icon
 		local currencies = rewards.Currencies
 
-		item.IconBorder:SetAlpha(0)
+		item.IconBorder:Kill()
 		S:HandleIcon(icon)
 		icon:SetDrawLayer('ARTWORK')
 

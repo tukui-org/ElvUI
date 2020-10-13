@@ -25,11 +25,11 @@ function TestTalkingHead()
 	local frame = TalkingHeadFrame;
 	local model = frame.MainFrame.Model;
 
-	if( frame.finishTimer ) then
+	if frame.finishTimer then
 		frame.finishTimer:Cancel();
 		frame.finishTimer = nil;
 	end
-	if ( frame.voHandle ) then
+	if frame.voHandle then
 		StopSound(frame.voHandle);
 		frame.voHandle = nil;
 	end
@@ -49,9 +49,9 @@ function TestTalkingHead()
 	textureKitID = 0
 
 	local textFormatted = format(text);
-	if ( displayInfo and displayInfo ~= 0 ) then
+	if displayInfo and displayInfo ~= 0 then
 		local textureKit;
-		if ( textureKitID ~= 0 ) then
+		if textureKitID ~= 0 then
 			SetupTextureKits(textureKitID, frame.BackgroundFrame, talkingHeadTextureKitRegionFormatStrings, false, true);
 			SetupTextureKits(textureKitID, frame.PortraitFrame, talkingHeadTextureKitRegionFormatStrings, false, true);
 			textureKit = GetUITextureKitInfo(textureKitID);
@@ -68,22 +68,22 @@ function TestTalkingHead()
 		frame.TextFrame.Text:SetTextColor(textColor:GetRGB());
 		frame.TextFrame.Text:SetShadowColor(shadowColor:GetRGBA());
 		frame:Show();
-		if ( currentDisplayInfo ~= displayInfo ) then
+		if currentDisplayInfo ~= displayInfo then
 			model.uiCameraID = cameraID;
 			model:SetDisplayInfo(displayInfo);
 		else
-			if ( model.uiCameraID ~= cameraID ) then
+			if model.uiCameraID ~= cameraID then
 				model.uiCameraID = cameraID;
 				Model_ApplyUICamera(model, model.uiCameraID);
 			end
 			TalkingHeadFrame_SetupAnimations(model);
 		end
 
-		if ( isNewTalkingHead ) then
+		if isNewTalkingHead then
 			TalkingHeadFrame_Reset(frame, textFormatted, name);
 			TalkingHeadFrame_FadeinFrames();
 		else
-			if ( name ~= frame.NameFrame.Name:GetText() ) then
+			if name ~= frame.NameFrame.Name:GetText() then
 				-- Fade out the old name and fade in the new name
 				frame.NameFrame.Fadeout:Play();
 				E:Delay(0.25, frame.NameFrame.Name.SetText, frame.NameFrame.Name, name);
@@ -92,7 +92,7 @@ function TestTalkingHead()
 				frame.MainFrame.TalkingHeadsInAnim:Play();
 			end
 
-			if ( textFormatted ~= frame.TextFrame.Text:GetText() ) then
+			if textFormatted ~= frame.TextFrame.Text:GetText() then
 				-- Fade out the old text and fade in the new text
 				frame.TextFrame.Fadeout:Play();
 				E:Delay(0.25, frame.TextFrame.Text.SetText, frame.TextFrame.Text, textFormatted);
@@ -101,7 +101,7 @@ function TestTalkingHead()
 		end
 
 		local success, voHandle = PlaySound(vo, 'Talking Head', true, true);
-		if ( success ) then
+		if success then
 			frame.voHandle = voHandle;
 		end
 	end
@@ -125,12 +125,12 @@ function S:Blizzard_TalkingHeadUI()
 		local button = TalkingHeadFrame.MainFrame.CloseButton
 		S:HandleCloseButton(button)
 		button:ClearAllPoints()
-		button:SetPoint('TOPRIGHT', TalkingHeadFrame.BackgroundFrame, 'TOPRIGHT', 0, -2)
+		button:Point('TOPRIGHT', TalkingHeadFrame.BackgroundFrame, 'TOPRIGHT', 0, -2)
 	else
 		TalkingHeadFrame.MainFrame.Model:CreateBackdrop('Transparent')
 		TalkingHeadFrame.MainFrame.Model.backdrop:ClearAllPoints()
-		TalkingHeadFrame.MainFrame.Model.backdrop:SetPoint('CENTER')
-		TalkingHeadFrame.MainFrame.Model.backdrop:SetSize(120, 119)
+		TalkingHeadFrame.MainFrame.Model.backdrop:Point('CENTER')
+		TalkingHeadFrame.MainFrame.Model.backdrop:Size(120, 119)
 
 		TalkingHeadFrame.MainFrame.CloseButton:Kill()
 	end

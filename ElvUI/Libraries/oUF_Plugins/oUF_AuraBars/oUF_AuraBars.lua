@@ -17,6 +17,7 @@ local UnitAura = UnitAura
 local CreateFrame = CreateFrame
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
+local GameTooltip = GameTooltip
 
 local DAY, HOUR, MINUTE = 86400, 3600, 60
 local function FormatTime(s)
@@ -34,15 +35,16 @@ local function FormatTime(s)
 end
 
 local function onEnter(self)
-	if _G.GameTooltip:IsForbidden() or not self:IsVisible() then return end
+	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
-	_G.GameTooltip:SetOwner(self, self.tooltipAnchor)
-	_G.GameTooltip:SetUnitAura(self.unit, self.index, self.filter)
+	GameTooltip:SetOwner(self, self.tooltipAnchor)
+	GameTooltip:SetUnitAura(self.unit, self.index, self.filter)
 end
 
 local function onLeave()
-	if _G.GameTooltip:IsForbidden() then return end
-	_G.GameTooltip:Hide()
+	if GameTooltip:IsForbidden() then return end
+
+	GameTooltip:Hide()
 end
 
 local function onUpdate(self, elapsed)

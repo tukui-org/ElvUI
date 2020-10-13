@@ -26,7 +26,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local function Update(self, event, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if not unit or self.unit ~= unit then return end
 	local element = self.CombatIndicator
 
 	--[[ Callback: CombatIndicator:PreUpdate()
@@ -72,7 +72,7 @@ end
 
 local function Enable(self, unit)
 	local element = self.CombatIndicator
-	if(element) then
+	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 

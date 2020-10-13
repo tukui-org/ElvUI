@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 
 local unpack = unpack
 local UnitPlayerControlled = UnitPlayerControlled
@@ -106,7 +107,7 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
-	Power:SetStatusBarTexture(E.Libs.LSM:Fetch('statusbar', NP.db.statusbar))
+	Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
 	local clipFrame = CreateFrame('Frame', nil, Power)
 	clipFrame:SetClipsChildren(true)
@@ -134,7 +135,7 @@ function NP:Update_Power(nameplate)
 			nameplate:EnableElement('Power')
 		end
 
-		nameplate.Power:SetPoint('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
+		nameplate.Power:Point('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
 
 		nameplate:SetPowerUpdateMethod(E.global.nameplate.effectivePower)
 		nameplate:SetPowerUpdateSpeed(E.global.nameplate.effectivePowerSpeed)
@@ -150,5 +151,5 @@ function NP:Update_Power(nameplate)
 	nameplate.Power.colorPower = not db.power.useClassColor
 	nameplate.Power.width = db.power.width
 	nameplate.Power.height = db.power.height
-	nameplate.Power:SetSize(db.power.width, db.power.height)
+	nameplate.Power:Size(db.power.width, db.power.height)
 end

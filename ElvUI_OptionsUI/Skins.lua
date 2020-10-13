@@ -5,18 +5,32 @@ local ACH = E.Libs.ACH
 
 E.Options.args.skins = ACH:Group(L["Skins"], nil, 2, 'tab')
 E.Options.args.skins.args.intro = ACH:Description(L["SKINS_DESC"], 0)
-E.Options.args.skins.args.general = ACH:MultiSelect(L["General"], nil, 1, nil, nil, nil, function(_, key) if key == 'blizzardEnable' then return E.private.skins.blizzard.enable else return E.private.skins[key] end end, function(_, key, value) if key == 'blizzardEnable' then E.private.skins.blizzard.enable = value else E.private.skins[key] = value end E:StaticPopup_Show('PRIVATE_RL') end)
+E.Options.args.skins.args.general = ACH:MultiSelect(L["General"], nil, 1, nil, nil, nil,
+	function(_, key)
+		if key == 'blizzardEnable' then
+			return E.private.skins.blizzard.enable
+		else
+			return E.private.skins[key] end
+		end,
+	function(_, key, value)
+		if key == 'blizzardEnable' then
+			E.private.skins.blizzard.enable = value
+		else
+			E.private.skins[key] = value
+		end
+
+		E:StaticPopup_Show('PRIVATE_RL')
+	end)
 E.Options.args.skins.args.general.sortByValue = true
 E.Options.args.skins.args.general.values = {
 	ace3Enable = 'Ace3',
 	blizzardEnable = L["Blizzard"],
 	checkBoxSkin = L["CheckBox Skin"],
-	cleanBossButton = L["Clean Boss Button"],
 	parchmentRemoverEnable = L["Parchment Remover"],
 }
 
 E.Options.args.skins.args.talkingHead = ACH:Group(L["TalkingHead"], nil, 2, nil, function(info) return E.db.general[info[#info]] end)
-E.Options.args.skins.args.talkingHead.guiInline = true
+E.Options.args.skins.args.talkingHead.inline = true
 E.Options.args.skins.args.talkingHead.args.talkingHeadFrameScale = ACH:Range(L["Talking Head Scale"], nil, 1, { min = .5, max = 2, step = .01, isPercent = true }, nil, nil, function(_, value) E.db.general.talkingHeadFrameScale = value; B:ScaleTalkingHeadFrame() end)
 E.Options.args.skins.args.talkingHead.args.talkingHeadFrameBackdrop = ACH:Toggle(L["Talking Head Backdrop"], nil, 2, nil, nil, nil, nil, function(_, value) E.db.general.talkingHeadFrameBackdrop = value; E:StaticPopup_Show('CONFIG_RL') end)
 
@@ -25,28 +39,32 @@ E.Options.args.skins.args.blizzard.sortByValue = true
 E.Options.args.skins.args.blizzard.values = {
 	achievement = L["ACHIEVEMENTS"],
 	addonManager = L["AddOn Manager"],
-	AdventureMap = L["ADVENTURE_MAP_TITLE"],
+	adventureMap = L["ADVENTURE_MAP_TITLE"],
 	alertframes = L["Alert Frames"],
-	AlliedRaces = L["Allied Races"],
+	alliedRaces = L["Allied Races"],
+	animaDiversion = L["Anima Diversion"],
 	archaeology = L["Archaeology Frame"],
 	artifact = L["ITEM_QUALITY6_DESC"],
 	auctionhouse = L["AUCTIONS"],
-	AzeriteEssence = L["Azerite Essence"],
-	AzeriteRespec = L["AZERITE_RESPEC_TITLE"],
-	AzeriteUI = L["AzeriteUI"],
+	azeriteEssence = L["Azerite Essence"],
+	azeriteRespec = L["AZERITE_RESPEC_TITLE"],
+	azerite = L["Azerite"],
 	bags = L["Bags"],
 	barber = L["BARBERSHOP"],
 	bgmap = L["BG Map"],
 	bgscore = L["BG Score"],
 	binding = L["KEY_BINDINGS"],
-	BlizzardOptions = L["INTERFACE_OPTIONS"],
+	blizzardOptions = L["INTERFACE_OPTIONS"],
 	bmah = L["BLACK_MARKET_AUCTION_HOUSE"],
 	calendar = L["Calendar Frame"],
-	Channels  = L["CHANNELS"],
+	channels  = L["CHANNELS"],
 	character = L["Character Frame"],
+	chromieTime = L["Chromie Time Frame"],
 	collections = L["COLLECTIONS"],
-	Communities = L["COMMUNITIES"],
-	Contribution = L["Contribution"],
+	communities = L["COMMUNITIES"],
+	contribution = L["Contribution"],
+	covenantPreview = L["Covenant Preview"],
+	covenantSanctum = L["Covenant Sanctum"],
 	deathRecap = L["DEATH_RECAP_TITLE"],
 	debug = L["Debug Tools"],
 	dressingroom = L["DRESSUP_FRAME"],
@@ -54,16 +72,17 @@ E.Options.args.skins.args.blizzard.values = {
 	friends = L["FRIENDS"],
 	garrison = L["GARRISON_LOCATION_TOOLTIP"],
 	gbank = L["GUILD_BANK"],
-	GMChat = L["GM Chat"],
+	gmChat = L["GM Chat"],
 	gossip = L["Gossip Frame"],
+	guide = L["Guide Frame"],
 	guild = L["GUILD"],
 	guildcontrol = L["Guild Control Frame"],
 	guildregistrar = L["Guild Registrar"],
 	help = L["Help Frame"],
 	inspect = L["INSPECT"],
-	IslandQueue = L["ISLANDS_HEADER"],
-	IslandsPartyPose = L["Island Party Pose"],
-	ItemInteraction = L["Item Interaction"],
+	islandQueue = L["ISLANDS_HEADER"],
+	islandsPartyPose = L["Island Party Pose"],
+	itemInteraction = L["Item Interaction"],
 	itemUpgrade = L["Item Upgrade"],
 	lfg = L["LFG_TITLE"],
 	lfguild = L["LF Guild Frame"],
@@ -76,30 +95,35 @@ E.Options.args.skins.args.blizzard.values = {
 	misc = L["Misc Frames"],
 	nonraid = L["Non-Raid Frame"],
 	objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"],
-	Obliterum = L["OBLITERUM_FORGE_TITLE"],
+	obliterum = L["OBLITERUM_FORGE_TITLE"],
 	orderhall = L["Orderhall"],
 	petbattleui = L["Pet Battle"],
 	petition = L["Petition Frame"],
+	playerChoice = L["Player Choice Frame"],
 	pvp = L["PvP Frames"],
 	quest = L["Quest Frames"],
 	questChoice = L["Quest Choice"],
 	raid = L["Raid Frame"],
-	Scrapping = L["SCRAP_BUTTON"],
+	runeforge = L["Runeforge"],
+	scrapping = L["SCRAP_BUTTON"],
 	socket = L["Socket Frame"],
 	spellbook = L["SPELLBOOK"],
 	stable = L["Stable"],
+	soulbinds = L["Soulbinds"],
 	tabard = L["Tabard Frame"],
 	talent = L["TALENTS"],
 	talkinghead = L["TalkingHead"],
 	taxi = L["FLIGHT_MAP"],
 	timemanager = L["TIMEMANAGER_TITLE"],
 	tooltip = L["Tooltip"],
+	torghastLevelPicker = L["Torghast Level Picker"],
 	trade = L["TRADE"],
 	tradeskill = L["TRADESKILLS"],
 	trainer = L["Trainer Frame"],
 	transmogrify = L["TRANSMOGRIFY"],
-	Tutorials = L["Tutorials"],
+	tutorials = L["Tutorials"],
 	voidstorage = L["VOID_STORAGE"],
-	Warboard = L["Warboard"],
+	warboard = L["Warboard"],
+	weeklyRewards = L["Weekly Rewards"],
 	worldmap = L["WORLD_MAP"],
 }

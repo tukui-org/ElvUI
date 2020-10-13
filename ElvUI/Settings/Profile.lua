@@ -58,7 +58,7 @@ P.general = {
 	fontSize = 12,
 	font = 'PT Sans Narrow',
 	fontStyle = 'OUTLINE',
-	bordercolor = { r = 0.1, g = 0.1, b = 0.1 },
+	bordercolor = { r = 0, g = 0, b = 0 }, -- updated in E.Initialize
 	backdropcolor = { r = 0.1, g = 0.1, b = 0.1 },
 	backdropfadecolor = { r = .06, g = .06, b = .06, a = 0.8 },
 	valuecolor = {r = 23/255, g = 132/255, b = 209/255},
@@ -76,7 +76,7 @@ P.general = {
 		icons = {
 			classHall = {
 				scale = 0.8,
-				position = 'TOPLEFT',
+				position = 'BOTTOMLEFT',
 				xOffset = 0,
 				yOffset = 0,
 				hide = false,
@@ -112,19 +112,7 @@ P.general = {
 				xOffset = 8,
 				yOffset = -8,
 			},
-			ticket = {
-				scale = 1,
-				position = 'TOPRIGHT',
-				xOffset = 0,
-				yOffset = 0,
-			},
 		}
-	},
-	threat = {
-		enable = true,
-		position = 'RIGHTCHAT',
-		textSize = 12,
-		textOutline = 'NONE',
 	},
 	totems = {
 		enable = true,
@@ -136,42 +124,59 @@ P.general = {
 	kittys = false
 };
 
-P.databars = {}
+P.databars = {
+	transparent = true,
+	statusbar = 'ElvUI Norm',
+	customTexture = false,
+	colors = {
+		experience = { r = 0, g = .4, b = 1, a = .8 },
+		rested = { r = 1, g = 0, b = 1, a = .4},
+		quest = { r = 0, g = 1, b = 0, a = .4},
+		honor = { r = .94, g = .45, b = .25, a = 1 },
+		azerite = { r = .901, g = .8, b = .601, a = 1 },
+		useCustomFactionColors = false,
+		factionColors = {
+			[1] = { r = .8, g = .3, b = .22},
+			[2] = { r = .8, g = .3, b = .22},
+			[3] = { r = .75, g = .27, b = 0},
+			[4] = { r = .9, g = .7, b = 0},
+			[5] = { r = 0, g = .6, b = .1},
+			[6] = { r = 0, g = .6, b = .1},
+			[7] = { r = 0, g = .6, b = .1},
+			[8] = { r = 0, g = .6, b = .1},
+		}
+	}
+}
 
-for _, databar in pairs({'experience', 'reputation', 'honor', 'azerite'}) do
+for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite'}) do
 	P.databars[databar] = {
 		enable = true,
 		width = 222,
 		height = 10,
 		textFormat = 'NONE',
-		textSize = 11,
+		fontSize = 11,
 		font = 'PT Sans Narrow',
 		fontOutline = 'NONE',
 		mouseover = false,
-		orientation = 'HORIZONTAL',
+		clickThrough = false,
+		orientation = 'AUTOMATIC',
 		reverseFill = false,
 	}
 end
 
 P.databars.experience.hideAtMaxLevel = true
-P.databars.experience.hideInVehicle = false
-P.databars.experience.hideInCombat = false
 P.databars.experience.width = 348
-P.databars.experience.textSize = 12
+P.databars.experience.fontSize = 12
+P.databars.experience.questCompletedOnly = false
+P.databars.experience.questCurrentZoneOnly = false
 
 P.databars.reputation.enable = false
-P.databars.reputation.hideInVehicle = false
-P.databars.reputation.hideInCombat = false
 P.databars.reputation.hideBelowMaxLevel = false
 
-P.databars.honor.hideInVehicle = false
-P.databars.honor.hideInCombat = false
 P.databars.honor.hideOutsidePvP = false
 P.databars.honor.hideBelowMaxLevel = false
 
 P.databars.azerite.hideAtMaxLevel = true
-P.databars.azerite.hideInVehicle = false
-P.databars.azerite.hideInCombat = false
 P.databars.azerite.hideBelowMaxLevel = false
 
 --Bags
@@ -644,6 +649,7 @@ P.nameplates = {
 		},
 		TARGET = {
 			enable = true,
+			arrow = 'Arrow1',
 			glowStyle = 'style2',
 			classpower = {
 				enable = false,
@@ -697,15 +703,6 @@ P.nameplates = {
 			enable = true,
 			showTitle = true,
 			nameOnly = true,
-			widgetXPBar = {
-				enable = true,
-				yOffset = -4,
-				color = {
-					r = 0.529,
-					g = 0.808,
-					b = 0.922
-				}
-			},
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
 			debuffs = CopyTable(NP_Auras),
@@ -724,15 +721,6 @@ P.nameplates = {
 			enable = true,
 			showTitle = true,
 			nameOnly = false,
-			widgetXPBar = {
-				enable = true,
-				yOffset = -4,
-				color = {
-					r = 0.529,
-					g = 0.808,
-					b = 0.922
-				}
-			},
 			buffs = CopyTable(NP_Auras),
 			castbar = CopyTable(NP_Castbar),
 			debuffs = CopyTable(NP_Auras),
@@ -968,41 +956,6 @@ P.datatexts = {
 	battleground = true,
 	noCombatClick = false,
 	noCombatHover = false,
-
-	--Datatext Options
-	---General
-	goldFormat = 'BLIZZARD',
-	goldCoins = false,
-	---Currencies
-	currencies = {
-		displayedCurrency = 'BACKPACK',
-		displayStyle = 'ICON',
-	},
-	---Durability
-	durability = {
-		percThreshold = 30,
-	},
-	---Time
-	localtime = true,
-	time24 = _G.GetCurrentRegion() ~= 1, -- Non US region will default to the 24-hour clock
-	---Friends
-	friends = {
-		--status
-		hideAFK = false,
-		hideDND = false,
-		--clients
-		hideWoW = false,
-		hideD3 = false,
-		hideVIPR = false,
-		hideWTCG = false, --Hearthstone
-		hideHero = false, --Heros of the Storm
-		hidePro = false, --Overwatch
-		hideS1 = false,
-		hideS2 = false,
-		hideDST2 = false,
-		hideBSAp = false, --Mobile
-		hideApp = false, --Launcher
-	},
 }
 
 --Tooltip
@@ -1020,6 +973,7 @@ P.tooltip = {
 	showMount = true,
 	modifierID = 'SHOW',
 	role = true,
+	gender = false,
 	font = 'PT Sans Narrow',
 	fontOutline = 'NONE',
 	headerFontSize = 12,
@@ -1176,7 +1130,7 @@ local UF_Health = {
 
 local UF_HealthPrediction = {
 	enable = false,
-	absorbStyle = 'NORMAL',
+	absorbStyle = 'OVERFLOW',
 	anchorPoint = 'BOTTOM',
 	height = -1
 }
@@ -1397,10 +1351,10 @@ P.unitframe = {
 		CTRL = 'NONE',
 		ALT = 'NONE',
 	},
-	thinBorders = false,
+	thinBorders = true,
 	targetSound = false,
 	colors = {
-		borderColor = {r = 0, g = 0, b = 0},
+		borderColor = {r = 0, g = 0, b = 0}, -- updated in E.Initialize
 		healthclass = false,
 		--healththreat = false,
 		healthselection = false,
@@ -2237,6 +2191,13 @@ P.actionbar = {
 	extraActionButton = {
 		alpha = 1,
 		scale = 1,
+		clean = false,
+		inheritGlobalFade = false,
+	},
+	zoneActionButton = {
+		alpha = 1,
+		scale = 1,
+		clean = false,
 		inheritGlobalFade = false,
 	},
 	vehicleExitButton = {

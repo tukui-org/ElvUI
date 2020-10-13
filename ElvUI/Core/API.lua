@@ -30,7 +30,6 @@ local UnitIsMercenary = UnitIsMercenary
 local UnitStat = UnitStat
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
-local C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo = C_UIWidgetManager.GetStatusBarWidgetVisualizationInfo
 local FACTION_HORDE = FACTION_HORDE
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
@@ -48,7 +47,7 @@ function E:ClassColor(class, usePriestColor)
 		color.colorStr = 'ff'..color.colorStr
 	end
 
-	if (usePriestColor and class == 'PRIEST') and tonumber(color.colorStr, 16) > tonumber(E.PriestColors.colorStr, 16) then
+	if usePriestColor and class == 'PRIEST' and tonumber(color.colorStr, 16) > tonumber(E.PriestColors.colorStr, 16) then
 		return E.PriestColors
 	else
 		return color
@@ -207,36 +206,6 @@ do
 end
 
 do
-	function E:GetWidgetInfoID(guid)
-		return E.global.nameplate.widgetMap[guid]
-	end
-
-	function E:SetWidgetInfoID(guid, widgetID)
-		if widgetID then
-			E.global.nameplate.widgetMap[guid] = widgetID
-		end
-	end
-
-	E.MaxWidgetInfoRank = 30
-	function E:GetWidgetInfoBase(widgetID)
-		local widget = widgetID and C_UIWidgetManager_GetStatusBarWidgetVisualizationInfo(widgetID)
-		if not widget then return end
-
-		local cur = widget.barValue - widget.barMin
-		local toNext = widget.barMax - widget.barMin
-		local total = widget.barValue
-
-		local rank, maxRank
-		if widget.overrideBarText then
-			rank = tonumber(strmatch(widget.overrideBarText, '%d+'))
-			maxRank = rank == E.MaxWidgetInfoRank
-		end
-
-		return cur, toNext, total, rank, maxRank
-	end
-end
-
-do
 	local Masque = E.Libs.Masque
 	local MasqueGroupState = {}
 	local MasqueGroupToTableElement = {
@@ -320,7 +289,7 @@ do
 		if module == 'all' then
 			for moduName, modu in pairs(self.modules) do
 				for funcName, func in pairs(modu) do
-					if (funcName ~= 'GetModule') and (type(func) == 'function') then
+					if funcName ~= 'GetModule' and type(func) == 'function' then
 						CPU_USAGE[moduName..':'..funcName] = GetFunctionCPUUsage(func, true)
 					end
 				end

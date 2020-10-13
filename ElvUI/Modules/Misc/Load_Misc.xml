@@ -7,7 +7,6 @@
 	<Script file='LootRoll.lua'/>
 	<Script file='InfoItemLevel.lua'/>
 	<Script file='RaidUtility.lua'/>
-	<Script file='Threat.lua'/>
 	<Script file='TotemBar.lua'/>
 	<Script file='AFK.lua'/>
 </Ui>

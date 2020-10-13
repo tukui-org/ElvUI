@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local gsub = gsub
@@ -16,7 +17,7 @@ function S:AddonList()
 	local maxShown = _G.MAX_ADDONS_DISPLAYED
 	local AddonCharacterDropDown = _G.AddonCharacterDropDown
 
-	S:HandlePortraitFrame(AddonList, true)
+	S:HandlePortraitFrame(AddonList)
 	S:HandleButton(AddonList.EnableAllButton, true)
 	S:HandleButton(AddonList.DisableAllButton, true)
 	S:HandleButton(AddonList.OkayButton, true)
@@ -24,19 +25,19 @@ function S:AddonList()
 	S:HandleDropDownBox(AddonCharacterDropDown, 165)
 	S:HandleScrollBar(_G.AddonListScrollFrameScrollBar)
 	S:HandleCheckBox(_G.AddonListForceLoad)
-	_G.AddonListForceLoad:SetSize(26, 26)
+	_G.AddonListForceLoad:Size(26, 26)
 
 	_G.AddonListScrollFrame:StripTextures()
 	_G.AddonListScrollFrame:CreateBackdrop('Transparent')
-	_G.AddonListScrollFrame.backdrop:SetPoint('TOPLEFT', -14, 0)
-	_G.AddonListScrollFrame.backdrop:SetPoint('BOTTOMRIGHT', 0, -1)
+	_G.AddonListScrollFrame.backdrop:Point('TOPLEFT', -14, 0)
+	_G.AddonListScrollFrame.backdrop:Point('BOTTOMRIGHT', 0, -1)
 
 	for i = 1, maxShown do
 		S:HandleCheckBox(_G['AddonListEntry'..i..'Enabled'], nil, nil, true)
 		S:HandleButton(_G['AddonListEntry'..i].LoadAddonButton)
 	end
 
-	local font = E.Libs.LSM:Fetch('font', 'Expressway')
+	local font = LSM:Fetch('font', 'Expressway')
 	hooksecurefunc('AddonList_Update', function()
 		local numEntrys = GetNumAddOns()
 		for i = 1, maxShown do

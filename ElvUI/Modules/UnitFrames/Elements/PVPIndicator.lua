@@ -12,7 +12,7 @@ function UF:Configure_PVPIndicator(frame)
 	local pvp = frame.PvPText
 	local x, y = self:GetPositionOffset(frame.db.pvp.position)
 	pvp:ClearAllPoints()
-	pvp:SetPoint(frame.db.pvp.position, frame.Health, frame.db.pvp.position, x, y)
+	pvp:Point(frame.db.pvp.position, frame.Health, frame.db.pvp.position, x, y)
 
 	frame:Tag(pvp, frame.db.pvp.text_format)
 end

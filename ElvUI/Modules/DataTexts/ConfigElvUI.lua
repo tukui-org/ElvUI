@@ -4,8 +4,8 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local pairs, strjoin = pairs, strjoin
 local IsShiftKeyDown = IsShiftKeyDown
-local ReloadUI = ReloadUI
 local InCombatLockdown = InCombatLockdown
+local ReloadUI = ReloadUI
 
 local displayString = ''
 local configText = 'ElvUI'
@@ -55,4 +55,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('ElvUI Config', nil, nil, OnEvent, nil, Click, OnEnter)
+DT:RegisterDatatext('ElvUI Config', nil, nil, OnEvent, nil, Click, OnEnter, nil, nil, nil, ValueColorUpdate)

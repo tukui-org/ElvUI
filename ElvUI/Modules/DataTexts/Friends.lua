@@ -363,13 +363,13 @@ local function Click(self, btn)
 		menuList[2].menuList = {}
 		menuList[3].menuList = {}
 
-		if not E.db.datatexts.friends.hideWoW then
+		if not E.global.datatexts.settings.Friends.hideWoW then
 			for _, info in ipairs(friendTable) do
 				if info.online then
 					local shouldSkip = false
-					if (info.status == statusTable.AFK) and E.db.datatexts.friends.hideAFK then
+					if (info.status == statusTable.AFK) and E.global.datatexts.settings.Friends.hideAFK then
 						shouldSkip = true
-					elseif (info.status == statusTable.DND) and E.db.datatexts.friends.hideDND then
+					elseif (info.status == statusTable.DND) and E.global.datatexts.settings.Friends.hideDND then
 						shouldSkip = true
 					end
 					if not shouldSkip then
@@ -391,12 +391,12 @@ local function Click(self, btn)
 		for _, info in ipairs(BNTable) do
 			if info.isOnline then
 				local shouldSkip = false
-				if (info.isBnetAFK == true) and E.db.datatexts.friends.hideAFK then
+				if (info.isBnetAFK == true) and E.global.datatexts.settings.Friends.hideAFK then
 					shouldSkip = true
-				elseif (info.isBnetDND == true) and E.db.datatexts.friends.hideDND then
+				elseif (info.isBnetDND == true) and E.global.datatexts.settings.Friends.hideDND then
 					shouldSkip = true
 				end
-				if info.client and E.db.datatexts.friends['hide'..info.client] then
+				if info.client and E.global.datatexts.settings.Friends['hide'..info.client] then
 					shouldSkip = true
 				end
 				if not shouldSkip then
@@ -468,15 +468,16 @@ local function OnEnter()
 
 	local totalfriends = numberOfFriends + totalBNet
 	local zonec, classc, levelc, realmc
+	local shiftDown = IsShiftKeyDown()
 
 	DT.tooltip:AddDoubleLine(L["Friends List"], format(totalOnlineString, totalonline, totalfriends),tthead.r,tthead.g,tthead.b,tthead.r,tthead.g,tthead.b)
-	if (onlineFriends > 0) and not E.db.datatexts.friends.hideWoW then
+	if (onlineFriends > 0) and not E.global.datatexts.settings.Friends.hideWoW then
 		for _, info in ipairs(friendTable) do
 			if info.online then
 				local shouldSkip = false
-				if (info.status == statusTable.AFK) and E.db.datatexts.friends.hideAFK then
+				if (info.status == statusTable.AFK) and E.global.datatexts.settings.Friends.hideAFK then
 					shouldSkip = true
-				elseif (info.status == statusTable.DND) and E.db.datatexts.friends.hideDND then
+				elseif (info.status == statusTable.DND) and E.global.datatexts.settings.Friends.hideDND then
 					shouldSkip = true
 				end
 				if not shouldSkip then
@@ -494,18 +495,18 @@ local function OnEnter()
 		local status
 		for _, client in ipairs(clientSorted) do
 			local Table = tableList[client]
-			local shouldSkip = E.db.datatexts.friends['hide'..client]
+			local shouldSkip = E.global.datatexts.settings.Friends['hide'..client]
 			if not shouldSkip then
 				for _, info in ipairs(Table) do
 					if info.isOnline then
 						shouldSkip = false
 						if info.isBnetAFK == true then
-							if E.db.datatexts.friends.hideAFK then
+							if E.global.datatexts.settings.Friends.hideAFK then
 								shouldSkip = true
 							end
 							status = statusTable.AFK
 						elseif info.isBnetDND == true then
-							if E.db.datatexts.friends.hideDND then
+							if E.global.datatexts.settings.Friends.hideDND then
 								shouldSkip = true
 							end
 							status = statusTable.DND
@@ -527,14 +528,14 @@ local function OnEnter()
 								if not classc then classc = PRIEST_COLOR end
 
 								TooltipAddXLine(true, header, format(levelNameString..'%s%s',levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,inGroup(info.characterName, info.realmName),status),info.accountName,238,238,238,238,238,238)
-								if IsShiftKeyDown() then
+								if shiftDown then
 									if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zoneName) then zonec = activezone else zonec = inactivezone end
 									if E.myrealm == info.realmName then realmc = activezone else realmc = inactivezone end
 									TooltipAddXLine(true, header, info.zoneName, info.realmName, zonec.r, zonec.g, zonec.b, realmc.r, realmc.g, realmc.b)
 								end
 							else
 								TooltipAddXLine(true, header, info.characterName..status, info.accountName, .9, .9, .9, .9, .9, .9)
-								if IsShiftKeyDown() and (info.gameText and info.gameText ~= '') and (info.client and info.client ~= 'App' and info.client ~= 'BSAp') then
+								if shiftDown and (info.gameText and info.gameText ~= '') and (info.client and info.client ~= 'App' and info.client ~= 'BSAp') then
 									TooltipAddXLine(false, header, info.gameText, inactivezone.r, inactivezone.g, inactivezone.b)
 								end
 							end
@@ -565,12 +566,17 @@ local function OnEvent(self, event, message)
 		OnEnter(self)
 	end
 
-	self.text:SetFormattedText(displayString, _G.FRIENDS, onlineFriends + numBNetOnline)
+	if E.global.datatexts.settings.Friends.NoLabel then
+		self.text:SetFormattedText(displayString, onlineFriends + numBNetOnline)
+	else
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Friends.Label ~= '' and E.global.datatexts.settings.Friends.Label or _G.FRIENDS..': ', onlineFriends + numBNetOnline)
+	end
+
 	lastPanel = self
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', '%s: ', hex, '%d|r')
+	displayString = strjoin('', E.global.datatexts.settings.Friends.NoLabel and '' or '%s', hex, '%d|r')
 
 	if lastPanel then
 		OnEvent(lastPanel, 'ELVUI_COLOR_UPDATE')
@@ -578,4 +584,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Friends', _G.SOCIAL_LABEL, {'BN_FRIEND_ACCOUNT_ONLINE', 'BN_FRIEND_ACCOUNT_OFFLINE', 'BN_FRIEND_INFO_CHANGED', 'FRIENDLIST_UPDATE', 'CHAT_MSG_SYSTEM', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, Click, OnEnter, nil, _G.FRIENDS)
+DT:RegisterDatatext('Friends', _G.SOCIAL_LABEL, {'BN_FRIEND_ACCOUNT_ONLINE', 'BN_FRIEND_ACCOUNT_OFFLINE', 'BN_FRIEND_INFO_CHANGED', 'FRIENDLIST_UPDATE', 'CHAT_MSG_SYSTEM', 'MODIFIER_STATE_CHANGED'}, OnEvent, nil, Click, OnEnter, nil, _G.FRIENDS, nil, ValueColorUpdate)

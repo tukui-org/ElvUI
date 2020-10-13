@@ -37,11 +37,11 @@ local function SkinSocialHeaderTab(tab)
 		tex:SetTexture()
 	end
 	tab:GetHighlightTexture():SetTexture()
-	tab.backdrop = CreateFrame('Frame', nil, tab)
+	tab.backdrop = CreateFrame('Frame', nil, tab, 'BackdropTemplate')
 	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
-	tab.backdrop:SetPoint('TOPLEFT', 3, -8)
-	tab.backdrop:SetPoint('BOTTOMRIGHT', -6, 0)
+	tab.backdrop:Point('TOPLEFT', 3, -8)
+	tab.backdrop:Point('BOTTOMRIGHT', -6, 0)
 end
 
 local function BattleNetFrame_OnEnter(button)
@@ -60,7 +60,7 @@ end
 local function RAFRewards()
 	for reward in _G.RecruitAFriendRewardsFrame.rewardPool:EnumerateActive() do
 		S:HandleIcon(reward.Button.Icon)
-		reward.Button.IconBorder:SetAlpha(0)
+		reward.Button.IconBorder:Kill()
 	end
 end
 
@@ -111,7 +111,7 @@ function S:FriendsFrame()
 	end
 
 	local FriendsFrame = _G.FriendsFrame
-	S:HandlePortraitFrame(FriendsFrame, true)
+	S:HandlePortraitFrame(FriendsFrame)
 
 	_G.WhoFrameListInset:StripTextures()
 	_G.WhoFrameListInset.NineSlice:Hide()
@@ -133,7 +133,7 @@ function S:FriendsFrame()
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropDown, 70)
 
 	_G.FriendsFrameStatusDropDown:ClearAllPoints()
-	_G.FriendsFrameStatusDropDown:SetPoint('TOPLEFT', FriendsFrame, 'TOPLEFT', 5, -24)
+	_G.FriendsFrameStatusDropDown:Point('TOPLEFT', FriendsFrame, 'TOPLEFT', 5, -24)
 
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
@@ -142,9 +142,9 @@ function S:FriendsFrame()
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
 	local button = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)
-	button:SetPoint('TOPLEFT', FriendsFrameBattlenetFrame, 'TOPLEFT')
-	button:SetPoint('BOTTOMRIGHT', FriendsFrameBattlenetFrame, 'BOTTOMRIGHT')
-	button:SetSize(FriendsFrameBattlenetFrame:GetSize())
+	button:Point('TOPLEFT', FriendsFrameBattlenetFrame, 'TOPLEFT')
+	button:Point('BOTTOMRIGHT', FriendsFrameBattlenetFrame, 'BOTTOMRIGHT')
+	button:Size(FriendsFrameBattlenetFrame:GetSize())
 	button:CreateBackdrop()
 	button.backdrop:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -156,19 +156,19 @@ function S:FriendsFrame()
 	FriendsFrameBattlenetFrame.BroadcastButton:Kill() -- We use the BattlenetFrame to enter a Status Message
 
 	FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
-	FriendsFrameBattlenetFrame.UnavailableInfoFrame:SetPoint('TOPLEFT', FriendsFrame, 'TOPRIGHT', 1, -18)
+	FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point('TOPLEFT', FriendsFrame, 'TOPRIGHT', 1, -18)
 
 	FriendsFrameBattlenetFrame.BroadcastFrame:StripTextures()
 	FriendsFrameBattlenetFrame.BroadcastFrame:CreateBackdrop('Transparent')
 	FriendsFrameBattlenetFrame.BroadcastFrame.EditBox:StripTextures()
 	FriendsFrameBattlenetFrame.BroadcastFrame:ClearAllPoints()
-	FriendsFrameBattlenetFrame.BroadcastFrame:SetPoint('TOPLEFT', FriendsFrame, 'TOPRIGHT', 3, -1)
+	FriendsFrameBattlenetFrame.BroadcastFrame:Point('TOPLEFT', FriendsFrame, 'TOPRIGHT', 3, -1)
 	S:HandleEditBox(FriendsFrameBattlenetFrame.BroadcastFrame.EditBox)
 	S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton)
 	S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton)
 
 	S:HandleEditBox(_G.AddFriendNameEditBox)
-	_G.AddFriendFrame:SetTemplate('Transparent')
+	_G.AddFriendFrame:CreateBackdrop('Transparent')
 
 	--Pending invites
 	S:HandleButton(_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton)
@@ -187,7 +187,7 @@ function S:FriendsFrame()
 	for i = 1, 17 do
 		local level = _G['WhoFrameButton'..i..'Level']
 		if level then
-			level:SetWidth(level:GetWidth() + 5)
+			level:Width(level:GetWidth() + 5)
 		end
 	end
 
@@ -217,14 +217,14 @@ function S:FriendsFrame()
 	local QuickJoinRoleSelectionFrame = _G.QuickJoinRoleSelectionFrame
 	S:HandleScrollBar(_G.QuickJoinScrollFrame.scrollBar, 5)
 	S:HandleButton(_G.QuickJoinFrame.JoinQueueButton)
-	QuickJoinFrame.JoinQueueButton:SetSize(131, 21)  --Match button on other tab
+	QuickJoinFrame.JoinQueueButton:Size(131, 21)  --Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
-	QuickJoinFrame.JoinQueueButton:SetPoint('BOTTOMRIGHT', QuickJoinFrame, 'BOTTOMRIGHT', -6, 4)
+	QuickJoinFrame.JoinQueueButton:Point('BOTTOMRIGHT', QuickJoinFrame, 'BOTTOMRIGHT', -6, 4)
 	_G.QuickJoinScrollFrameTop:SetTexture()
 	_G.QuickJoinScrollFrameBottom:SetTexture()
 	_G.QuickJoinScrollFrameMiddle:SetTexture()
 	QuickJoinRoleSelectionFrame:StripTextures()
-	QuickJoinRoleSelectionFrame:SetTemplate('Transparent')
+	QuickJoinRoleSelectionFrame:CreateBackdrop('Transparent')
 	S:HandleButton(QuickJoinRoleSelectionFrame.AcceptButton)
 	S:HandleButton(QuickJoinRoleSelectionFrame.CancelButton)
 	S:HandleCloseButton(QuickJoinRoleSelectionFrame.CloseButton)
@@ -237,11 +237,11 @@ function S:FriendsFrame()
 		local btn = _G['FriendsListFrameScrollFrameButton'..i]
 		local icon = _G['FriendsListFrameScrollFrameButton'..i..'GameIcon']
 
-		icon:SetSize(22, 22)
+		icon:Size(22, 22)
 		icon:SetTexCoord(.15, .85, .15, .85)
 
 		icon:ClearAllPoints()
-		icon:SetPoint('RIGHT', btn, 'RIGHT', -24, 0)
+		icon:Point('RIGHT', btn, 'RIGHT', -24, 0)
 		icon.SetPoint = E.noop
 	end
 
@@ -272,7 +272,7 @@ function S:FriendsFrame()
 	Claiming:CreateBackdrop('Transparent')
 	S:HandleIcon(Claiming.NextRewardButton.Icon)
 	Claiming.NextRewardButton.CircleMask:Hide()
-	Claiming.NextRewardButton.IconBorder:SetAlpha(0)
+	Claiming.NextRewardButton.IconBorder:Kill()
 	S:HandleButton(Claiming.ClaimOrViewRewardButton)
 
 	local RecruitList = RAF.RecruitList

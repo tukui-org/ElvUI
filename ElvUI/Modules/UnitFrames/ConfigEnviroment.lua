@@ -33,7 +33,7 @@ local attributeBlacklist = {
 }
 
 local function createConfigEnv()
-	if( configEnv ) then return end
+	if configEnv then return end
 	configEnv = setmetatable({
 		UnitPower = function (unit, displayType)
 			if unit:find('target') or unit:find('focus') then
@@ -126,11 +126,11 @@ function UF:ForceShow(frame)
 		frame:Update()
 	end
 
-	if(_G[frame:GetName()..'Target']) then
+	if _G[frame:GetName()..'Target'] then
 		self:ForceShow(_G[frame:GetName()..'Target'])
 	end
 
-	if(_G[frame:GetName()..'Pet']) then
+	if _G[frame:GetName()..'Pet'] then
 		self:ForceShow(_G[frame:GetName()..'Pet'])
 	end
 end
@@ -161,11 +161,11 @@ function UF:UnforceShow(frame)
 		frame:Update()
 	end
 
-	if(_G[frame:GetName()..'Target']) then
+	if _G[frame:GetName()..'Target'] then
 		self:UnforceShow(_G[frame:GetName()..'Target'])
 	end
 
-	if(_G[frame:GetName()..'Pet']) then
+	if _G[frame:GetName()..'Pet'] then
 		self:UnforceShow(_G[frame:GetName()..'Pet'])
 	end
 end

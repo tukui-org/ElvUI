@@ -21,7 +21,7 @@ local function OnEvent(self)
 	if friendshipID then
 		local _, friendRep, _, _, _, _, friendTextLevel, friendThreshold, nextFriendThreshold = GetFriendshipReputation(factionID);
 		isFriend, reaction, friendText = true, 5, friendTextLevel
-		if ( nextFriendThreshold ) then
+		if nextFriendThreshold then
 			min, max, value = friendThreshold, nextFriendThreshold, friendRep;
 		else
 			isCapped = true;
@@ -43,18 +43,17 @@ local function OnEvent(self)
 
 	local color = _G.FACTION_BAR_COLORS[reaction]
 	local text = ''
-	local textFormat = E.DataBars.db.reputation.textFormat
+	local textFormat = E.global.datatexts.settings.Reputation.textFormat
 
 	standingLabel = E:RGBToHex(color.r, color.g, color.b, nil, _G['FACTION_STANDING_LABEL'..reaction]..'|r')
 
 	--Prevent a division by zero
 	local maxMinDiff = max - min
-	if (maxMinDiff == 0) then
+	if maxMinDiff == 0 then
 		maxMinDiff = 1
 	end
 
-	if isCapped and textFormat ~= 'NONE' then
-		-- show only name and standing on exalted
+	if isCapped then
 		text = format('%s: [%s]', name, isFriend and friendText or standingLabel)
 	else
 		if textFormat == 'PERCENT' then

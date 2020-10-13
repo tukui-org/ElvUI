@@ -10,7 +10,7 @@ function S:Blizzard_ItemSocketingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.socket) then return end
 
 	local ItemSocketingFrame = _G.ItemSocketingFrame
-	S:HandlePortraitFrame(ItemSocketingFrame, true)
+	S:HandlePortraitFrame(ItemSocketingFrame)
 
 	_G.ItemSocketingDescription:DisableDrawLayer('BORDER')
 	_G.ItemSocketingDescription:DisableDrawLayer('BACKGROUND')
@@ -25,7 +25,7 @@ function S:Blizzard_ItemSocketingUI()
 		local button_icon = _G[('ItemSocketingSocket%dIconTexture'):format(i)]
 		button:StripTextures()
 		button:StyleButton(false)
-		button:SetTemplate(nil, true)
+		button:CreateBackdrop(nil, true)
 		button_bracket:Kill()
 		button_bg:Kill()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
@@ -36,13 +36,13 @@ function S:Blizzard_ItemSocketingUI()
 		for i, socket in ipairs(_G.ItemSocketingFrame.Sockets) do
 			local gemColor = GetSocketTypes(i)
 			local color = E.GemTypeInfo[gemColor]
-			socket:SetBackdropBorderColor(color.r, color.g, color.b)
+			socket.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
 	end)
 
 	_G.ItemSocketingFramePortrait:Kill()
 	_G.ItemSocketingSocketButton:ClearAllPoints()
-	_G.ItemSocketingSocketButton:SetPoint('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
+	_G.ItemSocketingSocketButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
 	S:HandleButton(_G.ItemSocketingSocketButton)
 end
 

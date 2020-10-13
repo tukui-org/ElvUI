@@ -9,7 +9,7 @@ function S:LookingForGuildFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfguild) then return end
 
 	local LookingForGuildFrame = _G.LookingForGuildFrame
-	S:HandlePortraitFrame(LookingForGuildFrame, true)
+	S:HandlePortraitFrame(LookingForGuildFrame)
 
 	local checkbox = {
 		'LookingForGuildPvPButton',
@@ -40,8 +40,8 @@ function S:LookingForGuildFrame()
 
 	-- skin container buttons on browse and request page
 	for i = 1, 5 do
-		_G['LookingForGuildBrowseFrameContainerButton'..i]:SetBackdrop(nil)
-		_G['LookingForGuildAppsFrameContainerButton'..i]:SetBackdrop(nil)
+		_G['LookingForGuildBrowseFrameContainerButton'..i]:SetBackdrop()
+		_G['LookingForGuildAppsFrameContainerButton'..i]:SetBackdrop()
 	end
 
 	-- skin tabs

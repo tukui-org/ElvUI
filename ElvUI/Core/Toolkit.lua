@@ -1,11 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local unpack, type, select, getmetatable, assert, pairs, pcall = unpack, type, select, getmetatable, assert, pairs, pcall
-
-local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
+local pairs, pcall = pairs, pcall
+local unpack, type, select, getmetatable = unpack, type, select, getmetatable
 local EnumerateFrames = EnumerateFrames
+local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 
 local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
 
@@ -21,119 +22,6 @@ function E:SafeGetPoint(frame)
 		return frame:GetPoint()
 	end
 end
-
--- ls, Azil, and Simpy made this to replace Blizzard's SetBackdrop API while the textures can't snap
-E.PixelBorders = {'TOP', 'BOTTOM', 'LEFT', 'RIGHT'}
-function E:SetBackdrop(frame, giveBorder, bgFile, edgeSize, insetLeft, insetRight, insetTop, insetBottom)
-	if not frame.pixelBorders then return end
-
-	local shownBorders = frame.pixelBorders.TOP:IsShown()
-	if shownBorders and not giveBorder then
-		E:TogglePixelBorders(frame)
-	elseif not shownBorders then
-		E:TogglePixelBorders(frame, true)
-	end
-
-	frame.pixelBorders.CENTER:SetTexture(bgFile)
-
-	if not (giveBorder or bgFile) then return end
-
-	if insetLeft or insetRight or insetTop or insetBottom then
-		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame, 'TOPLEFT', -insetLeft or 0, insetTop or 0)
-		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', insetRight or 0, -insetBottom or 0)
-	else
-		frame.pixelBorders.CENTER:SetPoint('TOPLEFT', frame)
-		frame.pixelBorders.CENTER:SetPoint('BOTTOMRIGHT', frame)
-	end
-
-	frame.pixelBorders.TOP:SetHeight(edgeSize)
-	frame.pixelBorders.BOTTOM:SetHeight(edgeSize)
-	frame.pixelBorders.LEFT:SetWidth(edgeSize)
-	frame.pixelBorders.RIGHT:SetWidth(edgeSize)
-end
-
-function E:GetBackdropColor(frame)
-	if frame.pixelBorders then
-		return frame.pixelBorders.CENTER:GetVertexColor()
-	else
-		return frame:GetBackdropColor()
-	end
-end
-
-function E:GetBackdropBorderColor(frame)
-	if frame.pixelBorders then
-		return frame.pixelBorders.TOP:GetVertexColor()
-	else
-		return frame:GetBackdropBorderColor()
-	end
-end
-
-function E:SetBackdropColor(frame, r, g, b, a)
-	if frame.pixelBorders then
-		frame.pixelBorders.CENTER:SetVertexColor(r, g, b, a)
-	end
-end
-
-function E:SetBackdropBorderColor(frame, r, g, b, a)
-	if frame.pixelBorders then
-		for _, v in pairs(E.PixelBorders) do
-			frame.pixelBorders[v]:SetVertexColor(r or 0, g or 0, b or 0, a)
-		end
-	end
-end
-
-function E:HookedSetBackdropColor(r, g, b, a)
-	E:SetBackdropColor(self, r, g, b, a)
-end
-
-function E:HookedSetBackdropBorderColor(r, g, b, a)
-	E:SetBackdropBorderColor(self, r, g, b, a)
-end
-
-function E:TogglePixelBorders(frame, show)
-	if frame.pixelBorders then
-		for _, v in pairs(E.PixelBorders) do
-			if show then
-				frame.pixelBorders[v]:Show()
-			else
-				frame.pixelBorders[v]:Hide()
-			end
-		end
-	end
-end
-
-function E:BuildPixelBorders(frame, noSecureHook)
-	if frame and not frame.pixelBorders then
-		local borders = {}
-
-		for _, v in pairs(E.PixelBorders) do
-			borders[v] = frame:CreateTexture('$parentPixelBorder'..v, 'BORDER', nil, 1)
-			borders[v]:SetTexture(E.media.blankTex)
-		end
-
-		borders.CENTER = frame:CreateTexture('$parentPixelBorderCENTER', 'BACKGROUND', nil, -1)
-
-		borders.TOP:SetPoint('BOTTOMLEFT', borders.CENTER, 'TOPLEFT', 1, -1)
-		borders.TOP:SetPoint('BOTTOMRIGHT', borders.CENTER, 'TOPRIGHT', -1, -1)
-
-		borders.BOTTOM:SetPoint('TOPLEFT', borders.CENTER, 'BOTTOMLEFT', 1, 1)
-		borders.BOTTOM:SetPoint('TOPRIGHT', borders.CENTER, 'BOTTOMRIGHT', -1, 1)
-
-		borders.LEFT:SetPoint('TOPRIGHT', borders.TOP, 'TOPLEFT', 0, 0)
-		borders.LEFT:SetPoint('BOTTOMRIGHT', borders.BOTTOM, 'BOTTOMLEFT', 0, 0)
-
-		borders.RIGHT:SetPoint('TOPLEFT', borders.TOP, 'TOPRIGHT', 0, 0)
-		borders.RIGHT:SetPoint('BOTTOMLEFT', borders.BOTTOM, 'BOTTOMRIGHT', 0, 0)
-
-		if not noSecureHook then
-			hooksecurefunc(frame, 'SetBackdropColor', E.HookedSetBackdropColor)
-			hooksecurefunc(frame, 'SetBackdropBorderColor', E.HookedSetBackdropBorderColor)
-		end
-
-		frame.pixelBorders = borders
-	end
-end
--- end backdrop replace code
 
 local function WatchPixelSnap(frame, snap)
 	if (frame and not frame:IsForbidden()) and frame.PixelSnapDisabled and snap then
@@ -174,92 +62,116 @@ local function GetTemplate(template, isUnitFrameElement)
 	end
 end
 
--- * WARNING * ~ Size, Width, Height, and Point APIs we provide will be removed during prepatch!!
-local function Width(frame, ...) frame:SetWidth(...) end
-local function Height(frame, ...) frame:SetHeight(...) end
-local function Point(frame, ...) frame:SetPoint(...) end
 local function Size(frame, width, height, ...)
-	frame:SetSize(width, height or width, ...)
+	local w = E:Scale(width)
+	frame:SetSize(w, (height and E:Scale(height)) or w, ...)
 end
 
-local function SetOutside(obj, anchor, xOffset, yOffset, anchor2)
-	xOffset = xOffset or E.Border
-	yOffset = yOffset or E.Border
-	anchor = anchor or obj:GetParent()
+local function Width(frame, width, ...)
+	frame:SetWidth(E:Scale(width), ...)
+end
 
-	assert(anchor)
+local function Height(frame, height, ...)
+	frame:SetHeight(E:Scale(height), ...)
+end
+
+local function Point(obj, arg1, arg2, arg3, arg4, arg5, ...)
+	if not arg2 then arg2 = obj:GetParent() end
+
+	if type(arg2)=='number' then arg2 = E:Scale(arg2) end
+	if type(arg3)=='number' then arg3 = E:Scale(arg3) end
+	if type(arg4)=='number' then arg4 = E:Scale(arg4) end
+	if type(arg5)=='number' then arg5 = E:Scale(arg5) end
+
+	obj:SetPoint(arg1, arg2, arg3, arg4, arg5, ...)
+end
+
+local function SetOutside(obj, anchor, xOffset, yOffset, anchor2, noScale)
+	if not anchor then anchor = obj:GetParent() end
+
+	if not xOffset then xOffset = E.Border end
+	if not yOffset then yOffset = E.Border end
+	local x = (noScale and xOffset) or E:Scale(xOffset)
+	local y = (noScale and yOffset) or E:Scale(yOffset)
+
 	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -xOffset, yOffset)
-	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', xOffset, -yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -x, y)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', x, -y)
 end
 
-local function SetInside(obj, anchor, xOffset, yOffset, anchor2)
-	xOffset = xOffset or E.Border
-	yOffset = yOffset or E.Border
-	anchor = anchor or obj:GetParent()
+local function SetInside(obj, anchor, xOffset, yOffset, anchor2, noScale)
+	if not anchor then anchor = obj:GetParent() end
 
-	assert(anchor)
+	if not xOffset then xOffset = E.Border end
+	if not yOffset then yOffset = E.Border end
+	local x = (noScale and xOffset) or E:Scale(xOffset)
+	local y = (noScale and yOffset) or E:Scale(yOffset)
+
 	if E:SetPointsRestricted(obj) or obj:GetPoint() then
 		obj:ClearAllPoints()
 	end
 
 	DisablePixelSnap(obj)
-	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', xOffset, -yOffset)
-	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -xOffset, yOffset)
+	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', x, -y)
+	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -x, y)
 end
 
 local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	GetTemplate(template, isUnitFrameElement)
 
 	frame.template = template or 'Default'
-	if glossTex then frame.glossTex = glossTex end
-	if ignoreUpdates then frame.ignoreUpdates = ignoreUpdates end
-	if forcePixelMode then frame.forcePixelMode = forcePixelMode end
-	if isUnitFrameElement then frame.isUnitFrameElement = isUnitFrameElement end
-
-	frame:SetBackdrop(nil)
-	E:BuildPixelBorders(frame)
+	frame.glossTex = glossTex
+	frame.ignoreUpdates = ignoreUpdates
+	frame.forcePixelMode = forcePixelMode
+	frame.isUnitFrameElement = isUnitFrameElement
 
 	if template == 'NoBackdrop' then
-		E:SetBackdrop(frame)
+		frame:SetBackdrop()
 	else
-		E:SetBackdrop(frame, true, glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex, (not E.twoPixelsPlease and E.mult) or E.mult*2)
+		frame:SetBackdrop({
+			edgeFile = E.media.blankTex,
+			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
+			edgeSize = E:Scale(E.twoPixelsPlease and 2 or 1)
+		})
 
-		if not frame.ignoreBackdropColors then
-			if template == 'Transparent' then
-				E:SetBackdropColor(frame, backdropr, backdropg, backdropb, backdropa)
-			else
-				E:SetBackdropColor(frame, backdropr, backdropg, backdropb, 1)
-			end
+		if frame.callbackBackdropColor then
+			frame:callbackBackdropColor()
+		elseif not frame.ignoreBackdropColor then
+			frame:SetBackdropColor(backdropr, backdropg, backdropb, frame.customBackdropAlpha or (template == 'Transparent' and backdropa) or 1)
 		end
 
-		if not E.PixelMode and not frame.forcePixelMode then
+		local notPixelMode = not isUnitFrameElement and not E.PixelMode
+		local notThinBorders = isUnitFrameElement and not UF.thinBorders
+		if (notPixelMode or notThinBorders) and not forcePixelMode then
+			local backdrop = {
+				edgeFile = E.media.blankTex,
+				edgeSize = E:Scale(1)
+			}
+
 			if not frame.iborder then
-				local border = CreateFrame('Frame', nil, frame)
-				E:BuildPixelBorders(border, true)
-				E:SetBackdrop(border, true, nil, E.mult, -E.mult, -E.mult, -E.mult, -E.mult)
-				E:SetBackdropBorderColor(border, 0, 0, 0, 1)
-				border:SetAllPoints()
+				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+				border:SetBackdrop(backdrop)
+				border:SetBackdropBorderColor(0, 0, 0, 1)
+				border:SetInside(frame, 1, 1)
 				frame.iborder = border
 			end
 
 			if not frame.oborder then
-				local border = CreateFrame('Frame', nil, frame)
-				E:BuildPixelBorders(border, true)
-				E:SetBackdrop(border, true, nil, E.mult, E.mult, E.mult, E.mult, E.mult)
-				E:SetBackdropBorderColor(border, 0, 0, 0, 1)
-				border:SetAllPoints()
+				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+				border:SetBackdrop(backdrop)
+				border:SetBackdropBorderColor(0, 0, 0, 1)
+				border:SetOutside(frame, 1, 1)
 				frame.oborder = border
 			end
 		end
 	end
 
 	if not frame.ignoreBorderColors then
-		E:SetBackdropBorderColor(frame, borderr, borderg, borderb)
+		frame:SetBackdropBorderColor(borderr, borderg, borderb)
 	end
 
 	if not frame.ignoreUpdates then
@@ -273,11 +185,13 @@ end
 
 local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
-	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent)
+	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
-	if frame.forcePixelMode or forcePixelMode then
-		backdrop:SetOutside(frame, 1, 1)
+	if forcePixelMode then
+		backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
+	elseif isUnitFrameElement then
+		backdrop:SetOutside(frame, UF.BORDER, UF.BORDER)
 	else
 		backdrop:SetOutside(frame)
 	end
@@ -295,14 +209,16 @@ end
 
 local function CreateShadow(frame, size, pass)
 	if not pass and frame.shadow then return end
+	if not size then size = 3 end
 
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
-	local shadow = CreateFrame('Frame', nil, frame)
+	local offset = (E.PixelMode and size) or (size + 1)
+	local shadow = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
-	shadow:SetOutside(frame, size or 3, size or 3)
-	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = size or 3})
+	shadow:SetOutside(frame, offset, offset, nil, true)
+	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = E:Scale(size)})
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 
@@ -462,8 +378,8 @@ do
 		if frame.CloseButton then return end
 
 		local CloseButton = CreateFrame('Button', nil, frame)
-		CloseButton:SetSize(size or 16, size or 16)
-		CloseButton:SetPoint('TOPRIGHT', offset or -6, offset or -6)
+		CloseButton:Size(size or 16)
+		CloseButton:Point('TOPRIGHT', offset or -6, offset or -6)
 		if backdrop then
 			CloseButton:CreateBackdrop(nil, true)
 		end

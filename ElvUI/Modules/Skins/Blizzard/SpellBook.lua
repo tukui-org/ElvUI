@@ -11,7 +11,7 @@ function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
 	local SpellBookFrame = _G.SpellBookFrame
-	S:HandlePortraitFrame(SpellBookFrame, true)
+	S:HandlePortraitFrame(SpellBookFrame)
 
 	for _, object in pairs({ 'SpellBookSpellIconsFrame', 'SpellBookSideTabsFrame', 'SpellBookPageNavigationFrame' }) do
 		_G[object]:StripTextures()
@@ -26,10 +26,10 @@ function S:SpellBookFrame()
 		_G.SpellBookPage2:SetAlpha(0)
 		_G.SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
 	else
-		local pagebackdrop = CreateFrame('Frame', nil, SpellBookFrame)
+		local pagebackdrop = CreateFrame('Frame', nil, SpellBookFrame, 'BackdropTemplate')
 		pagebackdrop:SetTemplate()
-		pagebackdrop:SetPoint('TOPLEFT', _G.SpellBookPage1, 'TOPLEFT', -2, 2)
-		pagebackdrop:SetPoint('BOTTOMRIGHT', SpellBookFrame, 'BOTTOMRIGHT', -8, 4)
+		pagebackdrop:Point('TOPLEFT', _G.SpellBookPage1, 'TOPLEFT', -2, 2)
+		pagebackdrop:Point('BOTTOMRIGHT', SpellBookFrame, 'BOTTOMRIGHT', -8, 4)
 		SpellBookFrame.pagebackdrop = pagebackdrop
 		for i = 1, 2 do
 			_G['SpellBookPage'..i]:SetParent(pagebackdrop)
@@ -41,7 +41,7 @@ function S:SpellBookFrame()
 	S:HandleNextPrevButton(_G.SpellBookNextPageButton, nil, nil, true)
 
 	_G.SpellBookPageText:ClearAllPoints()
-	_G.SpellBookPageText:SetPoint('RIGHT', _G.SpellBookPrevPageButton, 'LEFT', -5, 0)
+	_G.SpellBookPageText:Point('RIGHT', _G.SpellBookPrevPageButton, 'LEFT', -5, 0)
 
 	for i = 1, _G.SPELLS_PER_PAGE do
 		local button = _G['SpellButton'..i]
@@ -59,22 +59,14 @@ function S:SpellBookFrame()
 		end
 
 		S:HandleIcon(icon)
-		icon:SetInside()
 		E:RegisterCooldown(_G['SpellButton'..i..'Cooldown'])
-		button:SetTemplate(nil, true)
-
-		if button.SpellHighlightTexture then
-			button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
-			if icon then
-				button.SpellHighlightTexture:SetOutside(button)
-			end
-			E:Flash(button.SpellHighlightTexture, 1, true)
-		end
+		button:CreateBackdrop(nil, true)
+		icon:SetInside(button.backdrop)
 
 		if button.shine then
 			button.shine:ClearAllPoints()
-			button.shine:SetPoint('TOPLEFT', button, 'TOPLEFT', -3, 3)
-			button.shine:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
+			button.shine:Point('TOPLEFT', button, 'TOPLEFT', -3, 3)
+			button.shine:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 3, -3)
 		end
 
 		highlight:SetAllPoints(icon)
@@ -88,15 +80,14 @@ function S:SpellBookFrame()
 	hooksecurefunc('SpellButton_UpdateButton', function()
 		for i = 1, _G.SPELLS_PER_PAGE do
 			local button = _G['SpellButton'..i]
-			local icon = _G['SpellButton'..i..'IconTexture']
-
 			if button.SpellHighlightTexture then
 				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
-				if icon then
-					button.SpellHighlightTexture:SetOutside(button.backdrop)
-				end
+				button.SpellHighlightTexture:SetInside(button.backdrop)
 				E:Flash(button.SpellHighlightTexture, 1, true)
 			end
+
+			button.backdrop:SetShown(button.SpellName:IsShown())
+
 			if E.private.skins.parchmentRemoverEnable then
 				button:SetHighlightTexture('')
 				local r = button.SpellName:GetTextColor()
@@ -111,12 +102,12 @@ function S:SpellBookFrame()
 		end
 	end)
 
-	_G.SpellBookSkillLineTab1:SetPoint('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
+	_G.SpellBookSkillLineTab1:Point('TOPLEFT', '$parent', 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
 
 	for i = 1, 8 do
 		local Tab = _G['SpellBookSkillLineTab'..i]
 		Tab:StripTextures()
-		Tab:SetTemplate()
+		Tab:CreateBackdrop()
 		Tab:StyleButton(nil, true)
 	end
 
@@ -141,17 +132,17 @@ function S:SpellBookFrame()
 		end
 
 		S:HandleStatusBar(Frame.statusBar, {0, .86, 0})
-		Frame.statusBar.rankText:SetPoint('CENTER')
+		Frame.statusBar.rankText:Point('CENTER')
 
 		local a, b, c, _, e = Frame.statusBar:GetPoint()
-		Frame.statusBar:SetPoint(a, b, c, 0, e)
+		Frame.statusBar:Point(a, b, c, 0, e)
 
 		if a == 'BOTTOMLEFT' then
-			Frame.rank:SetPoint('BOTTOMLEFT', Frame.statusBar, 'TOPLEFT', 0, 4)
+			Frame.rank:Point('BOTTOMLEFT', Frame.statusBar, 'TOPLEFT', 0, 4)
 		end
 
 		if Frame.icon then
-			Frame.professionName:SetPoint('TOPLEFT', 100, -4)
+			Frame.professionName:Point('TOPLEFT', 100, -4)
 			Frame:StripTextures()
 			S:HandleIcon(Frame.icon, true)
 			Frame.icon:SetAlpha(1)
@@ -182,7 +173,7 @@ function S:SpellBookFrame()
 	end
 
 	_G.SpellBookFrameTabButton1:ClearAllPoints()
-	_G.SpellBookFrameTabButton1:SetPoint('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
+	_G.SpellBookFrameTabButton1:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', 0, 2)
 
 	-- Some Texture Magic
 	hooksecurefunc('FormatProfession', function(frame, id)

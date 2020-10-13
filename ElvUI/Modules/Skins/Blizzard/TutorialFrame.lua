@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 function S:TutorialFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.Tutorials) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tutorials) then return end
 
 	-- Dont use :StripTextures() here
 	_G.TutorialFrame:CreateBackdrop('Transparent')

@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 function S:Blizzard_IslandsPartyPoseUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.IslandsPartyPose) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.islandsPartyPose) then return end
 
 	local IslandsPartyPoseFrame = _G.IslandsPartyPoseFrame
 	IslandsPartyPoseFrame:StripTextures()

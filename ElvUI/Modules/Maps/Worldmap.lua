@@ -48,14 +48,14 @@ function M:UpdateMaximizedSize()
 	local WorldMapFrame = _G.WorldMapFrame
 	local width, height = WorldMapFrame:GetSize()
 	local magicNumber = (1 - smallerMapScale) * 100
-	WorldMapFrame:SetSize((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
+	WorldMapFrame:Size((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
 end
 
 function M:SynchronizeDisplayState()
 	local WorldMapFrame = _G.WorldMapFrame
 	if WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:SetPoint('CENTER', E.UIParent)
+		WorldMapFrame:Point('CENTER', E.UIParent)
 	end
 end
 
@@ -63,7 +63,7 @@ function M:SetSmallWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	if not WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:SetPoint('TOPLEFT', E.UIParent, 'TOPLEFT', 16, -94)
+		WorldMapFrame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 16, -94)
 	end
 end
 
@@ -112,9 +112,9 @@ function M:PositionCoords()
 	if strfind(position, 'TOP') then y = -5 end
 
 	CoordsHolder.playerCoords:ClearAllPoints()
-	CoordsHolder.playerCoords:SetPoint(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
+	CoordsHolder.playerCoords:Point(position, _G.WorldMapFrame.BorderFrame, position, x + xOffset, y + yOffset)
 	CoordsHolder.mouseCoords:ClearAllPoints()
-	CoordsHolder.mouseCoords:SetPoint(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
+	CoordsHolder.mouseCoords:Point(position, CoordsHolder.playerCoords, INVERTED_POINTS[position], 0, y)
 end
 
 function M:MapShouldFade()

@@ -9,7 +9,7 @@ function S:TabardFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tabard) then return end
 
 	local TabardFrame = _G.TabardFrame
-	S:HandlePortraitFrame(TabardFrame, true)
+	S:HandlePortraitFrame(TabardFrame)
 
 	S:HandleButton(_G.TabardFrameCancelButton)
 	S:HandleButton(_G.TabardFrameAcceptButton)
@@ -43,24 +43,24 @@ function S:TabardFrame()
 
 		if i > 1 then
 			_G[custom]:ClearAllPoints()
-			_G[custom]:SetPoint('TOP', _G['TabardFrameCustomization'..i-1], 'BOTTOM', 0, -6)
+			_G[custom]:Point('TOP', _G['TabardFrameCustomization'..i-1], 'BOTTOM', 0, -6)
 		else
 			local point, anchor, point2, x, y = _G[custom]:GetPoint()
-			_G[custom]:SetPoint(point, anchor, point2, x, y+4)
+			_G[custom]:Point(point, anchor, point2, x, y+4)
 		end
 	end
 
-	_G.TabardCharacterModelRotateLeftButton:SetPoint('BOTTOMLEFT', 4, 4)
-	_G.TabardCharacterModelRotateRightButton:SetPoint('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
-	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, 'SetPoint', function(s, point, _, _, xOffset, yOffset)
-		if point ~= 'BOTTOMLEFT' or xOffset ~= 4 or yOffset ~= 4 then
-			s:SetPoint('BOTTOMLEFT', 4, 4)
+	_G.TabardCharacterModelRotateLeftButton:Point('BOTTOMLEFT', _G.TabardModel, 'BOTTOMLEFT', 4, 4)
+	_G.TabardCharacterModelRotateRightButton:Point('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
+	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, 'SetPoint', function(s, _, _, _, _, _, forced)
+		if forced ~= true then
+			s:Point('BOTTOMLEFT', _G.TabardModel, 'BOTTOMLEFT', 4, 4, true)
 		end
 	end)
 
-	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, 'SetPoint', function(s, point, _, _, xOffset, yOffset)
-		if point ~= 'TOPLEFT' or xOffset ~= 4 or yOffset ~= 0 then
-			s:SetPoint('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0)
+	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, 'SetPoint', function(s, _, _, _, _, _, forced)
+		if forced ~= true then
+			s:Point('TOPLEFT', _G.TabardCharacterModelRotateLeftButton, 'TOPRIGHT', 4, 0, true)
 		end
 	end)
 end

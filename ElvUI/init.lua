@@ -9,8 +9,9 @@
 
 local _G = _G
 local unpack = unpack
-local format, gsub, type = format, gsub, type
+local format, gsub, pairs, type = format, gsub, pairs, type
 
+local BAG_ITEM_QUALITY_COLORS = BAG_ITEM_QUALITY_COLORS
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
@@ -65,11 +66,20 @@ E.NamePlates = E:NewModule('NamePlates','AceHook-3.0','AceEvent-3.0','AceTimer-3
 E.PluginInstaller = E:NewModule('PluginInstaller')
 E.RaidUtility = E:NewModule('RaidUtility','AceEvent-3.0')
 E.Skins = E:NewModule('Skins','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
-E.Threat = E:NewModule('Threat','AceEvent-3.0')
 E.Tooltip = E:NewModule('Tooltip','AceTimer-3.0','AceHook-3.0','AceEvent-3.0')
 E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
 E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
 E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
+
+-- Item Qualitiy stuff - used by MerathilisUI
+E.QualityColors = {}
+local qualityColors = BAG_ITEM_QUALITY_COLORS
+for index, value in pairs(qualityColors) do
+	E.QualityColors[index] = {r = value.r, g = value.g, b = value.b}
+end
+E.QualityColors[-1] = {r = 0, g = 0, b = 0}
+E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
+E.QualityColors[Enum.ItemQuality.Common] = {r = 0, g = 0, b = 0}
 
 do
 	local locale = GetLocale()
@@ -115,6 +125,7 @@ do
 
 	-- backwards compatible for plugins
 	E.LSM = E.Libs.LSM
+	E.UnitFrames.LSM = E.Libs.LSM
 	E.Masque = E.Libs.Masque
 end
 
@@ -173,12 +184,11 @@ function E:OnInitialize()
 		end
 	end
 
-	E.twoPixelsPlease = false
+	E.twoPixelsPlease = false -- changing this option is not supported! :P
 	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
-
+	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
 	E.Spacing = E.PixelMode and 0 or 1
-	E.Border = (not E.twoPixelsPlease and E.PixelMode and 1) or 2
 
 	E:UIScale(true)
 	E:UpdateMedia()
@@ -196,7 +206,7 @@ function E:OnInitialize()
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 
-	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
+	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate, BackdropTemplate')
 	GameMenuButton:SetScript('OnClick', function()
 		E:ToggleOptionsUI() --We already prevent it from opening in combat
 		if not InCombatLockdown() then
@@ -206,8 +216,8 @@ function E:OnInitialize()
 	GameMenuFrame[E.name] = GameMenuButton
 
 	if not IsAddOnLoaded('ConsolePortUI_Menu') then -- #390
-		GameMenuButton:SetSize(GameMenuButtonLogout:GetSize())
-		GameMenuButton:SetPoint('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
+		GameMenuButton:Size(GameMenuButtonLogout:GetWidth(), GameMenuButtonLogout:GetHeight())
+		GameMenuButton:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
 		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
 	end
 
@@ -216,7 +226,7 @@ end
 
 function E:PositionGameMenuButton()
 	GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
-	GameMenuFrame:SetHeight(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
+	GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 
 	local button = GameMenuFrame[E.name]
 	button:SetText(format('%s%s|r', E.media.hexvaluecolor, E.name))
@@ -224,9 +234,9 @@ function E:PositionGameMenuButton()
 	local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
 	if relTo ~= button then
 		button:ClearAllPoints()
-		button:SetPoint('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
+		button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
 		GameMenuButtonLogout:ClearAllPoints()
-		GameMenuButtonLogout:SetPoint('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
+		GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
 	end
 end
 

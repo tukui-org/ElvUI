@@ -149,7 +149,7 @@ function AB:PositionAndSizeBarShapeShift()
 
 	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
 	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:SetSize(barWidth, barHeight)
+	bar:Size(barWidth, barHeight)
 
 	local horizontalGrowth, verticalGrowth
 	if point == 'TOPLEFT' or point == 'TOPRIGHT' then
@@ -191,7 +191,7 @@ function AB:PositionAndSizeBarShapeShift()
 		lastColumnButton = _G['ElvUI_StanceBarButton'..i-buttonsPerRow]
 		button:SetParent(bar)
 		button:ClearAllPoints()
-		button:SetSize(size, size)
+		button:Size(size)
 		button:EnableMouse(not self.db.stanceBar.clickThrough)
 
 		if i == 1 then
@@ -206,7 +206,7 @@ function AB:PositionAndSizeBarShapeShift()
 				x, y = -firstButtonSpacing, firstButtonSpacing
 			end
 
-			button:SetPoint(point, bar, point, x, y)
+			button:Point(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0
 			local y = -buttonSpacing
@@ -216,7 +216,7 @@ function AB:PositionAndSizeBarShapeShift()
 				buttonPoint = 'BOTTOM'
 				anchorPoint = 'TOP'
 			end
-			button:SetPoint(buttonPoint, lastColumnButton, anchorPoint, x, y)
+			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y)
 		else
 			local x = buttonSpacing
 			local y = 0
@@ -227,7 +227,7 @@ function AB:PositionAndSizeBarShapeShift()
 				anchorPoint = 'LEFT'
 			end
 
-			button:SetPoint(buttonPoint, lastButton, anchorPoint, x, y)
+			button:Point(buttonPoint, lastButton, anchorPoint, x, y)
 		end
 
 		if i > numButtons then
@@ -302,6 +302,11 @@ function AB:AdjustMaxStanceButtons(event)
 			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
 		end
 
+		local blizz = _G[format('StanceButton%d', i)]
+		if blizz and blizz.commandName then
+			bar.buttons[i].commandName = blizz.commandName
+		end
+
 		if i <= numButtons then
 			bar.buttons[i]:Show()
 			bar.LastButton = i
@@ -333,7 +338,7 @@ end
 function AB:CreateBarShapeShift()
 	bar:CreateBackdrop(self.db.transparent and 'Transparent')
 	bar.backdrop:SetAllPoints()
-	bar:SetPoint('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
+	bar:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')

@@ -119,7 +119,7 @@ local DEVELOPERS = {
 	'|cff9482c9Darth Predator|r',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/FoxWarlock:15:15:0:0:64:64:5:59:5:59|t |cffff2020NihilisticPandemonium|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 1.00,1.00,0.60, 0.53,1.00,0.40, 0.01,0.80,0.58, 0.89,0.22,0.67, 1.00,0.73,0.40, 0.40,1.00,0.53)
+	E:TextGradient('Simpy but my name needs to be longer.', 0.63,0.40,0.80, 0.63,0.40,0.80, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.20,0.74,0.74, 0.20,0.74,0.74, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.63,0.40,0.80, 0.63,0.40,0.80)
 }
 
 local TESTERS = {
@@ -173,7 +173,7 @@ E.Options.args.info.args.header = ACH:Description(L["ELVUI_DESC"], 1, 'medium')
 E.Options.args.info.args.spacer = ACH:Spacer(2)
 
 E.Options.args.info.args.support = ACH:Group(L["Support & Download"], nil, 3)
-E.Options.args.info.args.support.guiInline = true
+E.Options.args.info.args.support.inline = true
 E.Options.args.info.args.support.args.homepage = ACH:Execute(L["Support Forum"], nil, 1, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.tukui.org/forum/viewforum.php?f=4') end)
 E.Options.args.info.args.support.args.homepage.customWidth = 140
 E.Options.args.info.args.support.args.git = ACH:Execute(L["Ticket Tracker"], nil, 2, function() E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://git.tukui.org/elvui/elvui/issues') end)
@@ -186,19 +186,19 @@ E.Options.args.info.args.support.args.development = ACH:Execute(L["Development V
 E.Options.args.info.args.support.args.development.customWidth = 140
 
 E.Options.args.info.args.credits = ACH:Group(L["Credits"], nil, 4)
-E.Options.args.info.args.credits.guiInline = true
+E.Options.args.info.args.credits.inline = true
 E.Options.args.info.args.credits.args.string = ACH:Description(L["ELVUI_CREDITS"], 1, 'medium')
 
 E.Options.args.info.args.coding = ACH:Group(L["Coding:"], nil, 5)
-E.Options.args.info.args.coding.guiInline = true
+E.Options.args.info.args.coding.inline = true
 E.Options.args.info.args.coding.args.string = ACH:Description(DEVELOPER_STRING, 1, 'medium')
 
 E.Options.args.info.args.testers = ACH:Group(L["Testing:"], nil, 6)
-E.Options.args.info.args.testers.guiInline = true
+E.Options.args.info.args.testers.inline = true
 E.Options.args.info.args.testers.args.string = ACH:Description(TESTER_STRING, 1, 'medium')
 
 E.Options.args.info.args.donators = ACH:Group(L["Donations:"], nil, 7)
-E.Options.args.info.args.donators.guiInline = true
+E.Options.args.info.args.donators.inline = true
 E.Options.args.info.args.donators.args.string = ACH:Description(DONATOR_STRING, 1, 'medium')
 
 local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"], styleFilters = L["NamePlate Style Filters"] }
@@ -425,8 +425,12 @@ E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvPrivates', E.Options.args.profiles.args.private)
 
-E.Options.args.profiles.args.private.args.choose.confirm = function(_, value)
-	return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
+E.Options.args.profiles.args.private.args.choose.confirm = function(info, value)
+	if info[#info-1] == 'private' then
+		return format(L["Choosing Settings %s. This will reload the UI.\n\n Are you sure?"], value)
+	else
+		return false
+	end
 end
 
 E.Options.args.profiles.args.private.args.copyfrom.confirm = function(info, value)

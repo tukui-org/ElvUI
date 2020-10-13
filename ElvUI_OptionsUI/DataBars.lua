@@ -1,423 +1,110 @@
-local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
-local mod = E:GetModule('DataBars')
+local DB = E:GetModule('DataBars')
 local ACH = E.Libs.ACH
 
-E.Options.args.databars = {
-	type = 'group',
-	name = L["DataBars"],
-	childGroups = 'tab',
-	order = 2,
-	get = function(info) return E.db.databars[info[#info]] end,
-	set = function(info, value) E.db.databars[info[#info]] = value; end,
-	args = {
-		intro = ACH:Description(L["Setup on-screen display of information bars."], 1),
-		spacer = ACH:Spacer(2),
-		experience = {
-			order = 5,
-			get = function(info) return mod.db.experience[info[#info]] end,
-			set = function(info, value) mod.db.experience[info[#info]] = value; mod:UpdateExperienceDimensions() end,
-			type = 'group',
-			name = L["XPBAR_LABEL"],
-			args = {
-				enable = {
-					order = 1,
-					type = 'toggle',
-					name = L["Enable"],
-					set = function(info, value) mod.db.experience[info[#info]] = value; mod:EnableDisable_ExperienceBar() end,
-				},
-				mouseover = {
-					order = 2,
-					type = 'toggle',
-					name = L["Mouseover"],
-				},
-				hideAtMaxLevel = {
-					order = 3,
-					type = 'toggle',
-					name = L["Hide At Max Level"],
-					set = function(info, value) mod.db.experience[info[#info]] = value; mod:UpdateExperience() end,
-				},
-				hideInVehicle = {
-					order = 4,
-					type = 'toggle',
-					name = L["Hide In Vehicle"],
-					set = function(info, value) mod.db.experience[info[#info]] = value; mod:UpdateExperience() end,
-				},
-				hideInCombat = {
-					order = 5,
-					type = 'toggle',
-					name = L["Hide In Combat"],
-					set = function(info, value) mod.db.experience[info[#info]] = value; mod:UpdateExperience() end,
-				},
-				reverseFill = {
-					order = 6,
-					type = 'toggle',
-					name = L["Reverse Fill Direction"],
-				},
-				orientation = {
-					order = 7,
-					type = 'select',
-					name = L["Statusbar Fill Orientation"],
-					desc = L["Direction the bar moves on gains/losses"],
-					values = {
-						HORIZONTAL = L["Horizontal"],
-						VERTICAL = L["Vertical"]
-					}
-				},
-				width = {
-					order = 8,
-					type = 'range',
-					name = L["Width"],
-					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
-				},
-				height = {
-					order = 9,
-					type = 'range',
-					name = L["Height"],
-					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
-				},
-				font = {
-					order = 10,
-					type = 'select', dialogControl = 'LSM30_Font',
-					name = L["Font"],
-					values = AceGUIWidgetLSMlists.font,
-				},
-				textSize = {
-					order = 11,
-					name = L["FONT_SIZE"],
-					type = 'range',
-					min = 6, max = 22, step = 1,
-				},
-				fontOutline = {
-					order = 12,
-					type = 'select',
-					name = L["Font Outline"],
-					values = C.Values.FontFlags,
-				},
-				textFormat = {
-					order = 13,
-					type = 'select',
-					name = L["Text Format"],
-					width = 'double',
-					values = {
-						NONE = L["NONE"],
-						PERCENT = L["Percent"],
-						CUR = L["Current"],
-						REM = L["Remaining"],
-						CURMAX = L["Current - Max"],
-						CURPERC = L["Current - Percent"],
-						CURREM = L["Current - Remaining"],
-						CURPERCREM = L["Current - Percent (Remaining)"],
-					},
-					set = function(info, value) mod.db.experience[info[#info]] = value; mod:UpdateExperience() end,
-				},
-			},
-		},
-		reputation = {
-			order = 6,
-			get = function(info) return mod.db.reputation[info[#info]] end,
-			set = function(info, value) mod.db.reputation[info[#info]] = value; mod:UpdateReputationDimensions() end,
-			type = 'group',
-			name = L["REPUTATION"],
-			args = {
-				enable = {
-					order = 1,
-					type = 'toggle',
-					name = L["Enable"],
-					set = function(info, value) mod.db.reputation[info[#info]] = value; mod:EnableDisable_ReputationBar() end,
-				},
-				mouseover = {
-					order = 2,
-					type = 'toggle',
-					name = L["Mouseover"],
-				},
-				hideInVehicle = {
-					order = 3,
-					type = 'toggle',
-					name = L["Hide In Vehicle"],
-					set = function(info, value) mod.db.reputation[info[#info]] = value; mod:UpdateReputation() end,
-				},
-				hideInCombat = {
-					order = 4,
-					type = 'toggle',
-					name = L["Hide In Combat"],
-					set = function(info, value) mod.db.reputation[info[#info]] = value; mod:UpdateReputation() end,
-				},
-				reverseFill = {
-					order = 5,
-					type = 'toggle',
-					name = L["Reverse Fill Direction"],
-				},
-				orientation = {
-					order = 7,
-					type = 'select',
-					name = L["Statusbar Fill Orientation"],
-					desc = L["Direction the bar moves on gains/losses"],
-					values = {
-						HORIZONTAL = L["Horizontal"],
-						VERTICAL = L["Vertical"]
-					}
-				},
-				width = {
-					order = 8,
-					type = 'range',
-					name = L["Width"],
-					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
-				},
-				height = {
-					order = 9,
-					type = 'range',
-					name = L["Height"],
-					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
-				},
-				font = {
-					order = 10,
-					type = 'select', dialogControl = 'LSM30_Font',
-					name = L["Font"],
-					values = AceGUIWidgetLSMlists.font,
-				},
-				textSize = {
-					order = 11,
-					name = L["FONT_SIZE"],
-					type = 'range',
-					min = 6, max = 22, step = 1,
-				},
-				fontOutline = {
-					order = 12,
-					type = 'select',
-					name = L["Font Outline"],
-					values = C.Values.FontFlags,
-				},
-				textFormat = {
-					order = 13,
-					type = 'select',
-					name = L["Text Format"],
-					width = 'double',
-					values = {
-						NONE = L["NONE"],
-						CUR = L["Current"],
-						REM = L["Remaining"],
-						PERCENT = L["Percent"],
-						CURMAX = L["Current - Max"],
-						CURPERC = L["Current - Percent"],
-						CURREM = L["Current - Remaining"],
-						CURPERCREM = L["Current - Percent (Remaining)"],
-					},
-					set = function(info, value) mod.db.reputation[info[#info]] = value; mod:UpdateReputation() end,
-				},
-			},
-		},
-		honor = {
-			order = 7,
-			get = function(info) return mod.db.honor[info[#info]] end,
-			set = function(info, value) mod.db.honor[info[#info]] = value; mod:UpdateHonorDimensions() end,
-			type = 'group',
-			name = L["HONOR"],
-			args = {
-				enable = {
-					order = 1,
-					type = 'toggle',
-					name = L["Enable"],
-					set = function(info, value) mod.db.honor[info[#info]] = value; mod:EnableDisable_HonorBar() end,
-				},
-				mouseover = {
-					order = 2,
-					type = 'toggle',
-					name = L["Mouseover"],
-				},
-				hideInVehicle = {
-					order = 3,
-					type = 'toggle',
-					name = L["Hide In Vehicle"],
-					set = function(info, value) mod.db.honor[info[#info]] = value; mod:UpdateHonor() end,
-				},
-				hideInCombat = {
-					order = 4,
-					type = 'toggle',
-					name = L["Hide In Combat"],
-					set = function(info, value) mod.db.honor[info[#info]] = value; mod:UpdateHonor() end,
-				},
-				hideOutsidePvP = {
-					order = 5,
-					type = 'toggle',
-					name = L["Hide Outside PvP"],
-					set = function(info, value) mod.db.honor[info[#info]] = value; mod:UpdateHonor() end,
-				},
-				hideBelowMaxLevel = {
-					order = 6,
-					type = 'toggle',
-					name = L["Hide Below Max Level"],
-					set = function(info, value) mod.db.honor[info[#info]] = value; mod:UpdateHonor() end,
-				},
-				reverseFill = {
-					order = 7,
-					type = 'toggle',
-					name = L["Reverse Fill Direction"],
-				},
-				orientation = {
-					order = 8,
-					type = 'select',
-					name = L["Statusbar Fill Orientation"],
-					desc = L["Direction the bar moves on gains/losses"],
-					values = {
-						HORIZONTAL = L["Horizontal"],
-						VERTICAL = L["Vertical"]
-					}
-				},
-				width = {
-					order = 9,
-					type = 'range',
-					name = L["Width"],
-					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
-				},
-				height = {
-					order = 10,
-					type = 'range',
-					name = L["Height"],
-					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
-				},
-				font = {
-					order = 11,
-					type = 'select', dialogControl = 'LSM30_Font',
-					name = L["Font"],
-					values = AceGUIWidgetLSMlists.font,
-				},
-				textSize = {
-					order = 12,
-					name = L["FONT_SIZE"],
-					type = 'range',
-					min = 6, max = 22, step = 1,
-				},
-				fontOutline = {
-					order = 13,
-					type = 'select',
-					name = L["Font Outline"],
-					values = C.Values.FontFlags,
-				},
-				textFormat = {
-					order = 14,
-					type = 'select',
-					name = L["Text Format"],
-					width = 'double',
-					values = {
-						NONE = L["NONE"],
-						PERCENT = L["Percent"],
-						CUR = L["Current"],
-						REM = L["Remaining"],
-						CURMAX = L["Current - Max"],
-						CURPERC = L["Current - Percent"],
-						CURREM = L["Current - Remaining"],
-						CURPERCREM = L["Current - Percent (Remaining)"],
-					},
-					set = function(info, value) mod.db.honor[info[#info]] = value; mod:UpdateHonor() end,
-				},
-			},
-		},
-		azerite = {
-			order = 8,
-			get = function(info) return mod.db.azerite[info[#info]] end,
-			set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzeriteDimensions() end,
-			type = 'group',
-			name = L["Azerite Bar"],
-			args = {
-				enable = {
-					order = 0,
-					type = 'toggle',
-					name = L["Enable"],
-					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:EnableDisable_AzeriteBar() end,
-				},
-				mouseover = {
-					order = 1,
-					type = 'toggle',
-					name = L["Mouseover"],
-				},
-				hideAtMaxLevel = {
-					order = 2,
-					type = 'toggle',
-					name = L["Hide At Max Power"],
-					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
-				},
-				hideBelowMaxLevel = {
-					order = 3,
-					type = 'toggle',
-					name = L["Hide Below Max Level"],
-					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateHonor() end,
-				},
-				hideInVehicle = {
-					order = 4,
-					type = 'toggle',
-					name = L["Hide In Vehicle"],
-					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
-				},
-				hideInCombat = {
-					order = 5,
-					type = 'toggle',
-					name = L["Hide In Combat"],
-					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
-				},
-				reverseFill = {
-					order = 6,
-					type = 'toggle',
-					name = L["Reverse Fill Direction"],
-				},
-				orientation = {
-					order = 7,
-					type = 'select',
-					name = L["Statusbar Fill Orientation"],
-					desc = L["Direction the bar moves on gains/losses"],
-					values = {
-						HORIZONTAL = L["Horizontal"],
-						VERTICAL = L["Vertical"]
-					}
-				},
-				width = {
-					order = 8,
-					type = 'range',
-					name = L["Width"],
-					min = 5, max = ceil(GetScreenWidth() or 800), step = 1,
-				},
-				height = {
-					order = 9,
-					type = 'range',
-					name = L["Height"],
-					min = 5, max = ceil(GetScreenHeight() or 800), step = 1,
-				},
-				font = {
-					order = 10,
-					type = 'select', dialogControl = 'LSM30_Font',
-					name = L["Font"],
-					values = AceGUIWidgetLSMlists.font,
-				},
-				textSize = {
-					order = 11,
-					name = L["FONT_SIZE"],
-					type = 'range',
-					min = 6, max = 22, step = 1,
-				},
-				fontOutline = {
-					order = 12,
-					type = 'select',
-					name = L["Font Outline"],
-					values = C.Values.FontFlags,
-				},
-				textFormat = {
-					order = 13,
-					type = 'select',
-					name = L["Text Format"],
-					width = 'double',
-					values = {
-						NONE = L["NONE"],
-						CUR = L["Current"],
-						REM = L["Remaining"],
-						PERCENT = L["Percent"],
-						CURMAX = L["Current - Max"],
-						CURPERC = L["Current - Percent"],
-						CURREM = L["Current - Remaining"],
-						CURPERCREM = L["Current - Percent (Remaining)"],
-					},
-					set = function(info, value) mod.db.azerite[info[#info]] = value; mod:UpdateAzerite() end,
-				},
-			},
-		},
-	},
+local tonumber = tonumber
+
+local SharedOptions = {
+	enable = ACH:Toggle(L["Enable"], nil, 1),
+	textFormat = ACH:Select(L["Text Format"], nil, 2, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
+	mouseover = ACH:Toggle(L["Mouseover"], nil, 3),
+	clickThrough = ACH:Toggle(L["Click Through"], nil, 4),
+	sizeGroup = ACH:Group(L["Size"], nil, 5),
+	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, 6),
+	fontGroup = ACH:Group(L["Fonts"], nil, 7),
+}
+
+SharedOptions.sizeGroup.inline = true
+SharedOptions.sizeGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })
+SharedOptions.sizeGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })
+SharedOptions.sizeGroup.args.orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the bar moves on gains/losses"], 3, { AUTOMATIC = L["Automatic"], HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
+SharedOptions.sizeGroup.args.reverseFill = ACH:Toggle(L["Reverse Fill Direction"], nil, 4)
+
+SharedOptions.fontGroup.inline = true
+SharedOptions.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
+SharedOptions.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
+SharedOptions.fontGroup.args.fontOutline = ACH:Select(L["Font Outline"], nil, 3, C.Values.FontFlags)
+
+E.Options.args.databars = ACH:Group(L["DataBars"], nil, 2, 'tab', function(info) return E.db.databars[info[#info]] end, function(info, value) E.db.databars[info[#info]] = value DB:UpdateAll() end)
+E.Options.args.databars.args.intro = ACH:Description(L["Setup on-screen display of information bars."], 1)
+E.Options.args.databars.args.spacer = ACH:Spacer(2)
+
+E.Options.args.databars.args.general = ACH:Group(L["General"], nil, 3, nil, function(info) return E.db.databars[info[#info]] end, function(info, value) E.db.databars[info[#info]] = value DB:UpdateAll() end)
+E.Options.args.databars.args.general.inline = true
+E.Options.args.databars.args.general.args.transparent = ACH:Toggle(L["Transparent"], nil, 1)
+E.Options.args.databars.args.general.args.customTexture = ACH:Toggle(L["Custom StatusBar"], nil, 2)
+E.Options.args.databars.args.general.args.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 3, nil, nil, nil, function() return not E.db.databars.customTexture end)
+
+E.Options.args.databars.args.colorGroup = ACH:Group(L["COLORS"], nil, 4, nil, function(info) local t = E.db.databars.colors[info[#info]] local d = P.databars.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end)
+E.Options.args.databars.args.colorGroup.inline = true
+E.Options.args.databars.args.colorGroup.args.experience = ACH:Color(L["Experience"], nil, 1, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
+E.Options.args.databars.args.colorGroup.args.rested = ACH:Color(L["Rested Experience"], nil, 2, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
+E.Options.args.databars.args.colorGroup.args.quest = ACH:Color(L["Quest Experience"], nil, 3, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_QuestXP() end)
+E.Options.args.databars.args.colorGroup.args.honor = ACH:Color(L["Honor"], nil, 4, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:HonorBar_Update() end)
+E.Options.args.databars.args.colorGroup.args.azerite = ACH:Color(L["Azerite"], nil, 5, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:AzeriteBar_Update() end)
+E.Options.args.databars.args.colorGroup.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], L["Reputation"], 6, nil, nil, nil, function() return E.db.databars.colors.useCustomFactionColors end, function(_, value) E.db.databars.colors.useCustomFactionColors = value end)
+
+E.Options.args.databars.args.colorGroup.args.factionColors = ACH:Group(' ', nil, nil, nil, function(info) local v = tonumber(info[#info]) local t = E.db.databars.colors.factionColors[v] local d = P.databars.colors.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local v = tonumber(info[#info]); local t = E.db.databars.colors.factionColors[v]; t.r, t.g, t.b = r, g, b end, nil, function() return not E.db.databars.colors.useCustomFactionColors end)
+E.Options.args.databars.args.colorGroup.args.factionColors.inline = true
+
+for i = 1, 8 do
+	E.Options.args.databars.args.colorGroup.args.factionColors.args[""..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true)
+end
+
+E.Options.args.databars.args.experience = ACH:Group(L["Experience"], nil, 1, nil, function(info) return DB.db.experience[info[#info]] end, function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Update() DB:ExperienceBar_QuestXP() DB:UpdateAll() end)
+E.Options.args.databars.args.experience.args = CopyTable(SharedOptions)
+E.Options.args.databars.args.experience.args.enable.set = function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Toggle() DB:UpdateAll() end
+E.Options.args.databars.args.experience.args.textFormat.set = function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Update() end
+E.Options.args.databars.args.experience.args.conditionGroup.get = function(_, key) return DB.db.experience[key] end
+E.Options.args.databars.args.experience.args.conditionGroup.set = function(_, key, value) DB.db.experience[key] = value DB:ExperienceBar_Update() DB:ExperienceBar_QuestXP() DB:UpdateAll() end
+E.Options.args.databars.args.experience.args.conditionGroup.values = {
+	questCurrentZoneOnly = L["Quests in Current Zone Only"],
+	questCompletedOnly = L["Completed Quests Only"],
+	hideAtMaxLevel = L["Hide At Max Level"],
+	hideInVehicle = L["Hide In Vehicle"],
+	hideInCombat = L["Hide In Combat"],
+}
+
+E.Options.args.databars.args.reputation = ACH:Group(L["Reputation"], nil, 2, nil, function(info) return DB.db.reputation[info[#info]] end, function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() DB:UpdateAll() end)
+E.Options.args.databars.args.reputation.args = CopyTable(SharedOptions)
+E.Options.args.databars.args.reputation.args.enable.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Toggle() DB:UpdateAll() end
+E.Options.args.databars.args.reputation.args.textFormat.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
+E.Options.args.databars.args.reputation.args.conditionGroup.get = function(_, key) return DB.db.reputation[key] end
+E.Options.args.databars.args.reputation.args.conditionGroup.set = function(_, key, value) DB.db.reputation[key] = value DB:ReputationBar_Update() DB:UpdateAll() end
+E.Options.args.databars.args.reputation.args.conditionGroup.values = {
+	hideInVehicle = L["Hide In Vehicle"],
+	hideInCombat = L["Hide In Combat"],
+}
+
+E.Options.args.databars.args.honor = ACH:Group(L["Honor"], nil, 3, nil, function(info) return DB.db.honor[info[#info]] end, function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() DB:UpdateAll() end)
+E.Options.args.databars.args.honor.args = CopyTable(SharedOptions)
+E.Options.args.databars.args.honor.args.enable.set = function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Toggle() DB:UpdateAll() end
+E.Options.args.databars.args.honor.args.textFormat.set = function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() end
+E.Options.args.databars.args.honor.args.conditionGroup.get = function(_, key) return DB.db.honor[key] end
+E.Options.args.databars.args.honor.args.conditionGroup.set = function(_, key, value) DB.db.honor[key] = value DB:HonorBar_Update() DB:UpdateAll() end
+E.Options.args.databars.args.honor.args.conditionGroup.values = {
+	hideInVehicle = L["Hide In Vehicle"],
+	hideInCombat = L["Hide In Combat"],
+	hideOutsidePvP = L["Hide Outside PvP"],
+	hideBelowMaxLevel = L["Hide Below Max Level"],
+}
+
+E.Options.args.databars.args.threat = ACH:Group(L["Threat"], nil, 4, nil, function(info) return DB.db.threat[info[#info]] end, function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Update() DB:UpdateAll() end)
+E.Options.args.databars.args.threat.args = CopyTable(SharedOptions)
+E.Options.args.databars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Toggle() DB:UpdateAll() end
+E.Options.args.databars.args.threat.args.textFormat = nil
+E.Options.args.databars.args.threat.args.conditionGroup = nil
+
+E.Options.args.databars.args.azerite = ACH:Group(L["Azerite"], nil, 5, nil, function(info) return DB.db.azerite[info[#info]] end, function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() DB:UpdateAll() end)
+E.Options.args.databars.args.azerite.args = CopyTable(SharedOptions)
+E.Options.args.databars.args.azerite.args.enable.set = function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Toggle() DB:UpdateAll() end
+E.Options.args.databars.args.azerite.args.textFormat.set = function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() end
+E.Options.args.databars.args.azerite.args.conditionGroup.get = function(_, key) return DB.db.azerite[key] end
+E.Options.args.databars.args.azerite.args.conditionGroup.set = function(_, key, value) DB.db.azerite[key] = value DB:AzeriteBar_Update() DB:UpdateAll() end
+E.Options.args.databars.args.azerite.args.conditionGroup.values = {
+	hideInVehicle = L["Hide In Vehicle"],
+	hideInCombat = L["Hide In Combat"],
+	hideAtMaxLevel = L["Hide At Max Level"],
+	hideBelowMaxLevel = L["Hide Below Max Level"],
 }

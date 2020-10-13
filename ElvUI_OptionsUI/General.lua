@@ -4,8 +4,10 @@ local Misc = E:GetModule('Misc')
 local Layout = E:GetModule('Layout')
 local Totems = E:GetModule('Totems')
 local Blizzard = E:GetModule('Blizzard')
-local Threat = E:GetModule('Threat')
+local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 local AFK = E:GetModule('AFK')
+local ACH = E.Libs.ACH
 
 local _G = _G
 local IsAddOnLoaded = IsAddOnLoaded
@@ -33,37 +35,6 @@ E.Options.args.general = {
 			type = 'group',
 			name = L["General"],
 			args = {
-				UIScale = {
-					order = 1,
-					type = 'range',
-					name = L["UI_SCALE"],
-					min = 0.1, max = 1.25, step = 0.000000000000001,
-					softMin = 0.40, softMax = 1.15, bigStep = 0.01,
-					get = function(info) return E.global.general.UIScale end,
-					set = function(info, value)
-						E.global.general.UIScale = value
-						if not IsMouseButtonDown() then
-							E:PixelScaleChanged()
-						end
-					end
-				},
-				AutoScale = {
-					order = 2,
-					type = 'execute',
-					name = L["Auto Scale"],
-					func = function()
-						E.global.general.UIScale = E:PixelBestSize()
-						E:PixelScaleChanged()
-					end,
-				},
-				pixelPerfect = {
-					order = 3,
-					name = L["Thin Border Theme"],
-					desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
-					type = 'toggle',
-					get = function(info) return E.private.general.pixelPerfect end,
-					set = function(info, value) E.private.general.pixelPerfect = value; E:StaticPopup_Show('PRIVATE_RL') end
-				},
 				loginmessage = {
 					order = 4,
 					type = 'toggle',
@@ -117,58 +88,14 @@ E.Options.args.general = {
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
-				messageRedirect = {
-					order = 13,
-					name = L["Chat Output"],
-					desc = L["This selects the Chat Frame to use as the output of ElvUI messages."],
-					type = 'select',
-					values = GetChatWindowInfo()
+				autoTrackReputation = {
+					order = 12,
+					name = L["Auto Track Reputation"],
+					type = 'toggle',
 				},
-				numberPrefixStyle = {
-					order = 14,
-					type = 'select',
-					name = L["Unit Prefix Style"],
-					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
-					set = function(info, value)
-						E.db.general.numberPrefixStyle = value
-						E:BuildPrefixValues()
-						E:StaticPopup_Show('CONFIG_RL')
-					end,
-					values = {
-						TCHINESE = '萬, 億',
-						CHINESE = '万, 亿',
-						ENGLISH = 'K, M, B',
-						GERMAN = 'Tsd, Mio, Mrd',
-						KOREAN = '천, 만, 억',
-						METRIC = 'k, M, G'
-					},
-				},
-				decimalLength = {
-					order = 15,
-					type = 'range',
-					name = L["Decimal Length"],
-					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
-					min = 0, max = 4, step = 1,
-					set = function(info, value)
-						E.db.general.decimalLength = value
-						E:BuildPrefixValues()
-						E:StaticPopup_Show('CONFIG_RL')
-					end,
-				},
-				smoothingAmount = {
-					order = 16,
-					type = 'range',
-					isPercent = true,
-					name = L["Smoothing Amount"],
-					desc = L["Controls the speed at which smoothed bars will be updated."],
-					min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01,
-					set = function(info, value)
-						E.db.general.smoothingAmount = value
-						E:SetSmoothingAmount(value)
-					end,
-				},
+				spacer1 = ACH:Spacer(15, 'full'),
 				locale = {
-					order = 17,
+					order = 16,
 					type = 'select',
 					name = L["LANGUAGE"],
 					get = function(info) return E.global.general.locale end,
@@ -189,8 +116,34 @@ E.Options.args.general = {
 						itIT = 'Italiano',
 					},
 				},
-				interruptAnnounce = {
+				messageRedirect = {
+					order = 17,
+					name = L["Chat Output"],
+					desc = L["This selects the Chat Frame to use as the output of ElvUI messages."],
+					type = 'select',
+					values = GetChatWindowInfo()
+				},
+				numberPrefixStyle = {
 					order = 18,
+					type = 'select',
+					name = L["Unit Prefix Style"],
+					desc = L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."],
+					set = function(info, value)
+						E.db.general.numberPrefixStyle = value
+						E:BuildPrefixValues()
+						E:StaticPopup_Show('CONFIG_RL')
+					end,
+					values = {
+						TCHINESE = '萬, 億',
+						CHINESE = '万, 亿',
+						ENGLISH = 'K, M, B',
+						GERMAN = 'Tsd, Mio, Mrd',
+						KOREAN = '천, 만, 억',
+						METRIC = 'k, M, G'
+					},
+				},
+				interruptAnnounce = {
+					order = 19,
 					name = L["Announce Interrupts"],
 					desc = L["Announce when you interrupt a spell to the specified chat channel."],
 					type = 'select',
@@ -213,7 +166,7 @@ E.Options.args.general = {
 					end,
 				},
 				autoRepair = {
-					order = 19,
+					order = 20,
 					name = L["Auto Repair"],
 					desc = L["Automatically repair using the following method when visiting a merchant."],
 					type = 'select',
@@ -223,55 +176,58 @@ E.Options.args.general = {
 						PLAYER = L["PLAYER"],
 					},
 				},
-				autoTrackReputation = {
-					order = 20,
-					name = L["Auto Track Reputation"],
-					type = 'toggle',
+				spacer2 = ACH:Spacer(25, 'full'),
+				decimalLength = {
+					order = 26,
+					type = 'range',
+					name = L["Decimal Length"],
+					desc = L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."],
+					min = 0, max = 4, step = 1,
+					set = function(info, value)
+						E.db.general.decimalLength = value
+						E:BuildPrefixValues()
+						E:StaticPopup_Show('CONFIG_RL')
+					end,
 				},
-				threatGroup = {
-					order = 50,
-					type = 'group',
-					guiInline = true,
-					name = L["Threat"],
-					get = function(info) return E.db.general.threat[info[#info]] end,
-					args = {
-						enable = {
-							order = 41,
-							type = 'toggle',
-							name = L["Enable"],
-							set = function(info, value) E.db.general.threat.enable = value; Threat:ToggleEnable() end,
-						},
-						position = {
-							order = 42,
-							type = 'select',
-							name = L["Position"],
-							desc = L["Adjust the position of the threat bar to either the left or right datatext panels."],
-							values = {
-								LEFTCHAT = L["Left Chat"],
-								RIGHTCHAT = L["Right Chat"],
-							},
-							set = function(info, value) E.db.general.threat.position = value; Threat:UpdatePosition() end,
-						},
-						textSize = {
-							order = 43,
-							name = L["FONT_SIZE"],
-							type = 'range',
-							min = 6, max = 22, step = 1,
-							set = function(info, value) E.db.general.threat.textSize = value; Threat:UpdatePosition() end,
-						},
-						textOutline = {
-							order = 44,
-							type = 'select',
-							name = L["Font Outline"],
-							set = function(info, value) E.db.general.threat.textOutline = value; Threat:UpdatePosition() end,
-							values = C.Values.FontFlags,
-						},
-					},
+				smoothingAmount = {
+					order = 27,
+					type = 'range',
+					isPercent = true,
+					name = L["Smoothing Amount"],
+					desc = L["Controls the speed at which smoothed bars will be updated."],
+					min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01,
+					set = function(info, value)
+						E.db.general.smoothingAmount = value
+						E:SetSmoothingAmount(value)
+					end,
+				},
+				UIScale = {
+					order = 28,
+					type = 'range',
+					name = L["UI_SCALE"],
+					min = 0.1, max = 1.25, step = 0.000000000000001,
+					softMin = 0.40, softMax = 1.15, bigStep = 0.01,
+					get = function(info) return E.global.general.UIScale end,
+					set = function(info, value)
+						E.global.general.UIScale = value
+						if not IsMouseButtonDown() then
+							E:PixelScaleChanged()
+						end
+					end
+				},
+				AutoScale = {
+					order = 29,
+					type = 'execute',
+					name = L["Auto Scale"],
+					func = function()
+						E.global.general.UIScale = E:PixelBestSize()
+						E:PixelScaleChanged()
+					end,
 				},
 				totems = {
 					order = 55,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = L["Class Totems"],
 					get = function(info) return E.db.general.totems[info[#info]] end,
 					set = function(info, value) E.db.general.totems[info[#info]] = value; Totems:PositionAndSize() end,
@@ -332,7 +288,7 @@ E.Options.args.general = {
 					order = 50,
 					name = L["Font"],
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					args = {
 						main = {
 							order = 1,
@@ -419,7 +375,7 @@ E.Options.args.general = {
 					order = 51,
 					name = L["Textures"],
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					get = function(info) return E.private.general[info[#info]] end,
 					args = {
 						normTex = {
@@ -429,17 +385,9 @@ E.Options.args.general = {
 							desc = L["The texture that will be used mainly for statusbars."],
 							values = AceGUIWidgetLSMlists.statusbar,
 							set = function(info, value)
-								local previousValue = E.private.general[info[#info]]
 								E.private.general[info[#info]] = value;
-
-								if(E.db.unitframe.statusbar == previousValue) then
-									E.db.unitframe.statusbar = value
-									E:StaggeredUpdateAll(nil, true)
-								else
-									E:UpdateMedia()
-									E:UpdateStatusBars()
-								end
-
+								E:UpdateMedia()
+								E:UpdateStatusBars()
 							end
 						},
 						glossTex = {
@@ -457,22 +405,70 @@ E.Options.args.general = {
 						applyTextureToAll = {
 							order = 3,
 							type = 'execute',
-							name = L["Apply Texture To All"],
-							desc = L["Applies the primary texture to all statusbars."],
+							name = L["Copy Primary Texture"],
+							desc = L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."],
 							func = function()
-								local texture = E.private.general.normTex
-								E.db.unitframe.statusbar = texture
-								E.db.nameplates.statusbar = texture
-								E:StaggeredUpdateAll(nil, true)
+								E.db.unitframe.statusbar = E.private.general.normTex
+								UF:Update_StatusBars()
+
+								E.db.nameplates.statusbar = E.private.general.normTex
+								NP:ConfigureAll()
 							end,
 						},
 					},
+				},
+				bordersGroup = {
+					order = 52,
+					name = L["Borders"],
+					type = 'group',
+					inline = true,
+					args = {
+						uiThinBorders = {
+							order = 1,
+							name = L["Thin Borders"],
+							desc = L["The Thin Border Theme option will change the overall apperance of your UI. Using Thin Border Theme is a slight performance increase over the traditional layout."],
+							type = 'toggle',
+							get = function(info) return E.private.general.pixelPerfect end,
+							set = function(info, value)
+								E.private.general.pixelPerfect = value
+								E:StaticPopup_Show('PRIVATE_RL')
+							end
+						},
+						ufThinBorders = {
+							order = 2,
+							name = L["Unitframe Thin Borders"],
+							desc = L["Use thin borders on certain unitframe elements."],
+							type = 'toggle',
+							get = function(info) return E.db.unitframe.thinBorders end,
+							set = function(info, value)
+								E.db.unitframe.thinBorders = value
+								E:StaticPopup_Show('CONFIG_RL')
+							end,
+						},
+						cropIcon = {
+							order = 3,
+							type = 'toggle',
+							tristate = true,
+							name = L["Crop Icons"],
+							desc = L["This is for Customized Icons in your Interface/Icons folder."],
+							get = function(info)
+								local value = E.db.general[info[#info]]
+								if value == 2 then return true
+								elseif value == 1 then return nil
+								else return false end
+							end,
+							set = function(info, value)
+								E.db.general[info[#info]] = (value and 2) or (value == nil and 1) or 0
+								E:StaticPopup_Show('PRIVATE_RL')
+							end,
+						},
+					}
 				},
 				colorsGroup = {
 					order = 52,
 					name = L["Colors"],
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					get = function(info)
 						local t = E.db.general[info[#info]]
 						local d = P.general[info[#info]]
@@ -490,49 +486,59 @@ E.Options.args.general = {
 						end
 					end,
 					args = {
-						bordercolor = {
-							type = 'color',
-							order = 6,
-							name = L["Border Color"],
-							desc = L["Main border color of the UI."],
-							hasAlpha = false,
-						},
 						backdropcolor = {
 							type = 'color',
-							order = 7,
+							order = 1,
 							name = L["Backdrop Color"],
 							desc = L["Main backdrop color of the UI."],
 							hasAlpha = false,
 						},
 						backdropfadecolor = {
 							type = 'color',
-							order = 8,
+							order = 2,
 							name = L["Backdrop Faded Color"],
 							desc = L["Backdrop color of transparent frames"],
 							hasAlpha = true,
 						},
 						valuecolor = {
 							type = 'color',
-							order = 9,
+							order = 3,
 							name = L["Value Color"],
 							desc = L["Color some texts use."],
 							hasAlpha = false,
 						},
-						cropIcon = {
+						spacer1 = ACH:Spacer(9, 'full'),
+						uiBorderColors = {
+							type = 'color',
 							order = 10,
-							type = 'toggle',
-							tristate = true,
-							name = L["Crop Icons"],
-							desc = L["This is for Customized Icons in your Interface/Icons folder."],
+							name = L["Border Color"],
+							desc = L["Main border color of the UI."],
 							get = function(info)
-								local value = E.db.general[info[#info]]
-								if value == 2 then return true
-								elseif value == 1 then return nil
-								else return false end
+								local t = E.db.general.bordercolor
+								local d = P.general.bordercolor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
 							end,
-							set = function(info, value)
-								E.db.general[info[#info]] = (value and 2) or (value == nil and 1) or 0
-								E:StaticPopup_Show('PRIVATE_RL')
+							set = function(info, r, g, b, a)
+								local t = E.db.general.bordercolor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								E:UpdateMedia()
+								E:UpdateBorderColors()
+							end,
+						},
+						ufBorderColors = {
+							order = 11,
+							type = 'color',
+							name = L["Unitframes Border Color"],
+							get = function(info)
+								local t = E.db.unitframe.colors.borderColor
+								local d = P.unitframe.colors.borderColor
+								return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.db.unitframe.colors.borderColor
+								t.r, t.g, t.b, t.a = r, g, b, a
+								E:UpdateMedia()
+								E:UpdateBorderColors()
 							end,
 						},
 					},
@@ -576,7 +582,7 @@ E.Options.args.general = {
 					order = 5,
 					name = L["Status Bar"],
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					set = function(info, value)
 						E.db.general.altPowerBar[info[#info]] = value;
 						Blizzard:UpdateAltPowerBarColors();
@@ -626,7 +632,7 @@ E.Options.args.general = {
 					order = 6,
 					name = L["Text"],
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					set = function(info, value)
 						E.db.general.altPowerBar[info[#info]] = value;
 						Blizzard:UpdateAltPowerBarSettings()
@@ -783,7 +789,7 @@ E.Options.args.general = {
 					order = 14,
 					name = L["Item Level"],
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					get = function(info) return E.db.general.itemLevel[info[#info]] end,
 					args = {
 						displayCharacterInfo = {
@@ -844,7 +850,7 @@ E.Options.args.general = {
 				objectiveFrameGroup = {
 					order = 15,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = L["Objective Frame"],
 					get = function(info) return E.db.general[info[#info]] end,
 					args = {
@@ -887,7 +893,7 @@ E.Options.args.general = {
 				chatBubblesGroup = {
 					order = 16,
 					type = 'group',
-					guiInline = true,
+					inline = true,
 					name = L["Chat Bubbles"],
 					get = function(info) return E.private.general[info[#info]] end,
 					set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end,

@@ -55,7 +55,7 @@ E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
 local function ConvertTime(h, m)
 	local AmPm
-	if E.db.datatexts.time24 == true then
+	if E.global.datatexts.settings.Time.time24 == true then
 		return h, m, -1
 	else
 		if h >= 12 then
@@ -70,7 +70,7 @@ local function ConvertTime(h, m)
 end
 
 local function CalculateTimeValues(tooltip)
-	if (tooltip and E.db.datatexts.localtime) or (not tooltip and not E.db.datatexts.localtime) then
+	if (tooltip and E.global.datatexts.settings.Time.localTime) or (not tooltip and not E.global.datatexts.settings.Time.localTime) then
 		return ConvertTime(GetGameTime())
 	else
 		local dateTable = date('*t')
@@ -216,7 +216,7 @@ local function OnEnter()
 			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.raids[i][4])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
+			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
@@ -238,7 +238,7 @@ local function OnEnter()
 			local name, _, reset, _, _, extended, _, _, maxPlayers, _, numEncounters, encounterProgress = unpack(lockedInstances.dungeons[i][4])
 
 			local lockoutColor = extended and lockoutColorExtended or lockoutColorNormal
-			if (numEncounters and numEncounters > 0) and (encounterProgress and encounterProgress > 0) then
+			if numEncounters and numEncounters > 0 and (encounterProgress and encounterProgress > 0) then
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormat, buttonImg, maxPlayers, difficultyLetter, name, encounterProgress, numEncounters), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
 			else
 				DT.tooltip:AddDoubleLine(format(lockoutInfoFormatNoEnc, buttonImg, maxPlayers, difficultyLetter, name), SecondsToTime(reset, false, nil, 3), 1, 1, 1, lockoutColor.r, lockoutColor.g, lockoutColor.b)
@@ -255,8 +255,8 @@ local function OnEnter()
 	sort(worldbossLockoutList, sortFunc)
 	for i = 1,#worldbossLockoutList do
 		local name, reset = unpack(worldbossLockoutList[i])
-		if(reset) then
-			if(not addedLine) then
+		if reset then
+			if not addedLine then
 				if DT.tooltip:NumLines() > 0 then
 					DT.tooltip:AddLine(' ')
 				end
@@ -272,9 +272,9 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 	end
 	if AmPm == -1 then
-		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
-		DT.tooltip:AddDoubleLine(E.db.datatexts.localtime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(ukDisplayFormat_nocolor, Hr, Min, APM[AmPm]), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	end
 
 	DT.tooltip:Show()
@@ -305,7 +305,7 @@ function Update(self, t)
 	local Hr, Min, AmPm = CalculateTimeValues(false)
 
 	-- no update quick exit
-	if (Hr == curHr and Min == curMin and AmPm == curAmPm) and not (int < -15000) then
+	if Hr == curHr and Min == curMin and AmPm == curAmPm and not (int < -15000) then
 		int = 5
 		return
 	end
@@ -323,4 +323,4 @@ function Update(self, t)
 	int = 5
 end
 
-DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, Update, Click, OnEnter, OnLeave)
+DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, Update, Click, OnEnter, OnLeave, nil, nil, ValueColorUpdate)

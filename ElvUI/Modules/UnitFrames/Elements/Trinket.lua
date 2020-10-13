@@ -5,8 +5,8 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_Trinket(frame)
 	local trinket = CreateFrame('Frame', nil, frame)
-	trinket.bg = CreateFrame('Frame', nil, trinket)
-	trinket.bg:SetTemplate(nil, nil, nil, self.thinBorders, true)
+	trinket.bg = CreateFrame('Frame', nil, trinket, 'BackdropTemplate')
+	trinket.bg:SetTemplate(nil, nil, nil, nil, true)
 	trinket.bg:SetFrameLevel(trinket:GetFrameLevel() - 1)
 	trinket:SetInside(trinket.bg)
 
@@ -17,12 +17,12 @@ function UF:Configure_Trinket(frame)
 	local db = frame.db
 	local trinket = frame.Trinket
 
-	trinket.bg:SetSize(db.pvpTrinket.size, db.pvpTrinket.size)
+	trinket.bg:Size(db.pvpTrinket.size)
 	trinket.bg:ClearAllPoints()
 	if db.pvpTrinket.position == 'RIGHT' then
-		trinket.bg:SetPoint('LEFT', frame, 'RIGHT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
+		trinket.bg:Point('LEFT', frame, 'RIGHT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 	else
-		trinket.bg:SetPoint('RIGHT', frame, 'LEFT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
+		trinket.bg:Point('RIGHT', frame, 'LEFT', db.pvpTrinket.xOffset, db.pvpTrinket.yOffset)
 	end
 
 	if db.pvpTrinket.enable and not frame:IsElementEnabled('Trinket') then

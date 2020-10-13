@@ -4,9 +4,9 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local ipairs, pairs, format = ipairs, pairs, format
 local tinsert, tremove, next = tinsert, tremove, next
-local GetCurrencyInfo = GetCurrencyInfo
-local GetCurrencyListInfo = GetCurrencyListInfo
-local GetCurrencyListSize = GetCurrencyListSize
+local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
+local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
+local C_CurrencyInfo_GetCurrencyListSize = C_CurrencyInfo.GetCurrencyListSize
 
 local CustomCurrencies = {}
 local CurrencyListNameToIndex = {}
@@ -14,24 +14,26 @@ local CurrencyListNameToIndex = {}
 local function OnEvent(self)
 	local currency = CustomCurrencies[self.name]
 	if currency then
-		local _, currencyAmount, _, _, _, currencyMax = GetCurrencyInfo(currency.ID)
+		local info = C_CurrencyInfo_GetCurrencyInfo(currency.ID)
+		if not info then return end
+
 		if currency.DISPLAY_STYLE == 'ICON' then
 			if currency.SHOW_MAX then
-				self.text:SetFormattedText('%s %d / %d', currency.ICON, currencyAmount, currencyMax)
+				self.text:SetFormattedText('%s %d / %d', currency.ICON, info.quantity, info.maxQuantity)
 			else
-				self.text:SetFormattedText('%s %d', currency.ICON, currencyAmount)
+				self.text:SetFormattedText('%s %d', currency.ICON, info.quantity)
 			end
 		elseif currency.DISPLAY_STYLE == 'ICON_TEXT' then
 			if currency.SHOW_MAX then
-				self.text:SetFormattedText('%s %s %d / %d', currency.ICON, currency.NAME, currencyAmount, currencyMax)
+				self.text:SetFormattedText('%s %s %d / %d', currency.ICON, currency.NAME, info.quantity, info.maxQuantity)
 			else
-				self.text:SetFormattedText('%s %s %d', currency.ICON, currency.NAME, currencyAmount)
+				self.text:SetFormattedText('%s %s %d', currency.ICON, currency.NAME, info.quantity)
 			end
 		else --ICON_TEXT_ABBR
 			if currency.SHOW_MAX then
-				self.text:SetFormattedText('%s %s %d / %d', currency.ICON, E:AbbreviateString(currency.NAME), currencyAmount, currencyMax)
+				self.text:SetFormattedText('%s %s %d / %d', currency.ICON, E:AbbreviateString(currency.NAME), info.quantity, info.maxQuantity)
 			else
-				self.text:SetFormattedText('%s %s %d', currency.ICON, E:AbbreviateString(currency.NAME), currencyAmount)
+				self.text:SetFormattedText('%s %s %d', currency.ICON, E:AbbreviateString(currency.NAME), info.quantity)
 			end
 		end
 	end
@@ -50,9 +52,9 @@ local function OnEnter(self)
 end
 
 local function AddCurrencyNameToIndex(name)
-	for index = 1, GetCurrencyListSize() do
-		local currencyName = GetCurrencyListInfo(index)
-		if currencyName == name then
+	for index = 1, C_CurrencyInfo_GetCurrencyListSize() do
+		local info = C_CurrencyInfo_GetCurrencyListInfo(index)
+		if info.name == name then
 			CurrencyListNameToIndex[name] = index
 			break
 		end
@@ -60,11 +62,12 @@ local function AddCurrencyNameToIndex(name)
 end
 
 local function RegisterNewDT(currencyID)
-	local name, _, icon, _, _, _, isDiscovered = GetCurrencyInfo(currencyID)
+	local info = C_CurrencyInfo_GetCurrencyInfo(currencyID)
+	if info.discovered then
+		local name = info.name
 
-	if isDiscovered then
 		--Add to internal storage, stored with name as key
-		CustomCurrencies[name] = {NAME = name, ID = currencyID, ICON = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', icon), DISPLAY_STYLE = 'ICON', USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true}
+		CustomCurrencies[name] = {NAME = name, ID = currencyID, ICON = format('|T%s:16:16:0:0:64:64:4:60:4:60|t', info.iconFileID), DISPLAY_STYLE = 'ICON', USE_TOOLTIP = true, SHOW_MAX = false, DISPLAY_IN_MAIN_TOOLTIP = true}
 		--Register datatext
 		DT:RegisterDatatext(name, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, name)
 		--Save info to persistent storage, stored with ID as key

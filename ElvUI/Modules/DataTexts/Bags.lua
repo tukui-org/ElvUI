@@ -6,7 +6,6 @@ local format = format
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local ToggleAllBags = ToggleAllBags
-local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo
 local CURRENCY = CURRENCY
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
@@ -14,6 +13,7 @@ local GetBagName = GetBagName
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetItemQualityColor = GetItemQualityColor
 local GetInventoryItemTexture = GetInventoryItemTexture
+local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 
 local displayString, lastPanel = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
@@ -21,11 +21,23 @@ local bagIcon = 'Interface/Buttons/Button-Backpack-Up'
 
 local function OnEvent(self)
 	lastPanel = self
-	local free, total = 0, 0
+	local free, total, used = 0, 0
 	for i = 0, NUM_BAG_SLOTS do
 		free, total = free + GetContainerNumFreeSlots(i), total + GetContainerNumSlots(i)
 	end
-	self.text:SetFormattedText(displayString, L["Bags"]..': ', total - free, total)
+	used = total - free
+
+	local textFormat = E.global.datatexts.settings.Bags.textFormat
+
+	if textFormat == "FREE" then
+		self.text:SetFormattedText(displayString, L["Bags"]..": ", free)
+	elseif textFormat == "USED" then
+		self.text:SetFormattedText(displayString, L["Bags"]..": ", used)
+	elseif textFormat == "FREE_TOTAL" then
+		self.text:SetFormattedText(displayString, L["Bags"]..": ", free, total)
+	else
+		self.text:SetFormattedText(displayString, L["Bags"]..": ", used, total)
+	end
 end
 
 local function OnClick()
@@ -55,14 +67,16 @@ local function OnEnter()
 	end
 
 	for i = 1, MAX_WATCHED_TOKENS do
-		local name, count, icon = GetBackpackCurrencyInfo(i)
-		if name and i == 1 then
-			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(CURRENCY)
-			DT.tooltip:AddLine(' ')
-		end
-		if name and count then
-			DT.tooltip:AddDoubleLine(format(iconString, icon, name), count, 1, 1, 1, 1, 1, 1)
+		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
+		if info then
+			if i == 1 then
+				DT.tooltip:AddLine(' ')
+				DT.tooltip:AddLine(CURRENCY)
+				DT.tooltip:AddLine(' ')
+			end
+			if info.quantity then
+				DT.tooltip:AddDoubleLine(format(iconString, info.iconFileID, info.name), info.quantity, 1, 1, 1, 1, 1, 1)
+			end
 		end
 	end
 
@@ -70,10 +84,15 @@ local function OnEnter()
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', '%s', hex, '%d/%d|r')
+	local textFormat = E.global.datatexts.settings.Bags.textFormat
+	if textFormat == "FREE" or textFormat == "USED" then
+		displayString = strjoin('', '%s', hex, '%d|r')
+	else
+		displayString = strjoin('', '%s', hex, '%d/%d|r')
+	end
 
 	if lastPanel then OnEvent(lastPanel) end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Bags', nil, {'BAG_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"])
+DT:RegisterDatatext('Bags', nil, {'BAG_UPDATE'}, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ValueColorUpdate)

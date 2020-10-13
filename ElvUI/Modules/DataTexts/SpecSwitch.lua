@@ -49,15 +49,16 @@ local function OnEvent(self)
 	end
 
 	local specIndex = GetSpecialization()
-	if not specIndex then
+	local specialization = GetLootSpecialization()
+	local info = DT.SPECIALIZATION_CACHE[specIndex]
+
+	if not info then
 		self.text:SetText('N/A')
 		return
 	end
 
 	active = specIndex
 
-	local specialization = GetLootSpecialization()
-	local info = DT.SPECIALIZATION_CACHE[specIndex]
 	local spec = format(mainIcon, info.icon)
 
 	if specialization == 0 or info.id == specialization then
@@ -83,11 +84,10 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 
 	local specialization = GetLootSpecialization()
-	if specialization == 0 then
-		local specIndex = GetSpecialization()
-		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, format(LOOT_SPECIALIZATION_DEFAULT, DT.SPECIALIZATION_CACHE[specIndex].name)))
-	else
-		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, DT.SPECIALIZATION_CACHE[specialization].name))
+	local sameSpec = specialization == 0 and GetSpecialization()
+	local specIndex = DT.SPECIALIZATION_CACHE[sameSpec or specialization]
+	if specIndex and specIndex.name then
+		DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', SELECT_LOOT_SPECIALIZATION, sameSpec and format(LOOT_SPECIALIZATION_DEFAULT, specIndex.name) or specIndex.name))
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -102,22 +102,18 @@ local function OnEnter()
 		end
 	end
 
-	if E.mylevel >= _G.SHOW_PVP_TALENT_LEVEL then
-		local pvpTalents = C_SpecializationInfo_GetAllSelectedPvpTalentIDs()
+	local pvpTalents = C_SpecializationInfo_GetAllSelectedPvpTalentIDs()
+	if next(pvpTalents) then
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddLine(PVP_TALENTS, 0.69, 0.31, 0.31)
 
-		if #pvpTalents > 0 then
-			DT.tooltip:AddLine(' ')
-			DT.tooltip:AddLine(PVP_TALENTS, 0.69, 0.31, 0.31)
-			for i, talentID in next, pvpTalents do
-				if i > 4 then break end
-				local _, name, icon, _, _, _, unlocked = GetPvpTalentInfoByID(talentID)
-				if name and unlocked then
-					DT.tooltip:AddLine(AddTexture(icon)..' '..name)
-				end
+		for i, talentID in next, pvpTalents do
+			if i > 4 then break end
+			local _, name, icon, _, _, _, unlocked = GetPvpTalentInfoByID(talentID)
+			if name and unlocked then
+				DT.tooltip:AddLine(AddTexture(icon)..' '..name)
 			end
 		end
-
-		wipe(pvpTalents)
 	end
 
 	DT.tooltip:AddLine(' ')

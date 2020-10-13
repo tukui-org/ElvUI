@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 35
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 36
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -92,8 +92,11 @@ end
 local E, L
 local function checkElvUI()
 	if not E then
-		E = ElvUI[1]
-		L = ElvUI[2]
+		if ElvUI then
+			E = ElvUI[1]
+			L = ElvUI[2]
+		end
+
 		assert(E, "ElvUI not found.")
 	end
 end
@@ -184,7 +187,7 @@ function lib:GetPluginOptions()
 		order = 3,
 		type = "group",
 		name = L["Plugins"],
-		guiInline = false,
+		inline = false,
 		args = {
 			pluginheader = E.Libs.ACH:Header(format(HDR_INFORMATION, MINOR), 1),
 			plugins = {

@@ -13,7 +13,7 @@ function UF:Construct_Portrait(frame, type)
 	local portrait
 
 	if type == 'texture' then
-		local backdrop = CreateFrame('Frame', nil, frame)
+		local backdrop = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 		portrait = frame:CreateTexture(nil, 'OVERLAY')
 		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 		backdrop:SetOutside(portrait)
@@ -22,7 +22,7 @@ function UF:Construct_Portrait(frame, type)
 		portrait.backdrop = backdrop
 	else
 		portrait = CreateFrame('PlayerModel', nil, frame)
-		portrait:CreateBackdrop(nil, nil, nil, self.thinBorders, true)
+		portrait:CreateBackdrop(nil, nil, nil, nil, true)
 	end
 
 	portrait.PostUpdate = self.PortraitUpdate
@@ -74,35 +74,35 @@ function UF:Configure_Portrait(frame)
 			else
 				local healthTex = frame.Health:GetStatusBarTexture()
 				if db.health.reverseFill then
-					portrait:SetPoint('TOPLEFT', healthTex, 'TOPLEFT')
-					portrait:SetPoint('BOTTOMLEFT', healthTex, 'BOTTOMLEFT')
-					portrait:SetPoint('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT')
+					portrait:Point('TOPLEFT', healthTex, 'TOPLEFT')
+					portrait:Point('BOTTOMLEFT', healthTex, 'BOTTOMLEFT')
+					portrait:Point('BOTTOMRIGHT', frame.Health, 'BOTTOMRIGHT')
 				else
-					portrait:SetPoint('TOPLEFT', frame.Health, 'TOPLEFT')
-					portrait:SetPoint('BOTTOMRIGHT', healthTex, 'BOTTOMRIGHT')
-					portrait:SetPoint('BOTTOMLEFT', healthTex, 'BOTTOMLEFT')
+					portrait:Point('TOPLEFT', frame.Health, 'TOPLEFT')
+					portrait:Point('BOTTOMRIGHT', healthTex, 'BOTTOMRIGHT')
+					portrait:Point('BOTTOMLEFT', healthTex, 'BOTTOMLEFT')
 				end
 			end
 		else
 			portrait:SetAlpha(1)
 			portrait.backdrop:Show()
-			portrait:SetInside(portrait.backdrop, frame.BORDER)
+			portrait:SetInside(portrait.backdrop, UF.BORDER)
 
 			if frame.ORIENTATION == 'LEFT' then
-				portrait.backdrop:SetPoint('TOPLEFT', frame, 'TOPLEFT', frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
+				portrait.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', UF.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+UF.SPACING) or -UF.SPACING)
 
 				if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR or frame.POWERBAR_DETACHED then
-					portrait.backdrop:SetPoint('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMLEFT', frame.BORDER - frame.SPACING*3, 0)
+					portrait.backdrop:Point('BOTTOMRIGHT', frame.Health.backdrop, 'BOTTOMLEFT', UF.BORDER - UF.SPACING*3, 0)
 				else
-					portrait.backdrop:SetPoint('BOTTOMRIGHT', frame.Power.backdrop, 'BOTTOMLEFT', frame.BORDER - frame.SPACING*3, 0)
+					portrait.backdrop:Point('BOTTOMRIGHT', frame.Power.backdrop, 'BOTTOMLEFT', UF.BORDER - UF.SPACING*3, 0)
 				end
 			elseif frame.ORIENTATION == 'RIGHT' then
-				portrait.backdrop:SetPoint('TOPRIGHT', frame, 'TOPRIGHT', -frame.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+frame.SPACING) or -frame.SPACING)
+				portrait.backdrop:Point('TOPRIGHT', frame, 'TOPRIGHT', -UF.SPACING, frame.USE_MINI_CLASSBAR and -(frame.CLASSBAR_YOFFSET+UF.SPACING) or -UF.SPACING)
 
 				if frame.USE_MINI_POWERBAR or frame.USE_POWERBAR_OFFSET or not frame.USE_POWERBAR or frame.USE_INSET_POWERBAR or frame.POWERBAR_DETACHED then
-					portrait.backdrop:SetPoint('BOTTOMLEFT', frame.Health.backdrop, 'BOTTOMRIGHT', -frame.BORDER + frame.SPACING*3, 0)
+					portrait.backdrop:Point('BOTTOMLEFT', frame.Health.backdrop, 'BOTTOMRIGHT', -UF.BORDER + UF.SPACING*3, 0)
 				else
-					portrait.backdrop:SetPoint('BOTTOMLEFT', frame.Power.backdrop, 'BOTTOMRIGHT', -frame.BORDER + frame.SPACING*3, 0)
+					portrait.backdrop:Point('BOTTOMLEFT', frame.Power.backdrop, 'BOTTOMRIGHT', -UF.BORDER + UF.SPACING*3, 0)
 				end
 			end
 		end
