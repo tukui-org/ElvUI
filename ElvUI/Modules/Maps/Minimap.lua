@@ -155,7 +155,11 @@ function M:GetLocTextColor()
 end
 
 function M:SetupHybridMinimap()
-	_G.HybridMinimap.MapCanvas:SetMaskTexture(E.Media.Textures.White8x8)
+	local MapCanvas = _G.HybridMinimap.MapCanvas
+	MapCanvas:SetMaskTexture(E.Media.Textures.White8x8)
+	MapCanvas:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
+	MapCanvas:SetScript('OnMouseDown', M.MapCanvas_OnMouseDown)
+	MapCanvas:SetScript('OnMouseUp', E.noop)
 end
 
 function M:ADDON_LOADED(_, addon)
@@ -184,6 +188,23 @@ function M:Minimap_OnMouseDown(btn)
 		_G.ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, 'cursor')
 	else
 		_G.Minimap_OnClick(self)
+	end
+end
+
+function M:MapCanvas_OnMouseDown(btn)
+	_G.HideDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown)
+	menuFrame:Hide()
+
+	local position = self:GetPoint()
+	if btn == 'MiddleButton' or (btn == 'RightButton' and IsShiftKeyDown()) then
+		if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
+		if position:match('LEFT') then
+			E:DropDown(menuList, menuFrame)
+		else
+			E:DropDown(menuList, menuFrame, -160, 0)
+		end
+	elseif btn == 'RightButton' then
+		_G.ToggleDropDownMenu(1, nil, ElvUIMiniMapTrackingDropDown, 'cursor')
 	end
 end
 

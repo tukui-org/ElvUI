@@ -93,12 +93,6 @@ function S:Blizzard_InspectUI()
 			Slot:StripTextures()
 			Slot:StyleButton()
 			S:HandleIconBorder(Slot.IconBorder, Slot.icon.backdrop)
-
-			if not Slot.Eye then
-				Slot.Eye = Slot:CreateTexture()
-				Slot.Eye:SetAtlas('Nzoth-inventory-icon')
-				Slot.Eye:SetInside()
-			end
 		end
 	end
 
