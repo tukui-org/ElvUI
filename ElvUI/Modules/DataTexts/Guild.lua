@@ -298,7 +298,7 @@ local function OnEvent(self, event, ...)
 		if E.global.datatexts.settings.Guild.NoLabel then
 			self.text:SetFormattedText(displayString, #guildTable)
 		else
-			self.text:SetFormattedText(displayString, E.global.datatexts.settings.Guild.Label ~= '' and E.global.datatexts.settings.Guild.Label or GUILD, #guildTable)
+			self.text:SetFormattedText(displayString, E.global.datatexts.settings.Guild.Label ~= '' and E.global.datatexts.settings.Guild.Label or GUILD..': ', #guildTable)
 		end
 	else
 		self.text:SetText(noGuildString)
@@ -306,7 +306,7 @@ local function OnEvent(self, event, ...)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', E.global.datatexts.settings.Guild.NoLabel and '' or '%s: ', hex, '%d|r')
+	displayString = strjoin('', E.global.datatexts.settings.Guild.NoLabel and '' or '%s', hex, '%d|r')
 	noGuildString = hex..L["No Guild"]
 
 	if lastPanel then
