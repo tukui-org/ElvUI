@@ -4,7 +4,8 @@ local Misc = E:GetModule('Misc')
 local Layout = E:GetModule('Layout')
 local Totems = E:GetModule('Totems')
 local Blizzard = E:GetModule('Blizzard')
-local Threat = E:GetModule('Threat')
+local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 local AFK = E:GetModule('AFK')
 local ACH = E.Libs.ACH
 
@@ -384,17 +385,9 @@ E.Options.args.general = {
 							desc = L["The texture that will be used mainly for statusbars."],
 							values = AceGUIWidgetLSMlists.statusbar,
 							set = function(info, value)
-								local previousValue = E.private.general[info[#info]]
 								E.private.general[info[#info]] = value;
-
-								if(E.db.unitframe.statusbar == previousValue) then
-									E.db.unitframe.statusbar = value
-									E:StaggeredUpdateAll(nil, true)
-								else
-									E:UpdateMedia()
-									E:UpdateStatusBars()
-								end
-
+								E:UpdateMedia()
+								E:UpdateStatusBars()
 							end
 						},
 						glossTex = {
@@ -416,10 +409,10 @@ E.Options.args.general = {
 							desc = L["Replaces the StatusBar texture setting on Unitframes and Nameplates with the primary texture."],
 							func = function()
 								E.db.unitframe.statusbar = E.private.general.normTex
-								E:UpdateUnitFrames()
+								UF:Update_StatusBars()
 
 								E.db.nameplates.statusbar = E.private.general.normTex
-								E:UpdateNamePlates()
+								NP:ConfigureAll()
 							end,
 						},
 					},
