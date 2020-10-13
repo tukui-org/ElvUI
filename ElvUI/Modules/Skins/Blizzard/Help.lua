@@ -27,7 +27,7 @@ function S:HelpFrame()
 	local frame = _G.HelpFrame
 	frame:StripTextures()
 	frame:CreateBackdrop('Transparent')
-	S:HandleCloseButton(_G.HelpFrameCloseButton)
+	S:HandleCloseButton(_G.HelpFrameCloseButton, frame.backdrop)
 
 	local browser = _G.HelpBrowser
 	browser.BrowserInset:StripTextures()
@@ -144,7 +144,6 @@ function S:HelpFrame()
 	HelpFrame:CreateBackdrop('Transparent')
 	S:HandleEditBox(_G.HelpFrameKnowledgebaseSearchBox)
 	S:HandleScrollBar(_G.HelpFrameKnowledgebaseScrollFrameScrollBar, 5)
-	S:HandleCloseButton(_G.HelpFrameCloseButton, HelpFrame.backdrop)
 	S:HandleCloseButton(_G.HelpFrameKnowledgebaseErrorFrameCloseButton, _G.HelpFrameKnowledgebaseErrorFrame.backdrop)
 
 	--Hearth Stone Button
