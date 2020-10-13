@@ -1,7 +1,23 @@
-### Version 11.53 [ ETA: 🍨 ]
+### Version 12.01 [ ETA: 🍨 ]
 
 **Shiny:**  
 
+___
+
+### Version 12.00 [ Oct 13th 2020 ]
+
+**Cool:**
+We updated our backdrop code to behave nicely with the backdrop changes Blizzard implemented.  
+We decided to completely rewrite the DataBars, this includes rewriting the old threat into this new module.  
+
+**Shiny:**  
+Even though Shadowlands was delayed, this version will contain the Mythic+ and Raid filter list for the expansion.  
+NamePlates had the wrong font when loading into the game, should be resolved now (for real finally).  
+DataTexts have a better options now to allow customizing even further, we will add new options here over time.  
+New section for Boss Button, Zone Ability, and Vehicle exit in the ActionBars options, which includes adding the ability to enable Inherit Global Fade on the Boss and Zone buttons.  
+Thin Border Unitframe setting can be toggled separately, regardless of the Thin Border UI setting (both are found under *General > Media > Borders* now).  
+Quest reward will show percent of level, also the EXP Bar will show Quest XP if enabled.  
+Fixed an issue that was causing Aura Statusbars color to become color stuck on auras with no duration.  
 
 ___
 
@@ -1019,7 +1035,7 @@ ___
 [Unitframe] Added Duration option for cooldown text and reworked the cooldown code.  
 [Actionbar] Added show cooldown text on charges option. (#716)  
 [Chat] Added options to Desaturate, Pin to Tab Panel, or Hide Voice Buttons.  
-Added an option to ignore the UI Scale popup when resizing the game window (General -> Ignore UI Scale Popup).  
+Added an option to ignore the UI Scale popup when resizing the game window (General > Ignore UI Scale Popup).  
 
 **Bug Fixes:**  
 [Nameplate] Fixed an issue which caused the Targeted and Player Classbar options to not take effect correctly.  
@@ -1260,7 +1276,7 @@ ___
 ##### Version 10.88 [ February 24th 2019 ]
 
 **New Additions:**  
-Added new scale options. (General -> Auto Scale | UI Scale)  
+Added new scale options. (General > Auto Scale | UI Scale)  
 Added quality border option for Bag/Bank items. (#869)  
 Added BoE/BoA text overlay in our Bag/Bank.  
 Added optional mount name for units on tooltips.  
@@ -1500,7 +1516,7 @@ Added Phase Indicator for Target, Party and Raid frames (Thanks @ls-).
 Added Cutaway Health to nameplates (part of #331).  
 Added BFA Mission Datatext (Thanks @AcidWeb).  
 Added ActionBar option to color Keybind Text instead of Button.  
-Added Alternative Power Bar. The settings are located under: General -> Alternative Power  
+Added Alternative Power Bar. The settings are located under: General > Alternative Power  
 
 **Bug Fixes:**  
 Fixed a texture issue on the Talent skin. (#566)  
@@ -1585,7 +1601,7 @@ ___
 
 **New Additions:**  
 New Cooldown settings, they can be found in the Cooldowns category.  
-Added Death Knight Rune sorting option under: Player Frame -> Classbar -> Sort Direction  
+Added Death Knight Rune sorting option under: Player Frame > Classbar > Sort Direction  
 Added new Azerite DataBar (replaces Artifact DataBar).  
 Added button size and spacing options to the Micro Bar.  
 Added scale option for the smaller world map.  
@@ -1619,8 +1635,8 @@ ___
 **New Additions:**  
 Added "Group Spacing" option to party/raid frames. This allows you to separate each individual group.  
 Added option to move the Resurrect Icon on the party/raid/raid40 frames.  
-Added new UnitFrame Glow settings located under "UnitFrame -> General -> Frame Glow". Each type of UnitFrame (Player, Target, Etc) has new options to disable these settings individually.  
-Added an option "Nameplates -> General -> Name Colored Glow" to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
+Added new UnitFrame Glow settings located under "UnitFrame > General > Frame Glow". Each type of UnitFrame (Player, Target, Etc) has new options to disable these settings individually.  
+Added an option "Nameplates > General > Name Colored Glow" to use the Nameplate Name Color for the Name Glow instead of Glow Color.  
 Added options to override the Cooldown Text settings inside of Bags, NamePlates, UnitFrames, and Buffs and Debuffs.  
 
 **Bug Fixes:**  
@@ -1729,7 +1745,7 @@ Added option to control the amount of decimals used for values on elements like 
 Added new "Quick Join" datatext.  
 Added new style filter action "Power Color".  
 Added options to hide specific sections in the Friends datatext tooltip.  
-Added the ability to assign items to bags like in blizzard's ui to our big bag (toggle the bags and right click bag -> assign it).  
+Added the ability to assign items to bags like in blizzard's ui to our big bag (toggle the bags and right click bag > assign it).  
 Added new command "/estatus" which will show a Status Report frame with helpful information for troubleshooting purposes.  
 
 **Bug Fixes:**  
@@ -1909,7 +1925,7 @@ ___
 Added Korean option for the "Numer Prefix Style" setting. This will allow unitframe tags to use the Korean number annotations.  
 Added "Match SpellID Only" option to individual RaidDebuff Indicator modules. If disabled it will allow it to match by spell name in addition to spell ID.  
 Added possibility of setting alpha of the stack and duration text colors on RaidDebuff Indicator modules.  
-Added global option to choose which filter is used for the RaidDebuff Indicator modules. This is found in UnitFrames->General Options->RaidDebuff Indicator.  
+Added global option to choose which filter is used for the RaidDebuff Indicator modules. This is found in UnitFrames > General Options > RaidDebuff Indicator.  
 Added new "CastByNPC" special filter for aura filtering.  
 Added talent triggers for nameplate style filters.  
 Added instance type triggers to nameplate style filters.  
@@ -1918,7 +1934,7 @@ Added classification triggers to nameplate style filters.
 Added toggle option for datatext backdrop. Disabling it will remove the backdrop completely and only show text.  
 Added option to hide Blizzard nameplates. If enabled then you will no longer see nameplates with the default Blizzard appearance. This option can be found in the NamePlate General Options.  
 Added cooldown trigger to nameplate style filters. This allows you to trigger a filter when one of your spells is either on cooldown or ready to use.  
-Added font options for the duration and stack text on nameplate auras. These options can be found in the "General Options -> Fonts" section.  
+Added font options for the duration and stack text on nameplate auras. These options can be found in the "General Options > Fonts" section.  
 Added alpha action to nameplate style filters.  
 Added "name only" action to nameplate style filters.  
 Added flash action to nameplate style filters.  
