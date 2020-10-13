@@ -178,7 +178,7 @@ function S:Blizzard_AchievementUI(event)
 
 	local summaries = {_G.AchievementFrameComparisonSummaryPlayer, _G.AchievementFrameComparisonSummaryFriend}
 	for _, frame in pairs(summaries) do
-		frame:SetBackdrop(nil)
+		frame:SetBackdrop()
 	end
 
 	_G.AchievementFrameMetalBorderTopLeft:Hide()
@@ -201,7 +201,7 @@ function S:Blizzard_AchievementUI(event)
 			for i=1, frame:GetNumChildren() do
 				local child = select(i, frame:GetChildren())
 				if child and not child:GetName() then
-					child:SetBackdrop(nil)
+					child:SetBackdrop()
 				end
 			end
 		end

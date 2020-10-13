@@ -40,8 +40,8 @@ function S:LookingForGuildFrame()
 
 	-- skin container buttons on browse and request page
 	for i = 1, 5 do
-		_G['LookingForGuildBrowseFrameContainerButton'..i]:SetBackdrop(nil)
-		_G['LookingForGuildAppsFrameContainerButton'..i]:SetBackdrop(nil)
+		_G['LookingForGuildBrowseFrameContainerButton'..i]:SetBackdrop()
+		_G['LookingForGuildAppsFrameContainerButton'..i]:SetBackdrop()
 	end
 
 	-- skin tabs
