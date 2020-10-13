@@ -590,7 +590,7 @@ function S:Blizzard_GarrisonUI()
 	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
 
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
-	S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar)
+	--S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar) -- Dont skin it, the "NEW" default ones looks amazing
 
 	-- Complete Missions
 	_G.CombatLog.CombatLogMessageFrame:StripTextures()
@@ -612,6 +612,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
 
 	S:HandleButton(Follower.HealAllButton)
+	S:HandleButton(_G.HealFollowerButtonTemplate)
 
 	-- Mission Tab
 	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
