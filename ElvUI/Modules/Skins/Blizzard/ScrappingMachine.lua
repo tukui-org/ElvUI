@@ -16,9 +16,9 @@ function S:Blizzard_ScrappingMachineUI()
 
 	for button in pairs(ItemSlots.scrapButtons.activeObjects) do
 		button:StripTextures()
-		button:SetTemplate()
-		S:HandleIcon(button.Icon)
-		S:HandleIconBorder(button.IconBorder)
+		S:HandleIcon(button.Icon, true)
+		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+		button.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 
 	-- Temp mover
