@@ -138,6 +138,10 @@ function S:HelpFrame()
 	_G.HelpBrowserBrowserSettings:ClearAllPoints()
 	_G.HelpBrowserBrowserSettings:Point('TOPRIGHT', _G.HelpFrameCloseButton, 'TOPLEFT', -3, -8)
 
+	_G.BrowserSettingsTooltip:StripTextures()
+	_G.BrowserSettingsTooltip:CreateBackdrop('Transparent')
+	S:HandleButton(_G.BrowserSettingsTooltip.CookiesButton)
+
 	-- skin misc items
 	_G.HelpFrameKnowledgebaseSearchBox:ClearAllPoints()
 	_G.HelpFrameKnowledgebaseSearchBox:Point('TOPLEFT', _G.HelpFrameMainInset, 'TOPLEFT', 13, -10)
