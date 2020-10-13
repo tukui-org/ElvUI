@@ -3474,7 +3474,10 @@ E.Options.args.unitframe = {
 									order = 2,
 									name = L["Smooth Bars"],
 									desc = L["Bars will transition smoothly."],
-									set = function(info, value) E.db.unitframe[info[#info]] = value; UF:Update_AllFrames(); end,
+									set = function(info, value)
+										E.db.unitframe[info[#info]] = value
+										UF:Update_AllFrames()
+									end,
 								},
 								statusbar = {
 									type = 'select', dialogControl = 'LSM30_Statusbar',
@@ -3482,7 +3485,10 @@ E.Options.args.unitframe = {
 									name = L["StatusBar Texture"],
 									desc = L["Main statusbar texture."],
 									values = _G.AceGUIWidgetLSMlists.statusbar,
-									set = function(info, value) E.db.unitframe[info[#info]] = value; UF:Update_StatusBars() end,
+									set = function(info, value)
+										E.db.unitframe[info[#info]] = value
+										UF:Update_StatusBars()
+									end,
 								},
 							},
 						},
