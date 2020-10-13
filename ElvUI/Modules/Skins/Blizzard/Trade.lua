@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 
 function S:TradeFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trade) then return end

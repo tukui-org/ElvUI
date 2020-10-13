@@ -7,7 +7,7 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 local _G = _G
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
-local format, select, strsplit = format, select, strsplit
+local format, select, strsplit, tostring = format, select, strsplit, tostring
 
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar

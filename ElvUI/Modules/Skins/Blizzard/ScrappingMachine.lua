@@ -3,8 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs = pairs
-local unpack = unpack
-local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_ScrappingMachineUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.scrapping) then return end

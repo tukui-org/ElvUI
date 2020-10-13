@@ -170,7 +170,7 @@ function S:ObjectiveTrackerFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
 	local minimize = _G.ObjectiveTrackerFrame.HeaderMenu.MinimizeButton
-	minimize:StripTextures()
+	minimize:StripTextures(nil, true)
 	minimize:Size(16, 16)
 	minimize:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
 	minimize.tex = minimize:CreateTexture(nil, 'OVERLAY')
@@ -199,16 +199,16 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,'AddObjective',SkinItemButton)			--[Skin]: Campaign Quest Item Buttons
 
 	for _, header in pairs(headers) do
-		local minimize = header.MinimizeButton
-		if minimize then
-			minimize:GetNormalTexture():SetAlpha(0)
-			minimize:GetPushedTexture():SetAlpha(0)
+		local button = header.MinimizeButton
+		if button then
+			button:GetNormalTexture():SetAlpha(0)
+			button:GetPushedTexture():SetAlpha(0)
 
-			minimize.tex = minimize:CreateTexture(nil, 'OVERLAY')
-			minimize.tex:SetTexture(E.Media.Textures.MinusButton)
-			minimize.tex:SetInside()
+			button.tex = button:CreateTexture(nil, 'OVERLAY')
+			button.tex:SetTexture(E.Media.Textures.MinusButton)
+			button.tex:SetInside()
 
-			hooksecurefunc(minimize, 'SetCollapsed', UpdateMinimizeButton)
+			hooksecurefunc(button, 'SetCollapsed', UpdateMinimizeButton)
 		end
 	end
 end

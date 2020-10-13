@@ -19,11 +19,11 @@ function S:Blizzard_RuneforgeUI()
 	S:HandleNextPrevButton(pageControl.BackwardButton)
 	S:HandleNextPrevButton(pageControl.ForwardButton)
 
-	hooksecurefunc(powerFrame.PowerList, 'RefreshListDisplay', function(self)
-		if not self.elements then return end
+	hooksecurefunc(powerFrame.PowerList, 'RefreshListDisplay', function(list)
+		if not list.elements then return end
 
-		for i = 1, self:GetNumElementFrames() do
-			local button = self.elements[i]
+		for i = 1, list:GetNumElementFrames() do
+			local button = list.elements[i]
 			if button and not button.IsSkinned then
 				button.Border:SetAlpha(0)
 				button.CircleMask:Hide()

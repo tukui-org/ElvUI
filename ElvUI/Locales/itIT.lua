@@ -123,7 +123,6 @@ L["ElvUI is out of date. You can download the newest version from www.tukui.org.
 L["ElvUI needs to perform database optimizations please be patient."] = true
 L["ElvUI Plugin Installation"] = true
 L["ElvUI Status"] = true
-L["ElvUI was updated while the game is still running. Please relaunch the game, as this is required for the files to be properly updated."] = true
 L["Empty Slot"] = true
 L["Enable"] = true
 L["Error resetting UnitFrame."] = true

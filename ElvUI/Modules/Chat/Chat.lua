@@ -38,8 +38,6 @@ local GMChatFrame_IsGM = GMChatFrame_IsGM
 local GMError = GMError
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
-local IsActivePlayerMentor = IsActivePlayerMentor
-local IsActivePlayerNewcomer = IsActivePlayerNewcomer
 local IsAltKeyDown = IsAltKeyDown
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local IsShiftKeyDown = IsShiftKeyDown
@@ -51,8 +49,10 @@ local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local IsActivePlayerMentor = IsActivePlayerMentor
 local UnitName = UnitName
 
+local C_PlayerMentorship_IsActivePlayerConsideredNewcomer = C_PlayerMentorship.IsActivePlayerConsideredNewcomer
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
 local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
@@ -203,8 +203,8 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Simpys: FFFF66, 88FF66, 02CC96, E539AC, FFBB66, 66FF88 (Yellowish, Greeish, Springish, Pinkish, Sandy, Soft Green)
-		local SimpyColors = function(t) return specialText(t, 1.00,1.00,0.60, 0.53,1.00,0.40, 0.01,0.80,0.58, 0.89,0.22,0.67, 1.00,0.73,0.40, 0.40,1.00,0.53) end
+		--Simpys Ghoulish: A366CC, 88E032, 33BDBE, 88E032, A366CC
+		local SimpyColors = function(t) return specialText(t, 0.63,0.40,0.80, 0.63,0.40,0.80, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.20,0.74,0.74, 0.20,0.74,0.74, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.63,0.40,0.80, 0.63,0.40,0.80) end
 		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
@@ -273,13 +273,6 @@ do --this can save some main file locals
 		['Luckywl-LaughingSkull']		= Clover,
 		['Luckyrogue-LaughingSkull']	= Clover,
 		['Luckypala-LaughingSkull']		= Clover,
-		['Luckydemon-Blackrock']		= Clover,
-		['Luckymage-Blackrock']			= Clover,
-		['Luckyshaman-Blackrock']		= Clover,
-		['Luckylockx-Blackrock']		= Clover,
-		['Luckybow-Blackrock']			= Clover,
-		['Luckypoggers-Blackrock']		= Clover,
-		['Luckyclap-Blackrock']			= Clover,
 		-- NihilisticPandemonium
 		['Dirishia-WyrmrestAccord']		= itsTheFlyestNihilist('Warlock'),
 		['Xanikani-WyrmrestAccord']		= itsTheFlyestNihilist('Mage'),
@@ -1482,7 +1475,7 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 			-- Add Blizzard Icon if  this was sent by a GM/DEV
 			return '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t '
 		elseif specialFlag == 'GUIDE' then
-			if IsActivePlayerNewcomer() then
+			if C_PlayerMentorship_IsActivePlayerConsideredNewcomer() then
 				return _G.NPEV2_CHAT_USER_TAG_GUIDE .. ' ' -- possibly unable to save global string with trailing whitespace...
 			end
 		elseif specialFlag == 'NEWCOMER' then

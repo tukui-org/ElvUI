@@ -14,6 +14,8 @@ local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
 
+local LEGENDARY_COLOR = Enum.ItemQuality.Legendary or 5
+
 local function HandleButton(btn, ...)
 	S:HandleButton(btn, ...)
 	if btn:GetFontString() then
@@ -493,23 +495,23 @@ function S:Blizzard_EncounterJournal()
 
 	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
 
-	local IconColor = E.QualityColors[Enum.ItemQuality.Legendary or 5] -- legendary color
-	hooksecurefunc(LootJournal.PowersFrame, "RefreshListDisplay", function(button)
-		if not button.elements then return end
+	local IconColor = E.QualityColors[LEGENDARY_COLOR]
+	hooksecurefunc(LootJournal.PowersFrame, "RefreshListDisplay", function(buttons)
+		if not buttons.elements then return end
 
-		for i = 1, button:GetNumElementFrames() do
-			local button = button.elements[i]
-			if button and not button.IsSkinned then
-				button.Background:SetAlpha(0)
-				button.CircleMask:Hide()
-				S:HandleIcon(button.Icon, true)
-				button.Icon.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
+		for i = 1, buttons:GetNumElementFrames() do
+			local btn = buttons.elements[i]
+			if btn and not btn.IsSkinned then
+				btn.Background:SetAlpha(0)
+				btn.CircleMask:Hide()
+				S:HandleIcon(btn.Icon, true)
+				btn.Icon.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
 
-				button:CreateBackdrop('Transparent')
-				button.backdrop:Point('TOPLEFT', 3, 0)
-				button.backdrop:Point('BOTTOMRIGHT', -2, 1)
+				btn:CreateBackdrop('Transparent')
+				btn.backdrop:Point('TOPLEFT', 3, 0)
+				btn.backdrop:Point('BOTTOMRIGHT', -2, 1)
 
-				button.IsSkinned = true
+				btn.IsSkinned = true
 			end
 		end
 	end)

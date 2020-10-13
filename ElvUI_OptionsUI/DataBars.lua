@@ -3,6 +3,8 @@ local C, L = unpack(select(2, ...))
 local DB = E:GetModule('DataBars')
 local ACH = E.Libs.ACH
 
+local tonumber = tonumber
+
 local SharedOptions = {
 	enable = ACH:Toggle(L["Enable"], nil, 1),
 	textFormat = ACH:Select(L["Text Format"], nil, 2, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),

@@ -3,6 +3,7 @@ local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local unpack = unpack
 local pairs, select = pairs, select
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo

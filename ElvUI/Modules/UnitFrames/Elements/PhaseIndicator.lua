@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
 
-local UnitPhaseReason = UnitPhaseReason
 local unpack = unpack
 local texCoords = {
 	{1/128,   33/128,  1/64,  33/64},
@@ -9,9 +8,7 @@ local texCoords = {
 }
 
 function UF:PostUpdate_PhaseIcon(isPhased)
-	if isPhased then
-		self:SetTexCoord(unpack(texCoords[isPhased == 2 and 2 or 1]))
-	end
+	self:SetTexCoord(unpack(texCoords[isPhased == 2 and 2 or 1]))
 end
 
 function UF:Construct_PhaseIcon(frame)

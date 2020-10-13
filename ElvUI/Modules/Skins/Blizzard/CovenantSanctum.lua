@@ -5,8 +5,6 @@ local _G = _G
 local gsub, ipairs = gsub, ipairs
 local hooksecurefunc = hooksecurefunc
 
--- 9.0 SHADOWLANDS
-
 local function HandleIconString(self, text)
 	if not text then text = self:GetText() end
 	if not text or text == '' then return end
