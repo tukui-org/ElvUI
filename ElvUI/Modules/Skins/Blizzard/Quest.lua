@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub, type, pairs, ipairs, select, unpack, strfind = gsub, type, pairs, ipairs, select, unpack, strfind
+local gsub, pairs, ipairs, select, unpack, strfind = gsub, pairs, ipairs, select, unpack, strfind
 
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
@@ -220,7 +220,7 @@ function S:BlizzardQuestFrames()
 			_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
 
 			-- 9.0 Shadowlands Objective Text Colors
-			hooksecurefunc('QuestInfo_ShowObjectives', function()
+			local function handleObjectives()
 				local numObjectives = GetNumQuestLeaderBoards()
 				local questID = Quest_GetQuestID()
 				local numVisibleObjectives = 0
@@ -232,13 +232,14 @@ function S:BlizzardQuestFrames()
 					objective:SetTextColor(1, .8, .1)
 				end
 
-				for i = 1, numObjectives do
-					local _, _, finished = GetQuestLogLeaderBoard(i)
-					if type ~= 'spell' and type ~= 'log' and numVisibleObjectives < _G.MAX_OBJECTIVES then
+				for i = 0, numObjectives do
+					local _, objectiveType, isCompleted = GetQuestLogLeaderBoard(i)
+					if objectiveType ~= 'spell' and objectiveType ~= 'log' and numVisibleObjectives < _G.MAX_OBJECTIVES then
 						numVisibleObjectives = numVisibleObjectives + 1
+
 						local objective = _G['QuestInfoObjective'..numVisibleObjectives]
 						if objective then
-							if finished then
+							if isCompleted then
 								objective:SetTextColor(1, .8, .1)
 							else
 								objective:SetTextColor(1, 1, 1)
@@ -246,7 +247,10 @@ function S:BlizzardQuestFrames()
 						end
 					end
 				end
-			end)
+			end
+
+			hooksecurefunc('QuestInfo_ShowObjectives', handleObjectives)
+			handleObjectives()
 
 			if _G.QuestInfoRewardsFrame.SpellLearnText then
 				_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
