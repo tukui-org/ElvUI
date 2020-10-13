@@ -274,9 +274,6 @@ function S:CharacterFrame()
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
 			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
-			Slot.CorruptedHighlightTexture:SetAtlas('Nzoth-charactersheet-item-glow')
-			Slot.IconOverlay:SetAtlas('Nzoth-inventory-icon')
-			Slot.IconOverlay:SetInside()
 
 			S:HandleIconBorder(Slot.IconBorder)
 
