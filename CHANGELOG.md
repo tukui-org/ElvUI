@@ -4,7 +4,7 @@
 
 ___
 
-### Version 12.00 [ Oct 13th 2020 ]
+### Version 12.00 [ October 13th 2020 ]
 
 **Cool:**
 We updated our backdrop code to behave nicely with the backdrop changes Blizzard implemented.  
