@@ -232,7 +232,7 @@ function S:BlizzardQuestFrames()
 					objective:SetTextColor(1, .8, .1)
 				end
 
-				for i = 0, numObjectives do
+				for i = 1, numObjectives do
 					local _, objectiveType, isCompleted = GetQuestLogLeaderBoard(i)
 					if objectiveType ~= 'spell' and objectiveType ~= 'log' and numVisibleObjectives < _G.MAX_OBJECTIVES then
 						numVisibleObjectives = numVisibleObjectives + 1
