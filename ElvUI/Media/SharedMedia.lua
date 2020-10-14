@@ -9,8 +9,7 @@ E.Media = {
 	Textures = {}
 }
 
-local format = format
-local ipairs, type = ipairs, type
+local format, ipairs, type = format, ipairs, type
 local westAndRU = LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western
 
 do
@@ -206,19 +205,16 @@ AddMedia('logo','Gem')
 
 do -- LSM Font Preloader ~Simpy
 	local preloader = CreateFrame('Frame')
-	preloader:SetPoint('CENTER', UIParent, 'CENTER')
+	preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -500)
 	preloader:SetSize(100, 100)
 
 	local cacheFont = function(key, data)
-		preloader:Show()
-
 		local loadFont = preloader:CreateFontString()
 		loadFont:SetAllPoints()
-		if pcall(loadFont.SetFont, loadFont, data, 14) then
-			loadFont:SetText('cache')
-		end
 
-		preloader:Hide()
+		if pcall(loadFont.SetFont, loadFont, data, 14) then
+			pcall(loadFont.SetText, loadFont, 'cache')
+		end
 	end
 
 	-- Preload ElvUI Invisible
