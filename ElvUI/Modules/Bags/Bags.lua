@@ -74,6 +74,10 @@ local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local hooksecurefunc = hooksecurefunc
 
+local SplitContainerItem = SplitContainerItem
+local ReagentButtonInventorySlot = ReagentButtonInventorySlot
+local BankFrameItemButton_OnEnter = BankFrameItemButton_OnEnter
+
 local BAG_FILTER_ICONS = BAG_FILTER_ICONS
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -1835,8 +1839,12 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	return slot
 end
 
+function B:ReagentSplitStack(split)
+	SplitContainerItem(REAGENTBANK_CONTAINER, self:GetID(), split)
+end
+
 function B:ConstructReagentSlot(f, slotID)
-	local slot = CreateFrame('ItemButton', 'ElvUIReagentBankFrameItem'..slotID, f.reagentFrame, 'ReagentBankItemButtonGenericTemplate, BackdropTemplate')
+	local slot = CreateFrame('ItemButton', 'ElvUIReagentBankFrameItem'..slotID, f.reagentFrame, 'BankItemButtonGenericTemplate, BackdropTemplate')
 	slot:SetID(slotID)
 	slot.isReagent = true
 	slot:StyleButton()
@@ -1844,6 +1852,7 @@ function B:ConstructReagentSlot(f, slotID)
 	slot:SetNormalTexture(nil)
 
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
+	slot.icon:SetInside()
 	slot.IconBorder:Kill()
 	slot.IconOverlay:SetInside()
 	slot.IconOverlay2:SetInside()
@@ -1853,6 +1862,13 @@ function B:ConstructReagentSlot(f, slotID)
 	slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 
 	slot.searchOverlay:SetAllPoints()
+
+	-- mimic ReagentBankItemButtonGenericTemplate
+	slot:RegisterForDrag('LeftButton')
+	slot:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
+	slot.GetInventorySlot = ReagentButtonInventorySlot
+	slot.UpdateTooltip = BankFrameItemButton_OnEnter
+	slot.SplitStack = B.ReagentSplitStack
 
 	if not slot.newItemGlow then
 		slot.newItemGlow = slot:CreateTexture(nil, 'OVERLAY')

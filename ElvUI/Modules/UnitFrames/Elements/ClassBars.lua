@@ -440,7 +440,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.frequentUpdates = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
 	additionalPower.PostUpdateColor = UF.PostColorAdditionalPower
-	additionalPower.PostUpdateVisibility = UF.PostVisibilityAdditionalPower
+	additionalPower.PostVisibility = UF.PostVisibilityAdditionalPower
 	additionalPower:CreateBackdrop(nil, nil, nil, nil, true)
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
 	UF.statusbars[additionalPower] = true
@@ -503,7 +503,7 @@ function UF:Construct_Stagger(frame)
 	local stagger = CreateFrame('Statusbar', '$parent_Stagger', frame)
 	stagger:CreateBackdrop(nil,nil, nil, nil, true)
 	stagger.PostUpdate = UF.PostUpdateStagger
-	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
+	stagger.PostVisibility = UF.PostUpdateVisibilityStagger
 	UF.statusbars[stagger] = true
 
 	stagger:SetScript('OnShow', ToggleResourceBar)
