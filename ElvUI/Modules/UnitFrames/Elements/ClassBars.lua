@@ -503,7 +503,7 @@ function UF:Construct_Stagger(frame)
 	local stagger = CreateFrame('Statusbar', '$parent_Stagger', frame)
 	stagger:CreateBackdrop(nil,nil, nil, nil, true)
 	stagger.PostUpdate = UF.PostUpdateStagger
-	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
+	stagger.PostVisibility = UF.PostUpdateVisibilityStagger
 	UF.statusbars[stagger] = true
 
 	stagger:SetScript('OnShow', ToggleResourceBar)
