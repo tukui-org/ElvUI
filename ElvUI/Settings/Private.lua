@@ -152,6 +152,7 @@ V.skins = {
 		guide = true,
 		playerChoice = true,
 		soulbinds = true,
+		subscriptionInterstitial = true,
 		runeforge = true,
 		weeklyRewards = true,
 		torghastLevelPicker = true,
