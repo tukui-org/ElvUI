@@ -74,9 +74,41 @@ function UF:Construct_HealComm(frame)
 	return prediction
 end
 
+function UF:SetSize_HealComm(frame)
+	local health = frame.Health
+	local pred = frame.HealthPrediction
+	local orientation = health:GetOrientation()
+
+	local db = frame.db.healPrediction
+	local width, height = health:GetSize()
+
+	-- fallback just incase? this shouldnt be need anymore
+	if not width or width <= 0 then width = health.WIDTH end
+	if not height or height <= 0 then height = health.HEIGHT end
+
+	if orientation == 'HORIZONTAL' then
+		local barHeight = db.height
+		if barHeight == -1 or barHeight > height then barHeight = height end
+
+		pred.myBar:Size(width, barHeight)
+		pred.otherBar:Size(width, barHeight)
+		pred.healAbsorbBar:Size(width, barHeight)
+		pred.absorbBar:Size(width, barHeight)
+	else
+		local barWidth = db.height -- this is really width now not height
+		if barWidth == -1 or barWidth > width then barWidth = width end
+		pred.myBar:Size(barWidth, height)
+		pred.otherBar:Size(barWidth, height)
+		pred.healAbsorbBar:Size(barWidth, height)
+		pred.absorbBar:Size(barWidth, height)
+	end
+end
+
 function UF:Configure_HealComm(frame)
 	local db = frame.db.healPrediction
 	if db and db.enable then
+		frame.needsSizeUpdated = true
+
 		local pred = frame.HealthPrediction
 		local myBar = pred.myBar
 		local otherBar = pred.otherBar
@@ -126,35 +158,25 @@ function UF:Configure_HealComm(frame)
 		absorbBar:SetOrientation(orientation)
 		healAbsorbBar:SetOrientation(orientation)
 
-		local width, height = health:GetSize()
-		if not width or width <= 0 then width = health.WIDTH end
-		if not height or height <= 0 then height = health.HEIGHT end
-
 		if orientation == 'HORIZONTAL' then
 			local p1 = reverseFill and 'RIGHT' or 'LEFT'
 			local p2 = reverseFill and 'LEFT' or 'RIGHT'
 
-			local barHeight = db.height
 			local anchor = db.anchorPoint
-			if barHeight == -1 or barHeight > height then barHeight = height end
 			pred.anchor, pred.anchor1, pred.anchor2 = anchor, p1, p2
 
 			myBar:ClearAllPoints()
-			myBar:Size(width, barHeight)
 			myBar:Point(anchor, health)
 			myBar:Point(p1, healthBarTexture, p2)
 
 			otherBar:ClearAllPoints()
-			otherBar:Size(width, barHeight)
 			otherBar:Point(anchor, health)
 			otherBar:Point(p1, pred.myBarTexture, p2)
 
 			healAbsorbBar:ClearAllPoints()
-			healAbsorbBar:Size(width, barHeight)
 			healAbsorbBar:Point(anchor, health)
 
 			absorbBar:ClearAllPoints()
-			absorbBar:Size(width, barHeight)
 			absorbBar:Point(anchor, health)
 
 			if db.absorbStyle == 'REVERSED' then
@@ -167,27 +189,21 @@ function UF:Configure_HealComm(frame)
 			local p1 = reverseFill and 'TOP' or 'BOTTOM'
 			local p2 = reverseFill and 'BOTTOM' or 'TOP'
 
-			local barWidth = db.height -- this is really width now not height
 			local anchor = (db.anchorPoint == 'BOTTOM' and 'RIGHT') or (db.anchorPoint == 'TOP' and 'LEFT') or db.anchorPoint -- convert this for vertical too
-			if barWidth == -1 or barWidth > width then barWidth = width end
 			pred.anchor, pred.anchor1, pred.anchor2 = anchor, p1, p2
 
 			myBar:ClearAllPoints()
-			myBar:Size(barWidth, height)
 			myBar:Point(anchor, health)
 			myBar:Point(p1, healthBarTexture, p2)
 
 			otherBar:ClearAllPoints()
-			otherBar:Size(barWidth, height)
 			otherBar:Point(anchor, health)
 			otherBar:Point(p1, pred.myBarTexture, p2)
 
 			healAbsorbBar:ClearAllPoints()
-			healAbsorbBar:Size(barWidth, height)
 			healAbsorbBar:Point(anchor, health)
 
 			absorbBar:ClearAllPoints()
-			absorbBar:Size(barWidth, height)
 			absorbBar:Point(anchor, health)
 
 			if db.absorbStyle == 'REVERSED' then
@@ -216,6 +232,11 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 		healAbsorbBar:Hide()
 		absorbBar:Hide()
 		return
+	end
+
+	if frame.needsSizeUpdated then
+		UF:SetSize_HealComm(frame)
+		frame.needsSizeUpdated = nil
 	end
 
 	local colors = UF.db.colors.healPrediction
