@@ -6,7 +6,6 @@ local _G = _G
 -- /run SubscriptionInterstitial_LoadUI(); _G.SubscriptionInterstitialFrame:Show()
 
 function S:Blizzard_SubscriptionInterstitialUI()
-    print(1)
     if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.subscriptionInterstitial) then return end
 
     local SubscriptionInterstitial = _G.SubscriptionInterstitialFrame
