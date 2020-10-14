@@ -23,17 +23,18 @@ local function OnLeave()
 end
 
 function B:SkinBag(bag)
+	local icon = _G[bag:GetName()..'IconTexture']
+	bag.oldTex = icon:GetTexture()
+
 	bag:StripTextures()
 	bag:CreateBackdrop()
 	bag:StyleButton(true)
 	bag.IconBorder:Kill()
+	bag.backdrop:SetAllPoints()
 
-	local icon = _G[bag:GetName()..'IconTexture']
 	icon:SetInside()
 	icon:SetTexture(bag.oldTex)
 	icon:SetTexCoord(unpack(E.TexCoords))
-
-	bag.oldTex = icon:GetTexture()
 end
 
 function B:SizeAndPositionBagBar()
