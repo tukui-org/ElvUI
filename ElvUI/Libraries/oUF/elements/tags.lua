@@ -314,7 +314,7 @@ local tagStrings = {
 					return Hex(altR, altG, altB)
 				end
 			else
-				return Hex(_COLORS.power[pType])
+				return Hex(_COLORS.power[pType] or _COLORS.power.MANA)
 			end
 		end
 
