@@ -13,8 +13,8 @@ function NP:Update_TagText(nameplate, element, db, hide)
 	if not db then return end
 
 	if db.enable and not hide then
-		element:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 		nameplate:Tag(element, db.format or '')
+		element:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 		element:UpdateTag()
 
 		element:ClearAllPoints()
