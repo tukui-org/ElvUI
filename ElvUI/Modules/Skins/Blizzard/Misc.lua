@@ -49,9 +49,12 @@ function S:BlizzardMiscFrames()
 	}
 
 	for i = 1, #skins do
-		_G[skins[i]]:StripTextures()
-		_G[skins[i]]:CreateBackdrop('Transparent')
+		local frame = _G[skins[i]]
+		frame:StripTextures()
+		frame:CreateBackdrop('Transparent')
 	end
+
+	_G.AutoCompleteBox.backdrop:SetFrameLevel(_G.AutoCompleteBox:GetFrameLevel())
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
