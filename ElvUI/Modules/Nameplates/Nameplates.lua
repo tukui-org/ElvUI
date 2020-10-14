@@ -540,6 +540,7 @@ function NP:ConfigureAll(skipUpdate)
 
 	if skipUpdate then -- since this is a fake plate, we actually need to trigger this always
 		NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+		_G.ElvNP_Player:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
 		NP.SkipFading = true
 		for nameplate in pairs(NP.Plates) do
@@ -557,6 +558,8 @@ function NP:ConfigureAll(skipUpdate)
 				nameplate.previousType = nil -- we still need a full update
 				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 			end
+
+			nameplate:UpdateAllElements('ForceUpdate')
 		end
 		NP.SkipFading = nil
 	end
