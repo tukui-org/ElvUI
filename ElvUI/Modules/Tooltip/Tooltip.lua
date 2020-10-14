@@ -639,7 +639,7 @@ function TT:GameTooltip_ShowStatusBar(tt)
 end
 
 function TT:SetStyle(tt)
-	if not tt or (tt == E.ScanTooltip or tt.IsEmbedded) or tt:IsForbidden() then return end
+	if not tt or (tt == E.ScanTooltip or tt.IsEmbedded) or tt:IsForbidden() or not tt.SetTemplate then return end
 	tt.customBackdropAlpha = TT.db.colorAlpha
 	tt:SetTemplate('Transparent')
 end
