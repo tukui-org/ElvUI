@@ -90,7 +90,6 @@ function AB:SetupExtraButton()
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
-	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 150, 300)
@@ -98,11 +97,12 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:SetAllPoints()
-	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	ZoneAbilityFrame.SpellButtonContainer.holder = ZoneAbilityHolder
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil -- this is for both
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
