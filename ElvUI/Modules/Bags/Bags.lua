@@ -531,7 +531,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		local r, g, b = unpack(professionColors)
 		slot.newItemGlow:SetVertexColor(r, g, b)
 		slot:SetBackdropBorderColor(r, g, b)
-		slot.ignoreBorderColors = true
+		slot.forcedBorderColors = {r, g, b}
 	elseif clink then
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(clink)
 		slot.name = name
@@ -587,43 +587,46 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
-			slot.ignoreBorderColors = true
+			local rr, gg, bb, aa = unpack(B.QuestColors.questStarter)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb, aa)
+			slot:SetBackdropBorderColor(rr, gg, bb, aa)
+			slot.forcedBorderColors = {rr, gg, bb, aa}
+
 			if slot.questIcon then
 				slot.questIcon:Show()
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
-			slot.ignoreBorderColors = true
+			local rr, gg, bb, aa = unpack(B.QuestColors.questItem)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb, aa)
+			slot:SetBackdropBorderColor(rr, gg, bb, aa)
+			slot.forcedBorderColors = {rr, gg, bb, aa}
 		elseif B.db.qualityColors and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
 			slot.newItemGlow:SetVertexColor(r, g, b)
 			slot:SetBackdropBorderColor(r, g, b)
-			slot.ignoreBorderColors = true
+			slot.forcedBorderColors = {r, g, b}
 		elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 			local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
 			slot:SetBackdropBorderColor(rr, gg, bb)
-			slot.ignoreBorderColors = true
+			slot.forcedBorderColors = {rr, gg, bb}
 		else
 			local rr, gg, bb = unpack(E.media.bordercolor)
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
 			slot:SetBackdropBorderColor(rr, gg, bb)
 			slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
-			slot.ignoreBorderColors = nil
+			slot.forcedBorderColors = nil
 		end
 	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
 		slot:SetBackdropBorderColor(rr, gg, bb)
-		slot.ignoreBorderColors = true
+		slot.forcedBorderColors = {rr, gg, bb}
 	else
 		local rr, gg, bb = unpack(E.media.bordercolor)
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
 		slot:SetBackdropBorderColor(rr, gg, bb)
 		slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
-		slot.ignoreBorderColors = nil
+		slot.forcedBorderColors = nil
 	end
 
 	if E.db.bags.newItemGlow then
@@ -861,10 +864,11 @@ function B:GetBagAssignedInfo(holder)
 
 	if not active then
 		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		holder.ignoreBorderColors = nil --restore these borders to be updated
+		holder.forcedBorderColors = nil
 	else
-		holder:SetBackdropBorderColor(unpack(color or B.AssignmentColors[0]))
-		holder.ignoreBorderColors = true --dont allow these border colors to update for now
+		local r, g, b, a = unpack(color or B.AssignmentColors[0])
+		holder:SetBackdropBorderColor(r, g, b, a)
+		holder.forcedBorderColors = {r, g, b, a}
 		return active
 	end
 end
@@ -1077,31 +1081,34 @@ function B:UpdateReagentSlot(slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
-			slot.ignoreBorderColors = true
+			local rr, gg, bb, aa = unpack(B.QuestColors.questStarter)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb, aa)
+			slot:SetBackdropBorderColor(rr, gg, bb, aa)
+			slot.forcedBorderColors = {rr, gg, bb, aa}
+
 			if slot.questIcon then
 				slot.questIcon:Show()
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
-			slot.ignoreBorderColors = true
+			local rr, gg, bb, aa = unpack(B.QuestColors.questItem)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb, aa)
+			slot:SetBackdropBorderColor(rr, gg, bb, aa)
+			slot.forcedBorderColors = {rr, gg, bb, aa}
 		elseif B.db.qualityColors and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
 			slot.newItemGlow:SetVertexColor(r, g, b)
 			slot:SetBackdropBorderColor(r, g, b)
-			slot.ignoreBorderColors = true
+			slot.forcedBorderColors = {r, g, b}
 		else
 			local rr, gg, bb = unpack(E.media.bordercolor)
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
 			slot:SetBackdropBorderColor(rr, gg, bb)
-			slot.ignoreBorderColors = nil
+			slot.forcedBorderColors = nil
 		end
 	else
 		local rr, gg, bb = unpack(E.media.bordercolor)
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
 		slot:SetBackdropBorderColor(rr, gg, bb)
-		slot.ignoreBorderColors = nil
+		slot.forcedBorderColors = nil
 	end
 
 	if E.db.bags.newItemGlow then

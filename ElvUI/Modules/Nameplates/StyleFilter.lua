@@ -416,8 +416,14 @@ function mod:StyleFilterUpdatePlate(frame, updateBase)
 	mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 end
 
-function mod:StyleFilterBorderLock(backdrop, switch)
-	backdrop.ignoreBorderColors = switch -- but keep the backdrop updated
+function mod:StyleFilterBorderLock(backdrop, r, g, b, a)
+	if r then
+		backdrop.forcedBorderColors = {r,g,b,a}
+		backdrop:SetBackdropBorderColor(r,g,b,a)
+	else
+		backdrop.forcedBorderColors = nil
+		backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
 end
 
 do
@@ -458,11 +464,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		local bc = actions.color.borderColor
 		c.Borders = true
 
-		mod:StyleFilterBorderLock(frame.Health.backdrop, true)
-		frame.Health.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
+		mod:StyleFilterBorderLock(frame.Health.backdrop, bc.r, bc.g, bc.b, bc.a)
+
 		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
-			mod:StyleFilterBorderLock(frame.Power.backdrop, true)
-			frame.Power.backdrop:SetBackdropBorderColor(bc.r, bc.g, bc.b, bc.a)
+			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a)
 		end
 	end
 	if HealthFlash then
@@ -557,12 +562,10 @@ function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor,
 		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, 1)
 	end
 	if Borders then
-		local r, g, b = unpack(E.media.bordercolor)
 		mod:StyleFilterBorderLock(frame.Health.backdrop)
-		frame.Health.backdrop:SetBackdropBorderColor(r, g, b)
+
 		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
 			mod:StyleFilterBorderLock(frame.Power.backdrop)
-			frame.Power.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end
 	if HealthFlash then

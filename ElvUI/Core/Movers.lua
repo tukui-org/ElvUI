@@ -202,7 +202,9 @@ local function OnShow(self, r, g, b)
 
 	self.text:FontTemplate()
 	self.text:SetTextColor(r, g, b)
+
 	self:SetBackdropBorderColor(r, g, b)
+	self.forcedBorderColors = {r, g, b}
 end
 
 local function UpdateColors()
@@ -252,7 +254,6 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 	f.configString = configString
 	f.perferCorners = perferCorners
 	f.ignoreSizeChanged = ignoreSizeChanged
-	f.ignoreBorderColors = true
 
 	holder.mover = f
 	parent.mover = f

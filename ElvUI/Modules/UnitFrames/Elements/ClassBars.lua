@@ -42,7 +42,7 @@ function UF:Configure_ClassBar(frame, cur)
 	local SPACING = (UF.BORDER + UF.SPACING)*2
 
 	local color = E.db.unitframe.colors.borderColor
-	if not bars.backdrop.ignoreBorderColors then
+	if not bars.backdrop.forcedBorderColors then
 		bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 
@@ -75,7 +75,9 @@ function UF:Configure_ClassBar(frame, cur)
 			bars[i].backdrop:Hide()
 
 			if i <= frame.MAX_CLASS_BAR then
-				bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				if not bars[i].backdrop.forcedBorderColors then
+					bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				end
 
 				bars[i]:Height(bars:GetHeight())
 				if frame.MAX_CLASS_BAR == 1 then
