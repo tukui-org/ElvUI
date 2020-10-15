@@ -56,13 +56,13 @@ function UF:Configure_PowerPrediction(frame)
 			local point = reverseFill and 'LEFT' or 'RIGHT'
 			mainBar:Point('TOP')
 			mainBar:Point('BOTTOM')
-			mainBar:Point(point, powerBarTexture)
+			mainBar:Point(point, powerBarTexture, point)
 			mainBar:Size(power:GetWidth(), 0)
 		else
 			local point = reverseFill and 'BOTTOM' or 'TOP'
 			mainBar:Point('LEFT')
 			mainBar:Point('RIGHT')
-			mainBar:Point(point, powerBarTexture)
+			mainBar:Point(point, powerBarTexture, point)
 			mainBar:Size(0, power:GetHeight())
 		end
 
@@ -78,12 +78,12 @@ function UF:Configure_PowerPrediction(frame)
 			if orientation == 'HORIZONTAL' then
 				altBar:Point('TOP')
 				altBar:Point('BOTTOM')
-				altBar:Point('RIGHT', altPowerBarTexture)
+				altBar:Point('RIGHT', altPowerBarTexture, 'RIGHT')
 				altBar:Size(altPower:GetWidth(), 0)
 			else
 				altBar:Point('LEFT')
 				altBar:Point('RIGHT')
-				altBar:Point('TOP', altPowerBarTexture)
+				altBar:Point('TOP', altPowerBarTexture, 'TOP')
 				altBar:Size(0, altPower:GetHeight())
 			end
 		end
