@@ -2,79 +2,15 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local sort = sort
 local pairs = pairs
-local ipairs = ipairs
 local unpack = unpack
 local tinsert = tinsert
-local tremove = tremove
-local GetCVar = GetCVar
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local hooksecurefunc = hooksecurefunc
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 local ExtraButtons = {}
-
-do	-- modify some ExtraAbilityContainerMixin functions ~Simpy
-	-- we need to do this to prevent tainting from Show/Hide and to shut off SetParent
-	local function SortFramePairs(lhsFramePair, rhsFramePair)
-		return lhsFramePair.priority < rhsFramePair.priority
-	end
-
-	function AB:ContainerMixin_AddFrame(frameToAdd, priority)
-		local bestSlot
-		for i, framePair in ipairs(self.frames) do
-			if framePair.frame == frameToAdd then
-				if framePair.priority == priority then
-					return
-				end
-
-				framePair.priority = priority
-				sort(self.frames, SortFramePairs)
-				self:UpdateLayoutIndicies()
-
-				return
-			elseif not bestSlot and framePair.priority >= priority then
-				bestSlot = i
-			end
-		end
-
-		if not bestSlot then
-			bestSlot = #self.frames + 1
-		end
-
-		tinsert(self.frames, bestSlot, {frame = frameToAdd, priority = priority})
-
-		--frameToAdd:SetParent(self)
-		if frameToAdd ~= _G.ExtraActionBarFrame then
-			frameToAdd:Show()
-		end
-
-		self:UpdateLayoutIndicies()
-		self:Show()
-	end
-
-	function AB:ContainerMixin_RemoveFrame(frameToRemove)
-		for i, framePair in ipairs(self.frames) do
-			if framePair.frame == frameToRemove then
-				frameToRemove.layoutIndex = nil
-
-				tremove(self.frames, i)
-
-				--frameToRemove:SetParent(nil)
-				if frameToRemove ~= _G.ExtraActionBarFrame then
-					frameToRemove:Hide()
-				end
-
-				break
-			end
-		end
-
-		self:UpdateLayoutIndicies()
-		self:SetShown(#self.frames > 0)
-	end
-end
 
 function AB:ExtraButtons_BossStyle(button)
 	if not button.style then return end
@@ -152,16 +88,8 @@ function AB:SetupExtraButton()
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
 	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -150, 300)
 
-	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
-	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:SetAllPoints()
-
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 150, 300)
-
-	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
-	ZoneAbilityFrame:ClearAllPoints()
-	ZoneAbilityFrame:SetAllPoints()
 
 	ZoneAbilityFrame.SpellButtonContainer.holder = ZoneAbilityHolder
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
@@ -169,14 +97,16 @@ function AB:SetupExtraButton()
 
 	-- try to shutdown the container movement and taints
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
-	_G.ExtraAbilityContainer.AddFrame = AB.ContainerMixin_AddFrame
-	_G.ExtraAbilityContainer.RemoveFrame = AB.ContainerMixin_RemoveFrame
 	_G.ExtraAbilityContainer.SetSize = E.noop
 
 	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
+	ZoneAbilityFrame:ClearAllPoints()
+	ZoneAbilityFrame:SetAllPoints()
 	ZoneAbilityFrame.ignoreInLayout = true
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
+	ExtraActionBarFrame:ClearAllPoints()
+	ExtraActionBarFrame:SetAllPoints()
 	ExtraActionBarFrame.ignoreInLayout = true
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
