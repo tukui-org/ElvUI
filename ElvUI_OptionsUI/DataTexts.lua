@@ -234,8 +234,13 @@ local function PanelGroup_Create(panel)
 	local panelOpts = E:CopyTable(opts.args.panelOptions.args, DTPanelOptions)
 	panelOpts.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 	panelOpts.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
-	panelOpts.templateGroup.get = function(info, key) return E.global.datatexts.customPanels[panel][key] end
-	panelOpts.templateGroup.set = function(info, key, value) E.global.datatexts.customPanels[panel][key] = value; DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end
+	panelOpts.templateGroup.get = function(info, key)
+		return E.global.datatexts.customPanels[panel][key]
+	end
+	panelOpts.templateGroup.set = function(info, key, value)
+		E.global.datatexts.customPanels[panel][key] = value;
+		DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel])
+	end
 
 	E.Options.args.datatexts.args.panels.args[panel] = opts
 end
@@ -747,11 +752,13 @@ E.Options.args.datatexts = {
 							order = 6,
 							name = L["Border"],
 							type = 'toggle',
+							disabled = function() return not E.db.datatexts.panels.LeftChatDataPanel.backdrop end,
 						},
 						panelTransparency = {
 							order = 7,
 							type = 'toggle',
 							name = L["Panel Transparency"],
+							disabled = function() return not E.db.datatexts.panels.LeftChatDataPanel.backdrop end,
 						},
 					},
 				},
@@ -792,11 +799,13 @@ E.Options.args.datatexts = {
 							order = 6,
 							name = L["Border"],
 							type = 'toggle',
+							disabled = function() return not E.db.datatexts.panels.RightChatDataPanel.backdrop end,
 						},
 						panelTransparency = {
 							order = 7,
 							type = 'toggle',
 							name = L["Panel Transparency"],
+							disabled = function() return not E.db.datatexts.panels.RightChatDataPanel.backdrop end,
 						},
 					},
 				},
@@ -837,11 +846,13 @@ E.Options.args.datatexts = {
 							order = 7,
 							name = L["Border"],
 							type = 'toggle',
+							disabled = function() return not E.db.datatexts.panels.MinimapPanel.backdrop end,
 						},
 						panelTransparency = {
 							order = 8,
 							type = 'toggle',
 							name = L["Panel Transparency"],
+							disabled = function() return not E.db.datatexts.panels.MinimapPanel.backdrop end,
 						},
 					},
 				},
