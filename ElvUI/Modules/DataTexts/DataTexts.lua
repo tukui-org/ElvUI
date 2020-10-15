@@ -478,12 +478,15 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		end
 	end
 
-	panel.forcedBorderColors = (not db.border and {0,0,0,0}) or nil
+	--Note: some plugins dont have db.border, we need the nil checks
+	panel.forcedBorderColors = (db.border == false and {0,0,0,0}) or nil
 	panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
 
 	--Show Border option
-	if panel.iborder then panel.iborder:SetShown(db.border) end
-	if panel.oborder then panel.oborder:SetShown(db.border) end
+	if db.border ~= nil then
+		if panel.iborder then panel.iborder:SetShown(db.border) end
+		if panel.oborder then panel.oborder:SetShown(db.border) end
+	end
 
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
