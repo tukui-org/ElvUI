@@ -66,7 +66,7 @@ local C_SocialIsSocialEnabled = C_Social.IsSocialEnabled
 local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
-local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTextur
+local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
 local ChatChannelRuleset_Mentor = Enum.ChatChannelRuleset.Mentor
 
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
