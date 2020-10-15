@@ -1,5 +1,5 @@
 -- Widget created by Yssaril
-local DataVersion = 9002
+local DataVersion = 9003
 local AGSMW = LibStub:NewLibrary("AceGUISharedMediaWidgets-1.0", DataVersion)
 
 if not AGSMW then
@@ -177,14 +177,12 @@ do
 			self:SetHeight(UIParent:GetHeight()*2/5)
 			self.slider:Show()
 			self:SetScript("OnMouseWheel", OnMouseWheel)
-			self.scrollframe:UpdateScrollChildRect()
 			self.slider:SetMinMaxValues(0, self.contentframe:GetHeight()-self.scrollframe:GetHeight())
 		else
 			self.scrollframe:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -14, 12)
 			self:SetHeight(self.contentframe:GetHeight()+25)
 			self.slider:Hide()
 			self:SetScript("OnMouseWheel", nil)
-			self.scrollframe:UpdateScrollChildRect()
 			self.slider:SetMinMaxValues(0, 0)
 		end
 		self.contentframe:SetWidth(self.scrollframe:GetWidth())
