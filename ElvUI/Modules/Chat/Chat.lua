@@ -1692,11 +1692,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12);
 
 			if arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == ChatChannelRuleset_Mentor then
-				_G.ChatFrame_UpdateDefaultChatTarget(self)
-				_G.ChatEdit_UpdateNewcomerEditBoxHint(self.editBox)
+				_G.ChatFrame_UpdateDefaultChatTarget(frame)
+				_G.ChatEdit_UpdateNewcomerEditBoxHint(frame.editBox)
 			else
 				if arg1 == 'YOU_LEFT' then
-					_G.ChatEdit_UpdateNewcomerEditBoxHint(self.editBox, arg8)
+					_G.ChatEdit_UpdateNewcomerEditBoxHint(frame.editBox, arg8)
 				end
 
 				local globalstring
