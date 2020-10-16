@@ -168,9 +168,7 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
-
-	local borderSpacing = (E.Border + backdropSpacing)
-	local sideSpacing = db.backdrop and borderSpacing or E.Spacing
+	local sideSpacing = db.backdrop and (E.Border + backdropSpacing) or E.Spacing
 
 	bar.mouseover = db.mouseover
 	if bar.mouseover then
