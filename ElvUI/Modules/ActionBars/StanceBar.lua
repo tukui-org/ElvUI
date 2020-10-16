@@ -104,7 +104,7 @@ end
 
 function AB:PositionAndSizeBarShapeShift()
 	local buttonSpacing = self.db.stanceBar.buttonspacing
-	local backdropSpacing = self.db.stanceBar.backdropSpacing or self.db.stanceBar.buttonspacing
+	local backdropSpacing = self.db.stanceBar.backdropSpacing
 	local buttonsPerRow = self.db.stanceBar.buttonsPerRow
 	local numButtons = self.db.stanceBar.buttons
 	local size = self.db.stanceBar.buttonsize

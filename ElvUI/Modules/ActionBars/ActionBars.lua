@@ -130,6 +130,8 @@ AB.customExitButton = {
 }
 
 function AB:HandleBackdropMultiplier(bar, spacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	if not bar.backdrop:IsShown() then return end
+
 	local useWidthMult = widthMult > 1
 	local useHeightMult = heightMult > 1
 	if useWidthMult or useHeightMult then

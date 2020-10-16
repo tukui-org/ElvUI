@@ -103,7 +103,7 @@ end
 
 function AB:PositionAndSizeBarPet()
 	local buttonSpacing = self.db.barPet.buttonspacing
-	local backdropSpacing = self.db.barPet.backdropSpacing or self.db.barPet.buttonspacing
+	local backdropSpacing = self.db.barPet.backdropSpacing
 	local buttonsPerRow = self.db.barPet.buttonsPerRow
 	local numButtons = self.db.barPet.buttons
 	local size = self.db.barPet.buttonsize
