@@ -68,6 +68,7 @@ local function Update(self, event, unit)
 	local mainPowerType = UnitPowerType(unit)
 	local hasAltManaBar = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass] and ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][mainPowerType]
 	local mainCost, altCost = 0, 0
+	local mainMax, altMax = 0, 0
 
 	if(event == 'UNIT_SPELLCAST_START' and startTime ~= endTime) then
 		local costTable = GetSpellPowerCost(spellID)
@@ -83,10 +84,12 @@ local function Update(self, event, unit)
 			-- - requiredAuraID: number
 			if(costInfo.type == mainPowerType) then
 				mainCost = costInfo.cost
+				mainMax = UnitPowerMax(unit, mainPowerType)
 
 				break
 			elseif(costInfo.type == ADDITIONAL_POWER_BAR_INDEX) then
 				altCost = costInfo.cost
+				altMax = UnitPowerMax(unit, ADDITIONAL_POWER_BAR_INDEX)
 
 				break
 			end
@@ -94,14 +97,14 @@ local function Update(self, event, unit)
 	end
 
 	if(element.mainBar) then
-		element.mainBar:SetMinMaxValues(0, UnitPowerMax(unit, mainPowerType))
-		element.mainBar:SetValue(mainCost)
+		element.mainBar:SetMinMaxValues(0, mainMax)
+		element.mainBar:SetValue(mainCost ~= mainMax and mainCost or 0)
 		element.mainBar:Show()
 	end
 
 	if(element.altBar and hasAltManaBar) then
-		element.altBar:SetMinMaxValues(0, UnitPowerMax(unit, ADDITIONAL_POWER_BAR_INDEX))
-		element.altBar:SetValue(altCost)
+		element.altBar:SetMinMaxValues(0, altMax)
+		element.altBar:SetValue(altCost ~= altMax and altCost or 0)
 		element.altBar:Show()
 	end
 
