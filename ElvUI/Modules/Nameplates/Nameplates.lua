@@ -246,7 +246,7 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = (nameplate == _G.ElvNP_Player and 1) or E.global.general.UIScale
+	local mult = (nameplate == _G.ElvNP_Player or nameplate == _G.ElvNP_Test) and 1 or E.global.general.UIScale
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
@@ -323,6 +323,11 @@ function NP:UpdatePlate(nameplate, updateBase)
 		end
 	elseif sf.Visibility or sf.NameOnly or db.nameOnly then
 		NP:DisablePlate(nameplate, sf.NameOnly or (db.nameOnly and not sf.Visibility))
+
+		if nameplate == _G.ElvNP_Test then
+			nameplate.Castbar:SetAlpha(0)
+			nameplate.ClassPower:SetAlpha(0)
+		end
 	elseif updateBase then
 		NP:Update_Tags(nameplate)
 		NP:Update_Health(nameplate)
@@ -352,7 +357,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:Update_Health(nameplate, true) -- this will only reset the ouf vars so it won't hold stale threat ones
 	end
 
-	if nameplate.isTarget then
+	if nameplate.isTarget and nameplate ~= _G.ElvNP_Test then
 		NP:SetupTarget(nameplate, nil, true)
 	end
 
@@ -536,6 +541,10 @@ function NP:ConfigureAll(skipUpdate)
 		_G.ElvNP_StaticSecure:Hide()
 	end
 
+	if _G.ElvNP_Test:IsEnabled() then
+		NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED')
+	end
+
 	NP:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
 
 	if skipUpdate then -- since this is a fake plate, we actually need to trigger this always
@@ -620,21 +629,23 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
 
-		if nameplate.isMe then
-			nameplate.frameType = 'PLAYER'
+		if nameplate ~= _G.ElvNP_Test then
+			if nameplate.isMe then
+				nameplate.frameType = 'PLAYER'
 
-			if NP.db.units.PLAYER.enable and (nameplate ~= _G.ElvNP_Test) then
-				NP.PlayerNamePlateAnchor:ClearAllPoints()
-				NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
-				NP.PlayerNamePlateAnchor:Show()
+				if NP.db.units.PLAYER.enable then
+					NP.PlayerNamePlateAnchor:ClearAllPoints()
+					NP.PlayerNamePlateAnchor:SetParent(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+					NP.PlayerNamePlateAnchor:SetAllPoints(NP.db.units.PLAYER.useStaticPosition and _G.ElvNP_Player or nameplate)
+					NP.PlayerNamePlateAnchor:Show()
+				end
+			elseif nameplate.isPVPSanctuary then
+				nameplate.frameType = 'FRIENDLY_PLAYER'
+			elseif not nameplate.isEnemy and (not nameplate.reaction or nameplate.reaction > 4) then -- keep as: not isEnemy, dont switch to isFriend
+				nameplate.frameType = (nameplate.isPlayer and 'FRIENDLY_PLAYER') or 'FRIENDLY_NPC'
+			else
+				nameplate.frameType = (nameplate.isPlayer and 'ENEMY_PLAYER') or 'ENEMY_NPC'
 			end
-		elseif nameplate.isPVPSanctuary then
-			nameplate.frameType = 'FRIENDLY_PLAYER'
-		elseif not nameplate.isEnemy and (not nameplate.reaction or nameplate.reaction > 4) then -- keep as: not isEnemy, dont switch to isFriend
-			nameplate.frameType = (nameplate.isPlayer and 'FRIENDLY_PLAYER') or 'FRIENDLY_NPC'
-		else
-			nameplate.frameType = (nameplate.isPlayer and 'ENEMY_PLAYER') or 'ENEMY_NPC'
 		end
 
 		if nameplate.frameType == 'PLAYER' then
@@ -658,7 +669,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				nameplate.RaisedElement:Show()
 			end
 
-			if nameplate == _G.ElvNP_Player then
+			if nameplate == _G.ElvNP_Player or nameplate == _G.ElvNP_Test then
 				NP:UpdatePlate(nameplate, true)
 			else
 				NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
@@ -674,13 +685,15 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
-		if nameplate.frameType == 'PLAYER' and (nameplate ~= _G.ElvNP_Test) then
-			NP.PlayerNamePlateAnchor:Hide()
-		end
+		if nameplate ~= _G.ElvNP_Test then
+			if nameplate.frameType == 'PLAYER' then
+				NP.PlayerNamePlateAnchor:Hide()
+			end
 
-		if nameplate.isTarget then
-			NP:SetupTarget(nameplate, true)
-			NP:ScalePlate(nameplate, 1, true)
+			if nameplate.isTarget then
+				NP:SetupTarget(nameplate, true)
+				NP:ScalePlate(nameplate, 1, true)
+			end
 		end
 
 		if nameplate.unitGUID then

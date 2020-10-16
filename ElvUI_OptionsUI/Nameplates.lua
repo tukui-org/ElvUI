@@ -3067,7 +3067,8 @@ local function GetUnitSettings(unit, name)
 					if not _G.ElvNP_Test:IsEnabled() or _G.ElvNP_Test.frameType ~= unit then
 						_G.ElvNP_Test:Enable()
 						_G.ElvNP_Test.frameType = unit
-						NP:UpdatePlate(_G.ElvNP_Test, true)
+
+						NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED')
 						_G.ElvNP_Test:UpdateAllElements('ForceUpdate')
 					else
 						NP:DisablePlate(_G.ElvNP_Test)

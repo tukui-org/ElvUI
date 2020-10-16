@@ -173,6 +173,10 @@ end
 function NP:Update_Castbar(nameplate)
 	local db = NP:PlateDB(nameplate)
 
+	if nameplate == _G.ElvNP_Test then
+		nameplate.Castbar:SetAlpha((not db.nameOnly and db.castbar.enable) and 1 or 0)
+	end
+
 	if db.castbar.enable then
 		if not nameplate:IsElementEnabled('Castbar') then
 			nameplate:EnableElement('Castbar')

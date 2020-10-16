@@ -77,6 +77,7 @@ function NP:Construct_ClassPower(nameplate)
 	if nameplate == _G.ElvNP_Test then
 		ClassPower.Hide = ClassPower.Show
 		ClassPower:Show()
+
 		for i = 1, Max do
 			ClassPower[i]:SetStatusBarTexture(texture)
 			ClassPower[i].bg:SetTexture(texture)
@@ -92,6 +93,15 @@ end
 
 function NP:Update_ClassPower(nameplate)
 	local db = NP:PlateDB(nameplate)
+
+	if nameplate == _G.ElvNP_Test then
+		if not db.nameOnly and db.classpower and db.classpower.enable then
+			NP.ClassPower_UpdateColor(nameplate.ClassPower, 'COMBO_POINTS')
+			nameplate.ClassPower:SetAlpha(1)
+		else
+			nameplate.ClassPower:SetAlpha(0)
+		end
+	end
 
 	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('ClassPower') then
