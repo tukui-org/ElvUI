@@ -143,7 +143,9 @@ function AB:PositionAndSizeBarPet()
 
 	-- mover magic ~Simpy
 	bar:ClearAllPoints()
-	if anchorUp then
+	if not bar.backdrop:IsShown() then
+		bar:SetPoint('BOTTOMLEFT', bar.mover)
+	elseif anchorUp then
 		bar:SetPoint('BOTTOMLEFT', bar.mover, 'BOTTOMLEFT', anchorLeft and E.Border or -E.Border, -E.Border)
 	else
 		bar:SetPoint('TOPLEFT', bar.mover, 'TOPLEFT', anchorLeft and E.Border or -E.Border, E.Border)
@@ -242,7 +244,7 @@ function AB:PositionAndSizeBarPet()
 	end
 
 	AB:HandleBackdropMultiplier(bar, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
-	bar:SetSize(bar.backdrop:GetSize())
+	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	RegisterStateDriver(bar, 'show', visibility)
 

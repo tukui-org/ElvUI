@@ -148,6 +148,16 @@ function AB:HandleBackdropMultiplier(bar, spacing, widthMult, heightMult, anchor
 	end
 end
 
+function AB:HandleBackdropMover(bar, backdropSpacing)
+	local width, height = bar.backdrop:GetSize()
+	if not bar.backdrop:IsShown() then
+		local spacing = E:Scale(backdropSpacing) * 2
+		bar:SetSize(width - spacing, height - spacing)
+	else
+		bar:SetSize(width, height)
+	end
+end
+
 function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 
@@ -196,7 +206,9 @@ function AB:PositionAndSizeBar(barName)
 
 	-- mover magic ~Simpy
 	bar:ClearAllPoints()
-	if anchorUp then
+	if not bar.backdrop:IsShown() then
+		bar:SetPoint('BOTTOMLEFT', bar.mover)
+	elseif anchorUp then
 		bar:SetPoint('BOTTOMLEFT', bar.mover, 'BOTTOMLEFT', anchorLeft and E.Border or -E.Border, -E.Border)
 	else
 		bar:SetPoint('TOPLEFT', bar.mover, 'TOPLEFT', anchorLeft and E.Border or -E.Border, E.Border)
@@ -272,7 +284,7 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	AB:HandleBackdropMultiplier(bar, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
-	bar:SetSize(bar.backdrop:GetSize())
+	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	if db.enabled or not bar.initialized then
 		if AB.barDefaults['bar'..bar.id].conditions:find('[form,noform]') then
