@@ -240,6 +240,7 @@ function AB:PositionAndSizeBar(barName)
 			end
 
 			button:Point(point, bar, point, x, y)
+			anchorRowButton = button
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local y = -buttonSpacing
 			buttonPoint, anchorPoint = 'TOP', 'BOTTOM'

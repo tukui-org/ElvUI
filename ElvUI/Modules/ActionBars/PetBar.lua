@@ -198,6 +198,7 @@ function AB:PositionAndSizeBarPet()
 			end
 
 			button:Point(point, bar, point, x, y)
+			anchorRowButton = button
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0
 			local y = -buttonSpacing
