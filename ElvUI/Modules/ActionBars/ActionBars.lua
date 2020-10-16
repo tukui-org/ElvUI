@@ -129,7 +129,7 @@ AB.customExitButton = {
 	tooltip = _G.LEAVE_VEHICLE,
 }
 
-function AB:HandleBackdropMultiplier(bar, spacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+function AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
 	if not bar.backdrop:IsShown() then return end
 
 	local useWidthMult = widthMult > 1
@@ -137,14 +137,12 @@ function AB:HandleBackdropMultiplier(bar, spacing, widthMult, heightMult, anchor
 	if useWidthMult or useHeightMult then
 		local oldWidth, oldHeight = bar.backdrop:GetSize()
 		if useHeightMult then
-			local height = oldHeight - (E.Border * 2)
-			local offset = (height + spacing) * (heightMult - 1)
+			local offset = ((oldHeight + buttonSpacing) * (heightMult - 1)) - backdropSpacing
 			local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
 			bar.backdrop:Point(anchorPoint, lastShownButton, anchorPoint, 0, anchorUp and offset or -offset)
 		end
 		if useWidthMult then
-			local width = oldWidth - (E.Border * 2)
-			local offset = (width + spacing) * (widthMult - 1)
+			local offset = ((oldWidth + buttonSpacing) * (widthMult - 1)) - backdropSpacing
 			bar.backdrop:Point(horizontalGrowth, anchorRowButton, horizontalGrowth, anchorLeft and -offset or offset, 0)
 		end
 	end
@@ -286,7 +284,7 @@ function AB:PositionAndSizeBar(barName)
 		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
-	AB:HandleBackdropMultiplier(bar, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	if db.enabled or not bar.initialized then
