@@ -14,7 +14,7 @@ ElvUI_QuestXP is now depreciated and forced off
 Voice Chat Error  
 NewComer Chat Error  
 Reagent Bank busted  
-Status Report errors  
+Status Report Errors  
 Tooltips breaking other things  
 Ace3 skin breaking other things  
 Buffwatch errors (they are Aurawatch now)  
@@ -22,7 +22,7 @@ Databars not showing properly with combat setting
 Databars Show Border option not working properly  
 Unitframe Additional power works again  
 Unitframe Heal and Power Prediction  
-Nameplate power bars  
+Nameplate Power Bars were weird  
 Nameplate failing to update  
 Test Nameplate works a lot better now  
 Time Datatext showing empty world PVP stuff  
