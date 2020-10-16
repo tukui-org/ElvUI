@@ -51,13 +51,6 @@ local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
-local flipPoints = {
-	TOPLEFT = 'BOTTOMRIGHT',
-	TOPRIGHT = 'BOTTOMLEFT',
-	BOTTOMLEFT = 'TOPRIGHT',
-	BOTTOMRIGHT = 'TOPLEFT'
-}
-
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
