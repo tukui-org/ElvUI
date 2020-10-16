@@ -684,7 +684,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			end
 		end
 
-		if NP.db.fadeIn and event == 'NAME_PLATE_UNIT_ADDED' and not NP.SkipFading then
+		if NP.db.fadeIn and (event == 'NAME_PLATE_UNIT_ADDED' and nameplate == _G.ElvNP_Player) and not NP.SkipFading then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
