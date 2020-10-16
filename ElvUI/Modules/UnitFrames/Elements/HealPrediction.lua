@@ -106,7 +106,7 @@ function UF:SetSize_HealComm(frame)
 end
 
 function UF:Configure_HealComm(frame)
-	local db = frame.db and frame.db.healPrediction
+	local db = frame.db.healPrediction
 	if db and db.enable then
 		frame.needsSizeUpdated = true
 
