@@ -63,7 +63,7 @@ function DB:ThreatBar_Update()
 						bar.list['raid'..i] = select(3, UnitDetailedThreatSituation('raid'..i, 'target'))
 					end
 				end
-			else
+			elseif isInGroup then
 				for i = 1, 4 do
 					if UnitExists('party'..i) then
 						bar.list['party'..i] = select(3, UnitDetailedThreatSituation('party'..i, 'target'))
