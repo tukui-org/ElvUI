@@ -9,7 +9,7 @@ E.Media = {
 	Textures = {}
 }
 
-local format, ipairs, type = format, ipairs, type
+local format, ipairs, type, pcall = format, ipairs, type, pcall
 local westAndRU = LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western
 
 do

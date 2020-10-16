@@ -5,7 +5,6 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local pairs = pairs
 local unpack = unpack
-local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
 	self:SetBackdrop()

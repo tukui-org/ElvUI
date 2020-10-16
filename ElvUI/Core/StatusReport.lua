@@ -12,6 +12,7 @@ local GetNumAddOns = GetNumAddOns
 local GetRealZoneText = GetRealZoneText
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
+local UNKNOWN = UNKNOWN
 
 function E:AreOtherAddOnsEnabled()
 	local EP, addons, plugins = E.Libs.EP.plugins
