@@ -11,9 +11,9 @@ local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 
-local PLACEINBAGS_LOCATION = 0xFFFFFFFF
-local IGNORESLOT_LOCATION = 0xFFFFFFFE
-local UNIGNORESLOT_LOCATION = 0xFFFFFFFD
+local LOCATION_PLACEINBAGS = 0xFFFFFFFF
+local LOCATION_IGNORESLOT = 0xFFFFFFFE
+local LOCATION_UNIGNORESLOT = 0xFFFFFFFD
 
 local function UpdateAzeriteItem(self)
 	if not self.styled then
@@ -69,17 +69,20 @@ local function SkinItemFlyouts()
 	end
 
 	for i, button in ipairs(buttons) do
-		if buttonAnchor['bg'..i] and buttonAnchor['bg'..i]:GetTexture() ~= nil then
-			buttonAnchor['bg'..i]:SetTexture()
+		local bg = buttonAnchor['bg'..i]
+		if bg and bg:GetTexture() ~= nil then
+			bg:SetTexture()
 		end
 
 		if not button.isHooked then
+			local oldTex = button.icon:GetTexture()
 			button:StripTextures()
 			button:StyleButton(false)
 			button:GetNormalTexture():SetTexture()
 
 			button.icon:SetInside()
 			button.icon:SetTexCoord(unpack(E.TexCoords))
+			button.icon:SetTexture(oldTex)
 
 			if not button.backdrop then
 				button:SetFrameLevel(buttonAnchor:GetFrameLevel()+2)
@@ -88,15 +91,18 @@ local function SkinItemFlyouts()
 
 				S:HandleIconBorder(button.IconBorder)
 
-				if i ~= 1 then -- dont call this intially on placeInBags button
+				local r, g, b, a = unpack(E.media.bordercolor)
+				if i == 1 then -- dont call this intially on placeInBags button
+					button.backdrop:SetBackdropBorderColor(r, g, b, a)
+				else
 					button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
 				end
 
 				if i == 1 or i == 2 then
 					hooksecurefunc(button.icon, 'SetTexture', function(self)
 						local loc = self:GetParent().location
-						if loc == PLACEINBAGS_LOCATION or loc == IGNORESLOT_LOCATION or loc == UNIGNORESLOT_LOCATION then
-							self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+						if loc == LOCATION_PLACEINBAGS or loc == LOCATION_IGNORESLOT or loc == LOCATION_UNIGNORESLOT then
+							self:GetParent().backdrop:SetBackdropBorderColor(r, g, b, a)
 						end
 					end)
 				end
