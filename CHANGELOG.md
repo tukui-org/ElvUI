@@ -1,4 +1,10 @@
-### Version 12.01 [ ETA: 🍨 ]
+### Version 12.02 [ ETA: 🍨 ]
+
+**Fancy:**  
+
+___
+
+### Version 12.01 [ October 16th 2020 ]
 
 **Nice:**  
 Unitframe and Nameplate font issues (new method to get them showing properly)  
