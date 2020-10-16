@@ -542,7 +542,9 @@ function NP:ConfigureAll(skipUpdate)
 	end
 
 	if _G.ElvNP_Test:IsEnabled() then
+		NP.SkipFading = true
 		NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED')
+		NP.SkipFading = nil
 	end
 
 	NP:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
