@@ -427,6 +427,11 @@ local function CreateDTOptions(name, data)
 				type = 'toggle',
 				name = L["No Label"],
 			}
+		elseif key == 'ShowOthers' then
+			optionTable.args.ShowOthers = {
+				type = 'toggle',
+				name = L["Other AddOns"],
+			}
 		elseif key == 'textFormat' then
 			optionTable.args.textFormat = {
 				type = 'select',
