@@ -74,6 +74,10 @@ local C_NewItems_IsNewItem = C_NewItems.IsNewItem
 local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 local hooksecurefunc = hooksecurefunc
 
+local SplitContainerItem = SplitContainerItem
+local ReagentButtonInventorySlot = ReagentButtonInventorySlot
+local BankFrameItemButton_OnEnter = BankFrameItemButton_OnEnter
+
 local BAG_FILTER_ICONS = BAG_FILTER_ICONS
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
@@ -108,9 +112,9 @@ local CONTAINER_SCALE = 0.75
 
 local SEARCH_STRING = ''
 B.BAG_FILTER_ICONS = {
-	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 'Interface/ICONS/INV_Chest_Plate10',
-	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 'Interface/ICONS/INV_Potion_93',
-	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 'Interface/ICONS/INV_Fabric_Silk_02',
+	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 132745,		-- Interface/ICONS/INV_Chest_Plate10
+	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 134873,	-- Interface/ICONS/INV_Potion_93
+	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 132906,	-- Interface/ICONS/INV_Fabric_Silk_02
 }
 
 function B:GetContainerFrame(arg)
@@ -527,7 +531,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		local r, g, b = unpack(professionColors)
 		slot.newItemGlow:SetVertexColor(r, g, b)
 		slot:SetBackdropBorderColor(r, g, b)
-		slot.ignoreBorderColors = true
+		slot.forcedBorderColors = {r, g, b}
 	elseif clink then
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(clink)
 		slot.name = name
@@ -583,43 +587,46 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
-			slot.ignoreBorderColors = true
+			local rr, gg, bb, aa = unpack(B.QuestColors.questStarter)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb, aa)
+			slot:SetBackdropBorderColor(rr, gg, bb, aa)
+			slot.forcedBorderColors = {rr, gg, bb, aa}
+
 			if slot.questIcon then
 				slot.questIcon:Show()
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
-			slot.ignoreBorderColors = true
+			local rr, gg, bb, aa = unpack(B.QuestColors.questItem)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb, aa)
+			slot:SetBackdropBorderColor(rr, gg, bb, aa)
+			slot.forcedBorderColors = {rr, gg, bb, aa}
 		elseif B.db.qualityColors and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
 			slot.newItemGlow:SetVertexColor(r, g, b)
 			slot:SetBackdropBorderColor(r, g, b)
-			slot.ignoreBorderColors = true
+			slot.forcedBorderColors = {r, g, b}
 		elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 			local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
 			slot:SetBackdropBorderColor(rr, gg, bb)
-			slot.ignoreBorderColors = true
+			slot.forcedBorderColors = {rr, gg, bb}
 		else
 			local rr, gg, bb = unpack(E.media.bordercolor)
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
 			slot:SetBackdropBorderColor(rr, gg, bb)
 			slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
-			slot.ignoreBorderColors = nil
+			slot.forcedBorderColors = nil
 		end
 	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
 		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
 		slot:SetBackdropBorderColor(rr, gg, bb)
-		slot.ignoreBorderColors = true
+		slot.forcedBorderColors = {rr, gg, bb}
 	else
 		local rr, gg, bb = unpack(E.media.bordercolor)
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
 		slot:SetBackdropBorderColor(rr, gg, bb)
 		slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
-		slot.ignoreBorderColors = nil
+		slot.forcedBorderColors = nil
 	end
 
 	if E.db.bags.newItemGlow then
@@ -857,10 +864,11 @@ function B:GetBagAssignedInfo(holder)
 
 	if not active then
 		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		holder.ignoreBorderColors = nil --restore these borders to be updated
+		holder.forcedBorderColors = nil
 	else
-		holder:SetBackdropBorderColor(unpack(color or B.AssignmentColors[0]))
-		holder.ignoreBorderColors = true --dont allow these border colors to update for now
+		local r, g, b, a = unpack(color or B.AssignmentColors[0])
+		holder:SetBackdropBorderColor(r, g, b, a)
+		holder.forcedBorderColors = {r, g, b, a}
 		return active
 	end
 end
@@ -1073,31 +1081,34 @@ function B:UpdateReagentSlot(slotID)
 
 		-- color slot according to item quality
 		if questId and not isActiveQuest then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questStarter))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors.questStarter))
-			slot.ignoreBorderColors = true
+			local rr, gg, bb, aa = unpack(B.QuestColors.questStarter)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb, aa)
+			slot:SetBackdropBorderColor(rr, gg, bb, aa)
+			slot.forcedBorderColors = {rr, gg, bb, aa}
+
 			if slot.questIcon then
 				slot.questIcon:Show()
 			end
 		elseif questId or isQuestItem then
-			slot.newItemGlow:SetVertexColor(unpack(B.QuestColors.questItem))
-			slot:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
-			slot.ignoreBorderColors = true
+			local rr, gg, bb, aa = unpack(B.QuestColors.questItem)
+			slot.newItemGlow:SetVertexColor(rr, gg, bb, aa)
+			slot:SetBackdropBorderColor(rr, gg, bb, aa)
+			slot.forcedBorderColors = {rr, gg, bb, aa}
 		elseif B.db.qualityColors and slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON then
 			slot.newItemGlow:SetVertexColor(r, g, b)
 			slot:SetBackdropBorderColor(r, g, b)
-			slot.ignoreBorderColors = true
+			slot.forcedBorderColors = {r, g, b}
 		else
 			local rr, gg, bb = unpack(E.media.bordercolor)
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
 			slot:SetBackdropBorderColor(rr, gg, bb)
-			slot.ignoreBorderColors = nil
+			slot.forcedBorderColors = nil
 		end
 	else
 		local rr, gg, bb = unpack(E.media.bordercolor)
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
 		slot:SetBackdropBorderColor(rr, gg, bb)
-		slot.ignoreBorderColors = nil
+		slot.forcedBorderColors = nil
 	end
 
 	if E.db.bags.newItemGlow then
@@ -1835,8 +1846,12 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	return slot
 end
 
+function B:ReagentSplitStack(split)
+	SplitContainerItem(REAGENTBANK_CONTAINER, self:GetID(), split)
+end
+
 function B:ConstructReagentSlot(f, slotID)
-	local slot = CreateFrame('ItemButton', 'ElvUIReagentBankFrameItem'..slotID, f.reagentFrame, 'ReagentBankItemButtonGenericTemplate, BackdropTemplate')
+	local slot = CreateFrame('ItemButton', 'ElvUIReagentBankFrameItem'..slotID, f.reagentFrame, 'BankItemButtonGenericTemplate, BackdropTemplate')
 	slot:SetID(slotID)
 	slot.isReagent = true
 	slot:StyleButton()
@@ -1844,6 +1859,7 @@ function B:ConstructReagentSlot(f, slotID)
 	slot:SetNormalTexture(nil)
 
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
+	slot.icon:SetInside()
 	slot.IconBorder:Kill()
 	slot.IconOverlay:SetInside()
 	slot.IconOverlay2:SetInside()
@@ -1853,6 +1869,13 @@ function B:ConstructReagentSlot(f, slotID)
 	slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
 
 	slot.searchOverlay:SetAllPoints()
+
+	-- mimic ReagentBankItemButtonGenericTemplate
+	slot:RegisterForDrag('LeftButton')
+	slot:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
+	slot.GetInventorySlot = ReagentButtonInventorySlot
+	slot.UpdateTooltip = BankFrameItemButton_OnEnter
+	slot.SplitStack = B.ReagentSplitStack
 
 	if not slot.newItemGlow then
 		slot.newItemGlow = slot:CreateTexture(nil, 'OVERLAY')

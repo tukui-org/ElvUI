@@ -64,13 +64,17 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
-	local mainPowerType = UnitPowerType(unit)
-	local hasAltManaBar = ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass] and ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass][mainPowerType]
 	local mainCost, altCost = 0, 0
+	local mainType = UnitPowerType(unit)
+	local mainMax = UnitPowerMax(unit, mainType)
+	local isPlayer = UnitIsUnit('player', unit)
+	local altManaInfo = isPlayer and ALT_MANA_BAR_PAIR_DISPLAY_INFO[playerClass]
+	local hasAltManaBar = altManaInfo and altManaInfo[mainType]
+	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
 
 	if(event == 'UNIT_SPELLCAST_START' and startTime ~= endTime) then
 		local costTable = GetSpellPowerCost(spellID)
+		local requiresAura = isPlayer and #costTable > 1
 		for _, costInfo in next, costTable do
 			-- costInfo content:
 			-- - name: string (powerToken)
@@ -81,12 +85,15 @@ local function Update(self, event, unit)
 			-- - minCost: number
 			-- - hasRequiredAura: boolean
 			-- - requiredAuraID: number
-			if(costInfo.type == mainPowerType) then
-				mainCost = costInfo.cost
+
+			local cost, ctype, cperc = costInfo.cost, costInfo.type, costInfo.costPercent
+			local checkSpec = not requiresAura or costInfo.hasRequiredAura
+			if checkSpec and ctype == mainType then
+				mainCost = ((isPlayer or cost < mainMax) and cost) or (mainMax * cperc) / 100
 
 				break
-			elseif(costInfo.type == ADDITIONAL_POWER_BAR_INDEX) then
-				altCost = costInfo.cost
+			elseif hasAltManaBar and checkSpec and ctype == ADDITIONAL_POWER_BAR_INDEX then
+				altCost = cost
 
 				break
 			end
@@ -94,7 +101,7 @@ local function Update(self, event, unit)
 	end
 
 	if(element.mainBar) then
-		element.mainBar:SetMinMaxValues(0, UnitPowerMax(unit, mainPowerType))
+		element.mainBar:SetMinMaxValues(0, mainMax)
 		element.mainBar:SetValue(mainCost)
 		element.mainBar:Show()
 	end

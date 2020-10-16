@@ -7,8 +7,8 @@ local ipairs = ipairs
 local pairs = pairs
 
 local hooksecurefunc = hooksecurefunc
-local UnitIsUnit = UnitIsUnit
 local InCombatLockdown = InCombatLockdown
+local UnitIsUnit = UnitIsUnit
 
 local function HandlePushToTalkButton(button)
 	button:Size(button:GetSize())
@@ -378,6 +378,7 @@ function S:BlizzardOptions()
 	SplashFrame.Header:FontTemplate(nil, 22)
 	S:HandleButton(SplashFrame.BottomCloseButton)
 	S:HandleCloseButton(SplashFrame.TopCloseButton)
+	SplashFrame.BottomCloseButton:SetFrameLevel(SplashFrame.BottomCloseButton:GetFrameLevel() + 1)
 
 	-- New Voice Sliders
 	S:HandleSliderFrame(_G.UnitPopupVoiceSpeakerVolume.Slider)

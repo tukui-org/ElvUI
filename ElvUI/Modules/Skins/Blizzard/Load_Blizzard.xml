@@ -92,6 +92,7 @@
 	<Script file='PlayerChoice.lua'/>
 	<Script file='Runeforge.lua'/>
 	<Script file='Soulbinds.lua'/>
+	<Script file='SubscriptionInterstitial.lua'/>
 	<Script file='TorghastLevelPicker.lua'/>
 	<Script file='WeeklyRewards.lua'/>
 </Ui>

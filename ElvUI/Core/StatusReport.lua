@@ -12,6 +12,7 @@ local GetNumAddOns = GetNumAddOns
 local GetRealZoneText = GetRealZoneText
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
+local UNKNOWN = UNKNOWN
 
 function E:AreOtherAddOnsEnabled()
 	local EP, addons, plugins = E.Libs.EP.plugins
@@ -86,7 +87,7 @@ local EnglishSpecName = {
 }
 
 local function GetSpecName()
-	return EnglishSpecName[GetSpecializationInfo(GetSpecialization())]
+	return EnglishSpecName[GetSpecializationInfo(GetSpecialization())] or UNKNOWN
 end
 
 function E:CreateStatusContent(num, width, parent, anchorTo, content)
@@ -320,7 +321,7 @@ function E:UpdateStatusFrame()
 	local Section3 = StatusFrame.Section3
 	Section3.Content.Line4.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName())
 	Section3.Content.Line5.Text:SetFormattedText('Level: |cff4beb2c%s|r', E.mylevel)
-	Section3.Content.Line6.Text:SetFormattedText('Zone: |cff4beb2c%s|r', GetRealZoneText())
+	Section3.Content.Line6.Text:SetFormattedText('Zone: |cff4beb2c%s|r', GetRealZoneText() or UNKNOWN)
 
 	StatusFrame.TitleLogoFrame.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
 end

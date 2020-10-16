@@ -147,6 +147,7 @@ do
 	DisableAddOn('ElvUI_AuraBarsMovers')
 	DisableAddOn('ElvUI_CustomTweaks')
 	DisableAddOn('ElvUI_DTBars2')
+	DisableAddOn('ElvUI_QuestXP')
 end
 
 function E:OnEnable()

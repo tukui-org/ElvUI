@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local ceil = ceil
 local unpack = unpack
 local format, strfind = format, strfind
 local CooldownFrame_Set = CooldownFrame_Set
@@ -105,7 +104,7 @@ end
 
 function AB:PositionAndSizeBarShapeShift()
 	local buttonSpacing = self.db.stanceBar.buttonspacing
-	local backdropSpacing = self.db.stanceBar.backdropSpacing or self.db.stanceBar.buttonspacing
+	local backdropSpacing = self.db.stanceBar.backdropSpacing
 	local buttonsPerRow = self.db.stanceBar.buttonsPerRow
 	local numButtons = self.db.stanceBar.buttons
 	local size = self.db.stanceBar.buttonsize
@@ -124,44 +123,28 @@ function AB:PositionAndSizeBarShapeShift()
 	if bar.LastButton and numButtons > bar.LastButton then
 		numButtons = bar.LastButton
 	end
-
 	if bar.LastButton and buttonsPerRow > bar.LastButton then
 		buttonsPerRow = bar.LastButton
 	end
-
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons
 	end
 
-	local numColumns = ceil(numButtons / buttonsPerRow)
-	if numColumns < 1 then
-		numColumns = 1
-	end
+	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
+	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
+	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
 
-	if self.db.stanceBar.backdrop == true then
-		bar.backdrop:Show()
+	bar.backdrop:SetShown(self.db.stanceBar.backdrop)
+	bar.backdrop:ClearAllPoints()
+
+	-- mover magic ~Simpy
+	bar:ClearAllPoints()
+	if not bar.backdrop:IsShown() then
+		bar:SetPoint('BOTTOMLEFT', bar.mover)
+	elseif anchorUp then
+		bar:SetPoint('BOTTOMLEFT', bar.mover, 'BOTTOMLEFT', anchorLeft and E.Border or -E.Border, -E.Border)
 	else
-		bar.backdrop:Hide()
-		--Set size multipliers to 1 when backdrop is disabled
-		widthMult = 1
-		heightMult = 1
-	end
-
-	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:Size(barWidth, barHeight)
-
-	local horizontalGrowth, verticalGrowth
-	if point == 'TOPLEFT' or point == 'TOPRIGHT' then
-		verticalGrowth = 'DOWN'
-	else
-		verticalGrowth = 'UP'
-	end
-
-	if point == 'BOTTOMLEFT' or point == 'TOPLEFT' then
-		horizontalGrowth = 'RIGHT'
-	else
-		horizontalGrowth = 'LEFT'
+		bar:SetPoint('TOPLEFT', bar.mover, 'TOPLEFT', anchorLeft and E.Border or -E.Border, E.Border)
 	end
 
 	bar.mouseover = self.db.stanceBar.mouseover
@@ -181,7 +164,7 @@ function AB:PositionAndSizeBarShapeShift()
 
 	bar:EnableMouse(not self.db.stanceBar.clickThrough)
 
-	local button, lastButton, lastColumnButton
+	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
 	local useMasque = MasqueGroup and E.private.actionbar.masque.stanceBar
 	local firstButtonSpacing = (self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
 
@@ -207,11 +190,12 @@ function AB:PositionAndSizeBarShapeShift()
 			end
 
 			button:Point(point, bar, point, x, y)
+			anchorRowButton = button
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0
 			local y = -buttonSpacing
 			local buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
-			if verticalGrowth == 'UP' then
+			if anchorUp then
 				y = buttonSpacing
 				buttonPoint = 'BOTTOM'
 				anchorPoint = 'TOP'
@@ -221,7 +205,7 @@ function AB:PositionAndSizeBarShapeShift()
 			local x = buttonSpacing
 			local y = 0
 			local buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
-			if horizontalGrowth == 'LEFT' then
+			if anchorLeft then
 				x = -buttonSpacing
 				buttonPoint = 'RIGHT'
 				anchorPoint = 'LEFT'
@@ -230,10 +214,21 @@ function AB:PositionAndSizeBarShapeShift()
 			button:Point(buttonPoint, lastButton, anchorPoint, x, y)
 		end
 
+		if i == 1 then
+			bar.backdrop:Point(point, button, point, anchorLeft and backdropSpacing or -backdropSpacing, anchorUp and -backdropSpacing or backdropSpacing)
+		elseif i == buttonsPerRow then
+			bar.backdrop:Point(horizontalGrowth, button, horizontalGrowth, anchorLeft and -backdropSpacing or backdropSpacing, 0)
+			anchorRowButton = button
+		end
+
 		if i > numButtons then
 			button:SetAlpha(0)
 		else
 			button:SetAlpha(bar.db.alpha)
+
+			local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
+			bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and backdropSpacing or -backdropSpacing)
+			lastShownButton = button
 		end
 
 		if not button.ICON then
@@ -262,6 +257,9 @@ function AB:PositionAndSizeBarShapeShift()
 			end
 		end
 	end
+
+	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	if useMasque then
 		MasqueGroup:ReSkin()
@@ -336,8 +334,10 @@ function AB:UpdateStanceBindings()
 end
 
 function AB:CreateBarShapeShift()
-	bar:CreateBackdrop(self.db.transparent and 'Transparent')
-	bar.backdrop:SetAllPoints()
+	bar.backdrop = CreateFrame('Frame', nil, bar, 'BackdropTemplate')
+	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
+	bar.backdrop:SetFrameLevel(0)
+
 	bar:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
 
 	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
