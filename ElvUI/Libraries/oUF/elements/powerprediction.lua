@@ -83,13 +83,13 @@ local function Update(self, event, unit)
 			-- - hasRequiredAura: boolean
 			-- - requiredAuraID: number
 			if(costInfo.type == mainPowerType) then
-				mainCost = costInfo.cost
 				mainMax = UnitPowerMax(unit, mainPowerType)
+				mainCost = (mainMax * costInfo.costPercent) / 100
 
 				break
 			elseif(costInfo.type == ADDITIONAL_POWER_BAR_INDEX) then
-				altCost = costInfo.cost
 				altMax = UnitPowerMax(unit, ADDITIONAL_POWER_BAR_INDEX)
+				altCost = (altMax * costInfo.costPercent) / 100
 
 				break
 			end
@@ -98,13 +98,13 @@ local function Update(self, event, unit)
 
 	if(element.mainBar) then
 		element.mainBar:SetMinMaxValues(0, mainMax)
-		element.mainBar:SetValue(mainCost < mainMax and mainCost or 0)
+		element.mainBar:SetValue(mainCost)
 		element.mainBar:Show()
 	end
 
 	if(element.altBar and hasAltManaBar) then
 		element.altBar:SetMinMaxValues(0, altMax)
-		element.altBar:SetValue(altCost < altMax and altCost or 0)
+		element.altBar:SetValue(altCost)
 		element.altBar:Show()
 	end
 
