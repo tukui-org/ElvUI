@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local ceil = ceil
 local unpack = unpack
 local format, strfind = format, strfind
 local CooldownFrame_Set = CooldownFrame_Set

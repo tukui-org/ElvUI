@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local ceil, unpack = ceil, unpack
+local unpack = unpack
 local ipairs, pairs, select = ipairs, pairs, select
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
