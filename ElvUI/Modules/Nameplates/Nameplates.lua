@@ -321,6 +321,11 @@ function NP:UpdatePlate(nameplate, updateBase)
 		if nameplate.RaisedElement:IsShown() then
 			nameplate.RaisedElement:Hide()
 		end
+
+		if nameplate == _G.ElvNP_Test then
+			nameplate.Castbar:SetAlpha(0)
+			nameplate.ClassPower:SetAlpha(0)
+		end
 	elseif sf.Visibility or sf.NameOnly or db.nameOnly then
 		NP:DisablePlate(nameplate, sf.NameOnly or (db.nameOnly and not sf.Visibility))
 
@@ -541,19 +546,18 @@ function NP:ConfigureAll(skipUpdate)
 		_G.ElvNP_StaticSecure:Hide()
 	end
 
-	if _G.ElvNP_Test:IsEnabled() then
-		NP.SkipFading = true
-		NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED')
-		NP.SkipFading = nil
-	end
-
 	NP:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
+
+	NP.SkipFading = true
+
+	if _G.ElvNP_Test:IsEnabled() then
+		NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED')
+	end
 
 	if skipUpdate then -- since this is a fake plate, we actually need to trigger this always
 		NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
 		_G.ElvNP_Player:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
-		NP.SkipFading = true
 		for nameplate in pairs(NP.Plates) do
 			if nameplate.frameType == 'PLAYER' then
 				nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
@@ -572,8 +576,9 @@ function NP:ConfigureAll(skipUpdate)
 
 			nameplate:UpdateAllElements('ForceUpdate')
 		end
-		NP.SkipFading = nil
 	end
+
+	NP.SkipFading = nil
 end
 
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
@@ -679,7 +684,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			end
 		end
 
-		if NP.db.fadeIn and (event == 'NAME_PLATE_UNIT_ADDED' and nameplate.frameType ~= 'PLAYER') and not NP.SkipFading then
+		if NP.db.fadeIn and event == 'NAME_PLATE_UNIT_ADDED' and not NP.SkipFading then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
