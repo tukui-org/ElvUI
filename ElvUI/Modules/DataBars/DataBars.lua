@@ -115,6 +115,8 @@ function DB:CombatCheck(event)
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable and bar.db.hideInCombat then
 			bar:SetShown(notInCombat)
+			bar.holder:SetShown(notInCombat)
+
 			if notInCombat and bar.Update then
 				bar:Update()
 			end
