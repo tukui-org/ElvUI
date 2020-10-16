@@ -51,6 +51,13 @@ local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
 hiddenParent:SetAllPoints()
 hiddenParent:Hide()
 
+local flipPoints = {
+	TOPLEFT = 'BOTTOMRIGHT',
+	TOPRIGHT = 'BOTTOMLEFT',
+	BOTTOMLEFT = 'TOPRIGHT',
+	BOTTOMRIGHT = 'TOPLEFT'
+}
+
 AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
@@ -129,17 +136,22 @@ AB.customExitButton = {
 	tooltip = _G.LEAVE_VEHICLE,
 }
 
-do
-	local function barSize(size, btnSpacing, sideSpacing, mult, num)
-		local allButtons = size * (num * mult)
-		local allSpacing = (btnSpacing * (num - 1)) + sideSpacing
-		return allButtons + allSpacing
-	end
-
-	function AB:SetBarSize(bar, size, btnSpacing, sideSpacing, widthMult, heightMult, buttonsPerRow, numColumns)
-		local width = barSize(size, btnSpacing, sideSpacing, widthMult, buttonsPerRow)
-		local height = barSize(size, btnSpacing, sideSpacing, heightMult, numColumns)
-		bar:Size(width, height)
+function AB:HandleBackdropMultiplier(bar, spacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	local useWidthMult = widthMult > 1
+	local useHeightMult = heightMult > 1
+	if useWidthMult or useHeightMult then
+		local oldWidth, oldHeight = bar.backdrop:GetSize()
+		if useHeightMult then
+			local height = oldHeight - spacing
+			local offset = height * (heightMult - 1)
+			local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
+			bar.backdrop:Point(anchorPoint, lastShownButton, anchorPoint, 0, anchorUp and offset or -offset)
+		end
+		if useWidthMult then
+			local width = oldWidth - spacing
+			local offset = width * (widthMult - 1)
+			bar.backdrop:Point(horizontalGrowth, anchorRowButton, horizontalGrowth, anchorLeft and -offset or offset, 0)
+		end
 	end
 end
 
@@ -152,23 +164,20 @@ function AB:PositionAndSizeBar(barName)
 	local numButtons = db.buttons
 	local size = db.buttonsize
 	local point = db.point
-	local numColumns = ceil(numButtons / buttonsPerRow)
 	local visibility = db.visibility
 	local bar = AB.handledBars[barName]
 
 	bar.db = db
 	bar.db.position = nil --Depreciated
-	bar.backdrop:SetShown(db.backdrop)
 
 	if visibility and visibility:match('[\n\r]') then
 		visibility = visibility:gsub('[\n\r]','')
 	end
 
-	if numColumns < 1 then numColumns = 1 end
 	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
 
-	local sideSpacing = db.backdrop and (E.Border + backdropSpacing) or E.Spacing
-	AB:SetBarSize(bar, size, buttonSpacing, sideSpacing * 2, db.backdrop and db.widthMult or 1, db.backdrop and db.heightMult or 1, buttonsPerRow, numColumns)
+	local borderSpacing = (E.Border + backdropSpacing)
+	local sideSpacing = db.backdrop and borderSpacing or E.Spacing
 
 	bar.mouseover = db.mouseover
 	if bar.mouseover then
@@ -189,18 +198,32 @@ function AB:PositionAndSizeBar(barName)
 
 	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
 	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
+	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
 
-	local button, lastButton, lastColumnButton
+	bar.backdrop:SetShown(db.backdrop)
+	bar.backdrop:ClearAllPoints()
+
+	-- mover magic ~Simpy
+	bar:ClearAllPoints()
+	if anchorUp then
+		bar:SetPoint('BOTTOMLEFT', bar.mover, 'BOTTOMLEFT', anchorLeft and E.Border or -E.Border, -E.Border)
+	else
+		bar:SetPoint('TOPLEFT', bar.mover, 'TOPLEFT', anchorLeft and E.Border or -E.Border, E.Border)
+	end
+
+	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
-		button = bar.buttons[i]
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
+
+		button = bar.buttons[i]
 		button:SetParent(bar)
 		button:ClearAllPoints()
 		button:SetAttribute('showgrid', 1)
 		button:EnableMouse(not db.clickThrough)
 		button:Size(size)
 
+		local buttonPoint, anchorPoint
 		if i == 1 then
 			local x, y
 			if point == 'BOTTOMLEFT' then
@@ -216,8 +239,8 @@ function AB:PositionAndSizeBar(barName)
 			button:Point(point, bar, point, x, y)
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local y = -buttonSpacing
-			local buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
-			if verticalGrowth == 'UP' then
+			buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
+			if anchorUp then
 				y = buttonSpacing
 				buttonPoint = 'BOTTOM'
 				anchorPoint = 'TOP'
@@ -225,8 +248,8 @@ function AB:PositionAndSizeBar(barName)
 			button:Point(buttonPoint, lastColumnButton, anchorPoint, 0, y)
 		else
 			local x = buttonSpacing
-			local buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
-			if horizontalGrowth == 'LEFT' then
+			buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
+			if anchorLeft then
 				x = -buttonSpacing
 				buttonPoint = 'RIGHT'
 				anchorPoint = 'LEFT'
@@ -241,8 +264,24 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 		end
 
+		if i == 1 then
+			bar.backdrop:Point(point, button, point, anchorLeft and backdropSpacing or -backdropSpacing, anchorUp and -backdropSpacing or backdropSpacing)
+		elseif i == buttonsPerRow then
+			bar.backdrop:Point(horizontalGrowth, button, horizontalGrowth, anchorLeft and -backdropSpacing or backdropSpacing, 0)
+			anchorRowButton = button
+		end
+
+		if button:IsShown() then
+			anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
+			bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and backdropSpacing or -backdropSpacing)
+			lastShownButton = button
+		end
+
 		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
+
+	AB:HandleBackdropMultiplier(bar, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	bar:SetSize(bar.backdrop:GetSize())
 
 	if db.enabled or not bar.initialized then
 		if AB.barDefaults['bar'..bar.id].conditions:find('[form,noform]') then
@@ -287,8 +326,9 @@ function AB:CreateBar(id)
 	bar:SetFrameStrata('LOW')
 	bar.id = id
 
-	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
-	bar.backdrop:SetAllPoints()
+	bar.backdrop = CreateFrame('Frame', nil, bar, 'BackdropTemplate')
+	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
+	bar.backdrop:SetFrameLevel(0)
 
 	bar.buttons = {}
 	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons
@@ -344,6 +384,7 @@ function AB:CreateBar(id)
 
 	AB.handledBars['bar'..id] = bar
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS',nil,'actionbar,playerBars,bar'..id)
+
 	AB:PositionAndSizeBar('bar'..id)
 
 	return bar
