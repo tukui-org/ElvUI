@@ -174,8 +174,8 @@ local function Visibility(self, event, unit)
 		stateChanged = true
 	end
 
-	if element.PostUpdateVisibility then
-		element.PostUpdateVisibility(self, event, unit, not useClassbar, stateChanged)
+	if element.PostVisibility then
+		element.PostVisibility(self, event, unit, not useClassbar, stateChanged)
 	end
 
 	if not useClassbar then

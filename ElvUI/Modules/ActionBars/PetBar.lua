@@ -2,9 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local ceil = ceil
 local unpack = unpack
 
+local CreateFrame = CreateFrame
 local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar
@@ -109,7 +109,6 @@ function AB:PositionAndSizeBarPet()
 	local size = self.db.barPet.buttonsize
 	local autoCastSize = (size / 2) - (size / 7.5)
 	local point = self.db.barPet.point
-	local numColumns = ceil(numButtons / buttonsPerRow)
 	local widthMult = self.db.barPet.widthMult
 	local heightMult = self.db.barPet.heightMult
 	local visibility = self.db.barPet.visibility
@@ -125,23 +124,6 @@ function AB:PositionAndSizeBarPet()
 		buttonsPerRow = numButtons
 	end
 
-	if numColumns < 1 then
-		numColumns = 1
-	end
-
-	if self.db.barPet.backdrop == true then
-		bar.backdrop:Show()
-	else
-		bar.backdrop:Hide()
-		--Set size multipliers to 1 when backdrop is disabled
-		widthMult = 1
-		heightMult = 1
-	end
-
-	local barWidth = (size * (buttonsPerRow * widthMult)) + ((buttonSpacing * (buttonsPerRow - 1)) * widthMult) + (buttonSpacing * (widthMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	local barHeight = (size * (numColumns * heightMult)) + ((buttonSpacing * (numColumns - 1)) * heightMult) + (buttonSpacing * (heightMult-1)) + ((self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)*2)
-	bar:Size(barWidth, barHeight)
-
 	if self.db.barPet.enabled then
 		bar:SetScale(1)
 		bar:SetAlpha(bar.db.alpha)
@@ -152,17 +134,21 @@ function AB:PositionAndSizeBarPet()
 		E:DisableMover(bar.mover:GetName())
 	end
 
-	local horizontalGrowth, verticalGrowth
-	if point == 'TOPLEFT' or point == 'TOPRIGHT' then
-		verticalGrowth = 'DOWN'
-	else
-		verticalGrowth = 'UP'
-	end
+	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
+	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
+	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
 
-	if point == 'BOTTOMLEFT' or point == 'TOPLEFT' then
-		horizontalGrowth = 'RIGHT'
+	bar.backdrop:SetShown(self.db.barPet.backdrop)
+	bar.backdrop:ClearAllPoints()
+
+	-- mover magic ~Simpy
+	bar:ClearAllPoints()
+	if not bar.backdrop:IsShown() then
+		bar:SetPoint('BOTTOMLEFT', bar.mover)
+	elseif anchorUp then
+		bar:SetPoint('BOTTOMLEFT', bar.mover, 'BOTTOMLEFT', anchorLeft and E.Border or -E.Border, -E.Border)
 	else
-		horizontalGrowth = 'LEFT'
+		bar:SetPoint('TOPLEFT', bar.mover, 'TOPLEFT', anchorLeft and E.Border or -E.Border, E.Border)
 	end
 
 	bar.mouseover = self.db.barPet.mouseover
@@ -182,7 +168,7 @@ function AB:PositionAndSizeBarPet()
 
 	bar:EnableMouse(not self.db.barPet.clickThrough)
 
-	local button, lastButton, lastColumnButton, autoCast
+	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton, autoCast
 	local firstButtonSpacing = (self.db.barPet.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		button = _G['PetActionButton'..i]
@@ -212,11 +198,12 @@ function AB:PositionAndSizeBarPet()
 			end
 
 			button:Point(point, bar, point, x, y)
+			anchorRowButton = button
 		elseif (i - 1) % buttonsPerRow == 0 then
 			local x = 0
 			local y = -buttonSpacing
 			local buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
-			if verticalGrowth == 'UP' then
+			if anchorUp then
 				y = buttonSpacing
 				buttonPoint = 'BOTTOM'
 				anchorPoint = 'TOP'
@@ -226,7 +213,7 @@ function AB:PositionAndSizeBarPet()
 			local x = buttonSpacing
 			local y = 0
 			local buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
-			if horizontalGrowth == 'LEFT' then
+			if anchorLeft then
 				x = -buttonSpacing
 				buttonPoint = 'RIGHT'
 				anchorPoint = 'LEFT'
@@ -235,16 +222,30 @@ function AB:PositionAndSizeBarPet()
 			button:Point(buttonPoint, lastButton, anchorPoint, x, y)
 		end
 
+		if i == 1 then
+			bar.backdrop:Point(point, button, point, anchorLeft and backdropSpacing or -backdropSpacing, anchorUp and -backdropSpacing or backdropSpacing)
+		elseif i == buttonsPerRow then
+			bar.backdrop:Point(horizontalGrowth, button, horizontalGrowth, anchorLeft and -backdropSpacing or backdropSpacing, 0)
+			anchorRowButton = button
+		end
+
 		if i > numButtons then
 			button:SetScale(0.0001)
 			button:SetAlpha(0)
 		else
 			button:SetScale(1)
 			button:SetAlpha(bar.db.alpha)
+
+			local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
+			bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and backdropSpacing or -backdropSpacing)
+			lastShownButton = button
 		end
 
 		self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.petBar and true or nil)
 	end
+
+	AB:HandleBackdropMultiplier(bar, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	RegisterStateDriver(bar, 'show', visibility)
 
@@ -274,8 +275,10 @@ function AB:UpdatePetBindings()
 end
 
 function AB:CreateBarPet()
-	bar:CreateBackdrop(self.db.transparent and 'Transparent')
-	bar.backdrop:SetAllPoints()
+	bar.backdrop = CreateFrame('Frame', nil, bar, 'BackdropTemplate')
+	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
+	bar.backdrop:SetFrameLevel(0)
+
 	if self.db.bar4.enabled then
 		bar:Point('RIGHT', _G.ElvUI_Bar4, 'LEFT', -4, 0)
 	else

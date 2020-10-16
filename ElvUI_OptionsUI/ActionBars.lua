@@ -532,8 +532,6 @@ E.Options.args.actionbar = {
 						TOPRIGHT = 'TOPRIGHT',
 						BOTTOMLEFT = 'BOTTOMLEFT',
 						BOTTOMRIGHT = 'BOTTOMRIGHT',
-						BOTTOM = 'BOTTOM',
-						TOP = 'TOP',
 					},
 				},
 				generalOptions = {

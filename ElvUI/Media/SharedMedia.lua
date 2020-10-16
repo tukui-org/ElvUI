@@ -9,8 +9,7 @@ E.Media = {
 	Textures = {}
 }
 
-local format = format
-local ipairs, type = ipairs, type
+local format, ipairs, type = format, ipairs, type
 local westAndRU = LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western
 
 do
@@ -203,3 +202,36 @@ AddMedia('logo','FoxWarrior')
 AddMedia('logo','DeathlyHallows')
 AddMedia('logo','GoldShield')
 AddMedia('logo','Gem')
+
+do -- LSM Font Preloader ~Simpy
+	local preloader = CreateFrame('Frame')
+	preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -500)
+	preloader:SetSize(100, 100)
+
+	local cacheFont = function(key, data)
+		local loadFont = preloader:CreateFontString()
+		loadFont:SetAllPoints()
+
+		if pcall(loadFont.SetFont, loadFont, data, 14) then
+			pcall(loadFont.SetText, loadFont, 'cache')
+		end
+	end
+
+	-- Preload ElvUI Invisible
+	cacheFont('Invisible', E.Media.Fonts.Invisible)
+
+	-- Lets load all the fonts in LSM to prevent fonts not being ready
+	local sharedFonts = LSM:HashTable('font')
+	for key, data in next, sharedFonts do
+		cacheFont(key, data)
+	end
+
+	-- Now lets hook it so we can preload any other AddOns add to LSM
+	hooksecurefunc(LSM, 'Register', function(_, mediatype, key, data)
+		if not mediatype or type(mediatype) ~= 'string' then return end
+
+		if mediatype:lower() == 'font' then
+			cacheFont(key, data)
+		end
+	end)
+end

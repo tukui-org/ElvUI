@@ -431,22 +431,6 @@ function DT:GetTextAttributes(panel, db)
 	return width, height, vertical, numPoints
 end
 
--- this is used to make texts show on init load, when the font was added after elvui but registers
--- during the load screen, for some reason blizzard doesnt render the font unless we change the
--- text after the first frame? its probably related to the texture not inheriting alpha problem.
--- also, this seems to be a problem with SetJustifyH not triggering a rerender too. ~Simpy
-local RerenderFont = function(fs)
-	local text = fs:GetText()
-	fs:SetText('\10')
-	fs:SetText(text)
-end
-
-local FixFonts = function(fontStrings)
-	for fs in pairs(fontStrings) do
-		RerenderFont(fs)
-	end
-end
-
 function DT:UpdatePanelInfo(panelName, panel, ...)
 	if not panel then panel = DT.RegisteredPanels[panelName] end
 	local db = panel.db or P.datatexts.panels[panelName] and DT.db.panels[panelName]
@@ -494,13 +478,15 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		end
 	end
 
-	panel.ignoreBorderColors = not db.border or nil
+	--Note: some plugins dont have db.border, we need the nil checks
+	panel.forcedBorderColors = (db.border == false and {0,0,0,0}) or nil
 	panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
 
 	--Show Border option
-	if panel.iborder then panel.iborder:SetShown(not panel.ignoreBorderColors) end
-	if panel.oborder then panel.oborder:SetShown(not panel.ignoreBorderColors) end
-	if panel.ignoreBorderColors then panel:SetBackdropBorderColor(0,0,0,0) end
+	if db.border ~= nil then
+		if panel.iborder then panel.iborder:SetShown(db.border) end
+		if panel.oborder then panel.oborder:SetShown(db.border) end
+	end
 
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
@@ -509,6 +495,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt:ClearAllPoints()
 		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 		dt:UnregisterAllEvents()
+		dt:EnableMouseWheel(false)
 		dt:SetScript('OnUpdate', nil)
 		dt:SetScript('OnEvent', nil)
 		dt:SetScript('OnClick', nil)
@@ -535,8 +522,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:SetJustifyH(db.textJustify or 'CENTER')
 		dt.text:SetWordWrap(DT.db.wordWrap)
 		dt.text:SetText()
-
-		RerenderFont(dt.text) -- SetJustifyH wont update without a rerender?
 
 		if battlePanel then
 			dt:SetScript('OnClick', DT.ToggleBattleStats)
@@ -747,12 +732,8 @@ function DT:CURRENCY_DISPLAY_UPDATE(_, currencyType)
 	end
 end
 
-function DT:PLAYER_ENTERING_WORLD(_, initLogin)
+function DT:PLAYER_ENTERING_WORLD()
 	DT:LoadDataTexts()
-
-	if initLogin then
-		E:Delay(1, FixFonts, DT.FontStrings)
-	end
 end
 
 function DT:Initialize()

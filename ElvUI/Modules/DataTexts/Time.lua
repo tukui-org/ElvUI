@@ -167,18 +167,21 @@ local function OnEnter()
 
 	for i = 1, GetNumWorldPVPAreas() do
 		local _, localizedName, isActive, _, startTime, canEnter = GetWorldPVPAreaInfo(i)
-		if canEnter then
+
+		if isActive then
+			startTime = WINTERGRASP_IN_PROGRESS
+		elseif not startTime then
+			startTime = QUEUE_TIME_UNAVAILABLE
+		elseif startTime ~= 0 then
+			startTime = SecondsToTime(startTime, false, nil, 3)
+		end
+
+		if canEnter and startTime ~= 0 then
 			if not addedHeader then
 				DT.tooltip:AddLine(VOICE_CHAT_BATTLEGROUND)
 				addedHeader = true
 			end
-			if isActive then
-				startTime = WINTERGRASP_IN_PROGRESS
-			elseif startTime == nil then
-				startTime = QUEUE_TIME_UNAVAILABLE
-			else
-				startTime = SecondsToTime(startTime, false, nil, 3)
-			end
+
 			DT.tooltip:AddDoubleLine(format(formatBattleGroundInfo, localizedName), startTime, 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 		end
 	end

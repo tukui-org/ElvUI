@@ -33,7 +33,7 @@ function S:AddonList()
 	_G.AddonListScrollFrame.backdrop:Point('BOTTOMRIGHT', 0, -1)
 
 	for i = 1, maxShown do
-		S:HandleCheckBox(_G['AddonListEntry'..i..'Enabled'], nil, nil, true)
+		S:HandleCheckBox(_G['AddonListEntry'..i..'Enabled'])
 		S:HandleButton(_G['AddonListEntry'..i].LoadAddonButton)
 	end
 
@@ -90,12 +90,19 @@ function S:AddonList()
 				end
 
 				local checktex = checkbox:GetCheckedTexture()
+				checktex:Show()
+
 				if not enabled and checkall == 1 then
 					checktex:SetVertexColor(0.3, 0.3, 0.3)
-					checktex:SetDesaturated(false)
-					checktex:Show()
-				elseif checkstate == 0 then
+					checktex:SetDesaturated(true)
+				elseif not checkbox.state or checkbox.state == 0 then
 					checktex:Hide()
+				elseif checkbox.state == 1 then
+					checktex:SetVertexColor(0.6, 0.6, 0.6)
+					checktex:SetDesaturated(true)
+				elseif checkbox.state == 2 then
+					checktex:SetVertexColor(unpack(E.media.rgbvaluecolor))
+					checktex:SetDesaturated(false)
 				end
 			end
 		end

@@ -42,7 +42,7 @@ function UF:Configure_ClassBar(frame, cur)
 	local SPACING = (UF.BORDER + UF.SPACING)*2
 
 	local color = E.db.unitframe.colors.borderColor
-	if not bars.backdrop.ignoreBorderColors then
+	if not bars.backdrop.forcedBorderColors then
 		bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 
@@ -75,7 +75,9 @@ function UF:Configure_ClassBar(frame, cur)
 			bars[i].backdrop:Hide()
 
 			if i <= frame.MAX_CLASS_BAR then
-				bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				if not bars[i].backdrop.forcedBorderColors then
+					bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				end
 
 				bars[i]:Height(bars:GetHeight())
 				if frame.MAX_CLASS_BAR == 1 then
@@ -440,7 +442,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.frequentUpdates = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower
 	additionalPower.PostUpdateColor = UF.PostColorAdditionalPower
-	additionalPower.PostUpdateVisibility = UF.PostVisibilityAdditionalPower
+	additionalPower.PostVisibility = UF.PostVisibilityAdditionalPower
 	additionalPower:CreateBackdrop(nil, nil, nil, nil, true)
 	additionalPower:SetStatusBarTexture(E.media.blankTex)
 	UF.statusbars[additionalPower] = true
@@ -503,7 +505,7 @@ function UF:Construct_Stagger(frame)
 	local stagger = CreateFrame('Statusbar', '$parent_Stagger', frame)
 	stagger:CreateBackdrop(nil,nil, nil, nil, true)
 	stagger.PostUpdate = UF.PostUpdateStagger
-	stagger.PostUpdateVisibility = UF.PostUpdateVisibilityStagger
+	stagger.PostVisibility = UF.PostUpdateVisibilityStagger
 	UF.statusbars[stagger] = true
 
 	stagger:SetScript('OnShow', ToggleResourceBar)

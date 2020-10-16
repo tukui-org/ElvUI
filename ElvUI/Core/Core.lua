@@ -418,7 +418,7 @@ function E:UpdateBorderColors()
 	local r, g, b = unpack(E.media.bordercolor)
 	for frame in pairs(E.frames) do
 		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.ignoreBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
+			if not (frame.ignoreUpdates or frame.forcedBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
 				frame:SetBackdropBorderColor(r, g, b)
 			end
 		else
@@ -429,7 +429,7 @@ function E:UpdateBorderColors()
 	local r2, g2, b2 = unpack(E.media.unitframeBorderColor)
 	for frame in pairs(E.unitFrameElements) do
 		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.ignoreBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
+			if not (frame.ignoreUpdates or frame.forcedBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
 				frame:SetBackdropBorderColor(r2, g2, b2)
 			end
 		else

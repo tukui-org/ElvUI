@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
+local pairs = pairs
+local unpack = unpack
 local tinsert = tinsert
-local unpack, pairs = unpack, pairs
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local hooksecurefunc = hooksecurefunc
@@ -87,22 +88,26 @@ function AB:SetupExtraButton()
 	ExtraActionBarHolder = CreateFrame('Frame', nil, E.UIParent)
 	ExtraActionBarHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', -150, 300)
 
-	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
-	ExtraActionBarFrame:ClearAllPoints()
-	ExtraActionBarFrame:SetAllPoints()
-	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
-
 	ZoneAbilityHolder = CreateFrame('Frame', nil, E.UIParent)
 	ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 150, 300)
-
-	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
-	ZoneAbilityFrame:ClearAllPoints()
-	ZoneAbilityFrame:SetAllPoints()
-	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ZoneAbilityFrame = nil
 
 	ZoneAbilityFrame.SpellButtonContainer.holder = ZoneAbilityHolder
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+
+	-- try to shutdown the container movement and taints
+	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
+	_G.ExtraAbilityContainer.SetSize = E.noop
+
+	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
+	ZoneAbilityFrame:ClearAllPoints()
+	ZoneAbilityFrame:SetAllPoints()
+	ZoneAbilityFrame.ignoreInLayout = true
+
+	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
+	ExtraActionBarFrame:ClearAllPoints()
+	ExtraActionBarFrame:SetAllPoints()
+	ExtraActionBarFrame.ignoreInLayout = true
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
@@ -135,20 +140,6 @@ function AB:SetupExtraButton()
 
 				spellButton.IsSkinned = true
 			end
-		end
-	end)
-
-	-- Sometimes the ZoneButtons anchor it to the ExtraAbilityContainer, we dont want this.
-	hooksecurefunc(ZoneAbilityFrame, 'SetParent', function(frame, parent)
-		if parent ~= ZoneAbilityHolder then
-			frame:SetParent(ZoneAbilityHolder)
-		end
-	end)
-
-	-- Also track the parent for the Boss Button
-	hooksecurefunc(ExtraActionBarFrame, 'SetParent', function(frame, parent)
-		if parent ~= ExtraActionBarHolder then
-			frame:SetParent(ExtraActionBarHolder)
 		end
 	end)
 

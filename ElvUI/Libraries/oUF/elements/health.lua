@@ -165,10 +165,10 @@ local function Update(self, event, unit)
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 	element:SetMinMaxValues(0, max)
 
-	if not UnitIsConnected(unit) then
-		element:SetValue(max)
-	else
+	if(UnitIsConnected(unit)) then
 		element:SetValue(cur)
+	else
+		element:SetValue(max)
 	end
 
 	element.cur = cur
