@@ -74,7 +74,7 @@ local function Update(self, event, unit)
 
 	if(event == 'UNIT_SPELLCAST_START' and startTime ~= endTime) then
 		local costTable = GetSpellPowerCost(spellID)
-		local checkRequiredAura = #costTable > 1
+		local requiresAura = isPlayer and #costTable > 1
 		for _, costInfo in next, costTable do
 			-- costInfo content:
 			-- - name: string (powerToken)
@@ -87,7 +87,7 @@ local function Update(self, event, unit)
 			-- - requiredAuraID: number
 
 			local cost, ctype, cperc = costInfo.cost, costInfo.type, costInfo.costPercent
-			local checkSpec = not checkRequiredAura or costInfo.hasRequiredAura
+			local checkSpec = not requiresAura or costInfo.hasRequiredAura
 			if checkSpec and ctype == mainType then
 				mainCost = ((isPlayer or cost < mainMax) and cost) or (mainMax * cperc) / 100
 
