@@ -98,13 +98,13 @@ local function Update(self, event, unit)
 
 	if(element.mainBar) then
 		element.mainBar:SetMinMaxValues(0, mainMax)
-		element.mainBar:SetValue(mainCost ~= mainMax and mainCost or 0)
+		element.mainBar:SetValue(mainCost < mainMax and mainCost or 0)
 		element.mainBar:Show()
 	end
 
 	if(element.altBar and hasAltManaBar) then
 		element.altBar:SetMinMaxValues(0, altMax)
-		element.altBar:SetValue(altCost ~= altMax and altCost or 0)
+		element.altBar:SetValue(altCost < altMax and altCost or 0)
 		element.altBar:Show()
 	end
 
