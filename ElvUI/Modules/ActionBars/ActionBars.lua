@@ -151,7 +151,7 @@ end
 function AB:HandleBackdropMover(bar, backdropSpacing)
 	local width, height = bar.backdrop:GetSize()
 	if not bar.backdrop:IsShown() then
-		local spacing = E:Scale(backdropSpacing) * 2
+		local spacing = backdropSpacing * 2
 		bar:SetSize(width - spacing, height - spacing)
 	else
 		bar:SetSize(width, height)
