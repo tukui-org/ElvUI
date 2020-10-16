@@ -1,42 +1,40 @@
 ### Version 12.01 [ ETA: 🍨 ]
 
-**New:**
-oUF updates  
-System DT options: No Label, Other Addons  
-ElvUI_QuestXP is now depreciated and forced off  
-
-**Fixed Stuff:**  
+**Nice:**  
 Unitframe and Nameplate font issues (new method to get them showing properly)  
 Actionbar Backdrops we reworked to fix them being a little funky, this includes Pet and Stance bar  
 Boss and Zone Button being jumpy  
 
+**Good:**
+oUF updates  
+System DT options: No Label, Other Addons  
+ElvUI_QuestXP is now depreciated and forced off  
+
+**Fixed:**
+Voice Chat Error  
+NewComer Chat Error  
+Reagent Bank busted  
 Status Report errors  
 Tooltips breaking other things  
 Ace3 skin breaking other things  
 Buffwatch errors (they are Aurawatch now)  
 Databars not showing properly with combat setting  
 Databars Show Border option not working properly  
-
-Voice Chat Error  
-NewComer Chat Error  
-Reagent Bank busted  
-
 Unitframe Additional power works again  
 Unitframe Heal and Power Prediction  
-
 Nameplate power bars  
 Nameplate failing to update  
 Test Nameplate works a lot better now  
-
 Time Datatext showing empty world PVP stuff  
 
-**Fixed Skin Errors:**
+**Unbroken Skins:**
 Pet Battle Tooltip  
 Scrap Machine  
 Azerite Respec  
 AutoComplete backdrop  
 Bag Bar icons being wrong  
 Bank Skin with Bag module off  
+Equipment Flyout was busted
 
 ___
 

@@ -135,14 +135,14 @@ function AB:HandleBackdropMultiplier(bar, spacing, widthMult, heightMult, anchor
 	if useWidthMult or useHeightMult then
 		local oldWidth, oldHeight = bar.backdrop:GetSize()
 		if useHeightMult then
-			local height = oldHeight - spacing
-			local offset = height * (heightMult - 1)
+			local height = oldHeight - (E.Border * 2)
+			local offset = (height + spacing) * (heightMult - 1)
 			local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
 			bar.backdrop:Point(anchorPoint, lastShownButton, anchorPoint, 0, anchorUp and offset or -offset)
 		end
 		if useWidthMult then
-			local width = oldWidth - spacing
-			local offset = width * (widthMult - 1)
+			local width = oldWidth - (E.Border * 2)
+			local offset = (width + spacing) * (widthMult - 1)
 			bar.backdrop:Point(horizontalGrowth, anchorRowButton, horizontalGrowth, anchorLeft and -offset or offset, 0)
 		end
 	end
