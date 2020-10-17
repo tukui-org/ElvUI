@@ -103,7 +103,7 @@ end
 
 function AB:PositionAndSizeBarPet()
 	local buttonSpacing = self.db.barPet.buttonspacing
-	local backdropSpacing = self.db.barPet.backdropSpacing or self.db.barPet.buttonspacing
+	local backdropSpacing = self.db.barPet.backdropSpacing
 	local buttonsPerRow = self.db.barPet.buttonsPerRow
 	local numButtons = self.db.barPet.buttons
 	local size = self.db.barPet.buttonsize
@@ -244,7 +244,7 @@ function AB:PositionAndSizeBarPet()
 		self:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.petBar and true or nil)
 	end
 
-	AB:HandleBackdropMultiplier(bar, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	RegisterStateDriver(bar, 'show', visibility)

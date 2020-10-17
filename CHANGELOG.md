@@ -1,6 +1,46 @@
-### Version 12.01 [ ETA: 🍨 ]
+### Version 12.02 [ ETA: 🍨 ]
 
-**Shiny:**  
+**Fancy:**  
+
+___
+
+### Version 12.01 [ October 16th 2020 ]
+
+**Nice:**  
+Unitframe and Nameplate font issues (new method to get them showing properly)  
+Actionbar Backdrops we reworked to fix them being a little funky, this includes Pet and Stance bar  
+Boss and Zone Button being jumpy  
+
+**Good:**
+oUF updates  
+System DT options: No Label, Other Addons  
+ElvUI_QuestXP is now depreciated and forced off  
+
+**Fixed:**
+Voice Chat Error  
+NewComer Chat Error  
+Reagent Bank busted  
+Status Report Errors  
+Tooltips breaking other things  
+Ace3 skin breaking other things  
+Buffwatch errors (they are Aurawatch now)  
+Databars not showing properly with combat setting  
+Databars Show Border option not working properly  
+Unitframe Additional power works again  
+Unitframe Heal and Power Prediction  
+Nameplate Power Bars were weird  
+Nameplate failing to update  
+Test Nameplate works a lot better now  
+Time Datatext showing empty world PVP stuff  
+
+**Unbroken Skins:**
+Pet Battle Tooltip  
+Scrap Machine  
+Azerite Respec  
+AutoComplete backdrop  
+Bag Bar icons being wrong  
+Bank Skin with Bag module off  
+Equipment Flyout was busted
 
 ___
 

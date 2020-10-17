@@ -987,6 +987,8 @@ function mod:StyleFilterPass(frame, actions)
 end
 
 function mod:StyleFilterClear(frame, updateBase)
+	if frame == _G.ElvNP_Test then return end
+
 	local c = frame.StyleFilterChanges
 	if c and next(c) then
 		local shouldUpdate = c.NameOnly or c.Visibility
@@ -1026,12 +1028,16 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 }
 
 function mod:StyleFilterSetVariables(nameplate)
+	if nameplate == _G.ElvNP_Test then return end
+
 	for _, func in pairs(mod.StyleFilterEventFunctions) do
 		func(nameplate)
 	end
 end
 
 function mod:StyleFilterClearVariables(nameplate)
+	if nameplate == _G.ElvNP_Test then return end
+
 	nameplate.isTarget = nil
 	nameplate.isFocused = nil
 	nameplate.inVehicle = nil
@@ -1212,6 +1218,8 @@ function mod:StyleFilterConfigure()
 end
 
 function mod:StyleFilterUpdate(frame, event)
+	if frame == _G.ElvNP_Test then return end
+
 	if not frame.StyleFilterChanges or not mod.StyleFilterTriggerEvents[event] then return end
 
 	mod:StyleFilterClear(frame, true)
@@ -1304,6 +1312,8 @@ end
 
 -- events we actually register on plates when they aren't added
 function mod:StyleFilterEvents(nameplate)
+	if nameplate == _G.ElvNP_Test then return end
+
 	-- these events get added onto StyleFilterDefaultEvents to be watched,
 	-- the ones added from here should not by registered already
 	mod:StyleFilterRegister(nameplate,'MODIFIER_STATE_CHANGED', true)

@@ -104,7 +104,7 @@ end
 
 function AB:PositionAndSizeBarShapeShift()
 	local buttonSpacing = self.db.stanceBar.buttonspacing
-	local backdropSpacing = self.db.stanceBar.backdropSpacing or self.db.stanceBar.buttonspacing
+	local backdropSpacing = self.db.stanceBar.backdropSpacing
 	local buttonsPerRow = self.db.stanceBar.buttonsPerRow
 	local numButtons = self.db.stanceBar.buttons
 	local size = self.db.stanceBar.buttonsize
@@ -258,7 +258,7 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 	end
 
-	AB:HandleBackdropMultiplier(bar, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	if useMasque then

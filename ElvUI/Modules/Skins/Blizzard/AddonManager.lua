@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local gsub = gsub
+local unpack = unpack
 local GetNumAddOns = GetNumAddOns
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnEnableState = GetAddOnEnableState
