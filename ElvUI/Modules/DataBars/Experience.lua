@@ -29,7 +29,7 @@ function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 
 	if C_QuestLog_ShouldShowQuestRewards(questID) then
 		local isCompleted = C_QuestLog_ReadyForTurnIn(questID)
-		if completedOnly and isCompleted or (not completedOnly and not isCompleted) then
+		if not completedOnly or isCompleted then
 			QuestLogXP = QuestLogXP + GetQuestLogRewardXP()
 		end
 	end
