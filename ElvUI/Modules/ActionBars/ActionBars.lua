@@ -1249,6 +1249,10 @@ function AB:LAB_CooldownUpdate(button, _, duration)
 	end
 end
 
+function AB:PLAYER_ENTERING_WORLD()
+	AB:AdjustMaxStanceButtons('PLAYER_ENTERING_WORLD')
+end
+
 function AB:Initialize()
 	AB.db = E.db.actionbar
 
@@ -1291,6 +1295,7 @@ function AB:Initialize()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 
+	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')

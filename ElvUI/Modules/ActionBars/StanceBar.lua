@@ -316,7 +316,7 @@ function AB:AdjustMaxStanceButtons(event)
 	self:PositionAndSizeBarShapeShift()
 
 	-- sometimes after combat lock down `event` may be true because of passing it back with `AB.NeedsAdjustMaxStanceButtons`
-	if event == 'UPDATE_SHAPESHIFT_FORMS' then
+	if event == 'UPDATE_SHAPESHIFT_FORMS' or event == 'PLAYER_ENTERING_WORLD' then
 		self:StyleShapeShift()
 	end
 end
@@ -350,8 +350,7 @@ function AB:CreateBarShapeShift()
 	self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'AdjustMaxStanceButtons')
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons')
 
-	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar', true)
-	self:AdjustMaxStanceButtons()
-	self:StyleShapeShift()
 	self:UpdateStanceBindings()
+
+	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar', true)
 end
