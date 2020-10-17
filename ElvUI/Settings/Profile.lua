@@ -2140,7 +2140,7 @@ P.actionbar = {
 		buttonSize = 20,
 		buttonSpacing = 2,
 		alpha = 1,
-		visibility = 'show',
+		visibility = '[petbattle] hide; show',
 	},
 
 	globalFadeAlpha = 0,
