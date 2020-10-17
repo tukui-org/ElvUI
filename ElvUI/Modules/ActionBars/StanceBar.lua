@@ -344,11 +344,11 @@ function AB:CreateBarShapeShift()
 	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN')
-	self:RegisterEvent('UPDATE_BONUS_ACTIONBAR', 'AdjustMaxStanceButtons')
-	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons')
 	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift')
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift')
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift')
+	self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'AdjustMaxStanceButtons')
+	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons')
 
 	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar', true)
 	self:AdjustMaxStanceButtons()
