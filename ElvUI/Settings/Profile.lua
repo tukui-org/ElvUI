@@ -161,6 +161,7 @@ for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite
 		clickThrough = false,
 		orientation = 'AUTOMATIC',
 		reverseFill = false,
+		showBubbles = false,
 	}
 end
 
@@ -2139,7 +2140,7 @@ P.actionbar = {
 		buttonSize = 20,
 		buttonSpacing = 2,
 		alpha = 1,
-		visibility = 'show',
+		visibility = '[petbattle] hide; show',
 	},
 
 	globalFadeAlpha = 0,

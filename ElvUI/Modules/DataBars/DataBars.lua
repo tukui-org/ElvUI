@@ -52,6 +52,38 @@ function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	return bar
 end
 
+function DB:CreateBarBubbles(bar)
+	if bar.bubbles then return end
+
+	bar.bubbles = {}
+
+	for i = 1, 19 do
+		bar.bubbles[i] = bar:CreateTexture(nil, 'OVERLAY')
+		bar.bubbles[i]:SetColorTexture(0, 0, 0)
+	end
+end
+
+function DB:UpdateBarBubbles(bar)
+	if not bar.bubbles then return end
+
+	local width, height = bar.db.width, bar.db.height
+	local vertical = bar:GetOrientation() ~= 'HORIZONTAL'
+	local bubbleWidth, bubbleHeight = vertical and (width - 2) or 1, vertical and 1 or (height - 2)
+	local offset = (vertical and height or width) / 20
+
+	for i, bubble in ipairs(bar.bubbles) do
+		bubble:ClearAllPoints()
+		bubble:SetSize(bubbleWidth, bubbleHeight)
+		bubble:SetShown(bar.db.showBubbles)
+
+		if vertical then
+			bubble:Point('TOP', bar, 'BOTTOM', 0, offset * i)
+		else
+			bubble:Point('RIGHT', bar, 'LEFT', offset * i, 0)
+		end
+	end
+end
+
 function DB:UpdateAll()
 	local texture = DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex
 
@@ -95,6 +127,8 @@ function DB:UpdateAll()
 				child:SetReverseFill(reverseFill)
 			end
 		end
+
+		DB:UpdateBarBubbles(bar)
 	end
 
 	DB:PvPCheck()

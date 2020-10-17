@@ -103,6 +103,7 @@ end
 
 function DB:HonorBar()
 	local Honor = DB:CreateBar('ElvUI_HonorBar', 'Honor', DB.HonorBar_Update, DB.HonorBar_OnEnter, DB.HonorBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -255})
+	DB:CreateBarBubbles(Honor)
 
 	E:CreateMover(Honor.holder, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 
