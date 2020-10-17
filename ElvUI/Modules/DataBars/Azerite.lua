@@ -134,6 +134,7 @@ end
 
 function DB:AzeriteBar()
 	local Azerite = DB:CreateBar('ElvUI_AzeriteBar', 'Azerite', DB.AzeriteBar_Update, DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
+	DB:CreateBarBubbles(Azerite)
 
 	E:CreateMover(Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
 

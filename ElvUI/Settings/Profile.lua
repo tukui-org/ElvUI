@@ -161,6 +161,7 @@ for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite
 		clickThrough = false,
 		orientation = 'AUTOMATIC',
 		reverseFill = false,
+		showBubbles = false,
 	}
 end
 
