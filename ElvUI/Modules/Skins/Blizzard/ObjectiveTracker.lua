@@ -61,7 +61,6 @@ local function SkinItemButton(_, block)
 	if item and not item.skinned then
 		item:CreateBackdrop('Transparent')
 		item.backdrop:SetAllPoints()
-		item.backdrop:SetFrameLevel(3)
 		item:StyleButton()
 		item:SetNormalTexture(nil)
 		item.icon:SetTexCoord(unpack(E.TexCoords))
@@ -85,6 +84,10 @@ local function SkinItemButton(_, block)
 
 		E:RegisterCooldown(item.Cooldown)
 		item.skinned = true
+	end
+
+	if item.backdrop then
+		item.backdrop:SetFrameLevel(item:GetFrameLevel() - 1)
 	end
 end
 
