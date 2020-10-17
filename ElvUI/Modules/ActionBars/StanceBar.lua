@@ -323,12 +323,16 @@ end
 
 function AB:UpdateStanceBindings()
 	for i = 1, NUM_STANCE_SLOTS do
+		local button = _G['ElvUI_StanceBarButton'..i]
+		if not button then break end
+
 		if self.db.hotkeytext then
-			_G['ElvUI_StanceBarButton'..i..'HotKey']:Show()
-			_G['ElvUI_StanceBarButton'..i..'HotKey']:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
-			self:FixKeybindText(_G['ElvUI_StanceBarButton'..i])
+			button.HotKey:Show()
+			button.HotKey:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
+
+			self:FixKeybindText(button)
 		else
-			_G['ElvUI_StanceBarButton'..i..'HotKey']:Hide()
+			button.HotKey:Hide()
 		end
 	end
 end
@@ -349,8 +353,6 @@ function AB:CreateBarShapeShift()
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift')
 	self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'AdjustMaxStanceButtons')
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons')
-
-	self:UpdateStanceBindings()
 
 	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar', true)
 end
