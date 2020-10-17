@@ -70,7 +70,6 @@ local function SkinItemButton(_, block)
 		item.Count:Point('TOPLEFT', 1, -1)
 		item.Count:FontTemplate(nil, 14, 'OUTLINE')
 		item.Count:SetShadowOffset(5, -5)
-		item.HotKey:SetAlpha(0)
 
 		local rangeOverlay = item:CreateTexture(nil, 'OVERLAY')
 		rangeOverlay:SetTexture(E.Media.Textures.White8x8)
@@ -80,9 +79,8 @@ local function SkinItemButton(_, block)
 		hooksecurefunc(item.HotKey, 'Show', HotkeyShow)
 		hooksecurefunc(item.HotKey, 'Hide', HotkeyHide)
 		hooksecurefunc(item.HotKey, 'SetVertexColor', HotkeyColor)
-
-		local r, g, b = item.HotKey:GetTextColor()
-		rangeOverlay:SetVertexColor(r, g, b, 0.2)
+		HotkeyColor(item.Hotkey, item.HotKey:GetTextColor())
+		item.HotKey:SetAlpha(0)
 
 		E:RegisterCooldown(item.Cooldown)
 		item.skinned = true
