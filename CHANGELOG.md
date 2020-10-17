@@ -1,7 +1,17 @@
-### Version 12.02 [ ETA: 🍨 ]
+### Version 12.03 [ ETA: 🍨 ]
+
+**Yay:**  
+
+___
+
+### Version 12.02 [ October 17th 2020 ]
 
 **Fancy:**  
-
+Clean Boss Button option wasnt saving properly.  
+Added a Show Bubbles option for Databars.  
+Fixed Difficulty Datatext error.  
+Added two buttons to Quick Toggle Blizzard Skins, in the skin section of config.  
+Allowed the MicroBar to be shown in Pet Battles by editing the visbility setting.  
 ___
 
 ### Version 12.01 [ October 16th 2020 ]

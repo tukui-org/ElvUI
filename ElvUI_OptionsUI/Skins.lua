@@ -3,6 +3,8 @@ local C, L = unpack(select(2, ...))
 local B = E:GetModule('Blizzard')
 local ACH = E.Libs.ACH
 
+local pairs = pairs
+
 E.Options.args.skins = ACH:Group(L["Skins"], nil, 2, 'tab')
 E.Options.args.skins.args.intro = ACH:Description(L["SKINS_DESC"], 0)
 E.Options.args.skins.args.general = ACH:MultiSelect(L["General"], nil, 1, nil, nil, nil,
