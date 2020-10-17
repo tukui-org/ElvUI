@@ -39,7 +39,7 @@ function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	bar:Hide()
 
 	bar.barTexture = bar:GetStatusBarTexture()
-	bar.text = bar:CreateFontString(nil, 'OVERLAY', 7)
+	bar.text = bar:CreateFontString(nil, 'OVERLAY', nil, 7)
 	bar.text:FontTemplate()
 	bar.text:Point('CENTER')
 
@@ -58,7 +58,7 @@ function DB:CreateBarBubbles(bar)
 	bar.bubbles = {}
 
 	for i = 1, 19 do
-		bar.bubbles[i] = bar:CreateTexture(nil, 'OVERLAY', 0)
+		bar.bubbles[i] = bar:CreateTexture(nil, 'OVERLAY', nil, 0)
 		bar.bubbles[i]:SetColorTexture(0, 0, 0)
 	end
 end
