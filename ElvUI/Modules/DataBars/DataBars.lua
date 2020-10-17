@@ -66,21 +66,21 @@ end
 function DB:UpdateBarBubbles(bar)
 	if not bar.bubbles then return end
 
-	local bubbleWidth, bubbleHeight = (bar.db.height > bar.db.width) and (bar.db.width - 2) or 1, (bar.db.height > bar.db.width) and 1 or (bar.db.height - 2)
-	local offset = bar.db.height > bar.db.width and (bar.db.height / 20) or bar.db.width / 20
-	local orientation = bar:GetOrientation()
+	local width, height = bar.db.width, bar.db.height
+	local vertical = bar:GetOrientation() ~= 'HORIZONTAL'
+	local bubbleWidth, bubbleHeight = vertical and (width - 2) or 1, vertical and 1 or (height - 2)
+	local offset = (vertical and height or width) / 20
 
 	for i, bubble in ipairs(bar.bubbles) do
 		bubble:ClearAllPoints()
 		bubble:SetSize(bubbleWidth, bubbleHeight)
-
-		if orientation == 'HORIZONTAL' then
-			bubble:Point('RIGHT', bar, 'LEFT', offset * i, 0)
-		else
-			bubble:Point('TOP', bar, 'BOTTOM', 0, offset * i)
-		end
-
 		bubble:SetShown(bar.db.showBubbles)
+
+		if vertical then
+			bubble:Point('TOP', bar, 'BOTTOM', 0, offset * i)
+		else
+			bubble:Point('RIGHT', bar, 'LEFT', offset * i, 0)
+		end
 	end
 end
 

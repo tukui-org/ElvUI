@@ -120,12 +120,22 @@ local function OnEvent(self)
 end
 
 local function OnEnter()
+	if not (DungeonDifficultyID or RaidDifficultyID or LegacyRaidDifficultyID) then return end
+
 	DT.tooltip:ClearLines()
 	DT.tooltip:SetText(L["Current Difficulties:"])
 	DT.tooltip:AddLine(' ')
-	if DungeonDifficultyID then DT.tooltip:AddLine(format('%s %s', DungeonTexture, DiffLabel[DungeonDifficultyID]), 1, 1, 1) end
-	if RaidDifficultyID then DT.tooltip:AddLine(format('%s %s', RaidTexture, DiffLabel[RaidDifficultyID]), 1, 1, 1) end
-	if LegacyRaidDifficultyID then DT.tooltip:AddLine(format('%s %s', LegacyTexture, DiffLabel[LegacyRaidDifficultyID]), 1, 1, 1) end
+
+	if DungeonDifficultyID then
+		DT.tooltip:AddLine(format('%s %s', DungeonTexture, DiffLabel[DungeonDifficultyID]), 1, 1, 1)
+	end
+	if RaidDifficultyID then
+		DT.tooltip:AddLine(format('%s %s', RaidTexture, DiffLabel[RaidDifficultyID]), 1, 1, 1)
+	end
+	if LegacyRaidDifficultyID then
+		DT.tooltip:AddLine(format('%s %s', LegacyTexture, DiffLabel[LegacyRaidDifficultyID]), 1, 1, 1)
+	end
+
 	DT.tooltip:Show()
 end
 
