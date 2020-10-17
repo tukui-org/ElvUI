@@ -1369,7 +1369,7 @@ function E:InitializeModules()
 end
 
 function E:DBConversions()
-	if E.private.skins.cleanBossButton ~= nil then
+	if E.private.skins.cleanBossButton then
 		E.db.actionbar.extraActionButton.clean = E.private.skins.cleanBossButton
 		E.private.skins.cleanBossButton = nil
 	end
