@@ -79,7 +79,7 @@ local function SkinItemButton(_, block)
 		hooksecurefunc(item.HotKey, 'Show', HotkeyShow)
 		hooksecurefunc(item.HotKey, 'Hide', HotkeyHide)
 		hooksecurefunc(item.HotKey, 'SetVertexColor', HotkeyColor)
-		HotkeyColor(item.Hotkey, item.HotKey:GetTextColor())
+		HotkeyColor(item.HotKey, item.HotKey:GetTextColor())
 		item.HotKey:SetAlpha(0)
 
 		E:RegisterCooldown(item.Cooldown)
