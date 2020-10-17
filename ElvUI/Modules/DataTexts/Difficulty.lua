@@ -123,9 +123,9 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 	DT.tooltip:SetText(L["Current Difficulties:"])
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(format('%s %s', DungeonTexture, DiffLabel[DungeonDifficultyID]), 1, 1, 1)
-	DT.tooltip:AddLine(format('%s %s', RaidTexture, DiffLabel[RaidDifficultyID]), 1, 1, 1)
-	DT.tooltip:AddLine(format('%s %s', LegacyTexture, DiffLabel[LegacyRaidDifficultyID]), 1, 1, 1)
+	if DungeonDifficultyID then DT.tooltip:AddLine(format('%s %s', DungeonTexture, DiffLabel[DungeonDifficultyID]), 1, 1, 1) end
+	if RaidDifficultyID then DT.tooltip:AddLine(format('%s %s', RaidTexture, DiffLabel[RaidDifficultyID]), 1, 1, 1) end
+	if LegacyRaidDifficultyID then DT.tooltip:AddLine(format('%s %s', LegacyTexture, DiffLabel[LegacyRaidDifficultyID]), 1, 1, 1) end
 	DT.tooltip:Show()
 end
 
