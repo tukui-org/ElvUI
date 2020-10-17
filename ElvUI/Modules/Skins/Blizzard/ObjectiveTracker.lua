@@ -58,7 +58,9 @@ end
 
 local function SkinItemButton(_, block)
 	local item = block.itemButton
-	if item and not item.skinned then
+	if not item then return end
+
+	if not item.skinned then
 		item:CreateBackdrop('Transparent')
 		item.backdrop:SetAllPoints()
 		item:StyleButton()
