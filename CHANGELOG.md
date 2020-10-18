@@ -1,13 +1,19 @@
-### Version 12.03 [ ETA: 🍨 ]
+### Version 12.04 [ ETA: 🍨 ]
+
+**Nice:**  
+
+___
+
+### Version 12.03 [ October 17th 2020 ]
 
 **Yay:**  
-Battleground Datatext was showing in Arena where it doesnt work anymore  
 Fixed taint for Override Action Button Show  
-Objective Tracker button has a range overlay now and the 'its grey' should be fixed  
+Battleground Datatext was showing in Arena where it doesnt work anymore  
+Objective Tracker button has a range overlay now and the (its grey) should be fixed  
 Stance bar showing when entering a Battleground on priest and it switching you to healer from Shadow  
-Databar Quest XP will show green for quests you are on and have completed, unless you have completed only on  
+Databar Quest XP will show green for quests you are on and have completed, unless you have completed enabled  
 Heal Pred was anchoring incorrectly when absorb style was set to None  
-
+Fixed oUF alternativepower UnitIsUnit error  
 
 ___
 
