@@ -231,15 +231,15 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 		frame.needsSizeUpdated = nil
 	end
 
-	local colors = UF.db.colors.healPrediction
-	local maxOverflow = colors.maxOverflow or 0
-
 	-- absorbs is set to none so hide both and kill code execution
 	if db.absorbStyle == 'NONE' then
 		healAbsorbBar:Hide()
 		absorbBar:Hide()
 		return
 	end
+
+	local colors = UF.db.colors.healPrediction
+	local maxOverflow = colors.maxOverflow or 0
 
 	-- handle over heal absorbs
 	healAbsorbBar:ClearAllPoints()
