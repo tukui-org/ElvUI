@@ -80,12 +80,6 @@ local function EquipmentDisplayButton(button)
 	local id = button.id or button:GetID()
 	if not id then return end
 
-	local anchor = _G.EquipmentFlyoutFrame.buttonFrame
-	local bg = anchor['bg'..id]
-	if bg and bg:GetTexture() ~= nil then
-		bg:SetTexture()
-	end
-
 	if not button.isHooked then
 		local oldTex = button.icon:GetTexture()
 		button:StripTextures()
@@ -97,7 +91,6 @@ local function EquipmentDisplayButton(button)
 		button.icon:SetTexture(oldTex)
 
 		if not button.backdrop then
-			button:SetFrameLevel(anchor:GetFrameLevel()+2)
 			button:CreateBackdrop()
 			button.backdrop:SetAllPoints()
 
@@ -282,6 +275,7 @@ function S:CharacterFrame()
 			Slot:StripTextures()
 			Slot:CreateBackdrop()
 			Slot.backdrop:SetAllPoints()
+			Slot.backdrop:SetFrameLevel(Slot:GetFrameLevel())
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
 			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
