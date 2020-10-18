@@ -515,7 +515,7 @@ function S:Blizzard_Collections()
 					elseif texture == 'transmog-wardrobe-border-unusable' then
 						border:SetBackdropBorderColor(0.9, 0.3, 0.3)
 					elseif Model.TransmogStateTexture:IsShown() then
-						border:SetBackdropBorderColor(0.4, 1.0, 0.4)
+						border:SetBackdropBorderColor(1, 0.7, 1)
 					else
 						border:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					end
@@ -531,7 +531,7 @@ function S:Blizzard_Collections()
 			Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
 			Glowframe.backdrop:SetPoint('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
 			Glowframe.backdrop:SetFrameLevel(pending:GetFrameLevel())
-			Glowframe.backdrop:SetBackdropBorderColor(1.0, 0.4, 1.0)
+			Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
 			Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
 
 			for i = 1, 12 do
