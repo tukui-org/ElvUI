@@ -25,13 +25,9 @@ local QuestLogXP = 0
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	if not questID then return end
 
-	C_QuestLog_SetSelectedQuest(questID)
-
-	if C_QuestLog_ShouldShowQuestRewards(questID) then
-		local isCompleted = C_QuestLog_ReadyForTurnIn(questID)
-		if not completedOnly or isCompleted then
-			QuestLogXP = QuestLogXP + GetQuestLogRewardXP()
-		end
+	local isCompleted = C_QuestLog_ReadyForTurnIn(questID)
+	if not completedOnly or isCompleted then
+		QuestLogXP = QuestLogXP + GetQuestLogRewardXP(questID)
 	end
 end
 
