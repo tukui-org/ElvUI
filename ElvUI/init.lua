@@ -71,6 +71,8 @@ E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
 E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
 E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
+E.twoPixelsPlease = false -- changing this option is not supported! :P
+
 -- Item Qualitiy stuff - used by MerathilisUI
 E.QualityColors = {}
 local qualityColors = BAG_ITEM_QUALITY_COLORS
@@ -185,7 +187,6 @@ function E:OnInitialize()
 		end
 	end
 
-	E.twoPixelsPlease = false -- changing this option is not supported! :P
 	E.ScanTooltip = CreateFrame('GameTooltip', 'ElvUI_ScanTooltip', _G.UIParent, 'GameTooltipTemplate')
 	E.PixelMode = E.twoPixelsPlease or E.private.general.pixelPerfect -- keep this over `UIScale`
 	E.Border = (E.PixelMode and not E.twoPixelsPlease) and 1 or 2
