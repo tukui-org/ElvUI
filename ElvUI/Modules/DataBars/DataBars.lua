@@ -3,8 +3,8 @@ local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local unpack = unpack
-local pairs, select = pairs, select
+local unpack, select = unpack, select
+local pairs, ipairs = pairs, ipairs
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
