@@ -3,8 +3,8 @@ local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local unpack = unpack
-local pairs, select = pairs, select
+local unpack, select = unpack, select
+local pairs, ipairs = pairs, ipairs
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
@@ -39,7 +39,7 @@ function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	bar:Hide()
 
 	bar.barTexture = bar:GetStatusBarTexture()
-	bar.text = bar:CreateFontString(nil, 'OVERLAY')
+	bar.text = bar:CreateFontString(nil, 'OVERLAY', nil, 7)
 	bar.text:FontTemplate()
 	bar.text:Point('CENTER')
 
@@ -58,7 +58,7 @@ function DB:CreateBarBubbles(bar)
 	bar.bubbles = {}
 
 	for i = 1, 19 do
-		bar.bubbles[i] = bar:CreateTexture(nil, 'OVERLAY')
+		bar.bubbles[i] = bar:CreateTexture(nil, 'OVERLAY', nil, 0)
 		bar.bubbles[i]:SetColorTexture(0, 0, 0)
 	end
 end

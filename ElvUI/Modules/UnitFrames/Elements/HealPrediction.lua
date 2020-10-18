@@ -185,7 +185,6 @@ function UF:Configure_HealComm(frame)
 			else
 				absorbBar:Point(p1, pred.otherBarTexture, p2)
 			end
-
 		else
 			local p1 = reverseFill and 'TOP' or 'BOTTOM'
 			local p2 = reverseFill and 'BOTTOM' or 'TOP'
@@ -212,7 +211,6 @@ function UF:Configure_HealComm(frame)
 			else
 				absorbBar:Point(p1, pred.otherBarTexture, p2)
 			end
-
 		end
 	elseif frame:IsElementEnabled('HealthPrediction') then
 		frame:DisableElement('HealthPrediction')
@@ -228,16 +226,16 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	local healAbsorbBar = pred.healAbsorbBar
 	local absorbBar = pred.absorbBar
 
+	if frame.needsSizeUpdated then
+		UF:SetSize_HealComm(frame)
+		frame.needsSizeUpdated = nil
+	end
+
 	-- absorbs is set to none so hide both and kill code execution
 	if db.absorbStyle == 'NONE' then
 		healAbsorbBar:Hide()
 		absorbBar:Hide()
 		return
-	end
-
-	if frame.needsSizeUpdated then
-		UF:SetSize_HealComm(frame)
-		frame.needsSizeUpdated = nil
 	end
 
 	local colors = UF.db.colors.healPrediction

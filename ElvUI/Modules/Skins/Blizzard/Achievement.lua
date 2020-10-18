@@ -214,10 +214,10 @@ function S:Blizzard_AchievementUI(event)
 	AchievementFrame.backdrop:Point('BOTTOMRIGHT')
 
 	_G.AchievementFrameHeaderTitle:ClearAllPoints()
-	_G.AchievementFrameHeaderTitle:Point('TOPLEFT', AchievementFrame.backdrop, 'TOPLEFT', -45, -8)
+	_G.AchievementFrameHeaderTitle:Point('TOP', AchievementFrame.backdrop, 'TOP', 0, -8)
 
 	_G.AchievementFrameHeaderPoints:ClearAllPoints()
-	_G.AchievementFrameHeaderPoints:Point('LEFT', _G.AchievementFrameHeaderTitle, 'RIGHT', 2, 0)
+	_G.AchievementFrameHeaderPoints:Point('CENTER', _G.AchievementFrameHeaderTitle, 'CENTER', 0, 0)
 
 	--Backdrops
 	_G.AchievementFrameCategories:StripTextures()

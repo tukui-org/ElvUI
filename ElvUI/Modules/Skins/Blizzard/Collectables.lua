@@ -514,6 +514,8 @@ function S:Blizzard_Collections()
 						border:SetBackdropBorderColor(0.9, 0.9, 0.3)
 					elseif texture == 'transmog-wardrobe-border-unusable' then
 						border:SetBackdropBorderColor(0.9, 0.3, 0.3)
+					elseif Model.TransmogStateTexture:IsShown() then
+						border:SetBackdropBorderColor(1, 0.7, 1)
 					else
 						border:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					end
@@ -521,22 +523,30 @@ function S:Blizzard_Collections()
 			end
 		end
 
-		if Frame.PendingTransmogFrame then
-			Frame.PendingTransmogFrame.Glowframe:SetAtlas(nil)
-			Frame.PendingTransmogFrame.Glowframe:CreateBackdrop()
-			Frame.PendingTransmogFrame.Glowframe.backdrop:SetOutside()
-			Frame.PendingTransmogFrame.Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
-			Frame.PendingTransmogFrame.Glowframe.backdrop:SetBackdropBorderColor(1, .77, 1, 1)
-			Frame.PendingTransmogFrame.Glowframe = Frame.PendingTransmogFrame.Glowframe.backdrop
+		local pending = Frame.PendingTransmogFrame
+		if pending then
+			local Glowframe = pending.Glowframe
+			Glowframe:SetAtlas(nil)
+			Glowframe:CreateBackdrop()
+			Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
+			Glowframe.backdrop:SetPoint('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
+			Glowframe.backdrop:SetFrameLevel(pending:GetFrameLevel())
+			Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
+			Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
 
 			for i = 1, 12 do
+				if i < 5 then
+					Frame.PendingTransmogFrame['Smoke'..i]:Hide()
+				end
+
 				Frame.PendingTransmogFrame['Wisp'..i]:Hide()
 			end
 		end
 
-		if Frame.PagingFrame then
-			S:HandleNextPrevButton(Frame.PagingFrame.PrevPageButton, nil, nil, true)
-			S:HandleNextPrevButton(Frame.PagingFrame.NextPageButton, nil, nil, true)
+		local paging = Frame.PagingFrame
+		if paging then
+			S:HandleNextPrevButton(paging.PrevPageButton, nil, nil, true)
+			S:HandleNextPrevButton(paging.NextPageButton, nil, nil, true)
 		end
 	end
 

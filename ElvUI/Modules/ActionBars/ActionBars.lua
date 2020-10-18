@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local unpack = unpack
-local ipairs, pairs, select = ipairs, pairs, select
+local unpack, next, tremove = unpack, next, tremove
+local ipairs, pairs, select, strmatch = ipairs, pairs, select, strmatch
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
 local ClearOverrideBindings = ClearOverrideBindings
@@ -857,6 +857,23 @@ function AB:SpellButtonOnLeave()
 	SpellBookTooltip:SetScript('OnUpdate', nil)
 end
 
+function AB:ButtonEventsRegisterFrame(added)
+	local frames = _G.ActionBarButtonEventsFrame.frames
+	for index = #frames, 1, -1 do
+		local frame = frames[index]
+		local wasAdded = frame == added
+		if not added or wasAdded then
+			if not strmatch(frame:GetName(), 'ExtraActionButton%d') then
+				tremove(_G.ActionBarButtonEventsFrame.frames, index)
+			end
+
+			if wasAdded then
+				break
+			end
+		end
+	end
+end
+
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	for i, name in ipairs({'OverrideActionBar', 'StanceBarFrame', 'PossessBarFrame', 'PetActionBarFrame', 'MultiCastActionBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}) do
@@ -889,6 +906,10 @@ function AB:DisableBlizzard()
 	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
 	_G.ActionBarController:UnregisterAllEvents()
 	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
+
+	-- lets only keep ExtraActionButtons in here
+	hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
+	AB.ButtonEventsRegisterFrame()
 
 	-- this would taint along with the same path as the SetNoopers: ValidateActionBarTransition
 	_G.VerticalMultiBarsContainer:Size(10, 10) -- dummy values so GetTop etc doesnt fail without replacing
@@ -1228,6 +1249,10 @@ function AB:LAB_CooldownUpdate(button, _, duration)
 	end
 end
 
+function AB:PLAYER_ENTERING_WORLD()
+	AB:AdjustMaxStanceButtons('PLAYER_ENTERING_WORLD')
+end
+
 function AB:Initialize()
 	AB.db = E.db.actionbar
 
@@ -1270,6 +1295,7 @@ function AB:Initialize()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 
+	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')

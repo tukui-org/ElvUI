@@ -316,19 +316,23 @@ function AB:AdjustMaxStanceButtons(event)
 	self:PositionAndSizeBarShapeShift()
 
 	-- sometimes after combat lock down `event` may be true because of passing it back with `AB.NeedsAdjustMaxStanceButtons`
-	if event == 'UPDATE_SHAPESHIFT_FORMS' then
+	if event == 'UPDATE_SHAPESHIFT_FORMS' or event == 'PLAYER_ENTERING_WORLD' then
 		self:StyleShapeShift()
 	end
 end
 
 function AB:UpdateStanceBindings()
 	for i = 1, NUM_STANCE_SLOTS do
+		local button = _G['ElvUI_StanceBarButton'..i]
+		if not button then break end
+
 		if self.db.hotkeytext then
-			_G['ElvUI_StanceBarButton'..i..'HotKey']:Show()
-			_G['ElvUI_StanceBarButton'..i..'HotKey']:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
-			self:FixKeybindText(_G['ElvUI_StanceBarButton'..i])
+			button.HotKey:Show()
+			button.HotKey:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
+
+			self:FixKeybindText(button)
 		else
-			_G['ElvUI_StanceBarButton'..i..'HotKey']:Hide()
+			button.HotKey:Hide()
 		end
 	end
 end
@@ -345,12 +349,9 @@ function AB:CreateBarShapeShift()
 
 	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN')
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons')
-	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift')
 	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift')
+	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift')
 	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift')
 
 	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar', true)
-	self:AdjustMaxStanceButtons()
-	self:StyleShapeShift()
-	self:UpdateStanceBindings()
 end

@@ -37,11 +37,32 @@ local function ColorProgressBars(self, value)
 end
 
 -- 9.0 Needs Update
+local function HotkeyShow(self)
+	local item = self:GetParent()
+	if item.rangeOverlay then item.rangeOverlay:Show() end
+end
+local function HotkeyHide(self)
+	local item = self:GetParent()
+	if item.rangeOverlay then item.rangeOverlay:Hide() end
+end
+local function HotkeyColor(self, r, g, b)
+	local item = self:GetParent()
+	if item.rangeOverlay then
+		if r == 0.6 and g == 0.6 and b == 0.6 then
+			item.rangeOverlay:SetVertexColor(0, 0, 0, 0)
+		else
+			item.rangeOverlay:SetVertexColor(.8, .1, .1, .5)
+		end
+	end
+end
+
 local function SkinItemButton(_, block)
 	local item = block.itemButton
-	if item and not item.skinned then
-		item:Size(25, 25)
+	if not item then return end
+
+	if not item.skinned then
 		item:CreateBackdrop('Transparent')
+		item.backdrop:SetAllPoints()
 		item:StyleButton()
 		item:SetNormalTexture(nil)
 		item.icon:SetTexCoord(unpack(E.TexCoords))
@@ -51,8 +72,24 @@ local function SkinItemButton(_, block)
 		item.Count:Point('TOPLEFT', 1, -1)
 		item.Count:FontTemplate(nil, 14, 'OUTLINE')
 		item.Count:SetShadowOffset(5, -5)
+
+		local rangeOverlay = item:CreateTexture(nil, 'OVERLAY')
+		rangeOverlay:SetTexture(E.Media.Textures.White8x8)
+		rangeOverlay:SetInside()
+		item.rangeOverlay = rangeOverlay
+
+		hooksecurefunc(item.HotKey, 'Show', HotkeyShow)
+		hooksecurefunc(item.HotKey, 'Hide', HotkeyHide)
+		hooksecurefunc(item.HotKey, 'SetVertexColor', HotkeyColor)
+		HotkeyColor(item.HotKey, item.HotKey:GetTextColor())
+		item.HotKey:SetAlpha(0)
+
 		E:RegisterCooldown(item.Cooldown)
 		item.skinned = true
+	end
+
+	if item.backdrop then
+		item.backdrop:SetFrameLevel(item:GetFrameLevel() - 1)
 	end
 end
 
