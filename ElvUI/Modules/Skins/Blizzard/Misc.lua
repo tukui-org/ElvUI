@@ -123,7 +123,7 @@ function S:BlizzardMiscFrames()
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
 			s.closeDialog:CreateBackdrop('Transparent')
-			s.closeDialog.backdrop:SetFrameLevel(s.CloseDialog:GetFrameLevel())
+			s.closeDialog.backdrop:SetFrameLevel(s.closeDialog:GetFrameLevel())
 			s:SetScale(_G.UIParent:GetScale())
 			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
 			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
