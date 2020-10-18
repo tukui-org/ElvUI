@@ -84,7 +84,7 @@ local GameTooltip, GameTooltipStatusBar = _G.GameTooltip, _G.GameTooltipStatusBa
 local targetList, TAPPED_COLOR, keybindFrame = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
-local genderTable = { ' '.._G.UNKNOWN, ' '.._G.MALE, ' '.._G.FEMALE }
+local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
 
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
@@ -248,9 +248,9 @@ function TT:SetUnitText(tt, unit)
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			local unitGender = TT.db.gender and genderTable[gender]
 			if level < realLevel then
-				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, unitGender..' ' or '', race or '', nameColor.colorStr, localeClass)
+				levelLine:SetFormattedText('%s%s|r |cffFFFFFF(%s)|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '', nameColor.colorStr, localeClass)
 			else
-				levelLine:SetFormattedText('%s%s|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', unitGender..' ' or '', race or '', nameColor.colorStr, localeClass)
+				levelLine:SetFormattedText('%s%s|r %s%s |c%s%s|r', hexColor, level > 0 and level or '??', unitGender or '', race or '', nameColor.colorStr, localeClass)
 			end
 		end
 
