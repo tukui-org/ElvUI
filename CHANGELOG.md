@@ -8,23 +8,23 @@ ___
 
 **Yay:**  
 Fixed taint for Override Action Button Show  
-Battleground Datatext was showing in Arena where it doesnt work anymore  
+Battleground Datatext was showing in Arena where it doesn't work anymore  
 Objective Tracker button has a range overlay now and the (its grey) should be fixed  
 Stance bar showing when entering a Battleground on priest and it switching you to healer from Shadow  
 Databar Quest XP will show green for quests you are on and have completed, unless you have completed enabled  
 Heal Pred was anchoring incorrectly when absorb style was set to None  
-Fixed oUF alternativepower UnitIsUnit error  
+Fixed Alternative Power UnitIsUnit error  
 
 ___
 
 ### Version 12.02 [ October 17th 2020 ]
 
 **Fancy:**  
-Clean Boss Button option wasnt saving properly.  
+Clean Boss Button option wasn't saving properly.  
 Added a Show Bubbles option for Databars.  
 Fixed Difficulty Datatext error.  
 Added two buttons to Quick Toggle Blizzard Skins, in the skin section of config.  
-Allowed the MicroBar to be shown in Pet Battles by editing the visbility setting.  
+Allowed the MicroBar to be shown in Pet Battles by editing the visibility setting.  
 ___
 
 ### Version 12.01 [ October 16th 2020 ]
