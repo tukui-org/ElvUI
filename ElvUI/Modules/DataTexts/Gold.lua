@@ -75,9 +75,7 @@ local function OnEvent(self)
 		Profit = Profit + Change
 	end
 
-	if NewMoney then
-		self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or "BLIZZARD", not E.global.datatexts.settings.Gold.goldCoins))
-	end
+	self.text:SetText(E:FormatMoney(NewMoney, E.global.datatexts.settings.Gold.goldFormat or "BLIZZARD", not E.global.datatexts.settings.Gold.goldCoins))
 end
 
 local function deleteCharacter(self, realm, name)
