@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local unpack, next, tremove = unpack, next, tremove
+local unpack = unpack
 local ipairs, pairs, select, strmatch = ipairs, pairs, select, strmatch
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
@@ -864,7 +864,7 @@ function AB:ButtonEventsRegisterFrame(added)
 		local wasAdded = frame == added
 		if not added or wasAdded then
 			if not strmatch(frame:GetName(), 'ExtraActionButton%d') then
-				tremove(_G.ActionBarButtonEventsFrame.frames, index)
+				_G.ActionBarButtonEventsFrame.frames[index] = nil
 			end
 
 			if wasAdded then

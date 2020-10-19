@@ -69,13 +69,14 @@ function UF:Configure_PowerPrediction(frame)
 		if altBar then
 			local altPower = frame.AdditionalPower
 			local altPowerBarTexture = altPower:GetStatusBarTexture()
+			local altPowerOrientation = altPower:GetOrientation()
 
 			altBar:ClearAllPoints()
 			altBar:SetReverseFill(true)
 			altBar:SetStatusBarTexture(UF.db.colors.transparentPower and E.media.blankTex or altPowerBarTexture:GetTexture())
 			altBar:SetOrientation((frame.db.classbar.verticalOrientation and 'VERTICAL') or 'HORIZONTAL')
 
-			if orientation == 'HORIZONTAL' then
+			if altPowerOrientation == 'HORIZONTAL' then
 				altBar:Point('TOP')
 				altBar:Point('BOTTOM')
 				altBar:Point('RIGHT', altPowerBarTexture, 'RIGHT')
