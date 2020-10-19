@@ -1,6 +1,19 @@
-### Version 12.04 [ ETA: 🍨 ]
+### Version 12.05 [ ETA: 🍨 ]
 
 **Nice:**  
+
+
+___
+
+### Version 12.04 [ October 19th 2020 ]
+
+**Nice:**  
+Boss button should appear as its supposed to now.  
+Gender display option in tooltip had space on the wrong side.  
+Adjusted the QuestXP code to not mess with Reward Item Tooltip.  
+Fixed Additional Power Prediction not anchoring properly when set to vertical fill.  
+Cleaned up the Equipment flyout skin some.  
+Movie frame dialog backdrop was missing.  
 
 ___
 
