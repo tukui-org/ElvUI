@@ -886,6 +886,7 @@ end
 
 function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFollowers)
 	if not Buttons or (not numButtons or numButtons == 0) or not offset or not numFollowers then return end
+
 	for i = 1, numButtons do
 		local button = Buttons[i]
 		local index = offset + i -- adjust index
@@ -893,7 +894,11 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 		if button then
 			local fl = button.Follower
 			if (index <= numFollowers) and not button.backdrop then
-				button:CreateBackdrop()
+				if button.mode == 'CATEGORY' then
+					button:CreateBackdrop('Transparent')
+				else
+					button:CreateBackdrop('NoBackdrop')
+				end
 
 				if button.Category then
 					button.Category:ClearAllPoints()
@@ -909,16 +914,17 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 					fl.BusyFrame:SetAllPoints()
 
 					local hl = fl:GetHighlightTexture()
-					hl:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-					hl:ClearAllPoints()
-					hl:Point('TOPLEFT', 1, -1)
-					hl:Point('BOTTOMRIGHT', -1, 1)
+					hl:SetColorTexture(0.9, 0.9, 0.9, 0.25)
+					hl:SetAllPoints()
 
 					if fl.Counters then
 						for y = 1, #fl.Counters do
 							local counter = fl.Counters[y]
 							if counter and not counter.backdrop then
 								counter:CreateBackdrop()
+								counter.backdrop:SetAllPoints()
+								counter.backdrop:SetFrameLevel(counter:GetFrameLevel())
+
 								if counter.Border then
 									counter.Border:SetTexture()
 								end
@@ -939,20 +945,18 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 				end
 			end
 
-			if fl then
-				if fl.Selection and fl.backdrop then
-					if fl.Selection:IsShown() then
-						fl.backdrop:SetBackdropColor(0.9, 0.8, 0.1, 0.3)
-					else
-						fl.backdrop:SetBackdropColor(0, 0, 0, .25)
-					end
+			if fl and fl.Selection and fl.backdrop then
+				if fl.Selection:IsShown() then
+					fl.backdrop:SetBackdropColor(0.9, 0.8, 0.1, 0.25)
+				else
+					fl.backdrop:SetBackdropColor(0, 0, 0, 0.5)
 				end
+			end
 
-				if fl.PortraitFrame and fl.PortraitFrame.quality then
-					local color = ITEM_QUALITY_COLORS[fl.PortraitFrame.quality]
-					if color and fl.PortraitFrame.backdrop then
-						fl.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-					end
+			if fl and fl.PortraitFrame and fl.PortraitFrame.quality then
+				local color = ITEM_QUALITY_COLORS[fl.PortraitFrame.quality]
+				if color and fl.PortraitFrame.backdrop then
+					fl.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				end
 			end
 		end
@@ -965,27 +969,15 @@ function S:HandleFollowerListOnUpdateData(frame)
 		return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
 	end
 
-	if S.FollowerListUpdateDataFrames[frame] ~= nil then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
-	S.FollowerListUpdateDataFrames[frame] = 0 -- use this variable to reduce calls to HandleFollowerListOnUpdateDataFunc
+	if S.FollowerListUpdateDataFrames[frame] then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
+	S.FollowerListUpdateDataFrames[frame] = true
 
-	local FollowerListUpdateDataLastOffset = nil
 	hooksecurefunc(_G[frame], 'UpdateData', function(dataFrame)
 		if not S.FollowerListUpdateDataFrames[frame] or (not dataFrame or not dataFrame.listScroll) then return end
+		local buttons, list = dataFrame.listScroll.buttons, dataFrame.followersList
 		local offset = _G.HybridScrollFrame_GetOffset(dataFrame.listScroll)
-		local Buttons = dataFrame.listScroll.buttons
-		local followersList = dataFrame.followersList
 
-		-- store the offset so we can bypass the updateData delay
-		if FollowerListUpdateDataLastOffset ~= offset then
-			FollowerListUpdateDataLastOffset = offset
-		else -- this will delay the function call until every other call
-			S.FollowerListUpdateDataFrames[frame] = S.FollowerListUpdateDataFrames[frame] + 1
-			-- this is mainly to prevent two calls when you add or remove a follower to a mission
-			if S.FollowerListUpdateDataFrames[frame] < 2 then return end
-		end
-
-		S.FollowerListUpdateDataFrames[frame] = 0 -- back to zero because we call it
-		S:HandleFollowerListOnUpdateDataFunc(Buttons, Buttons and #Buttons, offset, followersList and #followersList)
+		S:HandleFollowerListOnUpdateDataFunc(buttons, buttons and #buttons, offset, list and #list)
 	end)
 end
 
