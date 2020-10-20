@@ -119,7 +119,9 @@ local function SkinMissionFrame(frame, strip)
 		if tab then S:HandleTab(tab) end
 	end
 
-	if frame.MapTab then frame.MapTab.ScrollContainer.Child.TiledBackground:Hide() end
+	if frame.MapTab then
+		frame.MapTab.ScrollContainer.Child.TiledBackground:Hide()
+	end
 
 	ReskinMissionComplete(frame)
 
@@ -478,13 +480,10 @@ function S:Blizzard_GarrisonUI()
 	end
 
 	for _, Button in pairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
-		if not Button.isSkinned then
-			Button:StripTextures()
-			Button:CreateBackdrop()
-			S:HandleButton(Button)
-			Button.backdrop:SetBackdropBorderColor(0, 0, 0, 0)
-			Button.LocBG:Hide()
-			Button.isSkinned = true
+		if not Button.backdrop then -- added in S:HandleButton
+			S:HandleButton(Button, true)
+			Button.backdrop:SetFrameLevel(Button:GetFrameLevel())
+			Button.LocBG:SetDrawLayer('BACKGROUND', 0)
 		end
 	end
 
