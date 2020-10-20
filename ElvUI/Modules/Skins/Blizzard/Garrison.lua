@@ -483,7 +483,7 @@ function S:Blizzard_GarrisonUI()
 		if not Button.backdrop then -- added in S:HandleButton
 			S:HandleButton(Button, true)
 			Button.backdrop:SetFrameLevel(Button:GetFrameLevel())
-			Button.LocBG:SetDrawLayer('BACKGROUND', 0)
+			Button.LocBG:SetDrawLayer('BACKGROUND', 1)
 		end
 	end
 
