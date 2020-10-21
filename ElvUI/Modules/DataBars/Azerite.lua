@@ -114,7 +114,6 @@ function DB:AzeriteBar_Toggle()
 
 		DB:RegisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED', 'AzeriteBar_Update')
 		DB:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'AzeriteBar_Update')
-		DB:RegisterEvent('UNIT_INVENTORY_CHANGED', 'AzeriteBar_Update')
 
 		DB:AzeriteBar_Update()
 	else
@@ -122,7 +121,6 @@ function DB:AzeriteBar_Toggle()
 
 		DB:UnregisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED')
 		DB:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
-		DB:UnregisterEvent('UNIT_INVENTORY_CHANGED')
 	end
 end
 
