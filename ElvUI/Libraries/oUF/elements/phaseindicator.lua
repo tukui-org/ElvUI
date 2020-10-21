@@ -46,19 +46,20 @@ Used to populate the tooltip when the widget is hovered.
 local function UpdateTooltip(element)
 	if GameTooltip:IsForbidden() then return end
 
-	local unit = element.__owner.unit
-	local reason = UnitPhaseReason(unit)
-	local text = reason and PartyUtil.GetPhasedReasonString(reason, unit) or ''
-
-	GameTooltip:SetText(text, nil, nil, nil, nil, true)
-	GameTooltip:Show()
+	local text = PartyUtil.GetPhasedReasonString(element.reason, element.__owner.unit)
+	if(text) then
+		GameTooltip:SetText(text, nil, nil, nil, nil, true)
+		GameTooltip:Show()
+	end
 end
 
 local function onEnter(element)
 	if GameTooltip:IsForbidden() or not element:IsVisible() then return end
 
-	GameTooltip:SetOwner(element, 'ANCHOR_BOTTOMRIGHT')
-	element:UpdateTooltip()
+	if(element.reason) then
+		GameTooltip:SetOwner(element, 'ANCHOR_BOTTOMRIGHT')
+		element:UpdateTooltip()
+	end
 end
 
 local function onLeave()
@@ -81,21 +82,24 @@ local function Update(self, event, unit)
 		element:PreUpdate()
 	end
 
-	local isPhased = UnitPhaseReason(unit)
-	if(isPhased and UnitIsPlayer(unit) and UnitIsConnected(unit)) then
+	local phaseReason = UnitIsPlayer(unit) and UnitIsConnected(unit) and UnitPhaseReason(unit) or nil
+	if(phaseReason) then
 		element:Show()
 	else
 		element:Hide()
 	end
 
-	--[[ Callback: PhaseIndicator:PostUpdate(isPhased)
+	element.reason = phaseReason
+
+	--[[ Callback: PhaseIndicator:PostUpdate(isInSamePhase, phaseReason)
 	Called after the element has been updated.
 
 	* self          - the PhaseIndicator element
-	* isPhased		- returns enum of what type of phase if not in the same phase as the player (number)
+	* isInSamePhase - indicates whether the unit is in the same phase as the player (boolean)
+	* phaseReason   - the reason why the unit is in a different phase (number?)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(isPhased)
+		return element:PostUpdate(not phaseReason, phaseReason)
 	end
 end
 
