@@ -173,9 +173,14 @@ function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
 	bar.db = DB.db.experience
 
+	if bar.db.enable then
+		E:EnableMover(bar.holder.mover:GetName())
+	else
+		E:DisableMover(bar.holder.mover:GetName())
+	end
+
 	if bar.db.enable and not (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
 		bar.holder:Show()
-		E:EnableMover(bar.holder.mover:GetName())
 
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_Update')
 		DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Update')
@@ -189,7 +194,6 @@ function DB:ExperienceBar_Toggle()
 		DB:ExperienceBar_Update()
 	else
 		bar.holder:Hide()
-		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')
 		DB:UnregisterEvent('DISABLE_XP_GAIN')
