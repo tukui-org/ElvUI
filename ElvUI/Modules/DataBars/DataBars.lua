@@ -139,13 +139,16 @@ function DB:SetVisibility(bar)
 	if bar.showBar ~= nil then
 		bar:SetShown(bar.showBar)
 		bar.holder:SetShown(bar.showBar)
-	else
+	elseif bar.db.enable then
 		local hideBar = (bar.db.hideInCombat and InCombatLockdown())
 		or (bar.db.hideOutsidePvP and not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'))
 		or (bar.ShouldHide and bar:ShouldHide())
 
 		bar:SetShown(not hideBar)
 		bar.holder:SetShown(not hideBar)
+	else
+		bar:SetShown(false)
+		bar.holder:SetShown(false)
 	end
 end
 
