@@ -168,8 +168,6 @@ function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
 	bar.db = DB.db.experience
 
-	DB:SetVisibility(bar)
-
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
 	else

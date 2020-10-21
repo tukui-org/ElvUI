@@ -108,5 +108,4 @@ E.Options.args.databars.args.azerite.args.conditionGroup.values = {
 	hideInVehicle = L["Hide In Vehicle"],
 	hideInCombat = L["Hide In Combat"],
 	hideAtMaxLevel = L["Hide At Max Level"],
-	hideBelowMaxLevel = L["Hide Below Max Level"],
 }

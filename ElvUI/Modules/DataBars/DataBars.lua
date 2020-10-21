@@ -134,12 +134,12 @@ function DB:UpdateAll()
 	DB:HandleVisibility()
 end
 
-function DB:SetVisibility(bar)
+function DB:SetVisibility(bar, event)
 	if bar.showBar ~= nil then
 		bar:SetShown(bar.showBar)
 		bar.holder:SetShown(bar.showBar)
 	elseif bar.db.enable then
-		local hideBar = (bar.db.hideInCombat and InCombatLockdown())
+		local hideBar = (bar.db.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown()))
 		or (bar.db.hideOutsidePvP and not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'))
 		or (bar.ShouldHide and bar:ShouldHide())
 
@@ -151,18 +151,9 @@ function DB:SetVisibility(bar)
 	end
 end
 
-function DB:HandleVisibility()
+function DB:HandleVisibility(event)
 	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable then
-			DB:SetVisibility(bar)
-
-			if bar.Update then
-				bar:Update()
-			end
-		else
-			bar:SetShown(false)
-			bar.holder:SetShown(false)
-		end
+		DB:SetVisibility(bar, event)
 	end
 end
 

@@ -125,8 +125,6 @@ function DB:ReputationBar_Toggle()
 	local bar = DB.StatusBars.Reputation
 	bar.db = DB.db.reputation
 
-	DB:SetVisibility(bar)
-
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
 

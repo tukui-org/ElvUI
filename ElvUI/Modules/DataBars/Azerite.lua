@@ -113,8 +113,6 @@ function DB:AzeriteBar_Toggle()
 	local bar = DB.StatusBars.Azerite
 	bar.db = DB.db.azerite
 
-	DB:SetVisibility(bar)
-
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
 

@@ -82,8 +82,6 @@ function DB:HonorBar_Toggle()
 	local bar = DB.StatusBars.Honor
 	bar.db = DB.db.honor
 
-	DB:SetVisibility(bar)
-
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
 
@@ -106,7 +104,6 @@ function DB:HonorBar()
 	Honor.ShouldHide = function()
 		return DB.db.honor.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()
 	end
-
 
 	E:CreateMover(Honor.holder, 'HonorBarMover', L["Honor Bar"], nil, nil, nil, nil, nil, 'databars,honor')
 

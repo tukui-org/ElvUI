@@ -46,13 +46,13 @@ end
 function DB:ThreatBar_Update()
 	local bar = DB.StatusBars.Threat
 	local isInGroup, isInRaid, petExists = IsInGroup(), IsInRaid(), UnitExists('pet')
+
 	if InCombatLockdown() and (isInGroup or petExists) then
 		local _, status, percent = UnitDetailedThreatSituation('player', 'target')
+		local name = UnitName('target') or UNKNOWN
 		bar.showBar = true
 
-		local name = UnitName('target')
 		if percent == 100 then
-			--Build threat list
 			if petExists then
 				bar.list.pet = select(3, UnitDetailedThreatSituation('pet', 'target'))
 			end
@@ -89,9 +89,13 @@ function DB:ThreatBar_Update()
 				bar:SetValue(percent)
 			end
 		else
-			bar:SetStatusBarColor(GetThreatStatusColor(status))
-			bar.text:SetFormattedText('%s: %.0f%%', name, percent)
-			bar:SetValue(percent)
+			if not percent then
+				bar.showBar = false
+			else
+				bar:SetStatusBarColor(GetThreatStatusColor(status))
+				bar.text:SetFormattedText('%s: %.0f%%', name, percent)
+				bar:SetValue(percent)
+			end
 		end
 	else
 		bar.showBar = false
@@ -105,8 +109,6 @@ end
 function DB:ThreatBar_Toggle()
 	local bar = DB.StatusBars.Threat
 	bar.db = DB.db.threat
-
-	DB:SetVisibility(bar)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
