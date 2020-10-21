@@ -77,6 +77,7 @@ function S:MailFrame()
 	_G.SendMailMoneyInset:StripTextures()
 	_G.SendMailSubjectEditBox:Point('TOPLEFT', _G.SendMailNameEditBox, 'BOTTOMLEFT', 0, -10)
 	_G.SendMailSubjectEditBox:Height(18)
+	_G.SendMailSubjectEditBox:Width(214)
 	_G.SendMailNameEditBox:Height(18)
 	_G.SendMailFrame:StripTextures()
 
