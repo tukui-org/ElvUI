@@ -135,34 +135,33 @@ function DB:UpdateAll()
 	DB:HandleVisibility()
 end
 
-function DB:PLAYER_LEVEL_UP()
-	local isMaxLevel = IsPlayerAtEffectiveMaxLevel()
-
-	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable and (bar.db.hideAtMaxLevel ~= nil or bar.db.hideBelowMaxLevel ~= nil) then
-			bar:SetShown(not ((bar.db.hideAtMaxLevel and isMaxLevel) or (bar.db.hideBelowMaxLevel and not isMaxLevel)))
-		end
-	end
-end
-
 function DB:HandleVisibility()
 	local noCombat = not InCombatLockdown()
+	local maxLevel = IsPlayerAtEffectiveMaxLevel()
 	local noPVP = not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp')
 
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable then
-			local hideCombat = bar.db.hideInCombat
-			local hidePvP = bar.db.hideOutsidePvP
-			if hideCombat or hidePvP then
-				local combatShow = hideCombat and noCombat
-				local shouldShow = combatShow or (hidePvP and noPVP)
+			local hideCombat, hidePvP = bar.db.hideInCombat, bar.db.hideOutsidePvP
+			local hideLevel = bar.db.hideAtMaxLevel or bar.db.hideBelowMaxLevel
+
+			if hideLevel or hideCombat or hidePvP then
+				local shouldShow
+
+				if hideLevel then
+					shouldShow = not ((bar.db.hideAtMaxLevel and maxLevel) or (bar.db.hideBelowMaxLevel and not maxLevel))
+				elseif hidePvP then
+					shouldShow = noPVP
+				elseif hideCombat then
+					shouldShow = noCombat
+
+					if bar.Update then
+						bar:Update()
+					end
+				end
 
 				bar:SetShown(shouldShow)
 				bar.holder:SetShown(shouldShow)
-
-				if combatShow and bar.Update then
-					bar:Update()
-				end
 			end
 		end
 	end
@@ -182,10 +181,10 @@ function DB:Initialize()
 
 	DB:UpdateAll()
 
-	DB:RegisterEvent('PLAYER_LEVEL_UP')
-	DB:RegisterEvent('PLAYER_REGEN_ENABLED', 'HandleVisibility')
-	DB:RegisterEvent('PLAYER_REGEN_DISABLED', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_LEVEL_UP', 'HandleVisibility')
 	DB:RegisterEvent('PLAYER_ENTERING_WORLD', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_REGEN_DISABLED', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_REGEN_ENABLED', 'HandleVisibility')
 	DB:RegisterEvent('PVP_TIMER_UPDATE', 'HandleVisibility')
 end
 
