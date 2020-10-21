@@ -18,6 +18,11 @@ function B:DisableHelpTip()
 
 	AcknowledgeTips()
 	hooksecurefunc(_G.HelpTip, 'Show', AcknowledgeTips)
+
+	local NPE = _G.NewPlayerExperience
+	if NPE and NPE:GetIsActive() then
+		NPE:RegisterComplete()
+	end
 end
 
 function B:KillBlizzard()
