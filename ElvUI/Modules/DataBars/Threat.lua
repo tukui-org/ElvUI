@@ -6,6 +6,7 @@ local pairs, select, wipe = pairs, select, wipe
 local GetThreatStatusColor = GetThreatStatusColor
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local UnitClass = UnitClass
+local InCombatLockdown = InCombatLockdown
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitExists = UnitExists
 local UnitIsPlayer = UnitIsPlayer
@@ -43,14 +44,13 @@ function DB:ThreatBar_GetColor(unit)
 end
 
 function DB:ThreatBar_Update()
-	local isInGroup, isInRaid, petExists = IsInGroup(), IsInRaid(), UnitExists('pet')
-	local _, status, percent = UnitDetailedThreatSituation('player', 'target')
 	local bar = DB.StatusBars.Threat
-	if percent and percent > 0 and (isInGroup or petExists) then
-		local name = UnitName('target')
-		bar:Show()
-		bar.holder:Show()
+	local isInGroup, isInRaid, petExists = IsInGroup(), IsInRaid(), UnitExists('pet')
+	if InCombatLockdown() and (isInGroup or petExists) then
+		local _, status, percent = UnitDetailedThreatSituation('player', 'target')
+		bar.showBar = true
 
+		local name = UnitName('target')
 		if percent == 100 then
 			--Build threat list
 			if petExists then
@@ -94,9 +94,10 @@ function DB:ThreatBar_Update()
 			bar:SetValue(percent)
 		end
 	else
-		bar:Hide()
-		bar.holder:Hide()
+		bar.showBar = false
 	end
+
+	DB:SetVisibility(bar) -- lower visibility because of using showBar variable
 
 	wipe(bar.list)
 end
@@ -105,7 +106,7 @@ function DB:ThreatBar_Toggle()
 	local bar = DB.StatusBars.Threat
 	bar.db = DB.db.threat
 
-	bar.holder:SetShown(bar.db.enable)
+	DB:SetVisibility(bar)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())

@@ -12,15 +12,12 @@ local HONOR = HONOR
 local CurrentHonor, MaxHonor, CurrentLevel, PercentHonor, RemainingHonor
 
 function DB:HonorBar_Update(event, unit)
+	if event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player' then return end
+
 	local bar = DB.StatusBars.Honor
-	if not DB.db.honor.enable or (event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player') then
-		bar:Hide()
-		bar.holder:Hide()
-		return
-	else
-		bar:Show()
-		bar.holder:Show()
-	end
+	DB:SetVisibility(bar)
+
+	if not DB.db.honor.enable then return end
 
 	CurrentHonor, MaxHonor, CurrentLevel = UnitHonor('player'), UnitHonorMax('player'), UnitHonorLevel('player')
 
@@ -84,7 +81,7 @@ function DB:HonorBar_Toggle()
 	local bar = DB.StatusBars.Honor
 	bar.db = DB.db.honor
 
-	bar.holder:SetShown(bar.db.enable)
+	DB:SetVisibility(bar)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())

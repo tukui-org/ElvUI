@@ -14,16 +14,10 @@ local STANDING = STANDING
 
 function DB:ReputationBar_Update()
 	local bar = DB.StatusBars.Reputation
-	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
+	DB:SetVisibility(bar)
 
-	if not name or (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
-		bar:Hide()
-		bar.holder:Hide()
-		return
-	else
-		bar:Show()
-		bar.holder:Show()
-	end
+	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
+	if not name or bar:ShouldHide() then return end
 
 	local displayString, textFormat = '', DB.db.reputation.textFormat
 	local isCapped, isFriend, friendText, standingLabel
@@ -131,7 +125,7 @@ function DB:ReputationBar_Toggle()
 	local bar = DB.StatusBars.Reputation
 	bar.db = DB.db.reputation
 
-	bar.holder:SetShown(bar.db.enable)
+	DB:SetVisibility(bar)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -151,6 +145,10 @@ end
 function DB:ReputationBar()
 	local Reputation = DB:CreateBar('ElvUI_ReputationBar', 'Reputation', DB.ReputationBar_Update, DB.ReputationBar_OnEnter, DB.ReputationBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -264})
 	DB:CreateBarBubbles(Reputation)
+
+	Reputation.ShouldHide = function()
+		return DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()
+	end
 
 	E:CreateMover(Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
 

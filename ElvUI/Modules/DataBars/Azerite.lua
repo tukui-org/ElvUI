@@ -20,20 +20,17 @@ local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLe
 local ARTIFACT_POWER = ARTIFACT_POWER
 
 function DB:AzeriteBar_Update(event, unit)
-	if not DB.db.azerite.enable or (event == 'UNIT_INVENTORY_CHANGED' and unit ~= 'player') then
-		return
-	end
+	if event == 'UNIT_INVENTORY_CHANGED' and unit ~= 'player' then return end
 
 	local bar = DB.StatusBars.Azerite
+	DB:SetVisibility(bar)
+
+	if not DB.db.azerite.enable then return end
+
 	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
+	local hidden = not azeriteItemLocation or bar:ShouldHide()
 
-	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or E.mylevel > 50 then
-		bar:Hide()
-		bar.holder:Hide()
-	else
-		bar:Show()
-		bar.holder:Show()
-
+	if not hidden then
 		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 		local color = DB.db.colors.azerite
@@ -115,7 +112,7 @@ function DB:AzeriteBar_Toggle()
 	local bar = DB.StatusBars.Azerite
 	bar.db = DB.db.azerite
 
-	bar.holder:SetShown(bar.db.enable)
+	DB:SetVisibility(bar)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
@@ -135,6 +132,10 @@ end
 function DB:AzeriteBar()
 	local Azerite = DB:CreateBar('ElvUI_AzeriteBar', 'Azerite', DB.AzeriteBar_Update, DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
 	DB:CreateBarBubbles(Azerite)
+
+	Azerite.ShouldHide = function()
+		return (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or E.mylevel < 50
+	end
 
 	E:CreateMover(Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
 

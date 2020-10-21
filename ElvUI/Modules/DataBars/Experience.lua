@@ -35,14 +35,9 @@ end
 
 function DB:ExperienceBar_Update()
 	local bar = DB.StatusBars.Experience
-	if not DB.db.experience.enable or (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
-		bar:Hide()
-		bar.holder:Hide()
-		return
-	else
-		bar:Show()
-		bar.holder:Show()
-	end
+	DB:SetVisibility(bar)
+
+	if not DB.db.experience.enable or bar:ShouldHide() then return end
 
 	CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
 	if XPToLevel <= 0 then XPToLevel = 1 end
@@ -173,15 +168,15 @@ function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
 	bar.db = DB.db.experience
 
+	DB:SetVisibility(bar)
+
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
 	else
 		E:DisableMover(bar.holder.mover:GetName())
 	end
 
-	if bar.db.enable and not (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
-		bar.holder:Show()
-
+	if bar.db.enable and not bar:ShouldHide() then
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_Update')
 		DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Update')
 		DB:RegisterEvent('ENABLE_XP_GAIN', 'ExperienceBar_Update')
@@ -193,8 +188,6 @@ function DB:ExperienceBar_Toggle()
 
 		DB:ExperienceBar_Update()
 	else
-		bar.holder:Hide()
-
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')
 		DB:UnregisterEvent('DISABLE_XP_GAIN')
 		DB:UnregisterEvent('ENABLE_XP_GAIN')
@@ -210,6 +203,10 @@ function DB:ExperienceBar()
 	local Experience = DB:CreateBar('ElvUI_ExperienceBar', 'Experience', DB.ExperienceBar_Update, DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, {'BOTTOM', E.UIParent, 'BOTTOM', 0, 43})
 	Experience.barTexture:SetDrawLayer('ARTWORK', 4)
 	DB:CreateBarBubbles(Experience)
+
+	Experience.ShouldHide = function()
+		return DB.db.experience.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()
+	end
 
 	local Rested = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Rested', Experience.holder)
 	Rested:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)
