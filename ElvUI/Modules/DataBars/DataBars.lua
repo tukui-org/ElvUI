@@ -142,17 +142,24 @@ function DB:HandleVisibility()
 
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable then
-			local hideCombat, hidePVP = bar.db.hideInCombat, bar.db.hideOutsidePvP
-			local hideLevel = bar.db.hideAtMaxLevel or bar.db.hideBelowMaxLevel
+			local hideCombat, hideNoPVP, hideLevel
+			if bar.db.hideInCombat ~= nil then
+				hideCombat = bar.db.hideInCombat and isCombat
+			end
+			if bar.db.hideOutsidePvP ~= nil then
+				hideNoPVP = bar.db.hideOutsidePvP and not isPVP
+			end
+			if bar.db.hideAtMaxLevel ~= nil and bar.db.hideBelowMaxLevel ~= nil then
+				hideLevel = (bar.db.hideAtMaxLevel and maxLevel) or (bar.db.hideBelowMaxLevel and not maxLevel)
+			end
 
-			if hideLevel or hideCombat or hidePVP then
-				local hideBar = (hideCombat and isCombat) or (hidePVP and not isPVP)
-				or (hideLevel and ((bar.db.hideAtMaxLevel and maxLevel) or (bar.db.hideBelowMaxLevel and not maxLevel)))
+			if hideLevel ~= nil or hideCombat ~= nil or hideNoPVP ~= nil then
+				local hideBar = hideCombat or hideNoPVP or hideLevel
 
 				bar:SetShown(not hideBar)
 				bar.holder:SetShown(not hideBar)
 
-				if hideCombat and isCombat and bar.Update then
+				if hideCombat and bar.Update then
 					bar:Update()
 				end
 			end
