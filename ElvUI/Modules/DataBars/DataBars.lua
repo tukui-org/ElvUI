@@ -151,15 +151,17 @@ function DB:HandleVisibility()
 
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable then
-			local outOfCombat = bar.db.hideInCombat and noCombat
-			local outOfPvP = bar.db.hideOutsidePvP and noPVP
-			local shouldShow = outOfCombat or outOfPvP
+			local hideCombat = bar.db.hideInCombat
+			local hidePvP = bar.db.hideOutsidePvP
+			if hideCombat or hidePvP then
+				local shouldShow = (hideCombat and noCombat) or (hidePvP and noPVP)
 
-			bar:SetShown(shouldShow)
-			bar.holder:SetShown(shouldShow)
+				bar:SetShown(shouldShow)
+				bar.holder:SetShown(shouldShow)
 
-			if noCombat and bar.Update then
-				bar:Update()
+				if noCombat and bar.Update then
+					bar:Update()
+				end
 			end
 		end
 	end
