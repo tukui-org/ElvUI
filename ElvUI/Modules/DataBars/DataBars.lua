@@ -136,34 +136,25 @@ function DB:UpdateAll()
 end
 
 function DB:HandleVisibility()
-	local noCombat = not InCombatLockdown()
+	local isCombat = InCombatLockdown()
 	local maxLevel = IsPlayerAtEffectiveMaxLevel()
-	local noPVP = not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp')
+	local isPVP = C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'
 
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable then
-			local hideCombat, hidePvP = bar.db.hideInCombat, bar.db.hideOutsidePvP
+			local hideCombat, hidePVP = bar.db.hideInCombat, bar.db.hideOutsidePvP
 			local hideLevel = bar.db.hideAtMaxLevel or bar.db.hideBelowMaxLevel
 
-			if hideLevel or hideCombat or hidePvP then
-				local shouldShow
+			if hideLevel or hideCombat or hidePVP then
+				local hideBar = (hideCombat and isCombat) or (hidePVP and isPVP)
+				or (hideLevel and ((bar.db.hideAtMaxLevel and maxLevel) or (bar.db.hideBelowMaxLevel and not maxLevel)))
 
-				if hideCombat then
-					shouldShow = noCombat
+				bar:SetShown(not hideBar)
+				bar.holder:SetShown(not hideBar)
 
-					if noCombat and bar.Update then
-						bar:Update()
-					end
+				if hideCombat and isCombat and bar.Update then
+					bar:Update()
 				end
-				if hidePvP and not shouldShow then
-					shouldShow = noPVP
-				end
-				if hideLevel and not shouldShow then
-					shouldShow = not ((bar.db.hideAtMaxLevel and maxLevel) or (bar.db.hideBelowMaxLevel and not maxLevel))
-				end
-
-				bar:SetShown(shouldShow)
-				bar.holder:SetShown(shouldShow)
 			end
 		end
 	end
