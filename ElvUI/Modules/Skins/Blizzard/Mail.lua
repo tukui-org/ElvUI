@@ -75,10 +75,13 @@ function S:MailFrame()
 	S:HandleEditBox(_G.SendMailMoneyCopper)
 	_G.SendMailMoneyBg:Kill()
 	_G.SendMailMoneyInset:StripTextures()
+
+	--[[ Commented out for testing -- Merathilis
 	_G.SendMailSubjectEditBox:Point('TOPLEFT', _G.SendMailNameEditBox, 'BOTTOMLEFT', 0, -10)
 	_G.SendMailSubjectEditBox:Height(18)
 	_G.SendMailSubjectEditBox:Width(214)
 	_G.SendMailNameEditBox:Height(18)
+	]]
 	_G.SendMailFrame:StripTextures()
 
 	hooksecurefunc('SendMailFrame_Update', MailFrameSkin)
