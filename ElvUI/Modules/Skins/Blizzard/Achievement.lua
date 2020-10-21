@@ -129,13 +129,13 @@ function S:Blizzard_AchievementUI(event)
 					skinAch(Achievement.friend)
 
 					hooksecurefunc(Achievement.player, 'Saturate', function()
+						local r, g, b = unpack(E.media.bordercolor)
 						if Achievement.player.accountWide then
-							Achievement.player.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENT_BLUE_BORDER_COLOR:GetRGB())
-							Achievement.friend.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENT_BLUE_BORDER_COLOR:GetRGB())
-						else
-							Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-							Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+							r, g, b = _G.ACHIEVEMENT_BLUE_BORDER_COLOR:GetRGB()
 						end
+
+						Achievement.player.backdrop:SetBackdropBorderColor(r, g, b)
+						Achievement.friend.backdrop:SetBackdropBorderColor(r, g, b)
 					end)
 				end
 			end
