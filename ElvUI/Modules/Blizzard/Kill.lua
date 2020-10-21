@@ -16,16 +16,18 @@ end
 function B:ShutdownNPE()
 	local NPE = _G.NewPlayerExperience
 	if NPE and NPE:GetIsActive() then
-		NPE:RegisterComplete()
+		NPE:Shutdown()
 	end
 end
 
 function B:DisableHelpTip()
 	if not E.global.general.disableTutorialButtons then return end
 
+	-- auto complete helptips
 	AcknowledgeTips()
 	hooksecurefunc(_G.HelpTip, 'Show', AcknowledgeTips)
 
+	-- disable new player experience
 	if _G.NewPlayerExperience then
 		B:ShutdownNPE()
 	else
