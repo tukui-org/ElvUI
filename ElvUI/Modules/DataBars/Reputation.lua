@@ -16,9 +16,9 @@ function DB:ReputationBar_Update()
 	local bar = DB.StatusBars.Reputation
 	DB:SetVisibility(bar)
 
-	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
-	if not name or bar:ShouldHide() then return end
+	if bar:ShouldHide() then return end
 
+	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
 	local displayString, textFormat = '', DB.db.reputation.textFormat
 	local isCapped, isFriend, friendText, standingLabel
 	local friendshipID = GetFriendshipReputation(factionID)
@@ -147,7 +147,7 @@ function DB:ReputationBar()
 	DB:CreateBarBubbles(Reputation)
 
 	Reputation.ShouldHide = function()
-		return DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()
+		return (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) or not GetWatchedFactionInfo()
 	end
 
 	E:CreateMover(Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
