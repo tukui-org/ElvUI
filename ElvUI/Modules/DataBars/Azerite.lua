@@ -28,9 +28,9 @@ function DB:AzeriteBar_Update(event, unit)
 	if not DB.db.azerite.enable then return end
 
 	if not bar:ShouldHide() then
-		local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
+		local item = C_AzeriteItem_FindActiveAzeriteItem()
+		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(item)
+		local currentLevel = C_AzeriteItem_GetPowerLevel(item)
 		local color = DB.db.colors.azerite
 
 		bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
@@ -75,8 +75,8 @@ do
 	end
 
 	function DB:AzeriteBar_OnEnter()
-		local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-		if azeriteItemLocation then
+		local item = C_AzeriteItem_FindActiveAzeriteItem()
+		if item then
 			if DB.db.azerite.mouseover then
 				E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 			end
@@ -86,10 +86,9 @@ do
 				_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 			end
 
-			curXP, maxXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-			currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
-
-			azeriteItem = Item:CreateFromItemLocation(azeriteItemLocation)
+			curXP, maxXP = C_AzeriteItem_GetAzeriteItemXPInfo(item)
+			currentLevel = C_AzeriteItem_GetPowerLevel(item)
+			azeriteItem = Item:CreateFromItemLocation(item)
 			azeriteItem:ContinueWithCancelOnItemLoad(dataLoadedCancelFunc)
 		end
 	end
@@ -130,8 +129,8 @@ function DB:AzeriteBar()
 	DB:CreateBarBubbles(Azerite)
 
 	Azerite.ShouldHide = function()
-		local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-		local equipped = azeriteItemLocation and azeriteItemLocation:IsEquipmentSlot()
+		local item = C_AzeriteItem_FindActiveAzeriteItem()
+		local equipped = item and item:IsEquipmentSlot()
 		return not equipped or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel())
 	end
 
