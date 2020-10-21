@@ -31,22 +31,22 @@ function E:UpdateBlizzardFonts()
 		_G.STANDARD_TEXT_FONT	= NORMAL
 		--_G.NAMEPLATE_FONT		= NAMEFONT
 
-		SetFont(_G.AchievementFont_Small,				NORMAL, E.db.general.fontSize)				-- Achiev dates
-		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 24)									-- Talent Title
+		SetFont(_G.AchievementFont_Small,				NORMAL, 10)									-- Achiev dates
+		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 25)									-- Talent Title
 		SetFont(_G.ChatBubbleFont,						BUBBLE, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
-		SetFont(_G.CoreAbilityFont,						NORMAL, 26)									-- Core abilities(title)
+		SetFont(_G.CoreAbilityFont,						NORMAL, 28)		-- 32						-- Core abilities(title)
 		SetFont(_G.DestinyFontHuge,						NORMAL, 32)									-- Garrison Mission Report
 		SetFont(_G.DestinyFontMed,						NORMAL, 14)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy12Font,							NORMAL, 12)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy14Font,							NORMAL, 14)									-- Added in 7.3.5 used for ?
-		SetFont(_G.Fancy22Font,							NORMAL, 20)									-- Talking frame Title font
-		SetFont(_G.Fancy24Font,							NORMAL, 20)									-- Artifact frame - weapon name
-		SetFont(_G.FriendsFont_Large,					NORMAL, E.db.general.fontSize)
-		SetFont(_G.FriendsFont_Normal,					NORMAL, E.db.general.fontSize)
-		SetFont(_G.FriendsFont_Small,					NORMAL, E.db.general.fontSize)
-		SetFont(_G.FriendsFont_UserText,				NORMAL, E.db.general.fontSize)
+		SetFont(_G.Fancy22Font,							NORMAL, 22)									-- Talking frame Title font
+		SetFont(_G.Fancy24Font,							NORMAL, 24)									-- Artifact frame - weapon name
+		SetFont(_G.FriendsFont_Large,					NORMAL, 14)
+		SetFont(_G.FriendsFont_Normal,					NORMAL, 12)
+		SetFont(_G.FriendsFont_Small,					NORMAL, 10)
+		SetFont(_G.FriendsFont_UserText,				NORMAL, 11)
 		SetFont(_G.Game12Font,							NORMAL, 12)									-- PVP Stuff
-		SetFont(_G.Game13FontShadow,					NORMAL, 14)									-- InspectPvpFrame
+		SetFont(_G.Game13FontShadow,					NORMAL, 13)									-- InspectPvpFrame
 		SetFont(_G.Game15Font_o1,						NORMAL, 15)									-- CharacterStatsPane (ItemLevelFrame)
 		SetFont(_G.Game16Font,							NORMAL, 16)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Game18Font,							NORMAL, 18)									-- MissionUI Bonus Chance
@@ -61,65 +61,64 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game72Font,							NORMAL, 72)
 		SetFont(_G.Game120Font,							NORMAL, 120)
 		SetFont(_G.GameFont_Gigantic,					NORMAL, 32)									-- Used at the install steps
-		SetFont(_G.GameFontHighlightMedium,				NORMAL, 15)									-- Fix QuestLog Title mouseover
-		SetFont(_G.GameFontHighlightSmall2,				NORMAL, E.db.general.fontSize)				-- Skill or Recipe description on TradeSkill frame
+		SetFont(_G.GameFontHighlightMedium,				NORMAL, 14)									-- Fix QuestLog Title mouseover
+		SetFont(_G.GameFontHighlightSmall2,				NORMAL, 11)									-- Skill or Recipe description on TradeSkill frame
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, 24)									-- Mythic weekly best dungeon name
 		SetFont(_G.GameFontNormalLarge,					NORMAL, 16)
-		SetFont(_G.GameFontNormalLarge2,				NORMAL, 15) 								-- Garrison Follower Names
-		SetFont(_G.GameFontNormalMed1,					NORMAL, 14)									-- WoW Token Info
-		SetFont(_G.GameFontNormalMed2,					NORMAL, E.db.general.fontSize*1.1)			-- Quest tracker
-		SetFont(_G.GameFontNormalMed3,					NORMAL, 15)
-		SetFont(_G.GameFontNormalSmall2,				NORMAL, 12)									-- MissionUI Followers names
-		SetFont(_G.GameTooltipHeader,					NORMAL, E.db.general.fontSize)
+		SetFont(_G.GameFontNormalLarge2,				NORMAL, 18) 								-- Garrison Follower Names
+		SetFont(_G.GameFontNormalMed1,					NORMAL, 13)									-- WoW Token Info
+		SetFont(_G.GameFontNormalMed2,					NORMAL, 14)									-- Quest tracker
+		SetFont(_G.GameFontNormalMed3,					NORMAL, 14)
+		SetFont(_G.GameFontNormalSmall2,				NORMAL, 11)									-- MissionUI Followers names
+		SetFont(_G.GameTooltipHeader,					NORMAL, E.db.general.fontSize)	-- 14
 		SetFont(_G.InvoiceFont_Med,						NORMAL, 12)									-- Mail
-		SetFont(_G.InvoiceFont_Small,					NORMAL, E.db.general.fontSize)				-- Mail
+		SetFont(_G.InvoiceFont_Small,					NORMAL, 10)									-- Mail
 		SetFont(_G.MailFont_Large,						NORMAL, 14)									-- Mail
-		SetFont(_G.NumberFont_Outline_Huge,				NUMBER, 28, MONOCHROME..'THICKOUTLINE', 28)
-		SetFont(_G.NumberFont_Outline_Large,			NUMBER, 15, MONOCHROME..'OUTLINE')
-		SetFont(_G.NumberFont_Outline_Med,				NUMBER, E.db.general.fontSize*1.1, 'OUTLINE')
-		SetFont(_G.NumberFont_OutlineThick_Mono_Small,	NUMBER, E.db.general.fontSize, 'OUTLINE')
-		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, E.db.general.fontSize)				-- Chat EditBox
-		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, E.db.general.fontSize)
-		SetFont(_G.NumberFontNormalSmall,				NORMAL, 11, 'OUTLINE')						-- Calendar, EncounterJournal
+		SetFont(_G.NumberFont_Outline_Huge,				NUMBER, 30, MONOCHROME..'THICKOUTLINE')
+		SetFont(_G.NumberFont_Outline_Large,			NUMBER, 16, MONOCHROME..'OUTLINE')
+		SetFont(_G.NumberFont_Outline_Med,				NUMBER, 14, 'OUTLINE')
+		SetFont(_G.NumberFont_OutlineThick_Mono_Small,	NUMBER, 12, 'OUTLINE')
+		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, 14)									-- Chat EditBox
+		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, 12)
+		SetFont(_G.NumberFontNormalSmall,				NORMAL, 12, 'OUTLINE')						-- Calendar, EncounterJournal
 		SetFont(_G.Number11Font,						NORMAL, 11)
 		SetFont(_G.Number12Font,						NORMAL, 12)
 		SetFont(_G.Number15Font,						NORMAL, 15)
-		SetFont(_G.PriceFont,							NORMAL, 13)
+		SetFont(_G.PriceFont,							NORMAL, 14)
 		SetFont(_G.PVPArenaTextString,					NORMAL, 22, MONOCHROME..'OUTLINE')
 		SetFont(_G.PVPInfoTextString,					NORMAL, 22, MONOCHROME..'OUTLINE')
-		SetFont(_G.QuestFont,							NORMAL, E.db.general.fontSize)
-		SetFont(_G.QuestFont_Enormous, 					NORMAL, 24) 								-- Garrison Titles
-		SetFont(_G.QuestFont_Huge,						NORMAL, 15)									-- Quest rewards title(Rewards)
+		SetFont(_G.QuestFont,							NORMAL, E.db.general.fontSize)	-- 13
+		SetFont(_G.QuestFont_Enormous, 					NORMAL, 30) 								-- Garrison Titles
+		SetFont(_G.QuestFont_Huge,						NORMAL, 18)									-- Quest rewards title(Rewards)
 		SetFont(_G.QuestFont_Large,						NORMAL, 14)
-		SetFont(_G.QuestFont_Shadow_Huge,				NORMAL, 15) 								-- Quest Title
+		SetFont(_G.QuestFont_Shadow_Huge,				NORMAL, 18) 								-- Quest Title
 		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, 14)
-		SetFont(_G.QuestFont_Super_Huge,				NORMAL, 22)
-		SetFont(_G.ReputationDetailFont,				NORMAL, E.db.general.fontSize)				-- Rep Desc when clicking a rep
-		SetFont(_G.SubZoneTextFont,						NORMAL, 24, MONOCHROME..'OUTLINE')			-- World Map(SubZone)
-		SetFont(_G.SubZoneTextString,					NORMAL, 25, MONOCHROME..'OUTLINE')
+		SetFont(_G.QuestFont_Super_Huge,				NORMAL, 24)
+		SetFont(_G.ReputationDetailFont,				NORMAL, E.db.general.fontSize)	-- 10		-- Rep Desc when clicking a rep
+		SetFont(_G.SubZoneTextFont,						NORMAL, 24, MONOCHROME..'OUTLINE')	-- 26	-- World Map(SubZone)
+		SetFont(_G.SubZoneTextString,					NORMAL, 25, MONOCHROME..'OUTLINE')	-- 26
 		SetFont(_G.SystemFont_Huge1, 					NORMAL, 20)									-- Garrison Mission XP
-		SetFont(_G.SystemFont_Huge1_Outline,			NORMAL, 18, MONOCHROME..'OUTLINE')			-- Garrison Mission Chance
-		SetFont(_G.SystemFont_Large,					NORMAL, 15)
-		SetFont(_G.SystemFont_Med1,						NORMAL, E.db.general.fontSize)
-		SetFont(_G.SystemFont_Med3,						NORMAL, E.db.general.fontSize*1.1)
+		SetFont(_G.SystemFont_Huge1_Outline,			NORMAL, 18, MONOCHROME..'OUTLINE')	-- 20	-- Garrison Mission Chance
+		SetFont(_G.SystemFont_Large,					NORMAL, 16)
+		SetFont(_G.SystemFont_Med1,						NORMAL, 12)
+		SetFont(_G.SystemFont_Med3,						NORMAL, 14)
 		SetFont(_G.SystemFont_Outline,					NORMAL, 13, MONOCHROME..'OUTLINE')			-- Pet level on World map
-		SetFont(_G.SystemFont_Outline_Small,			NUMBER, E.db.general.fontSize, 'OUTLINE')
-		SetFont(_G.SystemFont_OutlineThick_Huge2,		NORMAL, 20, MONOCHROME..'THICKOUTLINE')
+		SetFont(_G.SystemFont_Outline_Small,			NUMBER, 10, 'OUTLINE')
+		SetFont(_G.SystemFont_OutlineThick_Huge2,		NORMAL, 22, MONOCHROME..'THICKOUTLINE')
 		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, 32, MONOCHROME..'OUTLINE')			-- World Map
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, MONOCHROME..'OUTLINE')			-- Raid Warning, Boss emote frame too
-		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 22)									-- FlightMap
-		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 15)
+		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 25)									-- FlightMap
+		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 16)
 		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
-		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')
-		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, E.db.general.fontSize)
-		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, 13 * 1.1)							-- Shows Order resourses on OrderHallTalentFrame
-		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, 13 * 1.1)
-		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, E.db.general.fontSize*1.1)
-		SetFont(_G.SystemFont_Shadow_Small,				NORMAL, E.db.general.fontSize*0.9)
-		SetFont(_G.SystemFont_Small,					NORMAL, E.db.general.fontSize)
-		SetFont(_G.SystemFont_Tiny,						NORMAL, E.db.general.fontSize)
+		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 16, 'OUTLINE')
+		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, E.db.general.fontSize)	-- 12
+		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, 14)									-- Shows Order resourses on OrderHallTalentFrame
+		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, 14)
+		SetFont(_G.SystemFont_Shadow_Small,				NORMAL, 10)
+		SetFont(_G.SystemFont_Small,					NORMAL, 10)
+		SetFont(_G.SystemFont_Tiny,						NORMAL, 9)
 		SetFont(_G.Tooltip_Med,							NORMAL, E.db.general.fontSize)
-		SetFont(_G.Tooltip_Small,						NORMAL, E.db.general.fontSize)
+		SetFont(_G.Tooltip_Small,						NORMAL, E.db.general.fontSize * 0.9)
 		SetFont(_G.ZoneTextString,						NORMAL, 32, MONOCHROME..'OUTLINE')
 		SetFont(_G.Game10Font_o1,						NORMAL, 10, 'OUTLINE')
 		SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, 27, nil, nil, nil, nil, nil, 1, -1)
