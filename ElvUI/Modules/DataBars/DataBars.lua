@@ -153,13 +153,13 @@ function DB:HandleVisibility()
 				hideLevel = (bar.db.hideAtMaxLevel and maxLevel) or (bar.db.hideBelowMaxLevel and not maxLevel)
 			end
 
-			if hideLevel ~= nil or hideCombat ~= nil or hideNoPVP ~= nil then
+			if hideCombat ~= nil or hideNoPVP ~= nil or hideLevel ~= nil then
 				local hideBar = hideCombat or hideNoPVP or hideLevel
 
 				bar:SetShown(not hideBar)
 				bar.holder:SetShown(not hideBar)
 
-				if hideCombat and bar.Update then
+				if bar.Update then
 					bar:Update()
 				end
 			end
