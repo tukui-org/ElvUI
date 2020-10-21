@@ -79,9 +79,9 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.GameFont_Gigantic,					NORMAL, 32)									-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, medium)	-- 14						-- Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, small)	-- 11						-- Skill or Recipe description on TradeSkill frame
-		SetFont(_G.GameFontNormalHuge2,					NORMAL, 24)									-- Mythic weekly best dungeon name
-		SetFont(_G.GameFontNormalLarge,					NORMAL, 16)
-		SetFont(_G.GameFontNormalLarge2,				NORMAL, 18) 								-- Garrison Follower Names
+		SetFont(_G.GameFontNormalHuge2,					NORMAL, huge)	-- 24						-- Mythic weekly best dungeon name
+		SetFont(_G.GameFontNormalLarge,					NORMAL, large)	-- 16
+		SetFont(_G.GameFontNormalLarge2,				NORMAL, large) 	-- 18						-- Garrison Follower Names
 		SetFont(_G.GameFontNormalMed1,					NORMAL, size)	-- 13						-- WoW Token Info
 		SetFont(_G.GameFontNormalMed2,					NORMAL, size)	-- 14						-- Quest tracker
 		SetFont(_G.GameFontNormalMed3,					NORMAL, size)	-- 14
