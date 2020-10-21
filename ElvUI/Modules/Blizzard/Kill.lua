@@ -13,7 +13,8 @@ local function AcknowledgeTips()
 	end
 end
 
-local function ShutdownNPE(NPE)
+function B:ShutdownNPE()
+	local NPE = _G.NewPlayerExperience
 	if NPE and NPE:GetIsActive() then
 		NPE:RegisterComplete()
 	end
@@ -27,16 +28,9 @@ function B:DisableHelpTip()
 
 	local NPE = _G.NewPlayerExperience
 	if NPE then
-		ShutdownNPE(NPE)
+		B:ShutdownNPE()
 	else
-		local frame = CreateFrame('Frame')
-		frame:RegisterEvent('ADDON_LOADED')
-		frame:SetScript('OnEvent', function(f, event, addon)
-			if addon == 'Blizzard_NewPlayerExperience' then
-				ShutdownNPE()
-				f:UnregisterEvent(event)
-			end
-		end)
+		B:RegisterEvent('ADDON_LOADED', 'ShutdownNPE')
 	end
 end
 
