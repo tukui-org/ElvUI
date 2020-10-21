@@ -135,7 +135,7 @@ function DB:AzeriteBar()
 	DB:CreateBarBubbles(Azerite)
 
 	Azerite.ShouldHide = function()
-		return (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or E.mylevel < IsPlayerAtEffectiveMaxLevel()
+		return (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or not IsPlayerAtEffectiveMaxLevel()
 	end
 
 	E:CreateMover(Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
