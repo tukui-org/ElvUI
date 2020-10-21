@@ -88,14 +88,12 @@ function DB:ThreatBar_Update()
 				bar.text:SetFormattedText('%s: %.0f%%', name, percent)
 				bar:SetValue(percent)
 			end
+		elseif percent then
+			bar:SetStatusBarColor(GetThreatStatusColor(status))
+			bar.text:SetFormattedText('%s: %.0f%%', name, percent)
+			bar:SetValue(percent)
 		else
-			if not percent then
-				bar.showBar = false
-			else
-				bar:SetStatusBarColor(GetThreatStatusColor(status))
-				bar.text:SetFormattedText('%s: %.0f%%', name, percent)
-				bar:SetValue(percent)
-			end
+			bar.showBar = false
 		end
 	else
 		bar.showBar = false
