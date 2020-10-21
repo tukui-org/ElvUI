@@ -146,8 +146,8 @@ function DB:PLAYER_LEVEL_UP()
 end
 
 function DB:HandleVisibility()
-	local noCombat = InCombatLockdown()
-	local noPVP = C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'
+	local noCombat = not InCombatLockdown()
+	local noPVP = not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp')
 
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable then
