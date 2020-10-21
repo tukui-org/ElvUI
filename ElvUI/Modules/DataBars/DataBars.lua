@@ -151,14 +151,14 @@ function DB:HandleVisibility()
 				if hideCombat then
 					shouldShow = noCombat
 
-					if bar.Update then
+					if noCombat and bar.Update then
 						bar:Update()
 					end
 				end
-				if hidePvP then
+				if hidePvP and not shouldShow then
 					shouldShow = noPVP
 				end
-				if hideLevel then
+				if hideLevel and not shouldShow then
 					shouldShow = not ((bar.db.hideAtMaxLevel and maxLevel) or (bar.db.hideBelowMaxLevel and not maxLevel))
 				end
 
