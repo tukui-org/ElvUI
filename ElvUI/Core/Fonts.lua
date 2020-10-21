@@ -107,8 +107,8 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.NumberFont_Outline_Large,			NUMBER, large, MONOCHROME..'OUTLINE')		-- 16
 		SetFont(_G.NumberFont_Outline_Med,				NUMBER, medium, 'OUTLINE')					-- 14
 		SetFont(_G.NumberFont_OutlineThick_Mono_Small,	NUMBER, size, 'OUTLINE')					-- 12
-		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, medium)	-- 14						-- Chat EditBox
-		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, small)	-- 12
+		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, medium)				-- 14			-- Chat EditBox
+		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, small)				-- 12
 		SetFont(_G.NumberFontNormalSmall,				NORMAL, small, 'OUTLINE')	-- 12			-- Calendar, EncounterJournal
 		SetFont(_G.PriceFont,							NORMAL, 14)
 		SetFont(_G.PVPArenaTextString,					NORMAL, 22, MONOCHROME..'OUTLINE')
