@@ -12,7 +12,6 @@ local UIParentLoadAddOn = UIParentLoadAddOn
 local ToggleFrame = ToggleFrame
 local Item = Item
 
-local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
 local C_ArtifactUI_IsEquippedArtifactDisabled = C_ArtifactUI.IsEquippedArtifactDisabled
 local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
@@ -28,10 +27,8 @@ function DB:AzeriteBar_Update(event, unit)
 
 	if not DB.db.azerite.enable then return end
 
-	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-	local hidden = not azeriteItemLocation or bar:ShouldHide()
-
-	if not hidden then
+	if not bar:ShouldHide() then
+		local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
 		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
 		local color = DB.db.colors.azerite
@@ -133,7 +130,9 @@ function DB:AzeriteBar()
 	DB:CreateBarBubbles(Azerite)
 
 	Azerite.ShouldHide = function()
-		return (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or (E.mylevel ~= GetMaxLevelForExpansionLevel(7))
+		local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
+		local equipped = azeriteItemLocation and azeriteItemLocation:IsEquipmentSlot()
+		return not equipped or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel())
 	end
 
 	E:CreateMover(Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
