@@ -166,7 +166,7 @@ for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite
 	}
 end
 
-P.databars.threat.hideInCombat = true -- always on
+P.databars.threat.hideInCombat = nil -- always on in code
 
 P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.width = 348
