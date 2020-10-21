@@ -131,7 +131,7 @@ function DB:UpdateAll()
 		DB:UpdateBarBubbles(bar)
 	end
 
-	DB:PvPCheck()
+	DB:HandleVisibility()
 end
 
 function DB:PLAYER_LEVEL_UP()
@@ -144,27 +144,25 @@ function DB:PLAYER_LEVEL_UP()
 	end
 end
 
-function DB:CombatCheck(event)
+function DB:HandleVisibility(event)
 	local notInCombat = event == 'PLAYER_REGEN_ENABLED'
-	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable and bar.db.hideInCombat then
-			bar:SetShown(notInCombat)
-			bar.holder:SetShown(notInCombat)
-
-			if notInCombat and bar.Update then
-				bar:Update()
-			end
-		end
-	end
-end
-
-function DB:PvPCheck()
 	local PvPInstance = select(2, GetInstanceInfo()) == 'pvp'
 	local WarMode = C_PvP_IsWarModeActive()
+	local outsidePvP = not (PvPInstance or WarMode)
 
 	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable and bar.db.hideOutsidePvP then
-			bar:SetShown(not (PvPInstance or WarMode))
+		if bar.db.enable then
+			if bar.db.hideOutsidePvP then
+				bar:SetShown(outsidePvP)
+				bar.holder:SetShown(outsidePvP)
+			elseif bar.db.hideInCombat then
+				bar:SetShown(notInCombat)
+				bar.holder:SetShown(notInCombat)
+
+				if notInCombat and bar.Update then
+					bar:Update()
+				end
+			end
 		end
 	end
 end
@@ -184,10 +182,10 @@ function DB:Initialize()
 	DB:UpdateAll()
 
 	DB:RegisterEvent('PLAYER_LEVEL_UP')
-	DB:RegisterEvent('PLAYER_REGEN_ENABLED', 'CombatCheck')
-	DB:RegisterEvent('PLAYER_REGEN_DISABLED', 'CombatCheck')
-	DB:RegisterEvent('PVP_TIMER_UPDATE', 'PvPCheck')
-	DB:RegisterEvent('PLAYER_ENTERING_WORLD', 'PvPCheck')
+	DB:RegisterEvent('PLAYER_REGEN_ENABLED', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_REGEN_DISABLED', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_ENTERING_WORLD', 'HandleVisibility')
+	DB:RegisterEvent('PVP_TIMER_UPDATE', 'HandleVisibility')
 end
 
 E:RegisterModule(DB:GetName())
