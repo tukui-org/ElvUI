@@ -7,6 +7,7 @@ local unpack, select = unpack, select
 local pairs, ipairs = pairs, ipairs
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
+local InCombatLockdown = InCombatLockdown
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 
@@ -144,24 +145,21 @@ function DB:PLAYER_LEVEL_UP()
 	end
 end
 
-function DB:HandleVisibility(event)
-	local notInCombat = event == 'PLAYER_REGEN_ENABLED'
-	local PvPInstance = select(2, GetInstanceInfo()) == 'pvp'
-	local WarMode = C_PvP_IsWarModeActive()
-	local outsidePvP = not (PvPInstance or WarMode)
+function DB:HandleVisibility()
+	local noCombat = InCombatLockdown()
+	local noPVP = C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'
 
 	for _, bar in pairs(DB.StatusBars) do
 		if bar.db.enable then
-			if bar.db.hideOutsidePvP then
-				bar:SetShown(outsidePvP)
-				bar.holder:SetShown(outsidePvP)
-			elseif bar.db.hideInCombat then
-				bar:SetShown(notInCombat)
-				bar.holder:SetShown(notInCombat)
+			local outOfCombat = bar.db.hideInCombat and noCombat
+			local outOfPvP = bar.db.hideOutsidePvP and noPVP
+			local shouldShow = outOfCombat or outOfPvP
 
-				if notInCombat and bar.Update then
-					bar:Update()
-				end
+			bar:SetShown(shouldShow)
+			bar.holder:SetShown(shouldShow)
+
+			if noCombat and bar.Update then
+				bar:Update()
 			end
 		end
 	end
