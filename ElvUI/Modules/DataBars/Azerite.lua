@@ -12,6 +12,7 @@ local UIParentLoadAddOn = UIParentLoadAddOn
 local ToggleFrame = ToggleFrame
 local Item = Item
 
+local GetMaxLevelForExpansionLevel = GetMaxLevelForExpansionLevel
 local C_ArtifactUI_IsEquippedArtifactDisabled = C_ArtifactUI.IsEquippedArtifactDisabled
 local C_AzeriteItem_FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local C_AzeriteItem_GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
@@ -134,7 +135,7 @@ function DB:AzeriteBar()
 	DB:CreateBarBubbles(Azerite)
 
 	Azerite.ShouldHide = function()
-		return (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or (E.mylevel ~= 50)
+		return (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or (E.mylevel ~= GetMaxLevelForExpansionLevel(7))
 	end
 
 	E:CreateMover(Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
