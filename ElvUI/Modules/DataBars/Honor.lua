@@ -18,8 +18,10 @@ function DB:HonorBar_Update(event, unit)
 	local bar = DB.StatusBars.Honor
 	if event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player' then return end
 
-	if not DB.db.honor.enable or (DB.db.honor.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or
-		(DB.db.honor.hideOutsidePvP and not UnitIsPVP('player')) or (DB.db.honor.hideBelowMaxLevel and E.mylevel < _G.MAX_PLAYER_LEVEL) then
+	if not DB.db.honor.enable
+	or (DB.db.honor.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown()))
+	or (DB.db.honor.hideOutsidePvP and not UnitIsPVP('player'))
+	or (DB.db.honor.hideBelowMaxLevel and E.mylevel < _G.MAX_PLAYER_LEVEL) then
 		bar:Hide()
 		bar.backdrop:Hide()
 		return
