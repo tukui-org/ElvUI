@@ -18,11 +18,11 @@ function DB:ReputationBar_Update()
 
 	if not name or (DB.db.reputation.hideBelowMaxLevel and not IsPlayerAtEffectiveMaxLevel()) then
 		bar:Hide()
-		bar.backdrop:Hide()
+		bar.holder:Hide()
 		return
 	else
 		bar:Show()
-		bar.backdrop:Show()
+		bar.holder:Show()
 	end
 
 	local displayString, textFormat = '', DB.db.reputation.textFormat
@@ -131,7 +131,7 @@ function DB:ReputationBar_Toggle()
 	local bar = DB.StatusBars.Reputation
 	bar.db = DB.db.reputation
 
-	bar.backdrop:SetShown(bar.db.enable)
+	bar.holder:SetShown(bar.db.enable)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())

@@ -37,11 +37,11 @@ function DB:ExperienceBar_Update()
 	local bar = DB.StatusBars.Experience
 	if not DB.db.experience.enable or (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
 		bar:Hide()
-		bar.backdrop:Hide()
+		bar.holder:Hide()
 		return
 	else
 		bar:Show()
-		bar.backdrop:Show()
+		bar.holder:Show()
 	end
 
 	CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
@@ -174,7 +174,7 @@ function DB:ExperienceBar_Toggle()
 	bar.db = DB.db.experience
 
 	if bar.db.enable and not (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
-		bar.backdrop:Show()
+		bar.holder:Show()
 		E:EnableMover(bar.holder.mover:GetName())
 
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_Update')
@@ -188,7 +188,7 @@ function DB:ExperienceBar_Toggle()
 
 		DB:ExperienceBar_Update()
 	else
-		bar.backdrop:Hide()
+		bar.holder:Hide()
 		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')

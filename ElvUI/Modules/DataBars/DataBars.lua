@@ -21,7 +21,8 @@ function DB:OnLeave()
 end
 
 function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
-	local holder = CreateFrame('Frame', name..'Holder', E.UIParent)
+	local holder = CreateFrame('Frame', name..'Holder', E.UIParent, 'BackdropTemplate')
+	holder:SetTemplate(DB.db.transparent and 'Transparent')
 	holder:SetScript('OnEnter', onEnter)
 	holder:SetScript('OnLeave', DB.OnLeave)
 	holder:SetScript('OnMouseDown', onClick)
@@ -36,9 +37,6 @@ function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	bar:EnableMouse(false)
 	bar:SetInside()
 	bar:Hide()
-
-	bar:CreateBackdrop(DB.db.transparent and 'Transparent')
-	bar.backdrop:SetAllPoints(holder)
 
 	bar.barTexture = bar:GetStatusBarTexture()
 	bar.text = bar:CreateFontString(nil, 'OVERLAY', nil, 7)
@@ -92,9 +90,9 @@ function DB:UpdateAll()
 	for _, bar in pairs(DB.StatusBars) do
 		bar.holder.db = bar.db
 		bar.holder:Size(bar.db.width, bar.db.height)
+		bar.holder:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.holder:EnableMouse(not bar.db.clickThrough)
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
-		bar.backdrop:SetTemplate(DB.db.transparent and 'Transparent')
 		bar:SetStatusBarTexture(texture)
 		bar:SetReverseFill(bar.db.reverseFill)
 
