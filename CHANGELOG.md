@@ -1,13 +1,23 @@
-### Version 12.05 [ ETA: 🍨 ]
+### Version 12.06 [ ETA: 🍨 ]
 
-**Nice:**  
+**Changes:**
 
+
+___
+
+### Version 12.05 [ October 21st 2020 ]
+
+**Changes:**
+Attempted to fix a taint with opening Spellbook in combat  
+Shut off the NewPlayerExperience because it conflicts with ActionBars  
+Small update for Missions and Follower skins (classhall)  
+ClassBar when login as kitty was tiny  
 
 ___
 
 ### Version 12.04 [ October 19th 2020 ]
 
-**Nice:**  
+**Nice:**
 Boss button should appear as its supposed to now.  
 Gender display option in tooltip had space on the wrong side.  
 Adjusted the QuestXP code to not mess with Reward Item Tooltip.  
@@ -19,7 +29,7 @@ ___
 
 ### Version 12.03 [ October 17th 2020 ]
 
-**Yay:**  
+**Yay:**
 Fixed taint for Override Action Button Show  
 Battleground Datatext was showing in Arena where it doesn't work anymore  
 Objective Tracker button has a range overlay now and the (its grey) should be fixed  
@@ -32,7 +42,7 @@ ___
 
 ### Version 12.02 [ October 17th 2020 ]
 
-**Fancy:**  
+**Fancy:**
 Clean Boss Button option wasn't saving properly.  
 Added a Show Bubbles option for Databars.  
 Fixed Difficulty Datatext error.  
@@ -42,7 +52,7 @@ ___
 
 ### Version 12.01 [ October 16th 2020 ]
 
-**Nice:**  
+**Nice:**
 Unitframe and Nameplate font issues (new method to get them showing properly)  
 Actionbar Backdrops we reworked to fix them being a little funky, this includes Pet and Stance bar  
 Boss and Zone Button being jumpy  
