@@ -21,11 +21,11 @@ function DB:HonorBar_Update(event, unit)
 	if not DB.db.honor.enable or (DB.db.honor.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or
 		(DB.db.honor.hideOutsidePvP and not UnitIsPVP('player')) or (DB.db.honor.hideBelowMaxLevel and E.mylevel < _G.MAX_PLAYER_LEVEL) then
 		bar:Hide()
-		bar.holder:Hide()
+		bar.backdrop:Hide()
 		return
 	else
 		bar:Show()
-		bar.holder:Show()
+		bar.backdrop:Show()
 	end
 
 	CurrentHonor, MaxHonor, CurrentLevel = UnitHonor('player'), UnitHonorMax('player'), UnitHonorLevel('player')
@@ -90,7 +90,7 @@ function DB:HonorBar_Toggle()
 	local bar = DB.StatusBars.Honor
 	bar.db = DB.db.honor
 
-	bar.holder:SetShown(bar.db.enable)
+	bar.backdrop:SetShown(bar.db.enable)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())

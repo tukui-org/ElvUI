@@ -29,10 +29,10 @@ function DB:AzeriteBar_Update(event, unit)
 
 	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or E.mylevel > 50 then
 		bar:Hide()
-		bar.holder:Hide()
+		bar.backdrop:Hide()
 	else
 		bar:Show()
-		bar.holder:Show()
+		bar.backdrop:Show()
 
 		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
 		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
@@ -115,7 +115,7 @@ function DB:AzeriteBar_Toggle()
 	local bar = DB.StatusBars.Azerite
 	bar.db = DB.db.azerite
 
-	bar.holder:SetShown(bar.db.enable)
+	bar.backdrop:SetShown(bar.db.enable)
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
