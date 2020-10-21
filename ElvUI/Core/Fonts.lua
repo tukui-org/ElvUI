@@ -41,10 +41,13 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Fancy14Font,							NORMAL, 14)									-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy22Font,							NORMAL, 22)									-- Talking frame Title font
 		SetFont(_G.Fancy24Font,							NORMAL, 24)									-- Artifact frame - weapon name
+		SetFont(_G.FriendsFont_11,						NORMAL, 11)
 		SetFont(_G.FriendsFont_Large,					NORMAL, 14)
 		SetFont(_G.FriendsFont_Normal,					NORMAL, 12)
 		SetFont(_G.FriendsFont_Small,					NORMAL, 10)
 		SetFont(_G.FriendsFont_UserText,				NORMAL, 11)
+		SetFont(_G.Game10Font_o1,						NORMAL, 10, 'OUTLINE')
+		SetFont(_G.Game120Font,							NORMAL, 120)
 		SetFont(_G.Game12Font,							NORMAL, 12)									-- PVP Stuff
 		SetFont(_G.Game13FontShadow,					NORMAL, 13)									-- InspectPvpFrame
 		SetFont(_G.Game15Font_o1,						NORMAL, 15)									-- CharacterStatsPane (ItemLevelFrame)
@@ -59,7 +62,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game48FontShadow,					NORMAL, 48)
 		SetFont(_G.Game60Font,							NORMAL, 60)
 		SetFont(_G.Game72Font,							NORMAL, 72)
-		SetFont(_G.Game120Font,							NORMAL, 120)
 		SetFont(_G.GameFont_Gigantic,					NORMAL, 32)									-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, 14)									-- Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, 11)									-- Skill or Recipe description on TradeSkill frame
@@ -74,6 +76,19 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.InvoiceFont_Med,						NORMAL, 12)									-- Mail
 		SetFont(_G.InvoiceFont_Small,					NORMAL, 10)									-- Mail
 		SetFont(_G.MailFont_Large,						NORMAL, 14)									-- Mail
+		SetFont(_G.Number11Font,						NORMAL, 11)
+		SetFont(_G.Number11Font,						NUMBER, 11)
+		SetFont(_G.Number12Font,						NORMAL, 12)
+		SetFont(_G.Number12Font_o1,						NUMBER, 12, 'OUTLINE')
+		SetFont(_G.Number13Font,						NUMBER, 13)
+		SetFont(_G.Number13FontGray,					NUMBER, 13)
+		SetFont(_G.Number13FontWhite,					NUMBER, 13)
+		SetFont(_G.Number13FontYellow,					NUMBER, 13)
+		SetFont(_G.Number14FontGray,					NUMBER, 14)
+		SetFont(_G.Number14FontWhite,					NUMBER, 14)
+		SetFont(_G.Number15Font,						NORMAL, 15)
+		SetFont(_G.Number18Font,						NUMBER, 18)
+		SetFont(_G.Number18FontWhite,					NUMBER, 18)
 		SetFont(_G.NumberFont_Outline_Huge,				NUMBER, 30, MONOCHROME..'THICKOUTLINE')
 		SetFont(_G.NumberFont_Outline_Large,			NUMBER, 16, MONOCHROME..'OUTLINE')
 		SetFont(_G.NumberFont_Outline_Med,				NUMBER, 14, 'OUTLINE')
@@ -81,9 +96,6 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, 14)									-- Chat EditBox
 		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, 12)
 		SetFont(_G.NumberFontNormalSmall,				NORMAL, 12, 'OUTLINE')						-- Calendar, EncounterJournal
-		SetFont(_G.Number11Font,						NORMAL, 11)
-		SetFont(_G.Number12Font,						NORMAL, 12)
-		SetFont(_G.Number15Font,						NORMAL, 15)
 		SetFont(_G.PriceFont,							NORMAL, 14)
 		SetFont(_G.PVPArenaTextString,					NORMAL, 22, MONOCHROME..'OUTLINE')
 		SetFont(_G.PVPInfoTextString,					NORMAL, 22, MONOCHROME..'OUTLINE')
@@ -95,6 +107,8 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, 14)
 		SetFont(_G.QuestFont_Super_Huge,				NORMAL, 24)
 		SetFont(_G.ReputationDetailFont,				NORMAL, E.db.general.fontSize)	-- 10		-- Rep Desc when clicking a rep
+		SetFont(_G.SpellFont_Small,						NORMAL, 10)
+		SetFont(_G.SubSpellFont,						NORMAL, 10)									-- Spellbook Sub Names
 		SetFont(_G.SubZoneTextFont,						NORMAL, 24, MONOCHROME..'OUTLINE')	-- 26	-- World Map(SubZone)
 		SetFont(_G.SubZoneTextString,					NORMAL, 25, MONOCHROME..'OUTLINE')	-- 26
 		SetFont(_G.SystemFont_Huge1, 					NORMAL, 20)									-- Garrison Mission XP
@@ -108,6 +122,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, 32, MONOCHROME..'OUTLINE')			-- World Map
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, MONOCHROME..'OUTLINE')			-- Raid Warning, Boss emote frame too
 		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 25)									-- FlightMap
+		SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, 27, nil, nil, nil, nil, nil, 1, -1)
 		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 16)
 		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
 		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 16, 'OUTLINE')
@@ -120,20 +135,5 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Tooltip_Med,							NORMAL, E.db.general.fontSize)
 		SetFont(_G.Tooltip_Small,						NORMAL, E.db.general.fontSize * 0.9)
 		SetFont(_G.ZoneTextString,						NORMAL, 32, MONOCHROME..'OUTLINE')
-		SetFont(_G.Game10Font_o1,						NORMAL, 10, 'OUTLINE')
-		SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, 27, nil, nil, nil, nil, nil, 1, -1)
-		SetFont(_G.Number11Font,						NUMBER, 11)
-		SetFont(_G.Number12Font_o1,						NUMBER, 12, 'OUTLINE')
-		SetFont(_G.Number13Font,						NUMBER, 13)
-		SetFont(_G.Number13FontGray,					NUMBER, 13)
-		SetFont(_G.Number13FontWhite,					NUMBER, 13)
-		SetFont(_G.Number13FontYellow,					NUMBER, 13)
-		SetFont(_G.Number14FontGray,					NUMBER, 14)
-		SetFont(_G.Number14FontWhite,					NUMBER, 14)
-		SetFont(_G.Number18Font,						NUMBER, 18)
-		SetFont(_G.Number18FontWhite,					NUMBER, 18)
-		SetFont(_G.FriendsFont_11,						NORMAL, 11)
-		SetFont(_G.SpellFont_Small,						NORMAL, 10)
-		SetFont(_G.SubSpellFont,						NORMAL, 10)									-- Spellbook Sub Names
 	end
 end
