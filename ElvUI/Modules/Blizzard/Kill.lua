@@ -26,8 +26,7 @@ function B:DisableHelpTip()
 	AcknowledgeTips()
 	hooksecurefunc(_G.HelpTip, 'Show', AcknowledgeTips)
 
-	local NPE = _G.NewPlayerExperience
-	if NPE then
+	if _G.NewPlayerExperience then
 		B:ShutdownNPE()
 	else
 		B:RegisterEvent('ADDON_LOADED', 'ShutdownNPE')
