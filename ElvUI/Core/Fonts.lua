@@ -15,7 +15,7 @@ local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b
 end
 
 local function GetSize(size)
-	return max(10, min(40, size))
+	return min(10, max(40, size))
 end
 
 local chatFontHeights = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
