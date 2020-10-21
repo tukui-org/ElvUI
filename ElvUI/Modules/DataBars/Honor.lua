@@ -3,12 +3,9 @@ local DB = E:GetModule('DataBars')
 
 local _G = _G
 local format = format
-
-local InCombatLockdown = InCombatLockdown
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
-local UnitIsPVP = UnitIsPVP
 local TogglePVPUI = TogglePVPUI
 local HONOR = HONOR
 
@@ -16,10 +13,7 @@ local CurrentHonor, MaxHonor, CurrentLevel, PercentHonor, RemainingHonor
 
 function DB:HonorBar_Update(event, unit)
 	local bar = DB.StatusBars.Honor
-	if event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player' then return end
-
-	if not DB.db.honor.enable or (DB.db.honor.hideInCombat and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown())) or
-		(DB.db.honor.hideOutsidePvP and not UnitIsPVP('player')) or (DB.db.honor.hideBelowMaxLevel and E.mylevel < _G.MAX_PLAYER_LEVEL) then
+	if not DB.db.honor.enable or (event == 'PLAYER_FLAGS_CHANGED' and unit ~= 'player') then
 		bar:Hide()
 		bar.holder:Hide()
 		return
