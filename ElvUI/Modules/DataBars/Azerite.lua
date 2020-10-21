@@ -25,38 +25,36 @@ function DB:AzeriteBar_Update(event, unit)
 	local bar = DB.StatusBars.Azerite
 	DB:SetVisibility(bar)
 
-	if not DB.db.azerite.enable then return end
+	if not bar.db.enable or bar:ShouldHide() then return end
 
-	if not bar:ShouldHide() then
-		local item = C_AzeriteItem_FindActiveAzeriteItem()
-		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(item)
-		local currentLevel = C_AzeriteItem_GetPowerLevel(item)
-		local color = DB.db.colors.azerite
+	local item = C_AzeriteItem_FindActiveAzeriteItem()
+	local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(item)
+	local currentLevel = C_AzeriteItem_GetPowerLevel(item)
+	local color = DB.db.colors.azerite
 
-		bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
-		bar:SetMinMaxValues(0, max)
-		bar:SetValue(cur)
+	bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+	bar:SetMinMaxValues(0, max)
+	bar:SetValue(cur)
 
-		local textFormat = DB.db.azerite.textFormat
-		if textFormat == 'NONE' then
-			bar.text:SetText('')
-		elseif textFormat == 'PERCENT' then
-			bar.text:SetFormattedText('%s%% [%s]', floor(cur / max * 100), currentLevel)
-		elseif textFormat == 'CURMAX' then
-			bar.text:SetFormattedText('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max), currentLevel)
-		elseif textFormat == 'CURPERC' then
-			bar.text:SetFormattedText('%s - %s%% [%s]', E:ShortValue(cur), floor(cur / max * 100), currentLevel)
-		elseif textFormat == 'CUR' then
-			bar.text:SetFormattedText('%s [%s]', E:ShortValue(cur), currentLevel)
-		elseif textFormat == 'REM' then
-			bar.text:SetFormattedText('%s [%s]', E:ShortValue(max - cur), currentLevel)
-		elseif textFormat == 'CURREM' then
-			bar.text:SetFormattedText('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max - cur), currentLevel)
-		elseif textFormat == 'CURPERCREM' then
-			bar.text:SetFormattedText('%s - %s%% (%s) [%s]', E:ShortValue(cur), floor(cur / max * 100), E:ShortValue(max - cur), currentLevel)
-		else
-			bar.text:SetFormattedText('[%s]', currentLevel)
-		end
+	local textFormat = DB.db.azerite.textFormat
+	if textFormat == 'NONE' then
+		bar.text:SetText('')
+	elseif textFormat == 'PERCENT' then
+		bar.text:SetFormattedText('%s%% [%s]', floor(cur / max * 100), currentLevel)
+	elseif textFormat == 'CURMAX' then
+		bar.text:SetFormattedText('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max), currentLevel)
+	elseif textFormat == 'CURPERC' then
+		bar.text:SetFormattedText('%s - %s%% [%s]', E:ShortValue(cur), floor(cur / max * 100), currentLevel)
+	elseif textFormat == 'CUR' then
+		bar.text:SetFormattedText('%s [%s]', E:ShortValue(cur), currentLevel)
+	elseif textFormat == 'REM' then
+		bar.text:SetFormattedText('%s [%s]', E:ShortValue(max - cur), currentLevel)
+	elseif textFormat == 'CURREM' then
+		bar.text:SetFormattedText('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max - cur), currentLevel)
+	elseif textFormat == 'CURPERCREM' then
+		bar.text:SetFormattedText('%s - %s%% (%s) [%s]', E:ShortValue(cur), floor(cur / max * 100), E:ShortValue(max - cur), currentLevel)
+	else
+		bar.text:SetFormattedText('[%s]', currentLevel)
 	end
 end
 

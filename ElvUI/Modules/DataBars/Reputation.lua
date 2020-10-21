@@ -16,7 +16,7 @@ function DB:ReputationBar_Update()
 	local bar = DB.StatusBars.Reputation
 	DB:SetVisibility(bar)
 
-	if bar:ShouldHide() then return end
+	if not bar.db.enable or bar:ShouldHide() then return end
 
 	local name, reaction, Min, Max, value, factionID = GetWatchedFactionInfo()
 	local displayString, textFormat = '', DB.db.reputation.textFormat
