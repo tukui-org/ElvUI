@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 
-function UF:PostUpdate_PhaseIcon(_, phaseReason)
+function UF:PostUpdate_PhaseIcon(hidden, phaseReason)
 	if phaseReason == 3 then -- chromie, gold
 		self.Overlay:SetVertexColor(1, 0.9, 0.5)
 	elseif phaseReason == 2 then -- warmode, red
@@ -11,6 +11,8 @@ function UF:PostUpdate_PhaseIcon(_, phaseReason)
 	else -- phasing, blue
 		self.Overlay:SetVertexColor(0.3, 0.5, 1)
 	end
+
+	self.Overlay:SetShown(not hidden)
 end
 
 function UF:Construct_PhaseIcon(frame)
@@ -23,6 +25,7 @@ function UF:Construct_PhaseIcon(frame)
 	Overlay:SetTexture(E.Media.Textures.PhaseOverlay)
 	Overlay:Point('CENTER', frame.Health)
 	Overlay:Size(32)
+	Overlay:Hide()
 
 	PhaseIndicator.Overlay = Overlay
 	PhaseIndicator.PostUpdate = UF.PostUpdate_PhaseIcon
