@@ -76,6 +76,7 @@ E.Options.args.skins.args.blizzard.values = {
 	communities = L["COMMUNITIES"],
 	contribution = L["Contribution"],
 	covenantPreview = L["Covenant Preview"],
+	covenantRenown = L["Covenant Renown"],
 	covenantSanctum = L["Covenant Sanctum"],
 	deathRecap = L["DEATH_RECAP_TITLE"],
 	debug = L["Debug Tools"],

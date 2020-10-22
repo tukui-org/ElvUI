@@ -146,6 +146,7 @@ V.skins = {
 		animaDiversion = true,
 		chromieTime = true,
 		covenantPreview = true,
+		covenantRenown = true,
 		covenantSanctum = true,
 		guide = true,
 		playerChoice = true,
