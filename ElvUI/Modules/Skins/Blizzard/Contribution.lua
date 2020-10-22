@@ -17,8 +17,7 @@ function S:Blizzard_Contribution()
 		--Reward Tooltip
 		local ContributionBuffTooltip = _G.ContributionBuffTooltip
 		ContributionBuffTooltip:StripTextures()
-		ContributionBuffTooltip:SetTemplate('Transparent')
-		ContributionBuffTooltip:CreateBackdrop()
+		ContributionBuffTooltip:CreateBackdrop('Transparent')
 		ContributionBuffTooltip:StyleButton()
 		ContributionBuffTooltip.Border:SetAlpha(0)
 		ContributionBuffTooltip.Icon:SetTexCoord(unpack(E.TexCoords))

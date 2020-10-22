@@ -5,15 +5,19 @@ local _G = _G
 local unpack, select = unpack, select
 local pairs, ipairs, type = pairs, ipairs, type
 
+local EquipmentManager_GetItemInfoByLocation = EquipmentManager_GetItemInfoByLocation
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 local GetFactionInfo = GetFactionInfo
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
-local PLACEINBAGS_LOCATION = 0xFFFFFFFF
-local IGNORESLOT_LOCATION = 0xFFFFFFFE
-local UNIGNORESLOT_LOCATION = 0xFFFFFFFD
+local FLYOUT_LOCATIONS = {
+	[0xFFFFFFFF] = 'PLACEINBAGS',
+	[0xFFFFFFFE] = 'IGNORESLOT',
+	[0xFFFFFFFD] = 'UNIGNORESLOT'
+}
 
 local function UpdateAzeriteItem(self)
 	if not self.styled then
@@ -58,56 +62,56 @@ local function StatsPane(which)
 	CharacterStatsPane[which].backdrop:Size(150, 18)
 end
 
-local function SkinItemFlyouts()
-	local flyout = _G.EquipmentFlyoutFrame
-	local buttons = flyout.buttons
-	local buttonAnchor = flyout.buttonFrame
-
-	if not buttonAnchor.backdrop then
-		buttonAnchor:StripTextures()
-		buttonAnchor:CreateBackdrop('Transparent')
+local function EquipmentUpdateItems()
+	local anchor = _G.EquipmentFlyoutFrame.buttonFrame
+	if not anchor.backdrop then
+		anchor:StripTextures()
+		anchor:CreateBackdrop('Transparent')
 	end
 
-	for i, button in ipairs(buttons) do
-		if buttonAnchor['bg'..i] and buttonAnchor['bg'..i]:GetTexture() ~= nil then
-			buttonAnchor['bg'..i]:SetTexture()
+	local width, height = anchor:GetSize()
+	anchor:Size(width+3, height)
+end
+
+local function EquipmentDisplayButton(button)
+	local location, border = button.location, button.IconBorder
+	if not location or not border then return end
+
+	local id = button.id or button:GetID()
+	if not id then return end
+
+	if not button.isHooked then
+		local oldTex = button.icon:GetTexture()
+		button:StripTextures()
+		button:StyleButton(false)
+		button:GetNormalTexture():SetTexture()
+
+		button.icon:SetInside()
+		button.icon:SetTexCoord(unpack(E.TexCoords))
+		button.icon:SetTexture(oldTex)
+
+		if not button.backdrop then
+			button:CreateBackdrop()
+			button.backdrop:SetAllPoints()
+
+			S:HandleIconBorder(button.IconBorder)
 		end
 
-		if not button.isHooked then
-			button:StripTextures()
-			button:StyleButton(false)
-			button:GetNormalTexture():SetTexture()
-
-			button.icon:SetInside()
-			button.icon:SetTexCoord(unpack(E.TexCoords))
-
-			if not button.backdrop then
-				button:SetFrameLevel(buttonAnchor:GetFrameLevel()+2)
-				button:CreateBackdrop()
-				button.backdrop:SetAllPoints()
-
-				S:HandleIconBorder(button.IconBorder)
-
-				if i ~= 1 then -- dont call this intially on placeInBags button
-					button.backdrop:SetBackdropBorderColor(button.IconBorder:GetVertexColor())
-				end
-
-				if i == 1 or i == 2 then
-					hooksecurefunc(button.icon, 'SetTexture', function(self)
-						local loc = self:GetParent().location
-						if loc == PLACEINBAGS_LOCATION or loc == IGNORESLOT_LOCATION or loc == UNIGNORESLOT_LOCATION then
-							self:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-						end
-					end)
-				end
-			end
-
-			button.isHooked = true
-		end
+		button.isHooked = true
 	end
 
-	local width, height = buttonAnchor:GetSize()
-	buttonAnchor:Size(width+3, height)
+	local r, g, b, a = unpack(E.media.bordercolor)
+	if FLYOUT_LOCATIONS[location] then -- special slots
+		button.backdrop:SetBackdropBorderColor(r, g, b, a)
+	else
+		local quality = select(13, EquipmentManager_GetItemInfoByLocation(location))
+		if not quality or quality == 0 then
+			button.backdrop:SetBackdropBorderColor(r, g, b, a)
+		else
+			local color = ITEM_QUALITY_COLORS[quality]
+			button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		end
+	end
 end
 
 local function FixSidebarTabCoords()
@@ -271,6 +275,7 @@ function S:CharacterFrame()
 			Slot:StripTextures()
 			Slot:CreateBackdrop()
 			Slot.backdrop:SetAllPoints()
+			Slot.backdrop:SetFrameLevel(Slot:GetFrameLevel())
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
 			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
@@ -360,7 +365,7 @@ function S:CharacterFrame()
 	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
 	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
 
-	_G.EquipmentFlyoutFrameHighlight:Kill()
+	_G.EquipmentFlyoutFrameHighlight:StripTextures()
 	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
 	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer('ARTWORK')
 	_G.EquipmentFlyoutFrame.NavigationFrame:StripTextures()
@@ -371,18 +376,8 @@ function S:CharacterFrame()
 	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	--Swap item flyout frame (shown when holding alt over a slot)
-	hooksecurefunc('EquipmentFlyout_UpdateItems', SkinItemFlyouts)
-	hooksecurefunc('EquipmentFlyout_DisplayButton', function(button)
-		local location = button.location
-		local border = button.IconBorder
-		if not location or not border then return end
-
-		if location >= _G.EQUIPMENTFLYOUT_FIRST_SPECIAL_LOCATION then
-			border:Hide()
-		else
-			border:Show()
-		end
-	end)
+	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems)
+	hooksecurefunc('EquipmentFlyout_DisplayButton', EquipmentDisplayButton)
 
 	--Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()

@@ -174,8 +174,8 @@ local function Visibility(self, event, unit)
 		stateChanged = true
 	end
 
-	if element.PostUpdateVisibility then
-		element.PostUpdateVisibility(self, event, unit, not useClassbar, stateChanged)
+	if element.PostVisibility then
+		element.PostVisibility(self, event, unit, not useClassbar, stateChanged)
 	end
 
 	if not useClassbar then
@@ -217,6 +217,9 @@ local function Enable(self, unit)
 		MonkStaggerBar:UnregisterEvent('UNIT_DISPLAYPOWER')
 		MonkStaggerBar:UnregisterEvent('UNIT_EXITED_VEHICLE')
 		MonkStaggerBar:UnregisterEvent('UPDATE_VEHICLE_ACTIONBAR')
+
+		-- do not change this without taking Visibility into account
+		element:Hide()
 
 		return true
 	end

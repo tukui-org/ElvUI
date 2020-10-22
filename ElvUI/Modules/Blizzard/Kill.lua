@@ -5,6 +5,11 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 
+function B:KillBlizzard()
+	_G.Display_UIScaleSlider:Kill()
+	_G.Display_UseUIScale:Kill()
+end
+
 local function AcknowledgeTips()
 	if InCombatLockdown() then return end -- just incase cause this code path will call SetCVar
 
@@ -13,15 +18,31 @@ local function AcknowledgeTips()
 	end
 end
 
-function B:DisableHelpTip()
+function B:DisableHelpTip() -- auto complete helptips
 	if not E.global.general.disableTutorialButtons then return end
 
-	AcknowledgeTips()
 	hooksecurefunc(_G.HelpTip, 'Show', AcknowledgeTips)
+	E:Delay(1, AcknowledgeTips)
 end
 
-function B:KillBlizzard()
-	_G.Display_UIScaleSlider:Kill()
-	_G.Display_UseUIScale:Kill()
+-- NOTE: ActionBars heavily conflicts with NPE
+local function ShutdownNPE(event)
+	local NPE = _G.NewPlayerExperience
+	if NPE then
+		if NPE:GetIsActive() then
+			NPE:Shutdown()
+		end
+
+		if event then
+			B:UnregisterEvent(event)
+		end
+	end
 end
 
+function B:DisableNPE() -- disable new player experience
+	if _G.NewPlayerExperience then
+		ShutdownNPE()
+	else
+		B:RegisterEvent('ADDON_LOADED', ShutdownNPE)
+	end
+end

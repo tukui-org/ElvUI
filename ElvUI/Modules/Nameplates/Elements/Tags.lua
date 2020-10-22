@@ -3,15 +3,18 @@ local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 function NP:Construct_TagText(nameplate)
-	return nameplate:CreateFontString(nil, 'OVERLAY')
+	local Text = nameplate:CreateFontString(nil, 'OVERLAY')
+	Text:FontTemplate(E.LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+
+	return Text
 end
 
 function NP:Update_TagText(nameplate, element, db, hide)
 	if not db then return end
 
 	if db.enable and not hide then
-		element:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 		nameplate:Tag(element, db.format or '')
+		element:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 		element:UpdateTag()
 
 		element:ClearAllPoints()

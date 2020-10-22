@@ -49,9 +49,12 @@ function S:BlizzardMiscFrames()
 	}
 
 	for i = 1, #skins do
-		_G[skins[i]]:StripTextures()
-		_G[skins[i]]:CreateBackdrop('Transparent')
+		local frame = _G[skins[i]]
+		frame:StripTextures()
+		frame:CreateBackdrop('Transparent')
 	end
+
+	_G.AutoCompleteBox.backdrop:SetFrameLevel(_G.AutoCompleteBox:GetFrameLevel())
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
@@ -120,6 +123,7 @@ function S:BlizzardMiscFrames()
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
 			s.closeDialog:CreateBackdrop('Transparent')
+			s.closeDialog.backdrop:SetFrameLevel(s.closeDialog:GetFrameLevel())
 			s:SetScale(_G.UIParent:GetScale())
 			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
 			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
@@ -137,6 +141,7 @@ function S:BlizzardMiscFrames()
 			s:SetScale(_G.UIParent:GetScale())
 			s.CloseDialog:StripTextures()
 			s.CloseDialog:CreateBackdrop('Transparent')
+			s.CloseDialog.backdrop:SetFrameLevel(s.CloseDialog:GetFrameLevel())
 			S:HandleButton(s.CloseDialog.ConfirmButton)
 			S:HandleButton(s.CloseDialog.ResumeButton)
 		end
@@ -206,10 +211,10 @@ function S:BlizzardMiscFrames()
 			S:HandleButton(button)
 
 			button.Flash:Hide()
-
 			button:CreateShadow(5)
 			button.shadow:SetAlpha(0)
 			button.shadow:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+			button:SetFrameLevel(button:GetFrameLevel() + 1)
 
 			local anim1, anim2 = button.PulseAnim:GetAnimations()
 			anim1:SetTarget(button.shadow)

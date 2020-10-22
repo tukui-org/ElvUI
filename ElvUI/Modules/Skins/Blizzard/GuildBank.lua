@@ -69,6 +69,7 @@ function S:Blizzard_GuildBankUI()
 		button:StripTextures()
 		button:StyleButton(true)
 		button:CreateBackdrop(nil, true)
+		button.backdrop:SetAllPoints()
 
 		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))

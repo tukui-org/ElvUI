@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs = pairs
+local unpack = unpack
 
 function S:Blizzard_ScrappingMachineUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.scrapping) then return end
@@ -16,9 +17,9 @@ function S:Blizzard_ScrappingMachineUI()
 
 	for button in pairs(ItemSlots.scrapButtons.activeObjects) do
 		button:StripTextures()
-		button:SetTemplate()
-		S:HandleIcon(button.Icon)
-		S:HandleIconBorder(button.IconBorder)
+		S:HandleIcon(button.Icon, true)
+		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+		button.Icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 
 	-- Temp mover

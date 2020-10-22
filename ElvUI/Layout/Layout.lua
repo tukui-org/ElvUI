@@ -135,9 +135,21 @@ function LO:ToggleChatTabPanels(rightOverride, leftOverride)
 	end
 end
 
-function LO:SetDataPanelStyle()
-	_G.LeftChatToggleButton:SetTemplate(E.db.datatexts.panels.LeftChatDataPanel.backdrop and (E.db.datatexts.panels.LeftChatDataPanel.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
-	_G.RightChatToggleButton:SetTemplate(E.db.datatexts.panels.RightChatDataPanel.backdrop and (E.db.datatexts.panels.RightChatDataPanel.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
+do
+	local function DataPanelStyle(panel, db)
+		panel.forcedBorderColors = (db.border == false and {0,0,0,0}) or nil
+		panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
+
+		if db.border ~= nil then
+			if panel.iborder then panel.iborder:SetShown(db.border) end
+			if panel.oborder then panel.oborder:SetShown(db.border) end
+		end
+	end
+
+	function LO:SetDataPanelStyle()
+		DataPanelStyle(_G.LeftChatToggleButton, E.db.datatexts.panels.LeftChatDataPanel)
+		DataPanelStyle(_G.RightChatToggleButton, E.db.datatexts.panels.RightChatDataPanel)
+	end
 end
 
 local barHeight = BAR_HEIGHT + 1

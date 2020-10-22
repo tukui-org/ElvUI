@@ -10,9 +10,10 @@ local SharedOptions = {
 	textFormat = ACH:Select(L["Text Format"], nil, 2, { NONE = L["NONE"], CUR = L["Current"], REM = L["Remaining"], PERCENT = L["Percent"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }),
 	mouseover = ACH:Toggle(L["Mouseover"], nil, 3),
 	clickThrough = ACH:Toggle(L["Click Through"], nil, 4),
-	sizeGroup = ACH:Group(L["Size"], nil, 5),
-	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, 6),
-	fontGroup = ACH:Group(L["Fonts"], nil, 7),
+	showBubbles = ACH:Toggle(L["Show Bubbles"], nil, 5),
+	sizeGroup = ACH:Group(L["Size"], nil, -3),
+	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, -2),
+	fontGroup = ACH:Group(L["Fonts"], nil, -1),
 }
 
 SharedOptions.sizeGroup.inline = true
@@ -95,6 +96,7 @@ E.Options.args.databars.args.threat.args = CopyTable(SharedOptions)
 E.Options.args.databars.args.threat.args.enable.set = function(info, value) DB.db.threat[info[#info]] = value DB:ThreatBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.threat.args.textFormat = nil
 E.Options.args.databars.args.threat.args.conditionGroup = nil
+E.Options.args.databars.args.threat.args.showBubbles = nil
 
 E.Options.args.databars.args.azerite = ACH:Group(L["Azerite"], nil, 5, nil, function(info) return DB.db.azerite[info[#info]] end, function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() DB:UpdateAll() end)
 E.Options.args.databars.args.azerite.args = CopyTable(SharedOptions)
@@ -106,5 +108,4 @@ E.Options.args.databars.args.azerite.args.conditionGroup.values = {
 	hideInVehicle = L["Hide In Vehicle"],
 	hideInCombat = L["Hide In Combat"],
 	hideAtMaxLevel = L["Hide At Max Level"],
-	hideBelowMaxLevel = L["Hide Below Max Level"],
 }

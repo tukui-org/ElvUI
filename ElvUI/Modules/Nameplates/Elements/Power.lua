@@ -70,12 +70,8 @@ function NP:Power_UpdateColor(_, unit)
 	if atlas then
 		element:SetStatusBarAtlas(atlas)
 		element:SetStatusBarColor(1, 1, 1)
-	else
-		element:SetStatusBarTexture(element.texture)
-
-		if b then
-			element:SetStatusBarColor(r, g, b)
-		end
+	elseif b then
+		element:SetStatusBarColor(r, g, b)
 	end
 
 	if element.bg and b then element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier) end
@@ -107,7 +103,6 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent')
-	Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
 	local clipFrame = CreateFrame('Frame', nil, Power)
 	clipFrame:SetClipsChildren(true)
@@ -135,6 +130,7 @@ function NP:Update_Power(nameplate)
 			nameplate:EnableElement('Power')
 		end
 
+		nameplate.Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		nameplate.Power:Point('CENTER', nameplate, 'CENTER', db.power.xOffset, db.power.yOffset)
 
 		nameplate:SetPowerUpdateMethod(E.global.nameplate.effectivePower)

@@ -5,7 +5,6 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local pairs = pairs
 local unpack = unpack
-local hooksecurefunc = hooksecurefunc
 
 local function IslandTooltipStyle(self)
 	self:SetBackdrop()
@@ -89,17 +88,6 @@ function S:TooltipFrames()
 			tt.IconBorder:Kill()
 			tt.Icon:SetTexCoord(unpack(E.TexCoords))
 			TT:UnregisterEvent(event)
-		end
-	end)
-
-	-- Icon in ItemTooltip is stuck sometimes because of nargles, we dont want that
-	-- I have no idea if this actually works, it's a guess. ~Simpy
-	hooksecurefunc('EmbeddedItemTooltip_UpdateSize', function(frame)
-		if frame.Tooltip:IsShown() then
-			local textLeft = _G[frame.Tooltip:GetName() .. 'TextLeft1']
-			if textLeft and not textLeft:GetText() then
-				frame:Hide()
-			end
 		end
 	end)
 end

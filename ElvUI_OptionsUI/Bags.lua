@@ -23,8 +23,8 @@ E.Options.args.bags = {
 			type = 'toggle',
 			name = L["Enable"],
 			desc = L["Enable/Disable the all-in-one bag."],
-			get = function(info) return E.private.bags.enable end,
-			set = function(info, value) E.private.bags.enable = value; E:StaticPopup_Show('PRIVATE_RL') end
+			get = function() return E.private.bags.enable end,
+			set = function(_, value) E.private.bags.enable = value; E:StaticPopup_Show('PRIVATE_RL') end
 		},
 		general = {
 			order = 3,
@@ -189,8 +189,6 @@ E.Options.args.bags = {
 						LOW = 'LOW',
 						MEDIUM = 'MEDIUM',
 						HIGH = 'HIGH',
-						DIALOG = 'DIALOG',
-						TOOLTIP = 'TOOLTIP',
 					},
 				},
 				countGroup = {
@@ -506,8 +504,8 @@ E.Options.args.bags = {
 					type = 'toggle',
 					name = L["Enable"],
 					desc = L["Enable/Disable the Bag-Bar."],
-					get = function(info) return E.private.bags.bagBar end,
-					set = function(info, value) E.private.bags.bagBar = value; E:StaticPopup_Show('PRIVATE_RL') end
+					get = function() return E.private.bags.bagBar end,
+					set = function(_, value) E.private.bags.bagBar = value; E:StaticPopup_Show('PRIVATE_RL') end
 				},
 				showBackdrop = {
 					order = 2,
@@ -569,7 +567,7 @@ E.Options.args.bags = {
 					desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 					width = 'full',
 					multiline = true,
-					set = function(info, value)
+					set = function(_, value)
 						if value and value:match('[\n\r]') then
 							value = value:gsub('[\n\r]','')
 						end
@@ -609,8 +607,8 @@ E.Options.args.bags = {
 					order = 4,
 					type = 'multiselect',
 					name = L["Player"],
-					get = function(info, key) return E.db.bags.split[key] end,
-					set = function(info, key, value) E.db.bags.split[key] = value B:Layout() end,
+					get = function(_, key) return E.db.bags.split[key] end,
+					set = function(_, key, value) E.db.bags.split[key] = value B:Layout() end,
 					values = {
 						bag1 = L["Bag 1"],
 						bag2 = L["Bag 2"],
@@ -623,8 +621,8 @@ E.Options.args.bags = {
 					order = 5,
 					type = 'multiselect',
 					name = L["Bank"],
-					get = function(info, key) return E.db.bags.split[key] end,
-					set = function(info, key, value) E.db.bags.split[key] = value B:Layout(true) end,
+					get = function(_, key) return E.db.bags.split[key] end,
+					set = function(_, key, value) E.db.bags.split[key] = value B:Layout(true) end,
 					sortByValue = true,
 					values = {
 						bag5 = L["Bank 1"],
@@ -696,8 +694,8 @@ E.Options.args.bags = {
 							name = L["Profile"],
 							desc = L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."],
 							type = 'input',
-							get = function(info) return '' end,
-							set = function(info, value)
+							get = function() return '' end,
+							set = function(_, value)
 								if value == '' or gsub(value, '%s+', '') == '' then return; end --Don't allow empty entries
 
 								--Store by itemID if possible
@@ -710,8 +708,8 @@ E.Options.args.bags = {
 							name = L["Global"],
 							desc = L["Add an item or search syntax to the ignored list. Items matching the search syntax will be ignored."],
 							type = 'input',
-							get = function(info) return '' end,
-							set = function(info, value)
+							get = function() return '' end,
+							set = function(_, value)
 								if value == '' or gsub(value, '%s+', '') == '' then return; end --Don't allow empty entries
 
 								--Store by itemID if possible
@@ -731,8 +729,8 @@ E.Options.args.bags = {
 					type = 'multiselect',
 					name = L["Ignored Items and Search Syntax (Profile)"],
 					values = function() return E.db.bags.ignoredItems end,
-					get = function(info, value)	return E.db.bags.ignoredItems[value] end,
-					set = function(info, value)
+					get = function(_, value)	return E.db.bags.ignoredItems[value] end,
+					set = function(_, value)
 						E.db.bags.ignoredItems[value] = nil
 						GameTooltip:Hide()--Make sure tooltip is properly hidden
 					end,
@@ -742,8 +740,8 @@ E.Options.args.bags = {
 					type = 'multiselect',
 					name = L["Ignored Items and Search Syntax (Global)"],
 					values = function() return E.global.bags.ignoredItems end,
-					get = function(info, value)	return E.global.bags.ignoredItems[value] end,
-					set = function(info, value)
+					get = function(_, value)	return E.global.bags.ignoredItems[value] end,
+					set = function(_, value)
 						E.global.bags.ignoredItems[value] = nil
 						GameTooltip:Hide()--Make sure tooltip is properly hidden
 					end,
@@ -762,7 +760,7 @@ E.Options.args.bags = {
 					multiline = 26,
 					width = 'full',
 					name = '',
-					get = function(info) return L["SEARCH_SYNTAX_DESC"]; end,
+					get = function() return L["SEARCH_SYNTAX_DESC"]; end,
 					set = E.noop,
 				},
 			},

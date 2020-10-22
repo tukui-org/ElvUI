@@ -37,10 +37,6 @@ end
 
 local function SkinPetTooltip(tt)
 	tt.Background:SetTexture()
-	if tt.Delimiter1 then
-		tt.Delimiter1:SetTexture()
-		tt.Delimiter2:SetTexture()
-	end
 	tt.BorderTop:SetTexture()
 	tt.BorderTopLeft:SetTexture()
 	tt.BorderTopRight:SetTexture()
@@ -49,6 +45,14 @@ local function SkinPetTooltip(tt)
 	tt.BorderBottom:SetTexture()
 	tt.BorderBottomRight:SetTexture()
 	tt.BorderBottomLeft:SetTexture()
+
+	if tt.Delimiter1 then
+		tt.Delimiter1:SetTexture()
+	end
+	if tt.Delimiter2 then
+		tt.Delimiter2:SetTexture()
+	end
+
 	tt:CreateBackdrop('Transparent')
 end
 
@@ -244,19 +248,20 @@ function S:PetBattleFrame()
 
 	-- TOOLTIPS SKINNING
 	if E.private.skins.blizzard.tooltip then
+		SkinPetTooltip(_G.BattlePetTooltip)
 		SkinPetTooltip(_G.PetBattlePrimaryAbilityTooltip)
 		SkinPetTooltip(_G.PetBattlePrimaryUnitTooltip)
-		SkinPetTooltip(_G.BattlePetTooltip)
 		SkinPetTooltip(_G.FloatingBattlePetTooltip)
 		SkinPetTooltip(_G.FloatingPetBattleAbilityTooltip)
 
 		-- BATTLEPET RARITY COLOR
 		hooksecurefunc('BattlePetToolTip_Show', function(_, _, rarity)
+			if not _G.BattlePetTooltip.backdrop then return end
 			local quality = rarity and ITEM_QUALITY_COLORS[rarity]
 			if quality and rarity > 1 then
-				_G.BattlePetTooltip:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+				_G.BattlePetTooltip.backdrop:SetBackdropBorderColor(quality.r, quality.g, quality.b)
 			else
-				_G.BattlePetTooltip:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				_G.BattlePetTooltip.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end)
 

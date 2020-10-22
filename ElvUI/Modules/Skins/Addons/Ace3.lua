@@ -388,6 +388,8 @@ function S:Ace3_RegisterAsContainer(widget)
 			frame:SetTemplate('Transparent')
 			frame.callbackBackdropColor = S.Ace3_BackdropColor
 			S.Ace3_BackdropColor(frame)
+		elseif TYPE == 'Window' then
+			frame:CreateBackdrop('Transparent')
 		else
 			frame:SetTemplate('Transparent')
 		end

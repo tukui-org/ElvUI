@@ -179,7 +179,7 @@ function S:ContainerFrame()
 	hooksecurefunc('BankFrameItemButton_Update', function(button)
 		if not BankFrame.backdrop then
 			BankFrame:StripTextures(true)
-			BankFrame:SetTemplate('Transparent')
+			BankFrame:CreateBackdrop('Transparent')
 			S:HandleButton(_G.BankFramePurchaseButton, true)
 			S:HandleCloseButton(_G.BankFrameCloseButton)
 

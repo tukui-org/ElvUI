@@ -10,7 +10,7 @@ function S:Blizzard_AzeriteRespecUI()
 	AzeriteRespecFrame:SetClipsChildren(true)
 	AzeriteRespecFrame.Background:Hide()
 	AzeriteRespecFrame:StripTextures()
-	AzeriteRespecFrame:SetTemplate('Transparent')
+	AzeriteRespecFrame:CreateBackdrop('Transparent')
 
 	local Lines = AzeriteRespecFrame:CreateTexture(nil, 'BACKGROUND')
 	Lines:ClearAllPoints()

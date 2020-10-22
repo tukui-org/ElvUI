@@ -65,8 +65,8 @@ function UF:Configure_Threat(frame)
 end
 
 function UF:ThreatBorderColor(backdrop, lock, r, g, b)
+	backdrop.forcedBorderColors = lock and {r, g, b} or nil
 	backdrop:SetBackdropBorderColor(r, g, b)
-	backdrop.ignoreBorderColors = lock
 end
 
 do

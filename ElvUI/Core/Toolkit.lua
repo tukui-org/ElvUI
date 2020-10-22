@@ -8,7 +8,8 @@ local EnumerateFrames = EnumerateFrames
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local backdropr, backdropg, backdropb, backdropa, borderr, borderg, borderb = 0, 0, 0, 1, 0, 0, 0
+local backdropr, backdropg, backdropb, backdropa = 0, 0, 0, 1
+local borderr, borderg, borderb, bordera = 0, 0, 0, 1
 
 -- 8.2 restricted frame check
 function E:SetPointsRestricted(frame)
@@ -47,7 +48,7 @@ local function DisablePixelSnap(frame)
 end
 
 local function GetTemplate(template, isUnitFrameElement)
-	backdropa = 1
+	backdropa, bordera = 1, 1
 
 	if template == 'ClassColor' then
 		local color = E:ClassColor(E.myclass)
@@ -170,9 +171,11 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 		end
 	end
 
-	if not frame.ignoreBorderColors then
-		frame:SetBackdropBorderColor(borderr, borderg, borderb)
+	if frame.forcedBorderColors then
+		borderr, borderg, borderb, bordera = unpack(frame.forcedBorderColors)
 	end
+
+	frame:SetBackdropBorderColor(borderr, borderg, borderb, bordera)
 
 	if not frame.ignoreUpdates then
 		if frame.isUnitFrameElement then

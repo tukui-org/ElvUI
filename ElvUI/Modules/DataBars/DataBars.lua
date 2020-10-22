@@ -3,11 +3,11 @@ local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local unpack = unpack
-local pairs, select = pairs, select
+local unpack, select = unpack, select
+local pairs, ipairs = pairs, ipairs
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
-local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local InCombatLockdown = InCombatLockdown
 local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 
 function DB:OnLeave()
@@ -39,7 +39,7 @@ function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	bar:Hide()
 
 	bar.barTexture = bar:GetStatusBarTexture()
-	bar.text = bar:CreateFontString(nil, 'OVERLAY')
+	bar.text = bar:CreateFontString(nil, 'OVERLAY', nil, 7)
 	bar.text:FontTemplate()
 	bar.text:Point('CENTER')
 
@@ -50,6 +50,38 @@ function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
 	DB.StatusBars[key] = bar
 
 	return bar
+end
+
+function DB:CreateBarBubbles(bar)
+	if bar.bubbles then return end
+
+	bar.bubbles = {}
+
+	for i = 1, 19 do
+		bar.bubbles[i] = bar:CreateTexture(nil, 'OVERLAY', nil, 0)
+		bar.bubbles[i]:SetColorTexture(0, 0, 0)
+	end
+end
+
+function DB:UpdateBarBubbles(bar)
+	if not bar.bubbles then return end
+
+	local width, height = bar.db.width, bar.db.height
+	local vertical = bar:GetOrientation() ~= 'HORIZONTAL'
+	local bubbleWidth, bubbleHeight = vertical and (width - 2) or 1, vertical and 1 or (height - 2)
+	local offset = (vertical and height or width) / 20
+
+	for i, bubble in ipairs(bar.bubbles) do
+		bubble:ClearAllPoints()
+		bubble:SetSize(bubbleWidth, bubbleHeight)
+		bubble:SetShown(bar.db.showBubbles)
+
+		if vertical then
+			bubble:Point('TOP', bar, 'BOTTOM', 0, offset * i)
+		else
+			bubble:Point('RIGHT', bar, 'LEFT', offset * i, 0)
+		end
+	end
 end
 
 function DB:UpdateAll()
@@ -95,41 +127,33 @@ function DB:UpdateAll()
 				child:SetReverseFill(reverseFill)
 			end
 		end
+
+		DB:UpdateBarBubbles(bar)
 	end
 
-	DB:PvPCheck()
+	DB:HandleVisibility()
 end
 
-function DB:PLAYER_LEVEL_UP()
-	local isMaxLevel = IsPlayerAtEffectiveMaxLevel()
+function DB:SetVisibility(bar, event)
+	if bar.showBar ~= nil then
+		bar:SetShown(bar.showBar)
+		bar.holder:SetShown(bar.showBar)
+	elseif bar.db.enable then
+		local hideBar = ((bar == DB.StatusBars.Threat or bar.db.hideInCombat) and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown()))
+		or (bar.db.hideOutsidePvP and not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'))
+		or (bar.ShouldHide and bar:ShouldHide())
 
-	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable and (bar.db.hideAtMaxLevel ~= nil or bar.db.hideBelowMaxLevel ~= nil) then
-			bar:SetShown(not ((bar.db.hideAtMaxLevel and isMaxLevel) or (bar.db.hideBelowMaxLevel and not isMaxLevel)))
-		end
-	end
-end
-
-function DB:CombatCheck(event)
-	local notInCombat = event == 'PLAYER_REGEN_ENABLED'
-	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable and bar.db.hideInCombat then
-			bar:SetShown(notInCombat)
-			if notInCombat and bar.Update then
-				bar:Update()
-			end
-		end
+		bar:SetShown(not hideBar)
+		bar.holder:SetShown(not hideBar)
+	else
+		bar:SetShown(false)
+		bar.holder:SetShown(false)
 	end
 end
 
-function DB:PvPCheck()
-	local PvPInstance = select(2, GetInstanceInfo()) == 'pvp'
-	local WarMode = C_PvP_IsWarModeActive()
-
+function DB:HandleVisibility(event)
 	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable and bar.db.hideOutsidePvP then
-			bar:SetShown(not (PvPInstance or WarMode))
-		end
+		DB:SetVisibility(bar, event)
 	end
 end
 
@@ -147,11 +171,11 @@ function DB:Initialize()
 
 	DB:UpdateAll()
 
-	DB:RegisterEvent('PLAYER_LEVEL_UP')
-	DB:RegisterEvent('PLAYER_REGEN_ENABLED', 'CombatCheck')
-	DB:RegisterEvent('PLAYER_REGEN_DISABLED', 'CombatCheck')
-	DB:RegisterEvent('PVP_TIMER_UPDATE', 'PvPCheck')
-	DB:RegisterEvent('PLAYER_ENTERING_WORLD', 'PvPCheck')
+	DB:RegisterEvent('PLAYER_LEVEL_UP', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_ENTERING_WORLD', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_REGEN_DISABLED', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_REGEN_ENABLED', 'HandleVisibility')
+	DB:RegisterEvent('PVP_TIMER_UPDATE', 'HandleVisibility')
 end
 
 E:RegisterModule(DB:GetName())

@@ -980,6 +980,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	local button1 = _G[dialog:GetName()..'Button1']
 	local button2 = _G[dialog:GetName()..'Button2']
 	local button3 = _G[dialog:GetName()..'Button3']
+	local button4 = _G[dialog:GetName()..'Button4']
 
 	do	--If there is any recursion in this block, we may get errors (tempButtonLocs is static). If you have to recurse, we'll have to create a new table each time.
 		assert(#tempButtonLocs == 0);	--If this fails, we're recursing. (See the table.wipe at the end of the block)
@@ -987,6 +988,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		tinsert(tempButtonLocs, button1)
 		tinsert(tempButtonLocs, button2)
 		tinsert(tempButtonLocs, button3)
+		tinsert(tempButtonLocs, button4)
 
 		for i=#tempButtonLocs, 1, -1 do
 			--Do this stuff before we move it. (This is why we go back-to-front)
@@ -1183,12 +1185,6 @@ function E:Contruct_StaticPopups()
 		E.StaticPopupFrames[index]:SetScript('OnUpdate', E.StaticPopup_OnUpdate)
 		E.StaticPopupFrames[index]:SetScript('OnEvent', E.StaticPopup_OnEvent)
 
-		for i = 1, 3 do
-			_G['ElvUI_StaticPopup'..index..'Button'..i]:SetScript('OnClick', function(button)
-				E.StaticPopup_OnClick(button:GetParent(), button:GetID())
-			end)
-		end
-
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEnterPressed', E.StaticPopup_EditBoxOnEnterPressed)
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
@@ -1200,8 +1196,14 @@ function E:Contruct_StaticPopups()
 		E.StaticPopupFrames[index].Border:StripTextures()
 		E.StaticPopupFrames[index]:SetTemplate('Transparent')
 
-		for i = 1, 3 do
-			Skins:HandleButton(_G['ElvUI_StaticPopup'..index..'Button'..i])
+		for i = 1, 4 do
+			local button = _G['ElvUI_StaticPopup'..index..'Button'..i]
+			button:SetFrameLevel(button:GetFrameLevel() + 1)
+			button:SetScript('OnClick', function(btn)
+				E.StaticPopup_OnClick(btn:GetParent(), btn:GetID())
+			end)
+
+			Skins:HandleButton(button)
 		end
 
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:Size(24)

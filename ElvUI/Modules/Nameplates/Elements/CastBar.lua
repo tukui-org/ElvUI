@@ -118,9 +118,11 @@ function NP:Construct_Castbar(nameplate)
 	Castbar.Time = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Time:Point('RIGHT', Castbar, 'RIGHT', -4, 0)
 	Castbar.Time:SetJustifyH('RIGHT')
+	Castbar.Time:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 
 	Castbar.Text = Castbar:CreateFontString(nil, 'OVERLAY')
 	Castbar.Text:SetJustifyH('LEFT')
+	Castbar.Text:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	Castbar.Text:SetWordWrap(false)
 
 	Castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
@@ -133,9 +135,11 @@ function NP:Construct_Castbar(nameplate)
 
 	if nameplate == _G.ElvNP_Test then
 		Castbar.Hide = Castbar.Show
+		Castbar:Show()
+		Castbar.Text:SetText('Casting')
+		Castbar.Time:SetText('3.1')
 		Castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
 		Castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
-		Castbar:Show()
 	end
 
 	return Castbar
@@ -168,6 +172,10 @@ end
 
 function NP:Update_Castbar(nameplate)
 	local db = NP:PlateDB(nameplate)
+
+	if nameplate == _G.ElvNP_Test then
+		nameplate.Castbar:SetAlpha((not db.nameOnly and db.castbar.enable) and 1 or 0)
+	end
 
 	if db.castbar.enable then
 		if not nameplate:IsElementEnabled('Castbar') then
@@ -211,10 +219,6 @@ function NP:Update_Castbar(nameplate)
 		else
 			nameplate.Castbar.Time:FontTemplate(LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Time:Show()
-
-			if nameplate == _G.ElvNP_Test then
-				nameplate.Castbar.Time:SetText('3.1')
-			end
 		end
 
 		if db.castbar.hideSpellName then
@@ -222,10 +226,6 @@ function NP:Update_Castbar(nameplate)
 		else
 			nameplate.Castbar.Text:FontTemplate(LSM:Fetch('font', db.castbar.font), db.castbar.fontSize, db.castbar.fontOutline)
 			nameplate.Castbar.Text:Show()
-
-			if nameplate == _G.ElvNP_Test then
-				nameplate.Castbar.Text:SetText('Casting')
-			end
 		end
 	elseif nameplate:IsElementEnabled('Castbar') then
 		nameplate:DisableElement('Castbar')

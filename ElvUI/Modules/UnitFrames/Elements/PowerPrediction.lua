@@ -34,15 +34,17 @@ function UF:Construct_PowerPrediction(frame)
 end
 
 function UF:Configure_PowerPrediction(frame)
-	local powerPrediction = frame.PowerPrediction
 	if frame.db.power.powerPrediction then
 		if not frame:IsElementEnabled('PowerPrediction') then
 			frame:EnableElement('PowerPrediction')
 		end
 
+		local pred = frame.PowerPrediction
+		local mainBar = pred.mainBar
+		local altBar = pred.altBar
 		local power = frame.Power
+
 		local powerBarTexture = power:GetStatusBarTexture()
-		local mainBar, altBar = powerPrediction.mainBar, powerPrediction.altBar
 		local orientation = power:GetOrientation()
 		local reverseFill = power:GetReverseFill()
 
@@ -52,14 +54,14 @@ function UF:Configure_PowerPrediction(frame)
 
 		if orientation == 'HORIZONTAL' then
 			local point = reverseFill and 'LEFT' or 'RIGHT'
-			mainBar:Point('TOP', power, 'TOP')
-			mainBar:Point('BOTTOM', power, 'BOTTOM')
+			mainBar:Point('TOP')
+			mainBar:Point('BOTTOM')
 			mainBar:Point(point, powerBarTexture, point)
 			mainBar:Size(power:GetWidth(), 0)
 		else
 			local point = reverseFill and 'BOTTOM' or 'TOP'
-			mainBar:Point('LEFT', power, 'LEFT')
-			mainBar:Point('RIGHT', power, 'RIGHT')
+			mainBar:Point('LEFT')
+			mainBar:Point('RIGHT')
 			mainBar:Point(point, powerBarTexture, point)
 			mainBar:Size(0, power:GetHeight())
 		end
@@ -67,20 +69,21 @@ function UF:Configure_PowerPrediction(frame)
 		if altBar then
 			local altPower = frame.AdditionalPower
 			local altPowerBarTexture = altPower:GetStatusBarTexture()
+			local altPowerOrientation = altPower:GetOrientation()
 
 			altBar:ClearAllPoints()
 			altBar:SetReverseFill(true)
 			altBar:SetStatusBarTexture(UF.db.colors.transparentPower and E.media.blankTex or altPowerBarTexture:GetTexture())
 			altBar:SetOrientation((frame.db.classbar.verticalOrientation and 'VERTICAL') or 'HORIZONTAL')
 
-			if orientation == 'HORIZONTAL' then
-				altBar:Point('TOP', altPower, 'TOP')
-				altBar:Point('BOTTOM', altPower, 'BOTTOM')
+			if altPowerOrientation == 'HORIZONTAL' then
+				altBar:Point('TOP')
+				altBar:Point('BOTTOM')
 				altBar:Point('RIGHT', altPowerBarTexture, 'RIGHT')
 				altBar:Size(altPower:GetWidth(), 0)
 			else
-				altBar:Point('LEFT', altPower, 'LEFT')
-				altBar:Point('RIGHT', altPower, 'RIGHT')
+				altBar:Point('LEFT')
+				altBar:Point('RIGHT')
 				altBar:Point('TOP', altPowerBarTexture, 'TOP')
 				altBar:Size(0, altPower:GetHeight())
 			end

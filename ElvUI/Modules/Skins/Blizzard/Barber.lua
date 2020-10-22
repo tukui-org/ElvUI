@@ -9,10 +9,13 @@ function S:Blizzard_BarbershopUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end
 
 	local frame = _G.BarberShopFrame
-
 	S:HandleButton(frame.ResetButton)
 	S:HandleButton(frame.CancelButton)
 	S:HandleButton(frame.AcceptButton)
+
+	frame.TopBackgroundOverlay:SetDrawLayer('BACKGROUND', 0)
+	frame.LeftBackgroundOverlay:SetDrawLayer('BACKGROUND', 0)
+	frame.RightBackgroundOverlay:SetDrawLayer('BACKGROUND', 0)
 end
 S:AddCallbackForAddon('Blizzard_BarbershopUI')
 
@@ -24,17 +27,16 @@ end
 function S:Blizzard_CharacterCustomize()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end -- yes, it belongs also to tbe BarberUI
 
-	local frame = _G.CharCustomizeFrame
-
 	-- backdrop is ugly, so dont use a style
+	local frame = _G.CharCustomizeFrame
 	S:HandleButton(frame.SmallButtons.ResetCameraButton, nil, nil, true)
 	S:HandleButton(frame.SmallButtons.ZoomOutButton, nil, nil, true)
 	S:HandleButton(frame.SmallButtons.ZoomInButton, nil, nil, true)
 	S:HandleButton(frame.SmallButtons.RotateLeftButton, nil, nil, true)
 	S:HandleButton(frame.SmallButtons.RotateRightButton, nil, nil, true)
 
-	hooksecurefunc(frame, 'SetSelectedCatgory', function(self)
-		for button in self.selectionPopoutPool:EnumerateActive() do
+	hooksecurefunc(frame, 'SetSelectedCatgory', function(list)
+		for button in list.selectionPopoutPool:EnumerateActive() do
 			if not button.IsSkinned then
 				S:HandleNextPrevButton(button.DecrementButton)
 				S:HandleNextPrevButton(button.IncrementButton)
@@ -52,7 +54,7 @@ function S:Blizzard_CharacterCustomize()
 			end
 		end
 
-		local optionPool = self.pools:GetPool('CharCustomizeOptionCheckButtonTemplate')
+		local optionPool = list.pools:GetPool('CharCustomizeOptionCheckButtonTemplate')
 		for button in optionPool:EnumerateActive() do
 			if not button.IsSkinned then
 				S:HandleCheckBox(button.Button)
