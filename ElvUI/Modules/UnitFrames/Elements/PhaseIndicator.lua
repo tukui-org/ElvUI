@@ -1,23 +1,33 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 
-local unpack = unpack
-local texCoords = {
-	{1/128,   33/128,  1/64,  33/64},
-	{34/128,  66/128,  1/64,  33/64},
-}
+function UF:PostUpdate_PhaseIcon(hidden, phaseReason)
+	if phaseReason == 3 then -- chromie, gold
+		self.Overlay:SetVertexColor(1, 0.9, 0.5)
+	elseif phaseReason == 2 then -- warmode, red
+		self.Overlay:SetVertexColor(1, 0.3, 0.3)
+	elseif phaseReason == 1 then -- sharding, purple
+		self.Overlay:SetVertexColor(0.5, 0.3, 1)
+	else -- phasing, blue
+		self.Overlay:SetVertexColor(0.3, 0.5, 1)
+	end
 
-function UF:PostUpdate_PhaseIcon(isPhased)
-	self:SetTexCoord(unpack(texCoords[isPhased == 2 and 2 or 1]))
+	self.Overlay:SetShown(not hidden)
 end
 
 function UF:Construct_PhaseIcon(frame)
-	local PhaseIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK', nil, 1)
-	PhaseIndicator:Size(30, 30)
-	PhaseIndicator:Point('CENTER', frame.Health, 'CENTER')
-	PhaseIndicator:SetTexture(E.Media.Textures.PhaseIcons)
-	PhaseIndicator:SetDrawLayer('OVERLAY', 7)
+	local PhaseIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY', nil, 6)
+	PhaseIndicator:SetTexture(E.Media.Textures.PhaseIcon)
+	PhaseIndicator:Point('CENTER', frame.Health)
+	PhaseIndicator:Size(32)
 
+	local Overlay = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY', nil, 7)
+	Overlay:SetTexture(E.Media.Textures.PhaseOverlay)
+	Overlay:Point('CENTER', frame.Health)
+	Overlay:Size(32)
+	Overlay:Hide()
+
+	PhaseIndicator.Overlay = Overlay
 	PhaseIndicator.PostUpdate = UF.PostUpdate_PhaseIcon
 
 	return PhaseIndicator
@@ -29,7 +39,7 @@ function UF:Configure_PhaseIcon(frame)
 	PhaseIndicator:Point(frame.db.phaseIndicator.anchorPoint, frame.Health, frame.db.phaseIndicator.anchorPoint, frame.db.phaseIndicator.xOffset, frame.db.phaseIndicator.yOffset)
 
 	local scale = frame.db.phaseIndicator.scale or 1
-	PhaseIndicator:Size(30 * scale)
+	PhaseIndicator:Size(32 * scale)
 
 	if frame.db.phaseIndicator.enable and not frame:IsElementEnabled('PhaseIndicator') then
 		frame:EnableElement('PhaseIndicator')

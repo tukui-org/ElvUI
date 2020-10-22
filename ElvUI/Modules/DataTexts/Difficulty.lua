@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format = format
 local pairs = pairs
+local format = format
 local GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID = GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID
 local SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID = SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID
 local GetInstanceInfo, GetDifficultyInfo, ResetInstances = GetInstanceInfo, GetDifficultyInfo, ResetInstances
@@ -120,12 +120,22 @@ local function OnEvent(self)
 end
 
 local function OnEnter()
+	if not (DungeonDifficultyID or RaidDifficultyID or LegacyRaidDifficultyID) then return end
+
 	DT.tooltip:ClearLines()
 	DT.tooltip:SetText(L["Current Difficulties:"])
 	DT.tooltip:AddLine(' ')
-	DT.tooltip:AddLine(format('%s %s', DungeonTexture, DiffLabel[DungeonDifficultyID]), 1, 1, 1)
-	DT.tooltip:AddLine(format('%s %s', RaidTexture, DiffLabel[RaidDifficultyID]), 1, 1, 1)
-	DT.tooltip:AddLine(format('%s %s', LegacyTexture, DiffLabel[LegacyRaidDifficultyID]), 1, 1, 1)
+
+	if DungeonDifficultyID then
+		DT.tooltip:AddLine(format('%s %s', DungeonTexture, DiffLabel[DungeonDifficultyID]), 1, 1, 1)
+	end
+	if RaidDifficultyID then
+		DT.tooltip:AddLine(format('%s %s', RaidTexture, DiffLabel[RaidDifficultyID]), 1, 1, 1)
+	end
+	if LegacyRaidDifficultyID then
+		DT.tooltip:AddLine(format('%s %s', LegacyTexture, DiffLabel[LegacyRaidDifficultyID]), 1, 1, 1)
+	end
+
 	DT.tooltip:Show()
 end
 

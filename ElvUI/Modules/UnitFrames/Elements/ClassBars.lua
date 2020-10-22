@@ -307,6 +307,7 @@ function UF:Construct_ClassBar(frame)
 		bars[i].bg:SetTexture(E.media.blankTex)
 	end
 
+	bars.PostVisibility = UF.PostVisibilityClassBar
 	bars.PostUpdate = UF.UpdateClassBar
 	bars.UpdateColor = E.noop --We handle colors on our own in Configure_ClassBar
 	bars.UpdateTexture = E.noop --We don't use textures but statusbars, so prevent errors
@@ -317,10 +318,20 @@ function UF:Construct_ClassBar(frame)
 	return bars
 end
 
+function UF:PostVisibilityClassBar()
+	local frame = self.origParent or self:GetParent()
+
+	ToggleResourceBar(frame[frame.ClassBar])
+	UF:Configure_ClassBar(frame)
+	UF:Configure_HealthBar(frame)
+	UF:Configure_Power(frame)
+	UF:Configure_InfoPanel(frame)
+end
+
 function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
-	if not db then return; end
+	if not db then return end
 
 	local isShown = self:IsShown()
 	local stateChanged
@@ -411,33 +422,11 @@ function UF:Construct_DeathKnightResourceBar(frame)
 	return runes
 end
 
--- Keep it for now. Maybe obsolete!
---[[
-function UF:PostVisibilityRunes(enabled)
-	local frame = self.origParent or self:GetParent()
-
-	if enabled then
-		frame.ClassBar = 'Runes'
-		frame.MAX_CLASS_BAR = #self
-	else
-		frame.ClassBar = 'ClassPower'
-		frame.MAX_CLASS_BAR = MAX_COMBO_POINTS
-	end
-
-	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-	if custom_backdrop then
-		for i=1, #self do
-			self[i].bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-		end
-	end
-end]]
-
 -------------------------------------------------------------
 -- ALTERNATIVE MANA BAR
 -------------------------------------------------------------
 function UF:Construct_AdditionalPowerBar(frame)
 	local additionalPower = CreateFrame('StatusBar', '$parent_AdditionalPowerBar', frame)
-	additionalPower:SetFrameLevel(additionalPower:GetFrameLevel() + 1)
 	additionalPower.colorPower = true
 	additionalPower.frequentUpdates = true
 	additionalPower.PostUpdate = UF.PostUpdateAdditionalPower

@@ -13,8 +13,6 @@ local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
-local C_QuestLog_SetSelectedQuest = C_QuestLog.SetSelectedQuest
-local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetQuestsOnMap = C_QuestLog.GetQuestsOnMap
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 
@@ -25,13 +23,9 @@ local QuestLogXP = 0
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	if not questID then return end
 
-	C_QuestLog_SetSelectedQuest(questID)
-
-	if C_QuestLog_ShouldShowQuestRewards(questID) then
-		local isCompleted = C_QuestLog_ReadyForTurnIn(questID)
-		if completedOnly and isCompleted or (not completedOnly and not isCompleted) then
-			QuestLogXP = QuestLogXP + GetQuestLogRewardXP()
-		end
+	local isCompleted = C_QuestLog_ReadyForTurnIn(questID)
+	if not completedOnly or isCompleted then
+		QuestLogXP = QuestLogXP + GetQuestLogRewardXP(questID)
 	end
 end
 
@@ -41,14 +35,9 @@ end
 
 function DB:ExperienceBar_Update()
 	local bar = DB.StatusBars.Experience
-	if not DB.db.experience.enable or (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
-		bar:Hide()
-		bar.holder:Hide()
-		return
-	else
-		bar:Show()
-		bar.holder:Show()
-	end
+	DB:SetVisibility(bar)
+
+	if not bar.db.enable or bar:ShouldHide() then return end
 
 	CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), GetXPExhaustion()
 	if XPToLevel <= 0 then XPToLevel = 1 end
@@ -179,10 +168,13 @@ function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
 	bar.db = DB.db.experience
 
-	if bar.db.enable and not (bar.db.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()) then
-		bar.holder:Show()
+	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
+	else
+		E:DisableMover(bar.holder.mover:GetName())
+	end
 
+	if bar.db.enable and not bar:ShouldHide() then
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_Update')
 		DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Update')
 		DB:RegisterEvent('ENABLE_XP_GAIN', 'ExperienceBar_Update')
@@ -194,9 +186,6 @@ function DB:ExperienceBar_Toggle()
 
 		DB:ExperienceBar_Update()
 	else
-		bar.holder:Hide()
-		E:DisableMover(bar.holder.mover:GetName())
-
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')
 		DB:UnregisterEvent('DISABLE_XP_GAIN')
 		DB:UnregisterEvent('ENABLE_XP_GAIN')
@@ -211,6 +200,11 @@ end
 function DB:ExperienceBar()
 	local Experience = DB:CreateBar('ElvUI_ExperienceBar', 'Experience', DB.ExperienceBar_Update, DB.ExperienceBar_OnEnter, DB.ExperienceBar_OnClick, {'BOTTOM', E.UIParent, 'BOTTOM', 0, 43})
 	Experience.barTexture:SetDrawLayer('ARTWORK', 4)
+	DB:CreateBarBubbles(Experience)
+
+	Experience.ShouldHide = function()
+		return DB.db.experience.hideAtMaxLevel and not DB:ExperienceBar_ShouldBeVisible()
+	end
 
 	local Rested = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Rested', Experience.holder)
 	Rested:SetStatusBarTexture(DB.db.customTexture and LSM:Fetch('statusbar', DB.db.statusbar) or E.media.normTex)

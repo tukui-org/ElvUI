@@ -41,6 +41,6 @@ function B:START_TIMER()
 end
 
 function B:SkinBlizzTimers()
-	self:RegisterEvent('START_TIMER')
-	self:START_TIMER()
+	B:RegisterEvent('START_TIMER')
+	B:START_TIMER()
 end

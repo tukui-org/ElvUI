@@ -538,7 +538,7 @@ function DT:LoadDataTexts(...)
 	local data = DT.LoadedInfo
 	data.font, data.fontSize, data.fontOutline = LSM:Fetch('font', DT.db.font), DT.db.fontSize, DT.db.fontOutline
 	data.inInstance, data.instanceType = IsInInstance()
-	data.isInBattle = data.inInstance and (data.instanceType == 'pvp' or data.instanceType == 'arena')
+	data.isInBattle = data.inInstance and data.instanceType == 'pvp'
 
 	for panel, db in pairs(E.global.datatexts.customPanels) do
 		DT:UpdatePanelAttributes(panel, db, true)

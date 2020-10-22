@@ -1,7 +1,53 @@
-### Version 12.02 [ ETA: 🍨 ]
+### Version 12.06 [ ETA: 🍨 ]
+
+**Changes:**  
+
+
+___
+
+### Version 12.05 [ October 21st 2020 ]
+
+**Changes:**  
+Attempted to fix a taint with opening Spellbook in combat  
+Shut off the NewPlayerExperience because it conflicts with ActionBars  
+Small update for Missions and Follower skins (classhall)  
+ClassBar when login as kitty was tiny  
+
+___
+
+### Version 12.04 [ October 19th 2020 ]
+
+**Nice:**  
+Boss button should appear as its supposed to now.  
+Gender display option in tooltip had space on the wrong side.  
+Adjusted the QuestXP code to not mess with Reward Item Tooltip.  
+Fixed Additional Power Prediction not anchoring properly when set to vertical fill.  
+Cleaned up the Equipment flyout skin some.  
+Movie frame dialog backdrop was missing.  
+
+___
+
+### Version 12.03 [ October 17th 2020 ]
+
+**Yay:**  
+Fixed taint for Override Action Button Show  
+Battleground Datatext was showing in Arena where it doesn't work anymore  
+Objective Tracker button has a range overlay now and the (its grey) should be fixed  
+Stance bar showing when entering a Battleground on priest and it switching you to healer from Shadow  
+Databar Quest XP will show green for quests you are on and have completed, unless you have completed enabled  
+Heal Pred was anchoring incorrectly when absorb style was set to None  
+Fixed Alternative Power UnitIsUnit error  
+
+___
+
+### Version 12.02 [ October 17th 2020 ]
 
 **Fancy:**  
-
+Clean Boss Button option wasn't saving properly.  
+Added a Show Bubbles option for Databars.  
+Fixed Difficulty Datatext error.  
+Added two buttons to Quick Toggle Blizzard Skins, in the skin section of config.  
+Allowed the MicroBar to be shown in Pet Battles by editing the visibility setting.  
 ___
 
 ### Version 12.01 [ October 16th 2020 ]
@@ -11,12 +57,12 @@ Unitframe and Nameplate font issues (new method to get them showing properly)
 Actionbar Backdrops we reworked to fix them being a little funky, this includes Pet and Stance bar  
 Boss and Zone Button being jumpy  
 
-**Good:**
+**Good:**  
 oUF updates  
 System DT options: No Label, Other Addons  
 ElvUI_QuestXP is now depreciated and forced off  
 
-**Fixed:**
+**Fixed:**  
 Voice Chat Error  
 NewComer Chat Error  
 Reagent Bank busted  
@@ -33,7 +79,7 @@ Nameplate failing to update
 Test Nameplate works a lot better now  
 Time Datatext showing empty world PVP stuff  
 
-**Unbroken Skins:**
+**Unbroken Skins:**  
 Pet Battle Tooltip  
 Scrap Machine  
 Azerite Respec  
@@ -46,7 +92,7 @@ ___
 
 ### Version 12.00 [ October 13th 2020 ]
 
-**Cool:**
+**Cool:**  
 We updated our backdrop code to behave nicely with the backdrop changes Blizzard implemented.  
 We decided to completely rewrite the DataBars, this includes rewriting the old threat into this new module.  
 
@@ -99,31 +145,31 @@ Bags Datatext is a little less weird now.
 Added Text Justify setting, so text can hug left/right if you want.  
 New datatext for Date, incase you aren't sure.  
 
-**Config:**
+**Config:**  
 Style Filters and Custom Texts will be automatically selected when created now.  
 Options Logo was animating a little too much, someone gave it too much candy.  
 Copy From should update the config to match now.  
 Skin options are again sorted in order.  
 
-**UnitFrames:**
+**UnitFrames:**  
 Buff Indicator better supports Blizzard Cooldowns when our Cooldown module is disabled.  
 Added some new Absorb settings (aka one is old but readded now).  
 Party Pets and Party Targets can now display Aura Highlight.  
 Added Interrupted Color for castbar on Unitframes.  
 
-**NamePlates:**
+**NamePlates:**  
 Castbar Time should fit better.  
 Fixed Player Nameplate being weird half of the time.  
 Quest Icons also shows the quest ! texture now in some cases, and wont show 1 on the icon anymore.  
 Quest Icons code was slightly updated to improve locales and pick the correct icon to use, so now it might work on other languages better.  
 Corrected a Style Filter error, also let entering and leaving combat trigger filters correctly (regardless of unit threat).  
 
-**Chat:**
+**Chat:**  
 Panel Movers will update with the Panel resizing again.  
 Docked chats werent fading correctly.  
 Added option to hide the Copy Button.  
 
-**ActionBars:**
+**ActionBars:**  
 Equipped Item border wasn't updating correctly.  
 Extra Action Button cooldown was not showing when it should.  
 
@@ -136,7 +182,7 @@ Added option to show Class Icon as Portrait.
 Style filter settings were getting stuck in last version.  
 Corrected a few issues with Portrait backdrops being shown when they weren't supposed to.  
 
-**Options:**
+**Options:**  
 Masque options are now clickable again.  
 
 ___
