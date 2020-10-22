@@ -997,7 +997,7 @@ end
 ElvUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['name:title'] = function(unit)
 	if UnitIsPlayer(unit) then
-		return UnitPVPName(unit) or UnitPVPName(unit)
+		return UnitPVPName(unit) or UnitName(unit)
 	end
 end
 
