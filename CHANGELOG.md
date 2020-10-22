@@ -1,7 +1,18 @@
-### Version 12.06 [ ETA: 🍨 ]
+### Version 12.07 [ ETA: 🍨 ]
 
 **Changes:**  
 
+___
+
+### Version 12.06 [ October 22nd 2020 ]
+
+**Excellent:**  
+Adjusted fonts to scale a little better to follow what Blizzard intended.  
+Databars: Fixed EXP mover not showing up, fixed visibility logic for all bars.  
+Adjusted backdrop color of Account Wide achievements to a soft dark blue.  
+Updated Phase Indicator to show Chromie Champions and Sharding players.  
+Attempted to correct Power Prediction not anchoring correctly on Additional Power.  
+Let tag [name:title] fall back to [name] when phased.  
 
 ___
 
