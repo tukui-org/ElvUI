@@ -116,9 +116,12 @@ function DB:ExperienceBar_QuestXP()
 	if bar.db.questCurrentZoneOnly then
 		local mapID = E.MapInfo.mapID
 		if mapID then
-			for _, v in ipairs(C_QuestLog_GetQuestsOnMap(mapID)) do
-				if v.type == -1 then
-					DB:ExperienceBar_CheckQuests(v.questID, completedOnly)
+			local quests = C_QuestLog_GetQuestsOnMap(mapID)
+			if quests then
+				for _, v in ipairs(quests) do
+					if v.type == -1 then
+						DB:ExperienceBar_CheckQuests(v.questID, completedOnly)
+					end
 				end
 			end
 		end
