@@ -8,14 +8,24 @@ local strmatch = strmatch
 local function SetFont(obj, font, size, style, sr, sg, sb, sa, sox, soy, r, g, b)
 	if not obj then return end
 	obj:SetFont(font, size, style)
-	if sr and sg and sb then obj:SetShadowColor(sr, sg, sb, sa) end
-	if sox and soy then obj:SetShadowOffset(sox, soy) end
-	if r and g and b then obj:SetTextColor(r, g, b)
-	elseif r then obj:SetAlpha(r) end
+
+	if sr and sg and sb then
+		obj:SetShadowColor(sr, sg, sb, sa)
+	end
+
+	if sox and soy then
+		obj:SetShadowOffset(sox, soy)
+	end
+
+	if r and g and b then
+		obj:SetTextColor(r, g, b)
+	elseif r then
+		obj:SetAlpha(r)
+	end
 end
 
 local function GetSize(size)
-	return min(10, max(40, size))
+	return max(10, min(40, size))
 end
 
 local chatFontHeights = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}
@@ -29,6 +39,7 @@ function E:UpdateBlizzardFonts()
 	local MONOCHROME = strmatch(E.db.general.fontStyle, 'MONOCHROME') and 'MONOCHROME' or ''
 
 	_G.CHAT_FONT_HEIGHTS = chatFontHeights
+
 	if E.eyefinity then COMBAT = E.Media.Fonts.Invisible end -- set an invisible font for xp, honor kill, etc
 	if E.private.general.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
 	if E.private.general.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
@@ -37,13 +48,13 @@ function E:UpdateBlizzardFonts()
 		--_G.NAMEPLATE_FONT		= NAMEFONT
 
 		local size = E.db.general.fontSize
-		local enormous = GetSize(size * 2.0)
-		local mega = GetSize(size * 1.5)
-		local huge = GetSize(size * 1.2)
-		local large = GetSize(size * 1.1)
-		local medium = GetSize(size * 1.05)
-		local small = GetSize(size * 0.9)
-		local tiny = GetSize(size * 0.8)
+		local enormous	= GetSize(size * 2.00)
+		local mega		= GetSize(size * 1.75)
+		local huge		= GetSize(size * 1.50)
+		local large		= GetSize(size * 1.25)
+		local medium	= GetSize(size * 1.15)
+		local small		= GetSize(size * 0.95)
+		local tiny		= GetSize(size * 0.90)
 
 		SetFont(_G.AchievementFont_Small,				NORMAL, small)	-- 10						-- Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 25)									-- Talent Title
