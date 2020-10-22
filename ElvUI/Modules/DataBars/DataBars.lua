@@ -7,7 +7,7 @@ local unpack, select = unpack, select
 local pairs, ipairs = pairs, ipairs
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
-local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local UnitAffectingCombat = UnitAffectingCombat
 local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 
 function DB:OnLeave()
@@ -131,41 +131,29 @@ function DB:UpdateAll()
 		DB:UpdateBarBubbles(bar)
 	end
 
-	DB:PvPCheck()
+	DB:HandleVisibility()
 end
 
-function DB:PLAYER_LEVEL_UP()
-	local isMaxLevel = IsPlayerAtEffectiveMaxLevel()
+function DB:SetVisibility(bar)
+	if bar.showBar ~= nil then
+		bar:SetShown(bar.showBar)
+		bar.holder:SetShown(bar.showBar)
+	elseif bar.db.enable then
+		local hideBar = (bar == DB.StatusBars.Threat or bar.db.hideInCombat) and UnitAffectingCombat('player')
+		or (bar.db.hideOutsidePvP and not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'))
+		or (bar.ShouldHide and bar:ShouldHide())
 
-	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable and (bar.db.hideAtMaxLevel ~= nil or bar.db.hideBelowMaxLevel ~= nil) then
-			bar:SetShown(not ((bar.db.hideAtMaxLevel and isMaxLevel) or (bar.db.hideBelowMaxLevel and not isMaxLevel)))
-		end
+		bar:SetShown(not hideBar)
+		bar.holder:SetShown(not hideBar)
+	else
+		bar:SetShown(false)
+		bar.holder:SetShown(false)
 	end
 end
 
-function DB:CombatCheck(event)
-	local notInCombat = event == 'PLAYER_REGEN_ENABLED'
+function DB:HandleVisibility()
 	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable and bar.db.hideInCombat then
-			bar:SetShown(notInCombat)
-			bar.holder:SetShown(notInCombat)
-
-			if notInCombat and bar.Update then
-				bar:Update()
-			end
-		end
-	end
-end
-
-function DB:PvPCheck()
-	local PvPInstance = select(2, GetInstanceInfo()) == 'pvp'
-	local WarMode = C_PvP_IsWarModeActive()
-
-	for _, bar in pairs(DB.StatusBars) do
-		if bar.db.enable and bar.db.hideOutsidePvP then
-			bar:SetShown(not (PvPInstance or WarMode))
-		end
+		DB:SetVisibility(bar)
 	end
 end
 
@@ -183,11 +171,11 @@ function DB:Initialize()
 
 	DB:UpdateAll()
 
-	DB:RegisterEvent('PLAYER_LEVEL_UP')
-	DB:RegisterEvent('PLAYER_REGEN_ENABLED', 'CombatCheck')
-	DB:RegisterEvent('PLAYER_REGEN_DISABLED', 'CombatCheck')
-	DB:RegisterEvent('PVP_TIMER_UPDATE', 'PvPCheck')
-	DB:RegisterEvent('PLAYER_ENTERING_WORLD', 'PvPCheck')
+	DB:RegisterEvent('PLAYER_LEVEL_UP', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_ENTERING_WORLD', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_REGEN_DISABLED', 'HandleVisibility')
+	DB:RegisterEvent('PLAYER_REGEN_ENABLED', 'HandleVisibility')
+	DB:RegisterEvent('PVP_TIMER_UPDATE', 'HandleVisibility')
 end
 
 E:RegisterModule(DB:GetName())

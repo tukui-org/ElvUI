@@ -82,10 +82,6 @@ function UF:SetSize_HealComm(frame)
 	local db = frame.db.healPrediction
 	local width, height = health:GetSize()
 
-	-- fallback just incase? this shouldnt be need anymore
-	if not width or width <= 0 then width = health.WIDTH end
-	if not height or height <= 0 then height = health.HEIGHT end
-
 	if orientation == 'HORIZONTAL' then
 		local barHeight = db.height
 		if barHeight == -1 or barHeight > height then barHeight = height end
@@ -108,13 +104,13 @@ end
 function UF:Configure_HealComm(frame)
 	local db = frame.db.healPrediction
 	if db and db.enable then
-		frame.needsSizeUpdated = true
 
 		local pred = frame.HealthPrediction
 		local myBar = pred.myBar
 		local otherBar = pred.otherBar
 		local absorbBar = pred.absorbBar
 		local healAbsorbBar = pred.healAbsorbBar
+		pred.needsSizeUpdated = true
 
 		local colors = self.db.colors.healPrediction
 		pred.maxOverflow = 1 + (colors.maxOverflow or 0)
@@ -226,9 +222,9 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	local healAbsorbBar = pred.healAbsorbBar
 	local absorbBar = pred.absorbBar
 
-	if frame.needsSizeUpdated then
+	if pred.needsSizeUpdated then
 		UF:SetSize_HealComm(frame)
-		frame.needsSizeUpdated = nil
+		pred.needsSizeUpdated = nil
 	end
 
 	-- absorbs is set to none so hide both and kill code execution

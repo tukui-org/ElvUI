@@ -159,11 +159,14 @@ for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite
 		fontOutline = 'NONE',
 		mouseover = false,
 		clickThrough = false,
+		hideInCombat = false,
 		orientation = 'AUTOMATIC',
 		reverseFill = false,
 		showBubbles = false,
 	}
 end
+
+P.databars.threat.hideInCombat = nil -- always on in code
 
 P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.width = 348
@@ -178,7 +181,6 @@ P.databars.honor.hideOutsidePvP = false
 P.databars.honor.hideBelowMaxLevel = false
 
 P.databars.azerite.hideAtMaxLevel = true
-P.databars.azerite.hideBelowMaxLevel = false
 
 --Bags
 P.bags = {

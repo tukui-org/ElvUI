@@ -20,48 +20,41 @@ local C_AzeriteItem_IsAzeriteItemAtMaxLevel = C_AzeriteItem.IsAzeriteItemAtMaxLe
 local ARTIFACT_POWER = ARTIFACT_POWER
 
 function DB:AzeriteBar_Update(event, unit)
-	if not DB.db.azerite.enable or (event == 'UNIT_INVENTORY_CHANGED' and unit ~= 'player') then
-		return
-	end
+	if event == 'UNIT_INVENTORY_CHANGED' and unit ~= 'player' then return end
 
 	local bar = DB.StatusBars.Azerite
-	local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
+	DB:SetVisibility(bar)
 
-	if not azeriteItemLocation or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel()) or E.mylevel > 50 then
-		bar:Hide()
-		bar.holder:Hide()
+	if not bar.db.enable or bar:ShouldHide() then return end
+
+	local item = C_AzeriteItem_FindActiveAzeriteItem()
+	local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(item)
+	local currentLevel = C_AzeriteItem_GetPowerLevel(item)
+	local color = DB.db.colors.azerite
+
+	bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+	bar:SetMinMaxValues(0, max)
+	bar:SetValue(cur)
+
+	local textFormat = DB.db.azerite.textFormat
+	if textFormat == 'NONE' then
+		bar.text:SetText('')
+	elseif textFormat == 'PERCENT' then
+		bar.text:SetFormattedText('%s%% [%s]', floor(cur / max * 100), currentLevel)
+	elseif textFormat == 'CURMAX' then
+		bar.text:SetFormattedText('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max), currentLevel)
+	elseif textFormat == 'CURPERC' then
+		bar.text:SetFormattedText('%s - %s%% [%s]', E:ShortValue(cur), floor(cur / max * 100), currentLevel)
+	elseif textFormat == 'CUR' then
+		bar.text:SetFormattedText('%s [%s]', E:ShortValue(cur), currentLevel)
+	elseif textFormat == 'REM' then
+		bar.text:SetFormattedText('%s [%s]', E:ShortValue(max - cur), currentLevel)
+	elseif textFormat == 'CURREM' then
+		bar.text:SetFormattedText('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max - cur), currentLevel)
+	elseif textFormat == 'CURPERCREM' then
+		bar.text:SetFormattedText('%s - %s%% (%s) [%s]', E:ShortValue(cur), floor(cur / max * 100), E:ShortValue(max - cur), currentLevel)
 	else
-		bar:Show()
-		bar.holder:Show()
-
-		local cur, max = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-		local currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
-		local color = DB.db.colors.azerite
-
-		bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
-		bar:SetMinMaxValues(0, max)
-		bar:SetValue(cur)
-
-		local textFormat = DB.db.azerite.textFormat
-		if textFormat == 'NONE' then
-			bar.text:SetText('')
-		elseif textFormat == 'PERCENT' then
-			bar.text:SetFormattedText('%s%% [%s]', floor(cur / max * 100), currentLevel)
-		elseif textFormat == 'CURMAX' then
-			bar.text:SetFormattedText('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max), currentLevel)
-		elseif textFormat == 'CURPERC' then
-			bar.text:SetFormattedText('%s - %s%% [%s]', E:ShortValue(cur), floor(cur / max * 100), currentLevel)
-		elseif textFormat == 'CUR' then
-			bar.text:SetFormattedText('%s [%s]', E:ShortValue(cur), currentLevel)
-		elseif textFormat == 'REM' then
-			bar.text:SetFormattedText('%s [%s]', E:ShortValue(max - cur), currentLevel)
-		elseif textFormat == 'CURREM' then
-			bar.text:SetFormattedText('%s - %s [%s]', E:ShortValue(cur), E:ShortValue(max - cur), currentLevel)
-		elseif textFormat == 'CURPERCREM' then
-			bar.text:SetFormattedText('%s - %s%% (%s) [%s]', E:ShortValue(cur), floor(cur / max * 100), E:ShortValue(max - cur), currentLevel)
-		else
-			bar.text:SetFormattedText('[%s]', currentLevel)
-		end
+		bar.text:SetFormattedText('[%s]', currentLevel)
 	end
 end
 
@@ -80,8 +73,8 @@ do
 	end
 
 	function DB:AzeriteBar_OnEnter()
-		local azeriteItemLocation = C_AzeriteItem_FindActiveAzeriteItem()
-		if azeriteItemLocation then
+		local item = C_AzeriteItem_FindActiveAzeriteItem()
+		if item then
 			if DB.db.azerite.mouseover then
 				E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 			end
@@ -91,10 +84,9 @@ do
 				_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 			end
 
-			curXP, maxXP = C_AzeriteItem_GetAzeriteItemXPInfo(azeriteItemLocation)
-			currentLevel = C_AzeriteItem_GetPowerLevel(azeriteItemLocation)
-
-			azeriteItem = Item:CreateFromItemLocation(azeriteItemLocation)
+			curXP, maxXP = C_AzeriteItem_GetAzeriteItemXPInfo(item)
+			currentLevel = C_AzeriteItem_GetPowerLevel(item)
+			azeriteItem = Item:CreateFromItemLocation(item)
 			azeriteItem:ContinueWithCancelOnItemLoad(dataLoadedCancelFunc)
 		end
 	end
@@ -115,26 +107,30 @@ function DB:AzeriteBar_Toggle()
 	local bar = DB.StatusBars.Azerite
 	bar.db = DB.db.azerite
 
-	bar.holder:SetShown(bar.db.enable)
-
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover:GetName())
 
 		DB:RegisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED', 'AzeriteBar_Update')
-		DB:RegisterEvent('UNIT_INVENTORY_CHANGED', 'AzeriteBar_Update')
+		DB:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'AzeriteBar_Update')
 
 		DB:AzeriteBar_Update()
 	else
 		E:DisableMover(bar.holder.mover:GetName())
 
 		DB:UnregisterEvent('AZERITE_ITEM_EXPERIENCE_CHANGED')
-		DB:UnregisterEvent('UNIT_INVENTORY_CHANGED')
+		DB:UnregisterEvent('PLAYER_EQUIPMENT_CHANGED')
 	end
 end
 
 function DB:AzeriteBar()
 	local Azerite = DB:CreateBar('ElvUI_AzeriteBar', 'Azerite', DB.AzeriteBar_Update, DB.AzeriteBar_OnEnter, DB.AzeriteBar_OnClick, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
 	DB:CreateBarBubbles(Azerite)
+
+	Azerite.ShouldHide = function()
+		local item = C_AzeriteItem_FindActiveAzeriteItem()
+		local equipped = item and item:IsEquipmentSlot()
+		return not equipped or (DB.db.azerite.hideAtMaxLevel and C_AzeriteItem_IsAzeriteItemAtMaxLevel())
+	end
 
 	E:CreateMover(Azerite.holder, 'AzeriteBarMover', L["Azerite Bar"], nil, nil, nil, nil, nil, 'databars,azerite')
 

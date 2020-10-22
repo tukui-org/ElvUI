@@ -3,7 +3,7 @@ local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local floor, format, tinsert = floor, format, tinsert
+local format, tinsert = format, tinsert
 local select, unpack, strmatch = select, unpack, strmatch
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
@@ -91,7 +91,7 @@ end
 function A:UpdateStatusBar(button)
 	button.statusBar:SetValue(button.timeLeft)
 
-	local threshold = E.db.auras.fadeThreshold
+	local threshold = A.db.fadeThreshold
 	if threshold == -1 then
 		return
 	elseif button.timeLeft > threshold then
@@ -102,29 +102,22 @@ function A:UpdateStatusBar(button)
 end
 
 function A:CreateIcon(button)
-	local font = LSM:Fetch('font', A.db.font)
 	local header = button:GetParent()
 	local auraType = header:GetAttribute('filter')
 
-	local db = A.db.debuffs
 	button.auraType = 'debuffs' -- used to update cooldown text
 	button.filter = auraType
 	if auraType == 'HELPFUL' then
-		db = A.db.buffs
 		button.auraType = 'buffs'
 	end
 
-	-- button:SetFrameLevel(4)
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 
 	button.count = button:CreateFontString(nil, 'OVERLAY')
-	button.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 1 + A.db.countYOffset)
-	button.count:FontTemplate(font, db.countFontSize, A.db.fontOutline)
 
 	button.text = button:CreateFontString(nil, 'OVERLAY')
-	button.text:Point('TOP', button, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
 
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	button.highlight:SetColorTexture(1, 1, 1, .45)
@@ -133,21 +126,10 @@ function A:CreateIcon(button)
 	button.statusBar = CreateFrame('StatusBar', nil, button)
 	button.statusBar:SetFrameLevel(button:GetFrameLevel())
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
-	button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', A.db.barTexture))
 	button.statusBar:CreateBackdrop()
+
+	A:UpdateIcon(button)
 	E:SetSmoothing(button.statusBar)
-
-	local pos, spacing, iconSize = A.db.barPosition, A.db.barSpacing, db.size - (E.Border * 2)
-	local isOnTop = pos == 'TOP' and true or false
-	local isOnBottom = pos == 'BOTTOM' and true or false
-	local isOnLeft = pos == 'LEFT' and true or false
-	local isOnRight = pos == 'RIGHT' and true or false
-
-	button.statusBar:Width((isOnTop or isOnBottom) and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)))
-	button.statusBar:Height((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
-	button.statusBar:Point(E.InversePoints[pos], button, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
-	if isOnLeft or isOnRight then button.statusBar:SetOrientation('VERTICAL') end
-
 	E:SetUpAnimGroup(button)
 
 	-- support cooldown override
@@ -160,8 +142,6 @@ function A:CreateIcon(button)
 		if not E.RegisteredCooldowns.auras then E.RegisteredCooldowns.auras = {} end
 		tinsert(E.RegisteredCooldowns.auras, button)
 	end
-
-	button.text:FontTemplate(font, db.durationFontSize, A.db.fontOutline)
 
 	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
 	A:Update_CooldownOptions(button)
@@ -176,6 +156,44 @@ function A:CreateIcon(button)
 		MasqueGroupDebuffs:ReSkin()
 	else
 		button:SetTemplate()
+	end
+end
+
+function A:UpdateIcon(button)
+	local font = LSM:Fetch('font', A.db.font)
+
+	local db = A.db.debuffs
+	if button.auraType == 'HELPFUL' then
+		db = A.db.buffs
+	end
+
+	button.count:ClearAllPoints()
+	button.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 1 + A.db.countYOffset)
+	button.count:FontTemplate(font, db.countFontSize, A.db.fontOutline)
+
+	button.text:ClearAllPoints()
+	button.text:Point('TOP', button, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
+	button.text:FontTemplate(font, db.durationFontSize, A.db.fontOutline)
+
+	local pos, spacing, iconSize = A.db.barPosition, A.db.barSpacing, db.size - (E.Border * 2)
+	local isOnTop = pos == 'TOP' and true or false
+	local isOnBottom = pos == 'BOTTOM' and true or false
+	local isOnLeft = pos == 'LEFT' and true or false
+	local isOnRight = pos == 'RIGHT' and true or false
+
+	button.statusBar:ClearAllPoints()
+	button.statusBar:Width((isOnTop or isOnBottom) and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)))
+	button.statusBar:Height((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
+	button.statusBar:Point(E.InversePoints[pos], button, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
+
+	button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', A.db.barTexture))
+
+	if isOnLeft or isOnRight then
+		button.statusBar:SetOrientation('VERTICAL')
+		button.statusBar:SetRotatesTexture(true)
+	else
+		button.statusBar:SetOrientation('HORIZONTAL')
+		button.statusBar:SetRotatesTexture(false)
 	end
 end
 
@@ -370,46 +388,18 @@ function A:UpdateHeader(header)
 
 	header:SetAttribute('template', format('ElvUIAuraTemplate%d',db.size))
 
-	local pos, spacing, iconSize = A.db.barPosition, A.db.barSpacing, db.size - (E.Border * 2)
-	local isOnTop = pos == 'TOP' and true or false
-	local isOnBottom = pos == 'BOTTOM' and true or false
-	local isOnLeft = pos == 'LEFT' and true or false
-	local isOnRight = pos == 'RIGHT' and true or false
-
 	local index = 1
 	local child = select(index, header:GetChildren())
 	while child do
-		if (floor(child:GetWidth() * 100 + 0.5) / 100) ~= db.size then
-			child:Size(db.size, db.size)
-		end
+		child:Size(db.size, db.size)
 
 		child.auraType = auraType -- used to update cooldown text
 
-		if child.text then
-			local font = LSM:Fetch('font', A.db.font)
-			child.text:ClearAllPoints()
-			child.text:Point('TOP', child, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
-			child.text:FontTemplate(font, db.durationFontSize, A.db.fontOutline)
-
-			child.count:ClearAllPoints()
-			child.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 0 + A.db.countYOffset)
-			child.count:FontTemplate(font, db.countFontSize, A.db.fontOutline)
-		end
+		A:UpdateIcon(child)
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
 		if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
 			child:Hide()
-		end
-
-		child.statusBar:Width((isOnTop or isOnBottom) and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)))
-		child.statusBar:Height((isOnLeft or isOnRight) and iconSize or (A.db.barHeight + (E.PixelMode and 0 or 2)))
-		child.statusBar:ClearAllPoints()
-		child.statusBar:Point(E.InversePoints[pos], child, pos, (isOnTop or isOnBottom) and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), (isOnLeft or isOnRight) and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
-		child.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', A.db.barTexture))
-		if isOnLeft or isOnRight then
-			child.statusBar:SetOrientation('VERTICAL')
-		else
-			child.statusBar:SetOrientation('HORIZONTAL')
 		end
 
 		index = index + 1

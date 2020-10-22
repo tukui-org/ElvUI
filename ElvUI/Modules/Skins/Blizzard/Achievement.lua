@@ -11,6 +11,8 @@ local GetNumFilteredAchievements = GetNumFilteredAchievements
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
+local BlueAchievement = {0.1, 0.2, 0.3}
+
 local function skinAch(Achievement, BiggerIcon)
 	if Achievement.isSkinned then return; end
 
@@ -19,6 +21,7 @@ local function skinAch(Achievement, BiggerIcon)
 	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
 	Achievement.icon:CreateBackdrop()
+	Achievement.icon.backdrop:SetAllPoints()
 	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
 	Achievement.icon:ClearAllPoints()
 	Achievement.icon:Point('TOPLEFT', 8, -8)
@@ -29,16 +32,8 @@ local function skinAch(Achievement, BiggerIcon)
 
 	if Achievement.highlight then
 		Achievement.highlight:StripTextures()
-		Achievement:HookScript('OnEnter', function(self)
-			self.backdrop:SetBackdropBorderColor(1, 1, 0)
-		end)
-		Achievement:HookScript('OnLeave', function(self)
-			if self.player and self.player.accountWide or self.accountWide then
-				self.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
-			else
-				self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end)
+		Achievement:HookScript('OnEnter', function(self) self.backdrop:SetBackdropBorderColor(1, 1, 0) end)
+		Achievement:HookScript('OnLeave', function(self) self.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end)
 	end
 
 	if Achievement.label then
@@ -104,6 +99,35 @@ local function SkinSearchButton(self)
 	hl:Point('BOTTOMRIGHT', -1, 1)
 end
 
+local function playerSaturate(self) -- self is Achievement.player
+	local Achievement = self:GetParent()
+
+	local r, g, b = unpack(E.media.bordercolor)
+	Achievement.player.backdrop.ignoreBackdropColor = nil
+	Achievement.friend.backdrop.ignoreBackdropColor = nil
+
+	if Achievement.player.accountWide then
+		r, g, b = unpack(BlueAchievement)
+		Achievement.player.backdrop.ignoreBackdropColor = true
+		Achievement.friend.backdrop.ignoreBackdropColor = true
+	end
+
+	Achievement.player.backdrop:SetBackdropColor(r, g, b)
+	Achievement.friend.backdrop:SetBackdropColor(r, g, b)
+end
+
+local function setAchievementColor(frame)
+	if frame and frame.backdrop then
+		if frame.accountWide then
+			frame.backdrop.ignoreBackdropColor = true
+			frame.backdrop:SetBackdropColor(unpack(BlueAchievement))
+		else
+			frame.backdrop.ignoreBackdropColor = nil
+			frame.backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
+		end
+	end
+end
+
 function S:Blizzard_AchievementUI(event)
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
@@ -128,15 +152,7 @@ function S:Blizzard_AchievementUI(event)
 					skinAch(Achievement.player)
 					skinAch(Achievement.friend)
 
-					hooksecurefunc(Achievement.player, 'Saturate', function()
-						if Achievement.player.accountWide then
-							Achievement.player.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
-							Achievement.friend.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
-						else
-							Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-							Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-						end
-					end)
+					hooksecurefunc(Achievement.player, 'Saturate', playerSaturate)
 				end
 			end
 			if template == 'StatTemplate' then
@@ -344,15 +360,7 @@ function S:Blizzard_AchievementUI(event)
 		_G[highlight:GetName()..'Middle']:SetAllPoints(frame)
 	end
 
-	hooksecurefunc('AchievementButton_DisplayAchievement', function(frame)
-		if frame.backdrop then
-			if frame.accountWide then
-				frame.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
-			else
-				frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end
-	end)
+	hooksecurefunc('AchievementButton_DisplayAchievement', setAchievementColor)
 
 	hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
 		for i=1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
@@ -370,11 +378,7 @@ function S:Blizzard_AchievementUI(event)
 				frame:Point('TOPRIGHT', prevFrame, 'BOTTOMRIGHT', 0, 1)
 			end
 
-			if frame.accountWide then
-				frame.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
-			else
-				frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
+			setAchievementColor(frame)
 		end
 	end)
 
@@ -480,15 +484,7 @@ function S:Blizzard_AchievementUI(event)
 		skinAch(Achievement.player)
 		skinAch(Achievement.friend)
 
-		hooksecurefunc(Achievement.player, 'Saturate', function()
-			if Achievement.player.accountWide then
-				Achievement.player.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
-				Achievement.friend.backdrop:SetBackdropBorderColor(_G.ACHIEVEMENTUI_BLUEBORDER_R, _G.ACHIEVEMENTUI_BLUEBORDER_G, _G.ACHIEVEMENTUI_BLUEBORDER_B)
-			else
-				Achievement.player.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				Achievement.friend.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end)
+		hooksecurefunc(Achievement.player, 'Saturate', playerSaturate)
 
 		Achievement.isSkinned = true
 	end
