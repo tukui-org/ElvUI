@@ -1455,7 +1455,7 @@ G.unitframe.ChannelTicks = {
 	[64843]  = 4,	-- Divine Hymn
 	[15407]  = 5,	-- Mind Flay
 	[48045]  = 5,	-- Mind Sear
-	[47757]  = 5,	-- Penance
+	[47540]  = 4,	-- Penance
 	-- Mage
 	[5143]   = 5,	-- Arcane Missiles
 	[12051]  = 3,	-- Evocation
@@ -1471,11 +1471,14 @@ G.unitframe.ChannelTicksSize = {
 
 -- Spells Effected By Haste
 G.unitframe.HastedChannelTicks = {
+	-- Mage
 	[205021] = true,	-- Ray of Frost
+	-- Priest
 	[15407]  = true,	-- Mind Flay
 	[48045]  = true,	-- Mind Sear
+	[64843]  = true,	-- Divine Hymn
+	[47540]  = true,	-- Penance
 }
-
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
 	[2825]  = { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
