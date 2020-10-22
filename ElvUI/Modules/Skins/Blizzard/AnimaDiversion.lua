@@ -16,7 +16,6 @@ function S:Blizzard_AnimaDiversionUI()
 	frame.CloseButton:Point('TOPRIGHT', frame, 'TOPRIGHT', 4, 4) --default is -5, -5
 
 	frame.AnimaDiversionCurrencyFrame.Background:SetAlpha(0)
-	S:HandleIcon(frame.AnimaDiversionCurrencyFrame.CurrencyFrame.CurrencyIcon)
 
 	S:HandleButton(frame.ReinforceInfoFrame.AnimaNodeReinforceButton)
 
