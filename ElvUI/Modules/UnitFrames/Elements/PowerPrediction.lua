@@ -4,12 +4,49 @@ local UF = E:GetModule('UnitFrames');
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+function UF:SetSize_PowerPrediction(frame)
+	local pred = frame.PowerPrediction
+
+	local width, height = frame.Power:GetSize()
+	if frame.Power:GetOrientation() == 'HORIZONTAL' then
+		pred.mainBar:Size(width, 0)
+	else
+		pred.mainBar:Size(0, height)
+	end
+
+	local altBar = pred.altBar
+	if altBar then
+		local altWidth, altHeight = frame.AdditionalPower:GetSize()
+
+		if altBar:GetOrientation() == 'HORIZONTAL' then
+			altBar:Size(altWidth, 0)
+		else
+			altBar:Size(0, altHeight)
+		end
+	end
+end
+
+function UF:PostUpdate_PowerPrediction()
+	local frame = self.parent
+	local pred = frame.PowerPrediction
+
+	if pred.needsSizeUpdated then
+		UF:SetSize_PowerPrediction(frame)
+		pred.needsSizeUpdated = nil
+	end
+end
+
 function UF:Construct_PowerPrediction(frame)
 	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
-	local prediction = { mainBar = mainBar, parent = frame }
 	mainBar:SetStatusBarTexture(E.media.blankTex)
 	mainBar.parent = frame.Power
 	mainBar:Hide()
+
+	local prediction = {
+		parent = frame,
+		mainBar = mainBar,
+		PostUpdate = UF.PostUpdate_PowerPrediction
+	}
 
 	if frame.AdditionalPower then
 		prediction.altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
@@ -43,6 +80,7 @@ function UF:Configure_PowerPrediction(frame)
 		local mainBar = pred.mainBar
 		local altBar = pred.altBar
 		local power = frame.Power
+		pred.needsSizeUpdated = true
 
 		local powerBarTexture = power:GetStatusBarTexture()
 		local orientation = power:GetOrientation()
@@ -57,13 +95,11 @@ function UF:Configure_PowerPrediction(frame)
 			mainBar:Point('TOP')
 			mainBar:Point('BOTTOM')
 			mainBar:Point(point, powerBarTexture, point)
-			mainBar:Size(power:GetWidth(), 0)
 		else
 			local point = reverseFill and 'BOTTOM' or 'TOP'
 			mainBar:Point('LEFT')
 			mainBar:Point('RIGHT')
 			mainBar:Point(point, powerBarTexture, point)
-			mainBar:Size(0, power:GetHeight())
 		end
 
 		if altBar then
@@ -74,18 +110,16 @@ function UF:Configure_PowerPrediction(frame)
 			altBar:ClearAllPoints()
 			altBar:SetReverseFill(true)
 			altBar:SetStatusBarTexture(UF.db.colors.transparentPower and E.media.blankTex or altPowerBarTexture:GetTexture())
-			altBar:SetOrientation((frame.db.classbar.verticalOrientation and 'VERTICAL') or 'HORIZONTAL')
+			altBar:SetOrientation(altPowerOrientation)
 
 			if altPowerOrientation == 'HORIZONTAL' then
 				altBar:Point('TOP')
 				altBar:Point('BOTTOM')
 				altBar:Point('RIGHT', altPowerBarTexture, 'RIGHT')
-				altBar:Size(altPower:GetWidth(), 0)
 			else
 				altBar:Point('LEFT')
 				altBar:Point('RIGHT')
 				altBar:Point('TOP', altPowerBarTexture, 'TOP')
-				altBar:Size(0, altPower:GetHeight())
 			end
 		end
 	elseif frame:IsElementEnabled('PowerPrediction') then
