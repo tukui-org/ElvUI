@@ -110,15 +110,10 @@ function S:Blizzard_CovenantSanctum()
 			UpgradesTab.CurrencyBackground:SetAlpha(0)
 			ReplaceCurrencies(UpgradesTab.CurrencyDisplayGroup)
 
-			hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
-			hooksecurefunc(frame.RenownTab, 'Refresh', HideRenownLevelBorder)
+			--hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
+			--hooksecurefunc(frame.RenownTab, 'Refresh', HideRenownLevelBorder)
 		end
 	end)
-
-	S:HandleTab(_G.CovenantSanctumFrameTab1)
-	S:HandleTab(_G.CovenantSanctumFrameTab2)
-	_G.CovenantSanctumFrameTab1:ClearAllPoints()
-	_G.CovenantSanctumFrameTab1:Point('BOTTOMLEFT', frame, 23, -32) --default is: 23, 9
 end
 
 S:AddCallbackForAddon('Blizzard_CovenantSanctum')
