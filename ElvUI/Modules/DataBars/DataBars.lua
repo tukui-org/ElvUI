@@ -7,7 +7,7 @@ local unpack, select = unpack, select
 local pairs, ipairs = pairs, ipairs
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
-local InCombatLockdown = InCombatLockdown
+local UnitAffectingCombat = UnitAffectingCombat
 local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 
 function DB:OnLeave()
@@ -134,12 +134,12 @@ function DB:UpdateAll()
 	DB:HandleVisibility()
 end
 
-function DB:SetVisibility(bar, event)
+function DB:SetVisibility(bar)
 	if bar.showBar ~= nil then
 		bar:SetShown(bar.showBar)
 		bar.holder:SetShown(bar.showBar)
 	elseif bar.db.enable then
-		local hideBar = ((bar == DB.StatusBars.Threat or bar.db.hideInCombat) and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown()))
+		local hideBar = (bar == DB.StatusBars.Threat or bar.db.hideInCombat) and UnitAffectingCombat('player')
 		or (bar.db.hideOutsidePvP and not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'))
 		or (bar.ShouldHide and bar:ShouldHide())
 
@@ -151,9 +151,9 @@ function DB:SetVisibility(bar, event)
 	end
 end
 
-function DB:HandleVisibility(event)
+function DB:HandleVisibility()
 	for _, bar in pairs(DB.StatusBars) do
-		DB:SetVisibility(bar, event)
+		DB:SetVisibility(bar)
 	end
 end
 

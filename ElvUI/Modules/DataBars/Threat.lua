@@ -6,7 +6,7 @@ local pairs, select, wipe = pairs, select, wipe
 local GetThreatStatusColor = GetThreatStatusColor
 local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local UnitClass = UnitClass
-local InCombatLockdown = InCombatLockdown
+local UnitAffectingCombat = UnitAffectingCombat
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitExists = UnitExists
 local UnitIsPlayer = UnitIsPlayer
@@ -47,7 +47,7 @@ function DB:ThreatBar_Update()
 	local bar = DB.StatusBars.Threat
 	local isInGroup, isInRaid, petExists = IsInGroup(), IsInRaid(), UnitExists('pet')
 
-	if InCombatLockdown() and (isInGroup or petExists) then
+	if UnitAffectingCombat('player') and (isInGroup or petExists) then
 		local _, status, percent = UnitDetailedThreatSituation('player', 'target')
 		local name = UnitName('target') or UNKNOWN
 		bar.showBar = true
@@ -114,6 +114,7 @@ function DB:ThreatBar_Toggle()
 		DB:RegisterEvent('PLAYER_TARGET_CHANGED', 'ThreatBar_Update')
 		DB:RegisterEvent('UNIT_THREAT_LIST_UPDATE', 'ThreatBar_Update')
 		DB:RegisterEvent('GROUP_ROSTER_UPDATE', 'ThreatBar_Update')
+		DB:RegisterEvent('UNIT_FLAGS', 'ThreatBar_Update')
 		DB:RegisterEvent('UNIT_PET', 'ThreatBar_Update')
 
 		DB:ThreatBar_Update()
@@ -123,6 +124,7 @@ function DB:ThreatBar_Toggle()
 		DB:UnregisterEvent('PLAYER_TARGET_CHANGED')
 		DB:UnregisterEvent('UNIT_THREAT_LIST_UPDATE')
 		DB:UnregisterEvent('GROUP_ROSTER_UPDATE')
+		DB:UnregisterEvent('UNIT_FLAGS')
 		DB:UnregisterEvent('UNIT_PET')
 	end
 end
