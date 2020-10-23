@@ -377,7 +377,7 @@ function UF:PostCastStart(unit)
 			end
 		end
 
-		-- hastTicks require a tickSize
+		-- hasteTicks require a tickSize
 		if hasteTicks then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste('player') * 0.01
