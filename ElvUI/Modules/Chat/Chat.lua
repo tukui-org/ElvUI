@@ -605,19 +605,22 @@ function CH:UpdateEditboxFont(chatFrame)
 		chatFrame = _G.GeneralDockManager.selected
 	end
 
-	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
 	local id = chatFrame:GetID()
+	local font = LSM:Fetch('font', CH.db.font)
 	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
-	local font, size, outline = LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline
 
-	editbox:FontTemplate(font, size, outline)
-	editbox.header:FontTemplate(font, size, outline)
+	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
+	editbox:FontTemplate(font, fontSize, 'NONE')
+	editbox.header:FontTemplate(font, fontSize, 'NONE')
 
 	if editbox.characterCount then
-		editbox.characterCount:FontTemplate(font, size, outline)
+		editbox.characterCount:FontTemplate(font, fontSize, 'NONE')
 	end
 
-	return editbox
+	-- the header and text will not update the placement without focus
+	if editbox and editbox:IsShown() then
+		editbox:SetFocus()
+	end
 end
 
 function CH:StyleChat(frame)
@@ -919,9 +922,8 @@ function CH:ChatEdit_SetLastActiveWindow(editbox)
 end
 
 function CH:FCFDock_SelectWindow(_, chatFrame)
-	local editbox = chatFrame and CH:UpdateEditboxFont(chatFrame)
-	if editbox and editbox:IsShown() then
-		editbox:SetFocus()
+	if chatFrame then
+		CH:UpdateEditboxFont(chatFrame)
 	end
 end
 
