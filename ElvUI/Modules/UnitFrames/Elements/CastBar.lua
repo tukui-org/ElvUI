@@ -360,7 +360,7 @@ function UF:PostCastStart(unit)
 		local unitframe = E.global.unitframe
 		local baseTicks = unitframe.ChannelTicks[self.spellID]
 
-		if E.myclass == 'PRIEST' and select(4, GetTalentInfo(1, 1, 1)) and self.spellID == 47758 then
+		if E.myclass == 'PRIEST' and select(4, GetTalentInfo(1, 1, 1)) and (self.spellID == 47758 or self.spellID == 47757) then
 			baseTicks = 4
 		end
 
