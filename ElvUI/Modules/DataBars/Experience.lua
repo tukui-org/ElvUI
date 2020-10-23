@@ -13,7 +13,7 @@ local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
-local C_QuestLog_GetQuestsOnMap = C_QuestLog.GetQuestsOnMap
+local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 local UnitXP, UnitXPMax = UnitXP, UnitXPMax
 
 local CurrentXP, XPToLevel, RestedXP, PercentRested
@@ -112,19 +112,10 @@ function DB:ExperienceBar_QuestXP()
 
 	QuestLogXP = 0
 
-	local completedOnly = bar.db.questCompletedOnly
-	if bar.db.questCurrentZoneOnly then
-		local mapID = E.MapInfo.mapID
-		if mapID then
-			for _, v in ipairs(C_QuestLog_GetQuestsOnMap(mapID)) do
-				if v.type == -1 then
-					DB:ExperienceBar_CheckQuests(v.questID, completedOnly)
-				end
-			end
-		end
-	else
-		for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-			DB:ExperienceBar_CheckQuests(C_QuestLog_GetQuestIDForLogIndex(i), completedOnly)
+	for i = 1, C_QuestLog_GetNumQuestLogEntries() do
+		local info = C_QuestLog_GetInfo(i)
+		if (not info.isHidden) and (bar.db.questCurrentZoneOnly and info.isOnMap or not bar.db.questCurrentZoneOnly) then
+			DB:ExperienceBar_CheckQuests(C_QuestLog_GetQuestIDForLogIndex(i), bar.db.questCompletedOnly)
 		end
 	end
 

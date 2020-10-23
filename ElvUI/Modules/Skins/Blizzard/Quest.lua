@@ -69,8 +69,8 @@ local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inse
 		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
 	end
 
-	local parent = scrollFrame:GetParent()
-	if parent.SealMaterialBG and parent.SealMaterialBG:IsShown() then
+	local theme = _G.QuestInfoSealFrame.theme
+	if theme and theme.background then
 		scrollFrame.spellTex:Hide()
 		scrollFrame.backdrop:Hide()
 	else
