@@ -1457,8 +1457,8 @@ G.unitframe.ChannelTicks = {
 	[64843]  = 4,	-- Divine Hymn
 	[15407]  = 6,	-- Mind Flay
 	[48045]  = 6,	-- Mind Sear
-	[47757]  = 3,	-- Penance
-	[47758]  = 3,	-- Penance
+	[47757]  = 3,	-- Penance (heal)
+	[47758]  = 3,	-- Penance (dps)
 	-- Mage
 	[5143]   = 4,	-- Arcane Missiles
 	[12051]  = 6,	-- Evocation
