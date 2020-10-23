@@ -360,6 +360,10 @@ function UF:PostCastStart(unit)
 		local unitframe = E.global.unitframe
 		local baseTicks = unitframe.ChannelTicks[self.spellID]
 
+		if E.myclass == 'PRIEST' and select(4, GetTalentInfo(1, 1, 1)) and self.spellID == 47758 then
+			baseTicks = 4
+		end
+
 		if baseTicks and unitframe.ChannelTicksSize[self.spellID] and unitframe.HastedChannelTicks[self.spellID] then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste('player') * 0.01
