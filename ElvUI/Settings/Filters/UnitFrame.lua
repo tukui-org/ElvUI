@@ -1447,21 +1447,30 @@ P.unitframe.filters = {
 
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
+	-- Racials
+	[291944] = 6,	-- Regeneratin'
 	-- Warlock
 	[198590] = 5,	-- Drain Soul
-	[755]    = 6,	-- Health Funnel
-	[234153] = 6,	-- Drain Life
+	[755]    = 5,	-- Health Funnel
+	[234153] = 5,	-- Drain Life
 	-- Priest
 	[64843]  = 4,	-- Divine Hymn
-	[15407]  = 5,	-- Mind Flay
-	[48045]  = 5,	-- Mind Sear
-	[47757]  = 4,	-- Penance
+	[15407]  = 6,	-- Mind Flay
+	[48045]  = 6,	-- Mind Sear
+	[47757]  = 3,	-- Penance
 	-- Mage
-	[5143]   = 5,	-- Arcane Missiles
-	[12051]  = 3,	-- Evocation
-	[205021] = 10,	-- Ray of Frost
+	[5143]   = 4,	-- Arcane Missiles
+	[12051]  = 6,	-- Evocation
+	[205021] = 5,	-- Ray of Frost
 	-- Druid
 	[740]    = 4,	-- Tranquility
+	-- DK
+	[206931] = 3,	-- Blooddrinker
+	-- DH
+	[198013] = 10,	-- Eye Beam
+	[212084] = 10,	-- Fel Devastation
+	-- Hunter
+	[120360] = 15,	-- Barrage
 }
 
 G.unitframe.ChannelTicksSize = {
@@ -1473,12 +1482,8 @@ G.unitframe.ChannelTicksSize = {
 G.unitframe.HastedChannelTicks = {
 	-- Mage
 	[205021] = true,	-- Ray of Frost
-	-- Priest
-	[15407]  = true,	-- Mind Flay
-	[48045]  = true,	-- Mind Sear
-	[64843]  = true,	-- Divine Hymn
-	[47757]  = true,	-- Penance
 }
+
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
 	[2825]  = { enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
