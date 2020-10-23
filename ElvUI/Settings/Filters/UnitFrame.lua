@@ -1471,6 +1471,7 @@ G.unitframe.ChannelTicks = {
 	[212084] = 10,	-- Fel Devastation
 	-- Hunter
 	[120360] = 15,	-- Barrage
+	[257044] = 7,	-- Rapid Fire
 }
 
 G.unitframe.ChannelTicksSize = {
