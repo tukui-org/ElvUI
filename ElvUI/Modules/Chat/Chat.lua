@@ -601,6 +601,10 @@ function CH:UpdateEditboxFont(chatFrame)
 		chatFrame = CH.LeftChatWindow
 	end
 
+	if chatFrame == _G.GeneralDockManager.primary then
+		chatFrame = _G.GeneralDockManager.selected
+	end
+
 	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
 	local id = chatFrame:GetID()
 	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
@@ -612,6 +616,8 @@ function CH:UpdateEditboxFont(chatFrame)
 	if editbox.characterCount then
 		editbox.characterCount:FontTemplate(font, size, outline)
 	end
+
+	return editbox
 end
 
 function CH:StyleChat(frame)
@@ -912,8 +918,17 @@ function CH:ChatEdit_SetLastActiveWindow(editbox)
 	if style == 'im' then editbox:SetAlpha(0.5) end
 end
 
+function CH:FCFDock_SelectWindow(_, chatFrame)
+	local editbox = chatFrame and CH:UpdateEditboxFont(chatFrame)
+	if editbox and editbox:IsShown() then
+		editbox:SetFocus()
+	end
+end
+
 function CH:ChatEdit_ActivateChat(editbox)
-	CH:UpdateEditboxFont(editbox.chatFrame)
+	if editbox and editbox.chatFrame then
+		CH:UpdateEditboxFont(editbox.chatFrame)
+	end
 end
 
 function CH:ChatEdit_DeactivateChat(editbox)
@@ -3155,6 +3170,7 @@ function CH:Initialize()
 	CH:SecureHook('FCF_Close')
 	CH:SecureHook('FCF_SetWindowAlpha')
 	CH:SecureHook('FCFTab_UpdateColors')
+	CH:SecureHook('FCFDock_SelectWindow')
 	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	CH:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
 	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
