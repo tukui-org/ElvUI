@@ -1478,6 +1478,15 @@ G.unitframe.ChannelTicks = {
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
 	[198590] = 1,	-- Drain Soul
+	-- Mage
+	[205021] = 1,	-- Ray of Frost
+}
+
+-- Spells Effected By Talents
+G.unitframe.TalentChannelTicks = {
+	-- Priest
+	[47757]  = {tier = 1, column = 1, ticks = 4},	-- Penance (heal)
+	[47758]  = {tier = 1, column = 1, ticks = 4},	-- Penance (dps)
 }
 
 -- Spells Effected By Haste
