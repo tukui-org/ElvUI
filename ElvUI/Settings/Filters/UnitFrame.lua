@@ -1475,13 +1475,6 @@ G.unitframe.ChannelTicks = {
 	[257044] = 7,	-- Rapid Fire
 }
 
-G.unitframe.ChannelTicksSize = {
-	-- Warlock
-	[198590] = 1,	-- Drain Soul
-	-- Mage
-	[205021] = 1,	-- Ray of Frost
-}
-
 -- Spells Effected By Talents
 G.unitframe.TalentChannelTicks = {
 	-- Priest
@@ -1489,7 +1482,14 @@ G.unitframe.TalentChannelTicks = {
 	[47758]  = {tier = 1, column = 1, ticks = 4},	-- Penance (dps)
 }
 
--- Spells Effected By Haste
+G.unitframe.ChannelTicksSize = {
+	-- Warlock
+	[198590] = 1,	-- Drain Soul
+	-- Mage
+	[205021] = 1,	-- Ray of Frost
+}
+
+-- Spells Effected By Haste, these spells require a Tick Size (table above)
 G.unitframe.HastedChannelTicks = {
 	-- Mage
 	[205021] = true,	-- Ray of Frost
