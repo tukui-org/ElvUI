@@ -18,6 +18,7 @@ local function ReskinTalents(self)
 		if not frame.IsSkinned then
 			frame.Border:SetAlpha(0)
 			frame.IconBorder:SetAlpha(0)
+			frame.TierBorder:SetAlpha(0)
 			frame.Background:SetAlpha(0)
 
 			frame:CreateBackdrop('Transparent')
@@ -72,7 +73,7 @@ function S:Blizzard_CovenantSanctum()
 	local frame = _G.CovenantSanctumFrame
 
 	frame:HookScript('OnShow', function()
-		if not frame.backdrop then
+		if not frame.IsSkinned then
 			frame:CreateBackdrop('Transparent')
 			frame.NineSlice:SetAlpha(0)
 
@@ -110,8 +111,9 @@ function S:Blizzard_CovenantSanctum()
 			UpgradesTab.CurrencyBackground:SetAlpha(0)
 			ReplaceCurrencies(UpgradesTab.CurrencyDisplayGroup)
 
-			--hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
-			--hooksecurefunc(frame.RenownTab, 'Refresh', HideRenownLevelBorder)
+			hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
+
+			frame.IsSkinned = true
 		end
 	end)
 end
