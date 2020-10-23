@@ -21,13 +21,15 @@ function S:Blizzard_CovenantRenown()
 		end
 	end)
 
+	hooksecurefunc(frame, 'SetUpTextureKits', function(self)
+		self.CloseButton.Border:Hide()
+		if E.private.skins.parchmentRemoverEnable then
+			self:StripTextures()
+		end
+	end)
+
 	if E.private.skins.parchmentRemoverEnable then
 		frame:CreateBackdrop('Transparent')
-
-		hooksecurefunc(frame, 'SetUpTextureKits', function(self)
-			self:StripTextures()
-			self.CloseButton.Border:Hide()
-		end)
 	end
 end
 
