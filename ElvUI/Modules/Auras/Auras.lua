@@ -163,7 +163,7 @@ function A:UpdateIcon(button)
 	local font = LSM:Fetch('font', A.db.font)
 
 	local db = A.db.debuffs
-	if button.auraType == 'HELPFUL' then
+	if button.auraType == 'buffs' then
 		db = A.db.buffs
 	end
 
