@@ -139,29 +139,25 @@ function S:BlizzardQuestFrames()
 	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
 
 	hooksecurefunc('QuestInfo_Display', function()
-		for i = 1, #_G.QuestInfoRewardsFrame.RewardButtons do
-			local questItem = _G.QuestInfoRewardsFrame.RewardButtons[i]
-			if questItem and questItem:IsShown() then
-
-				local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
-				if point and relativeTo and relativePoint then
-					if i == 1 then
-						questItem:Point(point, relativeTo, relativePoint, 0, y)
-					elseif relativePoint == 'BOTTOMLEFT' then
-						questItem:Point(point, relativeTo, relativePoint, 0, -4)
-					else
-						questItem:Point(point, relativeTo, relativePoint, 4, 0)
-					end
+		for i, questItem in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
+			local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
+			if point and relativeTo and relativePoint then
+				if i == 1 then
+					questItem:Point(point, relativeTo, relativePoint, 0, y)
+				elseif relativePoint == 'BOTTOMLEFT' then
+					questItem:Point(point, relativeTo, relativePoint, 0, -4)
+				else
+					questItem:Point(point, relativeTo, relativePoint, 4, 0)
 				end
-
-				if not questItem.Icon.backdrop then
-					HandleReward(questItem)
-					questItem.NameFrame:Hide()
-					S:HandleIconBorder(questItem.IconBorder, questItem.Icon.backdrop)
-				end
-
-				questItem.Name:SetTextColor(1, 1, 1)
 			end
+
+			if not questItem.Icon.backdrop then
+				HandleReward(questItem)
+				questItem.NameFrame:Hide()
+				S:HandleIconBorder(questItem.IconBorder, questItem.Icon.backdrop)
+			end
+
+			questItem.Name:SetTextColor(1, 1, 1)
 		end
 
 		local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
