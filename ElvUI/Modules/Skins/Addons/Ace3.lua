@@ -390,6 +390,7 @@ function S:Ace3_RegisterAsContainer(widget)
 			S.Ace3_BackdropColor(frame)
 		elseif TYPE == 'Window' then
 			frame:CreateBackdrop('Transparent')
+			frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
 		else
 			frame:SetTemplate('Transparent')
 		end

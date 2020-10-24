@@ -140,6 +140,11 @@ local function JournalScrollButtons(frame)
 			highlight:SetAllPoints(bu.icon)
 		end
 
+		if bu.ProgressBar then
+			bu.ProgressBar:SetTexture(E.media.normTex)
+			bu.ProgressBar:SetVertexColor(0.251, 0.753, 0.251, 1) -- 0.0118, 0.247, 0.00392
+		end
+
 		if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
 			bu.setList = true
 			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
@@ -474,7 +479,6 @@ function S:Blizzard_Collections()
 	WardrobeCollectionFrame.progressBar:StripTextures()
 	WardrobeCollectionFrame.progressBar:CreateBackdrop()
 	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
-
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)

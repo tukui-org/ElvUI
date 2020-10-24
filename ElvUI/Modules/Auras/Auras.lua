@@ -162,10 +162,7 @@ end
 function A:UpdateIcon(button)
 	local font = LSM:Fetch('font', A.db.font)
 
-	local db = A.db.debuffs
-	if button.auraType == 'HELPFUL' then
-		db = A.db.buffs
-	end
+	local db = A.db[button.auraType]
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 1 + A.db.countYOffset)
