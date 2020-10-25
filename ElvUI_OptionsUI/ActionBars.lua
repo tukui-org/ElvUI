@@ -893,6 +893,7 @@ for i = 1, 10 do
 					mouseover = L["Mouse Over"],
 					clickThrough = L["Click Through"],
 					inheritGlobalFade = L["Inherit Global Fade"],
+					buttonSizeProportional = L["Keep Button Size Proportional"],
 				}
 			},
 			point = {
@@ -935,7 +936,7 @@ for i = 1, 10 do
 				name = L["Button Size"],
 				desc = L["The size of the action buttons."],
 				min = 15, max = 60, step = 1,
-				disabled = function() return not E.private.actionbar.enable end,
+				disabled = function() return not E.private.actionbar.enable or not E.db.actionbar['bar'..i]['buttonSizeProportional'] end,
 			},
 			buttonspacing = {
 				order = 9,
@@ -953,22 +954,38 @@ for i = 1, 10 do
 				min = 0, max = 10, step = 1,
 				disabled = function() return not E.private.actionbar.enable end,
 			},
-			heightMult = {
+			buttonWidth = {
 				order = 11,
+				type = 'range',
+				name = L["Button Width"],
+				desc = L["The width of the action buttons."],
+				min = 15, max = 60, step = 1,
+				disabled = function() return not E.private.actionbar.enable or E.db.actionbar['bar'..i]['buttonSizeProportional'] end,
+			},
+			buttonHeight = {
+				order = 12,
+				type = 'range',
+				name = L["Button Height"],
+				desc = L["The height of the action buttons."],
+				min = 15, max = 60, step = 1,
+				disabled = function() return not E.private.actionbar.enable or E.db.actionbar['bar'..i]['buttonSizeProportional'] end,
+			},
+			heightMult = {
+				order = 13,
 				type = 'range',
 				name = L["Height Multiplier"],
 				desc = L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."],
 				min = 1, max = 5, step = 1,
 			},
 			widthMult = {
-				order = 12,
+				order = 14,
 				type = 'range',
 				name = L["Width Multiplier"],
 				desc = L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."],
 				min = 1, max = 5, step = 1,
 			},
 			alpha = {
-				order = 13,
+				order = 15,
 				type = 'range',
 				name = L["Alpha"],
 				isPercent = true,
@@ -976,7 +993,7 @@ for i = 1, 10 do
 			},
 			paging = {
 				type = 'input',
-				order = 14,
+				order = 16,
 				name = L["Action Paging"],
 				desc = L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"],
 				width = 'full',
@@ -997,7 +1014,7 @@ for i = 1, 10 do
 			},
 			visibility = {
 				type = 'input',
-				order = 15,
+				order = 17,
 				name = L["Visibility State"],
 				desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 				width = 'full',
