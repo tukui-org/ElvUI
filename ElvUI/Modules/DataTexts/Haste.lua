@@ -20,14 +20,7 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, lastPanel = ''
 
-local function OnEvent(self)
-	local haste = GetHaste()
-	self.text:SetFormattedText(displayString, STAT_HASTE, haste)
-
-	lastPanel = self
-end
-
-local OnEnter = function()
+local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	local rating = CR_HASTE_MELEE
@@ -50,8 +43,20 @@ local OnEnter = function()
 	DT.tooltip:Show()
 end
 
+local function OnEvent(self)
+	local haste = GetHaste()
+
+	if E.global.datatexts.settings.Haste.NoLabel then
+		self.text:SetFormattedText(displayString, haste)
+	else
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Haste.Label ~= '' and E.global.datatexts.settings.Haste.Label or STAT_HASTE..': ', haste)
+	end
+
+	lastPanel = self
+end
+
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
+	displayString = strjoin('', E.global.datatexts.settings.Haste.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Haste.decimalLength..'f%%|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
