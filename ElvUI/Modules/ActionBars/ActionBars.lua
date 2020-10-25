@@ -148,6 +148,12 @@ function AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthM
 	end
 end
 
+function AB:SetBarSize(bar, buttonWidth, buttonHeight, btnSpacing, sideSpacing, widthMult, heightMult, buttonsPerRow, numColumns)
+	local width = barSize(buttonWidth, btnSpacing, sideSpacing, widthMult, buttonsPerRow)
+	local height = barSize(buttonHeight, btnSpacing, sideSpacing, heightMult, numColumns)
+	bar:Size(width, height)
+end
+
 function AB:HandleBackdropMover(bar, backdropSpacing)
 	local width, height = bar.backdrop:GetSize()
 	if not bar.backdrop:IsShown() then
@@ -166,6 +172,8 @@ function AB:PositionAndSizeBar(barName)
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
 	local size = db.buttonsize
+	local buttonWidth = (db.buttonSizeProportional == true) and db.buttonsize or db.buttonWidth
+	local buttonHeight = (db.buttonSizeProportional == true) and db.buttonsize or db.buttonHeight
 	local point = db.point
 	local visibility = db.visibility
 	local bar = AB.handledBars[barName]
@@ -179,6 +187,7 @@ function AB:PositionAndSizeBar(barName)
 
 	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
 	local sideSpacing = db.backdrop and (E.Border + backdropSpacing) or E.Spacing
+	AB:SetBarSize(bar, buttonWidth, buttonHeight, buttonSpacing, sideSpacing * 2, db.backdrop and db.widthMult or 1, db.backdrop and db.heightMult or 1, buttonsPerRow, numColumns)
 
 	bar.mouseover = db.mouseover
 	if bar.mouseover then
@@ -224,7 +233,7 @@ function AB:PositionAndSizeBar(barName)
 		button:ClearAllPoints()
 		button:SetAttribute('showgrid', 1)
 		button:EnableMouse(not db.clickThrough)
-		button:Size(size)
+		button:Size(buttonWidth, buttonHeight)
 
 		local buttonPoint, anchorPoint
 		if i == 1 then
@@ -619,7 +628,28 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if icon then
-		icon:SetTexCoord(unpack(E.TexCoords))
+		local left, right, top, bottom = unpack(E.TexCoords)
+
+		local parent = button:GetParent()
+		local actionBarPattern = 'ElvUI_Bar(%d+)'	
+		local barId = string.match(parent:GetName(), actionBarPattern)
+		
+		if barId then
+			local db = AB.db['bar'..barId]
+			if not db.buttonSizeProportional then
+				local ratio = db.buttonWidth / db.buttonHeight
+				if ratio > 1 then
+					local trimAmount = (1 - (1 / ratio)) / 2
+					top = top + trimAmount
+					bottom = bottom - trimAmount
+				else
+					local trimAmount = (1 - ratio) / 2
+					left = left + trimAmount
+					right = right - trimAmount
+				end
+			end
+		end
+		icon:SetTexCoord(left, right, top, bottom)
 		icon:SetInside()
 	end
 
