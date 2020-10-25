@@ -893,7 +893,7 @@ for i = 1, 10 do
 					mouseover = L["Mouse Over"],
 					clickThrough = L["Click Through"],
 					inheritGlobalFade = L["Inherit Global Fade"],
-					buttonSizeProportional = L["Keep Button Size Proportional"],
+					keepSizeRatio = L["Keep Size Ratio"],
 				}
 			},
 			point = {
@@ -930,16 +930,8 @@ for i = 1, 10 do
 				desc = L["The amount of buttons to display per row."],
 				min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1,
 			},
-			buttonsize = {
-				order = 8,
-				type = 'range',
-				name = L["Button Size"],
-				desc = L["The size of the action buttons."],
-				min = 15, max = 60, step = 1,
-				disabled = function() return not E.private.actionbar.enable or not E.db.actionbar['bar'..i]['buttonSizeProportional'] end,
-			},
 			buttonspacing = {
-				order = 9,
+				order = 8,
 				type = 'range',
 				name = L["Button Spacing"],
 				desc = L["The spacing between buttons."],
@@ -947,20 +939,20 @@ for i = 1, 10 do
 				disabled = function() return not E.private.actionbar.enable end,
 			},
 			backdropSpacing = {
-				order = 10,
+				order = 9,
 				type = 'range',
 				name = L["Backdrop Spacing"],
 				desc = L["The spacing between the backdrop and the buttons."],
 				min = 0, max = 10, step = 1,
 				disabled = function() return not E.private.actionbar.enable end,
 			},
-			buttonWidth = {
-				order = 11,
+			buttonsize = {
+				order = 10,
 				type = 'range',
-				name = L["Button Width"],
-				desc = L["The width of the action buttons."],
+				name = function() return E.db.actionbar['bar'..i].keepSizeRatio and L["Button Size"] or L["Button Width"] end,
+				desc = function() return E.db.actionbar['bar'..i].keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end,
 				min = 15, max = 60, step = 1,
-				disabled = function() return not E.private.actionbar.enable or E.db.actionbar['bar'..i]['buttonSizeProportional'] end,
+				disabled = function() return not E.private.actionbar.enable end,
 			},
 			buttonHeight = {
 				order = 12,
@@ -968,7 +960,7 @@ for i = 1, 10 do
 				name = L["Button Height"],
 				desc = L["The height of the action buttons."],
 				min = 15, max = 60, step = 1,
-				disabled = function() return not E.private.actionbar.enable or E.db.actionbar['bar'..i]['buttonSizeProportional'] end,
+				hidden = function() return not E.private.actionbar.enable or E.db.actionbar['bar'..i].keepSizeRatio end,
 			},
 			heightMult = {
 				order = 13,
