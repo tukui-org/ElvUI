@@ -147,7 +147,7 @@ local function OnEnter()
 						name = k,
 						realm = realm,
 						amount = ElvDB.gold[realm][k],
-						amountText = E:FormatMoney(ElvDB.gold[realm][k], E.db.datatexts.goldFormat or 'BLIZZARD', not E.db.datatexts.goldCoins),
+						amountText = E:FormatMoney(ElvDB.gold[realm][k], style, textOnly),
 						faction = ElvDB.faction[realm][k] or '',
 						r = color.r, g = color.g, b = color.b,
 					}
