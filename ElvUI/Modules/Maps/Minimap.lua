@@ -223,11 +223,6 @@ function M:Update_ZoneText()
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
 
-function M:PLAYER_REGEN_ENABLED()
-	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	self:UpdateSettings()
-end
-
 do
 	local isResetting
 	local function ResetZoom()
@@ -248,10 +243,6 @@ end
 
 function M:UpdateSettings()
 	if not E.private.general.minimap.enable then return end
-	if InCombatLockdown() then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED')
-		return
-	end
 
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 

@@ -28,6 +28,7 @@ V.general = {
 	classColorMentionsSpeech = true,
 	raidUtility = true,
 	voiceOverlay = true,
+	worldMap = true,
 }
 
 V.bags = {
