@@ -165,8 +165,8 @@ function AB:PositionAndSizeBar(barName)
 	local backdropSpacing = db.backdropSpacing
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
-	local buttonWidth = db.buttonSizeProportional and db.buttonsize or db.buttonWidth
-	local buttonHeight = db.buttonSizeProportional and db.buttonsize or db.buttonHeight
+	local buttonWidth = db.buttonsize
+	local buttonHeight = db.keepSizeRatio and db.buttonsize or db.buttonHeight
 	local point = db.point
 	local visibility = db.visibility
 	local bar = AB.handledBars[barName]
@@ -625,8 +625,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 		if barID then
 			local db = AB.db['bar'..barID]
-			if not db.buttonSizeProportional then
-				local ratio = db.buttonWidth / db.buttonHeight
+			if not db.keepSizeRatio then
+				local ratio = db.buttonsize / db.buttonHeight
 				if ratio > 1 then
 					local trimAmount = (1 - (1 / ratio)) / 2
 					top = top + trimAmount

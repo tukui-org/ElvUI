@@ -1376,6 +1376,7 @@ function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displ
 end
 
 G.unitframe.aurawatch = {
+	GLOBAL = {},
 	PRIEST = {
 		[194384] = UF:AuraWatch_AddSpell(194384, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement
 		[214206] = UF:AuraWatch_AddSpell(214206, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement (PvP)

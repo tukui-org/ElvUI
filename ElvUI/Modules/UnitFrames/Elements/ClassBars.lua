@@ -276,6 +276,9 @@ local function ToggleResourceBar(bars, overrideVisibility)
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((UF.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT - (UF.BORDER-UF.SPACING)))
 
 	UF:Configure_CustomTexts(frame)
+	if frame.HealthPrediction then
+		UF:SetSize_HealComm(frame)
+	end
 
 	if not frame.CLASSBAR_DETACHED then --Only update when necessary
 		UF:Configure_HealthBar(frame)
