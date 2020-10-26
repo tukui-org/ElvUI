@@ -223,7 +223,7 @@ ElvUF.Tags.Events['altpowercolor'] = 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
-		local _, r, g, b = UnitAlternatePowerTextureInfo(u, 2)
+		local _, r, g, b = GetUnitPowerBarTextureInfo(u, 3)
 		if not r then
 			r, g, b = 1, 1, 1
 		end
