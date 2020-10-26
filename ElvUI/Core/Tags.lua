@@ -30,7 +30,6 @@ local GetUnitSpeed = GetUnitSpeed
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
-local UnitAlternatePowerTextureInfo = UnitAlternatePowerTextureInfo
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
 local UnitSex = UnitSex
