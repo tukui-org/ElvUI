@@ -12,7 +12,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
-function UF:Configure_ClassBar(frame, cur)
+function UF:Configure_ClassBar(frame)
 	local bars = frame[frame.ClassBar]
 	if not bars then return end
 
@@ -60,18 +60,12 @@ function UF:Configure_ClassBar(frame, cur)
 	bars:Height(frame.CLASSBAR_HEIGHT - SPACING)
 
 	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' then
-		--This fixes issue with ComboPoints showing as active when they are not.
-		if frame.ClassBar == 'ClassPower' and not cur then
-			cur = 0
-		end
-
 		if E.myclass == 'DEATHKNIGHT' and frame.ClassBar == 'Runes' then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
 		end
 
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
-			bars[i]:Hide()
 			bars[i].backdrop:Hide()
 
 			if i <= frame.MAX_CLASS_BAR then
@@ -150,10 +144,6 @@ function UF:Configure_ClassBar(frame, cur)
 					else
 						bars[i].bg:SetParent(bars)
 					end
-				end
-
-				if cur and cur >= i then
-					bars[i]:Show()
 				end
 			end
 		end
