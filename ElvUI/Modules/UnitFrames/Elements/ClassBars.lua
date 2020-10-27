@@ -13,10 +13,12 @@ local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
 function UF:Configure_ClassBar(frame)
+	local db = frame.db
+	if not db then return end
+
 	local bars = frame[frame.ClassBar]
 	if not bars then return end
 
-	local db = frame.db
 	bars.Holder = frame.ClassBarHolder
 	bars.origParent = frame
 
