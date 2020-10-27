@@ -541,6 +541,17 @@ ElvUF.Tags.Methods['namecolor'] = function(unit)
 	end
 end
 
+ElvUF.Tags.Events['reactioncolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
+ElvUF.Tags.Methods['reactioncolor'] = function(unit)
+	local unitReaction = UnitReaction(unit, 'player')
+	if (unitReaction) then
+		local reaction = ElvUF.colors.reaction[unitReaction]
+		return Hex(reaction[1], reaction[2], reaction[3])
+	else
+		return '|cFFC2C2C2'
+	end
+end
+
 ElvUF.Tags.Events['smartlevel'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['smartlevel'] = function(unit)
 	local level = UnitEffectiveLevel(unit)
