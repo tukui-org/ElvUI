@@ -635,7 +635,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[97821]  = Defaults(), -- Void-Touched
 		[36032]  = Defaults(), -- Arcane Charge
 		[8733]   = Defaults(), -- Blessing of Blackfathom
-		[25771]  = Defaults(), -- Forbearance (pally: divine shield, hand of protection, and lay on hands)
+		[25771]  = Defaults(), -- Forbearance (Pally: Divine Shield, Blessing of Protection, and Lay on Hands)
 		[57724]  = Defaults(), -- Sated (lust debuff)
 		[57723]  = Defaults(), -- Exhaustion (heroism debuff)
 		[80354]  = Defaults(), -- Temporal Displacement (timewarp debuff)
@@ -1435,10 +1435,12 @@ G.unitframe.aurawatch = {
 		[193396] = UF:AuraWatch_AddSpell(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true),	-- Demonic Empowerment
 		-- Hunter Pets
 		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
-		[136]    = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)		-- Mend Pet
+		[290819] = UF:AuraWatch_AddSpell(290819, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Mend Pet
 	},
-	HUNTER = {}, -- Keep for reference to G.unitframe.aurawatch[E.myclass][SomeValue]
-	DEMONHUNTER = {},
+	HUNTER = {
+		[90361]  = UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),				-- Spirit Mend (HoT)
+	},
+	DEMONHUNTER = {}, -- Keep for reference to G.unitframe.aurawatch[E.myclass][SomeValue]
 	WARLOCK = {},
 	MAGE = {},
 	DEATHKNIGHT = {},
@@ -1452,7 +1454,7 @@ P.unitframe.filters = {
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	-- Racials
-	[291944] = 6,	-- Regeneratin'
+	[291944] = 6,	-- Regeneratin (Zandalari)
 	-- Warlock
 	[198590] = 5,	-- Drain Soul
 	[755]    = 5,	-- Health Funnel
