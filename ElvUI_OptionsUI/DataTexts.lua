@@ -409,7 +409,7 @@ local function CreateDTOptions(name, data)
 				type = 'input',
 				name = L["Label"],
 				get = function(info) return settings[info[#info]] and gsub(settings[info[#info]], '\124', '\124\124') end,
-				set = function(info, value) settings[info[#info]] = gsub(value, '\124\124+', '\124') end,
+				set = function(info, value) settings[info[#info]] = gsub(value, '\124\124+', '\124') DT:ForceUpdate_DataText(name) end,
 			}
 		elseif key == 'NoLabel' then
 			optionTable.args.NoLabel = {
