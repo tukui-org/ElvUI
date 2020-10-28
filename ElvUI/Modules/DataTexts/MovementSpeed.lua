@@ -56,7 +56,7 @@ local function OnEvent(self)
 end
 
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', E.global.datatexts.settings.MovementSpeed.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.MovementSpeed.decimalLength..'f%%|r')
+	displayString = strjoin('', E.global.datatexts.settings.MovementSpeed.NoLabel and '' or '%s: ', hex, '%.'..E.global.datatexts.settings.MovementSpeed.decimalLength..'f%%|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
