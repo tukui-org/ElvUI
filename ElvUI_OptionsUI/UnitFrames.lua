@@ -799,9 +799,9 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				name = L["Configure Auras"],
 				func = function()
 					if E.db.unitframe.units[groupName].buffIndicator.profileSpecific then
-						E:SetToFilterConfig('Buff Indicator (Profile)')
+						E:SetToFilterConfig('Aura Indicator (Profile)')
 					else
-						E:SetToFilterConfig('Buff Indicator')
+						E:SetToFilterConfig('Aura Indicator (Class)')
 					end
 				end,
 			},

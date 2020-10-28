@@ -140,7 +140,7 @@ local function SetSpellList()
 		list = E.global.unitframe.AuraBarColors
 	elseif selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' then
 		list = GetSelectedFilters()
-	else
+	elseif E.global.unitframe.aurafilters[selectedFilter] then
 		list = E.global.unitframe.aurafilters[selectedFilter].spells
 	end
 
