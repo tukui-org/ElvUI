@@ -45,6 +45,7 @@ local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsReagentBankUnlocked = IsReagentBankUnlocked
+local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local PickupContainerItem = PickupContainerItem
 local PlaySound = PlaySound
@@ -377,13 +378,20 @@ function B:IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, rari
 end
 
 function B:UpdateItemUpgradeIcon(slot)
+	local itemIsUpgrade
 	if not E.db.bags.upgradeIcon then
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', nil)
 		return
 	end
 
-	local itemIsUpgrade = _G.IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID())
+	-- We need to use the Pawn function here to show actually the icon
+	if IsAddOnLoaded('Pawn') then
+		itemIsUpgrade = _G.PawnIsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID())
+	else
+		itemIsUpgrade = _G.IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID())
+	end
+
 	if itemIsUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', B.UpgradeCheck_OnUpdate)
