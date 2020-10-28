@@ -378,19 +378,18 @@ function B:IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, rari
 end
 
 function B:UpdateItemUpgradeIcon(slot)
-	local itemIsUpgrade
 	if not E.db.bags.upgradeIcon then
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', nil)
 		return
 	end
 
-	-- We need to use the Pawn function here to show actually the icon
-	if IsAddOnLoaded('Pawn') then
-		itemIsUpgrade = _G.PawnIsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID())
-	else
-		itemIsUpgrade = _G.IsContainerItemAnUpgrade(slot:GetParent():GetID(), slot:GetID())
-	end
+	local itemIsUpgrade, containerID, slotID = nil, slot:GetParent():GetID(), slot:GetID()
+
+	-- We need to use the Pawn function here to show actually the icon, as Blizzard API doesnt seem to work.
+	if IsAddOnLoaded('Pawn') then itemIsUpgrade = _G.PawnIsContainerItemAnUpgrade(containerID, slotID) end
+	-- Pawn author suggests to fallback to Blizzard API anyways.
+	if itemIsUpgrade == nil then itemIsUpgrade = _G.IsContainerItemAnUpgrade(containerID, slotID) end
 
 	if itemIsUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
 		slot.UpgradeIcon:SetShown(false)
