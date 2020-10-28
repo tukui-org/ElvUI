@@ -55,8 +55,8 @@ local function skinAch(Achievement, BiggerIcon)
 
 	if Achievement.tracked then
 		Achievement.tracked:GetRegions():SetTextColor(1, 1, 1)
-		S:HandleCheckBox(Achievement.tracked, true)
-		Achievement.tracked:Size(14, 14)
+		S:HandleCheckBox(Achievement.tracked)
+		Achievement.tracked:Size(18)
 		Achievement.tracked:ClearAllPoints()
 		Achievement.tracked:Point('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
 	end
