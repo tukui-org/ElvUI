@@ -31,7 +31,7 @@ local function DelayUpdate()
 		wasFlying = false
 	end
 
-	if IsFalling('player') and wasFlying and beforeFalling then
+	if IsFalling() and wasFlying and beforeFalling then
 		speed = beforeFalling
 	else
 		beforeFalling = speed
