@@ -531,10 +531,6 @@ function AB:UpdateButtonSettings()
 		end
 	end
 
-	AB:UpdatePetBindings()
-	AB:UpdateStanceBindings()
-	AB:UpdateFlyoutButtons()
-
 	for barName, bar in pairs(AB.handledBars) do
 		if bar then
 			AB:UpdateButtonConfig(bar, bar.bindButtons)
@@ -545,6 +541,10 @@ function AB:UpdateButtonSettings()
 	AB:AdjustMaxStanceButtons()
 	AB:PositionAndSizeBarPet()
 	AB:PositionAndSizeBarShapeShift()
+
+	AB:UpdatePetBindings()
+	AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
+	AB:UpdateFlyoutButtons()
 end
 
 function AB:GetPage(bar, defaultPage, condition)
