@@ -66,7 +66,6 @@ local SortBankBags = SortBankBags
 local SortReagentBankBags = SortReagentBankBags
 local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
-local ToggleAllBags = ToggleAllBags
 local UseContainerItem = UseContainerItem
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_Item_CanScrapItem = C_Item.CanScrapItem
@@ -423,19 +422,6 @@ function B:UpdateItemScrapIcon(slot)
 			slot.ScrapIcon:SetShown(false)
 		end
 	end
-end
-
-function B:SCRAPPING_MACHINE_SHOW()
-	E:Delay(0.1, B.Layout, B)
-
-	if not B.BagFrame:IsShown() then
-		ToggleAllBags()
-	end
-end
-
-function B:SCRAPPING_MACHINE_CLOSE()
-	E:Delay(0.1, B.Layout, B)
-	ToggleAllBags()
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -1957,6 +1943,7 @@ function B:CloseBags()
 
 	B.BagFrame:UnregisterEvent('BAG_UPDATE')
 	B.BagFrame:UnregisterEvent('BAG_UPDATE_COOLDOWN')
+
 	for _, event in pairs(B.BagFrame.events) do
 		B.BagFrame:UnregisterEvent(event)
 	end
@@ -2022,9 +2009,24 @@ function B:SetupItemGlow(frame)
 	frame.NewItemGlow.Fade:SetScript('OnFinished', B.ItemGlowOnFinished)
 end
 
+function B:OpenAuction()
+	if E.db.bags.auctionToggle then
+		B:OpenBags()
+	end
+end
+
+function B:CloseAuction()
+	if E.db.bags.auctionToggle then
+		B:CloseBags()
+	end
+end
+
 function B:OpenBank()
 	B.BankFrame:RegisterEvent('BAG_UPDATE')
 	B.BankFrame:RegisterEvent('BAG_UPDATE_COOLDOWN')
+	B.BankFrame:Show()
+
+	_G.BankFrame:Show()
 
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
@@ -2032,9 +2034,12 @@ function B:OpenBank()
 	B:Layout(true)
 
 	B:OpenBags()
+end
 
-	_G.BankFrame:Show()
-	B.BankFrame:Show()
+function B:CloseBank()
+	_G.BankFrame:Hide()
+
+	B:CloseBags()
 end
 
 function B:PLAYERBANKBAGSLOTS_CHANGED()
@@ -2043,15 +2048,6 @@ end
 
 function B:GuildBankFrame_Update()
 	B:SetGuildBankSearch(SEARCH_STRING)
-end
-
-function B:CloseBank()
-	B.BankFrame:Hide()
-	_G.BankFrame:Hide()
-	B.BagFrame:Hide()
-
-	B.BankFrame:UnregisterEvent('BAG_UPDATE')
-	B.BankFrame:UnregisterEvent('BAG_UPDATE_COOLDOWN')
 end
 
 function B:GUILDBANKFRAME_OPENED(event)
@@ -2420,29 +2416,28 @@ function B:Initialize()
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
 
 	--Hook onto Blizzard Functions
+	B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	B:SecureHook('OpenAllBags', 'OpenBags')
 	B:SecureHook('CloseAllBags', 'CloseBags')
 	B:SecureHook('ToggleBag', 'ToggleBags')
 	B:SecureHook('ToggleAllBags', 'ToggleBackpack')
 	B:SecureHook('ToggleBackpack')
-	B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 
 	B:DisableBlizzard()
+
 	B:RegisterEvent('PLAYER_ENTERING_WORLD')
+	B:RegisterEvent('GUILDBANKFRAME_OPENED')
+	B:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
-	B:RegisterEvent('AUCTION_HOUSE_SHOW', 'OpenBags')
-	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseBags')
-	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
-	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
 	B:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateBagButtons')
 	B:RegisterEvent('PLAYER_REGEN_DISABLED', 'UpdateBagButtons')
 
-	B:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
-	B:RegisterEvent('GUILDBANKFRAME_OPENED')
-	B:RegisterEvent('SCRAPPING_MACHINE_SHOW')
-	B:RegisterEvent('SCRAPPING_MACHINE_CLOSE')
+	B:RegisterEvent('AUCTION_HOUSE_SHOW', 'OpenAuction')
+	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseAuction')
+	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
+	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
 
 	_G.BankFrame:SetScale(0.0001)
 	_G.BankFrame:SetAlpha(0)
