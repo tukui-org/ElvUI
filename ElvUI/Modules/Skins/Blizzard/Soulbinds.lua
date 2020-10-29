@@ -48,8 +48,6 @@ function S:Blizzard_Soulbinds()
 	frame.ActivateSoulbindButton:SetFrameLevel(10)
 
 	local scrollBox = frame.ConduitList.ScrollBox
-	select(2, scrollBox:GetChildren()):Hide() -- Weird shadow on the ScrollBox
-
 	for i = 1, 3 do
 		hooksecurefunc(scrollBox.ScrollTarget.Lists[i], 'UpdateLayout', SkinConduitList)
 	end

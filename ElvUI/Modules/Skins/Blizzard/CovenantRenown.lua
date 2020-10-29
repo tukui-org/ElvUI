@@ -10,18 +10,10 @@ function S:Blizzard_CovenantRenown()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantRenown) then return end
 
 	local frame = _G.CovenantRenownFrame
+	local track = frame.TrackFrame
 	S:HandleCloseButton(frame.CloseButton)
 
-	hooksecurefunc(frame.TrackFrame, 'Init', function(self)
-		for _, element in next, self.Elements do
-			if not element.IsSkinned then
-				element.LevelBorder:SetAlpha(0)
-				element.IsSkinned = true
-			end
-		end
-	end)
-
-	hooksecurefunc(frame, 'SetUpTextureKits', function(self)
+	hooksecurefunc(frame, 'Refresh', function(self)
 		self.CloseButton.Border:Hide()
 		if E.private.skins.parchmentRemoverEnable then
 			self:StripTextures()
@@ -29,7 +21,13 @@ function S:Blizzard_CovenantRenown()
 	end)
 
 	if E.private.skins.parchmentRemoverEnable then
-		frame:CreateBackdrop('Transparent')
+		if not frame.backdrop then
+			frame:CreateBackdrop('Transparent')
+		end
+
+		if not track.backdrop then
+			track:CreateBackdrop('Transparent')
+		end
 	end
 end
 
