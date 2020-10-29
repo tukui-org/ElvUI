@@ -92,14 +92,28 @@ local function Quest_GetQuestID()
 	end
 end
 
+local StyleScrollFrames = {
+	[_G.QuestDetailScrollChildFrame] = { frame = _G.QuestDetailScrollFrame, width = 506, height = 615, inset = true },
+	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, width = 506, height = 615, inset = true },
+	[_G.QuestLogPopupDetailFrame.ScrollFrame.ScrollChild] = {
+		frame = _G.QuestLogPopupDetailFrameScrollFrame,
+		width = 509, height = 630, inset = false,
+		custom = function(self)
+			self:Height(self:GetHeight() - 2)
+
+			if not E.private.skins.parchmentRemoverEnable then
+				self.spellTex:Height(self:GetHeight() + 217)
+			end
+		end
+	}
+}
+
 function S:BlizzardQuestFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.quest) then return end
 
 	S:HandleScrollBar(_G.QuestProgressScrollFrameScrollBar)
 	S:HandleScrollBar(_G.QuestRewardScrollFrameScrollBar)
 	S:HandleScrollBar(_G.QuestDetailScrollFrameScrollBar)
-	_G.QuestProgressScrollFrame:StripTextures()
-	_G.QuestGreetingScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.QuestGreetingScrollFrameScrollBar)
 
 	local QuestInfoSkillPointFrame = _G.QuestInfoSkillPointFrame
@@ -138,7 +152,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestRewardScrollFrame:CreateBackdrop()
 	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
 
-	hooksecurefunc('QuestInfo_Display', function()
+	hooksecurefunc('QuestInfo_Display', function(_, parentFrame)
 		for i, questItem in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
 			local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
 			if point and relativeTo and relativePoint then
@@ -240,6 +254,15 @@ function S:BlizzardQuestFrames()
 			_G.QuestInfoQuestType:SetShadowColor(0, 0, 0, 0)
 			_G.QuestInfoRewardsFrame.ItemChooseText:SetShadowColor(0, 0, 0, 0)
 			_G.QuestInfoRewardsFrame.ItemReceiveText:SetShadowColor(0, 0, 0, 0)
+
+			local style = StyleScrollFrames[parentFrame]
+			if style then
+				StyleScrollFrame(style.frame, style.width, style.height, style.inset)
+
+				if style.custom then
+					style.custom(style.frame)
+				end
+			end
 		end
 	end)
 
@@ -298,23 +321,23 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameDetailPanel:StripTextures(true)
 	_G.QuestDetailScrollFrame:StripTextures(true)
 	_G.QuestDetailScrollFrame:CreateBackdrop()
+	_G.QuestProgressScrollFrame:StripTextures()
 	_G.QuestProgressScrollFrame:CreateBackdrop()
+	_G.QuestGreetingScrollFrame:StripTextures()
 	_G.QuestGreetingScrollFrame:CreateBackdrop()
 
-	local function UpdateGreetingFrame()
-		for Button in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
-			Button.Icon:SetDrawLayer('ARTWORK')
+	_G.QuestFrameGreetingPanel:HookScript('OnShow', function(frame)
+		for button in frame.titleButtonPool:EnumerateActive() do
+			button.Icon:SetDrawLayer('ARTWORK')
 
 			if E.private.skins.parchmentRemoverEnable then
-				local Text = Button:GetFontString():GetText()
-				if Text and strfind(Text, '|cff000000') then
-					Button:GetFontString():SetText(gsub(Text, '|cff000000', '|cffffe519'))
+				local text = button:GetFontString():GetText()
+				if text and strfind(text, '|cff000000') then
+					button:GetFontString():SetText(gsub(text, '|cff000000', '|cffffe519'))
 				end
 			end
 		end
-	end
-
-	_G.QuestFrameGreetingPanel:HookScript('OnShow', UpdateGreetingFrame)
+	end)
 
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc('QuestFrameProgressItems_Update', function()
@@ -351,8 +374,6 @@ function S:BlizzardQuestFrames()
 	else
 		StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
 		StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
-		_G.QuestFrameDetailPanel:HookScript('OnShow', function(s) E:Delay(0.05, StyleScrollFrame, s.ScrollFrame, 506, 615, true) end)
-		_G.QuestRewardScrollFrame:HookScript('OnShow', function(s) E:Delay(0.05, StyleScrollFrame, s, 506, 615, true) end)
 	end
 
 	_G.QuestFrameGreetingPanel:StripTextures(true)
@@ -411,19 +432,6 @@ function S:BlizzardQuestFrames()
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.QuestLogPopupDetailFrameScrollFrameScrollBar)
 	QuestLogPopupDetailFrame:CreateBackdrop('Transparent')
-
-	_G.QuestLogPopupDetailFrameScrollFrame:HookScript('OnShow', function(s)
-		if not _G.QuestLogPopupDetailFrameScrollFrame.backdrop then
-			_G.QuestLogPopupDetailFrameScrollFrame:CreateBackdrop()
-			_G.QuestLogPopupDetailFrameScrollFrame:Height(s:GetHeight() - 2)
-			if not E.private.skins.parchmentRemoverEnable then
-				StyleScrollFrame(_G.QuestLogPopupDetailFrameScrollFrame, 509, 630, false)
-			end
-		end
-		if not E.private.skins.parchmentRemoverEnable then
-			_G.QuestLogPopupDetailFrameScrollFrame.spellTex:Height(s:GetHeight() + 217)
-		end
-	end)
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)
