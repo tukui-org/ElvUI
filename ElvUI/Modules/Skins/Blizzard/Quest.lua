@@ -92,7 +92,7 @@ local function Quest_GetQuestID()
 	end
 end
 
-local StyleScrollFrames = {
+S.QuestInfo_StyleScrollFrames = {
 	[_G.QuestDetailScrollChildFrame] = { frame = _G.QuestDetailScrollFrame, width = 506, height = 615, inset = true },
 	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, width = 506, height = 615, inset = true },
 	[_G.QuestLogPopupDetailFrame.ScrollFrame.ScrollChild] = {
@@ -272,7 +272,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetShadowColor(0, 0, 0, 0)
 
-		local style = StyleScrollFrames[parentFrame]
+		local style = S.QuestInfo_StyleScrollFrames[parentFrame]
 		if style then
 			StyleScrollFrame(style.frame, style.width, style.height, style.inset)
 
