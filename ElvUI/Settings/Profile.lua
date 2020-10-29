@@ -197,6 +197,7 @@ P.bags = {
 	scrapIcon = false,
 	upgradeIcon = true,
 	newItemGlow = true,
+	auctionToggle = true,
 	ignoredItems = {},
 	itemLevel = true,
 	itemLevelThreshold = 1,

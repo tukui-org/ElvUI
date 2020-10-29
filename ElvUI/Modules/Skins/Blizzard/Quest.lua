@@ -304,6 +304,7 @@ function S:BlizzardQuestFrames()
 	local function UpdateGreetingFrame()
 		for Button in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
 			Button.Icon:SetDrawLayer('ARTWORK')
+
 			if E.private.skins.parchmentRemoverEnable then
 				local Text = Button:GetFontString():GetText()
 				if Text and strfind(Text, '|cff000000') then
@@ -314,7 +315,6 @@ function S:BlizzardQuestFrames()
 	end
 
 	_G.QuestFrameGreetingPanel:HookScript('OnShow', UpdateGreetingFrame)
-	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc('QuestFrameProgressItems_Update', function()
@@ -351,8 +351,8 @@ function S:BlizzardQuestFrames()
 	else
 		StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
 		StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
-		_G.QuestFrameDetailPanel:HookScript('OnShow', function(s) StyleScrollFrame(s.ScrollFrame, 506, 615, true) end)
-		_G.QuestRewardScrollFrame:HookScript('OnShow', function(s) StyleScrollFrame(s, 506, 615, true) end)
+		_G.QuestFrameDetailPanel:HookScript('OnShow', function(s) E:Delay(0.05, StyleScrollFrame, s.ScrollFrame, 506, 615, true) end)
+		_G.QuestRewardScrollFrame:HookScript('OnShow', function(s) E:Delay(0.05, StyleScrollFrame, s, 506, 615, true) end)
 	end
 
 	_G.QuestFrameGreetingPanel:StripTextures(true)

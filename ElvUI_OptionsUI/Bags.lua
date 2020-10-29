@@ -60,127 +60,8 @@ E.Options.args.bags = {
 					},
 					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateGoldText(); end,
 				},
-				moneyCoins = {
-					order = 3,
-					type = 'toggle',
-					name = L["Show Coins"],
-					desc = L["Use coin icons instead of colored text."],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateGoldText(); end,
-				},
-				transparent = {
-					order = 4,
-					type = 'toggle',
-					name = L["Transparent Buttons"],
-					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL'); end,
-				},
-				junkIcon = {
-					order = 5,
-					type = 'toggle',
-					name = L["Show Junk Icon"],
-					desc = L["Display the junk icon on all grey items that can be vendored."],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
-				},
-				junkDesaturate = {
-					order = 6,
-					type = 'toggle',
-					name = L["Desaturate Junk Items"],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
-				},
-				upgradeIcon = {
-					order = 7,
-					type = 'toggle',
-					name = L["Show Upgrade Icon"],
-					desc = L["Display the upgrade icon on items that WoW considers an upgrade for your character."],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
-				},
-				scrapIcon = {
-					order = 8,
-					type = 'toggle',
-					name = L["Show Scrap Icon"],
-					desc = L["Display the scrap icon on items that can be scrapped."],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
-				},
-				newItemGlow = {
-					order = 9,
-					type = 'toggle',
-					name = L["Show New Item Glow"],
-					desc = L["Display the New Item Glow"],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
-				},
-				showAssignedColor = {
-					order = 10,
-					type = 'toggle',
-					name = L["Show Assigned Color"],
-					desc = L["Colors the border according to the type of items assigned to the bag."],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
-				},
-				showAssignedIcon = {
-					order = 11,
-					type = 'toggle',
-					name = L["Show Assigned Icon"],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:Layout(); B:SizeAndPositionBagBar() end,
-				},
-				qualityColors = {
-					order = 12,
-					type = 'toggle',
-					name = L["Show Quality Color"],
-					desc = L["Colors the border according to the Quality of the Item."],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
-				},
-				specialtyColors = {
-					order = 13,
-					type = 'toggle',
-					name = L["Show Special Bags Color"],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
-				},
-				showBindType = {
-					order = 14,
-					type = 'toggle',
-					name = L["Show Bind on Equip/Use Text"],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
-				},
-				clearSearchOnClose = {
-					order = 15,
-					type = 'toggle',
-					name = L["Clear Search On Close"],
-					set = function(info, value) E.db.bags[info[#info]] = value; end
-				},
-				reverseLoot = {
-					order = 16,
-					type = 'toggle',
-					name = L["REVERSE_NEW_LOOT_TEXT"],
-					set = function(info, value)
-						E.db.bags.reverseLoot = value;
-						SetInsertItemsLeftToRight(value)
-					end,
-				},
-				reverseSlots = {
-					order = 17,
-					type = 'toggle',
-					name = L["Reverse Bag Slots"],
-					set = function(info, value) E.db.bags[info[#info]] = value B:UpdateAll() end,
-				},
-				disableBagSort = {
-					order = 18,
-					type = 'toggle',
-					name = L["Disable Bag Sort"],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(false); end
-				},
-				disableBankSort = {
-					order = 19,
-					type = 'toggle',
-					name = L["Disable Bank Sort"],
-					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
-				},
-				useBlizzardCleanup = {
-					order = 20,
-					type = 'toggle',
-					name = L["Use Blizzard Cleanup"],
-					desc = L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."],
-					set = function(info, value) E.db.bags[info[#info]] = value; end
-				},
 				strata = {
-					order = 21,
+					order = 3,
 					type = 'select',
 					name = L["Frame Strata"],
 					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end,
@@ -191,8 +72,135 @@ E.Options.args.bags = {
 						HIGH = 'HIGH',
 					},
 				},
+				spacer = ACH:Spacer(4, 'full'),
+				moneyCoins = {
+					order = 10,
+					type = 'toggle',
+					name = L["Show Coins"],
+					desc = L["Use coin icons instead of colored text."],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateGoldText(); end,
+				},
+				transparent = {
+					order = 11,
+					type = 'toggle',
+					name = L["Transparent Buttons"],
+					set = function(info, value) E.db.bags[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL'); end,
+				},
+				junkIcon = {
+					order = 12,
+					type = 'toggle',
+					name = L["Show Junk Icon"],
+					desc = L["Display the junk icon on all grey items that can be vendored."],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				junkDesaturate = {
+					order = 13,
+					type = 'toggle',
+					name = L["Desaturate Junk Items"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				upgradeIcon = {
+					order = 14,
+					type = 'toggle',
+					name = L["Show Upgrade Icon"],
+					desc = L["Display the upgrade icon on items that WoW considers an upgrade for your character."],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				scrapIcon = {
+					order = 15,
+					type = 'toggle',
+					name = L["Show Scrap Icon"],
+					desc = L["Display the scrap icon on items that can be scrapped."],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				newItemGlow = {
+					order = 16,
+					type = 'toggle',
+					name = L["Show New Item Glow"],
+					desc = L["Display the New Item Glow"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				showAssignedColor = {
+					order = 17,
+					type = 'toggle',
+					name = L["Show Assigned Color"],
+					desc = L["Colors the border according to the type of items assigned to the bag."],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				showAssignedIcon = {
+					order = 18,
+					type = 'toggle',
+					name = L["Show Assigned Icon"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:Layout(); B:SizeAndPositionBagBar() end,
+				},
+				qualityColors = {
+					order = 19,
+					type = 'toggle',
+					name = L["Show Quality Color"],
+					desc = L["Colors the border according to the Quality of the Item."],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				specialtyColors = {
+					order = 20,
+					type = 'toggle',
+					name = L["Show Special Bags Color"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				showBindType = {
+					order = 21,
+					type = 'toggle',
+					name = L["Show Bind on Equip/Use Text"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:UpdateAllBagSlots(); end,
+				},
+				clearSearchOnClose = {
+					order = 22,
+					type = 'toggle',
+					name = L["Clear Search On Close"],
+					set = function(info, value) E.db.bags[info[#info]] = value; end
+				},
+				reverseLoot = {
+					order = 23,
+					type = 'toggle',
+					name = L["REVERSE_NEW_LOOT_TEXT"],
+					set = function(info, value)
+						E.db.bags.reverseLoot = value;
+						SetInsertItemsLeftToRight(value)
+					end,
+				},
+				reverseSlots = {
+					order = 24,
+					type = 'toggle',
+					name = L["Reverse Bag Slots"],
+					set = function(info, value) E.db.bags[info[#info]] = value B:UpdateAll() end,
+				},
+				disableBagSort = {
+					order = 25,
+					type = 'toggle',
+					name = L["Disable Bag Sort"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(false); end
+				},
+				disableBankSort = {
+					order = 26,
+					type = 'toggle',
+					name = L["Disable Bank Sort"],
+					set = function(info, value) E.db.bags[info[#info]] = value; B:ToggleSortButtonState(true); end
+				},
+				useBlizzardCleanup = {
+					order = 27,
+					type = 'toggle',
+					name = L["Use Blizzard Cleanup"],
+					desc = L["Use Blizzards method of cleaning up bags instead of the ElvUI sorting."],
+					set = function(info, value) E.db.bags[info[#info]] = value; end
+				},
+				auctionToggle = {
+					order = 28,
+					type = 'toggle',
+					name = L["Auction Toggle"],
+					desc = L["This will toggle your bags while visiting the Auction House."],
+					set = function(info, value) E.db.bags[info[#info]] = value; end
+				},
 				countGroup = {
-					order = 30,
+					order = 50,
 					type = 'group',
 					name = L["Item Count Font"],
 					inline = true,
@@ -237,7 +245,7 @@ E.Options.args.bags = {
 					},
 				},
 				itemLevelGroup = {
-					order = 35,
+					order = 55,
 					type = 'group',
 					name = L["Item Level"],
 					inline = true,

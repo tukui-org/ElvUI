@@ -440,6 +440,10 @@ function S:Blizzard_Collections()
 			button.slotFrameUncollected:SetAlpha(0)
 			button.special:SetJustifyH('RIGHT')
 			button.special:ClearAllPoints()
+
+			button.cooldown:SetAllPoints(button.iconTexture)
+			E:RegisterCooldown(button.cooldown)
+
 			button.styled = true
 		end
 
