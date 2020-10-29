@@ -60,7 +60,7 @@ local function HandleReward(frame)
 	end
 end
 
-local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
+function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	if not scrollFrame.backdrop then
 		scrollFrame:CreateBackdrop()
 	end
@@ -83,15 +83,6 @@ local function StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inse
 	end
 end
 
--- Quest objective text color
-local function Quest_GetQuestID()
-	if _G.QuestInfoFrame.questLog then
-		return C_QuestLog_GetSelectedQuest()
-	else
-		return GetQuestID()
-	end
-end
-
 S.QuestInfo_StyleScrollFrames = {
 	[_G.QuestDetailScrollChildFrame] = { frame = _G.QuestDetailScrollFrame, width = 506, height = 615, inset = true },
 	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, width = 506, height = 615, inset = true },
@@ -107,6 +98,15 @@ S.QuestInfo_StyleScrollFrames = {
 		end
 	}
 }
+
+-- Quest objective text color
+local function Quest_GetQuestID()
+	if _G.QuestInfoFrame.questLog then
+		return C_QuestLog_GetSelectedQuest()
+	else
+		return GetQuestID()
+	end
+end
 
 function S:QuestInfo_ShowObjectives() -- self is not S
 	local numObjectives = GetNumQuestLeaderBoards()
@@ -274,7 +274,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 
 		local style = S.QuestInfo_StyleScrollFrames[parentFrame]
 		if style then
-			StyleScrollFrame(style.frame, style.width, style.height, style.inset)
+			S:QuestInfo_StyleScrollFrame(style.frame, style.width, style.height, style.inset)
 
 			if style.custom then
 				style.custom(style.frame)
@@ -416,8 +416,8 @@ function S:BlizzardQuestFrames()
 			_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
 		end
 	else
-		StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
-		StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
+		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
+		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
 	end
 
 	_G.QuestFrameGreetingPanel:StripTextures(true)
