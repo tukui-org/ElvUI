@@ -144,7 +144,7 @@ local clientTags = {
 	[_G.BNET_CLIENT_COD] = 'BO4',
 	[_G.BNET_CLIENT_COD_MW] = 'MW',
 	[_G.BNET_CLIENT_COD_MW2] = 'MW2',
-	ZEUS = 'CW',
+	[_G.BNET_CLIENT_COD_BOCW] = 'CW',
 	BSAp = L["Mobile"],
 }
 
@@ -159,7 +159,7 @@ local clientIndex = {
 	[_G.BNET_CLIENT_COD] = 8,
 	[_G.BNET_CLIENT_COD_MW] = 9,
 	[_G.BNET_CLIENT_COD_MW2] = 10,
-	ZEUS = 11,
+	[_G.BNET_CLIENT_COD_BOCW] = 11,
 	App = 12,
 	BSAp = 13,
 }
