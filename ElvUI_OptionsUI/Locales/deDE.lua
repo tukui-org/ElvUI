@@ -103,6 +103,7 @@ L["Attach Text To"] = "Text anfügen an"
 L["Attach To"] = "Anfügen an"
 L["Attempt to create URL links inside the chat."] = "Eine Möglichkeit um Internet-Links im Chat anzuzeigen."
 L["Attempt to support eyefinity/nvidia surround."] = "Versucht Eyefinity/NVIDIA Surround zu unterstützen"
+L["Attempts to center UI elements in a 16:9 format for ultrawide monitors"] = true
 L["Aura Bars"] = "Auren Leisten"
 L["Aura Filters"] = "Auren Filter"
 L["Aura Speed"] = "Auren Geschwindigkeit"

@@ -5,6 +5,7 @@ G.general = {
 	UIScale = 0.64,
 	locale = E:GetLocale(),
 	eyefinity = false,
+	ultrawide = false,
 	smallerWorldMap = true,
 	allowDistributor = false,
 	smallerWorldMapScale = 0.9,
