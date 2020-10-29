@@ -543,6 +543,7 @@ local function CreateDTOptions(name, data)
 				VIPR = "COD: Black Ops 4",
 				ODIN = "COD: Modern Warfare",
 				LAZR = "COD: Modern Warfare 2",
+				ZEUS = "COD: Cold War"
 			},
 		}
 	elseif name == 'Reputation' or name == 'Experience' then

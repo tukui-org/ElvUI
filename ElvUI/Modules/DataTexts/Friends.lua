@@ -144,6 +144,7 @@ local clientTags = {
 	[_G.BNET_CLIENT_COD] = 'BO4',
 	[_G.BNET_CLIENT_COD_MW] = 'MW',
 	[_G.BNET_CLIENT_COD_MW2] = 'MW2',
+	ZEUS = 'CW',
 	BSAp = L["Mobile"],
 }
 
@@ -158,8 +159,9 @@ local clientIndex = {
 	[_G.BNET_CLIENT_COD] = 8,
 	[_G.BNET_CLIENT_COD_MW] = 9,
 	[_G.BNET_CLIENT_COD_MW2] = 10,
-	App = 11,
-	BSAp = 12,
+	ZEUS = 11,
+	App = 12,
+	BSAp = 13,
 }
 
 local function inGroup(name, realmName)
