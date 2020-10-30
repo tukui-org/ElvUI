@@ -1321,6 +1321,7 @@ local UF_SubGroup = {
 	colorOverride = 'USE_DEFAULT',
 	name = CopyTable(UF_Name),
 	raidicon = CopyTable(UF_RaidIcon),
+	buffIndicator = CopyTable(UF_AuraWatch),
 }
 
 local UF_ClassBar = {
@@ -2001,6 +2002,7 @@ P.unitframe.units.party.power.text_format = '[powercolor][power:current]'
 P.unitframe.units.party.power.xOffset = -2
 P.unitframe.units.party.targetsGroup.name.text_format = '[namecolor][name:medium] [difficultycolor][smartlevel]'
 P.unitframe.units.party.targetsGroup.enable = false
+P.unitframe.units.party.targetsGroup.buffIndicator = nil
 
 P.unitframe.units.raid = CopyTable(P.unitframe.units.party)
 P.unitframe.units.raid.groupBy = 'GROUP'
@@ -2066,6 +2068,7 @@ P.unitframe.units.tank.targetsGroup.name.position = 'CENTER'
 P.unitframe.units.tank.targetsGroup.name.text_format = '[namecolor][name:medium]'
 P.unitframe.units.tank.targetsGroup.name.xOffset = 0
 P.unitframe.units.tank.targetsGroup.enable = true
+P.unitframe.units.tank.targetsGroup.buffIndicator = false
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 

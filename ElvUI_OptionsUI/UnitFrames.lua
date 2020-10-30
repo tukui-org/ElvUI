@@ -769,7 +769,7 @@ local function BuffIndicator_ApplyToAll(info, value, profileSpecific)
 	end
 end
 
-local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
+local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGroup)
 	local config = {
 		type = 'group',
 		name = L["Buff Indicator"],
@@ -842,6 +842,12 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 			}
 		},
 	}
+
+	if subGroup then
+		config.inline = true
+		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
+		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end
+	end
 
 	return config
 end
@@ -5442,6 +5448,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 						},
 					},
 				},
+				buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup'),
 			},
 		},
 		targetsGroup = {
