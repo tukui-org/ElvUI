@@ -27,7 +27,7 @@ end
 function E:IsUltrawide(width, height)
 	if E.global.general.ultrawide and width >= 2560 then
 		--32:9 Ultrawide @ 5120x1440 or 21:9 @ 3440 x 1440
-		if width >= 3440 and height == (1440 or 1600) then return 2560 end --WQHD, DQHD, DQHD+ & WQHD+
+		if width >= 3440 and height == 1440 or 1600 then return 2560 end --WQHD, DQHD, DQHD+ & WQHD+
 		
 		--Low resolution
 		if width >= 2560 and height == 1080 then return 1920 end --WFHD & DFHD
