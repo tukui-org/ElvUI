@@ -234,13 +234,8 @@ local function PanelGroup_Create(panel)
 	local panelOpts = E:CopyTable(opts.args.panelOptions.args, DTPanelOptions)
 	panelOpts.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 	panelOpts.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
-	panelOpts.templateGroup.get = function(info, key)
-		return E.global.datatexts.customPanels[panel][key]
-	end
-	panelOpts.templateGroup.set = function(info, key, value)
-		E.global.datatexts.customPanels[panel][key] = value;
-		DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel])
-	end
+	panelOpts.templateGroup.get = function(_, key) return E.global.datatexts.customPanels[panel][key] end
+	panelOpts.templateGroup.set = function(_, key, value) E.global.datatexts.customPanels[panel][key] = value; DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end
 
 	E.Options.args.datatexts.args.panels.args[panel] = opts
 end
