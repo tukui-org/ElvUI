@@ -13,7 +13,7 @@ function S:Blizzard_CovenantRenown()
 	local track = frame.TrackFrame
 	S:HandleCloseButton(frame.CloseButton)
 
-	hooksecurefunc(frame, 'Refresh', function(self)
+	hooksecurefunc(frame, 'SetUpCovenantData', function(self)
 		self.CloseButton.Border:Hide()
 		if E.private.skins.parchmentRemoverEnable then
 			self:StripTextures()
