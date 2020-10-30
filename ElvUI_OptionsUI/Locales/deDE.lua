@@ -1304,6 +1304,7 @@ L["Triggers"] = "Auslöser"
 L["Trivial"] = true --No need to translate
 L["Turtle Color"] = "Turtle Farbe"
 L["Tutorials"] = true --No need to translate
+L["Ultrawide Support"] = true
 L["Under Health Threshold"] = "Unter Gesundheit Schwellenwert"
 L["Under Power Threshold"] = "Unter dem Kraft Schwellenwert"
 L["Unfriendly"] = "Unfreundlich"
