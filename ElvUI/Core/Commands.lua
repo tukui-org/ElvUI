@@ -258,6 +258,12 @@ do -- Blizzard Commands
 	end
 end
 
+function E:DBConvertProfile()
+	E.db.dbConverted = nil
+	E:DBConversions()
+	ReloadUI()
+end
+
 function E:LoadCommands()
 	self:RegisterChatCommand('in', 'DelayScriptCall')
 	self:RegisterChatCommand('ec', 'ToggleOptionsUI')
@@ -285,6 +291,7 @@ function E:LoadCommands()
 	self:RegisterChatCommand('estatus', 'ShowStatusReport')
 	self:RegisterChatCommand('ehelp', 'EHelp')
 	self:RegisterChatCommand('ecommands', 'EHelp')
+	self:RegisterChatCommand('efixdb', 'DBConvertProfile')
 	-- self:RegisterChatCommand('aprilfools', '') --Don't need this until next april fools
 
 	if E.private.actionbar.enable then
