@@ -1700,14 +1700,15 @@ function E:InitializeModules()
 end
 
 function E:DBConversions()
-	-- development converts
+	-- release converts, only one call per version
+	if E.db.dbConverted ~= E.version then
+		E.db.dbConverted = E.version
 
-	-- release converts
-	if E.db.dbConverted == E.version then return end
-	E.db.dbConverted = E.version
+		E:DBConvertBFA()
+		E:DBConvertSL()
+	end
 
-	E:DBConvertBFA()
-	E:DBConvertSL()
+	-- development converts, always call
 end
 
 function E:RefreshModulesDB()
