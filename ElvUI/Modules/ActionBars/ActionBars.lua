@@ -129,7 +129,7 @@ AB.customExitButton = {
 	tooltip = _G.LEAVE_VEHICLE,
 }
 
-function AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+function AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	if not bar.backdrop:IsShown() then return end
 
 	local useWidthMult = widthMult > 1
@@ -143,7 +143,7 @@ function AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthM
 		end
 		if useWidthMult then
 			local offset = ((oldWidth + buttonSpacing) * (widthMult - 1)) - backdropSpacing
-			bar.backdrop:Point(horizontalGrowth, anchorRowButton, horizontalGrowth, anchorLeft and -offset or offset, 0)
+			bar.backdrop:Point(horizontal, anchorRowButton, horizontal, anchorLeft and -offset or offset, 0)
 		end
 	end
 end
