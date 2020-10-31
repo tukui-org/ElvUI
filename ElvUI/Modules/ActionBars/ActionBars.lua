@@ -158,54 +158,93 @@ function AB:HandleBackdropMover(bar, backdropSpacing)
 	end
 end
 
-function AB:PositionAndSizeBar(barName)
-	local db = AB.db[barName]
+function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
+	local db = bar.db
 
-	local buttonSpacing = db.buttonspacing
-	local backdropSpacing = db.backdropSpacing
-	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
-	local buttonWidth = db.buttonsize
-	local buttonHeight = db.keepSizeRatio and db.buttonsize or db.buttonHeight
-	local point = db.point
-	local visibility = db.visibility
-	local bar = AB.handledBars[barName]
+	local buttonsPerRow = db.buttonsPerRow
+	local buttonWidth = (db.buttonsize or db.buttonSize)
+	local buttonHeight = db.keepSizeRatio and (db.buttonsize or db.buttonSize * 1.4) or db.buttonHeight
 
-	bar.db = db
-	bar.db.position = nil --Depreciated
-
-	if visibility and visibility:match('[\n\r]') then
-		visibility = visibility:gsub('[\n\r]','')
+	if bar.LastButton then
+		if numButtons > bar.LastButton then numButtons = bar.LastButton end
+		if buttonsPerRow > bar.LastButton then buttonsPerRow = bar.LastButton end
 	end
 
 	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
-	local sideSpacing = db.backdrop and (E.Border + backdropSpacing) or E.Spacing
 
-	bar.mouseover = db.mouseover
-	if bar.mouseover then
-		bar:SetAlpha(0)
-		AB:FadeBarBlings(bar, 0)
-	else
-		bar:SetAlpha(db.alpha)
-		AB:FadeBarBlings(bar, db.alpha)
-	end
-
-	if db.inheritGlobalFade then
-		bar:SetParent(AB.fadeParent)
-	else
-		bar:SetParent(E.UIParent)
-	end
-
-	bar:EnableMouse(not db.clickThrough)
-
-	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
-	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
+	local verticalGrowth = (db.point == 'TOPLEFT' or db.point == 'TOPRIGHT') and 'DOWN' or 'UP'
+	local horizontalGrowth = (db.point == 'BOTTOMLEFT' or db.point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
 	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
 
-	bar.backdrop:SetShown(db.backdrop)
-	bar.backdrop:ClearAllPoints()
+	local point, relativeFrame, relativePoint, x, y
+	if index == 1 then
+		local firstButtonSpacing = db.backdrop and (E.Border + db.backdropSpacing) or E.Spacing
+		if db.point == 'BOTTOMLEFT' then
+			x, y = firstButtonSpacing, firstButtonSpacing
+		elseif db.point == 'TOPRIGHT' then
+			x, y = -firstButtonSpacing, -firstButtonSpacing
+		elseif db.point == 'TOPLEFT' then
+			x, y = firstButtonSpacing, -firstButtonSpacing
+		else
+			x, y = -firstButtonSpacing, firstButtonSpacing
+		end
 
-	-- mover magic ~Simpy
+		point, relativeFrame, relativePoint = db.point, bar, db.point
+	elseif (index - 1) % buttonsPerRow == 0 then
+		point, relativeFrame, relativePoint, x, y = 'TOP', lastColumnButton, 'BOTTOM', 0, -(db.buttonspacing or db.buttonSpacing)
+		if anchorUp then
+			point, relativePoint, y = 'BOTTOM', 'TOP', (db.buttonspacing or db.buttonSpacing)
+		end
+	else
+		point, relativeFrame, relativePoint, x, y = 'LEFT', lastButton, 'RIGHT', (db.buttonspacing or db.buttonSpacing), 0
+		if anchorLeft then
+			point, relativePoint, x = 'RIGHT', 'LEFT', -(db.buttonspacing or db.buttonSpacing)
+		end
+	end
+
+	button:SetParent(bar)
+	button:ClearAllPoints()
+	button:SetAttribute('showgrid', 1)
+	button:EnableMouse(not db.clickThrough)
+	button:Size(buttonWidth, buttonHeight)
+	button:Point(point, relativeFrame, relativePoint, x, y)
+
+	if index == 1 then
+		bar.backdrop:Point(point, button, point, anchorLeft and db.backdropSpacing or -db.backdropSpacing, anchorUp and -db.backdropSpacing or db.backdropSpacing)
+	elseif index == buttonsPerRow then
+		bar.backdrop:Point(horizontalGrowth, button, horizontalGrowth, anchorLeft and -db.backdropSpacing or db.backdropSpacing, 0)
+	end
+
+	if button:IsShown() then
+		local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
+		bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and db.backdropSpacing or -db.backdropSpacing)
+	end
+end
+
+function AB:TrimIcon(icon, db, customCoords)
+	local left, right, top, bottom = unpack(customCoords or E.TexCoords)
+	if db and not db.keepSizeRatio then
+		local ratio = (db.buttonsize or db.buttonSize) / db.buttonHeight
+		if ratio > 1 then
+			local trimAmount = (1 - (1 / ratio)) / 2
+			top = top + trimAmount
+			bottom = bottom - trimAmount
+		else
+			local trimAmount = (1 - ratio) / 2
+			left = left + trimAmount
+			right = right - trimAmount
+		end
+	end
+
+	icon:SetTexCoord(left, right, top, bottom)
+end
+
+function AB:MoverMagic(bar) -- ~Simpy
+	local verticalGrowth = (bar.db.point == 'TOPLEFT' or bar.db.point == 'TOPRIGHT') and 'DOWN' or 'UP'
+	local horizontalGrowth = (bar.db.point == 'BOTTOMLEFT' or bar.db.point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
+	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
+
 	bar:ClearAllPoints()
 	if not bar.backdrop:IsShown() then
 		bar:SetPoint('BOTTOMLEFT', bar.mover)
@@ -214,74 +253,58 @@ function AB:PositionAndSizeBar(barName)
 	else
 		bar:SetPoint('TOPLEFT', bar.mover, 'TOPLEFT', anchorLeft and E.Border or -E.Border, E.Border)
 	end
+end
+
+function AB:PositionAndSizeBar(barName)
+	local db = AB.db[barName]
+	local bar = AB.handledBars[barName]
+
+	local buttonSpacing = db.buttonspacing
+	local backdropSpacing = db.backdropSpacing
+	local buttonsPerRow = db.buttonsPerRow
+	local numButtons = db.buttons
+	local point = db.point
+	local visibility = db.visibility
+
+	bar.db = db
+	bar.mouseover = db.mouseover
+
+	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
+
+	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
+	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
+	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
+
+	bar:SetParent(db.inheritGlobalFade and AB.fadeParent or E.UIParent)
+	bar:EnableMouse(not db.clickThrough)
+	bar:SetAlpha(bar.mouseover and 0 or db.alpha)
+	AB:FadeBarBlings(bar, bar.mouseover and 0 or db.alpha)
+
+	bar.backdrop:SetShown(db.backdrop)
+	bar.backdrop:ClearAllPoints()
+
+	AB:MoverMagic(bar)
 
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
+
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
-
 		button = bar.buttons[i]
-		button:SetParent(bar)
-		button:ClearAllPoints()
-		button:SetAttribute('showgrid', 1)
-		button:EnableMouse(not db.clickThrough)
-		button:Size(buttonWidth, buttonHeight)
+		button.db = db
 
-		local buttonPoint, anchorPoint
-		if i == 1 then
-			local x, y
-			if point == 'BOTTOMLEFT' then
-				x, y = sideSpacing, sideSpacing
-			elseif point == 'TOPRIGHT' then
-				x, y = -sideSpacing, -sideSpacing
-			elseif point == 'TOPLEFT' then
-				x, y = sideSpacing, -sideSpacing
-			else
-				x, y = -sideSpacing, sideSpacing
-			end
-
-			button:Point(point, bar, point, x, y)
+		if i == 1 or i == buttonsPerRow then
 			anchorRowButton = button
-		elseif (i - 1) % buttonsPerRow == 0 then
-			local y = -buttonSpacing
-			buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
-			if anchorUp then
-				y = buttonSpacing
-				buttonPoint = 'BOTTOM'
-				anchorPoint = 'TOP'
-			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, 0, y)
-		else
-			local x = buttonSpacing
-			buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
-			if anchorLeft then
-				x = -buttonSpacing
-				buttonPoint = 'RIGHT'
-				anchorPoint = 'LEFT'
-			end
-
-			button:Point(buttonPoint, lastButton, anchorPoint, x, 0)
 		end
 
 		if i > numButtons then
 			button:Hide()
 		else
 			button:Show()
-		end
-
-		if i == 1 then
-			bar.backdrop:Point(point, button, point, anchorLeft and backdropSpacing or -backdropSpacing, anchorUp and -backdropSpacing or backdropSpacing)
-		elseif i == buttonsPerRow then
-			bar.backdrop:Point(horizontalGrowth, button, horizontalGrowth, anchorLeft and -backdropSpacing or backdropSpacing, 0)
-			anchorRowButton = button
-		end
-
-		if button:IsShown() then
-			anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
-			bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and backdropSpacing or -backdropSpacing)
 			lastShownButton = button
 		end
 
+		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
@@ -297,6 +320,8 @@ function AB:PositionAndSizeBar(barName)
 		end
 
 		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
+		visibility = gsub(visibility, '[\n\r]','')
+
 		RegisterStateDriver(bar, 'visibility', visibility)
 		RegisterStateDriver(bar, 'page', page)
 		bar:SetAttribute('page', page)
@@ -331,14 +356,13 @@ function AB:CreateBar(id)
 	bar:SetFrameStrata('LOW')
 	bar.id = id
 
-	bar.backdrop = CreateFrame('Frame', nil, bar, 'BackdropTemplate')
-	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
+	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
 	bar.backdrop:SetFrameLevel(0)
 
 	bar.buttons = {}
 	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons
-	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
-	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
+	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
+	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
 	for i = 1, 12 do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName()..'Button%d', i), bar, nil)
@@ -356,8 +380,8 @@ function AB:CreateBar(id)
 			bar.buttons[i]:AddToMasque(MasqueGroup)
 		end
 
-		self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
-		self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
+		AB:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
+		AB:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
 	end
 	AB:UpdateButtonConfig(bar, bar.bindButtons)
 
@@ -620,26 +644,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if icon then
-		local left, right, top, bottom = unpack(E.TexCoords)
-		local barID = button.header and button.header.id
-
-		if barID then
-			local db = AB.db['bar'..barID]
-			if not db.keepSizeRatio then
-				local ratio = db.buttonsize / db.buttonHeight
-				if ratio > 1 then
-					local trimAmount = (1 - (1 / ratio)) / 2
-					top = top + trimAmount
-					bottom = bottom - trimAmount
-				else
-					local trimAmount = (1 - ratio) / 2
-					left = left + trimAmount
-					right = right - trimAmount
-				end
-			end
-		end
-
-		icon:SetTexCoord(left, right, top, bottom)
+		AB:TrimIcon(icon, button.db, button.customCoords)
 		icon:SetInside()
 	end
 
