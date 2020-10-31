@@ -553,6 +553,10 @@ function AB:UpdateButtonSettings()
 		end
 	end
 
+	AB:AdjustMaxStanceButtons()
+	AB:PositionAndSizeBarPet()
+	AB:PositionAndSizeBarShapeShift()
+
 	for button in pairs(AB.handledbuttons) do
 		if button then
 			AB:StyleButton(button, button.noBackdrop, button.useMasque, button.ignoreNormal)
@@ -561,10 +565,6 @@ function AB:UpdateButtonSettings()
 			AB.handledbuttons[button] = nil
 		end
 	end
-
-	AB:AdjustMaxStanceButtons()
-	AB:PositionAndSizeBarPet()
-	AB:PositionAndSizeBarShapeShift()
 
 	AB:UpdatePetBindings()
 	AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
