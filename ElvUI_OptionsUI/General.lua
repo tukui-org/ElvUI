@@ -765,7 +765,7 @@ E.Options.args.general = {
 					name = L["Durability Scale"],
 					min = 0.5, max = 8, step = 0.5,
 					get = function(info) return E.db.general.durabilityScale end,
-					set = function(info, value) E.db.general.durabilityScale = value; E:StaticPopup_Show('PRIVATE_RL') end,
+					set = function(info, value) E.db.general.durabilityScale = value; Blizzard:UpdateDurabilityScale() end,
 				},
 				commandBarSetting = {
 					order = 12,

@@ -298,9 +298,9 @@ E.Options.args.actionbar.args.general.args.fontGroup.args.fontOutline = ACH:Font
 
 E.Options.args.actionbar.args.general.args.masqueGroup = ACH:Group(L["Masque Support"], nil, -1, nil, function(info) return E.private.actionbar.masque[info[#info]] end, function(info, value) E.private.actionbar.masque[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.Masque end)
 E.Options.args.actionbar.args.general.args.masqueGroup.inline = true
-E.Options.args.actionbar.args.general.args.masqueGroup.args.actionbars = ACH:Toggle(L["ActionBars"])
-E.Options.args.actionbar.args.general.args.masqueGroup.args.petBar = ACH:Toggle(L["Pet Bar"])
-E.Options.args.actionbar.args.general.args.masqueGroup.args.stanceBar = ACH:Toggle(L["Stance Bar"])
+E.Options.args.actionbar.args.general.args.masqueGroup.args.actionbars = ACH:Toggle(L["ActionBars"], nil, 1)
+E.Options.args.actionbar.args.general.args.masqueGroup.args.petBar = ACH:Toggle(L["Pet Bar"], nil, 2)
+E.Options.args.actionbar.args.general.args.masqueGroup.args.stanceBar = ACH:Toggle(L["Stance Bar"], nil, 3)
 
 E.Options.args.actionbar.args.barPet = ACH:Group(L["Pet Bar"], nil, 14, nil, function(info) return E.db.actionbar.barPet[info[#info]] end, function(info, value) E.db.actionbar.barPet[info[#info]] = value; AB:PositionAndSizeBarPet() end, function() return not E.ActionBars.Initialized end)
 E.Options.args.actionbar.args.barPet.args = CopyTable(SharedBarOptions)

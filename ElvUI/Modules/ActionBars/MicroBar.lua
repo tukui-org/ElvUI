@@ -133,10 +133,9 @@ function AB:UpdateMicroPositionDimensions()
 
 	db.buttons = #_G.MICRO_BUTTONS-1
 
-	local point = db.point
 	local backdropSpacing = db.backdropSpacing
 
-	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(db.point)
 	local lastButton, anchorRowButton = microBar
 	for i = 1, #_G.MICRO_BUTTONS-1 do
 		local button = _G[__buttonIndex[i]] or _G[_G.MICRO_BUTTONS[i]]
