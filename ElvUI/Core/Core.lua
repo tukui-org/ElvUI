@@ -1700,6 +1700,9 @@ function E:InitializeModules()
 end
 
 function E:DBConversions()
+	-- development converts
+
+	-- release converts
 	if E.db.dbConverted == E.version then return end
 	E.db.dbConverted = E.version
 
