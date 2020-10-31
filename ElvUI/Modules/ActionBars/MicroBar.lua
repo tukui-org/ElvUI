@@ -13,6 +13,7 @@ local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 
 local microBar = CreateFrame('Frame', 'ElvUI_MicroBar', E.UIParent)
+microBar:SetSize(100, 100)
 
 local function onLeaveBar()
 	if AB.db.microbar.mouseover then
@@ -125,11 +126,6 @@ function AB:UpdateMicroPositionDimensions()
 	local db = AB.db.microbar
 	microBar.db = db
 
-	local numRows = 1
-	local lastButton = microBar
-	local offset = E.PixelMode and 1 or 3
-	local spacing = offset + db.buttonSpacing
-
 	microBar.backdrop:SetShown(db.backdrop)
 	microBar.backdrop:ClearAllPoints()
 
@@ -137,11 +133,22 @@ function AB:UpdateMicroPositionDimensions()
 
 	db.buttons = #_G.MICRO_BUTTONS-1
 
+	local point = db.point
+	local backdropSpacing = db.backdropSpacing
+	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
+	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
+	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
+
+	local lastButton, anchorRowButton = microBar
 	for i = 1, #_G.MICRO_BUTTONS-1 do
 		local button = _G[__buttonIndex[i]] or _G[_G.MICRO_BUTTONS[i]]
 		local lastColumnButton = i - db.buttonsPerRow
 		lastColumnButton = _G[__buttonIndex[lastColumnButton]] or _G[_G.MICRO_BUTTONS[lastColumnButton]]
 		button.db = db
+
+		if i == 1 or i == db.buttonsPerRow then
+			anchorRowButton = button
+		end
 
 		AB:HandleButton(microBar, button, i, lastButton, lastColumnButton)
 
@@ -150,9 +157,8 @@ function AB:UpdateMicroPositionDimensions()
 
 	microBar:SetAlpha(db.mouseover and 0 or db.alpha)
 
-	AB.MicroWidth = (((_G.CharacterMicroButton:GetWidth() + spacing) * AB.db.microbar.buttonsPerRow) - spacing) + (offset * 2)
-	AB.MicroHeight = (((_G.CharacterMicroButton:GetHeight() + spacing) * numRows) - spacing) + (offset * 2)
-	microBar:Size(AB.MicroWidth, AB.MicroHeight)
+	AB:HandleBackdropMultiplier(microBar, backdropSpacing, db.buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastButton, anchorRowButton)
+	AB:HandleBackdropMover(microBar, backdropSpacing)
 
 	if microBar.mover then
 		if AB.db.microbar.enabled then
