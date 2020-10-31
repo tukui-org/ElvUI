@@ -6,19 +6,22 @@ local unpack = unpack
 local ipairs, pairs, select, strmatch = ipairs, pairs, select, strmatch
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
+local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
+local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetOverrideBarIndex = GetOverrideBarIndex
+local GetSpellBookItemInfo = GetSpellBookItemInfo
 local GetVehicleBarIndex = GetVehicleBarIndex
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
+local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
 local SetModifiedClick = SetModifiedClick
-local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
@@ -27,14 +30,11 @@ local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnregisterStateDriver = UnregisterStateDriver
-local VehicleExit = VehicleExit
-local GetSpellBookItemInfo = GetSpellBookItemInfo
-local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
-local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
-local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
+local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
+local VehicleExit = VehicleExit
 
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
@@ -173,10 +173,7 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 
 	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
 
-	local verticalGrowth = (db.point == 'TOPLEFT' or db.point == 'TOPRIGHT') and 'DOWN' or 'UP'
-	local horizontalGrowth = (db.point == 'BOTTOMLEFT' or db.point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
-	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
-
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(db.point)
 	local point, relativeFrame, relativePoint, x, y
 	if index == 1 then
 		local firstButtonSpacing = db.backdrop and (E.Border + db.backdropSpacing) or E.Spacing
@@ -213,7 +210,7 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	if index == 1 then
 		bar.backdrop:Point(point, button, point, anchorLeft and db.backdropSpacing or -db.backdropSpacing, anchorUp and -db.backdropSpacing or db.backdropSpacing)
 	elseif index == buttonsPerRow then
-		bar.backdrop:Point(horizontalGrowth, button, horizontalGrowth, anchorLeft and -db.backdropSpacing or db.backdropSpacing, 0)
+		bar.backdrop:Point(horizontal, button, horizontal, anchorLeft and -db.backdropSpacing or db.backdropSpacing, 0)
 	end
 
 	if button:IsShown() then
@@ -240,10 +237,16 @@ function AB:TrimIcon(icon, db, customCoords)
 	icon:SetTexCoord(left, right, top, bottom)
 end
 
+function AB:GetGrowth(point)
+	local vertical = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
+	local horizontal = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
+	local anchorUp, anchorLeft = vertical == 'UP', horizontal == 'LEFT'
+
+	return vertical, horizontal, anchorUp, anchorLeft
+end
+
 function AB:MoverMagic(bar) -- ~Simpy
-	local verticalGrowth = (bar.db.point == 'TOPLEFT' or bar.db.point == 'TOPRIGHT') and 'DOWN' or 'UP'
-	local horizontalGrowth = (bar.db.point == 'BOTTOMLEFT' or bar.db.point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
-	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
+	local _, _, anchorUp, anchorLeft = AB:GetGrowth(bar.db.point)
 
 	bar:ClearAllPoints()
 	if not bar.backdrop:IsShown() then
@@ -271,10 +274,6 @@ function AB:PositionAndSizeBar(barName)
 
 	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
 
-	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
-	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
-	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
-
 	bar:SetParent(db.inheritGlobalFade and AB.fadeParent or E.UIParent)
 	bar:EnableMouse(not db.clickThrough)
 	bar:SetAlpha(bar.mouseover and 0 or db.alpha)
@@ -285,6 +284,7 @@ function AB:PositionAndSizeBar(barName)
 
 	AB:MoverMagic(bar)
 
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
 
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
@@ -308,7 +308,7 @@ function AB:PositionAndSizeBar(barName)
 		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
-	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	if db.enabled or not bar.initialized then

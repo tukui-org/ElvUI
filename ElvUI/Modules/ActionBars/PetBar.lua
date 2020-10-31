@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local unpack = unpack
-
+local gsub = gsub
 local CreateFrame = CreateFrame
 local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
@@ -14,7 +13,6 @@ local PetActionButton_StartFlash = PetActionButton_StartFlash
 local PetActionButton_StopFlash = PetActionButton_StopFlash
 local AutoCastShine_AutoCastStart = AutoCastShine_AutoCastStart
 local AutoCastShine_AutoCastStop = AutoCastShine_AutoCastStop
-local GetPetActionSlotUsable = GetPetActionSlotUsable
 local SetDesaturation = SetDesaturation
 local PetActionBar_ShowGrid = PetActionBar_ShowGrid
 local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns
@@ -118,10 +116,6 @@ function AB:PositionAndSizeBarPet()
 		E:DisableMover(bar.mover:GetName())
 	end
 
-	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
-	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
-	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
-
 	bar:SetParent(db.inheritGlobalFade and AB.fadeParent or E.UIParent)
 	bar:EnableMouse(not db.clickThrough)
 	bar:SetAlpha(bar.mouseover and 0 or db.alpha)
@@ -132,6 +126,7 @@ function AB:PositionAndSizeBarPet()
 
 	AB:MoverMagic(bar)
 
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton, autoCast
 
 	for i = 1, NUM_PET_ACTION_SLOTS do
@@ -162,7 +157,7 @@ function AB:PositionAndSizeBarPet()
 		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.petBar)
 	end
 
-	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	visibility = gsub(visibility, '[\n\r]','')

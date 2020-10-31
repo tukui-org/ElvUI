@@ -135,10 +135,8 @@ function AB:UpdateMicroPositionDimensions()
 
 	local point = db.point
 	local backdropSpacing = db.backdropSpacing
-	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
-	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
-	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
 
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local lastButton, anchorRowButton = microBar
 	for i = 1, #_G.MICRO_BUTTONS-1 do
 		local button = _G[__buttonIndex[i]] or _G[_G.MICRO_BUTTONS[i]]
@@ -157,7 +155,7 @@ function AB:UpdateMicroPositionDimensions()
 
 	microBar:SetAlpha(db.mouseover and 0 or db.alpha)
 
-	AB:HandleBackdropMultiplier(microBar, backdropSpacing, db.buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastButton, anchorRowButton)
+	AB:HandleBackdropMultiplier(microBar, backdropSpacing, db.buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastButton, anchorRowButton)
 	AB:HandleBackdropMover(microBar, backdropSpacing)
 
 	if microBar.mover then

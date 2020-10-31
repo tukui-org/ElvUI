@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local format, strfind = format, strfind
+local format, ipairs = format, ipairs
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
@@ -112,12 +112,6 @@ function AB:PositionAndSizeBarShapeShift()
 	bar.db = db
 	bar.mouseover = db.mouseover
 
-	--Convert 'TOP' or 'BOTTOM' to anchor points we can use
-	local position = E:GetScreenQuadrant(bar)
-	if strfind(position, 'LEFT') or position == 'TOP' or position == 'BOTTOM' then
-		if point == 'TOP' then point = 'TOPLEFT' elseif point == 'BOTTOM' then point = 'BOTTOMLEFT' end
-	elseif point == 'TOP' then point = 'TOPRIGHT' elseif point == 'BOTTOM' then point = 'BOTTOMRIGHT' end
-
 	if bar.LastButton then
 		if numButtons > bar.LastButton then numButtons = bar.LastButton end
 		if buttonsPerRow > bar.LastButton then buttonsPerRow = bar.LastButton end
@@ -125,10 +119,6 @@ function AB:PositionAndSizeBarShapeShift()
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons
 	end
-
-	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
-	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
-	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
 
 	bar:SetParent(db.inheritGlobalFade and AB.fadeParent or E.UIParent)
 	bar:EnableMouse(not db.clickThrough)
@@ -140,6 +130,7 @@ function AB:PositionAndSizeBarShapeShift()
 
 	AB:MoverMagic(bar)
 
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
 	local useMasque = MasqueGroup and E.private.actionbar.masque.stanceBar
 
@@ -179,7 +170,7 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 	end
 
-	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
 	if useMasque then

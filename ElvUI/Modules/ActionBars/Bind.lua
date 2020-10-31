@@ -6,23 +6,23 @@ local _G = _G
 local strfind, format = strfind, format
 local select, tonumber, pairs, floor = select, tonumber, pairs, floor
 local CreateFrame = CreateFrame
-local GetSpellInfo = GetSpellInfo
-local IsAddOnLoaded = IsAddOnLoaded
-local LoadBindings, SaveBindings = LoadBindings, SaveBindings
-local GetCurrentBindingSet = GetCurrentBindingSet
-local SetBinding = SetBinding
+local GameTooltip_Hide = GameTooltip_Hide
+local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local GetBindingKey = GetBindingKey
+local GetCurrentBindingSet = GetCurrentBindingSet
+local GetFlyoutID = GetFlyoutID
+local GetMacroInfo = GetMacroInfo
+local GetNumFlyouts, GetFlyoutInfo = GetNumFlyouts, GetFlyoutInfo
+local GetSpellBookItemName = GetSpellBookItemName
+local GetSpellInfo = GetSpellInfo
+local InCombatLockdown = InCombatLockdown
+local IsAddOnLoaded = IsAddOnLoaded
 local IsAltKeyDown, IsControlKeyDown = IsAltKeyDown, IsControlKeyDown
 local IsShiftKeyDown, IsModifiedClick = IsShiftKeyDown, IsModifiedClick
-local InCombatLockdown = InCombatLockdown
-local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
-local GetSpellBookItemName = GetSpellBookItemName
-local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
-local GetMacroInfo = GetMacroInfo
+local LoadBindings, SaveBindings = LoadBindings, SaveBindings
 local SecureActionButton_OnClick = SecureActionButton_OnClick
-local GetNumFlyouts, GetFlyoutInfo = GetNumFlyouts, GetFlyoutInfo
-local GetFlyoutID = GetFlyoutID
-local GameTooltip_Hide = GameTooltip_Hide
+local SetBinding = SetBinding
+local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
 local MAX_ACCOUNT_MACROS = MAX_ACCOUNT_MACROS
 local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
 local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
@@ -86,24 +86,18 @@ function AB:BindListener(key)
 	--Check if this button can open a flyout menu
 	local isFlyout = (bind.button.FlyoutArrow and bind.button.FlyoutArrow:IsShown())
 
-	if key == 'LSHIFT'
-	or key == 'RSHIFT'
-	or key == 'LCTRL'
-	or key == 'RCTRL'
-	or key == 'LALT'
-	or key == 'RALT'
-	or key == 'UNKNOWN'
-	then return; end
+	if key == 'LSHIFT' or key == 'RSHIFT'
+	or key == 'LCTRL' or key == 'RCTRL'
+	or key == 'LALT' or key == 'RALT'
+	or key == 'UNKNOWN' then return end
 
 	--Redirect LeftButton click to open flyout
 	if key == 'LeftButton' and isFlyout then
 		SecureActionButton_OnClick(bind.button)
 	end
 
-	if key == 'MiddleButton' then key = 'BUTTON3'; end
-	if key:find('Button%d') then
-		key = key:upper()
-	end
+	if key == 'MiddleButton' then key = 'BUTTON3' end
+	if key:find('Button%d') then key = key:upper() end
 
 	local alt = IsAltKeyDown() and 'ALT-' or ''
 	local ctrl = IsControlKeyDown() and 'CTRL-' or ''
