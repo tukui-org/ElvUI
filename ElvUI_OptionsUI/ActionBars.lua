@@ -217,71 +217,6 @@ E.Options.args.actionbar.args.general = {
 						},
 					}
 				},
-				colorGroup = {
-					order = 30,
-					type = 'group',
-					name = L["COLORS"],
-					inline = true,
-					disabled = function() return (E.Masque and E.private.actionbar.masque.actionbars) end,
-					get = function(info)
-						local t = E.db.actionbar[info[#info]]
-						local d = P.actionbar[info[#info]]
-						return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a
-					end,
-					set = function(info, r, g, b, a)
-						local t = E.db.actionbar[info[#info]]
-						t.r, t.g, t.b, t.a = r, g, b, a
-						AB:UpdateButtonSettings();
-					end,
-					args = {
-						fontColor = {
-							type = 'color',
-							order = 0,
-							name = L["Text"],
-						},
-						noRangeColor = {
-							type = 'color',
-							order = 1,
-							name = L["Out of Range"],
-							desc = L["Color of the actionbutton when out of range."],
-						},
-						noPowerColor = {
-							type = 'color',
-							order = 2,
-							name = L["Out of Power"],
-							desc = L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."],
-						},
-						usableColor = {
-							type = 'color',
-							order = 3,
-							name = L["Usable"],
-							desc = L["Color of the actionbutton when usable."],
-						},
-						notUsableColor = {
-							type = 'color',
-							order = 4,
-							name = L["Not Usable"],
-							desc = L["Color of the actionbutton when not usable."],
-						},
-						colorSwipeNormal = {
-							type = 'color',
-							order = 5,
-							hasAlpha = true,
-							name = L["Swipe: Normal"],
-						},
-						colorSwipeLOC = {
-							type = 'color',
-							order = 6,
-							hasAlpha = true,
-							name = L["Swipe: Loss of Control"],
-						},
-						equippedItemColor = {
-							order = 7,
-							type = 'color',
-							name = L["Equipped Item Color"]
-						},
-					},
-				},
 				textGroup = {
 					type = 'group',
 					order = 50,
@@ -343,6 +278,17 @@ E.Options.args.actionbar.args.general = {
 				},
 			},
 		}
+
+E.Options.args.actionbar.args.general.args.colorGroup = ACH:Group(L["COLORS"], nil, 30, nil, function(info) local t = E.db.actionbar[info[#info]] local d = P.actionbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.actionbar[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateButtonSettings() end, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
+E.Options.args.actionbar.args.general.args.colorGroup.inline = true
+E.Options.args.actionbar.args.general.args.colorGroup.args.fontColor = ACH:Color(L["Text"], nil, 0)
+E.Options.args.actionbar.args.general.args.colorGroup.args.noRangeColor = ACH:Color(L["Out of Range"], L["Color of the actionbutton when out of range."], 1)
+E.Options.args.actionbar.args.general.args.colorGroup.args.noPowerColor = ACH:Color(L["Out of Power"], L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."], 2)
+E.Options.args.actionbar.args.general.args.colorGroup.args.usableColor = ACH:Color(L["Usable"], L["Color of the actionbutton when usable."], 3)
+E.Options.args.actionbar.args.general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Color of the actionbutton when not usable."], 4)
+E.Options.args.actionbar.args.general.args.colorGroup.args.colorSwipeNormal = ACH:Color(L["Swipe: Normal"], nil, 5, true)
+E.Options.args.actionbar.args.general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true)
+E.Options.args.actionbar.args.general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item Color"], nil, 7)
 
 E.Options.args.actionbar.args.general.args.fontGroup = ACH:Group(L["Fonts"], nil, 40)
 E.Options.args.actionbar.args.general.args.fontGroup.inline = true
