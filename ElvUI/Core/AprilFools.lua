@@ -56,7 +56,6 @@ do
 		end
 
 		E.massiveShakeTimer = E:ScheduleTimer('StopHarlemShake', 42.5)
-		SendChatMessage('DO THE HARLEM SHAKE!', 'YELL')
 	end
 
 	function E:BeginHarlemShake()
