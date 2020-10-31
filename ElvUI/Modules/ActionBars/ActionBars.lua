@@ -546,19 +546,19 @@ function AB:UpdateButtonSettings()
 		return
 	end
 
+	for barName, bar in pairs(AB.handledBars) do
+		if bar then
+			AB:UpdateButtonConfig(bar, bar.bindButtons)
+			AB:PositionAndSizeBar(barName)
+		end
+	end
+
 	for button in pairs(AB.handledbuttons) do
 		if button then
 			AB:StyleButton(button, button.noBackdrop, button.useMasque, button.ignoreNormal)
 			AB:StyleFlyout(button)
 		else
 			AB.handledbuttons[button] = nil
-		end
-	end
-
-	for barName, bar in pairs(AB.handledBars) do
-		if bar then
-			AB:UpdateButtonConfig(bar, bar.bindButtons)
-			AB:PositionAndSizeBar(barName)
 		end
 	end
 
