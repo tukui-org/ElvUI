@@ -73,33 +73,35 @@ E.Options.args.general = {
 					desc = L["Attempt to support eyefinity/nvidia surround."],
 					type = 'toggle',
 					get = function(info) return E.global.general.eyefinity end,
-					set = function(info, value) E.global.general.eyefinity = value; E:StaticPopup_Show('GLOBAL_RL') end
+					set = function(info, value) E.global.general.eyefinity = value; E:StaticPopup_Show('GLOBAL_RL') end,
+					disabled = function() return E.global.general.ultrawide end,
+				},
+				ultrawide = {
+					order = 10,
+					name = L["Ultrawide Support"],
+					desc = L["Attempts to center UI elements in a 16:9 format for ultrawide monitors"],
+					type = 'toggle',
+					get = function(info) return E.global.general.ultrawide end,
+					set = function(info, value) E.global.general.ultrawide = value; E:StaticPopup_Show('GLOBAL_RL') end,
+					disabled = function() return E.global.general.eyefinity end,
 				},
 				autoAcceptInvite = {
-					order = 10,
+					order = 11,
 					name = L["Accept Invites"],
 					desc = L["Automatically accept invites from guild/friends."],
 					type = 'toggle',
 				},
 				autoRoll = {
-					order = 11,
+					order = 12,
 					name = L["Auto Greed/DE"],
 					desc = L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."],
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
 				autoTrackReputation = {
-					order = 12,
+					order = 13,
 					name = L["Auto Track Reputation"],
 					type = 'toggle',
-				},
-				ultrawide = {
-					order = 13,
-					name = L["Ultrawide Support"],
-					desc = L["Attempts to center UI elements in a 16:9 format for ultrawide monitors"],
-					type = 'toggle',
-					get = function(info) return E.global.general.ultrawide end,
-					set = function(info, value) E.global.general.ultrawide = value; E:StaticPopup_Show('GLOBAL_RL') end
 				},
 				spacer1 = ACH:Spacer(15, 'full'),
 				locale = {
