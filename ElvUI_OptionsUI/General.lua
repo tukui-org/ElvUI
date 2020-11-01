@@ -93,6 +93,14 @@ E.Options.args.general = {
 					name = L["Auto Track Reputation"],
 					type = 'toggle',
 				},
+				ultrawide = {
+					order = 13,
+					name = L["Ultrawide Support"],
+					desc = L["Attempts to center UI elements in a 16:9 format for ultrawide monitors"],
+					type = 'toggle',
+					get = function(info) return E.global.general.ultrawide end,
+					set = function(info, value) E.global.general.ultrawide = value; E:StaticPopup_Show('GLOBAL_RL') end
+				},
 				spacer1 = ACH:Spacer(15, 'full'),
 				locale = {
 					order = 16,
