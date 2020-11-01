@@ -44,6 +44,7 @@ G.datatexts = {
 		Armor = { Label = '', NoLabel = false },
 		Avoidance = { Label = '', NoLabel = false, decimalLength = 1 },
 		CallToArms = { Label = '', NoLabel = false },
+		Combat = { TimeFull = true },
 		Crit = { Label = '', NoLabel = false, decimalLength = 1 },
 		Currencies = { goldFormat = 'BLIZZARD', goldCoins = true, displayedCurrency = 'BACKPACK', displayStyle = 'ICON', tooltipData = {} },
 		Durability = { percThreshold = 30 },
