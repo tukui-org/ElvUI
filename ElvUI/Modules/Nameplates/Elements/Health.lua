@@ -64,7 +64,7 @@ function NP:Construct_Health(nameplate)
 	local Health = CreateFrame('StatusBar', nameplate:GetName()..'Health', nameplate)
 	Health:SetFrameStrata(nameplate:GetFrameStrata())
 	Health:SetFrameLevel(5)
-	Health:CreateBackdrop('Transparent')
+	Health:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Health:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
 	local clipFrame = CreateFrame('Frame', nil, Health)

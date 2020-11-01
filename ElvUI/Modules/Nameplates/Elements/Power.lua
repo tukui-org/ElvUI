@@ -102,7 +102,7 @@ function NP:Construct_Power(nameplate)
 	local Power = CreateFrame('StatusBar', nameplate:GetName()..'Power', nameplate)
 	Power:SetFrameStrata(nameplate:GetFrameStrata())
 	Power:SetFrameLevel(5)
-	Power:CreateBackdrop('Transparent')
+	Power:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 
 	local clipFrame = CreateFrame('Frame', nil, Power)
 	clipFrame:SetClipsChildren(true)

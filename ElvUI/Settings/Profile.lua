@@ -481,6 +481,7 @@ P.nameplates = {
 	showFriendlyCombat = 'DISABLED',
 	smoothbars = false,
 	statusbar = 'ElvUI Norm',
+	thinBorders = true,
 	clickThrough = {
 		personal = false,
 		friendly = false,

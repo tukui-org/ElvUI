@@ -446,6 +446,17 @@ E.Options.args.general = {
 								E:StaticPopup_Show('CONFIG_RL')
 							end,
 						},
+						npThinBorders = {
+							order = 2,
+							name = L["NamePlate Thin Borders"],
+							desc = L["Use thin borders on certain nameplate elements."],
+							type = 'toggle',
+							get = function(info) return E.db.nameplates.thinBorders end,
+							set = function(info, value)
+								E.db.nameplates.thinBorders = value
+								E:StaticPopup_Show('CONFIG_RL')
+							end,
+						},
 						cropIcon = {
 							order = 3,
 							type = 'toggle',

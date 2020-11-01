@@ -752,6 +752,7 @@ function NP:Initialize()
 	NP.db = E.db.nameplates
 
 	if E.private.nameplates.enable ~= true then return end
+	NP.thinBorders = NP.db.thinBorders
 	NP.Initialized = true
 
 	ElvUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
