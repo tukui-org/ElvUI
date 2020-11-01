@@ -7,7 +7,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
-local tinsert, tremove, twipe, tmaxn = tinsert, tremove, wipe, table.maxn
+local tinsert, tremove, wipe, tmaxn = tinsert, tremove, wipe, table.maxn
 local next, floor, ceil, abs = next, floor, ceil, abs
 local format, sub = format, strsub
 
@@ -2201,7 +2201,7 @@ end
 function B:MERCHANT_CLOSED()
 	B.SellFrame:Hide()
 
-	twipe(B.SellFrame.Info.itemList)
+	wipe(B.SellFrame.Info.itemList)
 	B.SellFrame.Info.delete = false
 	B.SellFrame.Info.ProgressTimer = 0
 	B.SellFrame.Info.SellInterval = E.db.bags.vendorGrays.interval

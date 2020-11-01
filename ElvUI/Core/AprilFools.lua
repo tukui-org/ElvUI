@@ -9,14 +9,13 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local pairs = pairs
-local twipe, tinsert = wipe, tinsert
+local wipe, tinsert = wipe, tinsert
 
 local CreateFrame = CreateFrame
 local DoEmote = DoEmote
 local GetCVar, SetCVar = GetCVar, SetCVar
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 local PlayMusic, StopMusic = PlayMusic, StopMusic
-local SendChatMessage = SendChatMessage
 -- GLOBALS: ElvUI_StaticPopup1, ElvUI_StaticPopup1Button1, ElvUI_StanceBar
 
 --Harlem Shake (Activate with command: /harlemshake)
@@ -41,7 +40,7 @@ do
 
 		E.global.aprilFools = true
 		E:StaticPopup_Hide('HARLEM_SHAKE')
-		twipe(self.massiveShakeObjects)
+		wipe(self.massiveShakeObjects)
 		DoEmote('Dance')
 	end
 
