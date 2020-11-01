@@ -29,8 +29,8 @@ SharedBarOptions.buttonGroup.inline = true
 SharedBarOptions.buttonGroup.args.buttons = ACH:Range(L["Buttons"], L["The amount of buttons to display."], 1, { min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonsPerRow = ACH:Range(L["Buttons Per Row"], L["The amount of buttons to display per row."], 2, { min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonspacing = ACH:Range(L["Button Spacing"], L["The spacing between buttons."], 3, { min = 1, max = 20, step = 1 })
-SharedBarOptions.buttonGroup.args.buttonsize = ACH:Range('', nil, 4, { min = 15, max = 60, step = 1 })
-SharedBarOptions.buttonGroup.args.buttonHeight = ACH:Range(L["Button Height"], L["The height of the action buttons."], 5, { min = 15, max = 60, step = 1 })
+SharedBarOptions.buttonGroup.args.buttonsize = ACH:Range('', nil, 4, { min = 15, max = 64, step = 1 })
+SharedBarOptions.buttonGroup.args.buttonHeight = ACH:Range(L["Button Height"], L["The height of the action buttons."], 5, { min = 15, max = 64, step = 1 })
 
 SharedBarOptions.backdropGroup.inline = true
 SharedBarOptions.backdropGroup.args.backdropSpacing = ACH:Range(L["Backdrop Spacing"], L["The spacing between the backdrop and the buttons."], 1, { min = 0, max = 10, step = 1 })
