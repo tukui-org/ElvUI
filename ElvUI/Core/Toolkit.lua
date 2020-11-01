@@ -148,7 +148,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 		end
 
 		local notPixelMode = not isUnitFrameElement and not E.PixelMode
-		local notThinBorders = isUnitFrameElement and not UF.thinBorders or isNamePlateElement and not NP.thinBorders
+		local notThinBorders = (isUnitFrameElement and not UF.thinBorders) or (isNamePlateElement and not NP.thinBorders)
 		if (notPixelMode or notThinBorders) and not forcePixelMode then
 			local backdrop = {
 				edgeFile = E.media.blankTex,
