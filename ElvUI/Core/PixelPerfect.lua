@@ -50,6 +50,8 @@ function E:UIScale(init)
 		E.eyefinity = E:IsEyefinity(width, height)
 		E.ultrawide = E:IsUltrawide(width, height)
 
+		local newWidth = E.eyefinity or E.ultrawide
+
 		--Resize E.UIParent if Eyefinity or UltraWide is on.
 		local testingResize = false
 		if testingResize then
@@ -57,10 +59,10 @@ function E:UIScale(init)
 			-- Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
 			local uiWidth, uiHeight = UIParent:GetSize()
 			width, height = uiWidth-250, uiHeight-250
-		elseif (E.eyefinity or E.ultrawide) then
+		elseif newWidth then
 			-- Center E.UIParent
 			local uiHeight = UIParent:GetHeight()
-			width, height = (E.eyefinity or E.ultrawide) / (height / uiHeight), uiHeight
+			width, height = newWidth / (height / uiHeight), uiHeight
 		else
 			width, height = UIParent:GetSize()
 		end
