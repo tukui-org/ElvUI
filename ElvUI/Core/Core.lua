@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local strsplit, strjoin, wipe, sort, tinsert, tremove, tContains = strsplit, strjoin, wipe, sort, tinsert, tremove, tContains
+local strsplit, strjoin, wipe, tinsert, tremove, tContains = strsplit, strjoin, wipe, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
@@ -698,15 +698,12 @@ end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 	--Code slightly modified by Simpy, sorting from @sighol
-	local tkeys = {}
 	local function recurse(tbl, level, ret)
-		wipe(tkeys)
+		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
 		sort(tkeys)
-
 		for _, i in ipairs(tkeys) do
 			local v = tbl[i]
-
 			ret = ret..strrep('    ', level)..'['
 			if type(i) == 'string' then ret = ret..'"'..i..'"' else ret = ret..i end
 			ret = ret..'] = '
@@ -765,16 +762,14 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		return str
 	end
 
-	local tkeys, sameLine = {}
+	local sameLine
 	local function recurse(tbl, ret, profileText)
-		wipe(tkeys)
+		local lineStructure = buildLineStructure(profileText)
+		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
 		sort(tkeys)
-
-		local lineStructure = buildLineStructure(profileText)
 		for _, k in ipairs(tkeys) do
 			local v = tbl[k]
-
 			if not sameLine then
 				ret = ret..lineStructure
 			end
