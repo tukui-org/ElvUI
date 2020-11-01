@@ -11,6 +11,7 @@ local GetAvailableBandwidth = GetAvailableBandwidth
 local GetFileStreamingStatus = GetFileStreamingStatus
 local GetBackgroundLoadingStatus = GetBackgroundLoadingStatus
 local GetDownloadedPercentage = GetDownloadedPercentage
+local SetCVar = SetCVar
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
 local GetFramerate = GetFramerate
@@ -19,7 +20,7 @@ local GetNetStats = GetNetStats
 local GetNumAddOns = GetNumAddOns
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
-local IsModifierKeyDown = IsModifierKeyDown
+local IsControlKeyDown = IsControlKeyDown
 local ResetCPUUsage = ResetCPUUsage
 local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
@@ -79,7 +80,11 @@ local function BuildAddonList()
 end
 
 local function OnClick()
-	if IsModifierKeyDown() then
+	if IsShiftKeyDown() and IsControlKeyDown() and not InCombatLockdown() then
+		SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
+		_G.ReloadUI()
+	end
+	if IsShiftKeyDown() then
 		collectgarbage('collect')
 		ResetCPUUsage()
 	end
@@ -222,7 +227,8 @@ local function OnEnter(_, slow)
 		end
 	end
 
-	DT.tooltip:AddLine(L["(Modifer Click) Collect Garbage"])
+	DT.tooltip:AddLine(L["(Shift Click) Collect Garbage"])
+	DT.tooltip:AddLine(L["(Ctrl & Shift Click) Toggle CPU Profiling"])
 	DT.tooltip:Show()
 end
 
