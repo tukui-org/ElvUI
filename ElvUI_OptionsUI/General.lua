@@ -448,7 +448,7 @@ E.Options.args.general = {
 						},
 						npThinBorders = {
 							order = 2,
-							name = L["NamePlate Thin Borders"],
+							name = L["Nameplate Thin Borders"],
 							desc = L["Use thin borders on certain nameplate elements."],
 							type = 'toggle',
 							get = function(info) return E.db.nameplates.thinBorders end,
