@@ -46,12 +46,6 @@ function E:UIScale(init)
 	else -- E.Initialize
 		UIParent:SetScale(scale)
 
-		-- Check to make sure both are not enabled at the same time.
-		if E.global.general.eyefinity and E.global.general.ultrawide then
-			E.global.general.ultrawide = false
-			E.global.general.eyefinity = false
-		end
-
 		local width, height = E.screenwidth, E.screenheight
 		E.eyefinity = E:IsEyefinity(width, height)
 		E.ultrawide = E:IsUltrawide(width, height)

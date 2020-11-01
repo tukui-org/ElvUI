@@ -74,7 +74,6 @@ E.Options.args.general = {
 					type = 'toggle',
 					get = function(info) return E.global.general.eyefinity end,
 					set = function(info, value) E.global.general.eyefinity = value; E:StaticPopup_Show('GLOBAL_RL') end,
-					disabled = function() return E.global.general.ultrawide end,
 				},
 				ultrawide = {
 					order = 10,
@@ -83,7 +82,6 @@ E.Options.args.general = {
 					type = 'toggle',
 					get = function(info) return E.global.general.ultrawide end,
 					set = function(info, value) E.global.general.ultrawide = value; E:StaticPopup_Show('GLOBAL_RL') end,
-					disabled = function() return E.global.general.eyefinity end,
 				},
 				autoAcceptInvite = {
 					order = 11,
