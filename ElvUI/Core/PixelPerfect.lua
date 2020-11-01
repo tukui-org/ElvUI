@@ -28,7 +28,7 @@ function E:IsUltrawide(width, height)
 	if E.global.general.ultrawide and width >= 2560 then
 		--HQ Resolution
 		if width >= 3440 and (height == 1440 or height == 1600) then return 2560 end --WQHD, DQHD, DQHD+ & WQHD+
-		
+
 		--Low resolution
 		if width >= 2560 and height == 1080 then return 1920 end --WFHD & DFHD
 	end
@@ -46,34 +46,21 @@ function E:UIScale(init)
 	else -- E.Initialize
 		UIParent:SetScale(scale)
 
-		--Check if we are using `E.eyefinity`
 		local width, height = E.screenwidth, E.screenheight
 		E.eyefinity = E:IsEyefinity(width, height)
-
-		--Check if we are using `E.ultrawide`
-		local width, height = E.screenwidth, E.screenheight
 		E.ultrawide = E:IsUltrawide(width, height)
 
-		--Resize E.UIParent if Eyefinity is on.
-		local testingEyefinity = false
-		if testingEyefinity then
-			--Eyefinity Test: Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
-			--Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
+		--Resize E.UIParent if Eyefinity or UltraWide is on.
+		local testingResize = false
+		if testingResize then
+			-- Eyefinity / UltraWide Test: Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
+			-- Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
 			local uiWidth, uiHeight = UIParent:GetSize()
 			width, height = uiWidth-250, uiHeight-250
-		elseif testingUltrawide then
-			--Ultrawide Test: Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
-			--Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
-			local uiWidth, uiHeight = UIParent:GetSize()
-			width, height = uiWidth-250, uiHeight-250
-		elseif E.eyefinity then
-			--Find a new width value of E.UIParent for screen #1.
+		elseif (E.eyefinity or E.ultrawide) then
+			-- Center E.UIParent
 			local uiHeight = UIParent:GetHeight()
-			width, height = E.eyefinity / (height / uiHeight), uiHeight
-		elseif E.ultrawide then
-			--Center E.UIParent for Ultrawide monitors
-			local uiHeight = UIParent:GetHeight()
-			width, height = E.ultrawide / (height / uiHeight), uiHeight
+			width, height = (E.eyefinity or E.ultrawide) / (height / uiHeight), uiHeight
 		else
 			width, height = UIParent:GetSize()
 		end

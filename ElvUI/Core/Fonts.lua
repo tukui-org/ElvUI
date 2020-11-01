@@ -38,8 +38,7 @@ function E:UpdateBlizzardFonts()
 
 	_G.CHAT_FONT_HEIGHTS = chatFontHeights
 
-	if E.eyefinity then COMBAT = E.Media.Fonts.Invisible end -- set an invisible font for xp, honor kill, etc
-	if E.ultrawide then COMBAT = E.Media.Fonts.Invisible end -- set an invisible font for xp, honor kill, etc
+	if (E.eyefinity or E.ultrawide) then COMBAT = E.Media.Fonts.Invisible end -- set an invisible font for xp, honor kill, etc
 	if E.private.general.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
 	if E.private.general.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
 	if E.private.general.replaceBlizzFonts then
