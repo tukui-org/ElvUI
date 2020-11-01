@@ -506,7 +506,7 @@ function S:Blizzard_Collections()
 				border:SetPoint('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
 				border:SetPoint('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
-				border.ignoreBackdropColor = true
+				border.forcedBackdropColor = {0, 0, 0, 0}
 
 				for i=1, Model:GetNumRegions() do
 				local region = select(i, Model:GetRegions())

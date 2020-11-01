@@ -103,13 +103,13 @@ local function playerSaturate(self) -- self is Achievement.player
 	local Achievement = self:GetParent()
 
 	local r, g, b = unpack(E.media.bordercolor)
-	Achievement.player.backdrop.ignoreBackdropColor = nil
-	Achievement.friend.backdrop.ignoreBackdropColor = nil
+	Achievement.player.backdrop.forcedBackdropColor = nil
+	Achievement.friend.backdrop.forcedBackdropColor = nil
 
 	if Achievement.player.accountWide then
 		r, g, b = unpack(BlueAchievement)
-		Achievement.player.backdrop.ignoreBackdropColor = true
-		Achievement.friend.backdrop.ignoreBackdropColor = true
+		Achievement.player.backdrop.forcedBackdropColor = {r, g, b}
+		Achievement.friend.backdrop.forcedBackdropColor = {r, g, b}
 	end
 
 	Achievement.player.backdrop:SetBackdropColor(r, g, b)
@@ -119,10 +119,11 @@ end
 local function setAchievementColor(frame)
 	if frame and frame.backdrop then
 		if frame.accountWide then
-			frame.backdrop.ignoreBackdropColor = true
-			frame.backdrop:SetBackdropColor(unpack(BlueAchievement))
+			local r, g, b = unpack(BlueAchievement)
+			frame.backdrop.forcedBackdropColor = {r, g, b}
+			frame.backdrop:SetBackdropColor(r, g, b)
 		else
-			frame.backdrop.ignoreBackdropColor = nil
+			frame.backdrop.forcedBackdropColor = nil
 			frame.backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
 		end
 	end

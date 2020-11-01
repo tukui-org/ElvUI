@@ -448,7 +448,9 @@ function E:UpdateBackdropColors()
 			if not frame.ignoreUpdates then
 				if frame.callbackBackdropColor then
 					frame:callbackBackdropColor()
-				elseif not frame.ignoreBackdropColor then
+				elseif frame.forcedBackdropColor then
+					frame:SetBackdropColor(unpack(frame.forcedBackdropColor))
+				else
 					if frame.template == 'Default' then
 						frame:SetBackdropColor(r, g, b)
 					elseif frame.template == 'Transparent' then
@@ -466,7 +468,9 @@ function E:UpdateBackdropColors()
 			if not frame.ignoreUpdates then
 				if frame.callbackBackdropColor then
 					frame:callbackBackdropColor()
-				elseif not frame.ignoreBackdropColor then
+				elseif frame.forcedBackdropColor then
+					frame:SetBackdropColor(unpack(frame.forcedBackdropColor))
+				else
 					if frame.template == 'Default' then
 						frame:SetBackdropColor(r, g, b)
 					elseif frame.template == 'Transparent' then
