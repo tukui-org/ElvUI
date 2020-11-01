@@ -697,7 +697,7 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
-	--Code slightly modified by Simpy
+	--Code slightly modified by Simpy, sorting from @sighol
 	local tkeys = {}
 	local function recurse(tbl, level, ret)
 		wipe(tkeys)
@@ -744,7 +744,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
-	--Code slightly modified by Simpy
+	--Code slightly modified by Simpy, sorting from @sighol
 	local lineStructureTable, profileFormat = {}, {
 		profile = 'E.db',
 		private = 'E.private',
