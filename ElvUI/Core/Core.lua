@@ -700,7 +700,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	--Code slightly modified by Simpy
 	local function recurse(tbl, level, ret)
 		local tkeys = {}
-		for i, v in pairs(tbl) do table.insert(tkeys, i) end
+		for i in pairs(tbl) do table.insert(tkeys, i) end
 		table.sort(tkeys)
 		for _, i in ipairs(tkeys) do
 			local v = tbl[i]
@@ -765,7 +765,11 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	local sameLine
 	local function recurse(tbl, ret, profileText)
 		local lineStructure = buildLineStructure(profileText)
-		for k, v in pairs(tbl) do
+		local tkeys = {}
+		for i in pairs(tbl) do table.insert(tkeys, i) end
+		table.sort(tkeys)
+		for _, k in ipairs(tkeys) do
+			local v = tbl[k]
 			if not sameLine then
 				ret = ret..lineStructure
 			end
