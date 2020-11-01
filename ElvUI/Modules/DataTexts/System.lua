@@ -80,13 +80,14 @@ local function BuildAddonList()
 end
 
 local function OnClick()
-	if IsShiftKeyDown() and IsControlKeyDown() and not InCombatLockdown() then
-		SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
-		_G.ReloadUI()
-	end
 	if IsShiftKeyDown() then
-		collectgarbage('collect')
-		ResetCPUUsage()
+		if IsControlKeyDown() then
+			SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
+			_G.ReloadUI()
+		else
+			collectgarbage('collect')
+			ResetCPUUsage()
+		end
 	end
 end
 
