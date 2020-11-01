@@ -105,7 +105,7 @@ function A:CreateIcon(button)
 	local header = button:GetParent()
 	local auraType = header.filter
 
-	button.auraType = auraType == 'HELPFUL' and 'debuffs' or 'buffs' -- used to update cooldown text
+	button.auraType = auraType == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
 	button.filter = auraType
 
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
