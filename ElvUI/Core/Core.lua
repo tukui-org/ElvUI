@@ -4,7 +4,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local strsplit, strjoin, wipe, sort, tinsert, tremove, tContains = strsplit, strjoin, wipe, sort, tinsert, tremove, tContains
+local strsplit, strjoin, twipe, tinsert, tremove, tContains = strsplit, strjoin, wipe, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
@@ -697,11 +697,11 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
-	--Code slightly modified by Simpy, sorting from @sighol
+	--Code slightly modified by Simpy
 	local function recurse(tbl, level, ret)
 		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys)
+		for i in pairs(tbl) do table.insert(tkeys, i) end
+		table.sort(tkeys)
 		for _, i in ipairs(tkeys) do
 			local v = tbl[i]
 			ret = ret..strrep('    ', level)..'['
@@ -766,8 +766,8 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	local function recurse(tbl, ret, profileText)
 		local lineStructure = buildLineStructure(profileText)
 		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys)
+		for i in pairs(tbl) do table.insert(tkeys, i) end
+		table.sort(tkeys)
 		for _, k in ipairs(tkeys) do
 			local v = tbl[k]
 			if not sameLine then
@@ -816,7 +816,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		local profileText = profileFormat[profileType]
 		if not profileText then return end
 
-		wipe(lineStructureTable)
+		twipe(lineStructureTable)
 		local ret = ''
 		if inTable and profileType then
 			sameLine = false
@@ -833,7 +833,7 @@ do	--Split string by multi-character delimiter (the strsplit / string.split func
 		assert(type (delim) == 'string' and strlen(delim) > 0, 'bad delimiter')
 
 		local start = 1
-		wipe(splitTable)  -- results table
+		twipe(splitTable)  -- results table
 
 		-- find each instance of a string followed by the delimiter
 		while true do
@@ -1718,7 +1718,7 @@ end
 function E:RefreshModulesDB()
 	-- this function is specifically used to reference the new database
 	-- onto the unitframe module, its useful dont delete! D:
-	wipe(UnitFrames.db) --old ref, dont need so clear it
+	twipe(UnitFrames.db) --old ref, dont need so clear it
 	UnitFrames.db = E.db.unitframe --new ref
 end
 
@@ -1750,9 +1750,9 @@ do
 end
 
 function E:Initialize()
-	wipe(E.db)
-	wipe(E.global)
-	wipe(E.private)
+	twipe(E.db)
+	twipe(E.global)
+	twipe(E.private)
 
 	local playerGUID = UnitGUID('player')
 	local _, serverID = strsplit('-', playerGUID)
