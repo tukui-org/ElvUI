@@ -186,6 +186,10 @@ local function JournalScrollButtons(frame)
 	end
 end
 
+local function clearBackdrop(self)
+	self:SetBackdropColor(0, 0, 0, 0)
+end
+
 function S:Blizzard_Collections()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.collections) then return end
 
@@ -506,7 +510,7 @@ function S:Blizzard_Collections()
 				border:SetPoint('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
 				border:SetPoint('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
-				border.forcedBackdropColor = {0, 0, 0, 0}
+				border.callbackBackdropColor = clearBackdrop
 
 				for i=1, Model:GetNumRegions() do
 				local region = select(i, Model:GetRegions())
