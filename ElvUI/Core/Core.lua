@@ -698,8 +698,12 @@ end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 	--Code slightly modified by Simpy
-	local function recurse(table, level, ret)
-		for i, v in pairs(table) do
+	local function recurse(tbl, level, ret)
+		local tkeys = {}
+		for i, v in pairs(tbl) do table.insert(tkeys, i) end
+		table.sort(tkeys)
+		for _, i in ipairs(tkeys) do
+			local v = tbl[i]
 			ret = ret..strrep('    ', level)..'['
 			if type(i) == 'string' then ret = ret..'"'..i..'"' else ret = ret..i end
 			ret = ret..'] = '
