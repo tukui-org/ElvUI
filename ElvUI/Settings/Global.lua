@@ -72,6 +72,7 @@ G.datatexts = {
 		QuickJoin = { Label = '', NoLabel = false },
 		Bags = { textFormat = 'USED_TOTAL' },
 		Reputation = { textFormat = 'CUR' },
+		Mastery = { Label = '', NoLabel = false, decimalLength = 1 },
 		MovementSpeed = { Label = '', NoLabel = false, decimalLength = 1 },
 		Speed = { Label = '', NoLabel = false, decimalLength = 1 },
 		Stamina = { Label = '', NoLabel = false },

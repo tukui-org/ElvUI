@@ -10,11 +10,6 @@ local STAT_MASTERY = STAT_MASTERY
 
 local displayString, lastPanel = ''
 
-local function OnEvent(self)
-	lastPanel = self
-	self.text:SetFormattedText(displayString, STAT_MASTERY, GetMasteryEffect())
-end
-
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
@@ -33,8 +28,19 @@ local function OnEnter()
 	end
 end
 
+local function OnEvent(self)
+	lastPanel = self
+
+	local masteryRating = GetMasteryEffect()
+	if E.global.datatexts.settings.Mastery.NoLabel then
+		self.text:SetFormattedText(displayString, masteryRating)
+	else
+		self.text:SetFormattedText(displayString, E.global.datatexts.settings.Mastery.Label ~= '' and E.global.datatexts.settings.Mastery.Label or STAT_MASTERY..': ', masteryRating)
+	end
+end
+
 local function ValueColorUpdate(hex)
-	displayString = strjoin('', '%s: ', hex, '%.2f%%|r')
+	displayString = strjoin('', E.global.datatexts.settings.Mastery.NoLabel and '' or '%s', hex, '%.'..E.global.datatexts.settings.Mastery.decimalLength..'f%%|r')
 
 	if lastPanel then OnEvent(lastPanel) end
 end
