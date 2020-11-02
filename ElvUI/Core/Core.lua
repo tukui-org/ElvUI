@@ -698,9 +698,8 @@ end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 	--Code slightly modified by Simpy, sorting from @sighol
-	local tkeys = {}
 	local function recurse(tbl, level, ret)
-		wipe(tkeys)
+		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
 		sort(tkeys)
 
@@ -765,9 +764,9 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		return str
 	end
 
-	local tkeys, sameLine = {}
+	local sameLine
 	local function recurse(tbl, ret, profileText)
-		wipe(tkeys)
+		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
 		sort(tkeys)
 
@@ -822,6 +821,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		if not profileText then return end
 
 		wipe(lineStructureTable)
+
 		local ret = ''
 		if inTable and profileType then
 			sameLine = false
