@@ -696,15 +696,18 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 	return tfbCleaned
 end
 
-local function profileSort(a, b)
-	local typeA = type(a)
-	local typeB = type(b)
+local function keySort(a, b)
+	local A, B = type(a), type(b)
 
-	if typeA == typeB then
-		return a < b
+	if A == B then
+		if A == 'number' or A == 'string' then
+			return a < b
+		elseif A == 'boolean' then
+			return (a and 1 or 0) > (b and 1 or 0)
+		end
 	end
 
-	return typeA < typeB
+	return A < B
 end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
@@ -712,7 +715,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	local function recurse(tbl, level, ret)
 		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys, profileSort)
+		sort(tkeys, keySort)
 
 		for _, i in ipairs(tkeys) do
 			local v = tbl[i]
@@ -779,7 +782,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	local function recurse(tbl, ret, profileText)
 		local tkeys = {}
 		for i in pairs(tbl) do tinsert(tkeys, i) end
-		sort(tkeys, profileSort)
+		sort(tkeys, keySort)
 
 		local lineStructure = buildLineStructure(profileText)
 		for _, k in ipairs(tkeys) do
