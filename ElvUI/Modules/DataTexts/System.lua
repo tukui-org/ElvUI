@@ -13,6 +13,7 @@ local GetBackgroundLoadingStatus = GetBackgroundLoadingStatus
 local GetDownloadedPercentage = GetDownloadedPercentage
 local SetCVar = SetCVar
 local GetCVar = GetCVar
+local ReloadUI = ReloadUI
 local GetCVarBool = GetCVarBool
 local GetFramerate = GetFramerate
 local GetNetIpTypes = GetNetIpTypes
@@ -83,7 +84,7 @@ local function OnClick()
 	if IsShiftKeyDown() then
 		if IsControlKeyDown() then
 			SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
-			_G.ReloadUI()
+			ReloadUI()
 		else
 			collectgarbage('collect')
 			ResetCPUUsage()

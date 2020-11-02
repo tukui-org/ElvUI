@@ -336,18 +336,23 @@ do --this can save some main file locals
 		['Rubee-CenarionCircle']		= itsSimpy, -- [RP] DH
 		['Wennie-CenarionCircle']		= itsSimpy, -- [RP] Priest
 		-- Melbelle (Simpys Bestie)
-		['Deathchaser-Bladefist']		= itsMel, -- DH
 		['Melbelle-Bladefist']			= itsMel, -- Hunter
-		['Alykins-Cenarius']			= itsMel, -- DH
+		['Deathchaser-Bladefist']		= itsMel, -- DH
 		['Alyosha-Cenarius']			= itsMel, -- Warrior
-		['Alytotes-Cenarius']			= itsMel, -- Shaman
 		['Dãwn-Cenarius']				= itsMel, -- Paladin
+		['Faelen-Cenarius']				= itsMel, -- Rogue
 		['Freckles-Cenarius']			= itsMel, -- DK
 		['Lõvi-Cenarius']				= itsMel, -- Priest
 		['Melbelle-Cenarius']			= itsMel, -- Druid
 		['Perìwìnkle-Cenarius']			= itsMel, -- Shaman
 		['Pìper-Cenarius']				= itsMel, -- Warlock
 		['Spãrkles-Cenarius']			= itsMel, -- Mage
+		['Alybones-Cenarius']			= itsMel, -- [Horde] DK
+		['Alyfreeze-Cenarius']			= itsMel, -- [Horde] Mage
+		['Alykins-Cenarius']			= itsMel, -- [Horde] DH
+		['Alyrage-Cenarius']			= itsMel, -- [Horde] Warrior
+		['Alysneaks-Cenarius']			= itsMel, -- [Horde] Rogue
+		['Alytotes-Cenarius']			= itsMel, -- [Horde] Shaman
 		-- Lulupeep (Nihilist's wife)
 		['Arïä-WyrmrestAccord'] 		= DeathlyH,
 		['Belladonnä-WyrmrestAccord'] 	= DeathlyH,
