@@ -389,8 +389,8 @@ function S:BlizzardQuestFrames()
 	_G.QuestGreetingScrollFrame:StripTextures()
 	_G.QuestGreetingScrollFrame:CreateBackdrop()
 
-	_G.QuestFrameGreetingPanel:HookScript('OnShow', function(frame)
-		for button in frame.titleButtonPool:EnumerateActive() do
+	local function UpdateGreetingFrame()
+		for button in _G.QuestFrameGreetingPanel.titleButtonPool:EnumerateActive() do
 			button.Icon:SetDrawLayer('ARTWORK')
 
 			if E.private.skins.parchmentRemoverEnable then
@@ -400,7 +400,10 @@ function S:BlizzardQuestFrames()
 				end
 			end
 		end
-	end)
+	end
+
+	_G.QuestFrameGreetingPanel:HookScript('OnShow', UpdateGreetingFrame)
+	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc('QuestFrameProgressItems_Update', S.QuestFrameProgressItems_Update)
