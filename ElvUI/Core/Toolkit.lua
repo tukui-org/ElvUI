@@ -195,12 +195,9 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 
 	if forcePixelMode then
 		backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
-	elseif isUnitFrameElement then
-		backdrop:SetOutside(frame, UF.BORDER, UF.BORDER)
-	elseif isNamePlateElement then
-		backdrop:SetOutside(frame, NP.BORDER, NP.BORDER)
 	else
-		backdrop:SetOutside(frame)
+		local border = (isUnitFrameElement and UF.BORDER) or (isNamePlateElement and NP.BORDER)
+		backdrop:SetOutside(frame, border, border)
 	end
 
 	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
