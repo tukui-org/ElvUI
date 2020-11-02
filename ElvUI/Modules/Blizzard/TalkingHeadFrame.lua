@@ -49,13 +49,17 @@ end
 local function LoadTalkingHead(event)
 	B:UnregisterEvent(event)
 
-	_G.TalkingHead_LoadUI()
+	if not _G.TalkingHeadFrame then
+		_G.TalkingHead_LoadUI()
+	end
 
 	InitializeTalkingHead()
 	B:ScaleTalkingHeadFrame()
 end
 
 function B:PositionTalkingHead()
+	if not E:IsAddOnEnabled('Blizzard_TalkingHeadUI') then return end
+
 	if IsAddOnLoaded('Blizzard_TalkingHeadUI') then
 		InitializeTalkingHead()
 		B:ScaleTalkingHeadFrame()
