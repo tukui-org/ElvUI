@@ -1796,7 +1796,6 @@ function E:Initialize()
 	if not E.db.unitframe.thinBorders then P.unitframe.colors.borderColor = { r = 0.1, g = 0.1, b = 0.1 } end
 
 	E:DBConversions()
-	E:UIScale()
 	E:BuildPrefixValues()
 	E:LoadAPI()
 	E:LoadCommands()

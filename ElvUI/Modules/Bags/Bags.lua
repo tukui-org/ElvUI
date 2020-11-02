@@ -45,7 +45,6 @@ local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsReagentBankUnlocked = IsReagentBankUnlocked
-local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown, IsControlKeyDown = IsShiftKeyDown, IsControlKeyDown
 local PickupContainerItem = PickupContainerItem
 local PlaySound = PlaySound
@@ -386,7 +385,7 @@ function B:UpdateItemUpgradeIcon(slot)
 	local itemIsUpgrade, containerID, slotID = nil, slot:GetParent():GetID(), slot:GetID()
 
 	-- We need to use the Pawn function here to show actually the icon, as Blizzard API doesnt seem to work.
-	if IsAddOnLoaded('Pawn') then itemIsUpgrade = _G.PawnIsContainerItemAnUpgrade(containerID, slotID) end
+	if _G.PawnIsContainerItemAnUpgrade then itemIsUpgrade = _G.PawnIsContainerItemAnUpgrade(containerID, slotID) end
 	-- Pawn author suggests to fallback to Blizzard API anyways.
 	if itemIsUpgrade == nil then itemIsUpgrade = _G.IsContainerItemAnUpgrade(containerID, slotID) end
 
