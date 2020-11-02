@@ -61,7 +61,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.ChatBubbleFont,						BUBBLE, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)	-- 13
 		SetFont(_G.AchievementFont_Small,				NORMAL, unified or small)							-- 10  Achiev dates
 		SetFont(_G.BossEmoteNormalHuge,					NORMAL, 25)											-- Talent Title
-		SetFont(_G.CoreAbilityFont,						NORMAL, 28)											-- 32  Core abilities(title)
+		SetFont(_G.CoreAbilityFont,						NORMAL, 26)											-- 32  Core abilities(title)
 		SetFont(_G.DestinyFontHuge,						NORMAL, 32)											-- Garrison Mission Report
 		SetFont(_G.DestinyFontMed,						NORMAL, 14)											-- Added in 7.3.5 used for ?
 		SetFont(_G.Fancy12Font,							NORMAL, 12)											-- Added in 7.3.5 used for ?
@@ -90,17 +90,17 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game60Font,							NORMAL, 60)
 		SetFont(_G.Game72Font,							NORMAL, 72)
 		SetFont(_G.GameFont_Gigantic,					NORMAL, 32)											-- Used at the install steps
-		SetFont(_G.GameFontHighlightMedium,				NORMAL, unified or medium)							-- 14  Fix QuestLog Title mouseover
+		SetFont(_G.GameFontHighlightMedium,				NORMAL, unified and 15 or medium)					-- 14  Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, unified or small)							-- 11  Skill or Recipe description on TradeSkill frame
-		SetFont(_G.GameFontNormalHuge2,					NORMAL, unified or huge)							-- 24  Mythic weekly best dungeon name
-		SetFont(_G.GameFontNormalLarge,					NORMAL, unified or large)							-- 16
-		SetFont(_G.GameFontNormalLarge2,				NORMAL, unified or large)							-- 18  Garrison Follower Names
-		SetFont(_G.GameFontNormalMed1,					NORMAL, unified or size)							-- 13  WoW Token Info
-		SetFont(_G.GameFontNormalMed2,					NORMAL, unified or size)							-- 14  Quest tracker
-		SetFont(_G.GameFontNormalMed3,					NORMAL, unified or size)							-- 14
-		SetFont(_G.GameFontNormalSmall2,				NORMAL, unified or small)							-- 11  MissionUI Followers names
+		SetFont(_G.GameFontNormalHuge2,					NORMAL, unified and 24 or huge)						-- 24  Mythic weekly best dungeon name
+		SetFont(_G.GameFontNormalLarge,					NORMAL, unified and 16 or large)					-- 16
+		SetFont(_G.GameFontNormalLarge2,				NORMAL, unified and 15 or large)					-- 18  Garrison Follower Names
+		SetFont(_G.GameFontNormalMed1,					NORMAL, unified and 14 or size)						-- 13  WoW Token Info
+		SetFont(_G.GameFontNormalMed2,					NORMAL, unified and 14 or size)						-- 14  Quest tracker
+		SetFont(_G.GameFontNormalMed3,					NORMAL, unified and 15 or size)						-- 14
+		SetFont(_G.GameFontNormalSmall2,				NORMAL, unified and 12 or small)					-- 11  MissionUI Followers names
 		SetFont(_G.GameTooltipHeader,					NORMAL, unified or size)							-- 14
-		SetFont(_G.InvoiceFont_Med,						NORMAL, unified or size)							-- 12  Mail
+		SetFont(_G.InvoiceFont_Med,						NORMAL, unified and 12 or size)						-- 12  Mail
 		SetFont(_G.InvoiceFont_Small,					NORMAL, unified or small)							-- 10  Mail
 		SetFont(_G.MailFont_Large,						NORMAL, 14)											-- Mail
 		SetFont(_G.Number11Font,						NORMAL, 11)
@@ -116,23 +116,23 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Number15Font,						NORMAL, 15)
 		SetFont(_G.Number18Font,						NUMBER, 18)
 		SetFont(_G.Number18FontWhite,					NUMBER, 18)
-		SetFont(_G.NumberFont_Outline_Huge,				NUMBER, unified or huge, thick)							-- 30
-		SetFont(_G.NumberFont_Outline_Large,			NUMBER, unified or large, outline)						-- 16
-		SetFont(_G.NumberFont_Outline_Med,				NUMBER, unified or medium, 'OUTLINE')					-- 14
+		SetFont(_G.NumberFont_Outline_Huge,				NUMBER, unified and 28 or huge, thick)					-- 30
+		SetFont(_G.NumberFont_Outline_Large,			NUMBER, unified and 15 or large, outline)				-- 16
+		SetFont(_G.NumberFont_Outline_Med,				NUMBER, unified and 14 or medium, 'OUTLINE')			-- 14
 		SetFont(_G.NumberFont_OutlineThick_Mono_Small,	NUMBER, unified or size, 'OUTLINE')						-- 12
 		SetFont(_G.NumberFont_Shadow_Med,				NORMAL, unified or medium)								-- 14  Chat EditBox
 		SetFont(_G.NumberFont_Shadow_Small,				NORMAL, unified or small)								-- 12
-		SetFont(_G.NumberFontNormalSmall,				NORMAL, unified or small, 'OUTLINE')					-- 12  Calendar, EncounterJournal
+		SetFont(_G.NumberFontNormalSmall,				NORMAL, unified and 11 or small, 'OUTLINE')				-- 12  Calendar, EncounterJournal
 		SetFont(_G.PriceFont,							NORMAL, 14)
 		SetFont(_G.PVPArenaTextString,					NORMAL, 22, outline)
 		SetFont(_G.PVPInfoTextString,					NORMAL, 22, outline)
 		SetFont(_G.QuestFont,							NORMAL, unified or size)								-- 13
-		SetFont(_G.QuestFont_Enormous, 					NORMAL, unified or enormous)							-- 30  Garrison Titles
-		SetFont(_G.QuestFont_Huge,						NORMAL, unified or huge)								-- 18  Quest rewards title(Rewards)
-		SetFont(_G.QuestFont_Large,						NORMAL, unified or large)								-- 14
-		SetFont(_G.QuestFont_Shadow_Huge,				NORMAL, unified or huge)								-- 18  Quest Title
-		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, unified or small)								-- 14
-		SetFont(_G.QuestFont_Super_Huge,				NORMAL, unified or mega)								-- 24
+		SetFont(_G.QuestFont_Enormous, 					NORMAL, unified and 24 or enormous)						-- 30  Garrison Titles
+		SetFont(_G.QuestFont_Huge,						NORMAL, unified and 15 or huge)							-- 18  Quest rewards title(Rewards)
+		SetFont(_G.QuestFont_Large,						NORMAL, unified and 14 or large)						-- 14
+		SetFont(_G.QuestFont_Shadow_Huge,				NORMAL, unified and 15 or huge)							-- 18  Quest Title
+		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, unified and 14 or small)						-- 14
+		SetFont(_G.QuestFont_Super_Huge,				NORMAL, unified and 22 or mega)							-- 24
 		SetFont(_G.ReputationDetailFont,				NORMAL, unified or size)								-- 10  Rep Desc when clicking a rep
 		SetFont(_G.SpellFont_Small,						NORMAL, 10)
 		SetFont(_G.SubSpellFont,						NORMAL, 10)												-- Spellbook Sub Names
@@ -142,25 +142,25 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_Huge1_Outline,			NORMAL, 18, outline)									-- 20  Garrison Mission Chance
 		SetFont(_G.SystemFont_Large,					NORMAL, 16)
 		SetFont(_G.SystemFont_Med1,						NORMAL, unified or size)								-- 12
-		SetFont(_G.SystemFont_Med3,						NORMAL, unified or medium)								-- 14
-		SetFont(_G.SystemFont_Outline,					NORMAL, unified or size, outline)						-- 13  Pet level on World map
+		SetFont(_G.SystemFont_Med3,						NORMAL, unified and 14 or medium)						-- 14
+		SetFont(_G.SystemFont_Outline,					NORMAL, unified and 13 or size, outline)				-- 13  Pet level on World map
 		SetFont(_G.SystemFont_Outline_Small,			NUMBER, unified or small, 'OUTLINE')					-- 10
-		SetFont(_G.SystemFont_OutlineThick_Huge2,		NORMAL, unified or huge, thick)							-- 22
-		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, unified or enormous, outline)					-- 32  World Map
+		SetFont(_G.SystemFont_OutlineThick_Huge2,		NORMAL, unified and 20 or huge, thick)					-- 22
+		SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, unified and 32 or enormous, outline)			-- 32  World Map
 		SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, 20, outline)									-- Raid Warning, Boss emote frame too
-		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 25)												-- FlightMap
+		SetFont(_G.SystemFont_Shadow_Huge3,				NORMAL, 24)												-- 25  FlightMap
 		SetFont(_G.SystemFont_Shadow_Huge4,				NORMAL, 27, nil, nil, nil, nil, nil, 1, -1)
 		SetFont(_G.SystemFont_Shadow_Large,				NORMAL, 16)
 		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)												-- Auction House ItemDisplay
-		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 16, 'OUTLINE')
+		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 18, 'OUTLINE')									-- 16
 		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, unified or size)								-- 12
-		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, unified or medium)								-- 14  Shows Order resourses on OrderHallTalentFrame
-		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, unified or medium)								-- 14
-		SetFont(_G.SystemFont_Shadow_Small,				NORMAL, unified or small)								-- 10
-		SetFont(_G.SystemFont_Small,					NORMAL, unified or small)								-- 10
+		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, unified and 15 or medium)						-- 14  Shows Order resourses on OrderHallTalentFrame
+		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, unified and 15 or medium)						-- 14
+		SetFont(_G.SystemFont_Shadow_Small,				NORMAL, unified and 15 or small)						-- 10
+		SetFont(_G.SystemFont_Small,					NORMAL, unified and 13 or small)						-- 10
 		SetFont(_G.SystemFont_Tiny,						NORMAL, unified or tiny)								-- 09
 		SetFont(_G.Tooltip_Med,							NORMAL, unified or size)								-- 12
 		SetFont(_G.Tooltip_Small,						NORMAL, unified or small)								-- 10
-		SetFont(_G.ZoneTextString,						NORMAL, unified or enormous, outline)					-- 32
+		SetFont(_G.ZoneTextString,						NORMAL, unified and 32 or enormous, outline)			-- 32
 	end
 end
