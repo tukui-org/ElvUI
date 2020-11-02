@@ -46,9 +46,7 @@ local function InitializeTalkingHead()
 	end
 end
 
-local function LoadTalkingHead(event)
-	B:UnregisterEvent(event)
-
+local function LoadTalkingHead()
 	if not _G.TalkingHeadFrame then
 		_G.TalkingHead_LoadUI()
 	end
@@ -64,6 +62,6 @@ function B:PositionTalkingHead()
 		InitializeTalkingHead()
 		B:ScaleTalkingHeadFrame()
 	else --We want the mover to be available immediately, so we load it ourselves
-		B:RegisterEvent('PLAYER_ENTERING_WORLD', LoadTalkingHead)
+		E:Delay(1, LoadTalkingHead)
 	end
 end
