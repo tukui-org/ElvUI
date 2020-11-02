@@ -3,7 +3,6 @@ local B = E:GetModule('Blizzard')
 
 local _G = _G
 local ipairs, tremove = ipairs, tremove
-local IsAddOnLoaded = IsAddOnLoaded
 
 function B:ScaleTalkingHeadFrame()
 	local scale = E.db.general.talkingHeadFrameScale or 1
@@ -58,10 +57,6 @@ end
 function B:PositionTalkingHead()
 	if not E:IsAddOnEnabled('Blizzard_TalkingHeadUI') then return end
 
-	if IsAddOnLoaded('Blizzard_TalkingHeadUI') then
-		InitializeTalkingHead()
-		B:ScaleTalkingHeadFrame()
-	else --We want the mover to be available immediately, so we load it ourselves
-		E:Delay(1, LoadTalkingHead)
-	end
+	-- wait until first frame, then load talking head (if it isnt yet) and spawn the mover
+	E:Delay(1, LoadTalkingHead)
 end
