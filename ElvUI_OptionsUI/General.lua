@@ -346,7 +346,7 @@ E.Options.args.general = {
 									order = 6,
 									type = 'toggle',
 									name = L["Unified Font Sizes"],
-									desc = L["Let the Replace Blizzard Fonts setting use the General Font Size setting. With this off the Fonts will Scale based on General Font Size to Blizzard's Font Size Scheme."],
+									desc = L["This setting mimics the older style of Replace Blizzard Fonts, with a more static unified font sizing."],
 									get = function(info) return E.private.general[info[#info]] end,
 									set = function(info, value) E.private.general[info[#info]] = value; E:UpdateBlizzardFonts() end,
 								},

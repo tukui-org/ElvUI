@@ -1,7 +1,16 @@
-### Version 12.08 [ ETA: 🍨 ]
+### Version 12.09 [ ETA: 🍨 ]
 
 **Nice:**  
 
+___
+
+### Version 12.08 [ November 2nd 2020 ]
+
+**Wonderful:**  
+Ungoofed the Nameplate Thin Border option (under *General > Media > Borders*).  
+Removed ultra rare hidden error with how we spawn the Talking Head Frame.  
+Tweaked "Unified Font Sizes" a little more to mimic the older style and disabled it by default.  
+Supressed the error when you dont have Pawn updated yet, go update it if you use it! :)  
 
 ___
 
