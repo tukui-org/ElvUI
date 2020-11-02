@@ -147,7 +147,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			frame:SetBackdropColor(backdropr, backdropg, backdropb, frame.customBackdropAlpha or (template == 'Transparent' and backdropa) or 1)
 		end
 
-		local notPixelMode = not isUnitFrameElement and not E.PixelMode
+		local notPixelMode = not isUnitFrameElement and not isNamePlateElement and not E.PixelMode
 		local notThinBorders = (isUnitFrameElement and not UF.thinBorders) or (isNamePlateElement and not NP.thinBorders)
 		if (notPixelMode or notThinBorders) and not forcePixelMode then
 			local backdrop = {
