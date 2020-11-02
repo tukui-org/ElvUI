@@ -196,9 +196,9 @@ do --this can save some main file locals
 
 	local itsElv, itsMis, itsMel, itsSimpy, itsTheFlyestNihilist
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
-		local e, f, g = {'|[TA].-|[ta]', '|?c?%x-%[?|H.-|h.-|h]?|?r?', '|c.-|r'}, {}, {}
+		local e, f, g = {'||','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
-		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
+		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end if r then tinsert(g, r) f[r] = w end return gsub(t, w, '\24') end
 		local specialText = function(t,...) local u = t for _, w in ipairs(e) do for k in gmatch(t, w) do t = protectText(t, u, k) end end t = prettify(t,...)
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
@@ -336,18 +336,23 @@ do --this can save some main file locals
 		['Rubee-CenarionCircle']		= itsSimpy, -- [RP] DH
 		['Wennie-CenarionCircle']		= itsSimpy, -- [RP] Priest
 		-- Melbelle (Simpys Bestie)
-		['Deathchaser-Bladefist']		= itsMel, -- DH
 		['Melbelle-Bladefist']			= itsMel, -- Hunter
-		['Alykins-Cenarius']			= itsMel, -- DH
+		['Deathchaser-Bladefist']		= itsMel, -- DH
 		['Alyosha-Cenarius']			= itsMel, -- Warrior
-		['Alytotes-Cenarius']			= itsMel, -- Shaman
 		['Dãwn-Cenarius']				= itsMel, -- Paladin
+		['Faelen-Cenarius']				= itsMel, -- Rogue
 		['Freckles-Cenarius']			= itsMel, -- DK
 		['Lõvi-Cenarius']				= itsMel, -- Priest
 		['Melbelle-Cenarius']			= itsMel, -- Druid
 		['Perìwìnkle-Cenarius']			= itsMel, -- Shaman
 		['Pìper-Cenarius']				= itsMel, -- Warlock
 		['Spãrkles-Cenarius']			= itsMel, -- Mage
+		['Alybones-Cenarius']			= itsMel, -- [Horde] DK
+		['Alyfreeze-Cenarius']			= itsMel, -- [Horde] Mage
+		['Alykins-Cenarius']			= itsMel, -- [Horde] DH
+		['Alyrage-Cenarius']			= itsMel, -- [Horde] Warrior
+		['Alysneaks-Cenarius']			= itsMel, -- [Horde] Rogue
+		['Alytotes-Cenarius']			= itsMel, -- [Horde] Shaman
 		-- Lulupeep (Nihilist's wife)
 		['Arïä-WyrmrestAccord'] 		= DeathlyH,
 		['Belladonnä-WyrmrestAccord'] 	= DeathlyH,
@@ -595,9 +600,46 @@ function CH:EditBoxFocusLost()
 	self.historyIndex = 0
 end
 
+function CH:UpdateEditboxFont(chatFrame)
+	local style = GetCVar('chatStyle')
+	if style == 'classic' and CH.LeftChatWindow then
+		chatFrame = CH.LeftChatWindow
+	end
+
+	if chatFrame == _G.GeneralDockManager.primary then
+		chatFrame = _G.GeneralDockManager.selected
+	end
+
+	local id = chatFrame:GetID()
+	local font = LSM:Fetch('font', CH.db.font)
+	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
+
+	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
+	editbox:FontTemplate(font, fontSize, 'NONE')
+	editbox.header:FontTemplate(font, fontSize, 'NONE')
+
+	if editbox.characterCount then
+		editbox.characterCount:FontTemplate(font, fontSize, 'NONE')
+	end
+
+	-- the header and text will not update the placement without focus
+	if editbox and editbox:IsShown() then
+		editbox:SetFocus()
+	end
+end
+
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 	local tab = CH:GetTab(frame)
+
+	local id = frame:GetID()
+	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
+	local font, size, outline = LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline
+	frame:FontTemplate(font, size, outline)
+
+	frame:SetTimeVisible(CH.db.inactivityTimer)
+	frame:SetMaxLines(CH.db.maxLines)
+	frame:SetFading(CH.db.fade)
 
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
@@ -610,7 +652,6 @@ function CH:StyleChat(frame)
 
 	_G[name..'ButtonFrame']:Kill()
 
-	local id = frame:GetID()
 	local scrollTex = _G[name..'ThumbTexture']
 	local scrollToBottom = frame.ScrollToBottomButton
 	local scroll = frame.ScrollBar
@@ -885,6 +926,18 @@ function CH:ChatEdit_SetLastActiveWindow(editbox)
 	if style == 'im' then editbox:SetAlpha(0.5) end
 end
 
+function CH:FCFDock_SelectWindow(_, chatFrame)
+	if chatFrame then
+		CH:UpdateEditboxFont(chatFrame)
+	end
+end
+
+function CH:ChatEdit_ActivateChat(editbox)
+	if editbox and editbox.chatFrame then
+		CH:UpdateEditboxFont(editbox.chatFrame)
+	end
+end
+
 function CH:ChatEdit_DeactivateChat(editbox)
 	local style = editbox.chatStyle or GetCVar('chatStyle')
 	if style == 'im' then editbox:Hide() end
@@ -895,9 +948,8 @@ function CH:UpdateEditboxAnchors()
 
 	local classic = cvar == 'classic'
 	local leftChat = classic and _G.LeftChatPanel
+	local bottomheight, topheight = 1, 0
 	local width = classic and 0 or 5
-	local bottomheight = classic and 1 or (E.PixelMode and 3 or 5)
-	local topheight = classic and 0 or (E.PixelMode and -1 or -5)
 	local panel_height = 22
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
@@ -910,9 +962,11 @@ function CH:UpdateEditboxAnchors()
 		editbox:ClearAllPoints()
 
 		if CH.db.editBoxPosition == 'BELOW_CHAT' then
+			if not classic then bottomheight, topheight = 6, -4 end
 			editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', -width, topheight)
 			editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', width, -(panel_height+bottomheight))
 		else
+			if not classic then bottomheight, topheight = 5, 3 end
 			editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', -width, topheight)
 			editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', width, panel_height+bottomheight)
 		end
@@ -1971,14 +2025,9 @@ function CH:SetupChat()
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		local id = frame:GetID()
-		local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 		CH:StyleChat(frame)
-		_G.FCFTab_UpdateAlpha(frame)
 
-		frame:FontTemplate(LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline)
-		frame:SetTimeVisible(CH.db.inactivityTimer)
-		frame:SetMaxLines(CH.db.maxLines)
-		frame:SetFading(CH.db.fade)
+		_G.FCFTab_UpdateAlpha(frame)
 
 		if id ~= 2 and not frame.OldAddMessage then
 			--Don't add timestamps to combat log, they don't work.
@@ -2173,6 +2222,8 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	if not fontSize then fontSize = dropDown.value end
 
 	chatFrame:FontTemplate(LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline)
+
+	CH:UpdateEditboxFont(chatFrame)
 end
 
 CH.SecureSlashCMD = {
@@ -3120,11 +3171,13 @@ function CH:Initialize()
 	CH:SecureHook('GetPlayerInfoByGUID')
 	CH:SecureHook('ChatEdit_SetLastActiveWindow')
 	CH:SecureHook('ChatEdit_DeactivateChat')
+	CH:SecureHook('ChatEdit_ActivateChat')
 	CH:SecureHook('ChatEdit_OnEnterPressed')
 	CH:SecureHook('FCFDock_UpdateTabs')
 	CH:SecureHook('FCF_Close')
 	CH:SecureHook('FCF_SetWindowAlpha')
 	CH:SecureHook('FCFTab_UpdateColors')
+	CH:SecureHook('FCFDock_SelectWindow')
 	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	CH:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
 	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')

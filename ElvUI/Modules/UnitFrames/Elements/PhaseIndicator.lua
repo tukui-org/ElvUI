@@ -48,5 +48,6 @@ function UF:Configure_PhaseIcon(frame)
 		frame:EnableElement('PhaseIndicator')
 	elseif not frame.db.phaseIndicator.enable and frame:IsElementEnabled('PhaseIndicator') then
 		frame:DisableElement('PhaseIndicator')
+		PhaseIndicator.Center:Hide()
 	end
 end

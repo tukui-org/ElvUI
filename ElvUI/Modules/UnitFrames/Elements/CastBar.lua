@@ -9,6 +9,7 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local UnitCanAttack = UnitCanAttack
+local GetTalentInfo = GetTalentInfo
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -344,6 +345,11 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 	end
 end
 
+function UF:GetTalentTicks(info)
+	local _, _, _, selected = GetTalentInfo(info.tier, info.column, 1)
+	return selected and info.ticks
+end
+
 function UF:PostCastStart(unit)
 	local db = self:GetParent().db
 	if not db or not db.castbar then return; end
@@ -359,8 +365,20 @@ function UF:PostCastStart(unit)
 	if self.channeling and db.castbar.ticks and unit == 'player' then
 		local unitframe = E.global.unitframe
 		local baseTicks = unitframe.ChannelTicks[self.spellID]
+		local ticksSize = baseTicks and unitframe.ChannelTicksSize[self.spellID]
+		local hasteTicks = ticksSize and unitframe.HastedChannelTicks[self.spellID]
+		local talentTicks = baseTicks and unitframe.TalentChannelTicks[self.spellID]
 
-		if baseTicks and unitframe.ChannelTicksSize[self.spellID] and unitframe.HastedChannelTicks[self.spellID] then
+		-- Separate group, so they can be effected by haste or size if needed
+		if talentTicks then
+			local selectedTicks = UF:GetTalentTicks(talentTicks)
+			if selectedTicks then
+				baseTicks = selectedTicks
+			end
+		end
+
+		-- hasteTicks require a tickSize
+		if hasteTicks then
 			local tickIncRate = 1 / baseTicks
 			local curHaste = UnitSpellHaste('player') * 0.01
 			local firstTickInc = tickIncRate / 2
@@ -377,15 +395,15 @@ function UF:PostCastStart(unit)
 				end
 			end
 
-			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
+			local baseTickSize = ticksSize
 			local hastedTickSize = baseTickSize / (1 + curHaste)
 			local extraTick = self.max - hastedTickSize * (baseTicks + bonusTicks)
 			local extraTickRatio = extraTick / hastedTickSize
 			UF:SetCastTicks(self, baseTicks + bonusTicks, extraTickRatio)
 			self.hadTicks = true
-		elseif baseTicks and unitframe.ChannelTicksSize[self.spellID] then
+		elseif ticksSize then
 			local curHaste = UnitSpellHaste('player') * 0.01
-			local baseTickSize = unitframe.ChannelTicksSize[self.spellID]
+			local baseTickSize = ticksSize
 			local hastedTickSize = baseTickSize / (1 +  curHaste)
 			local extraTick = self.max - hastedTickSize * (baseTicks)
 			local extraTickRatio = extraTick / hastedTickSize

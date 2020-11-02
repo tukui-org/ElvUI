@@ -3,11 +3,9 @@ local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
 local trinketSpells = {
-	[208683] = 120,
-	[195710] = 180,
-	[59752] = 120,
-	[42292] = 120,
-	[7744] = 45,
+	[311430] = 120, -- Re-Arm (PvP Trinket 9.0.1)
+	[59752] = 180, -- Will to Survive (Human Racial)
+	[7744] = 120, -- Will of the Forsaken (Undead Racial)
 }
 
 local GetTrinketIcon = function(unit)

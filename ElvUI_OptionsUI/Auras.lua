@@ -3,23 +3,19 @@ local C, L = unpack(select(2, ...))
 local A = E:GetModule('Auras')
 local ACH = E.Libs.ACH
 
-local function GetAuraOptions()
-	local auraOptions = {}
-
-	auraOptions.size = ACH:Range(L["Size"], L["Set the size of the individual auras."], 1, { min = 16, max = 60, step = 2 })
-	auraOptions.durationFontSize = ACH:Range(L["Duration Font Size"], nil, 2, C.Values.FontSize)
-	auraOptions.countFontSize = ACH:Range(L["Count Font Size"], nil, 3, C.Values.FontSize)
-	auraOptions.growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 4, C.Values.GrowthDirection)
-	auraOptions.wrapAfter = ACH:Range(L["Wrap After"], L["Begin a new row or column after this many auras."], 5, { min = 1, max = 32, step = 1 })
-	auraOptions.maxWraps = ACH:Range(L["Max Wraps"], L["Limit the number of rows or columns."], 6, { min = 1, max = 32, step = 1 })
-	auraOptions.horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 7, { min = 0, max = 50, step = 1 })
-	auraOptions.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 8, { min = 0, max = 50, step = 1 })
-	auraOptions.sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 9, { INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] })
-	auraOptions.sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 10, { ['+'] = L["Ascending"], ['-'] = L["Descending"] })
-	auraOptions.seperateOwn = ACH:Select(L["Seperate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 11, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] })
-
-	return auraOptions
-end
+local SharedOptions = {
+	size = ACH:Range(L["Size"], L["Set the size of the individual auras."], 1, { min = 16, max = 60, step = 2 }),
+	durationFontSize = ACH:Range(L["Duration Font Size"], nil, 2, C.Values.FontSize),
+	countFontSize = ACH:Range(L["Count Font Size"], nil, 3, C.Values.FontSize),
+	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 4, C.Values.GrowthDirection),
+	wrapAfter = ACH:Range(L["Wrap After"], L["Begin a new row or column after this many auras."], 5, { min = 1, max = 32, step = 1 }),
+	maxWraps = ACH:Range(L["Max Wraps"], L["Limit the number of rows or columns."], 6, { min = 1, max = 32, step = 1 }),
+	horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 7, { min = 0, max = 50, step = 1 }),
+	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 8, { min = 0, max = 50, step = 1 }),
+	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 9, { INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
+	sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 10, { ['+'] = L["Ascending"], ['-'] = L["Descending"] }),
+	seperateOwn = ACH:Select(L["Seperate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 11, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] })
+}
 
 E.Options.args.auras = ACH:Group(L["BUFFOPTIONS_LABEL"], nil, 2, 'tab', function(info) return E.private.auras[info[#info]] end, function(info, value) E.private.auras[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
 E.Options.args.auras.args.intro = ACH:Description(L["AURAS_DESC"], 0)
@@ -53,7 +49,7 @@ E.Options.args.auras.args.general.args.statusBar.args.barSpacing = ACH:Range(L["
 E.Options.args.auras.args.general.args.masque = ACH:MultiSelect(L["Masque Support"], nil, 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.Masque or not E.private.auras.enable end)
 
 E.Options.args.auras.args.buffs = ACH:Group(L["Buffs"], nil, 2, nil, function(info) return E.db.auras.buffs[info[#info]] end, function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function() return not E.private.auras.buffsHeader end)
-E.Options.args.auras.args.buffs.args = GetAuraOptions()
+E.Options.args.auras.args.buffs.args = CopyTable(SharedOptions)
 
 E.Options.args.auras.args.debuffs = ACH:Group(L["Debuffs"], nil, 3, nil, function(info) return E.db.auras.debuffs[info[#info]] end, function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function() return not E.private.auras.debuffsHeader end)
-E.Options.args.auras.args.debuffs.args = GetAuraOptions()
+E.Options.args.auras.args.debuffs.args = CopyTable(SharedOptions)

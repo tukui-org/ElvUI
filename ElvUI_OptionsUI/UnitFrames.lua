@@ -769,7 +769,7 @@ local function BuffIndicator_ApplyToAll(info, value, profileSpecific)
 	end
 end
 
-local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
+local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGroup)
 	local config = {
 		type = 'group',
 		name = L["Buff Indicator"],
@@ -798,10 +798,12 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 				type = 'execute',
 				name = L["Configure Auras"],
 				func = function()
-					if E.db.unitframe.units[groupName].buffIndicator.profileSpecific then
-						E:SetToFilterConfig('Buff Indicator (Profile)')
+					if groupName == 'pet' then
+						E:SetToFilterConfig('Aura Indicator (Pet)')
+					elseif E.db.unitframe.units[groupName].buffIndicator.profileSpecific then
+						E:SetToFilterConfig('Aura Indicator (Profile)')
 					else
-						E:SetToFilterConfig('Buff Indicator')
+						E:SetToFilterConfig('Aura Indicator (Class)')
 					end
 				end,
 			},
@@ -840,6 +842,12 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup)
 			}
 		},
 	}
+
+	if subGroup then
+		config.inline = true
+		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
+		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end
+	end
 
 	return config
 end
@@ -5440,6 +5448,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 						},
 					},
 				},
+				buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup'),
 			},
 		},
 		targetsGroup = {

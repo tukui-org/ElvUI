@@ -223,11 +223,6 @@ function M:Update_ZoneText()
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
 
-function M:PLAYER_REGEN_ENABLED()
-	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	self:UpdateSettings()
-end
-
 do
 	local isResetting
 	local function ResetZoom()
@@ -248,10 +243,6 @@ end
 
 function M:UpdateSettings()
 	if not E.private.general.minimap.enable then return end
-	if InCombatLockdown() then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED')
-		return
-	end
 
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
@@ -368,10 +359,6 @@ function M:Initialize()
 	Minimap:Point('TOPRIGHT', mmholder, 'TOPRIGHT', -E.Border, -E.Border)
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
-
-	--Fix spellbook taint
-	ShowUIPanel(_G.SpellBookFrame)
-	HideUIPanel(_G.SpellBookFrame)
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')

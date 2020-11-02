@@ -50,6 +50,9 @@ local function SkinBosses()
 	local _, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex);
 	local bossButton;
 
+	local encounter = _G.EncounterJournal.encounter
+	encounter.info.instanceButton.icon:SetMask("")
+
 	while bossID do
 		bossButton = _G['EncounterJournalBossButton'..bossIndex];
 		if bossButton and not bossButton.isSkinned then
@@ -232,14 +235,17 @@ function S:Blizzard_EncounterJournal()
 		text:Point('CENTER')
 	end
 
-	_G.EncounterJournalEncounterFrameInfoInstanceButton:Kill()
-
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
 	EncounterInfo:CreateBackdrop('Transparent')
 	EncounterInfo.backdrop:SetOutside(_G.EncounterJournalEncounterFrameInfoBG)
 
 	EncounterInfo.encounterTitle:Kill()
+
+	S:HandleIcon(EncounterInfo.instanceButton.icon, true)
+	EncounterInfo.instanceButton.icon:SetTexCoord(0, 1, 0, 1)
+	EncounterInfo.instanceButton:SetNormalTexture('')
+	EncounterInfo.instanceButton:SetHighlightTexture('')
 
 	--_G.EncounterJournalEncounterFrameInfoBG:Kill()
 	_G.EncounterJournalEncounterFrameInfoBG:Height(385)

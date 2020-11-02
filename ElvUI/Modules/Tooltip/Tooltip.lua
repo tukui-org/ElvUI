@@ -109,6 +109,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	end
 
 	if tt.StatusBar then
+		tt.StatusBar:SetAlpha(TT.db.healthBar.statusPosition == 'DISABLED' and 0 or 1)
 		if TT.db.healthBar.statusPosition == 'BOTTOM' then
 			if tt.StatusBar.anchoredToTop then
 				tt.StatusBar:ClearAllPoints()
@@ -117,7 +118,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 				tt.StatusBar.text:Point('CENTER', tt.StatusBar, 0, 0)
 				tt.StatusBar.anchoredToTop = nil
 			end
-		else
+		elseif TT.db.healthBar.statusPosition == 'TOP' then
 			if not tt.StatusBar.anchoredToTop then
 				tt.StatusBar:ClearAllPoints()
 				tt.StatusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, (E.Spacing * 3))

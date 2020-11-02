@@ -12,11 +12,13 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
-function UF:Configure_ClassBar(frame, cur)
+function UF:Configure_ClassBar(frame)
+	local db = frame.db
+	if not db then return end
+
 	local bars = frame[frame.ClassBar]
 	if not bars then return end
 
-	local db = frame.db
 	bars.Holder = frame.ClassBarHolder
 	bars.origParent = frame
 
@@ -60,18 +62,12 @@ function UF:Configure_ClassBar(frame, cur)
 	bars:Height(frame.CLASSBAR_HEIGHT - SPACING)
 
 	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' then
-		--This fixes issue with ComboPoints showing as active when they are not.
-		if frame.ClassBar == 'ClassPower' and not cur then
-			cur = 0
-		end
-
 		if E.myclass == 'DEATHKNIGHT' and frame.ClassBar == 'Runes' then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
 		end
 
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
-			bars[i]:Hide()
 			bars[i].backdrop:Hide()
 
 			if i <= frame.MAX_CLASS_BAR then
@@ -89,7 +85,7 @@ function UF:Configure_ClassBar(frame, cur)
 						bars[i]:Width((CLASSBAR_WIDTH - ((5 + (UF.BORDER*2 + UF.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 					end
 				elseif i ~= frame.MAX_CLASS_BAR then
-					bars[i]:Width((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(UF.BORDER-UF.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
+					bars[i]:Width((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(UF.BORDER*2-UF.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
 				end
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -150,10 +146,6 @@ function UF:Configure_ClassBar(frame, cur)
 					else
 						bars[i].bg:SetParent(bars)
 					end
-				end
-
-				if cur and cur >= i then
-					bars[i]:Show()
 				end
 			end
 		end
@@ -276,6 +268,9 @@ local function ToggleResourceBar(bars, overrideVisibility)
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((UF.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT - (UF.BORDER-UF.SPACING)))
 
 	UF:Configure_CustomTexts(frame)
+	if frame.HealthPrediction then
+		UF:SetSize_HealComm(frame)
+	end
 
 	if not frame.CLASSBAR_DETACHED then --Only update when necessary
 		UF:Configure_HealthBar(frame)

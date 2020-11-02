@@ -234,13 +234,8 @@ local function PanelGroup_Create(panel)
 	local panelOpts = E:CopyTable(opts.args.panelOptions.args, DTPanelOptions)
 	panelOpts.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 	panelOpts.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
-	panelOpts.templateGroup.get = function(info, key)
-		return E.global.datatexts.customPanels[panel][key]
-	end
-	panelOpts.templateGroup.set = function(info, key, value)
-		E.global.datatexts.customPanels[panel][key] = value;
-		DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel])
-	end
+	panelOpts.templateGroup.get = function(_, key) return E.global.datatexts.customPanels[panel][key] end
+	panelOpts.templateGroup.set = function(_, key, value) E.global.datatexts.customPanels[panel][key] = value; DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end
 
 	E.Options.args.datatexts.args.panels.args[panel] = opts
 end
@@ -409,7 +404,7 @@ local function CreateDTOptions(name, data)
 				type = 'input',
 				name = L["Label"],
 				get = function(info) return settings[info[#info]] and gsub(settings[info[#info]], '\124', '\124\124') end,
-				set = function(info, value) settings[info[#info]] = gsub(value, '\124\124+', '\124') end,
+				set = function(info, value) settings[info[#info]] = gsub(value, '\124\124+', '\124') DT:ForceUpdate_DataText(name) end,
 			}
 		elseif key == 'NoLabel' then
 			optionTable.args.NoLabel = {
@@ -433,7 +428,9 @@ local function CreateDTOptions(name, data)
 		end
 	end
 
-	if name == 'Currencies' then
+	if name == 'Combat' then
+		optionTable.args.TimeFull = ACH:Toggle('Full Time')
+	elseif name == 'Currencies' then
 		optionTable.args.displayedCurrency = {
 			type = "select",
 			name = L["Displayed Currency"],
@@ -543,6 +540,7 @@ local function CreateDTOptions(name, data)
 				VIPR = "COD: Black Ops 4",
 				ODIN = "COD: Modern Warfare",
 				LAZR = "COD: Modern Warfare 2",
+				ZEUS = "COD: Cold War"
 			},
 		}
 	elseif name == 'Reputation' or name == 'Experience' then

@@ -19,6 +19,7 @@ V.general = {
 	replaceNameFont = true,
 	replaceCombatFont = true,
 	replaceBlizzFonts = true,
+	unifiedBlizzFonts = true,
 	totemBar = true,
 	minimap = {
 		enable = true,
@@ -28,6 +29,7 @@ V.general = {
 	classColorMentionsSpeech = true,
 	raidUtility = true,
 	voiceOverlay = true,
+	worldMap = true,
 }
 
 V.bags = {

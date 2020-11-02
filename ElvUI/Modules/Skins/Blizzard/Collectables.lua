@@ -140,6 +140,11 @@ local function JournalScrollButtons(frame)
 			highlight:SetAllPoints(bu.icon)
 		end
 
+		if bu.ProgressBar then
+			bu.ProgressBar:SetTexture(E.media.normTex)
+			bu.ProgressBar:SetVertexColor(0.251, 0.753, 0.251, 1) -- 0.0118, 0.247, 0.00392
+		end
+
 		if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
 			bu.setList = true
 			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
@@ -179,6 +184,10 @@ local function JournalScrollButtons(frame)
 			end
 		end
 	end
+end
+
+local function clearBackdrop(self)
+	self:SetBackdropColor(0, 0, 0, 0)
 end
 
 function S:Blizzard_Collections()
@@ -435,6 +444,10 @@ function S:Blizzard_Collections()
 			button.slotFrameUncollected:SetAlpha(0)
 			button.special:SetJustifyH('RIGHT')
 			button.special:ClearAllPoints()
+
+			button.cooldown:SetAllPoints(button.iconTexture)
+			E:RegisterCooldown(button.cooldown)
+
 			button.styled = true
 		end
 
@@ -474,7 +487,6 @@ function S:Blizzard_Collections()
 	WardrobeCollectionFrame.progressBar:StripTextures()
 	WardrobeCollectionFrame.progressBar:CreateBackdrop()
 	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
-
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
@@ -498,7 +510,7 @@ function S:Blizzard_Collections()
 				border:SetPoint('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
 				border:SetPoint('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
-				border.ignoreBackdropColor = true
+				border.callbackBackdropColor = clearBackdrop
 
 				for i=1, Model:GetNumRegions() do
 				local region = select(i, Model:GetRegions())

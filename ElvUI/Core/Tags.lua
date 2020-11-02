@@ -30,7 +30,6 @@ local GetUnitSpeed = GetUnitSpeed
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
-local UnitAlternatePowerTextureInfo = UnitAlternatePowerTextureInfo
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
 local UnitSex = UnitSex
@@ -64,6 +63,7 @@ local UnitStagger = UnitStagger
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
 
+local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
 local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 
@@ -223,7 +223,7 @@ ElvUF.Tags.Events['altpowercolor'] = 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
-		local _, r, g, b = UnitAlternatePowerTextureInfo(u, 2)
+		local _, r, g, b = GetUnitPowerBarTextureInfo(u, 3)
 		if not r then
 			r, g, b = 1, 1, 1
 		end
@@ -539,6 +539,17 @@ ElvUF.Tags.Methods['namecolor'] = function(unit)
 	else
 		local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
 		return (cr and Hex(cr[1], cr[2], cr[3])) or '|cFFcccccc'
+	end
+end
+
+ElvUF.Tags.Events['reactioncolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
+ElvUF.Tags.Methods['reactioncolor'] = function(unit)
+	local unitReaction = UnitReaction(unit, 'player')
+	if (unitReaction) then
+		local reaction = ElvUF.colors.reaction[unitReaction]
+		return Hex(reaction[1], reaction[2], reaction[3])
+	else
+		return '|cFFC2C2C2'
 	end
 end
 

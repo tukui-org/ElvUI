@@ -11,7 +11,9 @@ local GetAvailableBandwidth = GetAvailableBandwidth
 local GetFileStreamingStatus = GetFileStreamingStatus
 local GetBackgroundLoadingStatus = GetBackgroundLoadingStatus
 local GetDownloadedPercentage = GetDownloadedPercentage
+local SetCVar = SetCVar
 local GetCVar = GetCVar
+local ReloadUI = ReloadUI
 local GetCVarBool = GetCVarBool
 local GetFramerate = GetFramerate
 local GetNetIpTypes = GetNetIpTypes
@@ -19,7 +21,7 @@ local GetNetStats = GetNetStats
 local GetNumAddOns = GetNumAddOns
 local IsAddOnLoaded = IsAddOnLoaded
 local IsShiftKeyDown = IsShiftKeyDown
-local IsModifierKeyDown = IsModifierKeyDown
+local IsControlKeyDown = IsControlKeyDown
 local ResetCPUUsage = ResetCPUUsage
 local UpdateAddOnCPUUsage = UpdateAddOnCPUUsage
 local UpdateAddOnMemoryUsage = UpdateAddOnMemoryUsage
@@ -79,9 +81,14 @@ local function BuildAddonList()
 end
 
 local function OnClick()
-	if IsModifierKeyDown() then
-		collectgarbage('collect')
-		ResetCPUUsage()
+	if IsShiftKeyDown() then
+		if IsControlKeyDown() then
+			SetCVar('scriptProfile', GetCVarBool('scriptProfile') and 0 or 1)
+			ReloadUI()
+		else
+			collectgarbage('collect')
+			ResetCPUUsage()
+		end
 	end
 end
 
@@ -222,7 +229,8 @@ local function OnEnter(_, slow)
 		end
 	end
 
-	DT.tooltip:AddLine(L["(Modifer Click) Collect Garbage"])
+	DT.tooltip:AddLine(L["(Shift Click) Collect Garbage"])
+	DT.tooltip:AddLine(L["(Ctrl & Shift Click) Toggle CPU Profiling"])
 	DT.tooltip:Show()
 end
 

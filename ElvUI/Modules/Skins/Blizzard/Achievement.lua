@@ -11,7 +11,10 @@ local GetNumFilteredAchievements = GetNumFilteredAchievements
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
-local BlueAchievement = {0.1, 0.2, 0.3}
+local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
+local function blueBackdrop(self)
+	self:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
+end
 
 local function skinAch(Achievement, BiggerIcon)
 	if Achievement.isSkinned then return; end
@@ -55,8 +58,8 @@ local function skinAch(Achievement, BiggerIcon)
 
 	if Achievement.tracked then
 		Achievement.tracked:GetRegions():SetTextColor(1, 1, 1)
-		S:HandleCheckBox(Achievement.tracked, true)
-		Achievement.tracked:Size(14, 14)
+		S:HandleCheckBox(Achievement.tracked)
+		Achievement.tracked:Size(18)
 		Achievement.tracked:ClearAllPoints()
 		Achievement.tracked:Point('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
 	end
@@ -103,13 +106,13 @@ local function playerSaturate(self) -- self is Achievement.player
 	local Achievement = self:GetParent()
 
 	local r, g, b = unpack(E.media.bordercolor)
-	Achievement.player.backdrop.ignoreBackdropColor = nil
-	Achievement.friend.backdrop.ignoreBackdropColor = nil
+	Achievement.player.backdrop.callbackBackdropColor = nil
+	Achievement.friend.backdrop.callbackBackdropColor = nil
 
 	if Achievement.player.accountWide then
-		r, g, b = unpack(BlueAchievement)
-		Achievement.player.backdrop.ignoreBackdropColor = true
-		Achievement.friend.backdrop.ignoreBackdropColor = true
+		r, g, b = blueAchievement.r, blueAchievement.g, blueAchievement.b
+		Achievement.player.backdrop.callbackBackdropColor = blueBackdrop
+		Achievement.friend.backdrop.callbackBackdropColor = blueBackdrop
 	end
 
 	Achievement.player.backdrop:SetBackdropColor(r, g, b)
@@ -119,10 +122,10 @@ end
 local function setAchievementColor(frame)
 	if frame and frame.backdrop then
 		if frame.accountWide then
-			frame.backdrop.ignoreBackdropColor = true
-			frame.backdrop:SetBackdropColor(unpack(BlueAchievement))
+			frame.backdrop.callbackBackdropColor = blueBackdrop
+			frame.backdrop:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
 		else
-			frame.backdrop.ignoreBackdropColor = nil
+			frame.backdrop.callbackBackdropColor = nil
 			frame.backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
 		end
 	end

@@ -36,6 +36,10 @@ function UF:Construct_PartyFrames()
 			self.childType = 'target'
 		end
 
+		if self.childType == 'pet' then
+			self.AuraWatch = UF:Construct_AuraWatch(self)
+		end
+
 		self.unitframeType = 'party'..self.childType
 	else
 		self.Health = UF:Construct_HealthBar(self, true, true, 'RIGHT')
@@ -144,10 +148,6 @@ function UF:Update_PartyFrames(frame, db)
 		frame.db = frame.childType == 'target' and db.targetsGroup or db.petsGroup
 		db = frame.db
 
-		if frame.childType == 'pet' then
-			frame.Health.colorPetByUnitClass = db.colorPetByUnitClass
-		end
-
 		frame:Size(db.width, db.height)
 
 		if not InCombatLockdown() then
@@ -160,6 +160,10 @@ function UF:Update_PartyFrames(frame, db)
 			end
 		end
 
+		if frame.childType == 'pet' then
+			frame.Health.colorPetByUnitClass = db.colorPetByUnitClass
+			UF:Configure_AuraWatch(frame)
+		end
 		UF:Configure_HealthBar(frame)
 	else
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)

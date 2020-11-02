@@ -36,7 +36,7 @@ for _, Table in pairs({'Events', 'Methods'}) do
 
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] = E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag] or {}
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].type = 'input'
-		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].name = E.TagInfo[Tag].description or ''
+		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].name = E.TagInfo[Tag].description ~= '' and E.TagInfo[Tag].description or getTag
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].order = E.TagInfo[Tag].order or nil
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].width = 'full'
 		E.Options.args.tagGroup.args[E.TagInfo[Tag].category].args[Tag].get = getTag
