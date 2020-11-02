@@ -701,10 +701,10 @@ local function profileSort(a, b)
 	local typeB = type(b)
 
 	if typeA == typeB then
-		return a > b
+		return a < b
 	end
 
-	return typeA > typeB
+	return typeA < typeB
 end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
