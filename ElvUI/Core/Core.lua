@@ -700,7 +700,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	--Code slightly modified by Simpy, sorting from @sighol
 	local function recurse(tbl, level, ret)
 		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, i) end
+		for i in pairs(tbl) do tinsert(tkeys, tostring(i)) end
 		sort(tkeys)
 
 		for _, i in ipairs(tkeys) do
@@ -767,7 +767,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	local sameLine
 	local function recurse(tbl, ret, profileText)
 		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, i) end
+		for i in pairs(tbl) do tinsert(tkeys, tostring(i)) end
 		sort(tkeys)
 
 		local lineStructure = buildLineStructure(profileText)
