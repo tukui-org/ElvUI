@@ -492,6 +492,7 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	end
 
 	if initLogin or isReload then
+		self:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 		self:CheckIncompatible()
 	end
 
@@ -594,7 +595,6 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 	E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
 	E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
-	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
 	do -- setup cropIcon texCoords
 		local opt = E.db.general.cropIcon

@@ -34,25 +34,17 @@ function E:IsUltrawide(width, height)
 	end
 end
 
-local waitScale
-local delayUIScale = function()
-	UIParent:SetScale(E.global.general.UIScale)
-	waitScale = nil
-end
-
 function E:UIScale(init)
+	local scale = E.global.general.UIScale
 	-- `init` will be the `event` if its triggered after combat
 	if init == true then -- E.OnInitialize
 		--Set variables for pixel scaling
-		local scale = E.global.general.UIScale
 		local pixel, ratio = 1, 768 / E.screenheight
 		E.mult = (pixel / scale) - ((pixel - ratio) / scale)
 	elseif InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 	else -- E.Initialize
-		if not waitScale then
-			waitScale = E:Delay(1, delayUIScale)
-		end
+		UIParent:SetScale(scale)
 
 		local width, height = E.screenwidth, E.screenheight
 		E.eyefinity = E:IsEyefinity(width, height)
