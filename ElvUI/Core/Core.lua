@@ -700,6 +700,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	--Code slightly modified by Simpy, sorting from @sighol
 	local tkeys = {}
 	local function recurse(tbl, level, ret)
+		wipe(tkeys)
 		for i in pairs(tbl) do tinsert(tkeys, i) end
 		sort(tkeys)
 
@@ -734,8 +735,6 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 			return
 		end
 
-		wipe(tkeys)
-
 		local ret = '{\n'
 		if inTable then ret = recurse(inTable, 1, ret) end
 		ret = ret..'}'
@@ -768,6 +767,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 
 	local tkeys, sameLine = {}
 	local function recurse(tbl, ret, profileText)
+		wipe(tkeys)
 		for i in pairs(tbl) do tinsert(tkeys, i) end
 		sort(tkeys)
 
@@ -821,9 +821,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		local profileText = profileFormat[profileType]
 		if not profileText then return end
 
-		wipe(tkeys)
 		wipe(lineStructureTable)
-
 		local ret = ''
 		if inTable and profileType then
 			sameLine = false
