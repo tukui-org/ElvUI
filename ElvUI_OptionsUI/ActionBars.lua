@@ -338,7 +338,7 @@ E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonsPerRow.max =
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.microbar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.microbar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
-E.Options.args.actionbar.args.microbar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.microbar.stanceBar.visibility = value; AB:UpdateMicroPositionDimensions() end
+E.Options.args.actionbar.args.microbar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar.microbar.visibility = value; AB:UpdateMicroPositionDimensions() end
 
 local SharedButtonOptions = {
 	alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 1, { min = 0, max = 1, step = 0.01, isPercent = true }),
