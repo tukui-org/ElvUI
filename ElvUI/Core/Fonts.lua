@@ -54,7 +54,7 @@ function E:UpdateBlizzardFonts()
 		local small		= GetSize(size * 0.95)
 		local tiny		= GetSize(size * 0.90)
 
-		local unified = E.private.general.unifiedFontSizes and size
+		local unified = E.private.general.unifiedBlizzFonts and size
 		local mono = strmatch(E.db.general.fontStyle, 'MONOCHROME') and 'MONOCHROME' or ''
 		local thick, outline = mono..'THICKOUTLINE', mono..'OUTLINE'
 

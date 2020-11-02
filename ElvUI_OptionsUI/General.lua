@@ -342,7 +342,7 @@ E.Options.args.general = {
 									get = function(info) return E.private.general[info[#info]] end,
 									set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL'); end,
 								},
-								unifiedFontSizes = {
+								unifiedBlizzFonts = {
 									order = 6,
 									type = 'toggle',
 									name = L["Unified Font Sizes"],
