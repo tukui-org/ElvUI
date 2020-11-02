@@ -290,12 +290,6 @@ function M:ADDON_LOADED(_, addon)
 	end
 end
 
-function M:QUEST_TURNED_IN()
-	if M.QuestRewardGoldIconFrame then
-		M.QuestRewardGoldIconFrame:Hide()
-	end
-end
-
 function M:QUEST_COMPLETE()
 	if not E.db.general.questRewardMostValueIcon then return end
 
@@ -348,7 +342,6 @@ function M:Initialize()
 	self:RegisterEvent('COMBAT_TEXT_UPDATE')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('QUEST_COMPLETE')
-	self:RegisterEvent('QUEST_TURNED_IN')
 
 	do	-- questRewardMostValueIcon
 		local frame = CreateFrame('Frame')
@@ -359,6 +352,12 @@ function M:Initialize()
 		frame.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
 		frame:Hide()
 		M.QuestRewardGoldIconFrame = frame
+
+		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', function()
+			if M.QuestRewardGoldIconFrame then
+				M.QuestRewardGoldIconFrame:Hide()
+			end
+		end)
 	end
 
 	if E.db.general.interruptAnnounce ~= 'NONE' then
