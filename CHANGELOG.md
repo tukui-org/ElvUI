@@ -1,6 +1,49 @@
-### Version 12.07 [ ETA: 🍨 ]
+### Version 12.08 [ ETA: 🍨 ]
 
-**Changes:**  
+**Nice:**  
+
+
+___
+
+### Version 12.07 [ November 1st 2020 ]
+
+**Nice:**  
+Added new "Unified Font Sizes" setting for "Replace Blizzard Fonts" (on by default). A decent amount of you didn't seem to like the change this hopefully will make you love us again. <3  
+Actionbar Buttons can be sized unproportionally now by unchecking the Keep Size Ratio option. This will let you make an EPIC looking bar.  
+HelpTips will now be hidden with Hide Tutorials, even while in combat (it was protected for safety but seems okay without it).  
+Added an option for Ultrawide monitors to be 16:9 like eyefinity would do but on one monitor (Thanks @Gholie).  
+Microbar can have a backdrop like ActionBars now.  
+Fixed Item Upgradeable Icon while using Pawn.  
+Nameplates now also have a Thin Border option.  
+Added option to hide Health Bar on Tooltips.  
+
+**Datatext:**  
+Added Datatext Option to hide friends playing CoD: Cold War.  
+ElvUI Datatext now has a Custom Label option.  
+Updated Movement Speed Datatext (Thanks @Caedis).  
+Gave Mastery and Haste Datatext Decimal Length and Label / No Label option.  
+Gave Combat Datatext a Full Time option.  
+Fixed Datatext Gold Tooltip Style.  
+
+**Yay:**  
+Fixed unequal Classbar combo points.  
+Fixed Heirloom Cooldown not fitting the icon.  
+Fixed Class bar sometimes not showing when it's supposed to.  
+Party Pets now have an Aura Watch setting.  
+Maybe fixed the "Most Expensive" icon from getting stuck.  
+Hotkey text on Stance Bar will show again.  
+Updated Trinket Spells for Trinket element.  
+Fixed [altpowercolor] tag.  
+Added [reactioncolor] back into tags.  
+Heal Prediction was messing up for Druids but I fixed it.  
+Updated Castbar Ticks amount, nice Penance btw.  
+Remove that one Databar Quest EXP error.  
+Chat Editbox will follow the chats text font and size.  
+Center piece of Phase Indicator was getting stuck on.  
+Another attempt to make sure the background/seal background art show correctly on Quest frame.  
+Fixed Transmog squares turning white when changing spec when your profile changes.  
+Stopped yoinking the progress bar off the collections appearance sets.  
+Fixed Auras text from using wrong settings.  
 
 ___
 
