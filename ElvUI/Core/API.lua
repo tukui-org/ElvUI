@@ -493,6 +493,8 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 
 	if initLogin or isReload then
 		self:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
+		self:UIScale()
+
 		self:CheckIncompatible()
 	end
 
