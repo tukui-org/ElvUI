@@ -342,6 +342,14 @@ E.Options.args.general = {
 									get = function(info) return E.private.general[info[#info]] end,
 									set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL'); end,
 								},
+								stockFontSizes = {
+									order = 6,
+									type = 'toggle',
+									name = L["Stock Font Sizes"],
+									desc = L["Let the Replace Blizzard Fonts setting use the original Font Sizes Blizzard set."],
+									get = function(info) return E.private.general[info[#info]] end,
+									set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL'); end,
+								},
 							},
 						},
 						replaceCombatFont = {
