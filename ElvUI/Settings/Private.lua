@@ -19,6 +19,7 @@ V.general = {
 	replaceNameFont = true,
 	replaceCombatFont = true,
 	replaceBlizzFonts = true,
+	unifiedFontSizes = true,
 	totemBar = true,
 	minimap = {
 		enable = true,
