@@ -26,15 +26,17 @@ function UF:Configure_ClassBar(frame)
 	if not UF.thinBorders and (frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 7) then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 		frame.CLASSBAR_HEIGHT = 7
 		if db.classbar then db.classbar.height = 7 end
+		UF.ToggleResourceBar(bars)
 	elseif UF.thinBorders and (frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 3) then --A height of 3 means 2px for borders and just 1px for the actual power statusbar
 		frame.CLASSBAR_HEIGHT = 3
 		if db.classbar then db.classbar.height = 3 end
+		UF.ToggleResourceBar(bars)
 	elseif not frame.CLASSBAR_DETACHED and frame.CLASSBAR_HEIGHT > 30 then
 		frame.CLASSBAR_HEIGHT = 10
 		if db.classbar then db.classbar.height = 10 end
+		--Override visibility if Classbar is Additional Power in order to fix a bug when Auto Hide is enabled, height is higher than 30 and it goes from detached to not detached
+		UF.ToggleResourceBar(bars, frame.ClassBar == 'AdditionalPower')
 	end
-
-	UF.ToggleResourceBar(bars)
 
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
@@ -251,18 +253,18 @@ function UF:Configure_ClassBar(frame)
 	end
 end
 
-local function ToggleResourceBar(bars)
+local function ToggleResourceBar(bars, overrideVisibility)
 	local frame = bars.origParent or bars:GetParent()
 
 	local db = frame.db
 	if not db then return end
 
-	frame.CLASSBAR_SHOWN = frame[frame.ClassBar]:IsShown()
+	frame.CLASSBAR_SHOWN = overrideVisibility or frame[frame.ClassBar]:IsShown()
 
 	if bars.text then bars.text:SetAlpha(frame.CLASSBAR_SHOWN and 1 or 0) end
 
 	local height = (db.classbar and db.classbar.height) or (frame.AlternativePower and db.power.height)
-	frame.CLASSBAR_HEIGHT = (frame.USE_CLASSBAR and (frame.CLASSBAR_SHOWN and height) or 0)
+	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and height or 0
 	frame.CLASSBAR_YOFFSET = (not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED) and 0 or (frame.USE_MINI_CLASSBAR and ((UF.SPACING+(frame.CLASSBAR_HEIGHT/2))) or (frame.CLASSBAR_HEIGHT - (UF.BORDER-UF.SPACING)))
 
 	UF:Configure_CustomTexts(frame)
