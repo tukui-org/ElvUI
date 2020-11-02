@@ -272,6 +272,7 @@ local function ToggleResourceBar(bars)
 		UF:Configure_Portrait(frame)
 	end
 
+	-- keep this after the configure_healtbar, we need the one updated before we match the healpred size to -1
 	if frame.HealthPrediction then
 		UF:SetSize_HealComm(frame)
 	end
