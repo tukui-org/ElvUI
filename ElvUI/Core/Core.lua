@@ -698,12 +698,15 @@ end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
 	--Code slightly modified by Simpy, sorting from @sighol
+	local tkeys = {}
 	local function recurse(tbl, level, ret)
-		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, tostring(i)) end
+		wipe(tkeys)
+		for i in pairs(tbl) do tinsert(tkeys, i) end
 		sort(tkeys)
+
 		for _, i in ipairs(tkeys) do
 			local v = tbl[i]
+
 			ret = ret..strrep('    ', level)..'['
 			if type(i) == 'string' then ret = ret..'"'..i..'"' else ret = ret..i end
 			ret = ret..'] = '
@@ -762,14 +765,16 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		return str
 	end
 
-	local sameLine
+	local tkeys, sameLine = {}
 	local function recurse(tbl, ret, profileText)
-		local lineStructure = buildLineStructure(profileText)
-		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, tostring(i)) end
+		wipe(tkeys)
+		for i in pairs(tbl) do tinsert(tkeys, i) end
 		sort(tkeys)
+
+		local lineStructure = buildLineStructure(profileText)
 		for _, k in ipairs(tkeys) do
 			local v = tbl[k]
+
 			if not sameLine then
 				ret = ret..lineStructure
 			end
