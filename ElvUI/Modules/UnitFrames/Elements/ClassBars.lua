@@ -12,7 +12,7 @@ local _, ns = ...
 local ElvUF = ns.oUF
 assert(ElvUF, 'ElvUI was unable to locate oUF.')
 
-function UF:PostVisibility_UpdateBars(frame)
+function UF:PostVisibility_ClassBars(frame)
 	if not (frame and frame.db) then return end
 
 	UF:Configure_ClassBar(frame)
@@ -319,7 +319,7 @@ function UF:Construct_ClassBar(frame)
 end
 
 function UF:PostVisibilityClassBar()
-	UF:PostVisibility_UpdateBars(self.origParent or self:GetParent())
+	UF:PostVisibility_ClassBars(self.origParent or self:GetParent())
 end
 
 function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
@@ -474,7 +474,7 @@ function UF:PostVisibilityAdditionalPower(enabled)
 
 	frame.ClassBar = (enabled and 'AdditionalPower') or 'ClassPower'
 
-	UF:PostVisibility_UpdateBars(frame)
+	UF:PostVisibility_ClassBars(frame)
 end
 
 -----------------------------------------------------------
@@ -508,6 +508,6 @@ function UF:PostUpdateVisibilityStagger(_, _, isShown, stateChanged)
 	self.ClassBar = (isShown and 'Stagger') or 'ClassPower'
 
 	if stateChanged then
-		UF:PostVisibility_UpdateBars(self)
+		UF:PostVisibility_ClassBars(self)
 	end
 end
