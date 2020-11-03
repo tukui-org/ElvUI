@@ -260,13 +260,13 @@ function UF:Configure_ClassBar(frame)
 	end
 end
 
-local function ToggleResourceBar(bars, overrideVisibility)
+local function ToggleResourceBar(bars)
 	local frame = bars.origParent or bars:GetParent()
 
 	local db = frame.db
 	if not db then return end
 
-	frame.CLASSBAR_SHOWN = overrideVisibility or frame[frame.ClassBar]:IsShown()
+	frame.CLASSBAR_SHOWN = frame[frame.ClassBar]:IsShown()
 
 	if bars.text then bars.text:SetAlpha(frame.CLASSBAR_SHOWN and 1 or 0) end
 
