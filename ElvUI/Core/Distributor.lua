@@ -297,7 +297,6 @@ local blacklistedKeys = {
 D.GeneratedKeys = {
 	profile = {
 		movers = true,
-		v11NamePlateReset = true,
 		nameplates = { -- this is supposed to have an 's' because yeah, oh well
 			filters = true
 		},
