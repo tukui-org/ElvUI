@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
+local gsub = gsub
 local pairs = pairs
 local assert = assert
 local unpack = unpack
@@ -116,9 +117,7 @@ function AB:UpdateMicroBarVisibility()
 	end
 
 	local visibility = AB.db.microbar.visibility
-	if visibility and visibility:match('[\n\r]') then
-		visibility = visibility:gsub('[\n\r]','')
-	end
+	visibility = gsub(visibility, '[\n\r]','')
 
 	RegisterStateDriver(microBar.visibility, 'visibility', (AB.db.microbar.enabled and visibility) or 'hide')
 end
@@ -153,7 +152,7 @@ function AB:UpdateMicroPositionDimensions()
 		lastButton = button
 	end
 
-	microBar:SetAlpha(db.mouseover and 0 or db.alpha)
+	microBar:SetAlpha((db.mouseover and not microBar.IsMouseOvered and 0) or db.alpha)
 
 	AB:HandleBackdropMultiplier(microBar, backdropSpacing, db.buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastButton, anchorRowButton)
 	AB:HandleBackdropMover(microBar, backdropSpacing)
@@ -199,8 +198,6 @@ function AB:SetupMicroBar()
 
 	_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton.backdrop)
 
-	--self:SecureHook('MainMenuMicroButton_SetPushed')
-	--self:SecureHook('MainMenuMicroButton_SetNormal')
 	AB:SecureHook('UpdateMicroButtonsParent')
 	AB:SecureHook('MoveMicroButtons', 'UpdateMicroPositionDimensions')
 	AB:SecureHook('UpdateMicroButtons')
