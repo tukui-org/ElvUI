@@ -1332,7 +1332,7 @@ function AB:ActivateBindMode()
 		LoadAddOn('Blizzard_BindingUI')
 	end
 
-	_G.KeyBindingFrame:EnterQuickKeybind()
+	_G.KeyBindingFrame.quickKeybindButton:Click()
 end
 
 function AB:Initialize()
