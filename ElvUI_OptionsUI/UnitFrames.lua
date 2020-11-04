@@ -4710,6 +4710,44 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 				},
 			},
 		},
+		PartyIndicator = {
+			type = 'group',
+			name = L["Party Indicator"],
+			get = function(info) return E.db.unitframe.units.player.partyIndicator[info[#info]] end,
+			set = function(info, value) E.db.unitframe.units.player.partyIndicator[info[#info]] = value; UF:CreateAndUpdateUF('player'); end,
+			args = {
+				enable = {
+					order = 2,
+					type = 'toggle',
+					name = L["Enable"],
+				},
+				scale = {
+					order = 3,
+					type = 'range',
+					name = L["Scale"],
+					isPercent = true,
+					min = 0.5, max = 1.5, step = 0.01,
+				},
+				xOffset = {
+					order = 6,
+					type = 'range',
+					name = L["X-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				yOffset = {
+					order = 7,
+					type = 'range',
+					name = L["Y-Offset"],
+					min = -100, max = 100, step = 1,
+				},
+				anchorPoint = {
+					order = 9,
+					type = 'select',
+					name = L["Anchor Point"],
+					values = positionValues,
+				},
+			},
+		},
 		pvpText = {
 			type = 'group',
 			name = L["PvP Text"],
