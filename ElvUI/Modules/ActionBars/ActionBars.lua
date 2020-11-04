@@ -30,6 +30,7 @@ local UnitChannelInfo = UnitChannelInfo
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local GetCurrentBindingSet = GetCurrentBindingSet
 local UnregisterStateDriver = UnregisterStateDriver
 local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
@@ -1333,6 +1334,7 @@ function AB:ActivateBindMode()
 	end
 
 	_G.KeyBindingFrame.quickKeybindButton:Click()
+	_G.KeyBindingFrame.characterSpecificButton:SetChecked(GetCurrentBindingSet() == 2)
 end
 
 function AB:Initialize()
