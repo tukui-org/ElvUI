@@ -186,9 +186,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 
 		HandleReward(questItem)
 
-		if not questItem.IconBorder.IconBorderHooked then
-			S:HandleIconBorder(questItem.IconBorder, questItem.Icon.backdrop)
-		end
+		S:HandleIconBorder(questItem.IconBorder, questItem.Icon.backdrop)
 
 		questItem.NameFrame:Hide()
 		questItem.Name:SetTextColor(1, 1, 1)
