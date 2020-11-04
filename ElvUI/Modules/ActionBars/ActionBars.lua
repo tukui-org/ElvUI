@@ -1295,8 +1295,8 @@ end
 function AB:QuickKeybindMovable()
 	local frame = _G.QuickKeybindFrame
 
+	frame:SetMovable(true)
 	frame:SetUserPlaced(true)
-	frame:EnableKeyboard(false)
 	frame:SetScript('OnMouseDown', frame.StartMoving)
 	frame:SetScript('OnMouseUp', frame.StopMovingOrSizing)
 end
