@@ -38,7 +38,6 @@ local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
 local VehicleExit = VehicleExit
 
-local CHARACTER_BINDINGS = CHARACTER_BINDINGS
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
@@ -1328,7 +1327,7 @@ function AB:ADDON_LOADED(event, addon)
 end
 
 function AB:ActivateBindMode()
-	if InCombatLockdown() then return end
+	if InCombatLockdown() or not E:IsAddOnEnabled('Blizzard_BindingUI') then return end
 
 	if not _G.QuickKeybindFrame then
 		LoadAddOn('Blizzard_BindingUI')
@@ -1337,7 +1336,7 @@ function AB:ActivateBindMode()
 	_G.KeyBindingFrame.quickKeybindButton:Click()
 
 	-- we need to set the checkbox here
-	local charBinds = GetCurrentBindingSet() == CHARACTER_BINDINGS
+	local charBinds = GetCurrentBindingSet() == _G.CHARACTER_BINDINGS
 	_G.KeyBindingFrame.characterSpecificButton:SetChecked(charBinds)
 	_G.QuickKeybindFrame.characterSpecificButton:SetChecked(charBinds)
 end
