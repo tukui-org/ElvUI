@@ -505,13 +505,13 @@ function AB:ReassignBindings(event)
 	for _, bar in pairs(AB.handledBars) do
 		if bar then
 			ClearOverrideBindings(bar)
-			for i = 1, #bar.buttons do
-				local button = (bar.bindButtons..'%d'):format(i)
-				local real_button = (bar:GetName()..'Button%d'):format(i)
-				for k=1, select('#', GetBindingKey(button)) do
-					local key = select(k, GetBindingKey(button))
+
+			for _, button in ipairs(bar.buttons) do
+				local bindKey = GetBindingKey(button.keyBoundTarget)
+				for k=1, select('#', bindKey) do
+					local key = select(k, bindKey)
 					if key and key ~= '' then
-						SetOverrideBindingClick(bar, false, key, real_button)
+						SetOverrideBindingClick(bar, false, key, button:GetName())
 					end
 				end
 			end
@@ -712,7 +712,7 @@ function AB:FadeBlings(alpha)
 	for i = 1, AB.fadeParent:GetNumChildren() do
 		local bar = select(i, AB.fadeParent:GetChildren())
 		if bar.buttons then
-			for _, button in pairs(bar.buttons) do
+			for _, button in ipairs(bar.buttons) do
 				AB:FadeBlingTexture(button.cooldown, alpha)
 			end
 		end
@@ -992,7 +992,7 @@ function AB:ToggleCountDownNumbers(bar, button, cd)
 		end
 	elseif bar then -- ref: E:UpdateCooldownOverride
 		if bar.buttons then
-			for _, btn in pairs(bar.buttons) do
+			for _, btn in ipairs(bar.buttons) do
 				if btn and btn.config and (btn.cooldown and btn.cooldown.timer) then
 					-- update the buttons config
 					btn.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
@@ -1027,7 +1027,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
 	SetModifiedClick('PICKUPACTION', AB.db.movementModifier)
 
-	for i, button in pairs(bar.buttons) do
+	for i, button in ipairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)
 
 		bar.buttonConfig.keyBoundTarget = format(buttonName..'%d', i)
