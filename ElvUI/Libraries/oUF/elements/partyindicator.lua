@@ -1,50 +1,44 @@
 --[[
 # Element: Party Indicator
-
-Toggles the visibility of an indicator based on if the player was in a group before joining the instance.
+	Toggles the visibility of an indicator based on if the player was in a group before joining the instance.
 
 ## Widget
-
-PartyIndicator - Player only widget.
-
-## Notes
+	PartyIndicator - Player only widget.
 ]]
 
 local _, ns = ...
 local oUF = ns.oUF
 
---[[ 
-	* self - the ElvUF_Player element
-	--]]
 local function Update(self, event)
-	local element = self.PartyIndicator	
+	local element = self.PartyIndicator
 
 	if(element.PreUpdate) then
 		element:PreUpdate()
 	end
 
-	if event == 'GROUP_ROSTER_UPDATE' or event == 'ElvUI_UpdateAllElements' then
+	local forced = not event or event == 'ElvUI_UpdateAllElements'
+	if forced or event == 'GROUP_ROSTER_UPDATE' then
 		if IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
 			element:Show()
 		else
 			element:Hide()
 		end
 	end
-	
-	if event == 'UPDATE_CHAT_COLOR' or event == 'ElvUI_UpdateAllElements' then
-		local private = ChatTypeInfo["PARTY"];
-		element.HomePartyIcon:SetVertexColor(private.r, private.g, private.b, 1);
 
-		local public = ChatTypeInfo["INSTANCE_CHAT"];
-		element.InstancePartyIcon:SetVertexColor(public.r, public.g, public.b, 1);
+	if forced or event == 'UPDATE_CHAT_COLOR' then
+		local private = ChatTypeInfo.PARTY
+		if private and element.HomeIcon then
+			element.HomeIcon:SetVertexColor(private.r, private.g, private.b, 1)
+		end
+
+		local public = ChatTypeInfo.INSTANCE_CHAT
+		if public and element.InstanceIcon then
+			element.InstanceIcon:SetVertexColor(public.r, public.g, public.b, 1)
+		end
 	end
 
-	--[[ Callback: PartyIndicator:PostUpdate(inInstance)
-	Called after the element has been updated.
-	* inInstance - indicates if the player is inside an instance (boolean)
-	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(inInstance)
+		return element:PostUpdate()
 	end
 end
 
@@ -62,7 +56,7 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate')
 end
 
-local function Enable(self, unit)
+local function Enable(self)
 	local element = self.PartyIndicator
 	if element then
 		element.__owner = self
@@ -82,7 +76,7 @@ local function Disable(self)
 
 		self:UnregisterEvent('UPDATE_CHAT_COLOR', Path)
 		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path)
-		
+
 	end
 end
 
