@@ -76,7 +76,6 @@ local function Disable(self)
 
 		self:UnregisterEvent('UPDATE_CHAT_COLOR', Path)
 		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path)
-
 	end
 end
 
