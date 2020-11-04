@@ -361,6 +361,7 @@ function S:BlizzardQuestFrames()
 
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc('QuestInfo_ShowObjectives', S.QuestInfo_ShowObjectives)
+		S:QuestInfo_ShowObjectives()
 	end
 
 	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'ArtifactXPFrame', 'TitleFrame', 'WarModeBonusFrame'}) do
