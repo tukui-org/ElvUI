@@ -61,6 +61,7 @@ function AB:HandleMicroButton(button)
 	local disabled = button:GetDisabledTexture()
 
 	button:CreateBackdrop()
+	button.backdrop:SetAllPoints()
 
 	button:SetParent(microBar)
 	button:GetHighlightTexture():Kill()
