@@ -38,6 +38,7 @@ local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
 local VehicleExit = VehicleExit
 
+local CHARACTER_BINDINGS = CHARACTER_BINDINGS
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
@@ -1334,7 +1335,11 @@ function AB:ActivateBindMode()
 	end
 
 	_G.KeyBindingFrame.quickKeybindButton:Click()
-	_G.KeyBindingFrame.characterSpecificButton:SetChecked(GetCurrentBindingSet() == 2)
+
+	-- we need to set the checkbox here
+	local charBinds = GetCurrentBindingSet() == CHARACTER_BINDINGS
+	_G.KeyBindingFrame.characterSpecificButton:SetChecked(charBinds)
+	_G.QuickKeybindFrame.characterSpecificButton:SetChecked(charBinds)
 end
 
 function AB:Initialize()
