@@ -21,6 +21,7 @@ local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
+local LoadAddOn = LoadAddOn
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
@@ -507,7 +508,7 @@ function AB:ReassignBindings(event)
 			ClearOverrideBindings(bar)
 
 			for _, button in ipairs(bar.buttons) do
-				local bindKey = GetBindingKey(button.keyBoundTarget)
+				local bindKey = GetBindingKey(button.commandName)
 				for k=1, select('#', bindKey) do
 					local key = select(k, bindKey)
 					if key and key ~= '' then
@@ -1030,8 +1031,10 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	for i, button in ipairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)
 
-		bar.buttonConfig.keyBoundTarget = format(buttonName..'%d', i)
-		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
+		local blizzName = format(buttonName..'%d', i)
+		bar.buttonConfig.commandName = blizzName
+		button.commandName = blizzName
+
 		button.postKeybind = AB.FixKeybindText
 		button:SetAttribute('buttonlock', AB.db.lockActionBars)
 		button:SetAttribute('checkselfcast', true)
@@ -1289,6 +1292,49 @@ function AB:PLAYER_ENTERING_WORLD()
 	AB:AdjustMaxStanceButtons('PLAYER_ENTERING_WORLD')
 end
 
+function AB:QuickKeybindMovable()
+	local frame = _G.QuickKeybindFrame
+
+	frame:SetUserPlaced(true)
+	frame:EnableKeyboard(false)
+	frame:SetScript('OnMouseDown', frame.StartMoving)
+	frame:SetScript('OnMouseUp', frame.StopMovingOrSizing)
+end
+
+function AB:SetupQuickKeybind()
+	AB:HandlePhantomExtraActionButton()
+	AB:QuickKeybindMovable()
+end
+
+function AB:HandlePhantomExtraActionButton()
+	local button = _G.QuickKeybindFrame.phantomExtraActionButton
+	button:SetScript('OnUpdate', nil)
+
+	button:StripTextures()
+	button:CreateBackdrop(AB.db.transparent and 'Transparent')
+
+	button:ClearAllPoints()
+	button:SetAllPoints(_G.ExtraActionBarFrame)
+end
+
+function AB:ADDON_LOADED(event, addon)
+	if addon == 'Blizzard_BindingUI' then
+		AB:SetupQuickKeybind()
+
+		AB:UnregisterEvent(event)
+	end
+end
+
+function AB:ActivateBindMode()
+	if InCombatLockdown() then return end
+
+	if not _G.QuickKeybindFrame then
+		LoadAddOn('Blizzard_BindingUI')
+	end
+
+	_G.KeyBindingFrame:EnterQuickKeybind()
+end
+
 function AB:Initialize()
 	AB.db = E.db.actionbar
 
@@ -1329,7 +1375,6 @@ function AB:Initialize()
 	AB:UpdateButtonSettings()
 	AB:UpdatePetCooldownSettings()
 	AB:ToggleCooldownOptions()
-	AB:LoadKeyBinder()
 
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
@@ -1341,6 +1386,12 @@ function AB:Initialize()
 		AB:RemoveBindings()
 	else
 		AB:ReassignBindings()
+	end
+
+	if _G.QuickKeybindFrame then
+		AB:SetupQuickKeybind()
+	else
+		AB:RegisterEvent('ADDON_LOADED')
 	end
 
 	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates

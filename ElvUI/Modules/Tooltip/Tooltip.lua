@@ -64,6 +64,7 @@ local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
 
+local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
@@ -74,14 +75,14 @@ local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local UNKNOWN = UNKNOWN
 
--- GLOBALS: ElvUF, ElvUI_KeyBinder, ElvUI_ContainerFrame
+-- GLOBALS: ElvUF, ElvUI_ContainerFrame
 
 -- Custom to find LEVEL string on tooltip
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
 local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
 
 local GameTooltip, GameTooltipStatusBar = _G.GameTooltip, _G.GameTooltipStatusBar
-local targetList, TAPPED_COLOR, keybindFrame = {}, { r=0.6, g=0.6, b=0.6 }
+local targetList, TAPPED_COLOR = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
 local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
@@ -103,7 +104,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 
 	local owner = tt:GetOwner()
 	local ownerName = owner and owner.GetName and owner:GetName()
-	if ownerName and (strfind(ownerName, 'ElvUI_Bar') or strfind(ownerName, 'ElvUI_StanceBar') or strfind(ownerName, 'PetAction')) and not keybindFrame.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
+	if ownerName and (strfind(ownerName, 'ElvUI_Bar') or strfind(ownerName, 'ElvUI_StanceBar') or strfind(ownerName, 'PetAction')) and KeybindFrames_InQuickKeybindMode() and not TT:IsModKeyDown(TT.db.visibility.actionbars) then
 		tt:Hide()
 		return
 	end
@@ -848,10 +849,6 @@ function TT:Initialize()
 	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
-
-	--Variable is localized at top of file, then set here when we're sure the frame has been created
-	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
-	keybindFrame = ElvUI_KeyBinder
 end
 
 E:RegisterModule(TT:GetName())

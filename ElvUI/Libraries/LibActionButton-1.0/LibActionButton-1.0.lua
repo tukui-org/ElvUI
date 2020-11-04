@@ -131,7 +131,7 @@ local DefaultConfig = {
 		hotkey = false,
 		equipped = false,
 	},
-	keyBoundTarget = false,
+	commandName = false,
 	clickOnDown = false,
 	flyoutDirection = "UP",
 	disableCountDownNumbers = false,
@@ -155,7 +155,7 @@ function lib:CreateButton(id, name, header, config)
 		KeyBound = LibStub("LibKeyBound-1.0", true)
 	end
 
-	local button = setmetatable(CreateFrame("CheckButton", name, header, "SecureActionButtonTemplate, ActionButtonTemplate"), Generic_MT)
+	local button = setmetatable(CreateFrame("CheckButton", name, header, "QuickKeybindButtonTemplate, SecureActionButtonTemplate, ActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 	button:RegisterForClicks("AnyUp")
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
@@ -565,12 +565,20 @@ function Generic:OnEnter()
 	if self.config.clickOnDown then
 		self:SetScript('OnUpdate', Generic.OnUpdate)
 	end
+
+	if self.QuickKeybindButtonOnEnter then
+		self:QuickKeybindButtonOnEnter()
+	end
 end
 
 function Generic:OnLeave()
 	if GameTooltip:IsForbidden() then return end
 	GameTooltip:Hide()
 	self:SetScript('OnUpdate', nil)
+
+	if self.QuickKeybindButtonOnLeave then
+		self:QuickKeybindButtonOnLeave()
+	end
 end
 
 -- Insecure drag handler to allow clicking on the button with an action on the cursor
@@ -991,13 +999,13 @@ end
 --- KeyBound integration
 
 function Generic:GetBindingAction()
-	return self.config.keyBoundTarget or "CLICK "..self:GetName()..":LeftButton"
+	return self.config.commandName or "CLICK "..self:GetName()..":LeftButton"
 end
 
 function Generic:GetHotkey()
 	local name = "CLICK "..self:GetName()..":LeftButton"
-	local key = GetBindingKey(self.config.keyBoundTarget or name)
-	if not key and self.config.keyBoundTarget then
+	local key = GetBindingKey(self.config.commandName or name)
+	if not key and self.config.commandName then
 		key = GetBindingKey(name)
 	end
 	if key then
@@ -1020,8 +1028,8 @@ end
 function Generic:GetBindings()
 	local keys
 
-	if self.config.keyBoundTarget then
-		keys = getKeys(self.config.keyBoundTarget)
+	if self.config.commandName then
+		keys = getKeys(self.config.commandName)
 	end
 
 	keys = getKeys("CLICK "..self:GetName()..":LeftButton", keys)
@@ -1030,8 +1038,8 @@ function Generic:GetBindings()
 end
 
 function Generic:SetKey(key)
-	if self.config.keyBoundTarget then
-		SetBinding(key, self.config.keyBoundTarget)
+	if self.config.commandName then
+		SetBinding(key, self.config.commandName)
 	else
 		SetBindingClick(key, self:GetName(), "LeftButton")
 	end
@@ -1045,8 +1053,8 @@ local function clearBindings(binding)
 end
 
 function Generic:ClearBindings()
-	if self.config.keyBoundTarget then
-		clearBindings(self.config.keyBoundTarget)
+	if self.config.commandName then
+		clearBindings(self.config.commandName)
 	end
 	clearBindings("CLICK "..self:GetName()..":LeftButton")
 	lib.callbacks:Fire("OnKeybindingChanged", self, nil)
