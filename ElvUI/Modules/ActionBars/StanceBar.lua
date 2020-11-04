@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
+local gsub = gsub
 local format, ipairs = format, ipairs
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
@@ -173,20 +174,24 @@ function AB:PositionAndSizeBarShapeShift()
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
-	if useMasque then
-		MasqueGroup:ReSkin()
-	end
-
 	if db.enabled then
-		if visibility and visibility:match('[\n\r]') then
-			visibility = visibility:gsub('[\n\r]','')
-		end
+		visibility = gsub(visibility,'[\n\r]','')
 
 		RegisterStateDriver(bar, 'visibility', (GetNumShapeshiftForms() == 0 and 'hide') or visibility)
 		E:EnableMover(bar.mover:GetName())
 	else
 		RegisterStateDriver(bar, 'visibility', 'hide')
 		E:DisableMover(bar.mover:GetName())
+	end
+
+	if useMasque then
+		MasqueGroup:ReSkin()
+
+		for _, btn in ipairs(bar.buttons) do
+			if btn.icon then
+				AB:TrimIcon(btn.icon, btn.db, btn.customCoords)
+			end
+		end
 	end
 end
 

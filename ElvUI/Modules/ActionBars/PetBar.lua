@@ -163,7 +163,15 @@ function AB:PositionAndSizeBarPet()
 	visibility = gsub(visibility, '[\n\r]','')
 	RegisterStateDriver(bar, 'show', visibility)
 
-	if MasqueGroup and E.private.actionbar.masque.petBar then MasqueGroup:ReSkin() end
+	if MasqueGroup and E.private.actionbar.masque.petBar then
+		MasqueGroup:ReSkin()
+
+		for _, btn in ipairs(bar.buttons) do
+			if btn.icon then
+				AB:TrimIcon(btn.icon, btn.db, btn.customCoords)
+			end
+		end
+	end
 end
 
 function AB:UpdatePetCooldownSettings()

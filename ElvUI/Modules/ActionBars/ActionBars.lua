@@ -284,10 +284,6 @@ function AB:PositionAndSizeBar(barName)
 
 	AB:MoverMagic(bar)
 
-	if MasqueGroup and E.private.actionbar.masque.actionbars then
-		MasqueGroup:ReSkin()
-	end
-
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
 
@@ -345,6 +341,17 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonspacing / 2)
+
+	if MasqueGroup and E.private.actionbar.masque.actionbars then
+		MasqueGroup:ReSkin()
+
+		-- masque retrims them all so we have to too
+		for btn in pairs(AB.handledbuttons) do
+			if btn.icon then
+				AB:TrimIcon(btn.icon, btn.db, btn.customCoords)
+			end
+		end
+	end
 end
 
 function AB:CreateBar(id)
@@ -643,12 +650,9 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		end
 	end
 
-	if icon then
+	if icon and not useMasque then
 		AB:TrimIcon(icon, button.db, button.customCoords)
-
-		if not useMasque then
-			icon:SetInside()
-		end
+		icon:SetInside()
 	end
 
 	if shine then
