@@ -14,6 +14,7 @@
 	<Script file='InfoPanel.lua'/>
 	<Script file='Name.lua'/>
 	<Script file='PhaseIndicator.lua'/>
+	<Script file='PartyIndicator.lua'/>
 	<Script file='Portrait.lua'/>
 	<Script file='Power.lua'/>
 	<Script file='PowerPrediction.lua'/>
