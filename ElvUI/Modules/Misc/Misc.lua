@@ -344,14 +344,16 @@ function M:Initialize()
 	self:RegisterEvent('QUEST_COMPLETE')
 
 	do	-- questRewardMostValueIcon
-		local frame = CreateFrame('Frame')
-		frame:SetFrameStrata('HIGH')
-		frame:Size(20)
-		frame.Icon = frame:CreateTexture(nil, 'OVERLAY')
-		frame.Icon:SetAllPoints(frame)
-		frame.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
-		frame:Hide()
-		M.QuestRewardGoldIconFrame = frame
+		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame')
+		MostValue:SetFrameStrata('HIGH')
+		MostValue:Size(16)
+		MostValue:Hide()
+
+		MostValue.Icon = MostValue:CreateTexture(nil, 'OVERLAY')
+		MostValue.Icon:SetAllPoints(MostValue)
+		MostValue.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
+
+		M.QuestRewardGoldIconFrame = MostValue
 
 		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', function()
 			if M.QuestRewardGoldIconFrame then
