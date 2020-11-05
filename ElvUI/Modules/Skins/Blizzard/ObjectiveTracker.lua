@@ -1,12 +1,11 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
-local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
-local hooksecurefunc = hooksecurefunc
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
 local GetItemInfo = GetItemInfo
+local hooksecurefunc = hooksecurefunc
 
 local headers = {
 	_G.ObjectiveTrackerBlocksFrame.QuestHeader,
@@ -59,104 +58,52 @@ local function HotkeyColor(self, r, g, b)
 end
 
 local function SkinItemButton(item)
-	if not item.skinned then
-		item:CreateBackdrop('Transparent')
-		item.backdrop:SetAllPoints()
-		item:StyleButton()
-		item:SetNormalTexture(nil)
-		item.icon:SetTexCoord(unpack(E.TexCoords))
-		item.icon:SetInside()
-		item.Cooldown:SetInside()
-		item.Count:ClearAllPoints()
-		item.Count:Point('TOPLEFT', 1, -1)
-		item.Count:FontTemplate(nil, 14, 'OUTLINE')
-		item.Count:SetShadowOffset(5, -5)
+	item:CreateBackdrop('Transparent')
+	item.backdrop:SetAllPoints()
+	item:StyleButton()
+	item:SetNormalTexture(nil)
 
-		local rangeOverlay = item:CreateTexture(nil, 'OVERLAY')
-		rangeOverlay:SetTexture(E.Media.Textures.White8x8)
-		rangeOverlay:SetInside()
-		item.rangeOverlay = rangeOverlay
+	item.icon:SetTexCoord(unpack(E.TexCoords))
+	item.icon:SetInside()
 
-		hooksecurefunc(item.HotKey, 'Show', HotkeyShow)
-		hooksecurefunc(item.HotKey, 'Hide', HotkeyHide)
-		hooksecurefunc(item.HotKey, 'SetVertexColor', HotkeyColor)
-		HotkeyColor(item.HotKey, item.HotKey:GetTextColor())
-		item.HotKey:SetAlpha(0)
+	item.Cooldown:SetInside()
+	item.Count:ClearAllPoints()
+	item.Count:Point('TOPLEFT', 1, -1)
+	item.Count:FontTemplate(nil, 14, 'OUTLINE')
+	item.Count:SetShadowOffset(5, -5)
 
-		E:RegisterCooldown(item.Cooldown)
-		item.skinned = true
+	local rangeOverlay = item:CreateTexture(nil, 'OVERLAY')
+	rangeOverlay:SetTexture(E.Media.Textures.White8x8)
+	rangeOverlay:SetInside()
+	item.rangeOverlay = rangeOverlay
 
-		-- bag keybind support from actionbar module
-		if not E.private.actionbar.enable then return end
+	hooksecurefunc(item.HotKey, 'Show', HotkeyShow)
+	hooksecurefunc(item.HotKey, 'Hide', HotkeyHide)
+	hooksecurefunc(item.HotKey, 'SetVertexColor', HotkeyColor)
+	HotkeyColor(item.HotKey, item.HotKey:GetTextColor())
+	item.HotKey:SetAlpha(0)
 
-		AB:QuickKeybindImport(item)
-		item:HookScript('OnEnter', AB.KeybindButtonOnEnter)
-		item:HookScript('OnLeave', AB.KeybindButtonOnLeave)
-	end
-end
-
-local BlockItemTracker, BlockItemRelease
-do -- add support for quest buttons to /kb  ~Simpy
-	local count = 1
-	local function ItemTrackerName()
-		return 'ElvUI_TrackerBlockItem' .. count
-	end
-
-	local blockItems = {}
-	BlockItemTracker = function(block)
-		if blockItems[block] then return end
-
-		local name, new = ItemTrackerName()
-		local exists = _G[name] -- check for existing first
-		if exists then
-			count = count + 1
-
-			new = ItemTrackerName()
-			_G[new] = block.itemButton
-		else
-			_G[name] = block.itemButton
-		end
-
-		local reference = new or name
-		blockItems[block] = _G[reference]
-
-		block.itemButton.ElvUI_TrackerItem = reference
-	end
-
-	BlockItemRelease = function(block)
-		local name = blockItems[block]
-		if _G[name] then
-			_G[name] = nil
-
-			block.itemButton.ElvUI_TrackerItem = nil
-
-			count = count - 1
-		end
-	end
+	E:RegisterCooldown(item.Cooldown)
 end
 
 local function HandleItemButton(block, questLogIndex, isQuestComplete)
-	if not block.itemButton then return end
+	local item = block and block.itemButton
+	if not item then return end
 
-	local itemLink, itemID, showItemWhenComplete, _
+	local itemID, showItemWhenComplete, _
 	if questLogIndex then
-		itemLink, itemID, _, showItemWhenComplete = GetQuestLogSpecialItemInfo(questLogIndex)
+		_, itemID, _, showItemWhenComplete = GetQuestLogSpecialItemInfo(questLogIndex)
 	end
 
-	block.itemButton.objectiveItem = (itemLink and GetItemInfo(itemLink)) or nil
-	block.itemButton.itemID = itemID
-
-	local shouldShowItem = itemID and (not isQuestComplete or showItemWhenComplete)
-	if shouldShowItem then
-		SkinItemButton(block.itemButton)
-
-		if block.itemButton.backdrop then
-			block.itemButton.backdrop:SetFrameLevel(block.itemButton:GetFrameLevel() - 1)
+	if itemID and (not isQuestComplete or showItemWhenComplete) then -- shouldShowItem
+		if not item.skinned then
+			SkinItemButton(item)
+			item.skinned = true
 		end
 
-		BlockItemTracker(block)
-	else
-		BlockItemRelease(block)
+		if item.backdrop then
+			item.backdrop:SetFrameLevel(item:GetFrameLevel() - 1)
+		end
 	end
 end
 
@@ -281,9 +228,9 @@ function S:ObjectiveTrackerFrame()
 	minimize.tex:SetTexture(E.Media.Textures.MinusButton)
 	minimize.tex:SetInside()
 
-	hooksecurefunc('QuestObjectiveSetupBlockButton_Item', HandleItemButton)
 	hooksecurefunc('ObjectiveTracker_Expand',TrackerStateChanged)
 	hooksecurefunc('ObjectiveTracker_Collapse',TrackerStateChanged)
+	hooksecurefunc('QuestObjectiveSetupBlockButton_Item', HandleItemButton)
 	hooksecurefunc('BonusObjectiveTrackerProgressBar_SetValue',ColorProgressBars)			--[Color]: Bonus Objective Progress Bar
 	hooksecurefunc('ObjectiveTrackerProgressBar_SetValue',ColorProgressBars)				--[Color]: Quest Progress Bar
 	hooksecurefunc('ScenarioTrackerProgressBar_SetValue',ColorProgressBars)					--[Color]: Scenario Progress Bar
