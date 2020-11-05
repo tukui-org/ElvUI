@@ -507,11 +507,12 @@ function AB:ReassignBindings(event)
 			ClearOverrideBindings(bar)
 
 			for _, button in ipairs(bar.buttons) do
-				local bindKey = GetBindingKey(button.commandName)
-				for k=1, select('#', bindKey) do
-					local key = select(k, bindKey)
-					if key and key ~= '' then
-						SetOverrideBindingClick(bar, false, key, button:GetName())
+				if button.commandName then
+					for k=1, select('#', GetBindingKey(button.commandName)) do
+						local key = select(k, GetBindingKey(button.commandName))
+						if key and key ~= '' then
+							SetOverrideBindingClick(bar, false, key, button:GetName())
+						end
 					end
 				end
 			end
