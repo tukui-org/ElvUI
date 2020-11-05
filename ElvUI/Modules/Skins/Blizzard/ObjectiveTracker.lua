@@ -1,9 +1,12 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
+local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
+local GetItemInfo = GetItemInfo
 
 local headers = {
 	_G.ObjectiveTrackerBlocksFrame.QuestHeader,
@@ -36,7 +39,6 @@ local function ColorProgressBars(self, value)
 	S:StatusBarColorGradient(self.Bar, value, 100)
 end
 
--- 9.0 Needs Update
 local function HotkeyShow(self)
 	local item = self:GetParent()
 	if item.rangeOverlay then item.rangeOverlay:Show() end
@@ -56,10 +58,7 @@ local function HotkeyColor(self, r, g, b)
 	end
 end
 
-local function SkinItemButton(_, block)
-	local item = block.itemButton
-	if not item then return end
-
+local function SkinItemButton(item)
 	if not item.skinned then
 		item:CreateBackdrop('Transparent')
 		item.backdrop:SetAllPoints()
@@ -86,10 +85,78 @@ local function SkinItemButton(_, block)
 
 		E:RegisterCooldown(item.Cooldown)
 		item.skinned = true
+
+		-- bag keybind support from actionbar module
+		if not E.private.actionbar.enable then return end
+
+		AB:QuickKeybindImport(item)
+		item:HookScript('OnEnter', AB.KeybindButtonOnEnter)
+		item:HookScript('OnLeave', AB.KeybindButtonOnLeave)
+	end
+end
+
+local BlockItemTracker, BlockItemRelease
+do -- add support for quest buttons to /kb  ~Simpy
+	local count = 1
+	local function ItemTrackerName()
+		return 'ElvUI_TrackerBlockItem' .. count
 	end
 
-	if item.backdrop then
-		item.backdrop:SetFrameLevel(item:GetFrameLevel() - 1)
+	local blockItems = {}
+	BlockItemTracker = function(block)
+		if blockItems[block] then return end
+
+		local name, new = ItemTrackerName()
+		local exists = _G[name] -- check for existing first
+		if exists then
+			count = count + 1
+
+			new = ItemTrackerName()
+			_G[new] = block.itemButton
+		else
+			_G[name] = block.itemButton
+		end
+
+		local reference = new or name
+		blockItems[block] = _G[reference]
+
+		block.itemButton.ElvUI_TrackerItem = reference
+	end
+
+	BlockItemRelease = function(block)
+		local name = blockItems[block]
+		if _G[name] then
+			_G[name] = nil
+
+			block.itemButton.ElvUI_TrackerItem = nil
+
+			count = count - 1
+		end
+	end
+end
+
+local function HandleItemButton(block, questLogIndex, isQuestComplete)
+	if not block.itemButton then return end
+
+	local itemLink, itemID, showItemWhenComplete, _
+	if questLogIndex then
+		itemLink, itemID, _, showItemWhenComplete = GetQuestLogSpecialItemInfo(questLogIndex)
+	end
+
+	block.itemButton.objectiveItem = (itemLink and GetItemInfo(itemLink)) or nil
+	block.itemButton.itemID = itemID
+
+	local shouldShowItem = itemID and (not isQuestComplete or showItemWhenComplete)
+	if shouldShowItem then
+		SkinItemButton(block.itemButton)
+
+		if block.itemButton.backdrop then
+			block.itemButton.backdrop:SetFrameLevel(block.itemButton:GetFrameLevel() - 1)
+		end
+
+		BlockItemTracker(block)
+	else
+		BlockItemRelease(block)
 	end
 end
 
@@ -214,6 +281,7 @@ function S:ObjectiveTrackerFrame()
 	minimize.tex:SetTexture(E.Media.Textures.MinusButton)
 	minimize.tex:SetInside()
 
+	hooksecurefunc('QuestObjectiveSetupBlockButton_Item', HandleItemButton)
 	hooksecurefunc('ObjectiveTracker_Expand',TrackerStateChanged)
 	hooksecurefunc('ObjectiveTracker_Collapse',TrackerStateChanged)
 	hooksecurefunc('BonusObjectiveTrackerProgressBar_SetValue',ColorProgressBars)			--[Color]: Bonus Objective Progress Bar
@@ -231,9 +299,6 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc(_G.QUEST_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)						--[Skin]: Quest Timer Bar
 	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)					--[Skin]: Scenario Timer Bar
 	hooksecurefunc(_G.ACHIEVEMENT_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)				--[Skin]: Achievement Timer Bar
-	hooksecurefunc(_G.QUEST_TRACKER_MODULE,'SetBlockHeader',SkinItemButton)					--[Skin]: Quest Item Buttons
-	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,'AddObjective',SkinItemButton)				--[Skin]: World Quest Item Buttons
-	hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,'AddObjective',SkinItemButton)			--[Skin]: Campaign Quest Item Buttons
 
 	for _, header in pairs(headers) do
 		local button = header.MinimizeButton

@@ -845,13 +845,18 @@ function AB:KeybindButtonOnEnter()
 	if self.QuickKeybindButtonOnEnter then
 		self.commandName = nil
 
-		local parentName = self:GetParent():GetName()
-		if parentName and not InCombatLockdown() then
-			if parentName == 'MacroButtonContainer' then
-				self.commandName = 'MACRO '.. GetMacroInfo(self:GetID())
-			elseif strmatch(parentName, 'ContainerFrame') then -- Bags
-				if self.itemID then
-					self.commandName = 'ITEM item:'..self.itemID
+		if not InCombatLockdown() then
+			if self.ElvUI_TrackerItem then -- objective items
+				self.commandName = 'CLICK ' .. self.ElvUI_TrackerItem .. ':LeftButton'
+			else
+				local parent = self:GetParent()
+				local parentName = parent and parent:GetName()
+				if parentName == 'MacroButtonContainer' then
+					self.commandName = 'MACRO '.. GetMacroInfo(self:GetID())
+				elseif parentName and strmatch(parentName, 'ContainerFrame') then -- Bags
+					if self.itemID then
+						self.commandName = 'ITEM item:'..self.itemID
+					end
 				end
 			end
 
