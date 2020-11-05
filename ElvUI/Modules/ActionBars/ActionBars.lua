@@ -839,6 +839,25 @@ function AB:SpellBookTooltipOnUpdate(elapsed)
 	if owner then AB.SpellButtonOnEnter(owner) end
 end
 
+function AB:MacroButtonOnEnter()
+	if self.QuickKeybindButtonOnEnter then
+		local index = not InCombatLockdown() and self:GetID()
+		if not index then
+			self.commandName = nil
+		else
+			self.commandName = 'MACRO '..index
+
+			self:QuickKeybindButtonOnEnter()
+		end
+	end
+end
+
+function AB:MacroButtonOnLeave()
+	if self.QuickKeybindButtonOnLeave then
+		self:QuickKeybindButtonOnLeave()
+	end
+end
+
 function AB:SpellButtonOnEnter(_, tt) -- copied from SpellBookFrame to remove: ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
 	ClearOnBarHighlightMarks()
 	ClearPetActionHighlightMarks()
@@ -924,6 +943,19 @@ function AB:ButtonEventsRegisterFrame(added)
 	end
 end
 
+function AB:QuickKeybindImport(button)
+	-- replicate QuickKeybindButtonTemplate
+	Mixin(button, _G.QuickKeybindButtonTemplateMixin)
+
+	local highlight = button:CreateTexture()
+	highlight:SetAtlas('bags-newitem')
+	highlight:SetAlpha(0.5)
+	highlight:Hide()
+	highlight:SetInside()
+
+	button.QuickKeybindHighlightTexture = highlight
+end
+
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	for i, name in ipairs({'OverrideActionBar', 'StanceBarFrame', 'PossessBarFrame', 'PetActionBarFrame', 'MultiCastActionBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}) do
@@ -940,17 +972,7 @@ function AB:DisableBlizzard()
 		local button = _G['SpellButton'..i]
 		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
-
-		-- replicate QuickKeybindButtonTemplate
-		Mixin(button, _G.QuickKeybindButtonTemplateMixin)
-
-		local highlight = button:CreateTexture()
-		highlight:SetAtlas('bags-newitem')
-		highlight:SetAlpha(0.5)
-		highlight:Hide()
-		highlight:SetInside()
-
-		button.QuickKeybindHighlightTexture = highlight
+		AB:QuickKeybindImport(button)
 	end
 
 	-- MainMenuBar:ClearAllPoints taint during combat
@@ -1345,11 +1367,36 @@ function AB:HandlePhantomExtraActionButton()
 	button:SetAllPoints(_G.ExtraActionBarFrame)
 end
 
-function AB:ADDON_LOADED(event, addon)
-	if addon == 'Blizzard_BindingUI' then
-		AB:SetupQuickKeybind()
+function AB:SetupMacroKeybind()
+	for i = 1, _G.MAX_ACCOUNT_MACROS do
+		local macro = _G['MacroButton'..i]
+		macro:HookScript('OnEnter', AB.MacroButtonOnEnter)
+		macro:HookScript('OnLeave', AB.MacroButtonOnLeave)
+		AB:QuickKeybindImport(macro)
+	end
+end
 
-		AB:UnregisterEvent(event)
+do
+	AB.AddonLoaded = {
+		Blizzard_BindingUI = { check = function() return _G.QuickKeybindFrame end, func = AB.SetupQuickKeybind },
+		Blizzard_MacroUI = { check = function() return _G.MacroFrame end, func = AB.SetupMacroKeybind }
+	}
+
+	function AB:ADDON_LOADED(_, addon)
+		local data = AB.AddonLoaded[addon]
+		if data and data.func then
+			data.func()
+			AB.AddonLoaded[addon] = nil
+		end
+	end
+
+	function AB:CheckLoadedAddons()
+		for key, data in ipairs(AB.AddonLoaded) do
+			if data and data.func and data.check and data.check() then
+				data.func()
+				AB.AddonLoaded[key] = nil
+			end
+		end
 	end
 end
 
@@ -1408,7 +1455,9 @@ function AB:Initialize()
 	AB:UpdateButtonSettings()
 	AB:UpdatePetCooldownSettings()
 	AB:ToggleCooldownOptions()
+	AB:CheckLoadedAddons()
 
+	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
@@ -1419,12 +1468,6 @@ function AB:Initialize()
 		AB:RemoveBindings()
 	else
 		AB:ReassignBindings()
-	end
-
-	if _G.QuickKeybindFrame then
-		AB:SetupQuickKeybind()
-	else
-		AB:RegisterEvent('ADDON_LOADED')
 	end
 
 	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
