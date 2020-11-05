@@ -6,6 +6,7 @@ local unpack = unpack
 local ipairs, pairs, select, strmatch = ipairs, pairs, select, strmatch
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
+local Mixin = Mixin
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
@@ -30,6 +31,7 @@ local UnitChannelInfo = UnitChannelInfo
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local GetSpellBookItemName = GetSpellBookItemName
 local GetCurrentBindingSet = GetCurrentBindingSet
 local UnregisterStateDriver = UnregisterStateDriver
 local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
@@ -42,6 +44,7 @@ local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
+local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 
 local LAB = E.Libs.LAB
@@ -836,22 +839,11 @@ function AB:SpellBookTooltipOnUpdate(elapsed)
 	if owner then AB.SpellButtonOnEnter(owner) end
 end
 
-function AB:SpellButtonOnEnter(_, tt)
-	-- copied from SpellBookFrame to remove:
-	--- ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
-
-	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
-	if not tt then tt = SpellBookTooltip end
-
-	if tt:IsForbidden() then return end
-	tt:SetOwner(self, 'ANCHOR_RIGHT')
-
-	local slot = _G.SpellBook_GetSpellBookSlot(self)
-	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
-
+function AB:SpellButtonOnEnter(_, tt) -- copied from SpellBookFrame to remove: ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
 	ClearOnBarHighlightMarks()
 	ClearPetActionHighlightMarks()
 
+	local slot = _G.SpellBook_GetSpellBookSlot(self)
 	local slotType, actionID = GetSpellBookItemInfo(slot, _G.SpellBookFrame.bookType)
 	if slotType == 'SPELL' then
 		UpdateOnBarHighlightMarksBySpell(actionID)
@@ -862,17 +854,39 @@ function AB:SpellButtonOnEnter(_, tt)
 		UpdatePetActionHighlightMarks(actionID)
 	end
 
-	local highlight = self.SpellHighlightTexture
-	if highlight and highlight:IsShown() then
-		local color = _G.LIGHTBLUE_FONT_COLOR
-		tt:AddLine(_G.SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, color.r, color.g, color.b)
+	if self.QuickKeybindButtonOnEnter then
+		local name = not InCombatLockdown() and GetSpellBookItemName(slot, _G.SpellBookFrame.bookType)
+		if not name then
+			self.commandName = nil
+		else
+			self.commandName = 'SPELL '..name
+
+			self:QuickKeybindButtonOnEnter()
+		end
 	end
 
-	if tt == SpellBookTooltip then
-		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
-	end
+	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
+	if not tt then tt = SpellBookTooltip end
+	if tt:IsForbidden() then return end
 
-	tt:Show()
+	if KeybindFrames_InQuickKeybindMode() then
+		tt:Hide()
+	else
+		tt:SetOwner(self, 'ANCHOR_RIGHT')
+
+		local highlight = self.SpellHighlightTexture
+		if highlight and highlight:IsShown() then
+			local color = _G.LIGHTBLUE_FONT_COLOR
+			tt:AddLine(_G.SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, color.r, color.g, color.b)
+		end
+
+		if tt == SpellBookTooltip then
+			local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
+			tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
+		end
+
+		tt:Show()
+	end
 end
 
 function AB:UpdateSpellBookTooltip(event)
@@ -887,6 +901,10 @@ function AB:SpellButtonOnLeave()
 
 	SpellBookTooltip:Hide()
 	SpellBookTooltip:SetScript('OnUpdate', nil)
+
+	if self.QuickKeybindButtonOnLeave then
+		self:QuickKeybindButtonOnLeave()
+	end
 end
 
 function AB:ButtonEventsRegisterFrame(added)
@@ -922,6 +940,17 @@ function AB:DisableBlizzard()
 		local button = _G['SpellButton'..i]
 		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+
+		-- replicate QuickKeybindButtonTemplate
+		Mixin(button, _G.QuickKeybindButtonTemplateMixin)
+
+		local highlight = button:CreateTexture()
+		highlight:SetAtlas('bags-newitem')
+		highlight:SetAlpha(0.5)
+		highlight:Hide()
+		highlight:SetInside()
+
+		button.QuickKeybindHighlightTexture = highlight
 	end
 
 	-- MainMenuBar:ClearAllPoints taint during combat
