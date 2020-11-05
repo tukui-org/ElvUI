@@ -652,11 +652,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		end
 	end
 
-	if icon then
-		if not useMasque then
-			AB:TrimIcon(icon, button.db, button.customCoords)
-		end
-
+	if icon and not useMasque then
+		AB:TrimIcon(icon, button.db, button.customCoords)
 		icon:SetInside()
 	end
 
