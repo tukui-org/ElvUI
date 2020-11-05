@@ -221,10 +221,14 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	end
 end
 
-function AB:TrimIcon(icon, db, customCoords)
-	local left, right, top, bottom = unpack(customCoords or E.TexCoords)
-	if db and not db.keepSizeRatio then
-		local ratio = (db.buttonsize or db.buttonSize) / db.buttonHeight
+function AB:TrimIcon(button)
+	local db, icon = button.db, button.icon
+	if not (db and icon) then return end
+
+	local left, right, top, bottom = unpack(db.customCoords or E.TexCoords)
+	if icon and not db.keepSizeRatio then
+		local width, height = button:GetSize()
+		local ratio = width / height
 		if ratio > 1 then
 			local trimAmount = (1 - (1 / ratio)) / 2
 			top = top + trimAmount
@@ -347,9 +351,7 @@ function AB:PositionAndSizeBar(barName)
 
 		-- masque retrims them all so we have to too
 		for btn in pairs(AB.handledbuttons) do
-			if btn.icon and btn.db and not btn.db.keepSizeRatio then
-				AB:TrimIcon(btn.icon, btn.db, btn.customCoords)
-			end
+			AB:TrimIcon(btn)
 		end
 	end
 end
@@ -553,23 +555,22 @@ function AB:UpdateButtonSettings()
 
 	for barName, bar in pairs(AB.handledBars) do
 		if bar then
-			AB:UpdateButtonConfig(bar, bar.bindButtons)
-			AB:PositionAndSizeBar(barName)
+			AB:UpdateButtonConfig(bar, bar.bindButtons) -- config them first
+			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+		end
+	end
+
+	for button in pairs(AB.handledbuttons) do
+		if button then
+			AB:StyleFlyout(button)
+		else
+			AB.handledbuttons[button] = nil
 		end
 	end
 
 	AB:AdjustMaxStanceButtons()
 	AB:PositionAndSizeBarPet()
 	AB:PositionAndSizeBarShapeShift()
-
-	for button in pairs(AB.handledbuttons) do
-		if button then
-			AB:StyleButton(button, button.noBackdrop, button.useMasque, button.ignoreNormal)
-			AB:StyleFlyout(button)
-		else
-			AB.handledbuttons[button] = nil
-		end
-	end
 
 	AB:UpdatePetBindings()
 	AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
@@ -649,7 +650,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if icon and not useMasque then
-		AB:TrimIcon(icon, button.db, button.customCoords)
+		AB:TrimIcon(button)
 		icon:SetInside()
 	end
 
