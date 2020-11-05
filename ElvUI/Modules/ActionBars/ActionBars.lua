@@ -854,6 +854,8 @@ function AB:KeybindButtonOnEnter()
 				if self.itemID then
 					self.commandName = 'ITEM item:'..self.itemID
 				end
+			elseif self.spellName then -- Flyouts
+				self.commandName = 'SPELL '..self.spellName
 			end
 
 			if self.commandName then
@@ -1168,11 +1170,15 @@ end
 function AB:FlyoutButton_OnEnter()
 	local anchor = flyoutButtonAnchor(self)
 	if anchor then AB:Bar_OnEnter(anchor) end
+
+	AB.KeybindButtonOnEnter(self)
 end
 
 function AB:FlyoutButton_OnLeave()
 	local anchor = flyoutButtonAnchor(self)
 	if anchor then AB:Bar_OnLeave(anchor) end
+
+	AB.KeybindButtonOnLeave(self)
 end
 
 local function spellFlyoutAnchor(frame)
@@ -1207,6 +1213,7 @@ function AB:SetupFlyoutButton(button)
 		AB:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
 		button:HookScript('OnEnter', AB.FlyoutButton_OnEnter)
 		button:HookScript('OnLeave', AB.FlyoutButton_OnLeave)
+		AB:QuickKeybindImport(button)
 	end
 
 	if not InCombatLockdown() then
