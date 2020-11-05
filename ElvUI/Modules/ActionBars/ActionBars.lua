@@ -46,6 +46,9 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local C_ToyBox_GetToyFromIndex = C_ToyBox.GetToyFromIndex
+local C_ToyBox_GetToyInfo = C_ToyBox.GetToyInfo
+local GameTooltip = GameTooltip
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -839,20 +842,35 @@ function AB:SpellBookTooltipOnUpdate(elapsed)
 	if owner then AB.SpellButtonOnEnter(owner) end
 end
 
-function AB:MacroButtonOnEnter()
+function AB:KeybindButtonOnEnter()
 	if self.QuickKeybindButtonOnEnter then
 		local index = not InCombatLockdown() and self:GetID()
 		if not index then
 			self.commandName = nil
 		else
-			self.commandName = 'MACRO '..index
+			if self.slotFrameCollected then -- issa toy
+				local toyID = C_ToyBox_GetToyFromIndex(index)
+				if toyID then
+					local _, toyName = C_ToyBox_GetToyInfo(toyID)
+					if toyName then
+						self.commandName = 'ITEM '..toyName
+					end
+				end
+			else
+				self.commandName = 'MACRO '..index
+			end
 
 			self:QuickKeybindButtonOnEnter()
+
+			-- hide the GameTooltip if its showning too
+			if _G.QuickKeybindTooltip:IsShown() and not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
+				GameTooltip:Hide()
+			end
 		end
 	end
 end
 
-function AB:MacroButtonOnLeave()
+function AB:KeybindButtonOnLeave()
 	if self.QuickKeybindButtonOnLeave then
 		self:QuickKeybindButtonOnLeave()
 	end
@@ -1370,16 +1388,26 @@ end
 function AB:SetupMacroKeybind()
 	for i = 1, _G.MAX_ACCOUNT_MACROS do
 		local macro = _G['MacroButton'..i]
-		macro:HookScript('OnEnter', AB.MacroButtonOnEnter)
-		macro:HookScript('OnLeave', AB.MacroButtonOnLeave)
+		macro:HookScript('OnEnter', AB.KeybindButtonOnEnter)
+		macro:HookScript('OnLeave', AB.KeybindButtonOnLeave)
 		AB:QuickKeybindImport(macro)
+	end
+end
+
+function AB:SetupToyKeybind()
+	for i = 1, 18 do -- TOYS_PER_PAGE
+	    local button = _G.ToyBox.iconsFrame['spellButton'..i]
+		button:HookScript('OnEnter', AB.KeybindButtonOnEnter)
+		button:HookScript('OnLeave', AB.KeybindButtonOnLeave)
+		AB:QuickKeybindImport(button)
 	end
 end
 
 do
 	AB.AddonLoaded = {
 		Blizzard_BindingUI = { check = function() return _G.QuickKeybindFrame end, func = AB.SetupQuickKeybind },
-		Blizzard_MacroUI = { check = function() return _G.MacroFrame end, func = AB.SetupMacroKeybind }
+		Blizzard_MacroUI = { check = function() return _G.MacroFrame end, func = AB.SetupMacroKeybind },
+		Blizzard_Collections = { check = function() return _G.ToyBox end, func = AB.SetupToyKeybind }
 	}
 
 	function AB:ADDON_LOADED(_, addon)
