@@ -3,8 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
-local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
-local GetItemInfo = GetItemInfo
 local hooksecurefunc = hooksecurefunc
 
 local headers = {
@@ -86,24 +84,17 @@ local function SkinItemButton(item)
 	E:RegisterCooldown(item.Cooldown)
 end
 
-local function HandleItemButton(block, questLogIndex, isQuestComplete)
+local function HandleItemButton(block)
 	local item = block and block.itemButton
 	if not item then return end
 
-	local itemID, showItemWhenComplete, _
-	if questLogIndex then
-		_, itemID, _, showItemWhenComplete = GetQuestLogSpecialItemInfo(questLogIndex)
+	if not item.skinned then
+		SkinItemButton(item)
+		item.skinned = true
 	end
 
-	if itemID and (not isQuestComplete or showItemWhenComplete) then -- shouldShowItem
-		if not item.skinned then
-			SkinItemButton(item)
-			item.skinned = true
-		end
-
-		if item.backdrop then
-			item.backdrop:SetFrameLevel(item:GetFrameLevel() - 1)
-		end
+	if item.backdrop then
+		item.backdrop:SetFrameLevel(item:GetFrameLevel() - 1)
 	end
 end
 
