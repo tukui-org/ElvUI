@@ -842,18 +842,23 @@ end
 
 function AB:KeybindButtonOnEnter()
 	if self.QuickKeybindButtonOnEnter then
+		self.commandName = nil
+
 		local index = not InCombatLockdown() and self:GetID()
-		if not index then
-			self.commandName = nil
-		else
-			if self.bagID then
-				local id = self.itemID
-				if id then
-					self.commandName = 'ITEM item:'..id
-				end
-			else
+		if index then
+			local parent = self:GetParent()
+			local parentName = parent and parent:GetName()
+			if not parentName then return end -- dont try without a parent name
+
+			if parentName == 'MacroButtonContainer' then
 				self.commandName = 'MACRO '..index
+			elseif strmatch(parentName, 'ContainerFrame') then -- Bags
+				if self.itemID then
+					self.commandName = 'ITEM item:'..self.itemID
+				end
 			end
+
+			if not self.commandName then return end
 
 			self:QuickKeybindButtonOnEnter()
 
