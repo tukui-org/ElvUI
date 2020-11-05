@@ -3,7 +3,6 @@ local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local ipairs = ipairs
 local min, format = min, format
 local CreateFrame = CreateFrame
 local GetXPExhaustion = GetXPExhaustion
@@ -114,7 +113,7 @@ function DB:ExperienceBar_QuestXP()
 
 	for i = 1, C_QuestLog_GetNumQuestLogEntries() do
 		local info = C_QuestLog_GetInfo(i)
-		if (not info.isHidden) and (bar.db.questCurrentZoneOnly and info.isOnMap or not bar.db.questCurrentZoneOnly) then
+		if info and (not info.isHidden) and (bar.db.questCurrentZoneOnly and info.isOnMap or not bar.db.questCurrentZoneOnly) then
 			DB:ExperienceBar_CheckQuests(C_QuestLog_GetQuestIDForLogIndex(i), bar.db.questCompletedOnly)
 		end
 	end

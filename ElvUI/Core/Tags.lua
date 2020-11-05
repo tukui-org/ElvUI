@@ -63,6 +63,7 @@ local UnitStagger = UnitStagger
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
 
+local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
 local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 

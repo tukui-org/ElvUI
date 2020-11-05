@@ -61,13 +61,13 @@ function S:Blizzard_BindingUI()
 	Quickie.Header:StripTextures()
 	Quickie:CreateBackdrop('Transparent')
 
-	local buttons = {
+	local quickies = {
 		'okayButton',
 		'defaultsButton',
 		'cancelButton'
 	}
 
-	for _, v in pairs(buttons) do
+	for _, v in pairs(quickies) do
 		S:HandleButton(Quickie[v])
 	end
 

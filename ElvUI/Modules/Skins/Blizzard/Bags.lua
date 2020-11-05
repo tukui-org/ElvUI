@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local unpack, select = unpack, select
@@ -11,6 +12,7 @@ local GetContainerItemInfo = GetContainerItemInfo
 local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventorySlotInfo = GetInventorySlotInfo
+local GetContainerItemID = GetContainerItemID
 local hooksecurefunc = hooksecurefunc
 local BACKPACK_TOOLTIP = BACKPACK_TOOLTIP
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
@@ -59,21 +61,30 @@ local function SkinButton(button)
 		end
 
 		button.skinned = true
+
+		-- bag keybind support from actionbar module
+		if not E.private.actionbar.enable then return end
+
+		AB:QuickKeybindImport(button)
+		button:HookScript('OnEnter', AB.KeybindButtonOnEnter)
+		button:HookScript('OnLeave', AB.KeybindButtonOnLeave)
 	end
 end
 
 local function SkinBagButtons(container, button)
 	SkinButton(button)
 
-	local texture, _, _, _, _, _, itemLink = GetContainerItemInfo(container:GetID(), button:GetID())
-	local isQuestItem, questId = GetContainerItemQuestInfo(container:GetID(), button:GetID())
+	local bagID, slotID = container:GetID(), button:GetID()
+	local texture, _, _, _, _, _, itemLink = GetContainerItemInfo(bagID, slotID)
+	local isQuestItem, questId = GetContainerItemQuestInfo(bagID, slotID)
 	_G[button:GetName()..'IconTexture']:SetTexture(texture)
 
-	button.type = nil
-	button.quality = nil
+	button.type, button.quality, button.itemID = nil, nil, nil
 	button.ilink = itemLink
+
 	if button.ilink then
 		button.name, _, button.quality, _, _, button.type = GetItemInfo(button.ilink)
+		button.itemID = GetContainerItemID(bagID, slotID)
 	end
 
 	if questId or isQuestItem then

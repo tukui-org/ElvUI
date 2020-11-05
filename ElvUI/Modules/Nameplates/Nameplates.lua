@@ -754,6 +754,10 @@ function NP:Initialize()
 	if E.private.nameplates.enable ~= true then return end
 	NP.Initialized = true
 
+	NP.thinBorders = NP.db.thinBorders
+	NP.SPACING = (NP.thinBorders or E.twoPixelsPlease) and 0 or 1
+	NP.BORDER = (NP.thinBorders and not E.twoPixelsPlease) and 1 or 2
+
 	ElvUF:RegisterStyle('ElvNP', function(frame, unit) NP:Style(frame, unit) end)
 	ElvUF:SetActiveStyle('ElvNP')
 

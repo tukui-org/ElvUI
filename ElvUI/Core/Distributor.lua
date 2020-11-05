@@ -259,6 +259,7 @@ local blacklistedKeys = {
 			locale = true,
 			version = true,
 			eyefinity = true,
+			ultrawide = true,
 			disableTutorialButtons = true,
 			showMissingTalentAlert = true,
 			allowDistributor = true
@@ -296,7 +297,6 @@ local blacklistedKeys = {
 D.GeneratedKeys = {
 	profile = {
 		movers = true,
-		v11NamePlateReset = true,
 		nameplates = { -- this is supposed to have an 's' because yeah, oh well
 			filters = true
 		},

@@ -428,7 +428,9 @@ local function CreateDTOptions(name, data)
 		end
 	end
 
-	if name == 'Currencies' then
+	if name == 'Combat' then
+		optionTable.args.TimeFull = ACH:Toggle('Full Time')
+	elseif name == 'Currencies' then
 		optionTable.args.displayedCurrency = {
 			type = "select",
 			name = L["Displayed Currency"],

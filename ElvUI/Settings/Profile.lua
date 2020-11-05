@@ -4,6 +4,7 @@ local CopyTable = CopyTable -- Our function doesn't exist yet.
 P.gridSize = 64
 P.layoutSetting = 'tank'
 P.hideTutorial = true
+P.dbConverted = nil -- use this to let DBConversions run once per profile
 
 --Core
 P.general = {
@@ -480,6 +481,7 @@ P.nameplates = {
 	showFriendlyCombat = 'DISABLED',
 	smoothbars = false,
 	statusbar = 'ElvUI Norm',
+	thinBorders = true,
 	clickThrough = {
 		personal = false,
 		friendly = false,
@@ -1179,6 +1181,14 @@ local UF_PhaseIndicator = {
 	yOffset = 0,
 }
 
+local UF_PartyIndicator = {
+	anchorPoint = 'TOPRIGHT',
+	enable = true,
+	scale = 1,
+	xOffset = -5,
+	yOffset = 10
+}
+
 local UF_Portrait = {
 	enable = false,
 	paused = false,
@@ -1550,6 +1560,7 @@ P.unitframe = {
 			health = CopyTable(UF_Health),
 			infoPanel = CopyTable(UF_InfoPanel),
 			name = CopyTable(UF_Name),
+			partyIndicator = CopyTable(UF_PartyIndicator),
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			pvpIcon = CopyTable(UF_PVPIcon),
@@ -2144,9 +2155,16 @@ P.actionbar = {
 		mouseover = false,
 		buttonsPerRow = 11,
 		buttonSize = 20,
+		keepSizeRatio = true,
+		point = 'TOPLEFT',
+		buttonHeight = 32,
 		buttonSpacing = 2,
 		alpha = 1,
 		visibility = '[petbattle] hide; show',
+		backdrop = false,
+		backdropSpacing = 2,
+		heightMult = 1,
+		widthMult = 1,
 	},
 
 	globalFadeAlpha = 0,
@@ -2170,7 +2188,9 @@ P.actionbar = {
 		backdrop = true,
 		heightMult = 1,
 		widthMult = 1,
+		keepSizeRatio = true,
 		buttonsize = 32,
+		buttonHeight = 32,
 		buttonspacing = 2,
 		backdropSpacing = 2,
 		alpha = 1,
@@ -2188,7 +2208,9 @@ P.actionbar = {
 		backdrop = false,
 		heightMult = 1,
 		widthMult = 1,
+		keepSizeRatio = true,
 		buttonsize = 32,
+		buttonHeight = 32,
 		buttonspacing = 2,
 		backdropSpacing = 2,
 		alpha = 1,

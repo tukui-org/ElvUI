@@ -196,9 +196,9 @@ do --this can save some main file locals
 
 	local itsElv, itsMis, itsMel, itsSimpy, itsTheFlyestNihilist
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
-		local e, f, g = {'|[TA].-|[ta]', '|?c?%x-%[?|H.-|h.-|h]?|?r?', '|c.-|r'}, {}, {}
+		local e, f, g = {'||','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
-		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
+		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end if r then tinsert(g, r) f[r] = w end return gsub(t, w, '\24') end
 		local specialText = function(t,...) local u = t for _, w in ipairs(e) do for k in gmatch(t, w) do t = protectText(t, u, k) end end t = prettify(t,...)
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
@@ -336,18 +336,23 @@ do --this can save some main file locals
 		['Rubee-CenarionCircle']		= itsSimpy, -- [RP] DH
 		['Wennie-CenarionCircle']		= itsSimpy, -- [RP] Priest
 		-- Melbelle (Simpys Bestie)
-		['Deathchaser-Bladefist']		= itsMel, -- DH
 		['Melbelle-Bladefist']			= itsMel, -- Hunter
-		['Alykins-Cenarius']			= itsMel, -- DH
+		['Deathchaser-Bladefist']		= itsMel, -- DH
 		['Alyosha-Cenarius']			= itsMel, -- Warrior
-		['Alytotes-Cenarius']			= itsMel, -- Shaman
 		['Dãwn-Cenarius']				= itsMel, -- Paladin
+		['Faelen-Cenarius']				= itsMel, -- Rogue
 		['Freckles-Cenarius']			= itsMel, -- DK
 		['Lõvi-Cenarius']				= itsMel, -- Priest
 		['Melbelle-Cenarius']			= itsMel, -- Druid
 		['Perìwìnkle-Cenarius']			= itsMel, -- Shaman
 		['Pìper-Cenarius']				= itsMel, -- Warlock
 		['Spãrkles-Cenarius']			= itsMel, -- Mage
+		['Alybones-Cenarius']			= itsMel, -- [Horde] DK
+		['Alyfreeze-Cenarius']			= itsMel, -- [Horde] Mage
+		['Alykins-Cenarius']			= itsMel, -- [Horde] DH
+		['Alyrage-Cenarius']			= itsMel, -- [Horde] Warrior
+		['Alysneaks-Cenarius']			= itsMel, -- [Horde] Rogue
+		['Alytotes-Cenarius']			= itsMel, -- [Horde] Shaman
 		-- Lulupeep (Nihilist's wife)
 		['Arïä-WyrmrestAccord'] 		= DeathlyH,
 		['Belladonnä-WyrmrestAccord'] 	= DeathlyH,

@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local unpack = unpack
-local format, strfind = format, strfind
+local gsub = gsub
+local format, ipairs = format, ipairs
 local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
@@ -34,20 +34,18 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 		end
 	end
 
-	self:StyleShapeShift('UPDATE_SHAPESHIFT_COOLDOWN')
+	AB:StyleShapeShift('UPDATE_SHAPESHIFT_COOLDOWN')
 end
 
 function AB:StyleShapeShift()
 	local numForms = GetNumShapeshiftForms()
 	local stance = GetShapeshiftForm()
-	local darkenInactive = self.db.stanceBar.style == 'darkenInactive'
+	local darkenInactive = AB.db.stanceBar.style == 'darkenInactive'
 
 	for i = 1, NUM_STANCE_SLOTS do
 		local buttonName = 'ElvUI_StanceBarButton'..i
 		local button = _G[buttonName]
 		local cooldown = _G[buttonName..'Cooldown']
-
-		button.icon:Hide()
 
 		if i <= numForms then
 			local texture, isActive, isCastable, spellID, _ = GetShapeshiftFormInfo(i)
@@ -58,7 +56,7 @@ function AB:StyleShapeShift()
 
 			if not texture then texture = WispSplode end
 
-			button.ICON:SetTexture(texture)
+			button.icon:SetTexture(texture)
 
 			if not button.useMasque then
 				cooldown:SetAlpha(1)
@@ -94,162 +92,77 @@ function AB:StyleShapeShift()
 			end
 
 			if isCastable then
-				button.ICON:SetVertexColor(1.0, 1.0, 1.0)
+				button.icon:SetVertexColor(1.0, 1.0, 1.0)
 			else
-				button.ICON:SetVertexColor(0.4, 0.4, 0.4)
+				button.icon:SetVertexColor(0.4, 0.4, 0.4)
 			end
 		end
 	end
 end
 
 function AB:PositionAndSizeBarShapeShift()
-	local buttonSpacing = self.db.stanceBar.buttonspacing
-	local backdropSpacing = self.db.stanceBar.backdropSpacing
-	local buttonsPerRow = self.db.stanceBar.buttonsPerRow
-	local numButtons = self.db.stanceBar.buttons
-	local size = self.db.stanceBar.buttonsize
-	local point = self.db.stanceBar.point
-	local widthMult = self.db.stanceBar.widthMult
-	local heightMult = self.db.stanceBar.heightMult
+	local db = AB.db.stanceBar
 
-	--Convert 'TOP' or 'BOTTOM' to anchor points we can use
-	local position = E:GetScreenQuadrant(bar)
-	if strfind(position, 'LEFT') or position == 'TOP' or position == 'BOTTOM' then
-		if point == 'TOP' then point = 'TOPLEFT' elseif point == 'BOTTOM' then point = 'BOTTOMLEFT' end
-	elseif point == 'TOP' then point = 'TOPRIGHT' elseif point == 'BOTTOM' then point = 'BOTTOMRIGHT' end
+	local buttonSpacing = db.buttonspacing
+	local backdropSpacing = db.backdropSpacing
+	local buttonsPerRow = db.buttonsPerRow
+	local numButtons = db.buttons
+	local point = db.point
+	local visibility = db.visibility
 
-	bar.db = self.db.stanceBar
+	bar.db = db
+	bar.mouseover = db.mouseover
 
-	if bar.LastButton and numButtons > bar.LastButton then
-		numButtons = bar.LastButton
-	end
-	if bar.LastButton and buttonsPerRow > bar.LastButton then
-		buttonsPerRow = bar.LastButton
+	if bar.LastButton then
+		if numButtons > bar.LastButton then numButtons = bar.LastButton end
+		if buttonsPerRow > bar.LastButton then buttonsPerRow = bar.LastButton end
 	end
 	if numButtons < buttonsPerRow then
 		buttonsPerRow = numButtons
 	end
 
-	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
-	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
-	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
+	bar:SetParent(db.inheritGlobalFade and AB.fadeParent or E.UIParent)
+	bar:EnableMouse(not db.clickThrough)
+	bar:SetAlpha(bar.mouseover and 0 or db.alpha)
+	AB:FadeBarBlings(bar, bar.mouseover and 0 or db.alpha)
 
-	bar.backdrop:SetShown(self.db.stanceBar.backdrop)
+	bar.backdrop:SetShown(db.backdrop)
 	bar.backdrop:ClearAllPoints()
 
-	-- mover magic ~Simpy
-	bar:ClearAllPoints()
-	if not bar.backdrop:IsShown() then
-		bar:SetPoint('BOTTOMLEFT', bar.mover)
-	elseif anchorUp then
-		bar:SetPoint('BOTTOMLEFT', bar.mover, 'BOTTOMLEFT', anchorLeft and E.Border or -E.Border, -E.Border)
-	else
-		bar:SetPoint('TOPLEFT', bar.mover, 'TOPLEFT', anchorLeft and E.Border or -E.Border, E.Border)
-	end
+	AB:MoverMagic(bar)
 
-	bar.mouseover = self.db.stanceBar.mouseover
-	if bar.mouseover then
-		bar:SetAlpha(0)
-		AB:FadeBarBlings(bar, 0)
-	else
-		bar:SetAlpha(bar.db.alpha)
-		AB:FadeBarBlings(bar, bar.db.alpha)
-	end
-
-	if self.db.stanceBar.inheritGlobalFade then
-		bar:SetParent(self.fadeParent)
-	else
-		bar:SetParent(E.UIParent)
-	end
-
-	bar:EnableMouse(not self.db.stanceBar.clickThrough)
-
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
 	local useMasque = MasqueGroup and E.private.actionbar.masque.stanceBar
-	local firstButtonSpacing = (self.db.stanceBar.backdrop == true and (E.Border + backdropSpacing) or E.Spacing)
 
 	for i = 1, NUM_STANCE_SLOTS do
 		button = _G['ElvUI_StanceBarButton'..i]
 		lastButton = _G['ElvUI_StanceBarButton'..i-1]
 		lastColumnButton = _G['ElvUI_StanceBarButton'..i-buttonsPerRow]
-		button:SetParent(bar)
-		button:ClearAllPoints()
-		button:Size(size)
-		button:EnableMouse(not self.db.stanceBar.clickThrough)
+		button.db = db
 
-		if i == 1 then
-			local x, y
-			if point == 'BOTTOMLEFT' then
-				x, y = firstButtonSpacing, firstButtonSpacing
-			elseif point == 'TOPRIGHT' then
-				x, y = -firstButtonSpacing, -firstButtonSpacing
-			elseif point == 'TOPLEFT' then
-				x, y = firstButtonSpacing, -firstButtonSpacing
-			else
-				x, y = -firstButtonSpacing, firstButtonSpacing
-			end
-
-			button:Point(point, bar, point, x, y)
-			anchorRowButton = button
-		elseif (i - 1) % buttonsPerRow == 0 then
-			local x = 0
-			local y = -buttonSpacing
-			local buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
-			if anchorUp then
-				y = buttonSpacing
-				buttonPoint = 'BOTTOM'
-				anchorPoint = 'TOP'
-			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, x, y)
-		else
-			local x = buttonSpacing
-			local y = 0
-			local buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
-			if anchorLeft then
-				x = -buttonSpacing
-				buttonPoint = 'RIGHT'
-				anchorPoint = 'LEFT'
-			end
-
-			button:Point(buttonPoint, lastButton, anchorPoint, x, y)
-		end
-
-		if i == 1 then
-			bar.backdrop:Point(point, button, point, anchorLeft and backdropSpacing or -backdropSpacing, anchorUp and -backdropSpacing or backdropSpacing)
-		elseif i == buttonsPerRow then
-			bar.backdrop:Point(horizontalGrowth, button, horizontalGrowth, anchorLeft and -backdropSpacing or backdropSpacing, 0)
+		if i == 1 or i == buttonsPerRow then
 			anchorRowButton = button
 		end
 
 		if i > numButtons then
 			button:SetAlpha(0)
 		else
-			button:SetAlpha(bar.db.alpha)
-
-			local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
-			bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and backdropSpacing or -backdropSpacing)
+			button:SetAlpha(db.alpha)
 			lastShownButton = button
 		end
 
-		if not button.ICON then
-			button.ICON = button:CreateTexture('ElvUI_StanceBarButton'..i..'ICON')
-			button.ICON:SetTexCoord(unpack(E.TexCoords))
-			button.ICON:SetInside()
-
-			if button.pushed then
-				button.pushed:SetDrawLayer('ARTWORK', 1)
-			end
-		end
+		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 
 		if useMasque then
-			MasqueGroup:AddButton(bar.buttons[i], {Icon=bar.buttons[i].ICON})
+			MasqueGroup:AddButton(bar.buttons[i])
 		end
 
 		if not button.FlyoutUpdateFunc then
-			self:StyleButton(button, nil, useMasque and true or nil, true)
+			AB:StyleButton(button, nil, useMasque, true)
 
 			if not useMasque then
-				if self.db.stanceBar.style == 'darkenInactive' then
+				if db.style == 'darkenInactive' then
 					button.checked:SetBlendMode('BLEND')
 				else
 					button.checked:SetBlendMode('ADD')
@@ -258,18 +171,11 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 	end
 
-	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
-	if useMasque then
-		MasqueGroup:ReSkin()
-	end
-
-	if self.db.stanceBar.enabled then
-		local visibility = self.db.stanceBar.visibility
-		if visibility and visibility:match('[\n\r]') then
-			visibility = visibility:gsub('[\n\r]','')
-		end
+	if db.enabled then
+		visibility = gsub(visibility,'[\n\r]','')
 
 		RegisterStateDriver(bar, 'visibility', (GetNumShapeshiftForms() == 0 and 'hide') or visibility)
 		E:EnableMover(bar.mover:GetName())
@@ -277,17 +183,25 @@ function AB:PositionAndSizeBarShapeShift()
 		RegisterStateDriver(bar, 'visibility', 'hide')
 		E:DisableMover(bar.mover:GetName())
 	end
+
+	if useMasque then
+		MasqueGroup:ReSkin()
+
+		for _, btn in ipairs(bar.buttons) do
+			AB:TrimIcon(btn)
+		end
+	end
 end
 
 function AB:AdjustMaxStanceButtons(event)
 	if InCombatLockdown() then
 		AB.NeedsAdjustMaxStanceButtons = event or true
-		self:RegisterEvent('PLAYER_REGEN_ENABLED')
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return
 	end
 
-	for i = 1, #bar.buttons do
-		bar.buttons[i]:Hide()
+	for _, button in ipairs(bar.buttons) do
+		button:Hide()
 	end
 
 	local numButtons = GetNumShapeshiftForms()
@@ -296,8 +210,8 @@ function AB:AdjustMaxStanceButtons(event)
 			bar.buttons[i] = CreateFrame('CheckButton', format(bar:GetName()..'Button%d', i), bar, 'StanceButtonTemplate')
 			bar.buttons[i]:SetID(i)
 
-			self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
-			self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
+			AB:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
+			AB:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
 		end
 
 		local blizz = _G[format('StanceButton%d', i)]
@@ -308,16 +222,14 @@ function AB:AdjustMaxStanceButtons(event)
 		if i <= numButtons then
 			bar.buttons[i]:Show()
 			bar.LastButton = i
-		else
-			bar.buttons[i]:Hide()
 		end
 	end
 
-	self:PositionAndSizeBarShapeShift()
+	AB:PositionAndSizeBarShapeShift()
 
 	-- sometimes after combat lock down `event` may be true because of passing it back with `AB.NeedsAdjustMaxStanceButtons`
 	if event == 'UPDATE_SHAPESHIFT_FORMS' or event == 'PLAYER_ENTERING_WORLD' then
-		self:StyleShapeShift()
+		AB:StyleShapeShift()
 	end
 end
 
@@ -326,11 +238,11 @@ function AB:UpdateStanceBindings()
 		local button = _G['ElvUI_StanceBarButton'..i]
 		if not button then break end
 
-		if self.db.hotkeytext then
+		if AB.db.hotkeytext then
 			button.HotKey:Show()
 			button.HotKey:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
 
-			self:FixKeybindText(button)
+			AB:FixKeybindText(button)
 		else
 			button.HotKey:Hide()
 		end
@@ -338,20 +250,19 @@ function AB:UpdateStanceBindings()
 end
 
 function AB:CreateBarShapeShift()
-	bar.backdrop = CreateFrame('Frame', nil, bar, 'BackdropTemplate')
-	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
+	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
 	bar.backdrop:SetFrameLevel(0)
 
 	bar:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
 
-	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
-	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
+	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
+	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
-	self:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN')
-	self:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons')
-	self:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift')
-	self:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift')
-	self:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift')
+	AB:RegisterEvent('UPDATE_SHAPESHIFT_COOLDOWN')
+	AB:RegisterEvent('UPDATE_SHAPESHIFT_FORMS', 'AdjustMaxStanceButtons')
+	AB:RegisterEvent('UPDATE_SHAPESHIFT_FORM', 'StyleShapeShift')
+	AB:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift')
+	AB:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift')
 
 	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar', true)
 end

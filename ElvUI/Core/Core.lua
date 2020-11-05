@@ -4,13 +4,14 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
-local strsplit, strjoin, twipe, tinsert, tremove, tContains = strsplit, strjoin, wipe, tinsert, tremove, tContains
+local strsplit, strjoin, wipe, sort, tinsert, tremove, tContains = strsplit, strjoin, wipe, sort, tinsert, tremove, tContains
 local format, find, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 
 local CreateFrame = CreateFrame
 local GetCVar = GetCVar
+local GetSpellInfo = GetSpellInfo
 local GetCVarBool = GetCVarBool
 local GetNumGroupMembers = GetNumGroupMembers
 local GetSpecialization = GetSpecialization
@@ -447,12 +448,10 @@ function E:UpdateBackdropColors()
 			if not frame.ignoreUpdates then
 				if frame.callbackBackdropColor then
 					frame:callbackBackdropColor()
-				elseif not frame.ignoreBackdropColor then
-					if frame.template == 'Default' then
-						frame:SetBackdropColor(r, g, b)
-					elseif frame.template == 'Transparent' then
-						frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
-					end
+				elseif frame.template == 'Default' then
+					frame:SetBackdropColor(r, g, b)
+				elseif frame.template == 'Transparent' then
+					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
 				end
 			end
 		else
@@ -465,12 +464,10 @@ function E:UpdateBackdropColors()
 			if not frame.ignoreUpdates then
 				if frame.callbackBackdropColor then
 					frame:callbackBackdropColor()
-				elseif not frame.ignoreBackdropColor then
-					if frame.template == 'Default' then
-						frame:SetBackdropColor(r, g, b)
-					elseif frame.template == 'Transparent' then
-						frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
-					end
+				elseif frame.template == 'Default' then
+					frame:SetBackdropColor(r, g, b)
+				elseif frame.template == 'Transparent' then
+					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
 				end
 			end
 		else
@@ -699,10 +696,30 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 	return tfbCleaned
 end
 
+local function keySort(a, b)
+	local A, B = type(a), type(b)
+
+	if A == B then
+		if A == 'number' or A == 'string' then
+			return a < b
+		elseif A == 'boolean' then
+			return (a and 1 or 0) > (b and 1 or 0)
+		end
+	end
+
+	return A < B
+end
+
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
-	--Code slightly modified by Simpy
-	local function recurse(table, level, ret)
-		for i, v in pairs(table) do
+	--Code slightly modified by Simpy, sorting from @sighol
+	local function recurse(tbl, level, ret)
+		local tkeys = {}
+		for i in pairs(tbl) do tinsert(tkeys, i) end
+		sort(tkeys, keySort)
+
+		for _, i in ipairs(tkeys) do
+			local v = tbl[i]
+
 			ret = ret..strrep('    ', level)..'['
 			if type(i) == 'string' then ret = ret..'"'..i..'"' else ret = ret..i end
 			ret = ret..'] = '
@@ -740,7 +757,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 end
 
 do	--The code in this function is from WeakAuras, credit goes to Mirrored and the WeakAuras Team
-	--Code slightly modified by Simpy
+	--Code slightly modified by Simpy, sorting from @sighol
 	local lineStructureTable, profileFormat = {}, {
 		profile = 'E.db',
 		private = 'E.private',
@@ -763,8 +780,14 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 
 	local sameLine
 	local function recurse(tbl, ret, profileText)
+		local tkeys = {}
+		for i in pairs(tbl) do tinsert(tkeys, i) end
+		sort(tkeys, keySort)
+
 		local lineStructure = buildLineStructure(profileText)
-		for k, v in pairs(tbl) do
+		for _, k in ipairs(tkeys) do
+			local v = tbl[k]
+
 			if not sameLine then
 				ret = ret..lineStructure
 			end
@@ -811,7 +834,8 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		local profileText = profileFormat[profileType]
 		if not profileText then return end
 
-		twipe(lineStructureTable)
+		wipe(lineStructureTable)
+
 		local ret = ''
 		if inTable and profileType then
 			sameLine = false
@@ -828,7 +852,7 @@ do	--Split string by multi-character delimiter (the strsplit / string.split func
 		assert(type (delim) == 'string' and strlen(delim) > 0, 'bad delimiter')
 
 		local start = 1
-		twipe(splitTable)  -- results table
+		wipe(splitTable)  -- results table
 
 		-- find each instance of a string followed by the delimiter
 		while true do
@@ -921,12 +945,333 @@ function E:UpdateStart(skipCallback, skipUpdateDB)
 	end
 end
 
+do -- BFA Convert, deprecated..
+	local function buffwatchConvert(spell)
+		if spell.sizeOverride then spell.sizeOverride = nil end
+		if spell.size then spell.size = nil end
+
+		if not spell.sizeOffset then
+			spell.sizeOffset = 0
+		end
+
+		if spell.styleOverride then
+			spell.style = spell.styleOverride
+			spell.styleOverride = nil
+		elseif not spell.style then
+			spell.style = 'coloredIcon'
+		end
+	end
+
+	local ttModSwap
+	do -- tooltip convert
+		local swap = {ALL = 'HIDE',NONE = 'SHOW'}
+		ttModSwap = function(val) return swap[val] end
+	end
+
+	function E:DBConvertBFA()
+		--Fix issue where UIScale was incorrectly stored as string
+		E.global.general.UIScale = tonumber(E.global.general.UIScale)
+
+		--Not sure how this one happens, but prevent it in any case
+		if E.global.general.UIScale <= 0 then
+			E.global.general.UIScale = G.general.UIScale
+		end
+
+		--Combat & Resting Icon options update
+		if E.db.unitframe.units.player.combatIcon ~= nil then
+			E.db.unitframe.units.player.CombatIcon.enable = E.db.unitframe.units.player.combatIcon
+			E.db.unitframe.units.player.combatIcon = nil
+		end
+		if E.db.unitframe.units.player.restIcon ~= nil then
+			E.db.unitframe.units.player.RestIcon.enable = E.db.unitframe.units.player.restIcon
+			E.db.unitframe.units.player.restIcon = nil
+		end
+
+		-- [Fader] Combat Fade options for Player
+		if E.db.unitframe.units.player.combatfade ~= nil then
+			local enabled = E.db.unitframe.units.player.combatfade
+			E.db.unitframe.units.player.fader.enable = enabled
+
+			if enabled then -- use the old min alpha too
+				E.db.unitframe.units.player.fader.minAlpha = 0
+			end
+
+			E.db.unitframe.units.player.combatfade = nil
+		end
+
+		-- [Fader] Range check options for Units
+		do
+			local outsideAlpha
+			if E.db.unitframe.OORAlpha ~= nil then
+				outsideAlpha = E.db.unitframe.OORAlpha
+				E.db.unitframe.OORAlpha = nil
+			end
+
+			for _, unit in ipairs({'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid','raid40','raidpet','tank','assist'}) do
+				if E.db.unitframe.units[unit].rangeCheck ~= nil then
+					local enabled = E.db.unitframe.units[unit].rangeCheck
+					E.db.unitframe.units[unit].fader.enable = enabled
+					E.db.unitframe.units[unit].fader.range = enabled
+
+					if outsideAlpha then
+						E.db.unitframe.units[unit].fader.minAlpha = outsideAlpha
+					end
+
+					E.db.unitframe.units[unit].rangeCheck = nil
+				end
+			end
+		end
+
+		--Convert old 'Buffs and Debuffs' font size option to individual options
+		if E.db.auras.fontSize then
+			local fontSize = E.db.auras.fontSize
+			E.db.auras.buffs.countFontSize = fontSize
+			E.db.auras.buffs.durationFontSize = fontSize
+			E.db.auras.debuffs.countFontSize = fontSize
+			E.db.auras.debuffs.durationFontSize = fontSize
+			E.db.auras.fontSize = nil
+		end
+
+		--Remove stale font settings from Cooldown system for top auras
+		if E.db.auras.cooldown.fonts then
+			E.db.auras.cooldown.fonts = nil
+		end
+
+		--Convert Nameplate Aura Duration to new Cooldown system
+		if E.db.nameplates.durationFont then
+			E.db.nameplates.cooldown.fonts.font = E.db.nameplates.durationFont
+			E.db.nameplates.cooldown.fonts.fontSize = E.db.nameplates.durationFontSize
+			E.db.nameplates.cooldown.fonts.fontOutline = E.db.nameplates.durationFontOutline
+
+			E.db.nameplates.durationFont = nil
+			E.db.nameplates.durationFontSize = nil
+			E.db.nameplates.durationFontOutline = nil
+		end
+
+		if E.db.nameplates.lowHealthThreshold > 0.8 then
+			E.db.nameplates.lowHealthThreshold = 0.8
+		end
+
+		if E.db.nameplates.units.TARGET.nonTargetTransparency ~= nil then
+			E.global.nameplate.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
+			E.db.nameplates.units.TARGET.nonTargetTransparency = nil
+		end
+
+		--Removed additional table in nameplate filters cause it was basically useless
+		for _, unit in ipairs({'PLAYER','FRIENDLY_PLAYER','ENEMY_PLAYER','FRIENDLY_NPC','ENEMY_NPC'}) do
+			if E.db.nameplates.units[unit].buffs and E.db.nameplates.units[unit].buffs.filters ~= nil then
+				E.db.nameplates.units[unit].buffs.minDuration = E.db.nameplates.units[unit].buffs.filters.minDuration or P.nameplates.units[unit].buffs.minDuration
+				E.db.nameplates.units[unit].buffs.maxDuration = E.db.nameplates.units[unit].buffs.filters.maxDuration or P.nameplates.units[unit].buffs.maxDuration
+				E.db.nameplates.units[unit].buffs.priority = E.db.nameplates.units[unit].buffs.filters.priority or P.nameplates.units[unit].buffs.priority
+				E.db.nameplates.units[unit].buffs.filters = nil
+			end
+			if E.db.nameplates.units[unit].debuffs and E.db.nameplates.units[unit].debuffs.filters ~= nil then
+				E.db.nameplates.units[unit].debuffs.minDuration = E.db.nameplates.units[unit].debuffs.filters.minDuration or P.nameplates.units[unit].debuffs.minDuration
+				E.db.nameplates.units[unit].debuffs.maxDuration = E.db.nameplates.units[unit].debuffs.filters.maxDuration or P.nameplates.units[unit].debuffs.maxDuration
+				E.db.nameplates.units[unit].debuffs.priority = E.db.nameplates.units[unit].debuffs.filters.priority or P.nameplates.units[unit].debuffs.priority
+				E.db.nameplates.units[unit].debuffs.filters = nil
+			end
+		end
+
+		--Moved target scale to a style filter
+		if E.db.nameplates.units.TARGET.scale ~= nil then
+			E.global.nameplate.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
+			E.db.nameplates.units.TARGET.scale = nil
+		end
+
+		--Convert cropIcon to tristate
+		local cropIcon = E.db.general.cropIcon
+		if type(cropIcon) == 'boolean' then
+			E.db.general.cropIcon = (cropIcon and 2) or 0
+		end
+
+		--Vendor Greys option is now in bags table
+		if E.db.general.vendorGrays ~= nil then
+			E.db.bags.vendorGrays.enable = E.db.general.vendorGrays
+			E.db.general.vendorGraysDetails = nil
+			E.db.general.vendorGrays = nil
+		end
+
+		--Heal Prediction is now a table instead of a bool
+		for _, unit in ipairs({'player','target','focus','pet','arena','party','raid','raid40','raidpet'}) do
+			if type(E.db.unitframe.units[unit].healPrediction) ~= 'table' then
+				local enabled = E.db.unitframe.units[unit].healPrediction
+				E.db.unitframe.units[unit].healPrediction = {}
+				E.db.unitframe.units[unit].healPrediction.enable = enabled
+			else
+				local healPrediction = E.db.unitframe.units[unit].healPrediction
+				if healPrediction.reversedAbsorbs ~= nil then -- convert the newer setting if it existed
+					healPrediction.reversedAbsorbs = nil
+					healPrediction.absorbStyle = 'REVERSED'
+
+					-- clear extras
+					healPrediction.showAbsorbAmount = nil
+					healPrediction.showOverAbsorbs = nil
+				elseif healPrediction.showAbsorbAmount ~= nil then -- convert the old setting into the new wrapped setting
+					healPrediction.showAbsorbAmount = nil
+					healPrediction.absorbStyle = 'WRAPPED'
+
+					-- clear extras
+					healPrediction.showOverAbsorbs = nil
+				elseif healPrediction.showOverAbsorbs ~= nil then -- convert the over absorb toggle into the new setting
+					healPrediction.absorbStyle = 'NORMAL'
+					healPrediction.showOverAbsorbs = nil
+				end
+			end
+		end
+
+		--Health Backdrop Multiplier
+		if E.db.unitframe.colors.healthmultiplier ~= nil then
+			if E.db.unitframe.colors.healthmultiplier > 0.75 then
+				E.db.unitframe.colors.healthMultiplier = 0.75
+			else
+				E.db.unitframe.colors.healthMultiplier = E.db.unitframe.colors.healthmultiplier
+			end
+
+			E.db.unitframe.colors.healthmultiplier = nil
+		end
+
+		--Tooltip FactionColors Setting
+		for i = 1, 8 do
+			local oldTable = E.db.tooltip.factionColors[''..i]
+			if oldTable then
+				local newTable = E:CopyTable({}, P.tooltip.factionColors[i]) -- import full table
+				E.db.tooltip.factionColors[i] = E:CopyTable(newTable, oldTable)
+				E.db.tooltip.factionColors[''..i] = nil
+			end
+		end
+
+		-- Wipe some old variables off profiles
+		if E.global.uiScaleInformed then E.global.uiScaleInformed = nil end
+		if E.global.nameplatesResetInformed then E.global.nameplatesResetInformed = nil end
+		if E.global.userInformedNewChanges1 then E.global.userInformedNewChanges1 = nil end
+
+		-- cvar nameplate visibility stuff
+		if E.db.nameplates.visibility.nameplateShowAll ~= nil then
+			E.db.nameplates.visibility.showAll = E.db.nameplates.visibility.nameplateShowAll
+			E.db.nameplates.visibility.nameplateShowAll = nil
+		end
+		if E.db.nameplates.units.FRIENDLY_NPC.showAlways ~= nil then
+			E.db.nameplates.visibility.friendly.npcs = E.db.nameplates.units.FRIENDLY_NPC.showAlways
+			E.db.nameplates.units.FRIENDLY_NPC.showAlways = nil
+		end
+		if E.db.nameplates.units.FRIENDLY_PLAYER.minions ~= nil then
+			E.db.nameplates.visibility.friendly.minions = E.db.nameplates.units.FRIENDLY_PLAYER.minions
+			E.db.nameplates.units.FRIENDLY_PLAYER.minions = nil
+		end
+		if E.db.nameplates.units.ENEMY_NPC.minors ~= nil then
+			E.db.nameplates.visibility.enemy.minus = E.db.nameplates.units.ENEMY_NPC.minors
+			E.db.nameplates.units.ENEMY_NPC.minors = nil
+		end
+		if E.db.nameplates.units.ENEMY_PLAYER.minions ~= nil or E.db.nameplates.units.ENEMY_NPC.minions ~= nil then
+			E.db.nameplates.visibility.enemy.minions = E.db.nameplates.units.ENEMY_PLAYER.minions or E.db.nameplates.units.ENEMY_NPC.minions
+			E.db.nameplates.units.ENEMY_PLAYER.minions = nil
+			E.db.nameplates.units.ENEMY_NPC.minions = nil
+		end
+
+		-- removed override stuff from aurawatch
+		if E.global.unitframe.buffwatch then
+			for _, spells in pairs(E.global.unitframe.buffwatch) do
+				for _, spell in pairs(spells) do
+					buffwatchConvert(spell)
+				end
+			end
+		end
+
+		if E.db.unitframe.filters.buffwatch then
+			for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
+				buffwatchConvert(spell)
+			end
+		end
+
+		-- fix aurabars colors
+		local auraBarColors = E.global.unitframe.AuraBarColors
+		for spell, info in pairs(auraBarColors) do
+			if type(spell) == 'string' then
+				local spellID = select(7, GetSpellInfo(spell))
+				if spellID and not auraBarColors[spellID] then
+					auraBarColors[spellID] = info
+					auraBarColors[spell] = nil
+					spell = spellID
+				end
+			end
+
+			if type(info) == 'boolean' then
+				auraBarColors[spell] = { color = { r = 1, g = 1, b = 1 }, enable = info }
+			elseif type(info) == 'table' then
+				if info.r or info.g or info.b then
+					auraBarColors[spell] = { color = { r = info.r or 1, g = info.g or 1, b = info.b or 1 }, enable = true }
+				elseif info.color then -- azil created a void hole, delete it -x-
+					if info.color.color then info.color.color = nil end
+					if info.color.enable then info.color.enable = nil end
+					if info.color.a then info.color.a = nil end -- alpha isnt supported by this
+				end
+			end
+		end
+
+		if E.db.unitframe.colors.debuffHighlight.blendMode == 'MOD' then
+			E.db.unitframe.colors.debuffHighlight.blendMode = P.unitframe.colors.debuffHighlight.blendMode
+		end
+
+		do -- tooltip modifier code was dumb, change it but keep the past setting
+			local swap = ttModSwap(E.db.tooltip.modifierID)
+			if swap then E.db.tooltip.modifierID = swap end
+
+			swap = ttModSwap(E.db.tooltip.visibility.bags)
+			if swap then E.db.tooltip.visibility.bags = swap end
+
+			swap = ttModSwap(E.db.tooltip.visibility.unitFrames)
+			if swap then E.db.tooltip.visibility.unitFrames = swap end
+
+			swap = ttModSwap(E.db.tooltip.visibility.actionbars)
+			if swap then E.db.tooltip.visibility.actionbars = swap end
+
+			swap = ttModSwap(E.db.tooltip.visibility.combatOverride)
+			if swap then E.db.tooltip.visibility.combatOverride = swap end
+
+			-- remove the old combat variable and just use the mod since it supports show/hide states
+			local hideInCombat = E.db.tooltip.visibility.combat
+			if hideInCombat ~= nil then
+				E.db.tooltip.visibility.combat = nil
+
+				local override = E.db.tooltip.visibility.combatOverride
+				if hideInCombat and (override ~= 'SHIFT' and override ~= 'CTRL' and override ~= 'ALT') then -- wouldve been NONE but now it would be HIDE
+					E.db.tooltip.visibility.combatOverride = 'HIDE'
+				end
+			end
+		end
+	end
+end
+
+function E:DBConvertSL()
+	if E.private.skins.cleanBossButton ~= nil then
+		E.db.actionbar.extraActionButton.clean = E.private.skins.cleanBossButton
+		E.private.skins.cleanBossButton = nil
+	end
+
+	if E.global.unitframe.DebuffHighlightColors then
+		E:CopyTable(E.global.unitframe.AuraHighlightColors, E.global.unitframe.DebuffHighlightColors)
+		E.global.unitframe.DebuffHighlightColors = nil
+	end
+
+	if E.db.unitframe.filters.buffwatch then
+		E.db.unitframe.filters.aurawatch = E:CopyTable({}, E.db.unitframe.filters.buffwatch)
+		E.db.unitframe.filters.buffwatch = nil
+	end
+
+	if E.global.unitframe.buffwatch then
+		E:CopyTable(E.global.unitframe.aurawatch, E.global.unitframe.buffwatch)
+		E.global.unitframe.buffwatch = nil
+	end
+end
+
 function E:UpdateDB()
 	E.private = E.charSettings.profile
 	E.global = E.data.global
 	E.db = E.data.profile
 
 	E:DBConversions()
+
 	Auras.db = E.db.auras
 	ActionBars.db = E.db.actionbar
 	Bags.db = E.db.bags
@@ -1369,31 +1714,21 @@ function E:InitializeModules()
 end
 
 function E:DBConversions()
-	if E.private.skins.cleanBossButton ~= nil then
-		E.db.actionbar.extraActionButton.clean = E.private.skins.cleanBossButton
-		E.private.skins.cleanBossButton = nil
+	-- release converts, only one call per version
+	if E.db.dbConverted ~= E.version then
+		E.db.dbConverted = E.version
+
+		E:DBConvertBFA()
+		E:DBConvertSL()
 	end
 
-	if E.global.unitframe.DebuffHighlightColors then
-		E:CopyTable(E.global.unitframe.AuraHighlightColors, E.global.unitframe.DebuffHighlightColors)
-		E.global.unitframe.DebuffHighlightColors = nil
-	end
-
-	if E.db.unitframe.filters.buffwatch then
-		E.db.unitframe.filters.aurawatch = E:CopyTable({}, E.db.unitframe.filters.buffwatch)
-		E.db.unitframe.filters.buffwatch = nil
-	end
-
-	if E.global.unitframe.buffwatch then
-		E:CopyTable(E.global.unitframe.aurawatch, E.global.unitframe.buffwatch)
-		E.global.unitframe.buffwatch = nil
-	end
+	-- development converts, always call
 end
 
 function E:RefreshModulesDB()
 	-- this function is specifically used to reference the new database
 	-- onto the unitframe module, its useful dont delete! D:
-	twipe(UnitFrames.db) --old ref, dont need so clear it
+	wipe(UnitFrames.db) --old ref, dont need so clear it
 	UnitFrames.db = E.db.unitframe --new ref
 end
 
@@ -1425,9 +1760,9 @@ do
 end
 
 function E:Initialize()
-	twipe(E.db)
-	twipe(E.global)
-	twipe(E.private)
+	wipe(E.db)
+	wipe(E.global)
+	wipe(E.private)
 
 	local playerGUID = UnitGUID('player')
 	local _, serverID = strsplit('-', playerGUID)

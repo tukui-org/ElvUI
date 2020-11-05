@@ -73,23 +73,31 @@ E.Options.args.general = {
 					desc = L["Attempt to support eyefinity/nvidia surround."],
 					type = 'toggle',
 					get = function(info) return E.global.general.eyefinity end,
-					set = function(info, value) E.global.general.eyefinity = value; E:StaticPopup_Show('GLOBAL_RL') end
+					set = function(info, value) E.global.general.eyefinity = value; E:StaticPopup_Show('GLOBAL_RL') end,
+				},
+				ultrawide = {
+					order = 10,
+					name = L["Ultrawide Support"],
+					desc = L["Attempts to center UI elements in a 16:9 format for ultrawide monitors"],
+					type = 'toggle',
+					get = function(info) return E.global.general.ultrawide end,
+					set = function(info, value) E.global.general.ultrawide = value; E:StaticPopup_Show('GLOBAL_RL') end,
 				},
 				autoAcceptInvite = {
-					order = 10,
+					order = 11,
 					name = L["Accept Invites"],
 					desc = L["Automatically accept invites from guild/friends."],
 					type = 'toggle',
 				},
 				autoRoll = {
-					order = 11,
+					order = 12,
 					name = L["Auto Greed/DE"],
 					desc = L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."],
 					type = 'toggle',
 					disabled = function() return not E.private.general.lootRoll end
 				},
 				autoTrackReputation = {
-					order = 12,
+					order = 13,
 					name = L["Auto Track Reputation"],
 					type = 'toggle',
 				},
@@ -308,7 +316,7 @@ E.Options.args.general = {
 									name = L["FONT_SIZE"],
 									desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 									type = 'range',
-									min = 4, max = 48, step = 1,
+									min = 8, max = 48, step = 1,
 									softMin = 10, softMax = 32,
 									set = function(info, value) E.db.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 								},
@@ -333,6 +341,14 @@ E.Options.args.general = {
 									desc = L["Replaces the default Blizzard fonts on various panels and frames with the fonts chosen in the Media section of the ElvUI Options. NOTE: Any font that inherits from the fonts ElvUI usually replaces will be affected as well if you disable this. Enabled by default."],
 									get = function(info) return E.private.general[info[#info]] end,
 									set = function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL'); end,
+								},
+								unifiedBlizzFonts = {
+									order = 6,
+									type = 'toggle',
+									name = L["Unified Font Sizes"],
+									desc = L["This setting mimics the older style of Replace Blizzard Fonts, with a more static unified font sizing."],
+									get = function(info) return E.private.general[info[#info]] end,
+									set = function(info, value) E.private.general[info[#info]] = value; E:UpdateBlizzardFonts() end,
 								},
 							},
 						},
@@ -443,6 +459,17 @@ E.Options.args.general = {
 							get = function(info) return E.db.unitframe.thinBorders end,
 							set = function(info, value)
 								E.db.unitframe.thinBorders = value
+								E:StaticPopup_Show('CONFIG_RL')
+							end,
+						},
+						npThinBorders = {
+							order = 2,
+							name = L["Nameplate Thin Borders"],
+							desc = L["Use thin borders on certain nameplate elements."],
+							type = 'toggle',
+							get = function(info) return E.db.nameplates.thinBorders end,
+							set = function(info, value)
+								E.db.nameplates.thinBorders = value
 								E:StaticPopup_Show('CONFIG_RL')
 							end,
 						},
@@ -765,7 +792,7 @@ E.Options.args.general = {
 					name = L["Durability Scale"],
 					min = 0.5, max = 8, step = 0.5,
 					get = function(info) return E.db.general.durabilityScale end,
-					set = function(info, value) E.db.general.durabilityScale = value; E:StaticPopup_Show('PRIVATE_RL') end,
+					set = function(info, value) E.db.general.durabilityScale = value; Blizzard:UpdateDurabilityScale() end,
 				},
 				commandBarSetting = {
 					order = 12,

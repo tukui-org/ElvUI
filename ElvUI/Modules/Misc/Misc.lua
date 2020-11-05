@@ -48,6 +48,7 @@ local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ExpandAllFactionHeaders = ExpandAllFactionHeaders
 local SetWatchedFactionIndex = SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
+local hooksecurefunc = hooksecurefunc
 
 local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
 local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
@@ -295,25 +296,10 @@ function M:QUEST_COMPLETE()
 	local firstItem = _G.QuestInfoRewardsFrameQuestInfoItem1
 	if not firstItem then return end
 
-	local bestValue, bestItem = 0
 	local numQuests = GetNumQuestChoices()
+	if numQuests < 2 then return end
 
-	if not self.QuestRewardGoldIconFrame then
-		local frame = CreateFrame('Frame', nil, firstItem)
-		frame:SetFrameStrata('HIGH')
-		frame:Size(20)
-		frame.Icon = frame:CreateTexture(nil, 'OVERLAY')
-		frame.Icon:SetAllPoints(frame)
-		frame.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
-		self.QuestRewardGoldIconFrame = frame
-	end
-
-	self.QuestRewardGoldIconFrame:Hide()
-
-	if numQuests < 2 then
-		return
-	end
-
+	local bestValue, bestItem = 0
 	for i = 1, numQuests do
 		local questLink = GetQuestItemLink('choice', i)
 		local _, _, amount = GetQuestItemInfo('choice', i)
@@ -329,9 +315,9 @@ function M:QUEST_COMPLETE()
 	if bestItem then
 		local btn = _G['QuestInfoRewardsFrameQuestInfoItem'..bestItem]
 		if btn and btn.type == 'choice' then
-			self.QuestRewardGoldIconFrame:ClearAllPoints()
-			self.QuestRewardGoldIconFrame:Point('TOPRIGHT', btn, 'TOPRIGHT', -2, -2)
-			self.QuestRewardGoldIconFrame:Show()
+			M.QuestRewardGoldIconFrame:ClearAllPoints()
+			M.QuestRewardGoldIconFrame:Point('TOPRIGHT', btn, 'TOPRIGHT', -2, -2)
+			M.QuestRewardGoldIconFrame:Show()
 		end
 	end
 end
@@ -356,6 +342,25 @@ function M:Initialize()
 	self:RegisterEvent('COMBAT_TEXT_UPDATE')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('QUEST_COMPLETE')
+
+	do	-- questRewardMostValueIcon
+		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame', _G.UIParent)
+		MostValue:SetFrameStrata('HIGH')
+		MostValue:Size(19)
+		MostValue:Hide()
+
+		MostValue.Icon = MostValue:CreateTexture(nil, 'OVERLAY')
+		MostValue.Icon:SetAllPoints(MostValue)
+		MostValue.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
+
+		M.QuestRewardGoldIconFrame = MostValue
+
+		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', function()
+			if M.QuestRewardGoldIconFrame then
+				M.QuestRewardGoldIconFrame:Hide()
+			end
+		end)
+	end
 
 	if E.db.general.interruptAnnounce ~= 'NONE' then
 		self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')

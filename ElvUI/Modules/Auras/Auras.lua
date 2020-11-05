@@ -105,7 +105,7 @@ function A:CreateIcon(button)
 	local header = button:GetParent()
 	local auraType = header.filter
 
-	button.auraType = auraType == 'HELPFUL' and 'debuffs' or 'buffs' -- used to update cooldown text
+	button.auraType = auraType == 'HELPFUL' and 'buffs' or 'debuffs' -- used to update cooldown text
 	button.filter = auraType
 
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
@@ -113,8 +113,12 @@ function A:CreateIcon(button)
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 
 	button.count = button:CreateFontString(nil, 'OVERLAY')
+	button.count:SetFontObject('NumberFontNormal')
+	button.count:SetText('\10')
 
 	button.text = button:CreateFontString(nil, 'OVERLAY')
+	button.text:SetFontObject('NumberFontNormal')
+	button.text:SetText('\10')
 
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	button.highlight:SetColorTexture(1, 1, 1, .45)
