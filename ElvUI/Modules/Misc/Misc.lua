@@ -344,9 +344,9 @@ function M:Initialize()
 	self:RegisterEvent('QUEST_COMPLETE')
 
 	do	-- questRewardMostValueIcon
-		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame')
+		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame', _G.UIParent)
 		MostValue:SetFrameStrata('HIGH')
-		MostValue:Size(16)
+		MostValue:Size(19)
 		MostValue:Hide()
 
 		MostValue.Icon = MostValue:CreateTexture(nil, 'OVERLAY')
