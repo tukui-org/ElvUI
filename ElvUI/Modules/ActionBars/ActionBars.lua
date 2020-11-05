@@ -846,7 +846,14 @@ function AB:KeybindButtonOnEnter()
 		if not index then
 			self.commandName = nil
 		else
-			self.commandName = 'MACRO '..index
+			if self.bagID then
+				local id = self.itemID
+				if id then
+					self.commandName = 'ITEM item:'..id
+				end
+			else
+				self.commandName = 'MACRO '..index
+			end
 
 			self:QuickKeybindButtonOnEnter()
 

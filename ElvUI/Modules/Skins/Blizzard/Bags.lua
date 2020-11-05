@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack, select = unpack, select
+local strmatch = strmatch
 
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
@@ -74,6 +75,7 @@ local function SkinBagButtons(container, button)
 	button.ilink = itemLink
 	if button.ilink then
 		button.name, _, button.quality, _, _, button.type = GetItemInfo(button.ilink)
+		button.itemID = strmatch(itemLink, 'item:%d+')
 	end
 
 	if questId or isQuestItem then

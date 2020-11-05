@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
+local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 local Search = E.Libs.ItemSearch
 local LSM = E.Libs.LSM
@@ -473,7 +474,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local assignedBag = frame.Bags[assignedID] and frame.Bags[assignedID].assigned
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.rarity, slot.locked = nil, rarity, locked
+	slot.name, slot.itemID, slot.rarity, slot.locked = nil, nil, rarity, locked
 
 	local clink = GetContainerItemLink(bagID, slotID)
 
@@ -528,6 +529,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(clink)
 		slot.name = name
 
+		slot.itemID = GetContainerItemID(bagID, slotID)
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 		local r, g, b
 
@@ -1050,7 +1052,7 @@ function B:UpdateReagentSlot(slotID)
 		slot.questIcon:Hide()
 	end
 
-	slot.name, slot.rarity, slot.locked = nil, nil, locked
+	slot.name, slot.itemID, slot.rarity, slot.locked = nil, nil, nil, locked
 
 	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
 	CooldownFrame_Set(slot.Cooldown, start, duration, enable)
@@ -1063,6 +1065,7 @@ function B:UpdateReagentSlot(slotID)
 	if clink then
 		local name, _, rarity = GetItemInfo(clink)
 		slot.name, slot.rarity = name, rarity
+		slot.itemID = GetContainerItemID(bagID, slotID)
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 		local r, g, b
@@ -1302,6 +1305,24 @@ function B:VendorGrayCheck()
 	else
 		B:VendorGrays()
 	end
+end
+
+function B:SlotOnEnter()
+	B.HideSlotItemGlow(self)
+
+	-- bag keybind support from actionbar module
+	if not E.private.actionbar.enable then return end
+
+	local bag = self:GetParent()
+	if not bag.isBank then
+		AB.KeybindButtonOnEnter(self)
+	end
+end
+
+function B:SlotOnLeave()
+	-- bag keybind support from actionbar module
+	if not E.private.actionbar.enable then return end
+	AB.KeybindButtonOnLeave(self)
 end
 
 function B:ConstructContainerFrame(name, isBank)
@@ -1756,7 +1777,7 @@ function B:ConstructContainerFrame(name, isBank)
 end
 
 function B:ConstructContainerButton(f, slotID, bagID)
-	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BackdropTemplate, BankItemButtonGenericTemplate' or 'BackdropTemplate, ContainerFrameItemButtonTemplate')
+	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BackdropTemplate, BankItemButtonGenericTemplate' or 'BackdropTemplate, QuickKeybindButtonTemplate, ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(E.db.bags.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
@@ -1832,7 +1853,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 		slot.newItemGlow:Hide()
 		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
-		slot:HookScript('OnEnter', B.HideSlotItemGlow)
+
+		slot:HookScript('OnEnter', B.SlotOnEnter)
+		slot:HookScript('OnLeave', B.SlotOnLeave)
 	end
 
 	return slot
