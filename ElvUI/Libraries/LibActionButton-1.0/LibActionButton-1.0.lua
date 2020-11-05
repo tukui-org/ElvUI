@@ -566,7 +566,7 @@ function Generic:OnEnter()
 		self:SetScript('OnUpdate', Generic.OnUpdate)
 	end
 
-	if self.QuickKeybindButtonOnEnter then
+	if self.QuickKeybindButtonOnEnter and not InCombatLockdown() then
 		self:QuickKeybindButtonOnEnter()
 	end
 end
