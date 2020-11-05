@@ -313,14 +313,18 @@ function AB:PositionAndSizeBar(barName)
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
-	if db.enabled or not bar.initialized then
+	if not bar.initialized then
+		bar.initialized = true
+
 		if AB.barDefaults['bar'..bar.id].conditions:find('[form,noform]') then
 			bar:SetAttribute('newCondition', gsub(AB.barDefaults['bar'..bar.id].conditions, ' %[form,noform%] 0; ', ''))
 			bar:SetAttribute('hasTempBar', true)
 		else
 			bar:SetAttribute('hasTempBar', false)
 		end
+	end
 
+	if db.enabled or not bar.initialized then
 		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
 		visibility = gsub(visibility, '[\n\r]','')
 
@@ -328,12 +332,6 @@ function AB:PositionAndSizeBar(barName)
 		RegisterStateDriver(bar, 'page', page)
 		bar:SetAttribute('page', page)
 		bar:Show()
-
-		if not bar.initialized then
-			bar.initialized = true
-			AB:PositionAndSizeBar(barName)
-			return
-		end
 
 		E:EnableMover(bar.mover:GetName())
 	else
@@ -422,8 +420,6 @@ function AB:CreateBar(id)
 
 	AB.handledBars['bar'..id] = bar
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS',nil,'actionbar,playerBars,bar'..id)
-
-	AB:PositionAndSizeBar('bar'..id)
 
 	return bar
 end
