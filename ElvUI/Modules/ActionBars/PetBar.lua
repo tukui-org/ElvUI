@@ -167,7 +167,7 @@ function AB:PositionAndSizeBarPet()
 		MasqueGroup:ReSkin()
 
 		for _, btn in ipairs(bar.buttons) do
-			if btn.icon then
+			if btn.icon and btn.db and not btn.db.keepSizeRatio then
 				AB:TrimIcon(btn.icon, btn.db, btn.customCoords)
 			end
 		end

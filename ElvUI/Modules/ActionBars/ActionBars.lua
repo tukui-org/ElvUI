@@ -349,7 +349,7 @@ function AB:PositionAndSizeBar(barName)
 
 		-- masque retrims them all so we have to too
 		for btn in pairs(AB.handledbuttons) do
-			if btn.icon then
+			if btn.icon and btn.db and not btn.db.keepSizeRatio then
 				AB:TrimIcon(btn.icon, btn.db, btn.customCoords)
 			end
 		end
