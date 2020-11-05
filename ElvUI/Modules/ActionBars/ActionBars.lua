@@ -7,6 +7,7 @@ local ipairs, pairs, select, strmatch = ipairs, pairs, select, strmatch
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
 local Mixin = Mixin
+local GetMacroInfo = GetMacroInfo
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
@@ -844,27 +845,23 @@ function AB:KeybindButtonOnEnter()
 	if self.QuickKeybindButtonOnEnter then
 		self.commandName = nil
 
-		local index = not InCombatLockdown() and self:GetID()
-		if index then
-			local parent = self:GetParent()
-			local parentName = parent and parent:GetName()
-			if not parentName then return end -- dont try without a parent name
-
+		local parentName = self:GetParent():GetName()
+		if parentName and not InCombatLockdown() then
 			if parentName == 'MacroButtonContainer' then
-				self.commandName = 'MACRO '..index
+				self.commandName = 'MACRO '.. GetMacroInfo(self:GetID())
 			elseif strmatch(parentName, 'ContainerFrame') then -- Bags
 				if self.itemID then
 					self.commandName = 'ITEM item:'..self.itemID
 				end
 			end
 
-			if not self.commandName then return end
+			if self.commandName then
+				self:QuickKeybindButtonOnEnter()
 
-			self:QuickKeybindButtonOnEnter()
-
-			-- hide the GameTooltip if its showning too
-			if _G.QuickKeybindTooltip:IsShown() and not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
-				GameTooltip:Hide()
+				-- hide the GameTooltip if its showning too
+				if _G.QuickKeybindTooltip:IsShown() and not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
+					GameTooltip:Hide()
+				end
 			end
 		end
 	end
