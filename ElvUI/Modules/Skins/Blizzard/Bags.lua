@@ -1,4 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -28,6 +29,10 @@ local function UpdateBorderColors(button)
 		local r, g, b = GetItemQualityColor(button.quality)
 		button.backdrop:SetBackdropBorderColor(r, g, b)
 	end
+end
+
+local function BagButtonOnEnter(self)
+	AB:BindUpdate(self, 'BAG')
 end
 
 local function SkinButton(button)
@@ -62,7 +67,9 @@ local function SkinButton(button)
 		button.skinned = true
 
 		-- bag keybind support from actionbar module
-		if not E.private.actionbar.enable then return end
+		if E.private.actionbar.enable then
+			button:HookScript('OnEnter', BagButtonOnEnter)
+		end
 	end
 end
 

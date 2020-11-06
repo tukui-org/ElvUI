@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
+local AB = E:GetModule('ActionBars')
 local Search = E.Libs.ItemSearch
 local LSM = E.Libs.LSM
 
@@ -1310,13 +1311,12 @@ function B:SlotOnEnter()
 	B.HideSlotItemGlow(self)
 
 	-- bag keybind support from actionbar module
-	if not E.private.actionbar.enable then return end
+	if E.private.actionbar.enable then
+		AB:BindUpdate(self, 'BAG')
+	end
 end
 
-function B:SlotOnLeave()
-	-- bag keybind support from actionbar module
-	if not E.private.actionbar.enable then return end
-end
+function B:SlotOnLeave() end
 
 function B:ConstructContainerFrame(name, isBank)
 	local strata = E.db.bags.strata or 'HIGH'

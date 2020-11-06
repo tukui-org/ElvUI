@@ -85,10 +85,8 @@ function AB:BindListener(key)
 	--Check if this button can open a flyout menu
 	local isFlyout = (bind.button.FlyoutArrow and bind.button.FlyoutArrow:IsShown())
 
-	if key == 'LSHIFT' or key == 'RSHIFT'
-	or key == 'LCTRL' or key == 'RCTRL'
-	or key == 'LALT' or key == 'RALT'
-	or key == 'UNKNOWN' then return end
+	if key == 'LSHIFT' or key == 'RSHIFT' or key == 'LCTRL' or key == 'RCTRL'
+	or key == 'LALT' or key == 'RALT' or key == 'UNKNOWN' then return end
 
 	--Redirect LeftButton click to open flyout
 	if key == 'LeftButton' and isFlyout then
@@ -176,7 +174,15 @@ function AB:BindUpdate(button, spellmacro)
 
 	_G.ShoppingTooltip1:Hide()
 
-	if spellmacro == 'FLYOUT' then
+	bind.button.bindstring = nil -- keep this clean
+
+	if spellmacro == 'BAG' then
+		if bind.button.itemID then
+			bind.name = bind.button.name
+			bind.button.bindstring = 'ITEM item:'..bind.button.itemID
+			notShowOnHide = false
+		end
+	elseif spellmacro == 'FLYOUT' then
 		bind.name = bind.button.spellName
 		bind.button.bindstring = spellmacro..' '..bind.name
 	elseif spellmacro == 'SPELL' then
@@ -240,10 +246,8 @@ do
 		AB:BindUpdate(button, stance or pet or nil)
 	end
 
-	function AB:RegisterButton(b)
-		if b.IsProtected and b:IsProtected() and b.IsObjectType and b:IsObjectType('CheckButton') then
-			b:HookScript('OnEnter', bindUpdate)
-		end
+	function AB:RegisterBindButton(b)
+		b:HookScript('OnEnter', bindUpdate)
 	end
 end
 
@@ -307,8 +311,8 @@ function AB:LoadKeyBinder()
 	end
 
 	for b in pairs(self.handledbuttons) do
-		if not b.isFlyout then
-			self:RegisterButton(b)
+		if b:IsProtected() and b:IsObjectType('CheckButton') and not b.isFlyout then
+			self:RegisterBindButton(b)
 		end
 	end
 
