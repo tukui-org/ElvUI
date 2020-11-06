@@ -138,14 +138,10 @@ function AB:DisplayBindings()
 	end
 end
 
-function AB:BindTooltip(notShowOnHide)
+function AB:BindTooltip(triggerTooltip)
 	if GameTooltip:IsForbidden() then return end
 
-	if notShowOnHide then
-		AB:DisplayBindsTooltip()
-		AB:DisplayBindings()
-		GameTooltip:Show()
-	else
+	if triggerTooltip then -- this is needed for some tooltip magic, also it helps show a tooltip when a spell isnt there
 		AB:DisplayBindsTooltip()
 		GameTooltip:AddLine(L["Trigger"])
 
@@ -157,12 +153,16 @@ function AB:BindTooltip(notShowOnHide)
 			tt:Show()
 			tt:SetScript('OnHide', nil)
 		end)
+	else
+		AB:DisplayBindsTooltip()
+		AB:DisplayBindings()
+		GameTooltip:Show()
 	end
 end
 
 function AB:BindUpdate(button, spellmacro)
 	if not bind.active or InCombatLockdown() then return end
-	local notShowOnHide = true
+	local triggerTooltip = false
 
 	bind.button = button
 	bind.spellmacro = spellmacro
@@ -176,13 +176,7 @@ function AB:BindUpdate(button, spellmacro)
 
 	bind.button.bindstring = nil -- keep this clean
 
-	if spellmacro == 'BAG' then
-		if bind.button.itemID then
-			bind.name = bind.button.name
-			bind.button.bindstring = 'ITEM item:'..bind.button.itemID
-			notShowOnHide = false
-		end
-	elseif spellmacro == 'FLYOUT' then
+	if spellmacro == 'FLYOUT' then
 		bind.name = bind.button.spellName
 		bind.button.bindstring = spellmacro..' '..bind.name
 	elseif spellmacro == 'SPELL' then
@@ -199,22 +193,28 @@ function AB:BindUpdate(button, spellmacro)
 
 		bind.name = GetMacroInfo(bind.button.id)
 		bind.button.bindstring = spellmacro..' '..bind.name
+	elseif spellmacro == 'BAG' then
+		if bind.button.itemID then
+			bind.name = bind.button.name
+			bind.button.bindstring = 'ITEM item:'..bind.button.itemID
+			triggerTooltip = true
+		end
 	elseif spellmacro=='STANCE' or spellmacro=='PET' then
 		bind.name = button:GetName()
 		if not bind.name then return end
 
 		bind.button.id = tonumber(button:GetID())
 		bind.button.bindstring = (spellmacro=='STANCE' and 'SHAPESHIFTBUTTON' or 'BONUSACTIONBUTTON')..bind.button.id
-		notShowOnHide = false
+		triggerTooltip = true
 	else
 		bind.name = button:GetName()
 		if not bind.name then return end
 
 		bind.button.action = tonumber(button.action)
+		triggerTooltip = true
 
 		if bind.button.keyBoundTarget then
 			bind.button.bindstring = bind.button.keyBoundTarget
-			notShowOnHide = false
 		else
 			local modact = 1+(bind.button.action-1)%12
 			if bind.name == 'ExtraActionButton1' then
@@ -235,7 +235,7 @@ function AB:BindUpdate(button, spellmacro)
 
 	if bind.button.bindstring then
 		bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
-		AB:BindTooltip(notShowOnHide)
+		AB:BindTooltip(triggerTooltip)
 	end
 end
 
