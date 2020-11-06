@@ -195,13 +195,6 @@ function AB:BindUpdate(button, spellmacro)
 			bind.button.bindstring = 'ITEM item:'..bind.button.itemID
 			triggerTooltip = true
 		end
-	elseif spellmacro=='STANCE' or spellmacro=='PET' then
-		bind.name = button:GetName()
-		if not bind.name then return end
-
-		bind.button.id = tonumber(button:GetID())
-		bind.button.bindstring = (spellmacro=='STANCE' and 'SHAPESHIFTBUTTON' or 'BONUSACTIONBUTTON')..bind.button.id
-		triggerTooltip = true
 	else
 		bind.name = button:GetName()
 		if not bind.name then return end
@@ -211,6 +204,8 @@ function AB:BindUpdate(button, spellmacro)
 
 		if bind.button.keyBoundTarget then
 			bind.button.bindstring = bind.button.keyBoundTarget
+		elseif button.commandName then
+			bind.button.bindstring = button.commandName
 		else
 			local modact = 1+(bind.button.action-1)%12
 			if bind.name == 'ExtraActionButton1' then
@@ -232,18 +227,6 @@ function AB:BindUpdate(button, spellmacro)
 	if bind.button.bindstring then
 		bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
 		AB:BindTooltip(triggerTooltip)
-	end
-end
-
-do
-	local bindUpdate = function(button)
-		local stance = button.commandName and strfind(button.commandName, '^SHAPESHIFT') and 'STANCE'
-		local pet = button.commandName and strfind(button.commandName, '^BONUSACTION') and 'PET'
-		AB:BindUpdate(button, stance or pet or nil)
-	end
-
-	function AB:RegisterBindButton(b)
-		b:HookScript('OnEnter', bindUpdate)
 	end
 end
 
@@ -306,9 +289,10 @@ function AB:LoadKeyBinder()
 		b:HookScript('OnEnter', function(s) AB:BindUpdate(s, 'SPELL') end)
 	end
 
+	local function buttonOnEnter(b) AB:BindUpdate(b) end
 	for b in pairs(self.handledbuttons) do
 		if b:IsProtected() and b:IsObjectType('CheckButton') and not b.isFlyout then
-			self:RegisterBindButton(b)
+			b:HookScript('OnEnter', buttonOnEnter)
 		end
 	end
 
