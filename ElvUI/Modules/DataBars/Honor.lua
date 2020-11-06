@@ -35,19 +35,19 @@ function DB:HonorBar_Update(event, unit)
 	bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
 
 	if textFormat == 'PERCENT' then
-		displayString = format('%d%%', PercentHonor)
+		displayString = format('%d%% - [%s]', PercentHonor, CurrentLevel)
 	elseif textFormat == 'CURMAX' then
-		displayString = format('%s - %s', E:ShortValue(CurrentHonor), E:ShortValue(MaxHonor))
+		displayString = format('%s - %s - [%s]', E:ShortValue(CurrentHonor), E:ShortValue(MaxHonor), CurrentLevel)
 	elseif textFormat == 'CURPERC' then
-		displayString = format('%s - %d%%', E:ShortValue(CurrentHonor), PercentHonor)
+		displayString = format('%s - %d%% - [%s]', E:ShortValue(CurrentHonor), PercentHonor, CurrentLevel)
 	elseif textFormat == 'CUR' then
-		displayString = format('%s', E:ShortValue(CurrentHonor))
+		displayString = format('%s - [%s]' , E:ShortValue(CurrentHonor), CurrentLevel)
 	elseif textFormat == 'REM' then
-		displayString = format('%s', E:ShortValue(RemainingHonor))
+		displayString = format('%s - [%s]', E:ShortValue(RemainingHonor), CurrentLevel)
 	elseif textFormat == 'CURREM' then
-		displayString = format('%s - %s', E:ShortValue(CurrentHonor), E:ShortValue(RemainingHonor))
+		displayString = format('%s - %s - [%s]', E:ShortValue(CurrentHonor), E:ShortValue(RemainingHonor), CurrentLevel)
 	elseif textFormat == 'CURPERCREM' then
-		displayString = format('%s - %d%% (%s)', E:ShortValue(CurrentHonor), CurrentHonor, E:ShortValue(RemainingHonor))
+		displayString = format('%s - %d%% (%s) - [%s]', E:ShortValue(CurrentHonor), CurrentHonor, E:ShortValue(RemainingHonor), CurrentLevel)
 	end
 
 	bar.text:SetText(displayString)
