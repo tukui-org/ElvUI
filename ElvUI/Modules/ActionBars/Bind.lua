@@ -360,7 +360,9 @@ function AB:LoadKeyBinder()
 	end
 
 	for b in pairs(self.handledbuttons) do
-		self:RegisterButton(b)
+		if not b.FlyoutUpdateFunc then
+			self:RegisterButton(b)
+		end
 	end
 
 	if not IsAddOnLoaded('Blizzard_MacroUI') then
