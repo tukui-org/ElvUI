@@ -6,6 +6,7 @@ local _G = _G
 local tonumber, format = tonumber, format
 local select, pairs, floor = select, pairs, floor
 local CreateFrame = CreateFrame
+local HideUIPanel = HideUIPanel
 local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local GetBindingKey = GetBindingKey
@@ -260,6 +261,30 @@ function AB:ChangeBindingProfile()
 		LoadBindings(1)
 		SaveBindings(1)
 	end
+end
+
+local function keybindButtonClick()
+	if InCombatLockdown() then return end
+
+	AB:ActivateBindMode()
+
+	HideUIPanel(_G.KeyBindingFrame)
+	HideUIPanel(_G.GameMenuFrame)
+end
+
+function AB:SwapKeybindButton(event, addon)
+	if event and addon ~= 'Blizzard_BindingUI' then return end
+
+	local parent = _G.KeyBindingFrame
+	parent.quickKeybindButton:Hide()
+
+	local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'OptionsButtonTemplate, BackdropTemplate')
+	frame:Width(150)
+	frame:Point('TOPLEFT', parent.quickKeybindButton)
+	frame:SetScript('OnClick', keybindButtonClick)
+	frame:SetText('ElvUI Keybind')
+
+	Skins:HandleButton(frame)
 end
 
 function AB:LoadKeyBinder()

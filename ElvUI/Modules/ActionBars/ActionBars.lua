@@ -1338,6 +1338,12 @@ function AB:Initialize()
 	AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
 
+	if _G.KeyBindingFrame then
+		AB:SwapKeybindButton()
+	else
+		AB:RegisterEvent('ADDON_LOADED', 'SwapKeybindButton')
+	end
+
 	if C_PetBattles_IsInBattle() then
 		AB:RemoveBindings()
 	else
