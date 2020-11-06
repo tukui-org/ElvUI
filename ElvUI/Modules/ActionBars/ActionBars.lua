@@ -6,8 +6,6 @@ local unpack = unpack
 local ipairs, pairs, select, strmatch = ipairs, pairs, select, strmatch
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
-local Mixin = Mixin
-local GetMacroInfo = GetMacroInfo
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
@@ -23,7 +21,6 @@ local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
-local LoadAddOn = LoadAddOn
 local SetModifiedClick = SetModifiedClick
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
@@ -32,8 +29,6 @@ local UnitChannelInfo = UnitChannelInfo
 local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local GetSpellBookItemName = GetSpellBookItemName
-local GetCurrentBindingSet = GetCurrentBindingSet
 local UnregisterStateDriver = UnregisterStateDriver
 local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
@@ -45,9 +40,7 @@ local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
-local KeybindFrames_InQuickKeybindMode = KeybindFrames_InQuickKeybindMode
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
-local GameTooltip = GameTooltip
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -512,9 +505,9 @@ function AB:ReassignBindings(event)
 			ClearOverrideBindings(bar)
 
 			for _, button in ipairs(bar.buttons) do
-				if button.commandName then
-					for k=1, select('#', GetBindingKey(button.commandName)) do
-						local key = select(k, GetBindingKey(button.commandName))
+				if button.keyBoundTarget then
+					for k=1, select('#', GetBindingKey(button.keyBoundTarget)) do
+						local key = select(k, GetBindingKey(button.keyBoundTarget))
 						if key and key ~= '' then
 							SetOverrideBindingClick(bar, false, key, button:GetName())
 						end
@@ -841,46 +834,22 @@ function AB:SpellBookTooltipOnUpdate(elapsed)
 	if owner then AB.SpellButtonOnEnter(owner) end
 end
 
-function AB:KeybindButtonOnEnter()
-	if self.QuickKeybindButtonOnEnter then
-		self.commandName = nil
+function AB:SpellButtonOnEnter(_, tt)
+	-- copied from SpellBookFrame to remove:
+	--- ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
 
-		if not InCombatLockdown() then
-			local parent = self:GetParent()
-			local parentName = parent and parent:GetName()
-			if parentName == 'MacroButtonContainer' then
-				self.commandName = 'MACRO '.. GetMacroInfo(self:GetID())
-			elseif parentName and strmatch(parentName, 'ContainerFrame') then -- Bags
-				if self.itemID then
-					self.commandName = 'ITEM item:'..self.itemID
-				end
-			elseif self.spellName then -- Flyouts
-				self.commandName = 'SPELL '..self.spellName
-			end
+	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
+	if not tt then tt = SpellBookTooltip end
 
-			if self.commandName then
-				self:QuickKeybindButtonOnEnter()
+	if tt:IsForbidden() then return end
+	tt:SetOwner(self, 'ANCHOR_RIGHT')
 
-				-- hide the GameTooltip if its showning too
-				if _G.QuickKeybindTooltip:IsShown() and not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
-					GameTooltip:Hide()
-				end
-			end
-		end
-	end
-end
+	local slot = _G.SpellBook_GetSpellBookSlot(self)
+	local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
 
-function AB:KeybindButtonOnLeave()
-	if self.QuickKeybindButtonOnLeave then
-		self:QuickKeybindButtonOnLeave()
-	end
-end
-
-function AB:SpellButtonOnEnter(_, tt) -- copied from SpellBookFrame to remove: ActionBarController_UpdateAll, PetActionHighlightMarks, and BarHighlightMarks
 	ClearOnBarHighlightMarks()
 	ClearPetActionHighlightMarks()
 
-	local slot = _G.SpellBook_GetSpellBookSlot(self)
 	local slotType, actionID = GetSpellBookItemInfo(slot, _G.SpellBookFrame.bookType)
 	if slotType == 'SPELL' then
 		UpdateOnBarHighlightMarksBySpell(actionID)
@@ -891,39 +860,17 @@ function AB:SpellButtonOnEnter(_, tt) -- copied from SpellBookFrame to remove: A
 		UpdatePetActionHighlightMarks(actionID)
 	end
 
-	if self.QuickKeybindButtonOnEnter then
-		local name = not InCombatLockdown() and GetSpellBookItemName(slot, _G.SpellBookFrame.bookType)
-		if not name then
-			self.commandName = nil
-		else
-			self.commandName = 'SPELL '..name
-
-			self:QuickKeybindButtonOnEnter()
-		end
+	local highlight = self.SpellHighlightTexture
+	if highlight and highlight:IsShown() then
+		local color = _G.LIGHTBLUE_FONT_COLOR
+		tt:AddLine(_G.SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, color.r, color.g, color.b)
 	end
 
-	-- TT:MODIFIER_STATE_CHANGED uses this function to safely update the spellbook tooltip when the actionbar module is disabled
-	if not tt then tt = SpellBookTooltip end
-	if tt:IsForbidden() then return end
-
-	if KeybindFrames_InQuickKeybindMode() then
-		tt:Hide()
-	else
-		tt:SetOwner(self, 'ANCHOR_RIGHT')
-
-		local highlight = self.SpellHighlightTexture
-		if highlight and highlight:IsShown() then
-			local color = _G.LIGHTBLUE_FONT_COLOR
-			tt:AddLine(_G.SPELLBOOK_SPELL_NOT_ON_ACTION_BAR, color.r, color.g, color.b)
-		end
-
-		if tt == SpellBookTooltip then
-			local needsUpdate = tt:SetSpellBookItem(slot, _G.SpellBookFrame.bookType)
-			tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
-		end
-
-		tt:Show()
+	if tt == SpellBookTooltip then
+		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
+
+	tt:Show()
 end
 
 function AB:UpdateSpellBookTooltip(event)
@@ -938,10 +885,6 @@ function AB:SpellButtonOnLeave()
 
 	SpellBookTooltip:Hide()
 	SpellBookTooltip:SetScript('OnUpdate', nil)
-
-	if self.QuickKeybindButtonOnLeave then
-		self:QuickKeybindButtonOnLeave()
-	end
 end
 
 function AB:ButtonEventsRegisterFrame(added)
@@ -961,19 +904,6 @@ function AB:ButtonEventsRegisterFrame(added)
 	end
 end
 
-function AB:QuickKeybindImport(button)
-	-- replicate QuickKeybindButtonTemplate
-	Mixin(button, _G.QuickKeybindButtonTemplateMixin)
-
-	local highlight = button:CreateTexture()
-	highlight:SetAtlas('bags-newitem')
-	highlight:SetAlpha(0.5)
-	highlight:Hide()
-	highlight:SetInside()
-
-	button.QuickKeybindHighlightTexture = highlight
-end
-
 function AB:DisableBlizzard()
 	-- dont blindly add to this table, the first 5 get their events registered
 	for i, name in ipairs({'OverrideActionBar', 'StanceBarFrame', 'PossessBarFrame', 'PetActionBarFrame', 'MultiCastActionBarFrame', 'MainMenuBar', 'MicroButtonAndBagsBar', 'MultiBarBottomLeft', 'MultiBarBottomRight', 'MultiBarLeft', 'MultiBarRight'}) do
@@ -990,7 +920,6 @@ function AB:DisableBlizzard()
 		local button = _G['SpellButton'..i]
 		button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 		button:SetScript('OnLeave', AB.SpellButtonOnLeave)
-		AB:QuickKeybindImport(button)
 	end
 
 	-- MainMenuBar:ClearAllPoints taint during combat
@@ -1099,10 +1028,8 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	for i, button in ipairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)
 
-		local blizzName = format(buttonName..'%d', i)
-		bar.buttonConfig.commandName = blizzName
-		button.commandName = blizzName
-
+		bar.buttonConfig.keyBoundTarget = format(buttonName..'%d', i)
+		button.keyBoundTarget = bar.buttonConfig.keyBoundTarget
 		button.postKeybind = AB.FixKeybindText
 		button:SetAttribute('buttonlock', AB.db.lockActionBars)
 		button:SetAttribute('checkselfcast', true)
@@ -1170,15 +1097,11 @@ end
 function AB:FlyoutButton_OnEnter()
 	local anchor = flyoutButtonAnchor(self)
 	if anchor then AB:Bar_OnEnter(anchor) end
-
-	AB.KeybindButtonOnEnter(self)
 end
 
 function AB:FlyoutButton_OnLeave()
 	local anchor = flyoutButtonAnchor(self)
 	if anchor then AB:Bar_OnLeave(anchor) end
-
-	AB.KeybindButtonOnLeave(self)
 end
 
 local function spellFlyoutAnchor(frame)
@@ -1213,7 +1136,6 @@ function AB:SetupFlyoutButton(button)
 		AB:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
 		button:HookScript('OnEnter', AB.FlyoutButton_OnEnter)
 		button:HookScript('OnLeave', AB.FlyoutButton_OnLeave)
-		AB:QuickKeybindImport(button)
 	end
 
 	if not InCombatLockdown() then
@@ -1365,79 +1287,6 @@ function AB:PLAYER_ENTERING_WORLD()
 	AB:AdjustMaxStanceButtons('PLAYER_ENTERING_WORLD')
 end
 
-function AB:QuickKeybindMovable()
-	local frame = _G.QuickKeybindFrame
-
-	frame:SetMovable(true)
-	frame:SetUserPlaced(true)
-	frame:SetScript('OnMouseDown', frame.StartMoving)
-	frame:SetScript('OnMouseUp', frame.StopMovingOrSizing)
-end
-
-function AB:SetupQuickKeybind()
-	AB:HandlePhantomExtraActionButton()
-	AB:QuickKeybindMovable()
-end
-
-function AB:HandlePhantomExtraActionButton()
-	local button = _G.QuickKeybindFrame.phantomExtraActionButton
-	button:SetScript('OnUpdate', nil)
-
-	button:StripTextures()
-	button:CreateBackdrop(AB.db.transparent and 'Transparent')
-
-	button:ClearAllPoints()
-	button:SetAllPoints(_G.ExtraActionBarFrame)
-end
-
-function AB:SetupMacroKeybind()
-	for i = 1, _G.MAX_ACCOUNT_MACROS do
-		local macro = _G['MacroButton'..i]
-		macro:HookScript('OnEnter', AB.KeybindButtonOnEnter)
-		macro:HookScript('OnLeave', AB.KeybindButtonOnLeave)
-		AB:QuickKeybindImport(macro)
-	end
-end
-
-do
-	AB.AddonLoaded = {
-		Blizzard_BindingUI = { check = function() return _G.QuickKeybindFrame end, func = AB.SetupQuickKeybind },
-		Blizzard_MacroUI = { check = function() return _G.MacroFrame end, func = AB.SetupMacroKeybind },
-	}
-
-	function AB:ADDON_LOADED(_, addon)
-		local data = AB.AddonLoaded[addon]
-		if data and data.func then
-			data.func()
-			AB.AddonLoaded[addon] = nil
-		end
-	end
-
-	function AB:CheckLoadedAddons()
-		for key, data in ipairs(AB.AddonLoaded) do
-			if data and data.func and data.check and data.check() then
-				data.func()
-				AB.AddonLoaded[key] = nil
-			end
-		end
-	end
-end
-
-function AB:ActivateBindMode()
-	if InCombatLockdown() or not E:IsAddOnEnabled('Blizzard_BindingUI') then return end
-
-	if not _G.QuickKeybindFrame then
-		LoadAddOn('Blizzard_BindingUI')
-	end
-
-	_G.KeyBindingFrame.quickKeybindButton:Click()
-
-	-- we need to set the checkbox here
-	local charBinds = GetCurrentBindingSet() == _G.CHARACTER_BINDINGS
-	_G.KeyBindingFrame.characterSpecificButton:SetChecked(charBinds)
-	_G.QuickKeybindFrame.characterSpecificButton:SetChecked(charBinds)
-end
-
 function AB:Initialize()
 	AB.db = E.db.actionbar
 
@@ -1478,9 +1327,8 @@ function AB:Initialize()
 	AB:UpdateButtonSettings()
 	AB:UpdatePetCooldownSettings()
 	AB:ToggleCooldownOptions()
-	AB:CheckLoadedAddons()
+	AB:LoadKeyBinder()
 
-	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')

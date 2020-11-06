@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
-local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local unpack, select = unpack, select
@@ -64,10 +63,6 @@ local function SkinButton(button)
 
 		-- bag keybind support from actionbar module
 		if not E.private.actionbar.enable then return end
-
-		AB:QuickKeybindImport(button)
-		button:HookScript('OnEnter', AB.KeybindButtonOnEnter)
-		button:HookScript('OnLeave', AB.KeybindButtonOnLeave)
 	end
 end
 

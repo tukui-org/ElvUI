@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
-local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 local Search = E.Libs.ItemSearch
 local LSM = E.Libs.LSM
@@ -1312,17 +1311,11 @@ function B:SlotOnEnter()
 
 	-- bag keybind support from actionbar module
 	if not E.private.actionbar.enable then return end
-
-	local bag = self:GetParent()
-	if not bag.isBank then
-		AB.KeybindButtonOnEnter(self)
-	end
 end
 
 function B:SlotOnLeave()
 	-- bag keybind support from actionbar module
 	if not E.private.actionbar.enable then return end
-	AB.KeybindButtonOnLeave(self)
 end
 
 function B:ConstructContainerFrame(name, isBank)
@@ -1777,7 +1770,7 @@ function B:ConstructContainerFrame(name, isBank)
 end
 
 function B:ConstructContainerButton(f, slotID, bagID)
-	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BackdropTemplate, BankItemButtonGenericTemplate' or 'BackdropTemplate, QuickKeybindButtonTemplate, ContainerFrameItemButtonTemplate')
+	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BackdropTemplate, BankItemButtonGenericTemplate' or 'BackdropTemplate, ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(E.db.bags.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)

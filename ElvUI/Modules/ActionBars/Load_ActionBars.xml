@@ -3,5 +3,6 @@
 	<Script file='ExtraAB.lua'/>
 	<Script file='PetBar.lua'/>
 	<Script file='StanceBar.lua'/>
+	<Script file='Bind.lua'/>
 	<Script file='MicroBar.lua'/>
 </Ui>
