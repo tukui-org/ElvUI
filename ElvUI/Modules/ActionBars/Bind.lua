@@ -3,8 +3,8 @@ local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
-local strfind, format = strfind, format
-local select, tonumber, pairs, floor = select, tonumber, pairs, floor
+local tonumber, format = tonumber, format
+local select, pairs, floor = select, pairs, floor
 local CreateFrame = CreateFrame
 local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
@@ -29,9 +29,7 @@ local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
 local bind = CreateFrame('Frame', 'ElvUI_KeyBinder', E.UIParent)
 
 function AB:ActivateBindMode()
-	if InCombatLockdown() then
-		return
-	end
+	if InCombatLockdown() then return end
 
 	bind.active = true
 	E:StaticPopupSpecial_Show(ElvUIBindPopupWindow)
@@ -198,27 +196,26 @@ function AB:BindUpdate(button, spellmacro)
 	else
 		bind.name = button:GetName()
 		if not bind.name then return end
-
-		button.action = tonumber(button.action)
 		triggerTooltip = true
 
 		if button.keyBoundTarget then
 			button.bindstring = button.keyBoundTarget
 		elseif button.commandName then
 			button.bindstring = button.commandName
-		else
-			local modact = 1+(button.action-1)%12
+		elseif button.action then
+			local action = tonumber(button.action)
+			local modact = 1+(action-1)%12
 			if bind.name == 'ExtraActionButton1' then
 				button.bindstring = 'EXTRAACTIONBUTTON1'
-			elseif button.action < 25 or button.action > 72 then
+			elseif action < 25 or action > 72 then
 				button.bindstring = 'ACTIONBUTTON'..modact
-			elseif button.action < 73 and button.action > 60 then
+			elseif action < 73 and action > 60 then
 				button.bindstring = 'MULTIACTIONBAR1BUTTON'..modact
-			elseif button.action < 61 and button.action > 48 then
+			elseif action < 61 and action > 48 then
 				button.bindstring = 'MULTIACTIONBAR2BUTTON'..modact
-			elseif button.action < 49 and button.action > 36 then
+			elseif action < 49 and action > 36 then
 				button.bindstring = 'MULTIACTIONBAR4BUTTON'..modact
-			elseif button.action < 37 and button.action > 24 then
+			elseif action < 37 and action > 24 then
 				button.bindstring = 'MULTIACTIONBAR3BUTTON'..modact
 			end
 		end
