@@ -1097,6 +1097,8 @@ end
 function AB:FlyoutButton_OnEnter()
 	local anchor = flyoutButtonAnchor(self)
 	if anchor then AB:Bar_OnEnter(anchor) end
+
+	AB:BindUpdate(self, 'FLYOUT')
 end
 
 function AB:FlyoutButton_OnLeave()
@@ -1125,6 +1127,7 @@ function AB:UpdateFlyoutButtons()
 	local btn, i = _G['SpellFlyoutButton1'], 1
 	while btn do
 		AB:SetupFlyoutButton(btn)
+		btn.isFlyout = true
 
 		i = i + 1
 		btn = _G['SpellFlyoutButton'..i]
