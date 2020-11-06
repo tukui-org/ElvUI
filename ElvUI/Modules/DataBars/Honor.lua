@@ -41,7 +41,7 @@ function DB:HonorBar_Update(event, unit)
 	elseif textFormat == 'CURPERC' then
 		displayString = format('%s - %d%% - [%s]', E:ShortValue(CurrentHonor), PercentHonor, CurrentLevel)
 	elseif textFormat == 'CUR' then
-		displayString = format('%s - [%s]' , E:ShortValue(CurrentHonor), CurrentLevel)
+		displayString = format('%s - [%s]', E:ShortValue(CurrentHonor), CurrentLevel)
 	elseif textFormat == 'REM' then
 		displayString = format('%s - [%s]', E:ShortValue(RemainingHonor), CurrentLevel)
 	elseif textFormat == 'CURREM' then
