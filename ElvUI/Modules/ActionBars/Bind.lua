@@ -166,66 +166,66 @@ function AB:BindUpdate(button, spellmacro)
 
 	_G.ShoppingTooltip1:Hide()
 
-	bind.button.bindstring = nil -- keep this clean
+	button.bindstring = nil -- keep this clean
 
 	if spellmacro == 'FLYOUT' then
-		bind.name = bind.button.spellName
-		bind.button.bindstring = spellmacro..' '..bind.name
+		bind.name = button.spellName
+		button.bindstring = spellmacro..' '..bind.name
 	elseif spellmacro == 'SPELL' then
-		bind.button.id = SpellBook_GetSpellBookSlot(bind.button)
-		bind.name = GetSpellBookItemName(bind.button.id, _G.SpellBookFrame.bookType)
-		bind.button.bindstring = spellmacro..' '..bind.name
+		button.id = SpellBook_GetSpellBookSlot(button)
+		bind.name = GetSpellBookItemName(button.id, _G.SpellBookFrame.bookType)
+		button.bindstring = spellmacro..' '..bind.name
 	elseif spellmacro == 'MACRO' then
-		bind.button.id = bind.button:GetID()
+		button.id = button:GetID()
 
 		-- no clue what this is, leaving it alone tho lol
 		if floor(.5+select(2,_G.MacroFrameTab1Text:GetTextColor())*10)/10==.8 then
-			bind.button.id = bind.button.id + MAX_ACCOUNT_MACROS
+			button.id = button.id + MAX_ACCOUNT_MACROS
 		end
 
-		bind.name = GetMacroInfo(bind.button.id)
-		bind.button.bindstring = spellmacro..' '..bind.name
+		bind.name = GetMacroInfo(button.id)
+		button.bindstring = spellmacro..' '..bind.name
 	elseif spellmacro == 'MICRO' then
 		bind.name = button.tooltipText
-		bind.button.bindstring = button.commandName
+		button.bindstring = button.commandName
 		triggerTooltip = true
 	elseif spellmacro == 'BAG' then
-		if bind.button.itemID then
-			bind.name = bind.button.name
-			bind.button.bindstring = 'ITEM item:'..bind.button.itemID
+		if button.itemID then
+			bind.name = button.name
+			button.bindstring = 'ITEM item:'..button.itemID
 			triggerTooltip = true
 		end
 	else
 		bind.name = button:GetName()
 		if not bind.name then return end
 
-		bind.button.action = tonumber(button.action)
+		button.action = tonumber(button.action)
 		triggerTooltip = true
 
-		if bind.button.keyBoundTarget then
-			bind.button.bindstring = bind.button.keyBoundTarget
+		if button.keyBoundTarget then
+			button.bindstring = button.keyBoundTarget
 		elseif button.commandName then
-			bind.button.bindstring = button.commandName
+			button.bindstring = button.commandName
 		else
-			local modact = 1+(bind.button.action-1)%12
+			local modact = 1+(button.action-1)%12
 			if bind.name == 'ExtraActionButton1' then
-				bind.button.bindstring = 'EXTRAACTIONBUTTON1'
-			elseif bind.button.action < 25 or bind.button.action > 72 then
-				bind.button.bindstring = 'ACTIONBUTTON'..modact
-			elseif bind.button.action < 73 and bind.button.action > 60 then
-				bind.button.bindstring = 'MULTIACTIONBAR1BUTTON'..modact
-			elseif bind.button.action < 61 and bind.button.action > 48 then
-				bind.button.bindstring = 'MULTIACTIONBAR2BUTTON'..modact
-			elseif bind.button.action < 49 and bind.button.action > 36 then
-				bind.button.bindstring = 'MULTIACTIONBAR4BUTTON'..modact
-			elseif bind.button.action < 37 and bind.button.action > 24 then
-				bind.button.bindstring = 'MULTIACTIONBAR3BUTTON'..modact
+				button.bindstring = 'EXTRAACTIONBUTTON1'
+			elseif button.action < 25 or button.action > 72 then
+				button.bindstring = 'ACTIONBUTTON'..modact
+			elseif button.action < 73 and button.action > 60 then
+				button.bindstring = 'MULTIACTIONBAR1BUTTON'..modact
+			elseif button.action < 61 and button.action > 48 then
+				button.bindstring = 'MULTIACTIONBAR2BUTTON'..modact
+			elseif button.action < 49 and button.action > 36 then
+				button.bindstring = 'MULTIACTIONBAR4BUTTON'..modact
+			elseif button.action < 37 and button.action > 24 then
+				button.bindstring = 'MULTIACTIONBAR3BUTTON'..modact
 			end
 		end
 	end
 
-	if bind.button.bindstring then
-		bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
+	if button.bindstring then
+		button.bindings = {GetBindingKey(button.bindstring)}
 		AB:BindTooltip(triggerTooltip)
 	end
 end
