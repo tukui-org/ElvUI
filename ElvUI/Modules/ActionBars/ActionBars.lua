@@ -213,7 +213,7 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 		bar.backdrop:Point(horizontal, button, horizontal, anchorLeft and -db.backdropSpacing or db.backdropSpacing, 0)
 	end
 
-	if button:IsShown() then
+	if button.handleBackdrop then
 		local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
 		bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and db.backdropSpacing or -db.backdropSpacing)
 	end
@@ -303,8 +303,10 @@ function AB:PositionAndSizeBar(barName)
 
 		if i > numButtons then
 			button:Hide()
+			button.handleBackdrop = nil
 		else
 			button:Show()
+			button.handleBackdrop = true
 			lastShownButton = button
 		end
 

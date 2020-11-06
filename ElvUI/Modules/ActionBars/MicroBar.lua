@@ -153,6 +153,7 @@ function AB:UpdateMicroPositionDimensions()
 		end
 
 		AB:HandleButton(microBar, button, i, lastButton, lastColumnButton)
+		button.handleBackdrop = true
 
 		lastButton = button
 	end
