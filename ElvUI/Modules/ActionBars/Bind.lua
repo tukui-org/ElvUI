@@ -101,16 +101,8 @@ function AB:BindListener(key)
 	local shift = IsShiftKeyDown() and 'SHIFT-' or ''
 	local allowBinding = (not isFlyout or (isFlyout and key ~= 'LeftButton')) --Don't attempt to bind left mouse button for flyout buttons
 
-	if not bind.spellmacro or bind.spellmacro == 'PET' or bind.spellmacro == 'STANCE' or bind.spellmacro == 'FLYOUT' then
-		if allowBinding then
-			SetBinding(alt..ctrl..shift..key, bind.button.bindstring)
-		end
-	else
-		if allowBinding then
-			SetBinding(alt..ctrl..shift..key, bind.spellmacro..' '..bind.name)
-		end
-	end
-	if allowBinding then
+	if bind.button.bindstring and allowBinding then
+		SetBinding(alt..ctrl..shift..key, bind.button.bindstring)
 		E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.name..'.')
 	end
 
@@ -193,6 +185,10 @@ function AB:BindUpdate(button, spellmacro)
 
 		bind.name = GetMacroInfo(bind.button.id)
 		bind.button.bindstring = spellmacro..' '..bind.name
+	elseif spellmacro == 'MICRO' then
+		bind.name = button.tooltipText
+		bind.button.bindstring = button.commandName
+		triggerTooltip = true
 	elseif spellmacro == 'BAG' then
 		if bind.button.itemID then
 			bind.name = bind.button.name
