@@ -94,12 +94,12 @@ function AB:BindListener(key)
 	if key == 'MiddleButton' then key = 'BUTTON3' end
 	if key:find('Button%d') then key = key:upper() end
 
-	local alt = IsAltKeyDown() and 'ALT-' or ''
-	local ctrl = IsControlKeyDown() and 'CTRL-' or ''
-	local shift = IsShiftKeyDown() and 'SHIFT-' or ''
 	local allowBinding = (not isFlyout or (isFlyout and key ~= 'LeftButton')) --Don't attempt to bind left mouse button for flyout buttons
+	if allowBinding and bind.button.bindstring then
+		local alt = IsAltKeyDown() and 'ALT-' or ''
+		local ctrl = IsControlKeyDown() and 'CTRL-' or ''
+		local shift = IsShiftKeyDown() and 'SHIFT-' or ''
 
-	if bind.button.bindstring and allowBinding then
 		SetBinding(alt..ctrl..shift..key, bind.button.bindstring)
 		E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.name..'.')
 	end
