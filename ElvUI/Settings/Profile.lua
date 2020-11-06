@@ -1068,6 +1068,18 @@ local UF_AuraWatch = {
 }
 
 local UF_Castbar = {
+	customTextFont = {
+		enable = false,
+		font = 'PT Sans Narrow',
+		fontSize = 12,
+		fontStyle = 'OUTLINE'
+	},
+	customTimeFont = {
+		enable = false,
+		font = 'PT Sans Narrow',
+		fontSize = 12,
+		fontStyle = 'OUTLINE'
+	},
 	displayTarget = false,
 	enable = true,
 	format = 'REMAINING',
@@ -1085,18 +1097,10 @@ local UF_Castbar = {
 	overlayOnFrame = 'None',
 	reverse = false,
 	spark = true,
-	textFontStyle = 'OUTLINE',
-	textFontSize = 12,
-	textFont = 'PT Sans Narrow',
-	textUseGeneralFontSettings = true,
 	textColor = {r = 0.84, g = 0.75, b = 0.65, a = 1},
 	tickColor = {r = 0, g = 0, b = 0, a = 0.8},
 	ticks = true,
 	tickWidth = 1,
-	timeFont = 'PT Sans Narrow',
-	timeFontSize = 12,
-	timeFontStyle = 'OUTLINE',
-	timeUseGeneralFontSettings = true,
 	timeToHold = 0,
 	width = 270,
 	xOffsetText = 4,
