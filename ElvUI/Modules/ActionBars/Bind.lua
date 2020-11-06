@@ -362,7 +362,11 @@ function AB:LoadKeyBinder()
 	Popup.discard:Point('BOTTOMLEFT', 14, 10)
 
 	Skins:HandleCheckBox(Popup.perCharCheck)
-	Skins:HandleButton(Popup.save)
 	Skins:HandleButton(Popup.discard)
 	Skins:HandleButton(Popup.header)
+	Skins:HandleButton(Popup.save)
+
+	Popup.discard.backdrop:SetFrameLevel(Popup.discard:GetFrameLevel())
+	Popup.header.backdrop:SetFrameLevel(Popup.header:GetFrameLevel())
+	Popup.save.backdrop:SetFrameLevel(Popup.save:GetFrameLevel())
 end
