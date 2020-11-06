@@ -9,6 +9,7 @@ local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame
 local GetQuestID = GetQuestID
+local GetQuestBackgroundMaterial = GetQuestBackgroundMaterial
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
@@ -65,12 +66,7 @@ local function NewSealStyle()
 	return theme and theme.background
 end
 
-local function OldSealStyle(material)
-	local bottomLeft = material and _G[material..'BotLeft']
-	return bottomLeft and bottomLeft:IsShown()
-end
-
-function S:QuestInfo_StyleScrollFrame(scrollFrame, material, widthOverride, heightOverride, inset)
+function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	if not scrollFrame.backdrop then
 		scrollFrame:CreateBackdrop()
 	end
@@ -79,7 +75,7 @@ function S:QuestInfo_StyleScrollFrame(scrollFrame, material, widthOverride, heig
 		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
 	end
 
-	if NewSealStyle() or OldSealStyle(material) then
+	if NewSealStyle() or GetQuestBackgroundMaterial() then
 		scrollFrame.spellTex:Hide()
 		scrollFrame.backdrop:Hide()
 	else
@@ -93,8 +89,8 @@ function S:QuestInfo_StyleScrollFrame(scrollFrame, material, widthOverride, heig
 end
 
 S.QuestInfo_StyleScrollFrames = {
-	[_G.QuestDetailScrollChildFrame] = { frame = _G.QuestDetailScrollFrame, material = 'QuestFrameDetailPanelMaterial', width = 506, height = 615, inset = true },
-	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, material = 'QuestFrameRewardPanelMaterial', width = 506, height = 615, inset = true },
+	[_G.QuestDetailScrollChildFrame] = { frame = _G.QuestDetailScrollFrame, width = 506, height = 615, inset = true },
+	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, width = 506, height = 615, inset = true },
 	[_G.QuestLogPopupDetailFrame.ScrollFrame.ScrollChild] = {
 		frame = _G.QuestLogPopupDetailFrameScrollFrame,
 		width = 509, height = 630, inset = false,
@@ -283,7 +279,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 
 		local style = S.QuestInfo_StyleScrollFrames[parentFrame]
 		if style then
-			S:QuestInfo_StyleScrollFrame(style.frame, style.material, style.width, style.height, style.inset)
+			S:QuestInfo_StyleScrollFrame(style.frame, style.width, style.height, style.inset)
 
 			if style.custom then
 				style.custom(style.frame)
@@ -412,8 +408,8 @@ function S:BlizzardQuestFrames()
 		hooksecurefunc('QuestFrame_SetTextColor', S.QuestFrame_SetTextColor)
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', S.QuestInfo_ShowRequiredMoney)
 	else
-		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, 'QuestFrameProgressPanelMaterial', 506, 615, true)
-		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, 'QuestFrameGreetingPanelMaterial', 506, 615, true)
+		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
+		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
 	end
 
 	_G.QuestFrameGreetingPanel:StripTextures(true)
