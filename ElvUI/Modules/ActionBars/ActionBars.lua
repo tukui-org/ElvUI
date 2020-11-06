@@ -227,11 +227,11 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 end
 
 function AB:TrimIcon(button)
-	local db, icon = button.db, button.icon
-	if not (db and icon) then return end
+	if not button.icon then return end
 
-	local left, right, top, bottom = unpack(db.customCoords or E.TexCoords)
-	if icon and not db.keepSizeRatio then
+	local db = button.db
+	local left, right, top, bottom = unpack(db and db.customCoords or E.TexCoords)
+	if db and not db.keepSizeRatio then
 		local width, height = button:GetSize()
 		local ratio = width / height
 		if ratio > 1 then
@@ -245,7 +245,7 @@ function AB:TrimIcon(button)
 		end
 	end
 
-	icon:SetTexCoord(left, right, top, bottom)
+	button.icon:SetTexCoord(left, right, top, bottom)
 end
 
 function AB:GetGrowth(point)
