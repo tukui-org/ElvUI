@@ -94,7 +94,7 @@ function AB:BindListener(key)
 	if key == 'MiddleButton' then key = 'BUTTON3' end
 	if key:find('Button%d') then key = key:upper() end
 
-	local allowBinding = (not isFlyout or (isFlyout and key ~= 'LeftButton')) --Don't attempt to bind left mouse button for flyout buttons
+	local allowBinding = not isFlyout or (key ~= 'LeftButton') --Don't attempt to bind left mouse button for flyout buttons
 	if allowBinding and bind.button.bindstring then
 		local alt = IsAltKeyDown() and 'ALT-' or ''
 		local ctrl = IsControlKeyDown() and 'CTRL-' or ''
