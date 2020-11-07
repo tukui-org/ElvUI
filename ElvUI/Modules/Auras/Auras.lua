@@ -89,9 +89,10 @@ function A:MasqueData(texture, highlight)
 end
 
 function A:UpdateStatusBar(button)
+	local db = A.db[button.auraType]
 	button.statusBar:SetValue(button.timeLeft)
 
-	local threshold = button.db.fadeThreshold
+	local threshold = db.fadeThreshold
 	if threshold == -1 then
 		return
 	elseif button.timeLeft > threshold then
@@ -158,7 +159,6 @@ end
 
 function A:UpdateIcon(button)
 	local db = A.db[button.auraType]
-	button.db = db
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
