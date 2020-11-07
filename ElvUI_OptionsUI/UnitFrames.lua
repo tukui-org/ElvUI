@@ -1248,7 +1248,9 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						type = 'toggle',
 						name = L["Invert Colors"],
 						desc = L["Invert foreground and background colors."],
-						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
+						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or
+							(E.db.unitframe.units[groupName].castbar.customColor.enable and
+								not E.db.unitframe.units[groupName].castbar.customColor.transparent) end,
 					},
 					spacer1 = ACH:Spacer(4, 'full'),
 					useClassColor = {
