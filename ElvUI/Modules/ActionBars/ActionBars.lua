@@ -1295,13 +1295,14 @@ function AB:PLAYER_ENTERING_WORLD()
 	AB:AdjustMaxStanceButtons('PLAYER_ENTERING_WORLD')
 end
 
-function AB:HandleOverlay(enable)
-	if enable then
+function AB:HandleOverlay()
+	if AB.db.handleOverlay then
 		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
 		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
 	else
 		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
 		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
+
 		for button in next, LAB.activeButtons do
 			E.Libs.ButtonGlow.HideOverlayGlow(button)
 		end
@@ -1349,7 +1350,7 @@ function AB:Initialize()
 	AB:UpdatePetCooldownSettings()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
-	AB:HandleOverlay(AB.db.handleOverlay)
+	AB:HandleOverlay()
 
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')

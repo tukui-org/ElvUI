@@ -219,7 +219,10 @@ E.Options.args.actionbar.args.general = {
 							order = 27,
 							type = 'toggle',
 							name = L["Action Button Glow"],
-							set = function(_, value) E.db.actionbar.handleOverlay = value AB:HandleOverlay(value) end,
+							set = function(_, value)
+								E.db.actionbar.handleOverlay = value
+								AB:HandleOverlay()
+							end,
 						},
 					}
 				},
