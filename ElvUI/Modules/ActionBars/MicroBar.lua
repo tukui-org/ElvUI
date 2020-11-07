@@ -46,6 +46,11 @@ local function onEnter(button)
 	if button.backdrop and button:IsEnabled() then
 		button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	end
+
+	-- bag keybind support from actionbar module
+	if E.private.actionbar.enable then
+		AB:BindUpdate(button, 'MICRO')
+	end
 end
 
 local function onLeave(button)
@@ -148,6 +153,7 @@ function AB:UpdateMicroPositionDimensions()
 		end
 
 		AB:HandleButton(microBar, button, i, lastButton, lastColumnButton)
+		button.handleBackdrop = true
 
 		lastButton = button
 	end

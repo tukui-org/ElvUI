@@ -9,6 +9,7 @@ local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame
 local GetQuestID = GetQuestID
+local GetQuestBackgroundMaterial = GetQuestBackgroundMaterial
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
@@ -60,6 +61,11 @@ local function HandleReward(frame)
 	end
 end
 
+local function NewSealStyle()
+	local theme = _G.QuestInfoSealFrame.theme
+	return theme and theme.background
+end
+
 function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	if not scrollFrame.backdrop then
 		scrollFrame:CreateBackdrop()
@@ -69,8 +75,7 @@ function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride
 		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
 	end
 
-	local theme = _G.QuestInfoSealFrame.theme
-	if theme and theme.background then
+	if NewSealStyle() or GetQuestBackgroundMaterial() then
 		scrollFrame.spellTex:Hide()
 		scrollFrame.backdrop:Hide()
 	else
@@ -376,13 +381,12 @@ function S:BlizzardQuestFrames()
 	--Quest Frame
 	local QuestFrame = _G.QuestFrame
 	S:HandlePortraitFrame(QuestFrame)
-
-	_G.QuestFrameDetailPanel:StripTextures(true)
-	_G.QuestDetailScrollFrame:StripTextures(true)
+	_G.QuestFrameDetailPanel:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
+	_G.QuestDetailScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
+	_G.QuestProgressScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
+	_G.QuestGreetingScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 	_G.QuestDetailScrollFrame:CreateBackdrop()
-	_G.QuestProgressScrollFrame:StripTextures()
 	_G.QuestProgressScrollFrame:CreateBackdrop()
-	_G.QuestGreetingScrollFrame:StripTextures()
 	_G.QuestGreetingScrollFrame:CreateBackdrop()
 
 	_G.QuestFrameGreetingPanel:HookScript('OnShow', function(frame)
@@ -403,14 +407,6 @@ function S:BlizzardQuestFrames()
 		hooksecurefunc('QuestFrame_SetTitleTextColor', S.QuestFrame_SetTitleTextColor)
 		hooksecurefunc('QuestFrame_SetTextColor', S.QuestFrame_SetTextColor)
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', S.QuestInfo_ShowRequiredMoney)
-
-		if _G.QuestFrameDetailPanel.SealMaterialBG then
-			_G.QuestFrameDetailPanel.SealMaterialBG:SetAlpha(0)
-		end
-
-		if _G.QuestFrameRewardPanel.SealMaterialBG then
-			_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
-		end
 	else
 		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
 		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)

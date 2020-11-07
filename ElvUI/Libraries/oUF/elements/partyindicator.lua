@@ -65,6 +65,14 @@ local function Enable(self)
 		self:RegisterEvent('UPDATE_CHAT_COLOR', Path, true)
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', Path, true)
 
+		if(element.HomeIcon and element.HomeIcon:IsObjectType('Texture') and not element.HomeIcon:GetTexture()) then
+			element.HomeIcon:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
+		end
+
+		if(element.InstanceIcon and element.InstanceIcon:IsObjectType('Texture') and not element.InstanceIcon:GetTexture()) then
+			element.InstanceIcon:SetTexture([[Interface\FriendsFrame\UI-Toast-FriendOnlineIcon]])
+		end
+
 		return true
 	end
 end

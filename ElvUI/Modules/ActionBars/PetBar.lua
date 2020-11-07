@@ -3,6 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local gsub = gsub
+local ipairs = ipairs
 local CreateFrame = CreateFrame
 local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
@@ -148,10 +149,12 @@ function AB:PositionAndSizeBarPet()
 		if i > numButtons then
 			button:SetScale(0.0001)
 			button:SetAlpha(0)
+			button.handleBackdrop = nil
 		else
 			button:SetScale(1)
 			button:SetAlpha(bar.db.alpha)
 			lastShownButton = button
+			button.handleBackdrop = true
 		end
 
 		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.petBar)
