@@ -8,11 +8,12 @@ ___
 
 **Sweet:**  
 Nameplates were reset in the last version for some people who had a newer profile, sorry about that. That problem is corrected now.  
+**/kb** was upgraded to also work on the microbar and bag items. You can now quickly bind from the Spell (binds by the Spell name) and Macro (binds by the Macro name), on Action buttons (binds to slot), or directly on Bag items (binds by Item ID, not the slot).  
 
 **Nice:**  
 Quest Most Expensive Item icon is behaving now.  
 Shadowed Unitframes wasn't playing nicely, should be okay now.  
-Masque should play nicely again, unchecking Keep Aspect Ratio will affect Masque icons, keep it on if you want it to use the one intended for the skin you have selected.  
+Masque should play nicely again. However noting that unchecking Keep Aspect Ratio will affect Masque icons, keep it on if you want it to use the one intended for the skin you have selected.  
 
 **Okay:**  
 Exp Databar would error sometimes.  
