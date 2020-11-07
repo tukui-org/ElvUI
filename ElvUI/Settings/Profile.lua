@@ -2182,7 +2182,7 @@ P.actionbar = {
 	rightClickSelfCast = false,
 	desaturateOnCooldown = false,
 	chargeCooldown = false,
-
+	handleOverlay = true,
 	barPet = {
 		enabled = true,
 		mouseover = false,
