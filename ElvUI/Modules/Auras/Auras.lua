@@ -154,9 +154,6 @@ function A:CreateIcon(button)
 		MasqueGroupDebuffs:ReSkin()
 	else
 		button:SetTemplate()
-		local color = E.media.bordercolor
-		button:SetBackdropBorderColor(color.r, color.g, color.b)
-		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 end
 
