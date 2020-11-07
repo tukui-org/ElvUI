@@ -92,6 +92,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.GameFont_Gigantic,					NORMAL, 32)											-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, unified and 15 or medium)					-- 14  Fix QuestLog Title mouseover
 		SetFont(_G.GameFontHighlightSmall2,				NORMAL, unified or small)							-- 11  Skill or Recipe description on TradeSkill frame
+		SetFont(_G.GameFontHighlightSmall,				NORMAL, unified or small)							-- 10
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, unified and 24 or huge)						-- 24  Mythic weekly best dungeon name
 		SetFont(_G.GameFontNormalLarge,					NORMAL, unified and 16 or large)					-- 16
 		SetFont(_G.GameFontNormalLarge2,				NORMAL, unified and 15 or large)					-- 18  Garrison Follower Names
@@ -131,7 +132,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.QuestFont_Huge,						NORMAL, unified and 15 or huge)							-- 18  Quest rewards title(Rewards)
 		SetFont(_G.QuestFont_Large,						NORMAL, unified and 14 or large)						-- 14
 		SetFont(_G.QuestFont_Shadow_Huge,				NORMAL, unified and 15 or huge)							-- 18  Quest Title
-		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, unified and 14 or small)						-- 14
+		SetFont(_G.QuestFont_Shadow_Small,				NORMAL, unified and 14 or size)							-- 14
 		SetFont(_G.QuestFont_Super_Huge,				NORMAL, unified and 22 or mega)							-- 24
 		SetFont(_G.ReputationDetailFont,				NORMAL, unified or size)								-- 10  Rep Desc when clicking a rep
 		SetFont(_G.SpellFont_Small,						NORMAL, 10)
