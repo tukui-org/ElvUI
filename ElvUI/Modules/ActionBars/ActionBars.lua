@@ -317,20 +317,21 @@ function AB:PositionAndSizeBar(barName)
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
+	-- paging needs to be updated even if the bar is disabled
+	local defaults = AB.barDefaults[barName]
+	local page = AB:GetPage(barName, defaults.page, defaults.conditions)
+	RegisterStateDriver(bar, 'page', page)
+	bar:SetAttribute('page', page)
+
 	if not bar.initialized then
 		bar.initialized = true
 
-		local defaults = AB.barDefaults[barName]
 		if defaults.conditions:find('[form,noform]') then
 			bar:SetAttribute('newCondition', gsub(defaults.conditions, ' %[form,noform%] 0; ', ''))
 			bar:SetAttribute('hasTempBar', true)
 		else
 			bar:SetAttribute('hasTempBar', false)
 		end
-
-		local page = AB:GetPage(barName, defaults.page, defaults.conditions)
-		RegisterStateDriver(bar, 'page', page)
-		bar:SetAttribute('page', page)
 	end
 
 	if db.enabled or not bar.initialized then
