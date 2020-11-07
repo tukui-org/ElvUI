@@ -139,9 +139,6 @@ function AB:PositionAndSizeBarPet()
 
 		bar.buttons[i] = button
 
-		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
-		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
-
 		if i == 1 or i == buttonsPerRow then
 			anchorRowButton = button
 		end
@@ -154,9 +151,11 @@ function AB:PositionAndSizeBarPet()
 			button:SetScale(1)
 			button:SetAlpha(bar.db.alpha)
 			lastShownButton = button
-			button.handleBackdrop = true
+			button.handleBackdrop = true -- keep over HandleButton
 		end
 
+		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
+		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.petBar)
 	end
 

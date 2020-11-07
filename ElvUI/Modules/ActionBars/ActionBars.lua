@@ -306,7 +306,7 @@ function AB:PositionAndSizeBar(barName)
 			button.handleBackdrop = nil
 		else
 			button:Show()
-			button.handleBackdrop = true
+			button.handleBackdrop = true -- keep over HandleButton
 			lastShownButton = button
 		end
 

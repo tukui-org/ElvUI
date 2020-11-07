@@ -1,6 +1,17 @@
-### Version 12.10 [ ETA: 🍨 ]
+### Version 12.11 [ ETA: 🍨 ]
 
 **Sweet:**  
+
+___
+
+### Version 12.10 [ November 6th 2020 ]
+
+**Hotfix:**  
+Petbar wasn't appearing with the Backdrop option selected.  
+
+**Also:**
+Top Aura options were reworked and settings for them were reset.  
+Added Custom Font options for Unitframe Castbars (Thanks @Caedis).  
 
 ___
 
