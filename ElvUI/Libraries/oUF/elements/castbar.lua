@@ -143,12 +143,6 @@ local function CastStart(self, event, unit)
 		return
 	end
 
-	-- [Blizzard Bug] Druid that is in a form and starts a craft
-	-- will fire UNIT_SPELLCAST_START twice (fires twice in Blizz UI as well)
-	if isTradeSkill and element:IsVisible() then
-		return
-	end
-
 	endTime = endTime / 1000
 	startTime = startTime / 1000
 
