@@ -7,7 +7,7 @@ local UIWidgetSetLayoutDirection = Enum.UIWidgetSetLayoutDirection
 local UIWidgetLayoutDirection = Enum.UIWidgetLayoutDirection
 
 function NP:Construct_WidgetContainer(nameplate)
-	local WidgetContainer = CreateFrame('Frame', nil, nameplate, 'UIWidgetContainerTemplate')
+	local WidgetContainer = CreateFrame('Frame', nil, nameplate, 'UIWidgetContainerNoResizeTemplate')
 	WidgetContainer:Point('BOTTOM', nameplate, 'TOP')
 	WidgetContainer:Hide()
 

@@ -213,16 +213,20 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 		bar.backdrop:Point(horizontal, button, horizontal, anchorLeft and -db.backdropSpacing or db.backdropSpacing, 0)
 	end
 
-	if button:IsShown() then
+	if button.handleBackdrop then
 		local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
 		bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and db.backdropSpacing or -db.backdropSpacing)
 	end
 end
 
-function AB:TrimIcon(icon, db, customCoords)
-	local left, right, top, bottom = unpack(customCoords or E.TexCoords)
+function AB:TrimIcon(button)
+	if not button.icon then return end
+
+	local db = button.db
+	local left, right, top, bottom = unpack(db and db.customCoords or E.TexCoords)
 	if db and not db.keepSizeRatio then
-		local ratio = (db.buttonsize or db.buttonSize) / db.buttonHeight
+		local width, height = button:GetSize()
+		local ratio = width / height
 		if ratio > 1 then
 			local trimAmount = (1 - (1 / ratio)) / 2
 			top = top + trimAmount
@@ -234,7 +238,7 @@ function AB:TrimIcon(icon, db, customCoords)
 		end
 	end
 
-	icon:SetTexCoord(left, right, top, bottom)
+	button.icon:SetTexCoord(left, right, top, bottom)
 end
 
 function AB:GetGrowth(point)
@@ -299,8 +303,10 @@ function AB:PositionAndSizeBar(barName)
 
 		if i > numButtons then
 			button:Hide()
+			button.handleBackdrop = nil
 		else
 			button:Show()
+			button.handleBackdrop = true
 			lastShownButton = button
 		end
 
@@ -311,14 +317,18 @@ function AB:PositionAndSizeBar(barName)
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
-	if db.enabled or not bar.initialized then
+	if not bar.initialized then
+		bar.initialized = true
+
 		if AB.barDefaults['bar'..bar.id].conditions:find('[form,noform]') then
 			bar:SetAttribute('newCondition', gsub(AB.barDefaults['bar'..bar.id].conditions, ' %[form,noform%] 0; ', ''))
 			bar:SetAttribute('hasTempBar', true)
 		else
 			bar:SetAttribute('hasTempBar', false)
 		end
+	end
 
+	if db.enabled or not bar.initialized then
 		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
 		visibility = gsub(visibility, '[\n\r]','')
 
@@ -326,12 +336,6 @@ function AB:PositionAndSizeBar(barName)
 		RegisterStateDriver(bar, 'page', page)
 		bar:SetAttribute('page', page)
 		bar:Show()
-
-		if not bar.initialized then
-			bar.initialized = true
-			AB:PositionAndSizeBar(barName)
-			return
-		end
 
 		E:EnableMover(bar.mover:GetName())
 	else
@@ -344,6 +348,11 @@ function AB:PositionAndSizeBar(barName)
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		MasqueGroup:ReSkin()
+
+		-- masque retrims them all so we have to too
+		for btn in pairs(AB.handledbuttons) do
+			AB:TrimIcon(btn)
+		end
 	end
 end
 
@@ -413,8 +422,6 @@ function AB:CreateBar(id)
 
 	AB.handledBars['bar'..id] = bar
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS',nil,'actionbar,playerBars,bar'..id)
-
-	AB:PositionAndSizeBar('bar'..id)
 
 	return bar
 end
@@ -498,13 +505,14 @@ function AB:ReassignBindings(event)
 	for _, bar in pairs(AB.handledBars) do
 		if bar then
 			ClearOverrideBindings(bar)
-			for i = 1, #bar.buttons do
-				local button = (bar.bindButtons..'%d'):format(i)
-				local real_button = (bar:GetName()..'Button%d'):format(i)
-				for k=1, select('#', GetBindingKey(button)) do
-					local key = select(k, GetBindingKey(button))
-					if key and key ~= '' then
-						SetOverrideBindingClick(bar, false, key, real_button)
+
+			for _, button in ipairs(bar.buttons) do
+				if button.keyBoundTarget then
+					for k=1, select('#', GetBindingKey(button.keyBoundTarget)) do
+						local key = select(k, GetBindingKey(button.keyBoundTarget))
+						if key and key ~= '' then
+							SetOverrideBindingClick(bar, false, key, button:GetName())
+						end
 					end
 				end
 			end
@@ -548,23 +556,22 @@ function AB:UpdateButtonSettings()
 
 	for barName, bar in pairs(AB.handledBars) do
 		if bar then
-			AB:UpdateButtonConfig(bar, bar.bindButtons)
-			AB:PositionAndSizeBar(barName)
+			AB:UpdateButtonConfig(bar, bar.bindButtons) -- config them first
+			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+		end
+	end
+
+	for button in pairs(AB.handledbuttons) do
+		if button then
+			AB:StyleFlyout(button)
+		else
+			AB.handledbuttons[button] = nil
 		end
 	end
 
 	AB:AdjustMaxStanceButtons()
 	AB:PositionAndSizeBarPet()
 	AB:PositionAndSizeBarShapeShift()
-
-	for button in pairs(AB.handledbuttons) do
-		if button then
-			AB:StyleButton(button, button.noBackdrop, button.useMasque, button.ignoreNormal)
-			AB:StyleFlyout(button)
-		else
-			AB.handledbuttons[button] = nil
-		end
-	end
 
 	AB:UpdatePetBindings()
 	AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
@@ -643,8 +650,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		end
 	end
 
-	if icon then
-		AB:TrimIcon(icon, button.db, button.customCoords)
+	if icon and not useMasque then
+		AB:TrimIcon(button)
 		icon:SetInside()
 	end
 
@@ -705,7 +712,7 @@ function AB:FadeBlings(alpha)
 	for i = 1, AB.fadeParent:GetNumChildren() do
 		local bar = select(i, AB.fadeParent:GetChildren())
 		if bar.buttons then
-			for _, button in pairs(bar.buttons) do
+			for _, button in ipairs(bar.buttons) do
 				AB:FadeBlingTexture(button.cooldown, alpha)
 			end
 		end
@@ -985,7 +992,7 @@ function AB:ToggleCountDownNumbers(bar, button, cd)
 		end
 	elseif bar then -- ref: E:UpdateCooldownOverride
 		if bar.buttons then
-			for _, btn in pairs(bar.buttons) do
+			for _, btn in ipairs(bar.buttons) do
 				if btn and btn.config and (btn.cooldown and btn.cooldown.timer) then
 					-- update the buttons config
 					btn.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
@@ -1020,7 +1027,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
 	SetModifiedClick('PICKUPACTION', AB.db.movementModifier)
 
-	for i, button in pairs(bar.buttons) do
+	for i, button in ipairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)
 
 		bar.buttonConfig.keyBoundTarget = format(buttonName..'%d', i)
@@ -1092,6 +1099,8 @@ end
 function AB:FlyoutButton_OnEnter()
 	local anchor = flyoutButtonAnchor(self)
 	if anchor then AB:Bar_OnEnter(anchor) end
+
+	AB:BindUpdate(self, 'FLYOUT')
 end
 
 function AB:FlyoutButton_OnLeave()
@@ -1120,6 +1129,7 @@ function AB:UpdateFlyoutButtons()
 	local btn, i = _G['SpellFlyoutButton1'], 1
 	while btn do
 		AB:SetupFlyoutButton(btn)
+		btn.isFlyout = true
 
 		i = i + 1
 		btn = _G['SpellFlyoutButton'..i]
@@ -1329,6 +1339,12 @@ function AB:Initialize()
 	AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
+
+	if _G.KeyBindingFrame then
+		AB:SwapKeybindButton()
+	else
+		AB:RegisterEvent('ADDON_LOADED', 'SwapKeybindButton')
+	end
 
 	if C_PetBattles_IsInBattle() then
 		AB:RemoveBindings()

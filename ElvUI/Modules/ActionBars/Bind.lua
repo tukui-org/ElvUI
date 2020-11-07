@@ -3,18 +3,16 @@ local AB = E:GetModule('ActionBars')
 local Skins = E:GetModule('Skins')
 
 local _G = _G
-local strfind, format = strfind, format
-local select, tonumber, pairs, floor = select, tonumber, pairs, floor
+local tonumber, format = tonumber, format
+local select, pairs, floor = select, pairs, floor
 local CreateFrame = CreateFrame
+local HideUIPanel = HideUIPanel
 local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
-local GetFlyoutID = GetFlyoutID
 local GetMacroInfo = GetMacroInfo
-local GetNumFlyouts, GetFlyoutInfo = GetNumFlyouts, GetFlyoutInfo
 local GetSpellBookItemName = GetSpellBookItemName
-local GetSpellInfo = GetSpellInfo
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
 local IsAltKeyDown, IsControlKeyDown = IsAltKeyDown, IsControlKeyDown
@@ -22,6 +20,7 @@ local IsShiftKeyDown, IsModifiedClick = IsShiftKeyDown, IsModifiedClick
 local LoadBindings, SaveBindings = LoadBindings, SaveBindings
 local SecureActionButton_OnClick = SecureActionButton_OnClick
 local SetBinding = SetBinding
+local GameTooltip = GameTooltip
 local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
 local MAX_ACCOUNT_MACROS = MAX_ACCOUNT_MACROS
 local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
@@ -31,9 +30,7 @@ local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
 local bind = CreateFrame('Frame', 'ElvUI_KeyBinder', E.UIParent)
 
 function AB:ActivateBindMode()
-	if InCombatLockdown() then
-		return
-	end
+	if InCombatLockdown() then return end
 
 	bind.active = true
 	E:StaticPopupSpecial_Show(ElvUIBindPopupWindow)
@@ -59,6 +56,7 @@ end
 function AB:BindHide()
 	bind:ClearAllPoints()
 	bind:Hide()
+
 	if not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:Hide()
 	end
@@ -73,7 +71,7 @@ function AB:BindListener(key)
 			end
 		end
 
-		E:Print(format(L["All keybindings cleared for |cff00ff00%s|r."], bind.button.name))
+		E:Print(format(L["All keybindings cleared for |cff00ff00%s|r."], bind.name))
 		self:BindUpdate(bind.button, bind.spellmacro)
 
 		if bind.spellmacro~='MACRO' and not _G.GameTooltip:IsForbidden() then
@@ -86,10 +84,8 @@ function AB:BindListener(key)
 	--Check if this button can open a flyout menu
 	local isFlyout = (bind.button.FlyoutArrow and bind.button.FlyoutArrow:IsShown())
 
-	if key == 'LSHIFT' or key == 'RSHIFT'
-	or key == 'LCTRL' or key == 'RCTRL'
-	or key == 'LALT' or key == 'RALT'
-	or key == 'UNKNOWN' then return end
+	if key == 'LSHIFT' or key == 'RSHIFT' or key == 'LCTRL' or key == 'RCTRL'
+	or key == 'LALT' or key == 'RALT' or key == 'UNKNOWN' then return end
 
 	--Redirect LeftButton click to open flyout
 	if key == 'LeftButton' and isFlyout then
@@ -99,35 +95,69 @@ function AB:BindListener(key)
 	if key == 'MiddleButton' then key = 'BUTTON3' end
 	if key:find('Button%d') then key = key:upper() end
 
-	local alt = IsAltKeyDown() and 'ALT-' or ''
-	local ctrl = IsControlKeyDown() and 'CTRL-' or ''
-	local shift = IsShiftKeyDown() and 'SHIFT-' or ''
-	local allowBinding = (not isFlyout or (isFlyout and key ~= 'LeftButton')) --Don't attempt to bind left mouse button for flyout buttons
+	local allowBinding = not isFlyout or (key ~= 'LeftButton') --Don't attempt to bind left mouse button for flyout buttons
+	if allowBinding and bind.button.bindstring then
+		local alt = IsAltKeyDown() and 'ALT-' or ''
+		local ctrl = IsControlKeyDown() and 'CTRL-' or ''
+		local shift = IsShiftKeyDown() and 'SHIFT-' or ''
 
-	if not bind.spellmacro or bind.spellmacro == 'PET' or bind.spellmacro == 'STANCE' or bind.spellmacro == 'FLYOUT' then
-		if allowBinding then
-			SetBinding(alt..ctrl..shift..key, bind.button.bindstring)
-		end
-	else
-		if allowBinding then
-			SetBinding(alt..ctrl..shift..key, bind.spellmacro..' '..bind.button.name)
-		end
+		SetBinding(alt..ctrl..shift..key, bind.button.bindstring)
+		E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.name..'.')
 	end
-	if allowBinding then
-		E:Print(alt..ctrl..shift..key..L[" |cff00ff00bound to |r"]..bind.button.name..'.')
-	end
+
 	self:BindUpdate(bind.button, bind.spellmacro)
+
 	if bind.spellmacro~='MACRO' and bind.spellmacro~='FLYOUT' and not _G.GameTooltip:IsForbidden() then
 		_G.GameTooltip:Hide()
 	end
 end
 
+function AB:DisplayBindsTooltip()
+	GameTooltip:SetOwner(bind, 'ANCHOR_TOP')
+	GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
+	GameTooltip:AddLine(bind.name, 1, 1, 1)
+end
+
+function AB:DisplayBindings()
+	if #bind.button.bindings == 0 then
+		GameTooltip:AddLine(L["No bindings set."], .6, .6, .6)
+	else
+		GameTooltip:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6)
+		for i = 1, #bind.button.bindings do
+			GameTooltip:AddDoubleLine(L["Binding"]..i, bind.button.bindings[i], 1, 1, 1)
+		end
+	end
+end
+
+function AB:BindTooltip(triggerTooltip)
+	if GameTooltip:IsForbidden() then return end
+
+	if triggerTooltip then -- this is needed for some tooltip magic, also it helps show a tooltip when a spell isnt there
+		AB:DisplayBindsTooltip()
+		GameTooltip:AddLine(L["Trigger"])
+
+		GameTooltip:Show()
+		GameTooltip:SetScript('OnHide', function(tt)
+			AB:DisplayBindsTooltip()
+			AB:DisplayBindings()
+
+			tt:Show()
+			tt:SetScript('OnHide', nil)
+		end)
+	else
+		AB:DisplayBindsTooltip()
+		AB:DisplayBindings()
+		GameTooltip:Show()
+	end
+end
+
 function AB:BindUpdate(button, spellmacro)
-	if not bind.active or InCombatLockdown() then return; end
-	local GameTooltip = _G.GameTooltip
+	if not bind.active or InCombatLockdown() then return end
+	local triggerTooltip = false
 
 	bind.button = button
 	bind.spellmacro = spellmacro
+	bind.name = nil
 
 	bind:ClearAllPoints()
 	bind:SetAllPoints(button)
@@ -135,158 +165,72 @@ function AB:BindUpdate(button, spellmacro)
 
 	_G.ShoppingTooltip1:Hide()
 
+	button.bindstring = nil -- keep this clean
+
 	if spellmacro == 'FLYOUT' then
-		bind.button.name = GetSpellInfo(button.spellID)
-		bind.button.bindstring = 'SPELL '..bind.button.name
-
-		GameTooltip:SetOwner(bind, 'ANCHOR_TOP')
-		GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
-		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
-		bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
-			if #bind.button.bindings == 0 then
-				GameTooltip:AddLine(L["No bindings set."], .6, .6, .6)
-			else
-				GameTooltip:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6)
-				for i = 1, #bind.button.bindings do
-					GameTooltip:AddDoubleLine(i, bind.button.bindings[i])
-				end
-			end
-		GameTooltip:Show()
-
+		bind.name = button.spellName
+		button.bindstring = spellmacro..' '..bind.name
 	elseif spellmacro == 'SPELL' then
-		bind.button.id = SpellBook_GetSpellBookSlot(bind.button)
-		bind.button.name = GetSpellBookItemName(bind.button.id, _G.SpellBookFrame.bookType)
-
-		GameTooltip:AddLine(L["Trigger"])
-		GameTooltip:Show()
-		GameTooltip:SetScript('OnHide', function(tt)
-			tt:SetOwner(bind, 'ANCHOR_TOP')
-			tt:Point('BOTTOM', bind, 'TOP', 0, 1)
-			tt:AddLine(bind.button.name, 1, 1, 1)
-			bind.button.bindings = {GetBindingKey(spellmacro..' '..bind.button.name)}
-			if #bind.button.bindings == 0 then
-				tt:AddLine(L["No bindings set."], .6, .6, .6)
-			else
-				tt:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6)
-				for i = 1, #bind.button.bindings do
-					tt:AddDoubleLine(i, bind.button.bindings[i])
-				end
-			end
-			tt:Show()
-			tt:SetScript('OnHide', nil)
-		end)
+		button.id = SpellBook_GetSpellBookSlot(button)
+		bind.name = GetSpellBookItemName(button.id, _G.SpellBookFrame.bookType)
+		button.bindstring = spellmacro..' '..bind.name
 	elseif spellmacro == 'MACRO' then
-		bind.button.id = bind.button:GetID()
+		button.id = button:GetID()
 
-		if floor(.5+select(2,_G.MacroFrameTab1Text:GetTextColor())*10)/10==.8 then bind.button.id = bind.button.id + MAX_ACCOUNT_MACROS; end
+		-- no clue what this is, leaving it alone tho lol
+		if floor(.5+select(2,_G.MacroFrameTab1Text:GetTextColor())*10)/10==.8 then
+			button.id = button.id + MAX_ACCOUNT_MACROS
+		end
 
-		bind.button.name = GetMacroInfo(bind.button.id)
-
-		GameTooltip:SetOwner(bind, 'ANCHOR_TOP')
-		GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
-		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
-
-		bind.button.bindings = {GetBindingKey(spellmacro..' '..bind.button.name)}
-			if #bind.button.bindings == 0 then
-				GameTooltip:AddLine(L["No bindings set."], .6, .6, .6)
-			else
-				GameTooltip:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6)
-				for i = 1, #bind.button.bindings do
-					GameTooltip:AddDoubleLine(L["Binding"]..i, bind.button.bindings[i], 1, 1, 1)
-				end
-			end
-		GameTooltip:Show()
-	elseif spellmacro=='STANCE' or spellmacro=='PET' then
-		bind.button.name = button:GetName()
-
-		if not bind.button.name then return; end
-
-		bind.button.id = tonumber(button:GetID())
-		bind.button.bindstring = (spellmacro=='STANCE' and 'SHAPESHIFTBUTTON' or 'BONUSACTIONBUTTON')..bind.button.id
-
-		GameTooltip:SetOwner(bind, 'ANCHOR_NONE')
-		GameTooltip:Point('BOTTOM', bind, 'TOP', 0, 1)
-		GameTooltip:AddLine(bind.button.name, 1, 1, 1)
-		GameTooltip:Show()
-		GameTooltip:SetScript('OnHide', function(tt)
-			tt:SetOwner(bind, 'ANCHOR_NONE')
-			tt:Point('BOTTOM', bind, 'TOP', 0, 1)
-			tt:AddLine(bind.button.name, 1, 1, 1)
-			bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
-			if #bind.button.bindings == 0 then
-				tt:AddLine(L["No bindings set."], .6, .6, .6)
-			else
-				tt:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6)
-				for i = 1, #bind.button.bindings do
-					tt:AddDoubleLine(i, bind.button.bindings[i])
-				end
-			end
-			tt:Show()
-			tt:SetScript('OnHide', nil)
-		end)
+		bind.name = GetMacroInfo(button.id)
+		button.bindstring = spellmacro..' '..bind.name
+	elseif spellmacro == 'MICRO' then
+		bind.name = button.tooltipText
+		button.bindstring = button.commandName
+		triggerTooltip = true
+	elseif spellmacro == 'BAG' then
+		if button.itemID then
+			bind.name = button.name
+			button.bindstring = 'ITEM item:'..button.itemID
+			triggerTooltip = true
+		end
 	else
-		bind.button.name = button:GetName()
+		bind.name = button:GetName()
+		if not bind.name then return end
+		triggerTooltip = true
 
-		if not bind.button.name then return; end
-		bind.button.action = tonumber(button.action)
-
-		if bind.button.keyBoundTarget then
-			bind.button.bindstring = bind.button.keyBoundTarget
-		else
-			local modact = 1+(bind.button.action-1)%12
-			if bind.button.name == 'ExtraActionButton1' then
-				bind.button.bindstring = 'EXTRAACTIONBUTTON1'
-			elseif bind.button.action < 25 or bind.button.action > 72 then
-				bind.button.bindstring = 'ACTIONBUTTON'..modact
-			elseif bind.button.action < 73 and bind.button.action > 60 then
-				bind.button.bindstring = 'MULTIACTIONBAR1BUTTON'..modact
-			elseif bind.button.action < 61 and bind.button.action > 48 then
-				bind.button.bindstring = 'MULTIACTIONBAR2BUTTON'..modact
-			elseif bind.button.action < 49 and bind.button.action > 36 then
-				bind.button.bindstring = 'MULTIACTIONBAR4BUTTON'..modact
-			elseif bind.button.action < 37 and bind.button.action > 24 then
-				bind.button.bindstring = 'MULTIACTIONBAR3BUTTON'..modact
+		if button.keyBoundTarget then
+			button.bindstring = button.keyBoundTarget
+		elseif button.commandName then
+			button.bindstring = button.commandName
+		elseif button.action then
+			local action = tonumber(button.action)
+			local modact = 1+(action-1)%12
+			if bind.name == 'ExtraActionButton1' then
+				button.bindstring = 'EXTRAACTIONBUTTON1'
+			elseif action < 25 or action > 72 then
+				button.bindstring = 'ACTIONBUTTON'..modact
+			elseif action < 73 and action > 60 then
+				button.bindstring = 'MULTIACTIONBAR1BUTTON'..modact
+			elseif action < 61 and action > 48 then
+				button.bindstring = 'MULTIACTIONBAR2BUTTON'..modact
+			elseif action < 49 and action > 36 then
+				button.bindstring = 'MULTIACTIONBAR4BUTTON'..modact
+			elseif action < 37 and action > 24 then
+				button.bindstring = 'MULTIACTIONBAR3BUTTON'..modact
 			end
 		end
-
-		GameTooltip:AddLine(L["Trigger"])
-		GameTooltip:Show()
-		GameTooltip:SetScript('OnHide', function(tt)
-			tt:SetOwner(bind, 'ANCHOR_TOP')
-			tt:Point('BOTTOM', bind, 'TOP', 0, 4)
-			tt:AddLine(bind.button.name, 1, 1, 1)
-			bind.button.bindings = {GetBindingKey(bind.button.bindstring)}
-			if #bind.button.bindings == 0 then
-				tt:AddLine(L["No bindings set."], .6, .6, .6)
-			else
-				tt:AddDoubleLine(L["Binding"], L["Key"], .6, .6, .6, .6, .6, .6)
-				for i = 1, #bind.button.bindings do
-					tt:AddDoubleLine(i, bind.button.bindings[i])
-				end
-			end
-			tt:Show()
-			tt:SetScript('OnHide', nil)
-		end)
-	end
-end
-
-do
-	local bindUpdate = function(button)
-		local stance = button.commandName and strfind(button.commandName, '^SHAPESHIFT') and 'STANCE'
-		local pet = button.commandName and strfind(button.commandName, '^BONUSACTION') and 'PET'
-		AB:BindUpdate(button, stance or pet or nil)
 	end
 
-	function AB:RegisterButton(b)
-		if b.IsProtected and b:IsProtected() and b.IsObjectType and b:IsObjectType('CheckButton') then
-			b:HookScript('OnEnter', bindUpdate)
-		end
+	if button.bindstring then
+		button.bindings = {GetBindingKey(button.bindstring)}
+		AB:BindTooltip(triggerTooltip)
 	end
 end
 
 local elapsed = 0
 function AB:Tooltip_OnUpdate(tooltip, e)
-	if tooltip:IsForbidden() then return; end
+	if tooltip:IsForbidden() then return end
 
 	elapsed = elapsed + e
 	if elapsed < .2 then return else elapsed = 0 end
@@ -298,22 +242,6 @@ function AB:Tooltip_OnUpdate(tooltip, e)
 	elseif tooltip.comparing and not compareItems then
 		for _, frame in pairs(tooltip.shoppingTooltips) do frame:Hide() end
 		tooltip.comparing = false
-	end
-end
-
-function AB:UpdateFlyouts()
-	for i = 1, GetNumFlyouts() do
-		local x = GetFlyoutID(i)
-		local _, _, numSlots, isKnown = GetFlyoutInfo(x)
-		if isKnown then
-			for k=1, numSlots do
-				local b = _G.SpellFlyout:IsShown() and _G['SpellFlyoutButton'..k]
-				if b and b:IsShown() and not b.hookedFlyout then
-					b:HookScript('OnEnter', function(btn) AB:BindUpdate(btn, 'FLYOUT') end)
-					b.hookedFlyout = true
-				end
-			end
-		end
 	end
 end
 
@@ -335,6 +263,30 @@ function AB:ChangeBindingProfile()
 	end
 end
 
+local function keybindButtonClick()
+	if InCombatLockdown() then return end
+
+	AB:ActivateBindMode()
+
+	HideUIPanel(_G.KeyBindingFrame)
+	HideUIPanel(_G.GameMenuFrame)
+end
+
+function AB:SwapKeybindButton(event, addon)
+	if event and addon ~= 'Blizzard_BindingUI' then return end
+
+	local parent = _G.KeyBindingFrame
+	parent.quickKeybindButton:Hide()
+
+	local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'OptionsButtonTemplate, BackdropTemplate')
+	frame:Width(150)
+	frame:Point('TOPLEFT', parent.quickKeybindButton)
+	frame:SetScript('OnClick', keybindButtonClick)
+	frame:SetText('ElvUI Keybind')
+
+	Skins:HandleButton(frame)
+end
+
 function AB:LoadKeyBinder()
 	bind:SetFrameStrata('DIALOG')
 	bind:SetFrameLevel(99)
@@ -349,18 +301,21 @@ function AB:LoadKeyBinder()
 	self:SecureHookScript(_G.GameTooltip, 'OnUpdate', 'Tooltip_OnUpdate')
 
 	bind:SetScript('OnEnter', function(b) local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(b.button) end end)
-	bind:SetScript('OnLeave', function(b) AB:BindHide(); local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(b.button) end end)
+	bind:SetScript('OnLeave', function(b) AB:BindHide() local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(b.button) end end)
 	bind:SetScript('OnKeyUp', function(_, key) self:BindListener(key) end)
 	bind:SetScript('OnMouseUp', function(_, key) self:BindListener(key) end)
-	bind:SetScript('OnMouseWheel', function(_, delta) if delta>0 then self:BindListener('MOUSEWHEELUP') else self:BindListener('MOUSEWHEELDOWN'); end end)
+	bind:SetScript('OnMouseWheel', function(_, delta) if delta>0 then self:BindListener('MOUSEWHEELUP') else self:BindListener('MOUSEWHEELDOWN') end end)
 
 	for i = 1, 12 do
 		local b = _G['SpellButton'..i]
-		b:HookScript('OnEnter', function(s) AB:BindUpdate(s, 'SPELL'); end)
+		b:HookScript('OnEnter', function(s) AB:BindUpdate(s, 'SPELL') end)
 	end
 
+	local function buttonOnEnter(b) AB:BindUpdate(b) end
 	for b in pairs(self.handledbuttons) do
-		self:RegisterButton(b)
+		if b:IsProtected() and b:IsObjectType('CheckButton') and not b.isFlyout then
+			b:HookScript('OnEnter', buttonOnEnter)
+		end
 	end
 
 	if not IsAddOnLoaded('Blizzard_MacroUI') then
@@ -368,9 +323,6 @@ function AB:LoadKeyBinder()
 	else
 		self:RegisterMacro('Blizzard_MacroUI')
 	end
-
-	self:SecureHook('ActionButton_UpdateFlyout', 'UpdateFlyouts')
-	self:UpdateFlyouts()
 
 	--Special Popup
 	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', _G.UIParent, 'BackdropTemplate')
@@ -400,7 +352,7 @@ function AB:LoadKeyBinder()
 	Popup.desc:SetJustifyH('LEFT')
 	Popup.desc:Point('TOPLEFT', 18, -32)
 	Popup.desc:Point('BOTTOMRIGHT', -18, 48)
-	Popup.desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."])
+	Popup.desc:SetText(L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1macro|r, or |cFF1784d1spellbook|r button to bind it. This also works for items in your |cFF1784d1bag|r. Press the |cfd9b9b9bESC|r key to |cfd9b9b9bclear|r the current bindings."])
 
 	Popup.save = CreateFrame('Button', Popup:GetName()..'SaveButton', Popup, 'OptionsButtonTemplate, BackdropTemplate')
 	Popup.save:SetText(L["Save"])
@@ -435,7 +387,11 @@ function AB:LoadKeyBinder()
 	Popup.discard:Point('BOTTOMLEFT', 14, 10)
 
 	Skins:HandleCheckBox(Popup.perCharCheck)
-	Skins:HandleButton(Popup.save)
 	Skins:HandleButton(Popup.discard)
 	Skins:HandleButton(Popup.header)
+	Skins:HandleButton(Popup.save)
+
+	Popup.discard.backdrop:SetFrameLevel(Popup.discard:GetFrameLevel())
+	Popup.header.backdrop:SetFrameLevel(Popup.header:GetFrameLevel())
+	Popup.save.backdrop:SetFrameLevel(Popup.save:GetFrameLevel())
 end

@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
+local AB = E:GetModule('ActionBars')
 local Search = E.Libs.ItemSearch
 local LSM = E.Libs.LSM
 
@@ -473,7 +474,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local assignedBag = frame.Bags[assignedID] and frame.Bags[assignedID].assigned
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.rarity, slot.locked = nil, rarity, locked
+	slot.name, slot.itemID, slot.rarity, slot.locked = nil, nil, rarity, locked
 
 	local clink = GetContainerItemLink(bagID, slotID)
 
@@ -528,6 +529,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(clink)
 		slot.name = name
 
+		slot.itemID = GetContainerItemID(bagID, slotID)
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 		local r, g, b
 
@@ -1050,7 +1052,7 @@ function B:UpdateReagentSlot(slotID)
 		slot.questIcon:Hide()
 	end
 
-	slot.name, slot.rarity, slot.locked = nil, nil, locked
+	slot.name, slot.itemID, slot.rarity, slot.locked = nil, nil, nil, locked
 
 	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
 	CooldownFrame_Set(slot.Cooldown, start, duration, enable)
@@ -1063,6 +1065,7 @@ function B:UpdateReagentSlot(slotID)
 	if clink then
 		local name, _, rarity = GetItemInfo(clink)
 		slot.name, slot.rarity = name, rarity
+		slot.itemID = GetContainerItemID(bagID, slotID)
 
 		local isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 		local r, g, b
@@ -1303,6 +1306,17 @@ function B:VendorGrayCheck()
 		B:VendorGrays()
 	end
 end
+
+function B:SlotOnEnter()
+	B.HideSlotItemGlow(self)
+
+	-- bag keybind support from actionbar module
+	if E.private.actionbar.enable then
+		AB:BindUpdate(self, 'BAG')
+	end
+end
+
+function B:SlotOnLeave() end
 
 function B:ConstructContainerFrame(name, isBank)
 	local strata = E.db.bags.strata or 'HIGH'
@@ -1832,7 +1846,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 		slot.newItemGlow:Hide()
 		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
-		slot:HookScript('OnEnter', B.HideSlotItemGlow)
+
+		slot:HookScript('OnEnter', B.SlotOnEnter)
+		slot:HookScript('OnLeave', B.SlotOnLeave)
 	end
 
 	return slot

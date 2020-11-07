@@ -28,7 +28,7 @@ SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 3, { min = 0, 
 SharedBarOptions.buttonGroup.inline = true
 SharedBarOptions.buttonGroup.args.buttons = ACH:Range(L["Buttons"], L["The amount of buttons to display."], 1, { min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonsPerRow = ACH:Range(L["Buttons Per Row"], L["The amount of buttons to display per row."], 2, { min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1 })
-SharedBarOptions.buttonGroup.args.buttonspacing = ACH:Range(L["Button Spacing"], L["The spacing between buttons."], 3, { min = 1, max = 20, step = 1 })
+SharedBarOptions.buttonGroup.args.buttonspacing = ACH:Range(L["Button Spacing"], L["The spacing between buttons."], 3, { min = -3, max = 20, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonsize = ACH:Range('', nil, 4, { min = 15, max = 64, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonHeight = ACH:Range(L["Button Height"], L["The height of the action buttons."], 5, { min = 15, max = 64, step = 1 })
 
@@ -338,7 +338,7 @@ E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonsPerRow.max =
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.microbar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.microbar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
-E.Options.args.actionbar.args.microbar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.microbar.stanceBar.visibility = value; AB:UpdateMicroPositionDimensions() end
+E.Options.args.actionbar.args.microbar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar.microbar.visibility = value; AB:UpdateMicroPositionDimensions() end
 
 local SharedButtonOptions = {
 	alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 1, { min = 0, max = 1, step = 0.01, isPercent = true }),

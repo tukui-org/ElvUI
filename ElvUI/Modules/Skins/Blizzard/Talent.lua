@@ -15,6 +15,10 @@ local GetSpellTexture = GetSpellTexture
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
 local C_SpecializationInfo_GetSpellsDisplay = C_SpecializationInfo.GetSpellsDisplay
 
+local function clearBackdrop(self)
+	self:SetBackdropColor(0, 0, 0, 0)
+end
+
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -73,6 +77,9 @@ function S:Blizzard_TalentUI()
 			Button.selectedTex:SetAlpha(0)
 			Button.specIcon:SetTexture(icon)
 			S:HandleIcon(Button.specIcon, true)
+			Button.specIcon.backdrop:SetFrameLevel(Button:GetFrameLevel()+1)
+			Button.specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
+			Button.specIcon.backdrop.callbackBackdropColor = clearBackdrop
 			Button:SetHighlightTexture(nil)
 
 			Button.SelectedTexture = Button:CreateTexture(nil, 'ARTWORK')

@@ -9,6 +9,7 @@ local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local GetMoney = GetMoney
 local CreateFrame = CreateFrame
 local GetQuestID = GetQuestID
+local GetQuestBackgroundMaterial = GetQuestBackgroundMaterial
 local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
@@ -60,6 +61,11 @@ local function HandleReward(frame)
 	end
 end
 
+local function NewSealStyle()
+	local theme = _G.QuestInfoSealFrame.theme
+	return theme and theme.background
+end
+
 function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
 	if not scrollFrame.backdrop then
 		scrollFrame:CreateBackdrop()
@@ -69,8 +75,7 @@ function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride
 		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
 	end
 
-	local theme = _G.QuestInfoSealFrame.theme
-	if theme and theme.background then
+	if NewSealStyle() or GetQuestBackgroundMaterial() then
 		scrollFrame.spellTex:Hide()
 		scrollFrame.backdrop:Hide()
 	else
@@ -108,24 +113,23 @@ local function Quest_GetQuestID()
 	end
 end
 
-function S:QuestInfo_ShowObjectives() -- self is not S
-	local numObjectives = GetNumQuestLeaderBoards()
-	local questID = Quest_GetQuestID()
-	local numVisibleObjectives = 0
+function S:QuestInfo_ShowObjectives()
+	local objectives = _G.QuestInfoObjectivesFrame.Objectives
+	local index = 0
 
+	local questID = Quest_GetQuestID()
 	local waypointText = C_QuestLog_GetNextWaypointText(questID)
 	if waypointText then
-		numVisibleObjectives = numVisibleObjectives + 1
-		local objective = _G['QuestInfoObjective'..numVisibleObjectives]
-		objective:SetTextColor(.4, 1, 1)
+		index = index + 1
+		objectives[index]:SetTextColor(.4, 1, 1)
 	end
 
-	for i = 1, numObjectives do
+	for i = 1, GetNumQuestLeaderBoards() do
 		local _, objectiveType, isCompleted = GetQuestLogLeaderBoard(i)
-		if objectiveType ~= 'spell' and objectiveType ~= 'log' and numVisibleObjectives < _G.MAX_OBJECTIVES then
-			numVisibleObjectives = numVisibleObjectives + 1
+		if objectiveType ~= 'spell' and objectiveType ~= 'log' and index < _G.MAX_OBJECTIVES then
+			index = index + 1
 
-			local objective = _G['QuestInfoObjective'..numVisibleObjectives]
+			local objective = objectives[index]
 			if objective then
 				if isCompleted then
 					objective:SetTextColor(.2, 1, .2)
@@ -170,7 +174,10 @@ function S:QuestLogQuests_Update() -- self is not S
 end
 
 function S:QuestInfo_Display(parentFrame) -- self is template, not S
-	for i, questItem in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
+	local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
+	local isQuestLog = _G.QuestInfoFrame.questLog ~= nil
+
+	for i, questItem in ipairs(rewardsFrame.RewardButtons) do
 		local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
 		if point and relativeTo and relativePoint then
 			if i == 1 then
@@ -182,17 +189,13 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 			end
 		end
 
-		if not questItem.Icon.backdrop then
-			HandleReward(questItem)
-			questItem.NameFrame:Hide()
-			S:HandleIconBorder(questItem.IconBorder, questItem.Icon.backdrop)
-		end
+		HandleReward(questItem)
 
+		S:HandleIconBorder(questItem.IconBorder, questItem.Icon.backdrop)
+
+		questItem.NameFrame:Hide()
 		questItem.Name:SetTextColor(1, 1, 1)
 	end
-
-	local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
-	local isQuestLog = _G.QuestInfoFrame.questLog ~= nil
 
 	local numSpellRewards = isQuestLog and GetNumQuestLogRewardSpells() or GetNumRewardSpells()
 	if numSpellRewards > 0 then
@@ -259,6 +262,8 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 
 		_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(1, 1, 1)
+
+		S:QuestInfo_ShowObjectives()
 	else
 		_G.QuestInfoTitleHeader:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoDescriptionHeader:SetShadowColor(0, 0, 0, 0)
@@ -358,10 +363,6 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc('QuestLogQuests_Update', S.QuestLogQuests_Update) -- Skin the Plus Minus buttons in the QuestLog
 	hooksecurefunc(_G.CampaignCollapseButtonMixin, 'UpdateState', S.CampaignCollapseButton_UpdateState) -- Plus Minus buttons for the CampaignHeaders in the QuestLog
 
-	if E.private.skins.parchmentRemoverEnable then
-		hooksecurefunc('QuestInfo_ShowObjectives', S.QuestInfo_ShowObjectives)
-	end
-
 	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'ArtifactXPFrame', 'TitleFrame', 'WarModeBonusFrame'}) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
 		HandleReward(_G.QuestInfoRewardsFrame[frame])
@@ -380,13 +381,12 @@ function S:BlizzardQuestFrames()
 	--Quest Frame
 	local QuestFrame = _G.QuestFrame
 	S:HandlePortraitFrame(QuestFrame)
-
-	_G.QuestFrameDetailPanel:StripTextures(true)
-	_G.QuestDetailScrollFrame:StripTextures(true)
+	_G.QuestFrameDetailPanel:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
+	_G.QuestDetailScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
+	_G.QuestProgressScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
+	_G.QuestGreetingScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 	_G.QuestDetailScrollFrame:CreateBackdrop()
-	_G.QuestProgressScrollFrame:StripTextures()
 	_G.QuestProgressScrollFrame:CreateBackdrop()
-	_G.QuestGreetingScrollFrame:StripTextures()
 	_G.QuestGreetingScrollFrame:CreateBackdrop()
 
 	_G.QuestFrameGreetingPanel:HookScript('OnShow', function(frame)
@@ -407,14 +407,6 @@ function S:BlizzardQuestFrames()
 		hooksecurefunc('QuestFrame_SetTitleTextColor', S.QuestFrame_SetTitleTextColor)
 		hooksecurefunc('QuestFrame_SetTextColor', S.QuestFrame_SetTextColor)
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', S.QuestInfo_ShowRequiredMoney)
-
-		if _G.QuestFrameDetailPanel.SealMaterialBG then
-			_G.QuestFrameDetailPanel.SealMaterialBG:SetAlpha(0)
-		end
-
-		if _G.QuestFrameRewardPanel.SealMaterialBG then
-			_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
-		end
 	else
 		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
 		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)
