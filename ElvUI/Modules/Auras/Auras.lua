@@ -162,7 +162,7 @@ function A:UpdateIcon(button)
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
-	button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.fontOutline)
+	button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 
 	button.text:ClearAllPoints()
 	button.text:Point('TOP', button, 'BOTTOM', db.timeXOffset, db.timeYOffset)
