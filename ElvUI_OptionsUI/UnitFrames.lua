@@ -1034,14 +1034,49 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 						set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 						args = {
-							xOffsetText = {
+							enable = {
 								order = 1,
+								type = 'toggle',
+								name = L["Custom Font"],
+								get = function(info) return E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] end,
+								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+							},
+							font = {
+								order = 2,
+								type = 'select',
+								dialogControl = 'LSM30_Font',
+								name = L["Font"],
+								values = _G.AceGUIWidgetLSMlists.font,
+								get = function(info) return E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] end,
+								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+								disabled = function() return not E.db.unitframe.units[groupName].castbar.customTextFont.enable end
+							},
+							fontSize = {
+								order = 3,
+								type = 'range',
+								name = L["Font Size"],
+								min = 7, max = 212, step = 1,
+								get = function(info) return E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] end,
+								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+								disabled = function() return not E.db.unitframe.units[groupName].castbar.customTextFont.enable end
+							},
+							fontStyle = {
+								order = 4,
+								type = 'select',
+								name = L["Font Outline"],
+								values = C.Values.FontFlags,
+								get = function(info) return E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] end,
+								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTextFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+								disabled = function() return not E.db.unitframe.units[groupName].castbar.customTextFont.enable end
+							},
+							xOffsetText = {
+								order = 4,
 								type = 'range',
 								name = L["X-Offset"],
 								min = -100, max = 100, step = 1,
 							},
 							yOffsetText = {
-								order = 2,
+								order = 5,
 								type = 'range',
 								name = L["Y-Offset"],
 								min = -50, max = 50, step = 1,
@@ -1056,14 +1091,49 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 						get = function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end,
 						set = function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 						args = {
-							xOffsetTime = {
+							enable = {
 								order = 1,
+								type = 'toggle',
+								name = L["Custom Font"],
+								get = function(info) return E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] end,
+								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+							},
+							font = {
+								order = 2,
+								type = 'select',
+								dialogControl = 'LSM30_Font',
+								name = L["Font"],
+								values = _G.AceGUIWidgetLSMlists.font,
+								get = function(info) return E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] end,
+								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+								disabled = function() return not E.db.unitframe.units[groupName].castbar.customTimeFont.enable end
+							},
+							fontSize = {
+								order = 3,
+								type = 'range',
+								name = L["Font Size"],
+								min = 7, max = 212, step = 1,
+								get = function(info) return E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] end,
+								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+								disabled = function() return not E.db.unitframe.units[groupName].castbar.customTimeFont.enable end
+							},
+							fontStyle = {
+								order = 4,
+								type = 'select',
+								name = L["Font Outline"],
+								values = C.Values.FontFlags,
+								get = function(info) return E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] end,
+								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+								disabled = function() return not E.db.unitframe.units[groupName].castbar.customTimeFont.enable end
+							},
+							xOffsetText = {
+								order = 4,
 								type = 'range',
 								name = L["X-Offset"],
 								min = -100, max = 100, step = 1,
 							},
-							yOffsetTime = {
-								order = 2,
+							yOffsetText = {
+								order = 5,
 								type = 'range',
 								name = L["Y-Offset"],
 								min = -50, max = 50, step = 1,

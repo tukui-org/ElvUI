@@ -1061,6 +1061,18 @@ local UF_AuraWatch = {
 }
 
 local UF_Castbar = {
+	customTextFont = {
+		enable = false,
+		font = 'PT Sans Narrow',
+		fontSize = 12,
+		fontStyle = 'OUTLINE'
+	},
+	customTimeFont = {
+		enable = false,
+		font = 'PT Sans Narrow',
+		fontSize = 12,
+		fontStyle = 'OUTLINE'
+	},
 	displayTarget = false,
 	enable = true,
 	format = 'REMAINING',
