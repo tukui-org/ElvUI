@@ -7,7 +7,7 @@ ___
 ### Version 12.10 [ November 6th 2020 ]
 
 **Hotfix:**  
-Petbar wasn't appearing with the Backdrop option selected.    
+Petbar wasn't appearing with the Backdrop option selected.  
 
 **Also:**
 Top Aura options were reworked and settings for them were reset.  
