@@ -320,24 +320,25 @@ function AB:PositionAndSizeBar(barName)
 	if not bar.initialized then
 		bar.initialized = true
 
-		if AB.barDefaults['bar'..bar.id].conditions:find('[form,noform]') then
-			bar:SetAttribute('newCondition', gsub(AB.barDefaults['bar'..bar.id].conditions, ' %[form,noform%] 0; ', ''))
+		local defaults = AB.barDefaults[barName]
+		if defaults.conditions:find('[form,noform]') then
+			bar:SetAttribute('newCondition', gsub(defaults.conditions, ' %[form,noform%] 0; ', ''))
 			bar:SetAttribute('hasTempBar', true)
 		else
 			bar:SetAttribute('hasTempBar', false)
 		end
+
+		local page = AB:GetPage(barName, defaults.page, defaults.conditions)
+		RegisterStateDriver(bar, 'page', page)
+		bar:SetAttribute('page', page)
 	end
 
 	if db.enabled or not bar.initialized then
-		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
 		visibility = gsub(visibility, '[\n\r]','')
 
-		RegisterStateDriver(bar, 'visibility', visibility)
-		RegisterStateDriver(bar, 'page', page)
-		bar:SetAttribute('page', page)
-		bar:Show()
-
 		E:EnableMover(bar.mover:GetName())
+		RegisterStateDriver(bar, 'visibility', visibility)
+		bar:Show()
 	else
 		E:DisableMover(bar.mover:GetName())
 		UnregisterStateDriver(bar, 'visibility')
@@ -360,7 +361,8 @@ function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
 	SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 
-	local point, anchor, attachTo, x, y = strsplit(',', AB.barDefaults['bar'..id].position)
+	local defaults = AB.barDefaults['bar'..id]
+	local point, anchor, attachTo, x, y = strsplit(',', defaults.position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar:SetFrameStrata('LOW')
 	bar.id = id
@@ -369,7 +371,7 @@ function AB:CreateBar(id)
 	bar.backdrop:SetFrameLevel(0)
 
 	bar.buttons = {}
-	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons
+	bar.bindButtons = defaults.bindButtons
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
@@ -394,7 +396,7 @@ function AB:CreateBar(id)
 	end
 	AB:UpdateButtonConfig(bar, bar.bindButtons)
 
-	if AB.barDefaults['bar'..id].conditions:find('[form]') then
+	if defaults.conditions:find('[form]') then
 		bar:SetAttribute('hasTempBar', true)
 	else
 		bar:SetAttribute('hasTempBar', false)
