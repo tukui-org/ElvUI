@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
 
 local headers = {
 	_G.ObjectiveTrackerBlocksFrame.QuestHeader,
@@ -85,6 +86,8 @@ local function SkinItemButton(item)
 end
 
 local function HandleItemButton(block)
+	if InCombatLockdown() then return end -- will break quest item button
+
 	local item = block and block.itemButton
 	if not item then return end
 
@@ -167,6 +170,8 @@ local function SkinTimerBars(_, _, line)
 end
 
 local function PositionFindGroupButton(block, button)
+	if InCombatLockdown() then return end -- will break quest item button
+
 	if button and button.GetPoint then
 		local a, b, c, d, e = button:GetPoint()
 		if block.groupFinderButton and b == block.groupFinderButton and block.itemButton and button == block.itemButton then
@@ -186,6 +191,7 @@ local function SkinFindGroupButton(block)
 		if block.groupFinderButton and not block.groupFinderButton.skinned then
 			S:HandleButton(block.groupFinderButton)
 			block.groupFinderButton:Size(20)
+			block.groupFinderButton.backdrop:SetFrameLevel(block:GetFrameLevel())
 			block.groupFinderButton.skinned = true
 		end
 	end

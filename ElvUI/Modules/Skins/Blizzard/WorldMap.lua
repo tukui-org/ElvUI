@@ -41,6 +41,7 @@ function S:WorldMapFrame()
 	-- Quest Frames
 	local QuestMapFrame = _G.QuestMapFrame
 	QuestMapFrame.VerticalSeparator:Hide()
+	QuestMapFrame:SetScript('OnHide', nil) -- Taints Quest Objective Tracker Button
 
 	if E.private.skins.parchmentRemoverEnable then
 		QuestMapFrame.DetailsFrame:StripTextures(true)
