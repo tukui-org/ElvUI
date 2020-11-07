@@ -1,6 +1,30 @@
-### Version 12.09 [ ETA: 🍨 ]
+### Version 12.10 [ ETA: 🍨 ]
+
+**Sweet:**  
+
+___
+
+### Version 12.09 [ November 6th 2020 ]
+
+**Sweet:**  
+Nameplates were reset in the last version for some people who had a newer profile, sorry about that. That problem is corrected now.  
 
 **Nice:**  
+Quest Most Expensive Item icon is behaving now.  
+Shadowed Unitframes wasn't playing nicely, should be okay now.  
+Masque should play nicely again, unchecking Keep Aspect Ratio will affect Masque icons, keep it on if you want it to use the one intended for the skin you have selected.  
+
+**Okay:**  
+Exp Databar would error sometimes.  
+Microbar Visibility option would error sometimes.  
+Adjustments to the Quest Skin to try to keep the text and backgrounds showing properly (again).  
+Fixed Classbar being tiny when using AutoHide option, also would error when leaving a vehicle.  
+Actionbar Button Spacing option can once again be set to up to -3.  
+Added Party Indicator option for Unitframes (Thanks @Caedis).  
+Backdrop on the Stance bar wasn't using the correct multiplier when less than the amount of buttons available.  
+Backdrop on the Microbar was a little off, that is sorted.  
+Added Honor Level to Honor bar text outputs.  
+Fixed the last tick on castbars.  
 
 ___
 
