@@ -89,9 +89,10 @@ function A:MasqueData(texture, highlight)
 end
 
 function A:UpdateStatusBar(button)
+	local db = A.db[button.auraType]
 	button.statusBar:SetValue(button.timeLeft)
 
-	local threshold = A.db.fadeThreshold
+	local threshold = db.fadeThreshold
 	if threshold == -1 then
 		return
 	elseif button.timeLeft > threshold then
@@ -113,12 +114,8 @@ function A:CreateIcon(button)
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 
 	button.count = button:CreateFontString(nil, 'OVERLAY')
-	button.count:SetFontObject('NumberFontNormal')
-	button.count:SetText('\10')
 
 	button.text = button:CreateFontString(nil, 'OVERLAY')
-	button.text:SetFontObject('NumberFontNormal')
-	button.text:SetText('\10')
 
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	button.highlight:SetColorTexture(1, 1, 1, .45)
@@ -161,25 +158,24 @@ function A:CreateIcon(button)
 end
 
 function A:UpdateIcon(button)
-	local font = LSM:Fetch('font', A.db.font)
 	local db = A.db[button.auraType]
 
 	button.count:ClearAllPoints()
-	button.count:Point('BOTTOMRIGHT', -1 + A.db.countXOffset, 1 + A.db.countYOffset)
-	button.count:FontTemplate(font, db.countFontSize, A.db.fontOutline)
+	button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
+	button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.fontOutline)
 
 	button.text:ClearAllPoints()
-	button.text:Point('TOP', button, 'BOTTOM', 1 + A.db.timeXOffset, 0 + A.db.timeYOffset)
-	button.text:FontTemplate(font, db.durationFontSize, A.db.fontOutline)
+	button.text:Point('TOP', button, 'BOTTOM', db.timeXOffset, db.timeYOffset)
+	button.text:FontTemplate(LSM:Fetch('font', db.timeFont), db.timeFontSize, db.timeFontOutline)
 
-	local pos, spacing, iconSize = A.db.barPosition, A.db.barSpacing, db.size - (E.Border * 2)
+	local pos, spacing, iconSize = db.barPosition, db.barSpacing, db.size - (E.Border * 2)
 	local isOnTop, isOnBottom, isOnLeft = pos == 'TOP', pos == 'BOTTOM', pos == 'LEFT'
 	local isHorizontal = isOnTop or isOnBottom
 
 	button.statusBar:ClearAllPoints()
-	button.statusBar:Size(isHorizontal and iconSize or (A.db.barWidth + (E.PixelMode and 0 or 2)), isHorizontal and (A.db.barHeight + (E.PixelMode and 0 or 2)) or iconSize)
+	button.statusBar:Size(isHorizontal and iconSize or (db.barSize + (E.PixelMode and 0 or 2)), isHorizontal and (db.barSize + (E.PixelMode and 0 or 2)) or iconSize)
 	button.statusBar:Point(E.InversePoints[pos], button, pos, isHorizontal and 0 or ((isOnLeft and -((E.PixelMode and 1 or 3) + spacing)) or ((E.PixelMode and 1 or 3) + spacing)), not isHorizontal and 0 or ((isOnTop and ((E.PixelMode and 1 or 3) + spacing) or -((E.PixelMode and 1 or 3) + spacing))))
-	button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', A.db.barTexture))
+	button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
 	button.statusBar:SetOrientation(isHorizontal and 'HORIZONTAL' or 'VERTICAL')
 	button.statusBar:SetRotatesTexture(not isHorizontal)
 end
@@ -223,20 +219,21 @@ function A:UpdateAura(button, index)
 
 	local DebuffType = dtype or 'none'
 	if name then
+		local db = A.db[button.auraType]
 		if duration > 0 and expiration then
 			A:SetAuraTime(button, expiration, duration)
 		else
 			A:ClearAuraTime(button)
 		end
 
-		local r, g, b = A.db.barColor.r, A.db.barColor.g, A.db.barColor.b
-		if button.timeLeft and A.db.barColorGradient then
+		local r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
+		if button.timeLeft and db.barColorGradient then
 			r, g, b = E.oUF:ColorGradient(button.timeLeft, duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
 		end
 
 		button.count:SetText(count > 1 and count)
-		button.text:SetShown(A.db.showDuration)
-		button.statusBar:SetShown((A.db.barShow and duration > 0) or (A.db.barShow and A.db.barNoDuration and duration == 0))
+		button.text:SetShown(db.showDuration)
+		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 		button.statusBar:SetStatusBarColor(r, g, b)
 		button.texture:SetTexture(texture)
 
@@ -252,6 +249,7 @@ end
 
 function A:UpdateTempEnchant(button, index)
 	local offset = (strmatch(button:GetName(), '2$') and 6) or 2
+	local db = A.db[button.auraType]
 
 	local duration, remaining = 600, 0
 	local expiration = select(offset, GetWeaponEnchantInfo())
@@ -277,13 +275,13 @@ function A:UpdateTempEnchant(button, index)
 		A:ClearAuraTime(button)
 	end
 
-	local r, g, b = A.db.barColor.r, A.db.barColor.g, A.db.barColor.b
-	if expiration and A.db.barColorGradient then
+	local r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
+	if expiration and db.barColorGradient then
 		r, g, b = E.oUF:ColorGradient(remaining, duration, .8, 0, 0, .8, .8, 0, 0, .8, 0)
 	end
 
-	button.text:SetShown(A.db.showDuration)
-	button.statusBar:SetShown((A.db.barShow and remaining > 0) or (A.db.barShow and A.db.barNoDuration and not expiration))
+	button.text:SetShown(db.showDuration)
+	button.statusBar:SetShown((db.barShow and remaining > 0) or (db.barShow and db.barNoDuration and not expiration))
 	button.statusBar:SetStatusBarColor(r, g, b)
 end
 
@@ -306,6 +304,12 @@ function A:UpdateHeader(header)
 
 	local db = A.db[header.auraType]
 	local template = format('ElvUIAuraTemplate%d', db.size)
+
+	local colors = db.barColor
+	if E:CheckClassColor(colors.r, colors.g, colors.b) then
+		local classColor = E:ClassColor(E.myclass, true)
+		colors.r, colors.g, colors.b = classColor.r, classColor.g, classColor.b
+	end
 
 	if header.filter == 'HELPFUL' then
 		header:SetAttribute('consolidateTo', 0)
@@ -339,8 +343,9 @@ function A:UpdateHeader(header)
 	local index = 1
 	local child = select(index, header:GetChildren())
 	while child do
-		child:Size(db.size, db.size)
+		child.db = db
 		child.auraType = header.auraType -- used to update cooldown text
+		child:Size(db.size, db.size)
 
 		A:UpdateIcon(child)
 
@@ -390,12 +395,6 @@ function A:Initialize()
 
 	A.Initialized = true
 	A.db = E.db.auras
-
-	local colors = A.db.barColor
-	if E:CheckClassColor(colors.r, colors.g, colors.b) then
-		local classColor = E:ClassColor(E.myclass, true)
-		colors.r, colors.g, colors.b = classColor.r, classColor.g, classColor.b
-	end
 
 	if E.private.auras.buffsHeader then
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
