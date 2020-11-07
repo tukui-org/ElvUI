@@ -3,6 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local gsub = gsub
+local ipairs = ipairs
 local CreateFrame = CreateFrame
 local RegisterStateDriver = RegisterStateDriver
 local GetBindingKey = GetBindingKey
