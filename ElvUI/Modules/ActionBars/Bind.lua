@@ -352,7 +352,7 @@ function AB:LoadKeyBinder()
 	Popup.desc:SetJustifyH('LEFT')
 	Popup.desc:Point('TOPLEFT', 18, -32)
 	Popup.desc:Point('BOTTOMRIGHT', -18, 48)
-	Popup.desc:SetText(L["Hover your mouse over any actionbutton or spellbook button to bind it. Press the ESC key to clear the current actionbutton's keybinding."])
+	Popup.desc:SetText(L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1macro|r, or |cFF1784d1spellbook|r button to bind it. This also works for items in your |cFF1784d1bag|r. Press the |cfd9b9b9bESC|r key to |cfd9b9b9bclear|r the current bindings."])
 
 	Popup.save = CreateFrame('Button', Popup:GetName()..'SaveButton', Popup, 'OptionsButtonTemplate, BackdropTemplate')
 	Popup.save:SetText(L["Save"])
