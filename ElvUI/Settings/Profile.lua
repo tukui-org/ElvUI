@@ -806,11 +806,11 @@ local TopAuras = {
 	countFontSize = 10,
 	countXOffset = 0,
 	countYOffset = 0,
-	durationFont = 'Homespun',
-	durationFontOutline = 'MONOCHROMEOUTLINE',
-	durationFontSize = 10,
-	durationXOffset = 0,
-	durationYOffset = 0,
+	timeFont = 'Homespun',
+	timeFontOutline = 'MONOCHROMEOUTLINE',
+	timeFontSize = 10,
+	timeXOffset = 0,
+	timeYOffset = 0,
 	fadeThreshold = 6,
 	growthDirection = 'LEFT_DOWN',
 	horizontalSpacing = 6,
@@ -823,7 +823,6 @@ local TopAuras = {
 	verticalSpacing = 16,
 	wrapAfter = 12,
 }
-
 
 --Auras
 P.auras = {
