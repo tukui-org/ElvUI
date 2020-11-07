@@ -1302,7 +1302,7 @@ function AB:HandleOverlay(enable)
 	else
 		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
 		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
-		for _, button in pairs(LAB.activeButtons) do
+		for button in next, LAB.activeButtons do
 			E.Libs.ButtonGlow.HideOverlayGlow(button)
 		end
 	end
