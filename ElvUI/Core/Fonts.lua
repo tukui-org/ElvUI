@@ -96,9 +96,9 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, unified and 24 or huge)						-- 24  Mythic weekly best dungeon name
 		SetFont(_G.GameFontNormalLarge,					NORMAL, unified and 16 or large)					-- 16
 		SetFont(_G.GameFontNormalLarge2,				NORMAL, unified and 15 or large)					-- 18  Garrison Follower Names
-		SetFont(_G.GameFontNormalMed1,					NORMAL, unified and 14 or size)						-- 13  WoW Token Info
-		SetFont(_G.GameFontNormalMed2,					NORMAL, unified and 14 or size)						-- 14  Quest tracker
-		SetFont(_G.GameFontNormalMed3,					NORMAL, unified and 15 or size)						-- 14
+		SetFont(_G.GameFontNormalMed1,					NORMAL, unified and 14 or medium)					-- 13  WoW Token Info
+		SetFont(_G.GameFontNormalMed2,					NORMAL, unified and 14 or medium)					-- 14  Quest tracker
+		SetFont(_G.GameFontNormalMed3,					NORMAL, unified and 15 or medium)					-- 14
 		SetFont(_G.GameFontNormalSmall2,				NORMAL, unified and 12 or small)					-- 11  MissionUI Followers names
 		SetFont(_G.GameTooltipHeader,					NORMAL, unified or size)							-- 14
 		SetFont(_G.InvoiceFont_Med,						NORMAL, unified and 12 or size)						-- 12  Mail
