@@ -792,52 +792,46 @@ P.nameplates.units.ENEMY_NPC.level.format = '[difficultycolor][level][shortclass
 P.nameplates.units.ENEMY_NPC.title.format = '[npctitle]'
 P.nameplates.units.ENEMY_NPC.name.format = '[name]'
 
---Auras
-P.auras = {
-	font = 'Homespun',
-	fontOutline = 'MONOCHROMEOUTLINE',
-	countYOffset = 0,
-	countXOffset = 0,
-	timeYOffset = 0,
-	timeXOffset = 0,
-	fadeThreshold = 6,
-	showDuration = true,
-	barShow = false,
-	barTexture = 'ElvUI Norm',
-	barPosition = 'BOTTOM',
-	barWidth = 2,
-	barHeight = 2,
-	barSpacing = 2,
+local TopAuras = {
 	barColor = { r = 0, g = .8, b = 0 },
 	barColorGradient = false,
+	barSize = 2,
 	barNoDuration = true,
-	buffs = {
-		growthDirection = 'LEFT_DOWN',
-		wrapAfter = 12,
-		maxWraps = 3,
-		horizontalSpacing = 6,
-		verticalSpacing = 16,
-		sortMethod = 'TIME',
-		sortDir = '-',
-		seperateOwn = 1,
-		size = 32,
-		countFontSize = 10,
-		durationFontSize = 10,
-	},
-	debuffs = {
-		growthDirection = 'LEFT_DOWN',
-		wrapAfter = 12,
-		maxWraps = 1,
-		horizontalSpacing = 6,
-		verticalSpacing = 16,
-		sortMethod = 'TIME',
-		sortDir = '-',
-		seperateOwn = 1,
-		size = 32,
-		countFontSize = 10,
-		durationFontSize = 10,
-	},
+	barPosition = 'BOTTOM',
+	barShow = false,
+	barSpacing = 2,
+	barTexture = 'ElvUI Norm',
+	countFont = 'Homespun',
+	countFontOutline = 'MONOCHROMEOUTLINE',
+	countFontSize = 10,
+	countXOffset = 0,
+	countYOffset = 0,
+	durationFont = 'Homespun',
+	durationFontOutline = 'MONOCHROMEOUTLINE',
+	durationFontSize = 10,
+	durationXOffset = 0,
+	durationYOffset = 0,
+	fadeThreshold = 6,
+	growthDirection = 'LEFT_DOWN',
+	horizontalSpacing = 6,
+	maxWraps = 3,
+	seperateOwn = 1,
+	showDuration = true,
+	size = 32,
+	sortDir = '-',
+	sortMethod = 'TIME',
+	verticalSpacing = 16,
+	wrapAfter = 12,
 }
+
+
+--Auras
+P.auras = {
+	buffs = CopyTable(TopAuras),
+	debuffs = CopyTable(TopAuras),
+}
+
+P.auras.debuffs.maxWraps = 1
 
 --Chat
 P.chat = {
