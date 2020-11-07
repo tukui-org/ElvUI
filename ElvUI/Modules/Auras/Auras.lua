@@ -238,7 +238,7 @@ function A:UpdateAura(button, index)
 		button.texture:SetTexture(texture)
 
 		if button.debuffType ~= DebuffType then
-			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[DebuffType] or E.media.bordercolor
+			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[DebuffType] or E.db.general.bordercolor
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 			button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
