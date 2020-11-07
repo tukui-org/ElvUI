@@ -152,8 +152,8 @@ function AB:UpdateMicroPositionDimensions()
 			anchorRowButton = button
 		end
 
+		button.handleBackdrop = true -- keep over HandleButton
 		AB:HandleButton(microBar, button, i, lastButton, lastColumnButton)
-		button.handleBackdrop = true
 
 		lastButton = button
 	end
