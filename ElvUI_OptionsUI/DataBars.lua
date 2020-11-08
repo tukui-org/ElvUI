@@ -55,6 +55,7 @@ end
 
 E.Options.args.databars.args.experience = ACH:Group(L["Experience"], nil, 1, nil, function(info) return DB.db.experience[info[#info]] end, function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Update() DB:ExperienceBar_QuestXP() DB:UpdateAll() end)
 E.Options.args.databars.args.experience.args = CopyTable(SharedOptions)
+E.Options.args.databars.args.experience.args.showLevel = ACH:Toggle(L["Level"], nil, 6)
 E.Options.args.databars.args.experience.args.enable.set = function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Toggle() DB:UpdateAll() end
 E.Options.args.databars.args.experience.args.textFormat.set = function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Update() end
 E.Options.args.databars.args.experience.args.conditionGroup.get = function(_, key) return DB.db.experience[key] end

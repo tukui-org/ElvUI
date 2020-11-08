@@ -170,6 +170,7 @@ end
 P.databars.threat.hideInCombat = nil -- always on in code
 
 P.databars.experience.hideAtMaxLevel = true
+P.databars.experience.showLevel = false
 P.databars.experience.width = 348
 P.databars.experience.fontSize = 12
 P.databars.experience.questCompletedOnly = false
@@ -2182,7 +2183,7 @@ P.actionbar = {
 	rightClickSelfCast = false,
 	desaturateOnCooldown = false,
 	chargeCooldown = false,
-
+	handleOverlay = true,
 	barPet = {
 		enabled = true,
 		mouseover = false,

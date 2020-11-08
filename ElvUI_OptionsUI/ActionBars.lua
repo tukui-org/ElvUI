@@ -215,6 +215,15 @@ E.Options.args.actionbar.args.general = {
 							name = L["Color Keybind Text"],
 							desc = L["Color Keybind Text when Out of Range, instead of the button."],
 						},
+						handleOverlay = {
+							order = 27,
+							type = 'toggle',
+							name = L["Action Button Glow"],
+							set = function(_, value)
+								E.db.actionbar.handleOverlay = value
+								AB:HandleOverlay()
+							end,
+						},
 					}
 				},
 				textGroup = {
