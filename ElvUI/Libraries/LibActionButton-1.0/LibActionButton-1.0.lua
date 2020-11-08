@@ -1120,9 +1120,12 @@ function Update(self, fromUpdateConfig)
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 
+	-- Cooldown desaturate can control saturation, we don't want to override it here
+	local allowSaturation = not self.saturationLocked and not self.LevelLinkLockIcon:IsShown()
+
 	-- Zone ability button handling
 	self.zoneAbilityDisabled = false
-	if not self.saturationLocked then
+	if allowSaturation then
 		self.icon:SetDesaturated(false)
 	end
 	if self._state_type == "action" then
@@ -1133,7 +1136,8 @@ function Update(self, fromUpdateConfig)
 			if name == abilityName then
 				texture = GetLastZoneAbilitySpellTexture()
 				self.zoneAbilityDisabled = true
-				if not self.saturationLocked then
+
+				if allowSaturation then
 					self.icon:SetDesaturated(true)
 				end
 			end
