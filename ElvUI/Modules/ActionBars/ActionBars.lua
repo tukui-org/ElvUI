@@ -1231,6 +1231,11 @@ function AB:ToggleCooldownOptions()
 end
 
 function AB:SetButtonDesaturation(button, duration)
+	if button.LevelLinkLockIcon:IsShown() then
+		button.saturationLocked = nil
+		return
+	end
+
 	if AB.db.desaturateOnCooldown and (duration and duration > 1.5) then
 		button.icon:SetDesaturated(true)
 		button.saturationLocked = true
