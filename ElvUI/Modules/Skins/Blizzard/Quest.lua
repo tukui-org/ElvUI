@@ -407,6 +407,11 @@ function S:BlizzardQuestFrames()
 		hooksecurefunc('QuestFrame_SetTitleTextColor', S.QuestFrame_SetTitleTextColor)
 		hooksecurefunc('QuestFrame_SetTextColor', S.QuestFrame_SetTextColor)
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', S.QuestInfo_ShowRequiredMoney)
+
+		_G.QuestFrameDetailPanel.SealMaterialBG:SetAlpha(0)
+		_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
+		_G.QuestFrameProgressPanel.SealMaterialBG:SetAlpha(0)
+		_G.QuestFrameGreetingPanel.SealMaterialBG:SetAlpha(0)
 	else
 		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, 506, 615, true)
 		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, 506, 615, true)

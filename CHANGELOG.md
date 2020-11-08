@@ -1,6 +1,19 @@
-### Version 12.11 [ ETA: 🍨 ]
+### Version 12.12 [ ETA: 🍨 ]
 
 **Sweet:**  
+
+___
+
+### Version 12.11 [ November 7th 2020 ]
+
+**Sweet:**  
+The Keybinds for disabled ActionBars will work again! Sorry this was overlooked.  
+Corrected Count Font Outline on Top Auras, along with the border color being incorrect. Also, Apply All Fonts will a work for these again.  
+Implemented a work around for the Quest Objective Tracker Icon being unusable sometimes in combat.  
+Added a toggle for Action Button Glow incase you don't want to see procs happening.  
+Seals were showing when Parchment Remover was enabled, should be hidden again now.  
+Fixed the Mend Pet spell ID for Aura indicator on Pet.  
+Added Show Level option for EXP Databar.  
 
 ___
 

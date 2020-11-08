@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local unpack = unpack
+local next, unpack = next, unpack
 local ipairs, pairs, select, strmatch = ipairs, pairs, select, strmatch
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
@@ -317,11 +317,17 @@ function AB:PositionAndSizeBar(barName)
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
+	-- paging needs to be updated even if the bar is disabled
+	local defaults = AB.barDefaults[barName]
+	local page = AB:GetPage(barName, defaults.page, defaults.conditions)
+	RegisterStateDriver(bar, 'page', page)
+	bar:SetAttribute('page', page)
+
 	if not bar.initialized then
 		bar.initialized = true
 
-		if AB.barDefaults['bar'..bar.id].conditions:find('[form,noform]') then
-			bar:SetAttribute('newCondition', gsub(AB.barDefaults['bar'..bar.id].conditions, ' %[form,noform%] 0; ', ''))
+		if defaults.conditions:find('[form,noform]') then
+			bar:SetAttribute('newCondition', gsub(defaults.conditions, ' %[form,noform%] 0; ', ''))
 			bar:SetAttribute('hasTempBar', true)
 		else
 			bar:SetAttribute('hasTempBar', false)
@@ -329,15 +335,11 @@ function AB:PositionAndSizeBar(barName)
 	end
 
 	if db.enabled or not bar.initialized then
-		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
 		visibility = gsub(visibility, '[\n\r]','')
 
-		RegisterStateDriver(bar, 'visibility', visibility)
-		RegisterStateDriver(bar, 'page', page)
-		bar:SetAttribute('page', page)
-		bar:Show()
-
 		E:EnableMover(bar.mover:GetName())
+		RegisterStateDriver(bar, 'visibility', visibility)
+		bar:Show()
 	else
 		E:DisableMover(bar.mover:GetName())
 		UnregisterStateDriver(bar, 'visibility')
@@ -360,7 +362,8 @@ function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
 	SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 
-	local point, anchor, attachTo, x, y = strsplit(',', AB.barDefaults['bar'..id].position)
+	local defaults = AB.barDefaults['bar'..id]
+	local point, anchor, attachTo, x, y = strsplit(',', defaults.position)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar:SetFrameStrata('LOW')
 	bar.id = id
@@ -369,7 +372,7 @@ function AB:CreateBar(id)
 	bar.backdrop:SetFrameLevel(0)
 
 	bar.buttons = {}
-	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons
+	bar.bindButtons = defaults.bindButtons
 	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
 	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
@@ -394,7 +397,7 @@ function AB:CreateBar(id)
 	end
 	AB:UpdateButtonConfig(bar, bar.bindButtons)
 
-	if AB.barDefaults['bar'..id].conditions:find('[form]') then
+	if defaults.conditions:find('[form]') then
 		bar:SetAttribute('hasTempBar', true)
 	else
 		bar:SetAttribute('hasTempBar', false)
@@ -1292,6 +1295,20 @@ function AB:PLAYER_ENTERING_WORLD()
 	AB:AdjustMaxStanceButtons('PLAYER_ENTERING_WORLD')
 end
 
+function AB:HandleOverlay()
+	if AB.db.handleOverlay then
+		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
+	else
+		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
+
+		for button in next, LAB.activeButtons do
+			E.Libs.ButtonGlow.HideOverlayGlow(button)
+		end
+	end
+end
+
 function AB:Initialize()
 	AB.db = E.db.actionbar
 
@@ -1333,6 +1350,7 @@ function AB:Initialize()
 	AB:UpdatePetCooldownSettings()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
+	AB:HandleOverlay()
 
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')

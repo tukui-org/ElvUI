@@ -162,7 +162,7 @@ function A:UpdateIcon(button)
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
-	button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.fontOutline)
+	button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 
 	button.text:ClearAllPoints()
 	button.text:Point('TOP', button, 'BOTTOM', db.timeXOffset, db.timeYOffset)
@@ -238,7 +238,7 @@ function A:UpdateAura(button, index)
 		button.texture:SetTexture(texture)
 
 		if button.debuffType ~= DebuffType then
-			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[DebuffType] or E.media.bordercolor
+			local color = button.filter == 'HARMFUL' and _G.DebuffTypeColor[DebuffType] or E.db.general.bordercolor
 			button:SetBackdropBorderColor(color.r, color.g, color.b)
 			button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 		end
