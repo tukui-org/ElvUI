@@ -628,8 +628,14 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if count then
 		count:ClearAllPoints()
-		count:Point(countPosition, countXOffset, countYOffset)
-		count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+		if button:GetParent().db and button:GetParent().db.customCountFont then
+			local db = button:GetParent().db
+			count:Point(db.countTextPosition, db.countTextXOffset, db.countTextYOffset)
+			count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		else
+			count:Point(countPosition, countXOffset, countYOffset)
+			count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+		end
 		count:SetTextColor(color.r, color.g, color.b)
 	end
 
@@ -671,7 +677,12 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if AB.db.hotkeytext or AB.db.useRangeColorText then
-		hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+		if (button:GetParent().db and button:GetParent().db.customHotkeyFont) then
+			local db = button:GetParent().db
+			hotkey:FontTemplate(LSM:Fetch('font', db.hotkeyFont), db.hotkeyFontSize, db.hotkeyFontOutline)
+		else
+			hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+		end
 		if button.config and (button.config.outOfRangeColoring ~= 'hotkey') then
 			button.HotKey:SetTextColor(color.r, color.g, color.b)
 		end
@@ -1054,9 +1065,10 @@ function AB:FixKeybindText(button)
 	local hotkey = _G[button:GetName()..'HotKey']
 	local text = hotkey:GetText()
 
-	local hotkeyPosition = E.db.actionbar.hotkeyTextPosition or 'TOPRIGHT'
-	local hotkeyXOffset = E.db.actionbar.hotkeyTextXOffset or 0
-	local hotkeyYOffset =  E.db.actionbar.hotkeyTextYOffset or -3
+	local db = button:GetParent().db
+	local hotkeyPosition = db and db.customHotkeyFont and db.hotkeyTextPosition or E.db.actionbar.hotkeyTextPosition or 'TOPRIGHT'
+	local hotkeyXOffset = db and db.customHotkeyFont and db.hotkeyTextXOffset or E.db.actionbar.hotkeyTextXOffset or 0
+	local hotkeyYOffset = db and db.customHotkeyFont and db.hotkeyTextYOffset or  E.db.actionbar.hotkeyTextYOffset or -3
 
 	local justify = 'RIGHT'
 	if hotkeyPosition == 'TOPLEFT' or hotkeyPosition == 'BOTTOMLEFT' then
