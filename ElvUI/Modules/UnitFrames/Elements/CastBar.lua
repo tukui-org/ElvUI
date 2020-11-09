@@ -372,7 +372,7 @@ end
 
 function UF:GetInterruptColor(db, unit)
 	local colors = ElvUF.colors
-	local custom, r, g, b = db.castbar.customColor and db.castbar.customColor.enable and db.castbar.customColor.color
+	local custom, r, g, b = db and db.castbar and db.castbar.customColor and db.castbar.customColor.enable and db.castbar.customColor.color
 	if custom then
 		r, g, b = custom.color.r, custom.color.g, custom.color.b
 	else
