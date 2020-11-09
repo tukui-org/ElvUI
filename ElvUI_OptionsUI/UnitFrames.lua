@@ -1204,6 +1204,110 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				},
 			},
 			strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'castbar'),
+			customColor = {
+				order = 21,
+				type = 'group',
+				name = L["Custom Color"],
+				inline = true,
+				get = function(info)
+					if info.type == 'color' then
+						local c = E.db.unitframe.units[groupName].castbar.customColor[info[#info]]
+						local d = P.unitframe.units[groupName].castbar.customColor[info[#info]]
+						return c.r, c.g, c.b, c.a, d.r, d.g, d.b, 1.0
+					else
+						return E.db.unitframe.units[groupName].castbar.customColor[info[#info]]
+					end
+				end,
+				set = function(info, ...)
+					if info.type == 'color' then
+						local r, g, b, a = ...
+						local c = E.db.unitframe.units[groupName].castbar.customColor[info[#info]]
+						c.r, c.g, c.b, c.a = r, g, b, a
+					else
+						local value = ...
+						E.db.unitframe.units[groupName].castbar.customColor[info[#info]] = value;
+					end
+
+					updateFunc(UF, groupName, numUnits)
+				end,
+				args = {
+					enable = {
+						order = 1,
+						type = 'toggle',
+						name = L["Enable"],
+					},
+					transparent = {
+						order = 2,
+						type = 'toggle',
+						name = L["Transparent"],
+						desc = L["Make textures transparent."],
+						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
+					},
+					invertColors = {
+						order = 3,
+						type = 'toggle',
+						name = L["Invert Colors"],
+						desc = L["Invert foreground and background colors."],
+						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or
+							(E.db.unitframe.units[groupName].castbar.customColor.enable and
+								not E.db.unitframe.units[groupName].castbar.customColor.transparent) end,
+					},
+					spacer1 = ACH:Spacer(4, 'full'),
+					useClassColor = {
+						order = 5,
+						type = 'toggle',
+						name = L["Class Color"],
+						desc = L["Color castbar by the class of the unit's class."],
+						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
+					},
+					useReactionColor = {
+						order = 5,
+						type = 'toggle',
+						name = L["Reaction Color"],
+						desc = L["Color castbar by the reaction of the unit to the player."],
+						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or (groupName == 'player' or groupName == 'pet') end,
+					},
+					useCustomBackdrop = {
+						order = 6,
+						type = 'toggle',
+						name = L["Custom Backdrop"],
+						desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
+					},
+					spacer2 = ACH:Spacer(7, 'full'),
+					colorBackdrop = {
+						order = 8,
+						type = 'color',
+						name = L["Custom Backdrop"],
+						desc = L["Use the custom backdrop color instead of a multiple of the main color."],
+						disabled = function()
+							return not E.db.unitframe.units[groupName].castbar.customColor.enable or
+							(E.db.unitframe.units[groupName].castbar.customColor.enable and
+								not E.db.unitframe.units[groupName].castbar.customColor.useCustomBackdrop)
+						end,
+						hasAlpha = true,
+					},
+					color = {
+						order = 9,
+						name = L["Interruptible"],
+						type = 'color',
+						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
+					},
+					colorNoInterrupt = {
+						order = 10,
+						name = L["Non-Interruptible"],
+						type = 'color',
+						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
+					},
+					spacer3 = ACH:Spacer(11, 'full'),
+					colorInterrupted = {
+						name = L["Interrupted"],
+						order = 12,
+						type = 'color',
+						disabled = function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end,
+					},
+				},
+			},
 		},
 	}
 

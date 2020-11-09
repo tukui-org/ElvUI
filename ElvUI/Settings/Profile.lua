@@ -1062,6 +1062,18 @@ local UF_AuraWatch = {
 }
 
 local UF_Castbar = {
+	customColor = {
+		enable = false,
+		transparent = false,
+		invertColors = false,
+		useClassColor = false,
+		useCustomBackdrop = false,
+		useReactionColor = false,
+		color = { r = .31, g = .31, b = .31 },
+		colorNoInterrupt = { r = 0.78, g = 0.25, b = 0.25 },
+		colorInterrupted = { r = 0.30, g = 0.30, b = 0.30 },
+		colorBackdrop = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
+	},
 	customTextFont = {
 		enable = false,
 		font = 'PT Sans Narrow',
