@@ -292,8 +292,8 @@ function E:UpdateCooldownOverride(module)
 				elseif parent.CooldownOverride == 'auras' then
 					-- parent.auraType defined in `A:UpdateHeader` and `A:CreateIcon`
 					local fontDB = parent.auraType and db[parent.auraType]
-					if fontDB then
-						cd.text:FontTemplate(LSM:Fetch('font', fontDB.timeFont) , fontDB.timeFontSize, fontDB.timeFontOutline)
+					if fontDB and fontDB.timeFont then
+						cd.text:FontTemplate(LSM:Fetch('font', fontDB.timeFont), fontDB.timeFontSize, fontDB.timeFontOutline)
 					end
 				end
 
