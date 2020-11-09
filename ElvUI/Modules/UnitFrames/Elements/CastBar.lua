@@ -370,9 +370,37 @@ function UF:GetTalentTicks(info)
 	return selected and info.ticks
 end
 
+function UF:GetInterruptColor(db, unit)
+	local colors = ElvUF.colors
+	local custom, r, g, b = db.castbar.customColor and db.castbar.customColor.enable and db.castbar.customColor.color
+	if custom then
+		r, g, b = custom.color.r, custom.color.g, custom.color.b
+	else
+		r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
+	end
+
+	if self.notInterruptible and unit ~= 'player' and UnitCanAttack('player', unit) then
+		if custom and custom.colorNoInterrupt then
+			r, g, b = custom.colorNoInterrupt.r, custom.colorNoInterrupt.g, custom.colorNoInterrupt.b
+		else
+			r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
+		end
+	elseif ((custom and custom.useClassColor) or (not custom and UF.db.colors.castClassColor)) and UnitIsPlayer(unit) then
+		local _, Class = UnitClass(unit)
+		local t = Class and ElvUF.colors.class[Class]
+		if t then r, g, b = t[1], t[2], t[3] end
+	elseif (custom and custom.useReactionColor) or (not custom and UF.db.colors.castReactionColor) then
+		local Reaction = UnitReaction(unit, 'player')
+		local t = Reaction and ElvUF.colors.reaction[Reaction]
+		if t then r, g, b = t[1], t[2], t[3] end
+	end
+
+	return r, g, b
+end
+
 function UF:PostCastStart(unit)
 	local db = self:GetParent().db
-	if not db or not db.castbar then return; end
+	if not db or not db.castbar then return end
 
 	if unit == 'vehicle' then unit = 'player' end
 
@@ -438,35 +466,11 @@ function UF:PostCastStart(unit)
 		end
 	end
 
-	local colors = ElvUF.colors
-	local custom, r, g, b = db.castbar.customColor and db.castbar.customColor.enable and db.castbar.customColor.color
-	if custom then
-		r, g, b = custom.color.r, custom.color.g, custom.color.b
-	else
-		r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
-	end
-
-	if self.notInterruptible and unit ~= 'player' and UnitCanAttack('player', unit) then
-		if custom and custom.colorNoInterrupt then
-			r, g, b = custom.colorNoInterrupt.r, custom.colorNoInterrupt.g, custom.colorNoInterrupt.b
-		else
-			r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
-		end
-	elseif ((custom and custom.useClassColor) or (not custom and UF.db.colors.castClassColor)) and UnitIsPlayer(unit) then
-		local _, Class = UnitClass(unit)
-		local t = Class and ElvUF.colors.class[Class]
-		if t then r, g, b = t[1], t[2], t[3] end
-	elseif (custom and custom.useReactionColor) or (not custom and UF.db.colors.castReactionColor) then
-		local Reaction = UnitReaction(unit, 'player')
-		local t = Reaction and ElvUF.colors.reaction[Reaction]
-		if t then r, g, b = t[1], t[2], t[3] end
-	end
-
 	if self.SafeZone then
 		self.SafeZone:Show()
 	end
 
-	self:SetStatusBarColor(r, g, b)
+	self:SetStatusBarColor(UF:GetInterruptColor(db, unit))
 end
 
 function UF:PostCastStop(unit)
@@ -490,30 +494,8 @@ end
 function UF:PostCastInterruptible(unit)
 	if unit == 'vehicle' or unit == 'player' then return end
 
-	local colors = ElvUF.colors
 	local db = self:GetParent().db
-	local custom, r, g, b = db and db.castbar.customColor and db.castbar.customColor.enable and db.castbar.customColor.color
-	if custom then
-		r, g, b = custom.color.r, custom.color.g, custom.color.b
-	else
-		r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
-	end
+	if not db or not db.castbar then return end
 
-	if self.notInterruptible and UnitCanAttack('player', unit) then
-		if custom and custom.colorNoInterrupt then
-			r, g, b = custom.colorNoInterrupt.r, custom.colorNoInterrupt.g, custom.colorNoInterrupt.b
-		else
-			r, g, b = colors.castNoInterrupt[1], colors.castNoInterrupt[2], colors.castNoInterrupt[3]
-		end
-	elseif (custom and custom.useClassColor or UF.db.colors.castClassColor) and UnitIsPlayer(unit) then
-		local _, Class = UnitClass(unit)
-		local t = Class and ElvUF.colors.class[Class]
-		if t then r, g, b = t[1], t[2], t[3] end
-	elseif custom and custom.useReactionColor or UF.db.colors.castReactionColor then
-		local Reaction = UnitReaction(unit, 'player')
-		local t = Reaction and ElvUF.colors.reaction[Reaction]
-		if t then r, g, b = t[1], t[2], t[3] end
-	end
-
-	self:SetStatusBarColor(r, g, b)
+	self:SetStatusBarColor(UF:GetInterruptColor(db, unit))
 end
