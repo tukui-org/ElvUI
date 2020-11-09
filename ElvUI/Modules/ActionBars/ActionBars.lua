@@ -613,6 +613,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local normal  = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
 
+	local db = button:GetParent().db
 	local color = AB.db.fontColor
 	local countPosition = AB.db.countTextPosition or 'BOTTOMRIGHT'
 	local countXOffset = AB.db.countTextXOffset or 0
@@ -628,14 +629,15 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if count then
 		count:ClearAllPoints()
-		if button:GetParent().db and button:GetParent().db.customCountFont then
-			local db = button:GetParent().db
+
+		if db and db.customCountFont then
 			count:Point(db.countTextPosition, db.countTextXOffset, db.countTextYOffset)
 			count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 		else
 			count:Point(countPosition, countXOffset, countYOffset)
 			count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		end
+
 		count:SetTextColor(color.r, color.g, color.b)
 	end
 
@@ -677,12 +679,12 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if AB.db.hotkeytext or AB.db.useRangeColorText then
-		if (button:GetParent().db and button:GetParent().db.customHotkeyFont) then
-			local db = button:GetParent().db
+		if db and db.customHotkeyFont then
 			hotkey:FontTemplate(LSM:Fetch('font', db.hotkeyFont), db.hotkeyFontSize, db.hotkeyFontOutline)
 		else
 			hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		end
+
 		if button.config and (button.config.outOfRangeColoring ~= 'hotkey') then
 			button.HotKey:SetTextColor(color.r, color.g, color.b)
 		end
