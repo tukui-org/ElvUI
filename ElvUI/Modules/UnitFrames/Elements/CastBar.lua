@@ -484,7 +484,7 @@ end
 function UF:PostCastFail()
 	local db = self:GetParent().db
 	local customColor = db and db.castbar and db.castbar.customColor
-	local color = (customColor and customColor.enable and customColor.colorInterrupted and customColor.color) or UF.db.colors.castInterruptedColor
+	local color = (customColor and customColor.enable and customColor.colorInterrupted) or UF.db.colors.castInterruptedColor
 	self:SetStatusBarColor(color.r, color.g, color.b)
 
 	if self.SafeZone then
