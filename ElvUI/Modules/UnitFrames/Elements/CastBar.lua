@@ -372,9 +372,10 @@ end
 
 function UF:GetInterruptColor(db, unit)
 	local colors = ElvUF.colors
-	local custom, r, g, b = db and db.castbar and db.castbar.customColor and db.castbar.customColor.enable and db.castbar.customColor.color
+	local customColor = db and db.castbar and db.castbar.customColor
+	local custom, r, g, b = customColor and customColor.enable and customColor
 	if custom then
-		r, g, b = custom.color.r, custom.color.g, custom.color.b
+		r, g, b = customColor.color.r, customColor.color.g, customColor.color.b
 	else
 		r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
 	end
@@ -483,7 +484,7 @@ end
 function UF:PostCastFail()
 	local db = self:GetParent().db
 	local customColor = db and db.castbar and db.castbar.customColor
-	local color = (customColor and customColor.enable and customColor.colorInterrupted) or UF.db.colors.castInterruptedColor
+	local color = (customColor and customColor.enable and customColor.colorInterrupted and customColor.color) or UF.db.colors.castInterruptedColor
 	self:SetStatusBarColor(color.r, color.g, color.b)
 
 	if self.SafeZone then
