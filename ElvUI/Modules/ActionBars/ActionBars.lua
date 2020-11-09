@@ -219,12 +219,12 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	end
 end
 
-function AB:TrimIcon(button)
+function AB:TrimIcon(button, masque)
 	if not button.icon then return end
 
-	local db = button.db
-	local left, right, top, bottom = unpack(db and db.customCoords or E.TexCoords)
-	if db and not db.keepSizeRatio then
+	local left, right, top, bottom = unpack(button.db and button.db.customCoords or E.TexCoords)
+	local changeRatio = button.db and not button.db.keepSizeRatio
+	if changeRatio then
 		local width, height = button:GetSize()
 		local ratio = width / height
 		if ratio > 1 then
@@ -238,7 +238,10 @@ function AB:TrimIcon(button)
 		end
 	end
 
-	button.icon:SetTexCoord(left, right, top, bottom)
+	-- always when masque is off, otherwise only when keepSizeRatio is off
+	if not masque or changeRatio then
+		button.icon:SetTexCoord(left, right, top, bottom)
+	end
 end
 
 function AB:GetGrowth(point)
@@ -353,7 +356,7 @@ function AB:PositionAndSizeBar(barName)
 
 		-- masque retrims them all so we have to too
 		for btn in pairs(AB.handledbuttons) do
-			AB:TrimIcon(btn)
+			AB:TrimIcon(btn, true)
 		end
 	end
 end
