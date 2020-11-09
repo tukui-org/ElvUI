@@ -1126,13 +1126,13 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 								set = function(info, value) E.db.unitframe.units[groupName].castbar.customTimeFont[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 								disabled = function() return not E.db.unitframe.units[groupName].castbar.customTimeFont.enable end
 							},
-							xOffsetText = {
+							xOffsetTime = {
 								order = 4,
 								type = 'range',
 								name = L["X-Offset"],
 								min = -100, max = 100, step = 1,
 							},
-							yOffsetText = {
+							yOffsetTime = {
 								order = 5,
 								type = 'range',
 								name = L["Y-Offset"],
