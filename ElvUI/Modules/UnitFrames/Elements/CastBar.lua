@@ -151,6 +151,9 @@ function UF:Configure_Castbar(frame)
 	castbar.Text:Point('LEFT', castbar, 'LEFT', db.xOffsetText, db.yOffsetText)
 	castbar.Time:Point('RIGHT', castbar, 'RIGHT', db.xOffsetTime, db.yOffsetTime)
 
+	castbar.Text:Width(castbar.Text:GetStringWidth())
+	castbar.Time:Width(castbar.Time:GetStringWidth())
+
 	--Icon
 	if db.icon then
 		castbar.Icon = castbar.ButtonIcon
