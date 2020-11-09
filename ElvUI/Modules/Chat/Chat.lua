@@ -328,7 +328,7 @@ do --this can save some main file locals
 		['Imsospicy-Cenarius']			= itsSimpy, -- [Horde] Mage
 		['Imsonutty-Cenarius']			= itsSimpy, -- [Horde] Hunter
 		['Imsotasty-Cenarius']			= itsSimpy, -- [Horde] Monk
-		['Imsogooey-Cenarius']			= itsSimpy, -- [Horde] Warlock
+		['Imsosaucy-Cenarius']			= itsSimpy, -- [Horde] Warlock
 		['Imsodrippy-Cenarius']			= itsSimpy, -- [Horde] Rogue
 		['Bunne-CenarionCircle']		= itsSimpy, -- [RP] Warrior
 		['Loppie-CenarionCircle']		= itsSimpy, -- [RP] Monk
