@@ -1073,7 +1073,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 								order = 4,
 								type = 'range',
 								name = L["X-Offset"],
-								min = -100, max = 100, step = 1,
+								min = -500, max = 500, step = 1,
 							},
 							yOffsetText = {
 								order = 5,
@@ -1130,7 +1130,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 								order = 4,
 								type = 'range',
 								name = L["X-Offset"],
-								min = -100, max = 100, step = 1,
+								min = -500, max = 500, step = 1,
 							},
 							yOffsetTime = {
 								order = 5,
