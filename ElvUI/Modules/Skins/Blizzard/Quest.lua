@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub, pairs, ipairs, select, unpack, strfind = gsub, pairs, ipairs, select, unpack, strfind
+local gsub, pairs, ipairs, select, unpack, strmatch, strfind = gsub, pairs, ipairs, select, unpack, strmatch, strfind
 
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
@@ -16,6 +16,21 @@ local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetNumQuestLogRewardSpells = GetNumQuestLogRewardSpells
 local GetNumRewardSpells = GetNumRewardSpells
 local hooksecurefunc = hooksecurefunc
+
+local sealFrameTextColor = {
+	['480404'] = 'c20606',
+	['042c54'] = '1c86ee',
+}
+
+function S:QuestInfoSealFrameText(text)
+	if text and text ~= '' then
+		local colorStr, rawText = strmatch(text, '|c[fF][fF](%x%x%x%x%x%x)(.-)|r')
+		if colorStr and rawText then
+			colorStr = sealFrameTextColor[colorStr] or '99ccff'
+			self:SetFormattedText('|cff%s%s|r', colorStr, rawText)
+		end
+	end
+end
 
 local function HandleReward(frame)
 	if not frame then return end
@@ -407,6 +422,7 @@ function S:BlizzardQuestFrames()
 		hooksecurefunc('QuestFrame_SetTitleTextColor', S.QuestFrame_SetTitleTextColor)
 		hooksecurefunc('QuestFrame_SetTextColor', S.QuestFrame_SetTextColor)
 		hooksecurefunc('QuestInfo_ShowRequiredMoney', S.QuestInfo_ShowRequiredMoney)
+		hooksecurefunc(_G.QuestInfoSealFrame.Text, 'SetText', S.QuestInfoSealFrameText)
 
 		_G.QuestFrameDetailPanel.SealMaterialBG:SetAlpha(0)
 		_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
