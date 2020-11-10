@@ -114,8 +114,10 @@ function A:CreateIcon(button)
 	button.texture:SetTexCoord(unpack(E.TexCoords))
 
 	button.count = button:CreateFontString(nil, 'OVERLAY')
+	button.count:FontTemplate()
 
 	button.text = button:CreateFontString(nil, 'OVERLAY')
+	button.text:FontTemplate()
 
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	button.highlight:SetColorTexture(1, 1, 1, .45)
