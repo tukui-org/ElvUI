@@ -391,11 +391,11 @@ function UF:GetInterruptColor(db, unit)
 		end
 	elseif ((custom and custom.useClassColor) or (not custom and UF.db.colors.castClassColor)) and UnitIsPlayer(unit) then
 		local _, Class = UnitClass(unit)
-		local t = Class and ElvUF.colors.class[Class]
+		local t = Class and colors.class[Class]
 		if t then r, g, b = t[1], t[2], t[3] end
 	elseif (custom and custom.useReactionColor) or (not custom and UF.db.colors.castReactionColor) then
 		local Reaction = UnitReaction(unit, 'player')
-		local t = Reaction and ElvUF.colors.reaction[Reaction]
+		local t = Reaction and colors.reaction[Reaction]
 		if t then r, g, b = t[1], t[2], t[3] end
 	end
 
