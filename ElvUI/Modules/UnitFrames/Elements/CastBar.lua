@@ -474,7 +474,7 @@ function UF:PostCastStart(unit)
 		self.SafeZone:Show()
 	end
 
-	self:SetStatusBarColor(UF:GetInterruptColor(db, unit))
+	self:SetStatusBarColor(UF.GetInterruptColor(self, db, unit))
 end
 
 function UF:PostCastStop(unit)
@@ -501,5 +501,5 @@ function UF:PostCastInterruptible(unit)
 	local db = self:GetParent().db
 	if not db or not db.castbar then return end
 
-	self:SetStatusBarColor(UF:GetInterruptColor(db, unit))
+	self:SetStatusBarColor(UF.GetInterruptColor(self, db, unit))
 end
