@@ -1,6 +1,20 @@
-### Version 12.12 [ ETA: 🍨 ]
+### Version 12.13 [ ETA: 🍨 ]
 
 **Sweet:**  
+
+___
+
+### Version 12.12 [ November 10th 2020 ]
+
+**Woot:**  
+Level Locked Spells on Action Bars will display more clearly when doing older instances with friends on a higher level character.  
+Masque on Action Bars should once again trim correctly (when Keep Aspect Ratio is checked). The logic was a little off before. Should be okay now.  
+Quest Icons on NamePlates would sometimes show the incorrect Icon on some mobs, this logic has been adjusted.  
+The Quest Seal Color Text with Parchment Remover enabled should be more visible.  
+Added custom font count and hotkey text options for Action Bars (Thanks @Caedis).  
+Added custom color options for Cast Bars on UnitFrames (Thanks @Caedis).  
+Increased the Cast Bar text offset options on UnitFrames.  
+A couple Top Aura font issues resolved.  
 
 ___
 
