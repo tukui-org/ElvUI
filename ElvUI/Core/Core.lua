@@ -564,6 +564,7 @@ do
 				name = 'ElvUI NamePlates'
 			},
 			'TidyPlates',
+			'TidyPlates_ThreatPlates',
 			'Healers-Have-To-Die',
 			'Kui_Nameplates',
 			'Plater',
