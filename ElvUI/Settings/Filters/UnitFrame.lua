@@ -763,6 +763,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[326836] = Defaults(), -- Curse of Suppression
 		[322554] = Defaults(), -- Castigate
 		[321038] = Defaults(), -- Burden Soul
+		[328593] = Defaults(), -- Agonize (Channel)
+		[325254] = Defaults(), -- Iron Spikes
 		-- Spires of Ascension
 		[338729] = Defaults(), -- Charged Stomp
 		[338747] = Defaults(), -- Purifying Blast
@@ -1007,6 +1009,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		-- The Council of Blood
 		[327773] = Defaults(), -- Drain Essence 1
 		[327052] = Defaults(), -- Drain Essence 2
+		[346651] = Defaults(), -- Drain Essence Mythic
 		[328334] = Defaults(), -- Tactical Advance
 		[330848] = Defaults(), -- Wrong Moves
 		[331706] = Defaults(), -- Scarlet Letter
@@ -1022,10 +1025,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		-- Stone Legion Generals
 		[334498] = Defaults(), -- Seismic Upheaval
 		[337643] = Defaults(), -- Unstable Footing
-		[334765] = Defaults(), -- Stone Shatterer
+		[334765] = Defaults(), -- Heart Rend
 		[333377] = Defaults(), -- Wicked Mark
 		[334616] = Defaults(), -- Petrified
 		[334541] = Defaults(), -- Curse of Petrification
+		[339690] = Defaults(), -- Crystalize
+		[342655] = Defaults(), -- Volatile Anima Infusion
+		[342698] = Defaults(), -- Volatile Anima Infection
 		-- Sire Denathrius
 		[326851] = Defaults(), -- Blood Price
 		[327798] = Defaults(), -- Night Hunter
@@ -1339,11 +1345,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
-		-- Mythic / Mythic+
+		-- Mythic+ General
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
-		-- Shadowlands
+		-- Mythic+ Shadowlands Season 1
 		[343502] = Defaults(), -- Inspiring
 		[342332] = Defaults(), -- Bursting With Pride (Prideful)
 		[340880] = Defaults(), -- Prideful

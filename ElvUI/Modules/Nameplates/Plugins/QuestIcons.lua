@@ -4,14 +4,12 @@ local oUF = E.oUF
 
 local _G = _G
 local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
-local strmatch, strlower, strfind = strmatch, strlower, strfind
+local wipe, strmatch, strlower, strfind = wipe, strmatch, strlower, strfind
 
 local GetLocale = GetLocale
 local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
-local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
-local C_QuestLog_GetLogIndexForQuestID = C_QuestLog.GetLogIndexForQuestID
 local C_QuestLog_GetTitleForLogIndex = C_QuestLog.GetTitleForLogIndex
 local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
@@ -114,7 +112,7 @@ local function GetQuests(unitID)
 			local count, percent = CheckTextForQuest(text)
 
 			-- this line comes from one line up in the tooltip
-			local activeQuest = NP.QuestIcons.activeQuests[text]
+			local activeQuest = questIcons.activeQuests[text]
 			if activeQuest then activeID = activeQuest end
 
 			if count then
@@ -129,19 +127,19 @@ local function GetQuests(unitID)
 				else
 					local lowerText = strlower(text)
 
-					-- check chat type first
-					for _, listText in ipairs(questTypes.CHAT) do
+					-- check kill type first
+					for _, listText in ipairs(questTypes.KILL) do
 						if strfind(lowerText, listText, nil, true) then
-							type = 'CHAT'
+							type = 'KILL'
 							break
 						end
 					end
 
-					-- check kill type if chat type doesn't exist
+					-- check chat type if kill type doesn't exist
 					if not type then
-						for _, listText in ipairs(questTypes.KILL) do
+						for _, listText in ipairs(questTypes.CHAT) do
 							if strfind(lowerText, listText, nil, true) then
-								type = 'KILL'
+								type = 'CHAT'
 								break
 							end
 						end
@@ -293,39 +291,22 @@ local frame = CreateFrame('Frame')
 frame:RegisterEvent('QUEST_ACCEPTED')
 frame:RegisterEvent('QUEST_REMOVED')
 frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-frame:SetScript('OnEvent', function(self, event, questID)
+frame:SetScript('OnEvent', function(self, event)
+	wipe(questIcons.indexByID)
+	wipe(questIcons.activeQuests)
+
+	for i = 1, C_QuestLog_GetNumQuestLogEntries() do
+		local id = C_QuestLog_GetQuestIDForLogIndex(i)
+		if id and id > 0 then
+			questIcons.indexByID[id] = i
+
+			local title = C_QuestLog_GetTitleForLogIndex(i)
+			if title then questIcons.activeQuests[title] = id end
+		end
+	end
+
 	if event == 'PLAYER_ENTERING_WORLD' then
-		for i = 1, C_QuestLog_GetNumQuestLogEntries() do
-			local id = C_QuestLog_GetQuestIDForLogIndex(i)
-			if id and id > 0 then
-				questIcons.indexByID[id] = i
-
-				local title = C_QuestLog_GetTitleForLogIndex(i)
-				if title then questIcons.activeQuests[title] = id end
-			end
-		end
-
 		self:UnregisterEvent(event)
-	elseif event == 'QUEST_ACCEPTED' then
-		if questID and questID > 0 then
-			local index = C_QuestLog_GetLogIndexForQuestID(questID)
-			if index and index > 0 then
-				questIcons.indexByID[questID] = index
-
-				local title = C_QuestLog_GetTitleForQuestID(questID)
-				if title then questIcons.activeQuests[title] = questID end
-			end
-		end
-	elseif event == 'QUEST_REMOVED' then
-		if not questID then return end
-		questIcons.indexByID[questID] = nil
-
-		for title, id in pairs(questIcons.activeQuests) do
-			if id == questID then
-				questIcons.activeQuests[title] = nil
-				break
-			end
-		end
 	end
 end)
 

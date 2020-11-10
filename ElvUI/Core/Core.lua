@@ -564,6 +564,7 @@ do
 				name = 'ElvUI NamePlates'
 			},
 			'TidyPlates',
+			'TidyPlates_ThreatPlates',
 			'Healers-Have-To-Die',
 			'Kui_Nameplates',
 			'Plater',
@@ -1020,16 +1021,6 @@ do -- BFA Convert, deprecated..
 					E.db.unitframe.units[unit].rangeCheck = nil
 				end
 			end
-		end
-
-		--Convert old 'Buffs and Debuffs' font size option to individual options
-		if E.db.auras.fontSize then
-			local fontSize = E.db.auras.fontSize
-			E.db.auras.buffs.countFontSize = fontSize
-			E.db.auras.buffs.durationFontSize = fontSize
-			E.db.auras.debuffs.countFontSize = fontSize
-			E.db.auras.debuffs.durationFontSize = fontSize
-			E.db.auras.fontSize = nil
 		end
 
 		--Remove stale font settings from Cooldown system for top auras

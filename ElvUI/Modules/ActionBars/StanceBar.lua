@@ -190,7 +190,7 @@ function AB:PositionAndSizeBarShapeShift()
 		MasqueGroup:ReSkin()
 
 		for _, btn in ipairs(bar.buttons) do
-			AB:TrimIcon(btn)
+			AB:TrimIcon(btn, true)
 		end
 	end
 end

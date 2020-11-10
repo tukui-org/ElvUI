@@ -316,8 +316,8 @@ E.Options.args.general = {
 									name = L["FONT_SIZE"],
 									desc = L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own seperate options (UnitFrame Font, Datatext Font, ect..)"],
 									type = 'range',
-									min = 8, max = 48, step = 1,
-									softMin = 10, softMax = 32,
+									min = 6, max = 64, step = 1,
+									softMin = 8, softMax = 32,
 									set = function(info, value) E.db.general[info[#info]] = value; E:UpdateMedia(); E:UpdateFontTemplates(); end,
 								},
 								fontStyle = {
@@ -679,7 +679,7 @@ E.Options.args.general = {
 							order = 2,
 							name = L["FONT_SIZE"],
 							type = 'range',
-							min = 6, max = 22, step = 1,
+							min = 6, max = 24, step = 1,
 						},
 						fontOutline = {
 							order = 3,
@@ -863,7 +863,7 @@ E.Options.args.general = {
 									order = 2,
 									type = 'range',
 									name = L["FONT_SIZE"],
-									min = 4, max = 40, step = 1,
+									min = 4, max = 42, step = 1,
 								},
 								itemLevelFontOutline = {
 									order = 3,
@@ -949,7 +949,7 @@ E.Options.args.general = {
 							order = 4,
 							type = 'range',
 							name = L["FONT_SIZE"],
-							min = 4, max = 212, step = 1,
+							min = 6, max = 64, step = 1,
 						},
 						chatBubbleFontOutline = {
 							order = 5,

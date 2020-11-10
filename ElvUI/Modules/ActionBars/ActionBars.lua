@@ -219,12 +219,12 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	end
 end
 
-function AB:TrimIcon(button)
+function AB:TrimIcon(button, masque)
 	if not button.icon then return end
 
-	local db = button.db
-	local left, right, top, bottom = unpack(db and db.customCoords or E.TexCoords)
-	if db and not db.keepSizeRatio then
+	local left, right, top, bottom = unpack(button.db and button.db.customCoords or E.TexCoords)
+	local changeRatio = button.db and not button.db.keepSizeRatio
+	if changeRatio then
 		local width, height = button:GetSize()
 		local ratio = width / height
 		if ratio > 1 then
@@ -238,7 +238,10 @@ function AB:TrimIcon(button)
 		end
 	end
 
-	button.icon:SetTexCoord(left, right, top, bottom)
+	-- always when masque is off, otherwise only when keepSizeRatio is off
+	if not masque or changeRatio then
+		button.icon:SetTexCoord(left, right, top, bottom)
+	end
 end
 
 function AB:GetGrowth(point)
@@ -353,7 +356,7 @@ function AB:PositionAndSizeBar(barName)
 
 		-- masque retrims them all so we have to too
 		for btn in pairs(AB.handledbuttons) do
-			AB:TrimIcon(btn)
+			AB:TrimIcon(btn, true)
 		end
 	end
 end
@@ -610,6 +613,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local normal  = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
 
+	local db = button:GetParent().db
 	local color = AB.db.fontColor
 	local countPosition = AB.db.countTextPosition or 'BOTTOMRIGHT'
 	local countXOffset = AB.db.countTextXOffset or 0
@@ -625,8 +629,15 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if count then
 		count:ClearAllPoints()
-		count:Point(countPosition, countXOffset, countYOffset)
-		count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+
+		if db and db.customCountFont then
+			count:Point(db.countTextPosition, db.countTextXOffset, db.countTextYOffset)
+			count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		else
+			count:Point(countPosition, countXOffset, countYOffset)
+			count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+		end
+
 		count:SetTextColor(color.r, color.g, color.b)
 	end
 
@@ -668,7 +679,12 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if AB.db.hotkeytext or AB.db.useRangeColorText then
-		hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+		if db and db.customHotkeyFont then
+			hotkey:FontTemplate(LSM:Fetch('font', db.hotkeyFont), db.hotkeyFontSize, db.hotkeyFontOutline)
+		else
+			hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+		end
+
 		if button.config and (button.config.outOfRangeColoring ~= 'hotkey') then
 			button.HotKey:SetTextColor(color.r, color.g, color.b)
 		end
@@ -1051,9 +1067,10 @@ function AB:FixKeybindText(button)
 	local hotkey = _G[button:GetName()..'HotKey']
 	local text = hotkey:GetText()
 
-	local hotkeyPosition = E.db.actionbar.hotkeyTextPosition or 'TOPRIGHT'
-	local hotkeyXOffset = E.db.actionbar.hotkeyTextXOffset or 0
-	local hotkeyYOffset =  E.db.actionbar.hotkeyTextYOffset or -3
+	local db = button:GetParent().db
+	local hotkeyPosition = db and db.customHotkeyFont and db.hotkeyTextPosition or E.db.actionbar.hotkeyTextPosition or 'TOPRIGHT'
+	local hotkeyXOffset = db and db.customHotkeyFont and db.hotkeyTextXOffset or E.db.actionbar.hotkeyTextXOffset or 0
+	local hotkeyYOffset = db and db.customHotkeyFont and db.hotkeyTextYOffset or  E.db.actionbar.hotkeyTextYOffset or -3
 
 	local justify = 'RIGHT'
 	if hotkeyPosition == 'TOPLEFT' or hotkeyPosition == 'BOTTOMLEFT' then
@@ -1231,6 +1248,11 @@ function AB:ToggleCooldownOptions()
 end
 
 function AB:SetButtonDesaturation(button, duration)
+	if button.LevelLinkLockIcon:IsShown() then
+		button.saturationLocked = nil
+		return
+	end
+
 	if AB.db.desaturateOnCooldown and (duration and duration > 1.5) then
 		button.icon:SetDesaturated(true)
 		button.saturationLocked = true
