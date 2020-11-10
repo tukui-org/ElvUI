@@ -4,7 +4,7 @@ local oUF = E.oUF
 
 local _G = _G
 local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
-local strmatch, strlower, strfind = strmatch, strlower, strfind
+local wipe, strmatch, strlower, strfind = wipe, strmatch, strlower, strfind
 
 local GetLocale = GetLocale
 local IsInInstance = IsInInstance
@@ -112,7 +112,7 @@ local function GetQuests(unitID)
 			local count, percent = CheckTextForQuest(text)
 
 			-- this line comes from one line up in the tooltip
-			local activeQuest = NP.QuestIcons.activeQuests[text]
+			local activeQuest = questIcons.activeQuests[text]
 			if activeQuest then activeID = activeQuest end
 
 			if count then
@@ -287,7 +287,14 @@ local function Disable(self)
 	end
 end
 
-local function populateIndexByID()
+local frame = CreateFrame('Frame')
+frame:RegisterEvent('QUEST_ACCEPTED')
+frame:RegisterEvent('QUEST_REMOVED')
+frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+frame:SetScript('OnEvent', function(self, event)
+	wipe(questIcons.indexByID)
+	wipe(questIcons.activeQuests)
+
 	for i = 1, C_QuestLog_GetNumQuestLogEntries() do
 		local id = C_QuestLog_GetQuestIDForLogIndex(i)
 		if id and id > 0 then
@@ -297,29 +304,9 @@ local function populateIndexByID()
 			if title then questIcons.activeQuests[title] = id end
 		end
 	end
-end
 
-local frame = CreateFrame('Frame')
-frame:RegisterEvent('QUEST_ACCEPTED')
-frame:RegisterEvent('QUEST_REMOVED')
-frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-frame:SetScript('OnEvent', function(self, event, questID)
 	if event == 'PLAYER_ENTERING_WORLD' then
-		populateIndexByID()
-
 		self:UnregisterEvent(event)
-	elseif event == 'QUEST_ACCEPTED' then
-		populateIndexByID()
-	elseif event == 'QUEST_REMOVED' then
-		if not questID then return end
-		questIcons.indexByID[questID] = nil
-
-		for title, id in pairs(questIcons.activeQuests) do
-			if id == questID then
-				questIcons.activeQuests[title] = nil
-				break
-			end
-		end
 	end
 end)
 
