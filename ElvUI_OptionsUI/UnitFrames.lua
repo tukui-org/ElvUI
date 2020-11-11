@@ -491,7 +491,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 				order = 8,
 				name = L["Spacing"],
 				type = 'range',
-				min = 0, max = 20, step = 1,
+				min = -1, max = 20, step = 1,
 			},
 			attachTo = {
 				type = 'select',
