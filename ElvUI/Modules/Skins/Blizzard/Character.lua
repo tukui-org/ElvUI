@@ -223,24 +223,19 @@ local function UpdateCurrencySkins()
 			if button.categoryLeft then button.categoryLeft:Kill() end
 			if button.categoryRight then button.categoryRight:Kill() end
 			if button.categoryMiddle then button.categoryMiddle:Kill() end
-			
-			if not button.IconIsSkinned then
-				button.IconOverlay = CreateFrame('Frame', nil, button)
-				button.IconOverlay:SetFrameLevel(button:GetFrameLevel() + 1)
-				button.IconOverlay:SetInside(button.icon)
-				button.IconOverlay:CreateBackdrop()
-				button.IconOverlay:Hide()
-				
-				button.IconIsSkinned = true
+
+			if not button.backdrop then
+				button:CreateBackdrop()
 			end
 
 			if button.icon then
 				button.icon:SetTexCoord(unpack(E.TexCoords))
 				button.icon:Size(17, 17)
-				
-				button.IconOverlay:Show()
+
+				button.backdrop:SetOutside(button.icon)
+				button.backdrop:Show()
 			else
-				button.IconOverlay:Hide()
+				button.backdrop:Hide()
 			end
 
 			if button.expandIcon then
@@ -257,8 +252,8 @@ local function UpdateCurrencySkins()
 				end
 
 				if button.isHeader then
-					button.IconOverlay:Hide()
-				
+					button.backdrop:Hide()
+
 					if button.isExpanded then
 						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
 						button.expandIcon:SetTexCoord(0,1,0,1)
