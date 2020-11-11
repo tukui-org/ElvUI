@@ -81,7 +81,7 @@ function AB:UpdatePet(event, unit)
 
 		if not PetHasActionBar() and texture and name ~= 'PET_ACTION_FOLLOW' then
 			PetActionButton_StopFlash(button)
-			SetDesaturation(button.icon, true)
+			button.icon:SetDesaturation(true)
 			button:SetChecked(0)
 		end
 	end
