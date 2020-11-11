@@ -191,7 +191,7 @@ local function SkinFindGroupButton(block)
 		if block.groupFinderButton and not block.groupFinderButton.skinned then
 			S:HandleButton(block.groupFinderButton)
 			block.groupFinderButton:Size(20)
-			block.groupFinderButton.backdrop:SetFrameLevel(block:GetFrameLevel())
+			block.groupFinderButton.backdrop:SetFrameLevel(3)
 			block.groupFinderButton.skinned = true
 		end
 	end
