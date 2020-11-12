@@ -46,8 +46,9 @@ function S:AddonList()
 			if index <= numEntrys then
 				local entry = _G['AddonListEntry'..i]
 				local string = _G['AddonListEntry'..i..'Title']
+				local addonName = _G['AddonListEntry'..i..'Title']:GetText()
 				local checkbox = _G['AddonListEntry'..i..'Enabled']
-				local name, title, _, loadable, reason = GetAddOnInfo(index)
+				local name, title, _, loadable, reason = GetAddOnInfo(addonName)
 
 				-- Get the character from the current list (nil is all characters)
 				local checkall
@@ -55,10 +56,10 @@ function S:AddonList()
 				if character == true then
 					character = nil
 				else
-					checkall = GetAddOnEnableState(nil, index)
+					checkall = GetAddOnEnableState(nil, addonName)
 				end
 
-				local checkstate = GetAddOnEnableState(character, index)
+				local checkstate = GetAddOnEnableState(character, addonName)
 				local enabled = checkstate > 0
 
 				string:FontTemplate(font, 13, 'NONE')
