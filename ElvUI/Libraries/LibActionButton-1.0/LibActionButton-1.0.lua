@@ -137,6 +137,7 @@ local DefaultConfig = {
 	disableCountDownNumbers = false,
 	useDrawBling = true,
 	useDrawSwipeOnCharges = true,
+	handleOverlay = true,
 }
 
 --- Create a new action button.
