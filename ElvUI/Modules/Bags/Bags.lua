@@ -539,7 +539,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if showItemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
-			local iLvl = GetDetailedItemLevelInfo(itemLink)
+			--local iLvl = GetDetailedItemLevelInfo(itemLink)
+			local iLvl = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromBagAndSlot(bagID, slotID))
 
 			if canShowItemLevel and iLvl and iLvl >= B.db.itemLevelThreshold then
 				slot.itemLevel:SetText(iLvl)
