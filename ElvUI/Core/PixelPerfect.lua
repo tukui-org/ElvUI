@@ -35,7 +35,7 @@ function E:IsUltrawide(width, height)
 end
 
 function E:UIScale(init) -- `init` will be the `event` if its triggered after combat
-	if init == true then -- E.OnInitialize, Set variables for pixel scaling
+	if init == true then -- E.OnInitialize
 		E.mult = (768 / E.screenheight) / E.global.general.UIScale
 	elseif InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
