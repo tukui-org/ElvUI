@@ -294,10 +294,23 @@ function S:CharacterFrame()
 
 			S:HandleIconBorder(Slot.IconBorder)
 
-			if Slot.popoutButton:GetPoint() == 'TOP' then
-				Slot.popoutButton:Point('TOP', Slot, 'BOTTOM', 0, 2)
+			local EquipmentPopoutButton = Slot.popoutButton
+			S:HandleButton(EquipmentPopoutButton)
+			
+			EquipmentPopoutButton.Texture = EquipmentPopoutButton:CreateTexture(nil, "OVERLAY")
+			EquipmentPopoutButton.Texture:Size(14, 14)
+			EquipmentPopoutButton.Texture:SetVertexColor(1, 0.82, 0)
+			
+			if EquipmentPopoutButton:GetPoint() == "TOP" then
+				EquipmentPopoutButton:Size(37, 8)
+				EquipmentPopoutButton:Point("TOP", Slot, "BOTTOM", 0, -2)
+				--EquipmentPopoutButton.Texture:SetTexture() -- Needs A ArrowDown Texture
+				EquipmentPopoutButton.Texture:Point("CENTER", EquipmentPopoutButton, 0, 2)
 			else
-				Slot.popoutButton:Point('LEFT', Slot, 'RIGHT', -2, 0)
+				EquipmentPopoutButton:Size(8, 37)
+				EquipmentPopoutButton:Point("LEFT", Slot, "RIGHT", 2, 0)
+				--EquipmentPopoutButton.Texture:SetTexture() -- Needs A Arrow Right Texture
+				EquipmentPopoutButton.Texture:Point("CENTER", EquipmentPopoutButton, -2, 0)
 			end
 
 			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown'])
@@ -457,24 +470,43 @@ function S:CharacterFrame()
 
 	--Itemset buttons
 	for _, object in pairs(_G.PaperDollEquipmentManagerPane.buttons) do
+		if (object.EquipmentButtonIsSkinned) then
+			return 
+		end
+	
 		object.BgTop:SetTexture()
 		object.BgBottom:SetTexture()
 		object.BgMiddle:SetTexture()
-		object.icon:Size(36, 36)
+		object.HighlightBar:Kill()
+		object.Stripe:Kill()
+		
+		object.SelectedBar:SetTexture(E.media.normTex)
+		object.SelectedBar:SetInside(object, 3, 3)
+		object.SelectedBar:SetVertexColor(1, 1, 1, 0.20)
+		
+		S:HandleButton(object)
+		object.backdrop:SetInside(object, 2, 2)
+	
+		object.icon:Size(30, 30)
+		object.icon:Point("LEFT", object, 8, 0)
 		object.icon:SetTexCoord(unpack(E.TexCoords))
 
-		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
-		object.icon:Point('LEFT', object, 'LEFT', 4, 0)
+		local IconOverlay = CreateFrame("Frame", nil, object)
+		IconOverlay:SetInside(object.icon, 1, 1)
+		IconOverlay:CreateBackdrop(nil, nil, nil, true)
+		
 		hooksecurefunc(object.icon, 'SetPoint', function(icn, _, _, _, _, _, forced)
 			if forced ~= true then
-				icn:Point('LEFT', object, 'LEFT', 4, 0, true)
+				icn:Point('LEFT', object, 'LEFT', 8, 0, true)
 			end
 		end)
 		hooksecurefunc(object.icon, 'SetSize', function(icn, width, height)
-			if width == 30 or height == 30 then
-				icn:Size(36, 36)
+			if width == 36 or height == 36 then
+				icn:Size(30, 30)
 			end
 		end)
+		
+		object.EquipmentButtonIsSkinned = true
 	end
 
 	--Icon selection frame
