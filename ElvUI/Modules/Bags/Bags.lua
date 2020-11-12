@@ -35,7 +35,6 @@ local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
-local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetItemInfo = GetItemInfo
@@ -100,6 +99,8 @@ local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
+
+local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame, ElvUIReagentBankFrameItem1
 
@@ -409,19 +410,7 @@ function B:UpgradeCheck_OnUpdate(elapsed)
 end
 
 function B:UpdateItemScrapIcon(slot)
-	if not E.db.bags.scrapIcon then
-		slot.ScrapIcon:SetShown(false)
-		return
-	end
-
-	local itemLoc = _G.ItemLocation:CreateFromBagAndSlot(slot:GetParent():GetID(), slot:GetID())
-	if itemLoc and itemLoc ~= '' then
-		if E.db.bags.scrapIcon and (C_Item_DoesItemExist(itemLoc) and C_Item_CanScrapItem(itemLoc)) then
-			slot.ScrapIcon:SetShown(itemLoc)
-		else
-			slot.ScrapIcon:SetShown(false)
-		end
-	end
+	slot.ScrapIcon:SetShown(E.db.bags.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -539,8 +528,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if showItemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
-			--local iLvl = GetDetailedItemLevelInfo(itemLink)
-			local iLvl = C_Item.GetCurrentItemLevel(ItemLocation:CreateFromBagAndSlot(bagID, slotID))
+			local iLvl = C_Item_GetCurrentItemLevel(slot.itemLocation)
 
 			if canShowItemLevel and iLvl and iLvl >= B.db.itemLevelThreshold then
 				slot.itemLevel:SetText(iLvl)
@@ -1839,6 +1827,10 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	if slot.BattlepayItemTexture then
 		slot.BattlepayItemTexture:Hide()
+	end
+
+	if not slot.itemLocation then
+		slot.itemLocation = _G.ItemLocation:CreateFromBagAndSlot(bagID, slotID)
 	end
 
 	if not slot.newItemGlow then
