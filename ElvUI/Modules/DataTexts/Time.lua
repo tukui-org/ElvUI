@@ -290,12 +290,9 @@ local function OnEvent(self, event)
 end
 
 function Update(self, t)
-	if not self.timeInfo then self.timeInfo = { elapsed = 5 } end
-	local info = self.timeInfo
-
-	info.elapsed = info.elapsed - t
-	if info.elapsed > 0 then return end
-	info.elapsed = 5
+	self.timeElapsed = (self.timeElapsed or 5) - t
+	if self.timeElapsed > 0 then return end
+	self.timeElapsed = 5
 
 	if _G.GameTimeFrame.flashInvite then
 		E:Flash(self, 0.53, true)
