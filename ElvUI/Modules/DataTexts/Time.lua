@@ -39,7 +39,7 @@ local lockoutInfoFormat = '%s%s %s |cffaaaaaa(%s, %s/%s)'
 local lockoutInfoFormatNoEnc = '%s%s %s |cffaaaaaa(%s)'
 local formatBattleGroundInfo = '%s: '
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
-local enteredFrame, curHr, curMin, curAmPm = false
+local enteredFrame = false
 
 local Update, lastPanel
 
@@ -289,11 +289,12 @@ local function OnEvent(self, event)
 	end
 end
 
-local int = 3
 function Update(self, t)
-	int = int - t
+	if not self.timeInfo then self.timeInfo = { int = 3 } end
+	local info = self.timeInfo
 
-	if int > 0 then return end
+	info.int = info.int - t
+	if info.int > 0 then return end
 
 	if _G.GameTimeFrame.flashInvite then
 		E:Flash(self, 0.53, true)
@@ -305,25 +306,26 @@ function Update(self, t)
 		OnEnter(self)
 	end
 
-	local Hr, Min, AmPm = CalculateTimeValues(false)
+	local Hr, Min, AmPm = CalculateTimeValues()
 
 	-- no update quick exit
-	if Hr == curHr and Min == curMin and AmPm == curAmPm and not (int < -15000) then
-		int = 5
+	if Hr == info.curHr and Min == info.curMin and AmPm == info.curAmPm and not (info.int < -15000) then
+		info.int = 5
 		return
 	end
 
-	curHr = Hr
-	curMin = Min
-	curAmPm = AmPm
+	info.curHr = Hr
+	info.curMin = Min
+	info.curAmPm = AmPm
+	info.int = 5
 
 	if AmPm == -1 then
 		self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
 	else
 		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
 	end
+
 	lastPanel = self
-	int = 5
 end
 
 DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, Update, Click, OnEnter, OnLeave, nil, nil, ValueColorUpdate)
