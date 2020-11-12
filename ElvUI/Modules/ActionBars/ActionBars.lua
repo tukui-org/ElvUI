@@ -575,6 +575,15 @@ function AB:UpdateButtonSettings()
 		end
 	end
 
+	-- we can safely toggle these events when we arent using the handle overlay
+	if AB.db.handleOverlay then
+		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
+	else
+		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
+	end
+
 	AB:AdjustMaxStanceButtons()
 	AB:PositionAndSizeBarPet()
 	AB:PositionAndSizeBarShapeShift()
