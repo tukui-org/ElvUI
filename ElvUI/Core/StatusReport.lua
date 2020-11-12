@@ -283,6 +283,9 @@ function E:UpdateStatusFrame()
 	local addons, plugins = E:AreOtherAddOnsEnabled()
 	StatusFrame.Section1.Content.Line2.Text:SetFormattedText('Other AddOns Enabled: |cff%s|r', (not addons and plugins and 'ff9933Plugins') or (addons and 'ff3333Yes') or '33ff33No')
 
+	local scale = E.global.general.UIScale
+	StatusFrame.Section1.Content.Line4.Text:SetFormattedText('UI Scale Is: |cff%s%s|r', scale == E:PixelBestSize() and '33ff33' or 'ff9933', scale)
+
 	if plugins then
 		wipe(pluginData)
 		for _, data in pairs(E.Libs.EP.plugins) do
