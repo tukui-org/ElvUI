@@ -1409,7 +1409,7 @@ function UpdateHotkeys(self)
 end
 
 function ShowOverlayGlow(self)
-	if LBG then
+	if LBG and self.config.handleOverlay then
 		LBG.ShowOverlayGlow(self)
 	end
 end
