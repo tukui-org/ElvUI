@@ -290,11 +290,12 @@ local function OnEvent(self, event)
 end
 
 function Update(self, t)
-	if not self.timeInfo then self.timeInfo = { int = 3 } end
+	if not self.timeInfo then self.timeInfo = { elapsed = 5 } end
 	local info = self.timeInfo
 
-	info.int = info.int - t
-	if info.int > 0 then return end
+	info.elapsed = info.elapsed - t
+	if info.elapsed > 0 then return end
+	info.elapsed = 5
 
 	if _G.GameTimeFrame.flashInvite then
 		E:Flash(self, 0.53, true)
@@ -307,17 +308,6 @@ function Update(self, t)
 	end
 
 	local Hr, Min, AmPm = CalculateTimeValues()
-
-	-- no update quick exit
-	if Hr == info.curHr and Min == info.curMin and AmPm == info.curAmPm and not (info.int < -15000) then
-		info.int = 5
-		return
-	end
-
-	info.curHr = Hr
-	info.curMin = Min
-	info.curAmPm = AmPm
-	info.int = 5
 
 	if AmPm == -1 then
 		self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
