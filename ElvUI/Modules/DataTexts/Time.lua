@@ -12,7 +12,7 @@ local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_GetNumTiers = EJ_GetNumTiers
 local EJ_SelectTier = EJ_SelectTier
 local GetDifficultyInfo = GetDifficultyInfo
-local GetGameTime = GetGameTime
+local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local GetLocale = GetLocale
 local GetNumSavedInstances = GetNumSavedInstances
 local GetNumSavedWorldBosses = GetNumSavedWorldBosses
@@ -71,7 +71,8 @@ end
 
 local function CalculateTimeValues(tooltip)
 	if (tooltip and E.global.datatexts.settings.Time.localTime) or (not tooltip and not E.global.datatexts.settings.Time.localTime) then
-		return ConvertTime(GetGameTime())
+		local dateTable = C_DateAndTime_GetCurrentCalendarTime()
+		return ConvertTime(dateTable.hour, dateTable.minute)
 	else
 		local dateTable = date('*t')
 		return ConvertTime(dateTable.hour, dateTable.min)
