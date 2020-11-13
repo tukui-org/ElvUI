@@ -217,7 +217,7 @@ local function LoadSkin()
 	end
 
 	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
-	_G.AuctionHouseFrameBuyTab:Point('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -32)
+	_G.AuctionHouseFrameBuyTab:SetPoint('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -30)
 
 	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)
