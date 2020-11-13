@@ -873,8 +873,8 @@ function B:Layout(isBank)
 	local f = B:GetContainerFrame(isBank)
 	if not f then return end
 
-	local buttonSize = isBank and B.db.bankSize or B.db.bagSize
-	local buttonSpacing = E.Border * 2
+	local buttonSpacing = E:Scale(E.Border * 2)
+	local buttonSize = E:Scale(isBank and B.db.bankSize or B.db.bagSize)
 	local containerWidth = ((isBank and B.db.bankWidth) or B.db.bagWidth)
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
@@ -882,9 +882,9 @@ function B:Layout(isBank)
 	local bagSpacing = B.db.split.bagSpacing
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
 
-	f.holderFrame:Width(holderWidth)
+	f.holderFrame:SetWidth(holderWidth)
 	if isBank then
-		f.reagentFrame:Width(holderWidth)
+		f.reagentFrame:SetWidth(holderWidth)
 	end
 
 	f.totalSlots = 0
@@ -892,8 +892,8 @@ function B:Layout(isBank)
 	local numContainerSlots = isBank and 8 or 5
 
 	f.totalSlots = 0
-	f.holderFrame:Width(holderWidth)
-	f.ContainerHolder:Size(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
+	f.holderFrame:SetWidth(holderWidth)
+	f.ContainerHolder:SetSize(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
 
 	if isBank and not f.fullBank then
 		f.fullBank = select(2, GetNumBankSlots())
@@ -926,7 +926,7 @@ function B:Layout(isBank)
 			end
 
 			assignedBag = B:GetBagAssignedInfo(f.ContainerHolder[i])
-			f.ContainerHolder[i]:Size(buttonSize)
+			f.ContainerHolder[i]:SetSize(buttonSize, buttonSize)
 		end
 
 		--Bag Slots
@@ -947,9 +947,9 @@ function B:Layout(isBank)
 				f.totalSlots = f.totalSlots + 1
 
 				f.Bags[bagID][slotID]:SetID(slotID)
-				f.Bags[bagID][slotID]:Size(buttonSize)
+				f.Bags[bagID][slotID]:SetSize(buttonSize, buttonSize)
 
-				f.Bags[bagID][slotID].JunkIcon:Size(buttonSize / 2)
+				f.Bags[bagID][slotID].JunkIcon:SetSize(buttonSize / 2, buttonSize / 2)
 
 				B:UpdateSlot(f, bagID, slotID)
 
@@ -1006,7 +1006,7 @@ function B:Layout(isBank)
 			totalSlots = totalSlots + 1
 
 			f.reagentFrame.slots[i]:ClearAllPoints()
-			f.reagentFrame.slots[i]:Size(buttonSize)
+			f.reagentFrame.slots[i]:SetSize(buttonSize, buttonSize)
 
 			if f.reagentFrame.slots[i-1] then
 				if(totalSlots - 1) % numContainerColumns == 0 then
@@ -1025,7 +1025,8 @@ function B:Layout(isBank)
 		end
 	end
 
-	f:Size(containerWidth, (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing) + (isSplit and (numBags * bagSpacing) or 0 ) + f.topOffset + f.bottomOffset); -- 8 is the cussion of the f.holderFrame
+	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
+	f:SetSize(containerWidth, buttonsHeight + f.topOffset + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
 end
 
 function B:UpdateReagentSlot(slotID)
