@@ -122,16 +122,17 @@ function UF:Configure_AuraBars(frame)
 			end
 		end
 
-
 		local attachTo = frame
+		local BORDER, SPACING, xOffset, yOffset = UF.BORDER + UF.SPACING
 		if db.aurabar.attachTo == 'BUFFS' then
 			attachTo = frame.Buffs
 		elseif db.aurabar.attachTo == 'DEBUFFS' then
 			attachTo = frame.Debuffs
-		elseif db.aurabar.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
-			attachTo = _G.ElvUF_Player.AuraBars
 		elseif db.aurabar.attachTo == 'DETACHED' then
 			attachTo = auraBars.Holder
+		elseif db.aurabar.attachTo == 'PLAYER_AURABARS' and _G.ElvUF_Player then
+			attachTo = _G.ElvUF_Player.AuraBars
+			xOffset = 0
 		end
 
 		local anchorPoint, anchorTo = 'BOTTOM', 'TOP'
@@ -139,7 +140,6 @@ function UF:Configure_AuraBars(frame)
 			anchorPoint, anchorTo = 'TOP', 'BOTTOM'
 		end
 
-		local BORDER, SPACING, yOffset = UF.BORDER + UF.SPACING
 		if db.aurabar.attachTo == 'DETACHED' then
 			E:EnableMover(auraBars.Holder.mover:GetName())
 			SPACING = UF.thinBorders and 1 or 5
@@ -173,8 +173,8 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		auraBars:ClearAllPoints()
-		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', -SPACING, yOffset)
-		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', -(SPACING + BORDER), yOffset)
+		auraBars:Point(anchorPoint..'LEFT', attachTo, anchorTo..'LEFT', xOffset or -SPACING, yOffset)
+		auraBars:Point(anchorPoint..'RIGHT', attachTo, anchorTo..'RIGHT', xOffset or -(SPACING + BORDER), yOffset)
 
 		auraBars.width = E:Scale((db.aurabar.attachTo == 'DETACHED' and db.aurabar.detachedWidth or frame.UNIT_WIDTH) - (BORDER * 4) - auraBars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
 		auraBars:Show()
