@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local gsub, strfind, gmatch, format, max = gsub, strfind, gmatch, format, max
-local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
+local ipairs, sort, wipe, date, time, difftime = ipairs, sort, wipe, date, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tinsert, tremove, tconcat = tinsert, tremove, table.concat
@@ -742,14 +742,16 @@ function CH:StyleChat(frame)
 end
 
 function CH:GetChatTime()
+	local Time = time()
 	local serverTime = not CH.db.timeStampLocalTime and C_DateAndTime_GetCurrentCalendarTime()
 	if serverTime then -- blizzard is weird
 		serverTime.min = serverTime.minute
 		serverTime.day = serverTime.monthDay
+		serverTime.sec = date('%S', Time)
 		serverTime = time(serverTime)
 	end
 
-	return serverTime or time()
+	return serverTime or Time
 end
 
 function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHistory, historyTime)
