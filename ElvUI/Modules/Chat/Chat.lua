@@ -52,6 +52,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local IsActivePlayerMentor = IsActivePlayerMentor
 local UnitName = UnitName
 
+local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_PlayerMentorship_IsActivePlayerConsideredNewcomer = C_PlayerMentorship.IsActivePlayerConsideredNewcomer
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
@@ -740,12 +741,23 @@ function CH:StyleChat(frame)
 	frame.styled = true
 end
 
+function CH:GetChatTime()
+	local serverTime = not CH.db.timeStampLocalTime and C_DateAndTime_GetCurrentCalendarTime()
+	if serverTime then -- blizzard is weird
+		serverTime.min = serverTime.minute
+		serverTime.day = serverTime.monthDay
+		serverTime = time(serverTime)
+	end
+
+	return serverTime or time()
+end
+
 function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHistory, historyTime)
 	local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
 	if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
 
 	if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
-		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or time())
+		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or CH:GetChatTime())
 		timeStamp = gsub(timeStamp, ' ', '')
 		timeStamp = gsub(timeStamp, 'AM', ' AM')
 		timeStamp = gsub(timeStamp, 'PM', ' PM')
@@ -2406,7 +2418,7 @@ function CH:SaveChatHistory(event, ...)
 
 	if #tempHistory > 0 and not CH:MessageIsProtected(tempHistory[1]) then
 		tempHistory[50] = event
-		tempHistory[51] = time()
+		tempHistory[51] = CH:GetChatTime()
 
 		local coloredName, battleTag
 		if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
