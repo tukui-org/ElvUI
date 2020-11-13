@@ -742,16 +742,16 @@ function CH:StyleChat(frame)
 end
 
 function CH:GetChatTime()
-	local Time = time()
-	local serverTime = not CH.db.timeStampLocalTime and C_DateAndTime_GetCurrentCalendarTime()
-	if serverTime then -- blizzard is weird
-		serverTime.day = serverTime.monthDay
-		serverTime.min = date('%M', Time)
-		serverTime.sec = date('%S', Time)
-		serverTime = time(serverTime)
+	local unix = time()
+	local realm = not CH.db.timeStampLocalTime and C_DateAndTime_GetCurrentCalendarTime()
+	if realm then -- blizzard is weird
+		realm.day = realm.monthDay
+		realm.min = date('%M', unix)
+		realm.sec = date('%S', unix)
+		realm = time(realm)
 	end
 
-	return serverTime or Time
+	return realm or unix
 end
 
 function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHistory, historyTime)
