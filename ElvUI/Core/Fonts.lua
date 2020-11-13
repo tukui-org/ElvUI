@@ -42,13 +42,13 @@ function E:UpdateBlizzardFonts()
 		--_G.NAMEPLATE_FONT		= NAMEFONT
 
 		local size		= E.db.general.fontSize
-		local enormous	= size * 2.00
-		local mega		= size * 1.75
-		local huge		= size * 1.50
-		local large		= size * 1.25
-		local medium	= size * 1.15
-		local small		= size * 0.95
-		local tiny		= size * 0.90
+		local enormous	= size * 1.9
+		local mega		= size * 1.7
+		local huge		= size * 1.5
+		local large		= size * 1.3
+		local medium	= size * 1.1
+		local small		= size * 0.9
+		local tiny		= size * 0.8
 
 		local s = not E.private.general.unifiedBlizzFonts
 		local mono = strmatch(E.db.general.fontStyle, 'MONOCHROME') and 'MONOCHROME' or ''
