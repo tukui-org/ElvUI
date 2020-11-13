@@ -745,8 +745,8 @@ function CH:GetChatTime()
 	local Time = time()
 	local serverTime = not CH.db.timeStampLocalTime and C_DateAndTime_GetCurrentCalendarTime()
 	if serverTime then -- blizzard is weird
-		serverTime.min = serverTime.minute
 		serverTime.day = serverTime.monthDay
+		serverTime.min = date('%M', Time)
 		serverTime.sec = date('%S', Time)
 		serverTime = time(serverTime)
 	end
