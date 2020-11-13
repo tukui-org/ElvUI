@@ -91,8 +91,8 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game72Font,							NORMAL, 72)
 		SetFont(_G.GameFont_Gigantic,					NORMAL, 32)											-- Used at the install steps
 		SetFont(_G.GameFontHighlightMedium,				NORMAL, unified and 15 or medium)					-- 14  Fix QuestLog Title mouseover
-		SetFont(_G.GameFontHighlightSmall2,				NORMAL, unified or small)							-- 11  Skill or Recipe description on TradeSkill frame
-		SetFont(_G.GameFontHighlightSmall,				NORMAL, unified or small)							-- 10
+		SetFont(_G.GameFontHighlightSmall2,				NORMAL, unified and 12 or small)					-- 11  Skill or Recipe description on TradeSkill frame
+		SetFont(_G.GameFontHighlightSmall,				NORMAL, unified and 12 or small)					-- 10
 		SetFont(_G.GameFontNormalHuge2,					NORMAL, unified and 24 or huge)						-- 24  Mythic weekly best dungeon name
 		SetFont(_G.GameFontNormalLarge,					NORMAL, unified and 16 or large)					-- 16
 		SetFont(_G.GameFontNormalLarge2,				NORMAL, unified and 15 or large)					-- 18  Garrison Follower Names
@@ -100,10 +100,11 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.GameFontNormalMed2,					NORMAL, unified and 14 or medium)					-- 14  Quest tracker
 		SetFont(_G.GameFontNormalMed3,					NORMAL, unified and 15 or medium)					-- 14
 		SetFont(_G.GameFontNormalSmall2,				NORMAL, unified and 12 or small)					-- 11  MissionUI Followers names
+		SetFont(_G.GameFontNormalSmall,					NORMAL, unified and 12 or small)					-- 10
 		SetFont(_G.GameTooltipHeader,					NORMAL, unified or size)							-- 14
 		SetFont(_G.InvoiceFont_Med,						NORMAL, unified and 12 or size)						-- 12  Mail
 		SetFont(_G.InvoiceFont_Small,					NORMAL, unified or small)							-- 10  Mail
-		SetFont(_G.MailFont_Large,						NORMAL, 14)											-- Mail
+		SetFont(_G.MailFont_Large,						NORMAL, 14)											-- 10  Mail
 		SetFont(_G.Number11Font,						NORMAL, 11)
 		SetFont(_G.Number11Font,						NUMBER, 11)
 		SetFont(_G.Number12Font,						NORMAL, 12)
