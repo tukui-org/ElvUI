@@ -101,6 +101,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.GameFontNormalMed3,					NORMAL, unified and 15 or medium)					-- 14
 		SetFont(_G.GameFontNormalSmall2,				NORMAL, unified and 12 or small)					-- 11  MissionUI Followers names
 		SetFont(_G.GameFontNormalSmall,					NORMAL, unified and 12 or small)					-- 10
+		SetFont(_G.GameFontNormal,						NORMAL, unified or size)							-- 12
 		SetFont(_G.GameTooltipHeader,					NORMAL, unified or size)							-- 14
 		SetFont(_G.InvoiceFont_Med,						NORMAL, unified and 12 or size)						-- 12  Mail
 		SetFont(_G.InvoiceFont_Small,					NORMAL, unified or small)							-- 10  Mail
