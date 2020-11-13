@@ -6,7 +6,7 @@ local next, pairs, tinsert = next, pairs, tinsert
 
 local CreateFrame = CreateFrame
 local GetAddOnInfo = GetAddOnInfo
-local GetCVar = GetCVar
+local GetCVarBool = GetCVarBool
 local GetLocale = GetLocale
 local GetNumAddOns = GetNumAddOns
 local GetRealZoneText = GetRealZoneText
@@ -28,8 +28,7 @@ function E:AreOtherAddOnsEnabled()
 end
 
 function E:GetDisplayMode()
-	local window, maximize = GetCVar('gxWindow') == '1', GetCVar('gxMaximize') == '1'
-	return (window and maximize and 'Windowed (Fullscreen)') or (window and 'Windowed') or 'Fullscreen'
+	return GetCVarBool('gxMaximize') and 'Fullscreen' or 'Windowed'
 end
 
 local EnglishClassName = {
