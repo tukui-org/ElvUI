@@ -150,11 +150,9 @@ function UF:Configure_Power(frame)
 				power.Holder = CreateFrame('Frame', nil, power)
 				power.Holder:Point('BOTTOM', frame, 'BOTTOM', 0, -20)
 
-				--Currently only Player and Target can detach power bars, so doing it this way is okay for now
-				if frame.unitframeType and frame.unitframeType == 'player' then
-					E:CreateMover(power.Holder, 'PlayerPowerBarMover', L["Player Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,power')
-				elseif frame.unitframeType and frame.unitframeType == 'target' then
-					E:CreateMover(power.Holder, 'TargetPowerBarMover', L["Target Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,power')
+				if frame.unitframeType then
+					local key = frame.unitframeType:gsub('t(arget)','T%1'):gsub('p(layer)','P%1'):gsub('f(ocus)','F%1'):gsub('p(et)','P%1')
+					E:CreateMover(power.Holder, key..'PowerBarMover', L[key.." Powerbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,'..frame.unitframeType..',power')
 				end
 			end
 
