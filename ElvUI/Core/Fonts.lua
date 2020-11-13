@@ -72,7 +72,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.Game10Font_o1,						NORMAL, 10, 'OUTLINE')
 		SetFont(_G.Game120Font,							NORMAL, 120)
 		SetFont(_G.Game12Font,							NORMAL, 12)						-- PVP Stuff
-		SetFont(_G.Game13FontShadow,					NORMAL, 13)						-- InspectPvpFrame
+		SetFont(_G.Game13FontShadow,					NORMAL, s and 13 or 14)			-- InspectPvpFrame
 		SetFont(_G.Game15Font_o1,						NORMAL, 15)						-- CharacterStatsPane (ItemLevelFrame)
 		SetFont(_G.Game16Font,							NORMAL, 16)						-- Added in 7.3.5 used for ?
 		SetFont(_G.Game18Font,							NORMAL, 18)						-- MissionUI Bonus Chance
@@ -136,7 +136,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SubZoneTextString,					NORMAL, 25, outline)						-- 26
 		SetFont(_G.SystemFont_Huge1, 					NORMAL, 20)									-- Garrison Mission XP
 		SetFont(_G.SystemFont_Huge1_Outline,			NORMAL, 18, outline)						-- 20  Garrison Mission Chance
-		SetFont(_G.SystemFont_Large,					NORMAL, 16)
+		SetFont(_G.SystemFont_Large,					NORMAL, s and 16 or 15)
 		SetFont(_G.SystemFont_Med1,						NORMAL, size)								-- 12
 		SetFont(_G.SystemFont_Med3,						NORMAL, medium)								-- 14
 		SetFont(_G.SystemFont_Outline,					NORMAL, s and size or 13, outline)			-- 13  Pet level on World map
@@ -150,8 +150,8 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_Shadow_Large2,			NORMAL, 18)									-- Auction House ItemDisplay
 		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')						-- 16
 		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, size)								-- 12
-		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, s and medium or 14)					-- 14  Shows Order resourses on OrderHallTalentFrame
-		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, s and medium or 14)					-- 14
+		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, s and medium or 14.3)				-- 14  Shows Order resourses on OrderHallTalentFrame
+		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, s and medium or 14.3)				-- 14
 		SetFont(_G.SystemFont_Shadow_Small,				NORMAL, s and small or medium)				-- 10
 		SetFont(_G.SystemFont_Small,					NORMAL, small)								-- 10
 		SetFont(_G.SystemFont_Tiny,						NORMAL, s and tiny or size)					-- 09
