@@ -103,6 +103,8 @@ function S:WorldMapFrame()
 
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right')
+	WorldMapFrame.SidePanelToggle.CloseButton.backdrop:SetFrameLevel(WorldMapFrame.SidePanelToggle.CloseButton:GetFrameLevel())
+	WorldMapFrame.SidePanelToggle.OpenButton.backdrop:SetFrameLevel(WorldMapFrame.SidePanelToggle.OpenButton:GetFrameLevel())
 
 	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
