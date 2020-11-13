@@ -84,7 +84,14 @@ function E:PixelScaleChanged(event)
 	E:Config_UpdateSize(true) -- Reposition config
 end
 
-local sugar = 2^52+2^51 -- IEEE754 magic rounding number ~Simpy
+local trunc = function(s) return s >= 0 and s-s%01 or s-s%-1 end
+local round = function(s) return s >= 0 and s-s%-1 or s-s%01 end
 function E:Scale(num)
-	return ((num / E.mult) + sugar - sugar) * E.mult
+	if E.mult == 1 then
+		return num
+	elseif E.mult < 1 then
+		return trunc(num/E.mult) * E.mult
+	else
+		return round(num/E.mult) * E.mult
+	end
 end
