@@ -398,16 +398,19 @@ function A:Initialize()
 	A.Initialized = true
 	A.db = E.db.auras
 
+	local xoffset = -(6 + E.Border)
 	if E.private.auras.buffsHeader then
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
-		A.BuffFrame:Point('TOPRIGHT', _G.MMHolder or _G.Minimap, 'TOPLEFT', -(6 + E.Border), -E.Border - E.Spacing)
+		A.BuffFrame:ClearAllPoints()
+		A.BuffFrame:SetPoint('TOPRIGHT', _G.MMHolder or _G.MinimapCluster, 'TOPLEFT', xoffset, -E.Spacing)
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 		if Masque and MasqueGroupBuffs then A.BuffsMasqueGroup = MasqueGroupBuffs end
 	end
 
 	if E.private.auras.debuffsHeader then
 		A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
-		A.DebuffFrame:Point('BOTTOMRIGHT', _G.MMHolder or _G.Minimap, 'BOTTOMLEFT', -(6 + E.Border), E.Border + E.Spacing)
+		A.DebuffFrame:ClearAllPoints()
+		A.DebuffFrame:SetPoint('BOTTOMRIGHT', _G.MMHolder or _G.MinimapCluster, 'BOTTOMLEFT', xoffset, E.Spacing)
 		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
 		if Masque and MasqueGroupDebuffs then A.DebuffsMasqueGroup = MasqueGroupDebuffs end
 	end
