@@ -151,7 +151,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SystemFont_Shadow_Large_Outline,		NUMBER, 20, 'OUTLINE')						-- 16
 		SetFont(_G.SystemFont_Shadow_Med1,				NORMAL, size)								-- 12
 		SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, s and medium or 14.3)				-- 14  Shows Order resourses on OrderHallTalentFrame
-		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, s and medium or 14.3)				-- 14
+		SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, medium)								-- 14
 		SetFont(_G.SystemFont_Shadow_Small,				NORMAL, s and small or medium)				-- 10
 		SetFont(_G.SystemFont_Small,					NORMAL, small)								-- 10
 		SetFont(_G.SystemFont_Tiny,						NORMAL, s and tiny or size)					-- 09
