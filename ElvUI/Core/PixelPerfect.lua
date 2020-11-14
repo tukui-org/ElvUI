@@ -87,7 +87,7 @@ end
 local trunc = function(s) return s >= 0 and s-s%01 or s-s%-1 end
 local round = function(s) return s >= 0 and s-s%-1 or s-s%01 end
 function E:Scale(num)
-	if E.mult == 1 then
+	if E.mult == 1 or num == 0 then
 		return num
 	elseif E.mult < 1 then
 		return trunc(num/E.mult) * E.mult
