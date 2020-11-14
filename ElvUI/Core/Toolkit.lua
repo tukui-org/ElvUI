@@ -25,29 +25,6 @@ function E:SafeGetPoint(frame)
 	end
 end
 
-local function WatchPixelSnap(frame, snap)
-	if (frame and not frame:IsForbidden()) and frame.PixelSnapDisabled and snap then
-		frame.PixelSnapDisabled = nil
-	end
-end
-
-local function DisablePixelSnap(frame)
-	if (frame and not frame:IsForbidden()) and not frame.PixelSnapDisabled then
-		if frame.SetSnapToPixelGrid then
-			frame:SetSnapToPixelGrid(false)
-			frame:SetTexelSnappingBias(0)
-		elseif frame.GetStatusBarTexture then
-			local texture = frame:GetStatusBarTexture()
-			if texture and texture.SetSnapToPixelGrid then
-				texture:SetSnapToPixelGrid(false)
-				texture:SetTexelSnappingBias(0)
-			end
-		end
-
-		frame.PixelSnapDisabled = true
-	end
-end
-
 local function GetTemplate(template, isUnitFrameElement)
 	backdropa, bordera = 1, 1
 
@@ -100,7 +77,6 @@ local function SetOutside(obj, anchor, xOffset, yOffset, anchor2, noScale)
 		obj:ClearAllPoints()
 	end
 
-	DisablePixelSnap(obj)
 	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', -x, y)
 	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', x, -y)
 end
@@ -117,7 +93,6 @@ local function SetInside(obj, anchor, xOffset, yOffset, anchor2, noScale)
 		obj:ClearAllPoints()
 	end
 
-	DisablePixelSnap(obj)
 	obj:SetPoint('TOPLEFT', anchor, 'TOPLEFT', x, -y)
 	obj:SetPoint('BOTTOMRIGHT', anchor2 or anchor, 'BOTTOMRIGHT', -x, y)
 end
@@ -424,16 +399,6 @@ local function addapi(object)
 	if not object.StyleButton then mt.StyleButton = StyleButton end
 	if not object.CreateCloseButton then mt.CreateCloseButton = CreateCloseButton end
 	if not object.GetNamedChild then mt.GetNamedChild = GetNamedChild end
-	if not object.DisabledPixelSnap and (mt.SetSnapToPixelGrid or mt.SetStatusBarTexture or mt.SetColorTexture or mt.SetVertexColor or mt.CreateTexture or mt.SetTexCoord or mt.SetTexture) then
-		if mt.SetSnapToPixelGrid then hooksecurefunc(mt, 'SetSnapToPixelGrid', WatchPixelSnap) end
-		if mt.SetStatusBarTexture then hooksecurefunc(mt, 'SetStatusBarTexture', DisablePixelSnap) end
-		if mt.SetColorTexture then hooksecurefunc(mt, 'SetColorTexture', DisablePixelSnap) end
-		if mt.SetVertexColor then hooksecurefunc(mt, 'SetVertexColor', DisablePixelSnap) end
-		if mt.CreateTexture then hooksecurefunc(mt, 'CreateTexture', DisablePixelSnap) end
-		if mt.SetTexCoord then hooksecurefunc(mt, 'SetTexCoord', DisablePixelSnap) end
-		if mt.SetTexture then hooksecurefunc(mt, 'SetTexture', DisablePixelSnap) end
-		mt.DisabledPixelSnap = true
-	end
 end
 
 local handled = {Frame = true}
