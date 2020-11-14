@@ -65,7 +65,7 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	local SCALED_SPACING = E:Scale(SIDE_SPACING)
-	bars:SetSize(E:Scale(CLASSBAR_WIDTH) - SCALED_SPACING, E:Scale(frame.CLASSBAR_HEIGHT))
+	bars:SetSize(CLASSBAR_WIDTH - SCALED_SPACING, frame.CLASSBAR_HEIGHT)
 
 	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' then
 		if E.myclass == 'DEATHKNIGHT' and frame.ClassBar == 'Runes' then
