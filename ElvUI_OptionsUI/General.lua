@@ -213,11 +213,13 @@ E.Options.args.general = {
 					order = 28,
 					type = 'range',
 					name = L["UI_SCALE"],
+					desc = L["Please /reload after changing this setting."],
 					min = 0.1, max = 1.25, step = 0.000000000000001,
 					softMin = 0.40, softMax = 1.15, bigStep = 0.01,
 					get = function(info) return E.global.general.UIScale end,
 					set = function(info, value)
 						E.global.general.UIScale = value
+
 						if not IsMouseButtonDown() then
 							E:PixelScaleChanged()
 						end
@@ -227,6 +229,7 @@ E.Options.args.general = {
 					order = 29,
 					type = 'execute',
 					name = L["Auto Scale"],
+					desc = L["Please /reload after changing this setting."],
 					func = function()
 						E.global.general.UIScale = E:PixelBestSize()
 						E:PixelScaleChanged()

@@ -273,6 +273,9 @@ function E:UpdateStatusFrame()
 	StatusFrame.Section3.Header.Text:SetFormattedText('%sCharacter Info|r', valueColor)
 	--StatusFrame.Section4.Header.Text:SetFormattedText('%sExport To|r', valueColor)
 
+	StatusFrame.Section1.Content.Line3.Text:SetFormattedText('Recommended Scale: |cff4beb2c%s|r', E:PixelBestSize())
+	StatusFrame.Section1.Content.Line4.Text:SetFormattedText('UI Scale Is: |cff4beb2c%s|r', E.global.general.UIScale)
+
 	local PluginSection = PluginFrame.SectionP
 	PluginSection.Header.Text:SetFormattedText('%sPlugins|r', valueColor)
 
@@ -281,9 +284,6 @@ function E:UpdateStatusFrame()
 
 	local addons, plugins = E:AreOtherAddOnsEnabled()
 	StatusFrame.Section1.Content.Line2.Text:SetFormattedText('Other AddOns Enabled: |cff%s|r', (not addons and plugins and 'ff9933Plugins') or (addons and 'ff3333Yes') or '33ff33No')
-
-	local scale = E.global.general.UIScale
-	StatusFrame.Section1.Content.Line4.Text:SetFormattedText('UI Scale Is: |cff%s%s|r', scale == E:PixelBestSize() and '33ff33' or 'ff9933', scale)
 
 	if plugins then
 		wipe(pluginData)
