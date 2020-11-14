@@ -252,12 +252,13 @@ function M:UpdateSettings()
 	local borderWidth, borderHeight = E.PixelMode and 2 or 6, E.PixelMode and 2 or 8
 	local panelSize, joinPanel = (MinimapPanel:IsShown() and MinimapPanel:GetHeight()) or (E.PixelMode and 1 or -1), 1
 	local height, width = E.MinimapSize + (panelSize - joinPanel), E.MinimapSize
-	MMHolder:SetSize(width + borderWidth, height + borderHeight)
+	MMHolder:Size(width + borderWidth, height + borderHeight)
+	_G.MinimapMover:Size(width + borderWidth, height + borderHeight)
 
 	local mmOffset = E.PixelMode and 1 or 3
 	Minimap:ClearAllPoints()
-	Minimap:SetPoint('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset, -mmOffset)
-	Minimap:SetSize(E.MinimapSize, E.MinimapSize)
+	Minimap:Point('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset, -mmOffset)
+	Minimap:Size(E.MinimapSize, E.MinimapSize)
 
 	Minimap.location:Width(E.MinimapSize)
 	if E.db.general.minimap.locationText ~= 'SHOW' then
