@@ -89,9 +89,9 @@ function DB:UpdateAll()
 
 	for _, bar in pairs(DB.StatusBars) do
 		bar.holder.db = bar.db
-		bar.holder:Size(bar.db.width, bar.db.height)
-		bar.holder:SetTemplate(DB.db.transparent and 'Transparent')
+		bar.holder:SetSize(bar.db.width, bar.db.height)
 		bar.holder:EnableMouse(not bar.db.clickThrough)
+		bar.holder:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
 		bar:SetStatusBarTexture(texture)
 		bar:SetReverseFill(bar.db.reverseFill)
