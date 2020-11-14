@@ -657,7 +657,7 @@ function E:SetPage(PageNum)
 			E.PixelScaleChanged()
 		end)
 
-		f.Desc3:SetText(L["Importance: |cffFF3333High|r"])
+		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
 		f.Desc3:FontTemplate(nil, 18)
 	elseif PageNum == 7 then
 		f.SubTitle:SetText(L["Layout"])
