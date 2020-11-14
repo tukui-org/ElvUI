@@ -530,8 +530,14 @@ E.Options.args.chat = {
 								t.r, t.g, t.b = r, g, b
 							end,
 						},
-						timeStampFormat = {
+						timeStampLocalTime = {
 							order = 3,
+							type = 'toggle',
+							name = L["Local Time"],
+							desc = L["If not set to true then the server time will be displayed instead."],
+						},
+						timeStampFormat = {
+							order = 4,
 							type = 'select',
 							name = L["TIMESTAMPS_LABEL"],
 							desc = L["OPTION_TOOLTIP_TIMESTAMPS"],

@@ -12,7 +12,7 @@ local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_GetNumTiers = EJ_GetNumTiers
 local EJ_SelectTier = EJ_SelectTier
 local GetDifficultyInfo = GetDifficultyInfo
-local GetGameTime = GetGameTime
+local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local GetLocale = GetLocale
 local GetNumSavedInstances = GetNumSavedInstances
 local GetNumSavedWorldBosses = GetNumSavedWorldBosses
@@ -39,7 +39,7 @@ local lockoutInfoFormat = '%s%s %s |cffaaaaaa(%s, %s/%s)'
 local lockoutInfoFormatNoEnc = '%s%s %s |cffaaaaaa(%s)'
 local formatBattleGroundInfo = '%s: '
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
-local enteredFrame, curHr, curMin, curAmPm = false
+local enteredFrame = false
 
 local Update, lastPanel
 
@@ -71,7 +71,8 @@ end
 
 local function CalculateTimeValues(tooltip)
 	if (tooltip and E.global.datatexts.settings.Time.localTime) or (not tooltip and not E.global.datatexts.settings.Time.localTime) then
-		return ConvertTime(GetGameTime())
+		local dateTable = C_DateAndTime_GetCurrentCalendarTime()
+		return ConvertTime(dateTable.hour, dateTable.minute)
 	else
 		local dateTable = date('*t')
 		return ConvertTime(dateTable.hour, dateTable.min)
@@ -289,11 +290,10 @@ local function OnEvent(self, event)
 	end
 end
 
-local int = 3
 function Update(self, t)
-	int = int - t
-
-	if int > 0 then return end
+	self.timeElapsed = (self.timeElapsed or 5) - t
+	if self.timeElapsed > 0 then return end
+	self.timeElapsed = 5
 
 	if _G.GameTimeFrame.flashInvite then
 		E:Flash(self, 0.53, true)
@@ -305,25 +305,15 @@ function Update(self, t)
 		OnEnter(self)
 	end
 
-	local Hr, Min, AmPm = CalculateTimeValues(false)
-
-	-- no update quick exit
-	if Hr == curHr and Min == curMin and AmPm == curAmPm and not (int < -15000) then
-		int = 5
-		return
-	end
-
-	curHr = Hr
-	curMin = Min
-	curAmPm = AmPm
+	local Hr, Min, AmPm = CalculateTimeValues()
 
 	if AmPm == -1 then
 		self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
 	else
 		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
 	end
+
 	lastPanel = self
-	int = 5
 end
 
 DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, Update, Click, OnEnter, OnLeave, nil, nil, ValueColorUpdate)

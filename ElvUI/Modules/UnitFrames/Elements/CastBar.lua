@@ -151,6 +151,9 @@ function UF:Configure_Castbar(frame)
 	castbar.Text:Point('LEFT', castbar, 'LEFT', db.xOffsetText, db.yOffsetText)
 	castbar.Time:Point('RIGHT', castbar, 'RIGHT', db.xOffsetTime, db.yOffsetTime)
 
+	castbar.Text:Width(castbar.Text:GetStringWidth())
+	castbar.Time:Width(castbar.Time:GetStringWidth())
+
 	--Icon
 	if db.icon then
 		castbar.Icon = castbar.ButtonIcon
@@ -388,11 +391,11 @@ function UF:GetInterruptColor(db, unit)
 		end
 	elseif ((custom and custom.useClassColor) or (not custom and UF.db.colors.castClassColor)) and UnitIsPlayer(unit) then
 		local _, Class = UnitClass(unit)
-		local t = Class and ElvUF.colors.class[Class]
+		local t = Class and colors.class[Class]
 		if t then r, g, b = t[1], t[2], t[3] end
 	elseif (custom and custom.useReactionColor) or (not custom and UF.db.colors.castReactionColor) then
 		local Reaction = UnitReaction(unit, 'player')
-		local t = Reaction and ElvUF.colors.reaction[Reaction]
+		local t = Reaction and colors.reaction[Reaction]
 		if t then r, g, b = t[1], t[2], t[3] end
 	end
 
@@ -471,7 +474,7 @@ function UF:PostCastStart(unit)
 		self.SafeZone:Show()
 	end
 
-	self:SetStatusBarColor(UF:GetInterruptColor(db, unit))
+	self:SetStatusBarColor(UF.GetInterruptColor(self, db, unit))
 end
 
 function UF:PostCastStop(unit)
@@ -498,5 +501,5 @@ function UF:PostCastInterruptible(unit)
 	local db = self:GetParent().db
 	if not db or not db.castbar then return end
 
-	self:SetStatusBarColor(UF:GetInterruptColor(db, unit))
+	self:SetStatusBarColor(UF.GetInterruptColor(self, db, unit))
 end
