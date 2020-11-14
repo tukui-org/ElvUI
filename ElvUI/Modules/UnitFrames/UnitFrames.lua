@@ -630,26 +630,25 @@ end
 
 function UF.groupPrototype:Configure_Groups(Header)
 	local db = UF.db.units[Header.groupName]
-
 	local width, height, newCols, newRows = 0, 0, 0, 0
-	local direction, dbWidth, dbHeight = db.growthDirection, db.width, db.height
-	local xMult, yMult = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 
-
-	local groupBy = db.groupBy
+	local direction = db.growthDirection
 	local groupsPerRowCol = db.groupsPerRowCol
 	local invertGroupingOrder = db.invertGroupingOrder
 	local startFromCenter = db.startFromCenter
 	local raidWideSorting = db.raidWideSorting
 	local showPlayer = db.showPlayer
+	local groupBy = db.groupBy
 	local sortDir = db.sortDir
 
 	local groupSpacing = db.groupSpacing
 	local verticalSpacing = db.verticalSpacing
 	local horizontalSpacing = db.horizontalSpacing
+	local dbWidth, dbHeight = db.width, db.height
 
-	local HEIGHT = dbHeight + verticalSpacing + (db.infoPanel and db.infoPanel.enable and db.infoPanel.height or 0)
 	local WIDTH = dbWidth + horizontalSpacing
+	local HEIGHT = dbHeight + verticalSpacing + (db.infoPanel and db.infoPanel.enable and db.infoPanel.height or 0)
+	local xMult, yMult = E:Scale(DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction]), E:Scale(DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction])
 
 	local HEIGHT_FIVE = HEIGHT * 5
 	local WIDTH_FIVE = WIDTH * 5
@@ -711,42 +710,43 @@ function UF.groupPrototype:Configure_Groups(Header)
 
 		if (i - 1) % groupsPerRowCol == 0 then
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
-				if group then group:Point(point, Header, point, 0, height * yMult) end
-				height = height + HEIGHT + groupSpacing
+				if group then group:SetPoint(point, Header, point, 0, height * yMult) end
+				height = height + HEIGHT
 				newRows = newRows + 1
 			else
-				if group then group:Point(point, Header, point, width * xMult, 0) end
-				width = width + WIDTH + groupSpacing
+				if group then group:SetPoint(point, Header, point, width * xMult, 0) end
+				width = width + WIDTH
 				newCols = newCols + 1
 			end
 		else
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if newRows == 1 then
-					if group then group:Point(point, Header, point, width * xMult, 0) end
-					width = width + WIDTH_FIVE + groupSpacing
+					if group then group:SetPoint(point, Header, point, width * xMult, 0) end
+					width = width + WIDTH_FIVE
 					newCols = newCols + 1
 				elseif group then
-					group:Point(point, Header, point, ((WIDTH_FIVE * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * xMult, (((HEIGHT+groupSpacing) * (newRows - 1))) * yMult)
+					group:SetPoint(point, Header, point, ((WIDTH_FIVE * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * xMult, (((HEIGHT+groupSpacing) * (newRows - 1))) * yMult)
 				end
 			else
 				if newCols == 1 then
-					if group then group:Point(point, Header, point, 0, height * yMult) end
-					height = height + HEIGHT_FIVE + groupSpacing
+					if group then group:SetPoint(point, Header, point, 0, height * yMult) end
+					height = height + HEIGHT_FIVE
 					newRows = newRows + 1
 				elseif group then
-					group:Point(point, Header, point, (((WIDTH+groupSpacing) * (newCols - 1))) * xMult, ((HEIGHT_FIVE * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * yMult)
+					group:SetPoint(point, Header, point, (((WIDTH+groupSpacing) * (newCols - 1))) * xMult, ((HEIGHT_FIVE * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * yMult)
 				end
 			end
 		end
 
 		if height == 0 then
-			height = height + HEIGHT_FIVE + groupSpacing
-		elseif width == 0 then
-			width = width + WIDTH_FIVE +groupSpacing
+			height = height + HEIGHT_FIVE
+		end
+		if width == 0 then
+			width = width + WIDTH_FIVE
 		end
 	end
 
-	Header:Size(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
+	Header:SetSize(width - horizontalSpacing, height - verticalSpacing)
 end
 
 function UF.groupPrototype:Update(Header)
