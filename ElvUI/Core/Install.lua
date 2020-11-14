@@ -530,6 +530,7 @@ function E:SetPage(PageNum)
 	local InstallOption1Button = _G.InstallOption1Button
 	local InstallOption2Button = _G.InstallOption2Button
 	local InstallOption3Button = _G.InstallOption3Button
+	local InstallOption4Button = _G.InstallOption4Button
 	local InstallSlider = _G.InstallSlider
 
 	local f = ElvUIInstallFrame
@@ -561,6 +562,7 @@ function E:SetPage(PageNum)
 		f.Desc1:SetText(L["This part of the installation process sets up your chat windows names, positions and colors."])
 		f.Desc2:SetText(L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc2:FontTemplate(nil, 14)
 		f.Desc3:FontTemplate(nil, 18)
 
 		InstallOption1Button:Show()
@@ -569,8 +571,7 @@ function E:SetPage(PageNum)
 	elseif PageNum == 4 then
 		f.SubTitle:SetText(L["Profile Settings Setup"])
 		f.Desc1:SetText(L["Please click the button below to setup your Profile Settings."])
-		f.Desc2:SetText(L["New Profile will create a fresh profile for this character."])
-		f.Desc3:SetText(L["Shared Profile will select the default profile."])
+		f.Desc2:SetText(L["New Profile will create a fresh profile for this character."] .. '\n' .. L["Shared Profile will select the default profile."])
 
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
@@ -644,6 +645,14 @@ function E:SetPage(PageNum)
 		InstallOption3Button:SetText(_G.LARGE)
 		InstallOption3Button:SetScript('OnClick', function()
 			E.global.general.UIScale = .70
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
+			E.PixelScaleChanged()
+		end)
+
+		InstallOption4Button:Show()
+		InstallOption4Button:SetText(L["Auto Scale"])
+		InstallOption4Button:SetScript('OnClick', function()
+			E.global.general.UIScale = E:PixelBestSize()
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
@@ -827,7 +836,7 @@ function E:Install()
 		f.Slider.Max:Point('LEFT', f.Slider, 'RIGHT', 3, 0)
 		f.Slider.Cur = f.Slider:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 		f.Slider.Cur:Point('BOTTOM', f.Slider, 'TOP', 0, 10)
-		f.Slider.Cur:FontTemplate(nil, 20)
+		f.Slider.Cur:FontTemplate(nil, 22)
 
 		f.Option1 = CreateFrame('Button', 'InstallOption1Button', f, 'UIPanelButtonTemplate, BackdropTemplate')
 		f.Option1:Size(160, 30)
@@ -871,7 +880,7 @@ function E:Install()
 		S:HandleButton(f.Option4, true)
 
 		f.SubTitle = f:CreateFontString(nil, 'OVERLAY')
-		f.SubTitle:FontTemplate(nil, 18)
+		f.SubTitle:FontTemplate(nil, 20)
 		f.SubTitle:Point('TOP', 0, -40)
 		f.SubTitle:SetTextColor(unpack(E.media.rgbvaluecolor))
 
