@@ -711,18 +711,18 @@ function UF.groupPrototype:Configure_Groups(Header)
 		if (i - 1) % groupsPerRowCol == 0 then
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if group then group:SetPoint(point, Header, point, 0, height * yMult) end
-				height = height + HEIGHT
+				height = height + HEIGHT + groupSpacing
 				newRows = newRows + 1
 			else
 				if group then group:SetPoint(point, Header, point, width * xMult, 0) end
-				width = width + WIDTH
+				width = width + WIDTH + groupSpacing
 				newCols = newCols + 1
 			end
 		else
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if newRows == 1 then
 					if group then group:SetPoint(point, Header, point, width * xMult, 0) end
-					width = width + WIDTH_FIVE
+					width = width + WIDTH_FIVE + groupSpacing
 					newCols = newCols + 1
 				elseif group then
 					group:SetPoint(point, Header, point, ((WIDTH_FIVE * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * xMult, (((HEIGHT+groupSpacing) * (newRows - 1))) * yMult)
@@ -730,7 +730,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			else
 				if newCols == 1 then
 					if group then group:SetPoint(point, Header, point, 0, height * yMult) end
-					height = height + HEIGHT_FIVE
+					height = height + HEIGHT_FIVE + groupSpacing
 					newRows = newRows + 1
 				elseif group then
 					group:SetPoint(point, Header, point, (((WIDTH+groupSpacing) * (newCols - 1))) * xMult, ((HEIGHT_FIVE * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * yMult)
@@ -739,14 +739,14 @@ function UF.groupPrototype:Configure_Groups(Header)
 		end
 
 		if height == 0 then
-			height = height + HEIGHT_FIVE
+			height = height + HEIGHT_FIVE + groupSpacing
 		end
 		if width == 0 then
-			width = width + WIDTH_FIVE
+			width = width + WIDTH_FIVE + groupSpacing
 		end
 	end
 
-	Header:SetSize(width - horizontalSpacing, height - verticalSpacing)
+	Header:SetSize(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
 end
 
 function UF.groupPrototype:Update(Header)
