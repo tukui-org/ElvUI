@@ -64,7 +64,7 @@ function UF:Configure_ClassBar(frame)
 		CLASSBAR_WIDTH = db.classbar.detachedWidth
 	end
 
-	bars:SetSize(CLASSBAR_WIDTH - BAR_SPACING, frame.CLASSBAR_HEIGHT)
+	bars:SetSize(CLASSBAR_WIDTH - BAR_SPACING, frame.CLASSBAR_HEIGHT - BAR_SPACING)
 
 	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' then
 		if E.myclass == 'DEATHKNIGHT' and frame.ClassBar == 'Runes' then
