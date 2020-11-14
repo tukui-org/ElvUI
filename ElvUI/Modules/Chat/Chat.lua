@@ -1187,11 +1187,11 @@ function CH:PositionChat(chat)
 end
 
 function CH:PositionChats()
-	_G.LeftChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
+	_G.LeftChatPanel:SetSize(CH.db.panelWidth, CH.db.panelHeight)
 	if CH.db.separateSizes then
-		_G.RightChatPanel:Size(CH.db.panelWidthRight, CH.db.panelHeightRight)
+		_G.RightChatPanel:SetSize(CH.db.panelWidthRight, CH.db.panelHeightRight)
 	else
-		_G.RightChatPanel:Size(CH.db.panelWidth, CH.db.panelHeight)
+		_G.RightChatPanel:SetSize(CH.db.panelWidth, CH.db.panelHeight)
 	end
 
 	LO:RepositionChatDataPanels()
