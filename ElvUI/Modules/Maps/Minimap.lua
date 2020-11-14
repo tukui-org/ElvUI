@@ -253,7 +253,6 @@ function M:UpdateSettings()
 	local panelSize, joinPanel = (MinimapPanel:IsShown() and MinimapPanel:GetHeight()) or (E.PixelMode and 1 or -1), 1
 	local height, width = E.MinimapSize + (panelSize - joinPanel), E.MinimapSize
 	MMHolder:Size(width + borderWidth, height + borderHeight)
-	_G.MinimapMover:Size(width + borderWidth, height + borderHeight)
 
 	local mmOffset = E.PixelMode and 1 or 3
 	Minimap:ClearAllPoints()
