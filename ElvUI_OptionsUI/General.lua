@@ -239,7 +239,7 @@ E.Options.args.general = {
 							name = _G.SMALL,
 							customWidth = 100,
 							func = function()
-								E.global.general.UIScale = .60
+								E.global.general.UIScale = .6
 								E:PixelScaleChanged()
 								E:StaticPopup_Show('PRIVATE_RL')
 							end,
@@ -250,7 +250,7 @@ E.Options.args.general = {
 							name = _G.TIME_LEFT_MEDIUM,
 							customWidth = 100,
 							func = function()
-								E.global.general.UIScale = .65
+								E.global.general.UIScale = .7
 								E:PixelScaleChanged()
 								E:StaticPopup_Show('PRIVATE_RL')
 							end,
@@ -261,7 +261,7 @@ E.Options.args.general = {
 							name = _G.LARGE,
 							customWidth = 100,
 							func = function()
-								E.global.general.UIScale = .70
+								E.global.general.UIScale = .8
 								E:PixelScaleChanged()
 								E:StaticPopup_Show('PRIVATE_RL')
 							end,

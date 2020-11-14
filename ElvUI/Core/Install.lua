@@ -628,7 +628,7 @@ function E:SetPage(PageNum)
 		InstallOption1Button:Show()
 		InstallOption1Button:SetText(_G.SMALL)
 		InstallOption1Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .60
+			E.global.general.UIScale = .6
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
@@ -636,7 +636,7 @@ function E:SetPage(PageNum)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetText(_G.TIME_LEFT_MEDIUM)
 		InstallOption2Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .65
+			E.global.general.UIScale = .7
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
@@ -644,7 +644,7 @@ function E:SetPage(PageNum)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetText(_G.LARGE)
 		InstallOption3Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .70
+			E.global.general.UIScale = .8
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)

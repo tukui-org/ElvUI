@@ -165,22 +165,23 @@ function LO:RefreshChatMovers()
 	local showRightPanel = E.db.datatexts.panels.RightChatDataPanel.enable
 	local showLeftPanel = E.db.datatexts.panels.LeftChatDataPanel.enable
 	if not showLeftPanel or E.db.chat.LeftChatDataPanelAnchor == 'ABOVE_CHAT' then
-		LeftChatPanel:SetPoint(Left, LeftChatMover, 0, 0)
+		LeftChatPanel:Point(Left, LeftChatMover, 0, 0)
 	elseif showLeftPanel then
-		LeftChatPanel:SetPoint(Left, LeftChatMover, 0, barHeight)
+		LeftChatPanel:Point(Left, LeftChatMover, 0, barHeight)
 	end
 	if not showRightPanel or E.db.chat.RightChatDataPanelAnchor == 'ABOVE_CHAT' then
-		RightChatPanel:SetPoint(Right, RightChatMover, 0, 0)
+		RightChatPanel:Point(Right, RightChatMover, 0, 0)
 	elseif showRightPanel then
-		RightChatPanel:SetPoint(Right, RightChatMover, 0, barHeight)
+		RightChatPanel:Point(Right, RightChatMover, 0, barHeight)
 	end
 
 	-- mover sizes: same as in CH.PositionChats for panels but including the datatext bar height
-	LeftChatMover:SetSize(E.db.chat.panelWidth, E.db.chat.panelHeight + (showLeftPanel and barHeight or 0))
+	local panelWidth, panelHeight = E:Scale(E.db.chat.panelWidth), E:Scale(E.db.chat.panelHeight)
+	LeftChatMover:SetSize(panelWidth, panelHeight + (showLeftPanel and barHeight or 0))
 	if E.db.chat.separateSizes then
-		RightChatMover:SetSize(E.db.chat.panelWidthRight, E.db.chat.panelHeightRight + (showRightPanel and barHeight or 0))
+		RightChatMover:SetSize(E:Scale(E.db.chat.panelWidthRight), E:Scale(E.db.chat.panelHeightRight) + E:Scale(showRightPanel and barHeight or 0))
 	else
-		RightChatMover:SetSize(E.db.chat.panelWidth, E.db.chat.panelHeight + (showRightPanel and barHeight or 0))
+		RightChatMover:SetSize(panelWidth, panelHeight + E:Scale(showRightPanel and barHeight or 0))
 	end
 end
 
