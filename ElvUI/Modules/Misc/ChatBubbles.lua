@@ -23,7 +23,7 @@ function M:UpdateBubbleBorder()
 	if not str then return end
 
 	if E.private.general.chatBubbles == 'backdrop' then
-		backdrop:SetBackdropBorderColor(str:GetTextColor())
+		backdrop.backdrop:SetBackdropBorderColor(str:GetTextColor())
 	end
 
 	local name = self.Name and self.Name:GetText()
@@ -84,25 +84,28 @@ end
 local yOffset --Value set in M:LoadChatBubbles()
 function M:SkinBubble(frame, backdrop)
 	local bubbleFont = LSM:Fetch('font', E.private.general.chatBubbleFont)
+	if backdrop then
+		backdrop:DisableDrawLayer("BORDER")
+	end
+
 	if backdrop.String then
 		backdrop.String:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	end
 
 	if E.private.general.chatBubbles == 'backdrop' then
 		if not backdrop.template then
-			backdrop:SetBackdrop()
-			backdrop:SetTemplate('Transparent', nil, true)
+			backdrop:CreateBackdrop('Transparent', nil, true)
 		end
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
 		if not backdrop.noBorder then
-			backdrop:SetBackdrop()
 			backdrop.noBorder = backdrop:CreateTexture(nil, 'ARTWORK')
 		end
 
 		backdrop.noBorder:SetInside(frame, 4, 4)
 		backdrop.noBorder:SetColorTexture(unpack(E.media.backdropfadecolor))
 	elseif E.private.general.chatBubbles == 'nobackdrop' then
-		backdrop:SetBackdrop()
+		backdrop:DisableDrawLayer("BORDER")
+		backdrop.Tail:Hide()
 	end
 
 	if not frame.Name then
