@@ -73,8 +73,8 @@ function DB:UpdateBarBubbles(bar)
 
 	for i, bubble in ipairs(bar.bubbles) do
 		bubble:ClearAllPoints()
-		bubble:SetSize(bubbleWidth, bubbleHeight)
 		bubble:SetShown(bar.db.showBubbles)
+		bubble:Size(bubbleWidth, bubbleHeight)
 
 		if vertical then
 			bubble:Point('TOP', bar, 'BOTTOM', 0, offset * i)
