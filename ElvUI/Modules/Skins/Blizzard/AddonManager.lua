@@ -42,11 +42,12 @@ function S:AddonList()
 	hooksecurefunc('AddonList_Update', function()
 		local numEntrys = GetNumAddOns()
 		for i = 1, maxShown do
-			local index = AddonList.offset + i
-			if index <= numEntrys then
-				local entry = _G['AddonListEntry'..i]
+			local entry = _G['AddonListEntry'..i]
+			if entry:IsShown() then
+				local index = entry:GetID()
 				local string = _G['AddonListEntry'..i..'Title']
 				local checkbox = _G['AddonListEntry'..i..'Enabled']
+
 				local name, title, _, loadable, reason = GetAddOnInfo(index)
 
 				-- Get the character from the current list (nil is all characters)
@@ -96,12 +97,12 @@ function S:AddonList()
 				if not enabled and checkall == 1 then
 					checktex:SetVertexColor(0.3, 0.3, 0.3)
 					checktex:SetDesaturated(true)
-				elseif not checkbox.state or checkbox.state == 0 then
+				elseif not checkstate or checkstate == 0 then
 					checktex:Hide()
-				elseif checkbox.state == 1 then
+				elseif checkstate == 1 then
 					checktex:SetVertexColor(0.6, 0.6, 0.6)
 					checktex:SetDesaturated(true)
-				elseif checkbox.state == 2 then
+				elseif checkstate == 2 then
 					checktex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 					checktex:SetDesaturated(false)
 				end
