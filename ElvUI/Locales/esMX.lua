@@ -28,6 +28,7 @@ L["Accepting this will reset your Filter Priority lists for all auras on UnitFra
 L["Additive Blend"] = "Mezcla Aditiva"
 L["Adjust the UI Scale to fit your screen."] = true
 L["AFK"] = "Ausente"
+L["AFK Mode"] = "Modo AFK"
 L["All keybindings cleared for |cff00ff00%s|r."] = "Todos los atajos borrados para |cff00ff00%s|r."
 L["Alliance: "] = "Alianza: "
 L["Alpha Key"] = "Clave Alfa"
@@ -165,6 +166,7 @@ L["Icons Only"] = "Sólo Iconos"
 L["If you accidentally removed a default chat tab you can always re-run the chat part of the ElvUI installer."] = true
 L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI first."] = true
 L["IL"] = "LI"
+L["Import Profile"] = true
 L["Importance: |cFF33FF33Low|r"] = "Importancia: |cFF33FF33Baja|r"
 L["Importance: |cffD3CF00Medium|r"] = "Importancia: |cffD3CF00Media|r"
 L["Importance: |cffFF3333High|r"] = "Importancia: |cffFF3333Alta|r"
