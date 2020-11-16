@@ -26,17 +26,17 @@ SharedBarOptions.barGroup.args.point = ACH:Select(L["Anchor Point"], L["The firs
 SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 2, { min = 0, max = 1, step = 0.01, isPercent = true })
 SharedBarOptions.barGroup.args.spacer1 = ACH:Spacer(15, 'full')
 SharedBarOptions.barGroup.args.customCountFont = ACH:Toggle(L["Custom Count Font"], nil, 20)
-SharedBarOptions.barGroup.args.countTextPosition = ACH:Select(L["Text Anchor"], nil, 21, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
-SharedBarOptions.barGroup.args.countTextXOffset = ACH:Range(L["X-Offset"], nil, 22, { softMin = -64, softMax = 64, min = -128, max = 128, step = 1 })
-SharedBarOptions.barGroup.args.countTextYOffset = ACH:Range(L["Y-Offset"], nil, 23, { softMin = -64, softMax = 64, min = -128, max = 128, step = 1 })
+SharedBarOptions.barGroup.args.countTextPosition = ACH:Select(L["Text Anchor"], nil, 21, { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' })
+SharedBarOptions.barGroup.args.countTextXOffset = ACH:Range(L["X-Offset"], nil, 22, { min = -24, max = 24, step = 1 })
+SharedBarOptions.barGroup.args.countTextYOffset = ACH:Range(L["Y-Offset"], nil, 23, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 24)
 SharedBarOptions.barGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 25)
 SharedBarOptions.barGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 26, C.Values.FontSize)
 SharedBarOptions.barGroup.args.spacer2 = ACH:Spacer(27, 'full')
 SharedBarOptions.barGroup.args.customHotkeyFont = ACH:Toggle(L["Custom Keybind Font"], nil, 40)
-SharedBarOptions.barGroup.args.hotkeyTextPosition = ACH:Select(L["Text Anchor"], nil, 41, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
-SharedBarOptions.barGroup.args.hotkeyTextXOffset = ACH:Range(L["X-Offset"], nil, 42, { softMin = -64, softMax = 64, min = -128, max = 128, step = 1 })
-SharedBarOptions.barGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil, 43, { softMin = -64, softMax = 64, min = -128, max = 128, step = 1 })
+SharedBarOptions.barGroup.args.hotkeyTextPosition = ACH:Select(L["Text Anchor"], nil, 41, { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' })
+SharedBarOptions.barGroup.args.hotkeyTextXOffset = ACH:Range(L["X-Offset"], nil, 42, { min = -24, max = 24, step = 1 })
+SharedBarOptions.barGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil, 43, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.hotkeyFont = ACH:SharedMediaFont(L["Font"], nil, 44)
 SharedBarOptions.barGroup.args.hotkeyFontOutline = ACH:FontFlags(L["Font Outline"], nil, 45)
 SharedBarOptions.barGroup.args.hotkeyFontSize = ACH:Range(L["Font Size"], nil, 46, C.Values.FontSize)
@@ -262,16 +262,16 @@ E.Options.args.actionbar.args.general = {
 							type = 'range',
 							order = 2,
 							name = L["Stack Text X-Offset"],
-							softMin = -64, softMax = 64, min = -128, max = 128, step = 1,
+							min = -24, max = 24, step = 1,
 						},
 						countTextYOffset = {
 							type = 'range',
 							order = 3,
 							name = L["Stack Text Y-Offset"],
-							softMin = -64, softMax = 64, min = -128, max = 128, step = 1,
+							min = -24, max = 24, step = 1,
 						},
 						spacer1 = ACH:Spacer(5, 'full'),
-						hotkeyTextPosition  = {
+						hotkeyTextPosition = {
 							type = 'select',
 							order = 10,
 							name = L["Keybind Text Position"],
@@ -288,13 +288,13 @@ E.Options.args.actionbar.args.general = {
 							type = 'range',
 							order = 11,
 							name = L["Keybind Text X-Offset"],
-							softMin = -64, softMax = 64, min = -128, max = 128, step = 1,
+							min = -24, max = 24, step = 1,
 						},
 						hotkeyTextYOffset = {
 							type = 'range',
 							order = 12,
 							name = L["Keybind Text Y-Offset"],
-							softMin = -64, softMax = 64, min = -128, max = 128, step = 1,
+							min = -24, max = 24, step = 1,
 						},
 					},
 				},
