@@ -130,7 +130,6 @@ V.skins = {
 		obliterum = true,
 		contribution = true,
 		blizzardOptions = true,
-		warboard = true,
 		alliedRaces = true,
 		channels = true,
 		azerite = true,
