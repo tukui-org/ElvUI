@@ -81,7 +81,7 @@ local function OnEnter()
 			end
 
 			goldSpace = true
-		elseif enabled and E.global.datatexts.settings.Currencies.headers then
+		elseif enabled and E.global.datatexts.settings.Currencies.headers and not id then
 			if addLine then
 				DT.tooltip:AddLine(' ')
 			else
