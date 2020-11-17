@@ -101,11 +101,11 @@ local function HandleItemButton(block)
 	end
 end
 
--- 9.0 Needs Update
 local function SkinProgressBars(_, _, line)
 	local progressBar = line and line.ProgressBar
 	local bar = progressBar and progressBar.Bar
 	if not bar then return end
+
 	local icon = bar.Icon
 	local label = bar.Label
 

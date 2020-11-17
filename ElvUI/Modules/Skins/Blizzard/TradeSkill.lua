@@ -117,7 +117,6 @@ function S:Blizzard_TradeSkillUI()
 			Button.NameFrame:Kill()
 		end
 
-		-- 9.0 Shadowlands
 		for i = 1, #TradeSkillFrame.DetailsFrame.Contents.OptionalReagents do
 			local Button = TradeSkillFrame.DetailsFrame.Contents.OptionalReagents[i]
 			local Icon = Button.Icon
@@ -162,7 +161,6 @@ function S:Blizzard_TradeSkillUI()
 	--S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 
-	-- 9.0 Shadowlands
 	local OptionalReagents = TradeSkillFrame.OptionalReagentList
 	OptionalReagents:StripTextures()
 	OptionalReagents:CreateBackdrop('Transparent')

@@ -982,7 +982,6 @@ function S:HandleFollowerListOnUpdateData(frame)
 end
 
 -- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
--- 9.0 Shadowland: Needs Update
 local ReplacedRoleTex = {
 	['Adventures-Tank'] = 'Soulbinds_Tree_Conduit_Icon_Protect',
 	['Adventures-Healer'] = 'ui_adv_health',
