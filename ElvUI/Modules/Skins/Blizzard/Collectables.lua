@@ -244,6 +244,8 @@ function S:Blizzard_Collections()
 	_G.PetJournalRightInset:StripTextures()
 	_G.PetJournalLeftInset:StripTextures()
 	S:HandleItemButton(_G.PetJournalSummonRandomFavoritePetButton, true)
+	E:RegisterCooldown(_G.PetJournalSummonRandomFavoritePetButtonCooldown)
+	_G.PetJournalSummonRandomFavoritePetButtonCooldown:SetAllPoints(_G.PetJournalSummonRandomFavoritePetButtonIconTexture)
 
 	for i = 1, 3 do
 		local f = _G['PetJournalLoadoutPet'..i..'HelpFrame']
@@ -271,7 +273,8 @@ function S:Blizzard_Collections()
 
 	S:HandleItemButton(_G.PetJournalHealPetButton, true)
 	E:RegisterCooldown(_G.PetJournalHealPetButtonCooldown)
-	_G.PetJournalHealPetButton.texture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
+	_G.PetJournalHealPetButtonCooldown:SetAllPoints(_G.PetJournalHealPetButtonIconTexture)
+	_G.PetJournalHealPetButtonIconTexture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
 	_G.PetJournalLoadoutBorder:StripTextures()
 
 	for i = 1, 3 do
