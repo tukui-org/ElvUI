@@ -646,8 +646,8 @@ function UF.groupPrototype:Configure_Groups(Header)
 	local horizontalSpacing = db.horizontalSpacing
 	local dbWidth, dbHeight = db.width, db.height
 
-	local WIDTH = dbWidth + horizontalSpacing
-	local HEIGHT = dbHeight + verticalSpacing + (db.infoPanel and db.infoPanel.enable and db.infoPanel.height or 0)
+	local WIDTH = E:Scale(dbWidth) + horizontalSpacing
+	local HEIGHT = E:Scale(dbHeight + (db.infoPanel and db.infoPanel.enable and db.infoPanel.height or 0)) + verticalSpacing
 	local x, y = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
 
 	local HEIGHT_FIVE = HEIGHT * 5
@@ -656,6 +656,8 @@ function UF.groupPrototype:Configure_Groups(Header)
 	local numGroups = Header.numGroups
 	for i = 1, numGroups do
 		local group = Header.groups[i]
+		local lastIndex = i - 1
+		local lastGroup = lastIndex % groupsPerRowCol
 
 		if group then
 			UF:ConvertGroupDB(group)
@@ -708,45 +710,41 @@ function UF.groupPrototype:Configure_Groups(Header)
 			point = DIRECTION_TO_GROUP_ANCHOR_POINT['OUT_'..direction]
 		end
 
-		if (i - 1) % groupsPerRowCol == 0 then
+		if lastGroup == 0 then
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
-				if group then group:Point(point, Header, point, 0, height * y) end
-				height = height + HEIGHT + groupSpacing
+				if group then group:SetPoint(point, Header, point, 0, height * y) end
+				height = height + HEIGHT
 				newRows = newRows + 1
 			else
-				if group then group:Point(point, Header, point, width * x, 0) end
-				width = width + WIDTH + groupSpacing
+				if group then group:SetPoint(point, Header, point, width * x, 0) end
+				width = width + WIDTH
 				newCols = newCols + 1
 			end
 		else
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if newRows == 1 then
-					if group then group:Point(point, Header, point, width * x, 0) end
+					if group then group:SetPoint(point, Header, point, width * x, 0) end
 					width = width + WIDTH_FIVE + groupSpacing
 					newCols = newCols + 1
 				elseif group then
-					group:Point(point, Header, point, ((WIDTH_FIVE * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * x, (((HEIGHT+groupSpacing) * (newRows - 1))) * y)
+					group:SetPoint(point, Header, point, ((WIDTH_FIVE * lastGroup) + lastGroup * groupSpacing) * x, ((HEIGHT + groupSpacing) * (newRows - 1)) * y)
 				end
 			else
 				if newCols == 1 then
-					if group then group:Point(point, Header, point, 0, height * y) end
+					if group then group:SetPoint(point, Header, point, 0, height * y) end
 					height = height + HEIGHT_FIVE + groupSpacing
 					newRows = newRows + 1
 				elseif group then
-					group:Point(point, Header, point, (((WIDTH+groupSpacing) * (newCols - 1))) * x, ((HEIGHT_FIVE * ((i-1) % groupsPerRowCol))+((i-1) % groupsPerRowCol)*groupSpacing) * y)
+					group:SetPoint(point, Header, point, ((WIDTH + groupSpacing) * (newCols - 1)) * x, ((HEIGHT_FIVE * lastGroup) + lastGroup * groupSpacing) * y)
 				end
 			end
 		end
 
-		if height == 0 then
-			height = height + HEIGHT_FIVE + groupSpacing
-		end
-		if width == 0 then
-			width = width + WIDTH_FIVE + groupSpacing
-		end
+		if height == 0 then height = height + HEIGHT_FIVE + groupSpacing end
+		if width == 0 then width = width + WIDTH_FIVE + groupSpacing end
 	end
 
-	Header:Size(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
+	Header:SetSize(width - horizontalSpacing, height - verticalSpacing)
 end
 
 function UF.groupPrototype:Update(Header)
