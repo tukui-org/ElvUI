@@ -1205,7 +1205,20 @@ function S:SkinStatusBarWidget(widgetFrame)
 end
 
 -- For now see the function below
-function S:SkinDoubleStatusBarWidget()
+function S:SkinDoubleStatusBarWidget(widgetFrame)
+	for _, bar in pairs({widgetFrame.LeftBar, widgetFrame.RightBar}) do
+		if not bar.backdrop then
+			bar:CreateBackdrop('Transparent')
+
+			bar.BG:SetAlpha(0)
+			bar.BorderLeft:SetAlpha(0)
+			bar.BorderRight:SetAlpha(0)
+			bar.BorderCenter:SetAlpha(0)
+			bar.Spark:SetAlpha(0)
+			bar.SparkGlow:SetAlpha(0)
+			bar.BorderGlow:SetAlpha(0)
+		end
+	end
 end
 
 function S:SkinIconTextAndBackgroundWidget()
@@ -1304,8 +1317,9 @@ end
 
 function S:SkinWidgetContainer(widgetContainer)
 	for _, child in ipairs({widgetContainer:GetChildren()}) do
-		if S.WidgetSkinningFuncs[child.widgetType] then
-			S[S.WidgetSkinningFuncs[child.widgetType]](S, child)
+		local typeFunc = S.WidgetSkinningFuncs[child.widgetType]
+		if typeFunc and S[typeFunc] then
+			S[typeFunc](S, child)
 		end
 	end
 end
@@ -1417,55 +1431,14 @@ function S:Initialize()
 		end
 	end
 
-	do -- Credits ShestakUI
-		hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', function(info)
-			info.LeftLine:SetAlpha(0)
-			info.RightLine:SetAlpha(0)
-			info.BarBackground:SetAlpha(0)
-			info.Glow1:SetAlpha(0)
-			info.Glow2:SetAlpha(0)
-			info.Glow3:SetAlpha(0)
-
-			info.LeftBar:SetTexture(E.media.normTex)
-			info.NeutralBar:SetTexture(E.media.normTex)
-			info.RightBar:SetTexture(E.media.normTex)
-
-			info.LeftBar:SetVertexColor(0.2, 0.6, 1)
-			info.NeutralBar:SetVertexColor(0.8, 0.8, 0.8)
-			info.RightBar:SetVertexColor(0.9, 0.2, 0.2)
-
-			if not info.backdrop then
-				info:CreateBackdrop()
-				info.backdrop:Point('TOPLEFT', info.LeftBar, -2, 2)
-				info.backdrop:Point('BOTTOMRIGHT', info.RightBar, 2, -2)
-			end
-		end)
-
-		local frame = CreateFrame('Frame')
-		frame:RegisterEvent('PLAYER_ENTERING_WORLD')
-		frame:RegisterEvent('UPDATE_ALL_UI_WIDGETS')
-		frame:SetScript('OnEvent', function()
-			for _, widgetFrame in pairs(_G.UIWidgetTopCenterContainerFrame.widgetFrames) do
-				if widgetFrame.widgetType == _G.Enum.UIWidgetVisualizationType.DoubleStatusBar then
-					for _, bar in pairs({widgetFrame.LeftBar, widgetFrame.RightBar}) do
-						if not bar.IsSkinned then
-							bar.BG:SetAlpha(0)
-							bar.BorderLeft:SetAlpha(0)
-							bar.BorderRight:SetAlpha(0)
-							bar.BorderCenter:SetAlpha(0)
-							bar.Spark:SetAlpha(0)
-							bar.SparkGlow:SetAlpha(0)
-							bar.BorderGlow:SetAlpha(0)
-
-							bar:CreateBackdrop('Transparent')
-
-							bar.IsSkinned = true
-						end
-					end
-				end
-			end
-		end)
-	end
+	local frame = CreateFrame('Frame')
+	frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+	frame:RegisterEvent('UPDATE_ALL_UI_WIDGETS')
+	frame:SetScript('OnEvent', function()
+		for _, widget in pairs(_G.UIWidgetTopCenterContainerFrame.widgetFrames) do
+			S:SkinWidgetContainer(widget)
+		end
+	end)
 
 	--[[hooksecurefunc('TriStateCheckbox_SetState', function(_, checkButton)
 		if checkButton.forceSaturation then

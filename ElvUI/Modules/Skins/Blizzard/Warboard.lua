@@ -19,24 +19,14 @@ function S:Blizzard_WarboardUI()
 		for x = 1, #option.OptionButtonsContainer.Buttons do
 			S:HandleButton(option.OptionButtonsContainer.Buttons[x])
 		end
+
 		option.ArtworkBorder:SetAlpha(0)
 	end
 
-	local WarboardQuestChoiceDelayed = function(s)
-		if not s then return end
-
-		local frame
-		for i = 1, 4 do
-			frame = s['Option'..i]
-			if frame and frame.WidgetContainer then
-				S:SkinWidgetContainer(frame.WidgetContainer)
-			end
-		end
-	end
-
 	WarboardQuestChoiceFrame:HookScript('OnShow', function(s)
-		if s.CloseButton.Border then s.CloseButton.Border:SetAlpha(0) end
-		E:Delay(0.5, WarboardQuestChoiceDelayed, s)
+		if s.CloseButton.Border then
+			s.CloseButton.Border:SetAlpha(0)
+		end
 	end)
 
 	S:HandleCloseButton(WarboardQuestChoiceFrame.CloseButton)
