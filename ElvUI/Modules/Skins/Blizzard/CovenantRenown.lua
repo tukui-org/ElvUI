@@ -2,8 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
-
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_CovenantRenown()
@@ -13,10 +11,10 @@ function S:Blizzard_CovenantRenown()
 	local track = frame.TrackFrame
 	S:HandleCloseButton(frame.CloseButton)
 
-	hooksecurefunc(frame, 'SetUpCovenantData', function(self)
-		self.CloseButton.Border:Hide()
+	hooksecurefunc(frame, 'SetUpCovenantData', function(Frame)
+		Frame.CloseButton.Border:Hide()
 		if E.private.skins.parchmentRemoverEnable then
-			self:StripTextures()
+			Frame:StripTextures()
 		end
 	end)
 
@@ -24,7 +22,6 @@ function S:Blizzard_CovenantRenown()
 		if not frame.backdrop then
 			frame:CreateBackdrop('Transparent')
 		end
-
 		if not track.backdrop then
 			track:CreateBackdrop('Transparent')
 		end

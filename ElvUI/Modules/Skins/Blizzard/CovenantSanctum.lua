@@ -38,24 +38,6 @@ local function ReskinTalents(self)
 	end
 end
 
-local function HideRenownLevelBorder(frame)
-	if not frame.IsSkinned then
-		frame.Divider:SetAlpha(0)
-		frame.BackgroundTile:SetAlpha(0)
-		frame.Background:CreateBackdrop()
-
-		frame.IsSkinned = true
-	end
-
-	for button in frame.milestonesPool:EnumerateActive() do
-		if not button.IsSkinned then
-			button.LevelBorder:SetAlpha(0)
-
-			button.IsSkinned = true
-		end
-	end
-end
-
 local function ReplaceCurrencies(displayGroup)
 	for frame in displayGroup.currencyFramePool:EnumerateActive() do
 		if not frame.IsSkinned then
@@ -84,9 +66,9 @@ function S:Blizzard_CovenantSanctum()
 	UpgradesTab.CurrencyBackground:SetAlpha(0)
 	ReplaceCurrencies(UpgradesTab.CurrencyDisplayGroup)
 
-	for _, frame in ipairs(UpgradesTab.Upgrades) do
-		if frame.TierBorder then
-			frame.TierBorder:SetAlpha(0)
+	for _, upgrade in ipairs(UpgradesTab.Upgrades) do
+		if upgrade.TierBorder then
+			upgrade.TierBorder:SetAlpha(0)
 		end
 	end
 

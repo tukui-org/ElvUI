@@ -492,7 +492,7 @@ function S:Blizzard_GarrisonUI()
 	-- Followers
 	local Follower = _G.OrderHallMissionFrameFollowers
 	FollowerList = OrderHallMissionFrame.FollowerList -- swap
-	local FollowerTab = OrderHallMissionFrame.FollowerTab
+	FollowerTab = OrderHallMissionFrame.FollowerTab -- swap
 	Follower:StripTextures()
 	Follower:CreateBackdrop('Transparent')
 	FollowerList:StripTextures()
