@@ -29,6 +29,9 @@ function S:HelpFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.help) then return end
 
 	local frame = _G.HelpFrame
+	local header = frame and frame.header
+	if not header then return end
+
 	frame:StripTextures()
 	frame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(_G.HelpFrameCloseButton, frame.backdrop)
@@ -58,10 +61,9 @@ function S:HelpFrame()
 		frames[i]:CreateBackdrop('Transparent')
 	end
 
-	local Header = _G.HelpFrame.Header
-	Header:StripTextures(true)
-	Header:CreateBackdrop(nil, true)
-	Header:SetFrameLevel(Header:GetFrameLevel() + 2)
+	header:StripTextures(true)
+	header:CreateBackdrop(nil, true)
+	header:SetFrameLevel(header:GetFrameLevel() + 2)
 	_G.HelpFrameKnowledgebaseErrorFrame:SetFrameLevel(_G.HelpFrameKnowledgebaseErrorFrame:GetFrameLevel() + 2)
 
 	local HelpFrameReportBugScrollFrame = _G.HelpFrameReportBugScrollFrame
