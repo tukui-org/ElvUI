@@ -588,9 +588,12 @@ function S:Blizzard_GarrisonUI()
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame
 	SkinMissionFrame(CovenantMissionFrame) -- currently dont use StripTextures here, cause it seems blizzard fucks this up /shurg
-	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
-	CovenantMissionFrame.RaisedBorder:SetAlpha(0)
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
+	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
+
+	if CovenantMissionFrame.RaisedBorder then
+		CovenantMissionFrame.RaisedBorder:SetAlpha(0)
+	end
 
 	-- Complete Missions
 	_G.CombatLog.CombatLogMessageFrame:StripTextures()
