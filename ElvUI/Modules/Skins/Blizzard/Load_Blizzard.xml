@@ -86,6 +86,7 @@
 	<Script file='AnimaDiversion.lua'/>
 	<Script file='Barber.lua'/>
 	<Script file='CovenantPreview.lua'/>
+	<Script file='CovenantRenown.lua'/>
 	<Script file='CovenantSanctum.lua'/>
 	<Script file='ChromieTime.lua'/>
 	<Script file='Guide.lua'/>

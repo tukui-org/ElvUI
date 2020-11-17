@@ -589,9 +589,8 @@ function S:Blizzard_GarrisonUI()
 	local CovenantMissionFrame = _G.CovenantMissionFrame
 	SkinMissionFrame(CovenantMissionFrame) -- currently dont use StripTextures here, cause it seems blizzard fucks this up /shurg
 	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
-
+	CovenantMissionFrame.RaisedBorder:SetAlpha(0)
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
-	--S:HandleScrollBar(_G.CovenantMissionFrameMissionsListScrollFrameScrollBar) -- Dont skin it, the "NEW" default ones looks amazing
 
 	-- Complete Missions
 	_G.CombatLog.CombatLogMessageFrame:StripTextures()
