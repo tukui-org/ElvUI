@@ -143,6 +143,7 @@ V.skins = {
 		azeriteEssence = true,
 		tutorials = true,
 		itemInteraction = true,
+		widgets = true,
 
 		-- 9.0
 		animaDiversion = true,
