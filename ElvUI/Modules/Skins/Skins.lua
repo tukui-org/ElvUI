@@ -1206,6 +1206,8 @@ end
 
 -- For now see the function below
 function S:SkinDoubleStatusBarWidget(widgetFrame)
+	if not widgetFrame.LeftBar or not widgetFrame.RightBar then return end
+
 	for _, bar in pairs({widgetFrame.LeftBar, widgetFrame.RightBar}) do
 		if not bar.backdrop then
 			bar:CreateBackdrop('Transparent')
@@ -1235,10 +1237,9 @@ end
 
 function S:SkinTextWithStateWidget(widgetFrame)
 	local text = widgetFrame.Text
+	if not text then return end
 
-	if text then
-		text:SetTextColor(1, 1, 1)
-	end
+	text:SetTextColor(1, 1, 1)
 end
 
 function S:SkinHorizontalCurrenciesWidget()
