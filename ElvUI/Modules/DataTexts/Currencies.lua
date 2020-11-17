@@ -44,8 +44,6 @@ local function AddHeader(id, addLine)
 
 	DT.tooltip:AddLine(E.global.datatexts.settings.Currencies.tooltipData[id][1])
 	shownHeaders[id] = true
-
-	return true
 end
 
 local goldText
