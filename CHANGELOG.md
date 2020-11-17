@@ -1,6 +1,32 @@
-### Version 12.13 [ ETA: 🍨 ]
+### Version 12.14 [ ETA: 🍨 ]
 
 **Sweet:**  
+
+___
+
+### Version 12.13 [ November 17th 2020 ]
+
+**Early Message:**  
+Real Change Log coming soon.. Servers went up early. This is for 9.0.2, the main change in this version is the way scaling works in the UI, using any scaling size you prefer should work much, much better. However, this is new and it still needs a little adjusting but overall experience with scaling should be a ton better. Also, the Unified Fonts setting was further adjusted to be exactly as it was pre-font changes.  
+
+**Epic:**  
+The new scaling adjustments are in place, which should allow you to select a custom scale that will keep borders intact better. This comes with new Small Medium and Large buttons to quickly adjust the scale *(Reload is required to properly change scale)*.  
+Unified Font setting is now replicating old behaviour entirely.  
+Druid multicrafting castbar is now fixed.  
+
+**Rare:**  
+All Individual Unitframes were given Detached Power Bar setting.  
+Currency Icons have a little border of their own now.  
+Pet bar saturation would sometimes become stuck, it is now unstuck.  
+Group Finder eye icon was sometimes behind the button itself, we moved the eyeball up some.  
+Fixed up the Hide Button Glow on ActionBars, it was a bit funky before when implemented.  
+Time Datatext can now be used in multiple areas without getting confused about what time it actually is.  
+Bags Item Level should be more accurate again.  
+Chat has a Server Time setting now which can be used instead of Local Time.  
+Target Aura Bars attached to Player Aura Bars should be offset correctly.  
+Addon Manager skin was adjusted to allow searching by other addons.  
+Added Top and Bottom for Custom Text on ActionBars.  
+Fixed another Quest Skin but which prevented the Parchment from being shown sometimes with Parchment Remover disabled.  
 
 ___
 
