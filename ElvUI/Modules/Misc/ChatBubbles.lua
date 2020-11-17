@@ -24,6 +24,7 @@ function M:UpdateBubbleBorder()
 
 	if holder.backdrop and E.private.general.chatBubbles == 'backdrop' then
 		holder.backdrop:SetBackdropBorderColor(str:GetTextColor())
+		holder.backdrop:SetFrameLevel(holder:GetFrameLevel())
 	end
 
 	local name = self.Name and self.Name:GetText()
