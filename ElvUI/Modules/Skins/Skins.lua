@@ -1439,18 +1439,6 @@ function S:Initialize()
 			S:SkinWidgetContainer(widget)
 		end
 	end)
-
-	--[[hooksecurefunc('TriStateCheckbox_SetState', function(_, checkButton)
-		if checkButton.forceSaturation then
-			local tex = checkButton:GetCheckedTexture()
-			if checkButton.state == 2 then
-				tex:SetDesaturated(false)
-				tex:SetVertexColor(unpack(E.media.rgbvaluecolor))
-			elseif checkButton.state == 1 then
-				tex:SetVertexColor(0.6, 0.6, 0.6)
-			end
-		end
-	end)]]
 end
 
 -- Keep this outside, it's used for skinning addons before ElvUI load
