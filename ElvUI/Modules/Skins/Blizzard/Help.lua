@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
+local select, unpack = select, unpack
 
 local function OnEnter(f)
 	if f.selected:IsShown() or f:IsEnabled() then
