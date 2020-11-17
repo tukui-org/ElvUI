@@ -641,11 +641,11 @@ function UF.groupPrototype:Configure_Groups(Header)
 	local groupBy = db.groupBy
 	local sortDir = db.sortDir
 
-	local groupSpacing = db.groupSpacing
-	local verticalSpacing = db.verticalSpacing
-	local horizontalSpacing = db.horizontalSpacing
 	local dbWidth, dbHeight = db.width, db.height
 
+	local groupSpacing = E:Scale(db.groupSpacing)
+	local verticalSpacing = E:Scale(db.verticalSpacing)
+	local horizontalSpacing = E:Scale(db.horizontalSpacing)
 	local WIDTH = E:Scale(dbWidth) + horizontalSpacing
 	local HEIGHT = E:Scale(dbHeight + (db.infoPanel and db.infoPanel.enable and db.infoPanel.height or 0)) + verticalSpacing
 	local x, y = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[direction], DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER[direction]
@@ -713,11 +713,11 @@ function UF.groupPrototype:Configure_Groups(Header)
 		if lastGroup == 0 then
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if group then group:SetPoint(point, Header, point, 0, height * y) end
-				height = height + HEIGHT
+				height = height + HEIGHT + groupSpacing
 				newRows = newRows + 1
 			else
 				if group then group:SetPoint(point, Header, point, width * x, 0) end
-				width = width + WIDTH
+				width = width + WIDTH + groupSpacing
 				newCols = newCols + 1
 			end
 		else
@@ -744,7 +744,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 		if width == 0 then width = width + WIDTH_FIVE + groupSpacing end
 	end
 
-	Header:SetSize(width - horizontalSpacing, height - verticalSpacing)
+	Header:SetSize(width - horizontalSpacing - groupSpacing, height - verticalSpacing - groupSpacing)
 end
 
 function UF.groupPrototype:Update(Header)
