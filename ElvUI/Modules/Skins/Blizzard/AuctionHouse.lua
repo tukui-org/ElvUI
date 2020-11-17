@@ -217,7 +217,7 @@ local function LoadSkin()
 	end
 
 	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
-	_G.AuctionHouseFrameBuyTab:Point('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -32)
+	_G.AuctionHouseFrameBuyTab:SetPoint('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -30)
 
 	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)
@@ -384,6 +384,7 @@ local function LoadSkin()
 	WowTokenGameTimeTutorial:CreateBackdrop('Transparent')
 	S:HandleCloseButton(WowTokenGameTimeTutorial.CloseButton)
 	S:HandleButton(WowTokenGameTimeTutorial.RightDisplay.StoreButton)
+	WowTokenGameTimeTutorial.RightDisplay.StoreButton.backdrop:SetFrameLevel(WowTokenGameTimeTutorial.RightDisplay.StoreButton:GetFrameLevel())
 	WowTokenGameTimeTutorial.Bg:SetAlpha(0)
 	WowTokenGameTimeTutorial.LeftDisplay.Label:SetTextColor(1, 1, 1)
 	WowTokenGameTimeTutorial.LeftDisplay.Tutorial1:SetTextColor(1, 0, 0)

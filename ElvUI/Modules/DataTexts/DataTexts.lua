@@ -211,8 +211,8 @@ function DT:BuildPanelFrame(name, db, fromInit)
 
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
-	Panel:Point('CENTER')
-	Panel:Size(db.width, db.height)
+	Panel:SetPoint('CENTER')
+	Panel:SetSize(db.width, db.height)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -491,9 +491,9 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	--Restore Panels
 	for i, dt in ipairs(panel.dataPanels) do
 		dt:SetShown(i <= numPoints)
-		dt:Size(width, height)
+		dt:SetSize(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
+		dt:SetPoint(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 		dt:UnregisterAllEvents()
 		dt:EnableMouseWheel(false)
 		dt:SetScript('OnUpdate', nil)
@@ -562,9 +562,9 @@ function DT:PanelSizeChanged()
 	local width, height, vertical, numPoints = DT:GetTextAttributes(self, db)
 
 	for i, dt in ipairs(self.dataPanels) do
-		dt:Size(width, height)
+		dt:SetSize(width, height)
 		dt:ClearAllPoints()
-		dt:Point(DT:GetDataPanelPoint(self, i, numPoints, vertical))
+		dt:SetPoint(DT:GetDataPanelPoint(self, i, numPoints, vertical))
 	end
 end
 
@@ -579,7 +579,7 @@ function DT:UpdatePanelAttributes(name, db, fromLoad)
 	Panel.yOff = db.tooltipYOffset
 	Panel.anchor = db.tooltipAnchor
 	Panel.vertical = db.growth == 'VERTICAL'
-	Panel:Size(db.width, db.height)
+	Panel:SetSize(db.width, db.height)
 	Panel:SetFrameStrata(db.frameStrata)
 	Panel:SetFrameLevel(db.frameLevel)
 
@@ -670,7 +670,7 @@ function DT:RegisterHyperDT()
 	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'SingleHyperMode')
 end
 
-function DT:PopulateData()
+function DT:PopulateData(currencyOnly)
 	local Collapsed = {}
 	local listSize, i = C_CurrencyInfo_GetCurrencyListSize(), 1
 
@@ -684,8 +684,7 @@ function DT:PopulateData()
 		end
 		if info.isHeader then
 			G.datatexts.settings.Currencies.tooltipData[i] = { info.name, nil, nil, (info.name == expansion or info.name == MISCELLANEOUS) or strfind(info.name, LFG_TYPE_DUNGEON) }
-			E.global.datatexts.settings.Currencies.tooltipData[i] = E.global.datatexts.settings.Currencies.tooltipData[i] or { info.name, nil, nil, G.datatexts.settings.Currencies.tooltipData[i][4] }
-			E.global.datatexts.settings.Currencies.tooltipData[i][1] = info.name
+			E.global.datatexts.settings.Currencies.tooltipData[i] = { info.name, nil, nil, E.global.datatexts.settings.Currencies.headers }
 
 			headerIndex = i
 		end
@@ -695,8 +694,9 @@ function DT:PopulateData()
 			if currencyID then
 				DT.CurrencyList[tostring(currencyID)] = info.name
 				G.datatexts.settings.Currencies.tooltipData[i] = { info.name, currencyID, headerIndex, G.datatexts.settings.Currencies.tooltipData[headerIndex][4] }
-				E.global.datatexts.settings.Currencies.tooltipData[i] = E.global.datatexts.settings.Currencies.tooltipData[i] or { info.name, currencyID, headerIndex, G.datatexts.settings.Currencies.tooltipData[headerIndex][4] }
-				E.global.datatexts.settings.Currencies.tooltipData[i][1] = info.name
+				G.datatexts.settings.Currencies.idEnable[currencyID] = G.datatexts.settings.Currencies.tooltipData[headerIndex][4]
+				E.global.datatexts.settings.Currencies.idEnable[currencyID] = E.global.datatexts.settings.Currencies.idEnable[currencyID] == nil and G.datatexts.settings.Currencies.idEnable[currencyID] or E.global.datatexts.settings.Currencies.idEnable[currencyID]
+				E.global.datatexts.settings.Currencies.tooltipData[i] = { info.name, currencyID, headerIndex, E.global.datatexts.settings.Currencies.idEnable[currencyID] }
 			end
 		end
 		i = i + 1
@@ -713,21 +713,23 @@ function DT:PopulateData()
 
 	wipe(Collapsed)
 
-	for index = 1, GetNumSpecializations() do
-		local id, name, _, icon, _, statID = GetSpecializationInfo(index)
+	if not currencyOnly then
+		for index = 1, GetNumSpecializations() do
+			local id, name, _, icon, _, statID = GetSpecializationInfo(index)
 
-		if id then
-			DT.SPECIALIZATION_CACHE[index] = { id = id, name = name, icon = icon, statID = statID }
-			DT.SPECIALIZATION_CACHE[id] = { name = name, icon = icon }
+			if id then
+				DT.SPECIALIZATION_CACHE[index] = { id = id, name = name, icon = icon, statID = statID }
+				DT.SPECIALIZATION_CACHE[id] = { name = name, icon = icon }
+			end
 		end
 	end
 end
 
-function DT:CURRENCY_DISPLAY_UPDATE(_, currencyType)
-	if currencyType and not DT.CurrencyList[tostring(currencyType)] then
-		local info = C_CurrencyInfo_GetCurrencyInfo(currencyType)
-		if info and info.name then
-			DT.CurrencyList[tostring(currencyType)] = info.name
+function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
+	if currencyID and not DT.CurrencyList[tostring(currencyID)] then
+		local info = C_CurrencyInfo_GetCurrencyInfo(currencyID)
+		if info then
+			DT:PopulateData(true)
 		end
 	end
 end

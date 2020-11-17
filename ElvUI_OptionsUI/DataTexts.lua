@@ -456,6 +456,10 @@ local function CreateDTOptions(name, data)
 			name = L["Tooltip Lines"],
 			args = {}
 		}
+		optionTable.args.headers = {
+			type = 'toggle',
+			name = "Headers",
+		}
 		for i, info in ipairs(G.datatexts.settings.Currencies.tooltipData) do
 			if not info[2] then
 				optionTable.args.tooltipLines.args[tostring(i)] = {
@@ -463,23 +467,15 @@ local function CreateDTOptions(name, data)
 					type = 'group',
 					inline = true,
 					name = info[1],
-					args = {
-						header = {
-							order = i,
-							type = 'toggle',
-							name = "Header",
-							get = function() return settings.tooltipData[i][4] end,
-							set = function(_, value) settings.tooltipData[i][4] = value end,
-						},
-					},
+					args = {},
 				}
 			elseif info[3] then
 				optionTable.args.tooltipLines.args[tostring(info[3])].args[tostring(i)] = {
 					order = i,
 					type = 'toggle',
 					name = info[1],
-					get = function() return settings.tooltipData[i][4] end,
-					set = function(_, value) settings.tooltipData[i][4] = value end,
+					get = function() return settings.idEnable[info[2]] end,
+					set = function(_, value) settings.idEnable[info[2]] = value end,
 				}
 			end
 		end

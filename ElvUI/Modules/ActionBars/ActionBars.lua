@@ -575,6 +575,15 @@ function AB:UpdateButtonSettings()
 		end
 	end
 
+	-- we can safely toggle these events when we arent using the handle overlay
+	if AB.db.handleOverlay then
+		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
+	else
+		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
+	end
+
 	AB:AdjustMaxStanceButtons()
 	AB:PositionAndSizeBarPet()
 	AB:PositionAndSizeBarShapeShift()
@@ -1044,6 +1053,7 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.colors.notUsable = E:SetColorTable(bar.buttonConfig.colors.notUsable, AB.db.notUsableColor)
 	bar.buttonConfig.useDrawBling = not AB.db.hideCooldownBling
 	bar.buttonConfig.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
+	bar.buttonConfig.handleOverlay = AB.db.handleOverlay
 	SetModifiedClick('PICKUPACTION', AB.db.movementModifier)
 
 	for i, button in ipairs(bar.buttons) do
@@ -1317,20 +1327,6 @@ function AB:PLAYER_ENTERING_WORLD()
 	AB:AdjustMaxStanceButtons('PLAYER_ENTERING_WORLD')
 end
 
-function AB:HandleOverlay()
-	if AB.db.handleOverlay then
-		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
-		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
-	else
-		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
-		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
-
-		for button in next, LAB.activeButtons do
-			E.Libs.ButtonGlow.HideOverlayGlow(button)
-		end
-	end
-end
-
 function AB:Initialize()
 	AB.db = E.db.actionbar
 
@@ -1372,7 +1368,6 @@ function AB:Initialize()
 	AB:UpdatePetCooldownSettings()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
-	AB:HandleOverlay()
 
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')

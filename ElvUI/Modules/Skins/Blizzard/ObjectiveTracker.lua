@@ -101,11 +101,11 @@ local function HandleItemButton(block)
 	end
 end
 
--- 9.0 Needs Update
 local function SkinProgressBars(_, _, line)
 	local progressBar = line and line.ProgressBar
 	local bar = progressBar and progressBar.Bar
 	if not bar then return end
+
 	local icon = bar.Icon
 	local label = bar.Label
 
@@ -191,7 +191,7 @@ local function SkinFindGroupButton(block)
 		if block.groupFinderButton and not block.groupFinderButton.skinned then
 			S:HandleButton(block.groupFinderButton)
 			block.groupFinderButton:Size(20)
-			block.groupFinderButton.backdrop:SetFrameLevel(block:GetFrameLevel())
+			block.groupFinderButton.backdrop:SetFrameLevel(3)
 			block.groupFinderButton.skinned = true
 		end
 	end

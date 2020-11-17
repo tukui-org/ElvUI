@@ -18,12 +18,12 @@ local messageToGUID = {}
 local messageToSender = {}
 
 function M:UpdateBubbleBorder()
-	local backdrop = self.backdrop
-	local str = backdrop and backdrop.String
+	local holder = self.holder
+	local str = holder and holder.String
 	if not str then return end
 
-	if E.private.general.chatBubbles == 'backdrop' then
-		backdrop:SetBackdropBorderColor(str:GetTextColor())
+	if holder.backdrop and E.private.general.chatBubbles == 'backdrop' then
+		holder.backdrop:SetBackdropBorderColor(str:GetTextColor())
 	end
 
 	local name = self.Name and self.Name:GetText()
@@ -82,27 +82,23 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 end
 
 local yOffset --Value set in M:LoadChatBubbles()
-function M:SkinBubble(frame, backdrop)
+function M:SkinBubble(frame, holder)
 	local bubbleFont = LSM:Fetch('font', E.private.general.chatBubbleFont)
-	if backdrop.String then
-		backdrop.String:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
+	if holder.String then
+		holder.String:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	end
 
 	if E.private.general.chatBubbles == 'backdrop' then
-		if not backdrop.template then
-			backdrop:SetBackdrop()
-			backdrop:SetTemplate('Transparent', nil, true)
+		if not holder.backdrop then
+			holder:CreateBackdrop('Transparent', nil, true)
 		end
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
-		if not backdrop.noBorder then
-			backdrop:SetBackdrop()
-			backdrop.noBorder = backdrop:CreateTexture(nil, 'ARTWORK')
+		if not holder.noBorder then
+			holder.noBorder = holder:CreateTexture(nil, 'ARTWORK')
 		end
 
-		backdrop.noBorder:SetInside(frame, 4, 4)
-		backdrop.noBorder:SetColorTexture(unpack(E.media.backdropfadecolor))
-	elseif E.private.general.chatBubbles == 'nobackdrop' then
-		backdrop:SetBackdrop()
+		holder.noBorder:SetInside(frame, 4, 4)
+		holder.noBorder:SetColorTexture(unpack(E.media.backdropfadecolor))
 	end
 
 	if not frame.Name then
@@ -114,9 +110,14 @@ function M:SkinBubble(frame, backdrop)
 		frame.Name = name
 	end
 
-	if not frame.backdrop then
-		frame.backdrop = backdrop
-		backdrop.Tail:Hide()
+	if not frame.holder then
+		frame.holder = holder
+		holder.Tail:Hide()
+		holder:DisableDrawLayer('BORDER')
+
+		if holder.Center then -- can remove later
+			holder.Center:Hide()
+		end
 
 		frame:HookScript('OnShow', M.UpdateBubbleBorder)
 		frame:SetFrameStrata('DIALOG') --Doesn't work currently in Legion due to a bug on Blizzards end
@@ -144,9 +145,9 @@ local function ChatBubble_OnUpdate(eventFrame, elapsed)
 	eventFrame.lastupdate = 0
 
 	for _, frame in pairs(C_ChatBubbles_GetAllChatBubbles()) do
-		local backdrop = frame:GetChildren(1)
-		if backdrop and not backdrop:IsForbidden() and not frame.isSkinnedElvUI then
-			M:SkinBubble(frame, backdrop)
+		local holder = frame:GetChildren()
+		if holder and not holder:IsForbidden() and not frame.isSkinnedElvUI then
+			M:SkinBubble(frame, holder)
 		end
 	end
 end

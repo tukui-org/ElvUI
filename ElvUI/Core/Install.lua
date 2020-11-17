@@ -497,6 +497,9 @@ local function ResetAll()
 	_G.InstallSlider.Min:SetText('')
 	_G.InstallSlider.Max:SetText('')
 	_G.InstallSlider.Cur:SetText('')
+	_G.InstallSlider:SetScript('OnValueChanged', nil)
+	_G.InstallSlider:SetScript('OnMouseUp', nil)
+
 	ElvUIInstallFrame.SubTitle:SetText('')
 	ElvUIInstallFrame.Desc1:SetText('')
 	ElvUIInstallFrame.Desc2:SetText('')
@@ -511,9 +514,6 @@ function E:SetPage(PageNum)
 	_G.InstallStatus.anim.progress:SetChange(PageNum)
 	_G.InstallStatus.anim.progress:Play()
 	_G.InstallStatus.text:SetText(CURRENT_PAGE..' / '..MAX_PAGE)
-
-	local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
-	ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
 
 	if PageNum == MAX_PAGE then
 		_G.InstallNextButton:Disable()
@@ -530,22 +530,30 @@ function E:SetPage(PageNum)
 	local InstallOption1Button = _G.InstallOption1Button
 	local InstallOption2Button = _G.InstallOption2Button
 	local InstallOption3Button = _G.InstallOption3Button
+	local InstallOption4Button = _G.InstallOption4Button
 	local InstallSlider = _G.InstallSlider
 
 	local f = ElvUIInstallFrame
+
+	local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
+	f.Status:SetStatusBarColor(r, g, b)
+
+	f.Desc1:FontTemplate(nil, 16)
+	f.Desc2:FontTemplate(nil, 16)
+	f.Desc3:FontTemplate(nil, 16)
+
 	if PageNum == 1 then
 		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %s!"], E.version)
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
 		f.Desc2:SetText(L["The in-game configuration menu can be accessed by typing the /ec command. Press the button below if you wish to skip the installation process."])
 		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
-		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', InstallComplete)
-		InstallOption1Button:SetText(L["Skip Process"])
 	elseif PageNum == 2 then
 		f.SubTitle:SetText(L["CVars"])
 		f.Desc1:SetText(L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."])
 		f.Desc2:SetText(L["Please click the button below to setup your CVars."])
 		f.Desc3:SetText(L["Importance: |cffFF3333High|r"])
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupCVars() end)
 		InstallOption1Button:SetText(L["Setup CVars"])
@@ -554,17 +562,23 @@ function E:SetPage(PageNum)
 		f.Desc1:SetText(L["This part of the installation process sets up your chat windows names, positions and colors."])
 		f.Desc2:SetText(L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc2:FontTemplate(nil, 14)
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupChat() end)
 		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
 		f.SubTitle:SetText(L["Profile Settings Setup"])
 		f.Desc1:SetText(L["Please click the button below to setup your Profile Settings."])
+		f.Desc2:SetText(L["New Profile will create a fresh profile for this character."] .. '\n' .. L["Shared Profile will select the default profile."])
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
 			E.data:SetProfile('Default')
 			E:NextPage()
 		end)
+
 		InstallOption1Button:SetText(L["Shared Profile"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function()
@@ -577,6 +591,8 @@ function E:SetPage(PageNum)
 		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
 		f.Desc2:SetText(L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."])
 		f.Desc3:SetText(L["Importance: |cFF33FF33Low|r"])
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupTheme('classic') end)
 		InstallOption1Button:SetText(L["Classic"])
@@ -587,8 +603,8 @@ function E:SetPage(PageNum)
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 6 then
-		f.SubTitle:SetText(_G.UISCALE)
-		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
+		f.SubTitle:SetText(L["UI Scale"])
+		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen."])
 		InstallSlider:Show()
 		InstallSlider:SetValueStep(0.01)
 		InstallSlider:SetObeyStepOnDrag(true)
@@ -597,54 +613,78 @@ function E:SetPage(PageNum)
 		local value = E.global.general.UIScale
 		InstallSlider:SetValue(value)
 		InstallSlider.Cur:SetText(value)
-		InstallSlider:SetScript('OnValueChanged', function(self)
-			local val = E:Round(self:GetValue(), 2)
+		InstallSlider:SetScript('OnMouseUp', function()
+			E:PixelScaleChanged()
+		end)
+		InstallSlider:SetScript('OnValueChanged', function(slider)
+			local val = E:Round(slider:GetValue(), 2)
 			E.global.general.UIScale = val
 			InstallSlider.Cur:SetText(val)
 		end)
 
 		InstallSlider.Min:SetText(0.4)
 		InstallSlider.Max:SetText(1.15)
+
 		InstallOption1Button:Show()
+		InstallOption1Button:SetText(_G.SMALL)
 		InstallOption1Button:SetScript('OnClick', function()
-			local scale = E:PixelBestSize()
-
-			-- this is to just keep the slider in place, the values need updated again afterwards
-			InstallSlider:SetValue(scale)
-
-			-- update the values with deeper accuracy
-			E.global.general.UIScale = scale
+			E.global.general.UIScale = .6
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
+			E.PixelScaleChanged()
 		end)
 
-		InstallOption1Button:SetText(L["Auto Scale"])
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', E.PixelScaleChanged)
+		InstallOption2Button:SetText(_G.TIME_LEFT_MEDIUM)
+		InstallOption2Button:SetScript('OnClick', function()
+			E.global.general.UIScale = .7
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
+			E.PixelScaleChanged()
+		end)
 
-		InstallOption2Button:SetText(L["Preview"])
-		f.Desc3:SetText(L["Importance: |cffFF3333High|r"])
+		InstallOption3Button:Show()
+		InstallOption3Button:SetText(_G.LARGE)
+		InstallOption3Button:SetScript('OnClick', function()
+			E.global.general.UIScale = .8
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
+			E.PixelScaleChanged()
+		end)
+
+		InstallOption4Button:Show()
+		InstallOption4Button:SetText(L["Auto Scale"])
+		InstallOption4Button:SetScript('OnClick', function()
+			E.global.general.UIScale = E:PixelBestSize()
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
+			E.PixelScaleChanged()
+		end)
+
+		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc3:FontTemplate(nil, 18)
 	elseif PageNum == 7 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
 		f.Desc2:SetText(L["This will change the layout of your unitframes and actionbars."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
-		InstallOption1Button:SetText(L["Tank / Physical DPS"])
+		InstallOption1Button:SetText(_G.STAT_CATEGORY_MELEE)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
-		InstallOption2Button:SetText(L["Healer"])
+		InstallOption2Button:SetText(_G.CLUB_FINDER_HEALER)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
-		InstallOption3Button:SetText(L["Caster DPS"])
+		InstallOption3Button:SetText(_G.STAT_CATEGORY_RANGED)
 	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Auras"])
 		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
 		f.Desc2:SetText(L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupAuras(true) end)
-		InstallOption1Button:SetText(L["Aura Bars & Icons"])
+		InstallOption1Button:SetText(L["Aura Bars"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E:SetupAuras() end)
 		InstallOption2Button:SetText(L["Icons Only"])
@@ -740,7 +780,7 @@ function E:Install()
 		f:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
 
 		f.Title = f:CreateFontString(nil, 'OVERLAY')
-		f.Title:FontTemplate(nil, 17, nil)
+		f.Title:FontTemplate(nil, 20)
 		f.Title:Point('TOP', 0, -5)
 		f.Title:SetText(L["ElvUI Installation"])
 
@@ -796,7 +836,7 @@ function E:Install()
 		f.Slider.Max:Point('LEFT', f.Slider, 'RIGHT', 3, 0)
 		f.Slider.Cur = f.Slider:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 		f.Slider.Cur:Point('BOTTOM', f.Slider, 'TOP', 0, 10)
-		f.Slider.Cur:FontTemplate(nil, 30, nil)
+		f.Slider.Cur:FontTemplate(nil, 22)
 
 		f.Option1 = CreateFrame('Button', 'InstallOption1Button', f, 'UIPanelButtonTemplate, BackdropTemplate')
 		f.Option1:Size(160, 30)
@@ -840,21 +880,22 @@ function E:Install()
 		S:HandleButton(f.Option4, true)
 
 		f.SubTitle = f:CreateFontString(nil, 'OVERLAY')
-		f.SubTitle:FontTemplate(nil, 15, nil)
+		f.SubTitle:FontTemplate(nil, 20)
 		f.SubTitle:Point('TOP', 0, -40)
+		f.SubTitle:SetTextColor(unpack(E.media.rgbvaluecolor))
 
 		f.Desc1 = f:CreateFontString(nil, 'OVERLAY')
-		f.Desc1:FontTemplate()
+		f.Desc1:FontTemplate(nil, 16)
 		f.Desc1:Point('TOPLEFT', 20, -75)
 		f.Desc1:Width(f:GetWidth() - 40)
 
 		f.Desc2 = f:CreateFontString(nil, 'OVERLAY')
-		f.Desc2:FontTemplate()
+		f.Desc2:FontTemplate(nil, 16)
 		f.Desc2:Point('TOPLEFT', 20, -125)
 		f.Desc2:Width(f:GetWidth() - 40)
 
 		f.Desc3 = f:CreateFontString(nil, 'OVERLAY')
-		f.Desc3:FontTemplate()
+		f.Desc3:FontTemplate(nil, 16)
 		f.Desc3:Point('TOPLEFT', 20, -175)
 		f.Desc3:Width(f:GetWidth() - 40)
 

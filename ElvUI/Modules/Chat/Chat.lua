@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local gsub, strfind, gmatch, format, max = gsub, strfind, gmatch, format, max
-local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
+local ipairs, sort, wipe, date, time, difftime = ipairs, sort, wipe, date, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tinsert, tremove, tconcat = tinsert, tremove, table.concat
@@ -52,6 +52,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local IsActivePlayerMentor = IsActivePlayerMentor
 local UnitName = UnitName
 
+local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_PlayerMentorship_IsActivePlayerConsideredNewcomer = C_PlayerMentorship.IsActivePlayerConsideredNewcomer
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
@@ -740,12 +741,25 @@ function CH:StyleChat(frame)
 	frame.styled = true
 end
 
+function CH:GetChatTime()
+	local unix = time()
+	local realm = not CH.db.timeStampLocalTime and C_DateAndTime_GetCurrentCalendarTime()
+	if realm then -- blizzard is weird
+		realm.day = realm.monthDay
+		realm.min = date('%M', unix)
+		realm.sec = date('%S', unix)
+		realm = time(realm)
+	end
+
+	return realm or unix
+end
+
 function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHistory, historyTime)
 	local historyTimestamp --we need to extend the arguments on AddMessage so we can properly handle times without overriding
 	if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
 
 	if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
-		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or time())
+		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or CH:GetChatTime())
 		timeStamp = gsub(timeStamp, ' ', '')
 		timeStamp = gsub(timeStamp, 'AM', ' AM')
 		timeStamp = gsub(timeStamp, 'PM', ' PM')
@@ -1137,7 +1151,9 @@ function CH:PositionChat(chat)
 	end
 
 	if chat.FontStringContainer then
-		chat.FontStringContainer:SetOutside(chat, 3, 3)
+		chat.FontStringContainer:ClearAllPoints()
+		chat.FontStringContainer:SetPoint('TOPLEFT', chat, 'TOPLEFT', -1, 1)
+		chat.FontStringContainer:SetPoint('BOTTOMRIGHT', chat, 'BOTTOMRIGHT', 1, -1)
 	end
 
 	if chat:IsShown() then
@@ -1153,16 +1169,16 @@ function CH:PositionChat(chat)
 		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
 
 		chat:ClearAllPoints()
-		chat:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 5)
-		chat:Size(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET - LOG_OFFSET)
+		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 5)
+		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
 		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
 
 		chat:ClearAllPoints()
-		chat:Point('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 5)
-		chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET - LOG_OFFSET)
+		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 5)
+		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
@@ -2404,7 +2420,7 @@ function CH:SaveChatHistory(event, ...)
 
 	if #tempHistory > 0 and not CH:MessageIsProtected(tempHistory[1]) then
 		tempHistory[50] = event
-		tempHistory[51] = time()
+		tempHistory[51] = CH:GetChatTime()
 
 		local coloredName, battleTag
 		if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end

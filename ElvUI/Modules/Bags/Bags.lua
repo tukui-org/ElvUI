@@ -35,7 +35,6 @@ local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab
-local GetDetailedItemLevelInfo = GetDetailedItemLevelInfo
 local GetGuildBankItemLink = GetGuildBankItemLink
 local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetItemInfo = GetItemInfo
@@ -100,6 +99,8 @@ local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 local SEARCH = SEARCH
+
+local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame, ElvUIReagentBankFrameItem1
 
@@ -409,19 +410,7 @@ function B:UpgradeCheck_OnUpdate(elapsed)
 end
 
 function B:UpdateItemScrapIcon(slot)
-	if not E.db.bags.scrapIcon then
-		slot.ScrapIcon:SetShown(false)
-		return
-	end
-
-	local itemLoc = _G.ItemLocation:CreateFromBagAndSlot(slot:GetParent():GetID(), slot:GetID())
-	if itemLoc and itemLoc ~= '' then
-		if E.db.bags.scrapIcon and (C_Item_DoesItemExist(itemLoc) and C_Item_CanScrapItem(itemLoc)) then
-			slot.ScrapIcon:SetShown(itemLoc)
-		else
-			slot.ScrapIcon:SetShown(false)
-		end
-	end
+	slot.ScrapIcon:SetShown(E.db.bags.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -539,7 +528,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if showItemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
-			local iLvl = GetDetailedItemLevelInfo(itemLink)
+			local iLvl = C_Item_GetCurrentItemLevel(slot.itemLocation)
 
 			if canShowItemLevel and iLvl and iLvl >= B.db.itemLevelThreshold then
 				slot.itemLevel:SetText(iLvl)
@@ -884,8 +873,8 @@ function B:Layout(isBank)
 	local f = B:GetContainerFrame(isBank)
 	if not f then return end
 
-	local buttonSize = isBank and B.db.bankSize or B.db.bagSize
-	local buttonSpacing = E.Border * 2
+	local buttonSpacing = E:Scale(E.Border * 2)
+	local buttonSize = E:Scale(isBank and B.db.bankSize or B.db.bagSize)
 	local containerWidth = ((isBank and B.db.bankWidth) or B.db.bagWidth)
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
@@ -893,9 +882,9 @@ function B:Layout(isBank)
 	local bagSpacing = B.db.split.bagSpacing
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
 
-	f.holderFrame:Width(holderWidth)
+	f.holderFrame:SetWidth(holderWidth)
 	if isBank then
-		f.reagentFrame:Width(holderWidth)
+		f.reagentFrame:SetWidth(holderWidth)
 	end
 
 	f.totalSlots = 0
@@ -903,8 +892,8 @@ function B:Layout(isBank)
 	local numContainerSlots = isBank and 8 or 5
 
 	f.totalSlots = 0
-	f.holderFrame:Width(holderWidth)
-	f.ContainerHolder:Size(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
+	f.holderFrame:SetWidth(holderWidth)
+	f.ContainerHolder:SetSize(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
 
 	if isBank and not f.fullBank then
 		f.fullBank = select(2, GetNumBankSlots())
@@ -937,7 +926,7 @@ function B:Layout(isBank)
 			end
 
 			assignedBag = B:GetBagAssignedInfo(f.ContainerHolder[i])
-			f.ContainerHolder[i]:Size(buttonSize)
+			f.ContainerHolder[i]:SetSize(buttonSize, buttonSize)
 		end
 
 		--Bag Slots
@@ -958,9 +947,9 @@ function B:Layout(isBank)
 				f.totalSlots = f.totalSlots + 1
 
 				f.Bags[bagID][slotID]:SetID(slotID)
-				f.Bags[bagID][slotID]:Size(buttonSize)
+				f.Bags[bagID][slotID]:SetSize(buttonSize, buttonSize)
 
-				f.Bags[bagID][slotID].JunkIcon:Size(buttonSize / 2)
+				f.Bags[bagID][slotID].JunkIcon:SetSize(buttonSize / 2, buttonSize / 2)
 
 				B:UpdateSlot(f, bagID, slotID)
 
@@ -1017,7 +1006,7 @@ function B:Layout(isBank)
 			totalSlots = totalSlots + 1
 
 			f.reagentFrame.slots[i]:ClearAllPoints()
-			f.reagentFrame.slots[i]:Size(buttonSize)
+			f.reagentFrame.slots[i]:SetSize(buttonSize, buttonSize)
 
 			if f.reagentFrame.slots[i-1] then
 				if(totalSlots - 1) % numContainerColumns == 0 then
@@ -1036,7 +1025,8 @@ function B:Layout(isBank)
 		end
 	end
 
-	f:Size(containerWidth, (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing) + (isSplit and (numBags * bagSpacing) or 0 ) + f.topOffset + f.bottomOffset); -- 8 is the cussion of the f.holderFrame
+	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
+	f:SetSize(containerWidth, buttonsHeight + f.topOffset + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
 end
 
 function B:UpdateReagentSlot(slotID)
@@ -1838,6 +1828,10 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	if slot.BattlepayItemTexture then
 		slot.BattlepayItemTexture:Hide()
+	end
+
+	if not slot.itemLocation then
+		slot.itemLocation = _G.ItemLocation:CreateFromBagAndSlot(bagID, slotID)
 	end
 
 	if not slot.newItemGlow then

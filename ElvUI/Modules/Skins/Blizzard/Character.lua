@@ -224,8 +224,18 @@ local function UpdateCurrencySkins()
 			if button.categoryRight then button.categoryRight:Kill() end
 			if button.categoryMiddle then button.categoryMiddle:Kill() end
 
+			if not button.backdrop then
+				button:CreateBackdrop(nil, nil, nil, true)
+			end
+
 			if button.icon then
 				button.icon:SetTexCoord(unpack(E.TexCoords))
+				button.icon:Size(17, 17)
+
+				button.backdrop:SetOutside(button.icon, 1, 1)
+				button.backdrop:Show()
+			else
+				button.backdrop:Hide()
 			end
 
 			if button.expandIcon then
@@ -242,6 +252,8 @@ local function UpdateCurrencySkins()
 				end
 
 				if button.isHeader then
+					button.backdrop:Hide()
+
 					if button.isExpanded then
 						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
 						button.expandIcon:SetTexCoord(0,1,0,1)

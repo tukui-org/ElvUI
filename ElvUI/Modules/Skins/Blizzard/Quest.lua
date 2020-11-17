@@ -90,7 +90,8 @@ function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride
 		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', 1)
 	end
 
-	if NewSealStyle() or GetQuestBackgroundMaterial() then
+	local material = GetQuestBackgroundMaterial()
+	if (material and material ~= 'Parchment') or NewSealStyle() then
 		scrollFrame.spellTex:Hide()
 		scrollFrame.backdrop:Hide()
 	else

@@ -13,20 +13,17 @@ local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetLootRollItemInfo = GetLootRollItemInfo
 local GetLootRollItemLink = GetLootRollItemLink
 local GetLootRollTimeLeft = GetLootRollTimeLeft
+local ShowInspectCursor = ShowInspectCursor
 local IsControlKeyDown = IsControlKeyDown
 local IsModifiedClick = IsModifiedClick
 local IsShiftKeyDown = IsShiftKeyDown
 local ResetCursor = ResetCursor
 local RollOnLoot = RollOnLoot
-local SetDesaturation = SetDesaturation
-local ShowInspectCursor = ShowInspectCursor
 
 local C_LootHistoryGetItem = C_LootHistory.GetItem
 local C_LootHistoryGetPlayerInfo = C_LootHistory.GetPlayerInfo
-local GREED = GREED
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local NEED = NEED
-local PASS = PASS
+local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
 
 local pos = 'TOP';
@@ -228,9 +225,14 @@ function M:START_LOOT_ROLL(_, rollID, time)
 	if canNeed then f.needbutt:Enable() else f.needbutt:Disable() end
 	if canGreed then f.greedbutt:Enable() else f.greedbutt:Disable() end
 	if canDisenchant then f.disenchantbutt:Enable() else f.disenchantbutt:Disable() end
-	SetDesaturation(f.needbutt:GetNormalTexture(), not canNeed)
-	SetDesaturation(f.greedbutt:GetNormalTexture(), not canGreed)
-	SetDesaturation(f.disenchantbutt:GetNormalTexture(), not canDisenchant)
+
+	local needTexture = f.needbutt:GetNormalTexture()
+	local greenTexture = f.greedbutt:GetNormalTexture()
+	local disenchantTexture = f.disenchantbutt:GetNormalTexture()
+	needTexture:SetDesaturation(not canNeed)
+	greenTexture:SetDesaturation(not canGreed)
+	disenchantTexture:SetDesaturation(not canDisenchant)
+
 	if canNeed then f.needbutt:SetAlpha(1) else f.needbutt:SetAlpha(0.2) end
 	if canGreed then f.greedbutt:SetAlpha(1) else f.greedbutt:SetAlpha(0.2) end
 	if canDisenchant then f.disenchantbutt:SetAlpha(1) else f.disenchantbutt:SetAlpha(0.2) end

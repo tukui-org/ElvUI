@@ -75,13 +75,13 @@ local function OnEnter()
 	local addLine, goldSpace
 	for _, info in ipairs(E.global.datatexts.settings.Currencies.tooltipData) do
 		local name, id, _, enabled = unpack(info)
-		if id and enabled then
+		if enabled and id and E.global.datatexts.settings.Currencies.idEnable[id] then
 			if type(id) == 'number' then
 				AddInfo(id)
 			end
 
 			goldSpace = true
-		elseif enabled then
+		elseif enabled and E.global.datatexts.settings.Currencies.headers and not id then
 			if addLine then
 				DT.tooltip:AddLine(' ')
 			else

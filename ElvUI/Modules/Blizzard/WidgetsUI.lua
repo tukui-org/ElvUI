@@ -2,10 +2,26 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local B = E:GetModule('Blizzard')
 
 local _G = _G
+local unpack = unpack
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function topCenterPosition(self, _, b)
+local atlasColors = {
+	["UI-Frame-Bar-Fill-Blue"]			= {0.2, 0.6, 1.0},
+	["UI-Frame-Bar-Fill-Red"]			= {0.9, 0.2, 0.2},
+	["UI-Frame-Bar-Fill-Yellow"]		= {1.0, 0.6, 0.0},
+	["objectivewidget-bar-fill-left"]	= {0.2, 0.6, 1.0},
+	["objectivewidget-bar-fill-right"]	= {0.9, 0.2, 0.2}
+}
+
+local function UpdateBarTexture(bar, atlas)
+	if atlasColors[atlas] then
+		bar:SetStatusBarTexture(E.media.normTex)
+		bar:SetStatusBarColor(unpack(atlasColors[atlas]))
+	end
+end
+
+local function TopCenterPosition(self, _, b)
 	local holder = _G.TopCenterContainerHolder
 	if b and (b ~= holder) then
 		self:ClearAllPoints()
@@ -14,7 +30,7 @@ local function topCenterPosition(self, _, b)
 	end
 end
 
-local function belowMinimapPosition(self, _, b)
+local function BelowMinimapPosition(self, _, b)
 	local holder = _G.BelowMinimapContainerHolder
 	if b and (b ~= holder) then
 		self:ClearAllPoints()
@@ -23,7 +39,48 @@ local function belowMinimapPosition(self, _, b)
 	end
 end
 
-local function UIWidgets()
+function B:UIWidgetTemplateStatusBar()
+	local bar = self.Bar
+	local atlas = bar:GetStatusBarAtlas()
+	UpdateBarTexture(bar, atlas)
+
+	if not bar.backdrop then
+		bar:CreateBackdrop('Transparent')
+
+		bar.BGLeft:SetAlpha(0)
+		bar.BGRight:SetAlpha(0)
+		bar.BGCenter:SetAlpha(0)
+		bar.BorderLeft:SetAlpha(0)
+		bar.BorderRight:SetAlpha(0)
+		bar.BorderCenter:SetAlpha(0)
+		bar.Spark:SetAlpha(0)
+	end
+end
+
+function B:UIWidgetTemplateCaptureBar()
+	self.LeftLine:SetAlpha(0)
+	self.RightLine:SetAlpha(0)
+	self.BarBackground:SetAlpha(0)
+	self.Glow1:SetAlpha(0)
+	self.Glow2:SetAlpha(0)
+	self.Glow3:SetAlpha(0)
+
+	self.LeftBar:SetTexture(E.media.normTex)
+	self.RightBar:SetTexture(E.media.normTex)
+	self.NeutralBar:SetTexture(E.media.normTex)
+
+	self.LeftBar:SetVertexColor(0.2, 0.6, 1.0)
+	self.RightBar:SetVertexColor(0.9, 0.2, 0.2)
+	self.NeutralBar:SetVertexColor(0.8, 0.8, 0.8)
+
+	if not self.backdrop then
+		self:CreateBackdrop()
+		self.backdrop:Point('TOPLEFT', self.LeftBar, -2, 2)
+		self.backdrop:Point('BOTTOMRIGHT', self.RightBar, 2, -2)
+	end
+end
+
+function B:Handle_UIWidgets()
 	local topCenterContainer = _G.UIWidgetTopCenterContainerFrame
 	local belowMiniMapcontainer = _G.UIWidgetBelowMinimapContainerFrame
 
@@ -44,10 +101,10 @@ local function UIWidgets()
 	belowMiniMapcontainer:ClearAllPoints()
 	belowMiniMapcontainer:Point('CENTER', belowMiniMapHolder, 'CENTER')
 
-	hooksecurefunc(topCenterContainer, 'SetPoint', topCenterPosition)
-	hooksecurefunc(belowMiniMapcontainer, 'SetPoint', belowMinimapPosition)
-end
+	hooksecurefunc(topCenterContainer, 'SetPoint', TopCenterPosition)
+	hooksecurefunc(belowMiniMapcontainer, 'SetPoint', BelowMinimapPosition)
 
-function B:Handle_UIWidgets()
-	UIWidgets()
+	-- Credits ShestakUI
+	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', B.UIWidgetTemplateStatusBar)
+	hooksecurefunc(_G.UIWidgetTemplateCaptureBarMixin, 'Setup', B.UIWidgetTemplateCaptureBar)
 end

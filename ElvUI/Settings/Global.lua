@@ -47,7 +47,7 @@ G.datatexts = {
 		CallToArms = { Label = '', NoLabel = false },
 		Combat = { TimeFull = true },
 		Crit = { Label = '', NoLabel = false, decimalLength = 1 },
-		Currencies = { goldFormat = 'BLIZZARD', goldCoins = true, displayedCurrency = 'BACKPACK', displayStyle = 'ICON', tooltipData = {} },
+		Currencies = { goldFormat = 'BLIZZARD', goldCoins = true, displayedCurrency = 'BACKPACK', displayStyle = 'ICON', tooltipData = {}, idEnable = {}, headers = true },
 		Durability = { percThreshold = 30 },
 		ElvUI = { Label = '' },
 		Experience = { textFormat = 'CUR' },

@@ -137,6 +137,7 @@ local DefaultConfig = {
 	disableCountDownNumbers = false,
 	useDrawBling = true,
 	useDrawSwipeOnCharges = true,
+	handleOverlay = true,
 }
 
 --- Create a new action button.
@@ -1409,7 +1410,7 @@ function UpdateHotkeys(self)
 end
 
 function ShowOverlayGlow(self)
-	if LBG then
+	if LBG and self.config.handleOverlay then
 		LBG.ShowOverlayGlow(self)
 	end
 end
@@ -1421,7 +1422,7 @@ function HideOverlayGlow(self)
 end
 
 function UpdateOverlayGlow(self)
-	local spellId = self:GetSpellId()
+	local spellId = self.config.handleOverlay and self:GetSpellId()
 	if spellId and IsSpellOverlayed(spellId) then
 		ShowOverlayGlow(self)
 	else

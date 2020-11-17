@@ -23,31 +23,30 @@ local SharedBarOptions = {
 
 SharedBarOptions.barGroup.inline = true
 SharedBarOptions.barGroup.args.point = ACH:Select(L["Anchor Point"], L["The first button anchors itself to this point on the bar."], 1, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
-SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 3, { min = 0, max = 1, step = 0.01, isPercent = true })
-SharedBarOptions.barGroup.args.spacer1 = ACH:Spacer(19, 'full')
-SharedBarOptions.barGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 21)
-SharedBarOptions.barGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 21)
-SharedBarOptions.barGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 21, C.Values.FontSize)
-SharedBarOptions.barGroup.args.countTextPosition = ACH:Select(L["Text Anchor"], nil, 21, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
-SharedBarOptions.barGroup.args.countTextXOffset = ACH:Range(L["X-Offset"], nil, 21, { min = -10, max = 10, step = 1 })
-SharedBarOptions.barGroup.args.countTextYOffset = ACH:Range(L["Y-Offset"], nil, 21, { min = -10, max = 10, step = 1 })
+SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 2, { min = 0, max = 1, step = 0.01, isPercent = true })
+SharedBarOptions.barGroup.args.spacer1 = ACH:Spacer(15, 'full')
 SharedBarOptions.barGroup.args.customCountFont = ACH:Toggle(L["Custom Count Font"], nil, 20)
-SharedBarOptions.barGroup.args.spacer2 = ACH:Spacer(22, 'full')
-SharedBarOptions.barGroup.args.customHotkeyFont = ACH:Toggle(L["Custom Keybind Font"], nil, 23)
-SharedBarOptions.barGroup.args.hotkeyFont = ACH:SharedMediaFont(L["Font"], nil, 24)
-SharedBarOptions.barGroup.args.hotkeyFontOutline = ACH:FontFlags(L["Font Outline"], nil, 24)
-SharedBarOptions.barGroup.args.hotkeyFontSize = ACH:Range(L["Font Size"], nil, 24, C.Values.FontSize)
-SharedBarOptions.barGroup.args.hotkeyTextPosition = ACH:Select(L["Text Anchor"], nil, 24, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
-SharedBarOptions.barGroup.args.hotkeyTextXOffset = ACH:Range(L["X-Offset"], nil, 24, { min = -10, max = 10, step = 1 })
-SharedBarOptions.barGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil, 24, { min = -10, max = 10, step = 1 })
-
+SharedBarOptions.barGroup.args.countTextPosition = ACH:Select(L["Text Anchor"], nil, 21, { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' })
+SharedBarOptions.barGroup.args.countTextXOffset = ACH:Range(L["X-Offset"], nil, 22, { min = -24, max = 24, step = 1 })
+SharedBarOptions.barGroup.args.countTextYOffset = ACH:Range(L["Y-Offset"], nil, 23, { min = -24, max = 24, step = 1 })
+SharedBarOptions.barGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 24)
+SharedBarOptions.barGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 25)
+SharedBarOptions.barGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 26, C.Values.FontSize)
+SharedBarOptions.barGroup.args.spacer2 = ACH:Spacer(27, 'full')
+SharedBarOptions.barGroup.args.customHotkeyFont = ACH:Toggle(L["Custom Keybind Font"], nil, 40)
+SharedBarOptions.barGroup.args.hotkeyTextPosition = ACH:Select(L["Text Anchor"], nil, 41, { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' })
+SharedBarOptions.barGroup.args.hotkeyTextXOffset = ACH:Range(L["X-Offset"], nil, 42, { min = -24, max = 24, step = 1 })
+SharedBarOptions.barGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil, 43, { min = -24, max = 24, step = 1 })
+SharedBarOptions.barGroup.args.hotkeyFont = ACH:SharedMediaFont(L["Font"], nil, 44)
+SharedBarOptions.barGroup.args.hotkeyFontOutline = ACH:FontFlags(L["Font Outline"], nil, 45)
+SharedBarOptions.barGroup.args.hotkeyFontSize = ACH:Range(L["Font Size"], nil, 46, C.Values.FontSize)
 
 SharedBarOptions.buttonGroup.inline = true
 SharedBarOptions.buttonGroup.args.buttons = ACH:Range(L["Buttons"], L["The amount of buttons to display."], 1, { min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonsPerRow = ACH:Range(L["Buttons Per Row"], L["The amount of buttons to display per row."], 2, { min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonspacing = ACH:Range(L["Button Spacing"], L["The spacing between buttons."], 3, { min = -3, max = 20, step = 1 })
-SharedBarOptions.buttonGroup.args.buttonsize = ACH:Range('', nil, 4, { min = 15, max = 64, step = 1 })
-SharedBarOptions.buttonGroup.args.buttonHeight = ACH:Range(L["Button Height"], L["The height of the action buttons."], 5, { min = 15, max = 64, step = 1 })
+SharedBarOptions.buttonGroup.args.buttonsize = ACH:Range('', nil, 4, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
+SharedBarOptions.buttonGroup.args.buttonHeight = ACH:Range(L["Button Height"], L["The height of the action buttons."], 5, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
 
 SharedBarOptions.backdropGroup.inline = true
 SharedBarOptions.backdropGroup.args.backdropSpacing = ACH:Range(L["Backdrop Spacing"], L["The spacing between the backdrop and the buttons."], 1, { min = 0, max = 10, step = 1 })
@@ -236,10 +235,6 @@ E.Options.args.actionbar.args.general = {
 							order = 27,
 							type = 'toggle',
 							name = L["Action Button Glow"],
-							set = function(_, value)
-								E.db.actionbar.handleOverlay = value
-								AB:HandleOverlay()
-							end,
 						},
 					}
 				},
@@ -267,17 +262,18 @@ E.Options.args.actionbar.args.general = {
 							type = 'range',
 							order = 2,
 							name = L["Stack Text X-Offset"],
-							min = -10, max = 10, step = 1,
+							min = -24, max = 24, step = 1,
 						},
 						countTextYOffset = {
 							type = 'range',
 							order = 3,
 							name = L["Stack Text Y-Offset"],
-							min = -10, max = 10, step = 1,
+							min = -24, max = 24, step = 1,
 						},
-						hotkeyTextPosition  = {
+						spacer1 = ACH:Spacer(5, 'full'),
+						hotkeyTextPosition = {
 							type = 'select',
-							order = 4,
+							order = 10,
 							name = L["Keybind Text Position"],
 							values = {
 								BOTTOMRIGHT = 'BOTTOMRIGHT',
@@ -290,15 +286,15 @@ E.Options.args.actionbar.args.general = {
 						},
 						hotkeyTextXOffset = {
 							type = 'range',
-							order = 5,
+							order = 11,
 							name = L["Keybind Text X-Offset"],
-							min = -10, max = 10, step = 1,
+							min = -24, max = 24, step = 1,
 						},
 						hotkeyTextYOffset = {
 							type = 'range',
-							order = 6,
+							order = 12,
 							name = L["Keybind Text Y-Offset"],
-							min = -10, max = 10, step = 1,
+							min = -24, max = 24, step = 1,
 						},
 					},
 				},
@@ -338,18 +334,19 @@ E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttonHeight.hidden =
 E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttonsPerRow.max = NUM_PET_ACTION_SLOTS
 E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttons.max = NUM_PET_ACTION_SLOTS
 E.Options.args.actionbar.args.barPet.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar.barPet.visibility = value; AB:UpdateButtonSettings() end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.countFont.disabled = function() return not E.db.actionbar.barPet.customCountFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.countFontOutline.disabled = function() return not E.db.actionbar.barPet.customCountFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.countFontSize.disabled = function() return not E.db.actionbar.barPet.customCountFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.countTextPosition.disabled = function() return not E.db.actionbar.barPet.customCountFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.countTextXOffset.disabled = function() return not E.db.actionbar.barPet.customCountFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.countTextYOffset.disabled = function() return not E.db.actionbar.barPet.customCountFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyFont.disabled = function() return not E.db.actionbar.barPet.customHotkeyFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyFontOutline.disabled = function() return not E.db.actionbar.barPet.customHotkeyFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyFontSize.disabled = function() return not E.db.actionbar.barPet.customHotkeyFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyTextPosition.disabled = function() return not E.db.actionbar.barPet.customHotkeyFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyTextXOffset.disabled = function() return not E.db.actionbar.barPet.customHotkeyFont end
-E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyTextYOffset.disabled = function() return not E.db.actionbar.barPet.customHotkeyFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.countFont.hidden = function() return not E.db.actionbar.barPet.customCountFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.countFontOutline.hidden = function() return not E.db.actionbar.barPet.customCountFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.countFontSize.hidden = function() return not E.db.actionbar.barPet.customCountFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.countTextPosition.hidden = function() return not E.db.actionbar.barPet.customCountFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.countTextXOffset.hidden = function() return not E.db.actionbar.barPet.customCountFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.countTextYOffset.hidden = function() return not E.db.actionbar.barPet.customCountFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyFont.hidden = function() return not E.db.actionbar.barPet.customHotkeyFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyFontOutline.hidden = function() return not E.db.actionbar.barPet.customHotkeyFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyFontSize.hidden = function() return not E.db.actionbar.barPet.customHotkeyFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyTextPosition.hidden = function() return not E.db.actionbar.barPet.customHotkeyFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyTextXOffset.hidden = function() return not E.db.actionbar.barPet.customHotkeyFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.hotkeyTextYOffset.hidden = function() return not E.db.actionbar.barPet.customHotkeyFont end
+E.Options.args.actionbar.args.barPet.args.barGroup.args.spacer2.hidden = function() return not E.db.actionbar.barPet.customCountFont end
 
 
 E.Options.args.actionbar.args.stanceBar = ACH:Group(L["Stance Bar"], nil, 15, nil, function(info) return E.db.actionbar.stanceBar[info[#info]] end, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value; AB:PositionAndSizeBarShapeShift() end, function() return not E.ActionBars.Initialized end)
@@ -363,18 +360,19 @@ E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttonsPerRow.max 
 E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttons.max = NUM_STANCE_SLOTS
 E.Options.args.actionbar.args.stanceBar.args.barGroup.args.style = ACH:Select(L["Style"], L["This setting will be updated upon changing stances."], 12, { darkenInactive = L["Darken Inactive"], classic = L["Classic"] })
 E.Options.args.actionbar.args.stanceBar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar.stanceBar.visibility = value; AB:UpdateButtonSettings() end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countFont.disabled = function() return not E.db.actionbar.stanceBar.customCountFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countFontOutline.disabled = function() return not E.db.actionbar.stanceBar.customCountFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countFontSize.disabled = function() return not E.db.actionbar.stanceBar.customCountFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countTextPosition.disabled = function() return not E.db.actionbar.stanceBar.customCountFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countTextXOffset.disabled = function() return not E.db.actionbar.stanceBar.customCountFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countTextYOffset.disabled = function() return not E.db.actionbar.stanceBar.customCountFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyFont.disabled = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyFontOutline.disabled = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyFontSize.disabled = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyTextPosition.disabled = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyTextXOffset.disabled = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyTextYOffset.disabled = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countFont.hidden = function() return not E.db.actionbar.stanceBar.customCountFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countFontOutline.hidden = function() return not E.db.actionbar.stanceBar.customCountFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countFontSize.hidden = function() return not E.db.actionbar.stanceBar.customCountFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countTextPosition.hidden = function() return not E.db.actionbar.stanceBar.customCountFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countTextXOffset.hidden = function() return not E.db.actionbar.stanceBar.customCountFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.countTextYOffset.hidden = function() return not E.db.actionbar.stanceBar.customCountFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyFont.hidden = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyFontOutline.hidden = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyFontSize.hidden = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyTextPosition.hidden = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyTextXOffset.hidden = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.hotkeyTextYOffset.hidden = function() return not E.db.actionbar.stanceBar.customHotkeyFont end
+E.Options.args.actionbar.args.stanceBar.args.barGroup.args.spacer2.hidden = function() return not E.db.actionbar.stanceBar.customCountFont end
 
 E.Options.args.actionbar.args.microbar = ACH:Group(L["Micro Bar"], nil, 16, nil, function(info) return E.db.actionbar.microbar[info[#info]] end, function(info, value) E.db.actionbar.microbar[info[#info]] = value; AB:UpdateMicroPositionDimensions() end, function() return not E.ActionBars.Initialized end)
 E.Options.args.actionbar.args.microbar.args = CopyTable(SharedBarOptions)
@@ -460,18 +458,19 @@ for i = 1, 10 do
 
 	bar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar['bar'..i].visibility = value AB:UpdateButtonSettings() end
 
-	bar.args.barGroup.args.countFont.disabled = function() return not E.db.actionbar['bar'..i].customCountFont end
-	bar.args.barGroup.args.countFontOutline.disabled = function() return not E.db.actionbar['bar'..i].customCountFont end
-	bar.args.barGroup.args.countFontSize.disabled = function() return not E.db.actionbar['bar'..i].customCountFont end
-	bar.args.barGroup.args.countTextXOffset.disabled = function() return not E.db.actionbar['bar'..i].customCountFont end
-	bar.args.barGroup.args.countTextYOffset.disabled = function() return not E.db.actionbar['bar'..i].customCountFont end
-	bar.args.barGroup.args.countTextPosition.disabled = function() return not E.db.actionbar['bar'..i].customCountFont end
-	bar.args.barGroup.args.hotkeyFont.disabled = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyFontOutline.disabled = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyFontSize.disabled = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyTextPosition.disabled = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyTextXOffset.disabled = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyTextYOffset.disabled = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.countFont.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
+	bar.args.barGroup.args.countFontOutline.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
+	bar.args.barGroup.args.countFontSize.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
+	bar.args.barGroup.args.countTextXOffset.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
+	bar.args.barGroup.args.countTextYOffset.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
+	bar.args.barGroup.args.countTextPosition.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
+	bar.args.barGroup.args.hotkeyFont.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyFontOutline.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyFontSize.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyTextPosition.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyTextXOffset.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyTextYOffset.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.spacer2.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
 
 	if (E.myclass == 'DRUID' and i >= 7 or E.myclass == 'ROGUE' and i == 7) then
 		bar.args.enabled.confirm = function() return format(L["Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?"], i) end

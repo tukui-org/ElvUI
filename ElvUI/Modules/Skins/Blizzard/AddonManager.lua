@@ -5,7 +5,6 @@ local LSM = E.Libs.LSM
 local _G = _G
 local gsub = gsub
 local unpack = unpack
-local GetNumAddOns = GetNumAddOns
 local GetAddOnInfo = GetAddOnInfo
 local GetAddOnEnableState = GetAddOnEnableState
 local UIDropDownMenu_GetSelectedValue = UIDropDownMenu_GetSelectedValue
@@ -40,34 +39,31 @@ function S:AddonList()
 
 	local font = LSM:Fetch('font', 'Expressway')
 	hooksecurefunc('AddonList_Update', function()
-		local numEntrys = GetNumAddOns()
 		for i = 1, maxShown do
-			local index = AddonList.offset + i
-			if index <= numEntrys then
-				local entry = _G['AddonListEntry'..i]
-				local string = _G['AddonListEntry'..i..'Title']
+			local entry = _G['AddonListEntry'..i]
+			if entry and entry:IsShown() then
+				local id = entry:GetID()
+				local text = _G['AddonListEntry'..i..'Title']
 				local checkbox = _G['AddonListEntry'..i..'Enabled']
-				local name, title, _, loadable, reason = GetAddOnInfo(index)
+				local checktex = checkbox:GetCheckedTexture()
 
-				-- Get the character from the current list (nil is all characters)
-				local checkall
+				local checkall -- Get the character from the current list (nil is all characters)
 				local character = UIDropDownMenu_GetSelectedValue(AddonCharacterDropDown)
 				if character == true then
 					character = nil
 				else
-					checkall = GetAddOnEnableState(nil, index)
+					checkall = GetAddOnEnableState(nil, id)
 				end
 
-				local checkstate = GetAddOnEnableState(character, index)
-				local enabled = checkstate > 0
-
-				string:FontTemplate(font, 13, 'NONE')
+				text:FontTemplate(font, 13, 'NONE')
 				entry.Status:FontTemplate(font, 11, 'NONE')
 				entry.Reload:FontTemplate(font, 11, 'NONE')
 				entry.Reload:SetTextColor(1.0, 0.3, 0.3)
 				entry.LoadAddonButton.Text:FontTemplate(font, 11, 'NONE')
 
+				local checkstate = GetAddOnEnableState(character, id)
 				local enabledForSome = not character and checkstate == 1
+				local enabled = checkstate > 0
 				local disabled = not enabled or enabledForSome
 
 				if disabled then
@@ -76,34 +72,35 @@ function S:AddonList()
 					entry.Status:SetTextColor(0.7, 0.7, 0.7)
 				end
 
+				local name, title, _, loadable, reason = GetAddOnInfo(id)
 				if disabled or reason == 'DEP_DISABLED' then
-					string:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|?r?','%1'))
+					text:SetText(gsub(title or name, '|c%x%x%x%x%x%x%x%x(.-)|?r?','%1'))
 				end
 
 				if enabledForSome then
-					string:SetTextColor(0.5, 0.5, 0.5)
+					text:SetTextColor(0.5, 0.5, 0.5)
 				elseif enabled and (loadable or reason == 'DEP_DEMAND_LOADED' or reason == 'DEMAND_LOADED') then
-					string:SetTextColor(0.9, 0.9, 0.9)
+					text:SetTextColor(0.9, 0.9, 0.9)
 				elseif enabled and reason ~= 'DEP_DISABLED' then
-					string:SetTextColor(1.0, 0.2, 0.2)
+					text:SetTextColor(1.0, 0.2, 0.2)
 				else
-					string:SetTextColor(0.3, 0.3, 0.3)
+					text:SetTextColor(0.3, 0.3, 0.3)
 				end
-
-				local checktex = checkbox:GetCheckedTexture()
-				checktex:Show()
 
 				if not enabled and checkall == 1 then
 					checktex:SetVertexColor(0.3, 0.3, 0.3)
 					checktex:SetDesaturated(true)
-				elseif not checkbox.state or checkbox.state == 0 then
+					checktex:Show()
+				elseif not checkstate or checkstate == 0 then
 					checktex:Hide()
-				elseif checkbox.state == 1 then
+				elseif checkstate == 1 then
 					checktex:SetVertexColor(0.6, 0.6, 0.6)
 					checktex:SetDesaturated(true)
-				elseif checkbox.state == 2 then
+					checktex:Show()
+				elseif checkstate == 2 then
 					checktex:SetVertexColor(unpack(E.media.rgbvaluecolor))
 					checktex:SetDesaturated(false)
+					checktex:Show()
 				end
 			end
 		end

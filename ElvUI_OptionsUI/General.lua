@@ -209,28 +209,75 @@ E.Options.args.general = {
 						E:SetSmoothingAmount(value)
 					end,
 				},
-				UIScale = {
-					order = 28,
-					type = 'range',
-					name = L["UI_SCALE"],
-					min = 0.1, max = 1.25, step = 0.000000000000001,
-					softMin = 0.40, softMax = 1.15, bigStep = 0.01,
-					get = function(info) return E.global.general.UIScale end,
-					set = function(info, value)
-						E.global.general.UIScale = value
-						if not IsMouseButtonDown() then
-							E:PixelScaleChanged()
-						end
-					end
-				},
-				AutoScale = {
-					order = 29,
-					type = 'execute',
-					name = L["Auto Scale"],
-					func = function()
-						E.global.general.UIScale = E:PixelBestSize()
-						E:PixelScaleChanged()
-					end,
+				scaling = {
+					order = 50,
+					type = 'group',
+					inline = true,
+					name = L["UI Scale"],
+					get = function(info) end,
+					set = function(info, value) end,
+					args = {
+						UIScale = {
+							order = 1,
+							type = 'range',
+							name = L["UI_SCALE"],
+							min = 0.1, max = 1.25, step = 0.000000000000001,
+							softMin = 0.40, softMax = 1.15, bigStep = 0.01,
+							get = function(info) return E.global.general.UIScale end,
+							set = function(info, value)
+								E.global.general.UIScale = value
+
+								if not IsMouseButtonDown() then
+									E:PixelScaleChanged()
+									E:StaticPopup_Show('PRIVATE_RL')
+								end
+							end
+						},
+						ScaleSmall = {
+							order = 2,
+							type = 'execute',
+							name = _G.SMALL,
+							customWidth = 100,
+							func = function()
+								E.global.general.UIScale = .6
+								E:PixelScaleChanged()
+								E:StaticPopup_Show('PRIVATE_RL')
+							end,
+						},
+						ScaleMedium = {
+							order = 3,
+							type = 'execute',
+							name = _G.TIME_LEFT_MEDIUM,
+							customWidth = 100,
+							func = function()
+								E.global.general.UIScale = .7
+								E:PixelScaleChanged()
+								E:StaticPopup_Show('PRIVATE_RL')
+							end,
+						},
+						ScaleLarge = {
+							order = 4,
+							type = 'execute',
+							name = _G.LARGE,
+							customWidth = 100,
+							func = function()
+								E.global.general.UIScale = .8
+								E:PixelScaleChanged()
+								E:StaticPopup_Show('PRIVATE_RL')
+							end,
+						},
+						ScaleAuto = {
+							order = 5,
+							type = 'execute',
+							name = L["Auto Scale"],
+							customWidth = 100,
+							func = function()
+								E.global.general.UIScale = E:PixelBestSize()
+								E:PixelScaleChanged()
+								E:StaticPopup_Show('PRIVATE_RL')
+							end,
+						},
+					},
 				},
 				totems = {
 					order = 55,
