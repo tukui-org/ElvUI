@@ -87,8 +87,8 @@ local function OnEnter()
 	wipe(shownHeaders)
 	local addLine
 	for _, info in ipairs(E.global.datatexts.settings.Currencies.tooltipData) do
-		local _, id, header, enabled = unpack(info)
-		if enabled and id and E.global.datatexts.settings.Currencies.idEnable[id] then
+		local _, id, header = unpack(info)
+		if id and E.global.datatexts.settings.Currencies.idEnable[id] then
 			AddHeader(header, addLine)
 			if type(id) == 'number' then
 				AddInfo(id)
