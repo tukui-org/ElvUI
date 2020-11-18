@@ -25,7 +25,7 @@ SharedBarOptions.barGroup.inline = true
 SharedBarOptions.barGroup.args.point = ACH:Select(L["Anchor Point"], L["The first button anchors itself to this point on the bar."], 1, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
 SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 2, { min = 0, max = 1, step = 0.01, isPercent = true })
 SharedBarOptions.barGroup.args.spacer1 = ACH:Spacer(15, 'full')
-SharedBarOptions.barGroup.args.customCountFont = ACH:Toggle(L["Custom Count Font"], nil, 20)
+SharedBarOptions.barGroup.args.customCountFont = ACH:Toggle(L["Count Font"], nil, 20)
 SharedBarOptions.barGroup.args.countTextPosition = ACH:Select(L["Text Anchor"], nil, 21, { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' })
 SharedBarOptions.barGroup.args.countTextXOffset = ACH:Range(L["X-Offset"], nil, 22, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.countTextYOffset = ACH:Range(L["Y-Offset"], nil, 23, { min = -24, max = 24, step = 1 })
@@ -33,13 +33,67 @@ SharedBarOptions.barGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 2
 SharedBarOptions.barGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 25)
 SharedBarOptions.barGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 26, C.Values.FontSize)
 SharedBarOptions.barGroup.args.spacer2 = ACH:Spacer(27, 'full')
-SharedBarOptions.barGroup.args.customHotkeyFont = ACH:Toggle(L["Custom Keybind Font"], nil, 40)
+SharedBarOptions.barGroup.args.customHotkeyFont = ACH:Toggle(L["Keybind Font"], nil, 40)
 SharedBarOptions.barGroup.args.hotkeyTextPosition = ACH:Select(L["Text Anchor"], nil, 41, { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' })
 SharedBarOptions.barGroup.args.hotkeyTextXOffset = ACH:Range(L["X-Offset"], nil, 42, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil, 43, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.hotkeyFont = ACH:SharedMediaFont(L["Font"], nil, 44)
 SharedBarOptions.barGroup.args.hotkeyFontOutline = ACH:FontFlags(L["Font Outline"], nil, 45)
 SharedBarOptions.barGroup.args.hotkeyFontSize = ACH:Range(L["Font Size"], nil, 46, C.Values.FontSize)
+SharedBarOptions.barGroup.args.spacer3 = ACH:Spacer(50, 'full')
+SharedBarOptions.barGroup.args.useCountColor = ACH:Toggle(L["Count Text Color"], nil, 51)
+SharedBarOptions.barGroup.args.countColor = ACH:Color('', nil, 52, nil, nil,
+	function(info)
+		local c = E.db.actionbar[info[#info-2]][info[#info]]
+		local p = P.actionbar[info[#info-2]][info[#info]]
+		return c.r, c.g, c.b, c.a, p.r, p.g, p.b, p.a
+   	end,
+   	function(info, r, g, b, a)
+		local c = E.db.actionbar[info[#info-2]][info[#info]]
+		c.r, c.g, c.b, c.a = r, g, b, a
+		AB:UpdateButtonSettings()
+	end,
+	nil,
+	function(info)
+		return not E.db.actionbar[info[#info-2]].useCountColor
+	end
+)
+SharedBarOptions.barGroup.args.spacer4 = ACH:Spacer(55, 'full')
+SharedBarOptions.barGroup.args.useHotkeyColor = ACH:Toggle(L["Keybind Text Color"], nil, 56)
+SharedBarOptions.barGroup.args.hotkeyColor = ACH:Color('', nil, 57, nil, nil,
+	function(info)
+		local c = E.db.actionbar[info[#info-2]][info[#info]]
+		local p = P.actionbar[info[#info-2]][info[#info]]
+		return c.r, c.g, c.b, c.a, p.r, p.g, p.b, p.a
+   	end,
+   	function(info, r, g, b, a)
+		local c = E.db.actionbar[info[#info-2]][info[#info]]
+		c.r, c.g, c.b, c.a = r, g, b, a
+		AB:UpdateButtonSettings()
+	end,
+	nil,
+	function(info)
+		return not E.db.actionbar[info[#info-2]].useHotkeyColor
+	end
+)
+SharedBarOptions.barGroup.args.spacer5 = ACH:Spacer(60, 'full')
+SharedBarOptions.barGroup.args.useMacroColor = ACH:Toggle(L["Macro Text Color"], nil, 61)
+SharedBarOptions.barGroup.args.macroColor = ACH:Color('', nil, 62, nil, nil,
+	function(info)
+		local c = E.db.actionbar[info[#info-2]][info[#info]]
+		local p = P.actionbar[info[#info-2]][info[#info]]
+		return c.r, c.g, c.b, c.a, p.r, p.g, p.b, p.a
+   	end,
+   	function(info, r, g, b, a)
+		local c = E.db.actionbar[info[#info-2]][info[#info]]
+		c.r, c.g, c.b, c.a = r, g, b, a
+		AB:UpdateButtonSettings()
+	end,
+	nil,
+	function(info)
+		return not E.db.actionbar[info[#info-2]].useMacroColor
+	end
+)
 
 SharedBarOptions.buttonGroup.inline = true
 SharedBarOptions.buttonGroup.args.buttons = ACH:Range(L["Buttons"], L["The amount of buttons to display."], 1, { min = 1, max = NUM_ACTIONBAR_BUTTONS, step = 1 })
@@ -405,6 +459,15 @@ E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyTextXOffset = ni
 E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyTextYOffset = nil
 E.Options.args.actionbar.args.microbar.args.barGroup.args.spacer1 = nil
 E.Options.args.actionbar.args.microbar.args.barGroup.args.spacer2 = nil
+E.Options.args.actionbar.args.microbar.args.barGroup.args.spacer3 = nil
+E.Options.args.actionbar.args.microbar.args.barGroup.args.spacer4 = nil
+E.Options.args.actionbar.args.microbar.args.barGroup.args.useHotkeyColor = nil
+E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyColor = nil
+E.Options.args.actionbar.args.microbar.args.barGroup.args.useCountColor = nil
+E.Options.args.actionbar.args.microbar.args.barGroup.args.countColor = nil
+E.Options.args.actionbar.args.microbar.args.barGroup.args.useMacroColor = nil
+E.Options.args.actionbar.args.microbar.args.barGroup.args.macroColor = nil
+
 
 local SharedButtonOptions = {
 	alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 1, { min = 0, max = 1, step = 0.01, isPercent = true }),
