@@ -382,7 +382,7 @@ do
 
 		if Thumb and not Thumb.backdrop then
 			Thumb:SetTexture()
-			Thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, Thumb:GetFrameLevel() + 1)
+			Thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, frame:GetFrameLevel() + 1)
 
 			if Thumb.backdrop then
 				if not thumbTrimY then thumbTrimY = 3 end
