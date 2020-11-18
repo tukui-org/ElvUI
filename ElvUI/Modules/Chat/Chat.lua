@@ -975,13 +975,21 @@ function CH:UpdateEditboxAnchors()
 		local anchorTo = leftChat or frame
 		editbox:ClearAllPoints()
 
-		if CH.db.editBoxPosition == 'BELOW_CHAT' then
+		if CH.db.editBoxPosition == 'BELOW_CHAT_OUTSIDE' then
 			if not classic then bottomheight, topheight = 6, -4 end
 			editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', -width, topheight)
 			editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', width, -(panel_height+bottomheight))
-		else
+		elseif CH.db.editBoxPosition == 'ABOVE_CHAT_OUTSIDE' then
 			if not classic then bottomheight, topheight = 5, 3 end
 			editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', -width, topheight)
+			editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', width, panel_height+bottomheight)
+		elseif CH.db.editBoxPosition == 'BELOW_CHAT_INSIDE' then
+			if not classic then bottomheight, topheight = 6, -4 end
+			editbox:Point('BOTTOMLEFT', anchorTo, 'BOTTOMLEFT', -width, topheight)
+			editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', width, -(panel_height+bottomheight))
+		elseif CH.db.editBoxPosition == 'ABOVE_CHAT_INSIDE' then
+			if not classic then bottomheight, topheight = 5, 3 end
+			editbox:Point('TOPLEFT', anchorTo, 'TOPLEFT', -width, topheight)
 			editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', width, panel_height+bottomheight)
 		end
 	end

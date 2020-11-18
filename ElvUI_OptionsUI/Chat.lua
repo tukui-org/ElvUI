@@ -183,8 +183,10 @@ E.Options.args.chat = {
 					name = L["Chat EditBox Position"],
 					desc = L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."],
 					values = {
-						BELOW_CHAT = L["Below Chat"],
-						ABOVE_CHAT = L["Above Chat"],
+						BELOW_CHAT_OUTSIDE = L["Below Chat (Outside)"],
+						ABOVE_CHAT_OUTSIDE = L["Above Chat (Outside)"],
+						BELOW_CHAT_INSIDE = L["Below Chat (Inside)"],
+						ABOVE_CHAT_INSIDE = L["Above Chat (Inside)"],
 					},
 					set = function(info, value)
 						E.db.chat[info[#info]] = value;
