@@ -305,12 +305,12 @@ do
 	end
 end
 
-function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, styleTemplate, noGlossTex, override)
+function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, styleTemplate, noGlossTex, overrideTex, frameLevel)
 	assert(button, 'doesnt exist!')
 
 	if button.isSkinned then return end
 
-	if button.SetNormalTexture and not override then button:SetNormalTexture('') end
+	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture('') end
 	if button.SetHighlightTexture then button:SetHighlightTexture('') end
 	if button.SetPushedTexture then button:SetPushedTexture('') end
 	if button.SetDisabledTexture then button:SetDisabledTexture('') end
@@ -337,7 +337,7 @@ function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, st
 		if setTemplate then
 			button:SetTemplate(styleTemplate, not noGlossTex)
 		else
-			button:CreateBackdrop(styleTemplate, not noGlossTex, nil, nil, nil, nil, true)
+			button:CreateBackdrop(styleTemplate, not noGlossTex, nil, nil, nil, nil, true, frameLevel)
 		end
 
 		button:HookScript('OnEnter', S.SetModifiedBackdrop)
@@ -1092,7 +1092,7 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	end
 end
 
-function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
+function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel)
 	if btn.isSkinned then return end
 
 	if not arrowDir then
@@ -1112,7 +1112,7 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts)
 
 	btn:StripTextures()
 	if not noBackdrop then
-		S:HandleButton(btn)
+		S:HandleButton(btn, nil, nil, nil, nil, nil, nil, nil, frameLevel)
 	end
 
 	if stripTexts then

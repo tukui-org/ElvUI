@@ -187,9 +187,8 @@ end
 
 local function SkinFindGroupButton(block)
 	if block.hasGroupFinderButton and block.groupFinderButton then
-		S:HandleButton(block.groupFinderButton)
+		S:HandleButton(block.groupFinderButton, nil, nil, nil, nil, nil, nil, nil, 3)
 		block.groupFinderButton:Size(20)
-		block.groupFinderButton.backdrop:SetFrameLevel(3)
 	end
 end
 

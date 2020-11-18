@@ -280,7 +280,7 @@ function S:Blizzard_Collections()
 		local petButtonHealthFrame = _G['PetJournalLoadoutPet'..i..'HealthFrame']
 		local petButtonXPBar = _G['PetJournalLoadoutPet'..i..'XPBar']
 		petButton:StripTextures()
-		petButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		petButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
 		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
 
 		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
@@ -291,8 +291,6 @@ function S:Blizzard_Collections()
 		petButton.checked = true;
 		S:HandleItemButton(petButton)
 		petButton.levelBG:SetAtlas('PetJournal-LevelBubble', true)
-
-		petButton.backdrop:SetFrameLevel(_G['PetJournalLoadoutPet'..i].backdrop:GetFrameLevel() + 1)
 
 		petButton.setButton:StripTextures()
 		petButtonHealthFrame.healthBar:StripTextures()
