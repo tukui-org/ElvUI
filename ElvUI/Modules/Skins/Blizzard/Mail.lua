@@ -10,8 +10,7 @@ local function MailFrameSkin()
 		local btn = _G['SendMailAttachment'..i]
 		if not btn.skinned then
 			btn:StripTextures()
-			btn:CreateBackdrop(nil, true)
-			btn.backdrop:SetAllPoints()
+			btn:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
 			btn:StyleButton()
 			S:HandleIconBorder(btn.IconBorder)
 

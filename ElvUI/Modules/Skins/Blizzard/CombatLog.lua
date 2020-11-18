@@ -27,8 +27,7 @@ function S:Blizzard_CombatLog()
 
 	local bar = _G.CombatLogQuickButtonFrame_Custom
 	bar:StripTextures()
-	bar:CreateBackdrop('Transparent')
-	bar.backdrop:SetAllPoints()
+	bar:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 
 	bar:ClearAllPoints()
 	bar:SetPoint('BOTTOMLEFT', _G.ChatFrame2, 'TOPLEFT', -3, 2)

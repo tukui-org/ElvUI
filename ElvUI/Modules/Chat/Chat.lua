@@ -3248,8 +3248,7 @@ function CH:Initialize()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
 
 		if not editbox.backdrop then
-			editbox:CreateBackdrop(nil, true)
-			editbox.backdrop:SetAllPoints()
+			editbox:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
 		end
 
 		if chanName and (chatType == 'CHANNEL') then

@@ -110,10 +110,9 @@ end
 local function JournalScrollButtons(frame)
 	for i, bu in ipairs(frame.buttons) do
 		bu:StripTextures()
-		bu:CreateBackdrop('Transparent', nil, nil, true)
+		bu:CreateBackdrop('Transparent', nil, nil, true, nil, nil, true)
 		bu:Size(210, 42)
 		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
-		bu.backdrop:SetAllPoints()
 
 		local point, relativeTo, relativePoint, xOffset, yOffset = bu:GetPoint()
 		bu:ClearAllPoints()
@@ -282,8 +281,7 @@ function S:Blizzard_Collections()
 		local petButtonHealthFrame = _G['PetJournalLoadoutPet'..i..'HealthFrame']
 		local petButtonXPBar = _G['PetJournalLoadoutPet'..i..'XPBar']
 		petButton:StripTextures()
-		petButton:CreateBackdrop()
-		petButton.backdrop:SetAllPoints()
+		petButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
 
 		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
@@ -359,8 +357,7 @@ function S:Blizzard_Collections()
 		local frame = _G['PetJournalPetCardSpell'..i]
 		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 		frame:DisableDrawLayer('BACKGROUND')
-		frame:CreateBackdrop()
-		frame.backdrop:SetAllPoints()
+		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		frame.icon:SetTexCoord(unpack(E.TexCoords))
 		frame.icon:SetInside(frame.backdrop)
 	end
@@ -618,8 +615,7 @@ function S:Blizzard_Collections()
 	for i = 1, #WardrobeTransmogFrame.ModelScene.SlotButtons do
 		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:StripTextures()
 		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.ModelScene.SlotButtons[i]:GetFrameLevel() + 2)
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:CreateBackdrop()
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i].backdrop:SetAllPoints()
+		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Border:Kill()
 		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
 	end

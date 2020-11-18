@@ -417,9 +417,8 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 	elseif TYPE == 'SimpleGroup' then
 		local frame = widget.content:GetParent()
-		frame:CreateBackdrop('Transparent')
+		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 		frame.backdrop:SetFrameLevel(widget.content:GetFrameLevel())
-		frame.backdrop:SetAllPoints()
 		frame.callbackBackdropColor = S.Ace3_BackdropColor
 		S.Ace3_BackdropColor(frame)
 	end

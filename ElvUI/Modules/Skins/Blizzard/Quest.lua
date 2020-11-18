@@ -364,8 +364,7 @@ function S:BlizzardQuestFrames()
 
 	local QuestInfoItemHighlight = _G.QuestInfoItemHighlight
 	QuestInfoItemHighlight:StripTextures()
-	QuestInfoItemHighlight:CreateBackdrop()
-	QuestInfoItemHighlight.backdrop:SetAllPoints()
+	QuestInfoItemHighlight:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 	QuestInfoItemHighlight.backdrop:SetBackdropBorderColor(1, 1, 0)
 	QuestInfoItemHighlight.backdrop:SetBackdropColor(0, 0, 0, 0)
 	QuestInfoItemHighlight:Size(142, 40)

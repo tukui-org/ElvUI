@@ -113,8 +113,7 @@ function S:HandlePortraitFrame(frame, setTemplate)
 	if setTemplate then
 		frame:SetTemplate('Transparent')
 	else
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:SetAllPoints()
+		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 	end
 end
 
@@ -338,8 +337,7 @@ function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, st
 		if setTemplate then
 			button:SetTemplate(styleTemplate, not noGlossTex)
 		else
-			button:CreateBackdrop(styleTemplate, not noGlossTex)
-			button.backdrop:SetAllPoints()
+			button:CreateBackdrop(styleTemplate, not noGlossTex, nil, nil, nil, nil, true)
 		end
 
 		button:HookScript('OnEnter', S.SetModifiedBackdrop)
@@ -728,7 +726,7 @@ function S:HandleItemButton(b, shrinkIcon)
 	local texture = icon and icon.GetTexture and icon:GetTexture()
 
 	b:StripTextures()
-	b:CreateBackdrop(nil, true)
+	b:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
 	b:StyleButton()
 
 	if icon then
@@ -736,7 +734,6 @@ function S:HandleItemButton(b, shrinkIcon)
 
 		-- create a backdrop around the icon
 		if shrinkIcon then
-			b.backdrop:SetAllPoints()
 			icon:SetInside(b)
 		else
 			b.backdrop:SetOutside(icon, 1, 1)
@@ -786,8 +783,7 @@ function S:HandleSliderFrame(frame)
 	frame:SetThumbTexture(E.Media.Textures.Melli)
 
 	if not frame.backdrop then
-		frame:CreateBackdrop()
-		frame.backdrop:SetAllPoints()
+		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 	end
 
 	local thumb = frame:GetThumbTexture()
@@ -921,8 +917,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 						for y = 1, #fl.Counters do
 							local counter = fl.Counters[y]
 							if counter and not counter.backdrop then
-								counter:CreateBackdrop()
-								counter.backdrop:SetAllPoints()
+								counter:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 								counter.backdrop:SetFrameLevel(counter:GetFrameLevel())
 
 								if counter.Border then

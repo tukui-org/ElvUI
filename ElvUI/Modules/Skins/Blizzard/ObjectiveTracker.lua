@@ -57,8 +57,7 @@ local function HotkeyColor(self, r, g, b)
 end
 
 local function SkinItemButton(item)
-	item:CreateBackdrop('Transparent')
-	item.backdrop:SetAllPoints()
+	item:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 	item:StyleButton()
 	item:SetNormalTexture(nil)
 

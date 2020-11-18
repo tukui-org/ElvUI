@@ -188,16 +188,22 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	end
 end
 
-local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
+local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, setAllPoints)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
 	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
-	if forcePixelMode then
-		backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
+	if setAllPoints == true then
+		backdrop:SetAllPoints()
+	elseif setAllPoints then
+		backdrop:SetAllPoints(setAllPoints)
 	else
-		local border = (isUnitFrameElement and UF.BORDER) or (isNamePlateElement and NP.BORDER)
-		backdrop:SetOutside(frame, border, border)
+		if forcePixelMode then
+			backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
+		else
+			local border = (isUnitFrameElement and UF.BORDER) or (isNamePlateElement and NP.BORDER)
+			backdrop:SetOutside(frame, border, border)
+		end
 	end
 
 	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)

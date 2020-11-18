@@ -41,8 +41,7 @@ function S:Blizzard_AzeriteEssenceUI()
 	AzeriteEssenceUI:HookScript('OnShow', function(s)
 		s.EssenceList.HeaderButton:StripTextures()
 		if not s.EssenceList.HeaderButton.backdrop then
-			s.EssenceList.HeaderButton:CreateBackdrop('Transparent')
-			s.EssenceList.HeaderButton.backdrop:SetAllPoints()
+			s.EssenceList.HeaderButton:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 		end
 	end)
 end

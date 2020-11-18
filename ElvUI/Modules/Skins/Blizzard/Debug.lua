@@ -91,10 +91,8 @@ function S:Blizzard_DebugTools()
 
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
-		_G.FrameStackTooltip:CreateBackdrop('Transparent')
-		_G.FrameStackTooltip.backdrop:SetAllPoints()
-		_G.EventTraceTooltip:CreateBackdrop('Transparent')
-		_G.FrameStackTooltip.backdrop:SetAllPoints()
+		_G.FrameStackTooltip:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
+		_G.EventTraceTooltip:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 	end
 
 	for i=1, #FrameTexs do

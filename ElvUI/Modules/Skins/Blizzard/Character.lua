@@ -91,8 +91,7 @@ local function EquipmentDisplayButton(button)
 		button.icon:SetTexture(oldTex)
 
 		if not button.backdrop then
-			button:CreateBackdrop()
-			button.backdrop:SetAllPoints()
+			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 
 			S:HandleIconBorder(button.IconBorder)
 		end
@@ -285,8 +284,7 @@ function S:CharacterFrame()
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
-			Slot:CreateBackdrop()
-			Slot.backdrop:SetAllPoints()
+			Slot:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 			Slot.backdrop:SetFrameLevel(Slot:GetFrameLevel())
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()

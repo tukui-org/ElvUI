@@ -14,8 +14,7 @@ function S:Blizzard_ItemUpgradeUI()
 	S:HandlePortraitFrame(ItemUpgradeFrame)
 
 	local ItemButton = ItemUpgradeFrame.ItemButton
-	ItemButton:CreateBackdrop()
-	ItemButton.backdrop:SetAllPoints()
+	ItemButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 	ItemButton.Frame:SetTexture('')
 	ItemButton:SetPushedTexture('')
 	S:HandleItemButton(ItemButton)

@@ -87,8 +87,7 @@ function RU:UpdateMedia()
 	end
 
 	if RU.MarkerButton then
-		RU.MarkerButton:CreateBackdrop(nil, true)
-		RU.MarkerButton.backdrop:SetAllPoints()
+		RU.MarkerButton:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
 	end
 end
 
