@@ -105,9 +105,9 @@ function UF:Configure_ClassBar(frame)
 				else
 					if frame.USE_MINI_CLASSBAR then
 						if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
-							bars[i]:Point('BOTTOM', bars[i-1], 'TOP', 0, (db.classbar.spacing + SIDE_SPACING))
+							bars[i]:Point('BOTTOM', bars[i-1], 'TOP', 0, (db.classbar.spacing + (UF.SPACING * 2)))
 						else
-							bars[i]:Point('LEFT', bars[i-1], 'RIGHT', (db.classbar.spacing + SIDE_SPACING), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
+							bars[i]:Point('LEFT', bars[i-1], 'RIGHT', (db.classbar.spacing + (UF.SPACING * 2)), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
 						end
 					elseif i == MAX_CLASS_BAR then
 						bars[i]:Point('LEFT', bars[i-1], 'RIGHT', UF.BORDER-UF.SPACING, 0)
