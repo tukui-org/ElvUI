@@ -414,11 +414,16 @@ function S:Blizzard_Communities()
 			button.hover = hover
 		end
 
-		button.Icon:SetTexCoord(unpack(E.TexCoords))
-		if not button.Icon.backdrop then
-			button.Icon:CreateBackdrop()
-			button.Icon.backdrop:SetOutside(button.Icon, 1, 1)
-			button.Icon.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() + 1)
+		if button.Icon then
+			button.Icon:SetTexCoord(unpack(E.TexCoords))
+
+			if not button.Icon.backdrop then
+				button.Icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+
+				if button.Icon.backdrop then
+					button.Icon.backdrop:SetOutside(button.Icon, 1, 1)
+				end
+			end
 		end
 	end
 

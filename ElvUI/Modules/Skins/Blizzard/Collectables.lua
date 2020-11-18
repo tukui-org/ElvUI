@@ -110,9 +110,8 @@ end
 local function JournalScrollButtons(frame)
 	for i, bu in ipairs(frame.buttons) do
 		bu:StripTextures()
-		bu:CreateBackdrop('Transparent', nil, nil, true, nil, nil, true)
+		bu:CreateBackdrop('Transparent', nil, nil, true, nil, nil, true, true)
 		bu:Size(210, 42)
-		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
 
 		local point, relativeTo, relativePoint, xOffset, yOffset = bu:GetPoint()
 		bu:ClearAllPoints()
@@ -539,12 +538,14 @@ function S:Blizzard_Collections()
 		if pending then
 			local Glowframe = pending.Glowframe
 			Glowframe:SetAtlas(nil)
-			Glowframe:CreateBackdrop()
-			Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
-			Glowframe.backdrop:SetPoint('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
-			Glowframe.backdrop:SetFrameLevel(pending:GetFrameLevel())
-			Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
-			Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
+			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+
+			if Glowframe.backdrop then
+				Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
+				Glowframe.backdrop:SetPoint('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
+				Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
+				Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
+			end
 
 			for i = 1, 12 do
 				if i < 5 then

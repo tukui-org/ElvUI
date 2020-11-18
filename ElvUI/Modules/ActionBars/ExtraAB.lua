@@ -150,8 +150,7 @@ function AB:SetupExtraButton()
 
 			self:StyleButton(button, true) -- registers cooldown too
 			button.icon:SetDrawLayer('ARTWORK')
-			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
-			button.backdrop:SetFrameLevel(button:GetFrameLevel())
+			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
 
 			AB:ExtraButtons_BossStyle(button)
 

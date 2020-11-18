@@ -252,8 +252,7 @@ function AB:UpdateStanceBindings()
 end
 
 function AB:CreateBarShapeShift()
-	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
-	bar.backdrop:SetFrameLevel(0)
+	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
 
 	bar:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
 

@@ -139,9 +139,11 @@ function S:Ace3_RegisterAsWidget(widget)
 		local checkbg = widget.checkbg
 		local highlight = widget.highlight
 
-		checkbg:CreateBackdrop()
-		checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
-		checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
+		checkbg:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+
+		if checkbg.backdrop then
+			checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
+		end
 
 		checkbg:SetTexture()
 		highlight:SetTexture()
@@ -194,10 +196,9 @@ function S:Ace3_RegisterAsWidget(widget)
 		local text = frame.text
 
 		frame:StripTextures()
-		frame:CreateBackdrop()
+		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 		frame.backdrop:Point('TOPLEFT', 0, -21)
 		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
-		frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
 
 		frame.label:ClearAllPoints()
 		frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -389,8 +390,7 @@ function S:Ace3_RegisterAsContainer(widget)
 			frame.callbackBackdropColor = S.Ace3_BackdropColor
 			S.Ace3_BackdropColor(frame)
 		elseif TYPE == 'Window' then
-			frame:CreateBackdrop('Transparent')
-			frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
+			frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 		else
 			frame:SetTemplate('Transparent')
 		end
@@ -417,8 +417,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 	elseif TYPE == 'SimpleGroup' then
 		local frame = widget.content:GetParent()
-		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
-		frame.backdrop:SetFrameLevel(widget.content:GetFrameLevel())
+		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true, widget.content:GetFrameLevel())
 		frame.callbackBackdropColor = S.Ace3_BackdropColor
 		S.Ace3_BackdropColor(frame)
 	end

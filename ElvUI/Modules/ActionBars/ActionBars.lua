@@ -371,8 +371,7 @@ function AB:CreateBar(id)
 	bar:SetFrameStrata('LOW')
 	bar.id = id
 
-	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
-	bar.backdrop:SetFrameLevel(0)
+	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
 
 	bar.buttons = {}
 	bar.bindButtons = defaults.bindButtons

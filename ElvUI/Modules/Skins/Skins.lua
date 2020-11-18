@@ -363,10 +363,9 @@ do
 		local Thumb = GrabScrollBarElement(frame, 'ThumbTexture') or GrabScrollBarElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
 
 		frame:StripTextures()
-		frame:CreateBackdrop()
+		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 		frame.backdrop:Point('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
 		frame.backdrop:Point('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
-		frame.backdrop:SetFrameLevel(frame.backdrop:GetFrameLevel() + 1)
 
 		if frame.ScrollUpBorder then
 			frame.ScrollUpBorder:Hide()
@@ -383,13 +382,15 @@ do
 
 		if Thumb and not Thumb.backdrop then
 			Thumb:SetTexture()
-			Thumb:CreateBackdrop(nil, true, true)
-			if not thumbTrimY then thumbTrimY = 3 end
-			if not thumbTrimX then thumbTrimX = 2 end
-			Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
-			Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
-			Thumb.backdrop:SetFrameLevel(Thumb.backdrop:GetFrameLevel() + 2)
-			Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
+			Thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, Thumb:GetFrameLevel() + 1)
+
+			if Thumb.backdrop then
+				if not thumbTrimY then thumbTrimY = 3 end
+				if not thumbTrimX then thumbTrimX = 2 end
+				Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
+				Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
+				Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
+			end
 
 			frame.Thumb = Thumb
 		end
@@ -513,8 +514,7 @@ function S:HandleEditBox(frame)
 
 	if frame.backdrop then return end
 
-	frame:CreateBackdrop()
-	frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
+	frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 	S:HandleBlizzardRegions(frame)
 
 	local EditBoxName = frame:GetName()
@@ -917,12 +917,12 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 						for y = 1, #fl.Counters do
 							local counter = fl.Counters[y]
 							if counter and not counter.backdrop then
-								counter:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
-								counter.backdrop:SetFrameLevel(counter:GetFrameLevel())
+								counter:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
 
 								if counter.Border then
 									counter.Border:SetTexture()
 								end
+
 								if counter.Icon then
 									counter.Icon:SetTexCoord(unpack(E.TexCoords))
 									counter.Icon:SetInside()

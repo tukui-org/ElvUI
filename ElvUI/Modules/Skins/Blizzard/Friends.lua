@@ -36,7 +36,9 @@ local function SkinSocialHeaderTab(tab)
 		local tex = _G[tab:GetName()..object]
 		tex:SetTexture()
 	end
+
 	tab:GetHighlightTexture():SetTexture()
+
 	tab.backdrop = CreateFrame('Frame', nil, tab, 'BackdropTemplate')
 	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)

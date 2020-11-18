@@ -188,15 +188,19 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	end
 end
 
-local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, setAllPoints)
+local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, setAllPoints, setFrameLevel)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
 	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
-	if setAllPoints == true then
-		backdrop:SetAllPoints()
-	elseif setAllPoints then
-		backdrop:SetAllPoints(setAllPoints)
+	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
+
+	if setAllPoints then
+		if setAllPoints == true then
+			backdrop:SetAllPoints()
+		else
+			backdrop:SetAllPoints(setAllPoints)
+		end
 	else
 		if forcePixelMode then
 			backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
@@ -206,14 +210,20 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 		end
 	end
 
-	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
-
-	local frameLevel = parent.GetFrameLevel and parent:GetFrameLevel()
-	local frameLevelMinusOne = frameLevel and (frameLevel - 1)
-	if frameLevelMinusOne and (frameLevelMinusOne >= 0) then
-		backdrop:SetFrameLevel(frameLevelMinusOne)
+	if setFrameLevel then
+		if setFrameLevel == true then
+			backdrop:SetFrameLevel(parent:GetFrameLevel())
+		else
+			backdrop:SetFrameLevel(setFrameLevel)
+		end
 	else
-		backdrop:SetFrameLevel(0)
+		local frameLevel = parent.GetFrameLevel and parent:GetFrameLevel()
+		local frameLevelMinusOne = frameLevel and (frameLevel - 1)
+		if frameLevelMinusOne and (frameLevelMinusOne >= 0) then
+			backdrop:SetFrameLevel(frameLevelMinusOne)
+		else
+			backdrop:SetFrameLevel(0)
+		end
 	end
 end
 
