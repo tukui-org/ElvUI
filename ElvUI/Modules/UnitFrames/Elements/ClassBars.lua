@@ -30,6 +30,8 @@ function UF:Configure_ClassBar(frame)
 	bars.Holder = frame.ClassBarHolder
 	bars.origParent = frame
 
+	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
+
 	--Fix height in case it is lower than the theme allows, or in case it's higher than 30px when not detached
 	if not UF.thinBorders and (frame.CLASSBAR_HEIGHT > 0 and frame.CLASSBAR_HEIGHT < 7) then --A height of 7 means 6px for borders and just 1px for the actual power statusbar
 		frame.CLASSBAR_HEIGHT = 7
@@ -55,10 +57,10 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
-		if frame.MAX_CLASS_BAR == 1 or frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
+		if MAX_CLASS_BAR == 1 or frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
 			CLASSBAR_WIDTH = CLASSBAR_WIDTH * 2/3
 		else
-			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (frame.MAX_CLASS_BAR - 1) / frame.MAX_CLASS_BAR
+			CLASSBAR_WIDTH = CLASSBAR_WIDTH * (MAX_CLASS_BAR - 1) / MAX_CLASS_BAR
 		end
 	elseif frame.CLASSBAR_DETACHED then --Detached
 		CLASSBAR_WIDTH = db.classbar.detachedWidth
@@ -76,22 +78,22 @@ function UF:Configure_ClassBar(frame)
 		for i = 1, maxClassBarButtons do
 			bars[i].backdrop:Hide()
 
-			if i <= frame.MAX_CLASS_BAR then
+			if i <= MAX_CLASS_BAR then
 				if not bars[i].backdrop.forcedBorderColors then
 					bars[i].backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				end
 
 				bars[i]:Height(bars:GetHeight())
-				if frame.MAX_CLASS_BAR == 1 then
+				if MAX_CLASS_BAR == 1 then
 					bars[i]:Width(CLASSBAR_WIDTH)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
 						bars[i]:Width(CLASSBAR_WIDTH)
 					else
-						bars[i]:Width((CLASSBAR_WIDTH - ((5 + (UF.BORDER*2 + UF.SPACING*2))*(frame.MAX_CLASS_BAR - 1)))/frame.MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
+						bars[i]:Width((CLASSBAR_WIDTH - ((5 + (UF.BORDER*2 + UF.SPACING*2))*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 					end
-				elseif i ~= frame.MAX_CLASS_BAR then
-					bars[i]:Width((CLASSBAR_WIDTH - ((frame.MAX_CLASS_BAR-1)*(UF.BORDER*2-UF.SPACING))) / frame.MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
+				elseif i ~= MAX_CLASS_BAR then
+					bars[i]:Width((CLASSBAR_WIDTH - ((MAX_CLASS_BAR-1)*(UF.BORDER*2-UF.SPACING))) / MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
 				end
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
@@ -105,7 +107,7 @@ function UF:Configure_ClassBar(frame)
 						else
 							bars[i]:Point('LEFT', bars[i-1], 'RIGHT', (db.classbar.spacing + UF.BORDER*2 + UF.SPACING*2), 0) --5px spacing between borders of each button(replaced with Detached Spacing option)
 						end
-					elseif i == frame.MAX_CLASS_BAR then
+					elseif i == MAX_CLASS_BAR then
 						bars[i]:Point('LEFT', bars[i-1], 'RIGHT', UF.BORDER-UF.SPACING, 0)
 						bars[i]:Point('RIGHT', bars)
 					else
@@ -134,7 +136,7 @@ function UF:Configure_ClassBar(frame)
 					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
 					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
 					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
-					local maxComboPoints = ((frame.MAX_CLASS_BAR == 10 and 10) or (frame.MAX_CLASS_BAR > 5 and 6 or 5))
+					local maxComboPoints = ((MAX_CLASS_BAR == 10 and 10) or (MAX_CLASS_BAR > 5 and 6 or 5))
 
 					bars[i]:SetStatusBarColor(ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3))
 				end
