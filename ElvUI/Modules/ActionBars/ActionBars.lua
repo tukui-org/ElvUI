@@ -646,8 +646,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 			count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		end
 
-		local color = db and db.useCountColor and db.countColor or color
-		count:SetTextColor(color.r, color.g, color.b)
+		local c = db and db.useCountColor and db.countColor or color
+		count:SetTextColor(c.r, c.g, c.b)
 	end
 
 	if macroText then
@@ -655,8 +655,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		macroText:Point('BOTTOM', 0, 1)
 		macroText:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 
-		local color = db and db.useMacroColor and db.macroColor or color
-		macroText:SetTextColor(color.r, color.g, color.b)
+		local c = db and db.useMacroColor and db.macroColor or color
+		macroText:SetTextColor(c.r, c.g, c.b)
 	end
 
 	if not button.noBackdrop and not button.backdrop and not button.useMasque then
@@ -696,10 +696,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 			hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		end
 
-		if button.config and not button.outOfRange then
-			local color = db and db.useHotkeyColor and db.hotkeyColor or color
-			button.HotKey:SetTextColor(color.r, color.g, color.b)
-		end
+		AB:UpdateHotkeyColor(button)
 	end
 
 	--Extra Action Button
@@ -722,6 +719,14 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		E:RegisterCooldown(button.cooldown)
 
 		AB.handledbuttons[button] = true
+	end
+end
+
+function AB:UpdateHotkeyColor(button)
+	if button.config and not button.outOfRange then
+		local db = button.db
+		local c = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
+		button.HotKey:SetVertexColor(c.r, c.g, c.b)
 	end
 end
 
@@ -1314,11 +1319,7 @@ function AB:LAB_ButtonUpdate(button)
 end
 
 function AB:LAB_UpdateRange(button)
-	if button.config and not button.outOfRange then
-		local db = button.db
-		local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
-		button.HotKey:SetTextColor(color.r, color.g, color.b)
-	end
+	AB:UpdateHotkeyColor(button)
 end
 
 function AB:LAB_CooldownDone(button)

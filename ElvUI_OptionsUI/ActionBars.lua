@@ -47,8 +47,8 @@ SharedBarOptions.barGroup.args.countColor = ACH:Color('', nil, 52, nil, nil,
 		local c = E.db.actionbar[info[#info-2]][info[#info]]
 		local p = P.actionbar[info[#info-2]][info[#info]]
 		return c.r, c.g, c.b, c.a, p.r, p.g, p.b, p.a
-   	end,
-   	function(info, r, g, b, a)
+	end,
+	function(info, r, g, b, a)
 		local c = E.db.actionbar[info[#info-2]][info[#info]]
 		c.r, c.g, c.b, c.a = r, g, b, a
 		AB:UpdateButtonSettings()
@@ -65,8 +65,8 @@ SharedBarOptions.barGroup.args.hotkeyColor = ACH:Color('', nil, 57, nil, nil,
 		local c = E.db.actionbar[info[#info-2]][info[#info]]
 		local p = P.actionbar[info[#info-2]][info[#info]]
 		return c.r, c.g, c.b, c.a, p.r, p.g, p.b, p.a
-   	end,
-   	function(info, r, g, b, a)
+	end,
+	function(info, r, g, b, a)
 		local c = E.db.actionbar[info[#info-2]][info[#info]]
 		c.r, c.g, c.b, c.a = r, g, b, a
 		AB:UpdateButtonSettings()
@@ -83,8 +83,8 @@ SharedBarOptions.barGroup.args.macroColor = ACH:Color('', nil, 62, nil, nil,
 		local c = E.db.actionbar[info[#info-2]][info[#info]]
 		local p = P.actionbar[info[#info-2]][info[#info]]
 		return c.r, c.g, c.b, c.a, p.r, p.g, p.b, p.a
-   	end,
-   	function(info, r, g, b, a)
+	end,
+	function(info, r, g, b, a)
 		local c = E.db.actionbar[info[#info-2]][info[#info]]
 		c.r, c.g, c.b, c.a = r, g, b, a
 		AB:UpdateButtonSettings()
