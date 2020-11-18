@@ -2228,6 +2228,12 @@ P.actionbar = {
 		hotkeyTextPosition = 'TOPRIGHT',
 		hotkeyTextXOffset = 0,
 		hotkeyTextYOffset = -3,
+		useHotkeyColor = false,
+		hotkeyColor = { r = 1, g = 1, b = 1 },
+		useCountColor = false,
+		countColor = { r = 1, g = 1, b = 1 },
+		useMacroColor = false,
+		macroColor = { r = 1, g = 1, b = 1 },
 	},
 	stanceBar = {
 		enabled = true,
@@ -2262,6 +2268,12 @@ P.actionbar = {
 		hotkeyTextPosition = 'TOPRIGHT',
 		hotkeyTextXOffset = 0,
 		hotkeyTextYOffset = -3,
+		useHotkeyColor = false,
+		hotkeyColor = { r = 1, g = 1, b = 1 },
+		useCountColor = false,
+		countColor = { r = 1, g = 1, b = 1 },
+		useMacroColor = false,
+		macroColor = { r = 1, g = 1, b = 1 },
 	},
 	extraActionButton = {
 		alpha = 1,
@@ -2319,6 +2331,12 @@ for i = 1, 10 do
 		hotkeyTextPosition = 'TOPRIGHT',
 		hotkeyTextXOffset = 0,
 		hotkeyTextYOffset = -3,
+		useHotkeyColor = false,
+		hotkeyColor = { r = 1, g = 1, b = 1 },
+		useCountColor = false,
+		countColor = { r = 1, g = 1, b = 1 },
+		useMacroColor = false,
+		macroColor = { r = 1, g = 1, b = 1 },
 	}
 end
 

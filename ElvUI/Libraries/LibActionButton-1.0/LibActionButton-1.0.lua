@@ -985,6 +985,7 @@ function UpdateRange(self, force) -- Sezz: moved from OnUpdate
 				hotkey:SetVertexColor(unpack(self.config.colors.usable))
 			end
 		end
+		lib.callbacks:Fire("OnUpdateRange", self)
 	end
 end
 

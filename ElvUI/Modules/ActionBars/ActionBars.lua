@@ -635,7 +635,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
 	if border and not button.useMasque then border:Kill() end
-
 	if count then
 		count:ClearAllPoints()
 
@@ -647,6 +646,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 			count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		end
 
+		local color = db and db.useCountColor and db.countColor or color
 		count:SetTextColor(color.r, color.g, color.b)
 	end
 
@@ -654,6 +654,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		macroText:ClearAllPoints()
 		macroText:Point('BOTTOM', 0, 1)
 		macroText:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+
+		local color = db and db.useMacroColor and db.macroColor or color
 		macroText:SetTextColor(color.r, color.g, color.b)
 	end
 
@@ -694,7 +696,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 			hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		end
 
-		if button.config and (button.config.outOfRangeColoring ~= 'hotkey') then
+		if button.config and not button.outOfRange then
+			local color = db and db.useHotkeyColor and db.hotkeyColor or color
 			button.HotKey:SetTextColor(color.r, color.g, color.b)
 		end
 	end
@@ -1297,14 +1300,24 @@ end
 
 function AB:LAB_ButtonUpdate(button)
 	local color = AB.db.fontColor
-	button.Count:SetTextColor(color.r, color.g, color.b)
-	if button.config and (button.config.outOfRangeColoring ~= 'hotkey') then
-		button.HotKey:SetTextColor(color.r, color.g, color.b)
+	local db = button.db
+
+	do
+		local color = db and db.useCountColor and db.countColor or color
+		button.Count:SetTextColor(color.r, color.g, color.b)
 	end
 
 	if button.backdrop then
 		color = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
 		button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	end
+end
+
+function AB:LAB_UpdateRange(button)
+	if button.config and not button.outOfRange then
+		local db = button.db
+		local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
+		button.HotKey:SetTextColor(color.r, color.g, color.b)
 	end
 end
 
@@ -1334,6 +1347,7 @@ function AB:Initialize()
 	AB.Initialized = true
 
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
+	LAB.RegisterCallback(AB, 'OnUpdateRange', AB.LAB_UpdateRange)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
