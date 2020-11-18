@@ -163,6 +163,11 @@ function M:SetupHybridMinimap()
 	MapCanvas:SetScript('OnMouseUp', E.noop)
 end
 
+function M:EncounterJournal_OpenJournal()
+	if InCombatLockdown() or not WorldMapFrame:IsShown() then return end
+	HideUIPanel(WorldMapFrame)
+end
+
 function M:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_TimeManager' then
 		_G.TimeManagerClockButton:Kill()
@@ -171,10 +176,8 @@ function M:ADDON_LOADED(_, addon)
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
 	elseif addon == 'Blizzard_EncounterJournal' then
-		M:Hook('EncounterJournal_OpenJournal', function()
-			if InCombatLockdown() then return end
-			HideUIPanel(WorldMapFrame)
-		end, true)
+		-- Since the default non-quest map is full screen, it overrides the showing of the encounter journal
+		hooksecurefunc('EncounterJournal_OpenJournal', M.EncounterJournal_OpenJournal)
 	end
 end
 
