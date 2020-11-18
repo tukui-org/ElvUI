@@ -29,6 +29,7 @@ local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 local hooksecurefunc = hooksecurefunc
 local Minimap = _G.Minimap
+local WorldMapFrame = _G.WorldMapFrame
 
 -- GLOBALS: GetMinimapShape
 
@@ -169,6 +170,11 @@ function M:ADDON_LOADED(_, addon)
 		_G.FeedbackUIButton:Kill()
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
+	elseif addon == 'Blizzard_EncounterJournal' then
+		M:Hook('EncounterJournal_OpenJournal', function()
+			if InCombatLockdown() then return end
+			HideUIPanel(WorldMapFrame)
+		end, true)
 	end
 end
 
