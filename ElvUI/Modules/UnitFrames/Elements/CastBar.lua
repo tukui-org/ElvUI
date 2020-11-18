@@ -101,8 +101,11 @@ function UF:Configure_Castbar(frame)
 	local castbar = frame.Castbar
 	local db = frame.db.castbar
 
-	castbar:Width(db.width - ((UF.BORDER+UF.SPACING)*2))
-	castbar:Height(db.height - ((UF.BORDER+UF.SPACING)*2))
+	local BORDER = UF.BORDER + UF.SPACING
+	local SCALED_TRIPLE = E:Scale(UF.SPACING * 3)
+
+	castbar:Width(db.width - (BORDER*2))
+	castbar:Height(db.height - (BORDER*2))
 	castbar.Holder:Size(db.width, db.height)
 
 	local oSC = castbar.Holder:GetScript('OnSizeChanged')
@@ -151,8 +154,8 @@ function UF:Configure_Castbar(frame)
 	castbar.Text:Point('LEFT', castbar, 'LEFT', db.xOffsetText, db.yOffsetText)
 	castbar.Time:Point('RIGHT', castbar, 'RIGHT', db.xOffsetTime, db.yOffsetTime)
 
-	castbar.Text:Width(castbar.Text:GetStringWidth())
-	castbar.Time:Width(castbar.Time:GetStringWidth())
+	castbar.Text:SetWidth(castbar.Text:GetStringWidth())
+	castbar.Time:SetWidth(castbar.Time:GetStringWidth())
 
 	--Icon
 	if db.icon then
@@ -163,7 +166,7 @@ function UF:Configure_Castbar(frame)
 			castbar.Icon.bg:Size(db.iconSize)
 		else
 			castbar.Icon.bg:Size(db.height-UF.SPACING*2)
-			castbar:Width(db.width - castbar.Icon.bg:GetWidth() - (UF.BORDER + UF.SPACING*5))
+			castbar:SetWidth(db.width - castbar.Icon.bg:GetWidth() - (BORDER*5))
 		end
 
 		castbar.Icon.bg:Show()
@@ -198,21 +201,22 @@ function UF:Configure_Castbar(frame)
 			castbar:SetInside(anchor, 0, 0)
 		else
 			if castbar.Icon then
-				castbar.Icon.bg:Size(anchor:GetHeight() - UF.SPACING*2)
+				local size = anchor:GetHeight() + SCALED_TRIPLE
+				castbar.Icon.bg:SetSize(size, size)
 			end
 
 			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - UF.BORDER) or 0
 			if frame.ORIENTATION == 'RIGHT' then
-				castbar:Point('TOPLEFT', anchor, 'TOPLEFT')
-				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - UF.SPACING*3, 0)
+				castbar:SetPoint('TOPLEFT', anchor, 'TOPLEFT')
+				castbar:SetPoint('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - SCALED_TRIPLE, 0)
 			else
-				castbar:Point('TOPLEFT', anchor, 'TOPLEFT',  iconWidth + UF.SPACING*3, 0)
-				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
+				castbar:SetPoint('TOPLEFT', anchor, 'TOPLEFT', iconWidth + SCALED_TRIPLE, 0)
+				castbar:SetPoint('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
 			end
 		end
 
 		if db.spark then
-			castbar.Spark:Height(anchor:GetHeight() * 2)
+			castbar.Spark:SetHeight(anchor:GetHeight() * 2)
 		end
 	else
 		if db.positionsGroup then
@@ -221,9 +225,9 @@ function UF:Configure_Castbar(frame)
 		end
 
 		if frame.ORIENTATION ~= 'RIGHT' then
-			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(UF.BORDER+UF.SPACING), UF.BORDER+UF.SPACING)
+			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -BORDER, BORDER)
 		else
-			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', UF.BORDER+UF.SPACING, UF.BORDER+UF.SPACING)
+			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', BORDER, BORDER)
 		end
 	end
 
@@ -235,9 +239,9 @@ function UF:Configure_Castbar(frame)
 	elseif db.icon then
 		castbar.Icon.bg:ClearAllPoints()
 		if frame.ORIENTATION == 'RIGHT' then
-			castbar.Icon.bg:Point('LEFT', castbar, 'RIGHT', UF.SPACING*3, 0)
+			castbar.Icon.bg:SetPoint('LEFT', castbar, 'RIGHT', SCALED_TRIPLE, 0)
 		else
-			castbar.Icon.bg:Point('RIGHT', castbar, 'LEFT', -UF.SPACING*3, 0)
+			castbar.Icon.bg:SetPoint('RIGHT', castbar, 'LEFT', -SCALED_TRIPLE, 0)
 		end
 	end
 
@@ -305,7 +309,7 @@ function UF:CustomCastDelayText(duration)
 		end
 	end
 
-	self.Time:Width(self.Time:GetStringWidth())
+	self.Time:SetWidth(self.Time:GetStringWidth())
 end
 
 function UF:CustomTimeText(duration)
@@ -335,7 +339,7 @@ function UF:CustomTimeText(duration)
 		end
 	end
 
-	self.Time:Width(self.Time:GetStringWidth())
+	self.Time:SetWidth(self.Time:GetStringWidth())
 end
 
 function UF:HideTicks()
@@ -362,8 +366,8 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 		end
 
 		ticks[i]:ClearAllPoints()
-		ticks[i]:Point('RIGHT', frame, 'LEFT', d * i, 0)
-		ticks[i]:Height(frame.tickHeight)
+		ticks[i]:SetPoint('RIGHT', frame, 'LEFT', d * i, 0)
+		ticks[i]:SetHeight(frame.tickHeight)
 		ticks[i]:Show()
 	end
 end
@@ -456,7 +460,7 @@ function UF:PostCastStart(unit)
 		elseif ticksSize then
 			local curHaste = UnitSpellHaste('player') * 0.01
 			local baseTickSize = ticksSize
-			local hastedTickSize = baseTickSize / (1 +  curHaste)
+			local hastedTickSize = baseTickSize / (1 + curHaste)
 			local extraTick = self.max - hastedTickSize * (baseTicks)
 			local extraTickRatio = extraTick / hastedTickSize
 
