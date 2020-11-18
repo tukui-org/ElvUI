@@ -112,10 +112,13 @@ end
 
 function S:Ace3_SkinTab(tab)
 	tab:StripTextures()
-	tab:CreateBackdrop(nil, true, true)
-	tab.backdrop:Point('TOPLEFT', 10, -3)
-	tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
 	tab.text:Point('LEFT', 14, -1)
+
+	tab:CreateBackdrop(nil, true, true)
+	if tab.backdrop then
+		tab.backdrop:Point('TOPLEFT', 10, -3)
+		tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
+	end
 
 	hooksecurefunc(tab, 'SetSelected', S.Ace3_TabSetSelected)
 end
@@ -171,8 +174,10 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame:StripTextures()
 		frame:CreateBackdrop()
-		frame.backdrop:Point('TOPLEFT', 15, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
+		if frame.backdrop then
+			frame.backdrop:Point('TOPLEFT', 15, -2)
+			frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
+		end
 
 		S:HandleNextPrevButton(button, nil, nextPrevColor)
 
@@ -197,8 +202,10 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame:StripTextures()
 		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
-		frame.backdrop:Point('TOPLEFT', 0, -21)
-		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
+		if frame.backdrop then
+			frame.backdrop:Point('TOPLEFT', 0, -21)
+			frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
+		end
 
 		frame.label:ClearAllPoints()
 		frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -280,9 +287,11 @@ function S:Ace3_RegisterAsWidget(widget)
 		local colorSwatch = widget.colorSwatch
 
 		frame:CreateBackdrop()
-		frame.backdrop:Size(24, 16)
-		frame.backdrop:ClearAllPoints()
-		frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
+		if frame.backdrop then
+			frame.backdrop:Size(24, 16)
+			frame.backdrop:ClearAllPoints()
+			frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
+		end
 
 		colorSwatch:SetTexture(E.Media.Textures.White8x8)
 		colorSwatch:ClearAllPoints()
