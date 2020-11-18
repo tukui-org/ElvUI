@@ -962,35 +962,25 @@ function CH:UpdateEditboxAnchors()
 
 	local classic = cvar == 'classic'
 	local leftChat = classic and _G.LeftChatPanel
-	local bottomheight, topheight = 1, 0
-	local width = classic and 0 or 5
-	local panel_height = 22
+	local panel = 22
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[name]
 		local editbox = frame and frame.editBox
 		if not editbox then return end
 		editbox.chatStyle = cvar
-
-		local anchorTo = leftChat or frame
 		editbox:ClearAllPoints()
 
-		if CH.db.editBoxPosition == 'BELOW_CHAT' then
-			if not classic then bottomheight, topheight = 6, -4 end
-			editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', -width, topheight)
-			editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', width, -(panel_height+bottomheight))
-		elseif CH.db.editBoxPosition == 'ABOVE_CHAT' then
-			if not classic then bottomheight, topheight = 5, 3 end
-			editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', -width, topheight)
-			editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', width, panel_height+bottomheight)
-		elseif CH.db.editBoxPosition == 'BELOW_CHAT_INSIDE' then
-			if not classic then bottomheight, topheight = 6, -4 end
-			editbox:Point('BOTTOMLEFT', anchorTo, 'BOTTOMLEFT', -width, topheight)
-			editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', width, -(panel_height+bottomheight))
-		elseif CH.db.editBoxPosition == 'ABOVE_CHAT_INSIDE' then
-			if not classic then bottomheight, topheight = 5, 3 end
-			editbox:Point('TOPLEFT', anchorTo, 'TOPLEFT', -width, topheight)
-			editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', width, panel_height+bottomheight)
+		local anchorTo = leftChat or frame
+		local below, belowInside = CH.db.editBoxPosition == 'BELOW_CHAT', CH.db.editBoxPosition == 'BELOW_CHAT_INSIDE'
+		if below or belowInside then
+			local showLeftPanel = E.db.datatexts.panels.LeftChatDataPanel.enable
+			editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', classic and (showLeftPanel and 1 or 0) or -2, (classic and (belowInside and 1 or 0) or -5))
+			editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', classic and (showLeftPanel and -1 or 0) or -2, (classic and (belowInside and 1 or 0) or -5) + (belowInside and panel or -panel))
+		else
+			local aboveInside = CH.db.editBoxPosition == 'ABOVE_CHAT_INSIDE'
+			editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', classic and (aboveInside and 1 or 0) or -2, (classic and (aboveInside and -1 or 0) or 2))
+			editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', classic and (aboveInside and -1 or 0) or 2, (classic and (aboveInside and -1 or 0) or 2) + (aboveInside and -panel or panel))
 		end
 	end
 end
