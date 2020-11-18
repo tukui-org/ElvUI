@@ -166,7 +166,7 @@ function UF:Configure_Castbar(frame)
 			castbar.Icon.bg:Size(db.iconSize)
 		else
 			castbar.Icon.bg:Size(db.height-UF.SPACING*2)
-			castbar:Width(db.width - castbar.Icon.bg:GetWidth() - (BORDER*5))
+			castbar:Width(db.width - castbar.Icon.bg:GetWidth() - (UF.BORDER + UF.SPACING*5))
 		end
 
 		castbar.Icon.bg:Show()
