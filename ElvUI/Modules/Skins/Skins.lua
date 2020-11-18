@@ -1315,12 +1315,10 @@ do
 	}
 end
 
-function S:SkinWidgetContainer(widgetContainer)
-	for _, child in ipairs({widgetContainer:GetChildren()}) do
-		local typeFunc = S.WidgetSkinningFuncs[child.widgetType]
-		if typeFunc and S[typeFunc] then
-			S[typeFunc](S, child)
-		end
+function S:SkinWidgetContainer(widget)
+	local typeFunc = S.WidgetSkinningFuncs[widget.widgetType]
+	if typeFunc and S[typeFunc] then
+		S[typeFunc](S, widget)
 	end
 end
 
