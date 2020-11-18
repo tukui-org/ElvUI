@@ -536,7 +536,7 @@ function S:Blizzard_Collections()
 		if pending then
 			local Glowframe = pending.Glowframe
 			Glowframe:SetAtlas(nil)
-			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
 
 			if Glowframe.backdrop then
 				Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
