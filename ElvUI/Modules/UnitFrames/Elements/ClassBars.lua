@@ -46,10 +46,8 @@ function UF:Configure_ClassBar(frame)
 	UF.ToggleResourceBar(bars)
 
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
-	local SPACING = UF.BORDER + UF.SPACING
-	local SIDE_SPACING = E:Scale(SPACING * 2)
-	local CLASSBAR_WIDTH = E:Scale(frame.CLASSBAR_WIDTH) - SIDE_SPACING
-	local CLASSBAR_HEIGHT = E:Scale(frame.CLASSBAR_HEIGHT) - SIDE_SPACING
+	local BORDER = UF.BORDER + UF.SPACING
+	local BORDERS = BORDER * 2
 
 	local color = E.db.unitframe.colors.borderColor
 	if not bars.backdrop.forcedBorderColors then
@@ -57,6 +55,9 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
+	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
+	local CLASSBAR_HEIGHT = frame.CLASSBAR_HEIGHT
+
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		if MAX_CLASS_BAR == 1 or frame.ClassBar == 'AdditionalPower' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
 			CLASSBAR_WIDTH = (CLASSBAR_WIDTH * 2) / 3
@@ -67,7 +68,7 @@ function UF:Configure_ClassBar(frame)
 		CLASSBAR_WIDTH = db.classbar.detachedWidth
 	end
 
-	bars:SetSize(CLASSBAR_WIDTH, CLASSBAR_HEIGHT)
+	bars:Size(CLASSBAR_WIDTH, CLASSBAR_HEIGHT)
 
 	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' then
 		if E.myclass == 'DEATHKNIGHT' and frame.ClassBar == 'Runes' then
@@ -89,13 +90,13 @@ function UF:Configure_ClassBar(frame)
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
 						bars[i]:SetWidth(CLASSBAR_WIDTH)
 					else
-						bars[i]:SetWidth((CLASSBAR_WIDTH - ((5+SIDE_SPACING)*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
+						bars[i]:SetWidth((CLASSBAR_WIDTH - ((5+BORDERS)*(MAX_CLASS_BAR - 1)))/MAX_CLASS_BAR) --Width accounts for 5px spacing between each button, excluding borders
 					end
 				elseif i ~= MAX_CLASS_BAR then
 					bars[i]:SetWidth((CLASSBAR_WIDTH - ((MAX_CLASS_BAR-1)*(UF.BORDER*2-UF.SPACING))) / MAX_CLASS_BAR) --classbar width minus total width of dividers between each button, divided by number of buttons
 				end
 
-				bars[i]:SetHeight(CLASSBAR_HEIGHT)
+				bars[i]:Height(CLASSBAR_HEIGHT)
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
 
@@ -185,7 +186,7 @@ function UF:Configure_ClassBar(frame)
 		bars.Holder:SetSize(db.classbar.detachedWidth, db.classbar.height)
 
 		bars:ClearAllPoints()
-		bars:Point('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', SPACING, SPACING)
+		bars:Point('BOTTOMLEFT', bars.Holder, 'BOTTOMLEFT', BORDER, BORDER)
 
 		if not bars.Holder.mover then
 			E:CreateMover(bars.Holder, 'ClassBarMover', L["Classbar"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,classbar')

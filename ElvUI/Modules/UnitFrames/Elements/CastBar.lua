@@ -102,10 +102,10 @@ function UF:Configure_Castbar(frame)
 	local db = frame.db.castbar
 
 	local BORDER = UF.BORDER + UF.SPACING
-	local SCALED_TRIPLE = E:Scale(UF.SPACING * 3)
+	local BORDERS = BORDER * 2
 
-	castbar:Width(db.width - (BORDER*2))
-	castbar:Height(db.height - (BORDER*2))
+	castbar:Width(db.width - BORDERS)
+	castbar:Height(db.height - BORDERS)
 	castbar.Holder:Size(db.width, db.height)
 
 	local oSC = castbar.Holder:GetScript('OnSizeChanged')
@@ -166,7 +166,7 @@ function UF:Configure_Castbar(frame)
 			castbar.Icon.bg:Size(db.iconSize)
 		else
 			castbar.Icon.bg:Size(db.height-UF.SPACING*2)
-			castbar:SetWidth(db.width - castbar.Icon.bg:GetWidth() - (BORDER*5))
+			castbar:Width(db.width - castbar.Icon.bg:GetWidth() - (BORDER*5))
 		end
 
 		castbar.Icon.bg:Show()
@@ -201,22 +201,21 @@ function UF:Configure_Castbar(frame)
 			castbar:SetInside(anchor, 0, 0)
 		else
 			if castbar.Icon then
-				local size = anchor:GetHeight() + SCALED_TRIPLE
-				castbar.Icon.bg:SetSize(size, size)
+				castbar.Icon.bg:Size(anchor:GetHeight() - UF.SPACING*2)
 			end
 
 			local iconWidth = db.icon and (castbar.Icon.bg:GetWidth() - UF.BORDER) or 0
 			if frame.ORIENTATION == 'RIGHT' then
-				castbar:SetPoint('TOPLEFT', anchor, 'TOPLEFT')
-				castbar:SetPoint('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - SCALED_TRIPLE, 0)
+				castbar:Point('TOPLEFT', anchor, 'TOPLEFT')
+				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - UF.SPACING*3, 0)
 			else
-				castbar:SetPoint('TOPLEFT', anchor, 'TOPLEFT', iconWidth + SCALED_TRIPLE, 0)
-				castbar:SetPoint('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
+				castbar:Point('TOPLEFT', anchor, 'TOPLEFT',  iconWidth + UF.SPACING*3, 0)
+				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
 			end
 		end
 
 		if db.spark then
-			castbar.Spark:SetHeight(anchor:GetHeight() * 2)
+			castbar.Spark:Height(anchor:GetHeight() * 2)
 		end
 	else
 		if db.positionsGroup then
@@ -239,9 +238,9 @@ function UF:Configure_Castbar(frame)
 	elseif db.icon then
 		castbar.Icon.bg:ClearAllPoints()
 		if frame.ORIENTATION == 'RIGHT' then
-			castbar.Icon.bg:SetPoint('LEFT', castbar, 'RIGHT', SCALED_TRIPLE, 0)
+			castbar.Icon.bg:Point('LEFT', castbar, 'RIGHT', UF.SPACING*3, 0)
 		else
-			castbar.Icon.bg:SetPoint('RIGHT', castbar, 'LEFT', -SCALED_TRIPLE, 0)
+			castbar.Icon.bg:Point('RIGHT', castbar, 'LEFT', -UF.SPACING*3, 0)
 		end
 	end
 
@@ -366,8 +365,8 @@ function UF:SetCastTicks(frame, numTicks, extraTickRatio)
 		end
 
 		ticks[i]:ClearAllPoints()
-		ticks[i]:SetPoint('RIGHT', frame, 'LEFT', d * i, 0)
-		ticks[i]:SetHeight(frame.tickHeight)
+		ticks[i]:Point('RIGHT', frame, 'LEFT', d * i, 0)
+		ticks[i]:Height(frame.tickHeight)
 		ticks[i]:Show()
 	end
 end
