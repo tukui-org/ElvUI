@@ -101,11 +101,8 @@ function UF:Configure_Castbar(frame)
 	local castbar = frame.Castbar
 	local db = frame.db.castbar
 
-	local BORDER = UF.BORDER + UF.SPACING
-	local BORDERS = BORDER * 2
-
-	castbar:Width(db.width - BORDERS)
-	castbar:Height(db.height - BORDERS)
+	castbar:Width(db.width - ((UF.BORDER+UF.SPACING)*2))
+	castbar:Height(db.height - ((UF.BORDER+UF.SPACING)*2))
 	castbar.Holder:Size(db.width, db.height)
 
 	local oSC = castbar.Holder:GetScript('OnSizeChanged')
@@ -224,9 +221,9 @@ function UF:Configure_Castbar(frame)
 		end
 
 		if frame.ORIENTATION ~= 'RIGHT' then
-			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -BORDER, BORDER)
+			castbar:Point('BOTTOMRIGHT', castbar.Holder, 'BOTTOMRIGHT', -(UF.BORDER+UF.SPACING), UF.BORDER+UF.SPACING)
 		else
-			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', BORDER, BORDER)
+			castbar:Point('BOTTOMLEFT', castbar.Holder, 'BOTTOMLEFT', UF.BORDER+UF.SPACING, UF.BORDER+UF.SPACING)
 		end
 	end
 
