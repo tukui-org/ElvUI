@@ -188,18 +188,18 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	end
 end
 
-local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, setAllPoints, setFrameLevel)
+local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, allPoints, frameLevel)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
 	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
 	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
 
-	if setAllPoints then
-		if setAllPoints == true then
+	if allPoints then
+		if allPoints == true then
 			backdrop:SetAllPoints()
 		else
-			backdrop:SetAllPoints(setAllPoints)
+			backdrop:SetAllPoints(allPoints)
 		end
 	else
 		if forcePixelMode then
@@ -210,17 +210,17 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 		end
 	end
 
-	if setFrameLevel then
-		if setFrameLevel == true then
+	if frameLevel then
+		if frameLevel == true then
 			backdrop:SetFrameLevel(parent:GetFrameLevel())
 		else
-			backdrop:SetFrameLevel(setFrameLevel)
+			backdrop:SetFrameLevel(frameLevel)
 		end
 	else
-		local frameLevel = parent.GetFrameLevel and parent:GetFrameLevel()
-		local frameLevelMinusOne = frameLevel and (frameLevel - 1)
-		if frameLevelMinusOne and (frameLevelMinusOne >= 0) then
-			backdrop:SetFrameLevel(frameLevelMinusOne)
+		local level = parent:GetFrameLevel()
+		local minus = level and (level - 1)
+		if minus and (minus >= 0) then
+			backdrop:SetFrameLevel(minus)
 		else
 			backdrop:SetFrameLevel(0)
 		end
