@@ -163,7 +163,7 @@ function M:SetupHybridMinimap()
 	MapCanvas:SetScript('OnMouseUp', E.noop)
 end
 
-function M:EJ_HideNonInstancePanels()
+function M:HideNonInstancePanels()
 	if InCombatLockdown() or not WorldMapFrame:IsShown() then return end
 	HideUIPanel(WorldMapFrame)
 end
@@ -177,7 +177,7 @@ function M:ADDON_LOADED(_, addon)
 		M:SetupHybridMinimap()
 	elseif addon == 'Blizzard_EncounterJournal' then
 		-- Since the default non-quest map is full screen, it overrides the showing of the encounter journal
-		hooksecurefunc('EJ_HideNonInstancePanels', M.EJ_HideNonInstancePanels)
+		hooksecurefunc('EJ_HideNonInstancePanels', M.HideNonInstancePanels)
 	end
 end
 
