@@ -64,10 +64,10 @@ function B:SizeAndPositionBagBar()
 		button:ClearAllPoints()
 		button.Count:SetShown(GetCVarBool('displayFreeBagSlots'))
 
-		if i == 1 then
-			firstButton = button
+		if sortDirection == 'ASCENDING'then
+			if i == 1 then firstButton = button else lastButton = button end
 		else
-			lastButton = button
+			if i == 1 then lastButton = button else firstButton = button end
 		end
 
 		if growthDirection == 'HORIZONTAL' and sortDirection == 'ASCENDING' then
