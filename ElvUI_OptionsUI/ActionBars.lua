@@ -532,13 +532,16 @@ for i = 1, 10 do
 	bar.args.barGroup.args.countTextXOffset.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
 	bar.args.barGroup.args.countTextYOffset.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
 	bar.args.barGroup.args.countTextPosition.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
-	bar.args.barGroup.args.hotkeyFont.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyFontOutline.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyFontSize.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyTextPosition.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyTextXOffset.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
-	bar.args.barGroup.args.hotkeyTextYOffset.hidden = function() return not E.db.actionbar['bar'..i].customHotkeyFont end
+
 	bar.args.barGroup.args.spacer2.hidden = function() return not E.db.actionbar['bar'..i].customCountFont end
+
+	bar.args.barGroup.args.customHotkeyFont.hidden = function() return E.db.actionbar['bar'..i].hideHotkey end
+	bar.args.barGroup.args.hotkeyFont.hidden = function() return E.db.actionbar['bar'..i].hideHotkey or not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyFontOutline.hidden = function() return E.db.actionbar['bar'..i].hideHotkey or not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyFontSize.hidden = function() return E.db.actionbar['bar'..i].hideHotkey or not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyTextPosition.hidden = function() return E.db.actionbar['bar'..i].hideHotkey or not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyTextXOffset.hidden = function() return E.db.actionbar['bar'..i].hideHotkey or not E.db.actionbar['bar'..i].customHotkeyFont end
+	bar.args.barGroup.args.hotkeyTextYOffset.hidden = function() return E.db.actionbar['bar'..i].hideHotkey or not E.db.actionbar['bar'..i].customHotkeyFont end
 
 	if (E.myclass == 'DRUID' and i >= 7 or E.myclass == 'ROGUE' and i == 7) then
 		bar.args.enabled.confirm = function() return format(L["Bar %s is used for stance or forms.|N You will have to adjust paging to use this bar.|N Are you sure?"], i) end
