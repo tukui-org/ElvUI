@@ -6,6 +6,8 @@ local ACH = E.Libs.ACH
 local _G = _G
 local gsub = gsub
 local strmatch = strmatch
+local SetCVar = SetCVar
+local GetCVarBool = GetCVarBool
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 local GameTooltip = _G.GameTooltip
 
@@ -526,22 +528,34 @@ E.Options.args.bags = {
 					desc = L["The frame is not shown unless you mouse over the frame."],
 					type = 'toggle',
 				},
-				size = {
+				showCount = {
 					order = 4,
+					name = L["Show Count"],
+					type = 'toggle',
+					set = function(_, value)
+						SetCVar('displayFreeBagSlots', value and 1 or 0)
+						B:SizeAndPositionBagBar()
+					end,
+					get = function()
+						return GetCVarBool('displayFreeBagSlots')
+					end
+				},
+				size = {
+					order = 5,
 					type = 'range',
 					name = L["Button Size"],
 					desc = L["Set the size of your bag buttons."],
-					min = 24, max = 60, step = 1,
+					min = 12, max = 128, step = 1,
 				},
 				spacing = {
-					order = 5,
+					order = 6,
 					type = 'range',
 					name = L["Button Spacing"],
 					desc = L["The spacing between buttons."],
-					min = -1, max = 10, step = 1,
+					min = -3, max = 20, step = 1,
 				},
 				backdropSpacing = {
-					order = 6,
+					order = 7,
 					type = 'range',
 					name = L["Backdrop Spacing"],
 					desc = L["The spacing between the backdrop and the buttons."],
@@ -549,7 +563,7 @@ E.Options.args.bags = {
 					disabled = function() return not E.private.actionbar.enable end,
 				},
 				sortDirection = {
-					order = 7,
+					order = 8,
 					type = 'select',
 					name = L["Sort Direction"],
 					desc = L["The direction that the bag frames will grow from the anchor."],
@@ -559,7 +573,7 @@ E.Options.args.bags = {
 					},
 				},
 				growthDirection = {
-					order = 7,
+					order = 9,
 					type = 'select',
 					name = L["Bar Direction"],
 					desc = L["The direction that the bag frames be (Horizontal or Vertical)."],
@@ -570,7 +584,7 @@ E.Options.args.bags = {
 				},
 				visibility = {
 					type = 'input',
-					order = 8,
+					order = 10,
 					name = L["Visibility State"],
 					desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 					width = 'full',
