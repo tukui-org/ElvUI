@@ -46,7 +46,7 @@ function B:SizeAndPositionBagBar()
 	local sortDirection = E.db.bags.bagBar.sortDirection
 
 	local showBackdrop = E.db.bags.bagBar.showBackdrop
-	local backdropSpacing = showBackdrop and E.db.bags.bagBar.backdropSpacing or 0
+	local backdropSpacing = not showBackdrop and 0 or E.db.bags.bagBar.backdropSpacing
 
 	local visibility = E.db.bags.bagBar.visibility
 	if visibility and visibility:match('[\n\r]') then
@@ -55,14 +55,20 @@ function B:SizeAndPositionBagBar()
 
 	RegisterStateDriver(B.BagBar, 'visibility', visibility)
 	B.BagBar:SetAlpha(E.db.bags.bagBar.mouseover and 0 or 1)
-	B.BagBar.backdrop:SetShown(showBackdrop)
 
+	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
 		local prevButton = B.BagBar.buttons[i-1]
 		button.ElvUIFilterIcon.FilterBackdrop:Size(bagBarSize / 2)
 		button:Size(bagBarSize)
 		button:ClearAllPoints()
 		button.Count:SetShown(GetCVarBool('displayFreeBagSlots'))
+
+		if i == 1 then
+			firstButton = button
+		else
+			lastButton = button
+		end
 
 		if growthDirection == 'HORIZONTAL' and sortDirection == 'ASCENDING' then
 			if i == 1 then
@@ -112,6 +118,11 @@ function B:SizeAndPositionBagBar()
 	local btnSize = bagBarSize * (NUM_BAG_FRAMES + 1)
 	local btnSpace = buttonSpacing * NUM_BAG_FRAMES
 	local bdpDoubled = backdropSpacing * 2
+
+	B.BagBar.backdrop:ClearAllPoints()
+	B.BagBar.backdrop:Point('TOPLEFT', firstButton, 'TOPLEFT', -backdropSpacing, backdropSpacing)
+	B.BagBar.backdrop:Point('BOTTOMRIGHT', lastButton, 'BOTTOMRIGHT', backdropSpacing, -backdropSpacing)
+	B.BagBar.backdrop:SetShown(showBackdrop)
 
 	if growthDirection == 'HORIZONTAL' then
 		B.BagBar:Width(btnSize + btnSpace + bdpDoubled)
