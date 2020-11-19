@@ -25,6 +25,19 @@ SharedBarOptions.barGroup.inline = true
 SharedBarOptions.barGroup.args.point = ACH:Select(L["Anchor Point"], L["The first button anchors itself to this point on the bar."], 1, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
 SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 2, { min = 0, max = 1, step = 0.01, isPercent = true })
 SharedBarOptions.barGroup.args.spacer1 = ACH:Spacer(15, 'full')
+SharedBarOptions.barGroup.args.hideHotkey = ACH:Toggle(L["Hide Keybind Text"], nil, 16, nil, nil, nil,
+	function(info)
+		return E.db.actionbar[info[#info-2]][info[#info]]
+	end,
+	function(info, value)
+		E.db.actionbar[info[#info-2]][info[#info]] = value
+
+		for _, bar in pairs(AB.handledBars) do
+			AB:UpdateButtonConfig(bar, bar.bindButtons)
+		end
+	end
+)
+
 SharedBarOptions.barGroup.args.customCountFont = ACH:Toggle(L["Count Font"], nil, 20)
 SharedBarOptions.barGroup.args.countTextPosition = ACH:Select(L["Text Anchor"], nil, 21, { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' })
 SharedBarOptions.barGroup.args.countTextXOffset = ACH:Range(L["X-Offset"], nil, 22, { min = -24, max = 24, step = 1 })
@@ -40,6 +53,7 @@ SharedBarOptions.barGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil,
 SharedBarOptions.barGroup.args.hotkeyFont = ACH:SharedMediaFont(L["Font"], nil, 44)
 SharedBarOptions.barGroup.args.hotkeyFontOutline = ACH:FontFlags(L["Font Outline"], nil, 45)
 SharedBarOptions.barGroup.args.hotkeyFontSize = ACH:Range(L["Font Size"], nil, 46, C.Values.FontSize)
+
 SharedBarOptions.barGroup.args.spacer3 = ACH:Spacer(50, 'full')
 SharedBarOptions.barGroup.args.useCountColor = ACH:Toggle(L["Count Text Color"], nil, 51)
 SharedBarOptions.barGroup.args.countColor = ACH:Color('', nil, 52, nil, nil,
@@ -449,6 +463,7 @@ E.Options.args.actionbar.args.microbar.args.barGroup.args.countFontSize = nil
 E.Options.args.actionbar.args.microbar.args.barGroup.args.countTextXOffset = nil
 E.Options.args.actionbar.args.microbar.args.barGroup.args.countTextYOffset = nil
 E.Options.args.actionbar.args.microbar.args.barGroup.args.countTextPosition = nil
+E.Options.args.actionbar.args.microbar.args.barGroup.args.hideHotkey = nil
 E.Options.args.actionbar.args.microbar.args.barGroup.args.customCountFont = nil
 E.Options.args.actionbar.args.microbar.args.barGroup.args.customHotkeyFont = nil
 E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyFont = nil

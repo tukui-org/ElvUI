@@ -1047,10 +1047,11 @@ function AB:UpdateButtonConfig(bar, buttonName)
 		return
 	end
 
+	local barDB = AB.db['bar'..bar.id]
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
 	bar.buttonConfig.hideElements.macro = not AB.db.macrotext
-	bar.buttonConfig.hideElements.hotkey = not AB.db.hotkeytext
-	bar.buttonConfig.showGrid = AB.db['bar'..bar.id].showGrid
+	bar.buttonConfig.hideElements.hotkey = not AB.db.hotkeytext or barDB.hideHotkey
+	bar.buttonConfig.showGrid = barDB.showGrid
 	bar.buttonConfig.clickOnDown = AB.db.keyDown
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
