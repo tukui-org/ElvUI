@@ -562,8 +562,9 @@ E.Options.args.bags = {
 					min = 0, max = 10, step = 1,
 					disabled = function() return not E.private.actionbar.enable end,
 				},
+				spacer = ACH:Spacer(8, 'full'),
 				sortDirection = {
-					order = 8,
+					order = 9,
 					type = 'select',
 					name = L["Sort Direction"],
 					desc = L["The direction that the bag frames will grow from the anchor."],
@@ -573,7 +574,7 @@ E.Options.args.bags = {
 					},
 				},
 				growthDirection = {
-					order = 9,
+					order = 10,
 					type = 'select',
 					name = L["Bar Direction"],
 					desc = L["The direction that the bag frames be (Horizontal or Vertical)."],
@@ -584,7 +585,7 @@ E.Options.args.bags = {
 				},
 				visibility = {
 					type = 'input',
-					order = 10,
+					order = 11,
 					name = L["Visibility State"],
 					desc = L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"],
 					width = 'full',

@@ -125,12 +125,12 @@ function B:SizeAndPositionBagBar()
 	B.BagBar.backdrop:SetShown(showBackdrop)
 
 	if growthDirection == 'HORIZONTAL' then
-		B.BagBar:Width(btnSize + btnSpace + bdpDoubled)
-		B.BagBar:Height(bagBarSize + bdpDoubled)
+		B.BagBar:Size(btnSize + btnSpace + bdpDoubled, bagBarSize + bdpDoubled)
 	else
-		B.BagBar:Height(btnSize + btnSpace + bdpDoubled)
-		B.BagBar:Width(bagBarSize + bdpDoubled)
+		B.BagBar:Size(bagBarSize + bdpDoubled, btnSize + btnSpace + bdpDoubled)
 	end
+
+	B.BagBar.mover:SetSize(B.BagBar.backdrop:GetSize())
 end
 
 function B:LoadBagBar()
@@ -139,9 +139,9 @@ function B:LoadBagBar()
 	B.BagBar = CreateFrame('Frame', 'ElvUIBags', E.UIParent)
 	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
 	B.BagBar:CreateBackdrop(E.db.bags.transparent and 'Transparent', nil, nil, nil, nil, nil, true)
-	B.BagBar:EnableMouse(true)
 	B.BagBar:SetScript('OnEnter', OnEnter)
 	B.BagBar:SetScript('OnLeave', OnLeave)
+	B.BagBar:EnableMouse(true)
 	B.BagBar.buttons = {}
 
 	_G.MainMenuBarBackpackButton:SetParent(B.BagBar)
@@ -186,6 +186,7 @@ function B:LoadBagBar()
 	end
 
 	E:CreateMover(B.BagBar, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
+	B.BagBar:SetPoint('BOTTOMLEFT', B.BagBar.mover)
 	B:RegisterEvent('BAG_SLOT_FLAGS_UPDATED', 'SizeAndPositionBagBar')
 	B:SizeAndPositionBagBar()
 end
