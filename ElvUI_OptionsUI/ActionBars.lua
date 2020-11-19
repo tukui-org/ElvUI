@@ -459,40 +459,41 @@ E.Options.args.actionbar.args.microbar.args.visibility.set = function(_, value) 
 
 --Remove these as these bars doesnt have these options
 for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
-	E.Options.args.actionbar.args[name].args.barGroup.args.countFont = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.countFontOutline = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.countFontSize = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.countTextXOffset = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.countTextYOffset = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.countTextPosition = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.customCountFont = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.customHotkeyFont = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyFont = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyFontOutline = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyFontSize = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyTextPosition = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyTextXOffset = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyTextYOffset = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.spacer1 = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.spacer2 = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.spacer3 = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.spacer4 = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.useHotkeyColor = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyColor = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.useCountColor = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.countColor = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.useMacroColor = nil
-	E.Options.args.actionbar.args[name].args.barGroup.args.macroColor = nil
+	local options = E.Options.args.actionbar.args[name].args.barGroup.args
+	options.countFont = nil
+	options.countFontOutline = nil
+	options.countFontSize = nil
+	options.countTextXOffset = nil
+	options.countTextYOffset = nil
+	options.countTextPosition = nil
+	options.customCountFont = nil
+	options.customHotkeyFont = nil
+	options.hotkeyFont = nil
+	options.hotkeyFontOutline = nil
+	options.hotkeyFontSize = nil
+	options.hotkeyTextPosition = nil
+	options.hotkeyTextXOffset = nil
+	options.hotkeyTextYOffset = nil
+	options.spacer1 = nil
+	options.spacer2 = nil
+	options.spacer3 = nil
+	options.spacer4 = nil
+	options.useHotkeyColor = nil
+	options.hotkeyColor = nil
+	options.useCountColor = nil
+	options.countColor = nil
+	options.useMacroColor = nil
+	options.macroColor = nil
 
 	if name == 'microbar' then
-		E.Options.args.actionbar.args[name].args.barGroup.args.hideHotkey = nil
+		options.hideHotkey = nil
 	elseif name == 'stanceBar' then
-		E.Options.args.actionbar.args[name].args.barGroup.args.hideHotkey.set = function(info, value)
+		options.hideHotkey.set = function(info, value)
 			E.db.actionbar[info[#info-2]][info[#info]] = value
 			AB:UpdateStanceBindings()
 		end
 	elseif name == 'barPet' then
-		E.Options.args.actionbar.args[name].args.barGroup.args.hideHotkey.set = function(info, value)
+		options.hideHotkey.set = function(info, value)
 			E.db.actionbar[info[#info-2]][info[#info]] = value
 			AB:UpdatePetBindings()
 		end
