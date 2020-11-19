@@ -456,32 +456,48 @@ E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.name = f
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.microbar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
 E.Options.args.actionbar.args.microbar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar.microbar.visibility = value; AB:UpdateMicroPositionDimensions() end
---Remove these as the microbar doesnt show either texts
-E.Options.args.actionbar.args.microbar.args.barGroup.args.countFont = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.countFontOutline = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.countFontSize = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.countTextXOffset = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.countTextYOffset = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.countTextPosition = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.hideHotkey = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.customCountFont = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.customHotkeyFont = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyFont = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyFontOutline = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyFontSize = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyTextPosition = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyTextXOffset = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyTextYOffset = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.spacer1 = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.spacer2 = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.spacer3 = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.spacer4 = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.useHotkeyColor = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.hotkeyColor = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.useCountColor = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.countColor = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.useMacroColor = nil
-E.Options.args.actionbar.args.microbar.args.barGroup.args.macroColor = nil
+
+--Remove these as these bars doesnt have these options
+for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
+	E.Options.args.actionbar.args[name].args.barGroup.args.countFont = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.countFontOutline = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.countFontSize = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.countTextXOffset = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.countTextYOffset = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.countTextPosition = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.customCountFont = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.customHotkeyFont = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyFont = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyFontOutline = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyFontSize = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyTextPosition = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyTextXOffset = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyTextYOffset = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.spacer1 = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.spacer2 = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.spacer3 = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.spacer4 = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.useHotkeyColor = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.hotkeyColor = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.useCountColor = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.countColor = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.useMacroColor = nil
+	E.Options.args.actionbar.args[name].args.barGroup.args.macroColor = nil
+
+	if name == 'microbar' then
+		E.Options.args.actionbar.args[name].args.barGroup.args.hideHotkey = nil
+	elseif name == 'stanceBar' then
+		E.Options.args.actionbar.args[name].args.barGroup.args.hideHotkey.set = function(info, value)
+			E.db.actionbar[info[#info-2]][info[#info]] = value
+			AB:UpdateStanceBindings()
+		end
+	elseif name == 'barPet' then
+		E.Options.args.actionbar.args[name].args.barGroup.args.hideHotkey.set = function(info, value)
+			E.db.actionbar[info[#info-2]][info[#info]] = value
+			AB:UpdatePetBindings()
+		end
+	end
+end
 
 
 local SharedButtonOptions = {

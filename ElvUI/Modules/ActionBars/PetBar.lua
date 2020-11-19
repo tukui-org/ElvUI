@@ -184,13 +184,16 @@ end
 
 function AB:UpdatePetBindings()
 	for i = 1, NUM_PET_ACTION_SLOTS do
-		if AB.db.hotkeytext then
+		local button = _G['PetActionButton'..i]
+		if not button then break end
+
+		if AB.db.hotkeytext and not (button.db and button.db.hideHotkey) then
 			local key = GetBindingKey('BONUSACTIONBUTTON'..i)
-			_G['PetActionButton'..i..'HotKey']:Show()
-			_G['PetActionButton'..i..'HotKey']:SetText(key)
-			AB:FixKeybindText(_G['PetActionButton'..i])
+			button.HotKey:Show()
+			button.HotKey:SetText(key)
+			AB:FixKeybindText(button)
 		else
-			_G['PetActionButton'..i..'HotKey']:Hide()
+			button.HotKey:Hide()
 		end
 	end
 end
