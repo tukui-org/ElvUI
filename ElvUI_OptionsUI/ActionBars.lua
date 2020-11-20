@@ -507,7 +507,7 @@ for i = 1, 10 do
 	bar.args = CopyTable(SharedBarOptions)
 
 	bar.args.enabled.set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value AB:PositionAndSizeBar('bar'..i) end
-	bar.args.restorePosition.set = function() E:CopyTable(E.db.actionbar['bar'..i], P.actionbar['bar'..i]) E:ResetMovers('Bar '..i) AB:PositionAndSizeBar('bar'..i) end
+	bar.args.restorePosition.func = function() E:CopyTable(E.db.actionbar['bar'..i], P.actionbar['bar'..i]) E:ResetMovers('Bar '..i) AB:PositionAndSizeBar('bar'..i) end
 
 	bar.args.generalOptions.get = function(_, key) return E.db.actionbar['bar'..i][key] end
 	bar.args.generalOptions.set = function(_, key, value) E.db.actionbar['bar'..i][key] = value AB:PositionAndSizeBar('bar'..i) AB:UpdateButtonSettingsForBar('bar'..i) end
