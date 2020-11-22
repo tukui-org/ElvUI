@@ -190,7 +190,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castClassColor = false
-		E.db.chat.tabSelectorColor = {r=0.09, g=0.51, b=0.82}	
+		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82}
 	elseif theme == 'class' then
 		classColor = E:ClassColor(E.myclass, true)
 
@@ -212,7 +212,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.health = E:GetColor(.1, .1, .1)
 		E.db.unitframe.colors.castColor = E:GetColor(.1, .1, .1)
 		E.db.unitframe.colors.castClassColor = false
-		E.db.chat.tabSelectorColor = {r=0.09, g=0.51, b=0.82}
+		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82}
 	end
 
 	--Value Color
@@ -294,7 +294,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.databars.threat.height = 24
 			E.db.databars.threat.width = 472
 			E.db.databars.azerite.enable = false
-			E.db.databars.reputation.enable = true			
+			E.db.databars.reputation.enable = true
 		--General
 			E.db.general.bonusObjectivePosition = 'AUTO'
 			E.db.general.minimap.size = 220
