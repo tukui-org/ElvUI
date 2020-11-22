@@ -8,11 +8,9 @@ local pairs, ipairs, type = pairs, ipairs, type
 local EquipmentManager_GetItemInfoByLocation = EquipmentManager_GetItemInfoByLocation
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 local GetFactionInfo = GetFactionInfo
-local GetInventoryItemLink = GetInventoryItemLink
 local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
-local IsCosmeticItem = IsCosmeticItem
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 local FLYOUT_LOCATIONS = {
@@ -36,11 +34,6 @@ local function UpdateAzeriteEmpoweredItem(self)
 	self.AzeriteTexture:SetInside()
 	self.AzeriteTexture:SetTexCoord(unpack(E.TexCoords))
 	self.AzeriteTexture:SetDrawLayer('BORDER', 1)
-end
-
-local function UpdateCosmetic(self)
-	local itemLink = GetInventoryItemLink("player", self:GetID())
-	self.IconOverlay:SetShown(itemLink and IsCosmeticItem(itemLink))
 end
 
 local function ColorizeStatPane(frame)
@@ -295,8 +288,6 @@ function S:CharacterFrame()
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
 			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
-			Slot.IconOverlay:SetAtlas('CosmeticIconFrame')
-			Slot.IconOverlay:SetInside()
 
 			S:HandleIconBorder(Slot.IconBorder)
 
@@ -317,8 +308,6 @@ function S:CharacterFrame()
 		highlight:SetTexture(E.Media.Textures.White8x8)
 		highlight:SetVertexColor(1, 1, 1, .25)
 		highlight:SetInside()
-
-		UpdateCosmetic(slot)
 	end)
 
 	--Give character frame model backdrop it's color back

@@ -3,15 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs = pairs
-local GetInventoryItemLink = GetInventoryItemLink
-local IsCosmeticItem = IsCosmeticItem
-local hooksecurefunc = hooksecurefunc
-
-local function UpdateCosmetic(self)
-	local unit = _G.InspectFrame.unit
-	local itemLink = unit and GetInventoryItemLink(unit, self:GetID())
-	self.IconOverlay:SetShown(itemLink and IsCosmeticItem(itemLink))
-end
 
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
@@ -101,17 +92,10 @@ function S:Blizzard_InspectUI()
 			Slot.icon:SetInside()
 			Slot:StripTextures()
 			Slot:StyleButton()
-			Slot.IconOverlay:SetAtlas('CosmeticIconFrame')
-			Slot.IconOverlay:SetInside()
 
 			S:HandleIconBorder(Slot.IconBorder, Slot.icon.backdrop)
 		end
 	end
-
-	hooksecurefunc('InspectPaperDollItemSlotButton_Update', function(button)
-		button.icon:SetShown(button.hasItem)
-		UpdateCosmetic(button)
-	end)
 
 	InspectPVPFrame.BG:Kill()
 	_G.InspectGuildFrameBG:Kill()
