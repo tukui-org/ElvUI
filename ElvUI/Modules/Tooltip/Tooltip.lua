@@ -64,6 +64,7 @@ local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
 
+local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
@@ -743,7 +744,7 @@ function TT:SetCurrencyTokenByID(tt, id)
 end
 
 function TT:QuestID(tt)
-	local id = tt.questLogIndex and C_QuestLog.GetQuestIDForLogIndex(tt.questLogIndex) or tt.questID
+	local id = tt.questLogIndex and C_QuestLog_GetQuestIDForLogIndex(tt.questLogIndex) or tt.questID
 	if id and TT:IsModKeyDown() then
 		GameTooltip:AddLine(format(IDLine, _G.ID, id))
 		GameTooltip:Show()
