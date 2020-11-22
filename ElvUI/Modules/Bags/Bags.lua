@@ -102,6 +102,9 @@ local SEARCH = SEARCH
 
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
+local C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID = C_AzeriteEmpoweredItem.IsAzeriteEmpoweredItemByID
+local C_Soulbinds_IsItemConduitByItemInfo = C_Soulbinds.IsItemConduitByItemInfo
+local IsCosmeticItem = IsCosmeticItem
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame, ElvUIReagentBankFrameItem1
 
 -- 8.3 this are now local in blizzard files. Copy & Pasted:
@@ -117,6 +120,18 @@ B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 134873,	-- Interface/ICONS/INV_Potion_93
 	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 132906,	-- Interface/ICONS/INV_Fabric_Silk_02
 }
+
+local function GetIconOverlayAtlas(slot)
+	if not slot then return end
+
+	if C_AzeriteEmpoweredItem_IsAzeriteEmpoweredItemByID(slot) then
+		return 'AzeriteIconFrame'
+	elseif IsCosmeticItem(slot) then
+		return 'CosmeticIconFrame'
+	elseif C_Soulbinds_IsItemConduitByItemInfo(slot) then
+		return 'ConduitIconFrame', 'ConduitIconFrame-Corners'
+	end
+end
 
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and (arg == true) then
@@ -501,6 +516,18 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if slot.UpgradeIcon then
 		--Check if item is an upgrade and show/hide upgrade icon accordingly
 		B:UpdateItemUpgradeIcon(slot)
+	end
+
+	local atlas, secondAtlas = GetIconOverlayAtlas(slotID)
+	if atlas then
+		slot.IconOverlay:SetAtlas(atlas)
+		slot.IconOverlay:Show()
+		if secondAtlas then
+			local color = E.QualityColors[slotID.rarity or 1]
+			slot.IconOverlay:SetVertexColor(color.r, color.g, color.b)
+			slot.IconOverlay2:SetAtlas(secondAtlas)
+			slot.IconOverlay2:Show()
+		end
 	end
 
 	slot.itemLevel:SetText('')
