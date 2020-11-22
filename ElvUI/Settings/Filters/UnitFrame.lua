@@ -780,9 +780,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		-- Huntsman Altimor
 		[335304] = Defaults(), -- Sinseeker
 		[334971] = Defaults(), -- Jagged Claws
-		[335113] = Defaults(), -- Huntsman's Mark 1
+		[335111] = Defaults(), -- Huntsman's Mark 1
 		[335112] = Defaults(), -- Huntsman's Mark 2
-		[335111] = Defaults(), -- Huntsman's Mark 3
+		[335113] = Defaults(), -- Huntsman's Mark 3
 		[334945] = Defaults(), -- Bloody Thrash
 		-- Hungering Destroyer
 		[334228] = Defaults(), -- Volatile Ejection
@@ -791,7 +791,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[325936] = Defaults(), -- Shared Cognition
 		[335396] = Defaults(), -- Hidden Desire
 		[324983] = Defaults(), -- Shared Suffering
-		[324982] = Defaults(), -- Shared Suffering Partner
+		[324982] = Defaults(), -- Shared Suffering (Partner)
 		[332664] = Defaults(), -- Concentrate Anima
 		[325382] = Defaults(), -- Warped Desires
 		-- Sun King's Salvation
@@ -804,8 +804,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[325236] = Defaults(), -- Glyph of Destruction
 		[327414] = Defaults(), -- Possession
 		-- The Council of Blood
-		[327773] = Defaults(), -- Drain Essence 1
-		[327052] = Defaults(), -- Drain Essence 2
+		[327052] = Defaults(), -- Drain Essence 1
+		[327773] = Defaults(), -- Drain Essence 2
 		[346651] = Defaults(), -- Drain Essence Mythic
 		[328334] = Defaults(), -- Tactical Advance
 		[330848] = Defaults(), -- Wrong Moves
