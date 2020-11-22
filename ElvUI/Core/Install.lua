@@ -318,7 +318,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.tooltip.healthBar.fontOutline = "NONE"
 			E.db.tooltip.healthBar.fontSize = 12
 		--Nameplates
-			E.db.nameplates.colors.castColor = {r = 0.85, g=0.76, b=0.36}
 			E.db.nameplates.colors.castNoInterruptColor = {r = 0.78, g=0.25, b=0.25}
 			E.db.nameplates.colors.reactions.good = {r = 0.30, g=0.67, b=0.29}
 			E.db.nameplates.colors.reactions.neutral = {r = 0.85, g=0.76, b=0.36}
