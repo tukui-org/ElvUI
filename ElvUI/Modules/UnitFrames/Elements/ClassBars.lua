@@ -48,8 +48,8 @@ function UF:Configure_ClassBar(frame)
 	UF.ToggleResourceBar(bars)
 
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
-	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
-	local SPACING = (UF.BORDER + UF.SPACING)*2
+	local CLASSBAR_WIDTH = E:Scale(frame.CLASSBAR_WIDTH)
+	local SPACING = E:Scale((UF.BORDER + UF.SPACING)*2)
 
 	local color = E.db.unitframe.colors.borderColor
 	if not bars.backdrop.forcedBorderColors then
