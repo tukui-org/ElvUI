@@ -744,6 +744,7 @@ function TT:SetCurrencyTokenByID(tt, id)
 end
 
 function TT:QuestID(tt)
+	if tt:IsForbidden() then return end
 	local id = tt.questLogIndex and C_QuestLog_GetQuestIDForLogIndex(tt.questLogIndex) or tt.questID
 	if id and TT:IsModKeyDown() then
 		GameTooltip:AddLine(format(IDLine, _G.ID, id))
