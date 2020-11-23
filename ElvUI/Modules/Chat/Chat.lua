@@ -204,8 +204,8 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Simpys Ghoulish: A366CC, 88E032, 33BDBE, 88E032, A366CC
-		local SimpyColors = function(t) return specialText(t, 0.63,0.40,0.80, 0.63,0.40,0.80, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.20,0.74,0.74, 0.20,0.74,0.74, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.63,0.40,0.80, 0.63,0.40,0.80) end
+		--Simpys CandyCane: Red, White, Red, White, Red
+		local SimpyColors = function(t) return specialText(t, 1,.3,.3,1,.3,.3, 1,1,1,1,1,1, 1,.3,.3,1,.3,.3, 1,1,1,1,1,1, 1,.3,.3,1,.3,.3) end
 		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
