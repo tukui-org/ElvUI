@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs = pairs
+local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end

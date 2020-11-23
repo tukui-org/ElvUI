@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format, tonumber = format, tonumber
+local format, tonumber, wipe = format, tonumber, wipe
 local type, ipairs, unpack = type, ipairs, unpack
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetMoney = GetMoney
