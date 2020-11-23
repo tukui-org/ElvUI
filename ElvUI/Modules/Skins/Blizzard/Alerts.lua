@@ -277,7 +277,7 @@ local function SkinWorldQuestCompleteAlert(frame)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -14, 6)
 		frame.shine:Kill()
 		-- Background
-		frame:DisableDrawLayer("BORDER")
+		frame.ToastBackground:Kill()
 		--Icon
 		frame.QuestTexture:SetTexCoord(unpack(E.TexCoords))
 		frame.QuestTexture:SetDrawLayer('ARTWORK')
