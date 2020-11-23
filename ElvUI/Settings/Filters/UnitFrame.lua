@@ -728,6 +728,14 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[322557] = Defaults(), -- Soul Split
 		[331172] = Defaults(), -- Mind Link
 		[322563] = Defaults(), -- Marked Prey
+		[322487] = Defaults(), -- Overgrowth 1
+		[322486] = Defaults(), -- Overgrowth 2
+		[328756] = Defaults(), -- Repulsive Visage
+		[325021] = Defaults(), -- Mistveil Tear
+		[321891] = Defaults(), -- Freeze Tag Fixation
+		[325224] = Defaults(), -- Anima Injection
+		[326092] = Defaults(), -- Debilitating Poison
+		[325418] = Defaults(), -- Volatile Acid
 		-- Plaguefall
 		[336258] = Defaults(), -- Solitary Prey
 		[331818] = Defaults(), -- Shadow Ambush
