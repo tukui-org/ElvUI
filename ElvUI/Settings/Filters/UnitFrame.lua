@@ -892,10 +892,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[342698] = Defaults(), -- Volatile Anima Infection
 		-- Sire Denathrius
 		[326851] = Defaults(), -- Blood Price
-		[327798] = Defaults(), -- Night Hunter
+		[327796] = Defaults(), -- Night Hunter
 		[327992] = Defaults(), -- Desolation
 		[328276] = Defaults(), -- March of the Penitent
 		[326699] = Defaults(), -- Burden of Sin
+		[329181] = Defaults(), -- Wracking Pain
+		[335873] = Defaults(), -- Rancor
+		[329951] = Defaults(), -- Impale
 
 	},
 }
