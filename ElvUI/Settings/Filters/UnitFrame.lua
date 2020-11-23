@@ -713,13 +713,15 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		-- Halls of Atonement
 		[335338] = Defaults(), -- Ritual of Woe
 		[326891] = Defaults(), -- Anguish
-		[329321] = Defaults(), -- Jagged Swipe
+		[329321] = Defaults(), -- Jagged Swipe 1
+		[344993] = Defaults(), -- Jagged Swipe 2
 		[319603] = Defaults(), -- Curse of Stone
 		[319611] = Defaults(), -- Turned to Stone
 		[325876] = Defaults(), -- Curse of Obliteration
 		[326632] = Defaults(), -- Stony Veins
 		[323650] = Defaults(), -- Haunting Fixation
 		[326874] = Defaults(), -- Ankle Bites
+		[340446] = Defaults(), -- Mark of Envy
 		-- Mists of Tirna Scithe
 		[325027] = Defaults(), -- Bramble Burst
 		[323043] = Defaults(), -- Bloodletting
@@ -761,6 +763,14 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[327481] = Defaults(), -- Dark Lance
 		[322818] = Defaults(), -- Lost Confidence
 		[322817] = Defaults(), -- Lingering Doubt
+		[324205] = Defaults(), -- Blinding Flash
+		[331251] = Defaults(), -- Deep Connection
+		[328331] = Defaults(), -- Forced Confession
+		[341215] = Defaults(), -- Volatile Anima
+		[323792] = Defaults(), -- Anima Field
+		[317661] = Defaults(), -- Insidious Venom
+		[330683] = Defaults(), -- Raw Anima
+		[328434] = Defaults(), -- Intimidated
 		-- De Other Side
 		[320786] = Defaults(), -- Power Overwhelming
 		[334913] = Defaults(), -- Master of Death
