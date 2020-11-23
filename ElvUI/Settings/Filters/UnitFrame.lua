@@ -742,6 +742,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[329110] = Defaults(), -- Slime Injection
 		[325552] = Defaults(), -- Cytotoxic Slash
 		[336301] = Defaults(), -- Web Wrap
+		[322358] = Defaults(), -- Burning Strain
+		[322410] = Defaults(), -- Withering Filth
+		[328180] = Defaults(), -- Gripping Infection
+		[320542] = Defaults(), -- Wasting Blight
+		[340355] = Defaults(), -- Rapid Infection
+		[328395] = Defaults(), -- Venompiercer
+		[320512] = Defaults(), -- Corroded Claws
+		[333406] = Defaults(), -- Assassinate
+		[332397] = Defaults(), -- Shroudweb
+		[330069] = Defaults(), -- Concentrated Plague
 		-- The Necrotic Wake
 		[321821] = Defaults(), -- Disgusting Guts
 		[323365] = Defaults(), -- Clinging Darkness
@@ -811,6 +821,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[339978] = Defaults(), -- Pacifying Mists
 		[323692] = Defaults(), -- Arcane Vulnerability
 		[333250] = Defaults(), -- Reaver
+		[330434] = Defaults(), -- Buzz-Saw 1
+		[320144] = Defaults(), -- Buzz-Saw 2
+		[331847] = Defaults(), -- W-00F
+		[327649] = Defaults(), -- Crushed Soul
+		[331379] = Defaults(), -- Lubricate
+		[332678] = Defaults(), -- Gushing Wound
+		[322746] = Defaults(), -- Corrupted Blood
+		[323687] = Defaults(), -- Arcane Lightning
+		[323877] = Defaults(), -- Echo Finger Laser X-treme
+		[334535] = Defaults(), -- Beak Slice
 
 	-- Castle Nathria
 		-- Shriekwing
