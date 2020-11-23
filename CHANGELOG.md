@@ -15,11 +15,11 @@ Fixed the Restore Bar button for ActionBars.
 Gave ActionBars Count, HotKey, and Macro text color overrides (Thanks @Caedis).  
 The eyeball for group finder was still hiding. Should do a less hide now.  
 Fixed the BG Double status bar not skinning right.  
-Can open Encounter Journal with Smaller Map on.  
+Encounter Journal opens correctly with Smaller Map on.  
 Skinned Equipment Buttons (Thanks @Aftermathhqt).  
 Added Below and Above (Inside) options for chat editbox (Thanks @Cistara).  
 Adjusted the skin code to prevent possible errors from other addons involving backdrop not existing.  
-Updated all the Spell IDs we should need for Shadowlands dungeons and the first Raid.  
+Updated all the Spell IDs we should need for Shadowlands dungeons and the first raid.  
 World Quest Alert Frame will be skinned properly again.  
 Fixed up the Bag Bar skin code.  
 
