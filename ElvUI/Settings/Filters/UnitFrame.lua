@@ -745,11 +745,22 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323464] = Defaults(), -- Dark Ichor
 		[323198] = Defaults(), -- Dark Exile
 		-- Theater of Pain
-		[333299] = Defaults(), -- Curse of Desolation
+		[333299] = Defaults(), -- Curse of Desolation 1
+		[333301] = Defaults(), -- Curse of Desolation 2
 		[319539] = Defaults(), -- Soulless
 		[326892] = Defaults(), -- Fixate
 		[321768] = Defaults(), -- On the Hook
 		[323825] = Defaults(), -- Grasping Rift
+		[342675] = Defaults(), -- Bone Spear
+		[323831] = Defaults(), -- Death Grasp
+		[330608] = Defaults(), -- Vile Eruption
+		[330868] = Defaults(), -- Necrotic Bolt Volley
+		[323750] = Defaults(), -- Vile Gas
+		[323406] = Defaults(), -- Jagged Gash
+		[330700] = Defaults(), -- Decaying Blight
+		[319626] = Defaults(), -- Phantasmal Parasite
+		[324449] = Defaults(), -- Manifest Death
+		[341949] = Defaults(), -- Withering Blight
 		-- Sanguine Depths
 		[326827] = Defaults(), -- Dread Bindings
 		[326836] = Defaults(), -- Curse of Suppression
