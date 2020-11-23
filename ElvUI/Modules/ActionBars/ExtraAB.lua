@@ -118,8 +118,7 @@ function AB:SetupExtraButton()
 				spellButton.NormalTexture:SetAlpha(0)
 				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 				spellButton:StyleButton(nil, true)
-				spellButton:CreateBackdrop()
-				spellButton.backdrop:SetAllPoints()
+				spellButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 				spellButton.Icon:SetDrawLayer('ARTWORK')
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
 				spellButton.Icon:SetInside()
@@ -151,9 +150,7 @@ function AB:SetupExtraButton()
 
 			self:StyleButton(button, true) -- registers cooldown too
 			button.icon:SetDrawLayer('ARTWORK')
-			button:CreateBackdrop()
-			button.backdrop:SetAllPoints()
-			button.backdrop:SetFrameLevel(button:GetFrameLevel())
+			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
 
 			AB:ExtraButtons_BossStyle(button)
 

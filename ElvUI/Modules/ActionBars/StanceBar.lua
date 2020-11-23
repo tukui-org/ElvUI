@@ -240,7 +240,7 @@ function AB:UpdateStanceBindings()
 		local button = _G['ElvUI_StanceBarButton'..i]
 		if not button then break end
 
-		if AB.db.hotkeytext then
+		if AB.db.hotkeytext and not (button.db and button.db.hideHotkey) then
 			button.HotKey:Show()
 			button.HotKey:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
 
@@ -252,8 +252,7 @@ function AB:UpdateStanceBindings()
 end
 
 function AB:CreateBarShapeShift()
-	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
-	bar.backdrop:SetFrameLevel(0)
+	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
 
 	bar:Point('TOPLEFT', E.UIParent, 'BOTTOMLEFT', 4, -769)
 

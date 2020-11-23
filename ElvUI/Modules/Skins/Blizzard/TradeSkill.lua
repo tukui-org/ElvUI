@@ -21,8 +21,7 @@ local function SkinRecipeList(self, _, tradeSkillInfo)
 		self.SubSkillRankBar.BorderRight:Hide()
 
 		if not self.SubSkillRankBar.backdrop then
-			self.SubSkillRankBar:CreateBackdrop()
-			self.SubSkillRankBar.backdrop:SetAllPoints()
+			self.SubSkillRankBar:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 			self.SubSkillRankBar:SetStatusBarTexture(E.media.normTex)
 			E:RegisterStatusBar(self.SubSkillRankBar)
 		end
@@ -188,8 +187,7 @@ function S:Blizzard_TradeSkillUI()
 		end
 
 		if not frame.backdrop then
-			frame:CreateBackdrop()
-			frame.backdrop:SetAllPoints()
+			frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		end
 	end)
 end

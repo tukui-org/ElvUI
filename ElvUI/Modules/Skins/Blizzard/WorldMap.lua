@@ -66,10 +66,12 @@ function S:WorldMapFrame()
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
 
 	local QuestScrollFrameScrollBar = _G.QuestScrollFrame.ScrollBar
-	QuestScrollFrame.DetailFrame:CreateBackdrop()
-	QuestScrollFrame.DetailFrame.backdrop:SetFrameLevel(1)
-	QuestScrollFrame.DetailFrame.backdrop:Point('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPLEFT', 3, 1)
-	QuestScrollFrame.DetailFrame.backdrop:Point('BOTTOMRIGHT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', -2, -7)
+	QuestScrollFrame.DetailFrame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, 1)
+
+	if QuestScrollFrame.DetailFrame.backdrop then
+		QuestScrollFrame.DetailFrame.backdrop:Point('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPLEFT', 3, 1)
+		QuestScrollFrame.DetailFrame.backdrop:Point('BOTTOMRIGHT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', -2, -7)
+	end
 
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
@@ -101,10 +103,8 @@ function S:WorldMapFrame()
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right')
-	WorldMapFrame.SidePanelToggle.CloseButton.backdrop:SetFrameLevel(WorldMapFrame.SidePanelToggle.CloseButton:GetFrameLevel())
-	WorldMapFrame.SidePanelToggle.OpenButton.backdrop:SetFrameLevel(WorldMapFrame.SidePanelToggle.OpenButton:GetFrameLevel())
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left', nil, nil, nil, true)
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right', nil, nil, nil, true)
 
 	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)

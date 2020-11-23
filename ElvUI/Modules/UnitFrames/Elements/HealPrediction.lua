@@ -86,18 +86,18 @@ function UF:SetSize_HealComm(frame)
 		local barHeight = db.height
 		if barHeight == -1 or barHeight > height then barHeight = height end
 
-		pred.myBar:Size(width, barHeight)
-		pred.otherBar:Size(width, barHeight)
-		pred.healAbsorbBar:Size(width, barHeight)
-		pred.absorbBar:Size(width, barHeight)
+		pred.myBar:SetSize(width, barHeight)
+		pred.otherBar:SetSize(width, barHeight)
+		pred.healAbsorbBar:SetSize(width, barHeight)
+		pred.absorbBar:SetSize(width, barHeight)
 	else
 		local barWidth = db.height -- this is really width now not height
 		if barWidth == -1 or barWidth > width then barWidth = width end
 
-		pred.myBar:Size(barWidth, height)
-		pred.otherBar:Size(barWidth, height)
-		pred.healAbsorbBar:Size(barWidth, height)
-		pred.absorbBar:Size(barWidth, height)
+		pred.myBar:SetSize(barWidth, height)
+		pred.otherBar:SetSize(barWidth, height)
+		pred.healAbsorbBar:SetSize(barWidth, height)
+		pred.absorbBar:SetSize(barWidth, height)
 	end
 end
 

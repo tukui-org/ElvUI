@@ -93,6 +93,7 @@ function S:Blizzard_InspectUI()
 			Slot.icon:SetInside()
 			Slot:StripTextures()
 			Slot:StyleButton()
+
 			S:HandleIconBorder(Slot.IconBorder, Slot.icon.backdrop)
 		end
 	end

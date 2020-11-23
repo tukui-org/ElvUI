@@ -185,6 +185,8 @@ E.Options.args.chat = {
 					values = {
 						BELOW_CHAT = L["Below Chat"],
 						ABOVE_CHAT = L["Above Chat"],
+						BELOW_CHAT_INSIDE = L["Below Chat (Inside)"],
+						ABOVE_CHAT_INSIDE = L["Above Chat (Inside)"],
 					},
 					set = function(info, value)
 						E.db.chat[info[#info]] = value;

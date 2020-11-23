@@ -119,7 +119,7 @@ local DEVELOPERS = {
 	'|cff9482c9Darth Predator|r',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/FoxWarlock:15:15:0:0:64:64:5:59:5:59|t |cffff2020NihilisticPandemonium|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 0.63,0.40,0.80, 0.63,0.40,0.80, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.20,0.74,0.74, 0.20,0.74,0.74, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.63,0.40,0.80, 0.63,0.40,0.80)
+	E:TextGradient('Simpy but my name needs to be longer.', 1,.3,.3,1,.3,.3, 1,1,1,1,1,1, 1,.3,.3,1,.3,.3, 1,1,1,1,1,1, 1,.3,.3,1,.3,.3)
 }
 
 local TESTERS = {
@@ -139,6 +139,7 @@ local TESTERS = {
 	'Botanica',
 	'Yachanay',
 	'Catok',
+	'Caedis',
 	'|cff00c0faBenik|r',
 	'|T136012:15:15:0:0:64:64:5:59:5:59|t |cff006fdcRubgrsch|r |T656558:15:15:0:0:64:64:5:59:5:59|t',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t Luckyone',

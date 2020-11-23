@@ -107,8 +107,7 @@ function S:SpellBookFrame()
 	for i = 1, 8 do
 		local Tab = _G['SpellBookSkillLineTab'..i]
 		Tab:StripTextures()
-		Tab:CreateBackdrop()
-		Tab.backdrop:SetAllPoints()
+		Tab:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		Tab:StyleButton(nil, true)
 	end
 

@@ -36,7 +36,9 @@ local function SkinSocialHeaderTab(tab)
 		local tex = _G[tab:GetName()..object]
 		tex:SetTexture()
 	end
+
 	tab:GetHighlightTexture():SetTexture()
+
 	tab.backdrop = CreateFrame('Frame', nil, tab, 'BackdropTemplate')
 	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
@@ -137,8 +139,7 @@ function S:FriendsFrame()
 
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
-	FriendsFrameBattlenetFrame:CreateBackdrop('Transparent')
-	FriendsFrameBattlenetFrame.backdrop:SetAllPoints()
+	FriendsFrameBattlenetFrame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
 	local button = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)

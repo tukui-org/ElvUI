@@ -66,8 +66,7 @@ function AB:HandleMicroButton(button)
 	local normal = button:GetNormalTexture()
 	local disabled = button:GetDisabledTexture()
 
-	button:CreateBackdrop()
-	button.backdrop:SetAllPoints()
+	button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 
 	button:SetParent(microBar)
 	button:GetHighlightTexture():Kill()
@@ -188,9 +187,7 @@ function AB:UpdateMicroButtons()
 end
 
 function AB:SetupMicroBar()
-	microBar:CreateBackdrop(AB.db.transparent and 'Transparent')
-	microBar.backdrop:SetFrameLevel(0)
-
+	microBar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
 	microBar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -48)
 	microBar:EnableMouse(false)
 

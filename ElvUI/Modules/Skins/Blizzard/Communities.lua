@@ -414,11 +414,16 @@ function S:Blizzard_Communities()
 			button.hover = hover
 		end
 
-		button.Icon:SetTexCoord(unpack(E.TexCoords))
-		if not button.Icon.backdrop then
-			button.Icon:CreateBackdrop()
-			button.Icon.backdrop:SetOutside(button.Icon, 1, 1)
-			button.Icon.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel() + 1)
+		if button.Icon then
+			button.Icon:SetTexCoord(unpack(E.TexCoords))
+
+			if not button.Icon.backdrop then
+				button.Icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+
+				if button.Icon.backdrop then
+					button.Icon.backdrop:SetOutside(button.Icon, 1, 1)
+				end
+			end
 		end
 	end
 
@@ -626,8 +631,7 @@ function S:Blizzard_Communities()
 	-- Notification Settings Dialog
 	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
 	NotificationSettings:StripTextures()
-	NotificationSettings:CreateBackdrop('Transparent')
-	NotificationSettings.backdrop:SetAllPoints()
+	NotificationSettings:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 
 	S:HandleDropDownBox(CommunitiesFrame.NotificationSettingsDialog.CommunitiesListDropDownMenu)
 	S:HandleCheckBox(CommunitiesFrame.NotificationSettingsDialog.ScrollFrame.Child.QuickJoinButton)
@@ -640,8 +644,7 @@ function S:Blizzard_Communities()
 	-- Create Channel Dialog
 	local EditStreamDialog = CommunitiesFrame.EditStreamDialog
 	EditStreamDialog:StripTextures()
-	EditStreamDialog:CreateBackdrop('Transparent')
-	EditStreamDialog.backdrop:SetAllPoints()
+	EditStreamDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 
 	S:HandleEditBox(EditStreamDialog.NameEdit)
 	EditStreamDialog.NameEdit:Size(280, 20)
@@ -654,8 +657,7 @@ function S:Blizzard_Communities()
 	-- Communities Settings
 	local Settings = _G.CommunitiesSettingsDialog
 	Settings.BG:Hide()
-	Settings:CreateBackdrop('Transparent')
-	Settings.backdrop:SetAllPoints()
+	Settings:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 	S:HandleIcon(Settings.IconPreview)
 	Settings.IconPreviewRing:Hide()
 
@@ -672,8 +674,7 @@ function S:Blizzard_Communities()
 	-- Avatar Picker
 	local Avatar = _G.CommunitiesAvatarPickerDialog
 	Avatar:StripTextures()
-	Avatar:CreateBackdrop('Transparent')
-	Avatar.backdrop:SetAllPoints()
+	Avatar:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 
 	Avatar.ScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.CommunitiesAvatarPickerDialogScrollBar)
@@ -691,8 +692,7 @@ function S:Blizzard_Communities()
 	-- TO DO: Fix the Tabs
 	TicketManager.InviteManager.ListScrollFrame:StripTextures()
 
-	TicketManager:CreateBackdrop('Transparent')
-	TicketManager.backdrop:SetAllPoints()
+	TicketManager:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 
 	S:HandleButton(TicketManager.LinkToChat)
 	S:HandleButton(TicketManager.Copy)

@@ -30,8 +30,7 @@ local function HandleJailerOptionButton(button)
 	if not button or button.IsSkinned then return end
 
 	button:StripTextures(true)
-	button:CreateBackdrop()
-	button.backdrop:SetAllPoints()
+	button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 
 	button:HookScript('OnEnter', S.SetModifiedBackdrop)
 	button:HookScript('OnLeave', S.SetOriginalBackdrop)

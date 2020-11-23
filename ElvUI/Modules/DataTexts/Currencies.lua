@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format, tonumber = format, tonumber
+local format, tonumber, wipe = format, tonumber, wipe
 local type, ipairs, unpack = type, ipairs, unpack
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetMoney = GetMoney
@@ -32,6 +32,18 @@ local function AddInfo(id)
 	if name then
 		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
 	end
+end
+
+local shownHeaders = {}
+local function AddHeader(id, addLine)
+	if (not E.global.datatexts.settings.Currencies.headers) or shownHeaders[id] then return end
+
+	if addLine then
+		DT.tooltip:AddLine(' ')
+	end
+
+	DT.tooltip:AddLine(E.global.datatexts.settings.Currencies.tooltipData[id][1])
+	shownHeaders[id] = true
 end
 
 local goldText
@@ -72,28 +84,20 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	local addLine, goldSpace
+	wipe(shownHeaders)
+	local addLine
 	for _, info in ipairs(E.global.datatexts.settings.Currencies.tooltipData) do
-		local name, id, _, enabled = unpack(info)
-		if enabled and id and E.global.datatexts.settings.Currencies.idEnable[id] then
+		local _, id, header = unpack(info)
+		if id and E.global.datatexts.settings.Currencies.idEnable[id] then
+			AddHeader(header, addLine)
 			if type(id) == 'number' then
 				AddInfo(id)
 			end
-
-			goldSpace = true
-		elseif enabled and E.global.datatexts.settings.Currencies.headers and not id then
-			if addLine then
-				DT.tooltip:AddLine(' ')
-			else
-				addLine = true
-			end
-
-			DT.tooltip:AddLine(name)
-			goldSpace = true
+			addLine = true
 		end
 	end
 
-	if goldSpace then
+	if addLine then
 		DT.tooltip:AddLine(' ')
 	end
 

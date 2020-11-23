@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 22 -- the real minor version is 79
+local MINOR_VERSION = 23 -- the real minor version is 79
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -985,6 +985,7 @@ function UpdateRange(self, force) -- Sezz: moved from OnUpdate
 				hotkey:SetVertexColor(unpack(self.config.colors.usable))
 			end
 		end
+		lib.callbacks:Fire("OnUpdateRange", self)
 	end
 end
 

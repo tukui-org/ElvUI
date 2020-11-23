@@ -29,6 +29,7 @@ local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 local hooksecurefunc = hooksecurefunc
 local Minimap = _G.Minimap
+local WorldMapFrame = _G.WorldMapFrame
 
 -- GLOBALS: GetMinimapShape
 
@@ -162,6 +163,11 @@ function M:SetupHybridMinimap()
 	MapCanvas:SetScript('OnMouseUp', E.noop)
 end
 
+function M:HideNonInstancePanels()
+	if InCombatLockdown() or not WorldMapFrame:IsShown() then return end
+	HideUIPanel(WorldMapFrame)
+end
+
 function M:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_TimeManager' then
 		_G.TimeManagerClockButton:Kill()
@@ -169,6 +175,9 @@ function M:ADDON_LOADED(_, addon)
 		_G.FeedbackUIButton:Kill()
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
+	elseif addon == 'Blizzard_EncounterJournal' then
+		-- Since the default non-quest map is full screen, it overrides the showing of the encounter journal
+		hooksecurefunc('EJ_HideNonInstancePanels', M.HideNonInstancePanels)
 	end
 end
 

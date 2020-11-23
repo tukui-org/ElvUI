@@ -410,8 +410,7 @@ function S:LookingForGroupFrames()
 				tab:GetNormalTexture():SetInside()
 
 				tab.pushed = true
-				tab:CreateBackdrop()
-				tab.backdrop:SetAllPoints()
+				tab:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 				tab:StyleButton(true)
 				hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(highlight, texPath)
 					if texPath ~= nil then
@@ -634,8 +633,7 @@ function S:LookingForGroupFrames()
 		local button = self.CategoryButtons[btnIndex]
 		if button then
 			if not button.isSkinned then
-				button:CreateBackdrop()
-				button.backdrop:SetAllPoints()
+				button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 				button.Icon:SetDrawLayer('BACKGROUND', 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()
@@ -675,8 +673,7 @@ function S:Blizzard_ChallengesUI()
 		for _, frame in ipairs(self.DungeonIcons) do
 			if not frame.backdrop then
 				frame:GetRegions():SetAlpha(0)
-				frame:CreateBackdrop('Transparent')
-				frame.backdrop:SetAllPoints()
+				frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 				S:HandleIcon(frame.Icon, true)
 				frame.Icon:SetInside()
 			end

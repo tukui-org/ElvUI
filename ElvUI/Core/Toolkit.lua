@@ -188,26 +188,42 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	end
 end
 
-local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
+local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, allPoints, frameLevel)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
 	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
 	if not frame.backdrop then frame.backdrop = backdrop end
 
-	if forcePixelMode then
-		backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
-	else
-		local border = (isUnitFrameElement and UF.BORDER) or (isNamePlateElement and NP.BORDER)
-		backdrop:SetOutside(frame, border, border)
-	end
-
 	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
 
-	local frameLevel = parent.GetFrameLevel and parent:GetFrameLevel()
-	local frameLevelMinusOne = frameLevel and (frameLevel - 1)
-	if frameLevelMinusOne and (frameLevelMinusOne >= 0) then
-		backdrop:SetFrameLevel(frameLevelMinusOne)
+	if allPoints then
+		if allPoints == true then
+			backdrop:SetAllPoints()
+		else
+			backdrop:SetAllPoints(allPoints)
+		end
 	else
-		backdrop:SetFrameLevel(0)
+		if forcePixelMode then
+			backdrop:SetOutside(frame, E.twoPixelsPlease and 2 or 1, E.twoPixelsPlease and 2 or 1)
+		else
+			local border = (isUnitFrameElement and UF.BORDER) or (isNamePlateElement and NP.BORDER)
+			backdrop:SetOutside(frame, border, border)
+		end
+	end
+
+	if frameLevel then
+		if frameLevel == true then
+			backdrop:SetFrameLevel(parent:GetFrameLevel())
+		else
+			backdrop:SetFrameLevel(frameLevel)
+		end
+	else
+		local level = parent:GetFrameLevel()
+		local minus = level and (level - 1)
+		if minus and (minus >= 0) then
+			backdrop:SetFrameLevel(minus)
+		else
+			backdrop:SetFrameLevel(0)
+		end
 	end
 end
 

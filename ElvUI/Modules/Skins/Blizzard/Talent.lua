@@ -64,8 +64,10 @@ function S:Blizzard_TalentUI()
 			_G['PlayerTalentFrameSpecializationSpecButton'..i..'Glow']:Kill()
 
 			Button:CreateBackdrop()
-			Button.backdrop:Point('TOPLEFT', 8, 2)
-			Button.backdrop:Point('BOTTOMRIGHT', 10, -2)
+			if Button.backdrop then
+				Button.backdrop:Point('TOPLEFT', 8, 2)
+				Button.backdrop:Point('BOTTOMRIGHT', 10, -2)
+			end
 			Button.specIcon:Size(50, 50)
 			Button.specIcon:Point('LEFT', Button, 'LEFT', 15, 0)
 			Button.specIcon:SetDrawLayer('ARTWORK', 2)
@@ -76,10 +78,11 @@ function S:Blizzard_TalentUI()
 			Button.learnedTex:SetAlpha(0)
 			Button.selectedTex:SetAlpha(0)
 			Button.specIcon:SetTexture(icon)
-			S:HandleIcon(Button.specIcon, true)
-			Button.specIcon.backdrop:SetFrameLevel(Button:GetFrameLevel()+1)
-			Button.specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
-			Button.specIcon.backdrop.callbackBackdropColor = clearBackdrop
+			S:HandleIcon(Button.specIcon, true, nil, nil, nil, nil, nil, nil, Button:GetFrameLevel() + 1)
+			if Button.specIcon.backdrop then
+				Button.specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
+				Button.specIcon.backdrop.callbackBackdropColor = clearBackdrop
+			end
 			Button:SetHighlightTexture(nil)
 
 			Button.SelectedTexture = Button:CreateTexture(nil, 'ARTWORK')
@@ -168,7 +171,9 @@ function S:Blizzard_TalentUI()
 				bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
 				bu.bg:Point('TOPLEFT', 15, -1)
 				bu.bg:Point('BOTTOMRIGHT', -10, 1)
-				row.transition.color:AddChild(bu.bg.backdrop)
+				if bu.bg.backdrop then
+					row.transition.color:AddChild(bu.bg.backdrop)
+				end
 
 				bu.GlowFrame:Kill()
 
@@ -231,7 +236,10 @@ function S:Blizzard_TalentUI()
 
 		for i = 1, numSpecs do
 			local bu = s['specButton'..i]
-			bu.SelectedTexture:SetInside(bu.backdrop)
+			if bu.backdrop then
+				bu.SelectedTexture:SetInside(bu.backdrop)
+			end
+
 			if bu.selected then
 				bu.SelectedTexture:Show()
 			else
@@ -254,7 +262,9 @@ function S:Blizzard_TalentUI()
 						frame.icon:SetTexCoord(unpack(E.TexCoords))
 						frame.icon:Size(40, 40)
 						frame:CreateBackdrop()
-						frame.backdrop:SetOutside(frame.icon)
+						if frame.backdrop then
+							frame.backdrop:SetOutside(frame.icon)
+						end
 					end
 				end
 				index = index + 1
@@ -271,7 +281,9 @@ function S:Blizzard_TalentUI()
 
 	for _, button in pairs(PvpTalentFrame.Slots) do
 		button:CreateBackdrop()
-		button.backdrop:SetOutside(button.Texture)
+		if button.backdrop then
+			button.backdrop:SetOutside(button.Texture)
+		end
 
 		button.Arrow:SetAlpha(0)
 		button.Border:Hide()
@@ -284,16 +296,16 @@ function S:Blizzard_TalentUI()
 				S:HandleIcon(s.Texture)
 				if not slotInfo.selectedTalentID then
 					s.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
-					s.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
+					if s.backdrop then s.backdrop:SetBackdropBorderColor(0, 1, 0, 1) end
 				else
-					s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					if s.backdrop then s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end
 				end
 			else
 				s.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
 				s.Texture:SetTexCoord(0, 1, 0, 1)
 				s.Texture:SetDesaturated(true)
 				s.Texture:Show()
-				s.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
+				if s.backdrop then s.backdrop:SetBackdropBorderColor(1, 0, 0, 1) end
 			end
 		end)
 	end
@@ -327,9 +339,8 @@ function S:Blizzard_TalentUI()
 		Button:DisableDrawLayer('BACKGROUND')
 		S:HandleIcon(Button.Icon)
 		Button:StyleButton()
-		Button:CreateBackdrop()
+		Button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		Button.Selected:SetTexture()
-		Button.backdrop:SetAllPoints()
 
 		Button.selectedTexture = Button:CreateTexture(nil, 'ARTWORK')
 		Button.selectedTexture:SetInside(Button)

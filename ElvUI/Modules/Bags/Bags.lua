@@ -461,6 +461,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	local assignedID = bagID
 	local assignedBag = frame.Bags[assignedID] and frame.Bags[assignedID].assigned
+	local assignedColor = B.db.showAssignedColor and B.AssignmentColors[assignedBag]
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked = nil, nil, rarity, locked
@@ -587,7 +588,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot.newItemGlow:SetVertexColor(r, g, b)
 			slot:SetBackdropBorderColor(r, g, b)
 			slot.forcedBorderColors = {r, g, b}
-		elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
+		elseif assignedColor then
 			local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 			slot.newItemGlow:SetVertexColor(rr, gg, bb)
 			slot:SetBackdropBorderColor(rr, gg, bb)
@@ -599,7 +600,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 			slot.forcedBorderColors = nil
 		end
-	elseif B.db.showAssignedColor and B.AssignmentColors[assignedBag] then
+	elseif assignedColor then
 		local rr, gg, bb = unpack(B.AssignmentColors[assignedBag])
 		slot.newItemGlow:SetVertexColor(rr, gg, bb)
 		slot:SetBackdropBorderColor(rr, gg, bb)
@@ -758,11 +759,11 @@ function B:AssignBagFlagMenu()
 					if value then
 						holder.tempflag = i
 						holder.ElvUIFilterIcon:SetTexture(BAG_FILTER_ICONS[i])
-						holder.ElvUIFilterIcon:Show()
 					else
-						holder.ElvUIFilterIcon:Hide()
 						holder.tempflag = -1
 					end
+
+					holder.ElvUIFilterIcon:SetShown(value)
 				end
 
 				if holder.tempflag then
@@ -839,10 +840,13 @@ function B:GetBagAssignedInfo(holder)
 				color = B.AssignmentColors[i]
 				active = (color and i) or 0
 				holder.ElvUIFilterIcon:SetTexture(B.BAG_FILTER_ICONS[i])
-				holder.ElvUIFilterIcon:SetShown(E.db.bags.showAssignedIcon)
 				break
 			end
 		end
+	end
+
+	if E.db.bags.showAssignedIcon then
+		holder.ElvUIFilterIcon:SetShown(active)
 	end
 
 	if not active then
@@ -856,15 +860,31 @@ function B:GetBagAssignedInfo(holder)
 	end
 end
 
+function B:FilterIconShown(show)
+	if self.FilterBackdrop then
+		self.FilterBackdrop:SetShown(show)
+	end
+end
+
 function B:CreateFilterIcon(parent)
+	if parent.ElvUIFilterIcon then
+		return parent.ElvUIFilterIcon
+	end
+
 	--Create the texture showing the assignment type
-	parent.ElvUIFilterIcon = parent:CreateTexture(nil, 'OVERLAY')
-	parent.ElvUIFilterIcon:Hide()
+	local FilterBackdrop = CreateFrame('Frame', nil, parent, 'BackdropTemplate')
+	FilterBackdrop:Point('TOPLEFT', parent, 'TOPLEFT', E.Border, -E.Border)
+	FilterBackdrop:SetTemplate()
+	FilterBackdrop:Size(20, 20)
+
+	parent.ElvUIFilterIcon = FilterBackdrop:CreateTexture(nil, 'OVERLAY')
 	parent.ElvUIFilterIcon:SetTexture('Interface/ICONS/INV_Potion_93')
-	parent.ElvUIFilterIcon:CreateBackdrop(nil, nil, nil, true)
-	parent.ElvUIFilterIcon:Point('TOPLEFT', parent, 'TOPLEFT', E.Border, -E.Border)
 	parent.ElvUIFilterIcon:SetTexCoord(unpack(E.TexCoords))
-	parent.ElvUIFilterIcon:Size(18, 18)
+	parent.ElvUIFilterIcon:SetInside()
+	parent.ElvUIFilterIcon.FilterBackdrop = FilterBackdrop
+
+	hooksecurefunc(parent.ElvUIFilterIcon, 'SetShown', B.FilterIconShown)
+	parent.ElvUIFilterIcon:SetShown(false)
 end
 
 function B:Layout(isBank)
@@ -948,6 +968,10 @@ function B:Layout(isBank)
 
 				f.Bags[bagID][slotID]:SetID(slotID)
 				f.Bags[bagID][slotID]:SetSize(buttonSize, buttonSize)
+
+				if f.Bags[bagID][slotID].ElvUIFilterIcon then
+					f.Bags[bagID][slotID].ElvUIFilterIcon.FilterBackdrop:SetSize(buttonSize, buttonSize)
+				end
 
 				f.Bags[bagID][slotID].JunkIcon:SetSize(buttonSize / 2, buttonSize / 2)
 

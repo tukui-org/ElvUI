@@ -91,8 +91,7 @@ local function EquipmentDisplayButton(button)
 		button.icon:SetTexture(oldTex)
 
 		if not button.backdrop then
-			button:CreateBackdrop()
-			button.backdrop:SetAllPoints()
+			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 
 			S:HandleIconBorder(button.IconBorder)
 		end
@@ -285,9 +284,7 @@ function S:CharacterFrame()
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
-			Slot:CreateBackdrop()
-			Slot.backdrop:SetAllPoints()
-			Slot.backdrop:SetFrameLevel(Slot:GetFrameLevel())
+			Slot:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
 			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
@@ -460,19 +457,31 @@ function S:CharacterFrame()
 		object.BgTop:SetTexture()
 		object.BgBottom:SetTexture()
 		object.BgMiddle:SetTexture()
-		object.icon:Size(36, 36)
-		object.icon:SetTexCoord(unpack(E.TexCoords))
+		object.HighlightBar:Kill()
+		object.Stripe:Kill()
 
-		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
-		object.icon:Point('LEFT', object, 'LEFT', 4, 0)
+		object.SelectedBar:SetTexture(E.media.normTex)
+		object.SelectedBar:SetVertexColor(1, 1, 1, 0.20)
+		object.SelectedBar:SetInside(object, 4, 3)
+
+		S:HandleButton(object, nil, nil, nil, nil, 'Transparent')
+		object.backdrop:SetInside(object, 3, 2)
+
+		object.icon:Point('LEFT', object, 6, 0)
+		object.icon:SetTexCoord(unpack(E.TexCoords))
+		object.icon:CreateBackdrop(nil, nil, nil, true)
+
 		hooksecurefunc(object.icon, 'SetPoint', function(icn, _, _, _, _, _, forced)
 			if forced ~= true then
-				icn:Point('LEFT', object, 'LEFT', 4, 0, true)
+				icn:Point('LEFT', object, 'LEFT', 6, 0, true)
 			end
 		end)
+
 		hooksecurefunc(object.icon, 'SetSize', function(icn, width, height)
-			if width == 30 or height == 30 then
-				icn:Size(36, 36)
+			if width == 36 or height == 36 then -- items
+				icn:Size(32, 32)
+			elseif width == 30 or height == 30 then -- new set
+				icn:Size(32, 32)
 			end
 		end)
 	end

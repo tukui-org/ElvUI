@@ -458,8 +458,7 @@ function S:Blizzard_EncounterJournal()
 			local rewardData = sugg.reward.data
 			if rewardData then
 				if not sugg.reward.icon.backdrop then
-					sugg.reward.icon:CreateBackdrop()
-					sugg.reward.icon.backdrop:SetFrameLevel(3)
+					sugg.reward.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, 3)
 				end
 
 				sugg.reward.icon:SetMask('')

@@ -371,8 +371,7 @@ function AB:CreateBar(id)
 	bar:SetFrameStrata('LOW')
 	bar.id = id
 
-	bar:CreateBackdrop(AB.db.transparent and 'Transparent')
-	bar.backdrop:SetFrameLevel(0)
+	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
 
 	bar.buttons = {}
 	bar.bindButtons = defaults.bindButtons
@@ -635,7 +634,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
 	if border and not button.useMasque then border:Kill() end
-
 	if count then
 		count:ClearAllPoints()
 
@@ -647,19 +645,21 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 			count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		end
 
-		count:SetTextColor(color.r, color.g, color.b)
+		local c = db and db.useCountColor and db.countColor or color
+		count:SetTextColor(c.r, c.g, c.b)
 	end
 
 	if macroText then
 		macroText:ClearAllPoints()
 		macroText:Point('BOTTOM', 0, 1)
 		macroText:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
-		macroText:SetTextColor(color.r, color.g, color.b)
+
+		local c = db and db.useMacroColor and db.macroColor or color
+		macroText:SetTextColor(c.r, c.g, c.b)
 	end
 
 	if not button.noBackdrop and not button.backdrop and not button.useMasque then
-		button:CreateBackdrop(AB.db.transparent and 'Transparent', true)
-		button.backdrop:SetAllPoints()
+		button:CreateBackdrop(AB.db.transparent and 'Transparent', true, nil, nil, nil, nil, true)
 	end
 
 	if flash then
@@ -694,9 +694,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 			hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
 		end
 
-		if button.config and (button.config.outOfRangeColoring ~= 'hotkey') then
-			button.HotKey:SetTextColor(color.r, color.g, color.b)
-		end
+		AB:UpdateHotkeyColor(button)
 	end
 
 	--Extra Action Button
@@ -719,6 +717,14 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		E:RegisterCooldown(button.cooldown)
 
 		AB.handledbuttons[button] = true
+	end
+end
+
+function AB:UpdateHotkeyColor(button)
+	if button.config and not button.outOfRange then
+		local db = button.db
+		local c = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
+		button.HotKey:SetVertexColor(c.r, c.g, c.b)
 	end
 end
 
@@ -1041,10 +1047,11 @@ function AB:UpdateButtonConfig(bar, buttonName)
 		return
 	end
 
+	local barDB = AB.db['bar'..bar.id]
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
 	bar.buttonConfig.hideElements.macro = not AB.db.macrotext
-	bar.buttonConfig.hideElements.hotkey = not AB.db.hotkeytext
-	bar.buttonConfig.showGrid = AB.db['bar'..bar.id].showGrid
+	bar.buttonConfig.hideElements.hotkey = not AB.db.hotkeytext or barDB.hideHotkey
+	bar.buttonConfig.showGrid = barDB.showGrid
 	bar.buttonConfig.clickOnDown = AB.db.keyDown
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
@@ -1297,15 +1304,21 @@ end
 
 function AB:LAB_ButtonUpdate(button)
 	local color = AB.db.fontColor
-	button.Count:SetTextColor(color.r, color.g, color.b)
-	if button.config and (button.config.outOfRangeColoring ~= 'hotkey') then
-		button.HotKey:SetTextColor(color.r, color.g, color.b)
+	local db = button.db
+
+	do
+		local color = db and db.useCountColor and db.countColor or color
+		button.Count:SetTextColor(color.r, color.g, color.b)
 	end
 
 	if button.backdrop then
 		color = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
 		button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
+end
+
+function AB:LAB_UpdateRange(button)
+	AB:UpdateHotkeyColor(button)
 end
 
 function AB:LAB_CooldownDone(button)
@@ -1334,6 +1347,7 @@ function AB:Initialize()
 	AB.Initialized = true
 
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
+	LAB.RegisterCallback(AB, 'OnUpdateRange', AB.LAB_UpdateRange)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)

@@ -27,8 +27,7 @@ function S:Blizzard_RaidUI()
 				local slot = _G[object..'Slot'..j]
 				if slot then
 					slot:StripTextures()
-					slot:CreateBackdrop('Transparent')
-					slot.backdrop:SetAllPoints()
+					slot:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 				end
 			end
 		end

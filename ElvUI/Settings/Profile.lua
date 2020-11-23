@@ -277,6 +277,7 @@ P.bags = {
 		backdropSpacing = 4,
 		showBackdrop = false,
 		mouseover = false,
+		showCount = true,
 		visibility = '[petbattle] hide; show',
 	},
 };
@@ -2214,20 +2215,7 @@ P.actionbar = {
 		alpha = 1,
 		inheritGlobalFade = false,
 		visibility = '[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide',
-		countFont = 'Homespun',
-		countFontOutline = 'MONOCHROMEOUTLINE',
-		countFontSize = 10,
-		countFontXOffset = 0,
-		countFontYOffset = 2,
-		countTextPosition = 'BOTTOMRIGHT',
-		customCountFont = false,
-		customHotkeyFont = false,
-		hotkeyFont = 'Homespun',
-		hotkeyFontOutline = 'MONOCHROMEOUTLINE',
-		hotkeyFontSize = 10,
-		hotkeyTextPosition = 'TOPRIGHT',
-		hotkeyTextXOffset = 0,
-		hotkeyTextYOffset = -3,
+		hideHotkey = false
 	},
 	stanceBar = {
 		enabled = true,
@@ -2248,20 +2236,7 @@ P.actionbar = {
 		alpha = 1,
 		inheritGlobalFade = false,
 		visibility = '[vehicleui] hide; [petbattle] hide;show',
-		countFont = 'Homespun',
-		countFontOutline = 'MONOCHROMEOUTLINE',
-		countFontSize = 10,
-		countFontXOffset = 0,
-		countFontYOffset = 2,
-		countTextPosition = 'BOTTOMRIGHT',
-		customCountFont = false,
-		customHotkeyFont = false,
-		hotkeyFont = 'Homespun',
-		hotkeyFontOutline = 'MONOCHROMEOUTLINE',
-		hotkeyFontSize = 10,
-		hotkeyTextPosition = 'TOPRIGHT',
-		hotkeyTextXOffset = 0,
-		hotkeyTextYOffset = -3,
+		hideHotkey = false
 	},
 	extraActionButton = {
 		alpha = 1,
@@ -2319,6 +2294,13 @@ for i = 1, 10 do
 		hotkeyTextPosition = 'TOPRIGHT',
 		hotkeyTextXOffset = 0,
 		hotkeyTextYOffset = -3,
+		hideHotkey = false,
+		useHotkeyColor = false,
+		hotkeyColor = { r = 1, g = 1, b = 1 },
+		useCountColor = false,
+		countColor = { r = 1, g = 1, b = 1 },
+		useMacroColor = false,
+		macroColor = { r = 1, g = 1, b = 1 },
 	}
 end
 
@@ -2387,17 +2369,25 @@ E.LayoutMoverPositions = {
 		ObjectiveFrameMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-163,-325',
 		SocialMenuMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-187',
 		VehicleSeatMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-4',
+		DurabilityFrameMover = "TOPLEFT,ElvUIParent,TOPLEFT,141,-4",
+		ThreatBarMover = "BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,4",
+		PetAB = "RIGHT,ElvUIParent,RIGHT,-4,0",
+		ShiftAB = "BOTTOM,ElvUIParent,BOTTOM,0,58",
+        ElvUF_Raid40Mover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269",
+		ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269",
+		ElvUF_PartyMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269",	
+		HonorBarMover = "TOPRIGHT,ElvUIParent,TOPRIGHT,-2,-251",
+		ReputationBarMover = "TOPRIGHT,ElvUIParent,TOPRIGHT,-2,-243"
 	},
 	dpsCaster = {
 		ElvUF_PlayerCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,243',
-		ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,97'
+		ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,97',	
 	},
 	healer = {
 		ElvUF_PlayerCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,243',
 		ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,97',
 		ElvUF_RaidMover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,202,373',
 		LootFrameMover = 'TOPLEFT,ElvUIParent,TOPLEFT,250,-104',
-		ShiftAB = 'TOPLEFT,ElvUIParent,BOTTOMLEFT,4,273',
 		VOICECHAT = 'TOPLEFT,ElvUIParent,TOPLEFT,250,-82'
 	}
 }

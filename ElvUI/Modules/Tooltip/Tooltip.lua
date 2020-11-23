@@ -64,6 +64,7 @@ local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
 
+local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
@@ -79,7 +80,7 @@ local UNKNOWN = UNKNOWN
 -- Custom to find LEVEL string on tooltip
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
 local LEVEL2 = strlower(_G.TOOLTIP_UNIT_LEVEL_CLASS:gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
-
+local IDLine = '|cFFCA3C3C%s|r %d'
 local GameTooltip, GameTooltipStatusBar = _G.GameTooltip, _G.GameTooltipStatusBar
 local targetList, TAPPED_COLOR, keybindFrame = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
@@ -517,7 +518,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		local guid = UnitGUID(unit) or ''
 		local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
 		if id then
-			tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, id))
+			tt:AddLine(format(IDLine, _G.ID, id))
 		end
 	end
 
@@ -582,12 +583,12 @@ function TT:GameTooltip_OnTooltipSetItem(tt)
 		end
 
 		if TT.db.itemCount == 'BAGS_ONLY' then
-			right = format('|cFFCA3C3C%s|r %d', L["Count"], num)
+			right = format(IDLine, L["Count"], num)
 		elseif TT.db.itemCount == 'BANK_ONLY' then
-			bankCount = format('|cFFCA3C3C%s|r %d', L["Bank"], numall - num)
+			bankCount = format(IDLine, L["Bank"], numall - num)
 		elseif TT.db.itemCount == 'BOTH' then
-			right = format('|cFFCA3C3C%s|r %d', L["Count"], num)
-			bankCount = format('|cFFCA3C3C%s|r %d', L["Bank"], numall - num)
+			right = format(IDLine, L["Count"], num)
+			bankCount = format(IDLine, L["Bank"], numall - num)
 		end
 
 		if left ~= ' ' or right ~= ' ' then
@@ -680,9 +681,9 @@ function TT:SetUnitAura(tt, unit, index, filter)
 				local name = UnitName(caster)
 				local _, class = UnitClass(caster)
 				local color = E:ClassColor(class) or PRIEST_COLOR
-				tt:AddDoubleLine(format('|cFFCA3C3C%s|r %d', _G.ID, id), format('|c%s%s|r', color.colorStr, name))
+				tt:AddDoubleLine(format(IDLine, _G.ID, id), format('|c%s%s|r', color.colorStr, name))
 			else
-				tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, id))
+				tt:AddLine(format(IDLine, _G.ID, id))
 			end
 		end
 
@@ -696,7 +697,7 @@ function TT:GameTooltip_OnTooltipSetSpell(tt)
 	local _, id = tt:GetSpell()
 	if not id then return end
 
-	local ID = format('|cFFCA3C3C%s|r %d', _G.ID, id)
+	local ID = format(IDLine, _G.ID, id)
 	for i = 3, tt:NumLines() do
 		local line = _G[format('GameTooltipTextLeft%d', i)]
 		local text = line and line:GetText()
@@ -712,14 +713,14 @@ end
 function TT:SetItemRef(link)
 	if IsModifierKeyDown() or not (link and strfind(link, '^spell:')) then return end
 
-	_G.ItemRefTooltip:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, strmatch(link, ':(%d+)')))
+	_G.ItemRefTooltip:AddLine(format(IDLine, _G.ID, strmatch(link, ':(%d+)')))
 	_G.ItemRefTooltip:Show()
 end
 
 function TT:SetToyByItemID(tt, id)
 	if tt:IsForbidden() then return end
 	if id and TT:IsModKeyDown() then
-		tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, id))
+		tt:AddLine(format(IDLine, _G.ID, id))
 		tt:Show()
 	end
 end
@@ -730,15 +731,24 @@ function TT:SetCurrencyToken(tt, index)
 	local id = TT:IsModKeyDown() and tonumber(strmatch(C_CurrencyInfo_GetCurrencyListLink(index),'currency:(%d+)'))
 	if not id then return end
 
-	tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, id))
+	tt:AddLine(format(IDLine, _G.ID, id))
 	tt:Show()
 end
 
 function TT:SetCurrencyTokenByID(tt, id)
 	if tt:IsForbidden() then return end
 	if id and TT:IsModKeyDown() then
-		tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, id))
+		tt:AddLine(format(IDLine, _G.ID, id))
 		tt:Show()
+	end
+end
+
+function TT:QuestID(tt)
+	if not tt or tt:IsForbidden() then return end
+	local id = tt.questLogIndex and C_QuestLog_GetQuestIDForLogIndex(tt.questLogIndex) or tt.questID
+	if id and TT:IsModKeyDown() then
+		GameTooltip:AddLine(format(IDLine, _G.ID, id))
+		GameTooltip:Show()
 	end
 end
 
@@ -747,7 +757,7 @@ function TT:SetBackpackToken(tt, id)
 	if id and TT:IsModKeyDown() then
 		local info = C_CurrencyInfo_GetBackpackCurrencyInfo(id)
 		if info and info.currencyTypesID then
-			tt:AddLine(format('|cFFCA3C3C%s|r %d', _G.ID, info.currencyTypesID))
+			tt:AddLine(format(IDLine, _G.ID, info.currencyTypesID))
 			tt:Show()
 		end
 	end
@@ -848,6 +858,9 @@ function TT:Initialize()
 	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	TT:SecureHookScript(_G.ElvUISpellBookTooltip, 'OnTooltipSetSpell', 'GameTooltip_OnTooltipSetSpell')
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
+
+	TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'QuestID')
+	TT:SecureHook('TaskPOI_OnEnter', 'QuestID')
 
 	--Variable is localized at top of file, then set here when we're sure the frame has been created
 	--Used to check if keybinding is active, if so then don't hide tooltips on actionbars
