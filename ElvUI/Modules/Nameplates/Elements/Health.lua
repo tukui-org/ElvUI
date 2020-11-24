@@ -58,6 +58,11 @@ function NP:Health_UpdateColor(_, unit)
 	if element.PostUpdateColor then
 		element:PostUpdateColor(unit, r, g, b)
 	end
+
+	if not element:IsShown() then
+		print("Something dun fucked up bit it was fixed")
+		element:Show()
+	end
 end
 
 function NP:Construct_Health(nameplate)
