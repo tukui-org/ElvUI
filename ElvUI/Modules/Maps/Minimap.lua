@@ -161,6 +161,10 @@ function M:SetupHybridMinimap()
 	MapCanvas:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
 	MapCanvas:SetScript('OnMouseDown', M.MapCanvas_OnMouseDown)
 	MapCanvas:SetScript('OnMouseUp', E.noop)
+
+	if _G.MinimapBackdrop then
+		_G.MinimapBackdrop:SetFrameLevel(MapCanvas:GetFrameLevel()-1)
+	end
 end
 
 function M:HideNonInstancePanels()
