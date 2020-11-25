@@ -162,8 +162,8 @@ function M:SetupHybridMinimap()
 	MapCanvas:SetScript('OnMouseDown', M.MapCanvas_OnMouseDown)
 	MapCanvas:SetScript('OnMouseUp', E.noop)
 
-	if _G.MinimapBackdrop then
-		_G.MinimapBackdrop:SetFrameLevel(MapCanvas:GetFrameLevel()-1)
+	if _G.Minimap.backdrop then
+		_G.Minimap.backdrop:SetFrameLevel(MapCanvas:GetFrameLevel()-1)
 	end
 end
 
