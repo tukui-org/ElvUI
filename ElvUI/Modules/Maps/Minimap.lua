@@ -16,6 +16,7 @@ local GetMinimapZoneText = GetMinimapZoneText
 local GetZonePVPInfo = GetZonePVPInfo
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
+local IsInJailersTower = IsInJailersTower
 local IsShiftKeyDown = IsShiftKeyDown
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
