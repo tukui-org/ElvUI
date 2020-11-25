@@ -671,6 +671,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			if nameplate.RaisedElement:IsShown() then
 				nameplate.RaisedElement:Hide()
 			end
+
+			nameplate.previousType = nil -- dont get the plate stuck for next unit
 		else
 			if not nameplate.RaisedElement:IsShown() then
 				nameplate.RaisedElement:Show()
