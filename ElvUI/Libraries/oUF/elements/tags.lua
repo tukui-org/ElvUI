@@ -69,6 +69,7 @@ local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
+local xpcall = Private.xpcall
 local unitExists = Private.unitExists
 
 -- ElvUI block
@@ -735,8 +736,10 @@ end
 local function registerEvent(fontstr, event)
 	if(not events[event]) then events[event] = {} end
 
-	eventFrame:RegisterEvent(event)
-	tinsert(events[event], fontstr)
+	local isOK = xpcall(eventFrame.RegisterEvent, eventFrame, event)
+	if(isOK) then
+		tinsert(events[event], fontstr)
+	end
 end
 
 local function registerEvents(fontstr, tagstr)
@@ -761,7 +764,7 @@ local function unregisterEvents(fontstr)
 					eventFrame:UnregisterEvent(event)
 				end
 
-				table.remove(data, index)
+				tremove(data, index)
 			else
 				index = index + 1
 			end

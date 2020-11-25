@@ -137,6 +137,7 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 		else
 			self.unitEvents = self.unitEvents or {}
 			self.unitEvents[event] = true
+
 			-- UpdateUnits will take care of unit event registration for header
 			-- units in case we don't have a valid unit yet
 			local unit1, unit2 = self.unit
