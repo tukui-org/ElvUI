@@ -16,7 +16,6 @@ local GetMinimapZoneText = GetMinimapZoneText
 local GetZonePVPInfo = GetZonePVPInfo
 local InCombatLockdown = InCombatLockdown
 local IsAddOnLoaded = IsAddOnLoaded
-local IsInJailersTower = IsInJailersTower
 local IsShiftKeyDown = IsShiftKeyDown
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local ShowUIPanel, HideUIPanel = ShowUIPanel, HideUIPanel
@@ -227,10 +226,6 @@ function M:Minimap_OnMouseWheel(d)
 end
 
 function M:Update_ZoneText()
-	if Minimap.backdrop then
-		Minimap.backdrop:SetShown(not IsInJailersTower())
-	end
-
 	if E.db.general.minimap.locationText == 'HIDE' then return end
 	Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
@@ -355,6 +350,10 @@ function M:SetGetMinimapShape()
 	Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
 end
 
+local function clearBackdrop(self)
+    self:SetBackdropColor(0, 0, 0, 0)
+end
+
 function M:Initialize()
 	if not E.private.general.minimap.enable then return end
 	self.Initialized = true
@@ -373,6 +372,11 @@ function M:Initialize()
 	Minimap:Point('TOPRIGHT', mmholder, 'TOPRIGHT', -E.Border, -E.Border)
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
+
+	if Minimap.backdrop then
+		Minimap.backdrop:SetBackdropColor(0, 0, 0, 0)
+		Minimap.backdrop.callbackBackdropColor = clearBackdrop
+	end
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
