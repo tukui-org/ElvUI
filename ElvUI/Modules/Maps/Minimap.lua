@@ -352,10 +352,6 @@ function M:SetGetMinimapShape()
 	Minimap:Size(E.db.general.minimap.size, E.db.general.minimap.size)
 end
 
-local function clearBackdrop(self)
-    self:SetBackdropColor(0, 0, 0, 0)
-end
-
 function M:Initialize()
 	if not E.private.general.minimap.enable then return end
 	self.Initialized = true
@@ -375,14 +371,9 @@ function M:Initialize()
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
 
-	if Minimap.backdrop then
+	if Minimap.backdrop then -- level to hybrid maps fixed values
 		Minimap.backdrop:SetFrameLevel(100)
 		Minimap.backdrop:SetFrameStrata('BACKGROUND')
-	end
-
-	if Minimap.backdrop then
-		Minimap.backdrop:SetBackdropColor(0, 0, 0, 0)
-		Minimap.backdrop.callbackBackdropColor = clearBackdrop
 	end
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
