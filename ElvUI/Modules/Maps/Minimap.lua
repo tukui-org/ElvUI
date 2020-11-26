@@ -227,6 +227,10 @@ function M:Minimap_OnMouseWheel(d)
 end
 
 function M:Update_ZoneText()
+	if Minimap.backdrop then
+		Minimap.backdrop:SetShown(not IsInJailersTower())
+	end
+
 	if E.db.general.minimap.locationText == 'HIDE' then return end
 	Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
@@ -364,7 +368,6 @@ function M:Initialize()
 	Minimap:SetQuestBlobRingAlpha(0)
 	Minimap:SetArchBlobRingAlpha(0)
 	Minimap:CreateBackdrop()
-	Minimap.backdrop:SetShown(not IsInJailersTower())
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
 	Minimap:ClearAllPoints()
 	Minimap:Point('TOPRIGHT', mmholder, 'TOPRIGHT', -E.Border, -E.Border)
