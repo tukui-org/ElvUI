@@ -161,6 +161,8 @@ function M:SetupHybridMinimap()
 	MapCanvas:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
 	MapCanvas:SetScript('OnMouseDown', M.MapCanvas_OnMouseDown)
 	MapCanvas:SetScript('OnMouseUp', E.noop)
+
+	_G.HybridMinimap.CircleMask:StripTextures()
 end
 
 function M:HideNonInstancePanels()
@@ -226,6 +228,13 @@ function M:Minimap_OnMouseWheel(d)
 end
 
 function M:Update_ZoneText()
+	local hybrid = _G.HybridMinimap
+	local canvas = hybrid and hybrid.MapCanvas
+	if canvas and Minimap.backdrop then
+		Minimap.backdrop:SetFrameStrata(canvas:GetFrameStrata())
+		Minimap.backdrop:SetFrameLevel(canvas:GetFrameLevel()-1)
+	end
+
 	if E.db.general.minimap.locationText == 'HIDE' then return end
 	Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
