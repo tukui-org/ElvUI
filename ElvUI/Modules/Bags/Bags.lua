@@ -2085,16 +2085,6 @@ end
 
 function B:GUILDBANKFRAME_OPENED(event)
 	local GuildItemSearchBox = _G.GuildItemSearchBox
-	--[[
-		local button = CreateFrame('Button', 'GuildSortButton', GuildBankFrame, 'UIPanelButtonTemplate, BackdropTemplate')
-		button:StripTextures()
-		button:SetTemplate(nil, true)
-		button:Size(110, 20)
-		button:Point('RIGHT', GuildItemSearchBox, 'LEFT', -4, 0)
-		button:SetText(L["Sort Tab"])
-		button:SetScript('OnClick', function() B:CommandDecorator(B.SortBags, 'guild')() end)
-		E.Skins:HandleButton(button, true)
-	]]
 
 	if GuildItemSearchBox then
 		GuildItemSearchBox:SetScript('OnEscapePressed', B.ResetAndClear)
