@@ -228,13 +228,6 @@ function M:Minimap_OnMouseWheel(d)
 end
 
 function M:Update_ZoneText()
-	local hybrid = _G.HybridMinimap
-	local canvas = hybrid and hybrid.MapCanvas
-	if canvas and Minimap.backdrop then
-		Minimap.backdrop:SetFrameStrata(canvas:GetFrameStrata())
-		Minimap.backdrop:SetFrameLevel(canvas:GetFrameLevel()-1)
-	end
-
 	if E.db.general.minimap.locationText == 'HIDE' then return end
 	Minimap.location:FontTemplate(LSM:Fetch('font', E.db.general.minimap.locationFont), E.db.general.minimap.locationFontSize, E.db.general.minimap.locationFontOutline)
 	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
@@ -381,6 +374,11 @@ function M:Initialize()
 	Minimap:Point('TOPRIGHT', mmholder, 'TOPRIGHT', -E.Border, -E.Border)
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
+
+	if Minimap.backdrop then
+		Minimap.backdrop:SetFrameLevel(100)
+		Minimap.backdrop:SetFrameStrata('BACKGROUND')
+	end
 
 	if Minimap.backdrop then
 		Minimap.backdrop:SetBackdropColor(0, 0, 0, 0)
