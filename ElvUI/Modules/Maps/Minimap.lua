@@ -372,7 +372,7 @@ function M:Initialize()
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
 
 	if Minimap.backdrop then -- level to hybrid maps fixed values
-		Minimap.backdrop:SetFrameLevel(100)
+		Minimap.backdrop:SetFrameLevel(99)
 		Minimap.backdrop:SetFrameStrata('BACKGROUND')
 	end
 
