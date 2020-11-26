@@ -612,7 +612,7 @@ E.Options.args.bags = {
 					order = 1,
 					type = 'range',
 					name = L["Bag Spacing"],
-					min = 0, max = 20, step = 1,
+					min = -3, max = 20, step = 1,
 				},
 				player = {
 					order = 2,
