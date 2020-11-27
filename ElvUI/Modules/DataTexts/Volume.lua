@@ -33,19 +33,23 @@ local menu = {{ text = L["Select Volume Stream"], isTitle = true, notCheckable =
 local toggleMenu = {{ text = L["Toggle Volume Stream"], isTitle = true, notCheckable = true }}
 local deviceMenu = {{ text = L["Output Audio Device"], isTitle = true, notCheckable = true }}
 
-local function GetStatusColor(vol, text)
-	if not text then
-		text = vol.Name
+local function GetStreamString(stream, tooltip)
+	if not stream then
+		stream = AudioStreams[1]
 	end
 
-	return format('|cFF%s%s%%|r', GetCVarBool(AudioStreams[1].Enabled) and GetCVarBool(vol.Enabled) and '00FF00' or 'FF3333', text)
+	if tooltip then
+		return format('|cFF%s%.f%%|r', GetCVarBool(AudioStreams[1].Enabled) and GetCVarBool(stream.Enabled) and '00FF00' or 'FF3333',  GetCVar(stream.Volume) * 100)
+	else
+		return format('%s: |cFF%s%.f%%|r', stream.Name, GetCVarBool(AudioStreams[1].Enabled) and GetCVarBool(stream.Enabled) and '00FF00' or 'FF3333',  GetCVar(stream.Volume) * 100)
+	end
 end
 
 local function SelectStream(_, ...)
 	activeIndex = ...
 	activeStream = AudioStreams[activeIndex]
 
-	panel.text:SetText(activeStream.Name..': '..GetStatusColor(activeStream, format('%.f', GetCVar(activeStream.Volume) * 100)))
+	panel.text:SetText(GetStreamString(activeStream))
 end
 
 local function ToggleStream(_, ...)
@@ -53,7 +57,7 @@ local function ToggleStream(_, ...)
 
 	SetCVar(Stream.Enabled, GetCVarBool(Stream.Enabled) and 0 or 1, 'ELVUI_VOLUME')
 
-	panel.text:SetText(activeStream.Name..': '..GetStatusColor(activeStream, format('%.f', GetCVar(activeStream.Volume) * 100)))
+	panel.text:SetText(GetStreamString(activeStream))
 end
 
 for Index, Stream in ipairs(AudioStreams) do
@@ -80,7 +84,7 @@ local function OnEnter()
 	DT.tooltip:AddLine(L["Volume Streams"], 1, 1, 1)
 
 	for _, Stream in ipairs(AudioStreams) do
-		DT.tooltip:AddDoubleLine(Stream.Name, GetStatusColor(Stream, format('%.f', GetCVar(Stream.Volume) * 100)))
+		DT.tooltip:AddDoubleLine(Stream.Name, GetStreamString(Stream, true))
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -94,7 +98,7 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-function OnEvent(self, event, ...)
+function OnEvent(self, event, arg1)
 	activeStream = AudioStreams[activeIndex]
 	panel = self
 
@@ -118,16 +122,10 @@ function OnEvent(self, event, ...)
 
 			SetCVar(activeStream.Volume, vol, 'ELVUI_VOLUME')
 		end)
-
-		self.text:SetText(activeStream.Name..': '..GetStatusColor(activeStream, format('%.f', GetCVar(activeStream.Volume) * 100)))
 	end
 
-	if event == 'CVAR_UPDATE' then
-		local cvar_name, value = ...
-
-		if cvar_name == 'ELVUI_VOLUME' then
-			self.text:SetText(activeStream.Name..': '..GetStatusColor(activeStream, format('%.f', value * 100)))
-		end
+	if event == 'CVAR_UPDATE' and arg1 == 'ELVUI_VOLUME' or event == 'ELVUI_FORCE_UPDATE' then
+		self.text:SetText(GetStreamString(activeStream))
 	end
 end
 
@@ -141,8 +139,7 @@ local function OnClick(self, button)
 		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 		_G.EasyMenu(menu, DT.EasyMenu, nil, nil, nil, 'MENU')
 	elseif button == 'MiddleButton' then
-		SetCVar(AudioStreams[1].Enabled, GetCVarBool(AudioStreams[1].Enabled) and 0 or 1)
-		OnEvent(self, 'CVAR_UPDATE', 'ELVUI_VOLUME', GetCVar(AudioStreams[1].Volume));
+		SetCVar(AudioStreams[1].Enabled, GetCVarBool(AudioStreams[1].Enabled) and 0 or 1, 'ELVUI_VOLUME')
 	elseif button == 'RightButton' then
 		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 		_G.EasyMenu(IsShiftKeyDown() and deviceMenu or toggleMenu, DT.EasyMenu, nil, nil, nil, 'MENU')
