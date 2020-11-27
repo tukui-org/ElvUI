@@ -10,7 +10,6 @@ local GetRewardXP = GetRewardXP
 local IsAddOnLoaded = IsAddOnLoaded
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
-local hooksecurefunc = hooksecurefunc
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 

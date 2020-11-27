@@ -1,18 +1,18 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
---Lua functions
-local format = string.format
+local _G = _G
 local tonumber = tonumber
+local format = format
 local ipairs = ipairs
+local tinsert = tinsert
 
---WoW API / Variables
 local SetCVar = SetCVar
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
 local IsShiftKeyDown = IsShiftKeyDown
-local SOUND = SOUND
 local ShowOptionsPanel = ShowOptionsPanel
+local SOUND = SOUND
 
 local Sound_GameSystem_GetOutputDriverNameByIndex = Sound_GameSystem_GetOutputDriverNameByIndex
 local Sound_GameSystem_GetNumOutputDrivers = Sound_GameSystem_GetNumOutputDrivers
@@ -26,22 +26,23 @@ local AudioStreams = {
 	{ Name = _G.MUSIC_VOLUME, Volume = 'Sound_MusicVolume', Enabled = 'Sound_EnableMusic' }
 }
 
+local panel, OnEvent
 local activeIndex = 1
 local activeStream = AudioStreams[activeIndex]
-local panel, OnEvent
 local menu = {{ text = L["Select Volume Stream"], isTitle = true, notCheckable = true }}
 local toggleMenu = {{ text = L["Toggle Volume Stream"], isTitle = true, notCheckable = true }}
 local deviceMenu = {{ text = L["Output Audio Device"], isTitle = true, notCheckable = true }}
 
 local function GetStreamString(stream, tooltip)
-	if not stream then
-		stream = AudioStreams[1]
-	end
+	if not stream then stream = AudioStreams[1] end
+
+	local color = GetCVarBool(AudioStreams[1].Enabled) and GetCVarBool(stream.Enabled) and '00FF00' or 'FF3333'
+	local level = GetCVar(stream.Volume) * 100
 
 	if tooltip then
-		return format('|cFF%s%.f%%|r', GetCVarBool(AudioStreams[1].Enabled) and GetCVarBool(stream.Enabled) and '00FF00' or 'FF3333',  GetCVar(stream.Volume) * 100)
+		return format('|cFF%s%.f%%|r', color, level)
 	else
-		return format('%s: |cFF%s%.f%%|r', stream.Name, GetCVarBool(AudioStreams[1].Enabled) and GetCVarBool(stream.Enabled) and '00FF00' or 'FF3333',  GetCVar(stream.Volume) * 100)
+		return format('%s: |cFF%s%.f%%|r', stream.Name, color, level)
 	end
 end
 
@@ -98,30 +99,32 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
+local function onMouseWheel(_, delta)
+	local vol = GetCVar(activeStream.Volume)
+	local scale = 100
+
+	if IsShiftKeyDown() then
+		scale = 10
+	end
+
+	vol = vol + (delta / scale)
+
+	if vol >= 1 then
+		vol = 1
+	elseif vol <= 0 then
+		vol = 0
+	end
+
+	SetCVar(activeStream.Volume, vol, 'ELVUI_VOLUME')
+end
+
 function OnEvent(self, event, arg1)
 	activeStream = AudioStreams[activeIndex]
 	panel = self
 
-	if (event == 'ELVUI_FORCE_UPDATE') then
+	if event == 'ELVUI_FORCE_UPDATE' then
 		self:EnableMouseWheel(true)
-		self:SetScript('OnMouseWheel', function(_, delta)
-			local vol = GetCVar(activeStream.Volume);
-			local volScale = 100;
-
-			if (IsShiftKeyDown()) then
-				volScale = 10;
-			end
-
-			vol = vol + (delta / volScale)
-
-			if (vol >= 1) then
-				vol = 1
-			elseif (vol <= 0) then
-				vol = 0
-			end
-
-			SetCVar(activeStream.Volume, vol, 'ELVUI_VOLUME')
-		end)
+		self:SetScript('OnMouseWheel', onMouseWheel)
 	end
 
 	if event == 'CVAR_UPDATE' and arg1 == 'ELVUI_VOLUME' or event == 'ELVUI_FORCE_UPDATE' then
