@@ -7,6 +7,7 @@ local format, strjoin = format, strjoin
 local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
 
+local ToggleFrame = ToggleFrame
 local EJ_GetCurrentTier = EJ_GetCurrentTier
 local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_GetNumTiers = EJ_GetNumTiers
@@ -41,14 +42,14 @@ local formatBattleGroundInfo = '%s: '
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
 local enteredFrame = false
 
-local Update, lastPanel
+local OnUpdate, lastPanel
 
 local function ValueColorUpdate(hex)
 	europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
 	ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
 
 	if lastPanel ~= nil then
-		Update(lastPanel, 20000)
+		OnUpdate(lastPanel, 20000)
 	end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
@@ -79,9 +80,14 @@ local function CalculateTimeValues(tooltip)
 	end
 end
 
-local function Click()
+local function OnClick(_, btn)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-	_G.GameTimeFrame:Click()
+
+	if btn == 'RightButton' then
+		ToggleFrame(_G.TimeManagerFrame)
+	else
+		_G.GameTimeFrame:Click()
+	end
 end
 
 local function OnLeave()
@@ -290,7 +296,7 @@ local function OnEvent(self, event)
 	end
 end
 
-function Update(self, t)
+function OnUpdate(self, t)
 	self.timeElapsed = (self.timeElapsed or 5) - t
 	if self.timeElapsed > 0 then return end
 	self.timeElapsed = 5
@@ -316,4 +322,4 @@ function Update(self, t)
 	lastPanel = self
 end
 
-DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, Update, Click, OnEnter, OnLeave, nil, nil, ValueColorUpdate)
+DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ValueColorUpdate)

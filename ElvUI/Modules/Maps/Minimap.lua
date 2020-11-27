@@ -161,6 +161,8 @@ function M:SetupHybridMinimap()
 	MapCanvas:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
 	MapCanvas:SetScript('OnMouseDown', M.MapCanvas_OnMouseDown)
 	MapCanvas:SetScript('OnMouseUp', E.noop)
+
+	_G.HybridMinimap.CircleMask:StripTextures()
 end
 
 function M:HideNonInstancePanels()
@@ -368,6 +370,11 @@ function M:Initialize()
 	Minimap:Point('TOPRIGHT', mmholder, 'TOPRIGHT', -E.Border, -E.Border)
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
+
+	if Minimap.backdrop then -- level to hybrid maps fixed values
+		Minimap.backdrop:SetFrameLevel(99)
+		Minimap.backdrop:SetFrameStrata('BACKGROUND')
+	end
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')

@@ -10,7 +10,6 @@ local GetRewardXP = GetRewardXP
 local IsAddOnLoaded = IsAddOnLoaded
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
-local hooksecurefunc = hooksecurefunc
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 
@@ -30,6 +29,28 @@ local function PostBNToastMove(mover)
 
 	_G.BNToastFrame:ClearAllPoints()
 	_G.BNToastFrame:Point(anchorPoint, mover)
+end
+
+function B:QuestXPPercent()
+	if not E.db.general.questXPPercent then return end
+
+	local unitXP, unitXPMax = UnitXP('player'), UnitXPMax('player')
+	if _G.QuestInfoFrame.questLog then
+		local selectedQuest = C_QuestLog_GetSelectedQuest()
+		if C_QuestLog_ShouldShowQuestRewards(selectedQuest) then
+			local xp = GetQuestLogRewardXP()
+			if xp and xp > 0 then
+				local text = _G.MapQuestInfoRewardsFrame.XPFrame.Name:GetText()
+				if text then _G.MapQuestInfoRewardsFrame.XPFrame.Name:SetFormattedText('%s (|cff4beb2c+%.2f%%|r)', text, (((unitXP + xp) / unitXPMax) - (unitXP / unitXPMax))*100) end
+			end
+		end
+	else
+		local xp = GetRewardXP()
+		if xp and xp > 0 then
+			local text = _G.QuestInfoXPFrame.ValueText:GetText()
+			if text then _G.QuestInfoXPFrame.ValueText:SetFormattedText('%s (|cff4beb2c+%.2f%%|r)', text, (((unitXP + xp) / unitXPMax) - (unitXP / unitXPMax))*100) end
+		end
+	end
 end
 
 function B:Initialize()
@@ -75,25 +96,7 @@ function B:Initialize()
 	end)
 
 	--Add (+X%) to quest rewards experience text
-	hooksecurefunc('QuestInfo_Display', function()
-		local unitXP, unitXPMax = UnitXP('player'), UnitXPMax('player')
-		if _G.QuestInfoFrame.questLog then
-			local selectedQuest = C_QuestLog_GetSelectedQuest()
-			if C_QuestLog_ShouldShowQuestRewards(selectedQuest) then
-				local xp = GetQuestLogRewardXP()
-				if xp and xp > 0 then
-					local text = _G.MapQuestInfoRewardsFrame.XPFrame.Name:GetText()
-					if text then _G.MapQuestInfoRewardsFrame.XPFrame.Name:SetFormattedText('%s (|cff4beb2c+%.2f%%|r)', text, (((unitXP + xp) / unitXPMax) - (unitXP / unitXPMax))*100) end
-				end
-			end
-		else
-			local xp = GetRewardXP()
-			if xp and xp > 0 then
-				local text = _G.QuestInfoXPFrame.ValueText:GetText()
-				if text then _G.QuestInfoXPFrame.ValueText:SetFormattedText('%s (|cff4beb2c+%.2f%%|r)', text, (((unitXP + xp) / unitXPMax) - (unitXP / unitXPMax))*100) end
-			end
-		end
-	end)
+	B:SecureHook('QuestInfo_Display', 'QuestXPPercent')
 
 	-- MicroButton Talent Alert
 	local TalentMicroButtonAlert = _G.TalentMicroButtonAlert

@@ -14,6 +14,7 @@ local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local C_Garrison_GetBuildings = C_Garrison.GetBuildings
 local C_Garrison_GetInProgressMissions = C_Garrison.GetInProgressMissions
 local C_Garrison_GetLandingPageShipmentInfo = C_Garrison.GetLandingPageShipmentInfo
+local C_Garrison_GetLandingPageGarrisonType = C_Garrison.GetLandingPageGarrisonType
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
 local C_Garrison_GetLandingPageShipmentInfoByContainerID = C_Garrison.GetLandingPageShipmentInfoByContainerID
@@ -308,11 +309,19 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnClick(self)
+local function OnClick(self, btn)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 
-	DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-	_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
+	if btn == 'RightButton' then
+		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
+		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
+	else
+		if _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsShown() then
+			HideUIPanel(_G.GarrisonLandingPage)
+		else
+			LandingPage(nil, C_Garrison_GetLandingPageGarrisonType())
+		end
+	end
 end
 
 local function OnEvent(self, event, ...)

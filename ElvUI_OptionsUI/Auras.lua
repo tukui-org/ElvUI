@@ -3,13 +3,15 @@ local C, L = unpack(select(2, ...))
 local A = E:GetModule('Auras')
 local ACH = E.Libs.ACH
 
-E.Options.args.auras = ACH:Group(L["BUFFOPTIONS_LABEL"], nil, 2, 'tab', function(info) return E.private.auras[info[#info]] end, function(info, value) E.private.auras[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
-E.Options.args.auras.args.intro = ACH:Description(L["AURAS_DESC"], 0)
-E.Options.args.auras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-E.Options.args.auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 2)
-E.Options.args.auras.args.buffsHeader = ACH:Toggle(L["Buffs"], nil, 3)
-E.Options.args.auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 4)
-E.Options.args.auras.args.masque = ACH:MultiSelect(L["Masque Support"], nil, 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.Masque or not E.private.auras.enable end)
+local Auras = ACH:Group(L["BUFFOPTIONS_LABEL"], nil, 2, 'tab', function(info) return E.private.auras[info[#info]] end, function(info, value) E.private.auras[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+E.Options.args.auras = Auras
+
+Auras.args.intro = ACH:Description(L["AURAS_DESC"], 0)
+Auras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+Auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 2)
+Auras.args.buffsHeader = ACH:Toggle(L["Buffs"], nil, 3)
+Auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 4)
+Auras.args.masque = ACH:MultiSelect(L["Masque Support"], nil, 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.Masque or not E.private.auras.enable end)
 
 local SharedOptions = {
 	general = ACH:Group(L["General"], nil, 1, nil),
@@ -57,20 +59,20 @@ SharedOptions.statusBar.args.barPosition = ACH:Select(L["Position"], nil, 6, { T
 SharedOptions.statusBar.args.barSize = ACH:Range(L["Size"], nil, 7, { min = 1, max = 10, step = 1 })
 SharedOptions.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 8, { min = -10, max = 10, step = 1 })
 
-E.Options.args.auras.args.buffs = ACH:Group(L["Buffs"], nil, 2, nil, function(info) return E.db.auras.buffs[info[#info]] end, function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function() return not E.private.auras.buffsHeader end)
-E.Options.args.auras.args.buffs.args = CopyTable(SharedOptions)
-E.Options.args.auras.args.buffs.args.general.get = function(info) return E.db.auras.buffs[info[#info]] end
-E.Options.args.auras.args.buffs.args.general.set = function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end
-E.Options.args.auras.args.buffs.args.statusBar.disabled = function() return not E.db.auras.buffs.barShow end
-E.Options.args.auras.args.buffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.buffs.barColor local d = P.auras.buffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
-E.Options.args.auras.args.buffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.buffs.barColor t.r, t.g, t.b = r, g, b end
-E.Options.args.auras.args.buffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.buffs.barShow or (E.db.auras.buffs.barColorGradient or not E.db.auras.buffs.barShow) end
+Auras.args.buffs = ACH:Group(L["Buffs"], nil, 2, nil, function(info) return E.db.auras.buffs[info[#info]] end, function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function() return not E.private.auras.buffsHeader end)
+Auras.args.buffs.args = CopyTable(SharedOptions)
+Auras.args.buffs.args.general.get = function(info) return E.db.auras.buffs[info[#info]] end
+Auras.args.buffs.args.general.set = function(info, value) E.db.auras.buffs[info[#info]] = value; A:UpdateHeader(A.BuffFrame) end
+Auras.args.buffs.args.statusBar.disabled = function() return not E.db.auras.buffs.barShow end
+Auras.args.buffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.buffs.barColor local d = P.auras.buffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
+Auras.args.buffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.buffs.barColor t.r, t.g, t.b = r, g, b end
+Auras.args.buffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.buffs.barShow or (E.db.auras.buffs.barColorGradient or not E.db.auras.buffs.barShow) end
 
-E.Options.args.auras.args.debuffs = ACH:Group(L["Debuffs"], nil, 3, nil, function(info) return E.db.auras.debuffs[info[#info]] end, function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function() return not E.private.auras.debuffsHeader end)
-E.Options.args.auras.args.debuffs.args = CopyTable(SharedOptions)
-E.Options.args.auras.args.debuffs.args.general.get = function(info) return E.db.auras.debuffs[info[#info]] end
-E.Options.args.auras.args.debuffs.args.general.set = function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end
-E.Options.args.auras.args.debuffs.args.statusBar.disabled = function() return not E.db.auras.debuffs.barShow end
-E.Options.args.auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.debuffs.barColor local d = P.auras.debuffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
-E.Options.args.auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
-E.Options.args.auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end
+Auras.args.debuffs = ACH:Group(L["Debuffs"], nil, 3, nil, function(info) return E.db.auras.debuffs[info[#info]] end, function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function() return not E.private.auras.debuffsHeader end)
+Auras.args.debuffs.args = CopyTable(SharedOptions)
+Auras.args.debuffs.args.general.get = function(info) return E.db.auras.debuffs[info[#info]] end
+Auras.args.debuffs.args.general.set = function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end
+Auras.args.debuffs.args.statusBar.disabled = function() return not E.db.auras.debuffs.barShow end
+Auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.debuffs.barColor local d = P.auras.debuffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
+Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
+Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end

@@ -997,8 +997,8 @@ function S:HandleGarrisonPortrait(portrait)
 	local level = portrait.Level or portrait.LevelText
 	if level then
 		level:ClearAllPoints()
-		level:Point('BOTTOM', portrait, 0, 12)
-		level:FontTemplate(nil, 12, 'OUTLINE')
+		level:Point('BOTTOM', portrait, 0, 15)
+		level:FontTemplate(nil, 14, 'OUTLINE')
 		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
 		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
 	end
