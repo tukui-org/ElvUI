@@ -272,7 +272,14 @@ E.PopupDialogs.DELETE_GRAYS = {
 	text = format('|cffff0000%s|r', L["Delete gray items?"]),
 	button1 = YES,
 	button2 = NO,
-	OnAccept = function() Bags:VendorGrays(true) end,
+	OnAccept = function()
+		Bags:VendorGrays(true)
+		for _, info in ipairs(Bags.SellFrame.Info.itemList) do
+			PickupContainerItem(info[1], info[2])
+			DeleteCursorItem()
+		end
+		wipe(Bags.SellFrame.Info.itemList)
+	end,
 	OnShow = function(self)
 		MoneyFrame_Update(self.moneyFrame, E.PopupDialogs.DELETE_GRAYS.Money)
 	end,

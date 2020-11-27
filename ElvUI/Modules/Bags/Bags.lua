@@ -1284,7 +1284,7 @@ function B:VendorGrays(delete)
 				local _, link, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
 
 				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
-					tinsert(B.SellFrame.Info.itemList, {bag,slot,itemPrice,link})
+					tinsert(B.SellFrame.Info.itemList, {bag, slot, itemPrice, link})
 				end
 			end
 		end
@@ -1304,8 +1304,10 @@ function B:VendorGrays(delete)
 	B.SellFrame.statusbar:SetMinMaxValues(0, B.SellFrame.Info.ProgressMax)
 	B.SellFrame.statusbar.ValueText:SetText('0 / '..B.SellFrame.Info.ProgressMax)
 
-	--Time to sell
-	B.SellFrame:Show()
+	if not delete then
+		--Time to sell
+		B.SellFrame:Show()
+	end
 end
 
 function B:VendorGrayCheck()
@@ -2236,20 +2238,14 @@ end
 function B:ProgressQuickVendor()
 	local item = B.SellFrame.Info.itemList[1]
 	if not item then return nil, true end --No more to sell
-	local bag, slot,itemPrice, link = unpack(item)
+	local bag, slot, itemPrice, link = unpack(item)
 
-	local stackPrice = 0
-	if B.SellFrame.Info.delete then
-		PickupContainerItem(bag, slot)
-		DeleteCursorItem()
-	else
-		local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
-		stackPrice = (itemPrice or 0) * stackCount
-		if E.db.bags.vendorGrays.details and link then
-			E:Print(format('%s|cFF00DDDDx%d|r %s', link, stackCount, B:FormatMoney(stackPrice)))
-		end
-		UseContainerItem(bag, slot)
+	local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
+	local stackPrice = (itemPrice or 0) * stackCount
+	if E.db.bags.vendorGrays.details and link then
+		E:Print(format('%s|cFF00DDDDx%d|r %s', link, stackCount, B:FormatMoney(stackPrice)))
 	end
+	UseContainerItem(bag, slot)
 
 	tremove(B.SellFrame.Info.itemList, 1)
 
