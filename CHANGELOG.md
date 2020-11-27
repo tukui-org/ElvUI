@@ -1,6 +1,23 @@
-### Version 12.15 [ ETA: 🍨 ]
+### Version 12.17 [ ETA: 🍨 ]
 
 **Sweet:**  
+
+___
+
+### Version 12.16 [ November 27th 2020 ]
+
+**Happy Holidays:**  
+The Minimap was fixed for Torghast.  
+Bag Spacing setting min was lowered to -3.  
+Added XP Quest Percent toggle in settings under General > BlizzUI Improvements.  
+Added Volume Datatext (Thanks @Caedis).  
+
+___
+
+### Version 12.15 [ November 24th 2020 ]
+
+**Happy Holidays:**  
+Hotfixed a NamePlate bug, that was causing plate to be broken.  
 
 ___
 
