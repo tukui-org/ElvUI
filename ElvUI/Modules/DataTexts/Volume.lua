@@ -37,7 +37,7 @@ local function GetStatusColor(vol, text)
 		text = vol.Name
 	end
 
-	return format('|cFF%s%s%%|r', (GetCVarBool(volumeCVars[1].CVs.Enabled) and GetCVarBool(vol.CVs.Volume) and vol.Enabled) and '00FF00' or 'FF0000', text)
+	return format('|cFF%s%s%%|r', (GetCVarBool(volumeCVars[1].CVs.Enabled) and GetCVarBool(vol.CVs.Volume) and vol.Enabled) and '00FF00' or 'FF3333', text)
 end
 
 local function OnEnter(self)
