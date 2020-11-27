@@ -18,16 +18,17 @@ local Sound_GameSystem_GetOutputDriverNameByIndex = Sound_GameSystem_GetOutputDr
 local Sound_GameSystem_GetNumOutputDrivers = Sound_GameSystem_GetNumOutputDrivers
 local Sound_GameSystem_RestartSoundSystem = Sound_GameSystem_RestartSoundSystem
 
-local volumeCVars = {
-	{ Name = _G.MASTER, CVs = { Volume = 'Sound_MasterVolume', Enabled = 'Sound_EnableAllSound' }, Enabled = nil},
-	{ Name = _G.SOUND_VOLUME, CVs = { Volume = 'Sound_SFXVolume', Enabled = 'Sound_EnableSFX' }, Enabled = nil},
-	{ Name = _G.AMBIENCE_VOLUME, CVs = { Volume = 'Sound_AmbienceVolume', Enabled = 'Sound_EnableAmbience' }, Enabled = nil},
-	{ Name = _G.DIALOG_VOLUME, CVs = { Volume = 'Sound_DialogVolume', Enabled = 'Sound_EnableDialog' }, Enabled = nil},
-	{ Name = _G.MUSIC_VOLUME, CVs = { Volume = 'Sound_MusicVolume', Enabled = 'Sound_EnableMusic' }, Enabled = nil}
+local AudioStreams = {
+	{ Name = _G.MASTER, Volume = 'Sound_MasterVolume', Enabled = 'Sound_EnableAllSound' },
+	{ Name = _G.SOUND_VOLUME, Volume = 'Sound_SFXVolume', Enabled = 'Sound_EnableSFX' },
+	{ Name = _G.AMBIENCE_VOLUME, Volume = 'Sound_AmbienceVolume', Enabled = 'Sound_EnableAmbience' },
+	{ Name = _G.DIALOG_VOLUME, Volume = 'Sound_DialogVolume', Enabled = 'Sound_EnableDialog' },
+	{ Name = _G.MUSIC_VOLUME, Volume = 'Sound_MusicVolume', Enabled = 'Sound_EnableMusic' }
 }
 
-local activeVolumeIndex = 1
-local activeVolume = volumeCVars[activeVolumeIndex]
+local activeIndex = 1
+local activeStream = AudioStreams[activeIndex]
+local panel, OnEvent
 local menu = {{ text = L["Select Volume Stream"], isTitle = true, notCheckable = true }}
 local toggleMenu = {{ text = L["Toggle Volume Stream"], isTitle = true, notCheckable = true }}
 local deviceMenu = {{ text = L["Output Audio Device"], isTitle = true, notCheckable = true }}
@@ -37,13 +38,40 @@ local function GetStatusColor(vol, text)
 		text = vol.Name
 	end
 
-	return format('|cFF%s%s%%|r', (GetCVarBool(volumeCVars[1].CVs.Enabled) and GetCVarBool(vol.CVs.Volume) and vol.Enabled) and '00FF00' or 'FF3333', text)
+	return format('|cFF%s%s%%|r', GetCVarBool(AudioStreams[1].Enabled) and GetCVarBool(vol.Enabled) and '00FF00' or 'FF3333', text)
 end
 
-local function OnEnter(self)
-	E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
+local function SelectStream(_, ...)
+	activeIndex = ...
+	activeStream = AudioStreams[activeIndex]
 
-	DT:SetupTooltip(self)
+	panel.text:SetText(activeStream.Name..': '..GetStatusColor(activeStream, format('%.f', GetCVar(activeStream.Volume) * 100)))
+end
+
+local function ToggleStream(_, ...)
+	local Stream = AudioStreams[...]
+
+	SetCVar(Stream.Enabled, GetCVarBool(Stream.Enabled) and 0 or 1, 'ELVUI_VOLUME')
+
+	panel.text:SetText(activeStream.Name..': '..GetStatusColor(activeStream, format('%.f', GetCVar(activeStream.Volume) * 100)))
+end
+
+for Index, Stream in ipairs(AudioStreams) do
+	tinsert(menu, { text = Stream.Name, checked = function() return Index == activeIndex end, func = SelectStream, arg1 = Index })
+	tinsert(toggleMenu, { text = Stream.Name, checked = function() return GetCVarBool(Stream.Enabled) end, func = ToggleStream, arg1 = Index})
+end
+
+local function SelectSoundOutput(_, ...)
+	SetCVar('Sound_OutputDriverIndex', ..., 'ELVUI_VOLUME')
+	Sound_GameSystem_RestartSoundSystem()
+end
+
+local numDevices = Sound_GameSystem_GetNumOutputDrivers()
+for i = 0, numDevices - 1 do
+	tinsert(deviceMenu, { text = Sound_GameSystem_GetOutputDriverNameByIndex(i), checked = function() return i == tonumber(GetCVar('Sound_OutputDriverIndex')) end, func = SelectSoundOutput, arg1 = i })
+end
+
+local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddLine(L["Active Output Audio Device"], 1, 1, 1)
@@ -51,8 +79,8 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["Volume Streams"], 1, 1, 1)
 
-	for _, vol in ipairs(volumeCVars) do
-		DT.tooltip:AddDoubleLine(vol.Name, GetStatusColor(vol, format('%.f', GetCVar(vol.CVs.Volume) * 100)))
+	for _, Stream in ipairs(AudioStreams) do
+		DT.tooltip:AddDoubleLine(Stream.Name, GetStatusColor(Stream, format('%.f', GetCVar(Stream.Volume) * 100)))
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -66,13 +94,14 @@ local function OnEnter(self)
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event, ...)
-	activeVolume = volumeCVars[activeVolumeIndex]
+function OnEvent(self, event, ...)
+	activeStream = AudioStreams[activeIndex]
+	panel = self
 
-	if (event == 'ELVUI_FORCE_UPDATE' ) then
+	if (event == 'ELVUI_FORCE_UPDATE') then
 		self:EnableMouseWheel(true)
 		self:SetScript('OnMouseWheel', function(_, delta)
-			local vol = GetCVar(activeVolume.CVs.Volume);
+			local vol = GetCVar(activeStream.Volume);
 			local volScale = 100;
 
 			if (IsShiftKeyDown()) then
@@ -87,56 +116,17 @@ local function OnEvent(self, event, ...)
 				vol = 0
 			end
 
-			SetCVar(activeVolume.CVs.Volume, vol, 'ELV_VOLUME_CHANGED')
+			SetCVar(activeStream.Volume, vol, 'ELVUI_VOLUME')
 		end)
 
-		OnEvent(self, 'CVAR_UPDATE', 'ELV_VOLUME_TEXT_CHANGE')
-		OnEvent(self, 'CVAR_UPDATE', 'ELV_VOLUME_STREAM_TOGGLE')
-		OnEvent(self, 'CVAR_UPDATE', 'ELV_OUTPUT_SOUND_DEVICE_CHANGED')
-		OnEvent(self, 'CVAR_UPDATE', 'ELV_VOLUME_CHANGED', GetCVar(activeVolume.CVs.Volume))
+		self.text:SetText(activeStream.Name..': '..GetStatusColor(activeStream, format('%.f', GetCVar(activeStream.Volume) * 100)))
 	end
 
 	if event == 'CVAR_UPDATE' then
 		local cvar_name, value = ...
 
-		if cvar_name == 'ELV_VOLUME_CHANGED' then
-			self.text:SetText(activeVolume.Name..': '..GetStatusColor(activeVolume, format('%.f', value * 100)))
-		elseif cvar_name == 'ELV_VOLUME_TEXT_CHANGE' then
-			for i,vol in pairs(volumeCVars) do
-				menu[i+1]={
-					text = vol.Name,
-					checked = i == activeVolumeIndex,
-					func = function()
-						activeVolumeIndex = i;
-						OnEvent(self, 'CVAR_UPDATE', 'ELV_VOLUME_TEXT_CHANGE');
-						OnEvent(self, 'CVAR_UPDATE', 'ELV_VOLUME_CHANGED', GetCVar(vol.CVs.Volume));
-					 end
-				}
-			end
-		elseif cvar_name == 'ELV_VOLUME_STREAM_TOGGLE' then
-			for i,vol in pairs(volumeCVars) do
-				vol.Enabled = GetCVar(vol.CVs.Enabled) == '1'
-				toggleMenu[i + 1] = {
-					text = vol.Name,
-					checked = GetCVar(vol.CVs.Enabled) == '1',
-					func = function()
-						SetCVar(vol.CVs.Enabled, (not vol.Enabled) and '1' or '0', 'ELV_VOLUME_STREAM_TOGGLE')
-						OnEvent(self, 'CVAR_UPDATE', 'ELV_VOLUME_CHANGED', GetCVar(activeVolume.CVs.Volume));
-					end
-				}
-			end
-
-		elseif cvar_name == 'ELV_OUTPUT_SOUND_DEVICE_CHANGED' then
-			local numDevices = Sound_GameSystem_GetNumOutputDrivers()
-			local activeIndex = tonumber(GetCVar('Sound_OutputDriverIndex'))
-
-			for i=0,numDevices-1 do --the only thing I have found that is 0 based....
-				deviceMenu[i+2] = {
-					text = Sound_GameSystem_GetOutputDriverNameByIndex(i),
-					checked = i == activeIndex,
-					func = function() GetCVar('Sound_OutputDriverIndex', i, 'ELV_OUTPUT_SOUND_DEVICE_CHANGED'); Sound_GameSystem_RestartSoundSystem(); end
-				}
-			end
+		if cvar_name == 'ELVUI_VOLUME' then
+			self.text:SetText(activeStream.Name..': '..GetStatusColor(activeStream, format('%.f', value * 100)))
 		end
 	end
 end
@@ -151,8 +141,7 @@ local function OnClick(self, button)
 		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 		_G.EasyMenu(menu, DT.EasyMenu, nil, nil, nil, 'MENU')
 	elseif button == 'MiddleButton' then
-		SetCVar(volumeCVars[1].CVs.Enabled, (not volumeCVars[1].Enabled) and '1' or '0', 'ELV_VOLUME_STREAM_TOGGLE')
-		OnEvent(self, 'CVAR_UPDATE', 'ELV_VOLUME_CHANGED', GetCVar(activeVolume.CVs.Volume));
+		SetCVar(AudioStreams[1].Enabled, GetCVarBool(AudioStreams[1].Enabled) and 0 or 1, 'ELVUI_VOLUME')
 	elseif button == 'RightButton' then
 		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
 		_G.EasyMenu(IsShiftKeyDown() and deviceMenu or toggleMenu, DT.EasyMenu, nil, nil, nil, 'MENU')
