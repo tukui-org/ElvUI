@@ -41,4 +41,5 @@
 	<Script file='System.lua'/>
 	<Script file='Time.lua'/>
 	<Script file='Versatility.lua'/>
+	<Script file='Volume.lua'/>
 </Ui>
