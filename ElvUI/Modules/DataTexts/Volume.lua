@@ -37,7 +37,7 @@ local function GetStatusColor(vol, text)
 		text = vol.Name
 	end
 
-	return format('|cFF%s%s|r', not (GetCVarBool(volumeCVars[1].CVs.Enabled) or GetCVarBool(vol.CVs.Volume) or vol.Enabled) and 'FF0000' or '00FF00', text)
+	return format('|cFF%s%s%%|r', (GetCVarBool(volumeCVars[1].CVs.Enabled) and GetCVarBool(vol.CVs.Volume) and vol.Enabled) and '00FF00' or 'FF0000', text)
 end
 
 local function OnEnter(self)
@@ -52,7 +52,7 @@ local function OnEnter(self)
 	DT.tooltip:AddLine(L["Volume Streams"], 1, 1, 1)
 
 	for _, vol in ipairs(volumeCVars) do
-		DT.tooltip:AddDoubleLine(vol.Name, GetStatusColor(vol, format('%.f', GetCVar(vol.CVs.Volume) * 100) .. '%'))
+		DT.tooltip:AddDoubleLine(vol.Name, GetStatusColor(vol, format('%.f', GetCVar(vol.CVs.Volume) * 100)))
 	end
 
 	DT.tooltip:AddLine(' ')
@@ -100,7 +100,7 @@ local function OnEvent(self, event, ...)
 		local cvar_name, value = ...
 
 		if cvar_name == 'ELV_VOLUME_CHANGED' then
-			self.text:SetText(activeVolume.Name..': '..GetStatusColor(activeVolume, format('%.f', value * 100) .. '%'))
+			self.text:SetText(activeVolume.Name..': '..GetStatusColor(activeVolume, format('%.f', value * 100)))
 		elseif cvar_name == 'ELV_VOLUME_TEXT_CHANGE' then
 			for i,vol in pairs(volumeCVars) do
 				menu[i+1]={
