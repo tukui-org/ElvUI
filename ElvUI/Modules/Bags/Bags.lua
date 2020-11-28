@@ -570,7 +570,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if C_Item_IsAnimaItemByID(link) then
 			local _, spellID = GetItemSpell(link)
 			slot.centerText:SetText(animaSpellID[spellID])
-			slot.centerText:SetTextColor(0, 191/255, 250/255)
 		end
 	end
 
@@ -1825,6 +1824,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.centerText = slot:CreateFontString(nil, 'OVERLAY', nil, 1)
 	slot.centerText:Point('CENTER', 0, 0)
 	slot.centerText:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+	slot.centerText:SetTextColor(0, 0.75, 0.98)
 
 	if slot.BattlepayItemTexture then
 		slot.BattlepayItemTexture:Hide()
