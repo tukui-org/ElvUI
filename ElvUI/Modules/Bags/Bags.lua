@@ -65,6 +65,7 @@ local StaticPopup_Show = StaticPopup_Show
 local ToggleFrame = ToggleFrame
 local UseContainerItem = UseContainerItem
 local BreakUpLargeNumbers = BreakUpLargeNumbers
+local C_Item_IsAnimaItemByID = C_Item.IsAnimaItemByID
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
@@ -566,9 +567,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if C_Item.IsAnimaItemByID(link) then
+		if C_Item_IsAnimaItemByID(link) then
 			local _, spellID = GetItemSpell(link)
 			slot.centerText:SetText(animaSpellID[spellID])
+			slot.centerText:SetTextColor(0, 191/255, 250/255)
 		end
 	end
 
