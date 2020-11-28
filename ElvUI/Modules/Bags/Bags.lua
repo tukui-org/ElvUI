@@ -505,6 +505,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot.itemLevel:SetText('')
 	slot.bindType:SetText('')
+	slot.centerText:SetText('')
 
 	local professionColors = B.ProfessionColors[bagType]
 	local showItemLevel = B.db.itemLevel and link and not professionColors
@@ -567,9 +568,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if C_Item.IsAnimaItemByID(link) then
 			local _, spellID = GetItemSpell(link)
-			slot.SpaceForRent:SetText(animaSpellID[spellID])
-		else
-			slot.SpaceForRent:SetText('')
+			slot.centerText:SetText(animaSpellID[spellID])
 		end
 	end
 
@@ -1821,9 +1820,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.bindType:Point('TOP', 0, -2)
 	slot.bindType:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
-	slot.SpaceForRent = slot:CreateFontString(nil, 'OVERLAY', nil, 1)
-	slot.SpaceForRent:Point('CENTER', 0, 0)
-	slot.SpaceForRent:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+	slot.centerText = slot:CreateFontString(nil, 'OVERLAY', nil, 1)
+	slot.centerText:Point('CENTER', 0, 0)
+	slot.centerText:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
 	if slot.BattlepayItemTexture then
 		slot.BattlepayItemTexture:Hide()
