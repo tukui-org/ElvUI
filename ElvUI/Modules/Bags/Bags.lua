@@ -567,7 +567,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if C_Item.IsAnimaItemByID(link) then
 			local _, spellID = GetItemSpell(link)
-			slot.Count:SetText(animaSpellID[spellID])
+			slot.SpaceForRent:SetText(animaSpellID[spellID])
+		else
+			slot.SpaceForRent:SetText('')
 		end
 	end
 
@@ -1046,9 +1048,13 @@ function B:UpdateReagentSlot(slotID)
 	end
 
 	slot.name, slot.itemID, slot.rarity, slot.locked = nil, nil, nil, locked
+	SetItemButtonTexture(slot, texture)
+	SetItemButtonCount(slot, count)
+	SetItemButtonDesaturated(slot, slot.locked)
 
 	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
 	CooldownFrame_Set(slot.Cooldown, start, duration, enable)
+
 	if duration > 0 and enable == 0 then
 		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4)
 	else
@@ -1090,10 +1096,6 @@ function B:UpdateReagentSlot(slotID)
 	if E.db.bags.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
-
-	SetItemButtonTexture(slot, texture)
-	SetItemButtonCount(slot, count)
-	SetItemButtonDesaturated(slot, slot.locked)
 end
 
 function B:UpdateAll()
@@ -1818,6 +1820,10 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.bindType = slot:CreateFontString(nil, 'OVERLAY', nil, 1)
 	slot.bindType:Point('TOP', 0, -2)
 	slot.bindType:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+
+	slot.SpaceForRent = slot:CreateFontString(nil, 'OVERLAY', nil, 1)
+	slot.SpaceForRent:Point('CENTER', 0, 0)
+	slot.SpaceForRent:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
 
 	if slot.BattlepayItemTexture then
 		slot.BattlepayItemTexture:Hide()
