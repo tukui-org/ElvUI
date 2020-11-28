@@ -493,6 +493,8 @@ function S:Blizzard_EncounterJournal()
 	local LootJournal = EJ.LootJournal
 	HandleButton(LootJournal.ClassDropDownButton, true)
 	LootJournal.ClassDropDownButton:SetFrameLevel(10)
+	HandleButton(LootJournal.RuneforgePowerFilterDropDownButton, true)
+	LootJournal.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
 	_G.EncounterJournal.LootJournal:CreateBackdrop('Transparent')
 	local parch = _G.EncounterJournal.LootJournal:GetRegions()
