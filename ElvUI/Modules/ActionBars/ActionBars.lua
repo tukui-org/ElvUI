@@ -1303,17 +1303,14 @@ function AB:LAB_ButtonCreated(button)
 end
 
 function AB:LAB_ButtonUpdate(button)
-	local color = AB.db.fontColor
 	local db = button.db
+	local color = db and db.useCountColor and db.countColor or AB.db.fontColor
 
-	do
-		color = db and db.useCountColor and db.countColor or color
-		button.Count:SetTextColor(color.r, color.g, color.b)
-	end
+	button.Count:SetTextColor(color.r, color.g, color.b)
 
 	if button.backdrop then
-		color = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
-		button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
+		button.backdrop:SetBackdropBorderColor(border.r, border.g, border.b)
 	end
 end
 
