@@ -1307,7 +1307,7 @@ function AB:LAB_ButtonUpdate(button)
 	local db = button.db
 
 	do
-		local color = db and db.useCountColor and db.countColor or color
+		color = db and db.useCountColor and db.countColor or color
 		button.Count:SetTextColor(color.r, color.g, color.b)
 	end
 
