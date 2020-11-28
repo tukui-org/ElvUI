@@ -63,6 +63,7 @@ E.Options.args.databars.args.experience.args.conditionGroup.set = function(_, ke
 E.Options.args.databars.args.experience.args.conditionGroup.values = {
 	questCurrentZoneOnly = L["Quests in Current Zone Only"],
 	questCompletedOnly = L["Completed Quests Only"],
+	questTrackedOnly = L["Tracked Quests Only"],
 	hideAtMaxLevel = L["Hide At Max Level"],
 	hideInVehicle = L["Hide In Vehicle"],
 	hideInCombat = L["Hide In Combat"],

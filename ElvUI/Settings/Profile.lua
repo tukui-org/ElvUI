@@ -176,6 +176,7 @@ P.databars.experience.width = 348
 P.databars.experience.fontSize = 12
 P.databars.experience.questCompletedOnly = false
 P.databars.experience.questCurrentZoneOnly = false
+P.databars.experience.questTrackedOnly = false
 
 P.databars.reputation.enable = false
 P.databars.reputation.hideBelowMaxLevel = false
