@@ -303,7 +303,7 @@ local function OnEnter()
 		end
 	else
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine('Hold Shift - Show Previous Expansion', .66, .66, .66)
+		DT.tooltip:AddLine('Hold Shift - Show Previous Expansions', .66, .66, .66)
 	end
 
 	DT.tooltip:Show()
