@@ -968,6 +968,18 @@ E.Options.args.general = {
 								AUTO = L["Automatic"],
 							},
 						},
+						torghastBuffsPosition = {
+							order = 35,
+							type = 'select',
+							name = L["Torghast Buffs Position"],
+							desc = L["Position of the Torghast buff list relative to the objective tracker."],
+							values = {
+								RIGHT = L["Right"],
+								LEFT = L["Left"],
+								AUTO = L["Automatic"],
+							},
+							set = function(info, value) E.db.general.torghastBuffsPosition = value; Blizzard:SetupTorghastBuffFrame(); end,
+						},
 					},
 				},
 				chatBubblesGroup = {
