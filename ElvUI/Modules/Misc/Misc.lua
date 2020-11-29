@@ -353,7 +353,7 @@ function M:Initialize()
 		self:RegisterEvent('ADDON_LOADED')
 	end
 
-	M:SecureHook('BossBanner_ConfigureLootFrame')
+	M:RawHook('BossBanner_ConfigureLootFrame')
 end
 
 E:RegisterModule(M:GetName())
