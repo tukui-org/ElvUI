@@ -105,6 +105,11 @@ function DT:PanelLayoutOptions()
 					if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
 						tab[option] = nil
 					else
+						if not options[name].args.dts then
+							options[name].args.dts = ACH:Group(L["DataTexts"], nil, 1)
+							options[name].args.dts.inline = true
+						end
+
 						options[name].args.dts.args[tostring(option)] = ACH:Select('', nil, option, dts, nil, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
 					end
 				end
