@@ -289,6 +289,8 @@ function M:QUEST_COMPLETE()
 	end
 end
 
+-- TEMP: fix `SetItemButtonOverlay` error at `button.IconOverlay2:SetAtlas("ConduitIconFrame-Corners")`
+-- because the `BossBannerLootFrameTemplate` doesnt add `IconOverlay2` so we can before it gets there
 function M:BossBanner_ConfigureLootFrame(lootFrame)
 	if not lootFrame.IconHitBox then return end
 
