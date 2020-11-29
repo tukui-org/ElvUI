@@ -63,7 +63,7 @@ end
 
 local function RegisterNewDT(currencyID)
 	local info = C_CurrencyInfo_GetCurrencyInfo(currencyID)
-	if info.discovered then
+	if info then
 		local name = info.name
 
 		--Add to internal storage, stored with name as key
@@ -118,7 +118,7 @@ function DT:RegisterCustomCurrencyDT(currencyID)
 	else
 		--We called this in DT:Initialize, so load all the stored currency datatexts
 		for _, info in pairs(E.global.datatexts.customCurrencies) do
-			CustomCurrencies[info.NAME] = {NAME = info.NAME, ID = info.ID, ICON = info.ICON, DISPLAY_STYLE = info.DISPLAY_STYLE, USE_TOOLTIP = info.USE_TOOLTIP, SHOW_MAX = info.SHOW_MAX}
+			CustomCurrencies[info.NAME] = { NAME = info.NAME, ID = info.ID, ICON = info.ICON, DISPLAY_STYLE = info.DISPLAY_STYLE, USE_TOOLTIP = info.USE_TOOLTIP, SHOW_MAX = info.SHOW_MAX }
 			DT:RegisterDatatext(info.NAME, _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter, nil, info.NAME)
 			--Get the currency index for this currency, so we can use it for a tooltip
 			AddCurrencyNameToIndex(info.NAME)
