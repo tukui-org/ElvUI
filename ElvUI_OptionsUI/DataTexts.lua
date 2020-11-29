@@ -98,19 +98,14 @@ function DT:PanelLayoutOptions()
 
 			if not P.datatexts.panels[name] and not E.global.datatexts.customPanels[name] then
 				options[name].args.delete = ACH:Execute(L["Delete"], nil, -1, function() E.db.datatexts.panels[name] = nil options[name] = nil DT:PanelLayoutOptions() end)
-			end
-
-			for option in pairs(tab) do
-				if type(option) == 'number' then
-					if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
-						tab[option] = nil
-					else
-						if not options[name].args.dts then
-							options[name].args.dts = ACH:Group(L["DataTexts"], nil, 1)
-							options[name].args.dts.inline = true
+			else
+				for option in pairs(tab) do
+					if type(option) == 'number' then
+						if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
+							tab[option] = nil
+						else
+							options[name].args.dts.args[tostring(option)] = ACH:Select('', nil, option, dts, nil, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
 						end
-
-						options[name].args.dts.args[tostring(option)] = ACH:Select('', nil, option, dts, nil, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
 					end
 				end
 			end
