@@ -291,34 +291,16 @@ end
 
 -- TEMP: fix `SetItemButtonOverlay` error at `button.IconOverlay2:SetAtlas("ConduitIconFrame-Corners")`
 -- because the `BossBannerLootFrameTemplate` doesnt add `IconOverlay2` so we can before it gets there
-function M:BossBanner_AnimLootInsert(self, entry)
-	local key, data = next(self.pendingLoot);
-	if ( key ) then
-		-- we have an item, show it
-		self.pendingLoot[key] = nil;
-		self.lootShown = self.lootShown + 1;
-		local lootFrame = self.LootFrames[self.lootShown];
-		if ( not lootFrame ) then
-			lootFrame = CreateFrame("FRAME", nil, self, "BossBannerLootFrameTemplate");
-			lootFrame:SetPoint("TOP", self.LootFrames[self.lootShown - 1], "BOTTOM", 0, -6);
-			lootFrame.IconHitBox.IconOverlay2 = lootFrame.IconHitBox:CreateTexture(nil, 'OVERLAY', nil, 2)
-			lootFrame.IconHitBox.IconOverlay2:SetSize(37, 37)
-			lootFrame.IconHitBox.IconOverlay2:SetPoint('CENTER')
-		end
-		BossBanner_ConfigureLootFrame(lootFrame, data);
-		lootFrame:Show();
-		lootFrame.Anim:Play();
-		-- loop back if more items
-		if ( next(self.pendingLoot) and self.lootShown < BB_MAX_LOOT ) then
-			BossBanner_SetAnimState(self, BB_STATE_LOOT_EXPAND);
-			return true;
-		end
+function M:BossBanner_ConfigureLootFrame(lootFrame)
+	if not lootFrame.IconHitBox then return end
+
+	if not lootFrame.IconHitBox.IconOverlay2 then
+		lootFrame.IconHitBox.IconOverlay2 = lootFrame.IconHitBox:CreateTexture(nil, 'OVERLAY', nil, 2)
+		lootFrame.IconHitBox.IconOverlay2:SetSize(37, 37)
+		lootFrame.IconHitBox.IconOverlay2:SetPoint('CENTER')
 	end
-	if ( self.lootShown > 0 ) then
-		entry.duration = 4;
-	else
-		entry.duration = 0;
-	end
+
+	lootFrame.IconHitBox.IconOverlay2:Hide()
 end
 
 function M:Initialize()
@@ -371,7 +353,7 @@ function M:Initialize()
 		self:RegisterEvent('ADDON_LOADED')
 	end
 
-	M:RawHook('BossBanner_AnimLootInsert')
+	M:SecureHook('BossBanner_ConfigureLootFrame')
 end
 
 E:RegisterModule(M:GetName())
