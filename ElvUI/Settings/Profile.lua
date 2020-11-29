@@ -26,6 +26,7 @@ P.general = {
 	objectiveFrameAutoHide = true,
 	objectiveFrameAutoHideInKeystone = false,
 	bonusObjectivePosition = 'LEFT',
+	torghastBuffsPosition = 'LEFT',
 	talkingHeadFrameScale = 0.9,
 	talkingHeadFrameBackdrop = false,
 	vehicleSeatIndicatorSize = 128,
@@ -2375,13 +2376,13 @@ E.LayoutMoverPositions = {
 		ShiftAB = "BOTTOM,ElvUIParent,BOTTOM,0,58",
         ElvUF_Raid40Mover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269",
 		ElvUF_RaidMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269",
-		ElvUF_PartyMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269",	
+		ElvUF_PartyMover = "BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269",
 		HonorBarMover = "TOPRIGHT,ElvUIParent,TOPRIGHT,-2,-251",
 		ReputationBarMover = "TOPRIGHT,ElvUIParent,TOPRIGHT,-2,-243"
 	},
 	dpsCaster = {
 		ElvUF_PlayerCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,243',
-		ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,97',	
+		ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,97',
 	},
 	healer = {
 		ElvUF_PlayerCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,243',

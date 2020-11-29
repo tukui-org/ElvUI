@@ -10,6 +10,7 @@ local GetScreenWidth = GetScreenWidth
 local hooksecurefunc = hooksecurefunc
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
+local IsInJailersTower = IsInJailersTower
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
@@ -43,12 +44,27 @@ function B:SetObjectiveFrameAutoHide()
 	end
 end
 
+function B:SetupTorghastBuffFrame()
+	if not IsInJailersTower() then return end
+
+	local container = _G.ScenarioBlocksFrame.MawBuffsBlock.Container
+	container.List:ClearAllPoints()
+
+	local buffsPos = E.db.general.torghastBuffsPosition or 'AUTO'
+	if buffsPos == 'RIGHT' or (buffsPos == 'AUTO' and IsFramePositionedLeft(_G.ScenarioBlocksFrame)) then
+		container.List:Point('TOPLEFT', container, 'TOPRIGHT', 15, 1)
+		--container:GetNormalTexture()
+	else
+		container.List:Point('TOPRIGHT', container, 'TOPLEFT', 15, 1)
+	end
+end
+
 function B:MoveObjectiveFrame()
 	local ObjectiveFrameHolder = CreateFrame('Frame', 'ObjectiveFrameHolder', E.UIParent)
 	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 	ObjectiveFrameHolder:Size(130, 22)
 
-	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
+	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, B.SetupTorghastBuffFrame, nil, nil, 'general,blizzUIImprovements')
 	ObjectiveFrameHolder:SetAllPoints(_G.ObjectiveFrameMover)
 
 	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
@@ -91,6 +107,9 @@ function B:MoveObjectiveFrame()
 			_G.ObjectiveTracker_Expand()
 		end
 	end)
+
+
+	B:SetupTorghastBuffFrame()
 
 	self:SetObjectiveFrameAutoHide()
 end
