@@ -290,11 +290,14 @@ function M:QUEST_COMPLETE()
 end
 
 function M:BossBanner_ConfigureLootFrame(lootFrame)
+	if not lootFrame.IconHitBox then return end
+
 	if not lootFrame.IconHitBox.IconOverlay2 then
 		lootFrame.IconHitBox.IconOverlay2 = lootFrame.IconHitBox:CreateTexture(nil, 'OVERLAY', nil, 2)
 		lootFrame.IconHitBox.IconOverlay2:SetSize(37, 37)
 		lootFrame.IconHitBox.IconOverlay2:SetPoint('CENTER')
 	end
+
 	lootFrame.IconHitBox.IconOverlay2:Hide()
 end
 
