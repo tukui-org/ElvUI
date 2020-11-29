@@ -348,7 +348,7 @@ function M:Initialize()
 		self:RegisterEvent('ADDON_LOADED')
 	end
 
-	M:Hook('BossBanner_ConfigureLootFrame', 'BossBanner_ConfigureLootFrame', true)
+	M:SecureHook('BossBanner_ConfigureLootFrame')
 end
 
 E:RegisterModule(M:GetName())
