@@ -353,7 +353,7 @@ function M:Initialize()
 		self:RegisterEvent('ADDON_LOADED')
 	end
 
-	M:Hook('BossBanner_ConfigureLootFrame') -- fix blizz thing x.x
+	M:Hook('BossBanner_ConfigureLootFrame', nil, true) -- fix blizz thing x.x
 end
 
 E:RegisterModule(M:GetName())
