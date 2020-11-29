@@ -53,7 +53,13 @@ function B:SetupTorghastBuffFrame()
 	local buffsPos = E.db.general.torghastBuffsPosition or 'AUTO'
 	if buffsPos == 'RIGHT' or (buffsPos == 'AUTO' and IsFramePositionedLeft(_G.ScenarioBlocksFrame)) then
 		container.List:Point('TOPLEFT', container, 'TOPRIGHT', 15, 1)
-		--container:GetNormalTexture()
+
+		container.List:SetScript('OnShow', function(self)
+			self.button:SetHighlightAtlas("jailerstower-animapowerbutton-highlight", true)
+			self.button:SetPushedAtlas("jailerstower-animapowerbutton-normalpressed", true)
+			self.button:SetButtonState("NORMAL")
+			self.button:SetButtonState("PUSHED", true)
+		end)
 	else
 		container.List:Point('TOPRIGHT', container, 'TOPLEFT', 15, 1)
 	end
