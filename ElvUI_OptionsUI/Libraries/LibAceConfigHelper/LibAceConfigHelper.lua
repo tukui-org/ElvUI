@@ -1,5 +1,5 @@
 local LibStub = LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 2
+local MAJOR, MINOR = 'LibAceConfigHelper', 3
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -44,6 +44,8 @@ function ACH:Input(name, desc, order, multiline, width, get, set, disabled, hidd
 end
 
 function ACH:Select(name, desc, order, values, confirm, width, get, set, disabled, hidden)
+	values = values or {}
+
 	local optionTable = { type = 'select', name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	if confirm then
@@ -62,6 +64,8 @@ function ACH:Select(name, desc, order, values, confirm, width, get, set, disable
 end
 
 function ACH:MultiSelect(name, desc, order, values, confirm, width, get, set, disabled, hidden)
+	values = values or {}
+
 	local optionTable = { type = 'multiselect', name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	if confirm then
@@ -107,6 +111,8 @@ end
 -- isPercent (boolean) - represent e.g. 1.0 as 100%, etc. (default=false)
 
 function ACH:Range(name, desc, order, values, width, get, set, disabled, hidden)
+	values = values or {}
+
 	local optionTable = { type = 'range', name = name, desc = desc, order = order, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 
 	for key, value in pairs(values) do
