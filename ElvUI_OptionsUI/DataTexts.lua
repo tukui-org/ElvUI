@@ -97,7 +97,8 @@ function DT:PanelLayoutOptions()
 			end
 
 			if not P.datatexts.panels[name] and not E.global.datatexts.customPanels[name] then
-				options[name].args.delete = ACH:Execute(L["Delete"], nil, -1, function() E.db.datatexts.panels[name] = nil options[name] = nil DT:PanelLayoutOptions() end)
+				options[name].args.delete = ACH:Execute(L["Delete"], nil, 2, function() E.db.datatexts.panels[name] = nil options[name] = nil DT:PanelLayoutOptions() end)
+				options[name].args.rebuild = ACH:Execute(L["Rebuild"], nil, 1, function() E.global.datatexts.customPanels[name] = E:CopyTable({}, G.datatexts.newPanelInfo) local infoType = type(E.db.datatexts.panels[name]) if infoType == 'string' then E.db.datatexts.panels[name] = { enable = true } for i = 1, G.datatexts.newPanelInfo.numPoints do E.db.datatexts.panels[name][i] = '' end elseif infoType == 'table' then E.db.datatexts.panels[name].enable = true E.global.datatexts.customPanels[name].numPoints = #E.db.datatexts.panels[name] end PanelGroup_Create(name) DT:BuildPanelFrame(name) DT:PanelLayoutOptions() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'datatexts', 'panels', name) end)
 			else
 				for option in pairs(tab) do
 					if type(option) == 'number' then
