@@ -584,7 +584,17 @@ function S:Blizzard_GarrisonUI()
 
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame
-	SkinMissionFrame(CovenantMissionFrame) -- currently dont use StripTextures here, cause it seems blizzard fucks this up /shurg
+
+	if E.private.skins.parchmentRemoverEnable then
+		SkinMissionFrame(CovenantMissionFrame, true)
+
+		hooksecurefunc(CovenantMissionFrame, "SetupTabs", function(self)
+			self.MapTab:SetShown(not self.Tab2:IsShown())
+		end)
+	else
+		SkinMissionFrame(CovenantMissionFrame)
+	end
+
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
 	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
 
