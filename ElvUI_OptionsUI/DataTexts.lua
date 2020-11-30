@@ -50,7 +50,6 @@ end
 
 local function PanelGroup_Create(panel)
 	local opts = ACH:Group(ColorizeName(panel), nil, nil, nil, function(info) return E.db.datatexts.panels[panel][info[#info]] end, function(info, value) E.db.datatexts.panels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end)
-
 	opts.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 
 	opts.args.dts = ACH:Group(L["DataTexts"], nil, 1)
@@ -105,6 +104,11 @@ function DT:PanelLayoutOptions()
 						if E.global.datatexts.customPanels[name] and option > E.global.datatexts.customPanels[name].numPoints then
 							tab[option] = nil
 						else
+							if not options[name].args.dts then
+								options[name].args.dts = ACH:Group(L["DataTexts"], nil, 1)
+								options[name].args.dts.inline = true
+							end
+
 							options[name].args.dts.args[tostring(option)] = ACH:Select('', nil, option, dts, nil, nil, function(info) return E.db.datatexts.panels[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.panels[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end)
 						end
 					end
