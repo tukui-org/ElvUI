@@ -52,9 +52,6 @@ local function PanelGroup_Create(panel)
 	local opts = ACH:Group(ColorizeName(panel), nil, nil, nil, function(info) return E.db.datatexts.panels[panel][info[#info]] end, function(info, value) E.db.datatexts.panels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end)
 	opts.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 
-	opts.args.dts = ACH:Group(L["DataTexts"], nil, 1)
-	opts.args.dts.inline = true
-
 	opts.args.panelOptions = ACH:Group(L["Panel Options"], nil, 2, nil, function(info) return E.global.datatexts.customPanels[panel][info[#info]] end, function(info, value) E.global.datatexts.customPanels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) DT:PanelLayoutOptions() end)
 	opts.args.panelOptions.inline = true
 
@@ -224,6 +221,12 @@ local function SetupDTCustomization()
 	end
 end
 
+local defaultTemplateGroup = ACH:Group(' ', nil, 2)
+defaultTemplateGroup.inline = true
+defaultTemplateGroup.args.backdrop = ACH:Toggle(L["Backdrop"], nil, 1)
+defaultTemplateGroup.args.border = ACH:Toggle(L["Border"], nil, 2, nil, nil, nil, nil, nil, function(info) return not E.db.datatexts.panels[info[#info - 2]].backdrop end)
+defaultTemplateGroup.args.panelTransparency = ACH:Toggle(L["Panel Transparency"], nil, 3, nil, nil, nil, nil, nil, function(info) return not E.db.datatexts.panels[info[#info - 2]].backdrop end)
+
 local DataTexts = ACH:Group(L["DataTexts"], nil, 2, 'tab', function(info) return E.db.datatexts[info[#info]] end, function(info, value) E.db.datatexts[info[#info]] = value; DT:LoadDataTexts() end)
 E.Options.args.datatexts = DataTexts
 
@@ -253,34 +256,16 @@ DataTexts.args.panels.args.newPanel.args.add = ACH:Execute(L["Add"], nil, 1, fun
 
 DataTexts.args.panels.args.LeftChatDataPanel = ACH:Group(ColorizeName(L["Datatext Panel (Left)"], 'cccccc'), L["Display data panels below the chat, used for datatexts."], 1, nil, function(info) return E.db.datatexts.panels.LeftChatDataPanel[info[#info]] end, function(info, value) E.db.datatexts.panels.LeftChatDataPanel[info[#info]] = value DT:UpdatePanelInfo('LeftChatDataPanel') Layout:SetDataPanelStyle() end)
 DataTexts.args.panels.args.LeftChatDataPanel.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, function(info, value) E.db.datatexts.panels[info[#info - 1]][info[#info]] = value if E.db.LeftChatPanelFaded then E.db.LeftChatPanelFaded = true; _G.HideLeftChat() end if E.private.chat.enable then Chat:UpdateEditboxAnchors() end Layout:ToggleChatPanels() Layout:SetDataPanelStyle() DT:UpdatePanelInfo('LeftChatDataPanel') end)
-DataTexts.args.panels.args.LeftChatDataPanel.args.templateGroup = ACH:Group(' ', nil, 2)
-DataTexts.args.panels.args.LeftChatDataPanel.args.templateGroup.inline = true
-DataTexts.args.panels.args.LeftChatDataPanel.args.templateGroup.args.backdrop = ACH:Toggle(L["Backdrop"], nil, 1)
-DataTexts.args.panels.args.LeftChatDataPanel.args.templateGroup.args.border = ACH:Toggle(L["Border"], nil, 2, nil, nil, nil, nil, nil, function(info) return not E.db.datatexts.panels[info[#info - 2]].backdrop end)
-DataTexts.args.panels.args.LeftChatDataPanel.args.templateGroup.args.panelTransparency = ACH:Toggle(L["Panel Transparency"], nil, 3, nil, nil, nil, nil, nil, function(info) return not E.db.datatexts.panels[info[#info - 2]].backdrop end)
-DataTexts.args.panels.args.LeftChatDataPanel.args.dts = ACH:Group(L["DataTexts"], nil, 3)
-DataTexts.args.panels.args.LeftChatDataPanel.args.dts.inline = true
+DataTexts.args.panels.args.LeftChatDataPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
 DataTexts.args.panels.args.RightChatDataPanel = ACH:Group(ColorizeName(L["Datatext Panel (Right)"], 'cccccc'), L["Display data panels below the chat, used for datatexts."], 1, nil, function(info) return E.db.datatexts.panels.RightChatDataPanel[info[#info]] end, function(info, value) E.db.datatexts.panels.RightChatDataPanel[info[#info]] = value DT:UpdatePanelInfo('RightChatDataPanel') Layout:SetDataPanelStyle() end)
 DataTexts.args.panels.args.RightChatDataPanel.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, function(info, value) E.db.datatexts.panels[info[#info - 1]][info[#info]] = value if E.db.RightChatPanelFaded then E.db.RightChatPanelFaded = true; _G.HideRightChat() end if E.private.chat.enable then Chat:UpdateEditboxAnchors() end Layout:ToggleChatPanels() Layout:SetDataPanelStyle() DT:UpdatePanelInfo('RightChatDataPanel') end)
-DataTexts.args.panels.args.RightChatDataPanel.args.templateGroup = ACH:Group(' ', nil, 2)
-DataTexts.args.panels.args.RightChatDataPanel.args.templateGroup.inline = true
-DataTexts.args.panels.args.RightChatDataPanel.args.templateGroup.args.backdrop = ACH:Toggle(L["Backdrop"], nil, 1)
-DataTexts.args.panels.args.RightChatDataPanel.args.templateGroup.args.border = ACH:Toggle(L["Border"], nil, 2, nil, nil, nil, nil, nil, function(info) return not E.db.datatexts.panels[info[#info - 2]].backdrop end)
-DataTexts.args.panels.args.RightChatDataPanel.args.templateGroup.args.panelTransparency = ACH:Toggle(L["Panel Transparency"], nil, 3, nil, nil, nil, nil, nil, function(info) return not E.db.datatexts.panels[info[#info - 2]].backdrop end)
-DataTexts.args.panels.args.RightChatDataPanel.args.dts = ACH:Group(L["DataTexts"], nil, 3)
-DataTexts.args.panels.args.RightChatDataPanel.args.dts.inline = true
+DataTexts.args.panels.args.RightChatDataPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
 DataTexts.args.panels.args.MinimapPanel = ACH:Group(ColorizeName(L["Minimap Panels"], 'cccccc'), L["Display minimap panels below the minimap, used for datatexts."], 3, nil, function(info) return E.db.datatexts.panels.MinimapPanel[info[#info]] end, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') end, function() return not E.private.general.minimap.enable end)
 DataTexts.args.panels.args.MinimapPanel.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, function(info, value) E.db.datatexts.panels[info[#info - 1]][info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') if E.private.general.minimap.enable then Minimap:UpdateSettings() end end)
 DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 1, { min = 1, max = 2, step = 1 })
-DataTexts.args.panels.args.MinimapPanel.args.templateGroup = ACH:Group(' ', nil, 2)
-DataTexts.args.panels.args.MinimapPanel.args.templateGroup.inline = true
-DataTexts.args.panels.args.MinimapPanel.args.templateGroup.args.backdrop = ACH:Toggle(L["Backdrop"], nil, 1)
-DataTexts.args.panels.args.MinimapPanel.args.templateGroup.args.border = ACH:Toggle(L["Border"], nil, 2, nil, nil, nil, nil, nil, function(info) return not E.db.datatexts.panels[info[#info - 2]].backdrop end)
-DataTexts.args.panels.args.MinimapPanel.args.templateGroup.args.panelTransparency = ACH:Toggle(L["Panel Transparency"], nil, 3, nil, nil, nil, nil, nil, function(info) return not E.db.datatexts.panels[info[#info - 2]].backdrop end)
-DataTexts.args.panels.args.MinimapPanel.args.dts = ACH:Group(L["DataTexts"], nil, 3)
-DataTexts.args.panels.args.MinimapPanel.args.dts.inline = true
+DataTexts.args.panels.args.MinimapPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
 DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6)
 DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
