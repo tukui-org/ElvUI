@@ -126,8 +126,8 @@ local function CreateCustomCurrencyOptions(currencyID)
 
 		options.args.DISPLAY_STYLE = ACH:Select(L["Display Style"], nil, 1, { ICON = L["Icons Only"], ICON_TEXT = L["Icons and Text"], ICON_TEXT_ABBR = L["Icons and Text (Short)"] })
 		options.args.SHOW_MAX = ACH:Toggle(L["Current / Max"], nil, 2)
-		options.args.USE_TOOLTIP = ACH:Toggle(L["Use Tooltip"], nil, 3)
-		options.args.DISPLAY_IN_MAIN_TOOLTIP = ACH:Toggle(L["Display In Main Tooltip"], L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."], 4)
+		options.args.USE_TOOLTIP = ACH:Toggle(L["Tooltip"], nil, 3)
+		options.args.DISPLAY_IN_MAIN_TOOLTIP = ACH:Toggle(L["Display In Main Tooltip"], L["If enabled, then this currency will be displayed in the main Currencies datatext tooltip."], 4, nil, nil, nil, nil, nil, nil, DT.CurrencyList[tostring(currencyID)] and true)
 
 		E.Options.args.datatexts.args.customCurrency.args[currency.NAME] = options
 	end
@@ -168,7 +168,7 @@ local function CreateDTOptions(name, data)
 	if name == 'Combat' then
 		optionTable.args.TimeFull = ACH:Toggle('Full Time')
 	elseif name == 'Currencies' then
-		optionTable.args.displayedCurrency = ACH:Select(L["Displayed Currency"], nil, nil, function() return DT.CurrencyList end)
+		optionTable.args.displayedCurrency = ACH:Select(L["Displayed Currency"], nil, nil, function() local list = E:CopyTable({}, DT.CurrencyList) for _, info in pairs(E.global.datatexts.customCurrencies) do local id = tostring(info.ID) if info and not DT.CurrencyList[id] then list[id] = info.NAME end end return list end)
 		optionTable.args.displayedCurrency.sortByValue = true
 
 		optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { ICON = L["Icons Only"], ICON_TEXT = L["Icons and Text"], ICON_TEXT_ABBR = L["Icons and Text (Short)"] }, nil, nil, nil, nil, nil, function() return (settings.displayedCurrency == "GOLD") or (settings.displayedCurrency == "BACKPACK") end)
