@@ -68,6 +68,8 @@ function S:Blizzard_PlayerChoiceUI()
 				option.Header.Text:SetTextColor(1, .8, 0)
 				option.OptionText:SetTextColor(1, 1, 1)
 
+				option.RewardsFrame.Rewards.lastReward.Name:SetTextColor(1, 1, 1)
+
 				option.Background:SetAlpha(0)
 				option.Header.Ribbon:SetAlpha(0)
 			end
