@@ -68,8 +68,6 @@ function S:Blizzard_PlayerChoiceUI()
 				option.Header.Text:SetTextColor(1, .8, 0)
 				option.OptionText:SetTextColor(1, 1, 1)
 
-				option.RewardsFrame.Rewards.lastReward.Name:SetTextColor(1, 1, 1)
-
 				option.Background:SetAlpha(0)
 				option.Header.Ribbon:SetAlpha(0)
 			end
@@ -130,6 +128,26 @@ function S:Blizzard_PlayerChoiceUI()
 				end
 			end
 		end
+	end)
+
+	hooksecurefunc(frame, 'SetupRewards', function(self)
+		if E.private.skins.parchmentRemoverEnable then
+			for i = 1, self.numActiveOptions do
+				local optionFrameRewards = self.Options[i].RewardsFrame.Rewards
+				for button in optionFrameRewards.ItemRewardsPool:EnumerateActive() do
+					if not button.IsSkinned then
+						button.Name:SetTextColor(.9, .8, .5)
+						button.IconBorder:SetAlpha(0)
+
+						button.IsSkinned = true
+					end
+				end
+			end
+		end
+		--[[
+			optionFrameRewards.CurrencyRewardsPool
+			optionFrameRewards.ReputationRewardsPool
+		]]
 	end)
 end
 
