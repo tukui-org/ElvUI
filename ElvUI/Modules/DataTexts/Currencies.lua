@@ -52,7 +52,7 @@ local function OnEvent(self)
 
 	local displayed = E.global.datatexts.settings.Currencies.displayedCurrency
 	if displayed == 'BACKPACK' then
-		local displayString = ''
+		local displayString
 		for i = 1, 3 do
 			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
 			if info and info.quantity then
@@ -60,7 +60,7 @@ local function OnEvent(self)
 			end
 		end
 
-		self.text:SetText(displayString == '' and goldText or displayString)
+		self.text:SetText(displayString or goldText)
 	elseif displayed == 'GOLD' then
 		self.text:SetText(goldText)
 	else

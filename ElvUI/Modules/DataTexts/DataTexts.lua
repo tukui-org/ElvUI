@@ -39,6 +39,7 @@ DT.SelectedDatatext = nil
 DT.HyperList = HyperList
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
+DT.DataTextList = {}
 DT.LoadedInfo = {}
 DT.PanelPool = {
 	InUse = {},
@@ -283,11 +284,6 @@ function DT:SetupObjectLDB(name, obj)
 	local data = DT:RegisterDatatext(name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave)
 	E.valueColorUpdateFuncs[onCallback] = true
 	data.isLibDataBroker = true
-
-	-- Update config if it has been loaded
-	if DT.PanelLayoutOptions then
-		DT:PanelLayoutOptions()
-	end
 end
 
 function DT:RegisterLDB()
@@ -382,7 +378,6 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		if not data.objectEvent then
 			dt:SetScript('OnEvent', data.eventFunc)
 		end
-
 		data.eventFunc(dt, ev, ...)
 	end
 
@@ -843,6 +838,7 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 	end
 
 	DT.RegisteredDataTexts[name] = data
+	DT.DataTextList[name] = localizedName or name
 
 	return data
 end

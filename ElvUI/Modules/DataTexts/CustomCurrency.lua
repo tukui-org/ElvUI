@@ -3,6 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local ipairs, pairs, format = ipairs, pairs, format
+local strjoin = strjoin
 local tinsert, tremove, next = tinsert, tremove, next
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local C_CurrencyInfo_GetCurrencyListInfo = C_CurrencyInfo.GetCurrencyListInfo
@@ -16,26 +17,20 @@ local function OnEvent(self)
 	if currency then
 		local info = C_CurrencyInfo_GetCurrencyInfo(currency.ID)
 		if not info then return end
+		local style = currency.DISPLAY_STYLE
+		local displayString = currency.ICON
 
-		if currency.DISPLAY_STYLE == 'ICON' then
-			if currency.SHOW_MAX then
-				self.text:SetFormattedText('%s %d / %d', currency.ICON, info.quantity, info.maxQuantity)
-			else
-				self.text:SetFormattedText('%s %d', currency.ICON, info.quantity)
-			end
-		elseif currency.DISPLAY_STYLE == 'ICON_TEXT' then
-			if currency.SHOW_MAX then
-				self.text:SetFormattedText('%s %s %d / %d', currency.ICON, currency.NAME, info.quantity, info.maxQuantity)
-			else
-				self.text:SetFormattedText('%s %s %d', currency.ICON, currency.NAME, info.quantity)
-			end
-		else --ICON_TEXT_ABBR
-			if currency.SHOW_MAX then
-				self.text:SetFormattedText('%s %s %d / %d', currency.ICON, E:AbbreviateString(currency.NAME), info.quantity, info.maxQuantity)
-			else
-				self.text:SetFormattedText('%s %s %d', currency.ICON, E:AbbreviateString(currency.NAME), info.quantity)
-			end
+		if style ~= 'ICON' then
+			displayString = strjoin(' ', displayString, style == 'ICON_TEXT' and currency.NAME or E:AbbreviateString(currency.NAME))
 		end
+
+		displayString = strjoin(' ', displayString, '%d')
+
+		if currency.SHOW_MAX and info.maxQuantity > 0 then
+			displayString = strjoin(' ', displayString, '/', info.maxQuantity)
+		end
+
+		self.text:SetFormattedText(displayString, info.quantity)
 	end
 end
 
@@ -95,15 +90,7 @@ end
 function DT:UpdateCustomCurrencySettings(currencyName, option, value)
 	if not currencyName or not option then return end
 
-	if option == 'DISPLAY_STYLE' then
-		CustomCurrencies[currencyName].DISPLAY_STYLE = value
-	elseif option == 'USE_TOOLTIP' then
-		CustomCurrencies[currencyName].USE_TOOLTIP = value
-	elseif option == 'SHOW_MAX' then
-		CustomCurrencies[currencyName].SHOW_MAX = value
-	elseif option == 'DISPLAY_IN_MAIN_TOOLTIP' then
-		CustomCurrencies[currencyName].DISPLAY_IN_MAIN_TOOLTIP = value
-	end
+	CustomCurrencies[currencyName][option] = value
 end
 
 function DT:RegisterCustomCurrencyDT(currencyID)
