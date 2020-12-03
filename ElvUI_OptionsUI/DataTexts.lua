@@ -59,7 +59,7 @@ local function PanelGroup_Create(panel)
 		opts = ACH:Group(ColorizeName(panel), nil, nil, nil, function(info) return E.db.datatexts.panels[panel][info[#info]] end, function(info, value) E.db.datatexts.panels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end)
 		opts.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 
-		opts.args.panelOptions = ACH:Group(L["Panel Options"], nil, 2, nil, function(info) return E.global.datatexts.customPanels[panel][info[#info]] end, function(info, value) E.global.datatexts.customPanels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) DT:SetupPanelOptions(panel) end)
+		opts.args.panelOptions = ACH:Group(L["Panel Options"], nil, 2, nil, function(info) return E.global.datatexts.customPanels[panel][info[#info]] end, function(info, value) E.global.datatexts.customPanels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end)
 		opts.args.panelOptions.inline = true
 
 		opts.args.panelOptions.args.delete = ACH:Execute(L["Delete"], nil, -1, function() PanelGroup_Delete(panel) end, nil, true, 'full')
@@ -71,6 +71,7 @@ local function PanelGroup_Create(panel)
 		opts.args.panelOptions.args.fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
 
 		local panelOpts = E:CopyTable(opts.args.panelOptions.args, DTPanelOptions)
+		panelOpts.numPoints.set = function(info, value) E.global.datatexts.customPanels[panel][info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) DT:SetupPanelOptions(panel) end
 		panelOpts.tooltip.args.tooltipYOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 		panelOpts.tooltip.args.tooltipXOffset.disabled = function() return E.global.datatexts.customPanels[panel].tooltipAnchor == 'ANCHOR_CURSOR' end
 		panelOpts.templateGroup.get = function(_, key) return E.global.datatexts.customPanels[panel][key] end
@@ -297,9 +298,9 @@ DataTexts.args.panels.args.RightChatDataPanel = ACH:Group(ColorizeName(L["Datate
 DataTexts.args.panels.args.RightChatDataPanel.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, function(info, value) E.db.datatexts.panels[info[#info - 1]][info[#info]] = value if E.db.RightChatPanelFaded then E.db.RightChatPanelFaded = true; _G.HideRightChat() end if E.private.chat.enable then Chat:UpdateEditboxAnchors() end Layout:ToggleChatPanels() Layout:SetDataPanelStyle() DT:UpdatePanelInfo(info[#info - 1]) end)
 DataTexts.args.panels.args.RightChatDataPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
-DataTexts.args.panels.args.MinimapPanel = ACH:Group(ColorizeName(L["Minimap Panels"], 'cccccc'), L["Display minimap panels below the minimap, used for datatexts."], 3, nil, function(info) return E.db.datatexts.panels.MinimapPanel[info[#info]] end, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') DT:SetupPanelOptions('MinimapPanel') end, function() return not E.private.general.minimap.enable end)
+DataTexts.args.panels.args.MinimapPanel = ACH:Group(ColorizeName(L["Minimap Panels"], 'cccccc'), L["Display minimap panels below the minimap, used for datatexts."], 3, nil, function(info) return E.db.datatexts.panels.MinimapPanel[info[#info]] end, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') end, function() return not E.private.general.minimap.enable end)
 DataTexts.args.panels.args.MinimapPanel.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, function(info, value) E.db.datatexts.panels[info[#info - 1]][info[#info]] = value DT:UpdatePanelInfo(info[#info - 1]) if E.private.general.minimap.enable then Minimap:UpdateSettings() end end)
-DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 1, { min = 1, max = 2, step = 1 })
+DataTexts.args.panels.args.MinimapPanel.args.numPoints = ACH:Range(L["Number of DataTexts"], nil, 1, { min = 1, max = 2, step = 1 }, nil, function(info, value) E.db.datatexts.panels.MinimapPanel[info[#info]] = value DT:UpdatePanelInfo('MinimapPanel') DT:SetupPanelOptions('MinimapPanel') end)
 DataTexts.args.panels.args.MinimapPanel.args.templateGroup = CopyTable(defaultTemplateGroup)
 
 DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6)
