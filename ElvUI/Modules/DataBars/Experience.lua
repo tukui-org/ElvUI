@@ -206,7 +206,7 @@ function DB:ExperienceBar()
 	Rested:SetInside()
 	Rested:Hide()
 	Rested.barTexture = Rested:GetStatusBarTexture()
-	Rested.barTexture:SetDrawLayer('ARTWORK', 2)
+	Rested.barTexture:SetDrawLayer('ARTWORK', 3)
 	Experience.Rested = Rested
 
 	local Quest = CreateFrame('StatusBar', 'ElvUI_ExperienceBar_Quest', Experience.holder)
@@ -215,7 +215,7 @@ function DB:ExperienceBar()
 	Quest:SetInside()
 	Quest:Hide()
 	Quest.barTexture = Quest:GetStatusBarTexture()
-	Quest.barTexture:SetDrawLayer('ARTWORK', 3)
+	Quest.barTexture:SetDrawLayer('ARTWORK', 2)
 	Experience.Quest = Quest
 
 	E:CreateMover(Experience.holder, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
