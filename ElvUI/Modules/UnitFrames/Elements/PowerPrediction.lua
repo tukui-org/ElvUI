@@ -5,7 +5,8 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 function UF:SetSize_PowerPrediction(frame)
-	local pred = frame.PowerPrediction
+	local pred = frame and frame.PowerPrediction
+	if not pred then return end
 
 	local width, height = frame.Power:GetSize()
 	if frame.Power:GetOrientation() == 'HORIZONTAL' then
@@ -27,13 +28,7 @@ function UF:SetSize_PowerPrediction(frame)
 end
 
 function UF:PostUpdate_PowerPrediction()
-	local frame = self.parent
-	local pred = frame.PowerPrediction
-
-	if pred.needsSizeUpdated then
-		UF:SetSize_PowerPrediction(frame)
-		pred.needsSizeUpdated = nil
-	end
+	UF:SetSize_PowerPrediction(self.parent)
 end
 
 function UF:Construct_PowerPrediction(frame)
@@ -80,7 +75,6 @@ function UF:Configure_PowerPrediction(frame)
 		local mainBar = pred.mainBar
 		local altBar = pred.altBar
 		local power = frame.Power
-		pred.needsSizeUpdated = true
 
 		local powerBarTexture = power:GetStatusBarTexture()
 		local orientation = power:GetOrientation()

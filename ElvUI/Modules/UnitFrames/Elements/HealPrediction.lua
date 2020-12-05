@@ -110,7 +110,6 @@ function UF:Configure_HealComm(frame)
 		local otherBar = pred.otherBar
 		local absorbBar = pred.absorbBar
 		local healAbsorbBar = pred.healAbsorbBar
-		pred.needsSizeUpdated = true
 
 		local colors = self.db.colors.healPrediction
 		pred.maxOverflow = 1 + (colors.maxOverflow or 0)
@@ -222,10 +221,7 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	local healAbsorbBar = pred.healAbsorbBar
 	local absorbBar = pred.absorbBar
 
-	if pred.needsSizeUpdated then
-		UF:SetSize_HealComm(frame)
-		pred.needsSizeUpdated = nil
-	end
+	UF:SetSize_HealComm(frame)
 
 	-- absorbs is set to none so hide both and kill code execution
 	if db.absorbStyle == 'NONE' then
