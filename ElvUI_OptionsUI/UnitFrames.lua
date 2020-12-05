@@ -772,7 +772,7 @@ end
 local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGroup)
 	local config = {
 		type = 'group',
-		name = L["Buff Indicator"],
+		name = L["Aura Indicator"],
 		get = function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
 		args = {
@@ -790,7 +790,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 			profileSpecific = {
 				type = 'toggle',
 				name = L["Profile Specific"],
-				desc = L["Use the profile specific filter Buff Indicator (Profile) instead of the global filter Buff Indicator."],
+				desc = L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."],
 				order = 4,
 			},
 			configureButton = {
@@ -815,7 +815,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 				get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
 				set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
 				args = {
-					header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Buff Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1),
+					header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1),
 					style = {
 						name = L["Style"],
 						order = 2,
