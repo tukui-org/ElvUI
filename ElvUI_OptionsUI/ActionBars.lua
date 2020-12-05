@@ -359,7 +359,7 @@ E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttonsize.desc = fun
 E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.barPet.keepSizeRatio end
 E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttonsPerRow.max = NUM_PET_ACTION_SLOTS
 E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttons.max = NUM_PET_ACTION_SLOTS
-E.Options.args.actionbar.args.barPet.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar.barPet.visibility = value; AB:UpdateButtonSettings() end
+E.Options.args.actionbar.args.barPet.args.visibility.set = function(_, value) E.db.actionbar.barPet.visibility = value; AB:UpdateButtonSettings() end
 
 E.Options.args.actionbar.args.stanceBar = ACH:Group(L["Stance Bar"], nil, 15, nil, function(info) return E.db.actionbar.stanceBar[info[#info]] end, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value; AB:PositionAndSizeBarShapeShift() end, function() return not E.ActionBars.Initialized end)
 E.Options.args.actionbar.args.stanceBar.args = CopyTable(SharedBarOptions)
@@ -371,7 +371,7 @@ E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttonHeight.hidde
 E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttonsPerRow.max = NUM_STANCE_SLOTS
 E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttons.max = NUM_STANCE_SLOTS
 E.Options.args.actionbar.args.stanceBar.args.barGroup.args.style = ACH:Select(L["Style"], L["This setting will be updated upon changing stances."], 12, { darkenInactive = L["Darken Inactive"], classic = L["Classic"] })
-E.Options.args.actionbar.args.stanceBar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar.stanceBar.visibility = value; AB:UpdateButtonSettings() end
+E.Options.args.actionbar.args.stanceBar.args.visibility.set = function(_, value) E.db.actionbar.stanceBar.visibility = value; AB:UpdateButtonSettings() end
 
 E.Options.args.actionbar.args.microbar = ACH:Group(L["Micro Bar"], nil, 16, nil, function(info) return E.db.actionbar.microbar[info[#info]] end, function(info, value) E.db.actionbar.microbar[info[#info]] = value; AB:UpdateMicroPositionDimensions() end, function() return not E.ActionBars.Initialized end)
 E.Options.args.actionbar.args.microbar.args = CopyTable(SharedBarOptions)
@@ -386,7 +386,7 @@ E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonsPerRow.max =
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.microbar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.microbar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
 E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
-E.Options.args.actionbar.args.microbar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar.microbar.visibility = value; AB:UpdateMicroPositionDimensions() end
+E.Options.args.actionbar.args.microbar.args.visibility.set = function(_, value) E.db.actionbar.microbar.visibility = value; AB:UpdateMicroPositionDimensions() end
 
 --Remove these as these bars doesnt have these options
 for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
@@ -419,18 +419,11 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 	if name == 'microbar' then
 		options.hideHotkey = nil
 	elseif name == 'stanceBar' then
-		options.hideHotkey.set = function(info, value)
-			E.db.actionbar[info[#info-2]][info[#info]] = value
-			AB:UpdateStanceBindings()
-		end
+		options.hideHotkey.set = function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateStanceBindings() end
 	elseif name == 'barPet' then
-		options.hideHotkey.set = function(info, value)
-			E.db.actionbar[info[#info-2]][info[#info]] = value
-			AB:UpdatePetBindings()
-		end
+		options.hideHotkey.set = function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdatePetBindings() end
 	end
 end
-
 
 local SharedButtonOptions = {
 	alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 1, { min = 0, max = 1, step = 0.01, isPercent = true }),
@@ -482,7 +475,7 @@ for i = 1, 10 do
 
 	bar.args.paging = ACH:Input(L["Action Paging"], L["This works like a macro, you can run different situations to get the actionbar to page differently.\n Example: '[combat] 2;'"], 7, 4, 'full', function() return E.db.actionbar['bar'..i].paging[E.myclass] end, function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar['bar'..i].paging[E.myclass] = value AB:UpdateButtonSettings() end)
 
-	bar.args.visibility.set = function(_, value) if value and value:match('[\n\r]') then value = value:gsub('[\n\r]','') end E.db.actionbar['bar'..i].visibility = value AB:UpdateButtonSettings() end
+	bar.args.visibility.set = function(_, value) E.db.actionbar['bar'..i].visibility = value AB:UpdateButtonSettings() end
 
 	local countHidden = function() return not E.db.actionbar['bar'..i].customCountFont end
 	bar.args.barGroup.args.countFont.hidden = countHidden
