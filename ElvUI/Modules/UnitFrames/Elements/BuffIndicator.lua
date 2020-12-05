@@ -61,9 +61,6 @@ function UF:BuffIndicator_PostCreateIcon(button)
 	button.icon.border:SetTexture(E.media.blankTex)
 	button.icon.border:SetVertexColor(0, 0, 0)
 
-	UF:Configure_FontString(button.count)
-	UF:Update_FontString(button.count)
-
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
@@ -118,6 +115,7 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 			button.icon:SetTexCoord(unpack(E.TexCoords))
 		end
 
+		button.count:FontTemplate(nil, button:GetSize() / 2, 'OUTLINE')
 		if textureIcon and button.filter == 'HARMFUL' then
 			button.icon.border:SetVertexColor(1, 0, 0)
 		else
