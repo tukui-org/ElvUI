@@ -2431,6 +2431,8 @@ function B:Initialize()
 	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseAuction')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
 	B:RegisterEvent('BANKFRAME_CLOSED', 'CloseBank')
+	B:RegisterEvent('SOULBIND_FORGE_INTERACTION_STARTED', 'OpenBags')
+	B:RegisterEvent('SOULBIND_FORGE_INTERACTION_ENDED', 'CloseBags')
 
 	_G.BankFrame:SetScale(0.0001)
 	_G.BankFrame:SetAlpha(0)
