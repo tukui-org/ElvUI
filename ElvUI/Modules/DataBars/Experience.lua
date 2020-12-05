@@ -32,6 +32,12 @@ function DB:ExperienceBar_ShouldBeVisible()
 	return not IsPlayerAtEffectiveMaxLevel() and not IsXPUserDisabled()
 end
 
+local function RestedQuestLayering()
+	local bar = DB.StatusBars.Experience
+	bar.Quest.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP > RestedXP) and 2 or 3)
+	bar.Rested.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP <= RestedXP) and 2 or 3)
+end
+
 function DB:ExperienceBar_Update()
 	local bar = DB.StatusBars.Experience
 	DB:SetVisibility(bar)
@@ -99,6 +105,7 @@ function DB:ExperienceBar_Update()
 			displayString = format('%s %s : %s', L['Level'], E.mylevel, displayString)
 		end
 
+		RestedQuestLayering()
 		bar.Rested:SetShown(isRested)
 	end
 
@@ -124,6 +131,7 @@ function DB:ExperienceBar_QuestXP()
 		bar.Quest:SetMinMaxValues(0, XPToLevel)
 		bar.Quest:SetValue(min(CurrentXP + QuestLogXP, XPToLevel))
 		bar.Quest:SetStatusBarColor(DB.db.colors.quest.r, DB.db.colors.quest.g, DB.db.colors.quest.b, DB.db.colors.quest.a)
+		RestedQuestLayering()
 		bar.Quest:Show()
 	else
 		bar.Quest:Hide()
