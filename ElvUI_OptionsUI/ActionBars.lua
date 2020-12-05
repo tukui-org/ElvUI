@@ -4,7 +4,7 @@ local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
 local _G = _G
-local pairs = pairs
+local ipairs = ipairs
 local format = format
 local SetCVar = SetCVar
 local GameTooltip = _G.GameTooltip
@@ -21,6 +21,8 @@ local SharedBarOptions = {
 	visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 8, 4, 'full')
 }
 
+local textAnchors = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' }
+
 SharedBarOptions.barGroup.inline = true
 SharedBarOptions.barGroup.args.point = ACH:Select(L["Anchor Point"], L["The first button anchors itself to this point on the bar."], 1, { TOPLEFT = 'TOPLEFT', TOPRIGHT = 'TOPRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT' })
 SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 2, { min = 0, max = 1, step = 0.01, isPercent = true })
@@ -28,7 +30,7 @@ SharedBarOptions.barGroup.args.spacer1 = ACH:Spacer(15, 'full')
 SharedBarOptions.barGroup.args.hideHotkey = ACH:Toggle(L["Hide Keybind Text"], nil, 16, nil, nil, nil, function(info) return E.db.actionbar[info[#info-2]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end)
 
 SharedBarOptions.barGroup.args.customCountFont = ACH:Toggle(L["Count Font"], nil, 20)
-SharedBarOptions.barGroup.args.countTextPosition = ACH:Select(L["Text Anchor"], nil, 21, { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' })
+SharedBarOptions.barGroup.args.countTextPosition = ACH:Select(L["Text Anchor"], nil, 21, textAnchors)
 SharedBarOptions.barGroup.args.countTextXOffset = ACH:Range(L["X-Offset"], nil, 22, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.countTextYOffset = ACH:Range(L["Y-Offset"], nil, 23, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 24)
@@ -36,7 +38,7 @@ SharedBarOptions.barGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"
 SharedBarOptions.barGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 26, C.Values.FontSize)
 SharedBarOptions.barGroup.args.spacer2 = ACH:Spacer(27, 'full')
 SharedBarOptions.barGroup.args.customHotkeyFont = ACH:Toggle(L["Keybind Font"], nil, 40)
-SharedBarOptions.barGroup.args.hotkeyTextPosition = ACH:Select(L["Text Anchor"], nil, 41, { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' })
+SharedBarOptions.barGroup.args.hotkeyTextPosition = ACH:Select(L["Text Anchor"], nil, 41, textAnchors)
 SharedBarOptions.barGroup.args.hotkeyTextXOffset = ACH:Range(L["X-Offset"], nil, 42, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil, 43, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.hotkeyFont = ACH:SharedMediaFont(L["Font"], nil, 44)
@@ -69,313 +71,109 @@ SharedBarOptions.backdropGroup.args.heightMult = ACH:Range(L["Height Multiplier"
 SharedBarOptions.backdropGroup.args.widthMult = ACH:Range(L["Width Multiplier"], L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."], 2, { min = 1, max = 5, step = 1 })
 
 -- Start ActionBar Config
+local ActionBar = ACH:Group(L["ActionBars"], nil, 2, 'tab', function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end)
+E.Options.args.actionbar = ActionBar
 
-E.Options.args.actionbar = ACH:Group(L["ActionBars"], nil, 2, 'tab', function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end)
-E.Options.args.actionbar.args.intro = ACH:Description(L["ACTIONBARS_DESC"], 0)
-E.Options.args.actionbar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info) return E.private.actionbar[info[#info]] end, function(info, value) E.private.actionbar[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+ActionBar.args.intro = ACH:Description(L["ACTIONBARS_DESC"], 0)
+ActionBar.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info) return E.private.actionbar[info[#info]] end, function(info, value) E.private.actionbar[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
 
-E.Options.args.actionbar.args.general = {
-			order = 3,
-			type = 'group',
-			name = L["General"],
-			disabled = function() return not E.ActionBars.Initialized; end,
-			args = {
-				toggleKeybind = {
-					order = 0,
-					type = 'execute',
-					name = L["Keybind Mode"],
-					func = function() AB:ActivateBindMode(); E:ToggleOptionsUI(); GameTooltip:Hide(); end,
-				},
-				movementModifier = {
-					order = 1,
-					type = 'select',
-					name = L["PICKUP_ACTION_KEY_TEXT"],
-					desc = L["The button you must hold down in order to drag an ability to another action button."],
-					hidden = function() return not E.db.actionbar.lockActionBars end,
-					values = {
-						NONE = L["NONE"],
-						SHIFT = L["SHIFT_KEY_TEXT"],
-						ALT = L["ALT_KEY_TEXT"],
-						CTRL = L["CTRL_KEY_TEXT"],
-					},
-				},
-				flyoutSize = {
-					order = 2,
-					type = 'range',
-					name = L["Flyout Button Size"],
-					min = 15, max = 60, step = 1,
-				},
-				globalFadeAlpha = {
-					order = 3,
-					type = 'range',
-					name = L["Global Fade Transparency"],
-					desc = L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."],
-					min = 0, max = 1, step = 0.01,
-					isPercent = true,
-					set = function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end,
-				},
-				generalGroup = {
-					order = 20,
-					type = 'group',
-					name = L["General"],
-					inline = true,
-					get = function(info) return E.db.actionbar[info[#info]] end,
-					set = function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end,
-					args = {
-						keyDown = {
-							order = 13,
-							type = 'toggle',
-							name = L["Key Down"],
-							desc = L["OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN"],
-						},
-						lockActionBars = {
-							order = 14,
-							type = 'toggle',
-							name = L["LOCK_ACTIONBAR_TEXT"],
-							desc = L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."],
-							set = function(info, value)
-								E.db.actionbar[info[#info]] = value;
-								AB:UpdateButtonSettings()
+ActionBar.args.general = ACH:Group(L["General"], nil, 3, nil, nil, nil, function() return not E.ActionBars.Initialized end)
+ActionBar.args.general.args.toggleKeybind = ACH:Execute(L["Keybind Mode"], nil, 0, function() AB:ActivateBindMode() E:ToggleOptionsUI() GameTooltip:Hide() end)
+ActionBar.args.general.args.movementModifier = ACH:Select(L["PICKUP_ACTION_KEY_TEXT"], L["The button you must hold down in order to drag an ability to another action button."], 1, { NONE = L["NONE"], SHIFT = L["SHIFT_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"] }, nil, nil, nil, nil, nil, function() return not E.db.actionbar.lockActionBars end)
+ActionBar.args.general.args.flyoutSize = ACH:Range(L["Flyout Button Size"], nil, 2, { min = 15, max = 60, step = 1 })
+ActionBar.args.general.args.globalFadeAlpha = ACH:Range(L["Global Fade Transparency"], L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."], 3, { min = 0, max = 1, step = 0.01, isPercent = true }, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value; AB.fadeParent:SetAlpha(1-value) end)
 
-								--Make it work for PetBar too
-								SetCVar('lockActionBars', (value == true and 1 or 0))
-								LOCK_ACTIONBAR = (value == true and '1' or '0')
-							end,
-						},
-						hideCooldownBling = {
-							order = 15,
-							type = 'toggle',
-							name = L["Hide Cooldown Bling"],
-							desc = L["Hides the bling animation on buttons at the end of the global cooldown."],
-							get = function() return E.db.actionbar.hideCooldownBling end,
-							set = function(_, value) E.db.actionbar.hideCooldownBling = value;
-								for _, bar in pairs(AB.handledBars) do
-									AB:UpdateButtonConfig(bar, bar.bindButtons)
-								end
-								AB:UpdatePetCooldownSettings()
-							end,
-						},
-						addNewSpells = {
-							order = 16,
-							type = 'toggle',
-							name = L["Auto Add New Spells"],
-							desc = L["Allow newly learned spells to be automatically placed on an empty actionbar slot."],
-							set = function(_, value) E.db.actionbar.addNewSpells = value; AB:IconIntroTracker_Toggle() end,
-						},
-						rightClickSelfCast = {
-							order = 17,
-							type = 'toggle',
-							name = L["RightClick Self-Cast"],
-							set = function(_, value)
-								E.db.actionbar.rightClickSelfCast = value;
-								for _, bar in pairs(AB.handledBars) do
-									AB:UpdateButtonConfig(bar, bar.bindButtons)
-								end
-							end,
-						},
-						useDrawSwipeOnCharges = {
-							order = 18,
-							type = 'toggle',
-							name = L["Charge Draw Swipe"],
-							desc = L["Shows a swipe animation when a spell is recharging but still has charges left."],
-							get = function() return E.db.actionbar.useDrawSwipeOnCharges end,
-							set = function(_, value)
-								E.db.actionbar.useDrawSwipeOnCharges = value;
-								for _, bar in pairs(AB.handledBars) do
-									AB:UpdateButtonConfig(bar, bar.bindButtons)
-								end
-							end,
-						},
-						chargeCooldown = {
-							order = 19,
-							type = 'toggle',
-							name = L["Charge Cooldown Text"],
-							set = function(_, value)
-								E.db.actionbar.chargeCooldown = value;
-								AB:ToggleCooldownOptions()
-							end,
-						},
-						desaturateOnCooldown = {
-							order = 20,
-							type = 'toggle',
-							name = L["Desaturate Cooldowns"],
-							set = function(_, value)
-								E.db.actionbar.desaturateOnCooldown = value;
-								AB:ToggleCooldownOptions()
-							end,
-						},
-						transparent = {
-							order = 21,
-							type = 'toggle',
-							name = L["Transparent"],
-							set = function(_, value)
-								E.db.actionbar.transparent = value
-								E:StaticPopup_Show('PRIVATE_RL')
-							end,
-						},
-						flashAnimation = {
-							order = 22,
-							type = 'toggle',
-							name = L["Button Flash"],
-							desc = L["Use a more visible flash animation for Auto Attacks."],
-							set = function(_, value)
-								E.db.actionbar.flashAnimation = value
-								E:StaticPopup_Show('PRIVATE_RL')
-							end,
-						},
-						equippedItem = {
-							order = 23,
-							type = 'toggle',
-							name = L["Equipped Item"],
-						},
-						macrotext = {
-							order = 24,
-							type = 'toggle',
-							name = L["Macro Text"],
-							desc = L["Display macro names on action buttons."],
-						},
-						hotkeytext = {
-							order = 25,
-							type = 'toggle',
-							name = L["Keybind Text"],
-							desc = L["Display bind names on action buttons."],
-						},
-						useRangeColorText = {
-							order = 26,
-							type = 'toggle',
-							name = L["Color Keybind Text"],
-							desc = L["Color Keybind Text when Out of Range, instead of the button."],
-						},
-						handleOverlay = {
-							order = 27,
-							type = 'toggle',
-							name = L["Action Button Glow"],
-						},
-					}
-				},
-				textGroup = {
-					type = 'group',
-					order = 50,
-					name = L["Text Position"],
-					disabled = function() return (E.Masque and E.private.actionbar.masque.actionbars) end,
-					inline = true,
-					args = {
-						countTextPosition = {
-							type = 'select',
-							order = 1,
-							name = L["Stack Text Position"],
-							values = {
-								BOTTOMRIGHT = 'BOTTOMRIGHT',
-								BOTTOMLEFT = 'BOTTOMLEFT',
-								TOPRIGHT = 'TOPRIGHT',
-								TOPLEFT = 'TOPLEFT',
-								BOTTOM = 'BOTTOM',
-								TOP = 'TOP',
-							},
-						},
-						countTextXOffset = {
-							type = 'range',
-							order = 2,
-							name = L["Stack Text X-Offset"],
-							min = -24, max = 24, step = 1,
-						},
-						countTextYOffset = {
-							type = 'range',
-							order = 3,
-							name = L["Stack Text Y-Offset"],
-							min = -24, max = 24, step = 1,
-						},
-						spacer1 = ACH:Spacer(5, 'full'),
-						hotkeyTextPosition = {
-							type = 'select',
-							order = 10,
-							name = L["Keybind Text Position"],
-							values = {
-								BOTTOMRIGHT = 'BOTTOMRIGHT',
-								BOTTOMLEFT = 'BOTTOMLEFT',
-								TOPRIGHT = 'TOPRIGHT',
-								TOPLEFT = 'TOPLEFT',
-								BOTTOM = 'BOTTOM',
-								TOP = 'TOP',
-							},
-						},
-						hotkeyTextXOffset = {
-							type = 'range',
-							order = 11,
-							name = L["Keybind Text X-Offset"],
-							min = -24, max = 24, step = 1,
-						},
-						hotkeyTextYOffset = {
-							type = 'range',
-							order = 12,
-							name = L["Keybind Text Y-Offset"],
-							min = -24, max = 24, step = 1,
-						},
-					},
-				},
-			},
-		}
+ActionBar.args.general.args.generalGroup = ACH:Group(L["General"], nil, 20, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value; AB:UpdateButtonSettings() end)
+ActionBar.args.general.args.generalGroup.inline = true
 
-E.Options.args.actionbar.args.general.args.colorGroup = ACH:Group(L["COLORS"], nil, 30, nil, function(info) local t = E.db.actionbar[info[#info]] local d = P.actionbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.actionbar[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateButtonSettings() end, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
-E.Options.args.actionbar.args.general.args.colorGroup.inline = true
-E.Options.args.actionbar.args.general.args.colorGroup.args.fontColor = ACH:Color(L["Text"], nil, 0)
-E.Options.args.actionbar.args.general.args.colorGroup.args.noRangeColor = ACH:Color(L["Out of Range"], L["Color of the actionbutton when out of range."], 1)
-E.Options.args.actionbar.args.general.args.colorGroup.args.noPowerColor = ACH:Color(L["Out of Power"], L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."], 2)
-E.Options.args.actionbar.args.general.args.colorGroup.args.usableColor = ACH:Color(L["Usable"], L["Color of the actionbutton when usable."], 3)
-E.Options.args.actionbar.args.general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Color of the actionbutton when not usable."], 4)
-E.Options.args.actionbar.args.general.args.colorGroup.args.colorSwipeNormal = ACH:Color(L["Swipe: Normal"], nil, 5, true)
-E.Options.args.actionbar.args.general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true)
-E.Options.args.actionbar.args.general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item Color"], nil, 7)
+ActionBar.args.general.args.generalGroup.args.keyDown = ACH:Toggle(L["Key Down"], L["OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN"], 1)
+ActionBar.args.general.args.generalGroup.args.lockActionBars = ACH:Toggle(L["LOCK_ACTIONBAR_TEXT"], L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."], 2, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() SetCVar('lockActionBars', (value == true and 1 or 0)) LOCK_ACTIONBAR = (value == true and '1' or '0') end)
+ActionBar.args.general.args.generalGroup.args.hideCooldownBling = ACH:Toggle(L["Hide Cooldown Bling"], L["Hides the bling animation on buttons at the end of the global cooldown."], 3, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() AB:UpdatePetCooldownSettings() end)
+ActionBar.args.general.args.generalGroup.args.addNewSpells = ACH:Toggle(L["Auto Add New Spells"], L["Allow newly learned spells to be automatically placed on an empty actionbar slot."], 4, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:IconIntroTracker_Toggle() end)
+ActionBar.args.general.args.generalGroup.args.rightClickSelfCast = ACH:Toggle(L["RightClick Self-Cast"], nil, 5)
+ActionBar.args.general.args.generalGroup.args.useDrawSwipeOnCharges = ACH:Toggle(L["Charge Draw Swipe"], L["Shows a swipe animation when a spell is recharging but still has charges left."], 6)
+ActionBar.args.general.args.generalGroup.args.chargeCooldown = ACH:Toggle(L["Charge Cooldown Text"], nil, 7, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:ToggleCooldownOptions() end)
+ActionBar.args.general.args.generalGroup.args.desaturateOnCooldown = ACH:Toggle(L["Desaturate Cooldowns"], nil, 8, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:ToggleCooldownOptions() end)
+ActionBar.args.general.args.generalGroup.args.transparent = ACH:Toggle(L["Transparent"], nil, 9, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
+ActionBar.args.general.args.generalGroup.args.flashAnimation = ACH:Toggle(L["Button Flash"], L["Use a more visible flash animation for Auto Attacks."], 10, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
+ActionBar.args.general.args.generalGroup.args.equippedItem = ACH:Toggle(L["Equipped Item Color"], nil, 11)
+ActionBar.args.general.args.generalGroup.args.macrotext = ACH:Toggle(L["Macro Text"], L["Display macro names on action buttons."], 12)
+ActionBar.args.general.args.generalGroup.args.hotkeytext = ACH:Toggle(L["Keybind Text"], L["Display bind names on action buttons."], 13)
+ActionBar.args.general.args.generalGroup.args.useRangeColorText = ACH:Toggle(L["Color Keybind Text"], L["Color Keybind Text when Out of Range, instead of the button."], 14)
+ActionBar.args.general.args.generalGroup.args.handleOverlay = ACH:Toggle(L["Action Button Glow"], nil, 15)
 
-E.Options.args.actionbar.args.general.args.fontGroup = ACH:Group(L["Fonts"], nil, 40)
-E.Options.args.actionbar.args.general.args.fontGroup.inline = true
-E.Options.args.actionbar.args.general.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-E.Options.args.actionbar.args.general.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
-E.Options.args.actionbar.args.general.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
+ActionBar.args.general.args.colorGroup = ACH:Group(L["COLORS"], nil, 30, nil, function(info) local t = E.db.actionbar[info[#info]] local d = P.actionbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.actionbar[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateButtonSettings() end, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
+ActionBar.args.general.args.colorGroup.inline = true
+ActionBar.args.general.args.colorGroup.args.fontColor = ACH:Color(L["Text"], nil, 0)
+ActionBar.args.general.args.colorGroup.args.noRangeColor = ACH:Color(L["Out of Range"], L["Color of the actionbutton when out of range."], 1)
+ActionBar.args.general.args.colorGroup.args.noPowerColor = ACH:Color(L["Out of Power"], L["Color of the actionbutton when out of power (Mana, Rage, Focus, Holy Power)."], 2)
+ActionBar.args.general.args.colorGroup.args.usableColor = ACH:Color(L["Usable"], L["Color of the actionbutton when usable."], 3)
+ActionBar.args.general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Color of the actionbutton when not usable."], 4)
+ActionBar.args.general.args.colorGroup.args.colorSwipeNormal = ACH:Color(L["Swipe: Normal"], nil, 5, true)
+ActionBar.args.general.args.colorGroup.args.colorSwipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true)
+ActionBar.args.general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item Color"], nil, 7)
 
-E.Options.args.actionbar.args.general.args.masqueGroup = ACH:Group(L["Masque Support"], nil, -1, nil, function(info) return E.private.actionbar.masque[info[#info]] end, function(info, value) E.private.actionbar.masque[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.Masque end)
-E.Options.args.actionbar.args.general.args.masqueGroup.inline = true
-E.Options.args.actionbar.args.general.args.masqueGroup.args.actionbars = ACH:Toggle(L["ActionBars"], nil, 1)
-E.Options.args.actionbar.args.general.args.masqueGroup.args.petBar = ACH:Toggle(L["Pet Bar"], nil, 2)
-E.Options.args.actionbar.args.general.args.masqueGroup.args.stanceBar = ACH:Toggle(L["Stance Bar"], nil, 3)
+ActionBar.args.general.args.fontGroup = ACH:Group(L["Fonts"], nil, 40)
+ActionBar.args.general.args.fontGroup.inline = true
+ActionBar.args.general.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
+ActionBar.args.general.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
+ActionBar.args.general.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 
-E.Options.args.actionbar.args.barPet = ACH:Group(L["Pet Bar"], nil, 14, nil, function(info) return E.db.actionbar.barPet[info[#info]] end, function(info, value) E.db.actionbar.barPet[info[#info]] = value; AB:PositionAndSizeBarPet() end, function() return not E.ActionBars.Initialized end)
-E.Options.args.actionbar.args.barPet.args = CopyTable(SharedBarOptions)
-E.Options.args.actionbar.args.barPet.args.restorePosition.func = function() E:CopyTable(E.db.actionbar.barPet, P.actionbar.barPet); E:ResetMovers('Pet Bar'); AB:PositionAndSizeBarPet() end
-E.Options.args.actionbar.args.barPet.args.generalOptions = ACH:MultiSelect('', nil, 3, { backdrop = L["Backdrop"], mouseover = L["Mouse Over"], clickThrough = L["Click Through"], inheritGlobalFade = L["Inherit Global Fade"], keepSizeRatio = L["Keep Size Ratio"] }, nil, nil, function(_, key) return E.db.actionbar.barPet[key] end, function(_, key, value) E.db.actionbar.barPet[key] = value; AB:PositionAndSizeBarPet() end)
-E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttonsize.name = function() return E.db.actionbar.barPet.keepSizeRatio and L["Button Size"] or L["Button Width"] end
-E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttonsize.desc = function() return E.db.actionbar.barPet.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
-E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.barPet.keepSizeRatio end
-E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttonsPerRow.max = NUM_PET_ACTION_SLOTS
-E.Options.args.actionbar.args.barPet.args.buttonGroup.args.buttons.max = NUM_PET_ACTION_SLOTS
-E.Options.args.actionbar.args.barPet.args.visibility.set = function(_, value) E.db.actionbar.barPet.visibility = value; AB:PositionAndSizeBarPet() end
+ActionBar.args.general.args.countTextGroup = ACH:Group(L["Count Text"], nil, 50, nil, nil, nil, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
+ActionBar.args.general.args.countTextGroup.inline = true
+ActionBar.args.general.args.countTextGroup.args.countTextPosition = ACH:Select(L["Position"], nil, 1, textAnchors)
+ActionBar.args.general.args.countTextGroup.args.countTextXOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -24, max = 24, step = 1 })
+ActionBar.args.general.args.countTextGroup.args.countTextYOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -24, max = 24, step = 1 })
 
-E.Options.args.actionbar.args.stanceBar = ACH:Group(L["Stance Bar"], nil, 15, nil, function(info) return E.db.actionbar.stanceBar[info[#info]] end, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value; AB:PositionAndSizeBarShapeShift() end, function() return not E.ActionBars.Initialized end)
-E.Options.args.actionbar.args.stanceBar.args = CopyTable(SharedBarOptions)
-E.Options.args.actionbar.args.stanceBar.args.restorePosition.func = function() E:CopyTable(E.db.actionbar.stanceBar, P.actionbar.stanceBar); E:ResetMovers('Stance Bar'); AB:PositionAndSizeBarShapeShift() end
-E.Options.args.actionbar.args.stanceBar.args.generalOptions = ACH:MultiSelect('', nil, 3, { backdrop = L["Backdrop"], mouseover = L["Mouse Over"], clickThrough = L["Click Through"], inheritGlobalFade = L["Inherit Global Fade"], keepSizeRatio = L["Keep Size Ratio"] }, nil, nil, function(_, key) return E.db.actionbar.stanceBar[key] end, function(_, key, value) E.db.actionbar.stanceBar[key] = value; AB:PositionAndSizeBarShapeShift() end)
-E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttonsize.name = function() return E.db.actionbar.stanceBar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
-E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttonsize.desc = function() return E.db.actionbar.stanceBar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
-E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.stanceBar.keepSizeRatio end
-E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttonsPerRow.max = NUM_STANCE_SLOTS
-E.Options.args.actionbar.args.stanceBar.args.buttonGroup.args.buttons.max = NUM_STANCE_SLOTS
-E.Options.args.actionbar.args.stanceBar.args.barGroup.args.style = ACH:Select(L["Style"], L["This setting will be updated upon changing stances."], 12, { darkenInactive = L["Darken Inactive"], classic = L["Classic"] })
-E.Options.args.actionbar.args.stanceBar.args.visibility.set = function(_, value) E.db.actionbar.stanceBar.visibility = value; AB:PositionAndSizeBarShapeShift() end
+ActionBar.args.general.args.hotkeyTextGroup = ACH:Group(L["Keybind Text"], nil, 60, nil, nil, nil, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
+ActionBar.args.general.args.hotkeyTextGroup.inline = true
+ActionBar.args.general.args.hotkeyTextGroup.args.hotkeyTextPosition = ACH:Select(L["Position"], nil, 1, textAnchors)
+ActionBar.args.general.args.hotkeyTextGroup.args.hotkeyTextXOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -24, max = 24, step = 1 })
+ActionBar.args.general.args.hotkeyTextGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -24, max = 24, step = 1 })
 
-E.Options.args.actionbar.args.microbar = ACH:Group(L["Micro Bar"], nil, 16, nil, function(info) return E.db.actionbar.microbar[info[#info]] end, function(info, value) E.db.actionbar.microbar[info[#info]] = value; AB:UpdateMicroPositionDimensions() end, function() return not E.ActionBars.Initialized end)
-E.Options.args.actionbar.args.microbar.args = CopyTable(SharedBarOptions)
-E.Options.args.actionbar.args.microbar.args.restorePosition.func = function() E:CopyTable(E.db.actionbar.microbar, P.actionbar.microbar); E:ResetMovers('Micro Bar'); AB:UpdateMicroPositionDimensions() end
-E.Options.args.actionbar.args.microbar.args.generalOptions = ACH:MultiSelect('', nil, 3, { backdrop = L["Backdrop"], mouseover = L["Mouse Over"], keepSizeRatio = L["Keep Size Ratio"] }, nil, nil, function(_, key) return E.db.actionbar.microbar[key] end, function(_, key, value) E.db.actionbar.microbar[key] = value; AB:UpdateMicroPositionDimensions() end)
-E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttons = nil
-E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize = CopyTable(E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonsize)
-E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonsize = nil
-E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSpacing = CopyTable(E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonspacing)
-E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonspacing = nil
-E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonsPerRow.max = #MICRO_BUTTONS-1
-E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.microbar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
-E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.microbar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
-E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
-E.Options.args.actionbar.args.microbar.args.visibility.set = function(_, value) E.db.actionbar.microbar.visibility = value; AB:UpdateMicroPositionDimensions() end
+ActionBar.args.general.args.masqueGroup = ACH:Group(L["Masque Support"], nil, -1, nil, function(info) return E.private.actionbar.masque[info[#info]] end, function(info, value) E.private.actionbar.masque[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.Masque end)
+ActionBar.args.general.args.masqueGroup.inline = true
+ActionBar.args.general.args.masqueGroup.args.actionbars = ACH:Toggle(L["ActionBars"], nil, 1)
+ActionBar.args.general.args.masqueGroup.args.petBar = ACH:Toggle(L["Pet Bar"], nil, 2)
+ActionBar.args.general.args.masqueGroup.args.stanceBar = ACH:Toggle(L["Stance Bar"], nil, 3)
+
+ActionBar.args.barPet = ACH:Group(L["Pet Bar"], nil, 14, nil, function(info) return E.db.actionbar.barPet[info[#info]] end, function(info, value) E.db.actionbar.barPet[info[#info]] = value; AB:PositionAndSizeBarPet() end, function() return not E.ActionBars.Initialized end)
+ActionBar.args.barPet.args = CopyTable(SharedBarOptions)
+ActionBar.args.barPet.args.restorePosition.func = function() E:CopyTable(E.db.actionbar.barPet, P.actionbar.barPet); E:ResetMovers('Pet Bar'); AB:PositionAndSizeBarPet() end
+ActionBar.args.barPet.args.generalOptions = ACH:MultiSelect('', nil, 3, { backdrop = L["Backdrop"], mouseover = L["Mouse Over"], clickThrough = L["Click Through"], inheritGlobalFade = L["Inherit Global Fade"], keepSizeRatio = L["Keep Size Ratio"] }, nil, nil, function(_, key) return E.db.actionbar.barPet[key] end, function(_, key, value) E.db.actionbar.barPet[key] = value; AB:PositionAndSizeBarPet() end)
+ActionBar.args.barPet.args.buttonGroup.args.buttonsize.name = function() return E.db.actionbar.barPet.keepSizeRatio and L["Button Size"] or L["Button Width"] end
+ActionBar.args.barPet.args.buttonGroup.args.buttonsize.desc = function() return E.db.actionbar.barPet.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
+ActionBar.args.barPet.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.barPet.keepSizeRatio end
+ActionBar.args.barPet.args.buttonGroup.args.buttonsPerRow.max = NUM_PET_ACTION_SLOTS
+ActionBar.args.barPet.args.buttonGroup.args.buttons.max = NUM_PET_ACTION_SLOTS
+ActionBar.args.barPet.args.visibility.set = function(_, value) E.db.actionbar.barPet.visibility = value; AB:PositionAndSizeBarPet() end
+
+ActionBar.args.stanceBar = ACH:Group(L["Stance Bar"], nil, 15, nil, function(info) return E.db.actionbar.stanceBar[info[#info]] end, function(info, value) E.db.actionbar.stanceBar[info[#info]] = value; AB:PositionAndSizeBarShapeShift() end, function() return not E.ActionBars.Initialized end)
+ActionBar.args.stanceBar.args = CopyTable(SharedBarOptions)
+ActionBar.args.stanceBar.args.restorePosition.func = function() E:CopyTable(E.db.actionbar.stanceBar, P.actionbar.stanceBar); E:ResetMovers('Stance Bar'); AB:PositionAndSizeBarShapeShift() end
+ActionBar.args.stanceBar.args.generalOptions = ACH:MultiSelect('', nil, 3, { backdrop = L["Backdrop"], mouseover = L["Mouse Over"], clickThrough = L["Click Through"], inheritGlobalFade = L["Inherit Global Fade"], keepSizeRatio = L["Keep Size Ratio"] }, nil, nil, function(_, key) return E.db.actionbar.stanceBar[key] end, function(_, key, value) E.db.actionbar.stanceBar[key] = value; AB:PositionAndSizeBarShapeShift() end)
+ActionBar.args.stanceBar.args.buttonGroup.args.buttonsize.name = function() return E.db.actionbar.stanceBar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
+ActionBar.args.stanceBar.args.buttonGroup.args.buttonsize.desc = function() return E.db.actionbar.stanceBar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
+ActionBar.args.stanceBar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.stanceBar.keepSizeRatio end
+ActionBar.args.stanceBar.args.buttonGroup.args.buttonsPerRow.max = NUM_STANCE_SLOTS
+ActionBar.args.stanceBar.args.buttonGroup.args.buttons.max = NUM_STANCE_SLOTS
+ActionBar.args.stanceBar.args.barGroup.args.style = ACH:Select(L["Style"], L["This setting will be updated upon changing stances."], 12, { darkenInactive = L["Darken Inactive"], classic = L["Classic"] })
+ActionBar.args.stanceBar.args.visibility.set = function(_, value) E.db.actionbar.stanceBar.visibility = value; AB:PositionAndSizeBarShapeShift() end
+
+ActionBar.args.microbar = ACH:Group(L["Micro Bar"], nil, 16, nil, function(info) return E.db.actionbar.microbar[info[#info]] end, function(info, value) E.db.actionbar.microbar[info[#info]] = value; AB:UpdateMicroPositionDimensions() end, function() return not E.ActionBars.Initialized end)
+ActionBar.args.microbar.args = CopyTable(SharedBarOptions)
+ActionBar.args.microbar.args.restorePosition.func = function() E:CopyTable(E.db.actionbar.microbar, P.actionbar.microbar); E:ResetMovers('Micro Bar'); AB:UpdateMicroPositionDimensions() end
+ActionBar.args.microbar.args.generalOptions = ACH:MultiSelect('', nil, 3, { backdrop = L["Backdrop"], mouseover = L["Mouse Over"], keepSizeRatio = L["Keep Size Ratio"] }, nil, nil, function(_, key) return E.db.actionbar.microbar[key] end, function(_, key, value) E.db.actionbar.microbar[key] = value; AB:UpdateMicroPositionDimensions() end)
+ActionBar.args.microbar.args.buttonGroup.args.buttons = nil
+ActionBar.args.microbar.args.buttonGroup.args.buttonSize = CopyTable(E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonsize)
+ActionBar.args.microbar.args.buttonGroup.args.buttonsize = nil
+ActionBar.args.microbar.args.buttonGroup.args.buttonSpacing = CopyTable(E.Options.args.actionbar.args.microbar.args.buttonGroup.args.buttonspacing)
+ActionBar.args.microbar.args.buttonGroup.args.buttonspacing = nil
+ActionBar.args.microbar.args.buttonGroup.args.buttonsPerRow.max = #MICRO_BUTTONS-1
+ActionBar.args.microbar.args.buttonGroup.args.buttonSize.name = function() return E.db.actionbar.microbar.keepSizeRatio and L["Button Size"] or L["Button Width"] end
+ActionBar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() return E.db.actionbar.microbar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
+ActionBar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
+ActionBar.args.microbar.args.visibility.set = function(_, value) E.db.actionbar.microbar.visibility = value; AB:UpdateMicroPositionDimensions() end
 
 --Remove these as these bars doesnt have these options
 for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
@@ -421,29 +219,29 @@ local SharedButtonOptions = {
 	clean = ACH:Toggle(L["Clean Button"], nil, 4),
 }
 
-E.Options.args.actionbar.args.extraButtons = ACH:Group(L["Extra Buttons"], nil, 18, nil, nil, nil, function() return not E.ActionBars.Initialized end)
+ActionBar.args.extraButtons = ACH:Group(L["Extra Buttons"], nil, 18, nil, nil, nil, function() return not E.ActionBars.Initialized end)
 
-E.Options.args.actionbar.args.extraButtons.args.extraActionButton = ACH:Group(L["Boss Button"], nil, 1, nil, function(info) return E.db.actionbar.extraActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.extraActionButton[key] = value; if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end)
-E.Options.args.actionbar.args.extraButtons.args.extraActionButton.inline = true
-E.Options.args.actionbar.args.extraButtons.args.extraActionButton.args = CopyTable(SharedButtonOptions)
+ActionBar.args.extraButtons.args.extraActionButton = ACH:Group(L["Boss Button"], nil, 1, nil, function(info) return E.db.actionbar.extraActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.extraActionButton[key] = value; if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end)
+ActionBar.args.extraButtons.args.extraActionButton.inline = true
+ActionBar.args.extraButtons.args.extraActionButton.args = CopyTable(SharedButtonOptions)
 
-E.Options.args.actionbar.args.extraButtons.args.zoneButton = ACH:Group(L["Zone Button"], nil, 2, nil, function(info) return E.db.actionbar.zoneActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.zoneActionButton[key] = value; if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end)
-E.Options.args.actionbar.args.extraButtons.args.zoneButton.inline = true
-E.Options.args.actionbar.args.extraButtons.args.zoneButton.args = CopyTable(SharedButtonOptions)
+ActionBar.args.extraButtons.args.zoneButton = ACH:Group(L["Zone Button"], nil, 2, nil, function(info) return E.db.actionbar.zoneActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.zoneActionButton[key] = value; if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end)
+ActionBar.args.extraButtons.args.zoneButton.inline = true
+ActionBar.args.extraButtons.args.zoneButton.args = CopyTable(SharedButtonOptions)
 
-E.Options.args.actionbar.args.extraButtons.args.vehicleExitButton = ACH:Group(L["Vehicle Exit"], nil, 3, nil, function(info) return E.db.actionbar.vehicleExitButton[info[#info]] end, function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end)
-E.Options.args.actionbar.args.extraButtons.args.vehicleExitButton.inline = true
-E.Options.args.actionbar.args.extraButtons.args.vehicleExitButton.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
-E.Options.args.actionbar.args.extraButtons.args.vehicleExitButton.args.size = ACH:Range(L["Size"], nil, 2, { min = 16, max = 50, step = 1 })
-E.Options.args.actionbar.args.extraButtons.args.vehicleExitButton.args.strata = ACH:Select(L["Frame Strata"], nil, 3, { BACKGROUND = 'BACKGROUND', LOW = 'LOW', MEDIUM = 'MEDIUM', HIGH = 'HIGH' })
-E.Options.args.actionbar.args.extraButtons.args.vehicleExitButton.args.level = ACH:Range(L["Frame Level"], nil, 4, { min = 1, max = 128, step = 1 })
+ActionBar.args.extraButtons.args.vehicleExitButton = ACH:Group(L["Vehicle Exit"], nil, 3, nil, function(info) return E.db.actionbar.vehicleExitButton[info[#info]] end, function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end)
+ActionBar.args.extraButtons.args.vehicleExitButton.inline = true
+ActionBar.args.extraButtons.args.vehicleExitButton.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+ActionBar.args.extraButtons.args.vehicleExitButton.args.size = ACH:Range(L["Size"], nil, 2, { min = 16, max = 50, step = 1 })
+ActionBar.args.extraButtons.args.vehicleExitButton.args.strata = ACH:Select(L["Frame Strata"], nil, 3, { BACKGROUND = 'BACKGROUND', LOW = 'LOW', MEDIUM = 'MEDIUM', HIGH = 'HIGH' })
+ActionBar.args.extraButtons.args.vehicleExitButton.args.level = ACH:Range(L["Frame Level"], nil, 4, { min = 1, max = 128, step = 1 })
 
-E.Options.args.actionbar.args.playerBars = ACH:Group(L["Player Bars"], nil, 4, 'tree', nil, nil, function() return not E.ActionBars.Initialized end)
+ActionBar.args.playerBars = ACH:Group(L["Player Bars"], nil, 4, 'tree', nil, nil, function() return not E.ActionBars.Initialized end)
 
 for i = 1, 10 do
 	local bar = ACH:Group(L["Bar "]..i, nil, i, 'group', function(info) return E.db.actionbar['bar'..i][info[#info]] end, function(info, value) E.db.actionbar['bar'..i][info[#info]] = value; AB:PositionAndSizeBar('bar'..i) end)
+	ActionBar.args.playerBars.args['bar'..i] = bar
 
-	E.Options.args.actionbar.args.playerBars.args['bar'..i] = bar
 	bar.args = CopyTable(SharedBarOptions)
 
 	bar.args.enabled.set = function(info, value) E.db.actionbar['bar'..i][info[#info]] = value AB:PositionAndSizeBar('bar'..i) end
@@ -490,5 +288,5 @@ for i = 1, 10 do
 	end
 end
 
-E.Options.args.actionbar.args.playerBars.args.bar1.args.pagingReset = ACH:Execute(L["Reset Action Paging"], nil, 2, function() E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass] AB:UpdateButtonSettings('bar1') end, nil, L["You are about to reset paging. Are you sure?"])
-E.Options.args.actionbar.args.playerBars.args.bar6.args.enabled.set = function(_, value) E.db.actionbar.bar6.enabled = value; AB:PositionAndSizeBar('bar6') AB:UpdateBar1Paging() AB:PositionAndSizeBar('bar1') end
+ActionBar.args.playerBars.args.bar1.args.pagingReset = ACH:Execute(L["Reset Action Paging"], nil, 2, function() E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass] AB:UpdateButtonSettings('bar1') end, nil, L["You are about to reset paging. Are you sure?"])
+ActionBar.args.playerBars.args.bar6.args.enabled.set = function(_, value) E.db.actionbar.bar6.enabled = value; AB:PositionAndSizeBar('bar6') AB:UpdateBar1Paging() AB:PositionAndSizeBar('bar1') end
