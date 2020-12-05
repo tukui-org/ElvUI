@@ -364,6 +364,7 @@ end
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
 	SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
+	AB.handledBars['bar'..id] = bar
 
 	local defaults = AB.barDefaults['bar'..id]
 	local point, anchor, attachTo, x, y = strsplit(',', defaults.position)
@@ -397,7 +398,6 @@ function AB:CreateBar(id)
 		AB:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
 		AB:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
 	end
-	AB:UpdateButtonConfig(bar, bar.bindButtons)
 
 	if defaults.conditions:find('[form]') then
 		bar:SetAttribute('hasTempBar', true)
@@ -425,7 +425,6 @@ function AB:CreateBar(id)
 		end
 	]])
 
-	AB.handledBars['bar'..id] = bar
 	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS',nil,'actionbar,playerBars,bar'..id)
 
 	return bar
@@ -545,12 +544,7 @@ function AB:UpdateBar1Paging()
 	end
 end
 
-function AB:UpdateButtonSettingsForBar(barName)
-	local bar = AB.handledBars[barName]
-	AB:UpdateButtonConfig(bar, bar.bindButtons)
-end
-
-function AB:UpdateButtonSettings()
+function AB:UpdateButtonSettings(specific)
 	if not E.private.actionbar.enable then return end
 
 	if InCombatLockdown() then
@@ -560,36 +554,33 @@ function AB:UpdateButtonSettings()
 	end
 
 	for barName, bar in pairs(AB.handledBars) do
-		if bar then
-			AB:UpdateButtonConfig(bar, bar.bindButtons) -- config them first
+		if not specific or specific == barName then
+			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
 			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+			for _, button in ipairs(bar.buttons) do
+				AB:StyleFlyout(button)
+			end
 		end
 	end
 
-	for button in pairs(AB.handledbuttons) do
-		if button then
-			AB:StyleFlyout(button)
+	if not specific then
+		-- we can safely toggle these events when we arent using the handle overlay
+		if AB.db.handleOverlay then
+			LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+			LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
 		else
-			AB.handledbuttons[button] = nil
+			LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+			LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
 		end
+
+		AB:AdjustMaxStanceButtons()
+		AB:PositionAndSizeBarPet()
+		AB:PositionAndSizeBarShapeShift()
+
+		AB:UpdatePetBindings()
+		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
+		AB:UpdateFlyoutButtons()
 	end
-
-	-- we can safely toggle these events when we arent using the handle overlay
-	if AB.db.handleOverlay then
-		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
-		LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
-	else
-		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
-		LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
-	end
-
-	AB:AdjustMaxStanceButtons()
-	AB:PositionAndSizeBarPet()
-	AB:PositionAndSizeBarShapeShift()
-
-	AB:UpdatePetBindings()
-	AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
-	AB:UpdateFlyoutButtons()
 end
 
 function AB:GetPage(bar, defaultPage, condition)
@@ -597,8 +588,8 @@ function AB:GetPage(bar, defaultPage, condition)
 	if not condition then condition = '' end
 	if not page then
 		page = ''
-	elseif page:match('[\n\r]') then
-		page = page:gsub('[\n\r]','')
+	else
+		page = gsub(page, '[\n\r]', '')
 	end
 
 	if page then
@@ -1040,15 +1031,20 @@ function AB:ToggleCountDownNumbers(bar, button, cd)
 	end
 end
 
-function AB:UpdateButtonConfig(bar, buttonName)
+function AB:UpdateButtonConfig(barName, buttonName)
 	if InCombatLockdown() then
 		AB.NeedsUpdateButtonSettings = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return
 	end
 
-	local barDB = AB.db['bar'..bar.id]
+	local barDB = AB.db[barName]
+	local bar = AB.handledBars[barName]
+
+	buttonName = buttonName or bar.bindButtons
+
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
+
 	bar.buttonConfig.hideElements.macro = not AB.db.macrotext
 	bar.buttonConfig.hideElements.hotkey = not AB.db.hotkeytext or barDB.hideHotkey
 	bar.buttonConfig.showGrid = barDB.showGrid
