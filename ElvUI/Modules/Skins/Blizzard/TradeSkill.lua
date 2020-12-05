@@ -84,6 +84,15 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton)
 	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:Point('LEFT', TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, 'RIGHT', 4, 0)
 
+	S:HandleButton(TradeSkillFrame.DetailsFrame.Contents.RecipeLevelSelector)
+
+	if not TradeSkillFrame.DetailsFrame.Contents.RecipeLevel.backdrop then
+		TradeSkillFrame.DetailsFrame.Contents.RecipeLevel:StripTextures()
+		TradeSkillFrame.DetailsFrame.Contents.RecipeLevel:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		TradeSkillFrame.DetailsFrame.Contents.RecipeLevel:SetStatusBarTexture(E.media.normTex)
+		E:RegisterStatusBar(TradeSkillFrame.DetailsFrame.Contents.RecipeLevel)
+	end
+
 	hooksecurefunc(TradeSkillFrame.DetailsFrame, 'RefreshDisplay', function()
 		local ResultIcon = TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 		ResultIcon:StyleButton()
