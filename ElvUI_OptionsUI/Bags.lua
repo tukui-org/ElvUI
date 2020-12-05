@@ -522,6 +522,7 @@ E.Options.args.bags = {
 					type = 'toggle',
 					name = L["Backdrop"],
 				},
+				justBackpack = ACH:Toggle(L['Backpack Only']),
 				mouseover = {
 					order = 3,
 					name = L["Mouse Over"],

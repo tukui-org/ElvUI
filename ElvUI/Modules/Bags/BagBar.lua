@@ -47,6 +47,7 @@ function B:SizeAndPositionBagBar()
 
 	local showBackdrop = E.db.bags.bagBar.showBackdrop
 	local backdropSpacing = not showBackdrop and 0 or E.db.bags.bagBar.backdropSpacing
+	local justBackpack = E.private.bags.enable and E.db.bags.bagBar.justBackpack
 
 	local visibility = E.db.bags.bagBar.visibility
 	if visibility and visibility:match('[\n\r]') then
@@ -62,6 +63,7 @@ function B:SizeAndPositionBagBar()
 		button.ElvUIFilterIcon.FilterBackdrop:Size(bagBarSize / 2)
 		button:Size(bagBarSize)
 		button:ClearAllPoints()
+		button:SetShown(i == 1 and justBackpack or not justBackpack)
 		button.Count:SetShown(GetCVarBool('displayFreeBagSlots'))
 
 		if sortDirection == 'ASCENDING'then

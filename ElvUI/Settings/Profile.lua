@@ -281,6 +281,7 @@ P.bags = {
 		showBackdrop = false,
 		mouseover = false,
 		showCount = true,
+		justBackpack = false,
 		visibility = '[petbattle] hide; show',
 	},
 };
