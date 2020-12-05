@@ -33,7 +33,9 @@ function DB:ExperienceBar_ShouldBeVisible()
 end
 
 local function RestedQuestLayering()
+	if not QuestLogXP or not RestedXP then return end
 	local bar = DB.StatusBars.Experience
+
 	bar.Quest.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP > RestedXP) and 2 or 3)
 	bar.Rested.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP <= RestedXP) and 2 or 3)
 end
