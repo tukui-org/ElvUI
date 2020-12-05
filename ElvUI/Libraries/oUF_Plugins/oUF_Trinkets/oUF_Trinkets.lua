@@ -3,6 +3,7 @@ local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
 local trinketSpells = {
+	[336126] = 120, -- Sinful Gladiator's Medallion (PvP Trinket 9.0.2)
 	[311430] = 120, -- Re-Arm (PvP Trinket 9.0.1)
 	[59752] = 180, -- Will to Survive (Human Racial)
 	[7744] = 120, -- Will of the Forsaken (Undead Racial)
