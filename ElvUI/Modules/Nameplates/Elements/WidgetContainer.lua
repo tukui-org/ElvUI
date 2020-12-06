@@ -10,6 +10,7 @@ function NP:Construct_WidgetContainer(nameplate)
 	local WidgetContainer = CreateFrame('Frame', nil, nameplate, 'UIWidgetContainerNoResizeTemplate')
 	WidgetContainer:Point('BOTTOM', nameplate, 'TOP')
 	WidgetContainer:Hide()
+	WidgetContainer.showAndHideOnWidgetSetRegistration = false
 
 	return WidgetContainer
 end
@@ -140,4 +141,5 @@ function NP.Widget_DefaultLayout(widgetContainerFrame, sortedWidgets)
 	end
 
 	widgetContainerFrame:Size(totalWidth, totalHeight)
+	widgetContainerFrame:Show()
 end
