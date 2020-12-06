@@ -8,9 +8,11 @@ E.Options.args.auras = Auras
 
 Auras.args.intro = ACH:Description(L["AURAS_DESC"], 0)
 Auras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 2)
-Auras.args.buffsHeader = ACH:Toggle(L["Buffs"], nil, 3)
-Auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 4)
+Auras.args.cooldownShortcut = ACH:Execute(L["Cooldown Text"], nil, 2, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'cooldown', 'auras') end)
+Auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 3)
+Auras.args.buffsHeader = ACH:Toggle(L["Buffs"], nil, 4)
+Auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 5)
+
 Auras.args.masque = ACH:MultiSelect(L["Masque Support"], nil, 10, { buffs = L["Buffs"], debuffs = L["Debuffs"] }, nil, nil, function(_, key) return E.private.auras.masque[key] end, function(_, key, value) E.private.auras.masque[key] = value; E:StaticPopup_Show('PRIVATE_RL') end, function() return not E.Masque or not E.private.auras.enable end)
 
 local SharedOptions = {
