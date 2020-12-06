@@ -56,7 +56,7 @@ local function OnEvent(self)
 		for i = 1, 3 do
 			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
 			if info and info.quantity then
-				displayString = (i > 1 and displayString..' ' or displayString)..format('%s %s', format(iconString, info.iconFileID), E:ShortValue(info.quantity))
+				displayString = (i > 1 and displayString..' ' or '')..format('%s %s', format(iconString, info.iconFileID), E:ShortValue(info.quantity))
 			end
 		end
 
