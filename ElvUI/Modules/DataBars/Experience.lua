@@ -150,7 +150,7 @@ function DB:ExperienceBar_OnEnter()
 	_G.GameTooltip:ClearLines()
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_CURSOR')
 
-	_G.GameTooltip:AddLine(L["Experience"])
+	_G.GameTooltip:AddDoubleLine(L["Experience"], format('%s %d', L["Level"], E.mylevel))
 	_G.GameTooltip:AddLine(' ')
 
 	_G.GameTooltip:AddDoubleLine(L["XP:"], format(' %d / %d (%.2f%%)', CurrentXP, XPToLevel, PercentXP), 1, 1, 1)
