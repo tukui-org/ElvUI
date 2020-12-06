@@ -158,7 +158,7 @@ function DB:ExperienceBar_OnEnter()
 	_G.GameTooltip:AddDoubleLine(L["Quest Log XP:"], format(' %d (%.2f%%)', QuestLogXP, (QuestLogXP / XPToLevel) * 100), 1, 1, 1)
 
 	if RestedXP and RestedXP > 0 then
-		_G.GameTooltip:AddDoubleLine(L["Rested:"], format('+%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)
+		_G.GameTooltip:AddDoubleLine(L["Rested:"], format('%d (%.2f%%)', RestedXP, PercentRested), 1, 1, 1)
 	end
 
 	_G.GameTooltip:Show()

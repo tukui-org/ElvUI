@@ -199,7 +199,7 @@ local function CreateDTOptions(name, data)
 	if name == 'Combat' then
 		optionTable.args.TimeFull = ACH:Toggle('Full Time')
 	elseif name == 'Currencies' then
-		optionTable.args.displayedCurrency = ACH:Select(L["Displayed Currency"], nil, nil, function() local list = E:CopyTable({}, DT.CurrencyList) for _, info in pairs(E.global.datatexts.customCurrencies) do local id = tostring(info.ID) if info and not DT.CurrencyList[id] then list[id] = info.NAME end end return list end)
+		optionTable.args.displayedCurrency = ACH:Select(L["Displayed Currency"], nil, 0, function() local list = E:CopyTable({}, DT.CurrencyList) for _, info in pairs(E.global.datatexts.customCurrencies) do local id = tostring(info.ID) if info and not DT.CurrencyList[id] then list[id] = info.NAME end end return list end)
 		optionTable.args.displayedCurrency.sortByValue = true
 
 		optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { ICON = L["Icons Only"], ICON_TEXT = L["Icons and Text"], ICON_TEXT_ABBR = L["Icons and Text (Short)"] }, nil, nil, nil, nil, nil, function() return (settings.displayedCurrency == "GOLD") or (settings.displayedCurrency == "BACKPACK") end)

@@ -8,6 +8,7 @@ local _G = _G
 local tostring, format, type, pcall = tostring, format, type, pcall
 local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
 local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
+local hooksecurefunc = hooksecurefunc
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
 local EasyMenu = EasyMenu
@@ -777,6 +778,8 @@ function DT:Initialize()
 		DT.BattleStats.LEFT.panel = _G.LeftChatDataPanel.dataPanels
 		DT.BattleStats.RIGHT.panel = _G.RightChatDataPanel.dataPanels
 	end
+
+	hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
 
 	DT:PopulateData()
 	DT:RegisterHyperDT()
