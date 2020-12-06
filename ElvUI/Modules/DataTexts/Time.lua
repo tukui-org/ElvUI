@@ -105,10 +105,11 @@ if locale == 'deDE' then -- O.O
 	InstanceNameByID[1023] = 'Belagerung von Boralus'	-- 'Die Belagerung von Boralus'
 	InstanceNameByID[1041] = 'Königsruh'				-- 'Die Königsruh'
 	InstanceNameByID[1021] = 'Kronsteiganwesen'			-- 'Das Kronsteiganwesen'
+	InstanceNameByID[1186] = 'Spitzen des Aufstiegs'	-- 'Die Spitzen des Aufstiegs'
 end
 
 local instanceIconByName = {}
-local collectIDs, collectedIDs = false -- for testing; mouse over the dt to show the tinspect table
+local collectIDs, collectedIDs = false -- for testing; mouse over the dt to show the tinspect table (@Merathilis :x)
 local function GetInstanceImages(index, raid)
 	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	while instanceID do
