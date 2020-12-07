@@ -35,6 +35,8 @@ local UnitReaction = UnitReaction
 local UnitWidgetSet = UnitWidgetSet
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local ShowBossFrameWhenUninteractable = ShowBossFrameWhenUninteractable
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
@@ -690,7 +692,12 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
-		nameplate.WidgetContainer:RegisterForWidgetSet(nameplate.widgetSet, NP.Widget_DefaultLayout, nil, unit)
+		nameplate.WidgetContainer:UnregisterForWidgetSet()
+		local playerControlled = UnitPlayerControlled(unit)
+		if nameplate.widgetSet and ((playerControlled and UnitIsOwnerOrControllerOfUnit('player', unit)) or not playerControlled) then
+			nameplate.WidgetContainer:RegisterForWidgetSet(nameplate.widgetSet, NP.Widget_DefaultLayout, nil, unit)
+			nameplate.WidgetContainer:ProcessAllWidgets()
+		end
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
