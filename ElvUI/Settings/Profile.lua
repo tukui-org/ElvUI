@@ -2302,7 +2302,7 @@ P.actionbar.bar1.enabled = true
 P.actionbar.bar1.visibility = '[petbattle] hide; show'
 P.actionbar.bar1.paging = {
 	DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10;',
-	ROGUE = '[stealth] 7; ',
+	ROGUE = '[stance:1] 7; [stance:2] 7; [stance:3] 7;',
 }
 
 P.actionbar.bar3.enabled = true
