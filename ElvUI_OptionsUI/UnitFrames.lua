@@ -6166,17 +6166,18 @@ E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.class
 	}
 }
 
-for i = 1, 3 do
+
+for i in pairs(P.unitframe.colors.classResources.comboPoints) do
 	E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args['combo'..i] = {
-		order = i+10,
+		order = 10 + i,
 		type = 'color',
 		name = L["Combo Point"]..' #'..i,
-		get = function(info)
+		get = function()
 			local t = E.db.unitframe.colors.classResources.comboPoints[i]
 			local d = P.unitframe.colors.classResources.comboPoints[i]
 			return t.r, t.g, t.b, t.a, d.r, d.g, d.b
 		end,
-		set = function(info, r, g, b)
+		set = function(_, r, g, b)
 			local t = E.db.unitframe.colors.classResources.comboPoints[i]
 			t.r, t.g, t.b = r, g, b
 			UF:Update_AllFrames()
@@ -6184,6 +6185,21 @@ for i = 1, 3 do
 	}
 end
 
+E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args.chargedComboPoint = {
+	order = 17,
+	type = 'color',
+	name = L["Charged Combo Point"],
+	get = function()
+		local t = E.db.unitframe.colors.classResources.chargedComboPoint
+		local d = P.unitframe.colors.classResources.chargedComboPoint
+		return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+	end,
+	set = function(_, r, g, b)
+		local t = E.db.unitframe.colors.classResources.chargedComboPoint
+		t.r, t.g, t.b = r, g, b
+		UF:Update_AllFrames()
+	end,
+}
 
 if P.unitframe.colors.classResources[E.myclass] then
 	E.Options.args.unitframe.args.generalOptionsGroup.args.allColorsGroup.args.classResourceGroup.args.spacer5 = ACH:Spacer(20, 'full')

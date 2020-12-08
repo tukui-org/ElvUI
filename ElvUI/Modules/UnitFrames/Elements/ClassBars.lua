@@ -324,7 +324,7 @@ function UF:PostVisibilityClassBar()
 	UF:PostVisibility_ClassBars(self.origParent or self:GetParent())
 end
 
-function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
+function UF:UpdateClassBar(current, maxBars, hasMaxChanged, _, chargedIndex)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return end
@@ -352,18 +352,25 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 	end
 
 	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-	for i=1, #self do
+
+	for i, bar in ipairs(self) do
 		if custom_backdrop then
-			self[i].bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
 		else
-			local r, g, b = self[i]:GetStatusBarColor()
-			self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
+			local r, g, b = bar:GetStatusBarColor()
+			if E.myclass == 'ROGUE' then
+				local colorTable = i == chargedIndex and ElvUF.colors.chargedComboPoint or ElvUF.colors.ComboPoints[i]
+				r, g, b = unpack(colorTable)
+			end
+
+			bar:SetStatusBarColor(r, g, b)
+			bar.bg:SetVertexColor(r * .35, g * .35, b * .35)
 		end
 
 		if maxBars and (i <= maxBars) then
-			self[i].bg:Show()
+			bar.bg:Show()
 		else
-			self[i].bg:Hide()
+			bar.bg:Hide()
 		end
 	end
 end
