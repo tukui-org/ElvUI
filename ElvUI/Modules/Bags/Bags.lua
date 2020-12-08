@@ -569,7 +569,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if C_Item_IsAnimaItemByID(link) then
 			local _, spellID = GetItemSpell(link)
-			slot.centerText:SetText(animaSpellID[spellID])
+			slot.centerText:SetText(animaSpellID[spellID] * count)
 		end
 	end
 
