@@ -197,6 +197,8 @@ function S:Blizzard_PVPUI()
 		end
 
 		Frame.ConquestBar.Reward:Point('LEFT', Frame.ConquestBar, 'RIGHT', -8, 0)
+		-- Keep blizzard default fo the statusbar here, the new atlas looks good
+
 		--Frame.ConquestBar:SetStatusBarTexture(E.media.normTex)
 		--Frame.ConquestBar:GetStatusBarTexture():SetGradient("VERTICAL", 1, .8, 0, 6, .4, 0)
 		--Frame.ConquestBar:SetStatusBarColor(unpack(E.myfaction == 'Alliance' and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09}))
