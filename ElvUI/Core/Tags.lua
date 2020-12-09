@@ -1363,6 +1363,13 @@ E.TagInfo = {
 	['threat'] = { category = 'Threat', description = "Displays the current threat situation (Aggro is secure tanking, -- is losing threat and ++ is gaining threat)" },
 }
 
+--[[
+	tagName = Tag Name
+	category = Category that you want it to fall in
+	description = self explainitory
+	order = This is optional. It's used for sorting the tags by order and not by name. The +10 is not a rule. I reserve the first 10 slots.
+]]
+
 function E:AddTagInfo(tagName, category, description, order)
 	if order then order = tonumber(order) + 10 end
 
