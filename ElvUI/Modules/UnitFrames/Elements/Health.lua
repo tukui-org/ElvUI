@@ -8,6 +8,8 @@ local UnitReaction = UnitReaction
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local UnitIsCharmed = UnitIsCharmed
+local UnitIsEnemy = UnitIsEnemy
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -206,7 +208,7 @@ function UF:Configure_HealthBar(frame)
 	if frame:IsElementEnabled('Health') then
 		frame:SetHealthUpdateMethod(E.global.unitframe.effectiveHealth)
 		frame:SetHealthUpdateSpeed(E.global.unitframe.effectiveHealthSpeed)
-	    frame.Health:ForceUpdate()
+		frame.Health:ForceUpdate()
 	end
 end
 
@@ -222,6 +224,8 @@ function UF:GetHealthBottomOffset(frame)
 	return bottomOffset
 end
 
+local HOSTILE_REACTION = 2
+
 function UF:PostUpdateHealthColor(unit, r, g, b)
 	local parent = self:GetParent()
 	local colors = E.db.unitframe.colors
@@ -231,6 +235,14 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	if (((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not UnitIsTapDenied(unit)) then
 		newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 		self:SetStatusBarColor(newr, newg, newb)
+	end
+
+	-- Charmed player should have hostile color
+	if unit and (string.match(unit, "raid%d+") or string.match(unit, "party%d+")) then
+		if not UnitIsDeadOrGhost(unit) and UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy("player", unit) then
+			local color = parent.colors.reaction[HOSTILE_REACTION]
+			if color then self:SetStatusBarColor(color[1], color[2], color[3]) end
+		end
 	end
 
 	if self.bg then
