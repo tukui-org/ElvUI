@@ -611,19 +611,23 @@ function E:SetPage(PageNum)
 		f.Desc1:SetText(L["Please click the button below to setup your Profile Settings."])
 		f.Desc2:SetText(L["New Profile will create a fresh profile for this character."] .. '\n' .. L["Shared Profile will select the default profile."])
 
+		InstallOption1Button:SetText(L["Shared Profile"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
 			E.data:SetProfile('Default')
-			E:NextPage()
+			if E.db.layoutSet then
+				E:SetPage(9)
+			else
+				E:NextPage()
+			end
 		end)
 
-		InstallOption1Button:SetText(L["Shared Profile"])
+		InstallOption2Button:SetText(L["New Profile"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function()
 			E.data:SetProfile(E.mynameRealm)
 			E:NextPage()
 		end)
-		InstallOption2Button:SetText(L["New Profile"])
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Theme Setup"])
 		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
