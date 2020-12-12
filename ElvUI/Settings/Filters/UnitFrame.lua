@@ -841,10 +841,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		-- Huntsman Altimor
 		[335304] = Defaults(), -- Sinseeker
 		[334971] = Defaults(), -- Jagged Claws
-		[335111] = Defaults(), -- Huntsman's Mark 1
+		[335111] = Defaults(), -- Huntsman's Mark 3
 		[335112] = Defaults(), -- Huntsman's Mark 2
-		[335113] = Defaults(), -- Huntsman's Mark 3
-		[334945] = Defaults(), -- Bloody Thrash
+		[335113] = Defaults(), -- Huntsman's Mark 1
+		[334945] = Defaults(), -- Vicious Lunge
+		[334852] = Defaults(), -- Petrifying Howl
 		-- Hungering Destroyer
 		[334228] = Defaults(), -- Volatile Ejection
 		[329298] = Defaults(), -- Gluttonous Miasma
@@ -859,11 +860,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[333002] = Defaults(), -- Vulgar Brand
 		[326078] = Defaults(), -- Infuser's Boon
 		[325251] = Defaults(), -- Sin of Pride
+		[341475] = Defaults(), -- Crimson Flurry
+		[341473] = Defaults(), -- Crimson Flurry Teleport
+		[328479] = Defaults(), -- Eyes on Target
+		[328889] = Defaults(), -- Greater Castigation
 		-- Artificer Xy'mox
 		[327902] = Defaults(), -- Fixate
 		[326302] = Defaults(), -- Stasis Trap
 		[325236] = Defaults(), -- Glyph of Destruction
 		[327414] = Defaults(), -- Possession
+		[328468] = Defaults(), -- Dimensional Tear 1
+		[328448] = Defaults(), -- Dimensional Tear 2
 		-- The Council of Blood
 		[327052] = Defaults(), -- Drain Essence 1
 		[327773] = Defaults(), -- Drain Essence 2
@@ -879,7 +886,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[331209] = Defaults(), -- Hateful Gaze
 		[335293] = Defaults(), -- Chain Link
 		[335270] = Defaults(), -- Chain This One!
+		[342419] = Defaults(), -- Chain Them! 1
+		[342420] = Defaults(), -- Chain Them! 2
 		[335295] = Defaults(), -- Shattering Chain
+		[332572] = Defaults(), -- Falling Rubble
 		-- Stone Legion Generals
 		[334498] = Defaults(), -- Seismic Upheaval
 		[337643] = Defaults(), -- Unstable Footing
@@ -890,6 +900,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[339690] = Defaults(), -- Crystalize
 		[342655] = Defaults(), -- Volatile Anima Infusion
 		[342698] = Defaults(), -- Volatile Anima Infection
+		[343881] = Defaults(), -- Serrated Tear
 		-- Sire Denathrius
 		[326851] = Defaults(), -- Blood Price
 		[327796] = Defaults(), -- Night Hunter
@@ -899,6 +910,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[329181] = Defaults(), -- Wracking Pain
 		[335873] = Defaults(), -- Rancor
 		[329951] = Defaults(), -- Impale
+		[327039] = Defaults(), -- Feeding Time
+		[332794] = Defaults(), -- Fatal Finesse
 
 	},
 }
