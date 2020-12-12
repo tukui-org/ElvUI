@@ -28,7 +28,8 @@ C.Values = {
 		RIGHT_UP = format(L["%s and then %s"], L["Right"], L["Up"]),
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
-	}
+	},
+	AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', CENTER = 'CENTER', TOP = 'TOP', BOTTOM = 'BOTTOM' }
 }
 
 C.StateSwitchGetText = function(_, TEXT)

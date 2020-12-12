@@ -152,37 +152,12 @@ end
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
 local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, subGroup)
-	local config = {
-		type = 'group',
-		name = L["Strata and Level"],
-		get = function(info) return E.db.unitframe.units[groupName].strataAndLevel[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].strataAndLevel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			useCustomStrata = {
-				order = 1,
-				type = 'toggle',
-				name = L["Use Custom Strata"],
-			},
-			frameStrata = {
-				order = 2,
-				type = 'select',
-				name = L["Frame Strata"],
-				values = C.Values.Strata,
-			},
-			spacer = ACH:Spacer(3),
-			useCustomLevel = {
-				order = 4,
-				type = 'toggle',
-				name = L["Use Custom Level"],
-			},
-			frameLevel = {
-				order = 5,
-				type = 'range',
-				name = L["Frame Level"],
-				min = 2, max = 128, step = 1,
-			},
-		},
-	}
+	local config = ACH:Group(L["Strata and Level"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].strataAndLevel[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].strataAndLevel[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+	config.args.useCustomStrata = ACH:Toggle(L["Use Custom Strata"], nil, 1)
+	config.args.frameStrata = ACH:Select(L["Frame Strata"], nil, 2, C.Values.Strata)
+	config.args.spacer = ACH:Spacer(3)
+	config.args.useCustomLevel = ACH:Toggle(L["Use Custom Level"], nil, 4)
+	config.args.frameLevel = ACH:Range(L["Frame Level"], nil, 5, { min = 2, max = 128, step = 1 })
 
 	if subGroup then
 		config.inline = true
@@ -726,21 +701,12 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	}
 
 	if auraType == 'debuffs' then
-		config.args.attachTo.values = {
-			FRAME = L["Frame"],
-			BUFFS = L["Buffs"],
-			HEALTH = L["Health"],
-			POWER = L["Power"],
-		}
+		config.args.attachTo.values = { FRAME = L["Frame"], BUFFS = L["Buffs"], HEALTH = L["Health"], POWER = L["Power"] }
 		config.args.attachTo.disabled = function()
 			local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
 			return (smartAuraPosition and (smartAuraPosition == 'DEBUFFS_ON_BUFFS' or smartAuraPosition == 'FLUID_DEBUFFS_ON_BUFFS'))
 		end
-		config.args.desaturate = {
-			type = 'toggle',
-			order = 2,
-			name = L["Desaturate Icon"],
-		}
+		config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], nil, 2)
 	end
 
 	return config
@@ -786,6 +752,12 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 				type = 'range',
 				name = L["Size"],
 				min = 6, max = 48, step = 1,
+			},
+			countFontSize = {
+				order = 2,
+				name = L["FONT_SIZE"],
+				type = 'range',
+				min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
 			},
 			profileSpecific = {
 				type = 'toggle',

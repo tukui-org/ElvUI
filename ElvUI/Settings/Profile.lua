@@ -1064,6 +1064,7 @@ local UF_AuraWatch = {
 	enable = true,
 	profileSpecific = false,
 	size = 8,
+	countFontSize = 12,
 }
 
 local UF_Castbar = {
