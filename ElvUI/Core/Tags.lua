@@ -397,6 +397,37 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			return E:GetFormattedText(textFormat, cur, max)
 		end
 	end
+
+	if tagTextFormat ~= 'percent' then
+		ElvUF.Tags.Events[format('health:%s:shortvalue', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+		ElvUF.Tags.Methods[format('health:%s:shortvalue', tagTextFormat)] = function(unit)
+			local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+			if (status) then
+				return status
+			else
+				local min, max = UnitHealth(unit), UnitHealthMax(unit)
+				return E:GetFormattedText(textFormat, min, max, nil, true)
+			end
+		end
+
+		ElvUF.Tags.Events[format('health:%s-nostatus:shortvalue', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+		ElvUF.Tags.Methods[format('health:%s-nostatus:shortvalue', tagTextFormat)] = function(unit)
+			local min, max = UnitHealth(unit), UnitHealthMax(unit)
+			return E:GetFormattedText(textFormat, min, max, nil, true)
+		end
+
+
+		ElvUF.Tags.Events[format('power:%s:shortvalue', tagTextFormat)] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+		ElvUF.Tags.Methods[format('power:%s:shortvalue', tagTextFormat)] = function(unit)
+			local pType = UnitPowerType(unit)
+			return E:GetFormattedText(textFormat, UnitPower(unit, pType), UnitPowerMax(unit, pType), nil, true)
+		end
+
+		ElvUF.Tags.Events[format('mana:%s:shortvalue', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+		ElvUF.Tags.Methods[format('mana:%s:shortvalue', tagTextFormat)] = function(unit)
+			return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA), nil, true)
+		end
+	end
 end
 
 for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 20}) do
@@ -474,6 +505,13 @@ ElvUF.Tags.Methods['health:max'] = function(unit)
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
+ElvUF.Tags.Events['health:max:shortvalue'] = 'UNIT_MAXHEALTH'
+ElvUF.Tags.Methods['health:max:shortvalue'] = function(unit)
+	local _, max = UnitHealth(unit), UnitHealthMax(unit)
+
+	return E:GetFormattedText('CURRENT', max, max, nil, true)
+end
+
 ElvUF.Tags.Events['health:percent-with-absorbs'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
@@ -509,6 +547,21 @@ ElvUF.Tags.Methods['power:max'] = function(unit)
 	local max = UnitPowerMax(unit, powerType)
 
 	return E:GetFormattedText('CURRENT', max, max)
+end
+
+ElvUF.Tags.Events['power:max:shortvalue'] = 'UNIT_DISPLAYPOWER UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:max:shortvalue'] = function(unit)
+	local pType = UnitPowerType(unit)
+	local max = UnitPowerMax(unit, pType)
+
+	return E:GetFormattedText('CURRENT', max, max, nil, true)
+end
+
+ElvUF.Tags.Events['mana:max:shortvalue'] = 'UNIT_MAXPOWER'
+ElvUF.Tags.Methods['mana:max:shortvalue'] = function(unit)
+	local max = UnitPowerMax(unit, SPELL_POWER_MANA)
+
+	return E:GetFormattedText('CURRENT', max, max, nil, true)
 end
 
 ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
