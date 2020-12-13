@@ -189,6 +189,9 @@ do --this can save some main file locals
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
 	local DeathlyH		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
 	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
+	local Beer			= E:TextureString(E.Media.ChatLogos.Beer,x)
+	local TyroneBiggums = E:TextureString(E.Media.ChatLogos.TyroneBiggums,x)
+	local SuperBear = E:TextureString(E.Media.ChatLogos.SuperBear,x)
 
 	--[[ Simpys Thing: new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
@@ -244,10 +247,10 @@ do --this can save some main file locals
 		['Affinity-Illidan']	= Bathrobe,
 		['Uplift-Illidan']		= Bathrobe,
 		-- Tirain (NOTE: lol)
-		['Tierone-Spirestone']	= 'Dr. ',
-		['Tirain-Spirestone']	= MrHankey,
-		['Sinth-Spirestone']	= MrHankey,
-		['Tee-Spirestone']		= MrHankey,
+		['Tierone-Spirestone']	= TyroneBiggums,
+		['Tirain-Spirestone']	= TyroneBiggums,
+		['Sinth-Spirestone']	= TyroneBiggums,
+		['Tee-Spirestone']		= TyroneBiggums,
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
 		['Misdîrect-Spirestone']	= itsMis,
 		['Misoracle-Spirestone']	= itsMis,
@@ -377,6 +380,12 @@ do --this can save some main file locals
 		['Livarax-BurningLegion']		= Gem,
 		['Filevandrel-BurningLegion']	= Gem,
 		['Akavaya-BurningLegion']		= Gem,
+		--Bozaum
+		['Bozaum-Spirestone'] = Beer,
+		--Bladesdruid
+		['Bladedemonz-Spirestone'] = SuperBear,
+		['Bladesdruid-Spirestone'] = SuperBear,
+		['Rollerblade-Spirestone'] = SuperBear,
 	}
 end
 
