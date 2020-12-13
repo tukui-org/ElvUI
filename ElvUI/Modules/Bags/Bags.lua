@@ -480,7 +480,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
 	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate)
-	SetItemButtonQuality(slot, rarity, itemLink, frame.isBank)
+	SetItemButtonQuality(slot, rarity, itemLink)
 
 	local color = E.db.bags.countFontColor
 	slot.Count:SetTextColor(color.r, color.g, color.b)
