@@ -39,7 +39,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 end
 
-function NP:ClassPower_PostUpdate(Cur, _, needUpdate)
+function NP:ClassPower_PostUpdate(Cur, _, needUpdate, _, chargedIndex)
 	if Cur and Cur > 0 then
 		self:Show()
 	else
@@ -48,6 +48,13 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate)
 
 	if needUpdate then
 		NP:Update_ClassPower(self.__owner)
+	end
+
+	if chargedIndex then
+		local r, g, b = unpack(NP.db.colors.chargedComboPoint)
+
+		self[chargedIndex]:SetStatusBarColor(r, g, b)
+		self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
 	end
 end
 

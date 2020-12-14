@@ -133,12 +133,7 @@ function UF:Configure_ClassBar(frame)
 						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
 					end
 				else -- Combo Points for everyone else
-					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
-					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
-					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
-					local maxComboPoints = ((MAX_CLASS_BAR == 10 and 10) or (MAX_CLASS_BAR > 5 and 6 or 5))
-
-					bars[i]:SetStatusBarColor(ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3))
+					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ComboPoints[i]))
 				end
 
 				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then

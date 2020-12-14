@@ -570,6 +570,7 @@ P.nameplates = {
 			[13] = {r = 025/255, g = 147/255, b = 072/255}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		classResources = {
+			chargedComboPoint = { r = 0.1647, g = 0.6353, b = 1.0 },
 			comboPoints = {
 				[1] = {r = .69, g = .31, b = .31},
 				[2] = {r = .65, g = .42, b = .31},

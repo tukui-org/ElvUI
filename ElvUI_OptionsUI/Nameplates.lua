@@ -6668,6 +6668,23 @@ E.Options.args.nameplate = {
 }
 
 ORDER = 10
+
+E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args.chargedComboPoint = {
+	order = 17,
+	type = 'color',
+	name = L["Charged Combo Point"],
+	get = function()
+		local t = E.db.nameplates.colors.classResources.chargedComboPoint
+		local d = P.nameplates.colors.classResources.chargedComboPoint
+		return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+	end,
+	set = function(_, r, g, b)
+		local t = E.db.nameplates.colors.classResources.chargedComboPoint
+		t.r, t.g, t.b = r, g, b
+		NP:ConfigureAll()
+	end,
+}
+
 for i = 1, 6 do
 	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['CHI_POWER' .. i] = {
 		type = 'color',
