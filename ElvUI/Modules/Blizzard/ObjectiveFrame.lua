@@ -114,7 +114,7 @@ function B:MoveObjectiveFrame()
 		--end
 	end)
 
-
+	B:RegisterEvent("ZONE_CHANGED_NEW_AREA", "SetupTorghastBuffFrame")
 	B:SetupTorghastBuffFrame()
 
 	self:SetObjectiveFrameAutoHide()
