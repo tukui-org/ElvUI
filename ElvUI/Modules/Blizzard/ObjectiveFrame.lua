@@ -55,10 +55,10 @@ function B:SetupTorghastBuffFrame()
 		container.List:Point('TOPLEFT', container, 'TOPRIGHT', 15, 1)
 
 		container.List:SetScript('OnShow', function(self)
-			self.button:SetHighlightAtlas("jailerstower-animapowerbutton-highlight", true)
-			self.button:SetPushedAtlas("jailerstower-animapowerbutton-normalpressed", true)
-			self.button:SetButtonState("NORMAL")
-			self.button:SetButtonState("PUSHED", true)
+			self.button:SetHighlightAtlas('jailerstower-animapowerbutton-highlight', true)
+			self.button:SetPushedAtlas('jailerstower-animapowerbutton-normalpressed', true)
+			self.button:SetButtonState('NORMAL')
+			self.button:SetButtonState('PUSHED', true)
 		end)
 	else
 		container.List:Point('TOPRIGHT', container, 'TOPLEFT', 15, 1)
@@ -114,7 +114,7 @@ function B:MoveObjectiveFrame()
 		--end
 	end)
 
-	B:RegisterEvent("ZONE_CHANGED_NEW_AREA", "SetupTorghastBuffFrame")
+	B:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'SetupTorghastBuffFrame')
 	B:SetupTorghastBuffFrame()
 
 	self:SetObjectiveFrameAutoHide()
