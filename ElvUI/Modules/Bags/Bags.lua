@@ -117,7 +117,7 @@ B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_TRADE_GOODS] = 132906,	-- Interface/ICONS/INV_Fabric_Silk_02
 }
 
-local animaSpellID = {[347555] = 3, [345706] = 5, [336327] = 35, [336456] = 250}
+local animaSpellID = { [347555] = 3, [345706] = 5, [336327] = 35, [336456] = 250 }
 
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and (arg == true) then
@@ -569,7 +569,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		if C_Item_IsAnimaItemByID(link) then
 			local _, spellID = GetItemSpell(link)
-			slot.centerText:SetText(animaSpellID[spellID] * count)
+			if animaSpellID[spellID] then
+				slot.centerText:SetText(animaSpellID[spellID] * count)
+			end
 		end
 	end
 
@@ -1321,7 +1323,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.BagIDs = isBank and {-1, 5, 6, 7, 8, 9, 10, 11} or {0, 1, 2, 3, 4}
 	f.Bags = {}
 
-	local mover = (isBank and ElvUIBankMover) or ElvUIBagMover
+	local mover = (isBank and _G.ElvUIBankMover) or _G.ElvUIBagMover
 	if mover then
 		f:Point(mover.POINT, mover)
 		f.mover = mover
@@ -1477,24 +1479,20 @@ function B:ConstructContainerFrame(name, isBank)
 	f.bagsButton:SetScript('OnLeave', GameTooltip_Hide)
 
 	--Search
-	f.editBox = CreateFrame('EditBox', name..'EditBox', f)
+	f.editBox = CreateFrame('EditBox', name..'EditBox', f, 'SearchBoxTemplate')
 	f.editBox:FontTemplate()
 	f.editBox:SetFrameLevel(f.editBox:GetFrameLevel() + 2)
+	f.editBox.Left:SetTexture()
+	f.editBox.Middle:SetTexture()
+	f.editBox.Right:SetTexture()
 	f.editBox:CreateBackdrop()
-	f.editBox.backdrop:Point('TOPLEFT', f.editBox, 'TOPLEFT', -20, 2)
-	f.editBox:Height(15)
+	f.editBox:Height(16)
 	f.editBox:SetAutoFocus(false)
 	f.editBox:SetScript('OnEscapePressed', B.ResetAndClear)
 	f.editBox:SetScript('OnEnterPressed', function(eb) eb:ClearFocus() end)
 	f.editBox:SetScript('OnEditFocusGained', f.editBox.HighlightText)
-	f.editBox:SetScript('OnTextChanged', B.UpdateSearch)
+	--f.editBox:SetScript('OnTextChanged', B.UpdateSearch)
 	f.editBox:SetScript('OnChar', B.UpdateSearch)
-	f.editBox:SetText(SEARCH)
-
-	f.editBox.searchIcon = f.editBox:CreateTexture(nil, 'OVERLAY')
-	f.editBox.searchIcon:SetTexture('Interface/Common/UI-Searchbox-Icon')
-	f.editBox.searchIcon:Point('LEFT', f.editBox.backdrop, 'LEFT', E.Border + 1, -1)
-	f.editBox.searchIcon:Size(15, 15)
 
 	if isBank then
 		f.fullBank = select(2, GetNumBankSlots())
@@ -1667,7 +1665,7 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		--Search
-		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2)
+		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 0, E.Border * 2 + 2)
 	else
 		--Gold Text
 		f.goldText = f:CreateFontString(nil, 'OVERLAY')
@@ -1709,7 +1707,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.vendorGraysButton:SetScript('OnClick', B.VendorGrayCheck)
 
 		--Search
-		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', (E.Border * 2) + 18, E.Border * 2 + 2)
+		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 0, E.Border * 2 + 2)
 		f.editBox:Point('RIGHT', f.vendorGraysButton, 'LEFT', -5, 0)
 
 		--Currency
@@ -2146,7 +2144,7 @@ function B:UpdateContainerFrameAnchors()
 
 		if index == 1 then
 			-- First bag
-			frame:Point('BOTTOMRIGHT', ElvUIBagMover, 'BOTTOMRIGHT', E.Spacing, -E.Border)
+			frame:Point('BOTTOMRIGHT', _G.ElvUIBagMover, 'BOTTOMRIGHT', E.Spacing, -E.Border)
 			bagsPerColumn = bagsPerColumn + 1
 		elseif freeScreenHeight < frame:GetHeight() then
 			-- Start a new column
@@ -2318,11 +2316,16 @@ B.QuestKeys = {
 }
 
 function B:UpdateBagColors(table, indice, r, g, b)
-	B[table][B.BagIndice[indice]] = { r, g, b }
-end
+	local colorTable
+	if table == 'items' then
+		colorTable = B.QuestColors[B.QuestKeys[indice]]
+	else
+		if table == 'profession' then table = 'ProfessionColors' end
+		if table == 'assignment' then table = 'AssignmentColors' end
+		colorTable = B[table][B.BagIndice[indice]]
+	end
 
-function B:UpdateQuestColors(table, indice, r, g, b)
-	B[table][B.QuestKeys[indice]] = { r, g, b }
+	colorTable[1], colorTable[2], colorTable[3] = r, g, b
 end
 
 function B:Initialize()
@@ -2397,12 +2400,12 @@ function B:Initialize()
 	E:CreateMover(BankFrameHolder, 'ElvUIBankMover', L["Bank Mover (Grow Up)"], nil, nil, B.PostBagMove, nil, nil, 'bags,general')
 
 	--Set some variables on movers
-	ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]
-	ElvUIBagMover.textGrowDown = L["Bag Mover (Grow Down)"]
-	ElvUIBagMover.POINT = 'BOTTOM'
-	ElvUIBankMover.textGrowUp = L["Bank Mover (Grow Up)"]
-	ElvUIBankMover.textGrowDown = L["Bank Mover (Grow Down)"]
-	ElvUIBankMover.POINT = 'BOTTOM'
+	_G.ElvUIBagMover.textGrowUp = L["Bag Mover (Grow Up)"]
+	_G.ElvUIBagMover.textGrowDown = L["Bag Mover (Grow Down)"]
+	_G.ElvUIBagMover.POINT = 'BOTTOM'
+	_G.ElvUIBankMover.textGrowUp = L["Bank Mover (Grow Up)"]
+	_G.ElvUIBankMover.textGrowDown = L["Bank Mover (Grow Down)"]
+	_G.ElvUIBankMover.POINT = 'BOTTOM'
 
 	--Create Containers
 	B.BagFrame = B:ConstructContainerFrame('ElvUI_ContainerFrame')
