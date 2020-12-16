@@ -2590,7 +2590,7 @@ end
 local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits, subGroup)
 	local config = {
 		type = 'group',
-		name = L["Raid Icon"],
+		name = L["Target Marker Icon"],
 		get = function(info) return E.db.unitframe.units[groupName].raidicon[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].raidicon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
 		args = {
