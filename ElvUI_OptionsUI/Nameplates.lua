@@ -378,45 +378,24 @@ end
 local function UpdateInstanceDifficulty()
 	if (E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.party) then
 		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.types.args.dungeonDifficulty = {
-			type = 'group',
+			type = 'multiselect',
 			name = L["DUNGEON_DIFFICULTY"],
 			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
-			inline = true,
 			order = 10,
-			get = function(info)
-				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]]
+			get = function(_, key)
+				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[key]
 			end,
-			set = function(info, value)
-				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]] = value
+			set = function(_, key, value)
+				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[key] = value
 				UpdateInstanceDifficulty()
 				NP:ConfigureAll()
 			end,
-			args = {
-				normal = {
-					type = 'toggle',
-					name = GetDifficultyInfo(1),
-					order = 1
-				},
-				heroic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(2),
-					order = 2
-				},
-				mythic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(23),
-					order = 3
-				},
-				['mythic+'] = {
-					type = 'toggle',
-					name = GetDifficultyInfo(8),
-					order = 4
-				},
-				timewalking = {
-					type = 'toggle',
-					name = GetDifficultyInfo(24),
-					order = 5
-				}
+			values = {
+				normal = GetDifficultyInfo(1),
+				heroic = GetDifficultyInfo(2),
+				mythic = GetDifficultyInfo(23),
+				['mythic+'] = GetDifficultyInfo(8),
+				timewalking = GetDifficultyInfo(24),
 			}
 		}
 	else
@@ -425,65 +404,28 @@ local function UpdateInstanceDifficulty()
 
 	if (E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.raid) then
 		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.types.args.raidDifficulty = {
-			type = 'group',
+			type = 'multiselect',
 			name = L["Raid Difficulty"],
 			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
-			inline = true,
 			order = 11,
-			get = function(info)
-				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[info[#info]]
+			get = function(_, key)
+				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[key]
 			end,
-			set = function(info, value)
-				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[info[#info]] = value
+			set = function(_, key, value)
+				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[key] = value
 				UpdateInstanceDifficulty()
 				NP:ConfigureAll()
 			end,
-			args = {
-				lfr = {
-					type = 'toggle',
-					name = GetDifficultyInfo(17),
-					order = 1
-				},
-				normal = {
-					type = 'toggle',
-					name = GetDifficultyInfo(14),
-					order = 2
-				},
-				heroic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(15),
-					order = 3
-				},
-				mythic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(16),
-					order = 4
-				},
-				timewalking = {
-					type = 'toggle',
-					name = GetDifficultyInfo(24),
-					order = 5
-				},
-				legacy10normal = {
-					type = 'toggle',
-					name = GetDifficultyInfo(3),
-					order = 6
-				},
-				legacy25normal = {
-					type = 'toggle',
-					name = GetDifficultyInfo(4),
-					order = 7
-				},
-				legacy10heroic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(5),
-					order = 8
-				},
-				legacy25heroic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(6),
-					order = 9
-				}
+			values = {
+				lfr = GetDifficultyInfo(17),
+				normal = GetDifficultyInfo(14),
+				heroic = GetDifficultyInfo(15),
+				mythic = GetDifficultyInfo(16),
+				timewalking = GetDifficultyInfo(24),
+				legacy10normal = GetDifficultyInfo(3),
+				legacy25normal = GetDifficultyInfo(4),
+				legacy10heroic = GetDifficultyInfo(5),
+				legacy25heroic = GetDifficultyInfo(6),
 			}
 		}
 	else
@@ -4655,7 +4597,7 @@ local function GetUnitSettings(unit, name)
 			},
 			raidTargetIndicator = {
 				order = 11,
-				name = L["Raid Icon"],
+				name = L["Target Marker Icon"],
 				type = 'group',
 				get = function(info)
 					return E.db.nameplates.units[unit].raidTargetIndicator[info[#info]]
