@@ -81,7 +81,7 @@ function S:Blizzard_WeeklyRewards()
 		if confirmSelectionFrame and not confirmSelectionFrame.IsSkinned then
 			local itemFrame = confirmSelectionFrame.ItemFrame
 			S:HandleIcon(itemFrame.Icon, true)
-			S:HandleIconBorder(itemFrame.IconBorder, itemFrame.IconBorder.backdrop)  --Monitor this
+			--S:HandleIconBorder(itemFrame.IconBorder, itemFrame.IconBorder.backdrop)  --Monitor this
 
 			local nameframe = _G[confirmSelectionFrame:GetName()..'NameFrame']
 			if nameframe then
