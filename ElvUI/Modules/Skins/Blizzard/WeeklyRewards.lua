@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs, unpack = pairs, unpack
+local gsub = gsub
 local hooksecurefunc = hooksecurefunc
 
 -- Credits Siweia | AuroraClassic
@@ -49,6 +50,19 @@ local function SkinActivityFrame(frame, isObject)
 	end
 end
 
+local function ReplaceIconString(self, text)
+	if not text then text = self:GetText() end
+	if not text or text == "" then return end
+
+	local newText, count = gsub(text, '24:24:0:%-2', '14:14:0:0:64:64:5:59:5:59')
+	if count > 0 then self:SetFormattedText('%s', newText) end
+end
+
+local function ReskinConfirmIcon(frame)
+	S:HandleIcon(frame.Icon, true)
+	S:HandleIconBorder(frame.IconBorder, frame.IconBorder.backdrop)
+end
+
 function S:Blizzard_WeeklyRewards()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.weeklyRewards) then return end
 
@@ -78,19 +92,23 @@ function S:Blizzard_WeeklyRewards()
 
 	hooksecurefunc(frame, 'SelectReward', function(self)
 		local confirmSelectionFrame = self.confirmSelectionFrame
-		if confirmSelectionFrame and not confirmSelectionFrame.IsSkinned then
-			local itemFrame = confirmSelectionFrame.ItemFrame
-			S:HandleIcon(itemFrame.Icon, true)
-			--S:HandleIconBorder(itemFrame.IconBorder, itemFrame.IconBorder.backdrop)  --Monitor this
-
-			local nameframe = _G[confirmSelectionFrame:GetName()..'NameFrame']
-			if nameframe then
-				nameframe:Hide()
+		if confirmSelectionFrame then
+			if not confirmSelectionFrame.IsSkinned then
+				ReskinConfirmIcon(confirmSelectionFrame.ItemFrame)
+				_G.WeeklyRewardsFrameNameFrame:Hide()
+				confirmSelectionFrame.IsSkinned = true
 			end
 
-			confirmSelectionFrame.IsSkinned = true
+			local alsoItemsFrame = confirmSelectionFrame.AlsoItemsFrame
+			for frame in alsoItemsFrame.pool:EnumerateActive() do
+				ReskinConfirmIcon(frame)
+			end
 		end
 	end)
+
+	local rewardText = frame.ConcessionFrame.RewardsFrame.Text
+	ReplaceIconString(rewardText)
+	hooksecurefunc(rewardText, "SetText", ReplaceIconString)
 end
 
 S:AddCallbackForAddon('Blizzard_WeeklyRewards')
