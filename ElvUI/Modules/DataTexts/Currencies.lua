@@ -21,16 +21,18 @@ end
 local function GetInfo(id)
 	local info = C_CurrencyInfo_GetCurrencyInfo(id)
 	if info then
-		return info.name, info.quantity, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
-	else
-		return '', '', '136012'
+		return info.name, info.quantity, info.maxQuantity, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
 	end
 end
 
 local function AddInfo(id)
-	local name, num, icon = GetInfo(id)
+	local name, num, max, icon = GetInfo(id)
 	if name then
-		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
+		local textRight = '%s'
+		if E.global.datatexts.settings.Currencies.maxCurrency and max and max > 0 then
+			textRight = '%s / '..BreakUpLargeNumbers(max)
+		end
+		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), format(textRight, BreakUpLargeNumbers(num)), 1, 1, 1, 1, 1, 1)
 	end
 end
 
