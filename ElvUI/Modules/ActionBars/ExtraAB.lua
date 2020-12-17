@@ -172,8 +172,8 @@ function AB:SetupExtraButton()
 	AB:ExtraButtons_UpdateScale()
 	AB:ExtraButtons_GlobalFade()
 
-	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraActionButton')
-	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS')
+	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
+	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
 
 	-- Spawn the mover before its available.
 	ZoneAbilityHolder:Size(52 * E.db.actionbar.zoneActionButton.scale)
