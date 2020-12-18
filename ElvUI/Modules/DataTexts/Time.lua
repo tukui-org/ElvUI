@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local next, pairs, unpack = next, pairs, unpack
+local gsub, next, pairs, unpack = gsub, next, pairs, unpack
 local format, strjoin = format, strjoin
 local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
