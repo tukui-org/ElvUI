@@ -302,11 +302,15 @@ local function OnEnter()
 	end
 
 	if TorghastInfo and C_QuestLog_IsQuestFlaggedCompleted(60136) then
+		local torghastHeader
 		for _, value in pairs(TorghastWidgets) do
 			local nameInfo = C_UIWidgetManager_GetTextWithStateWidgetVisualizationInfo(value.nameID)
 			if nameInfo and nameInfo.shownState == 1 then
-				DT.tooltip:AddLine(' ')
-				DT.tooltip:AddLine(TorghastInfo.name)
+				if not torghastHeader then
+					DT.tooltip:AddLine(' ')
+					DT.tooltip:AddLine(TorghastInfo.name)
+					torghastHeader = true
+				end
 				local nameText = CleanupLevelName(nameInfo.text)
 				local levelInfo = C_UIWidgetManager_GetTextWithStateWidgetVisualizationInfo(value.levelID)
 				local levelText = levelInfo and CleanupLevelName(levelInfo.text) or UNKNOWN
