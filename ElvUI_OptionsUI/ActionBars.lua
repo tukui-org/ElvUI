@@ -28,6 +28,7 @@ SharedBarOptions.barGroup.args.point = ACH:Select(L["Anchor Point"], L["The firs
 SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 2, { min = 0, max = 1, step = 0.01, isPercent = true })
 SharedBarOptions.barGroup.args.spacer1 = ACH:Spacer(15, 'full')
 SharedBarOptions.barGroup.args.hideHotkey = ACH:Toggle(L["Hide Keybind Text"], nil, 16, nil, nil, nil, function(info) return E.db.actionbar[info[#info-2]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end)
+SharedBarOptions.barGroup.args.hideMacroText = ACH:Toggle(L["Hide Macro Text"], nil, 16, nil, nil, nil, function(info) return E.db.actionbar[info[#info-2]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end)
 
 SharedBarOptions.barGroup.args.customCountFont = ACH:Toggle(L["Count Font"], nil, 20)
 SharedBarOptions.barGroup.args.countTextPosition = ACH:Select(L["Text Anchor"], nil, 21, textAnchors)
@@ -206,10 +207,13 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 
 	if name == 'microbar' then
 		options.hideHotkey = nil
+		options.hideMacroText = nil
 	elseif name == 'stanceBar' then
 		options.hideHotkey.set = function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateStanceBindings() end
+		options.hideMacroText = nil
 	elseif name == 'barPet' then
 		options.hideHotkey.set = function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdatePetBindings() end
+		options.hideMacroText = nil
 	end
 end
 

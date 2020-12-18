@@ -2295,6 +2295,7 @@ for i = 1, 10 do
 		hotkeyTextXOffset = 0,
 		hotkeyTextYOffset = -3,
 		hideHotkey = false,
+		hideMacroText = false,
 		useHotkeyColor = false,
 		hotkeyColor = { r = 1, g = 1, b = 1 },
 		useCountColor = false,
