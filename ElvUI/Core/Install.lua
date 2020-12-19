@@ -943,7 +943,12 @@ function E:Install()
 
 		local close = CreateFrame('Button', 'InstallCloseButton', f, 'UIPanelCloseButton, BackdropTemplate')
 		close:Point('TOPRIGHT', f, 'TOPRIGHT')
-		close:SetScript('OnClick', function() f:Hide() end)
+		close:SetScript('OnClick', function()
+			-- Wasn't sure if we should run the InstallComplete function which will reload the ui for just clicking X to close it...
+			-- Simpy, Azil and I were sure what your thoughts on just saying it's complete
+			E.private.install_complete = E.version
+			f:Hide()
+		end)
 		S:HandleCloseButton(close)
 
 		local logo = f:CreateTexture('InstallTutorialImage', 'OVERLAY')
