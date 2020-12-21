@@ -66,11 +66,11 @@ local function GetAuraType(unit, filter, filterTable)
 
 	i = 1
 	while true do
-		local _, texture, _, debufftype, _, _, _, _, _, spellID = UnitAura(unit, i)
+		local _, texture, _, debufftype, _, _, caster, _, _, spellID = UnitAura(unit, i)
 		if not texture then break end
 
 		local filterSpell = filterTable[spellID]
-		if filterTable and filterSpell and filterSpell.enable then
+		if filterTable and filterSpell and filterSpell.enable and (not filterSpell.ownOnly or caster == 'player') then
 			return debufftype, texture, true, filterSpell.style, filterSpell.color
 		end
 
