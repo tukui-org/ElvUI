@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, unpack = pairs, unpack
 local gsub = gsub
+local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
 
 -- Credits Siweia | AuroraClassic
@@ -60,7 +60,7 @@ end
 
 local function ReskinConfirmIcon(frame)
 	S:HandleIcon(frame.Icon, true)
-	S:HandleIconBorder(frame.IconBorder, frame.IconBorder.backdrop)
+	S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
 end
 
 function S:Blizzard_WeeklyRewards()
@@ -90,18 +90,17 @@ function S:Blizzard_WeeklyRewards()
 		SkinActivityFrame(activity, true)
 	end
 
-	hooksecurefunc(frame, 'SelectReward', function(self)
-		local confirmSelectionFrame = self.confirmSelectionFrame
-		if confirmSelectionFrame then
-			if not confirmSelectionFrame.IsSkinned then
-				ReskinConfirmIcon(confirmSelectionFrame.ItemFrame)
-				_G.WeeklyRewardsFrameNameFrame:Hide()
-				confirmSelectionFrame.IsSkinned = true
-			end
+	hooksecurefunc(frame, 'SelectReward', function(reward)
+		local selection = reward.confirmSelectionFrame
+		if selection then
+			_G.WeeklyRewardsFrameNameFrame:Hide()
+			ReskinConfirmIcon(selection.ItemFrame)
 
-			local alsoItemsFrame = confirmSelectionFrame.AlsoItemsFrame
-			for frame in alsoItemsFrame.pool:EnumerateActive() do
-				ReskinConfirmIcon(frame)
+			local alsoItems = selection.AlsoItemsFrame
+			if alsoItems then
+				for items in alsoItems.pool:EnumerateActive() do
+					ReskinConfirmIcon(items)
+				end
 			end
 		end
 	end)
