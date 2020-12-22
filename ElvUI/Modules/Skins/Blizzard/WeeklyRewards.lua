@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub = gsub
-local pairs, unpack = pairs, unpack
+local gsub, pairs, unpack = gsub, pairs, unpack
 local hooksecurefunc = hooksecurefunc
 
 -- Credits Siweia | AuroraClassic
@@ -36,7 +35,7 @@ local function SkinActivityFrame(frame, isObject)
 			frame.Border:SetAlpha(0)
 			frame.SelectedTexture:SetAlpha(0)
 			frame.LockIcon:SetVertexColor(unpack(E.media.rgbvaluecolor))
-			hooksecurefunc(frame, "SetSelectionState", UpdateSelection)
+			hooksecurefunc(frame, 'SetSelectionState', UpdateSelection)
 			hooksecurefunc(frame.ItemFrame, 'SetDisplayedItem', SkinRewardIcon)
 		else
 			frame.Border:SetTexCoord(.926, 1, 0, 1)
@@ -52,7 +51,7 @@ end
 
 local function ReplaceIconString(self, text)
 	if not text then text = self:GetText() end
-	if not text or text == "" then return end
+	if not text or text == '' then return end
 
 	local newText, count = gsub(text, '24:24:0:%-2', '14:14:0:0:64:64:5:59:5:59')
 	if count > 0 then self:SetFormattedText('%s', newText) end
@@ -107,7 +106,7 @@ function S:Blizzard_WeeklyRewards()
 
 	local rewardText = frame.ConcessionFrame.RewardsFrame.Text
 	ReplaceIconString(rewardText)
-	hooksecurefunc(rewardText, "SetText", ReplaceIconString)
+	hooksecurefunc(rewardText, 'SetText', ReplaceIconString)
 end
 
 S:AddCallbackForAddon('Blizzard_WeeklyRewards')
