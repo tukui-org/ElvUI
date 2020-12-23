@@ -308,6 +308,9 @@ local function OnEnter()
 			local nameInfo = C_UIWidgetManager_GetTextWithStateWidgetVisualizationInfo(value.nameID)
 			if nameInfo and nameInfo.shownState == 1 then
 				if not torghastHeader then
+					if DT.tooltip:NumLines() > 0 then
+						DT.tooltip:AddLine(' ')
+					end
 					DT.tooltip:AddLine(TorghastInfo.name)
 					torghastHeader = true
 				end
@@ -324,6 +327,7 @@ local function OnEnter()
 	if DT.tooltip:NumLines() > 0 then
 		DT.tooltip:AddLine(' ')
 	end
+
 	if AmPm == -1 then
 		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
