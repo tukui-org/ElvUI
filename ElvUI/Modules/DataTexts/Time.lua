@@ -307,7 +307,6 @@ local function OnEnter()
 			local nameInfo = C_UIWidgetManager_GetTextWithStateWidgetVisualizationInfo(value.nameID)
 			if nameInfo and nameInfo.shownState == 1 then
 				if not torghastHeader then
-					DT.tooltip:AddLine(' ')
 					DT.tooltip:AddLine(TorghastInfo.name)
 					torghastHeader = true
 				end
