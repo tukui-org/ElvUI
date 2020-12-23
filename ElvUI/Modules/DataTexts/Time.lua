@@ -34,6 +34,7 @@ local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS
 local C_AreaPoiInfo_GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo
 local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
 local C_UIWidgetManager_GetTextWithStateWidgetVisualizationInfo = C_UIWidgetManager.GetTextWithStateWidgetVisualizationInfo
+local AVAILABLE = AVAILABLE
 local UNKNOWN = UNKNOWN
 
 local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
@@ -312,7 +313,8 @@ local function OnEnter()
 				end
 				local nameText = CleanupLevelName(nameInfo.text)
 				local levelInfo = C_UIWidgetManager_GetTextWithStateWidgetVisualizationInfo(value.levelID)
-				local levelText = levelInfo and CleanupLevelName(levelInfo.text) or UNKNOWN
+				local levelText = AVAILABLE
+				if levelInfo and levelInfo.shownState == 1 then levelText = CleanupLevelName(levelInfo.text) end
 				DT.tooltip:AddDoubleLine(nameText, levelText)
 			end
 		end
