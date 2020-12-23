@@ -96,7 +96,7 @@ function S:Blizzard_WeeklyRewards()
 			ReskinConfirmIcon(selection.ItemFrame)
 
 			local alsoItems = selection.AlsoItemsFrame
-			if alsoItems then
+			if alsoItems and alsoItems.pool then
 				for items in alsoItems.pool:EnumerateActive() do
 					ReskinConfirmIcon(items)
 				end
