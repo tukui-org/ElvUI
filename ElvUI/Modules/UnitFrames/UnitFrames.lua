@@ -112,6 +112,11 @@ UF.headerGroupBy = {
 		header:SetAttribute('sortMethod', 'NAME')
 		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
 	end,
+	ROLE3 = function(header)
+		header:SetAttribute('groupingOrder', 'HEALER,TANK,DAMAGER,NONE')
+		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
+	end,
 	NAME = function(header)
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
 		header:SetAttribute('sortMethod', 'NAME')

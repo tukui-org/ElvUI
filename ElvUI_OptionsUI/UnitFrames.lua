@@ -3223,6 +3223,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 						CLASSROLE = L["CLASS"]..' & '..L["ROLE"],
 						ROLE = L["Role: Tank, Healer, Damage"],
 						ROLE2 = L["Role: Tank, Damage, Healer"],
+						ROLE3 = L["Role: Healer, Tank, Damage"],
 						NAME = L["NAME"],
 						MTMA = L["Main Tanks / Main Assist"],
 						GROUP = L["GROUP"],
