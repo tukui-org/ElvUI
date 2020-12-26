@@ -278,6 +278,7 @@ L["Rested:"] = "Reposé :"
 L["Right Chat"] = "Chat de droite"
 L["Right Click the bag icon to assign a type of item to this bag."] = "Cliquez avec le bouton droit sur l'icône du sac pour attribuer un type d'article à ce sac."
 L["RL"] = "RL"
+L["Role: Healer, Tank, Damage"] = true
 L["Role: Tank, Damage, Healer"] = true
 L["Role: Tank, Healer, Damage"] = true
 L["RW"] = "RW"

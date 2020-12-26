@@ -278,6 +278,7 @@ L["Rested:"] = true
 L["Right Chat"] = true
 L["Right Click the bag icon to assign a type of item to this bag."] = true
 L["RL"] = true
+L["Role: Healer, Tank, Damage"] = true
 L["Role: Tank, Damage, Healer"] = true
 L["Role: Tank, Healer, Damage"] = true
 L["RW"] = true

@@ -278,6 +278,7 @@ L["Rested:"] = "휴식 경험치:"
 L["Right Chat"] = "우측 패널"
 L["Right Click the bag icon to assign a type of item to this bag."] = "가방 아이콘을 우클릭하여 이 가방의 아이템 종류를 할당합니다."
 L["RL"] = "공장"
+L["Role: Healer, Tank, Damage"] = true
 L["Role: Tank, Damage, Healer"] = true
 L["Role: Tank, Healer, Damage"] = true
 L["RW"] = "경보"

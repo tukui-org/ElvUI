@@ -278,6 +278,7 @@ L["Rested:"] = "休息:"
 L["Right Chat"] = "右侧对话框"
 L["Right Click the bag icon to assign a type of item to this bag."] = "右键点击背包按钮来选择将某一类型的物品放在此背包中"
 L["RL"] = "团队领袖"
+L["Role: Healer, Tank, Damage"] = true
 L["Role: Tank, Damage, Healer"] = "职责：坦克，输出，治疗"
 L["Role: Tank, Healer, Damage"] = "职责：坦克，治疗，输出"
 L["RW"] = "团队警告"

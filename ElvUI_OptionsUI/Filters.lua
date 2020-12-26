@@ -695,8 +695,8 @@ E.Options.args.filters = {
 							},
 						},
 						ownOnly = {
-							name = "Only highlight own", --Needs localization
-							desc = "Only highlight auras that originated from the player",
+							name = L["Casted by Player Only"],
+							desc = L["Only highlight the aura that originated from you and not others."],
 							order = 5,
 							type = 'toggle',
 							hidden = function() return selectedFilter ~= 'Aura Highlight' end,
