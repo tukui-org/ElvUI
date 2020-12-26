@@ -933,13 +933,28 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[340873] = Defaults(), -- Bursting With Pride (Prideful)
 		[340880] = Defaults(), -- Prideful
 		-- Halls of Atonement
+		[326450] = Defaults(), -- Loyal Beasts
 		-- Mists of Tirna Scithe
+		[336499] = Defaults(), -- Guessing Game
 		-- Plaguefall
+		[336451] = Defaults(), -- Bulwark of Maldraxxus
 		-- The Necrotic Wake
+		[321754] = Defaults(), -- Icebound Aegis
+		[343558] = Defaults(), -- Morbid Fixation
 		-- Theater of Pain
+		[331510] = Defaults(), -- Death Wish
+		[333241] = Defaults(), -- Raging Tantrum
+		[326892] = Defaults(), -- Fixate
 		-- Sanguine Depths
+		[322433] = Defaults(), -- Stoneskin
+		[321402] = Defaults(), -- Engorge
 		-- Spires of Ascension
+		[327416] = Defaults(), -- Recharge Anima
+		[317936] = Defaults(), -- Forsworn Doctrine
 		-- De Other Side
+		[344739] = Defaults(), -- Spectral
+		[333227] = Defaults(), -- Undying Rage
+		[322773] = Defaults(), -- Blood Barrier
 	},
 }
 
