@@ -191,6 +191,8 @@ P.databars.azerite.hideAtMaxLevel = true
 P.bags = {
 	sortInverted = true,
 	bagSize = 34,
+	bagButtonSpacing = 1,
+	bankButtonSpacing = 1,
 	bankSize = 34,
 	bagWidth = 406,
 	bankWidth = 406,
@@ -258,6 +260,7 @@ P.bags = {
 	},
 	split = {
 		bagSpacing = 5,
+		bankSpacing = 5,
 		player = false,
 		bank = false,
 		bag1 = false,

@@ -168,10 +168,11 @@ end
 
 function B:SearchReset()
 	SEARCH_STRING = ''
+	B:RefreshSearch()
 end
 
 function B:IsSearching()
-	return SEARCH_STRING ~= '' and SEARCH_STRING ~= SEARCH
+	return SEARCH_STRING ~= ''
 end
 
 function B:UpdateSearch()
@@ -213,16 +214,16 @@ end
 function B:OpenEditbox()
 	B.BagFrame.detail:Hide()
 	B.BagFrame.editBox:Show()
-	B.BagFrame.editBox:SetText(SEARCH)
+	B.BagFrame.editBox:SetText('')
 	B.BagFrame.editBox:HighlightText()
 end
 
 function B:ResetAndClear()
-	B.BagFrame.editBox:SetText(SEARCH)
+	B.BagFrame.editBox:SetText('')
 	B.BagFrame.editBox:ClearFocus()
 
 	if B.BankFrame then
-		B.BankFrame.editBox:SetText(SEARCH)
+		B.BankFrame.editBox:SetText('')
 		B.BankFrame.editBox:ClearFocus()
 	end
 
@@ -880,13 +881,13 @@ function B:Layout(isBank)
 	local f = B:GetContainerFrame(isBank)
 	if not f then return end
 
-	local buttonSpacing = E:Scale(E.Border * 2)
+	local buttonSpacing = isBank and B.db.bankButtonSpacing or B.db.bagButtonSpacing
 	local buttonSize = E:Scale(isBank and B.db.bankSize or B.db.bagSize)
 	local containerWidth = ((isBank and B.db.bankWidth) or B.db.bagWidth)
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
 	local numContainerRows, numBags, numBagSlots = 0, 0, 0
-	local bagSpacing = B.db.split.bagSpacing
+	local bagSpacing = isBank and B.db.split.bankSpacing or B.db.split.bagSpacing
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
 
 	f.holderFrame:SetWidth(holderWidth)
@@ -954,6 +955,7 @@ function B:Layout(isBank)
 				f.totalSlots = f.totalSlots + 1
 
 				f.Bags[bagID][slotID]:SetID(slotID)
+				f.Bags[bagID][slotID]:SetTemplate(E.db.bags.transparent and 'Transparent', true)
 				f.Bags[bagID][slotID]:SetSize(buttonSize, buttonSize)
 
 				if f.Bags[bagID][slotID].ElvUIFilterIcon then
@@ -1038,6 +1040,7 @@ function B:Layout(isBank)
 
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
 	f:SetSize(containerWidth, buttonsHeight + f.topOffset + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
+	f:SetFrameStrata(E.db.bags.strata or 'HIGH')
 end
 
 function B:UpdateReagentSlot(slotID)
@@ -1472,10 +1475,9 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox:Height(16)
 	f.editBox:SetAutoFocus(false)
 	f.editBox:SetScript('OnEscapePressed', B.ResetAndClear)
-	f.editBox:SetScript('OnEnterPressed', function(eb) eb:ClearFocus() end)
 	f.editBox:SetScript('OnEditFocusGained', f.editBox.HighlightText)
-	--f.editBox:SetScript('OnTextChanged', B.UpdateSearch)
-	f.editBox:SetScript('OnChar', B.UpdateSearch)
+	f.editBox.clearButton:HookScript('OnClick', B.ResetAndClear)
+	f.editBox:HookScript('OnTextChanged', B.UpdateSearch)
 
 	if isBank then
 		f.fullBank = select(2, GetNumBankSlots())
