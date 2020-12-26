@@ -930,8 +930,16 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[226510] = Defaults(), -- Sanguine
 		-- Mythic+ Shadowlands Season 1
 		[343502] = Defaults(), -- Inspiring
-		[342332] = Defaults(), -- Bursting With Pride (Prideful)
+		[340873] = Defaults(), -- Bursting With Pride (Prideful)
 		[340880] = Defaults(), -- Prideful
+		-- Halls of Atonement
+		-- Mists of Tirna Scithe
+		-- Plaguefall
+		-- The Necrotic Wake
+		-- Theater of Pain
+		-- Sanguine Depths
+		-- Spires of Ascension
+		-- De Other Side
 	},
 }
 
