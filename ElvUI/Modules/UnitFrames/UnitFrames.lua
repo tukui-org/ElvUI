@@ -1218,7 +1218,13 @@ function ElvUF:DisableBlizzard(unit)
 
 		-- Blizzard_ArenaUI should not be loaded
 		Arena_LoadUI = E.noop
-		SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
+		if _G.ArenaEnemyFrames then
+			_G.ArenaEnemyFrames:UnregisterAllEvents()
+			_G.ArenaPrepFrames:UnregisterAllEvents()
+			_G.ArenaEnemyFrames:Hide()
+			_G.ArenaPrepFrames:Hide()
+		end
+		--SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	elseif unit:match('nameplate%d+$') then
 		local frame = C_NamePlate_GetNamePlateForUnit(unit)
 		if frame and frame.UnitFrame then
