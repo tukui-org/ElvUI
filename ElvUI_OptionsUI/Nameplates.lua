@@ -4357,7 +4357,8 @@ local function GetUnitSettings(unit, name)
 					format = {
 						order = 2,
 						name = L["Format"],
-						type = 'input'
+						type = 'input',
+						width = 'full'
 					},
 					position = {
 						order = 3,
@@ -4399,7 +4400,7 @@ local function GetUnitSettings(unit, name)
 					fontGroup = {
 						type = 'group',
 						order = 7,
-						name = '',
+						name = ' ',
 						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].level[info[#info]]
