@@ -9,6 +9,8 @@ local format, gsub, ipairs, pairs, select, strmatch, strsplit = format, gsub, ip
 local tconcat, tinsert, tremove, type, wipe, tonumber = table.concat, tinsert, tremove, type, wipe, tonumber
 local GetScreenWidth = GetScreenWidth
 local IsAddOnLoaded = IsAddOnLoaded
+local GetNumClasses = GetNumClasses
+local GetClassInfo = GetClassInfo
 
 -- GLOBALS: ElvUF_Parent, ElvUF_Player, ElvUF_Pet, ElvUF_PetTarget, ElvUF_Party, ElvUF_Raidpet
 -- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
@@ -2588,51 +2590,14 @@ local function GetOptionsTable_RaidDebuff(updateFunc, groupName)
 end
 
 local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits, subGroup)
-	local config = {
-		type = 'group',
-		name = L["Target Marker Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].raidicon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].raidicon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				order = 2,
-				name = L["Enable"],
-			},
-			attachTo = {
-				type = 'select',
-				order = 3,
-				name = L["Position"],
-				values = positionValues,
-			},
-			attachToObject = {
-				type = 'select',
-				order = 4,
-				name = L["Attach To"],
-				desc = L["The object you want to attach to."],
-				values = attachToValues,
-			},
-			size = {
-				type = 'range',
-				name = L["Size"],
-				order = 4,
-				min = 8, max = 60, step = 1,
-			},
-			xOffset = {
-				order = 5,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 6,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-		},
-	}
+	local config = ACH:Group(L["Target Marker Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].raidicon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].raidicon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.attachTo = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
+	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
 	if subGroup then
 		config.inline = true
@@ -2644,281 +2609,80 @@ local function GetOptionsTable_RaidIcon(updateFunc, groupName, numUnits, subGrou
 end
 
 local function GetOptionsTable_RoleIcons(updateFunc, groupName, numGroup)
-	local config = {
-		type = 'group',
-		name = L["Role Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].roleIcon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].roleIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				name = L["Enable"],
-				order = 2,
-			},
-			position = {
-				type = 'select',
-				order = 3,
-				name = L["Position"],
-				values = positionValues,
-			},
-			attachTo = {
-				type = 'select',
-				order = 4,
-				name = L["Attach To"],
-				desc = L["The object you want to attach to."],
-				values = attachToValues,
-			},
-			xOffset = {
-				order = 5,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 6,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-			size = {
-				type = 'range',
-				order = 7,
-				name = L["Size"],
-				min = 4, max = 100, step = 1,
-			},
-			tank = {
-				order = 8,
-				type = 'toggle',
-				name = L["Show For Tanks"],
-			},
-			healer = {
-				order = 9,
-				type = 'toggle',
-				name = L["Show For Healers"],
-			},
-			damager = {
-				order = 10,
-				type = 'toggle',
-				name = L["Show For DPS"],
-			},
-			combatHide = {
-				order = 11,
-				type = 'toggle',
-				name = L["Hide In Combat"],
-			},
-		},
-	}
+	local config = ACH:Group(L["Role Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].roleIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].roleIcon[info[#info]] = value; updateFunc(UF, groupName, numGroup) end)
+
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.options = ACH:MultiSelect(' ', nil, 1, { tank = L["Show For Tanks"], healer = L["Show For Healers"], damager = L["Show For DPS"], combatHide = L["Hide In Combat"] }, nil, nil, function(_, key) return E.db.unitframe.units[groupName].roleIcon[key] end, function(_, key, value) E.db.unitframe.units[groupName].roleIcon[key] = value; updateFunc(UF, groupName, numGroup) end)
+	config.args.position = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.attachTo = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
+	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
 	return config
 end
 
 local function GetOptionsTable_RaidRoleIcons(updateFunc, groupName, numGroup)
-	local config = {
-		type = 'group',
-		name = L["Leader Indicator"],
-		get = function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value; updateFunc(UF, groupName, numGroup) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				name = L["Enable"],
-				order = 2,
-			},
-			position = {
-				type = 'select',
-				order = 3,
-				name = L["Position"],
-				values = {
-					TOPLEFT = L["TOPLEFT"],
-					TOPRIGHT = L["TOPRIGHT"],
-				},
-			},
-			xOffset = {
-				order = 4,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 5,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-		},
-	}
+	local config = ACH:Group(L["Leader Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].raidRoleIcons[info[#info]] = value; updateFunc(UF, groupName, numGroup) end)
+
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.position = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
 	return config
 end
 
 local function GetOptionsTable_ReadyCheckIcon(updateFunc, groupName)
-	local config = {
-		type = 'group',
-		name = L["Ready Check Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].readycheckIcon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].readycheckIcon[info[#info]] = value; updateFunc(UF, groupName) end,
-		args = {
-			enable = {
-				order = 2,
-				type = 'toggle',
-				name = L["Enable"],
-			},
-			size = {
-				order = 3,
-				type = 'range',
-				name = L["Size"],
-				min = 8, max = 60, step = 1,
-			},
-			attachTo = {
-				order = 4,
-				type = 'select',
-				name = L["Attach To"],
-				desc = L["The object you want to attach to."],
-				values = attachToValues,
-			},
-			position = {
-				order = 5,
-				type = 'select',
-				name = L["Position"],
-				values = positionValues,
-			},
-			xOffset = {
-				order = 6,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 7,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-		},
-	}
+	local config = ACH:Group(L["Ready Check Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].readycheckIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].readycheckIcon[info[#info]] = value; updateFunc(UF, groupName) end)
+
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.attachTo = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
+	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
 	return config
 end
 
 local function GetOptionsTable_ResurrectIcon(updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Resurrect Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].resurrectIcon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].resurrectIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				order = 2,
-				name = L["Enable"],
-			},
-			attachTo = {
-				type = 'select',
-				order = 3,
-				name = L["Position"],
-				values = positionValues,
-			},
-			attachToObject = {
-				type = 'select',
-				order = 4,
-				name = L["Attach To"],
-				desc = L["The object you want to attach to."],
-				values = attachToValues,
-			},
-			size = {
-				order = 5,
-				type = 'range',
-				name = L["Size"],
-				min = 8, max = 60, step = 1,
-			},
-			xOffset = {
-				order = 6,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 7,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-		},
-	}
+	local config = ACH:Group(L["Resurrect Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].resurrectIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].resurrectIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.attachTo = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
+	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
 	return config
 end
 
 local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Summon Icon"],
-		get = function(info) return E.db.unitframe.units[groupName].summonIcon[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].summonIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				order = 2,
-				name = L["Enable"],
-			},
-			attachTo = {
-				type = 'select',
-				order = 3,
-				name = L["Position"],
-				values = positionValues,
-			},
-			attachToObject = {
-				type = 'select',
-				order = 4,
-				name = L["Attach To"],
-				desc = L["The object you want to attach to."],
-				values = attachToValues,
-			},
-			size = {
-				order = 5,
-				type = 'range',
-				name = L["Size"],
-				min = 8, max = 60, step = 1,
-			},
-			xOffset = {
-				order = 6,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-			yOffset = {
-				order = 7,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -300, max = 300, step = 1,
-			},
-		},
-	}
+	local config = ACH:Group(L["Summon Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].summonIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].summonIcon[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.attachTo = ACH:Select(L["Position"], nil, 2, positionValues)
+	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
+	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -300, max = 300, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -300, max = 300, step = 1 })
 
 	return config
 end
 
 local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
-	local config = {
-		type = 'group',
-		name = L["Classbar"],
-		get = function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-		args = {
-			enable = {
-				type = 'toggle',
-				order = 2,
-				name = L["Enable"],
-			},
-			height = {
+	local config = ACH:Group(L["Classbar"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.height = {
 				type = 'range',
 				order = 3,
 				name = L["Height"],
-				min = 2,
-				max = 30,
-				step = 1,
-			},
-			fill = {
+				min = 2, max = 30, step = 1,
+			}
+	config.args.fill = {
 				type = 'select',
 				order = 4,
 				name = L["Fill"],
@@ -2926,9 +2690,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 					fill = L["Filled"],
 					spaced = L["Spaced"],
 				},
-			},
-		},
-	}
+			}
 
 	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' then
 		config.args.altPowerColor = {
@@ -3031,318 +2793,88 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
-	local config = {
-		order = 5,
-		type = 'group',
-		name = L["General"],
-		args = {
-			orientation = {
-				order = 9,
-				type = 'select',
-				name = L["Frame Orientation"],
-				desc = L["Set the orientation of the UnitFrame."],
-				values = orientationValues,
-			},
-			disableMouseoverGlow = {
-				order = 12,
-				type = 'toggle',
-				name = L["Block Mouseover Glow"],
-				desc = L["Forces Mouseover Glow to be disabled for these frames"],
-			},
-			disableTargetGlow = {
-				order = 13,
-				type = 'toggle',
-				name = L["Block Target Glow"],
-				desc = L["Forces Target Glow to be disabled for these frames"],
-			},
-			disableFocusGlow = {
-				order = 14,
-				type = 'toggle',
-				name = L["Block Focus Glow"],
-				desc = L["Forces Focus Glow to be disabled for these frames"],
-			},
-		},
-	}
+	local config = ACH:Group(L["General"], nil, 1)
+
+	config.args.orientation = ACH:Select(L["Frame Orientation"], L["Set the orientation of the UnitFrame."], 1, orientationValues)
+	config.args.disableMouseoverGlow = ACH:Toggle(L["Block Mouseover Glow"], L["Forces Mouseover Glow to be disabled for these frames"], 2)
+	config.args.disableTargetGlow = ACH:Toggle(L["Block Target Glow"], L["Forces Target Glow to be disabled for these frames"], 3)
+	config.args.disableFocusGlow = ACH:Toggle(L["Block Focus Glow"], L["Forces Focus Glow to be disabled for these frames"], 4)
 
 	if groupName ~= 'tank' and groupName ~= 'assist' then
-		config.args.hideonnpc = {
-			type = 'toggle',
-			order = 15,
-			name = L["Text Toggle On NPC"],
-			desc = L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."],
-			get = function(info) return E.db.unitframe.units[groupName].power.hideonnpc end,
-			set = function(info, value) E.db.unitframe.units[groupName].power.hideonnpc = value; updateFunc(UF, groupName, numUnits) end,
-		}
+		config.args.hideonnpc = ACH:Toggle(L["Text Toggle On NPC"], L["Power text will be hidden on NPC targets, in addition the name text will be repositioned to the power texts anchor point."], 5, nil, nil, nil, function() return E.db.unitframe.units[groupName].power.hideonnpc end, function(_, value) E.db.unitframe.units[groupName].power.hideonnpc = value; updateFunc(UF, groupName, numUnits) end)
 	end
 
 	if groupName ~= 'party' and groupName ~= 'raid' and groupName ~= 'raid40' and groupName ~= 'raidpet' and groupName ~= 'assist' and groupName ~= 'tank' then
-		config.args.smartAuraPosition = {
-			order = 8,
-			type = 'select',
-			name = L["Smart Aura Position"],
-			desc = L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."],
-			values = smartAuraPositionValues,
-		}
+		config.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 6, smartAuraPositionValues)
 	end
 
 	if groupName ~= 'arena' then
-		config.args.threatStyle = {
-			type = 'select',
-			order = 7,
-			name = L["Threat Display Mode"],
-			values = threatValues,
-		}
+		config.args.threatStyle = ACH:Select(L["Threat Display Mode"], nil, 7, threatValues)
 	end
 
-	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
-		config.args.positionsGroup = {
-			order = 100,
-			name = L["Size and Positions"],
-			type = 'group',
-			inline = true,
-			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-			args = {
-				width = {
-					order = 1,
-					name = L["Width"],
-					type = 'range',
-					min = 10, max = 500, step = 1,
-					set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-				},
-				height = {
-					order = 2,
-					name = L["Height"],
-					type = 'range',
-					min = 5, max = 500, step = 1,
-					set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-				},
-				spacer = ACH:Spacer(3, 'full'),
-				growthDirection = {
-					order = 4,
-					name = L["Growth Direction"],
-					desc = L["Growth direction from the first unitframe."],
-					type = 'select',
-					values = growthDirectionValues,
-				},
-				numGroups = {
-					order = 7,
-					type = 'range',
-					name = L["Number of Groups"],
-					min = 1, max = 8, step = 1,
-					set = function(info, value)
-						E.db.unitframe.units[groupName][info[#info]] = value;
-						updateFunc(UF, groupName, numUnits)
-						if UF[groupName].isForced then
-							UF:HeaderConfig(UF[groupName])
-							UF:HeaderConfig(UF[groupName], true)
-						end
-					end,
-				},
-				groupsPerRowCol = {
-					order = 8,
-					type = 'range',
-					name = L["Groups Per Row/Column"],
-					min = 1, max = 8, step = 1,
-					set = function(info, value)
-						E.db.unitframe.units[groupName][info[#info]] = value;
-						updateFunc(UF, groupName, numUnits)
-						if UF[groupName].isForced then
-							UF:HeaderConfig(UF[groupName])
-							UF:HeaderConfig(UF[groupName], true)
-						end
-					end,
-				},
-				horizontalSpacing = {
-					order = 9,
-					type = 'range',
-					name = L["Horizontal Spacing"],
-					min = -1, max = 50, step = 1,
-				},
-				verticalSpacing = {
-					order = 10,
-					type = 'range',
-					name = L["Vertical Spacing"],
-					min = -1, max = 50, step = 1,
-				},
-				groupSpacing = {
-					order = 11,
-					type = 'range',
-					name = L["Group Spacing"],
-					desc = L["Additional spacing between each individual group."],
-					min = 0, softMax = 50, step = 1,
-				},
-			},
-		}
-		config.args.visibilityGroup = {
-			order = 200,
-			name = L["Visibility"],
-			type = 'group',
-			inline = true,
-			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-			args = {
-				showPlayer = {
-					order = 0,
-					type = 'toggle',
-					name = L["Display Player"],
-					desc = L["When true, the header includes the player when not in a raid."],
-				},
-				defaults = {
-					order = 1,
-					type = 'execute',
-					name = L["Restore Defaults"],
-					confirm = true,
-					func = function()
-						E.db.unitframe.units[groupName].visibility = P.unitframe.units[groupName].visibility
-						updateFunc(UF, groupName, numUnits)
-					end,
-				},
-				visibility = {
-					order = 2,
-					type = 'input',
-					name = L["Visibility"],
-					desc = L["VISIBILITY_DESC"],
-					width = 'full',
-				},
-			},
-		}
-		config.args.sortingGroup = {
-			order = 300,
-			type = 'group',
-			inline = true,
-			name = L["Grouping & Sorting"],
-			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-			args = {
-				groupBy = {
-					order = 1,
-					name = L["Group By"],
-					desc = L["Set the order that the group will sort."],
-					customWidth = 250,
-					type = 'select',
-					values = {
-						CLASS = L["CLASS"],
-						CLASSROLE = L["CLASS"]..' & '..L["ROLE"],
-						ROLE = L["Role: Tank, Healer, Damage"],
-						ROLE2 = L["Role: Tank, Damage, Healer"],
-						ROLE3 = L["Role: Healer, Tank, Damage"],
-						NAME = L["NAME"],
-						MTMA = L["Main Tanks / Main Assist"],
-						GROUP = L["GROUP"],
-					},
-				},
-				sortDir = {
-					order = 2,
-					name = L["Sort Direction"],
-					desc = L["Defines the sort order of the selected sort method."],
-					type = 'select',
-					values = {
-						ASC = L["Ascending"],
-						DESC = L["Descending"]
-					},
-				},
-				spacer = ACH:Spacer(3, 'full'),
-				raidWideSorting = {
-					order = 4,
-					name = L["Raid-Wide Sorting"],
-					desc = L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."],
-					type = 'toggle',
-				},
-				invertGroupingOrder = {
-					order = 5,
-					name = L["Invert Grouping Order"],
-					desc = L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."],
-					disabled = function() return not E.db.unitframe.units[groupName].raidWideSorting end,
-					type = 'toggle',
-				},
-				startFromCenter = {
-					order = 6,
-					name = L["Start Near Center"],
-					desc = L["The initial group will start near the center and grow out."],
-					disabled = function() return not E.db.unitframe.units[groupName].raidWideSorting end,
-					type = 'toggle',
-				},
-			},
-		}
-	else
-		config.args.positionsGroup = {
-			order = 100,
-			name = L["Size and Positions"],
-			type = 'group',
-			inline = true,
-			set = function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-			args = {
-				width = {
-					order = 1,
-					name = L["Width"],
-					type = 'range',
-					min = 50, max = 1000, step = 1,
-					set = function(info, value)
-						if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then
-							E.db.unitframe.units[groupName].castbar.width = value;
-						end
+	config.args.positionsGroup = ACH:Group(L["Size and Positions"], nil, 100, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+	config.args.positionsGroup.inline = true
+	config.args.positionsGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 50, max = 1000, step = 1 })
+	config.args.positionsGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 
-						E.db.unitframe.units[groupName][info[#info]] = value;
-						updateFunc(UF, groupName, numUnits)
-					end,
-				},
-				height = {
-					order = 2,
-					name = L["Height"],
-					type = 'range',
-					min = 5, max = 500, step = 1,
-				},
-			},
-		}
+	if groupName == 'party' or groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
+		config.args.positionsGroup.args.growthDirection = ACH:Select(L["Growth Direction"], L["Growth direction from the first unitframe."], 4, growthDirectionValues)
+		config.args.positionsGroup.args.numGroups = ACH:Range(L["Number of Groups"], nil, 7, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end)
+		config.args.positionsGroup.args.groupsPerRowCol = ACH:Range(L["Groups Per Row/Column"], nil, 8, { min = 1, max = 8, step = 1 }, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) if UF[groupName].isForced then UF:HeaderConfig(UF[groupName]) UF:HeaderConfig(UF[groupName], true) end end)
+		config.args.positionsGroup.args.horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 9, { min = -1, max = 50, step = 1 })
+		config.args.positionsGroup.args.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 10, { min = -1, max = 50, step = 1 })
+		config.args.positionsGroup.args.groupSpacing = ACH:Range(L["Group Spacing"], L["Additional spacing between each individual group."], 11, { min = 0, max = 50, step = 1 })
+
+		config.args.visibilityGroup = ACH:Group(L["Visibility"], nil, 200, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+		config.args.visibilityGroup.inline = true
+		config.args.visibilityGroup.args.showPlayer = ACH:Toggle(L["Display Player"], L["When true, the header includes the player when not in a raid."], 0)
+		config.args.visibilityGroup.args.defaults = ACH:Execute(L["Restore Defaults"], nil, 1, function() E.db.unitframe.units[groupName].visibility = P.unitframe.units[groupName].visibility updateFunc(UF, groupName, numUnits) end, nil, true)
+		config.args.visibilityGroup.args.visibility = ACH:Input(L["Visibility"], L["VISIBILITY_DESC"], 2, nil, 'full')
+
+		config.args.sortingGroup = ACH:Group(L["Grouping & Sorting"], nil, 300, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+		config.args.sortingGroup.inline = true
+		config.args.sortingGroup.args.raidWideSorting = ACH:Toggle(L["Raid-Wide Sorting"], L["Enabling this allows raid-wide sorting however you will not be able to distinguish between groups."], 1)
+		config.args.sortingGroup.args.invertGroupingOrder = ACH:Toggle(L["Invert Grouping Order"], L["Enabling this inverts the grouping order when the raid is not full, this will reverse the direction it starts from."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].raidWideSorting end)
+		config.args.sortingGroup.args.startFromCenter = ACH:Toggle(L["Start Near Center"], L["The initial group will start near the center and grow out."], 3, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].raidWideSorting end)
+		config.args.sortingGroup.args.groupBy = ACH:Select(L["Group By"], L["Set the order that the group will sort."], 4, { CLASS = L["CLASS"], ROLE = L["Role"], NAME = L["NAME"], GROUP = L["GROUP"] })
+		config.args.sortingGroup.args.sortDir = ACH:Select(L["Sort Direction"], nil, 5, { ASC = L["Ascending"], DESC = L["Descending"] })
+		config.args.sortingGroup.args.sortMethod = ACH:Select(L["Sort Method"], nil, 6, { NAME = L["NAME"], INDEX = L["Index"] })
+
+		config.args.sortingGroup.args.roleSetup = ACH:Group(L["Role Order"], nil, 7, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'ROLE' end)
+		config.args.sortingGroup.args.roleSetup.inline = true
+		config.args.sortingGroup.args.roleSetup.args.ROLE1 = ACH:Select(' ', nil, 1, { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] })
+		config.args.sortingGroup.args.roleSetup.args.ROLE2 = ACH:Select(' ', nil, 2, { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] })
+		config.args.sortingGroup.args.roleSetup.args.ROLE3 = ACH:Select(' ', nil, 3, { TANK = L["Tank"] , HEALER = L["Healer"], DAMAGER = L["DPS"] })
+
+		config.args.sortingGroup.args.classSetup = ACH:Group(L["Class Order"], nil, 7, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'CLASS' end)
+		config.args.sortingGroup.args.classSetup.inline = true
+
+		local classTable = {}
+		for i = 1, GetNumClasses() do
+			local classDisplayName, classTag = GetClassInfo(i)
+			classTable[classTag] = classDisplayName
+			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, classTable)
+		end
+	else
+		config.args.positionsGroup.args.width.set = function(info, value) if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then E.db.unitframe.units[groupName].castbar.width = value end E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end
 
 		if groupName == 'boss' or groupName == 'arena' then
-			config.args.positionsGroup.args.spacing = {
-				order = 3,
-				type = 'range',
-				name = L["Spacing"],
-				min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 400, step = 1,
-			}
-			config.args.positionsGroup.args.growthDirection = {
-				order = 4,
-				type = 'select',
-				name = L["Growth Direction"],
-				values = {
-					UP = L["Bottom to Top"],
-					DOWN = L["Top to Bottom"],
-					LEFT = L["Right to Left"],
-					RIGHT = L["Left to Right"],
-				},
-			}
+			config.args.positionsGroup.args.spacing = ACH:Range(L["Spacing"], nil, 3, { min = ((E.db.unitframe.thinBorders or E.PixelMode) and -1 or -4), max = 400, step = 1 })
+			config.args.positionsGroup.args.growthDirection = ACH:Select(L["Growth Direction"], nil, 4, { UP = L["Bottom to Top"], DOWN = L["Top to Bottom"], LEFT = L["Right to Left"], RIGHT = L["Left to Right"] })
 		end
 
 		if groupName == 'tank' or groupName == 'assist' then
-			config.args.positionsGroup.args.verticalSpacing = {
-				order = 3,
-				type = 'range',
-				name = L["Vertical Spacing"],
-				min = 0, max = 100, step = 1,
-			}
+			config.args.positionsGroup.args.verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 3, { min = 0, max = 100, step = 1 })
 		end
-	end
-
-	if groupName == 'party' then
-		config.args.sortingGroup.args.groupBy.values.INDEX = L["Index"]
 	end
 
 	if groupName == 'raid' or groupName == 'raid40' or groupName == 'raidpet' then
-		config.args.positionsGroup.args.numGroups.disabled = function()
-			return E.db.unitframe.smartRaidFilter
-		end
-		config.args.visibilityGroup.args.visibility.disabled = function()
-			return E.db.unitframe.smartRaidFilter
-		end
+		config.args.positionsGroup.args.numGroups.disabled = function() return E.db.unitframe.smartRaidFilter end
+		config.args.visibilityGroup.args.visibility.disabled = function() return E.db.unitframe.smartRaidFilter end
 	end
 
 	if (groupName == 'target' or groupName == 'boss' or groupName == 'tank' or groupName == 'arena' or groupName == 'assist') and not IsAddOnLoaded('Clique') then
-		config.args.middleClickFocus = {
-			order = 16,
-			name = L["Middle Click - Set Focus"],
-			desc = L["Middle clicking the unit frame will cause your focus to match the unit."],
-			type = 'toggle',
-		}
+		config.args.middleClickFocus = ACH:Toggle(L["Middle Click - Set Focus"], L["Middle clicking the unit frame will cause your focus to match the unit."], 16)
 	end
 
 	return config
@@ -3355,11 +2887,7 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 		get = function(info) return E.db.unitframe.units[groupName].CombatIcon[info[#info]] end,
 		set = function(info, value) E.db.unitframe.units[groupName].CombatIcon[info[#info]] = value updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end,
 		args = {
-			enable = {
-				order = 2,
-				type = 'toggle',
-				name = L["Enable"],
-			},
+			enable = ACH:Toggle(L["Enable"], nil, 0),
 			defaultColor = {
 				order = 3,
 				type = 'toggle',
@@ -3370,20 +2898,9 @@ local function GetOptionsTable_CombatIconGroup(updateFunc, groupName, numUnits)
 				type = 'color',
 				name = L["COLOR"],
 				hasAlpha = true,
-				disabled = function()
-					return E.db.unitframe.units[groupName].CombatIcon.defaultColor
-				end,
-				get = function()
-					local c = E.db.unitframe.units[groupName].CombatIcon.color
-					local d = P.unitframe.units[groupName].CombatIcon.color
-					return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a
-				end,
-				set = function(_, r, g, b, a)
-					local c = E.db.unitframe.units[groupName].CombatIcon.color
-					c.r, c.g, c.b, c.a = r, g, b, a
-					updateFunc(UF, groupName, numUnits)
-					UF:TestingDisplay_CombatIndicator(UF[groupName]);
-				end,
+				disabled = function() return E.db.unitframe.units[groupName].CombatIcon.defaultColor end,
+				get = function() local c = E.db.unitframe.units[groupName].CombatIcon.color local d = P.unitframe.units[groupName].CombatIcon.color return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end,
+				set = function(_, r, g, b, a) local c = E.db.unitframe.units[groupName].CombatIcon.color c.r, c.g, c.b, c.a = r, g, b, a updateFunc(UF, groupName, numUnits) UF:TestingDisplay_CombatIndicator(UF[groupName]) end,
 			},
 			size = {
 				order = 5,

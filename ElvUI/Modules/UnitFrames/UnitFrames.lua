@@ -93,28 +93,23 @@ UF.instanceMapIDs = {
 
 UF.headerGroupBy = {
 	CLASS = function(header)
-		header:SetAttribute('groupingOrder', 'DEATHKNIGHT,DEMONHUNTER,DRUID,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
-		header:SetAttribute('sortMethod', 'NAME')
+		local groupingOrder = header.db and strjoin(',', header.db.CLASS1, header.db.CLASS2, header.db.CLASS3, header.db.CLASS4, header.db.CLASS5, header.db.CLASS6, header.db.CLASS7, header.db.CLASS8, header.db.CLASS9, header.db.CLASS10, header.db.CLASS11, header.db.CLASS12)
+		local sortMethod = header.db and header.db.sortMethod
+		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
+		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'CLASS')
 	end,
 	MTMA = function(header)
+		local sortMethod = header.db and header.db.sortMethod
 		header:SetAttribute('groupingOrder', 'MAINTANK,MAINASSIST,NONE')
-		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'ROLE')
 	end,
 	ROLE = function(header)
-		header:SetAttribute('groupingOrder', 'TANK,HEALER,DAMAGER,NONE')
-		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
-	end,
-	ROLE2 = function(header)
-		header:SetAttribute('groupingOrder', 'TANK,DAMAGER,HEALER,NONE')
-		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
-	end,
-	ROLE3 = function(header)
-		header:SetAttribute('groupingOrder', 'HEALER,TANK,DAMAGER,NONE')
-		header:SetAttribute('sortMethod', 'NAME')
+		local groupingOrder = header.db and strjoin(',', header.db.ROLE1, header.db.ROLE2, header.db.ROLE3, 'NONE')
+		local sortMethod = header.db and header.db.sortMethod
+		header:SetAttribute('groupingOrder', groupingOrder or 'TANK,HEALER,DAMAGER,NONE')
+		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
 	end,
 	NAME = function(header)
@@ -123,14 +118,10 @@ UF.headerGroupBy = {
 		header:SetAttribute('groupBy', nil)
 	end,
 	GROUP = function(header)
+		local sortMethod = header.db and header.db.sortMethod
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
-		header:SetAttribute('sortMethod', 'INDEX')
+		header:SetAttribute('sortMethod', sortMethod or 'INDEX')
 		header:SetAttribute('groupBy', 'GROUP')
-	end,
-	CLASSROLE = function(header)
-		header:SetAttribute('groupingOrder', 'DEATHKNIGHT,WARRIOR,DEMONHUNTER,ROGUE,MONK,PALADIN,DRUID,SHAMAN,HUNTER,PRIEST,MAGE,WARLOCK')
-		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute('groupBy', 'CLASS')
 	end,
 	PETNAME = function(header)
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
@@ -640,6 +631,7 @@ end
 function UF.groupPrototype:Configure_Groups(Header)
 	local db = UF.db.units[Header.groupName]
 	local width, height, newCols, newRows = 0, 0, 0, 0
+	Header.db = db
 
 	local direction = db.growthDirection
 	local groupsPerRowCol = db.groupsPerRowCol

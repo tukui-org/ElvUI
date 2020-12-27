@@ -1781,6 +1781,7 @@ P.unitframe = {
 			groupsPerRowCol = 1,
 			groupBy = 'INDEX',
 			sortDir = 'ASC',
+			sortMethod = 'INDEX',
 			raidWideSorting = false,
 			invertGroupingOrder = false,
 			startFromCenter = false,
@@ -2114,6 +2115,21 @@ P.unitframe.units.tank.targetsGroup.enable = true
 P.unitframe.units.tank.targetsGroup.buffIndicator = false
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
+
+for i = 1, GetNumClasses() do
+	local classDisplayName, classTag = GetClassInfo(i)
+	P.unitframe.units.party['CLASS'..i] = classTag
+	P.unitframe.units.raid['CLASS'..i] = classTag
+	P.unitframe.units.raid40['CLASS'..i] = classTag
+	P.unitframe.units.raidpet['CLASS'..i] = classTag
+end
+
+for i, role in ipairs({ 'TANK', 'HEALER', 'DAMAGER' }) do
+	P.unitframe.units.party['ROLE'..i] = role
+	P.unitframe.units.raid['ROLE'..i] = role
+	P.unitframe.units.raid40['ROLE'..i] = role
+	P.unitframe.units.raidpet['ROLE'..i] = role
+end
 
 --Cooldown
 P.cooldown = {
