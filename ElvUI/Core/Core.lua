@@ -1714,6 +1714,36 @@ function E:DBConversions()
 	end
 
 	-- development converts, always call
+
+	-- ActionBar
+
+	for i = 1, 10 do
+		if E.db.actionbar['bar'..i].buttonsize then
+			E.db.actionbar['bar'..i].buttonSize = E.db.actionbar['bar'..i].buttonsize
+			E.db.actionbar['bar'..i].buttonsize = nil
+		end
+		if E.db.actionbar['bar'..i].buttonspacing then
+			E.db.actionbar['bar'..i].buttonSpacing = E.db.actionbar['bar'..i].buttonspacing
+			E.db.actionbar['bar'..i].buttonspacing = nil
+		end
+	end
+	if E.db.actionbar.barPet.buttonsize then
+		E.db.actionbar.barPet.buttonSize = E.db.actionbar.barPet.buttonsize
+		E.db.actionbar.barPet.buttonsize = nil
+	end
+	if E.db.actionbar.stanceBar.buttonsize then
+		E.db.actionbar.stanceBar.buttonSize = E.db.actionbar.stanceBar.buttonsize
+		E.db.actionbar.stanceBar.buttonsize = nil
+	end
+	if E.db.actionbar.barPet.buttonspacing then
+		E.db.actionbar.barPet.buttonSpacing = E.db.actionbar.barPet.buttonspacing
+		E.db.actionbar.barPet.buttonspacing = nil
+	end
+	if E.db.actionbar.stanceBar.buttonspacing then
+		E.db.actionbar.stanceBar.buttonSpacing = E.db.actionbar.stanceBar.buttonspacing
+		E.db.actionbar.stanceBar.buttonspacing = nil
+	end
+	-- UnitFrame
 	if E.db.unitframe.units.party.groupBy == 'ROLE2' or E.db.unitframe.units.party.groupBy == 'CLASSROLE' then
 		E.db.unitframe.units.party.groupBy = 'ROLE'
 	end

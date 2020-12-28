@@ -2184,13 +2184,8 @@ P.actionbar = {
 	globalFadeAlpha = 0,
 	handleOverlay = true,
 	hideCooldownBling = false,
-	hotkeytext = true,
-	hotkeyTextPosition = 'TOPRIGHT',
-	hotkeyTextXOffset = 0,
-	hotkeyTextYOffset = -3,
 	keyDown = true,
 	lockActionBars = true,
-	macrotext = false,
 	movementModifier = 'SHIFT',
 	noPowerColor = { r = 0.5, g = 0.5, b = 1 },
 	noRangeColor = { r = 0.8, g = 0.1, b = 0.1 },
@@ -2211,14 +2206,13 @@ P.actionbar = {
 		heightMult = 1,
 		widthMult = 1,
 		keepSizeRatio = true,
-		buttonsize = 32,
+		buttonSize = 32,
 		buttonHeight = 32,
-		buttonspacing = 2,
+		buttonSpacing = 2,
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
 		visibility = '[petbattle] hide;[pet,novehicleui,nooverridebar,nopossessbar] show;hide',
-		hideHotkey = false
 	},
 	stanceBar = {
 		enabled = true,
@@ -2232,14 +2226,13 @@ P.actionbar = {
 		heightMult = 1,
 		widthMult = 1,
 		keepSizeRatio = true,
-		buttonsize = 32,
+		buttonSize = 32,
 		buttonHeight = 32,
-		buttonspacing = 2,
+		buttonSpacing = 2,
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
 		visibility = '[vehicleui] hide; [petbattle] hide;show',
-		hideHotkey = false
 	},
 	microbar = {
 		enabled = false,
@@ -2273,7 +2266,7 @@ P.actionbar = {
 		enable = true,
 		size = 32,
 		level = 1,
-		strata = 'MEDIUM'
+		strata = 'MEDIUM',
 	}
 };
 
@@ -2289,9 +2282,9 @@ for i = 1, 10 do
 		backdrop = false,
 		heightMult = 1,
 		widthMult = 1,
-		buttonsize = 32,
+		buttonSize = 32,
 		buttonHeight = 32,
-		buttonspacing = 2,
+		buttonSpacing = 2,
 		backdropSpacing = 2,
 		alpha = 1,
 		inheritGlobalFade = false,
@@ -2299,29 +2292,52 @@ for i = 1, 10 do
 		flyoutDirection = 'AUTOMATIC',
 		paging = {},
 		visibility = '[vehicleui] hide; [overridebar] hide; [petbattle] hide; show',
+		countColor = { r = 1, g = 1, b = 1 },
 		countFont = 'Homespun',
 		countFontOutline = 'MONOCHROMEOUTLINE',
 		countFontSize = 10,
 		countFontXOffset = 0,
 		countFontYOffset = 2,
+		counttext = true,
 		countTextPosition = 'BOTTOMRIGHT',
-		customCountFont = false,
-		customHotkeyFont = false,
+		hotkeyColor = { r = 1, g = 1, b = 1 },
 		hotkeyFont = 'Homespun',
 		hotkeyFontOutline = 'MONOCHROMEOUTLINE',
 		hotkeyFontSize = 10,
+		hotkeytext = true,
 		hotkeyTextPosition = 'TOPRIGHT',
 		hotkeyTextXOffset = 0,
 		hotkeyTextYOffset = -3,
-		hideHotkey = false,
-		hideMacroText = false,
-		useHotkeyColor = false,
-		hotkeyColor = { r = 1, g = 1, b = 1 },
-		useCountColor = false,
-		countColor = { r = 1, g = 1, b = 1 },
-		useMacroColor = false,
 		macroColor = { r = 1, g = 1, b = 1 },
+		macrotext = false,
+		macroFont = 'Homespun',
+		macroFontOutline = 'MONOCHROMEOUTLINE',
+		macroFontSize = 10,
+		useCountColor = false,
+		useHotkeyColor = false,
+		useMacroColor = false,
 	}
+end
+
+for _, bar in pairs({ 'barPet', 'stanceBar', 'extraActionButton', 'zoneActionButton', 'vehicleExitButton' }) do
+	P.actionbar[bar].countColor = { r = 1, g = 1, b = 1 }
+	P.actionbar[bar].countFont = 'Homespun'
+	P.actionbar[bar].countFontOutline = 'MONOCHROMEOUTLINE'
+	P.actionbar[bar].countFontSize = 10
+	P.actionbar[bar].countFontXOffset = 0
+	P.actionbar[bar].countFontYOffset = 2
+	P.actionbar[bar].counttext = true
+	P.actionbar[bar].countTextPosition = 'BOTTOMRIGHT'
+	P.actionbar[bar].hotkeyColor = { r = 1, g = 1, b = 1 }
+	P.actionbar[bar].hotkeyFont = 'Homespun'
+	P.actionbar[bar].hotkeyFontOutline = 'MONOCHROMEOUTLINE'
+	P.actionbar[bar].hotkeyFontSize = 10
+	P.actionbar[bar].hotkeytext = true
+	P.actionbar[bar].hotkeyTextPosition = 'TOPRIGHT'
+	P.actionbar[bar].hotkeyTextXOffset = 0
+	P.actionbar[bar].hotkeyTextYOffset = -3
+	P.actionbar[bar].useCountColor = false
+	P.actionbar[bar].useHotkeyColor = false
 end
 
 P.actionbar.bar1.enabled = true

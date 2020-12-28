@@ -163,8 +163,8 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 
 	local numButtons = db.buttons
 	local buttonsPerRow = db.buttonsPerRow
-	local buttonWidth = (db.buttonsize or db.buttonSize)
-	local buttonHeight = db.keepSizeRatio and (db.buttonsize or db.buttonSize * 1.4) or db.buttonHeight
+	local buttonWidth = db.buttonSize
+	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
 
 	if bar.LastButton then
 		if numButtons > bar.LastButton then numButtons = bar.LastButton end
@@ -189,14 +189,14 @@ function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 
 		point, relativeFrame, relativePoint = db.point, bar, db.point
 	elseif (index - 1) % buttonsPerRow == 0 then
-		point, relativeFrame, relativePoint, x, y = 'TOP', lastColumnButton, 'BOTTOM', 0, -(db.buttonspacing or db.buttonSpacing)
+		point, relativeFrame, relativePoint, x, y = 'TOP', lastColumnButton, 'BOTTOM', 0, -db.buttonSpacing
 		if anchorUp then
-			point, relativePoint, y = 'BOTTOM', 'TOP', (db.buttonspacing or db.buttonSpacing)
+			point, relativePoint, y = 'BOTTOM', 'TOP', db.buttonSpacing
 		end
 	else
-		point, relativeFrame, relativePoint, x, y = 'LEFT', lastButton, 'RIGHT', (db.buttonspacing or db.buttonSpacing), 0
+		point, relativeFrame, relativePoint, x, y = 'LEFT', lastButton, 'RIGHT', db.buttonSpacing, 0
 		if anchorLeft then
-			point, relativePoint, x = 'RIGHT', 'LEFT', -(db.buttonspacing or db.buttonSpacing)
+			point, relativePoint, x = 'RIGHT', 'LEFT', -db.buttonSpacing
 		end
 	end
 
@@ -269,7 +269,7 @@ function AB:PositionAndSizeBar(barName)
 	local db = AB.db[barName]
 	local bar = AB.handledBars[barName]
 
-	local buttonSpacing = db.buttonspacing
+	local buttonSpacing = db.buttonSpacing
 	local backdropSpacing = db.backdropSpacing
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
@@ -349,7 +349,7 @@ function AB:PositionAndSizeBar(barName)
 		bar:Hide()
 	end
 
-	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonspacing / 2)
+	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing / 2)
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		MasqueGroup:ReSkin()
@@ -614,9 +614,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	local db = button:GetParent().db
 	local color = AB.db.fontColor
-	local countPosition = AB.db.countTextPosition or 'BOTTOMRIGHT'
-	local countXOffset = AB.db.countTextXOffset or 0
-	local countYOffset = AB.db.countTextYOffset or 2
+	local countPosition = db and db.countTextPosition or 'BOTTOMRIGHT'
+	local countXOffset = db and db.countTextXOffset or 0
+	local countYOffset = db and db.countTextYOffset or 2
+	local font, fontSize, fontOutline = AB.db.font, AB.db.fontSize, AB.db.fontOutline
 
 	button.noBackdrop = noBackdrop
 	button.useMasque = useMasque
@@ -627,14 +628,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if border and not button.useMasque then border:Kill() end
 	if count then
 		count:ClearAllPoints()
-
-		if db and db.customCountFont then
-			count:Point(db.countTextPosition, db.countTextXOffset, db.countTextYOffset)
-			count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
-		else
-			count:Point(countPosition, countXOffset, countYOffset)
-			count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
-		end
+		count:Point(countPosition, countXOffset, countYOffset)
+		count:FontTemplate(LSM:Fetch('font', db and db.countFont or font), db and db.countFontSize or fontSize, db and db.countFontOutline or fontOutline)
 
 		local c = db and db.useCountColor and db.countColor or color
 		count:SetTextColor(c.r, c.g, c.b)
@@ -643,7 +638,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if macroText then
 		macroText:ClearAllPoints()
 		macroText:Point('BOTTOM', 0, 1)
-		macroText:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
+		macroText:FontTemplate(LSM:Fetch('font', db and db.macroFont or font), db and db.macroFontSize or fontSize, db and db.macroFontSize or fontOutline)
 
 		local c = db and db.useMacroColor and db.macroColor or color
 		macroText:SetTextColor(c.r, c.g, c.b)
@@ -678,13 +673,15 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		button.SpellHighlightTexture:SetAllPoints()
 	end
 
-	if AB.db.hotkeytext or AB.db.useRangeColorText then
-		if db and db.customHotkeyFont then
-			hotkey:FontTemplate(LSM:Fetch('font', db.hotkeyFont), db.hotkeyFontSize, db.hotkeyFontOutline)
-		else
-			hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
-		end
+	if not AB.handledbuttons[button] then
+		button.cooldown.CooldownOverride = 'actionbar'
+		E:RegisterCooldown(button.cooldown)
+		AB.handledbuttons[button] = true
+	end
 
+	hotkey:FontTemplate(LSM:Fetch('font', db and db.hotkeyFont or font), db and db.hotkeyFontSize or fontSize, db and db.hotkeyFontOutline or fontOutline)
+
+	if AB.db.useRangeColorText then
 		AB:UpdateHotkeyColor(button)
 	end
 
@@ -700,14 +697,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		button:StyleButton()
 	else
 		button:StyleButton(true, true, true)
-	end
-
-	if not AB.handledbuttons[button] then
-		button.cooldown.CooldownOverride = 'actionbar'
-
-		E:RegisterCooldown(button.cooldown)
-
-		AB.handledbuttons[button] = true
 	end
 end
 
@@ -1045,8 +1034,8 @@ function AB:UpdateButtonConfig(barName, buttonName)
 
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
 
-	bar.buttonConfig.hideElements.macro = not AB.db.macrotext or barDB.hideMacroText
-	bar.buttonConfig.hideElements.hotkey = not AB.db.hotkeytext or barDB.hideHotkey
+	bar.buttonConfig.hideElements.macro = not barDB.macrotext
+	bar.buttonConfig.hideElements.hotkey = not barDB.hotkeytext
 	bar.buttonConfig.showGrid = barDB.showGrid
 	bar.buttonConfig.clickOnDown = AB.db.keyDown
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
@@ -1081,9 +1070,9 @@ function AB:FixKeybindText(button)
 	local text = hotkey:GetText()
 
 	local db = button:GetParent().db
-	local hotkeyPosition = db and db.customHotkeyFont and db.hotkeyTextPosition or E.db.actionbar.hotkeyTextPosition or 'TOPRIGHT'
-	local hotkeyXOffset = db and db.customHotkeyFont and db.hotkeyTextXOffset or E.db.actionbar.hotkeyTextXOffset or 0
-	local hotkeyYOffset = db and db.customHotkeyFont and db.hotkeyTextYOffset or  E.db.actionbar.hotkeyTextYOffset or -3
+	local hotkeyPosition = db and db.hotkeyTextPosition or 'TOPRIGHT'
+	local hotkeyXOffset = db and db.hotkeyTextXOffset or 0
+	local hotkeyYOffset = db and db.hotkeyTextYOffset or -3
 
 	local justify = 'RIGHT'
 	if hotkeyPosition == 'TOPLEFT' or hotkeyPosition == 'BOTTOMLEFT' then
@@ -1113,6 +1102,10 @@ function AB:FixKeybindText(button)
 
 		hotkey:SetText(text)
 		hotkey:SetJustifyH(justify)
+	end
+
+	if not AB.handledbuttons[button] and db then
+		hotkey:SetShown(db.hotkeytext)
 	end
 
 	if not button.useMasque then
