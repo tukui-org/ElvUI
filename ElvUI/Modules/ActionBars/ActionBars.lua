@@ -1106,10 +1106,6 @@ function AB:FixKeybindText(button)
 		hotkey:SetJustifyH(justify)
 	end
 
-	if not AB.handledbuttons[button] and db then
-		hotkey:SetShown(db.hotkeytext)
-	end
-
 	if not button.useMasque then
 		hotkey:ClearAllPoints()
 		hotkey:Point(hotkeyPosition, hotkeyXOffset, hotkeyYOffset)

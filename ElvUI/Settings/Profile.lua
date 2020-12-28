@@ -2323,14 +2323,18 @@ for i = 1, 10 do
 end
 
 for _, bar in pairs({ 'barPet', 'stanceBar', 'extraActionButton', 'zoneActionButton', 'vehicleExitButton' }) do
-	P.actionbar[bar].countColor = { r = 1, g = 1, b = 1 }
-	P.actionbar[bar].countFont = 'Homespun'
-	P.actionbar[bar].countFontOutline = 'MONOCHROMEOUTLINE'
-	P.actionbar[bar].countFontSize = 10
-	P.actionbar[bar].countFontXOffset = 0
-	P.actionbar[bar].countFontYOffset = 2
-	P.actionbar[bar].counttext = true
-	P.actionbar[bar].countTextPosition = 'BOTTOMRIGHT'
+	if bar == 'barPet' then
+		P.actionbar[bar].countColor = { r = 1, g = 1, b = 1 }
+		P.actionbar[bar].countFont = 'Homespun'
+		P.actionbar[bar].countFontOutline = 'MONOCHROMEOUTLINE'
+		P.actionbar[bar].countFontSize = 10
+		P.actionbar[bar].countFontXOffset = 0
+		P.actionbar[bar].countFontYOffset = 2
+		P.actionbar[bar].counttext = true
+		P.actionbar[bar].countTextPosition = 'BOTTOMRIGHT'
+		P.actionbar[bar].useCountColor = false
+	end
+
 	P.actionbar[bar].hotkeyColor = { r = 1, g = 1, b = 1 }
 	P.actionbar[bar].hotkeyFont = 'Homespun'
 	P.actionbar[bar].hotkeyFontOutline = 'MONOCHROMEOUTLINE'
@@ -2339,7 +2343,6 @@ for _, bar in pairs({ 'barPet', 'stanceBar', 'extraActionButton', 'zoneActionBut
 	P.actionbar[bar].hotkeyTextPosition = 'TOPRIGHT'
 	P.actionbar[bar].hotkeyTextXOffset = 0
 	P.actionbar[bar].hotkeyTextYOffset = -3
-	P.actionbar[bar].useCountColor = false
 	P.actionbar[bar].useHotkeyColor = false
 end
 

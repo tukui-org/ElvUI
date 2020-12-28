@@ -240,14 +240,12 @@ function AB:UpdateStanceBindings()
 		local button = _G['ElvUI_StanceBarButton'..i]
 		if not button then break end
 
-		if AB.db.hotkeytext and not (button.db and button.db.hideHotkey) then
-			button.HotKey:Show()
-			button.HotKey:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
-
-			AB:FixKeybindText(button)
-		else
-			button.HotKey:Hide()
-		end
+		local db = button.db
+		local c = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
+		button.HotKey:SetVertexColor(c.r, c.g, c.b)
+		button.HotKey:SetText(GetBindingKey('SHAPESHIFTBUTTON'..i))
+		button.HotKey:SetShown(db.hotkeytext)
+		AB:FixKeybindText(button)
 	end
 end
 

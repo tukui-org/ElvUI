@@ -181,7 +181,11 @@ end
 
 function AB:UpdateExtraBindings()
 	for _, button in pairs(ExtraButtons) do
+		local db = button.db
+		local c = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
+		button.HotKey:SetVertexColor(c.r, c.g, c.b)
 		button.HotKey:SetText(_G.GetBindingKey(button:GetName()))
+		button.HotKey:SetShown(db.hotkeytext)
 		AB:FixKeybindText(button)
 	end
 end

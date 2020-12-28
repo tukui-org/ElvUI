@@ -172,7 +172,7 @@ ActionBar.args.microbar.args.buttonGroup.args.buttonSize.desc = function() retur
 ActionBar.args.microbar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar.microbar.keepSizeRatio end
 ActionBar.args.microbar.args.visibility.set = function(_, value) E.db.actionbar.microbar.visibility = value; AB:UpdateMicroPositionDimensions() end
 
---Remove these as these bars doesnt have these options
+--Remove options on bars that don't have those settings.
 for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 	local options = E.Options.args.actionbar.args[name].args.barGroup.args
 
@@ -182,11 +182,11 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 		options.macroTextGroup = nil
 	elseif name == 'stanceBar' then
 		options.countTextGroup = nil
-		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateStanceBindings() end
+		options.hotkeyTextGroup.args.hotkeytext.set = function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdateStanceBindings() end
 		options.macroTextGroup = nil
 	elseif name == 'barPet' then
 		options.countTextGroup = nil
-		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdatePetBindings() end
+		options.hotkeyTextGroup.args.hotkeytext.set = function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdatePetBindings() end
 		options.macroTextGroup = nil
 	end
 end
@@ -204,9 +204,9 @@ ActionBar.args.extraButtons.args.extraActionButton = ACH:Group(L["Boss Button"],
 ActionBar.args.extraButtons.args.extraActionButton.inline = true
 ActionBar.args.extraButtons.args.extraActionButton.args = CopyTable(SharedButtonOptions)
 
-ActionBar.args.extraButtons.args.zoneButton = ACH:Group(L["Zone Button"], nil, 2, nil, function(info) return E.db.actionbar.zoneActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.zoneActionButton[key] = value; if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end)
-ActionBar.args.extraButtons.args.zoneButton.inline = true
-ActionBar.args.extraButtons.args.zoneButton.args = CopyTable(SharedButtonOptions)
+ActionBar.args.extraButtons.args.zoneActionButton = ACH:Group(L["Zone Button"], nil, 2, nil, function(info) return E.db.actionbar.zoneActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.zoneActionButton[key] = value; if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end)
+ActionBar.args.extraButtons.args.zoneActionButton.inline = true
+ActionBar.args.extraButtons.args.zoneActionButton.args = CopyTable(SharedButtonOptions)
 
 ActionBar.args.extraButtons.args.vehicleExitButton = ACH:Group(L["Vehicle Exit"], nil, 3, nil, function(info) return E.db.actionbar.vehicleExitButton[info[#info]] end, function(info, value) E.db.actionbar.vehicleExitButton[info[#info]] = value; AB:UpdateVehicleLeave() end)
 ActionBar.args.extraButtons.args.vehicleExitButton.inline = true
@@ -214,6 +214,22 @@ ActionBar.args.extraButtons.args.vehicleExitButton.args.enable = ACH:Toggle(L["E
 ActionBar.args.extraButtons.args.vehicleExitButton.args.size = ACH:Range(L["Size"], nil, 2, { min = 16, max = 50, step = 1 })
 ActionBar.args.extraButtons.args.vehicleExitButton.args.strata = ACH:Select(L["Frame Strata"], nil, 3, { BACKGROUND = 'BACKGROUND', LOW = 'LOW', MEDIUM = 'MEDIUM', HIGH = 'HIGH' })
 ActionBar.args.extraButtons.args.vehicleExitButton.args.level = ACH:Range(L["Frame Level"], nil, 4, { min = 1, max = 128, step = 1 })
+
+for _, button in pairs({ 'extraActionButton', 'zoneActionButton' }) do
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup = ACH:Group(L["Keybind Text"], nil, 40, nil, nil, nil, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.inline = true
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.hotkeytext = ACH:Toggle(L["Enable"], L["Display bind names on action buttons."], 0, nil, nil, nil, function(info) return E.db.actionbar[info[#info-2]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]][info[#info]] = value AB:UpdateExtraBindings() end, nil, false)
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.useHotkeyColor = ACH:Toggle(L["Custom Color"], nil, 1)
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.hotkeyColor = ACH:Color('', nil, 2, nil, nil, function(info) local t = E.db.actionbar[info[#info-2]][info[#info]] local d = P.actionbar[info[#info-2]][info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.actionbar[info[#info-2]][info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateExtraBindings() end, nil, function(info) return not E.db.actionbar[info[#info-2]].useHotkeyColor or not E.db.actionbar[info[#info-2]].hotkeytext end)
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.spacer1 = ACH:Spacer(3, 'full')
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.hotkeyTextPosition = ACH:Select(L["Position"], nil, 4, textAnchors)
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.hotkeyTextXOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -24, max = 24, step = 1 })
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -24, max = 24, step = 1 })
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.spacer2 = ACH:Spacer(7, 'full')
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.hotkeyFont = ACH:SharedMediaFont(L["Font"], nil, 8)
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.hotkeyFontOutline = ACH:FontFlags(L["Font Outline"], nil, 9)
+	ActionBar.args.extraButtons.args[button].args.hotkeyTextGroup.args.hotkeyFontSize = ACH:Range(L["Font Size"], nil, 10, C.Values.FontSize)
+end
 
 ActionBar.args.playerBars = ACH:Group(L["Player Bars"], nil, 4, 'tree', nil, nil, function() return not E.ActionBars.Initialized end)
 
