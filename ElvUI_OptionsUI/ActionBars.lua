@@ -56,9 +56,9 @@ SharedBarOptions.barGroup.args.countTextGroup.args.countColor = ACH:Color('', ni
 SharedBarOptions.barGroup.args.macroTextGroup = ACH:Group(L["Macro Text"], nil, 60)
 SharedBarOptions.barGroup.args.macroTextGroup.inline = true
 SharedBarOptions.barGroup.args.macroTextGroup.args.macrotext = ACH:Toggle(L["Enable"], L["Display macro names on action buttons."], 0, nil, nil, nil, function(info) return E.db.actionbar[info[#info-3]][info[#info]] end, function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdateButtonSettings(info[#info-3]) end, nil, false)
-SharedBarOptions.barGroup.args.macroTextGroup.args.macrotextFont = ACH:SharedMediaFont(L["Font"], nil, 1)
-SharedBarOptions.barGroup.args.macroTextGroup.args.macrotextFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
-SharedBarOptions.barGroup.args.macroTextGroup.args.macrotextFontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
+SharedBarOptions.barGroup.args.macroTextGroup.args.macroFont = ACH:SharedMediaFont(L["Font"], nil, 1)
+SharedBarOptions.barGroup.args.macroTextGroup.args.macroFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
+SharedBarOptions.barGroup.args.macroTextGroup.args.macroFontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 SharedBarOptions.barGroup.args.macroTextGroup.args.useMacroColor = ACH:Toggle(L["Custom Color"], nil, 4)
 SharedBarOptions.barGroup.args.macroTextGroup.args.macroColor = ACH:Color('', nil, 5, nil, nil, getTextColor, setTextColor, nil, function(info) return not E.db.actionbar[info[#info-3]].useMacroColor  or not E.db.actionbar[info[#info-3]].macrotext end)
 
