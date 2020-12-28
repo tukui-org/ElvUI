@@ -631,6 +631,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		count:Point(position, xOffset, yOffset)
 		count:FontTemplate(LSM:Fetch('font', db and db.countFont or font), db and db.countFontSize or fontSize, db and db.countFontOutline or fontOutline)
 
+		if db then
+			count:SetShown(db.counttext)
+		end
+
 		local c = db and db.useCountColor and db.countColor or color
 		count:SetTextColor(c.r, c.g, c.b)
 	end
