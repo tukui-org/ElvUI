@@ -614,9 +614,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	local db = button:GetParent().db
 	local color = AB.db.fontColor
-	local countPosition = db and db.countTextPosition or 'BOTTOMRIGHT'
-	local countXOffset = db and db.countTextXOffset or 0
-	local countYOffset = db and db.countTextYOffset or 2
 	local font, fontSize, fontOutline = AB.db.font, AB.db.fontSize, AB.db.fontOutline
 
 	button.noBackdrop = noBackdrop
@@ -626,9 +623,12 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
 	if border and not button.useMasque then border:Kill() end
+
 	if count then
+		local position, xOffset, yOffset = db and db.countTextPosition or 'BOTTOMRIGHT', db and db.countTextXOffset or 0, db and db.countTextYOffset or 2
+
 		count:ClearAllPoints()
-		count:Point(countPosition, countXOffset, countYOffset)
+		count:Point(position, xOffset, yOffset)
 		count:FontTemplate(LSM:Fetch('font', db and db.countFont or font), db and db.countFontSize or fontSize, db and db.countFontOutline or fontOutline)
 
 		local c = db and db.useCountColor and db.countColor or color
@@ -636,8 +636,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if macroText then
+		local position, xOffset, yOffset = db and db.macroTextPosition or 'BOTTOM', db and db.macroTextXOffset or 0, db and db.macroTextYOffset or 1
+
 		macroText:ClearAllPoints()
-		macroText:Point('BOTTOM', 0, 1)
+		macroText:Point(position, xOffset, yOffset)
 		macroText:FontTemplate(LSM:Fetch('font', db and db.macroFont or font), db and db.macroFontSize or fontSize, db and db.macroFontSize or fontOutline)
 
 		local c = db and db.useMacroColor and db.macroColor or color

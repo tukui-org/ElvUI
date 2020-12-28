@@ -59,6 +59,9 @@ SharedBarOptions.barGroup.args.macroTextGroup.args.macrotext = ACH:Toggle(L["Ena
 SharedBarOptions.barGroup.args.macroTextGroup.args.macroFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 SharedBarOptions.barGroup.args.macroTextGroup.args.macroFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 SharedBarOptions.barGroup.args.macroTextGroup.args.macroFontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
+SharedBarOptions.barGroup.args.countTextGroup.args.macroTextPosition = ACH:Select(L["Position"], nil, 1, textAnchors)
+SharedBarOptions.barGroup.args.countTextGroup.args.macroTextXOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -24, max = 24, step = 1 })
+SharedBarOptions.barGroup.args.countTextGroup.args.macroTextYOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -24, max = 24, step = 1 })
 SharedBarOptions.barGroup.args.macroTextGroup.args.useMacroColor = ACH:Toggle(L["Custom Color"], nil, 4)
 SharedBarOptions.barGroup.args.macroTextGroup.args.macroColor = ACH:Color('', nil, 5, nil, nil, getTextColor, setTextColor, nil, function(info) return not E.db.actionbar[info[#info-3]].useMacroColor  or not E.db.actionbar[info[#info-3]].macrotext end)
 
