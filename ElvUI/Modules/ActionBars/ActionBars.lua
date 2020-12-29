@@ -686,8 +686,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		AB.handledbuttons[button] = true
 	end
 
-	hotkey:FontTemplate(LSM:Fetch('font', db and db.hotkeyFont or font), db and db.hotkeyFontSize or fontSize, db and db.hotkeyFontOutline or fontOutline)
-
 	if AB.db.useRangeColorText then
 		AB:UpdateHotkeyColor(button)
 	end
@@ -1093,6 +1091,8 @@ function AB:FixKeybindText(button)
 		if text == _G.RANGE_INDICATOR then
 			hotkey:SetFont(defaultFont, defaultFontSize, defaultFontOutline)
 		else
+			hotkey:FontTemplate(LSM:Fetch('font', db and db.hotkeyFont or AB.db.font), db and db.hotkeyFontSize or AB.db.fontSize, db and db.hotkeyFontOutline or AB.db.fontOutline)
+
 			text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
 			text = gsub(text, 'ALT%-', L["KEY_ALT"])
 			text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
