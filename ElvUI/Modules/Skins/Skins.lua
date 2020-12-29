@@ -880,6 +880,13 @@ function S:HandleShipFollowerPage(followerTab)
 	end
 end
 
+local function UpdateFollowerQuality(self, followerInfo)
+	if followerInfo then
+		local color = E.QualityColors[followerInfo.quality or 1]
+		self.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	end
+end
+
 function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFollowers)
 	if not Buttons or (not numButtons or numButtons == 0) or not offset or not numFollowers then return end
 
@@ -935,6 +942,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 						S:HandleGarrisonPortrait(fl.PortraitFrame)
 						fl.PortraitFrame:ClearAllPoints()
 						fl.PortraitFrame:Point('TOPLEFT', 3, -3)
+						hooksecurefunc(fl.PortraitFrame, 'SetupPortrait', UpdateFollowerQuality)
 						fl.PortraitFrameStyled = true
 					end
 				end
