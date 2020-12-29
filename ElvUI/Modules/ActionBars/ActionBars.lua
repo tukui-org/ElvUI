@@ -813,7 +813,8 @@ end
 
 function AB:FadeParent_OnEvent()
 	if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
+	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player'))
+	or IsPossessBarVisible() or UnitExists('vehicle') or HasOverrideActionBar() then
 		self.mouseLock = true
 		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 		AB:FadeBlings(1)
@@ -1346,6 +1347,9 @@ function AB:Initialize()
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_DISABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_ENABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_TARGET_CHANGED')
+	AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
+	AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
+	AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_START', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', 'player')
