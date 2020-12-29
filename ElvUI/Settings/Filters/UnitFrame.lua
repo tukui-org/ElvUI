@@ -871,6 +871,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[327414] = Defaults(), -- Possession
 		[328468] = Defaults(), -- Dimensional Tear 1
 		[328448] = Defaults(), -- Dimensional Tear 2
+		[340860] = Defaults(), -- Withering Touch
 		-- The Council of Blood
 		[327052] = Defaults(), -- Drain Essence 1
 		[327773] = Defaults(), -- Drain Essence 2
