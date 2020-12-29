@@ -46,6 +46,7 @@ local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBars')
+local defaultFont, defaultFontSize, defaultFontOutline
 
 local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
 hiddenParent:SetAllPoints()
@@ -1079,6 +1080,7 @@ function AB:FixKeybindText(button)
 	local hotkeyPosition = db and db.hotkeyTextPosition or 'TOPRIGHT'
 	local hotkeyXOffset = db and db.hotkeyTextXOffset or 0
 	local hotkeyYOffset = db and db.hotkeyTextYOffset or -3
+	local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
 
 	local justify = 'RIGHT'
 	if hotkeyPosition == 'TOPLEFT' or hotkeyPosition == 'BOTTOMLEFT' then
@@ -1088,26 +1090,40 @@ function AB:FixKeybindText(button)
 	end
 
 	if text then
-		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
-		text = gsub(text, 'ALT%-', L["KEY_ALT"])
-		text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
-		text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"])
-		text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"])
-		text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"])
-		text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"])
-		text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"])
-		text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"])
-		text = gsub(text, 'SPACE', L["KEY_SPACE"])
-		text = gsub(text, 'INSERT', L["KEY_INSERT"])
-		text = gsub(text, 'HOME', L["KEY_HOME"])
-		text = gsub(text, 'DELETE', L["KEY_DELETE"])
-		text = gsub(text, 'NMULTIPLY', '*')
-		text = gsub(text, 'NMINUS', 'N-')
-		text = gsub(text, 'NPLUS', 'N+')
-		text = gsub(text, 'NEQUALS', 'N=')
+		if text == _G.RANGE_INDICATOR then
+			hotkey:SetFont(defaultFont, defaultFontSize, defaultFontOutline)
+		else
+			text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
+			text = gsub(text, 'ALT%-', L["KEY_ALT"])
+			text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
+			text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"])
+			text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"])
+			text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"])
+			text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"])
+			text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"])
+			text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"])
+			text = gsub(text, 'SPACE', L["KEY_SPACE"])
+			text = gsub(text, 'INSERT', L["KEY_INSERT"])
+			text = gsub(text, 'HOME', L["KEY_HOME"])
+			text = gsub(text, 'DELETE', L["KEY_DELETE"])
+			text = gsub(text, 'NMULTIPLY', '*')
+			text = gsub(text, 'NMINUS', 'N-')
+			text = gsub(text, 'NPLUS', 'N+')
+			text = gsub(text, 'NEQUALS', 'N=')
+		end
 
 		hotkey:SetText(text)
 		hotkey:SetJustifyH(justify)
+	end
+
+	hotkey:SetVertexColor(color.r, color.g, color.b)
+
+	if not button.__LAB_Version then
+		if db and not db.hotkeytext then
+			hotkey:Hide()
+		else
+			hotkey:Show()
+		end
 	end
 
 	if not button.useMasque then
@@ -1353,6 +1369,16 @@ function AB:Initialize()
 	AB.fadeParent:RegisterUnitEvent('UNIT_HEALTH', 'player')
 	AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
+
+	if E:GetLocale() == 'koKR' then
+		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\2002.TTF]], 11, "MONOCHROME, THICK"
+	elseif E:GetLocale() == 'zhTW' then
+		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\arheiuhk_bd.TTF]], 11, "MONOCHROME, THICK"
+	elseif E:GetLocale() == 'zhCN' then
+		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\FRIZQT__.TTF]], 11, 'MONOCHROME'
+	else
+		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\ARIALN.TTF]], 12, "MONOCHROME, THICK"
+	end
 
 	AB:DisableBlizzard()
 	AB:SetupExtraButton()

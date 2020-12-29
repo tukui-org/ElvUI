@@ -187,11 +187,7 @@ function AB:UpdatePetBindings()
 		local button = _G['PetActionButton'..i]
 		if not button then break end
 
-		local db = button.db
-		local c = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
-		button.HotKey:SetVertexColor(c.r, c.g, c.b)
 		button.HotKey:SetText(GetBindingKey('BONUSACTIONBUTTON'..i))
-		button.HotKey:SetShown(db.hotkeytext)
 		AB:FixKeybindText(button)
 	end
 end
