@@ -399,7 +399,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	end
 
 	if tagTextFormat ~= 'percent' then
-		ElvUF.Tags.Events[format('health:%s:shortvalue', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+		ElvUF.Tags.Events[format('health:%s:shortvalue', tagTextFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 		ElvUF.Tags.Methods[format('health:%s:shortvalue', tagTextFormat)] = function(unit)
 			local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 			if (status) then
@@ -410,7 +410,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			end
 		end
 
-		ElvUF.Tags.Events[format('health:%s-nostatus:shortvalue', tagTextFormat)] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH'
+		ElvUF.Tags.Events[format('health:%s-nostatus:shortvalue', tagTextFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 		ElvUF.Tags.Methods[format('health:%s-nostatus:shortvalue', tagTextFormat)] = function(unit)
 			local min, max = UnitHealth(unit), UnitHealthMax(unit)
 			return E:GetFormattedText(textFormat, min, max, nil, true)
