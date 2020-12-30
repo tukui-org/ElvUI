@@ -57,6 +57,7 @@ function AB:StyleShapeShift()
 			if not texture then texture = WispSplode end
 
 			button.icon:SetTexture(texture)
+			button.icon:SetInside()
 
 			if not button.useMasque then
 				cooldown:SetAlpha(1)
