@@ -1471,7 +1471,7 @@ function UF:TargetSound(unit)
 	if UnitExists(unit) and not IsReplacingUnit() then
 		if UnitIsEnemy(unit, 'player') then
 			PlaySound(SOUNDKIT_IG_CREATURE_AGGRO_SELECT)
-		elseif UnitIsFriend('player', unit) then
+		elseif UnitIsFriend(unit, 'player') then
 			PlaySound(SOUNDKIT_IG_CHARACTER_NPC_SELECT)
 		else
 			PlaySound(SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT)

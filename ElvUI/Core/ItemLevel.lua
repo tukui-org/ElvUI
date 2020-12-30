@@ -193,7 +193,7 @@ end
 do
 	local iLevelDB, tryAgain = {}, {}
 	function E:GetUnitItemLevel(unit)
-		if UnitIsUnit('player', unit) then
+		if UnitIsUnit(unit, 'player') then
 			return E:GetPlayerItemLevel()
 		end
 
