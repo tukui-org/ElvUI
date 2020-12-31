@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local next, unpack = next, unpack
-local ipairs, pairs, select, strmatch = ipairs, pairs, select, strmatch
+local ipairs, pairs, select, strmatch, unpack = ipairs, pairs, select, strmatch, unpack
 local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
@@ -14,8 +13,10 @@ local GetBindingKey = GetBindingKey
 local GetOverrideBarIndex = GetOverrideBarIndex
 local GetSpellBookItemInfo = GetSpellBookItemInfo
 local GetVehicleBarIndex = GetVehicleBarIndex
+local HasOverrideActionBar = HasOverrideActionBar
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
+local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
@@ -811,9 +812,8 @@ function AB:BlizzardOptionsPanel_OnEvent()
 end
 
 function AB:FadeParent_OnEvent()
-	if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player'))
-	or IsPossessBarVisible() or UnitExists('vehicle') or HasOverrideActionBar() then
+	if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus') or UnitExists('vehicle')
+	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) or IsPossessBarVisible() or HasOverrideActionBar() then
 		self.mouseLock = true
 		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 		AB:FadeBlings(1)
@@ -1363,9 +1363,11 @@ function AB:Initialize()
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_DISABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_ENABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_TARGET_CHANGED')
+	AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
 	AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
 	AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
-	AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
+	AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
+	AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_START', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', 'player')
