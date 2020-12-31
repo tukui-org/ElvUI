@@ -208,7 +208,7 @@ end
 
 function M:UpdateAverageString(frame, which, iLevelDB)
 	local isCharPage = which == 'Character'
-	local AvgItemLevel = (isCharPage and E:GetPlayerItemLevel()) or E:CalculateAverageItemLevel(iLevelDB, frame.unit)
+	local AvgItemLevel = (isCharPage and E:GetPlayerItemLevel()) or (frame.unit and E:CalculateAverageItemLevel(iLevelDB, frame.unit))
 	if AvgItemLevel then
 		if isCharPage then
 			frame.ItemLevelText:SetText(AvgItemLevel)
