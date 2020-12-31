@@ -626,8 +626,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 		nameplate.faction = UnitFactionGroup(unit)
-		nameplate.reaction = UnitReaction('player', unit)
-		nameplate.repReaction = UnitReaction(unit, 'player')
+		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
+		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.unitName = UnitName(unit)
 		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
