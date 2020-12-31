@@ -64,14 +64,14 @@ AB.barDefaults = {
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,191',
 	},
 	bar2 = {
-		page = 5,
-		bindButtons = 'MULTIACTIONBAR2BUTTON',
+		page = 2,
+		bindButtons = 'ELVUIBAR6BUTTON',
 		conditions = '',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
 	},
 	bar3 = {
-		page = 6,
-		bindButtons = 'MULTIACTIONBAR1BUTTON',
+		page = 3,
+		bindButtons = 'MULTIACTIONBAR3BUTTON',
 		conditions = '',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,139',
 	},
@@ -82,14 +82,14 @@ AB.barDefaults = {
 		position = 'RIGHT,ElvUIParent,RIGHT,-4,0',
 	},
 	bar5 = {
-		page = 3,
-		bindButtons = 'MULTIACTIONBAR3BUTTON',
+		page = 5,
+		bindButtons = 'MULTIACTIONBAR2BUTTON',
 		conditions = '',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-92,57',
 	},
 	bar6 = {
-		page = 2,
-		bindButtons = 'ELVUIBAR6BUTTON',
+		page = 6,
+		bindButtons = 'MULTIACTIONBAR1BUTTON',
 		conditions = '',
 		position = 'BOTTOM,ElvUI_Bar2,TOP,0,2',
 	},
@@ -539,7 +539,7 @@ function AB:RemoveBindings()
 end
 
 function AB:UpdateBar1Paging()
-	if AB.db.bar6.enabled then
+	if AB.db.bar2.enabled then
 		AB.barDefaults.bar1.conditions = format('[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetVehicleBarIndex(), GetOverrideBarIndex())
 	else
 		AB.barDefaults.bar1.conditions = format('[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetVehicleBarIndex(), GetOverrideBarIndex())
