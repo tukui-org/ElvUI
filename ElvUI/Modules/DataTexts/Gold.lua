@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
+local B = E:GetModule('Bags')
 
 local _G = _G
 local type, wipe, pairs, ipairs, sort = type, wipe, pairs, ipairs, sort
@@ -198,6 +199,12 @@ local function OnEnter()
 				DT.tooltip:AddDoubleLine(format('%s %s', format(iconString, info.iconFileID), info.name), BreakUpLargeNumbers(info.quantity), 1, 1, 1, 1, 1, 1)
 			end
 		end
+	end
+
+	local grayValue = B:GetGraysValue()
+	if grayValue > 0 then
+		DT.tooltip:AddLine(' ')
+		DT.tooltip:AddDoubleLine(L["Grays"], E:FormatMoney(grayValue, style, textOnly), nil, nil, nil, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')

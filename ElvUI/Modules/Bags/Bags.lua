@@ -150,7 +150,7 @@ function B:Tooltip_Show()
 		end
 	end
 
-	if self.ttValue then
+	if self.ttValue and self.ttValue() > 0 then
 		GameTooltip:AddLine(E:FormatMoney(self.ttValue(), E.db.bags.moneyFormat, not E.db.bags.moneyCoins), 1, 1, 1)
 	end
 
