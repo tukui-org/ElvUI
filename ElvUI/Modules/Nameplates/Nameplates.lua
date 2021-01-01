@@ -296,7 +296,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
-	nameplate.WidgetContainer = NP:Construct_WidgetContainer(nameplate)
 
 	NP:Construct_Auras(nameplate)
 
@@ -674,6 +673,14 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				nameplate.RaisedElement:Hide()
 			end
 
+			nameplate.widgetContainer = nameplate.blizzPlate.WidgetContainer
+			if nameplate.widgetContainer then
+				nameplate.widgetContainer:SetParent(nameplate)
+				nameplate.widgetContainer:SetScale(E.global.general.UIScale)
+				nameplate.widgetContainer:ClearAllPoints()
+				nameplate.widgetContainer:SetPoint('BOTTOM', nameplate, 'TOP')
+			end
+
 			nameplate.previousType = nil -- dont get the plate stuck for next unit
 		else
 			if not nameplate.RaisedElement:IsShown() then
@@ -690,13 +697,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if NP.db.fadeIn and (event == 'NAME_PLATE_UNIT_ADDED' and nameplate.frameType ~= 'PLAYER') and not NP.SkipFading then
 			NP:PlateFade(nameplate, 1, 0, 1)
-		end
-
-		nameplate.WidgetContainer:UnregisterForWidgetSet()
-		local playerControlled = UnitPlayerControlled(unit)
-		if nameplate.widgetSet and ((playerControlled and UnitIsOwnerOrControllerOfUnit('player', unit)) or not playerControlled) then
-			nameplate.WidgetContainer:RegisterForWidgetSet(nameplate.widgetSet, NP.Widget_DefaultLayout, nil, unit)
-			nameplate.WidgetContainer:ProcessAllWidgets()
 		end
 
 		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
@@ -716,12 +716,17 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateGUID(nameplate)
 		end
 
+		if nameplate.widgetsOnly and nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
+			nameplate.widgetContainer:SetParent(nameplate.blizzPlate)
+			nameplate.widgetContainer:SetScale(1)
+			nameplate.widgetContainer:ClearAllPoints()
+			nameplate.widgetContainer:SetPoint('TOP', nameplate.blizzPlate.castBar, 'BOTTOM')
+		end
+
 		-- vars that we need to keep in a nonstale state
 		nameplate.Health.cur = nil -- cutaway
 		nameplate.Power.cur = nil -- cutaway
 		nameplate.npcID = nil -- just cause
-
-		nameplate.WidgetContainer:UnregisterForWidgetSet()
 
 		NP:StyleFilterClearVariables(nameplate) -- keep this at the end
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
