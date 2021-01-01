@@ -66,55 +66,46 @@ AB.barDefaults = {
 	bar2 = {
 		page = 2,
 		bindButtons = 'ELVUIBAR6BUTTON',
-		conditions = '',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
 	},
 	bar3 = {
 		page = 3,
 		bindButtons = 'MULTIACTIONBAR3BUTTON',
-		conditions = '',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,139',
 	},
 	bar4 = {
 		page = 4,
 		bindButtons = 'MULTIACTIONBAR4BUTTON',
-		conditions = '',
 		position = 'RIGHT,ElvUIParent,RIGHT,-4,0',
 	},
 	bar5 = {
 		page = 5,
 		bindButtons = 'MULTIACTIONBAR2BUTTON',
-		conditions = '',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-92,57',
 	},
 	bar6 = {
 		page = 6,
 		bindButtons = 'MULTIACTIONBAR1BUTTON',
-		conditions = '',
 		position = 'BOTTOM,ElvUI_Bar2,TOP,0,2',
 	},
 	bar7 = {
 		page = 7,
 		bindButtons = 'EXTRABAR7BUTTON',
-		conditions = '',
 		position = 'BOTTOM,ElvUI_Bar1,TOP,0,82',
 	},
 	bar8 = {
 		page = 8,
 		bindButtons = 'EXTRABAR8BUTTON',
-		conditions = '',
 		position = 'BOTTOM,ElvUI_Bar1,TOP,0,122',
 	},
 	bar9 = {
 		page = 9,
 		bindButtons = 'EXTRABAR9BUTTON',
-		conditions = '',
 		position = 'BOTTOM,ElvUI_Bar1,TOP,0,162',
 	},
 	bar10 = {
 		page = 10,
 		bindButtons = 'EXTRABAR10BUTTON',
-		conditions = '',
 		position = 'BOTTOM,ElvUI_Bar1,TOP,0,202',
 	},
 }
@@ -331,7 +322,7 @@ function AB:PositionAndSizeBar(barName)
 	if not bar.initialized then
 		bar.initialized = true
 
-		if defaults.conditions:find('[form,noform]') then
+		if defaults.conditions and strfind(defaults.conditions, '[form,noform]') then
 			bar:SetAttribute('newCondition', gsub(defaults.conditions, ' %[form,noform%] 0; ', ''))
 			bar:SetAttribute('hasTempBar', true)
 		else
@@ -401,7 +392,7 @@ function AB:CreateBar(id)
 		AB:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
 	end
 
-	if defaults.conditions:find('[form]') then
+	if defaults.conditions and strfind(defaults.conditions, '[form]') then
 		bar:SetAttribute('hasTempBar', true)
 	else
 		bar:SetAttribute('hasTempBar', false)
@@ -588,15 +579,13 @@ end
 function AB:GetPage(bar, defaultPage, condition)
 	local page = AB.db[bar].paging[E.myclass]
 	if not condition then condition = '' end
-	if not page then
-		page = ''
-	else
-		page = gsub(page, '[\n\r]', '')
-	end
 
 	if page then
+		page = gsub(page, '[\n\r]', '')
+
 		condition = condition..' '..page
 	end
+
 	condition = condition..' '..defaultPage
 
 	return condition
@@ -609,7 +598,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local shine = _G[name..'Shine']
 	local count = _G[name..'Count']
 	local flash	 = _G[name..'Flash']
-	local hotkey = _G[name..'HotKey']
 	local border  = _G[name..'Border']
 	local normal  = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
