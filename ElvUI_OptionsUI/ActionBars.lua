@@ -16,8 +16,8 @@ local SharedBarOptions = {
 	restorePosition = ACH:Execute(L["Restore Bar"], L["Restore the actionbars default settings"], 1),
 	generalOptions = ACH:MultiSelect('', nil, 3, { backdrop = L["Backdrop"], mouseover = L["Mouse Over"], clickThrough = L["Click Through"], inheritGlobalFade = L["Inherit Global Fade"] }),
 	buttonGroup = ACH:Group(L["Button Settings"], nil, 4),
-	barGroup = ACH:Group(L["Bar Settings"], nil, 5),
-	backdropGroup = ACH:Group(L["Backdrop Settings"], nil, 6),
+	backdropGroup = ACH:Group(L["Backdrop Settings"], nil, 5),
+	barGroup = ACH:Group(L["Bar Settings"], nil, 6),
 	visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 8, 4, 'full')
 }
 
