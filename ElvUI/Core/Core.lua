@@ -1743,6 +1743,14 @@ function E:DBConversions()
 		E.db.actionbar.stanceBar.buttonSpacing = E.db.actionbar.stanceBar.buttonspacing
 		E.db.actionbar.stanceBar.buttonspacing = nil
 	end
+	-- Convert Pages
+	if not E.db.actionbar.convertPages then
+		local bar2, bar3, bar5, bar6 = E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6
+		local bar2mover, bar3mover, bar5mover, bar6mover = E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6
+		E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6 = E:CopyTable({}, bar6), E:CopyTable({}, bar5), E:CopyTable({}, bar2), E:CopyTable({}, bar3)
+		E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6 = bar6mover, bar5mover, bar2mover, bar3mover
+		E.db.actionbar.convertPages = true
+	end
 	-- UnitFrame
 	if E.db.unitframe.units.party.groupBy == 'ROLE2' or E.db.unitframe.units.party.groupBy == 'CLASSROLE' then
 		E.db.unitframe.units.party.groupBy = 'ROLE'

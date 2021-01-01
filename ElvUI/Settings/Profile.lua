@@ -2166,6 +2166,7 @@ P.cooldown = {
 --Actionbar
 P.actionbar = {
 	addNewSpells = false,
+	convertPages = false,
 	chargeCooldown = false,
 	colorSwipeLOC = { r = 0.25, g = 0, b = 0, a = 0.8 },
 	colorSwipeNormal = { r = 0, g = 0, b = 0, a = 0.8 },
