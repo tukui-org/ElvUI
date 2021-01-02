@@ -676,7 +676,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			nameplate.widgetContainer = nameplate.blizzPlate.WidgetContainer
 			if nameplate.widgetContainer then
 				nameplate.widgetContainer:SetParent(nameplate)
-				nameplate.widgetContainer:SetScale(E.global.general.UIScale)
 				nameplate.widgetContainer:ClearAllPoints()
 				nameplate.widgetContainer:SetPoint('BOTTOM', nameplate, 'TOP')
 			end
@@ -718,7 +717,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if nameplate.widgetsOnly and nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
 			nameplate.widgetContainer:SetParent(nameplate.blizzPlate)
-			nameplate.widgetContainer:SetScale(1)
 			nameplate.widgetContainer:ClearAllPoints()
 			nameplate.widgetContainer:SetPoint('TOP', nameplate.blizzPlate.castBar, 'BOTTOM')
 		end
