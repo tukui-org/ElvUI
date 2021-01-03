@@ -5,6 +5,7 @@ P.gridSize = 64
 P.layoutSetting = 'tank'
 P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
+P.convertPages = false
 
 --Core
 P.general = {
@@ -2166,7 +2167,6 @@ P.cooldown = {
 --Actionbar
 P.actionbar = {
 	addNewSpells = false,
-	convertPages = false,
 	chargeCooldown = false,
 	colorSwipeLOC = { r = 0.25, g = 0, b = 0, a = 0.8 },
 	colorSwipeNormal = { r = 0, g = 0, b = 0, a = 0.8 },
