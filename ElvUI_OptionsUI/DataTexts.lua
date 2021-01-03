@@ -205,9 +205,6 @@ local function CreateDTOptions(name, data)
 		optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { ICON = L["Icons Only"], ICON_TEXT = L["Icons and Text"], ICON_TEXT_ABBR = L["Icons and Text (Short)"] }, nil, nil, nil, nil, nil, function() return (settings.displayedCurrency == "GOLD") or (settings.displayedCurrency == "BACKPACK") end)
 		optionTable.args.headers = ACH:Toggle(L["Headers"])
 		optionTable.args.maxCurrency = ACH:Toggle(L["Show Max Currency"])
-		optionTable.args.goldFormat.hidden = function() return (settings.displayedCurrency ~= "GOLD") end
-		optionTable.args.goldCoins.hidden = function() return (settings.displayedCurrency ~= "GOLD") end
-
 		optionTable.args.tooltipLines = ACH:Group(L["Tooltip Lines"], nil, -1)
 		optionTable.args.tooltipLines.inline = true
 
