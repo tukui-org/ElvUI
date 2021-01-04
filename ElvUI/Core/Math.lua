@@ -11,6 +11,7 @@ local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
+local LARGE_NUMBER_SEPERATOR = LARGE_NUMBER_SEPERATOR
 local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
@@ -497,6 +498,14 @@ function E:FormatMoney(amount, style, textonly)
 			return format('%s%d|r.%s%02d|r.%s%02d|r', COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
 		elseif silver > 0 then
 			return format('%s%d|r.%s%02d|r', COLOR_SILVER, silver, COLOR_COPPER, copper)
+		else
+			return format('%s%d|r', COLOR_COPPER, copper)
+		end
+	elseif style == 'CONDENSED_SPACED' then
+		if gold > 0 then
+			return format('%s%d|r %s%02d|r %s%02d|r', COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
+		elseif silver > 0 then
+			return format('%s%d|r %s%02d|r', COLOR_SILVER, silver, COLOR_COPPER, copper)
 		else
 			return format('%s%d|r', COLOR_COPPER, copper)
 		end
