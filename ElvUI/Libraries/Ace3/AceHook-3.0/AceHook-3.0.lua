@@ -10,7 +10,7 @@
 -- @class file
 -- @name AceHook-3.0
 -- @release $Id$
-local ACEHOOK_MAJOR, ACEHOOK_MINOR = "AceHook-3.0", 8
+local ACEHOOK_MAJOR, ACEHOOK_MINOR = "AceHook-3.0", 9
 local AceHook, oldminor = LibStub:NewLibrary(ACEHOOK_MAJOR, ACEHOOK_MINOR)
 
 if not AceHook then return end -- No upgrade needed
@@ -478,10 +478,10 @@ function AceHook:UnhookAll()
 	for key, value in pairs(registry[self]) do
 		if type(key) == "table" then
 			for method in pairs(value) do
-				self:Unhook(key, method)
+				AceHook.Unhook(self, key, method)
 			end
 		else
-			self:Unhook(key)
+			AceHook.Unhook(self, key)
 		end
 	end
 end

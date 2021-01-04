@@ -5,10 +5,10 @@ local Type, Version = "MultiLineEditBox-ElvUI", 29
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
-local _G, pairs = _G, pairs
+local pairs = pairs
 local GetCursorInfo, GetSpellInfo, ClearCursor = GetCursorInfo, GetSpellInfo, ClearCursor
 local CreateFrame, UIParent = CreateFrame, UIParent
--- GLOBALS: ACCEPT, ChatFontNormal, BackdropTemplateMixin
+local _G = _G
 
 local indent = _G.ElvUI[1].Libs.indent -- ElvUI
 
