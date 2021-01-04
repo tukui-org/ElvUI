@@ -1754,6 +1754,7 @@ function E:DBConversions()
 
 		if E.db.movers then
 			local bar2mover, bar3mover, bar5mover, bar6mover = E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6
+			if bar6mover == 'BOTTOM,ElvUI_Bar2,TOP,0,2' then bar6mover = E:ResetMovers('ElvAB_2') end
 			E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6 = bar6mover, bar5mover, bar2mover, bar3mover
 		end
 
