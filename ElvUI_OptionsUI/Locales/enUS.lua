@@ -1085,6 +1085,7 @@ L["Setup on-screen display of information bars."] = true
 L["Share Current Profile"] = true
 L["Share Filters"] = true
 L["Short (Whole Numbers)"] = true
+L["Short (Whole Numbers Spaced)"] = true
 L["Short Channels"] = true
 L["Shortcut to global filters."] = true
 L["Shortcuts"] = true
