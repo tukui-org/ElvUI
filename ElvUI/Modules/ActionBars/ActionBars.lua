@@ -81,32 +81,32 @@ AB.barDefaults = {
 	bar5 = {
 		page = 5,
 		bindButtons = 'MULTIACTIONBAR2BUTTON',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,-92,57',
+		position = 'BOTTOM,ElvUIParent,BOTTOM,-279,4',
 	},
 	bar6 = {
 		page = 6,
 		bindButtons = 'MULTIACTIONBAR1BUTTON',
-		position = 'BOTTOM,ElvUI_Bar2,TOP,0,2',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,264',
 	},
 	bar7 = {
 		page = 7,
 		bindButtons = 'EXTRABAR7BUTTON',
-		position = 'BOTTOM,ElvUI_Bar1,TOP,0,82',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,298',
 	},
 	bar8 = {
 		page = 8,
 		bindButtons = 'EXTRABAR8BUTTON',
-		position = 'BOTTOM,ElvUI_Bar1,TOP,0,122',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,332',
 	},
 	bar9 = {
 		page = 9,
 		bindButtons = 'EXTRABAR9BUTTON',
-		position = 'BOTTOM,ElvUI_Bar1,TOP,0,162',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,366',
 	},
 	bar10 = {
 		page = 10,
 		bindButtons = 'EXTRABAR10BUTTON',
-		position = 'BOTTOM,ElvUI_Bar1,TOP,0,202',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
 }
 
