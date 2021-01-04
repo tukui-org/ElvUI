@@ -39,14 +39,14 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 end
 
-function NP:ClassPower_PostUpdate(Cur, _, needUpdate, _, chargedIndex)
+function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedIndex)
 	if Cur and Cur > 0 then
 		self:Show()
 	else
 		self:Hide()
 	end
 
-	if needUpdate then
+	if powerType == 'COMBO_POINTS' or needUpdate then
 		NP:Update_ClassPower(self.__owner)
 	end
 

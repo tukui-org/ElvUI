@@ -324,7 +324,7 @@ function UF:PostVisibilityClassBar()
 	UF:PostVisibility_ClassBars(self.origParent or self:GetParent())
 end
 
-function UF:UpdateClassBar(current, maxBars, hasMaxChanged, _, chargedIndex)
+function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedIndex)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return end
@@ -365,10 +365,13 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, _, chargedIndex)
 		end
 	end
 
-	if chargedIndex then
-		local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
-		self[chargedIndex]:SetStatusBarColor(r, g, b)
-		self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
+	if powerType == 'COMBO_POINTS' then
+		UF:ClassPower_UpdateColor(powerType)
+		if chargedIndex then
+			local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
+			self[chargedIndex]:SetStatusBarColor(r, g, b)
+			self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
+		end
 	end
 end
 
