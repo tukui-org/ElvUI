@@ -1175,7 +1175,6 @@ function E:ToggleOptionsUI(msg)
 			buttonsHolder:Point('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
 			buttonsHolder:Point('TOPLEFT', left, 'TOPLEFT', 0, -70)
 			buttonsHolder:Point('BOTTOMRIGHT')
-			buttonsHolder:SetFrameLevel(5)
 			buttonsHolder:SetClipsChildren(true)
 			left.buttonsHolder = buttonsHolder
 
