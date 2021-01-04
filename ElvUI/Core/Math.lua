@@ -484,6 +484,14 @@ function E:FormatMoney(amount, style, textonly)
 		else
 			return format('%d%s', copper, coppername)
 		end
+	elseif style == 'SHORTSPACED' then
+		if gold > 0 then
+			return format('%d%s', BreakUpLargeNumbers(gold):gsub('%'..LARGE_NUMBER_SEPERATOR, ' '), goldname)
+		elseif silver > 0 then
+			return format('%d%s', silver, silvername)
+		else
+			return format('%d%s', copper, coppername)
+		end
 	elseif style == 'CONDENSED' then
 		if gold > 0 then
 			return format('%s%d|r.%s%02d|r.%s%02d|r', COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)

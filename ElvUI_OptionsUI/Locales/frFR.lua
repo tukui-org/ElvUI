@@ -1079,6 +1079,7 @@ L["Setup on-screen display of information bars."] = "Configuration de l'affichag
 L["Share Current Profile"] = "Partagez votre profil actuel"
 L["Share Filters"] = "Partagez les filtres"
 L["Short (Whole Numbers)"] = "Court (nombres entiers)"
+L["Short (Whole Numbers Spaced)"] = "Court (Nb. entiers, espacé)"
 L["Short Channels"] = "Raccourcis canaux"
 L["Shortcut to global filters."] = true
 L["Shortcuts"] = "Raccourcis"
