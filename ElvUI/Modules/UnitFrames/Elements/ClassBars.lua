@@ -20,6 +20,25 @@ function UF:PostVisibility_ClassBars(frame)
 	UF:Configure_InfoPanel(frame)
 end
 
+function UF:ClassPower_UpdateColor(powerType)
+	local color, r, g, b = UF.db.colors.classResources[E.myclass] or UF.db.colors.power[powerType]
+	if color then
+		r, g, b = color.r, color.g, color.b
+	else
+		color = ElvUF.colors.power[powerType]
+		r, g, b = unpack(color)
+	end
+
+	for i, bar in ipairs(self) do
+		local classCombo = (powerType == 'COMBO_POINTS' and UF.db.colors.classResources.comboPoints[i] or powerType == 'CHI' and UF.db.colors.classResources.MONK[i])
+		if classCombo then r, g, b = classCombo.r, classCombo.g, classCombo.b end
+
+		bar:SetStatusBarColor(r, g, b)
+
+		if bar.bg then bar.bg:SetVertexColor(r * .35, g * .35, b * .35) end
+	end
+end
+
 function UF:Configure_ClassBar(frame)
 	local db = frame.db
 	if not db then return end
@@ -98,6 +117,7 @@ function UF:Configure_ClassBar(frame)
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
+
 				if i == 1 then
 					bars[i]:Point('LEFT', bars)
 				else
@@ -119,21 +139,6 @@ function UF:Configure_ClassBar(frame)
 					bars[i].backdrop:Hide()
 				else
 					bars[i].backdrop:Show()
-				end
-
-				if E.myclass == 'MONK' then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
-				elseif E.myclass == 'PALADIN' or E.myclass == 'MAGE' or E.myclass == 'WARLOCK' then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
-				elseif E.myclass == 'DEATHKNIGHT' and frame.ClassBar == 'Runes' then
-					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
-					bars[i]:SetStatusBarColor(r, g, b)
-					if bars[i].bg then
-						local mu = bars[i].bg.multiplier or 1
-						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
-					end
-				else -- Combo Points for everyone else
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ComboPoints[i]))
 				end
 
 				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
@@ -306,7 +311,7 @@ function UF:Construct_ClassBar(frame)
 
 	bars.PostVisibility = UF.PostVisibilityClassBar
 	bars.PostUpdate = UF.UpdateClassBar
-	bars.UpdateColor = E.noop --We handle colors on our own in Configure_ClassBar
+	bars.UpdateColor = UF.ClassPower_UpdateColor
 	bars.UpdateTexture = E.noop --We don't use textures but statusbars, so prevent errors
 
 	bars:SetScript('OnShow', ToggleResourceBar)
@@ -351,15 +356,6 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, _, chargedIndex)
 	for i, bar in ipairs(self) do
 		if custom_backdrop then
 			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-		else
-			local r, g, b = bar:GetStatusBarColor()
-			if E.myclass == 'ROGUE' then
-				local colorTable = i == chargedIndex and ElvUF.colors.chargedComboPoint or ElvUF.colors.ComboPoints[i]
-				r, g, b = unpack(colorTable)
-			end
-
-			bar:SetStatusBarColor(r, g, b)
-			bar.bg:SetVertexColor(r * .35, g * .35, b * .35)
 		end
 
 		if maxBars and (i <= maxBars) then
@@ -367,6 +363,12 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, _, chargedIndex)
 		else
 			bar.bg:Hide()
 		end
+	end
+
+	if chargedIndex then
+		local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
+		self[chargedIndex]:SetStatusBarColor(r, g, b)
+		self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
 	end
 end
 
