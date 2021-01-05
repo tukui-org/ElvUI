@@ -29,13 +29,21 @@ function UF:ClassPower_UpdateColor(powerType)
 		r, g, b = unpack(color)
 	end
 
+	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+
 	for i, bar in ipairs(self) do
 		local classCombo = (powerType == 'COMBO_POINTS' and UF.db.colors.classResources.comboPoints[i] or powerType == 'CHI' and UF.db.colors.classResources.MONK[i])
 		if classCombo then r, g, b = classCombo.r, classCombo.g, classCombo.b end
 
 		bar:SetStatusBarColor(r, g, b)
 
-		if bar.bg then bar.bg:SetVertexColor(r * .35, g * .35, b * .35) end
+		if bar.bg then
+			if custom_backdrop then
+				bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+			else
+				bar.bg:SetVertexColor(r * .35, g * .35, b * .35)
+			end
+		end
 	end
 end
 
@@ -351,13 +359,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedIn
 		UF:Configure_ClassBar(frame, current)
 	end
 
-	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-
 	for i, bar in ipairs(self) do
-		if custom_backdrop then
-			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-		end
-
 		if maxBars and (i <= maxBars) then
 			bar.bg:Show()
 		else
