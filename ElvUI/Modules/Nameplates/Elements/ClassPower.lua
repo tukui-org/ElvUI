@@ -50,7 +50,7 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedIndex)
 		NP:Update_ClassPower(self.__owner)
 	end
 
-	if powerType == 'COMBO_POINTS' then
+	if powerType == 'COMBO_POINTS' and E.myclass == 'ROGUE' then
 		NP.ClassPower_UpdateColor(self, powerType)
 		if chargedIndex then
 			local color = NP.db.colors.classResources.chargedComboPoint

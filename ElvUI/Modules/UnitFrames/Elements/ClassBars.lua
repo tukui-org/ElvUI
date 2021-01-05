@@ -367,7 +367,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedIn
 		end
 	end
 
-	if powerType == 'COMBO_POINTS' then
+	if powerType == 'COMBO_POINTS' and E.myclass == 'ROGUE' then
 		UF.ClassPower_UpdateColor(self, powerType)
 		if chargedIndex then
 			local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
