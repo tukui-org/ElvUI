@@ -46,15 +46,18 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedIndex)
 		self:Hide()
 	end
 
-	if powerType == 'COMBO_POINTS' or needUpdate then
+	if needUpdate then
 		NP:Update_ClassPower(self.__owner)
 	end
 
-	if chargedIndex then
-		local color = NP.db.colors.classResources.chargedComboPoint
+	if powerType == 'COMBO_POINTS' then
+		NP.ClassPower_UpdateColor(self, powerType)
+		if chargedIndex then
+			local color = NP.db.colors.classResources.chargedComboPoint
 
-		self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
-		self[chargedIndex].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+			self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
+			self[chargedIndex].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+		end
 	end
 end
 
