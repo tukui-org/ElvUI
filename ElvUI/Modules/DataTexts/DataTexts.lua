@@ -214,7 +214,7 @@ function DT:BuildPanelFrame(name, db, fromInit)
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
 	Panel:SetPoint('CENTER')
-	Panel:SetSize(db.width, db.height)
+	Panel:SetSize(db.width or 300, db.height or 22)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -227,7 +227,7 @@ function DT:BuildPanelFrame(name, db, fromInit)
 		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'datatexts,panels')
 	end
 
-	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
+	DT:RegisterPanel(Panel, db.numPoints or 3, db.tooltipAnchor or 'ANCHOR_TOPLEFT', db.tooltipXOffset or -17, db.tooltipYOffset or 4, db.growth == 'VERTICAL')
 
 	if not fromInit then
 		DT:UpdatePanelAttributes(name, db)
