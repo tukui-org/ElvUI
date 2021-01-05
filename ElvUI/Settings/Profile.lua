@@ -5,7 +5,6 @@ P.gridSize = 64
 P.layoutSetting = 'tank'
 P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
-P.convertPages = false
 
 --Core
 P.general = {
