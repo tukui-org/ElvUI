@@ -54,7 +54,7 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedIndex)
 		local color = NP.db.colors.classResources.chargedComboPoint
 
 		self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
-		self[chargedIndex].bg:SetVertexColor(color.r * .35, color.g * .35, color.b * .35)
+		self[chargedIndex].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
 	end
 end
 
