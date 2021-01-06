@@ -166,9 +166,9 @@ function B:LoadBagBar()
 		b:HookScript('OnEnter', OnEnter)
 		b:HookScript('OnLeave', OnLeave)
 
-		if not useMasque then
+		--if not useMasque then
 			B:SkinBag(b)
-		end
+		--end
 
 		tinsert(B.BagBar.buttons, b)
 	end
