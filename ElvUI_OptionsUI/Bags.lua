@@ -103,6 +103,7 @@ Bags.args.colorGroup.args.general.inline = true
 Bags.args.colorGroup.args.general.args.showAssignedColor = ACH:Toggle(L["Show Assigned Color"], L["Colors the border according to the type of items assigned to the bag."], 1)
 Bags.args.colorGroup.args.general.args.qualityColors = ACH:Toggle(L["Show Quality Color"], L["Colors the border according to the Quality of the Item."], 2)
 Bags.args.colorGroup.args.general.args.specialtyColors = ACH:Toggle(L["Show Special Bags Color"], nil, 3)
+Bags.args.colorGroup.args.general.args.colorBackdrop = ACH:Toggle(L["Color Backdrop"], nil, 4)
 
 Bags.args.colorGroup.args.profession = ACH:Group(L["Profession Bags"], nil, 1)
 Bags.args.colorGroup.args.profession.inline = true

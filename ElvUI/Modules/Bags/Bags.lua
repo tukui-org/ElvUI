@@ -475,9 +475,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local link = GetContainerItemLink(bagID, slotID)
 
 	slot:Show()
-	if slot.questIcon then
-		slot.questIcon:Hide()
-	end
 
 	slot.isJunk = (slot.rarity and slot.rarity == LE_ITEM_QUALITY_POOR) and not noValue
 	slot.junkDesaturate = slot.isJunk and E.db.bags.junkDesaturate
@@ -489,26 +486,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	local color = E.db.bags.countFontColor
 	slot.Count:SetTextColor(color.r, color.g, color.b)
-
-	if slot.JunkIcon then
-		if slot.isJunk and E.db.bags.junkIcon then
-			slot.JunkIcon:Show()
-		else
-			slot.JunkIcon:Hide()
-		end
-	end
-
-	if slot.ScrapIcon then
-		B:UpdateItemScrapIcon(slot)
-	end
-
-	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
-
-	if slot.UpgradeIcon then
-		--Check if item is an upgrade and show/hide upgrade icon accordingly
-		B:UpdateItemUpgradeIcon(slot)
-	end
-
 	slot.itemLevel:SetText('')
 	slot.bindType:SetText('')
 	slot.centerText:SetText('')
@@ -580,14 +557,17 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
 
+	if slot.questIcon then slot.questIcon:SetShown(questId and not isActiveQuest) end
+	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and E.db.bags.junkIcon) end
+	if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
+	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
+
+	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
+
 	if B.db.specialtyColors and professionColors then
 		r, g, b, a = unpack(professionColors)
 	elseif questId and not isActiveQuest then
 		r, g, b, a = unpack(B.QuestColors.questStarter)
-
-		if slot.questIcon then
-			slot.questIcon:Show()
-		end
 	elseif questId or isQuestItem then
 		r, g, b, a = unpack(B.QuestColors.questItem)
 	elseif assignedColor then
@@ -595,6 +575,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 	elseif not link or B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
+	end
+
+	if forceColor and B.db.colorBackdrop then
+		slot:SetBackdropColor(r, g, b, a)
+	else
+		slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 	end
 
 	slot.newItemGlow:SetVertexColor(r, g, b, a or 1)
@@ -955,7 +941,6 @@ function B:Layout(isBank)
 				f.totalSlots = f.totalSlots + 1
 
 				f.Bags[bagID][slotID]:SetID(slotID)
-				f.Bags[bagID][slotID]:SetTemplate(E.db.bags.transparent and 'Transparent', true)
 				f.Bags[bagID][slotID]:SetSize(buttonSize, buttonSize)
 
 				if f.Bags[bagID][slotID].ElvUIFilterIcon then
@@ -1052,11 +1037,9 @@ function B:UpdateReagentSlot(slotID)
 	if not slot then return end
 
 	slot:Show()
-	if slot.questIcon then
-		slot.questIcon:Hide()
-	end
 
 	slot.name, slot.itemID, slot.rarity, slot.locked = nil, nil, nil, locked
+
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
 	SetItemButtonDesaturated(slot, slot.locked)
@@ -1087,15 +1070,15 @@ function B:UpdateReagentSlot(slotID)
 
 	if questId and not isActiveQuest then
 		r, g, b, a = unpack(B.QuestColors.questStarter)
-
-		if slot.questIcon then
-			slot.questIcon:Show()
-		end
 	elseif questId or isQuestItem then
 		r, g, b, a = unpack(B.QuestColors.questItem)
 	elseif not link or B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
+	end
+
+	if slot.questIcon then
+		slot.questIcon:SetShown(questId and not isActiveQuest)
 	end
 
 	slot.newItemGlow:SetVertexColor(r, g, b, a or 1)
