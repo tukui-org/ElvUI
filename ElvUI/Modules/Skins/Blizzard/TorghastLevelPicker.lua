@@ -16,7 +16,7 @@ function S:Blizzard_TorghastLevelPicker()
 	S:HandleNextPrevButton(frame.Pager.NextPage)
 	S:HandleButton(frame.OpenPortalButton)
 
-	hooksecurefunc(frame, "ScrollAndSelectHighestAvailableLayer", function(self)
+	hooksecurefunc(frame, 'ScrollAndSelectHighestAvailableLayer', function(self)
 		for layer in self.gossipOptionsPool:EnumerateActive() do
 			if not layer.IsSkinned then
 				layer.SelectedBorder:SetAtlas('charactercreate-ring-select')
