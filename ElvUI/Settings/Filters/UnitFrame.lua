@@ -925,6 +925,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
+		-- Castle Nathria
+		[329808] = Defaults(), -- Hardened Stone Form / Grashaal
+		[329636] = Defaults(), -- Hardened Stone Form / Kaal
 		-- Mythic+ General
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
