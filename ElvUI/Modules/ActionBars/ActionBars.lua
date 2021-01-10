@@ -537,6 +537,38 @@ function AB:UpdateBar1Paging()
 	end
 end
 
+function AB:ApplyFontToAll()
+	for i = 1, 10 do
+		for _, object in pairs({ 'hotkey', 'macro', 'count'}) do
+			E.db.actionbar['bar'..i][object..'Font'] = E.db.actionbar.font
+			E.db.actionbar['bar'..i][object..'FontOutline'] = E.db.actionbar.fontOutline
+			E.db.actionbar['bar'..i][object..'FontSize'] = E.db.actionbar.fontSize
+		end
+	end
+
+	for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton' }) do
+		for _, object in pairs({ 'hotkey', 'macro', 'count'}) do
+			E.db.actionbar[bar][object..'Font'] = E.db.actionbar.font
+			E.db.actionbar[bar][object..'FontOutline'] = E.db.actionbar.fontOutline
+			E.db.actionbar[bar][object..'FontSize'] = E.db.actionbar.fontSize
+		end
+	end
+
+	AB:UpdateButtonSettings()
+end
+
+function AB:ApplyTextOption(option, value)
+	for i = 1, 10 do
+		E.db.actionbar['bar'..i][option] = value
+	end
+
+	for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton' }) do
+		E.db.actionbar[bar][option] = value
+	end
+
+	AB:UpdateButtonSettings()
+end
+
 function AB:UpdateButtonSettings(specific)
 	if not E.private.actionbar.enable then return end
 

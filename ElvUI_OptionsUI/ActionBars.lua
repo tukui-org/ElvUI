@@ -119,7 +119,28 @@ ActionBar.args.general.args.fontGroup.inline = true
 ActionBar.args.general.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 ActionBar.args.general.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 ActionBar.args.general.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
-ActionBar.args.general.args.fontGroup.args.applyFontToAll = ACH:Execute(L["Apply Font To All"], nil, 4, function() for i = 1, 10 do for _, object in pairs({ 'hotkey', 'macro', 'count'}) do E.db.actionbar['bar'..i][object..'Font'] = E.db.actionbar.font E.db.actionbar['bar'..i][object..'FontOutline'] = E.db.actionbar.fontOutline E.db.actionbar['bar'..i][object..'FontSize'] = E.db.actionbar.fontSize end end for _, bar in pairs({ 'barPet', 'stanceBar', 'extraActionButton', 'zoneActionButton', 'vehicleExitButton' }) do for _, object in pairs({ 'hotkey', 'macro', 'count'}) do E.db.actionbar[bar][object..'Font'] = E.db.actionbar.font E.db.actionbar[bar][object..'FontOutline'] = E.db.actionbar.fontOutline E.db.actionbar[bar][object..'FontSize'] = E.db.actionbar.fontSize end end AB:UpdateButtonSettings() end)
+ActionBar.args.general.args.fontGroup.args.applyFontToAll = ACH:Execute(L["Apply Font To All"], nil, 4, function() AB:ApplyFontToAll() end)
+
+ActionBar.args.general.args.applyGroup = ACH:Group(L["Apply To All"], nil, 22)
+ActionBar.args.general.args.applyGroup.inline = true
+
+ActionBar.args.general.args.applyGroup.args.hotkeyTextGroup = ACH:Group(L["Keybind Text"], nil, 1, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:ApplyTextOption(info[#info], value) end)
+ActionBar.args.general.args.applyGroup.args.hotkeyTextGroup.inline = true
+ActionBar.args.general.args.applyGroup.args.hotkeyTextGroup.args.hotkeyTextPosition = ACH:Select(L["Position"], nil, 4, textAnchors)
+ActionBar.args.general.args.applyGroup.args.hotkeyTextGroup.args.hotkeyTextXOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -24, max = 24, step = 1 })
+ActionBar.args.general.args.applyGroup.args.hotkeyTextGroup.args.hotkeyTextYOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -24, max = 24, step = 1 })
+
+ActionBar.args.general.args.applyGroup.args.countTextGroup = ACH:Group(L["Count Text"], nil, 2, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:ApplyTextOption(info[#info], value) end)
+ActionBar.args.general.args.applyGroup.args.countTextGroup.inline = true
+ActionBar.args.general.args.applyGroup.args.countTextGroup.args.countTextPosition = ACH:Select(L["Position"], nil, 4, textAnchors)
+ActionBar.args.general.args.applyGroup.args.countTextGroup.args.countTextXOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -24, max = 24, step = 1 })
+ActionBar.args.general.args.applyGroup.args.countTextGroup.args.countTextYOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -24, max = 24, step = 1 })
+
+ActionBar.args.general.args.applyGroup.args.macroTextGroup = ACH:Group(L["Macro Text"], nil, 3, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:ApplyTextOption(info[#info], value) end)
+ActionBar.args.general.args.applyGroup.args.macroTextGroup.inline = true
+ActionBar.args.general.args.applyGroup.args.macroTextGroup.args.macroTextPosition = ACH:Select(L["Position"], nil, 4, textAnchors)
+ActionBar.args.general.args.applyGroup.args.macroTextGroup.args.macroTextXOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -24, max = 24, step = 1 })
+ActionBar.args.general.args.applyGroup.args.macroTextGroup.args.macroTextYOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -24, max = 24, step = 1 })
 
 ActionBar.args.general.args.colorGroup = ACH:Group(L["COLORS"], nil, 30, nil, function(info) local t = E.db.actionbar[info[#info]] local d = P.actionbar[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.actionbar[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateButtonSettings() end, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
 ActionBar.args.general.args.colorGroup.inline = true
