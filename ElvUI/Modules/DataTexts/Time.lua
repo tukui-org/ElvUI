@@ -328,6 +328,8 @@ local function OnEnter()
 		DT.tooltip:AddLine(' ')
 	end
 
+	DT.tooltip:AddDoubleLine(L["Daily Reset"], SecondsToTime(C_DateAndTime.GetSecondsUntilDailyReset()), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+
 	if AmPm == -1 then
 		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
