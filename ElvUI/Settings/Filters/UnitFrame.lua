@@ -945,6 +945,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		-- The Necrotic Wake
 		[321754] = Defaults(), -- Icebound Aegis
 		[343558] = Defaults(), -- Morbid Fixation
+		[343470] = Defaults(), -- Boneshatter Shield
 		-- Theater of Pain
 		[331510] = Defaults(), -- Death Wish
 		[333241] = Defaults(), -- Raging Tantrum
