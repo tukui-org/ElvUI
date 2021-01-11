@@ -1723,6 +1723,7 @@ P.unitframe = {
 			disableMouseoverGlow = false,
 			disableTargetGlow = false,
 			disableFocusGlow = false,
+			buffIndicator = CopyTable(UF_AuraWatch),
 			health = CopyTable(UF_Health),
 			fader = CopyTable(UF_Fader),
 			power = CopyTable(UF_Power),
