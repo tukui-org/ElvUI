@@ -114,7 +114,7 @@ ActionBar.args.general.args.generalGroup.args.equippedItem = ACH:Toggle(L["Equip
 ActionBar.args.general.args.generalGroup.args.useRangeColorText = ACH:Toggle(L["Color Keybind Text"], L["Color Keybind Text when Out of Range, instead of the button."], 14)
 ActionBar.args.general.args.generalGroup.args.handleOverlay = ACH:Toggle(L["Action Button Glow"], nil, 15)
 
-ActionBar.args.general.args.fontGroup = ACH:Group(L["Font Group"], nil, 20)
+ActionBar.args.general.args.fontGroup = ACH:Group(L["Font Group"], nil, 21)
 ActionBar.args.general.args.fontGroup.inline = true
 ActionBar.args.general.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 ActionBar.args.general.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
