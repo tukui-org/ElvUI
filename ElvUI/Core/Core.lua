@@ -345,6 +345,53 @@ function E:UpdateMedia()
 	E:UpdateBlizzardFonts()
 end
 
+function E:GeneralMedia_ApplyToAll()
+	local font = E.db.general.font
+	local fontSize = E.db.general.fontSize
+
+	E.db.bags.itemLevelFont = font
+	E.db.bags.itemLevelFontSize = fontSize
+	E.db.bags.countFont = font
+	E.db.bags.countFontSize = fontSize
+	E.db.nameplates.font = font
+	--E.db.nameplate.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	--E.db.nameplate.buffs.font = font
+	--E.db.nameplate.buffs.fontSize = fontSize  --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	--E.db.nameplate.debuffs.font = font
+	--E.db.nameplate.debuffs.fontSize = fontSize   --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	E.db.actionbar.font = font
+	--E.db.actionbar.fontSize = fontSize	--This may not look good if a big font size is chosen
+	E.db.auras.buffs.countFont = font
+	E.db.auras.buffs.countFontSize = fontSize
+	E.db.auras.buffs.timeFont = font
+	E.db.auras.buffs.timeFontSize = fontSize
+	E.db.auras.debuffs.countFont = font
+	E.db.auras.debuffs.countFontSize = fontSize
+	E.db.auras.debuffs.timeFont = font
+	E.db.auras.debuffs.timeFontSize = fontSize
+	E.db.chat.font = font
+	E.db.chat.fontSize = fontSize
+	E.db.chat.tabFont = font
+	E.db.chat.tabFontSize = fontSize
+	E.db.datatexts.font = font
+	E.db.datatexts.fontSize = fontSize
+	E.db.general.minimap.locationFont = font
+	E.db.tooltip.font = font
+	E.db.tooltip.fontSize = fontSize
+	E.db.tooltip.headerFontSize = fontSize
+	E.db.tooltip.textFontSize = fontSize
+	E.db.tooltip.smallTextFontSize = fontSize
+	E.db.tooltip.healthBar.font = font
+	--E.db.tooltip.healthbar.fontSize = fontSize -- Size is smaller than default
+	E.db.unitframe.font = font
+	--E.db.unitframe.fontSize = fontSize  -- Size is smaller than default
+	E.db.unitframe.units.party.rdebuffs.font = font
+	E.db.unitframe.units.raid.rdebuffs.font = font
+	E.db.unitframe.units.raid40.rdebuffs.font = font
+
+	E:StaggeredUpdateAll(nil, true)
+end
+
 do	--Update font/texture paths when they are registered by the addon providing them
 	--This helps fix most of the issues with fonts or textures reverting to default because the addon providing them is loading after ElvUI.
 	--We use a wrapper to avoid errors in :UpdateMedia because 'self' is passed to the function with a value other than ElvUI.
