@@ -668,6 +668,8 @@ function S:Blizzard_ChallengesUI()
 	KeyStoneFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(KeyStoneFrame.CloseButton)
 	S:HandleButton(KeyStoneFrame.StartButton)
+	
+	S:HandleIcon(KeyStoneFrame.KeystoneSlot.Texture, true)
 
 	hooksecurefunc('ChallengesFrame_Update', function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
@@ -690,6 +692,9 @@ function S:Blizzard_ChallengesUI()
 	hooksecurefunc(KeyStoneFrame, 'Reset', function(self)
 		self:GetRegions():SetAlpha(0)
 		self.InstructionBackground:SetAlpha(0)
+		self.KeystoneSlotGlow:Hide()
+		self.SlotBG:Hide()
+		self.KeystoneFrame:Hide()
 	end)
 
 	hooksecurefunc(KeyStoneFrame, 'OnKeystoneSlotted', HandleAffixIcons)
