@@ -1171,7 +1171,7 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, fr
 	btn.isSkinned = true
 end
 
-	-- Handle collapse
+-- Handle collapse
 local function UpdateCollapseTexture(texture, collapsed)
 	local tex = collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
 	texture:SetTexture(tex, true)

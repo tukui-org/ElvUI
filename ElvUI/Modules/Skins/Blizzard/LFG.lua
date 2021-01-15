@@ -86,15 +86,15 @@ end
 
 local function HandleAffixIcons(self)
 	local MapID, _, PowerLevel = C_ChallengeMode_GetSlottedKeystoneInfo()
-	
-	if (MapID) then
+
+	if MapID then
 		local Name = C_ChallengeMode_GetMapUIInfo(MapID)
-		
-		if (Name and PowerLevel) then
-			self.DungeonName:SetText(Name.. "|cffffffff - |r" .. "(" .. PowerLevel .. ")")
+
+		if Name and PowerLevel then
+			self.DungeonName:SetText(Name.. '|cffffffff - |r' .. '(' .. PowerLevel .. ')')
 		end
-		
-		self.PowerLevel:SetText("")
+
+		self.PowerLevel:SetText('')
 	end
 
 	for _, frame in ipairs(self.Affixes) do
@@ -107,12 +107,10 @@ local function HandleAffixIcons(self)
 			local _, _, filedataid = C_ChallengeMode_GetAffixInfo(frame.affixID)
 			frame.Portrait:SetTexture(filedataid)
 		end
-		
+
 		S:HandleIcon(frame.Portrait, true)
-		
-		frame.Percent:FontTemplate(E.media.normFont, 16, "OUTLINE")
-		frame.Percent:ClearAllPoints()
-		frame.Percent:Point("TOP", frame, 0, 22)
+
+		frame.Percent:FontTemplate(E.media.normFont, 16, 'OUTLINE')
 	end
 end
 
@@ -688,14 +686,9 @@ function S:Blizzard_ChallengesUI()
 	S:HandleCloseButton(KeyStoneFrame.CloseButton)
 	S:HandleButton(KeyStoneFrame.StartButton)
 	S:HandleIcon(KeyStoneFrame.KeystoneSlot.Texture, true)
-	
-	KeyStoneFrame.DungeonName:FontTemplate(E.media.normFont, 28, "OUTLINE")
-	KeyStoneFrame.DungeonName:ClearAllPoints()
-	KeyStoneFrame.DungeonName:Point("CENTER", KeyStoneFrame, 0, -88)
 
-	KeyStoneFrame.TimeLimit:FontTemplate(E.media.normFont, 22, "OUTLINE")
-	KeyStoneFrame.TimeLimit:ClearAllPoints()
-	KeyStoneFrame.TimeLimit:Point("BOTTOM", KeyStoneFrame.DungeonName, 0, -32)
+	KeyStoneFrame.DungeonName:FontTemplate(E.media.normFont, 26, 'OUTLINE')
+	KeyStoneFrame.TimeLimit:FontTemplate(E.media.normFont, 20, 'OUTLINE')
 
 	hooksecurefunc('ChallengesFrame_Update', function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
