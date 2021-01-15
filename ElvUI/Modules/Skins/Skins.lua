@@ -1171,6 +1171,49 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, fr
 	btn.isSkinned = true
 end
 
+	-- Handle collapse
+local function UpdateCollapseTexture(texture, collapsed)
+	local tex = collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
+	texture:SetTexture(tex, true)
+end
+
+local function ResetCollapseTexture(self, texture)
+	if self.settingTexture then return end
+	self.settingTexture = true
+	self:SetNormalTexture('')
+
+	if texture and texture ~= '' then
+		if strfind(texture, 'Plus') or strfind(texture, 'Closed') then
+			self.__texture:DoCollapse(true)
+		elseif strfind(texture, 'Minus') or strfind(texture, 'Open') then
+			self.__texture:DoCollapse(false)
+		end
+		self.backdrop:Show()
+	else
+		self.backdrop:Hide()
+	end
+	self.settingTexture = nil
+end
+
+function S:HandleCollapseTexture(button)
+	button:SetHighlightTexture('')
+	button:SetPushedTexture('')
+
+	button:CreateBackdrop()
+	button.backdrop:ClearAllPoints()
+	button.backdrop:SetSize(12, 12)
+	button.backdrop:SetPoint('TOPLEFT', button:GetNormalTexture())
+
+	button.__texture = button.backdrop:CreateTexture(nil, 'OVERLAY')
+	button.__texture:SetPoint('CENTER')
+	button.__texture.DoCollapse = UpdateCollapseTexture
+
+	button:HookScript('OnEnter', S.SetModifiedBackdrop)
+	button:HookScript('OnLeave', S.SetOriginalBackdrop)
+
+	hooksecurefunc(button, 'SetNormalTexture', ResetCollapseTexture)
+end
+
 -- World Map related Skinning functions used for WoW 8.0
 function S:WorldMapMixin_AddOverlayFrame(frame, templateName)
 	S[templateName](frame.overlayFrames[#frame.overlayFrames])
