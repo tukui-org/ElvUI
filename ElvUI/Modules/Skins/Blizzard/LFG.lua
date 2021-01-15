@@ -15,6 +15,8 @@ local C_LFGList_GetApplicationInfo = C_LFGList.GetApplicationInfo
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
+local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
+local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
 
 local function LFDQueueFrameRoleButtonIconOnShow(self)
 	LBG.ShowOverlayGlow(self:GetParent().checkButton)
@@ -83,6 +85,18 @@ local function SetRoleIcon(self, resultID)
 end
 
 local function HandleAffixIcons(self)
+	local MapID, _, PowerLevel = C_ChallengeMode_GetSlottedKeystoneInfo()
+	
+	if (MapID) then
+		local Name = C_ChallengeMode_GetMapUIInfo(MapID)
+		
+		if (Name and PowerLevel) then
+			self.DungeonName:SetText(Name.. "|cffffffff - |r" .. "(" .. PowerLevel .. ")")
+		end
+		
+		self.PowerLevel:SetText("")
+	end
+
 	for _, frame in ipairs(self.Affixes) do
 		frame.Border:SetTexture()
 		frame.Portrait:SetTexture()
@@ -93,7 +107,12 @@ local function HandleAffixIcons(self)
 			local _, _, filedataid = C_ChallengeMode_GetAffixInfo(frame.affixID)
 			frame.Portrait:SetTexture(filedataid)
 		end
-		frame.Portrait:SetTexCoord(unpack(E.TexCoords))
+		
+		S:HandleIcon(frame.Portrait, true)
+		
+		frame.Percent:FontTemplate(E.media.normFont, 16, "OUTLINE")
+		frame.Percent:ClearAllPoints()
+		frame.Percent:Point("TOP", frame, 0, 22)
 	end
 end
 
@@ -668,8 +687,15 @@ function S:Blizzard_ChallengesUI()
 	KeyStoneFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(KeyStoneFrame.CloseButton)
 	S:HandleButton(KeyStoneFrame.StartButton)
-	
 	S:HandleIcon(KeyStoneFrame.KeystoneSlot.Texture, true)
+	
+	KeyStoneFrame.DungeonName:FontTemplate(E.media.normFont, 28, "OUTLINE")
+	KeyStoneFrame.DungeonName:ClearAllPoints()
+	KeyStoneFrame.DungeonName:Point("CENTER", KeyStoneFrame, 0, -88)
+
+	KeyStoneFrame.TimeLimit:FontTemplate(E.media.normFont, 22, "OUTLINE")
+	KeyStoneFrame.TimeLimit:ClearAllPoints()
+	KeyStoneFrame.TimeLimit:Point("BOTTOM", KeyStoneFrame.DungeonName, 0, -32)
 
 	hooksecurefunc('ChallengesFrame_Update', function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
@@ -695,6 +721,7 @@ function S:Blizzard_ChallengesUI()
 		self.KeystoneSlotGlow:Hide()
 		self.SlotBG:Hide()
 		self.KeystoneFrame:Hide()
+		self.Divider:Hide()
 	end)
 
 	hooksecurefunc(KeyStoneFrame, 'OnKeystoneSlotted', HandleAffixIcons)
