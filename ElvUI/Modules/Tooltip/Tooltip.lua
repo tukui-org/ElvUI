@@ -559,6 +559,26 @@ end
 function TT:GameTooltip_OnTooltipCleared(tt)
 	if tt:IsForbidden() then return end
 	tt.itemCleared = nil
+
+	if tt.ItemTooltip then
+		tt.ItemTooltip:Hide()
+	end
+end
+
+function TT:EmbeddedItemTooltip_ID(tt, id)
+	if tt:IsForbidden() then return end
+	if tt.Tooltip:IsShown() and TT:IsModKeyDown() then
+		tt.Tooltip:AddLine(format(IDLine, _G.ID, id))
+		tt.Tooltip:Show()
+	end
+end
+
+function TT:EmbeddedItemTooltip_QuestReward(tt)
+	if tt:IsForbidden() then return end
+	if tt.Tooltip:IsShown() and TT:IsModKeyDown() then
+		tt.Tooltip:AddLine(format(IDLine, _G.ID, tt.itemID or tt.spellID))
+		tt.Tooltip:Show()
+	end
 end
 
 function TT:GameTooltip_OnTooltipSetItem(tt)
@@ -748,6 +768,7 @@ function TT:QuestID(tt)
 	local id = tt.questLogIndex and C_QuestLog_GetQuestIDForLogIndex(tt.questLogIndex) or tt.questID
 	if id and TT:IsModKeyDown() then
 		GameTooltip:AddLine(format(IDLine, _G.ID, id))
+		if GameTooltip.ItemTooltip:IsShown() then GameTooltip:AddLine(' ') end
 		GameTooltip:Show()
 	end
 end
@@ -844,6 +865,11 @@ function TT:Initialize()
 
 	TT:SecureHook('SetItemRef')
 	TT:SecureHook('GameTooltip_SetDefaultAnchor')
+	TT:SecureHook('EmbeddedItemTooltip_SetItemByID', 'EmbeddedItemTooltip_ID')
+	TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
+	TT:SecureHook('EmbeddedItemTooltip_SetCurrencyByID', 'EmbeddedItemTooltip_ID')
+	TT:SecureHook('EmbeddedItemTooltip_SetItemByQuestReward', 'EmbeddedItemTooltip_QuestReward')
+	TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
 	TT:SecureHook(GameTooltip, 'SetToyByItemID')
 	TT:SecureHook(GameTooltip, 'SetCurrencyToken')
 	TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
