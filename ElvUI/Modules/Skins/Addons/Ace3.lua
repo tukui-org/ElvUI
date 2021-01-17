@@ -152,6 +152,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		highlight:SetTexture()
 
 		hooksecurefunc(widget, 'SetDisabled', S.Ace3_CheckBoxSetDisabled)
+		hooksecurefunc(widget, 'SetType', function(_, type) if type == 'radio' then checkbg:SetSize(20, 20) end end)
 
 		if E.private.skins.checkBoxSkin then
 			S.Ace3_CheckBoxSetDesaturated(check, check:GetDesaturation())
