@@ -9,13 +9,7 @@ local tonumber = tonumber
 local GameTooltip = _G.GameTooltip
 local GameTooltipStatusBar = _G.GameTooltipStatusBar
 
-local modifierValues = {
-	SHOW	= L["Show"],
-	HIDE	= L["Hide"],
-	SHIFT	= L["SHIFT_KEY_TEXT"],
-	CTRL	= L["CTRL_KEY_TEXT"],
-	ALT		= L["ALT_KEY_TEXT"],
-}
+local modifierValues = { SHOW = L["Show"], HIDE = L["Hide"], SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
 
 E.Options.args.tooltip = ACH:Group(L["Tooltip"], nil, 2, 'tree', function(info) return E.db.tooltip[info[#info]] end, function(info, value) E.db.tooltip[info[#info]] = value; end)
 E.Options.args.tooltip.args.intro = ACH:Description(L["TOOLTIP_DESC"], 1)
@@ -56,7 +50,7 @@ E.Options.args.tooltip.args.healthBar.args.text = ACH:Toggle(L["Text"], nil, 2, 
 E.Options.args.tooltip.args.healthBar.args.height = ACH:Range(L["Height"], nil, 3, { min = 1, max = 15, step = 1 }, nil, nil, function(_, value) E.db.tooltip.healthBar.height = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar:Height(value); end end, function() return E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
 E.Options.args.tooltip.args.healthBar.args.font = ACH:SharedMediaFont(L["Font"], nil, 4, nil, nil, function(_, value) E.db.tooltip.healthBar.font = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text or E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
 E.Options.args.tooltip.args.healthBar.args.fontSize = ACH:Range(L["FONT_SIZE"], nil, 5, C.Values.FontSize, nil, nil, function(_, value) E.db.tooltip.healthBar.fontSize = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text or E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
-E.Options.args.tooltip.args.healthBar.args.fontOutline = ACH:Select(L["Font Outline"], nil, 6, C.Values.FontFlags, nil, nil, nil, function(_, value) E.db.tooltip.healthBar.fontOutline = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text or E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
+E.Options.args.tooltip.args.healthBar.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 6, nil, nil, function(_, value) E.db.tooltip.healthBar.fontOutline = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text or E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
 
 E.Options.args.tooltip.args.factionColors = ACH:Group(L["Custom Faction Colors"], nil, nil, nil, function(info) local v = tonumber(info[#info]) local t = E.db.tooltip.factionColors[v] local d = P.tooltip.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local v = tonumber(info[#info]); local t = E.db.tooltip.factionColors[v]; t.r, t.g, t.b = r, g, b end)
 E.Options.args.tooltip.args.factionColors.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], nil, 0, nil, nil, nil, function() return E.db.tooltip.useCustomFactionColors end, function(_, value) E.db.tooltip.useCustomFactionColors = value; end)
