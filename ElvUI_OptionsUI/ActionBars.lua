@@ -294,4 +294,3 @@ for i = 1, 10 do
 end
 
 ActionBar.args.playerBars.args.bar1.args.pagingReset = ACH:Execute(L["Reset Action Paging"], nil, 2, function() E.db.actionbar.bar1.paging[E.myclass] = P.actionbar.bar1.paging[E.myclass] AB:UpdateButtonSettings('bar1') end, nil, L["You are about to reset paging. Are you sure?"])
-ActionBar.args.playerBars.args.bar2.args.enabled.set = function(_, value) E.db.actionbar.bar2.enabled = value; AB:PositionAndSizeBar('bar2') AB:UpdateBar1Paging() AB:PositionAndSizeBar('bar1') end
