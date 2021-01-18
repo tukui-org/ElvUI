@@ -319,19 +319,8 @@ function AB:PositionAndSizeBar(barName)
 	RegisterStateDriver(bar, 'page', page)
 	bar:SetAttribute('page', page)
 
-	if not bar.initialized then
-		bar.initialized = true
-
-		if defaults.conditions and strfind(defaults.conditions, '[form,noform]') then
-			bar:SetAttribute('newCondition', gsub(defaults.conditions, ' %[form,noform%] 0; ', ''))
-			bar:SetAttribute('hasTempBar', true)
-		else
-			bar:SetAttribute('hasTempBar', false)
-		end
-	end
-
-	if db.enabled or not bar.initialized then
-		visibility = gsub(visibility, '[\n\r]','')
+	if db.enabled then
+		visibility = gsub(visibility, '[\n\r]', '')
 
 		E:EnableMover(bar.mover:GetName())
 		RegisterStateDriver(bar, 'visibility', visibility)
@@ -392,7 +381,8 @@ function AB:CreateBar(id)
 		AB:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
 	end
 
-	if defaults.conditions and strfind(defaults.conditions, '[form]') then
+	if defaults.conditions and strfind(defaults.conditions, '[form,noform]') then
+		bar:SetAttribute('newCondition', gsub(defaults.conditions, ' %[form,noform%] 0; ', ''))
 		bar:SetAttribute('hasTempBar', true)
 	else
 		bar:SetAttribute('hasTempBar', false)
