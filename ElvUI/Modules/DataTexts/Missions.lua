@@ -81,7 +81,16 @@ local function LandingPage(_, ...)
 		return
 	end
 
-	HideUIPanel(_G.GarrisonLandingPage)
+	if _G.GarrisonLandingPage then
+		HideUIPanel(_G.GarrisonLandingPage)
+
+		for _, frame in pairs({ 'SoulbindPanel', 'CovenantCallings', 'ArdenwealdGardeningPanel' }) do
+			if _G.GarrisonLandingPage[frame] then
+				_G.GarrisonLandingPage[frame]:Hide()
+			end
+		end
+	end
+
 	ShowGarrisonLandingPage(...)
 end
 
