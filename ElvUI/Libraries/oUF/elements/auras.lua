@@ -88,13 +88,13 @@ local floor, min = math.floor, math.min
 
 -- ElvUI adds IsForbidden checks
 local function UpdateTooltip(self)
-	if GameTooltip:IsForbidden() then return end
+	if(GameTooltip:IsForbidden()) then return end
 
 	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local function onEnter(self)
-	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
+	if(GameTooltip:IsForbidden() or not self:IsVisible()) then return end
 
 	-- Avoid parenting GameTooltip to frames with anchoring restrictions,
 	-- otherwise it'll inherit said restrictions which will cause issues with
@@ -104,7 +104,7 @@ local function onEnter(self)
 end
 
 local function onLeave()
-	if GameTooltip:IsForbidden() then return end
+	if(GameTooltip:IsForbidden()) then return end
 
 	GameTooltip:Hide()
 end
@@ -255,7 +255,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			end
 
 			if(button.stealable) then
-				if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit(unit, 'player')) then
+				if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit)) then
 					button.stealable:Show()
 				else
 					button.stealable:Hide()
