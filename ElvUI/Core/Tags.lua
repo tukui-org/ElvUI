@@ -427,6 +427,17 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		ElvUF.Tags.Methods[format('mana:%s:shortvalue', tagTextFormat)] = function(unit)
 			return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA), nil, true)
 		end
+
+		ElvUF.Tags.Events[format('additionalmana:%s:shortvalue', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
+		ElvUF.Tags.Methods[format('additionalmana:%s:shortvalue', tagTextFormat)] = function(unit)
+			local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
+			if barIndex and barIndex[UnitPowerType(unit)] then
+				local min = UnitPower(unit, SPELL_POWER_MANA)
+				if min ~= 0 and tagTextFormat ~= 'deficit' then
+					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA), nil, true)
+				end
+			end
+		end
 	end
 end
 
