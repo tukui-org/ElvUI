@@ -2,81 +2,103 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, 'oUF not loaded')
 
-local trinketSpells = {
-	[336126] = 120, -- Sinful Gladiator's Medallion (PvP Trinket 9.0.2)
-	[336135] = 60, -- Sinful Gladiator's Sigil of Adaptation (PvP Trinket 9.0.2)
-	[311430] = 120, -- Re-Arm (PvP Trinket 9.0.1)
-	[59752] = 180, -- Will to Survive (Human Racial)
-	[7744] = 120, -- Will of the Forsaken (Undead Racial)
-}
+local function GetTrinketIconBySpellID(spellID)
+	local _, _, spellTexture = GetSpellInfo(spellID)
+	return spellTexture
+end
 
-local GetTrinketIcon = function(unit)
+local function GetTrinketIconByFaction(unit)
 	if UnitFactionGroup(unit) == "Horde" then
-		return "Interface\\Icons\\INV_Jewelry_TrinketPVP_02"
+		return [[Interface\Icons\INV_Jewelry_Necklace_38]]
+	elseif UnitFactionGroup(unit) == "Alliance" then
+		return [[Interface\Icons\INV_Jewelry_Necklace_37]]
 	else
-		return "Interface\\Icons\\INV_Jewelry_TrinketPVP_01"
+		return [[Interface\Icons\INV_MISC_QUESTIONMARK]]
 	end
 end
 
-local Update = function(self, event, ...)
-	local _, instanceType = IsInInstance();
-	if instanceType ~= 'arena' then
-		self.Trinket:Hide();
+local function UpdateTrinket(self, unit)
+	local element = self.Trinket
+
+	local spellID, startTime, duration = C_PvP.GetArenaCrowdControlInfo(unit or self.unit)
+	if spellID and spellID ~= 0 and element.spellID ~= spellID then
+		element.spellID = spellID
+		element.icon:SetTexture(GetTrinketIconBySpellID(spellID))
+	end
+
+	if startTime and duration > 0 then
+		element.cd:SetCooldown(startTime / 1000, duration / 1000, 1)
+		element.cd:Show()
+	else
+		element.cd:Clear()
+		element.cd:Hide()
+	end
+end
+
+local function Update(self, event, unit, ...)
+	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (self.unit ~= unit) then return end
+
+	local element = self.Trinket
+
+	if self.isForced and element.icon then
+		element.icon:SetTexture(GetTrinketIconByFaction("player"))
+		element:Show()
 		return;
-	else
-		self.Trinket:Show();
 	end
 
-	if(self.Trinket.PreUpdate) then self.Trinket:PreUpdate(event) end
-
-	if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-		local _, eventType, _, sourceGUID, _, _, _, _, _, _, _, spellID = CombatLogGetCurrentEventInfo()
-		if eventType == "SPELL_CAST_SUCCESS" and sourceGUID == UnitGUID(self.unit) and trinketSpells[spellID] then
-			CooldownFrame_Set(self.Trinket.cooldownFrame, GetTime(), trinketSpells[spellID], 1)
-		end
-	elseif event == "ARENA_OPPONENT_UPDATE" then
-		local unit, type = ...
-		if type == "seen" then
-			if UnitExists(unit) and UnitIsPlayer(unit) then
-				self.Trinket.Icon:SetTexture(GetTrinketIcon(unit))
-			end
-		end
-	elseif event == 'PLAYER_ENTERING_WORLD' then
-		CooldownFrame_Set(self.Trinket.cooldownFrame, 1, 1, 1)
+	if (element.PreUpdate) then
+		element:PreUpdate(event, unit)
 	end
 
-	if(self.Trinket.PostUpdate) then self.Trinket:PostUpdate(event) end
+	if event == 'PLAYER_ENTERING_WORLD' then
+		element.spellID = 0
+		element.cd:Clear()
+	end
+
+	if (event == "ARENA_OPPONENT_UPDATE" or event == "OnShow") then
+		local unitEvent = ...
+        if (unitEvent ~= "seen" and event ~= "OnShow") then return end
+		C_PvP.RequestCrowdControlSpell(unit)
+	elseif event == "ARENA_COOLDOWNS_UPDATE" then
+		UpdateTrinket(self, unit)
+	elseif event == "ARENA_CROWD_CONTROL_SPELL_UPDATE" then
+		local spellID = ...
+		if spellID ~= 0 then
+			element.spellID = spellID
+			element.icon:SetTexture(GetTrinketIconBySpellID(spellID))
+		end
+	end
+
+	element:SetShown(element.spellID ~= 0)
+
+	if (element.PostUpdate) then
+		element:PostUpdate(event, unit)
+	end
 end
 
-local Enable = function(self)
-	if self.Trinket then
-		self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Update, true)
+local function Enable(self)
+	local element = self.Trinket
+	if element then
+		element.__owner = self
+
+		self:RegisterEvent("ARENA_COOLDOWNS_UPDATE", Update, true)
+		self:RegisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update, true)
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
-
-		if not self.Trinket.cooldownFrame then
-			self.Trinket.cooldownFrame = CreateFrame("Cooldown", nil, self.Trinket, "CooldownFrameTemplate")
-			self.Trinket.cooldownFrame:SetAllPoints(self.Trinket)
-			ElvUI[1]:RegisterCooldown(self.Trinket.cooldownFrame)
-		end
-
-		if not self.Trinket.Icon then
-			self.Trinket.Icon = self.Trinket:CreateTexture(nil, "BORDER")
-			self.Trinket.Icon:SetAllPoints(self.Trinket)
-			self.Trinket.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
-			self.Trinket.Icon:SetTexture(GetTrinketIcon('player'))
-		end
 
 		return true
 	end
 end
 
-local Disable = function(self)
-	if self.Trinket then
-		self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", Update)
+local function Disable(self)
+	local element = self.Trinket
+	if element then
+		self:UnregisterEvent("ARENA_COOLDOWNS_UPDATE", Update)
+		self:UnregisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update)
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
-		self.Trinket:Hide()
+
+		element:Hide()
 	end
 end
 

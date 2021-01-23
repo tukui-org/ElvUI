@@ -441,7 +441,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	end
 end
 
-for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 20}) do
+for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long = 20 }) do
 	ElvUF.Tags.Events[format('health:deficit-percent:name-%s', textFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE'
 	ElvUF.Tags.Methods[format('health:deficit-percent:name-%s', textFormat)] = function(unit)
 		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
