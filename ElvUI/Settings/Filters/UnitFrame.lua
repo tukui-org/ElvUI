@@ -942,6 +942,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[336499] = Defaults(), -- Guessing Game
 		-- Plaguefall
 		[336451] = Defaults(), -- Bulwark of Maldraxxus
+		[333737] = Defaults(), -- Congealed Contagion
 		-- The Necrotic Wake
 		[321754] = Defaults(), -- Icebound Aegis
 		[343558] = Defaults(), -- Morbid Fixation
@@ -956,6 +957,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		-- Spires of Ascension
 		[327416] = Defaults(), -- Recharge Anima
 		[317936] = Defaults(), -- Forsworn Doctrine
+		[327808] = Defaults(), -- Inspiring Presence
 		-- De Other Side
 		[344739] = Defaults(), -- Spectral
 		[333227] = Defaults(), -- Undying Rage
