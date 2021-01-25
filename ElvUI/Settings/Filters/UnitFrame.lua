@@ -838,6 +838,8 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[330713] = Defaults(), -- Reverberating Pain
 		[329370] = Defaults(), -- Deadly Descent
 		[336494] = Defaults(), -- Echo Screech
+		[346301] = Defaults(), -- Bloodlight
+		[342077] = Defaults(), -- Echolocation
 		-- Huntsman Altimor
 		[335304] = Defaults(), -- Sinseeker
 		[334971] = Defaults(), -- Jagged Claws
@@ -926,16 +928,17 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
 		-- Castle Nathria
-		[329808] = Defaults(), -- Hardened Stone Form / Grashaal
-		[329636] = Defaults(), -- Hardened Stone Form / Kaal
+		[343026] = Defaults(), -- Cloak of Flames (Sun King's Salvation)
+		[329808] = Defaults(), -- Hardened Stone Form Grashaal (Stone Legion Generals)
+		[329636] = Defaults(), -- Hardened Stone Form Kaal (Stone Legion Generals)
+		[340037] = Defaults(), -- Volatile Stone Shell (Stone Legion Generals)
 		-- Mythic+ General
+		[340873] = Defaults(), -- Bursting With Pride (Prideful)
+		[340880] = Defaults(), -- Prideful
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
-		-- Mythic+ Shadowlands Season 1
 		[343502] = Defaults(), -- Inspiring
-		[340873] = Defaults(), -- Bursting With Pride (Prideful)
-		[340880] = Defaults(), -- Prideful
 		-- Halls of Atonement
 		[326450] = Defaults(), -- Loyal Beasts
 		-- Mists of Tirna Scithe
