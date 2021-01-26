@@ -241,29 +241,6 @@ function S:BlizzardMiscFrames()
 		end
 	end
 
-	hooksecurefunc(_G.WeeklyRewardConfirmSelectionMixin, 'ShowPopup', function(popup)
-		local itemFrame = popup.ItemFrame
-		if itemFrame and not itemFrame.IsSkinned then
-			S:HandleIcon(_G.WeeklyRewardsFrameIconTexture)
-			_G.WeeklyRewardsFrameNameFrame:SetAlpha(0)
-
-			itemFrame.IconBorder:SetAlpha(0)
-			itemFrame.IsSkinned = true
-		end
-
-		local alsoItemsFrame = popup.AlsoItemsFrame
-		if alsoItemsFrame and alsoItemsFrame.pool then
-			for alsoItems in alsoItemsFrame.pool:EnumerateActive() do
-				if not alsoItems.IsSkinned then
-					S:HandleIcon(alsoItems.Icon)
-
-					alsoItems.IconBorder:SetAlpha(0)
-					alsoItems.IsSkinned = true
-				end
-			end
-		end
-	end)
-
 	-- skin return to graveyard button
 	do
 		_G.GhostFrameMiddle:SetAlpha(0)
