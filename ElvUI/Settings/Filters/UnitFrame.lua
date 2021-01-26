@@ -954,6 +954,7 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[331510] = Defaults(), -- Death Wish
 		[333241] = Defaults(), -- Raging Tantrum
 		[326892] = Defaults(), -- Fixate
+		[330545] = Defaults(), -- Commanding Presences
 		-- Sanguine Depths
 		[322433] = Defaults(), -- Stoneskin
 		[321402] = Defaults(), -- Engorge
