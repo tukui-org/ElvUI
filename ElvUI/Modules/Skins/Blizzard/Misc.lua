@@ -241,18 +241,24 @@ function S:BlizzardMiscFrames()
 		end
 	end
 
-	hooksecurefunc('StaticPopup_Show', function()
-		if _G.StaticPopup1.insertedFrame and not _G.StaticPopup1.insertedFrame.IsSkinned then
+	hooksecurefunc(_G.WeeklyRewardConfirmSelectionMixin, 'ShowPopup', function(popup)
+		local itemFrame = popup.ItemFrame
+		if itemFrame and not itemFrame.IsSkinned then
 			S:HandleIcon(_G.WeeklyRewardsFrameIconTexture)
 			_G.WeeklyRewardsFrameNameFrame:SetAlpha(0)
-			_G.StaticPopup1.insertedFrame.ItemFrame.IconBorder:SetAlpha(0)
-			_G.StaticPopup1.insertedFrame.IsSkinned = true
 
-			for AlsoItems in _G.StaticPopup1.insertedFrame.AlsoItemsFrame.pool:EnumerateActive() do
-				if not AlsoItems.IsSkinned then
-					AlsoItems.IconBorder:SetAlpha(0)
-					S:HandleIcon(AlsoItems.Icon)
-					AlsoItems.IsSkinned = true
+			itemFrame.IconBorder:SetAlpha(0)
+			itemFrame.IsSkinned = true
+		end
+
+		local alsoItemsFrame = popup.AlsoItemsFrame
+		if alsoItemsFrame and alsoItemsFrame.pool then
+			for alsoItems in alsoItemsFrame.pool:EnumerateActive() do
+				if not alsoItems.IsSkinned then
+					S:HandleIcon(alsoItems.Icon)
+
+					alsoItems.IconBorder:SetAlpha(0)
+					alsoItems.IsSkinned = true
 				end
 			end
 		end
