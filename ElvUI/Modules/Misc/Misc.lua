@@ -142,7 +142,7 @@ do -- Auto Repair Functions
 	end
 
 	function M:AutoRepairOutput()
-		if TYPE == 'GUILD' then
+		if TYPE == 'GUILD' and IsInGuild() then
 			if STATUS == 'GUILD_REPAIR_FAILED' then
 				M:AttemptAutoRepair(true) --Try using player money instead
 			else
