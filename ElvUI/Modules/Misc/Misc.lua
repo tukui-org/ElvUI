@@ -124,17 +124,16 @@ function M:COMBAT_TEXT_UPDATE(_, messagetype)
 end
 
 do -- Auto Repair Functions
-	local STATUS, TYPE, COST, POSS
+	local STATUS, TYPE, COST, canRepair
 	function M:AttemptAutoRepair(playerOverride)
-		STATUS, TYPE, COST, POSS = '', E.db.general.autoRepair, GetRepairAllCost()
+		STATUS, TYPE, COST, canRepair = '', E.db.general.autoRepair, GetRepairAllCost()
 
-		if POSS and COST > 0 then
-			--This check evaluates to true even if the guild bank has 0 gold, so we add an override
-			if IsInGuild() and TYPE == 'GUILD' and (playerOverride or (not CanGuildBankRepair() or COST > GetGuildBankWithdrawMoney())) then
-				TYPE = 'PLAYER'
-			end
+		if canRepair and COST > 0 then
+			local tryGuild = not playerOverride and TYPE == 'GUILD' and IsInGuild()
+			local useGuild = tryGuild and CanGuildBankRepair() and COST <= GetGuildBankWithdrawMoney()
+			if not useGuild then TYPE = 'PLAYER' end
 
-			RepairAllItems(TYPE == 'GUILD')
+			RepairAllItems(useGuild)
 
 			--Delay this a bit so we have time to catch the outcome of first repair attempt
 			E:Delay(0.5, M.AutoRepairOutput)
