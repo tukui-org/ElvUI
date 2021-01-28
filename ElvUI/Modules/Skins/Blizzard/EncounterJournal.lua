@@ -203,7 +203,7 @@ function S:Blizzard_EncounterJournal()
 	EJ.instanceSelect.tierDropDown:HookScript('OnShow', function(s)
 		local text = s.Text
 		local a, b, c, d, e = text:GetPoint()
-		text:Point(a, b, c, d + 10, e - 4)
+		--text:Point(a, b, c, d + 10, e - 4)
 		text:Width(s:GetWidth() / 1.4)
 	end)
 
