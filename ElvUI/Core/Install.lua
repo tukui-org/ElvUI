@@ -247,15 +247,15 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 
 		--ActionBars
 			E.db.actionbar.bar1.buttons = 8
-			E.db.actionbar.bar1.buttonsize = 50
+			E.db.actionbar.bar1.buttonSize = 50
 			E.db.actionbar.bar1.buttonspacing = 1
 			E.db.actionbar.bar2.buttons = 9
-			E.db.actionbar.bar2.buttonsize = 38
+			E.db.actionbar.bar2.buttonSize = 38
 			E.db.actionbar.bar2.buttonspacing = 1
 			E.db.actionbar.bar2.enabled = true
 			E.db.actionbar.bar2.visibility = '[petbattle] hide; show'
 			E.db.actionbar.bar3.buttons = 8
-			E.db.actionbar.bar3.buttonsize = 50
+			E.db.actionbar.bar3.buttonSize = 50
 			E.db.actionbar.bar3.buttonspacing = 1
 			E.db.actionbar.bar3.buttonsPerRow = 10
 			E.db.actionbar.bar3.visibility = '[petbattle] hide; show'
