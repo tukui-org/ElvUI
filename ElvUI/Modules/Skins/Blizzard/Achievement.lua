@@ -245,7 +245,6 @@ function S:Blizzard_AchievementUI(event)
 	_G.AchievementFrameCategoriesContainer.backdrop:Point('BOTTOMRIGHT', -2, -3)
 	_G.AchievementFrameCategoriesBG:SetAlpha(0)
 	_G.AchievementFrameWaterMark:SetAlpha(0)
-	--_G.AchievementFrameCategoriesBG:SetInside(_G.AchievementFrameCategoriesContainer.backdrop)
 
 	_G.AchievementFrameAchievementsContainer:CreateBackdrop('Transparent')
 	_G.AchievementFrameAchievementsContainer.backdrop:Point('TOPLEFT', -2, 2)
