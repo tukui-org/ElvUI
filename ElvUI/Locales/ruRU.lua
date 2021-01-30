@@ -68,6 +68,7 @@ L["Binds Discarded"] = "Назначения отменены"
 L["Binds Saved"] = "Назначения сохранены"
 L["Blend Mode"] = "Тип смешивания" --Check back later
 L["Blend"] = "Смешивание" --Check back later
+L["Blizzard Widgets"] = true
 L["BNet Frame"] = "Оповещения BNet"
 L["Boss Button"] = "Кнопка босса"
 L["Boss Frames"] = "Боссы"

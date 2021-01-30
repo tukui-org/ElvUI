@@ -68,6 +68,7 @@ L["Binds Discarded"] = true
 L["Binds Saved"] = true
 L["Blend Mode"] = true
 L["Blend"] = true
+L["Blizzard Widgets"] = true
 L["BNet Frame"] = true
 L["Boss Button"] = true
 L["Boss Frames"] = true

@@ -68,6 +68,7 @@ L["Binds Discarded"] = "Ligações Descartadas"
 L["Binds Saved"] = "Ligações Salvas"
 L["Blend Mode"] = true
 L["Blend"] = true
+L["Blizzard Widgets"] = true
 L["BNet Frame"] = "Quadro do Bnet"
 L["Boss Button"] = "Botão de Chefe"
 L["Boss Frames"] = "Quadros dos Chefes"

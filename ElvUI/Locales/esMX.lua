@@ -68,6 +68,7 @@ L["Binds Discarded"] = "Teclas Descartadas"
 L["Binds Saved"] = "Teclas Guardadas"
 L["Blend Mode"] = "Modo de Mezcla"
 L["Blend"] = "Mezcla"
+L["Blizzard Widgets"] = true
 L["BNet Frame"] = "Marco BNet"
 L["Boss Button"] = "Botón de Jefe"
 L["Boss Frames"] = "Marco de Jefe"

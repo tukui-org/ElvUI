@@ -68,6 +68,7 @@ L["Binds Discarded"] = "Raccourcis annulés"
 L["Binds Saved"] = "Raccourcis sauvegardés"
 L["Blend Mode"] = "Mode de fusion"
 L["Blend"] = "Mélange"
+L["Blizzard Widgets"] = true
 L["BNet Frame"] = "Cadre BNet"
 L["Boss Button"] = "Bouton du Boss"
 L["Boss Frames"] = "Cadre du Boss"

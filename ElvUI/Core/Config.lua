@@ -33,7 +33,8 @@ E.ConfigModeLayouts = {
 	'PARTY',
 	'ARENA',
 	'RAID',
-	'ACTIONBARS'
+	'ACTIONBARS',
+	'WIDGETS'
 }
 
 E.ConfigModeLocalizedStrings = {
@@ -43,7 +44,8 @@ E.ConfigModeLocalizedStrings = {
 	PARTY = _G.PARTY,
 	ARENA = _G.ARENA,
 	RAID = _G.RAID,
-	ACTIONBARS = _G.ACTIONBARS_LABEL
+	ACTIONBARS = _G.ACTIONBARS_LABEL,
+	WIDGETS = L["Blizzard Widgets"]
 }
 
 function E:Grid_Show()

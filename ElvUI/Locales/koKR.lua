@@ -68,6 +68,7 @@ L["Binds Discarded"] = "방금 한 단축키 지정 작업을 저장하지 않�
 L["Binds Saved"] = "단축키가 저장되었습니다."
 L["Blend Mode"] = true
 L["Blend"] = true
+L["Blizzard Widgets"] = true
 L["BNet Frame"] = "배틀넷 알림"
 L["Boss Button"] = "특수능력 버튼"
 L["Boss Frames"] = "보스 프레임"

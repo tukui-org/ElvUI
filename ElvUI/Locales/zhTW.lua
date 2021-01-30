@@ -68,6 +68,7 @@ L["Binds Discarded"] = "取消綁定"
 L["Binds Saved"] = "儲存綁定"
 L["Blend Mode"] = "混合模式"
 L["Blend"] = "常規混合"
+L["Blizzard Widgets"] = true
 L["BNet Frame"] = "戰網提示資訊"
 L["Boss Button"] = "特殊技能鍵"
 L["Boss Frames"] = "首領框架"
