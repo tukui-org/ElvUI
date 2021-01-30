@@ -53,12 +53,11 @@ local function Update(self, event, unit, ...)
 	if event == 'PLAYER_ENTERING_WORLD' then
 		element.spellID = 0
 		element.cd:Clear()
-		element:Hide()
 	end
 
 	if (event == "ARENA_OPPONENT_UPDATE" or event == "OnShow") then
 		local unitEvent = ...
-		if (unitEvent ~= "seen" and event ~= "OnShow") then return end
+        if (unitEvent ~= "seen" and event ~= "OnShow") then return end
 
 		C_PvP.RequestCrowdControlSpell(unit)
 	elseif event == "ARENA_COOLDOWNS_UPDATE" then
@@ -71,9 +70,7 @@ local function Update(self, event, unit, ...)
 		end
 	end
 
-	if event == "ARENA_COOLDOWNS_UPDATE" or event == "ARENA_CROWD_CONTROL_SPELL_UPDATE" then
-		element:Show()
-	end
+	element:SetShown(element.spellID and element.spellID ~= 0)
 
 	if (element.PostUpdate) then
 		element:PostUpdate(event, unit)
@@ -97,11 +94,11 @@ end
 local function Disable(self)
 	local element = self.Trinket
 	if element then
+
 		self:UnregisterEvent("ARENA_COOLDOWNS_UPDATE", Update)
 		self:UnregisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update)
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
-
 		element:Hide()
 	end
 end
