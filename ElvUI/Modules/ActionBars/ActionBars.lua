@@ -3,7 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local ipairs, pairs, select, strmatch, unpack = ipairs, pairs, select, strmatch, unpack
-local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
+local format, gsub, strsplit, strfind, strupper = format, gsub, strsplit, strfind, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -519,36 +519,32 @@ function AB:RemoveBindings()
 	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'ReassignBindings')
 end
 
-function AB:ApplyFontToAll()
-	for i = 1, 10 do
-		for _, object in pairs({ 'hotkey', 'macro', 'count'}) do
-			E.db.actionbar['bar'..i][object..'Font'] = E.db.actionbar.font
-			E.db.actionbar['bar'..i][object..'FontOutline'] = E.db.actionbar.fontOutline
-			E.db.actionbar['bar'..i][object..'FontSize'] = E.db.actionbar.fontSize
+do
+	local texts = { 'hotkey', 'macro', 'count' }
+	local bars = { 'barPet', 'stanceBar', 'vehicleExitButton' }
+
+	local function saveSetting(option, value)
+		for i = 1, 10 do
+			E.db.actionbar['bar'..i][option] = value
+		end
+
+		for _, bar in pairs(bars) do
+			E.db.actionbar[bar][option] = value
 		end
 	end
 
-	for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton' }) do
-		for _, object in pairs({ 'hotkey', 'macro', 'count'}) do
-			E.db.actionbar[bar][object..'Font'] = E.db.actionbar.font
-			E.db.actionbar[bar][object..'FontOutline'] = E.db.actionbar.fontOutline
-			E.db.actionbar[bar][object..'FontSize'] = E.db.actionbar.fontSize
+	function AB:ApplyTextOption(option, value, fonts)
+		if fonts then
+			local upperOption = gsub(option, '^%w', strupper) -- font>Font, fontSize>FontSize, fontOutline>FontOutline
+			for _, object in pairs(texts) do
+				saveSetting(object..upperOption, value)
+			end
+		else
+			saveSetting(option, value)
 		end
+
+		AB:UpdateButtonSettings()
 	end
-
-	AB:UpdateButtonSettings()
-end
-
-function AB:ApplyTextOption(option, value)
-	for i = 1, 10 do
-		E.db.actionbar['bar'..i][option] = value
-	end
-
-	for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton' }) do
-		E.db.actionbar[bar][option] = value
-	end
-
-	AB:UpdateButtonSettings()
 end
 
 function AB:UpdateButtonSettings(specific)

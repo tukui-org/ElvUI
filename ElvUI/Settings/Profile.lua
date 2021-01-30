@@ -2170,6 +2170,8 @@ P.actionbar = {
 	chargeCooldown = false,
 	colorSwipeLOC = { r = 0.25, g = 0, b = 0, a = 0.8 },
 	colorSwipeNormal = { r = 0, g = 0, b = 0, a = 0.8 },
+	hotkeyTextPosition = 'TOPRIGHT',
+	macroTextPosition = 'TOPRIGHT',
 	countTextPosition = 'BOTTOMRIGHT',
 	countTextXOffset = 0,
 	countTextYOffset = 2,
