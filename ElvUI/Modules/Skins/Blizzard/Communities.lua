@@ -709,9 +709,9 @@ function S:Blizzard_Communities()
 	local ClubFinderInvitationFrame = CommunitiesFrame.ClubFinderInvitationFrame
 	ClubFinderInvitationFrame.InsetFrame:StripTextures()
 	ClubFinderInvitationFrame:CreateBackdrop()
-	S:HandleButton(ClubFinderInvitationFrame.AcceptButton)
-	S:HandleButton(ClubFinderInvitationFrame.DeclineButton)
-	S:HandleButton(ClubFinderInvitationFrame.ApplyButton)
+	S:HandleButton(ClubFinderInvitationFrame.AcceptButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(ClubFinderInvitationFrame.DeclineButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(ClubFinderInvitationFrame.ApplyButton, nil, nil, nil, nil, nil, nil, nil, true)
 
 	ClubFinderInvitationFrame.WarningDialog:StripTextures()
 	ClubFinderInvitationFrame.WarningDialog:CreateBackdrop('Transparent')
