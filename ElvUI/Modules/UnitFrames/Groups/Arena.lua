@@ -31,6 +31,10 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 			frame.ArenaPrepIcon:Show()
 			frame.PVPSpecIcon:Hide()
 		end
+
+		frame.Trinket:Hide()
+		frame.HealthPrediction:ForceUpdate()
+
 	else -- mainly called from `PostUpdateArenaFrame` to hide them
 		frame.ArenaPrepSpec:SetText('')
 		frame.Health.value:Show()

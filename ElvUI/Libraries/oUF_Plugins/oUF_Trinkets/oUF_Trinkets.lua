@@ -71,7 +71,7 @@ local function Update(self, event, unit, ...)
 		end
 	end
 
-	if event == "ARENA_OPPONENT_UPDATE" or event == "ARENA_COOLDOWNS_UPDATE" or event == "ARENA_CROWD_CONTROL_SPELL_UPDATE" then
+	if event == "ARENA_COOLDOWNS_UPDATE" or event == "ARENA_CROWD_CONTROL_SPELL_UPDATE" then
 		element:Show()
 	end
 
