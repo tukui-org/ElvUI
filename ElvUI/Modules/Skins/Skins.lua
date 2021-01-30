@@ -411,9 +411,11 @@ do --Tab Regions
 		if not tab or (tab.backdrop and not noBackdrop) then return end
 
 		for _, object in pairs(tabs) do
-			local tex = _G[tab:GetName()..object]
-			if tex then
-				tex:SetTexture()
+			local textureName = tab:GetName() and _G[tab:GetName()..object]
+			if textureName then
+				textureName:SetTexture()
+			elseif tab[object] then
+				tab[object]:SetTexture()
 			end
 		end
 
