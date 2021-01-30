@@ -40,7 +40,7 @@ local function Update(self, event, unit, ...)
 
 	local element = self.Trinket
 
-	if self.isForced and element.icon then
+	if self.isForced then
 		element.icon:SetTexture(GetTrinketIconByFaction("player"))
 		element:Show()
 		return;
@@ -53,11 +53,13 @@ local function Update(self, event, unit, ...)
 	if event == 'PLAYER_ENTERING_WORLD' then
 		element.spellID = 0
 		element.cd:Clear()
+		element:Hide()
 	end
 
 	if (event == "ARENA_OPPONENT_UPDATE" or event == "OnShow") then
 		local unitEvent = ...
-        if (unitEvent ~= "seen" and event ~= "OnShow") then return end
+		if (unitEvent ~= "seen" and event ~= "OnShow") then return end
+
 		C_PvP.RequestCrowdControlSpell(unit)
 	elseif event == "ARENA_COOLDOWNS_UPDATE" then
 		UpdateTrinket(self, unit)
@@ -69,7 +71,9 @@ local function Update(self, event, unit, ...)
 		end
 	end
 
-	element:SetShown(element.spellID ~= 0)
+	if event == "ARENA_OPPONENT_UPDATE" or event == "ARENA_COOLDOWNS_UPDATE" or event == "ARENA_CROWD_CONTROL_SPELL_UPDATE" then
+		element:Show()
+	end
 
 	if (element.PostUpdate) then
 		element:PostUpdate(event, unit)
