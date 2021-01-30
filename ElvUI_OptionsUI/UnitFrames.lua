@@ -1472,7 +1472,8 @@ local function UpdateCustomTextGroup(unit)
 			end
 		end
 	elseif unit == 'boss' or unit == 'arena' then
-		for i = 1, 6 do
+		local num = unit == 'boss' and 6 or 5
+		for i = 1, num do
 			UF:Configure_CustomTexts(UF[unit..i])
 			UF[unit..i]:UpdateTags()
 		end
