@@ -8,7 +8,7 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 local _G = _G
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
-local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
+local MAX_BOSS_FRAMES = 6
 -- GLOBALS: BossHeaderMover
 
 local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
