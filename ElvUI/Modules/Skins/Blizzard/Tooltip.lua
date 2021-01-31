@@ -91,6 +91,7 @@ function S:TooltipFrames()
 		end
 		if addon == 'Blizzard_GarrisonUI' then
 			local tt = _G.GarrisonShipyardMapMissionTooltip
+			tt:StripTextures(true)
 			TT:SetStyle(tt)
 		end
 	end)
