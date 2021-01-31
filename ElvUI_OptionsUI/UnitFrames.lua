@@ -952,12 +952,6 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = 'range',
 				min = 0, max = 10, step = .1,
 			},
-			displayTarget = {
-				order = 13,
-				type = 'toggle',
-				name = L["Display Target"],
-				desc = L["Display the target of current cast."],
-			},
 			overlayOnFrame = {
 				order = 3,
 				type = 'select',
@@ -1280,6 +1274,15 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 			},
 		},
 	}
+
+	if groupName == 'player' then
+		config.args.displayTarget = {
+			order = 13,
+			type = 'toggle',
+			name = L["Display Target"],
+			desc = L["Display the target of current cast."],
+		}
+	end
 
 	if groupName == 'party' then
 		config.args.positionsGroup = {
