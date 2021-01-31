@@ -202,11 +202,11 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 		options.macroTextGroup = nil
 	elseif name == 'stanceBar' then
 		options.countTextGroup = nil
-		options.hotkeyTextGroup.args.hotkeytext.set = function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdateStanceBindings() end
+		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdateStanceBindings() end
 		options.macroTextGroup = nil
 	elseif name == 'barPet' then
 		options.countTextGroup = nil
-		options.hotkeyTextGroup.args.hotkeytext.set = function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdatePetBindings() end
+		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[info[#info-3]][info[#info]] = value AB:UpdatePetBindings() end
 		options.macroTextGroup = nil
 	end
 end
