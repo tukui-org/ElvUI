@@ -128,11 +128,7 @@ function A:CreateIcon(button)
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
 	button.statusBar:CreateBackdrop()
 
-	A:Update_CooldownOptions(button)
-	A:UpdateIcon(button)
-
-	E:SetSmoothing(button.statusBar)
-	E:SetUpAnimGroup(button)
+	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
 
 	-- support cooldown override
 	if not button.isRegisteredCooldown then
@@ -145,7 +141,11 @@ function A:CreateIcon(button)
 		tinsert(E.RegisteredCooldowns.auras, button)
 	end
 
-	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
+	A:Update_CooldownOptions(button)
+	A:UpdateIcon(button)
+
+	E:SetSmoothing(button.statusBar)
+	E:SetUpAnimGroup(button)
 
 	if auraType == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
 		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
