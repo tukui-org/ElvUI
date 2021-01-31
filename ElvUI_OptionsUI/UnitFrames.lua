@@ -1475,8 +1475,7 @@ local function UpdateCustomTextGroup(unit)
 			end
 		end
 	elseif unit == 'boss' or unit == 'arena' then
-		local num = unit == 'boss' and 6 or 5
-		for i = 1, num do
+		for i = 1, 5 do
 			UF:Configure_CustomTexts(UF[unit..i])
 			UF[unit..i]:UpdateTags()
 		end
@@ -4891,7 +4890,7 @@ E.Options.args.unitframe.args.groupUnits.args.boss = {
 	type = 'group',
 	order = 1000,
 	get = function(info) return E.db.unitframe.units.boss[info[#info]] end,
-	set = function(info, value) E.db.unitframe.units.boss[info[#info]] = value; UF:CreateAndUpdateUFGroup('boss', 6) end,
+	set = function(info, value) E.db.unitframe.units.boss[info[#info]] = value; UF:CreateAndUpdateUFGroup('boss', _G.MAX_BOSS_FRAMES) end,
 	disabled = function() return not E.UnitFrames.Initialized end,
 	args = {
 		enable = {
@@ -4904,7 +4903,7 @@ E.Options.args.unitframe.args.groupUnits.args.boss = {
 			order = 2,
 			name = L["Display Frames"],
 			desc = L["Force the frames to show, they will act as if they are the player frame."],
-			func = function() UF:ToggleForceShowGroupFrames('boss', 6) end,
+			func = function() UF:ToggleForceShowGroupFrames('boss', _G.MAX_BOSS_FRAMES) end,
 		},
 		resetSettings = {
 			type = 'execute',
@@ -4923,20 +4922,20 @@ E.Options.args.unitframe.args.groupUnits.args.boss = {
 			set = function(info, value) UF:MergeUnitSettings(value, 'boss'); E:RefreshGUI(); end,
 			confirm = true,
 		},
-		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'boss', 6),
-		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUFGroup, 'boss', 6),
-		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', 6),
-		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', 6),
-		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'boss', 6),
-		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'boss', 6),
-		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'boss', 6),
-		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'boss', 6),
-		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUFGroup, 'boss', 6),
-		buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUFGroup, 'boss', 6),
-		debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUFGroup, 'boss', 6),
-		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'boss', 6),
-		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUFGroup, 'boss', 6),
-		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'boss', 6),
+		generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		customText = GetOptionsTable_CustomText(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		health = GetOptionsTable_Health(false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		power = GetOptionsTable_Power(false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		infoPanel = GetOptionsTable_InformationPanel(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		name = GetOptionsTable_Name(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		portrait = GetOptionsTable_Portrait(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		fader = GetOptionsTable_Fader(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		buffs = GetOptionsTable_Auras('buffs', UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		debuffs = GetOptionsTable_Auras('debuffs', UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
+		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUFGroup, 'boss', _G.MAX_BOSS_FRAMES),
 	},
 }
 
