@@ -128,7 +128,9 @@ function A:CreateIcon(button)
 	button.statusBar:SetFrameStrata(button:GetFrameStrata())
 	button.statusBar:CreateBackdrop()
 
+	A:Update_CooldownOptions(button)
 	A:UpdateIcon(button)
+
 	E:SetSmoothing(button.statusBar)
 	E:SetUpAnimGroup(button)
 
@@ -144,7 +146,6 @@ function A:CreateIcon(button)
 	end
 
 	button:SetScript('OnAttributeChanged', A.OnAttributeChanged)
-	A:Update_CooldownOptions(button)
 
 	if auraType == 'HELPFUL' and MasqueGroupBuffs and E.private.auras.masque.buffs then
 		MasqueGroupBuffs:AddButton(button, A:MasqueData(button.texture, button.highlight))
@@ -292,8 +293,6 @@ function A:Update_CooldownOptions(button)
 end
 
 function A:OnAttributeChanged(attribute, value)
-	A:Update_CooldownOptions(self)
-
 	if attribute == 'index' then
 		A:UpdateAura(self, value)
 	elseif attribute == 'target-slot' then
@@ -349,6 +348,7 @@ function A:UpdateHeader(header)
 		child.auraType = header.auraType -- used to update cooldown text
 		child:Size(db.size, db.size)
 
+		A:Update_CooldownOptions(child)
 		A:UpdateIcon(child)
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
