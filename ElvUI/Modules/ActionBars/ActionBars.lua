@@ -1089,6 +1089,7 @@ function AB:FixKeybindText(button)
 	if text then
 		if text == _G.RANGE_INDICATOR then
 			hotkey:SetFont(defaultFont, defaultFontSize, defaultFontOutline)
+			hotkey.SetVertexColor = nil
 		else
 			hotkey:FontTemplate(LSM:Fetch('font', db and db.hotkeyFont or AB.db.font), db and db.hotkeyFontSize or AB.db.fontSize, db and db.hotkeyFontOutline or AB.db.fontOutline)
 
@@ -1109,13 +1110,14 @@ function AB:FixKeybindText(button)
 			text = gsub(text, 'NMINUS', 'N-')
 			text = gsub(text, 'NPLUS', 'N+')
 			text = gsub(text, 'NEQUALS', 'N=')
+			hotkey.SetVertexColor = E.noop
 		end
 
 		hotkey:SetText(text)
 		hotkey:SetJustifyH(justify)
 	end
 
-	hotkey:SetVertexColor(color.r, color.g, color.b)
+	hotkey:SetTextColor(color.r, color.g, color.b)
 
 	if not button.__LAB_Version then
 		if db and not db.hotkeytext then

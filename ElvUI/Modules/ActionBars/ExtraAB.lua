@@ -103,11 +103,13 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:SetAllPoints()
 	ZoneAbilityFrame.ignoreInLayout = true
+	ZoneAbilityFrame.db = E.db.actionbar.zoneActionButton
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
 	ExtraActionBarFrame.ignoreInLayout = true
+	ExtraActionBarFrame.db = E.db.actionbar.extraActionButton
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
@@ -164,6 +166,8 @@ function AB:SetupExtraButton()
 			button:SetCheckedTexture(tex)
 
 			button.HotKey:SetText(GetBindingKey('ExtraActionButton'..i))
+
+			AB:FixKeybindText(button)
 			tinsert(ExtraButtons, button)
 		end
 	end
