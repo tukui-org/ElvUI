@@ -35,6 +35,13 @@ local function UpdateTrinket(self, unit)
 	end
 end
 
+local function ClearCooldown(self)
+	local element = self.Trinket
+
+	element.spellID = 0
+	element.cd:Clear()
+end
+
 local function Update(self, event, unit, ...)
 	if (self.isForced and event ~= 'ElvUI_UpdateAllElements') or (self.unit ~= unit) then return end
 
@@ -48,11 +55,6 @@ local function Update(self, event, unit, ...)
 
 	if (element.PreUpdate) then
 		element:PreUpdate(event, unit)
-	end
-
-	if event == 'PLAYER_ENTERING_WORLD' then
-		element.spellID = 0
-		element.cd:Clear()
 	end
 
 	if (event == "ARENA_OPPONENT_UPDATE" or event == "OnShow") then
@@ -85,7 +87,7 @@ local function Enable(self)
 		self:RegisterEvent("ARENA_COOLDOWNS_UPDATE", Update, true)
 		self:RegisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update, true)
 		self:RegisterEvent("ARENA_OPPONENT_UPDATE", Update, true)
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", Update, true)
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", ClearCooldown, true)
 
 		return true
 	end
@@ -98,7 +100,7 @@ local function Disable(self)
 		self:UnregisterEvent("ARENA_COOLDOWNS_UPDATE", Update)
 		self:UnregisterEvent("ARENA_CROWD_CONTROL_SPELL_UPDATE", Update)
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
-		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
+		self:UnregisterEvent("PLAYER_ENTERING_WORLD", ClearCooldown)
 		element:Hide()
 	end
 end
