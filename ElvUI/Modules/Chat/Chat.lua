@@ -2982,7 +2982,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 		tab.selected = selected
 
 		local whisper = tab.conversationIcon and chat.chatTarget
-		local name = chat.name
+		local name = chat.name or UNKNOWN
 
 		if whisper and not tab.whisperName then
 			tab.whisperName = gsub(E:StripMyRealm(name), '([%S]-)%-[%S]+', '%1|cFF999999*|r')
