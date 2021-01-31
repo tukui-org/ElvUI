@@ -147,9 +147,11 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 
 		if i > numButtons then
+			button:SetScale(0.0001)
 			button:SetAlpha(0)
 			button.handleBackdrop = nil
 		else
+			button:SetScale(1)
 			button:SetAlpha(db.alpha)
 			lastShownButton = button
 			button.handleBackdrop = true -- keep over HandleButton
