@@ -123,10 +123,6 @@ function AB:SetupExtraButton()
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
 				spellButton.Icon:SetInside()
 
-				--check these
-				--spellButton.HotKey:SetText(GetBindingKey(spellButton:GetName()))
-				--tinsert(ExtraButtons, spellButton)
-
 				spellButton.holder = ZoneAbilityHolder
 				spellButton:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
 				spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
@@ -184,7 +180,6 @@ function AB:UpdateExtraButtons()
 end
 
 function AB:UpdateExtraBindings()
-	_G.ZoneAbilityFrame.db = E.db.actionbar.zoneActionButton
 	_G.ExtraActionBarFrame.db = E.db.actionbar.extraActionButton
 
 	for _, button in pairs(ExtraButtons) do

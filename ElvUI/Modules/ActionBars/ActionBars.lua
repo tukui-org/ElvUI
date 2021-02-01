@@ -521,7 +521,7 @@ end
 
 do
 	local texts = { 'hotkey', 'macro', 'count' }
-	local bars = { 'barPet', 'stanceBar', 'vehicleExitButton' }
+	local bars = { 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton' }
 
 	local function saveSetting(option, value)
 		for i = 1, 10 do
