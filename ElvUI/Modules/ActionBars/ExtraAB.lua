@@ -103,13 +103,11 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:SetAllPoints()
 	ZoneAbilityFrame.ignoreInLayout = true
-	ZoneAbilityFrame.db = E.db.actionbar.zoneActionButton
 
 	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
 	ExtraActionBarFrame.ignoreInLayout = true
-	ExtraActionBarFrame.db = E.db.actionbar.extraActionButton
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
@@ -166,15 +164,11 @@ function AB:SetupExtraButton()
 			button:SetCheckedTexture(tex)
 
 			button.HotKey:SetText(GetBindingKey('ExtraActionButton'..i))
-
-			AB:FixKeybindText(button)
 			tinsert(ExtraButtons, button)
 		end
 	end
 
-	AB:ExtraButtons_UpdateAlpha()
-	AB:ExtraButtons_UpdateScale()
-	AB:ExtraButtons_GlobalFade()
+	AB:UpdateExtraButtons()
 
 	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
 	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
@@ -183,9 +177,18 @@ function AB:SetupExtraButton()
 	ZoneAbilityHolder:Size(52 * E.db.actionbar.zoneActionButton.scale)
 end
 
+function AB:UpdateExtraButtons()
+	AB:ExtraButtons_UpdateAlpha()
+	AB:ExtraButtons_UpdateScale()
+	AB:ExtraButtons_GlobalFade()
+end
+
 function AB:UpdateExtraBindings()
+	_G.ZoneAbilityFrame.db = E.db.actionbar.zoneActionButton
+	_G.ExtraActionBarFrame.db = E.db.actionbar.extraActionButton
+
 	for _, button in pairs(ExtraButtons) do
-		button.HotKey:SetText(_G.GetBindingKey(button:GetName()))
+		button.HotKey:SetText(GetBindingKey(button:GetName()))
 		AB:FixKeybindText(button)
 	end
 end

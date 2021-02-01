@@ -1364,13 +1364,11 @@ function E:UpdateLayout(skipCallback)
 end
 
 function E:UpdateActionBars(skipCallback)
-	ActionBars:ExtraButtons_UpdateAlpha()
-	ActionBars:ExtraButtons_UpdateScale()
-	ActionBars:ExtraButtons_GlobalFade()
 	ActionBars:ToggleCooldownOptions()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroPositionDimensions()
 	ActionBars:UpdatePetCooldownSettings()
+	ActionBars:UpdateExtraButtons()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')

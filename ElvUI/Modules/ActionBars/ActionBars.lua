@@ -582,6 +582,8 @@ function AB:UpdateButtonSettings(specific)
 
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
+		AB:UpdateExtraBindings()
+
 		AB:UpdateFlyoutButtons()
 	end
 end
