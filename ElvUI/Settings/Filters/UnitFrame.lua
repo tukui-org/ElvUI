@@ -915,6 +915,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[329951] = Defaults(), -- Impale
 		[327039] = Defaults(), -- Feeding Time
 		[332794] = Defaults(), -- Fatal Finesse
+		[334016] = Defaults(), -- Unworthy
 
 	},
 }
