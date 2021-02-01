@@ -337,8 +337,7 @@ Lib.Filters.tipPhrases = {
 		local matches = false
 		for i = 1, Lib.Scanner:NumLines() do
 			local text = _G[Lib.Scanner:GetName() .. 'TextLeft' .. i]:GetText()
-			text = CleanString(text)
-			if search == text then
+			if search == CleanString(text) then
 				matches = true
 				break
 			end
