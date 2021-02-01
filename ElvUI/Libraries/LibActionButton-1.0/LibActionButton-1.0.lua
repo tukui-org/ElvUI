@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 23 -- the real minor version is 79
+local MINOR_VERSION = 24 -- the real minor version is 80
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -490,7 +490,7 @@ function Generic:AddToMasque(group)
 	if type(group) ~= "table" or type(group.AddButton) ~= "function" then
 		error("LibActionButton-1.0:AddToMasque: You need to supply a proper group to use!", 2)
 	end
-	group:AddButton(self)
+	group:AddButton(self, nil, "Action")
 	self.MasqueSkinned = true
 end
 
