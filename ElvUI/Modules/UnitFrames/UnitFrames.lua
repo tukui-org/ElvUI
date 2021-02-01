@@ -664,6 +664,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			UF:ConvertGroupDB(group)
 			group:ClearAllPoints()
 			group:ClearChildPoints()
+			group.db = db
 
 			local point = DIRECTION_TO_POINT[direction]
 			group:SetAttribute('point', point)
