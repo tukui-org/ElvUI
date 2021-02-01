@@ -19,14 +19,15 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 
 	frame.forceInRange = show -- used to force unitframe range
 
+	local visibility = not show
 	if show then frame.Trinket:Hide() end
 
 	frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', specName, LOCALIZED_CLASS_NAMES_MALE[specClass])  -- during `PostUpdateArenaPreparation` this means spec class and name exist
-	UF:ToggleVisibility_CustomTexts(frame, not show)
+	UF:ToggleVisibility_CustomTexts(frame, visibility)
 
-	frame.Health.value:SetShown(not show)
-	frame.Power.value:SetShown(not show)
-	frame.Health.ClipFrame:SetShown(not show)
+	frame.Health.value:SetShown(visibility)
+	frame.Power.value:SetShown(visibility)
+	frame.Health.ClipFrame:SetShown(visibility)
 
 	if specIcon and show then
 		frame.PVPSpecIcon.Icon:SetTexture(specTexture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
