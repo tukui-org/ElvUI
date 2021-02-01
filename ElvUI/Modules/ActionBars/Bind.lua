@@ -8,7 +8,6 @@ local select, pairs, floor = select, pairs, floor
 local CreateFrame = CreateFrame
 local HideUIPanel = HideUIPanel
 local GameTooltip_Hide = GameTooltip_Hide
-local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
 local GetMacroInfo = GetMacroInfo
@@ -228,23 +227,6 @@ function AB:BindUpdate(button, spellmacro)
 	end
 end
 
-local elapsed = 0
-function AB:Tooltip_OnUpdate(tooltip, e)
-	if tooltip:IsForbidden() then return end
-
-	elapsed = elapsed + e
-	if elapsed < .2 then return else elapsed = 0 end
-
-	local compareItems = IsModifiedClick('COMPAREITEMS')
-	if not tooltip.comparing and compareItems and tooltip:GetItem() then
-		GameTooltip_ShowCompareItem(tooltip)
-		tooltip.comparing = true
-	elseif tooltip.comparing and not compareItems then
-		for _, frame in pairs(tooltip.shoppingTooltips) do frame:Hide() end
-		tooltip.comparing = false
-	end
-end
-
 function AB:RegisterMacro(addon)
 	if addon == 'Blizzard_MacroUI' then
 		for i=1, MAX_ACCOUNT_MACROS do
@@ -297,8 +279,6 @@ function AB:LoadKeyBinder()
 	bind.texture:SetAllPoints(bind)
 	bind.texture:SetColorTexture(0, 0, 0, .25)
 	bind:Hide()
-
-	self:SecureHookScript(_G.GameTooltip, 'OnUpdate', 'Tooltip_OnUpdate')
 
 	bind:SetScript('OnEnter', function(b) local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnEnter(b.button) end end)
 	bind:SetScript('OnLeave', function(b) AB:BindHide() local db = b.button:GetParent().db if db and db.mouseover then AB:Button_OnLeave(b.button) end end)
