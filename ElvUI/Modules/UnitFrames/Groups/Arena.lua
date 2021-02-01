@@ -15,42 +15,23 @@ local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
 
 function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specClass)
-	if not (frame and frame.ArenaPrepSpec and frame.ArenaPrepIcon) then return end
-
 	local specIcon = (frame.db and frame.db.pvpSpecIcon) and frame:IsElementEnabled('PVPSpecIcon')
 
 	frame.forceInRange = show -- used to force unitframe range
 
-	if show then -- during `PostUpdateArenaPreparation` this means spec class and name exist
-		frame.ArenaPrepSpec:SetText(specName..'  -  '..LOCALIZED_CLASS_NAMES_MALE[specClass])
-		frame.Health.value:Hide()
-		frame.Power.value:Hide()
+	if show then frame.Trinket:Hide() end
 
-		if specIcon then
-			frame.ArenaPrepIcon:SetTexture(specTexture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
-			frame.ArenaPrepIcon:SetTexCoord(unpack(E.TexCoords))
-			frame.ArenaPrepIcon.bg:Show()
-			frame.ArenaPrepIcon:Show()
-			frame.PVPSpecIcon:Hide()
-		end
+	frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', specName, LOCALIZED_CLASS_NAMES_MALE[specClass])  -- during `PostUpdateArenaPreparation` this means spec class and name exist
+	UF:ToggleVisibility_CustomTexts(frame, not show)
 
-		frame.Trinket:Hide()
-		frame.Health.ClipFrame:Hide()
+	frame.Health.value:SetShown(not show)
+	frame.Power.value:SetShown(not show)
+	frame.Health.ClipFrame:SetShown(not show)
 
-		UF:ToggleVisibility_CustomTexts(frame)
-	else -- mainly called from `PostUpdateArenaFrame` to hide them
-		frame.ArenaPrepSpec:SetText('')
-		frame.Health.value:Show()
-		frame.Power.value:Show()
-		frame.Health.ClipFrame:Show()
-
-		UF:ToggleVisibility_CustomTexts(frame, true)
-
-		if specIcon then
-			frame.ArenaPrepIcon.bg:Hide()
-			frame.ArenaPrepIcon:Hide()
-			frame.PVPSpecIcon:Show()
-		end
+	if specIcon and show then
+		frame.PVPSpecIcon.Icon:SetTexture(specTexture or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+		frame.PVPSpecIcon.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame.PVPSpecIcon:Show()
 	end
 end
 
@@ -100,17 +81,6 @@ function UF:Construct_ArenaFrames(frame)
 		frame.customTexts = {}
 		frame.InfoPanel = UF:Construct_InfoPanel(frame)
 		frame.unitframeType = 'arena'
-
-		-- Arena Preparation
-		frame.ArenaPrepIcon = frame:CreateTexture(nil, 'OVERLAY')
-		frame.ArenaPrepIcon.bg = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-		frame.ArenaPrepIcon.bg:SetAllPoints(frame.PVPSpecIcon.bg)
-		frame.ArenaPrepIcon.bg:SetTemplate()
-		frame.ArenaPrepIcon:SetParent(frame.ArenaPrepIcon.bg)
-		frame.ArenaPrepIcon:SetTexCoord(unpack(E.TexCoords))
-		frame.ArenaPrepIcon:SetInside(frame.ArenaPrepIcon.bg)
-		frame.ArenaPrepIcon.bg:Hide()
-		frame.ArenaPrepIcon:Hide()
 
 		frame.ArenaPrepSpec = frame.Health:CreateFontString(nil, 'OVERLAY')
 		frame.ArenaPrepSpec:Point('CENTER')
