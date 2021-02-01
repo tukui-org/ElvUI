@@ -176,22 +176,20 @@ do --this can save some main file locals
 	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
 	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
 	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
-	--local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
 	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
 	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
 	local ElvSimpy		= E:TextureString(E.Media.ChatLogos.ElvSimpy,y)
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
-	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
 	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
-	local DeathlyH		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
+	local Deathly		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
 	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
 	local Beer			= E:TextureString(E.Media.ChatLogos.Beer,x)
 	local TyroneBiggums = E:TextureString(E.Media.ChatLogos.TyroneBiggums,x)
-	local SuperBear = E:TextureString(E.Media.ChatLogos.SuperBear,x)
+	local SuperBear		= E:TextureString(E.Media.ChatLogos.SuperBear,x)
 
 	--[[ Simpys Thing: new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
@@ -208,7 +206,7 @@ do --this can save some main file locals
 		end
 
 		--Simpys Valentine Vibes: Rose Pink, Soft Pink, Soft Cyan, Soft Violet, Soft Rose, Soft Yellow
-		local SimpyColors = function(t) return specialText(t, 1,.42,.78, 1,.56,.68, .66,.99,.98, .77,.52,1, 1,.48,.81, .96,.93,.76) end
+		local SimpyColors = function(t) return specialText(t, 1,.42,.78, 1,.56,.68, .66,.99,.98, .77,.52,1, 1,.48,.81, .98,.95,.68) end
 		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
@@ -241,42 +239,6 @@ do --this can save some main file locals
 		-- Blazeflack
 		['Blazii-Silvermoon']	= ElvBlue, -- Priest
 		['Chazii-Silvermoon']	= ElvBlue, -- Shaman
-		-- Affinity
-		['Affinichi-Illidan']	= Bathrobe,
-		['Affinitii-Illidan']	= Bathrobe,
-		['Affinity-Illidan']	= Bathrobe,
-		['Uplift-Illidan']		= Bathrobe,
-		-- Tirain (NOTE: lol)
-		['Tierone-Spirestone']	= TyroneBiggums,
-		['Tirain-Spirestone']	= TyroneBiggums,
-		['Sinth-Spirestone']	= TyroneBiggums,
-		['Tee-Spirestone']		= TyroneBiggums,
-		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
-		['Misdîrect-Spirestone']	= itsMis,
-		['Misoracle-Spirestone']	= itsMis,
-		['MisLight-Spirestone']		= itsMis,
-		['MisDivine-Spirestone']	= itsMis,
-		['MisMayhem-Spirestone']	= itsMis,
-		['Mismonk-Spirestone']		= itsMis,
-		['Misillidan-Spirestone']	= itsMis,
-		['Mispel-Spirestone']		= itsMis,
-		['Misdecay-Spirestone']		= itsMis,
-		['Mislust-Spirestone'] 		= itsMis,
-		['Misdivine-Spirestone']	= itsMis,
-		['Mislight-Spirestone']		= itsMis,
-		-- Luckyone
-		['Luckyone-LaughingSkull']		= Clover,
-		['Luckypriest-LaughingSkull']	= Clover,
-		['Luckymonkas-LaughingSkull']	= Clover,
-		['Luckydk-LaughingSkull']		= Clover,
-		['Luckyhunter-LaughingSkull']	= Clover,
-		['Unluckyone-LaughingSkull']	= Clover,
-		['Notlucky-LaughingSkull']		= Clover,
-		['Luckymage-LaughingSkull']		= Clover,
-		['Luckydh-LaughingSkull']		= Clover,
-		['Luckywl-LaughingSkull']		= Clover,
-		['Luckyrogue-LaughingSkull']	= Clover,
-		['Luckypala-LaughingSkull']		= Clover,
 		-- NihilisticPandemonium
 		['Dirishia-WyrmrestAccord']		= itsTheFlyestNihilist('Warlock'),
 		['Xanikani-WyrmrestAccord']		= itsTheFlyestNihilist('Mage'),
@@ -302,17 +264,30 @@ do --this can save some main file locals
 		['Millop-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
 		['Aeondalew-WyrmrestAccord']	= itsTheFlyestNihilist('DeathKnight'),
 		-- Merathilis
-		['Asragoth-Shattrath']			= ElvPurple,	-- [Alliance] Warlock
-		['Brítt-Shattrath'] 			= ElvBlue,		-- [Alliance] Warrior
-		['Damará-Shattrath']			= ElvRed,		-- [Alliance] Paladin
-		['Jazira-Shattrath']			= ElvBlue,		-- [Alliance] Priest
-		['Jústice-Shattrath']			= ElvYellow,	-- [Alliance] Rogue
-		['Maithilis-Shattrath']			= ElvGreen,		-- [Alliance] Monk
-		['Mattdemôn-Shattrath']			= ElvPurple,	-- [Alliance] DH
-		['Melisendra-Shattrath']		= ElvBlue,		-- [Alliance] Mage
-		['Merathilis-Shattrath']		= ElvOrange,	-- [Alliance] Druid
-		['Merathilîs-Shattrath']		= ElvBlue,		-- [Alliance] Shaman
-		['Róhal-Shattrath']				= ElvGreen,		-- [Alliance] Hunter
+		['Asragoth-Shattrath']		= ElvPurple,	-- [Alliance] Warlock
+		['Brítt-Shattrath'] 		= ElvBlue,		-- [Alliance] Warrior
+		['Damará-Shattrath']		= ElvRed,		-- [Alliance] Paladin
+		['Jazira-Shattrath']		= ElvBlue,		-- [Alliance] Priest
+		['Jústice-Shattrath']		= ElvYellow,	-- [Alliance] Rogue
+		['Maithilis-Shattrath']		= ElvGreen,		-- [Alliance] Monk
+		['Mattdemôn-Shattrath']		= ElvPurple,	-- [Alliance] DH
+		['Melisendra-Shattrath']	= ElvBlue,		-- [Alliance] Mage
+		['Merathilis-Shattrath']	= ElvOrange,	-- [Alliance] Druid
+		['Merathilîs-Shattrath']	= ElvBlue,		-- [Alliance] Shaman
+		['Róhal-Shattrath']			= ElvGreen,		-- [Alliance] Hunter
+		-- Luckyone
+		['Luckyone-LaughingSkull']		= Clover,
+		['Luckypriest-LaughingSkull']	= Clover,
+		['Luckymonkas-LaughingSkull']	= Clover,
+		['Luckydk-LaughingSkull']		= Clover,
+		['Luckyhunter-LaughingSkull']	= Clover,
+		['Unluckyone-LaughingSkull']	= Clover,
+		['Notlucky-LaughingSkull']		= Clover,
+		['Luckymage-LaughingSkull']		= Clover,
+		['Luckydh-LaughingSkull']		= Clover,
+		['Luckywl-LaughingSkull']		= Clover,
+		['Luckyrogue-LaughingSkull']	= Clover,
+		['Luckypala-LaughingSkull']		= Clover,
 		-- Simpy
 		['Arieva-Cenarius']				= itsSimpy, -- Hunter
 		['Buddercup-Cenarius']			= itsSimpy, -- Rogue
@@ -340,52 +315,75 @@ do --this can save some main file locals
 		['Rubee-CenarionCircle']		= itsSimpy, -- [RP] DH
 		['Wennie-CenarionCircle']		= itsSimpy, -- [RP] Priest
 		-- Melbelle (Simpys Bestie)
-		['Melbelle-Bladefist']			= itsMel, -- Hunter
-		['Deathchaser-Bladefist']		= itsMel, -- DH
-		['Alyosha-Cenarius']			= itsMel, -- Warrior
-		['Dãwn-Cenarius']				= itsMel, -- Paladin
-		['Faelen-Cenarius']				= itsMel, -- Rogue
-		['Freckles-Cenarius']			= itsMel, -- DK
-		['Lõvi-Cenarius']				= itsMel, -- Priest
-		['Melbelle-Cenarius']			= itsMel, -- Druid
-		['Perìwìnkle-Cenarius']			= itsMel, -- Shaman
-		['Pìper-Cenarius']				= itsMel, -- Warlock
-		['Spãrkles-Cenarius']			= itsMel, -- Mage
-		['Alybones-Cenarius']			= itsMel, -- [Horde] DK
-		['Alyfreeze-Cenarius']			= itsMel, -- [Horde] Mage
-		['Alykins-Cenarius']			= itsMel, -- [Horde] DH
-		['Alyrage-Cenarius']			= itsMel, -- [Horde] Warrior
-		['Alysneaks-Cenarius']			= itsMel, -- [Horde] Rogue
-		['Alytotes-Cenarius']			= itsMel, -- [Horde] Shaman
+		['Melbelle-Bladefist']		= itsMel, -- Hunter
+		['Deathchaser-Bladefist']	= itsMel, -- DH
+		['Alyosha-Cenarius']		= itsMel, -- Warrior
+		['Dãwn-Cenarius']			= itsMel, -- Paladin
+		['Faelen-Cenarius']			= itsMel, -- Rogue
+		['Freckles-Cenarius']		= itsMel, -- DK
+		['Lõvi-Cenarius']			= itsMel, -- Priest
+		['Melbelle-Cenarius']		= itsMel, -- Druid
+		['Perìwìnkle-Cenarius']		= itsMel, -- Shaman
+		['Pìper-Cenarius']			= itsMel, -- Warlock
+		['Spãrkles-Cenarius']		= itsMel, -- Mage
+		['Alybones-Cenarius']		= itsMel, -- [Horde] DK
+		['Alyfreeze-Cenarius']		= itsMel, -- [Horde] Mage
+		['Alykins-Cenarius']		= itsMel, -- [Horde] DH
+		['Alyrage-Cenarius']		= itsMel, -- [Horde] Warrior
+		['Alysneaks-Cenarius']		= itsMel, -- [Horde] Rogue
+		['Alytotes-Cenarius']		= itsMel, -- [Horde] Shaman
 		-- Lulupeep (Nihilist's wife)
-		['Arïä-WyrmrestAccord'] 		= DeathlyH,
-		['Belladonnä-WyrmrestAccord'] 	= DeathlyH,
-		['Cadense-WyrmrestAccord']		= DeathlyH,
-		['Cäydence-WyrmrestAccord'] 	= DeathlyH,
-		['Esmæ-WyrmrestAccord']			= DeathlyH,
-		['Falorya-WyrmrestAccord']		= DeathlyH,
-		['Fufus-WyrmrestAccord']		= DeathlyH,
-		['Gemmä-WyrmrestAccord']		= DeathlyH,
-		['Lilliës-WyrmrestAccord']		= DeathlyH,
-		['Louisianagrl-WyrmrestAccord']	= DeathlyH,
-		['Lulupeep-WyrmrestAccord']		= DeathlyH,
-		['Nolalove-WyrmrestAccord']		= DeathlyH,
-		['Onyxnovä-WyrmrestAccord']		= DeathlyH,
-		['Rukíá-WyrmrestAccord']		= DeathlyH,
-		['Songbïrd-WyrmrestAccord']		= DeathlyH,
-		['Vidiä-WyrmrestAccord']		= DeathlyH,
+		['Arïä-WyrmrestAccord'] 		= Deathly,
+		['Belladonnä-WyrmrestAccord'] 	= Deathly,
+		['Cadense-WyrmrestAccord']		= Deathly,
+		['Cäydence-WyrmrestAccord'] 	= Deathly,
+		['Esmæ-WyrmrestAccord']			= Deathly,
+		['Falorya-WyrmrestAccord']		= Deathly,
+		['Fufus-WyrmrestAccord']		= Deathly,
+		['Gemmä-WyrmrestAccord']		= Deathly,
+		['Lilliës-WyrmrestAccord']		= Deathly,
+		['Louisianagrl-WyrmrestAccord']	= Deathly,
+		['Lulupeep-WyrmrestAccord']		= Deathly,
+		['Nolalove-WyrmrestAccord']		= Deathly,
+		['Onyxnovä-WyrmrestAccord']		= Deathly,
+		['Rukíá-WyrmrestAccord']		= Deathly,
+		['Songbïrd-WyrmrestAccord']		= Deathly,
+		['Vidiä-WyrmrestAccord']		= Deathly,
 		-- Quickhanz (Nihilist's absolute bestie)
-		['Zandahanz-Area52']			= GoldShield,
+		['Zandahanz-Area52']	= GoldShield,
 		-- AcidWeb
 		['Livarax-BurningLegion']		= Gem,
 		['Filevandrel-BurningLegion']	= Gem,
 		['Akavaya-BurningLegion']		= Gem,
-		--Bozaum
-		['Bozaum-Spirestone'] = Beer,
+		-- Affinity
+		['Affinichi-Illidan']	= Bathrobe,
+		['Affinitii-Illidan']	= Bathrobe,
+		['Affinity-Illidan']	= Bathrobe,
+		['Uplift-Illidan']		= Bathrobe,
+		-- Tirain (NOTE: lol)
+		['Tierone-Spirestone']	= TyroneBiggums,
+		['Tirain-Spirestone']	= TyroneBiggums,
+		['Sinth-Spirestone']	= TyroneBiggums,
+		['Tee-Spirestone']		= TyroneBiggums,
+		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
+		['Misdîrect-Spirestone']	= itsMis,
+		['Misoracle-Spirestone']	= itsMis,
+		['MisLight-Spirestone']		= itsMis,
+		['MisDivine-Spirestone']	= itsMis,
+		['MisMayhem-Spirestone']	= itsMis,
+		['Mismonk-Spirestone']		= itsMis,
+		['Misillidan-Spirestone']	= itsMis,
+		['Mispel-Spirestone']		= itsMis,
+		['Misdecay-Spirestone']		= itsMis,
+		['Mislust-Spirestone'] 		= itsMis,
+		['Misdivine-Spirestone']	= itsMis,
+		['Mislight-Spirestone']		= itsMis,
 		--Bladesdruid
-		['Bladedemonz-Spirestone'] = SuperBear,
-		['Bladesdruid-Spirestone'] = SuperBear,
-		['Rollerblade-Spirestone'] = SuperBear,
+		['Bladedemonz-Spirestone']	= SuperBear,
+		['Bladesdruid-Spirestone']	= SuperBear,
+		['Rollerblade-Spirestone']	= SuperBear,
+		--Bozaum
+		['Bozaum-Spirestone']	= Beer,
 	}
 end
 
