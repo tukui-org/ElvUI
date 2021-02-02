@@ -122,10 +122,12 @@ function DB:ExperienceBar_QuestXP()
 
 	for i = 1, C_QuestLog_GetNumQuestLogEntries() do
 		local info = C_QuestLog_GetInfo(i)
-		local currentZoneCheck = (bar.db.questCurrentZoneOnly and info.isOnMap or not bar.db.questCurrentZoneOnly)
-		local trackedQuestCheck = (bar.db.questTrackedOnly and C_QuestLog_GetQuestWatchType(info.questID) or not bar.db.questTrackedOnly)
-		if info and (not info.isHidden) and currentZoneCheck and trackedQuestCheck then
-			DB:ExperienceBar_CheckQuests(info.questID, bar.db.questCompletedOnly)
+		if info and not info.isHidden then
+			local currentZoneCheck = (bar.db.questCurrentZoneOnly and info.isOnMap) or not bar.db.questCurrentZoneOnly
+			local trackedQuestCheck = (bar.db.questTrackedOnly and info.questID and C_QuestLog_GetQuestWatchType(info.questID)) or not bar.db.questTrackedOnly
+			if currentZoneCheck and trackedQuestCheck then
+				DB:ExperienceBar_CheckQuests(info.questID, bar.db.questCompletedOnly)
+			end
 		end
 	end
 
