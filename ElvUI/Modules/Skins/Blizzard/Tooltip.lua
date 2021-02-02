@@ -88,11 +88,7 @@ function S:TooltipFrames()
 			tt:GetParent():HookScript('OnShow', IslandTooltipStyle)
 			tt.IconBorder:Kill()
 			tt.Icon:SetTexCoord(unpack(E.TexCoords))
-		end
-		if addon == 'Blizzard_GarrisonUI' then
-			local tt = _G.GarrisonShipyardMapMissionTooltip
-			tt:StripTextures(true)
-			TT:SetStyle(tt)
+			TT:UnregisterEvent(event)
 		end
 	end)
 end

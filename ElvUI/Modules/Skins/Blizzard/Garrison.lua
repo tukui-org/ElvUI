@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
@@ -197,10 +198,6 @@ function S:Blizzard_GarrisonUI()
 	GarrisonBuildingFrame:CreateBackdrop('Transparent')
 
 	S:HandleCloseButton(GarrisonBuildingFrame.CloseButton, GarrisonBuildingFrame.backdrop)
-	if E.private.skins.blizzard.tooltip then
-		GarrisonBuildingFrame.BuildingLevelTooltip:StripTextures()
-		GarrisonBuildingFrame.BuildingLevelTooltip:CreateBackdrop('Transparent')
-	end
 
 	-- Follower List
 	local FollowerList = GarrisonBuildingFrame.FollowerList
@@ -446,25 +443,6 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame.Icon:SetAtlas('ShipMission_CurrencyIcon-Oil', false) --Re-add the material icon
 	-- HandleShipFollowerPage(FollowerList.followerTab)
 
-	if E.private.skins.blizzard.tooltip ~= true then return end
-
-	-- ShipYard: Mission Tooltip
-	local tooltip = _G.GarrisonShipyardMapMissionTooltip
-	tooltip:CreateBackdrop('Transparent')
-	local reward = tooltip.ItemTooltip
-	local icon = reward.Icon
-	if icon then
-		S:HandleIcon(icon)
-		reward.IconBorder:SetTexture()
-	end
-
-	local bonusIcon = tooltip.BonusReward and tooltip.BonusReward.Icon
-	if bonusIcon then S:HandleIcon(bonusIcon) end
-
-	-- Threat Counter Tooltips
-	_G.GarrisonMissionMechanicFollowerCounterTooltip:CreateBackdrop('Transparent')
-	_G.GarrisonMissionMechanicTooltip:CreateBackdrop('Transparent')
-
 	-- MissionFrame
 	local OrderHallMissionFrame = _G.OrderHallMissionFrame
 	OrderHallMissionFrame:StripTextures()
@@ -635,6 +613,8 @@ function S:Blizzard_GarrisonUI()
 
 	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript('OnShow', SkinMissionBoards)
 	CovenantMissionFrame.MissionComplete.Board:HookScript('OnShow', SkinMissionBoards)
+
+	S:GarrisonTooltips()
 end
 
 local function SkinFollowerTooltip(frame)
@@ -742,7 +722,26 @@ function S:GarrisonTooltips()
 		end
 		tooltipFrame.numPropertiesStyled = numPropertiesStyled
 	end)
+
+	-- ShipYard: Mission Tooltip
+	local tooltip = _G.GarrisonShipyardMapMissionTooltip
+	TT:SetStyle(tooltip)
+	local reward = tooltip.ItemTooltip
+	local icon = reward.Icon
+	if icon then
+		S:HandleIcon(icon)
+		reward.IconBorder:SetAlpha(0)
+	end
+
+	local bonusIcon = tooltip.BonusReward and tooltip.BonusReward.Icon
+	if bonusIcon then S:HandleIcon(bonusIcon) end
+
+	-- Threat Counter Tooltips
+	_G.GarrisonMissionMechanicFollowerCounterTooltip:CreateBackdrop('Transparent')
+	_G.GarrisonMissionMechanicTooltip:CreateBackdrop('Transparent')
+
+	_G.GarrisonBuildingFrame.BuildingLevelTooltip:StripTextures()
+	_G.GarrisonBuildingFrame.BuildingLevelTooltip:CreateBackdrop('Transparent')
 end
 
 S:AddCallbackForAddon('Blizzard_GarrisonUI')
-S:AddCallback('GarrisonTooltips')
