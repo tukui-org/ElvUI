@@ -1301,6 +1301,67 @@ function E:DBConvertSL()
 		E:CopyTable(E.global.unitframe.aurawatch, E.global.unitframe.buffwatch)
 		E.global.unitframe.buffwatch = nil
 	end
+
+	-- ActionBar 12.18 changes
+	for i = 1, 10 do
+		local bar = E.db.actionbar['bar'..i]
+		if bar.buttonsize then
+			bar.buttonSize = bar.buttonsize
+			bar.buttonsize = nil
+		end
+		if bar.buttonspacing then
+			bar.buttonSpacing = bar.buttonspacing
+			bar.buttonspacing = nil
+		end
+	end
+	if E.db.actionbar.barPet.buttonsize then
+		E.db.actionbar.barPet.buttonSize = E.db.actionbar.barPet.buttonsize
+		E.db.actionbar.barPet.buttonsize = nil
+	end
+	if E.db.actionbar.stanceBar.buttonsize then
+		E.db.actionbar.stanceBar.buttonSize = E.db.actionbar.stanceBar.buttonsize
+		E.db.actionbar.stanceBar.buttonsize = nil
+	end
+	if E.db.actionbar.barPet.buttonspacing then
+		E.db.actionbar.barPet.buttonSpacing = E.db.actionbar.barPet.buttonspacing
+		E.db.actionbar.barPet.buttonspacing = nil
+	end
+	if E.db.actionbar.stanceBar.buttonspacing then
+		E.db.actionbar.stanceBar.buttonSpacing = E.db.actionbar.stanceBar.buttonspacing
+		E.db.actionbar.stanceBar.buttonspacing = nil
+	end
+
+	-- Convert Pages
+	if E.db.actionbar.convertPages then
+		E.db.convertPages = E.db.actionbar.convertPages
+		E.db.actionbar.convertPages = nil
+	end
+	if not E.db.convertPages then
+		local bar2, bar3, bar5, bar6 = E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6
+		E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6 = E:CopyTable({}, bar6), E:CopyTable({}, bar5), E:CopyTable({}, bar2), E:CopyTable({}, bar3)
+
+		if E.db.movers then
+			local bar2mover, bar3mover, bar5mover, bar6mover = E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6
+			if bar6mover == 'BOTTOM,ElvUI_Bar2,TOP,0,2' then bar6mover = ActionBars.barDefaults.bar2.position end
+			E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6 = bar6mover, bar5mover, bar2mover, bar3mover
+		end
+
+		E.db.convertPages = true
+	end
+
+	-- UnitFrame
+	if E.db.unitframe.units.party.groupBy == 'ROLE2' or E.db.unitframe.units.party.groupBy == 'CLASSROLE' then
+		E.db.unitframe.units.party.groupBy = 'ROLE'
+	end
+	if E.db.unitframe.units.raid.groupBy == 'ROLE2' or E.db.unitframe.units.raid.groupBy == 'CLASSROLE' then
+		E.db.unitframe.units.raid.groupBy = 'ROLE'
+	end
+	if E.db.unitframe.units.raid40.groupBy == 'ROLE2' or E.db.unitframe.units.raid40.groupBy == 'CLASSROLE' then
+		E.db.unitframe.units.raid40.groupBy = 'ROLE'
+	end
+	if E.db.unitframe.units.raidpet.groupBy == 'ROLE2' or E.db.unitframe.units.raidpet.groupBy == 'CLASSROLE' then
+		E.db.unitframe.units.raidpet.groupBy = 'ROLE'
+	end
 end
 
 function E:UpdateDB()
@@ -1759,65 +1820,6 @@ function E:DBConversions()
 	end
 
 	-- development converts, always call
-
-	-- ActionBar
-
-	for i = 1, 10 do
-		if E.db.actionbar['bar'..i].buttonsize then
-			E.db.actionbar['bar'..i].buttonSize = E.db.actionbar['bar'..i].buttonsize
-			E.db.actionbar['bar'..i].buttonsize = nil
-		end
-		if E.db.actionbar['bar'..i].buttonspacing then
-			E.db.actionbar['bar'..i].buttonSpacing = E.db.actionbar['bar'..i].buttonspacing
-			E.db.actionbar['bar'..i].buttonspacing = nil
-		end
-	end
-	if E.db.actionbar.barPet.buttonsize then
-		E.db.actionbar.barPet.buttonSize = E.db.actionbar.barPet.buttonsize
-		E.db.actionbar.barPet.buttonsize = nil
-	end
-	if E.db.actionbar.stanceBar.buttonsize then
-		E.db.actionbar.stanceBar.buttonSize = E.db.actionbar.stanceBar.buttonsize
-		E.db.actionbar.stanceBar.buttonsize = nil
-	end
-	if E.db.actionbar.barPet.buttonspacing then
-		E.db.actionbar.barPet.buttonSpacing = E.db.actionbar.barPet.buttonspacing
-		E.db.actionbar.barPet.buttonspacing = nil
-	end
-	if E.db.actionbar.stanceBar.buttonspacing then
-		E.db.actionbar.stanceBar.buttonSpacing = E.db.actionbar.stanceBar.buttonspacing
-		E.db.actionbar.stanceBar.buttonspacing = nil
-	end
-	-- Convert Pages
-	if E.db.actionbar.convertPages then
-		E.db.convertPages = E.db.actionbar.convertPages
-		E.db.actionbar.convertPages = nil
-	end
-	if not E.db.convertPages then
-		local bar2, bar3, bar5, bar6 = E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6
-		E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6 = E:CopyTable({}, bar6), E:CopyTable({}, bar5), E:CopyTable({}, bar2), E:CopyTable({}, bar3)
-
-		if E.db.movers then
-			local bar2mover, bar3mover, bar5mover, bar6mover = E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6
-			if bar6mover == 'BOTTOM,ElvUI_Bar2,TOP,0,2' then bar6mover = ActionBars.barDefaults.bar2.position end
-			E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6 = bar6mover, bar5mover, bar2mover, bar3mover
-		end
-
-		E.db.convertPages = true
-	end
-	-- UnitFrame
-	if E.db.unitframe.units.party.groupBy == 'ROLE2' or E.db.unitframe.units.party.groupBy == 'CLASSROLE' then
-		E.db.unitframe.units.party.groupBy = 'ROLE'
-	end
-	if E.db.unitframe.units.raid.groupBy == 'ROLE2' or E.db.unitframe.units.raid.groupBy == 'CLASSROLE' then
-		E.db.unitframe.units.raid.groupBy = 'ROLE'
-	end
-	if E.db.unitframe.units.raid40.groupBy == 'ROLE2' or E.db.unitframe.units.raid40.groupBy == 'CLASSROLE' then
-		E.db.unitframe.units.raid40.groupBy = 'ROLE'
-	end
-	if E.db.unitframe.units.raidpet.groupBy == 'ROLE2' or E.db.unitframe.units.raidpet.groupBy == 'CLASSROLE' then
-		E.db.unitframe.units.raidpet.groupBy = 'ROLE'
-	end
 end
 
 function E:RefreshModulesDB()
