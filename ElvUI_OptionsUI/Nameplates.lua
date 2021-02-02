@@ -3132,6 +3132,7 @@ local function GetUnitSettings(unit, name)
 								order = 2,
 								name = L["Text Format"],
 								type = 'input',
+								width = 'full',
 							},
 							position = {
 								order = 3,
@@ -3323,6 +3324,7 @@ local function GetUnitSettings(unit, name)
 								order = 2,
 								name = L["Text Format"],
 								type = 'input',
+								width = 'full',
 							},
 							position = {
 								order = 3,
@@ -4457,6 +4459,7 @@ local function GetUnitSettings(unit, name)
 						order = 2,
 						name = L["Text Format"],
 						type = 'input',
+						width = 'full',
 					},
 					position = {
 						order = 3,
@@ -5088,6 +5091,7 @@ local function GetUnitSettings(unit, name)
 					order = 2,
 					name = L["Text Format"],
 					type = 'input',
+					width = 'full',
 				},
 				position = {
 					order = 3,
