@@ -848,6 +848,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[335113] = Defaults(), -- Huntsman's Mark 1
 		[334945] = Defaults(), -- Vicious Lunge
 		[334852] = Defaults(), -- Petrifying Howl
+		[334695] = Defaults(), -- Destabilize
 		-- Hungering Destroyer
 		[334228] = Defaults(), -- Volatile Ejection
 		[329298] = Defaults(), -- Gluttonous Miasma
