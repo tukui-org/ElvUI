@@ -1,6 +1,50 @@
-### Version 12.17 [ ETA: 🍨 ]
+### Version 12.19 [ ETA: 🍨 ]
 
 **Sweet:**  
+
+___
+
+### Version 12.18 [ February 1st 2021 ]
+
+**Updated Parts:**  
+[IMPORTANT] Action Bar pages will finally match the bar numbers  
+Text settings for Action Bars: Hotkey, Macro, Count  
+Arena Trinkets and Arena Prep  
+Multiple Skins  
+Raid Auras  
+
+**Fixed Stuff:**  
+Delete Grey Items  
+Quest Experience Bar  
+Boss Banner Error  
+Nameplate Widget Error  
+Rare ILvl error when Inspecting  
+Auto Repair when not in Guild  
+Mend Pet (Hunter) in Aura Watch  
+Stance and Pet buttons were not properly hidden  
+
+**Added Things:**  
+Anima in Bags  
+Just Backpack to Bag Bar  
+Aura Watch on Focus and Boss Frame  
+Enveloping Breathing (Monk) to Aura Watch  
+Charged Combo Point (Rogue) on UnitFrames and NamePlates  
+Show Max Currency setting for Currency Datatext  
+Torghast Info onto the Time Datatext  
+Daily Reset added to Time Datatext  
+Grey Items Value on Bags Datatext  
+Condensed (Spaced) and Short (Whole Numbers Spaced) format options added to Gold Datatext  
+
+**Tag Changes:**  
+[health:current] will now show full value  
+[health:current:shortvalue] will show the short value  
+
+___
+
+### Version 12.17 [ January 4th 2021 ]
+
+**Hotfixed:**  
+Updated Ace3 so buttons on the side of Options will not be under the frame.  
 
 ___
 
@@ -741,7 +785,7 @@ Added Color and Text Format option to the Party Alternative Power bar settings.
 
 **Bug Fixes:**  
 Attempted to fix Boss Frame (or other Unitframes) name not being updated correctly.  
-Fixed error when using the "[health:deficit-percent:nostatus]" tag.  
+Fixed error when using the [health:deficit-percent:nostatus] tag.  
 Fixed Reagent Bank Icon borders.  
 
 **Misc. Changes:**  
