@@ -152,7 +152,7 @@ function B:Tooltip_Show()
 	end
 
 	if self.ttValue and self.ttValue() > 0 then
-		GameTooltip:AddLine(E:FormatMoney(self.ttValue(), E.db.bags.moneyFormat, not E.db.bags.moneyCoins), 1, 1, 1)
+		GameTooltip:AddLine(E:FormatMoney(self.ttValue(), B.db.moneyFormat, not B.db.moneyCoins), 1, 1, 1)
 	end
 
 	GameTooltip:Show()
@@ -319,7 +319,24 @@ function B:UpdateItemLevelDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.itemLevel then
-					slot.itemLevel:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+					slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
+				end
+			end
+		end
+
+		B:UpdateAllSlots(bagFrame)
+	end
+end
+
+function B:UpdateItemInfoDisplay()
+	if E.private.bags.enable ~= true then return end
+	for _, bagFrame in pairs(B.BagFrames) do
+		for _, bagID in ipairs(bagFrame.BagIDs) do
+			for slotID = 1, GetContainerNumSlots(bagID) do
+				local slot = bagFrame.Bags[bagID][slotID]
+				if slot and slot.itemLevel then
+					slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
+					slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
 				end
 			end
 		end
@@ -336,7 +353,7 @@ function B:UpdateCountDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.Count then
-					slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+					slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 				end
 			end
 		end
@@ -349,7 +366,7 @@ function B:UpdateCountDisplay()
 		for i = 1, B.REAGENTBANK_SIZE do
 			local slot = B.BankFrame.reagentFrame.slots[i]
 			if slot then
-				slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+				slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 				B:UpdateReagentSlot(i)
 			end
 		end
@@ -385,7 +402,7 @@ function B:IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, rari
 end
 
 function B:UpdateItemUpgradeIcon(slot)
-	if not E.db.bags.upgradeIcon then
+	if not B.db.upgradeIcon then
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', nil)
 		return
@@ -417,7 +434,7 @@ function B:UpgradeCheck_OnUpdate(elapsed)
 end
 
 function B:UpdateItemScrapIcon(slot)
-	slot.ScrapIcon:SetShown(E.db.bags.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
+	slot.ScrapIcon:SetShown(B.db.scrapIcon and C_Item_DoesItemExist(slot.itemLocation) and C_Item_CanScrapItem(slot.itemLocation))
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
@@ -478,14 +495,14 @@ function B:UpdateSlot(frame, bagID, slotID)
 	slot:Show()
 
 	slot.isJunk = (slot.rarity and slot.rarity == LE_ITEM_QUALITY_POOR) and not noValue
-	slot.junkDesaturate = slot.isJunk and E.db.bags.junkDesaturate
+	slot.junkDesaturate = slot.isJunk and B.db.junkDesaturate
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
 	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate)
 	SetItemButtonQuality(slot, rarity, itemLink)
 
-	local color = E.db.bags.countFontColor
+	local color = B.db.countFontColor
 	slot.Count:SetTextColor(color.r, color.g, color.b)
 	slot.itemLevel:SetText('')
 	slot.bindType:SetText('')
@@ -550,7 +567,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if C_Item_IsAnimaItemByID(link) then
+		if C_Item_IsAnimaItemByID(link) and B.db.itemInfo then
 			local _, spellID = GetItemSpell(link)
 			if animaSpellID[spellID] then
 				slot.centerText:SetText(animaSpellID[spellID] * count)
@@ -559,7 +576,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 
 	if slot.questIcon then slot.questIcon:SetShown(questId and not isActiveQuest) end
-	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and E.db.bags.junkIcon) end
+	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
 	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
@@ -581,20 +598,20 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if forceColor and B.db.colorBackdrop then
 		slot:SetBackdropColor(r, g, b, a)
 	else
-		slot:SetBackdropColor(unpack(E.db.bags.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
+		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 	end
 
 	slot.newItemGlow:SetVertexColor(r, g, b, a or 1)
 	slot:SetBackdropBorderColor(r, g, b, a or 1)
 	slot.forcedBorderColors = forceColor and {r, g, b, a or 1}
 
-	if E.db.bags.newItemGlow then
+	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
 
 	if texture then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-		CooldownFrame_Set(slot.cooldown, start, duration, enable)
+		slot.cooldown:SetCooldown(start, duration, enable)
 		if duration > 0 and enable == 0 then
 			SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4)
 		else
@@ -820,7 +837,7 @@ function B:GetBagAssignedInfo(holder)
 		end
 	end
 
-	if E.db.bags.showAssignedIcon then
+	if B.db.showAssignedIcon then
 		holder.ElvUIFilterIcon:SetShown(active)
 	end
 
@@ -1026,7 +1043,7 @@ function B:Layout(isBank)
 
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
 	f:SetSize(containerWidth, buttonsHeight + f.topOffset + f.bottomOffset + (isSplit and (numBags * bagSpacing) or 0))
-	f:SetFrameStrata(E.db.bags.strata or 'HIGH')
+	f:SetFrameStrata(B.db.strata or 'HIGH')
 end
 
 function B:UpdateReagentSlot(slotID)
@@ -1086,7 +1103,7 @@ function B:UpdateReagentSlot(slotID)
 	slot:SetBackdropBorderColor(r, g, b, a or 1)
 	slot.forcedBorderColors = forceColor and {r, g, b, a or 1}
 
-	if E.db.bags.newItemGlow then
+	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
 end
@@ -1186,7 +1203,7 @@ function B:UpdateTokens()
 end
 
 function B:UpdateGoldText()
-	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), E.db.bags.moneyFormat, not E.db.bags.moneyCoins))
+	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), B.db.moneyFormat, not B.db.moneyCoins))
 end
 
 function B:GetGraysValue()
@@ -1294,7 +1311,7 @@ function B:SetButtonTexture(button, texture)
 end
 
 function B:ConstructContainerFrame(name, isBank)
-	local strata = E.db.bags.strata or 'HIGH'
+	local strata = B.db.strata or 'HIGH'
 
 	local f = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
 	f:SetTemplate('Transparent')
@@ -1360,7 +1377,7 @@ function B:ConstructContainerFrame(name, isBank)
 		local inherit = isBank and 'BackdropTemplate, BankItemButtonBagTemplate' or bagID == 0 and 'BackdropTemplate, ItemAnimTemplate' or 'BackdropTemplate, BagSlotButtonTemplate'
 
 		f.ContainerHolder[i] = CreateFrame('ItemButton', bagName, f.ContainerHolder, inherit)
-		f.ContainerHolder[i]:SetTemplate(E.db.bags.transparent and 'Transparent', true)
+		f.ContainerHolder[i]:SetTemplate(B.db.transparent and 'Transparent', true)
 		f.ContainerHolder[i]:StyleButton()
 		f.ContainerHolder[i]:SetNormalTexture('')
 		f.ContainerHolder[i]:SetPushedTexture('')
@@ -1436,7 +1453,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.sortButton:SetScript('OnEnter', _G.BagItemAutoSortButton:GetScript('OnEnter'))
 	f.sortButton:SetScript('OnLeave', GameTooltip_Hide)
 
-	if isBank and E.db.bags.disableBankSort or (not isBank and E.db.bags.disableBagSort) then
+	if isBank and B.db.disableBankSort or (not isBank and B.db.disableBagSort) then
 		f.sortButton:Disable()
 	end
 
@@ -1611,7 +1628,7 @@ function B:ConstructContainerFrame(name, isBank)
 			B:NewItemGlowBagClear(f)
 			B:HideItemGlow(f)
 
-			if E.db.bags.clearSearchOnClose then
+			if B.db.clearSearchOnClose then
 				B:ResetAndClear()
 			end
 		end)
@@ -1689,7 +1706,7 @@ function B:ConstructContainerFrame(name, isBank)
 			B:NewItemGlowBagClear(f)
 			B:HideItemGlow(f)
 
-			if not _G.BankFrame:IsShown() and E.db.bags.clearSearchOnClose then
+			if not _G.BankFrame:IsShown() and B.db.clearSearchOnClose then
 				B:ResetAndClear()
 			end
 		end)
@@ -1703,7 +1720,7 @@ end
 function B:ConstructContainerButton(f, slotID, bagID)
 	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BackdropTemplate, BankItemButtonGenericTemplate' or 'BackdropTemplate, ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
-	slot:SetTemplate(E.db.bags.transparent and 'Transparent', true)
+	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
 
 	if _G[slot:GetName()..'NewItemTexture'] then
@@ -1712,7 +1729,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	slot.Count:ClearAllPoints()
 	slot.Count:Point('BOTTOMRIGHT', 0, 2)
-	slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+	slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 
 	if not (slot.questIcon) then
 		slot.questIcon = _G[slot:GetName()..'IconQuestTexture'] or _G[slot:GetName()].IconQuestTexture
@@ -1761,16 +1778,16 @@ function B:ConstructContainerButton(f, slotID, bagID)
 
 	slot.itemLevel = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
 	slot.itemLevel:Point('BOTTOMRIGHT', 0, 2)
-	slot.itemLevel:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+	slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 
 	slot.bindType = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
 	slot.bindType:Point('TOP', 0, -2)
-	slot.bindType:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
+	slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 
 	slot.centerText = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
 	slot.centerText:Point('CENTER', 0, 0)
-	slot.centerText:FontTemplate(LSM:Fetch('font', E.db.bags.itemLevelFont), E.db.bags.itemLevelFontSize, E.db.bags.itemLevelFontOutline)
-	slot.centerText:SetTextColor(0, 0.75, 0.98)
+	slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
+	slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
 
 	if slot.BattlepayItemTexture then
 		slot.BattlepayItemTexture:Hide()
@@ -1803,7 +1820,7 @@ function B:ConstructReagentSlot(f, slotID)
 	slot:SetID(slotID)
 	slot.isReagent = true
 	slot:StyleButton()
-	slot:SetTemplate(E.db.bags.transparent and 'Transparent', true)
+	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
 
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
@@ -1814,7 +1831,7 @@ function B:ConstructReagentSlot(f, slotID)
 
 	slot.Count:ClearAllPoints()
 	slot.Count:Point('BOTTOMRIGHT', 0, 2)
-	slot.Count:FontTemplate(LSM:Fetch('font', E.db.bags.countFont), E.db.bags.countFontSize, E.db.bags.countFontOutline)
+	slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 
 	slot.searchOverlay:SetAllPoints()
 
@@ -1866,10 +1883,10 @@ function B:ToggleSortButtonState(isBank)
 	local button, disable
 	if isBank and B.BankFrame then
 		button = B.BankFrame.sortButton
-		disable = E.db.bags.disableBankSort
+		disable = B.db.disableBankSort
 	elseif not isBank and B.BagFrame then
 		button = B.BagFrame.sortButton
-		disable = E.db.bags.disableBagSort
+		disable = B.db.disableBagSort
 	end
 
 	if button and disable then
@@ -1965,13 +1982,13 @@ function B:SetupItemGlow(frame)
 end
 
 function B:OpenAuction()
-	if E.db.bags.auctionToggle then
+	if B.db.auctionToggle then
 		B:OpenBags()
 	end
 end
 
 function B:CloseAuction()
-	if E.db.bags.auctionToggle then
+	if B.db.auctionToggle then
 		B:CloseBags()
 	end
 end
@@ -2149,7 +2166,7 @@ function B:MERCHANT_CLOSED()
 	wipe(B.SellFrame.Info.itemList)
 	B.SellFrame.Info.delete = false
 	B.SellFrame.Info.ProgressTimer = 0
-	B.SellFrame.Info.SellInterval = E.db.bags.vendorGrays.interval
+	B.SellFrame.Info.SellInterval = B.db.vendorGrays.interval
 	B.SellFrame.Info.ProgressMax = 0
 	B.SellFrame.Info.goldGained = 0
 	B.SellFrame.Info.itemsSold = 0
@@ -2162,8 +2179,8 @@ function B:ProgressQuickVendor()
 
 	local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 	local stackPrice = (itemPrice or 0) * stackCount
-	if E.db.bags.vendorGrays.details and link then
-		E:Print(format('%s|cFF00DDDDx%d|r %s', link, stackCount, E:FormatMoney(stackPrice, E.db.bags.moneyFormat, not E.db.bags.moneyCoins)))
+	if B.db.vendorGrays.details and link then
+		E:Print(format('%s|cFF00DDDDx%d|r %s', link, stackCount, E:FormatMoney(stackPrice, B.db.moneyFormat, not B.db.moneyCoins)))
 	end
 	UseContainerItem(bag, slot)
 
@@ -2187,7 +2204,7 @@ function B:VendorGreys_OnUpdate(elapsed)
 	elseif lastItem then
 		B.SellFrame:Hide()
 		if B.SellFrame.Info.goldGained > 0 then
-			E:Print((L["Vendored gray items for: %s"]):format(E:FormatMoney(B.SellFrame.Info.goldGained, E.db.bags.moneyFormat, not E.db.bags.moneyCoins)))
+			E:Print((L["Vendored gray items for: %s"]):format(E:FormatMoney(B.SellFrame.Info.goldGained, B.db.moneyFormat, not B.db.moneyCoins)))
 		end
 	end
 end
@@ -2197,7 +2214,7 @@ function B:CreateSellFrame()
 	B.SellFrame:Size(200,40)
 	B.SellFrame:Point('CENTER', E.UIParent)
 	B.SellFrame:CreateBackdrop('Transparent')
-	B.SellFrame:SetAlpha(E.db.bags.vendorGrays.progressBar and 1 or 0)
+	B.SellFrame:SetAlpha(B.db.vendorGrays.progressBar and 1 or 0)
 
 	B.SellFrame.title = B.SellFrame:CreateFontString(nil, 'OVERLAY')
 	B.SellFrame.title:FontTemplate(nil, 12, 'OUTLINE')
@@ -2224,7 +2241,7 @@ function B:CreateSellFrame()
 	B.SellFrame.Info = {
 		delete = false,
 		ProgressTimer = 0,
-		SellInterval = E.db.bags.vendorGrays.interval,
+		SellInterval = B.db.vendorGrays.interval,
 		ProgressMax = 0,
 		goldGained = 0,
 		itemsSold = 0,
@@ -2239,8 +2256,8 @@ end
 function B:UpdateSellFrameSettings()
 	if not B.SellFrame or not B.SellFrame.Info then return; end
 
-	B.SellFrame.Info.SellInterval = E.db.bags.vendorGrays.interval
-	B.SellFrame:SetAlpha(E.db.bags.vendorGrays.progressBar and 1 or 0)
+	B.SellFrame.Info.SellInterval = B.db.vendorGrays.interval
+	B.SellFrame:SetAlpha(B.db.vendorGrays.progressBar and 1 or 0)
 end
 
 B.BagIndice = {
@@ -2392,7 +2409,7 @@ function B:Initialize()
 	_G.BankFrame:Point('TOPLEFT')
 
 	--Enable/Disable 'Loot to Leftmost Bag'
-	SetInsertItemsLeftToRight(E.db.bags.reverseLoot)
+	SetInsertItemsLeftToRight(B.db.reverseLoot)
 end
 
 E:RegisterModule(B:GetName())
