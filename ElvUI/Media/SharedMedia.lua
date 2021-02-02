@@ -66,6 +66,55 @@ AddMedia('font','Expressway.ttf',			true, nil, westAndRU)
 AddMedia('font','Homespun.ttf',				true, nil, westAndRU)
 AddMedia('font','Invisible.ttf')
 
+-- SF Compact by Apple
+AddMedia('font','SFCompactDisplay-Bold.ttf', 		'SFCD Bold')
+AddMedia('font','SFCompactDisplay-Medium.ttf', 		'SFCD Medium')
+AddMedia('font','SFCompactDisplay-Regular.ttf', 	'SFCD Regular')
+AddMedia('font','SFCompactDisplay-SemiBold.ttf', 	'SFCD SemiBold')
+
+-- SF Pro Rounded by Apple
+AddMedia('font','SF-Pro-Rounded-Bold.ttf', 	'SFP Rounded Bold')
+AddMedia('font','SF-Pro-Rounded-Medium.ttf', 	'SFP Rounded Medium')
+AddMedia('font','SF-Pro-Rounded-Regular.ttf', 	'SFP Rounded Regular')
+
+
+-- Karla
+AddMedia('font','Karla-Bold.ttf', 		'Karla Bold')
+AddMedia('font','Karla-Medium.ttf', 	'Karla Medium')
+AddMedia('font','Karla-Regular.ttf', 	'Karla Regular')
+AddMedia('font','Karla-SemiBold.ttf', 	'Karla SemiBold')
+
+-- Mulish
+AddMedia('font','Mulish-Bold.ttf', 		'Mulish Bold')
+AddMedia('font','Mulish-Medium.ttf', 	'Mulish Medium')
+AddMedia('font','Mulish-Regular.ttf', 	'Mulish Regular')
+AddMedia('font','Mulish-SemiBold.ttf', 	'Mulish SemiBold')
+
+-- Nunito
+AddMedia('font','Nunito-Bold.ttf', 		'Nunito Bold')
+AddMedia('font','Nunito-Regular.ttf', 	'Nunito Regular')
+AddMedia('font','Nunito-SemiBold.ttf', 	'Nunito SemiBold')
+
+-- NunitoSans
+AddMedia('font','NunitoSans-Bold.ttf', 		'NunitoSans Bold')
+AddMedia('font','NunitoSans-Regular.ttf', 	'NunitoSans Regular')
+AddMedia('font','NunitoSans-SemiBold.ttf', 	'NunitoSans SemiBold')
+
+-- QuattrocentoSans
+AddMedia('font','QuattrocentoSans-Bold.ttf', 		'QuattrocentoSans Bold')
+AddMedia('font','QuattrocentoSans-Regular.ttf', 	'QuattrocentoSans Regular')
+
+-- Rubik
+AddMedia('font','Rubik-Bold.ttf', 		'Rubik Bold')
+AddMedia('font','Rubik-Medium.ttf', 	'Rubik Medium')
+AddMedia('font','Rubik-Regular.ttf', 	'Rubik Regular')
+AddMedia('font','Rubik-SemiBold.ttf', 	'Rubik SemiBold')
+
+-- SourceSansPro
+AddMedia('font','SourceSansPro-Bold.ttf', 		'SourceSP Bold')
+AddMedia('font','SourceSansPro-Regular.ttf', 	'SourceSP Regular')
+AddMedia('font','SourceSansPro-SemiBold.ttf', 	'SourceSP SemiBold')
+
 AddMedia('sound','AwwCrap.ogg',					'Awww Crap')
 AddMedia('sound','BbqAss.ogg',					'BBQ Ass')
 AddMedia('sound','DumbShit.ogg',				'Dumb Shit')
