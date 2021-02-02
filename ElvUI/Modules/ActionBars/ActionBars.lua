@@ -708,7 +708,7 @@ end
 
 function AB:UpdateHotkeyColor(button)
 	local db = button.db
-	local c = button.outOfRange and AB.db.noRangeColor or db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
+	local c = AB.db.useRangeColorText and button.outOfRange and AB.db.noRangeColor or db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
 	button.HotKey:SetTextColor(c.r, c.g, c.b)
 end
 
