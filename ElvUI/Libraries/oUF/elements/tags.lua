@@ -563,6 +563,7 @@ local unitlessEvents = {
 	NEUTRAL_FACTION_SELECT_RESULT = true,
 	PARTY_LEADER_CHANGED = true,
 	PLAYER_LEVEL_UP = true,
+	PLAYER_TALENT_UPDATE = true,
 	PLAYER_TARGET_CHANGED = true,
 	PLAYER_UPDATE_RESTING = true,
 	RUNE_POWER_UPDATE = true,
@@ -938,6 +939,11 @@ local function Untag(self, fs)
 	self.__tags[fs] = nil
 end
 
+local function strip(tag)
+	-- remove prefix, custom args, and suffix
+	return tag:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]") -- ElvUI uses old tag format
+end
+
 oUF.Tags = {
 	Methods = tags,
 	Events = tagEvents,
@@ -953,7 +959,7 @@ oUF.Tags = {
 		-- string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr, func in next, tagPool do
-			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then
+			if(strip(tagstr):match(tag)) then
 				tagPool[tagstr] = nil
 
 				for fs in next, taggedFS do
@@ -975,7 +981,7 @@ oUF.Tags = {
 		-- string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr in next, tagPool do
-			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then
+			if(strip(tagstr):match(tag)) then
 				for fs, ts in next, taggedFS do
 					if(ts == tagstr) then
 						unregisterEvents(fs)

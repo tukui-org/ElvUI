@@ -189,7 +189,10 @@ function S:Blizzard_Calendar()
 	_G.CalendarMassInviteFrame:StripTextures()
 	_G.CalendarMassInviteFrame:CreateBackdrop('Transparent')
 	_G.CalendarMassInviteFrame.Header:StripTextures()
-
+	S:HandleDropDownBox(_G.CalendarMassInviteCommunityDropDown, 200)
+	S:HandleDropDownBox(_G.CalendarMassInviteRankMenu)
+	S:HandleEditBox(_G.CalendarMassInviteMinLevelEdit)
+	S:HandleEditBox(_G.CalendarMassInviteMaxLevelEdit)
 	S:HandleCloseButton(_G.CalendarMassInviteCloseButton)
 
 	--Raid View

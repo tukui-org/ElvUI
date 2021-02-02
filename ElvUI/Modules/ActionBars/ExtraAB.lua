@@ -17,13 +17,11 @@ function AB:ExtraButtons_BossStyle(button)
 	button.style:SetAlpha(not E.db.actionbar.extraActionButton.clean and E.db.actionbar.extraActionButton.alpha or 0)
 end
 
-function AB:ExtraButtons_ZoneStyle()
+function AB:ExtraButtons_ZoneAlpha()
 	local zoneAlpha = E.db.actionbar.zoneActionButton.alpha
 	_G.ZoneAbilityFrame.Style:SetAlpha(not E.db.actionbar.zoneActionButton.clean and zoneAlpha or 0)
 
-	for button in _G.ZoneAbilityFrame.SpellButtonContainer:EnumerateActive() do
-		button:SetAlpha(zoneAlpha)
-	end
+	return zoneAlpha
 end
 
 function AB:ExtraButtons_OnEnter()
@@ -55,7 +53,10 @@ function AB:ExtraButtons_UpdateAlpha()
 		end
 	end
 
-	AB:ExtraButtons_ZoneStyle()
+	local zoneAlpha = AB:ExtraButtons_ZoneAlpha()
+	for button in _G.ZoneAbilityFrame.SpellButtonContainer:EnumerateActive() do
+		button:SetAlpha(zoneAlpha)
+	end
 end
 
 function AB:ExtraButtons_UpdateScale()
@@ -111,33 +112,33 @@ function AB:SetupExtraButton()
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
-		AB:ExtraButtons_ZoneStyle()
+		local zoneAlpha = AB:ExtraButtons_ZoneAlpha()
 
 		for spellButton in frame.SpellButtonContainer:EnumerateActive() do
-			if spellButton and not spellButton.IsSkinned then
-				spellButton.NormalTexture:SetAlpha(0)
-				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
-				spellButton:StyleButton(nil, true)
-				spellButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
-				spellButton.Icon:SetDrawLayer('ARTWORK')
-				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
-				spellButton.Icon:SetInside()
+			if spellButton then
+				spellButton:SetAlpha(zoneAlpha)
 
-				--check these
-				--spellButton.HotKey:SetText(GetBindingKey(spellButton:GetName()))
-				--tinsert(ExtraButtons, spellButton)
+				if not spellButton.IsSkinned then
+					spellButton.NormalTexture:SetAlpha(0)
+					spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+					spellButton:StyleButton(nil, true)
+					spellButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+					spellButton.Icon:SetDrawLayer('ARTWORK')
+					spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
+					spellButton.Icon:SetInside()
 
-				spellButton.holder = ZoneAbilityHolder
-				spellButton:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
-				spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+					spellButton.holder = ZoneAbilityHolder
+					spellButton:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
+					spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
-				if spellButton.Cooldown then
-					spellButton.Cooldown.CooldownOverride = 'actionbar'
-					E:RegisterCooldown(spellButton.Cooldown)
-					spellButton.Cooldown:SetInside(spellButton)
+					if spellButton.Cooldown then
+						spellButton.Cooldown.CooldownOverride = 'actionbar'
+						E:RegisterCooldown(spellButton.Cooldown)
+						spellButton.Cooldown:SetInside(spellButton)
+					end
+
+					spellButton.IsSkinned = true
 				end
-
-				spellButton.IsSkinned = true
 			end
 		end
 	end)
@@ -148,7 +149,7 @@ function AB:SetupExtraButton()
 			button.pushed = true
 			button.checked = true
 
-			self:StyleButton(button, true) -- registers cooldown too
+			AB:StyleButton(button, true) -- registers cooldown too
 			button.icon:SetDrawLayer('ARTWORK')
 			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
 
@@ -168,20 +169,26 @@ function AB:SetupExtraButton()
 		end
 	end
 
-	AB:ExtraButtons_UpdateAlpha()
-	AB:ExtraButtons_UpdateScale()
-	AB:ExtraButtons_GlobalFade()
+	AB:UpdateExtraButtons()
 
-	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraActionButton')
-	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS')
+	E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
+	E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
 
 	-- Spawn the mover before its available.
 	ZoneAbilityHolder:Size(52 * E.db.actionbar.zoneActionButton.scale)
 end
 
+function AB:UpdateExtraButtons()
+	AB:ExtraButtons_UpdateAlpha()
+	AB:ExtraButtons_UpdateScale()
+	AB:ExtraButtons_GlobalFade()
+end
+
 function AB:UpdateExtraBindings()
+	_G.ExtraActionBarFrame.db = E.db.actionbar.extraActionButton
+
 	for _, button in pairs(ExtraButtons) do
-		button.HotKey:SetText(_G.GetBindingKey(button:GetName()))
+		button.HotKey:SetText(GetBindingKey(button:GetName()))
 		AB:FixKeybindText(button)
 	end
 end

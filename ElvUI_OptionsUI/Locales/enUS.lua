@@ -200,6 +200,7 @@ L["Cart / Flag / Orb / Assassin Bounty"] = true
 L["Cast Bar"] = true
 L["Cast Time Format"] = true
 L["Castbar"] = true
+L["Casted by Player Only"] = true
 L["Casting"] = true
 L["Center"] = true
 L["Change settings for the display of the location text that is on the minimap."] = true
@@ -582,6 +583,8 @@ L["Hide Error Text"] = true
 L["Hide Frame"] = true
 L["Hide In Combat"] = true
 L["Hide In Vehicle"] = true
+L["Hide Keybind Text"] = true
+L["Hide Macro Text"] = true
 L["Hide Outside PvP"] = true
 L["Hide specific sections in the datatext tooltip."] = true
 L["Hide Spell Name"] = true
@@ -861,6 +864,7 @@ L["Offset position for text."] = true
 L["Offset"] = true
 L["On Cooldown"] = true
 L["On screen positions for different elements."] = true
+L["Only highlight the aura that originated from you and not others."] = true
 L["Only Match SpellID"] = true
 L["Open Ticket"] = true
 L["Order Hall Command Bar"] = true
@@ -932,6 +936,7 @@ L["Position Buffs on Debuffs"] = true
 L["Position Debuffs on Buffs"] = true
 L["Position of bonus quest reward frame relative to the objective tracker."] = true
 L["Position of the Chat EditBox, if datatexts are disabled this will be forced to be above chat."] = true
+L["Position of the Torghast buff list relative to the objective tracker."] = true
 L["Position other Nameplates at the base, rather than overhead."] = true
 L["Position the Model horizontally."] = true
 L["Position the Model vertically."] = true
@@ -1080,6 +1085,7 @@ L["Setup on-screen display of information bars."] = true
 L["Share Current Profile"] = true
 L["Share Filters"] = true
 L["Short (Whole Numbers)"] = true
+L["Short (Whole Numbers Spaced)"] = true
 L["Short Channels"] = true
 L["Shortcut to global filters."] = true
 L["Shortcuts"] = true
@@ -1294,6 +1300,7 @@ L["Top Panel"] = true
 L["Top Right"] = true
 L["Top to Bottom"] = true
 L["Top"] = true
+L["Torghast Buffs Position"] = true
 L["Totems"] = true
 L["Trainer Frame"] = true
 L["Transparency level when not in combat, no target exists, full health, not casting, and no focus target exists."] = true
@@ -1449,32 +1456,32 @@ L["VISIBILITY_DESC"] = [=[The following macro must be true in order for the grou
 L["SEARCH_SYNTAX_DESC"] = [=[With the new addition of LibItemSearch, you now have access to much more advanced item searches. The following is a documentation of the search syntax. See the full explanation at: https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax.
 
 Specific Searching:
-    • q:[quality] or quality:[quality]. For instance, q:epic will find all epic items.
-    • l:[level], lvl:[level] or level:[level]. For example, l:30 will find all items with level 30.
-    • t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
-    • n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
-    • s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
-    • r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
-    • tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
+    â€¢ q:[quality] or quality:[quality]. For instance, q:epic will find all epic items.
+    â€¢ l:[level], lvl:[level] or level:[level]. For example, l:30 will find all items with level 30.
+    â€¢ t:[search], type:[search] or slot:[search]. For instance, t:weapon will find all weapons.
+    â€¢ n:[name] or name:[name]. For instance, typing n:muffins will find all items with names containing "muffins".
+    â€¢ s:[set] or set:[set]. For example, s:fire will find all items in equipment sets you have with names that start with fire.
+    â€¢ r:[level], reg:[level], rl:[level], regl:[level] or reqlvl:[level]. For example, reqlvl:30 will find all items that require level 30.
+    â€¢ tt:[search], tip:[search] or tooltip:[search]. For instance, tt:binds will find all items that can be bound to account, on equip, or on pickup.
 
 
 Search Operators:
-    • ! : Negates a search. For example, !q:epic will find all items that are NOT epic.
-    • | : Joins two searches. Typing q:epic | t:weapon will find all items that are either epic OR weapons.
-    • & : Intersects two searches. For instance, q:epic & t:weapon will find all items that are epic AND weapons
-    • >, <, <=, => : Performs comparisons on numerical searches. For example, typing lvl: >30 will find all items with level HIGHER than 30.
+    â€¢ ! : Negates a search. For example, !q:epic will find all items that are NOT epic.
+    â€¢ | : Joins two searches. Typing q:epic | t:weapon will find all items that are either epic OR weapons.
+    â€¢ & : Intersects two searches. For instance, q:epic & t:weapon will find all items that are epic AND weapons
+    â€¢ >, <, <=, => : Performs comparisons on numerical searches. For example, typing lvl: >30 will find all items with level HIGHER than 30.
 
 
 The following search keywords can also be used:
-    • soulbound, bound, bop : Bind on pickup items.
-    • bou : Bind on use items.
-    • boe : Bind on equip items.
-    • boa : Bind on account items.
-    • quest : Quest bound items.
-    • reagent, crafting : Profession reagents.
-    • keystone : Mythic Keystone.
-    • followers : Follower items.
-    • champions : Champion equipment.]=]
+    â€¢ soulbound, bound, bop : Bind on pickup items.
+    â€¢ bou : Bind on use items.
+    â€¢ boe : Bind on equip items.
+    â€¢ boa : Bind on account items.
+    â€¢ quest : Quest bound items.
+    â€¢ reagent, crafting : Profession reagents.
+    â€¢ keystone : Mythic Keystone.
+    â€¢ followers : Follower items.
+    â€¢ champions : Champion equipment.]=]
 
 L[ [=[This works like a macro, you can run different situations to get the actionbar to page differently.
  Example: '[combat] 2;']=] ] = true

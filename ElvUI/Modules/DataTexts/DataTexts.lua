@@ -8,6 +8,7 @@ local _G = _G
 local tostring, format, type, pcall = tostring, format, type, pcall
 local tinsert, ipairs, pairs, wipe, sort = tinsert, ipairs, pairs, wipe, sort
 local next, strfind, strlen, strsplit = next, strfind, strlen, strsplit
+local hooksecurefunc = hooksecurefunc
 local CloseDropDownMenus = CloseDropDownMenus
 local CreateFrame = CreateFrame
 local EasyMenu = EasyMenu
@@ -39,6 +40,7 @@ DT.SelectedDatatext = nil
 DT.HyperList = HyperList
 DT.RegisteredPanels = {}
 DT.RegisteredDataTexts = {}
+DT.DataTextList = {}
 DT.LoadedInfo = {}
 DT.PanelPool = {
 	InUse = {},
@@ -212,7 +214,7 @@ function DT:BuildPanelFrame(name, db, fromInit)
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
 	Panel:SetPoint('CENTER')
-	Panel:SetSize(db.width, db.height)
+	Panel:SetSize(db.width or 300, db.height or 22)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -225,7 +227,7 @@ function DT:BuildPanelFrame(name, db, fromInit)
 		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'datatexts,panels')
 	end
 
-	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
+	DT:RegisterPanel(Panel, db.numPoints or 3, db.tooltipAnchor or 'ANCHOR_TOPLEFT', db.tooltipXOffset or -17, db.tooltipYOffset or 4, db.growth == 'VERTICAL')
 
 	if not fromInit then
 		DT:UpdatePanelAttributes(name, db)
@@ -283,11 +285,6 @@ function DT:SetupObjectLDB(name, obj)
 	local data = DT:RegisterDatatext(name, 'Data Broker', nil, onEvent, nil, onClick, onEnter, onLeave)
 	E.valueColorUpdateFuncs[onCallback] = true
 	data.isLibDataBroker = true
-
-	-- Update config if it has been loaded
-	if DT.PanelLayoutOptions then
-		DT:PanelLayoutOptions()
-	end
 end
 
 function DT:RegisterLDB()
@@ -382,7 +379,6 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		if not data.objectEvent then
 			dt:SetScript('OnEvent', data.eventFunc)
 		end
-
 		data.eventFunc(dt, ev, ...)
 	end
 
@@ -783,6 +779,8 @@ function DT:Initialize()
 		DT.BattleStats.RIGHT.panel = _G.RightChatDataPanel.dataPanels
 	end
 
+	hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
+
 	DT:PopulateData()
 	DT:RegisterHyperDT()
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -843,6 +841,7 @@ function DT:RegisterDatatext(name, category, events, eventFunc, updateFunc, clic
 	end
 
 	DT.RegisteredDataTexts[name] = data
+	DT.DataTextList[name] = localizedName or name
 
 	return data
 end

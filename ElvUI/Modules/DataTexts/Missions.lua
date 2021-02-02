@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local next, wipe, ipairs = next, wipe, ipairs
-local format, sort, select = format, sort, select
+local format, sort, pairs, select = format, sort, pairs, select
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
@@ -81,7 +81,16 @@ local function LandingPage(_, ...)
 		return
 	end
 
-	HideUIPanel(_G.GarrisonLandingPage)
+	if _G.GarrisonLandingPage then
+		HideUIPanel(_G.GarrisonLandingPage)
+
+		for _, frame in pairs({ 'SoulbindPanel', 'CovenantCallings', 'ArdenwealdGardeningPanel' }) do
+			if _G.GarrisonLandingPage[frame] then
+				_G.GarrisonLandingPage[frame]:Hide()
+			end
+		end
+	end
+
 	ShowGarrisonLandingPage(...)
 end
 
@@ -303,7 +312,7 @@ local function OnEnter()
 		end
 	else
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine('Hold Shift - Show Previous Expansion', .66, .66, .66)
+		DT.tooltip:AddLine('Hold Shift - Show Previous Expansions', .66, .66, .66)
 	end
 
 	DT.tooltip:Show()

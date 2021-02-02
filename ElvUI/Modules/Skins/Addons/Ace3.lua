@@ -85,6 +85,12 @@ function S:Ace3_EditBoxSetPoint(a, b, c, d, e)
 	end
 end
 
+function S:Ace3_CheckBoxSetType(type)
+	if type == 'radio' then
+		self.checkbg:SetSize(20, 20)
+	end
+end
+
 function S:Ace3_TabSetSelected(selected)
 	local bd = self.backdrop
 	if not bd then return end
@@ -152,6 +158,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		highlight:SetTexture()
 
 		hooksecurefunc(widget, 'SetDisabled', S.Ace3_CheckBoxSetDisabled)
+		hooksecurefunc(widget, 'SetType', S.Ace3_CheckBoxSetType)
 
 		if E.private.skins.checkBoxSkin then
 			S.Ace3_CheckBoxSetDesaturated(check, check:GetDesaturation())

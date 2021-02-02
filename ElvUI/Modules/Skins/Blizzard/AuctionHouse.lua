@@ -5,11 +5,6 @@ local _G = _G
 local pairs, ipairs, select = pairs, ipairs, select
 local hooksecurefunc = hooksecurefunc
 
---[[
-TO DO:
-	* Skin Multisell .ProgressBar
-]]
-
 -- Credits: siweia (AuroraClassic)
 
 local function SkinEditBoxes(Frame)
@@ -395,6 +390,20 @@ local function LoadSkin()
 	Frame.BuyDialog:CreateBackdrop('Transparent')
 	S:HandleButton(Frame.BuyDialog.BuyNowButton)
 	S:HandleButton(Frame.BuyDialog.CancelButton)
+
+	--[[ Multisell thing]]
+	local multisellFrame = _G.AuctionHouseMultisellProgressFrame
+	multisellFrame:StripTextures()
+	multisellFrame:CreateBackdrop('Transparent')
+
+	local progressBar = multisellFrame.ProgressBar
+	progressBar:StripTextures()
+	S:HandleIcon(progressBar.Icon)
+	progressBar:SetStatusBarTexture(E.Media.normTex)
+	progressBar:CreateBackdrop()
+
+	local close = multisellFrame.CancelButton
+	S:HandleCloseButton(close)
 end
 
 S:AddCallbackForAddon('Blizzard_AuctionHouseUI', 'AuctionHouse', LoadSkin)

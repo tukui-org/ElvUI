@@ -22,6 +22,7 @@ function UF:Construct_BossFrames(frame)
 	frame.Power.displayAltPower = true
 	frame.PowerPrediction = UF:Construct_PowerPrediction(frame)
 	frame.Name = UF:Construct_NameText(frame)
+	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
 	frame.InfoPanel = UF:Construct_InfoPanel(frame)
@@ -93,6 +94,7 @@ function UF:Update_BossFrames(frame, db)
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_Fader(frame)
 	UF:Configure_Cutaway(frame)
+	UF:Configure_AuraWatch(frame)
 
 	frame:ClearAllPoints()
 	if frame.index == 1 then

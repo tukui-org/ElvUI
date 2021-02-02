@@ -838,13 +838,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[330713] = Defaults(), -- Reverberating Pain
 		[329370] = Defaults(), -- Deadly Descent
 		[336494] = Defaults(), -- Echo Screech
+		[346301] = Defaults(), -- Bloodlight
+		[342077] = Defaults(), -- Echolocation
 		-- Huntsman Altimor
 		[335304] = Defaults(), -- Sinseeker
 		[334971] = Defaults(), -- Jagged Claws
-		[335111] = Defaults(), -- Huntsman's Mark 1
+		[335111] = Defaults(), -- Huntsman's Mark 3
 		[335112] = Defaults(), -- Huntsman's Mark 2
-		[335113] = Defaults(), -- Huntsman's Mark 3
-		[334945] = Defaults(), -- Bloody Thrash
+		[335113] = Defaults(), -- Huntsman's Mark 1
+		[334945] = Defaults(), -- Vicious Lunge
+		[334852] = Defaults(), -- Petrifying Howl
+		[334695] = Defaults(), -- Destabilize
 		-- Hungering Destroyer
 		[334228] = Defaults(), -- Volatile Ejection
 		[329298] = Defaults(), -- Gluttonous Miasma
@@ -859,11 +863,18 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[333002] = Defaults(), -- Vulgar Brand
 		[326078] = Defaults(), -- Infuser's Boon
 		[325251] = Defaults(), -- Sin of Pride
+		[341475] = Defaults(), -- Crimson Flurry
+		[341473] = Defaults(), -- Crimson Flurry Teleport
+		[328479] = Defaults(), -- Eyes on Target
+		[328889] = Defaults(), -- Greater Castigation
 		-- Artificer Xy'mox
 		[327902] = Defaults(), -- Fixate
 		[326302] = Defaults(), -- Stasis Trap
 		[325236] = Defaults(), -- Glyph of Destruction
 		[327414] = Defaults(), -- Possession
+		[328468] = Defaults(), -- Dimensional Tear 1
+		[328448] = Defaults(), -- Dimensional Tear 2
+		[340860] = Defaults(), -- Withering Touch
 		-- The Council of Blood
 		[327052] = Defaults(), -- Drain Essence 1
 		[327773] = Defaults(), -- Drain Essence 2
@@ -879,7 +890,10 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[331209] = Defaults(), -- Hateful Gaze
 		[335293] = Defaults(), -- Chain Link
 		[335270] = Defaults(), -- Chain This One!
+		[342419] = Defaults(), -- Chain Them! 1
+		[342420] = Defaults(), -- Chain Them! 2
 		[335295] = Defaults(), -- Shattering Chain
+		[332572] = Defaults(), -- Falling Rubble
 		-- Stone Legion Generals
 		[334498] = Defaults(), -- Seismic Upheaval
 		[337643] = Defaults(), -- Unstable Footing
@@ -890,6 +904,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[339690] = Defaults(), -- Crystalize
 		[342655] = Defaults(), -- Volatile Anima Infusion
 		[342698] = Defaults(), -- Volatile Anima Infection
+		[343881] = Defaults(), -- Serrated Tear
 		-- Sire Denathrius
 		[326851] = Defaults(), -- Blood Price
 		[327796] = Defaults(), -- Night Hunter
@@ -899,6 +914,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[329181] = Defaults(), -- Wracking Pain
 		[335873] = Defaults(), -- Rancor
 		[329951] = Defaults(), -- Impale
+		[327039] = Defaults(), -- Feeding Time
+		[332794] = Defaults(), -- Fatal Finesse
+		[334016] = Defaults(), -- Unworthy
 
 	},
 }
@@ -911,14 +929,45 @@ G.unitframe.aurafilters.RaidDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
+		-- Castle Nathria
+		[343026] = Defaults(), -- Cloak of Flames (Sun King's Salvation)
+		[329808] = Defaults(), -- Hardened Stone Form Grashaal (Stone Legion Generals)
+		[329636] = Defaults(), -- Hardened Stone Form Kaal (Stone Legion Generals)
+		[340037] = Defaults(), -- Volatile Stone Shell (Stone Legion Generals)
 		-- Mythic+ General
+		[340873] = Defaults(), -- Bursting With Pride (Prideful)
+		[340880] = Defaults(), -- Prideful
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
-		-- Mythic+ Shadowlands Season 1
 		[343502] = Defaults(), -- Inspiring
-		[342332] = Defaults(), -- Bursting With Pride (Prideful)
-		[340880] = Defaults(), -- Prideful
+		-- Halls of Atonement
+		[326450] = Defaults(), -- Loyal Beasts
+		-- Mists of Tirna Scithe
+		[336499] = Defaults(), -- Guessing Game
+		-- Plaguefall
+		[336451] = Defaults(), -- Bulwark of Maldraxxus
+		[333737] = Defaults(), -- Congealed Contagion
+		-- The Necrotic Wake
+		[321754] = Defaults(), -- Icebound Aegis
+		[343558] = Defaults(), -- Morbid Fixation
+		[343470] = Defaults(), -- Boneshatter Shield
+		-- Theater of Pain
+		[331510] = Defaults(), -- Death Wish
+		[333241] = Defaults(), -- Raging Tantrum
+		[326892] = Defaults(), -- Fixate
+		[330545] = Defaults(), -- Commanding Presences
+		-- Sanguine Depths
+		[322433] = Defaults(), -- Stoneskin
+		[321402] = Defaults(), -- Engorge
+		-- Spires of Ascension
+		[327416] = Defaults(), -- Recharge Anima
+		[317936] = Defaults(), -- Forsworn Doctrine
+		[327808] = Defaults(), -- Inspiring Presence
+		-- De Other Side
+		[344739] = Defaults(), -- Spectral
+		[333227] = Defaults(), -- Undying Rage
+		[322773] = Defaults(), -- Blood Barrier
 	},
 }
 
@@ -995,6 +1044,7 @@ G.unitframe.aurawatch = {
 		[124682] = UF:AuraWatch_AddSpell(124682, 'BOTTOMLEFT', {0.8, 0.8, 0.25}),		-- Enveloping Mist
 		[191840] = UF:AuraWatch_AddSpell(191840, 'BOTTOMRIGHT', {0.27, 0.62, 0.7}),		-- Essence Font
 		[116841] = UF:AuraWatch_AddSpell(116841, 'TOP', {0.12, 1.00, 0.53}),			-- Tiger's Lust (Freedom)
+		[325209] = UF:AuraWatch_AddSpell(325209, 'BOTTOM', {0.3, 0.8, 0.6}),			-- Enveloping Breath
 	},
 	ROGUE = {
 		[57934]  = UF:AuraWatch_AddSpell(57934, 'TOPRIGHT', {0.89, 0.09, 0.05}),		-- Tricks of the Trade
@@ -1007,7 +1057,7 @@ G.unitframe.aurawatch = {
 		[193396] = UF:AuraWatch_AddSpell(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true),	-- Demonic Empowerment
 		-- Hunter Pets
 		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
-		[136] = UF:AuraWatch_AddSpell(290819, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Mend Pet
+		[136] = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Mend Pet
 	},
 	HUNTER = {
 		[90361]  = UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),				-- Spirit Mend (HoT)

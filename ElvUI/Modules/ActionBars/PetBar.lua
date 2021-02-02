@@ -26,7 +26,7 @@ bar:SetFrameStrata('LOW')
 bar.buttons = {}
 
 function AB:UpdatePet(event, unit)
-	if event == 'UNIT_AURA' and unit ~= 'pet' then return end
+	if (event == 'UNIT_FLAGS' or event == 'UNIT_PET') and unit ~= 'pet' then return end
 
 	for i = 1, NUM_PET_ACTION_SLOTS, 1 do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
@@ -89,12 +89,12 @@ end
 function AB:PositionAndSizeBarPet()
 	local db = AB.db.barPet
 
-	local buttonSpacing = db.buttonspacing
+	local buttonSpacing = db.buttonSpacing
 	local backdropSpacing = db.backdropSpacing
 	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
-	local buttonWidth = db.buttonsize
-	local buttonHeight = db.keepSizeRatio and db.buttonsize or db.buttonHeight
+	local buttonWidth = db.buttonSize
+	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
 	local point = db.point
 	local visibility = db.visibility
 
@@ -187,14 +187,8 @@ function AB:UpdatePetBindings()
 		local button = _G['PetActionButton'..i]
 		if not button then break end
 
-		if AB.db.hotkeytext and not (button.db and button.db.hideHotkey) then
-			local key = GetBindingKey('BONUSACTIONBUTTON'..i)
-			button.HotKey:Show()
-			button.HotKey:SetText(key)
-			AB:FixKeybindText(button)
-		else
-			button.HotKey:Hide()
-		end
+		button.HotKey:SetText(GetBindingKey('BONUSACTIONBUTTON'..i))
+		AB:FixKeybindText(button)
 	end
 end
 

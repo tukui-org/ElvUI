@@ -361,7 +361,7 @@ E.Options.args.filters = {
 
 								if selectedFilter == 'Aura Highlight' then
 									if not E.global.unitframe.AuraHighlightColors[value] then
-										E.global.unitframe.AuraHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85} }
+										E.global.unitframe.AuraHighlightColors[value] = { enable = true, style = 'GLOW', color = {r = 0.8, g = 0, b = 0, a = 0.85}, ownOnly = false }
 									end
 								elseif selectedFilter == 'AuraBar Colors' then
 									if not E.global.unitframe.AuraBarColors[value] then
@@ -693,6 +693,31 @@ E.Options.args.filters = {
 									end,
 								},
 							},
+						},
+						ownOnly = {
+							name = L["Casted by Player Only"],
+							desc = L["Only highlight the aura that originated from you and not others."],
+							order = 5,
+							type = 'toggle',
+							hidden = function() return selectedFilter ~= 'Aura Highlight' end,
+							get = function(info)
+								local spell = GetSelectedSpell()
+								if not spell then return end
+
+								if selectedFilter == 'Aura Highlight' then
+									return E.global.unitframe.AuraHighlightColors[spell].ownOnly or false
+								end
+							end,
+							set = function(info, value)
+								local spell = GetSelectedSpell()
+								if not spell then return end
+
+								if selectedFilter == 'Aura Highlight' then
+									E.global.unitframe.AuraHighlightColors[spell].ownOnly = value
+								end
+
+								UF:Update_AllFrames();
+							end,
 						},
 					},
 				}

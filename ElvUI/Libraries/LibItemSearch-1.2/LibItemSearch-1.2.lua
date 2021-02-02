@@ -5,10 +5,15 @@
 
 local Search = LibStub('CustomSearch-1.0')
 local Unfit = LibStub('Unfit-1.0')
-local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 9)
+local Lib = LibStub:NewLibrary('LibItemSearch-1.2-ElvUI', 10)
 if Lib then
-	Lib.Scanner = LibItemSearchTooltipScanner or CreateFrame('GameTooltip', 'LibItemSearchTooltipScanner', UIParent, 'GameTooltipTemplate')
 	Lib.Filters = {}
+	Lib.Scanner = LibItemSearchTooltipScanner or CreateFrame('GameTooltip', 'LibItemSearchTooltipScanner', UIParent, 'GameTooltipTemplate')
+	Lib.Scanner:RegisterEvent('GET_ITEM_INFO_RECEIVED')
+	Lib.Scanner:SetScript('OnEvent', function()
+		Lib.Filters.tipPhrases.keywords[FOLLOWERLIST_LABEL_CHAMPIONS:lower()] = Lib:TooltipLine('item:147556', 2)
+		Lib.Filters.tipPhrases.keywords[GARRISON_FOLLOWERS:lower()] = Lib:TooltipLine('item:147556', 2)
+	end)
 else
 	return
 end
@@ -28,13 +33,20 @@ function Lib:TooltipPhrase(link, search)
 	return link and self.Filters.tipPhrases:match(link, nil, search)
 end
 
+function Lib:ForQuest(link)
+	return self:Tooltip(link, GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM):lower())
+end
+
+function Lib:IsReagent(link)
+	return self:TooltipPhrase(link, PROFESSIONS_USED_IN_COOKING)
+end
+
 function Lib:InSet(link, search)
 	if IsEquippableItem(link) then
 		local id = tonumber(link:match('item:(%-?%d+)'))
 		return self:BelongsToSet(id, (search or ''):lower())
 	end
 end
-
 
 
 --[[ Internal API ]]--
@@ -94,7 +106,7 @@ else
 end
 
 
---[[ General Filters]]--
+--[[ General Filters ]]--
 
 Lib.Filters.name = {
 	tags = {'n', 'name'},
@@ -104,8 +116,7 @@ Lib.Filters.name = {
 	end,
 
 	match = function(self, item, _, search)
-	-- Modified: C_Item.GetItemNameByID returns nil for M+ keystones, a fallback is needed
-		return Search:Find(search, C_Item.GetItemNameByID(item) or item:match('%[(.-)%]'))
+		return Search:Find(search, C_Item.GetItemNameByID(item) or item:match('%[(.+)%]'))
 	end
 }
 
@@ -177,7 +188,7 @@ Lib.Filters.quality = {
 	end,
 
 	match = function(self, link, operator, num)
-		local quality = link:sub(1, 9) == 'battlepet' and tonumber(link:match('%d+:%d+:(%d+)')) or C_Item.GetItemQualityByID(link)
+		local quality = link:find('battlepet') and tonumber(link:match('%d+:%d+:(%d+)')) or C_Item.GetItemQualityByID(link)
 		return Search:Compare(operator, quality, num)
 	end,
 }
@@ -326,8 +337,7 @@ Lib.Filters.tipPhrases = {
 		local matches = false
 		for i = 1, Lib.Scanner:NumLines() do
 			local text = _G[Lib.Scanner:GetName() .. 'TextLeft' .. i]:GetText()
-			text = CleanString(text)
-			if search == text then
+			if search == CleanString(text) then
 				matches = true
 				break
 			end
@@ -343,14 +353,15 @@ Lib.Filters.tipPhrases = {
 		[QUESTS_LABEL:lower()] = ITEM_BIND_QUEST,
 		[GetItemClassInfo(LE_ITEM_CLASS_QUESTITEM):lower()] = ITEM_BIND_QUEST,
 		[PROFESSIONS_USED_IN_COOKING:lower()] = PROFESSIONS_USED_IN_COOKING,
+		[APPEARANCE_LABEL:lower()] = TRANSMOGRIFY_TOOLTIP_APPEARANCE_UNKNOWN,
 		[TOY:lower()] = TOY,
 
 		[FOLLOWERLIST_LABEL_CHAMPIONS:lower()] = Lib:TooltipLine('item:147556', 2),
 		[GARRISON_FOLLOWERS:lower()] = Lib:TooltipLine('item:147556', 2),
 
 		['soulbound'] = ITEM_BIND_ON_PICKUP,
-    	['bound'] = ITEM_BIND_ON_PICKUP,
-    	['bop'] = ITEM_BIND_ON_PICKUP,
+		['bound'] = ITEM_BIND_ON_PICKUP,
+		['bop'] = ITEM_BIND_ON_PICKUP,
 		['boe'] = ITEM_BIND_ON_EQUIP,
 		['bou'] = ITEM_BIND_ON_USE,
 		['boa'] = ITEM_BIND_TO_BNETACCOUNT,

@@ -62,3 +62,20 @@ function UF:Configure_CustomTexts(frame)
 		end
 	end
 end
+
+function UF:ToggleVisibility_CustomTexts(frame, show)
+	local frameDB = frame.db
+
+	if frameDB.customTexts then
+		for name in pairs(frameDB.customTexts) do
+			local object = frame.customTexts[name]
+			local db = frameDB.customTexts[name]
+
+			if show and db.enable then
+				object:Show()
+			else
+				object:Hide()
+			end
+		end
+	end
+end

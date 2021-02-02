@@ -371,8 +371,8 @@ function S:Blizzard_Collections()
 	--Toy Box
 	local ToyBox = _G.ToyBox
 	S:HandleButton(_G.ToyBoxFilterButton)
-	_G.ToyBoxFilterButton:Point('TOPRIGHT', ToyBox, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(ToyBox.searchBox)
+	_G.ToyBoxFilterButton:Point('LEFT', ToyBox.searchBox, 'RIGHT', 2, 0)
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
@@ -414,10 +414,11 @@ function S:Blizzard_Collections()
 
 	--Heirlooms
 	local HeirloomsJournal = _G.HeirloomsJournal
-	S:HandleButton(_G.HeirloomsJournalFilterButton)
-	_G.HeirloomsJournalFilterButton:Point('TOPRIGHT', HeirloomsJournal, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
+	_G.HeirloomsJournalFilterButton:Point('LEFT', HeirloomsJournal.SearchBox, 'RIGHT', 2, 0)
+	S:HandleButton(_G.HeirloomsJournalFilterButton)
 	HeirloomsJournal.iconsFrame:StripTextures()
+
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)

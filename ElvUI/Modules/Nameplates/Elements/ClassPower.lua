@@ -39,7 +39,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 end
 
-function NP:ClassPower_PostUpdate(Cur, _, needUpdate)
+function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedIndex)
 	if Cur and Cur > 0 then
 		self:Show()
 	else
@@ -48,6 +48,16 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate)
 
 	if needUpdate then
 		NP:Update_ClassPower(self.__owner)
+	end
+
+	if powerType == 'COMBO_POINTS' and E.myclass == 'ROGUE' then
+		NP.ClassPower_UpdateColor(self, powerType)
+		if chargedIndex then
+			local color = NP.db.colors.classResources.chargedComboPoint
+
+			self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
+			self[chargedIndex].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+		end
 	end
 end
 

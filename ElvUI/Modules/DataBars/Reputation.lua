@@ -130,6 +130,7 @@ function DB:ReputationBar_Toggle()
 
 		DB:RegisterEvent('UPDATE_FACTION', 'ReputationBar_Update')
 		DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')
+		DB:RegisterEvent('QUEST_FINISHED', 'ReputationBar_Update')
 
 		DB:ReputationBar_Update()
 	else
@@ -137,6 +138,7 @@ function DB:ReputationBar_Toggle()
 
 		DB:UnregisterEvent('UPDATE_FACTION')
 		DB:UnregisterEvent('COMBAT_TEXT_UPDATE')
+		DB:UnregisterEvent('QUEST_FINISHED')
 	end
 end
 

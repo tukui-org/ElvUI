@@ -345,6 +345,53 @@ function E:UpdateMedia()
 	E:UpdateBlizzardFonts()
 end
 
+function E:GeneralMedia_ApplyToAll()
+	local font = E.db.general.font
+	local fontSize = E.db.general.fontSize
+
+	E.db.bags.itemLevelFont = font
+	E.db.bags.itemLevelFontSize = fontSize
+	E.db.bags.countFont = font
+	E.db.bags.countFontSize = fontSize
+	E.db.nameplates.font = font
+	--E.db.nameplate.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	--E.db.nameplate.buffs.font = font
+	--E.db.nameplate.buffs.fontSize = fontSize  --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	--E.db.nameplate.debuffs.font = font
+	--E.db.nameplate.debuffs.fontSize = fontSize   --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	E.db.actionbar.font = font
+	--E.db.actionbar.fontSize = fontSize	--This may not look good if a big font size is chosen
+	E.db.auras.buffs.countFont = font
+	E.db.auras.buffs.countFontSize = fontSize
+	E.db.auras.buffs.timeFont = font
+	E.db.auras.buffs.timeFontSize = fontSize
+	E.db.auras.debuffs.countFont = font
+	E.db.auras.debuffs.countFontSize = fontSize
+	E.db.auras.debuffs.timeFont = font
+	E.db.auras.debuffs.timeFontSize = fontSize
+	E.db.chat.font = font
+	E.db.chat.fontSize = fontSize
+	E.db.chat.tabFont = font
+	E.db.chat.tabFontSize = fontSize
+	E.db.datatexts.font = font
+	E.db.datatexts.fontSize = fontSize
+	E.db.general.minimap.locationFont = font
+	E.db.tooltip.font = font
+	E.db.tooltip.fontSize = fontSize
+	E.db.tooltip.headerFontSize = fontSize
+	E.db.tooltip.textFontSize = fontSize
+	E.db.tooltip.smallTextFontSize = fontSize
+	E.db.tooltip.healthBar.font = font
+	--E.db.tooltip.healthbar.fontSize = fontSize -- Size is smaller than default
+	E.db.unitframe.font = font
+	--E.db.unitframe.fontSize = fontSize  -- Size is smaller than default
+	E.db.unitframe.units.party.rdebuffs.font = font
+	E.db.unitframe.units.raid.rdebuffs.font = font
+	E.db.unitframe.units.raid40.rdebuffs.font = font
+
+	E:StaggeredUpdateAll(nil, true)
+end
+
 do	--Update font/texture paths when they are registered by the addon providing them
 	--This helps fix most of the issues with fonts or textures reverting to default because the addon providing them is loading after ElvUI.
 	--We use a wrapper to avoid errors in :UpdateMedia because 'self' is passed to the function with a value other than ElvUI.
@@ -1254,6 +1301,67 @@ function E:DBConvertSL()
 		E:CopyTable(E.global.unitframe.aurawatch, E.global.unitframe.buffwatch)
 		E.global.unitframe.buffwatch = nil
 	end
+
+	-- ActionBar 12.18 changes
+	for i = 1, 10 do
+		local bar = E.db.actionbar['bar'..i]
+		if bar.buttonsize then
+			bar.buttonSize = bar.buttonsize
+			bar.buttonsize = nil
+		end
+		if bar.buttonspacing then
+			bar.buttonSpacing = bar.buttonspacing
+			bar.buttonspacing = nil
+		end
+	end
+	if E.db.actionbar.barPet.buttonsize then
+		E.db.actionbar.barPet.buttonSize = E.db.actionbar.barPet.buttonsize
+		E.db.actionbar.barPet.buttonsize = nil
+	end
+	if E.db.actionbar.stanceBar.buttonsize then
+		E.db.actionbar.stanceBar.buttonSize = E.db.actionbar.stanceBar.buttonsize
+		E.db.actionbar.stanceBar.buttonsize = nil
+	end
+	if E.db.actionbar.barPet.buttonspacing then
+		E.db.actionbar.barPet.buttonSpacing = E.db.actionbar.barPet.buttonspacing
+		E.db.actionbar.barPet.buttonspacing = nil
+	end
+	if E.db.actionbar.stanceBar.buttonspacing then
+		E.db.actionbar.stanceBar.buttonSpacing = E.db.actionbar.stanceBar.buttonspacing
+		E.db.actionbar.stanceBar.buttonspacing = nil
+	end
+
+	-- Convert Pages
+	if E.db.actionbar.convertPages then
+		E.db.convertPages = E.db.actionbar.convertPages
+		E.db.actionbar.convertPages = nil
+	end
+	if not E.db.convertPages then
+		local bar2, bar3, bar5, bar6 = E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6
+		E.db.actionbar.bar2, E.db.actionbar.bar3, E.db.actionbar.bar5, E.db.actionbar.bar6 = E:CopyTable({}, bar6), E:CopyTable({}, bar5), E:CopyTable({}, bar2), E:CopyTable({}, bar3)
+
+		if E.db.movers then
+			local bar2mover, bar3mover, bar5mover, bar6mover = E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6
+			if bar6mover == 'BOTTOM,ElvUI_Bar2,TOP,0,2' then bar6mover = ActionBars.barDefaults.bar2.position end
+			E.db.movers.ElvAB_2, E.db.movers.ElvAB_3, E.db.movers.ElvAB_5, E.db.movers.ElvAB_6 = bar6mover, bar5mover, bar2mover, bar3mover
+		end
+
+		E.db.convertPages = true
+	end
+
+	-- UnitFrame
+	if E.db.unitframe.units.party.groupBy == 'ROLE2' or E.db.unitframe.units.party.groupBy == 'CLASSROLE' then
+		E.db.unitframe.units.party.groupBy = 'ROLE'
+	end
+	if E.db.unitframe.units.raid.groupBy == 'ROLE2' or E.db.unitframe.units.raid.groupBy == 'CLASSROLE' then
+		E.db.unitframe.units.raid.groupBy = 'ROLE'
+	end
+	if E.db.unitframe.units.raid40.groupBy == 'ROLE2' or E.db.unitframe.units.raid40.groupBy == 'CLASSROLE' then
+		E.db.unitframe.units.raid40.groupBy = 'ROLE'
+	end
+	if E.db.unitframe.units.raidpet.groupBy == 'ROLE2' or E.db.unitframe.units.raidpet.groupBy == 'CLASSROLE' then
+		E.db.unitframe.units.raidpet.groupBy = 'ROLE'
+	end
 end
 
 function E:UpdateDB()
@@ -1317,13 +1425,11 @@ function E:UpdateLayout(skipCallback)
 end
 
 function E:UpdateActionBars(skipCallback)
-	ActionBars:ExtraButtons_UpdateAlpha()
-	ActionBars:ExtraButtons_UpdateScale()
-	ActionBars:ExtraButtons_GlobalFade()
 	ActionBars:ToggleCooldownOptions()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroPositionDimensions()
 	ActionBars:UpdatePetCooldownSettings()
+	ActionBars:UpdateExtraButtons()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')

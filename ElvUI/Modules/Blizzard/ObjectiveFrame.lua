@@ -10,6 +10,7 @@ local GetScreenWidth = GetScreenWidth
 local hooksecurefunc = hooksecurefunc
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
+local IsInJailersTower = IsInJailersTower
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
@@ -43,12 +44,33 @@ function B:SetObjectiveFrameAutoHide()
 	end
 end
 
+function B:SetupTorghastBuffFrame()
+	if not IsInJailersTower() then return end
+
+	local container = _G.ScenarioBlocksFrame.MawBuffsBlock.Container
+	container.List:ClearAllPoints()
+
+	local buffsPos = E.db.general.torghastBuffsPosition or 'AUTO'
+	if buffsPos == 'RIGHT' or (buffsPos == 'AUTO' and IsFramePositionedLeft(_G.ScenarioBlocksFrame)) then
+		container.List:Point('TOPLEFT', container, 'TOPRIGHT', 15, 1)
+
+		container.List:SetScript('OnShow', function(self)
+			self.button:SetHighlightAtlas('jailerstower-animapowerbutton-highlight', true)
+			self.button:SetPushedAtlas('jailerstower-animapowerbutton-normalpressed', true)
+			self.button:SetButtonState('NORMAL')
+			self.button:SetButtonState('PUSHED', true)
+		end)
+	else
+		container.List:Point('TOPRIGHT', container, 'TOPLEFT', 15, 1)
+	end
+end
+
 function B:MoveObjectiveFrame()
 	local ObjectiveFrameHolder = CreateFrame('Frame', 'ObjectiveFrameHolder', E.UIParent)
 	ObjectiveFrameHolder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300)
 	ObjectiveFrameHolder:Size(130, 22)
 
-	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
+	E:CreateMover(ObjectiveFrameHolder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, B.SetupTorghastBuffFrame, nil, nil, 'general,blizzUIImprovements')
 	ObjectiveFrameHolder:SetAllPoints(_G.ObjectiveFrameMover)
 
 	local ObjectiveTrackerFrame = _G.ObjectiveTrackerFrame
@@ -74,7 +96,7 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
 	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
 	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', function()
-		if not ObjectiveTrackerFrame.collapsed then
+		--if not ObjectiveTrackerFrame.collapsed then
 			if E.db.general.objectiveFrameAutoHideInKeystone then
 				_G.ObjectiveTracker_Collapse()
 			else
@@ -83,14 +105,17 @@ function B:MoveObjectiveFrame()
 					_G.ObjectiveTracker_Collapse()
 				end
 			end
-		end
+		--end
 	end)
 
 	ObjectiveTrackerFrame.AutoHider:SetScript('OnShow', function()
-		if ObjectiveTrackerFrame.collapsed then
+		--if ObjectiveTrackerFrame.collapsed then
 			_G.ObjectiveTracker_Expand()
-		end
+		--end
 	end)
+
+	B:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'SetupTorghastBuffFrame')
+	B:SetupTorghastBuffFrame()
 
 	self:SetObjectiveFrameAutoHide()
 end

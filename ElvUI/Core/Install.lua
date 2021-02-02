@@ -234,6 +234,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	if not noDataReset then
 		E.db.layoutSet = layout
 		E.db.layoutSetting = layout
+		E.db.convertPages = true
 
 		--Unitframes
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
@@ -246,16 +247,16 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 
 		--ActionBars
 			E.db.actionbar.bar1.buttons = 8
-			E.db.actionbar.bar1.buttonsize = 50
-			E.db.actionbar.bar1.buttonspacing = 1
+			E.db.actionbar.bar1.buttonSize = 50
+			E.db.actionbar.bar1.buttonSpacing = 1
 			E.db.actionbar.bar2.buttons = 9
-			E.db.actionbar.bar2.buttonsize = 38
-			E.db.actionbar.bar2.buttonspacing = 1
+			E.db.actionbar.bar2.buttonSize = 38
+			E.db.actionbar.bar2.buttonSpacing = 1
 			E.db.actionbar.bar2.enabled = true
 			E.db.actionbar.bar2.visibility = '[petbattle] hide; show'
 			E.db.actionbar.bar3.buttons = 8
-			E.db.actionbar.bar3.buttonsize = 50
-			E.db.actionbar.bar3.buttonspacing = 1
+			E.db.actionbar.bar3.buttonSize = 50
+			E.db.actionbar.bar3.buttonSpacing = 1
 			E.db.actionbar.bar3.buttonsPerRow = 10
 			E.db.actionbar.bar3.visibility = '[petbattle] hide; show'
 			E.db.actionbar.bar4.enabled = false
@@ -611,19 +612,23 @@ function E:SetPage(PageNum)
 		f.Desc1:SetText(L["Please click the button below to setup your Profile Settings."])
 		f.Desc2:SetText(L["New Profile will create a fresh profile for this character."] .. '\n' .. L["Shared Profile will select the default profile."])
 
+		InstallOption1Button:SetText(L["Shared Profile"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
 			E.data:SetProfile('Default')
-			E:NextPage()
+			if E.db.layoutSet then
+				E:SetPage(9)
+			else
+				E:NextPage()
+			end
 		end)
 
-		InstallOption1Button:SetText(L["Shared Profile"])
+		InstallOption2Button:SetText(L["New Profile"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function()
 			E.data:SetProfile(E.mynameRealm)
 			E:NextPage()
 		end)
-		InstallOption2Button:SetText(L["New Profile"])
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Theme Setup"])
 		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
@@ -939,7 +944,12 @@ function E:Install()
 
 		local close = CreateFrame('Button', 'InstallCloseButton', f, 'UIPanelCloseButton, BackdropTemplate')
 		close:Point('TOPRIGHT', f, 'TOPRIGHT')
-		close:SetScript('OnClick', function() f:Hide() end)
+		close:SetScript('OnClick', function()
+			-- Wasn't sure if we should run the InstallComplete function which will reload the ui for just clicking X to close it...
+			-- Simpy, Azil and I were sure what your thoughts on just saying it's complete
+			E.private.install_complete = E.version
+			f:Hide()
+		end)
 		S:HandleCloseButton(close)
 
 		local logo = f:CreateTexture('InstallTutorialImage', 'OVERLAY')

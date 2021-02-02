@@ -69,9 +69,8 @@ function B:Initialize()
 	B:PositionTalkingHead()
 	B:Handle_LevelUpDisplay_BossBanner()
 	B:Handle_UIWidgets()
-	B:GarrisonDropDown()
 
-	if not IsAddOnLoaded('DugisGuideViewerZ') then
+	if not (IsAddOnLoaded('DugisGuideViewerZ') or IsAddOnLoaded('!KalielsTracker')) then
 		B:MoveObjectiveFrame()
 	end
 

@@ -11,6 +11,7 @@ local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
+local LARGE_NUMBER_SEPERATOR = LARGE_NUMBER_SEPERATOR
 local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
@@ -231,20 +232,20 @@ function E:GetXYOffset(position, forcedX, forcedY)
 	end
 end
 
-function E:GetFormattedText(style, min, max, dec)
+function E:GetFormattedText(style, min, max, dec, short)
 	if max == 0 then max = 1 end
 
 	if style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(E.GetFormattedTextStyles.CURRENT, E:ShortValue(min, dec))
+		return format(E.GetFormattedTextStyles.CURRENT, short and E:ShortValue(min, dec) or BreakUpLargeNumbers(min))
 	else
 		local useStyle = E.GetFormattedTextStyles[style]
 		if not useStyle then return end
 
 		if style == 'DEFICIT' then
 			local deficit = max - min
-			return (deficit > 0 and format(useStyle, E:ShortValue(deficit, dec))) or ''
+			return (deficit > 0 and format(useStyle, short and E:ShortValue(deficit, dec) or BreakUpLargeNumbers(deficit))) or ''
 		elseif style == 'CURRENT_MAX' then
-			return format(useStyle, E:ShortValue(min, dec), E:ShortValue(max, dec))
+			return format(useStyle, short and E:ShortValue(min, dec) or BreakUpLargeNumbers(min), short and E:ShortValue(max, dec) or BreakUpLargeNumbers(max))
 		elseif style == 'PERCENT' or style == 'CURRENT_PERCENT' or style == 'CURRENT_MAX_PERCENT' then
 			if dec then useStyle = gsub(useStyle, '%d', tonumber(dec) or 0) end
 			local perc = min / max * 100
@@ -252,9 +253,9 @@ function E:GetFormattedText(style, min, max, dec)
 			if style == 'PERCENT' then
 				return format(useStyle, perc)
 			elseif style == 'CURRENT_PERCENT' then
-				return format(useStyle, E:ShortValue(min, dec), perc)
+				return format(useStyle, short and E:ShortValue(min, dec) or BreakUpLargeNumbers(min), perc)
 			elseif style == 'CURRENT_MAX_PERCENT' then
-				return format(useStyle, E:ShortValue(min, dec), E:ShortValue(max, dec), perc)
+				return format(useStyle, short and E:ShortValue(min, dec) or BreakUpLargeNumbers(min), short and E:ShortValue(max, dec) or BreakUpLargeNumbers(max), perc)
 			end
 		end
 	end
@@ -484,11 +485,27 @@ function E:FormatMoney(amount, style, textonly)
 		else
 			return format('%d%s', copper, coppername)
 		end
+	elseif style == 'SHORTSPACED' then
+		if gold > 0 then
+			return format('%d%s', BreakUpLargeNumbers(gold):gsub('%'..LARGE_NUMBER_SEPERATOR, ' '), goldname)
+		elseif silver > 0 then
+			return format('%d%s', silver, silvername)
+		else
+			return format('%d%s', copper, coppername)
+		end
 	elseif style == 'CONDENSED' then
 		if gold > 0 then
 			return format('%s%d|r.%s%02d|r.%s%02d|r', COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
 		elseif silver > 0 then
 			return format('%s%d|r.%s%02d|r', COLOR_SILVER, silver, COLOR_COPPER, copper)
+		else
+			return format('%s%d|r', COLOR_COPPER, copper)
+		end
+	elseif style == 'CONDENSED_SPACED' then
+		if gold > 0 then
+			return format('%s%d|r %s%02d|r %s%02d|r', COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
+		elseif silver > 0 then
+			return format('%s%d|r %s%02d|r', COLOR_SILVER, silver, COLOR_COPPER, copper)
 		else
 			return format('%s%d|r', COLOR_COPPER, copper)
 		end

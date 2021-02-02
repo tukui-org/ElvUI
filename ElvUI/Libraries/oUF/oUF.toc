@@ -1,4 +1,4 @@
-## Interface: 90001
+## Interface: 90002
 ## Title: oUF
 ## Author: Haste, lightspark, p3lim, Rainrider
 ## Version: @project-version@

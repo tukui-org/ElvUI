@@ -6,9 +6,6 @@ local unpack, select = unpack, select
 local pairs, ipairs, type = pairs, ipairs, type
 
 local EquipmentManager_GetItemInfoByLocation = EquipmentManager_GetItemInfoByLocation
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
-local GetFactionInfo = GetFactionInfo
-local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
@@ -151,24 +148,8 @@ local function UpdateFactionSkins()
 	_G.ReputationListScrollFrame:StripTextures()
 	_G.ReputationFrame:StripTextures(true)
 
-	local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
-	local numFactions = GetNumFactions()
-
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED, 1 do
 		local statusbar = _G['ReputationBar'..i..'ReputationBar']
-		local button = _G['ReputationBar'..i..'ExpandOrCollapseButton']
-		local factionIndex = factionOffset + i
-		local _, _, _, _, _, _, _, _, _, isCollapsed = GetFactionInfo(factionIndex)
-		if factionIndex <= numFactions then
-			if button then
-				if isCollapsed then
-					button:SetNormalTexture(E.Media.Textures.PlusButton)
-				else
-					button:SetNormalTexture(E.Media.Textures.MinusButton)
-				end
-			end
-		end
-
 		if statusbar then
 			statusbar:SetStatusBarTexture(E.media.normTex)
 
@@ -492,8 +473,13 @@ function S:CharacterFrame()
 	S:HandleButton(_G.GearManagerDialogPopupCancel)
 	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
 
+	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
+		local bu = _G["ReputationBar"..i.."ExpandOrCollapseButton"]
+		S:HandleCollapseTexture(bu)
+	end
+
 	--Handle Tabs at bottom of character frame
-	for i=1, 4 do
+	for i = 1, 4 do
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
 

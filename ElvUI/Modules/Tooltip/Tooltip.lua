@@ -13,6 +13,9 @@ local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatc
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
 local GameTooltip_ClearMoney = GameTooltip_ClearMoney
+local GameTooltip_ClearStatusBars = GameTooltip_ClearStatusBars
+local GameTooltip_ClearProgressBars = GameTooltip_ClearProgressBars
+local GameTooltip_ClearWidgetSet = GameTooltip_ClearWidgetSet
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetGuildInfo = GetGuildInfo
 local GetInspectSpecialization = GetInspectSpecialization
@@ -94,7 +97,8 @@ end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if E.private.tooltip.enable ~= true then return end
-	if tt:IsForbidden() or not TT.db.visibility then return end
+	if tt:IsForbidden() then return end
+	if not TT.db.visibility then return end
 	if tt:GetAnchorType() ~= 'ANCHOR_NONE' then return end
 
 	if InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride) then
@@ -559,6 +563,32 @@ end
 function TT:GameTooltip_OnTooltipCleared(tt)
 	if tt:IsForbidden() then return end
 	tt.itemCleared = nil
+
+	-- This code is to reset stuck widgets.
+	GameTooltip_ClearMoney(tt)
+	GameTooltip_ClearStatusBars(tt)
+	GameTooltip_ClearProgressBars(tt)
+	GameTooltip_ClearWidgetSet(tt)
+
+	if tt.ItemTooltip then
+		tt.ItemTooltip:Hide()
+	end
+end
+
+function TT:EmbeddedItemTooltip_ID(tt, id)
+	if tt:IsForbidden() then return end
+	if tt.Tooltip:IsShown() and TT:IsModKeyDown() then
+		tt.Tooltip:AddLine(format(IDLine, _G.ID, id))
+		tt.Tooltip:Show()
+	end
+end
+
+function TT:EmbeddedItemTooltip_QuestReward(tt)
+	if tt:IsForbidden() then return end
+	if tt.Tooltip:IsShown() and TT:IsModKeyDown() then
+		tt.Tooltip:AddLine(format(IDLine, _G.ID, tt.itemID or tt.spellID))
+		tt.Tooltip:Show()
+	end
 end
 
 function TT:GameTooltip_OnTooltipSetItem(tt)
@@ -748,6 +778,7 @@ function TT:QuestID(tt)
 	local id = tt.questLogIndex and C_QuestLog_GetQuestIDForLogIndex(tt.questLogIndex) or tt.questID
 	if id and TT:IsModKeyDown() then
 		GameTooltip:AddLine(format(IDLine, _G.ID, id))
+		if GameTooltip.ItemTooltip:IsShown() then GameTooltip:AddLine(' ') end
 		GameTooltip:Show()
 	end
 end
@@ -844,6 +875,11 @@ function TT:Initialize()
 
 	TT:SecureHook('SetItemRef')
 	TT:SecureHook('GameTooltip_SetDefaultAnchor')
+	TT:SecureHook('EmbeddedItemTooltip_SetItemByID', 'EmbeddedItemTooltip_ID')
+	TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
+	TT:SecureHook('EmbeddedItemTooltip_SetCurrencyByID', 'EmbeddedItemTooltip_ID')
+	TT:SecureHook('EmbeddedItemTooltip_SetItemByQuestReward', 'EmbeddedItemTooltip_QuestReward')
+	TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
 	TT:SecureHook(GameTooltip, 'SetToyByItemID')
 	TT:SecureHook(GameTooltip, 'SetCurrencyToken')
 	TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')

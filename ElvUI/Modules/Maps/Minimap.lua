@@ -28,8 +28,9 @@ local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 local hooksecurefunc = hooksecurefunc
-local Minimap = _G.Minimap
+
 local WorldMapFrame = _G.WorldMapFrame
+local Minimap = _G.Minimap
 
 -- GLOBALS: GetMinimapShape
 
@@ -362,8 +363,6 @@ function M:Initialize()
 	mmholder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
 	mmholder:Size(Minimap:GetSize())
 
-	Minimap:SetQuestBlobRingAlpha(0)
-	Minimap:SetArchBlobRingAlpha(0)
 	Minimap:CreateBackdrop()
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
 	Minimap:ClearAllPoints()
@@ -406,7 +405,9 @@ function M:Initialize()
 	hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
 
 	--Hide the BlopRing on Minimap
+	Minimap:SetArchBlobRingAlpha(0)
 	Minimap:SetArchBlobRingScalar(0)
+	Minimap:SetQuestBlobRingAlpha(0)
 	Minimap:SetQuestBlobRingScalar(0)
 
 	if E.private.general.minimap.hideClassHallReport then

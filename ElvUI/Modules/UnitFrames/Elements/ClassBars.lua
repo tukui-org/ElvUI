@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 local max = max
+local ipairs = ipairs
 local unpack = unpack
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -18,6 +19,33 @@ function UF:PostVisibility_ClassBars(frame)
 	UF:Configure_ClassBar(frame)
 	UF:Configure_Power(frame)
 	UF:Configure_InfoPanel(frame)
+end
+
+function UF:ClassPower_UpdateColor(powerType)
+	local color, r, g, b = UF.db.colors.classResources[E.myclass] or UF.db.colors.power[powerType]
+	if color then
+		r, g, b = color.r, color.g, color.b
+	else
+		color = ElvUF.colors.power[powerType]
+		r, g, b = unpack(color)
+	end
+
+	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+
+	for i, bar in ipairs(self) do
+		local classCombo = (powerType == 'COMBO_POINTS' and UF.db.colors.classResources.comboPoints[i] or powerType == 'CHI' and UF.db.colors.classResources.MONK[i])
+		if classCombo then r, g, b = classCombo.r, classCombo.g, classCombo.b end
+
+		bar:SetStatusBarColor(r, g, b)
+
+		if bar.bg then
+			if custom_backdrop then
+				bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+			else
+				bar.bg:SetVertexColor(r * .35, g * .35, b * .35)
+			end
+		end
+	end
 end
 
 function UF:Configure_ClassBar(frame)
@@ -98,6 +126,7 @@ function UF:Configure_ClassBar(frame)
 
 				bars[i]:GetStatusBarTexture():SetHorizTile(false)
 				bars[i]:ClearAllPoints()
+
 				if i == 1 then
 					bars[i]:Point('LEFT', bars)
 				else
@@ -119,26 +148,6 @@ function UF:Configure_ClassBar(frame)
 					bars[i].backdrop:Hide()
 				else
 					bars[i].backdrop:Show()
-				end
-
-				if E.myclass == 'MONK' then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass][i]))
-				elseif E.myclass == 'PALADIN' or E.myclass == 'MAGE' or E.myclass == 'WARLOCK' then
-					bars[i]:SetStatusBarColor(unpack(ElvUF.colors.ClassBars[E.myclass]))
-				elseif E.myclass == 'DEATHKNIGHT' and frame.ClassBar == 'Runes' then
-					local r, g, b = unpack(ElvUF.colors.ClassBars.DEATHKNIGHT)
-					bars[i]:SetStatusBarColor(r, g, b)
-					if bars[i].bg then
-						local mu = bars[i].bg.multiplier or 1
-						bars[i].bg:SetVertexColor(r * mu, g * mu, b * mu)
-					end
-				else -- Combo Points for everyone else
-					local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
-					local r2, g2, b2 = unpack(ElvUF.colors.ComboPoints[2])
-					local r3, g3, b3 = unpack(ElvUF.colors.ComboPoints[3])
-					local maxComboPoints = ((MAX_CLASS_BAR == 10 and 10) or (MAX_CLASS_BAR > 5 and 6 or 5))
-
-					bars[i]:SetStatusBarColor(ElvUF:ColorGradient(i, maxComboPoints, r1, g1, b1, r2, g2, b2, r3, g3, b3))
 				end
 
 				if frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation then
@@ -311,7 +320,7 @@ function UF:Construct_ClassBar(frame)
 
 	bars.PostVisibility = UF.PostVisibilityClassBar
 	bars.PostUpdate = UF.UpdateClassBar
-	bars.UpdateColor = E.noop --We handle colors on our own in Configure_ClassBar
+	bars.UpdateColor = UF.ClassPower_UpdateColor
 	bars.UpdateTexture = E.noop --We don't use textures but statusbars, so prevent errors
 
 	bars:SetScript('OnShow', ToggleResourceBar)
@@ -324,7 +333,7 @@ function UF:PostVisibilityClassBar()
 	UF:PostVisibility_ClassBars(self.origParent or self:GetParent())
 end
 
-function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
+function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedIndex)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 	if not db then return end
@@ -351,19 +360,20 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged)
 		UF:Configure_ClassBar(frame, current)
 	end
 
-	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-	for i=1, #self do
-		if custom_backdrop then
-			self[i].bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-		else
-			local r, g, b = self[i]:GetStatusBarColor()
-			self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
-		end
-
+	for i, bar in ipairs(self) do
 		if maxBars and (i <= maxBars) then
-			self[i].bg:Show()
+			bar.bg:Show()
 		else
-			self[i].bg:Hide()
+			bar.bg:Hide()
+		end
+	end
+
+	if powerType == 'COMBO_POINTS' and E.myclass == 'ROGUE' then
+		UF.ClassPower_UpdateColor(self, powerType)
+		if chargedIndex then
+			local r, g, b = unpack(ElvUF.colors.chargedComboPoint)
+			self[chargedIndex]:SetStatusBarColor(r, g, b)
+			self[chargedIndex].bg:SetVertexColor(r * .35, g * .35, b * .35)
 		end
 	end
 end
@@ -375,18 +385,9 @@ local function PostUpdateRunes(self)
 	local useRunes = not UnitHasVehicleUI('player')
 	if useRunes then
 		self:Show()
+		UF.ClassPower_UpdateColor(self, 'RUNES')
 	else
 		self:Hide()
-	end
-
-	local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-	for i=1, #self do
-		if custom_backdrop then
-			self[i].bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-		else
-			local r, g, b = self[i]:GetStatusBarColor()
-			self[i].bg:SetVertexColor(r * .35, g * .35, b * .35)
-		end
 	end
 end
 

@@ -25,6 +25,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 		end
 
 		frame.AuraWatch.size = db.size
+		frame.AuraWatch.countFontSize = db.countFontSize
 
 		if frame.unit == 'pet' or isPet then
 			frame.AuraWatch:SetNewTable(E.global.unitframe.aurawatch.PET)
@@ -60,9 +61,6 @@ function UF:BuffIndicator_PostCreateIcon(button)
 	button.icon.border:SetOutside(button.icon, 1, 1)
 	button.icon.border:SetTexture(E.media.blankTex)
 	button.icon.border:SetVertexColor(0, 0, 0)
-
-	UF:Configure_FontString(button.count)
-	UF:Update_FontString(button.count)
 
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)
@@ -117,6 +115,8 @@ function UF:BuffIndicator_PostUpdateIcon(_, button)
 			button.icon:SetVertexColor(1, 1, 1)
 			button.icon:SetTexCoord(unpack(E.TexCoords))
 		end
+
+		button.count:FontTemplate(nil, self.countFontSize or 12, 'OUTLINE')
 
 		if textureIcon and button.filter == 'HARMFUL' then
 			button.icon.border:SetVertexColor(1, 0, 0)

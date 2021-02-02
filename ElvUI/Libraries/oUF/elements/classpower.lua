@@ -129,6 +129,9 @@ local function Update(self, event, unit, powerType)
 			local chargedPoints = GetUnitChargedPowerPoints(unit)
 			-- according to Blizzard there will only be one
 			chargedIndex = chargedPoints and chargedPoints[1]
+
+			-- UNIT_POWER_POINT_CHARGE doesn't provide a power type
+			powerType = powerType or ClassPowerType
 		end
 
 		local numActive = cur + 0.9

@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local tinsert, xpcall, next = tinsert, xpcall, next
-local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
+local unpack, assert, pairs, select, type, strfind = unpack, assert, pairs, select, type, strfind
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -411,9 +411,11 @@ do --Tab Regions
 		if not tab or (tab.backdrop and not noBackdrop) then return end
 
 		for _, object in pairs(tabs) do
-			local tex = _G[tab:GetName()..object]
-			if tex then
-				tex:SetTexture()
+			local textureName = tab:GetName() and _G[tab:GetName()..object]
+			if textureName then
+				textureName:SetTexture()
+			elseif tab[object] then
+				tab[object]:SetTexture()
 			end
 		end
 
@@ -880,6 +882,13 @@ function S:HandleShipFollowerPage(followerTab)
 	end
 end
 
+local function UpdateFollowerQuality(self, followerInfo)
+	if followerInfo then
+		local color = E.QualityColors[followerInfo.quality or 1]
+		self.Portrait.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+	end
+end
+
 function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFollowers)
 	if not Buttons or (not numButtons or numButtons == 0) or not offset or not numFollowers then return end
 
@@ -935,6 +944,7 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 						S:HandleGarrisonPortrait(fl.PortraitFrame)
 						fl.PortraitFrame:ClearAllPoints()
 						fl.PortraitFrame:Point('TOPLEFT', 3, -3)
+						hooksecurefunc(fl.PortraitFrame, 'SetupPortrait', UpdateFollowerQuality)
 						fl.PortraitFrameStyled = true
 					end
 				end
@@ -1161,6 +1171,49 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, fr
 	end
 
 	btn.isSkinned = true
+end
+
+-- Handle collapse
+local function UpdateCollapseTexture(texture, collapsed)
+	local tex = collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
+	texture:SetTexture(tex, true)
+end
+
+local function ResetCollapseTexture(self, texture)
+	if self.settingTexture then return end
+	self.settingTexture = true
+	self:SetNormalTexture('')
+
+	if texture and texture ~= '' then
+		if strfind(texture, 'Plus') or strfind(texture, 'Closed') then
+			self.__texture:DoCollapse(true)
+		elseif strfind(texture, 'Minus') or strfind(texture, 'Open') then
+			self.__texture:DoCollapse(false)
+		end
+		self.backdrop:Show()
+	else
+		self.backdrop:Hide()
+	end
+	self.settingTexture = nil
+end
+
+function S:HandleCollapseTexture(button)
+	button:SetHighlightTexture('')
+	button:SetPushedTexture('')
+
+	button:CreateBackdrop()
+	button.backdrop:ClearAllPoints()
+	button.backdrop:SetSize(12, 12)
+	button.backdrop:SetPoint('TOPLEFT', button:GetNormalTexture())
+
+	button.__texture = button.backdrop:CreateTexture(nil, 'OVERLAY')
+	button.__texture:SetPoint('CENTER')
+	button.__texture.DoCollapse = UpdateCollapseTexture
+
+	button:HookScript('OnEnter', S.SetModifiedBackdrop)
+	button:HookScript('OnLeave', S.SetOriginalBackdrop)
+
+	hooksecurefunc(button, 'SetNormalTexture', ResetCollapseTexture)
 end
 
 -- World Map related Skinning functions used for WoW 8.0

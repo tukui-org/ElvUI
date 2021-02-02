@@ -296,6 +296,7 @@ local blacklistedKeys = {
 --Keys that auto or user generated tables.
 D.GeneratedKeys = {
 	profile = {
+		convertPages = true,
 		movers = true,
 		nameplates = { -- this is supposed to have an 's' because yeah, oh well
 			filters = true
