@@ -1194,9 +1194,9 @@ function B:GetGraysValue()
 
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
-			local itemID = GetContainerItemID(bag, slot)
-			if itemID then
-				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
+			local itemLink = GetContainerItemLink(bag, slot)
+			if itemLink then
+				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemLink)
 				if itemPrice then
 					local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 					local stackPrice = itemPrice * stackCount
