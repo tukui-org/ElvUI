@@ -439,6 +439,14 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 				end
 			end
 		end
+
+		ElvUF.Tags.Events[format('classpower:%s:shortvalue', tagTextFormat)] = (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+		ElvUF.Tags.Methods[format('classpower:%s:shortvalue', tagTextFormat)] = function()
+			local min, max = GetClassPower(E.myclass)
+			if min ~= 0 then
+				return E:GetFormattedText(textFormat, min, max, nil, true)
+			end
+		end
 	end
 end
 
