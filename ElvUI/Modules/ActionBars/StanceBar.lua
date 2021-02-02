@@ -4,7 +4,6 @@ local AB = E:GetModule('ActionBars')
 local _G = _G
 local gsub = gsub
 local format, ipairs = format, ipairs
-local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetNumShapeshiftForms = GetNumShapeshiftForms
@@ -29,12 +28,10 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 		if i <= numForms then
 			cooldown = _G['ElvUI_StanceBarButton'..i..'Cooldown']
 			start, duration, enable = GetShapeshiftFormCooldown(i)
-			CooldownFrame_Set(cooldown, start, duration, enable)
+			cooldown:SetCooldown(start, duration, enable)
 			cooldown:SetDrawBling(cooldown:GetEffectiveAlpha() > 0.5) --Cooldown Bling Fix
 		end
 	end
-
-	AB:StyleShapeShift('UPDATE_SHAPESHIFT_COOLDOWN')
 end
 
 function AB:StyleShapeShift()
