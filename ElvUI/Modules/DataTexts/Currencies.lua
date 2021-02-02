@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format, tonumber, wipe = format, tonumber, wipe
-local type, ipairs, unpack = type, ipairs, unpack
+local pairs, ipairs, unpack, tostring = pairs, ipairs, unpack, tostring
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetMoney = GetMoney
 

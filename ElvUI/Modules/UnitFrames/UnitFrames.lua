@@ -8,7 +8,7 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 local _G = _G
 local select, type, unpack, assert, tostring = select, type, unpack, assert, tostring
 local min, pairs, ipairs, tinsert, strsub = min, pairs, ipairs, tinsert, strsub
-local strfind, gsub, format = strfind, gsub, format
+local strfind, gsub, format, strjoin = strfind, gsub, format, strjoin
 
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 local CreateFrame = CreateFrame
@@ -17,7 +17,6 @@ local hooksecurefunc = hooksecurefunc
 local IsReplacingUnit = IsReplacingUnit
 local IsAddOnLoaded = IsAddOnLoaded
 local RegisterStateDriver = RegisterStateDriver
-local SetCVar = SetCVar
 local UnitExists = UnitExists
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend

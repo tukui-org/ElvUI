@@ -4,6 +4,7 @@ local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
 if not ACH then return end
+local type, pairs = type, pairs
 
 function ACH:Color(name, desc, order, alpha, width, get, set, disabled, hidden)
 	return { type = 'color', name = name, desc = desc, order = order, hasAlpha = alpha, width = width, get = get, set = set, disabled = disabled, hidden = hidden }

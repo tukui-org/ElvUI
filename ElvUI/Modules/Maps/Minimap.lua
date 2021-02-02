@@ -28,8 +28,9 @@ local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 local hooksecurefunc = hooksecurefunc
-local Minimap = _G.Minimap
+
 local WorldMapFrame = _G.WorldMapFrame
+local Minimap = _G.Minimap
 
 -- GLOBALS: GetMinimapShape
 

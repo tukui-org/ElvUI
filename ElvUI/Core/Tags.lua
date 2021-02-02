@@ -6,7 +6,7 @@ local Translit = E.Libs.Translit
 local translitMark = '!'
 
 local _G = _G
-local tonumber, next = tonumber, next
+local next, type = next, type
 local gmatch, gsub, format = gmatch, gsub, format
 local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
@@ -41,6 +41,7 @@ local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGUID = UnitGUID
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UnitIsFeignDeath = UnitIsFeignDeath
 local UnitIsAFK = UnitIsAFK
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local UnitIsConnected = UnitIsConnected

@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 local _G = _G
+local ipairs = ipairs
 local unpack = unpack
 local CreateFrame = CreateFrame
 

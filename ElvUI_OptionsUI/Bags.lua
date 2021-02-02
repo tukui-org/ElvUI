@@ -5,6 +5,7 @@ local ACH = E.Libs.ACH
 
 local _G = _G
 local gsub = gsub
+local next = next
 local strmatch = strmatch
 local SetCVar = SetCVar
 local GetCVarBool = GetCVarBool

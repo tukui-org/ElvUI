@@ -2,11 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 local random = random
+local strmatch = strmatch
 local CreateFrame = CreateFrame
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitReaction = UnitReaction
 local UnitIsPlayer = UnitIsPlayer
 local UnitClass = UnitClass
+local UnitIsConnected = UnitIsConnected
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 local UnitIsCharmed = UnitIsCharmed
 local UnitIsEnemy = UnitIsEnemy
@@ -238,7 +240,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	end
 
 	-- Charmed player should have hostile color
-	if unit and (string.match(unit, "raid%d+") or string.match(unit, "party%d+")) then
+	if unit and (strmatch(unit, "raid%d+") or strmatch(unit, "party%d+")) then
 		if not UnitIsDeadOrGhost(unit) and UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy("player", unit) then
 			local color = parent.colors.reaction[HOSTILE_REACTION]
 			if color then self:SetStatusBarColor(color[1], color[2], color[3]) end

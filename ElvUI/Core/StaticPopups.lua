@@ -8,10 +8,12 @@ local Skins = E:GetModule('Skins')
 local _G = _G
 local pairs, type, unpack, assert = pairs, type, unpack, assert
 local tremove, tContains, tinsert, wipe = tremove, tContains, tinsert, wipe
-local format, error = format, error
+local format, error, ipairs = format, error, ipairs
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = IsAddOnLoaded
+local PickupContainerItem = PickupContainerItem
+local DeleteCursorItem = DeleteCursorItem
 local MoneyFrame_Update = MoneyFrame_Update
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
 local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost

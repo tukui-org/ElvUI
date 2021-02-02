@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames');
 
+local unpack = unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_Trinket(frame)

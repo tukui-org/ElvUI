@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local tinsert, xpcall, next = tinsert, xpcall, next
-local unpack, assert, pairs, ipairs, select, type, strfind = unpack, assert, pairs, ipairs, select, type, strfind
+local unpack, assert, pairs, select, type, strfind = unpack, assert, pairs, select, type, strfind
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc

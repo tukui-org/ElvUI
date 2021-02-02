@@ -439,10 +439,10 @@ function S:Blizzard_AchievementUI(event)
 
 			if ( criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT and assetID ) then
 				metas = metas + 1
-				criteria, object = AchievementButton_GetMeta(metas), 'label'
+				criteria, object = _G.AchievementButton_GetMeta(metas), 'label'
 			elseif criteriaType ~= 1 then
 				textStrings = textStrings + 1
-				criteria, object = AchievementButton_GetCriteria(textStrings), 'name'
+				criteria, object = _G.AchievementButton_GetCriteria(textStrings), 'name'
 			end
 
 			local r, g, b, x, y = .6, .6, .6, 1, -1

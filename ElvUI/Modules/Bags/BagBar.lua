@@ -13,9 +13,6 @@ local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 
-local Masque = E.Masque
-local MasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBars')
-
 local function OnEnter()
 	if not E.db.bags.bagBar.mouseover then return; end
 	E:UIFrameFadeIn(B.BagBar, 0.2, B.BagBar:GetAlpha(), 1)
@@ -166,9 +163,7 @@ function B:LoadBagBar()
 		b:HookScript('OnEnter', OnEnter)
 		b:HookScript('OnLeave', OnLeave)
 
-		--if not useMasque then
-			B:SkinBag(b)
-		--end
+		B:SkinBag(b)
 
 		tinsert(B.BagBar.buttons, b)
 	end
