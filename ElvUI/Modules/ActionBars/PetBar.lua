@@ -26,7 +26,7 @@ bar:SetFrameStrata('LOW')
 bar.buttons = {}
 
 function AB:UpdatePet(event, unit)
-	if event == 'UNIT_AURA' and unit ~= 'pet' then return end
+	if (event == 'UNIT_FLAGS' or event == 'UNIT_PET') and unit ~= 'pet' then return end
 
 	for i = 1, NUM_PET_ACTION_SLOTS, 1 do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
