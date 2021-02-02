@@ -1,6 +1,8 @@
 ### Version 12.19 [ ETA: 🍨 ]
 
-**Sweet:**  
+**Fixes:**  
+Experience Bar Error  
+Grey Value corrected on Gold Datatext  
 
 ___
 
