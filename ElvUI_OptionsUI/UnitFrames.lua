@@ -2858,6 +2858,10 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 			classTable[classTag] = classDisplayName
 			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, classTable)
 		end
+		if groupName == 'party' then
+			config.args.sortingGroup.args.groupBy.values.INDEX = L["Index"]
+			config.args.sortingGroup.args.sortMethod.hidden = function() return E.db.unitframe.units[groupName].groupBy == 'INDEX' end
+		end
 	else
 		config.args.positionsGroup.args.width.set = function(info, value) if E.db.unitframe.units[groupName].castbar and E.db.unitframe.units[groupName].castbar.width == E.db.unitframe.units[groupName][info[#info]] then E.db.unitframe.units[groupName].castbar.width = value end E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end
 
