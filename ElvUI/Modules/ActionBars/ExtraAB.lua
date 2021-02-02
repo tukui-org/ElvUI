@@ -111,9 +111,13 @@ function AB:SetupExtraButton()
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
-		AB:ExtraButtons_ZoneStyle()
+		local updateStyle
 
 		for spellButton in frame.SpellButtonContainer:EnumerateActive() do
+			if not updateStyle then
+				AB:ExtraButtons_ZoneStyle() -- Lets update once if there is something to update.
+				updateStyle = true
+			end
 			if spellButton and not spellButton.IsSkinned then
 				spellButton.NormalTexture:SetAlpha(0)
 				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
@@ -144,7 +148,7 @@ function AB:SetupExtraButton()
 			button.pushed = true
 			button.checked = true
 
-			self:StyleButton(button, true) -- registers cooldown too
+			AB:StyleButton(button, true) -- registers cooldown too
 			button.icon:SetDrawLayer('ARTWORK')
 			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
 
