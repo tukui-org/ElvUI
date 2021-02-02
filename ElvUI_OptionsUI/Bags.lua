@@ -69,9 +69,9 @@ Bags.args.general.args.itemLevelGroup.args.itemLevelCustomColorEnable = ACH:Togg
 Bags.args.general.args.itemLevelGroup.args.itemLevelCustomColor = ACH:Color(" ", nil, 4, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemLevelDisplay() end, nil, function() return not E.db.bags.itemLevel or not E.db.bags.itemLevelCustomColorEnable end)
 Bags.args.general.args.itemLevelGroup.args.itemLevelFont = ACH:SharedMediaFont(L["Font"], nil, 5, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 Bags.args.general.args.itemLevelGroup.args.itemLevelFontSize = ACH:Range(L["Font Size"], nil, 6, C.Values.FontSize, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
-Bags.args.general.args.itemLevelGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 7, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)Bags.args.general.args.itemLevelGroup = ACH:Group(L["Item Level"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemLevelDisplay() end)
+Bags.args.general.args.itemLevelGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 7, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 
-Bags.args.general.args.itemInfoGroup = ACH:Group(L["Item Info"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemInfoDisplay() end)
+Bags.args.general.args.itemInfoGroup = ACH:Group(L["Item Info"], nil, 8, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemInfoDisplay() end)
 Bags.args.general.args.itemInfoGroup.inline = true
 Bags.args.general.args.itemInfoGroup.args.itemInfo = ACH:Toggle(L["Display Item Info"], L["Displays item info on center of item."], 1)
 Bags.args.general.args.itemInfoGroup.args.itemInfoColor = ACH:Color(L["COLOR"], nil, 4, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemInfoDisplay() end, nil, function() return not E.db.bags.itemInfo end)
