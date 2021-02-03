@@ -6,11 +6,6 @@ local _G = _G
 local pairs = pairs
 local unpack = unpack
 
-local function IslandTooltipStyle(self)
-	self:SetBackdrop()
-	self:SetTemplate('Transparent', nil, true)
-end
-
 function S:StyleTooltips()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 
@@ -80,17 +75,6 @@ function S:TooltipFrames()
 	TT:SecureHook('GameTooltip_ShowProgressBar') -- Skin Progress Bars
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('SharedTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
-
-	-- Used for Island Skin
-	TT:RegisterEvent('ADDON_LOADED', function(event, addon)
-		if addon == 'Blizzard_IslandsQueueUI' then
-			local tt = _G.IslandsQueueFrameTooltip:GetParent()
-			tt:GetParent():HookScript('OnShow', IslandTooltipStyle)
-			tt.IconBorder:Kill()
-			tt.Icon:SetTexCoord(unpack(E.TexCoords))
-			TT:UnregisterEvent(event)
-		end
-	end)
 end
 
 S:AddCallback('TooltipFrames')

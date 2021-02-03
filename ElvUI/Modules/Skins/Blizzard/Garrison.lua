@@ -566,8 +566,8 @@ function S:Blizzard_GarrisonUI()
 	if E.private.skins.parchmentRemoverEnable then
 		SkinMissionFrame(CovenantMissionFrame, true)
 
-		hooksecurefunc(CovenantMissionFrame, "SetupTabs", function(self)
-			self.MapTab:SetShown(not self.Tab2:IsShown())
+		hooksecurefunc(CovenantMissionFrame, 'SetupTabs', function(frame)
+			frame.MapTab:SetShown(not frame.Tab2:IsShown())
 		end)
 	else
 		SkinMissionFrame(CovenantMissionFrame)
@@ -614,7 +614,9 @@ function S:Blizzard_GarrisonUI()
 	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript('OnShow', SkinMissionBoards)
 	CovenantMissionFrame.MissionComplete.Board:HookScript('OnShow', SkinMissionBoards)
 
-	S:GarrisonTooltips()
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
+		S:GarrisonTooltips()
+	end
 end
 
 local function SkinFollowerTooltip(frame)
@@ -641,8 +643,6 @@ local function SkinAbilityTooltip(frame)
 end
 
 function S:GarrisonTooltips()
-	if not (E.private.skins.blizzard.enable ~= true or E.private.skins.blizzard.garrison and E.private.skins.blizzard.tooltip) then return end
-
 	SkinFollowerTooltip(_G.GarrisonFollowerTooltip)
 	SkinFollowerTooltip(_G.FloatingGarrisonFollowerTooltip)
 	SkinFollowerTooltip(_G.FloatingGarrisonMissionTooltip)
@@ -723,18 +723,24 @@ function S:GarrisonTooltips()
 		tooltipFrame.numPropertiesStyled = numPropertiesStyled
 	end)
 
-	-- ShipYard: Mission Tooltip
-	local tooltip = _G.GarrisonShipyardMapMissionTooltip
-	TT:SetStyle(tooltip)
-	local reward = tooltip.ItemTooltip
-	local icon = reward.Icon
-	if icon then
-		S:HandleIcon(icon)
-		reward.IconBorder:SetAlpha(0)
-	end
+	do -- ShipYard: Mission Tooltip
+		local tooltip = _G.GarrisonShipyardMapMissionTooltip
+		tooltip:StripTextures()
+		TT:SetStyle(tooltip)
 
-	local bonusIcon = tooltip.BonusReward and tooltip.BonusReward.Icon
-	if bonusIcon then S:HandleIcon(bonusIcon) end
+		local reward = tooltip.ItemTooltip
+		local icon = reward and reward.Icon
+		if icon then
+			S:HandleIcon(icon)
+
+			if reward.IconBorder then
+				reward.IconBorder:SetAlpha(0)
+			end
+		end
+
+		local bonusIcon = tooltip.BonusReward and tooltip.BonusReward.Icon
+		if bonusIcon then S:HandleIcon(bonusIcon) end
+	end
 
 	-- Threat Counter Tooltips
 	_G.GarrisonMissionMechanicFollowerCounterTooltip:CreateBackdrop('Transparent')

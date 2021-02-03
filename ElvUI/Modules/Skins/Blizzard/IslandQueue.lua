@@ -4,6 +4,18 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
+local function IslandTooltipStyle(self)
+	self:SetBackdrop()
+	self:SetTemplate('Transparent', nil, true)
+end
+
+function S:IslandsTooltips()
+	local tt = _G.IslandsQueueFrameTooltip:GetParent()
+	tt:GetParent():HookScript('OnShow', IslandTooltipStyle)
+	tt.IconBorder:Kill()
+	tt.Icon:SetTexCoord(unpack(E.TexCoords))
+end
+
 function S:Blizzard_IslandsQueueUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.islandQueue) then return end
 
@@ -25,6 +37,10 @@ function S:Blizzard_IslandsQueueUI()
 	local TutorialFrame = IslandsFrame.TutorialFrame
 	S:HandleButton(TutorialFrame.Leave)
 	S:HandleCloseButton(TutorialFrame.CloseButton)
+
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
+		S:IslandsTooltips()
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_IslandsQueueUI')
