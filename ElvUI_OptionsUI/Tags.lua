@@ -5,7 +5,7 @@ local ACH = E.Libs.ACH
 local _G = _G
 local format = format
 
-E.Options.args.tagGroup = ACH:Group(L["Available Tags"], nil, 3, 'tab')
+E.Options.args.tagGroup = ACH:Group(L["Available Tags"], nil, 3)
 E.Options.args.tagGroup.args.GuideLink = ACH:Input(L["Guide:"], nil, 1, nil, nil, function() return 'https://www.tukui.org/forum/viewtopic.php?f=9&t=6' end)
 E.Options.args.tagGroup.args.GuideLink.customWidth = 310
 E.Options.args.tagGroup.args.WikiLink = ACH:Input(L["Wiki:"], nil, 2, nil, nil, function() return 'https://git.tukui.org/elvui/elvui/-/wikis/home' end)
