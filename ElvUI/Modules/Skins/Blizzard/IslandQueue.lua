@@ -4,16 +4,16 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
-local function IslandTooltipStyle(self)
-	self:SetBackdrop()
-	self:SetTemplate('Transparent', nil, true)
-end
-
 function S:IslandsTooltips()
-	local tt = _G.IslandsQueueFrameTooltip:GetParent()
-	tt:GetParent():HookScript('OnShow', IslandTooltipStyle)
-	tt.IconBorder:Kill()
-	tt.Icon:SetTexCoord(unpack(E.TexCoords))
+	local tt = _G.IslandsQueueFrame.WeeklyQuest.QuestReward.Tooltip
+	tt:SetBackdrop()
+	tt:SetTemplate('Transparent', nil, true)
+
+	local it = tt.ItemTooltip
+	if it then
+		it.Icon:SetTexCoord(unpack(E.TexCoords))
+		it.IconBorder:Kill()
+	end
 end
 
 function S:Blizzard_IslandsQueueUI()
