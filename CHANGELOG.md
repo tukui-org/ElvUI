@@ -4,7 +4,7 @@
 
 ___
 
-### Version 12.19 [ ETA: 🍨 ]
+### Version 12.19 [ February 2nd 2021 ]
 
 **Added:**
 Bag Item Info option to change Anima text style  
