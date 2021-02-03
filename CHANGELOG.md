@@ -1,8 +1,22 @@
+### Version 12.20 [ ETA: 🍨 ]
+
+**Added:**  
+
+___
+
 ### Version 12.19 [ ETA: 🍨 ]
+
+**Added:**
+Bag Item Info option to change Anima text style  
+Sort by Index option for Unitframes  
+Classpower Shortvalue Tags  
 
 **Fixes:**  
 Experience Bar Error  
 Grey Value corrected on Gold Datatext  
+ActionBar Masque settings were not letting you toggle text  
+Hotkey Range Color when using text range coloring  
+Garrison and Island tooltips  
 
 ___
 
