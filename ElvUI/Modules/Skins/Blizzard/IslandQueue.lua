@@ -1,13 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
+local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local unpack = unpack
 
 function S:IslandsTooltips()
 	local tt = _G.IslandsQueueFrame.WeeklyQuest.QuestReward.Tooltip
-	tt:SetBackdrop()
-	tt:SetTemplate('Transparent', nil, true)
+	TT:SetStyle(tt)
 
 	local it = tt.ItemTooltip
 	if it then
