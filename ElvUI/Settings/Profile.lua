@@ -213,6 +213,11 @@ P.bags = {
 	itemLevelFontOutline = 'MONOCHROMEOUTLINE',
 	itemLevelCustomColorEnable = false,
 	itemLevelCustomColor = { r = 1, g = 1, b = 1 },
+	itemInfo = true,
+	itemInfoFont = 'Homespun',
+	itemInfoFontSize = 10,
+	itemInfoFontOutline = 'MONOCHROMEOUTLINE',
+	itemInfoColor = { r = 0, g = .75, b = .98 },
 	countFont = 'Homespun',
 	countFontSize = 10,
 	countFontOutline = 'MONOCHROMEOUTLINE',
@@ -1109,7 +1114,6 @@ local UF_Castbar = {
 	iconXOffset = -10,
 	iconYOffset = 0,
 	insideInfoPanel = true,
-	latency = true,
 	overlayOnFrame = 'None',
 	reverse = false,
 	spark = true,
@@ -1850,6 +1854,7 @@ P.unitframe.units.player.buffs.attachTo = 'DEBUFFS'
 P.unitframe.units.player.buffs.priority = 'Blacklist,Personal,PlayerBuffs,Whitelist,blockNoDuration,nonPersonal'
 P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,nonPersonal'
+P.unitframe.units.player.castbar.latency = true
 P.unitframe.units.player.fader.enable = false
 P.unitframe.units.player.fader.casting = true
 P.unitframe.units.player.fader.combat = true

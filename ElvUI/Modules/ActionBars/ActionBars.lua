@@ -707,11 +707,9 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 end
 
 function AB:UpdateHotkeyColor(button)
-	if button.config and not button.outOfRange then
-		local db = button.db
-		local c = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
-		button.HotKey:SetVertexColor(c.r, c.g, c.b)
-	end
+	local db = button.db
+	local c = AB.db.useRangeColorText and button.outOfRange and AB.db.noRangeColor or db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
+	button.HotKey:SetTextColor(c.r, c.g, c.b)
 end
 
 function AB:ColorSwipeTexture(cooldown)
