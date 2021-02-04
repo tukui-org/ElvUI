@@ -32,6 +32,7 @@ local function AddInfo(id)
 		if E.global.datatexts.settings.Currencies.maxCurrency and max and max > 0 then
 			textRight = '%s / '..BreakUpLargeNumbers(max)
 		end
+
 		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), format(textRight, BreakUpLargeNumbers(num)), 1, 1, 1, 1, 1, 1)
 	end
 end
@@ -69,7 +70,7 @@ local function OnEvent(self)
 		local id = tonumber(displayed)
 		if not id then return end
 
-		local name, num, icon = GetInfo(id)
+		local name, num, _, icon = GetInfo(id)
 		if not name then return end
 
 		local style = E.global.datatexts.settings.Currencies.displayStyle
