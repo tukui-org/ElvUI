@@ -1,6 +1,16 @@
-### Version 12.20 [ ETA: 🍨 ]
+### Version 12.21 [ ETA: 🍨 ]
 
-**Added:**  
+**Fixed:**  
+
+___
+
+### Version 12.20 [ February 3rd 2021 ]
+
+**Fixed:**  
+Paladin Aura Mastery lag issue  
+Gold format Short (Whole Numbers Spaced) error  
+Swapped the layout of Available Tags listing for readability  
+Power Shortvalue will follow the same rules by hiding if 0  
 
 ___
 
