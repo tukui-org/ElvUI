@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
-local format, strsub, strupper, gsub, gmatch = format, strsub, strupper, gsub, gmatch
+local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
 local CreateFrame = CreateFrame
@@ -11,7 +11,6 @@ local UnitPosition = UnitPosition
 local GetPlayerFacing = GetPlayerFacing
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
-local LARGE_NUMBER_SEPERATOR = LARGE_NUMBER_SEPERATOR
 local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
@@ -438,6 +437,17 @@ function E:GetDistance(unit1, unit2)
 	return distance, atan2(dY, dX) - GetPlayerFacing()
 end
 
+-- Taken from FormattingUtil.lua and modified by Simpy
+function E:FormatLargeNumber(amount, seperator)
+	local num, len = '', strlen(amount)
+	local trd = len % 3
+
+	if not seperator then seperator = ',' end
+	for i=4, len, 3 do num = seperator..strsub(amount, -(i - 1), -(i - 3))..num end
+
+	return strsub(amount, 1, (trd == 0) and 3 or trd)..num
+end
+
 --Money text formatting, code taken from Scrooge by thelibrarian ( http://www.wowace.com/addons/scrooge/ )
 local COLOR_COPPER, COLOR_SILVER, COLOR_GOLD = '|cffeda55f', '|cffc7c7cf', '|cffffd700'
 local ICON_COPPER = [[|TInterface\MoneyFrame\UI-CopperIcon:12:12|t]]
@@ -487,7 +497,7 @@ function E:FormatMoney(amount, style, textonly)
 		end
 	elseif style == 'SHORTSPACED' then
 		if gold > 0 then
-			return format('%d%s', BreakUpLargeNumbers(gold):gsub('%'..LARGE_NUMBER_SEPERATOR, ' '), goldname)
+			return format('%s%s', E:FormatLargeNumber(gold, ' '), goldname)
 		elseif silver > 0 then
 			return format('%d%s', silver, silvername)
 		else

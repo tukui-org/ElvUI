@@ -419,8 +419,11 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 		ElvUF.Tags.Events[format('power:%s:shortvalue', tagTextFormat)] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 		ElvUF.Tags.Methods[format('power:%s:shortvalue', tagTextFormat)] = function(unit)
-			local pType = UnitPowerType(unit)
-			return E:GetFormattedText(textFormat, UnitPower(unit, pType), UnitPowerMax(unit, pType), nil, true)
+			local powerType = UnitPowerType(unit)
+			local min = UnitPower(unit, powerType)
+			if min ~= 0 and tagTextFormat ~= 'deficit' then
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType), nil, true)
+			end
 		end
 
 		ElvUF.Tags.Events[format('mana:%s:shortvalue', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
