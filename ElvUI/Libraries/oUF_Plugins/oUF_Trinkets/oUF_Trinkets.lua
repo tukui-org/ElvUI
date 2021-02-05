@@ -35,7 +35,7 @@ local function UpdateTrinket(self, unit)
 	end
 end
 
-local function ClearCooldown(self)
+local function ClearCooldowns(self)
 	local element = self.Trinket
 
 	element.spellID = 0
