@@ -84,6 +84,7 @@ function UF:Configure_AuraBars(frame)
 		auraBars.spacing = db.aurabar.spacing
 		auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
 		auraBars.enemyAuraType = db.aurabar.enemyAuraType
+		auraBars.disableMouse = db.aurabar.clickThrough
 
 		for _, statusBar in ipairs(auraBars) do
 			statusBar.db = auraBars.db

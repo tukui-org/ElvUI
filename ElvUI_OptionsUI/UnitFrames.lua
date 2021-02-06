@@ -260,6 +260,12 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 					DESCENDING = L["Descending"],
 				},
 			},
+			clickThrough = {
+				order = 11,
+				name = L["Click Through"],
+				desc = L["Ignore mouse events."],
+				type = 'toggle',
+			},
 			friendlyAuraType = {
 				type = 'select',
 				order = 16,
