@@ -430,7 +430,7 @@ end
 local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	local config = ACH:Group(auraType == 'buffs' and L["Buffs"] or L["Debuffs"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 
-	config.args.enable = ACH:Input(L["Enable"], nil, 1)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.perrow = ACH:Range(L["Per Row"], nil, 3, { min = 1, max = 20, step = 1 })
 	config.args.numrows = ACH:Range(L["Num Rows"], nil, 4, { min = 1, max = 10, step = 1 })
 	config.args.sizeOverride = ACH:Range(L["Size Override"], L["If not set to 0 then override the size of the aura icon to this."], 5, { min = 1, max = 60, step = 1 })
