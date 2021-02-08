@@ -646,8 +646,6 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 		macroText:ClearAllPoints()
 		macroText:Point(position, xOffset, yOffset)
-		macroText:Point('LEFT')
-		macroText:Point('RIGHT')
 		macroText:FontTemplate(LSM:Fetch('font', db and db.macroFont or font), db and db.macroFontSize or fontSize, db and db.macroFontOutline or fontOutline)
 
 		local c = db and db.useMacroColor and db.macroColor or color
