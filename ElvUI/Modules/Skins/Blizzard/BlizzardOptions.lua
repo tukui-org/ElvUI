@@ -328,28 +328,19 @@ function S:BlizzardOptions()
 	_G.InterfaceOptionsFrameTab2:StripTextures()
 	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
 
-	do
-		local function syncPushTexture(button, _, skip)
-			if not skip then
-				local normal = button:GetNormalTexture():GetTexture()
-				button:SetPushedTexture(normal, true)
-			end
-		end
-
-		local function skinCategoryButton()
+	do -- plus minus buttons in addons category
+		local function skinButtons()
 			for i = 1, #_G.INTERFACEOPTIONS_ADDONCATEGORIES do
 				local button = _G['InterfaceOptionsFrameAddOnsButton'..i..'Toggle']
 				if button and not button.IsSkinned then
-					S:HandleCollapseTexture(button)
-					hooksecurefunc(button, 'SetPushedTexture', syncPushTexture)
-
+					S:HandleCollapseTexture(button, true)
 					button.IsSkinned = true
 				end
 			end
 		end
 
-		hooksecurefunc('InterfaceOptions_AddCategory', skinCategoryButton)
-		skinCategoryButton()
+		hooksecurefunc('InterfaceOptions_AddCategory', skinButtons)
+		skinButtons()
 	end
 
 	--Create New Raid Profle

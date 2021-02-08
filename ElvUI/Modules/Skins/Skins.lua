@@ -1183,8 +1183,20 @@ do -- Handle collapse
 		end
 	end
 
-	function S:HandleCollapseTexture(button)
-		button:SetPushedTexture('')
+	local function syncPushTexture(button, _, skip)
+		if not skip then
+			local normal = button:GetNormalTexture():GetTexture()
+			button:SetPushedTexture(normal, true)
+		end
+	end
+
+	function S:HandleCollapseTexture(button, syncPushed)
+		if syncPushed then -- not needed always
+			hooksecurefunc(button, 'SetPushedTexture', syncPushTexture)
+			syncPushTexture(button)
+		else
+			button:SetPushedTexture('')
+		end
 
 		hooksecurefunc(button, 'SetNormalTexture', UpdateCollapseTexture)
 		UpdateCollapseTexture(button, button:GetNormalTexture():GetTexture())
