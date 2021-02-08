@@ -742,7 +742,7 @@ function CH:StyleChat(frame)
 	CH:ToggleChatButton(copyButton)
 
 	_G.QuickJoinToastButton:Hide()
-	_G.GeneralDockManagerOverflowButtonList:CreateBackdrop('Transparent')
+	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
 	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
 
 	frame.styled = true
