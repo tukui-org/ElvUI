@@ -3,7 +3,10 @@ local C, L = unpack(select(2, ...))
 local DB = E:GetModule('DataBars')
 local ACH = E.Libs.ACH
 
+local ceil = ceil
 local tonumber = tonumber
+local CopyTable = CopyTable
+local GetScreenWidth = GetScreenWidth
 
 local SharedOptions = {
 	enable = ACH:Toggle(L["Enable"], nil, 1),
@@ -11,10 +14,15 @@ local SharedOptions = {
 	mouseover = ACH:Toggle(L["Mouseover"], nil, 3),
 	clickThrough = ACH:Toggle(L["Click Through"], nil, 4),
 	showBubbles = ACH:Toggle(L["Show Bubbles"], nil, 5),
-	sizeGroup = ACH:Group(L["Size"], nil, -3),
-	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, -2),
-	fontGroup = ACH:Group(L["Fonts"], nil, -1),
+	sizeGroup = ACH:Group(L["Size"], nil, -4),
+	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, -3),
+	strataAndLevel = ACH:Group(L["Strata and Level"], nil, -2),
+	fontGroup = ACH:Group(L["Fonts"], nil, -1)
 }
+
+SharedOptions.strataAndLevel.inline = true
+SharedOptions.strataAndLevel.args.frameStrata = ACH:Select(L["Frame Strata"], nil, 1, C.Values.Strata)
+SharedOptions.strataAndLevel.args.frameLevel = ACH:Range(L["Frame Level"], nil, 2, {min = 1, max = 128, step = 1})
 
 SharedOptions.sizeGroup.inline = true
 SharedOptions.sizeGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })

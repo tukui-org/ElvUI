@@ -166,6 +166,8 @@ for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite
 		orientation = 'AUTOMATIC',
 		reverseFill = false,
 		showBubbles = false,
+		frameStrata = 'LOW',
+		frameLevel = 1
 	}
 end
 
