@@ -215,7 +215,7 @@ local function UpdateColors()
 end
 E.valueColorUpdateFuncs[UpdateColors] = true
 
-local function UpdateMover(name, parent, textString, overlay, snapOffset, postdrag, shouldDisable, configString, perferCorners, ignoreSizeChanged)
+local function UpdateMover(name, parent, textString, overlay, snapOffset, postdrag, shouldDisable, configString, ignoreSizeChanged)
 	if not (name and parent) then return end --If for some reason the parent isnt loaded yet, also require a name
 
 	local holder = E.CreatedMovers[name]
@@ -252,7 +252,6 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 	f.snapOffset = snapOffset or -2
 	f.shouldDisable = shouldDisable
 	f.configString = configString
-	f.perferCorners = perferCorners
 	f.ignoreSizeChanged = ignoreSizeChanged
 
 	holder.mover = f
@@ -295,7 +294,7 @@ function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
 	if x >= (width * 2 / 3) then -- RIGHT: 1080p = 1280
 		point, nudgePoint, nudgeInversePoint = point..'RIGHT', 'RIGHT', 'LEFT'
 		x = mover:GetRight() - width
-	elseif x <= (width / 3) or mover.perferCorners then -- LEFT: 1080p = 640
+	elseif x <= (width / 3) then -- LEFT: 1080p = 640
 		point, nudgePoint, nudgeInversePoint = point..'LEFT', 'LEFT', 'RIGHT'
 		x = mover:GetLeft()
 	else
@@ -347,7 +346,7 @@ function E:SaveMoverDefaultPosition(name)
 	HandlePostDrag(holder.mover)
 end
 
-function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, types, shouldDisable, configString, perferCorners, ignoreSizeChanged)
+function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, types, shouldDisable, configString, ignoreSizeChanged)
 	local holder = E.CreatedMovers[name]
 	if holder == nil then
 		holder = {}
@@ -366,7 +365,7 @@ function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, 
 		E.CreatedMovers[name] = holder
 	end
 
-	UpdateMover(name, parent, textString, overlay, snapoffset, postdrag, shouldDisable, configString, perferCorners, ignoreSizeChanged)
+	UpdateMover(name, parent, textString, overlay, snapoffset, postdrag, shouldDisable, configString, ignoreSizeChanged)
 end
 
 function E:ToggleMovers(show, which)
@@ -483,6 +482,6 @@ end
 
 function E:LoadMovers()
 	for n, t in pairs(E.CreatedMovers) do
-		UpdateMover(n, t.parent, t.textString, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString, t.perferCorners, t.ignoreSizeChanged)
+		UpdateMover(n, t.parent, t.textString, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString, t.ignoreSizeChanged)
 	end
 end
