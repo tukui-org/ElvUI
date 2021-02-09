@@ -741,10 +741,6 @@ function CH:StyleChat(frame)
 	copyButton:SetScript('OnLeave', CH.CopyButtonOnLeave)
 	CH:ToggleChatButton(copyButton)
 
-	_G.QuickJoinToastButton:Hide()
-	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
-	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
-
 	frame.styled = true
 end
 
@@ -2078,6 +2074,10 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrame:Height(22)
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
+	_G.QuickJoinToastButton:Hide()
+	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
+	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
+
 	CH:PositionChats()
 
 	if not CH.HookSecured then
@@ -2758,8 +2758,15 @@ function CH:ReparentVoiceChatIcon(parent)
 end
 
 function CH:RepositionOverflowButton()
+	_G.GeneralDockManagerOverflowButtonList:SetFrameStrata('LOW')
+	_G.GeneralDockManagerOverflowButtonList:SetFrameLevel(5)
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
+
+	if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
+	else
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
+	end
 end
 
 function CH:UpdateVoiceChatIcons()
@@ -2786,32 +2793,46 @@ function CH:HandleChatVoiceIcons()
 			end
 		end
 
-		CH:RepositionOverflowButton()
 		channelButtons[3]:HookScript('OnShow', CH.RepositionOverflowButton)
 		channelButtons[3]:HookScript('OnHide', CH.RepositionOverflowButton)
 	else
 		CH:CreateChatVoicePanel()
 	end
 
-	if not CH.db.hideVoiceButtons then
-		_G.GeneralDockManagerOverflowButtonList:SetFrameStrata('LOW')
-		_G.GeneralDockManagerOverflowButtonList:SetFrameLevel(5)
-	end
+	CH:RepositionOverflowButton()
+end
 
-	if not CH.db.pinVoiceButtons then
-		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
+function CH:EnterVoicePanel()
+	if CH.VoicePanel and CH.db.mouseoverVoicePanel then
+		CH.VoicePanel:SetAlpha(1)
+	end
+end
+
+function CH:LeaveVoicePanel()
+	if CH.VoicePanel and CH.db.mouseoverVoicePanel then
+		CH.VoicePanel:SetAlpha(CH.db.voicePanelAlpha)
+	end
+end
+
+function CH:ResetVoicePanelAlpha()
+	if CH.VoicePanel then
+		CH.VoicePanel:SetAlpha(CH.db.mouseoverVoicePanel and CH.db.voicePanelAlpha or 1)
 	end
 end
 
 function CH:CreateChatVoicePanel()
-	local Holder = CreateFrame('Frame', 'ChatButtonHolder', E.UIParent, 'BackdropTemplate')
+	local Holder = CreateFrame('Frame', 'ElvUIChatVoicePanel', E.UIParent, 'BackdropTemplate')
 	Holder:ClearAllPoints()
 	Holder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'TOPLEFT', 0, 1)
 	Holder:Size(30, 86)
 	Holder:SetTemplate('Transparent', nil, true)
 	Holder:SetBackdropColor(CH.db.panelColor.r, CH.db.panelColor.g, CH.db.panelColor.b, CH.db.panelColor.a)
 	E:CreateMover(Holder, 'SocialMenuMover', _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
+	CH.VoicePanel = Holder
+
+	Holder:SetScript('OnEnter', CH.EnterVoicePanel)
+	Holder:SetScript('OnLeave', CH.LeaveVoicePanel)
+	CH.LeaveVoicePanel(Holder)
 
 	channelButtons[1]:ClearAllPoints()
 	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
@@ -2821,6 +2842,9 @@ function CH:CreateChatVoicePanel()
 		button.Icon:SetParent(button)
 		button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 		button:SetParent(Holder)
+
+		button:HookScript('OnEnter', CH.EnterVoicePanel)
+		button:HookScript('OnLeave', CH.LeaveVoicePanel)
 	end
 
 	_G.ChatAlertFrame:ClearAllPoints()
