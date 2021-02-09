@@ -96,7 +96,7 @@ function B:MoveObjectiveFrame()
 	ObjectiveTrackerFrame.AutoHider = CreateFrame('Frame', nil, ObjectiveTrackerFrame, 'SecureHandlerStateTemplate')
 	ObjectiveTrackerFrame.AutoHider:SetAttribute('_onstate-objectiveHider', 'if newstate == 1 then self:Hide() else self:Show() end')
 	ObjectiveTrackerFrame.AutoHider:SetScript('OnHide', function()
-		--if not ObjectiveTrackerFrame.collapsed then
+		if not ObjectiveTrackerFrame.collapsed then
 			if E.db.general.objectiveFrameAutoHideInKeystone then
 				_G.ObjectiveTracker_Collapse()
 			else
@@ -105,13 +105,13 @@ function B:MoveObjectiveFrame()
 					_G.ObjectiveTracker_Collapse()
 				end
 			end
-		--end
+		end
 	end)
 
 	ObjectiveTrackerFrame.AutoHider:SetScript('OnShow', function()
-		--if ObjectiveTrackerFrame.collapsed then
+		if ObjectiveTrackerFrame.collapsed then
 			_G.ObjectiveTracker_Expand()
-		--end
+		end
 	end)
 
 	B:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'SetupTorghastBuffFrame')
