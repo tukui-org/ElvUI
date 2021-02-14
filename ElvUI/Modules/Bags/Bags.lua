@@ -512,18 +512,16 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local showItemLevel = B.db.itemLevel and link and not professionColors
 	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
 	local isQuestItem, questId, isActiveQuest = false, false, false
-	local forceColor, r, g, b, a = true
+	local forceColor, r, g, b, a = true, unpack(E.media.bordercolor)
 
 	if link then
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(link)
 		slot.name = name
+		if not slot.rarity then slot.rarity = itemRarity end
 
 		slot.itemID = GetContainerItemID(bagID, slotID)
 		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-
-		if slot.rarity or itemRarity then
-			r, g, b = GetItemQualityColor(slot.rarity or itemRarity)
-		end
+		r, g, b = GetItemQualityColor(slot.rarity)
 
 		if showItemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
@@ -588,9 +586,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 		r, g, b, a = unpack(B.QuestColors.questStarter)
 	elseif questId or isQuestItem then
 		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif assignedColor then
+	elseif assignedColor and not link then
 		r, g, b, a = unpack(B.AssignmentColors[assignedBag])
-	elseif not link or B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON then
+	end
+
+	if not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON) then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
