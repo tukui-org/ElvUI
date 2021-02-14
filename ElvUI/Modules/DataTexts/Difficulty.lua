@@ -127,13 +127,13 @@ local function OnEnter()
 	DT.tooltip:AddLine(' ')
 
 	if DungeonDifficultyID then
-		DT.tooltip:AddLine(format('%s %s', DungeonTexture, DiffLabel[DungeonDifficultyID]), 1, 1, 1)
+		DT.tooltip:AddLine(format('%s %s', DungeonTexture, GetDiffIDLabel(DungeonDifficultyID)), 1, 1, 1)
 	end
 	if RaidDifficultyID then
-		DT.tooltip:AddLine(format('%s %s', RaidTexture, DiffLabel[RaidDifficultyID]), 1, 1, 1)
+		DT.tooltip:AddLine(format('%s %s', RaidTexture, GetDiffIDLabel(RaidDifficultyID)), 1, 1, 1)
 	end
 	if LegacyRaidDifficultyID then
-		DT.tooltip:AddLine(format('%s %s', LegacyTexture, DiffLabel[LegacyRaidDifficultyID]), 1, 1, 1)
+		DT.tooltip:AddLine(format('%s %s', LegacyTexture, GetDiffIDLabel(LegacyRaidDifficultyID)), 1, 1, 1)
 	end
 
 	DT.tooltip:Show()
