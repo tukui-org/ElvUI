@@ -580,14 +580,14 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
-	if B.db.specialtyColors and professionColors then
-		r, g, b, a = unpack(professionColors)
-	elseif questId and not isActiveQuest then
-		r, g, b, a = unpack(B.QuestColors.questStarter)
-	elseif questId or isQuestItem then
-		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif assignedColor and not link then
-		r, g, b, a = unpack(B.AssignmentColors[assignedBag])
+	if questId then
+		r, g, b, a = unpack(B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem'])
+	elseif not link then
+		if B.db.specialtyColors and professionColors then
+			r, g, b, a = unpack(professionColors)
+		elseif assignedColor then
+			r, g, b, a = unpack(B.AssignmentColors[assignedBag])
+		end
 	end
 
 	if not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON) then
