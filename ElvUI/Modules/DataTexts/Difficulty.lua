@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local pairs = pairs
-local format = format
+local pairs, format = pairs, format
 local GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID = GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID
 local SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID = SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID
 local GetInstanceInfo, GetDifficultyInfo, ResetInstances = GetInstanceInfo, GetDifficultyInfo, ResetInstances
@@ -37,9 +36,9 @@ local RightClickMenu, DiffLabel = {
 
 
 for i = 1, 200 do
-	if GetDifficultyInfo(i) then
-		local Name = GetDifficultyInfo(i)
-		if not DiffLabel[i] then DiffLabel[i] = Name end
+	local Name = GetDifficultyInfo(i)
+	if Name and not DiffLabel[i] then
+		DiffLabel[i] = Name
 	end
 end
 
@@ -93,7 +92,7 @@ local function GetLabelTexture(ID)
 	for Name, Info in pairs(IDTexture) do
 		for _, Num in pairs(Info) do
 			if Num == ID then
-				return Name == 'LEGACY' and LegacyTexture or RaidTexture
+				return (Name == 'LEGACY' and LegacyTexture) or RaidTexture
 			end
 		end
 	end
