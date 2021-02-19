@@ -11,6 +11,7 @@ local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ToggleCharacter = ToggleCharacter
 local REPUTATION = REPUTATION
 local STANDING = STANDING
+local UNKNOWN = UNKNOWN
 
 function DB:ReputationBar_Update()
 	local bar = DB.StatusBars.Reputation
@@ -18,23 +19,23 @@ function DB:ReputationBar_Update()
 
 	if not bar.db.enable or bar:ShouldHide() then return end
 
-	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
 	local displayString, textFormat = '', DB.db.reputation.textFormat
-	local isCapped, isFriend, friendText, standingLabel, hasReward
+	local isCapped, isFriend, friendText, standing, rewardPending
+	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
 	local friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
 
 	if friendshipID then
 		isFriend, reaction, friendText = true, 5, standingText
-		if (not nextThreshold) then
+
+		if not nextThreshold then
 			minValue, maxValue, curValue = 0, 1, 1
 		end
 	elseif C_Reputation_IsFactionParagon(factionID) then
-		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
-		hasReward = hasRewardPending
-		if currentValue and threshold then
-			standingLabel = L["Paragon"]
-			minValue, maxValue, curValue = 0, threshold, currentValue % threshold
-			reaction = 9
+		local current, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
+		rewardPending = hasRewardPending
+
+		if current and threshold then
+			standing, minValue, maxValue, curValue, reaction = L["Paragon"], 0, threshold, current % threshold, 9
 		end
 
 		if bar:GetOrientation() == 'VERTICAL' then
@@ -44,48 +45,44 @@ function DB:ReputationBar_Update()
 		end
 	end
 
+	if not standing then standing = _G['FACTION_STANDING_LABEL'..reaction] end
 	local color = DB.db.colors.useCustomFactionColors and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
-	if reaction == 9 then color = DB.db.colors.factionColors[reaction] end
+	if reaction == 9 then color = DB.db.colors.factionColors[reaction] end -- paragon
 
 	maxValue = maxValue - minValue
 	curValue = curValue - minValue
 
-	if (curValue == maxValue) then
+	if curValue == maxValue then
 		curValue, maxValue, isCapped = 1, 1, true
 	end
 
+	bar:SetStatusBarColor(color.r, color.g, color.b)
 	bar:SetMinMaxValues(minValue, maxValue)
 	bar:SetValue(curValue)
-	bar:SetStatusBarColor(color.r, color.g, color.b)
-	bar.Reward:SetShown(hasReward)
+	bar.Reward:SetShown(rewardPending)
 
-	standingLabel = standingLabel or _G['FACTION_STANDING_LABEL'..reaction]
+	local maximum = maxValue - minValue
+	local current, diff = curValue - minValue, maximum
+	if diff == 0 then diff = 1 end -- prevent a division by zero
+	local percent = current / diff * 100
 
-	--Prevent a division by zero
-	local maxMinDiff = maxValue - minValue
-	if maxMinDiff == 0 then
-		maxMinDiff = 1
-	end
-
-	if isCapped and textFormat ~= 'NONE' then
-		-- show only name and standing on exalted
-		displayString = format('%s: [%s]', name, isFriend and friendText or standingLabel)
-	else
-		if textFormat == 'PERCENT' then
-			displayString = format('%s: %d%% [%s]', name, ((curValue - minValue) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CURMAX' then
-			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(curValue - minValue), E:ShortValue(maxValue - minValue), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CURPERC' then
-			displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(curValue - minValue), ((curValue - minValue) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CUR' then
-			displayString = format('%s: %s [%s]', name, E:ShortValue(curValue - minValue), isFriend and friendText or standingLabel)
-		elseif textFormat == 'REM' then
-			displayString = format('%s: %s [%s]', name, E:ShortValue((maxValue - minValue) - (curValue - minValue)), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CURREM' then
-			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(curValue - minValue), E:ShortValue((maxValue - minValue) - (curValue - minValue)), isFriend and friendText or standingLabel)
-		elseif textFormat == 'CURPERCREM' then
-			displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(curValue - minValue), ((curValue - minValue) / (maxMinDiff) * 100), E:ShortValue((maxValue - minValue) - (curValue - minValue)), isFriend and friendText or standingLabel)
-		end
+	local label = (isFriend and friendText) or standing or UNKNOWN
+	if isCapped and textFormat ~= 'NONE' then -- show only name and standing on exalted
+		displayString = format('%s: [%s]', name, label)
+	elseif textFormat == 'PERCENT' then
+		displayString = format('%s: %d%% [%s]', name, percent, label)
+	elseif textFormat == 'CURMAX' then
+		displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum), label)
+	elseif textFormat == 'CURPERC' then
+		displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(current), percent, label)
+	elseif textFormat == 'CUR' then
+		displayString = format('%s: %s [%s]', name, E:ShortValue(current), label)
+	elseif textFormat == 'REM' then
+		displayString = format('%s: %s [%s]', name, E:ShortValue(maximum - current), label)
+	elseif textFormat == 'CURREM' then
+		displayString = format('%s: %s - %s [%s]', name, E:ShortValue(current), E:ShortValue(maximum - current), label)
+	elseif textFormat == 'CURPERCREM' then
+		displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(current), percent, E:ShortValue(maximum - current), label)
 	end
 
 	bar.text:SetText(displayString)
@@ -97,7 +94,7 @@ function DB:ReputationBar_OnEnter()
 	end
 
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
-	local standingLabel = _G['FACTION_STANDING_LABEL'..reaction]
+	local standing = _G['FACTION_STANDING_LABEL'..reaction]
 	local isParagon = C_Reputation_IsFactionParagon(factionID)
 
 	if factionID and isParagon then
@@ -105,7 +102,7 @@ function DB:ReputationBar_OnEnter()
 		if currentValue and threshold then
 			minValue, maxValue = 0, threshold
 			curValue = currentValue % threshold
-			standingLabel = L['Paragon']
+			standing = L['Paragon']
 		end
 	end
 
@@ -118,7 +115,7 @@ function DB:ReputationBar_OnEnter()
 		local friendID, friendTextLevel, _
 		if factionID then friendID, _, _, _, _, _, friendTextLevel = GetFriendshipReputation(factionID) end
 
-		_G.GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standingLabel, 1, 1, 1)
+		_G.GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
 
 		if reaction ~= _G.MAX_REPUTATION_REACTION or isParagon then
 			_G.GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', curValue - minValue, maxValue - minValue, (curValue - minValue) / ((maxValue - minValue == 0) and maxValue or (maxValue - minValue)) * 100), 1, 1, 1)
