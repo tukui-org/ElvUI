@@ -64,7 +64,8 @@ function DB:ReputationBar_Update()
 	bar:SetStatusBarColor(color.r, color.g, color.b)
 	bar:SetMinMaxValues(minValue, maxValue)
 	bar:SetValue(curValue)
-	bar.Reward:SetShown(rewardPending)
+
+	bar.Reward:SetShown(DB.db.reputation.showReward and rewardPending)
 
 	local label = (isFriend and friendText) or standing or UNKNOWN
 	local current, maximum, percent, capped = GetValues(curValue, minValue, maxValue)
