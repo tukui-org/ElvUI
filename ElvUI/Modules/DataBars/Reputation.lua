@@ -59,8 +59,7 @@ function DB:ReputationBar_Update()
 	end
 
 	if not standing then standing = _G['FACTION_STANDING_LABEL'..reaction] end
-	local color = DB.db.colors.useCustomFactionColors and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
-	if reaction == 9 then color = DB.db.colors.factionColors[reaction] end -- paragon
+	local color = (DB.db.colors.useCustomFactionColors or reaction == 9) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction] -- reaction 9 is Paragon
 
 	bar:SetStatusBarColor(color.r, color.g, color.b)
 	bar:SetMinMaxValues(minValue, maxValue)
