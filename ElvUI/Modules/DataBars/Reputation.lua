@@ -32,33 +32,28 @@ function DB:ReputationBar_Update()
 
 	if not bar.db.enable or bar:ShouldHide() then return end
 
-	local displayString, textFormat = '', DB.db.reputation.textFormat
-	local isFriend, friendText, standing, rewardPending
+	local displayString, textFormat, label, rewardPending = '', DB.db.reputation.textFormat
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
 	local friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
 
 	if friendshipID then
-		isFriend, reaction, friendText = true, 5, standingText
+		reaction, label = 5, standingText
 
 		if not nextThreshold then
 			minValue, maxValue, curValue = 0, 1, 1
 		end
 	elseif C_Reputation_IsFactionParagon(factionID) then
-		local current, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
-		rewardPending = hasRewardPending
+		local current, threshold
+		current, threshold, _, rewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 
 		if current and threshold then
-			standing, minValue, maxValue, curValue, reaction = L["Paragon"], 0, threshold, current % threshold, 9
+			label, minValue, maxValue, curValue, reaction = L["Paragon"], 0, threshold, current % threshold, 9
 		end
 
-		if bar:GetOrientation() == 'VERTICAL' then
-			bar.Reward:SetPoint('CENTER', bar, 'TOP')
-		else
-			bar.Reward:SetPoint('CENTER', bar, 'LEFT')
-		end
+		bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	end
 
-	if not standing then standing = _G['FACTION_STANDING_LABEL'..reaction] end
+	if not label then label = _G['FACTION_STANDING_LABEL'..reaction] end
 	local color = (DB.db.colors.useCustomFactionColors or reaction == 9) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction] -- reaction 9 is Paragon
 
 	bar:SetStatusBarColor(color.r, color.g, color.b)
@@ -67,7 +62,6 @@ function DB:ReputationBar_Update()
 
 	bar.Reward:SetShown(rewardPending and DB.db.reputation.showReward)
 
-	local label = (isFriend and friendText) or standing or UNKNOWN
 	local current, maximum, percent, capped = GetValues(curValue, minValue, maxValue)
 	if capped and textFormat ~= 'NONE' then -- show only name and standing on exalted
 		displayString = format('%s: [%s]', name, label)

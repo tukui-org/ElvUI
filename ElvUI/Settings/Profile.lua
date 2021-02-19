@@ -185,6 +185,7 @@ P.databars.experience.questTrackedOnly = false
 P.databars.reputation.enable = false
 P.databars.reputation.hideBelowMaxLevel = false
 P.databars.reputation.showReward = true
+P.databars.reputation.rewardPosition = 'LEFT'
 
 P.databars.honor.hideOutsidePvP = false
 P.databars.honor.hideBelowMaxLevel = false
