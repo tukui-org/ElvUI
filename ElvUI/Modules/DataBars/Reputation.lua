@@ -18,26 +18,24 @@ function DB:ReputationBar_Update()
 
 	if not bar.db.enable or bar:ShouldHide() then return end
 
-	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
+	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
 	local displayString, textFormat = '', DB.db.reputation.textFormat
-	local isCapped, isFriend, friendText, standingLabel
+	local isCapped, isFriend, friendText, standingLabel, hasReward
 	local friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
 
 	if friendshipID then
 		isFriend, reaction, friendText = true, 5, standingText
 		if (not nextThreshold) then
-			min, max, value = 0, 1, 1
+			minValue, maxValue, curValue = 0, 1, 1
 		end
 	elseif C_Reputation_IsFactionParagon(factionID) then
 		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
+		hasReward = hasRewardPending
 		if currentValue and threshold then
 			standingLabel = L["Paragon"]
-			min, max = 0, threshold
-			value = currentValue % threshold
+			minValue, maxValue, curValue = 0, threshold, currentValue % threshold
 			reaction = 9
 		end
-
-		bar.Reward:SetShown(hasRewardPending)
 
 		if bar:GetOrientation() == 'VERTICAL' then
 			bar.Reward:SetPoint('CENTER', bar, 'TOP')
@@ -49,21 +47,22 @@ function DB:ReputationBar_Update()
 	local color = DB.db.colors.useCustomFactionColors and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
 	if reaction == 9 then color = DB.db.colors.factionColors[reaction] end
 
-	max = max - min
-	value = value - min
+	maxValue = maxValue - minValue
+	curValue = curValue - minValue
 
-	if (value == max) then
-		value, max, isCapped = 1, 1, true
+	if (curValue == maxValue) then
+		curValue, maxValue, isCapped = 1, 1, true
 	end
 
-	bar:SetMinMaxValues(min, max)
-	bar:SetValue(value)
+	bar:SetMinMaxValues(minValue, maxValue)
+	bar:SetValue(curValue)
 	bar:SetStatusBarColor(color.r, color.g, color.b)
+	bar.Reward:SetShown(hasReward)
 
 	standingLabel = standingLabel or _G['FACTION_STANDING_LABEL'..reaction]
 
 	--Prevent a division by zero
-	local maxMinDiff = max - min
+	local maxMinDiff = maxValue - minValue
 	if maxMinDiff == 0 then
 		maxMinDiff = 1
 	end
@@ -73,19 +72,19 @@ function DB:ReputationBar_Update()
 		displayString = format('%s: [%s]', name, isFriend and friendText or standingLabel)
 	else
 		if textFormat == 'PERCENT' then
-			displayString = format('%s: %d%% [%s]', name, ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
+			displayString = format('%s: %d%% [%s]', name, ((curValue - minValue) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURMAX' then
-			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue(max - min), isFriend and friendText or standingLabel)
+			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(curValue - minValue), E:ShortValue(maxValue - minValue), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURPERC' then
-			displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
+			displayString = format('%s: %s - %d%% [%s]', name, E:ShortValue(curValue - minValue), ((curValue - minValue) / (maxMinDiff) * 100), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CUR' then
-			displayString = format('%s: %s [%s]', name, E:ShortValue(value - min), isFriend and friendText or standingLabel)
+			displayString = format('%s: %s [%s]', name, E:ShortValue(curValue - minValue), isFriend and friendText or standingLabel)
 		elseif textFormat == 'REM' then
-			displayString = format('%s: %s [%s]', name, E:ShortValue((max - min) - (value - min)), isFriend and friendText or standingLabel)
+			displayString = format('%s: %s [%s]', name, E:ShortValue((maxValue - minValue) - (curValue - minValue)), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURREM' then
-			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(value - min), E:ShortValue((max - min) - (value - min)), isFriend and friendText or standingLabel)
+			displayString = format('%s: %s - %s [%s]', name, E:ShortValue(curValue - minValue), E:ShortValue((maxValue - minValue) - (curValue - minValue)), isFriend and friendText or standingLabel)
 		elseif textFormat == 'CURPERCREM' then
-			displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(value - min), ((value - min) / (maxMinDiff) * 100), E:ShortValue((max - min) - (value - min)), isFriend and friendText or standingLabel)
+			displayString = format('%s: %s - %d%% (%s) [%s]', name, E:ShortValue(curValue - minValue), ((curValue - minValue) / (maxMinDiff) * 100), E:ShortValue((maxValue - minValue) - (curValue - minValue)), isFriend and friendText or standingLabel)
 		end
 	end
 
@@ -97,15 +96,15 @@ function DB:ReputationBar_OnEnter()
 		E:UIFrameFadeIn(self, 0.4, self:GetAlpha(), 1)
 	end
 
-	local name, reaction, min, max, value, factionID = GetWatchedFactionInfo()
+	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
 	local standingLabel = _G['FACTION_STANDING_LABEL'..reaction]
 	local isParagon = C_Reputation_IsFactionParagon(factionID)
 
 	if factionID and isParagon then
-		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(factionID)
+		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
 		if currentValue and threshold then
-			min, max = 0, threshold
-			value = currentValue % threshold
+			minValue, maxValue = 0, threshold
+			curValue = currentValue % threshold
 			standingLabel = L['Paragon']
 		end
 	end
@@ -122,7 +121,7 @@ function DB:ReputationBar_OnEnter()
 		_G.GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standingLabel, 1, 1, 1)
 
 		if reaction ~= _G.MAX_REPUTATION_REACTION or isParagon then
-			_G.GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', value - min, max - min, (value - min) / ((max - min == 0) and max or (max - min)) * 100), 1, 1, 1)
+			_G.GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', curValue - minValue, maxValue - minValue, (curValue - minValue) / ((maxValue - minValue == 0) and maxValue or (maxValue - minValue)) * 100), 1, 1, 1)
 		end
 
 		_G.GameTooltip:Show()
