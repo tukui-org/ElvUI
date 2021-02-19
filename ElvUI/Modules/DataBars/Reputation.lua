@@ -16,9 +16,14 @@ local UNKNOWN = UNKNOWN
 local function GetValues(curValue, minValue, maxValue)
 	local maximum = maxValue - minValue
 	local current, diff = curValue - minValue, maximum
+
 	if diff == 0 then diff = 1 end -- prevent a division by zero
 
-	return current, maximum, current / diff * 100
+	if current == maximum then
+		return 1, 1, 100, true
+	else
+		return current, maximum, current / diff * 100
+	end
 end
 
 function DB:ReputationBar_Update()
@@ -28,7 +33,7 @@ function DB:ReputationBar_Update()
 	if not bar.db.enable or bar:ShouldHide() then return end
 
 	local displayString, textFormat = '', DB.db.reputation.textFormat
-	local isCapped, isFriend, friendText, standing, rewardPending
+	local isFriend, friendText, standing, rewardPending
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
 	local friendshipID, _, _, _, _, _, standingText, _, nextThreshold = GetFriendshipReputation(factionID)
 
@@ -57,21 +62,14 @@ function DB:ReputationBar_Update()
 	local color = DB.db.colors.useCustomFactionColors and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
 	if reaction == 9 then color = DB.db.colors.factionColors[reaction] end -- paragon
 
-	maxValue = maxValue - minValue
-	curValue = curValue - minValue
-
-	if curValue == maxValue then
-		curValue, maxValue, isCapped = 1, 1, true
-	end
-
 	bar:SetStatusBarColor(color.r, color.g, color.b)
 	bar:SetMinMaxValues(minValue, maxValue)
 	bar:SetValue(curValue)
 	bar.Reward:SetShown(rewardPending)
 
 	local label = (isFriend and friendText) or standing or UNKNOWN
-	local current, maximum, percent = GetValues(curValue, minValue, maxValue)
-	if isCapped and textFormat ~= 'NONE' then -- show only name and standing on exalted
+	local current, maximum, percent, capped = GetValues(curValue, minValue, maxValue)
+	if capped and textFormat ~= 'NONE' then -- show only name and standing on exalted
 		displayString = format('%s: [%s]', name, label)
 	elseif textFormat == 'PERCENT' then
 		displayString = format('%s: %d%% [%s]', name, percent, label)
