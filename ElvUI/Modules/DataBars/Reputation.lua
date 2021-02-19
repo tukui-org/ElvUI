@@ -98,11 +98,9 @@ function DB:ReputationBar_OnEnter()
 	local isParagon = C_Reputation_IsFactionParagon(factionID)
 
 	if factionID and isParagon then
-		local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
-		if currentValue and threshold then
-			minValue, maxValue = 0, threshold
-			curValue = currentValue % threshold
-			standing = L['Paragon']
+		local current, threshold = C_Reputation_GetFactionParagonInfo(factionID)
+		if current and threshold then
+			standing, minValue, maxValue, curValue = L["Paragon"], 0, threshold, current % threshold
 		end
 	end
 
