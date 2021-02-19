@@ -13,6 +13,14 @@ local REPUTATION = REPUTATION
 local STANDING = STANDING
 local UNKNOWN = UNKNOWN
 
+local function GetValues(curValue, minValue, maxValue)
+	local maximum = maxValue - minValue
+	local current, diff = curValue - minValue, maximum
+	if diff == 0 then diff = 1 end -- prevent a division by zero
+
+	return current, maximum, current / diff * 100
+end
+
 function DB:ReputationBar_Update()
 	local bar = DB.StatusBars.Reputation
 	DB:SetVisibility(bar)
@@ -61,12 +69,8 @@ function DB:ReputationBar_Update()
 	bar:SetValue(curValue)
 	bar.Reward:SetShown(rewardPending)
 
-	local maximum = maxValue - minValue
-	local current, diff = curValue - minValue, maximum
-	if diff == 0 then diff = 1 end -- prevent a division by zero
-	local percent = current / diff * 100
-
 	local label = (isFriend and friendText) or standing or UNKNOWN
+	local current, maximum, percent = GetValues(curValue, minValue, maxValue)
 	if isCapped and textFormat ~= 'NONE' then -- show only name and standing on exalted
 		displayString = format('%s: [%s]', name, label)
 	elseif textFormat == 'PERCENT' then
@@ -116,7 +120,8 @@ function DB:ReputationBar_OnEnter()
 		_G.GameTooltip:AddDoubleLine(STANDING..':', (friendID and friendTextLevel) or standing, 1, 1, 1)
 
 		if reaction ~= _G.MAX_REPUTATION_REACTION or isParagon then
-			_G.GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', curValue - minValue, maxValue - minValue, (curValue - minValue) / ((maxValue - minValue == 0) and maxValue or (maxValue - minValue)) * 100), 1, 1, 1)
+			local current, maximum, percent = GetValues(curValue, minValue, maxValue)
+			_G.GameTooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', current, maximum, percent), 1, 1, 1)
 		end
 
 		_G.GameTooltip:Show()
