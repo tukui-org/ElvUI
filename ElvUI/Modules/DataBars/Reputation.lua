@@ -96,7 +96,7 @@ function DB:ReputationBar_OnEnter()
 	end
 
 	local name, reaction, minValue, maxValue, curValue, factionID = GetWatchedFactionInfo()
-	local standing = _G['FACTION_STANDING_LABEL'..reaction]
+	local standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
 	local isParagon = C_Reputation_IsFactionParagon(factionID)
 
 	if factionID and isParagon then
