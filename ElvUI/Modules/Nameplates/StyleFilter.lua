@@ -1048,20 +1048,18 @@ end
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
-mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called on the nameplate itself
-	NAME_PLATE_UNIT_ADDED = 1 -- rest is populated from StyleFilterDefaultEvents as needed
+mod.StyleFilterPlateEvents = { -- events (already on the nameplate) watched inside of ouf, which is called on the nameplate itself, updated by StyleFilterWatchEvents
+	NAME_PLATE_UNIT_ADDED = 1,
+	UNIT_AURA = 1,
+	UNIT_DISPLAYPOWER = 1,
+	UNIT_FACTION = 1,
+	UNIT_HEALTH = 1,
+	UNIT_MAXHEALTH = 1,
+	UNIT_NAME_UPDATE = 1,
+	UNIT_PET = 1,
+	UNIT_POWER_UPDATE = 1,
 }
-mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
-	-- this is a list of events already on the nameplate
-	'UNIT_AURA',
-	'UNIT_DISPLAYPOWER',
-	'UNIT_FACTION',
-	'UNIT_HEALTH',
-	'UNIT_MAXHEALTH',
-	'UNIT_NAME_UPDATE',
-	'UNIT_PET',
-	'UNIT_POWER_UPDATE',
-	-- list of events added during StyleFilterEvents
+mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events (updated during StyleFilterEvents)
 	'MODIFIER_STATE_CHANGED',
 	'PLAYER_FOCUS_CHANGED',
 	'PLAYER_REGEN_DISABLED',
