@@ -194,9 +194,6 @@ function DB:ExperienceBar_Toggle()
 		DB:UnregisterEvent('SUPER_TRACKING_CHANGED')
 	end
 
-	DB:RegisterEvent('UPDATE_EXPANSION_LEVEL', 'ExperienceBar_Toggle')
-	DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Toggle')
-	DB:RegisterEvent('ENABLE_XP_GAIN', 'ExperienceBar_Toggle')
 	DB:ExperienceBar_Update()
 end
 
@@ -229,5 +226,8 @@ function DB:ExperienceBar()
 
 	E:CreateMover(Experience.holder, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
 
+	DB:RegisterEvent('UPDATE_EXPANSION_LEVEL', 'ExperienceBar_Toggle')
+	DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Toggle')
+	DB:RegisterEvent('ENABLE_XP_GAIN', 'ExperienceBar_Toggle')
 	DB:ExperienceBar_Toggle()
 end
