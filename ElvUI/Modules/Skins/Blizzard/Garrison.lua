@@ -277,11 +277,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton, nil, nil, nil, nil, nil, nil, nil, true)
 	S:HandleButton(MissionPage.StartMissionButton)
 	S:HandleButton(GarrisonMissionFrame.MissionComplete.NextMissionButton)
-
-	MissionPage.StartMissionButton.Flash:Hide()
-	MissionPage.StartMissionButton.Flash.Show = E.noop
-	MissionPage.StartMissionButton.FlashAnim:Stop()
-	MissionPage.StartMissionButton.FlashAnim.Play = E.noop
+	MissionPage.StartMissionButton.Flash:Kill()
 
 	-- Landing page
 	local GarrisonLandingPage = _G.GarrisonLandingPage
@@ -428,10 +424,7 @@ function S:Blizzard_GarrisonUI()
 	MissionList.CompleteDialog:SetAllPoints(MissionList.MapTexture)
 	GarrisonShipyardFrame.MissionCompleteBackground:SetAllPoints(MissionList.MapTexture)
 	S:HandleButton(MissionPage.StartMissionButton)
-	MissionPage.StartMissionButton.Flash:Hide()
-	MissionPage.StartMissionButton.Flash.Show = E.noop
-	MissionPage.StartMissionButton.FlashAnim:Stop()
-	MissionPage.StartMissionButton.FlashAnim.Play = E.noop
+	MissionPage.StartMissionButton.Flash:Kill()
 
 	-- ShipYard: Follower List
 	FollowerList = GarrisonShipyardFrame.FollowerList
@@ -537,10 +530,10 @@ function S:Blizzard_GarrisonUI()
 
 	-- Mission Tab
 	MissionTab = MissionFrame.MissionTab -- swap
-
 	S:HandleCloseButton(MissionTab.MissionPage.CloseButton)
-	S:HandleButton(MissionTab.MissionPage.StartMissionButton)
+	S:HandleButton(MissionTab.MissionPage.StartMissionButton, nil, nil, nil, nil, nil, nil, nil, true)
 	S:HandleScrollBar(_G.BFAMissionFrameMissionsListScrollFrameScrollBar)
+	MissionTab.MissionPage.StartMissionButton.Flash:Kill()
 
 	-- Follower Tab
 	Follower = _G.BFAMissionFrameFollowers -- swap
