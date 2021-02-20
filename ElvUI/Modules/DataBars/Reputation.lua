@@ -53,7 +53,7 @@ function DB:ReputationBar_Update()
 		bar.Reward:SetPoint('CENTER', bar, DB.db.reputation.rewardPosition)
 	end
 
-	if not label then label = _G['FACTION_STANDING_LABEL'..reaction] end
+	if not label then label = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN end
 	local color = (DB.db.colors.useCustomFactionColors or reaction == 9) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction] -- reaction 9 is Paragon
 
 	bar:SetStatusBarColor(color.r, color.g, color.b)
