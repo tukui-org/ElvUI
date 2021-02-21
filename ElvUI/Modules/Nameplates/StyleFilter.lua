@@ -1059,27 +1059,27 @@ mod.StyleFilterPlateEvents = { -- events (already on the nameplate) watched insi
 	UNIT_PET = 1,
 	UNIT_POWER_UPDATE = 1,
 }
-mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events (updated during StyleFilterEvents)
-	'MODIFIER_STATE_CHANGED',
-	'PLAYER_FOCUS_CHANGED',
-	'PLAYER_REGEN_DISABLED',
-	'PLAYER_REGEN_ENABLED',
-	'PLAYER_TARGET_CHANGED',
-	'PLAYER_UPDATE_RESTING',
-	'QUEST_LOG_UPDATE',
-	'RAID_TARGET_UPDATE',
-	'SPELL_UPDATE_COOLDOWN',
-	'UNIT_ENTERED_VEHICLE',
-	'UNIT_EXITED_VEHICLE',
-	'UNIT_FLAGS',
-	'UNIT_TARGET',
-	'UNIT_THREAT_LIST_UPDATE',
-	'UNIT_THREAT_SITUATION_UPDATE',
-	'VEHICLE_UPDATE'
+mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events (updated during StyleFilterEvents), true if unitless
+	MODIFIER_STATE_CHANGED = true,
+	PLAYER_FOCUS_CHANGED = true,
+	PLAYER_REGEN_DISABLED = true,
+	PLAYER_REGEN_ENABLED = true,
+	PLAYER_TARGET_CHANGED = true,
+	PLAYER_UPDATE_RESTING = true,
+	QUEST_LOG_UPDATE = true,
+	RAID_TARGET_UPDATE = true,
+	SPELL_UPDATE_COOLDOWN = true,
+	UNIT_ENTERED_VEHICLE = false,
+	UNIT_EXITED_VEHICLE = false,
+	UNIT_FLAGS = false,
+	UNIT_TARGET = false,
+	UNIT_THREAT_LIST_UPDATE = false,
+	UNIT_THREAT_SITUATION_UPDATE = false,
+	VEHICLE_UPDATE = true
 }
 
 function mod:StyleFilterWatchEvents()
-	for _, event in ipairs(mod.StyleFilterDefaultEvents) do
+	for event in pairs(mod.StyleFilterDefaultEvents) do
 		mod.StyleFilterPlateEvents[event] = mod.StyleFilterTriggerEvents[event] and true or nil
 	end
 end
@@ -1284,7 +1284,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 	end end
 
 	function mod:StyleFilterEventWatch(frame)
-		for _, event in ipairs(mod.StyleFilterDefaultEvents) do
+		for event in pairs(mod.StyleFilterDefaultEvents) do
 			local holdsEvent = styleFilterIsWatching(frame, event)
 			if mod.StyleFilterPlateEvents[event] then
 				if not holdsEvent then
@@ -1312,27 +1312,12 @@ end
 function mod:StyleFilterEvents(nameplate)
 	if nameplate == _G.ElvNP_Test then return end
 
-	-- these events get added onto StyleFilterDefaultEvents to be watched,
-	-- the ones added from here should not by registered already
-	mod:StyleFilterRegister(nameplate,'MODIFIER_STATE_CHANGED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_REGEN_DISABLED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_REGEN_ENABLED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
-	mod:StyleFilterRegister(nameplate,'RAID_TARGET_UPDATE', true)
-	mod:StyleFilterRegister(nameplate,'SPELL_UPDATE_COOLDOWN', true)
-	mod:StyleFilterRegister(nameplate,'QUEST_LOG_UPDATE', true)
-	mod:StyleFilterRegister(nameplate,'UNIT_ENTERED_VEHICLE')
-	mod:StyleFilterRegister(nameplate,'UNIT_EXITED_VEHICLE')
-	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
-	mod:StyleFilterRegister(nameplate,'UNIT_TARGET')
-	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
-	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_SITUATION_UPDATE')
-	mod:StyleFilterRegister(nameplate,'VEHICLE_UPDATE', true)
+	-- add events to be watched
+	for event, unitless in pairs(mod.StyleFilterDefaultEvents) do
+		mod:StyleFilterRegister(nameplate, event, unitless)
+	end
 
-	-- object event pathing (these update after MapInfo updates),
-	-- these event are not added onto the nameplate itself
+	-- object event pathing (these update after MapInfo updates), these events are not added onto the nameplate itself
 	mod:StyleFilterRegister(nameplate,'LOADING_SCREEN_DISABLED', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_NEW_AREA', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_INDOORS', nil, nil, E.MapInfo)
