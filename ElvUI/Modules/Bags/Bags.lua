@@ -905,7 +905,7 @@ function B:Layout(isBank)
 
 	f.totalSlots = 0
 	f.holderFrame:SetWidth(holderWidth)
-	f.ContainerHolder:SetSize(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
+	f.ContainerHolder:SetSize(((buttonSize + E.Border * 2) * numContainerSlots) + E.Border * 2, buttonSize + (E.Border * 4))
 
 	if isBank and not f.fullBank then
 		f.fullBank = select(2, GetNumBankSlots())
