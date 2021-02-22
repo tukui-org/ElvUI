@@ -146,6 +146,17 @@ function AB:ExtraButtons_ZoneScale()
 	ZoneAbilityHolder:SetSize(width * scale, height * scale)
 end
 
+function AB:ExtraButtons_Reparent()
+	if InCombatLockdown() then
+		AB.NeedsReparentExtraButtons = true
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
+	end
+
+	_G.ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
+	_G.ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
+end
+
 function AB:SetupExtraButton()
 	local ExtraAbilityContainer = _G.ExtraAbilityContainer
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
@@ -165,12 +176,12 @@ function AB:SetupExtraButton()
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
 	ExtraAbilityContainer.SetSize = E.noop
 
-	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
+	AB:ExtraButtons_Reparent()
+
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:SetAllPoints()
 	ZoneAbilityFrame.ignoreInLayout = true
 
-	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
 	ExtraActionBarFrame.ignoreInLayout = true
@@ -178,15 +189,15 @@ function AB:SetupExtraButton()
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', AB.ExtraButtons_ZoneStyle)
 	hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_BossStyle)
-	hooksecurefunc(ExtraActionBarFrame, 'SetParent', function(frame, parent)
-		if parent ~= ExtraActionBarHolder and not AB.NeedsReparentBossButtons then
-			if InCombatLockdown() then
-				AB.NeedsReparentBossButtons = ExtraActionBarHolder
-				AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-				return
-			end
 
-			frame:SetParent(ExtraActionBarHolder)
+	hooksecurefunc(ZoneAbilityFrame, 'SetParent', function(_, parent)
+		if parent ~= ZoneAbilityHolder and not AB.NeedsReparentExtraButtons then
+			AB:ExtraButtons_Reparent()
+		end
+	end)
+	hooksecurefunc(ExtraActionBarFrame, 'SetParent', function(_, parent)
+		if parent ~= ExtraActionBarHolder and not AB.NeedsReparentExtraButtons then
+			AB:ExtraButtons_Reparent()
 		end
 	end)
 
