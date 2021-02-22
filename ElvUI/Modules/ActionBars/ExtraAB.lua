@@ -8,6 +8,7 @@ local tinsert = tinsert
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
 local ActionButton_UpdateCooldown = ActionButton_UpdateCooldown
 
 local ExtraActionBarHolder, ZoneAbilityHolder
@@ -20,11 +21,10 @@ function AB:ExtraButtons_BossStyle(frame)
 		button.checked = true
 
 		AB:StyleButton(button, true) -- registers cooldown too
+		ActionButton_UpdateCooldown(button) -- the cooldown is already fired sometimes?
+
 		button.icon:SetDrawLayer('ARTWORK')
 		button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
-
-		AB:ExtraButtons_BossAlpha(button)
-		ActionButton_UpdateCooldown(button) -- the cooldown is already fired sometimes?
 
 		button.holder = ExtraActionBarHolder
 		button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
@@ -37,6 +37,8 @@ function AB:ExtraButtons_BossStyle(frame)
 
 		button.HotKey:SetText(GetBindingKey(button:GetName()))
 		AB:FixKeybindText(button)
+
+		AB:ExtraButtons_BossAlpha(button)
 
 		tinsert(ExtraButtons, button)
 
@@ -76,8 +78,12 @@ function AB:ExtraButtons_ZoneStyle()
 end
 
 function AB:ExtraButtons_BossAlpha(button)
-	if not button.style then return end
-	button.style:SetAlpha(not E.db.actionbar.extraActionButton.clean and E.db.actionbar.extraActionButton.alpha or 0)
+	local bossAlpha = E.db.actionbar.extraActionButton.alpha
+	button:SetAlpha(bossAlpha)
+
+	if button.style then
+		button.style:SetAlpha(not E.db.actionbar.extraActionButton.clean and bossAlpha or 0)
+	end
 end
 
 function AB:ExtraButtons_ZoneAlpha()
@@ -106,14 +112,9 @@ end
 
 function AB:ExtraButtons_UpdateAlpha()
 	if not E.private.actionbar.enable then return end
-	local bossAlpha = E.db.actionbar.extraActionButton.alpha
 
-	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
-		local button = _G['ExtraActionButton'..i]
-		if button then
-			button:SetAlpha(bossAlpha)
-			AB:ExtraButtons_BossAlpha(button)
-		end
+	for _, button in pairs(ExtraButtons) do
+		AB:ExtraButtons_BossAlpha(button)
 	end
 
 	local zoneAlpha = AB:ExtraButtons_ZoneAlpha()
@@ -146,6 +147,7 @@ function AB:ExtraButtons_ZoneScale()
 end
 
 function AB:SetupExtraButton()
+	local ExtraAbilityContainer = _G.ExtraAbilityContainer
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
@@ -158,8 +160,6 @@ function AB:SetupExtraButton()
 	ZoneAbilityFrame.SpellButtonContainer.holder = ZoneAbilityHolder
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
 	ZoneAbilityFrame.SpellButtonContainer:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
-
-	local ExtraAbilityContainer = _G.ExtraAbilityContainer
 
 	-- try to shutdown the container movement and taints
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
@@ -178,11 +178,17 @@ function AB:SetupExtraButton()
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
 	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', AB.ExtraButtons_ZoneStyle)
 	hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_BossStyle)
-	if ExtraAbilityContainer.frames then -- first button is already made
-		for _, bar in pairs(ExtraAbilityContainer.frames) do
-			AB.ExtraButtons_BossStyle(ExtraAbilityContainer, bar.frame)
+	hooksecurefunc(ExtraActionBarFrame, 'SetParent', function(frame, parent)
+		if parent ~= ExtraActionBarHolder and not AB.NeedsReparentBossButtons then
+			if InCombatLockdown() then
+				AB.NeedsReparentBossButtons = ExtraActionBarHolder
+				AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+				return
+			end
+
+			frame:SetParent(ExtraActionBarHolder)
 		end
-	end
+	end)
 
 	AB:UpdateExtraButtons()
 

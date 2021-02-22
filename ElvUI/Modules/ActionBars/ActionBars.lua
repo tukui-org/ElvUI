@@ -426,6 +426,10 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB:AdjustMaxStanceButtons(AB.NeedsAdjustMaxStanceButtons) --sometimes it holds the event, otherwise true. pass it before we nil it.
 		AB.NeedsAdjustMaxStanceButtons = nil
 	end
+	if AB.NeedsReparentBossButtons then
+		_G.ExtraActionBarFrame:SetParent(AB.NeedsReparentBossButtons) --holds ExtraActionBarHolder
+		AB.NeedsReparentBossButtons = nil
+	end
 
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
