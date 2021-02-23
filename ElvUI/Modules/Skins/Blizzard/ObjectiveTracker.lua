@@ -96,7 +96,7 @@ local function HandleItemButton(block)
 	end
 
 	if item.backdrop then
-		item.backdrop:SetFrameLevel(item:GetFrameLevel() - 1)
+		item.backdrop:SetFrameLevel(3)
 	end
 end
 
