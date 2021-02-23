@@ -97,6 +97,10 @@ function AB:ExtraButtons_OnEnter()
 	if self.holder and self.holder:GetParent() == AB.fadeParent and not AB.fadeParent.mouseLock then
 		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
 	end
+
+	if self.buttonType == 'EXTRAACTIONBUTTON' then
+		AB:BindUpdate(self)
+	end
 end
 
 function AB:ExtraButtons_OnLeave()
