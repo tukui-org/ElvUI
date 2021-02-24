@@ -264,12 +264,16 @@ function NP:ScalePlate(nameplate, scale, targetPlate)
 	end
 end
 
+function NP:PostUpdateAllElements(event)
+	if event and event ~= 'PLAYER_TARGET_CHANGED' then
+		NP:StyleFilterUpdate(self, event)
+	end
+end
+
 function NP:StylePlate(nameplate)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:SetScale(E.global.general.UIScale)
-
-	nameplate.StyleFilterChanges = {}
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
@@ -296,6 +300,7 @@ function NP:StylePlate(nameplate)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 
 	NP:Construct_Auras(nameplate)
+	NP:StyleFilterEvents(nameplate) -- prepare the watcher
 
 	if E.myclass == 'DEATHKNIGHT' then
 		nameplate.Runes = NP:Construct_Runes(nameplate)
@@ -304,6 +309,8 @@ function NP:StylePlate(nameplate)
 	end
 
 	NP.Plates[nameplate] = nameplate:GetName()
+
+	hooksecurefunc(nameplate, 'UpdateAllElements', NP.PostUpdateAllElements)
 end
 
 function NP:UpdatePlate(nameplate, updateBase)
@@ -364,8 +371,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 	if nameplate.isTarget and nameplate ~= _G.ElvNP_Test then
 		NP:SetupTarget(nameplate, nil, true)
 	end
-
-	NP:StyleFilterEvents(nameplate)
 end
 
 NP.DisableInNotNameOnly = {
@@ -633,8 +638,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)
 		end
 
-		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
-
 		if nameplate ~= _G.ElvNP_Test then
 			if nameplate.isMe then
 				nameplate.frameType = 'PLAYER'
@@ -696,7 +699,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
-		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
+		NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
+		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		if nameplate ~= _G.ElvNP_Test then
 			if nameplate.frameType == 'PLAYER' then
@@ -724,6 +728,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.Power.cur = nil -- cutaway
 		nameplate.npcID = nil -- just cause
 
+		NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
 		NP:StyleFilterClearVariables(nameplate) -- keep this at the end
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here

@@ -1048,18 +1048,18 @@ end
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
-mod.StyleFilterPlateEvents = { -- events (already on the nameplate) watched inside of ouf, which is called on the nameplate itself, updated by StyleFilterWatchEvents
-	NAME_PLATE_UNIT_ADDED = 1,
-	UNIT_AURA = 1,
-	UNIT_DISPLAYPOWER = 1,
-	UNIT_FACTION = 1,
-	UNIT_HEALTH = 1,
-	UNIT_MAXHEALTH = 1,
-	UNIT_NAME_UPDATE = 1,
-	UNIT_PET = 1,
-	UNIT_POWER_UPDATE = 1,
-}
+mod.StyleFilterPlateEvents = {} -- events watched inside of ouf, which is called on the nameplate itself, updated by StyleFilterWatchEvents
 mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events (updated during StyleFilterEvents), true if unitless
+	-- existing:
+	UNIT_AURA = false,
+	UNIT_DISPLAYPOWER = false,
+	UNIT_FACTION = false,
+	UNIT_HEALTH = false,
+	UNIT_MAXHEALTH = false,
+	UNIT_NAME_UPDATE = false,
+	UNIT_PET = false,
+	UNIT_POWER_UPDATE = false,
+	-- mod events:
 	MODIFIER_STATE_CHANGED = true,
 	PLAYER_FOCUS_CHANGED = true,
 	PLAYER_REGEN_DISABLED = true,
@@ -1283,10 +1283,14 @@ do -- oUF style filter inject watch functions without actually registering any e
 			end
 	end end
 
-	function mod:StyleFilterEventWatch(frame)
+	function mod:StyleFilterEventWatch(frame, disable)
 		for event in pairs(mod.StyleFilterDefaultEvents) do
 			local holdsEvent = styleFilterIsWatching(frame, event)
-			if mod.StyleFilterPlateEvents[event] then
+			if disable then
+				if holdsEvent then
+					oUF_fake_register(frame, event, true)
+				end
+			elseif mod.StyleFilterPlateEvents[event] then
 				if not holdsEvent then
 					oUF_fake_register(frame, event)
 				end
@@ -1312,6 +1316,9 @@ end
 function mod:StyleFilterEvents(nameplate)
 	if nameplate == _G.ElvNP_Test then return end
 
+	-- happy little table
+	nameplate.StyleFilterChanges = {}
+
 	-- add events to be watched
 	for event, unitless in pairs(mod.StyleFilterDefaultEvents) do
 		mod:StyleFilterRegister(nameplate, event, unitless)
@@ -1322,9 +1329,6 @@ function mod:StyleFilterEvents(nameplate)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_NEW_AREA', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_INDOORS', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED', nil, nil, E.MapInfo)
-
-	-- fire up the ouf injection watcher
-	mod:StyleFilterEventWatch(nameplate)
 end
 
 function mod:StyleFilterAddCustomCheck(name, func)
