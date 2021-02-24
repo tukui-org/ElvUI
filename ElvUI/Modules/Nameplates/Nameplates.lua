@@ -265,7 +265,7 @@ function NP:ScalePlate(nameplate, scale, targetPlate)
 end
 
 function NP:PostUpdateAllElements(event)
-	if event and event ~= 'PLAYER_TARGET_CHANGED' then -- this we need on each plate, so skip it here as it only updates current target
+	if event and not NP.StyleFilterEventFunctions[event] then
 		NP:StyleFilterUpdate(self, event)
 	end
 end
