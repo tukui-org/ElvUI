@@ -265,7 +265,7 @@ function NP:ScalePlate(nameplate, scale, targetPlate)
 end
 
 function NP:PostUpdateAllElements(event)
-	if event and not NP.StyleFilterEventFunctions[event] then
+	if event and (event == 'ForceUpdate' or not NP.StyleFilterEventFunctions[event]) then
 		NP:StyleFilterUpdate(self, event)
 	end
 end

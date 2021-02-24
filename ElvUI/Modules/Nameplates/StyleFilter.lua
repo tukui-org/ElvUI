@@ -1219,7 +1219,7 @@ end
 function mod:StyleFilterUpdate(frame, event)
 	if frame == _G.ElvNP_Test then return end
 
-	if not frame.StyleFilterChanges or not mod.StyleFilterTriggerEvents[event] then return end
+	if not frame.StyleFilterChanges or (event ~= 'ForceUpdate' and not mod.StyleFilterTriggerEvents[event]) then return end
 
 	mod:StyleFilterClear(frame, true)
 
