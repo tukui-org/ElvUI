@@ -1055,7 +1055,6 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	-- existing:
 	UNIT_AURA = false,
 	UNIT_DISPLAYPOWER = false,
-	UNIT_FACTION = false,
 	UNIT_HEALTH = false,
 	UNIT_MAXHEALTH = false,
 	UNIT_NAME_UPDATE = false,
@@ -1100,8 +1099,9 @@ function mod:StyleFilterConfigure()
 
 				-- NOTE: 0 for fake events
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
-				events.NAME_PLATE_UNIT_ADDED = 1
 				events.PLAYER_TARGET_CHANGED = 1
+				events.NAME_PLATE_UNIT_ADDED = 1
+				events.UNIT_FACTION = 1 -- frameType can change here
 
 				if t.casting then
 					if next(t.casting.spells) then
@@ -1117,13 +1117,12 @@ function mod:StyleFilterConfigure()
 					end
 				end
 
-				if t.isTapDenied or t.isNotTapDenied then			events.UNIT_FLAGS = 1 end
-				if t.reactionType and t.reactionType.enable then	events.UNIT_FACTION = 1 end
-				if t.keyMod and t.keyMod.enable then				events.MODIFIER_STATE_CHANGED = 1 end
-				if t.targetMe or t.notTargetMe then					events.UNIT_TARGET = 1 end
-				if t.isFocus or t.notFocus then						events.PLAYER_FOCUS_CHANGED = 1 end
-				if t.isResting then									events.PLAYER_UPDATE_RESTING = 1 end
-				if t.isPet then										events.UNIT_PET = 1 end
+				if t.isTapDenied or t.isNotTapDenied then	events.UNIT_FLAGS = 1 end
+				if t.targetMe or t.notTargetMe then			events.UNIT_TARGET = 1 end
+				if t.keyMod and t.keyMod.enable then		events.MODIFIER_STATE_CHANGED = 1 end
+				if t.isFocus or t.notFocus then				events.PLAYER_FOCUS_CHANGED = 1 end
+				if t.isResting then							events.PLAYER_UPDATE_RESTING = 1 end
+				if t.isPet then								events.UNIT_PET = 1 end
 
 				if t.raidTarget and (t.raidTarget.star or t.raidTarget.circle or t.raidTarget.diamond or t.raidTarget.triangle or t.raidTarget.moon or t.raidTarget.square or t.raidTarget.cross or t.raidTarget.skull) then
 					events.RAID_TARGET_UPDATE = 1
