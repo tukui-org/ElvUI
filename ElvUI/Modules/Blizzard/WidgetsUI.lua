@@ -103,8 +103,8 @@ function B:Handle_UIWidgets()
 	belowMiniMapHolder:Size(128, 40)
 
 	local powerWidgetHolder = CreateFrame('Frame', 'PowerWidgetContainerHolder', E.UIParent)
-	powerWidgetHolder:Point('CENTER', UIParent, 'CENTER')
-	powerWidgetHolder:Size(128, 40)
+	powerWidgetHolder:Point('CENTER', E.UIParent, 'TOP', 0, -75)
+	powerWidgetHolder:Size(100, 20)
 
 	E:CreateMover(topCenterHolder, 'TopCenterContainerMover', L["UIWidgetTopContainer"], nil, nil, nil,'ALL,SOLO,WIDGETS')
 	E:CreateMover(belowMiniMapHolder, 'BelowMinimapContainerMover', L["UIWidgetBelowMinimapContainer"], nil, nil, nil,'ALL,SOLO,WIDGETS')
