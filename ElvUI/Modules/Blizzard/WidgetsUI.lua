@@ -108,9 +108,9 @@ function B:Handle_UIWidgets()
 	powerWidgetHolder:Point('CENTER', E.UIParent, 'TOP', 0, -75)
 	powerWidgetHolder:Size(100, 20)
 
-	E:CreateMover(topCenterHolder, 'TopCenterContainerMover', L["UIWidgetTopContainer"], nil, nil, nil,'ALL,SOLO,WIDGETS')
-	E:CreateMover(belowMiniMapHolder, 'BelowMinimapContainerMover', L["UIWidgetBelowMinimapContainer"], nil, nil, nil,'ALL,SOLO,WIDGETS')
-	E:CreateMover(powerWidgetHolder, 'PowerWidgetMover', L["PowerWidgetMover"], nil, nil, nil,'ALL,SOLO,WIDGETS')
+	E:CreateMover(topCenterHolder, 'TopCenterContainerMover', L["TopWidget"], nil, nil, nil,'ALL,SOLO,WIDGETS')
+	E:CreateMover(belowMiniMapHolder, 'BelowMinimapContainerMover', L["BelowMinimapWidget"], nil, nil, nil,'ALL,SOLO,WIDGETS')
+	E:CreateMover(powerWidgetHolder, 'PowerBarContainerMover', L["PowerBarWidget"], nil, nil, nil,'ALL,SOLO,WIDGETS')
 
 	topCenterContainer:ClearAllPoints()
 	topCenterContainer:Point('CENTER', topCenterHolder)
