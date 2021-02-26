@@ -191,9 +191,11 @@ function S:SkinPVPHonorXPBar(frame)
 			if not XPBar.NextAvailable.backdrop then
 				XPBar.NextAvailable:StripTextures()
 				XPBar.NextAvailable:CreateBackdrop()
+
 				if XPBar.NextAvailable.Icon then
-					XPBar.NextAvailable.backdrop:Point('TOPLEFT', XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
-					XPBar.NextAvailable.backdrop:Point('BOTTOMRIGHT', XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+					local x = E.PixelMode and 1 or 2
+					XPBar.NextAvailable.backdrop:Point('TOPLEFT', XPBar.NextAvailable.Icon, -x, x)
+					XPBar.NextAvailable.backdrop:Point('BOTTOMRIGHT', XPBar.NextAvailable.Icon, x, -x)
 				end
 			end
 
@@ -1228,11 +1230,12 @@ function S:SkinStatusBarWidget(widgetFrame)
 		if bar.BGCenter then bar.BGCenter:Hide() end
 
 		if not bar.backdrop then
-			bar:CreateBackdrop()
+			bar:CreateBackdrop('Transparent')
 		end
 
-		bar.backdrop:Point('TOPLEFT', -2, 2)
-		bar.backdrop:Point('BOTTOMRIGHT', 2, -2)
+		local x = E.PixelMode and 1 or 2
+		bar.backdrop:Point('TOPLEFT', -x, x)
+		bar.backdrop:Point('BOTTOMRIGHT', x, -x)
 
 		bar.IsSkinned = true
 	end

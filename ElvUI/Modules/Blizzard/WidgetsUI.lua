@@ -83,9 +83,11 @@ function B:UIWidgetTemplateCaptureBar()
 	self.NeutralBar:SetVertexColor(0.8, 0.8, 0.8)
 
 	if not self.backdrop then
+		local x = E.PixelMode and 1 or 2
+
 		self:CreateBackdrop()
-		self.backdrop:Point('TOPLEFT', self.LeftBar, -2, 2)
-		self.backdrop:Point('BOTTOMRIGHT', self.RightBar, 2, -2)
+		self.backdrop:Point('TOPLEFT', self.LeftBar, -x, x)
+		self.backdrop:Point('BOTTOMRIGHT', self.RightBar, x, -x)
 	end
 end
 

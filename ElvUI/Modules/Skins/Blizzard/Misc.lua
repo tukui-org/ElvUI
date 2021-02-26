@@ -253,13 +253,14 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameContentsFrameText:Point('TOPLEFT', 53, 0)
 		_G.GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
 		_G.GhostFrameContentsFrameIcon:Point('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
-		local b = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent(), 'BackdropTemplate')
-		local p = E.PixelMode and 1 or 2
-		b:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -p, p)
-		b:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, p, -p)
+
+		local x = E.PixelMode and 1 or 2
+		local button = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent(), 'BackdropTemplate')
+		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -x, x)
+		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, x, -x)
 		_G.GhostFrameContentsFrameIcon:Size(37,38)
-		_G.GhostFrameContentsFrameIcon:SetParent(b)
-		b:CreateBackdrop()
+		_G.GhostFrameContentsFrameIcon:SetParent(button)
+		button:CreateBackdrop()
 	end
 
 	_G.OpacityFrame:StripTextures()
