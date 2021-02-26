@@ -34,7 +34,7 @@ local function BelowMinimapPosition(self, _, b)
 	local holder = _G.BelowMinimapContainerHolder
 	if b and (b ~= holder) then
 		self:ClearAllPoints()
-		self:Point('CENTER', holder, 'CENTER')
+		self:Point('CENTER', holder)
 		self:SetParent(holder)
 	end
 end
@@ -116,7 +116,7 @@ function B:Handle_UIWidgets()
 	topCenterContainer:Point('CENTER', topCenterHolder)
 
 	belowMiniMapcontainer:ClearAllPoints()
-	belowMiniMapcontainer:Point('CENTER', belowMiniMapHolder, 'CENTER')
+	belowMiniMapcontainer:Point('CENTER', belowMiniMapHolder)
 
 	powerBarContainer:ClearAllPoints()
 	powerBarContainer:Point('CENTER', powerWidgetHolder)
