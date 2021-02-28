@@ -2266,6 +2266,8 @@ P.actionbar = {
 		backdropSpacing = 2,
 		heightMult = 1,
 		widthMult = 1,
+		frameStrata = 'LOW',
+		frameLevel = 0,
 	},
 	extraActionButton = {
 		alpha = 1,
@@ -2336,10 +2338,15 @@ for i = 1, 10 do
 		useCountColor = false,
 		useHotkeyColor = false,
 		useMacroColor = false,
+		frameStrata = 'LOW',
+		frameLevel = 0,
 	}
 end
 
 for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton' }) do
+	P.actionbar[bar].frameStrata = 'LOW'
+	P.actionbar[bar].frameLevel = 0
+
 	if bar == 'barPet' then
 		P.actionbar[bar].countColor = { r = 1, g = 1, b = 1 }
 		P.actionbar[bar].countFont = 'Homespun'

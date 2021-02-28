@@ -277,6 +277,9 @@ function AB:PositionAndSizeBar(barName)
 	bar:SetParent(db.inheritGlobalFade and AB.fadeParent or E.UIParent)
 	bar:EnableMouse(not db.clickThrough)
 	bar:SetAlpha(bar.mouseover and 0 or db.alpha)
+	bar:SetFrameStrata(db.frameStrata or 'LOW')
+	bar:SetFrameLevel(db.frameLevel or 0)
+
 	AB:FadeBarBlings(bar, bar.mouseover and 0 or db.alpha)
 
 	bar.backdrop:SetShown(db.backdrop)
@@ -351,7 +354,6 @@ function AB:CreateBar(id)
 	local defaults = AB.barDefaults['bar'..id]
 	local point, anchor, attachTo, x, y = strsplit(',', defaults.position)
 	bar:Point(point, anchor, attachTo, x, y)
-	bar:SetFrameStrata('LOW')
 	bar.id = id
 
 	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
