@@ -278,8 +278,8 @@ function TT:SetUnitText(tt, unit)
 		if TT.db.showElvUIUsers then
 			local addonUser = E.UserList[nameRealm]
 			if addonUser then
-				local v,r,g,b = addonUser == E.version, unpack(E.media.rgbvaluecolor)
-				GameTooltip:AddDoubleLine(L["ElvUI Version:"], addonUser, r,g,b, v and 0 or 1, v and 1 or 0, 0)
+				local same = addonUser == E.version
+				GameTooltip:AddDoubleLine(L["ElvUI Version:"], format('%.2f', addonUser), nil, nil, nil, same and 0 or 1, same and 1 or 0, 0)
 			end
 		end
 
