@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local max = max
 local ipairs, pairs, select, strmatch, unpack = ipairs, pairs, select, strmatch, unpack
 local format, gsub, strsplit, strfind, strupper = format, gsub, strsplit, strfind, strupper
 
@@ -279,13 +278,13 @@ function AB:PositionAndSizeBar(barName)
 	bar:EnableMouse(not db.clickThrough)
 	bar:SetAlpha(bar.mouseover and 0 or db.alpha)
 	bar:SetFrameStrata(db.frameStrata or 'LOW')
-	bar:SetFrameLevel(max(db.frameLevel, 1))
+	bar:SetFrameLevel(db.frameLevel, 1)
 
 	AB:FadeBarBlings(bar, bar.mouseover and 0 or db.alpha)
 
 	bar.backdrop:SetShown(db.backdrop)
 	bar.backdrop:SetFrameStrata(db.frameStrata or 'LOW')
-	bar.backdrop:SetFrameLevel(max(db.frameLevel, 1) - 1)
+	bar.backdrop:SetFrameLevel(db.frameLevel - 1)
 	bar.backdrop:ClearAllPoints()
 
 	AB:MoverMagic(bar)
