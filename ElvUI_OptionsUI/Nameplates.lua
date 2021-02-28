@@ -6517,7 +6517,16 @@ E.Options.args.nameplate = {
 						Arrow3 = E:TextureString(E.Media.Textures.Arrow3, ':14:14')
 					},
 				},
-				spacer1 = ACH:Spacer(3, 'full'),
+				arrowScale = {
+					order = 3,
+					type = 'range',
+					name = L["Arrow Scale"],
+					min = 0.2,
+					max = 2,
+					step = 0.01,
+					isPercent = true
+				},
+				spacer1 = ACH:Spacer(4, 'full'),
 				nonTargetAlphaShortcut = {
 					order = 5,
 					type = 'execute',
