@@ -6513,7 +6513,8 @@ E.Options.args.nameplate = {
 					values = {
 						ArrowUp = E:TextureString(E.Media.Textures.ArrowUp, ':14:14'),
 						Arrow1 = E:TextureString(E.Media.Textures.Arrow1, ':14:14'),
-						Arrow2 = E:TextureString(E.Media.Textures.Arrow2, ':14:14')
+						Arrow2 = E:TextureString(E.Media.Textures.Arrow2, ':14:14'),
+						Arrow3 = E:TextureString(E.Media.Textures.Arrow3, ':14:14')
 					},
 				},
 				spacer1 = ACH:Spacer(3, 'full'),
