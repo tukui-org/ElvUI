@@ -26,6 +26,8 @@ local UnitHealthMax = UnitHealthMax
 local UnitInVehicle = UnitInVehicle
 local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
 local UnitIsPVP = UnitIsPVP
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
 local UnitIsQuestBoss = UnitIsQuestBoss
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitIsUnit = UnitIsUnit
@@ -33,6 +35,7 @@ local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
@@ -748,9 +751,27 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if trigger.classification[frame.classification] then passed = true else return end
 	end
 
-	-- Group Role
+	-- My Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
 		if trigger.role[mod.TriggerConditions.roles[E.myrole]] then passed = true else return end
+	end
+
+	-- Unit Role
+	if trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager then
+		local role = UnitGroupRolesAssigned(frame.unit)
+		if trigger.unitRole[mod.TriggerConditions.roles[role]] then passed = true else return end
+	end
+
+	-- In Party
+	if trigger.inParty or trigger.notInParty then
+		local inParty = UnitInParty(frame.unit)
+		if (trigger.inParty and inParty) or (trigger.notInParty and not inParty) then passed = true else return end
+	end
+
+	-- In Raid
+	if trigger.inRaid or trigger.notInRaid then
+		local inRaid = UnitInRaid(frame.unit)
+		if (trigger.inRaid and inRaid) or (trigger.notInRaid and not inRaid) then passed = true else return end
 	end
 
 	-- Unit Type
@@ -1067,6 +1088,7 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	PLAYER_REGEN_ENABLED = true,
 	PLAYER_TARGET_CHANGED = true,
 	PLAYER_UPDATE_RESTING = true,
+	GROUP_ROSTER_UPDATE = true,
 	QUEST_LOG_UPDATE = true,
 	RAID_TARGET_UPDATE = true,
 	SPELL_UPDATE_COOLDOWN = true,
@@ -1154,6 +1176,10 @@ function mod:StyleFilterConfigure()
 					events.PLAYER_REGEN_ENABLED = 1
 					events.UNIT_THREAT_LIST_UPDATE = 1
 					events.UNIT_FLAGS = 1
+				end
+
+				if t.inParty or t.notInParty or t.inRaid or t.notInRaid or t.unitRole then
+					events.GROUP_ROSTER_UPDATE = 1
 				end
 
 				if t.location then
