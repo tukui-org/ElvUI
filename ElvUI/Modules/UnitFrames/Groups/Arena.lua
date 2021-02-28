@@ -28,6 +28,7 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 	frame.Health.value:SetShown(visibility)
 	frame.Power.value:SetShown(visibility)
 	frame.Health.ClipFrame:SetShown(visibility)
+	frame.PvPClassificationIndicator:SetAtlas(nil)
 	frame.Trinket.cd:Clear()
 
 	if specIcon and show then
