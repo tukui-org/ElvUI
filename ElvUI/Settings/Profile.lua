@@ -2267,7 +2267,7 @@ P.actionbar = {
 		heightMult = 1,
 		widthMult = 1,
 		frameStrata = 'LOW',
-		frameLevel = 0,
+		frameLevel = 1,
 	},
 	extraActionButton = {
 		alpha = 1,
@@ -2339,13 +2339,13 @@ for i = 1, 10 do
 		useHotkeyColor = false,
 		useMacroColor = false,
 		frameStrata = 'LOW',
-		frameLevel = 0,
+		frameLevel = 1,
 	}
 end
 
 for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton' }) do
 	P.actionbar[bar].frameStrata = 'LOW'
-	P.actionbar[bar].frameLevel = 0
+	P.actionbar[bar].frameLevel = 1
 
 	if bar == 'barPet' then
 		P.actionbar[bar].countColor = { r = 1, g = 1, b = 1 }
