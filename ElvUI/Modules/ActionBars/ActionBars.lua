@@ -278,7 +278,7 @@ function AB:PositionAndSizeBar(barName)
 	bar:EnableMouse(not db.clickThrough)
 	bar:SetAlpha(bar.mouseover and 0 or db.alpha)
 	bar:SetFrameStrata(db.frameStrata or 'LOW')
-	bar:SetFrameLevel(db.frameLevel, 1)
+	bar:SetFrameLevel(db.frameLevel)
 
 	AB:FadeBarBlings(bar, bar.mouseover and 0 or db.alpha)
 
