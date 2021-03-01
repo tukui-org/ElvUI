@@ -498,7 +498,6 @@ function S:Blizzard_Collections()
 	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
 		if Frame.Models then
 			for _, Model in pairs(Frame.Models) do
-				Model:SetFrameLevel(Model:GetFrameLevel() + 1)
 				Model.Border:SetAlpha(0)
 				Model.TransmogStateTexture:SetAlpha(0)
 
@@ -510,9 +509,12 @@ function S:Blizzard_Collections()
 				border:SetBackdropColor(0, 0, 0, 0)
 				border.callbackBackdropColor = clearBackdrop
 
+				if Model.NewGlow then Model.NewGlow:SetParent(border) end
+				if Model.NewString then Model.NewString:SetParent(border) end
+
 				for i=1, Model:GetNumRegions() do
-				local region = select(i, Model:GetRegions())
-					if region:IsObjectType('Texture') and region:GetTexture() == 1116940 then
+					local region = select(i, Model:GetRegions())
+					if region:IsObjectType('Texture') and region:GetTexture() == 1116940 then -- transmogrify.blp
 						region:SetColorTexture(1, 1, 1, 0.3)
 						region:SetBlendMode('ADD')
 						region:SetAllPoints(Model)
