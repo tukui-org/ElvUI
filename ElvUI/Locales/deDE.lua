@@ -164,7 +164,7 @@ L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1ma
 L["HP"] = "HP"
 L["HPS"] = "HPS"
 L["I Swear"] = "Ich schwöre"
-L["I"] = "Ich"
+L["I"] = true -- Abbreviation of I for Instance Chat
 L["Icons Only"] = "Nur Symbole"
 L["If you accidentally removed a default chat tab you can always re-run the chat part of the ElvUI installer."] = "Wenn du ausversehen einen Standard Chat Tab entfernt hast, kannst du jeder Zeit den Installationsschritt für den Chat erneut machen."
 L["If you are experiencing issues with ElvUI try disabling all your addons except ElvUI first."] = "Wenn du Fehler an ElvUI feststellst, deaktiviere alle anderen AddOns bis auf ElvUI."
