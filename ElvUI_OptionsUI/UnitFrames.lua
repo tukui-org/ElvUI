@@ -1717,7 +1717,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 	return config
 end
 
-local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
+local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, subGroup)
 	local config = {
 		type = 'group',
 		name = L["Heal Prediction"],
@@ -1780,6 +1780,12 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 			end, 50, 'medium', nil, nil, nil, nil, 'full'),
 		},
 	}
+
+	if subGroup then
+		config.inline = true
+		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] end
+		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] = value; updateFunc(UF, groupName, numGroup) end
+	end
 
 	return config
 end
@@ -4995,8 +5001,9 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					desc = L["An Y offset (in pixels) to be used when anchoring new frames."],
 					min = -500, max = 500, step = 1,
 				},
+				threatStyle = ACH:Select(L["Threat Display Mode"], nil, 10, threatValues),
 				name = {
-					order = 8,
+					order = 20,
 					type = 'group',
 					inline = true,
 					get = function(info) return E.db.unitframe.units.party.petsGroup.name[info[#info]] end,
@@ -5033,6 +5040,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					},
 				},
 				buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup'),
+				healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup'),
 			},
 		},
 		targetsGroup = {

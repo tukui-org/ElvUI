@@ -1369,10 +1369,12 @@ local UF_SubGroup = {
 	yOffset = 0,
 	width = 120,
 	height = 28,
+	threatStyle = 'GLOW',
 	colorOverride = 'USE_DEFAULT',
 	name = CopyTable(UF_Name),
 	raidicon = CopyTable(UF_RaidIcon),
 	buffIndicator = CopyTable(UF_AuraWatch),
+	healPrediction = CopyTable(UF_HealthPrediction),
 }
 
 local UF_ClassBar = {
