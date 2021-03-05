@@ -651,39 +651,6 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 						E:SetToFilterConfig('Aura Indicator (Class)')
 					end
 				end,
-			},
-			applyToAll = {
-				name = ' ',
-				inline = true,
-				type = 'group',
-				order = 50,
-				get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
-				set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
-				args = {
-					header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1),
-					style = {
-						name = L["Style"],
-						order = 2,
-						type = 'select',
-						values = {
-							timerOnly = L["Timer Only"],
-							coloredIcon = L["Colored Icon"],
-							texturedIcon = L["Textured Icon"],
-						},
-					},
-					textThreshold = {
-						name = L["Text Threshold"],
-						desc = L["At what point should the text be displayed. Set to -1 to disable."],
-						type = 'range',
-						order = 4,
-						min = -1, max = 60, step = 1,
-					},
-					displayText = {
-						name = L["Display Text"],
-						type = 'toggle',
-						order = 5,
-					},
-				}
 			}
 		},
 	}
@@ -692,6 +659,40 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end
+	else
+		config.args.applyToAll = {
+			name = ' ',
+			inline = true,
+			type = 'group',
+			order = 50,
+			get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
+			set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
+			args = {
+				header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1),
+				style = {
+					name = L["Style"],
+					order = 2,
+					type = 'select',
+					values = {
+						timerOnly = L["Timer Only"],
+						coloredIcon = L["Colored Icon"],
+						texturedIcon = L["Textured Icon"],
+					},
+				},
+				textThreshold = {
+					name = L["Text Threshold"],
+					desc = L["At what point should the text be displayed. Set to -1 to disable."],
+					type = 'range',
+					order = 4,
+					min = -1, max = 60, step = 1,
+				},
+				displayText = {
+					name = L["Display Text"],
+					type = 'toggle',
+					order = 5,
+				},
+			}
+		}
 	end
 
 	return config
