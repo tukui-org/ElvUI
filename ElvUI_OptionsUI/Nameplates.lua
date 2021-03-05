@@ -6686,10 +6686,10 @@ E.Options.args.nameplate = {
 					name = L["Arrow Texture"],
 					type = 'multiselect',
 					customWidth = 80,
-					get = function(info, key)
+					get = function(_, key)
 						return E.db.nameplates.units.TARGET.arrow == key
 					end,
-					set = function(info, key, value)
+					set = function(_, key)
 						E.db.nameplates.units.TARGET.arrow = key
 						NP:SetCVars()
 						NP:ConfigureAll()
