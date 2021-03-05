@@ -375,7 +375,6 @@ L["Disables the player and pet unitframes."] = "Désactiver les cadres du joueur
 L["Disables the target and target of target unitframes."] = "Désactiver les cadres de la cible et de la cible de la cible."
 L["Disables the tutorial button found on some frames."] = true
 L["Disconnected"] = "Déconnecté"
-L["Discord"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Affiche un icône soigneur sur le ou les soigneur(s) connu(s) à l'intérieur d'un champ de bataille ou arène"
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Affiche un bandeau au bas de l'écran. Option purement cosmétique."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Affiche un bandeau en haut de l'écran. Option purement cosmétique."

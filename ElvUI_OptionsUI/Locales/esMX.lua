@@ -375,7 +375,6 @@ L["Disables the player and pet unitframes."] = true
 L["Disables the target and target of target unitframes."] = true
 L["Disables the tutorial button found on some frames."] = true
 L["Disconnected"] = "Desconectado"
-L["Discord"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Muestra un icono de sanados sobre los sanadores conocidos en los campos de batalla o arenas."
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Despliega un panel a través de la parte inferior de la pantalla. Es es sólo algo cosmético."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Despliega un panel a través de la parte superior de la pantalla. Es es sólo algo cosmético."

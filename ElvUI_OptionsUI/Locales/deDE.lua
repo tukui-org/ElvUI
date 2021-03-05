@@ -377,7 +377,6 @@ L["Disables the player and pet unitframes."] = "Deaktiviert das Spieler und Begl
 L["Disables the target and target of target unitframes."] = "Deaktiviert das Ziel und Ziel des Ziels Einheitenfenster."
 L["Disables the tutorial button found on some frames."] = "Deaktiviert die Tutorial Taste auf einigen Fenstern."
 L["Disconnected"] = "Nicht Verbunden"
-L["Discord"] = true --No need to translate
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "Zeige auf Schlachtfeldern oder in Arenen ein Heilersymbol über Heilern an."
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "Zeige eine Leiste am unterem Bildschirmrand. Das ist rein kosmetisch."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "Zeige eine Leiste am oberen Bildschirmrand. Das ist rein kosmetisch."

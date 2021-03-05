@@ -375,7 +375,6 @@ L["Disables the player and pet unitframes."] = "禁用玩家和寵物框架"
 L["Disables the target and target of target unitframes."] = "禁用目標和目標的目標框架"
 L["Disables the tutorial button found on some frames."] = "禁用部分框架上的教程按鈕"
 L["Disconnected"] = "離線"
-L["Discord"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "戰場或競技場中, 為已確認為補職的玩家標上補職圖示."
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "顯示跨越螢幕底部的面板,僅僅是用于裝飾."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "顯示跨越螢幕頂部的面板,僅僅是用于裝飾."

@@ -375,7 +375,6 @@ L["Disables the player and pet unitframes."] = "플레이어, 소환수 프레�
 L["Disables the target and target of target unitframes."] = "대상, 대상의 대상 프레임 비활성"
 L["Disables the tutorial button found on some frames."] = "몇몇 프레임에서 등장하는 튜토리얼 버튼을 비활성화합니다."
 L["Disconnected"] = "오프라인"
-L["Discord"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = "전장이나 투기장에서 유닛이 힐러인 경우 이름표에 힐러 아이콘을 표시합니다."
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = "화면 하단에 꾸미기 용도의 바를 생성합니다."
 L["Display a panel across the top of the screen. This is for cosmetic only."] = "화면 상단에 꾸미기 용도의 바를 생성합니다."

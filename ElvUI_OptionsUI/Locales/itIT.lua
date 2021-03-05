@@ -375,7 +375,6 @@ L["Disables the player and pet unitframes."] = true
 L["Disables the target and target of target unitframes."] = true
 L["Disables the tutorial button found on some frames."] = true
 L["Disconnected"] = true
-L["Discord"] = true
 L["Display a healer icon over known healers inside battlegrounds or arenas."] = true
 L["Display a panel across the bottom of the screen. This is for cosmetic only."] = true
 L["Display a panel across the top of the screen. This is for cosmetic only."] = true
