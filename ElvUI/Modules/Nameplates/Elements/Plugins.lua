@@ -112,7 +112,7 @@ function NP:Update_TargetIndicator(nameplate)
 		nameplate:EnableElement('TargetIndicator')
 	end
 
-	nameplate.TargetIndicator.arrow = E.Media.Textures[NP.db.units.TARGET.arrow]
+	nameplate.TargetIndicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow]
 	nameplate.TargetIndicator.style = NP.db.units.TARGET.glowStyle
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 

@@ -6579,20 +6579,8 @@ E.Options.args.nameplate = {
 						style8 = L["Background Glow"] .. ' + ' .. L["Side Arrows"]
 					}
 				},
-				arrow = {
-					order = 2,
-					type = 'select',
-					sortByValue = true,
-					name = L["Arrow Texture"],
-					values = {
-						ArrowUp = E:TextureString(E.Media.Textures.ArrowUp, ':14:14'),
-						Arrow1 = E:TextureString(E.Media.Textures.Arrow1, ':14:14'),
-						Arrow2 = E:TextureString(E.Media.Textures.Arrow2, ':14:14'),
-						Arrow3 = E:TextureString(E.Media.Textures.Arrow3, ':14:14')
-					},
-				},
 				arrowScale = {
-					order = 3,
+					order = 2,
 					type = 'range',
 					name = L["Arrow Scale"],
 					min = 0.2,
@@ -6600,9 +6588,8 @@ E.Options.args.nameplate = {
 					step = 0.01,
 					isPercent = true
 				},
-				spacer1 = ACH:Spacer(4, 'full'),
 				nonTargetAlphaShortcut = {
-					order = 5,
+					order = 3,
 					type = 'execute',
 					name = L["Non-Target Alpha"],
 					func = function()
@@ -6612,7 +6599,7 @@ E.Options.args.nameplate = {
 					end
 				},
 				targetScaleShortcut = {
-					order = 6,
+					order = 4,
 					type = 'execute',
 					name = L["Scale"],
 					func = function()
@@ -6621,9 +6608,9 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup()
 					end
 				},
-				spacer2 = ACH:Spacer(10, 'full'),
+				spacer2 = ACH:Spacer(20, 'full'),
 				classBarGroup = {
-					order = 15,
+					order = 21,
 					type = 'group',
 					name = L["Classbar"],
 					inline = true,
@@ -6692,11 +6679,35 @@ E.Options.args.nameplate = {
 							end
 						}
 					}
+				},
+				spacer3 = ACH:Spacer(30, 'full'),
+				arrows = {
+					order = 31,
+					name = L["Arrow Texture"],
+					type = 'multiselect',
+					customWidth = 80,
+					get = function(info, key)
+						return E.db.nameplates.units.TARGET.arrow == key
+					end,
+					set = function(info, key, value)
+						E.db.nameplates.units.TARGET.arrow = key
+						NP:SetCVars()
+						NP:ConfigureAll()
+					end,
 				}
 			}
 		}
 	}
 }
+
+do -- target arrow textures
+	local arrows = {}
+	E.Options.args.nameplate.args.targetGroup.args.arrows.values = arrows
+
+	for key, arrow in pairs(E.Media.Arrows) do
+		arrows[key] = E:TextureString(arrow, ':32:32')
+	end
+end
 
 ORDER = 10
 

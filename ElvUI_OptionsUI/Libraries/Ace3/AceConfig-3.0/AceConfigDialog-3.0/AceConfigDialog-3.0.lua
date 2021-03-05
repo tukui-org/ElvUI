@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 82
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 83
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -1456,16 +1456,22 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 								check:SetCallback("OnValueChanged",ActivateMultiControl)
 								InjectInfo(check, options, v, path, rootframe, appName)
 								control:AddChild(check)
-								if width == "double" then
-									check:SetWidth(width_multiplier * 2)
-								elseif width == "half" then
-									check:SetWidth(width_multiplier / 2)
-								elseif (type(width) == "number") then
-									control:SetWidth(width_multiplier * width)
-								elseif width == "full" then
-									check.width = "fill"
+
+								local customWidth = control.customWidth or GetOptionsMemberValue("customWidth",v,options,path,appName)
+								if customWidth then
+									check:SetWidth(customWidth)
 								else
-									check:SetWidth(width_multiplier)
+									if width == "double" then
+										check:SetWidth(width_multiplier * 2)
+									elseif width == "half" then
+										check:SetWidth(width_multiplier / 2)
+									elseif (type(width) == "number") then
+										control:SetWidth(width_multiplier * width)
+									elseif width == "full" then
+										check.width = "fill"
+									else
+										check:SetWidth(width_multiplier)
+									end
 								end
 							end
 						end

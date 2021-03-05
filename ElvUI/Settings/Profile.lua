@@ -675,8 +675,8 @@ P.nameplates = {
 		},
 		TARGET = {
 			enable = true,
-			arrow = 'Arrow1',
-			arrowScale = 1,
+			arrow = 'Arrow9',
+			arrowScale = 0.8,
 			glowStyle = 'style2',
 			classpower = {
 				enable = false,
