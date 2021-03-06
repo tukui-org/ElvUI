@@ -564,10 +564,10 @@ function S:LookingForGroupFrames()
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
 		if not button.DeclineButton.template then
-			S:HandleButton(button.DeclineButton, nil, true)
+			S:HandleButton(button.DeclineButton, nil, true, nil, nil, nil, nil, nil, true)
 		end
 		if not button.InviteButton.template then
-			S:HandleButton(button.InviteButton)
+			S:HandleButton(button.InviteButton, nil, nil, nil, nil, nil, nil, nil, true)
 		end
 	end)
 
