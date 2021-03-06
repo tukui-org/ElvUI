@@ -6588,8 +6588,16 @@ E.Options.args.nameplate = {
 					step = 0.01,
 					isPercent = true
 				},
-				nonTargetAlphaShortcut = {
+				arrowSpacing = {
 					order = 3,
+					name = L["Arrow Spacing"],
+					type = 'range',
+					min = 0,
+					max = 50,
+					step = 1
+				},
+				nonTargetAlphaShortcut = {
+					order = 4,
 					type = 'execute',
 					name = L["Non-Target Alpha"],
 					func = function()
@@ -6599,7 +6607,7 @@ E.Options.args.nameplate = {
 					end
 				},
 				targetScaleShortcut = {
-					order = 4,
+					order = 5,
 					type = 'execute',
 					name = L["Scale"],
 					func = function()
