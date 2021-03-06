@@ -184,7 +184,7 @@ function UF:Configure_HealComm(frame)
 			local p1 = reverseFill and 'TOP' or 'BOTTOM'
 			local p2 = reverseFill and 'BOTTOM' or 'TOP'
 
-			local anchor = (db.anchorPoint == 'BOTTOM' and 'RIGHT') or (db.anchorPoint == 'TOP' and 'LEFT') or db.anchorPoint -- convert this for vertical too
+			local anchor = (db.anchorPoint == 'RIGHT' and 'BOTTOM') or (db.anchorPoint == 'LEFT' and 'TOP') or db.anchorPoint -- convert this for vertical too
 			pred.anchor, pred.anchor1, pred.anchor2 = anchor, p1, p2
 
 			myBar:ClearAllPoints()
