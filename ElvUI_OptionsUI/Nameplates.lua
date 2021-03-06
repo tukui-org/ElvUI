@@ -6608,9 +6608,8 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup()
 					end
 				},
-				spacer2 = ACH:Spacer(20, 'full'),
 				classBarGroup = {
-					order = 21,
+					order = 20,
 					type = 'group',
 					name = L["Classbar"],
 					inline = true,
@@ -6680,9 +6679,8 @@ E.Options.args.nameplate = {
 						}
 					}
 				},
-				spacer3 = ACH:Spacer(30, 'full'),
 				arrows = {
-					order = 31,
+					order = 30,
 					name = L["Arrow Texture"],
 					type = 'multiselect',
 					customWidth = 80,
