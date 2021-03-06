@@ -277,16 +277,7 @@ local function SkinWorldQuestCompleteAlert(frame)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -14, 6)
 		frame.shine:Kill()
 		-- Background
-		if frame.GetNumRegions then
-			for i = 1, frame:GetNumRegions() do
-				local region = select(i, frame:GetRegions())
-				if region:IsObjectType('Texture') then
-					if region:GetTexture() == [[Interface\LFGFrame\UI-LFG-DUNGEONTOAST]] then
-						region:Kill()
-					end
-				end
-			end
-		end
+		frame.ToastBackground:Kill()
 		--Icon
 		frame.QuestTexture:SetTexCoord(unpack(E.TexCoords))
 		frame.QuestTexture:SetDrawLayer('ARTWORK')

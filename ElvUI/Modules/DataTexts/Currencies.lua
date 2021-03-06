@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format, tonumber = format, tonumber
-local type, ipairs, unpack = type, ipairs, unpack
+local format, tonumber, wipe = format, tonumber, wipe
+local pairs, ipairs, unpack, tostring = pairs, ipairs, unpack, tostring
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetMoney = GetMoney
 
@@ -21,17 +21,32 @@ end
 local function GetInfo(id)
 	local info = C_CurrencyInfo_GetCurrencyInfo(id)
 	if info then
-		return info.name, info.quantity, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
-	else
-		return '', '', '136012'
+		return info.name, info.quantity, info.maxQuantity, (info.iconFileID and format(iconString, info.iconFileID)) or '136012'
 	end
 end
 
 local function AddInfo(id)
-	local name, num, icon = GetInfo(id)
+	local name, num, max, icon = GetInfo(id)
 	if name then
-		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), BreakUpLargeNumbers(num), 1, 1, 1, 1, 1, 1)
+		local textRight = '%s'
+		if E.global.datatexts.settings.Currencies.maxCurrency and max and max > 0 then
+			textRight = '%s / '..BreakUpLargeNumbers(max)
+		end
+
+		DT.tooltip:AddDoubleLine(format('%s %s', icon, name), format(textRight, BreakUpLargeNumbers(num)), 1, 1, 1, 1, 1, 1)
 	end
+end
+
+local shownHeaders = {}
+local function AddHeader(id, addLine)
+	if (not E.global.datatexts.settings.Currencies.headers) or shownHeaders[id] then return end
+
+	if addLine then
+		DT.tooltip:AddLine(' ')
+	end
+
+	DT.tooltip:AddLine(E.global.datatexts.settings.Currencies.tooltipData[id][1])
+	shownHeaders[id] = true
 end
 
 local goldText
@@ -40,22 +55,22 @@ local function OnEvent(self)
 
 	local displayed = E.global.datatexts.settings.Currencies.displayedCurrency
 	if displayed == 'BACKPACK' then
-		local displayString = ''
+		local displayString
 		for i = 1, 3 do
 			local info = C_CurrencyInfo_GetBackpackCurrencyInfo(i)
 			if info and info.quantity then
-				displayString = (i > 1 and displayString..' ' or displayString)..format('%s %s', format(iconString, info.iconFileID), E:ShortValue(info.quantity))
+				displayString = (i > 1 and displayString..' ' or '')..format('%s %s', format(iconString, info.iconFileID), E:ShortValue(info.quantity))
 			end
 		end
 
-		self.text:SetText(displayString == '' and goldText or displayString)
+		self.text:SetText(displayString or goldText)
 	elseif displayed == 'GOLD' then
 		self.text:SetText(goldText)
 	else
 		local id = tonumber(displayed)
 		if not id then return end
 
-		local name, num, icon = GetInfo(id)
+		local name, num, _, icon = GetInfo(id)
 		if not name then return end
 
 		local style = E.global.datatexts.settings.Currencies.displayStyle
@@ -72,28 +87,29 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	local addLine, goldSpace
+	wipe(shownHeaders)
+	local addLine, addLine2
 	for _, info in ipairs(E.global.datatexts.settings.Currencies.tooltipData) do
-		local name, id, _, enabled = unpack(info)
-		if id and enabled then
-			if type(id) == 'number' then
-				AddInfo(id)
-			end
-
-			goldSpace = true
-		elseif enabled then
-			if addLine then
-				DT.tooltip:AddLine(' ')
-			else
-				addLine = true
-			end
-
-			DT.tooltip:AddLine(name)
-			goldSpace = true
+		local _, id, header = unpack(info)
+		if id and E.global.datatexts.settings.Currencies.idEnable[id] then
+			AddHeader(header, addLine)
+			AddInfo(id)
+			addLine = true
 		end
 	end
 
-	if goldSpace then
+	if addLine then
+		DT.tooltip:AddLine(' ')
+	end
+
+	for _, info in pairs(E.global.datatexts.customCurrencies) do
+		if info and not DT.CurrencyList[tostring(info.ID)] and info.DISPLAY_IN_MAIN_TOOLTIP then
+			AddInfo(info.ID)
+			addLine2 = true
+		end
+	end
+
+	if addLine2 then
 		DT.tooltip:AddLine(' ')
 	end
 

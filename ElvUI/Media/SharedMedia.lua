@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 E.Media = {
 	Fonts = {},
 	Sounds = {},
+	Arrows = {},
 	ChatEmojis = {},
 	ChatLogos = {},
 	Textures = {}
@@ -22,6 +23,7 @@ end
 local MediaKey = {
 	font	= 'Fonts',
 	sound	= 'Sounds',
+	arrow   = 'Arrows',
 	emoji	= 'ChatEmojis',
 	logo	= 'ChatLogos',
 	texture	= 'Textures'
@@ -30,6 +32,7 @@ local MediaKey = {
 local MediaPath = {
 	font	= [[Interface\AddOns\ElvUI\Media\Fonts\]],
 	sound	= [[Interface\AddOns\ElvUI\Media\Sounds\]],
+	arrow	= [[Interface\AddOns\ElvUI\Media\Arrows\]],
 	emoji	= [[Interface\AddOns\ElvUI\Media\ChatEmojis\]],
 	logo	= [[Interface\AddOns\ElvUI\Media\ChatLogos\]],
 	texture	= [[Interface\AddOns\ElvUI\Media\Textures\]]
@@ -84,11 +87,15 @@ AddMedia('texture','White8x8',		'ElvUI Blank', {'statusbar','background'})
 AddMedia('texture','Minimalist',	true, 'statusbar')
 AddMedia('texture','Melli',			true, 'statusbar')
 
+-- nameplate target arrows
+AddMedia('arrow', 'ArrowRed')
+for i = 0, 72 do
+	AddMedia('arrow', 'Arrow'..i)
+end
+
 AddMedia('texture','Arrow')
 AddMedia('texture','ArrowRight')
 AddMedia('texture','ArrowUp')
-AddMedia('texture','Arrow1')
-AddMedia('texture','Arrow2')
 AddMedia('texture','BagNewItemGlow')
 AddMedia('texture','BagQuestIcon')
 AddMedia('texture','BagUpgradeIcon')
@@ -116,8 +123,8 @@ AddMedia('texture','Mail')
 AddMedia('texture','Minus')
 AddMedia('texture','MinusButton')
 AddMedia('texture','Pause')
-AddMedia('texture','PhaseIcon')
-AddMedia('texture','PhaseOverlay')
+AddMedia('texture','PhaseBorder')
+AddMedia('texture','PhaseCenter')
 AddMedia('texture','Play')
 AddMedia('texture','Plus')
 AddMedia('texture','PlusButton')
@@ -166,6 +173,7 @@ AddMedia('emoji','ThumbsUp')
 AddMedia('emoji','Wink')
 AddMedia('emoji','ZZZ')
 
+AddMedia('logo','Beer')
 AddMedia('logo','ElvRainbow')
 AddMedia('logo','ElvSimpy')
 AddMedia('logo','ElvBlue')
@@ -181,6 +189,7 @@ AddMedia('logo','Illuminati')
 AddMedia('logo','MrHankey')
 AddMedia('logo','Rainbow')
 AddMedia('logo','TyroneBiggums')
+AddMedia('logo','SuperBear')
 AddMedia('logo','Burger')
 AddMedia('logo','Clover')
 AddMedia('logo','Cupcake')

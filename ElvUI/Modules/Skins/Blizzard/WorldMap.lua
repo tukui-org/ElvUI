@@ -41,6 +41,7 @@ function S:WorldMapFrame()
 	-- Quest Frames
 	local QuestMapFrame = _G.QuestMapFrame
 	QuestMapFrame.VerticalSeparator:Hide()
+	QuestMapFrame:SetScript('OnHide', nil) -- This script would taint the Quest Objective Tracker Button, so unsetting it ~Simpy
 
 	if E.private.skins.parchmentRemoverEnable then
 		QuestMapFrame.DetailsFrame:StripTextures(true)
@@ -65,11 +66,12 @@ function S:WorldMapFrame()
 	QuestScrollFrame.Contents.Separator.Divider:Hide()
 
 	local QuestScrollFrameScrollBar = _G.QuestScrollFrame.ScrollBar
-	QuestScrollFrame.DetailFrame:CreateBackdrop()
-	QuestScrollFrame.DetailFrame.backdrop:SetFrameLevel(1)
-	QuestScrollFrame.DetailFrame.backdrop:Point('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPLEFT', 3, 1)
-	QuestScrollFrame.DetailFrame.backdrop:Point('BOTTOMRIGHT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', -2, -7)
-	QuestMapFrame.Background:SetInside(QuestScrollFrame.DetailFrame.backdrop)
+	QuestScrollFrame.DetailFrame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, 1)
+
+	if QuestScrollFrame.DetailFrame.backdrop then
+		QuestScrollFrame.DetailFrame.backdrop:Point('TOPLEFT', QuestScrollFrame.DetailFrame, 'TOPLEFT', 3, 1)
+		QuestScrollFrame.DetailFrame.backdrop:Point('BOTTOMRIGHT', QuestScrollFrame.DetailFrame, 'BOTTOMRIGHT', -2, -7)
+	end
 
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleScrollBar(QuestScrollFrameScrollBar, 3, 3)
@@ -84,6 +86,7 @@ function S:WorldMapFrame()
 	QuestMapFrame.DetailsFrame.ShareButton:SetFrameLevel(5)
 	S:HandleButton(QuestMapFrame.DetailsFrame.TrackButton, true)
 	QuestMapFrame.DetailsFrame.TrackButton:SetFrameLevel(5)
+	QuestMapFrame.DetailsFrame.TrackButton:Width(95)
 	S:HandleButton(QuestMapFrame.DetailsFrame.CompleteQuestFrame.CompleteButton, true)
 
 	local CampaignOverview = QuestMapFrame.CampaignOverview
@@ -100,8 +103,8 @@ function S:WorldMapFrame()
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right')
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left', nil, nil, nil, true)
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right', nil, nil, nil, true)
 
 	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)

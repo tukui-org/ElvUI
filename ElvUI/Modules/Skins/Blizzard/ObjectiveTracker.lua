@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, unpack = pairs, unpack
 local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
 
 local headers = {
 	_G.ObjectiveTrackerBlocksFrame.QuestHeader,
@@ -36,7 +37,6 @@ local function ColorProgressBars(self, value)
 	S:StatusBarColorGradient(self.Bar, value, 100)
 end
 
--- 9.0 Needs Update
 local function HotkeyShow(self)
 	local item = self:GetParent()
 	if item.rangeOverlay then item.rangeOverlay:Show() end
@@ -56,48 +56,55 @@ local function HotkeyColor(self, r, g, b)
 	end
 end
 
-local function SkinItemButton(_, block)
-	local item = block.itemButton
+local function SkinItemButton(item)
+	item:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
+	item:StyleButton()
+	item:SetNormalTexture(nil)
+
+	item.icon:SetTexCoord(unpack(E.TexCoords))
+	item.icon:SetInside()
+
+	item.Cooldown:SetInside()
+	item.Count:ClearAllPoints()
+	item.Count:Point('TOPLEFT', 1, -1)
+	item.Count:FontTemplate(nil, 14, 'OUTLINE')
+	item.Count:SetShadowOffset(5, -5)
+
+	local rangeOverlay = item:CreateTexture(nil, 'OVERLAY')
+	rangeOverlay:SetTexture(E.Media.Textures.White8x8)
+	rangeOverlay:SetInside()
+	item.rangeOverlay = rangeOverlay
+
+	hooksecurefunc(item.HotKey, 'Show', HotkeyShow)
+	hooksecurefunc(item.HotKey, 'Hide', HotkeyHide)
+	hooksecurefunc(item.HotKey, 'SetVertexColor', HotkeyColor)
+	HotkeyColor(item.HotKey, item.HotKey:GetTextColor())
+	item.HotKey:SetAlpha(0)
+
+	E:RegisterCooldown(item.Cooldown)
+end
+
+local function HandleItemButton(block)
+	if InCombatLockdown() then return end -- will break quest item button
+
+	local item = block and block.itemButton
 	if not item then return end
 
 	if not item.skinned then
-		item:CreateBackdrop('Transparent')
-		item.backdrop:SetAllPoints()
-		item:StyleButton()
-		item:SetNormalTexture(nil)
-		item.icon:SetTexCoord(unpack(E.TexCoords))
-		item.icon:SetInside()
-		item.Cooldown:SetInside()
-		item.Count:ClearAllPoints()
-		item.Count:Point('TOPLEFT', 1, -1)
-		item.Count:FontTemplate(nil, 14, 'OUTLINE')
-		item.Count:SetShadowOffset(5, -5)
-
-		local rangeOverlay = item:CreateTexture(nil, 'OVERLAY')
-		rangeOverlay:SetTexture(E.Media.Textures.White8x8)
-		rangeOverlay:SetInside()
-		item.rangeOverlay = rangeOverlay
-
-		hooksecurefunc(item.HotKey, 'Show', HotkeyShow)
-		hooksecurefunc(item.HotKey, 'Hide', HotkeyHide)
-		hooksecurefunc(item.HotKey, 'SetVertexColor', HotkeyColor)
-		HotkeyColor(item.HotKey, item.HotKey:GetTextColor())
-		item.HotKey:SetAlpha(0)
-
-		E:RegisterCooldown(item.Cooldown)
+		SkinItemButton(item)
 		item.skinned = true
 	end
 
 	if item.backdrop then
-		item.backdrop:SetFrameLevel(item:GetFrameLevel() - 1)
+		item.backdrop:SetFrameLevel(3)
 	end
 end
 
--- 9.0 Needs Update
 local function SkinProgressBars(_, _, line)
 	local progressBar = line and line.ProgressBar
 	local bar = progressBar and progressBar.Bar
 	if not bar then return end
+
 	local icon = bar.Icon
 	local label = bar.Label
 
@@ -162,6 +169,8 @@ local function SkinTimerBars(_, _, line)
 end
 
 local function PositionFindGroupButton(block, button)
+	if InCombatLockdown() then return end -- will break quest item button
+
 	if button and button.GetPoint then
 		local a, b, c, d, e = button:GetPoint()
 		if block.groupFinderButton and b == block.groupFinderButton and block.itemButton and button == block.itemButton then
@@ -177,11 +186,13 @@ local function PositionFindGroupButton(block, button)
 end
 
 local function SkinFindGroupButton(block)
-	if block.hasGroupFinderButton and block.groupFinderButton then
-		if block.groupFinderButton and not block.groupFinderButton.skinned then
-			S:HandleButton(block.groupFinderButton)
-			block.groupFinderButton:Size(20)
-			block.groupFinderButton.skinned = true
+	local button = block.hasGroupFinderButton and block.groupFinderButton
+	if button then
+		S:HandleButton(button)
+		button:Size(20)
+
+		if button.backdrop then
+			button.backdrop:SetFrameLevel(3)
 		end
 	end
 end
@@ -216,6 +227,8 @@ function S:ObjectiveTrackerFrame()
 
 	hooksecurefunc('ObjectiveTracker_Expand',TrackerStateChanged)
 	hooksecurefunc('ObjectiveTracker_Collapse',TrackerStateChanged)
+	hooksecurefunc('QuestObjectiveSetupBlockButton_Item', HandleItemButton)
+	hooksecurefunc(_G.BONUS_OBJECTIVE_TRACKER_MODULE, "AddObjective", HandleItemButton)
 	hooksecurefunc('BonusObjectiveTrackerProgressBar_SetValue',ColorProgressBars)			--[Color]: Bonus Objective Progress Bar
 	hooksecurefunc('ObjectiveTrackerProgressBar_SetValue',ColorProgressBars)				--[Color]: Quest Progress Bar
 	hooksecurefunc('ScenarioTrackerProgressBar_SetValue',ColorProgressBars)					--[Color]: Scenario Progress Bar
@@ -231,9 +244,6 @@ function S:ObjectiveTrackerFrame()
 	hooksecurefunc(_G.QUEST_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)						--[Skin]: Quest Timer Bar
 	hooksecurefunc(_G.SCENARIO_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)					--[Skin]: Scenario Timer Bar
 	hooksecurefunc(_G.ACHIEVEMENT_TRACKER_MODULE,'AddTimerBar',SkinTimerBars)				--[Skin]: Achievement Timer Bar
-	hooksecurefunc(_G.QUEST_TRACKER_MODULE,'SetBlockHeader',SkinItemButton)					--[Skin]: Quest Item Buttons
-	hooksecurefunc(_G.WORLD_QUEST_TRACKER_MODULE,'AddObjective',SkinItemButton)				--[Skin]: World Quest Item Buttons
-	hooksecurefunc(_G.CAMPAIGN_QUEST_TRACKER_MODULE,'AddObjective',SkinItemButton)			--[Skin]: Campaign Quest Item Buttons
 
 	for _, header in pairs(headers) do
 		local button = header.MinimizeButton

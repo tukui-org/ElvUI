@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ]]
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 21 -- the real minor version is 79
+local MINOR_VERSION = 25 -- the real minor version is 80
 
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
 local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -137,6 +137,7 @@ local DefaultConfig = {
 	disableCountDownNumbers = false,
 	useDrawBling = true,
 	useDrawSwipeOnCharges = true,
+	handleOverlay = true,
 }
 
 --- Create a new action button.
@@ -489,7 +490,7 @@ function Generic:AddToMasque(group)
 	if type(group) ~= "table" or type(group.AddButton) ~= "function" then
 		error("LibActionButton-1.0:AddToMasque: You need to supply a proper group to use!", 2)
 	end
-	group:AddButton(self)
+	group:AddButton(self, nil, "Action")
 	self.MasqueSkinned = true
 end
 
@@ -685,15 +686,10 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("ACTIONBAR_HIDEGRID")
 	lib.eventFrame:RegisterEvent("PET_BAR_SHOWGRID")
 	lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID")
-	--lib.eventFrame:RegisterEvent("ACTIONBAR_PAGE_CHANGED")
-	--lib.eventFrame:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 	lib.eventFrame:RegisterEvent("UPDATE_BINDINGS")
-	lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+	lib.eventFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORMS")
 	lib.eventFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
-	if not WoWClassic then
-		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
-	end
 
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_STATE")
 	lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
@@ -712,7 +708,9 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("PET_STABLE_SHOW")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
+
 	if not WoWClassic then
+		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
 		lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
 		lib.eventFrame:RegisterEvent("UNIT_ENTERED_VEHICLE")
 		lib.eventFrame:RegisterEvent("UNIT_EXITED_VEHICLE")
@@ -747,10 +745,8 @@ function OnEvent(frame, event, arg1, ...)
 				Update(button)
 			end
 		end
-	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_SHAPESHIFT_FORM" or event == "UPDATE_VEHICLE_ACTIONBAR" then
+	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_SHAPESHIFT_FORMS" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update)
-	elseif event == "ACTIONBAR_PAGE_CHANGED" or event == "UPDATE_BONUS_ACTIONBAR" then
-		-- TODO: Are these even needed?
 	elseif event == "ACTIONBAR_SHOWGRID" or event == "PET_BAR_SHOWGRID" then
 		ShowGrid(event)
 	elseif event == "ACTIONBAR_HIDEGRID" or event == "PET_BAR_HIDEGRID" then
@@ -984,6 +980,7 @@ function UpdateRange(self, force) -- Sezz: moved from OnUpdate
 				hotkey:SetVertexColor(unpack(self.config.colors.usable))
 			end
 		end
+		lib.callbacks:Fire("OnUpdateRange", self)
 	end
 end
 
@@ -1120,9 +1117,12 @@ function Update(self, fromUpdateConfig)
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 
+	-- Cooldown desaturate can control saturation, we don't want to override it here
+	local allowSaturation = not self.saturationLocked and not self.LevelLinkLockIcon:IsShown()
+
 	-- Zone ability button handling
 	self.zoneAbilityDisabled = false
-	if not self.saturationLocked then
+	if allowSaturation then
 		self.icon:SetDesaturated(false)
 	end
 	if self._state_type == "action" then
@@ -1133,7 +1133,8 @@ function Update(self, fromUpdateConfig)
 			if name == abilityName then
 				texture = GetLastZoneAbilitySpellTexture()
 				self.zoneAbilityDisabled = true
-				if not self.saturationLocked then
+
+				if allowSaturation then
 					self.icon:SetDesaturated(true)
 				end
 			end
@@ -1207,28 +1208,9 @@ function UpdateButtonState(self)
 end
 
 function UpdateUsable(self)
-	if self.config.useColoring then
-		if self.config.outOfRangeColoring == "button" and self.outOfRange then
-			self.icon:SetVertexColor(unpack(self.config.colors.range))
-		else
-			local isUsable, notEnoughMana = self:IsUsable()
-			if isUsable then
-				self.icon:SetVertexColor(unpack(self.config.colors.usable))
-				--self.NormalTexture:SetVertexColor(1.0, 1.0, 1.0)
-			elseif notEnoughMana then
-				self.icon:SetVertexColor(unpack(self.config.colors.mana))
-				--self.NormalTexture:SetVertexColor(0.5, 0.5, 1.0)
-			else
-				self.icon:SetVertexColor(unpack(self.config.colors.notUsable))
-				--self.NormalTexture:SetVertexColor(1.0, 1.0, 1.0)
-			end
-		end
-	else
-		self.icon:SetVertexColor(unpack(self.config.colors.usable))
-	end
-
+	local isLevelLinkLocked
 	if not WoWClassic and self._state_type == "action" then
-		local isLevelLinkLocked = C_LevelLink.IsActionLocked(self._state_action)
+		isLevelLinkLocked = C_LevelLink.IsActionLocked(self._state_action)
 		if not self.icon:IsDesaturated() then
 			self.icon:SetDesaturated(isLevelLinkLocked)
 		end
@@ -1236,6 +1218,25 @@ function UpdateUsable(self)
 		if self.LevelLinkLockIcon then
 			self.LevelLinkLockIcon:SetShown(isLevelLinkLocked)
 		end
+	end
+
+	if self.config.useColoring then
+		if isLevelLinkLocked then
+			self.icon:SetVertexColor(unpack(self.config.colors.notUsable))
+		elseif self.config.outOfRangeColoring == "button" and self.outOfRange then
+			self.icon:SetVertexColor(unpack(self.config.colors.range))
+		else
+			local isUsable, notEnoughMana = self:IsUsable()
+			if isUsable then
+				self.icon:SetVertexColor(unpack(self.config.colors.usable))
+			elseif notEnoughMana then
+				self.icon:SetVertexColor(unpack(self.config.colors.mana))
+			else
+				self.icon:SetVertexColor(unpack(self.config.colors.notUsable))
+			end
+		end
+	else
+		self.icon:SetVertexColor(unpack(self.config.colors.usable))
 	end
 
 	lib.callbacks:Fire("OnButtonUsable", self)
@@ -1405,7 +1406,7 @@ function UpdateHotkeys(self)
 end
 
 function ShowOverlayGlow(self)
-	if LBG then
+	if LBG and self.config.handleOverlay then
 		LBG.ShowOverlayGlow(self)
 	end
 end
@@ -1417,7 +1418,7 @@ function HideOverlayGlow(self)
 end
 
 function UpdateOverlayGlow(self)
-	local spellId = self:GetSpellId()
+	local spellId = self.config.handleOverlay and self:GetSpellId()
 	if spellId and IsSpellOverlayed(spellId) then
 		ShowOverlayGlow(self)
 	else

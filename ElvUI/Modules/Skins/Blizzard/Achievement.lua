@@ -11,7 +11,10 @@ local GetNumFilteredAchievements = GetNumFilteredAchievements
 local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
-local BlueAchievement = {0.1, 0.2, 0.3}
+local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
+local function blueBackdrop(self)
+	self:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
+end
 
 local function skinAch(Achievement, BiggerIcon)
 	if Achievement.isSkinned then return; end
@@ -20,8 +23,7 @@ local function skinAch(Achievement, BiggerIcon)
 	Achievement:StripTextures(true)
 	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
-	Achievement.icon:CreateBackdrop()
-	Achievement.icon.backdrop:SetAllPoints()
+	Achievement.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
 	Achievement.icon:ClearAllPoints()
 	Achievement.icon:Point('TOPLEFT', 8, -8)
@@ -55,8 +57,8 @@ local function skinAch(Achievement, BiggerIcon)
 
 	if Achievement.tracked then
 		Achievement.tracked:GetRegions():SetTextColor(1, 1, 1)
-		S:HandleCheckBox(Achievement.tracked, true)
-		Achievement.tracked:Size(14, 14)
+		S:HandleCheckBox(Achievement.tracked)
+		Achievement.tracked:Size(18)
 		Achievement.tracked:ClearAllPoints()
 		Achievement.tracked:Point('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
 	end
@@ -103,13 +105,13 @@ local function playerSaturate(self) -- self is Achievement.player
 	local Achievement = self:GetParent()
 
 	local r, g, b = unpack(E.media.bordercolor)
-	Achievement.player.backdrop.ignoreBackdropColor = nil
-	Achievement.friend.backdrop.ignoreBackdropColor = nil
+	Achievement.player.backdrop.callbackBackdropColor = nil
+	Achievement.friend.backdrop.callbackBackdropColor = nil
 
 	if Achievement.player.accountWide then
-		r, g, b = unpack(BlueAchievement)
-		Achievement.player.backdrop.ignoreBackdropColor = true
-		Achievement.friend.backdrop.ignoreBackdropColor = true
+		r, g, b = blueAchievement.r, blueAchievement.g, blueAchievement.b
+		Achievement.player.backdrop.callbackBackdropColor = blueBackdrop
+		Achievement.friend.backdrop.callbackBackdropColor = blueBackdrop
 	end
 
 	Achievement.player.backdrop:SetBackdropColor(r, g, b)
@@ -119,10 +121,10 @@ end
 local function setAchievementColor(frame)
 	if frame and frame.backdrop then
 		if frame.accountWide then
-			frame.backdrop.ignoreBackdropColor = true
-			frame.backdrop:SetBackdropColor(unpack(BlueAchievement))
+			frame.backdrop.callbackBackdropColor = blueBackdrop
+			frame.backdrop:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
 		else
-			frame.backdrop.ignoreBackdropColor = nil
+			frame.backdrop.callbackBackdropColor = nil
 			frame.backdrop:SetBackdropColor(unpack(E.media.backdropcolor))
 		end
 	end
@@ -243,7 +245,6 @@ function S:Blizzard_AchievementUI(event)
 	_G.AchievementFrameCategoriesContainer.backdrop:Point('BOTTOMRIGHT', -2, -3)
 	_G.AchievementFrameCategoriesBG:SetAlpha(0)
 	_G.AchievementFrameWaterMark:SetAlpha(0)
-	--_G.AchievementFrameCategoriesBG:SetInside(_G.AchievementFrameCategoriesContainer.backdrop)
 
 	_G.AchievementFrameAchievementsContainer:CreateBackdrop('Transparent')
 	_G.AchievementFrameAchievementsContainer.backdrop:Point('TOPLEFT', -2, 2)
@@ -432,37 +433,27 @@ function S:Blizzard_AchievementUI(event)
 
 	hooksecurefunc('AchievementObjectives_DisplayCriteria', function(objectivesFrame, id)
 		local numCriteria = GetAchievementNumCriteria(id)
-		local textStrings, metas = 0, 0
+		local textStrings, metas, criteria, object = 0, 0
 		for i = 1, numCriteria do
 			local _, criteriaType, completed, _, _, _, _, assetID = GetAchievementCriteriaInfo(id, i)
 
-			if criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT and assetID then
-				metas = metas + 1;
-				local metaCriteria = _G.AchievementButton_GetMeta(metas);
-				if objectivesFrame.completed and completed then
-					metaCriteria.label:SetShadowOffset(0, 0)
-					metaCriteria.label:SetTextColor(1, 1, 1, 1);
-				elseif completed then
-					metaCriteria.label:SetShadowOffset(1, -1)
-					metaCriteria.label:SetTextColor(0, 1, 0, 1);
-				else
-					metaCriteria.label:SetShadowOffset(1, -1)
-					metaCriteria.label:SetTextColor(.6, .6, .6, 1);
-				end
+			if ( criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT and assetID ) then
+				metas = metas + 1
+				criteria, object = _G.AchievementButton_GetMeta(metas), 'label'
 			elseif criteriaType ~= 1 then
-				textStrings = textStrings + 1;
-				local criteria = _G.AchievementButton_GetCriteria(textStrings);
-				if objectivesFrame.completed and completed then
-					criteria.name:SetTextColor(1, 1, 1, 1);
-					criteria.name:SetShadowOffset(0, 0);
-				elseif completed then
-					criteria.name:SetTextColor(0, 1, 0, 1);
-					criteria.name:SetShadowOffset(1, -1);
-				else
-					criteria.name:SetTextColor(.6, .6, .6, 1);
-					criteria.name:SetShadowOffset(1, -1);
-				end
+				textStrings = textStrings + 1
+				criteria, object = _G.AchievementButton_GetCriteria(textStrings), 'name'
 			end
+
+			local r, g, b, x, y = .6, .6, .6, 1, -1
+			if ( objectivesFrame.completed and completed ) then
+				r, g, b, x, y = 1, 1, 1, 0, 0
+			elseif ( completed ) then
+				r, g, b, x, y = 0, 1, 0, 1, -1
+			end
+
+			criteria[object]:SetTextColor(r, g, b)
+			criteria[object]:SetShadowOffset(x, y)
 		end
 	end)
 

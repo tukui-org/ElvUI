@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local next, wipe, ipairs = next, wipe, ipairs
-local format, sort, select = format, sort, select
+local format, sort, pairs, select = format, sort, pairs, select
 local GetMouseFocus = GetMouseFocus
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
@@ -14,6 +14,7 @@ local C_Garrison_HasGarrison = C_Garrison.HasGarrison
 local C_Garrison_GetBuildings = C_Garrison.GetBuildings
 local C_Garrison_GetInProgressMissions = C_Garrison.GetInProgressMissions
 local C_Garrison_GetLandingPageShipmentInfo = C_Garrison.GetLandingPageShipmentInfo
+local C_Garrison_GetLandingPageGarrisonType = C_Garrison.GetLandingPageGarrisonType
 local C_Garrison_GetCompleteTalent = C_Garrison.GetCompleteTalent
 local C_Garrison_GetFollowerShipments = C_Garrison.GetFollowerShipments
 local C_Garrison_GetLandingPageShipmentInfoByContainerID = C_Garrison.GetLandingPageShipmentInfoByContainerID
@@ -80,7 +81,16 @@ local function LandingPage(_, ...)
 		return
 	end
 
-	HideUIPanel(_G.GarrisonLandingPage)
+	if _G.GarrisonLandingPage then
+		HideUIPanel(_G.GarrisonLandingPage)
+
+		for _, frame in pairs({ 'SoulbindPanel', 'CovenantCallings', 'ArdenwealdGardeningPanel' }) do
+			if _G.GarrisonLandingPage[frame] then
+				_G.GarrisonLandingPage[frame]:Hide()
+			end
+		end
+	end
+
 	ShowGarrisonLandingPage(...)
 end
 
@@ -302,17 +312,25 @@ local function OnEnter()
 		end
 	else
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddLine('Hold Shift - Show Previous Expansion', .66, .66, .66)
+		DT.tooltip:AddLine('Hold Shift - Show Previous Expansions', .66, .66, .66)
 	end
 
 	DT.tooltip:Show()
 end
 
-local function OnClick(self)
+local function OnClick(self, btn)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
 
-	DT:SetEasyMenuAnchor(DT.EasyMenu, self)
-	_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
+	if btn == 'RightButton' then
+		DT:SetEasyMenuAnchor(DT.EasyMenu, self)
+		_G.EasyMenu(menuList, DT.EasyMenu, nil, nil, nil, 'MENU')
+	else
+		if _G.GarrisonLandingPage and _G.GarrisonLandingPage:IsShown() then
+			HideUIPanel(_G.GarrisonLandingPage)
+		else
+			LandingPage(nil, C_Garrison_GetLandingPageGarrisonType())
+		end
+	end
 end
 
 local function OnEvent(self, event, ...)

@@ -31,6 +31,8 @@ local Update = function(self, event, unit)
 		end
 	end
 
+	specIcon:Show()
+
 	if(specIcon.PostUpdate) then specIcon:PostUpdate(event) end
 end
 
@@ -45,7 +47,7 @@ local Enable = function(self)
 			specIcon.Icon:SetAllPoints(specIcon)
 			specIcon.Icon:SetTexCoord(0.07, 0.93, 0.07, 0.93)
 		end
-		specIcon:Show()
+
 		return true
 	end
 end
@@ -56,6 +58,7 @@ local Disable = function(self)
 		self:UnregisterEvent("ARENA_PREP_OPPONENT_SPECIALIZATIONS", Update)
 		self:UnregisterEvent("ARENA_OPPONENT_UPDATE", Update)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Update)
+
 		specIcon:Hide()
 	end
 end

@@ -2,17 +2,17 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local next, unpack = next, unpack
+local gsub, next, pairs, unpack = gsub, next, pairs, unpack
 local format, strjoin = format, strjoin
 local sort, tinsert = sort, tinsert
 local date, utf8sub = date, string.utf8sub
 
+local ToggleFrame = ToggleFrame
 local EJ_GetCurrentTier = EJ_GetCurrentTier
 local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_GetNumTiers = EJ_GetNumTiers
 local EJ_SelectTier = EJ_SelectTier
 local GetDifficultyInfo = GetDifficultyInfo
-local GetGameTime = GetGameTime
 local GetLocale = GetLocale
 local GetNumSavedInstances = GetNumSavedInstances
 local GetNumSavedWorldBosses = GetNumSavedWorldBosses
@@ -30,6 +30,12 @@ local TIMEMANAGER_TOOLTIP_REALMTIME = TIMEMANAGER_TOOLTIP_REALMTIME
 local VOICE_CHAT_BATTLEGROUND = VOICE_CHAT_BATTLEGROUND
 local WINTERGRASP_IN_PROGRESS = WINTERGRASP_IN_PROGRESS
 local WORLD_BOSSES_TEXT = RAID_INFO_WORLD_BOSS
+local C_AreaPoiInfo_GetAreaPOIInfo = C_AreaPoiInfo.GetAreaPOIInfo
+local C_QuestLog_IsQuestFlaggedCompleted = C_QuestLog.IsQuestFlaggedCompleted
+local C_UIWidgetManager_GetTextWithStateWidgetVisualizationInfo = C_UIWidgetManager.GetTextWithStateWidgetVisualizationInfo
+local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
+local C_DateAndTime_GetSecondsUntilDailyReset = C_DateAndTime.GetSecondsUntilDailyReset
+local AVAILABLE = AVAILABLE
 
 local APM = { _G.TIMEMANAGER_PM, _G.TIMEMANAGER_AM }
 local ukDisplayFormat, europeDisplayFormat = '', ''
@@ -39,16 +45,30 @@ local lockoutInfoFormat = '%s%s %s |cffaaaaaa(%s, %s/%s)'
 local lockoutInfoFormatNoEnc = '%s%s %s |cffaaaaaa(%s)'
 local formatBattleGroundInfo = '%s: '
 local lockoutColorExtended, lockoutColorNormal = { r=0.3,g=1,b=0.3 }, { r=.8,g=.8,b=.8 }
-local enteredFrame, curHr, curMin, curAmPm = false
+local enteredFrame = false
 
-local Update, lastPanel
+local OnUpdate, lastPanel
+
+-- Torghast
+local TorghastWidgets, TorghastInfo = {
+	{nameID = 2925, levelID = 2930}, -- Fracture Chambers
+	{nameID = 2926, levelID = 2932}, -- Skoldus Hall
+	{nameID = 2924, levelID = 2934}, -- Soulforges
+	{nameID = 2927, levelID = 2936}, -- Coldheart Interstitia
+	{nameID = 2928, levelID = 2938}, -- Mort'regar
+	{nameID = 2929, levelID = 2940}, -- The Upper Reaches
+}
+
+local function CleanupLevelName(text)
+	return gsub(text, "|n", "")
+end
 
 local function ValueColorUpdate(hex)
 	europeDisplayFormat = strjoin('', '%02d', hex, ':|r%02d')
 	ukDisplayFormat = strjoin('', '', '%d', hex, ':|r%02d', hex, ' %s|r')
 
 	if lastPanel ~= nil then
-		Update(lastPanel, 20000)
+		OnUpdate(lastPanel, 20000)
 	end
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
@@ -71,16 +91,22 @@ end
 
 local function CalculateTimeValues(tooltip)
 	if (tooltip and E.global.datatexts.settings.Time.localTime) or (not tooltip and not E.global.datatexts.settings.Time.localTime) then
-		return ConvertTime(GetGameTime())
+		local dateTable = C_DateAndTime_GetCurrentCalendarTime()
+		return ConvertTime(dateTable.hour, dateTable.minute)
 	else
 		local dateTable = date('*t')
 		return ConvertTime(dateTable.hour, dateTable.min)
 	end
 end
 
-local function Click()
+local function OnClick(_, btn)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-	_G.GameTimeFrame:Click()
+
+	if btn == 'RightButton' then
+		ToggleFrame(_G.TimeManagerFrame)
+	else
+		_G.GameTimeFrame:Click()
+	end
 end
 
 local function OnLeave()
@@ -98,10 +124,11 @@ if locale == 'deDE' then -- O.O
 	InstanceNameByID[1023] = 'Belagerung von Boralus'	-- 'Die Belagerung von Boralus'
 	InstanceNameByID[1041] = 'Königsruh'				-- 'Die Königsruh'
 	InstanceNameByID[1021] = 'Kronsteiganwesen'			-- 'Das Kronsteiganwesen'
+	InstanceNameByID[1186] = 'Spitzen des Aufstiegs'	-- 'Die Spitzen des Aufstiegs'
 end
 
 local instanceIconByName = {}
-local collectIDs, collectedIDs = false -- for testing; mouse over the dt to show the tinspect table
+local collectIDs, collectedIDs = false -- for testing; mouse over the dt to show the tinspect table (@Merathilis :x)
 local function GetInstanceImages(index, raid)
 	local instanceID, name, _, _, buttonImage = EJ_GetInstanceByIndex(index, raid)
 	while instanceID do
@@ -270,10 +297,39 @@ local function OnEnter()
 		end
 	end
 
+	-- Torghast
+	if not TorghastInfo then
+		TorghastInfo = C_AreaPoiInfo_GetAreaPOIInfo(1543, 6640)
+	end
+
+	if TorghastInfo and C_QuestLog_IsQuestFlaggedCompleted(60136) then
+		local torghastHeader
+		for _, value in pairs(TorghastWidgets) do
+			local nameInfo = C_UIWidgetManager_GetTextWithStateWidgetVisualizationInfo(value.nameID)
+			if nameInfo and nameInfo.shownState == 1 then
+				if not torghastHeader then
+					if DT.tooltip:NumLines() > 0 then
+						DT.tooltip:AddLine(' ')
+					end
+					DT.tooltip:AddLine(TorghastInfo.name)
+					torghastHeader = true
+				end
+				local nameText = CleanupLevelName(nameInfo.text)
+				local levelInfo = C_UIWidgetManager_GetTextWithStateWidgetVisualizationInfo(value.levelID)
+				local levelText = AVAILABLE
+				if levelInfo and levelInfo.shownState == 1 then levelText = CleanupLevelName(levelInfo.text) end
+				DT.tooltip:AddDoubleLine(nameText, levelText)
+			end
+		end
+	end
+
 	local Hr, Min, AmPm = CalculateTimeValues(true)
 	if DT.tooltip:NumLines() > 0 then
 		DT.tooltip:AddLine(' ')
 	end
+
+	DT.tooltip:AddDoubleLine(L["Daily Reset"], SecondsToTime(C_DateAndTime_GetSecondsUntilDailyReset()), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
+
 	if AmPm == -1 then
 		DT.tooltip:AddDoubleLine(E.global.datatexts.settings.Time.localTime and TIMEMANAGER_TOOLTIP_REALMTIME or TIMEMANAGER_TOOLTIP_LOCALTIME, format(europeDisplayFormat_nocolor, Hr, Min), 1, 1, 1, lockoutColorNormal.r, lockoutColorNormal.g, lockoutColorNormal.b)
 	else
@@ -289,11 +345,10 @@ local function OnEvent(self, event)
 	end
 end
 
-local int = 3
-function Update(self, t)
-	int = int - t
-
-	if int > 0 then return end
+function OnUpdate(self, t)
+	self.timeElapsed = (self.timeElapsed or 5) - t
+	if self.timeElapsed > 0 then return end
+	self.timeElapsed = 5
 
 	if _G.GameTimeFrame.flashInvite then
 		E:Flash(self, 0.53, true)
@@ -305,25 +360,15 @@ function Update(self, t)
 		OnEnter(self)
 	end
 
-	local Hr, Min, AmPm = CalculateTimeValues(false)
-
-	-- no update quick exit
-	if Hr == curHr and Min == curMin and AmPm == curAmPm and not (int < -15000) then
-		int = 5
-		return
-	end
-
-	curHr = Hr
-	curMin = Min
-	curAmPm = AmPm
+	local Hr, Min, AmPm = CalculateTimeValues()
 
 	if AmPm == -1 then
 		self.text:SetFormattedText(europeDisplayFormat, Hr, Min)
 	else
 		self.text:SetFormattedText(ukDisplayFormat, Hr, Min, APM[AmPm])
 	end
+
 	lastPanel = self
-	int = 5
 end
 
-DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, Update, Click, OnEnter, OnLeave, nil, nil, ValueColorUpdate)
+DT:RegisterDatatext('Time', nil, {'UPDATE_INSTANCE_INFO'}, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, nil, nil, ValueColorUpdate)

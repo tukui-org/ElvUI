@@ -185,6 +185,8 @@ E.Options.args.chat = {
 					values = {
 						BELOW_CHAT = L["Below Chat"],
 						ABOVE_CHAT = L["Above Chat"],
+						BELOW_CHAT_INSIDE = L["Below Chat (Inside)"],
+						ABOVE_CHAT_INSIDE = L["Above Chat (Inside)"],
 					},
 					set = function(info, value)
 						E.db.chat[info[#info]] = value;
@@ -501,6 +503,22 @@ E.Options.args.chat = {
 								CH:UpdateVoiceChatIcons()
 							end,
 						},
+						mouseoverVoicePanel = {
+							order = 4,
+							type = 'toggle',
+							name = L["Mouse Over"],
+							disabled = function() return E.db.chat.hideVoiceButtons or E.db.chat.pinVoiceButtons end,
+							set = function(info, value) E.db.chat[info[#info]] = value CH:ResetVoicePanelAlpha() end,
+						},
+						voicePanelAlpha = {
+							order = 5,
+							type = 'range',
+							name = L["Alpha"],
+							desc = L["Change the alpha level of the frame."],
+							disabled = function() return E.db.chat.hideVoiceButtons or E.db.chat.pinVoiceButtons or not E.db.chat.mouseoverVoicePanel end,
+							set = function(info, value) E.db.chat[info[#info]] = value CH:ResetVoicePanelAlpha() end,
+							min = 0, max = 1, step = 0.01,
+						},
 					},
 				},
 				timestampGroup = {
@@ -530,8 +548,14 @@ E.Options.args.chat = {
 								t.r, t.g, t.b = r, g, b
 							end,
 						},
-						timeStampFormat = {
+						timeStampLocalTime = {
 							order = 3,
+							type = 'toggle',
+							name = L["Local Time"],
+							desc = L["If not set to true then the server time will be displayed instead."],
+						},
+						timeStampFormat = {
+							order = 4,
 							type = 'select',
 							name = L["TIMESTAMPS_LABEL"],
 							desc = L["OPTION_TOOLTIP_TIMESTAMPS"],

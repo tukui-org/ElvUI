@@ -124,13 +124,13 @@ local function resetAttributes(self)
 	self.spellName = nil -- ElvUI
 end
 
-local function CastStart(self, event, unit)
-	if(self.unit ~= unit) then return end
+local function CastStart(self, real, unit, castGUID)
+	if self.unit ~= unit then return end
+	if real == 'UNIT_SPELLCAST_START' and not castGUID then return end
 
 	local element = self.Castbar
-
 	local name, _, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
-	event = 'UNIT_SPELLCAST_START'
+	local event = 'UNIT_SPELLCAST_START'
 	if(not name) then
 		name, _, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit)
 		event = 'UNIT_SPELLCAST_CHANNEL_START'

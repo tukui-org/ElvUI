@@ -6,7 +6,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local gsub, strfind, gmatch, format, max = gsub, strfind, gmatch, format, max
-local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
+local ipairs, sort, wipe, date, time, difftime = ipairs, sort, wipe, date, time, difftime
 local pairs, unpack, select, tostring, pcall, next, tonumber, type = pairs, unpack, select, tostring, pcall, next, tonumber, type
 local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, strlen, strupper, strtrim, strmatch
 local tinsert, tremove, tconcat = tinsert, tremove, table.concat
@@ -52,6 +52,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local IsActivePlayerMentor = IsActivePlayerMentor
 local UnitName = UnitName
 
+local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
 local C_PlayerMentorship_IsActivePlayerConsideredNewcomer = C_PlayerMentorship.IsActivePlayerConsideredNewcomer
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
@@ -175,19 +176,20 @@ do --this can save some main file locals
 	local ElvBlue		= E:TextureString(E.Media.ChatLogos.ElvBlue,y)
 	local ElvGreen		= E:TextureString(E.Media.ChatLogos.ElvGreen,y)
 	local ElvOrange		= E:TextureString(E.Media.ChatLogos.ElvOrange,y)
-	--local ElvPink		= E:TextureString(E.Media.ChatLogos.ElvPink,y)
 	local ElvPurple		= E:TextureString(E.Media.ChatLogos.ElvPurple,y)
 	local ElvRed		= E:TextureString(E.Media.ChatLogos.ElvRed,y)
 	local ElvYellow		= E:TextureString(E.Media.ChatLogos.ElvYellow,y)
 	local ElvSimpy		= E:TextureString(E.Media.ChatLogos.ElvSimpy,y)
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
-	local MrHankey		= E:TextureString(E.Media.ChatLogos.MrHankey,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
 	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
-	local DeathlyH		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
+	local Deathly		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
 	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
+	local Beer			= E:TextureString(E.Media.ChatLogos.Beer,x)
+	local TyroneBiggums = E:TextureString(E.Media.ChatLogos.TyroneBiggums,x)
+	local SuperBear		= E:TextureString(E.Media.ChatLogos.SuperBear,x)
 
 	--[[ Simpys Thing: new icon color every message, in order then reversed back, repeating of course
 		local a, b, c = 0, false, {ElvRed, ElvOrange, ElvYellow, ElvGreen, ElvBlue, ElvPurple, ElvPink}
@@ -196,15 +198,15 @@ do --this can save some main file locals
 
 	local itsElv, itsMis, itsMel, itsSimpy, itsTheFlyestNihilist
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
-		local e, f, g = {'|[TA].-|[ta]', '|?c?%x-%[?|H.-|h.-|h]?|?r?', '|c.-|r'}, {}, {}
+		local e, f, g = {'||','|Helvmoji:.-|h.-|h','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
-		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end tinsert(g, r) f[r] = w return gsub(t, w, '\24') end
+		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end if r then tinsert(g, r) f[r] = w end return gsub(t, w, '\24') end
 		local specialText = function(t,...) local u = t for _, w in ipairs(e) do for k in gmatch(t, w) do t = protectText(t, u, k) end end t = prettify(t,...)
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Simpys Ghoulish: A366CC, 88E032, 33BDBE, 88E032, A366CC
-		local SimpyColors = function(t) return specialText(t, 0.63,0.40,0.80, 0.63,0.40,0.80, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.20,0.74,0.74, 0.20,0.74,0.74, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.63,0.40,0.80, 0.63,0.40,0.80) end
+		--Simpys Valentine Vibes: Rose Pink, Soft Pink, Soft Cyan, Soft Violet, Soft Rose, Soft Yellow
+		local SimpyColors = function(t) return specialText(t, 1,.42,.78, 1,.56,.68, .66,.99,.98, .77,.52,1, 1,.48,.81, .98,.95,.68) end
 		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
@@ -237,42 +239,6 @@ do --this can save some main file locals
 		-- Blazeflack
 		['Blazii-Silvermoon']	= ElvBlue, -- Priest
 		['Chazii-Silvermoon']	= ElvBlue, -- Shaman
-		-- Affinity
-		['Affinichi-Illidan']	= Bathrobe,
-		['Affinitii-Illidan']	= Bathrobe,
-		['Affinity-Illidan']	= Bathrobe,
-		['Uplift-Illidan']		= Bathrobe,
-		-- Tirain (NOTE: lol)
-		['Tierone-Spirestone']	= 'Dr. ',
-		['Tirain-Spirestone']	= MrHankey,
-		['Sinth-Spirestone']	= MrHankey,
-		['Tee-Spirestone']		= MrHankey,
-		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
-		['Misdîrect-Spirestone']	= itsMis,
-		['Misoracle-Spirestone']	= itsMis,
-		['MisLight-Spirestone']		= itsMis,
-		['MisDivine-Spirestone']	= itsMis,
-		['MisMayhem-Spirestone']	= itsMis,
-		['Mismonk-Spirestone']		= itsMis,
-		['Misillidan-Spirestone']	= itsMis,
-		['Mispel-Spirestone']		= itsMis,
-		['Misdecay-Spirestone']		= itsMis,
-		['Mislust-Spirestone'] 		= itsMis,
-		['Misdivine-Spirestone']	= itsMis,
-		['Mislight-Spirestone']		= itsMis,
-		-- Luckyone
-		['Luckyone-LaughingSkull']		= Clover,
-		['Luckypriest-LaughingSkull']	= Clover,
-		['Luckymonkas-LaughingSkull']	= Clover,
-		['Luckydk-LaughingSkull']		= Clover,
-		['Luckyhunter-LaughingSkull']	= Clover,
-		['Unluckyone-LaughingSkull']	= Clover,
-		['Notlucky-LaughingSkull']		= Clover,
-		['Luckymage-LaughingSkull']		= Clover,
-		['Luckydh-LaughingSkull']		= Clover,
-		['Luckywl-LaughingSkull']		= Clover,
-		['Luckyrogue-LaughingSkull']	= Clover,
-		['Luckypala-LaughingSkull']		= Clover,
 		-- NihilisticPandemonium
 		['Dirishia-WyrmrestAccord']		= itsTheFlyestNihilist('Warlock'),
 		['Xanikani-WyrmrestAccord']		= itsTheFlyestNihilist('Mage'),
@@ -298,17 +264,30 @@ do --this can save some main file locals
 		['Millop-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
 		['Aeondalew-WyrmrestAccord']	= itsTheFlyestNihilist('DeathKnight'),
 		-- Merathilis
-		['Asragoth-Shattrath']			= ElvPurple,	-- [Alliance] Warlock
-		['Brítt-Shattrath'] 			= ElvBlue,		-- [Alliance] Warrior
-		['Damará-Shattrath']			= ElvRed,		-- [Alliance] Paladin
-		['Jazira-Shattrath']			= ElvBlue,		-- [Alliance] Priest
-		['Jústice-Shattrath']			= ElvYellow,	-- [Alliance] Rogue
-		['Maithilis-Shattrath']			= ElvGreen,		-- [Alliance] Monk
-		['Mattdemôn-Shattrath']			= ElvPurple,	-- [Alliance] DH
-		['Melisendra-Shattrath']		= ElvBlue,		-- [Alliance] Mage
-		['Merathilis-Shattrath']		= ElvOrange,	-- [Alliance] Druid
-		['Merathilîs-Shattrath']		= ElvBlue,		-- [Alliance] Shaman
-		['Róhal-Shattrath']				= ElvGreen,		-- [Alliance] Hunter
+		['Asragoth-Shattrath']		= ElvPurple,	-- [Alliance] Warlock
+		['Brítt-Shattrath'] 		= ElvBlue,		-- [Alliance] Warrior
+		['Damará-Shattrath']		= ElvRed,		-- [Alliance] Paladin
+		['Jazira-Shattrath']		= ElvBlue,		-- [Alliance] Priest
+		['Jústice-Shattrath']		= ElvYellow,	-- [Alliance] Rogue
+		['Maithilis-Shattrath']		= ElvGreen,		-- [Alliance] Monk
+		['Mattdemôn-Shattrath']		= ElvPurple,	-- [Alliance] DH
+		['Melisendra-Shattrath']	= ElvBlue,		-- [Alliance] Mage
+		['Merathilis-Shattrath']	= ElvOrange,	-- [Alliance] Druid
+		['Merathilîs-Shattrath']	= ElvBlue,		-- [Alliance] Shaman
+		['Róhal-Shattrath']			= ElvGreen,		-- [Alliance] Hunter
+		-- Luckyone
+		['Luckyone-LaughingSkull']		= Clover,
+		['Luckypriest-LaughingSkull']	= Clover,
+		['Luckymonkas-LaughingSkull']	= Clover,
+		['Luckydk-LaughingSkull']		= Clover,
+		['Luckyhunter-LaughingSkull']	= Clover,
+		['Unluckyone-LaughingSkull']	= Clover,
+		['Notlucky-LaughingSkull']		= Clover,
+		['Luckymage-LaughingSkull']		= Clover,
+		['Luckydh-LaughingSkull']		= Clover,
+		['Luckywl-LaughingSkull']		= Clover,
+		['Luckyrogue-LaughingSkull']	= Clover,
+		['Luckypala-LaughingSkull']		= Clover,
 		-- Simpy
 		['Arieva-Cenarius']				= itsSimpy, -- Hunter
 		['Buddercup-Cenarius']			= itsSimpy, -- Rogue
@@ -326,47 +305,85 @@ do --this can save some main file locals
 		['Imsopeachy-Cenarius']			= itsSimpy, -- [Horde] DH
 		['Imsosalty-Cenarius']			= itsSimpy, -- [Horde] Paladin
 		['Imsospicy-Cenarius']			= itsSimpy, -- [Horde] Mage
+		['Imsonutty-Cenarius']			= itsSimpy, -- [Horde] Hunter
+		['Imsotasty-Cenarius']			= itsSimpy, -- [Horde] Monk
+		['Imsosaucy-Cenarius']			= itsSimpy, -- [Horde] Warlock
+		['Imsodrippy-Cenarius']			= itsSimpy, -- [Horde] Rogue
 		['Bunne-CenarionCircle']		= itsSimpy, -- [RP] Warrior
 		['Loppie-CenarionCircle']		= itsSimpy, -- [RP] Monk
 		['Loppybunny-CenarionCircle']	= itsSimpy, -- [RP] Mage
 		['Rubee-CenarionCircle']		= itsSimpy, -- [RP] DH
 		['Wennie-CenarionCircle']		= itsSimpy, -- [RP] Priest
 		-- Melbelle (Simpys Bestie)
-		['Deathchaser-Bladefist']		= itsMel, -- DH
-		['Melbelle-Bladefist']			= itsMel, -- Hunter
-		['Alykins-Cenarius']			= itsMel, -- DH
-		['Alyosha-Cenarius']			= itsMel, -- Warrior
-		['Alytotes-Cenarius']			= itsMel, -- Shaman
-		['Dãwn-Cenarius']				= itsMel, -- Paladin
-		['Freckles-Cenarius']			= itsMel, -- DK
-		['Lõvi-Cenarius']				= itsMel, -- Priest
-		['Melbelle-Cenarius']			= itsMel, -- Druid
-		['Perìwìnkle-Cenarius']			= itsMel, -- Shaman
-		['Pìper-Cenarius']				= itsMel, -- Warlock
-		['Spãrkles-Cenarius']			= itsMel, -- Mage
+		['Melbelle-Bladefist']		= itsMel, -- Hunter
+		['Deathchaser-Bladefist']	= itsMel, -- DH
+		['Alyosha-Cenarius']		= itsMel, -- Warrior
+		['Dãwn-Cenarius']			= itsMel, -- Paladin
+		['Faelen-Cenarius']			= itsMel, -- Rogue
+		['Freckles-Cenarius']		= itsMel, -- DK
+		['Lõvi-Cenarius']			= itsMel, -- Priest
+		['Melbelle-Cenarius']		= itsMel, -- Druid
+		['Perìwìnkle-Cenarius']		= itsMel, -- Shaman
+		['Pìper-Cenarius']			= itsMel, -- Warlock
+		['Spãrkles-Cenarius']		= itsMel, -- Mage
+		['Alybones-Cenarius']		= itsMel, -- [Horde] DK
+		['Alyfreeze-Cenarius']		= itsMel, -- [Horde] Mage
+		['Alykins-Cenarius']		= itsMel, -- [Horde] DH
+		['Alyrage-Cenarius']		= itsMel, -- [Horde] Warrior
+		['Alysneaks-Cenarius']		= itsMel, -- [Horde] Rogue
+		['Alytotes-Cenarius']		= itsMel, -- [Horde] Shaman
 		-- Lulupeep (Nihilist's wife)
-		['Arïä-WyrmrestAccord'] 		= DeathlyH,
-		['Belladonnä-WyrmrestAccord'] 	= DeathlyH,
-		['Cadense-WyrmrestAccord']		= DeathlyH,
-		['Cäydence-WyrmrestAccord'] 	= DeathlyH,
-		['Esmæ-WyrmrestAccord']			= DeathlyH,
-		['Falorya-WyrmrestAccord']		= DeathlyH,
-		['Fufus-WyrmrestAccord']		= DeathlyH,
-		['Gemmä-WyrmrestAccord']		= DeathlyH,
-		['Lilliës-WyrmrestAccord']		= DeathlyH,
-		['Louisianagrl-WyrmrestAccord']	= DeathlyH,
-		['Lulupeep-WyrmrestAccord']		= DeathlyH,
-		['Nolalove-WyrmrestAccord']		= DeathlyH,
-		['Onyxnovä-WyrmrestAccord']		= DeathlyH,
-		['Rukíá-WyrmrestAccord']		= DeathlyH,
-		['Songbïrd-WyrmrestAccord']		= DeathlyH,
-		['Vidiä-WyrmrestAccord']		= DeathlyH,
+		['Arïä-WyrmrestAccord'] 		= Deathly,
+		['Belladonnä-WyrmrestAccord'] 	= Deathly,
+		['Cadense-WyrmrestAccord']		= Deathly,
+		['Cäydence-WyrmrestAccord'] 	= Deathly,
+		['Esmæ-WyrmrestAccord']			= Deathly,
+		['Falorya-WyrmrestAccord']		= Deathly,
+		['Fufus-WyrmrestAccord']		= Deathly,
+		['Gemmä-WyrmrestAccord']		= Deathly,
+		['Lilliës-WyrmrestAccord']		= Deathly,
+		['Louisianagrl-WyrmrestAccord']	= Deathly,
+		['Lulupeep-WyrmrestAccord']		= Deathly,
+		['Nolalove-WyrmrestAccord']		= Deathly,
+		['Onyxnovä-WyrmrestAccord']		= Deathly,
+		['Rukíá-WyrmrestAccord']		= Deathly,
+		['Songbïrd-WyrmrestAccord']		= Deathly,
+		['Vidiä-WyrmrestAccord']		= Deathly,
 		-- Quickhanz (Nihilist's absolute bestie)
-		['Zandahanz-Area52']			= GoldShield,
+		['Zandahanz-Area52']	= GoldShield,
 		-- AcidWeb
 		['Livarax-BurningLegion']		= Gem,
 		['Filevandrel-BurningLegion']	= Gem,
 		['Akavaya-BurningLegion']		= Gem,
+		-- Affinity
+		['Affinichi-Illidan']	= Bathrobe,
+		['Affinitii-Illidan']	= Bathrobe,
+		['Affinity-Illidan']	= Bathrobe,
+		['Uplift-Illidan']		= Bathrobe,
+		-- Tirain (NOTE: lol)
+		['Tierone-Spirestone']	= TyroneBiggums,
+		['Tirain-Spirestone']	= TyroneBiggums,
+		['Sinth-Spirestone']	= TyroneBiggums,
+		['Tee-Spirestone']		= TyroneBiggums,
+		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
+		['Misdîrect-Spirestone']	= itsMis,
+		['Misoracle-Spirestone']	= itsMis,
+		['MisLight-Spirestone']		= itsMis,
+		['MisDivine-Spirestone']	= itsMis,
+		['MisMayhem-Spirestone']	= itsMis,
+		['Mismonk-Spirestone']		= itsMis,
+		['Misillidan-Spirestone']	= itsMis,
+		['Mispel-Spirestone']		= itsMis,
+		['Misdecay-Spirestone']		= itsMis,
+		['Mislust-Spirestone'] 		= itsMis,
+		['Misdivine-Spirestone']	= itsMis,
+		['Mislight-Spirestone']		= itsMis,
+		--Bladesdruid
+		['Bladedemonz-Spirestone']	= SuperBear,
+		['Bladesdruid-Spirestone']	= SuperBear,
+		['Rollerblade-Spirestone']	= SuperBear,
+		--Bozaum
+		['Bozaum-Spirestone']	= Beer,
 	}
 end
 
@@ -532,7 +549,7 @@ do
 
 		-- recalculate the character count correctly with hyperlinks in it, using gsub so it matches multiple without gmatch
 		charCount = 0
-		gsub(text, '(|cff%x%x%x%x%x%x|H.-|h).-|h|r', CH.CountLinkCharacters)
+		gsub(text, '(|c%x-|H.-|h).-|h|r', CH.CountLinkCharacters)
 		if charCount ~= 0 then len = len - charCount end
 
 		self.characterCount:SetText(len > 0 and (255 - len) or '')
@@ -591,9 +608,46 @@ function CH:EditBoxFocusLost()
 	self.historyIndex = 0
 end
 
+function CH:UpdateEditboxFont(chatFrame)
+	local style = GetCVar('chatStyle')
+	if style == 'classic' and CH.LeftChatWindow then
+		chatFrame = CH.LeftChatWindow
+	end
+
+	if chatFrame == _G.GeneralDockManager.primary then
+		chatFrame = _G.GeneralDockManager.selected
+	end
+
+	local id = chatFrame:GetID()
+	local font = LSM:Fetch('font', CH.db.font)
+	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
+
+	local editbox = _G.ChatEdit_ChooseBoxForSend(chatFrame)
+	editbox:FontTemplate(font, fontSize, 'NONE')
+	editbox.header:FontTemplate(font, fontSize, 'NONE')
+
+	if editbox.characterCount then
+		editbox.characterCount:FontTemplate(font, fontSize, 'NONE')
+	end
+
+	-- the header and text will not update the placement without focus
+	if editbox and editbox:IsShown() then
+		editbox:SetFocus()
+	end
+end
+
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 	local tab = CH:GetTab(frame)
+
+	local id = frame:GetID()
+	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
+	local font, size, outline = LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline
+	frame:FontTemplate(font, size, outline)
+
+	frame:SetTimeVisible(CH.db.inactivityTimer)
+	frame:SetMaxLines(CH.db.maxLines)
+	frame:SetFading(CH.db.fade)
 
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
@@ -606,7 +660,6 @@ function CH:StyleChat(frame)
 
 	_G[name..'ButtonFrame']:Kill()
 
-	local id = frame:GetID()
 	local scrollTex = _G[name..'ThumbTexture']
 	local scrollToBottom = frame.ScrollToBottomButton
 	local scroll = frame.ScrollBar
@@ -688,11 +741,20 @@ function CH:StyleChat(frame)
 	copyButton:SetScript('OnLeave', CH.CopyButtonOnLeave)
 	CH:ToggleChatButton(copyButton)
 
-	_G.QuickJoinToastButton:Hide()
-	_G.GeneralDockManagerOverflowButtonList:CreateBackdrop('Transparent')
-	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
-
 	frame.styled = true
+end
+
+function CH:GetChatTime()
+	local unix = time()
+	local realm = not CH.db.timeStampLocalTime and C_DateAndTime_GetCurrentCalendarTime()
+	if realm then -- blizzard is weird
+		realm.day = realm.monthDay
+		realm.min = date('%M', unix)
+		realm.sec = date('%S', unix)
+		realm = time(realm)
+	end
+
+	return realm or unix
 end
 
 function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHistory, historyTime)
@@ -700,7 +762,7 @@ function CH:AddMessage(msg, infoR, infoG, infoB, infoID, accessID, typeID, isHis
 	if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
 
 	if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
-		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or time())
+		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or CH:GetChatTime())
 		timeStamp = gsub(timeStamp, ' ', '')
 		timeStamp = gsub(timeStamp, 'AM', ' AM')
 		timeStamp = gsub(timeStamp, 'PM', ' PM')
@@ -881,6 +943,18 @@ function CH:ChatEdit_SetLastActiveWindow(editbox)
 	if style == 'im' then editbox:SetAlpha(0.5) end
 end
 
+function CH:FCFDock_SelectWindow(_, chatFrame)
+	if chatFrame then
+		CH:UpdateEditboxFont(chatFrame)
+	end
+end
+
+function CH:ChatEdit_ActivateChat(editbox)
+	if editbox and editbox.chatFrame then
+		CH:UpdateEditboxFont(editbox.chatFrame)
+	end
+end
+
 function CH:ChatEdit_DeactivateChat(editbox)
 	local style = editbox.chatStyle or GetCVar('chatStyle')
 	if style == 'im' then editbox:Hide() end
@@ -891,26 +965,25 @@ function CH:UpdateEditboxAnchors()
 
 	local classic = cvar == 'classic'
 	local leftChat = classic and _G.LeftChatPanel
-	local width = classic and 0 or 5
-	local bottomheight = classic and 1 or (E.PixelMode and 3 or 5)
-	local topheight = classic and 0 or (E.PixelMode and -1 or -5)
-	local panel_height = 22
+	local panel = 22
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[name]
 		local editbox = frame and frame.editBox
 		if not editbox then return end
 		editbox.chatStyle = cvar
-
-		local anchorTo = leftChat or frame
 		editbox:ClearAllPoints()
 
-		if CH.db.editBoxPosition == 'BELOW_CHAT' then
-			editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', -width, topheight)
-			editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', width, -(panel_height+bottomheight))
+		local anchorTo = leftChat or frame
+		local below, belowInside = CH.db.editBoxPosition == 'BELOW_CHAT', CH.db.editBoxPosition == 'BELOW_CHAT_INSIDE'
+		if below or belowInside then
+			local showLeftPanel = E.db.datatexts.panels.LeftChatDataPanel.enable
+			editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', classic and (showLeftPanel and 1 or 0) or -2, (classic and (belowInside and 1 or 0) or -5))
+			editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', classic and (showLeftPanel and -1 or 0) or -2, (classic and (belowInside and 1 or 0) or -5) + (belowInside and panel or -panel))
 		else
-			editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', -width, topheight)
-			editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', width, panel_height+bottomheight)
+			local aboveInside = CH.db.editBoxPosition == 'ABOVE_CHAT_INSIDE'
+			editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', classic and (aboveInside and 1 or 0) or -2, (classic and (aboveInside and -1 or 0) or 2))
+			editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', classic and (aboveInside and -1 or 0) or 2, (classic and (aboveInside and -1 or 0) or 2) + (aboveInside and -panel or panel))
 		end
 	end
 end
@@ -1079,7 +1152,9 @@ function CH:PositionChat(chat)
 	end
 
 	if chat.FontStringContainer then
-		chat.FontStringContainer:SetOutside(chat, 3, 3)
+		chat.FontStringContainer:ClearAllPoints()
+		chat.FontStringContainer:SetPoint('TOPLEFT', chat, 'TOPLEFT', -1, 1)
+		chat.FontStringContainer:SetPoint('BOTTOMRIGHT', chat, 'BOTTOMRIGHT', 1, -1)
 	end
 
 	if chat:IsShown() then
@@ -1095,16 +1170,16 @@ function CH:PositionChat(chat)
 		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
 
 		chat:ClearAllPoints()
-		chat:Point('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 5)
-		chat:Size(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET - LOG_OFFSET)
+		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 5)
+		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
 		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
 
 		chat:ClearAllPoints()
-		chat:Point('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 5)
-		chat:Size((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET - LOG_OFFSET)
+		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 5)
+		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
@@ -1967,14 +2042,9 @@ function CH:SetupChat()
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[frameName]
 		local id = frame:GetID()
-		local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 		CH:StyleChat(frame)
-		_G.FCFTab_UpdateAlpha(frame)
 
-		frame:FontTemplate(LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline)
-		frame:SetTimeVisible(CH.db.inactivityTimer)
-		frame:SetMaxLines(CH.db.maxLines)
-		frame:SetFading(CH.db.fade)
+		_G.FCFTab_UpdateAlpha(frame)
 
 		if id ~= 2 and not frame.OldAddMessage then
 			--Don't add timestamps to combat log, they don't work.
@@ -2003,6 +2073,10 @@ function CH:SetupChat()
 	_G.GeneralDockManager:Height(22)
 	_G.GeneralDockManagerScrollFrame:Height(22)
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
+
+	_G.QuickJoinToastButton:Hide()
+	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
+	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
 
 	CH:PositionChats()
 
@@ -2074,7 +2148,7 @@ function CH:CheckKeyword(message, author)
 	local letInCombat = not CH.db.noAlertInCombat or not InCombatLockdown()
 	local letSound = not CH.SoundTimer and (CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME) and letInCombat
 
-	for hyperLink in gmatch(message, '|%x+|H.-|h.-|h|r') do
+	for hyperLink in gmatch(message, '|c%x-|H.-|h.-|h|r') do
 		protectLinks[hyperLink] = gsub(hyperLink,'%s','|s')
 
 		if letSound then
@@ -2169,6 +2243,8 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	if not fontSize then fontSize = dropDown.value end
 
 	chatFrame:FontTemplate(LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline)
+
+	CH:UpdateEditboxFont(chatFrame)
 end
 
 CH.SecureSlashCMD = {
@@ -2349,7 +2425,7 @@ function CH:SaveChatHistory(event, ...)
 
 	if #tempHistory > 0 and not CH:MessageIsProtected(tempHistory[1]) then
 		tempHistory[50] = event
-		tempHistory[51] = time()
+		tempHistory[51] = CH:GetChatTime()
 
 		local coloredName, battleTag
 		if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
@@ -2682,8 +2758,15 @@ function CH:ReparentVoiceChatIcon(parent)
 end
 
 function CH:RepositionOverflowButton()
+	_G.GeneralDockManagerOverflowButtonList:SetFrameStrata('LOW')
+	_G.GeneralDockManagerOverflowButtonList:SetFrameLevel(5)
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
+
+	if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
+	else
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
+	end
 end
 
 function CH:UpdateVoiceChatIcons()
@@ -2710,32 +2793,46 @@ function CH:HandleChatVoiceIcons()
 			end
 		end
 
-		CH:RepositionOverflowButton()
 		channelButtons[3]:HookScript('OnShow', CH.RepositionOverflowButton)
 		channelButtons[3]:HookScript('OnHide', CH.RepositionOverflowButton)
 	else
 		CH:CreateChatVoicePanel()
 	end
 
-	if not CH.db.hideVoiceButtons then
-		_G.GeneralDockManagerOverflowButtonList:SetFrameStrata('LOW')
-		_G.GeneralDockManagerOverflowButtonList:SetFrameLevel(5)
-	end
+	CH:RepositionOverflowButton()
+end
 
-	if not CH.db.pinVoiceButtons then
-		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
+function CH:EnterVoicePanel()
+	if CH.VoicePanel and CH.db.mouseoverVoicePanel then
+		CH.VoicePanel:SetAlpha(1)
+	end
+end
+
+function CH:LeaveVoicePanel()
+	if CH.VoicePanel and CH.db.mouseoverVoicePanel then
+		CH.VoicePanel:SetAlpha(CH.db.voicePanelAlpha)
+	end
+end
+
+function CH:ResetVoicePanelAlpha()
+	if CH.VoicePanel then
+		CH.VoicePanel:SetAlpha(CH.db.mouseoverVoicePanel and CH.db.voicePanelAlpha or 1)
 	end
 end
 
 function CH:CreateChatVoicePanel()
-	local Holder = CreateFrame('Frame', 'ChatButtonHolder', E.UIParent, 'BackdropTemplate')
+	local Holder = CreateFrame('Frame', 'ElvUIChatVoicePanel', E.UIParent, 'BackdropTemplate')
 	Holder:ClearAllPoints()
 	Holder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'TOPLEFT', 0, 1)
 	Holder:Size(30, 86)
 	Holder:SetTemplate('Transparent', nil, true)
 	Holder:SetBackdropColor(CH.db.panelColor.r, CH.db.panelColor.g, CH.db.panelColor.b, CH.db.panelColor.a)
 	E:CreateMover(Holder, 'SocialMenuMover', _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
+	CH.VoicePanel = Holder
+
+	Holder:SetScript('OnEnter', CH.EnterVoicePanel)
+	Holder:SetScript('OnLeave', CH.LeaveVoicePanel)
+	CH.LeaveVoicePanel(Holder)
 
 	channelButtons[1]:ClearAllPoints()
 	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
@@ -2745,6 +2842,9 @@ function CH:CreateChatVoicePanel()
 		button.Icon:SetParent(button)
 		button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 		button:SetParent(Holder)
+
+		button:HookScript('OnEnter', CH.EnterVoicePanel)
+		button:HookScript('OnLeave', CH.LeaveVoicePanel)
 	end
 
 	_G.ChatAlertFrame:ClearAllPoints()
@@ -2904,7 +3004,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 		tab.selected = selected
 
 		local whisper = tab.conversationIcon and chat.chatTarget
-		local name = chat.name
+		local name = chat.name or UNKNOWN
 
 		if whisper and not tab.whisperName then
 			tab.whisperName = gsub(E:StripMyRealm(name), '([%S]-)%-[%S]+', '%1|cFF999999*|r')
@@ -3116,11 +3216,13 @@ function CH:Initialize()
 	CH:SecureHook('GetPlayerInfoByGUID')
 	CH:SecureHook('ChatEdit_SetLastActiveWindow')
 	CH:SecureHook('ChatEdit_DeactivateChat')
+	CH:SecureHook('ChatEdit_ActivateChat')
 	CH:SecureHook('ChatEdit_OnEnterPressed')
 	CH:SecureHook('FCFDock_UpdateTabs')
 	CH:SecureHook('FCF_Close')
 	CH:SecureHook('FCF_SetWindowAlpha')
 	CH:SecureHook('FCFTab_UpdateColors')
+	CH:SecureHook('FCFDock_SelectWindow')
 	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
 	CH:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
 	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
@@ -3177,8 +3279,7 @@ function CH:Initialize()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
 
 		if not editbox.backdrop then
-			editbox:CreateBackdrop(nil, true)
-			editbox.backdrop:SetAllPoints()
+			editbox:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
 		end
 
 		if chanName and (chatType == 'CHANNEL') then

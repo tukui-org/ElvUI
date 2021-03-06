@@ -85,6 +85,12 @@ function S:Ace3_EditBoxSetPoint(a, b, c, d, e)
 	end
 end
 
+function S:Ace3_CheckBoxSetType(type)
+	if type == 'radio' then
+		self.checkbg:SetSize(20, 20)
+	end
+end
+
 function S:Ace3_TabSetSelected(selected)
 	local bd = self.backdrop
 	if not bd then return end
@@ -112,10 +118,13 @@ end
 
 function S:Ace3_SkinTab(tab)
 	tab:StripTextures()
-	tab:CreateBackdrop(nil, true, true)
-	tab.backdrop:Point('TOPLEFT', 10, -3)
-	tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
 	tab.text:Point('LEFT', 14, -1)
+
+	tab:CreateBackdrop(nil, true, true)
+	if tab.backdrop then
+		tab.backdrop:Point('TOPLEFT', 10, -3)
+		tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
+	end
 
 	hooksecurefunc(tab, 'SetSelected', S.Ace3_TabSetSelected)
 end
@@ -139,14 +148,17 @@ function S:Ace3_RegisterAsWidget(widget)
 		local checkbg = widget.checkbg
 		local highlight = widget.highlight
 
-		checkbg:CreateBackdrop()
-		checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
-		checkbg.backdrop:SetFrameLevel(widget.checkbg.backdrop:GetFrameLevel() + 1)
+		checkbg:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+
+		if checkbg.backdrop then
+			checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
+		end
 
 		checkbg:SetTexture()
 		highlight:SetTexture()
 
 		hooksecurefunc(widget, 'SetDisabled', S.Ace3_CheckBoxSetDisabled)
+		hooksecurefunc(widget, 'SetType', S.Ace3_CheckBoxSetType)
 
 		if E.private.skins.checkBoxSkin then
 			S.Ace3_CheckBoxSetDesaturated(check, check:GetDesaturation())
@@ -169,8 +181,10 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame:StripTextures()
 		frame:CreateBackdrop()
-		frame.backdrop:Point('TOPLEFT', 15, -2)
-		frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
+		if frame.backdrop then
+			frame.backdrop:Point('TOPLEFT', 15, -2)
+			frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
+		end
 
 		S:HandleNextPrevButton(button, nil, nextPrevColor)
 
@@ -194,10 +208,11 @@ function S:Ace3_RegisterAsWidget(widget)
 		local text = frame.text
 
 		frame:StripTextures()
-		frame:CreateBackdrop()
-		frame.backdrop:Point('TOPLEFT', 0, -21)
-		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
-		frame.backdrop:SetFrameLevel(frame:GetFrameLevel())
+		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+		if frame.backdrop then
+			frame.backdrop:Point('TOPLEFT', 0, -21)
+			frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
+		end
 
 		frame.label:ClearAllPoints()
 		frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -279,9 +294,11 @@ function S:Ace3_RegisterAsWidget(widget)
 		local colorSwatch = widget.colorSwatch
 
 		frame:CreateBackdrop()
-		frame.backdrop:Size(24, 16)
-		frame.backdrop:ClearAllPoints()
-		frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
+		if frame.backdrop then
+			frame.backdrop:Size(24, 16)
+			frame.backdrop:ClearAllPoints()
+			frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
+		end
 
 		colorSwatch:SetTexture(E.Media.Textures.White8x8)
 		colorSwatch:ClearAllPoints()
@@ -389,7 +406,7 @@ function S:Ace3_RegisterAsContainer(widget)
 			frame.callbackBackdropColor = S.Ace3_BackdropColor
 			S.Ace3_BackdropColor(frame)
 		elseif TYPE == 'Window' then
-			frame:CreateBackdrop('Transparent')
+			frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 		else
 			frame:SetTemplate('Transparent')
 		end
@@ -416,9 +433,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 	elseif TYPE == 'SimpleGroup' then
 		local frame = widget.content:GetParent()
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:SetFrameLevel(widget.content:GetFrameLevel())
-		frame.backdrop:SetAllPoints()
+		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true, widget.content:GetFrameLevel())
 		frame.callbackBackdropColor = S.Ace3_BackdropColor
 		S.Ace3_BackdropColor(frame)
 	end

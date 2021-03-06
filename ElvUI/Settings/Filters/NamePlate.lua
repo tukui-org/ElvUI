@@ -85,6 +85,11 @@ E.StyleFilterDefaults = {
 			healer = false,
 			damager = false
 		},
+		unitRole = {
+			tank = false,
+			healer = false,
+			damager = false
+		},
 		classification = {
 			worldboss = false,
 			rareelite = false,

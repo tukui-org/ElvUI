@@ -176,11 +176,12 @@ function LO:RefreshChatMovers()
 	end
 
 	-- mover sizes: same as in CH.PositionChats for panels but including the datatext bar height
-	LeftChatMover:Size(E.db.chat.panelWidth, E.db.chat.panelHeight + (showLeftPanel and barHeight or 0))
+	local panelWidth, panelHeight = E:Scale(E.db.chat.panelWidth), E:Scale(E.db.chat.panelHeight)
+	LeftChatMover:SetSize(panelWidth, panelHeight + (showLeftPanel and barHeight or 0))
 	if E.db.chat.separateSizes then
-		RightChatMover:Size(E.db.chat.panelWidthRight, E.db.chat.panelHeightRight + (showRightPanel and barHeight or 0))
+		RightChatMover:SetSize(E:Scale(E.db.chat.panelWidthRight), E:Scale(E.db.chat.panelHeightRight) + E:Scale(showRightPanel and barHeight or 0))
 	else
-		RightChatMover:Size(E.db.chat.panelWidth, E.db.chat.panelHeight + (showRightPanel and barHeight or 0))
+		RightChatMover:SetSize(panelWidth, panelHeight + E:Scale(showRightPanel and barHeight or 0))
 	end
 end
 
@@ -298,11 +299,10 @@ function LO:CreateChatPanels()
 	lchat:SetFrameLevel(300)
 	lchat:Size(100, 100)
 	lchat:Point('BOTTOMLEFT', E.UIParent, 4, 4)
-	lchat:CreateBackdrop('Transparent')
+	lchat:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 	lchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
-	lchat.backdrop:SetAllPoints()
 	lchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = lchat, finishedFuncKeep = true}
-	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', nil, true)
+	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', true)
 
 	--Background Texture
 	local lchattex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -348,11 +348,10 @@ function LO:CreateChatPanels()
 	rchat:SetFrameLevel(300)
 	rchat:Size(100, 100)
 	rchat:Point('BOTTOMRIGHT', E.UIParent, -4, 4)
-	rchat:CreateBackdrop('Transparent')
+	rchat:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 	rchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
-	rchat.backdrop:SetAllPoints()
 	rchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = rchat, finishedFuncKeep = true}
-	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', nil, true)
+	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', true)
 
 	--Background Texture
 	local rchattex = rchat:CreateTexture(nil, 'OVERLAY')

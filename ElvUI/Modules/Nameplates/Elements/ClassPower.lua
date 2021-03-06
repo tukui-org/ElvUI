@@ -28,7 +28,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 
 	local db = NP.db.units[self.__owner.frameType]
-	local ClassColor = db and db.classpower.classColor and E:ClassColor(E.myclass)
+	local ClassColor = db and db.classpower and db.classpower.classColor and E:ClassColor(E.myclass)
 	for i = 1, #self do
 		local classColor = ClassColor or (powerType == 'COMBO_POINTS' and NP.db.colors.classResources.comboPoints[i] or powerType == 'CHI' and NP.db.colors.classResources.MONK[i])
 		if classColor then r, g, b = classColor.r, classColor.g, classColor.b end
@@ -39,7 +39,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 end
 
-function NP:ClassPower_PostUpdate(Cur, _, needUpdate)
+function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedIndex)
 	if Cur and Cur > 0 then
 		self:Show()
 	else
@@ -49,12 +49,22 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate)
 	if needUpdate then
 		NP:Update_ClassPower(self.__owner)
 	end
+
+	if powerType == 'COMBO_POINTS' and E.myclass == 'ROGUE' then
+		NP.ClassPower_UpdateColor(self, powerType)
+		if chargedIndex then
+			local color = NP.db.colors.classResources.chargedComboPoint
+
+			self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
+			self[chargedIndex].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+		end
+	end
 end
 
 function NP:Construct_ClassPower(nameplate)
 	local frameName = nameplate:GetName()
 	local ClassPower = CreateFrame('Frame', frameName..'ClassPower', nameplate)
-	ClassPower:CreateBackdrop('Transparent')
+	ClassPower:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	ClassPower:Hide()
 	ClassPower:SetFrameStrata(nameplate:GetFrameStrata())
 	ClassPower:SetFrameLevel(5)
@@ -166,7 +176,7 @@ function NP:Construct_Runes(nameplate)
 	local Runes = CreateFrame('Frame', frameName..'Runes', nameplate)
 	Runes:SetFrameStrata(nameplate:GetFrameStrata())
 	Runes:SetFrameLevel(5)
-	Runes:CreateBackdrop('Transparent')
+	Runes:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Runes:Hide()
 
 	Runes.UpdateColor = E.noop
@@ -244,7 +254,7 @@ function NP:Construct_Stagger(nameplate)
 	Stagger:SetFrameStrata(nameplate:GetFrameStrata())
 	Stagger:SetFrameLevel(5)
 	Stagger:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
-	Stagger:CreateBackdrop('Transparent')
+	Stagger:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Stagger:Hide()
 
 	NP.StatusBars[Stagger] = true

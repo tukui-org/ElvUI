@@ -1,7 +1,267 @@
-### Version 12.06 [ ETA: 🍨 ]
+### Version 12.21 [ ETA: 🍨 ]
 
-**Changes:**  
+**Fixed:**  
 
+___
+
+### Version 12.20 [ February 3rd 2021 ]
+
+**Fixed:**  
+Paladin Aura Mastery lag issue  
+Gold format Short (Whole Numbers Spaced) error  
+Swapped the layout of Available Tags listing for readability  
+Power Shortvalue will follow the same rules by hiding if 0  
+
+___
+
+### Version 12.19 [ February 2nd 2021 ]
+
+**Added:**
+Bag Item Info option to change Anima text style  
+Sort by Index option for Unitframes  
+Classpower Shortvalue Tags  
+
+**Fixes:**  
+Experience Bar Error  
+Grey Value corrected on Gold Datatext  
+ActionBar Masque settings were not letting you toggle text  
+Hotkey Range Color when using text range coloring  
+Garrison and Island tooltips  
+
+___
+
+### Version 12.18 [ February 1st 2021 ]
+
+**Updated Parts:**  
+[IMPORTANT] Action Bar pages will finally match the bar numbers  
+Text settings for Action Bars: Hotkey, Macro, Count  
+Arena Trinkets and Arena Prep  
+Multiple Skins  
+Raid Auras  
+
+**Fixed Stuff:**  
+Delete Grey Items  
+Quest Experience Bar  
+Boss Banner Error  
+Nameplate Widget Error  
+Rare ILvl error when Inspecting  
+Auto Repair when not in Guild  
+Mend Pet (Hunter) in Aura Watch  
+Stance and Pet buttons were not properly hidden  
+
+**Added Things:**  
+Anima in Bags  
+Just Backpack to Bag Bar  
+Aura Watch on Focus and Boss Frame  
+Enveloping Breathing (Monk) to Aura Watch  
+Charged Combo Point (Rogue) on UnitFrames and NamePlates  
+Show Max Currency setting for Currency Datatext  
+Torghast Info onto the Time Datatext  
+Daily Reset added to Time Datatext  
+Grey Items Value on Bags Datatext  
+Condensed (Spaced) and Short (Whole Numbers Spaced) format options added to Gold Datatext  
+
+**Tag Changes:**  
+[health:current] will now show full value  
+[health:current:shortvalue] will show the short value  
+
+___
+
+### Version 12.17 [ January 4th 2021 ]
+
+**Hotfixed:**  
+Updated Ace3 so buttons on the side of Options will not be under the frame.  
+
+___
+
+### Version 12.16 [ November 27th 2020 ]
+
+**Happy Holidays:**  
+The Minimap was fixed for Torghast.  
+Bag Spacing setting min was lowered to -3.  
+Added XP Quest Percent toggle in settings under General > BlizzUI Improvements.  
+Added Volume Datatext (Thanks @Caedis).  
+
+___
+
+### Version 12.15 [ November 24th 2020 ]
+
+**Happy Holidays:**  
+Hotfixed a NamePlate bug, that was causing plate to be broken.  
+
+___
+
+### Version 12.14 [ November 23rd 2020 ]
+
+**Sweet:**  
+Added Hide Keybind for each ActionBar, Pet, and Stance bar.  
+Corrected skinned Chat Bubble Backdrop level.  
+Fixed DT Currency Headers being goofy.  
+Fade Duration option for Map was fixed.  
+Fixed the Restore Bar button for ActionBars.  
+Gave ActionBars Count, HotKey, and Macro text color overrides (Thanks @Caedis).  
+The eyeball for group finder was still hiding. Should do a less hide now.  
+Fixed the BG Double status bar not skinning right.  
+Encounter Journal opens correctly with Smaller Map on.  
+Skinned Equipment Buttons (Thanks @Aftermathhqt).  
+Added Below and Above (Inside) options for chat editbox (Thanks @Cistara).  
+Adjusted the skin code to prevent possible errors from other addons involving backdrop not existing.  
+Updated all the Spell IDs we should need for Shadowlands dungeons and the first raid.  
+World Quest Alert Frame will be skinned properly again.  
+Fixed up the Bag Bar skin code.  
+
+___
+
+### Version 12.13 [ November 17th 2020 ]
+
+**Early Message:**  
+Real Change Log coming soon.. Servers went up early. This is for 9.0.2, the main change in this version is the way scaling works in the UI, using any scaling size you prefer should work much, much better. However, this is new and it still needs a little adjusting but overall experience with scaling should be a ton better. Also, the Unified Fonts setting was further adjusted to be exactly as it was pre-font changes.  
+
+**Epic:**  
+The new scaling adjustments are in place, which should allow you to select a custom scale that will keep borders intact better. This comes with new Small Medium and Large buttons to quickly adjust the scale *(Reload is required to properly change scale)*.  
+Unified Font setting is now replicating old behaviour entirely.  
+Druid multicrafting castbar is now fixed.  
+
+**Rare:**  
+All Individual Unitframes were given Detached Power Bar setting.  
+Currency Icons have a little border of their own now.  
+Pet bar saturation would sometimes become stuck, it is now unstuck.  
+Group Finder eye icon was sometimes behind the button itself, we moved the eyeball up some.  
+Fixed up the Hide Button Glow on ActionBars, it was a bit funky before when implemented.  
+Time Datatext can now be used in multiple areas without getting confused about what time it actually is.  
+Bags Item Level should be more accurate again.  
+Chat has a Server Time setting now which can be used instead of Local Time.  
+Target Aura Bars attached to Player Aura Bars should be offset correctly.  
+Addon Manager skin was adjusted to allow searching by other addons.  
+Added Top and Bottom for Custom Text on ActionBars.  
+Fixed another Quest Skin but which prevented the Parchment from being shown sometimes with Parchment Remover disabled.  
+
+___
+
+### Version 12.12 [ November 10th 2020 ]
+
+**Woot:**  
+Level Locked Spells on Action Bars will display more clearly when doing older instances with friends on a higher level character.  
+Masque on Action Bars should once again trim correctly (when Keep Aspect Ratio is checked). The logic was a little off before. Should be okay now.  
+Quest Icons on NamePlates would sometimes show the incorrect Icon on some mobs, this logic has been adjusted.  
+The Quest Seal Color Text with Parchment Remover enabled should be more visible.  
+Added custom font count and hotkey text options for Action Bars (Thanks @Caedis).  
+Added custom color options for Cast Bars on UnitFrames (Thanks @Caedis).  
+Increased the Cast Bar text offset options on UnitFrames.  
+A couple Top Aura font issues resolved.  
+
+___
+
+### Version 12.11 [ November 7th 2020 ]
+
+**Sweet:**  
+The Keybinds for disabled ActionBars will work again! Sorry this was overlooked.  
+Corrected Count Font Outline on Top Auras, along with the border color being incorrect. Also, Apply All Fonts will a work for these again.  
+Implemented a work around for the Quest Objective Tracker Icon being unusable sometimes in combat.  
+Added a toggle for Action Button Glow incase you don't want to see procs happening.  
+Seals were showing when Parchment Remover was enabled, should be hidden again now.  
+Fixed the Mend Pet spell ID for Aura indicator on Pet.  
+Added Show Level option for EXP Databar.  
+
+___
+
+### Version 12.10 [ November 6th 2020 ]
+
+**Hotfix:**  
+Petbar wasn't appearing with the Backdrop option selected.  
+
+**Also:**
+Top Aura options were reworked and settings for them were reset.  
+Added Custom Font options for Unitframe Castbars (Thanks @Caedis).  
+
+___
+
+### Version 12.09 [ November 6th 2020 ]
+
+**Sweet:**  
+Nameplates were reset in the last version for some people who had a newer profile, sorry about that. That problem is corrected now.  
+**/kb** was upgraded to also work on the microbar and bag items. You can now quickly bind from the Spell (binds by the Spell name) and Macro (binds by the Macro name), on Action buttons (binds to slot), or directly on Bag items (binds by Item ID, not the slot).  
+
+**Nice:**  
+Quest Most Expensive Item icon is behaving now.  
+Shadowed Unitframes wasn't playing nicely, should be okay now.  
+Masque should play nicely again. However noting that unchecking Keep Aspect Ratio will affect Masque icons, keep it on if you want it to use the one intended for the skin you have selected.  
+
+**Okay:**  
+Exp Databar would error sometimes.  
+Microbar Visibility option would error sometimes.  
+Adjustments to the Quest Skin to try to keep the text and backgrounds showing properly (again).  
+Fixed Classbar being tiny when using AutoHide option, also would error when leaving a vehicle.  
+Actionbar Button Spacing option can once again be set to up to -3.  
+Added Party Indicator option for Unitframes (Thanks @Caedis).  
+Backdrop on the Stance bar wasn't using the correct multiplier when less than the amount of buttons available.  
+Backdrop on the Microbar was a little off, that is sorted.  
+Added Honor Level to Honor bar text outputs.  
+Fixed the last tick on castbars.  
+
+___
+
+### Version 12.08 [ November 2nd 2020 ]
+
+**Wonderful:**  
+Ungoofed the Nameplate Thin Border option (under *General > Media > Borders*).  
+Removed ultra rare hidden error with how we spawn the Talking Head Frame.  
+Tweaked "Unified Font Sizes" a little more to mimic the older style and disabled it by default.  
+Supressed the error when you dont have Pawn updated yet, go update it if you use it! :)  
+
+___
+
+### Version 12.07 [ November 1st 2020 ]
+
+**Nice:**  
+Added new "Unified Font Sizes" setting for "Replace Blizzard Fonts" (on by default). A decent amount of you didn't seem to like the change this hopefully will make you love us again. <3  
+Actionbar Buttons can be sized unproportionally now by unchecking the Keep Size Ratio option. This will let you make an EPIC looking bar.  
+HelpTips will now be hidden with Hide Tutorials, even while in combat (it was protected for safety but seems okay without it).  
+Added an option for Ultrawide monitors to be 16:9 like eyefinity would do but on one monitor (Thanks @Gholie).  
+Microbar can have a backdrop like ActionBars now.  
+Fixed Item Upgradeable Icon while using Pawn.  
+Nameplates now also have a Thin Border option.  
+Added option to hide Health Bar on Tooltips.  
+
+**Datatext:**  
+Added Datatext Option to hide friends playing CoD: Cold War.  
+ElvUI Datatext now has a Custom Label option.  
+Updated Movement Speed Datatext (Thanks @Caedis).  
+Gave Mastery and Haste Datatext Decimal Length and Label / No Label option.  
+Gave Combat Datatext a Full Time option.  
+Fixed Datatext Gold Tooltip Style.  
+
+**Yay:**  
+Fixed unequal Classbar combo points.  
+Fixed Heirloom Cooldown not fitting the icon.  
+Fixed Class bar sometimes not showing when it's supposed to.  
+Party Pets now have an Aura Watch setting.  
+Maybe fixed the "Most Expensive" icon from getting stuck.  
+Hotkey text on Stance Bar will show again.  
+Updated Trinket Spells for Trinket element.  
+Fixed [altpowercolor] tag.  
+Added [reactioncolor] back into tags.  
+Heal Prediction was messing up for Druids but I fixed it.  
+Updated Castbar Ticks amount, nice Penance btw.  
+Remove that one Databar Quest EXP error.  
+Chat Editbox will follow the chats text font and size.  
+Center piece of Phase Indicator was getting stuck on.  
+Another attempt to make sure the background/seal background art show correctly on Quest frame.  
+Fixed Transmog squares turning white when changing spec when your profile changes.  
+Stopped yoinking the progress bar off the collections appearance sets.  
+Fixed Auras text from using wrong settings.  
+
+___
+
+### Version 12.06 [ October 22nd 2020 ]
+
+**Excellent:**  
+Adjusted fonts to scale a little better to follow what Blizzard intended.  
+Databars: Fixed EXP mover not showing up, fixed visibility logic for all bars.  
+Adjusted backdrop color of Account Wide achievements to a soft dark blue.  
+Updated Phase Indicator to show Chromie Champions and Sharding players.  
+Attempted to correct Power Prediction not anchoring correctly on Additional Power.  
+Let tag [name:title] fall back to [name] when phased.  
 
 ___
 
@@ -551,7 +811,7 @@ Added Color and Text Format option to the Party Alternative Power bar settings.
 
 **Bug Fixes:**  
 Attempted to fix Boss Frame (or other Unitframes) name not being updated correctly.  
-Fixed error when using the "[health:deficit-percent:nostatus]" tag.  
+Fixed error when using the [health:deficit-percent:nostatus] tag.  
 Fixed Reagent Bank Icon borders.  
 
 **Misc. Changes:**  

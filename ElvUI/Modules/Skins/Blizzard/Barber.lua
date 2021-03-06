@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
--- 9.0 Shadowlands
 function S:Blizzard_BarbershopUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end
 
@@ -46,8 +45,7 @@ function S:Blizzard_CharacterCustomize()
 				popoutButton.NormalTexture:SetAlpha(0)
 
 				popoutButton.Popout:StripTextures()
-				popoutButton.Popout:CreateBackdrop('Transparent')
-				popoutButton.Popout.backdrop:SetFrameLevel(popoutButton.Popout:GetFrameLevel())
+				popoutButton.Popout:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 				ReskinCustomizeButton(popoutButton)
 
 				button.IsSkinned = true

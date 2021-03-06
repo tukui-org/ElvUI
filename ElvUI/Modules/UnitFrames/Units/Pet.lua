@@ -62,12 +62,13 @@ function UF:Update_PetFrame(frame, db)
 		frame.BOTTOM_OFFSET = UF:GetHealthBottomOffset(frame)
 	end
 
-	if db.strataAndLevel and db.strataAndLevel.useCustomStrata then
-		frame:SetFrameStrata(db.strataAndLevel.frameStrata)
-	end
-
-	if db.strataAndLevel and db.strataAndLevel.useCustomLevel then
-		frame:SetFrameLevel(db.strataAndLevel.frameLevel)
+	if db.strataAndLevel then
+		if db.strataAndLevel.useCustomStrata then
+			frame:SetFrameStrata(db.strataAndLevel.frameStrata)
+		end
+		if db.strataAndLevel.useCustomLevel then
+			frame:SetFrameLevel(db.strataAndLevel.frameLevel)
+		end
 	end
 
 	frame.Health.colorPetByUnitClass = db.health.colorPetByUnitClass

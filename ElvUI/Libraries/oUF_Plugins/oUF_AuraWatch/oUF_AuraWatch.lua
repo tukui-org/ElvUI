@@ -120,7 +120,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			end
 
 			if(button.stealable) then
-				if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit)) then
+				if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit(unit, 'player')) then
 					button.stealable:Show()
 				else
 					button.stealable:Hide()

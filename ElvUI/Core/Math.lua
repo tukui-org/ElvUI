@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local tinsert, tremove, next, wipe, ipairs = tinsert, tremove, next, wipe, ipairs
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local modf, atan2, ceil, floor, abs, sqrt, mod = math.modf, atan2, ceil, floor, abs, sqrt, mod
-local format, strsub, strupper, gsub, gmatch = format, strsub, strupper, gsub, gmatch
+local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
 local CreateFrame = CreateFrame
@@ -231,20 +231,20 @@ function E:GetXYOffset(position, forcedX, forcedY)
 	end
 end
 
-function E:GetFormattedText(style, min, max, dec)
+function E:GetFormattedText(style, min, max, dec, short)
 	if max == 0 then max = 1 end
 
 	if style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
-		return format(E.GetFormattedTextStyles.CURRENT, E:ShortValue(min, dec))
+		return format(E.GetFormattedTextStyles.CURRENT, short and E:ShortValue(min, dec) or BreakUpLargeNumbers(min))
 	else
 		local useStyle = E.GetFormattedTextStyles[style]
 		if not useStyle then return end
 
 		if style == 'DEFICIT' then
 			local deficit = max - min
-			return (deficit > 0 and format(useStyle, E:ShortValue(deficit, dec))) or ''
+			return (deficit > 0 and format(useStyle, short and E:ShortValue(deficit, dec) or BreakUpLargeNumbers(deficit))) or ''
 		elseif style == 'CURRENT_MAX' then
-			return format(useStyle, E:ShortValue(min, dec), E:ShortValue(max, dec))
+			return format(useStyle, short and E:ShortValue(min, dec) or BreakUpLargeNumbers(min), short and E:ShortValue(max, dec) or BreakUpLargeNumbers(max))
 		elseif style == 'PERCENT' or style == 'CURRENT_PERCENT' or style == 'CURRENT_MAX_PERCENT' then
 			if dec then useStyle = gsub(useStyle, '%d', tonumber(dec) or 0) end
 			local perc = min / max * 100
@@ -252,9 +252,9 @@ function E:GetFormattedText(style, min, max, dec)
 			if style == 'PERCENT' then
 				return format(useStyle, perc)
 			elseif style == 'CURRENT_PERCENT' then
-				return format(useStyle, E:ShortValue(min, dec), perc)
+				return format(useStyle, short and E:ShortValue(min, dec) or BreakUpLargeNumbers(min), perc)
 			elseif style == 'CURRENT_MAX_PERCENT' then
-				return format(useStyle, E:ShortValue(min, dec), E:ShortValue(max, dec), perc)
+				return format(useStyle, short and E:ShortValue(min, dec) or BreakUpLargeNumbers(min), short and E:ShortValue(max, dec) or BreakUpLargeNumbers(max), perc)
 			end
 		end
 	end
@@ -437,6 +437,17 @@ function E:GetDistance(unit1, unit2)
 	return distance, atan2(dY, dX) - GetPlayerFacing()
 end
 
+-- Taken from FormattingUtil.lua and modified by Simpy
+function E:FormatLargeNumber(amount, seperator)
+	local num, len = '', strlen(amount)
+	local trd = len % 3
+
+	if not seperator then seperator = ',' end
+	for i=4, len, 3 do num = seperator..strsub(amount, -(i - 1), -(i - 3))..num end
+
+	return strsub(amount, 1, (trd == 0) and 3 or trd)..num
+end
+
 --Money text formatting, code taken from Scrooge by thelibrarian ( http://www.wowace.com/addons/scrooge/ )
 local COLOR_COPPER, COLOR_SILVER, COLOR_GOLD = '|cffeda55f', '|cffc7c7cf', '|cffffd700'
 local ICON_COPPER = [[|TInterface\MoneyFrame\UI-CopperIcon:12:12|t]]
@@ -484,11 +495,27 @@ function E:FormatMoney(amount, style, textonly)
 		else
 			return format('%d%s', copper, coppername)
 		end
+	elseif style == 'SHORTSPACED' then
+		if gold > 0 then
+			return format('%s%s', E:FormatLargeNumber(gold, ' '), goldname)
+		elseif silver > 0 then
+			return format('%d%s', silver, silvername)
+		else
+			return format('%d%s', copper, coppername)
+		end
 	elseif style == 'CONDENSED' then
 		if gold > 0 then
 			return format('%s%d|r.%s%02d|r.%s%02d|r', COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
 		elseif silver > 0 then
 			return format('%s%d|r.%s%02d|r', COLOR_SILVER, silver, COLOR_COPPER, copper)
+		else
+			return format('%s%d|r', COLOR_COPPER, copper)
+		end
+	elseif style == 'CONDENSED_SPACED' then
+		if gold > 0 then
+			return format('%s%d|r %s%02d|r %s%02d|r', COLOR_GOLD, gold, COLOR_SILVER, silver, COLOR_COPPER, copper)
+		elseif silver > 0 then
+			return format('%s%d|r %s%02d|r', COLOR_SILVER, silver, COLOR_COPPER, copper)
 		else
 			return format('%s%d|r', COLOR_COPPER, copper)
 		end

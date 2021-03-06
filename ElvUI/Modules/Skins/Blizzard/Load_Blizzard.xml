@@ -4,6 +4,7 @@
 	<Script file='AdventureMap.lua'/>
 	<Script file='Alerts.lua'/>
 	<Script file='AlliedRaces.lua'/>
+	<Script file='AnimaDiversion.lua'/>
 	<Script file='Archaeology.lua'/>
 	<Script file='Artifact.lua'/>
 	<Script file='AuctionHouse.lua'/>
@@ -11,6 +12,7 @@
 	<Script file='AzeriteEssence.lua'/>
 	<Script file='AzeriteRespec.lua'/>
 	<Script file='Bags.lua'/>
+	<Script file='Barber.lua'/>
 	<Script file='Battlenet.lua'/>
 	<Script file='BGMap.lua'/>
 	<Script file='Binding.lua'/>
@@ -19,10 +21,14 @@
 	<Script file='Calendar.lua'/>
 	<Script file='Channels.lua'/>
 	<Script file='Character.lua'/>
+	<Script file='ChromieTime.lua'/>
 	<Script file='Collectables.lua'/>
 	<Script file='CombatLog.lua' />
 	<Script file='Communities.lua'/>
 	<Script file='Contribution.lua'/>
+	<Script file='CovenantPreview.lua'/>
+	<Script file='CovenantRenown.lua'/>
+	<Script file='CovenantSanctum.lua'/>
 	<Script file='DeathRecap.lua'/>
 	<Script file='Debug.lua'/>
 	<Script file='DressingRoom.lua'/>
@@ -33,6 +39,7 @@
 	<Script file='GarrisonTemplate.lua'/>
 	<Script file='GMChat.lua'/>
 	<Script file='Gossip.lua'/>
+	<Script file='Guide.lua'/>
 	<Script file='Guild.lua'/>
 	<Script file='GuildBank.lua'/>
 	<Script file='GuildControl.lua'/>
@@ -58,41 +65,32 @@
 	<Script file='Orderhall.lua'/>
 	<Script file='PetBattle.lua'/>
 	<Script file='Petition.lua'/>
+	<Script file='PlayerChoice.lua'/>
 	<Script file='PVP.lua'/>
 	<Script file='PVPMatch.lua'/>
 	<Script file='Quest.lua'/>
 	<Script file='QuestChoice.lua'/>
 	<Script file='Raid.lua'/>
+	<Script file='Runeforge.lua'/>
 	<Script file='ScrappingMachine.lua'/>
 	<Script file='Socket.lua'/>
+	<Script file='Soulbinds.lua'/>
 	<Script file='SpellBook.lua'/>
 	<Script file='Stable.lua'/>
+	<Script file='SubscriptionInterstitial.lua'/>
 	<Script file='Tabard.lua'/>
 	<Script file='Talent.lua'/>
 	<Script file='TalkingHead.lua'/>
 	<Script file='Taxi.lua'/>
 	<Script file='TimeManager.lua'/>
 	<Script file='Tooltip.lua'/>
+	<Script file='TorghastLevelPicker.lua'/>
 	<Script file='Trade.lua'/>
 	<Script file='TradeSkill.lua'/>
 	<Script file='Trainer.lua'/>
 	<Script file='TutorialFrame.lua'/>
 	<Script file='VoidStorage.lua'/>
-	<Script file='Warboard.lua'/>
 	<Script file='WarfrontPartyPose.lua'/>
-	<Script file='WorldMap.lua'/>
-
-	<!--9.0-->
-	<Script file='AnimaDiversion.lua'/>
-	<Script file='Barber.lua'/>
-	<Script file='CovenantPreview.lua'/>
-	<Script file='CovenantSanctum.lua'/>
-	<Script file='ChromieTime.lua'/>
-	<Script file='Guide.lua'/>
-	<Script file='PlayerChoice.lua'/>
-	<Script file='Runeforge.lua'/>
-	<Script file='Soulbinds.lua'/>
-	<Script file='SubscriptionInterstitial.lua'/>
-	<Script file='TorghastLevelPicker.lua'/>
 	<Script file='WeeklyRewards.lua'/>
+	<Script file='WorldMap.lua'/>
 </Ui>

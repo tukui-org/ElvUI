@@ -7,7 +7,7 @@ local unpack, select = unpack, select
 local pairs, ipairs = pairs, ipairs
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
-local InCombatLockdown = InCombatLockdown
+local UnitAffectingCombat = UnitAffectingCombat
 local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 
 function DB:OnLeave()
@@ -73,8 +73,8 @@ function DB:UpdateBarBubbles(bar)
 
 	for i, bubble in ipairs(bar.bubbles) do
 		bubble:ClearAllPoints()
-		bubble:SetSize(bubbleWidth, bubbleHeight)
 		bubble:SetShown(bar.db.showBubbles)
+		bubble:Size(bubbleWidth, bubbleHeight)
 
 		if vertical then
 			bubble:Point('TOP', bar, 'BOTTOM', 0, offset * i)
@@ -92,6 +92,8 @@ function DB:UpdateAll()
 		bar.holder:Size(bar.db.width, bar.db.height)
 		bar.holder:SetTemplate(DB.db.transparent and 'Transparent')
 		bar.holder:EnableMouse(not bar.db.clickThrough)
+		bar.holder:SetFrameLevel(bar.db.frameLevel)
+		bar.holder:SetFrameStrata(bar.db.frameStrata)
 		bar.text:FontTemplate(LSM:Fetch('font', bar.db.font), bar.db.fontSize, bar.db.fontOutline)
 		bar:SetStatusBarTexture(texture)
 		bar:SetReverseFill(bar.db.reverseFill)
@@ -134,12 +136,12 @@ function DB:UpdateAll()
 	DB:HandleVisibility()
 end
 
-function DB:SetVisibility(bar, event)
+function DB:SetVisibility(bar)
 	if bar.showBar ~= nil then
 		bar:SetShown(bar.showBar)
 		bar.holder:SetShown(bar.showBar)
 	elseif bar.db.enable then
-		local hideBar = ((bar == DB.StatusBars.Threat or bar.db.hideInCombat) and (event == 'PLAYER_REGEN_DISABLED' or InCombatLockdown()))
+		local hideBar = (bar == DB.StatusBars.Threat or bar.db.hideInCombat) and UnitAffectingCombat('player')
 		or (bar.db.hideOutsidePvP and not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'))
 		or (bar.ShouldHide and bar:ShouldHide())
 
@@ -151,9 +153,9 @@ function DB:SetVisibility(bar, event)
 	end
 end
 
-function DB:HandleVisibility(event)
+function DB:HandleVisibility()
 	for _, bar in pairs(DB.StatusBars) do
-		DB:SetVisibility(bar, event)
+		DB:SetVisibility(bar)
 	end
 end
 

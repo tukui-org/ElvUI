@@ -6,7 +6,7 @@ local Translit = E.Libs.Translit
 local translitMark = '!'
 
 local _G = _G
-local tonumber, next = tonumber, next
+local next, type = next, type
 local gmatch, gsub, format = gmatch, gsub, format
 local unpack, pairs, wipe, floor, ceil = unpack, pairs, wipe, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
@@ -30,7 +30,6 @@ local GetUnitSpeed = GetUnitSpeed
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
-local UnitAlternatePowerTextureInfo = UnitAlternatePowerTextureInfo
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitClass = UnitClass
 local UnitSex = UnitSex
@@ -42,6 +41,7 @@ local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGUID = UnitGUID
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UnitIsFeignDeath = UnitIsFeignDeath
 local UnitIsAFK = UnitIsAFK
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local UnitIsConnected = UnitIsConnected
@@ -64,6 +64,7 @@ local UnitStagger = UnitStagger
 local GetCurrentTitle = GetCurrentTitle
 local GetTitleName = GetTitleName
 
+local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local C_QuestLog_GetTitleForQuestID = C_QuestLog.GetTitleForQuestID
 local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 
@@ -223,7 +224,7 @@ ElvUF.Tags.Events['altpowercolor'] = 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
 	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
 	if cur > 0 then
-		local _, r, g, b = UnitAlternatePowerTextureInfo(u, 2)
+		local _, r, g, b = GetUnitPowerBarTextureInfo(u, 3)
 		if not r then
 			r, g, b = 1, 1, 1
 		end
@@ -397,9 +398,61 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 			return E:GetFormattedText(textFormat, cur, max)
 		end
 	end
+
+	if tagTextFormat ~= 'percent' then
+		ElvUF.Tags.Events[format('health:%s:shortvalue', tagTextFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
+		ElvUF.Tags.Methods[format('health:%s:shortvalue', tagTextFormat)] = function(unit)
+			local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+			if (status) then
+				return status
+			else
+				local min, max = UnitHealth(unit), UnitHealthMax(unit)
+				return E:GetFormattedText(textFormat, min, max, nil, true)
+			end
+		end
+
+		ElvUF.Tags.Events[format('health:%s-nostatus:shortvalue', tagTextFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH'
+		ElvUF.Tags.Methods[format('health:%s-nostatus:shortvalue', tagTextFormat)] = function(unit)
+			local min, max = UnitHealth(unit), UnitHealthMax(unit)
+			return E:GetFormattedText(textFormat, min, max, nil, true)
+		end
+
+		ElvUF.Tags.Events[format('power:%s:shortvalue', tagTextFormat)] = 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+		ElvUF.Tags.Methods[format('power:%s:shortvalue', tagTextFormat)] = function(unit)
+			local powerType = UnitPowerType(unit)
+			local min = UnitPower(unit, powerType)
+			if min ~= 0 and tagTextFormat ~= 'deficit' then
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType), nil, true)
+			end
+		end
+
+		ElvUF.Tags.Events[format('mana:%s:shortvalue', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
+		ElvUF.Tags.Methods[format('mana:%s:shortvalue', tagTextFormat)] = function(unit)
+			return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA), nil, true)
+		end
+
+		ElvUF.Tags.Events[format('additionalmana:%s:shortvalue', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
+		ElvUF.Tags.Methods[format('additionalmana:%s:shortvalue', tagTextFormat)] = function(unit)
+			local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
+			if barIndex and barIndex[UnitPowerType(unit)] then
+				local min = UnitPower(unit, SPELL_POWER_MANA)
+				if min ~= 0 and tagTextFormat ~= 'deficit' then
+					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA), nil, true)
+				end
+			end
+		end
+
+		ElvUF.Tags.Events[format('classpower:%s:shortvalue', tagTextFormat)] = (E.myclass == 'MONK' and 'UNIT_AURA ' or E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ' or '') .. 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'
+		ElvUF.Tags.Methods[format('classpower:%s:shortvalue', tagTextFormat)] = function()
+			local min, max = GetClassPower(E.myclass)
+			if min ~= 0 then
+				return E:GetFormattedText(textFormat, min, max, nil, true)
+			end
+		end
+	end
 end
 
-for textFormat, length in pairs({veryshort = 5, short = 10, medium = 15, long = 20}) do
+for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long = 20 }) do
 	ElvUF.Tags.Events[format('health:deficit-percent:name-%s', textFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE'
 	ElvUF.Tags.Methods[format('health:deficit-percent:name-%s', textFormat)] = function(unit)
 		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -474,6 +527,13 @@ ElvUF.Tags.Methods['health:max'] = function(unit)
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
+ElvUF.Tags.Events['health:max:shortvalue'] = 'UNIT_MAXHEALTH'
+ElvUF.Tags.Methods['health:max:shortvalue'] = function(unit)
+	local _, max = UnitHealth(unit), UnitHealthMax(unit)
+
+	return E:GetFormattedText('CURRENT', max, max, nil, true)
+end
+
 ElvUF.Tags.Events['health:percent-with-absorbs'] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 ElvUF.Tags.Methods['health:percent-with-absorbs'] = function(unit)
 	local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
@@ -511,6 +571,21 @@ ElvUF.Tags.Methods['power:max'] = function(unit)
 	return E:GetFormattedText('CURRENT', max, max)
 end
 
+ElvUF.Tags.Events['power:max:shortvalue'] = 'UNIT_DISPLAYPOWER UNIT_MAXPOWER'
+ElvUF.Tags.Methods['power:max:shortvalue'] = function(unit)
+	local pType = UnitPowerType(unit)
+	local max = UnitPowerMax(unit, pType)
+
+	return E:GetFormattedText('CURRENT', max, max, nil, true)
+end
+
+ElvUF.Tags.Events['mana:max:shortvalue'] = 'UNIT_MAXPOWER'
+ElvUF.Tags.Methods['mana:max:shortvalue'] = function(unit)
+	local max = UnitPowerMax(unit, SPELL_POWER_MANA)
+
+	return E:GetFormattedText('CURRENT', max, max, nil, true)
+end
+
 ElvUF.Tags.Events['difficultycolor'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	local c
@@ -539,6 +614,17 @@ ElvUF.Tags.Methods['namecolor'] = function(unit)
 	else
 		local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
 		return (cr and Hex(cr[1], cr[2], cr[3])) or '|cFFcccccc'
+	end
+end
+
+ElvUF.Tags.Events['reactioncolor'] = 'UNIT_NAME_UPDATE UNIT_FACTION'
+ElvUF.Tags.Methods['reactioncolor'] = function(unit)
+	local unitReaction = UnitReaction(unit, 'player')
+	if (unitReaction) then
+		local reaction = ElvUF.colors.reaction[unitReaction]
+		return Hex(reaction[1], reaction[2], reaction[3])
+	else
+		return '|cFFC2C2C2'
 	end
 end
 
@@ -996,9 +1082,7 @@ end
 
 ElvUF.Tags.Events['name:title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
 ElvUF.Tags.Methods['name:title'] = function(unit)
-	if UnitIsPlayer(unit) then
-		return UnitPVPName(unit)
-	end
+	return UnitIsPlayer(unit) and UnitPVPName(unit) or UnitName(unit)
 end
 
 ElvUF.Tags.Events['title'] = 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT'
@@ -1352,8 +1436,15 @@ E.TagInfo = {
 	['threat'] = { category = 'Threat', description = "Displays the current threat situation (Aggro is secure tanking, -- is losing threat and ++ is gaining threat)" },
 }
 
+--[[
+	tagName = Tag Name
+	category = Category that you want it to fall in
+	description = self explainitory
+	order = This is optional. It's used for sorting the tags by order and not by name. The +10 is not a rule. I reserve the first 10 slots.
+]]
+
 function E:AddTagInfo(tagName, category, description, order)
-	if order then order = tonumber(order) + 10 end
+	if type(order) == 'number' then order = order + 10 else order = nil end
 
 	E.TagInfo[tagName] = E.TagInfo[tagName] or {}
 	E.TagInfo[tagName].category = category or 'Miscellaneous'

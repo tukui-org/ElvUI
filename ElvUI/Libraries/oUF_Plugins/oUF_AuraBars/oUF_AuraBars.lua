@@ -162,6 +162,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			statusBar:SetSize(element.width, element.height)
 			statusBar.icon:SetSize(element.height, element.height)
 			statusBar:SetScript('OnUpdate', onUpdate)
+			statusBar:EnableMouse(not element.disableMouse)
 			statusBar:SetID(index)
 			statusBar:Show()
 
@@ -225,8 +226,8 @@ local function UpdateAuras(self, event, unit)
 	if(element) then
 		if(element.PreUpdate) then element:PreUpdate(unit) end
 
-		local isEnemy = UnitIsEnemy('player', unit)
-		local reaction = UnitReaction('player', unit)
+		local isEnemy = UnitIsEnemy(unit, 'player')
+		local reaction = UnitReaction(unit, 'player')
 		local filter = (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
 		local visible, hidden = filterBars(element, unit, filter, element.maxBars, filter == 'HARMFUL', 0)
 

@@ -28,7 +28,8 @@ C.Values = {
 		RIGHT_UP = format(L["%s and then %s"], L["Right"], L["Up"]),
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
-	}
+	},
+	AllPoints = { TOPLEFT = 'TOPLEFT', LEFT = 'LEFT', BOTTOMLEFT = 'BOTTOMLEFT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT', BOTTOMRIGHT = 'BOTTOMRIGHT', CENTER = 'CENTER', TOP = 'TOP', BOTTOM = 'BOTTOM' }
 }
 
 C.StateSwitchGetText = function(_, TEXT)
@@ -64,7 +65,7 @@ end
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvUI', E.Options)
 E.Libs.AceConfigDialog:SetDefaultSize('ElvUI', E:Config_GetDefaultSize())
-E.Options.name = format('%s: |cff99ff33%s|r', L["Version"], E.version)
+E.Options.name = format('%s: |cff99ff33%.2f|r', L["Version"], E.version)
 
 local DONATORS = {
 	'Dandruff',
@@ -119,7 +120,7 @@ local DEVELOPERS = {
 	'|cff9482c9Darth Predator|r',
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffff7d0aMerathilis|r',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/FoxWarlock:15:15:0:0:64:64:5:59:5:59|t |cffff2020NihilisticPandemonium|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 0.63,0.40,0.80, 0.63,0.40,0.80, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.20,0.74,0.74, 0.20,0.74,0.74, 0.53,0.87,0.19, 0.53,0.87,0.19, 0.63,0.40,0.80, 0.63,0.40,0.80)
+	E:TextGradient('Simpy but my name needs to be longer.', 1,.42,.78, 1,.56,.68, .66,.99,.98, .77,.52,1, 1,.48,.81, .98,.95,.68)
 }
 
 local TESTERS = {
@@ -139,6 +140,7 @@ local TESTERS = {
 	'Botanica',
 	'Yachanay',
 	'Catok',
+	'Caedis',
 	'|cff00c0faBenik|r',
 	'|T136012:15:15:0:0:64:64:5:59:5:59|t |cff006fdcRubgrsch|r |T656558:15:15:0:0:64:64:5:59:5:59|t',
 	'|TInterface/AddOns/ElvUI/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t Luckyone',

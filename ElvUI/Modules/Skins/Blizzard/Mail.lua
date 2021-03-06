@@ -10,8 +10,7 @@ local function MailFrameSkin()
 		local btn = _G['SendMailAttachment'..i]
 		if not btn.skinned then
 			btn:StripTextures()
-			btn:CreateBackdrop(nil, true)
-			btn.backdrop:SetAllPoints()
+			btn:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
 			btn:StyleButton()
 			S:HandleIconBorder(btn.IconBorder)
 
@@ -76,12 +75,15 @@ function S:MailFrame()
 	_G.SendMailMoneyBg:Kill()
 	_G.SendMailMoneyInset:StripTextures()
 
-	--[[ Commented out for testing -- Merathilis
-	_G.SendMailSubjectEditBox:Point('TOPLEFT', _G.SendMailNameEditBox, 'BOTTOMLEFT', 0, -10)
-	_G.SendMailSubjectEditBox:Height(18)
-	_G.SendMailSubjectEditBox:Width(214)
+	_G.SendMailNameEditBox:ClearAllPoints()
+	_G.SendMailNameEditBox:Point('TOPLEFT', _G.SendMailFrame, 'TOPLEFT', 90, -30)
+	_G.SendMailNameEditBox:Width(109)
 	_G.SendMailNameEditBox:Height(18)
-	]]
+
+	_G.SendMailSubjectEditBox:Point('TOPLEFT', _G.SendMailNameEditBox, 'BOTTOMLEFT', 0, -10)
+	_G.SendMailSubjectEditBox:Width(214)
+	_G.SendMailSubjectEditBox:Height(18)
+
 	_G.SendMailFrame:StripTextures()
 
 	hooksecurefunc('SendMailFrame_Update', MailFrameSkin)

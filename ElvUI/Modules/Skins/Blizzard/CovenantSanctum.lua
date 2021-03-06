@@ -18,6 +18,7 @@ local function ReskinTalents(self)
 		if not frame.IsSkinned then
 			frame.Border:SetAlpha(0)
 			frame.IconBorder:SetAlpha(0)
+			frame.TierBorder:SetAlpha(0)
 			frame.Background:SetAlpha(0)
 
 			frame:CreateBackdrop('Transparent')
@@ -37,24 +38,6 @@ local function ReskinTalents(self)
 	end
 end
 
-local function HideRenownLevelBorder(frame)
-	if not frame.IsSkinned then
-		frame.Divider:SetAlpha(0)
-		frame.BackgroundTile:SetAlpha(0)
-		frame.Background:CreateBackdrop()
-
-		frame.IsSkinned = true
-	end
-
-	for button in frame.milestonesPool:EnumerateActive() do
-		if not button.IsSkinned then
-			button.LevelBorder:SetAlpha(0)
-
-			button.IsSkinned = true
-		end
-	end
-end
-
 local function ReplaceCurrencies(displayGroup)
 	for frame in displayGroup.currencyFramePool:EnumerateActive() do
 		if not frame.IsSkinned then
@@ -70,9 +53,43 @@ function S:Blizzard_CovenantSanctum()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantSanctum) then return end
 
 	local frame = _G.CovenantSanctumFrame
+	frame.LevelFrame.Level:FontTemplate()
+
+	if E.private.skins.parchmentRemoverEnable then
+		frame.LevelFrame.Background:SetAlpha(0)
+	end
+
+	local UpgradesTab = frame.UpgradesTab
+	UpgradesTab.Background:CreateBackdrop('Transparent')
+	S:HandleButton(UpgradesTab.DepositButton)
+	UpgradesTab.DepositButton:SetFrameLevel(10)
+	UpgradesTab.CurrencyBackground:SetAlpha(0)
+	ReplaceCurrencies(UpgradesTab.CurrencyDisplayGroup)
+
+	for _, upgrade in ipairs(UpgradesTab.Upgrades) do
+		if upgrade.TierBorder then
+			upgrade.TierBorder:SetAlpha(0)
+		end
+	end
+
+	if E.private.skins.parchmentRemoverEnable then
+		UpgradesTab.Background:SetAlpha(0)
+	end
+
+	local TalentList = frame.UpgradesTab.TalentsList
+	TalentList:CreateBackdrop('Transparent')
+	S:HandleButton(TalentList.UpgradeButton)
+	TalentList.UpgradeButton:SetFrameLevel(10)
+	TalentList.IntroBox.Background:Hide()
+	hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
+
+	if E.private.skins.parchmentRemoverEnable then
+		TalentList.Divider:SetAlpha(0)
+		TalentList.BackgroundTile:SetAlpha(0)
+	end
 
 	frame:HookScript('OnShow', function()
-		if not frame.backdrop then
+		if not frame.IsSkinned then
 			frame:CreateBackdrop('Transparent')
 			frame.NineSlice:SetAlpha(0)
 
@@ -81,44 +98,9 @@ function S:Blizzard_CovenantSanctum()
 			frame.CloseButton:ClearAllPoints()
 			frame.CloseButton:Point('TOPRIGHT', frame, 'TOPRIGHT', 2, 2)
 
-			frame.LevelFrame.Level:FontTemplate()
-
-			local UpgradesTab = frame.UpgradesTab
-			UpgradesTab.Background:CreateBackdrop('Transparent')
-			S:HandleButton(UpgradesTab.DepositButton)
-			UpgradesTab.DepositButton:SetFrameLevel(10)
-
-			local TalentList = frame.UpgradesTab.TalentsList
-			TalentList:CreateBackdrop('Transparent')
-			S:HandleButton(TalentList.UpgradeButton)
-			TalentList.UpgradeButton:SetFrameLevel(10)
-			TalentList.IntroBox.Background:Hide()
-
-			if E.private.skins.parchmentRemoverEnable then
-				frame.LevelFrame.Background:SetAlpha(0)
-				UpgradesTab.Background:SetAlpha(0)
-				TalentList.Divider:SetAlpha(0)
-				TalentList.BackgroundTile:SetAlpha(0)
-
-				for _, frame in ipairs(UpgradesTab.Upgrades) do
-					if frame.RankBorder then
-						frame.RankBorder:SetAlpha(0)
-					end
-				end
-			end
-
-			UpgradesTab.CurrencyBackground:SetAlpha(0)
-			ReplaceCurrencies(UpgradesTab.CurrencyDisplayGroup)
-
-			hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
-			hooksecurefunc(frame.RenownTab, 'Refresh', HideRenownLevelBorder)
+			frame.IsSkinned = true
 		end
 	end)
-
-	S:HandleTab(_G.CovenantSanctumFrameTab1)
-	S:HandleTab(_G.CovenantSanctumFrameTab2)
-	_G.CovenantSanctumFrameTab1:ClearAllPoints()
-	_G.CovenantSanctumFrameTab1:Point('BOTTOMLEFT', frame, 23, -32) --default is: 23, 9
 end
 
 S:AddCallbackForAddon('Blizzard_CovenantSanctum')

@@ -32,6 +32,7 @@ function S:GossipFrame()
 	_G.ItemTextScrollFrame:StripTextures()
 
 	_G.GossipFrame:CreateBackdrop('Transparent')
+	_G.GossipFrame.Background:Hide()
 	_G.GossipFramePortrait:Kill()
 
 	S:HandleCloseButton(_G.ItemTextFrameCloseButton)

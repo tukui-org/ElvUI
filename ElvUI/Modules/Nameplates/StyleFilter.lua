@@ -26,6 +26,8 @@ local UnitHealthMax = UnitHealthMax
 local UnitInVehicle = UnitInVehicle
 local UnitIsOwnerOrControllerOfUnit = UnitIsOwnerOrControllerOfUnit
 local UnitIsPVP = UnitIsPVP
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
 local UnitIsQuestBoss = UnitIsQuestBoss
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitIsUnit = UnitIsUnit
@@ -33,6 +35,7 @@ local UnitLevel = UnitLevel
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitThreatSituation = UnitThreatSituation
+local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 
 local C_Timer_NewTimer = C_Timer.NewTimer
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
@@ -748,9 +751,27 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		if trigger.classification[frame.classification] then passed = true else return end
 	end
 
-	-- Group Role
+	-- My Role
 	if trigger.role.tank or trigger.role.healer or trigger.role.damager then
 		if trigger.role[mod.TriggerConditions.roles[E.myrole]] then passed = true else return end
+	end
+
+	-- Unit Role
+	if trigger.unitRole.tank or trigger.unitRole.healer or trigger.unitRole.damager then
+		local role = UnitGroupRolesAssigned(frame.unit)
+		if trigger.unitRole[mod.TriggerConditions.roles[role]] then passed = true else return end
+	end
+
+	-- In Party
+	if trigger.inParty or trigger.notInParty then
+		local inParty = UnitInParty(frame.unit)
+		if (trigger.inParty and inParty) or (trigger.notInParty and not inParty) then passed = true else return end
+	end
+
+	-- In Raid
+	if trigger.inRaid or trigger.notInRaid then
+		local inRaid = UnitInRaid(frame.unit)
+		if (trigger.inRaid and inRaid) or (trigger.notInRaid and not inRaid) then passed = true else return end
 	end
 
 	-- Unit Type
@@ -1030,8 +1051,10 @@ mod.StyleFilterEventFunctions = { -- a prefunction to the injected ouf watch
 function mod:StyleFilterSetVariables(nameplate)
 	if nameplate == _G.ElvNP_Test then return end
 
-	for _, func in pairs(mod.StyleFilterEventFunctions) do
-		func(nameplate)
+	for event, func in pairs(mod.StyleFilterEventFunctions) do
+		if event ~= 'UNIT_ENTERED_VEHICLE' and event ~= 'UNIT_EXITED_VEHICLE' then -- just need one call to StyleFilterVehicleFunction
+			func(nameplate)
+		end
 	end
 end
 
@@ -1048,40 +1071,38 @@ end
 
 mod.StyleFilterTriggerList = {} -- configured filters enabled with sorted priority
 mod.StyleFilterTriggerEvents = {} -- events required by the filter that we need to watch for
-mod.StyleFilterPlateEvents = { -- events watched inside of ouf, which is called on the nameplate itself
-	NAME_PLATE_UNIT_ADDED = 1 -- rest is populated from StyleFilterDefaultEvents as needed
-}
-mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events
-	-- this is a list of events already on the nameplate
-	'UNIT_AURA',
-	'UNIT_DISPLAYPOWER',
-	'UNIT_FACTION',
-	'UNIT_HEALTH',
-	'UNIT_MAXHEALTH',
-	'UNIT_NAME_UPDATE',
-	'UNIT_PET',
-	'UNIT_POWER_UPDATE',
-	-- list of events added during StyleFilterEvents
-	'MODIFIER_STATE_CHANGED',
-	'PLAYER_FOCUS_CHANGED',
-	'PLAYER_REGEN_DISABLED',
-	'PLAYER_REGEN_ENABLED',
-	'PLAYER_TARGET_CHANGED',
-	'PLAYER_UPDATE_RESTING',
-	'RAID_TARGET_UPDATE',
-	'QUEST_LOG_UPDATE',
-	'SPELL_UPDATE_COOLDOWN',
-	'UNIT_ENTERED_VEHICLE',
-	'UNIT_EXITED_VEHICLE',
-	'UNIT_FLAGS',
-	'UNIT_TARGET',
-	'UNIT_THREAT_LIST_UPDATE',
-	'UNIT_THREAT_SITUATION_UPDATE',
-	'VEHICLE_UPDATE'
+mod.StyleFilterPlateEvents = {} -- events watched inside of ouf, which is called on the nameplate itself, updated by StyleFilterWatchEvents
+mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate plate events (updated during StyleFilterEvents), true if unitless
+	-- existing:
+	UNIT_AURA = false,
+	UNIT_DISPLAYPOWER = false,
+	UNIT_HEALTH = false,
+	UNIT_MAXHEALTH = false,
+	UNIT_NAME_UPDATE = false,
+	UNIT_PET = false,
+	UNIT_POWER_UPDATE = false,
+	-- mod events:
+	MODIFIER_STATE_CHANGED = true,
+	PLAYER_FOCUS_CHANGED = true,
+	PLAYER_REGEN_DISABLED = true,
+	PLAYER_REGEN_ENABLED = true,
+	PLAYER_TARGET_CHANGED = true,
+	PLAYER_UPDATE_RESTING = true,
+	GROUP_ROSTER_UPDATE = true,
+	QUEST_LOG_UPDATE = true,
+	RAID_TARGET_UPDATE = true,
+	SPELL_UPDATE_COOLDOWN = true,
+	UNIT_ENTERED_VEHICLE = false,
+	UNIT_EXITED_VEHICLE = false,
+	UNIT_FLAGS = false,
+	UNIT_TARGET = false,
+	UNIT_THREAT_LIST_UPDATE = false,
+	UNIT_THREAT_SITUATION_UPDATE = false,
+	VEHICLE_UPDATE = true
 }
 
 function mod:StyleFilterWatchEvents()
-	for _, event in ipairs(mod.StyleFilterDefaultEvents) do
+	for event in pairs(mod.StyleFilterDefaultEvents) do
 		mod.StyleFilterPlateEvents[event] = mod.StyleFilterTriggerEvents[event] and true or nil
 	end
 end
@@ -1100,8 +1121,9 @@ function mod:StyleFilterConfigure()
 
 				-- NOTE: 0 for fake events
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
-				events.NAME_PLATE_UNIT_ADDED = 1
 				events.PLAYER_TARGET_CHANGED = 1
+				events.NAME_PLATE_UNIT_ADDED = 1
+				events.UNIT_FACTION = 1 -- frameType can change here
 
 				if t.casting then
 					if next(t.casting.spells) then
@@ -1117,13 +1139,12 @@ function mod:StyleFilterConfigure()
 					end
 				end
 
-				if t.isTapDenied or t.isNotTapDenied then			events.UNIT_FLAGS = 1 end
-				if t.reactionType and t.reactionType.enable then	events.UNIT_FACTION = 1 end
-				if t.keyMod and t.keyMod.enable then				events.MODIFIER_STATE_CHANGED = 1 end
-				if t.targetMe or t.notTargetMe then					events.UNIT_TARGET = 1 end
-				if t.isFocus or t.notFocus then						events.PLAYER_FOCUS_CHANGED = 1 end
-				if t.isResting then									events.PLAYER_UPDATE_RESTING = 1 end
-				if t.isPet then										events.UNIT_PET = 1 end
+				if t.isTapDenied or t.isNotTapDenied then	events.UNIT_FLAGS = 1 end
+				if t.targetMe or t.notTargetMe then			events.UNIT_TARGET = 1 end
+				if t.keyMod and t.keyMod.enable then		events.MODIFIER_STATE_CHANGED = 1 end
+				if t.isFocus or t.notFocus then				events.PLAYER_FOCUS_CHANGED = 1 end
+				if t.isResting then							events.PLAYER_UPDATE_RESTING = 1 end
+				if t.isPet then								events.UNIT_PET = 1 end
 
 				if t.raidTarget and (t.raidTarget.star or t.raidTarget.circle or t.raidTarget.diamond or t.raidTarget.triangle or t.raidTarget.moon or t.raidTarget.square or t.raidTarget.cross or t.raidTarget.skull) then
 					events.RAID_TARGET_UPDATE = 1
@@ -1155,6 +1176,10 @@ function mod:StyleFilterConfigure()
 					events.PLAYER_REGEN_ENABLED = 1
 					events.UNIT_THREAT_LIST_UPDATE = 1
 					events.UNIT_FLAGS = 1
+				end
+
+				if t.inParty or t.notInParty or t.inRaid or t.notInRaid or t.unitRole then
+					events.GROUP_ROSTER_UPDATE = 1
 				end
 
 				if t.location then
@@ -1220,7 +1245,7 @@ end
 function mod:StyleFilterUpdate(frame, event)
 	if frame == _G.ElvNP_Test then return end
 
-	if not frame.StyleFilterChanges or not mod.StyleFilterTriggerEvents[event] then return end
+	if not frame.StyleFilterChanges or (event ~= 'ForceUpdate' and not mod.StyleFilterTriggerEvents[event]) then return end
 
 	mod:StyleFilterClear(frame, true)
 
@@ -1285,10 +1310,14 @@ do -- oUF style filter inject watch functions without actually registering any e
 			end
 	end end
 
-	function mod:StyleFilterEventWatch(frame)
-		for _, event in ipairs(mod.StyleFilterDefaultEvents) do
+	function mod:StyleFilterEventWatch(frame, disable)
+		for event in pairs(mod.StyleFilterDefaultEvents) do
 			local holdsEvent = styleFilterIsWatching(frame, event)
-			if mod.StyleFilterPlateEvents[event] then
+			if disable then
+				if holdsEvent then
+					oUF_fake_register(frame, event, true)
+				end
+			elseif mod.StyleFilterPlateEvents[event] then
 				if not holdsEvent then
 					oUF_fake_register(frame, event)
 				end
@@ -1314,34 +1343,19 @@ end
 function mod:StyleFilterEvents(nameplate)
 	if nameplate == _G.ElvNP_Test then return end
 
-	-- these events get added onto StyleFilterDefaultEvents to be watched,
-	-- the ones added from here should not by registered already
-	mod:StyleFilterRegister(nameplate,'MODIFIER_STATE_CHANGED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_FOCUS_CHANGED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_REGEN_DISABLED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_REGEN_ENABLED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_TARGET_CHANGED', true)
-	mod:StyleFilterRegister(nameplate,'PLAYER_UPDATE_RESTING', true)
-	mod:StyleFilterRegister(nameplate,'RAID_TARGET_UPDATE', true)
-	mod:StyleFilterRegister(nameplate,'SPELL_UPDATE_COOLDOWN', true)
-	mod:StyleFilterRegister(nameplate,'QUEST_LOG_UPDATE', true)
-	mod:StyleFilterRegister(nameplate,'UNIT_ENTERED_VEHICLE')
-	mod:StyleFilterRegister(nameplate,'UNIT_EXITED_VEHICLE')
-	mod:StyleFilterRegister(nameplate,'UNIT_FLAGS')
-	mod:StyleFilterRegister(nameplate,'UNIT_TARGET')
-	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_LIST_UPDATE')
-	mod:StyleFilterRegister(nameplate,'UNIT_THREAT_SITUATION_UPDATE')
-	mod:StyleFilterRegister(nameplate,'VEHICLE_UPDATE', true)
+	-- happy little table
+	nameplate.StyleFilterChanges = {}
 
-	-- object event pathing (these update after MapInfo updates),
-	-- these event are not added onto the nameplate itself
+	-- add events to be watched
+	for event, unitless in pairs(mod.StyleFilterDefaultEvents) do
+		mod:StyleFilterRegister(nameplate, event, unitless)
+	end
+
+	-- object event pathing (these update after MapInfo updates), these events are not added onto the nameplate itself
 	mod:StyleFilterRegister(nameplate,'LOADING_SCREEN_DISABLED', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_NEW_AREA', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED_INDOORS', nil, nil, E.MapInfo)
 	mod:StyleFilterRegister(nameplate,'ZONE_CHANGED', nil, nil, E.MapInfo)
-
-	-- fire up the ouf injection watcher
-	mod:StyleFilterEventWatch(nameplate)
 end
 
 function mod:StyleFilterAddCustomCheck(name, func)

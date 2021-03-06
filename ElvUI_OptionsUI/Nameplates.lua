@@ -378,45 +378,24 @@ end
 local function UpdateInstanceDifficulty()
 	if (E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.party) then
 		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.types.args.dungeonDifficulty = {
-			type = 'group',
+			type = 'multiselect',
 			name = L["DUNGEON_DIFFICULTY"],
 			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
-			inline = true,
 			order = 10,
-			get = function(info)
-				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]]
+			get = function(_, key)
+				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[key]
 			end,
-			set = function(info, value)
-				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[info[#info]] = value
+			set = function(_, key, value)
+				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.dungeon[key] = value
 				UpdateInstanceDifficulty()
 				NP:ConfigureAll()
 			end,
-			args = {
-				normal = {
-					type = 'toggle',
-					name = GetDifficultyInfo(1),
-					order = 1
-				},
-				heroic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(2),
-					order = 2
-				},
-				mythic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(23),
-					order = 3
-				},
-				['mythic+'] = {
-					type = 'toggle',
-					name = GetDifficultyInfo(8),
-					order = 4
-				},
-				timewalking = {
-					type = 'toggle',
-					name = GetDifficultyInfo(24),
-					order = 5
-				}
+			values = {
+				normal = GetDifficultyInfo(1),
+				heroic = GetDifficultyInfo(2),
+				mythic = GetDifficultyInfo(23),
+				['mythic+'] = GetDifficultyInfo(8),
+				timewalking = GetDifficultyInfo(24),
 			}
 		}
 	else
@@ -425,65 +404,28 @@ local function UpdateInstanceDifficulty()
 
 	if (E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceType.raid) then
 		E.Options.args.nameplate.args.filters.args.triggers.args.instanceType.args.types.args.raidDifficulty = {
-			type = 'group',
+			type = 'multiselect',
 			name = L["Raid Difficulty"],
 			desc = L["Check these to only have the filter active in certain difficulties. If none are checked, it is active in all difficulties."],
-			inline = true,
 			order = 11,
-			get = function(info)
-				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[info[#info]]
+			get = function(_, key)
+				return E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[key]
 			end,
-			set = function(info, value)
-				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[info[#info]] = value
+			set = function(_, key, value)
+				E.global.nameplate.filters[selectedNameplateFilter].triggers.instanceDifficulty.raid[key] = value
 				UpdateInstanceDifficulty()
 				NP:ConfigureAll()
 			end,
-			args = {
-				lfr = {
-					type = 'toggle',
-					name = GetDifficultyInfo(17),
-					order = 1
-				},
-				normal = {
-					type = 'toggle',
-					name = GetDifficultyInfo(14),
-					order = 2
-				},
-				heroic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(15),
-					order = 3
-				},
-				mythic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(16),
-					order = 4
-				},
-				timewalking = {
-					type = 'toggle',
-					name = GetDifficultyInfo(24),
-					order = 5
-				},
-				legacy10normal = {
-					type = 'toggle',
-					name = GetDifficultyInfo(3),
-					order = 6
-				},
-				legacy25normal = {
-					type = 'toggle',
-					name = GetDifficultyInfo(4),
-					order = 7
-				},
-				legacy10heroic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(5),
-					order = 8
-				},
-				legacy25heroic = {
-					type = 'toggle',
-					name = GetDifficultyInfo(6),
-					order = 9
-				}
+			values = {
+				lfr = GetDifficultyInfo(17),
+				normal = GetDifficultyInfo(14),
+				heroic = GetDifficultyInfo(15),
+				mythic = GetDifficultyInfo(16),
+				timewalking = GetDifficultyInfo(24),
+				legacy10normal = GetDifficultyInfo(3),
+				legacy25normal = GetDifficultyInfo(4),
+				legacy10heroic = GetDifficultyInfo(5),
+				legacy25heroic = GetDifficultyInfo(6),
 			}
 		}
 	else
@@ -1039,167 +981,211 @@ local function UpdateFilterGroup()
 							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					end,
 					args = {
-						types = {
-							name = '',
+						playerGroup = {
+							name = L["Player"],
+							type = 'group',
+							inline = true,
+							order = 1,
+							args = {
+								inCombat = {
+									type = 'toggle',
+									name = L["In Combat"],
+									desc = L["If enabled then the filter will only activate when you are in combat."],
+									order = 1
+								},
+								outOfCombat = {
+									type = 'toggle',
+									name = L["Out of Combat"],
+									desc = L["If enabled then the filter will only activate when you are out of combat."],
+									order = 2
+								},
+								inVehicle = {
+									type = 'toggle',
+									name = L["In Vehicle"],
+									desc = L["If enabled then the filter will only activate when you are in a Vehicle."],
+									order = 3
+								},
+								outOfVehicle = {
+									type = 'toggle',
+									name = L["Out of Vehicle"],
+									desc = L["If enabled then the filter will only activate when you are not in a Vehicle."],
+									order = 4
+								},
+								isResting = {
+									type = 'toggle',
+									name = L["Is Resting"],
+									desc = L["If enabled then the filter will only activate when you are resting at an Inn."],
+									order = 5
+								},
+								playerCanAttack = {
+									type = 'toggle',
+									name = L["Can Attack"],
+									desc = L["If enabled then the filter will only activate when the unit can be attacked by the active player."],
+									order = 6
+								},
+								playerCanNotAttack = {
+									type = 'toggle',
+									name = L["Can Not Attack"],
+									desc = L["If enabled then the filter will only activate when the unit can not be attacked by the active player."],
+									order = 7
+								}
+							}
+						},
+						unitGroup = {
+							name = L["Unit"],
 							type = 'group',
 							inline = true,
 							order = 2,
 							args = {
-								inCombat = {
-									name = L["Player in Combat"],
-									desc = L["If enabled then the filter will only activate when you are in combat."],
+								inCombatUnit = {
 									type = 'toggle',
+									name = L["In Combat"],
+									desc = L["If enabled then the filter will only activate when the unit is in combat."],
 									order = 1
 								},
-								outOfCombat = {
-									name = L["Player Out of Combat"],
-									desc = L["If enabled then the filter will only activate when you are out of combat."],
+								outOfCombatUnit = {
 									type = 'toggle',
+									name = L["Out of Combat"],
+									desc = L["If enabled then the filter will only activate when the unit is out of combat."],
 									order = 2
 								},
-								inCombatUnit = {
-									name = L["Unit in Combat"],
-									desc = L["If enabled then the filter will only activate when the unit is in combat."],
+								inVehicleUnit = {
 									type = 'toggle',
+									name = L["In Vehicle"],
+									desc = L["If enabled then the filter will only activate when the unit is in a Vehicle."],
 									order = 3
 								},
-								outOfCombatUnit = {
-									name = L["Unit Out of Combat"],
-									desc = L["If enabled then the filter will only activate when the unit is out of combat."],
+								outOfVehicleUnit = {
 									type = 'toggle',
+									name = L["Out of Vehicle"],
+									desc = L["If enabled then the filter will only activate when the unit is not in a Vehicle."],
 									order = 4
 								},
-								spacer1 = ACH:Spacer(5, 'full'),
-								inVehicle = {
-									name = L["Player in Vehicle"],
-									desc = L["If enabled then the filter will only activate when you are in a Vehicle."],
-									order = 6,
-									type = 'toggle'
-								},
-								outOfVehicle = {
-									name = L["Player Out of Vehicle"],
-									desc = L["If enabled then the filter will only activate when you are not in a Vehicle."],
-									order = 7,
-									type = 'toggle'
-								},
-								inVehicleUnit = {
-									name = L["Unit in Vehicle"],
-									desc = L["If enabled then the filter will only activate when the unit is in a Vehicle."],
-									order = 8,
-									type = 'toggle'
-								},
-								outOfVehicleUnit = {
-									name = L["Unit Out of Vehicle"],
-									desc = L["If enabled then the filter will only activate when the unit is not in a Vehicle."],
-									order = 9,
-									type = 'toggle'
-								},
-								spacer2 = ACH:Spacer(10, 'full'),
-								isResting = {
+								inParty = {
 									type = 'toggle',
-									name = L["Player is Resting"],
-									desc = L["If enabled then the filter will only activate when you are resting at an Inn."],
-									order = 11
+									name = L["In Party"],
+									desc = L["If enabled then the filter will only activate when the unit is in your Party."],
+									order = 5
+								},
+								notInParty = {
+									type = 'toggle',
+									name = L["Not in Party"],
+									desc = L["If enabled then the filter will only activate when the unit is not in your Party."],
+									order = 6
+								},
+								inRaid = {
+									type = 'toggle',
+									name = L["In Raid"],
+									desc = L["If enabled then the filter will only activate when the unit is in your Raid."],
+									order = 7
+								},
+								notInRaid = {
+									type = 'toggle',
+									name = L["Not in Raid"],
+									desc = L["If enabled then the filter will only activate when the unit is not in your Raid."],
+									order = 8
 								},
 								isPet = {
 									type = 'toggle',
-									name = L["Unit is Pet"],
+									name = L["Is Pet"],
 									desc = L["If enabled then the filter will only activate when the unit is the active player's pet."],
-									order = 12
+									order = 9
 								},
 								isNotPet= {
 									type = 'toggle',
-									name =L["Unit is Not Pet"],
+									name =L["Not Pet"],
 									desc = L["If enabled then the filter will only activate when the unit is not the active player's pet."],
-									order = 13
+									order = 10
 								},
 								isPlayerControlled = {
 									type = 'toggle',
-									name = L["Unit is Player Controlled"],
+									name = L["Player Controlled"],
 									desc = L["If enabled then the filter will only activate when the unit is controlled by the player."],
-									order = 14
+									order = 11
 								},
 								isNotPlayerControlled = {
 									type = 'toggle',
-									name = L["Unit is Not Player Controlled"],
+									name = L["Not Player Controlled"],
 									desc = L["If enabled then the filter will only activate when the unit is not controlled by the player."],
-									order = 15
+									order = 12
 								},
 								isOwnedByPlayer = {
 									type = 'toggle',
-									name = L["Unit is Owned By Player"],
+									name = L["Owned By Player"],
 									desc = L["If enabled then the filter will only activate when the unit is owned by the player."],
-									order = 16
+									order = 13
 								},
 								isNotOwnedByPlayer = {
 									type = 'toggle',
-									name = L["Unit is Not Owned By Player"],
+									name = L["Not Owned By Player"],
 									desc = L["If enabled then the filter will only activate when the unit is not owned by the player."],
-									order = 17
+									order = 14
 								},
 								isPvP = {
 									type = 'toggle',
-									name = L["Unit is PvP"],
+									name = L["Is PvP"],
 									desc = L["If enabled then the filter will only activate when the unit is pvp-flagged."],
-									order = 18
+									order = 15
 								},
 								isNotPvP = {
 									type = 'toggle',
-									name = L["Unit is Not PvP"],
+									name = L["Not PvP"],
 									desc = L["If enabled then the filter will only activate when the unit is not pvp-flagged."],
-									order = 19
+									order = 16
 								},
 								isTapDenied = {
 									type = 'toggle',
-									name = L["Unit is Tap Denied"],
+									name = L["Tap Denied"],
 									desc = L["If enabled then the filter will only activate when the unit is tap denied."],
-									order = 20
+									order = 17
 								},
 								isNotTapDenied = {
 									type = 'toggle',
-									name = L["Unit is Not Tap Denied"],
+									name = L["Not Tap Denied"],
 									desc = L["If enabled then the filter will only activate when the unit is not tap denied."],
-									order = 21
+									order = 18
 								},
-								playerCanAttack = {
-									type = 'toggle',
-									name = L["Player Can Attack"],
-									desc = L["If enabled then the filter will only activate when the unit can be attacked by the active player."],
-									order = 22
-								},
-								playerCanNotAttack = {
-									type = 'toggle',
-									name = L["Player Can Not Attack"],
-									desc = L["If enabled then the filter will only activate when the unit can not be attacked by the active player."],
-									order = 23
-								},
-								spacer3 = ACH:Spacer(24, 'full'),
+							}
+						},
+						npcGroup = {
+							name = '',
+							type = 'group',
+							inline = true,
+							order = 3,
+							args = {
 								hasTitleNPC = {
 									type = 'toggle',
 									name = L["Has NPC Title"],
-									order = 25
+									order = 1
 								},
 								noTitleNPC = {
 									type = 'toggle',
 									name = L["No NPC Title"],
-									order = 26
+									order = 2
 								},
-								spacer4 = ACH:Spacer(27, 'full'),
+							}
+						},
+						questGroup = {
+							name = '',
+							type = 'group',
+							inline = true,
+							order = 4,
+							args = {
 								isQuest = {
 									type = 'toggle',
 									name = L["Quest Unit"],
-									order = 28
+									order = 1
 								},
 								notQuest = {
 									type = 'toggle',
 									name = L["Not Quest Unit"],
-									order = 29
+									order = 2
 								},
 								questBoss = {
 									type = 'toggle',
 									name = L["Quest Boss"],
-									order = 30,
-								}
+									order = 3,
+								},
 							}
 						}
 					}
@@ -1230,24 +1216,54 @@ local function UpdateFilterGroup()
 					order = 12,
 					type = 'group',
 					name = L["ROLE"],
-					get = function(info)
-						return E.global.nameplate.filters[selectedNameplateFilter].triggers.role[info[#info]]
-					end,
-					set = function(info, value)
-						E.global.nameplate.filters[selectedNameplateFilter].triggers.role[info[#info]] = value
-						NP:ConfigureAll()
-					end,
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
 							E.db.nameplates.filters[selectedNameplateFilter].triggers and
 							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					end,
 					args = {
-						types = {
-							name = '',
+						myRole = {
+							name = L["Player"],
 							type = 'group',
 							inline = true,
 							order = 2,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.role[info[#info]]
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.role[info[#info]] = value
+								NP:ConfigureAll()
+							end,
+							args = {
+								tank = {
+									type = 'toggle',
+									order = 1,
+									name = L["TANK"]
+								},
+								healer = {
+									type = 'toggle',
+									order = 2,
+									name = L["Healer"]
+								},
+								damager = {
+									type = 'toggle',
+									order = 3,
+									name = L["DAMAGER"]
+								}
+							}
+						},
+						unitRole = {
+							name = L["Unit"],
+							type = 'group',
+							inline = true,
+							order = 2,
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].triggers.unitRole[info[#info]]
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].triggers.unitRole[info[#info]] = value
+								NP:ConfigureAll()
+							end,
 							args = {
 								tank = {
 									type = 'toggle',
@@ -3190,6 +3206,7 @@ local function GetUnitSettings(unit, name)
 								order = 2,
 								name = L["Text Format"],
 								type = 'input',
+								width = 'full',
 							},
 							position = {
 								order = 3,
@@ -3381,6 +3398,7 @@ local function GetUnitSettings(unit, name)
 								order = 2,
 								name = L["Text Format"],
 								type = 'input',
+								width = 'full',
 							},
 							position = {
 								order = 3,
@@ -4415,7 +4433,8 @@ local function GetUnitSettings(unit, name)
 					format = {
 						order = 2,
 						name = L["Format"],
-						type = 'input'
+						type = 'input',
+						width = 'full'
 					},
 					position = {
 						order = 3,
@@ -4457,7 +4476,7 @@ local function GetUnitSettings(unit, name)
 					fontGroup = {
 						type = 'group',
 						order = 7,
-						name = '',
+						name = ' ',
 						inline = true,
 						get = function(info)
 							return E.db.nameplates.units[unit].level[info[#info]]
@@ -4514,6 +4533,7 @@ local function GetUnitSettings(unit, name)
 						order = 2,
 						name = L["Text Format"],
 						type = 'input',
+						width = 'full',
 					},
 					position = {
 						order = 3,
@@ -4655,7 +4675,7 @@ local function GetUnitSettings(unit, name)
 			},
 			raidTargetIndicator = {
 				order = 11,
-				name = L["Raid Icon"],
+				name = L["Target Marker Icon"],
 				type = 'group',
 				get = function(info)
 					return E.db.nameplates.units[unit].raidTargetIndicator[info[#info]]
@@ -5145,6 +5165,7 @@ local function GetUnitSettings(unit, name)
 					order = 2,
 					name = L["Text Format"],
 					type = 'input',
+					width = 'full',
 				},
 				position = {
 					order = 3,
@@ -6558,20 +6579,17 @@ E.Options.args.nameplate = {
 						style8 = L["Background Glow"] .. ' + ' .. L["Side Arrows"]
 					}
 				},
-				arrow = {
+				arrowScale = {
 					order = 2,
-					type = 'select',
-					sortByValue = true,
-					name = L["Arrow Texture"],
-					values = {
-						ArrowUp = E:TextureString(E.Media.Textures.ArrowUp, ':14:14'),
-						Arrow1 = E:TextureString(E.Media.Textures.Arrow1, ':14:14'),
-						Arrow2 = E:TextureString(E.Media.Textures.Arrow2, ':14:14')
-					},
+					type = 'range',
+					name = L["Arrow Scale"],
+					min = 0.2,
+					max = 2,
+					step = 0.01,
+					isPercent = true
 				},
-				spacer1 = ACH:Spacer(3, 'full'),
 				nonTargetAlphaShortcut = {
-					order = 5,
+					order = 3,
 					type = 'execute',
 					name = L["Non-Target Alpha"],
 					func = function()
@@ -6581,7 +6599,7 @@ E.Options.args.nameplate = {
 					end
 				},
 				targetScaleShortcut = {
-					order = 6,
+					order = 4,
 					type = 'execute',
 					name = L["Scale"],
 					func = function()
@@ -6590,9 +6608,8 @@ E.Options.args.nameplate = {
 						UpdateFilterGroup()
 					end
 				},
-				spacer2 = ACH:Spacer(10, 'full'),
 				classBarGroup = {
-					order = 15,
+					order = 20,
 					type = 'group',
 					name = L["Classbar"],
 					inline = true,
@@ -6661,13 +6678,53 @@ E.Options.args.nameplate = {
 							end
 						}
 					}
+				},
+				arrows = {
+					order = 30,
+					name = L["Arrow Texture"],
+					type = 'multiselect',
+					customWidth = 80,
+					get = function(_, key)
+						return E.db.nameplates.units.TARGET.arrow == key
+					end,
+					set = function(_, key)
+						E.db.nameplates.units.TARGET.arrow = key
+						NP:SetCVars()
+						NP:ConfigureAll()
+					end,
 				}
 			}
 		}
 	}
 }
 
+do -- target arrow textures
+	local arrows = {}
+	E.Options.args.nameplate.args.targetGroup.args.arrows.values = arrows
+
+	for key, arrow in pairs(E.Media.Arrows) do
+		arrows[key] = E:TextureString(arrow, ':32:32')
+	end
+end
+
 ORDER = 10
+
+E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args.chargedComboPoint = {
+	order = 17,
+	type = 'color',
+	name = L["Charged Combo Point"],
+	get = function()
+		local t = E.db.nameplates.colors.classResources.chargedComboPoint
+		local d = P.nameplates.colors.classResources.chargedComboPoint
+		return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+	end,
+	set = function(_, r, g, b)
+		local t = E.db.nameplates.colors.classResources.chargedComboPoint
+		t.r, t.g, t.b = r, g, b
+		NP:ConfigureAll()
+	end,
+}
+
 for i = 1, 6 do
 	E.Options.args.nameplate.args.generalGroup.args.colorsGroup.args.classResources.args['CHI_POWER' .. i] = {
 		type = 'color',

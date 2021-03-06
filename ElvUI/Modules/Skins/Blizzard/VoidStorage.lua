@@ -49,8 +49,7 @@ function S:Blizzard_VoidStorageUI()
 		for i = 1, NumSlots do
 			local Button = _G['VoidStorage'..StorageType..'Button'..i]
 			Button:StripTextures()
-			Button:CreateBackdrop()
-			Button.backdrop:SetAllPoints()
+			Button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 			Button:StyleButton()
 			S:HandleIcon(Button.icon)
 			Button.icon:SetInside()

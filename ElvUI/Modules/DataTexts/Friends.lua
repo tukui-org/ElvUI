@@ -144,6 +144,7 @@ local clientTags = {
 	[_G.BNET_CLIENT_COD] = 'BO4',
 	[_G.BNET_CLIENT_COD_MW] = 'MW',
 	[_G.BNET_CLIENT_COD_MW2] = 'MW2',
+	[_G.BNET_CLIENT_COD_BOCW] = 'CW',
 	BSAp = L["Mobile"],
 }
 
@@ -158,9 +159,28 @@ local clientIndex = {
 	[_G.BNET_CLIENT_COD] = 8,
 	[_G.BNET_CLIENT_COD_MW] = 9,
 	[_G.BNET_CLIENT_COD_MW2] = 10,
-	App = 11,
-	BSAp = 12,
+	[_G.BNET_CLIENT_COD_BOCW] = 11,
+	App = 12,
+	BSAp = 13,
 }
+
+local clientFullName = {
+	[_G.BNET_CLIENT_WOW] = "World of Warcraft",
+	App = "App",
+	BSAp = L["Mobile"],
+	[_G.BNET_CLIENT_D3] = "Diablo 3",
+	[_G.BNET_CLIENT_WTCG] = "Hearthstone",
+	[_G.BNET_CLIENT_HEROES] = "Heroes of the Storm",
+	[_G.BNET_CLIENT_OVERWATCH] = "Overwatch",
+	[_G.BNET_CLIENT_SC] = "Starcraft",
+	[_G.BNET_CLIENT_SC2] = "Starcraft 2",
+	[_G.BNET_CLIENT_COD] = "COD: Black Ops 4",
+	[_G.BNET_CLIENT_COD_MW] = "COD: Modern Warfare",
+	[_G.BNET_CLIENT_COD_MW2] = "COD: Modern Warfare 2",
+	[_G.BNET_CLIENT_COD_BOCW] = "COD: Cold War"
+}
+
+DT.clientFullName = clientFullName
 
 local function inGroup(name, realmName)
 	if realmName and realmName ~= '' and realmName ~= E.myrealm then

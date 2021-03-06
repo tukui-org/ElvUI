@@ -51,10 +51,8 @@ function S:BlizzardMiscFrames()
 	for i = 1, #skins do
 		local frame = _G[skins[i]]
 		frame:StripTextures()
-		frame:CreateBackdrop('Transparent')
+		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, i == 1) -- arg8: set AutoCompleteBox backdrop to same frame level
 	end
-
-	_G.AutoCompleteBox.backdrop:SetFrameLevel(_G.AutoCompleteBox:GetFrameLevel())
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
@@ -122,8 +120,7 @@ function S:BlizzardMiscFrames()
 	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(s)
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
-			s.closeDialog:CreateBackdrop('Transparent')
-			s.closeDialog.backdrop:SetFrameLevel(s.closeDialog:GetFrameLevel())
+			s.closeDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 			s:SetScale(_G.UIParent:GetScale())
 			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
 			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
@@ -140,8 +137,7 @@ function S:BlizzardMiscFrames()
 		if s and s.CloseDialog and not s.CloseDialog.template then
 			s:SetScale(_G.UIParent:GetScale())
 			s.CloseDialog:StripTextures()
-			s.CloseDialog:CreateBackdrop('Transparent')
-			s.CloseDialog.backdrop:SetFrameLevel(s.CloseDialog:GetFrameLevel())
+			s.CloseDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 			S:HandleButton(s.CloseDialog.ConfirmButton)
 			S:HandleButton(s.CloseDialog.ResumeButton)
 		end
@@ -257,13 +253,14 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameContentsFrameText:Point('TOPLEFT', 53, 0)
 		_G.GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
 		_G.GhostFrameContentsFrameIcon:Point('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
-		local b = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent(), 'BackdropTemplate')
-		local p = E.PixelMode and 1 or 2
-		b:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -p, p)
-		b:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, p, -p)
+
+		local x = E.PixelMode and 1 or 2
+		local button = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent(), 'BackdropTemplate')
+		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -x, x)
+		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, x, -x)
 		_G.GhostFrameContentsFrameIcon:Size(37,38)
-		_G.GhostFrameContentsFrameIcon:SetParent(b)
-		b:CreateBackdrop()
+		_G.GhostFrameContentsFrameIcon:SetParent(button)
+		button:CreateBackdrop()
 	end
 
 	_G.OpacityFrame:StripTextures()

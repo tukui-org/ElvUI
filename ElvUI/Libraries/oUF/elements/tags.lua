@@ -69,6 +69,7 @@ local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
+local xpcall = Private.xpcall
 local unitExists = Private.unitExists
 
 -- ElvUI block
@@ -562,6 +563,7 @@ local unitlessEvents = {
 	NEUTRAL_FACTION_SELECT_RESULT = true,
 	PARTY_LEADER_CHANGED = true,
 	PLAYER_LEVEL_UP = true,
+	PLAYER_TALENT_UPDATE = true,
 	PLAYER_TARGET_CHANGED = true,
 	PLAYER_UPDATE_RESTING = true,
 	RUNE_POWER_UPDATE = true,
@@ -735,8 +737,10 @@ end
 local function registerEvent(fontstr, event)
 	if(not events[event]) then events[event] = {} end
 
-	eventFrame:RegisterEvent(event)
-	tinsert(events[event], fontstr)
+	local isOK = xpcall(eventFrame.RegisterEvent, eventFrame, event)
+	if(isOK) then
+		tinsert(events[event], fontstr)
+	end
 end
 
 local function registerEvents(fontstr, tagstr)
@@ -753,14 +757,20 @@ end
 
 local function unregisterEvents(fontstr)
 	for event, data in next, events do
-		for i, tagfsstr in next, data do
+		local index = 1
+		local tagfsstr = data[index]
+		while tagfsstr do
 			if(tagfsstr == fontstr) then
 				if(#data == 1) then
 					eventFrame:UnregisterEvent(event)
 				end
 
-				tremove(data, i)
+				tremove(data, index)
+			else
+				index = index + 1
 			end
+
+			tagfsstr = data[index]
 		end
 	end
 end
@@ -910,10 +920,16 @@ local function Untag(self, fs)
 
 	unregisterEvents(fs)
 	for _, timers in next, eventlessUnits do
-		for i, fontstr in next, timers do
+		local index = 1
+		local fontstr = timers[index]
+		while fontstr do
 			if(fs == fontstr) then
-				tremove(timers, i)
+				tremove(timers, index)
+			else
+				index = index + 1
 			end
+
+			fontstr = timers[index]
 		end
 	end
 
@@ -921,6 +937,11 @@ local function Untag(self, fs)
 
 	taggedFS[fs] = nil
 	self.__tags[fs] = nil
+end
+
+local function strip(tag)
+	-- remove prefix, custom args, and suffix
+	return tag:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]") -- ElvUI uses old tag format
 end
 
 oUF.Tags = {
@@ -938,7 +959,7 @@ oUF.Tags = {
 		-- string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr, func in next, tagPool do
-			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then
+			if(strip(tagstr):match(tag)) then
 				tagPool[tagstr] = nil
 
 				for fs in next, taggedFS do
@@ -960,7 +981,7 @@ oUF.Tags = {
 		-- string.match will fail to find the match.
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 		for tagstr in next, tagPool do
-			if(tagstr:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]"):match(tag)) then
+			if(strip(tagstr):match(tag)) then
 				for fs, ts in next, taggedFS do
 					if(ts == tagstr) then
 						unregisterEvents(fs)

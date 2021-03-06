@@ -33,7 +33,8 @@ E.ConfigModeLayouts = {
 	'PARTY',
 	'ARENA',
 	'RAID',
-	'ACTIONBARS'
+	'ACTIONBARS',
+	'WIDGETS'
 }
 
 E.ConfigModeLocalizedStrings = {
@@ -43,7 +44,8 @@ E.ConfigModeLocalizedStrings = {
 	PARTY = _G.PARTY,
 	ARENA = _G.ARENA,
 	RAID = _G.RAID,
-	ACTIONBARS = _G.ACTIONBARS_LABEL
+	ACTIONBARS = _G.ACTIONBARS_LABEL,
+	WIDGETS = L["Blizzard Widgets"]
 }
 
 function E:Grid_Show()
@@ -246,11 +248,11 @@ function E:CreateMoverPopup()
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 
 	local f = CreateFrame('Frame', 'ElvUIMoverPopupWindow', _G.UIParent, 'BackdropTemplate')
-	f:SetFrameStrata('DIALOG')
+	f:SetFrameStrata('FULLSCREEN_DIALOG')
 	f:SetToplevel(true)
 	f:EnableMouse(true)
 	f:SetMovable(true)
-	f:SetFrameLevel(99)
+	f:SetFrameLevel(200)
 	f:SetClampedToScreen(true)
 	f:Size(370, 190)
 	f:SetTemplate('Transparent')
@@ -1175,7 +1177,6 @@ function E:ToggleOptionsUI(msg)
 			buttonsHolder:Point('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
 			buttonsHolder:Point('TOPLEFT', left, 'TOPLEFT', 0, -70)
 			buttonsHolder:Point('BOTTOMRIGHT')
-			buttonsHolder:SetFrameLevel(5)
 			buttonsHolder:SetClipsChildren(true)
 			left.buttonsHolder = buttonsHolder
 
@@ -1191,7 +1192,6 @@ function E:ToggleOptionsUI(msg)
 			slider:SetScript('OnValueChanged', ConfigSliderOnValueChanged)
 			slider:SetOrientation('VERTICAL')
 			slider:SetObeyStepOnDrag(true)
-			slider:SetFrameLevel(4)
 			slider:SetValueStep(1)
 			slider:SetValue(0)
 			slider:Width(192)

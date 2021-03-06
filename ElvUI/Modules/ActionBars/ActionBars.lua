@@ -2,23 +2,27 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local unpack = unpack
-local ipairs, pairs, select, strmatch = ipairs, pairs, select, strmatch
-local format, gsub, strsplit, strfind = format, gsub, strsplit, strfind
+local ipairs, pairs, select, strmatch, unpack = ipairs, pairs, select, strmatch, unpack
+local format, gsub, strsplit, strfind, strupper = format, gsub, strsplit, strfind, strupper
 
+local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
+local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetOverrideBarIndex = GetOverrideBarIndex
+local GetSpellBookItemInfo = GetSpellBookItemInfo
 local GetVehicleBarIndex = GetVehicleBarIndex
+local HasOverrideActionBar = HasOverrideActionBar
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
+local IsPossessBarVisible = IsPossessBarVisible
 local PetDismiss = PetDismiss
 local RegisterStateDriver = RegisterStateDriver
+local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetClampedTextureRotation = SetClampedTextureRotation
 local SetCVar = SetCVar
 local SetModifiedClick = SetModifiedClick
-local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetOverrideBindingClick = SetOverrideBindingClick
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitCastingInfo = UnitCastingInfo
@@ -27,14 +31,11 @@ local UnitExists = UnitExists
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnregisterStateDriver = UnregisterStateDriver
-local VehicleExit = VehicleExit
-local GetSpellBookItemInfo = GetSpellBookItemInfo
-local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
-local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks
-local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdateOnBarHighlightMarksByFlyout = UpdateOnBarHighlightMarksByFlyout
 local UpdateOnBarHighlightMarksByPetAction = UpdateOnBarHighlightMarksByPetAction
+local UpdateOnBarHighlightMarksBySpell = UpdateOnBarHighlightMarksBySpell
 local UpdatePetActionHighlightMarks = UpdatePetActionHighlightMarks
+local VehicleExit = VehicleExit
 
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
@@ -46,6 +47,7 @@ local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'ActionBars')
+local defaultFont, defaultFontSize, defaultFontOutline
 
 local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
 hiddenParent:SetAllPoints()
@@ -62,58 +64,49 @@ AB.barDefaults = {
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,191',
 	},
 	bar2 = {
-		page = 5,
-		bindButtons = 'MULTIACTIONBAR2BUTTON',
-		conditions = '',
+		page = 2,
+		bindButtons = 'ELVUIBAR6BUTTON',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
 	},
 	bar3 = {
-		page = 6,
-		bindButtons = 'MULTIACTIONBAR1BUTTON',
-		conditions = '',
+		page = 3,
+		bindButtons = 'MULTIACTIONBAR3BUTTON',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,-1,139',
 	},
 	bar4 = {
 		page = 4,
 		bindButtons = 'MULTIACTIONBAR4BUTTON',
-		conditions = '',
 		position = 'RIGHT,ElvUIParent,RIGHT,-4,0',
 	},
 	bar5 = {
-		page = 3,
-		bindButtons = 'MULTIACTIONBAR3BUTTON',
-		conditions = '',
-		position = 'BOTTOM,ElvUIParent,BOTTOM,-92,57',
+		page = 5,
+		bindButtons = 'MULTIACTIONBAR2BUTTON',
+		position = 'BOTTOM,ElvUIParent,BOTTOM,-279,4',
 	},
 	bar6 = {
-		page = 2,
-		bindButtons = 'ELVUIBAR6BUTTON',
-		conditions = '',
-		position = 'BOTTOM,ElvUI_Bar2,TOP,0,2',
+		page = 6,
+		bindButtons = 'MULTIACTIONBAR1BUTTON',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,264',
 	},
 	bar7 = {
 		page = 7,
 		bindButtons = 'EXTRABAR7BUTTON',
-		conditions = '',
-		position = 'BOTTOM,ElvUI_Bar1,TOP,0,82',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,298',
 	},
 	bar8 = {
 		page = 8,
 		bindButtons = 'EXTRABAR8BUTTON',
-		conditions = '',
-		position = 'BOTTOM,ElvUI_Bar1,TOP,0,122',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,332',
 	},
 	bar9 = {
 		page = 9,
 		bindButtons = 'EXTRABAR9BUTTON',
-		conditions = '',
-		position = 'BOTTOM,ElvUI_Bar1,TOP,0,162',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,366',
 	},
 	bar10 = {
 		page = 10,
 		bindButtons = 'EXTRABAR10BUTTON',
-		conditions = '',
-		position = 'BOTTOM,ElvUI_Bar1,TOP,0,202',
+		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
 }
 
@@ -129,7 +122,7 @@ AB.customExitButton = {
 	tooltip = _G.LEAVE_VEHICLE,
 }
 
-function AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+function AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthMult, heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	if not bar.backdrop:IsShown() then return end
 
 	local useWidthMult = widthMult > 1
@@ -143,7 +136,7 @@ function AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, widthM
 		end
 		if useWidthMult then
 			local offset = ((oldWidth + buttonSpacing) * (widthMult - 1)) - backdropSpacing
-			bar.backdrop:Point(horizontalGrowth, anchorRowButton, horizontalGrowth, anchorLeft and -offset or offset, 0)
+			bar.backdrop:Point(horizontal, anchorRowButton, horizontal, anchorLeft and -offset or offset, 0)
 		end
 	end
 end
@@ -158,53 +151,103 @@ function AB:HandleBackdropMover(bar, backdropSpacing)
 	end
 end
 
-function AB:PositionAndSizeBar(barName)
-	local db = AB.db[barName]
+function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
+	local db = bar.db
 
-	local buttonSpacing = db.buttonspacing
-	local backdropSpacing = db.backdropSpacing
-	local buttonsPerRow = db.buttonsPerRow
 	local numButtons = db.buttons
-	local size = db.buttonsize
-	local point = db.point
-	local visibility = db.visibility
-	local bar = AB.handledBars[barName]
+	local buttonsPerRow = db.buttonsPerRow
+	local buttonWidth = db.buttonSize
+	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
 
-	bar.db = db
-	bar.db.position = nil --Depreciated
-
-	if visibility and visibility:match('[\n\r]') then
-		visibility = visibility:gsub('[\n\r]','')
+	if bar.LastButton then
+		if numButtons > bar.LastButton then numButtons = bar.LastButton end
+		if buttonsPerRow > bar.LastButton then buttonsPerRow = bar.LastButton end
 	end
 
 	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
-	local sideSpacing = db.backdrop and (E.Border + backdropSpacing) or E.Spacing
 
-	bar.mouseover = db.mouseover
-	if bar.mouseover then
-		bar:SetAlpha(0)
-		AB:FadeBarBlings(bar, 0)
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(db.point)
+	local point, relativeFrame, relativePoint, x, y
+	if index == 1 then
+		local firstButtonSpacing = db.backdrop and (E.Border + db.backdropSpacing) or E.Spacing
+		if db.point == 'BOTTOMLEFT' then
+			x, y = firstButtonSpacing, firstButtonSpacing
+		elseif db.point == 'TOPRIGHT' then
+			x, y = -firstButtonSpacing, -firstButtonSpacing
+		elseif db.point == 'TOPLEFT' then
+			x, y = firstButtonSpacing, -firstButtonSpacing
+		else
+			x, y = -firstButtonSpacing, firstButtonSpacing
+		end
+
+		point, relativeFrame, relativePoint = db.point, bar, db.point
+	elseif (index - 1) % buttonsPerRow == 0 then
+		point, relativeFrame, relativePoint, x, y = 'TOP', lastColumnButton, 'BOTTOM', 0, -db.buttonSpacing
+		if anchorUp then
+			point, relativePoint, y = 'BOTTOM', 'TOP', db.buttonSpacing
+		end
 	else
-		bar:SetAlpha(db.alpha)
-		AB:FadeBarBlings(bar, db.alpha)
+		point, relativeFrame, relativePoint, x, y = 'LEFT', lastButton, 'RIGHT', db.buttonSpacing, 0
+		if anchorLeft then
+			point, relativePoint, x = 'RIGHT', 'LEFT', -db.buttonSpacing
+		end
 	end
 
-	if db.inheritGlobalFade then
-		bar:SetParent(AB.fadeParent)
-	else
-		bar:SetParent(E.UIParent)
+	button:SetParent(bar)
+	button:ClearAllPoints()
+	button:SetAttribute('showgrid', 1)
+	button:EnableMouse(not db.clickThrough)
+	button:Size(buttonWidth, buttonHeight)
+	button:Point(point, relativeFrame, relativePoint, x, y)
+
+	if index == 1 then
+		bar.backdrop:Point(point, button, point, anchorLeft and db.backdropSpacing or -db.backdropSpacing, anchorUp and -db.backdropSpacing or db.backdropSpacing)
+	elseif index == buttonsPerRow then
+		bar.backdrop:Point(horizontal, button, horizontal, anchorLeft and -db.backdropSpacing or db.backdropSpacing, 0)
 	end
 
-	bar:EnableMouse(not db.clickThrough)
+	if button.handleBackdrop then
+		local anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
+		bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and db.backdropSpacing or -db.backdropSpacing)
+	end
+end
 
-	local verticalGrowth = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
-	local horizontalGrowth = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
-	local anchorUp, anchorLeft = verticalGrowth == 'UP', horizontalGrowth == 'LEFT'
+function AB:TrimIcon(button, masque)
+	if not button.icon then return end
 
-	bar.backdrop:SetShown(db.backdrop)
-	bar.backdrop:ClearAllPoints()
+	local left, right, top, bottom = unpack(button.db and button.db.customCoords or E.TexCoords)
+	local changeRatio = button.db and not button.db.keepSizeRatio
+	if changeRatio then
+		local width, height = button:GetSize()
+		local ratio = width / height
+		if ratio > 1 then
+			local trimAmount = (1 - (1 / ratio)) / 2
+			top = top + trimAmount
+			bottom = bottom - trimAmount
+		else
+			local trimAmount = (1 - ratio) / 2
+			left = left + trimAmount
+			right = right - trimAmount
+		end
+	end
 
-	-- mover magic ~Simpy
+	-- always when masque is off, otherwise only when keepSizeRatio is off
+	if not masque or changeRatio then
+		button.icon:SetTexCoord(left, right, top, bottom)
+	end
+end
+
+function AB:GetGrowth(point)
+	local vertical = (point == 'TOPLEFT' or point == 'TOPRIGHT') and 'DOWN' or 'UP'
+	local horizontal = (point == 'BOTTOMLEFT' or point == 'TOPLEFT') and 'RIGHT' or 'LEFT'
+	local anchorUp, anchorLeft = vertical == 'UP', horizontal == 'LEFT'
+
+	return vertical, horizontal, anchorUp, anchorLeft
+end
+
+function AB:MoverMagic(bar) -- ~Simpy
+	local _, _, anchorUp, anchorLeft = AB:GetGrowth(bar.db.point)
+
 	bar:ClearAllPoints()
 	if not bar.backdrop:IsShown() then
 		bar:SetPoint('BOTTOMLEFT', bar.mover)
@@ -213,131 +256,114 @@ function AB:PositionAndSizeBar(barName)
 	else
 		bar:SetPoint('TOPLEFT', bar.mover, 'TOPLEFT', anchorLeft and E.Border or -E.Border, E.Border)
 	end
+end
 
+function AB:PositionAndSizeBar(barName)
+	local db = AB.db[barName]
+	local bar = AB.handledBars[barName]
+
+	local buttonSpacing = db.buttonSpacing
+	local backdropSpacing = db.backdropSpacing
+	local buttonsPerRow = db.buttonsPerRow
+	local numButtons = db.buttons
+	local point = db.point
+	local visibility = db.visibility
+
+	bar.db = db
+	bar.mouseover = db.mouseover
+
+	if numButtons < buttonsPerRow then buttonsPerRow = numButtons end
+
+	bar:SetParent(db.inheritGlobalFade and AB.fadeParent or E.UIParent)
+	bar:EnableMouse(not db.clickThrough)
+	bar:SetAlpha(bar.mouseover and 0 or db.alpha)
+	bar:SetFrameStrata(db.frameStrata or 'LOW')
+	bar:SetFrameLevel(db.frameLevel)
+
+	AB:FadeBarBlings(bar, bar.mouseover and 0 or db.alpha)
+
+	bar.backdrop:SetShown(db.backdrop)
+	bar.backdrop:SetFrameStrata(db.frameStrata or 'LOW')
+	bar.backdrop:SetFrameLevel(db.frameLevel - 1)
+	bar.backdrop:ClearAllPoints()
+
+	AB:MoverMagic(bar)
+
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
+
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
-
 		button = bar.buttons[i]
-		button:SetParent(bar)
-		button:ClearAllPoints()
-		button:SetAttribute('showgrid', 1)
-		button:EnableMouse(not db.clickThrough)
-		button:Size(size)
+		button.db = db
 
-		local buttonPoint, anchorPoint
-		if i == 1 then
-			local x, y
-			if point == 'BOTTOMLEFT' then
-				x, y = sideSpacing, sideSpacing
-			elseif point == 'TOPRIGHT' then
-				x, y = -sideSpacing, -sideSpacing
-			elseif point == 'TOPLEFT' then
-				x, y = sideSpacing, -sideSpacing
-			else
-				x, y = -sideSpacing, sideSpacing
-			end
-
-			button:Point(point, bar, point, x, y)
+		if i == 1 or i == buttonsPerRow then
 			anchorRowButton = button
-		elseif (i - 1) % buttonsPerRow == 0 then
-			local y = -buttonSpacing
-			buttonPoint, anchorPoint = 'TOP', 'BOTTOM'
-			if anchorUp then
-				y = buttonSpacing
-				buttonPoint = 'BOTTOM'
-				anchorPoint = 'TOP'
-			end
-			button:Point(buttonPoint, lastColumnButton, anchorPoint, 0, y)
-		else
-			local x = buttonSpacing
-			buttonPoint, anchorPoint = 'LEFT', 'RIGHT'
-			if anchorLeft then
-				x = -buttonSpacing
-				buttonPoint = 'RIGHT'
-				anchorPoint = 'LEFT'
-			end
-
-			button:Point(buttonPoint, lastButton, anchorPoint, x, 0)
 		end
 
 		if i > numButtons then
 			button:Hide()
+			button.handleBackdrop = nil
 		else
 			button:Show()
-		end
-
-		if i == 1 then
-			bar.backdrop:Point(point, button, point, anchorLeft and backdropSpacing or -backdropSpacing, anchorUp and -backdropSpacing or backdropSpacing)
-		elseif i == buttonsPerRow then
-			bar.backdrop:Point(horizontalGrowth, button, horizontalGrowth, anchorLeft and -backdropSpacing or backdropSpacing, 0)
-			anchorRowButton = button
-		end
-
-		if button:IsShown() then
-			anchorPoint = anchorUp and 'TOP' or 'BOTTOM'
-			bar.backdrop:Point(anchorPoint, button, anchorPoint, 0, anchorUp and backdropSpacing or -backdropSpacing)
+			button.handleBackdrop = true -- keep over HandleButton
 			lastShownButton = button
 		end
 
+		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
-	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontalGrowth, lastShownButton, anchorRowButton)
+	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
 	AB:HandleBackdropMover(bar, backdropSpacing)
 
-	if db.enabled or not bar.initialized then
-		if AB.barDefaults['bar'..bar.id].conditions:find('[form,noform]') then
-			bar:SetAttribute('newCondition', gsub(AB.barDefaults['bar'..bar.id].conditions, ' %[form,noform%] 0; ', ''))
-			bar:SetAttribute('hasTempBar', true)
-		else
-			bar:SetAttribute('hasTempBar', false)
-		end
+	-- paging needs to be updated even if the bar is disabled
+	local defaults = AB.barDefaults[barName]
+	local page = AB:GetPage(barName, defaults.page, defaults.conditions)
+	RegisterStateDriver(bar, 'page', page)
+	bar:SetAttribute('page', page)
 
-		local page = AB:GetPage(barName, AB.barDefaults[barName].page, AB.barDefaults[barName].conditions)
-		RegisterStateDriver(bar, 'visibility', visibility)
-		RegisterStateDriver(bar, 'page', page)
-		bar:SetAttribute('page', page)
-		bar:Show()
-
-		if not bar.initialized then
-			bar.initialized = true
-			AB:PositionAndSizeBar(barName)
-			return
-		end
+	if db.enabled then
+		visibility = gsub(visibility, '[\n\r]', '')
 
 		E:EnableMover(bar.mover:GetName())
+		RegisterStateDriver(bar, 'visibility', visibility)
+		bar:Show()
 	else
 		E:DisableMover(bar.mover:GetName())
 		UnregisterStateDriver(bar, 'visibility')
 		bar:Hide()
 	end
 
-	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonspacing / 2)
+	E:SetMoverSnapOffset('ElvAB_'..bar.id, db.buttonSpacing / 2)
 
 	if MasqueGroup and E.private.actionbar.masque.actionbars then
 		MasqueGroup:ReSkin()
+
+		-- masque retrims them all so we have to too
+		for btn in pairs(AB.handledbuttons) do
+			AB:TrimIcon(btn, true)
+		end
 	end
 end
 
 function AB:CreateBar(id)
 	local bar = CreateFrame('Frame', 'ElvUI_Bar'..id, E.UIParent, 'SecureHandlerStateTemplate')
 	SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
+	AB.handledBars['bar'..id] = bar
 
-	local point, anchor, attachTo, x, y = strsplit(',', AB.barDefaults['bar'..id].position)
+	local defaults = AB.barDefaults['bar'..id]
+	local point, anchor, attachTo, x, y = strsplit(',', defaults.position)
 	bar:Point(point, anchor, attachTo, x, y)
-	bar:SetFrameStrata('LOW')
 	bar.id = id
 
-	bar.backdrop = CreateFrame('Frame', nil, bar, 'BackdropTemplate')
-	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
-	bar.backdrop:SetFrameLevel(0)
+	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
 
 	bar.buttons = {}
-	bar.bindButtons = AB.barDefaults['bar'..id].bindButtons
-	self:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
-	self:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
+	bar.bindButtons = defaults.bindButtons
+	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
+	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 
 	for i = 1, 12 do
 		bar.buttons[i] = LAB:CreateButton(i, format(bar:GetName()..'Button%d', i), bar, nil)
@@ -355,12 +381,12 @@ function AB:CreateBar(id)
 			bar.buttons[i]:AddToMasque(MasqueGroup)
 		end
 
-		self:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
-		self:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
+		AB:HookScript(bar.buttons[i], 'OnEnter', 'Button_OnEnter')
+		AB:HookScript(bar.buttons[i], 'OnLeave', 'Button_OnLeave')
 	end
-	AB:UpdateButtonConfig(bar, bar.bindButtons)
 
-	if AB.barDefaults['bar'..id].conditions:find('[form]') then
+	if defaults.conditions and strfind(defaults.conditions, '[form,noform]') then
+		bar:SetAttribute('newCondition', gsub(defaults.conditions, ' %[form,noform%] 0; ', ''))
 		bar:SetAttribute('hasTempBar', true)
 	else
 		bar:SetAttribute('hasTempBar', false)
@@ -386,10 +412,7 @@ function AB:CreateBar(id)
 		end
 	]])
 
-	AB.handledBars['bar'..id] = bar
-	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil,'ALL,ACTIONBARS',nil,'actionbar,playerBars,bar'..id)
-
-	AB:PositionAndSizeBar('bar'..id)
+	E:CreateMover(bar, 'ElvAB_'..id, L["Bar "]..id, nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,playerBars,bar'..id)
 
 	return bar
 end
@@ -407,6 +430,10 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB:AdjustMaxStanceButtons(AB.NeedsAdjustMaxStanceButtons) --sometimes it holds the event, otherwise true. pass it before we nil it.
 		AB.NeedsAdjustMaxStanceButtons = nil
 	end
+	if AB.NeedsReparentExtraButtons then
+		AB:ExtraButtons_Reparent()
+		AB.NeedsReparentExtraButtons = nil
+	end
 
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
@@ -418,7 +445,7 @@ function AB:CreateVehicleLeave()
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 300)
 	holder:Size(_G.MainMenuBarVehicleLeaveButton:GetSize())
-	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,vehicleExitButton')
+	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,vehicleExitButton')
 
 	local Button = _G.MainMenuBarVehicleLeaveButton
 	Button:ClearAllPoints()
@@ -473,13 +500,14 @@ function AB:ReassignBindings(event)
 	for _, bar in pairs(AB.handledBars) do
 		if bar then
 			ClearOverrideBindings(bar)
-			for i = 1, #bar.buttons do
-				local button = (bar.bindButtons..'%d'):format(i)
-				local real_button = (bar:GetName()..'Button%d'):format(i)
-				for k=1, select('#', GetBindingKey(button)) do
-					local key = select(k, GetBindingKey(button))
-					if key and key ~= '' then
-						SetOverrideBindingClick(bar, false, key, real_button)
+
+			for _, button in ipairs(bar.buttons) do
+				if button.keyBoundTarget then
+					for k=1, select('#', GetBindingKey(button.keyBoundTarget)) do
+						local key = select(k, GetBindingKey(button.keyBoundTarget))
+						if key and key ~= '' then
+							SetOverrideBindingClick(bar, false, key, button:GetName())
+						end
 					end
 				end
 			end
@@ -499,20 +527,35 @@ function AB:RemoveBindings()
 	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'ReassignBindings')
 end
 
-function AB:UpdateBar1Paging()
-	if AB.db.bar6.enabled then
-		AB.barDefaults.bar1.conditions = format('[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetVehicleBarIndex(), GetOverrideBarIndex())
-	else
-		AB.barDefaults.bar1.conditions = format('[possessbar] %d; [overridebar] %d; [shapeshift] 13; [form,noform] 0; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6;', GetVehicleBarIndex(), GetOverrideBarIndex())
+do
+	local texts = { 'hotkey', 'macro', 'count' }
+	local bars = { 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton' }
+
+	local function saveSetting(option, value)
+		for i = 1, 10 do
+			E.db.actionbar['bar'..i][option] = value
+		end
+
+		for _, bar in pairs(bars) do
+			E.db.actionbar[bar][option] = value
+		end
+	end
+
+	function AB:ApplyTextOption(option, value, fonts)
+		if fonts then
+			local upperOption = gsub(option, '^%w', strupper) -- font>Font, fontSize>FontSize, fontOutline>FontOutline
+			for _, object in pairs(texts) do
+				saveSetting(object..upperOption, value)
+			end
+		else
+			saveSetting(option, value)
+		end
+
+		AB:UpdateButtonSettings()
 	end
 end
 
-function AB:UpdateButtonSettingsForBar(barName)
-	local bar = AB.handledBars[barName]
-	AB:UpdateButtonConfig(bar, bar.bindButtons)
-end
-
-function AB:UpdateButtonSettings()
+function AB:UpdateButtonSettings(specific)
 	if not E.private.actionbar.enable then return end
 
 	if InCombatLockdown() then
@@ -521,43 +564,48 @@ function AB:UpdateButtonSettings()
 		return
 	end
 
-	for button in pairs(AB.handledbuttons) do
-		if button then
-			AB:StyleButton(button, button.noBackdrop, button.useMasque, button.ignoreNormal)
-			AB:StyleFlyout(button)
-		else
-			AB.handledbuttons[button] = nil
-		end
-	end
-
-	AB:UpdatePetBindings()
-	AB:UpdateStanceBindings()
-	AB:UpdateFlyoutButtons()
-
 	for barName, bar in pairs(AB.handledBars) do
-		if bar then
-			AB:UpdateButtonConfig(bar, bar.bindButtons)
-			AB:PositionAndSizeBar(barName)
+		if not specific or specific == barName then
+			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
+			AB:PositionAndSizeBar(barName) -- db is set here, button style also runs here
+			for _, button in ipairs(bar.buttons) do
+				AB:StyleFlyout(button)
+			end
 		end
 	end
 
-	AB:AdjustMaxStanceButtons()
-	AB:PositionAndSizeBarPet()
-	AB:PositionAndSizeBarShapeShift()
+	if not specific then
+		-- we can safely toggle these events when we arent using the handle overlay
+		if AB.db.handleOverlay then
+			LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+			LAB.eventFrame:RegisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
+		else
+			LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_SHOW')
+			LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
+		end
+
+		AB:AdjustMaxStanceButtons()
+		AB:PositionAndSizeBarPet()
+		AB:PositionAndSizeBarShapeShift()
+
+		AB:UpdatePetBindings()
+		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
+		AB:UpdateExtraBindings()
+
+		AB:UpdateFlyoutButtons()
+	end
 end
 
 function AB:GetPage(bar, defaultPage, condition)
 	local page = AB.db[bar].paging[E.myclass]
 	if not condition then condition = '' end
-	if not page then
-		page = ''
-	elseif page:match('[\n\r]') then
-		page = page:gsub('[\n\r]','')
-	end
 
 	if page then
+		page = gsub(page, '[\n\r]', '')
+
 		condition = condition..' '..page
 	end
+
 	condition = condition..' '..defaultPage
 
 	return condition
@@ -570,15 +618,13 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local shine = _G[name..'Shine']
 	local count = _G[name..'Count']
 	local flash	 = _G[name..'Flash']
-	local hotkey = _G[name..'HotKey']
 	local border  = _G[name..'Border']
 	local normal  = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
 
+	local db = button:GetParent().db
 	local color = AB.db.fontColor
-	local countPosition = AB.db.countTextPosition or 'BOTTOMRIGHT'
-	local countXOffset = AB.db.countTextXOffset or 0
-	local countYOffset = AB.db.countTextYOffset or 2
+	local font, fontSize, fontOutline = AB.db.font, AB.db.fontSize, AB.db.fontOutline
 
 	button.noBackdrop = noBackdrop
 	button.useMasque = useMasque
@@ -589,22 +635,33 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if border and not button.useMasque then border:Kill() end
 
 	if count then
+		local position, xOffset, yOffset = db and db.countTextPosition or 'BOTTOMRIGHT', db and db.countTextXOffset or 0, db and db.countTextYOffset or 2
+
 		count:ClearAllPoints()
-		count:Point(countPosition, countXOffset, countYOffset)
-		count:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
-		count:SetTextColor(color.r, color.g, color.b)
+		count:Point(position, xOffset, yOffset)
+		count:FontTemplate(LSM:Fetch('font', db and db.countFont or font), db and db.countFontSize or fontSize, db and db.countFontOutline or fontOutline)
+
+		if db then
+			count:SetShown(db.counttext)
+		end
+
+		local c = db and db.useCountColor and db.countColor or color
+		count:SetTextColor(c.r, c.g, c.b)
 	end
 
 	if macroText then
+		local position, xOffset, yOffset = db and db.macroTextPosition or 'BOTTOM', db and db.macroTextXOffset or 0, db and db.macroTextYOffset or 1
+
 		macroText:ClearAllPoints()
-		macroText:Point('BOTTOM', 0, 1)
-		macroText:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
-		macroText:SetTextColor(color.r, color.g, color.b)
+		macroText:Point(position, xOffset, yOffset)
+		macroText:FontTemplate(LSM:Fetch('font', db and db.macroFont or font), db and db.macroFontSize or fontSize, db and db.macroFontOutline or fontOutline)
+
+		local c = db and db.useMacroColor and db.macroColor or color
+		macroText:SetTextColor(c.r, c.g, c.b)
 	end
 
 	if not button.noBackdrop and not button.backdrop and not button.useMasque then
-		button:CreateBackdrop(AB.db.transparent and 'Transparent', true)
-		button.backdrop:SetAllPoints()
+		button:CreateBackdrop(AB.db.transparent and 'Transparent', true, nil, nil, nil, nil, true)
 	end
 
 	if flash then
@@ -618,8 +675,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		end
 	end
 
-	if icon then
-		icon:SetTexCoord(unpack(E.TexCoords))
+	if icon and not useMasque then
+		AB:TrimIcon(button)
 		icon:SetInside()
 	end
 
@@ -632,11 +689,14 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		button.SpellHighlightTexture:SetAllPoints()
 	end
 
-	if AB.db.hotkeytext or AB.db.useRangeColorText then
-		hotkey:FontTemplate(LSM:Fetch('font', AB.db.font), AB.db.fontSize, AB.db.fontOutline)
-		if button.config and (button.config.outOfRangeColoring ~= 'hotkey') then
-			button.HotKey:SetTextColor(color.r, color.g, color.b)
-		end
+	if not AB.handledbuttons[button] then
+		button.cooldown.CooldownOverride = 'actionbar'
+		E:RegisterCooldown(button.cooldown)
+		AB.handledbuttons[button] = true
+	end
+
+	if AB.db.useRangeColorText then
+		AB:UpdateHotkeyColor(button)
 	end
 
 	--Extra Action Button
@@ -652,14 +712,12 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	else
 		button:StyleButton(true, true, true)
 	end
+end
 
-	if not AB.handledbuttons[button] then
-		button.cooldown.CooldownOverride = 'actionbar'
-
-		E:RegisterCooldown(button.cooldown)
-
-		AB.handledbuttons[button] = true
-	end
+function AB:UpdateHotkeyColor(button)
+	local db = button.db
+	local c = AB.db.useRangeColorText and button.outOfRange and AB.db.noRangeColor or db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
+	button.HotKey:SetTextColor(c.r, c.g, c.b)
 end
 
 function AB:ColorSwipeTexture(cooldown)
@@ -680,7 +738,7 @@ function AB:FadeBlings(alpha)
 	for i = 1, AB.fadeParent:GetNumChildren() do
 		local bar = select(i, AB.fadeParent:GetChildren())
 		if bar.buttons then
-			for _, button in pairs(bar.buttons) do
+			for _, button in ipairs(bar.buttons) do
 				AB:FadeBlingTexture(button.cooldown, alpha)
 			end
 		end
@@ -760,8 +818,8 @@ function AB:BlizzardOptionsPanel_OnEvent()
 end
 
 function AB:FadeParent_OnEvent()
-	if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
+	if UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus') or UnitExists('vehicle')
+	or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) or IsPossessBarVisible() or HasOverrideActionBar() then
 		self.mouseLock = true
 		E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 		AB:FadeBlings(1)
@@ -960,7 +1018,7 @@ function AB:ToggleCountDownNumbers(bar, button, cd)
 		end
 	elseif bar then -- ref: E:UpdateCooldownOverride
 		if bar.buttons then
-			for _, btn in pairs(bar.buttons) do
+			for _, btn in ipairs(bar.buttons) do
 				if btn and btn.config and (btn.cooldown and btn.cooldown.timer) then
 					-- update the buttons config
 					btn.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
@@ -974,17 +1032,23 @@ function AB:ToggleCountDownNumbers(bar, button, cd)
 	end
 end
 
-function AB:UpdateButtonConfig(bar, buttonName)
+function AB:UpdateButtonConfig(barName, buttonName)
 	if InCombatLockdown() then
 		AB.NeedsUpdateButtonSettings = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 		return
 	end
 
+	local barDB = AB.db[barName]
+	local bar = AB.handledBars[barName]
+
+	buttonName = buttonName or bar.bindButtons
+
 	if not bar.buttonConfig then bar.buttonConfig = { hideElements = {}, colors = {} } end
-	bar.buttonConfig.hideElements.macro = not AB.db.macrotext
-	bar.buttonConfig.hideElements.hotkey = not AB.db.hotkeytext
-	bar.buttonConfig.showGrid = AB.db['bar'..bar.id].showGrid
+
+	bar.buttonConfig.hideElements.macro = not barDB.macrotext
+	bar.buttonConfig.hideElements.hotkey = not barDB.hotkeytext
+	bar.buttonConfig.showGrid = barDB.showGrid
 	bar.buttonConfig.clickOnDown = AB.db.keyDown
 	bar.buttonConfig.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	bar.buttonConfig.colors.range = E:SetColorTable(bar.buttonConfig.colors.range, AB.db.noRangeColor)
@@ -993,9 +1057,10 @@ function AB:UpdateButtonConfig(bar, buttonName)
 	bar.buttonConfig.colors.notUsable = E:SetColorTable(bar.buttonConfig.colors.notUsable, AB.db.notUsableColor)
 	bar.buttonConfig.useDrawBling = not AB.db.hideCooldownBling
 	bar.buttonConfig.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
+	bar.buttonConfig.handleOverlay = AB.db.handleOverlay
 	SetModifiedClick('PICKUPACTION', AB.db.movementModifier)
 
-	for i, button in pairs(bar.buttons) do
+	for i, button in ipairs(bar.buttons) do
 		AB:ToggleCountDownNumbers(bar, button)
 
 		bar.buttonConfig.keyBoundTarget = format(buttonName..'%d', i)
@@ -1016,9 +1081,11 @@ function AB:FixKeybindText(button)
 	local hotkey = _G[button:GetName()..'HotKey']
 	local text = hotkey:GetText()
 
-	local hotkeyPosition = E.db.actionbar.hotkeyTextPosition or 'TOPRIGHT'
-	local hotkeyXOffset = E.db.actionbar.hotkeyTextXOffset or 0
-	local hotkeyYOffset =  E.db.actionbar.hotkeyTextYOffset or -3
+	local db = button:GetParent().db
+	local hotkeyPosition = db and db.hotkeyTextPosition or 'TOPRIGHT'
+	local hotkeyXOffset = db and db.hotkeyTextXOffset or 0
+	local hotkeyYOffset = db and db.hotkeyTextYOffset or -3
+	local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
 
 	local justify = 'RIGHT'
 	if hotkeyPosition == 'TOPLEFT' or hotkeyPosition == 'BOTTOMLEFT' then
@@ -1028,26 +1095,44 @@ function AB:FixKeybindText(button)
 	end
 
 	if text then
-		text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
-		text = gsub(text, 'ALT%-', L["KEY_ALT"])
-		text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
-		text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"])
-		text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"])
-		text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"])
-		text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"])
-		text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"])
-		text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"])
-		text = gsub(text, 'SPACE', L["KEY_SPACE"])
-		text = gsub(text, 'INSERT', L["KEY_INSERT"])
-		text = gsub(text, 'HOME', L["KEY_HOME"])
-		text = gsub(text, 'DELETE', L["KEY_DELETE"])
-		text = gsub(text, 'NMULTIPLY', '*')
-		text = gsub(text, 'NMINUS', 'N-')
-		text = gsub(text, 'NPLUS', 'N+')
-		text = gsub(text, 'NEQUALS', 'N=')
+		if text == _G.RANGE_INDICATOR then
+			hotkey:SetFont(defaultFont, defaultFontSize, defaultFontOutline)
+			hotkey.SetVertexColor = nil
+		else
+			hotkey:FontTemplate(LSM:Fetch('font', db and db.hotkeyFont or AB.db.font), db and db.hotkeyFontSize or AB.db.fontSize, db and db.hotkeyFontOutline or AB.db.fontOutline)
+
+			text = gsub(text, 'SHIFT%-', L["KEY_SHIFT"])
+			text = gsub(text, 'ALT%-', L["KEY_ALT"])
+			text = gsub(text, 'CTRL%-', L["KEY_CTRL"])
+			text = gsub(text, 'BUTTON', L["KEY_MOUSEBUTTON"])
+			text = gsub(text, 'MOUSEWHEELUP', L["KEY_MOUSEWHEELUP"])
+			text = gsub(text, 'MOUSEWHEELDOWN', L["KEY_MOUSEWHEELDOWN"])
+			text = gsub(text, 'NUMPAD', L["KEY_NUMPAD"])
+			text = gsub(text, 'PAGEUP', L["KEY_PAGEUP"])
+			text = gsub(text, 'PAGEDOWN', L["KEY_PAGEDOWN"])
+			text = gsub(text, 'SPACE', L["KEY_SPACE"])
+			text = gsub(text, 'INSERT', L["KEY_INSERT"])
+			text = gsub(text, 'HOME', L["KEY_HOME"])
+			text = gsub(text, 'DELETE', L["KEY_DELETE"])
+			text = gsub(text, 'NMULTIPLY', '*')
+			text = gsub(text, 'NMINUS', 'N-')
+			text = gsub(text, 'NPLUS', 'N+')
+			text = gsub(text, 'NEQUALS', 'N=')
+			hotkey.SetVertexColor = E.noop
+		end
 
 		hotkey:SetText(text)
 		hotkey:SetJustifyH(justify)
+	end
+
+	hotkey:SetTextColor(color.r, color.g, color.b)
+
+	if not button.__LAB_Version then
+		if db and not db.hotkeytext then
+			hotkey:Hide()
+		else
+			hotkey:Show()
+		end
 	end
 
 	if not button.useMasque then
@@ -1067,6 +1152,8 @@ end
 function AB:FlyoutButton_OnEnter()
 	local anchor = flyoutButtonAnchor(self)
 	if anchor then AB:Bar_OnEnter(anchor) end
+
+	AB:BindUpdate(self, 'FLYOUT')
 end
 
 function AB:FlyoutButton_OnLeave()
@@ -1095,6 +1182,7 @@ function AB:UpdateFlyoutButtons()
 	local btn, i = _G['SpellFlyoutButton1'], 1
 	while btn do
 		AB:SetupFlyoutButton(btn)
+		btn.isFlyout = true
 
 		i = i + 1
 		btn = _G['SpellFlyoutButton'..i]
@@ -1193,6 +1281,11 @@ function AB:ToggleCooldownOptions()
 end
 
 function AB:SetButtonDesaturation(button, duration)
+	if button.LevelLinkLockIcon:IsShown() then
+		button.saturationLocked = nil
+		return
+	end
+
 	if AB.db.desaturateOnCooldown and (duration and duration > 1.5) then
 		button.icon:SetDesaturated(true)
 		button.saturationLocked = true
@@ -1226,16 +1319,19 @@ function AB:LAB_ButtonCreated(button)
 end
 
 function AB:LAB_ButtonUpdate(button)
-	local color = AB.db.fontColor
+	local db = button.db
+	local color = db and db.useCountColor and db.countColor or AB.db.fontColor
+
 	button.Count:SetTextColor(color.r, color.g, color.b)
-	if button.config and (button.config.outOfRangeColoring ~= 'hotkey') then
-		button.HotKey:SetTextColor(color.r, color.g, color.b)
-	end
 
 	if button.backdrop then
-		color = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
-		button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
+		button.backdrop:SetBackdropBorderColor(border.r, border.g, border.b)
 	end
+end
+
+function AB:LAB_UpdateRange(button)
+	AB:UpdateHotkeyColor(button)
 end
 
 function AB:LAB_CooldownDone(button)
@@ -1264,6 +1360,7 @@ function AB:Initialize()
 	AB.Initialized = true
 
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
+	LAB.RegisterCallback(AB, 'OnUpdateRange', AB.LAB_UpdateRange)
 	LAB.RegisterCallback(AB, 'OnButtonCreated', AB.LAB_ButtonCreated)
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
@@ -1274,6 +1371,11 @@ function AB:Initialize()
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_DISABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_ENABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_TARGET_CHANGED')
+	AB.fadeParent:RegisterEvent('UPDATE_OVERRIDE_ACTIONBAR')
+	AB.fadeParent:RegisterEvent('UPDATE_POSSESS_BAR')
+	AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
+	AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
+	AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_START', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
 	AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', 'player')
@@ -1282,10 +1384,19 @@ function AB:Initialize()
 	AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
 
+	if E:GetLocale() == 'koKR' then
+		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\2002.TTF]], 11, "MONOCHROME, THICKOUTLINE"
+	elseif E:GetLocale() == 'zhTW' then
+		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\arheiuhk_bd.TTF]], 11, "MONOCHROME, THICKOUTLINE"
+	elseif E:GetLocale() == 'zhCN' then
+		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\FRIZQT__.TTF]], 11, 'MONOCHROME, OUTLINE'
+	else
+		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\ARIALN.TTF]], 12, "MONOCHROME, THICKOUTLINE"
+	end
+
 	AB:DisableBlizzard()
 	AB:SetupExtraButton()
 	AB:SetupMicroBar()
-	AB:UpdateBar1Paging()
 
 	for i = 1, 10 do
 		AB:CreateBar(i)
@@ -1304,6 +1415,12 @@ function AB:Initialize()
 	AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
 	AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
+
+	if _G.KeyBindingFrame then
+		AB:SwapKeybindButton()
+	else
+		AB:RegisterEvent('ADDON_LOADED', 'SwapKeybindButton')
+	end
 
 	if C_PetBattles_IsInBattle() then
 		AB:RemoveBindings()

@@ -259,6 +259,7 @@ local blacklistedKeys = {
 			locale = true,
 			version = true,
 			eyefinity = true,
+			ultrawide = true,
 			disableTutorialButtons = true,
 			showMissingTalentAlert = true,
 			allowDistributor = true
@@ -295,8 +296,9 @@ local blacklistedKeys = {
 --Keys that auto or user generated tables.
 D.GeneratedKeys = {
 	profile = {
+		convertPages = true,
 		movers = true,
-		v11NamePlateReset = true,
+		actionbar = {},
 		nameplates = { -- this is supposed to have an 's' because yeah, oh well
 			filters = true
 		},
@@ -330,6 +332,10 @@ do
 	local units = D.GeneratedKeys.profile.unitframe.units
 	for unit in pairs(P.unitframe.units) do
 		units[unit] = {customTexts = true}
+	end
+
+	for i = 1, 10 do
+		D.GeneratedKeys.profile.actionbar['bar'..i] = { paging = true }
 	end
 end
 

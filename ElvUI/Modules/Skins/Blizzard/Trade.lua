@@ -52,7 +52,6 @@ function S:TradeFrame()
 			player_button.bg:Point('TOPLEFT', player_button, 'TOPRIGHT', 4, 0)
 			player_button.bg:Point('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
 			player_button.bg:SetFrameLevel(player_button:GetFrameLevel() - 3)
-			player_button.backdrop:SetFrameLevel(player_button:GetFrameLevel() - 1)
 			player_button:SetFrameLevel(player_button:GetFrameLevel() - 1)
 
 			recipient_button_icon:SetInside(recipient_button)

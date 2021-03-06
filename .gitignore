@@ -16,3 +16,6 @@ $RECYCLE.BIN/
 
 # Luacheck's Cache
 .luacheckcache
+
+# Vscode local config
+.vscode

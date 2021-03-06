@@ -330,11 +330,11 @@ function S:PetBattleFrame()
 
 	bf.TurnTimer.SkipButton:Width(bar:GetWidth())
 	bf.TurnTimer.SkipButton:ClearAllPoints()
-	bf.TurnTimer.SkipButton:Point('BOTTOM', bar, 'TOP', 0, E.PixelMode and -1 or 1)
+	bf.TurnTimer.SkipButton:Point('BOTTOM', bar, 'TOP', 0, E.PixelMode and 1 or 2)
 	hooksecurefunc(bf.TurnTimer.SkipButton, 'SetPoint', function(btn, _, _, _, _, _, forced)
 		if forced ~= true then
 			btn:ClearAllPoints()
-			btn:Point('BOTTOM', bar, 'TOP', 0, E.PixelMode and -1 or 1, true)
+			btn:Point('BOTTOM', bar, 'TOP', 0, E.PixelMode and 1 or 2, true)
 		end
 	end)
 

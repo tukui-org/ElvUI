@@ -146,6 +146,7 @@ function E:SetupCVars(noDisplayMsg)
 	SetCVar('screenshotQuality', 10)
 	SetCVar('chatMouseScroll', 1)
 	SetCVar('chatStyle', 'classic')
+	SetCVar('whisperMode', 'inline')
 	SetCVar('wholeChatWindowClickable', 0)
 	SetCVar('showTutorials', 0)
 	SetCVar('showNPETutorials', 0)
@@ -189,6 +190,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castClassColor = false
+		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82}
 	elseif theme == 'class' then
 		classColor = E:ClassColor(E.myclass, true)
 
@@ -199,6 +201,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(classColor.r, classColor.g, classColor.b)
 		E.db.unitframe.colors.healthclass = true
 		E.db.unitframe.colors.castClassColor = true
+		E.db.chat.tabSelectorColor = E:GetColor(classColor.r, classColor.g, classColor.b)
 	else
 		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.1, .1, .1))
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
@@ -209,6 +212,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.health = E:GetColor(.1, .1, .1)
 		E.db.unitframe.colors.castColor = E:GetColor(.1, .1, .1)
 		E.db.unitframe.colors.castClassColor = false
+		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82}
 	end
 
 	--Value Color
@@ -230,6 +234,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 	if not noDataReset then
 		E.db.layoutSet = layout
 		E.db.layoutSetting = layout
+		E.db.convertPages = true
 
 		--Unitframes
 		E:CopyTable(E.db.unitframe.units, P.unitframe.units)
@@ -242,16 +247,16 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 
 		--ActionBars
 			E.db.actionbar.bar1.buttons = 8
-			E.db.actionbar.bar1.buttonsize = 50
-			E.db.actionbar.bar1.buttonspacing = 1
+			E.db.actionbar.bar1.buttonSize = 50
+			E.db.actionbar.bar1.buttonSpacing = 1
 			E.db.actionbar.bar2.buttons = 9
-			E.db.actionbar.bar2.buttonsize = 38
-			E.db.actionbar.bar2.buttonspacing = 1
+			E.db.actionbar.bar2.buttonSize = 38
+			E.db.actionbar.bar2.buttonSpacing = 1
 			E.db.actionbar.bar2.enabled = true
 			E.db.actionbar.bar2.visibility = '[petbattle] hide; show'
 			E.db.actionbar.bar3.buttons = 8
-			E.db.actionbar.bar3.buttonsize = 50
-			E.db.actionbar.bar3.buttonspacing = 1
+			E.db.actionbar.bar3.buttonSize = 50
+			E.db.actionbar.bar3.buttonSpacing = 1
 			E.db.actionbar.bar3.buttonsPerRow = 10
 			E.db.actionbar.bar3.visibility = '[petbattle] hide; show'
 			E.db.actionbar.bar4.enabled = false
@@ -271,14 +276,26 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.bags.bankWidth = 474
 			E.db.bags.itemLevelCustomColorEnable = true
 			E.db.bags.scrapIcon = true
+			E.db.bags.split.bag1 = true
+			E.db.bags.split.bag2 = true
+			E.db.bags.split.bag3 = true
+			E.db.bags.split.bag4 = true
+			E.db.bags.split.bagSpacing = 7
+			E.db.bags.split.player = true
 		--Chat
 			E.db.chat.fontSize = 10
 			E.db.chat.separateSizes = false
 			E.db.chat.panelHeight = 236
 			E.db.chat.panelWidth = 472
-			E.db.chat.tabFontSize = 10
+			E.db.chat.tabFontSize = 12
+			E.db.chat.copyChatLines = true
 		--DataTexts
 			E.db.datatexts.panels.LeftChatDataPanel[3] = 'QuickJoin'
+		--DataBars
+			E.db.databars.threat.height = 24
+			E.db.databars.threat.width = 472
+			E.db.databars.azerite.enable = false
+			E.db.databars.reputation.enable = true
 		--General
 			E.db.general.bonusObjectivePosition = 'AUTO'
 			E.db.general.minimap.size = 220
@@ -287,7 +304,8 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			E.db.general.totems.growthDirection = 'HORIZONTAL'
 			E.db.general.totems.size = 50
 			E.db.general.totems.spacing = 8
-
+			E.db.general.autoTrackReputation = true
+			E.db.general.bonusObjectivePosition = "AUTO"
 		--Movers
 			for mover, position in pairs(E.LayoutMoverPositions.ALL) do
 				E.db.movers[mover] = position
@@ -296,6 +314,29 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		--Tooltip
 			E.db.tooltip.healthBar.fontOutline = 'MONOCHROMEOUTLINE'
 			E.db.tooltip.healthBar.height = 12
+			E.db.movers.TooltipMover = nil --ensure that this mover gets completely reset.. yes E:ResetMover call above doesn't work.
+			E.db.tooltip.healthBar.font = "PT Sans Narrow"
+			E.db.tooltip.healthBar.fontOutline = "NONE"
+			E.db.tooltip.healthBar.fontSize = 12
+		--Nameplates
+			E.db.nameplates.colors.castNoInterruptColor = {r = 0.78, g=0.25, b=0.25}
+			E.db.nameplates.colors.reactions.good = {r = 0.30, g=0.67, b=0.29}
+			E.db.nameplates.colors.reactions.neutral = {r = 0.85, g=0.76, b=0.36}
+			E.db.nameplates.colors.selection[0] = {r = 0.78, g=0.25, b=0.25}
+			E.db.nameplates.colors.selection[2] = {r = 0.85, g=0.76, b=0.36}
+			E.db.nameplates.colors.selection[3] = {r = 0.29, g=0.67, b=0.30}
+			E.db.nameplates.colors.threat.badColor = {r = 0.78, g=0.25, b=0.25}
+			E.db.nameplates.colors.threat.goodColor = {r = 0.29, g=0.67, b=0.30}
+			E.db.nameplates.colors.threat.goodTransition = {r = 0.85, g=0.76, b=0.36}
+			E.db.nameplates.units.ENEMY_NPC.health.text.format = ""
+			E.db.nameplates.units.ENEMY_PLAYER.health.text.format = ""
+			E.db.nameplates.units.ENEMY_PLAYER.portrait.classicon = false
+			E.db.nameplates.units.ENEMY_PLAYER.portrait.enable = true
+			E.db.nameplates.units.ENEMY_PLAYER.portrait.position = "LEFT"
+			E.db.nameplates.units.ENEMY_PLAYER.portrait.xOffset = 0
+			E.db.nameplates.units.ENEMY_PLAYER.portrait.yOffset = 0
+
+
 		--UnitFrames
 			E.db.unitframe.smoothbars = true
 			E.db.unitframe.thinBorders = true
@@ -352,7 +393,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			--Pet
 				E.db.unitframe.units.pet.castbar.iconSize = 32
 				E.db.unitframe.units.pet.castbar.width = 270
-				E.db.unitframe.units.pet.debuffs.anchorPoint = 'TOPRIGHT'
 				E.db.unitframe.units.pet.debuffs.enable = true
 				E.db.unitframe.units.pet.disableTargetGlow = false
 				E.db.unitframe.units.pet.infoPanel.height = 14
@@ -496,6 +536,9 @@ local function ResetAll()
 	_G.InstallSlider.Min:SetText('')
 	_G.InstallSlider.Max:SetText('')
 	_G.InstallSlider.Cur:SetText('')
+	_G.InstallSlider:SetScript('OnValueChanged', nil)
+	_G.InstallSlider:SetScript('OnMouseUp', nil)
+
 	ElvUIInstallFrame.SubTitle:SetText('')
 	ElvUIInstallFrame.Desc1:SetText('')
 	ElvUIInstallFrame.Desc2:SetText('')
@@ -510,9 +553,6 @@ function E:SetPage(PageNum)
 	_G.InstallStatus.anim.progress:SetChange(PageNum)
 	_G.InstallStatus.anim.progress:Play()
 	_G.InstallStatus.text:SetText(CURRENT_PAGE..' / '..MAX_PAGE)
-
-	local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
-	ElvUIInstallFrame.Status:SetStatusBarColor(r, g, b)
 
 	if PageNum == MAX_PAGE then
 		_G.InstallNextButton:Disable()
@@ -529,22 +569,30 @@ function E:SetPage(PageNum)
 	local InstallOption1Button = _G.InstallOption1Button
 	local InstallOption2Button = _G.InstallOption2Button
 	local InstallOption3Button = _G.InstallOption3Button
+	local InstallOption4Button = _G.InstallOption4Button
 	local InstallSlider = _G.InstallSlider
 
 	local f = ElvUIInstallFrame
+
+	local r, g, b = E:ColorGradient(CURRENT_PAGE / MAX_PAGE, 1, 0, 0, 1, 1, 0, 0, 1, 0)
+	f.Status:SetStatusBarColor(r, g, b)
+
+	f.Desc1:FontTemplate(nil, 16)
+	f.Desc2:FontTemplate(nil, 16)
+	f.Desc3:FontTemplate(nil, 16)
+
 	if PageNum == 1 then
-		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %s!"], E.version)
+		f.SubTitle:SetFormattedText(L["Welcome to ElvUI version %.2f!"], E.version)
 		f.Desc1:SetText(L["This install process will help you learn some of the features in ElvUI has to offer and also prepare your user interface for usage."])
 		f.Desc2:SetText(L["The in-game configuration menu can be accessed by typing the /ec command. Press the button below if you wish to skip the installation process."])
 		f.Desc3:SetText(L["Please press the continue button to go onto the next step."])
-		InstallOption1Button:Show()
-		InstallOption1Button:SetScript('OnClick', InstallComplete)
-		InstallOption1Button:SetText(L["Skip Process"])
 	elseif PageNum == 2 then
 		f.SubTitle:SetText(L["CVars"])
 		f.Desc1:SetText(L["This part of the installation process sets up your World of Warcraft default options it is recommended you should do this step for everything to behave properly."])
 		f.Desc2:SetText(L["Please click the button below to setup your CVars."])
 		f.Desc3:SetText(L["Importance: |cffFF3333High|r"])
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupCVars() end)
 		InstallOption1Button:SetText(L["Setup CVars"])
@@ -553,29 +601,41 @@ function E:SetPage(PageNum)
 		f.Desc1:SetText(L["This part of the installation process sets up your chat windows names, positions and colors."])
 		f.Desc2:SetText(L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc2:FontTemplate(nil, 14)
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupChat() end)
 		InstallOption1Button:SetText(L["Setup Chat"])
 	elseif PageNum == 4 then
 		f.SubTitle:SetText(L["Profile Settings Setup"])
 		f.Desc1:SetText(L["Please click the button below to setup your Profile Settings."])
+		f.Desc2:SetText(L["New Profile will create a fresh profile for this character."] .. '\n' .. L["Shared Profile will select the default profile."])
+
+		InstallOption1Button:SetText(L["Shared Profile"])
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function()
 			E.data:SetProfile('Default')
-			E:NextPage()
+			if E.db.layoutSet then
+				E:SetPage(9)
+			else
+				E:NextPage()
+			end
 		end)
-		InstallOption1Button:SetText(L["Shared Profile"])
+
+		InstallOption2Button:SetText(L["New Profile"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function()
 			E.data:SetProfile(E.mynameRealm)
 			E:NextPage()
 		end)
-		InstallOption2Button:SetText(L["New Profile"])
 	elseif PageNum == 5 then
 		f.SubTitle:SetText(L["Theme Setup"])
 		f.Desc1:SetText(L["Choose a theme layout you wish to use for your initial setup."])
 		f.Desc2:SetText(L["You can always change fonts and colors of any element of ElvUI from the in-game configuration."])
 		f.Desc3:SetText(L["Importance: |cFF33FF33Low|r"])
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupTheme('classic') end)
 		InstallOption1Button:SetText(L["Classic"])
@@ -586,8 +646,8 @@ function E:SetPage(PageNum)
 		InstallOption3Button:SetScript('OnClick', function() E:SetupTheme('class') end)
 		InstallOption3Button:SetText(CLASS)
 	elseif PageNum == 6 then
-		f.SubTitle:SetText(_G.UISCALE)
-		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen, press the autoscale button to set the UI Scale automatically."])
+		f.SubTitle:SetText(L["UI Scale"])
+		f.Desc1:SetFormattedText(L["Adjust the UI Scale to fit your screen."])
 		InstallSlider:Show()
 		InstallSlider:SetValueStep(0.01)
 		InstallSlider:SetObeyStepOnDrag(true)
@@ -596,54 +656,78 @@ function E:SetPage(PageNum)
 		local value = E.global.general.UIScale
 		InstallSlider:SetValue(value)
 		InstallSlider.Cur:SetText(value)
-		InstallSlider:SetScript('OnValueChanged', function(self)
-			local val = E:Round(self:GetValue(), 2)
+		InstallSlider:SetScript('OnMouseUp', function()
+			E:PixelScaleChanged()
+		end)
+		InstallSlider:SetScript('OnValueChanged', function(slider)
+			local val = E:Round(slider:GetValue(), 2)
 			E.global.general.UIScale = val
 			InstallSlider.Cur:SetText(val)
 		end)
 
 		InstallSlider.Min:SetText(0.4)
 		InstallSlider.Max:SetText(1.15)
+
 		InstallOption1Button:Show()
+		InstallOption1Button:SetText(_G.SMALL)
 		InstallOption1Button:SetScript('OnClick', function()
-			local scale = E:PixelBestSize()
-
-			-- this is to just keep the slider in place, the values need updated again afterwards
-			InstallSlider:SetValue(scale)
-
-			-- update the values with deeper accuracy
-			E.global.general.UIScale = scale
+			E.global.general.UIScale = .6
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
+			E.PixelScaleChanged()
 		end)
 
-		InstallOption1Button:SetText(L["Auto Scale"])
 		InstallOption2Button:Show()
-		InstallOption2Button:SetScript('OnClick', E.PixelScaleChanged)
+		InstallOption2Button:SetText(_G.TIME_LEFT_MEDIUM)
+		InstallOption2Button:SetScript('OnClick', function()
+			E.global.general.UIScale = .7
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
+			E.PixelScaleChanged()
+		end)
 
-		InstallOption2Button:SetText(L["Preview"])
-		f.Desc3:SetText(L["Importance: |cffFF3333High|r"])
+		InstallOption3Button:Show()
+		InstallOption3Button:SetText(_G.LARGE)
+		InstallOption3Button:SetScript('OnClick', function()
+			E.global.general.UIScale = .8
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
+			E.PixelScaleChanged()
+		end)
+
+		InstallOption4Button:Show()
+		InstallOption4Button:SetText(L["Auto Scale"])
+		InstallOption4Button:SetScript('OnClick', function()
+			E.global.general.UIScale = E:PixelBestSize()
+			InstallSlider.Cur:SetText(E.global.general.UIScale)
+			E.PixelScaleChanged()
+		end)
+
+		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc3:FontTemplate(nil, 18)
 	elseif PageNum == 7 then
 		f.SubTitle:SetText(L["Layout"])
 		f.Desc1:SetText(L["You can now choose what layout you wish to use based on your combat role."])
 		f.Desc2:SetText(L["This will change the layout of your unitframes and actionbars."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('tank') end)
-		InstallOption1Button:SetText(L["Tank / Physical DPS"])
+		InstallOption1Button:SetText(_G.STAT_CATEGORY_MELEE)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('healer') end)
-		InstallOption2Button:SetText(L["Healer"])
+		InstallOption2Button:SetText(_G.CLUB_FINDER_HEALER)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetScript('OnClick', function() E.db.layoutSet = nil; E:SetupLayout('dpsCaster') end)
-		InstallOption3Button:SetText(L["Caster DPS"])
+		InstallOption3Button:SetText(_G.STAT_CATEGORY_RANGED)
 	elseif PageNum == 8 then
 		f.SubTitle:SetText(L["Auras"])
 		f.Desc1:SetText(L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."])
 		f.Desc2:SetText(L["If you have an icon or aurabar that you don't want to display simply hold down shift and right click the icon for it to disapear."])
 		f.Desc3:SetText(L["Importance: |cffD3CF00Medium|r"])
+		f.Desc3:FontTemplate(nil, 18)
+
 		InstallOption1Button:Show()
 		InstallOption1Button:SetScript('OnClick', function() E:SetupAuras(true) end)
-		InstallOption1Button:SetText(L["Aura Bars & Icons"])
+		InstallOption1Button:SetText(L["Aura Bars"])
 		InstallOption2Button:Show()
 		InstallOption2Button:SetScript('OnClick', function() E:SetupAuras() end)
 		InstallOption2Button:SetText(L["Icons Only"])
@@ -739,7 +823,7 @@ function E:Install()
 		f:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
 
 		f.Title = f:CreateFontString(nil, 'OVERLAY')
-		f.Title:FontTemplate(nil, 17, nil)
+		f.Title:FontTemplate(nil, 20)
 		f.Title:Point('TOP', 0, -5)
 		f.Title:SetText(L["ElvUI Installation"])
 
@@ -795,7 +879,7 @@ function E:Install()
 		f.Slider.Max:Point('LEFT', f.Slider, 'RIGHT', 3, 0)
 		f.Slider.Cur = f.Slider:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 		f.Slider.Cur:Point('BOTTOM', f.Slider, 'TOP', 0, 10)
-		f.Slider.Cur:FontTemplate(nil, 30, nil)
+		f.Slider.Cur:FontTemplate(nil, 22)
 
 		f.Option1 = CreateFrame('Button', 'InstallOption1Button', f, 'UIPanelButtonTemplate, BackdropTemplate')
 		f.Option1:Size(160, 30)
@@ -839,27 +923,33 @@ function E:Install()
 		S:HandleButton(f.Option4, true)
 
 		f.SubTitle = f:CreateFontString(nil, 'OVERLAY')
-		f.SubTitle:FontTemplate(nil, 15, nil)
+		f.SubTitle:FontTemplate(nil, 20)
 		f.SubTitle:Point('TOP', 0, -40)
+		f.SubTitle:SetTextColor(unpack(E.media.rgbvaluecolor))
 
 		f.Desc1 = f:CreateFontString(nil, 'OVERLAY')
-		f.Desc1:FontTemplate()
+		f.Desc1:FontTemplate(nil, 16)
 		f.Desc1:Point('TOPLEFT', 20, -75)
 		f.Desc1:Width(f:GetWidth() - 40)
 
 		f.Desc2 = f:CreateFontString(nil, 'OVERLAY')
-		f.Desc2:FontTemplate()
+		f.Desc2:FontTemplate(nil, 16)
 		f.Desc2:Point('TOPLEFT', 20, -125)
 		f.Desc2:Width(f:GetWidth() - 40)
 
 		f.Desc3 = f:CreateFontString(nil, 'OVERLAY')
-		f.Desc3:FontTemplate()
+		f.Desc3:FontTemplate(nil, 16)
 		f.Desc3:Point('TOPLEFT', 20, -175)
 		f.Desc3:Width(f:GetWidth() - 40)
 
 		local close = CreateFrame('Button', 'InstallCloseButton', f, 'UIPanelCloseButton, BackdropTemplate')
 		close:Point('TOPRIGHT', f, 'TOPRIGHT')
-		close:SetScript('OnClick', function() f:Hide() end)
+		close:SetScript('OnClick', function()
+			-- Wasn't sure if we should run the InstallComplete function which will reload the ui for just clicking X to close it...
+			-- Simpy, Azil and I were sure what your thoughts on just saying it's complete
+			E.private.install_complete = E.version
+			f:Hide()
+		end)
 		S:HandleCloseButton(close)
 
 		local logo = f:CreateTexture('InstallTutorialImage', 'OVERLAY')

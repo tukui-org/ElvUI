@@ -110,10 +110,8 @@ end
 local function JournalScrollButtons(frame)
 	for i, bu in ipairs(frame.buttons) do
 		bu:StripTextures()
-		bu:CreateBackdrop('Transparent', nil, nil, true)
+		bu:CreateBackdrop('Transparent', nil, nil, true, nil, nil, true, true)
 		bu:Size(210, 42)
-		bu.backdrop:SetFrameLevel(bu:GetFrameLevel())
-		bu.backdrop:SetAllPoints()
 
 		local point, relativeTo, relativePoint, xOffset, yOffset = bu:GetPoint()
 		bu:ClearAllPoints()
@@ -138,6 +136,11 @@ local function JournalScrollButtons(frame)
 			highlight:SetColorTexture(1, 1, 1, 0.3)
 			highlight:SetBlendMode('ADD')
 			highlight:SetAllPoints(bu.icon)
+		end
+
+		if bu.ProgressBar then
+			bu.ProgressBar:SetTexture(E.media.normTex)
+			bu.ProgressBar:SetVertexColor(0.251, 0.753, 0.251, 1) -- 0.0118, 0.247, 0.00392
 		end
 
 		if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
@@ -179,6 +182,10 @@ local function JournalScrollButtons(frame)
 			end
 		end
 	end
+end
+
+local function clearBackdrop(self)
+	self:SetBackdropColor(0, 0, 0, 0)
 end
 
 function S:Blizzard_Collections()
@@ -235,6 +242,8 @@ function S:Blizzard_Collections()
 	_G.PetJournalRightInset:StripTextures()
 	_G.PetJournalLeftInset:StripTextures()
 	S:HandleItemButton(_G.PetJournalSummonRandomFavoritePetButton, true)
+	E:RegisterCooldown(_G.PetJournalSummonRandomFavoritePetButtonCooldown)
+	_G.PetJournalSummonRandomFavoritePetButtonCooldown:SetAllPoints(_G.PetJournalSummonRandomFavoritePetButtonIconTexture)
 
 	for i = 1, 3 do
 		local f = _G['PetJournalLoadoutPet'..i..'HelpFrame']
@@ -262,7 +271,8 @@ function S:Blizzard_Collections()
 
 	S:HandleItemButton(_G.PetJournalHealPetButton, true)
 	E:RegisterCooldown(_G.PetJournalHealPetButtonCooldown)
-	_G.PetJournalHealPetButton.texture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
+	_G.PetJournalHealPetButtonCooldown:SetAllPoints(_G.PetJournalHealPetButtonIconTexture)
+	_G.PetJournalHealPetButtonIconTexture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
 	_G.PetJournalLoadoutBorder:StripTextures()
 
 	for i = 1, 3 do
@@ -270,8 +280,7 @@ function S:Blizzard_Collections()
 		local petButtonHealthFrame = _G['PetJournalLoadoutPet'..i..'HealthFrame']
 		local petButtonXPBar = _G['PetJournalLoadoutPet'..i..'XPBar']
 		petButton:StripTextures()
-		petButton:CreateBackdrop()
-		petButton.backdrop:SetAllPoints()
+		petButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
 		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
 
 		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
@@ -282,8 +291,6 @@ function S:Blizzard_Collections()
 		petButton.checked = true;
 		S:HandleItemButton(petButton)
 		petButton.levelBG:SetAtlas('PetJournal-LevelBubble', true)
-
-		petButton.backdrop:SetFrameLevel(_G['PetJournalLoadoutPet'..i].backdrop:GetFrameLevel() + 1)
 
 		petButton.setButton:StripTextures()
 		petButtonHealthFrame.healthBar:StripTextures()
@@ -347,8 +354,7 @@ function S:Blizzard_Collections()
 		local frame = _G['PetJournalPetCardSpell'..i]
 		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 		frame:DisableDrawLayer('BACKGROUND')
-		frame:CreateBackdrop()
-		frame.backdrop:SetAllPoints()
+		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		frame.icon:SetTexCoord(unpack(E.TexCoords))
 		frame.icon:SetInside(frame.backdrop)
 	end
@@ -365,8 +371,8 @@ function S:Blizzard_Collections()
 	--Toy Box
 	local ToyBox = _G.ToyBox
 	S:HandleButton(_G.ToyBoxFilterButton)
-	_G.ToyBoxFilterButton:Point('TOPRIGHT', ToyBox, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(ToyBox.searchBox)
+	_G.ToyBoxFilterButton:Point('LEFT', ToyBox.searchBox, 'RIGHT', 2, 0)
 	ToyBox.iconsFrame:StripTextures()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
@@ -408,10 +414,11 @@ function S:Blizzard_Collections()
 
 	--Heirlooms
 	local HeirloomsJournal = _G.HeirloomsJournal
-	S:HandleButton(_G.HeirloomsJournalFilterButton)
-	_G.HeirloomsJournalFilterButton:Point('TOPRIGHT', HeirloomsJournal, 'TOPRIGHT', -15, -34)
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
+	_G.HeirloomsJournalFilterButton:Point('LEFT', HeirloomsJournal.SearchBox, 'RIGHT', 2, 0)
+	S:HandleButton(_G.HeirloomsJournalFilterButton)
 	HeirloomsJournal.iconsFrame:StripTextures()
+
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
 	S:HandleDropDownBox(_G.HeirloomsJournalClassDropDown)
@@ -435,6 +442,10 @@ function S:Blizzard_Collections()
 			button.slotFrameUncollected:SetAlpha(0)
 			button.special:SetJustifyH('RIGHT')
 			button.special:ClearAllPoints()
+
+			button.cooldown:SetAllPoints(button.iconTexture)
+			E:RegisterCooldown(button.cooldown)
+
 			button.styled = true
 		end
 
@@ -474,7 +485,6 @@ function S:Blizzard_Collections()
 	WardrobeCollectionFrame.progressBar:StripTextures()
 	WardrobeCollectionFrame.progressBar:CreateBackdrop()
 	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
-
 	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
 
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
@@ -488,7 +498,6 @@ function S:Blizzard_Collections()
 	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
 		if Frame.Models then
 			for _, Model in pairs(Frame.Models) do
-				Model:SetFrameLevel(Model:GetFrameLevel() + 1)
 				Model.Border:SetAlpha(0)
 				Model.TransmogStateTexture:SetAlpha(0)
 
@@ -498,11 +507,14 @@ function S:Blizzard_Collections()
 				border:SetPoint('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
 				border:SetPoint('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
-				border.ignoreBackdropColor = true
+				border.callbackBackdropColor = clearBackdrop
+
+				if Model.NewGlow then Model.NewGlow:SetParent(border) end
+				if Model.NewString then Model.NewString:SetParent(border) end
 
 				for i=1, Model:GetNumRegions() do
-				local region = select(i, Model:GetRegions())
-					if region:IsObjectType('Texture') and region:GetTexture() == 1116940 then
+					local region = select(i, Model:GetRegions())
+					if region:IsObjectType('Texture') and region:GetTexture() == 1116940 then -- transmogrify.blp
 						region:SetColorTexture(1, 1, 1, 0.3)
 						region:SetBlendMode('ADD')
 						region:SetAllPoints(Model)
@@ -527,12 +539,14 @@ function S:Blizzard_Collections()
 		if pending then
 			local Glowframe = pending.Glowframe
 			Glowframe:SetAtlas(nil)
-			Glowframe:CreateBackdrop()
-			Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
-			Glowframe.backdrop:SetPoint('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
-			Glowframe.backdrop:SetFrameLevel(pending:GetFrameLevel())
-			Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
-			Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
+			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
+
+			if Glowframe.backdrop then
+				Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
+				Glowframe.backdrop:SetPoint('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
+				Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
+				Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
+			end
 
 			for i = 1, 12 do
 				if i < 5 then
@@ -603,8 +617,7 @@ function S:Blizzard_Collections()
 	for i = 1, #WardrobeTransmogFrame.ModelScene.SlotButtons do
 		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:StripTextures()
 		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.ModelScene.SlotButtons[i]:GetFrameLevel() + 2)
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:CreateBackdrop()
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i].backdrop:SetAllPoints()
+		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Border:Kill()
 		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
 	end

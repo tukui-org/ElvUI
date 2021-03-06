@@ -209,6 +209,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[201940] = Defaults(), -- Protector of the Pack
 		[201939] = Defaults(), -- Protector of the Pack (Allies)
 		[192081] = Defaults(), -- Ironfur
+		[50334] = Defaults(), -- Berserk (Guardian)
 	-- Hunter
 		[186265] = Defaults(), -- Aspect of the Turtle
 		[53480]  = Defaults(), -- Roar of Sacrifice
@@ -317,13 +318,16 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[194844] = Defaults(), -- BoneStorm
 		[145629] = Defaults(), -- Anti-Magic Zone
 		[194679] = Defaults(), -- Rune Tap
-		[51271]  = Defaults(), -- Pilar of Frost
+		[51271]  = Defaults(), -- Pillar of Frost
 		[207256] = Defaults(), -- Obliteration
 		[152279] = Defaults(), -- Breath of Sindragosa
 		[233411] = Defaults(), -- Blood for Blood
 		[212552] = Defaults(), -- Wraith Walk
 		[215711] = Defaults(), -- Soul Reaper
 		[194918] = Defaults(), -- Blighted Rune Weapon
+		[48265] = Defaults(), -- Death's Advance
+		[49039] = Defaults(), -- Lichborne
+		[47568] = Defaults(), -- Empower Rune Weapon
 	-- Demon Hunter
 		[207811] = Defaults(), -- Nether Bond (DH)
 		[207810] = Defaults(), -- Nether Bond (Target)
@@ -338,7 +342,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[211510] = Defaults(), -- Solitude
 		[162264] = Defaults(), -- Metamorphosis
 		[205629] = Defaults(), -- Demonic Trample
-		[206649] = Defaults(), -- Eye of Leotheras
+		[188501] = Defaults(), -- Spectral Sight
 	-- Druid
 		[102342] = Defaults(), -- Ironbark
 		[61336]  = Defaults(), -- Survival Instincts
@@ -357,7 +361,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[102543] = Defaults(), -- Incarnation: King of the Jungle
 		[102558] = Defaults(), -- Incarnation: Guardian of Ursoc
 		[117679] = Defaults(), -- Incarnation
-		[106951] = Defaults(), -- Berserk
+		[106951] = Defaults(), -- Berserk (Feral)
+		[50334] = Defaults(), -- Berserk (Guardian)
 		[5217]   = Defaults(), -- Tiger's Fury
 		[1850]   = Defaults(), -- Dash
 		[137452] = Defaults(), -- Displacer Beast
@@ -365,8 +370,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[77764]  = Defaults(), -- Stampeding Roar (Cat)
 		[77761]  = Defaults(), -- Stampeding Roar (Bear)
 		[305497] = Defaults(), -- Thorns
-		[233756] = Defaults(), -- Eclipse (it's this one or the other)
-		[234084] = Defaults(), -- Eclipse
+		[233756] = Defaults(), -- Moon and Stars (not used?)
+		[234084] = Defaults(), -- Moon and Stars (PvP)
 		[22842]  = Defaults(), -- Frenzied Regeneration
 	-- Hunter
 		[186265] = Defaults(), -- Aspect of the Turtle
@@ -374,7 +379,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[202748] = Defaults(), -- Survival Tactics
 		[62305]  = Defaults(), -- Master's Call (it's this one or the other)
 		[54216]  = Defaults(), -- Master's Call
-		[193526] = Defaults(), -- Trueshot
+		[288613] = Defaults(), -- Trueshot
 		[193530] = Defaults(), -- Aspect of the Wild
 		[19574]  = Defaults(), -- Bestial Wrath
 		[186289] = Defaults(), -- Aspect of the Eagle
@@ -382,6 +387,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[118922] = Defaults(), -- Posthaste
 		[90355]  = Defaults(), -- Ancient Hysteria (Pet)
 		[160452] = Defaults(), -- Netherwinds (Pet)
+		[266779] = Defaults(), -- Coordinated Assault
 	-- Mage
 		[45438]  = Defaults(), -- Ice Block
 		[113862] = Defaults(), -- Greater Invisibility
@@ -398,6 +404,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[205025] = Defaults(), -- Presence of Mind
 		[198158] = Defaults(), -- Mass Invisibility
 		[221404] = Defaults(), -- Burning Determination
+		[342246] = Defaults(), -- Alter Time
 	-- Monk
 		[122783] = Defaults(), -- Diffuse Magic
 		[122278] = Defaults(), -- Dampen Harm
@@ -526,6 +533,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[108281] = Defaults(), -- Ancestral Guidance
 	-- Warlock
 		[108416] = Defaults(), -- Dark Pact
+		[113860] = Defaults(), -- Dark Soul: Misery
 		[104773] = Defaults(), -- Unending Resolve
 		[221715] = Defaults(), -- Essence Drain
 		[212295] = Defaults(), -- Nether Ward
@@ -635,7 +643,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[97821]  = Defaults(), -- Void-Touched
 		[36032]  = Defaults(), -- Arcane Charge
 		[8733]   = Defaults(), -- Blessing of Blackfathom
-		[25771]  = Defaults(), -- Forbearance (pally: divine shield, hand of protection, and lay on hands)
+		[25771]  = Defaults(), -- Forbearance (Pally: Divine Shield, Blessing of Protection, and Lay on Hands)
 		[57724]  = Defaults(), -- Sated (lust debuff)
 		[57723]  = Defaults(), -- Exhaustion (heroism debuff)
 		[80354]  = Defaults(), -- Temporal Displacement (timewarp debuff)
@@ -660,6 +668,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[287825] = Defaults(), -- Lethargy debuff (fight or flight)
 		[206662] = Defaults(), -- Experience Eliminated (in range)
 		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
+		[348443] = Defaults(), -- Experience Eliminated
 		[206151] = Defaults(), -- Challenger's Burden
 	},
 }
@@ -706,42 +715,52 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
-		-- 8.3 Affix
-		[314531] = Defaults(), -- Tear Flesh
-		[314308] = Defaults(), -- Spirit Breaker
-		[314478] = Defaults(), -- Cascading Terror
-		[314483] = Defaults(), -- Cascading Terror
-		[314592] = Defaults(), -- Mind Flay
-		[314406] = Defaults(), -- Crippling Pestilence
-		[314411] = Defaults(), -- Lingering Doubt
-		[314565] = Defaults(), -- Defiled Ground
-		[314392] = Defaults(), -- Vile Corruption
-		-- Shadowlands
+		-- Shadowlands Affix
 		[342494] = Defaults(), -- Belligerent Boast (Prideful)
 
 	-- Shadowlands Dungeons
 		-- Halls of Atonement
 		[335338] = Defaults(), -- Ritual of Woe
 		[326891] = Defaults(), -- Anguish
-		[329321] = Defaults(), -- Jagged Swipe
+		[329321] = Defaults(), -- Jagged Swipe 1
+		[344993] = Defaults(), -- Jagged Swipe 2
 		[319603] = Defaults(), -- Curse of Stone
 		[319611] = Defaults(), -- Turned to Stone
 		[325876] = Defaults(), -- Curse of Obliteration
 		[326632] = Defaults(), -- Stony Veins
 		[323650] = Defaults(), -- Haunting Fixation
 		[326874] = Defaults(), -- Ankle Bites
+		[340446] = Defaults(), -- Mark of Envy
 		-- Mists of Tirna Scithe
 		[325027] = Defaults(), -- Bramble Burst
 		[323043] = Defaults(), -- Bloodletting
 		[322557] = Defaults(), -- Soul Split
 		[331172] = Defaults(), -- Mind Link
 		[322563] = Defaults(), -- Marked Prey
+		[322487] = Defaults(), -- Overgrowth 1
+		[322486] = Defaults(), -- Overgrowth 2
+		[328756] = Defaults(), -- Repulsive Visage
+		[325021] = Defaults(), -- Mistveil Tear
+		[321891] = Defaults(), -- Freeze Tag Fixation
+		[325224] = Defaults(), -- Anima Injection
+		[326092] = Defaults(), -- Debilitating Poison
+		[325418] = Defaults(), -- Volatile Acid
 		-- Plaguefall
 		[336258] = Defaults(), -- Solitary Prey
 		[331818] = Defaults(), -- Shadow Ambush
 		[329110] = Defaults(), -- Slime Injection
 		[325552] = Defaults(), -- Cytotoxic Slash
 		[336301] = Defaults(), -- Web Wrap
+		[322358] = Defaults(), -- Burning Strain
+		[322410] = Defaults(), -- Withering Filth
+		[328180] = Defaults(), -- Gripping Infection
+		[320542] = Defaults(), -- Wasting Blight
+		[340355] = Defaults(), -- Rapid Infection
+		[328395] = Defaults(), -- Venompiercer
+		[320512] = Defaults(), -- Corroded Claws
+		[333406] = Defaults(), -- Assassinate
+		[332397] = Defaults(), -- Shroudweb
+		[330069] = Defaults(), -- Concentrated Plague
 		-- The Necrotic Wake
 		[321821] = Defaults(), -- Disgusting Guts
 		[323365] = Defaults(), -- Clinging Darkness
@@ -752,23 +771,56 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[320170] = Defaults(), -- Necrotic Bolt
 		[323464] = Defaults(), -- Dark Ichor
 		[323198] = Defaults(), -- Dark Exile
+		[343504] = Defaults(), -- Dark Grasp
+		[343556] = Defaults(), -- Morbid Fixation 1
+		[338606] = Defaults(), -- Morbid Fixation 2
+		[324381] = Defaults(), -- Chill Scythe
+		[320573] = Defaults(), -- Shadow Well
+		[333492] = Defaults(), -- Necrotic Ichor
+		[334748] = Defaults(), -- Drain FLuids
+		[333489] = Defaults(), -- Necrotic Breath
+		[320717] = Defaults(), -- Blood Hunger
 		-- Theater of Pain
-		[333299] = Defaults(), -- Curse of Desolation
+		[333299] = Defaults(), -- Curse of Desolation 1
+		[333301] = Defaults(), -- Curse of Desolation 2
 		[319539] = Defaults(), -- Soulless
 		[326892] = Defaults(), -- Fixate
 		[321768] = Defaults(), -- On the Hook
 		[323825] = Defaults(), -- Grasping Rift
+		[342675] = Defaults(), -- Bone Spear
+		[323831] = Defaults(), -- Death Grasp
+		[330608] = Defaults(), -- Vile Eruption
+		[330868] = Defaults(), -- Necrotic Bolt Volley
+		[323750] = Defaults(), -- Vile Gas
+		[323406] = Defaults(), -- Jagged Gash
+		[330700] = Defaults(), -- Decaying Blight
+		[319626] = Defaults(), -- Phantasmal Parasite
+		[324449] = Defaults(), -- Manifest Death
+		[341949] = Defaults(), -- Withering Blight
 		-- Sanguine Depths
 		[326827] = Defaults(), -- Dread Bindings
 		[326836] = Defaults(), -- Curse of Suppression
 		[322554] = Defaults(), -- Castigate
 		[321038] = Defaults(), -- Burden Soul
+		[328593] = Defaults(), -- Agonize
+		[325254] = Defaults(), -- Iron Spikes
+		[335306] = Defaults(), -- Barbed Shackles
+		[322429] = Defaults(), -- Severing Slice
+		[334653] = Defaults(), -- Engorge
 		-- Spires of Ascension
 		[338729] = Defaults(), -- Charged Stomp
 		[338747] = Defaults(), -- Purifying Blast
 		[327481] = Defaults(), -- Dark Lance
 		[322818] = Defaults(), -- Lost Confidence
 		[322817] = Defaults(), -- Lingering Doubt
+		[324205] = Defaults(), -- Blinding Flash
+		[331251] = Defaults(), -- Deep Connection
+		[328331] = Defaults(), -- Forced Confession
+		[341215] = Defaults(), -- Volatile Anima
+		[323792] = Defaults(), -- Anima Field
+		[317661] = Defaults(), -- Insidious Venom
+		[330683] = Defaults(), -- Raw Anima
+		[328434] = Defaults(), -- Intimidated
 		-- De Other Side
 		[320786] = Defaults(), -- Power Overwhelming
 		[334913] = Defaults(), -- Master of Death
@@ -778,199 +830,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[339978] = Defaults(), -- Pacifying Mists
 		[323692] = Defaults(), -- Arcane Vulnerability
 		[333250] = Defaults(), -- Reaver
-
-	-- BFA Dungeons
-		-- Freehold
-		[258323] = Defaults(), -- Infected Wound
-		[257775] = Defaults(), -- Plague Step
-		[257908] = Defaults(), -- Oiled Blade
-		[257436] = Defaults(), -- Poisoning Strike
-		[274389] = Defaults(), -- Rat Traps
-		[274555] = Defaults(), -- Scabrous Bites
-		[258875] = Defaults(), -- Blackout Barrel
-		[256363] = Defaults(), -- Ripper Punch
-		-- Shrine of the Storm
-		[264560] = Defaults(), -- Choking Brine
-		[268233] = Defaults(), -- Electrifying Shock
-		[268322] = Defaults(), -- Touch of the Drowned
-		[268896] = Defaults(), -- Mind Rend
-		[268104] = Defaults(), -- Explosive Void
-		[267034] = Defaults(), -- Whispers of Power
-		[276268] = Defaults(), -- Heaving Blow
-		[264166] = Defaults(), -- Undertow
-		[264526] = Defaults(), -- Grasp of the Depths
-		[274633] = Defaults(), -- Sundering Blow
-		[268214] = Defaults(), -- Carving Flesh
-		[267818] = Defaults(), -- Slicing Blast
-		[268309] = Defaults(), -- Unending Darkness
-		[268317] = Defaults(), -- Rip Mind
-		[268391] = Defaults(), -- Mental Assault
-		[274720] = Defaults(), -- Abyssal Strike
-		-- Siege of Boralus
-		[257168] = Defaults(), -- Cursed Slash
-		[272588] = Defaults(), -- Rotting Wounds
-		[272571] = Defaults(), -- Choking Waters
-		[274991] = Defaults(), -- Putrid Waters
-		[275835] = Defaults(), -- Stinging Venom Coating
-		[273930] = Defaults(), -- Hindering Cut
-		[257292] = Defaults(), -- Heavy Slash
-		[261428] = Defaults(), -- Hangman's Noose
-		[256897] = Defaults(), -- Clamping Jaws
-		[272874] = Defaults(), -- Trample
-		[273470] = Defaults(), -- Gut Shot
-		[272834] = Defaults(), -- Viscous Slobber
-		[257169] = Defaults(), -- Terrifying Roar
-		[272713] = Defaults(), -- Crushing Slam
-		-- Tol Dagor
-		[258128] = Defaults(), -- Debilitating Shout
-		[265889] = Defaults(), -- Torch Strike
-		[257791] = Defaults(), -- Howling Fear
-		[258864] = Defaults(), -- Suppression Fire
-		[257028] = Defaults(), -- Fuselighter
-		[258917] = Defaults(), -- Righteous Flames
-		[257777] = Defaults(), -- Crippling Shiv
-		[258079] = Defaults(), -- Massive Chomp
-		[258058] = Defaults(), -- Squeeze
-		[260016] = Defaults(), -- Itchy Bite
-		[257119] = Defaults(), -- Sand Trap
-		[260067] = Defaults(), -- Vicious Mauling
-		[258313] = Defaults(), -- Handcuff
-		[259711] = Defaults(), -- Lockdown
-		[256198] = Defaults(), -- Azerite Rounds: Incendiary
-		[256101] = Defaults(), -- Explosive Burst (mythic)
-		[256105] = Defaults(), -- Explosive Burst (mythic+)
-		[256044] = Defaults(), -- Deadeye
-		[256474] = Defaults(), -- Heartstopper Venom
-		-- Waycrest Manor
-		[260703] = Defaults(), -- Unstable Runic Mark
-		[263905] = Defaults(), -- Marking Cleave
-		[265880] = Defaults(), -- Dread Mark
-		[265882] = Defaults(), -- Lingering Dread
-		[264105] = Defaults(), -- Runic Mark
-		[264050] = Defaults(), -- Infected Thorn
-		[261440] = Defaults(), -- Virulent Pathogen
-		[263891] = Defaults(), -- Grasping Thorns
-		[264378] = Defaults(), -- Fragment Soul
-		[266035] = Defaults(), -- Bone Splinter
-		[266036] = Defaults(), -- Drain Essence
-		[260907] = Defaults(), -- Soul Manipulation
-		[260741] = Defaults(), -- Jagged Nettles
-		[264556] = Defaults(), -- Tearing Strike
-		[265760] = Defaults(), -- Thorned Barrage
-		[260551] = Defaults(), -- Soul Thorns
-		[263943] = Defaults(), -- Etch
-		[265881] = Defaults(), -- Decaying Touch
-		[261438] = Defaults(), -- Wasting Strike
-		[268202] = Defaults(), -- Death Lens
-		[278456] = Defaults(), -- Infest
-		[264153] = Defaults(), -- Spit
-		-- AtalDazar
-		[252781] = Defaults(), -- Unstable Hex
-		[250096] = Defaults(), -- Wracking Pain
-		[250371] = Defaults(), -- Lingering Nausea
-		[253562] = Defaults(), -- Wildfire
-		[255582] = Defaults(), -- Molten Gold
-		[255041] = Defaults(), -- Terrifying Screech
-		[255371] = Defaults(), -- Terrifying Visage
-		[252687] = Defaults(), -- Venomfang Strike
-		[254959] = Defaults(), -- Soulburn
-		[255814] = Defaults(), -- Rending Maul
-		[255421] = Defaults(), -- Devour
-		[255434] = Defaults(), -- Serrated Teeth
-		[256577] = Defaults(), -- Soulfeast
-		-- Kings Rest
-		[270492] = Defaults(), -- Hex
-		[267763] = Defaults(), -- Wretched Discharge
-		[276031] = Defaults(), -- Pit of Despair
-		[265773] = Defaults(), -- Spit Gold
-		[270920] = Defaults(), -- Seduction
-		[270865] = Defaults(), -- Hidden Blade
-		[271564] = Defaults(), -- Embalming Fluid
-		[270507] = Defaults(), -- Poison Barrage
-		[267273] = Defaults(), -- Poison Nova
-		[270003] = Defaults(), -- Suppression Slam
-		[270084] = Defaults(), -- Axe Barrage
-		[267618] = Defaults(), -- Drain Fluids
-		[267626] = Defaults(), -- Dessication
-		[270487] = Defaults(), -- Severing Blade
-		[266238] = Defaults(), -- Shattered Defenses
-		[266231] = Defaults(), -- Severing Axe
-		[266191] = Defaults(), -- Whirling Axes
-		[272388] = Defaults(), -- Shadow Barrage
-		[271640] = Defaults(), -- Dark Revelation
-		[268796] = Defaults(), -- Impaling Spear
-		[268419] = Defaults(), -- Gale Slash
-		[269932] = Defaults(), -- Gust Slash
-		-- Motherlode
-		[263074] = Defaults(), -- Festering Bite
-		[280605] = Defaults(), -- Brain Freeze
-		[257337] = Defaults(), -- Shocking Claw
-		[270882] = Defaults(), -- Blazing Azerite
-		[268797] = Defaults(), -- Transmute: Enemy to Goo
-		[259856] = Defaults(), -- Chemical Burn
-		[269302] = Defaults(), -- Toxic Blades
-		[280604] = Defaults(), -- Iced Spritzer
-		[257371] = Defaults(), -- Tear Gas
-		[257544] = Defaults(), -- Jagged Cut
-		[268846] = Defaults(), -- Echo Blade
-		[262794] = Defaults(), -- Energy Lash
-		[262513] = Defaults(), -- Azerite Heartseeker
-		[260829] = Defaults(), -- Homing Missle (travelling)
-		[260838] = Defaults(), -- Homing Missle (exploded)
-		[263637] = Defaults(), -- Clothesline
-		-- Temple of Sethraliss
-		[269686] = Defaults(), -- Plague
-		[268013] = Defaults(), -- Flame Shock
-		[268008] = Defaults(), -- Snake Charm
-		[273563] = Defaults(), -- Neurotoxin
-		[272657] = Defaults(), -- Noxious Breath
-		[267027] = Defaults(), -- Cytotoxin
-		[272699] = Defaults(), -- Venomous Spit
-		[263371] = Defaults(), -- Conduction
-		[272655] = Defaults(), -- Scouring Sand
-		[263914] = Defaults(), -- Blinding Sand
-		[263958] = Defaults(), -- A Knot of Snakes
-		[266923] = Defaults(), -- Galvanize
-		[268007] = Defaults(), -- Heart Attack
-		-- Underrot
-		[265468] = Defaults(), -- Withering Curse
-		[278961] = Defaults(), -- Decaying Mind
-		[259714] = Defaults(), -- Decaying Spores
-		[272180] = Defaults(), -- Death Bolt
-		[272609] = Defaults(), -- Maddening Gaze
-		[269301] = Defaults(), -- Putrid Blood
-		[265533] = Defaults(), -- Blood Maw
-		[265019] = Defaults(), -- Savage Cleave
-		[265377] = Defaults(), -- Hooked Snare
-		[265625] = Defaults(), -- Dark Omen
-		[260685] = Defaults(), -- Taint of G'huun
-		[266107] = Defaults(), -- Thirst for Blood
-		[260455] = Defaults(), -- Serrated Fangs
-		-- Operation Mechagon
-		[291928] = Defaults(), -- Giga-Zap
-		[292267] = Defaults(), -- Giga-Zap
-		[302274] = Defaults(), -- Fulminating Zap
-		[298669] = Defaults(), -- Taze
-		[295445] = Defaults(), -- Wreck
-		[294929] = Defaults(), -- Blazing Chomp
-		[297257] = Defaults(), -- Electrical Charge
-		[294855] = Defaults(), -- Blossom Blast
-		[291972] = Defaults(), -- Explosive Leap
-		[285443] = Defaults(), -- 'Hidden' Flame Cannon
-		[291974] = Defaults(), -- Obnoxious Monologue
-		[296150] = Defaults(), -- Vent Blast
-		[298602] = Defaults(), -- Smoke Cloud
-		[296560] = Defaults(), -- Clinging Static
-		[297283] = Defaults(), -- Cave In
-		[291914] = Defaults(), -- Cutting Beam
-		[302384] = Defaults(), -- Static Discharge
-		[294195] = Defaults(), -- Arcing Zap
-		[299572] = Defaults(), -- Shrink
-		[300659] = Defaults(), -- Consuming Slime
-		[300650] = Defaults(), -- Suffocating Smog
-		[301712] = Defaults(), -- Pounce
-		[299475] = Defaults(), -- B.O.R.K
-		[293670] = Defaults(), -- Chain Blade
+		[330434] = Defaults(), -- Buzz-Saw 1
+		[320144] = Defaults(), -- Buzz-Saw 2
+		[331847] = Defaults(), -- W-00F
+		[327649] = Defaults(), -- Crushed Soul
+		[331379] = Defaults(), -- Lubricate
+		[332678] = Defaults(), -- Gushing Wound
+		[322746] = Defaults(), -- Corrupted Blood
+		[323687] = Defaults(), -- Arcane Lightning
+		[323877] = Defaults(), -- Echo Finger Laser X-treme
+		[334535] = Defaults(), -- Beak Slice
 
 	-- Castle Nathria
 		-- Shriekwing
@@ -978,13 +847,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[330713] = Defaults(), -- Reverberating Pain
 		[329370] = Defaults(), -- Deadly Descent
 		[336494] = Defaults(), -- Echo Screech
+		[346301] = Defaults(), -- Bloodlight
+		[342077] = Defaults(), -- Echolocation
 		-- Huntsman Altimor
 		[335304] = Defaults(), -- Sinseeker
 		[334971] = Defaults(), -- Jagged Claws
-		[335113] = Defaults(), -- Huntsman's Mark 1
-		[335112] = Defaults(), -- Huntsman's Mark 2
 		[335111] = Defaults(), -- Huntsman's Mark 3
-		[334945] = Defaults(), -- Bloody Thrash
+		[335112] = Defaults(), -- Huntsman's Mark 2
+		[335113] = Defaults(), -- Huntsman's Mark 1
+		[334945] = Defaults(), -- Vicious Lunge
+		[334852] = Defaults(), -- Petrifying Howl
+		[334695] = Defaults(), -- Destabilize
 		-- Hungering Destroyer
 		[334228] = Defaults(), -- Volatile Ejection
 		[329298] = Defaults(), -- Gluttonous Miasma
@@ -992,21 +865,29 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[325936] = Defaults(), -- Shared Cognition
 		[335396] = Defaults(), -- Hidden Desire
 		[324983] = Defaults(), -- Shared Suffering
-		[324982] = Defaults(), -- Shared Suffering Partner
+		[324982] = Defaults(), -- Shared Suffering (Partner)
 		[332664] = Defaults(), -- Concentrate Anima
 		[325382] = Defaults(), -- Warped Desires
 		-- Sun King's Salvation
 		[333002] = Defaults(), -- Vulgar Brand
 		[326078] = Defaults(), -- Infuser's Boon
 		[325251] = Defaults(), -- Sin of Pride
+		[341475] = Defaults(), -- Crimson Flurry
+		[341473] = Defaults(), -- Crimson Flurry Teleport
+		[328479] = Defaults(), -- Eyes on Target
+		[328889] = Defaults(), -- Greater Castigation
 		-- Artificer Xy'mox
 		[327902] = Defaults(), -- Fixate
 		[326302] = Defaults(), -- Stasis Trap
 		[325236] = Defaults(), -- Glyph of Destruction
 		[327414] = Defaults(), -- Possession
+		[328468] = Defaults(), -- Dimensional Tear 1
+		[328448] = Defaults(), -- Dimensional Tear 2
+		[340860] = Defaults(), -- Withering Touch
 		-- The Council of Blood
-		[327773] = Defaults(), -- Drain Essence 1
-		[327052] = Defaults(), -- Drain Essence 2
+		[327052] = Defaults(), -- Drain Essence 1
+		[327773] = Defaults(), -- Drain Essence 2
+		[346651] = Defaults(), -- Drain Essence Mythic
 		[328334] = Defaults(), -- Tactical Advance
 		[330848] = Defaults(), -- Wrong Moves
 		[331706] = Defaults(), -- Scarlet Letter
@@ -1018,316 +899,34 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[331209] = Defaults(), -- Hateful Gaze
 		[335293] = Defaults(), -- Chain Link
 		[335270] = Defaults(), -- Chain This One!
+		[342419] = Defaults(), -- Chain Them! 1
+		[342420] = Defaults(), -- Chain Them! 2
 		[335295] = Defaults(), -- Shattering Chain
+		[332572] = Defaults(), -- Falling Rubble
 		-- Stone Legion Generals
 		[334498] = Defaults(), -- Seismic Upheaval
 		[337643] = Defaults(), -- Unstable Footing
-		[334765] = Defaults(), -- Stone Shatterer
+		[334765] = Defaults(), -- Heart Rend
 		[333377] = Defaults(), -- Wicked Mark
 		[334616] = Defaults(), -- Petrified
 		[334541] = Defaults(), -- Curse of Petrification
+		[339690] = Defaults(), -- Crystalize
+		[342655] = Defaults(), -- Volatile Anima Infusion
+		[342698] = Defaults(), -- Volatile Anima Infection
+		[343881] = Defaults(), -- Serrated Tear
 		-- Sire Denathrius
 		[326851] = Defaults(), -- Blood Price
-		[327798] = Defaults(), -- Night Hunter
+		[327796] = Defaults(), -- Night Hunter
 		[327992] = Defaults(), -- Desolation
 		[328276] = Defaults(), -- March of the Penitent
 		[326699] = Defaults(), -- Burden of Sin
+		[329181] = Defaults(), -- Wracking Pain
+		[335873] = Defaults(), -- Rancor
+		[329951] = Defaults(), -- Impale
+		[327039] = Defaults(), -- Feeding Time
+		[332794] = Defaults(), -- Fatal Finesse
+		[334016] = Defaults(), -- Unworthy
 
-	-- Uldir
-		-- MOTHER
-		[268277] = Defaults(), -- Purifying Flame
-		[268253] = Defaults(), -- Surgical Beam
-		[268095] = Defaults(), -- Cleansing Purge
-		[267787] = Defaults(), -- Sundering Scalpel
-		[268198] = Defaults(), -- Clinging Corruption
-		[267821] = Defaults(), -- Defense Grid
-		-- Vectis
-		[265127] = Defaults(), -- Lingering Infection
-		[265178] = Defaults(), -- Mutagenic Pathogen
-		[265206] = Defaults(), -- Immunosuppression
-		[265212] = Defaults(), -- Gestate
-		[265129] = Defaults(), -- Omega Vector
-		[267160] = Defaults(), -- Omega Vector
-		[267161] = Defaults(), -- Omega Vector
-		[267162] = Defaults(), -- Omega Vector
-		[267163] = Defaults(), -- Omega Vector
-		[267164] = Defaults(), -- Omega Vector
-		-- Mythrax
-		[272536] = Defaults(), -- Imminent Ruin
-		[274693] = Defaults(), -- Essence Shear
-		[272407] = Defaults(), -- Oblivion Sphere
-		-- Fetid Devourer
-		[262313] = Defaults(), -- Malodorous Miasma
-		[262292] = Defaults(), -- Rotting Regurgitation
-		[262314] = Defaults(), -- Deadly Disease
-		-- Taloc
-		[270290] = Defaults(), -- Blood Storm
-		[275270] = Defaults(), -- Fixate
-		[271224] = Defaults(), -- Plasma Discharge
-		[271225] = Defaults(), -- Plasma Discharge
-		-- Zul
-		[273365] = Defaults(), -- Dark Revelation
-		[273434] = Defaults(), -- Pit of Despair
-		[272018] = Defaults(), -- Absorbed in Darkness
-		[274358] = Defaults(), -- Rupturing Blood
-		-- Zekvoz
-		[265237] = Defaults(), -- Shatter
-		[265264] = Defaults(), -- Void Lash
-		[265360] = Defaults(), -- Roiling Deceit
-		[265662] = Defaults(), -- Corruptor's Pact
-		[265646] = Defaults(), -- Will of the Corruptor
-		-- G'huun
-		[263436] = Defaults(), -- Imperfect Physiology
-		[263227] = Defaults(), -- Putrid Blood
-		[263372] = Defaults(), -- Power Matrix
-		[272506] = Defaults(), -- Explosive Corruption
-		[267409] = Defaults(), -- Dark Bargain
-		[267430] = Defaults(), -- Torment
-		[263235] = Defaults(), -- Blood Feast
-		[270287] = Defaults(), -- Blighted Ground
-
-	-- Battle of Dazar'alor
-		-- Champions of the Light
-		[283573] = Defaults(), -- Sacred Blade
-		[283617] = Defaults(), -- Wave of Light
-		[283651] = Defaults(), -- Blinding Faith
-		[284595] = Defaults(), -- Penance
-		[283582] = Defaults(), -- Consecration
-		-- Grong
-		[285998] = Defaults(), -- Ferocious Roar
-		[283069] = Defaults(), -- Megatomic Fire
-		[285671] = Defaults(), -- Crushed
-		[285875] = Defaults(), -- Rending Bite
-		-- Jaina
-		[285253] = Defaults(), -- Ice Shard
-		[287993] = Defaults(), -- Chilling Touch
-		[287365] = Defaults(), -- Searing Pitch
-		[288038] = Defaults(), -- Marked Target
-		[285254] = Defaults(), -- Avalanche
-		[287626] = Defaults(), -- Grasp of Frost
-		[287490] = Defaults(), -- Frozen Solid
-		[287199] = Defaults(), -- Ring of Ice
-		[288392] = Defaults(), -- Vengeful Seas
-		-- Stormwall Blockade
-		[284369] = Defaults(), -- Sea Storm
-		[284410] = Defaults(), -- Tempting Song
-		[284405] = Defaults(), -- Tempting Song
-		[284121] = Defaults(), -- Thunderous Boom
-		[286680] = Defaults(), -- Roiling Tides
-		-- Opulence
-		[286501] = Defaults(), -- Creeping Blaze
-		[283610] = Defaults(), -- Crush
-		[289383] = Defaults(), -- Chaotic Displacement
-		[285479] = Defaults(), -- Flame Jet
-		[283063] = Defaults(), -- Flames of Punishment
-		[283507] = Defaults(), -- Volatile Charge
-		-- King Rastakhan
-		[284995] = Defaults(), -- Zombie Dust
-		[285349] = Defaults(), -- Plague of Fire
-		[285044] = Defaults(), -- Toad Toxin
-		[284831] = Defaults(), -- Scorching Detonation
-		[289858] = Defaults(), -- Crushed
-		[284662] = Defaults(), -- Seal of Purification
-		[284676] = Defaults(), -- Seal of Purification
-		[285178] = Defaults(), -- Serpent's Breath
-		[285010] = Defaults(), -- Poison Toad Slime
-		-- Jadefire Masters
-		[282037] = Defaults(), -- Rising Flames
-		[284374] = Defaults(), -- Magma Trap
-		[285632] = Defaults(), -- Stalking
-		[288151] = Defaults(), -- Tested
-		[284089] = Defaults(), -- Successful Defense
-		[286988] = Defaults(), -- Searing Embers
-		-- Mekkatorque
-		[288806] = Defaults(), -- Gigavolt Blast
-		[289023] = Defaults(), -- Enormous
-		[286646] = Defaults(), -- Gigavolt Charge
-		[288939] = Defaults(), -- Gigavolt Radiation
-		[284168] = Defaults(), -- Shrunk
-		[286516] = Defaults(), -- Anti-Tampering Shock
-		[286480] = Defaults(), -- Anti-Tampering Shock
-		[284214] = Defaults(), -- Trample
-		-- Conclave of the Chosen
-		[284663] = Defaults(), -- Bwonsamdi's Wrath
-		[282444] = Defaults(), -- Lacerating Claws
-		[282592] = Defaults(), -- Bleeding Wounds
-		[282209] = Defaults(), -- Mark of Prey
-		[285879] = Defaults(), -- Mind Wipe
-		[282135] = Defaults(), -- Crawling Hex
-		[286060] = Defaults(), -- Cry of the Fallen
-		[282447] = Defaults(), -- Kimbul's Wrath
-		[282834] = Defaults(), -- Kimbul's Wrath
-		[286811] = Defaults(), -- Akunda's Wrath
-		[286838] = Defaults(), -- Static Orb
-
-	-- Crucible of Storms
-		-- The Restless Cabal
-		[282386] = Defaults(), -- Aphotic Blast
-		[282384] = Defaults(), -- Shear Mind
-		[282566] = Defaults(), -- Promises of Power
-		[282561] = Defaults(), -- Dark Herald
-		[282432] = Defaults(), -- Crushing Doubt
-		[282589] = Defaults(), -- Mind Scramble
-		[292826] = Defaults(), -- Mind Scramble
-		-- Uu'nat
-		[284851] = Defaults(), -- Touch of the End
-		[286459] = Defaults(), -- Feedback: Void
-		[286457] = Defaults(), -- Feedback: Ocean
-		[286458] = Defaults(), -- Feedback: Storm
-		[285367] = Defaults(), -- Piercing Gaze of N'Zoth
-		[284733] = Defaults(), -- Embrace of the Void
-		[284722] = Defaults(), -- Umbral Shell
-		[285345] = Defaults(), -- Maddening Eyes of N'Zoth
-		[285477] = Defaults(), -- Obscurity
-		[285652] = Defaults(), -- Insatiable Torment
-
-	-- Eternal Palace
-		-- Lady Ashvane
-		[296693] = Defaults(), -- Waterlogged
-		[296725] = Defaults(), -- Barnacle Bash
-		[296942] = Defaults(), -- Arcing Azerite
-		[296938] = Defaults(), -- Arcing Azerite
-		[296941] = Defaults(), -- Arcing Azerite
-		[296939] = Defaults(), -- Arcing Azerite
-		[296943] = Defaults(), -- Arcing Azerite
-		[296940] = Defaults(), -- Arcing Azerite
-		[296752] = Defaults(), -- Cutting Coral
-		[297333] = Defaults(), -- Briny Bubble
-		[297397] = Defaults(), -- Briny Bubble
-		-- Abyssal Commander Sivara
-		[300701] = Defaults(), -- Rimefrost
-		[300705] = Defaults(), -- Septic Taint
-		[294847] = Defaults(), -- Unstable Mixture
-		[295850] = Defaults(), -- Delirious
-		[295421] = Defaults(), -- Overflowing Venom
-		[295348] = Defaults(), -- Overflowing Chill
-		[295807] = Defaults(), -- Frozen
-		[300883] = Defaults(), -- Inversion Sickness
-		[295705] = Defaults(), -- Toxic Bolt
-		[295704] = Defaults(), -- Frost Bolt
-		[294711] = Defaults(), -- Frost Mark
-		[294715] = Defaults(), -- Toxic Brand
-		-- The Queens Court
-		[301830] = Defaults(), -- Pashmar's Touch
-		[296851] = Defaults(), -- Fanatical Verdict
-		[297836] = Defaults(), -- Potent Spark
-		[297586] = Defaults(), -- Suffering
-		[304410] = Defaults(), -- Repeat Performance
-		[299914] = Defaults(), -- Frenetic Charge
-		[303306] = Defaults(), -- Sphere of Influence
-		[300545] = Defaults(), -- Mighty Rupture
-		-- Radiance of Azshara
-		[296566] = Defaults(), -- Tide Fist
-		[296737] = Defaults(), -- Arcane Bomb
-		[296746] = Defaults(), -- Arcane Bomb
-		[295920] = Defaults(), -- Ancient Tempest
-		[296462] = Defaults(), -- Squall Trap
-		-- Orgozoa
-		[298156] = Defaults(), -- Desensitizing Sting
-		[298306] = Defaults(), -- Incubation Fluid
-		-- Blackwater Behemoth
-		[292127] = Defaults(), -- Darkest Depths
-		[292138] = Defaults(), -- Radiant Biomass
-		[292167] = Defaults(), -- Toxic Spine
-		[301494] = Defaults(), -- Piercing Barb
-		-- Zaqul
-		[295495] = Defaults(), -- Mind Tether
-		[295480] = Defaults(), -- Mind Tether
-		[295249] = Defaults(), -- Delirium Realm
-		[303819] = Defaults(), -- Nightmare Pool
-		[293509] = Defaults(), -- Manifest Nightmares
-		[295327] = Defaults(), -- Shattered Psyche
-		[294545] = Defaults(), -- Portal of Madness
-		[298192] = Defaults(), -- Dark Beyond
-		[292963] = Defaults(), -- Dread
-		[300133] = Defaults(), -- Snapped
-		-- Queen Azshara
-		[298781] = Defaults(), -- Arcane Orb
-		[297907] = Defaults(), -- Cursed Heart
-		[302999] = Defaults(), -- Arcane Vulnerability
-		[302141] = Defaults(), -- Beckon
-		[299276] = Defaults(), -- Sanction
-		[303657] = Defaults(), -- Arcane Burst
-		[298756] = Defaults(), -- Serrated Edge
-		[301078] = Defaults(), -- Charged Spear
-		[298014] = Defaults(), -- Cold Blast
-		[298018] = Defaults(), -- Frozen
-
-	-- Ny'alotha
-		-- Wrathion
-		[313255] = Defaults(), -- Creeping Madness (Slow Effect)
-		[306163] = Defaults(), -- Incineration
-		[306015] = Defaults(), -- Searing Armor [tank]
-		-- Maut
-		[307805] = Defaults(), -- Devour Magic
-		[314337] = Defaults(), -- Ancient Curse
-		[306301] = Defaults(), -- Forbidden Mana
-		[314992] = Defaults(), -- Darin Essence
-		[307399] = Defaults(), -- Shadow Claws [tank]
-		-- Prophet Skitra
-		[306387] = Defaults(), -- Shadow Shock
-		[313276] = Defaults(), -- Shred Psyche
-		-- Dark Inquisitor
-		[306311] = Defaults(), -- Soul Flay
-		[312406] = Defaults(), -- Void Woken
-		[311551] = Defaults(), -- Abyssal Strike [tank]
-		-- Hivemind
-		[313461] = Defaults(), -- Corrosion
-		[313672] = Defaults(), -- Acid Pool
-		[313460] = Defaults(), -- Nullification
-		-- Shadhar
-		[307471] = Defaults(), -- Crush [tank]
-		[307472] = Defaults(), -- Dissolve [tank]
-		[307358] = Defaults(), -- Debilitating Spit
-		[306928] = Defaults(), -- Umbral Breath
-		[312530] = Defaults(), -- Entropic Breath
-		[306929] = Defaults(), -- Bubbling Breath
-		[318078] = Defaults(), -- Fixated
-		-- Drest
-		[310406] = Defaults(), -- Void Glare
-		[310277] = Defaults(), -- Volatile Seed [tank]
-		[310309] = Defaults(), -- Volatile Vulnerability
-		[310358] = Defaults(), -- Mutterings of Insanity
-		[310552] = Defaults(), -- Mind Flay
-		[310478] = Defaults(), -- Void Miasma
-		-- Ilgy
-		[309961] = Defaults(), -- Eye of Nzoth [tank]
-		[310322] = Defaults(), -- Morass of Corruption
-		[311401] = Defaults(), -- Touch of the Corruptor
-		[314396] = Defaults(), -- Cursed Blood
-		[275269] = Defaults(), -- Fixate
-		[312486] = Defaults(), -- Recurring Nightmare
-		-- Vexiona
-		[307317] = Defaults(), -- Encroaching Shadows
-		[307359] = Defaults(), -- Despair
-		[315932] = Defaults(), -- Brutal Smash
-		[307218] = Defaults(), -- Twilight Decimator
-		[307284] = Defaults(), -- Terrifying Presence
-		[307421] = Defaults(), -- Annihilation
-		[307019] = Defaults(), -- Void Corruption [tank]
-		-- Raden
-		[306819] = Defaults(), -- Nullifying Strike [tank]
-		[306279] = Defaults(), -- Insanity Exposure
-		[315258] = Defaults(), -- Dread Inferno
-		[306257] = Defaults(), -- Unstable Vita
-		[313227] = Defaults(), -- Decaying Wound
-		[310019] = Defaults(), -- Charged Bonds
-		[316065] = Defaults(), -- Corrupted Existence
-		-- Carapace
-		[315954] = Defaults(), -- Black Scar [tank]
-		[306973] = Defaults(), -- Madness
-		[316848] = Defaults(), -- Adaptive Membrane
-		[307044] = Defaults(), -- Nightmare Antibody
-		[313364] = Defaults(), -- Mental Decay
-		[317627] = Defaults(), -- Infinite Void
-		-- Nzoth
-		[318442] = Defaults(), -- Paranoia
-		[313400] = Defaults(), -- Corrupted Mind
-		[313793] = Defaults(), -- Flames of Insanity
-		[316771] = Defaults(), -- Mindwrack
-		[314889] = Defaults(), -- Probe Mind
-		[317112] = Defaults(), -- Evoke Anguish
-		[318976] = Defaults(), -- Stupefying Glare
 	},
 }
 
@@ -1339,14 +938,45 @@ G.unitframe.aurafilters.RaidDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
-		-- Mythic / Mythic+
+		-- Castle Nathria
+		[343026] = Defaults(), -- Cloak of Flames (Sun King's Salvation)
+		[329808] = Defaults(), -- Hardened Stone Form Grashaal (Stone Legion Generals)
+		[329636] = Defaults(), -- Hardened Stone Form Kaal (Stone Legion Generals)
+		[340037] = Defaults(), -- Volatile Stone Shell (Stone Legion Generals)
+		-- Mythic+ General
+		[340873] = Defaults(), -- Bursting With Pride (Prideful)
+		[340880] = Defaults(), -- Prideful
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
-		-- Shadowlands
 		[343502] = Defaults(), -- Inspiring
-		[342332] = Defaults(), -- Bursting With Pride (Prideful)
-		[340880] = Defaults(), -- Prideful
+		-- Halls of Atonement
+		[326450] = Defaults(), -- Loyal Beasts
+		-- Mists of Tirna Scithe
+		[336499] = Defaults(), -- Guessing Game
+		-- Plaguefall
+		[336451] = Defaults(), -- Bulwark of Maldraxxus
+		[333737] = Defaults(), -- Congealed Contagion
+		-- The Necrotic Wake
+		[321754] = Defaults(), -- Icebound Aegis
+		[343558] = Defaults(), -- Morbid Fixation
+		[343470] = Defaults(), -- Boneshatter Shield
+		-- Theater of Pain
+		[331510] = Defaults(), -- Death Wish
+		[333241] = Defaults(), -- Raging Tantrum
+		[326892] = Defaults(), -- Fixate
+		[330545] = Defaults(), -- Commanding Presences
+		-- Sanguine Depths
+		[322433] = Defaults(), -- Stoneskin
+		[321402] = Defaults(), -- Engorge
+		-- Spires of Ascension
+		[327416] = Defaults(), -- Recharge Anima
+		[317936] = Defaults(), -- Forsworn Doctrine
+		[327808] = Defaults(), -- Inspiring Presence
+		-- De Other Side
+		[344739] = Defaults(), -- Spectral
+		[333227] = Defaults(), -- Undying Rage
+		[322773] = Defaults(), -- Blood Barrier
 	},
 }
 
@@ -1376,38 +1006,42 @@ function UF:AuraWatch_AddSpell(id, point, color, anyUnit, onlyShowMissing, displ
 end
 
 G.unitframe.aurawatch = {
+	GLOBAL = {},
 	PRIEST = {
+		[139]    = UF:AuraWatch_AddSpell(139, 'BOTTOMLEFT', {0.4, 0.7, 0.2}),			-- Renew
+		[17]     = UF:AuraWatch_AddSpell(17, 'TOPLEFT', {0.7, 0.7, 0.7}, true), 		-- Power Word: Shield
+		[193065] = UF:AuraWatch_AddSpell(193065, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}),	-- Masochism
 		[194384] = UF:AuraWatch_AddSpell(194384, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement
 		[214206] = UF:AuraWatch_AddSpell(214206, 'TOPRIGHT', {1, 1, 0.66}), 			-- Atonement (PvP)
-		[41635]  = UF:AuraWatch_AddSpell(41635, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}),		-- Prayer of Mending
-		[193065] = UF:AuraWatch_AddSpell(193065, 'BOTTOMRIGHT', {0.54, 0.21, 0.78}),	-- Masochism
-		[139]    = UF:AuraWatch_AddSpell(139, 'BOTTOMLEFT', {0.4, 0.7, 0.2}),			-- Renew
-		[6788]   = UF:AuraWatch_AddSpell(6788, 'BOTTOMLEFT', {0.89, 0.1, 0.1}), 		-- Weakened Soul
-		[17]     = UF:AuraWatch_AddSpell(17, 'TOPLEFT', {0.7, 0.7, 0.7}, true), 		-- Power Word: Shield
-		[47788]  = UF:AuraWatch_AddSpell(47788, 'LEFT', {0.86, 0.45, 0}, true), 		-- Guardian Spirit
 		[33206]  = UF:AuraWatch_AddSpell(33206, 'LEFT', {0.47, 0.35, 0.74}, true),		-- Pain Suppression
+		[41635]  = UF:AuraWatch_AddSpell(41635, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}),		-- Prayer of Mending
+		[47788]  = UF:AuraWatch_AddSpell(47788, 'LEFT', {0.86, 0.45, 0}, true), 		-- Guardian Spirit
+		[6788]   = UF:AuraWatch_AddSpell(6788, 'BOTTOMLEFT', {0.89, 0.1, 0.1}), 		-- Weakened Soul
 	},
 	DRUID = {
 		[774]    = UF:AuraWatch_AddSpell(774, 'TOPRIGHT', {0.8, 0.4, 0.8}), 			-- Rejuvenation
 		[155777] = UF:AuraWatch_AddSpell(155777, 'RIGHT', {0.8, 0.4, 0.8}), 			-- Germination
 		[8936]   = UF:AuraWatch_AddSpell(8936, 'BOTTOMLEFT', {0.2, 0.8, 0.2}),			-- Regrowth
-		[33763]  = UF:AuraWatch_AddSpell(33763, 'TOPLEFT', {0.4, 0.8, 0.2}), 			-- Lifebloom (Normal version)
-		[188550] = UF:AuraWatch_AddSpell(188550, 'TOPLEFT', {0.4, 0.8, 0.2}),			-- Lifebloom (Legendary version)
+		[33763]  = UF:AuraWatch_AddSpell(33763, 'TOPLEFT', {0.4, 0.8, 0.2}), 			-- Lifebloom
+		[188550] = UF:AuraWatch_AddSpell(188550, 'TOPLEFT', {0.4, 0.8, 0.2}),			-- Lifebloom (Shadowlands Legendary)
 		[48438]  = UF:AuraWatch_AddSpell(48438, 'BOTTOMRIGHT', {0.8, 0.4, 0}),			-- Wild Growth
 		[207386] = UF:AuraWatch_AddSpell(207386, 'TOP', {0.4, 0.2, 0.8}), 				-- Spring Blossoms
 		[102351] = UF:AuraWatch_AddSpell(102351, 'LEFT', {0.2, 0.8, 0.8}),				-- Cenarion Ward (Initial Buff)
 		[102352] = UF:AuraWatch_AddSpell(102352, 'LEFT', {0.2, 0.8, 0.8}),				-- Cenarion Ward (HoT)
 		[200389] = UF:AuraWatch_AddSpell(200389, 'BOTTOM', {1, 1, 0.4}),				-- Cultivation
+		[203554] = UF:AuraWatch_AddSpell(203554, 'TOP', {1, 1, 0.4}),					-- Focused Growth (PvP)
 	},
 	PALADIN = {
 		[53563]  = UF:AuraWatch_AddSpell(53563, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Light
 		[156910] = UF:AuraWatch_AddSpell(156910, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Faith
 		[200025] = UF:AuraWatch_AddSpell(200025, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Beacon of Virtue
-		[1022]   = UF:AuraWatch_AddSpell(1022, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true), 	-- Hand of Protection
-		[1044]   = UF:AuraWatch_AddSpell(1044, 'BOTTOMRIGHT', {0.89, 0.45, 0}, true),	-- Hand of Freedom
-		[6940]   = UF:AuraWatch_AddSpell(6940, 'BOTTOMRIGHT', {0.89, 0.1, 0.1}, true),	-- Hand of Sacrifice
+		[1022]   = UF:AuraWatch_AddSpell(1022, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true), 	-- Blessing of Protection
+		[1044]   = UF:AuraWatch_AddSpell(1044, 'BOTTOMRIGHT', {0.89, 0.45, 0}, true),	-- Blessing of Freedom
+		[6940]   = UF:AuraWatch_AddSpell(6940, 'BOTTOMRIGHT', {0.89, 0.1, 0.1}, true),	-- Blessing of Sacrifice
+		[204018] = UF:AuraWatch_AddSpell(204018, 'BOTTOMRIGHT', {0.2, 0.2, 1}, true),	-- Blessing of Spellwarding
 		[223306] = UF:AuraWatch_AddSpell(223306, 'BOTTOMLEFT', {0.7, 0.7, 0.3}),		-- Bestow Faith
-		[287280] = UF:AuraWatch_AddSpell(287280, 'TOPLEFT', {0.2, 0.8, 0.2}),			-- Glimmer of Light (Artifact HoT)
+		[287280] = UF:AuraWatch_AddSpell(287280, 'TOPLEFT', {0.2, 0.8, 0.2}),			-- Glimmer of Light (T50 Talent)
+		[157047] = UF:AuraWatch_AddSpell(157047, 'TOP', {0.15, 0.58, 0.84}),			-- Saved by the Light (T25 Talent)
 	},
 	SHAMAN = {
 		[61295]  = UF:AuraWatch_AddSpell(61295, 'TOPRIGHT', {0.7, 0.3, 0.7}),			-- Riptide
@@ -1418,12 +1052,13 @@ G.unitframe.aurawatch = {
 		[116849] = UF:AuraWatch_AddSpell(116849, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),	-- Life Cocoon
 		[124682] = UF:AuraWatch_AddSpell(124682, 'BOTTOMLEFT', {0.8, 0.8, 0.25}),		-- Enveloping Mist
 		[191840] = UF:AuraWatch_AddSpell(191840, 'BOTTOMRIGHT', {0.27, 0.62, 0.7}),		-- Essence Font
+		[116841] = UF:AuraWatch_AddSpell(116841, 'TOP', {0.12, 1.00, 0.53}),			-- Tiger's Lust (Freedom)
+		[325209] = UF:AuraWatch_AddSpell(325209, 'BOTTOM', {0.3, 0.8, 0.6}),			-- Enveloping Breath
 	},
 	ROGUE = {
 		[57934]  = UF:AuraWatch_AddSpell(57934, 'TOPRIGHT', {0.89, 0.09, 0.05}),		-- Tricks of the Trade
 	},
 	WARRIOR = {
-		[114030] = UF:AuraWatch_AddSpell(114030, 'TOPLEFT', {0.2, 0.2, 1}),				-- Vigilance
 		[3411]   = UF:AuraWatch_AddSpell(3411, 'TOPRIGHT', {0.89, 0.09, 0.05}),			-- Intervene
 	},
 	PET = {
@@ -1431,10 +1066,12 @@ G.unitframe.aurawatch = {
 		[193396] = UF:AuraWatch_AddSpell(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true),	-- Demonic Empowerment
 		-- Hunter Pets
 		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
-		[136]    = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true)		-- Mend Pet
+		[136] = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Mend Pet
 	},
-	HUNTER = {}, -- Keep for reference to G.unitframe.aurawatch[E.myclass][SomeValue]
-	DEMONHUNTER = {},
+	HUNTER = {
+		[90361]  = UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),				-- Spirit Mend (HoT)
+	},
+	DEMONHUNTER = {}, -- Keep for reference to G.unitframe.aurawatch[E.myclass][SomeValue]
 	WARLOCK = {},
 	MAGE = {},
 	DEATHKNIGHT = {},
@@ -1447,31 +1084,53 @@ P.unitframe.filters = {
 
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
+	-- Racials
+	[291944] = 6,	-- Regeneratin (Zandalari)
 	-- Warlock
 	[198590] = 5,	-- Drain Soul
-	[755]    = 6,	-- Health Funnel
-	[234153] = 6,	-- Drain Life
+	[755]    = 5,	-- Health Funnel
+	[234153] = 5,	-- Drain Life
 	-- Priest
 	[64843]  = 4,	-- Divine Hymn
-	[15407]  = 4,	-- Mind Flay
-	[48045]  = 5,	-- Mind Sear
-	[47757]  = 5,	-- Penance
+	[15407]  = 6,	-- Mind Flay
+	[48045]  = 6,	-- Mind Sear
+	[47757]  = 3,	-- Penance (heal)
+	[47758]  = 3,	-- Penance (dps)
+	[64902]  = 5,	-- Symbol of Hope (Mana Hymn)
 	-- Mage
-	[5143]   = 5,	-- Arcane Missiles
-	[12051]  = 3,	-- Evocation
-	[205021] = 10,	-- Ray of Frost
+	[5143]   = 4,	-- Arcane Missiles
+	[12051]  = 6,	-- Evocation
+	[205021] = 5,	-- Ray of Frost
 	-- Druid
 	[740]    = 4,	-- Tranquility
+	-- DK
+	[206931] = 3,	-- Blooddrinker
+	-- DH
+	[198013] = 10,	-- Eye Beam
+	[212084] = 10,	-- Fel Devastation
+	-- Hunter
+	[120360] = 15,	-- Barrage
+	[257044] = 7,	-- Rapid Fire
+}
+
+-- Spells Effected By Talents
+G.unitframe.TalentChannelTicks = {
+	-- Priest
+	[47757]  = {tier = 1, column = 1, ticks = 4},	-- Penance (heal)
+	[47758]  = {tier = 1, column = 1, ticks = 4},	-- Penance (dps)
 }
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
 	[198590] = 1,	-- Drain Soul
+	-- Mage
+	[205021] = 1,	-- Ray of Frost
 }
 
--- Spells Effected By Haste
+-- Spells Effected By Haste, these spells require a Tick Size (table above)
 G.unitframe.HastedChannelTicks = {
-	[205021] = true, -- Ray of Frost
+	-- Mage
+	[205021] = true,	-- Ray of Frost
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch

@@ -48,6 +48,7 @@ local GetWatchedFactionInfo = GetWatchedFactionInfo
 local ExpandAllFactionHeaders = ExpandAllFactionHeaders
 local SetWatchedFactionIndex = SetWatchedFactionIndex
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
+local hooksecurefunc = hooksecurefunc
 
 local C_PartyInfo_LeaveParty = C_PartyInfo.LeaveParty
 local C_BattleNet_GetGameAccountInfoByGUID = C_BattleNet.GetGameAccountInfoByGUID
@@ -123,17 +124,16 @@ function M:COMBAT_TEXT_UPDATE(_, messagetype)
 end
 
 do -- Auto Repair Functions
-	local STATUS, TYPE, COST, POSS
+	local STATUS, TYPE, COST, canRepair
 	function M:AttemptAutoRepair(playerOverride)
-		STATUS, TYPE, COST, POSS = '', E.db.general.autoRepair, GetRepairAllCost()
+		STATUS, TYPE, COST, canRepair = '', E.db.general.autoRepair, GetRepairAllCost()
 
-		if POSS and COST > 0 then
-			--This check evaluates to true even if the guild bank has 0 gold, so we add an override
-			if IsInGuild() and TYPE == 'GUILD' and (playerOverride or (not CanGuildBankRepair() or COST > GetGuildBankWithdrawMoney())) then
-				TYPE = 'PLAYER'
-			end
+		if canRepair and COST > 0 then
+			local tryGuild = not playerOverride and TYPE == 'GUILD' and IsInGuild()
+			local useGuild = tryGuild and CanGuildBankRepair() and COST <= GetGuildBankWithdrawMoney()
+			if not useGuild then TYPE = 'PLAYER' end
 
-			RepairAllItems(TYPE == 'GUILD')
+			RepairAllItems(useGuild)
 
 			--Delay this a bit so we have time to catch the outcome of first repair attempt
 			E:Delay(0.5, M.AutoRepairOutput)
@@ -244,37 +244,6 @@ function M:PLAYER_ENTERING_WORLD()
 	self:ToggleChatBubbleScript()
 end
 
---[[local function OnValueChanged(self, value)
-	local bar = _G.ElvUI_ChallengeModeTimer
-	bar.text:SetText(self:GetParent().TimeLeft:GetText())
-	bar:SetValue(value)
-
-	local r, g, b = E:ColorGradient(value / self:GetParent().timeLimit, 1, 0, 0, 1, 1, 0, 0, 1, 0)
-	bar:SetStatusBarColor(r, g, b)
-end
-
-local function ChallengeModeTimer_Update(timerID, elapsedTime, timeLimit)
-	local block = _G.ScenarioChallengeModeBlock;
-
-	_G.ElvUI_ChallengeModeTimer:SetMinMaxValues(0, block.timeLimit)
-	_G.ElvUI_ChallengeModeTimer:Show()
-	OnValueChanged(_G.ScenarioChallengeModeBlock.StatusBar, _G.ScenarioChallengeModeBlock.StatusBar:GetValue())
-end
-
-function M:SetupChallengeTimer()
-	local bar = CreateFrame('StatusBar', 'ElvUI_ChallengeModeTimer', E.UIParent)
-	bar:Size(250, 20)
-	bar:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 10, -10)
-	bar:CreateBackdrop('Transparent')
-	bar:SetStatusBarTexture(E.media.normTex)
-	bar.text = bar:CreateFontString(nil, 'OVERLAY')
-	bar.text:Point('CENTER')
-	bar.text:FontTemplate()
-
-	_G.ScenarioChallengeModeBlock.StatusBar:HookScript('OnValueChanged', OnValueChanged)
-	hooksecurefunc('Scenario_ChallengeMode_ShowBlock', ChallengeModeTimer_Update)
-end]]
-
 function M:RESURRECT_REQUEST()
 	if E.db.general.resurrectSound then
 		PlaySound(BOOST_THANKSFORPLAYING_SMALLER, 'Master')
@@ -284,8 +253,6 @@ end
 function M:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_InspectUI' then
 		M:SetupInspectPageInfo()
-	--[[elseif addon == 'Blizzard_ObjectiveTracker' then
-		M:SetupChallengeTimer()]]
 	end
 end
 
@@ -295,25 +262,10 @@ function M:QUEST_COMPLETE()
 	local firstItem = _G.QuestInfoRewardsFrameQuestInfoItem1
 	if not firstItem then return end
 
-	local bestValue, bestItem = 0
 	local numQuests = GetNumQuestChoices()
+	if numQuests < 2 then return end
 
-	if not self.QuestRewardGoldIconFrame then
-		local frame = CreateFrame('Frame', nil, firstItem)
-		frame:SetFrameStrata('HIGH')
-		frame:Size(20)
-		frame.Icon = frame:CreateTexture(nil, 'OVERLAY')
-		frame.Icon:SetAllPoints(frame)
-		frame.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
-		self.QuestRewardGoldIconFrame = frame
-	end
-
-	self.QuestRewardGoldIconFrame:Hide()
-
-	if numQuests < 2 then
-		return
-	end
-
+	local bestValue, bestItem = 0
 	for i = 1, numQuests do
 		local questLink = GetQuestItemLink('choice', i)
 		local _, _, amount = GetQuestItemInfo('choice', i)
@@ -329,11 +281,25 @@ function M:QUEST_COMPLETE()
 	if bestItem then
 		local btn = _G['QuestInfoRewardsFrameQuestInfoItem'..bestItem]
 		if btn and btn.type == 'choice' then
-			self.QuestRewardGoldIconFrame:ClearAllPoints()
-			self.QuestRewardGoldIconFrame:Point('TOPRIGHT', btn, 'TOPRIGHT', -2, -2)
-			self.QuestRewardGoldIconFrame:Show()
+			M.QuestRewardGoldIconFrame:ClearAllPoints()
+			M.QuestRewardGoldIconFrame:Point('TOPRIGHT', btn, 'TOPRIGHT', -2, -2)
+			M.QuestRewardGoldIconFrame:Show()
 		end
 	end
+end
+
+-- TEMP: fix `SetItemButtonOverlay` error at `button.IconOverlay2:SetAtlas("ConduitIconFrame-Corners")`
+-- because the `BossBannerLootFrameTemplate` doesnt add `IconOverlay2` so we can before it gets there
+function M:BossBanner_ConfigureLootFrame(lootFrame)
+	if not lootFrame.IconHitBox then return end
+
+	if not lootFrame.IconHitBox.IconOverlay2 then
+		lootFrame.IconHitBox.IconOverlay2 = lootFrame.IconHitBox:CreateTexture(nil, 'OVERLAY', nil, 2)
+		lootFrame.IconHitBox.IconOverlay2:SetSize(37, 37)
+		lootFrame.IconHitBox.IconOverlay2:SetPoint('CENTER')
+	end
+
+	lootFrame.IconHitBox.IconOverlay2:Hide()
 end
 
 function M:Initialize()
@@ -357,6 +323,25 @@ function M:Initialize()
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
 	self:RegisterEvent('QUEST_COMPLETE')
 
+	do	-- questRewardMostValueIcon
+		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame', _G.UIParent)
+		MostValue:SetFrameStrata('HIGH')
+		MostValue:Size(19)
+		MostValue:Hide()
+
+		MostValue.Icon = MostValue:CreateTexture(nil, 'OVERLAY')
+		MostValue.Icon:SetAllPoints(MostValue)
+		MostValue.Icon:SetTexture([[Interface\MONEYFRAME\UI-GoldIcon]])
+
+		M.QuestRewardGoldIconFrame = MostValue
+
+		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', function()
+			if M.QuestRewardGoldIconFrame then
+				M.QuestRewardGoldIconFrame:Hide()
+			end
+		end)
+	end
+
 	if E.db.general.interruptAnnounce ~= 'NONE' then
 		self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
@@ -367,11 +352,7 @@ function M:Initialize()
 		self:RegisterEvent('ADDON_LOADED')
 	end
 
-	--[[if IsAddOnLoaded('Blizzard_ObjectiveTracker') then
-		M:SetupChallengeTimer()
-	else
-		self:RegisterEvent('ADDON_LOADED')
-	end]]
+	M:Hook('BossBanner_ConfigureLootFrame', nil, true) -- fix blizz thing x.x
 end
 
 E:RegisterModule(M:GetName())

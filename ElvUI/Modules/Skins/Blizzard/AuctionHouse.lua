@@ -5,11 +5,6 @@ local _G = _G
 local pairs, ipairs, select = pairs, ipairs, select
 local hooksecurefunc = hooksecurefunc
 
---[[
-TO DO:
-	* Skin Multisell .ProgressBar
-]]
-
 -- Credits: siweia (AuroraClassic)
 
 local function SkinEditBoxes(Frame)
@@ -217,7 +212,7 @@ local function LoadSkin()
 	end
 
 	_G.AuctionHouseFrameBuyTab:ClearAllPoints()
-	_G.AuctionHouseFrameBuyTab:Point('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -32)
+	_G.AuctionHouseFrameBuyTab:SetPoint('BOTTOMLEFT', Frame, 'BOTTOMLEFT', 0, -30)
 
 	-- SearchBar Frame
 	HandleSearchBarFrame(Frame.SearchBar)
@@ -383,7 +378,7 @@ local function LoadSkin()
 	WowTokenGameTimeTutorial.TitleBg:SetAlpha(0)
 	WowTokenGameTimeTutorial:CreateBackdrop('Transparent')
 	S:HandleCloseButton(WowTokenGameTimeTutorial.CloseButton)
-	S:HandleButton(WowTokenGameTimeTutorial.RightDisplay.StoreButton)
+	S:HandleButton(WowTokenGameTimeTutorial.RightDisplay.StoreButton, nil, nil, nil, nil, nil, nil, nil, true)
 	WowTokenGameTimeTutorial.Bg:SetAlpha(0)
 	WowTokenGameTimeTutorial.LeftDisplay.Label:SetTextColor(1, 1, 1)
 	WowTokenGameTimeTutorial.LeftDisplay.Tutorial1:SetTextColor(1, 0, 0)
@@ -395,6 +390,20 @@ local function LoadSkin()
 	Frame.BuyDialog:CreateBackdrop('Transparent')
 	S:HandleButton(Frame.BuyDialog.BuyNowButton)
 	S:HandleButton(Frame.BuyDialog.CancelButton)
+
+	--[[ Multisell thing]]
+	local multisellFrame = _G.AuctionHouseMultisellProgressFrame
+	multisellFrame:StripTextures()
+	multisellFrame:CreateBackdrop('Transparent')
+
+	local progressBar = multisellFrame.ProgressBar
+	progressBar:StripTextures()
+	S:HandleIcon(progressBar.Icon)
+	progressBar:SetStatusBarTexture(E.Media.normTex)
+	progressBar:CreateBackdrop()
+
+	local close = multisellFrame.CancelButton
+	S:HandleCloseButton(close)
 end
 
 S:AddCallbackForAddon('Blizzard_AuctionHouseUI', 'AuctionHouse', LoadSkin)

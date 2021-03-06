@@ -192,6 +192,10 @@ end
 function M:Initialize()
 	self.Initialized = true
 
+	if not E.private.general.worldMap then
+		return
+	end
+
 	local WorldMapFrame = _G.WorldMapFrame
 	if E.global.general.WorldMapCoordinates.enable then
 		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)

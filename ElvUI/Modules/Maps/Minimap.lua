@@ -28,6 +28,8 @@ local ToggleGuildFrame = ToggleGuildFrame
 local ToggleHelpFrame = ToggleHelpFrame
 local ToggleLFDParentFrame = ToggleLFDParentFrame
 local hooksecurefunc = hooksecurefunc
+
+local WorldMapFrame = _G.WorldMapFrame
 local Minimap = _G.Minimap
 
 -- GLOBALS: GetMinimapShape
@@ -160,6 +162,13 @@ function M:SetupHybridMinimap()
 	MapCanvas:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
 	MapCanvas:SetScript('OnMouseDown', M.MapCanvas_OnMouseDown)
 	MapCanvas:SetScript('OnMouseUp', E.noop)
+
+	_G.HybridMinimap.CircleMask:StripTextures()
+end
+
+function M:HideNonInstancePanels()
+	if InCombatLockdown() or not WorldMapFrame:IsShown() then return end
+	HideUIPanel(WorldMapFrame)
 end
 
 function M:ADDON_LOADED(_, addon)
@@ -169,6 +178,9 @@ function M:ADDON_LOADED(_, addon)
 		_G.FeedbackUIButton:Kill()
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
+	elseif addon == 'Blizzard_EncounterJournal' then
+		-- Since the default non-quest map is full screen, it overrides the showing of the encounter journal
+		hooksecurefunc('EJ_HideNonInstancePanels', M.HideNonInstancePanels)
 	end
 end
 
@@ -223,11 +235,6 @@ function M:Update_ZoneText()
 	Minimap.location:SetTextColor(M:GetLocTextColor())
 end
 
-function M:PLAYER_REGEN_ENABLED()
-	self:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	self:UpdateSettings()
-end
-
 do
 	local isResetting
 	local function ResetZoom()
@@ -248,26 +255,22 @@ end
 
 function M:UpdateSettings()
 	if not E.private.general.minimap.enable then return end
-	if InCombatLockdown() then
-		self:RegisterEvent('PLAYER_REGEN_ENABLED')
-		return
-	end
 
 	E.MinimapSize = E.db.general.minimap.size or Minimap:GetWidth()
 
 	local MinimapPanel, MMHolder = _G.MinimapPanel, _G.MMHolder
 	MinimapPanel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
 
-	local borderWidth, borderHeight = E.PixelMode and 2 or 6, E.PixelMode and 2 or 8
-	local panelSize, joinPanel = (MinimapPanel:IsShown() and MinimapPanel:GetHeight()) or (E.PixelMode and 1 or -1), 1
-	local height, width = E.MinimapSize + (panelSize - joinPanel), E.MinimapSize
-	MMHolder:Size(width + borderWidth, height + borderHeight)
-	_G.MinimapMover:Size(width + borderWidth, height + borderHeight)
-
 	local mmOffset = E.PixelMode and 1 or 3
 	Minimap:ClearAllPoints()
 	Minimap:Point('TOPRIGHT', MMHolder, 'TOPRIGHT', -mmOffset, -mmOffset)
 	Minimap:Size(E.MinimapSize, E.MinimapSize)
+
+	local mWidth, mHeight = Minimap:GetSize()
+	local bWidth, bHeight = E:Scale(E.PixelMode and 2 or 6), E:Scale(E.PixelMode and 2 or 8)
+	local panelSize, joinPanel = (MinimapPanel:IsShown() and MinimapPanel:GetHeight()) or E:Scale(E.PixelMode and 1 or -1), E:Scale(1)
+	local HEIGHT, WIDTH = mHeight + (panelSize - joinPanel), mWidth
+	MMHolder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
 
 	Minimap.location:Width(E.MinimapSize)
 	if E.db.general.minimap.locationText ~= 'SHOW' then
@@ -360,8 +363,6 @@ function M:Initialize()
 	mmholder:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -3)
 	mmholder:Size(Minimap:GetSize())
 
-	Minimap:SetQuestBlobRingAlpha(0)
-	Minimap:SetArchBlobRingAlpha(0)
 	Minimap:CreateBackdrop()
 	Minimap:SetFrameLevel(Minimap:GetFrameLevel() + 2)
 	Minimap:ClearAllPoints()
@@ -369,9 +370,10 @@ function M:Initialize()
 	Minimap:HookScript('OnEnter', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Show() end end)
 	Minimap:HookScript('OnLeave', function(mm) if E.db.general.minimap.locationText == 'MOUSEOVER' then mm.location:Hide() end end)
 
-	--Fix spellbook taint
-	ShowUIPanel(_G.SpellBookFrame)
-	HideUIPanel(_G.SpellBookFrame)
+	if Minimap.backdrop then -- level to hybrid maps fixed values
+		Minimap.backdrop:SetFrameLevel(99)
+		Minimap.backdrop:SetFrameStrata('BACKGROUND')
+	end
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
 	Minimap.location:FontTemplate(nil, nil, 'OUTLINE')
@@ -403,7 +405,9 @@ function M:Initialize()
 	hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
 
 	--Hide the BlopRing on Minimap
+	Minimap:SetArchBlobRingAlpha(0)
 	Minimap:SetArchBlobRingScalar(0)
+	Minimap:SetQuestBlobRingAlpha(0)
 	Minimap:SetQuestBlobRingScalar(0)
 
 	if E.private.general.minimap.hideClassHallReport then

@@ -9,7 +9,7 @@ local displayString, lastPanel = ''
 local timerText, timer, startTime = L["Combat"], 0, 0
 
 local function UpdateText()
-	return format('%02d:%02d:%02d', floor(timer/60), timer % 60, (timer - floor(timer)) * 100)
+	return format(E.global.datatexts.settings.Combat.TimeFull and '%02d:%02d:%02d' or '%02d:%02d', floor(timer/60), timer % 60, (timer - floor(timer)) * 100)
 end
 
 local function OnUpdate(self)
@@ -52,4 +52,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('Combat/Arena Time', nil, {'START_TIMER', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"], nil, ValueColorUpdate)
+DT:RegisterDatatext('Combat', nil, {'START_TIMER', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"], nil, ValueColorUpdate)

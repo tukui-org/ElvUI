@@ -21,8 +21,7 @@ local function SkinRecipeList(self, _, tradeSkillInfo)
 		self.SubSkillRankBar.BorderRight:Hide()
 
 		if not self.SubSkillRankBar.backdrop then
-			self.SubSkillRankBar:CreateBackdrop()
-			self.SubSkillRankBar.backdrop:SetAllPoints()
+			self.SubSkillRankBar:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 			self.SubSkillRankBar:SetStatusBarTexture(E.media.normTex)
 			E:RegisterStatusBar(self.SubSkillRankBar)
 		end
@@ -85,6 +84,15 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleNextPrevButton(TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton)
 	TradeSkillFrame.DetailsFrame.CreateMultipleInputBox.IncrementButton:Point('LEFT', TradeSkillFrame.DetailsFrame.CreateMultipleInputBox, 'RIGHT', 4, 0)
 
+	S:HandleButton(TradeSkillFrame.DetailsFrame.Contents.RecipeLevelSelector)
+
+	if not TradeSkillFrame.DetailsFrame.Contents.RecipeLevel.backdrop then
+		TradeSkillFrame.DetailsFrame.Contents.RecipeLevel:StripTextures()
+		TradeSkillFrame.DetailsFrame.Contents.RecipeLevel:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		TradeSkillFrame.DetailsFrame.Contents.RecipeLevel:SetStatusBarTexture(E.media.normTex)
+		E:RegisterStatusBar(TradeSkillFrame.DetailsFrame.Contents.RecipeLevel)
+	end
+
 	hooksecurefunc(TradeSkillFrame.DetailsFrame, 'RefreshDisplay', function()
 		local ResultIcon = TradeSkillFrame.DetailsFrame.Contents.ResultIcon
 		ResultIcon:StyleButton()
@@ -117,7 +125,6 @@ function S:Blizzard_TradeSkillUI()
 			Button.NameFrame:Kill()
 		end
 
-		-- 9.0 Shadowlands
 		for i = 1, #TradeSkillFrame.DetailsFrame.Contents.OptionalReagents do
 			local Button = TradeSkillFrame.DetailsFrame.Contents.OptionalReagents[i]
 			local Icon = Button.Icon
@@ -162,7 +169,6 @@ function S:Blizzard_TradeSkillUI()
 	--S:HandleScrollBar(TradeSkillFrame.DetailsFrame.GuildFrame.Container.ScrollFrame.scrollBar) --This cannot be skinned due to issues on Blizzards end.
 	S:HandleScrollBar(TradeSkillFrame.RecipeList.scrollBar)
 
-	-- 9.0 Shadowlands
 	local OptionalReagents = TradeSkillFrame.OptionalReagentList
 	OptionalReagents:StripTextures()
 	OptionalReagents:CreateBackdrop('Transparent')
@@ -190,8 +196,7 @@ function S:Blizzard_TradeSkillUI()
 		end
 
 		if not frame.backdrop then
-			frame:CreateBackdrop()
-			frame.backdrop:SetAllPoints()
+			frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		end
 	end)
 end

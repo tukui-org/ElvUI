@@ -6,9 +6,6 @@ local unpack, select = unpack, select
 local pairs, ipairs, type = pairs, ipairs, type
 
 local EquipmentManager_GetItemInfoByLocation = EquipmentManager_GetItemInfoByLocation
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
-local GetFactionInfo = GetFactionInfo
-local GetNumFactions = GetNumFactions
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
@@ -91,8 +88,7 @@ local function EquipmentDisplayButton(button)
 		button.icon:SetTexture(oldTex)
 
 		if not button.backdrop then
-			button:CreateBackdrop()
-			button.backdrop:SetAllPoints()
+			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 
 			S:HandleIconBorder(button.IconBorder)
 		end
@@ -152,24 +148,8 @@ local function UpdateFactionSkins()
 	_G.ReputationListScrollFrame:StripTextures()
 	_G.ReputationFrame:StripTextures(true)
 
-	local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
-	local numFactions = GetNumFactions()
-
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED, 1 do
 		local statusbar = _G['ReputationBar'..i..'ReputationBar']
-		local button = _G['ReputationBar'..i..'ExpandOrCollapseButton']
-		local factionIndex = factionOffset + i
-		local _, _, _, _, _, _, _, _, _, isCollapsed = GetFactionInfo(factionIndex)
-		if factionIndex <= numFactions then
-			if button then
-				if isCollapsed then
-					button:SetNormalTexture(E.Media.Textures.PlusButton)
-				else
-					button:SetNormalTexture(E.Media.Textures.MinusButton)
-				end
-			end
-		end
-
 		if statusbar then
 			statusbar:SetStatusBarTexture(E.media.normTex)
 
@@ -224,8 +204,18 @@ local function UpdateCurrencySkins()
 			if button.categoryRight then button.categoryRight:Kill() end
 			if button.categoryMiddle then button.categoryMiddle:Kill() end
 
+			if not button.backdrop then
+				button:CreateBackdrop(nil, nil, nil, true)
+			end
+
 			if button.icon then
 				button.icon:SetTexCoord(unpack(E.TexCoords))
+				button.icon:Size(17, 17)
+
+				button.backdrop:SetOutside(button.icon, 1, 1)
+				button.backdrop:Show()
+			else
+				button.backdrop:Hide()
 			end
 
 			if button.expandIcon then
@@ -242,6 +232,8 @@ local function UpdateCurrencySkins()
 				end
 
 				if button.isHeader then
+					button.backdrop:Hide()
+
 					if button.isExpanded then
 						button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
 						button.expandIcon:SetTexCoord(0,1,0,1)
@@ -273,9 +265,7 @@ function S:CharacterFrame()
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
-			Slot:CreateBackdrop()
-			Slot.backdrop:SetAllPoints()
-			Slot.backdrop:SetFrameLevel(Slot:GetFrameLevel())
+			Slot:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
 			Slot:StyleButton(Slot)
 			Slot.icon:SetInside()
 			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
@@ -448,19 +438,31 @@ function S:CharacterFrame()
 		object.BgTop:SetTexture()
 		object.BgBottom:SetTexture()
 		object.BgMiddle:SetTexture()
-		object.icon:Size(36, 36)
-		object.icon:SetTexCoord(unpack(E.TexCoords))
+		object.HighlightBar:Kill()
+		object.Stripe:Kill()
 
-		--Making all icons the same size and position because otherwise BlizzardUI tries to attach itself to itself when it refreshes
-		object.icon:Point('LEFT', object, 'LEFT', 4, 0)
+		object.SelectedBar:SetTexture(E.media.normTex)
+		object.SelectedBar:SetVertexColor(1, 1, 1, 0.20)
+		object.SelectedBar:SetInside(object, 4, 3)
+
+		S:HandleButton(object, nil, nil, nil, nil, 'Transparent')
+		object.backdrop:SetInside(object, 3, 2)
+
+		object.icon:Point('LEFT', object, 6, 0)
+		object.icon:SetTexCoord(unpack(E.TexCoords))
+		object.icon:CreateBackdrop(nil, nil, nil, true)
+
 		hooksecurefunc(object.icon, 'SetPoint', function(icn, _, _, _, _, _, forced)
 			if forced ~= true then
-				icn:Point('LEFT', object, 'LEFT', 4, 0, true)
+				icn:Point('LEFT', object, 'LEFT', 6, 0, true)
 			end
 		end)
+
 		hooksecurefunc(object.icon, 'SetSize', function(icn, width, height)
-			if width == 30 or height == 30 then
-				icn:Size(36, 36)
+			if width == 36 or height == 36 then -- items
+				icn:Size(32, 32)
+			elseif width == 30 or height == 30 then -- new set
+				icn:Size(32, 32)
 			end
 		end)
 	end
@@ -471,8 +473,13 @@ function S:CharacterFrame()
 	S:HandleButton(_G.GearManagerDialogPopupCancel)
 	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
 
+	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
+		local bu = _G["ReputationBar"..i.."ExpandOrCollapseButton"]
+		S:HandleCollapseTexture(bu)
+	end
+
 	--Handle Tabs at bottom of character frame
-	for i=1, 4 do
+	for i = 1, 4 do
 		S:HandleTab(_G['CharacterFrameTab'..i])
 	end
 

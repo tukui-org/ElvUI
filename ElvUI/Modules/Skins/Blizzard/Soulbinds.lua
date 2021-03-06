@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, select = ipairs, select
+local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
 -- Credits: siweia - Aurora Classic
@@ -33,7 +33,6 @@ local function SkinConduitList(frame)
 	end
 end
 
--- SHADOWLANDS
 function S:Blizzard_Soulbinds()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.soulbinds) then return end
 
@@ -46,10 +45,9 @@ function S:Blizzard_Soulbinds()
 	frame.CommitConduitsButton:SetFrameLevel(10)
 	S:HandleButton(frame.ActivateSoulbindButton)
 	frame.ActivateSoulbindButton:SetFrameLevel(10)
+	frame.ConduitList.BottomShadowContainer.BottomShadow:SetAlpha(0)
 
 	local scrollBox = frame.ConduitList.ScrollBox
-	select(2, scrollBox:GetChildren()):Hide() -- Weird shadow on the ScrollBox
-
 	for i = 1, 3 do
 		hooksecurefunc(scrollBox.ScrollTarget.Lists[i], 'UpdateLayout', SkinConduitList)
 	end

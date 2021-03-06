@@ -14,7 +14,7 @@ local lastPanel
 
 local function OnEvent(self)
 	lastPanel = self
-	self.text:SetFormattedText(displayString, configText)
+	self.text:SetFormattedText(displayString, E.global.datatexts.settings.ElvUI.Label ~= '' and E.global.datatexts.settings.ElvUI.Label or configText)
 end
 
 local function OnEnter()
@@ -37,9 +37,10 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function Click(_, button)
+local function OnClick(_, button)
 	if InCombatLockdown() then _G.UIErrorsFrame:AddMessage(E.InfoColor.._G.ERR_NOT_IN_COMBAT) return end
-	if button == 'LeftButton' or (button == 'RightButton' and not IsShiftKeyDown()) then
+
+	if button == 'LeftButton' then
 		E:ToggleOptionsUI()
 	elseif button == 'RightButton' and IsShiftKeyDown() then
 		ReloadUI()
@@ -55,4 +56,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext('ElvUI Config', nil, nil, OnEvent, nil, Click, OnEnter, nil, nil, nil, ValueColorUpdate)
+DT:RegisterDatatext('ElvUI', nil, nil, OnEvent, nil, OnClick, OnEnter, nil, L['ElvUI Config'], nil, ValueColorUpdate)
