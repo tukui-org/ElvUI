@@ -128,6 +128,7 @@ function AB:PositionAndSizeBarPet()
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton, autoCast
+	local useMasque = MasqueGroup and E.private.actionbar.masque.petBar
 
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		button = _G['PetActionButton'..i]
@@ -155,7 +156,7 @@ function AB:PositionAndSizeBarPet()
 
 		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
-		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.petBar)
+		AB:StyleButton(button, nil, useMasque, true)
 	end
 
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
@@ -164,7 +165,7 @@ function AB:PositionAndSizeBarPet()
 	visibility = gsub(visibility, '[\n\r]','')
 	RegisterStateDriver(bar, 'show', visibility)
 
-	if MasqueGroup and E.private.actionbar.masque.petBar then
+	if useMasque then
 		MasqueGroup:ReSkin()
 
 		for _, btn in ipairs(bar.buttons) do
