@@ -155,20 +155,15 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
+		AB:StyleButton(button, nil, useMasque, true)
 
 		if useMasque then
 			MasqueGroup:AddButton(bar.buttons[i])
-		end
-
-		if not button.FlyoutUpdateFunc then
-			AB:StyleButton(button, nil, useMasque, true)
-
-			if not useMasque then
-				if db.style == 'darkenInactive' then
-					button.checked:SetBlendMode('BLEND')
-				else
-					button.checked:SetBlendMode('ADD')
-				end
+		elseif not button.FlyoutUpdateFunc then
+			if db.style == 'darkenInactive' then
+				button.checked:SetBlendMode('BLEND')
+			else
+				button.checked:SetBlendMode('ADD')
 			end
 		end
 	end

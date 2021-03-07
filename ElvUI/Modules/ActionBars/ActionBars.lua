@@ -1191,7 +1191,7 @@ end
 
 function AB:SetupFlyoutButton(button)
 	if not AB.handledbuttons[button] then
-		AB:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
+		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 		button:HookScript('OnEnter', AB.FlyoutButton_OnEnter)
 		button:HookScript('OnLeave', AB.FlyoutButton_OnLeave)
 	end
