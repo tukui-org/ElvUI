@@ -5,6 +5,7 @@ E.Media = {
 	Fonts = {},
 	Sounds = {},
 	Arrows = {},
+	MailIcons = {},
 	ChatEmojis = {},
 	ChatLogos = {},
 	Textures = {}
@@ -24,6 +25,7 @@ local MediaKey = {
 	font	= 'Fonts',
 	sound	= 'Sounds',
 	arrow   = 'Arrows',
+	mail    = 'MailIcons',
 	emoji	= 'ChatEmojis',
 	logo	= 'ChatLogos',
 	texture	= 'Textures'
@@ -33,6 +35,7 @@ local MediaPath = {
 	font	= [[Interface\AddOns\ElvUI\Media\Fonts\]],
 	sound	= [[Interface\AddOns\ElvUI\Media\Sounds\]],
 	arrow	= [[Interface\AddOns\ElvUI\Media\Arrows\]],
+	mail    = [[Interface\AddOns\ElvUI\Media\MailIcons\]],
 	emoji	= [[Interface\AddOns\ElvUI\Media\ChatEmojis\]],
 	logo	= [[Interface\AddOns\ElvUI\Media\ChatLogos\]],
 	texture	= [[Interface\AddOns\ElvUI\Media\Textures\]]
@@ -93,6 +96,11 @@ for i = 0, 72 do
 	AddMedia('arrow', 'Arrow'..i)
 end
 
+-- mail icons
+for i = 0, 7 do
+	AddMedia('mail','Mail'..i)
+end
+
 AddMedia('texture','Arrow')
 AddMedia('texture','ArrowRight')
 AddMedia('texture','ArrowUp')
@@ -119,9 +127,6 @@ AddMedia('texture','LogoTop')
 AddMedia('texture','LogoTopSmall')
 AddMedia('texture','LogoBottom')
 AddMedia('texture','LogoBottomSmall')
-AddMedia('texture','Mail')
-AddMedia('texture','Mail1')
-AddMedia('texture','Mail2')
 AddMedia('texture','Minus')
 AddMedia('texture','MinusButton')
 AddMedia('texture','Pause')

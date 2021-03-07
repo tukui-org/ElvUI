@@ -83,11 +83,16 @@ Maps.args.minimap.args.icons.args.mail.args.position = ACH:Select(L["Position"],
 Maps.args.minimap.args.icons.args.mail.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
 Maps.args.minimap.args.icons.args.mail.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
 Maps.args.minimap.args.icons.args.mail.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
-Maps.args.minimap.args.icons.args.mail.args.texture = ACH:Select(L["Texture"], nil, 5, {
-	Mail = E:TextureString(E.Media.Textures.Mail, ':14'),
-	Mail1 = E:TextureString(E.Media.Textures.Mail1, ':14'),
-	Mail2 = E:TextureString(E.Media.Textures.Mail2, ':14'),
-})
+Maps.args.minimap.args.icons.args.mail.args.texture = ACH:Select(L["Texture"], nil, 5)
+
+do -- mail icons
+	local mail = {}
+	Maps.args.minimap.args.icons.args.mail.args.texture.values = mail
+
+	for key, icon in pairs(E.Media.MailIcons) do
+		mail[key] = E:TextureString(icon, ':14:14')
+	end
+end
 
 Maps.args.minimap.args.icons.args.lfgEye = ACH:Group(L["LFG Queue"], nil, 4)
 Maps.args.minimap.args.icons.args.lfgEye.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
