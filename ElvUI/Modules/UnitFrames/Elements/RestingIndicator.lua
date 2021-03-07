@@ -7,7 +7,8 @@ local IsResting = IsResting
 local RestingTextures = {
 	DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]],
 	RESTING = E.Media.Textures.Resting,
-	RESTING1 = E.Media.Textures.Resting1
+	RESTING1 = E.Media.Textures.Resting1,
+	RESTING2 = E.Media.Textures.Resting2
 }
 
 function UF:Construct_RestingIndicator(frame)
