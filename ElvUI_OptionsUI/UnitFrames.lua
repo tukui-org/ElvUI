@@ -4701,6 +4701,7 @@ E.Options.args.unitframe.args.individualUnits.args.pet = {
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
 		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pet'),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'pet'),
 	},
 }
 
