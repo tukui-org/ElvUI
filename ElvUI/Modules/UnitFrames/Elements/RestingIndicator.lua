@@ -4,12 +4,7 @@ local UF = E:GetModule('UnitFrames');
 local C_Timer_NewTimer = C_Timer.NewTimer
 local IsResting = IsResting
 
-local RestingTextures = {
-	DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]],
-	RESTING = E.Media.Textures.Resting,
-	RESTING1 = E.Media.Textures.Resting1,
-	RESTING2 = E.Media.Textures.Resting2
-}
+local DEFAULT = [[Interface\CharacterFrame\UI-StateIcon]]
 
 function UF:Construct_RestingIndicator(frame)
 	return frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
@@ -62,11 +57,11 @@ function UF:Configure_RestingIndicator(frame)
 		if db.texture == 'CUSTOM' and db.customTexture then
 			Icon:SetTexture(db.customTexture)
 			Icon:SetTexCoord(0, 1, 0, 1)
-		elseif db.texture ~= 'DEFAULT' and RestingTextures[db.texture] then
-			Icon:SetTexture(RestingTextures[db.texture])
+		elseif db.texture ~= 'DEFAULT' and E.Media.RestIcons[db.texture] then
+			Icon:SetTexture(E.Media.RestIcons[db.texture])
 			Icon:SetTexCoord(0, 1, 0, 1)
 		else
-			Icon:SetTexture(RestingTextures.DEFAULT)
+			Icon:SetTexture(DEFAULT)
 			Icon:SetTexCoord(0, .5, 0, .421875)
 		end
 

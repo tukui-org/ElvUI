@@ -6,6 +6,7 @@ E.Media = {
 	Sounds = {},
 	Arrows = {},
 	MailIcons = {},
+	RestIcons = {},
 	ChatEmojis = {},
 	ChatLogos = {},
 	Textures = {}
@@ -26,6 +27,7 @@ local MediaKey = {
 	sound	= 'Sounds',
 	arrow   = 'Arrows',
 	mail    = 'MailIcons',
+	resting = 'RestIcons',
 	emoji	= 'ChatEmojis',
 	logo	= 'ChatLogos',
 	texture	= 'Textures'
@@ -36,6 +38,7 @@ local MediaPath = {
 	sound	= [[Interface\AddOns\ElvUI\Media\Sounds\]],
 	arrow	= [[Interface\AddOns\ElvUI\Media\Arrows\]],
 	mail    = [[Interface\AddOns\ElvUI\Media\MailIcons\]],
+	resting = [[Interface\AddOns\ElvUI\Media\RestIcons\]],
 	emoji	= [[Interface\AddOns\ElvUI\Media\ChatEmojis\]],
 	logo	= [[Interface\AddOns\ElvUI\Media\ChatLogos\]],
 	texture	= [[Interface\AddOns\ElvUI\Media\Textures\]]
@@ -90,15 +93,18 @@ AddMedia('texture','White8x8',		'ElvUI Blank', {'statusbar','background'})
 AddMedia('texture','Minimalist',	true, 'statusbar')
 AddMedia('texture','Melli',			true, 'statusbar')
 
+for i = 0, 7 do -- mail icons
+	AddMedia('mail','Mail'..i)
+end
+
+for i = 0, 2 do -- resting icons
+	AddMedia('resting','Resting'..i)
+end
+
 -- nameplate target arrows
 AddMedia('arrow', 'ArrowRed')
 for i = 0, 72 do
 	AddMedia('arrow', 'Arrow'..i)
-end
-
--- mail icons
-for i = 0, 7 do
-	AddMedia('mail','Mail'..i)
 end
 
 AddMedia('texture','Arrow')
@@ -136,9 +142,6 @@ AddMedia('texture','Play')
 AddMedia('texture','Plus')
 AddMedia('texture','PlusButton')
 AddMedia('texture','Reset')
-AddMedia('texture','Resting')
-AddMedia('texture','Resting1')
-AddMedia('texture','Resting2')
 AddMedia('texture','RolesHQ')
 AddMedia('texture','RoleIcons')
 AddMedia('texture','SkullIcon')
