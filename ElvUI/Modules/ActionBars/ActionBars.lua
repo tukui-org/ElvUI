@@ -684,6 +684,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		shine:SetAllPoints()
 	end
 
+	if not ignoreNormal then -- stance buttons dont need this
+		button.FlyoutUpdateFunc = AB.StyleFlyout
+	end
+
 	if button.SpellHighlightTexture then
 		button.SpellHighlightTexture:SetColorTexture(1, 1, 0, 0.45)
 		button.SpellHighlightTexture:SetAllPoints()
@@ -699,12 +703,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		AB:UpdateHotkeyColor(button)
 	end
 
-	--Extra Action Button
-	if button.style then
+	if button.style then -- Boss Button
 		button.style:SetDrawLayer('BACKGROUND', -7)
 	end
 
-	button.FlyoutUpdateFunc = AB.StyleFlyout
 	AB:FixKeybindText(button)
 
 	if not button.useMasque then

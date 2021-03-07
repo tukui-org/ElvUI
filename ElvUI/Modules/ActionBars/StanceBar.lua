@@ -159,12 +159,10 @@ function AB:PositionAndSizeBarShapeShift()
 
 		if useMasque then
 			MasqueGroup:AddButton(bar.buttons[i])
-		elseif not button.FlyoutUpdateFunc then
-			if db.style == 'darkenInactive' then
-				button.checked:SetBlendMode('BLEND')
-			else
-				button.checked:SetBlendMode('ADD')
-			end
+		elseif db.style == 'darkenInactive' then
+			button.checked:SetBlendMode('BLEND')
+		else
+			button.checked:SetBlendMode('ADD')
 		end
 	end
 
