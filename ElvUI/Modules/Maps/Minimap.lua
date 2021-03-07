@@ -281,6 +281,8 @@ function M:UpdateSettings()
 
 	M.HandleGarrisonButton()
 
+	_G.MiniMapMailIcon:SetTexture(E.Media.Textures[E.db.general.minimap.icons.mail.texture] or E.Media.Textures.Mail)
+
 	local GameTimeFrame = _G.GameTimeFrame
 	if GameTimeFrame then
 		if E.private.general.minimap.hideCalendar then
@@ -398,8 +400,6 @@ function M:Initialize()
 	for _, frame in pairs(frames) do
 		frame:Kill()
 	end
-
-	_G.MiniMapMailIcon:SetTexture(E.Media.Textures.Mail)
 
 	-- Every GarrisonLandingPageMinimapButton_UpdateIcon() call reanchor the button
 	hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleGarrisonButton)
