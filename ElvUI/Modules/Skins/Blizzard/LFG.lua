@@ -147,8 +147,8 @@ function S:LookingForGroupFrames()
 	end)
 
 	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
-		local _, _, _, _, _, _, role = GetLFGProposal()
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
+			local _, _, _, _, _, _, role = GetLFGProposal()
 			if role == 'DAMAGER' then
 				_G.LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 			elseif role == 'TANK' then
