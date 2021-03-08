@@ -5,6 +5,7 @@ local MM = E:GetModule('Minimap')
 local ACH = E.Libs.ACH
 
 local _G = _G
+local pairs = pairs
 -- GLOBALS: WORLD_MAP_MIN_ALPHA
 
 local buttonPositions = {
