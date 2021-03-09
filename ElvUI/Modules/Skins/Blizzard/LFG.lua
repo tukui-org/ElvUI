@@ -550,7 +550,7 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
-	S:HandleButton(_G.LFGListSearchPanelScrollFrame.StartGroupButton)
+	S:HandleButton(_G.LFGListSearchPanelScrollFrameScrollChild.StartGroupButton)
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
