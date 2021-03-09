@@ -1,6 +1,35 @@
-### Version 12.21 [ ETA: 🍨 ]
+### Version 12.22 [ ETA: 🍨 ]
 
 **Fixed:**  
+
+___
+
+### Version 12.21 [ March 9th 2021 ]
+
+**Added:**
+PowerBar widget now has a mover  
+Click-Through option for AuraBars  
+Mouseover and Alpha setting for Voice Chat Panel  
+Frame Level and Strata options for DataBars and ActionBars  
+Paragon display for Reputation Bar (optional bag icon when loot is available)  
+Heal Prediction and Threat options for Party Pets  
+Threat options for Tank Target and Party Target frames, Raid Icon option for Pet frame  
+Turtle Buffs and Player Buffs updated (Thanks Shrom)  
+NamePlate Target Arrow textures (Thanks Releaf) with the option to Scale and Space them  
+Another Player Resting Icon (Thanks Releaf), along with a few Minimap Mail icon options  
+New Role Icons displayed when you queue (Thanks Releaf - also, no it doesnt have an option)  
+StyleFilter triggers for UnitRole, InParty, and InRaid  
+
+**Fixes:**  
+Spooky Arena Prep Frame bugs  
+Trinket bugs on Arena Frames  
+Actionbar Paging wasnt exporting  
+Error in ClassPower on NamePlates  
+Error in Currency and Difficulty Datatexts  
+Experience DataBar not displaying correctly after toggling  
+StyleFilter code updated to hopefully correct several issues  
+Zone and Boss Button code updated (global fade works on them again)  
+StanceBar options not updating without a reload  
 
 ___
 
