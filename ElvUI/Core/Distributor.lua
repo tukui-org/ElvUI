@@ -298,6 +298,7 @@ D.GeneratedKeys = {
 	profile = {
 		convertPages = true,
 		movers = true,
+		actionbar = {},
 		nameplates = { -- this is supposed to have an 's' because yeah, oh well
 			filters = true
 		},
@@ -331,6 +332,10 @@ do
 	local units = D.GeneratedKeys.profile.unitframe.units
 	for unit in pairs(P.unitframe.units) do
 		units[unit] = {customTexts = true}
+	end
+
+	for i = 1, 10 do
+		D.GeneratedKeys.profile.actionbar['bar'..i] = { paging = true }
 	end
 end
 

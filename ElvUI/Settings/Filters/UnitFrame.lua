@@ -209,6 +209,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[201940] = Defaults(), -- Protector of the Pack
 		[201939] = Defaults(), -- Protector of the Pack (Allies)
 		[192081] = Defaults(), -- Ironfur
+		[50334] = Defaults(), -- Berserk (Guardian)
 	-- Hunter
 		[186265] = Defaults(), -- Aspect of the Turtle
 		[53480]  = Defaults(), -- Roar of Sacrifice
@@ -317,13 +318,16 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[194844] = Defaults(), -- BoneStorm
 		[145629] = Defaults(), -- Anti-Magic Zone
 		[194679] = Defaults(), -- Rune Tap
-		[51271]  = Defaults(), -- Pilar of Frost
+		[51271]  = Defaults(), -- Pillar of Frost
 		[207256] = Defaults(), -- Obliteration
 		[152279] = Defaults(), -- Breath of Sindragosa
 		[233411] = Defaults(), -- Blood for Blood
 		[212552] = Defaults(), -- Wraith Walk
 		[215711] = Defaults(), -- Soul Reaper
 		[194918] = Defaults(), -- Blighted Rune Weapon
+		[48265] = Defaults(), -- Death's Advance
+		[49039] = Defaults(), -- Lichborne
+		[47568] = Defaults(), -- Empower Rune Weapon
 	-- Demon Hunter
 		[207811] = Defaults(), -- Nether Bond (DH)
 		[207810] = Defaults(), -- Nether Bond (Target)
@@ -338,7 +342,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[211510] = Defaults(), -- Solitude
 		[162264] = Defaults(), -- Metamorphosis
 		[205629] = Defaults(), -- Demonic Trample
-		[206649] = Defaults(), -- Eye of Leotheras
+		[188501] = Defaults(), -- Spectral Sight
 	-- Druid
 		[102342] = Defaults(), -- Ironbark
 		[61336]  = Defaults(), -- Survival Instincts
@@ -357,7 +361,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[102543] = Defaults(), -- Incarnation: King of the Jungle
 		[102558] = Defaults(), -- Incarnation: Guardian of Ursoc
 		[117679] = Defaults(), -- Incarnation
-		[106951] = Defaults(), -- Berserk
+		[106951] = Defaults(), -- Berserk (Feral)
+		[50334] = Defaults(), -- Berserk (Guardian)
 		[5217]   = Defaults(), -- Tiger's Fury
 		[1850]   = Defaults(), -- Dash
 		[137452] = Defaults(), -- Displacer Beast
@@ -365,8 +370,8 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[77764]  = Defaults(), -- Stampeding Roar (Cat)
 		[77761]  = Defaults(), -- Stampeding Roar (Bear)
 		[305497] = Defaults(), -- Thorns
-		[233756] = Defaults(), -- Eclipse (it's this one or the other)
-		[234084] = Defaults(), -- Eclipse
+		[233756] = Defaults(), -- Moon and Stars (not used?)
+		[234084] = Defaults(), -- Moon and Stars (PvP)
 		[22842]  = Defaults(), -- Frenzied Regeneration
 	-- Hunter
 		[186265] = Defaults(), -- Aspect of the Turtle
@@ -374,7 +379,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[202748] = Defaults(), -- Survival Tactics
 		[62305]  = Defaults(), -- Master's Call (it's this one or the other)
 		[54216]  = Defaults(), -- Master's Call
-		[193526] = Defaults(), -- Trueshot
+		[288613] = Defaults(), -- Trueshot
 		[193530] = Defaults(), -- Aspect of the Wild
 		[19574]  = Defaults(), -- Bestial Wrath
 		[186289] = Defaults(), -- Aspect of the Eagle
@@ -382,6 +387,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[118922] = Defaults(), -- Posthaste
 		[90355]  = Defaults(), -- Ancient Hysteria (Pet)
 		[160452] = Defaults(), -- Netherwinds (Pet)
+		[266779] = Defaults(), -- Coordinated Assault
 	-- Mage
 		[45438]  = Defaults(), -- Ice Block
 		[113862] = Defaults(), -- Greater Invisibility
@@ -398,6 +404,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[205025] = Defaults(), -- Presence of Mind
 		[198158] = Defaults(), -- Mass Invisibility
 		[221404] = Defaults(), -- Burning Determination
+		[342246] = Defaults(), -- Alter Time
 	-- Monk
 		[122783] = Defaults(), -- Diffuse Magic
 		[122278] = Defaults(), -- Dampen Harm
@@ -526,6 +533,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[108281] = Defaults(), -- Ancestral Guidance
 	-- Warlock
 		[108416] = Defaults(), -- Dark Pact
+		[113860] = Defaults(), -- Dark Soul: Misery
 		[104773] = Defaults(), -- Unending Resolve
 		[221715] = Defaults(), -- Essence Drain
 		[212295] = Defaults(), -- Nether Ward
@@ -660,6 +668,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[287825] = Defaults(), -- Lethargy debuff (fight or flight)
 		[206662] = Defaults(), -- Experience Eliminated (in range)
 		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
+		[348443] = Defaults(), -- Experience Eliminated
 		[206151] = Defaults(), -- Challenger's Burden
 	},
 }

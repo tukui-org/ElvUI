@@ -93,6 +93,7 @@ P.general = {
 			},
 			mail = {
 				scale = 1,
+				texture = 'Mail3',
 				position = 'TOPRIGHT',
 				xOffset = 3,
 				yOffset = 4,
@@ -139,14 +140,15 @@ P.databars = {
 		azerite = { r = .901, g = .8, b = .601, a = 1 },
 		useCustomFactionColors = false,
 		factionColors = {
-			[1] = { r = .8, g = .3, b = .22},
-			[2] = { r = .8, g = .3, b = .22},
-			[3] = { r = .75, g = .27, b = 0},
-			[4] = { r = .9, g = .7, b = 0},
-			[5] = { r = 0, g = .6, b = .1},
-			[6] = { r = 0, g = .6, b = .1},
-			[7] = { r = 0, g = .6, b = .1},
-			[8] = { r = 0, g = .6, b = .1},
+			[1] = { r = .8, g = .3, b = .22 },
+			[2] = { r = .8, g = .3, b = .22 },
+			[3] = { r = .75, g = .27, b = 0 },
+			[4] = { r = .9, g = .7, b = 0 },
+			[5] = { r = 0, g = .6, b = .1 },
+			[6] = { r = 0, g = .6, b = .1 },
+			[7] = { r = 0, g = .6, b = .1 },
+			[8] = { r = 0, g = .6, b = .1 },
+			[9] = { r = 0, g = .6, b = .1 },
 		}
 	}
 }
@@ -166,6 +168,8 @@ for _, databar in pairs({'experience', 'reputation', 'honor', 'threat', 'azerite
 		orientation = 'AUTOMATIC',
 		reverseFill = false,
 		showBubbles = false,
+		frameStrata = 'LOW',
+		frameLevel = 1
 	}
 end
 
@@ -181,6 +185,8 @@ P.databars.experience.questTrackedOnly = false
 
 P.databars.reputation.enable = false
 P.databars.reputation.hideBelowMaxLevel = false
+P.databars.reputation.showReward = true
+P.databars.reputation.rewardPosition = 'LEFT'
 
 P.databars.honor.hideOutsidePvP = false
 P.databars.honor.hideBelowMaxLevel = false
@@ -670,7 +676,9 @@ P.nameplates = {
 		},
 		TARGET = {
 			enable = true,
-			arrow = 'Arrow1',
+			arrow = 'Arrow9',
+			arrowScale = 0.8,
+			arrowSpacing = 3,
 			glowStyle = 'style2',
 			classpower = {
 				enable = false,
@@ -929,7 +937,9 @@ P.chat = {
 	panelColor = {r = .06, g = .06, b = .06, a = 0.8},
 	pinVoiceButtons = true,
 	hideVoiceButtons = false,
-	desaturateVoiceIcons = true
+	desaturateVoiceIcons = true,
+	mouseoverVoicePanel = false,
+	voicePanelAlpha = 0.25
 }
 
 --Datatexts
@@ -1067,6 +1077,7 @@ local UF_AuraBars = {
 	priority = '',
 	spacing = 0,
 	yOffset = 0,
+	clickThrough = false,
 }
 
 local UF_AuraWatch = {
@@ -1360,10 +1371,12 @@ local UF_SubGroup = {
 	yOffset = 0,
 	width = 120,
 	height = 28,
+	threatStyle = 'GLOW',
 	colorOverride = 'USE_DEFAULT',
 	name = CopyTable(UF_Name),
 	raidicon = CopyTable(UF_RaidIcon),
 	buffIndicator = CopyTable(UF_AuraWatch),
+	healPrediction = CopyTable(UF_HealthPrediction),
 }
 
 local UF_ClassBar = {
@@ -1574,11 +1587,11 @@ P.unitframe = {
 				enable = true,
 				defaultColor = true,
 				color = {r = 1, g = 1, b = 1, a = 1},
+				texture = 'DEFAULT',
 				anchorPoint = 'TOPLEFT',
 				xOffset = -3,
 				yOffset = 6,
 				size = 22,
-				texture = 'DEFAULT',
 			},
 			CombatIcon = CopyTable(UF_CombatIcon),
 			classbar = CopyTable(UF_ClassBar),
@@ -1712,6 +1725,7 @@ P.unitframe = {
 			name = CopyTable(UF_Name),
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
+			raidicon = CopyTable(UF_RaidIcon),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
 		},
 		boss = {
@@ -1871,7 +1885,7 @@ P.unitframe.units.player.health.position = 'LEFT'
 P.unitframe.units.player.health.text_format = '[healthcolor][health:current-percent:shortvalue]'
 P.unitframe.units.player.health.xOffset = 2
 P.unitframe.units.player.power.position = 'RIGHT'
-P.unitframe.units.player.power.text_format = '[classpowercolor][classpower:current][powercolor][  >power:current:shortvalue]'
+P.unitframe.units.player.power.text_format = '[classpowercolor][classpower:current:shortvalue][powercolor][  >power:current:shortvalue]'
 P.unitframe.units.player.power.xOffset = -2
 
 P.unitframe.units.target.aurabar.maxDuration = 120
@@ -2053,6 +2067,7 @@ P.unitframe.units.party.power.xOffset = -2
 P.unitframe.units.party.targetsGroup.name.text_format = '[namecolor][name:medium] [difficultycolor][smartlevel]'
 P.unitframe.units.party.targetsGroup.enable = false
 P.unitframe.units.party.targetsGroup.buffIndicator = nil
+P.unitframe.units.party.targetsGroup.healPrediction = nil
 
 P.unitframe.units.raid = CopyTable(P.unitframe.units.party)
 P.unitframe.units.raid.groupBy = 'GROUP'
@@ -2119,6 +2134,7 @@ P.unitframe.units.tank.targetsGroup.name.text_format = '[namecolor][name:medium]
 P.unitframe.units.tank.targetsGroup.name.xOffset = 0
 P.unitframe.units.tank.targetsGroup.enable = true
 P.unitframe.units.tank.targetsGroup.buffIndicator = false
+P.unitframe.units.tank.targetsGroup.healPrediction = nil
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
@@ -2257,6 +2273,8 @@ P.actionbar = {
 		backdropSpacing = 2,
 		heightMult = 1,
 		widthMult = 1,
+		frameStrata = 'LOW',
+		frameLevel = 1,
 	},
 	extraActionButton = {
 		alpha = 1,
@@ -2327,10 +2345,15 @@ for i = 1, 10 do
 		useCountColor = false,
 		useHotkeyColor = false,
 		useMacroColor = false,
+		frameStrata = 'LOW',
+		frameLevel = 1,
 	}
 end
 
 for _, bar in pairs({ 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionButton', 'zoneActionButton' }) do
+	P.actionbar[bar].frameStrata = 'LOW'
+	P.actionbar[bar].frameLevel = 1
+
 	if bar == 'barPet' then
 		P.actionbar[bar].countColor = { r = 1, g = 1, b = 1 }
 		P.actionbar[bar].countFont = 'Homespun'

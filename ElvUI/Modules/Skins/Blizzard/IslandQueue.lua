@@ -21,7 +21,13 @@ function S:Blizzard_IslandsQueueUI()
 
 	local IslandsFrame = _G.IslandsQueueFrame
 	S:HandlePortraitFrame(IslandsFrame)
-	S:HandleButton(IslandsFrame.DifficultySelectorFrame.QueueButton)
+
+	local selectorFrame = IslandsFrame.DifficultySelectorFrame
+	local queueButton = selectorFrame and selectorFrame.QueueButton
+	if queueButton  then
+		S:HandleButton(queueButton, nil, nil, nil, nil, nil, nil, nil, true)
+		queueButton.Flash:Kill()
+	end
 
 	local WeeklyQuest = IslandsFrame.WeeklyQuest
 	local StatusBar = WeeklyQuest.StatusBar

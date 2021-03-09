@@ -198,7 +198,7 @@ do --this can save some main file locals
 
 	local itsElv, itsMis, itsMel, itsSimpy, itsTheFlyestNihilist
 	do	--Simpy Chaos: super cute text coloring function that ignores hyperlinks and keywords
-		local e, f, g = {'||','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
+		local e, f, g = {'||','|Helvmoji:.-|h.-|h','|[Cc].-|[Rr]','|[TA].-|[ta]','|H.-|h.-|h'}, {}, {}
 		local prettify = function(t,...) return gsub(gsub(E:TextGradient(gsub(gsub(t,'%%%%','\27'),'\124\124','\26'),...),'\27','%%%%'),'\26','||') end
 		local protectText = function(t, u, v) local w = E:EscapeString(v) local r, s = strfind(u, w) while f[r] do r, s = strfind(u, w, s) end if r then tinsert(g, r) f[r] = w end return gsub(t, w, '\24') end
 		local specialText = function(t,...) local u = t for _, w in ipairs(e) do for k in gmatch(t, w) do t = protectText(t, u, k) end end t = prettify(t,...)
@@ -549,7 +549,7 @@ do
 
 		-- recalculate the character count correctly with hyperlinks in it, using gsub so it matches multiple without gmatch
 		charCount = 0
-		gsub(text, '(|cff%x%x%x%x%x%x|H.-|h).-|h|r', CH.CountLinkCharacters)
+		gsub(text, '(|c%x-|H.-|h).-|h|r', CH.CountLinkCharacters)
 		if charCount ~= 0 then len = len - charCount end
 
 		self.characterCount:SetText(len > 0 and (255 - len) or '')
@@ -740,10 +740,6 @@ function CH:StyleChat(frame)
 	copyButton:SetScript('OnEnter', CH.CopyButtonOnEnter)
 	copyButton:SetScript('OnLeave', CH.CopyButtonOnLeave)
 	CH:ToggleChatButton(copyButton)
-
-	_G.QuickJoinToastButton:Hide()
-	_G.GeneralDockManagerOverflowButtonList:CreateBackdrop('Transparent')
-	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
 
 	frame.styled = true
 end
@@ -2078,6 +2074,10 @@ function CH:SetupChat()
 	_G.GeneralDockManagerScrollFrame:Height(22)
 	_G.GeneralDockManagerScrollFrameChild:Height(22)
 
+	_G.QuickJoinToastButton:Hide()
+	_G.GeneralDockManagerOverflowButtonList:SetTemplate('Transparent')
+	Skins:HandleNextPrevButton(_G.GeneralDockManagerOverflowButton, 'down', nil, true)
+
 	CH:PositionChats()
 
 	if not CH.HookSecured then
@@ -2148,7 +2148,7 @@ function CH:CheckKeyword(message, author)
 	local letInCombat = not CH.db.noAlertInCombat or not InCombatLockdown()
 	local letSound = not CH.SoundTimer and (CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME) and letInCombat
 
-	for hyperLink in gmatch(message, '|%x+|H.-|h.-|h|r') do
+	for hyperLink in gmatch(message, '|c%x-|H.-|h.-|h|r') do
 		protectLinks[hyperLink] = gsub(hyperLink,'%s','|s')
 
 		if letSound then
@@ -2758,8 +2758,15 @@ function CH:ReparentVoiceChatIcon(parent)
 end
 
 function CH:RepositionOverflowButton()
+	_G.GeneralDockManagerOverflowButtonList:SetFrameStrata('LOW')
+	_G.GeneralDockManagerOverflowButtonList:SetFrameLevel(5)
 	_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-	_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
+
+	if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(channelButtons[3]:IsShown() and 3) or 1], 'LEFT', -4, 0)
+	else
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
+	end
 end
 
 function CH:UpdateVoiceChatIcons()
@@ -2786,32 +2793,46 @@ function CH:HandleChatVoiceIcons()
 			end
 		end
 
-		CH:RepositionOverflowButton()
 		channelButtons[3]:HookScript('OnShow', CH.RepositionOverflowButton)
 		channelButtons[3]:HookScript('OnHide', CH.RepositionOverflowButton)
 	else
 		CH:CreateChatVoicePanel()
 	end
 
-	if not CH.db.hideVoiceButtons then
-		_G.GeneralDockManagerOverflowButtonList:SetFrameStrata('LOW')
-		_G.GeneralDockManagerOverflowButtonList:SetFrameLevel(5)
-	end
+	CH:RepositionOverflowButton()
+end
 
-	if not CH.db.pinVoiceButtons then
-		_G.GeneralDockManagerOverflowButton:ClearAllPoints()
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
+function CH:EnterVoicePanel()
+	if CH.VoicePanel and CH.db.mouseoverVoicePanel then
+		CH.VoicePanel:SetAlpha(1)
+	end
+end
+
+function CH:LeaveVoicePanel()
+	if CH.VoicePanel and CH.db.mouseoverVoicePanel then
+		CH.VoicePanel:SetAlpha(CH.db.voicePanelAlpha)
+	end
+end
+
+function CH:ResetVoicePanelAlpha()
+	if CH.VoicePanel then
+		CH.VoicePanel:SetAlpha(CH.db.mouseoverVoicePanel and CH.db.voicePanelAlpha or 1)
 	end
 end
 
 function CH:CreateChatVoicePanel()
-	local Holder = CreateFrame('Frame', 'ChatButtonHolder', E.UIParent, 'BackdropTemplate')
+	local Holder = CreateFrame('Frame', 'ElvUIChatVoicePanel', E.UIParent, 'BackdropTemplate')
 	Holder:ClearAllPoints()
 	Holder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'TOPLEFT', 0, 1)
 	Holder:Size(30, 86)
 	Holder:SetTemplate('Transparent', nil, true)
 	Holder:SetBackdropColor(CH.db.panelColor.r, CH.db.panelColor.g, CH.db.panelColor.b, CH.db.panelColor.a)
 	E:CreateMover(Holder, 'SocialMenuMover', _G.BINDING_HEADER_VOICE_CHAT, nil, nil, nil, nil, nil, 'chat')
+	CH.VoicePanel = Holder
+
+	Holder:SetScript('OnEnter', CH.EnterVoicePanel)
+	Holder:SetScript('OnLeave', CH.LeaveVoicePanel)
+	CH.LeaveVoicePanel(Holder)
 
 	channelButtons[1]:ClearAllPoints()
 	channelButtons[1]:Point('TOP', Holder, 'TOP', 0, -2)
@@ -2821,6 +2842,9 @@ function CH:CreateChatVoicePanel()
 		button.Icon:SetParent(button)
 		button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 		button:SetParent(Holder)
+
+		button:HookScript('OnEnter', CH.EnterVoicePanel)
+		button:HookScript('OnLeave', CH.LeaveVoicePanel)
 	end
 
 	_G.ChatAlertFrame:ClearAllPoints()

@@ -28,7 +28,7 @@ function NP:ClassPower_UpdateColor(powerType)
 	end
 
 	local db = NP.db.units[self.__owner.frameType]
-	local ClassColor = db and db.classpower.classColor and E:ClassColor(E.myclass)
+	local ClassColor = db and db.classpower and db.classpower.classColor and E:ClassColor(E.myclass)
 	for i = 1, #self do
 		local classColor = ClassColor or (powerType == 'COMBO_POINTS' and NP.db.colors.classResources.comboPoints[i] or powerType == 'CHI' and NP.db.colors.classResources.MONK[i])
 		if classColor then r, g, b = classColor.r, classColor.g, classColor.b end

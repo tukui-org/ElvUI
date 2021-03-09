@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
@@ -231,9 +231,9 @@ local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
 function UF:ConvertGroupDB(group)
 	local db = self.db.units[group.groupName]
 	if db.point and db.columnAnchorPoint then
-		db.growthDirection = POINT_COLUMN_ANCHOR_TO_DIRECTION[db.point..db.columnAnchorPoint];
-		db.point = nil;
-		db.columnAnchorPoint = nil;
+		db.growthDirection = POINT_COLUMN_ANCHOR_TO_DIRECTION[db.point..db.columnAnchorPoint]
+		db.point = nil
+		db.columnAnchorPoint = nil
 	end
 
 	if db.growthDirection == 'UP' then
@@ -280,7 +280,7 @@ function UF:GetObjectAnchorPoint(frame, point)
 end
 
 function UF:GetPositionOffset(position, offset)
-	if not offset then offset = 2; end
+	if not offset then offset = 2 end
 	local x, y = 0, 0
 	if strfind(position, 'LEFT') then
 		x = offset
@@ -565,7 +565,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		local frame = self[unit]
 
 		if not frame then
-			self.groupunits[unit] = group;
+			self.groupunits[unit] = group
 			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName)
 			frame.index = i
 			frame:SetParent(ElvUF_Parent)
@@ -946,7 +946,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		ElvUF:SetActiveStyle('ElvUF_'..name)
 
 		if numGroups then
-			Header = CreateFrame('Frame', 'ElvUF_'..name, ElvUF_Parent, 'SecureHandlerStateTemplate');
+			Header = CreateFrame('Frame', 'ElvUF_'..name, ElvUF_Parent, 'SecureHandlerStateTemplate')
 			Header.groups = {}
 			Header.groupName = group
 			Header.template = Header.template or template
@@ -1101,7 +1101,7 @@ function UF:UpdateAllHeaders(smart, skip)
 end
 
 function UF:DisableBlizzard()
-	if (not E.private.unitframe.disabledBlizzardFrames.raid) and (not E.private.unitframe.disabledBlizzardFrames.party) then return; end
+	if (not E.private.unitframe.disabledBlizzardFrames.raid) and (not E.private.unitframe.disabledBlizzardFrames.party) then return end
 	if not CompactRaidFrameManager_SetSetting then
 		E:StaticPopup_Show('WARNING_BLIZZARD_ADDONS')
 	else
@@ -1216,15 +1216,18 @@ function ElvUF:DisableBlizzard(unit)
 			end
 		end
 
-		-- Blizzard_ArenaUI should not be loaded
-		Arena_LoadUI = E.noop
 		if _G.ArenaEnemyFrames then
 			_G.ArenaEnemyFrames:UnregisterAllEvents()
 			_G.ArenaPrepFrames:UnregisterAllEvents()
 			_G.ArenaEnemyFrames:Hide()
 			_G.ArenaPrepFrames:Hide()
+
+			-- reference on oUF and clear the global frame reference, to fix ClearAllPoints taint
+			ElvUF.ArenaEnemyFrames = _G.ArenaEnemyFrames
+			ElvUF.ArenaPrepFrames = _G.ArenaPrepFrames
+			_G.ArenaEnemyFrames = nil
+			_G.ArenaPrepFrames = nil
 		end
-		--SetCVar('showArenaEnemyFrames', '0', 'SHOW_ARENA_ENEMY_FRAMES_TEXT')
 	elseif unit:match('nameplate%d+$') then
 		local frame = C_NamePlate_GetNamePlateForUnit(unit)
 		if frame and frame.UnitFrame then
@@ -1239,17 +1242,18 @@ function ElvUF:DisableBlizzard(unit)
 end
 
 function UF:ADDON_LOADED(_, addon)
-	if addon ~= 'Blizzard_ArenaUI' then return; end
+	if addon ~= 'Blizzard_ArenaUI' then return end
+
 	ElvUF:DisableBlizzard('arena')
-	self:UnregisterEvent('ADDON_LOADED');
+	self:UnregisterEvent('ADDON_LOADED')
 end
 
 function UF:UnitFrameThreatIndicator_Initialize(_, unitFrame)
-	unitFrame:UnregisterAllEvents() --Arena Taint Fix
+	unitFrame:UnregisterAllEvents() -- Arena Taint Fix
 end
 
 function UF:ResetUnitSettings(unit)
-	E:CopyTable(self.db.units[unit], P.unitframe.units[unit]);
+	E:CopyTable(self.db.units[unit], P.unitframe.units[unit])
 
 	if self.db.units[unit].buffs and self.db.units[unit].buffs.sizeOverride then
 		self.db.units[unit].buffs.sizeOverride = P.unitframe.units[unit].buffs.sizeOverride or 0
@@ -1273,39 +1277,6 @@ function UF:ToggleForceShowGroupFrames(unitGroup, numGroup)
 end
 
 local Blacklist = {
-	arena = {
-		enable = true,
-		fader = true,
-	},
-	assist = {
-		enable = true,
-		fader = true,
-	},
-	boss = {
-		enable = true,
-		fader = true,
-	},
-	focus = {
-		enable = true,
-		fader = true,
-	},
-	focustarget = {
-		enable = true,
-		fader = true,
-	},
-	party = {
-		enable = true,
-		visibility = true,
-		fader = true,
-	},
-	pet = {
-		enable = true,
-		fader = true,
-	},
-	pettarget = {
-		enable = true,
-		fader = true,
-	},
 	player = {
 		enable = true,
 		aurabars = true,
@@ -1321,37 +1292,21 @@ local Blacklist = {
 			maxDuration = true,
 		},
 	},
-	raid = {
-		enable = true,
-		fader = true,
-		visibility = true,
-	},
-	raid40 = {
-		enable = true,
-		fader = true,
-		visibility = true,
-	},
-	raidpet = {
-		enable = true,
-		fader = true,
-		visibility = true,
-	},
-	tank = {
-		fader = true,
-		enable = true,
-	},
-	target = {
-		fader = true,
-		enable = true,
-	},
-	targettarget = {
-		fader = true,
-		enable = true,
-	},
-	targettargettarget = {
-		fader = true,
-		enable = true,
-	},
+	arena = { enable = true, fader = true },
+	assist = { enable = true, fader = true },
+	boss = { enable = true, fader = true },
+	focus = { enable = true, fader = true },
+	focustarget = { enable = true, fader = true },
+	pet = { enable = true, fader = true },
+	pettarget = { enable = true, fader = true },
+	tank = { enable = true, fader = true },
+	target = { enable = true, fader = true },
+	targettarget = { enable = true, fader = true },
+	targettargettarget = { enable = true, fader = true },
+	party = { enable = true, fader = true, visibility = true },
+	raid = { enable = true, fader = true, visibility = true },
+	raid40 = { enable = true, fader = true, visibility = true },
+	raidpet = { enable = true, fader = true, visibility = true },
 }
 
 function UF:MergeUnitSettings(from, to)
@@ -1517,9 +1472,9 @@ function UF:Initialize()
 	if E.private.unitframe.enable ~= true then return end
 	UF.Initialized = true
 
-	E.ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate');
+	E.ElvUF_Parent = CreateFrame('Frame', 'ElvUF_Parent', E.UIParent, 'SecureHandlerStateTemplate')
 	E.ElvUF_Parent:SetFrameStrata('LOW')
-	RegisterStateDriver(E.ElvUF_Parent, 'visibility', '[petbattle] hide; show')
+	RegisterStateDriver(E.ElvUF_Parent, 'visibility', '[petbattle] hide;show')
 
 	UF:UpdateColors()
 	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
@@ -1545,10 +1500,12 @@ function UF:Initialize()
 	if E.private.unitframe.disabledBlizzardFrames.arena then
 		UF:SecureHook('UnitFrameThreatIndicator_Initialize')
 
-		if not IsAddOnLoaded('Blizzard_ArenaUI') then
-			UF:RegisterEvent('ADDON_LOADED')
-		else
+		Arena_LoadUI = E.noop -- Blizzard_ArenaUI should not be loaded, called on PLAYER_ENTERING_WORLD if in pvp or arena
+
+		if IsAddOnLoaded('Blizzard_ArenaUI') then
 			ElvUF:DisableBlizzard('arena')
+		else
+			UF:RegisterEvent('ADDON_LOADED')
 		end
 	end
 

@@ -184,7 +184,9 @@ function UF:Configure_HealComm(frame)
 			local p1 = reverseFill and 'TOP' or 'BOTTOM'
 			local p2 = reverseFill and 'BOTTOM' or 'TOP'
 
-			local anchor = (db.anchorPoint == 'BOTTOM' and 'RIGHT') or (db.anchorPoint == 'TOP' and 'LEFT') or db.anchorPoint -- convert this for vertical too
+			-- anchor converts while the health is in vertical orientation to be able to use a height
+			-- (well in this case, width) other than -1 which positions the absorb on the left or right side
+			local anchor = (db.anchorPoint == 'BOTTOM' and 'RIGHT') or (db.anchorPoint == 'TOP' and 'LEFT') or db.anchorPoint
 			pred.anchor, pred.anchor1, pred.anchor2 = anchor, p1, p2
 
 			myBar:ClearAllPoints()

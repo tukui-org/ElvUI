@@ -4,6 +4,9 @@ local LSM = E.Libs.LSM
 E.Media = {
 	Fonts = {},
 	Sounds = {},
+	Arrows = {},
+	MailIcons = {},
+	RestIcons = {},
 	ChatEmojis = {},
 	ChatLogos = {},
 	Textures = {}
@@ -22,6 +25,9 @@ end
 local MediaKey = {
 	font	= 'Fonts',
 	sound	= 'Sounds',
+	arrow   = 'Arrows',
+	mail    = 'MailIcons',
+	resting = 'RestIcons',
 	emoji	= 'ChatEmojis',
 	logo	= 'ChatLogos',
 	texture	= 'Textures'
@@ -30,6 +36,9 @@ local MediaKey = {
 local MediaPath = {
 	font	= [[Interface\AddOns\ElvUI\Media\Fonts\]],
 	sound	= [[Interface\AddOns\ElvUI\Media\Sounds\]],
+	arrow	= [[Interface\AddOns\ElvUI\Media\Arrows\]],
+	mail    = [[Interface\AddOns\ElvUI\Media\MailIcons\]],
+	resting = [[Interface\AddOns\ElvUI\Media\RestIcons\]],
 	emoji	= [[Interface\AddOns\ElvUI\Media\ChatEmojis\]],
 	logo	= [[Interface\AddOns\ElvUI\Media\ChatLogos\]],
 	texture	= [[Interface\AddOns\ElvUI\Media\Textures\]]
@@ -84,11 +93,23 @@ AddMedia('texture','White8x8',		'ElvUI Blank', {'statusbar','background'})
 AddMedia('texture','Minimalist',	true, 'statusbar')
 AddMedia('texture','Melli',			true, 'statusbar')
 
+for i = 0, 7 do -- mail icons
+	AddMedia('mail','Mail'..i)
+end
+
+for i = 0, 2 do -- resting icons
+	AddMedia('resting','Resting'..i)
+end
+
+-- nameplate target arrows
+AddMedia('arrow', 'ArrowRed')
+for i = 0, 72 do
+	AddMedia('arrow', 'Arrow'..i)
+end
+
 AddMedia('texture','Arrow')
 AddMedia('texture','ArrowRight')
 AddMedia('texture','ArrowUp')
-AddMedia('texture','Arrow1')
-AddMedia('texture','Arrow2')
 AddMedia('texture','BagNewItemGlow')
 AddMedia('texture','BagQuestIcon')
 AddMedia('texture','BagUpgradeIcon')
@@ -112,7 +133,6 @@ AddMedia('texture','LogoTop')
 AddMedia('texture','LogoTopSmall')
 AddMedia('texture','LogoBottom')
 AddMedia('texture','LogoBottomSmall')
-AddMedia('texture','Mail')
 AddMedia('texture','Minus')
 AddMedia('texture','MinusButton')
 AddMedia('texture','Pause')
@@ -122,8 +142,6 @@ AddMedia('texture','Play')
 AddMedia('texture','Plus')
 AddMedia('texture','PlusButton')
 AddMedia('texture','Reset')
-AddMedia('texture','Resting')
-AddMedia('texture','Resting1')
 AddMedia('texture','RolesHQ')
 AddMedia('texture','RoleIcons')
 AddMedia('texture','SkullIcon')

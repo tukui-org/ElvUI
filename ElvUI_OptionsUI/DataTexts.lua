@@ -19,7 +19,7 @@ local currencyList, DTPanelOptions = {}, {}
 DTPanelOptions.numPoints = ACH:Range(L["Number of DataTexts"], nil, 2, { min = 1, softMax = 20, step = 1})
 DTPanelOptions.growth = ACH:Select(L["Growth"], nil, 3, { HORIZONTAL = 'HORIZONTAL', VERTICAL = 'VERTICAL' })
 DTPanelOptions.width = ACH:Range(L["Width"], nil, 4, { min = 24, max = E.screenwidth, step = 1})
-DTPanelOptions.height = ACH:Range(L["Width"], nil, 5, { min = 12, max = E.screenheight, step = 1})
+DTPanelOptions.height = ACH:Range(L["Height"], nil, 5, { min = 12, max = E.screenheight, step = 1})
 DTPanelOptions.textJustify = ACH:Select(L["Text Justify"], L["Sets the font instance's horizontal text alignment style."], 6, { CENTER = L["Center"], LEFT = L["Left"], RIGHT = L["Right"] })
 
 DTPanelOptions.templateGroup = ACH:MultiSelect(L["Template"], nil, 10, { backdrop = L["Backdrop"], panelTransparency = L["Backdrop Transparency"], mouseover = L["Mouse Over"], border = L["Show Border"] })
@@ -65,7 +65,7 @@ local function PanelGroup_Create(panel)
 		opts.args.panelOptions.args.delete = ACH:Execute(L["Delete"], nil, -1, function() PanelGroup_Delete(panel) end, nil, true, 'full')
 
 		opts.args.panelOptions.args.fonts = ACH:Group(L["Fonts"], nil, 10, nil, function(info) local settings = E.global.datatexts.customPanels[panel] if not settings.fonts then settings.fonts = E:CopyTable({}, G.datatexts.newPanelInfo.fonts) end return settings.fonts[info[#info]] end, function(info, value) E.global.datatexts.customPanels[panel].fonts[info[#info]] = value DT:UpdatePanelAttributes(panel, E.global.datatexts.customPanels[panel]) end, function() return not (E.global.datatexts.customPanels[panel] and E.global.datatexts.customPanels[panel].fonts and E.global.datatexts.customPanels[panel].fonts.enable) end)
-		opts.args.panelOptions.args.fonts.args.enable = ACH:Toggle(L["Enable"], L["This will override the global cooldown settings."], 0, nil, nil, nil, nil, nil, false)
+		opts.args.panelOptions.args.fonts.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, false)
 		opts.args.panelOptions.args.fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 		opts.args.panelOptions.args.fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 2)
 		opts.args.panelOptions.args.fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)

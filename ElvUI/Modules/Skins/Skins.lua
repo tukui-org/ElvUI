@@ -191,9 +191,11 @@ function S:SkinPVPHonorXPBar(frame)
 			if not XPBar.NextAvailable.backdrop then
 				XPBar.NextAvailable:StripTextures()
 				XPBar.NextAvailable:CreateBackdrop()
+
 				if XPBar.NextAvailable.Icon then
-					XPBar.NextAvailable.backdrop:Point('TOPLEFT', XPBar.NextAvailable.Icon, -(E.PixelMode and 1 or 2), (E.PixelMode and 1 or 2))
-					XPBar.NextAvailable.backdrop:Point('BOTTOMRIGHT', XPBar.NextAvailable.Icon, (E.PixelMode and 1 or 2), -(E.PixelMode and 1 or 2))
+					local x = E.PixelMode and 1 or 2
+					XPBar.NextAvailable.backdrop:Point('TOPLEFT', XPBar.NextAvailable.Icon, -x, x)
+					XPBar.NextAvailable.backdrop:Point('BOTTOMRIGHT', XPBar.NextAvailable.Icon, x, -x)
 				end
 			end
 
@@ -578,7 +580,7 @@ end
 do
 	local check = [[Interface\Buttons\UI-CheckBox-Check]]
 	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
-	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures)
+	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel)
 		assert(frame, 'does not exist.')
 
 		if frame.isSkinned then return end
@@ -588,7 +590,7 @@ do
 		if noBackdrop then
 			frame:Size(16)
 		else
-			frame:CreateBackdrop()
+			frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, frameLevel)
 			frame.backdrop:SetInside(nil, 4, 4)
 		end
 
@@ -1173,47 +1175,34 @@ function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, fr
 	btn.isSkinned = true
 end
 
--- Handle collapse
-local function UpdateCollapseTexture(texture, collapsed)
-	local tex = collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
-	texture:SetTexture(tex, true)
-end
-
-local function ResetCollapseTexture(self, texture)
-	if self.settingTexture then return end
-	self.settingTexture = true
-	self:SetNormalTexture('')
-
-	if texture and texture ~= '' then
+do -- Handle collapse
+	local function UpdateCollapseTexture(button, texture)
+		local tex = button:GetNormalTexture()
 		if strfind(texture, 'Plus') or strfind(texture, 'Closed') then
-			self.__texture:DoCollapse(true)
+			tex:SetTexture(E.Media.Textures.PlusButton)
 		elseif strfind(texture, 'Minus') or strfind(texture, 'Open') then
-			self.__texture:DoCollapse(false)
+			tex:SetTexture(E.Media.Textures.MinusButton)
 		end
-		self.backdrop:Show()
-	else
-		self.backdrop:Hide()
 	end
-	self.settingTexture = nil
-end
 
-function S:HandleCollapseTexture(button)
-	button:SetHighlightTexture('')
-	button:SetPushedTexture('')
+	local function syncPushTexture(button, _, skip)
+		if not skip then
+			local normal = button:GetNormalTexture():GetTexture()
+			button:SetPushedTexture(normal, true)
+		end
+	end
 
-	button:CreateBackdrop()
-	button.backdrop:ClearAllPoints()
-	button.backdrop:SetSize(12, 12)
-	button.backdrop:SetPoint('TOPLEFT', button:GetNormalTexture())
+	function S:HandleCollapseTexture(button, syncPushed)
+		if syncPushed then -- not needed always
+			hooksecurefunc(button, 'SetPushedTexture', syncPushTexture)
+			syncPushTexture(button)
+		else
+			button:SetPushedTexture('')
+		end
 
-	button.__texture = button.backdrop:CreateTexture(nil, 'OVERLAY')
-	button.__texture:SetPoint('CENTER')
-	button.__texture.DoCollapse = UpdateCollapseTexture
-
-	button:HookScript('OnEnter', S.SetModifiedBackdrop)
-	button:HookScript('OnLeave', S.SetOriginalBackdrop)
-
-	hooksecurefunc(button, 'SetNormalTexture', ResetCollapseTexture)
+		hooksecurefunc(button, 'SetNormalTexture', UpdateCollapseTexture)
+		UpdateCollapseTexture(button, button:GetNormalTexture():GetTexture())
+	end
 end
 
 -- World Map related Skinning functions used for WoW 8.0
@@ -1241,11 +1230,12 @@ function S:SkinStatusBarWidget(widgetFrame)
 		if bar.BGCenter then bar.BGCenter:Hide() end
 
 		if not bar.backdrop then
-			bar:CreateBackdrop()
+			bar:CreateBackdrop('Transparent')
 		end
 
-		bar.backdrop:Point('TOPLEFT', -2, 2)
-		bar.backdrop:Point('BOTTOMRIGHT', 2, -2)
+		local x = E.PixelMode and 1 or 2
+		bar.backdrop:Point('TOPLEFT', -x, x)
+		bar.backdrop:Point('BOTTOMRIGHT', x, -x)
 
 		bar.IsSkinned = true
 	end
@@ -1389,7 +1379,7 @@ end
 -- this is used for loading skins that should be executed when the addon loads (including blizzard addons that load later).
 -- please add a given name, non-given-name is specific for elvui core addon.
 function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position) -- arg2: name is 'given name'; see example above.
-	local load = (name == 'function' and name) or (not func and (S[name] or S[addonName]))
+	local load = (type(name) == 'function' and name) or (not func and (S[name] or S[addonName]))
 	S:RegisterSkin(addonName, load or func, forceLoad, bypass, position)
 end
 
@@ -1397,7 +1387,7 @@ end
 --- this is used for loading skins when our skin init function executes.
 --- please add a given name, non-given-name is specific for elvui core addon.
 function S:AddCallback(name, func, position) -- arg1: name is 'given name'
-	local load = (name == 'function' and name) or (not func and S[name])
+	local load = (type(name) == 'function' and name) or (not func and S[name])
 	S:RegisterSkin('ElvUI', load or func, nil, nil, position)
 end
 

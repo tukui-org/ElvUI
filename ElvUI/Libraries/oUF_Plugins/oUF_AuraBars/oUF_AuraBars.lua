@@ -162,6 +162,7 @@ local function updateBar(element, unit, index, offset, filter, isDebuff, visible
 			statusBar:SetSize(element.width, element.height)
 			statusBar.icon:SetSize(element.height, element.height)
 			statusBar:SetScript('OnUpdate', onUpdate)
+			statusBar:EnableMouse(not element.disableMouse)
 			statusBar:SetID(index)
 			statusBar:Show()
 
