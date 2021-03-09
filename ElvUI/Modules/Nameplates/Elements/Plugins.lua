@@ -112,12 +112,12 @@ function NP:Update_TargetIndicator(nameplate)
 		nameplate:EnableElement('TargetIndicator')
 	end
 
-	nameplate.TargetIndicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow]
+	nameplate.TargetIndicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow] or E.Media.Arrows.Arrow9
 	nameplate.TargetIndicator.style = NP.db.units.TARGET.glowStyle
 	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
 
 	if nameplate.TargetIndicator.style ~= 'none' then
-		local GlowStyle, Color, ArrowScale = NP.db.units.TARGET.glowStyle, NP.db.colors.glowColor, NP.db.units.TARGET.arrowScale
+		local GlowStyle, Color, ArrowScale, ArrowSpacing = NP.db.units.TARGET.glowStyle, NP.db.colors.glowColor, NP.db.units.TARGET.arrowScale, NP.db.units.TARGET.arrowSpacing
 
 		if not db.health.enable and (GlowStyle ~= 'style2' and GlowStyle ~= 'style6' and GlowStyle ~= 'style8') then
 			GlowStyle = 'style2'
@@ -125,14 +125,14 @@ function NP:Update_TargetIndicator(nameplate)
 		end
 
 		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
-			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, 9)
+			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, ArrowSpacing)
 			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 			nameplate.TargetIndicator.TopIndicator:SetScale(ArrowScale)
 		end
 
 		if nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
-			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', 3, 0)
-			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', -3, 0)
+			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', ArrowSpacing, 0)
+			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', -ArrowSpacing, 0)
 			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
 			nameplate.TargetIndicator.LeftIndicator:SetScale(ArrowScale)

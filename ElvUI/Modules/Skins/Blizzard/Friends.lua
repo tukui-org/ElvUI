@@ -139,7 +139,7 @@ function S:FriendsFrame()
 
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
-	FriendsFrameBattlenetFrame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
+	FriendsFrameBattlenetFrame:CreateBackdrop('Transparent')
 
 	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
 	local button = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)
@@ -172,7 +172,9 @@ function S:FriendsFrame()
 	_G.AddFriendFrame:CreateBackdrop('Transparent')
 
 	--Pending invites
-	S:HandleButton(_G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton)
+	local PendingHeader = _G.FriendsListFrameScrollFrame.PendingInvitesHeaderButton
+	S:HandleButton(PendingHeader)
+	if PendingHeader.backdrop then PendingHeader.backdrop:SetInside() end
 	hooksecurefunc(_G.FriendsListFrameScrollFrame.invitePool, 'Acquire', function()
 		for object in pairs(_G.FriendsListFrameScrollFrame.invitePool.activeObjects) do
 			SkinFriendRequest(object)

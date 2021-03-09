@@ -4231,9 +4231,7 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 					name = L["Texture"],
 					values = {
 						CUSTOM = L["CUSTOM"],
-						DEFAULT = L["DEFAULT"],
-						RESTING = E:TextureString(E.Media.Textures.Resting, ':14'),
-						RESTING1 = E:TextureString(E.Media.Textures.Resting1, ':14'),
+						DEFAULT = L["DEFAULT"]
 					},
 				},
 				customTexture = {
@@ -4333,6 +4331,13 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'player'),
 	},
 }
+
+do -- resting icons
+	local resting = E.Options.args.unitframe.args.individualUnits.args.player.args.RestIcon.args.texture.values
+	for key, icon in pairs(E.Media.RestIcons) do
+		resting[key] = E:TextureString(icon, ':14:14')
+	end
+end
 
 --Target
 E.Options.args.unitframe.args.individualUnits.args.target = {
@@ -4701,6 +4706,7 @@ E.Options.args.unitframe.args.individualUnits.args.pet = {
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
 		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pet'),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'pet'),
 	},
 }
 

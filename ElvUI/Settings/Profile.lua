@@ -93,6 +93,7 @@ P.general = {
 			},
 			mail = {
 				scale = 1,
+				texture = 'Mail3',
 				position = 'TOPRIGHT',
 				xOffset = 3,
 				yOffset = 4,
@@ -677,6 +678,7 @@ P.nameplates = {
 			enable = true,
 			arrow = 'Arrow9',
 			arrowScale = 0.8,
+			arrowSpacing = 3,
 			glowStyle = 'style2',
 			classpower = {
 				enable = false,
@@ -1585,11 +1587,11 @@ P.unitframe = {
 				enable = true,
 				defaultColor = true,
 				color = {r = 1, g = 1, b = 1, a = 1},
+				texture = 'DEFAULT',
 				anchorPoint = 'TOPLEFT',
 				xOffset = -3,
 				yOffset = 6,
 				size = 22,
-				texture = 'DEFAULT',
 			},
 			CombatIcon = CopyTable(UF_CombatIcon),
 			classbar = CopyTable(UF_ClassBar),
@@ -1723,6 +1725,7 @@ P.unitframe = {
 			name = CopyTable(UF_Name),
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
+			raidicon = CopyTable(UF_RaidIcon),
 			strataAndLevel = CopyTable(UF_StrataAndLevel),
 		},
 		boss = {
