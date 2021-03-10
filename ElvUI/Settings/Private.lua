@@ -60,6 +60,7 @@ V.skins = {
 	ace3Enable = true,
 	checkBoxSkin = true,
 	parchmentRemoverEnable = false,
+	lfgIcons = true,
 	blizzard = {
 		enable = true,
 

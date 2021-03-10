@@ -38,7 +38,11 @@ local function HandleRoleChecks(button, ...)
 	button:DisableDrawLayer('OVERLAY')
 
 	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
-	button.bg:SetTexture(E.Media.Textures.RolesHQ)
+	if E.private.skins.lfgIcons then
+		button.bg:SetTexture(E.Media.Textures.RolesHQ)
+	else
+		button.bg:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
+	end
 	button.bg:SetTexCoord(...)
 	button.bg:Point('CENTER')
 	button.bg:Size(40, 40)

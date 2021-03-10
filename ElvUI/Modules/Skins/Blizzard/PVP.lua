@@ -18,7 +18,11 @@ local function HandleRoleChecks(button, ...)
 	button:DisableDrawLayer('OVERLAY')
 
 	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
-	button.bg:SetTexture(E.Media.Textures.RolesHQ)
+	if E.private.skins.lfgIcons then
+		button.bg:SetTexture(E.Media.Textures.RolesHQ)
+	else
+		button.bg:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
+	end
 	button.bg:SetTexCoord(...)
 	button.bg:Point('CENTER')
 	button.bg:Size(40, 40)
@@ -249,7 +253,11 @@ function S:PVPReadyDialog()
 	S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
 	S:HandleButton(_G.PVPReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.PVPReadyDialogCloseButton)
-	_G.PVPReadyDialogRoleIcon.texture:SetTexture(E.Media.Textures.RolesHQ)
+	if E.private.skins.lfgIcons then
+		_G.PVPReadyDialogRoleIcon.texture:SetTexture(E.Media.Textures.RolesHQ)
+	else
+		_G.PVPReadyDialogRoleIcon.texture:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
+	end
 	_G.PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
 
 	hooksecurefunc('PVPReadyDialog_Display', function(s, _, _, _, queueType, _, role)
