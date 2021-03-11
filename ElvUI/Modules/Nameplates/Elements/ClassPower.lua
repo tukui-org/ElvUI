@@ -113,13 +113,16 @@ function NP:Update_ClassPower(nameplate)
 		end
 	end
 
-	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
+	local target = nameplate.frameType == 'TARGET'
+	if (nameplate.frameType == 'PLAYER' or target) and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('ClassPower') then
 			nameplate:EnableElement('ClassPower')
 		end
 
-		nameplate.ClassPower:ClearAllPoints()
-		nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		if not target then
+			nameplate.ClassPower:ClearAllPoints()
+			nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		end
 
 		local maxClassBarButtons = nameplate.ClassPower.__max
 
@@ -203,14 +206,18 @@ end
 function NP:Update_Runes(nameplate)
 	local db = NP:PlateDB(nameplate)
 
-	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
+	local target = nameplate.frameType == 'TARGET'
+	if (nameplate.frameType == 'PLAYER' or target) and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
 		end
 
 		nameplate.Runes:Show()
-		nameplate.Runes:ClearAllPoints()
-		nameplate.Runes:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+
+		if not target then
+			nameplate.Runes:ClearAllPoints()
+			nameplate.Runes:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		end
 
 		nameplate.Runes.sortOrder = db.classpower.sortDirection
 
@@ -265,13 +272,17 @@ end
 function NP:Update_Stagger(nameplate)
 	local db = NP:PlateDB(nameplate)
 
-	if (nameplate.frameType == 'PLAYER' or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
+	local target = nameplate.frameType == 'TARGET'
+	if (nameplate.frameType == 'PLAYER' or target) and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('Stagger') then
 			nameplate:EnableElement('Stagger')
 		end
 
-		nameplate.Stagger:ClearAllPoints()
-		nameplate.Stagger:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		if not target then
+			nameplate.Stagger:ClearAllPoints()
+			nameplate.Stagger:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
+		end
+
 		nameplate.Stagger:Size(db.classpower.width, db.classpower.height)
 	elseif nameplate:IsElementEnabled('Stagger') then
 		nameplate:DisableElement('Stagger')
