@@ -367,10 +367,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 	else
 		NP:Update_Health(nameplate, true) -- this will only reset the ouf vars so it won't hold stale threat ones
 	end
-
-	if nameplate.isTarget and nameplate ~= _G.ElvNP_Test then
-		NP:SetupTarget(nameplate, nil, true)
-	end
 end
 
 NP.DisableInNotNameOnly = {
@@ -723,12 +719,16 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateBase(nameplate, updateBase)
 		end
 
+		NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
+		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
+
 		if (NP.db.fadeIn and not NP.SkipFading) and nameplate.frameType ~= 'PLAYER' then
 			NP:PlateFade(nameplate, 1, 0, 1)
 		end
 
-		NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
-		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
+		if nameplate.isTarget and nameplate ~= _G.ElvNP_Test then -- keep after StyleFilterSetVariables
+			NP:SetupTarget(nameplate)
+		end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		if nameplate ~= _G.ElvNP_Test then
 			if nameplate.frameType == 'PLAYER' then
