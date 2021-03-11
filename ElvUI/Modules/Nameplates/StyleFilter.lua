@@ -8,7 +8,6 @@ local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, t
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
-local GetLocale = GetLocale
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellCharges = GetSpellCharges
@@ -102,7 +101,7 @@ mod.TriggerConditions = {
 }
 
 do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value').
-	local c, locale = {}, GetLocale()
+	local c, locale = {}, E.locale
 	if locale == 'frFR' then
 		c['Aberration'] = 'Aberration'
 		c['Bête'] = 'Beast'

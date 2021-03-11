@@ -83,10 +83,9 @@ E.QualityColors[-1] = {r = 0, g = 0, b = 0}
 E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common] = {r = 0, g = 0, b = 0}
 
-do
-	local locale = GetLocale()
+do -- this is different from E.locale because we need to convert for ace locale files
 	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
-	local gameLocale = convert[locale] or locale or 'enUS'
+	local gameLocale = convert[E.locale] or E.locale or 'enUS'
 
 	function E:GetLocale()
 		return gameLocale
