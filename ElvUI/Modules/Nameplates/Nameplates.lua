@@ -269,7 +269,6 @@ function NP:PostUpdateAllElements(event)
 
 	if event and (event == 'ForceUpdate' or not NP.StyleFilterEventFunctions[event]) then
 		NP:StyleFilterUpdate(self, event)
-		self.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
 	end
 
 	if event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
@@ -563,7 +562,6 @@ function NP:ConfigureAll(skipUpdate)
 	if skipUpdate then -- since this is a fake plate, we actually need to trigger this always
 		NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
 
-		_G.ElvNP_Player.StyleFilterBaseAlreadyUpdated = nil
 		_G.ElvNP_Player:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
 		for nameplate in pairs(NP.Plates) do
@@ -582,7 +580,6 @@ function NP:ConfigureAll(skipUpdate)
 				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 			end
 
-			nameplate.StyleFilterBaseAlreadyUpdated = nil
 			nameplate:UpdateAllElements('ForceUpdate')
 		end
 	end
@@ -647,18 +644,12 @@ function NP:UpdatePlateSize(nameplate)
 	nameplate:Size(nameplate.width, nameplate.height)
 end
 
-function NP:UpdatePlateBase(nameplate)
-	if nameplate == _G.ElvNP_Test then
+function NP:UpdatePlateBase(nameplate, cleared)
+	if nameplate == _G.ElvNP_Player or nameplate == _G.ElvNP_Test then
 		NP:UpdatePlate(nameplate, true)
-	elseif nameplate == _G.ElvNP_Player then
-		NP:UpdatePlate(nameplate, true)
-
-		nameplate.StyleFilterBaseAlreadyUpdated = true
 	else
-		local update = nameplate.frameType ~= nameplate.previousType
-		NP:UpdatePlate(nameplate, update)
+		NP:UpdatePlate(nameplate, cleared or (nameplate.frameType ~= nameplate.previousType))
 
-		nameplate.StyleFilterBaseAlreadyUpdated = update
 		nameplate.previousType = nameplate.frameType
 	end
 end
@@ -666,6 +657,8 @@ end
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'UNIT_FACTION' then
 		if nameplate.widgetsOnly then return end
+
+		local cleared = NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
@@ -675,14 +668,15 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
-		NP:UpdatePlateBase(nameplate)
+		NP:UpdatePlateBase(nameplate, cleared)
 
-		NP:StyleFilterUpdate(nameplate, event) -- keep this after UpdatePlateBase
-		nameplate.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
+		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
 	elseif event == 'NAME_PLATE_UNIT_ADDED' then
 		if not unit then unit = nameplate.unit end
+
+		local cleared = NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
@@ -730,7 +724,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				nameplate.RaisedElement:Show()
 			end
 
-			NP:UpdatePlateBase(nameplate)
+			NP:UpdatePlateBase(nameplate, cleared)
 
 			NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
 			NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused

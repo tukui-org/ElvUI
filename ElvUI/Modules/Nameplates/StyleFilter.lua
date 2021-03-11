@@ -400,9 +400,9 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 	return anim
 end
 
-function mod:StyleFilterBaseUpdate(frame)
-	if not frame.StyleFilterBaseAlreadyUpdated then -- skip updates from UpdatePlateBase
-		mod:UpdatePlate(frame, true) -- enable elements back
+function mod:StyleFilterBaseUpdate(frame, clear)
+	if clear then -- enable elements back
+		mod:UpdatePlate(frame, true)
 	end
 
 	if frame.frameType then
@@ -541,7 +541,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterClearChanges(frame, clear, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local db = mod:PlateDB(frame)
 
 	if frame.StyleFilterChanges then
@@ -549,7 +549,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	end
 
 	if Visibility then
-		mod:StyleFilterBaseUpdate(frame)
+		mod:StyleFilterBaseUpdate(frame, clear)
 		frame:ClearAllPoints() -- pull the frame back in
 		frame:Point('CENTER')
 	end
@@ -592,7 +592,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		frame.Portrait:ForceUpdate()
 	end
 	if NameOnly then
-		mod:StyleFilterBaseUpdate(frame)
+		mod:StyleFilterBaseUpdate(frame, clear)
 	else -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
 		if NameTag then frame:Tag(frame.Name, db.name.format) frame.Name:UpdateTag() end
 		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) frame.Power.Text:UpdateTag() end
@@ -1008,12 +1008,14 @@ function mod:StyleFilterPass(frame, actions)
 	)
 end
 
-function mod:StyleFilterClear(frame)
+function mod:StyleFilterClear(frame, clear)
 	if frame == _G.ElvNP_Test then return end
 
 	local c = frame.StyleFilterChanges
 	if c and next(c) then
-		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
+		local cleared = c.NameOnly or c.Visibility
+		mod:StyleFilterClearChanges(frame, clear, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
+		return cleared
 	end
 end
 
@@ -1244,7 +1246,7 @@ end
 function mod:StyleFilterUpdate(frame, event)
 	if frame == _G.ElvNP_Test or not frame.StyleFilterChanges or (event ~= 'ForceUpdate' and not mod.StyleFilterTriggerEvents[event]) then return end
 
-	mod:StyleFilterClear(frame)
+	mod:StyleFilterClear(frame, true)
 
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
 		local filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]]
