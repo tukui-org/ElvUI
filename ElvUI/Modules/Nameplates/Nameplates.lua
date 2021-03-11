@@ -424,6 +424,10 @@ function NP:DisablePlate(nameplate, nameOnly)
 
 		nameplate.Title:ClearAllPoints()
 		nameplate.Title:Point('TOP', nameplate.Name, 'BOTTOM', 0, -2)
+
+		if nameplate.isTarget then
+			NP:SetupTarget(nameplate, true)
+		end
 	else
 		for _, element in ipairs(NP.DisableInNotNameOnly) do
 			if nameplate:IsElementEnabled(element) then
@@ -443,9 +447,8 @@ function NP:SetupTarget(nameplate, removed)
 		TCP.realPlate = nil
 	else
 		local db = NP:PlateDB(nameplate)
-		local sf = NP:StyleFilterChanges(nameplate)
 
-		TCP.realPlate = (not db.nameOnly and not sf.NameOnly) and nameplate or nil
+		TCP.realPlate = not db.nameOnly and nameplate or nil
 	end
 
 	local moveToPlate = TCP.realPlate or TCP
