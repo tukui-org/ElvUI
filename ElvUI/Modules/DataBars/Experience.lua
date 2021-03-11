@@ -140,6 +140,12 @@ function DB:ExperienceBar_QuestXP()
 	else
 		bar.Quest:Hide()
 	end
+
+	if DB.CustomQuestXPWatchers then
+		for _, func in pairs(DB.CustomQuestXPWatchers) do
+			func(QuestLogXP)
+		end
+	end
 end
 
 function DB:ExperienceBar_OnEnter()
@@ -230,4 +236,14 @@ function DB:ExperienceBar()
 	DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Toggle')
 	DB:RegisterEvent('ENABLE_XP_GAIN', 'ExperienceBar_Toggle')
 	DB:ExperienceBar_Toggle()
+end
+
+function DB:RegisterCustomQuestXPWatcher(name, func)
+	if not name or not func or type(name) ~= "string" or type(func) ~= "function" then
+		error("Usage: DB:RegisterCustomQuestXPWatcher(name [string], func [function])")
+		return
+	end
+
+	self.CustomQuestXPWatchers = self.CustomQuestXPWatchers or {}
+	self.CustomQuestXPWatchers[name] = func
 end
