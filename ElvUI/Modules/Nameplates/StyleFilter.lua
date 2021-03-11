@@ -415,7 +415,9 @@ function mod:StyleFilterBaseUpdate(frame)
 		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
 	end
 
-	mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+	if not mod.SkipFading then
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+	end
 end
 
 function mod:StyleFilterBorderLock(backdrop, r, g, b, a)
