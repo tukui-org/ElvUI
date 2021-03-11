@@ -113,13 +113,13 @@ function NP:Update_ClassPower(nameplate)
 		end
 	end
 
-	local target = nameplate.frameType == 'TARGET'
-	if (nameplate.frameType == 'PLAYER' or target) and db.classpower and db.classpower.enable then
+	local player = nameplate.frameType == 'PLAYER'
+	if (player or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('ClassPower') then
 			nameplate:EnableElement('ClassPower')
 		end
 
-		if not target then
+		if player then
 			nameplate.ClassPower:ClearAllPoints()
 			nameplate.ClassPower:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		end
@@ -206,15 +206,15 @@ end
 function NP:Update_Runes(nameplate)
 	local db = NP:PlateDB(nameplate)
 
-	local target = nameplate.frameType == 'TARGET'
-	if (nameplate.frameType == 'PLAYER' or target) and db.classpower and db.classpower.enable then
+	local player = nameplate.frameType == 'PLAYER'
+	if (player or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('Runes') then
 			nameplate:EnableElement('Runes')
 		end
 
 		nameplate.Runes:Show()
 
-		if not target then
+		if player then
 			nameplate.Runes:ClearAllPoints()
 			nameplate.Runes:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		end
@@ -272,13 +272,13 @@ end
 function NP:Update_Stagger(nameplate)
 	local db = NP:PlateDB(nameplate)
 
-	local target = nameplate.frameType == 'TARGET'
-	if (nameplate.frameType == 'PLAYER' or target) and db.classpower and db.classpower.enable then
+	local player = nameplate.frameType == 'PLAYER'
+	if (player or nameplate.frameType == 'TARGET') and db.classpower and db.classpower.enable then
 		if not nameplate:IsElementEnabled('Stagger') then
 			nameplate:EnableElement('Stagger')
 		end
 
-		if not target then
+		if player then
 			nameplate.Stagger:ClearAllPoints()
 			nameplate.Stagger:Point('CENTER', nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		end
