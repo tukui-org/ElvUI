@@ -717,10 +717,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			end
 
 			NP:UpdatePlateBase(nameplate, updateBase)
-		end
 
-		NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
-		NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
+			NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
+			NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
+		end
 
 		if (NP.db.fadeIn and not NP.SkipFading) and nameplate.frameType ~= 'PLAYER' then
 			NP:PlateFade(nameplate, 1, 0, 1)
@@ -745,7 +745,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			NP:UpdatePlateGUID(nameplate)
 		end
 
-		if nameplate.widgetsOnly and nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
+		if not nameplate.widgetsOnly then
+			NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
+			NP:StyleFilterClearVariables(nameplate)
+		elseif nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
 			nameplate.widgetContainer:SetParent(nameplate.blizzPlate)
 			nameplate.widgetContainer:ClearAllPoints()
 			nameplate.widgetContainer:SetPoint('TOP', nameplate.blizzPlate.castBar, 'BOTTOM')
@@ -755,9 +758,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.Health.cur = nil -- cutaway
 		nameplate.Power.cur = nil -- cutaway
 		nameplate.npcID = nil -- just cause
-
-		NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
-		NP:StyleFilterClearVariables(nameplate) -- keep this at the end
 	end
 end
 
