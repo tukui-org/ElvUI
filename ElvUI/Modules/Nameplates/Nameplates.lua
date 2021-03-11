@@ -440,10 +440,14 @@ function NP:SetupTarget(nameplate, removed)
 	local TCP = _G.ElvNP_TargetClassPower
 	local cp = NP.db.units.TARGET.classpower
 
-	local db = NP:PlateDB(nameplate)
-	local sf = NP:StyleFilterChanges(nameplate)
+	if removed or not nameplate or not cp.enable then
+		TCP.realPlate = nil
+	else
+		local db = NP:PlateDB(nameplate)
+		local sf = NP:StyleFilterChanges(nameplate)
 
-	TCP.realPlate = (cp.enable and not (removed or sf.NameOnly or db.nameOnly) and nameplate) or nil
+		TCP.realPlate = (not db.nameOnly and not sf.NameOnly) and nameplate or nil
+	end
 
 	local moveToPlate = TCP.realPlate or TCP
 
@@ -720,14 +724,14 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 			NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
 			NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
+
+			if nameplate.isTarget and nameplate ~= _G.ElvNP_Test then
+				NP:SetupTarget(nameplate) -- keep after StyleFilterSetVariables
+			end
 		end
 
 		if (NP.db.fadeIn and not NP.SkipFading) and nameplate.frameType ~= 'PLAYER' then
 			NP:PlateFade(nameplate, 1, 0, 1)
-		end
-
-		if nameplate.isTarget and nameplate ~= _G.ElvNP_Test then -- keep after StyleFilterSetVariables
-			NP:SetupTarget(nameplate)
 		end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
 		if nameplate ~= _G.ElvNP_Test then
@@ -736,8 +740,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			end
 
 			if nameplate.isTarget then
-				NP:SetupTarget(nameplate, true)
 				NP:ScalePlate(nameplate, 1, true)
+				NP:SetupTarget(nameplate, true)
 			end
 		end
 
