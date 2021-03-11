@@ -415,6 +415,10 @@ function mod:StyleFilterBaseUpdate(frame, clear)
 		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
 	end
 
+	if frame.isTarget and mod.db.units.TARGET.glowStyle ~= 'none' then
+		frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
+	end
+
 	if not mod.SkipFading then
 		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
