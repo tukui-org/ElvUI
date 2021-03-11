@@ -37,9 +37,6 @@ function S:AddonList()
 		S:HandleButton(_G['AddonListEntry'..i].LoadAddonButton)
 	end
 
-	local skip = E.locale == 'koKR' or E.locale == 'zhCN' or E.locale == 'zhTW'
-	local font = not skip and LSM:Fetch('font', 'Expressway')
-
 	hooksecurefunc('AddonList_Update', function()
 		for i = 1, maxShown do
 			local entry = _G['AddonListEntry'..i]
@@ -57,14 +54,11 @@ function S:AddonList()
 					checkall = GetAddOnEnableState(nil, id)
 				end
 
-				if font then
-					text:FontTemplate(font, 13, 'NONE')
-					entry.Status:FontTemplate(font, 11, 'NONE')
-					entry.Reload:FontTemplate(font, 11, 'NONE')
-					entry.LoadAddonButton.Text:FontTemplate(font, 11, 'NONE')
-				end
-
+				text:SetFontObject('ElvUIFontNormal')
+				entry.Status:SetFontObject('ElvUIFontSmall')
+				entry.Reload:SetFontObject('ElvUIFontSmall')
 				entry.Reload:SetTextColor(1.0, 0.3, 0.3)
+				entry.LoadAddonButton.Text:SetFontObject('ElvUIFontSmall')
 
 				local checkstate = GetAddOnEnableState(character, id)
 				local enabledForSome = not character and checkstate == 1
