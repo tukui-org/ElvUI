@@ -400,7 +400,7 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 	return anim
 end
 
-function mod:StyleFilterBaseUpdate(frame)
+function mod:StyleFilterBaseUpdate(frame, show)
 	if not frame.StyleFilterBaseAlreadyUpdated then -- skip updates from UpdatePlateBase
 		mod:UpdatePlate(frame, true) -- enable elements back
 	end
@@ -419,7 +419,7 @@ function mod:StyleFilterBaseUpdate(frame)
 		frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
 	end
 
-	if not mod.SkipFading then
+	if show and not mod.SkipFading then
 		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
 	end
 end
@@ -553,7 +553,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	end
 
 	if Visibility then
-		mod:StyleFilterBaseUpdate(frame)
+		mod:StyleFilterBaseUpdate(frame, true)
 		frame:ClearAllPoints() -- pull the frame back in
 		frame:Point('CENTER')
 	end
