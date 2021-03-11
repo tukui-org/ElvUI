@@ -265,8 +265,15 @@ function NP:ScalePlate(nameplate, scale, targetPlate)
 end
 
 function NP:PostUpdateAllElements(event)
+	if self == _G.ElvNP_Test or self.widgetsOnly then return end -- skip test and widget plates
+
 	if event and (event == 'ForceUpdate' or not NP.StyleFilterEventFunctions[event]) then
 		NP:StyleFilterUpdate(self, event)
+		self.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
+	end
+
+	if event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
+		NP:SetupTarget(self)
 	end
 end
 
@@ -320,20 +327,12 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_QuestIcons(nameplate)
 
 	local db = NP:PlateDB(nameplate)
-	local sf = NP:StyleFilterChanges(nameplate)
-	if not db.enable then
-		NP:DisablePlate(nameplate)
+	if db.nameOnly or not db.enable then
+		NP:DisablePlate(nameplate, db.enable and db.nameOnly)
 
-		if nameplate.RaisedElement:IsShown() then
+		if not db.enable and nameplate.RaisedElement:IsShown() then
 			nameplate.RaisedElement:Hide()
 		end
-
-		if nameplate == _G.ElvNP_Test then
-			nameplate.Castbar:SetAlpha(0)
-			nameplate.ClassPower:SetAlpha(0)
-		end
-	elseif sf.Visibility or sf.NameOnly or db.nameOnly then
-		NP:DisablePlate(nameplate, sf.NameOnly or (db.nameOnly and not sf.Visibility))
 
 		if nameplate == _G.ElvNP_Test then
 			nameplate.Castbar:SetAlpha(0)
@@ -574,7 +573,7 @@ function NP:ConfigureAll(skipUpdate)
 			if nameplate == _G.ElvNP_Player then
 				NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
 			else
-				nameplate.previousType = nil -- we still need a full update
+				nameplate.previousType = nil -- keep over the callback, we still need a full update
 				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
 			end
 
@@ -642,11 +641,18 @@ function NP:UpdatePlateSize(nameplate)
 	nameplate:Size(nameplate.width, nameplate.height)
 end
 
-function NP:UpdatePlateBase(nameplate, updateBase)
-	if nameplate == _G.ElvNP_Player or nameplate == _G.ElvNP_Test then
+function NP:UpdatePlateBase(nameplate)
+	if nameplate == _G.ElvNP_Test then
 		NP:UpdatePlate(nameplate, true)
+	elseif nameplate == _G.ElvNP_Player then
+		NP:UpdatePlate(nameplate, true)
+
+		nameplate.StyleFilterBaseAlreadyUpdated = true
 	else
-		NP:UpdatePlate(nameplate, updateBase or (nameplate.frameType ~= nameplate.previousType))
+		local update = nameplate.frameType ~= nameplate.previousType
+		NP:UpdatePlate(nameplate, update)
+
+		nameplate.StyleFilterBaseAlreadyUpdated = update
 		nameplate.previousType = nameplate.frameType
 	end
 end
@@ -654,7 +660,6 @@ end
 function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'UNIT_FACTION' then
 		if nameplate.widgetsOnly then return end
-		local updateBase = NP:StyleFilterClear(nameplate) -- keep this at the top
 
 		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
@@ -664,15 +669,14 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
-		NP:UpdatePlateBase(nameplate, updateBase)
+		NP:UpdatePlateBase(nameplate)
 
-		NP:StyleFilterUpdate(nameplate, event) -- keep this at the end
+		NP:StyleFilterUpdate(nameplate, event) -- keep this after UpdatePlateBase
+		nameplate.StyleFilterBaseAlreadyUpdated = nil -- keep after StyleFilterUpdate
 	elseif event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		NP:SetupTarget(nameplate) -- pass it, even as nil here
 	elseif event == 'NAME_PLATE_UNIT_ADDED' then
-		local updateBase = NP:StyleFilterClear(nameplate) -- keep this at the top
-
-		unit = unit or nameplate.unit
+		if not unit then unit = nameplate.unit end
 
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
 		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
@@ -720,14 +724,10 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 				nameplate.RaisedElement:Show()
 			end
 
-			NP:UpdatePlateBase(nameplate, updateBase)
+			NP:UpdatePlateBase(nameplate)
 
 			NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
 			NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
-
-			if nameplate.isTarget and nameplate ~= _G.ElvNP_Test then
-				NP:SetupTarget(nameplate) -- keep after StyleFilterSetVariables
-			end
 		end
 
 		if (NP.db.fadeIn and not NP.SkipFading) and nameplate.frameType ~= 'PLAYER' then
