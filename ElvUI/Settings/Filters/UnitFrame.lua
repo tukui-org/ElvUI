@@ -221,6 +221,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[198065] = Defaults(), -- Prismatic Cloak
 		[11426]  = Defaults(), -- Ice Barrier
 		[235313] = Defaults(), -- Blazing Barrier
+		[110909] = Defaults(), -- Alter Time
 	-- Monk
 		[122783] = Defaults(), -- Diffuse Magic
 		[122278] = Defaults(), -- Dampen Harm
@@ -404,7 +405,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[205025] = Defaults(), -- Presence of Mind
 		[198158] = Defaults(), -- Mass Invisibility
 		[221404] = Defaults(), -- Burning Determination
-		[342246] = Defaults(), -- Alter Time
+		[110909] = Defaults(), -- Alter Time
 	-- Monk
 		[122783] = Defaults(), -- Diffuse Magic
 		[122278] = Defaults(), -- Dampen Harm
