@@ -124,8 +124,8 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameBg:Hide()
 	PVEFrame.shadows:Kill() -- We need to kill it, because if you switch to Mythic Dungeon Tab and back, it shows back up.
 
-	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
-	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
+	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton, nil, nil, nil, nil, nil, nil, nil, true)
 
 	_G.GroupFinderFrame.groupButton1.icon:SetTexture([[Interface\Icons\INV_Helmet_08]])
 	_G.GroupFinderFrame.groupButton2.icon:SetTexture([[Interface\LFGFrame\UI-LFR-PORTRAIT]])
@@ -139,7 +139,7 @@ function S:LookingForGroupFrames()
 	_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent')
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:CreateBackdrop('Transparent')
-	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
+	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture(E.Media.Textures.RolesHQ)
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
 
 	hooksecurefunc(_G.LFGDungeonReadyDialog, 'SetBackdrop', function(frame, backdrop)
@@ -147,8 +147,8 @@ function S:LookingForGroupFrames()
 	end)
 
 	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
-		local _, _, _, _, _, _, role = GetLFGProposal()
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
+			local _, _, _, _, _, _, role = GetLFGProposal()
 			if role == 'DAMAGER' then
 				_G.LFGDungeonReadyDialogRoleIconTexture:SetTexCoord(_G.LFDQueueFrameRoleButtonDPS.background:GetTexCoord())
 			elseif role == 'TANK' then
@@ -162,7 +162,7 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGDungeonReadyStatusIndividual_UpdateIcon', function(button)
 		local _, role = GetLFGProposalMember(button:GetID())
 
-		button.texture:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
+		button.texture:SetTexture(E.Media.Textures.RolesHQ)
 		button.texture:SetAlpha(0.6)
 
 		if role == 'DAMAGER' then
@@ -178,7 +178,6 @@ function S:LookingForGroupFrames()
 	_G.LFDQueueFrameRoleButtonTankIncentiveIcon:SetAlpha(0)
 	_G.LFDQueueFrameRoleButtonHealerIncentiveIcon:SetAlpha(0)
 	_G.LFDQueueFrameRoleButtonDPSIncentiveIcon:SetAlpha(0)
-
 	_G.LFDQueueFrameRoleButtonTankIncentiveIcon:HookScript('OnShow', LFDQueueFrameRoleButtonIconOnShow)
 	_G.LFDQueueFrameRoleButtonHealerIncentiveIcon:HookScript('OnShow', LFDQueueFrameRoleButtonIconOnShow)
 	_G.LFDQueueFrameRoleButtonDPSIncentiveIcon:HookScript('OnShow', LFDQueueFrameRoleButtonIconOnShow)
@@ -213,7 +212,10 @@ function S:LookingForGroupFrames()
 	}
 
 	for _, roleButton in pairs(RoleButtons1) do
-		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton)
+		local checkButton = roleButton.checkButton or roleButton.CheckButton
+		S:HandleCheckBox(checkButton)
+		checkButton.backdrop:SetFrameLevel(checkButton:GetFrameLevel())
+
 		roleButton:DisableDrawLayer('ARTWORK')
 		roleButton:DisableDrawLayer('OVERLAY')
 
@@ -223,7 +225,7 @@ function S:LookingForGroupFrames()
 				roleButton.background = roleButton:CreateTexture(nil, 'BACKGROUND')
 				roleButton.background:Size(80, 80)
 				roleButton.background:Point('CENTER')
-				roleButton.background:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
+				roleButton.background:SetTexture(E.Media.Textures.RolesHQ)
 				roleButton.background:SetAlpha(0.65)
 
 				local buttonName = roleButton:GetName() ~= nil and roleButton:GetName() or roleButton.role
@@ -281,8 +283,8 @@ function S:LookingForGroupFrames()
 
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon = _G.LFDQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.LeaderHQ)
-	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Point(_G.LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
-	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Size(50)
+	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Point(_G.LFDQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -14, 16)
+	_G.LFDQueueFrameRoleButtonLeader.leadIcon:Size(80)
 	_G.LFDQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
 	_G.LFDQueueFrameRoleButtonTankBackground:SetTexture(E.Media.Textures.RolesHQ)
 	_G.LFDQueueFrameRoleButtonHealerBackground:SetTexture(E.Media.Textures.RolesHQ)
@@ -290,9 +292,12 @@ function S:LookingForGroupFrames()
 
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon = _G.RaidFinderQueueFrameRoleButtonLeader:CreateTexture(nil, 'BACKGROUND')
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetTexture(E.Media.Textures.LeaderHQ)
-	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Point(_G.RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -10, 5)
-	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Size(50)
+	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Point(_G.RaidFinderQueueFrameRoleButtonLeader:GetNormalTexture():GetPoint(), -14, 16)
+	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:Size(80)
 	_G.RaidFinderQueueFrameRoleButtonLeader.leadIcon:SetAlpha(0.6)
+	_G.RaidFinderQueueFrameRoleButtonTankBackground:SetTexture(E.Media.Textures.RolesHQ)
+	_G.RaidFinderQueueFrameRoleButtonHealerBackground:SetTexture(E.Media.Textures.RolesHQ)
+	_G.RaidFinderQueueFrameRoleButtonDPSBackground:SetTexture(E.Media.Textures.RolesHQ)
 
 	hooksecurefunc('LFG_DisableRoleButton', function(button)
 		if button.checkButton:GetChecked() then
@@ -524,7 +529,7 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFGListInviteDialog.AcknowledgeButton)
 	S:HandleButton(_G.LFGListInviteDialog.AcceptButton)
 	S:HandleButton(_G.LFGListInviteDialog.DeclineButton)
-	_G.LFGListInviteDialog.RoleIcon:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
+	_G.LFGListInviteDialog.RoleIcon:SetTexture(E.Media.Textures.RolesHQ)
 
 	hooksecurefunc('LFGListInviteDialog_Show', SetRoleIcon)
 
@@ -545,7 +550,7 @@ function S:LookingForGroupFrames()
 
 	S:HandleButton(LFGListFrame.SearchPanel.BackButton)
 	S:HandleButton(LFGListFrame.SearchPanel.SignUpButton)
-	S:HandleButton(_G.LFGListSearchPanelScrollFrame.StartGroupButton)
+	S:HandleButton(_G.LFGListSearchPanelScrollFrameScrollChild.StartGroupButton)
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
@@ -561,10 +566,10 @@ function S:LookingForGroupFrames()
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
 		if not button.DeclineButton.template then
-			S:HandleButton(button.DeclineButton, nil, true)
+			S:HandleButton(button.DeclineButton, nil, true, nil, nil, nil, nil, nil, true)
 		end
 		if not button.InviteButton.template then
-			S:HandleButton(button.InviteButton)
+			S:HandleButton(button.InviteButton, nil, nil, nil, nil, nil, nil, nil, true)
 		end
 	end)
 

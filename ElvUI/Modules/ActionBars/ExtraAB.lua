@@ -8,13 +8,82 @@ local tinsert = tinsert
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
+local ActionButton_UpdateCooldown = ActionButton_UpdateCooldown
 
 local ExtraActionBarHolder, ZoneAbilityHolder
 local ExtraButtons = {}
 
-function AB:ExtraButtons_BossStyle(button)
-	if not button.style then return end
-	button.style:SetAlpha(not E.db.actionbar.extraActionButton.clean and E.db.actionbar.extraActionButton.alpha or 0)
+function AB:ExtraButtons_BossStyle(frame)
+	local button = frame.button
+	if button and not button.IsSkinned then
+		button.pushed = true
+		button.checked = true
+
+		AB:StyleButton(button, true) -- registers cooldown too
+		ActionButton_UpdateCooldown(button) -- the cooldown is already fired sometimes?
+
+		button.icon:SetDrawLayer('ARTWORK')
+		button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
+
+		button.holder = ExtraActionBarHolder
+		button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
+		button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+
+		local tex = button:CreateTexture(nil, 'OVERLAY')
+		tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+		tex:SetInside()
+		button:SetCheckedTexture(tex)
+
+		button.HotKey:SetText(GetBindingKey(button:GetName()))
+		AB:FixKeybindText(button)
+
+		AB:ExtraButtons_BossAlpha(button)
+
+		tinsert(ExtraButtons, button)
+
+		button.IsSkinned = true
+	end
+end
+
+function AB:ExtraButtons_ZoneStyle()
+	local zoneAlpha = AB:ExtraButtons_ZoneAlpha()
+	for spellButton in self.SpellButtonContainer:EnumerateActive() do
+		if spellButton then
+			spellButton:SetAlpha(zoneAlpha)
+
+			if not spellButton.IsSkinned then
+				spellButton.NormalTexture:SetAlpha(0)
+				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+				spellButton:StyleButton(nil, true)
+				spellButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+				spellButton.Icon:SetDrawLayer('ARTWORK')
+				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
+				spellButton.Icon:SetInside()
+
+				spellButton.holder = ZoneAbilityHolder
+				spellButton:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
+				spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
+
+				if spellButton.Cooldown then
+					spellButton.Cooldown.CooldownOverride = 'actionbar'
+					E:RegisterCooldown(spellButton.Cooldown)
+					spellButton.Cooldown:SetInside(spellButton)
+				end
+
+				spellButton.IsSkinned = true
+			end
+		end
+	end
+end
+
+function AB:ExtraButtons_BossAlpha(button)
+	local bossAlpha = E.db.actionbar.extraActionButton.alpha
+	button:SetAlpha(bossAlpha)
+
+	if button.style then
+		button.style:SetAlpha(not E.db.actionbar.extraActionButton.clean and bossAlpha or 0)
+	end
 end
 
 function AB:ExtraButtons_ZoneAlpha()
@@ -27,6 +96,10 @@ end
 function AB:ExtraButtons_OnEnter()
 	if self.holder and self.holder:GetParent() == AB.fadeParent and not AB.fadeParent.mouseLock then
 		E:UIFrameFadeIn(AB.fadeParent, 0.2, AB.fadeParent:GetAlpha(), 1)
+	end
+
+	if self.buttonType == 'EXTRAACTIONBUTTON' then
+		AB:BindUpdate(self)
 	end
 end
 
@@ -43,14 +116,9 @@ end
 
 function AB:ExtraButtons_UpdateAlpha()
 	if not E.private.actionbar.enable then return end
-	local bossAlpha = E.db.actionbar.extraActionButton.alpha
 
-	for i = 1, _G.ExtraActionBarFrame:GetNumChildren() do
-		local button = _G['ExtraActionButton'..i]
-		if button then
-			button:SetAlpha(bossAlpha)
-			AB:ExtraButtons_BossStyle(button)
-		end
+	for _, button in pairs(ExtraButtons) do
+		AB:ExtraButtons_BossAlpha(button)
 	end
 
 	local zoneAlpha = AB:ExtraButtons_ZoneAlpha()
@@ -82,7 +150,19 @@ function AB:ExtraButtons_ZoneScale()
 	ZoneAbilityHolder:SetSize(width * scale, height * scale)
 end
 
+function AB:ExtraButtons_Reparent()
+	if InCombatLockdown() then
+		AB.NeedsReparentExtraButtons = true
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
+	end
+
+	_G.ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
+	_G.ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
+end
+
 function AB:SetupExtraButton()
+	local ExtraAbilityContainer = _G.ExtraAbilityContainer
 	local ExtraActionBarFrame = _G.ExtraActionBarFrame
 	local ZoneAbilityFrame = _G.ZoneAbilityFrame
 
@@ -98,76 +178,32 @@ function AB:SetupExtraButton()
 
 	-- try to shutdown the container movement and taints
 	_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraAbilityContainer = nil
-	_G.ExtraAbilityContainer.SetSize = E.noop
+	ExtraAbilityContainer.SetSize = E.noop
 
-	ZoneAbilityFrame:SetParent(ZoneAbilityHolder)
+	AB:ExtraButtons_Reparent()
+
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:SetAllPoints()
 	ZoneAbilityFrame.ignoreInLayout = true
 
-	ExtraActionBarFrame:SetParent(ExtraActionBarHolder)
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
 	ExtraActionBarFrame.ignoreInLayout = true
 
 	hooksecurefunc(ZoneAbilityFrame.SpellButtonContainer, 'SetSize', AB.ExtraButtons_ZoneScale)
-	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', function(frame)
-		local zoneAlpha = AB:ExtraButtons_ZoneAlpha()
+	hooksecurefunc(ZoneAbilityFrame, 'UpdateDisplayedZoneAbilities', AB.ExtraButtons_ZoneStyle)
+	hooksecurefunc(ExtraAbilityContainer, 'AddFrame', AB.ExtraButtons_BossStyle)
 
-		for spellButton in frame.SpellButtonContainer:EnumerateActive() do
-			if spellButton then
-				spellButton:SetAlpha(zoneAlpha)
-
-				if not spellButton.IsSkinned then
-					spellButton.NormalTexture:SetAlpha(0)
-					spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
-					spellButton:StyleButton(nil, true)
-					spellButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
-					spellButton.Icon:SetDrawLayer('ARTWORK')
-					spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
-					spellButton.Icon:SetInside()
-
-					spellButton.holder = ZoneAbilityHolder
-					spellButton:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
-					spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
-
-					if spellButton.Cooldown then
-						spellButton.Cooldown.CooldownOverride = 'actionbar'
-						E:RegisterCooldown(spellButton.Cooldown)
-						spellButton.Cooldown:SetInside(spellButton)
-					end
-
-					spellButton.IsSkinned = true
-				end
-			end
+	hooksecurefunc(ZoneAbilityFrame, 'SetParent', function(_, parent)
+		if parent ~= ZoneAbilityHolder and not AB.NeedsReparentExtraButtons then
+			AB:ExtraButtons_Reparent()
 		end
 	end)
-
-	for i = 1, ExtraActionBarFrame:GetNumChildren() do
-		local button = _G['ExtraActionButton'..i]
-		if button then
-			button.pushed = true
-			button.checked = true
-
-			AB:StyleButton(button, true) -- registers cooldown too
-			button.icon:SetDrawLayer('ARTWORK')
-			button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
-
-			AB:ExtraButtons_BossStyle(button)
-
-			button.holder = ExtraActionBarHolder
-			button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
-			button:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
-
-			local tex = button:CreateTexture(nil, 'OVERLAY')
-			tex:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-			tex:SetInside()
-			button:SetCheckedTexture(tex)
-
-			button.HotKey:SetText(GetBindingKey('ExtraActionButton'..i))
-			tinsert(ExtraButtons, button)
+	hooksecurefunc(ExtraActionBarFrame, 'SetParent', function(_, parent)
+		if parent ~= ExtraActionBarHolder and not AB.NeedsReparentExtraButtons then
+			AB:ExtraButtons_Reparent()
 		end
-	end
+	end)
 
 	AB:UpdateExtraButtons()
 

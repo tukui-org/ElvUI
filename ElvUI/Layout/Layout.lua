@@ -302,7 +302,7 @@ function LO:CreateChatPanels()
 	lchat:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 	lchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
 	lchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = lchat, finishedFuncKeep = true}
-	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', nil, true)
+	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', true)
 
 	--Background Texture
 	local lchattex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -351,7 +351,7 @@ function LO:CreateChatPanels()
 	rchat:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 	rchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
 	rchat.FadeObject = {finishedFunc = finishFade, finishedArg1 = rchat, finishedFuncKeep = true}
-	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', nil, true)
+	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', true)
 
 	--Background Texture
 	local rchattex = rchat:CreateTexture(nil, 'OVERLAY')

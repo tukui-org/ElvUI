@@ -155,21 +155,14 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
+		AB:StyleButton(button, nil, useMasque, true)
 
 		if useMasque then
 			MasqueGroup:AddButton(bar.buttons[i])
-		end
-
-		if not button.FlyoutUpdateFunc then
-			AB:StyleButton(button, nil, useMasque, true)
-
-			if not useMasque then
-				if db.style == 'darkenInactive' then
-					button.checked:SetBlendMode('BLEND')
-				else
-					button.checked:SetBlendMode('ADD')
-				end
-			end
+		elseif db.style == 'darkenInactive' then
+			button.checked:SetBlendMode('BLEND')
+		else
+			button.checked:SetBlendMode('ADD')
 		end
 	end
 
@@ -259,5 +252,5 @@ function AB:CreateBarShapeShift()
 	AB:RegisterEvent('UPDATE_SHAPESHIFT_USABLE', 'StyleShapeShift')
 	AB:RegisterEvent('ACTIONBAR_PAGE_CHANGED', 'StyleShapeShift')
 
-	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar', true)
+	E:CreateMover(bar, 'ShiftAB', L["Stance Bar"], nil, -3, nil, 'ALL,ACTIONBARS', nil, 'actionbar,stanceBar')
 end

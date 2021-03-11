@@ -277,9 +277,14 @@ function AB:PositionAndSizeBar(barName)
 	bar:SetParent(db.inheritGlobalFade and AB.fadeParent or E.UIParent)
 	bar:EnableMouse(not db.clickThrough)
 	bar:SetAlpha(bar.mouseover and 0 or db.alpha)
+	bar:SetFrameStrata(db.frameStrata or 'LOW')
+	bar:SetFrameLevel(db.frameLevel)
+
 	AB:FadeBarBlings(bar, bar.mouseover and 0 or db.alpha)
 
 	bar.backdrop:SetShown(db.backdrop)
+	bar.backdrop:SetFrameStrata(db.frameStrata or 'LOW')
+	bar.backdrop:SetFrameLevel(db.frameLevel - 1)
 	bar.backdrop:ClearAllPoints()
 
 	AB:MoverMagic(bar)
@@ -351,7 +356,6 @@ function AB:CreateBar(id)
 	local defaults = AB.barDefaults['bar'..id]
 	local point, anchor, attachTo, x, y = strsplit(',', defaults.position)
 	bar:Point(point, anchor, attachTo, x, y)
-	bar:SetFrameStrata('LOW')
 	bar.id = id
 
 	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
@@ -425,6 +429,10 @@ function AB:PLAYER_REGEN_ENABLED()
 	if AB.NeedsAdjustMaxStanceButtons then
 		AB:AdjustMaxStanceButtons(AB.NeedsAdjustMaxStanceButtons) --sometimes it holds the event, otherwise true. pass it before we nil it.
 		AB.NeedsAdjustMaxStanceButtons = nil
+	end
+	if AB.NeedsReparentExtraButtons then
+		AB:ExtraButtons_Reparent()
+		AB.NeedsReparentExtraButtons = nil
 	end
 
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
@@ -676,6 +684,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		shine:SetAllPoints()
 	end
 
+	if not ignoreNormal then -- stance buttons dont need this
+		button.FlyoutUpdateFunc = AB.StyleFlyout
+	end
+
 	if button.SpellHighlightTexture then
 		button.SpellHighlightTexture:SetColorTexture(1, 1, 0, 0.45)
 		button.SpellHighlightTexture:SetAllPoints()
@@ -691,12 +703,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		AB:UpdateHotkeyColor(button)
 	end
 
-	--Extra Action Button
-	if button.style then
+	if button.style then -- Boss Button
 		button.style:SetDrawLayer('BACKGROUND', -7)
 	end
 
-	button.FlyoutUpdateFunc = AB.StyleFlyout
 	AB:FixKeybindText(button)
 
 	if not button.useMasque then
@@ -1183,7 +1193,7 @@ end
 
 function AB:SetupFlyoutButton(button)
 	if not AB.handledbuttons[button] then
-		AB:StyleButton(button, nil, (MasqueGroup and E.private.actionbar.masque.actionbars) or nil)
+		AB:StyleButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 		button:HookScript('OnEnter', AB.FlyoutButton_OnEnter)
 		button:HookScript('OnLeave', AB.FlyoutButton_OnLeave)
 	end

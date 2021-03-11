@@ -18,7 +18,7 @@ local function HandleRoleChecks(button, ...)
 	button:DisableDrawLayer('OVERLAY')
 
 	button.bg = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
-	button.bg:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
+	button.bg:SetTexture(E.Media.Textures.RolesHQ)
 	button.bg:SetTexCoord(...)
 	button.bg:Point('CENTER')
 	button.bg:Size(40, 40)
@@ -196,14 +196,15 @@ function S:Blizzard_PVPUI()
 			Frame.ConquestBar.backdrop:SetOutside()
 		end
 
-		Frame.ConquestBar.Reward:Point('LEFT', Frame.ConquestBar, 'RIGHT', -8, 0)
-		-- Keep blizzard default fo the statusbar here, the new atlas looks good
+		Frame.ConquestBar.Reward:ClearAllPoints()
+		Frame.ConquestBar.Reward:Point('LEFT', Frame.ConquestBar, 'RIGHT', 0, 0)
+		S:HandleIcon(Frame.ConquestBar.Reward.Icon, true)
 
-		--Frame.ConquestBar:SetStatusBarTexture(E.media.normTex)
-		--Frame.ConquestBar:GetStatusBarTexture():SetGradient("VERTICAL", 1, .8, 0, 6, .4, 0)
-		--Frame.ConquestBar:SetStatusBarColor(unpack(E.myfaction == 'Alliance' and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09}))
-
-		S:HandleIcon(Frame.ConquestBar.Reward.Icon)
+		--[[ Keep blizzard default fo the statusbar here, the new atlas looks good
+			Frame.ConquestBar:SetStatusBarTexture(E.media.normTex)
+			Frame.ConquestBar:GetStatusBarTexture():SetGradient("VERTICAL", 1, .8, 0, 6, .4, 0)
+			Frame.ConquestBar:SetStatusBarColor(unpack(E.myfaction == 'Alliance' and {0.05, 0.15, 0.36} or {0.63, 0.09, 0.09}))
+		]]
 	end
 
 	-- New Season Frame
@@ -248,7 +249,7 @@ function S:PVPReadyDialog()
 	S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
 	S:HandleButton(_G.PVPReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.PVPReadyDialogCloseButton)
-	_G.PVPReadyDialogRoleIcon.texture:SetTexture([[Interface\LFGFrame\UI-LFG-ICONS-ROLEBACKGROUNDS]])
+	_G.PVPReadyDialogRoleIcon.texture:SetTexture(E.Media.Textures.RolesHQ)
 	_G.PVPReadyDialogRoleIcon.texture:SetAlpha(0.5)
 
 	hooksecurefunc('PVPReadyDialog_Display', function(s, _, _, _, queueType, _, role)

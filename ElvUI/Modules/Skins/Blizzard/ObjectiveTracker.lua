@@ -96,7 +96,7 @@ local function HandleItemButton(block)
 	end
 
 	if item.backdrop then
-		item.backdrop:SetFrameLevel(item:GetFrameLevel() - 1)
+		item.backdrop:SetFrameLevel(3)
 	end
 end
 
@@ -186,9 +186,14 @@ local function PositionFindGroupButton(block, button)
 end
 
 local function SkinFindGroupButton(block)
-	if block.hasGroupFinderButton and block.groupFinderButton then
-		S:HandleButton(block.groupFinderButton, nil, nil, nil, nil, nil, nil, nil, 3)
-		block.groupFinderButton:Size(20)
+	local button = block.hasGroupFinderButton and block.groupFinderButton
+	if button then
+		S:HandleButton(button)
+		button:Size(20)
+
+		if button.backdrop then
+			button.backdrop:SetFrameLevel(3)
+		end
 	end
 end
 

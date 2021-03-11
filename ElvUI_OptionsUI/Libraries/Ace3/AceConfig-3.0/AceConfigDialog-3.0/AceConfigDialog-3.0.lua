@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 82
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 84
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -22,10 +22,10 @@ AceConfigDialog.frame.closing = AceConfigDialog.frame.closing or {}
 AceConfigDialog.frame.closeAllOverride = AceConfigDialog.frame.closeAllOverride or {}
 
 -- Lua APIs
-local tinsert, tsort, tremove = table.insert, table.sort, table.remove
+local tinsert, tsort, tremove, wipe = table.insert, table.sort, table.remove, table.wipe
 local strmatch, format = string.match, string.format
 local error = error
-local pairs, next, select, type, unpack, wipe, ipairs = pairs, next, select, type, unpack, wipe, ipairs
+local pairs, next, select, type, unpack, ipairs = pairs, next, select, type, unpack, ipairs
 local tostring, tonumber = tostring, tonumber
 local math_min, math_max, math_floor = math.min, math.max, math.floor
 
@@ -577,12 +577,13 @@ local function GetFuncName(option)
 end
 do
 	local frame = AceConfigDialog.popup
-	if not frame then
+	if not frame or oldminor < 81 then
 		frame = CreateFrame("Frame", nil, UIParent)
 		AceConfigDialog.popup = frame
 		frame:Hide()
 		frame:SetPoint("CENTER", UIParent, "CENTER")
 		frame:SetSize(320, 72)
+		frame:EnableMouse(true) -- Do not allow click-through on the frame
 		frame:SetFrameStrata("TOOLTIP")
 		frame:SetFrameLevel(100) -- Lots of room to draw under it
 		frame:SetScript("OnKeyDown", function(self, key)
@@ -608,7 +609,7 @@ do
 				insets = { left = 11, right = 11, top = 11, bottom = 11 },
 			})
 		else
-			local border = CreateFrame("Frame", nil, frame, "DialogBorderDarkTemplate")
+			local border = CreateFrame("Frame", nil, frame, "DialogBorderOpaqueTemplate")
 			border:SetAllPoints(frame)
 			frame:SetFixedFrameStrata(true)
 			frame:SetFixedFrameLevel(true)
@@ -1456,16 +1457,22 @@ local function FeedOptions(appName, options,container,rootframe,path,group,inlin
 								check:SetCallback("OnValueChanged",ActivateMultiControl)
 								InjectInfo(check, options, v, path, rootframe, appName)
 								control:AddChild(check)
-								if width == "double" then
-									check:SetWidth(width_multiplier * 2)
-								elseif width == "half" then
-									check:SetWidth(width_multiplier / 2)
-								elseif (type(width) == "number") then
-									control:SetWidth(width_multiplier * width)
-								elseif width == "full" then
-									check.width = "fill"
+
+								local customWidth = control.customWidth or GetOptionsMemberValue("customWidth",v,options,path,appName)
+								if customWidth then
+									check:SetWidth(customWidth)
 								else
-									check:SetWidth(width_multiplier)
+									if width == "double" then
+										check:SetWidth(width_multiplier * 2)
+									elseif width == "half" then
+										check:SetWidth(width_multiplier / 2)
+									elseif (type(width) == "number") then
+										control:SetWidth(width_multiplier * width)
+									elseif width == "full" then
+										check.width = "fill"
+									else
+										check:SetWidth(width_multiplier)
+									end
 								end
 							end
 						end

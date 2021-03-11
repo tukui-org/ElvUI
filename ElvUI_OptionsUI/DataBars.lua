@@ -3,7 +3,10 @@ local C, L = unpack(select(2, ...))
 local DB = E:GetModule('DataBars')
 local ACH = E.Libs.ACH
 
+local ceil = ceil
 local tonumber = tonumber
+local CopyTable = CopyTable
+local GetScreenWidth = GetScreenWidth
 
 local SharedOptions = {
 	enable = ACH:Toggle(L["Enable"], nil, 1),
@@ -11,10 +14,15 @@ local SharedOptions = {
 	mouseover = ACH:Toggle(L["Mouseover"], nil, 3),
 	clickThrough = ACH:Toggle(L["Click Through"], nil, 4),
 	showBubbles = ACH:Toggle(L["Show Bubbles"], nil, 5),
-	sizeGroup = ACH:Group(L["Size"], nil, -3),
-	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, -2),
-	fontGroup = ACH:Group(L["Fonts"], nil, -1),
+	sizeGroup = ACH:Group(L["Size"], nil, -4),
+	conditionGroup = ACH:MultiSelect(L["Conditions"], nil, -3),
+	strataAndLevel = ACH:Group(L["Strata and Level"], nil, -2),
+	fontGroup = ACH:Group(L["Fonts"], nil, -1)
 }
+
+SharedOptions.strataAndLevel.inline = true
+SharedOptions.strataAndLevel.args.frameStrata = ACH:Select(L["Frame Strata"], nil, 1, C.Values.Strata)
+SharedOptions.strataAndLevel.args.frameLevel = ACH:Range(L["Frame Level"], nil, 2, {min = 1, max = 128, step = 1})
 
 SharedOptions.sizeGroup.inline = true
 SharedOptions.sizeGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })
@@ -48,12 +56,13 @@ DataBars.args.colorGroup.args.honor = ACH:Color(L["Honor"], nil, 4, true, nil, n
 DataBars.args.colorGroup.args.azerite = ACH:Color(L["Azerite"], nil, 5, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:AzeriteBar_Update() end)
 DataBars.args.colorGroup.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], L["Reputation"], 6, nil, nil, nil, function() return E.db.databars.colors.useCustomFactionColors end, function(_, value) E.db.databars.colors.useCustomFactionColors = value end)
 
-DataBars.args.colorGroup.args.factionColors = ACH:Group(' ', nil, nil, nil, function(info) local v = tonumber(info[#info]) local t = E.db.databars.colors.factionColors[v] local d = P.databars.colors.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local v = tonumber(info[#info]); local t = E.db.databars.colors.factionColors[v]; t.r, t.g, t.b = r, g, b end, nil, function() return not E.db.databars.colors.useCustomFactionColors end)
+DataBars.args.colorGroup.args.factionColors = ACH:Group(' ', nil, nil, nil, function(info) local v = tonumber(info[#info]) local t = E.db.databars.colors.factionColors[v] local d = P.databars.colors.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local v = tonumber(info[#info]); local t = E.db.databars.colors.factionColors[v]; t.r, t.g, t.b, t.a = r, g, b, a end, nil, function() return not E.db.databars.colors.useCustomFactionColors end)
 DataBars.args.colorGroup.args.factionColors.inline = true
 
 for i = 1, 8 do
 	DataBars.args.colorGroup.args.factionColors.args[""..i] = ACH:Color(L["FACTION_STANDING_LABEL"..i], nil, i, true)
 end
+DataBars.args.colorGroup.args.factionColors.args["9"] = ACH:Color(L["Paragon"], nil, 9, true)
 
 DataBars.args.experience = ACH:Group(L["Experience"], nil, 1, nil, function(info) return DB.db.experience[info[#info]] end, function(info, value) DB.db.experience[info[#info]] = value DB:ExperienceBar_Update() DB:ExperienceBar_QuestXP() DB:UpdateAll() end)
 DataBars.args.experience.args = CopyTable(SharedOptions)
@@ -75,6 +84,10 @@ DataBars.args.reputation = ACH:Group(L["Reputation"], nil, 2, nil, function(info
 DataBars.args.reputation.args = CopyTable(SharedOptions)
 DataBars.args.reputation.args.enable.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Toggle() DB:UpdateAll() end
 DataBars.args.reputation.args.textFormat.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
+DataBars.args.reputation.args.showReward = ACH:Toggle(L["Reward Icon"], nil, 6)
+DataBars.args.reputation.args.showReward.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
+DataBars.args.reputation.args.rewardPosition = ACH:Select(L["Reward Position"], nil, 7, { TOP = 'Top', BOTTOM = 'Bottom', LEFT = 'LEFT', RIGHT = 'RIGHT' })
+DataBars.args.reputation.args.rewardPosition.set = function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() end
 DataBars.args.reputation.args.conditionGroup.get = function(_, key) return DB.db.reputation[key] end
 DataBars.args.reputation.args.conditionGroup.set = function(_, key, value) DB.db.reputation[key] = value DB:ReputationBar_Update() DB:UpdateAll() end
 DataBars.args.reputation.args.conditionGroup.values = {

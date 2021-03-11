@@ -180,27 +180,21 @@ function DB:ExperienceBar_Toggle()
 
 	if bar.db.enable and not bar:ShouldHide() then
 		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_Update')
-		DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Update')
-		DB:RegisterEvent('ENABLE_XP_GAIN', 'ExperienceBar_Update')
 		DB:RegisterEvent('UPDATE_EXHAUSTION', 'ExperienceBar_Update')
 		DB:RegisterEvent('QUEST_LOG_UPDATE', 'ExperienceBar_QuestXP')
 		DB:RegisterEvent('ZONE_CHANGED', 'ExperienceBar_QuestXP')
 		DB:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'ExperienceBar_QuestXP')
 		DB:RegisterEvent('SUPER_TRACKING_CHANGED', 'ExperienceBar_QuestXP')
-		DB:UnregisterEvent('UPDATE_EXPANSION_LEVEL')
-
-		DB:ExperienceBar_Update()
 	else
 		DB:UnregisterEvent('PLAYER_XP_UPDATE')
-		DB:UnregisterEvent('DISABLE_XP_GAIN')
-		DB:UnregisterEvent('ENABLE_XP_GAIN')
 		DB:UnregisterEvent('UPDATE_EXHAUSTION')
 		DB:UnregisterEvent('QUEST_LOG_UPDATE')
 		DB:UnregisterEvent('ZONE_CHANGED')
 		DB:UnregisterEvent('ZONE_CHANGED_NEW_AREA')
 		DB:UnregisterEvent('SUPER_TRACKING_CHANGED')
-		DB:RegisterEvent('UPDATE_EXPANSION_LEVEL', 'ExperienceBar_Toggle')
 	end
+
+	DB:ExperienceBar_Update()
 end
 
 function DB:ExperienceBar()
@@ -232,5 +226,8 @@ function DB:ExperienceBar()
 
 	E:CreateMover(Experience.holder, 'ExperienceBarMover', L["Experience Bar"], nil, nil, nil, nil, nil, 'databars,experience')
 
+	DB:RegisterEvent('UPDATE_EXPANSION_LEVEL', 'ExperienceBar_Toggle')
+	DB:RegisterEvent('DISABLE_XP_GAIN', 'ExperienceBar_Toggle')
+	DB:RegisterEvent('ENABLE_XP_GAIN', 'ExperienceBar_Toggle')
 	DB:ExperienceBar_Toggle()
 end

@@ -260,6 +260,12 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 					DESCENDING = L["Descending"],
 				},
 			},
+			clickThrough = {
+				order = 11,
+				name = L["Click Through"],
+				desc = L["Ignore mouse events."],
+				type = 'toggle',
+			},
 			friendlyAuraType = {
 				type = 'select',
 				order = 16,
@@ -422,283 +428,148 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 end
 
 local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
-	local config = {
+	local config = ACH:Group(auraType == 'buffs' and L["Buffs"] or L["Debuffs"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+	config.args.perrow = ACH:Range(L["Per Row"], nil, 3, { min = 1, max = 20, step = 1 })
+	config.args.numrows = ACH:Range(L["Num Rows"], nil, 4, { min = 1, max = 10, step = 1 })
+	config.args.sizeOverride = ACH:Range(L["Size Override"], L["If not set to 0 then override the size of the aura icon to this."], 5, { min = 0, max = 60, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -80, max = 80, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -80, max = 80, step = 1 })
+	config.args.spacing = ACH:Range(L["Spacing"], nil, 8, { min = -1, max = 20, step = 1 })
+	config.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 9, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, nil, function() local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition return (smartAuraPosition and (smartAuraPosition == 'BUFFS_ON_DEBUFFS' or smartAuraPosition == 'FLUID_BUFFS_ON_DEBUFFS')) end)
+	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 10, positionValues)
+	config.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 11)
+	config.args.sortMethod = ACH:Select( L["Sort By"], L["Method to sort by."], 12, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
+	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 13, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
+
+	config.args.stacks = ACH:Group(L["Stack Counter"], nil, 14, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+	config.args.stacks.inline = true
+	config.args.stacks.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
+	config.args.stacks.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
+	config.args.stacks.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
+
+	config.args.duration = ACH:Group(L["Duration"], nil, 15, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+	config.args.duration.inline = true
+	config.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end)
+	config.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, { TOP = 'TOP', LEFT = 'LEFT', BOTTOM = 'BOTTOM', CENTER = 'CENTER', TOPLEFT = 'TOPLEFT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT' })
+
+	config.args.filters = {
+		name = L["FILTERS"],
+		inline = true,
 		type = 'group',
-		name = auraType == 'buffs' and L["Buffs"] or L["Debuffs"],
-		get = function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
-		set = function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
+		order = 500,
 		args = {
-			enable = {
-				type = 'toggle',
+			minDuration = {
 				order = 1,
-				name = L["Enable"],
-			},
-			perrow = {
 				type = 'range',
+				name = L["Minimum Duration"],
+				desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
+				min = 0, max = 10800, step = 1,
+			},
+			maxDuration = {
+				order = 2,
+				type = 'range',
+				name = L["Maximum Duration"],
+				desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
+				min = 0, max = 10800, step = 1,
+			},
+			jumpToFilter = {
 				order = 3,
-				name = L["Per Row"],
-				min = 1, max = 20, step = 1,
+				name = L["Filters Page"],
+				desc = L["Shortcut to 'Filters' section of the config."],
+				type = 'execute',
+				func = function() ACD:SelectGroup('ElvUI', 'filters') end,
 			},
-			numrows = {
-				type = 'range',
+			specialPriority = {
 				order = 4,
-				name = L["Num Rows"],
-				min = 1, max = 10, step = 1,
-			},
-			sizeOverride = {
-				type = 'range',
-				order = 5,
-				name = L["Size Override"],
-				desc = L["If not set to 0 then override the size of the aura icon to this."],
-				min = 0, max = 60, step = 1,
-			},
-			xOffset = {
-				order = 6,
-				type = 'range',
-				name = L["X-Offset"],
-				min = -1000, max = 1000, step = 1,
-			},
-			yOffset = {
-				order = 7,
-				type = 'range',
-				name = L["Y-Offset"],
-				min = -1000, max = 1000, step = 1,
-			},
-			spacing = {
-				order = 8,
-				name = L["Spacing"],
-				type = 'range',
-				min = -1, max = 20, step = 1,
-			},
-			attachTo = {
+				sortByValue = true,
 				type = 'select',
-				order = 9,
-				name = L["Attach To"],
-				desc = L["What to attach the buff anchor frame to."],
-				values = {
-					FRAME = L["Frame"],
-					DEBUFFS = L["Debuffs"],
-					HEALTH = L["Health"],
-					POWER = L["Power"],
-				},
-				disabled = function()
-					local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
-					return (smartAuraPosition and (smartAuraPosition == 'BUFFS_ON_DEBUFFS' or smartAuraPosition == 'FLUID_BUFFS_ON_DEBUFFS'))
+				name = L["Add Special Filter"],
+				desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
+				values = function()
+					local filters = {}
+					local list = E.global.unitframe.specialFilters
+					if not list then return end
+					for filter in pairs(list) do
+						filters[filter] = L[filter]
+					end
+					return filters
+				end,
+				set = function(info, value)
+					filterPriority(auraType, groupName, value)
+					updateFunc(UF, groupName, numUnits)
+				end
+			},
+			priority = {
+				order = 5,
+				name = L["Add Regular Filter"],
+				desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
+				type = 'select',
+				values = function()
+					local filters = {}
+					local list = E.global.unitframe.aurafilters
+					if not list then return end
+					for filter in pairs(list) do
+						filters[filter] = filter
+					end
+					return filters
+				end,
+				set = function(info, value)
+					filterPriority(auraType, groupName, value)
+					updateFunc(UF, groupName, numUnits)
+				end
+			},
+			resetPriority = {
+				order = 6,
+				name = L["Reset Priority"],
+				desc = L["Reset filter priority to the default state."],
+				type = 'execute',
+				func = function()
+					E.db.unitframe.units[groupName][auraType].priority = P.unitframe.units[groupName][auraType].priority
+					updateFunc(UF, groupName, numUnits)
 				end,
 			},
-			anchorPoint = {
-				type = 'select',
-				order = 10,
-				name = L["Anchor Point"],
-				desc = L["What point to anchor to the frame you set to attach to."],
-				values = positionValues,
+			filterPriority = {
+				order = 7,
+				dragdrop = true,
+				type = 'multiselect',
+				name = L["Filter Priority"],
+				dragOnLeave = E.noop, --keep this here
+				dragOnEnter = function(info)
+					carryFilterTo = info.obj.value
+				end,
+				dragOnMouseDown = function(info)
+					carryFilterFrom, carryFilterTo = info.obj.value, nil
+				end,
+				dragOnMouseUp = function(info)
+					filterPriority(auraType, groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
+					carryFilterFrom, carryFilterTo = nil, nil
+				end,
+				dragOnClick = function(info)
+					filterPriority(auraType, groupName, carryFilterFrom, true)
+				end,
+				stateSwitchGetText = C.StateSwitchGetText,
+				stateSwitchOnClick = function(info)
+					filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
+				end,
+				values = function()
+					local str = E.db.unitframe.units[groupName][auraType].priority
+					if str == '' then return nil end
+					return {strsplit(',',str)}
+				end,
+				get = function(info, value)
+					local str = E.db.unitframe.units[groupName][auraType].priority
+					if str == '' then return nil end
+					local tbl = {strsplit(',',str)}
+					return tbl[value]
+				end,
+				set = function(info)
+					E.db.unitframe.units[groupName][auraType][info[#info]] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
+					updateFunc(UF, groupName, numUnits)
+				end
 			},
-			clickThrough = {
-				order = 11,
-				name = L["Click Through"],
-				desc = L["Ignore mouse events."],
-				type = 'toggle',
-			},
-			sortMethod = {
-				order = 12,
-				name = L["Sort By"],
-				desc = L["Method to sort by."],
-				type = 'select',
-				values = {
-					TIME_REMAINING = L["Time Remaining"],
-					DURATION = L["Duration"],
-					NAME = L["NAME"],
-					INDEX = L["Index"],
-					PLAYER = L["PLAYER"],
-				},
-			},
-			sortDirection = {
-				order = 13,
-				name = L["Sort Direction"],
-				desc = L["Ascending or Descending order."],
-				type = 'select',
-				values = {
-					ASCENDING = L["Ascending"],
-					DESCENDING = L["Descending"],
-				},
-			},
-			stacks = {
-				type = 'group',
-				order = 14,
-				name = L["Stack Counter"],
-				inline = true,
-				get = function(info, value) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-				args = {
-					countFont = {
-						type = 'select', dialogControl = 'LSM30_Font',
-						order = 1,
-						name = L["Font"],
-						values = _G.AceGUIWidgetLSMlists.font,
-					},
-					countFontSize = {
-						order = 2,
-						name = L["FONT_SIZE"],
-						type = 'range',
-						min = 4, max = 20, step = 1, -- max 20 cause otherwise it looks weird
-					},
-					countFontOutline = {
-						order = 3,
-						name = L["Font Outline"],
-						desc = L["Set the font outline."],
-						type = 'select',
-						values = C.Values.FontFlags,
-					},
-				}
-			},
-			duration = {
-				type = 'group',
-				order = 15,
-				name = L["Duration"],
-				inline = true,
-				get = function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end,
-				set = function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end,
-				args = {
-					cooldownShortcut = {
-						order = 1,
-						type = 'execute',
-						name = L["Cooldowns"],
-						func = function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end,
-					},
-					durationPosition = {
-						order = 2,
-						name = L["Position"],
-						type = 'select',
-						values = {
-							TOP = 'TOP',
-							LEFT = 'LEFT',
-							BOTTOM = 'BOTTOM',
-							CENTER = 'CENTER',
-							TOPLEFT = 'TOPLEFT',
-							BOTTOMLEFT = 'BOTTOMLEFT',
-							TOPRIGHT = 'TOPRIGHT',
-						},
-					},
-				}
-			},
-			filters = {
-				name = L["FILTERS"],
-				inline = true,
-				type = 'group',
-				order = 500,
-				args = {
-					minDuration = {
-						order = 1,
-						type = 'range',
-						name = L["Minimum Duration"],
-						desc = L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."],
-						min = 0, max = 10800, step = 1,
-					},
-					maxDuration = {
-						order = 2,
-						type = 'range',
-						name = L["Maximum Duration"],
-						desc = L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."],
-						min = 0, max = 10800, step = 1,
-					},
-					jumpToFilter = {
-						order = 3,
-						name = L["Filters Page"],
-						desc = L["Shortcut to 'Filters' section of the config."],
-						type = 'execute',
-						func = function() ACD:SelectGroup('ElvUI', 'filters') end,
-					},
-					specialPriority = {
-						order = 4,
-						sortByValue = true,
-						type = 'select',
-						name = L["Add Special Filter"],
-						desc = L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."],
-						values = function()
-							local filters = {}
-							local list = E.global.unitframe.specialFilters
-							if not list then return end
-							for filter in pairs(list) do
-								filters[filter] = L[filter]
-							end
-							return filters
-						end,
-						set = function(info, value)
-							filterPriority(auraType, groupName, value)
-							updateFunc(UF, groupName, numUnits)
-						end
-					},
-					priority = {
-						order = 5,
-						name = L["Add Regular Filter"],
-						desc = L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."],
-						type = 'select',
-						values = function()
-							local filters = {}
-							local list = E.global.unitframe.aurafilters
-							if not list then return end
-							for filter in pairs(list) do
-								filters[filter] = filter
-							end
-							return filters
-						end,
-						set = function(info, value)
-							filterPriority(auraType, groupName, value)
-							updateFunc(UF, groupName, numUnits)
-						end
-					},
-					resetPriority = {
-						order = 6,
-						name = L["Reset Priority"],
-						desc = L["Reset filter priority to the default state."],
-						type = 'execute',
-						func = function()
-							E.db.unitframe.units[groupName][auraType].priority = P.unitframe.units[groupName][auraType].priority
-							updateFunc(UF, groupName, numUnits)
-						end,
-					},
-					filterPriority = {
-						order = 7,
-						dragdrop = true,
-						type = 'multiselect',
-						name = L["Filter Priority"],
-						dragOnLeave = E.noop, --keep this here
-						dragOnEnter = function(info)
-							carryFilterTo = info.obj.value
-						end,
-						dragOnMouseDown = function(info)
-							carryFilterFrom, carryFilterTo = info.obj.value, nil
-						end,
-						dragOnMouseUp = function(info)
-							filterPriority(auraType, groupName, carryFilterTo, nil, carryFilterFrom) --add it in the new spot
-							carryFilterFrom, carryFilterTo = nil, nil
-						end,
-						dragOnClick = function(info)
-							filterPriority(auraType, groupName, carryFilterFrom, true)
-						end,
-						stateSwitchGetText = C.StateSwitchGetText,
-						stateSwitchOnClick = function(info)
-							filterPriority(auraType, groupName, carryFilterFrom, nil, nil, true)
-						end,
-						values = function()
-							local str = E.db.unitframe.units[groupName][auraType].priority
-							if str == '' then return nil end
-							return {strsplit(',',str)}
-						end,
-						get = function(info, value)
-							local str = E.db.unitframe.units[groupName][auraType].priority
-							if str == '' then return nil end
-							local tbl = {strsplit(',',str)}
-							return tbl[value]
-						end,
-						set = function(info)
-							E.db.unitframe.units[groupName][auraType][info[#info]] = nil -- this was being set when drag and drop was first added, setting it to nil to clear tester profiles of this variable
-							updateFunc(UF, groupName, numUnits)
-						end
-					},
-					spacer1 = ACH:Description(L["Use drag and drop to rearrange filter priority or right click to remove a filter."]..'\n'..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."], 8, 'medium'),
-				},
-			},
+			spacer1 = ACH:Description(L["Use drag and drop to rearrange filter priority or right click to remove a filter."]..'\n'..L["Use Shift+LeftClick to toggle between friendly or enemy or normal state. Normal state will allow the filter to be checked on all units. Friendly state is for friendly units only and enemy state is for enemy units."], 8, 'medium'),
 		},
 	}
 
@@ -780,39 +651,6 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 						E:SetToFilterConfig('Aura Indicator (Class)')
 					end
 				end,
-			},
-			applyToAll = {
-				name = ' ',
-				inline = true,
-				type = 'group',
-				order = 50,
-				get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
-				set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
-				args = {
-					header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1),
-					style = {
-						name = L["Style"],
-						order = 2,
-						type = 'select',
-						values = {
-							timerOnly = L["Timer Only"],
-							coloredIcon = L["Colored Icon"],
-							texturedIcon = L["Textured Icon"],
-						},
-					},
-					textThreshold = {
-						name = L["Text Threshold"],
-						desc = L["At what point should the text be displayed. Set to -1 to disable."],
-						type = 'range',
-						order = 4,
-						min = -1, max = 60, step = 1,
-					},
-					displayText = {
-						name = L["Display Text"],
-						type = 'toggle',
-						order = 5,
-					},
-				}
 			}
 		},
 	}
@@ -821,6 +659,40 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 		config.inline = true
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] = value; updateFunc(UF, groupName, numGroup) end
+	else
+		config.args.applyToAll = {
+			name = ' ',
+			inline = true,
+			type = 'group',
+			order = 50,
+			get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
+			set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
+			args = {
+				header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1),
+				style = {
+					name = L["Style"],
+					order = 2,
+					type = 'select',
+					values = {
+						timerOnly = L["Timer Only"],
+						coloredIcon = L["Colored Icon"],
+						texturedIcon = L["Textured Icon"],
+					},
+				},
+				textThreshold = {
+					name = L["Text Threshold"],
+					desc = L["At what point should the text be displayed. Set to -1 to disable."],
+					type = 'range',
+					order = 4,
+					min = -1, max = 60, step = 1,
+				},
+				displayText = {
+					name = L["Display Text"],
+					type = 'toggle',
+					order = 5,
+				},
+			}
+		}
 	end
 
 	return config
@@ -1846,7 +1718,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 	return config
 end
 
-local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
+local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, subGroup)
 	local config = {
 		type = 'group',
 		name = L["Heal Prediction"],
@@ -1909,6 +1781,12 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup)
 			end, 50, 'medium', nil, nil, nil, nil, 'full'),
 		},
 	}
+
+	if subGroup then
+		config.inline = true
+		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] end
+		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] = value; updateFunc(UF, groupName, numGroup) end
+	end
 
 	return config
 end
@@ -4353,9 +4231,7 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 					name = L["Texture"],
 					values = {
 						CUSTOM = L["CUSTOM"],
-						DEFAULT = L["DEFAULT"],
-						RESTING = E:TextureString(E.Media.Textures.Resting, ':14'),
-						RESTING1 = E:TextureString(E.Media.Textures.Resting1, ':14'),
+						DEFAULT = L["DEFAULT"]
 					},
 				},
 				customTexture = {
@@ -4455,6 +4331,13 @@ E.Options.args.unitframe.args.individualUnits.args.player = {
 		resurrectIcon = GetOptionsTable_ResurrectIcon(UF.CreateAndUpdateUF, 'player'),
 	},
 }
+
+do -- resting icons
+	local resting = E.Options.args.unitframe.args.individualUnits.args.player.args.RestIcon.args.texture.values
+	for key, icon in pairs(E.Media.RestIcons) do
+		resting[key] = E:TextureString(icon, ':14:14')
+	end
+end
 
 --Target
 E.Options.args.unitframe.args.individualUnits.args.target = {
@@ -4823,6 +4706,7 @@ E.Options.args.unitframe.args.individualUnits.args.pet = {
 		castbar = GetOptionsTable_Castbar(false, UF.CreateAndUpdateUF, 'pet'),
 		aurabar = GetOptionsTable_AuraBars(UF.CreateAndUpdateUF, 'pet'),
 		cutaway = GetOptionsTable_Cutaway(UF.CreateAndUpdateUF, 'pet'),
+		raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateUF, 'pet'),
 	},
 }
 
@@ -5124,8 +5008,9 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					desc = L["An Y offset (in pixels) to be used when anchoring new frames."],
 					min = -500, max = 500, step = 1,
 				},
+				threatStyle = ACH:Select(L["Threat Display Mode"], nil, 10, threatValues),
 				name = {
-					order = 8,
+					order = 20,
 					type = 'group',
 					inline = true,
 					get = function(info) return E.db.unitframe.units.party.petsGroup.name[info[#info]] end,
@@ -5162,6 +5047,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					},
 				},
 				buffIndicator = GetOptionsTable_AuraWatch(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup'),
+				healPredction = GetOptionsTable_HealPrediction(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'petsGroup'),
 			},
 		},
 		targetsGroup = {
@@ -5208,6 +5094,7 @@ E.Options.args.unitframe.args.groupUnits.args.party = {
 					desc = L["An Y offset (in pixels) to be used when anchoring new frames."],
 					min = -500, max = 500, step = 1,
 				},
+				threatStyle = ACH:Select(L["Threat Display Mode"], nil, 10, threatValues),
 				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'targetsGroup'),
 				raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'party', nil, 'targetsGroup'),
 			},
@@ -5500,6 +5387,7 @@ E.Options.args.unitframe.args.groupUnits.args.tank = {
 					desc = L["An Y offset (in pixels) to be used when anchoring new frames."],
 					min = -500, max = 500, step = 1,
 				},
+				threatStyle = ACH:Select(L["Threat Display Mode"], nil, 10, threatValues),
 				name = GetOptionsTable_Name(UF.CreateAndUpdateHeaderGroup, 'tank', nil, 'targetsGroup'),
 				raidicon = GetOptionsTable_RaidIcon(UF.CreateAndUpdateHeaderGroup, 'tank', nil, 'targetsGroup'),
 			},

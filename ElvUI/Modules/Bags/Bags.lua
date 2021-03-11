@@ -512,18 +512,16 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local showItemLevel = B.db.itemLevel and link and not professionColors
 	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
 	local isQuestItem, questId, isActiveQuest = false, false, false
-	local forceColor, r, g, b, a = true
+	local forceColor, r, g, b, a = true, unpack(E.media.bordercolor)
 
 	if link then
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(link)
 		slot.name = name
+		if not slot.rarity then slot.rarity = itemRarity end
 
 		slot.itemID = GetContainerItemID(bagID, slotID)
 		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-
-		if slot.rarity or itemRarity then
-			r, g, b = GetItemQualityColor(slot.rarity or itemRarity)
-		end
+		r, g, b = GetItemQualityColor(slot.rarity)
 
 		if showItemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
@@ -582,15 +580,17 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
-	if B.db.specialtyColors and professionColors then
-		r, g, b, a = unpack(professionColors)
-	elseif questId and not isActiveQuest then
-		r, g, b, a = unpack(B.QuestColors.questStarter)
-	elseif questId or isQuestItem then
-		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif assignedColor then
-		r, g, b, a = unpack(B.AssignmentColors[assignedBag])
-	elseif not link or B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON then
+	if questId then
+		r, g, b, a = unpack(B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem'])
+	elseif not link then
+		if B.db.specialtyColors and professionColors then
+			r, g, b, a = unpack(professionColors)
+		elseif assignedColor then
+			r, g, b, a = unpack(B.AssignmentColors[assignedBag])
+		end
+	end
+
+	if not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON) then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
@@ -905,7 +905,7 @@ function B:Layout(isBank)
 
 	f.totalSlots = 0
 	f.holderFrame:SetWidth(holderWidth)
-	f.ContainerHolder:SetSize(((buttonSize + buttonSpacing) * numContainerSlots) + buttonSpacing, buttonSize + (buttonSpacing * 2))
+	f.ContainerHolder:SetSize(((buttonSize + E.Border * 2) * numContainerSlots) + E.Border * 2, buttonSize + (E.Border * 4))
 
 	if isBank and not f.fullBank then
 		f.fullBank = select(2, GetNumBankSlots())

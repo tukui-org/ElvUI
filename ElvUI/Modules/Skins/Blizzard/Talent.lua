@@ -255,6 +255,7 @@ function S:Blizzard_TalentUI()
 					if spellTex then
 						frame.icon:SetTexture(spellTex)
 					end
+					frame.subText:SetTextColor(.6, .6, .6)
 
 					if not frame.reskinned then
 						frame.reskinned = true
