@@ -415,8 +415,12 @@ function mod:StyleFilterBaseUpdate(frame, show)
 		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
 	end
 
-	if frame.isTarget and mod.db.units.TARGET.glowStyle ~= 'none' then
-		frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
+	if frame.isTarget then
+		if mod.db.units.TARGET.glowStyle ~= 'none' then
+			frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
+		end
+
+		mod:SetupTarget(frame) -- so the classbar will show up
 	end
 
 	if show and not mod.SkipFading then
