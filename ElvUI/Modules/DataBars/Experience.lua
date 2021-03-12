@@ -3,6 +3,8 @@ local DB = E:GetModule('DataBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
+local error = error
+local type, pairs = type, pairs
 local min, format = min, format
 local CreateFrame = CreateFrame
 local GetXPExhaustion = GetXPExhaustion
@@ -244,6 +246,6 @@ function DB:RegisterCustomQuestXPWatcher(name, func)
 		return
 	end
 
-	self.CustomQuestXPWatchers = self.CustomQuestXPWatchers or {}
-	self.CustomQuestXPWatchers[name] = func
+	DB.CustomQuestXPWatchers = DB.CustomQuestXPWatchers or {}
+	DB.CustomQuestXPWatchers[name] = func
 end

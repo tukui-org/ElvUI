@@ -1,6 +1,17 @@
-### Version 12.22 [ ETA: 🍨 ]
+### Version 12.23 [ ETA: 🍨 ]
 
-**Fixed:**  
+**Changes:**  
+
+___
+
+### Version 12.22 [ March 12th 2021 ]
+
+**Nice:**  
+Alter Time for Mages corrected on Player Buffs and Turtle Buffs.  
+Nameplate Target Classbar should show properly again and play nicely with Style Filters.  
+Updated Style Filter code a bit, which prevents flickering of Name Only mode Nameplates.  
+Addon Manager skin can now display addon names in other languages, instead of squares.  
+Removed Vender Greys display as Blizzard has added one, however we kept our Detailed option to show the price of each.  
 
 ___
 

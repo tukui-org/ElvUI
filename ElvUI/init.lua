@@ -16,7 +16,6 @@ local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata
-local GetLocale = GetLocale
 local GetTime = GetTime
 local HideUIPanel = HideUIPanel
 local hooksecurefunc = hooksecurefunc
