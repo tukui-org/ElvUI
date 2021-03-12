@@ -351,7 +351,6 @@ L["Unhittable:"] = "Unschlagbar:"
 L["Vehicle Seat Frame"] = "Fahrzeugfenster"
 L["Vendor / Delete Grays"] = "Verkaufe / Lösche graue Gegenstände"
 L["Vendor Grays"] = "Graue Gegenstände verkaufen"
-L["Vendored gray items for: %s"] = "Graue Gegenstände verkauft für: %s"
 L["Vendoring Grays"] = "Verkaufe graue Gegenstände"
 L["Voice Overlay"] = true --No need to translate
 L["Waist"] = "Taille"
