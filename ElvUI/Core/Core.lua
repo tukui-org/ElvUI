@@ -26,7 +26,6 @@ local IsInRaid = IsInRaid
 local SetCVar = SetCVar
 local ReloadUI = ReloadUI
 local UnitGUID = UnitGUID
-local GetLocale = GetLocale
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
@@ -66,7 +65,6 @@ E.myspec = GetSpecialization()
 E.wowpatch, E.wowbuild = GetBuildInfo()
 E.wowbuild = tonumber(E.wowbuild)
 E.isMacClient = IsMacClient()
-E.locale = GetLocale()
 E.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
