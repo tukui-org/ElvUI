@@ -276,10 +276,12 @@ E.PopupDialogs.DELETE_GRAYS = {
 	button2 = NO,
 	OnAccept = function()
 		Bags:VendorGrays(true)
+
 		for _, info in ipairs(Bags.SellFrame.Info.itemList) do
 			PickupContainerItem(info[1], info[2])
 			DeleteCursorItem()
 		end
+
 		wipe(Bags.SellFrame.Info.itemList)
 	end,
 	OnShow = function(self)

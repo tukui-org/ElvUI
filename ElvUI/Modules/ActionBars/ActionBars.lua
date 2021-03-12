@@ -1386,11 +1386,11 @@ function AB:Initialize()
 	AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
 
-	if E:GetLocale() == 'koKR' then
+	if E.locale == 'koKR' then
 		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\2002.TTF]], 11, "MONOCHROME, THICKOUTLINE"
-	elseif E:GetLocale() == 'zhTW' then
+	elseif E.locale == 'zhTW' then
 		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\arheiuhk_bd.TTF]], 11, "MONOCHROME, THICKOUTLINE"
-	elseif E:GetLocale() == 'zhCN' then
+	elseif E.locale == 'zhCN' then
 		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\FRIZQT__.TTF]], 11, 'MONOCHROME, OUTLINE'
 	else
 		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\ARIALN.TTF]], 12, "MONOCHROME, THICKOUTLINE"
