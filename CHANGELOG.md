@@ -1,6 +1,13 @@
-### Version 12.23 [ ETA: 🍨 ]
+### Version 12.24 [ ETA: 🍨 ]
 
 **Changes:**  
+
+___
+
+### Version 12.23 [ March 12th 2021 ]
+
+**Hotfix:**  
+Locale was forcing the Options into English for some languages.  
 
 ___
 

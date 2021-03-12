@@ -16,12 +16,13 @@ local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata
-local GetTime = GetTime
 local HideUIPanel = HideUIPanel
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local DisableAddOn = DisableAddOn
 local ReloadUI = ReloadUI
+local GetLocale = GetLocale
+local GetTime = GetTime
 
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
@@ -38,6 +39,7 @@ local E = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTim
 E.DF = {profile = {}, global = {}}; E.privateVars = {profile = {}} -- Defaults
 E.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree'}
 E.callbacks = E.callbacks or CallbackHandler:New(E)
+E.locale = GetLocale()
 
 Engine[1] = E
 Engine[2] = {}
