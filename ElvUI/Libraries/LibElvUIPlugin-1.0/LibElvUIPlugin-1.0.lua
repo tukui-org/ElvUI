@@ -137,7 +137,7 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		end
 
 		if callback then
-			callback()
+			pcall(callback)
 		end
 	end
 
@@ -164,7 +164,7 @@ function lib:OptionsUILoaded(_, addon)
 
 		for _, plugin in pairs(lib.plugins) do
 			if plugin.callback then
-				plugin.callback()
+				pcall(plugin.callback)
 			end
 		end
 
