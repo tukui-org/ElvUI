@@ -182,7 +182,7 @@ function S:Blizzard_TalentUI()
 				bu.bg.SelectedTexture:Point('BOTTOMRIGHT', bu, 'BOTTOMRIGHT', -10, 1)
 				bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
 
-				bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, 2)
+				bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, -2)
 				bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 			end
 		end
