@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 local TT = E:GetModule('Tooltip')
 local Skins = E:GetModule('Skins')
@@ -930,7 +930,7 @@ function B:Layout(isBank)
 
 				if (i - 1) > GetNumBankSlots() then
 					SetItemButtonTextureVertexColor(f.ContainerHolder[i], 1, .1, .1)
-					f.ContainerHolder[i].tooltipText = _G.BANK_BAG_PURCHASE;
+					f.ContainerHolder[i].tooltipText = _G.BANK_BAG_PURCHASE
 				else
 					SetItemButtonTextureVertexColor(f.ContainerHolder[i], 1, 1, 1)
 					f.ContainerHolder[i].tooltipText = ''
@@ -1211,10 +1211,10 @@ function B:GetGraysValue()
 
 	for bag = 0, 4 do
 		for slot = 1, GetContainerNumSlots(bag) do
-			local itemLink = GetContainerItemLink(bag, slot)
-			if itemLink then
-				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemLink)
-				if itemPrice then
+			local link = GetContainerItemLink(bag, slot)
+			if link then
+				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
+				if itemPrice and itemPrice > 0 then
 					local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 					local stackPrice = itemPrice * stackCount
 					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (stackPrice > 0) then
@@ -1230,6 +1230,7 @@ end
 
 function B:VendorGrays(delete)
 	if B.SellFrame:IsShown() then return end
+
 	if (not _G.MerchantFrame or not _G.MerchantFrame:IsShown()) and not delete then
 		E:Print(L["You must be at a vendor."])
 		return
@@ -1237,10 +1238,9 @@ function B:VendorGrays(delete)
 
 	for bag = 0, 4, 1 do
 		for slot = 1, GetContainerNumSlots(bag), 1 do
-			local itemID = GetContainerItemID(bag, slot)
-			if itemID then
-				local _, link, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemID)
-
+			local link = GetContainerItemLink(bag, slot)
+			if link then
+				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
 				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
 					tinsert(B.SellFrame.Info.itemList, {bag, slot, itemPrice, link})
 				end
@@ -1248,9 +1248,9 @@ function B:VendorGrays(delete)
 		end
 	end
 
-	if not B.SellFrame.Info.itemList then return; end
-	if tmaxn(B.SellFrame.Info.itemList) < 1 then return; end
-	--Resetting stuff
+	if not B.SellFrame.Info.itemList or tmaxn(B.SellFrame.Info.itemList) < 1 then return end
+
+	-- Resetting stuff
 	B.SellFrame.Info.delete = delete or false
 	B.SellFrame.Info.ProgressTimer = 0
 	B.SellFrame.Info.SellInterval = 0.2
@@ -1262,8 +1262,7 @@ function B:VendorGrays(delete)
 	B.SellFrame.statusbar:SetMinMaxValues(0, B.SellFrame.Info.ProgressMax)
 	B.SellFrame.statusbar.ValueText:SetText('0 / '..B.SellFrame.Info.ProgressMax)
 
-	if not delete then
-		--Time to sell
+	if not delete then -- Time to sell
 		B.SellFrame:Show()
 	end
 end
@@ -1401,7 +1400,7 @@ function B:ConstructContainerFrame(name, isBank)
 					_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 				else
 					local inventoryID = holder:GetInventorySlot()
-					PutItemInBag(inventoryID);--Put bag on empty slot, or drop item in this bag
+					PutItemInBag(inventoryID) -- Put bag on empty slot, or drop item in this bag
 				end
 			end)
 		else
@@ -2164,6 +2163,7 @@ function B:MERCHANT_CLOSED()
 	B.SellFrame:Hide()
 
 	wipe(B.SellFrame.Info.itemList)
+
 	B.SellFrame.Info.delete = false
 	B.SellFrame.Info.ProgressTimer = 0
 	B.SellFrame.Info.SellInterval = B.db.vendorGrays.interval
@@ -2174,14 +2174,16 @@ end
 
 function B:ProgressQuickVendor()
 	local item = B.SellFrame.Info.itemList[1]
-	if not item then return nil, true end --No more to sell
-	local bag, slot, itemPrice, link = unpack(item)
+	if not item then return nil, true end -- No more to sell
 
+	local bag, slot, itemPrice, link = unpack(item)
 	local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
 	local stackPrice = (itemPrice or 0) * stackCount
+
 	if B.db.vendorGrays.details and link then
 		E:Print(format('%s|cFF00DDDDx%d|r %s', link, stackCount, E:FormatMoney(stackPrice, B.db.moneyFormat, not B.db.moneyCoins)))
 	end
+
 	UseContainerItem(bag, slot)
 
 	tremove(B.SellFrame.Info.itemList, 1)
@@ -2191,7 +2193,7 @@ end
 
 function B:VendorGreys_OnUpdate(elapsed)
 	B.SellFrame.Info.ProgressTimer = B.SellFrame.Info.ProgressTimer - elapsed
-	if B.SellFrame.Info.ProgressTimer > 0 then return; end
+	if B.SellFrame.Info.ProgressTimer > 0 then return end
 	B.SellFrame.Info.ProgressTimer = B.SellFrame.Info.SellInterval
 
 	local goldGained, lastItem = B:ProgressQuickVendor()
@@ -2199,13 +2201,11 @@ function B:VendorGreys_OnUpdate(elapsed)
 		B.SellFrame.Info.goldGained = B.SellFrame.Info.goldGained + goldGained
 		B.SellFrame.Info.itemsSold = B.SellFrame.Info.itemsSold + 1
 		B.SellFrame.statusbar:SetValue(B.SellFrame.Info.itemsSold)
+
 		local timeLeft = (B.SellFrame.Info.ProgressMax - B.SellFrame.Info.itemsSold)*B.SellFrame.Info.SellInterval
 		B.SellFrame.statusbar.ValueText:SetText(B.SellFrame.Info.itemsSold..' / '..B.SellFrame.Info.ProgressMax..' ( '..timeLeft..'s )')
 	elseif lastItem then
 		B.SellFrame:Hide()
-		if B.SellFrame.Info.goldGained > 0 then
-			E:Print((L["Vendored gray items for: %s"]):format(E:FormatMoney(B.SellFrame.Info.goldGained, B.db.moneyFormat, not B.db.moneyCoins)))
-		end
 	end
 end
 
@@ -2249,12 +2249,11 @@ function B:CreateSellFrame()
 	}
 
 	B.SellFrame:SetScript('OnUpdate', B.VendorGreys_OnUpdate)
-
 	B.SellFrame:Hide()
 end
 
 function B:UpdateSellFrameSettings()
-	if not B.SellFrame or not B.SellFrame.Info then return; end
+	if not B.SellFrame or not B.SellFrame.Info then return end
 
 	B.SellFrame.Info.SellInterval = B.db.vendorGrays.interval
 	B.SellFrame:SetAlpha(B.db.vendorGrays.progressBar and 1 or 0)

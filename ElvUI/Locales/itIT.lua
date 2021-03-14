@@ -346,7 +346,6 @@ L["Unhittable:"] = true
 L["Vehicle Seat Frame"] = true
 L["Vendor / Delete Grays"] = true
 L["Vendor Grays"] = true
-L["Vendored gray items for: %s"] = true
 L["Vendoring Grays"] = true
 L["Voice Overlay"] = true
 L["Waist"] = true

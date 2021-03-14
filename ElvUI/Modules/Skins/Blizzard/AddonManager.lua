@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local gsub = gsub
@@ -37,7 +36,6 @@ function S:AddonList()
 		S:HandleButton(_G['AddonListEntry'..i].LoadAddonButton)
 	end
 
-	local font = LSM:Fetch('font', 'Expressway')
 	hooksecurefunc('AddonList_Update', function()
 		for i = 1, maxShown do
 			local entry = _G['AddonListEntry'..i]
@@ -55,11 +53,11 @@ function S:AddonList()
 					checkall = GetAddOnEnableState(nil, id)
 				end
 
-				text:FontTemplate(font, 13, 'NONE')
-				entry.Status:FontTemplate(font, 11, 'NONE')
-				entry.Reload:FontTemplate(font, 11, 'NONE')
+				text:SetFontObject('ElvUIFontNormal')
+				entry.Status:SetFontObject('ElvUIFontSmall')
+				entry.Reload:SetFontObject('ElvUIFontSmall')
 				entry.Reload:SetTextColor(1.0, 0.3, 0.3)
-				entry.LoadAddonButton.Text:FontTemplate(font, 11, 'NONE')
+				entry.LoadAddonButton.Text:SetFontObject('ElvUIFontSmall')
 
 				local checkstate = GetAddOnEnableState(character, id)
 				local enabledForSome = not character and checkstate == 1

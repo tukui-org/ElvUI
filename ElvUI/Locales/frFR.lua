@@ -346,7 +346,6 @@ L["Unhittable:"] = "Intouchable :"
 L["Vehicle Seat Frame"] = "Cadre de siège du véhicule"
 L["Vendor / Delete Grays"] = "Vendeur / Supprimer les gris"
 L["Vendor Grays"] = "Vendre les objets gris"
-L["Vendored gray items for: %s"] = "Objets gris vendus pour : %s"
 L["Vendoring Grays"] = true
 L["Voice Overlay"] = "Voix en superposition"
 L["Waist"] = "Ceinture"

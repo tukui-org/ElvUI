@@ -16,13 +16,13 @@ local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local GetAddOnEnableState = GetAddOnEnableState
 local GetAddOnMetadata = GetAddOnMetadata
-local GetLocale = GetLocale
-local GetTime = GetTime
 local HideUIPanel = HideUIPanel
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = IsAddOnLoaded
 local DisableAddOn = DisableAddOn
 local ReloadUI = ReloadUI
+local GetLocale = GetLocale
+local GetTime = GetTime
 
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
@@ -39,6 +39,7 @@ local E = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTim
 E.DF = {profile = {}, global = {}}; E.privateVars = {profile = {}} -- Defaults
 E.Options = {type = 'group', args = {}, childGroups = 'ElvUI_HiddenTree'}
 E.callbacks = E.callbacks or CallbackHandler:New(E)
+E.locale = GetLocale()
 
 Engine[1] = E
 Engine[2] = {}
@@ -83,10 +84,9 @@ E.QualityColors[-1] = {r = 0, g = 0, b = 0}
 E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common] = {r = 0, g = 0, b = 0}
 
-do
-	local locale = GetLocale()
+do -- this is different from E.locale because we need to convert for ace locale files
 	local convert = {enGB = 'enUS', esES = 'esMX', itIT = 'enUS'}
-	local gameLocale = convert[locale] or locale or 'enUS'
+	local gameLocale = convert[E.locale] or E.locale or 'enUS'
 
 	function E:GetLocale()
 		return gameLocale

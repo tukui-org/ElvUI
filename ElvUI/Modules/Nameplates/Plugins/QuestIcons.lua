@@ -6,7 +6,6 @@ local _G = _G
 local pairs, ipairs, ceil, floor, tonumber = pairs, ipairs, ceil, floor, tonumber
 local wipe, strmatch, strlower, strfind = wipe, strmatch, strlower, strfind
 
-local GetLocale = GetLocale
 local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
@@ -78,7 +77,7 @@ local typesLocalized = {
 	},
 }
 
-local questTypes = typesLocalized[GetLocale()] or typesLocalized.enUS
+local questTypes = typesLocalized[E.locale] or typesLocalized.enUS
 
 local function CheckTextForQuest(text)
 	local x, y = strmatch(text, '(%d+)/(%d+)')
