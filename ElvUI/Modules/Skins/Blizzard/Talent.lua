@@ -163,7 +163,7 @@ function S:Blizzard_TalentUI()
 				bu:StripTextures()
 				bu:SetFrameLevel(bu:GetFrameLevel() + 5)
 				bu.knownSelection:SetAlpha(0)
-				bu.icon:SetDrawLayer('OVERLAY', 1)
+				bu.icon:SetDrawLayer('ARTWORK', 1)
 				S:HandleIcon(bu.icon, true)
 
 				bu.bg = CreateFrame('Frame', nil, bu)
