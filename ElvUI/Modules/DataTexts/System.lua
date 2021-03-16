@@ -245,7 +245,7 @@ local function OnUpdate(self, elapsed)
 	if wait < 0 then
 		wait = 1
 
-		local framerate = GetFramerate()
+		local framerate = floor(GetFramerate())
 		local _, _, _, latency = GetNetStats()
 
 		local fps = framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4
