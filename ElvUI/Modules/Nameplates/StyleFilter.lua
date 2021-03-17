@@ -417,7 +417,7 @@ function mod:StyleFilterBaseUpdate(frame, show)
 	end
 
 	if frame.isTarget then
-		if mod.db.units.TARGET.glowStyle ~= 'none' then
+		if frame.frameType and frame.frameType ~= 'PLAYER' and mod.db.units.TARGET.glowStyle ~= 'none' then
 			frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
 		end
 
