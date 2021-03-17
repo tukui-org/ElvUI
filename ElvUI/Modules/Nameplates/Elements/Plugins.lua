@@ -173,7 +173,7 @@ function NP:Construct_Highlight(nameplate)
 	return Highlight
 end
 
-function NP:Update_Highlight(nameplate)
+function NP:Update_Highlight(nameplate, hideTags)
 	local db = NP:PlateDB(nameplate)
 
 	if NP.db.highlight and db.enable then
@@ -181,8 +181,7 @@ function NP:Update_Highlight(nameplate)
 			nameplate:EnableElement('Highlight')
 		end
 
-		local sf = NP:StyleFilterChanges(nameplate)
-		if db.health.enable and not (db.nameOnly or sf.NameOnly) then
+		if db.health.enable and not (db.nameOnly or hideTags) then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, 0.25)
 			nameplate.Highlight.texture:SetAllPoints(nameplate.HealthFlashTexture)
 			nameplate.Highlight.texture:SetAlpha(0.75)

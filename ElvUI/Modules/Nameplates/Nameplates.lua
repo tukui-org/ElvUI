@@ -404,7 +404,7 @@ function NP:DisablePlate(nameplate, nameOnly, hideTags)
 
 	if nameOnly then
 		NP:Update_Tags(nameplate, hideTags)
-		NP:Update_Highlight(nameplate)
+		NP:Update_Highlight(nameplate, hideTags)
 
 		-- The position values here are forced on purpose.
 		nameplate.Name:ClearAllPoints()
