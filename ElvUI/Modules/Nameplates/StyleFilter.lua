@@ -1144,21 +1144,22 @@ function mod:StyleFilterConfigure()
 				events.NAME_PLATE_UNIT_ADDED = 1
 				events.UNIT_FACTION = 1 -- frameType can change here
 
+				local castEvents
 				if t.casting then
 					if next(t.casting.spells) then
 						for _, value in pairs(t.casting.spells) do
 							if value then
-								events.FAKE_Casting = 0
+								castEvents = 0
 								break
 					end end end
 
 					if (t.casting.interruptible or t.casting.notInterruptible)
 					or (t.casting.isCasting or t.casting.isChanneling or t.casting.notCasting or t.casting.notChanneling) then
-						events.FAKE_Casting = 0
+						castEvents = 0
 					end
 				end
 
-				if events.FAKE_Casting then
+				if castEvents then
 					for event in pairs(mod.StyleFilterCastEvents) do
 						events[event] = 1
 					end
@@ -1285,7 +1286,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 		local eventFunc = mod.StyleFilterEventFunctions[event]
 		if eventFunc then eventFunc(frame, event, arg1, ...) end
 
-		if not mod.StyleFilterCastEvents[event] or (frame.StyleFilterChanges.NameOnly and arg1 == frame.unit) then
+		if not mod.StyleFilterCastEvents[event] or (arg1 == frame.unit) then
 			mod:StyleFilterUpdate(frame, event) -- we want to skip cast updates unless its in nameonly for that unit
 		end
 	end
