@@ -28,8 +28,7 @@ end
 
 function NP:Update_Tags(nameplate)
 	local db = NP:PlateDB(nameplate)
-	local sf = NP:StyleFilterChanges(nameplate)
-	local hide = db.nameOnly or sf.NameOnly
+	local hide = db.nameOnly
 
 	NP:Update_TagText(nameplate, nameplate.Name, db.name)
 	NP:Update_TagText(nameplate, nameplate.Title, db.title)
