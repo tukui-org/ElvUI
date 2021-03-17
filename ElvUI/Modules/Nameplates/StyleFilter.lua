@@ -519,7 +519,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 	if NameOnly then
 		c.NameOnly = true
-		mod:DisablePlate(frame, true)
+		mod:DisablePlate(frame, true, true)
 	end
 	-- Keeps Tag changes after NameOnly
 	if NameTag then

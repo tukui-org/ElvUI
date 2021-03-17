@@ -26,9 +26,9 @@ function NP:Update_TagText(nameplate, element, db, hide)
 	end
 end
 
-function NP:Update_Tags(nameplate)
+function NP:Update_Tags(nameplate, hideTags)
 	local db = NP:PlateDB(nameplate)
-	local hide = db.nameOnly
+	local hide = db.nameOnly or hideTags
 
 	NP:Update_TagText(nameplate, nameplate.Name, db.name)
 	NP:Update_TagText(nameplate, nameplate.Title, db.title)

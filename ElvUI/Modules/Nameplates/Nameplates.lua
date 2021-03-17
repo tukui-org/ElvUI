@@ -395,7 +395,7 @@ elseif E.myclass == 'MONK' then
 	tinsert(NP.DisableElements, 'Stagger')
 end
 
-function NP:DisablePlate(nameplate, nameOnly)
+function NP:DisablePlate(nameplate, nameOnly, hideTags)
 	for _, element in ipairs(NP.DisableElements) do
 		if nameplate:IsElementEnabled(element) then
 			nameplate:DisableElement(element)
@@ -403,7 +403,7 @@ function NP:DisablePlate(nameplate, nameOnly)
 	end
 
 	if nameOnly then
-		NP:Update_Tags(nameplate)
+		NP:Update_Tags(nameplate, hideTags)
 		NP:Update_Highlight(nameplate)
 
 		-- The position values here are forced on purpose.
