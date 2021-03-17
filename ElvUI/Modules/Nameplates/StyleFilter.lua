@@ -409,6 +409,7 @@ function mod:StyleFilterBaseUpdate(frame, show)
 		local db = mod:PlateDB(frame)
 		if db.health.enable then frame.Health:ForceUpdate() end
 		if db.power.enable then frame.Power:ForceUpdate() end
+		if db.castbar.enable then frame.Castbar:ForceUpdate() end
 	end
 
 	if mod.db.threat.enable and mod.db.threat.useThreatColor and not UnitIsTapDenied(frame.unit) then
@@ -1107,6 +1108,17 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_THREAT_SITUATION_UPDATE = false,
 	VEHICLE_UPDATE = true
 }
+mod.StyleFilterCastEvents = {
+	UNIT_SPELLCAST_START = 1,			-- start
+	UNIT_SPELLCAST_CHANNEL_START = 1,
+	UNIT_SPELLCAST_STOP = 1,			-- stop
+	UNIT_SPELLCAST_CHANNEL_STOP = 1,
+	UNIT_SPELLCAST_FAILED = 1,			-- fail
+	UNIT_SPELLCAST_INTERRUPTED = 1
+}
+for event in pairs(mod.StyleFilterCastEvents) do
+	mod.StyleFilterDefaultEvents[event] = false
+end
 
 function mod:StyleFilterWatchEvents()
 	for event in pairs(mod.StyleFilterDefaultEvents) do
@@ -1143,6 +1155,12 @@ function mod:StyleFilterConfigure()
 					if (t.casting.interruptible or t.casting.notInterruptible)
 					or (t.casting.isCasting or t.casting.isChanneling or t.casting.notCasting or t.casting.notChanneling) then
 						events.FAKE_Casting = 0
+					end
+				end
+
+				if events.FAKE_Casting then
+					for event in pairs(mod.StyleFilterCastEvents) do
+						events[event] = 1
 					end
 				end
 
@@ -1263,11 +1281,13 @@ function mod:StyleFilterUpdate(frame, event)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
-	local update = function(frame, event, ...)
+	local update = function(frame, event, arg1, ...)
 		local eventFunc = mod.StyleFilterEventFunctions[event]
-		if eventFunc then eventFunc(frame, event, ...) end
+		if eventFunc then eventFunc(frame, event, arg1, ...) end
 
-		mod:StyleFilterUpdate(frame, event)
+		if not mod.StyleFilterCastEvents[event] or (frame.StyleFilterChanges.NameOnly and arg1 == frame.unit) then
+			mod:StyleFilterUpdate(frame, event) -- we want to skip cast updates unless its in nameonly for that unit
+		end
 	end
 
 	local oUF_event_metatable = {
