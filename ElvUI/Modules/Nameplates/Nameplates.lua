@@ -532,15 +532,7 @@ function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	end
 end
 
-function NP:ConfigureAll(skipUpdate)
-	if E.private.nameplates.enable ~= true then return end
-	NP:StyleFilterConfigure() -- keep this at the top
-	NP:SetNamePlateClickThrough()
-	NP:SetNamePlateSizes()
-	NP:PLAYER_REGEN_ENABLED()
-	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
-	NP:Update_StatusBars()
-
+function NP:ToggleStaticPlate()
 	local playerEnabled = NP.db.units.PLAYER.enable
 	local isStatic = NP.db.units.PLAYER.useStaticPosition
 
@@ -556,14 +548,18 @@ function NP:ConfigureAll(skipUpdate)
 	end
 
 	NP:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
+end
 
+function NP:ConfigurePlates(skip)
 	NP.SkipFading = true
 
 	if _G.ElvNP_Test:IsEnabled() then
 		NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED')
 	end
 
-	if skipUpdate then -- since this is a fake plate, we actually need to trigger this always
+	local playerEnabled = NP.db.units.PLAYER.enable
+	local isStatic = NP.db.units.PLAYER.useStaticPosition
+	if skip then -- since this is a fake plate, we actually need to trigger this always
 		NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
 
 		_G.ElvNP_Player.StyleFilterBaseAlreadyUpdated = nil
@@ -591,6 +587,20 @@ function NP:ConfigureAll(skipUpdate)
 	end
 
 	NP.SkipFading = nil
+end
+
+function NP:ConfigureAll(skip)
+	if E.private.nameplates.enable ~= true then return end
+
+	NP:StyleFilterConfigure() -- keep this at the top
+	NP:SetNamePlateClickThrough()
+	NP:SetNamePlateSizes()
+	NP:PLAYER_REGEN_ENABLED()
+	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
+	NP:Update_StatusBars()
+
+	NP:ConfigurePlates(skip) -- keep before toggle static
+	NP:ToggleStaticPlate()
 end
 
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
