@@ -557,10 +557,9 @@ function NP:ConfigurePlates(skip)
 		NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED')
 	end
 
-	local playerEnabled = NP.db.units.PLAYER.enable
-	local isStatic = NP.db.units.PLAYER.useStaticPosition
+	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
 	if skip then -- since this is a fake plate, we actually need to trigger this always
-		NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+		NP:NamePlateCallBack(_G.ElvNP_Player, staticEvent, 'player')
 
 		_G.ElvNP_Player.StyleFilterBaseAlreadyUpdated = nil
 		_G.ElvNP_Player:UpdateAllElements('ForceUpdate')
@@ -575,7 +574,7 @@ function NP:ConfigurePlates(skip)
 			end
 
 			if nameplate == _G.ElvNP_Player then
-				NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+				NP:NamePlateCallBack(_G.ElvNP_Player, staticEvent, 'player')
 			else
 				nameplate.previousType = nil -- keep over the callback, we still need a full update
 				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
