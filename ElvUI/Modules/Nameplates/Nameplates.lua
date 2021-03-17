@@ -550,7 +550,7 @@ function NP:ToggleStaticPlate()
 	NP:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
 end
 
-function NP:ConfigurePlates(skip)
+function NP:ConfigurePlates(init)
 	NP.SkipFading = true
 
 	if _G.ElvNP_Test:IsEnabled() then
@@ -558,7 +558,7 @@ function NP:ConfigurePlates(skip)
 	end
 
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
-	if skip then -- since this is a fake plate, we actually need to trigger this always
+	if init then -- since this is a fake plate, we actually need to trigger this always
 		NP:NamePlateCallBack(_G.ElvNP_Player, staticEvent, 'player')
 
 		_G.ElvNP_Player.StyleFilterBaseAlreadyUpdated = nil
@@ -588,7 +588,7 @@ function NP:ConfigurePlates(skip)
 	NP.SkipFading = nil
 end
 
-function NP:ConfigureAll(skip)
+function NP:ConfigureAll(init)
 	if E.private.nameplates.enable ~= true then return end
 
 	NP:StyleFilterConfigure() -- keep this at the top
@@ -598,7 +598,7 @@ function NP:ConfigureAll(skip)
 	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
 	NP:Update_StatusBars()
 
-	NP:ConfigurePlates(skip) -- keep before toggle static
+	NP:ConfigurePlates(init) -- keep before toggle static
 	NP:ToggleStaticPlate()
 end
 
