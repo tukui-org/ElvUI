@@ -1144,24 +1144,19 @@ function mod:StyleFilterConfigure()
 				events.NAME_PLATE_UNIT_ADDED = 1
 				events.UNIT_FACTION = 1 -- frameType can change here
 
-				local castEvents
 				if t.casting then
+					local spell
 					if next(t.casting.spells) then
 						for _, value in pairs(t.casting.spells) do
 							if value then
-								castEvents = 0
+								spell = true
 								break
 					end end end
 
-					if (t.casting.interruptible or t.casting.notInterruptible)
-					or (t.casting.isCasting or t.casting.isChanneling or t.casting.notCasting or t.casting.notChanneling) then
-						castEvents = 0
-					end
-				end
-
-				if castEvents then
-					for event in pairs(mod.StyleFilterCastEvents) do
-						events[event] = 1
+					if spell or (t.casting.interruptible or t.casting.notInterruptible or t.casting.isCasting or t.casting.isChanneling or t.casting.notCasting or t.casting.notChanneling) then
+						for event in pairs(mod.StyleFilterCastEvents) do
+							events[event] = 1
+						end
 					end
 				end
 
