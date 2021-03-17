@@ -233,7 +233,7 @@ function NP:Update_Fader(nameplate)
 
 			NP:PlateFade(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
-	else
+	elseif db.enable then
 		if not nameplate.Fader then
 			nameplate.Fader = {}
 		end
