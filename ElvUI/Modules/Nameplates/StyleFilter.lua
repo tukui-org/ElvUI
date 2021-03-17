@@ -1282,7 +1282,7 @@ do -- oUF style filter inject watch functions without actually registering any e
 		if eventFunc then eventFunc(frame, event, arg1, ...) end
 
 		if not mod.StyleFilterCastEvents[event] or (arg1 == frame.unit) then
-			mod:StyleFilterUpdate(frame, event) -- we want to skip cast updates unless its in nameonly for that unit
+			mod:StyleFilterUpdate(frame, event)
 		end
 	end
 
