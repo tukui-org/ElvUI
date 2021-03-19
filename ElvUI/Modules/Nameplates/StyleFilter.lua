@@ -406,22 +406,22 @@ function mod:StyleFilterBaseUpdate(frame, show)
 	end
 
 	local db = mod:PlateDB(frame)
-	if db and not db.nameOnly then
-		if db.health.enable then frame.Health:ForceUpdate() end
+	if not db.nameOnly then
 		if db.power.enable then frame.Power:ForceUpdate() end
+		if db.health.enable then frame.Health:ForceUpdate() end
 		if db.castbar.enable then frame.Castbar:ForceUpdate() end
 
 		if mod.db.threat.enable and mod.db.threat.useThreatColor and not UnitIsTapDenied(frame.unit) then
 			frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
 		end
 
-		if frame.isTarget then
-			if frame.frameType and frame.frameType ~= 'PLAYER' and mod.db.units.TARGET.glowStyle ~= 'none' then
-				frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
-			end
-
-			mod:SetupTarget(frame) -- so the classbar will show up
+		if frame.isTarget and frame.frameType ~= 'PLAYER' and mod.db.units.TARGET.glowStyle ~= 'none' then
+			frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
 		end
+	end
+
+	if frame.isTarget then
+		mod:SetupTarget(frame, db.nameOnly) -- so the classbar will show up
 	end
 
 	if show and not mod.SkipFading then
@@ -479,7 +479,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 
 		mod:StyleFilterBorderLock(frame.Health.backdrop, bc.r, bc.g, bc.b, bc.a)
 
-		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
+		if frame.Power.backdrop and db.power.enable then
 			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a)
 		end
 	end
@@ -577,7 +577,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	if Borders then
 		mod:StyleFilterBorderLock(frame.Health.backdrop)
 
-		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
+		if frame.Power.backdrop and db.power.enable then
 			mod:StyleFilterBorderLock(frame.Power.backdrop)
 		end
 	end
@@ -994,13 +994,12 @@ end
 
 function mod:StyleFilterPass(frame, actions)
 	local db = mod:PlateDB(frame)
-	local healthBarEnabled = (frame.frameType and db.health.enable) or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
-	local powerBarEnabled = frame.frameType and db.power and db.power.enable
+	local healthBarEnabled = db.health.enable or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
 	mod:StyleFilterSetChanges(frame, actions,
 		(healthBarShown and actions.color and actions.color.health), --HealthColor
-		(healthBarShown and powerBarEnabled and actions.color and actions.color.power), --PowerColor
+		(healthBarShown and db.power.enable and actions.color and actions.color.power), --PowerColor
 		(healthBarShown and actions.color and actions.color.border and frame.Health.backdrop), --Borders
 		(healthBarShown and actions.flash and actions.flash.enable and frame.HealthFlashTexture), --HealthFlash
 		(healthBarShown and actions.texture and actions.texture.enable), --HealthTexture
@@ -1132,10 +1131,10 @@ function mod:StyleFilterConfigure()
 	wipe(events)
 	wipe(list)
 
-	for filterName, filter in pairs(E.global.nameplate.filters) do
-		local t = filter.triggers
-		if t and E.db.nameplates and E.db.nameplates.filters then
-			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
+	if E.db.nameplates and E.db.nameplates.filters  then
+		for filterName, filter in pairs(E.global.nameplate.filters) do
+			local t = filter.triggers
+			if t and E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
 
 				-- NOTE: 0 for fake events
