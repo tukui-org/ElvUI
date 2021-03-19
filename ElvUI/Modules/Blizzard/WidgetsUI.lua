@@ -93,7 +93,7 @@ end
 
 local function EmberCourtCaptureBar() end
 local CaptureBarSkins = {
-	['we need the pvp widget id in here'] = PVPCaptureBar,
+	[2] = PVPCaptureBar,
 	[252] = EmberCourtCaptureBar
 }
 
