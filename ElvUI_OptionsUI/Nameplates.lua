@@ -908,7 +908,7 @@ local function UpdateFilterGroup()
 									name = L["Not Casting Anything"],
 									desc = L["If enabled then the filter will activate if the unit is not casting anything."]
 								},
-								spacer1 = ACH:Spacer(6, 'full'),
+								spacer2 = ACH:Spacer(6, 'full'),
 								isChanneling = {
 									type = 'toggle',
 									order = 7,

@@ -920,10 +920,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			end
 		end
 
-		-- Status
-		if c.isCasting or c.isChanneling or c.notCasting or c.notChanneling then
-			if (c.isCasting and b.casting) or (c.isChanneling and b.channeling)
-			or (c.notCasting and not b.casting) or (c.notChanneling and not b.channeling) then passed = true else return end
+		-- Not Status
+		if c.notCasting or c.notChanneling then
+			if c.notCasting and c.notChanneling then
+				if not b.casting and not b.channeling then passed = true else return end
+			elseif (c.notCasting and not b.casting) or (c.notChanneling and not b.channeling) then passed = true else return end
+		end
+
+		-- Is Status
+		if c.isCasting or c.isChanneling then
+			if (c.isCasting and b.casting) or (c.isChanneling and b.channeling) then passed = true else return end
 		end
 
 		-- Interruptible
