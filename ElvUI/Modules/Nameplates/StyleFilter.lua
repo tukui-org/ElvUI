@@ -405,7 +405,7 @@ function mod:StyleFilterBaseUpdate(frame, show)
 		mod:UpdatePlate(frame, true) -- enable elements back
 	end
 
-	local db = mod:PlateDB(frame)
+	local db = mod:PlateDB(frame) -- keep this after UpdatePlate
 	if not db.nameOnly then
 		if db.power.enable then frame.Power:ForceUpdate() end
 		if db.health.enable then frame.Health:ForceUpdate() end
