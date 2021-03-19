@@ -405,23 +405,23 @@ function mod:StyleFilterBaseUpdate(frame, show)
 		mod:UpdatePlate(frame, true) -- enable elements back
 	end
 
-	if frame.frameType then
-		local db = mod:PlateDB(frame)
+	local db = mod:PlateDB(frame)
+	if db and not db.nameOnly then
 		if db.health.enable then frame.Health:ForceUpdate() end
 		if db.power.enable then frame.Power:ForceUpdate() end
 		if db.castbar.enable then frame.Castbar:ForceUpdate() end
-	end
 
-	if mod.db.threat.enable and mod.db.threat.useThreatColor and not UnitIsTapDenied(frame.unit) then
-		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
-	end
-
-	if frame.isTarget then
-		if frame.frameType and frame.frameType ~= 'PLAYER' and mod.db.units.TARGET.glowStyle ~= 'none' then
-			frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
+		if mod.db.threat.enable and mod.db.threat.useThreatColor and not UnitIsTapDenied(frame.unit) then
+			frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
 		end
 
-		mod:SetupTarget(frame) -- so the classbar will show up
+		if frame.isTarget then
+			if frame.frameType and frame.frameType ~= 'PLAYER' and mod.db.units.TARGET.glowStyle ~= 'none' then
+				frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
+			end
+
+			mod:SetupTarget(frame) -- so the classbar will show up
+		end
 	end
 
 	if show and not mod.SkipFading then
