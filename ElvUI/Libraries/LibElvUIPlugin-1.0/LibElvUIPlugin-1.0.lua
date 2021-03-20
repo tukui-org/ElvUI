@@ -30,8 +30,8 @@ LibElvUIPlugin API:
 		function	- function to call after Initialize (may be a string, that exists on the addons table: table['string'])
 ----------------------------]]--
 
-local assert, pairs, ipairs, strlen = assert, pairs, ipairs, strlen
 local tonumber, strmatch, strsub, tinsert = tonumber, strmatch, strsub, tinsert
+local assert, pairs, ipairs, strlen, pcall = assert, pairs, ipairs, strlen, pcall
 local format, wipe, type, gmatch, gsub, ceil = format, wipe, type, gmatch, gsub, ceil
 
 local hooksecurefunc = hooksecurefunc
