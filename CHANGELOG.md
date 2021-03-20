@@ -1,6 +1,9 @@
 ### Version 12.24 [ ETA: 🍨 ]
 
 **Changes:**  
+Apply to All for Aura Indicator on Pet and Focus not works correctly.  
+Updated Style Filter code for Casting triggers and fixed a few bugs when using Name Only in nameplate settings.  
+Fixed an issue which happened to display the Static and Real Player nameplate at the same time.  
 
 ___
 

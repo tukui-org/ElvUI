@@ -108,7 +108,10 @@ function S:Blizzard_WeeklyRewards()
 		local overlay = frame.Overlay
 		if overlay then
 			overlay:StripTextures()
-			overlay:CreateBackdrop() --transparent is not visibly at all
+
+			if not overlay.backdrop then
+				overlay:CreateBackdrop() --transparent is not visibly at all
+			end
 		end
 	end)
 
