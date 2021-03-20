@@ -99,20 +99,18 @@ function NP:Construct_TargetIndicator(nameplate)
 end
 
 function NP:Update_TargetIndicator(nameplate)
-	local db = NP:PlateDB(nameplate)
-	local tdb = NP.db.units.TARGET
-
+	local enabled = nameplate:IsElementEnabled('TargetIndicator')
 	if nameplate.frameType == 'PLAYER' then
-		if nameplate:IsElementEnabled('TargetIndicator') then
+		if enabled then
 			nameplate:DisableElement('TargetIndicator')
 		end
-		return
-	end
 
-	if not nameplate:IsElementEnabled('TargetIndicator') then
+		return
+	elseif not enabled then
 		nameplate:EnableElement('TargetIndicator')
 	end
 
+	local tdb = NP.db.units.TARGET
 	local indicator = nameplate.TargetIndicator
 	indicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow] or E.Media.Arrows.Arrow9
 	indicator.lowHealthThreshold = NP.db.lowHealthThreshold
@@ -121,6 +119,7 @@ function NP:Update_TargetIndicator(nameplate)
 	if indicator.style ~= 'none' then
 		local style, color, scale, spacing = tdb.glowStyle, NP.db.colors.glowColor, tdb.arrowScale, tdb.arrowSpacing
 		local r, g, b, a = color.r, color.g, color.b, color.a
+		local db = NP:PlateDB(nameplate)
 
 		-- background glow is 2, 6, and 8; 2 is background glow only
 		if not db.health.enable and (style ~= 'style2' and style ~= 'style6' and style ~= 'style8') then
@@ -173,7 +172,7 @@ function NP:Construct_Highlight(nameplate)
 	return Highlight
 end
 
-function NP:Update_Highlight(nameplate)
+function NP:Update_Highlight(nameplate, nameOnlySF)
 	local db = NP:PlateDB(nameplate)
 
 	if NP.db.highlight and db.enable then
@@ -181,8 +180,7 @@ function NP:Update_Highlight(nameplate)
 			nameplate:EnableElement('Highlight')
 		end
 
-		local sf = NP:StyleFilterChanges(nameplate)
-		if db.health.enable and not (db.nameOnly or sf.NameOnly) then
+		if db.health.enable and not (db.nameOnly or nameOnlySF) then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, 0.25)
 			nameplate.Highlight.texture:SetAllPoints(nameplate.HealthFlashTexture)
 			nameplate.Highlight.texture:SetAlpha(0.75)
@@ -235,7 +233,7 @@ function NP:Update_Fader(nameplate)
 
 			NP:PlateFade(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
-	else
+	elseif db.enable then
 		if not nameplate.Fader then
 			nameplate.Fader = {}
 		end

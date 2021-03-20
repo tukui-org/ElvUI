@@ -585,26 +585,24 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	return config
 end
 
-local function BuffIndicator_ApplyToAll(info, value, profileSpecific)
-	if profileSpecific then
-		for _, spell in pairs(E.db.unitframe.filters.aurawatch) do
-			if value ~= nil then
-				spell[info[#info]] = value
-			else
-				return spell[info[#info]]
-			end
+local function doApplyToAll(db, info, value)
+	if not db then return end
+	for _, spell in pairs(db) do
+		if value ~= nil then
+			spell[info[#info]] = value
+		else
+			return spell[info[#info]]
 		end
+	end
+end
+
+local function BuffIndicator_ApplyToAll(info, value, profile, pet)
+	if profile then
+		return doApplyToAll(E.db.unitframe.filters.aurawatch, info, value)
+	elseif pet then
+		return doApplyToAll(E.global.unitframe.aurawatch.PET, info, value)
 	else
-		local spells = E.global.unitframe.aurawatch[E.myclass]
-		if spells then
-			for _, spell in pairs(spells) do
-				if value ~= nil then
-					spell[info[#info]] = value
-				else
-					return spell[info[#info]]
-				end
-			end
-		end
+		return doApplyToAll(E.global.unitframe.aurawatch[E.myclass], info, value)
 	end
 end
 
@@ -665,8 +663,13 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 			inline = true,
 			type = 'group',
 			order = 50,
-			get = function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
-			set = function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific) end,
+			get = function(info)
+				return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet')
+			end,
+			set = function(info, value)
+				BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, groupName == 'pet')
+				updateFunc(UF, groupName, numGroup)
+			end,
 			args = {
 				header = ACH:Description(L["|cffFF0000Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1),
 				style = {

@@ -1031,6 +1031,8 @@ function S:HandleGarrisonPortrait(portrait)
 
 	if portrait.Highlight then portrait.Highlight:Hide() end
 	if portrait.PuckBorder then portrait.PuckBorder:SetAlpha(0) end
+	if portrait.TroopStackBorder1 then portrait.TroopStackBorder1:SetAlpha(0) end
+	if portrait.TroopStackBorder2 then portrait.TroopStackBorder2:SetAlpha(0) end
 
 	if portrait.HealthBar then
 		portrait.HealthBar.Border:Hide()

@@ -395,7 +395,7 @@ elseif E.myclass == 'MONK' then
 	tinsert(NP.DisableElements, 'Stagger')
 end
 
-function NP:DisablePlate(nameplate, nameOnly)
+function NP:DisablePlate(nameplate, nameOnly, nameOnlySF)
 	for _, element in ipairs(NP.DisableElements) do
 		if nameplate:IsElementEnabled(element) then
 			nameplate:DisableElement(element)
@@ -403,8 +403,8 @@ function NP:DisablePlate(nameplate, nameOnly)
 	end
 
 	if nameOnly then
-		NP:Update_Tags(nameplate)
-		NP:Update_Highlight(nameplate)
+		NP:Update_Tags(nameplate, nameOnlySF)
+		NP:Update_Highlight(nameplate, nameOnlySF)
 
 		-- The position values here are forced on purpose.
 		nameplate.Name:ClearAllPoints()
@@ -532,15 +532,7 @@ function NP:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	end
 end
 
-function NP:ConfigureAll(skipUpdate)
-	if E.private.nameplates.enable ~= true then return end
-	NP:StyleFilterConfigure() -- keep this at the top
-	NP:SetNamePlateClickThrough()
-	NP:SetNamePlateSizes()
-	NP:PLAYER_REGEN_ENABLED()
-	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
-	NP:Update_StatusBars()
-
+function NP:ToggleStaticPlate()
 	local playerEnabled = NP.db.units.PLAYER.enable
 	local isStatic = NP.db.units.PLAYER.useStaticPosition
 
@@ -556,15 +548,18 @@ function NP:ConfigureAll(skipUpdate)
 	end
 
 	NP:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
+end
 
+function NP:ConfigurePlates(init)
 	NP.SkipFading = true
 
 	if _G.ElvNP_Test:IsEnabled() then
 		NP:NamePlateCallBack(_G.ElvNP_Test, 'NAME_PLATE_UNIT_ADDED')
 	end
 
-	if skipUpdate then -- since this is a fake plate, we actually need to trigger this always
-		NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
+	if init then -- since this is a fake plate, we actually need to trigger this always
+		NP:NamePlateCallBack(_G.ElvNP_Player, staticEvent, 'player')
 
 		_G.ElvNP_Player.StyleFilterBaseAlreadyUpdated = nil
 		_G.ElvNP_Player:UpdateAllElements('ForceUpdate')
@@ -579,7 +574,7 @@ function NP:ConfigureAll(skipUpdate)
 			end
 
 			if nameplate == _G.ElvNP_Player then
-				NP:NamePlateCallBack(_G.ElvNP_Player, (isStatic and playerEnabled) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED', 'player')
+				NP:NamePlateCallBack(_G.ElvNP_Player, staticEvent, 'player')
 			else
 				nameplate.previousType = nil -- keep over the callback, we still need a full update
 				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
@@ -591,6 +586,20 @@ function NP:ConfigureAll(skipUpdate)
 	end
 
 	NP.SkipFading = nil
+end
+
+function NP:ConfigureAll(init)
+	if E.private.nameplates.enable ~= true then return end
+
+	NP:StyleFilterConfigure() -- keep this at the top
+	NP:SetNamePlateClickThrough()
+	NP:SetNamePlateSizes()
+	NP:PLAYER_REGEN_ENABLED()
+	NP:UpdateTargetPlate(_G.ElvNP_TargetClassPower)
+	NP:Update_StatusBars()
+
+	NP:ConfigurePlates(init) -- keep before toggle static
+	NP:ToggleStaticPlate()
 end
 
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)

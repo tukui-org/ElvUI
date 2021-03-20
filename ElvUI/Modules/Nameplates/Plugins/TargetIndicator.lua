@@ -21,6 +21,7 @@ local oUF = ns.oUF
 
 local function Update(self)
 	local element = self.TargetIndicator
+	local isTarget = UnitIsUnit(self.unit, 'target')
 
 	if element.PreUpdate then
 		element:PreUpdate()
@@ -32,7 +33,7 @@ local function Update(self)
 	if element.Shadow then element.Shadow:Hide() end
 	if element.Spark then element.Spark:Hide() end
 
-	if UnitIsUnit(self.unit, 'target') and (element.style ~= 'none') then
+	if isTarget and (element.style ~= 'none') then
 		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 			element.TopIndicator:Show()
 		end
@@ -51,17 +52,16 @@ local function Update(self)
 		end
 	end
 
-	local r, g, b
-	local showIndicator
-	if UnitIsUnit(self.unit, 'target') then
-		showIndicator = true
+	local show, r, g, b
+	if isTarget then
+		show = true
 		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
-	elseif not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0 then
+	elseif not isTarget and element.lowHealthThreshold > 0 then
 		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 		local perc = (maxHealth > 0 and health/maxHealth) or 0
 
 		if perc <= element.lowHealthThreshold then
-			showIndicator = true
+			show = true
 			if perc <= element.lowHealthThreshold / 2 then
 				r, g, b = 1, 0, 0
 			else
@@ -71,7 +71,7 @@ local function Update(self)
 
 	end
 
-	if showIndicator then
+	if show then
 		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 			element.TopIndicator:SetVertexColor(r, g, b)
 			element.TopIndicator:SetTexture(element.arrow)

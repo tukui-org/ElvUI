@@ -83,21 +83,17 @@ end
 
 function NP:Castbar_PostCastStart(unit)
 	self:CheckInterrupt(unit)
-	NP:StyleFilterUpdate(self.__owner, 'FAKE_Casting')
 end
 
 function NP:Castbar_PostCastFail()
 	self:SetStatusBarColor(NP.db.colors.castInterruptedColor.r, NP.db.colors.castInterruptedColor.g, NP.db.colors.castInterruptedColor.b)
-	NP:StyleFilterUpdate(self.__owner, 'FAKE_Casting')
 end
 
 function NP:Castbar_PostCastInterruptible(unit)
 	self:CheckInterrupt(unit)
 end
 
-function NP:Castbar_PostCastStop()
-	NP:StyleFilterUpdate(self.__owner, 'FAKE_Casting')
-end
+function NP:Castbar_PostCastStop() end
 
 function NP:Construct_Castbar(nameplate)
 	local Castbar = CreateFrame('StatusBar', nameplate:GetName()..'Castbar', nameplate)
