@@ -437,7 +437,7 @@ function S:Blizzard_AchievementUI(event)
 		for i = 1, numCriteria do
 			local _, criteriaType, completed, _, _, _, _, assetID = GetAchievementCriteriaInfo(id, i)
 
-			if ( criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT and assetID ) then
+			if (criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT and assetID) then
 				metas = metas + 1
 				criteria, object = _G.AchievementButton_GetMeta(metas), 'label'
 			elseif criteriaType ~= 1 then
@@ -446,14 +446,16 @@ function S:Blizzard_AchievementUI(event)
 			end
 
 			local r, g, b, x, y = .6, .6, .6, 1, -1
-			if ( objectivesFrame.completed and completed ) then
+			if (objectivesFrame.completed and completed) then
 				r, g, b, x, y = 1, 1, 1, 0, 0
-			elseif ( completed ) then
+			elseif (completed) then
 				r, g, b, x, y = 0, 1, 0, 1, -1
 			end
 
-			criteria[object]:SetTextColor(r, g, b)
-			criteria[object]:SetShadowOffset(x, y)
+			if criteria and criteria[object] then
+				criteria[object]:SetTextColor(r, g, b)
+				criteria[object]:SetShadowOffset(x, y)
+			end
 		end
 	end)
 
