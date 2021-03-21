@@ -7,11 +7,11 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 local atlasColors = {
-	["UI-Frame-Bar-Fill-Blue"]			= {0.2, 0.6, 1.0},
-	["UI-Frame-Bar-Fill-Red"]			= {0.9, 0.2, 0.2},
-	["UI-Frame-Bar-Fill-Yellow"]		= {1.0, 0.6, 0.0},
-	["objectivewidget-bar-fill-left"]	= {0.2, 0.6, 1.0},
-	["objectivewidget-bar-fill-right"]	= {0.9, 0.2, 0.2}
+	['UI-Frame-Bar-Fill-Blue']			= {0.2, 0.6, 1.0},
+	['UI-Frame-Bar-Fill-Red']			= {0.9, 0.2, 0.2},
+	['UI-Frame-Bar-Fill-Yellow']		= {1.0, 0.6, 0.0},
+	['objectivewidget-bar-fill-left']	= {0.2, 0.6, 1.0},
+	['objectivewidget-bar-fill-right']	= {0.9, 0.2, 0.2}
 }
 
 local function UpdateBarTexture(bar, atlas)
@@ -66,7 +66,7 @@ function B:UIWidgetTemplateStatusBar()
 	end
 end
 
-function B:UIWidgetTemplateCaptureBar()
+local function PVPCaptureBar(self)
 	self.LeftLine:SetAlpha(0)
 	self.RightLine:SetAlpha(0)
 	self.BarBackground:SetAlpha(0)
@@ -89,6 +89,18 @@ function B:UIWidgetTemplateCaptureBar()
 		self.backdrop:Point('TOPLEFT', self.LeftBar, -x, x)
 		self.backdrop:Point('BOTTOMRIGHT', self.RightBar, x, -x)
 	end
+end
+
+local function EmberCourtCaptureBar() end
+local CaptureBarSkins = {
+	[2] = PVPCaptureBar,
+	[252] = EmberCourtCaptureBar
+}
+
+function B:UIWidgetTemplateCaptureBar(_, widgetContainer)
+	if not widgetContainer then return end
+	local skinFunc = CaptureBarSkins[widgetContainer.widgetSetID]
+	if skinFunc then skinFunc(self) end
 end
 
 function B:Handle_UIWidgets()

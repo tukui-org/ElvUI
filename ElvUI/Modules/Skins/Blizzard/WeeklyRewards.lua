@@ -104,6 +104,17 @@ function S:Blizzard_WeeklyRewards()
 		end
 	end)
 
+	hooksecurefunc(frame, 'UpdateOverlay', function()
+		local overlay = frame.Overlay
+		if overlay then
+			overlay:StripTextures()
+
+			if not overlay.backdrop then
+				overlay:CreateBackdrop() --transparent is not visibly at all
+			end
+		end
+	end)
+
 	local rewardText = frame.ConcessionFrame.RewardsFrame.Text
 	ReplaceIconString(rewardText)
 	hooksecurefunc(rewardText, 'SetText', ReplaceIconString)
