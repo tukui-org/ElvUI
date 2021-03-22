@@ -70,6 +70,7 @@ end
 local function ReskinMissionComplete(frame)
 	local missionComplete = frame.MissionComplete
 	local bonusRewards = missionComplete.BonusRewards
+
 	if bonusRewards then
 		select(11, bonusRewards:GetRegions()):SetTextColor(1, .8, 0)
 		bonusRewards.Saturated:StripTextures()
@@ -78,9 +79,11 @@ local function ReskinMissionComplete(frame)
 		end
 		bonusRewards:CreateBackdrop()
 	end
+
 	if missionComplete.NextMissionButton then
 		S:HandleButton(missionComplete.NextMissionButton)
 	end
+
 	if missionComplete.CompleteFrame then
 		if E.private.skins.parchmentRemoverEnable then
 			missionComplete:StripTextures()
@@ -97,6 +100,12 @@ local function ReskinMissionComplete(frame)
 		S:HandleButton(missionComplete.CompleteFrame.SpeedButton)
 		S:HandleButton(missionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton)
 	end
+
+	if missionComplete.MissionInfo then
+		missionComplete.MissionInfo:StripTextures()
+	end
+	if missionComplete.EnemyBackground then missionComplete.EnemyBackground:Hide() end
+	if missionComplete.FollowerBackground then missionComplete.FollowerBackground:Hide() end
 end
 
 -- TO DO: Extend this function
