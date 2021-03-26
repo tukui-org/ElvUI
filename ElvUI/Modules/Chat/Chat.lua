@@ -239,7 +239,7 @@ do --this can save some main file locals
 		-- Blazeflack
 		['Blazii-Silvermoon']	= ElvBlue, -- Priest
 		['Chazii-Silvermoon']	= ElvBlue, -- Shaman
-		-- NihilisticPandemonium
+		-- Nihilistzsche
 		['Dirishia-WyrmrestAccord']		= itsTheFlyestNihilist('Warlock'),
 		['Xanikani-WyrmrestAccord']		= itsTheFlyestNihilist('Mage'),
 		['Rikanza-WyrmrestAccord']		= itsTheFlyestNihilist('Monk'),

@@ -74,7 +74,7 @@ function DT:SetEasyMenuAnchor(menu, dt)
 end
 
 --> [HyperDT Credits] <--
---> Original Work: NihilisticPandemonium
+--> Original Work: Nihilistzsche
 --> Modified by Azilroka! :)
 
 function DT:SingleHyperMode(_, key, active)
