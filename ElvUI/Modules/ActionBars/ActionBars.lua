@@ -90,22 +90,22 @@ AB.barDefaults = {
 	},
 	bar7 = {
 		page = 7,
-		bindButtons = 'EXTRABAR7BUTTON',
+		bindButtons = 'ELVUIBAR7BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,298',
 	},
 	bar8 = {
 		page = 8,
-		bindButtons = 'EXTRABAR8BUTTON',
+		bindButtons = 'ELVUIBAR8BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,332',
 	},
 	bar9 = {
 		page = 9,
-		bindButtons = 'EXTRABAR9BUTTON',
+		bindButtons = 'ELVUIBAR9BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,366',
 	},
 	bar10 = {
 		page = 10,
-		bindButtons = 'EXTRABAR10BUTTON',
+		bindButtons = 'ELVUIBAR10BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
 }
