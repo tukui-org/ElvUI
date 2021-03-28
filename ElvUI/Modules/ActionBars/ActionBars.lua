@@ -65,7 +65,7 @@ AB.barDefaults = {
 	},
 	bar2 = {
 		page = 2,
-		bindButtons = 'ELVUIBAR6BUTTON',
+		bindButtons = 'ELVUIBAR2BUTTON',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
 	},
 	bar3 = {
