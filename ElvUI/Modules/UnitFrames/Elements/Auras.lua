@@ -415,7 +415,7 @@ function UF:ConvertFilters(auras, priority)
 			tinsert(list, {
 				name = real,
 				custom = custom,
-				status = (friend and 1) or (enemy and 2) or true
+				status = (friend and 1) or (enemy and 2) or nil
 			})
 		end
 	end
