@@ -1476,12 +1476,13 @@ function UF:Initialize()
 	E.ElvUF_Parent:SetFrameStrata('LOW')
 	RegisterStateDriver(E.ElvUF_Parent, 'visibility', '[petbattle] hide;show')
 
-	UF:UpdateColors()
 	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		UF:Construct_UF(frame, unit)
 	end)
 	ElvUF:SetActiveStyle('ElvUF')
+
+	UF:UpdateColors()
 	UF:LoadUnits()
 
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
