@@ -12,68 +12,68 @@
 		HideBothChat()
 	</Binding>
 
-	<Binding name="ELVUIBAR2BUTTON1" header="BAR2" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON2" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON3" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON4" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON5" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON6" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON7" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON8" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON9" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON10" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON11" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR2BUTTON12" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
+	<Binding name='ELVUIBAR2BUTTON1' header='BAR2' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON2' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON3' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON4' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON5' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON6' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON7' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON8' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON9' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON10' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON11' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR2BUTTON12' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
 
-	<Binding name="ELVUIBAR7BUTTON1" header="BAR7" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON2" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON3" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON4" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON5" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON6" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON7" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON8" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON9" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON10" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON11" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR7BUTTON12" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
+	<Binding name='ELVUIBAR7BUTTON1' header='BAR7' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON2' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON3' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON4' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON5' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON6' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON7' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON8' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON9' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON10' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON11' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR7BUTTON12' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
 
-	<Binding name="ELVUIBAR8BUTTON1" header="BAR8" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON2" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON3" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON4" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON5" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON6" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON7" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON8" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON9" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON10" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON11" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR8BUTTON12" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
+	<Binding name='ELVUIBAR8BUTTON1' header='BAR8' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON2' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON3' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON4' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON5' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON6' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON7' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON8' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON9' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON10' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON11' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR8BUTTON12' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
 
-	<Binding name="ELVUIBAR9BUTTON1" header="BAR9" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON2" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON3" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON4" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON5" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON6" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON7" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON8" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON9" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON10" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON11" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR9BUTTON12" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
+	<Binding name='ELVUIBAR9BUTTON1' header='BAR9' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON2' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON3' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON4' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON5' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON6' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON7' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON8' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON9' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON10' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON11' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR9BUTTON12' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
 
-	<Binding name="ELVUIBAR10BUTTON1" header="BAR10" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON2" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON3" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON4" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON5" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON6" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON7" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON8" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON9" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON10" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON11" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
-	<Binding name="ELVUIBAR10BUTTON12" runOnUp="false" category="BINDING_HEADER_ELVUI"/>
+	<Binding name='ELVUIBAR10BUTTON1' header='BAR10' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON2' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON3' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON4' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON5' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON6' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON7' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON8' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON9' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON10' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON11' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
+	<Binding name='ELVUIBAR10BUTTON12' runOnUp='false' category='BINDING_HEADER_ELVUI'/>
 </Bindings>

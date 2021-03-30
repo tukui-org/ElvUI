@@ -35,7 +35,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
--- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
+-- GLOBALS: ElvCharacterDB, ElvUIPlayerBuffs, ElvUIPlayerDebuffs
 
 --Modules
 local ActionBars = E:GetModule('ActionBars')
@@ -1835,7 +1835,7 @@ function E:DBConversions()
 end
 
 function E:ConvertActionBarKeybinds()
-	if not _G.ElvCharacterDB.ConvertKeybindings then
+	if not ElvCharacterDB.ConvertKeybindings then
 		for oldKeybind, newKeybind in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
 			for i = 1, 12 do
 				local keys = { GetBindingKey(format('%s%d', oldKeybind, i)) }
@@ -1849,7 +1849,7 @@ function E:ConvertActionBarKeybinds()
 
 		SaveBindings(GetCurrentBindingSet())
 
-		_G.ElvCharacterDB.ConvertKeybindings = true
+		ElvCharacterDB.ConvertKeybindings = true
 	end
 end
 
