@@ -399,24 +399,24 @@ function UF:PostUpdateAura(_, button)
 end
 
 function UF:ConvertFilters(auras, priority)
+	if not priority or priority == '' then return end
+
 	local list = auras.filterList or {}
 	if next(list) then wipe(list) end
 
-	if priority and priority ~= '' then
-		local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
+	local special, filters = G.unitframe.specialFilters, E.global.unitframe.aurafilters
 
-		for _, name in next, {strsplit(',', priority)} do
-			local friend, enemy = strmatch(name, '^Friendly:([^,]*)'), strmatch(name, '^Enemy:([^,]*)')
-			local real = friend or enemy or name
-			local custom = filters[real]
+	for _, name in next, {strsplit(',', priority)} do
+		local friend, enemy = strmatch(name, '^Friendly:([^,]*)'), strmatch(name, '^Enemy:([^,]*)')
+		local real = friend or enemy or name
+		local custom = filters[real]
 
-			if special[real] or custom then
-				tinsert(list, {
-					name = real,
-					custom = custom,
-					status = (friend and 1) or (enemy and 2) or true
-				})
-			end
+		if special[real] or custom then
+			tinsert(list, {
+				name = real,
+				custom = custom,
+				status = (friend and 1) or (enemy and 2) or true
+			})
 		end
 	end
 
