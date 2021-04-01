@@ -518,11 +518,12 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	-- NPC ID's
 	if unit and not isPlayerUnit and TT:IsModKeyDown() then
-		if C_PetBattles_IsInBattle() then return end
-		local guid = UnitGUID(unit) or ''
-		local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
-		if id then
-			tt:AddLine(format(IDLine, _G.ID, id))
+		if not C_PetBattles_IsInBattle() then
+			local guid = UnitGUID(unit) or ''
+			local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
+			if id then
+				tt:AddLine(format(IDLine, _G.ID, id))
+			end
 		end
 	end
 
