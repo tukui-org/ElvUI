@@ -257,8 +257,7 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 				absorbBar:Point(pred.anchor, pred.health)
 				absorbBar:Point(pred.anchor2, pred.health, pred.anchor2)
 			elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
-				local maxOverflow = colors.maxOverflow or 0
-				local overflowAbsorb = absorb * maxOverflow
+				local overflowAbsorb = absorb * (colors.maxOverflow or 0)
 				if health == maxHealth then
 					absorbBar:SetValue(overflowAbsorb)
 				else -- fill the inner part along with the overflow amount so it smoothly transitions
