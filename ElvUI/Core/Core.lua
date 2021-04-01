@@ -56,7 +56,7 @@ local LSM = E.Libs.LSM
 
 --Constants
 E.noop = function() end
-E.title = format('|cff1784d1%s |r', 'ElvUI')
+E.title = format('%s%s |r', E.InfoColor, 'ElvUI')
 E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.mylevel = UnitLevel('player')
@@ -74,7 +74,6 @@ E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]] -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
-E.InfoColor = '|cff1784d1'
 E.UserList = {}
 
 -- oUF Defines

@@ -2,9 +2,6 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "esMX")
 
-local COLOR1 = '|cFF1784d1'
-local COLOR2 = '|cfd9b9b9b'
-
 L["BoP"] = true
 L["BoE"] = true
 L["BoU"] = true
@@ -158,7 +155,7 @@ L["Honor Bar"] = "Barra de Honor"
 L["Honor Remaining:"] = "Honor restante:"
 L["Honor XP:"] = true
 L["Horde: "] = "Horda: "
-L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1macro|r, or |cFF1784d1spellbook|r button to bind it. This also works for items in your |cFF1784d1bag|r. Press the |cfd9b9b9bESC|r key to |cfd9b9b9bclear|r the current bindings."] = true
+L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["HP"] = "Salud"
 L["HPS"] = "VPS"
 L["I Swear"] = "Lo Juro"
@@ -203,8 +200,8 @@ L["Legs"] = "Piernas"
 L["Level Up Display / Boss Banner"] = "Subiste de nivel / Jefe Banner"
 L["List of installations in queue:"] = "Lista de Instalaciones en cola:"
 L["Lock"] = "Bloquear"
-L["LOGIN_MSG_HELP"] = ("Por favor, escriba */ehelp|r para obtener una lista de los comandos de *ElvUI|r disponibles."):gsub('*', COLOR1)
-L["LOGIN_MSG"] = ("Bienvenido a *ElvUI|r versión *%s|r, escribe */ec|r para acceder al menú de configuración del juego. Si necesita ayuda, puede visítenos en https://www.tukui.org o unirse a nuestro Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Por favor, escriba */ehelp|r para obtener una lista de los comandos de *ElvUI|r disponibles."):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("Bienvenido a *ElvUI|r versión *%s|r, escribe */ec|r para acceder al menú de configuración del juego. Si necesita ayuda, puede visítenos en https://www.tukui.org o unirse a nuestro Discord: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = "Marcos de Botín / Alerta"
 L["Loot Frame"] = "Marco de Botín"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "¡Milagro! ¡La descarga se desvaneció como pedo! Intenta de nuevo"
@@ -397,4 +394,4 @@ L["EHELP_COMMANDS"] = ([=[Aquí hay una lista de todos los comandos importantes 
  */luaerror|r ^on|r or ^off|r  -  Deshabilitar todos los AddOns excepto ElvUI.
   NOTA: */luaerror|r ^off|r volverá a habilitar los complementos deshabilitado
   mediante el uso de */luaerror|r ^on|r dentro de esa sesión.
-]=]):gsub('*', COLOR1):gsub('%^', COLOR2)
+]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
