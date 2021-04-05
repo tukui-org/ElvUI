@@ -247,7 +247,7 @@ do --this can save some main file locals
 		['Cerishia-WyrmrestAccord']		= itsTheFlyestNihilist('Priest'),
 		['Vellilara-WyrmrestAccord']	= itsTheFlyestNihilist('DemonHunter'),
 		['Sayalia-WyrmrestAccord']		= itsTheFlyestNihilist('DeathKnight'),
-		['Pakasta-WyrmrestAccord']		= itsTheFlyestNihilist('Paladin'),
+		['Alledarisa-WyrmrestAccord']	= itsTheFlyestNihilist('Paladin'),
 		['Orlyrala-WyrmrestAccord']		= itsTheFlyestNihilist('Shaman'),
 		['Scerila-WyrmrestAccord']		= itsTheFlyestNihilist('Rogue'),
 		['Ralaniki-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
