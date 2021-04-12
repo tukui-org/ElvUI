@@ -389,10 +389,8 @@ end
 
 function A:Initialize()
 	if E.private.auras.disableBlizzard then
-		_G.BuffFrame:UnregisterAllEvents()
-		_G.BuffFrame:Hide()
-		_G.TemporaryEnchantFrame:UnregisterAllEvents()
-		_G.TemporaryEnchantFrame:Hide()
+		_G.BuffFrame:Kill()
+		_G.TemporaryEnchantFrame:Kill()
 	end
 
 	if not E.private.auras.enable then return end
