@@ -1,4 +1,4 @@
-## Interface: 90005
+## Interface: 90100
 ## Author: Elv
 ## Version: 1.07
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bOptionsUI|r
