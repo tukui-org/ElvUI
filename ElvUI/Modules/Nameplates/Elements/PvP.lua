@@ -43,7 +43,7 @@ function NP:Update_PvPIndicator(nameplate)
 end
 
 function NP:Construct_PvPClassificationIndicator(nameplate)
-    local PvPClassificationIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
+	local PvPClassificationIndicator = nameplate:CreateTexture(nil, 'OVERLAY')
 	return PvPClassificationIndicator
 end
 

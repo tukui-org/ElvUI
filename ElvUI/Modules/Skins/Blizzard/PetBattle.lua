@@ -120,7 +120,7 @@ function S:PetBattleFrame()
 		else
 			infoBar.HealthBarBackdrop:Point('TOPRIGHT', infoBar.ActualHealthBar, 'TOPRIGHT', E.Border, E.Border)
 			infoBar.HealthBarBackdrop:Point('BOTTOMRIGHT', infoBar.ActualHealthBar, 'BOTTOMRIGHT', E.Border, -E.Border)
-			infoBar.ActualHealthBar:SetVertexColor(196/255,  30/255,  60/255)
+			infoBar.ActualHealthBar:SetVertexColor(196/255, 30/255, 60/255)
 			f.Enemy2.iconPoint = infoBar.IconBackdrop
 			f.Enemy3.iconPoint = infoBar.IconBackdrop
 

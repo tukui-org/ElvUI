@@ -26,8 +26,8 @@ local tankSpecIDs = {
 	581,	--Demon Hunter Vengeance
 	104,	--Druid Guardian
 	268,	--Monk Brewmaster
-	73,     --Warrior Protection
-	250,    --Death Knight Blood
+	73,		--Warrior Protection
+	250,	--Death Knight Blood
 }
 
 local Healers, HealerSpecs = {}, {}

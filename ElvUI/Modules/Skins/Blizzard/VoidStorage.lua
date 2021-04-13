@@ -45,7 +45,7 @@ function S:Blizzard_VoidStorageUI()
 	S:HandleButton(_G.VoidStorageTransferButton)
 	S:HandleEditBox(_G.VoidItemSearchBox)
 
-	for StorageType, NumSlots  in pairs({ Deposit = 9, Withdraw = 9, Storage = 80 }) do
+	for StorageType, NumSlots in pairs({ Deposit = 9, Withdraw = 9, Storage = 80 }) do
 		for i = 1, NumSlots do
 			local Button = _G['VoidStorage'..StorageType..'Button'..i]
 			Button:StripTextures()

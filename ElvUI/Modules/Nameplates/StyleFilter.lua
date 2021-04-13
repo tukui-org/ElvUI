@@ -470,8 +470,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		local pc = actions.color.powerColor
 		c.PowerColor = true
 
-        frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a)
-        frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a)
+		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a)
+		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a)
 	end
 	if Borders then
 		local bc = actions.color.borderColor
@@ -1151,7 +1151,7 @@ function mod:StyleFilterConfigure()
 	wipe(events)
 	wipe(list)
 
-	if E.db.nameplates and E.db.nameplates.filters  then
+	if E.db.nameplates and E.db.nameplates.filters then
 		for filterName, filter in pairs(E.global.nameplate.filters) do
 			local t = filter.triggers
 			if t and E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then

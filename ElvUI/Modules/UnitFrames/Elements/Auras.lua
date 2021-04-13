@@ -236,7 +236,7 @@ function UF:Configure_Auras(frame, which)
 	auras.anchorPoint = settings.anchorPoint
 	auras.initialAnchor = E.InversePoints[auras.anchorPoint]
 	auras['growth-y'] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
-	auras['growth-x'] = auras.anchorPoint == 'LEFT' and 'LEFT' or  auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
+	auras['growth-x'] = auras.anchorPoint == 'LEFT' and 'LEFT' or auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
 	auras.filterList = UF:ConvertFilters(auras, settings.priority)
 
 	local x, y

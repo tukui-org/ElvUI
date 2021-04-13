@@ -617,9 +617,9 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local icon = _G[name..'Icon']
 	local shine = _G[name..'Shine']
 	local count = _G[name..'Count']
-	local flash	 = _G[name..'Flash']
-	local border  = _G[name..'Border']
-	local normal  = _G[name..'NormalTexture']
+	local flash = _G[name..'Flash']
+	local border = _G[name..'Border']
+	local normal = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
 
 	local db = button:GetParent().db
@@ -731,7 +731,7 @@ end
 
 function AB:FadeBlingTexture(cooldown, alpha)
 	if not cooldown then return end
-	cooldown:SetBlingTexture(alpha > 0.5 and 131010 or [[Interface\AddOns\ElvUI\Media\Textures\Blank]])  -- interface/cooldown/star4.blp
+	cooldown:SetBlingTexture(alpha > 0.5 and 131010 or [[Interface\AddOns\ElvUI\Media\Textures\Blank]]) -- interface/cooldown/star4.blp
 end
 
 function AB:FadeBlings(alpha)

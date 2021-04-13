@@ -22,7 +22,7 @@ function UF:ToggleArenaPreparationInfo(frame, show, specName, specTexture, specC
 	local visibility = not show
 	if show then frame.Trinket:Hide() end
 
-	frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', specName, LOCALIZED_CLASS_NAMES_MALE[specClass])  -- during `PostUpdateArenaPreparation` this means spec class and name exist
+	frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', specName, LOCALIZED_CLASS_NAMES_MALE[specClass]) -- during `PostUpdateArenaPreparation` this means spec class and name exist
 	UF:ToggleVisibility_CustomTexts(frame, visibility)
 
 	frame.Health.value:SetShown(visibility)

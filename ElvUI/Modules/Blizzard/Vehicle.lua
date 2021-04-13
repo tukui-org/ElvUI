@@ -50,7 +50,7 @@ function B:PositionVehicleFrame()
 
 	VehicleSeatIndicator:Size(E.db.general.vehicleSeatIndicatorSize)
 
-    if VehicleSeatIndicator.currSkin then
+	if VehicleSeatIndicator.currSkin then
 		VehicleSetUp(VehicleSeatIndicator.currSkin)
-    end
+	end
 end

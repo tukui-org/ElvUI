@@ -220,7 +220,7 @@ function S:FriendsFrame()
 	local QuickJoinRoleSelectionFrame = _G.QuickJoinRoleSelectionFrame
 	S:HandleScrollBar(_G.QuickJoinScrollFrame.scrollBar, 5)
 	S:HandleButton(_G.QuickJoinFrame.JoinQueueButton)
-	QuickJoinFrame.JoinQueueButton:Size(131, 21)  --Match button on other tab
+	QuickJoinFrame.JoinQueueButton:Size(131, 21) --Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
 	QuickJoinFrame.JoinQueueButton:Point('BOTTOMRIGHT', QuickJoinFrame, 'BOTTOMRIGHT', -6, 4)
 	_G.QuickJoinScrollFrameTop:SetTexture()

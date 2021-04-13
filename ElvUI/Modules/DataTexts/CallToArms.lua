@@ -105,7 +105,7 @@ local function OnEnter()
 
 		if not unavailable then
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)
-			if rolesString ~= ''  then
+			if rolesString ~= '' then
 				if addTooltipHeader then
 					DT.tooltip:AddLine(DUNGEONS)
 					addTooltipHeader = false
@@ -135,7 +135,7 @@ local function OnEnter()
 
 		if not unavailable then
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)
-			if rolesString ~= ''  then
+			if rolesString ~= '' then
 				if addTooltipHeader then
 					if addTooltipSeparator then DT.tooltip:AddLine(' ') end
 					DT.tooltip:AddLine(RAID_FINDER)
