@@ -10,8 +10,8 @@ local PLAYER = PLAYER
 local hooksecurefunc = hooksecurefunc
 local IsPlayerMoving = IsPlayerMoving
 local PlayerMovementFrameFader = PlayerMovementFrameFader
--- GLOBALS: CoordsHolder
 
+local CoordsHolder
 local INVERTED_POINTS = {
 	TOPLEFT = 'BOTTOMLEFT',
 	TOPRIGHT = 'BOTTOMRIGHT',
@@ -198,7 +198,7 @@ function M:Initialize()
 
 	local WorldMapFrame = _G.WorldMapFrame
 	if E.global.general.WorldMapCoordinates.enable then
-		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
+		CoordsHolder = CreateFrame('Frame', 'ElvUI_CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 10)
 		CoordsHolder:SetFrameStrata(WorldMapFrame.BorderFrame:GetFrameStrata())
 		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')
