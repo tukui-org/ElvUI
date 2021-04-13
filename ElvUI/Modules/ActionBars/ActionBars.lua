@@ -65,7 +65,7 @@ AB.barDefaults = {
 	},
 	bar2 = {
 		page = 2,
-		bindButtons = 'ELVUIBAR6BUTTON',
+		bindButtons = 'ELVUIBAR2BUTTON',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
 	},
 	bar3 = {
@@ -90,22 +90,22 @@ AB.barDefaults = {
 	},
 	bar7 = {
 		page = 7,
-		bindButtons = 'EXTRABAR7BUTTON',
+		bindButtons = 'ELVUIBAR7BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,298',
 	},
 	bar8 = {
 		page = 8,
-		bindButtons = 'EXTRABAR8BUTTON',
+		bindButtons = 'ELVUIBAR8BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,332',
 	},
 	bar9 = {
 		page = 9,
-		bindButtons = 'EXTRABAR9BUTTON',
+		bindButtons = 'ELVUIBAR9BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,366',
 	},
 	bar10 = {
 		page = 10,
-		bindButtons = 'EXTRABAR10BUTTON',
+		bindButtons = 'ELVUIBAR10BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
 }
@@ -617,9 +617,9 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local icon = _G[name..'Icon']
 	local shine = _G[name..'Shine']
 	local count = _G[name..'Count']
-	local flash	 = _G[name..'Flash']
-	local border  = _G[name..'Border']
-	local normal  = _G[name..'NormalTexture']
+	local flash = _G[name..'Flash']
+	local border = _G[name..'Border']
+	local normal = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
 
 	local db = button:GetParent().db
@@ -731,7 +731,7 @@ end
 
 function AB:FadeBlingTexture(cooldown, alpha)
 	if not cooldown then return end
-	cooldown:SetBlingTexture(alpha > 0.5 and 131010 or [[Interface\AddOns\ElvUI\Media\Textures\Blank]])  -- interface/cooldown/star4.blp
+	cooldown:SetBlingTexture(alpha > 0.5 and 131010 or [[Interface\AddOns\ElvUI\Media\Textures\Blank]]) -- interface/cooldown/star4.blp
 end
 
 function AB:FadeBlings(alpha)
@@ -1386,11 +1386,11 @@ function AB:Initialize()
 	AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
 
-	if E:GetLocale() == 'koKR' then
+	if E.locale == 'koKR' then
 		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\2002.TTF]], 11, "MONOCHROME, THICKOUTLINE"
-	elseif E:GetLocale() == 'zhTW' then
+	elseif E.locale == 'zhTW' then
 		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\arheiuhk_bd.TTF]], 11, "MONOCHROME, THICKOUTLINE"
-	elseif E:GetLocale() == 'zhCN' then
+	elseif E.locale == 'zhCN' then
 		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\FRIZQT__.TTF]], 11, 'MONOCHROME, OUTLINE'
 	else
 		defaultFont, defaultFontSize, defaultFontOutline = [[Fonts\ARIALN.TTF]], 12, "MONOCHROME, THICKOUTLINE"

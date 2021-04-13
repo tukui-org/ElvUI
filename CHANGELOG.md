@@ -1,6 +1,33 @@
-### Version 12.22 [ ETA: 🍨 ]
+### Version 12.25 [ ETA: 🍨 ]
 
-**Fixed:**  
+**Sweet:**  
+
+
+___
+### Version 12.24 [ March 19th 2021 ]
+
+**Changes:**  
+Apply to All for Aura Indicator on Pet and Focus now works correctly.  
+Updated Style Filter code for Casting triggers and fixed a few bugs when using Name Only in nameplate settings.  
+Fixed an issue which caused the Static and Real Player nameplate to display at the same time.  
+
+___
+
+### Version 12.23 [ March 12th 2021 ]
+
+**Hotfix:**  
+Locale was forcing the Options into English for some languages.  
+
+___
+
+### Version 12.22 [ March 12th 2021 ]
+
+**Nice:**  
+Alter Time for Mages corrected on Player Buffs and Turtle Buffs.  
+Nameplate Target Classbar should show properly again and play nicely with Style Filters.  
+Updated Style Filter code a bit, which prevents flickering of Name Only mode Nameplates.  
+Addon Manager skin can now display addon names in other languages, instead of squares.  
+Removed Vender Greys display as Blizzard has added one, however we kept our Detailed option to show the price of each.  
 
 ___
 

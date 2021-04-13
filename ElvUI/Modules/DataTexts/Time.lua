@@ -13,7 +13,6 @@ local EJ_GetInstanceByIndex = EJ_GetInstanceByIndex
 local EJ_GetNumTiers = EJ_GetNumTiers
 local EJ_SelectTier = EJ_SelectTier
 local GetDifficultyInfo = GetDifficultyInfo
-local GetLocale = GetLocale
 local GetNumSavedInstances = GetNumSavedInstances
 local GetNumSavedWorldBosses = GetNumSavedWorldBosses
 local GetNumWorldPVPAreas = GetNumWorldPVPAreas
@@ -119,8 +118,7 @@ local InstanceNameByID = {
 	[749] = C_Map_GetAreaInfo(3845) -- 'The Eye' -> 'Tempest Keep'
 }
 
-local locale = GetLocale()
-if locale == 'deDE' then -- O.O
+if E.locale == 'deDE' then -- O.O
 	InstanceNameByID[1023] = 'Belagerung von Boralus'	-- 'Die Belagerung von Boralus'
 	InstanceNameByID[1041] = 'Königsruh'				-- 'Die Königsruh'
 	InstanceNameByID[1021] = 'Kronsteiganwesen'			-- 'Das Kronsteiganwesen'
@@ -146,12 +144,12 @@ local function GetInstanceImages(index, raid)
 	end
 end
 
-local krcntw = locale == 'koKR' or locale == 'zhCN' or locale == 'zhTW'
+local krcntw = E.locale == 'koKR' or E.locale == 'zhCN' or E.locale == 'zhTW'
 local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
-	(krcntw and _G.PLAYER_DIFFICULTY3) or utf8sub(_G.PLAYER_DIFFICULTY3, 1, 1), -- R
-	(krcntw and _G.PLAYER_DIFFICULTY1) or utf8sub(_G.PLAYER_DIFFICULTY1, 1, 1), -- N
-	(krcntw and _G.PLAYER_DIFFICULTY2) or utf8sub(_G.PLAYER_DIFFICULTY2, 1, 1), -- H
-	(krcntw and _G.PLAYER_DIFFICULTY6) or utf8sub(_G.PLAYER_DIFFICULTY6, 1, 1)  -- M
+	(krcntw and _G.PLAYER_DIFFICULTY3) or utf8sub(_G.PLAYER_DIFFICULTY3, 1, 1),	-- R
+	(krcntw and _G.PLAYER_DIFFICULTY1) or utf8sub(_G.PLAYER_DIFFICULTY1, 1, 1),	-- N
+	(krcntw and _G.PLAYER_DIFFICULTY2) or utf8sub(_G.PLAYER_DIFFICULTY2, 1, 1),	-- H
+	(krcntw and _G.PLAYER_DIFFICULTY6) or utf8sub(_G.PLAYER_DIFFICULTY6, 1, 1)	-- M
 }
 
 local function sortFunc(a,b) return a[1] < b[1] end

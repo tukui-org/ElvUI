@@ -99,57 +99,64 @@ function NP:Construct_TargetIndicator(nameplate)
 end
 
 function NP:Update_TargetIndicator(nameplate)
-	local db = NP:PlateDB(nameplate)
-
+	local enabled = nameplate:IsElementEnabled('TargetIndicator')
 	if nameplate.frameType == 'PLAYER' then
-		if nameplate:IsElementEnabled('TargetIndicator') then
+		if enabled then
 			nameplate:DisableElement('TargetIndicator')
 		end
-		return
-	end
 
-	if not nameplate:IsElementEnabled('TargetIndicator') then
+		return
+	elseif not enabled then
 		nameplate:EnableElement('TargetIndicator')
 	end
 
-	nameplate.TargetIndicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow] or E.Media.Arrows.Arrow9
-	nameplate.TargetIndicator.style = NP.db.units.TARGET.glowStyle
-	nameplate.TargetIndicator.lowHealthThreshold = NP.db.lowHealthThreshold
+	local tdb = NP.db.units.TARGET
+	local indicator = nameplate.TargetIndicator
+	indicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow] or E.Media.Arrows.Arrow9
+	indicator.lowHealthThreshold = NP.db.lowHealthThreshold
+	indicator.style = tdb.glowStyle
 
-	if nameplate.TargetIndicator.style ~= 'none' then
-		local GlowStyle, Color, ArrowScale, ArrowSpacing = NP.db.units.TARGET.glowStyle, NP.db.colors.glowColor, NP.db.units.TARGET.arrowScale, NP.db.units.TARGET.arrowSpacing
+	if indicator.style ~= 'none' then
+		local style, color, scale, spacing = tdb.glowStyle, NP.db.colors.glowColor, tdb.arrowScale, tdb.arrowSpacing
+		local r, g, b, a = color.r, color.g, color.b, color.a
+		local db = NP:PlateDB(nameplate)
 
-		if not db.health.enable and (GlowStyle ~= 'style2' and GlowStyle ~= 'style6' and GlowStyle ~= 'style8') then
-			GlowStyle = 'style2'
-			nameplate.TargetIndicator.style = 'style2'
+		-- background glow is 2, 6, and 8; 2 is background glow only
+		if not db.health.enable and (style ~= 'style2' and style ~= 'style6' and style ~= 'style8') then
+			style = 'style2'
+			indicator.style = style
 		end
 
-		if nameplate.TargetIndicator.TopIndicator and (GlowStyle == 'style3' or GlowStyle == 'style5' or GlowStyle == 'style6') then
-			nameplate.TargetIndicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, ArrowSpacing)
-			nameplate.TargetIndicator.TopIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
-			nameplate.TargetIndicator.TopIndicator:SetScale(ArrowScale)
+		-- top arrow is 3, 5, 6
+		if indicator.TopIndicator and (style == 'style3' or style == 'style5' or style == 'style6') then
+			indicator.TopIndicator:Point('BOTTOM', nameplate.Health, 'TOP', 0, spacing)
+			indicator.TopIndicator:SetVertexColor(r, g, b, a)
+			indicator.TopIndicator:SetScale(scale)
 		end
 
-		if nameplate.TargetIndicator.LeftIndicator and nameplate.TargetIndicator.RightIndicator and (GlowStyle == 'style4' or GlowStyle == 'style7' or GlowStyle == 'style8') then
-			nameplate.TargetIndicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', ArrowSpacing, 0)
-			nameplate.TargetIndicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', -ArrowSpacing, 0)
-			nameplate.TargetIndicator.LeftIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
-			nameplate.TargetIndicator.RightIndicator:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
-			nameplate.TargetIndicator.LeftIndicator:SetScale(ArrowScale)
-			nameplate.TargetIndicator.RightIndicator:SetScale(ArrowScale)
+		-- side arrows are 4, 7, 8
+		if indicator.LeftIndicator and indicator.RightIndicator and (style == 'style4' or style == 'style7' or style == 'style8') then
+			indicator.LeftIndicator:Point('LEFT', nameplate.Health, 'RIGHT', spacing, 0)
+			indicator.RightIndicator:Point('RIGHT', nameplate.Health, 'LEFT', -spacing, 0)
+			indicator.LeftIndicator:SetVertexColor(r, g, b, a)
+			indicator.RightIndicator:SetVertexColor(r, g, b, a)
+			indicator.LeftIndicator:SetScale(scale)
+			indicator.RightIndicator:SetScale(scale)
 		end
 
-		if nameplate.TargetIndicator.Shadow and (GlowStyle == 'style1' or GlowStyle == 'style5' or GlowStyle == 'style7') then
-			nameplate.TargetIndicator.Shadow:SetOutside(nameplate.Health, E.PixelMode and 6 or 8, E.PixelMode and 6 or 8)
-			nameplate.TargetIndicator.Shadow:SetBackdropBorderColor(Color.r, Color.g, Color.b)
-			nameplate.TargetIndicator.Shadow:SetAlpha(Color.a)
+		-- border glow is 1, 5, 7
+		if indicator.Shadow and (style == 'style1' or style == 'style5' or style == 'style7') then
+			indicator.Shadow:SetOutside(nameplate.Health, E.PixelMode and 6 or 8, E.PixelMode and 6 or 8)
+			indicator.Shadow:SetBackdropBorderColor(r, g, b)
+			indicator.Shadow:SetAlpha(a)
 		end
 
-		if nameplate.TargetIndicator.Spark and (GlowStyle == 'style2' or GlowStyle == 'style6' or GlowStyle == 'style8') then
+		-- background glow is 2, 6, and 8
+		if indicator.Spark and (style == 'style2' or style == 'style6' or style == 'style8') then
 			local size = E.Border + 14
-			nameplate.TargetIndicator.Spark:Point('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
-			nameplate.TargetIndicator.Spark:Point('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', (size * 2), -size)
-			nameplate.TargetIndicator.Spark:SetVertexColor(Color.r, Color.g, Color.b, Color.a)
+			indicator.Spark:Point('TOPLEFT', nameplate.Health, 'TOPLEFT', -(size * 2), size)
+			indicator.Spark:Point('BOTTOMRIGHT', nameplate.Health, 'BOTTOMRIGHT', (size * 2), -size)
+			indicator.Spark:SetVertexColor(r, g, b, a)
 		end
 	end
 end
@@ -165,7 +172,7 @@ function NP:Construct_Highlight(nameplate)
 	return Highlight
 end
 
-function NP:Update_Highlight(nameplate)
+function NP:Update_Highlight(nameplate, nameOnlySF)
 	local db = NP:PlateDB(nameplate)
 
 	if NP.db.highlight and db.enable then
@@ -173,8 +180,7 @@ function NP:Update_Highlight(nameplate)
 			nameplate:EnableElement('Highlight')
 		end
 
-		local sf = NP:StyleFilterChanges(nameplate)
-		if db.health.enable and not (db.nameOnly or sf.NameOnly) then
+		if db.health.enable and not (db.nameOnly or nameOnlySF) then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, 0.25)
 			nameplate.Highlight.texture:SetAllPoints(nameplate.HealthFlashTexture)
 			nameplate.Highlight.texture:SetAlpha(0.75)
@@ -227,7 +233,7 @@ function NP:Update_Fader(nameplate)
 
 			NP:PlateFade(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
-	else
+	elseif db.enable then
 		if not nameplate.Fader then
 			nameplate.Fader = {}
 		end

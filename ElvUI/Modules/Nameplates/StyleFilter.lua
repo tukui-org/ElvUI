@@ -8,7 +8,6 @@ local setmetatable, tostring, tonumber, type, unpack = setmetatable, tostring, t
 local strmatch, tinsert, tremove, sort, wipe = strmatch, tinsert, tremove, sort, wipe
 
 local GetInstanceInfo = GetInstanceInfo
-local GetLocale = GetLocale
 local GetRaidTargetIndex = GetRaidTargetIndex
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellCharges = GetSpellCharges
@@ -102,7 +101,7 @@ mod.TriggerConditions = {
 }
 
 do -- E.CreatureTypes; Do *not* change the value, only the key (['key'] = 'value').
-	local c, locale = {}, GetLocale()
+	local c, locale = {}, E.locale
 	if locale == 'frFR' then
 		c['Aberration'] = 'Aberration'
 		c['Bête'] = 'Beast'
@@ -401,22 +400,33 @@ function mod:StyleFilterSetupFlash(FlashTexture)
 	return anim
 end
 
-function mod:StyleFilterUpdatePlate(frame, updateBase)
-	if updateBase then
+function mod:StyleFilterBaseUpdate(frame, show)
+	if not frame.StyleFilterBaseAlreadyUpdated then -- skip updates from UpdatePlateBase
 		mod:UpdatePlate(frame, true) -- enable elements back
 	end
 
-	if frame.frameType then
-		local db = mod:PlateDB(frame)
-		if db.health.enable then frame.Health:ForceUpdate() end
+	local db = mod:PlateDB(frame) -- keep this after UpdatePlate
+	if not db.nameOnly then
 		if db.power.enable then frame.Power:ForceUpdate() end
+		if db.health.enable then frame.Health:ForceUpdate() end
+		if db.castbar.enable then frame.Castbar:ForceUpdate() end
+
+		if mod.db.threat.enable and mod.db.threat.useThreatColor and not UnitIsTapDenied(frame.unit) then
+			frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
+		end
+
+		if frame.isTarget and frame.frameType ~= 'PLAYER' and mod.db.units.TARGET.glowStyle ~= 'none' then
+			frame.TargetIndicator:ForceUpdate() -- so the target indicator will show up
+		end
 	end
 
-	if mod.db.threat.enable and mod.db.threat.useThreatColor and not UnitIsTapDenied(frame.unit) then
-		frame.ThreatIndicator:ForceUpdate() -- this will account for the threat health color
+	if frame.isTarget then
+		mod:SetupTarget(frame, db.nameOnly) -- so the classbar will show up
 	end
 
-	mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+	if show and not mod.SkipFading then
+		mod:PlateFade(frame, mod.db.fadeIn and 1 or 0, 0, 1) -- fade those back in so it looks clean
+	end
 end
 
 function mod:StyleFilterBorderLock(backdrop, r, g, b, a)
@@ -460,8 +470,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		local pc = actions.color.powerColor
 		c.PowerColor = true
 
-        frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a)
-        frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a)
+		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a)
+		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a)
 	end
 	if Borders then
 		local bc = actions.color.borderColor
@@ -469,7 +479,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 
 		mod:StyleFilterBorderLock(frame.Health.backdrop, bc.r, bc.g, bc.b, bc.a)
 
-		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
+		if frame.Power.backdrop and db.power.enable then
 			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a)
 		end
 	end
@@ -510,7 +520,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 	if NameOnly then
 		c.NameOnly = true
-		mod:DisablePlate(frame, true)
+		mod:DisablePlate(frame, true, true)
 	end
 	-- Keeps Tag changes after NameOnly
 	if NameTag then
@@ -540,7 +550,7 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 	end
 end
 
-function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
+function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, HealthFlash, HealthTexture, Scale, Alpha, NameTag, PowerTag, HealthTag, TitleTag, LevelTag, Portrait, NameOnly, Visibility)
 	local db = mod:PlateDB(frame)
 
 	if frame.StyleFilterChanges then
@@ -548,7 +558,7 @@ function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor,
 	end
 
 	if Visibility then
-		mod:StyleFilterUpdatePlate(frame, updateBase)
+		mod:StyleFilterBaseUpdate(frame, true)
 		frame:ClearAllPoints() -- pull the frame back in
 		frame:Point('CENTER')
 	end
@@ -567,7 +577,7 @@ function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor,
 	if Borders then
 		mod:StyleFilterBorderLock(frame.Health.backdrop)
 
-		if frame.Power.backdrop and (frame.frameType and db.power and db.power.enable) then
+		if frame.Power.backdrop and db.power.enable then
 			mod:StyleFilterBorderLock(frame.Power.backdrop)
 		end
 	end
@@ -591,7 +601,7 @@ function mod:StyleFilterClearChanges(frame, updateBase, HealthColor, PowerColor,
 		frame.Portrait:ForceUpdate()
 	end
 	if NameOnly then
-		mod:StyleFilterUpdatePlate(frame, updateBase)
+		mod:StyleFilterBaseUpdate(frame)
 	else -- Only update these if it wasn't NameOnly. Otherwise, it leads to `Update_Tags` which does the job.
 		if NameTag then frame:Tag(frame.Name, db.name.format) frame.Name:UpdateTag() end
 		if PowerTag then frame:Tag(frame.Power.Text, db.power.text.format) frame.Power.Text:UpdateTag() end
@@ -620,9 +630,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local healthUnit = (trigger.healthUsePlayer and 'player') or frame.unit
 		local health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
 		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
-		local underHealthThreshold = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth)
-		local overHealthThreshold = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth)
-		if underHealthThreshold or overHealthThreshold then passed = true else return end
+
+		local underHealth = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0)
+		local overHealth = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0)
+
+		local underThreshold = underHealth and (trigger.underHealthThreshold > percHealth)
+		local overThreshold = overHealth and (trigger.overHealthThreshold < percHealth)
+
+		if underHealth and overHealth then
+			if underThreshold and overThreshold then passed = true else return end
+		elseif underThreshold or overThreshold then passed = true else return end
 	end
 
 	-- Power
@@ -630,9 +647,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local powerUnit = (trigger.powerUsePlayer and 'player') or frame.unit
 		local power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
 		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
-		local underPowerThreshold = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0) and (trigger.underPowerThreshold > percPower)
-		local overPowerThreshold = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0) and (trigger.overPowerThreshold < percPower)
-		if underPowerThreshold or overPowerThreshold then passed = true else return end
+
+		local underPower = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0)
+		local overPower = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0)
+
+		local underThreshold = underPower and (trigger.underPowerThreshold > percPower)
+		local overThreshold = overPower and (trigger.overPowerThreshold < percPower)
+
+		if underPower and overPower then
+			if underThreshold and overThreshold then passed = true else return end
+		elseif underThreshold or overThreshold then passed = true else return end
 	end
 
 	-- Level
@@ -910,10 +934,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 			end
 		end
 
-		-- Status
-		if c.isCasting or c.isChanneling or c.notCasting or c.notChanneling then
-			if (c.isCasting and b.casting) or (c.isChanneling and b.channeling)
-			or (c.notCasting and not b.casting) or (c.notChanneling and not b.channeling) then passed = true else return end
+		-- Not Status
+		if c.notCasting or c.notChanneling then
+			if c.notCasting and c.notChanneling then
+				if not b.casting and not b.channeling then passed = true else return end
+			elseif (c.notCasting and not b.casting) or (c.notChanneling and not b.channeling) then passed = true else return end
+		end
+
+		-- Is Status
+		if c.isCasting or c.isChanneling then
+			if (c.isCasting and b.casting) or (c.isChanneling and b.channeling) then passed = true else return end
 		end
 
 		-- Interruptible
@@ -984,13 +1014,12 @@ end
 
 function mod:StyleFilterPass(frame, actions)
 	local db = mod:PlateDB(frame)
-	local healthBarEnabled = (frame.frameType and db.health.enable) or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
-	local powerBarEnabled = frame.frameType and db.power and db.power.enable
+	local healthBarEnabled = db.health.enable or (mod.db.displayStyle ~= 'ALL') or (frame.isTarget and mod.db.alwaysShowTargetHealth)
 	local healthBarShown = healthBarEnabled and frame.Health:IsShown()
 
 	mod:StyleFilterSetChanges(frame, actions,
 		(healthBarShown and actions.color and actions.color.health), --HealthColor
-		(healthBarShown and powerBarEnabled and actions.color and actions.color.power), --PowerColor
+		(healthBarShown and db.power.enable and actions.color and actions.color.power), --PowerColor
 		(healthBarShown and actions.color and actions.color.border and frame.Health.backdrop), --Borders
 		(healthBarShown and actions.flash and actions.flash.enable and frame.HealthFlashTexture), --HealthFlash
 		(healthBarShown and actions.texture and actions.texture.enable), --HealthTexture
@@ -1007,14 +1036,12 @@ function mod:StyleFilterPass(frame, actions)
 	)
 end
 
-function mod:StyleFilterClear(frame, updateBase)
+function mod:StyleFilterClear(frame)
 	if frame == _G.ElvNP_Test then return end
 
 	local c = frame.StyleFilterChanges
 	if c and next(c) then
-		local shouldUpdate = c.NameOnly or c.Visibility
-		mod:StyleFilterClearChanges(frame, updateBase, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
-		return shouldUpdate
+		mod:StyleFilterClearChanges(frame, c.HealthColor, c.PowerColor, c.Borders, c.HealthFlash, c.HealthTexture, c.Scale, c.Alpha, c.NameTag, c.PowerTag, c.HealthTag, c.TitleTag, c.LevelTag, c.Portrait, c.NameOnly, c.Visibility)
 	end
 end
 
@@ -1100,6 +1127,17 @@ mod.StyleFilterDefaultEvents = { -- list of events style filter uses to populate
 	UNIT_THREAT_SITUATION_UPDATE = false,
 	VEHICLE_UPDATE = true
 }
+mod.StyleFilterCastEvents = {
+	UNIT_SPELLCAST_START = 1,			-- start
+	UNIT_SPELLCAST_CHANNEL_START = 1,
+	UNIT_SPELLCAST_STOP = 1,			-- stop
+	UNIT_SPELLCAST_CHANNEL_STOP = 1,
+	UNIT_SPELLCAST_FAILED = 1,			-- fail
+	UNIT_SPELLCAST_INTERRUPTED = 1
+}
+for event in pairs(mod.StyleFilterCastEvents) do
+	mod.StyleFilterDefaultEvents[event] = false
+end
 
 function mod:StyleFilterWatchEvents()
 	for event in pairs(mod.StyleFilterDefaultEvents) do
@@ -1113,10 +1151,10 @@ function mod:StyleFilterConfigure()
 	wipe(events)
 	wipe(list)
 
-	for filterName, filter in pairs(E.global.nameplate.filters) do
-		local t = filter.triggers
-		if t and E.db.nameplates and E.db.nameplates.filters then
-			if E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
+	if E.db.nameplates and E.db.nameplates.filters then
+		for filterName, filter in pairs(E.global.nameplate.filters) do
+			local t = filter.triggers
+			if t and E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
 
 				-- NOTE: 0 for fake events
@@ -1126,16 +1164,18 @@ function mod:StyleFilterConfigure()
 				events.UNIT_FACTION = 1 -- frameType can change here
 
 				if t.casting then
+					local spell
 					if next(t.casting.spells) then
 						for _, value in pairs(t.casting.spells) do
 							if value then
-								events.FAKE_Casting = 0
+								spell = true
 								break
 					end end end
 
-					if (t.casting.interruptible or t.casting.notInterruptible)
-					or (t.casting.isCasting or t.casting.isChanneling or t.casting.notCasting or t.casting.notChanneling) then
-						events.FAKE_Casting = 0
+					if spell or (t.casting.interruptible or t.casting.notInterruptible or t.casting.isCasting or t.casting.isChanneling or t.casting.notCasting or t.casting.notChanneling) then
+						for event in pairs(mod.StyleFilterCastEvents) do
+							events[event] = 1
+						end
 					end
 				end
 
@@ -1243,11 +1283,9 @@ function mod:StyleFilterConfigure()
 end
 
 function mod:StyleFilterUpdate(frame, event)
-	if frame == _G.ElvNP_Test then return end
+	if frame == _G.ElvNP_Test or not frame.StyleFilterChanges or (event ~= 'ForceUpdate' and not mod.StyleFilterTriggerEvents[event]) then return end
 
-	if not frame.StyleFilterChanges or (event ~= 'ForceUpdate' and not mod.StyleFilterTriggerEvents[event]) then return end
-
-	mod:StyleFilterClear(frame, true)
+	mod:StyleFilterClear(frame)
 
 	for filterNum in ipairs(mod.StyleFilterTriggerList) do
 		local filter = E.global.nameplate.filters[mod.StyleFilterTriggerList[filterNum][1]]
@@ -1258,11 +1296,13 @@ function mod:StyleFilterUpdate(frame, event)
 end
 
 do -- oUF style filter inject watch functions without actually registering any events
-	local update = function(frame, event, ...)
+	local update = function(frame, event, arg1, ...)
 		local eventFunc = mod.StyleFilterEventFunctions[event]
-		if eventFunc then eventFunc(frame, event, ...) end
+		if eventFunc then eventFunc(frame, event, arg1, ...) end
 
-		mod:StyleFilterUpdate(frame, event)
+		if not mod.StyleFilterCastEvents[event] or (arg1 == frame.unit) then
+			mod:StyleFilterUpdate(frame, event)
+		end
 	end
 
 	local oUF_event_metatable = {
@@ -1311,6 +1351,8 @@ do -- oUF style filter inject watch functions without actually registering any e
 	end end
 
 	function mod:StyleFilterEventWatch(frame, disable)
+		if frame == _G.ElvNP_Test then return end
+
 		for event in pairs(mod.StyleFilterDefaultEvents) do
 			local holdsEvent = styleFilterIsWatching(frame, event)
 			if disable then

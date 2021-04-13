@@ -239,7 +239,7 @@ do --this can save some main file locals
 		-- Blazeflack
 		['Blazii-Silvermoon']	= ElvBlue, -- Priest
 		['Chazii-Silvermoon']	= ElvBlue, -- Shaman
-		-- NihilisticPandemonium
+		-- Nihilistzsche
 		['Dirishia-WyrmrestAccord']		= itsTheFlyestNihilist('Warlock'),
 		['Xanikani-WyrmrestAccord']		= itsTheFlyestNihilist('Mage'),
 		['Rikanza-WyrmrestAccord']		= itsTheFlyestNihilist('Monk'),
@@ -247,7 +247,7 @@ do --this can save some main file locals
 		['Cerishia-WyrmrestAccord']		= itsTheFlyestNihilist('Priest'),
 		['Vellilara-WyrmrestAccord']	= itsTheFlyestNihilist('DemonHunter'),
 		['Sayalia-WyrmrestAccord']		= itsTheFlyestNihilist('DeathKnight'),
-		['Pakasta-WyrmrestAccord']		= itsTheFlyestNihilist('Paladin'),
+		['Alledarisa-WyrmrestAccord']	= itsTheFlyestNihilist('Paladin'),
 		['Orlyrala-WyrmrestAccord']		= itsTheFlyestNihilist('Shaman'),
 		['Scerila-WyrmrestAccord']		= itsTheFlyestNihilist('Rogue'),
 		['Ralaniki-WyrmrestAccord']		= itsTheFlyestNihilist('Hunter'),
@@ -1547,7 +1547,7 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 
 	if specialFlag ~= '' then
 		if specialFlag == 'GM' or specialFlag == 'DEV' then
-			-- Add Blizzard Icon if  this was sent by a GM/DEV
+			-- Add Blizzard Icon if this was sent by a GM/DEV
 			return '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t '
 		elseif specialFlag == 'GUIDE' then
 			if C_PlayerMentorship_IsActivePlayerConsideredNewcomer() then

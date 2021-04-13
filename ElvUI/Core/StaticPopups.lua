@@ -276,10 +276,12 @@ E.PopupDialogs.DELETE_GRAYS = {
 	button2 = NO,
 	OnAccept = function()
 		Bags:VendorGrays(true)
+
 		for _, info in ipairs(Bags.SellFrame.Info.itemList) do
 			PickupContainerItem(info[1], info[2])
 			DeleteCursorItem()
 		end
+
 		wipe(Bags.SellFrame.Info.itemList)
 	end,
 	OnShow = function(self)
@@ -828,7 +830,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		end
 		for i = index, MAX_STATIC_POPUPS do
 			local frame = _G['ElvUI_StaticPopup'..i]
-			if frame and  not frame:IsShown() then
+			if frame and not frame:IsShown() then
 				dialog = frame
 				break
 			end

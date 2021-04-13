@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, Private
 local UF = E:GetModule('UnitFrames');
 
 function UF:Construct_PvPClassificationIndicator(frame)
-    local PvPClassificationIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
+	local PvPClassificationIndicator = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'OVERLAY')
 
 	return PvPClassificationIndicator
 end

@@ -208,7 +208,7 @@ function UF:Configure_Castbar(frame)
 				castbar:Point('TOPLEFT', anchor, 'TOPLEFT')
 				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT', -iconWidth - UF.SPACING*3, 0)
 			else
-				castbar:Point('TOPLEFT', anchor, 'TOPLEFT',  iconWidth + UF.SPACING*3, 0)
+				castbar:Point('TOPLEFT', anchor, 'TOPLEFT', iconWidth + UF.SPACING*3, 0)
 				castbar:Point('BOTTOMRIGHT', anchor, 'BOTTOMRIGHT')
 			end
 		end

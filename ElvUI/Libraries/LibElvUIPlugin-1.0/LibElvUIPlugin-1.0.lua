@@ -1,4 +1,4 @@
-local MAJOR, MINOR = "LibElvUIPlugin-1.0", 36
+local MAJOR, MINOR = "LibElvUIPlugin-1.0", 37
 local lib = _G.LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 -- GLOBALS: ElvUI
@@ -30,8 +30,8 @@ LibElvUIPlugin API:
 		function	- function to call after Initialize (may be a string, that exists on the addons table: table['string'])
 ----------------------------]]--
 
-local assert, pairs, ipairs, strlen = assert, pairs, ipairs, strlen
 local tonumber, strmatch, strsub, tinsert = tonumber, strmatch, strsub, tinsert
+local assert, pairs, ipairs, strlen, pcall = assert, pairs, ipairs, strlen, pcall
 local format, wipe, type, gmatch, gsub, ceil = format, wipe, type, gmatch, gsub, ceil
 
 local hooksecurefunc = hooksecurefunc
@@ -137,7 +137,7 @@ function lib:RegisterPlugin(name, callback, isLib, libVersion)
 		end
 
 		if callback then
-			callback()
+			pcall(callback)
 		end
 	end
 
@@ -164,7 +164,7 @@ function lib:OptionsUILoaded(_, addon)
 
 		for _, plugin in pairs(lib.plugins) do
 			if plugin.callback then
-				plugin.callback()
+				pcall(plugin.callback)
 			end
 		end
 

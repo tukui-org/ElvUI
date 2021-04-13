@@ -74,15 +74,15 @@ local function SkinStatusBar(bar)
 	E:RegisterStatusBar(bar)
 
 	local StatusBarName = bar:GetName()
-	if _G[StatusBarName..'Title'] then
-		_G[StatusBarName..'Title']:Point('LEFT', 4, 0)
-	end
-	if _G[StatusBarName..'Label'] then
-		_G[StatusBarName..'Label']:Point('LEFT', 4, 0)
-	end
-	if _G[StatusBarName..'Text'] then
-		_G[StatusBarName..'Text']:Point('RIGHT', -4, 0)
-	end
+
+	local title = _G[StatusBarName..'Title']
+	if title then title:Point('LEFT', 4, 0) end
+
+	local label = _G[StatusBarName..'Label']
+	if label then label:Point('LEFT', 4, 0) end
+
+	local text = _G[StatusBarName..'Text']
+	if text then text:Point('RIGHT', -4, 0) end
 end
 
 local function SkinSearchButton(self)
@@ -130,43 +130,44 @@ local function setAchievementColor(frame)
 	end
 end
 
-function S:Blizzard_AchievementUI(event)
+local function hookHybridScrollButtons()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
-	if event == 'PLAYER_ENTERING_WORLD' then
-		hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)
-			if template == 'AchievementCategoryTemplate' then
-				for _, button in pairs(frame.buttons) do
-					if button.isSkinned then return; end
+	hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)
+		if template == 'AchievementCategoryTemplate' then
+			for _, button in pairs(frame.buttons) do
+				if not button.isSkinned then
 					button:StripTextures(true)
 					button:StyleButton()
+
 					button.isSkinned = true
 				end
 			end
-			if template == 'AchievementTemplate' then
-				for _, Achievement in pairs(frame.buttons) do
-					skinAch(Achievement, true)
-				end
+		elseif template == 'AchievementTemplate' then
+			for _, Achievement in pairs(frame.buttons) do
+				skinAch(Achievement, true)
 			end
-			if template == 'ComparisonTemplate' then
-				for _, Achievement in pairs(frame.buttons) do
-					if Achievement.isSkinned then return; end
+		elseif template == 'ComparisonTemplate' then
+			for _, Achievement in pairs(frame.buttons) do
+				if not Achievement.isSkinned then
 					skinAch(Achievement.player)
 					skinAch(Achievement.friend)
 
 					hooksecurefunc(Achievement.player, 'Saturate', playerSaturate)
-				end
-			end
-			if template == 'StatTemplate' then
-				for _, Stats in pairs(frame.buttons) do
-					-- Stats:StripTextures(true)
-					Stats:StyleButton()
-				end
-			end
-		end)
-	end
 
-	if not IsAddOnLoaded('Blizzard_AchievementUI') then return end
+					break -- dont need to continue this check
+				end
+			end
+		elseif template == 'StatTemplate' then
+			for _, Stats in pairs(frame.buttons) do
+				Stats:StyleButton()
+			end
+		end
+	end)
+end
+
+function S:Blizzard_AchievementUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
 	_G.AchievementFrameSummary:StripTextures()
 	_G.AchievementFrameSummaryBackground:Hide()
@@ -404,30 +405,28 @@ function S:Blizzard_AchievementUI(event)
 
 	hooksecurefunc('AchievementButton_GetProgressBar', function(index)
 		local frame = _G['AchievementFrameProgressBar'..index]
-		if frame then
-			if not frame.skinned then
-				frame:StripTextures()
-				frame:SetStatusBarTexture(E.media.normTex)
-				E:RegisterStatusBar(frame)
-				frame:SetStatusBarColor(4/255, 179/255, 30/255)
-				frame:CreateBackdrop('Transparent')
-				frame:SetFrameLevel(frame:GetFrameLevel() + 3)
-				frame:Height(frame:GetHeight() - 2)
+		if frame and not frame.skinned then
+			frame:StripTextures()
+			frame:SetStatusBarTexture(E.media.normTex)
+			E:RegisterStatusBar(frame)
 
-				frame.text:ClearAllPoints()
-				frame.text:Point('CENTER', frame, 'CENTER', 0, -1)
-				frame.text:SetJustifyH('CENTER')
+			frame:SetStatusBarColor(4/255, 179/255, 30/255)
+			frame:CreateBackdrop('Transparent')
+			frame:SetFrameLevel(frame:GetFrameLevel() + 3)
+			frame:Height(frame:GetHeight() - 2)
 
-				if index > 1 then
-					frame:ClearAllPoints()
-					frame:Point('TOP', _G['AchievementFrameProgressBar'..index-1], 'BOTTOM', 0, -5)
-					frame.SetPoint = E.noop
-					frame.ClearAllPoints = E.noop
-				end
+			frame.text:ClearAllPoints()
+			frame.text:Point('CENTER', frame, 'CENTER', 0, -1)
+			frame.text:SetJustifyH('CENTER')
 
-				frame.skinned = true
+			if index > 1 then
+				frame:ClearAllPoints()
+				frame:Point('TOP', _G['AchievementFrameProgressBar'..index-1], 'BOTTOM', 0, -5)
+				frame.SetPoint = E.noop
+				frame.ClearAllPoints = E.noop
 			end
 
+			frame.skinned = true
 		end
 	end)
 
@@ -436,8 +435,7 @@ function S:Blizzard_AchievementUI(event)
 		local textStrings, metas, criteria, object = 0, 0
 		for i = 1, numCriteria do
 			local _, criteriaType, completed, _, _, _, _, assetID = GetAchievementCriteriaInfo(id, i)
-
-			if ( criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT and assetID ) then
+			if assetID and criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT then
 				metas = metas + 1
 				criteria, object = _G.AchievementButton_GetMeta(metas), 'label'
 			elseif criteriaType ~= 1 then
@@ -445,32 +443,42 @@ function S:Blizzard_AchievementUI(event)
 				criteria, object = _G.AchievementButton_GetCriteria(textStrings), 'name'
 			end
 
-			local r, g, b, x, y = .6, .6, .6, 1, -1
-			if ( objectivesFrame.completed and completed ) then
-				r, g, b, x, y = 1, 1, 1, 0, 0
-			elseif ( completed ) then
-				r, g, b, x, y = 0, 1, 0, 1, -1
-			end
+			local text = criteria and criteria[object]
+			if text then
+				local r, g, b, x, y
+				if completed then
+					if objectivesFrame.completed then
+						r, g, b, x, y = 1, 1, 1, 0, 0
+					else
+						r, g, b, x, y = 0, 1, 0, 1, -1
+					end
+				else
+					r, g, b, x, y = .6, .6, .6, 1, -1
+				end
 
-			criteria[object]:SetTextColor(r, g, b)
-			criteria[object]:SetShadowOffset(x, y)
+				text:SetTextColor(r, g, b)
+				text:SetShadowOffset(x, y)
+			end
 		end
 	end)
 
 	--The section below is usually handled in our hook, but another addon may have loaded the AchievementUI before we were ready
-	--Categories
+	--- Categories
 	for i = 1, 20 do
 		local button = _G['AchievementFrameCategoriesContainerButton'..i]
-		if not button or (button and button.isSkinned) then return end
-		button:StripTextures(true)
-		button:StyleButton()
-		button.isSkinned = true
-	end
+		if not button then return end -- stop if no button
 
-	--Comparison
+		if not button.isSkinned then
+			button:StripTextures(true)
+			button:StyleButton()
+
+			button.isSkinned = true
+		end
+	end
+	--- Comparison
 	for i = 1, 10 do
 		local Achievement = _G['AchievementFrameComparisonContainerButton'..i]
-		if not Achievement or (Achievement and Achievement.isSkinned) then return end
+		if not Achievement or Achievement.isSkinned then return end
 
 		skinAch(Achievement.player)
 		skinAch(Achievement.friend)
@@ -485,7 +493,8 @@ local f = CreateFrame('Frame')
 f:RegisterEvent('PLAYER_ENTERING_WORLD')
 f:SetScript('OnEvent', function(self, event)
 	self:UnregisterEvent(event)
-	S:Blizzard_AchievementUI(event)
+
+	hookHybridScrollButtons()
 end)
 
 S:AddCallbackForAddon('Blizzard_AchievementUI')

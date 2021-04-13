@@ -64,7 +64,6 @@ function B:SizeAndPositionBagBar()
 		button:Size(bagBarSize)
 		button:ClearAllPoints()
 		button:SetShown(i == 1 and justBackpack or not justBackpack)
-		button.Count:SetShown(GetCVarBool('displayFreeBagSlots'))
 
 		if sortDirection == 'ASCENDING'then
 			if i == 1 then firstButton = button else lastButton = button end
@@ -133,6 +132,12 @@ function B:SizeAndPositionBagBar()
 	end
 
 	B.BagBar.mover:SetSize(B.BagBar.backdrop:GetSize())
+	B:UpdateMainButtonCount()
+end
+
+function B:UpdateMainButtonCount()
+	B.BagBar.buttons[1].Count:SetShown(GetCVarBool('displayFreeBagSlots'))
+	B.BagBar.buttons[1].Count:SetText(CalculateTotalNumberOfFreeBagSlots())
 end
 
 function B:LoadBagBar()
@@ -190,5 +195,6 @@ function B:LoadBagBar()
 	E:CreateMover(B.BagBar, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
 	B.BagBar:SetPoint('BOTTOMLEFT', B.BagBar.mover)
 	B:RegisterEvent('BAG_SLOT_FLAGS_UPDATED', 'SizeAndPositionBagBar')
+	B:RegisterEvent('BAG_UPDATE_DELAYED', 'UpdateMainButtonCount')
 	B:SizeAndPositionBagBar()
 end

@@ -2,9 +2,6 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "ptBR")
 
-local COLOR1 = '|cFF1784d1'
-local COLOR2 = '|cfd9b9b9b'
-
 L["BoP"] = true
 L["BoE"] = true
 L["BoU"] = true
@@ -158,7 +155,7 @@ L["Honor Bar"] = "Barra de honra"
 L["Honor Remaining:"] = "Honra restante"
 L["Honor XP:"] = "EXP de Honra"
 L["Horde: "] = "Horda: "
-L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1macro|r, or |cFF1784d1spellbook|r button to bind it. This also works for items in your |cFF1784d1bag|r. Press the |cfd9b9b9bESC|r key to |cfd9b9b9bclear|r the current bindings."] = true
+L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["HP"] = "PV"
 L["HPS"] = "PVS"
 L["I Swear"] = "Eu Juro"
@@ -203,8 +200,8 @@ L["Legs"] = "Pernas"
 L["Level Up Display / Boss Banner"] = "Display de Subida de Nível / Banner do Boss"
 L["List of installations in queue:"] = "Lista de instalações na fila:"
 L["Lock"] = "Travar"
-L["LOGIN_MSG_HELP"] = ("Por favor use */ehelp|r para ver a lista de comandos do *ElvUI|r."):gsub('*', COLOR1)
-L["LOGIN_MSG"] = ("Bem-vindo ao *ElvUI|r versão *%s|r, digite */ec|r para acessar as configurações dentro do jogo. Se você precisa de suporte técnico nos contate em https://www.tukui.org ou se entre no Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Por favor use */ehelp|r para ver a lista de comandos do *ElvUI|r."):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("Bem-vindo ao *ElvUI|r versão *%s|r, digite */ec|r para acessar as configurações dentro do jogo. Se você precisa de suporte técnico nos contate em https://www.tukui.org ou se entre no Discord: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = "Quadro de Saque / Alerta"
 L["Loot Frame"] = "Quadro de Saque"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Senhor! É um milagre! O Download sumiu como um peido no vento! Tente novamente!"
@@ -346,7 +343,6 @@ L["Unhittable:"] = "Inacertável"
 L["Vehicle Seat Frame"] = "Quadro de Assento de Veículo"
 L["Vendor / Delete Grays"] = "Vendedor / Deletar Cinzentos"
 L["Vendor Grays"] = "Vender Itens Cinzentos"
-L["Vendored gray items for: %s"] = "Vendeu os itens cinzentos por: %s"
 L["Vendoring Grays"] = "Vender Cinzentos"
 L["Voice Overlay"] = true
 L["Waist"] = "Cintura"
@@ -398,4 +394,4 @@ L["EHELP_COMMANDS"] = ([=[Aqui está a lista de todos os comandos importantes do
  */luaerror|r ^on|r or ^off|r  -  Desabilitar todos os AddOns exceto ElvUI.
   NOTA: */luaerror|r ^off|r irá reabilitar os addons desabilitados por ter
   usar */luaerror|r ^on|r nesta sessão.
-]=]):gsub('*', COLOR1):gsub('%^', COLOR2)
+]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

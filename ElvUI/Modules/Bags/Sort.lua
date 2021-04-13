@@ -844,7 +844,7 @@ function B:DoMoves()
 	if lockStop then
 		for slot, itemID in pairs(moveTracker) do
 			local actualItemID = B:GetItemID(B:Decode_BagSlot(slot))
-			if actualItemID  ~= itemID then
+			if actualItemID ~= itemID then
 				WAIT_TIME = 0.1
 				if (GetTime() - lockStop) > MAX_MOVE_TIME then
 					if lastMove and moveRetries < 100 then

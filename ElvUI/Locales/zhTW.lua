@@ -2,9 +2,6 @@
 local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "zhTW")
 
-local COLOR1 = '|cFF1784d1'
-local COLOR2 = '|cfd9b9b9b'
-
 L["BoP"] = true
 L["BoE"] = true
 L["BoU"] = true
@@ -158,7 +155,7 @@ L["Honor Bar"] = "榮譽條"
 L["Honor Remaining:"] = "剩餘:"
 L["Honor XP:"] = "榮譽:"
 L["Horde: "] = "部落: "
-L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1macro|r, or |cFF1784d1spellbook|r button to bind it. This also works for items in your |cFF1784d1bag|r. Press the |cfd9b9b9bESC|r key to |cfd9b9b9bclear|r the current bindings."] = true
+L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["HP"] = "生命值"
 L["HPS"] = "治療輸出"
 L["I Swear"] = "我承諾"
@@ -203,8 +200,8 @@ L["Legs"] = "腿部"
 L["Level Up Display / Boss Banner"] = "升級提示 / 首領旗幟"
 L["List of installations in queue:"] = "即將安裝的列表"
 L["Lock"] = "鎖定"
-L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
-L["LOGIN_MSG"] = ("歡迎使用 *ElvUI|r *%s 版本|r, 輸入 */ec|r 可打開遊戲內設置介面. 如果你需要技術協助, 可訪問我們的網址 https://www.tukui.org 或是加入我們的 Discord 伺服器: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("歡迎使用 *ElvUI|r *%s 版本|r, 輸入 */ec|r 可打開遊戲內設置介面. 如果你需要技術協助, 可訪問我們的網址 https://www.tukui.org 或是加入我們的 Discord 伺服器: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = "拾取 / 提醒框架"
 L["Loot Frame"] = "拾取框架"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "天啊! 太奇葩啦! 下載消失了! 就像是在風中放了個屁... 再試一次吧!"
@@ -346,7 +343,6 @@ L["Unhittable:"] = "未命中:"
 L["Vehicle Seat Frame"] = "載具座位框"
 L["Vendor / Delete Grays"] = "出售/摧毁灰色物品"
 L["Vendor Grays"] = "出售灰色物品"
-L["Vendored gray items for: %s"] = "已售出灰色物品, 共得： %s"
 L["Vendoring Grays"] = "正在出售灰色物品"
 L["Voice Overlay"] = "語音浮層"
 L["Waist"] = "腰部"
@@ -398,4 +394,4 @@ L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
   NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
   using */luaerror|r ^on|r within that session.
-]=]):gsub('*', COLOR1):gsub('%^', COLOR2)
+]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

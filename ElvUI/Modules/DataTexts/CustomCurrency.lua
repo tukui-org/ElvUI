@@ -118,7 +118,7 @@ function DT:RemoveCustomCurrency(currencyName)
 
 	if not next(CustomCurrencies) then
 		for i, menu in ipairs(DT.HyperList) do
-			if menu.text ==  _G.CURRENCY then
+			if menu.text == _G.CURRENCY then
 				tremove(DT.HyperList, i)
 				break
 			end

@@ -21,6 +21,7 @@ local oUF = ns.oUF
 
 local function Update(self)
 	local element = self.TargetIndicator
+	local isTarget = UnitIsUnit(self.unit, 'target')
 
 	if element.PreUpdate then
 		element:PreUpdate()
@@ -32,7 +33,7 @@ local function Update(self)
 	if element.Shadow then element.Shadow:Hide() end
 	if element.Spark then element.Spark:Hide() end
 
-	if UnitIsUnit(self.unit, 'target') and (element.style ~= 'none') then
+	if isTarget and (element.style ~= 'none') then
 		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 			element.TopIndicator:Show()
 		end
@@ -51,17 +52,16 @@ local function Update(self)
 		end
 	end
 
-	local r, g, b
-	local showIndicator
-	if UnitIsUnit(self.unit, 'target') then
-		showIndicator = true
+	local show, r, g, b
+	if isTarget then
+		show = true
 		r, g, b = NP.db.colors.glowColor.r, NP.db.colors.glowColor.g, NP.db.colors.glowColor.b
-	elseif not UnitIsUnit(self.unit, 'target') and element.lowHealthThreshold > 0 then
+	elseif not isTarget and element.lowHealthThreshold > 0 then
 		local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
 		local perc = (maxHealth > 0 and health/maxHealth) or 0
 
 		if perc <= element.lowHealthThreshold then
-			showIndicator = true
+			show = true
 			if perc <= element.lowHealthThreshold / 2 then
 				r, g, b = 1, 0, 0
 			else
@@ -71,7 +71,7 @@ local function Update(self)
 
 	end
 
-	if showIndicator then
+	if show then
 		if element.TopIndicator and (element.style == 'style3' or element.style == 'style5' or element.style == 'style6') then
 			element.TopIndicator:SetVertexColor(r, g, b)
 			element.TopIndicator:SetTexture(element.arrow)
@@ -132,17 +132,17 @@ local function Enable(self)
 
 		if element.TopIndicator and element.TopIndicator:IsObjectType('Texture') and not element.TopIndicator:GetTexture() then
 			element.TopIndicator:SetTexture(E.Media.Textures.ArrowUp)
-			element.TopIndicator:SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0)	--Rotates texture 180 degress (Up arrow to face down)
+			element.TopIndicator:SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0) --Rotates texture 180 degress (Up arrow to face down)
 		end
 
 		if element.LeftIndicator and element.LeftIndicator:IsObjectType('Texture') and not element.LeftIndicator:GetTexture() then
 			element.LeftIndicator:SetTexture(E.Media.Textures.ArrowUp)
-			element.LeftIndicator:SetTexCoord(1, 0, 0, 0, 1, 1, 0, 1)  --Rotates texture 90 degrees clockwise (Up arrow to face right)
+			element.LeftIndicator:SetTexCoord(1, 0, 0, 0, 1, 1, 0, 1) --Rotates texture 90 degrees clockwise (Up arrow to face right)
 		end
 
 		if element.RightIndicator and element.RightIndicator:IsObjectType('Texture') and not element.RightIndicator:GetTexture() then
 			element.RightIndicator:SetTexture(E.Media.Textures.ArrowUp)
-			element.RightIndicator:SetTexCoord(1, 1, 0, 1, 1, 0, 0, 0)	--Flips texture horizontally (Right facing arrow to face left)
+			element.RightIndicator:SetTexCoord(1, 1, 0, 1, 1, 0, 0, 0) --Flips texture horizontally (Right facing arrow to face left)
 		end
 
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
