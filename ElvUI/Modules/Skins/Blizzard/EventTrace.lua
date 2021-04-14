@@ -43,6 +43,9 @@ function S:Blizzard_EventTrace()
 	S:HandleButton(FilterBar.UncheckAllButton)
 	S:HandleButton(FilterBar.CheckAllButton)
 
+	-- Resize Button
+	EventTrace.ResizeButton:SetAlpha(0)
+
 end
 
 S:AddCallbackForAddon('Blizzard_EventTrace')
