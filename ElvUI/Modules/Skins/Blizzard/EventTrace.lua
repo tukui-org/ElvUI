@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local IsAddOnLoaded = IsAddOnLoaded
 
 function S:Blizzard_EventTrace()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.eventLog) then return end
