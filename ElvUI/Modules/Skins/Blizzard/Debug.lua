@@ -92,15 +92,7 @@ function S:Blizzard_DebugTools()
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
 		_G.FrameStackTooltip:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
-		_G.EventTraceTooltip:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
 	end
-
-	for i=1, #FrameTexs do
-		_G['EventTraceFrame'..FrameTexs[i]]:SetTexture()
-	end
-
-	_G.EventTraceFrame:CreateBackdrop('Transparent')
-	S:HandleCloseButton(_G.EventTraceFrameCloseButton)
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
@@ -115,7 +107,7 @@ end
 -- ScriptErrorsFrame Skin
 S:AddCallback('ScriptErrorsFrame')
 
--- EventTrace, FrameStack, TableInspect Skins
+-- FrameStack, TableInspect Skins
 if _G.IsAddOnLoaded('Blizzard_DebugTools') then
 	S:AddCallback('Blizzard_DebugTools')
 else
