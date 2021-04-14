@@ -125,6 +125,7 @@ L["ElvUI Status"] = true
 L["Empty Slot"] = "空拾取位"
 L["Enable"] = "启用"
 L["Error resetting UnitFrame."] = "重置单位框架出现错误."
+L["Event Log"] = true
 L["Experience Bar"] = "经验条"
 L["Experience"] = "经验/声望条"
 L["Feet"] = "脚"

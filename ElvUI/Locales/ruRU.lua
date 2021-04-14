@@ -125,6 +125,7 @@ L["ElvUI Status"] = "Статус ElvUI"
 L["Empty Slot"] = "Пустой слот"
 L["Enable"] = "Включить"
 L["Error resetting UnitFrame."] = "Ошибка сброса рамки юнита."
+L["Event Log"] = true
 L["Experience Bar"] = "Полоса опыта"
 L["Experience"] = "Опыт"
 L["Feet"] = "Ступни"

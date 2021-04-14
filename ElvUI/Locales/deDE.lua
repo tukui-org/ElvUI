@@ -127,6 +127,7 @@ L["ElvUI Status"] = true --No need to translate
 L["Empty Slot"] = "Leerer Platz"
 L["Enable"] = "Eingeschaltet"
 L["Error resetting UnitFrame."] = "Fehler beim Zurücksetzen des Einheitenfesters."
+L["Event Log"] = true
 L["Experience Bar"] = "Erfahrungsleiste"
 L["Experience"] = "Erfahrung"
 L["Feet"] = "Füße"
