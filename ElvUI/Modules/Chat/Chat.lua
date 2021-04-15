@@ -49,7 +49,7 @@ local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local IsActivePlayerMentor = IsActivePlayerMentor
+local IsActivePlayerGuide = IsActivePlayerGuide
 local UnitName = UnitName
 
 local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
@@ -1554,7 +1554,7 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 				return _G.NPEV2_CHAT_USER_TAG_GUIDE .. ' ' -- possibly unable to save global string with trailing whitespace...
 			end
 		elseif specialFlag == 'NEWCOMER' then
-			if IsActivePlayerMentor() then
+			if IsActivePlayerGuide() then
 				return _G.NPEV2_CHAT_USER_TAG_NEWCOMER
 			end
 		else
