@@ -35,6 +35,7 @@ local function CreateActionbarsConfig()
 	config.args.microbar.name = L["Micro Bar"]
 	config.args.extraActionButton.name = L["Boss Button"]
 	config.args.vehicleExitButton.name = L["Vehicle Exit"]
+	config.args.zoneActionButton.name = L["Zone Ability"]
 
 	return config
 end
@@ -91,6 +92,7 @@ local function CreateDatatbarsConfig()
 
 	MC:AddConfigOptions(P.databars, config)
 
+	config.args.colors.name = L["Colors"]
 	config.args.experience.name = L["Experience"]
 	config.args.reputation.name = L["Reputation"]
 	config.args.honor.name = L["Honor"]
