@@ -11,6 +11,6 @@
 	<Script file='AlertFrame.lua'/>
 	<Script file='AltPower.lua'/>
 	<Script file='TalkingHeadFrame.lua'/>
-	<Script file='LevelUpBossBanner.lua'/>
+	<Script file='BossBanner.lua'/>
 	<Script file='WidgetsUI.lua'/>
 </Ui>
