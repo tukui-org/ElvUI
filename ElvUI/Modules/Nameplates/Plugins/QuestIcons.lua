@@ -82,7 +82,7 @@ local questTypes = typesLocalized[E.locale] or typesLocalized.enUS
 local function CheckTextForQuest(text)
 	local x, y = strmatch(text, '(%d+)/(%d+)')
 	if x and y then
-		local diff = floor(y-x)
+		local diff = floor(y - x)
 		if diff > 0 then
 			return diff
 		end
