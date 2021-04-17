@@ -268,7 +268,12 @@ local blacklistedKeys = {
 			classColorMentionExcludedNames = true
 		},
 		datatexts = {
-			newPanelInfo = true
+			newPanelInfo = true,
+			settings = {
+				Currencies = {
+					tooltipData = true
+				}
+			}
 		},
 		nameplate = {
 			effectiveHealth = true,
