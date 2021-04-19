@@ -1,5 +1,5 @@
 local LibStub = LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 3
+local MAJOR, MINOR = 'LibAceConfigHelper', 4
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -37,7 +37,7 @@ function ACH:Group(name, desc, order, childGroups, get, set, disabled, hidden, f
 end
 
 function ACH:Header(name, order, get, set, hidden)
-	return { type = 'header', name = name, order = order, get = get, set = set, hidden = hidden }
+	return { type = 'header', name = name or '', order = order, get = get, set = set, hidden = hidden }
 end
 
 function ACH:Input(name, desc, order, multiline, width, get, set, disabled, hidden, validate)
