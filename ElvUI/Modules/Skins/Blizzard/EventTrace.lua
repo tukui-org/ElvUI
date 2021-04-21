@@ -3,6 +3,66 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
+local function ReskinEventTraceButton(button)
+	S:HandleButton(button)
+	button.NormalTexture:SetAlpha(0)
+	button.MouseoverOverlay:SetAlpha(0)
+end
+
+local function ReskinScrollArrow(self, direction)
+	self.Texture:SetAlpha(0)
+	self.Overlay:SetAlpha(0)
+
+	local tex = self:CreateTexture(nil, "ARTWORK")
+	tex:SetAllPoints()
+	tex:CreateBackdrop('Transparent')
+	S:SetupArrow(tex, direction)
+
+	--self:HookScript("OnEnter", Texture_OnEnter)
+	--self:HookScript("OnLeave", Texture_OnLeave)
+end
+
+local function ReskinEventTraceScrollBar(scrollBar)
+	scrollBar:StripTextures()
+	ReskinScrollArrow(scrollBar.Back, "up")
+	ReskinScrollArrow(scrollBar.Forward, "down")
+
+	local thumb = scrollBar:GetThumb()
+	thumb:StripTextures()
+	thumb:CreateBackdrop('Transparent')
+end
+
+local function reskinScrollChild(self)
+	for i = 1, self.ScrollTarget:GetNumChildren() do
+		local child = select(i, self.ScrollTarget:GetChildren())
+		local hideButton = child and child.HideButton
+		if hideButton and not hideButton.IsSkinned then
+			S:HandleCloseButton(hideButton)
+			hideButton:ClearAllPoints()
+			hideButton:SetPoint("LEFT", 3, 0)
+
+			local checkButton = child.CheckButton
+			if checkButton then
+				S:HandleCheckBox(checkButton)
+				checkButton:SetSize(22, 22)
+			end
+
+			hideButton.IsSkinned = true
+		end
+	end
+end
+
+local function ReskinEventTraceScrollBox(frame)
+	frame:DisableDrawLayer("BACKGROUND")
+	frame:CreateBackdrop('Transparent')
+	hooksecurefunc(frame, "Update", reskinScrollChild)
+end
+
+local function ReskinEventTraceFrame(frame)
+	ReskinEventTraceScrollBox(frame.ScrollBox)
+	ReskinEventTraceScrollBar(frame.ScrollBar)
+end
+
 function S:Blizzard_EventTrace()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.eventLog) then return end
 
@@ -10,9 +70,10 @@ function S:Blizzard_EventTrace()
 	local EventTrace = _G.EventTrace
 	EventTrace:StripTextures()
 	EventTrace:CreateBackdrop('Transparent')
-	S:HandleCloseButton(EventTraceCloseButton)
+	S:HandleCloseButton(_G.EventTraceCloseButton)
 
 	-- Top Buttons
+	local SubtitleBar = EventTrace.SubtitleBar
 	EventTrace.SubtitleBar.ViewLog:StripTextures()
 	EventTrace.SubtitleBar.ViewFilter:StripTextures()
 	S:HandleButton(EventTrace.SubtitleBar.ViewLog)
@@ -46,6 +107,23 @@ function S:Blizzard_EventTrace()
 	-- Resize Button
 	EventTrace.ResizeButton:SetAlpha(0)
 
+	ReskinEventTraceFrame(EventTrace.Log.Events)
+	ReskinEventTraceFrame(EventTrace.Log.Search)
+	ReskinEventTraceFrame(EventTrace.Filter)
+
+	local buttons = {
+		SubtitleBar.ViewLog,
+		SubtitleBar.ViewFilter,
+		LogBar.DiscardAllButton,
+		LogBar.PlaybackButton,
+		LogBar.MarkButton,
+		FilterBar.DiscardAllButton,
+		FilterBar.UncheckAllButton,
+		FilterBar.CheckAllButton,
+	}
+	for _, button in pairs(buttons) do
+		ReskinEventTraceButton(button)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_EventTrace')
