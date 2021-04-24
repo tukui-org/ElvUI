@@ -8,7 +8,6 @@ local _G = _G
 local format, gsub, ipairs, pairs, select, strmatch, strsplit = format, gsub, ipairs, pairs, select, strmatch, strsplit
 local tconcat, tinsert, tremove, type, wipe, tonumber = table.concat, tinsert, tremove, type, wipe, tonumber
 local GetScreenWidth = GetScreenWidth
-local IsAddOnLoaded = IsAddOnLoaded
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
 
@@ -2757,7 +2756,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.visibilityGroup.args.visibility.disabled = function() return E.db.unitframe.smartRaidFilter end
 	end
 
-	if (groupName == 'target' or groupName == 'boss' or groupName == 'tank' or groupName == 'arena' or groupName == 'assist') and not IsAddOnLoaded('Clique') then
+	if (groupName == 'target' or groupName == 'boss' or groupName == 'tank' or groupName == 'arena' or groupName == 'assist') and not E:IsAddOnEnabled('Clique') then
 		config.args.middleClickFocus = ACH:Toggle(L["Middle Click - Set Focus"], L["Middle clicking the unit frame will cause your focus to match the unit."], 16)
 	end
 

@@ -7,7 +7,6 @@ local pairs, ipairs, type = pairs, ipairs, type
 
 local EquipmentManager_GetItemInfoByLocation = EquipmentManager_GetItemInfoByLocation
 local hooksecurefunc = hooksecurefunc
-local IsAddOnLoaded = IsAddOnLoaded
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 local FLYOUT_LOCATIONS = {
@@ -121,7 +120,7 @@ local function FixSidebarTabCoords()
 			tab.Highlight:SetAllPoints()
 
 			-- Check for DejaCharacterStats. Lets hide the Texture if the AddOn is loaded.
-			if IsAddOnLoaded('DejaCharacterStats') then
+			if E:IsAddOnEnabled('DejaCharacterStats') then
 				tab.Hider:SetTexture()
 			else
 				tab.Hider:SetColorTexture(0, 0, 0, 0.8)
@@ -311,7 +310,7 @@ function S:CharacterFrame()
 	ColorizeStatPane(_G.CharacterStatsPane.ItemLevelFrame)
 
 	hooksecurefunc('PaperDollFrame_UpdateStats', function()
-		if IsAddOnLoaded('DejaCharacterStats') then return end
+		if E:IsAddOnEnabled('DejaCharacterStats') then return end
 
 		for _, Table in ipairs({_G.CharacterStatsPane.statsFramePool:EnumerateActive()}) do
 			if type(Table) == 'table' then
@@ -329,7 +328,7 @@ function S:CharacterFrame()
 		end
 	end)
 
-	if not IsAddOnLoaded('DejaCharacterStats') then
+	if not E:IsAddOnEnabled('DejaCharacterStats') then
 		StatsPane('EnhancementsCategory')
 		StatsPane('ItemLevelCategory')
 		StatsPane('AttributesCategory')
