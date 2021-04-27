@@ -255,16 +255,8 @@ function UF:PostUpdatePowerColor()
 end
 
 local powerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
-local individualUnits = {
-	player = true,
-	target = true,
-	targettarget = true,
-	targettargettarget = true,
-	focus = true,
-	focustarget = true,
-	pet = true,
-	pettarget = true,
-	}
+local individualUnits = {player = true, target = true, targettarget = true, targettargettarget = true, focus = true, focustarget = true, pet = true, pettarget = true}
+
 function UF:PostUpdatePower(unit, cur, min, max)
 	local parent = self.origParent or self:GetParent()
 	if parent.isForced then
