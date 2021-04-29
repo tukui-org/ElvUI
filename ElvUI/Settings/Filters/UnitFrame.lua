@@ -924,6 +924,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[334498] = Defaults(), -- Seismic Upheaval
 		[337643] = Defaults(), -- Unstable Footing
 		[334765] = Defaults(), -- Heart Rend
+		[334771] = Defaults(), -- Heart Hemorrhage
 		[333377] = Defaults(), -- Wicked Mark
 		[334616] = Defaults(), -- Petrified
 		[334541] = Defaults(), -- Curse of Petrification

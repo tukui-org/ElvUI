@@ -125,7 +125,7 @@ function UF:Update_ArenaFrames(frame, db)
 		frame.PVPINFO_WIDTH = db.pvpSpecIcon and frame.UNIT_HEIGHT or 0
 	end
 
-	if not IsAddOnLoaded('Clique') then
+	if not E:IsAddOnEnabled('Clique') then
 		if db.middleClickFocus then
 			frame:SetAttribute('type3', 'focus')
 		elseif frame:GetAttribute('type3') == 'focus' then

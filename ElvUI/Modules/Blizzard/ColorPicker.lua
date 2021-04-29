@@ -151,7 +151,7 @@ local function onValueChanged(frame, value)
 end
 
 function B:EnhanceColorPicker()
-	if IsAddOnLoaded('ColorPickerPlus') then return end
+	if E:IsAddOnEnabled('ColorPickerPlus') then return end
 
 	--Skin the default frame, move default buttons into place
 	_G.ColorPickerFrame:SetClampedToScreen(true)

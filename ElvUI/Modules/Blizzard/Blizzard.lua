@@ -7,7 +7,6 @@ local _G = _G
 local CreateFrame = CreateFrame
 local GetQuestLogRewardXP = GetQuestLogRewardXP
 local GetRewardXP = GetRewardXP
-local IsAddOnLoaded = IsAddOnLoaded
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
@@ -70,11 +69,11 @@ function B:Initialize()
 	B:Handle_BossBanner()
 	B:Handle_UIWidgets()
 
-	if not (IsAddOnLoaded('DugisGuideViewerZ') or IsAddOnLoaded('!KalielsTracker')) then
+	if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
 		B:MoveObjectiveFrame()
 	end
 
-	if not IsAddOnLoaded('SimplePowerBar') then
+	if not E:IsAddOnEnabled('SimplePowerBar') then
 		B:PositionAltPowerBar()
 		B:SkinAltPowerBar()
 	end

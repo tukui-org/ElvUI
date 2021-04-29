@@ -385,7 +385,7 @@ function UF:GetInterruptColor(db, unit)
 		r, g, b = colors.castColor[1], colors.castColor[2], colors.castColor[3]
 	end
 
-	if self.notInterruptible and unit ~= 'player' and UnitCanAttack('player', unit) then
+	if self.notInterruptible and (UnitIsPlayer(unit) or (unit ~= 'player' and UnitCanAttack('player', unit))) then
 		if custom and custom.colorNoInterrupt then
 			r, g, b = custom.colorNoInterrupt.r, custom.colorNoInterrupt.g, custom.colorNoInterrupt.b
 		else
