@@ -1,5 +1,5 @@
 local LibStub = LibStub
-local MAJOR, MINOR = 'LibAceConfigHelper', 4
+local MAJOR, MINOR = 'LibAceConfigHelper', 5
 local ACH = LibStub:NewLibrary(MAJOR, MINOR)
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -127,8 +127,8 @@ function ACH:Spacer(order, width, hidden)
 	return { name = ' ', type = 'description', order = order, width = width, hidden = hidden }
 end
 
-local function SharedMediaSelect(type, name, desc, order, values, width, get, set, disabled, hidden)
-	return { type = 'select', dialogControl = type, name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
+local function SharedMediaSelect(controlType, name, desc, order, values, width, get, set, disabled, hidden)
+	return { type = 'select', dialogControl = controlType, name = name, desc = desc, order = order, values = values, width = width, get = get, set = set, disabled = disabled, hidden = hidden }
 end
 
 function ACH:SharedMediaFont(name, desc, order, width, get, set, disabled, hidden)
