@@ -2,7 +2,7 @@
 -- Credit to Jaslm, most of this code is his from the addon ColorPickerPlus.
 -- Modified and optimized by Simpy.
 ------------------------------------------------------------------------------
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 local S = E:GetModule('Skins')
 
