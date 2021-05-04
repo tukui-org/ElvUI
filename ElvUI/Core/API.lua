@@ -54,6 +54,18 @@ function E:ClassColor(class, usePriestColor)
 	end
 end
 
+function E:InverseClassColor(class, usePriestColor, forceCap)
+	local color = E:CopyTable({}, E:ClassColor(class, usePriestColor))
+	local capColor = color == E.PriestColors or forceCap
+
+	color.r = capColor and math.max(1-color.r,0.35) or (1-color.r)
+	color.g = capColor and math.max(1-color.g,0.35) or (1-color.g)
+	color.b = capColor and math.max(1-color.b,0.35) or (1-color.b)
+	color.colorStr = E:RGBToHex(color.r, color.g, color.b, 'ff')
+
+	return color
+end
+
 do -- other non-english locales require this
 	E.UnlocalizedClasses = {}
 	for k, v in pairs(_G.LOCALIZED_CLASS_NAMES_MALE) do E.UnlocalizedClasses[v] = k end
