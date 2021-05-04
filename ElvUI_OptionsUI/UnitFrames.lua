@@ -4017,43 +4017,59 @@ E.Options.args.unitframe = {
 					get = function(info) return E.private.unitframe.disabledBlizzardFrames[info[#info]] end,
 					set = function(info, value) E.private.unitframe.disabledBlizzardFrames[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end,
 					args = {
-						player = {
+						individual = {
 							order = 1,
-							type = 'toggle',
-							name = L["Player"],
-							desc = L["Disables the player and pet unitframes."],
+							type = 'group',
+							name = L["Individual Units"],
+							inline = true,
+							args = {
+								player = {
+									order = 1,
+									type = 'toggle',
+									name = L["Player"],
+									desc = L["Disables the player and pet unitframes."],
+								},
+								target = {
+									order = 2,
+									type = 'toggle',
+									name = L["TARGET"],
+									desc = L["Disables the target and target of target unitframes."],
+								},
+								focus = {
+									order = 3,
+									type = 'toggle',
+									name = L["Focus"],
+									desc = L["Disables the focus and target of focus unitframes."],
+								},
+							},
 						},
-						target = {
+						group = {
 							order = 2,
-							type = 'toggle',
-							name = L["TARGET"],
-							desc = L["Disables the target and target of target unitframes."],
-						},
-						focus = {
-							order = 3,
-							type = 'toggle',
-							name = L["Focus"],
-							desc = L["Disables the focus and target of focus unitframes."],
-						},
-						boss = {
-							order = 4,
-							type = 'toggle',
-							name = L["Boss"],
-						},
-						arena = {
-							order = 5,
-							type = 'toggle',
-							name = L["Arena"],
-						},
-						party = {
-							order = 6,
-							type = 'toggle',
-							name = L["PARTY"],
-						},
-						raid = {
-							order = 7,
-							type = 'toggle',
-							name = L["Raid"],
+							type = 'group',
+							name = L["Group Units"],
+							inline = true,
+							args = {
+								party = {
+									order = 6,
+									type = 'toggle',
+									name = L["PARTY"],
+								},
+								raid = {
+									order = 7,
+									type = 'toggle',
+									name = L["Raid"],
+								},
+								boss = {
+									order = 8,
+									type = 'toggle',
+									name = L["Boss"],
+								},
+								arena = {
+									order = 9,
+									type = 'toggle',
+									name = L["Arena"],
+								},
+							},
 						},
 					},
 				},
