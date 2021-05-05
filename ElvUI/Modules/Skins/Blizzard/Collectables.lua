@@ -614,14 +614,6 @@ function S:Blizzard_Collections()
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
 
-	for i = 1, #WardrobeTransmogFrame.ModelScene.SlotButtons do
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:StripTextures()
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.ModelScene.SlotButtons[i]:GetFrameLevel() + 2)
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Border:Kill()
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
-	end
-
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
 	WardrobeTransmogFrame.SpecButton:Point('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -2, 0)
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
