@@ -13,23 +13,9 @@ local function ReskinScrollArrow(self, direction)
 	self.Texture:SetAlpha(0)
 	self.Overlay:SetAlpha(0)
 
-	local tex = self:CreateTexture(nil, "ARTWORK")
+	local tex = self:CreateTexture(nil, 'ARTWORK')
 	tex:SetAllPoints()
 	tex:CreateBackdrop('Transparent')
-	S:SetupArrow(tex, direction)
-
-	--self:HookScript("OnEnter", Texture_OnEnter)
-	--self:HookScript("OnLeave", Texture_OnLeave)
-end
-
-local function ReskinEventTraceScrollBar(scrollBar)
-	scrollBar:StripTextures()
-	ReskinScrollArrow(scrollBar.Back, "up")
-	ReskinScrollArrow(scrollBar.Forward, "down")
-
-	local thumb = scrollBar:GetThumb()
-	thumb:StripTextures()
-	thumb:CreateBackdrop('Transparent')
 end
 
 local function reskinScrollChild(self)
@@ -39,7 +25,7 @@ local function reskinScrollChild(self)
 		if hideButton and not hideButton.IsSkinned then
 			S:HandleCloseButton(hideButton)
 			hideButton:ClearAllPoints()
-			hideButton:SetPoint("LEFT", 3, 0)
+			hideButton:SetPoint('LEFT', 3, 0)
 
 			local checkButton = child.CheckButton
 			if checkButton then
@@ -53,14 +39,13 @@ local function reskinScrollChild(self)
 end
 
 local function ReskinEventTraceScrollBox(frame)
-	frame:DisableDrawLayer("BACKGROUND")
+	frame:DisableDrawLayer('BACKGROUND')
 	frame:CreateBackdrop('Transparent')
-	hooksecurefunc(frame, "Update", reskinScrollChild)
+	hooksecurefunc(frame, 'Update', reskinScrollChild)
 end
 
 local function ReskinEventTraceFrame(frame)
 	ReskinEventTraceScrollBox(frame.ScrollBox)
-	ReskinEventTraceScrollBar(frame.ScrollBar)
 end
 
 function S:Blizzard_EventTrace()
