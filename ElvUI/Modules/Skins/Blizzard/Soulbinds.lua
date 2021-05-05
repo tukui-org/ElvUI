@@ -45,12 +45,6 @@ function S:Blizzard_Soulbinds()
 	frame.CommitConduitsButton:SetFrameLevel(10)
 	S:HandleButton(frame.ActivateSoulbindButton)
 	frame.ActivateSoulbindButton:SetFrameLevel(10)
-	frame.ConduitList.BottomShadowContainer.BottomShadow:SetAlpha(0)
-
-	local scrollBox = frame.ConduitList.ScrollBox
-	for i = 1, 3 do
-		hooksecurefunc(scrollBox.ScrollTarget.Lists[i], 'UpdateLayout', SkinConduitList)
-	end
 end
 
 S:AddCallbackForAddon('Blizzard_Soulbinds')
