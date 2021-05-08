@@ -56,7 +56,7 @@ end
 
 function E:InverseClassColor(class, usePriestColor, forceCap)
 	local color = E:CopyTable({}, E:ClassColor(class, usePriestColor))
-	local capColor = color == E.PriestColors or forceCap
+	local capColor = class == "PRIEST" or forceCap
 
 	color.r = capColor and math.max(1-color.r,0.35) or (1-color.r)
 	color.g = capColor and math.max(1-color.g,0.35) or (1-color.g)
