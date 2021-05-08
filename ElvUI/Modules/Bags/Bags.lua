@@ -1228,7 +1228,7 @@ function B:GetGraysValue()
 	return value
 end
 
--- These 9 items trade in groups of 3 for baubleworm battle pets in 9.1 and should not be destroyed/sol automatically
+-- These 9 items trade in groups of 3 for baubleworm battle pets in 9.1 and should not be destroyed/sold automatically
 -- See: https://www.wow-petguide.com/News/311/Patch_9.1_Pet_Compilation_2021-04-14 for more info.
 B.PetGrays = { 36812, 62072, 67410, 11406, 11944, 25402, 3300, 3670, 6150 }
 function B:VendorGrays(delete)
