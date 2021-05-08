@@ -1228,6 +1228,7 @@ function B:GetGraysValue()
 	return value
 end
 
+B.PetGrays = { 36812, 62072, 67410, 11406, 11944, 25402, 3300, 3670, 6150 }
 function B:VendorGrays(delete)
 	if B.SellFrame:IsShown() then return end
 
@@ -1241,7 +1242,8 @@ function B:VendorGrays(delete)
 			local link = GetContainerItemLink(bag, slot)
 			if link then
 				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
-				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
+				local itemID = GetContainerItemID(bag, slot)
+				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) and not tContains(B.PetGrays, itemID) then
 					tinsert(B.SellFrame.Info.itemList, {bag, slot, itemPrice, link})
 				end
 			end
