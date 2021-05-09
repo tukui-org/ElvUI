@@ -14,9 +14,9 @@ License: Public Domain
 -- A callback is provided for those interested in checker changes.
 -- @usage
 -- local rc = LibStub("LibRangeCheck-2.0")
--- 
+--
 -- rc.RegisterCallback(self, rc.CHECKERS_CHANGED, function() print("need to refresh my stored checkers") end)
--- 
+--
 -- local minRange, maxRange = rc:GetRange('target')
 -- if not minRange then
 --     print("cannot get range estimate for target")
@@ -25,7 +25,7 @@ License: Public Domain
 -- else
 --     print("target is between " .. minRange .. " and " .. maxRange .. " yards")
 -- end
--- 
+--
 -- local meleeChecker = rc:GetFriendMaxChecker(rc.MeleeRange) or rc:GetFriendMinChecker(rc.MeleeRange) -- use the closest checker (MinChecker) if no valid Melee checker is found
 -- for i = 1, 4 do
 --     -- TODO: check if unit is valid, etc
@@ -81,7 +81,7 @@ local MeleeRange = 2
 
 -- list of friendly spells that have different ranges
 local FriendSpells = {}
--- list of harmful spells that have different ranges 
+-- list of harmful spells that have different ranges
 local HarmSpells = {}
 
 FriendSpells["DEATHKNIGHT"] = {
@@ -138,7 +138,7 @@ HarmSpells["PALADIN"] = {
     20271, -- ["Judgement"], -- 30
     853, -- ["Hammer of Justice"], -- 10
     35395, -- ["Crusader Strike"], -- Melee
-} 
+}
 
 FriendSpells["PRIEST"] = {
     527, -- ["Purify"], -- 40
@@ -544,7 +544,7 @@ local function createCheckerList(spellList, itemList, interactList)
             end
         end
     end
-    
+
     if spellList then
         for i = 1, #spellList do
             local sid = spellList[i]
@@ -568,7 +568,7 @@ local function createCheckerList(spellList, itemList, interactList)
             end
         end
     end
-    
+
     if interactList and not next(res) then
         for index, range in pairs(interactList) do
             addChecker(res, range, nil,  checkers_Interact[index], "interact:" .. index)
@@ -704,7 +704,7 @@ lib.failedItemRequests = {}
 local function checker(unit)
 end
 
---@end-do-not-package@ 
+--@end-do-not-package@
 
 --- The callback name that is fired when checkers are changed.
 -- @field
@@ -1019,7 +1019,7 @@ function lib:processItemRequests(itemRequests)
                     itemRequests[range] = nil
                     break
                 end
-                tremove(items, i)   
+                tremove(items, i)
             elseif not itemRequestTimeoutAt then
                 -- print("### processItemRequests: waiting: " .. tostring(item))
                 itemRequestTimeoutAt = GetTime() + ItemRequestTimeout
@@ -1182,7 +1182,7 @@ function lib:checkItems(itemList, verbose, color)
             if not name then
                 print(MAJOR_VERSION .. ": |c" .. color .. tostring(item) .. "|r: " .. tostring(range) .. "yd: |cffeda500not in cache|r")
             else
-                local res = IsItemInRange(item, "target") 
+                local res = IsItemInRange(item, "target")
                 if res == nil or verbose then
                     if res == nil then res = "|cffed0000nil|r" end
                     print(MAJOR_VERSION .. ": |c" .. color .. tostring(item) .. ": " .. tostring(name) .. "|r: " .. tostring(range) .. "yd: " .. tostring(res))
@@ -1195,7 +1195,7 @@ end
 function lib:checkSpells(spellList, verbose, color)
     if not spellList then return end
     color = color or 'ffffffff'
-    for i = 1, #spellList do 
+    for i = 1, #spellList do
         local sid = spellList[i]
         local name, _, _, _, minRange, range = GetSpellInfo(sid)
         if (not name) or (name == "") or (not range) then
@@ -1352,9 +1352,9 @@ function lib:speedTest(numIterations)
 end
 
 -- >> DEBUG STUFF
---@end-do-not-package@ 
+--@end-do-not-package@
 
--- << load-time initialization 
+-- << load-time initialization
 
 function lib:activate()
     if not self.frame then
