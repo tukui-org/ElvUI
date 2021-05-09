@@ -460,13 +460,6 @@ local HarmItems = {
     },
 }
 
--- This could've been done by checking player race as well and creating tables for those, but it's easier like this
-for k, v in pairs(FriendSpells) do
-    tinsert(v, 28880) -- ["Gift of the Naaru"]
-end
-
--- >> END OF STATIC CONFIG
-
 -- cache
 -- GLOBALS: LibStub, CreateFrame
 local setmetatable = setmetatable
@@ -499,6 +492,13 @@ local GetTime = GetTime
 local HandSlotId = GetInventorySlotInfo("HandsSlot")
 local math_floor = math.floor
 local UnitIsVisible = UnitIsVisible
+
+-- This could've been done by checking player race as well and creating tables for those, but it's easier like this
+for _, v in pairs(FriendSpells) do
+    tinsert(v, 28880) -- Gift of the Naaru (40 yards)
+end
+
+-- >> END OF STATIC CONFIG
 
 -- temporary stuff
 
@@ -1198,8 +1198,8 @@ function lib:activate()
         end
     end
     initItemRequests()
-    self.frame:SetScript("OnEvent", function(frame, ...) self:OnEvent(...) end)
-    self.frame:SetScript("OnUpdate", function(frame, elapsed)
+    self.frame:SetScript("OnEvent", function(_, ...) self:OnEvent(...) end)
+    self.frame:SetScript("OnUpdate", function(_, elapsed)
         lastUpdate = lastUpdate + elapsed
         if lastUpdate < UpdateDelay then
             return
