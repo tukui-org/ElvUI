@@ -292,8 +292,7 @@ local blacklistedKeys = {
 			effectiveAura = true,
 			effectiveHealthSpeed = true,
 			effectivePowerSpeed = true,
-			effectiveAuraSpeed = true,
-			spellRangeCheck = true
+			effectiveAuraSpeed = true
 		}
 	},
 }

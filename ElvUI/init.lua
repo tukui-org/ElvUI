@@ -123,7 +123,7 @@ do
 	E:AddLib('LDB', 'LibDataBroker-1.1')
 	E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
-	E:AddLib('SpellRange', 'SpellRange-1.0')
+	E:AddLib('RangeCheck', 'LibRangeCheck-2.0')
 	E:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
 	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
 	E:AddLib('Compress', 'LibCompress')
