@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
+local RangeCheck = E.Libs.RangeCheck
 local Translit = E.Libs.Translit
 local translitMark = '!'
 
@@ -334,6 +335,28 @@ ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
 	local deficit = (min / max) - 1
 	if deficit ~= 0 then
 		return E:GetFormattedText('PERCENT', deficit, -1)
+	end
+end
+
+for _, vars in ipairs({'',':min',':max'}) do
+	local textFormat = format('range%s', vars)
+	ElvUF.Tags.OnUpdateThrottle[textFormat] = 0.1
+	ElvUF.Tags.Methods[textFormat] = function(unit)
+		if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
+			local minRange, maxRange = RangeCheck:GetRange(unit, true)
+
+			if vars == ':min' then
+				if minRange then
+					return format('%d', minRange)
+				end
+			elseif vars == ':max' then
+				if maxRange then
+					return format('%d', maxRange)
+				end
+			elseif minRange and maxRange then
+				return format('%d - %d', minRange, maxRange)
+			end
+		end
 	end
 end
 
@@ -1391,6 +1414,9 @@ E.TagInfo = {
 	['quest:info'] = { category = 'Quest', description = "Displays the quest objectives" },
 	['quest:title'] = { category = 'Quest', description = "Displays the quest title" },
 	--Range
+	['range'] = { category = 'Range', description = "Displays the range" },
+	['range:min'] = { category = 'Range', description = "Displays the min range" },
+	['range:max'] = { category = 'Range', description = "Displays the max range" },
 	['distance'] = { category = 'Range', description = "Displays the distance" },
 	['nearbyplayers:10'] = { category = 'Range', description = "Displays all players within 10 yards" },
 	['nearbyplayers:30'] = { category = 'Range', description = "Displays all players within 30 yards" },

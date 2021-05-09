@@ -1510,8 +1510,6 @@ function UF:Initialize()
 		end
 	end
 
-	UF:UpdateRangeCheckSpells()
-
 	local ORD = E.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if not ORD then return end
 	ORD.ShowDispellableDebuff = true
