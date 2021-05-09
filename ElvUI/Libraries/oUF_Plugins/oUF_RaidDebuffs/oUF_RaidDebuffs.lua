@@ -284,7 +284,7 @@ local function Update(self, event, unit)
 	end
 
 	if self.RaidDebuffs.forceShow then
-		_spellId = 47540
+		_spellId = 5782
 		_name, _, _icon = GetSpellInfo(_spellId)
 		_count, _dtype, _duration, _endTime, _stackThreshold = 5, 'Magic', 0, 60, 0
 	end
