@@ -113,7 +113,7 @@ PetSpells["DEMONHUNTER"] = {}
 FriendSpells["DRUID"] = {
     774,  -- Rejuvenation (40 yards, level 10)
     2782, -- Remove Corruption (40 yards, level 19)
-    8936, -- Regrowth (40 yards, all specs, level 5)
+    8936, -- Regrowth (40 yards, level 5)
 }
 HarmSpells["DRUID"] = {
     5176,  -- Wrath (40 yards)
@@ -124,7 +124,7 @@ HarmSpells["DRUID"] = {
     8921,  -- Moonfire (40 yards, level 2)
 }
 ResSpells["DRUID"] = {
-    50769, -- Revive (40 yards, all specs, level 14)
+    50769, -- Revive (40 yards, level 14)
 }
 PetSpells["DRUID"] = {}
 
@@ -146,9 +146,9 @@ HarmSpells["MAGE"] = {
     44614, -- Flurry (40 yards)
     5019,  -- Shoot (30 yards)
     118,   -- Polymorph (30 yards)
-    116,   -- Frostbolt (Frost) (40 yards)
-    133,   -- Fireball (Fire) (40 yards)
-    44425, -- Arcane Barrage (Arcane) (40 yards)
+    116,   -- Frostbolt (40 yards)
+    133,   -- Fireball (40 yards)
+    44425, -- Arcane Barrage (40 yards)
 }
 ResSpells["MAGE"] = {}
 PetSpells["MAGE"] = {}
@@ -179,9 +179,7 @@ HarmSpells["PALADIN"] = {
     35395,  -- Crusader Strike (Melee Range)
     62124,  -- Hand of Reckoning (30 yards)
     183218, -- Hand of Hindrance (30 yards)
-    20271,  -- Judgement (30 yards) Retribution ~ does not work for retribution below level 78
-    275779, -- Judgement (30 yards) Tank
-    275773, -- Judgement (30 yards) Heal
+    20271,  -- Judgement (30 yards)
     20473,  -- Holy Shock (40 yards)
 }
 ResSpells["PALADIN"] = {
@@ -224,7 +222,7 @@ PetSpells["ROGUE"] = {}
 FriendSpells["SHAMAN"] = {
     8004,   -- Healing Surge (Resto/Elemental) (40 yards)
     188070, -- Healing Surge (Enhancement) (40 yards)
-    546,    -- ["Water Walking"], -- 30
+    546,    -- Water Walking (30 yards)
 }
 HarmSpells["SHAMAN"] = {
     370,    -- Purge (30 yards)
