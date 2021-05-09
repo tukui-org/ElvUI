@@ -43,7 +43,7 @@ local function friendlyIsInRange(unit)
 		return false -- blizz checked and said the unit is out of range
 	end
 
-	local _, maxRange = RangeCheck:GetRange(unit, true)
+	local _, maxRange = RangeCheck:GetRange(unit, true, true)
 	return maxRange
 end
 
@@ -59,7 +59,7 @@ function UF:UpdateRange(unit)
 		alpha = self.Fader.MinAlpha
 	elseif unit then
 		if UnitCanAttack('player', unit) or UnitIsUnit(unit, 'pet') then
-			local _, maxRange = RangeCheck:GetRange(unit, true)
+			local _, maxRange = RangeCheck:GetRange(unit, true, true)
 			alpha = (maxRange and self.Fader.MaxAlpha) or self.Fader.MinAlpha
 		else
 			alpha = (UnitIsConnected(unit) and friendlyIsInRange(unit) and self.Fader.MaxAlpha) or self.Fader.MinAlpha

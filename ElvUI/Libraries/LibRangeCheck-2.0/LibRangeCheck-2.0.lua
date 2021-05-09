@@ -40,7 +40,7 @@ License: Public Domain
 --
 -- @class file
 -- @name LibRangeCheck-2.0
-local MAJOR_VERSION = "LibRangeCheck-2.0"
+local MAJOR_VERSION = "LibRangeCheck-2.0-ElvUI"
 local MINOR_VERSION = tonumber(("$Revision: 205 $"):match("%d+")) + 100000
 
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
@@ -386,7 +386,6 @@ end
 -- cache
 
 local setmetatable = setmetatable
-local tonumber = tonumber
 local pairs = pairs
 local tostring = tostring
 local print = print
@@ -401,7 +400,6 @@ local GetSpellBookItemName = GetSpellBookItemName
 local GetNumSpellTabs = GetNumSpellTabs
 local GetSpellTabInfo = GetSpellTabInfo
 local GetItemInfo = GetItemInfo
-local UnitAura = UnitAura
 local UnitCanAttack = UnitCanAttack
 local UnitCanAssist = UnitCanAssist
 local UnitExists = UnitExists
@@ -412,8 +410,6 @@ local IsItemInRange = IsItemInRange
 local UnitClass = UnitClass
 local UnitRace = UnitRace
 local GetInventoryItemLink = GetInventoryItemLink
-local GetSpecialization = GetSpecialization
-local GetSpecializationInfo = GetSpecializationInfo
 local GetTime = GetTime
 local HandSlotId = GetInventorySlotInfo("HandsSlot")
 local math_floor = math.floor
@@ -691,6 +687,8 @@ lib.checkerCache_Item = lib.checkerCache_Item or {}
 lib.miscRC = createCheckerList(nil, nil, DefaultInteractList)
 lib.friendRC = createCheckerList(nil, nil, DefaultInteractList)
 lib.harmRC = createCheckerList(nil, nil, DefaultInteractList)
+lib.friendNoItemsRC = createCheckerList(nil, nil, DefaultInteractList)
+lib.harmNoItemsRC = createCheckerList(nil, nil, DefaultInteractList)
 
 lib.failedItemRequests = {}
 
@@ -786,6 +784,12 @@ function lib:init(forced)
         changed = true
     end
     if updateCheckers(self.harmRC, createCheckerList(HarmSpells[playerClass], HarmItems, interactList)) then
+        changed = true
+    end
+    if updateCheckers(self.friendNoItemsRC, createCheckerList(FriendSpells[playerClass], nil, interactList)) then
+        changed = true
+    end
+    if updateCheckers(self.harmNoItemsRC, createCheckerList(HarmSpells[playerClass], nil, interactList)) then
         changed = true
     end
     if updateCheckers(self.miscRC, createCheckerList(nil, nil, interactList)) then
@@ -914,7 +918,7 @@ end
 -- local rc = LibStub("LibRangeCheck-2.0")
 -- local minRange, maxRange = rc:GetRange('target')
 -- local minRangeIfVisible, maxRangeIfVisible = rc:GetRange('target', true)
-function lib:GetRange(unit, checkVisible)
+function lib:GetRange(unit, checkVisible, noItems)
     if not UnitExists(unit) then
         return nil
     end
@@ -925,9 +929,9 @@ function lib:GetRange(unit, checkVisible)
         return getRange(unit, self.miscRC)
     end
     if UnitCanAttack("player", unit) then
-        return getRange(unit, self.harmRC)
+        return getRange(unit, noItems and self.harmNoItemsRC or self.harmRC)
     elseif UnitCanAssist("player", unit) then
-        return getRange(unit, self.friendRC)
+        return getRange(unit, noItems and self.friendNoItemsRC or self.friendRC)
     else
         return getRange(unit, self.miscRC)
     end
