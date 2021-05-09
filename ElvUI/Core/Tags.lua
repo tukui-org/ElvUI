@@ -354,7 +354,7 @@ for _, vars in ipairs({'',':min',':max'}) do
 					return format('%d', maxRange)
 				end
 			elseif minRange or maxRange then
-				return format('%s - %s', minRange or 'NA', maxRange or 'NA')
+				return format('%s - %s', minRange or '??', maxRange or '??')
 			end
 		end
 	end
