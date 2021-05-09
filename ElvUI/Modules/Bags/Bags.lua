@@ -1206,6 +1206,20 @@ function B:UpdateGoldText()
 	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), B.db.moneyFormat, not B.db.moneyCoins))
 end
 
+-- These items trade in groups of 3 for baubleworm battle pets in 9.1 and should not be destroyed/sold automatically
+-- Link for more info: https://www.wow-petguide.com/News/311/Patch_9.1_Pet_Compilation_2021-04-14
+B.PetGrays = {
+	[3300] = "Rabbit's Foot",
+	[3670] = "Large Slimy Bone",
+	[6150] = "A Frayed Knot",
+	[11406] = "Rotting Bear Carcass",
+	[11944] = "Dark Iron Baby Booties",
+	[25402] = "The Stoppable Force",
+	[36812] = "Ground Gear",
+	[62072] = "Robble's Wobbly Staff",
+	[67410] = "Very Unlucky Rock",
+}
+
 function B:GetGraysValue()
 	local value = 0
 
@@ -1213,12 +1227,15 @@ function B:GetGraysValue()
 		for slot = 1, GetContainerNumSlots(bag) do
 			local link = GetContainerItemLink(bag, slot)
 			if link then
-				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
-				if itemPrice and itemPrice > 0 then
-					local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
-					local stackPrice = itemPrice * stackCount
-					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (stackPrice > 0) then
-						value = value + stackPrice
+				local itemID = GetContainerItemID(bag, slot)
+				if not B.PetGrays[itemID] then
+					local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
+					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
+						local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
+						local stackPrice = itemPrice * stackCount
+						if stackPrice > 0 then
+							value = value + stackPrice
+						end
 					end
 				end
 			end
@@ -1228,9 +1245,6 @@ function B:GetGraysValue()
 	return value
 end
 
--- These 9 items trade in groups of 3 for baubleworm battle pets in 9.1 and should not be destroyed/sold automatically
--- Link for more info: https://www.wow-petguide.com/News/311/Patch_9.1_Pet_Compilation_2021-04-14
-B.PetGrays = { 36812, 62072, 67410, 11406, 11944, 25402, 3300, 3670, 6150 }
 function B:VendorGrays(delete)
 	if B.SellFrame:IsShown() then return end
 
@@ -1243,10 +1257,12 @@ function B:VendorGrays(delete)
 		for slot = 1, GetContainerNumSlots(bag), 1 do
 			local link = GetContainerItemLink(bag, slot)
 			if link then
-				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
 				local itemID = GetContainerItemID(bag, slot)
-				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) and not tContains(B.PetGrays, itemID) then
-					tinsert(B.SellFrame.Info.itemList, {bag, slot, itemPrice, link})
+				if not B.PetGrays[itemID] then
+					local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
+					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
+						tinsert(B.SellFrame.Info.itemList, {bag, slot, itemPrice, link, itemID})
+					end
 				end
 			end
 		end
