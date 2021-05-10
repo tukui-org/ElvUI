@@ -573,10 +573,13 @@ function E:PLAYER_REGEN_DISABLED()
 end
 
 function E:GetGroupUnit(unit)
-	-- returns the unit with raid# or party# when its NOT player,
-	-- UnitIsUnit is true, and its not using raid# or party# already
-	local inGroup = not UnitIsUnit(unit, 'player') and (UnitInParty(unit) or UnitInRaid(unit))
-	if inGroup and (not strfind(unit, 'party') or not strfind(unit, 'raid')) then
+	if UnitIsUnit(unit, 'player') then return end
+	if strfind(unit, 'party') or strfind(unit, 'raid') then
+		return unit
+	end
+
+	-- returns the unit as raid# or party# when grouped
+	if UnitInParty(unit) or UnitInRaid(unit) then
 		local isInRaid = IsInRaid()
 		for i = 1, GetNumGroupMembers() do
 			local groupUnit = (isInRaid and 'raid' or 'party')..i

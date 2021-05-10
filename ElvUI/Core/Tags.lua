@@ -857,10 +857,10 @@ for _, var in ipairs({4,8,10,15,20,25,30,35,40}) do
 	local textFormat = format('nearbyplayers:%s', var)
 	ElvUF.Tags.OnUpdateThrottle[textFormat] = 0.25
 	ElvUF.Tags.Methods[textFormat] = function(realUnit)
-		local unit = E:GetGroupUnit(realUnit) or realUnit
 		local inRange = 0
 
-		if UnitIsConnected(unit) then
+		if UnitIsConnected(realUnit) then
+			local unit = E:GetGroupUnit(realUnit) or realUnit
 			for groupUnit in pairs(GroupUnits) do
 				if UnitIsConnected(groupUnit) and not UnitIsUnit(unit, groupUnit) then
 					local distance = E:GetDistance(unit, groupUnit)
@@ -879,9 +879,8 @@ end
 
 ElvUF.Tags.OnUpdateThrottle['distance'] = 0.1
 ElvUF.Tags.Methods['distance'] = function(realUnit)
-	local unit = E:GetGroupUnit(realUnit) or realUnit
-
-	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
+	if UnitIsConnected(realUnit) and not UnitIsUnit(realUnit, 'player') then
+		local unit = E:GetGroupUnit(realUnit) or realUnit
 		local distance = E:GetDistance('player', unit)
 		if distance then
 			return format('%.1f', distance)
