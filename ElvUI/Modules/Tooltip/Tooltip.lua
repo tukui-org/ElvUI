@@ -496,14 +496,16 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 
 		if TT.db.targetInfo and IsInGroup() then
+			local isInRaid = IsInRaid()
 			for i = 1, GetNumGroupMembers() do
-				local groupUnit = (IsInRaid() and 'raid'..i or 'party'..i);
+				local groupUnit = (isInRaid and 'raid' or 'party')..i
 				if UnitIsUnit(groupUnit..'target', unit) and not UnitIsUnit(groupUnit,'player') then
-					local _, class = UnitClass(groupUnit);
+					local _, class = UnitClass(groupUnit)
 					local classColor = E:ClassColor(class) or PRIEST_COLOR
 					tinsert(targetList, format('|c%s%s|r', classColor.colorStr, UnitName(groupUnit)))
 				end
 			end
+
 			local numList = #targetList
 			if numList > 0 then
 				tt:AddLine(format('%s (|cffffffff%d|r): %s', L["Targeted By:"], numList, tconcat(targetList, ', ')), nil, nil, nil, true);
