@@ -353,8 +353,8 @@ for _, vars in ipairs({'',':min',':max'}) do
 				if maxRange then
 					return format('%d', maxRange)
 				end
-			elseif minRange and maxRange then
-				return format('%d - %d', minRange, maxRange)
+			elseif minRange or maxRange then
+				return format('%s - %s', minRange or '??', maxRange or '??')
 			end
 		end
 	end
@@ -831,9 +831,9 @@ local GroupUnits = {}
 local f = CreateFrame('Frame')
 f:RegisterEvent('GROUP_ROSTER_UPDATE')
 f:SetScript('OnEvent', function()
-	local groupType, groupSize
 	wipe(GroupUnits)
 
+	local groupType, groupSize
 	if IsInRaid() then
 		groupType = 'raid'
 		groupSize = GetNumGroupMembers()
@@ -846,76 +846,46 @@ f:SetScript('OnEvent', function()
 	end
 
 	for index = 1, groupSize do
-		local unit = groupType..index
-		if not UnitIsUnit(unit, 'player') then
-			GroupUnits[unit] = true
+		local groupUnit = groupType..index
+		if not UnitIsUnit(groupUnit, 'player') then
+			GroupUnits[groupUnit] = true
 		end
 	end
 end)
 
-ElvUF.Tags.OnUpdateThrottle['nearbyplayers:8'] = 0.25
-ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
-	local unitsInRange, distance = 0
-	if UnitIsConnected(unit) then
-		for groupUnit in pairs(GroupUnits) do
-			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				distance = E:GetDistance(unit, groupUnit)
-				if distance and distance <= 8 then
-					unitsInRange = unitsInRange + 1
+for _, var in ipairs({4,8,10,15,20,25,30,35,40}) do
+	local textFormat = format('nearbyplayers:%s', var)
+	ElvUF.Tags.OnUpdateThrottle[textFormat] = 0.25
+	ElvUF.Tags.Methods[textFormat] = function(realUnit)
+		local inRange = 0
+
+		if UnitIsConnected(realUnit) then
+			local unit = E:GetGroupUnit(realUnit) or realUnit
+			for groupUnit in pairs(GroupUnits) do
+				if UnitIsConnected(groupUnit) and not UnitIsUnit(unit, groupUnit) then
+					local distance = E:GetDistance(unit, groupUnit)
+					if distance and distance <= var then
+						inRange = inRange + 1
+					end
 				end
 			end
 		end
-	end
 
-	return unitsInRange
-end
-
-ElvUF.Tags.OnUpdateThrottle['nearbyplayers:10'] = 0.25
-ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
-	local unitsInRange, distance = 0
-	if UnitIsConnected(unit) then
-		for groupUnit in pairs(GroupUnits) do
-			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				distance = E:GetDistance(unit, groupUnit)
-				if distance and distance <= 10 then
-					unitsInRange = unitsInRange + 1
-				end
-			end
+		if inRange > 0 then
+			return inRange
 		end
 	end
-
-	return unitsInRange
-end
-
-ElvUF.Tags.OnUpdateThrottle['nearbyplayers:30'] = 0.25
-ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
-	local unitsInRange, distance = 0
-	if UnitIsConnected(unit) then
-		for groupUnit in pairs(GroupUnits) do
-			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				distance = E:GetDistance(unit, groupUnit)
-				if distance and distance <= 30 then
-					unitsInRange = unitsInRange + 1
-				end
-			end
-		end
-	end
-
-	return unitsInRange
 end
 
 ElvUF.Tags.OnUpdateThrottle['distance'] = 0.1
-ElvUF.Tags.Methods['distance'] = function(unit)
-	local distance
-	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
-		distance = E:GetDistance('player', unit)
-
+ElvUF.Tags.Methods['distance'] = function(realUnit)
+	if UnitIsConnected(realUnit) and not UnitIsUnit(realUnit, 'player') then
+		local unit = E:GetGroupUnit(realUnit) or realUnit
+		local distance = E:GetDistance('player', unit)
 		if distance then
-			distance = format('%.1f', distance)
+			return format('%.1f', distance)
 		end
 	end
-
-	return distance
 end
 
 local speedText = _G.SPEED
@@ -1418,9 +1388,7 @@ E.TagInfo = {
 	['range:min'] = { category = 'Range', description = "Displays the min range" },
 	['range:max'] = { category = 'Range', description = "Displays the max range" },
 	['distance'] = { category = 'Range', description = "Displays the distance" },
-	['nearbyplayers:10'] = { category = 'Range', description = "Displays all players within 10 yards" },
-	['nearbyplayers:30'] = { category = 'Range', description = "Displays all players within 30 yards" },
-	['nearbyplayers:8'] = { category = 'Range', description = "Displays all players within 8 yards" },
+	['nearbyplayers:20'] = { category = 'Range', description = "Displays all players within 4, 8, 10, 15, 20, 25, 30, 35, or 40 yards (change the number)" },
 	--Realm
 	['realm:dash:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters and a dash in front" },
 	['realm:dash'] = { category = 'Realm', description = "Displays the server name with a dash in front (e.g. -Realm)" },
