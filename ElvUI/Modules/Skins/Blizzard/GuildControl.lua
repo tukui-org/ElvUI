@@ -26,7 +26,7 @@ local function SkinGuildRanks()
 end
 
 local function fixSkin(frame)
-	frame.backdrop:Hide();
+	frame.backdrop:Hide()
 	--Initiate fucked up method of creating a backdrop
 	if not E.PixelMode then
 		frame.bg1 = frame:CreateTexture(nil, 'BACKGROUND')
@@ -79,7 +79,7 @@ function S:Blizzard_GuildControlUI()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
 	S:HandleCloseButton(_G.GuildControlUICloseButton)
-	S:HandleScrollBar(_G.GuildControlUIRankBankFrameInsetScrollFrameScrollBar);
+	S:HandleScrollBar(_G.GuildControlUIRankBankFrameInsetScrollFrameScrollBar)
 
 	hooksecurefunc('GuildControlUI_RankOrder_Update', SkinGuildRanks)
 	_G.GuildControlUIRankOrderFrameNewButton:HookScript('OnClick', function()

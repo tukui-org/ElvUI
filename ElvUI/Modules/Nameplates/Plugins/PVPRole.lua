@@ -64,12 +64,12 @@ local function Event()
 					if HealerSpecs[talentSpec] then
 						Healers[name] = talentSpec
 					elseif Healers[name] then
-						Healers[name] = nil;
+						Healers[name] = nil
 					end
 					if TankSpecs[talentSpec] then
 						Tanks[name] = talentSpec
 					elseif Tanks[name] then
-						Tanks[name] = nil;
+						Tanks[name] = nil
 					end
 				end
 			end

@@ -66,8 +66,8 @@ function D:ScriptErrorsFrame_UpdateButtons()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	if not ScriptErrorsFrame.firstButton then return end
 
-	local numErrors = #ScriptErrorsFrame.order;
-	local index = ScriptErrorsFrame.index;
+	local numErrors = #ScriptErrorsFrame.order
+	local index = ScriptErrorsFrame.index
 	if index == 0 then
 		ScriptErrorsFrame.lastButton:Disable()
 		ScriptErrorsFrame.firstButton:Disable()
@@ -83,15 +83,15 @@ function D:ScriptErrorsFrame_UpdateButtons()
 end
 
 function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
-	if keepHidden or D.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return; end
+	if keepHidden or D.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return end
 
 	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
-	D.MessagePrinted = true;
+	D.MessagePrinted = true
 end
 
 function D:PLAYER_REGEN_ENABLED()
 	_G.ScriptErrorsFrame:SetParent(_G.UIParent)
-	D.MessagePrinted = nil;
+	D.MessagePrinted = nil
 end
 
 function D:PLAYER_REGEN_DISABLED()
@@ -105,7 +105,7 @@ end
 
 function D:StaticPopup_Show(name)
 	if name == 'ADDON_ACTION_FORBIDDEN' then
-		StaticPopup_Hide(name);
+		StaticPopup_Hide(name)
 	end
 end
 

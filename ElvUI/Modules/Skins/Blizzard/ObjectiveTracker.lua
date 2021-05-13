@@ -176,11 +176,11 @@ local function PositionFindGroupButton(block, button)
 		if block.groupFinderButton and b == block.groupFinderButton and block.itemButton and button == block.itemButton then
 			-- this fires when there is a group button and a item button to the left of it
 			-- we push the item button away from the group button (to the left)
-			button:Point(a, b, c, d-(E.PixelMode and -1 or 1), e);
+			button:Point(a, b, c, d-(E.PixelMode and -1 or 1), e)
 		elseif b == block and block.groupFinderButton and button == block.groupFinderButton then
 			-- this fires when there is a group finder button
 			-- we push the group finder button down slightly
-			button:Point(a, b, c, d, e-(E.PixelMode and 2 or -1));
+			button:Point(a, b, c, d, e-(E.PixelMode and 2 or -1))
 		end
 	end
 end

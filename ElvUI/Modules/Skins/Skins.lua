@@ -226,9 +226,9 @@ function S:SkinLibDropDownMenu(prefix)
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true
 		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
-			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS'];
-			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop'];
-			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop'];
+			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS']
+			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop']
+			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop']
 			if ddbd and not ddbd.template then ddbd:SetTemplate('Transparent') end
 			if ddmbd and not ddmbd.template then ddmbd:SetTemplate('Transparent') end
 		end)
@@ -628,7 +628,7 @@ do
 			end
 
 			frame:HookScript('OnDisable', function(checkbox)
-				if not checkbox.SetDisabledTexture then return; end
+				if not checkbox.SetDisabledTexture then return end
 				if checkbox:GetChecked() then
 					if E.private.skins.checkBoxSkin then
 						checkbox:SetDisabledTexture(E.Media.Textures.Melli)
@@ -723,7 +723,7 @@ function S:HandleIcon(icon, backdrop)
 end
 
 function S:HandleItemButton(b, shrinkIcon)
-	if b.isSkinned then return; end
+	if b.isSkinned then return end
 
 	local name = b:GetName()
 	local icon = b.icon or b.Icon or b.IconTexture or b.iconTexture or (name and (_G[name..'IconTexture'] or _G[name..'Icon']))

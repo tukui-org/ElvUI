@@ -286,9 +286,9 @@ function S:Blizzard_Collections()
 		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
 		petButton.dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 1)
 
-		petButton.hover = true;
-		petButton.pushed = true;
-		petButton.checked = true;
+		petButton.hover = true
+		petButton.pushed = true
+		petButton.checked = true
 		S:HandleItemButton(petButton)
 		petButton.levelBG:SetAtlas('PetJournal-LevelBubble', true)
 

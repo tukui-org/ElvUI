@@ -277,9 +277,9 @@ function S:BlizzardMiscFrames()
 
 	--DropDownMenu
 	hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index)
-		local listFrame = _G['DropDownList'..level];
-		local listFrameName = listFrame:GetName();
-		local expandArrow = _G[listFrameName..'Button'..index..'ExpandArrow'];
+		local listFrame = _G['DropDownList'..level]
+		local listFrameName = listFrame:GetName()
+		local expandArrow = _G[listFrameName..'Button'..index..'ExpandArrow']
 		if expandArrow then
 			local normTex = expandArrow:GetNormalTexture()
 			expandArrow:SetNormalTexture(E.Media.Textures.ArrowUp)
@@ -307,7 +307,7 @@ function S:BlizzardMiscFrames()
 
 	hooksecurefunc('ToggleDropDownMenu', function(level)
 		if not level then
-			level = 1;
+			level = 1
 		end
 
 		local r, g, b = unpack(E.media.rgbvaluecolor)

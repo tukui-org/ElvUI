@@ -171,8 +171,8 @@ local function OnEnter()
 			-- Loop through the expansions to collect the textures
 			for i=1, numTiers do
 				EJ_SelectTier(i)
-				GetInstanceImages(1, false); -- Populate for dungeon icons
-				GetInstanceImages(1, true); -- Populate for raid icons
+				GetInstanceImages(1, false) -- Populate for dungeon icons
+				GetInstanceImages(1, true) -- Populate for raid icons
 			end
 
 			if collectIDs then

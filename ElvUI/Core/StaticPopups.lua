@@ -404,13 +404,13 @@ E.PopupDialogs.WARNING_BLIZZARD_ADDONS = {
 	text = L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."],
 	button1 = OKAY,
 	hideOnEscape = false,
-	OnAccept = function() EnableAddOn('Blizzard_CompactRaidFrames'); ReloadUI(); end,
+	OnAccept = function() EnableAddOn('Blizzard_CompactRaidFrames'); ReloadUI() end,
 }
 
 E.PopupDialogs.APPLY_FONT_WARNING = {
 	text = L["Are you sure you want to apply this font to all ElvUI elements?"],
 	OnAccept = function() E:GeneralMedia_ApplyToAll() end,
-	OnCancel = function() E:StaticPopup_Hide('APPLY_FONT_WARNING'); end,
+	OnCancel = function() E:StaticPopup_Hide('APPLY_FONT_WARNING') end,
 	button1 = YES,
 	button2 = CANCEL,
 	whileDead = 1,
@@ -447,7 +447,7 @@ E.PopupDialogs.ELVUI_CONFIG_FOUND = {
 
 local MAX_STATIC_POPUPS = 4
 function E:StaticPopup_OnShow()
-	PlaySound(850); --IG_MAINMENU_OPEN
+	PlaySound(850) --IG_MAINMENU_OPEN
 
 	local dialog = E.PopupDialogs[self.which]
 	local OnShow = dialog.OnShow
@@ -575,7 +575,7 @@ function E:StaticPopup_OnKeyDown(key)
 end
 
 function E:StaticPopup_OnHide()
-	PlaySound(851); --IG_MAINMENU_CLOSE
+	PlaySound(851) --IG_MAINMENU_CLOSE
 
 	E:StaticPopup_CollapseTable()
 
@@ -777,7 +777,7 @@ function E:StaticPopup_OnEvent()
 	E:StaticPopup_Resize(self, self.which)
 end
 
-local tempButtonLocs = {};	--So we don't make a new table each time.
+local tempButtonLocs = {}	--So we don't make a new table each time.
 function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	local info = E.PopupDialogs[which]
 	if not info then
@@ -955,7 +955,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	local button4 = _G[dialog:GetName()..'Button4']
 
 	do	--If there is any recursion in this block, we may get errors (tempButtonLocs is static). If you have to recurse, we'll have to create a new table each time.
-		assert(#tempButtonLocs == 0);	--If this fails, we're recursing. (See the table.wipe at the end of the block)
+		assert(#tempButtonLocs == 0)	--If this fails, we're recursing. (See the table.wipe at the end of the block)
 
 		tinsert(tempButtonLocs, button1)
 		tinsert(tempButtonLocs, button2)

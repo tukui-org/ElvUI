@@ -14,8 +14,8 @@ local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 
 --This changes the growth direction of the toast frame depending on position of the mover
 local function PostBNToastMove(mover)
-	local x, y = mover:GetCenter();
-	local screenHeight = E.UIParent:GetTop();
+	local x, y = mover:GetCenter()
+	local screenHeight = E.UIParent:GetTop()
 	local screenWidth = E.UIParent:GetRight()
 
 	local anchorPoint

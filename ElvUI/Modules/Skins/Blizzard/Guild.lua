@@ -134,7 +134,7 @@ function S:Blizzard_GuildUI()
 	local GuildMemberDetailName = _G.GuildMemberDetailName
 	local GuildMemberDetailRankLabel = _G.GuildMemberDetailRankLabel
 	hooksecurefunc(GuildMemberDetailFrame, 'SetHeight', function(_, _, breakLoop)
-		if breakLoop then return; end
+		if breakLoop then return end
 		if C_GuildInfo_CanViewOfficerNote() then
 			GuildMemberDetailFrame:Height(_G.GUILD_DETAIL_OFFICER_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
 		else

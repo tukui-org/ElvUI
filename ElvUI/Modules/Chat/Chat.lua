@@ -1540,9 +1540,9 @@ end
 -- copied from ChatFrame.lua
 local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 	-- Renaming for clarity:
-	local specialFlag = arg6;
-	--local zoneChannelID = arg7;
-	--local localChannelID = arg8;
+	local specialFlag = arg6
+	--local zoneChannelID = arg7
+	--local localChannelID = arg8
 
 	if specialFlag ~= '' then
 		if specialFlag == 'GM' or specialFlag == 'DEV' then
@@ -1561,7 +1561,7 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 		end
 	end
 
-	return "";
+	return ""
 end
 
 function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
@@ -1762,8 +1762,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE' then
-			local accessID = _G.ChatHistory_GetAccessID(chatGroup, arg8);
-			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12);
+			local accessID = _G.ChatHistory_GetAccessID(chatGroup, arg8)
+			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12)
 
 			if arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == ChatChannelRuleset_Mentor then
 				_G.ChatFrame_UpdateDefaultChatTarget(frame)

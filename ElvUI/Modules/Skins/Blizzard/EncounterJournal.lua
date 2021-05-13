@@ -46,15 +46,15 @@ local function SkinDungeons()
 end
 
 local function SkinBosses()
-	local bossIndex = 1;
-	local _, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex);
-	local bossButton;
+	local bossIndex = 1
+	local _, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex)
+	local bossButton
 
 	local encounter = _G.EncounterJournal.encounter
 	encounter.info.instanceButton.icon:SetMask("")
 
 	while bossID do
-		bossButton = _G['EncounterJournalBossButton'..bossIndex];
+		bossButton = _G['EncounterJournalBossButton'..bossIndex]
 		if bossButton and not bossButton.isSkinned then
 			HandleButton(bossButton)
 			bossButton.creature:ClearAllPoints()
@@ -62,8 +62,8 @@ local function SkinBosses()
 			bossButton.isSkinned = true
 		end
 
-		bossIndex = bossIndex + 1;
-		_, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex);
+		bossIndex = bossIndex + 1
+		_, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex)
 	end
 end
 

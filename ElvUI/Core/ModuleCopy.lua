@@ -102,7 +102,7 @@ function MC:CreateMoversConfigGroup()
 			type = 'toggle',
 			name = data.mover.textString,
 			get = function() return E.global.profileCopy.movers[moverName] end,
-			set = function(_, value) E.global.profileCopy.movers[moverName] = value; end
+			set = function(_, value) E.global.profileCopy.movers[moverName] = value end
 		}
 	end
 	for moverName, data in pairs(E.DisabledMovers) do
@@ -112,7 +112,7 @@ function MC:CreateMoversConfigGroup()
 			type = 'toggle',
 			name = data.mover.textString,
 			get = function() return E.global.profileCopy.movers[moverName] end,
-			set = function(_, value) E.global.profileCopy.movers[moverName] = value; end
+			set = function(_, value) E.global.profileCopy.movers[moverName] = value end
 		}
 	end
 	return config

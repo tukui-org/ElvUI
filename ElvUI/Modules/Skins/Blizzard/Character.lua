@@ -292,13 +292,13 @@ function S:CharacterFrame()
 
 	--Give character frame model backdrop it's color back
 	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
-		local bg = _G['CharacterModelFrameBackground'..corner];
+		local bg = _G['CharacterModelFrameBackground'..corner]
 		if bg then
-			bg:SetDesaturated(false);
-			bg.ignoreDesaturated = true; -- so plugins can prevent this if they want.
+			bg:SetDesaturated(false)
+			bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
 			hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
 				if value and bckgnd.ignoreDesaturated then
-					bckgnd:SetDesaturated(false);
+					bckgnd:SetDesaturated(false)
 				end
 			end)
 		end

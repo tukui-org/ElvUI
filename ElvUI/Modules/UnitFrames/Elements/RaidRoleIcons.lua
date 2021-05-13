@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
 
 local CreateFrame = CreateFrame
 
@@ -43,7 +43,7 @@ function UF:RaidRoleUpdate()
 	local leader = frame.LeaderIndicator
 	local assistant = frame.AssistantIndicator
 
-	if not leader or not assistant then return; end
+	if not leader or not assistant then return end
 
 	local db = frame.db
 	local isLeader = leader:IsShown()

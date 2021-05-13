@@ -163,7 +163,7 @@ function S:ContainerFrame()
 	hooksecurefunc('ContainerFrame_Update', function(frame)
 		local frameName = frame:GetName()
 		for i=1, frame.size, 1 do
-			local questTexture = _G[frameName..'Item'..i..'IconQuestTexture'];
+			local questTexture = _G[frameName..'Item'..i..'IconQuestTexture']
 			if questTexture:IsShown() and questTexture:GetTexture() == TEXTURE_ITEM_QUEST_BORDER then
 				questTexture:Hide()
 			end
@@ -208,18 +208,18 @@ function S:ContainerFrame()
 
 			_G.BankFrameMoneyFrameInset:Kill()
 			_G.BankFrameMoneyFrameBorder:Kill()
-			BankFrame.backdrop = true;
+			BankFrame.backdrop = true
 		end
 
 		SkinButton(button)
 
 		if not button.levelAdjusted then
 			button:SetFrameLevel(button:GetFrameLevel() + 1)
-			button.levelAdjusted = true;
+			button.levelAdjusted = true
 		end
 
 		local inventoryID = button:GetInventorySlot()
-		local textureName = GetInventoryItemTexture('player',inventoryID);
+		local textureName = GetInventoryItemTexture('player',inventoryID)
 
 		if textureName then
 			button.icon:SetTexture(textureName)
@@ -229,7 +229,7 @@ function S:ContainerFrame()
 		end
 
 		if not button.isBag then
-			local container = button:GetParent():GetID();
+			local container = button:GetParent():GetID()
 			local _, _, _, _, _, _, itemLink = GetContainerItemInfo(container, button:GetID())
 			local isQuestItem, questId = GetContainerItemQuestInfo(container, button:GetID())
 			button.type = nil

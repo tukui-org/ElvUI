@@ -144,16 +144,16 @@ function S:LootFrame()
 
 	hooksecurefunc('BonusRollFrame_StartBonusRoll', function()
 		--keep the status bar a frame above but its increased 1 extra beacuse mera has a grid layer
-		local BonusRollFrameLevel = BonusRollFrame:GetFrameLevel();
-		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+2);
+		local BonusRollFrameLevel = BonusRollFrame:GetFrameLevel()
+		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+2)
 		if BonusRollFrame.BlackBackgroundHoist.b then
-			BonusRollFrame.BlackBackgroundHoist.b:SetFrameLevel(BonusRollFrameLevel+1);
+			BonusRollFrame.BlackBackgroundHoist.b:SetFrameLevel(BonusRollFrameLevel+1)
 		end
 
 		--set currency icons position at bottom right (or left of the spec icon, on the bottom right)
 		BonusRollFrame.CurrentCountFrame:ClearAllPoints()
 		if BonusRollFrame.SpecIcon.b then
-			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil);
+			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil)
 			if BonusRollFrame.SpecIcon.b:IsShown() then
 				BonusRollFrame.CurrentCountFrame:Point('RIGHT', BonusRollFrame.SpecIcon.b, 'LEFT', -2, -2)
 			else
@@ -176,7 +176,7 @@ function S:LootFrame()
 	_G.LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
 	for i=1, LootFrame:GetNumRegions() do
-		local region = select(i, LootFrame:GetRegions());
+		local region = select(i, LootFrame:GetRegions())
 		if region:IsObjectType('FontString') then
 			if region:GetText() == ITEMS then
 				LootFrame.Title = region
@@ -201,33 +201,33 @@ function S:LootFrame()
 	end
 
 	hooksecurefunc('LootFrame_UpdateButton', function(index)
-		local numLootItems = LootFrame.numLootItems;
+		local numLootItems = LootFrame.numLootItems
 		--Logic to determine how many items to show per page
-		local numLootToShow = _G.LOOTFRAME_NUMBUTTONS;
+		local numLootToShow = _G.LOOTFRAME_NUMBUTTONS
 		if LootFrame.AutoLootTable then
-			numLootItems = #LootFrame.AutoLootTable;
+			numLootItems = #LootFrame.AutoLootTable
 		end
 		if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
-			numLootToShow = numLootToShow - 1; -- make space for the page buttons
+			numLootToShow = numLootToShow - 1 -- make space for the page buttons
 		end
 
-		local button = _G['LootButton'..index];
-		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
+		local button = _G['LootButton'..index]
+		local slot = (numLootToShow * (LootFrame.page - 1)) + index
 		if button and button:IsShown() then
-			local texture, _, isQuestItem, questId, isActive;
+			local texture, _, isQuestItem, questId, isActive
 			if LootFrame.AutoLootTable then
-				local entry = LootFrame.AutoLootTable[slot];
+				local entry = LootFrame.AutoLootTable[slot]
 				if entry.hide then
-					button:Hide();
-					return;
+					button:Hide()
+					return
 				else
-					texture = entry.texture;
-					isQuestItem = entry.isQuestItem;
-					questId = entry.questId;
-					isActive = entry.isActive;
+					texture = entry.texture
+					isQuestItem = entry.isQuestItem
+					questId = entry.questId
+					isActive = entry.isActive
 				end
 			else
-				texture, _, _, _, _, isQuestItem, questId, isActive = GetLootSlotInfo(slot);
+				texture, _, _, _, _, isQuestItem, questId, isActive = GetLootSlotInfo(slot)
 			end
 
 			if texture then

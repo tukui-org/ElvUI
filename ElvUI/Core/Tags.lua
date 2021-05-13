@@ -615,7 +615,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	if UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
 		local level = UnitBattlePetLevel(unit)
 
-		local teamLevel = C_PetJournal_GetPetTeamAverageLevel();
+		local teamLevel = C_PetJournal_GetPetTeamAverageLevel()
 		if teamLevel < level or teamLevel > level then
 			c = GetRelativeDifficultyColor(teamLevel, level)
 		else

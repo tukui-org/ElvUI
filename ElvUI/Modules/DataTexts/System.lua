@@ -195,9 +195,9 @@ local function OnEnter(_, slow)
 					local stripName = E:StripString(data.title)
 					if name and (strmatch(stripName, searchString) or data.name == addon) then
 						if data.name ~= addon and stripName ~= addon then
-							memoryUsage = memoryUsage + mem;
+							memoryUsage = memoryUsage + mem
 							if showByCPU and cpuProfiling then
-								cpuUsage = cpuUsage + cpu;
+								cpuUsage = cpuUsage + cpu
 							end
 							infoDisplay[k] = false
 						end

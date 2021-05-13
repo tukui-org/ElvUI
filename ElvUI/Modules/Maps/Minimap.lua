@@ -239,7 +239,7 @@ do
 	local isResetting
 	local function ResetZoom()
 		Minimap:SetZoom(0)
-		_G.MinimapZoomIn:Enable(); --Reset enabled state of buttons
+		_G.MinimapZoomIn:Enable() --Reset enabled state of buttons
 		_G.MinimapZoomOut:Disable()
 		isResetting = false
 	end

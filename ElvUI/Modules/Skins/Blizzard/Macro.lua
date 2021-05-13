@@ -83,8 +83,8 @@ function S:Blizzard_MacroUI()
 	end
 
 	--Icon selection frame
-	ShowUIPanel(MacroFrame); --Toggle frame to create necessary variables needed for popup frame
-	HideUIPanel(MacroFrame);
+	ShowUIPanel(MacroFrame) --Toggle frame to create necessary variables needed for popup frame
+	HideUIPanel(MacroFrame)
 	local MacroPopupFrame = _G.MacroPopupFrame
 	MacroPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
 	MacroPopupFrame:Hide()

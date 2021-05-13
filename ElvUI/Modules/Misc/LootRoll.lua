@@ -26,7 +26,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
 
-local pos = 'TOP';
+local pos = 'TOP'
 local cancelled_rolls = {}
 local cachedRolls = {}
 local completedRolls = {}
@@ -275,8 +275,8 @@ function M:START_LOOT_ROLL(_, rollID, time)
 end
 
 function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
-	local rollID = C_LootHistoryGetItem(itemIdx);
-	local name, class, rollType = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx);
+	local rollID = C_LootHistoryGetItem(itemIdx)
+	local name, class, rollType = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx)
 
 	local rollIsHidden = true
 	if name and rollType then

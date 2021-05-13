@@ -197,7 +197,7 @@ end
 local function SkinInvasionAlert(frame)
 	if not frame.isSkinned then
 		frame:SetAlpha(1)
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha);
+		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 4, 4)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -7, 6)

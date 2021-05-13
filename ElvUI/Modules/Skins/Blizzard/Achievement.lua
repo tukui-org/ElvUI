@@ -17,7 +17,7 @@ local function blueBackdrop(self)
 end
 
 local function skinAch(Achievement, BiggerIcon)
-	if Achievement.isSkinned then return; end
+	if Achievement.isSkinned then return end
 
 	Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
 	Achievement:StripTextures(true)

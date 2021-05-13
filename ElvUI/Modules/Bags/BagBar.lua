@@ -14,12 +14,12 @@ local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 
 local function OnEnter()
-	if not E.db.bags.bagBar.mouseover then return; end
+	if not E.db.bags.bagBar.mouseover then return end
 	E:UIFrameFadeIn(B.BagBar, 0.2, B.BagBar:GetAlpha(), 1)
 end
 
 local function OnLeave()
-	if not E.db.bags.bagBar.mouseover then return; end
+	if not E.db.bags.bagBar.mouseover then return end
 	E:UIFrameFadeOut(B.BagBar, 0.2, B.BagBar:GetAlpha(), 0)
 end
 

@@ -290,7 +290,7 @@ function S:Blizzard_TalentUI()
 		button.Border:Hide()
 
 		hooksecurefunc(button, 'Update', function(s)
-			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(s.slotIndex);
+			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(s.slotIndex)
 			if not slotInfo then return end
 
 			if slotInfo.enabled then

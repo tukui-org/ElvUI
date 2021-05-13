@@ -271,7 +271,7 @@ function S:LookingForGroupFrames()
 		end
 
 		if avail2 then
-			avail1:ClearAllPoints();
+			avail1:ClearAllPoints()
 			avail1:Point('TOPRIGHT', self, 'TOP', -40, -35)
 			avail2:ClearAllPoints()
 			avail2:Point('TOPLEFT', self, 'TOP', 40, -35)
@@ -355,9 +355,9 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
 			if button.isCollapsed then
-				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton);
+				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
 			else
-				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton);
+				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
 			end
 		end
 	end)

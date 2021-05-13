@@ -26,17 +26,17 @@ function S:LossOfControlFrame()
 
 		s.AbilityName:ClearAllPoints()
 		s.AbilityName:Point('BOTTOM', s, 0, -28)
-		s.AbilityName.scrollTime = nil;
+		s.AbilityName.scrollTime = nil
 		s.AbilityName:FontTemplate(nil, 20, 'OUTLINE')
 
 		s.TimeLeft.NumberText:ClearAllPoints()
 		s.TimeLeft.NumberText:Point('BOTTOM', s, 4, -58)
-		s.TimeLeft.NumberText.scrollTime = nil;
+		s.TimeLeft.NumberText.scrollTime = nil
 		s.TimeLeft.NumberText:FontTemplate(nil, 20, 'OUTLINE')
 
 		s.TimeLeft.SecondsText:ClearAllPoints()
 		s.TimeLeft.SecondsText:Point('BOTTOM', s, 0, -80)
-		s.TimeLeft.SecondsText.scrollTime = nil;
+		s.TimeLeft.SecondsText.scrollTime = nil
 		s.TimeLeft.SecondsText:FontTemplate(nil, 20, 'OUTLINE')
 
 		-- always stop shake animation on start
