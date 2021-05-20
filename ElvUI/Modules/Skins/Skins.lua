@@ -506,7 +506,7 @@ function S:HandleBlizzardRegions(frame, name, kill)
 		if object then
 			if kill then
 				object:Kill()
-			else
+			elseif object.SetAlpha then
 				object:SetAlpha(0)
 			end
 		end
