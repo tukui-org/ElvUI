@@ -74,6 +74,8 @@ local function Update(self, event, unit)
 
 	if(event == 'UNIT_SPELLCAST_START' and startTime ~= endTime) then
 		local costTable = GetSpellPowerCost(spellID)
+		if not costTable then return end
+
 		local checkRequiredAura = isPlayer and #costTable > 1
 		for _, costInfo in next, costTable do
 			local cost, ctype, cperc = costInfo.cost, costInfo.type, costInfo.costPercent
