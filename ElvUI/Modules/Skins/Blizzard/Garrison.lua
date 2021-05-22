@@ -146,6 +146,14 @@ local function SkinMissionFrame(frame, strip)
 	end
 end
 
+-- Blizzard didn't set color for currency reward, incorrect color presents after scroll (Credits: siweia - NDui)
+local function FixLandingPageRewardBorder(icon)
+	local reward = icon:GetParent()
+	if reward and not reward.itemID then
+		reward.Icon.backdrop:SetBackdropBorderColor(0, 0, 0)
+	end
+end
+
 function S:Blizzard_GarrisonUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
@@ -345,6 +353,7 @@ function S:Blizzard_GarrisonUI()
 	Report.List:StripTextures(true)
 	scrollFrame = Report.List.listScroll
 	S:HandleScrollBar(scrollFrame.scrollBar)
+
 	local buttons = scrollFrame.buttons
 	for i = 1, #buttons do
 		local button = buttons[i]
@@ -353,9 +362,9 @@ function S:Blizzard_GarrisonUI()
 			if not reward.border then
 				reward.border = CreateFrame('Frame', nil, reward)
 				S:HandleIcon(reward.Icon, reward.border)
+				S:HandleIconBorder(reward.IconBorder, reward.Icon.backdrop)
+				hooksecurefunc(reward.Icon, "SetTexture", FixLandingPageRewardBorder)
 				reward.Quantity:SetParent(reward.border)
-				reward.IconBorder:Kill()
-				-- For some reason, this fix icon border in 8.1
 				reward:ClearAllPoints()
 				reward:Point('TOPRIGHT', -5, -5)
 
