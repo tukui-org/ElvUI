@@ -135,16 +135,21 @@ function AB:UpdateMicroPositionDimensions()
 
 	AB:MoverMagic(microBar)
 
-	db.buttons = #_G.MICRO_BUTTONS-1
+	local btns = _G.MICRO_BUTTONS
+	local numBtns = #btns-1
+	db.buttons = numBtns
 
 	local backdropSpacing = db.backdropSpacing
-
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(db.point)
 	local lastButton, anchorRowButton = microBar
-	for i = 1, #_G.MICRO_BUTTONS-1 do
-		local button = _G[__buttonIndex[i]] or _G[_G.MICRO_BUTTONS[i]]
-		local lastColumnButton = i - db.buttonsPerRow
-		lastColumnButton = _G[__buttonIndex[lastColumnButton]] or _G[_G.MICRO_BUTTONS[lastColumnButton]]
+	for i = 1, numBtns do
+		local name = __buttonIndex[i] or btns[i]
+		local button = _G[name]
+
+		local lastIndex = i - db.buttonsPerRow
+		local lastName = __buttonIndex[lastIndex] or btns[lastIndex]
+		local lastColumn = _G[lastName]
+
 		button.db = db
 
 		if i == 1 or i == db.buttonsPerRow then
@@ -152,7 +157,7 @@ function AB:UpdateMicroPositionDimensions()
 		end
 
 		button.handleBackdrop = true -- keep over HandleButton
-		AB:HandleButton(microBar, button, i, lastButton, lastColumnButton)
+		AB:HandleButton(microBar, button, i, lastButton, lastColumn)
 
 		lastButton = button
 	end
