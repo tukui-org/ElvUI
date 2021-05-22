@@ -164,10 +164,13 @@ function UF:Update_PartyFrames(frame, db)
 
 		if frame.childType == 'pet' then
 			frame.Health.colorPetByUnitClass = db.colorPetByUnitClass
+
+			UF:Configure_HealthBar(frame) -- keep over HealComm and after colorPetByUnitClass
 			UF:Configure_AuraWatch(frame)
 			UF:Configure_HealComm(frame)
+		else
+			UF:Configure_HealthBar(frame)
 		end
-		UF:Configure_HealthBar(frame)
 	else
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 
