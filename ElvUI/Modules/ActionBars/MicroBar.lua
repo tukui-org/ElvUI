@@ -43,8 +43,8 @@ local function onEnter(button)
 		E:UIFrameFadeIn(microBar, 0.2, microBar:GetAlpha(), AB.db.microbar.alpha)
 	end
 
-	if button.backdrop and button:IsEnabled() then
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	if button:IsEnabled() then
+		button:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 	end
 
 	-- bag keybind support from actionbar module
@@ -54,8 +54,8 @@ local function onEnter(button)
 end
 
 local function onLeave(button)
-	if button.backdrop and button:IsEnabled() then
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	if button:IsEnabled() then
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 end
 
@@ -66,8 +66,7 @@ function AB:HandleMicroButton(button)
 	local normal = button:GetNormalTexture()
 	local disabled = button:GetDisabledTexture()
 
-	button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
-
+	button:SetTemplate()
 	button:SetParent(microBar)
 	button:GetHighlightTexture():Kill()
 	button:HookScript('OnEnter', onEnter)
@@ -80,14 +79,14 @@ function AB:HandleMicroButton(button)
 	end
 
 	pushed:SetTexCoord(0.22, 0.81, 0.26, 0.82)
-	pushed:SetInside(button.backdrop)
+	pushed:SetInside(button)
 
 	normal:SetTexCoord(0.22, 0.81, 0.21, 0.82)
-	normal:SetInside(button.backdrop)
+	normal:SetInside(button)
 
 	if disabled then
 		disabled:SetTexCoord(0.22, 0.81, 0.21, 0.82)
-		disabled:SetInside(button.backdrop)
+		disabled:SetInside(button)
 	end
 end
 
@@ -204,7 +203,7 @@ function AB:SetupMicroBar()
 		AB:HandleMicroButton(_G[x])
 	end
 
-	_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton.backdrop)
+	_G.MicroButtonPortrait:SetInside(_G.CharacterMicroButton)
 
 	AB:SecureHook('UpdateMicroButtonsParent')
 	AB:SecureHook('MoveMicroButtons', 'UpdateMicroPositionDimensions')

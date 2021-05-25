@@ -5,11 +5,10 @@ local _G = _G
 local pairs, select, unpack = pairs, select, unpack
 
 local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 local GetNumFilteredAchievements = GetNumFilteredAchievements
-local IsAddOnLoaded = IsAddOnLoaded
-local CreateFrame = CreateFrame
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
 local function blueBackdrop(self)
@@ -22,6 +21,7 @@ local function skinAch(Achievement, BiggerIcon)
 	Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
 	Achievement:StripTextures(true)
 	Achievement:CreateBackdrop(nil, true)
+
 	Achievement.backdrop:SetInside()
 	Achievement.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
@@ -92,7 +92,7 @@ local function SkinSearchButton(self)
 		S:HandleIcon(self.icon)
 	end
 
-	self:CreateBackdrop('Transparent')
+	self:SetTemplate('Transparent')
 	self:SetHighlightTexture(E.media.normTex)
 
 	local hl = self:GetHighlightTexture()
@@ -283,7 +283,7 @@ function S:Blizzard_AchievementUI()
 
 	-- Search
 	AchievementFrame.searchResults:StripTextures()
-	AchievementFrame.searchResults:CreateBackdrop('Transparent')
+	AchievementFrame.searchResults:SetTemplate('Transparent')
 	AchievementFrame.searchPreviewContainer:StripTextures()
 	AchievementFrame.searchPreviewContainer:ClearAllPoints()
 	AchievementFrame.searchPreviewContainer:Point('TOPLEFT', AchievementFrame, 'TOPRIGHT', 2, 6)

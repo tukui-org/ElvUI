@@ -29,9 +29,7 @@ local function PetButtons(btn, p)
 		icon:Point('BOTTOMRIGHT', -p, p)
 
 		button:SetFrameLevel(button:GetFrameLevel() + 2)
-		if not button.backdrop then
-			button:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
-		end
+		button:SetTemplate(nil, true)
 	end
 end
 
@@ -43,7 +41,7 @@ function S:PetStableFrame()
 
 	_G.PetStableLeftInset:StripTextures()
 	_G.PetStableBottomInset:StripTextures()
-	_G.PetStableFrameInset:CreateBackdrop('Transparent')
+	_G.PetStableFrameInset:SetTemplate('Transparent')
 
 	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
 	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button

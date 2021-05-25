@@ -49,7 +49,7 @@ function S:BlizzardMiscFrames()
 	for i = 1, #skins do
 		local frame = _G[skins[i]]
 		frame:StripTextures()
-		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, i == 1) -- arg8: set AutoCompleteBox backdrop to same frame level
+		frame:SetTemplate('Transparent')
 	end
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
@@ -102,7 +102,7 @@ function S:BlizzardMiscFrames()
 		end
 
 		_G.GameMenuFrame:StripTextures()
-		_G.GameMenuFrame:CreateBackdrop('Transparent')
+		_G.GameMenuFrame:SetTemplate('Transparent')
 		_G.GameMenuFrame.Header:StripTextures()
 		_G.GameMenuFrame.Header:ClearAllPoints()
 		_G.GameMenuFrame.Header:Point('TOP', _G.GameMenuFrame, 0, 7)
@@ -118,7 +118,7 @@ function S:BlizzardMiscFrames()
 	hooksecurefunc('CinematicFrame_OnDisplaySizeChanged', function(s)
 		if s and s.closeDialog and not s.closeDialog.template then
 			s.closeDialog:StripTextures()
-			s.closeDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
+			s.closeDialog:SetTemplate('Transparent')
 			s:SetScale(_G.UIParent:GetScale())
 			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
 			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
@@ -135,7 +135,7 @@ function S:BlizzardMiscFrames()
 		if s and s.CloseDialog and not s.CloseDialog.template then
 			s:SetScale(_G.UIParent:GetScale())
 			s.CloseDialog:StripTextures()
-			s.CloseDialog:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
+			s.CloseDialog:SetTemplate('Transparent')
 			S:HandleButton(s.CloseDialog.ConfirmButton)
 			S:HandleButton(s.CloseDialog.ResumeButton)
 		end
@@ -179,7 +179,7 @@ function S:BlizzardMiscFrames()
 	}
 
 	_G.LFDRoleCheckPopup:StripTextures()
-	_G.LFDRoleCheckPopup:CreateBackdrop('Transparent')
+	_G.LFDRoleCheckPopup:SetTemplate('Transparent')
 	S:HandleButton(_G.LFDRoleCheckPopupAcceptButton)
 	S:HandleButton(_G.LFDRoleCheckPopupDeclineButton)
 
@@ -209,7 +209,7 @@ function S:BlizzardMiscFrames()
 			end
 		end)
 		StaticPopup:StripTextures()
-		StaticPopup:CreateBackdrop('Transparent')
+		StaticPopup:SetTemplate('Transparent')
 
 		for j = 1, 4 do
 			local button = StaticPopup['button'..j]
@@ -235,7 +235,7 @@ function S:BlizzardMiscFrames()
 		_G['StaticPopup'..i..'EditBox'].backdrop:Point('TOPLEFT', -2, -4)
 		_G['StaticPopup'..i..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
 		_G['StaticPopup'..i..'ItemFrameNameFrame']:Kill()
-		_G['StaticPopup'..i..'ItemFrame']:CreateBackdrop()
+		_G['StaticPopup'..i..'ItemFrame']:SetTemplate()
 		_G['StaticPopup'..i..'ItemFrame']:StyleButton()
 		S:HandleIconBorder(_G['StaticPopup'..i..'ItemFrame'].IconBorder)
 		_G['StaticPopup'..i..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
@@ -258,7 +258,7 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrame:StripTextures()
 		_G.GhostFrame:ClearAllPoints()
 		_G.GhostFrame:Point('TOP', E.UIParent, 'TOP', 0, -150)
-		_G.GhostFrameContentsFrame:CreateBackdrop('Transparent')
+		_G.GhostFrameContentsFrame:SetTemplate('Transparent')
 		_G.GhostFrameContentsFrameText:Point('TOPLEFT', 53, 0)
 		_G.GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
 		_G.GhostFrameContentsFrameIcon:Point('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
@@ -269,11 +269,11 @@ function S:BlizzardMiscFrames()
 		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, x, -x)
 		_G.GhostFrameContentsFrameIcon:Size(37,38)
 		_G.GhostFrameContentsFrameIcon:SetParent(button)
-		button:CreateBackdrop()
+		button:SetTemplate()
 	end
 
 	_G.OpacityFrame:StripTextures()
-	_G.OpacityFrame:CreateBackdrop('Transparent')
+	_G.OpacityFrame:SetTemplate('Transparent')
 
 	--DropDownMenu
 	hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index)
@@ -290,11 +290,11 @@ function S:BlizzardMiscFrames()
 
 		local Backdrop = _G[listFrameName..'Backdrop']
 		if not Backdrop.template then Backdrop:StripTextures() end
-		Backdrop:CreateBackdrop('Transparent')
+		Backdrop:SetTemplate('Transparent')
 
 		local menuBackdrop = _G[listFrameName..'MenuBackdrop']
 		if not menuBackdrop.template then menuBackdrop:StripTextures() end
-		menuBackdrop:CreateBackdrop('Transparent')
+		menuBackdrop:SetTemplate('Transparent')
 	end)
 
 	hooksecurefunc('UIDropDownMenu_SetIconImage', function(icon, texture)
@@ -361,12 +361,12 @@ function S:BlizzardMiscFrames()
 	SideDressUpFrame:StripTextures()
 	SideDressUpFrame.BGTopLeft:Hide()
 	SideDressUpFrame.BGBottomLeft:Hide()
-	SideDressUpFrame:CreateBackdrop('Transparent')
+	SideDressUpFrame:SetTemplate('Transparent')
 
 	-- StackSplit
 	local StackSplitFrame = _G.StackSplitFrame
 	StackSplitFrame:StripTextures()
-	StackSplitFrame:CreateBackdrop('Transparent')
+	StackSplitFrame:SetTemplate('Transparent')
 
 	StackSplitFrame.bg1 = CreateFrame('Frame', nil, StackSplitFrame, 'BackdropTemplate')
 	StackSplitFrame.bg1:SetTemplate('Transparent')

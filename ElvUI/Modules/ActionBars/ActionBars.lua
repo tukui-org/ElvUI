@@ -660,8 +660,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		macroText:SetTextColor(c.r, c.g, c.b)
 	end
 
-	if not button.noBackdrop and not button.backdrop and not button.useMasque then
-		button:CreateBackdrop(AB.db.transparent and 'Transparent', true, nil, nil, nil, nil, true)
+	if not button.noBackdrop and not button.useMasque then
+		button:SetTemplate(AB.db.transparent and 'Transparent', true)
 	end
 
 	if flash then
@@ -1326,9 +1326,9 @@ function AB:LAB_ButtonUpdate(button)
 
 	button.Count:SetTextColor(color.r, color.g, color.b)
 
-	if button.backdrop then
+	if button.SetBackdropBorderColor then
 		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
-		button.backdrop:SetBackdropBorderColor(border.r, border.g, border.b)
+		button:SetBackdropBorderColor(border.r, border.g, border.b)
 	end
 end
 

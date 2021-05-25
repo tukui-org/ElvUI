@@ -19,12 +19,8 @@ function S:Blizzard_CovenantRenown()
 	end)
 
 	if E.private.skins.parchmentRemoverEnable then
-		if not frame.backdrop then
-			frame:CreateBackdrop('Transparent')
-		end
-		if not track.backdrop then
-			track:CreateBackdrop('Transparent')
-		end
+		frame:SetTemplate('Transparent')
+		track:SetTemplate('Transparent')
 	end
 end
 

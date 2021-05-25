@@ -105,7 +105,7 @@ local function HandleTabs(tab)
 	tab:StripTextures()
 	tab:SetText(tab.tooltip)
 	tab:GetFontString():FontTemplate(nil, nil, '')
-	tab:CreateBackdrop()
+	tab:SetTemplate()
 	tab:SetScript('OnEnter', E.noop)
 	tab:SetScript('OnLeave', E.noop)
 	tab:Size(tab:GetFontString():GetStringWidth()*1.5, 20)
@@ -151,25 +151,6 @@ local function SkinAbilitiesInfo()
 		index = index + 1
 		header = _G['EncounterJournalInfoHeader'..index]
 	end
-end
-
-local function PowersFrame(_, button)
-	local frame = button:GetParent()
-
-	if not button.Icon.backdrop then
-		S:HandleIcon(button.Icon, true)
-		button.Border:SetAlpha(0)
-
-		if E.private.skins.parchmentRemoverEnable then
-			frame:StripTextures()
-			frame.ItemLevel:SetTextColor(1, 1, 1)
-			frame:CreateBackdrop('Transparent')
-			frame.backdrop:SetPoint('BOTTOMLEFT')
-			frame.backdrop:SetPoint('TOPLEFT', 10, 0)
-		end
-	end
-
-	button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
 end
 
 local function HandleTopTabs(tab)
@@ -230,8 +211,7 @@ function S:Blizzard_EncounterJournal()
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
-	EncounterInfo:CreateBackdrop('Transparent')
-	EncounterInfo.backdrop:SetOutside(_G.EncounterJournalEncounterFrameInfoBG)
+	EncounterInfo:SetTemplate('Transparent')
 
 	EncounterInfo.encounterTitle:Kill()
 
@@ -377,7 +357,7 @@ function S:Blizzard_EncounterJournal()
 
 	-- Search
 	_G.EncounterJournalSearchResults:StripTextures()
-	_G.EncounterJournalSearchResults:CreateBackdrop()
+	_G.EncounterJournalSearchResults:SetTemplate()
 	_G.EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
 
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
@@ -402,7 +382,7 @@ function S:Blizzard_EncounterJournal()
 		-- Suggestion 1
 		local suggestion = suggestFrame.Suggestion1
 		suggestion.bg:Hide()
-		suggestion:CreateBackdrop('Transparent')
+		suggestion:SetTemplate('Transparent')
 
 		local centerDisplay = suggestion.centerDisplay
 		centerDisplay.title.text:SetTextColor(1, 1, 1)
@@ -417,7 +397,7 @@ function S:Blizzard_EncounterJournal()
 		for i = 2, 3 do
 			suggestion = suggestFrame['Suggestion'..i]
 			suggestion.bg:Hide()
-			suggestion:CreateBackdrop('Transparent')
+			suggestion:SetTemplate('Transparent')
 			suggestion.icon:Point('TOPLEFT', 10, -10)
 
 			centerDisplay = suggestion.centerDisplay
@@ -435,10 +415,7 @@ function S:Blizzard_EncounterJournal()
 			for i, data in ipairs(suggestFrame.suggestions) do
 				local sugg = next(data) and suggestFrame['Suggestion'..i]
 				if sugg then
-					if not sugg.icon.backdrop then
-						sugg.icon:CreateBackdrop()
-					end
-
+					sugg.icon:SetTemplate()
 					sugg.icon:SetMask('')
 					sugg.icon:SetTexture(data.iconPath)
 					sugg.icon:SetTexCoord(unpack(E.TexCoords))
@@ -450,10 +427,7 @@ function S:Blizzard_EncounterJournal()
 		hooksecurefunc('EJSuggestFrame_UpdateRewards', function(sugg)
 			local rewardData = sugg.reward.data
 			if rewardData then
-				if not sugg.reward.icon.backdrop then
-					sugg.reward.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, 3)
-				end
-
+				sugg.reward.icon:SetTemplate()
 				sugg.reward.icon:SetMask('')
 				sugg.reward.icon:SetTexture(rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]])
 				sugg.reward.icon:SetTexCoord(unpack(E.TexCoords))
@@ -489,9 +463,7 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(LootJournal.RuneforgePowerFilterDropDownButton, true)
 	LootJournal.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
-	_G.EncounterJournal.LootJournal:CreateBackdrop('Transparent')
-	local parch = _G.EncounterJournal.LootJournal:GetRegions()
-	_G.EncounterJournal.LootJournal.backdrop:SetOutside(parch)
+	_G.EncounterJournal.LootJournal:SetTemplate('Transparent')
 
 	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
 
@@ -543,12 +515,13 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetTexCoord(0.71, 0.06, 0.582, 0.08)
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetRotation(rad(180))
 		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetScale(0.7)
-		_G.EncounterJournalEncounterFrameInstanceFrameBG:CreateBackdrop()
+		_G.EncounterJournalEncounterFrameInstanceFrameBG:SetTemplate()
 		_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:SetAlpha(0)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:SetTextColor(1, 1, 1)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:SetAlpha(0)
 
+		local parch = _G.EncounterJournal.LootJournal:GetRegions()
 		parch:Kill()
 	end
 end

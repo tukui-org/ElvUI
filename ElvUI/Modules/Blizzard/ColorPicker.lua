@@ -155,7 +155,7 @@ function B:EnhanceColorPicker()
 
 	--Skin the default frame, move default buttons into place
 	_G.ColorPickerFrame:SetClampedToScreen(true)
-	_G.ColorPickerFrame:CreateBackdrop('Transparent')
+	_G.ColorPickerFrame:SetTemplate('Transparent')
 	_G.ColorPickerFrame.Border:Hide()
 
 	_G.ColorPickerFrame.Header:StripTextures()

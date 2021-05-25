@@ -13,7 +13,7 @@ function S:Blizzard_NewPlayerExperienceGuide()
 	S:HandleButton(frame.ScrollFrame.ConfirmationButton)
 
 	frame.ScrollFrame.Child.ObjectivesFrame:StripTextures()
-	frame.ScrollFrame.Child.ObjectivesFrame:CreateBackdrop('Transparent')
+	frame.ScrollFrame.Child.ObjectivesFrame:SetTemplate('Transparent')
 
 	-- Texts if parchment is enabled
 	-- TO DO: Add Parchment option

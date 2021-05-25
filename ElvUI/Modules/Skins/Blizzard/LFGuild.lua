@@ -35,8 +35,8 @@ function S:LookingForGuildFrame()
 	S:HandleButton(_G.LookingForGuildBrowseButton)
 	S:HandleButton(_G.LookingForGuildRequestButton)
 
-	_G.LookingForGuildCommentInputFrame:CreateBackdrop()
-	_G.LookingForGuildCommentInputFrame:StripTextures(false)
+	_G.LookingForGuildCommentInputFrame:StripTextures()
+	_G.LookingForGuildCommentInputFrame:SetTemplate()
 
 	-- skin container buttons on browse and request page
 	for i = 1, 5 do

@@ -17,7 +17,7 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameTextBackground:StripTextures()
 	_G.MacroFrameTextBackground:SetTemplate('Transparent')
 	_G.MacroButtonScrollFrame:StripTextures()
-	_G.MacroButtonScrollFrame:CreateBackdrop('Transparent')
+	_G.MacroButtonScrollFrame:SetTemplate('Transparent')
 
 	S:HandleScrollBar(_G.MacroButtonScrollFrameScrollBar)
 	S:HandleScrollBar(_G.MacroFrameScrollFrameScrollBar)
@@ -59,7 +59,7 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameSelectedMacroButton:StripTextures()
 	_G.MacroFrameSelectedMacroButton:StyleButton(true)
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
-	_G.MacroFrameSelectedMacroButton:CreateBackdrop()
+	_G.MacroFrameSelectedMacroButton:SetTemplate()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
 	_G.MacroFrameSelectedMacroButtonIcon:Point('TOPLEFT', 1, -1)
 	_G.MacroFrameSelectedMacroButtonIcon:Point('BOTTOMRIGHT', -1, 1)
@@ -72,7 +72,7 @@ function S:Blizzard_MacroUI()
 		if b then
 			b:StripTextures()
 			b:StyleButton(true)
-			b:CreateBackdrop('Transparent')
+			b:SetTemplate('Transparent')
 		end
 
 		if t then

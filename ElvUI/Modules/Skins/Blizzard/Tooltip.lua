@@ -39,8 +39,7 @@ function S:TooltipFrames()
 
 	-- Skin Blizzard Tooltips
 	local ItemTooltip = _G.GameTooltip.ItemTooltip
-	ItemTooltip:CreateBackdrop('Default')
-	ItemTooltip.backdrop:SetOutside(ItemTooltip.Icon)
+	ItemTooltip:SetTemplate()
 	ItemTooltip.Count:ClearAllPoints()
 	ItemTooltip.Count:Point('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)
 	ItemTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
@@ -64,7 +63,7 @@ function S:TooltipFrames()
 
 	-- Skin GameTooltip Status Bar
 	_G.GameTooltipStatusBar:SetStatusBarTexture(E.media.normTex)
-	_G.GameTooltipStatusBar:CreateBackdrop('Transparent')
+	_G.GameTooltipStatusBar:SetTemplate('Transparent')
 	_G.GameTooltipStatusBar:ClearAllPoints()
 	_G.GameTooltipStatusBar:Point('TOPLEFT', _G.GameTooltip, 'BOTTOMLEFT', E.Border, -(E.Spacing * 3))
 	_G.GameTooltipStatusBar:Point('TOPRIGHT', _G.GameTooltip, 'BOTTOMRIGHT', -E.Border, -(E.Spacing * 3))

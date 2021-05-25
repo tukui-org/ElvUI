@@ -29,7 +29,7 @@ function S:WorldMapFrame()
 	WorldMapFrame.NavBar.overlay:StripTextures()
 	WorldMapFrame.NavBar:Point('TOPLEFT', 1, -40)
 
-	WorldMapFrame.ScrollContainer:CreateBackdrop()
+	WorldMapFrame.ScrollContainer:SetTemplate()
 	WorldMapFrame:CreateBackdrop('Transparent')
 	WorldMapFrame.backdrop:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', -8, 0)
 	WorldMapFrame.backdrop:Point('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 0, -9)
@@ -49,7 +49,7 @@ function S:WorldMapFrame()
 		QuestMapFrame.DetailsFrame.backdrop:Point('TOPLEFT', 0, 0)
 		QuestMapFrame.DetailsFrame.backdrop:Point('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', 0, 1)
 		QuestMapFrame.DetailsFrame.RewardsFrame:StripTextures()
-		QuestMapFrame.DetailsFrame.RewardsFrame:CreateBackdrop()
+		QuestMapFrame.DetailsFrame.RewardsFrame:SetTemplate()
 
 		if QuestMapFrame.Background then
 			QuestMapFrame.Background:SetAlpha(0)
@@ -130,7 +130,7 @@ function S:WorldMapFrame()
 	QuestMapFrame.QuestSessionManagement:StripTextures()
 
 	local ExecuteSessionCommand = QuestMapFrame.QuestSessionManagement.ExecuteSessionCommand
-	ExecuteSessionCommand:CreateBackdrop()
+	ExecuteSessionCommand:SetTemplate()
 	ExecuteSessionCommand:StyleButton()
 
 	local icon = ExecuteSessionCommand:CreateTexture(nil, 'ARTWORK')
@@ -157,9 +157,11 @@ function S:WorldMapFrame()
 	hooksecurefunc(_G.QuestSessionManager, 'NotifyDialogShow', function(_, dialog)
 		if not dialog.isSkinned then
 			dialog:StripTextures()
-			dialog:CreateBackdrop('Transparent')
+			dialog:SetTemplate('Transparent')
+
 			S:HandleButton(dialog.ButtonContainer.Confirm)
 			S:HandleButton(dialog.ButtonContainer.Decline)
+
 			if dialog.MinimizeButton then
 				dialog.MinimizeButton:StripTextures()
 				dialog.MinimizeButton:Size(16, 16)
@@ -169,6 +171,7 @@ function S:WorldMapFrame()
 				dialog.MinimizeButton.tex:SetInside()
 				dialog.MinimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
 			end
+
 			dialog.isSkinned = true
 		end
 	end)

@@ -44,14 +44,14 @@ function S:LootFrame()
 	LootHistoryFrame:StripTextures()
 	S:HandleCloseButton(LootHistoryFrame.CloseButton)
 	LootHistoryFrame:StripTextures()
-	LootHistoryFrame:CreateBackdrop('Transparent')
+	LootHistoryFrame:SetTemplate('Transparent')
 	LootHistoryFrame.ResizeButton:StripTextures()
 	LootHistoryFrame.ResizeButton.text = LootHistoryFrame.ResizeButton:CreateFontString(nil, 'OVERLAY')
 	LootHistoryFrame.ResizeButton.text:FontTemplate(nil, 16, 'OUTLINE')
 	LootHistoryFrame.ResizeButton.text:SetJustifyH('CENTER')
 	LootHistoryFrame.ResizeButton.text:Point('CENTER', LootHistoryFrame.ResizeButton)
 	LootHistoryFrame.ResizeButton.text:SetText('v v v v')
-	LootHistoryFrame.ResizeButton:CreateBackdrop()
+	LootHistoryFrame.ResizeButton:SetTemplate()
 	LootHistoryFrame.ResizeButton:Width(LootHistoryFrame:GetWidth())
 	LootHistoryFrame.ResizeButton:Height(19)
 	LootHistoryFrame.ResizeButton:ClearAllPoints()
@@ -64,7 +64,7 @@ function S:LootFrame()
 	-- Master Loot
 	local MasterLooterFrame = _G.MasterLooterFrame
 	MasterLooterFrame:StripTextures()
-	MasterLooterFrame:CreateBackdrop()
+	MasterLooterFrame:SetTemplate()
 
 	hooksecurefunc('MasterLooterFrame_Show', function()
 		local b = MasterLooterFrame.Item
@@ -73,12 +73,12 @@ function S:LootFrame()
 			local icon = i:GetTexture()
 			local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
 
-			b:StripTextures()
 			i:SetTexture(icon)
 			i:SetTexCoord(unpack(E.TexCoords))
-			b:CreateBackdrop()
-			b.backdrop:SetOutside(i)
-			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+
+			b:StripTextures()
+			b:SetTemplate()
+			b:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
 
 		for i=1, MasterLooterFrame:GetNumChildren() do
@@ -100,7 +100,7 @@ function S:LootFrame()
 	-- Bonus Roll Frame
 	local BonusRollFrame = _G.BonusRollFrame
 	BonusRollFrame:StripTextures()
-	BonusRollFrame:CreateBackdrop('Transparent')
+	BonusRollFrame:SetTemplate('Transparent')
 
 	BonusRollFrame.SpecRing:SetTexture()
 	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
@@ -109,7 +109,7 @@ function S:LootFrame()
 	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame('Frame', nil, BonusRollFrame.PromptFrame, 'BackdropTemplate')
 	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
-	BonusRollFrame.PromptFrame.IconBackdrop:CreateBackdrop()
+	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()
 
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarTexture(E.media.normTex)
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))

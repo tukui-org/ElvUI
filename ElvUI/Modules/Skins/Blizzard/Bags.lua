@@ -44,7 +44,7 @@ local function SkinButton(button)
 			end
 		end
 
-		button:CreateBackdrop()
+		button:SetTemplate()
 		button:StyleButton()
 		button.IconBorder:Kill()
 
@@ -124,8 +124,8 @@ local function SkinBags()
 		if container and not container.backdrop then
 			container:SetFrameStrata('HIGH')
 			container:StripTextures(true)
-			container:CreateBackdrop('Transparent')
-			container.backdrop:SetInside()
+			container:SetTemplate('Transparent')
+
 			S:HandleCloseButton(_G[container:GetName()..'CloseButton'])
 			S:HandleButton(container.PortraitButton)
 			container.PortraitButton:Size(35)
@@ -137,8 +137,8 @@ local function SkinBags()
 
 				for j = 1, MAX_WATCHED_TOKENS do
 					local token = _G['BackpackTokenFrameToken'..j]
-					token:CreateBackdrop()
-					token.backdrop:SetOutside(token.icon)
+					token:SetTemplate()
+					token:SetOutside(token.icon)
 					token.icon:SetTexCoord(unpack(E.TexCoords))
 				end
 			end
@@ -190,9 +190,9 @@ function S:ContainerFrame()
 	--Bank
 	local BankFrame = _G.BankFrame
 	hooksecurefunc('BankFrameItemButton_Update', function(button)
-		if not BankFrame.backdrop then
+		if not BankFrame.isSkinned then
 			BankFrame:StripTextures(true)
-			BankFrame:CreateBackdrop('Transparent')
+			BankFrame:SetTemplate('Transparent')
 			S:HandleButton(_G.BankFramePurchaseButton, true)
 			S:HandleCloseButton(_G.BankFrameCloseButton)
 
@@ -208,7 +208,8 @@ function S:ContainerFrame()
 
 			_G.BankFrameMoneyFrameInset:Kill()
 			_G.BankFrameMoneyFrameBorder:Kill()
-			BankFrame.backdrop = true
+
+			BankFrame.isSkinned = true
 		end
 
 		SkinButton(button)
@@ -254,14 +255,13 @@ function S:ContainerFrame()
 
 	local BankItemSearchBox = _G.BankItemSearchBox
 	BankItemSearchBox:StripTextures()
-	BankItemSearchBox:CreateBackdrop('Overlay')
+	BankItemSearchBox:CreateBackdrop()
 	BankItemSearchBox.backdrop:Point('TOPLEFT', 10, -1)
 	BankItemSearchBox.backdrop:Point('BOTTOMRIGHT', 4, 1)
 
 	local AutoSort = _G.BagItemAutoSortButton
 	AutoSort:StripTextures()
-	--AutoSort:SetTemplate()
-	AutoSort:CreateBackdrop()
+	AutoSort:SetTemplate()
 	AutoSort.Icon = AutoSort:CreateTexture()
 	AutoSort.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
 	AutoSort.Icon:SetTexCoord(unpack(E.TexCoords))

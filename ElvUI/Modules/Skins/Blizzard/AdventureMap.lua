@@ -22,8 +22,7 @@ function S:Blizzard_AdventureMap()
 	--Quest Choise
 	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog
 	AdventureMapQuestChoiceDialog:StripTextures()
-	AdventureMapQuestChoiceDialog:CreateBackdrop('Transparent')
-	AdventureMapQuestChoiceDialog.backdrop:SetFrameStrata('LOW')
+	AdventureMapQuestChoiceDialog:SetTemplate('Transparent')
 
 	-- Rewards
 	hooksecurefunc(AdventureMapQuestChoiceDialog, 'RefreshRewards', SkinRewards)

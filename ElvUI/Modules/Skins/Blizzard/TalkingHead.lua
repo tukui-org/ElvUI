@@ -119,8 +119,8 @@ function S:Blizzard_TalkingHeadUI()
 
 	if E.db.general.talkingHeadFrameBackdrop then
 		TalkingHeadFrame:StripTextures()
+		TalkingHeadFrame:SetTemplate('Transparent')
 		TalkingHeadFrame.MainFrame:StripTextures()
-		TalkingHeadFrame:CreateBackdrop('Transparent')
 
 		local button = TalkingHeadFrame.MainFrame.CloseButton
 		S:HandleCloseButton(button)

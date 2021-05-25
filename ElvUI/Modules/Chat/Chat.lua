@@ -3276,20 +3276,17 @@ function CH:Initialize()
 		--Increase inset on right side to make room for character count text
 		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
-
-		if not editbox.backdrop then
-			editbox:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
-		end
+		editbox:SetTemplate(nil, true)
 
 		if chanName and (chatType == 'CHANNEL') then
 			if chanName == 0 then
-				editbox.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			else
 				info = ChatTypeInfo[chatType..chanName]
-				editbox.backdrop:SetBackdropBorderColor(info.r, info.g, info.b)
+				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
 			end
 		else
-			editbox.backdrop:SetBackdropBorderColor(info.r, info.g, info.b)
+			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
 		end
 	end)
 

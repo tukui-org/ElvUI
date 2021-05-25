@@ -10,7 +10,7 @@ function S:Blizzard_GuildBankUI()
 
 	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:StripTextures()
-	GuildBankFrame:CreateBackdrop('Transparent')
+	GuildBankFrame:SetTemplate('Transparent')
 	_G.GuildBankEmblemFrame:StripTextures(true)
 	_G.GuildBankMoneyFrameBackground:Kill()
 	S:HandleScrollBar(_G.GuildBankPopupScrollFrameScrollBar)
@@ -53,7 +53,7 @@ function S:Blizzard_GuildBankUI()
 			end
 
 			button:StyleButton()
-			button:CreateBackdrop(nil, true)
+			button:SetTemplate(nil, true)
 
 			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
@@ -68,7 +68,7 @@ function S:Blizzard_GuildBankUI()
 
 		button:StripTextures()
 		button:StyleButton(true)
-		button:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
+		button:SetTemplate(nil, true)
 
 		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))
@@ -83,7 +83,7 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox.Middle:Kill()
 	GuildItemSearchBox.Right:Kill()
 	GuildItemSearchBox.searchIcon:Kill()
-	GuildItemSearchBox:CreateBackdrop('Overlay')
+	GuildItemSearchBox:SetTemplate()
 	GuildItemSearchBox.backdrop:Point('TOPLEFT', 10, -1)
 	GuildItemSearchBox.backdrop:Point('BOTTOMRIGHT', -1, 1)
 

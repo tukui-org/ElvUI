@@ -37,6 +37,7 @@ local function SkinAchievementAlert(frame)
 	frame.shine:Kill()
 	frame.GuildBanner:Kill()
 	frame.GuildBorder:Kill()
+
 	-- Text
 	frame.Unlocked:FontTemplate(nil, 12)
 	frame.Unlocked:SetTextColor(1, 1, 1)
@@ -87,6 +88,7 @@ local function SkinCriteriaAlert(frame)
 		frame.Icon.Texture.b:Point('BOTTOMRIGHT', frame.Icon.Texture, 'BOTTOMRIGHT', 3, -2)
 		frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
 	end
+
 	frame.Icon.Texture:SetTexCoord(unpack(E.TexCoords))
 end
 
@@ -169,6 +171,7 @@ local function SkinGuildChallengeAlert(frame)
 		EmblemIcon.b:Point('BOTTOMRIGHT', EmblemIcon, 'BOTTOMRIGHT', 3, -2)
 		EmblemIcon:SetParent(EmblemIcon.b)
 	end
+
 	SetLargeGuildTabardTextures('player', EmblemIcon, nil, nil)
 end
 
@@ -182,7 +185,7 @@ local function SkinHonorAwardedAlert(frame)
 	-- Icon border
 	if not frame.Icon.b then
 		frame.Icon.b = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-		frame.Icon.b:SetTemplate('Default')
+		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
 	end
@@ -198,9 +201,11 @@ local function SkinInvasionAlert(frame)
 	if not frame.isSkinned then
 		frame:SetAlpha(1)
 		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 4, 4)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -7, 6)
+
 		--Background contains the item border too, so have to remove it
 		if frame.GetRegions then
 			local region, icon = frame:GetRegions()
@@ -209,6 +214,7 @@ local function SkinInvasionAlert(frame)
 					region:Kill()
 				end
 			end
+
 			-- Icon border
 			if icon and icon:IsObjectType('Texture') then
 				if icon:GetTexture() == [[Interface\Icons\Ability_Warlock_DemonicPower]] then
@@ -221,6 +227,7 @@ local function SkinInvasionAlert(frame)
 				end
 			end
 		end
+
 		frame.isSkinned = true
 	end
 end
@@ -272,12 +279,16 @@ local function SkinWorldQuestCompleteAlert(frame)
 	if not frame.isSkinned then
 		frame:SetAlpha(1)
 		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 10, -6)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -14, 6)
+
 		frame.shine:Kill()
+
 		-- Background
 		frame.ToastBackground:Kill()
+
 		--Icon
 		frame.QuestTexture:SetTexCoord(unpack(E.TexCoords))
 		frame.QuestTexture:SetDrawLayer('ARTWORK')
@@ -296,6 +307,7 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		frame.shine:Kill()
 		frame.FollowerBG:SetAlpha(0)
 		frame.DieIcon:SetAlpha(0)
+
 		--Background
 		if frame.GetNumRegions then
 			for i = 1, frame:GetNumRegions() do
@@ -307,6 +319,7 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 				end
 			end
 		end
+
 		--Create Backdrop
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 16, -3)
@@ -350,8 +363,10 @@ local function SkinGarrisonShipFollowerAlert(frame)
 		frame.shine:Kill()
 		frame.FollowerBG:SetAlpha(0)
 		frame.DieIcon:SetAlpha(0)
+
 		--Background
 		frame.Background:Kill()
+
 		--Create Backdrop
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 16, -3)
@@ -366,6 +381,7 @@ local function SkinGarrisonTalentAlert(frame)
 		frame:GetRegions():Hide()
 		frame.glow:Kill()
 		frame.shine:Kill()
+
 		--Icon
 		frame.Icon:SetTexCoord(unpack(E.TexCoords))
 		frame.Icon:SetDrawLayer('ARTWORK')
@@ -373,6 +389,7 @@ local function SkinGarrisonTalentAlert(frame)
 		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
+
 		--Create Backdrop
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
@@ -387,10 +404,12 @@ local function SkinGarrisonBuildingAlert(frame)
 		frame.glow:Kill()
 		frame.shine:Kill()
 		frame:GetRegions():Hide()
+
 		--Create Backdrop
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -8)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 8)
+
 		--Icon
 		frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		frame.Icon:SetDrawLayer('ARTWORK')
@@ -409,6 +428,7 @@ local function SkinGarrisonMissionAlert(frame)
 		frame.shine:Kill()
 		frame.IconBG:Hide()
 		frame.Background:Kill()
+
 		--Icon
 		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
 		frame.MissionType:SetDrawLayer('ARTWORK')
@@ -416,6 +436,7 @@ local function SkinGarrisonMissionAlert(frame)
 		frame.MissionType.b:SetTemplate()
 		frame.MissionType.b:SetOutside(frame.MissionType)
 		frame.MissionType:SetParent(frame.MissionType.b)
+
 		--Create Backdrop
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
@@ -430,6 +451,7 @@ local function SkinGarrisonShipMissionAlert(frame)
 		frame.Background:Kill()
 		frame.glow:Kill()
 		frame.shine:Kill()
+
 		--Icon
 		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
 		frame.MissionType:SetDrawLayer('ARTWORK')
@@ -437,6 +459,7 @@ local function SkinGarrisonShipMissionAlert(frame)
 		frame.MissionType.b:SetTemplate()
 		frame.MissionType.b:SetOutside(frame.MissionType)
 		frame.MissionType:SetParent(frame.MissionType.b)
+
 		--Create Backdrop
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
@@ -453,6 +476,7 @@ local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
 		frame.IconBG:Kill()
 		frame.glow:Kill()
 		frame.shine:Kill()
+
 		--Icon
 		frame.MissionType:SetTexCoord(unpack(E.TexCoords))
 		frame.MissionType:SetDrawLayer('ARTWORK')
@@ -460,6 +484,7 @@ local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
 		frame.MissionType.b:SetTemplate()
 		frame.MissionType.b:SetOutside(frame.MissionType)
 		frame.MissionType:SetParent(frame.MissionType.b)
+
 		--Create Backdrop
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 8, -2)
@@ -490,6 +515,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.Starglow:Kill()
 		frame.glow:Kill()
 		frame.shine:Kill()
+
 		--Icon
 		frame.Icon:SetTexCoord(unpack(E.TexCoords))
 		frame.Icon:SetDrawLayer('ARTWORK')
@@ -497,6 +523,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.Icon.b:SetTemplate()
 		frame.Icon.b:SetOutside(frame.Icon)
 		frame.Icon:SetParent(frame.Icon.b)
+
 		--Create Backdrop
 		frame:CreateBackdrop('Transparent')
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 20, -20)
@@ -506,7 +533,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 	end
 
 	local _, _, itemRarity = GetItemInfo(itemLink)
-	local color = ITEM_QUALITY_COLORS[itemRarity]
+	local color = itemRarity and ITEM_QUALITY_COLORS[itemRarity]
 	if color then
 		frame.Icon.b:SetBackdropBorderColor(color.r, color.g, color.b)
 	else
@@ -809,11 +836,13 @@ function S:AlertSystem()
 	frame.Background:Kill()
 	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	frame.IconBorder:Kill()
+
 	-- Icon border
 	frame.Icon.b = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	frame.Icon.b:SetTemplate()
 	frame.Icon.b:SetOutside(frame.Icon)
 	frame.Icon:SetParent(frame.Icon.b)
+
 	--Create Backdrop
 	frame:CreateBackdrop('Transparent')
 	frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
@@ -830,11 +859,13 @@ function S:AlertSystem()
 	local lootItem = frame.lootItem or frame
 	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	lootItem.IconBorder:Kill()
+
 	-- Icon border
 	lootItem.Icon.b = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	lootItem.Icon.b:SetTemplate()
 	lootItem.Icon.b:SetOutside(lootItem.Icon)
 	lootItem.Icon:SetParent(lootItem.Icon.b)
+
 	--Create Backdrop
 	frame:CreateBackdrop('Transparent')
 	frame.backdrop:Point('TOPLEFT', lootItem.Icon.b, 'TOPLEFT', -4, 4)

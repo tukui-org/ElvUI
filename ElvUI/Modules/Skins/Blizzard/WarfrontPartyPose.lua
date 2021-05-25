@@ -9,11 +9,11 @@ function S:Blizzard_WarfrontsPartyPoseUI()
 
 	local WarfrontsPartyPoseFrame = _G.WarfrontsPartyPoseFrame
 	WarfrontsPartyPoseFrame:StripTextures()
-	WarfrontsPartyPoseFrame:CreateBackdrop('Transparent')
+	WarfrontsPartyPoseFrame:SetTemplate('Transparent')
 
 	local modelScene = WarfrontsPartyPoseFrame.ModelScene
 	modelScene:StripTextures()
-	modelScene:CreateBackdrop('Transparent')
+	modelScene:SetTemplate('Transparent')
 
 	S:HandleButton(WarfrontsPartyPoseFrame.LeaveButton)
 

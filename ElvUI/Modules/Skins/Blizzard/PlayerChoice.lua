@@ -23,14 +23,14 @@ end
 local function HandleSecondOptionButton(button)
 	if not button then return end
 
-	S:HandleButton(button, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(button)
 end
 
 local function HandleJailerOptionButton(button)
 	if not button or button.IsSkinned then return end
 
 	button:StripTextures(true)
-	button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+	button:SetTemplate()
 
 	button:HookScript('OnEnter', S.SetModifiedBackdrop)
 	button:HookScript('OnLeave', S.SetOriginalBackdrop)
@@ -49,7 +49,7 @@ function S:Blizzard_PlayerChoiceUI()
 			frame.NineSlice:SetAlpha(0)
 			frame.BorderFrame.Header:SetAlpha(0)
 
-			frame:CreateBackdrop('Transparent')
+			frame:SetTemplate('Transparent')
 
 			frame.Title:DisableDrawLayer('BACKGROUND')
 			frame.Title.Text:SetTextColor(1, .8, 0)
