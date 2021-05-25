@@ -58,7 +58,7 @@ function S:Blizzard_CovenantSanctum()
 	end
 
 	local UpgradesTab = frame.UpgradesTab
-	UpgradesTab.Background:SetTemplate('Transparent')
+	UpgradesTab.Background:CreateBackdrop('Transparent')
 	S:HandleButton(UpgradesTab.DepositButton)
 	UpgradesTab.DepositButton:SetFrameLevel(10)
 	UpgradesTab.CurrencyBackground:SetAlpha(0)
