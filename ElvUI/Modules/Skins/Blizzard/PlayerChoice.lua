@@ -60,8 +60,6 @@ function S:Blizzard_PlayerChoiceUI()
 			frame.IsSkinned = true
 		end
 
-		frame.backdrop:SetShown(not IsInJailersTower())
-
 		for i = 1, frame:GetNumOptions() do
 			local option = frame.Options[i]
 			if E.private.skins.parchmentRemoverEnable then
