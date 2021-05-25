@@ -84,8 +84,6 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox.Right:Kill()
 	GuildItemSearchBox.searchIcon:Kill()
 	GuildItemSearchBox:SetTemplate()
-	GuildItemSearchBox.backdrop:Point('TOPLEFT', 10, -1)
-	GuildItemSearchBox.backdrop:Point('BOTTOMRIGHT', -1, 1)
 
 	S:HandleScrollBar(_G.GuildBankTransactionsScrollFrameScrollBar)
 	S:HandleScrollBar(_G.GuildBankInfoScrollFrameScrollBar)
