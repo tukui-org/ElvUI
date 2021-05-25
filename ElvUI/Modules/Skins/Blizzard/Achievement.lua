@@ -2,13 +2,13 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 local GetNumFilteredAchievements = GetNumFilteredAchievements
+local CreateFrame = CreateFrame
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
 local function blueBackdrop(self)
