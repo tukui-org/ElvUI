@@ -52,9 +52,6 @@ function S:Blizzard_MacroUI()
 	_G.MacroEditButton:ClearAllPoints()
 	_G.MacroEditButton:Point('BOTTOMLEFT', _G.MacroFrameSelectedMacroButton, 'BOTTOMRIGHT', 10, 0)
 
-	-- Regular scroll bar
-	S:HandleScrollBar(_G.MacroButtonScrollFrame)
-
 	-- Big icon
 	_G.MacroFrameSelectedMacroButton:StripTextures()
 	_G.MacroFrameSelectedMacroButton:StyleButton(true)
