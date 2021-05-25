@@ -21,13 +21,13 @@ local QUESTS_LABEL = QUESTS_LABEL
 local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 
 local function UpdateBorderColors(button)
-	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
 	if button.type and button.type == QUESTS_LABEL then
-		button.backdrop:SetBackdropBorderColor(1, 0.2, 0.2)
+		button:SetBackdropBorderColor(1, 0.2, 0.2)
 	elseif button.quality and button.quality > 1 then
 		local r, g, b = GetItemQualityColor(button.quality)
-		button.backdrop:SetBackdropBorderColor(r, g, b)
+		button:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -138,7 +138,6 @@ local function SkinBags()
 				for j = 1, MAX_WATCHED_TOKENS do
 					local token = _G['BackpackTokenFrameToken'..j]
 					token:SetTemplate()
-					token:SetOutside(token.icon)
 					token.icon:SetTexCoord(unpack(E.TexCoords))
 				end
 			end
