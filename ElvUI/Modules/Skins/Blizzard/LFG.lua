@@ -131,25 +131,23 @@ function S:LookingForGroupFrames()
 	_G.GroupFinderFrame.groupButton2.icon:SetTexture([[Interface\LFGFrame\UI-LFR-PORTRAIT]])
 	_G.GroupFinderFrame.groupButton3.icon:SetTexture([[Interface\Icons\Icon_Scenarios]])
 
-	_G.LFGDungeonReadyDialogBackground:Kill()
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
 	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
-	-- _G.LFGDungeonReadyDialog:StripTextures()
-	-- _G.LFGDungeonReadyDialog:SetTemplate('Transparent')
-	_G.LFGDungeonReadyStatus:StripTextures()
-	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
+	_G.LFGDungeonReadyDialogBackground:Kill()
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture(E.Media.Textures.RolesHQ)
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
-
-	hooksecurefunc(_G.LFGDungeonReadyDialog, 'SetBackdrop', function(frame, backdrop)
-        if backdrop == BACKDROP_GOLD_DIALOG_32_32 or backdrop == BACKDROP_DIALOG_32_32 then
-            _G.LFGDungeonReadyDialog:StripTextures()
-            _G.LFGDungeonReadyDialog:SetTemplate('Transparent')
-        end
-    end)
+	_G.LFGDungeonReadyDialog.filigree:SetAlpha(0)
+	_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
+	_G.LFGDungeonReadyStatus:StripTextures()
+	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
 
 	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
+		if _G.LFGDungeonReadyDialog:IsShown() then
+			_G.LFGDungeonReadyDialog:StripTextures()
+			_G.LFGDungeonReadyDialog:SetTemplate('Transparent')
+		end
+
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
 			local _, _, _, _, _, _, role = GetLFGProposal()
 			if role == 'DAMAGER' then
@@ -190,8 +188,6 @@ function S:LookingForGroupFrames()
 	_G.LFDQueueFrameRoleButtonTank.shortageBorder:Kill()
 	_G.LFDQueueFrameRoleButtonDPS.shortageBorder:Kill()
 	_G.LFDQueueFrameRoleButtonHealer.shortageBorder:Kill()
-	_G.LFGDungeonReadyDialog.filigree:SetAlpha(0)
-	_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
 	S:HandleCloseButton(_G.LFGDungeonReadyStatusCloseButton)
 
 	local RoleButtons1 = {
