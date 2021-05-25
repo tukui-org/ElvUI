@@ -85,7 +85,7 @@ function NP:Construct_TargetIndicator(nameplate)
 	local TargetIndicator = CreateFrame('Frame', nameplate:GetName() .. 'TargetIndicator', nameplate)
 	TargetIndicator:SetFrameLevel(0)
 
-	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator)
+	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator, 'BackdropTemplate')
 	TargetIndicator.Shadow:Hide()
 
 	for _, object in ipairs(targetIndicators) do

@@ -239,7 +239,7 @@ local function CreateShadow(frame, size, pass)
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
 	local offset = (E.PixelMode and size) or (size + 1)
-	local shadow = CreateFrame('Frame', nil, frame)
+	local shadow = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, offset, offset, nil, true)
