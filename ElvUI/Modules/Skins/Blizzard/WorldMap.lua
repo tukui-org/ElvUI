@@ -103,8 +103,8 @@ function S:WorldMapFrame()
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left', nil, nil, nil, true)
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right', nil, nil, nil, true)
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right')
 
 	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
