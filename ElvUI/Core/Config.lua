@@ -694,7 +694,7 @@ function E:Config_CreateButton(info, frame, unskinned, ...)
 	btn.info = info
 
 	if not unskinned then
-		E.Skins:HandleButton(btn, nil, nil, nil, true)
+		E.Skins:HandleButton(btn)
 	end
 
 	E:Config_SetButtonText(btn)
