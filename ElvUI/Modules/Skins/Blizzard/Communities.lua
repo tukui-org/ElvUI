@@ -395,13 +395,11 @@ function S:Blizzard_Communities()
 	end
 
 	GuildBenefitsFrame.Rewards.TitleText:FontTemplate(nil, 14)
-
 	GuildBenefitsFrame.Rewards.Bg:Hide()
-
 	S:HandleScrollBar(_G.CommunitiesFrameRewards.scrollBar)
 
 	for _, button in pairs(CommunitiesFrame.GuildBenefitsFrame.Rewards.RewardsContainer.buttons) do
-		button:SetTemplate()
+		button:SetTemplate('Transparent')
 		button:SetNormalTexture('')
 		button:SetHighlightTexture('')
 
@@ -411,6 +409,10 @@ function S:Blizzard_Communities()
 			hover:SetInside(button.backdrop)
 			button:SetHighlightTexture(hover)
 			button.hover = hover
+		end
+
+		if button.DisabledBG then
+			button.DisabledBG:SetInside(button)
 		end
 
 		if button.Icon and not button.Icon.backdrop then
@@ -553,6 +555,7 @@ function S:Blizzard_Communities()
 	GuildLogFrame:StripTextures()
 	GuildLogFrame.Container:StripTextures()
 	GuildLogFrame:SetTemplate('Transparent')
+	GuildLogFrame.Container:SetTemplate('Transparent')
 
 	S:HandleScrollBar(_G.CommunitiesGuildLogFrameScrollBar, 4)
 	S:HandleCloseButton(_G.CommunitiesGuildLogFrameCloseButton)
