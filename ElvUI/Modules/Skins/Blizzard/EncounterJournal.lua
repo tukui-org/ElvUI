@@ -14,7 +14,7 @@ local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
 
-local LEGENDARY_COLOR = Enum.ItemQuality.Legendary or 5
+local ITEMQUALITY_LEGENDARY = Enum.ItemQuality.Legendary or 5
 
 local function HandleButton(btn, ...)
 	S:HandleButton(btn, ...)
@@ -467,7 +467,7 @@ function S:Blizzard_EncounterJournal()
 
 	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
 
-	local IconColor = E.QualityColors[LEGENDARY_COLOR]
+	local IconColor = E.QualityColors[ITEMQUALITY_LEGENDARY]
 	hooksecurefunc(LootJournal.PowersFrame, "RefreshListDisplay", function(buttons)
 		if not buttons.elements then return end
 

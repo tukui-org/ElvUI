@@ -17,7 +17,9 @@ local hooksecurefunc = hooksecurefunc
 local GetGuildRewardInfo = GetGuildRewardInfo
 local GetItemQualityColor = GetItemQualityColor
 local GetItemInfo = GetItemInfo
-local Enum = Enum
+
+local CLUBTYPE_GUILD = Enum.ClubType.Guild
+local CLUBTYPE_BATTLENET = Enum.ClubType.BattleNet
 
 local function UpdateNames(self)
 	if not self.expanded then return end
@@ -139,7 +141,7 @@ function S:Blizzard_Communities()
 				s.bg:Point('BOTTOMRIGHT', -10, 12)
 			end
 
-			local isGuild = clubInfo.clubType == Enum.ClubType.Guild
+			local isGuild = clubInfo.clubType == CLUBTYPE_GUILD
 			if isGuild then
 				s.Background:SetAtlas(nil)
 				s.Selection:SetAtlas(nil)
@@ -153,7 +155,7 @@ function S:Blizzard_Communities()
 			end
 
 			if not isInvitation and not isGuild and not isTicket then
-				if clubInfo.clubType == _G.Enum.ClubType.BattleNet then
+				if clubInfo.clubType == CLUBTYPE_BATTLENET then
 					s.IconBorder:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b)
 				else
 					s.IconBorder:SetColorTexture(FRIENDS_WOW_BACKGROUND_COLOR.r, FRIENDS_WOW_BACKGROUND_COLOR.g, FRIENDS_WOW_BACKGROUND_COLOR.b)

@@ -30,7 +30,6 @@ P.general = {
 	talkingHeadFrameScale = 0.9,
 	talkingHeadFrameBackdrop = false,
 	vehicleSeatIndicatorSize = 128,
-	objectiveTracker = true,
 	resurrectSound = false,
 	questRewardMostValueIcon = true,
 	questXPPercent = true,

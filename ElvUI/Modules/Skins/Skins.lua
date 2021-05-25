@@ -49,16 +49,7 @@ S.Blizzard.Regions = {
 	'BottomRightTex',
 	'RightTex',
 	'MiddleTex',
-	'Center',
-	-- 9.0 might want these later? (achievement frame uses them and maybe something else)
-	--'BottomEdge',
-	--'LeftEdge',
-	--'RightEdge',
-	--'TopEdge',
-	--'TopLeftCorner',
-	--'TopRightCorner',
-	--'BottomLeftCorner',
-	--'BottomRightCorner',
+	'Center'
 }
 
 -- Depends on the arrow texture to be up by default.

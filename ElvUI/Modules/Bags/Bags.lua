@@ -89,8 +89,8 @@ local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
-local LE_ITEM_QUALITY_COMMON = Enum.ItemQuality.Common
-local LE_ITEM_QUALITY_POOR = Enum.ItemQuality.Poor
+local ITEMQUALITY_COMMON = Enum.ItemQuality.Common
+local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
@@ -494,7 +494,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot:Show()
 
-	slot.isJunk = (slot.rarity and slot.rarity == LE_ITEM_QUALITY_POOR) and not noValue
+	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.junkDesaturate = slot.isJunk and B.db.junkDesaturate
 
 	SetItemButtonTexture(slot, texture)
@@ -510,7 +510,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	local professionColors = B.ProfessionColors[bagType]
 	local showItemLevel = B.db.itemLevel and link and not professionColors
-	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
+	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON)
 	local isQuestItem, questId, isActiveQuest = false, false, false
 	local forceColor, r, g, b, a = true, unpack(E.media.bordercolor)
 
@@ -590,7 +590,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
 
-	if not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON) then
+	if not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON) then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
@@ -1090,7 +1090,7 @@ function B:UpdateReagentSlot(slotID)
 		r, g, b, a = unpack(B.QuestColors.questStarter)
 	elseif questId or isQuestItem then
 		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif not link or B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON then
+	elseif not link or B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end

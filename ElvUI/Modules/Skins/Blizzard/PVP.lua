@@ -2,15 +2,16 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
+local ipairs, pairs, unpack = ipairs, pairs, unpack
 
 local CreateFrame = CreateFrame
-local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
-local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
-local LE_ITEM_QUALITY_ARTIFACT = Enum.ItemQuality.Artifact
+
+local ITEMQUALITY_ARTIFACT = Enum.ItemQuality.Artifact
+local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
+local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 
 local function HandleRoleChecks(button, ...)
 	button:StripTextures()
@@ -161,7 +162,7 @@ function S:Blizzard_PVPUI()
 		if currencyRewards then
 			for _, reward in ipairs(currencyRewards) do
 				local info = C_CurrencyInfo_GetCurrencyInfo(reward.id)
-				if info and info.quality == LE_ITEM_QUALITY_ARTIFACT then
+				if info and info.quality == ITEMQUALITY_ARTIFACT then
 					_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, info.name, info.iconFileID, info.quality)
 				end
 			end

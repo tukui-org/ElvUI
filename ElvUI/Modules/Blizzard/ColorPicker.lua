@@ -10,7 +10,6 @@ local _G = _G
 local strlen, strjoin, gsub = strlen, strjoin, gsub
 local tonumber, floor, strsub, wipe = tonumber, floor, strsub, wipe
 local CreateFrame = CreateFrame
-local IsAddOnLoaded = IsAddOnLoaded
 local IsControlKeyDown = IsControlKeyDown
 local IsModifierKeyDown = IsModifierKeyDown
 local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT

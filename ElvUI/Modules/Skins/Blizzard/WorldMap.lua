@@ -3,6 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
+local QUESTSESSIONCOMMAND_START = Enum.QuestSessionCommand.Start
+local QUESTSESSIONCOMMAND_STOP = Enum.QuestSessionCommand.Stop
 
 local function SkinHeaders(header)
 	if not header.IsSkinned then
@@ -139,8 +141,8 @@ function S:WorldMapFrame()
 	ExecuteSessionCommand.normalIcon = icon
 
 	local sessionCommandToButtonAtlas = {
-		[_G.Enum.QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
-		[_G.Enum.QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
+		[QUESTSESSIONCOMMAND_START] = 'QuestSharing-DialogIcon',
+		[QUESTSESSIONCOMMAND_STOP] = 'QuestSharing-Stop-DialogIcon'
 	}
 
 	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', function(s, command)

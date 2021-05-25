@@ -68,8 +68,8 @@ local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
-local ChatChannelRuleset_Mentor = Enum.ChatChannelRuleset.Mentor
 
+local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset.Mentor
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
@@ -1765,7 +1765,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local accessID = _G.ChatHistory_GetAccessID(chatGroup, arg8)
 			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12)
 
-			if arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == ChatChannelRuleset_Mentor then
+			if arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
 				_G.ChatFrame_UpdateDefaultChatTarget(frame)
 				_G.ChatEdit_UpdateNewcomerEditBoxHint(frame.editBox)
 			else

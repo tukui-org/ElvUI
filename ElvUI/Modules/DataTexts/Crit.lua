@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 local min = min
 local format, strjoin = format, strjoin
-
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus

@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs = pairs
-
 local C_AzeriteEssence_CanOpenUI = C_AzeriteEssence.CanOpenUI
 
 function S:Blizzard_AzeriteEssenceUI()

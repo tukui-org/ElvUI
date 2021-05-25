@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 
+local CreateFrame = CreateFrame
+
 function UF:Construct_PartyIndicator(frame)
 	local PartyIndicator = CreateFrame('Frame', nil, frame.RaisedElementParent)
 

@@ -1,4 +1,3 @@
---Lua functions
 local _G = _G
 local select = select
 

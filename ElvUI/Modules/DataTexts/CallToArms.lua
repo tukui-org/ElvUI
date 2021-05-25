@@ -3,7 +3,6 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local strjoin = strjoin
-
 local GetLFGRandomDungeonInfo = GetLFGRandomDungeonInfo
 local GetLFGRoleShortageRewards = GetLFGRoleShortageRewards
 local GetNumRandomDungeons = GetNumRandomDungeons

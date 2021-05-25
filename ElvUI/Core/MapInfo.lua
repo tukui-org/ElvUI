@@ -13,7 +13,7 @@ local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 
-local Enum_UIMapType = Enum.UIMapType
+local UIMAPTYPE_CONTINENT = Enum.UIMapType.Continent
 local MapUtil_GetMapParentInfo = MapUtil.GetMapParentInfo
 
 E.MapInfo = {}
@@ -31,7 +31,7 @@ function E:MapInfo_Update()
 	E.MapInfo.subZoneText = GetMinimapZoneText() or nil
 	E.MapInfo.realZoneText = GetRealZoneText() or nil
 
-	local continent = mapID and MapUtil_GetMapParentInfo(mapID, Enum_UIMapType.Continent, true)
+	local continent = mapID and MapUtil_GetMapParentInfo(mapID, UIMAPTYPE_CONTINENT, true)
 	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
 	E.MapInfo.continentMapType = (continent and continent.mapType) or nil
 	E.MapInfo.continentMapID = (continent and continent.mapID) or nil

@@ -143,7 +143,6 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		end
 	end
 
-	local ElvUI_ContainerFrame = ElvUI_ContainerFrame
 	local RightChatPanel = _G.RightChatPanel
 	local TooltipMover = _G.TooltipMover
 	local _, anchor = tt:GetPoint()

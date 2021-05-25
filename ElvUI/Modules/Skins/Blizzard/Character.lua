@@ -5,9 +5,9 @@ local _G = _G
 local unpack, select = unpack, select
 local pairs, ipairs, type = pairs, ipairs, type
 
-local EquipmentManager_GetItemInfoByLocation = EquipmentManager_GetItemInfoByLocation
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local EquipmentManager_GetItemInfoByLocation = EquipmentManager_GetItemInfoByLocation
 
 local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFF] = 'PLACEINBAGS',
