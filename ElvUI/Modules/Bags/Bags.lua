@@ -1393,7 +1393,7 @@ function B:ConstructContainerFrame(name, isBank)
 
 	for i, bagID in next, f.BagIDs do
 		local bagName = isBank and format('ElvUIBankBag%d', bagID-4) or bagID == 0 and 'ElvUIMainBagBackpack' or format('ElvUIMainBag%dSlot', bagID-1)
-		local inherit = isBank and 'BackdropTemplate, BankItemButtonBagTemplate' or bagID == 0 and 'BackdropTemplate, ItemAnimTemplate' or 'BackdropTemplate, BagSlotButtonTemplate'
+		local inherit = isBank and 'BankItemButtonBagTemplate' or bagID == 0 and 'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 		f.ContainerHolder[i] = CreateFrame('ItemButton', bagName, f.ContainerHolder, inherit)
 		f.ContainerHolder[i]:SetTemplate(B.db.transparent and 'Transparent', true)
@@ -1737,7 +1737,7 @@ function B:ConstructContainerFrame(name, isBank)
 end
 
 function B:ConstructContainerButton(f, slotID, bagID)
-	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BackdropTemplate, BankItemButtonGenericTemplate' or 'BackdropTemplate, ContainerFrameItemButtonTemplate')
+	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
