@@ -46,7 +46,7 @@ local function SkinActivityFrame(frame, isObject)
 	end
 
 	if frame.Background then
-		frame.Background:SetTemplate()
+		frame.Background:CreateBackdrop()
 	end
 end
 
