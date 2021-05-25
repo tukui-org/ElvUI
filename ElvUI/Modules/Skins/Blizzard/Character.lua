@@ -496,7 +496,6 @@ function S:CharacterFrame()
 	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
 
-
 	hooksecurefunc('CharacterFrame_ShowSubFrame', UpdateCharacterInset)
 end
 
