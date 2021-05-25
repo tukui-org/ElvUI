@@ -215,7 +215,7 @@ function E:OnInitialize()
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 
-	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate, BackdropTemplate')
+	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
 	GameMenuButton:SetScript('OnClick', function()
 		E:ToggleOptionsUI() --We already prevent it from opening in combat
 		if not InCombatLockdown() then
