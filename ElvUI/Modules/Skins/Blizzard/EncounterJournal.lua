@@ -415,7 +415,10 @@ function S:Blizzard_EncounterJournal()
 			for i, data in ipairs(suggestFrame.suggestions) do
 				local sugg = next(data) and suggestFrame['Suggestion'..i]
 				if sugg then
-					sugg.icon:SetTemplate()
+					if not sugg.icon.backdrop then
+						sugg.icon:CreateBackdrop()
+					end
+
 					sugg.icon:SetMask('')
 					sugg.icon:SetTexture(data.iconPath)
 					sugg.icon:SetTexCoord(unpack(E.TexCoords))
@@ -427,7 +430,10 @@ function S:Blizzard_EncounterJournal()
 		hooksecurefunc('EJSuggestFrame_UpdateRewards', function(sugg)
 			local rewardData = sugg.reward.data
 			if rewardData then
-				sugg.reward.icon:SetTemplate()
+				if not sugg.reward.icon.backdrop then
+					sugg.reward.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, 3)
+				end
+
 				sugg.reward.icon:SetMask('')
 				sugg.reward.icon:SetTexture(rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]])
 				sugg.reward.icon:SetTexCoord(unpack(E.TexCoords))
