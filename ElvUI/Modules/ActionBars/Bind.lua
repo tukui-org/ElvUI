@@ -367,7 +367,7 @@ function AB:LoadKeyBinder()
 	Popup.discard:Point('BOTTOMLEFT', 14, 10)
 
 	Skins:HandleCheckBox(Popup.perCharCheck)
-	Skins:HandleButton(Popup.discard, nil, nil, nil, nil, nil, nil, nil, true)
-	Skins:HandleButton(Popup.header, nil, nil, nil, nil, nil, nil, nil, true)
-	Skins:HandleButton(Popup.save, nil, nil, nil, nil, nil, nil, nil, true)
+	Skins:HandleButton(Popup.discard)
+	Skins:HandleButton(Popup.header)
+	Skins:HandleButton(Popup.save)
 end
