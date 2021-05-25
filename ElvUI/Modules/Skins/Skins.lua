@@ -930,8 +930,8 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 					if fl.Counters then
 						for y = 1, #fl.Counters do
 							local counter = fl.Counters[y]
-							if counter and not counter.backdrop then
-								counter:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
+							if counter and not counter.template then
+								counter:SetTemplate()
 
 								if counter.Border then
 									counter.Border:SetTexture()

@@ -20,8 +20,8 @@ local tabs = {
 
 local function SkinFriendRequest(frame)
 	if frame.isSkinned then return end
-	S:HandleButton(frame.DeclineButton, nil, true, nil, nil, nil, nil, nil, true)
-	S:HandleButton(frame.AcceptButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(frame.DeclineButton, nil, true)
+	S:HandleButton(frame.AcceptButton)
 	frame.isSkinned = true
 end
 

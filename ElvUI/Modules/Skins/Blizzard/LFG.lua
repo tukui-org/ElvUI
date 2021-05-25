@@ -124,8 +124,8 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameBg:Hide()
 	PVEFrame.shadows:Kill() -- We need to kill it, because if you switch to Mythic Dungeon Tab and back, it shows back up.
 
-	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton, nil, nil, nil, nil, nil, nil, nil, true)
-	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
+	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
 
 	_G.GroupFinderFrame.groupButton1.icon:SetTexture([[Interface\Icons\INV_Helmet_08]])
 	_G.GroupFinderFrame.groupButton2.icon:SetTexture([[Interface\LFGFrame\UI-LFR-PORTRAIT]])
@@ -570,10 +570,10 @@ function S:LookingForGroupFrames()
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
 		if not button.DeclineButton.template then
-			S:HandleButton(button.DeclineButton, nil, true, nil, nil, nil, nil, nil, true)
+			S:HandleButton(button.DeclineButton, nil, true)
 		end
 		if not button.InviteButton.template then
-			S:HandleButton(button.InviteButton, nil, nil, nil, nil, nil, nil, nil, true)
+			S:HandleButton(button.InviteButton)
 		end
 	end)
 

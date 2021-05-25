@@ -172,7 +172,7 @@ local function SkinGuildChallengeAlert(frame)
 		EmblemIcon:SetParent(EmblemIcon.b)
 	end
 
-	SetLargeGuildTabardTextures('player', EmblemIcon, nil, nil)
+	SetLargeGuildTabardTextures('player', EmblemIcon)
 end
 
 local function SkinHonorAwardedAlert(frame)

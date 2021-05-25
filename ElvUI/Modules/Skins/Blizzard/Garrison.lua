@@ -289,9 +289,9 @@ function S:Blizzard_GarrisonUI()
 	S:HandleScrollBar(MissionList.listScroll.scrollBar)
 	S:HandleCloseButton(MissionPage.CloseButton)
 	MissionPage.CloseButton:SetFrameLevel(MissionPage:GetFrameLevel() + 2)
-	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	S:HandleButton(GarrisonMissionFrame.MissionComplete.NextMissionButton)
-	S:HandleButton(MissionPage.StartMissionButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(MissionPage.StartMissionButton)
 	MissionPage.StartMissionButton.Flash:Kill()
 
 	-- Landing page
@@ -433,11 +433,11 @@ function S:Blizzard_GarrisonUI()
 	MissionPage = MissionTab.MissionPage
 	S:HandleCloseButton(MissionPage.CloseButton)
 	MissionPage.CloseButton:SetFrameLevel(MissionPage.CloseButton:GetFrameLevel() + 2)
-	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	S:HandleButton(GarrisonShipyardFrame.MissionComplete.NextMissionButton)
 	MissionList.CompleteDialog:SetAllPoints(MissionList.MapTexture)
 	GarrisonShipyardFrame.MissionCompleteBackground:SetAllPoints(MissionList.MapTexture)
-	S:HandleButton(MissionPage.StartMissionButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(MissionPage.StartMissionButton)
 	MissionPage.StartMissionButton.Flash:Kill()
 
 	-- ShipYard: Follower List
@@ -500,16 +500,16 @@ function S:Blizzard_GarrisonUI()
 	S:HandleScrollBar(MissionList.listScroll.scrollBar)
 	MissionList.CompleteDialog:StripTextures()
 	MissionList.CompleteDialog:SetTemplate('Transparent')
-	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	MissionList:StripTextures()
 	MissionList.listScroll:StripTextures()
 	S:HandleButton(_G.OrderHallMissionFrameMissions.CombatAllyUI.InProgress.Unassign)
 	S:HandleCloseButton(MissionPage.CloseButton)
 	S:HandleCloseButton(ZoneSupportMissionPage.CloseButton)
 	S:HandleButton(MissionComplete.NextMissionButton)
-	S:HandleButton(MissionPage.StartMissionButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(MissionPage.StartMissionButton)
 	MissionPage.StartMissionButton.Flash:Kill()
-	S:HandleButton(ZoneSupportMissionPage.StartMissionButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(ZoneSupportMissionPage.StartMissionButton)
 	ZoneSupportMissionPage.StartMissionButton.Flash:Kill()
 
 	-- BFA Mission
@@ -540,13 +540,13 @@ function S:Blizzard_GarrisonUI()
 	end
 
 	-- Missions
-	S:HandleButton(_G.BFAMissionFrameMissions.CompleteDialog.BorderFrame.ViewButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(_G.BFAMissionFrameMissions.CompleteDialog.BorderFrame.ViewButton)
 
 	-- Mission Tab
 	MissionTab = MissionFrame.MissionTab -- swap
 	S:HandleCloseButton(MissionTab.MissionPage.CloseButton)
 	S:HandleScrollBar(_G.BFAMissionFrameMissionsListScrollFrameScrollBar)
-	S:HandleButton(MissionTab.MissionPage.StartMissionButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(MissionTab.MissionPage.StartMissionButton)
 	MissionTab.MissionPage.StartMissionButton.Flash:Kill()
 
 	-- Follower Tab
@@ -616,7 +616,7 @@ function S:Blizzard_GarrisonUI()
 	-- Mission Tab
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
 	S:HandleIcon(CovenantMissionFrame.MissionTab.MissionPage.CostFrame.CostIcon)
-	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
 	CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton.Flash:Kill()
 
 	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript('OnShow', SkinMissionBoards)
