@@ -110,12 +110,6 @@ function M:SkinBubble(frame, holder)
 
 	if not frame.holder then
 		frame.holder = holder
-		holder.Tail:Hide()
-		holder:DisableDrawLayer('BORDER')
-
-		if holder.Center then -- can remove later
-			holder.Center:Hide()
-		end
 
 		frame:HookScript('OnShow', M.UpdateBubbleBorder)
 		frame:SetFrameStrata('DIALOG') --Doesn't work currently in Legion due to a bug on Blizzards end
