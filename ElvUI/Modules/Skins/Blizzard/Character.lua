@@ -15,6 +15,15 @@ local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFD] = 'UNIGNORESLOT'
 }
 
+local showInsetBackdrop = {
+	ReputationFrame = true,
+	TokenFrame = true
+}
+
+local function UpdateCharacterInset(name)
+	_G.CharacterFrameInset.backdrop:SetShown(showInsetBackdrop[name])
+end
+
 local function UpdateAzeriteItem(self)
 	if not self.styled then
 		self.styled = true
@@ -331,8 +340,8 @@ function S:CharacterFrame()
 	--Strip Textures
 	local charframe = {
 		'CharacterModelFrame',
-		'CharacterFrameInset',
 		'CharacterStatsPane',
+		'CharacterFrameInset',
 		'CharacterFrameInsetRight',
 		'PaperDollSidebarTabs',
 		'PaperDollEquipmentManagerPane',
@@ -393,6 +402,7 @@ function S:CharacterFrame()
 	}
 
 	_G.CharacterModelFrameControlFrame:StripTextures()
+	_G.CharacterFrameInset:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 
 	for _, button in pairs(controlButtons) do
 		S:HandleButton(_G[button])
@@ -485,6 +495,9 @@ function S:CharacterFrame()
 	--Currency
 	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
+
+
+	hooksecurefunc('CharacterFrame_ShowSubFrame', UpdateCharacterInset)
 end
 
 S:AddCallback('CharacterFrame')
