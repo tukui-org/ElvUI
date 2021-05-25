@@ -818,7 +818,7 @@ function E:Config_CreateLeftButtons(frame, unskinned, options)
 			if ACD then ACD:SelectGroup('ElvUI', key) end
 		end
 
-		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate')
+		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, buttons, 'UIPanelButtonTemplate, BackdropTemplate')
 		btn:Width(177)
 
 		if not last then
@@ -989,7 +989,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			end
 		}
 	}) do
-		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate')
+		local btn = E:Config_CreateButton(info, frame, unskinned, 'Button', nil, frame.bottomHolder, 'UIPanelButtonTemplate, BackdropTemplate')
 		local offset = unskinned and 14 or 8
 
 		if not last then
