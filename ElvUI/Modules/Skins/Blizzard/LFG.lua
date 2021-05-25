@@ -135,16 +135,19 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
 	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
-	_G.LFGDungeonReadyDialog:StripTextures()
-	_G.LFGDungeonReadyDialog:SetTemplate('Transparent')
+	-- _G.LFGDungeonReadyDialog:StripTextures()
+	-- _G.LFGDungeonReadyDialog:SetTemplate('Transparent')
 	_G.LFGDungeonReadyStatus:StripTextures()
 	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture(E.Media.Textures.RolesHQ)
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
 
 	hooksecurefunc(_G.LFGDungeonReadyDialog, 'SetBackdrop', function(frame, backdrop)
-		if backdrop ~= nil then frame:SetBackdrop() end
-	end)
+        if backdrop == BACKDROP_GOLD_DIALOG_32_32 or backdrop == BACKDROP_DIALOG_32_32 then
+            _G.LFGDungeonReadyDialog:StripTextures()
+            _G.LFGDungeonReadyDialog:SetTemplate('Transparent')
+        end
+    end)
 
 	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
