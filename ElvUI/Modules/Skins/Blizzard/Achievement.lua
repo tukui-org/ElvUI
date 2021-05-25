@@ -303,13 +303,9 @@ function S:Blizzard_AchievementUI()
 
 		local scrollFrame = AchievementFrame.searchResults.scrollFrame
 		local offset = _G.HybridScrollFrame_GetOffset(scrollFrame)
-		local results = scrollFrame.buttons
-		local result, index
 
-		for i = 1, #results do
-			result = results[i]
-			index = offset + i
-
+		for i, result in ipairs(scrollFrame.buttons) do
+			local index = offset + i
 			if index <= numResults then
 				if not result.styled then
 					result:SetNormalTexture('')
