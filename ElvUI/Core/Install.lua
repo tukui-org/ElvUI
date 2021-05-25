@@ -809,7 +809,7 @@ function E:Install()
 
 	--Create Frame
 	if not ElvUIInstallFrame then
-		local f = CreateFrame('Button', 'ElvUIInstallFrame', E.UIParent, 'BackdropTemplate')
+		local f = CreateFrame('Button', 'ElvUIInstallFrame', E.UIParent)
 		f.SetPage = E.SetPage
 		f:Size(550, 400)
 		f:SetTemplate('Transparent')
@@ -864,7 +864,7 @@ function E:Install()
 		f.Status.text:Point('CENTER')
 		f.Status.text:SetText(CURRENT_PAGE..' / '..MAX_PAGE)
 
-		f.Slider = CreateFrame('Slider', 'InstallSlider', f, 'BackdropTemplate')
+		f.Slider = CreateFrame('Slider', 'InstallSlider', f)
 		f.Slider:SetOrientation('HORIZONTAL')
 		f.Slider:Height(15)
 		f.Slider:Width(400)

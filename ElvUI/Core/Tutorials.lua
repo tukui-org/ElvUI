@@ -48,7 +48,7 @@ function E:SetPrevTutorial()
 end
 
 function E:SpawnTutorialFrame()
-	local f = CreateFrame('Frame', 'ElvUITutorialWindow', E.UIParent, 'BackdropTemplate')
+	local f = CreateFrame('Frame', 'ElvUITutorialWindow', E.UIParent)
 	f:SetFrameStrata('DIALOG')
 	f:SetToplevel(true)
 	f:SetClampedToScreen(true)
@@ -57,7 +57,7 @@ function E:SpawnTutorialFrame()
 	f:SetTemplate('Transparent')
 	f:Hide()
 
-	local header = CreateFrame('Button', nil, f, 'BackdropTemplate')
+	local header = CreateFrame('Button', nil, f)
 	header:SetTemplate(nil, true)
 	header:Width(120); header:Height(25)
 	header:Point('CENTER', f, 'TOP')

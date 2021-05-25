@@ -13,7 +13,7 @@ function UF:Construct_Portrait(frame, type)
 	local portrait
 
 	if type == 'texture' then
-		local backdrop = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+		local backdrop = CreateFrame('Frame', nil, frame)
 		portrait = frame:CreateTexture(nil, 'OVERLAY')
 		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 		backdrop:SetOutside(portrait)

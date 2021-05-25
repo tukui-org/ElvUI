@@ -264,7 +264,7 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameContentsFrameIcon:Point('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
 
 		local x = E.PixelMode and 1 or 2
-		local button = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent(), 'BackdropTemplate')
+		local button = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent())
 		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -x, x)
 		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, x, -x)
 		_G.GhostFrameContentsFrameIcon:Size(37,38)
@@ -368,7 +368,7 @@ function S:BlizzardMiscFrames()
 	StackSplitFrame:StripTextures()
 	StackSplitFrame:SetTemplate('Transparent')
 
-	StackSplitFrame.bg1 = CreateFrame('Frame', nil, StackSplitFrame, 'BackdropTemplate')
+	StackSplitFrame.bg1 = CreateFrame('Frame', nil, StackSplitFrame)
 	StackSplitFrame.bg1:SetTemplate('Transparent')
 	StackSplitFrame.bg1:Point('TOPLEFT', 10, -15)
 	StackSplitFrame.bg1:Point('BOTTOMRIGHT', -10, 55)

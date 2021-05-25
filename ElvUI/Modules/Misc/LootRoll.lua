@@ -116,7 +116,7 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 end
 
 function M:CreateRollFrame()
-	local frame = CreateFrame('Frame', nil, E.UIParent, 'BackdropTemplate')
+	local frame = CreateFrame('Frame', nil, E.UIParent)
 	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
 	frame:SetTemplate()
 	frame:SetScript('OnEvent', OnEvent)

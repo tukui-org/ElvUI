@@ -199,7 +199,7 @@ function PI:CreateStepComplete()
 end
 
 function PI:CreateFrame()
-	f = CreateFrame('Button', 'PluginInstallFrame', E.UIParent, 'BackdropTemplate')
+	f = CreateFrame('Button', 'PluginInstallFrame', E.UIParent)
 	f.SetPage = SetPage
 	f:Size(550, 400)
 	f:SetTemplate('Transparent')
@@ -343,7 +343,7 @@ function PI:CreateFrame()
 	f.tutorialImage = f:CreateTexture('PluginInstallTutorialImage', 'OVERLAY')
 	f.tutorialImage2 = f:CreateTexture('PluginInstallTutorialImage2', 'OVERLAY')
 
-	f.side = CreateFrame('Frame', 'PluginInstallTitleFrame', f, 'BackdropTemplate')
+	f.side = CreateFrame('Frame', 'PluginInstallTitleFrame', f)
 	f.side:SetTemplate('Transparent')
 	f.side:Point('TOPLEFT', f, 'TOPRIGHT', E.PixelMode and 1 or 3, 0)
 	f.side:Point('BOTTOMLEFT', f, 'BOTTOMRIGHT', E.PixelMode and 1 or 3, 0)

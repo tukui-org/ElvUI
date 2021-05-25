@@ -161,7 +161,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			}
 
 			if not frame.iborder then
-				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+				local border = CreateFrame('Frame', nil, frame)
 				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetInside(frame, 1, 1)
@@ -169,7 +169,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			end
 
 			if not frame.oborder then
-				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+				local border = CreateFrame('Frame', nil, frame)
 				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetOutside(frame, 1, 1)
@@ -195,7 +195,7 @@ end
 
 local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, allPoints, frameLevel)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
-	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
+	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent)
 	if not frame.backdrop then frame.backdrop = backdrop end
 
 	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
@@ -239,7 +239,7 @@ local function CreateShadow(frame, size, pass)
 	backdropr, backdropg, backdropb, borderr, borderg, borderb = 0, 0, 0, 0, 0, 0
 
 	local offset = (E.PixelMode and size) or (size + 1)
-	local shadow = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+	local shadow = CreateFrame('Frame', nil, frame)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, offset, offset, nil, true)

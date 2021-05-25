@@ -305,7 +305,7 @@ function AB:LoadKeyBinder()
 	end
 
 	--Special Popup
-	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', _G.UIParent, 'BackdropTemplate')
+	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', _G.UIParent)
 	Popup:SetFrameStrata('DIALOG')
 	Popup:EnableMouse(true)
 	Popup:SetMovable(true)

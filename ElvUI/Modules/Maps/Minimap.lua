@@ -43,7 +43,7 @@ _G.UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, _G.MiniMapTrackingDro
 ElvUIMiniMapTrackingDropDown.noResize = true
 
 --Create the minimap micro menu
-local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'BackdropTemplate')
+local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent)
 local menuList = {
 	{text = _G.CHARACTER_BUTTON,
 	func = function() ToggleCharacter('PaperDollFrame') end},

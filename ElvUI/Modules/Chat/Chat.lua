@@ -2820,7 +2820,7 @@ function CH:ResetVoicePanelAlpha()
 end
 
 function CH:CreateChatVoicePanel()
-	local Holder = CreateFrame('Frame', 'ElvUIChatVoicePanel', E.UIParent, 'BackdropTemplate')
+	local Holder = CreateFrame('Frame', 'ElvUIChatVoicePanel', E.UIParent)
 	Holder:ClearAllPoints()
 	Holder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'TOPLEFT', 0, 1)
 	Holder:Size(30, 86)
@@ -2894,7 +2894,7 @@ function CH:CreateChatVoicePanel()
 end
 
 function CH:BuildCopyChatFrame()
-	local frame = CreateFrame('Frame', 'CopyChatFrame', E.UIParent, 'BackdropTemplate')
+	local frame = CreateFrame('Frame', 'CopyChatFrame', E.UIParent)
 	tinsert(_G.UISpecialFrames, 'CopyChatFrame')
 	frame:SetTemplate('Transparent')
 	frame:Size(700, 200)
@@ -3304,7 +3304,7 @@ function CH:Initialize()
 		chatHead:Width(CH.ChatHeadFrame:GetWidth())
 		chatHead:Height(CHAT_HEAD_HEIGHT)
 
-		chatHead.Portrait = CreateFrame('Frame', nil, chatHead, 'BackdropTemplate')
+		chatHead.Portrait = CreateFrame('Frame', nil, chatHead)
 		chatHead.Portrait:Width(CHAT_HEAD_HEIGHT - CH.volumeBarHeight)
 		chatHead.Portrait:Height(CHAT_HEAD_HEIGHT - CH.volumeBarHeight - E.Border*2)
 		chatHead.Portrait:Point('TOPLEFT', chatHead, 'TOPLEFT')

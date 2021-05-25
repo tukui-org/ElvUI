@@ -244,7 +244,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 				level:ClearAllPoints()
 				level:Point('BOTTOM', followerReward.PortraitFrame, 0, 3)
 
-				local squareBG = CreateFrame('Frame', nil, followerReward.PortraitFrame, 'BackdropTemplate')
+				local squareBG = CreateFrame('Frame', nil, followerReward.PortraitFrame)
 				squareBG:SetFrameLevel(followerReward.PortraitFrame:GetFrameLevel()-1)
 				squareBG:Point('TOPLEFT', 2, -2)
 				squareBG:Point('BOTTOMRIGHT', -2, 2)
@@ -457,7 +457,7 @@ function S:BlizzardQuestFrames()
 		button:StripTextures()
 		button:SetFrameLevel(button:GetFrameLevel() +1)
 
-		local frame = CreateFrame('Frame', nil, button, 'BackdropTemplate')
+		local frame = CreateFrame('Frame', nil, button)
 		frame:SetFrameLevel(button:GetFrameLevel() -1)
 		frame:SetTemplate('Transparent', nil, true)
 		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))

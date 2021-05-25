@@ -272,7 +272,7 @@ function AFK:Initialize()
 	AFK.AFKMode.chat:SetScript('OnMouseWheel', Chat_OnMouseWheel)
 	AFK.AFKMode.chat:SetScript('OnEvent', Chat_OnEvent)
 
-	AFK.AFKMode.bottom = CreateFrame('Frame', nil, AFK.AFKMode, 'BackdropTemplate')
+	AFK.AFKMode.bottom = CreateFrame('Frame', nil, AFK.AFKMode)
 	AFK.AFKMode.bottom:SetFrameLevel(0)
 	AFK.AFKMode.bottom:SetTemplate('Transparent')
 	AFK.AFKMode.bottom:Point('BOTTOM', AFK.AFKMode, 'BOTTOM', 0, -E.Border)

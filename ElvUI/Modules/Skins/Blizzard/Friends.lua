@@ -39,7 +39,7 @@ local function SkinSocialHeaderTab(tab)
 
 	tab:GetHighlightTexture():SetTexture()
 
-	tab.backdrop = CreateFrame('Frame', nil, tab, 'BackdropTemplate')
+	tab.backdrop = CreateFrame('Frame', nil, tab)
 	tab.backdrop:SetTemplate()
 	tab.backdrop:SetFrameLevel(tab:GetFrameLevel() - 1)
 	tab.backdrop:Point('TOPLEFT', 3, -8)

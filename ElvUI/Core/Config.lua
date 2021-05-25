@@ -247,7 +247,7 @@ end
 function E:CreateMoverPopup()
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 
-	local f = CreateFrame('Frame', 'ElvUIMoverPopupWindow', _G.UIParent, 'BackdropTemplate')
+	local f = CreateFrame('Frame', 'ElvUIMoverPopupWindow', _G.UIParent)
 	f:SetFrameStrata('FULLSCREEN_DIALOG')
 	f:SetToplevel(true)
 	f:EnableMouse(true)
@@ -259,7 +259,7 @@ function E:CreateMoverPopup()
 	f:Point('BOTTOM', _G.UIParent, 'CENTER', 0, 100)
 	f:Hide()
 
-	local header = CreateFrame('Button', nil, f, 'BackdropTemplate')
+	local header = CreateFrame('Button', nil, f)
 	header:SetTemplate(nil, true)
 	header:Size(100, 25)
 	header:SetPoint('CENTER', f, 'TOP')
@@ -371,7 +371,7 @@ function E:CreateMoverPopup()
 
 	_G.UIDropDownMenu_Initialize(dropDown, ConfigMode_Initialize)
 
-	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent, 'BackdropTemplate')
+	local nudgeFrame = CreateFrame('Frame', 'ElvUIMoverNudgeWindow', E.UIParent)
 	nudgeFrame:SetFrameStrata('DIALOG')
 	nudgeFrame:Size(200, 110)
 	nudgeFrame:SetTemplate('Transparent')
@@ -405,7 +405,7 @@ function E:CreateMoverPopup()
 	desc:SetJustifyH('CENTER')
 	nudgeFrame.desc = desc
 
-	header = CreateFrame('Button', nil, nudgeFrame, 'BackdropTemplate')
+	header = CreateFrame('Button', nil, nudgeFrame)
 	header:SetTemplate(nil, true)
 	header:Size(100, 25)
 	header:SetPoint('CENTER', nudgeFrame, 'TOP')
@@ -498,7 +498,7 @@ function E:CreateMoverPopup()
 	S:HandleButton(resetButton)
 	nudgeFrame.resetButton = resetButton
 
-	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame, 'BackdropTemplate')
+	local upButton = CreateFrame('Button', nudgeFrame:GetName()..'UpButton', nudgeFrame)
 	upButton:Point('BOTTOMRIGHT', nudgeFrame, 'BOTTOM', -6, 4)
 	upButton:SetScript('OnClick', function() E:NudgeMover(nil, 1) end)
 	S:HandleNextPrevButton(upButton)
@@ -506,7 +506,7 @@ function E:CreateMoverPopup()
 	upButton:Size(22)
 	nudgeFrame.upButton = upButton
 
-	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame, 'BackdropTemplate')
+	local downButton = CreateFrame('Button', nudgeFrame:GetName()..'DownButton', nudgeFrame)
 	downButton:Point('BOTTOMLEFT', nudgeFrame, 'BOTTOM', 6, 4)
 	downButton:SetScript('OnClick', function() E:NudgeMover(nil, -1) end)
 	S:HandleNextPrevButton(downButton)
@@ -514,7 +514,7 @@ function E:CreateMoverPopup()
 	downButton:Size(22)
 	nudgeFrame.downButton = downButton
 
-	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame, 'BackdropTemplate')
+	local leftButton = CreateFrame('Button', nudgeFrame:GetName()..'LeftButton', nudgeFrame)
 	leftButton:Point('RIGHT', upButton, 'LEFT', -6, 0)
 	leftButton:SetScript('OnClick', function() E:NudgeMover(-1) end)
 	S:HandleNextPrevButton(leftButton)
@@ -522,7 +522,7 @@ function E:CreateMoverPopup()
 	leftButton:Size(22)
 	nudgeFrame.leftButton = leftButton
 
-	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame, 'BackdropTemplate')
+	local rightButton = CreateFrame('Button', nudgeFrame:GetName()..'RightButton', nudgeFrame)
 	rightButton:Point('LEFT', downButton, 'RIGHT', 6, 0)
 	rightButton:SetScript('OnClick', function() E:NudgeMover(1) end)
 	S:HandleNextPrevButton(rightButton)
@@ -1134,7 +1134,7 @@ function E:ToggleOptionsUI(msg)
 				end
 			end
 
-			local bottom = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+			local bottom = CreateFrame('Frame', nil, frame)
 			bottom:Point('BOTTOMLEFT', 2, 2)
 			bottom:Point('BOTTOMRIGHT', -2, 2)
 			bottom:Height(37)
@@ -1148,13 +1148,13 @@ function E:ToggleOptionsUI(msg)
 			close.originalClose = frame.originalClose
 			frame.closeButton = close
 
-			local left = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+			local left = CreateFrame('Frame', nil, frame)
 			left:Point('BOTTOMRIGHT', bottom, 'BOTTOMLEFT', 181, 0)
 			left:Point('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
 			left:Point('TOPLEFT', unskinned and 10 or 2, unskinned and -6 or -2)
 			frame.leftHolder = left
 
-			local top = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+			local top = CreateFrame('Frame', nil, frame)
 			top.version = frame.obj.titletext
 			top:Point('TOPRIGHT', frame, -2, 0)
 			top:Point('TOPLEFT', left, 'TOPRIGHT', 1, 0)
@@ -1180,13 +1180,13 @@ function E:ToggleOptionsUI(msg)
 			buttonsHolder:SetClipsChildren(true)
 			left.buttonsHolder = buttonsHolder
 
-			local buttons = CreateFrame('Frame', nil, buttonsHolder, 'BackdropTemplate')
+			local buttons = CreateFrame('Frame', nil, buttonsHolder)
 			buttons:Point('BOTTOMLEFT', bottom, 'TOPLEFT', 0, 1)
 			buttons:Point('BOTTOMRIGHT')
 			buttons:Point('TOPLEFT', 0, 0)
 			left.buttons = buttons
 
-			local slider = CreateFrame('Slider', nil, frame, 'BackdropTemplate')
+			local slider = CreateFrame('Slider', nil, frame)
 			slider:SetThumbTexture(E.Media.Textures.White8x8)
 			slider:SetScript('OnMouseWheel', ConfigSliderOnMouseWheel)
 			slider:SetScript('OnValueChanged', ConfigSliderOnValueChanged)

@@ -281,7 +281,7 @@ function RU:Initialize()
 	CloseButton:SetScript('OnMouseUp', function() RaidUtilityPanel.toggled = false end)
 	SecureHandlerSetFrameRef(RaidUtilityPanel, 'RaidUtility_CloseButton', CloseButton)
 
-	local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel, 'BackdropTemplate')
+	local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel)
 	RoleIcons:Point('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
 	RoleIcons:Size(36, PANEL_HEIGHT)
 	RoleIcons:SetTemplate('Transparent')

@@ -5,7 +5,7 @@ local CreateFrame = CreateFrame
 
 function UF:Construct_PVPSpecIcon(frame)
 	local specIcon = CreateFrame('Frame', nil, frame)
-	specIcon.bg = CreateFrame('Frame', nil, specIcon, 'BackdropTemplate')
+	specIcon.bg = CreateFrame('Frame', nil, specIcon)
 	specIcon.bg:SetTemplate(nil, nil, nil, nil, true)
 	specIcon.bg:SetFrameLevel(specIcon:GetFrameLevel() - 1)
 	specIcon:SetInside(specIcon.bg)

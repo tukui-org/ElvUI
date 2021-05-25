@@ -86,7 +86,7 @@ function TOTEMS:Initialize()
 	self.bar = bar
 
 	for i=1, MAX_TOTEMS do
-		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar, 'BackdropTemplate')
+		local frame = CreateFrame('Button', bar:GetName()..'Totem'..i, bar)
 		frame:SetID(i)
 		frame:SetTemplate()
 		frame:StyleButton()

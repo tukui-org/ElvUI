@@ -21,7 +21,7 @@ function DB:OnLeave()
 end
 
 function DB:CreateBar(name, key, updateFunc, onEnter, onClick, points)
-	local holder = CreateFrame('Frame', name..'Holder', E.UIParent, 'BackdropTemplate')
+	local holder = CreateFrame('Frame', name..'Holder', E.UIParent)
 	holder:SetTemplate(DB.db.transparent and 'Transparent')
 	holder:SetScript('OnEnter', onEnter)
 	holder:SetScript('OnLeave', DB.OnLeave)

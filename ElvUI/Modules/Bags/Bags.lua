@@ -864,7 +864,7 @@ function B:CreateFilterIcon(parent)
 	end
 
 	--Create the texture showing the assignment type
-	local FilterBackdrop = CreateFrame('Frame', nil, parent, 'BackdropTemplate')
+	local FilterBackdrop = CreateFrame('Frame', nil, parent)
 	FilterBackdrop:Point('TOPLEFT', parent, 'TOPLEFT', E.Border, -E.Border)
 	FilterBackdrop:SetTemplate()
 	FilterBackdrop:Size(20, 20)
@@ -1332,7 +1332,7 @@ end
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
-	local f = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
+	local f = CreateFrame('Button', name, E.UIParent)
 	f:SetTemplate('Transparent')
 	f:SetFrameStrata(strata)
 	B:SetupItemGlow(f)
@@ -1366,7 +1366,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton')
 	f.closeButton:Point('TOPRIGHT', 5, 5)
 
-	f.helpButton = CreateFrame('Button', name..'HelpButton', f, 'BackdropTemplate')
+	f.helpButton = CreateFrame('Button', name..'HelpButton', f)
 	f.helpButton:Point('RIGHT', f.closeButton, 'LEFT', 0, 0)
 	f.helpButton:Size(16)
 	B:SetButtonTexture(f.helpButton, E.Media.Textures.Help)
@@ -1386,7 +1386,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
 	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
 
-	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f, 'BackdropTemplate')
+	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f)
 	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
 	f.ContainerHolder:SetTemplate('Transparent')
 	f.ContainerHolder:Hide()
@@ -1464,7 +1464,7 @@ function B:ConstructContainerFrame(name, isBank)
 	end
 
 	--Sort Button
-	f.sortButton = CreateFrame('Button', name..'SortButton', f, 'BackdropTemplate')
+	f.sortButton = CreateFrame('Button', name..'SortButton', f)
 	f.sortButton:Size(16 + E.Border, 16 + E.Border)
 	f.sortButton:SetTemplate()
 	B:SetButtonTexture(f.sortButton, 'Interface/ICONS/INV_Pet_Broom')
@@ -1477,7 +1477,7 @@ function B:ConstructContainerFrame(name, isBank)
 	end
 
 	--Toggle Bags Button
-	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame, 'BackdropTemplate')
+	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame)
 	f.bagsButton:Size(16 + E.Border, 16 + E.Border)
 	f.bagsButton:SetTemplate()
 	B:SetButtonTexture(f.bagsButton, 'Interface/Buttons/Button-Backpack-Up')
@@ -1520,12 +1520,12 @@ function B:ConstructContainerFrame(name, isBank)
 			f.reagentFrame.slots[i] = B:ConstructReagentSlot(f, i)
 		end
 
-		f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame, 'BackdropTemplate')
+		f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
 		f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
 		f.reagentFrame.cover:SetTemplate(nil, true)
 		f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
 
-		f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover, 'BackdropTemplate')
+		f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover)
 		f.reagentFrame.cover.purchaseButton:Height(20)
 		f.reagentFrame.cover.purchaseButton:Width(150)
 		f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
@@ -1553,7 +1553,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.bagText:SetJustifyH('RIGHT')
 		f.bagText:SetText(L["Bank"])
 
-		f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f, 'BackdropTemplate')
+		f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
 		f.reagentToggle:Size(16 + E.Border, 16 + E.Border)
 		f.reagentToggle:SetTemplate()
 		f.reagentToggle:Point('RIGHT', f.bagText, 'LEFT', -5, E.Border * 2)
@@ -1586,7 +1586,7 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		--Deposite Reagents Button
-		f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame, 'BackdropTemplate')
+		f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame)
 		f.depositButton:Size(16 + E.Border, 16 + E.Border)
 		f.depositButton:SetTemplate()
 		f.depositButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
@@ -1600,7 +1600,7 @@ function B:ConstructContainerFrame(name, isBank)
 			DepositReagentBank()
 		end)
 
-		f.depositButtonBank = CreateFrame('Button', name..'DepositButton', f.holderFrame, 'BackdropTemplate')
+		f.depositButtonBank = CreateFrame('Button', name..'DepositButton', f.holderFrame)
 		f.depositButtonBank:Size(16 + E.Border, 16 + E.Border)
 		f.depositButtonBank:SetTemplate()
 		f.depositButtonBank:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
@@ -1621,7 +1621,7 @@ function B:ConstructContainerFrame(name, isBank)
 			PlaySound(852) --IG_MAINMENU_OPTION
 		end)
 
-		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame, 'BackdropTemplate')
+		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame)
 		f.purchaseBagButton:SetShown(not f.fullBank)
 		f.purchaseBagButton:Size(16 + E.Border, 16 + E.Border)
 		f.purchaseBagButton:SetTemplate()
@@ -1678,7 +1678,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
 		--Vendor Grays
-		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame, 'BackdropTemplate')
+		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
 		f.vendorGraysButton:Size(16 + E.Border, 16 + E.Border)
 		f.vendorGraysButton:SetTemplate()
 		f.vendorGraysButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
