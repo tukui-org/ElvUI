@@ -57,6 +57,7 @@ function AB:ExtraButtons_ZoneStyle()
 				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 				spellButton:StyleButton(nil, true)
 				spellButton:SetTemplate()
+
 				spellButton.Icon:SetDrawLayer('ARTWORK')
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
 				spellButton.Icon:SetInside()
