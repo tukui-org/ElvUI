@@ -60,6 +60,9 @@ function S:Blizzard_PlayerChoiceUI()
 			frame.IsSkinned = true
 		end
 
+		local inTower = IsInJailersTower()
+		frame:SetTemplate(inTower and 'NoBackdrop' or 'Transparent')
+
 		for i = 1, frame:GetNumOptions() do
 			local option = frame.Options[i]
 			if E.private.skins.parchmentRemoverEnable then
@@ -71,7 +74,7 @@ function S:Blizzard_PlayerChoiceUI()
 			end
 
 			-- for some reason the buttons are different. W T F
-			if IsInJailersTower() then
+			if inTower then
 				if option.OptionButtonsContainer.button1 then
 					HandleJailerOptionButton(option.OptionButtonsContainer.button1)
 				end
