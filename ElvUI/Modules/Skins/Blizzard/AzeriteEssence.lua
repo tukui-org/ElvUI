@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs = pairs
-
 local C_AzeriteEssence_CanOpenUI = C_AzeriteEssence.CanOpenUI
 
 function S:Blizzard_AzeriteEssenceUI()
@@ -40,9 +39,7 @@ function S:Blizzard_AzeriteEssenceUI()
 	-- Header on the Essence List
 	AzeriteEssenceUI:HookScript('OnShow', function(s)
 		s.EssenceList.HeaderButton:StripTextures()
-		if not s.EssenceList.HeaderButton.backdrop then
-			s.EssenceList.HeaderButton:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
-		end
+		s.EssenceList.HeaderButton:SetTemplate('Transparent')
 	end)
 end
 

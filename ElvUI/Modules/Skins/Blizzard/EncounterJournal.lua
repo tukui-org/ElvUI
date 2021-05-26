@@ -14,7 +14,7 @@ local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
 
-local LEGENDARY_COLOR = Enum.ItemQuality.Legendary or 5
+local ITEMQUALITY_LEGENDARY = Enum.ItemQuality.Legendary or 5
 
 local function HandleButton(btn, ...)
 	S:HandleButton(btn, ...)
@@ -46,15 +46,15 @@ local function SkinDungeons()
 end
 
 local function SkinBosses()
-	local bossIndex = 1;
-	local _, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex);
-	local bossButton;
+	local bossIndex = 1
+	local _, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex)
+	local bossButton
 
 	local encounter = _G.EncounterJournal.encounter
 	encounter.info.instanceButton.icon:SetMask("")
 
 	while bossID do
-		bossButton = _G['EncounterJournalBossButton'..bossIndex];
+		bossButton = _G['EncounterJournalBossButton'..bossIndex]
 		if bossButton and not bossButton.isSkinned then
 			HandleButton(bossButton)
 			bossButton.creature:ClearAllPoints()
@@ -62,8 +62,8 @@ local function SkinBosses()
 			bossButton.isSkinned = true
 		end
 
-		bossIndex = bossIndex + 1;
-		_, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex);
+		bossIndex = bossIndex + 1
+		_, _, bossID = _G.EJ_GetEncounterInfoByIndex(bossIndex)
 	end
 end
 
@@ -105,7 +105,7 @@ local function HandleTabs(tab)
 	tab:StripTextures()
 	tab:SetText(tab.tooltip)
 	tab:GetFontString():FontTemplate(nil, nil, '')
-	tab:CreateBackdrop()
+	tab:SetTemplate()
 	tab:SetScript('OnEnter', E.noop)
 	tab:SetScript('OnLeave', E.noop)
 	tab:Size(tab:GetFontString():GetStringWidth()*1.5, 20)
@@ -133,7 +133,7 @@ local function SkinAbilitiesInfo()
 
 			HandleButton(header.button)
 
-			header.button.bg = CreateFrame('Frame', nil, header.button, 'BackdropTemplate')
+			header.button.bg = CreateFrame('Frame', nil, header.button)
 			header.button.bg:SetTemplate()
 			header.button.bg:SetOutside(header.button.abilityIcon)
 			header.button.bg:SetFrameLevel(header.button.bg:GetFrameLevel() - 1)
@@ -151,25 +151,6 @@ local function SkinAbilitiesInfo()
 		index = index + 1
 		header = _G['EncounterJournalInfoHeader'..index]
 	end
-end
-
-local function PowersFrame(_, button)
-	local frame = button:GetParent()
-
-	if not button.Icon.backdrop then
-		S:HandleIcon(button.Icon, true)
-		button.Border:SetAlpha(0)
-
-		if E.private.skins.parchmentRemoverEnable then
-			frame:StripTextures()
-			frame.ItemLevel:SetTextColor(1, 1, 1)
-			frame:CreateBackdrop('Transparent')
-			frame.backdrop:SetPoint('BOTTOMLEFT')
-			frame.backdrop:SetPoint('TOPLEFT', 10, 0)
-		end
-	end
-
-	button.Icon.backdrop:SetBackdropBorderColor(frame.SetName:GetTextColor())
 end
 
 local function HandleTopTabs(tab)
@@ -230,8 +211,7 @@ function S:Blizzard_EncounterJournal()
 
 	--Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
-	EncounterInfo:CreateBackdrop('Transparent')
-	EncounterInfo.backdrop:SetOutside(_G.EncounterJournalEncounterFrameInfoBG)
+	EncounterInfo:SetTemplate('Transparent')
 
 	EncounterInfo.encounterTitle:Kill()
 
@@ -343,7 +323,7 @@ function S:Blizzard_EncounterJournal()
 		item.icon:SetDrawLayer('ARTWORK')
 		item.icon:SetTexCoord(unpack(E.TexCoords))
 
-		item.IconBackdrop = CreateFrame('Frame', nil, item, 'BackdropTemplate')
+		item.IconBackdrop = CreateFrame('Frame', nil, item)
 		item.IconBackdrop:SetFrameLevel(item:GetFrameLevel())
 		item.IconBackdrop:Point('TOPLEFT', item.icon, -1, 1)
 		item.IconBackdrop:Point('BOTTOMRIGHT', item.icon, 1, -1)
@@ -377,7 +357,7 @@ function S:Blizzard_EncounterJournal()
 
 	-- Search
 	_G.EncounterJournalSearchResults:StripTextures()
-	_G.EncounterJournalSearchResults:CreateBackdrop()
+	_G.EncounterJournalSearchResults:SetTemplate()
 	_G.EncounterJournalSearchBox.searchPreviewContainer:StripTextures()
 
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
@@ -402,7 +382,7 @@ function S:Blizzard_EncounterJournal()
 		-- Suggestion 1
 		local suggestion = suggestFrame.Suggestion1
 		suggestion.bg:Hide()
-		suggestion:CreateBackdrop('Transparent')
+		suggestion:SetTemplate('Transparent')
 
 		local centerDisplay = suggestion.centerDisplay
 		centerDisplay.title.text:SetTextColor(1, 1, 1)
@@ -417,7 +397,7 @@ function S:Blizzard_EncounterJournal()
 		for i = 2, 3 do
 			suggestion = suggestFrame['Suggestion'..i]
 			suggestion.bg:Hide()
-			suggestion:CreateBackdrop('Transparent')
+			suggestion:SetTemplate('Transparent')
 			suggestion.icon:Point('TOPLEFT', 10, -10)
 
 			centerDisplay = suggestion.centerDisplay
@@ -489,13 +469,11 @@ function S:Blizzard_EncounterJournal()
 	HandleButton(LootJournal.RuneforgePowerFilterDropDownButton, true)
 	LootJournal.RuneforgePowerFilterDropDownButton:SetFrameLevel(10)
 
-	_G.EncounterJournal.LootJournal:CreateBackdrop('Transparent')
-	local parch = _G.EncounterJournal.LootJournal:GetRegions()
-	_G.EncounterJournal.LootJournal.backdrop:SetOutside(parch)
+	_G.EncounterJournal.LootJournal:SetTemplate('Transparent')
 
 	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
 
-	local IconColor = E.QualityColors[LEGENDARY_COLOR]
+	local IconColor = E.QualityColors[ITEMQUALITY_LEGENDARY]
 	hooksecurefunc(LootJournal.PowersFrame, "RefreshListDisplay", function(buttons)
 		if not buttons.elements then return end
 
@@ -549,6 +527,7 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 		_G.EncounterJournalEncounterFrameInfoOverviewScrollFrameScrollChildHeader:SetAlpha(0)
 
+		local parch = _G.EncounterJournal.LootJournal:GetRegions()
 		parch:Kill()
 	end
 end

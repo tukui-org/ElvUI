@@ -21,7 +21,7 @@ function S:Blizzard_BlackMarketUI()
 
 	local BlackMarketFrame = _G.BlackMarketFrame
 	BlackMarketFrame:StripTextures()
-	BlackMarketFrame:CreateBackdrop('Transparent')
+	BlackMarketFrame:SetTemplate('Transparent')
 	BlackMarketFrame.Inset:StripTextures()
 
 	S:HandleCloseButton(BlackMarketFrame.CloseButton)

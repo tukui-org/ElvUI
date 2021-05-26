@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local B = E:GetModule('Bags')
 local ACH = E.Libs.ACH
@@ -168,4 +168,4 @@ Bags.args.bagSortingGroup.args.ignoredEntriesGlobal = ACH:MultiSelect(L["Ignored
 
 Bags.args.search_syntax = ACH:Group(L["Search Syntax"], nil, 6, nil, nil, nil, function() return not E.Bags.Initialized end)
 Bags.args.search_syntax.args.link = ACH:Input(L['More Info'], nil, 0, nil, 'full', function() return [[https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax]] end)
-Bags.args.search_syntax.args.text = ACH:Description(function() return L["SEARCH_SYNTAX_DESC"]; end, 1, 'medium')
+Bags.args.search_syntax.args.text = ACH:Description(function() return L["SEARCH_SYNTAX_DESC"] end, 1, 'medium')

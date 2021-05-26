@@ -2,14 +2,16 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
+local ipairs, pairs, unpack = ipairs, pairs, unpack
 
 local CreateFrame = CreateFrame
-local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
-local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
 local hooksecurefunc = hooksecurefunc
+
+local ITEMQUALITY_ARTIFACT = Enum.ItemQuality.Artifact
+local CurrencyContainerUtil_GetCurrencyContainerInfo = CurrencyContainerUtil.GetCurrencyContainerInfo
+local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 
 local function HandleRoleChecks(button, ...)
 	button:StripTextures()
@@ -57,7 +59,7 @@ function S:Blizzard_PVPUI()
 	SeasonReward.CircleMask:Hide()
 	SeasonReward.Ring:Hide()
 	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
-	local RewardFrameBorder = CreateFrame('Frame', nil, SeasonReward, 'BackdropTemplate')
+	local RewardFrameBorder = CreateFrame('Frame', nil, SeasonReward)
 	RewardFrameBorder:SetTemplate()
 	RewardFrameBorder:SetOutside(SeasonReward.Icon)
 	SeasonReward.Icon:SetParent(RewardFrameBorder)
@@ -88,7 +90,7 @@ function S:Blizzard_PVPUI()
 		S:HandleIcon(reward.Icon, true)
 
 		reward.EnlistmentBonus:StripTextures()
-		reward.EnlistmentBonus:CreateBackdrop()
+		reward.EnlistmentBonus:SetTemplate()
 		reward.EnlistmentBonus:Size(20, 20)
 		reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
 
@@ -160,7 +162,7 @@ function S:Blizzard_PVPUI()
 		if currencyRewards then
 			for _, reward in ipairs(currencyRewards) do
 				local info = C_CurrencyInfo_GetCurrencyInfo(reward.id)
-				if info and info.quality == Enum.ItemQuality.Artifact then
+				if info and info.quality == ITEMQUALITY_ARTIFACT then
 					_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, info.name, info.iconFileID, info.quality)
 				end
 			end
@@ -189,11 +191,7 @@ function S:Blizzard_PVPUI()
 		Frame.ConquestBar.Background:Hide()
 		Frame.ConquestBar.Reward.Ring:Hide()
 		Frame.ConquestBar.Reward.CircleMask:Hide()
-
-		if not Frame.ConquestBar.backdrop then
-			Frame.ConquestBar:CreateBackdrop()
-			Frame.ConquestBar.backdrop:SetOutside()
-		end
+		Frame.ConquestBar:SetTemplate()
 
 		Frame.ConquestBar.Reward:ClearAllPoints()
 		Frame.ConquestBar.Reward:Point('LEFT', Frame.ConquestBar, 'RIGHT', 0, 0)
@@ -210,7 +208,7 @@ function S:Blizzard_PVPUI()
 	local NewSeasonPopup = _G.PVPQueueFrame.NewSeasonPopup
 	S:HandleButton(NewSeasonPopup.Leave)
 	NewSeasonPopup:StripTextures()
-	NewSeasonPopup:CreateBackdrop('Overlay')
+	NewSeasonPopup:SetTemplate()
 	NewSeasonPopup:SetFrameLevel(5)
 
 	if NewSeasonPopup.NewSeason then
@@ -244,7 +242,7 @@ function S:PVPReadyDialog()
 
 	--PVP QUEUE FRAME
 	_G.PVPReadyDialog:StripTextures()
-	_G.PVPReadyDialog:CreateBackdrop('Transparent')
+	_G.PVPReadyDialog:SetTemplate('Transparent')
 	S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
 	S:HandleButton(_G.PVPReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.PVPReadyDialogCloseButton)

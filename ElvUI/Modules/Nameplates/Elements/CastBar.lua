@@ -104,7 +104,7 @@ function NP:Construct_Castbar(nameplate)
 
 	NP.StatusBars[Castbar] = true
 
-	Castbar.Button = CreateFrame('Frame', nil, Castbar, 'BackdropTemplate')
+	Castbar.Button = CreateFrame('Frame', nil, Castbar)
 	Castbar.Button:SetTemplate()
 
 	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')

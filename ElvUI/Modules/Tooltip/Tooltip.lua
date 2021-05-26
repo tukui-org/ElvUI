@@ -143,7 +143,6 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		end
 	end
 
-	local ElvUI_ContainerFrame = ElvUI_ContainerFrame
 	local RightChatPanel = _G.RightChatPanel
 	local TooltipMover = _G.TooltipMover
 	local _, anchor = tt:GetPoint()
@@ -287,7 +286,7 @@ function TT:SetUnitText(tt, unit)
 	else
 		local levelLine = TT:GetLevelLine(tt, 2)
 		if levelLine then
-			local isPetWild, isPetCompanion = UnitIsWildBattlePet(unit), UnitIsBattlePetCompanion(unit);
+			local isPetWild, isPetCompanion = UnitIsWildBattlePet(unit), UnitIsBattlePetCompanion(unit)
 			local creatureClassification = UnitClassification(unit)
 			local creatureType = UnitCreatureType(unit) or ''
 			local pvpFlag, classificationString, diffColor = '', ''
@@ -508,8 +507,8 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 			local numList = #targetList
 			if numList > 0 then
-				tt:AddLine(format('%s (|cffffffff%d|r): %s', L["Targeted By:"], numList, tconcat(targetList, ', ')), nil, nil, nil, true);
-				wipe(targetList);
+				tt:AddLine(format('%s (|cffffffff%d|r): %s', L["Targeted By:"], numList, tconcat(targetList, ', ')), nil, nil, nil, true)
+				wipe(targetList)
 			end
 		end
 	end
@@ -800,7 +799,7 @@ end
 function TT:RepositionBNET(frame, _, anchor)
 	if anchor ~= _G.BNETMover then
 		frame:ClearAllPoints()
-		frame:Point(_G.BNETMover.anchorPoint or 'TOPLEFT', _G.BNETMover, _G.BNETMover.anchorPoint or 'TOPLEFT');
+		frame:Point(_G.BNETMover.anchorPoint or 'TOPLEFT', _G.BNETMover, _G.BNETMover.anchorPoint or 'TOPLEFT')
 	end
 end
 
@@ -846,7 +845,7 @@ function TT:Initialize()
 	TT.db = E.db.tooltip
 
 	TT.MountIDs = {}
-	local mountIDs = C_MountJournal_GetMountIDs();
+	local mountIDs = C_MountJournal_GetMountIDs()
 	for _, mountID in ipairs(mountIDs) do
 		TT.MountIDs[select(2, C_MountJournal_GetMountInfoByID(mountID))] = mountID
 	end

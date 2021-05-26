@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local unpack, tonumber, abs = unpack, tonumber, abs
@@ -31,7 +31,7 @@ local INVERT_ANCHORPOINT = {
 local ticks = {}
 
 function UF:Construct_Castbar(frame, moverName)
-	local castbar = CreateFrame('StatusBar', '$parent_CastBar', frame, 'BackdropTemplate')
+	local castbar = CreateFrame('StatusBar', '$parent_CastBar', frame)
 	castbar:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 30) --Make it appear above everything else
 	UF.statusbars[castbar] = true
 	castbar.CustomDelayText = UF.CustomCastDelayText
@@ -73,7 +73,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.bg:SetTexture(E.media.blankTex)
 	castbar.bg:Show()
 
-	local button = CreateFrame('Frame', nil, castbar, 'BackdropTemplate')
+	local button = CreateFrame('Frame', nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
 	button:SetTemplate(nil, nil, nil, nil, true)
 

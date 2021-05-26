@@ -13,10 +13,7 @@ local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 local function SkinPetButton(self, bf)
-	if not self.backdrop then
-		self:CreateBackdrop()
-	end
-
+	self:SetTemplate()
 	self:SetNormalTexture('')
 	self.Icon:SetTexCoord(unpack(E.TexCoords))
 	self.Icon:SetParent(self.backdrop)
@@ -26,7 +23,6 @@ local function SkinPetButton(self, bf)
 	self.pushed:SetInside(self.backdrop)
 	self.hover:SetInside(self.backdrop)
 	self:SetFrameStrata('LOW')
-	self.backdrop:SetFrameStrata('LOW')
 
 	if self == bf.SwitchPetButton then
 		local spbc = self:GetCheckedTexture()
@@ -53,7 +49,7 @@ local function SkinPetTooltip(tt)
 		tt.Delimiter2:SetTexture()
 	end
 
-	tt:CreateBackdrop('Transparent')
+	tt:SetTemplate('Transparent')
 end
 
 function S:PetBattleFrame()
@@ -76,14 +72,14 @@ function S:PetBattleFrame()
 		infoBar.Border2:SetAlpha(0)
 		infoBar.healthBarWidth = 300
 
-		infoBar.IconBackdrop = CreateFrame('Frame', nil, infoBar, 'BackdropTemplate')
+		infoBar.IconBackdrop = CreateFrame('Frame', nil, infoBar)
 		infoBar.IconBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.IconBackdrop:SetOutside(infoBar.Icon)
 		infoBar.IconBackdrop:SetTemplate()
 		infoBar.BorderFlash:Kill()
 		infoBar.HealthBarBG:Kill()
 		infoBar.HealthBarFrame:Kill()
-		infoBar.HealthBarBackdrop = CreateFrame('Frame', nil, infoBar, 'BackdropTemplate')
+		infoBar.HealthBarBackdrop = CreateFrame('Frame', nil, infoBar)
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.HealthBarBackdrop:SetTemplate('Transparent')
 		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + (E.Border * 2))
@@ -196,9 +192,8 @@ function S:PetBattleFrame()
 				-- always hide the border
 				frame.DebuffBorder:Hide()
 
-				if not frame.isSkinned then
-					frame:CreateBackdrop()
-					frame.backdrop:SetOutside(frame.Icon)
+				if not frame.template then
+					frame:SetTemplate()
 					frame.Icon:SetTexCoord(unpack(E.TexCoords))
 					frame.Icon:SetParent(frame.backdrop)
 				end
@@ -291,14 +286,14 @@ function S:PetBattleFrame()
 		infoBar.HealthBarBG:SetAlpha(0)
 		infoBar.HealthDivider:SetAlpha(0)
 		infoBar:Size(40)
-		infoBar:CreateBackdrop()
+		infoBar:SetTemplate()
 		infoBar:ClearAllPoints()
 
 		infoBar.healthBarWidth = 40
 		infoBar.ActualHealthBar:ClearAllPoints()
 		infoBar.ActualHealthBar:Point('TOPLEFT', infoBar.backdrop, 'BOTTOMLEFT', E.Border, -3)
 
-		infoBar.HealthBarBackdrop = CreateFrame('Frame', nil, infoBar, 'BackdropTemplate')
+		infoBar.HealthBarBackdrop = CreateFrame('Frame', nil, infoBar)
 		infoBar.HealthBarBackdrop:SetFrameLevel(infoBar:GetFrameLevel() - 1)
 		infoBar.HealthBarBackdrop:SetTemplate()
 		infoBar.HealthBarBackdrop:Width(infoBar.healthBarWidth + (E.Border*2))
@@ -315,7 +310,7 @@ function S:PetBattleFrame()
 	-- PET BATTLE ACTION BAR SETUP --
 	---------------------------------
 
-	local bar = CreateFrame('Frame', 'ElvUIPetBattleActionBar', f, 'BackdropTemplate')
+	local bar = CreateFrame('Frame', 'ElvUIPetBattleActionBar', f)
 	bar:Size (52*6 + 7*10, 52 * 1 + 10*2)
 	bar:EnableMouse(true)
 	bar:SetTemplate()
@@ -353,6 +348,7 @@ function S:PetBattleFrame()
 	bf.xpBar:Point('BOTTOM', bf.TurnTimer.SkipButton, 'TOP', 0, E.PixelMode and 0 or 3)
 	bf.xpBar:SetScript('OnShow', function(s) s:StripTextures() s:SetStatusBarTexture(E.media.normTex) end)
 	E:RegisterStatusBar(bf.xpBar)
+
 	-- PETS SELECTION SKIN
 	for i = 1, 3 do
 		local pet = bf.PetSelectionFrame['Pet'..i]
@@ -406,11 +402,11 @@ function S:PetBattleFrame()
 
 	local PetBattleQueueReadyFrame = _G.PetBattleQueueReadyFrame
 	PetBattleQueueReadyFrame:StripTextures()
-	PetBattleQueueReadyFrame:CreateBackdrop('Transparent')
+	PetBattleQueueReadyFrame:SetTemplate('Transparent')
 	S:HandleButton(PetBattleQueueReadyFrame.AcceptButton)
 	S:HandleButton(PetBattleQueueReadyFrame.DeclineButton)
 	PetBattleQueueReadyFrame.Art:SetTexture([[Interface\PetBattles\PetBattlesQueue]])
-	--StaticPopupSpecial_Show(PetBattleQueueReadyFrame);
+	--StaticPopupSpecial_Show(PetBattleQueueReadyFrame)
 end
 
 S:AddCallback('PetBattleFrame')

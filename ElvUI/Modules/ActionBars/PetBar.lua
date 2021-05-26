@@ -194,7 +194,7 @@ function AB:UpdatePetBindings()
 end
 
 function AB:CreateBarPet()
-	bar.backdrop = CreateFrame('Frame', nil, bar, 'BackdropTemplate')
+	bar.backdrop = CreateFrame('Frame', nil, bar)
 	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
 	bar.backdrop:SetFrameLevel(0)
 

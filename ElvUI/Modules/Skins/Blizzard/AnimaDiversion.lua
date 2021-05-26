@@ -8,7 +8,7 @@ function S:Blizzard_AnimaDiversionUI()
 
 	local frame = _G.AnimaDiversionFrame
 	frame:StripTextures()
-	frame:CreateBackdrop('Transparent')
+	frame:SetTemplate('Transparent')
 
 	S:HandleCloseButton(frame.CloseButton)
 	frame.CloseButton:ClearAllPoints()

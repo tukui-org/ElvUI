@@ -38,9 +38,7 @@ function S:RaidInfoFrame()
 	_G.RaidInfoScrollFrame:StripTextures()
 
 	local RaidInfoFrame = _G.RaidInfoFrame
-	RaidInfoFrame:CreateBackdrop('Transparent')
-	RaidInfoFrame.backdrop:Point('TOPLEFT', RaidInfoFrame, 'TOPLEFT')
-	RaidInfoFrame.backdrop:Point('BOTTOMRIGHT', RaidInfoFrame, 'BOTTOMRIGHT')
+	RaidInfoFrame:SetTemplate('Transparent')
 	RaidInfoFrame.Header:StripTextures()
 	S:HandleCloseButton(_G.RaidInfoCloseButton,RaidInfoFrame)
 	S:HandleScrollBar(_G.RaidInfoScrollFrameScrollBar)

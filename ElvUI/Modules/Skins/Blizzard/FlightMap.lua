@@ -9,7 +9,7 @@ function S:Blizzard_FlightMap()
 	local FlightMapFrame = _G.FlightMapFrame
 	_G.FlightMapFramePortrait:Kill()
 	FlightMapFrame:StripTextures()
-	FlightMapFrame:CreateBackdrop('Transparent')
+	FlightMapFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(_G.FlightMapFrameCloseButton)
 end
 

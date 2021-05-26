@@ -1,4 +1,3 @@
---Lua functions
 local _G = _G
 local print, tostring, select = print, tostring, select
 local strlower = strlower

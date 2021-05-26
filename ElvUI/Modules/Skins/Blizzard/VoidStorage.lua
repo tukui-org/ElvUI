@@ -32,13 +32,13 @@ function S:Blizzard_VoidStorageUI()
 	end
 
 	VoidStorageFrame:StripTextures()
-	VoidStorageFrame:CreateBackdrop('Transparent')
+	VoidStorageFrame:SetTemplate('Transparent')
 	VoidStorageFrame.Page1:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceCosmicGreater]])
 	VoidStorageFrame.Page1:Point('LEFT', '$parent', 'TOPRIGHT', 1, -60)
 	VoidStorageFrame.Page2:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceArcaneLarge]])
 
 	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
-	_G.VoidStoragePurchaseFrame:CreateBackdrop()
+	_G.VoidStoragePurchaseFrame:SetTemplate()
 
 	S:HandleCloseButton(_G.VoidStorageBorderFrame.CloseButton)
 	S:HandleButton(_G.VoidStoragePurchaseButton)
@@ -49,7 +49,7 @@ function S:Blizzard_VoidStorageUI()
 		for i = 1, NumSlots do
 			local Button = _G['VoidStorage'..StorageType..'Button'..i]
 			Button:StripTextures()
-			Button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+			Button:SetTemplate()
 			Button:StyleButton()
 			S:HandleIcon(Button.icon)
 			Button.icon:SetInside()

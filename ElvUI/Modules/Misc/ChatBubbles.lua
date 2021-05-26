@@ -22,9 +22,8 @@ function M:UpdateBubbleBorder()
 	local str = holder and holder.String
 	if not str then return end
 
-	if holder.backdrop and E.private.general.chatBubbles == 'backdrop' then
-		holder.backdrop:SetBackdropBorderColor(str:GetTextColor())
-		holder.backdrop:SetFrameLevel(holder:GetFrameLevel())
+	if holder and E.private.general.chatBubbles == 'backdrop' then
+		holder:SetBackdropBorderColor(str:GetTextColor())
 	end
 
 	local name = self.Name and self.Name:GetText()
@@ -90,9 +89,7 @@ function M:SkinBubble(frame, holder)
 	end
 
 	if E.private.general.chatBubbles == 'backdrop' then
-		if not holder.backdrop then
-			holder:CreateBackdrop('Transparent', nil, true)
-		end
+		holder:SetTemplate('Transparent', nil, true)
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
 		if not holder.noBorder then
 			holder.noBorder = holder:CreateTexture(nil, 'ARTWORK')
@@ -114,11 +111,6 @@ function M:SkinBubble(frame, holder)
 	if not frame.holder then
 		frame.holder = holder
 		holder.Tail:Hide()
-		holder:DisableDrawLayer('BORDER')
-
-		if holder.Center then -- can remove later
-			holder.Center:Hide()
-		end
 
 		frame:HookScript('OnShow', M.UpdateBubbleBorder)
 		frame:SetFrameStrata('DIALOG') --Doesn't work currently in Legion due to a bug on Blizzards end

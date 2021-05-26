@@ -244,7 +244,7 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 				level:ClearAllPoints()
 				level:Point('BOTTOM', followerReward.PortraitFrame, 0, 3)
 
-				local squareBG = CreateFrame('Frame', nil, followerReward.PortraitFrame, 'BackdropTemplate')
+				local squareBG = CreateFrame('Frame', nil, followerReward.PortraitFrame)
 				squareBG:SetFrameLevel(followerReward.PortraitFrame:GetFrameLevel()-1)
 				squareBG:Point('TOPLEFT', 2, -2)
 				squareBG:Point('BOTTOMRIGHT', -2, 2)
@@ -359,18 +359,18 @@ function S:BlizzardQuestFrames()
 	QuestInfoSkillPointFrameIconTexture:SetDrawLayer('OVERLAY')
 	QuestInfoSkillPointFrameIconTexture:Point('TOPLEFT', 2, -2)
 	QuestInfoSkillPointFrameIconTexture:Size(QuestInfoSkillPointFrameIconTexture:GetWidth() - 2, QuestInfoSkillPointFrameIconTexture:GetHeight() - 2)
-	QuestInfoSkillPointFrame:CreateBackdrop()
+	QuestInfoSkillPointFrame:SetTemplate()
 	_G.QuestInfoSkillPointFrameCount:SetDrawLayer('OVERLAY')
 
 	local QuestInfoItemHighlight = _G.QuestInfoItemHighlight
 	QuestInfoItemHighlight:StripTextures()
-	QuestInfoItemHighlight:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
-	QuestInfoItemHighlight.backdrop:SetBackdropBorderColor(1, 1, 0)
-	QuestInfoItemHighlight.backdrop:SetBackdropColor(0, 0, 0, 0)
+	QuestInfoItemHighlight:SetTemplate()
+	QuestInfoItemHighlight:SetBackdropBorderColor(1, 1, 0)
+	QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
 	QuestInfoItemHighlight:Size(142, 40)
 
 
-	_G.QuestRewardScrollFrame:CreateBackdrop()
+	_G.QuestRewardScrollFrame:SetTemplate()
 	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
 
 	hooksecurefunc('QuestInfo_Display', S.QuestInfo_Display)
@@ -390,8 +390,7 @@ function S:BlizzardQuestFrames()
 	QuestInfoPlayerTitleFrame.FrameCenter:SetTexture()
 	QuestInfoPlayerTitleFrame.FrameRight:SetTexture()
 	QuestInfoPlayerTitleFrame.Icon:SetTexCoord(unpack(E.TexCoords))
-	QuestInfoPlayerTitleFrame:CreateBackdrop()
-	QuestInfoPlayerTitleFrame.backdrop:SetOutside(QuestInfoPlayerTitleFrame.Icon)
+	QuestInfoPlayerTitleFrame:SetTemplate()
 
 	--Quest Frame
 	local QuestFrame = _G.QuestFrame
@@ -458,7 +457,7 @@ function S:BlizzardQuestFrames()
 		button:StripTextures()
 		button:SetFrameLevel(button:GetFrameLevel() +1)
 
-		local frame = CreateFrame('Frame', nil, button, 'BackdropTemplate')
+		local frame = CreateFrame('Frame', nil, button)
 		frame:SetFrameLevel(button:GetFrameLevel() -1)
 		frame:SetTemplate('Transparent', nil, true)
 		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
@@ -474,10 +473,10 @@ function S:BlizzardQuestFrames()
 	end
 
 	_G.QuestModelScene:StripTextures()
-	_G.QuestModelScene:CreateBackdrop('Transparent')
+	_G.QuestModelScene:SetTemplate('Transparent')
 	_G.QuestModelScene:Point('TOPLEFT', _G.QuestLogDetailFrame, 'TOPRIGHT', 4, -34)
 	_G.QuestNPCModelTextFrame:StripTextures()
-	_G.QuestNPCModelTextFrame:CreateBackdrop('Transparent')
+	_G.QuestNPCModelTextFrame:SetTemplate('Transparent')
 	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
 
 	local QuestLogPopupDetailFrame = _G.QuestLogPopupDetailFrame
@@ -488,7 +487,7 @@ function S:BlizzardQuestFrames()
 	S:HandleButton(_G.QuestLogPopupDetailFrameTrackButton)
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.QuestLogPopupDetailFrameScrollFrameScrollBar)
-	QuestLogPopupDetailFrame:CreateBackdrop('Transparent')
+	QuestLogPopupDetailFrame:SetTemplate('Transparent')
 
 	QuestLogPopupDetailFrame.ShowMapButton:StripTextures()
 	S:HandleButton(QuestLogPopupDetailFrame.ShowMapButton)

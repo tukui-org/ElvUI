@@ -2,13 +2,12 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, select, unpack = pairs, select, unpack
+local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
 
 local hooksecurefunc = hooksecurefunc
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 local GetNumFilteredAchievements = GetNumFilteredAchievements
-local IsAddOnLoaded = IsAddOnLoaded
 local CreateFrame = CreateFrame
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
@@ -17,12 +16,13 @@ local function blueBackdrop(self)
 end
 
 local function skinAch(Achievement, BiggerIcon)
-	if Achievement.isSkinned then return; end
+	if Achievement.isSkinned then return end
 
 	Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
 	Achievement:StripTextures(true)
 	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
+
 	Achievement.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
 	Achievement.icon:ClearAllPoints()
@@ -92,7 +92,7 @@ local function SkinSearchButton(self)
 		S:HandleIcon(self.icon)
 	end
 
-	self:CreateBackdrop('Transparent')
+	self:SetTemplate('Transparent')
 	self:SetHighlightTexture(E.media.normTex)
 
 	local hl = self:GetHighlightTexture()
@@ -104,7 +104,7 @@ end
 local function playerSaturate(self) -- self is Achievement.player
 	local Achievement = self:GetParent()
 
-	local r, g, b = unpack(E.media.bordercolor)
+	local r, g, b = unpack(E.media.backdropcolor)
 	Achievement.player.backdrop.callbackBackdropColor = nil
 	Achievement.friend.backdrop.callbackBackdropColor = nil
 
@@ -116,6 +116,15 @@ local function playerSaturate(self) -- self is Achievement.player
 
 	Achievement.player.backdrop:SetBackdropColor(r, g, b)
 	Achievement.friend.backdrop:SetBackdropColor(r, g, b)
+end
+
+local function skinAchievementButton(button)
+	skinAch(button.player)
+	skinAch(button.friend)
+
+	hooksecurefunc(button.player, 'Saturate', playerSaturate)
+
+	button.isSkinned = true
 end
 
 local function setAchievementColor(frame)
@@ -150,12 +159,7 @@ local function hookHybridScrollButtons()
 		elseif template == 'ComparisonTemplate' then
 			for _, Achievement in pairs(frame.buttons) do
 				if not Achievement.isSkinned then
-					skinAch(Achievement.player)
-					skinAch(Achievement.friend)
-
-					hooksecurefunc(Achievement.player, 'Saturate', playerSaturate)
-
-					break -- dont need to continue this check
+					skinAchievementButton(Achievement)
 				end
 			end
 		elseif template == 'StatTemplate' then
@@ -183,6 +187,7 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameAchievementsBackground:Hide()
 	select(3, _G.AchievementFrameAchievements:GetRegions()):Hide()
 	_G.AchievementFrameStatsBG:Hide()
+	_G.AchievementFrameStatsContainer:CreateBackdrop('Transparent')
 	_G.AchievementFrameSummaryAchievementsHeaderHeader:Hide()
 	_G.AchievementFrameSummaryCategoriesHeaderTexture:Hide()
 	select(3, _G.AchievementFrameStats:GetChildren()):Hide()
@@ -283,7 +288,7 @@ function S:Blizzard_AchievementUI()
 
 	-- Search
 	AchievementFrame.searchResults:StripTextures()
-	AchievementFrame.searchResults:CreateBackdrop('Transparent')
+	AchievementFrame.searchResults:SetTemplate('Transparent')
 	AchievementFrame.searchPreviewContainer:StripTextures()
 	AchievementFrame.searchPreviewContainer:ClearAllPoints()
 	AchievementFrame.searchPreviewContainer:Point('TOPLEFT', AchievementFrame, 'TOPRIGHT', 2, 6)
@@ -298,13 +303,9 @@ function S:Blizzard_AchievementUI()
 
 		local scrollFrame = AchievementFrame.searchResults.scrollFrame
 		local offset = _G.HybridScrollFrame_GetOffset(scrollFrame)
-		local results = scrollFrame.buttons
-		local result, index
 
-		for i = 1, #results do
-			result = results[i]
-			index = offset + i
-
+		for i, result in ipairs(scrollFrame.buttons) do
+			local index = offset + i
 			if index <= numResults then
 				if not result.styled then
 					result:SetNormalTexture('')
@@ -324,10 +325,8 @@ function S:Blizzard_AchievementUI()
 		end
 	end)
 
-	hooksecurefunc(AchievementFrame.searchResults.scrollFrame, 'update', function(self)
-		for i = 1, #self.buttons do
-			local result = self.buttons[i]
-
+	hooksecurefunc(AchievementFrame.searchResults.scrollFrame, 'update', function(frame)
+		for _, result in ipairs(frame.buttons) do
 			if result.icon:GetTexCoord() == 0 then
 				result.icon:SetTexCoord(unpack(E.TexCoords))
 			end
@@ -480,12 +479,7 @@ function S:Blizzard_AchievementUI()
 		local Achievement = _G['AchievementFrameComparisonContainerButton'..i]
 		if not Achievement or Achievement.isSkinned then return end
 
-		skinAch(Achievement.player)
-		skinAch(Achievement.friend)
-
-		hooksecurefunc(Achievement.player, 'Saturate', playerSaturate)
-
-		Achievement.isSkinned = true
+		skinAchievementButton(Achievement)
 	end
 end
 

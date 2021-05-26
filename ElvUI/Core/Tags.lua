@@ -72,9 +72,10 @@ local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
 local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
 
-local SPELL_POWER_MANA = Enum.PowerType.Mana
-local COMBO_POINTS = Enum.PowerType.ComboPoints
-local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate
+local POWERTYPE_MANA = Enum.PowerType.Mana
+local POWERTYPE_COMBOPOINTS = Enum.PowerType.ComboPoints
+local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
+
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
@@ -194,8 +195,8 @@ local function GetClassPower(Class)
 				end
 			end
 		else
-			min = UnitPower('player', COMBO_POINTS)
-			max = UnitPowerMax('player', COMBO_POINTS)
+			min = UnitPower('player', POWERTYPE_COMBOPOINTS)
+			max = UnitPowerMax('player', POWERTYPE_COMBOPOINTS)
 
 			if min > 0 then
 				local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
@@ -210,8 +211,8 @@ local function GetClassPower(Class)
 	if not r then
 		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[Class]
 		if barIndex and barIndex[UnitPowerType('player')] then
-			min = UnitPower('player', SPELL_POWER_MANA)
-			max = UnitPowerMax('player', SPELL_POWER_MANA)
+			min = UnitPower('player', POWERTYPE_MANA)
+			max = UnitPowerMax('player', POWERTYPE_MANA)
 
 			r, g, b = unpack(ElvUF.colors.power.MANA)
 		end
@@ -223,7 +224,7 @@ E.TagFunctions.GetClassPower = GetClassPower
 
 ElvUF.Tags.Events['altpowercolor'] = 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE'
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+	local cur = UnitPower(u, POWERTYPE_ALTERNATE)
 	if cur > 0 then
 		local _, r, g, b = GetUnitPowerBarTextureInfo(u, 3)
 		if not r then
@@ -390,18 +391,18 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Methods[format('additionalmana:%s', tagTextFormat)] = function(unit)
 		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
 		if barIndex and barIndex[UnitPowerType(unit)] then
-			local min = UnitPower(unit, SPELL_POWER_MANA)
+			local min = UnitPower(unit, POWERTYPE_MANA)
 			if min ~= 0 and tagTextFormat ~= 'deficit' then
-				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 			end
 		end
 	end
 
 	ElvUF.Tags.Events[format('mana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('mana:%s', tagTextFormat)] = function(unit)
-		local min = UnitPower(unit, SPELL_POWER_MANA)
+		local min = UnitPower(unit, POWERTYPE_MANA)
 		if min ~= 0 and tagTextFormat ~= 'deficit' then
-			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 		end
 	end
 
@@ -415,9 +416,9 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	ElvUF.Tags.Events[format('altpower:%s', tagTextFormat)] = 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE'
 	ElvUF.Tags.Methods[format('altpower:%s', tagTextFormat)] = function(u)
-		local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+		local cur = UnitPower(u, POWERTYPE_ALTERNATE)
 		if cur > 0 then
-			local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
+			local max = UnitPowerMax(u, POWERTYPE_ALTERNATE)
 			return E:GetFormattedText(textFormat, cur, max)
 		end
 	end
@@ -451,16 +452,16 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 		ElvUF.Tags.Events[format('mana:%s:shortvalue', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 		ElvUF.Tags.Methods[format('mana:%s:shortvalue', tagTextFormat)] = function(unit)
-			return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA), nil, true)
+			return E:GetFormattedText(textFormat, UnitPower(unit, POWERTYPE_MANA), UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 		end
 
 		ElvUF.Tags.Events[format('additionalmana:%s:shortvalue', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
 		ElvUF.Tags.Methods[format('additionalmana:%s:shortvalue', tagTextFormat)] = function(unit)
 			local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
 			if barIndex and barIndex[UnitPowerType(unit)] then
-				local min = UnitPower(unit, SPELL_POWER_MANA)
+				local min = UnitPower(unit, POWERTYPE_MANA)
 				if min ~= 0 and tagTextFormat ~= 'deficit' then
-					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA), nil, true)
+					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 				end
 			end
 		end
@@ -604,7 +605,7 @@ end
 
 ElvUF.Tags.Events['mana:max:shortvalue'] = 'UNIT_MAXPOWER'
 ElvUF.Tags.Methods['mana:max:shortvalue'] = function(unit)
-	local max = UnitPowerMax(unit, SPELL_POWER_MANA)
+	local max = UnitPowerMax(unit, POWERTYPE_MANA)
 
 	return E:GetFormattedText('CURRENT', max, max, nil, true)
 end
@@ -615,7 +616,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	if UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
 		local level = UnitBattlePetLevel(unit)
 
-		local teamLevel = C_PetJournal_GetPetTeamAverageLevel();
+		local teamLevel = C_PetJournal_GetPetTeamAverageLevel()
 		if teamLevel < level or teamLevel > level then
 			c = GetRelativeDifficultyColor(teamLevel, level)
 		else

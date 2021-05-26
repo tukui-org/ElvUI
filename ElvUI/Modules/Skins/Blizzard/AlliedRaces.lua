@@ -19,7 +19,7 @@ function S:Blizzard_AlliedRacesUI()
 		S:HandleScrollBar(scrollFrame.ScrollBar)
 
 		scrollFrame.Child.ObjectivesFrame:StripTextures()
-		scrollFrame.Child.ObjectivesFrame:CreateBackdrop('Transparent')
+		scrollFrame.Child.ObjectivesFrame:SetTemplate('Transparent')
 
 		AlliedRacesFrame.RaceInfoFrame.AlliedRacesRaceName:SetTextColor(1, .8, 0)
 		scrollFrame.Child.RaceDescriptionText:SetTextColor(1, 1, 1)
@@ -30,8 +30,7 @@ function S:Blizzard_AlliedRacesUI()
 		_G.AlliedRacesFrameBg:SetAlpha(0)
 		AlliedRacesFrame.TitleBg:SetAlpha(0)
 		AlliedRacesFrame.ModelFrame:StripTextures()
-
-		AlliedRacesFrame:CreateBackdrop('Transparent')
+		AlliedRacesFrame:SetTemplate('Transparent')
 
 		local scrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame
 		scrollFrame.ScrollBar.Border:Hide()

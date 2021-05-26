@@ -30,7 +30,6 @@ P.general = {
 	talkingHeadFrameScale = 0.9,
 	talkingHeadFrameBackdrop = false,
 	vehicleSeatIndicatorSize = 128,
-	objectiveTracker = true,
 	resurrectSound = false,
 	questRewardMostValueIcon = true,
 	questXPPercent = true,
@@ -126,7 +125,7 @@ P.general = {
 		spacing = 4,
 	},
 	kittys = false
-};
+}
 
 P.databars = {
 	transparent = true,
@@ -298,7 +297,7 @@ P.bags = {
 		justBackpack = false,
 		visibility = '[petbattle] hide; show',
 	},
-};
+}
 
 local NP_Auras = {
 	enable = true,
@@ -765,7 +764,7 @@ P.nameplates = {
 			title = CopyTable(NP_Title),
 		},
 	},
-};
+}
 
 P.nameplates.units.PLAYER.buffs.maxDuration = 300
 P.nameplates.units.PLAYER.buffs.priority = 'Blacklist,blockNoDuration,Personal,TurtleBuffs,PlayerBuffs'
@@ -2294,7 +2293,7 @@ P.actionbar = {
 		level = 1,
 		strata = 'MEDIUM',
 	}
-};
+}
 
 for i = 1, 10 do
 	P.actionbar['bar'..i] = {

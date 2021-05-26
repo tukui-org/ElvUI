@@ -24,7 +24,7 @@ local function HandlePushToTalkButton(button)
 	button.MiddleMiddle:Hide()
 	button:SetHighlightTexture('')
 
-	button:CreateBackdrop(nil, true)
+	button:SetTemplate(nil, true)
 	button:HookScript('OnEnter', S.SetModifiedBackdrop)
 	button:HookScript('OnLeave', S.SetOriginalBackdrop)
 end
@@ -63,7 +63,7 @@ function S:BlizzardOptions()
 	end)
 
 	_G.RolePollPopup:StripTextures()
-	_G.RolePollPopup:CreateBackdrop('Transparent')
+	_G.RolePollPopup:SetTemplate('Transparent')
 	S:HandleCloseButton(_G.RolePollPopupCloseButton)
 
 	_G.InterfaceOptionsFrame:SetClampedToScreen(true)
@@ -157,7 +157,7 @@ function S:BlizzardOptions()
 
 	for _, Frame in pairs(ChatFrames) do
 		Frame:StripTextures()
-		Frame:CreateBackdrop('Transparent')
+		Frame:SetTemplate('Transparent')
 	end
 
 	for _, CheckBox in pairs(ChatCheckBoxs) do
@@ -280,7 +280,7 @@ function S:BlizzardOptions()
 
 	for _, Frame in pairs(OptionsFrames) do
 		Frame:StripTextures()
-		Frame:CreateBackdrop('Transparent')
+		Frame:SetTemplate('Transparent')
 	end
 
 	local InterfaceOptionsFrame = _G.InterfaceOptionsFrame
@@ -296,7 +296,7 @@ function S:BlizzardOptions()
 
 	for _, Frame in pairs(OptionsFrameBackdrops) do
 		Frame:StripTextures()
-		Frame:CreateBackdrop('Transparent')
+		Frame:SetTemplate('Transparent')
 	end
 
 	for _, Tab in pairs(OptionsButtons) do
@@ -347,7 +347,7 @@ function S:BlizzardOptions()
 	local newProfileDialog = _G.CompactUnitFrameProfilesNewProfileDialog
 	if newProfileDialog then
 		newProfileDialog:StripTextures()
-		newProfileDialog:CreateBackdrop('Transparent')
+		newProfileDialog:SetTemplate('Transparent')
 
 		S:HandleDropDownBox(_G.CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
 		S:HandleButton(_G.CompactUnitFrameProfilesNewProfileDialogCreateButton)
@@ -363,7 +363,7 @@ function S:BlizzardOptions()
 	local deleteProfileDialog = _G.CompactUnitFrameProfilesDeleteProfileDialog
 	if deleteProfileDialog then
 		deleteProfileDialog:StripTextures()
-		deleteProfileDialog:CreateBackdrop('Transparent')
+		deleteProfileDialog:SetTemplate('Transparent')
 
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogDeleteButton)
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)
@@ -389,7 +389,7 @@ function S:BlizzardOptions()
 
 	--What's New
 	local SplashFrame = _G.SplashFrame
-	SplashFrame:CreateBackdrop('Transparent')
+	SplashFrame:SetTemplate('Transparent')
 	SplashFrame.Header:FontTemplate(nil, 22)
 	S:HandleButton(SplashFrame.BottomCloseButton)
 	S:HandleCloseButton(SplashFrame.TopCloseButton)

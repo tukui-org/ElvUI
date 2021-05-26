@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local UF = E:GetModule('UnitFrames')
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -10,7 +10,7 @@ local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local hooksecurefunc = hooksecurefunc
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
-local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
+local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', '$parent_PowerBar', frame)
@@ -237,7 +237,7 @@ end
 function UF:GetDisplayPower()
 	local barInfo = GetUnitPowerBarInfo(self.__owner.unit)
 	if barInfo then
-		return ALTERNATE_POWER_INDEX, barInfo.minPower
+		return POWERTYPE_ALTERNATE, barInfo.minPower
 	end
 end
 

@@ -5,11 +5,11 @@ local _G = _G
 local strfind = strfind
 local CreateFrame = CreateFrame
 local SetUIPanelAttribute = SetUIPanelAttribute
-local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
-local PLAYER = PLAYER
 local hooksecurefunc = hooksecurefunc
 local IsPlayerMoving = IsPlayerMoving
 local PlayerMovementFrameFader = PlayerMovementFrameFader
+local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
+local PLAYER = PLAYER
 
 local CoordsHolder
 local INVERTED_POINTS = {
@@ -31,7 +31,7 @@ function M:SetLargeWorldMap()
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-		SetUIPanelAttribute(WorldMapFrame, 'area', 'center');
+		SetUIPanelAttribute(WorldMapFrame, 'area', 'center')
 	end
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then

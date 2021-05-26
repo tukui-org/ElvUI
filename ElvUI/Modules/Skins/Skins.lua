@@ -49,16 +49,7 @@ S.Blizzard.Regions = {
 	'BottomRightTex',
 	'RightTex',
 	'MiddleTex',
-	'Center',
-	-- 9.0 might want these later? (achievement frame uses them and maybe something else)
-	--'BottomEdge',
-	--'LeftEdge',
-	--'RightEdge',
-	--'TopEdge',
-	--'TopLeftCorner',
-	--'TopRightCorner',
-	--'BottomLeftCorner',
-	--'BottomRightCorner',
+	'Center'
 }
 
 -- Depends on the arrow texture to be up by default.
@@ -87,7 +78,7 @@ function S:HandleInsetFrame(frame)
 end
 
 -- All frames that have a Portrait
-function S:HandlePortraitFrame(frame, setTemplate)
+function S:HandlePortraitFrame(frame, createBackdrop)
 	assert(frame, 'doesnt exist!')
 
 	local name = frame and frame.GetName and frame:GetName()
@@ -110,10 +101,10 @@ function S:HandlePortraitFrame(frame, setTemplate)
 		S:HandleCloseButton(frame.CloseButton)
 	end
 
-	if setTemplate then
-		frame:SetTemplate('Transparent')
-	else
+	if createBackdrop then
 		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
+	else
+		frame:SetTemplate('Transparent')
 	end
 end
 
@@ -162,6 +153,7 @@ function S:SkinPVPHonorXPBar(frame)
 
 		if XPBar.Bar and not XPBar.Bar.backdrop then
 			XPBar.Bar:CreateBackdrop()
+
 			if XPBar.Bar.Background then
 				XPBar.Bar.Background:SetInside(XPBar.Bar.backdrop)
 			end
@@ -211,6 +203,7 @@ function S:StatusBarColorGradient(bar, value, max, backdrop)
 	local current = (not max and value) or (value and max and max ~= 0 and value/max)
 	if not (bar and current) then return end
 	local r, g, b = E:ColorGradient(current, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
+
 	local bg = backdrop or bar.backdrop
 	if bg then bg:SetBackdropColor(r*0.25, g*0.25, b*0.25) end
 	bar:SetStatusBarColor(r, g, b)
@@ -226,9 +219,9 @@ function S:SkinLibDropDownMenu(prefix)
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true
 		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
-			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS'];
-			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop'];
-			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop'];
+			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS']
+			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop']
+			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop']
 			if ddbd and not ddbd.template then ddbd:SetTemplate('Transparent') end
 			if ddmbd and not ddmbd.template then ddmbd:SetTemplate('Transparent') end
 		end)
@@ -307,7 +300,7 @@ do
 	end
 end
 
-function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, styleTemplate, noGlossTex, overrideTex, frameLevel)
+function S:HandleButton(button, strip, isDeclineButton, noStyle, createBackdrop, styleTemplate, noGlossTex, overrideTex, frameLevel)
 	assert(button, 'doesnt exist!')
 
 	if button.isSkinned then return end
@@ -336,10 +329,10 @@ function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, st
 	end
 
 	if not noStyle then
-		if setTemplate then
-			button:SetTemplate(styleTemplate, not noGlossTex)
-		else
+		if createBackdrop then
 			button:CreateBackdrop(styleTemplate, not noGlossTex, nil, nil, nil, nil, true, frameLevel)
+		else
+			button:SetTemplate(styleTemplate, not noGlossTex)
 		end
 
 		button:HookScript('OnEnter', S.SetModifiedBackdrop)
@@ -359,6 +352,7 @@ do
 		assert(frame, 'doesnt exist!')
 
 		if frame.backdrop then return end
+
 		local parent = frame:GetParent()
 		local ScrollUpButton = GrabScrollBarElement(frame, 'ScrollUpButton') or GrabScrollBarElement(frame, 'UpButton') or GrabScrollBarElement(frame, 'ScrollUp') or GrabScrollBarElement(parent, 'scrollUp')
 		local ScrollDownButton = GrabScrollBarElement(frame, 'ScrollDownButton') or GrabScrollBarElement(frame, 'DownButton') or GrabScrollBarElement(frame, 'ScrollDown') or GrabScrollBarElement(parent, 'scrollDown')
@@ -439,7 +433,7 @@ end
 function S:HandleRotateButton(btn)
 	if btn.isSkinned then return end
 
-	btn:CreateBackdrop()
+	btn:SetTemplate()
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
 
 	local normTex = btn:GetNormalTexture()
@@ -506,7 +500,7 @@ function S:HandleBlizzardRegions(frame, name, kill)
 		if object then
 			if kill then
 				object:Kill()
-			else
+			elseif object.SetAlpha then
 				object:SetAlpha(0)
 			end
 		end
@@ -628,7 +622,7 @@ do
 			end
 
 			frame:HookScript('OnDisable', function(checkbox)
-				if not checkbox.SetDisabledTexture then return; end
+				if not checkbox.SetDisabledTexture then return end
 				if checkbox:GetChecked() then
 					if E.private.skins.checkBoxSkin then
 						checkbox:SetDisabledTexture(E.Media.Textures.Melli)
@@ -722,8 +716,8 @@ function S:HandleIcon(icon, backdrop)
 	end
 end
 
-function S:HandleItemButton(b, shrinkIcon)
-	if b.isSkinned then return; end
+function S:HandleItemButton(b, setInside)
+	if b.isSkinned then return end
 
 	local name = b:GetName()
 	local icon = b.icon or b.Icon or b.IconTexture or b.iconTexture or (name and (_G[name..'IconTexture'] or _G[name..'Icon']))
@@ -736,8 +730,7 @@ function S:HandleItemButton(b, shrinkIcon)
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords))
 
-		-- create a backdrop around the icon
-		if shrinkIcon then
+		if setInside then
 			icon:SetInside(b)
 		else
 			b.backdrop:SetOutside(icon, 1, 1)
@@ -782,7 +775,10 @@ function S:HandleSliderFrame(frame)
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
 
-	frame:SetBackdrop()
+	if frame.SetBackdrop then
+		frame:SetBackdrop()
+	end
+
 	frame:StripTextures()
 	frame:SetThumbTexture(E.Media.Textures.Melli)
 
@@ -836,6 +832,7 @@ function S:HandleFollowerAbilities(followerList)
 			if equip then
 				equip.Border:SetAlpha(0)
 				equip.BG:SetAlpha(0)
+
 				S:HandleIcon(equip.Icon, true)
 				equip.Icon.backdrop:SetBackdropColor(1, 1, 1, .15)
 			end
@@ -1011,6 +1008,7 @@ function S:HandleGarrisonPortrait(portrait)
 		level:ClearAllPoints()
 		level:Point('BOTTOM', portrait, 0, 15)
 		level:FontTemplate(nil, 14, 'OUTLINE')
+
 		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
 		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
 	end
@@ -1312,15 +1310,7 @@ function S:SkinSpellDisplay(widgetFrame)
 
 	if spell.Icon then
 		S:HandleIcon(spell.Icon)
-
-		if not spell.Icon.backdrop then
-			spell.Icon:CreateBackdrop()
-		end
-
-		local x = E.PixelMode and 1 or 2
-		spell.Icon.backdrop:ClearAllPoints()
-		spell.Icon.backdrop:Point('TOPLEFT', spell.Icon, -x, x)
-		spell.Icon.backdrop:Point('BOTTOMRIGHT', spell.Icon, x, -x)
+		spell.Icon:SetTemplate()
 	end
 end
 

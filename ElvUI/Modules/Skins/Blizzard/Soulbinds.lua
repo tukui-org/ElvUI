@@ -6,7 +6,6 @@ local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
 -- Credits: siweia - Aurora Classic
-
 local function SkinConduitList(frame)
 	local header = frame.CategoryButton.Container
 	if not header.styled then
@@ -24,6 +23,7 @@ local function SkinConduitList(frame)
 			for _, element in ipairs(button.Hovers) do
 				element:SetColorTexture(1, 1, 1, .25)
 			end
+
 			button.PendingBackground:SetColorTexture(1, .8, 0, .25)
 			button.Spec.IconOverlay:Hide()
 			S:HandleIcon(button.Spec.Icon)
@@ -38,7 +38,7 @@ function S:Blizzard_Soulbinds()
 
 	local frame = _G.SoulbindViewer
 	frame:StripTextures()
-	frame:CreateBackdrop('Transparent')
+	frame:SetTemplate('Transparent')
 
 	S:HandleCloseButton(frame.CloseButton)
 	S:HandleButton(frame.CommitConduitsButton)

@@ -68,8 +68,8 @@ local C_SocialQueue_GetGroupMembers = C_SocialQueue.GetGroupMembers
 local C_SocialQueue_GetGroupQueues = C_SocialQueue.GetGroupQueues
 local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
-local ChatChannelRuleset_Mentor = Enum.ChatChannelRuleset.Mentor
 
+local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset.Mentor
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
@@ -1540,9 +1540,9 @@ end
 -- copied from ChatFrame.lua
 local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 	-- Renaming for clarity:
-	local specialFlag = arg6;
-	--local zoneChannelID = arg7;
-	--local localChannelID = arg8;
+	local specialFlag = arg6
+	--local zoneChannelID = arg7
+	--local localChannelID = arg8
 
 	if specialFlag ~= '' then
 		if specialFlag == 'GM' or specialFlag == 'DEV' then
@@ -1561,7 +1561,7 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 		end
 	end
 
-	return "";
+	return ""
 end
 
 function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
@@ -1762,10 +1762,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE' then
-			local accessID = _G.ChatHistory_GetAccessID(chatGroup, arg8);
-			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12);
+			local accessID = _G.ChatHistory_GetAccessID(chatGroup, arg8)
+			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12)
 
-			if arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == ChatChannelRuleset_Mentor then
+			if arg1 == 'YOU_CHANGED' and C_ChatInfo_GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
 				_G.ChatFrame_UpdateDefaultChatTarget(frame)
 				_G.ChatEdit_UpdateNewcomerEditBoxHint(frame.editBox)
 			else
@@ -2427,7 +2427,7 @@ function CH:SaveChatHistory(event, ...)
 		tempHistory[51] = CH:GetChatTime()
 
 		local coloredName, battleTag
-		if tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
+		if tempHistory[13] and tempHistory[13] > 0 then coloredName, battleTag = CH:GetBNFriendColor(tempHistory[2], tempHistory[13], true) end
 		if battleTag then tempHistory[53] = battleTag end -- store the battletag, only when the person is known by battletag, so we can replace arg2 later in the function
 		tempHistory[52] = coloredName or CH:GetColoredName(event, ...)
 
@@ -2820,7 +2820,7 @@ function CH:ResetVoicePanelAlpha()
 end
 
 function CH:CreateChatVoicePanel()
-	local Holder = CreateFrame('Frame', 'ElvUIChatVoicePanel', E.UIParent, 'BackdropTemplate')
+	local Holder = CreateFrame('Frame', 'ElvUIChatVoicePanel', E.UIParent)
 	Holder:ClearAllPoints()
 	Holder:Point('BOTTOMLEFT', _G.LeftChatPanel, 'TOPLEFT', 0, 1)
 	Holder:Size(30, 86)
@@ -2894,7 +2894,7 @@ function CH:CreateChatVoicePanel()
 end
 
 function CH:BuildCopyChatFrame()
-	local frame = CreateFrame('Frame', 'CopyChatFrame', E.UIParent, 'BackdropTemplate')
+	local frame = CreateFrame('Frame', 'CopyChatFrame', E.UIParent)
 	tinsert(_G.UISpecialFrames, 'CopyChatFrame')
 	frame:SetTemplate('Transparent')
 	frame:Size(700, 200)
@@ -2961,7 +2961,7 @@ function CH:BuildCopyChatFrame()
 		end
 	end)
 
-	local close = CreateFrame('Button', 'CopyChatFrameCloseButton', frame, 'UIPanelCloseButton, BackdropTemplate')
+	local close = CreateFrame('Button', 'CopyChatFrameCloseButton', frame, 'UIPanelCloseButton')
 	close:Point('TOPRIGHT')
 	close:SetFrameLevel(close:GetFrameLevel() + 1)
 	close:EnableMouse(true)
@@ -3276,20 +3276,17 @@ function CH:Initialize()
 		--Increase inset on right side to make room for character count text
 		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
 		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
-
-		if not editbox.backdrop then
-			editbox:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
-		end
+		editbox:SetTemplate(nil, true)
 
 		if chanName and (chatType == 'CHANNEL') then
 			if chanName == 0 then
-				editbox.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			else
 				info = ChatTypeInfo[chatType..chanName]
-				editbox.backdrop:SetBackdropBorderColor(info.r, info.g, info.b)
+				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
 			end
 		else
-			editbox.backdrop:SetBackdropBorderColor(info.r, info.g, info.b)
+			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
 		end
 	end)
 
@@ -3307,7 +3304,7 @@ function CH:Initialize()
 		chatHead:Width(CH.ChatHeadFrame:GetWidth())
 		chatHead:Height(CHAT_HEAD_HEIGHT)
 
-		chatHead.Portrait = CreateFrame('Frame', nil, chatHead, 'BackdropTemplate')
+		chatHead.Portrait = CreateFrame('Frame', nil, chatHead)
 		chatHead.Portrait:Width(CHAT_HEAD_HEIGHT - CH.volumeBarHeight)
 		chatHead.Portrait:Height(CHAT_HEAD_HEIGHT - CH.volumeBarHeight - E.Border*2)
 		chatHead.Portrait:Point('TOPLEFT', chatHead, 'TOPLEFT')

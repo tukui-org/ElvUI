@@ -39,7 +39,7 @@ function S:TooltipFrames()
 
 	-- Skin Blizzard Tooltips
 	local ItemTooltip = _G.GameTooltip.ItemTooltip
-	ItemTooltip:CreateBackdrop('Default')
+	ItemTooltip:CreateBackdrop()
 	ItemTooltip.backdrop:SetOutside(ItemTooltip.Icon)
 	ItemTooltip.Count:ClearAllPoints()
 	ItemTooltip.Count:Point('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)

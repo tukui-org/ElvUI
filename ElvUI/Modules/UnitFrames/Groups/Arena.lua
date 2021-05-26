@@ -8,7 +8,6 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 local _G = _G
 local unpack = unpack
 local CreateFrame = CreateFrame
-local IsAddOnLoaded = IsAddOnLoaded
 local GetSpecializationInfoByID = GetSpecializationInfoByID
 local LOCALIZED_CLASS_NAMES_MALE = LOCALIZED_CLASS_NAMES_MALE
 

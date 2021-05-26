@@ -11,7 +11,7 @@ function S:Blizzard_SubscriptionInterstitialUI()
 	local SubscriptionInterstitial = _G.SubscriptionInterstitialFrame
 
 	SubscriptionInterstitial:StripTextures()
-	SubscriptionInterstitial:CreateBackdrop('Transparent')
+	SubscriptionInterstitial:SetTemplate('Transparent')
 	SubscriptionInterstitial.ShadowOverlay:Hide()
 
 	S:HandleCloseButton(SubscriptionInterstitial.CloseButton)

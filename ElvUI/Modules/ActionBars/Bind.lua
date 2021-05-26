@@ -260,7 +260,7 @@ function AB:SwapKeybindButton(event, addon)
 	local parent = _G.KeyBindingFrame
 	parent.quickKeybindButton:Hide()
 
-	local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'OptionsButtonTemplate, BackdropTemplate')
+	local frame = CreateFrame('Button', 'ElvUI_KeybindButton', parent, 'OptionsButtonTemplate')
 	frame:Width(150)
 	frame:Point('TOPLEFT', parent.quickKeybindButton)
 	frame:SetScript('OnClick', keybindButtonClick)
@@ -305,7 +305,7 @@ function AB:LoadKeyBinder()
 	end
 
 	--Special Popup
-	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', _G.UIParent, 'BackdropTemplate')
+	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', _G.UIParent)
 	Popup:SetFrameStrata('DIALOG')
 	Popup:EnableMouse(true)
 	Popup:SetMovable(true)
@@ -318,7 +318,7 @@ function AB:LoadKeyBinder()
 	Popup:SetScript('OnMouseUp', Popup.StopMovingOrSizing)
 	Popup:Hide()
 
-	Popup.header = CreateFrame('Button', nil, Popup, 'OptionsButtonTemplate, BackdropTemplate')
+	Popup.header = CreateFrame('Button', nil, Popup, 'OptionsButtonTemplate')
 	Popup.header:Size(100, 25)
 	Popup.header:Point('CENTER', Popup, 'TOP')
 	Popup.header:RegisterForClicks('AnyUp', 'AnyDown')
@@ -334,17 +334,17 @@ function AB:LoadKeyBinder()
 	Popup.desc:Point('BOTTOMRIGHT', -18, 48)
 	Popup.desc:SetText(L["BINDINGS_HELP"])
 
-	Popup.save = CreateFrame('Button', Popup:GetName()..'SaveButton', Popup, 'OptionsButtonTemplate, BackdropTemplate')
+	Popup.save = CreateFrame('Button', Popup:GetName()..'SaveButton', Popup, 'OptionsButtonTemplate')
 	Popup.save:SetText(L["Save"])
 	Popup.save:Width(150)
 	Popup.save:SetScript('OnClick', function() AB:DeactivateBindMode(true) end)
 
-	Popup.discard = CreateFrame('Button', Popup:GetName()..'DiscardButton', Popup, 'OptionsButtonTemplate, BackdropTemplate')
+	Popup.discard = CreateFrame('Button', Popup:GetName()..'DiscardButton', Popup, 'OptionsButtonTemplate')
 	Popup.discard:Width(150)
 	Popup.discard:SetText(L["Discard"])
 	Popup.discard:SetScript('OnClick', function() AB:DeactivateBindMode(false) end)
 
-	Popup.perCharCheck = CreateFrame('CheckButton', Popup:GetName()..'CheckButton', Popup, 'OptionsCheckButtonTemplate, BackdropTemplate')
+	Popup.perCharCheck = CreateFrame('CheckButton', Popup:GetName()..'CheckButton', Popup, 'OptionsCheckButtonTemplate')
 	_G[Popup.perCharCheck:GetName()..'Text']:SetText(CHARACTER_SPECIFIC_KEYBINDINGS)
 	Popup.perCharCheck:SetScript('OnLeave', GameTooltip_Hide)
 	Popup.perCharCheck:SetScript('OnShow', function(checkBtn) checkBtn:SetChecked(GetCurrentBindingSet() == 2) end)
@@ -367,7 +367,7 @@ function AB:LoadKeyBinder()
 	Popup.discard:Point('BOTTOMLEFT', 14, 10)
 
 	Skins:HandleCheckBox(Popup.perCharCheck)
-	Skins:HandleButton(Popup.discard, nil, nil, nil, nil, nil, nil, nil, true)
-	Skins:HandleButton(Popup.header, nil, nil, nil, nil, nil, nil, nil, true)
-	Skins:HandleButton(Popup.save, nil, nil, nil, nil, nil, nil, nil, true)
+	Skins:HandleButton(Popup.discard)
+	Skins:HandleButton(Popup.header)
+	Skins:HandleButton(Popup.save)
 end
