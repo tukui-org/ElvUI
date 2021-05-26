@@ -20,11 +20,11 @@ end
 local IconColor = E.QualityColors[Enum.ItemQuality.Epic or 4] -- epic color only
 local function SkinRewardIcon(itemFrame)
 	if not itemFrame.IsSkinned then
-		itemFrame:SetTemplate('Transparent')
-		itemFrame:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
+		itemFrame:CreateBackdrop('Transparent')
+		itemFrame:DisableDrawLayer('BORDER')
 		itemFrame.Icon:SetPoint('LEFT', 6, 0)
 		S:HandleIcon(itemFrame.Icon, true)
-
+		itemFrame.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
 		itemFrame.IsSkinned = true
 	end
 end
@@ -108,7 +108,7 @@ function S:Blizzard_WeeklyRewards()
 		local overlay = frame.Overlay
 		if overlay then
 			overlay:StripTextures()
-			overlay:SetTemplate()
+			overlay:SetTemplate('Transparent')
 		end
 	end)
 
