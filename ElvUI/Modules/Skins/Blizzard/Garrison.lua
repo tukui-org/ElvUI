@@ -114,7 +114,9 @@ local function SkinMissionFrame(frame, strip)
 		frame:StripTextures()
 	end
 
-	frame:SetTemplate('Transparent')
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+	end
 
 	frame.CloseButton:StripTextures()
 	S:HandleCloseButton(frame.CloseButton)
@@ -588,8 +590,8 @@ function S:Blizzard_GarrisonUI()
 	end
 
 	-- Complete Missions
-	_G.CombatLog.CombatLogMessageFrame:StripTextures()
 	_G.CombatLog.ElevatedFrame:SetAlpha(0)
+	_G.CombatLog.CombatLogMessageFrame:StripTextures()
 	_G.CombatLog.CombatLogMessageFrame:SetTemplate('Transparent')
 
 	-- Adventures / Follower Tab
