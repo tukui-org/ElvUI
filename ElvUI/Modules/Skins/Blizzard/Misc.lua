@@ -327,10 +327,9 @@ function S:BlizzardMiscFrames()
 				button:CreateBackdrop()
 			end
 
-			button.backdrop:Hide()
-
 			if not button.notCheckable then
 				uncheck:SetTexture()
+
 				local _, co = check:GetTexCoord()
 				if co == 0 then
 					check:SetTexture([[Interface\Buttons\UI-CheckBox-Check]])
@@ -349,6 +348,7 @@ function S:BlizzardMiscFrames()
 				button.backdrop:Show()
 				check:SetTexCoord(0, 1, 0, 1)
 			else
+				button.backdrop:Hide()
 				check:Size(16, 16)
 			end
 		end
