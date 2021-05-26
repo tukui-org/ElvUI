@@ -125,7 +125,7 @@ do
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
 	E:AddLib('RangeCheck', 'LibRangeCheck-2.0-ElvUI')
 	E:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
-	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
+	--E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
 	E:AddLib('Compress', 'LibCompress')
 	E:AddLib('Base64', 'LibBase64-1.0-ElvUI')
 	E:AddLib('Masque', 'Masque', true)
