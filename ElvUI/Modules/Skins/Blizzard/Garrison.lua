@@ -362,6 +362,7 @@ function S:Blizzard_GarrisonUI()
 		local button = buttons[i]
 		for _, reward in pairs(button.Rewards) do
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
+
 			if not reward.border then
 				reward.border = CreateFrame('Frame', nil, reward)
 				S:HandleIcon(reward.Icon, reward.border)
@@ -466,13 +467,6 @@ function S:Blizzard_GarrisonUI()
 
 	for i = 1, 3 do
 		S:HandleTab(_G['OrderHallMissionFrameTab' .. i])
-	end
-
-	for _, Button in pairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
-		if not Button.backdrop then -- added in S:HandleButton
-			S:HandleButton(Button, true)
-			Button.LocBG:SetDrawLayer('BACKGROUND', 1)
-		end
 	end
 
 	-- Followers
