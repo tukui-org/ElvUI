@@ -49,8 +49,6 @@ function S:Blizzard_PlayerChoiceUI()
 			frame.NineSlice:SetAlpha(0)
 			frame.BorderFrame.Header:SetAlpha(0)
 
-			frame:SetTemplate('Transparent')
-
 			frame.Title:DisableDrawLayer('BACKGROUND')
 			frame.Title.Text:SetTextColor(1, .8, 0)
 
