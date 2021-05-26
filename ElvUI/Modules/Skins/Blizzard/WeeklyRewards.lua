@@ -20,7 +20,6 @@ end
 local IconColor = E.QualityColors[Enum.ItemQuality.Epic or 4] -- epic color only
 local function SkinRewardIcon(itemFrame)
 	if not itemFrame.IsSkinned then
-		itemFrame:StripTextures()
 		itemFrame:SetTemplate('Transparent')
 		itemFrame:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)
 		itemFrame.Icon:SetPoint('LEFT', 6, 0)
