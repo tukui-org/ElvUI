@@ -245,10 +245,13 @@ function S:Blizzard_GarrisonUI()
 
 	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(s)
 		for _, Reagent in ipairs(s.CapacitiveDisplay.Reagents) do
-			if not Reagent.backdrop then
-				Reagent.NameFrame:SetTexture()
-				S:HandleIcon(Reagent.Icon, true)
+			if not Reagent.template then
 				Reagent:SetTemplate()
+				Reagent.NameFrame:SetTexture()
+				Reagent.Icon:SetDrawLayer('ARTWORK')
+				Reagent.Icon:ClearAllPoints()
+				Reagent.Icon:SetPoint('TOPLEFT', 1, -1)
+				S:HandleIcon(Reagent.Icon)
 			end
 		end
 	end)
