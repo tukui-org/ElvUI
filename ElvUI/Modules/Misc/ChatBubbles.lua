@@ -22,8 +22,11 @@ function M:UpdateBubbleBorder()
 	local str = holder and holder.String
 	if not str then return end
 
-	if holder and E.private.general.chatBubbles == 'backdrop' then
+	local option = E.private.general.chatBubbles
+	if option == 'backdrop' then
 		holder:SetBackdropBorderColor(str:GetTextColor())
+	elseif option == 'backdrop_noborder' then
+		holder:SetBackdropBorderColor(0,0,0,0)
 	end
 
 	local name = self.Name and self.Name:GetText()
@@ -88,14 +91,15 @@ function M:SkinBubble(frame, holder)
 		holder.String:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	end
 
-	if E.private.general.chatBubbles == 'nobackdrop' then
-		holder:SetTemplate('NoBackdrop')
-	elseif E.private.general.chatBubbles == 'backdrop' then
-		holder:SetTemplate('Transparent', nil, true)
-		holder:EnableDrawLayer('BORDER')
-	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
-		holder:SetTemplate('Transparent', nil, true)
+	local option = E.private.general.chatBubbles
+	if option == 'nobackdrop' then
 		holder:DisableDrawLayer('BORDER')
+	else
+		holder:SetTemplate('Transparent', nil, true)
+
+		if option == 'backdrop_noborder' then
+			holder.Center:SetInside(frame, 4, 4)
+		end
 	end
 
 	if not frame.Name then
