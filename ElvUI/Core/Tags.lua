@@ -1234,7 +1234,7 @@ local classIcons = {
 ElvUF.Tags.Events['class:icon'] = 'PLAYER_TARGET_CHANGED'
 ElvUF.Tags.Methods['class:icon'] = function(unit)
 	if UnitIsPlayer(unit) then
-		local class = select(2, UnitClass(unit))
+		local _, class = UnitClass(unit)
 		local icon = classIcons[class]
 		if icon then
 			return format('|TInterface\\WorldStateFrame\\ICONS-CLASSES:32:32:0:0:256:256:%s|t', icon)
