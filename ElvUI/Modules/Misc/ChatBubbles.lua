@@ -88,15 +88,14 @@ function M:SkinBubble(frame, holder)
 		holder.String:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	end
 
-	if E.private.general.chatBubbles == 'backdrop' then
+	if E.private.general.chatBubbles == 'nobackdrop' then
+		holder:SetTemplate('NoBackdrop')
+	elseif E.private.general.chatBubbles == 'backdrop' then
 		holder:SetTemplate('Transparent', nil, true)
+		holder:EnableDrawLayer('BORDER')
 	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
-		if not holder.noBorder then
-			holder.noBorder = holder:CreateTexture(nil, 'ARTWORK')
-		end
-
-		holder.noBorder:SetInside(frame, 4, 4)
-		holder.noBorder:SetColorTexture(unpack(E.media.backdropfadecolor))
+		holder:SetTemplate('Transparent', nil, true)
+		holder:DisableDrawLayer('BORDER')
 	end
 
 	if not frame.Name then
