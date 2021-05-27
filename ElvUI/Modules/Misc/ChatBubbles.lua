@@ -98,7 +98,7 @@ function M:SkinBubble(frame, holder)
 		holder:SetTemplate('Transparent', nil, true)
 
 		if option == 'backdrop_noborder' then
-			holder.Center:SetInside(frame, 4, 4)
+			holder.Center:SetInside(holder, 4, 4)
 		end
 	end
 
