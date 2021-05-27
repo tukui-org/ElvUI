@@ -245,10 +245,13 @@ function S:Blizzard_GarrisonUI()
 
 	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', function(s)
 		for _, Reagent in ipairs(s.CapacitiveDisplay.Reagents) do
-			if not Reagent.backdrop then
-				Reagent.NameFrame:SetTexture()
-				S:HandleIcon(Reagent.Icon, true)
+			if not Reagent.template then
 				Reagent:SetTemplate()
+				Reagent.NameFrame:SetTexture()
+				Reagent.Icon:SetDrawLayer('ARTWORK')
+				Reagent.Icon:ClearAllPoints()
+				Reagent.Icon:SetPoint('TOPLEFT', 1, -1)
+				S:HandleIcon(Reagent.Icon)
 			end
 		end
 	end)
@@ -359,6 +362,7 @@ function S:Blizzard_GarrisonUI()
 		local button = buttons[i]
 		for _, reward in pairs(button.Rewards) do
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
+
 			if not reward.border then
 				reward.border = CreateFrame('Frame', nil, reward)
 				S:HandleIcon(reward.Icon, reward.border)
@@ -463,13 +467,6 @@ function S:Blizzard_GarrisonUI()
 
 	for i = 1, 3 do
 		S:HandleTab(_G['OrderHallMissionFrameTab' .. i])
-	end
-
-	for _, Button in pairs(OrderHallMissionFrame.MissionTab.MissionList.listScroll.buttons) do
-		if not Button.backdrop then -- added in S:HandleButton
-			S:HandleButton(Button, true)
-			Button.LocBG:SetDrawLayer('BACKGROUND', 1)
-		end
 	end
 
 	-- Followers

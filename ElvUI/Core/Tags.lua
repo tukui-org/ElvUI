@@ -1216,6 +1216,32 @@ ElvUF.Tags.Methods['ElvUI-Users'] = function(unit)
 	end
 end
 
+local classIcons = {
+	WARRIOR 	= '0:64:0:64',
+	MAGE 		= '64:128:0:64',
+	ROGUE 		= '128:196:0:64',
+	DRUID 		= '196:256:0:64',
+	HUNTER 		= '0:64:64:128',
+	SHAMAN 		= '64:128:64:128',
+	PRIEST 		= '128:196:64:128',
+	WARLOCK 	= '196:256:64:128',
+	PALADIN 	= '0:64:128:196',
+	DEATHKNIGHT = '64:128:128:196',
+	MONK 		= '128:192:128:196',
+	DEMONHUNTER = '192:256:128:196',
+ }
+
+ElvUF.Tags.Events['class:icon'] = 'PLAYER_TARGET_CHANGED'
+ElvUF.Tags.Methods['class:icon'] = function(unit)
+	if UnitIsPlayer(unit) then
+		local _, class = UnitClass(unit)
+		local icon = classIcons[class]
+		if icon then
+			return format('|TInterface\\WorldStateFrame\\ICONS-CLASSES:32:32:0:0:256:256:%s|t', icon)
+		end
+	end
+end
+
 ElvUF.Tags.Events['creature'] = ''
 
 E.TagInfo = {
@@ -1325,6 +1351,7 @@ E.TagInfo = {
 	--Miscellaneous
 	['affix'] = { category = 'Miscellaneous', description = "Displays low level critter mobs" },
 	['class'] = { category = 'Miscellaneous', description = "Displays the class of the unit, if that unit is a player" },
+	['class:icon'] = { category = 'Miscellaneous', description = "Displays the class icon of the unit, if that unit is a player" },
 	['race'] = { category = 'Miscellaneous', description = "Displays the race" },
 	['smartclass'] = { category = 'Miscellaneous', description = "Displays the player's class or creature's type" },
 	['specialization'] = { category = 'Miscellaneous', description = "Displays your current specialization as text" },

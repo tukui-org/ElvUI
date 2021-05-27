@@ -58,19 +58,24 @@ local function HandleCommunitiesButtons(self, color)
 	self.Icon:Point('TOPLEFT', 15, -18)
 	self.IconRing:Hide()
 
-	if not self.bg then
-		self.bg = CreateFrame('Frame', nil, self)
-		self.bg:SetTemplate('Transparent')
-		self.bg:Point('TOPLEFT', 7, -16)
-		self.bg:Point('BOTTOMRIGHT', -10, 12)
+	if not self.backdrop then
+		self:CreateBackdrop('Transparent')
+		self.backdrop:ClearAllPoints()
+		self.backdrop:Point('TOPLEFT', 7, -16)
+		self.backdrop:Point('BOTTOMRIGHT', -10, 12)
 	end
+
+	local highlight = self:GetHighlightTexture()
+	highlight:SetColorTexture(1, 1, 1, 0.3)
+	highlight:SetInside(self.backdrop)
 
 	if self.IconBorder then
 		self.IconBorder:Hide()
 	end
 
 	if color then
-		self.Selection:SetInside(self.bg, 0, 0)
+		self.Selection:SetInside(self.backdrop)
+
 		if color == 1 then
 			self.Selection:SetAtlas(nil)
 			self.Selection:SetColorTexture(GREEN_FONT_COLOR.r, GREEN_FONT_COLOR.g, GREEN_FONT_COLOR.b, 0.2)
@@ -79,10 +84,6 @@ local function HandleCommunitiesButtons(self, color)
 			self.Selection:SetColorTexture(BATTLENET_FONT_COLOR.r, BATTLENET_FONT_COLOR.g, BATTLENET_FONT_COLOR.b, 0.2)
 		end
 	end
-
-	local highlight = self:GetHighlightTexture()
-	highlight:SetColorTexture(1, 1, 1, 0.3)
-	highlight:SetInside(self.bg)
 end
 
 local function ColorMemberName(self, info)
@@ -124,33 +125,37 @@ function S:Blizzard_Communities()
 			S:HandleIcon(s.Icon)
 			s.IconRing:Hide()
 
+			s.GuildTabardBackground:Point('TOPLEFT', 6, -17)
+			s.GuildTabardEmblem:Point('TOPLEFT', 13, -17)
+			s.GuildTabardBorder:Point('TOPLEFT', 6, -17)
+
 			if not s.IconBorder then
 				s.IconBorder = s:CreateTexture(nil, 'BORDER')
 				s.IconBorder:SetOutside(s.Icon)
 				s.IconBorder:Hide()
 			end
 
-			s.GuildTabardBackground:Point('TOPLEFT', 6, -17)
-			s.GuildTabardEmblem:Point('TOPLEFT', 13, -17)
-			s.GuildTabardBorder:Point('TOPLEFT', 6, -17)
-
-			if not s.bg then
-				s.bg = CreateFrame('Frame', nil, s)
-				s.bg:CreateBackdrop('Transparent')
-				s.bg:Point('TOPLEFT', 7, -16)
-				s.bg:Point('BOTTOMRIGHT', -10, 12)
+			if not s.backdrop then
+				s:CreateBackdrop('Transparent')
+				s.backdrop:ClearAllPoints()
+				s.backdrop:Point('TOPLEFT', 7, -16)
+				s.backdrop:Point('BOTTOMRIGHT', -10, 12)
 			end
+
+			local highlight = s:GetHighlightTexture()
+			highlight:SetColorTexture(1, 1, 1, 0.3)
+			highlight:SetInside(s.backdrop)
 
 			local isGuild = clubInfo.clubType == CLUBTYPE_GUILD
 			if isGuild then
 				s.Background:SetAtlas(nil)
 				s.Selection:SetAtlas(nil)
-				s.Selection:SetAllPoints(s.bg)
+				s.Selection:SetInside(s.backdrop)
 				s.Selection:SetColorTexture(0, 1, 0, 0.2)
 			else
 				s.Background:SetAtlas(nil)
 				s.Selection:SetAtlas(nil)
-				s.Selection:SetAllPoints(s.bg)
+				s.Selection:SetInside(s.backdrop)
 				s.Selection:SetColorTexture(FRIENDS_BNET_BACKGROUND_COLOR.r, FRIENDS_BNET_BACKGROUND_COLOR.g, FRIENDS_BNET_BACKGROUND_COLOR.b, 0.2)
 			end
 
@@ -160,14 +165,11 @@ function S:Blizzard_Communities()
 				else
 					s.IconBorder:SetColorTexture(FRIENDS_WOW_BACKGROUND_COLOR.r, FRIENDS_WOW_BACKGROUND_COLOR.g, FRIENDS_WOW_BACKGROUND_COLOR.b)
 				end
+
 				s.IconBorder:Show()
 			else
 				s.IconBorder:Hide()
 			end
-
-			local highlight = s:GetHighlightTexture()
-			highlight:SetColorTexture(1, 1, 1, 0.3)
-			highlight:SetAllPoints(s.bg)
 		end
 	end)
 
@@ -353,6 +355,7 @@ function S:Blizzard_Communities()
 		for _, button in ipairs(s.ListScrollFrame.buttons or {}) do
 			if button and not button.hooked then
 				hooksecurefunc(button, 'RefreshExpandedColumns', UpdateNames)
+
 				if button.ProfessionHeader then
 					local header = button.ProfessionHeader
 					for i = 1, 3 do
@@ -364,6 +367,7 @@ function S:Blizzard_Communities()
 
 				button.hooked = true
 			end
+
 			if button and button.bg then
 				button.bg:SetShown(button.Class:IsShown())
 			end

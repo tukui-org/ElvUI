@@ -16,7 +16,8 @@ function S:Blizzard_DeathRecap()
 
 	for i=1, 5 do
 		local recap = DeathRecapFrame['Recap'..i].SpellInfo
-		recap:SetTemplate()
+		recap:CreateBackdrop()
+		recap.backdrop:SetOutside(recap.Icon)
 		recap.Icon:SetTexCoord(unpack(E.TexCoords))
 		recap.Icon:SetParent(recap.backdrop)
 		recap.IconBorder:Kill()
