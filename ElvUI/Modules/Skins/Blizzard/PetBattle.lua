@@ -13,7 +13,11 @@ local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 
 local function SkinPetButton(self, bf)
-	self:SetTemplate()
+	if not self.backdrop then
+		self:CreateBackdrop()
+		self.backdrop:SetFrameStrata('LOW')
+	end
+
 	self:SetNormalTexture('')
 	self.Icon:SetTexCoord(unpack(E.TexCoords))
 	self.Icon:SetParent(self.backdrop)
@@ -192,8 +196,9 @@ function S:PetBattleFrame()
 				-- always hide the border
 				frame.DebuffBorder:Hide()
 
-				if not frame.template then
-					frame:SetTemplate()
+				if not frame.backdrop then
+					frame:CreateBackdrop()
+					frame.backdrop:SetOutside(frame.Icon)
 					frame.Icon:SetTexCoord(unpack(E.TexCoords))
 					frame.Icon:SetParent(frame.backdrop)
 				end
