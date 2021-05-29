@@ -39,7 +39,7 @@ function S:MerchantFrame()
 		local iconBorder = button.IconBorder
 		local item = _G['MerchantItem'..i]
 		item:StripTextures(true)
-		item:SetTemplate()
+		item:SetTemplate('Transparent')
 
 		button:StripTextures()
 		button:StyleButton(false)
