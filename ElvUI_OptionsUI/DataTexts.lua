@@ -193,6 +193,8 @@ local function CreateDTOptions(name, data)
 			optionTable.args.ShowOthers = ACH:Toggle(L["Other AddOns"])
 		elseif key == 'textFormat' then
 			optionTable.args.textFormat = ACH:Select(L["Text Format"], nil, nil, nil, nil, 'double', function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
+		elseif key == 'latency' then
+			optionTable.args.latency = ACH:Select(L["Latency"], nil, nil, { WORLD = L["World Latency"], HOME = L["Home Latency"] })
 		end
 	end
 

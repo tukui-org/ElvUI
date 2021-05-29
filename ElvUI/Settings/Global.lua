@@ -80,7 +80,7 @@ G.datatexts = {
 		Speed = { Label = '', NoLabel = false, decimalLength = 1 },
 		Stamina = { Label = '', NoLabel = false },
 		Strength = { Label = '', NoLabel = false },
-		System = { NoLabel = false, ShowOthers = true },
+		System = { NoLabel = false, ShowOthers = true, latency = 'WORLD' },
 		Time = { time24 = _G.GetCurrentRegion() ~= 1, localTime = true },
 		Versatility = { Label = '', NoLabel = false, decimalLength = 1 },
 	},
