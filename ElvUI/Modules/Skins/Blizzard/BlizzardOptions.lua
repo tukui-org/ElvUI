@@ -240,6 +240,7 @@ function S:BlizzardOptions()
 	local InterfaceOptions = {
 		_G.InterfaceOptionsFrame,
 		_G.InterfaceOptionsControlsPanel,
+		_G.InterfaceOptionsColorblindPanel,
 		_G.InterfaceOptionsCombatPanel,
 		_G.InterfaceOptionsCombatPanelEnemyCastBars,
 		_G.InterfaceOptionsCombatTextPanel,
