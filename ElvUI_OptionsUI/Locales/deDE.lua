@@ -1118,6 +1118,7 @@ L["Show New Item Glow"] = "Zeige neues Gegenstandleuchten"
 L["Show Over Absorbs"] = "Zeige Über Absorbierung"
 L["Show PvP Badge Indicator if available"] = "Zeige PvP Abzeichen-Indikator wenn verfügbar"
 L["Show Quality Color"] = "Zeige Qualitätsfarbe"
+L["Show QuestXP"] = true
 L["Show Scrap Icon"] = "Zeige Schrott Symbol"
 L["Show Special Bags Color"] = "Zeige Spezielle-Taschen Farbe"
 L["Show the castbar icon desaturated if a spell is not interruptible."] = "Zeigt das Zauberleistensymbol entsättigt an, wenn ein Zauber nicht unterbrechbar ist."

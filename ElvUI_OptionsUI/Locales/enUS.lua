@@ -1121,6 +1121,7 @@ L["Show New Item Glow"] = true
 L["Show Over Absorbs"] = true
 L["Show PvP Badge Indicator if available"] = true
 L["Show Quality Color"] = true
+L["Show QuestXP"] = true
 L["Show Scrap Icon"] = true
 L["Show Special Bags Color"] = true
 L["Show the castbar icon desaturated if a spell is not interruptible."] = true

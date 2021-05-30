@@ -1116,6 +1116,7 @@ L["Show New Item Glow"] = "Mostrar Brilho de Novo Item"
 L["Show Over Absorbs"] = "Mostrar Absorções Excessivas"
 L["Show PvP Badge Indicator if available"] = "Mostrar Indicador de Distintivo de PvP se disponível"
 L["Show Quality Color"] = "Mostrar Cor da Qualidade"
+L["Show QuestXP"] = true
 L["Show Scrap Icon"] = "Mostrar Ícone de Sucateável"
 L["Show Special Bags Color"] = "Mostrar Cores de Bolsas Especiais"
 L["Show the castbar icon desaturated if a spell is not interruptible."] = "Mostrar o ícone da barra de cast desaturado se um feitiço não for interrompível."
