@@ -78,6 +78,7 @@ DataBars.args.experience.args.conditionGroup.values = {
 	hideAtMaxLevel = L["Hide At Max Level"],
 	hideInVehicle = L["Hide In Vehicle"],
 	hideInCombat = L["Hide In Combat"],
+	showQuestXP = L["Show QuestXP"],
 }
 
 DataBars.args.reputation = ACH:Group(L["Reputation"], nil, 2, nil, function(info) return DB.db.reputation[info[#info]] end, function(info, value) DB.db.reputation[info[#info]] = value DB:ReputationBar_Update() DB:UpdateAll() end)
