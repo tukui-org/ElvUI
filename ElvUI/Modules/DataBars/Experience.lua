@@ -176,6 +176,11 @@ end
 
 function DB:ExperienceBar_OnClick() end
 
+function DB:ExperienceBar_XPGain()
+	DB:ExperienceBar_Update()
+	DB:ExperienceBar_QuestXP()
+end
+
 function DB:ExperienceBar_Toggle()
 	local bar = DB.StatusBars.Experience
 	bar.db = DB.db.experience
@@ -187,7 +192,7 @@ function DB:ExperienceBar_Toggle()
 	end
 
 	if bar.db.enable and not bar:ShouldHide() then
-		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_Update')
+		DB:RegisterEvent('PLAYER_XP_UPDATE', 'ExperienceBar_XPGain')
 		DB:RegisterEvent('UPDATE_EXHAUSTION', 'ExperienceBar_Update')
 		DB:RegisterEvent('QUEST_LOG_UPDATE', 'ExperienceBar_QuestXP')
 		DB:RegisterEvent('ZONE_CHANGED', 'ExperienceBar_QuestXP')
