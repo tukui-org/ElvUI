@@ -400,7 +400,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestProgressScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 	_G.QuestGreetingScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 	_G.QuestDetailScrollFrame:CreateBackdrop('Transparent')
-	_G.QuestProgressScrollFrame:CreateBackdrop()
+	_G.QuestProgressScrollFrame:CreateBackdrop('Transparent')
 	_G.QuestGreetingScrollFrame:CreateBackdrop('Transparent')
 
 	_G.QuestFrameGreetingPanel:HookScript('OnShow', function(frame)
