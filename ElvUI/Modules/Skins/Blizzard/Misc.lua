@@ -36,10 +36,6 @@ end
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
-	-- Just testing
-	_G.SecureTransferDialog:StripTextures()
-	_G.SecureTransferDialog:SetTemplate('Transparent')
-
 	_G.QueueStatusFrame:StripTextures()
 
 	-- Blizzard frame we want to reskin
