@@ -197,6 +197,7 @@ L["Layout"] = true
 L["Left Chat"] = true
 L["Left Click:"] = true
 L["Legs"] = true
+L["Level"] = "Livello"
 L["Level Up Display / Boss Banner"] = true
 L["List of installations in queue:"] = true
 L["Lock"] = true
