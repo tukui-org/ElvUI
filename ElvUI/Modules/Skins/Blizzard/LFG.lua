@@ -326,6 +326,7 @@ function S:LookingForGroupFrames()
 		bu.ring:Kill()
 		bu.bg:Kill()
 		S:HandleButton(bu)
+		bu:SetTemplate('Transparent')
 
 		bu.icon:Size(45)
 		bu.icon:ClearAllPoints()
@@ -335,11 +336,13 @@ function S:LookingForGroupFrames()
 
 	for i = 1, 3 do
 		S:HandleTab(_G['PVEFrameTab'..i])
+		_G['PVEFrameTab'..i].backdrop:SetTemplate('Transparent')
 	end
 	_G.PVEFrameTab1:Point('BOTTOMLEFT', PVEFrame, 'BOTTOMLEFT', 19, E.PixelMode and -31 or -32)
 
 	-- Raid finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
+	_G.LFDQueueFrameFindGroupButton:SetTemplate('Transparent')
 
 	_G.LFDParentFrame:StripTextures()
 	_G.LFDParentFrameInset:StripTextures()
@@ -367,13 +370,15 @@ function S:LookingForGroupFrames()
 	end
 
 	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropDown)
-
+	_G.LFDQueueFrameTypeDropDown.backdrop:SetTemplate('Transparent')
 	-- Raid Finder
 	_G.RaidFinderFrame:StripTextures()
 	_G.RaidFinderFrameRoleInset:StripTextures()
 	S:HandleDropDownBox(_G.RaidFinderQueueFrameSelectionDropDown)
+	_G.RaidFinderQueueFrameSelectionDropDown.backdrop:SetTemplate('Transparent')
 	_G.RaidFinderFrameFindRaidButton:StripTextures()
 	S:HandleButton(_G.RaidFinderFrameFindRaidButton)
+	_G.RaidFinderFrameFindRaidButton:SetTemplate('Transparent')
 	_G.RaidFinderQueueFrame:StripTextures()
 	_G.RaidFinderQueueFrameScrollFrameScrollBar:StripTextures()
 	S:HandleScrollBar(_G.RaidFinderQueueFrameScrollFrameScrollBar)
@@ -482,9 +487,11 @@ function S:LookingForGroupFrames()
 	local LFGListFrame = _G.LFGListFrame
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
-	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
+	LFGListFrame.CategorySelection.StartGroupButton:SetTemplate('Transparent')
 	LFGListFrame.CategorySelection.StartGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.StartGroupButton:Point('BOTTOMLEFT', -1, 3)
+	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
+	LFGListFrame.CategorySelection.FindGroupButton:SetTemplate('Transparent')
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point('BOTTOMRIGHT', -6, 3)
 

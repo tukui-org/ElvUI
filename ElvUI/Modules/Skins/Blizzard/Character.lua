@@ -481,8 +481,9 @@ function S:CharacterFrame()
 	end
 
 	--Handle Tabs at bottom of character frame
-	for i = 1, 4 do
+	for i = 1, 3 do
 		S:HandleTab(_G['CharacterFrameTab'..i])
+		_G['CharacterFrameTab'..i].backdrop:SetTemplate('Transparent')
 	end
 
 	hooksecurefunc('ExpandFactionHeader', UpdateFactionSkins)
