@@ -476,8 +476,8 @@ function S:CharacterFrame()
 	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
 
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-		local bu = _G["ReputationBar"..i.."ExpandOrCollapseButton"]
-		S:HandleCollapseTexture(bu)
+		local bu = _G['ReputationBar'..i..'ExpandOrCollapseButton']
+		if bu then S:HandleCollapseTexture(bu) end
 	end
 
 	do --Handle Tabs at bottom of character frame
