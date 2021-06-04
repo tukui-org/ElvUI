@@ -480,10 +480,15 @@ function S:CharacterFrame()
 		S:HandleCollapseTexture(bu)
 	end
 
-	--Handle Tabs at bottom of character frame
-	for i = 1, 4 do
+	do --Handle Tabs at bottom of character frame
+		local i = 1
 		local tab = _G['CharacterFrameTab'..i]
-		if tab then S:HandleTab(tab) end
+		while tab do
+			S:HandleTab(tab)
+
+			i = i + 1
+			tab = _G['CharacterFrameTab'..i]
+		end
 	end
 
 	hooksecurefunc('ExpandFactionHeader', UpdateFactionSkins)
