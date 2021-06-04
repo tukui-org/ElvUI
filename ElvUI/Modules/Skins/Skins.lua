@@ -348,7 +348,7 @@ do
 		return frame[element] or FrameName and (_G[FrameName..element] or strfind(FrameName, element)) or nil
 	end
 
-	function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
+	function S:HandleScrollBar(frame, thumbY, thumbX, styleTemplate)
 		assert(frame, 'doesnt exist!')
 
 		if frame.backdrop then return end
@@ -359,7 +359,7 @@ do
 		local Thumb = GrabScrollBarElement(frame, 'ThumbTexture') or GrabScrollBarElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
 
 		frame:StripTextures()
-		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop(styleTemplate, nil, nil, nil, nil, nil, nil, true)
 		frame.backdrop:Point('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
 		frame.backdrop:Point('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
 
@@ -381,10 +381,11 @@ do
 			Thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, frame:GetFrameLevel() + 1)
 
 			if Thumb.backdrop then
-				if not thumbTrimY then thumbTrimY = 3 end
-				if not thumbTrimX then thumbTrimX = 2 end
-				Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
-				Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
+				if not thumbY then thumbY = 3 end
+				if not thumbX then thumbX = 2 end
+
+				Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbY)
+				Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbX, thumbY)
 				Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
 			end
 
@@ -403,7 +404,7 @@ do --Tab Regions
 		'Right'
 	}
 
-	function S:HandleTab(tab, noBackdrop)
+	function S:HandleTab(tab, noBackdrop, styleTemplate)
 		if not tab or (tab.backdrop and not noBackdrop) then return end
 
 		for _, object in pairs(tabs) do
@@ -423,7 +424,7 @@ do --Tab Regions
 		end
 
 		if not noBackdrop then
-			tab:CreateBackdrop()
+			tab:CreateBackdrop(styleTemplate)
 			tab.backdrop:Point('TOPLEFT', 10, E.PixelMode and -1 or -3)
 			tab.backdrop:Point('BOTTOMRIGHT', -10, 3)
 		end
@@ -507,12 +508,12 @@ function S:HandleBlizzardRegions(frame, name, kill)
 	end
 end
 
-function S:HandleEditBox(frame)
+function S:HandleEditBox(frame, styleTemplate)
 	assert(frame, 'doesnt exist!')
 
 	if frame.backdrop then return end
 
-	frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+	frame:CreateBackdrop(styleTemplate, nil, nil, nil, nil, nil, nil, true)
 	S:HandleBlizzardRegions(frame)
 
 	local EditBoxName = frame:GetName()
@@ -521,7 +522,7 @@ function S:HandleEditBox(frame)
 	end
 end
 
-function S:HandleDropDownBox(frame, width, pos)
+function S:HandleDropDownBox(frame, width, pos, styleTemplate)
 	assert(frame, 'doesnt exist!')
 
 	local frameName = frame.GetName and frame:GetName()
@@ -533,10 +534,9 @@ function S:HandleDropDownBox(frame, width, pos)
 		width = 155
 	end
 
-	frame:StripTextures()
 	frame:Width(width)
-
-	frame:CreateBackdrop()
+	frame:StripTextures()
+	frame:CreateBackdrop(styleTemplate)
 	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 	frame.backdrop:Point('TOPLEFT', 20, -2)
 	frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
@@ -562,10 +562,10 @@ function S:HandleDropDownBox(frame, width, pos)
 	end
 end
 
-function S:HandleStatusBar(frame, color)
+function S:HandleStatusBar(frame, color, styleTemplate)
 	frame:SetFrameLevel(frame:GetFrameLevel() + 1)
 	frame:StripTextures()
-	frame:CreateBackdrop('Transparent')
+	frame:CreateBackdrop(styleTemplate or 'Transparent')
 	frame:SetStatusBarTexture(E.media.normTex)
 	frame:SetStatusBarColor(unpack(color or {.01, .39, .1}))
 	E:RegisterStatusBar(frame)
@@ -574,7 +574,7 @@ end
 do
 	local check = [[Interface\Buttons\UI-CheckBox-Check]]
 	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
-	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel)
+	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, styleTemplate)
 		assert(frame, 'does not exist.')
 
 		if frame.isSkinned then return end
@@ -584,7 +584,7 @@ do
 		if noBackdrop then
 			frame:Size(16)
 		else
-			frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, frameLevel)
+			frame:CreateBackdrop(styleTemplate, nil, nil, nil, nil, nil, nil, frameLevel)
 			frame.backdrop:SetInside(nil, 4, 4)
 		end
 
@@ -769,7 +769,7 @@ function S:HandleCloseButton(f, point, x, y)
 	end
 end
 
-function S:HandleSliderFrame(frame)
+function S:HandleSliderFrame(frame, styleTemplate)
 	assert(frame, 'doesnt exist!')
 
 	local orientation = frame:GetOrientation()
@@ -783,7 +783,7 @@ function S:HandleSliderFrame(frame)
 	frame:SetThumbTexture(E.Media.Textures.Melli)
 
 	if not frame.backdrop then
-		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop(styleTemplate, nil, nil, nil, nil, nil, true)
 	end
 
 	local thumb = frame:GetThumbTexture()

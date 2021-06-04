@@ -250,11 +250,13 @@ function S:Blizzard_Communities()
 		if frame then
 			frame:StripTextures()
 			frame.InsetFrame:Hide()
+
 			if frame.CircleMask then
 				frame.CircleMask:Hide()
 				frame.IconRing:Hide()
 				S:HandleIcon(frame.Icon)
 			end
+
 			if frame.FindAGuildButton then S:HandleButton(frame.FindAGuildButton) end
 			if frame.AcceptButton then S:HandleButton(frame.AcceptButton) end
 			if frame.DeclineButton then S:HandleButton(frame.DeclineButton) end

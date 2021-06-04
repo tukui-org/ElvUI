@@ -41,7 +41,6 @@ function S:Blizzard_PVPUI()
 		bu.Ring:Kill()
 		bu.Background:Kill()
 		S:HandleButton(bu)
-		bu:SetTemplate('Transparent')
 
 		bu.Icon:Size(45)
 		bu.Icon:ClearAllPoints()
@@ -72,9 +71,7 @@ function S:Blizzard_PVPUI()
 
 	S:HandleScrollBar(_G.HonorFrameSpecificFrameScrollBar)
 	S:HandleDropDownBox(_G.HonorFrameTypeDropDown, 230)
-	_G.HonorFrameTypeDropDown.backdrop:SetTemplate('Transparent')
 	S:HandleButton(_G.HonorFrameQueueButton)
-	_G.HonorFrameQueueButton:SetTemplate('Transparent')
 
 	local BonusFrame = HonorFrame.BonusFrame
 	BonusFrame:StripTextures()
@@ -87,7 +84,6 @@ function S:Blizzard_PVPUI()
 		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-		bu:SetTemplate('Transparent')
 
 		reward.Border:Hide()
 		reward.CircleMask:Hide()
@@ -141,7 +137,6 @@ function S:Blizzard_PVPUI()
 	ConquestFrame.ShadowOverlay:Hide()
 
 	S:HandleButton(_G.ConquestJoinButton)
-	_G.ConquestJoinButton:SetTemplate('Transparent')
 
 	HandleRoleChecks(ConquestFrame.TankIcon, _G.LFDQueueFrameRoleButtonTank.background:GetTexCoord())
 	HandleRoleChecks(ConquestFrame.HealerIcon, _G.LFDQueueFrameRoleButtonHealer.background:GetTexCoord())
@@ -152,7 +147,6 @@ function S:Blizzard_PVPUI()
 		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-		bu:SetTemplate('Transparent')
 
 		reward.Border:Hide()
 		reward.CircleMask:Hide()
