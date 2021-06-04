@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, select, unpack = ipairs, pairs, select, unpack
+local ipairs, next, pairs, select, unpack = ipairs, next, pairs, select, unpack
 
 local C_CreatureInfo_GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
@@ -95,6 +95,28 @@ local function ColorMemberName(self, info)
 		local tcoords = CLASS_ICON_TCOORDS[classInfo]
 		class:SetTexCoord(tcoords[1] + .022, tcoords[2] - .025, tcoords[3] + .022, tcoords[4] - .025)
 	end
+end
+
+local function HandleGuildCards(cards)
+	for _, name in pairs({'First', 'Second', 'Third'}) do
+		local guildCard = cards[name..'Card']
+		guildCard:StripTextures()
+		guildCard:SetTemplate('Transparent')
+		S:HandleButton(guildCard.RequestJoin)
+	end
+	S:HandleNextPrevButton(cards.PreviousPage)
+	S:HandleNextPrevButton(cards.NextPage)
+end
+
+local function HandleCommunityCards(frame)
+	for _, button in next, frame.ListScrollFrame.buttons do
+		button.CircleMask:Hide()
+		button.LogoBorder:Hide()
+		button.Background:Hide()
+		S:HandleIcon(button.CommunityLogo)
+		S:HandleButton(button)
+	end
+	S:HandleScrollBar(frame.ListScrollFrame.scrollBar)
 end
 
 function S:Blizzard_Communities()
@@ -222,17 +244,49 @@ function S:Blizzard_Communities()
 	ClubFinderGuildFinderFrame:StripTextures()
 
 	S:HandleDropDownBox(_G.ClubFinderLanguageDropdown)
-	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.PreviousPage)
-	S:HandleNextPrevButton(ClubFinderGuildFinderFrame.GuildCards.NextPage)
 
-	-->> Monitor this
-	for _, card in pairs(ClubFinderGuildFinderFrame.GuildCards.Cards, ClubFinderGuildFinderFrame.PendingGuildCards.Cards) do
-		if not card.isSkinned then
-			card.CardBackground:Hide()
-			card:SetTemplate()
-			card.GuildBannerEmblemLogo:SetDrawLayer('OVERLAY')
-			S:HandleButton(card.RequestJoin)
-			card.isSkinned = true
+	for _, name in next, {"GuildFinderFrame", "InvitationFrame", "TicketFrame", "CommunityFinderFrame", "ClubFinderInvitationFrame"} do
+		local frame = CommunitiesFrame[name]
+		if frame then
+			frame:StripTextures()
+			frame.InsetFrame:Hide()
+			if frame.CircleMask then
+				frame.CircleMask:Hide()
+				frame.IconRing:Hide()
+				S:HandleIcon(frame.Icon)
+			end
+			if frame.FindAGuildButton then S:HandleButton(frame.FindAGuildButton) end
+			if frame.AcceptButton then S:HandleButton(frame.AcceptButton) end
+			if frame.DeclineButton then S:HandleButton(frame.DeclineButton) end
+			if frame.ApplyButton then S:HandleButton(frame.ApplyButton) end
+
+			local requestFrame = frame.RequestToJoinFrame
+			if requestFrame then
+				requestFrame:StripTextures()
+				requestFrame:SetTemplate('Transparent')
+
+				hooksecurefunc(requestFrame, 'Initialize', function(s)
+					for button in s.SpecsPool:EnumerateActive() do
+						if button.CheckBox then
+							S:HandleCheckBox(button.CheckBox)
+							button.CheckBox:Size(26, 26)
+						end
+					end
+				end)
+
+				requestFrame.MessageFrame:StripTextures(true)
+				requestFrame.MessageFrame.MessageScroll:StripTextures(true)
+
+				S:HandleEditBox(requestFrame.MessageFrame.MessageScroll)
+				S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
+				S:HandleButton(requestFrame.Apply)
+				S:HandleButton(requestFrame.Cancel)
+			end
+
+			if frame.GuildCards then HandleGuildCards(frame.GuildCards) end
+			if frame.PendingGuildCards then HandleGuildCards(frame.PendingGuildCards) end
+			if frame.CommunityCards then HandleCommunityCards(frame.CommunityCards) end
+			if frame.PendingCommunityCards then HandleCommunityCards(frame.PendingCommunityCards) end
 		end
 	end
 
@@ -257,18 +311,6 @@ function S:Blizzard_Communities()
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
 	ClubFinderCommunityAndGuildFinderFrame:StripTextures()
 
-	-->> Monitor this
-	for _, button in pairs(ClubFinderCommunityAndGuildFinderFrame.CommunityCards.ListScrollFrame.buttons, ClubFinderCommunityAndGuildFinderFrame.PendingCommunityCards.ListScrollFrame.buttons) do
-		if not button.isSkinned then
-			button.CircleMask:Hide()
-			button.LogoBorder:Hide()
-			S:HandleIcon(button.CommunityLogo)
-			S:HandleButton(button)
-
-			button.isSkinned = true
-		end
-	end
-
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.ClubFilterDropdown)
 	S:HandleDropDownBox(ClubFinderCommunityAndGuildFinderFrame.OptionsList.SortByDropdown)
 
@@ -288,28 +330,6 @@ function S:Blizzard_Communities()
 
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
 	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
-
-	for _, t in ipairs({ClubFinderGuildFinderFrame.RequestToJoinFrame, ClubFinderCommunityAndGuildFinderFrame.RequestToJoinFrame}) do
-		t:StripTextures()
-		t:SetTemplate('Transparent')
-
-		hooksecurefunc(t, 'Initialize', function(s)
-			for button in s.SpecsPool:EnumerateActive() do
-				if button.CheckBox then
-					S:HandleCheckBox(button.CheckBox)
-					button.CheckBox:Size(26, 26)
-				end
-			end
-		end)
-
-		t.MessageFrame:StripTextures(true)
-		t.MessageFrame.MessageScroll:StripTextures(true)
-
-		S:HandleEditBox(t.MessageFrame.MessageScroll)
-		S:HandleScrollBar(_G.ClubFinderGuildFinderFrameScrollBar)
-		S:HandleButton(t.Apply)
-		S:HandleButton(t.Cancel)
-	end
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
