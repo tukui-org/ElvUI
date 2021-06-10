@@ -97,8 +97,9 @@ local function ColorMemberName(self, info)
 	end
 end
 
+local card = {"First", "Second", "Third"}
 local function HandleGuildCards(cards)
-	for _, name in pairs({'First', 'Second', 'Third'}) do
+	for _, name in pairs(card) do
 		local guildCard = cards[name..'Card']
 		guildCard:StripTextures()
 		guildCard:SetTemplate('Transparent')
