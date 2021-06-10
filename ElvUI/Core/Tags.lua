@@ -382,7 +382,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Methods[format('power:%s', tagTextFormat)] = function(unit)
 		local powerType = UnitPowerType(unit)
 		local min = UnitPower(unit, powerType)
-		if min ~= 0 and tagTextFormat ~= 'deficit' then
+		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType))
 		end
 	end
@@ -392,7 +392,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
 		if barIndex and barIndex[UnitPowerType(unit)] then
 			local min = UnitPower(unit, POWERTYPE_MANA)
-			if min ~= 0 and tagTextFormat ~= 'deficit' then
+			if min ~= 0 then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 			end
 		end
@@ -401,7 +401,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Events[format('mana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('mana:%s', tagTextFormat)] = function(unit)
 		local min = UnitPower(unit, POWERTYPE_MANA)
-		if min ~= 0 and tagTextFormat ~= 'deficit' then
+		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 		end
 	end

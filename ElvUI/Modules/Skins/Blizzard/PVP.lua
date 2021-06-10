@@ -191,7 +191,7 @@ function S:Blizzard_PVPUI()
 		Frame.ConquestBar.Background:Hide()
 		Frame.ConquestBar.Reward.Ring:Hide()
 		Frame.ConquestBar.Reward.CircleMask:Hide()
-		Frame.ConquestBar:SetTemplate()
+		Frame.ConquestBar:SetTemplate('Transparent')
 
 		Frame.ConquestBar.Reward:ClearAllPoints()
 		Frame.ConquestBar.Reward:Point('LEFT', Frame.ConquestBar, 'RIGHT', 0, 0)

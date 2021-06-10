@@ -108,7 +108,7 @@ function S:Blizzard_WeeklyRewards()
 		local overlay = frame.Overlay
 		if overlay then
 			overlay:StripTextures()
-			overlay:SetTemplate('Transparent')
+			overlay:SetTemplate()
 		end
 	end)
 

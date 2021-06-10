@@ -91,10 +91,12 @@ function AB:HandleMicroButton(button)
 end
 
 function AB:MainMenuMicroButton_SetNormal()
+	_G.MainMenuBarPerformanceBar:ClearAllPoints()
 	_G.MainMenuBarPerformanceBar:Point('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 9, -36)
 end
 
 function AB:MainMenuMicroButton_SetPushed()
+	_G.MainMenuBarPerformanceBar:ClearAllPoints()
 	_G.MainMenuBarPerformanceBar:Point('TOPLEFT', _G.MainMenuMicroButton, 'TOPLEFT', 8, -37)
 end
 
@@ -138,20 +140,22 @@ function AB:UpdateMicroPositionDimensions()
 	local numBtns = #btns-1
 	db.buttons = numBtns
 
+	local buttonsPerRow = db.buttonsPerRow
 	local backdropSpacing = db.backdropSpacing
+
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(db.point)
 	local lastButton, anchorRowButton = microBar
 	for i = 1, numBtns do
 		local name = __buttonIndex[i] or btns[i]
 		local button = _G[name]
 
-		local columnIndex = i - db.buttonsPerRow
+		local columnIndex = i - buttonsPerRow
 		local columnName = __buttonIndex[columnIndex] or btns[columnIndex]
 		local columnButton = _G[columnName]
 
 		button.db = db
 
-		if i == 1 or i == db.buttonsPerRow then
+		if i == 1 or i == buttonsPerRow then
 			anchorRowButton = button
 		end
 

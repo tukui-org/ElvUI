@@ -182,7 +182,7 @@ local function CreateDTOptions(name, data)
 		if key == 'decimalLength' then
 			optionTable.args.decimalLength = ACH:Range(L["Decimal Length"], nil, nil, { min = 0, max = 5, step = 1 })
 		elseif key == 'goldFormat' then
-			optionTable.args.goldFormat = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown in the gold datatext and its tooltip."], nil, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"],  SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" })
+			optionTable.args.goldFormat = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown in the gold datatext and its tooltip."], nil, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" })
 		elseif key == 'goldCoins' then
 			optionTable.args.goldCoins = ACH:Toggle(L["Show Coins"], L["Use coin icons instead of colored text."])
 		elseif key == 'Label' then
@@ -193,6 +193,8 @@ local function CreateDTOptions(name, data)
 			optionTable.args.ShowOthers = ACH:Toggle(L["Other AddOns"])
 		elseif key == 'textFormat' then
 			optionTable.args.textFormat = ACH:Select(L["Text Format"], nil, nil, nil, nil, 'double', function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
+		elseif key == 'latency' then
+			optionTable.args.latency = ACH:Select(L["Latency"], nil, nil, { WORLD = L["World Latency"], HOME = L["Home Latency"] })
 		end
 	end
 

@@ -482,9 +482,9 @@ function S:LookingForGroupFrames()
 	local LFGListFrame = _G.LFGListFrame
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
-	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
 	LFGListFrame.CategorySelection.StartGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.StartGroupButton:Point('BOTTOMLEFT', -1, 3)
+	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point('BOTTOMRIGHT', -6, 3)
 

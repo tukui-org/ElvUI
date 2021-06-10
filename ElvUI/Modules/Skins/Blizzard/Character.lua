@@ -476,13 +476,19 @@ function S:CharacterFrame()
 	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
 
 	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
-		local bu = _G["ReputationBar"..i.."ExpandOrCollapseButton"]
-		S:HandleCollapseTexture(bu)
+		local bu = _G['ReputationBar'..i..'ExpandOrCollapseButton']
+		if bu then S:HandleCollapseTexture(bu) end
 	end
 
-	--Handle Tabs at bottom of character frame
-	for i = 1, 4 do
-		S:HandleTab(_G['CharacterFrameTab'..i])
+	do --Handle Tabs at bottom of character frame
+		local i = 1
+		local tab = _G['CharacterFrameTab'..i]
+		while tab do
+			S:HandleTab(tab)
+
+			i = i + 1
+			tab = _G['CharacterFrameTab'..i]
+		end
 	end
 
 	hooksecurefunc('ExpandFactionHeader', UpdateFactionSkins)

@@ -60,7 +60,7 @@ function S:GossipFrame()
 	S:HandlePortraitFrame(GossipFrame)
 
 	local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
-	GossipGreetingScrollFrame:SetTemplate()
+	GossipGreetingScrollFrame:SetTemplate('Transparent')
 
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc('GossipFrameUpdate', handleGossipText)

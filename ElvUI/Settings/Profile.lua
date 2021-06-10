@@ -178,9 +178,10 @@ P.databars.experience.hideAtMaxLevel = true
 P.databars.experience.showLevel = false
 P.databars.experience.width = 348
 P.databars.experience.fontSize = 12
+P.databars.experience.showQuestXP = true
+P.databars.experience.questTrackedOnly = false
 P.databars.experience.questCompletedOnly = false
 P.databars.experience.questCurrentZoneOnly = false
-P.databars.experience.questTrackedOnly = false
 
 P.databars.reputation.enable = false
 P.databars.reputation.hideBelowMaxLevel = false
