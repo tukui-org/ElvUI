@@ -38,9 +38,9 @@ local function reskinPickerOptions(self)
 	if scrollTarget then
 		for i = 1, scrollTarget:GetNumChildren() do
 			local child = select(i, scrollTarget:GetChildren())
-			if not child.styled then
+			if not child.IsSkinned then
 				child.UnCheck:SetTexture(nil)
-				child.Highlight:SetColorTexture(1, .82, 0)
+				child.Highlight:SetColorTexture(1, .82, 0, 0.4)
 
 				local check = child.Check
 				check:SetColorTexture(1, .82, 0, 0.8)
@@ -48,7 +48,7 @@ local function reskinPickerOptions(self)
 				check:SetPoint("LEFT", 2, 0)
 				check:CreateBackdrop('Transparent')
 
-				child.styled = true
+				child.IsSkinned = true
 			end
 		end
 	end
@@ -302,6 +302,8 @@ function S:BlizzardOptions()
 
 	HandleVoicePicker(_G.TextToSpeechFrameTtsVoicePicker)
 	HandleVoicePicker(_G.TextToSpeechFrameTtsVoiceAlternatePicker)
+
+	_G.ChatConfigTextToSpeechChannelSettingsLeft:StripTextures()
 
 	local OptionsFrames = { _G.InterfaceOptionsFrame, _G.InterfaceOptionsFrameCategories, _G.InterfaceOptionsFramePanelContainer, _G.InterfaceOptionsFrameAddOns, _G.VideoOptionsFrame, _G.VideoOptionsFrameCategoryFrame, _G.VideoOptionsFramePanelContainer, _G.Display_, _G.Graphics_, _G.RaidGraphics_ }
 	local OptionsFrameBackdrops = { _G.AudioOptionsSoundPanelHardware, _G.AudioOptionsSoundPanelVolume, _G.AudioOptionsSoundPanelPlayback, _G.AudioOptionsVoicePanelTalking, _G.AudioOptionsVoicePanelListening, _G.AudioOptionsVoicePanelBinding }
