@@ -710,21 +710,20 @@ G.unitframe.aurafilters.Whitelist = {
 G.unitframe.aurafilters.RaidDebuffs = {
 	type = 'Whitelist',
 	spells = {
-	-- Mythic+ Dungeons
-		-- General Affix
+	----------------------------------------------------------
+	-------------------- Mythic+ Specific --------------------
+	----------------------------------------------------------
+	-- General Affixes
 		[209858] = Defaults(), -- Necrotic
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
-		-- Shadowlands Season 1
+	-- Shadowlands Affixes
 		[342494] = Defaults(), -- Belligerent Boast (Prideful)
-		-- Shadowlands Season 2
-
-
-	-- Shadowlands Dungeons
-		-- Tazavesh, the Veiled Market
-
-		-- Halls of Atonement
+	----------------------------------------------------------
+	------------------ Shadowlands Dungeons ------------------
+	----------------------------------------------------------
+	-- Halls of Atonement
 		[335338] = Defaults(), -- Ritual of Woe
 		[326891] = Defaults(), -- Anguish
 		[329321] = Defaults(), -- Jagged Swipe 1
@@ -736,7 +735,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323650] = Defaults(), -- Haunting Fixation
 		[326874] = Defaults(), -- Ankle Bites
 		[340446] = Defaults(), -- Mark of Envy
-		-- Mists of Tirna Scithe
+	-- Mists of Tirna Scithe
 		[325027] = Defaults(), -- Bramble Burst
 		[323043] = Defaults(), -- Bloodletting
 		[322557] = Defaults(), -- Soul Split
@@ -750,7 +749,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[325224] = Defaults(), -- Anima Injection
 		[326092] = Defaults(), -- Debilitating Poison
 		[325418] = Defaults(), -- Volatile Acid
-		-- Plaguefall
+	-- Plaguefall
 		[336258] = Defaults(), -- Solitary Prey
 		[331818] = Defaults(), -- Shadow Ambush
 		[329110] = Defaults(), -- Slime Injection
@@ -766,7 +765,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[333406] = Defaults(), -- Assassinate
 		[332397] = Defaults(), -- Shroudweb
 		[330069] = Defaults(), -- Concentrated Plague
-		-- The Necrotic Wake
+	-- The Necrotic Wake
 		[321821] = Defaults(), -- Disgusting Guts
 		[323365] = Defaults(), -- Clinging Darkness
 		[338353] = Defaults(), -- Goresplatter
@@ -785,7 +784,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[334748] = Defaults(), -- Drain FLuids
 		[333489] = Defaults(), -- Necrotic Breath
 		[320717] = Defaults(), -- Blood Hunger
-		-- Theater of Pain
+	-- Theater of Pain
 		[333299] = Defaults(), -- Curse of Desolation 1
 		[333301] = Defaults(), -- Curse of Desolation 2
 		[319539] = Defaults(), -- Soulless
@@ -802,7 +801,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[319626] = Defaults(), -- Phantasmal Parasite
 		[324449] = Defaults(), -- Manifest Death
 		[341949] = Defaults(), -- Withering Blight
-		-- Sanguine Depths
+	-- Sanguine Depths
 		[326827] = Defaults(), -- Dread Bindings
 		[326836] = Defaults(), -- Curse of Suppression
 		[322554] = Defaults(), -- Castigate
@@ -812,7 +811,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[335306] = Defaults(), -- Barbed Shackles
 		[322429] = Defaults(), -- Severing Slice
 		[334653] = Defaults(), -- Engorge
-		-- Spires of Ascension
+	-- Spires of Ascension
 		[338729] = Defaults(), -- Charged Stomp
 		[338747] = Defaults(), -- Purifying Blast
 		[327481] = Defaults(), -- Dark Lance
@@ -826,7 +825,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[317661] = Defaults(), -- Insidious Venom
 		[330683] = Defaults(), -- Raw Anima
 		[328434] = Defaults(), -- Intimidated
-		-- De Other Side
+	-- De Other Side
 		[320786] = Defaults(), -- Power Overwhelming
 		[334913] = Defaults(), -- Master of Death
 		[325725] = Defaults(), -- Cosmic Artifice
@@ -845,28 +844,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323687] = Defaults(), -- Arcane Lightning
 		[323877] = Defaults(), -- Echo Finger Laser X-treme
 		[334535] = Defaults(), -- Beak Slice
-
-	-- Sanctum of Domination
-		-- The Tarragrue
-		-- The Eye of the Jailer
-		-- The Nine
-		-- Remnant of Ner'zhul
-		-- Soulrender Dormazain
-		-- Painsmith Raznal
-		-- Guardian of the First Ones
-		-- Fatescribe Roh-Kalo
-		-- Kel'Thuzad
-		-- Sylvanas Windrunner
-
-	-- Castle Nathria
-		-- Shriekwing
+	--------------------------------------------------------
+	-------------------- Castle Nathria --------------------
+	--------------------------------------------------------
+	-- Shriekwing
 		[328897] = Defaults(), -- Exsanguinated
 		[330713] = Defaults(), -- Reverberating Pain
 		[329370] = Defaults(), -- Deadly Descent
 		[336494] = Defaults(), -- Echo Screech
 		[346301] = Defaults(), -- Bloodlight
 		[342077] = Defaults(), -- Echolocation
-		-- Huntsman Altimor
+	-- Huntsman Altimor
 		[335304] = Defaults(), -- Sinseeker
 		[334971] = Defaults(), -- Jagged Claws
 		[335111] = Defaults(), -- Huntsman's Mark 3
@@ -875,17 +863,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[334945] = Defaults(), -- Vicious Lunge
 		[334852] = Defaults(), -- Petrifying Howl
 		[334695] = Defaults(), -- Destabilize
-		-- Hungering Destroyer
+	-- Hungering Destroyer
 		[334228] = Defaults(), -- Volatile Ejection
 		[329298] = Defaults(), -- Gluttonous Miasma
-		-- Lady Inerva Darkvein
+	-- Lady Inerva Darkvein
 		[325936] = Defaults(), -- Shared Cognition
 		[335396] = Defaults(), -- Hidden Desire
 		[324983] = Defaults(), -- Shared Suffering
 		[324982] = Defaults(), -- Shared Suffering (Partner)
 		[332664] = Defaults(), -- Concentrate Anima
 		[325382] = Defaults(), -- Warped Desires
-		-- Sun King's Salvation
+	-- Sun King's Salvation
 		[333002] = Defaults(), -- Vulgar Brand
 		[326078] = Defaults(), -- Infuser's Boon
 		[325251] = Defaults(), -- Sin of Pride
@@ -893,7 +881,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[341473] = Defaults(), -- Crimson Flurry Teleport
 		[328479] = Defaults(), -- Eyes on Target
 		[328889] = Defaults(), -- Greater Castigation
-		-- Artificer Xy'mox
+	-- Artificer Xy'mox
 		[327902] = Defaults(), -- Fixate
 		[326302] = Defaults(), -- Stasis Trap
 		[325236] = Defaults(), -- Glyph of Destruction
@@ -901,7 +889,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[328468] = Defaults(), -- Dimensional Tear 1
 		[328448] = Defaults(), -- Dimensional Tear 2
 		[340860] = Defaults(), -- Withering Touch
-		-- The Council of Blood
+	-- The Council of Blood
 		[327052] = Defaults(), -- Drain Essence 1
 		[327773] = Defaults(), -- Drain Essence 2
 		[346651] = Defaults(), -- Drain Essence Mythic
@@ -910,7 +898,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[331706] = Defaults(), -- Scarlet Letter
 		[331636] = Defaults(), -- Dark Recital 1
 		[331637] = Defaults(), -- Dark Recital 2
-		-- Sludgefist
+	-- Sludgefist
 		[335470] = Defaults(), -- Chain Slam
 		[339181] = Defaults(), -- Chain Slam (Root)
 		[331209] = Defaults(), -- Hateful Gaze
@@ -920,7 +908,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[342420] = Defaults(), -- Chain Them! 2
 		[335295] = Defaults(), -- Shattering Chain
 		[332572] = Defaults(), -- Falling Rubble
-		-- Stone Legion Generals
+	-- Stone Legion Generals
 		[334498] = Defaults(), -- Seismic Upheaval
 		[337643] = Defaults(), -- Unstable Footing
 		[334765] = Defaults(), -- Heart Rend
@@ -932,7 +920,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[342655] = Defaults(), -- Volatile Anima Infusion
 		[342698] = Defaults(), -- Volatile Anima Infection
 		[343881] = Defaults(), -- Serrated Tear
-		-- Sire Denathrius
+	-- Sire Denathrius
 		[326851] = Defaults(), -- Blood Price
 		[327796] = Defaults(), -- Night Hunter
 		[327992] = Defaults(), -- Desolation
@@ -944,7 +932,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[327039] = Defaults(), -- Feeding Time
 		[332794] = Defaults(), -- Fatal Finesse
 		[334016] = Defaults(), -- Unworthy
-
 	},
 }
 
@@ -1107,52 +1094,52 @@ P.unitframe.filters = {
 -- List of spells to display ticks
 G.unitframe.ChannelTicks = {
 	-- Racials
-	[291944] = 6,	-- Regeneratin (Zandalari)
+	[291944] = 6, -- Regeneratin (Zandalari)
 	-- Warlock
-	[198590] = 5,	-- Drain Soul
-	[755]    = 5,	-- Health Funnel
-	[234153] = 5,	-- Drain Life
+	[198590] = 5, -- Drain Soul
+	[755]    = 5, -- Health Funnel
+	[234153] = 5, -- Drain Life
 	-- Priest
-	[64843]  = 4,	-- Divine Hymn
-	[15407]  = 6,	-- Mind Flay
-	[48045]  = 6,	-- Mind Sear
-	[47757]  = 3,	-- Penance (heal)
-	[47758]  = 3,	-- Penance (dps)
-	[64902]  = 5,	-- Symbol of Hope (Mana Hymn)
+	[64843]  = 4, -- Divine Hymn
+	[15407]  = 6, -- Mind Flay
+	[48045]  = 6, -- Mind Sear
+	[47757]  = 3, -- Penance (heal)
+	[47758]  = 3, -- Penance (dps)
+	[64902]  = 5, -- Symbol of Hope (Mana Hymn)
 	-- Mage
-	[5143]   = 4,	-- Arcane Missiles
-	[12051]  = 6,	-- Evocation
-	[205021] = 5,	-- Ray of Frost
+	[5143]   = 4, -- Arcane Missiles
+	[12051]  = 6, -- Evocation
+	[205021] = 5, -- Ray of Frost
 	-- Druid
-	[740]    = 4,	-- Tranquility
+	[740]    = 4, -- Tranquility
 	-- DK
-	[206931] = 3,	-- Blooddrinker
+	[206931] = 3, -- Blooddrinker
 	-- DH
-	[198013] = 10,	-- Eye Beam
-	[212084] = 10,	-- Fel Devastation
+	[198013] = 10, -- Eye Beam
+	[212084] = 10, -- Fel Devastation
 	-- Hunter
-	[120360] = 15,	-- Barrage
-	[257044] = 7,	-- Rapid Fire
+	[120360] = 15, -- Barrage
+	[257044] = 7, -- Rapid Fire
 }
 
 -- Spells Effected By Talents
 G.unitframe.TalentChannelTicks = {
 	-- Priest
-	[47757]  = {tier = 1, column = 1, ticks = 4},	-- Penance (heal)
-	[47758]  = {tier = 1, column = 1, ticks = 4},	-- Penance (dps)
+	[47757]  = {tier = 1, column = 1, ticks = 4}, -- Penance (Heal)
+	[47758]  = {tier = 1, column = 1, ticks = 4}, -- Penance (DPS)
 }
 
 G.unitframe.ChannelTicksSize = {
 	-- Warlock
-	[198590] = 1,	-- Drain Soul
+	[198590] = 1, -- Drain Soul
 	-- Mage
-	[205021] = 1,	-- Ray of Frost
+	[205021] = 1, -- Ray of Frost
 }
 
 -- Spells Effected By Haste, these spells require a Tick Size (table above)
 G.unitframe.HastedChannelTicks = {
 	-- Mage
-	[205021] = true,	-- Ray of Frost
+	[205021] = true, -- Ray of Frost
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
