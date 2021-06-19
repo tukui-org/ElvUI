@@ -1017,6 +1017,17 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
 	-- Tazavesh, the Veiled Market
+		[355147] = Defaults(), -- Fish Invigoration
+		[351960] = Defaults(), -- Static Cling
+		[351088] = Defaults(), -- Relic Link
+		[346296] = Defaults(), -- Instability
+		[355057] = Defaults(), -- Cry of Mrrggllrrgg
+		[355640] = Defaults(), -- Phalanx Field
+		[355783] = Defaults(), -- Force Multiplied
+		[351086] = Defaults(), -- Power Overwhelming
+		[347840] = Defaults(), -- Feral
+		[355782] = Defaults(), -- Force Multiplier
+		[347992] = Defaults(), -- Rotar Body Armor
 	-- Halls of Atonement
 		[326450] = Defaults(), -- Loyal Beasts
 	-- Mists of Tirna Scithe
