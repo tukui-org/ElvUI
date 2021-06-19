@@ -871,7 +871,22 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------- Sanctum of Domination -----------------
 	--------------------------------------------------------
 	-- The Tarragrue
+		[347283] = Defaults(), -- Predator's Howl
+		[347286] = Defaults(), -- Unshakeable Dread
+		[346986] = Defaults(), -- Crushed Armor
+		[347991] = Defaults(), -- Ten of Towers
+		[347269] = Defaults(), -- Chains of Eternity
+		[346985] = Defaults(), -- Overpower
+		[347274] = Defaults(), -- Annihilating Smash
 	-- Eye of the Jailer
+		[350606] = Defaults(), -- Hopeless Lethargy
+		[355240] = Defaults(), -- Scorn
+		[355245] = Defaults(), -- Ire
+		[349979] = Defaults(), -- Dragging Chains
+		[348074] = Defaults(), -- Assailing Lance
+		[351827] = Defaults(), -- Spreading Misery
+		[355143] = Defaults(), -- Deathlink
+		[350763] = Defaults(), -- Annihilating Glare
 	-- The Nine
 	-- Remnant of Ner'zhul
 	-- Soulrender Dormazain
