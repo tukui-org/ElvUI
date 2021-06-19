@@ -81,7 +81,7 @@ G.unitframe.aurafilters.CCDebuffs = {
 		[126819] = Defaults(3), -- Porcupine (Poly)
 		[161354] = Defaults(3), -- Monkey (Poly)
 		[161353] = Defaults(3), -- Polar bear (Poly)
-		[61780] = Defaults(3),  -- Turkey (Poly)
+		[61780]  = Defaults(3),  -- Turkey (Poly)
 		[161355] = Defaults(3), -- Penguin (Poly)
 		[161372] = Defaults(3), -- Peacock (Poly)
 		[277787] = Defaults(3), -- Direhorn (Poly)
@@ -209,7 +209,7 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[201940] = Defaults(), -- Protector of the Pack
 		[201939] = Defaults(), -- Protector of the Pack (Allies)
 		[192081] = Defaults(), -- Ironfur
-		[50334] = Defaults(), -- Berserk (Guardian)
+		[50334]  = Defaults(), -- Berserk (Guardian)
 	-- Hunter
 		[186265] = Defaults(), -- Aspect of the Turtle
 		[53480]  = Defaults(), -- Roar of Sacrifice
@@ -326,9 +326,9 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[212552] = Defaults(), -- Wraith Walk
 		[215711] = Defaults(), -- Soul Reaper
 		[194918] = Defaults(), -- Blighted Rune Weapon
-		[48265] = Defaults(), -- Death's Advance
-		[49039] = Defaults(), -- Lichborne
-		[47568] = Defaults(), -- Empower Rune Weapon
+		[48265]  = Defaults(), -- Death's Advance
+		[49039]  = Defaults(), -- Lichborne
+		[47568]  = Defaults(), -- Empower Rune Weapon
 	-- Demon Hunter
 		[207811] = Defaults(), -- Nether Bond (DH)
 		[207810] = Defaults(), -- Nether Bond (Target)
@@ -363,7 +363,7 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[102558] = Defaults(), -- Incarnation: Guardian of Ursoc
 		[117679] = Defaults(), -- Incarnation
 		[106951] = Defaults(), -- Berserk (Feral)
-		[50334] = Defaults(), -- Berserk (Guardian)
+		[50334]  = Defaults(), -- Berserk (Guardian)
 		[5217]   = Defaults(), -- Tiger's Fury
 		[1850]   = Defaults(), -- Dash
 		[137452] = Defaults(), -- Displacer Beast
@@ -573,12 +573,12 @@ G.unitframe.aurafilters.PlayerBuffs = {
 		[215572] = Defaults(), -- Frothing Berserker
 		[199203] = Defaults(), -- Thirst for Battle
 	-- Racials
-		[65116] = Defaults(), -- Stoneform
-		[59547] = Defaults(), -- Gift of the Naaru
-		[20572] = Defaults(), -- Blood Fury
-		[26297] = Defaults(), -- Berserking
-		[68992] = Defaults(), -- Darkflight
-		[58984] = Defaults(), -- Shadowmeld
+		[65116]  = Defaults(), -- Stoneform
+		[59547]  = Defaults(), -- Gift of the Naaru
+		[20572]  = Defaults(), -- Blood Fury
+		[26297]  = Defaults(), -- Berserking
+		[68992]  = Defaults(), -- Darkflight
+		[58984]  = Defaults(), -- Shadowmeld
 	-- Consumables
 		[251231] = Defaults(), -- Steelskin Potion (BfA Armor)
 		[251316] = Defaults(), -- Potion of Bursting Blood (BfA Melee)
@@ -958,9 +958,9 @@ G.unitframe.aurafilters.RaidDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
-	--------------------------------------------------------
-	---------------- Sanctum of Domination -----------------
-	--------------------------------------------------------
+	----------------------------------------------------------
+	----------------- Sanctum of Domination ------------------
+	----------------------------------------------------------
 	-- The Tarragrue
 	-- Eye of the Jailer
 	-- The Nine
@@ -1112,12 +1112,13 @@ G.unitframe.aurawatch = {
 		[193396] = UF:AuraWatch_AddSpell(193396, 'TOPRIGHT', {0.6, 0.2, 0.8}, true),	-- Demonic Empowerment
 		-- Hunter Pets
 		[272790] = UF:AuraWatch_AddSpell(272790, 'TOPLEFT', {0.89, 0.09, 0.05}, true),	-- Frenzy
-		[136] = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Mend Pet
+		[136]    = UF:AuraWatch_AddSpell(136, 'TOPRIGHT', {0.2, 0.8, 0.2}, true),		-- Mend Pet
 	},
 	HUNTER = {
 		[90361]  = UF:AuraWatch_AddSpell(90361, 'TOP', {0.34, 0.47, 0.31}),				-- Spirit Mend (HoT)
 	},
-	DEMONHUNTER = {}, -- Keep for reference to G.unitframe.aurawatch[E.myclass][SomeValue]
+	-- Keep those for reference to G.unitframe.aurawatch[E.myclass][SomeValue]
+	DEMONHUNTER = {},
 	WARLOCK = {},
 	MAGE = {},
 	DEATHKNIGHT = {},
