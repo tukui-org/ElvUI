@@ -958,46 +958,68 @@ G.unitframe.aurafilters.RaidDebuffs = {
 G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
-		-- Sanctum of Domination
-		-- Castle Nathria
-		[343026] = Defaults(), -- Cloak of Flames (Sun King's Salvation)
-		[329808] = Defaults(), -- Hardened Stone Form Grashaal (Stone Legion Generals)
-		[329636] = Defaults(), -- Hardened Stone Form Kaal (Stone Legion Generals)
-		[340037] = Defaults(), -- Volatile Stone Shell (Stone Legion Generals)
-		-- Shadowlands Season 1
-		[340873] = Defaults(), -- Bursting With Pride (Prideful)
-		[340880] = Defaults(), -- Prideful
-		-- Shadowlands Season 2
-		-- Mythic+ General
+	--------------------------------------------------------
+	---------------- Sanctum of Domination -----------------
+	--------------------------------------------------------
+	-- The Tarragrue
+	-- Eye of the Jailer
+	-- The Nine
+	-- Remnant of Ner'zhul
+	-- Soulrender Dormazain
+	-- Painsmith Raznal
+	-- Guardian of the First Ones
+	-- Fatescribe Roh-Kalo
+	-- Kel'Thuzad
+	-- Sylvanas Windrunner
+	----------------------------------------------------------
+	--------------------- Castle Nathria ---------------------
+	----------------------------------------------------------
+	-- Sun King's Salvation
+		[343026] = Defaults(), -- Cloak of Flames
+	-- Stone Legion Generals
+		[329808] = Defaults(), -- Hardened Stone Form Grashaal
+		[329636] = Defaults(), -- Hardened Stone Form Kaal
+		[340037] = Defaults(), -- Volatile Stone Shell
+	----------------------------------------------------------
+	-------------------- Mythic+ Specific --------------------
+	----------------------------------------------------------
+	-- Mythic+ General
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
 		[343502] = Defaults(), -- Inspiring
-		-- Tazavesh, the Veiled Market
-		-- Halls of Atonement
+	-- Shadowlands Season 1
+		[340873] = Defaults(), -- Bursting With Pride (Prideful)
+		[340880] = Defaults(), -- Prideful
+	-- Shadowlands Season 2
+	----------------------------------------------------------
+	------------------ Shadowlands Dungeons ------------------
+	----------------------------------------------------------
+	-- Tazavesh, the Veiled Market
+	-- Halls of Atonement
 		[326450] = Defaults(), -- Loyal Beasts
-		-- Mists of Tirna Scithe
+	-- Mists of Tirna Scithe
 		[336499] = Defaults(), -- Guessing Game
-		-- Plaguefall
+	-- Plaguefall
 		[336451] = Defaults(), -- Bulwark of Maldraxxus
 		[333737] = Defaults(), -- Congealed Contagion
-		-- The Necrotic Wake
+	-- The Necrotic Wake
 		[321754] = Defaults(), -- Icebound Aegis
 		[343558] = Defaults(), -- Morbid Fixation
 		[343470] = Defaults(), -- Boneshatter Shield
-		-- Theater of Pain
+	-- Theater of Pain
 		[331510] = Defaults(), -- Death Wish
 		[333241] = Defaults(), -- Raging Tantrum
 		[326892] = Defaults(), -- Fixate
 		[330545] = Defaults(), -- Commanding Presences
-		-- Sanguine Depths
+	-- Sanguine Depths
 		[322433] = Defaults(), -- Stoneskin
 		[321402] = Defaults(), -- Engorge
-		-- Spires of Ascension
+	-- Spires of Ascension
 		[327416] = Defaults(), -- Recharge Anima
 		[317936] = Defaults(), -- Forsworn Doctrine
 		[327808] = Defaults(), -- Inspiring Presence
-		-- De Other Side
+	-- De Other Side
 		[344739] = Defaults(), -- Spectral
 		[333227] = Defaults(), -- Undying Rage
 		[322773] = Defaults(), -- Blood Barrier
