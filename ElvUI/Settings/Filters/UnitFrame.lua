@@ -718,11 +718,13 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[226512] = Defaults(), -- Sanguine
 		[240559] = Defaults(), -- Grievous
 		[240443] = Defaults(), -- Bursting
-	-- Shadowlands Affixes
+	-- Shadowlands Season 1
 		[342494] = Defaults(), -- Belligerent Boast (Prideful)
+	-- Shadowlands Season 2
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
+	-- Tazavesh, the Veiled Market
 	-- Halls of Atonement
 		[335338] = Defaults(), -- Ritual of Woe
 		[326891] = Defaults(), -- Anguish
@@ -845,6 +847,19 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[323877] = Defaults(), -- Echo Finger Laser X-treme
 		[334535] = Defaults(), -- Beak Slice
 	--------------------------------------------------------
+	---------------- Sanctum of Domination -----------------
+	--------------------------------------------------------
+	-- The Tarragrue
+	-- Eye of the Jailer
+	-- The Nine
+	-- Remnant of Ner'zhul
+	-- Soulrender Dormazain
+	-- Painsmith Raznal
+	-- Guardian of the First Ones
+	-- Fatescribe Roh-Kalo
+	-- Kel'Thuzad
+	-- Sylvanas Windrunner
+	--------------------------------------------------------
 	-------------------- Castle Nathria --------------------
 	--------------------------------------------------------
 	-- Shriekwing
@@ -944,21 +959,21 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	type = 'Whitelist',
 	spells = {
 		-- Sanctum of Domination
-
 		-- Castle Nathria
 		[343026] = Defaults(), -- Cloak of Flames (Sun King's Salvation)
 		[329808] = Defaults(), -- Hardened Stone Form Grashaal (Stone Legion Generals)
 		[329636] = Defaults(), -- Hardened Stone Form Kaal (Stone Legion Generals)
 		[340037] = Defaults(), -- Volatile Stone Shell (Stone Legion Generals)
-		-- Mythic+ General
+		-- Shadowlands Season 1
 		[340873] = Defaults(), -- Bursting With Pride (Prideful)
 		[340880] = Defaults(), -- Prideful
+		-- Shadowlands Season 2
+		-- Mythic+ General
 		[209859] = Defaults(), -- Bolster
 		[178658] = Defaults(), -- Raging
 		[226510] = Defaults(), -- Sanguine
 		[343502] = Defaults(), -- Inspiring
 		-- Tazavesh, the Veiled Market
-
 		-- Halls of Atonement
 		[326450] = Defaults(), -- Loyal Beasts
 		-- Mists of Tirna Scithe
