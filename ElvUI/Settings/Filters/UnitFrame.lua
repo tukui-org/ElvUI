@@ -725,6 +725,27 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
 	-- Tazavesh, the Veiled Market
+		[350804] = Defaults(), -- Collapsing Energy
+		[350885] = Defaults(), -- Hyperlight Jolt
+		[351101] = Defaults(), -- Energy Fragmentation
+		[346828] = Defaults(), -- Sanitizing Field
+		[355641] = Defaults(), -- Scintillate
+		[355451] = Defaults(), -- Undertow
+		[355581] = Defaults(), -- Crackle
+		[349999] = Defaults(), -- Anima Detonation
+		[346961] = Defaults(), -- Purging Field
+		[351956] = Defaults(), -- High-Value Target
+		[346297] = Defaults(), -- Unstable Explosion
+		[347728] = Defaults(), -- Flock!
+		[356408] = Defaults(), -- Ground Stomp
+		[347744] = Defaults(), -- Quickblade
+		[347481] = Defaults(), -- Shuri
+		[355915] = Defaults(), -- Glyph of Restraint
+		[350134] = Defaults(), -- Infinite Breath
+		[350013] = Defaults(), -- Gluttonous Feast
+		[355465] = Defaults(), -- Boulder Throw
+		[346116] = Defaults(), -- Shearing Swings
+		[356011] = Defaults(), -- Beam Splicer
 	-- Halls of Atonement
 		[335338] = Defaults(), -- Ritual of Woe
 		[326891] = Defaults(), -- Anguish
