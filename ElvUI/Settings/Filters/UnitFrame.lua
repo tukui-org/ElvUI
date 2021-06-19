@@ -983,7 +983,22 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------- Sanctum of Domination ------------------
 	----------------------------------------------------------
 	-- The Tarragrue
+		[352491] = Defaults(), -- Remnant: Mort'regar's Echoes 1
+		[352389] = Defaults(), -- Remnant: Mort'regar's Echoes 2
+		[352473] = Defaults(), -- Remnant: Upper Reaches' Might 1
+		[352382] = Defaults(), -- Remnant: Upper Reaches' Might 2
+		[352398] = Defaults(), -- Remnant: Soulforge Heat
+		[347490] = Defaults(), -- Fury of the Ages
+		[347740] = Defaults(), -- Hungering Mist 1
+		[347679] = Defaults(), -- Hungering Mist 2
+		[347369] = Defaults(), -- The Jailer's Gaze
 	-- Eye of the Jailer
+		[350006] = Defaults(), -- Pulled Down
+		[351413] = Defaults(), -- Annihilating Glare
+		[348805] = Defaults(), -- Stygian Darkshield
+		[351994] = Defaults(), -- Dying Suffering
+		[351825] = Defaults(), -- Shared Suffering
+		[345521] = Defaults(), -- Molten Aura
 	-- The Nine
 	-- Remnant of Ner'zhul
 	-- Soulrender Dormazain
