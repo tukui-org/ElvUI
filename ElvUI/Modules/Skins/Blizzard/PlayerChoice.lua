@@ -8,15 +8,20 @@ local IsInJailersTower = IsInJailersTower
 
 local function StyleText(text)
 	if text.IsSkinned then return end
+
 	text:SetTextColor(1, 1, 1)
 	text.SetTextColor = E.noop
+
 	text.IsSkinned = true
 end
 
-local function HandleChoiceOptionButton(button)
+local function HandleChoiceOptionButton(button, strip)
 	if not button or button.backdrop then return end
 
-	button:StripTextures(true)
+	if strip then
+		button:StripTextures(true)
+	end
+
 	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
 end
 
@@ -70,8 +75,8 @@ function S:Blizzard_PlayerChoiceUI()
 				HandleJailerOptionButton(option.OptionButtonsContainer.button1)
 				HandleJailerOptionButton(option.OptionButtonsContainer.button2)
 			else
-				HandleChoiceOptionButton(option.OptionButtonsContainer.button1)
-				HandleChoiceOptionButton(option.OptionButtonsContainer.button2)
+				HandleChoiceOptionButton(option.OptionButtonsContainer.button1, true)
+				HandleChoiceOptionButton(option.OptionButtonsContainer.button2) -- smaller button?
 			end
 
 			for x = 1, option.WidgetContainer:GetNumChildren() do
