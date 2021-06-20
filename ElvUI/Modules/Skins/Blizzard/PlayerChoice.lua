@@ -13,14 +13,7 @@ local function StyleText(text)
 	text.IsSkinned = true
 end
 
-local function HandleFirstOptionButton(button)
-	if not button or button.backdrop then return end
-
-	button:StripTextures(true)
-	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
-end
-
-local function HandleSecondOptionButton(button)
+local function HandleChoiceOptionButton(button)
 	if not button or button.backdrop then return end
 
 	button:StripTextures(true)
@@ -77,8 +70,8 @@ function S:Blizzard_PlayerChoiceUI()
 				HandleJailerOptionButton(option.OptionButtonsContainer.button1)
 				HandleJailerOptionButton(option.OptionButtonsContainer.button2)
 			else
-				HandleFirstOptionButton(option.OptionButtonsContainer.button1)
-				HandleSecondOptionButton(option.OptionButtonsContainer.button2)
+				HandleChoiceOptionButton(option.OptionButtonsContainer.button1)
+				HandleChoiceOptionButton(option.OptionButtonsContainer.button2)
 			end
 
 			for x = 1, option.WidgetContainer:GetNumChildren() do
