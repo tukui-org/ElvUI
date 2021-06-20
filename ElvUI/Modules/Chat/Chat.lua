@@ -505,7 +505,7 @@ do
 		local text = self:GetText()
 		local len = strlen(text)
 
-		if (not repeatedText or not strfind(text, repeatedText, 1, true)) and InCombatLockdown() then
+		if CH.db.enableCombatRepeat and InCombatLockdown() and (not repeatedText or not strfind(text, repeatedText, 1, true)) then
 			local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
 			if len > MIN_REPEAT_CHARACTERS then
 				local repeatChar = true

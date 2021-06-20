@@ -124,13 +124,6 @@ E.Options.args.chat = {
 					end,
 				},
 				spacer = ACH:Spacer(18, 'full'),
-				numAllowedCombatRepeat = {
-					order = 19,
-					type = 'range',
-					name = L["Allowed Combat Repeat"],
-					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
-					min = 2, max = 10, step = 1,
-				},
 				throttleInterval = {
 					order = 20,
 					type = 'range',
@@ -194,7 +187,7 @@ E.Options.args.chat = {
 					end,
 				},
 				tabSelection = {
-					order = 65,
+					order = 60,
 					type = 'group',
 					name = L["Tab Selector"],
 					set = function(info, value)
@@ -271,7 +264,7 @@ E.Options.args.chat = {
 					}
 				},
 				historyGroup = {
-					order = 70,
+					order = 65,
 					type = 'group',
 					name = L["History"],
 					set = function(info, value) E.db.chat[info[#info]] = value end,
@@ -319,6 +312,25 @@ E.Options.args.chat = {
 								EMOTE		= L["Emote"]
 							},
 						}
+					}
+				},
+				combatRepeat = {
+					order = 70,
+					type = 'group',
+					name = L["Combat Repeat"],
+					args = {
+						enableCombatRepeat = {
+							order = 1,
+							type = 'toggle',
+							name = L["Enable"],
+						},
+						numAllowedCombatRepeat = {
+							order = 2,
+							type = 'range',
+							name = L["Number Allowed"],
+							desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
+							min = 2, max = 10, step = 1,
+						},
 					}
 				},
 				fadingGroup = {
