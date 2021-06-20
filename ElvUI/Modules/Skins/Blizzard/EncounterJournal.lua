@@ -18,6 +18,7 @@ local ITEMQUALITY_LEGENDARY = Enum.ItemQuality.Legendary or 5
 
 local function HandleButton(btn, ...)
 	S:HandleButton(btn, ...)
+
 	if btn:GetFontString() then
 		btn:GetFontString():SetTextColor(1, 1, 1)
 	end
@@ -240,14 +241,14 @@ function S:Blizzard_EncounterJournal()
 
 	--buttons
 	EncounterInfo.difficulty:ClearAllPoints()
-	EncounterInfo.difficulty:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -1, 5)
+	EncounterInfo.difficulty:Point('BOTTOMRIGHT', _G.EncounterJournalEncounterFrameInfoBG, 'TOPRIGHT', -5, 7)
 	HandleButton(EncounterInfo.reset)
 	HandleButton(EncounterInfo.difficulty)
 	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, true)
 	HandleButton(_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle, true)
 
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:ClearAllPoints()
-	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:Point('BOTTOMLEFT', EncounterInfo.backdrop, 'TOP', 0, 4)
+	_G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle:Point('TOPLEFT', EncounterInfo, 'TOP', 0, -8)
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:ClearAllPoints()
 	_G.EncounterJournalEncounterFrameInfoLootScrollFrameFilterToggle:Point('LEFT', _G.EncounterJournalEncounterFrameInfoLootScrollFrameSlotFilterToggle, 'RIGHT', 4, 0)
 

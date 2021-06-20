@@ -13,17 +13,11 @@ local function StyleText(text)
 	text.IsSkinned = true
 end
 
-local function HandleFirstOptionButton(button)
-	if not button then return end
+local function HandleChoiceOptionButton(button)
+	if not button or button.backdrop then return end
 
 	button:StripTextures(true)
-	S:HandleButton(button)
-end
-
-local function HandleSecondOptionButton(button)
-	if not button then return end
-
-	S:HandleButton(button)
+	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
 end
 
 local function HandleJailerOptionButton(button)
@@ -73,19 +67,11 @@ function S:Blizzard_PlayerChoiceUI()
 
 			-- for some reason the buttons are different. W T F
 			if inTower then
-				if option.OptionButtonsContainer.button1 then
-					HandleJailerOptionButton(option.OptionButtonsContainer.button1)
-				end
-				if option.OptionButtonsContainer.button2 then
-					HandleJailerOptionButton(option.OptionButtonsContainer.button2)
-				end
+				HandleJailerOptionButton(option.OptionButtonsContainer.button1)
+				HandleJailerOptionButton(option.OptionButtonsContainer.button2)
 			else
-				if option.OptionButtonsContainer.button1 then
-					HandleFirstOptionButton(option.OptionButtonsContainer.button1)
-				end
-				if option.OptionButtonsContainer.button2 then
-					HandleSecondOptionButton(option.OptionButtonsContainer.button2)
-				end
+				HandleChoiceOptionButton(option.OptionButtonsContainer.button1)
+				HandleChoiceOptionButton(option.OptionButtonsContainer.button2)
 			end
 
 			for x = 1, option.WidgetContainer:GetNumChildren() do
