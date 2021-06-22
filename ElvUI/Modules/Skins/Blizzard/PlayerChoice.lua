@@ -58,16 +58,19 @@ function S:Blizzard_PlayerChoiceUI()
 		end
 
 		local inTower = IsInJailersTower()
-		local noParchment = not inTower and E.private.skins.parchmentRemoverEnable
+		local parchmentRemover = E.private.skins.parchmentRemoverEnable
+		local noParchment = not inTower and parchmentRemover
 
 		frame:SetTemplate(inTower and 'NoBackdrop' or 'Transparent')
 
 		for i = 1, frame:GetNumOptions() do
 			local option = frame.Options[i]
-			if noParchment then
+			if parchmentRemover then
 				option.Header.Text:SetTextColor(1, .8, 0)
 				option.OptionText:SetTextColor(1, 1, 1)
+			end
 
+			if noParchment then
 				option.Background:SetAlpha(0)
 				option.Header.Ribbon:SetAlpha(0)
 			end
