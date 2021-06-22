@@ -58,11 +58,13 @@ function S:Blizzard_PlayerChoiceUI()
 		end
 
 		local inTower = IsInJailersTower()
+		local noParchment = not inTower and E.private.skins.parchmentRemoverEnable
+
 		frame:SetTemplate(inTower and 'NoBackdrop' or 'Transparent')
 
 		for i = 1, frame:GetNumOptions() do
 			local option = frame.Options[i]
-			if E.private.skins.parchmentRemoverEnable then
+			if noParchment then
 				option.Header.Text:SetTextColor(1, .8, 0)
 				option.OptionText:SetTextColor(1, 1, 1)
 
@@ -70,8 +72,7 @@ function S:Blizzard_PlayerChoiceUI()
 				option.Header.Ribbon:SetAlpha(0)
 			end
 
-			-- for some reason the buttons are different. W T F
-			if inTower then
+			if inTower then -- for some reason the buttons are different. W T F
 				HandleJailerOptionButton(option.OptionButtonsContainer.button1)
 				HandleJailerOptionButton(option.OptionButtonsContainer.button2)
 			else
@@ -83,7 +84,7 @@ function S:Blizzard_PlayerChoiceUI()
 				local child = select(x, option.WidgetContainer:GetChildren())
 				if child then
 					local text = child.Text
-					if text and E.private.skins.parchmentRemoverEnable then
+					if text and noParchment then
 						text:SetTextColor(1, 1, 1)
 					end
 
@@ -98,7 +99,7 @@ function S:Blizzard_PlayerChoiceUI()
 							spell.isSkinned = true
 						end
 
-						if E.private.skins.parchmentRemoverEnable then
+						if noParchment then
 							spell.Text:SetTextColor(1, 1, 1)
 						end
 					end
@@ -121,23 +122,22 @@ function S:Blizzard_PlayerChoiceUI()
 	end)
 
 	hooksecurefunc(frame, 'SetupRewards', function(rewards)
-		if E.private.skins.parchmentRemoverEnable then
+		if rewards.numActiveOptions and E.private.skins.parchmentRemoverEnable then
 			for i = 1, rewards.numActiveOptions do
-				local optionFrameRewards = rewards.Options[i].RewardsFrame.Rewards
-				for button in optionFrameRewards.ItemRewardsPool:EnumerateActive() do
-					if not button.IsSkinned then
-						button.Name:SetTextColor(.9, .8, .5)
-						button.IconBorder:SetAlpha(0)
+				local option = rewards.Options[i]
+				local frameRewards = option and option.RewardsFrame and option.RewardsFrame.Rewards
+				if frameRewards and frameRewards.ItemRewardsPool then
+					for button in frameRewards.ItemRewardsPool:EnumerateActive() do
+						if not button.IsSkinned then
+							button.Name:SetTextColor(.9, .8, .5)
+							button.IconBorder:SetAlpha(0)
 
-						button.IsSkinned = true
+							button.IsSkinned = true
+						end
 					end
 				end
 			end
 		end
-		--[[
-			optionFrameRewards.CurrencyRewardsPool
-			optionFrameRewards.ReputationRewardsPool
-		]]
 	end)
 end
 
