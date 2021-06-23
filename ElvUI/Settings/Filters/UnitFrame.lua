@@ -906,6 +906,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[355786] = Defaults(5), -- Blackened Armor
 		[348255] = Defaults(6), -- Spiked
 	-- Guardian of the First Ones
+		[352394] = Defaults(5), -- Radiant Energy
+		[350496] = Defaults(6), -- Threat Neutralization
+		[347359] = Defaults(6), -- Suppression Field
+		[355357] = Defaults(6), -- Obliterate
+		[350732] = Defaults(5), -- Sunder
+		[352833] = Defaults(6), -- Disintegration
 	-- Fatescribe Roh-Kalo
 		[354365] = Defaults(5), -- Grim Portent
 		[350568] = Defaults(5), -- Call of Eternity
@@ -1070,6 +1076,10 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Painsmith Raznal
 		[355525] = Defaults(), -- Forge Weapon
 	-- Guardian of the First Ones
+		[352538] = Defaults(), -- Purging Protocol
+		[353448] = Defaults(), -- Suppression Field
+		[350534] = Defaults(), -- Purging Protocol
+		[352385] = Defaults(), -- Energizing Link
 	-- Fatescribe Roh-Kalo
 		[353604] = Defaults(), -- Diviner's Probe
 	-- Kel'Thuzad
