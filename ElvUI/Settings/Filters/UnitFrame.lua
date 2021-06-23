@@ -888,6 +888,16 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[355143] = Defaults(), -- Deathlink
 		[350763] = Defaults(), -- Annihilating Glare
 	-- The Nine
+		[350287] = Defaults(2), -- Song of Dissolution
+		[350542] = Defaults(3), -- Fragments of Destiny
+		[350202] = Defaults(3), -- Unending Strike
+		[350475] = Defaults(5), -- Pierce Soul
+		[350555] = Defaults(6), -- Shard of Destiny
+		[350109] = Defaults(6), -- Brynja's Mournful Dirge
+		[350483] = Defaults(6), -- Link Essence
+		[350039] = Defaults(6), -- Arthura's Crushing Gaze
+		[350184] = Defaults(6), -- Daschla's Mighty Impact
+		[350374] = Defaults(6), -- Wings of Rage
 	-- Remnant of Ner'zhul
 		[350073] = Defaults(2), -- Torment
 		[349890] = Defaults(5), -- Suffering
@@ -896,6 +906,15 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[354479] = Defaults(6), -- Spite 2
 		[354534] = Defaults(6), -- Spite 3
 	-- Soulrender Dormazain
+		[353429] = Defaults(2), -- Tormented
+		[353023] = Defaults(3), -- Torment
+		[351787] = Defaults(5), -- Agonizing Spike
+		[350647] = Defaults(5), -- Brand of Torment
+		[350422] = Defaults(6), -- Ruinblade
+		[350851] = Defaults(6), -- Vessel of Torment
+		[354231] = Defaults(6), -- Soul Manacles
+		[348987] = Defaults(6), -- Warmonger Shackle 1
+		[350927] = Defaults(6), -- Warmonger Shackle 2
 	-- Painsmith Raznal
 		[356472] = Defaults(5), -- Lingering Flames
 		[355505] = Defaults(6), -- Shadowsteel Chains 1
@@ -1065,6 +1084,13 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[351825] = Defaults(), -- Shared Suffering
 		[345521] = Defaults(), -- Molten Aura
 	-- The Nine
+		[355294] = Defaults(), -- Resentment
+		[350286] = Defaults(), -- Song of Dissolution
+		[352756] = Defaults(), -- Wings of Rage 1
+		[350365] = Defaults(), -- Wings of Rage 2
+		[352752] = Defaults(), -- Reverberating Refrain 1
+		[350385] = Defaults(), -- Reverberating Refrain 2
+		[350158] = Defaults(), -- Annhylde's Bright Aegis
 	-- Remnant of Ner'zhul
 		[355790] = Defaults(), -- Eternal Torment
 		[355151] = Defaults(), -- Malevolence
@@ -1073,6 +1099,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[350671] = Defaults(), -- Aura of Spite 3
 		[354440] = Defaults(), -- Aura of Spite 4
 	-- Soulrender Dormazain
+		[351946] = Defaults(), -- Hellscream
+		[352066] = Defaults(), -- Rendered Soul
+		[353554] = Defaults(), -- Infuse Defiance
+		[351773] = Defaults(), -- Defiance
+		[350415] = Defaults(), -- Warmonger's Shackles
+		[352933] = Defaults(), -- Tormented Eruptions
 	-- Painsmith Raznal
 		[355525] = Defaults(), -- Forge Weapon
 	-- Guardian of the First Ones
