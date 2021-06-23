@@ -889,6 +889,12 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[350763] = Defaults(), -- Annihilating Glare
 	-- The Nine
 	-- Remnant of Ner'zhul
+		[350073] = Defaults(2), -- Torment
+		[349890] = Defaults(5), -- Suffering
+		[350469] = Defaults(6), -- Malevolence
+		[354634] = Defaults(6), -- Spite 1
+		[354479] = Defaults(6), -- Spite 2
+		[354534] = Defaults(6), -- Spite 3
 	-- Soulrender Dormazain
 	-- Painsmith Raznal
 		[356472] = Defaults(5), -- Lingering Flames
@@ -1054,6 +1060,12 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[345521] = Defaults(), -- Molten Aura
 	-- The Nine
 	-- Remnant of Ner'zhul
+		[355790] = Defaults(), -- Eternal Torment
+		[355151] = Defaults(), -- Malevolence
+		[355439] = Defaults(), -- Aura of Spite 1
+		[354441] = Defaults(), -- Aura of Spite 2
+		[350671] = Defaults(), -- Aura of Spite 3
+		[354440] = Defaults(), -- Aura of Spite 4
 	-- Soulrender Dormazain
 	-- Painsmith Raznal
 		[355525] = Defaults(), -- Forge Weapon
