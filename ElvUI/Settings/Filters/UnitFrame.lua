@@ -1018,9 +1018,15 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	-- Remnant of Ner'zhul
 	-- Soulrender Dormazain
 	-- Painsmith Raznal
+		[355525] = Defaults(), -- Forge Weapon
 	-- Guardian of the First Ones
 	-- Fatescribe Roh-Kalo
+		[353604] = Defaults(), -- Diviner's Probe
 	-- Kel'Thuzad
+		[355935] = Defaults(), -- Banshee's Cry 1
+		[352141] = Defaults(), -- Banshee's Cry 2
+		[355948] = Defaults(), -- Necrotic Empowerment
+		[352051] = Defaults(), -- Necrotic Surge
 	-- Sylvanas Windrunner
 	----------------------------------------------------------
 	--------------------- Castle Nathria ---------------------
