@@ -891,9 +891,36 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Remnant of Ner'zhul
 	-- Soulrender Dormazain
 	-- Painsmith Raznal
+		[356472] = Defaults(5), -- Lingering Flames
+		[355505] = Defaults(6), -- Shadowsteel Chains 1
+		[355506] = Defaults(6), -- Shadowsteel Chains 2
+		[348456] = Defaults(6), -- Flameclasp Trap
+		[356870] = Defaults(2), -- Flameclasp Eruption
+		[355568] = Defaults(6), -- Cruciform Axe
+		[355786] = Defaults(5), -- Blackened Armor
+		[348255] = Defaults(6), -- Spiked
 	-- Guardian of the First Ones
 	-- Fatescribe Roh-Kalo
+		[354365] = Defaults(5), -- Grim Portent
+		[350568] = Defaults(5), -- Call of Eternity
+		[353435] = Defaults(6), -- Overwhelming Burden
+		[351680] = Defaults(6), -- Invoke Destiny
+		[353432] = Defaults(6), -- Burden of Destiny
+		[353693] = Defaults(6), -- Unstable Accretion
+		[350355] = Defaults(6), -- Fated Conjunction
+		[353931] = Defaults(2), -- Twist Fate
 	-- Kel'Thuzad
+		[346530] = Defaults(2), -- Frozen Destruction
+		[354289] = Defaults(2), -- Sinister Miasma
+		[347454] = Defaults(6), -- Oblivion's Echo 1
+		[347518] = Defaults(6), -- Oblivion's Echo 2
+		[347292] = Defaults(6), -- Oblivion's Echo 3
+		[348978] = Defaults(6), -- Soul Exhaustion
+		[355389] = Defaults(6), -- Relentless Haunt (Fixate)
+		[357298] = Defaults(6), -- Frozen Binds
+		[355137] = Defaults(5), -- Shadow Pool
+		[348638] = Defaults(4), -- Return of the Damned
+		[348760] = Defaults(6), -- Frost Blast
 	-- Sylvanas Windrunner
 	--------------------------------------------------------
 	-------------------- Castle Nathria --------------------
