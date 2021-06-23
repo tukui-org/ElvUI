@@ -922,6 +922,17 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[348638] = Defaults(4), -- Return of the Damned
 		[348760] = Defaults(6), -- Frost Blast
 	-- Sylvanas Windrunner
+		[349458] = Defaults(2), -- Domination Chains
+		[347704] = Defaults(2), -- Veil of Darkness
+		[347607] = Defaults(5), -- Banshee's Mark
+		[347670] = Defaults(5), -- Shadow Dagger
+		[351117] = Defaults(5), -- Crushing Dread
+		[351870] = Defaults(5), -- Haunting Wave
+		[351253] = Defaults(5), -- Banshee Wail
+		[351451] = Defaults(6), -- Curse of Lethargy
+		[351092] = Defaults(6), -- Destabilize 1
+		[351091] = Defaults(6), -- Destabilize 2
+		[348064] = Defaults(6), -- Wailing Arrow
 	--------------------------------------------------------
 	-------------------- Castle Nathria --------------------
 	--------------------------------------------------------
