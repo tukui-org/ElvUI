@@ -1055,6 +1055,14 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[355948] = Defaults(), -- Necrotic Empowerment
 		[352051] = Defaults(), -- Necrotic Surge
 	-- Sylvanas Windrunner
+		[352650] = Defaults(), -- Ranger's Heartseeker 1
+		[352663] = Defaults(), -- Ranger's Heartseeker 2
+		[350865] = Defaults(), -- Accursed Might
+		[348146] = Defaults(), -- Banshee Form
+		[347504] = Defaults(), -- Windrunner
+		[350857] = Defaults(), -- Banshee Shroud
+		[351109] = Defaults(), -- Enflame
+		[351452] = Defaults(), -- Lethargic Focus
 	----------------------------------------------------------
 	--------------------- Castle Nathria ---------------------
 	----------------------------------------------------------
