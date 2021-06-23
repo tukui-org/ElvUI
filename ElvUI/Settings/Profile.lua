@@ -923,6 +923,7 @@ P.chat = {
 	hideCopyButton = false,
 	useAltKey = false,
 	classColorMentionsChat = true,
+	enableCombatRepeat = true,
 	numAllowedCombatRepeat = 5,
 	useCustomTimeColor = true,
 	customTimeColor = {r = 0.7, g = 0.7, b = 0.7},

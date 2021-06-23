@@ -8,15 +8,20 @@ local IsInJailersTower = IsInJailersTower
 
 local function StyleText(text)
 	if text.IsSkinned then return end
+
 	text:SetTextColor(1, 1, 1)
 	text.SetTextColor = E.noop
+
 	text.IsSkinned = true
 end
 
-local function HandleChoiceOptionButton(button)
+local function HandleChoiceOptionButton(button, strip)
 	if not button or button.backdrop then return end
 
-	button:StripTextures(true)
+	if strip then
+		button:StripTextures(true)
+	end
+
 	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
 end
 
@@ -53,32 +58,36 @@ function S:Blizzard_PlayerChoiceUI()
 		end
 
 		local inTower = IsInJailersTower()
+		local parchmentRemover = E.private.skins.parchmentRemoverEnable
+		local noParchment = not inTower and parchmentRemover
+
 		frame:SetTemplate(inTower and 'NoBackdrop' or 'Transparent')
 
 		for i = 1, frame:GetNumOptions() do
 			local option = frame.Options[i]
-			if E.private.skins.parchmentRemoverEnable then
+			if parchmentRemover then
 				option.Header.Text:SetTextColor(1, .8, 0)
 				option.OptionText:SetTextColor(1, 1, 1)
+			end
 
+			if noParchment then
 				option.Background:SetAlpha(0)
 				option.Header.Ribbon:SetAlpha(0)
 			end
 
-			-- for some reason the buttons are different. W T F
-			if inTower then
+			if inTower then -- for some reason the buttons are different. W T F
 				HandleJailerOptionButton(option.OptionButtonsContainer.button1)
 				HandleJailerOptionButton(option.OptionButtonsContainer.button2)
 			else
-				HandleChoiceOptionButton(option.OptionButtonsContainer.button1)
-				HandleChoiceOptionButton(option.OptionButtonsContainer.button2)
+				HandleChoiceOptionButton(option.OptionButtonsContainer.button1, true)
+				HandleChoiceOptionButton(option.OptionButtonsContainer.button2) -- smaller button?
 			end
 
 			for x = 1, option.WidgetContainer:GetNumChildren() do
 				local child = select(x, option.WidgetContainer:GetChildren())
 				if child then
 					local text = child.Text
-					if text and E.private.skins.parchmentRemoverEnable then
+					if text and noParchment then
 						text:SetTextColor(1, 1, 1)
 					end
 
@@ -93,7 +102,7 @@ function S:Blizzard_PlayerChoiceUI()
 							spell.isSkinned = true
 						end
 
-						if E.private.skins.parchmentRemoverEnable then
+						if noParchment then
 							spell.Text:SetTextColor(1, 1, 1)
 						end
 					end
@@ -116,23 +125,22 @@ function S:Blizzard_PlayerChoiceUI()
 	end)
 
 	hooksecurefunc(frame, 'SetupRewards', function(rewards)
-		if E.private.skins.parchmentRemoverEnable then
+		if rewards.numActiveOptions and E.private.skins.parchmentRemoverEnable then
 			for i = 1, rewards.numActiveOptions do
-				local optionFrameRewards = rewards.Options[i].RewardsFrame.Rewards
-				for button in optionFrameRewards.ItemRewardsPool:EnumerateActive() do
-					if not button.IsSkinned then
-						button.Name:SetTextColor(.9, .8, .5)
-						button.IconBorder:SetAlpha(0)
+				local option = rewards.Options[i]
+				local frameRewards = option and option.RewardsFrame and option.RewardsFrame.Rewards
+				if frameRewards and frameRewards.ItemRewardsPool then
+					for button in frameRewards.ItemRewardsPool:EnumerateActive() do
+						if not button.IsSkinned then
+							button.Name:SetTextColor(.9, .8, .5)
+							button.IconBorder:SetAlpha(0)
 
-						button.IsSkinned = true
+							button.IsSkinned = true
+						end
 					end
 				end
 			end
 		end
-		--[[
-			optionFrameRewards.CurrencyRewardsPool
-			optionFrameRewards.ReputationRewardsPool
-		]]
 	end)
 end
 
