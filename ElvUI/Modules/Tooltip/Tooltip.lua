@@ -68,6 +68,7 @@ local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
 
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
+local C_ChallengeMode_GetDungeonScoreRarityColor = C_ChallengeMode.GetDungeonScoreRarityColor
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
@@ -278,7 +279,7 @@ function TT:SetUnitText(tt, unit)
 		if TT.db.dungeonScore then
 			local data = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
 			if data and data.currentSeasonScore then
-				local color = C_ChallengeMode.GetDungeonScoreRarityColor(data.currentSeasonScore)
+				local color = C_ChallengeMode_GetDungeonScoreRarityColor(data.currentSeasonScore)
 				GameTooltip:AddDoubleLine(L["Mythic+ Score:"], data.currentSeasonScore, nil, nil, nil, color.r or 1, color.g or 1, color.b or 1)
 			end
 		end
