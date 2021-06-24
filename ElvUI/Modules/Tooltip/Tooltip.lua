@@ -75,6 +75,7 @@ local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
 local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local UNKNOWN = UNKNOWN
 
@@ -271,6 +272,13 @@ function TT:SetUnitText(tt, unit)
 				end
 
 				GameTooltip:AddDoubleLine(format('%s:', _G.ROLE), role, nil, nil, nil, r, g, b)
+			end
+		end
+
+		if TT.db.dungeonScore then
+			local data = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
+			if data then
+				GameTooltip:AddDoubleLine(L["Mythic+ Score:"], data.currentSeasonScore)
 			end
 		end
 

@@ -990,6 +990,7 @@ P.tooltip = {
 	cursorAnchorType = 'ANCHOR_CURSOR',
 	cursorAnchorX = 0,
 	cursorAnchorY = 0,
+	dungeonScore = true,
 	alwaysShowRealm = false,
 	targetInfo = true,
 	playerTitles = true,
