@@ -67,8 +67,8 @@ function S:Blizzard_PlayerChoiceUI()
 				option.Header.Ribbon:SetAlpha(0)
 			end
 
-			HandleOptionButton(option.OptionButtonsContainer.button1, true)
-			HandleOptionButton(option.OptionButtonsContainer.button2, inTower)
+			HandleOptionButton(option.OptionButtonsContainer.button1, true) -- always strip art from main button
+			HandleOptionButton(option.OptionButtonsContainer.button2, inTower) -- only strip art on secondary in tower
 
 			for x = 1, option.WidgetContainer:GetNumChildren() do
 				local child = select(x, option.WidgetContainer:GetChildren())
