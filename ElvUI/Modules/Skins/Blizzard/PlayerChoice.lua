@@ -21,11 +21,11 @@ local function HandleOptionButton(button, strip)
 	if strip then button:StripTextures() end
 	button:SetTemplate()
 
-	if not button.IsSkinned then
+	if not button.backdropHooked then
 		button:HookScript('OnEnter', S.SetModifiedBackdrop)
 		button:HookScript('OnLeave', S.SetOriginalBackdrop)
 
-		button.IsSkinned = true
+		button.backdropHooked = true
 	end
 end
 
