@@ -22,7 +22,7 @@ local function HandleChoiceOptionButton(button, strip)
 		button:StripTextures(true)
 	end
 
-	S:HandleButton(button, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(button, nil, nil, nil, true)
 end
 
 local function HandleJailerOptionButton(button)
