@@ -15,26 +15,18 @@ local function StyleText(text)
 	text.IsSkinned = true
 end
 
-local function HandleChoiceOptionButton(button, strip)
-	if not button or button.backdrop then return end
+local function HandleOptionButton(button, strip)
+	if not button then return end
 
-	if strip then
-		button:StripTextures(true)
-	end
-
-	S:HandleButton(button, nil, nil, nil, true, nil, nil, true, true)
-end
-
-local function HandleJailerOptionButton(button)
-	if not button or button.IsSkinned then return end
-
-	button:StripTextures(true)
+	if strip then button:StripTextures() end
 	button:SetTemplate()
 
-	button:HookScript('OnEnter', S.SetModifiedBackdrop)
-	button:HookScript('OnLeave', S.SetOriginalBackdrop)
+	if not button.IsSkinned then
+		button:HookScript('OnEnter', S.SetModifiedBackdrop)
+		button:HookScript('OnLeave', S.SetOriginalBackdrop)
 
-	button.IsSkinned = true
+		button.IsSkinned = true
+	end
 end
 
 function S:Blizzard_PlayerChoiceUI()
@@ -75,13 +67,8 @@ function S:Blizzard_PlayerChoiceUI()
 				option.Header.Ribbon:SetAlpha(0)
 			end
 
-			if inTower then -- for some reason the buttons are different. W T F
-				HandleJailerOptionButton(option.OptionButtonsContainer.button1)
-				HandleJailerOptionButton(option.OptionButtonsContainer.button2)
-			else
-				HandleChoiceOptionButton(option.OptionButtonsContainer.button1, true)
-				HandleChoiceOptionButton(option.OptionButtonsContainer.button2) -- smaller button?
-			end
+			HandleOptionButton(option.OptionButtonsContainer.button1, true)
+			HandleOptionButton(option.OptionButtonsContainer.button2, inTower)
 
 			for x = 1, option.WidgetContainer:GetNumChildren() do
 				local child = select(x, option.WidgetContainer:GetChildren())
