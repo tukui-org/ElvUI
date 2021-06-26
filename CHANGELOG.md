@@ -1,6 +1,6 @@
 ### Version 12.25 [ ETA: 🍨 ]
 
-**Added:**
+**Added:**  
 Mythic+ score options in the tooltip section (Based on Blizzards new score API)  
 Option to enable/disable the Combat Repeat function in Chat  
 Position, X-Offset, Y-Offset options for Item Count and Item Level in Bags  
