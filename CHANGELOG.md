@@ -1,7 +1,23 @@
 ### Version 12.25 [ ETA: 🍨 ]
 
-**Sweet:**  
+**Added:**
+Mythic+ score options in the tooltip section (Based on Blizzards new score API)  
+Option to enable/disable the Combat Repeat function in Chat  
+Position, X-Offset, Y-Offset options for Item Count and Item Level in Bags  
 
+**Fixes:**  
+Fixed interruptible and nonInterruptible colors in castbars  
+Fixed rare healprediction lua error  
+Fixed rare power prediction lua error  
+Fixed rare tempHistory chat lua error  
+Fixed skins for patch 9.1  
+
+**Updates:**
+Optimized auras code, some players might notice a FPS gain in big mob pulls  
+Updated filters for Sanctum of Domination (All difficulties)  
+Updated filters for Tazavesh, the Veiled Market (Mythic)  
+Updated range tags  
+Updated tooltip options  
 
 ___
 ### Version 12.24 [ March 19th 2021 ]
