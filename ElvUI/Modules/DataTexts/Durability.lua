@@ -54,6 +54,7 @@ local function OnEvent(self)
 
 	local r, g, b = E:ColorGradient(totalDurability * .01, 1, .1, .1, 1, 1, .1, .1, 1, .1)
 	local hex = E:RGBToHex(r, g, b)
+
 	self.text:SetFormattedText(E.global.datatexts.settings.Durability.NoLabel and '%s%d%%|r' or DURABILITY..': %s%d%%|r', hex, totalDurability)
 	if totalDurability <= E.global.datatexts.settings.Durability.percThreshold then
 		E:Flash(self, 0.53, true)
