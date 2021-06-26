@@ -820,6 +820,7 @@ L["Movers"] = "移動器"
 L["Multi-Monitor Support"] = "多顯示器支援"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "根據此值增加背景的高度或寬度. 一般用來設定在一個背景框裡放置多條快捷列."
 L["Must be in group with the player if he isn't on the same server as you."] = "如果不是同一服務器, 那他必需和你在同一隊伍中."
+L["Mythic+ Data"] = true
 L["Mythic+ Score"] = true
 L["Name Color"] = "姓名顏色"
 L["Name Font"] = "名稱字體"

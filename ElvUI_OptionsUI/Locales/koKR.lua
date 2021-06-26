@@ -819,6 +819,7 @@ L["Movers"] = true
 L["Multi-Monitor Support"] = "다중모니터 지원"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "이 값 만큼 배경의 길이가 배로 늘어납니다. 배경 하나에 여러 행동단축바를 올리고 싶은 경우에 유용합니다."
 L["Must be in group with the player if he isn't on the same server as you."] = "대상으로 잡은 유저가 타 서버 유저라면 반드시 그 유저와 파티를 맻고 있어야 합니다."
+L["Mythic+ Data"] = true
 L["Mythic+ Score"] = true
 L["Name Color"] = "이름 색상"
 L["Name Font"] = "캐릭터 이름 글꼴"

@@ -821,6 +821,7 @@ L["Movers"] = "Movedores"
 L["Multi-Monitor Support"] = "Suporte a Multiplos Monitores"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Multiplicar a altura ou comprimento do fundo por este valor. Muito útil se desejar ter mais que uma barra por trás de um fundo."
 L["Must be in group with the player if he isn't on the same server as you."] = "É necessário estar em grupo com o jogador se ele não é do mesmo reino que você."
+L["Mythic+ Data"] = true
 L["Mythic+ Score"] = true
 L["Name Color"] = "Cor do Nome"
 L["Name Font"] = "Fonte de Nomes"

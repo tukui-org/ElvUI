@@ -819,6 +819,7 @@ L["Movers"] = "Фиксаторы"
 L["Multi-Monitor Support"] = "Поддержка нескольких мониторов"
 L["Multiply the backdrops height or width by this value. This is usefull if you wish to have more than one bar behind a backdrop."] = "Умножает высоту или ширину фона панели на это значение. Это полезно, когда Вы хотите иметь более одной панели на данном фоне."
 L["Must be in group with the player if he isn't on the same server as you."] = "Вы должны быть в группе в данным игроком, если он не с Вашего сервера."
+L["Mythic+ Data"] = true
 L["Mythic+ Score"] = true
 L["Name Color"] = "Цвет имени"
 L["Name Font"] = "Шрифт имени"
