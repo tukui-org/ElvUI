@@ -275,7 +275,7 @@ function TT:SetUnitText(tt, unit)
 				GameTooltip:AddDoubleLine(format('%s:', _G.ROLE), role, nil, nil, nil, r, g, b)
 			end
 		end
-		-- mythicDataEnable
+
 		if TT.db.mythicDataEnable then
 			local data = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
 			local color = C_ChallengeMode_GetDungeonScoreRarityColor(data.currentSeasonScore)
