@@ -275,18 +275,18 @@ do --this can save some main file locals
 		['Merathilîs-Shattrath']	= ElvBlue,		-- [Alliance] Shaman
 		['Róhal-Shattrath']			= ElvGreen,		-- [Alliance] Hunter
 		-- Luckyone
-		['Luckyone-LaughingSkull']		= Clover,
-		['Luckypriest-LaughingSkull']	= Clover,
-		['Luckymonkas-LaughingSkull']	= Clover,
-		['Luckydk-LaughingSkull']		= Clover,
-		['Luckyhunter-LaughingSkull']	= Clover,
-		['Unluckyone-LaughingSkull']	= Clover,
-		['Notlucky-LaughingSkull']		= Clover,
-		['Luckymage-LaughingSkull']		= Clover,
-		['Luckydh-LaughingSkull']		= Clover,
-		['Luckywl-LaughingSkull']		= Clover,
-		['Luckyrogue-LaughingSkull']	= Clover,
-		['Luckypala-LaughingSkull']		= Clover,
+		['Luckyone-LaughingSkull']		= ElvGreen, -- Druid
+		['Luckypriest-LaughingSkull']	= ElvGreen, -- Priest
+		['Luckymonkas-LaughingSkull']	= ElvGreen, -- Monk
+		['Luckydk-LaughingSkull']		= ElvGreen, -- DK
+		['Luckyhunter-LaughingSkull']	= ElvGreen, -- Hunter
+		['Unluckyone-LaughingSkull']	= ElvGreen, -- Shaman
+		['Notlucky-LaughingSkull']		= ElvGreen, -- Warrior
+		['Luckymage-LaughingSkull']		= ElvGreen, -- Mage
+		['Luckydh-LaughingSkull']		= ElvGreen, -- DH
+		['Luckywl-LaughingSkull']		= ElvGreen, -- Warlock
+		['Luckyrogue-LaughingSkull']	= ElvGreen, -- Rogue
+		['Luckypala-LaughingSkull']		= ElvGreen, -- Paladin
 		-- Simpy
 		['Arieva-Cenarius']				= itsSimpy, -- Hunter
 		['Buddercup-Cenarius']			= itsSimpy, -- Rogue
