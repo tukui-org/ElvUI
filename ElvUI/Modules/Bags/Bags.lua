@@ -320,7 +320,7 @@ function B:UpdateItemLevelDisplay()
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.itemLevel then
 					slot.itemLevel:ClearAllPoints()
-					slot.itemLevel:Point(E.db.bags.itemLevelPosition, E.db.bags.itemLevelxOffset, E.db.bags.itemLevelyOffset)
+					slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
 					slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 				end
 			end
@@ -356,7 +356,7 @@ function B:UpdateCountDisplay()
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.Count then
 					slot.Count:ClearAllPoints()
-					slot.Count:Point(E.db.bags.countPosition, E.db.bags.countxOffset, E.db.bags.countyOffset)
+					slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
 					slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 				end
 			end
@@ -1800,7 +1800,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
 
 	slot.itemLevel = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
-	slot.itemLevel:Point(E.db.bags.itemLevelPosition, E.db.bags.itemLevelxOffset, E.db.bags.itemLevelyOffset)
+	slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
 	slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 
 	slot.bindType = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
@@ -1853,7 +1853,7 @@ function B:ConstructReagentSlot(f, slotID)
 	slot.IconOverlay2:SetInside()
 
 	slot.Count:ClearAllPoints()
-	slot.Count:Point(E.db.bags.countPosition, E.db.bags.countxOffset, E.db.bags.countyOffset)
+	slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
 	slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 
 	slot.searchOverlay:SetAllPoints()
