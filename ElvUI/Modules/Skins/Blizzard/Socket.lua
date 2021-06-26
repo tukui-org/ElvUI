@@ -39,7 +39,9 @@ function S:Blizzard_ItemSocketingUI()
 			local gemColor = GetSocketTypes(i)
 			local color = E.GemTypeInfo[gemColor]
 			if color then
-				socket.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+				socket:SetBackdropBorderColor(color.r, color.g, color.b)
+			else
+				socket:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)
