@@ -93,15 +93,7 @@ function S:Blizzard_DebugTools()
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
 		_G.FrameStackTooltip:SetTemplate('Transparent')
-		_G.EventTraceTooltip:SetTemplate('Transparent')
 	end
-
-	for i=1, #FrameTexs do
-		_G['EventTraceFrame'..FrameTexs[i]]:SetTexture()
-	end
-
-	_G.EventTraceFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(_G.EventTraceFrameCloseButton)
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
