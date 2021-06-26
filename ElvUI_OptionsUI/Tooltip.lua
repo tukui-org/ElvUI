@@ -35,7 +35,8 @@ E.Options.args.tooltip.args.general.args.cursorAnchorY = ACH:Range(L["Cursor Anc
 
 E.Options.args.tooltip.args.mythicPlus = ACH:Group(L["Mythic+ Data"], nil, 7)
 E.Options.args.tooltip.args.mythicPlus.inline = true
-E.Options.args.tooltip.args.mythicPlus.args.dungeonScore = ACH:Toggle(L["Mythic+ Score"], L["Display the current Mythic+ Dungeon Score."], 1)
+E.Options.args.tooltip.args.mythicPlus.args.mythicDataEnable = ACH:Toggle(L["Enable"], nil, 1)
+E.Options.args.tooltip.args.mythicPlus.args.dungeonScore = ACH:Toggle(L["Mythic+ Score"], L["Display the current Mythic+ Dungeon Score."], 2, nil, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
 
 E.Options.args.tooltip.args.factionColors = ACH:Group(L["Custom Faction Colors"], nil, 8, nil, function(info) local v = tonumber(info[#info]) local t = E.db.tooltip.factionColors[v] local d = P.tooltip.factionColors[v] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local v = tonumber(info[#info]); local t = E.db.tooltip.factionColors[v]; t.r, t.g, t.b = r, g, b end)
 E.Options.args.tooltip.args.factionColors.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], nil, 0, nil, nil, nil, function() return E.db.tooltip.useCustomFactionColors end, function(_, value) E.db.tooltip.useCustomFactionColors = value; end)

@@ -275,12 +275,14 @@ function TT:SetUnitText(tt, unit)
 				GameTooltip:AddDoubleLine(format('%s:', _G.ROLE), role, nil, nil, nil, r, g, b)
 			end
 		end
-
-		if TT.db.dungeonScore then
+		-- mythicDataEnable
+		if TT.db.mythicDataEnable then
 			local data = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
-			if data and data.currentSeasonScore then
-				local color = C_ChallengeMode_GetDungeonScoreRarityColor(data.currentSeasonScore)
-				GameTooltip:AddDoubleLine(L["Mythic+ Score:"], data.currentSeasonScore, nil, nil, nil, color.r or 1, color.g or 1, color.b or 1)
+			local color = C_ChallengeMode_GetDungeonScoreRarityColor(data.currentSeasonScore)
+			if TT.db.dungeonScore then
+				if data and data.currentSeasonScore then
+					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], data.currentSeasonScore, nil, nil, nil, color.r or 1, color.g or 1, color.b or 1)
+				end
 			end
 		end
 
