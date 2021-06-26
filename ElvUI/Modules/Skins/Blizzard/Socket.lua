@@ -27,7 +27,7 @@ function S:Blizzard_ItemSocketingUI()
 
 		button:StripTextures()
 		button:StyleButton(false)
-		button:CreateBackdrop()
+		button:SetTemplate(nil, true)
 		button_bracket:Kill()
 		button_bg:Kill()
 		button_icon:SetTexCoord(unpack(E.TexCoords))
