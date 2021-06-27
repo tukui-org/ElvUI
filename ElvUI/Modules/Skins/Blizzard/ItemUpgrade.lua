@@ -34,6 +34,9 @@ function S:Blizzard_ItemUpgradeUI()
 		end
 	end)
 
+	local UpgradeDropDown = ItemUpgradeFrame.UpgradeLevelDropDown.DropDownMenu
+	S:HandleDropDownBox(UpgradeDropDown, 115)
+
 	local TextFrame = ItemUpgradeFrame.TextFrame
 	TextFrame:StripTextures()
 	TextFrame:CreateBackdrop('Transparent')
