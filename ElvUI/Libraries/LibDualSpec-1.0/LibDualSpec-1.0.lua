@@ -451,30 +451,3 @@ if IsLoggedIn() then
 else
 	lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
 end
-
---@do-not-package@
-if not lib.testdb then
-	local AC = LibStub("AceConfig-3.0", true)
-	local ACD = LibStub("AceConfigDialog-3.0", true)
-	local ADO = LibStub("AceDBOptions-3.0", true)
-	if AC and ACD and ADO then
-		local key = format("%s-%d test", MAJOR, MINOR)
-		local testdb = LibStub('AceDB-3.0'):New(key)
-		lib.testdb = testdb
-		testdb:RegisterCallback("OnNewProfile", print)
-		testdb:RegisterCallback("OnProfileChanged", print)
-		testdb:RegisterCallback("OnProfileShutdown", print)
-		testdb:RegisterCallback("OnProfileCopied", print)
-		testdb:RegisterCallback("OnProfileDeleted", print)
-		testdb:RegisterCallback("OnProfileReset", print)
-		testdb:RegisterCallback("OnDatabaseReset", print)
-		testdb:RegisterCallback("OnDatabaseShutdown", print)
-		lib:EnhanceDatabase(testdb, key)
-		local options = ADO:GetOptionsTable(testdb)
-		lib:EnhanceOptions(options, testdb)
-		AC:RegisterOptionsTable(key, options)
-		SlashCmdList["SPECPROFILES"] = function() ACD:Open(key) end
-		SLASH_SPECPROFILES1 = "/testdb"
-	end
-end
---@end-do-not-package@
