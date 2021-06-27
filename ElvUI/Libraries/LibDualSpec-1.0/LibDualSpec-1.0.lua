@@ -31,7 +31,10 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --]]
 
-local MAJOR, MINOR = "LibDualSpec-1.0", 17
+-- just bail out on classic, there is no DualSpec there
+if WOW_PROJECT_ID ~= WOW_PROJECT_MAINLINE then return end
+
+local MAJOR, MINOR = "LibDualSpec-1.0", 20
 assert(LibStub, MAJOR.." requires LibStub")
 local lib, minor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
@@ -69,7 +72,7 @@ local AceDB3 = LibStub('AceDB-3.0', true)
 local AceDBOptions3 = LibStub('AceDBOptions-3.0', true)
 local AceConfigRegistry3 = LibStub('AceConfigRegistry-3.0', true)
 
--- classId specialization functions don't require player data to be loaded
+-- class id specialization functions don't require player data to be loaded
 local _, _, classId = UnitClass("player")
 local numSpecs = GetNumSpecializationsForClassID(classId)
 
@@ -79,19 +82,35 @@ local numSpecs = GetNumSpecializationsForClassID(classId)
 
 local L_ENABLED = "Enable spec profiles"
 local L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-local L_CURRENT = "%s (Current)" -- maybe something like >> %s << and/or coloring to avoid localization?
+local L_CURRENT = "%s (Current)"
 
 do
 	local locale = GetLocale()
-	if locale == "frFR" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
-	elseif locale == "deDE" then
+	if locale == "deDE" then
 		L_ENABLED = "Spezialisierungsprofile aktivieren"
 		L_ENABLED_DESC = "Falls diese Option aktiviert ist, wird dein Profil auf das angegebene Profil gesetzt, wenn du die Spezialisierung wechselst."
 		L_CURRENT = "%s (Momentan)"
+	elseif locale == "esES" then
+		-- L_ENABLED = "Enable spec profiles"
+		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
+		-- L_CURRENT = "%s (Current)"
+	elseif locale == "esMX" then
+		-- L_ENABLED = "Enable spec profiles"
+		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
+		-- L_CURRENT = "%s (Current)"
+	elseif locale == "frFR" then
+		-- L_ENABLED = "Enable spec profiles"
+		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
+		-- L_CURRENT = "%s (Current)"
+	elseif locale == "itIT" then
+		L_ENABLED = "Abilita i profili per la specializzazione"
+		L_ENABLED_DESC = "Quando abilitato, il tuo profilo verrà impostato in base alla specializzazione usata."
+		L_CURRENT = "%s (Attuale)"
 	elseif locale == "koKR" then
+		-- L_ENABLED = "Enable spec profiles"
+		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
+		-- L_CURRENT = "%s (Current)"
+	elseif locale == "ptBR" then
 		-- L_ENABLED = "Enable spec profiles"
 		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
 		-- L_CURRENT = "%s (Current)"
@@ -107,18 +126,6 @@ do
 		L_ENABLED = "啟用專精設定檔"
 		L_ENABLED_DESC = "當啟用後，當你切換專精時設定檔會設定為專精設定檔。"
 		L_CURRENT = "%s (目前) "
-	elseif locale == "esES" or locale == "esMX" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
-	elseif locale == "ptBR" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
-	elseif locale == "itIT" then
-		-- L_ENABLED = "Enable spec profiles"
-		-- L_ENABLED_DESC = "When enabled, your profile will be set to the specified profile when you change specialization."
-		-- L_CURRENT = "%s (Current)"
 	end
 end
 
@@ -130,7 +137,7 @@ end
 -- @return (boolean) true is dual spec feature enabled.
 -- @name enhancedDB:IsDualSpecEnabled
 function mixin:IsDualSpecEnabled()
-	return registry[self].db.char.enabled
+	return lib.currentSpec > 0 and registry[self].db.char.enabled
 end
 
 --- Enable/disabled dual spec feature.
@@ -297,13 +304,24 @@ options.choose = {
 
 options.enabled = {
 	name = "|cffffd200"..L_ENABLED.."|r",
-	desc = L_ENABLED_DESC,
+	desc = function()
+		local desc = L_ENABLED_DESC
+		if lib.currentSpec == 0 then
+			local _, reason = C_SpecializationInfo.CanPlayerUseTalentSpecUI()
+			if not reason or reason == "" then
+				reason = TALENT_MICRO_BUTTON_NO_SPEC
+			end
+			desc = desc .. "\n\n" .. RED_FONT_COLOR:WrapTextInColorCode(reason)
+		end
+		return desc
+	end,
 	descStyle = "inline",
 	type = "toggle",
 	order = 41,
 	width = "full",
 	get = function(info) return info.handler.db:IsDualSpecEnabled() end,
 	set = function(info, value) info.handler.db:SetDualSpecEnabled(value) end,
+	disabled = function() return lib.currentSpec == 0 end,
 }
 
 for i = 1, numSpecs do
@@ -392,14 +410,20 @@ end
 -- ----------------------------------------------------------------------------
 
 local function eventHandler(self, event)
-	lib.currentSpec = GetSpecialization() or 0
+	local spec = GetSpecialization() or 0
+	-- Newly created characters start at 5 instead of 1 in 9.0.1.
+	if spec == 5 or not C_SpecializationInfo.CanPlayerUseTalentSpecUI() then
+		spec = 0
+	end
+	lib.currentSpec = spec
 
 	if event == "PLAYER_LOGIN" then
 		self:UnregisterEvent(event)
-		self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+		self:RegisterUnitEvent("PLAYER_SPECIALIZATION_CHANGED", "player")
+		self:RegisterEvent("PLAYER_LEVEL_CHANGED")
 	end
 
-	if lib.currentSpec > 0 and next(upgrades) then
+	if spec > 0 and next(upgrades) then
 		for target in next, upgrades do
 			UpgradeDatabase(target)
 		end
@@ -427,5 +451,3 @@ if IsLoggedIn() then
 else
 	lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
 end
-
-
