@@ -19,6 +19,8 @@ local function HandleOptionButton(button, strip)
 	if not button then return end
 
 	if strip then button:StripTextures() end
+	S:HandleBlizzardRegions(button)
+
 	button:SetTemplate()
 
 	if not button.backdropHooked then
