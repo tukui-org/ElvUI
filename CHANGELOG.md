@@ -12,7 +12,7 @@ Fixed rare power prediction lua error
 Fixed rare tempHistory chat lua error  
 Fixed skins for patch 9.1  
 
-**Updates:**
+**Updates:**  
 Optimized auras code, some players might notice a FPS gain in big mob pulls  
 Updated filters for Sanctum of Domination (All difficulties)  
 Updated filters for Tazavesh, the Veiled Market (Mythic)  
