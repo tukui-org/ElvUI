@@ -1,4 +1,9 @@
-### Version 12.25 [ ETA: 🍨 ]
+### Version 12.26 [ ETA: 🍨 ]
+
+**Hotfixes:**  
+
+___
+### Version 12.25 [ June 29th 2021 ]
 
 **Added:**  
 Mythic+ score options in the tooltip section (Based on Blizzards new score API)  
