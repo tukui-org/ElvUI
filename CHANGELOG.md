@@ -1,7 +1,13 @@
-### Version 12.27 [ ETA: 🍨 ]
+### Version 12.28 [ ETA: 🍨 ]
 
 **Hotfixes:**  
 
+
+___
+### Version 12.27 [ June 29th 2021 ]
+
+**Hotfixes:**  
+Fixed error when Ace3 skin was disabled.  
 
 ___
 ### Version 12.26 [ June 29th 2021 ]
