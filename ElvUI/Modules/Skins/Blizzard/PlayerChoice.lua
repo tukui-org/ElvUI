@@ -43,11 +43,11 @@ local function SetupOptions(frame)
 
 		S:HandleCloseButton(frame.CloseButton)
 
-		if frame.CloseButton.Border then -- dont exist in jailer
-			frame.CloseButton.Border:SetAlpha(0)
-		end
-
 		frame.IsSkinned = true
+	end
+
+	if frame.CloseButton.Border then -- dont exist in jailer
+		frame.CloseButton.Border:SetAlpha(0)
 	end
 
 	local inTower = IsInJailersTower()
