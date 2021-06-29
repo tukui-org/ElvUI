@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -58,17 +58,13 @@ function S:Blizzard_TrainerUI()
 	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown, 155)
 
 	ClassTrainerFrame:Height(ClassTrainerFrame:GetHeight() + 5)
-	ClassTrainerFrame:CreateBackdrop('Transparent')
-	ClassTrainerFrame.backdrop:Point('TOPLEFT', ClassTrainerFrame, 'TOPLEFT')
-	ClassTrainerFrame.backdrop:Point('BOTTOMRIGHT', ClassTrainerFrame, 'BOTTOMRIGHT')
+	ClassTrainerFrame:SetTemplate('Transparent')
 
-	local ClassTrainerFrameSkillStepButton = _G.ClassTrainerFrameSkillStepButton
-	ClassTrainerFrameSkillStepButton.icon:SetTexCoord(unpack(E.TexCoords))
-	ClassTrainerFrameSkillStepButton:CreateBackdrop()
-	ClassTrainerFrameSkillStepButton.backdrop:SetOutside(ClassTrainerFrameSkillStepButton.icon)
-	ClassTrainerFrameSkillStepButton.icon:SetParent(ClassTrainerFrameSkillStepButton.backdrop)
+	local stepButton = _G.ClassTrainerFrameSkillStepButton
+	stepButton:SetTemplate()
+	stepButton.icon:SetTexCoord(unpack(E.TexCoords))
+	stepButton.selectedTex:SetColorTexture(1,1,1,0.3)
 	_G.ClassTrainerFrameSkillStepButtonHighlight:SetColorTexture(1,1,1,0.3)
-	ClassTrainerFrameSkillStepButton.selectedTex:SetColorTexture(1,1,1,0.3)
 
 	local ClassTrainerStatusBar = _G.ClassTrainerStatusBar
 	ClassTrainerStatusBar:StripTextures()

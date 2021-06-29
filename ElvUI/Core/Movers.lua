@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local Sticky = E.Libs.SimpleSticky
 
 local _G = _G
@@ -224,7 +224,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	if overlay == nil then overlay = true end
 
-	local f = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
+	local f = CreateFrame('Button', name, E.UIParent)
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)

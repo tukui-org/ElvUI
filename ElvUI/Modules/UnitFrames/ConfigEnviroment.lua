@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 local _, ns = ...
 local ElvUF = ns.oUF
 
@@ -106,11 +106,11 @@ local function createConfigEnv()
 end
 
 function UF:ForceShow(frame)
-	if InCombatLockdown() then return; end
+	if InCombatLockdown() then return end
 	if not frame.isForced then
 		frame.oldUnit = frame.unit
 		frame.unit = 'player'
-		frame.isForced = true;
+		frame.isForced = true
 		frame.oldOnUpdate = frame:GetScript('OnUpdate')
 	end
 
@@ -137,7 +137,7 @@ function UF:ForceShow(frame)
 end
 
 function UF:UnforceShow(frame)
-	if InCombatLockdown() then return; end
+	if InCombatLockdown() then return end
 	if not frame.isForced then
 		return
 	end
@@ -190,7 +190,7 @@ function UF:UnshowChildUnits(header, ...)
 end
 
 local function OnAttributeChanged(self)
-	if not self:GetParent().forceShow and not self.forceShow then return; end
+	if not self:GetParent().forceShow and not self.forceShow then return end
 	if not self:IsShown() then return end
 
 	local db = self.db or self:GetParent().db
@@ -204,7 +204,7 @@ local function OnAttributeChanged(self)
 end
 
 function UF:HeaderConfig(header, configMode)
-	if InCombatLockdown() then return; end
+	if InCombatLockdown() then return end
 
 	createConfigEnv()
 	header.forceShow = configMode

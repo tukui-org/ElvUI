@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LO = E:GetModule('Layout')
 local DT = E:GetModule('DataTexts')
 local CH = E:GetModule('Chat')
@@ -22,7 +22,7 @@ function LO:Initialize()
 	LO:CreateMinimapPanels()
 	LO:SetDataPanelStyle()
 
-	LO.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent, 'BackdropTemplate')
+	LO.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent)
 	LO.BottomPanel:SetTemplate('Transparent')
 	LO.BottomPanel:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', -1, -1)
 	LO.BottomPanel:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
@@ -32,7 +32,7 @@ function LO:Initialize()
 	Panel_OnShow(LO.BottomPanel)
 	LO:BottomPanelVisibility()
 
-	LO.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent, 'BackdropTemplate')
+	LO.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent)
 	LO.TopPanel:SetTemplate('Transparent')
 	LO.TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
 	LO.TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
@@ -294,7 +294,7 @@ end
 
 function LO:CreateChatPanels()
 	--Left Chat
-	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent, 'BackdropTemplate')
+	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
 	lchat:SetFrameStrata('BACKGROUND')
 	lchat:SetFrameLevel(300)
 	lchat:Size(100, 100)
@@ -312,14 +312,14 @@ function LO:CreateChatPanels()
 	lchat.tex = lchattex
 
 	--Left Chat Tab
-	CreateFrame('Frame', 'LeftChatTab', lchat, 'BackdropTemplate')
+	CreateFrame('Frame', 'LeftChatTab', lchat)
 
 	--Left Chat Data Panel
-	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', lchat, 'BackdropTemplate')
+	local lchatdp = CreateFrame('Frame', 'LeftChatDataPanel', lchat)
 	DT:RegisterPanel(lchatdp, 3, 'ANCHOR_TOPLEFT', -17, 4)
 
 	--Left Chat Toggle Button
-	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent, 'BackdropTemplate')
+	local lchattb = CreateFrame('Button', 'LeftChatToggleButton', E.UIParent)
 	lchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
 	lchattb:SetFrameStrata('BACKGROUND')
 	lchattb:SetFrameLevel(301)
@@ -343,7 +343,7 @@ function LO:CreateChatPanels()
 	lchattb.parent = lchat
 
 	--Right Chat
-	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent, 'BackdropTemplate')
+	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
 	rchat:SetFrameStrata('BACKGROUND')
 	rchat:SetFrameLevel(300)
 	rchat:Size(100, 100)
@@ -361,14 +361,14 @@ function LO:CreateChatPanels()
 	rchat.tex = rchattex
 
 	--Right Chat Tab
-	CreateFrame('Frame', 'RightChatTab', rchat, 'BackdropTemplate')
+	CreateFrame('Frame', 'RightChatTab', rchat)
 
 	--Right Chat Data Panel
-	local rchatdp = CreateFrame('Frame', 'RightChatDataPanel', rchat, 'BackdropTemplate')
+	local rchatdp = CreateFrame('Frame', 'RightChatDataPanel', rchat)
 	DT:RegisterPanel(rchatdp, 3, 'ANCHOR_TOPRIGHT', 17, 4)
 
 	--Right Chat Toggle Button
-	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent, 'BackdropTemplate')
+	local rchattb = CreateFrame('Button', 'RightChatToggleButton', E.UIParent)
 	rchattb:SetNormalTexture(E.Media.Textures.ArrowUp)
 	rchattb:RegisterForClicks('AnyUp')
 	rchattb:SetFrameStrata('BACKGROUND')
@@ -412,7 +412,7 @@ function LO:CreateChatPanels()
 end
 
 function LO:CreateMinimapPanels()
-	local panel = CreateFrame('Frame', 'MinimapPanel', _G.Minimap, 'BackdropTemplate')
+	local panel = CreateFrame('Frame', 'MinimapPanel', _G.Minimap)
 	panel:Point('TOPLEFT', _G.Minimap, 'BOTTOMLEFT', -E.Border, E.PixelMode and 0 or -3)
 	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', E.Border, -BAR_HEIGHT)
 	panel:Hide()

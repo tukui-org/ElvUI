@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local CH = E:GetModule('Chat')
 local Bags = E:GetModule('Bags')
@@ -77,7 +77,7 @@ E.Options.args.chat = {
 					name = L["Role Icon"],
 					desc = L["Display LFG Icons in group chat."],
 					set = function(self, value)
-						E.db.chat.lfgIcons = value;
+						E.db.chat.lfgIcons = value
 						CH:CheckLFGRoles()
 					end,
 				},
@@ -87,7 +87,7 @@ E.Options.args.chat = {
 					name = L["Use Alt Key"],
 					desc = L["Require holding the Alt key down to move cursor or cycle through messages in the editbox."],
 					set = function(self, value)
-						E.db.chat.useAltKey = value;
+						E.db.chat.useAltKey = value
 						CH:UpdateSettings()
 					end,
 				},
@@ -124,13 +124,6 @@ E.Options.args.chat = {
 					end,
 				},
 				spacer = ACH:Spacer(18, 'full'),
-				numAllowedCombatRepeat = {
-					order = 19,
-					type = 'range',
-					name = L["Allowed Combat Repeat"],
-					desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
-					min = 2, max = 10, step = 1,
-				},
 				throttleInterval = {
 					order = 20,
 					type = 'range',
@@ -189,17 +182,17 @@ E.Options.args.chat = {
 						ABOVE_CHAT_INSIDE = L["Above Chat (Inside)"],
 					},
 					set = function(info, value)
-						E.db.chat[info[#info]] = value;
+						E.db.chat[info[#info]] = value
 						CH:UpdateEditboxAnchors()
 					end,
 				},
 				tabSelection = {
-					order = 65,
+					order = 60,
 					type = 'group',
 					name = L["Tab Selector"],
 					set = function(info, value)
-						E.db.chat[info[#info]] = value;
-						CH:UpdateChatTabColors();
+						E.db.chat[info[#info]] = value
+						CH:UpdateChatTabColors()
 					end,
 					args = {
 						tabSelectedTextEnabled = {
@@ -221,7 +214,7 @@ E.Options.args.chat = {
 							set = function(_, r, g, b)
 								local t = E.db.chat.tabSelectedTextColor
 								t.r, t.g, t.b = r, g, b
-								CH:UpdateChatTabColors();
+								CH:UpdateChatTabColors()
 							end,
 						},
 						tabSelector = {
@@ -265,13 +258,13 @@ E.Options.args.chat = {
 							set = function(_, r, g, b)
 								local t = E.db.chat.tabSelectorColor
 								t.r, t.g, t.b = r, g, b
-								E:UpdateMedia();
+								E:UpdateMedia()
 							end,
 						},
 					}
 				},
 				historyGroup = {
-					order = 70,
+					order = 65,
 					type = 'group',
 					name = L["History"],
 					set = function(info, value) E.db.chat[info[#info]] = value end,
@@ -319,6 +312,25 @@ E.Options.args.chat = {
 								EMOTE		= L["Emote"]
 							},
 						}
+					}
+				},
+				combatRepeat = {
+					order = 70,
+					type = 'group',
+					name = L["Combat Repeat"],
+					args = {
+						enableCombatRepeat = {
+							order = 1,
+							type = 'toggle',
+							name = L["Enable"],
+						},
+						numAllowedCombatRepeat = {
+							order = 2,
+							type = 'range',
+							name = L["Number Allowed"],
+							desc = L["Number of repeat characters while in combat before the chat editbox is automatically closed."],
+							min = 2, max = 10, step = 1,
+						},
 					}
 				},
 				fadingGroup = {
@@ -602,7 +614,7 @@ E.Options.args.chat = {
 							type = 'input',
 							get = function(info) return '' end,
 							set = function(info, value)
-								if value == '' or gsub(value, '%s+', '') == '' then return; end --Don't allow empty entries
+								if value == '' or gsub(value, '%s+', '') == '' then return end --Don't allow empty entries
 								E.global.chat.classColorMentionExcludedNames[strlower(value)] = value
 							end,
 						},
@@ -633,7 +645,7 @@ E.Options.args.chat = {
 					desc = L["Fades the text on chat tabs that are not docked at the left or right chat panel."],
 					hidden = function() return not E.Chat.Initialized end,
 					set = function(self, value)
-						E.db.chat.fadeUndockedTabs = value;
+						E.db.chat.fadeUndockedTabs = value
 						CH:UpdateChatTabs()
 					end,
 				},
@@ -644,7 +656,7 @@ E.Options.args.chat = {
 					desc = L["Fades the text on chat tabs that are docked in a panel where the backdrop is disabled."],
 					hidden = function() return not E.Chat.Initialized end,
 					set = function(self, value)
-						E.db.chat.fadeTabsNoBackdrop = value;
+						E.db.chat.fadeTabsNoBackdrop = value
 						CH:UpdateChatTabs()
 					end,
 				},
@@ -653,7 +665,7 @@ E.Options.args.chat = {
 					type = 'toggle',
 					name = L["Hide Chat Toggles"],
 					set = function(self, value)
-						E.db.chat.hideChatToggles = value;
+						E.db.chat.hideChatToggles = value
 						CH:RefreshToggleButtons()
 						Layout:RepositionChatDataPanels()
 					end,
@@ -665,7 +677,7 @@ E.Options.args.chat = {
 					desc = L["Fades the buttons that toggle chat windows when that window has been toggled off."],
 					disabled = function() return E.db.chat.hideChatToggles end,
 					set = function(self, value)
-						E.db.chat.fadeChatToggles = value;
+						E.db.chat.fadeChatToggles = value
 						CH:RefreshToggleButtons()
 					end,
 				},
@@ -682,7 +694,7 @@ E.Options.args.chat = {
 							name = L["Tab Panel Transparency"],
 							customWidth = 250,
 							disabled = function() return not E.db.chat.panelTabBackdrop end,
-							set = function(info, value) E.db.chat.panelTabTransparency = value; Layout:SetChatTabStyle(); end,
+							set = function(info, value) E.db.chat.panelTabTransparency = value; Layout:SetChatTabStyle() end,
 						},
 						panelTabBackdrop = {
 							order = 2,

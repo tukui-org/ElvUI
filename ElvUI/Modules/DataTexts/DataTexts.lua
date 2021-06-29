@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 local TT = E:GetModule('Tooltip')
 local LDB = E.Libs.LDB
@@ -74,7 +74,7 @@ function DT:SetEasyMenuAnchor(menu, dt)
 end
 
 --> [HyperDT Credits] <--
---> Original Work: NihilisticPandemonium
+--> Original Work: Nihilistzsche
 --> Modified by Azilroka! :)
 
 function DT:SingleHyperMode(_, key, active)
@@ -172,7 +172,7 @@ function DT:FetchFrame(givenName)
 		frame = poolFrame
 		DT.PanelPool.Free[poolName] = nil
 	else
-		frame = CreateFrame('Frame', name, E.UIParent, 'BackdropTemplate')
+		frame = CreateFrame('Frame', name, E.UIParent)
 		DT.PanelPool.Count = DT.PanelPool.Count + 1
 	end
 
@@ -208,13 +208,13 @@ function DT:ReleasePanel(givenName)
 	end
 end
 
-function DT:BuildPanelFrame(name, db, fromInit)
-	db = db or E.global.datatexts.customPanels[name] or DT:Panel_DefaultGlobalSettings(name)
+function DT:BuildPanelFrame(name, fromInit)
+	local db = DT:GetPanelSettings(name)
 
 	local Panel = DT:FetchFrame(name)
 	Panel:ClearAllPoints()
 	Panel:SetPoint('CENTER')
-	Panel:SetSize(db.width or 300, db.height or 22)
+	Panel:SetSize(db.width, db.height)
 
 	local MoverName = 'DTPanel'..name..'Mover'
 	Panel.moverName = MoverName
@@ -227,7 +227,7 @@ function DT:BuildPanelFrame(name, db, fromInit)
 		E:CreateMover(Panel, MoverName, name, nil, nil, nil, nil, nil, 'datatexts,panels')
 	end
 
-	DT:RegisterPanel(Panel, db.numPoints or 3, db.tooltipAnchor or 'ANCHOR_TOPLEFT', db.tooltipXOffset or -17, db.tooltipYOffset or 4, db.growth == 'VERTICAL')
+	DT:RegisterPanel(Panel, db.numPoints, db.tooltipAnchor, db.tooltipXOffset, db.tooltipYOffset, db.growth == 'VERTICAL')
 
 	if not fromInit then
 		DT:UpdatePanelAttributes(name, db)
@@ -339,10 +339,16 @@ function DT:RegisterPanel(panel, numPoints, anchor, xOff, yOff, vertical)
 	panel.vertical = vertical
 end
 
-function DT:Panel_DefaultGlobalSettings(name)
+function DT:GetPanelSettings(name)
 	local db = E:CopyTable({}, G.datatexts.newPanelInfo)
 
-	E.global.datatexts.customPanels[name] = db
+	local customPanels = E.global.datatexts.customPanels
+	local customPanel = customPanels[name]
+	if customPanel then
+		db = E:CopyTable(db, customPanel)
+	end
+
+	customPanels[name] = db
 
 	return db
 end
@@ -770,8 +776,8 @@ function DT:Initialize()
 	DT:RegisterLDB() -- LibDataBroker
 	DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
 
-	for name, db in pairs(E.global.datatexts.customPanels) do
-		DT:BuildPanelFrame(name, db, true)
+	for name in pairs(E.global.datatexts.customPanels) do
+		DT:BuildPanelFrame(name, true)
 	end
 
 	do -- we need to register the panels to access them for the text

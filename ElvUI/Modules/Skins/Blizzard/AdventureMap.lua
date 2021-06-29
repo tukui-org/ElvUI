@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -22,8 +22,7 @@ function S:Blizzard_AdventureMap()
 	--Quest Choise
 	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog
 	AdventureMapQuestChoiceDialog:StripTextures()
-	AdventureMapQuestChoiceDialog:CreateBackdrop('Transparent')
-	AdventureMapQuestChoiceDialog.backdrop:SetFrameStrata('LOW')
+	AdventureMapQuestChoiceDialog:SetTemplate('Transparent')
 
 	-- Rewards
 	hooksecurefunc(AdventureMapQuestChoiceDialog, 'RefreshRewards', SkinRewards)

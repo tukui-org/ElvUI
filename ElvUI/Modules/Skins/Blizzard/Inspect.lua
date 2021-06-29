@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -74,13 +74,13 @@ function S:Blizzard_InspectUI()
 
 	-- Give inspect frame model backdrop it's color back
 	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
-		local bg = _G['InspectModelFrameBackground'..corner];
+		local bg = _G['InspectModelFrameBackground'..corner]
 		if bg then
-			bg:SetDesaturated(false);
-			bg.ignoreDesaturated = true; -- so plugins can prevent this if they want.
+			bg:SetDesaturated(false)
+			bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
 			hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
 				if value and bckgnd.ignoreDesaturated then
-					bckgnd:SetDesaturated(false);
+					bckgnd:SetDesaturated(false)
 				end
 			end)
 		end

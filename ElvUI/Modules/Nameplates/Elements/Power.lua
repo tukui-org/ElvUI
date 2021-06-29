@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
@@ -10,7 +10,7 @@ local UnitReaction = UnitReaction
 local UnitIsConnected = UnitIsConnected
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
-local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
+local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 function NP:Power_UpdateColor(_, unit)
 	if self.unit ~= unit then return end
@@ -30,7 +30,7 @@ function NP:Power_UpdateColor(_, unit)
 	elseif element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit) then
 		t = self.colors.tapped
 	elseif element.colorPower then
-		if element.displayType ~= ALTERNATE_POWER_INDEX then
+		if element.displayType ~= POWERTYPE_ALTERNATE then
 			t = NP.db.colors.power[ptoken or ptype]
 			if not t then
 				if element.GetAlternativeColor then

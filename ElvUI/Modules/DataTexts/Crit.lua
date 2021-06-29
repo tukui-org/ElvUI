@@ -1,9 +1,8 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 local min = min
 local format, strjoin = format, strjoin
-
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
@@ -40,13 +39,13 @@ local function OnEnter()
 	elseif rangedCrit >= meleeCrit then
 		critText = RANGED_CRIT_CHANCE
 	else
-		critText = MELEE_CRIT_CHANCE;
+		critText = MELEE_CRIT_CHANCE
 	end
 
 	if GetCritChanceProvidesParryEffect() then
-		tooltip = format(CR_CRIT_PARRY_RATING_TOOLTIP, BreakUpLargeNumbers(extraCritRating), extraCritChance, GetCombatRatingBonusForCombatRatingValue(CR_PARRY, extraCritRating));
+		tooltip = format(CR_CRIT_PARRY_RATING_TOOLTIP, BreakUpLargeNumbers(extraCritRating), extraCritChance, GetCombatRatingBonusForCombatRatingValue(CR_PARRY, extraCritRating))
 	else
-		tooltip = format(CR_CRIT_TOOLTIP, BreakUpLargeNumbers(extraCritRating), extraCritChance);
+		tooltip = format(CR_CRIT_TOOLTIP, BreakUpLargeNumbers(extraCritRating), extraCritChance)
 	end
 
 	DT.tooltip:AddDoubleLine(HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, critText)..' '..format('%.2f%%', critChance)..FONT_COLOR_CODE_CLOSE, nil, 1, 1, 1)
@@ -57,22 +56,22 @@ end
 local function OnEvent(self)
 	local minCrit = GetSpellCritChance(2)
 	for i = 3, MAX_SPELL_SCHOOLS do
-		spellCrit = GetSpellCritChance(i);
-		minCrit = min(minCrit, spellCrit);
+		spellCrit = GetSpellCritChance(i)
+		minCrit = min(minCrit, spellCrit)
 	end
 	spellCrit = minCrit
-	rangedCrit = GetRangedCritChance();
-	meleeCrit = GetCritChance();
+	rangedCrit = GetRangedCritChance()
+	meleeCrit = GetCritChance()
 
 	if spellCrit >= rangedCrit and spellCrit >= meleeCrit then
-		critChance = spellCrit;
-		rating = CR_CRIT_SPELL;
+		critChance = spellCrit
+		rating = CR_CRIT_SPELL
 	elseif rangedCrit >= meleeCrit then
-		critChance = rangedCrit;
-		rating = CR_CRIT_RANGED;
+		critChance = rangedCrit
+		rating = CR_CRIT_RANGED
 	else
-		critChance = meleeCrit;
-		rating = CR_CRIT_MELEE;
+		critChance = meleeCrit
+		rating = CR_CRIT_MELEE
 	end
 
 	extraCritChance, extraCritRating = GetCombatRatingBonus(rating), GetCombatRating(rating)

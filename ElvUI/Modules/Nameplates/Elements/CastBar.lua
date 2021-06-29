@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 local CH = E:GetModule('Chat')
 local LSM = E.Libs.LSM
@@ -104,7 +104,7 @@ function NP:Construct_Castbar(nameplate)
 
 	NP.StatusBars[Castbar] = true
 
-	Castbar.Button = CreateFrame('Frame', nil, Castbar, 'BackdropTemplate')
+	Castbar.Button = CreateFrame('Frame', nil, Castbar)
 	Castbar.Button:SetTemplate()
 
 	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')

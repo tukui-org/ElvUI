@@ -1,10 +1,10 @@
 --[[
 	~AddOn Engine~
 	To load the AddOn engine add this to the top of your file:
-		local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+		local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 	To load the AddOn engine inside another addon add this to the top of your file:
-		local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+		local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
 local _G = _G
@@ -30,6 +30,11 @@ local GameMenuFrame = GameMenuFrame
 -- GLOBALS: ElvCharacterDB, ElvPrivateDB, ElvDB, ElvCharacterData, ElvPrivateData, ElvData
 
 _G.BINDING_HEADER_ELVUI = GetAddOnMetadata(..., 'Title')
+for _, barNumber in pairs({2, 7, 8, 9, 10}) do
+	for slot = 1, 12 do
+		_G[format('BINDING_NAME_ELVUIBAR%dBUTTON%d', barNumber, slot)] = format('ActionBar %d Button %d', barNumber, slot)
+	end
+end
 
 local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
 local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
@@ -72,6 +77,8 @@ E.TotemBar = E:NewModule('Totems','AceEvent-3.0')
 E.UnitFrames = E:NewModule('UnitFrames','AceTimer-3.0','AceEvent-3.0','AceHook-3.0')
 E.WorldMap = E:NewModule('WorldMap','AceHook-3.0','AceEvent-3.0','AceTimer-3.0')
 
+E.InfoColor = '|cff1784d1' -- blue
+E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
 -- Item Qualitiy stuff - used by MerathilisUI
@@ -116,7 +123,7 @@ do
 	E:AddLib('LDB', 'LibDataBroker-1.1')
 	E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	E:AddLib('SimpleSticky', 'LibSimpleSticky-1.0')
-	E:AddLib('SpellRange', 'SpellRange-1.0')
+	E:AddLib('RangeCheck', 'LibRangeCheck-2.0-ElvUI')
 	E:AddLib('ButtonGlow', 'LibButtonGlow-1.0', true)
 	E:AddLib('ItemSearch', 'LibItemSearch-1.2-ElvUI')
 	E:AddLib('Compress', 'LibCompress')
@@ -208,7 +215,7 @@ function E:OnInitialize()
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	end
 
-	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate, BackdropTemplate')
+	local GameMenuButton = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
 	GameMenuButton:SetScript('OnClick', function()
 		E:ToggleOptionsUI() --We already prevent it from opening in combat
 		if not InCombatLockdown() then

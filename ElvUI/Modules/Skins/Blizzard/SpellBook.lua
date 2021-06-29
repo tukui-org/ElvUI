@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -26,7 +26,7 @@ function S:SpellBookFrame()
 		_G.SpellBookPage2:SetAlpha(0)
 		_G.SpellBookPageText:SetTextColor(0.6, 0.6, 0.6)
 	else
-		local pagebackdrop = CreateFrame('Frame', nil, SpellBookFrame, 'BackdropTemplate')
+		local pagebackdrop = CreateFrame('Frame', nil, SpellBookFrame)
 		pagebackdrop:SetTemplate()
 		pagebackdrop:Point('TOPLEFT', _G.SpellBookPage1, 'TOPLEFT', -2, 2)
 		pagebackdrop:Point('BOTTOMRIGHT', SpellBookFrame, 'BOTTOMRIGHT', -8, 4)
@@ -58,10 +58,11 @@ function S:SpellBookFrame()
 			end
 		end
 
-		S:HandleIcon(icon)
 		E:RegisterCooldown(_G['SpellButton'..i..'Cooldown'])
-		button:CreateBackdrop(nil, true)
-		icon:SetInside(button.backdrop)
+		S:HandleIcon(icon)
+
+		button:SetTemplate(nil, true)
+		icon:SetInside(button)
 
 		if button.shine then
 			button.shine:ClearAllPoints()
@@ -82,11 +83,11 @@ function S:SpellBookFrame()
 			local button = _G['SpellButton'..i]
 			if button.SpellHighlightTexture then
 				button.SpellHighlightTexture:SetColorTexture(0.8, 0.8, 0, 0.6)
-				button.SpellHighlightTexture:SetInside(button.backdrop)
+				button.SpellHighlightTexture:SetInside(button)
 				E:Flash(button.SpellHighlightTexture, 1, true)
 			end
 
-			button.backdrop:SetShown(button.SpellName:IsShown())
+			button:SetShown(button.SpellName:IsShown())
 
 			if E.private.skins.parchmentRemoverEnable then
 				button:SetHighlightTexture('')
@@ -107,7 +108,7 @@ function S:SpellBookFrame()
 	for i = 1, 8 do
 		local Tab = _G['SpellBookSkillLineTab'..i]
 		Tab:StripTextures()
-		Tab:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		Tab:SetTemplate()
 		Tab:StyleButton(nil, true)
 	end
 

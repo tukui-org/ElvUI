@@ -1,9 +1,6 @@
 -- Russian localization file for ruRU.
-local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "ruRU")
-
-local COLOR1 = '|cFF1784d1'
-local COLOR2 = '|cfd9b9b9b'
 
 L["BoP"] = "ПпП"
 L["BoE"] = "ПпН"
@@ -70,6 +67,7 @@ L["Blend Mode"] = "Тип смешивания" --Check back later
 L["Blend"] = "Смешивание" --Check back later
 L["Blizzard Widgets"] = "Виджеты Blizzard"
 L["BNet Frame"] = "Оповещения BNet"
+L["Boss Banner"] = true
 L["Boss Button"] = "Кнопка босса"
 L["Boss Frames"] = "Боссы"
 L["Building(s) Report:"] = "Отчет зданий:"
@@ -128,6 +126,7 @@ L["ElvUI Status"] = "Статус ElvUI"
 L["Empty Slot"] = "Пустой слот"
 L["Enable"] = "Включить"
 L["Error resetting UnitFrame."] = "Ошибка сброса рамки юнита."
+L["Event Log"] = true
 L["Experience Bar"] = "Полоса опыта"
 L["Experience"] = "Опыт"
 L["Feet"] = "Ступни"
@@ -158,7 +157,7 @@ L["Honor Bar"] = "Полоса Чести"
 L["Honor Remaining:"] = "Осталось Чести"
 L["Honor XP:"] = "Честь: "
 L["Horde: "] = "Орда: "
-L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1macro|r, or |cFF1784d1spellbook|r button to bind it. This also works for items in your |cFF1784d1bag|r. Press the |cfd9b9b9bESC|r key to |cfd9b9b9bclear|r the current bindings."] = "Наведите курсор на любую кнопку |cFF1784d1панели команд|r, |cFF1784d1микроменю|r, |cFF1784d1макроса|r или |cFF1784d1книги заклинаний|r для назначения клавиши. Также работает для предметов в |cFF1784d1сумках|r. Нажмите |cfd9b9b9bESC|r для |cfd9b9b9bочистки|r текущего назначения."
+L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["HP"] = "+ Исцел."
 L["HPS"] = "ИВС"
 L["I Swear"] = "Я клянусь!"
@@ -200,11 +199,12 @@ L["Layout"] = "Расположение"
 L["Left Chat"] = "Левый чат"
 L["Left Click:"] = "ЛКМ:"
 L["Legs"] = "Ноги"
+L["Level"] = "Уровень"
 L["Level Up Display / Boss Banner"] = "Уровень / Баннер босса"
 L["List of installations in queue:"] = "Очередь установки:"
 L["Lock"] = "Закрепить"
-L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
-L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%s|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://www.tukui.org или присоединяйтесь к серверу Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%s|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://www.tukui.org или присоединяйтесь к серверу Discord: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = "Розыгрыш/оповещения"
 L["Loot Frame"] = "Окно добычи"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "Чтоб его! Загрузка была... да всплыла. Попробуйте еще раз!"
@@ -287,7 +287,7 @@ L["Save"] = "Сохранить"
 L["Saved Dungeon(s)"] = "Сохраненные подземелья"
 L["Saved Raid(s)"] = "Сохраненные рейды"
 L["says"] = "говорит"
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = "Выберите тип си стемы аур, который будет применен к рамкам юнитов. Выберите \"Полосы и иконки\" для показа полос аур и иконок, выберите \"Только иконки\" для показа исключительно иконок."
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bars to use both aura bars and icons, set to Icons Only to only see icons."] = "Выберите тип си стемы аур, который будет применен к рамкам юнитов. Выберите \"Полосы и иконки\" для показа полос аур и иконок, выберите \"Только иконки\" для показа исключительно иконок."
 L["Server: "] = "На сервере:"
 L["Session:"] = "За сеанс:"
 L["Setup Chat"] = "Настроить чат"
@@ -397,4 +397,4 @@ L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
   NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
   using */luaerror|r ^on|r within that session.
-]=]):gsub('*', COLOR1):gsub('%^', COLOR2)
+]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

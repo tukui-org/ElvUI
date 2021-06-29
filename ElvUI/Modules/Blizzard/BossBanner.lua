@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
 local _G = _G
@@ -13,18 +13,14 @@ local function Reanchor(frame, _, anchor)
 	end
 end
 
-function B:Handle_LevelUpDisplay_BossBanner()
+function B:Handle_BossBanner()
 	if not Holder then
-		Holder = CreateFrame('Frame', 'LevelUpBossBannerHolder', E.UIParent)
+		Holder = CreateFrame('Frame', 'BossBannerHolder', E.UIParent)
 		Holder:Size(200, 20)
 		Holder:Point('TOP', E.UIParent, 'TOP', -1, -120)
 	end
 
-	E:CreateMover(Holder, 'LevelUpBossBannerMover', L["Level Up Display / Boss Banner"])
-
-	_G.LevelUpDisplay:ClearAllPoints()
-	_G.LevelUpDisplay:Point('TOP', Holder)
-	hooksecurefunc(_G.LevelUpDisplay, 'SetPoint', Reanchor)
+	E:CreateMover(Holder, 'BossBannerMover', L["Boss Banner"])
 
 	_G.BossBanner:ClearAllPoints()
 	_G.BossBanner:Point('TOP', Holder)

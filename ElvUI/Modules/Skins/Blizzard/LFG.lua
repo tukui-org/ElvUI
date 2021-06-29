@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
@@ -124,29 +124,30 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameBg:Hide()
 	PVEFrame.shadows:Kill() -- We need to kill it, because if you switch to Mythic Dungeon Tab and back, it shows back up.
 
-	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton, nil, nil, nil, nil, nil, nil, nil, true)
-	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton, nil, nil, nil, nil, nil, nil, nil, true)
+	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
+	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
 
 	_G.GroupFinderFrame.groupButton1.icon:SetTexture([[Interface\Icons\INV_Helmet_08]])
 	_G.GroupFinderFrame.groupButton2.icon:SetTexture([[Interface\LFGFrame\UI-LFR-PORTRAIT]])
 	_G.GroupFinderFrame.groupButton3.icon:SetTexture([[Interface\Icons\Icon_Scenarios]])
 
-	_G.LFGDungeonReadyDialogBackground:Kill()
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
 	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
 	S:HandleCloseButton(_G.LFGDungeonReadyDialogCloseButton)
-	_G.LFGDungeonReadyDialog:StripTextures()
-	_G.LFGDungeonReadyDialog:CreateBackdrop('Transparent')
-	_G.LFGDungeonReadyStatus:StripTextures()
-	_G.LFGDungeonReadyStatus:CreateBackdrop('Transparent')
+	_G.LFGDungeonReadyDialogBackground:Kill()
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetTexture(E.Media.Textures.RolesHQ)
 	_G.LFGDungeonReadyDialogRoleIconTexture:SetAlpha(0.5)
-
-	hooksecurefunc(_G.LFGDungeonReadyDialog, 'SetBackdrop', function(frame, backdrop)
-		if backdrop ~= nil then frame:SetBackdrop() end
-	end)
+	_G.LFGDungeonReadyDialog.filigree:SetAlpha(0)
+	_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
+	_G.LFGDungeonReadyStatus:StripTextures()
+	_G.LFGDungeonReadyStatus:SetTemplate('Transparent')
 
 	hooksecurefunc('LFGDungeonReadyPopup_Update', function()
+		if _G.LFGDungeonReadyDialog:IsShown() then
+			_G.LFGDungeonReadyDialog:StripTextures()
+			_G.LFGDungeonReadyDialog:SetTemplate('Transparent')
+		end
+
 		if _G.LFGDungeonReadyDialogRoleIcon:IsShown() then
 			local _, _, _, _, _, _, role = GetLFGProposal()
 			if role == 'DAMAGER' then
@@ -187,8 +188,6 @@ function S:LookingForGroupFrames()
 	_G.LFDQueueFrameRoleButtonTank.shortageBorder:Kill()
 	_G.LFDQueueFrameRoleButtonDPS.shortageBorder:Kill()
 	_G.LFDQueueFrameRoleButtonHealer.shortageBorder:Kill()
-	_G.LFGDungeonReadyDialog.filigree:SetAlpha(0)
-	_G.LFGDungeonReadyDialog.bottomArt:SetAlpha(0)
 	S:HandleCloseButton(_G.LFGDungeonReadyStatusCloseButton)
 
 	local RoleButtons1 = {
@@ -271,7 +270,7 @@ function S:LookingForGroupFrames()
 		end
 
 		if avail2 then
-			avail1:ClearAllPoints();
+			avail1:ClearAllPoints()
 			avail1:Point('TOPRIGHT', self, 'TOP', -40, -35)
 			avail2:ClearAllPoints()
 			avail2:Point('TOPLEFT', self, 'TOP', 40, -35)
@@ -355,9 +354,9 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
 		if button and button.expandOrCollapseButton:IsShown() then
 			if button.isCollapsed then
-				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton);
+				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
 			else
-				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton);
+				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
 			end
 		end
 	end)
@@ -396,11 +395,11 @@ function S:LookingForGroupFrames()
 	_G.RaidBrowserFrameBg:Hide()
 	_G.LFRQueueFrameSpecificListScrollFrameScrollBackgroundTopLeft:Hide()
 	_G.LFRQueueFrameSpecificListScrollFrameScrollBackgroundBottomRight:Hide()
-	_G.LFRQueueFrameCommentScrollFrame:CreateBackdrop()
+	_G.LFRQueueFrameCommentScrollFrame:SetTemplate()
 	_G.LFRBrowseFrameColumnHeader1:Width(94) --Fix the columns being slightly off
 	_G.LFRBrowseFrameColumnHeader2:Width(38)
 
-	_G.RaidBrowserFrame:CreateBackdrop('Transparent')
+	_G.RaidBrowserFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(_G.RaidBrowserFrameCloseButton)
 	S:HandleButton(_G.LFRQueueFrameFindGroupButton)
 	S:HandleButton(_G.LFRQueueFrameAcceptCommentButton)
@@ -432,8 +431,9 @@ function S:LookingForGroupFrames()
 				tab:GetNormalTexture():SetInside()
 
 				tab.pushed = true
-				tab:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+				tab:SetTemplate()
 				tab:StyleButton(true)
+
 				hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', function(highlight, texPath)
 					if texPath ~= nil then
 						highlight:SetTexture()
@@ -461,10 +461,13 @@ function S:LookingForGroupFrames()
 		end
 	end)
 
-	--[[LFGInvitePopup_Update('Elvz', true, true, true)
-	StaticPopupSpecial_Show(LFGInvitePopup);]]
+	--[[
+		LFGInvitePopup_Update('Elvz', true, true, true)
+		StaticPopupSpecial_Show(LFGInvitePopup)
+	]]
+
 	_G.LFGInvitePopup:StripTextures()
-	_G.LFGInvitePopup:CreateBackdrop('Transparent')
+	_G.LFGInvitePopup:SetTemplate('Transparent')
 	S:HandleButton(_G.LFGInvitePopupAcceptButton)
 	S:HandleButton(_G.LFGInvitePopupDeclineButton)
 
@@ -479,9 +482,9 @@ function S:LookingForGroupFrames()
 	local LFGListFrame = _G.LFGListFrame
 	LFGListFrame.CategorySelection.Inset:StripTextures()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
-	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
 	LFGListFrame.CategorySelection.StartGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.StartGroupButton:Point('BOTTOMLEFT', -1, 3)
+	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point('BOTTOMRIGHT', -6, 3)
 
@@ -509,9 +512,9 @@ function S:LookingForGroupFrames()
 	S:HandleCheckBox(LFGListFrame.EntryCreation.PrivateGroup.CheckButton)
 
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog:CreateBackdrop('Transparent')
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog:SetTemplate('Transparent')
 	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:StripTextures()
-	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:CreateBackdrop('Transparent')
+	LFGListFrame.EntryCreation.ActivityFinder.Dialog.BorderFrame:SetTemplate('Transparent')
 
 	S:HandleEditBox(LFGListFrame.EntryCreation.ActivityFinder.Dialog.EntryBox)
 	S:HandleScrollBar(_G.LFGListEntryCreationSearchScrollFrameScrollBar)
@@ -519,13 +522,13 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.EntryCreation.ActivityFinder.Dialog.CancelButton)
 
 	_G.LFGListApplicationDialog:StripTextures()
-	_G.LFGListApplicationDialog:CreateBackdrop('Transparent')
+	_G.LFGListApplicationDialog:SetTemplate('Transparent')
 	S:HandleButton(_G.LFGListApplicationDialog.SignUpButton)
 	S:HandleButton(_G.LFGListApplicationDialog.CancelButton)
 	S:HandleEditBox(_G.LFGListApplicationDialogDescription)
 
 	_G.LFGListInviteDialog:StripTextures()
-	_G.LFGListInviteDialog:CreateBackdrop('Transparent')
+	_G.LFGListInviteDialog:SetTemplate('Transparent')
 	S:HandleButton(_G.LFGListInviteDialog.AcknowledgeButton)
 	S:HandleButton(_G.LFGListInviteDialog.AcceptButton)
 	S:HandleButton(_G.LFGListInviteDialog.DeclineButton)
@@ -566,10 +569,10 @@ function S:LookingForGroupFrames()
 
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
 		if not button.DeclineButton.template then
-			S:HandleButton(button.DeclineButton, nil, true, nil, nil, nil, nil, nil, true)
+			S:HandleButton(button.DeclineButton, nil, true)
 		end
 		if not button.InviteButton.template then
-			S:HandleButton(button.InviteButton, nil, nil, nil, nil, nil, nil, nil, true)
+			S:HandleButton(button.InviteButton)
 		end
 	end)
 
@@ -617,11 +620,12 @@ function S:LookingForGroupFrames()
 	S:HandleCheckBox(LFGListFrame.ApplicationViewer.AutoAcceptButton)
 
 	LFGListFrame.ApplicationViewer.Inset:StripTextures()
-	LFGListFrame.ApplicationViewer.Inset:CreateBackdrop('Transparent')
+	LFGListFrame.ApplicationViewer.Inset:SetTemplate('Transparent')
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.NameColumnHeader, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.RoleColumnHeader, true)
 	S:HandleButton(LFGListFrame.ApplicationViewer.ItemLevelColumnHeader, true)
+	S:HandleButton(LFGListFrame.ApplicationViewer.DungeonScoreColumnHeader, true)
 	LFGListFrame.ApplicationViewer.NameColumnHeader:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.NameColumnHeader:Point('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPLEFT', 0, 1)
 	LFGListFrame.ApplicationViewer.NameColumnHeader.Label:FontTemplate()
@@ -631,6 +635,9 @@ function S:LookingForGroupFrames()
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:ClearAllPoints()
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader:Point('LEFT', LFGListFrame.ApplicationViewer.RoleColumnHeader, 'RIGHT', 1, 0)
 	LFGListFrame.ApplicationViewer.ItemLevelColumnHeader.Label:FontTemplate()
+	LFGListFrame.ApplicationViewer.DungeonScoreColumnHeader:ClearAllPoints()
+	LFGListFrame.ApplicationViewer.DungeonScoreColumnHeader:Point('LEFT', LFGListFrame.ApplicationViewer.ItemLevelColumnHeader, 'RIGHT', 1, 0)
+	LFGListFrame.ApplicationViewer.DungeonScoreColumnHeader.Label:FontTemplate()
 	LFGListFrame.ApplicationViewer.PrivateGroup:FontTemplate()
 
 	S:HandleButton(LFGListFrame.ApplicationViewer.RefreshButton)
@@ -651,28 +658,29 @@ function S:LookingForGroupFrames()
 	LFGListApplicationViewerScrollFrameScrollBar:Point('TOPLEFT', LFGListFrame.ApplicationViewer.Inset, 'TOPRIGHT', 0, -14)
 	LFGListApplicationViewerScrollFrameScrollBar:Point('BOTTOMLEFT', LFGListFrame.ApplicationViewer.Inset, 'BOTTOMRIGHT', 0, 14)
 
-	hooksecurefunc('LFGListCategorySelection_AddButton', function(self, btnIndex, categoryID, filters)
-		local button = self.CategoryButtons[btnIndex]
+	hooksecurefunc('LFGListCategorySelection_AddButton', function(btn, btnIndex, categoryID, filters)
+		local button = btn.CategoryButtons[btnIndex]
 		if button then
 			if not button.isSkinned then
-				button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+				button:SetTemplate()
 				button.Icon:SetDrawLayer('BACKGROUND', 2)
 				button.Icon:SetTexCoord(unpack(E.TexCoords))
 				button.Icon:SetInside()
 				button.Cover:Hide()
 				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
 				button.HighlightTexture:SetInside()
+
 				--Fix issue with labels not following changes to GameFontNormal as they should
 				button.Label:SetFontObject(_G.GameFontNormal)
 				button.isSkinned = true
 			end
 
 			button.SelectedTexture:Hide()
-			local selected = self.selectedCategory == categoryID and self.selectedFilters == filters
+			local selected = btn.selectedCategory == categoryID and btn.selectedFilters == filters
 			if selected then
-				button.backdrop:SetBackdropBorderColor(1, 1, 0)
+				button:SetBackdropBorderColor(1, 1, 0)
 			else
-				button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end)
@@ -687,7 +695,7 @@ function S:Blizzard_ChallengesUI()
 
 	-- Mythic+ KeyStoneFrame
 	local KeyStoneFrame = _G.ChallengesKeystoneFrame
-	KeyStoneFrame:CreateBackdrop('Transparent')
+	KeyStoneFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(KeyStoneFrame.CloseButton)
 	S:HandleButton(KeyStoneFrame.StartButton)
 	S:HandleIcon(KeyStoneFrame.KeystoneSlot.Texture, true)
@@ -699,7 +707,7 @@ function S:Blizzard_ChallengesUI()
 		for _, frame in ipairs(self.DungeonIcons) do
 			if not frame.backdrop then
 				frame:GetRegions():SetAlpha(0)
-				frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
+				frame:SetTemplate('Transparent')
 				S:HandleIcon(frame.Icon, true)
 				frame.Icon:SetInside()
 			end
@@ -728,7 +736,7 @@ function S:Blizzard_ChallengesUI()
 	local NoticeFrame = _G.ChallengesFrame.SeasonChangeNoticeFrame
 	S:HandleButton(NoticeFrame.Leave)
 	NoticeFrame:StripTextures()
-	NoticeFrame:CreateBackdrop()
+	NoticeFrame:SetTemplate()
 	NoticeFrame:SetFrameLevel(5)
 	NoticeFrame.NewSeason:SetTextColor(1, .8, 0)
 	NoticeFrame.NewSeason:SetShadowOffset(1, -1)

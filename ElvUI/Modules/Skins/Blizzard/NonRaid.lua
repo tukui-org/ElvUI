@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -38,9 +38,7 @@ function S:RaidInfoFrame()
 	_G.RaidInfoScrollFrame:StripTextures()
 
 	local RaidInfoFrame = _G.RaidInfoFrame
-	RaidInfoFrame:CreateBackdrop('Transparent')
-	RaidInfoFrame.backdrop:Point('TOPLEFT', RaidInfoFrame, 'TOPLEFT')
-	RaidInfoFrame.backdrop:Point('BOTTOMRIGHT', RaidInfoFrame, 'BOTTOMRIGHT')
+	RaidInfoFrame:SetTemplate('Transparent')
 	RaidInfoFrame.Header:StripTextures()
 	S:HandleCloseButton(_G.RaidInfoCloseButton,RaidInfoFrame)
 	S:HandleScrollBar(_G.RaidInfoScrollFrameScrollBar)

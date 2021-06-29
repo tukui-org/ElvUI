@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -24,7 +24,7 @@ function S:Blizzard_QuestChoice()
 		end
 	end
 
-	QuestChoiceFrame:CreateBackdrop('Transparent')
+	QuestChoiceFrame:SetTemplate('Transparent')
 	S:HandleButton(_G.QuestChoiceFrameOption1.OptionButtonsContainer.OptionButton1)
 	S:HandleButton(_G.QuestChoiceFrameOption2.OptionButtonsContainer.OptionButton1)
 	S:HandleButton(_G.QuestChoiceFrameOption3.OptionButtonsContainer.OptionButton1)

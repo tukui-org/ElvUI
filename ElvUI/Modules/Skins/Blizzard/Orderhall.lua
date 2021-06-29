@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -14,7 +14,7 @@ function S:Blizzard_OrderHallUI()
 	-- CommandBar
 	local OrderHallCommandBar = _G.OrderHallCommandBar
 	OrderHallCommandBar:StripTextures()
-	OrderHallCommandBar:CreateBackdrop('Transparent')
+	OrderHallCommandBar:SetTemplate('Transparent')
 	OrderHallCommandBar.ClassIcon:SetTexture([[Interface\TargetingFrame\UI-Classes-Circles]])
 	OrderHallCommandBar.ClassIcon:Size(46, 20)
 	OrderHallCommandBar.CurrencyIcon:SetAtlas('legionmission-icon-currency', false)
@@ -41,15 +41,12 @@ function S:Blizzard_OrderHallUI()
 				bu.Icon:SetTexCoord(unpack(E.TexCoords))
 				bu.Highlight:SetColorTexture(1, 1, 1, .25)
 
-				if not bu.backdrop then
-					bu:CreateBackdrop()
-					bu.backdrop:SetOutside(bu.Icon)
-				end
+				bu:SetTemplate()
 
 				if bu.talent.selected then
-					bu.backdrop:SetBackdropBorderColor(1, 1, 0)
+					bu:SetBackdropBorderColor(1, 1, 0)
 				else
-					bu.backdrop:SetBackdropBorderColor(0, 0, 0)
+					bu:SetBackdropBorderColor(0, 0, 0)
 				end
 			end
 		end

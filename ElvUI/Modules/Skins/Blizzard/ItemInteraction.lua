@@ -12,7 +12,7 @@ function S:Blizzard_ItemInteractionUI()
 	do -- ItemSlot
 		local ItemSlot = ItemInteractionFrame.ItemSlot
 		ItemSlot:StripTextures()
-		ItemSlot:CreateBackdrop()
+		ItemSlot:SetTemplate()
 
 		ItemSlot:Size(58)
 		ItemSlot:ClearAllPoints()

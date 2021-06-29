@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -68,6 +68,7 @@ function S:Blizzard_TalentUI()
 				Button.backdrop:Point('TOPLEFT', 8, 2)
 				Button.backdrop:Point('BOTTOMRIGHT', 10, -2)
 			end
+
 			Button.specIcon:Size(50, 50)
 			Button.specIcon:Point('LEFT', Button, 'LEFT', 15, 0)
 			Button.specIcon:SetDrawLayer('ARTWORK', 2)
@@ -167,20 +168,18 @@ function S:Blizzard_TalentUI()
 				S:HandleIcon(bu.icon, true)
 
 				bu.bg = CreateFrame('Frame', nil, bu)
-				bu.bg:CreateBackdrop('Overlay')
+				bu.bg:SetTemplate()
 				bu.bg:SetFrameLevel(bu:GetFrameLevel() - 4)
-				bu.bg:Point('TOPLEFT', 15, -1)
-				bu.bg:Point('BOTTOMRIGHT', -10, 1)
-				if bu.bg.backdrop then
-					row.transition.color:AddChild(bu.bg.backdrop)
-				end
+				bu.bg:Point('TOPLEFT', 15, 2)
+				bu.bg:Point('BOTTOMRIGHT', -10, -2)
+
+				row.transition.color:AddChild(bu.bg)
 
 				bu.GlowFrame:Kill()
 
 				bu.bg.SelectedTexture = bu.bg:CreateTexture(nil, 'ARTWORK')
-				bu.bg.SelectedTexture:Point('TOPLEFT', bu, 'TOPLEFT', 15, -1)
-				bu.bg.SelectedTexture:Point('BOTTOMRIGHT', bu, 'BOTTOMRIGHT', -10, 1)
 				bu.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+				bu.bg.SelectedTexture:SetInside(bu.bg)
 
 				bu.ShadowedTexture = bu:CreateTexture(nil, 'OVERLAY', nil, -2)
 				bu.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
@@ -255,19 +254,21 @@ function S:Blizzard_TalentUI()
 					if spellTex then
 						frame.icon:SetTexture(spellTex)
 					end
+
 					frame.subText:SetTextColor(.6, .6, .6)
 
 					if not frame.reskinned then
-						frame.reskinned = true
 						frame.ring:Hide()
 						frame.icon:SetTexCoord(unpack(E.TexCoords))
-						frame.icon:Size(40, 40)
-						frame:CreateBackdrop()
-						if frame.backdrop then
-							frame.backdrop:SetOutside(frame.icon)
-						end
+						frame.icon:SetInside(frame)
+
+						frame:SetTemplate()
+						frame:Size(42)
+
+						frame.reskinned = true
 					end
 				end
+
 				index = index + 1
 			end
 		end
@@ -282,37 +283,44 @@ function S:Blizzard_TalentUI()
 
 	for _, button in pairs(PvpTalentFrame.Slots) do
 		button:CreateBackdrop()
-		if button.backdrop then
-			button.backdrop:SetOutside(button.Texture)
-		end
+		button.backdrop:SetOutside(button.Texture)
 
 		button.Arrow:SetAlpha(0)
 		button.Border:Hide()
 
-		hooksecurefunc(button, 'Update', function(s)
-			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(s.slotIndex);
+		hooksecurefunc(button, 'Update', function(slot)
+			local slotInfo = C_SpecializationInfo_GetPvpTalentSlotInfo(slot.slotIndex)
 			if not slotInfo then return end
 
 			if slotInfo.enabled then
-				S:HandleIcon(s.Texture)
+				S:HandleIcon(slot.Texture)
+
 				if not slotInfo.selectedTalentID then
-					s.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
-					if s.backdrop then s.backdrop:SetBackdropBorderColor(0, 1, 0, 1) end
+					slot.Texture:SetTexture([[Interface\Icons\INV_Misc_QuestionMark]])
+
+					if slot.backdrop then
+						slot.backdrop:SetBackdropBorderColor(0, 1, 0, 1)
+					end
 				else
-					if s.backdrop then s.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor)) end
+					if slot.backdrop then
+						slot.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					end
 				end
 			else
-				s.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
-				s.Texture:SetTexCoord(0, 1, 0, 1)
-				s.Texture:SetDesaturated(true)
-				s.Texture:Show()
-				if s.backdrop then s.backdrop:SetBackdropBorderColor(1, 0, 0, 1) end
+				slot.Texture:SetTexture([[Interface\PetBattles\PetBattle-LockIcon]])
+				slot.Texture:SetTexCoord(0, 1, 0, 1)
+				slot.Texture:SetDesaturated(true)
+				slot.Texture:Show()
+
+				if slot.backdrop then
+					slot.backdrop:SetBackdropBorderColor(1, 0, 0, 1)
+				end
 			end
 		end)
 	end
 
 	PvpTalentFrame.TalentList:StripTextures()
-	PvpTalentFrame.TalentList:CreateBackdrop('Transparent')
+	PvpTalentFrame.TalentList:SetTemplate('Transparent')
 
 	PvpTalentFrame.TalentList:Point('BOTTOMLEFT', PlayerTalentFrame, 'BOTTOMRIGHT', 5, 26)
 	S:SkinTalentListButtons(PvpTalentFrame.TalentList)
@@ -337,10 +345,11 @@ function S:Blizzard_TalentUI()
 	PvpTalentFrame.Ring:Hide()
 
 	for _, Button in pairs(PvpTalentFrame.TalentList.ScrollFrame.buttons) do
-		Button:DisableDrawLayer('BACKGROUND')
 		S:HandleIcon(Button.Icon)
+
+		Button:StripTextures()
 		Button:StyleButton()
-		Button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		Button:SetTemplate()
 		Button.Selected:SetTexture()
 
 		Button.selectedTexture = Button:CreateTexture(nil, 'ARTWORK')

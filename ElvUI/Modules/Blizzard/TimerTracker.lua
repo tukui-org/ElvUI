@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
 local _G = _G
@@ -23,7 +23,7 @@ local function SkinIt(bar)
 	end
 
 	if not bar.backdrop then
-		bar.backdrop = CreateFrame('Frame', nil, bar, 'BackdropTemplate')
+		bar.backdrop = CreateFrame('Frame', nil, bar)
 		bar.backdrop:SetFrameLevel(0)
 		bar.backdrop:SetTemplate('Transparent')
 		bar.backdrop:SetOutside()

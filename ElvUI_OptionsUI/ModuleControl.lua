@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local UF = E:GetModule('UnitFrames')
 local MC = E:GetModule('ModuleCopy')
@@ -35,6 +35,7 @@ local function CreateActionbarsConfig()
 	config.args.microbar.name = L["Micro Bar"]
 	config.args.extraActionButton.name = L["Boss Button"]
 	config.args.vehicleExitButton.name = L["Vehicle Exit"]
+	config.args.zoneActionButton.name = L["Zone Ability"]
 
 	return config
 end
@@ -91,6 +92,7 @@ local function CreateDatatbarsConfig()
 
 	MC:AddConfigOptions(P.databars, config)
 
+	config.args.colors.name = L["Colors"]
 	config.args.experience.name = L["Experience"]
 	config.args.reputation.name = L["Reputation"]
 	config.args.honor.name = L["Honor"]

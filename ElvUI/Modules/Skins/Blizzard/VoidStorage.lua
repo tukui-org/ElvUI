@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -32,24 +32,24 @@ function S:Blizzard_VoidStorageUI()
 	end
 
 	VoidStorageFrame:StripTextures()
-	VoidStorageFrame:CreateBackdrop('Transparent')
+	VoidStorageFrame:SetTemplate('Transparent')
 	VoidStorageFrame.Page1:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceCosmicGreater]])
 	VoidStorageFrame.Page1:Point('LEFT', '$parent', 'TOPRIGHT', 1, -60)
 	VoidStorageFrame.Page2:SetNormalTexture([[Interface\Icons\INV_Enchant_EssenceArcaneLarge]])
 
 	_G.VoidStoragePurchaseFrame:SetFrameStrata('DIALOG')
-	_G.VoidStoragePurchaseFrame:CreateBackdrop()
+	_G.VoidStoragePurchaseFrame:SetTemplate()
 
 	S:HandleCloseButton(_G.VoidStorageBorderFrame.CloseButton)
 	S:HandleButton(_G.VoidStoragePurchaseButton)
 	S:HandleButton(_G.VoidStorageTransferButton)
 	S:HandleEditBox(_G.VoidItemSearchBox)
 
-	for StorageType, NumSlots  in pairs({ Deposit = 9, Withdraw = 9, Storage = 80 }) do
+	for StorageType, NumSlots in pairs({ Deposit = 9, Withdraw = 9, Storage = 80 }) do
 		for i = 1, NumSlots do
 			local Button = _G['VoidStorage'..StorageType..'Button'..i]
 			Button:StripTextures()
-			Button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+			Button:SetTemplate()
 			Button:StyleButton()
 			S:HandleIcon(Button.icon)
 			Button.icon:SetInside()

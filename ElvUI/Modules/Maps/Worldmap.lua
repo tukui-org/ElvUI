@@ -1,17 +1,17 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('WorldMap')
 
 local _G = _G
 local strfind = strfind
 local CreateFrame = CreateFrame
 local SetUIPanelAttribute = SetUIPanelAttribute
-local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
-local PLAYER = PLAYER
 local hooksecurefunc = hooksecurefunc
 local IsPlayerMoving = IsPlayerMoving
 local PlayerMovementFrameFader = PlayerMovementFrameFader
--- GLOBALS: CoordsHolder
+local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
+local PLAYER = PLAYER
 
+local CoordsHolder
 local INVERTED_POINTS = {
 	TOPLEFT = 'BOTTOMLEFT',
 	TOPRIGHT = 'BOTTOMRIGHT',
@@ -31,7 +31,7 @@ function M:SetLargeWorldMap()
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-area') ~= 'center' then
-		SetUIPanelAttribute(WorldMapFrame, 'area', 'center');
+		SetUIPanelAttribute(WorldMapFrame, 'area', 'center')
 	end
 
 	if WorldMapFrame:GetAttribute('UIPanelLayout-allowOtherPanels') ~= true then
@@ -198,7 +198,7 @@ function M:Initialize()
 
 	local WorldMapFrame = _G.WorldMapFrame
 	if E.global.general.WorldMapCoordinates.enable then
-		local CoordsHolder = CreateFrame('Frame', 'CoordsHolder', WorldMapFrame)
+		CoordsHolder = CreateFrame('Frame', 'ElvUI_CoordsHolder', WorldMapFrame)
 		CoordsHolder:SetFrameLevel(WorldMapFrame.BorderFrame:GetFrameLevel() + 10)
 		CoordsHolder:SetFrameStrata(WorldMapFrame.BorderFrame:GetFrameStrata())
 		CoordsHolder.playerCoords = CoordsHolder:CreateFontString(nil, 'OVERLAY')

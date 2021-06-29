@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 
 local UnitHealth = UnitHealth
@@ -132,17 +132,17 @@ local function Enable(self)
 
 		if element.TopIndicator and element.TopIndicator:IsObjectType('Texture') and not element.TopIndicator:GetTexture() then
 			element.TopIndicator:SetTexture(E.Media.Textures.ArrowUp)
-			element.TopIndicator:SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0)	--Rotates texture 180 degress (Up arrow to face down)
+			element.TopIndicator:SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0) --Rotates texture 180 degress (Up arrow to face down)
 		end
 
 		if element.LeftIndicator and element.LeftIndicator:IsObjectType('Texture') and not element.LeftIndicator:GetTexture() then
 			element.LeftIndicator:SetTexture(E.Media.Textures.ArrowUp)
-			element.LeftIndicator:SetTexCoord(1, 0, 0, 0, 1, 1, 0, 1)  --Rotates texture 90 degrees clockwise (Up arrow to face right)
+			element.LeftIndicator:SetTexCoord(1, 0, 0, 0, 1, 1, 0, 1) --Rotates texture 90 degrees clockwise (Up arrow to face right)
 		end
 
 		if element.RightIndicator and element.RightIndicator:IsObjectType('Texture') and not element.RightIndicator:GetTexture() then
 			element.RightIndicator:SetTexture(E.Media.Textures.ArrowUp)
-			element.RightIndicator:SetTexCoord(1, 1, 0, 1, 1, 0, 0, 0)	--Flips texture horizontally (Right facing arrow to face left)
+			element.RightIndicator:SetTexCoord(1, 1, 0, 1, 1, 0, 0, 0) --Flips texture horizontally (Right facing arrow to face left)
 		end
 
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
@@ -86,6 +86,7 @@ function NP:Configure_Auras(nameplate, auras, db)
 	auras['growth-y'] = db.growthY
 	auras['growth-x'] = db.growthX
 	auras.initialAnchor = E.InversePoints[db.anchorPoint]
+	auras.filterList = UF:ConvertFilters(auras, db.priority)
 
 	local index = 1
 	while auras[index] do

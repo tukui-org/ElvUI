@@ -1,9 +1,6 @@
 -- Spanish localization file for esES and esMX.
-local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "esMX")
-
-local COLOR1 = '|cFF1784d1'
-local COLOR2 = '|cfd9b9b9b'
 
 L["BoP"] = true
 L["BoE"] = true
@@ -70,6 +67,7 @@ L["Blend Mode"] = "Modo de Mezcla"
 L["Blend"] = "Mezcla"
 L["Blizzard Widgets"] = true
 L["BNet Frame"] = "Marco BNet"
+L["Boss Banner"] = true
 L["Boss Button"] = "Botón de Jefe"
 L["Boss Frames"] = "Marco de Jefe"
 L["Building(s) Report:"] = "Informe de Edificio(s)"
@@ -128,6 +126,7 @@ L["ElvUI Status"] = "Estatus"
 L["Empty Slot"] = "Espacio vacío"
 L["Enable"] = "Habilitar"
 L["Error resetting UnitFrame."] = "Error al restablecer UnitFrame."
+L["Event Log"] = true
 L["Experience Bar"] = "Barra de Experiencia"
 L["Experience"] = "Experiencia"
 L["Feet"] = "Pies"
@@ -158,7 +157,7 @@ L["Honor Bar"] = "Barra de Honor"
 L["Honor Remaining:"] = "Honor restante:"
 L["Honor XP:"] = true
 L["Horde: "] = "Horda: "
-L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1macro|r, or |cFF1784d1spellbook|r button to bind it. This also works for items in your |cFF1784d1bag|r. Press the |cfd9b9b9bESC|r key to |cfd9b9b9bclear|r the current bindings."] = true
+L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["HP"] = "Salud"
 L["HPS"] = "VPS"
 L["I Swear"] = "Lo Juro"
@@ -200,11 +199,12 @@ L["Layout"] = "Distribución"
 L["Left Chat"] = "Chat Izquierdo"
 L["Left Click:"] = "Clic Izquierdo"
 L["Legs"] = "Piernas"
+L["Level"] = "Nivel"
 L["Level Up Display / Boss Banner"] = "Subiste de nivel / Jefe Banner"
 L["List of installations in queue:"] = "Lista de Instalaciones en cola:"
 L["Lock"] = "Bloquear"
-L["LOGIN_MSG_HELP"] = ("Por favor, escriba */ehelp|r para obtener una lista de los comandos de *ElvUI|r disponibles."):gsub('*', COLOR1)
-L["LOGIN_MSG"] = ("Bienvenido a *ElvUI|r versión *%s|r, escribe */ec|r para acceder al menú de configuración del juego. Si necesita ayuda, puede visítenos en https://www.tukui.org o unirse a nuestro Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Por favor, escriba */ehelp|r para obtener una lista de los comandos de *ElvUI|r disponibles."):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("Bienvenido a *ElvUI|r versión *%s|r, escribe */ec|r para acceder al menú de configuración del juego. Si necesita ayuda, puede visítenos en https://www.tukui.org o unirse a nuestro Discord: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = "Marcos de Botín / Alerta"
 L["Loot Frame"] = "Marco de Botín"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "¡Milagro! ¡La descarga se desvaneció como pedo! Intenta de nuevo"
@@ -287,7 +287,7 @@ L["Save"] = "Guardar"
 L["Saved Dungeon(s)"] = "Mazmorra(s) Guardada"
 L["Saved Raid(s)"] = "Banda(s) Guardada(s)"
 L["says"] = "dice"
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = "Seleccione el tipo de sistema de aura que desea usar con los cuadros unitarios de ElvUI. Establezca en barras de Aura y Iconos para usar tanto las barras de aura como los íconos, configure los íconos solo para ver solo los íconos."
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bars to use both aura bars and icons, set to Icons Only to only see icons."] = "Seleccione el tipo de sistema de aura que desea usar con los cuadros unitarios de ElvUI. Establezca en barras de Aura y Iconos para usar tanto las barras de aura como los íconos, configure los íconos solo para ver solo los íconos."
 L["Server: "] = "Servidor: "
 L["Session:"] = "Sesión:"
 L["Setup Chat"] = "Configurar Chat"
@@ -317,8 +317,8 @@ L["TargetTarget Frame"] = "Marco de Objetivo de Objetivo"
 L["TargetTargetTarget Frame"] = "Marco del Objetivo del Objetivo del Objetivo"
 L["Temporary Move"] = "Movimiento Temporal"
 L["The chat windows function the same as Blizzard standard chat windows, you can right click the tabs and drag them around, rename, etc. Please click the button below to setup your chat windows."] = "Las ventanas de chat funcionan igual que sus contrapartes estándar de Blizzard. Puedes hacer clic derecho en las pestañas y arrastrarlas, cambiarles el nombre, etc. Haz clic en el botón de abajo para configurar las ventanas de chat."
-   L["The in-game configuration menu can be accessed by typing the /ec command. Press the button below if you wish to skip the installation process."] = true
-   L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "El perfil que has intentado importar ya existe. Elige un nuevo nombre o acepta sobreescribir el perfil existente."
+L["The in-game configuration menu can be accessed by typing the /ec command. Press the button below if you wish to skip the installation process."] = true
+L["The profile you tried to import already exists. Choose a new name or accept to overwrite the existing profile."] = "El perfil que has intentado importar ya existe. Elige un nuevo nombre o acepta sobreescribir el perfil existente."
 L["The spell '%s' has been added to the Blacklist unitframe aura filter."] = "El hechizo '%s' ha sido añadido a la Lista Negra del filtro de auras del marco de unidad."
 L["Theme Set"] = "Establecer Tema"
 L["Theme Setup"] = "Configurar Tema"
@@ -397,4 +397,4 @@ L["EHELP_COMMANDS"] = ([=[Aquí hay una lista de todos los comandos importantes 
  */luaerror|r ^on|r or ^off|r  -  Deshabilitar todos los AddOns excepto ElvUI.
   NOTA: */luaerror|r ^off|r volverá a habilitar los complementos deshabilitado
   mediante el uso de */luaerror|r ^on|r dentro de esa sesión.
-]=]):gsub('*', COLOR1):gsub('%^', COLOR2)
+]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

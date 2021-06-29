@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local next = next
@@ -23,8 +23,7 @@ local rawset = rawset
 local minorGUI, minorConfigDialog = 36, 76
 
 function S:Ace3_BackdropColor()
-	local backdrop = self.backdrop or self
-	backdrop:SetBackdropColor(0, 0, 0, 0.25)
+	self:SetBackdropColor(0, 0, 0, 0.25)
 end
 
 function S:Ace3_SkinDropdown()
@@ -121,10 +120,8 @@ function S:Ace3_SkinTab(tab)
 	tab.text:Point('LEFT', 14, -1)
 
 	tab:CreateBackdrop(nil, true, true)
-	if tab.backdrop then
-		tab.backdrop:Point('TOPLEFT', 10, -3)
-		tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
-	end
+	tab.backdrop:Point('TOPLEFT', 10, -3)
+	tab.backdrop:Point('BOTTOMRIGHT', -10, 0)
 
 	hooksecurefunc(tab, 'SetSelected', S.Ace3_TabSetSelected)
 end
@@ -149,10 +146,7 @@ function S:Ace3_RegisterAsWidget(widget)
 		local highlight = widget.highlight
 
 		checkbg:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
-
-		if checkbg.backdrop then
-			checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
-		end
+		checkbg.backdrop:SetInside(widget.checkbg, 4, 4)
 
 		checkbg:SetTexture()
 		highlight:SetTexture()
@@ -166,10 +160,11 @@ function S:Ace3_RegisterAsWidget(widget)
 
 			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
 			check:SetInside(widget.checkbg.backdrop)
+
 			check:SetTexture(E.Media.Textures.Melli)
 			check.SetTexture = E.noop
 		else
-			check:SetOutside(widget.checkbg.backdrop, 3, 3)
+			check:SetOutside(checkbg.backdrop, 3, 3)
 		end
 
 		checkbg.SetTexture = E.noop
@@ -181,10 +176,8 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame:StripTextures()
 		frame:CreateBackdrop()
-		if frame.backdrop then
-			frame.backdrop:Point('TOPLEFT', 15, -2)
-			frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
-		end
+		frame.backdrop:Point('TOPLEFT', 15, -2)
+		frame.backdrop:Point('BOTTOMRIGHT', -21, 0)
 
 		S:HandleNextPrevButton(button, nil, nextPrevColor)
 
@@ -209,10 +202,8 @@ function S:Ace3_RegisterAsWidget(widget)
 
 		frame:StripTextures()
 		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
-		if frame.backdrop then
-			frame.backdrop:Point('TOPLEFT', 0, -21)
-			frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
-		end
+		frame.backdrop:Point('TOPLEFT', 0, -21)
+		frame.backdrop:Point('BOTTOMRIGHT', -4, -1)
 
 		frame.label:ClearAllPoints()
 		frame.label:Point('BOTTOMLEFT', frame.backdrop, 'TOPLEFT', 2, 0)
@@ -261,9 +252,7 @@ function S:Ace3_RegisterAsWidget(widget)
 	elseif TYPE == 'Button' or TYPE == 'Button-ElvUI' then
 		local frame = widget.frame
 		S:HandleButton(frame, true)
-		frame.backdrop:SetInside()
-
-		widget.text:SetParent(frame.backdrop)
+		frame:SetInside()
 	elseif TYPE == 'Slider' or TYPE == 'Slider-ElvUI' then
 		local frame = widget.slider
 		local editbox = widget.editbox
@@ -283,7 +272,6 @@ function S:Ace3_RegisterAsWidget(widget)
 		local msgframe = widget.msgframe
 
 		S:HandleButton(button, true)
-		button.backdrop:SetInside()
 
 		msgframe:StripTextures()
 		msgframe:SetTemplate('Transparent')
@@ -294,11 +282,9 @@ function S:Ace3_RegisterAsWidget(widget)
 		local colorSwatch = widget.colorSwatch
 
 		frame:CreateBackdrop()
-		if frame.backdrop then
-			frame.backdrop:Size(24, 16)
-			frame.backdrop:ClearAllPoints()
-			frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
-		end
+		frame.backdrop:Size(24, 16)
+		frame.backdrop:ClearAllPoints()
+		frame.backdrop:Point('LEFT', frame, 'LEFT', 4, 0)
 
 		colorSwatch:SetTexture(E.Media.Textures.White8x8)
 		colorSwatch:ClearAllPoints()
@@ -401,12 +387,10 @@ function S:Ace3_RegisterAsContainer(widget)
 			S:HandleCloseButton(frame.obj.closebutton)
 		end
 
-		if TYPE == 'InlineGroup' then
+		if TYPE == 'InlineGroup' then -- 'Window' is another type
 			frame:SetTemplate('Transparent')
 			frame.callbackBackdropColor = S.Ace3_BackdropColor
 			S.Ace3_BackdropColor(frame)
-		elseif TYPE == 'Window' then
-			frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
 		else
 			frame:SetTemplate('Transparent')
 		end
@@ -433,7 +417,7 @@ function S:Ace3_RegisterAsContainer(widget)
 		end
 	elseif TYPE == 'SimpleGroup' then
 		local frame = widget.content:GetParent()
-		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true, widget.content:GetFrameLevel())
+		frame:SetTemplate('Transparent')
 		frame.callbackBackdropColor = S.Ace3_BackdropColor
 		S.Ace3_BackdropColor(frame)
 	end
@@ -455,9 +439,10 @@ function S:Ace3_StyleTooltip(tt)
 end
 
 function S:Ace3_StylePopup()
-	if not self.backdrop and not self:IsForbidden() and E.private.skins.ace3Enable then
-		self:CreateBackdrop('Transparent', nil, true)
+	if not self:IsForbidden() and E.private.skins.ace3Enable then
+		self:SetTemplate('Transparent', nil, true)
 		self:GetChildren():StripTextures()
+
 		S:HandleButton(self.accept, true)
 		S:HandleButton(self.cancel, true)
 	end

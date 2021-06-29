@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 local Search = E.Libs.ItemSearch
 
@@ -30,8 +30,8 @@ local SplitContainerItem = SplitContainerItem
 local SplitGuildBankItem = SplitGuildBankItem
 
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
-local LE_ITEM_CLASS_ARMOR = LE_ITEM_CLASS_ARMOR
-local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON
+local ItemClass_Armor = Enum.ItemClass.Armor
+local ItemClass_Weapon = Enum.ItemClass.Weapon
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
@@ -242,7 +242,7 @@ local function DefaultSort(a, b)
 		return (aItemClassId or 99) < (bItemClassId or 99)
 	end
 
-	if aItemClassId == LE_ITEM_CLASS_ARMOR or aItemClassId == LE_ITEM_CLASS_WEAPON then
+	if aItemClassId == ItemClass_Armor or aItemClassId == ItemClass_Weapon then
 		aEquipLoc = inventorySlots[aEquipLoc] or -1
 		bEquipLoc = inventorySlots[bEquipLoc] or -1
 		if aEquipLoc == bEquipLoc then
@@ -844,7 +844,7 @@ function B:DoMoves()
 	if lockStop then
 		for slot, itemID in pairs(moveTracker) do
 			local actualItemID = B:GetItemID(B:Decode_BagSlot(slot))
-			if actualItemID  ~= itemID then
+			if actualItemID ~= itemID then
 				WAIT_TIME = 0.1
 				if (GetTime() - lockStop) > MAX_MOVE_TIME then
 					if lastMove and moveRetries < 100 then

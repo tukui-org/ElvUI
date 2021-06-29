@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
 
 local pairs, select, wipe = pairs, select, wipe
@@ -8,6 +8,7 @@ local IsInGroup, IsInRaid = IsInGroup, IsInRaid
 local UnitClass = UnitClass
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitDetailedThreatSituation = UnitDetailedThreatSituation
+local GetNumGroupMembers = GetNumGroupMembers
 local UnitExists = UnitExists
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
@@ -45,9 +46,9 @@ end
 
 function DB:ThreatBar_Update()
 	local bar = DB.StatusBars.Threat
-	local isInGroup, isInRaid, petExists = IsInGroup(), IsInRaid(), UnitExists('pet')
+	local petExists = UnitExists('pet')
 
-	if UnitAffectingCombat('player') and (isInGroup or petExists) then
+	if UnitAffectingCombat('player') and (petExists or IsInGroup()) then
 		local _, status, percent = UnitDetailedThreatSituation('player', 'target')
 		local name = UnitName('target') or UNKNOWN
 		bar.showBar = true
@@ -57,17 +58,11 @@ function DB:ThreatBar_Update()
 				bar.list.pet = select(3, UnitDetailedThreatSituation('pet', 'target'))
 			end
 
-			if isInRaid then
-				for i = 1, 40 do
-					if UnitExists('raid'..i) and not UnitIsUnit('raid'..i, 'player') then
-						bar.list['raid'..i] = select(3, UnitDetailedThreatSituation('raid'..i, 'target'))
-					end
-				end
-			elseif isInGroup then
-				for i = 1, 4 do
-					if UnitExists('party'..i) then
-						bar.list['party'..i] = select(3, UnitDetailedThreatSituation('party'..i, 'target'))
-					end
+			local isInRaid = IsInRaid()
+			for i = 1, GetNumGroupMembers() do
+				local groupUnit = (isInRaid and 'raid' or 'party')..i
+				if UnitExists(groupUnit) and not UnitIsUnit(groupUnit, 'player') then
+					bar.list[groupUnit] = select(3, UnitDetailedThreatSituation(groupUnit, 'target'))
 				end
 			end
 

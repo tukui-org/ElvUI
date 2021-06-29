@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -14,7 +14,7 @@ function S:Blizzard_ItemUpgradeUI()
 	S:HandlePortraitFrame(ItemUpgradeFrame)
 
 	local ItemButton = ItemUpgradeFrame.ItemButton
-	ItemButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+	ItemButton:SetTemplate()
 	ItemButton.Frame:SetTexture('')
 	ItemButton:SetPushedTexture('')
 	S:HandleItemButton(ItemButton)
@@ -33,6 +33,9 @@ function S:Blizzard_ItemUpgradeUI()
 			ItemButton.backdrop:SetBackdropBorderColor(0, 0, 0)
 		end
 	end)
+
+	local UpgradeDropDown = ItemUpgradeFrame.UpgradeLevelDropDown.DropDownMenu
+	S:HandleDropDownBox(UpgradeDropDown, 115)
 
 	local TextFrame = ItemUpgradeFrame.TextFrame
 	TextFrame:StripTextures()

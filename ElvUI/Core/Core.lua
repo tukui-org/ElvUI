@@ -1,6 +1,6 @@
 local ElvUI = select(2, ...)
 ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale doesn't exist yet, make it exist.
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local _G = _G
 local tonumber, pairs, ipairs, error, unpack, select, tostring = tonumber, pairs, ipairs, error, unpack, select, tostring
@@ -26,12 +26,16 @@ local IsInRaid = IsInRaid
 local SetCVar = SetCVar
 local ReloadUI = ReloadUI
 local UnitGUID = UnitGUID
+local GetBindingKey = GetBindingKey
+local SetBinding = SetBinding
+local SaveBindings = SaveBindings
+local GetCurrentBindingSet = GetCurrentBindingSet
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local C_ChatInfo_SendAddonMessage = C_ChatInfo.SendAddonMessage
--- GLOBALS: ElvUIPlayerBuffs, ElvUIPlayerDebuffs
+-- GLOBALS: ElvCharacterDB, ElvUIPlayerBuffs, ElvUIPlayerDebuffs
 
 --Modules
 local ActionBars = E:GetModule('ActionBars')
@@ -52,7 +56,7 @@ local LSM = E.Libs.LSM
 
 --Constants
 E.noop = function() end
-E.title = format('|cff1784d1%s |r', 'ElvUI')
+E.title = format('%s%s|r', E.InfoColor, 'ElvUI')
 E.version = tonumber(GetAddOnMetadata('ElvUI', 'Version'))
 E.myfaction, E.myLocalizedFaction = UnitFactionGroup('player')
 E.mylevel = UnitLevel('player')
@@ -70,7 +74,6 @@ E.screenwidth, E.screenheight = GetPhysicalScreenSize()
 E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]] -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
-E.InfoColor = '|cff1784d1'
 E.UserList = {}
 
 -- oUF Defines
@@ -356,9 +359,9 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.nameplates.font = font
 	--E.db.nameplate.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
 	--E.db.nameplate.buffs.font = font
-	--E.db.nameplate.buffs.fontSize = fontSize  --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	--E.db.nameplate.buffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
 	--E.db.nameplate.debuffs.font = font
-	--E.db.nameplate.debuffs.fontSize = fontSize   --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
+	--E.db.nameplate.debuffs.fontSize = fontSize --Dont use this because nameplate font it somewhat smaller than the rest of the font sizes
 	E.db.actionbar.font = font
 	--E.db.actionbar.fontSize = fontSize	--This may not look good if a big font size is chosen
 	E.db.auras.buffs.countFont = font
@@ -384,7 +387,7 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.tooltip.healthBar.font = font
 	--E.db.tooltip.healthbar.fontSize = fontSize -- Size is smaller than default
 	E.db.unitframe.font = font
-	--E.db.unitframe.fontSize = fontSize  -- Size is smaller than default
+	--E.db.unitframe.fontSize = fontSize -- Size is smaller than default
 	E.db.unitframe.units.party.rdebuffs.font = font
 	E.db.unitframe.units.raid.rdebuffs.font = font
 	E.db.unitframe.units.raid40.rdebuffs.font = font
@@ -680,7 +683,7 @@ function E:RemoveTableDuplicates(cleanTable, checkTable, generatedKeys)
 		E:Print('Bad argument #1 to \'RemoveTableDuplicates\' (table expected)')
 		return
 	end
-	if type(checkTable) ~=  'table' then
+	if type(checkTable) ~= 'table' then
 		E:Print('Bad argument #2 to \'RemoveTableDuplicates\' (table expected)')
 		return
 	end
@@ -721,7 +724,7 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 		E:Print('Bad argument #1 to \'FilterTableFromBlacklist\' (table expected)')
 		return
 	end
-	if type(blacklistTable) ~=  'table' then
+	if type(blacklistTable) ~= 'table' then
 		E:Print('Bad argument #2 to \'FilterTableFromBlacklist\' (table expected)')
 		return
 	end
@@ -900,7 +903,7 @@ do	--Split string by multi-character delimiter (the strsplit / string.split func
 		assert(type (delim) == 'string' and strlen(delim) > 0, 'bad delimiter')
 
 		local start = 1
-		wipe(splitTable)  -- results table
+		wipe(splitTable) -- results table
 
 		-- find each instance of a string followed by the delimiter
 		while true do
@@ -1826,6 +1829,28 @@ function E:DBConversions()
 	end
 
 	-- development converts, always call
+
+	E:ConvertActionBarKeybinds()
+end
+
+function E:ConvertActionBarKeybinds()
+	if not ElvCharacterDB.ConvertKeybindings then
+		for oldKeybind, newKeybind in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
+			for i = 1, 12 do
+				local keys = { GetBindingKey(format('%s%d', oldKeybind, i)) }
+				if next(keys) then
+					for _, key in pairs(keys) do
+						SetBinding(key, format('%s%d', newKeybind, i))
+					end
+				end
+			end
+		end
+
+		local cur = GetCurrentBindingSet()
+		if cur and cur > 0 then SaveBindings(cur) end
+
+		ElvCharacterDB.ConvertKeybindings = true
+	end
 end
 
 function E:RefreshModulesDB()

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -8,7 +8,7 @@ function S:Blizzard_IslandsPartyPoseUI()
 
 	local IslandsPartyPoseFrame = _G.IslandsPartyPoseFrame
 	IslandsPartyPoseFrame:StripTextures()
-	IslandsPartyPoseFrame:CreateBackdrop('Transparent')
+	IslandsPartyPoseFrame:SetTemplate('Transparent')
 	S:HandleButton(IslandsPartyPoseFrame.LeaveButton)
 end
 

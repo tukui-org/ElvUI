@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -11,12 +11,12 @@ function S:Blizzard_GMChatUI()
 	local frame = _G.GMChatFrame
 	frame:SetClampRectInsets(0, 0, 0, 0)
 	frame:StripTextures()
-	frame:CreateBackdrop('Transparent')
+	frame:SetTemplate('Transparent')
 
 	frame.buttonFrame:Hide()
 
 	local eb = frame.editBox
-	eb:CreateBackdrop('Transparent')
+	eb:SetTemplate('Transparent')
 	eb.backdrop:Hide()
 	eb:SetAltArrowKeyMode(false)
 	for i = 3, 8 do
@@ -41,7 +41,7 @@ function S:Blizzard_GMChatUI()
 
 	local tab = _G.GMChatTab
 	tab:StripTextures()
-	tab:CreateBackdrop('Transparent')
+	tab:SetTemplate('Transparent')
 	tab:SetBackdropColor(0, .6, 1, .3)
 	tab:ClearAllPoints()
 	tab:Point('BOTTOMLEFT', frame, 'TOPLEFT', 0, 3)

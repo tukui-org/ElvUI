@@ -44,7 +44,7 @@ end
 
 local function removePriority(value)
 	if not value then return end
-	local x,y,z=E.db.unitframe.units,E.db.nameplates.units;
+	local x, y, z = E.db.unitframe.units, E.db.nameplates.units
 	for n, t in pairs(x) do
 		if t and t.buffs and t.buffs.priority and t.buffs.priority ~= '' then
 			z = filterMatch(t.buffs.priority, E:EscapeString(value))
@@ -299,7 +299,7 @@ E.Options.args.filters = {
 								Blacklist = L["Blacklist"],
 							},
 							get = function() return E.global.unitframe.aurafilters[selectedFilter].type end,
-							set = function(info, value) E.global.unitframe.aurafilters[selectedFilter].type = value; UF:Update_AllFrames(); end,
+							set = function(info, value) E.global.unitframe.aurafilters[selectedFilter].type = value; UF:Update_AllFrames() end,
 							hidden = function() return (selectedFilter == 'Aura Highlight' or selectedFilter == 'AuraBar Colors' or selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' or selectedFilter == 'Whitelist' or selectedFilter == 'Blacklist') or G.unitframe.aurafilters[selectedFilter] end,
 						},
 						removeSpell = {
@@ -319,12 +319,12 @@ E.Options.args.filters = {
 								selectedSpell = nil
 
 								if selectedFilter == 'Aura Highlight' then
-									E.global.unitframe.AuraHighlightColors[value] = nil;
+									E.global.unitframe.AuraHighlightColors[value] = nil
 								elseif selectedFilter == 'AuraBar Colors' then
 									if G.unitframe.AuraBarColors[value] then
-										E.global.unitframe.AuraBarColors[value].enable = false;
+										E.global.unitframe.AuraBarColors[value].enable = false
 									else
-										E.global.unitframe.AuraBarColors[value] = nil;
+										E.global.unitframe.AuraBarColors[value] = nil
 									end
 								elseif selectedFilter == 'Aura Indicator (Pet)' or selectedFilter == 'Aura Indicator (Profile)' or selectedFilter == 'Aura Indicator (Class)' or selectedFilter == 'Aura Indicator (Global)' then
 									local selectedTable, defaultTable = GetSelectedFilters()
@@ -335,12 +335,12 @@ E.Options.args.filters = {
 										selectedTable[value] = nil
 									end
 								elseif G.unitframe.aurafilters[selectedFilter] and G.unitframe.aurafilters[selectedFilter].spells[value] then
-									E.global.unitframe.aurafilters[selectedFilter].spells[value].enable = false;
+									E.global.unitframe.aurafilters[selectedFilter].spells[value].enable = false
 								else
-									E.global.unitframe.aurafilters[selectedFilter].spells[value] = nil;
+									E.global.unitframe.aurafilters[selectedFilter].spells[value] = nil
 								end
 
-								UF:Update_AllFrames();
+								UF:Update_AllFrames()
 							end,
 							values = SetSpellList,
 						},
@@ -401,7 +401,7 @@ E.Options.args.filters = {
 						if not spell then return end
 
 						local selectedTable = GetSelectedFilters()
-						selectedTable[spell][info[#info]] = value;
+						selectedTable[spell][info[#info]] = value
 						UF:Update_AllFrames()
 					end,
 					order = -10,
@@ -562,7 +562,7 @@ E.Options.args.filters = {
 									E.global.unitframe.aurafilters[selectedFilter].spells[spell].enable = value
 								end
 
-								UF:Update_AllFrames();
+								UF:Update_AllFrames()
 							end,
 						},
 						style = {
@@ -638,7 +638,7 @@ E.Options.args.filters = {
 									E.global.unitframe.AuraBarColors[spell] = E:CopyTable({}, auraBarDefaults)
 								end
 
-								UF:Update_AllFrames();
+								UF:Update_AllFrames()
 							end,
 						},
 						forDebuffIndicator = {
@@ -666,8 +666,8 @@ E.Options.args.filters = {
 										local spell = GetSelectedSpell()
 										if not spell then return end
 
-										E.global.unitframe.aurafilters[selectedFilter].spells[spell].priority = value;
-										UF:Update_AllFrames();
+										E.global.unitframe.aurafilters[selectedFilter].spells[spell].priority = value
+										UF:Update_AllFrames()
 									end,
 								},
 								stackThreshold = {
@@ -716,7 +716,7 @@ E.Options.args.filters = {
 									E.global.unitframe.AuraHighlightColors[spell].ownOnly = value
 								end
 
-								UF:Update_AllFrames();
+								UF:Update_AllFrames()
 							end,
 						},
 					},

@@ -59,7 +59,7 @@ local function Update(self, event, unit, ...)
 
 	if (event == "ARENA_OPPONENT_UPDATE" or event == "OnShow") then
 		local unitEvent = ...
-        if (unitEvent ~= "seen" and event ~= "OnShow") then return end
+		if (unitEvent ~= "seen" and event ~= "OnShow") then return end
 
 		C_PvP.RequestCrowdControlSpell(unit)
 	elseif event == "ARENA_COOLDOWNS_UPDATE" then

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -35,8 +35,8 @@ function S:LookingForGuildFrame()
 	S:HandleButton(_G.LookingForGuildBrowseButton)
 	S:HandleButton(_G.LookingForGuildRequestButton)
 
-	_G.LookingForGuildCommentInputFrame:CreateBackdrop()
-	_G.LookingForGuildCommentInputFrame:StripTextures(false)
+	_G.LookingForGuildCommentInputFrame:StripTextures()
+	_G.LookingForGuildCommentInputFrame:SetTemplate()
 
 	-- skin container buttons on browse and request page
 	for i = 1, 5 do

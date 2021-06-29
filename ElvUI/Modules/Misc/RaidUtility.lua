@@ -87,7 +87,7 @@ function RU:UpdateMedia()
 	end
 
 	if RU.MarkerButton then
-		RU.MarkerButton:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
+		RU.MarkerButton:SetTemplate(nil, true)
 	end
 end
 
@@ -209,7 +209,7 @@ function RU:Initialize()
 	self.updateMedia = true -- update fonts and textures on entering world once, used to set the custom media from a plugin
 	self.Buttons = {}
 
-	local RaidUtilityPanel = CreateFrame('Frame', 'RaidUtilityPanel', E.UIParent, 'SecureHandlerBaseTemplate, BackdropTemplate')
+	local RaidUtilityPanel = CreateFrame('Frame', 'RaidUtilityPanel', E.UIParent, 'SecureHandlerBaseTemplate')
 	RaidUtilityPanel:SetScript('OnMouseUp', function(panel, ...) SecureHandler_OnClick(panel, '_onclick', ...) end)
 	RaidUtilityPanel:SetTemplate('Transparent')
 	RaidUtilityPanel:Size(PANEL_WIDTH, PANEL_HEIGHT)
@@ -219,7 +219,7 @@ function RU:Initialize()
 	RaidUtilityPanel:SetFrameStrata('HIGH')
 	E.FrameLocks.RaidUtilityPanel = true
 
-	local ShowButton = self:CreateUtilButton('RaidUtility_ShowButton', E.UIParent, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate, BackdropTemplate', 136, 18, 'TOP', E.UIParent, 'TOP', -400, E.Border, _G.RAID_CONTROL)
+	local ShowButton = self:CreateUtilButton('RaidUtility_ShowButton', E.UIParent, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate', 136, 18, 'TOP', E.UIParent, 'TOP', -400, E.Border, _G.RAID_CONTROL)
 	SecureHandlerSetFrameRef(ShowButton, 'RaidUtilityPanel', RaidUtilityPanel)
 	ShowButton:SetAttribute('_onclick', ([=[
 		local raidUtil = self:GetFrameRef('RaidUtilityPanel')
@@ -275,13 +275,13 @@ function RU:Initialize()
 	end)
 	E.FrameLocks.RaidUtility_ShowButton = true
 
-	local CloseButton = self:CreateUtilButton('RaidUtility_CloseButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate, BackdropTemplate', 136, 18, 'TOP', RaidUtilityPanel, 'BOTTOM', 0, -1, _G.CLOSE)
+	local CloseButton = self:CreateUtilButton('RaidUtility_CloseButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate, SecureHandlerClickTemplate', 136, 18, 'TOP', RaidUtilityPanel, 'BOTTOM', 0, -1, _G.CLOSE)
 	SecureHandlerSetFrameRef(CloseButton, 'RaidUtility_ShowButton', ShowButton)
 	CloseButton:SetAttribute('_onclick', [=[self:GetParent():Hide(); self:GetFrameRef('RaidUtility_ShowButton'):Show();]=])
 	CloseButton:SetScript('OnMouseUp', function() RaidUtilityPanel.toggled = false end)
 	SecureHandlerSetFrameRef(RaidUtilityPanel, 'RaidUtility_CloseButton', CloseButton)
 
-	local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel, 'BackdropTemplate')
+	local RoleIcons = CreateFrame('Frame', 'RaidUtilityRoleIcons', RaidUtilityPanel)
 	RoleIcons:Point('LEFT', RaidUtilityPanel, 'RIGHT', -1, 0)
 	RoleIcons:Size(36, PANEL_HEIGHT)
 	RoleIcons:SetTemplate('Transparent')
@@ -321,33 +321,33 @@ function RU:Initialize()
 	end
 
 	local BUTTON_WIDTH = PANEL_WIDTH - 20
-	self:CreateUtilButton('DisbandRaidButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate, BackdropTemplate', BUTTON_WIDTH, BUTTON_HEIGHT, 'TOP', RaidUtilityPanel, 'TOP', 0, -5, L["Disband Group"])
+	self:CreateUtilButton('DisbandRaidButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH, BUTTON_HEIGHT, 'TOP', RaidUtilityPanel, 'TOP', 0, -5, L["Disband Group"])
 	_G.DisbandRaidButton:SetScript('OnMouseUp', function()
 		if RU:CheckRaidStatus() then
 			E:StaticPopup_Show('DISBAND_RAID')
 		end
 	end)
 
-	self:CreateUtilButton('RoleCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate, BackdropTemplate', BUTTON_WIDTH, BUTTON_HEIGHT, 'TOP', _G.DisbandRaidButton, 'BOTTOM', 0, -5, _G.ROLE_POLL)
+	self:CreateUtilButton('RoleCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH, BUTTON_HEIGHT, 'TOP', _G.DisbandRaidButton, 'BOTTOM', 0, -5, _G.ROLE_POLL)
 	_G.RoleCheckButton:SetScript('OnMouseUp', function() if RU:CheckRaidStatus() then InitiateRolePoll() end end)
 
-	--[[self:CreateUtilButton('MainTankButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate, BackdropTemplate', (DisbandRaidButton:GetWidth() / 2) - 2, BUTTON_HEIGHT, 'TOPLEFT', RoleCheckButton, 'BOTTOMLEFT', 0, -5, MAINTANK)
+	--[[self:CreateUtilButton('MainTankButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate', (DisbandRaidButton:GetWidth() / 2) - 2, BUTTON_HEIGHT, 'TOPLEFT', RoleCheckButton, 'BOTTOMLEFT', 0, -5, MAINTANK)
 	MainTankButton:SetAttribute('type', 'maintank')
 	MainTankButton:SetAttribute('unit', 'target')
 	MainTankButton:SetAttribute('action', 'toggle')
 
-	self:CreateUtilButton('MainAssistButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate, BackdropTemplate', (DisbandRaidButton:GetWidth() / 2) - 2, BUTTON_HEIGHT, 'TOPRIGHT', RoleCheckButton, 'BOTTOMRIGHT', 0, -5, MAINASSIST)
+	self:CreateUtilButton('MainAssistButton', RaidUtilityPanel, 'SecureActionButtonTemplate, UIMenuButtonStretchTemplate', (DisbandRaidButton:GetWidth() / 2) - 2, BUTTON_HEIGHT, 'TOPRIGHT', RoleCheckButton, 'BOTTOMRIGHT', 0, -5, MAINASSIST)
 	MainAssistButton:SetAttribute('type', 'mainassist')
 	MainAssistButton:SetAttribute('unit', 'target')
 	MainAssistButton:SetAttribute('action', 'toggle')]]
 
-	self:CreateUtilButton('ReadyCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate, BackdropTemplate', BUTTON_WIDTH * 0.79, BUTTON_HEIGHT, 'TOPLEFT', _G.RoleCheckButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK)
+	self:CreateUtilButton('ReadyCheckButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.79, BUTTON_HEIGHT, 'TOPLEFT', _G.RoleCheckButton, 'BOTTOMLEFT', 0, -5, _G.READY_CHECK)
 	_G.ReadyCheckButton:SetScript('OnMouseUp', function() if RU:CheckRaidStatus() then DoReadyCheck() end end)
 
-	self:CreateUtilButton('RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate, BackdropTemplate', BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', _G.ReadyCheckButton, 'BOTTOMLEFT', 0, -5, L["Raid Menu"])
+	self:CreateUtilButton('RaidControlButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.5, BUTTON_HEIGHT, 'TOPLEFT', _G.ReadyCheckButton, 'BOTTOMLEFT', 0, -5, L["Raid Menu"])
 	_G.RaidControlButton:SetScript('OnMouseUp', function() ToggleFriendsFrame(3) end)
 
-	self:CreateUtilButton('RaidCountdownButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate, BackdropTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', _G.RaidControlButton, 'TOPRIGHT', 2, 0, _G.PLAYER_COUNTDOWN_BUTTON)
+	self:CreateUtilButton('RaidCountdownButton', RaidUtilityPanel, 'UIMenuButtonStretchTemplate', BUTTON_WIDTH * 0.49, BUTTON_HEIGHT, 'TOPLEFT', _G.RaidControlButton, 'TOPRIGHT', 2, 0, _G.PLAYER_COUNTDOWN_BUTTON)
 	_G.RaidCountdownButton:SetScript('OnMouseUp', function() C_PartyInfo_DoCountdown(10) end)
 
 	local buttons = {

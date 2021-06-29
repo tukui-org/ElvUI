@@ -30,7 +30,7 @@ local SOUNDKIT_IG_CREATURE_AGGRO_SELECT = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
 local SOUNDKIT_IG_CHARACTER_NPC_SELECT = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SOUNDKIT_IG_CREATURE_NEUTRAL_SELECT = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SOUNDKIT_INTERFACE_SOUND_LOST_TARGET_UNIT = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
-local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
+local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 -- GLOBALS: ElvUF_Parent, Arena_LoadUI
 local hiddenParent = CreateFrame('Frame', nil, _G.UIParent)
@@ -68,26 +68,26 @@ UF.classMaxResourceBar = {
 }
 
 UF.instanceMapIDs = {
-	[30]   = 40, -- Alterac Valley
-	[489]  = 10, -- Classic Warsong Gulch
-	[529]  = 15, -- Classic Arathi Basin
-	[566]  = 15, -- Eye of the Storm
-	[607]  = 15, -- Strand of the Ancients
-	[628]  = 40, -- Isle of Conquest
-	[726]  = 10, -- Twin Peaks
-	[727]  = 10, -- Silvershard Mines
-	[761]  = 10, -- The Battle for Gilneas
-	[968]  = 10, -- Rated Eye of the Storm
-	[998]  = 10, -- Temple of Kotmogu
-	[1191] = 40, -- Ashran
-	[1280] = 40, -- Southshore vs Tarren Mill
-	[1681] = 15, -- Arathi Basin Winter
-	[1803] = 10, -- Seething Shore
-	[2106] = 10, -- Warsong Gulch
-	[2107] = 15, -- Arathi Basin
-	[2118] = 40, -- Battle for Wintergrasp
-	[2245] = 15, -- Deepwind Gorge
-	[3358] = 15, -- Arathi Basin (NEW - Only Brawl?)
+	[30]	= 40, -- Alterac Valley
+	[489]	= 10, -- Classic Warsong Gulch
+	[529]	= 15, -- Classic Arathi Basin
+	[566]	= 15, -- Eye of the Storm
+	[607]	= 15, -- Strand of the Ancients
+	[628]	= 40, -- Isle of Conquest
+	[726]	= 10, -- Twin Peaks
+	[727]	= 10, -- Silvershard Mines
+	[761]	= 10, -- The Battle for Gilneas
+	[968]	= 10, -- Rated Eye of the Storm
+	[998]	= 10, -- Temple of Kotmogu
+	[1191]	= 40, -- Ashran
+	[1280]	= 40, -- Southshore vs Tarren Mill
+	[1681]	= 15, -- Arathi Basin Winter
+	[1803]	= 10, -- Seething Shore
+	[2106]	= 10, -- Warsong Gulch
+	[2107]	= 15, -- Arathi Basin
+	[2118]	= 40, -- Battle for Wintergrasp
+	[2245]	= 15, -- Deepwind Gorge
+	[3358]	= 15, -- Arathi Basin (NEW - Only Brawl?)
 }
 
 UF.headerGroupBy = {
@@ -356,7 +356,7 @@ function UF:UpdateColors()
 	ElvUF.colors.power.LUNAR_POWER = E:SetColorTable(ElvUF.colors.power.LUNAR_POWER, db.power.LUNAR_POWER)
 	ElvUF.colors.power.INSANITY = E:SetColorTable(ElvUF.colors.power.INSANITY, db.power.INSANITY)
 	ElvUF.colors.power.MAELSTROM = E:SetColorTable(ElvUF.colors.power.MAELSTROM, db.power.MAELSTROM)
-	ElvUF.colors.power[ALTERNATE_POWER_INDEX] = E:SetColorTable(ElvUF.colors.power[ALTERNATE_POWER_INDEX], db.power.ALT_POWER)
+	ElvUF.colors.power[POWERTYPE_ALTERNATE] = E:SetColorTable(ElvUF.colors.power[POWERTYPE_ALTERNATE], db.power.ALT_POWER)
 
 	ElvUF.colors.threat[0] = E:SetColorTable(ElvUF.colors.threat[0], db.threat[0])
 	ElvUF.colors.threat[1] = E:SetColorTable(ElvUF.colors.threat[1], db.threat[1])
@@ -853,7 +853,7 @@ function UF:HandleSmartVisibility(skip)
 	if instanceType == 'raid' or instanceType == 'pvp' then
 		local maxInstancePlayers = UF.instanceMapIDs[instanceID]
 		if maxInstancePlayers then
-			maxPlayers =  maxInstancePlayers
+			maxPlayers = maxInstancePlayers
 		elseif not maxPlayers or maxPlayers == 0 then
 			maxPlayers = 40
 		end
@@ -904,7 +904,7 @@ function UF:CreateHeader(parent, groupFilter, overrideName, template, groupName,
 
 	local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil,
 		'oUF-initialConfigFunction', format('self:SetWidth(%d); self:SetHeight(%d);', db.width, db.height),
-		'groupFilter', groupFilter, 'showParty', true, 'showRaid', true, 'showSolo', true,
+		'groupFilter', groupFilter, 'showParty', true, 'showRaid', group ~= "party", 'showSolo', true,
 		template and 'template', template
 	)
 
@@ -1476,12 +1476,13 @@ function UF:Initialize()
 	E.ElvUF_Parent:SetFrameStrata('LOW')
 	RegisterStateDriver(E.ElvUF_Parent, 'visibility', '[petbattle] hide;show')
 
-	UF:UpdateColors()
 	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
 	ElvUF:RegisterStyle('ElvUF', function(frame, unit)
 		UF:Construct_UF(frame, unit)
 	end)
 	ElvUF:SetActiveStyle('ElvUF')
+
+	UF:UpdateColors()
 	UF:LoadUnits()
 
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
@@ -1508,8 +1509,6 @@ function UF:Initialize()
 			UF:RegisterEvent('ADDON_LOADED')
 		end
 	end
-
-	UF:UpdateRangeCheckSpells()
 
 	local ORD = E.oUF_RaidDebuffs or _G.oUF_RaidDebuffs
 	if not ORD then return end

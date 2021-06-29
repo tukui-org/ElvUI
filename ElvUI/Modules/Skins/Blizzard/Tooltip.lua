@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
@@ -39,7 +39,7 @@ function S:TooltipFrames()
 
 	-- Skin Blizzard Tooltips
 	local ItemTooltip = _G.GameTooltip.ItemTooltip
-	ItemTooltip:CreateBackdrop('Default')
+	ItemTooltip:CreateBackdrop()
 	ItemTooltip.backdrop:SetOutside(ItemTooltip.Icon)
 	ItemTooltip.Count:ClearAllPoints()
 	ItemTooltip.Count:Point('BOTTOMRIGHT', ItemTooltip.Icon, 'BOTTOMRIGHT', 1, 0)

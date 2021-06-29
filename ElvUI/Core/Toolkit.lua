@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
 
@@ -132,6 +132,11 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	frame.isUnitFrameElement = isUnitFrameElement
 	frame.isNamePlateElement = isNamePlateElement
 
+	if not frame.SetBackdrop then
+		_G.Mixin(frame, _G.BackdropTemplateMixin)
+		frame:HookScript('OnSizeChanged', frame.OnBackdropSizeChanged)
+	end
+
 	if template == 'NoBackdrop' then
 		frame:SetBackdrop()
 	else
@@ -190,7 +195,7 @@ end
 
 local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement, allPoints, frameLevel)
 	local parent = (frame.IsObjectType and frame:IsObjectType('Texture') and frame:GetParent()) or frame
-	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent, 'BackdropTemplate')
+	local backdrop = frame.backdrop or CreateFrame('Frame', nil, parent)
 	if not frame.backdrop then frame.backdrop = backdrop end
 
 	backdrop:SetTemplate(template, glossTex, ignoreUpdates, forcePixelMode, isUnitFrameElement, isNamePlateElement)
@@ -249,17 +254,6 @@ local function CreateShadow(frame, size, pass)
 	end
 end
 
-local function Kill(object)
-	if object.UnregisterAllEvents then
-		object:UnregisterAllEvents()
-		object:SetParent(E.HiddenFrame)
-	else
-		object.Show = object.Hide
-	end
-
-	object:Hide()
-end
-
 local StripTexturesBlizzFrames = {
 	'Inset',
 	'inset',
@@ -283,6 +277,17 @@ local StripTexturesBlizzFrames = {
 	'ScrollFrameBorder',
 }
 
+local function Kill(object)
+	if object.UnregisterAllEvents then
+		object:UnregisterAllEvents()
+		object:SetParent(E.HiddenFrame)
+	else
+		object.Show = object.Hide
+	end
+
+	object:Hide()
+end
+
 local STRIP_TEX = 'Texture'
 local STRIP_FONT = 'FontString'
 local function StripRegion(which, object, kill, alpha)
@@ -295,7 +300,7 @@ local function StripRegion(which, object, kill, alpha)
 		object:SetText('')
 	end
 
-	if alpha then
+	if alpha and object.SetAlpha then
 		object:SetAlpha(0)
 	end
 end
@@ -338,9 +343,10 @@ local function FontTemplate(fs, font, size, style, skip)
 		fs.font, fs.fontSize, fs.fontStyle = font, size, style
 	end
 
-	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, style or E.db.general.fontStyle)
+	local outline = style or E.db.general.fontStyle
+	fs:SetFont(font or E.media.normFont, size or E.db.general.fontSize, outline)
 
-	if style == 'NONE' then
+	if outline == 'NONE' then
 		fs:SetShadowOffset(1, -0.5)
 		fs:SetShadowColor(0, 0, 0, 1)
 	else

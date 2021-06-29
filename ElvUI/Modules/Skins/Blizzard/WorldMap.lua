@@ -1,8 +1,10 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
+local QUESTSESSIONCOMMAND_START = Enum.QuestSessionCommand.Start
+local QUESTSESSIONCOMMAND_STOP = Enum.QuestSessionCommand.Stop
 
 local function SkinHeaders(header)
 	if not header.IsSkinned then
@@ -29,7 +31,7 @@ function S:WorldMapFrame()
 	WorldMapFrame.NavBar.overlay:StripTextures()
 	WorldMapFrame.NavBar:Point('TOPLEFT', 1, -40)
 
-	WorldMapFrame.ScrollContainer:CreateBackdrop()
+	WorldMapFrame.ScrollContainer:SetTemplate()
 	WorldMapFrame:CreateBackdrop('Transparent')
 	WorldMapFrame.backdrop:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', -8, 0)
 	WorldMapFrame.backdrop:Point('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 0, -9)
@@ -49,7 +51,7 @@ function S:WorldMapFrame()
 		QuestMapFrame.DetailsFrame.backdrop:Point('TOPLEFT', 0, 0)
 		QuestMapFrame.DetailsFrame.backdrop:Point('BOTTOMRIGHT', QuestMapFrame.DetailsFrame.RewardsFrame, 'TOPRIGHT', 0, 1)
 		QuestMapFrame.DetailsFrame.RewardsFrame:StripTextures()
-		QuestMapFrame.DetailsFrame.RewardsFrame:CreateBackdrop()
+		QuestMapFrame.DetailsFrame.RewardsFrame:SetTemplate()
 
 		if QuestMapFrame.Background then
 			QuestMapFrame.Background:SetAlpha(0)
@@ -103,8 +105,8 @@ function S:WorldMapFrame()
 
 	QuestMapFrame.DetailsFrame.CompleteQuestFrame:StripTextures()
 
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left', nil, nil, nil, true)
-	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right', nil, nil, nil, true)
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
+	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right')
 
 	S:HandleCloseButton(WorldMapFrame.BorderFrame.CloseButton)
 	S:HandleMaxMinFrame(WorldMapFrame.BorderFrame.MaximizeMinimizeFrame)
@@ -130,7 +132,7 @@ function S:WorldMapFrame()
 	QuestMapFrame.QuestSessionManagement:StripTextures()
 
 	local ExecuteSessionCommand = QuestMapFrame.QuestSessionManagement.ExecuteSessionCommand
-	ExecuteSessionCommand:CreateBackdrop()
+	ExecuteSessionCommand:SetTemplate()
 	ExecuteSessionCommand:StyleButton()
 
 	local icon = ExecuteSessionCommand:CreateTexture(nil, 'ARTWORK')
@@ -139,8 +141,8 @@ function S:WorldMapFrame()
 	ExecuteSessionCommand.normalIcon = icon
 
 	local sessionCommandToButtonAtlas = {
-		[_G.Enum.QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
-		[_G.Enum.QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
+		[QUESTSESSIONCOMMAND_START] = 'QuestSharing-DialogIcon',
+		[QUESTSESSIONCOMMAND_STOP] = 'QuestSharing-Stop-DialogIcon'
 	}
 
 	hooksecurefunc(QuestMapFrame.QuestSessionManagement, 'UpdateExecuteCommandAtlases', function(s, command)
@@ -157,9 +159,11 @@ function S:WorldMapFrame()
 	hooksecurefunc(_G.QuestSessionManager, 'NotifyDialogShow', function(_, dialog)
 		if not dialog.isSkinned then
 			dialog:StripTextures()
-			dialog:CreateBackdrop('Transparent')
+			dialog:SetTemplate('Transparent')
+
 			S:HandleButton(dialog.ButtonContainer.Confirm)
 			S:HandleButton(dialog.ButtonContainer.Decline)
+
 			if dialog.MinimizeButton then
 				dialog.MinimizeButton:StripTextures()
 				dialog.MinimizeButton:Size(16, 16)
@@ -169,6 +173,7 @@ function S:WorldMapFrame()
 				dialog.MinimizeButton.tex:SetInside()
 				dialog.MinimizeButton:SetHighlightTexture([[Interface\Buttons\UI-PlusButton-Hilight]], 'ADD')
 			end
+
 			dialog.isSkinned = true
 		end
 	end)

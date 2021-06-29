@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -26,7 +26,7 @@ local function SkinGuildRanks()
 end
 
 local function fixSkin(frame)
-	frame.backdrop:Hide();
+	frame.backdrop:Hide()
 	--Initiate fucked up method of creating a backdrop
 	if not E.PixelMode then
 		frame.bg1 = frame:CreateTexture(nil, 'BACKGROUND')
@@ -74,12 +74,12 @@ function S:Blizzard_GuildControlUI()
 
 	local GuildControlUI = _G.GuildControlUI
 	GuildControlUI:StripTextures()
-	GuildControlUI:CreateBackdrop('Transparent')
+	GuildControlUI:SetTemplate('Transparent')
 	_G.GuildControlUIHbar:StripTextures()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
 	S:HandleCloseButton(_G.GuildControlUICloseButton)
-	S:HandleScrollBar(_G.GuildControlUIRankBankFrameInsetScrollFrameScrollBar);
+	S:HandleScrollBar(_G.GuildControlUIRankBankFrameInsetScrollFrameScrollBar)
 
 	hooksecurefunc('GuildControlUI_RankOrder_Update', SkinGuildRanks)
 	_G.GuildControlUIRankOrderFrameNewButton:HookScript('OnClick', function()

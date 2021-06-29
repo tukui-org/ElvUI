@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -10,7 +10,7 @@ function S:Blizzard_GuildBankUI()
 
 	local GuildBankFrame = _G.GuildBankFrame
 	GuildBankFrame:StripTextures()
-	GuildBankFrame:CreateBackdrop('Transparent')
+	GuildBankFrame:SetTemplate('Transparent')
 	_G.GuildBankEmblemFrame:StripTextures(true)
 	_G.GuildBankMoneyFrameBackground:Kill()
 	S:HandleScrollBar(_G.GuildBankPopupScrollFrameScrollBar)
@@ -36,7 +36,7 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankInfoScrollFrame:Width(_G.GuildBankInfoScrollFrame:GetWidth() - 8)
 	_G.GuildBankTransactionsScrollFrame:StripTextures()
 
-	GuildBankFrame.inset = CreateFrame('Frame', nil, GuildBankFrame, 'BackdropTemplate')
+	GuildBankFrame.inset = CreateFrame('Frame', nil, GuildBankFrame)
 	GuildBankFrame.inset:SetTemplate()
 	GuildBankFrame.inset:Point('TOPLEFT', 20, -58)
 	GuildBankFrame.inset:Point('BOTTOMRIGHT', -16, 60)
@@ -53,7 +53,7 @@ function S:Blizzard_GuildBankUI()
 			end
 
 			button:StyleButton()
-			button:CreateBackdrop(nil, true)
+			button:SetTemplate(nil, true)
 
 			icon:SetInside()
 			icon:SetTexCoord(unpack(E.TexCoords))
@@ -68,7 +68,7 @@ function S:Blizzard_GuildBankUI()
 
 		button:StripTextures()
 		button:StyleButton(true)
-		button:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
+		button:SetTemplate(nil, true)
 
 		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))
@@ -83,9 +83,7 @@ function S:Blizzard_GuildBankUI()
 	GuildItemSearchBox.Middle:Kill()
 	GuildItemSearchBox.Right:Kill()
 	GuildItemSearchBox.searchIcon:Kill()
-	GuildItemSearchBox:CreateBackdrop('Overlay')
-	GuildItemSearchBox.backdrop:Point('TOPLEFT', 10, -1)
-	GuildItemSearchBox.backdrop:Point('BOTTOMRIGHT', -1, 1)
+	GuildItemSearchBox:SetTemplate()
 
 	S:HandleScrollBar(_G.GuildBankTransactionsScrollFrameScrollBar)
 	S:HandleScrollBar(_G.GuildBankInfoScrollFrameScrollBar)

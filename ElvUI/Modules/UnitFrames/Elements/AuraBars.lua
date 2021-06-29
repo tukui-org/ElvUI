@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
 local _G = _G
 local ipairs = ipairs
@@ -85,6 +85,7 @@ function UF:Configure_AuraBars(frame)
 		auraBars.friendlyAuraType = db.aurabar.friendlyAuraType
 		auraBars.enemyAuraType = db.aurabar.enemyAuraType
 		auraBars.disableMouse = db.aurabar.clickThrough
+		auraBars.filterList = UF:ConvertFilters(auraBars, db.aurabar.priority)
 
 		for _, statusBar in ipairs(auraBars) do
 			statusBar.db = auraBars.db

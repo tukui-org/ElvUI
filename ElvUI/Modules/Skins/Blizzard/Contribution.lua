@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -17,11 +17,10 @@ function S:Blizzard_Contribution()
 		--Reward Tooltip
 		local ContributionBuffTooltip = _G.ContributionBuffTooltip
 		ContributionBuffTooltip:StripTextures()
-		ContributionBuffTooltip:CreateBackdrop('Transparent')
+		ContributionBuffTooltip:SetTemplate('Transparent')
 		ContributionBuffTooltip:StyleButton()
 		ContributionBuffTooltip.Border:SetAlpha(0)
 		ContributionBuffTooltip.Icon:SetTexCoord(unpack(E.TexCoords))
-		ContributionBuffTooltip.backdrop:SetOutside(ContributionBuffTooltip.Icon)
 	end
 
 	local ContributionMixin = _G.ContributionMixin
@@ -34,25 +33,23 @@ function S:Blizzard_Contribution()
 
 		-- Skin the StatusBar
 		local statusBar = s.Status
-		if statusBar and not statusBar.isSkinned then
-			statusBar:StripTextures()
+		if statusBar and not statusBar.backdrop then
 			E:RegisterStatusBar(statusBar)
+			statusBar:StripTextures()
 			statusBar:CreateBackdrop()
-			statusBar.isSkinned = true
 		end
 	end)
 
 	--Skin the reward icons
 	hooksecurefunc(ContributionMixin, 'AddReward', function(s, _, rewardID)
-		local reward = s:FindOrAcquireReward(rewardID);
+		local reward = s:FindOrAcquireReward(rewardID)
 		if reward and not reward.isSkinned then
 			reward:SetFrameLevel(5)
-			reward:CreateBackdrop()
+			reward:SetTemplate()
 			reward:StyleButton()
 			reward.Border:SetAlpha(0)
 			reward.Icon:SetDrawLayer('OVERLAY')
 			reward.Icon:SetTexCoord(unpack(E.TexCoords))
-			reward.backdrop:SetOutside(reward.Icon)
 			reward.isSkinned = true
 		end
 	end)

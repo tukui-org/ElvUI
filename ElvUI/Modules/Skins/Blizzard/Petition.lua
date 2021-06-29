@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -8,7 +8,7 @@ function S:PetitionFrame()
 
 	local PetitionFrame = _G.PetitionFrame
 	PetitionFrame:StripTextures(true)
-	PetitionFrame:CreateBackdrop('Transparent')
+	PetitionFrame:SetTemplate('Transparent')
 	_G.PetitionFrameInset:Kill()
 
 	S:HandleButton(_G.PetitionFrameSignButton)
@@ -28,7 +28,6 @@ function S:PetitionFrame()
 	end
 
 	_G.PetitionFrameInstructions:SetTextColor(1, 1, 1)
-
 	_G.PetitionFrameRenameButton:Point('LEFT', _G.PetitionFrameRequestButton, 'RIGHT', 3, 0)
 	_G.PetitionFrameRenameButton:Point('RIGHT', _G.PetitionFrameCancelButton, 'LEFT', -3, 0)
 end

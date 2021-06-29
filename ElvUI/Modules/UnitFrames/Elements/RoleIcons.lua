@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
 local random = random
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
@@ -23,8 +23,8 @@ UF.RoleIconTextures = {
 
 function UF:UpdateRoleIcon(event)
 	local lfdrole = self.GroupRoleIndicator
-	if not self.db then return; end
-	local db = self.db.roleIcon;
+	if not self.db then return end
+	local db = self.db.roleIcon
 
 	if not db or not db.enable then
 		lfdrole:Hide()

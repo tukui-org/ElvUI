@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 
 E.Media = {
@@ -25,8 +25,8 @@ end
 local MediaKey = {
 	font	= 'Fonts',
 	sound	= 'Sounds',
-	arrow   = 'Arrows',
-	mail    = 'MailIcons',
+	arrow	= 'Arrows',
+	mail	= 'MailIcons',
 	resting = 'RestIcons',
 	emoji	= 'ChatEmojis',
 	logo	= 'ChatLogos',
@@ -37,7 +37,7 @@ local MediaPath = {
 	font	= [[Interface\AddOns\ElvUI\Media\Fonts\]],
 	sound	= [[Interface\AddOns\ElvUI\Media\Sounds\]],
 	arrow	= [[Interface\AddOns\ElvUI\Media\Arrows\]],
-	mail    = [[Interface\AddOns\ElvUI\Media\MailIcons\]],
+	mail	= [[Interface\AddOns\ElvUI\Media\MailIcons\]],
 	resting = [[Interface\AddOns\ElvUI\Media\RestIcons\]],
 	emoji	= [[Interface\AddOns\ElvUI\Media\ChatEmojis\]],
 	logo	= [[Interface\AddOns\ElvUI\Media\ChatLogos\]],

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -29,7 +29,7 @@ function S:Blizzard_BindingUI()
 	KeyBindingFrame.Header:ClearAllPoints()
 	KeyBindingFrame.Header:Point('TOP', KeyBindingFrame, 'TOP', 0, -4)
 	KeyBindingFrame:StripTextures()
-	KeyBindingFrame:CreateBackdrop('Transparent')
+	KeyBindingFrame:SetTemplate('Transparent')
 
 	_G.KeyBindingFrameCategoryList:StripTextures()
 	_G.KeyBindingFrameCategoryList:SetTemplate('Transparent')
@@ -59,7 +59,7 @@ function S:Blizzard_BindingUI()
 	local Quickie = _G.QuickKeybindFrame
 	Quickie:StripTextures()
 	Quickie.Header:StripTextures()
-	Quickie:CreateBackdrop('Transparent')
+	Quickie:SetTemplate('Transparent')
 
 	local quickies = {
 		'okayButton',

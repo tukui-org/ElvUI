@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local Misc = E:GetModule('Misc')
 local Layout = E:GetModule('Layout')
@@ -11,7 +11,6 @@ local ACH = E.Libs.ACH
 
 local _G = _G
 local wipe = wipe
-local IsAddOnLoaded = IsAddOnLoaded
 local IsMouseButtonDown = IsMouseButtonDown
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 
@@ -177,7 +176,7 @@ General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLeve
 General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLevelFontSize = ACH:Range(L["FONT_SIZE"], nil, 5, C.Values.FontSize)
 General.args.blizzUIImprovements.args.itemLevelInfo.args.fontGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 6)
 
-General.args.blizzUIImprovements.args.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 15, nil, function(info) return E.db.general[info[#info]] end, nil, function() return (IsAddOnLoaded('!KalielsTracker') or IsAddOnLoaded('DugisGuideViewerZ')) end)
+General.args.blizzUIImprovements.args.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 15, nil, function(info) return E.db.general[info[#info]] end, nil, function() return (E:IsAddOnEnabled('!KalielsTracker') or E:IsAddOnEnabled('DugisGuideViewerZ')) end)
 General.args.blizzUIImprovements.args.objectiveFrameGroup.inline = true
 General.args.blizzUIImprovements.args.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"], L["Automatically hide the objective frame during boss or arena fights."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value Blizzard:SetObjectiveFrameAutoHide() end)
 General.args.blizzUIImprovements.args.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["Hide In Keystone"], nil, 2, nil, nil, nil, nil, nil, nil, function() return not E.db.general.objectiveFrameAutoHide end)

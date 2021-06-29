@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -22,19 +22,19 @@ local talkingHeadFontColor = {
 
 --test
 function TestTalkingHead()
-	local frame = TalkingHeadFrame;
-	local model = frame.MainFrame.Model;
+	local frame = TalkingHeadFrame
+	local model = frame.MainFrame.Model
 
 	if frame.finishTimer then
-		frame.finishTimer:Cancel();
-		frame.finishTimer = nil;
+		frame.finishTimer:Cancel()
+		frame.finishTimer = nil
 	end
 	if frame.voHandle then
-		StopSound(frame.voHandle);
-		frame.voHandle = nil;
+		StopSound(frame.voHandle)
+		frame.voHandle = nil
 	end
 
-	local currentDisplayInfo = model:GetDisplayInfo();
+	local currentDisplayInfo = model:GetDisplayInfo()
 	local displayInfo, cameraID, vo, duration, lineNumber, numLines, name, text, isNewTalkingHead, textureKitID
 
 	displayInfo = 76291
@@ -48,61 +48,61 @@ function TestTalkingHead()
 	isNewTalkingHead = true
 	textureKitID = 0
 
-	local textFormatted = format(text);
+	local textFormatted = format(text)
 	if displayInfo and displayInfo ~= 0 then
-		local textureKit;
+		local textureKit
 		if textureKitID ~= 0 then
-			SetupTextureKits(textureKitID, frame.BackgroundFrame, talkingHeadTextureKitRegionFormatStrings, false, true);
-			SetupTextureKits(textureKitID, frame.PortraitFrame, talkingHeadTextureKitRegionFormatStrings, false, true);
-			textureKit = GetUITextureKitInfo(textureKitID);
+			SetupTextureKits(textureKitID, frame.BackgroundFrame, talkingHeadTextureKitRegionFormatStrings, false, true)
+			SetupTextureKits(textureKitID, frame.PortraitFrame, talkingHeadTextureKitRegionFormatStrings, false, true)
+			textureKit = GetUITextureKitInfo(textureKitID)
 		else
-			SetupAtlasesOnRegions(frame.BackgroundFrame, talkingHeadDefaultAtlases, true);
-			SetupAtlasesOnRegions(frame.PortraitFrame, talkingHeadDefaultAtlases, true);
-			textureKit = 'Normal';
+			SetupAtlasesOnRegions(frame.BackgroundFrame, talkingHeadDefaultAtlases, true)
+			SetupAtlasesOnRegions(frame.PortraitFrame, talkingHeadDefaultAtlases, true)
+			textureKit = 'Normal'
 		end
-		local nameColor = talkingHeadFontColor[textureKit].Name;
-		local textColor = talkingHeadFontColor[textureKit].Text;
-		local shadowColor = talkingHeadFontColor[textureKit].Shadow;
-		frame.NameFrame.Name:SetTextColor(nameColor:GetRGB());
-		frame.NameFrame.Name:SetShadowColor(shadowColor:GetRGBA());
-		frame.TextFrame.Text:SetTextColor(textColor:GetRGB());
-		frame.TextFrame.Text:SetShadowColor(shadowColor:GetRGBA());
-		frame:Show();
+		local nameColor = talkingHeadFontColor[textureKit].Name
+		local textColor = talkingHeadFontColor[textureKit].Text
+		local shadowColor = talkingHeadFontColor[textureKit].Shadow
+		frame.NameFrame.Name:SetTextColor(nameColor:GetRGB())
+		frame.NameFrame.Name:SetShadowColor(shadowColor:GetRGBA())
+		frame.TextFrame.Text:SetTextColor(textColor:GetRGB())
+		frame.TextFrame.Text:SetShadowColor(shadowColor:GetRGBA())
+		frame:Show()
 		if currentDisplayInfo ~= displayInfo then
-			model.uiCameraID = cameraID;
-			model:SetDisplayInfo(displayInfo);
+			model.uiCameraID = cameraID
+			model:SetDisplayInfo(displayInfo)
 		else
 			if model.uiCameraID ~= cameraID then
-				model.uiCameraID = cameraID;
-				Model_ApplyUICamera(model, model.uiCameraID);
+				model.uiCameraID = cameraID
+				Model_ApplyUICamera(model, model.uiCameraID)
 			end
-			TalkingHeadFrame_SetupAnimations(model);
+			TalkingHeadFrame_SetupAnimations(model)
 		end
 
 		if isNewTalkingHead then
-			TalkingHeadFrame_Reset(frame, textFormatted, name);
-			TalkingHeadFrame_FadeinFrames();
+			TalkingHeadFrame_Reset(frame, textFormatted, name)
+			TalkingHeadFrame_FadeinFrames()
 		else
 			if name ~= frame.NameFrame.Name:GetText() then
 				-- Fade out the old name and fade in the new name
-				frame.NameFrame.Fadeout:Play();
-				E:Delay(0.25, frame.NameFrame.Name.SetText, frame.NameFrame.Name, name);
-				E:Delay(0.5, frame.NameFrame.Fadein.Play, frame.NameFrame.Fadein);
+				frame.NameFrame.Fadeout:Play()
+				E:Delay(0.25, frame.NameFrame.Name.SetText, frame.NameFrame.Name, name)
+				E:Delay(0.5, frame.NameFrame.Fadein.Play, frame.NameFrame.Fadein)
 
-				frame.MainFrame.TalkingHeadsInAnim:Play();
+				frame.MainFrame.TalkingHeadsInAnim:Play()
 			end
 
 			if textFormatted ~= frame.TextFrame.Text:GetText() then
 				-- Fade out the old text and fade in the new text
-				frame.TextFrame.Fadeout:Play();
-				E:Delay(0.25, frame.TextFrame.Text.SetText, frame.TextFrame.Text, textFormatted);
-				E:Delay(0.5, frame.TextFrame.Fadein.Play, frame.TextFrame.Fadein);
+				frame.TextFrame.Fadeout:Play()
+				E:Delay(0.25, frame.TextFrame.Text.SetText, frame.TextFrame.Text, textFormatted)
+				E:Delay(0.5, frame.TextFrame.Fadein.Play, frame.TextFrame.Fadein)
 			end
 		end
 
-		local success, voHandle = PlaySound(vo, 'Talking Head', true, true);
+		local success, voHandle = PlaySound(vo, 'Talking Head', true, true)
 		if success then
-			frame.voHandle = voHandle;
+			frame.voHandle = voHandle
 		end
 	end
 end]]
@@ -119,8 +119,8 @@ function S:Blizzard_TalkingHeadUI()
 
 	if E.db.general.talkingHeadFrameBackdrop then
 		TalkingHeadFrame:StripTextures()
+		TalkingHeadFrame:SetTemplate('Transparent')
 		TalkingHeadFrame.MainFrame:StripTextures()
-		TalkingHeadFrame:CreateBackdrop('Transparent')
 
 		local button = TalkingHeadFrame.MainFrame.CloseButton
 		S:HandleCloseButton(button)

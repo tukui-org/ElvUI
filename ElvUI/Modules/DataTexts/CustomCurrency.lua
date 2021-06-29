@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
@@ -118,7 +118,7 @@ function DT:RemoveCustomCurrency(currencyName)
 
 	if not next(CustomCurrencies) then
 		for i, menu in ipairs(DT.HyperList) do
-			if menu.text ==  _G.CURRENCY then
+			if menu.text == _G.CURRENCY then
 				tremove(DT.HyperList, i)
 				break
 			end

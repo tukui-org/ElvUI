@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc')
 
 local _G = _G
@@ -26,7 +26,7 @@ local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local GREED, NEED, PASS = GREED, NEED, PASS
 local ROLL_DISENCHANT = ROLL_DISENCHANT
 
-local pos = 'TOP';
+local pos = 'TOP'
 local cancelled_rolls = {}
 local cachedRolls = {}
 local completedRolls = {}
@@ -116,7 +116,7 @@ local function CreateRollButton(parent, ntex, ptex, htex, rolltype, tiptext, ...
 end
 
 function M:CreateRollFrame()
-	local frame = CreateFrame('Frame', nil, E.UIParent, 'BackdropTemplate')
+	local frame = CreateFrame('Frame', nil, E.UIParent)
 	frame:Size(FRAME_WIDTH, FRAME_HEIGHT)
 	frame:SetTemplate()
 	frame:SetScript('OnEvent', OnEvent)
@@ -275,8 +275,8 @@ function M:START_LOOT_ROLL(_, rollID, time)
 end
 
 function M:LOOT_HISTORY_ROLL_CHANGED(_, itemIdx, playerIdx)
-	local rollID = C_LootHistoryGetItem(itemIdx);
-	local name, class, rollType = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx);
+	local rollID = C_LootHistoryGetItem(itemIdx)
+	local name, class, rollType = C_LootHistoryGetPlayerInfo(itemIdx, playerIdx)
 
 	local rollIsHidden = true
 	if name and rollType then

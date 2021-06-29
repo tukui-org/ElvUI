@@ -1,14 +1,14 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
-function UF:Construct_PvPIndicator(frame)
+function UF:Construct_PvPText(frame)
 	local pvp = frame.RaisedElementParent:CreateFontString(nil, 'OVERLAY')
 	UF:Configure_FontString(pvp)
 
 	return pvp
 end
 
-function UF:Configure_PVPIndicator(frame)
+function UF:Configure_PVPText(frame)
 	local pvp = frame.PvPText
 	local x, y = self:GetPositionOffset(frame.db.pvp.position)
 	pvp:ClearAllPoints()

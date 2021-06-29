@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -20,15 +20,15 @@ function S:Blizzard_CovenantPreviewUI()
 
 	hooksecurefunc(frame, 'TryShow', function(covenantInfo)
 		if covenantInfo and not frame.IsSkinned then
-			frame:CreateBackdrop('Transparent')
+			frame:SetTemplate('Transparent')
 
 			frame.ModelSceneContainer.ModelSceneBorder:SetAlpha(0)
-			frame.InfoPanel:CreateBackdrop('Transparent')
+			frame.InfoPanel:SetTemplate('Transparent')
 
 			if E.private.skins.parchmentRemoverEnable then
 				frame.Title:DisableDrawLayer('BACKGROUND')
 				frame.Title.Text:SetTextColor(1, .8, 0)
-				frame.Title:CreateBackdrop('Transparent')
+				frame.Title:SetTemplate('Transparent')
 				frame.Background:SetAlpha(0)
 				frame.BorderFrame:SetAlpha(0)
 				frame.InfoPanel.Parchment:SetAlpha(0)

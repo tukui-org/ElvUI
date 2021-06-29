@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Minimap')
 local LSM = E.Libs.LSM
 
@@ -43,7 +43,7 @@ _G.UIDropDownMenu_Initialize(ElvUIMiniMapTrackingDropDown, _G.MiniMapTrackingDro
 ElvUIMiniMapTrackingDropDown.noResize = true
 
 --Create the minimap micro menu
-local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'BackdropTemplate')
+local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent)
 local menuList = {
 	{text = _G.CHARACTER_BUTTON,
 	func = function() ToggleCharacter('PaperDollFrame') end},
@@ -239,7 +239,7 @@ do
 	local isResetting
 	local function ResetZoom()
 		Minimap:SetZoom(0)
-		_G.MinimapZoomIn:Enable(); --Reset enabled state of buttons
+		_G.MinimapZoomIn:Enable() --Reset enabled state of buttons
 		_G.MinimapZoomOut:Disable()
 		isResetting = false
 	end

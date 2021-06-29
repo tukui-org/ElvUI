@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local B = E:GetModule('Blizzard')
 local ACH = E.Libs.ACH
@@ -62,6 +62,7 @@ E.Options.args.skins.args.blizzard.values = {
 	debug = L["Debug Tools"],
 	dressingroom = L["DRESSUP_FRAME"],
 	encounterjournal = L["ENCOUNTER_JOURNAL"],
+	eventLog = L["Event Log"],
 	friends = L["FRIENDS"],
 	garrison = L["GARRISON_LOCATION_TOOLTIP"],
 	gbank = L["GUILD_BANK"],

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -49,16 +49,7 @@ S.Blizzard.Regions = {
 	'BottomRightTex',
 	'RightTex',
 	'MiddleTex',
-	'Center',
-	-- 9.0 might want these later? (achievement frame uses them and maybe something else)
-	--'BottomEdge',
-	--'LeftEdge',
-	--'RightEdge',
-	--'TopEdge',
-	--'TopLeftCorner',
-	--'TopRightCorner',
-	--'BottomLeftCorner',
-	--'BottomRightCorner',
+	'Center'
 }
 
 -- Depends on the arrow texture to be up by default.
@@ -87,7 +78,7 @@ function S:HandleInsetFrame(frame)
 end
 
 -- All frames that have a Portrait
-function S:HandlePortraitFrame(frame, setTemplate)
+function S:HandlePortraitFrame(frame, createBackdrop)
 	assert(frame, 'doesnt exist!')
 
 	local name = frame and frame.GetName and frame:GetName()
@@ -110,10 +101,10 @@ function S:HandlePortraitFrame(frame, setTemplate)
 		S:HandleCloseButton(frame.CloseButton)
 	end
 
-	if setTemplate then
-		frame:SetTemplate('Transparent')
-	else
+	if createBackdrop then
 		frame:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, true)
+	else
+		frame:SetTemplate('Transparent')
 	end
 end
 
@@ -162,6 +153,7 @@ function S:SkinPVPHonorXPBar(frame)
 
 		if XPBar.Bar and not XPBar.Bar.backdrop then
 			XPBar.Bar:CreateBackdrop()
+
 			if XPBar.Bar.Background then
 				XPBar.Bar.Background:SetInside(XPBar.Bar.backdrop)
 			end
@@ -211,6 +203,7 @@ function S:StatusBarColorGradient(bar, value, max, backdrop)
 	local current = (not max and value) or (value and max and max ~= 0 and value/max)
 	if not (bar and current) then return end
 	local r, g, b = E:ColorGradient(current, 0.8,0,0, 0.8,0.8,0, 0,0.8,0)
+
 	local bg = backdrop or bar.backdrop
 	if bg then bg:SetBackdropColor(r*0.25, g*0.25, b*0.25) end
 	bar:SetStatusBarColor(r, g, b)
@@ -226,9 +219,9 @@ function S:SkinLibDropDownMenu(prefix)
 
 		S[prefix..'_UIDropDownMenuSkinned'] = true
 		hooksecurefunc(prefix..'_UIDropDownMenu_CreateFrames', function()
-			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS'];
-			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop'];
-			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop'];
+			local lvls = _G[(prefix == 'Lib' and 'LIB' or prefix)..'_UIDROPDOWNMENU_MAXLEVELS']
+			local ddbd = lvls and _G[prefix..'_DropDownList'..lvls..'Backdrop']
+			local ddmbd = lvls and _G[prefix..'_DropDownList'..lvls..'MenuBackdrop']
 			if ddbd and not ddbd.template then ddbd:SetTemplate('Transparent') end
 			if ddmbd and not ddmbd.template then ddmbd:SetTemplate('Transparent') end
 		end)
@@ -307,7 +300,7 @@ do
 	end
 end
 
-function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, styleTemplate, noGlossTex, overrideTex, frameLevel)
+function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel)
 	assert(button, 'doesnt exist!')
 
 	if button.isSkinned then return end
@@ -329,17 +322,15 @@ function S:HandleButton(button, strip, isDeclineButton, noStyle, setTemplate, st
 		end
 	end
 
-	if isDeclineButton then
-		if button.Icon then
-			button.Icon:SetTexture(E.Media.Textures.Close)
-		end
+	if isDecline and button.Icon then
+		button.Icon:SetTexture(E.Media.Textures.Close)
 	end
 
 	if not noStyle then
-		if setTemplate then
-			button:SetTemplate(styleTemplate, not noGlossTex)
+		if createBackdrop then
+			button:CreateBackdrop(template, not noGlossTex, nil, nil, nil, nil, true, frameLevel)
 		else
-			button:CreateBackdrop(styleTemplate, not noGlossTex, nil, nil, nil, nil, true, frameLevel)
+			button:SetTemplate(template, not noGlossTex)
 		end
 
 		button:HookScript('OnEnter', S.SetModifiedBackdrop)
@@ -355,17 +346,18 @@ do
 		return frame[element] or FrameName and (_G[FrameName..element] or strfind(FrameName, element)) or nil
 	end
 
-	function S:HandleScrollBar(frame, thumbTrimY, thumbTrimX)
+	function S:HandleScrollBar(frame, thumbY, thumbX, template)
 		assert(frame, 'doesnt exist!')
 
 		if frame.backdrop then return end
+
 		local parent = frame:GetParent()
 		local ScrollUpButton = GrabScrollBarElement(frame, 'ScrollUpButton') or GrabScrollBarElement(frame, 'UpButton') or GrabScrollBarElement(frame, 'ScrollUp') or GrabScrollBarElement(parent, 'scrollUp')
 		local ScrollDownButton = GrabScrollBarElement(frame, 'ScrollDownButton') or GrabScrollBarElement(frame, 'DownButton') or GrabScrollBarElement(frame, 'ScrollDown') or GrabScrollBarElement(parent, 'scrollDown')
 		local Thumb = GrabScrollBarElement(frame, 'ThumbTexture') or GrabScrollBarElement(frame, 'thumbTexture') or frame.GetThumbTexture and frame:GetThumbTexture()
 
 		frame:StripTextures()
-		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, true)
 		frame.backdrop:Point('TOPLEFT', ScrollUpButton or frame, ScrollUpButton and 'BOTTOMLEFT' or 'TOPLEFT', 0, 0)
 		frame.backdrop:Point('BOTTOMRIGHT', ScrollDownButton or frame, ScrollUpButton and 'TOPRIGHT' or 'BOTTOMRIGHT', 0, 0)
 
@@ -387,10 +379,11 @@ do
 			Thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, frame:GetFrameLevel() + 1)
 
 			if Thumb.backdrop then
-				if not thumbTrimY then thumbTrimY = 3 end
-				if not thumbTrimX then thumbTrimX = 2 end
-				Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbTrimY)
-				Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbTrimX, thumbTrimY)
+				if not thumbY then thumbY = 3 end
+				if not thumbX then thumbX = 2 end
+
+				Thumb.backdrop:Point('TOPLEFT', Thumb, 'TOPLEFT', 2, -thumbY)
+				Thumb.backdrop:Point('BOTTOMRIGHT', Thumb, 'BOTTOMRIGHT', -thumbX, thumbY)
 				Thumb.backdrop:SetBackdropColor(0.6, 0.6, 0.6)
 			end
 
@@ -409,7 +402,7 @@ do --Tab Regions
 		'Right'
 	}
 
-	function S:HandleTab(tab, noBackdrop)
+	function S:HandleTab(tab, noBackdrop, template)
 		if not tab or (tab.backdrop and not noBackdrop) then return end
 
 		for _, object in pairs(tabs) do
@@ -429,7 +422,7 @@ do --Tab Regions
 		end
 
 		if not noBackdrop then
-			tab:CreateBackdrop()
+			tab:CreateBackdrop(template)
 			tab.backdrop:Point('TOPLEFT', 10, E.PixelMode and -1 or -3)
 			tab.backdrop:Point('BOTTOMRIGHT', -10, 3)
 		end
@@ -439,7 +432,7 @@ end
 function S:HandleRotateButton(btn)
 	if btn.isSkinned then return end
 
-	btn:CreateBackdrop()
+	btn:SetTemplate()
 	btn:Size(btn:GetWidth() - 14, btn:GetHeight() - 14)
 
 	local normTex = btn:GetNormalTexture()
@@ -506,19 +499,19 @@ function S:HandleBlizzardRegions(frame, name, kill)
 		if object then
 			if kill then
 				object:Kill()
-			else
+			elseif object.SetAlpha then
 				object:SetAlpha(0)
 			end
 		end
 	end
 end
 
-function S:HandleEditBox(frame)
+function S:HandleEditBox(frame, template)
 	assert(frame, 'doesnt exist!')
 
 	if frame.backdrop then return end
 
-	frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+	frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, true)
 	S:HandleBlizzardRegions(frame)
 
 	local EditBoxName = frame:GetName()
@@ -527,7 +520,7 @@ function S:HandleEditBox(frame)
 	end
 end
 
-function S:HandleDropDownBox(frame, width, pos)
+function S:HandleDropDownBox(frame, width, pos, template)
 	assert(frame, 'doesnt exist!')
 
 	local frameName = frame.GetName and frame:GetName()
@@ -539,10 +532,9 @@ function S:HandleDropDownBox(frame, width, pos)
 		width = 155
 	end
 
-	frame:StripTextures()
 	frame:Width(width)
-
-	frame:CreateBackdrop()
+	frame:StripTextures()
+	frame:CreateBackdrop(template)
 	frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 	frame.backdrop:Point('TOPLEFT', 20, -2)
 	frame.backdrop:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 2, -2)
@@ -568,10 +560,10 @@ function S:HandleDropDownBox(frame, width, pos)
 	end
 end
 
-function S:HandleStatusBar(frame, color)
+function S:HandleStatusBar(frame, color, template)
 	frame:SetFrameLevel(frame:GetFrameLevel() + 1)
 	frame:StripTextures()
-	frame:CreateBackdrop('Transparent')
+	frame:CreateBackdrop(template or 'Transparent')
 	frame:SetStatusBarTexture(E.media.normTex)
 	frame:SetStatusBarColor(unpack(color or {.01, .39, .1}))
 	E:RegisterStatusBar(frame)
@@ -580,7 +572,7 @@ end
 do
 	local check = [[Interface\Buttons\UI-CheckBox-Check]]
 	local disabled = [[Interface\Buttons\UI-CheckBox-Check-Disabled]]
-	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel)
+	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, template)
 		assert(frame, 'does not exist.')
 
 		if frame.isSkinned then return end
@@ -590,7 +582,7 @@ do
 		if noBackdrop then
 			frame:Size(16)
 		else
-			frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, frameLevel)
+			frame:CreateBackdrop(template, nil, nil, nil, nil, nil, nil, frameLevel)
 			frame.backdrop:SetInside(nil, 4, 4)
 		end
 
@@ -628,7 +620,7 @@ do
 			end
 
 			frame:HookScript('OnDisable', function(checkbox)
-				if not checkbox.SetDisabledTexture then return; end
+				if not checkbox.SetDisabledTexture then return end
 				if checkbox:GetChecked() then
 					if E.private.skins.checkBoxSkin then
 						checkbox:SetDisabledTexture(E.Media.Textures.Melli)
@@ -722,8 +714,8 @@ function S:HandleIcon(icon, backdrop)
 	end
 end
 
-function S:HandleItemButton(b, shrinkIcon)
-	if b.isSkinned then return; end
+function S:HandleItemButton(b, setInside)
+	if b.isSkinned then return end
 
 	local name = b:GetName()
 	local icon = b.icon or b.Icon or b.IconTexture or b.iconTexture or (name and (_G[name..'IconTexture'] or _G[name..'Icon']))
@@ -736,8 +728,7 @@ function S:HandleItemButton(b, shrinkIcon)
 	if icon then
 		icon:SetTexCoord(unpack(E.TexCoords))
 
-		-- create a backdrop around the icon
-		if shrinkIcon then
+		if setInside then
 			icon:SetInside(b)
 		else
 			b.backdrop:SetOutside(icon, 1, 1)
@@ -776,18 +767,21 @@ function S:HandleCloseButton(f, point, x, y)
 	end
 end
 
-function S:HandleSliderFrame(frame)
+function S:HandleSliderFrame(frame, template)
 	assert(frame, 'doesnt exist!')
 
 	local orientation = frame:GetOrientation()
 	local SIZE = 12
 
-	frame:SetBackdrop()
+	if frame.SetBackdrop then
+		frame:SetBackdrop()
+	end
+
 	frame:StripTextures()
 	frame:SetThumbTexture(E.Media.Textures.Melli)
 
 	if not frame.backdrop then
-		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		frame:CreateBackdrop(template, nil, nil, nil, nil, nil, true)
 	end
 
 	local thumb = frame:GetThumbTexture()
@@ -836,6 +830,7 @@ function S:HandleFollowerAbilities(followerList)
 			if equip then
 				equip.Border:SetAlpha(0)
 				equip.BG:SetAlpha(0)
+
 				S:HandleIcon(equip.Icon, true)
 				equip.Icon.backdrop:SetBackdropColor(1, 1, 1, .15)
 			end
@@ -896,39 +891,36 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 
 	for i = 1, numButtons do
 		local button = Buttons[i]
-		local index = offset + i -- adjust index
-
 		if button then
-			local fl = button.Follower
-			if (index <= numFollowers) and not button.backdrop then
-				if button.mode == 'CATEGORY' then
-					button:CreateBackdrop('Transparent')
-				else
-					button:CreateBackdrop('NoBackdrop')
-				end
+			local index = offset + i -- adjust index
+			if index <= numFollowers then
+				button:SetTemplate(button.mode == 'CATEGORY' and 'NoBackdrop' or 'Transparent')
 
 				if button.Category then
 					button.Category:ClearAllPoints()
 					button.Category:Point('TOP', button, 'TOP', 0, -4)
 				end
 
-				if fl and not fl.backdrop then
-					fl:CreateBackdrop()
-					fl.Name:SetWordWrap(false)
-					fl.BG:Hide()
-					fl.Selection:SetTexture()
-					fl.AbilitiesBG:SetTexture()
-					fl.BusyFrame:SetAllPoints()
+				local fl = button.Follower
+				if fl then
+					if not fl.template then
+						fl:SetTemplate('Transparent')
+						fl.Name:SetWordWrap(false)
+						fl.Selection:SetTexture()
+						fl.AbilitiesBG:SetTexture()
+						fl.BusyFrame:SetAllPoints()
+						fl.BG:Hide()
 
-					local hl = fl:GetHighlightTexture()
-					hl:SetColorTexture(0.9, 0.9, 0.9, 0.25)
-					hl:SetAllPoints()
+						local hl = fl:GetHighlightTexture()
+						hl:SetColorTexture(0.9, 0.9, 0.9, 0.25)
+						hl:SetAllPoints()
+					end
 
 					if fl.Counters then
 						for y = 1, #fl.Counters do
 							local counter = fl.Counters[y]
-							if counter and not counter.backdrop then
-								counter:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
+							if counter and not counter.template then
+								counter:SetTemplate()
 
 								if counter.Border then
 									counter.Border:SetTexture()
@@ -942,28 +934,30 @@ function S:HandleFollowerListOnUpdateDataFunc(Buttons, numButtons, offset, numFo
 						end
 					end
 
-					if fl.PortraitFrame and not fl.PortraitFrameStyled then
-						S:HandleGarrisonPortrait(fl.PortraitFrame)
-						fl.PortraitFrame:ClearAllPoints()
-						fl.PortraitFrame:Point('TOPLEFT', 3, -3)
-						hooksecurefunc(fl.PortraitFrame, 'SetupPortrait', UpdateFollowerQuality)
-						fl.PortraitFrameStyled = true
+					if fl.PortraitFrame then
+						if not fl.PortraitFrameStyled then
+							S:HandleGarrisonPortrait(fl.PortraitFrame)
+							fl.PortraitFrame:ClearAllPoints()
+							fl.PortraitFrame:Point('TOPLEFT', 3, -3)
+							hooksecurefunc(fl.PortraitFrame, 'SetupPortrait', UpdateFollowerQuality)
+							fl.PortraitFrameStyled = true
+						end
+
+						if fl.PortraitFrame.quality then
+							local color = ITEM_QUALITY_COLORS[fl.PortraitFrame.quality]
+							if color and fl.PortraitFrame.backdrop then
+								fl.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+							end
+						end
 					end
-				end
-			end
 
-			if fl and fl.Selection and fl.backdrop then
-				if fl.Selection:IsShown() then
-					fl.backdrop:SetBackdropColor(0.9, 0.8, 0.1, 0.25)
-				else
-					fl.backdrop:SetBackdropColor(0, 0, 0, 0.5)
-				end
-			end
-
-			if fl and fl.PortraitFrame and fl.PortraitFrame.quality then
-				local color = ITEM_QUALITY_COLORS[fl.PortraitFrame.quality]
-				if color and fl.PortraitFrame.backdrop then
-					fl.PortraitFrame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					if fl.Selection then
+						if fl.Selection:IsShown() then
+							fl:SetBackdropColor(0.9, 0.8, 0.1, 0.25)
+						else
+							fl:SetBackdropColor(0, 0, 0, 0.5)
+						end
+					end
 				end
 			end
 		end
@@ -1011,6 +1005,7 @@ function S:HandleGarrisonPortrait(portrait)
 		level:ClearAllPoints()
 		level:Point('BOTTOM', portrait, 0, 15)
 		level:FontTemplate(nil, 14, 'OUTLINE')
+
 		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
 		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
 	end
@@ -1307,15 +1302,7 @@ function S:SkinSpellDisplay(widgetFrame)
 
 	if spell.Icon then
 		S:HandleIcon(spell.Icon)
-
-		if not spell.Icon.backdrop then
-			spell.Icon:CreateBackdrop()
-		end
-
-		local x = E.PixelMode and 1 or 2
-		spell.Icon.backdrop:ClearAllPoints()
-		spell.Icon.backdrop:Point('TOPLEFT', spell.Icon, -x, x)
-		spell.Icon.backdrop:Point('BOTTOMRIGHT', spell.Icon, x, -x)
+		spell.Icon:SetTemplate()
 	end
 end
 
