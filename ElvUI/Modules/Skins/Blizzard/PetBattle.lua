@@ -11,6 +11,7 @@ local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+local BattlePetOwner_Weather = Enum.BattlePetOwner.Weather
 
 local function SkinPetButton(self, bf)
 	if not self.backdrop then
@@ -222,9 +223,8 @@ function S:PetBattleFrame()
 	end)
 
 	-- WEATHER
-	local weatherID = Enum.BattlePetOwner.Weather
 	hooksecurefunc('PetBattleWeatherFrame_Update', function(s)
-		local weather = C_PetBattles_GetAuraInfo(weatherID, _G.PET_BATTLE_PAD_INDEX, 1)
+		local weather = C_PetBattles_GetAuraInfo(BattlePetOwner_Weather, _G.PET_BATTLE_PAD_INDEX, 1)
 		if weather then
 			s.Icon:Hide()
 			s.BackgroundArt:ClearAllPoints()
