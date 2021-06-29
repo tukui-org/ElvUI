@@ -1,6 +1,13 @@
-### Version 12.26 [ ETA: 🍨 ]
+### Version 12.27 [ ETA: 🍨 ]
 
 **Hotfixes:**  
+
+
+___
+### Version 12.26 [ June 29th 2021 ]
+
+**Hotfixes:**  
+Toolkit SetBackdrop error.  
 
 ___
 ### Version 12.25 [ June 29th 2021 ]
