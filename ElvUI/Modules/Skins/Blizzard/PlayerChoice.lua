@@ -18,9 +18,7 @@ end
 local function HandleOptionButton(button, strip)
 	if not button then return end
 
-	if strip then button:StripTextures() end
-	S:HandleBlizzardRegions(button)
-
+	if strip then button:StripTextures(strip == 1) end
 	button:SetTemplate()
 
 	if not button.backdropHooked then
@@ -69,7 +67,7 @@ function S:Blizzard_PlayerChoiceUI()
 				option.Header.Ribbon:SetAlpha(0)
 			end
 
-			HandleOptionButton(option.OptionButtonsContainer.button1, true) -- always strip art from main button
+			HandleOptionButton(option.OptionButtonsContainer.button1, 1) -- always kill art from main button
 			HandleOptionButton(option.OptionButtonsContainer.button2, inTower) -- only strip art on secondary in tower
 
 			for x = 1, option.WidgetContainer:GetNumChildren() do
