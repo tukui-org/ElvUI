@@ -30,6 +30,8 @@ local SplitContainerItem = SplitContainerItem
 local SplitGuildBankItem = SplitGuildBankItem
 
 local C_PetJournalGetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
+local ItemClass_Armor = Enum.ItemClass.Armor
+local ItemClass_Weapon = Enum.ItemClass.Weapon
 
 local guildBags = {51,52,53,54,55,56,57,58}
 local bankBags = {BANK_CONTAINER}
@@ -240,7 +242,7 @@ local function DefaultSort(a, b)
 		return (aItemClassId or 99) < (bItemClassId or 99)
 	end
 
-	if aItemClassId == Enum.ItemClass.Armor or aItemClassId == Enum.ItemClass.Weapon then
+	if aItemClassId == ItemClass_Armor or aItemClassId == ItemClass_Weapon then
 		aEquipLoc = inventorySlots[aEquipLoc] or -1
 		bEquipLoc = inventorySlots[bEquipLoc] or -1
 		if aEquipLoc == bEquipLoc then

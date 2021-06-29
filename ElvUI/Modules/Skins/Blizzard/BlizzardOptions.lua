@@ -45,7 +45,7 @@ local function reskinPickerOptions(self)
 				local check = child.Check
 				check:SetColorTexture(1, .82, 0, 0.8)
 				check:SetSize(10, 10)
-				check:SetPoint("LEFT", 2, 0)
+				check:SetPoint('LEFT', 2, 0)
 				check:CreateBackdrop('Transparent')
 
 				child.IsSkinned = true
@@ -58,7 +58,7 @@ local function HandleVoicePicker(voicePicker)
 	local customFrame = voicePicker:GetChildren()
 	customFrame:StripTextures()
 	customFrame:CreateBackdrop('Transparent')
-	voicePicker:HookScript("OnShow", reskinPickerOptions)
+	voicePicker:HookScript('OnShow', reskinPickerOptions)
 end
 
 function S:BlizzardOptions()
