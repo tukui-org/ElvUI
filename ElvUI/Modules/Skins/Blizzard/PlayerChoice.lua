@@ -51,24 +51,26 @@ local function SetupOptions(frame)
 	end
 
 	local inTower = IsInJailersTower()
-	local parchmentRemover = E.private.skins.parchmentRemoverEnable
-	local noParchment = not inTower and parchmentRemover
-
 	frame:SetTemplate(inTower and 'NoBackdrop' or 'Transparent')
 
-	for option in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
-		if parchmentRemover then
-			option.Header.Contents.Text:SetTextColor(1, .8, 0)
-			option.OptionText:SetTextColor(1, 1, 1)
-		end
+	if frame.optionFrameTemplate and frame.optionPools then
+		local parchmentRemover = E.private.skins.parchmentRemoverEnable
+		local noParchment = not inTower and parchmentRemover
 
-		if noParchment then
-			option.Background:SetAlpha(0)
-			option.Header.Ribbon:SetAlpha(0)
-		end
+		for option in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
+			if parchmentRemover then
+				option.Header.Contents.Text:SetTextColor(1, .8, 0)
+				option.OptionText:SetTextColor(1, 1, 1)
+			end
 
-		SetupRewards(option.rewards)
-		SetupButtons(option.buttons)
+			if noParchment then
+				option.Background:SetAlpha(0)
+				option.Header.Ribbon:SetAlpha(0)
+			end
+
+			SetupRewards(option.rewards)
+			SetupButtons(option.buttons)
+		end
 	end
 end
 
