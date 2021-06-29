@@ -33,6 +33,34 @@ function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(btn)
 	HandlePushToTalkButton(btn.PushToTalkKeybindButton)
 end
 
+local function reskinPickerOptions(self)
+	local scrollTarget = self.ScrollBox.ScrollTarget
+	if scrollTarget then
+		for i = 1, scrollTarget:GetNumChildren() do
+			local child = select(i, scrollTarget:GetChildren())
+			if not child.IsSkinned then
+				child.UnCheck:SetTexture(nil)
+				child.Highlight:SetColorTexture(1, .82, 0, 0.4)
+
+				local check = child.Check
+				check:SetColorTexture(1, .82, 0, 0.8)
+				check:SetSize(10, 10)
+				check:SetPoint("LEFT", 2, 0)
+				check:CreateBackdrop('Transparent')
+
+				child.IsSkinned = true
+			end
+		end
+	end
+end
+
+local function HandleVoicePicker(voicePicker)
+	local customFrame = voicePicker:GetChildren()
+	customFrame:StripTextures()
+	customFrame:CreateBackdrop('Transparent')
+	voicePicker:HookScript("OnShow", reskinPickerOptions)
+end
+
 function S:BlizzardOptions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
@@ -233,6 +261,50 @@ function S:BlizzardOptions()
 		end
 	end)
 
+	--9.1 -- Text To Speech
+	local TextToSpeechCheckBoxes = {
+		'PlayActivitySoundWhenNotFocusedCheckButton',
+		'PlaySoundSeparatingChatLinesCheckButton',
+		'AddCharacterNameToSpeechCheckButton',
+		'NarrateMyMessagesCheckButton',
+		'UseAlternateVoiceForSystemMessagesCheckButton',
+	}
+
+	for _, checkbox in pairs(TextToSpeechCheckBoxes) do
+		S:HandleCheckBox(_G.TextToSpeechFramePanelContainer[checkbox])
+	end
+
+	S:HandleButton(_G.TextToSpeechFramePlaySampleButton)
+	S:HandleButton(_G.TextToSpeechFramePlaySampleAlternateButton)
+	S:HandleButton(_G.TextToSpeechDefaultButton)
+
+	S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceDropdown)
+	S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
+
+	S:HandleSliderFrame(_G.TextToSpeechFrameAdjustRateSlider)
+	S:HandleSliderFrame(_G.TextToSpeechFrameAdjustVolumeSlider)
+
+	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', function(frame)
+		local checkBoxTable = frame.checkBoxTable
+		if checkBoxTable then
+			local checkBoxNameString = frame:GetName()..'CheckBox'
+			local checkBoxName, checkBox
+			for index, value in ipairs(checkBoxTable) do
+				checkBoxName = checkBoxNameString..index
+				checkBox = _G[checkBoxName]
+				if checkBox and not checkBox.styled then
+					S:HandleCheckBox(checkBox)
+					checkBox.styled = true
+				end
+			end
+		end
+	end)
+
+	HandleVoicePicker(_G.TextToSpeechFrameTtsVoicePicker)
+	HandleVoicePicker(_G.TextToSpeechFrameTtsVoiceAlternatePicker)
+
+	_G.ChatConfigTextToSpeechChannelSettingsLeft:StripTextures()
+
 	local OptionsFrames = { _G.InterfaceOptionsFrame, _G.InterfaceOptionsFrameCategories, _G.InterfaceOptionsFramePanelContainer, _G.InterfaceOptionsFrameAddOns, _G.VideoOptionsFrame, _G.VideoOptionsFrameCategoryFrame, _G.VideoOptionsFramePanelContainer, _G.Display_, _G.Graphics_, _G.RaidGraphics_ }
 	local OptionsFrameBackdrops = { _G.AudioOptionsSoundPanelHardware, _G.AudioOptionsSoundPanelVolume, _G.AudioOptionsSoundPanelPlayback, _G.AudioOptionsVoicePanelTalking, _G.AudioOptionsVoicePanelListening, _G.AudioOptionsVoicePanelBinding }
 	local OptionsButtons = { _G.GraphicsButton, _G.RaidButton }
@@ -240,6 +312,7 @@ function S:BlizzardOptions()
 	local InterfaceOptions = {
 		_G.InterfaceOptionsFrame,
 		_G.InterfaceOptionsControlsPanel,
+		_G.InterfaceOptionsColorblindPanel,
 		_G.InterfaceOptionsCombatPanel,
 		_G.InterfaceOptionsCombatPanelEnemyCastBars,
 		_G.InterfaceOptionsCombatTextPanel,

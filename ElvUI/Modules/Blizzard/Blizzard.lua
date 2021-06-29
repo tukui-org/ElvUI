@@ -66,7 +66,7 @@ function B:Initialize()
 	B:SkinBlizzTimers()
 	B:PositionVehicleFrame()
 	B:PositionTalkingHead()
-	B:Handle_LevelUpDisplay_BossBanner()
+	B:Handle_BossBanner()
 	B:Handle_UIWidgets()
 
 	if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then

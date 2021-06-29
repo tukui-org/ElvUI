@@ -96,6 +96,7 @@ V.skins = {
 		debug = true,
 		dressingroom = true,
 		encounterjournal = true,
+		eventLog = true,
 		friends = true,
 		garrison = true,
 		gbank = true,

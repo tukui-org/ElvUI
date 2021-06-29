@@ -223,7 +223,7 @@ function S:PetBattleFrame()
 
 	-- WEATHER
 	hooksecurefunc('PetBattleWeatherFrame_Update', function(s)
-		local weather = C_PetBattles_GetAuraInfo(_G.LE_BATTLE_PET_WEATHER, _G.PET_BATTLE_PAD_INDEX, 1)
+		local weather = C_PetBattles_GetAuraInfo(Enum.BattlePetOwner.Weather, _G.PET_BATTLE_PAD_INDEX, 1)
 		if weather then
 			s.Icon:Hide()
 			s.BackgroundArt:ClearAllPoints()

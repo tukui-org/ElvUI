@@ -616,8 +616,8 @@ function S:Blizzard_Collections()
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
 
-	for i = 1, #WardrobeTransmogFrame.ModelScene.SlotButtons do
-		local slotButton = WardrobeTransmogFrame.ModelScene.SlotButtons[i]
+	for i = 1, #WardrobeTransmogFrame.SlotButtons do
+		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
 		slotButton:SetFrameLevel(slotButton:GetFrameLevel() + 2)
 		slotButton:StripTextures()
 		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)

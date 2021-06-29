@@ -62,6 +62,7 @@ E.Options.args.skins.args.blizzard.values = {
 	debug = L["Debug Tools"],
 	dressingroom = L["DRESSUP_FRAME"],
 	encounterjournal = L["ENCOUNTER_JOURNAL"],
+	eventLog = L["Event Log"],
 	friends = L["FRIENDS"],
 	garrison = L["GARRISON_LOCATION_TOOLTIP"],
 	gbank = L["GUILD_BANK"],

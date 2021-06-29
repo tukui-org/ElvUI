@@ -49,7 +49,7 @@ local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UnitExists, UnitIsUnit = UnitExists, UnitIsUnit
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
-local IsActivePlayerMentor = IsActivePlayerMentor
+local IsActivePlayerGuide = IsActivePlayerGuide
 local UnitName = UnitName
 
 local C_DateAndTime_GetCurrentCalendarTime = C_DateAndTime.GetCurrentCalendarTime
@@ -275,18 +275,18 @@ do --this can save some main file locals
 		['Merathilîs-Shattrath']	= ElvBlue,		-- [Alliance] Shaman
 		['Róhal-Shattrath']			= ElvGreen,		-- [Alliance] Hunter
 		-- Luckyone
-		['Luckyone-LaughingSkull']		= Clover,
-		['Luckypriest-LaughingSkull']	= Clover,
-		['Luckymonkas-LaughingSkull']	= Clover,
-		['Luckydk-LaughingSkull']		= Clover,
-		['Luckyhunter-LaughingSkull']	= Clover,
-		['Unluckyone-LaughingSkull']	= Clover,
-		['Notlucky-LaughingSkull']		= Clover,
-		['Luckymage-LaughingSkull']		= Clover,
-		['Luckydh-LaughingSkull']		= Clover,
-		['Luckywl-LaughingSkull']		= Clover,
-		['Luckyrogue-LaughingSkull']	= Clover,
-		['Luckypala-LaughingSkull']		= Clover,
+		['Luckyone-LaughingSkull']		= ElvGreen, -- Druid
+		['Luckypriest-LaughingSkull']	= ElvGreen, -- Priest
+		['Luckymonkas-LaughingSkull']	= ElvGreen, -- Monk
+		['Luckydk-LaughingSkull']		= ElvGreen, -- DK
+		['Luckyhunter-LaughingSkull']	= ElvGreen, -- Hunter
+		['Unluckyone-LaughingSkull']	= ElvGreen, -- Shaman
+		['Notlucky-LaughingSkull']		= ElvGreen, -- Warrior
+		['Luckymage-LaughingSkull']		= ElvGreen, -- Mage
+		['Luckydh-LaughingSkull']		= ElvGreen, -- DH
+		['Luckywl-LaughingSkull']		= ElvGreen, -- Warlock
+		['Luckyrogue-LaughingSkull']	= ElvGreen, -- Rogue
+		['Luckypala-LaughingSkull']		= ElvGreen, -- Paladin
 		-- Simpy
 		['Arieva-Cenarius']				= itsSimpy, -- Hunter
 		['Buddercup-Cenarius']			= itsSimpy, -- Rogue
@@ -1555,7 +1555,7 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 				return _G.NPEV2_CHAT_USER_TAG_GUIDE .. ' ' -- possibly unable to save global string with trailing whitespace...
 			end
 		elseif specialFlag == 'NEWCOMER' then
-			if IsActivePlayerMentor() then
+			if IsActivePlayerGuide() then
 				return _G.NPEV2_CHAT_USER_TAG_NEWCOMER
 			end
 		else

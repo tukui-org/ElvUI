@@ -1101,6 +1101,11 @@ function S:HandleIconSelectionFrame(frame, numIcons, buttonNameTemplate, frameNa
 	end
 end
 
+function S:SetupArrow(direction)
+	self:SetTexture(E.Media.Textures.ArrowUp)
+	self:SetRotation(rad(S.ArrowRotation[direction]))
+end
+
 function S:HandleNextPrevButton(btn, arrowDir, color, noBackdrop, stripTexts, frameLevel)
 	if btn.isSkinned then return end
 

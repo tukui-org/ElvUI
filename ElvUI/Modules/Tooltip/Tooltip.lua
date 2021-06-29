@@ -68,6 +68,7 @@ local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
 
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
+local C_ChallengeMode_GetDungeonScoreRarityColor = C_ChallengeMode.GetDungeonScoreRarityColor
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
 local C_MountJournal_GetMountIDs = C_MountJournal.GetMountIDs
@@ -75,6 +76,7 @@ local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
 local C_PetJournalGetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
+local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local UNKNOWN = UNKNOWN
 
@@ -271,6 +273,18 @@ function TT:SetUnitText(tt, unit)
 				end
 
 				GameTooltip:AddDoubleLine(format('%s:', _G.ROLE), role, nil, nil, nil, r, g, b)
+			end
+		end
+
+		if TT.db.mythicDataEnable then
+			if TT.db.dungeonScore then
+				local data = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
+				local seasonScore = data and data.currentSeasonScore
+
+				if seasonScore then
+					local color = TT.db.dungeonScoreColor and C_ChallengeMode_GetDungeonScoreRarityColor(seasonScore)
+					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], seasonScore, nil, nil, nil, color and color.r or 1, color and color.g or 1, color and color.b or 1)
+				end
 			end
 		end
 
