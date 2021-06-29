@@ -364,6 +364,8 @@ do --this can save some main file locals
 		['Tirain-Spirestone']	= TyroneBiggums,
 		['Sinth-Spirestone']	= TyroneBiggums,
 		['Tee-Spirestone']		= TyroneBiggums,
+		['TeePac-Area52']		= TyroneBiggums,
+		['TeeKettle-Area52']		= TyroneBiggums,
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
 		['Misdîrect-Spirestone']	= itsMis,
 		['Misoracle-Spirestone']	= itsMis,
