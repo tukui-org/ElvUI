@@ -161,7 +161,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			}
 
 			if not frame.iborder then
-				local border = CreateFrame('Frame', nil, frame)
+				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetInside(frame, 1, 1)
@@ -169,7 +169,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			end
 
 			if not frame.oborder then
-				local border = CreateFrame('Frame', nil, frame)
+				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetOutside(frame, 1, 1)
