@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DB = E:GetModule('DataBars')
 
 local _G = _G
@@ -63,10 +63,10 @@ do
 	local function dataLoadedCancelFunc()
 		if _G.GameTooltip:IsForbidden() then return end
 
-		_G.GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItem:GetItemName()..' ('..currentLevel..')', nil,  nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
+		_G.GameTooltip:AddDoubleLine(ARTIFACT_POWER, azeriteItem:GetItemName()..' ('..currentLevel..')', nil, nil, nil, 0.90, 0.80, 0.50) -- Temp Locale
 		_G.GameTooltip:AddLine(' ')
 
-		_G.GameTooltip:AddDoubleLine(L["AP:"], format(' %d / %d (%d%%)', curXP, maxXP, curXP / maxXP  * 100), 1, 1, 1)
+		_G.GameTooltip:AddDoubleLine(L["AP:"], format(' %d / %d (%d%%)', curXP, maxXP, curXP / maxXP * 100), 1, 1, 1)
 		_G.GameTooltip:AddDoubleLine(L["Remaining:"], format(' %d (%d%% - %d '..L["Bars"]..')', maxXP - curXP, (maxXP - curXP) / maxXP * 100, 10 * (maxXP - curXP) / maxXP), 1, 1, 1)
 
 		_G.GameTooltip:Show()

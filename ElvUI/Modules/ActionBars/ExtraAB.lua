@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
@@ -24,7 +24,7 @@ function AB:ExtraButtons_BossStyle(frame)
 		ActionButton_UpdateCooldown(button) -- the cooldown is already fired sometimes?
 
 		button.icon:SetDrawLayer('ARTWORK')
-		button:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
+		button:SetTemplate()
 
 		button.holder = ExtraActionBarHolder
 		button:HookScript('OnEnter', AB.ExtraButtons_OnEnter)
@@ -56,7 +56,8 @@ function AB:ExtraButtons_ZoneStyle()
 				spellButton.NormalTexture:SetAlpha(0)
 				spellButton:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 				spellButton:StyleButton(nil, true)
-				spellButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+				spellButton:SetTemplate()
+
 				spellButton.Icon:SetDrawLayer('ARTWORK')
 				spellButton.Icon:SetTexCoord(unpack(E.TexCoords))
 				spellButton.Icon:SetInside()

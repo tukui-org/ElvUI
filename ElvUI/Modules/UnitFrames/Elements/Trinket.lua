@@ -1,11 +1,11 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
 local unpack = unpack
 local CreateFrame = CreateFrame
 
 function UF:Construct_Trinket(frame)
-	local trinket = CreateFrame('Button', frame:GetName()..'Trinket', frame, 'BackdropTemplate')
+	local trinket = CreateFrame('Button', frame:GetName()..'Trinket', frame)
 	trinket:SetTemplate(nil, nil, nil, nil, true)
 
 	local cd = CreateFrame("Cooldown", '$parentCooldown', frame, "CooldownFrameTemplate")

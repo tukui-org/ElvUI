@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -48,7 +48,7 @@ function S:Blizzard_GuildUI()
 		_G[frame]:StripTextures()
 	end
 
-	_G.GuildNewsBossModel:CreateBackdrop('Transparent')
+	_G.GuildNewsBossModel:SetTemplate('Transparent')
 	_G.GuildNewsBossModelTextFrame:CreateBackdrop()
 	_G.GuildNewsBossModelTextFrame.backdrop:Point('TOPLEFT', _G.GuildNewsBossModel.backdrop, 'BOTTOMLEFT', 0, -1)
 	_G.GuildNewsBossModel:Point('TOPLEFT', GuildFrame, 'TOPRIGHT', 4, -43)
@@ -123,9 +123,9 @@ function S:Blizzard_GuildUI()
 	end
 
 	--Detail Frame
-	_G.GuildMemberDetailFrame:CreateBackdrop('Transparent')
-	_G.GuildMemberNoteBackground:CreateBackdrop('Transparent')
-	_G.GuildMemberOfficerNoteBackground:CreateBackdrop('Transparent')
+	_G.GuildMemberDetailFrame:SetTemplate('Transparent')
+	_G.GuildMemberNoteBackground:SetTemplate('Transparent')
+	_G.GuildMemberOfficerNoteBackground:SetTemplate('Transparent')
 	_G.GuildMemberRankDropdown:SetFrameLevel(_G.GuildMemberRankDropdown:GetFrameLevel() + 5)
 	S:HandleDropDownBox(_G.GuildMemberRankDropdown, 175)
 
@@ -134,7 +134,7 @@ function S:Blizzard_GuildUI()
 	local GuildMemberDetailName = _G.GuildMemberDetailName
 	local GuildMemberDetailRankLabel = _G.GuildMemberDetailRankLabel
 	hooksecurefunc(GuildMemberDetailFrame, 'SetHeight', function(_, _, breakLoop)
-		if breakLoop then return; end
+		if breakLoop then return end
 		if C_GuildInfo_CanViewOfficerNote() then
 			GuildMemberDetailFrame:Height(_G.GUILD_DETAIL_OFFICER_HEIGHT + 50 + GuildMemberDetailName:GetHeight() + GuildMemberDetailRankLabel:GetHeight(), true)
 		else
@@ -151,7 +151,7 @@ function S:Blizzard_GuildUI()
 	end
 
 	_G.GuildNewsFiltersFrame:StripTextures()
-	_G.GuildNewsFiltersFrame:CreateBackdrop('Transparent')
+	_G.GuildNewsFiltersFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(_G.GuildNewsFiltersFrameCloseButton)
 
 	for i = 1, #_G.GuildNewsFiltersFrame.GuildNewsFilterButtons do
@@ -169,25 +169,25 @@ function S:Blizzard_GuildUI()
 	end
 
 	local GuildInfoFrameInfo = _G.GuildInfoFrameInfo
-	local backdrop1 = CreateFrame('Frame', nil, GuildInfoFrameInfo, 'BackdropTemplate')
+	local backdrop1 = CreateFrame('Frame', nil, GuildInfoFrameInfo)
 	backdrop1:SetTemplate('Transparent')
 	backdrop1:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
 	backdrop1:Point('TOPLEFT', GuildInfoFrameInfo, 'TOPLEFT', 2, -22)
 	backdrop1:Point('BOTTOMRIGHT', GuildInfoFrameInfo, 'BOTTOMRIGHT', 0, 200)
 
-	local backdrop2 = CreateFrame('Frame', nil, GuildInfoFrameInfo, 'BackdropTemplate')
+	local backdrop2 = CreateFrame('Frame', nil, GuildInfoFrameInfo)
 	backdrop2:SetTemplate('Transparent')
 	backdrop2:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
 	backdrop2:Point('TOPLEFT', GuildInfoFrameInfo, 'TOPLEFT', 2, -158)
 	backdrop2:Point('BOTTOMRIGHT', GuildInfoFrameInfo, 'BOTTOMRIGHT', 0, 118)
 
-	local backdrop3 = CreateFrame('Frame', nil, GuildInfoFrameInfo, 'BackdropTemplate')
+	local backdrop3 = CreateFrame('Frame', nil, GuildInfoFrameInfo)
 	backdrop3:SetTemplate('Transparent')
 	backdrop3:SetFrameLevel(GuildInfoFrameInfo:GetFrameLevel() - 1)
 	backdrop3:Point('TOPLEFT', GuildInfoFrameInfo, 'TOPLEFT', 2, -233)
 	backdrop3:Point('BOTTOMRIGHT', GuildInfoFrameInfo, 'BOTTOMRIGHT', 0, 3)
 
-	_G.GuildRecruitmentCommentInputFrame:CreateBackdrop('Transparent')
+	_G.GuildRecruitmentCommentInputFrame:SetTemplate('Transparent')
 
 	for _, button in next, _G.GuildInfoFrameApplicantsContainer.buttons do
 		button.selectedTex:Kill()
@@ -196,9 +196,9 @@ function S:Blizzard_GuildUI()
 	end
 
 	--Text Edit Frame
-	_G.GuildTextEditFrame:CreateBackdrop('Transparent')
+	_G.GuildTextEditFrame:SetTemplate('Transparent')
 	S:HandleScrollBar(_G.GuildTextEditScrollFrameScrollBar, 5)
-	_G.GuildTextEditContainer:CreateBackdrop('Transparent')
+	_G.GuildTextEditContainer:SetTemplate('Transparent')
 	for i=1, _G.GuildTextEditFrame:GetNumChildren() do
 		local child = select(i, _G.GuildTextEditFrame:GetChildren())
 		if child:GetName() == 'GuildTextEditFrameCloseButton' and child:GetWidth() < 33 then
@@ -211,7 +211,7 @@ function S:Blizzard_GuildUI()
 	--Guild Log
 	local GuildLogFrame = _G.GuildLogFrame
 	S:HandleScrollBar(_G.GuildLogScrollFrameScrollBar, 4)
-	GuildLogFrame:CreateBackdrop('Transparent')
+	GuildLogFrame:SetTemplate('Transparent')
 
 	--Blizzard has two buttons with the same name, this is a fucked up way of determining that it isn't the other button
 	for i=1, GuildLogFrame:GetNumChildren() do
@@ -226,12 +226,11 @@ function S:Blizzard_GuildUI()
 	--Perks
 	for i=1, 9 do
 		local button = _G['GuildPerksContainerButton'..i]
-		button:DisableDrawLayer('BACKGROUND')
-		button:DisableDrawLayer('BORDER')
+		button:StripTextures()
+		button:SetTemplate('Transparent')
 
 		button.icon:SetTexCoord(unpack(E.TexCoords))
-		button:CreateBackdrop()
-		button.backdrop:SetOutside(button.icon)
+		button.icon:Point('LEFT', 3, 0)
 	end
 
 	--Rewards
@@ -257,7 +256,7 @@ function S:GuildInviteFrame()
 
 	local GuildInviteFrame = _G.GuildInviteFrame
 	GuildInviteFrame:StripTextures()
-	GuildInviteFrame:CreateBackdrop('Transparent')
+	GuildInviteFrame:SetTemplate('Transparent')
 	GuildInviteFrame.Points:ClearAllPoints()
 	GuildInviteFrame.Points:Point('TOP', GuildInviteFrame, 'CENTER', 15, -25)
 	S:HandleButton(_G.GuildInviteFrameJoinButton)

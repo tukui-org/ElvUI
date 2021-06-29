@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -16,7 +16,7 @@ function S:TabardFrame()
 	S:HandleRotateButton(_G.TabardCharacterModelRotateLeftButton)
 	S:HandleRotateButton(_G.TabardCharacterModelRotateRightButton)
 
-	_G.TabardModel:CreateBackdrop()
+	_G.TabardModel:SetTemplate()
 	_G.TabardFrameCostFrame:StripTextures()
 	_G.TabardFrameCustomizationFrame:StripTextures()
 	_G.TabardFrameMoneyInset:Kill()

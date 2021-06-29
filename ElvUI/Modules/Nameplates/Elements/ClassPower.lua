@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 local oUF = E.oUF
@@ -255,7 +255,7 @@ function NP:Update_Runes(nameplate)
 end
 
 function NP:Construct_Stagger(nameplate)
-    local Stagger = CreateFrame('StatusBar', nameplate:GetName()..'Stagger', nameplate)
+	local Stagger = CreateFrame('StatusBar', nameplate:GetName()..'Stagger', nameplate)
 	Stagger:SetFrameStrata(nameplate:GetFrameStrata())
 	Stagger:SetFrameLevel(5)
 	Stagger:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))

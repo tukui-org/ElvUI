@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -11,7 +11,7 @@ function S:Blizzard_ArtifactUI()
 
 	local ArtifactFrame = _G.ArtifactFrame
 	ArtifactFrame:StripTextures()
-	ArtifactFrame:CreateBackdrop('Transparent')
+	ArtifactFrame:SetTemplate('Transparent')
 	ArtifactFrame.BorderFrame:StripTextures()
 	S:HandleCloseButton(ArtifactFrame.CloseButton)
 
@@ -38,11 +38,14 @@ function S:Blizzard_ArtifactUI()
 				child.Background:SetAlpha(0)
 				child.HighlightTexture:SetAlpha(0)
 				child.HighlightTexture.SetAlpha = E.noop
+
 				if child.Selected:IsShown() then
 					child.backdrop:SetBackdropBorderColor(1,1,1)
 				end
+
 				child.Selected:SetAlpha(0)
 				child.Selected.SetAlpha = E.noop
+
 				hooksecurefunc(child.Selected, 'SetShown', function(_, isActive)
 					if isActive then
 						child.backdrop:SetBackdropBorderColor(1,1,1)

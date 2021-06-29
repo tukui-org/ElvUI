@@ -1,9 +1,6 @@
 -- Italian localization file for enUS and enGB.
-local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "itIT")
-
-local COLOR1 = '|cFF1784d1'
-local COLOR2 = '|cfd9b9b9b'
 
 L["BoP"] = true
 L["BoE"] = true
@@ -70,6 +67,7 @@ L["Blend Mode"] = true
 L["Blend"] = true
 L["Blizzard Widgets"] = true
 L["BNet Frame"] = true
+L["Boss Banner"] = true
 L["Boss Button"] = true
 L["Boss Frames"] = true
 L["Building(s) Report:"] = true
@@ -128,6 +126,7 @@ L["ElvUI Status"] = true
 L["Empty Slot"] = true
 L["Enable"] = true
 L["Error resetting UnitFrame."] = true
+L["Event Log"] = true
 L["Experience Bar"] = true
 L["Experience"] = true
 L["Feet"] = true
@@ -158,7 +157,7 @@ L["Honor Bar"] = true
 L["Honor Remaining:"] = true
 L["Honor XP:"] = true
 L["Horde: "] = true
-L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1macro|r, or |cFF1784d1spellbook|r button to bind it. This also works for items in your |cFF1784d1bag|r. Press the |cfd9b9b9bESC|r key to |cfd9b9b9bclear|r the current bindings."] = true
+L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["HP"] = true
 L["HPS"] = true
 L["I Swear"] = true
@@ -200,11 +199,12 @@ L["Layout"] = true
 L["Left Chat"] = true
 L["Left Click:"] = true
 L["Legs"] = true
+L["Level"] = "Livello"
 L["Level Up Display / Boss Banner"] = true
 L["List of installations in queue:"] = true
 L["Lock"] = true
-L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
-L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type */ec|r to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type */ec|r to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = true
 L["Loot Frame"] = true
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = true
@@ -287,7 +287,7 @@ L["Save"] = true
 L["Saved Dungeon(s)"] = true
 L["Saved Raid(s)"] = true
 L["says"] = true
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bars to use both aura bars and icons, set to Icons Only to only see icons."] = true
 L["Server: "] = true
 L["Session:"] = true
 L["Setup Chat"] = true
@@ -398,4 +398,4 @@ L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
   NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
   using */luaerror|r ^on|r within that session.
-]=]):gsub('*', COLOR1):gsub('%^', COLOR2)
+]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

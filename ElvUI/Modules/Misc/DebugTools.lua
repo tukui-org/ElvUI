@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local D = E:GetModule('DebugTools')
 
 local _G = _G
@@ -37,7 +37,7 @@ function D:ModifyErrorFrame()
 	local BUTTON_SPACING = 2
 
 	-- Add a first button
-	local firstButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate, BackdropTemplate')
+	local firstButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate')
 	firstButton:Point('BOTTOMLEFT', ScriptErrorsFrame.Reload, 'BOTTOMRIGHT', BUTTON_SPACING, 0)
 	firstButton:SetText('First')
 	firstButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
@@ -48,7 +48,7 @@ function D:ModifyErrorFrame()
 	ScriptErrorsFrame.firstButton = firstButton
 
 	-- Also add a Last button for errors
-	local lastButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate, BackdropTemplate')
+	local lastButton = CreateFrame('Button', nil, ScriptErrorsFrame, 'UIPanelButtonTemplate')
 	lastButton:Point('BOTTOMRIGHT', ScriptErrorsFrame.Close, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
 	lastButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
 	lastButton:SetText('Last')
@@ -66,8 +66,8 @@ function D:ScriptErrorsFrame_UpdateButtons()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	if not ScriptErrorsFrame.firstButton then return end
 
-	local numErrors = #ScriptErrorsFrame.order;
-	local index = ScriptErrorsFrame.index;
+	local numErrors = #ScriptErrorsFrame.order
+	local index = ScriptErrorsFrame.index
 	if index == 0 then
 		ScriptErrorsFrame.lastButton:Disable()
 		ScriptErrorsFrame.firstButton:Disable()
@@ -83,15 +83,15 @@ function D:ScriptErrorsFrame_UpdateButtons()
 end
 
 function D:ScriptErrorsFrame_OnError(_, _, keepHidden)
-	if keepHidden or D.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return; end
+	if keepHidden or D.MessagePrinted or not InCombatLockdown() or GetCVarBool('scriptErrors') ~= true then return end
 
 	E:Print(L["|cFFE30000Lua error recieved. You can view the error message when you exit combat."])
-	D.MessagePrinted = true;
+	D.MessagePrinted = true
 end
 
 function D:PLAYER_REGEN_ENABLED()
 	_G.ScriptErrorsFrame:SetParent(_G.UIParent)
-	D.MessagePrinted = nil;
+	D.MessagePrinted = nil
 end
 
 function D:PLAYER_REGEN_DISABLED()
@@ -105,7 +105,7 @@ end
 
 function D:StaticPopup_Show(name)
 	if name == 'ADDON_ACTION_FORBIDDEN' then
-		StaticPopup_Hide(name);
+		StaticPopup_Hide(name)
 	end
 end
 

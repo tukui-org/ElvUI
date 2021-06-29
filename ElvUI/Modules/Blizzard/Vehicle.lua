@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
 local _G = _G
@@ -50,7 +50,7 @@ function B:PositionVehicleFrame()
 
 	VehicleSeatIndicator:Size(E.db.general.vehicleSeatIndicatorSize)
 
-    if VehicleSeatIndicator.currSkin then
+	if VehicleSeatIndicator.currSkin then
 		VehicleSetUp(VehicleSeatIndicator.currSkin)
-    end
+	end
 end

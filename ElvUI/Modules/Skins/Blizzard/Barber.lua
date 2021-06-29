@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -45,7 +45,8 @@ function S:Blizzard_CharacterCustomize()
 				popoutButton.NormalTexture:SetAlpha(0)
 
 				popoutButton.Popout:StripTextures()
-				popoutButton.Popout:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, true)
+				popoutButton.Popout:SetTemplate('Transparent')
+
 				ReskinCustomizeButton(popoutButton)
 
 				button.IsSkinned = true

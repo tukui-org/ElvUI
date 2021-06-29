@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 local time, max, strjoin = time, max, strjoin
@@ -60,7 +60,7 @@ local function OnEvent(self, event)
 				lastDMGAmount = arg15
 			end
 			if arg16 == nil then overKill = 0 else overKill = arg16 end
-			DMGTotal = DMGTotal +  max(0, lastDMGAmount - overKill)
+			DMGTotal = DMGTotal + max(0, lastDMGAmount - overKill)
 		end
 	end
 

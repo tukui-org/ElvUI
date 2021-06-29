@@ -89,8 +89,8 @@ local IG_BACKPACK_OPEN = SOUNDKIT.IG_BACKPACK_OPEN
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local LE_BAG_FILTER_FLAG_IGNORE_CLEANUP = LE_BAG_FILTER_FLAG_IGNORE_CLEANUP
 local LE_BAG_FILTER_FLAG_JUNK = LE_BAG_FILTER_FLAG_JUNK
-local LE_ITEM_QUALITY_COMMON = Enum.ItemQuality.Common
-local LE_ITEM_QUALITY_POOR = Enum.ItemQuality.Poor
+local ITEMQUALITY_COMMON = Enum.ItemQuality.Common
+local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local NUM_BANKGENERIC_SLOTS = NUM_BANKGENERIC_SLOTS
@@ -319,6 +319,8 @@ function B:UpdateItemLevelDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.itemLevel then
+					slot.itemLevel:ClearAllPoints()
+					slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
 					slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 				end
 			end
@@ -353,6 +355,8 @@ function B:UpdateCountDisplay()
 			for slotID = 1, GetContainerNumSlots(bagID) do
 				local slot = bagFrame.Bags[bagID][slotID]
 				if slot and slot.Count then
+					slot.Count:ClearAllPoints()
+					slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
 					slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 				end
 			end
@@ -494,7 +498,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot:Show()
 
-	slot.isJunk = (slot.rarity and slot.rarity == LE_ITEM_QUALITY_POOR) and not noValue
+	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.junkDesaturate = slot.isJunk and B.db.junkDesaturate
 
 	SetItemButtonTexture(slot, texture)
@@ -510,7 +514,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	local professionColors = B.ProfessionColors[bagType]
 	local showItemLevel = B.db.itemLevel and link and not professionColors
-	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > LE_ITEM_QUALITY_COMMON)
+	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON)
 	local isQuestItem, questId, isActiveQuest = false, false, false
 	local forceColor, r, g, b, a = true, unpack(E.media.bordercolor)
 
@@ -590,7 +594,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
 
-	if not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON) then
+	if not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON) then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
@@ -864,7 +868,7 @@ function B:CreateFilterIcon(parent)
 	end
 
 	--Create the texture showing the assignment type
-	local FilterBackdrop = CreateFrame('Frame', nil, parent, 'BackdropTemplate')
+	local FilterBackdrop = CreateFrame('Frame', nil, parent)
 	FilterBackdrop:Point('TOPLEFT', parent, 'TOPLEFT', E.Border, -E.Border)
 	FilterBackdrop:SetTemplate()
 	FilterBackdrop:Size(20, 20)
@@ -1090,7 +1094,7 @@ function B:UpdateReagentSlot(slotID)
 		r, g, b, a = unpack(B.QuestColors.questStarter)
 	elseif questId or isQuestItem then
 		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif not link or B.db.qualityColors and slot.rarity and slot.rarity <= LE_ITEM_QUALITY_COMMON then
+	elseif not link or B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
@@ -1206,6 +1210,20 @@ function B:UpdateGoldText()
 	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney(), B.db.moneyFormat, not B.db.moneyCoins))
 end
 
+-- These items trade in groups of 3 for baubleworm battle pets in 9.1 and should not be destroyed/sold automatically
+-- Link for more info: https://www.wow-petguide.com/News/311/Patch_9.1_Pet_Compilation_2021-04-14
+B.PetGrays = {
+	[3300] = "Rabbit's Foot",
+	[3670] = "Large Slimy Bone",
+	[6150] = "A Frayed Knot",
+	[11406] = "Rotting Bear Carcass",
+	[11944] = "Dark Iron Baby Booties",
+	[25402] = "The Stoppable Force",
+	[36812] = "Ground Gear",
+	[62072] = "Robble's Wobbly Staff",
+	[67410] = "Very Unlucky Rock",
+}
+
 function B:GetGraysValue()
 	local value = 0
 
@@ -1213,12 +1231,15 @@ function B:GetGraysValue()
 		for slot = 1, GetContainerNumSlots(bag) do
 			local link = GetContainerItemLink(bag, slot)
 			if link then
-				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
-				if itemPrice and itemPrice > 0 then
-					local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
-					local stackPrice = itemPrice * stackCount
-					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (stackPrice > 0) then
-						value = value + stackPrice
+				local itemID = GetContainerItemID(bag, slot)
+				if not B.PetGrays[itemID] then
+					local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
+					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
+						local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
+						local stackPrice = itemPrice * stackCount
+						if stackPrice > 0 then
+							value = value + stackPrice
+						end
 					end
 				end
 			end
@@ -1240,9 +1261,12 @@ function B:VendorGrays(delete)
 		for slot = 1, GetContainerNumSlots(bag), 1 do
 			local link = GetContainerItemLink(bag, slot)
 			if link then
-				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
-				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
-					tinsert(B.SellFrame.Info.itemList, {bag, slot, itemPrice, link})
+				local itemID = GetContainerItemID(bag, slot)
+				if not B.PetGrays[itemID] then
+					local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
+					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
+						tinsert(B.SellFrame.Info.itemList, {bag, slot, itemPrice, link, itemID})
+					end
 				end
 			end
 		end
@@ -1312,7 +1336,7 @@ end
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
-	local f = CreateFrame('Button', name, E.UIParent, 'BackdropTemplate')
+	local f = CreateFrame('Button', name, E.UIParent)
 	f:SetTemplate('Transparent')
 	f:SetFrameStrata(strata)
 	B:SetupItemGlow(f)
@@ -1343,10 +1367,10 @@ function B:ConstructContainerFrame(name, isBank)
 	f:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
 	f:SetScript('OnClick', function(frame) if IsControlKeyDown() then B.PostBagMove(frame.mover) end end)
 
-	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton, BackdropTemplate')
+	f.closeButton = CreateFrame('Button', name..'CloseButton', f, 'UIPanelCloseButton')
 	f.closeButton:Point('TOPRIGHT', 5, 5)
 
-	f.helpButton = CreateFrame('Button', name..'HelpButton', f, 'BackdropTemplate')
+	f.helpButton = CreateFrame('Button', name..'HelpButton', f)
 	f.helpButton:Point('RIGHT', f.closeButton, 'LEFT', 0, 0)
 	f.helpButton:Size(16)
 	B:SetButtonTexture(f.helpButton, E.Media.Textures.Help)
@@ -1366,14 +1390,14 @@ function B:ConstructContainerFrame(name, isBank)
 	f.holderFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
 	f.holderFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
 
-	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f, 'BackdropTemplate')
+	f.ContainerHolder = CreateFrame('Button', name..'ContainerHolder', f)
 	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
 	f.ContainerHolder:SetTemplate('Transparent')
 	f.ContainerHolder:Hide()
 
 	for i, bagID in next, f.BagIDs do
 		local bagName = isBank and format('ElvUIBankBag%d', bagID-4) or bagID == 0 and 'ElvUIMainBagBackpack' or format('ElvUIMainBag%dSlot', bagID-1)
-		local inherit = isBank and 'BackdropTemplate, BankItemButtonBagTemplate' or bagID == 0 and 'BackdropTemplate, ItemAnimTemplate' or 'BackdropTemplate, BagSlotButtonTemplate'
+		local inherit = isBank and 'BankItemButtonBagTemplate' or bagID == 0 and 'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 		f.ContainerHolder[i] = CreateFrame('ItemButton', bagName, f.ContainerHolder, inherit)
 		f.ContainerHolder[i]:SetTemplate(B.db.transparent and 'Transparent', true)
@@ -1444,7 +1468,7 @@ function B:ConstructContainerFrame(name, isBank)
 	end
 
 	--Sort Button
-	f.sortButton = CreateFrame('Button', name..'SortButton', f, 'BackdropTemplate')
+	f.sortButton = CreateFrame('Button', name..'SortButton', f)
 	f.sortButton:Size(16 + E.Border, 16 + E.Border)
 	f.sortButton:SetTemplate()
 	B:SetButtonTexture(f.sortButton, 'Interface/ICONS/INV_Pet_Broom')
@@ -1457,7 +1481,7 @@ function B:ConstructContainerFrame(name, isBank)
 	end
 
 	--Toggle Bags Button
-	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame, 'BackdropTemplate')
+	f.bagsButton = CreateFrame('Button', name..'BagsButton', f.holderFrame)
 	f.bagsButton:Size(16 + E.Border, 16 + E.Border)
 	f.bagsButton:SetTemplate()
 	B:SetButtonTexture(f.bagsButton, 'Interface/Buttons/Button-Backpack-Up')
@@ -1500,12 +1524,12 @@ function B:ConstructContainerFrame(name, isBank)
 			f.reagentFrame.slots[i] = B:ConstructReagentSlot(f, i)
 		end
 
-		f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame, 'BackdropTemplate')
+		f.reagentFrame.cover = CreateFrame('Button', nil, f.reagentFrame)
 		f.reagentFrame.cover:SetAllPoints(f.reagentFrame)
 		f.reagentFrame.cover:SetTemplate(nil, true)
 		f.reagentFrame.cover:SetFrameLevel(f.reagentFrame:GetFrameLevel() + 10)
 
-		f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover, 'BackdropTemplate')
+		f.reagentFrame.cover.purchaseButton = CreateFrame('Button', nil, f.reagentFrame.cover)
 		f.reagentFrame.cover.purchaseButton:Height(20)
 		f.reagentFrame.cover.purchaseButton:Width(150)
 		f.reagentFrame.cover.purchaseButton:Point('CENTER', f.reagentFrame.cover, 'CENTER')
@@ -1533,7 +1557,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.bagText:SetJustifyH('RIGHT')
 		f.bagText:SetText(L["Bank"])
 
-		f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f, 'BackdropTemplate')
+		f.reagentToggle = CreateFrame('Button', name..'ReagentButton', f)
 		f.reagentToggle:Size(16 + E.Border, 16 + E.Border)
 		f.reagentToggle:SetTemplate()
 		f.reagentToggle:Point('RIGHT', f.bagText, 'LEFT', -5, E.Border * 2)
@@ -1566,7 +1590,7 @@ function B:ConstructContainerFrame(name, isBank)
 		end)
 
 		--Deposite Reagents Button
-		f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame, 'BackdropTemplate')
+		f.depositButton = CreateFrame('Button', name..'DepositButton', f.reagentFrame)
 		f.depositButton:Size(16 + E.Border, 16 + E.Border)
 		f.depositButton:SetTemplate()
 		f.depositButton:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
@@ -1580,7 +1604,7 @@ function B:ConstructContainerFrame(name, isBank)
 			DepositReagentBank()
 		end)
 
-		f.depositButtonBank = CreateFrame('Button', name..'DepositButton', f.holderFrame, 'BackdropTemplate')
+		f.depositButtonBank = CreateFrame('Button', name..'DepositButton', f.holderFrame)
 		f.depositButtonBank:Size(16 + E.Border, 16 + E.Border)
 		f.depositButtonBank:SetTemplate()
 		f.depositButtonBank:Point('RIGHT', f.sortButton, 'LEFT', -5, 0)
@@ -1601,7 +1625,7 @@ function B:ConstructContainerFrame(name, isBank)
 			PlaySound(852) --IG_MAINMENU_OPTION
 		end)
 
-		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame, 'BackdropTemplate')
+		f.purchaseBagButton = CreateFrame('Button', nil, f.holderFrame)
 		f.purchaseBagButton:SetShown(not f.fullBank)
 		f.purchaseBagButton:Size(16 + E.Border, 16 + E.Border)
 		f.purchaseBagButton:SetTemplate()
@@ -1658,7 +1682,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.bagsButton:SetScript('OnClick', function() ToggleFrame(f.ContainerHolder) end)
 
 		--Vendor Grays
-		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame, 'BackdropTemplate')
+		f.vendorGraysButton = CreateFrame('Button', nil, f.holderFrame)
 		f.vendorGraysButton:Size(16 + E.Border, 16 + E.Border)
 		f.vendorGraysButton:SetTemplate()
 		f.vendorGraysButton:Point('RIGHT', f.bagsButton, 'LEFT', -5, 0)
@@ -1683,7 +1707,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.currencyButton:Height(22)
 
 		for i = 1, MAX_WATCHED_TOKENS do
-			f.currencyButton[i] = CreateFrame('Button', f:GetName()..'CurrencyButton'..i, f.currencyButton, 'BackpackTokenTemplate, BackdropTemplate')
+			f.currencyButton[i] = CreateFrame('Button', f:GetName()..'CurrencyButton'..i, f.currencyButton, 'BackpackTokenTemplate')
 			f.currencyButton[i]:Size(16)
 			f.currencyButton[i]:SetTemplate()
 			f.currencyButton[i]:SetID(i)
@@ -1717,7 +1741,7 @@ function B:ConstructContainerFrame(name, isBank)
 end
 
 function B:ConstructContainerButton(f, slotID, bagID)
-	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BackdropTemplate, BankItemButtonGenericTemplate' or 'BackdropTemplate, ContainerFrameItemButtonTemplate')
+	local slot = CreateFrame('ItemButton', f.Bags[bagID]:GetName()..'Slot'..slotID, f.Bags[bagID], bagID == -1 and 'BankItemButtonGenericTemplate' or 'ContainerFrameItemButtonTemplate')
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
@@ -1776,7 +1800,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
 
 	slot.itemLevel = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
-	slot.itemLevel:Point('BOTTOMRIGHT', 0, 2)
+	slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
 	slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
 
 	slot.bindType = slot:CreateFontString(nil, 'ARTWORK', nil, 1)
@@ -1815,7 +1839,7 @@ function B:ReagentSplitStack(split)
 end
 
 function B:ConstructReagentSlot(f, slotID)
-	local slot = CreateFrame('ItemButton', 'ElvUIReagentBankFrameItem'..slotID, f.reagentFrame, 'BankItemButtonGenericTemplate, BackdropTemplate')
+	local slot = CreateFrame('ItemButton', 'ElvUIReagentBankFrameItem'..slotID, f.reagentFrame, 'BankItemButtonGenericTemplate')
 	slot:SetID(slotID)
 	slot.isReagent = true
 	slot:StyleButton()
@@ -1829,7 +1853,7 @@ function B:ConstructReagentSlot(f, slotID)
 	slot.IconOverlay2:SetInside()
 
 	slot.Count:ClearAllPoints()
-	slot.Count:Point('BOTTOMRIGHT', 0, 2)
+	slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
 	slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 
 	slot.searchOverlay:SetAllPoints()
@@ -2304,22 +2328,22 @@ function B:Initialize()
 	_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
 
 	B.AssignmentColors = {
-		[0] = { .99, .23, .21 },   -- fallback
+		[0] = { .99, .23, .21 }, -- fallback
 		[2] = { B.db.colors.assignment.equipment.r , B.db.colors.assignment.equipment.g, B.db.colors.assignment.equipment.b },
 		[3] = { B.db.colors.assignment.consumables.r , B.db.colors.assignment.consumables.g, B.db.colors.assignment.consumables.b },
 		[4] = { B.db.colors.assignment.tradegoods.r , B.db.colors.assignment.tradegoods.g, B.db.colors.assignment.tradegoods.b },
 	}
 
 	B.ProfessionColors = {
-		[0x0008]   = { B.db.colors.profession.leatherworking.r, B.db.colors.profession.leatherworking.g, B.db.colors.profession.leatherworking.b },
-		[0x0010]   = { B.db.colors.profession.inscription.r, B.db.colors.profession.inscription.g, B.db.colors.profession.inscription.b },
-		[0x0020]   = { B.db.colors.profession.herbs.r, B.db.colors.profession.herbs.g, B.db.colors.profession.herbs.b },
-		[0x0040]   = { B.db.colors.profession.enchanting.r, B.db.colors.profession.enchanting.g, B.db.colors.profession.enchanting.b },
-		[0x0080]   = { B.db.colors.profession.engineering.r, B.db.colors.profession.engineering.g, B.db.colors.profession.engineering.b },
-		[0x0200]   = { B.db.colors.profession.gems.r, B.db.colors.profession.gems.g, B.db.colors.profession.gems.b },
-		[0x0400]   = { B.db.colors.profession.mining.r, B.db.colors.profession.mining.g, B.db.colors.profession.mining.b },
-		[0x8000]   = { B.db.colors.profession.fishing.r, B.db.colors.profession.fishing.g, B.db.colors.profession.fishing.b },
-		[0x010000] = { B.db.colors.profession.cooking.r, B.db.colors.profession.cooking.g, B.db.colors.profession.cooking.b },
+		[0x0008]	= { B.db.colors.profession.leatherworking.r, B.db.colors.profession.leatherworking.g, B.db.colors.profession.leatherworking.b },
+		[0x0010]	= { B.db.colors.profession.inscription.r, B.db.colors.profession.inscription.g, B.db.colors.profession.inscription.b },
+		[0x0020]	= { B.db.colors.profession.herbs.r, B.db.colors.profession.herbs.g, B.db.colors.profession.herbs.b },
+		[0x0040]	= { B.db.colors.profession.enchanting.r, B.db.colors.profession.enchanting.g, B.db.colors.profession.enchanting.b },
+		[0x0080]	= { B.db.colors.profession.engineering.r, B.db.colors.profession.engineering.g, B.db.colors.profession.engineering.b },
+		[0x0200]	= { B.db.colors.profession.gems.r, B.db.colors.profession.gems.g, B.db.colors.profession.gems.b },
+		[0x0400]	= { B.db.colors.profession.mining.r, B.db.colors.profession.mining.g, B.db.colors.profession.mining.b },
+		[0x8000]	= { B.db.colors.profession.fishing.r, B.db.colors.profession.fishing.g, B.db.colors.profession.fishing.b },
+		[0x010000]	= { B.db.colors.profession.cooking.r, B.db.colors.profession.cooking.g, B.db.colors.profession.cooking.b },
 	}
 
 	B.QuestColors = {

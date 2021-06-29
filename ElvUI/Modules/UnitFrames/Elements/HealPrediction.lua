@@ -1,11 +1,10 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
 local CreateFrame = CreateFrame
 function UF.HealthClipFrame_HealComm(frame)
 	if frame.HealthPrediction then
 		UF:SetAlpha_HealComm(frame.HealthPrediction, 1)
-		UF:SetVisibility_HealComm(frame.HealthPrediction)
 	end
 end
 
@@ -23,23 +22,11 @@ function UF:SetTexture_HealComm(obj, texture)
 	obj.healAbsorbBar:SetStatusBarTexture(texture)
 end
 
-function UF:SetVisibility_HealComm(obj)
-	-- the first update is from `HealthClipFrame_HealComm`
-	-- we set this variable to allow `Configure_HealComm` to
-	-- update the elements overflow lock later on by option
-	if not obj.allowClippingUpdate then
-		obj.allowClippingUpdate = true
-	end
-
-	if obj.maxOverflow > 1 then
-		obj.myBar:SetParent(obj.health)
-		obj.otherBar:SetParent(obj.health)
-		obj.healAbsorbBar:SetParent(obj.health)
-	else
-		obj.myBar:SetParent(obj.parent)
-		obj.otherBar:SetParent(obj.parent)
-		obj.healAbsorbBar:SetParent(obj.parent)
-	end
+function UF:SetFrameLevel_HealComm(obj, level)
+	obj.myBar:SetFrameLevel(level)
+	obj.otherBar:SetFrameLevel(level)
+	obj.absorbBar:SetFrameLevel(level)
+	obj.healAbsorbBar:SetFrameLevel(level)
 end
 
 function UF:Construct_HealComm(frame)
@@ -50,11 +37,6 @@ function UF:Construct_HealComm(frame)
 	local otherBar = CreateFrame('StatusBar', nil, parent)
 	local absorbBar = CreateFrame('StatusBar', nil, parent)
 	local healAbsorbBar = CreateFrame('StatusBar', nil, parent)
-
-	myBar:SetFrameLevel(11)
-	otherBar:SetFrameLevel(11)
-	absorbBar:SetFrameLevel(11)
-	healAbsorbBar:SetFrameLevel(11)
 
 	local prediction = {
 		myBar = myBar,
@@ -69,6 +51,7 @@ function UF:Construct_HealComm(frame)
 	}
 
 	UF:SetAlpha_HealComm(prediction, 0)
+	UF:SetFrameLevel_HealComm(prediction, 11)
 	UF:SetTexture_HealComm(prediction, E.media.blankTex)
 
 	return prediction
@@ -90,6 +73,7 @@ function UF:SetSize_HealComm(frame)
 		pred.otherBar:SetSize(width, barHeight)
 		pred.healAbsorbBar:SetSize(width, barHeight)
 		pred.absorbBar:SetSize(width, barHeight)
+		pred.parent:SetSize(width * (pred.maxOverflow or 0), height)
 	else
 		local barWidth = db.height -- this is really width now not height
 		if barWidth == -1 or barWidth > width then barWidth = width end
@@ -98,6 +82,7 @@ function UF:SetSize_HealComm(frame)
 		pred.otherBar:SetSize(barWidth, height)
 		pred.healAbsorbBar:SetSize(barWidth, height)
 		pred.absorbBar:SetSize(barWidth, height)
+		pred.parent:SetSize(width, height * (pred.maxOverflow or 0))
 	end
 end
 
@@ -106,17 +91,14 @@ function UF:Configure_HealComm(frame)
 	if db and db.enable then
 
 		local pred = frame.HealthPrediction
+		local parent = pred.parent
 		local myBar = pred.myBar
 		local otherBar = pred.otherBar
 		local absorbBar = pred.absorbBar
 		local healAbsorbBar = pred.healAbsorbBar
 
-		local colors = self.db.colors.healPrediction
+		local colors = UF.db.colors.healPrediction
 		pred.maxOverflow = 1 + (colors.maxOverflow or 0)
-
-		if pred.allowClippingUpdate then
-			UF:SetVisibility_HealComm(pred)
-		end
 
 		if not frame:IsElementEnabled('HealthPrediction') then
 			frame:EnableElement('HealthPrediction')
@@ -175,6 +157,9 @@ function UF:Configure_HealComm(frame)
 			absorbBar:ClearAllPoints()
 			absorbBar:Point(anchor, health)
 
+			parent:ClearAllPoints()
+			parent:Point(p1, health, p1)
+
 			if db.absorbStyle == 'REVERSED' then
 				absorbBar:Point(p2, health, p2)
 			else
@@ -202,6 +187,9 @@ function UF:Configure_HealComm(frame)
 
 			absorbBar:ClearAllPoints()
 			absorbBar:Point(anchor, health)
+
+			parent:ClearAllPoints()
+			parent:Point(p1, health, p1)
 
 			if db.absorbStyle == 'REVERSED' then
 				absorbBar:Point(p2, health, p2)
@@ -232,13 +220,11 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 		return
 	end
 
-	local colors = UF.db.colors.healPrediction
-	local maxOverflow = colors.maxOverflow or 0
-
 	-- handle over heal absorbs
 	healAbsorbBar:ClearAllPoints()
 	healAbsorbBar:Point(pred.anchor, frame.Health)
 
+	local colors = UF.db.colors.healPrediction
 	if hasOverHealAbsorb then -- forward fill it when its greater than health so that you can still see this is being stolen
 		healAbsorbBar:SetReverseFill(pred.reverseFill)
 		healAbsorbBar:Point(pred.anchor1, pred.healthBarTexture, pred.anchor2)
@@ -261,17 +247,8 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 		if hasOverAbsorb and health == maxHealth then
 			absorbBar:SetValue(1.5)
 			absorbBar:SetMinMaxValues(0, 100)
-			absorbBar:SetParent(pred.health) -- lets overflow happen
-		else
-			absorbBar:SetParent(pred.parent) -- prevents overflow
 		end
 	else
-		if maxOverflow > 0 then
-			absorbBar:SetParent(pred.health)
-		else
-			absorbBar:SetParent(pred.parent)
-		end
-
 		if hasOverAbsorb then -- non normal mode overflowing
 			if db.absorbStyle == 'WRAPPED' then -- engage backfilling
 				absorbBar:SetReverseFill(not pred.reverseFill)
@@ -280,7 +257,7 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 				absorbBar:Point(pred.anchor, pred.health)
 				absorbBar:Point(pred.anchor2, pred.health, pred.anchor2)
 			elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
-				local overflowAbsorb = absorb * maxOverflow
+				local overflowAbsorb = absorb * (colors.maxOverflow or 0)
 				if health == maxHealth then
 					absorbBar:SetValue(overflowAbsorb)
 				else -- fill the inner part along with the overflow amount so it smoothly transitions

@@ -1,11 +1,10 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 
---Lua functions
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
-	local DurabilityFrame = _G.DurabilityFrame
+local DurabilityFrame = _G.DurabilityFrame
 
 local function SetPosition(frame, _, parent)
 	if parent ~= _G.DurabilityFrameHolder then

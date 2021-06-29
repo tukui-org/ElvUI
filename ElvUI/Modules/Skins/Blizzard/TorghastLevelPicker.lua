@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_TorghastLevelPicker()

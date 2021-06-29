@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local pairs = pairs
 local IsFalling = IsFalling
@@ -13,7 +13,7 @@ local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_Map_GetBestMapForUnit = C_Map.GetBestMapForUnit
 local C_Map_GetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 
-local Enum_UIMapType = Enum.UIMapType
+local UIMAPTYPE_CONTINENT = Enum.UIMapType.Continent
 local MapUtil_GetMapParentInfo = MapUtil.GetMapParentInfo
 
 E.MapInfo = {}
@@ -31,7 +31,7 @@ function E:MapInfo_Update()
 	E.MapInfo.subZoneText = GetMinimapZoneText() or nil
 	E.MapInfo.realZoneText = GetRealZoneText() or nil
 
-	local continent = mapID and MapUtil_GetMapParentInfo(mapID, Enum_UIMapType.Continent, true)
+	local continent = mapID and MapUtil_GetMapParentInfo(mapID, UIMAPTYPE_CONTINENT, true)
 	E.MapInfo.continentParentMapID = (continent and continent.parentMapID) or nil
 	E.MapInfo.continentMapType = (continent and continent.mapType) or nil
 	E.MapInfo.continentMapID = (continent and continent.mapID) or nil
@@ -149,9 +149,9 @@ function E:GetZoneText(mapID)
 
 	local continent, zoneName = ZoneIDToContinentName[mapID]
 	if continent and continent == 'Outland' then
-		if E.MapInfo.name == localizedMapNames.Nagrand or E.MapInfo.name == 'Nagrand'  then
+		if E.MapInfo.name == localizedMapNames.Nagrand or E.MapInfo.name == 'Nagrand' then
 			zoneName = localizedMapNames.Nagrand..' ('..localizedMapNames.Outland..')'
-		elseif E.MapInfo.name == localizedMapNames['Shadowmoon Valley'] or E.MapInfo.name == 'Shadowmoon Valley'  then
+		elseif E.MapInfo.name == localizedMapNames['Shadowmoon Valley'] or E.MapInfo.name == 'Shadowmoon Valley' then
 			zoneName = localizedMapNames['Shadowmoon Valley']..' ('..localizedMapNames.Outland..')'
 		end
 	end

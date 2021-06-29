@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -10,7 +10,7 @@ local function MailFrameSkin()
 		local btn = _G['SendMailAttachment'..i]
 		if not btn.skinned then
 			btn:StripTextures()
-			btn:CreateBackdrop(nil, true, nil, nil, nil, nil, true)
+			btn:SetTemplate()
 			btn:StyleButton()
 			S:HandleIconBorder(btn.IconBorder)
 
@@ -37,7 +37,7 @@ function S:MailFrame()
 
 		local btn = _G['MailItem'..i..'Button']
 		btn:StripTextures()
-		btn:CreateBackdrop(nil, true)
+		btn:SetTemplate(nil, true)
 		btn:StyleButton()
 
 		local t = _G['MailItem'..i..'ButtonIcon']
@@ -63,7 +63,7 @@ function S:MailFrame()
 
 	-- send mail
 	_G.SendMailScrollFrame:StripTextures(true)
-	_G.SendMailScrollFrame:CreateBackdrop()
+	_G.SendMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.SendMailScrollFrameScrollBar)
 
@@ -96,7 +96,7 @@ function S:MailFrame()
 
 	-- open mail (cod)
 	_G.OpenMailFrame:StripTextures(true)
-	_G.OpenMailFrame:CreateBackdrop('Transparent')
+	_G.OpenMailFrame:SetTemplate('Transparent')
 	_G.OpenMailFrameInset:Kill()
 
 	S:HandleCloseButton(_G.OpenMailFrameCloseButton)
@@ -110,7 +110,7 @@ function S:MailFrame()
 	_G.MailFrameInset:Kill()
 
 	_G.OpenMailScrollFrame:StripTextures(true)
-	_G.OpenMailScrollFrame:CreateBackdrop()
+	_G.OpenMailScrollFrame:SetTemplate()
 
 	S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 
@@ -123,13 +123,13 @@ function S:MailFrame()
 	_G.OpenMailArithmeticLine:Kill()
 
 	_G.OpenMailLetterButton:StripTextures()
-	_G.OpenMailLetterButton:CreateBackdrop(nil, true)
+	_G.OpenMailLetterButton:SetTemplate(nil, true)
 	_G.OpenMailLetterButton:StyleButton()
 	_G.OpenMailLetterButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.OpenMailLetterButtonIconTexture:SetInside()
 
 	_G.OpenMailMoneyButton:StripTextures()
-	_G.OpenMailMoneyButton:CreateBackdrop(nil, true)
+	_G.OpenMailMoneyButton:SetTemplate(nil, true)
 	_G.OpenMailMoneyButton:StyleButton()
 	_G.OpenMailMoneyButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.OpenMailMoneyButtonIconTexture:SetInside()
@@ -137,7 +137,7 @@ function S:MailFrame()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
 		local btn = _G['OpenMailAttachmentButton'..i]
 		btn:StripTextures()
-		btn:CreateBackdrop(nil, true)
+		btn:SetTemplate(nil, true)
 		btn:StyleButton()
 
 		S:HandleIconBorder(btn.IconBorder)

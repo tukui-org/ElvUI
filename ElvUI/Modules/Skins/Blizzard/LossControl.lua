@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -10,7 +10,7 @@ function S:LossOfControlFrame()
 
 	--/run LossOfControlFrame.fadeTime = 2000; LossOfControlFrame_SetUpDisplay(LossOfControlFrame, true, 'CONFUSE', 2094, 'Disoriented', [[Interface\Icons\Spell_Shadow_MindSteal]], 72101.9765625, 7.9950003623962, 8, 0, 5, 2)
 	local LossOfControlFrame = _G.LossOfControlFrame
-	local IconBackdrop = CreateFrame('Frame', nil, LossOfControlFrame, 'BackdropTemplate')
+	local IconBackdrop = CreateFrame('Frame', nil, LossOfControlFrame)
 	IconBackdrop:SetTemplate()
 	IconBackdrop:SetOutside(LossOfControlFrame.Icon)
 	IconBackdrop:SetFrameLevel(LossOfControlFrame:GetFrameLevel() - 1)
@@ -26,17 +26,17 @@ function S:LossOfControlFrame()
 
 		s.AbilityName:ClearAllPoints()
 		s.AbilityName:Point('BOTTOM', s, 0, -28)
-		s.AbilityName.scrollTime = nil;
+		s.AbilityName.scrollTime = nil
 		s.AbilityName:FontTemplate(nil, 20, 'OUTLINE')
 
 		s.TimeLeft.NumberText:ClearAllPoints()
 		s.TimeLeft.NumberText:Point('BOTTOM', s, 4, -58)
-		s.TimeLeft.NumberText.scrollTime = nil;
+		s.TimeLeft.NumberText.scrollTime = nil
 		s.TimeLeft.NumberText:FontTemplate(nil, 20, 'OUTLINE')
 
 		s.TimeLeft.SecondsText:ClearAllPoints()
 		s.TimeLeft.SecondsText:Point('BOTTOM', s, 0, -80)
-		s.TimeLeft.SecondsText.scrollTime = nil;
+		s.TimeLeft.SecondsText.scrollTime = nil
 		s.TimeLeft.SecondsText:FontTemplate(nil, 20, 'OUTLINE')
 
 		-- always stop shake animation on start

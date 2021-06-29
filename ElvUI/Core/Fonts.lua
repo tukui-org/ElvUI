@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -135,6 +135,7 @@ function E:UpdateBlizzardFonts()
 		SetFont(_G.SubZoneTextString,					NORMAL, 25, outline)						-- 26
 		SetFont(_G.SystemFont_Huge1, 					NORMAL, 20)									-- Garrison Mission XP
 		SetFont(_G.SystemFont_Huge1_Outline,			NORMAL, 18, outline)						-- 20  Garrison Mission Chance
+		SetFont(_G.SystemFont_Huge2,					NORMAL, 22)									-- 22  Mythic+ Score
 		SetFont(_G.SystemFont_Large,					NORMAL, s and 16 or 15)
 		SetFont(_G.SystemFont_Med1,						NORMAL, size)								-- 12
 		SetFont(_G.SystemFont_Med3,						NORMAL, medium)								-- 14

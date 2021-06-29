@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
@@ -65,7 +65,7 @@ AB.barDefaults = {
 	},
 	bar2 = {
 		page = 2,
-		bindButtons = 'ELVUIBAR6BUTTON',
+		bindButtons = 'ELVUIBAR2BUTTON',
 		position = 'BOTTOM,ElvUIParent,BOTTOM,0,4',
 	},
 	bar3 = {
@@ -90,22 +90,22 @@ AB.barDefaults = {
 	},
 	bar7 = {
 		page = 7,
-		bindButtons = 'EXTRABAR7BUTTON',
+		bindButtons = 'ELVUIBAR7BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,298',
 	},
 	bar8 = {
 		page = 8,
-		bindButtons = 'EXTRABAR8BUTTON',
+		bindButtons = 'ELVUIBAR8BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,332',
 	},
 	bar9 = {
 		page = 9,
-		bindButtons = 'EXTRABAR9BUTTON',
+		bindButtons = 'ELVUIBAR9BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,366',
 	},
 	bar10 = {
 		page = 10,
-		bindButtons = 'EXTRABAR10BUTTON',
+		bindButtons = 'ELVUIBAR10BUTTON',
 		position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400',
 	},
 }
@@ -617,9 +617,9 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	local icon = _G[name..'Icon']
 	local shine = _G[name..'Shine']
 	local count = _G[name..'Count']
-	local flash	 = _G[name..'Flash']
-	local border  = _G[name..'Border']
-	local normal  = _G[name..'NormalTexture']
+	local flash = _G[name..'Flash']
+	local border = _G[name..'Border']
+	local normal = _G[name..'NormalTexture']
 	local normal2 = button:GetNormalTexture()
 
 	local db = button:GetParent().db
@@ -629,6 +629,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	button.noBackdrop = noBackdrop
 	button.useMasque = useMasque
 	button.ignoreNormal = ignoreNormal
+
+	icon:SetDrawLayer('ARTWORK')
 
 	if normal and not ignoreNormal then normal:SetTexture(); normal:Hide(); normal:SetAlpha(0) end
 	if normal2 then normal2:SetTexture(); normal2:Hide(); normal2:SetAlpha(0) end
@@ -660,8 +662,8 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		macroText:SetTextColor(c.r, c.g, c.b)
 	end
 
-	if not button.noBackdrop and not button.backdrop and not button.useMasque then
-		button:CreateBackdrop(AB.db.transparent and 'Transparent', true, nil, nil, nil, nil, true)
+	if not button.noBackdrop and not button.useMasque then
+		button:SetTemplate(AB.db.transparent and 'Transparent', true)
 	end
 
 	if flash then
@@ -675,7 +677,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 		end
 	end
 
-	if icon and not useMasque then
+	if not useMasque then
 		AB:TrimIcon(button)
 		icon:SetInside()
 	end
@@ -731,7 +733,7 @@ end
 
 function AB:FadeBlingTexture(cooldown, alpha)
 	if not cooldown then return end
-	cooldown:SetBlingTexture(alpha > 0.5 and 131010 or [[Interface\AddOns\ElvUI\Media\Textures\Blank]])  -- interface/cooldown/star4.blp
+	cooldown:SetBlingTexture(alpha > 0.5 and 131010 or [[Interface\AddOns\ElvUI\Media\Textures\Blank]]) -- interface/cooldown/star4.blp
 end
 
 function AB:FadeBlings(alpha)
@@ -854,7 +856,7 @@ function AB:SetNoopsi(frame)
 	end
 end
 
-local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'GameTooltipTemplate, BackdropTemplate')
+local SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUISpellBookTooltip', E.UIParent, 'GameTooltipTemplate')
 function AB:SpellBookTooltipOnUpdate(elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 	if self.elapsed < TOOLTIP_UPDATE_TIME then return end
@@ -1326,9 +1328,9 @@ function AB:LAB_ButtonUpdate(button)
 
 	button.Count:SetTextColor(color.r, color.g, color.b)
 
-	if button.backdrop then
+	if button.SetBackdropBorderColor then
 		local border = (AB.db.equippedItem and button:IsEquipped() and AB.db.equippedItemColor) or E.db.general.bordercolor
-		button.backdrop:SetBackdropBorderColor(border.r, border.g, border.b)
+		button:SetBackdropBorderColor(border.r, border.g, border.b)
 	end
 end
 

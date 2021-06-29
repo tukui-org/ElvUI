@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 local oUF = E.oUF
 
@@ -82,7 +82,10 @@ local questTypes = typesLocalized[E.locale] or typesLocalized.enUS
 local function CheckTextForQuest(text)
 	local x, y = strmatch(text, '(%d+)/(%d+)')
 	if x and y then
-		return floor(y - x)
+		local diff = floor(y - x)
+		if diff > 0 then
+			return diff
+		end
 	elseif not strmatch(text, ThreatTooltip) then
 		local progress = tonumber(strmatch(text, '([%d%.]+)%%'))
 		if progress and progress <= 100 then

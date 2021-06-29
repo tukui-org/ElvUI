@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local mod = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
@@ -470,8 +470,8 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		local pc = actions.color.powerColor
 		c.PowerColor = true
 
-        frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a)
-        frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a)
+		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a)
+		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a)
 	end
 	if Borders then
 		local bc = actions.color.borderColor
@@ -630,9 +630,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local healthUnit = (trigger.healthUsePlayer and 'player') or frame.unit
 		local health, maxHealth = UnitHealth(healthUnit), UnitHealthMax(healthUnit)
 		local percHealth = (maxHealth and (maxHealth > 0) and health/maxHealth) or 0
-		local underHealthThreshold = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0) and (trigger.underHealthThreshold > percHealth)
-		local overHealthThreshold = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0) and (trigger.overHealthThreshold < percHealth)
-		if underHealthThreshold or overHealthThreshold then passed = true else return end
+
+		local underHealth = trigger.underHealthThreshold and (trigger.underHealthThreshold ~= 0)
+		local overHealth = trigger.overHealthThreshold and (trigger.overHealthThreshold ~= 0)
+
+		local underThreshold = underHealth and (trigger.underHealthThreshold > percHealth)
+		local overThreshold = overHealth and (trigger.overHealthThreshold < percHealth)
+
+		if underHealth and overHealth then
+			if underThreshold and overThreshold then passed = true else return end
+		elseif underThreshold or overThreshold then passed = true else return end
 	end
 
 	-- Power
@@ -640,9 +647,16 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		local powerUnit = (trigger.powerUsePlayer and 'player') or frame.unit
 		local power, maxPower = UnitPower(powerUnit, frame.PowerType), UnitPowerMax(powerUnit, frame.PowerType)
 		local percPower = (maxPower and (maxPower > 0) and power/maxPower) or 0
-		local underPowerThreshold = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0) and (trigger.underPowerThreshold > percPower)
-		local overPowerThreshold = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0) and (trigger.overPowerThreshold < percPower)
-		if underPowerThreshold or overPowerThreshold then passed = true else return end
+
+		local underPower = trigger.underPowerThreshold and (trigger.underPowerThreshold ~= 0)
+		local overPower = trigger.overPowerThreshold and (trigger.overPowerThreshold ~= 0)
+
+		local underThreshold = underPower and (trigger.underPowerThreshold > percPower)
+		local overThreshold = overPower and (trigger.overPowerThreshold < percPower)
+
+		if underPower and overPower then
+			if underThreshold and overThreshold then passed = true else return end
+		elseif underThreshold or overThreshold then passed = true else return end
 	end
 
 	-- Level
@@ -1137,7 +1151,7 @@ function mod:StyleFilterConfigure()
 	wipe(events)
 	wipe(list)
 
-	if E.db.nameplates and E.db.nameplates.filters  then
+	if E.db.nameplates and E.db.nameplates.filters then
 		for filterName, filter in pairs(E.global.nameplate.filters) do
 			local t = filter.triggers
 			if t and E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then

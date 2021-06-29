@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local MC = E:GetModule('ModuleCopy')
 
 local pairs, next, type = pairs, next, type
@@ -102,7 +102,7 @@ function MC:CreateMoversConfigGroup()
 			type = 'toggle',
 			name = data.mover.textString,
 			get = function() return E.global.profileCopy.movers[moverName] end,
-			set = function(_, value) E.global.profileCopy.movers[moverName] = value; end
+			set = function(_, value) E.global.profileCopy.movers[moverName] = value end
 		}
 	end
 	for moverName, data in pairs(E.DisabledMovers) do
@@ -112,7 +112,7 @@ function MC:CreateMoversConfigGroup()
 			type = 'toggle',
 			name = data.mover.textString,
 			get = function() return E.global.profileCopy.movers[moverName] end,
-			set = function(_, value) E.global.profileCopy.movers[moverName] = value; end
+			set = function(_, value) E.global.profileCopy.movers[moverName] = value end
 		}
 	end
 	return config

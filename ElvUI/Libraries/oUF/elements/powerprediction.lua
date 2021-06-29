@@ -74,25 +74,29 @@ local function Update(self, event, unit)
 
 	if(event == 'UNIT_SPELLCAST_START' and startTime ~= endTime) then
 		local costTable = GetSpellPowerCost(spellID)
-		local checkRequiredAura = isPlayer and #costTable > 1
-		for _, costInfo in next, costTable do
-			local cost, ctype, cperc = costInfo.cost, costInfo.type, costInfo.costPercent
-			local checkSpec = not checkRequiredAura or costInfo.hasRequiredAura
-			if checkSpec and ctype == mainType then
-				mainCost = ((isPlayer or cost < mainMax) and cost) or (mainMax * cperc) / 100
-				element.mainCost = mainCost
+		if not costTable then
+			element.mainCost = mainCost
+			element.altCost = altCost
+		else
+			local checkRequiredAura = isPlayer and #costTable > 1
+			for _, costInfo in next, costTable do
+				local cost, ctype, cperc = costInfo.cost, costInfo.type, costInfo.costPercent
+				local checkSpec = not checkRequiredAura or costInfo.hasRequiredAura
+				if checkSpec and ctype == mainType then
+					mainCost = ((isPlayer or cost < mainMax) and cost) or (mainMax * cperc) / 100
+					element.mainCost = mainCost
 
-				break
-			elseif hasAltManaBar and checkSpec and ctype == ADDITIONAL_POWER_BAR_INDEX then
-				altCost = cost
-				element.altCost = altCost
+					break
+				elseif hasAltManaBar and checkSpec and ctype == ADDITIONAL_POWER_BAR_INDEX then
+					altCost = cost
+					element.altCost = altCost
 
-				break
+					break
+				end
 			end
 		end
 	elseif(spellID) then
-		-- if we try to cast a spell while casting another one we need to avoid
-		-- resetting the element
+		-- if we try to cast a spell while casting another one we need to avoid resetting the element
 		mainCost = element.mainCost or 0
 		altCost = element.altCost or 0
 	else

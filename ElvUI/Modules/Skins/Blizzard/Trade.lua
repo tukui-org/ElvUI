@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -44,27 +44,29 @@ function S:TradeFrame()
 
 			player_button_icon:SetInside(player_button)
 			player_button_icon:SetTexCoord(unpack(E.TexCoords))
-			player_button:CreateBackdrop(nil, true)
+			player_button:SetTemplate(nil, true)
 			player_button:StyleButton()
 			player_button.IconBorder:Kill()
-			player_button.bg = CreateFrame('Frame', nil, player_button, 'BackdropTemplate')
+			player_button:SetFrameLevel(player_button:GetFrameLevel() - 1)
+
+			player_button.bg = CreateFrame('Frame', nil, player_button)
 			player_button.bg:SetTemplate()
 			player_button.bg:Point('TOPLEFT', player_button, 'TOPRIGHT', 4, 0)
 			player_button.bg:Point('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
 			player_button.bg:SetFrameLevel(player_button:GetFrameLevel() - 3)
-			player_button:SetFrameLevel(player_button:GetFrameLevel() - 1)
 
 			recipient_button_icon:SetInside(recipient_button)
 			recipient_button_icon:SetTexCoord(unpack(E.TexCoords))
-			recipient_button:CreateBackdrop(nil, true)
+			recipient_button:SetTemplate(nil, true)
 			recipient_button:StyleButton()
 			recipient_button.IconBorder:Kill()
-			recipient_button.bg = CreateFrame('Frame', nil, recipient_button, 'BackdropTemplate')
+			recipient_button:SetFrameLevel(recipient_button:GetFrameLevel() - 1)
+
+			recipient_button.bg = CreateFrame('Frame', nil, recipient_button)
 			recipient_button.bg:SetTemplate()
 			recipient_button.bg:Point('TOPLEFT', recipient_button, 'TOPRIGHT', 4, 0)
 			recipient_button.bg:Point('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
 			recipient_button.bg:SetFrameLevel(recipient_button:GetFrameLevel() - 3)
-			recipient_button:SetFrameLevel(recipient_button:GetFrameLevel() - 1)
 
 			S:HandleIconBorder(player_button.IconBorder)
 			S:HandleIconBorder(recipient_button.IconBorder)

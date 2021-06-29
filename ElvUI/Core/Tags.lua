@@ -1,7 +1,8 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
+local RangeCheck = E.Libs.RangeCheck
 local Translit = E.Libs.Translit
 local translitMark = '!'
 
@@ -71,9 +72,10 @@ local C_QuestLog_GetQuestDifficultyLevel = C_QuestLog.GetQuestDifficultyLevel
 local CHAT_FLAG_AFK = CHAT_FLAG_AFK:gsub('<(.-)>', '|r<|cffFF3333%1|r>')
 local CHAT_FLAG_DND = CHAT_FLAG_DND:gsub('<(.-)>', '|r<|cffFFFF33%1|r>')
 
-local SPELL_POWER_MANA = Enum.PowerType.Mana
-local COMBO_POINTS = Enum.PowerType.ComboPoints
-local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate
+local POWERTYPE_MANA = Enum.PowerType.Mana
+local POWERTYPE_COMBOPOINTS = Enum.PowerType.ComboPoints
+local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
+
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER
 local UNITNAME_SUMMON_TITLE17 = UNITNAME_SUMMON_TITLE17
 local DEFAULT_AFK_MESSAGE = DEFAULT_AFK_MESSAGE
@@ -193,8 +195,8 @@ local function GetClassPower(Class)
 				end
 			end
 		else
-			min = UnitPower('player', COMBO_POINTS)
-			max = UnitPowerMax('player', COMBO_POINTS)
+			min = UnitPower('player', POWERTYPE_COMBOPOINTS)
+			max = UnitPowerMax('player', POWERTYPE_COMBOPOINTS)
 
 			if min > 0 then
 				local r1, g1, b1 = unpack(ElvUF.colors.ComboPoints[1])
@@ -209,8 +211,8 @@ local function GetClassPower(Class)
 	if not r then
 		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[Class]
 		if barIndex and barIndex[UnitPowerType('player')] then
-			min = UnitPower('player', SPELL_POWER_MANA)
-			max = UnitPowerMax('player', SPELL_POWER_MANA)
+			min = UnitPower('player', POWERTYPE_MANA)
+			max = UnitPowerMax('player', POWERTYPE_MANA)
 
 			r, g, b = unpack(ElvUF.colors.power.MANA)
 		end
@@ -222,7 +224,7 @@ E.TagFunctions.GetClassPower = GetClassPower
 
 ElvUF.Tags.Events['altpowercolor'] = 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE'
 ElvUF.Tags.Methods['altpowercolor'] = function(u)
-	local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+	local cur = UnitPower(u, POWERTYPE_ALTERNATE)
 	if cur > 0 then
 		local _, r, g, b = GetUnitPowerBarTextureInfo(u, 3)
 		if not r then
@@ -337,6 +339,28 @@ ElvUF.Tags.Methods['health:deficit-percent:nostatus'] = function(unit)
 	end
 end
 
+for _, vars in ipairs({'',':min',':max'}) do
+	local textFormat = format('range%s', vars)
+	ElvUF.Tags.OnUpdateThrottle[textFormat] = 0.1
+	ElvUF.Tags.Methods[textFormat] = function(unit)
+		if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
+			local minRange, maxRange = RangeCheck:GetRange(unit, true)
+
+			if vars == ':min' then
+				if minRange then
+					return format('%d', minRange)
+				end
+			elseif vars == ':max' then
+				if maxRange then
+					return format('%d', maxRange)
+				end
+			elseif minRange or maxRange then
+				return format('%s - %s', minRange or '??', maxRange or '??')
+			end
+		end
+	end
+end
+
 for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagTextFormat = strlower(gsub(textFormat, '_', '-'))
 	ElvUF.Tags.Events[format('health:%s', tagTextFormat)] = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
@@ -358,7 +382,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Methods[format('power:%s', tagTextFormat)] = function(unit)
 		local powerType = UnitPowerType(unit)
 		local min = UnitPower(unit, powerType)
-		if min ~= 0 and tagTextFormat ~= 'deficit' then
+		if min ~= 0 then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, powerType))
 		end
 	end
@@ -367,18 +391,18 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	ElvUF.Tags.Methods[format('additionalmana:%s', tagTextFormat)] = function(unit)
 		local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
 		if barIndex and barIndex[UnitPowerType(unit)] then
-			local min = UnitPower(unit, SPELL_POWER_MANA)
-			if min ~= 0 and tagTextFormat ~= 'deficit' then
-				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
+			local min = UnitPower(unit, POWERTYPE_MANA)
+			if min ~= 0 then
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 			end
 		end
 	end
 
 	ElvUF.Tags.Events[format('mana:%s', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
 	ElvUF.Tags.Methods[format('mana:%s', tagTextFormat)] = function(unit)
-		local min = UnitPower(unit, SPELL_POWER_MANA)
-		if min ~= 0 and tagTextFormat ~= 'deficit' then
-			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA))
+		local min = UnitPower(unit, POWERTYPE_MANA)
+		if min ~= 0 then
+			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 		end
 	end
 
@@ -392,9 +416,9 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	ElvUF.Tags.Events[format('altpower:%s', tagTextFormat)] = 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE'
 	ElvUF.Tags.Methods[format('altpower:%s', tagTextFormat)] = function(u)
-		local cur = UnitPower(u, ALTERNATE_POWER_INDEX)
+		local cur = UnitPower(u, POWERTYPE_ALTERNATE)
 		if cur > 0 then
-			local max = UnitPowerMax(u, ALTERNATE_POWER_INDEX)
+			local max = UnitPowerMax(u, POWERTYPE_ALTERNATE)
 			return E:GetFormattedText(textFormat, cur, max)
 		end
 	end
@@ -428,16 +452,16 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 		ElvUF.Tags.Events[format('mana:%s:shortvalue', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER'
 		ElvUF.Tags.Methods[format('mana:%s:shortvalue', tagTextFormat)] = function(unit)
-			return E:GetFormattedText(textFormat, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA), nil, true)
+			return E:GetFormattedText(textFormat, UnitPower(unit, POWERTYPE_MANA), UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 		end
 
 		ElvUF.Tags.Events[format('additionalmana:%s:shortvalue', tagTextFormat)] = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER'
 		ElvUF.Tags.Methods[format('additionalmana:%s:shortvalue', tagTextFormat)] = function(unit)
 			local barIndex = _G.ADDITIONAL_POWER_BAR_INDEX == 0 and _G.ALT_MANA_BAR_PAIR_DISPLAY_INFO[E.myclass]
 			if barIndex and barIndex[UnitPowerType(unit)] then
-				local min = UnitPower(unit, SPELL_POWER_MANA)
+				local min = UnitPower(unit, POWERTYPE_MANA)
 				if min ~= 0 and tagTextFormat ~= 'deficit' then
-					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, SPELL_POWER_MANA), nil, true)
+					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 				end
 			end
 		end
@@ -581,7 +605,7 @@ end
 
 ElvUF.Tags.Events['mana:max:shortvalue'] = 'UNIT_MAXPOWER'
 ElvUF.Tags.Methods['mana:max:shortvalue'] = function(unit)
-	local max = UnitPowerMax(unit, SPELL_POWER_MANA)
+	local max = UnitPowerMax(unit, POWERTYPE_MANA)
 
 	return E:GetFormattedText('CURRENT', max, max, nil, true)
 end
@@ -592,7 +616,7 @@ ElvUF.Tags.Methods['difficultycolor'] = function(unit)
 	if UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
 		local level = UnitBattlePetLevel(unit)
 
-		local teamLevel = C_PetJournal_GetPetTeamAverageLevel();
+		local teamLevel = C_PetJournal_GetPetTeamAverageLevel()
 		if teamLevel < level or teamLevel > level then
 			c = GetRelativeDifficultyColor(teamLevel, level)
 		else
@@ -808,9 +832,9 @@ local GroupUnits = {}
 local f = CreateFrame('Frame')
 f:RegisterEvent('GROUP_ROSTER_UPDATE')
 f:SetScript('OnEvent', function()
-	local groupType, groupSize
 	wipe(GroupUnits)
 
+	local groupType, groupSize
 	if IsInRaid() then
 		groupType = 'raid'
 		groupSize = GetNumGroupMembers()
@@ -823,76 +847,46 @@ f:SetScript('OnEvent', function()
 	end
 
 	for index = 1, groupSize do
-		local unit = groupType..index
-		if not UnitIsUnit(unit, 'player') then
-			GroupUnits[unit] = true
+		local groupUnit = groupType..index
+		if not UnitIsUnit(groupUnit, 'player') then
+			GroupUnits[groupUnit] = true
 		end
 	end
 end)
 
-ElvUF.Tags.OnUpdateThrottle['nearbyplayers:8'] = 0.25
-ElvUF.Tags.Methods['nearbyplayers:8'] = function(unit)
-	local unitsInRange, distance = 0
-	if UnitIsConnected(unit) then
-		for groupUnit in pairs(GroupUnits) do
-			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				distance = E:GetDistance(unit, groupUnit)
-				if distance and distance <= 8 then
-					unitsInRange = unitsInRange + 1
+for _, var in ipairs({4,8,10,15,20,25,30,35,40}) do
+	local textFormat = format('nearbyplayers:%s', var)
+	ElvUF.Tags.OnUpdateThrottle[textFormat] = 0.25
+	ElvUF.Tags.Methods[textFormat] = function(realUnit)
+		local inRange = 0
+
+		if UnitIsConnected(realUnit) then
+			local unit = E:GetGroupUnit(realUnit) or realUnit
+			for groupUnit in pairs(GroupUnits) do
+				if UnitIsConnected(groupUnit) and not UnitIsUnit(unit, groupUnit) then
+					local distance = E:GetDistance(unit, groupUnit)
+					if distance and distance <= var then
+						inRange = inRange + 1
+					end
 				end
 			end
 		end
-	end
 
-	return unitsInRange
-end
-
-ElvUF.Tags.OnUpdateThrottle['nearbyplayers:10'] = 0.25
-ElvUF.Tags.Methods['nearbyplayers:10'] = function(unit)
-	local unitsInRange, distance = 0
-	if UnitIsConnected(unit) then
-		for groupUnit in pairs(GroupUnits) do
-			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				distance = E:GetDistance(unit, groupUnit)
-				if distance and distance <= 10 then
-					unitsInRange = unitsInRange + 1
-				end
-			end
+		if inRange > 0 then
+			return inRange
 		end
 	end
-
-	return unitsInRange
-end
-
-ElvUF.Tags.OnUpdateThrottle['nearbyplayers:30'] = 0.25
-ElvUF.Tags.Methods['nearbyplayers:30'] = function(unit)
-	local unitsInRange, distance = 0
-	if UnitIsConnected(unit) then
-		for groupUnit in pairs(GroupUnits) do
-			if not UnitIsUnit(unit, groupUnit) and UnitIsConnected(groupUnit) then
-				distance = E:GetDistance(unit, groupUnit)
-				if distance and distance <= 30 then
-					unitsInRange = unitsInRange + 1
-				end
-			end
-		end
-	end
-
-	return unitsInRange
 end
 
 ElvUF.Tags.OnUpdateThrottle['distance'] = 0.1
-ElvUF.Tags.Methods['distance'] = function(unit)
-	local distance
-	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
-		distance = E:GetDistance('player', unit)
-
+ElvUF.Tags.Methods['distance'] = function(realUnit)
+	if UnitIsConnected(realUnit) and not UnitIsUnit(realUnit, 'player') then
+		local unit = E:GetGroupUnit(realUnit) or realUnit
+		local distance = E:GetDistance('player', unit)
 		if distance then
-			distance = format('%.1f', distance)
+			return format('%.1f', distance)
 		end
 	end
-
-	return distance
 end
 
 local speedText = _G.SPEED
@@ -1222,6 +1216,32 @@ ElvUF.Tags.Methods['ElvUI-Users'] = function(unit)
 	end
 end
 
+local classIcons = {
+	WARRIOR 	= '0:64:0:64',
+	MAGE 		= '64:128:0:64',
+	ROGUE 		= '128:196:0:64',
+	DRUID 		= '196:256:0:64',
+	HUNTER 		= '0:64:64:128',
+	SHAMAN 		= '64:128:64:128',
+	PRIEST 		= '128:196:64:128',
+	WARLOCK 	= '196:256:64:128',
+	PALADIN 	= '0:64:128:196',
+	DEATHKNIGHT = '64:128:128:196',
+	MONK 		= '128:192:128:196',
+	DEMONHUNTER = '192:256:128:196',
+ }
+
+ElvUF.Tags.Events['class:icon'] = 'PLAYER_TARGET_CHANGED'
+ElvUF.Tags.Methods['class:icon'] = function(unit)
+	if UnitIsPlayer(unit) then
+		local _, class = UnitClass(unit)
+		local icon = classIcons[class]
+		if icon then
+			return format('|TInterface\\WorldStateFrame\\ICONS-CLASSES:32:32:0:0:256:256:%s|t', icon)
+		end
+	end
+end
+
 ElvUF.Tags.Events['creature'] = ''
 
 E.TagInfo = {
@@ -1331,6 +1351,7 @@ E.TagInfo = {
 	--Miscellaneous
 	['affix'] = { category = 'Miscellaneous', description = "Displays low level critter mobs" },
 	['class'] = { category = 'Miscellaneous', description = "Displays the class of the unit, if that unit is a player" },
+	['class:icon'] = { category = 'Miscellaneous', description = "Displays the class icon of the unit, if that unit is a player" },
 	['race'] = { category = 'Miscellaneous', description = "Displays the race" },
 	['smartclass'] = { category = 'Miscellaneous', description = "Displays the player's class or creature's type" },
 	['specialization'] = { category = 'Miscellaneous', description = "Displays your current specialization as text" },
@@ -1391,10 +1412,11 @@ E.TagInfo = {
 	['quest:info'] = { category = 'Quest', description = "Displays the quest objectives" },
 	['quest:title'] = { category = 'Quest', description = "Displays the quest title" },
 	--Range
+	['range'] = { category = 'Range', description = "Displays the range" },
+	['range:min'] = { category = 'Range', description = "Displays the min range" },
+	['range:max'] = { category = 'Range', description = "Displays the max range" },
 	['distance'] = { category = 'Range', description = "Displays the distance" },
-	['nearbyplayers:10'] = { category = 'Range', description = "Displays all players within 10 yards" },
-	['nearbyplayers:30'] = { category = 'Range', description = "Displays all players within 30 yards" },
-	['nearbyplayers:8'] = { category = 'Range', description = "Displays all players within 8 yards" },
+	['nearbyplayers:20'] = { category = 'Range', description = "Displays all players within 4, 8, 10, 15, 20, 25, 30, 35, or 40 yards (change the number)" },
 	--Realm
 	['realm:dash:translit'] = { category = 'Realm', description = "Displays the server name with transliteration for cyrillic letters and a dash in front" },
 	['realm:dash'] = { category = 'Realm', description = "Displays the server name with a dash in front (e.g. -Realm)" },

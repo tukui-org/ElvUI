@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc')
 local LBG = E.Libs.ButtonGlow
 
@@ -123,7 +123,7 @@ local function createSlot(id)
 	frame:SetScript('OnClick', OnClick)
 	frame:SetScript('OnShow', OnShow)
 
-	local iconFrame = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
+	local iconFrame = CreateFrame('Frame', nil, frame)
 	iconFrame:Height(iconsize)
 	iconFrame:Width(iconsize)
 	iconFrame:Point('RIGHT', frame)
@@ -309,7 +309,7 @@ function M:LoadLoot()
 	lootFrameHolder:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 418, -186)
 	lootFrameHolder:Size(150, 22)
 
-	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder, 'BackdropTemplate')
+	lootFrame = CreateFrame('Button', 'ElvLootFrame', lootFrameHolder)
 	lootFrame:SetClampedToScreen(true)
 	lootFrame:Point('TOPLEFT')
 	lootFrame:Size(256, 64)
@@ -318,7 +318,7 @@ function M:LoadLoot()
 	lootFrame:SetToplevel(true)
 	lootFrame.title = lootFrame:CreateFontString(nil, 'OVERLAY')
 	lootFrame.title:FontTemplate(nil, nil, 'OUTLINE')
-	lootFrame.title:Point('BOTTOMLEFT', lootFrame, 'TOPLEFT', 0,  1)
+	lootFrame.title:Point('BOTTOMLEFT', lootFrame, 'TOPLEFT', 0, 1)
 	lootFrame.slots = {}
 	lootFrame:SetScript('OnHide', function()
 		StaticPopup_Hide('CONFIRM_LOOT_DISTRIBUTION')

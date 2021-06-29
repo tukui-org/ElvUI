@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc')
 local CH = E:GetModule('Chat')
 local LSM = E.Libs.LSM
@@ -22,9 +22,11 @@ function M:UpdateBubbleBorder()
 	local str = holder and holder.String
 	if not str then return end
 
-	if holder.backdrop and E.private.general.chatBubbles == 'backdrop' then
-		holder.backdrop:SetBackdropBorderColor(str:GetTextColor())
-		holder.backdrop:SetFrameLevel(holder:GetFrameLevel())
+	local option = E.private.general.chatBubbles
+	if option == 'backdrop' then
+		holder:SetBackdropBorderColor(str:GetTextColor())
+	elseif option == 'backdrop_noborder' then
+		holder:SetBackdropBorderColor(0,0,0,0)
 	end
 
 	local name = self.Name and self.Name:GetText()
@@ -89,17 +91,15 @@ function M:SkinBubble(frame, holder)
 		holder.String:FontTemplate(bubbleFont, E.private.general.chatBubbleFontSize, E.private.general.chatBubbleFontOutline)
 	end
 
-	if E.private.general.chatBubbles == 'backdrop' then
-		if not holder.backdrop then
-			holder:CreateBackdrop('Transparent', nil, true)
-		end
-	elseif E.private.general.chatBubbles == 'backdrop_noborder' then
-		if not holder.noBorder then
-			holder.noBorder = holder:CreateTexture(nil, 'ARTWORK')
-		end
+	local option = E.private.general.chatBubbles
+	if option == 'nobackdrop' then
+		holder:DisableDrawLayer('BORDER')
+	else
+		holder:SetTemplate('Transparent', nil, true)
 
-		holder.noBorder:SetInside(frame, 4, 4)
-		holder.noBorder:SetColorTexture(unpack(E.media.backdropfadecolor))
+		if option == 'backdrop_noborder' then
+			holder.Center:SetInside(holder, 4, 4)
+		end
 	end
 
 	if not frame.Name then
@@ -114,11 +114,6 @@ function M:SkinBubble(frame, holder)
 	if not frame.holder then
 		frame.holder = holder
 		holder.Tail:Hide()
-		holder:DisableDrawLayer('BORDER')
-
-		if holder.Center then -- can remove later
-			holder.Center:Hide()
-		end
 
 		frame:HookScript('OnShow', M.UpdateBubbleBorder)
 		frame:SetFrameStrata('DIALOG') --Doesn't work currently in Legion due to a bug on Blizzards end

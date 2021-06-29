@@ -1,9 +1,8 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local strjoin = strjoin
-
 local GetLFGRandomDungeonInfo = GetLFGRandomDungeonInfo
 local GetLFGRoleShortageRewards = GetLFGRoleShortageRewards
 local GetNumRandomDungeons = GetNumRandomDungeons
@@ -47,9 +46,9 @@ local function OnEvent(self)
 		local id = GetLFGRandomDungeonInfo(i)
 		for x = 1, LFG_ROLE_NUM_SHORTAGE_TYPES do
 			local eligible, forTank, forHealer, forDamage, itemCount = GetLFGRoleShortageRewards(id, x)
-			if eligible and forTank and itemCount > 0 then tankReward = true; unavailable = false; end
-			if eligible and forHealer and itemCount > 0 then healerReward = true; unavailable = false; end
-			if eligible and forDamage and itemCount > 0 then dpsReward = true; unavailable = false; end
+			if eligible and forTank and itemCount > 0 then tankReward = true; unavailable = false end
+			if eligible and forHealer and itemCount > 0 then healerReward = true; unavailable = false end
+			if eligible and forDamage and itemCount > 0 then dpsReward = true; unavailable = false end
 		end
 	end
 
@@ -58,9 +57,9 @@ local function OnEvent(self)
 		local id = GetRFDungeonInfo(i)
 		for x = 1, LFG_ROLE_NUM_SHORTAGE_TYPES do
 			local eligible, forTank, forHealer, forDamage, itemCount = GetLFGRoleShortageRewards(id, x)
-			if eligible and forTank and itemCount > 0 then tankReward = true; unavailable = false; end
-			if eligible and forHealer and itemCount > 0 then healerReward = true; unavailable = false; end
-			if eligible and forDamage and itemCount > 0 then dpsReward = true; unavailable = false; end
+			if eligible and forTank and itemCount > 0 then tankReward = true; unavailable = false end
+			if eligible and forHealer and itemCount > 0 then healerReward = true; unavailable = false end
+			if eligible and forDamage and itemCount > 0 then dpsReward = true; unavailable = false end
 		end
 	end
 
@@ -105,7 +104,7 @@ local function OnEnter()
 
 		if not unavailable then
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)
-			if rolesString ~= ''  then
+			if rolesString ~= '' then
 				if addTooltipHeader then
 					DT.tooltip:AddLine(DUNGEONS)
 					addTooltipHeader = false
@@ -135,7 +134,7 @@ local function OnEnter()
 
 		if not unavailable then
 			local rolesString = MakeIconString(tankReward, healerReward, dpsReward)
-			if rolesString ~= ''  then
+			if rolesString ~= '' then
 				if addTooltipHeader then
 					if addTooltipSeparator then DT.tooltip:AddLine(' ') end
 					DT.tooltip:AddLine(RAID_FINDER)

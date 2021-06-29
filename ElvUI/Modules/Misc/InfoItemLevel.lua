@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local M = E:GetModule('Misc')
 local LSM = E.Libs.LSM
 
@@ -43,7 +43,7 @@ function M:CreateInspectTexture(slot, x, y)
 	texture:SetTexCoord(unpack(E.TexCoords))
 	texture:Size(14)
 
-	local backdrop = CreateFrame('Frame', nil, slot, 'BackdropTemplate')
+	local backdrop = CreateFrame('Frame', nil, slot)
 	backdrop:SetTemplate(nil, nil, true)
 	backdrop:SetBackdropColor(0,0,0,0)
 	backdrop:SetOutside(texture)

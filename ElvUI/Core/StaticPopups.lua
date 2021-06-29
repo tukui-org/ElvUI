@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 local UF = E:GetModule('UnitFrames')
 local Misc = E:GetModule('Misc')
@@ -404,13 +404,13 @@ E.PopupDialogs.WARNING_BLIZZARD_ADDONS = {
 	text = L["It appears one of your AddOns have disabled the AddOn Blizzard_CompactRaidFrames. This can cause errors and other issues. The AddOn will now be re-enabled."],
 	button1 = OKAY,
 	hideOnEscape = false,
-	OnAccept = function() EnableAddOn('Blizzard_CompactRaidFrames'); ReloadUI(); end,
+	OnAccept = function() EnableAddOn('Blizzard_CompactRaidFrames'); ReloadUI() end,
 }
 
 E.PopupDialogs.APPLY_FONT_WARNING = {
 	text = L["Are you sure you want to apply this font to all ElvUI elements?"],
 	OnAccept = function() E:GeneralMedia_ApplyToAll() end,
-	OnCancel = function() E:StaticPopup_Hide('APPLY_FONT_WARNING'); end,
+	OnCancel = function() E:StaticPopup_Hide('APPLY_FONT_WARNING') end,
 	button1 = YES,
 	button2 = CANCEL,
 	whileDead = 1,
@@ -447,7 +447,7 @@ E.PopupDialogs.ELVUI_CONFIG_FOUND = {
 
 local MAX_STATIC_POPUPS = 4
 function E:StaticPopup_OnShow()
-	PlaySound(850); --IG_MAINMENU_OPEN
+	PlaySound(850) --IG_MAINMENU_OPEN
 
 	local dialog = E.PopupDialogs[self.which]
 	local OnShow = dialog.OnShow
@@ -575,7 +575,7 @@ function E:StaticPopup_OnKeyDown(key)
 end
 
 function E:StaticPopup_OnHide()
-	PlaySound(851); --IG_MAINMENU_CLOSE
+	PlaySound(851) --IG_MAINMENU_CLOSE
 
 	E:StaticPopup_CollapseTable()
 
@@ -777,7 +777,7 @@ function E:StaticPopup_OnEvent()
 	E:StaticPopup_Resize(self, self.which)
 end
 
-local tempButtonLocs = {};	--So we don't make a new table each time.
+local tempButtonLocs = {}	--So we don't make a new table each time.
 function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	local info = E.PopupDialogs[which]
 	if not info then
@@ -830,7 +830,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 		end
 		for i = index, MAX_STATIC_POPUPS do
 			local frame = _G['ElvUI_StaticPopup'..i]
-			if frame and  not frame:IsShown() then
+			if frame and not frame:IsShown() then
 				dialog = frame
 				break
 			end
@@ -955,7 +955,7 @@ function E:StaticPopup_Show(which, text_arg1, text_arg2, data)
 	local button4 = _G[dialog:GetName()..'Button4']
 
 	do	--If there is any recursion in this block, we may get errors (tempButtonLocs is static). If you have to recurse, we'll have to create a new table each time.
-		assert(#tempButtonLocs == 0);	--If this fails, we're recursing. (See the table.wipe at the end of the block)
+		assert(#tempButtonLocs == 0)	--If this fails, we're recursing. (See the table.wipe at the end of the block)
 
 		tinsert(tempButtonLocs, button1)
 		tinsert(tempButtonLocs, button2)
@@ -1099,7 +1099,7 @@ local SecureButtons = {}
 local SecureOnEnter = function(s) s.text:SetTextColor(1, 1, 1) end
 local SecureOnLeave = function(s) s.text:SetTextColor(1, 0.17, 0.26) end
 function E:StaticPopup_CreateSecureButton(popup, button, text, macro)
-	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate, BackdropTemplate')
+	local btn = CreateFrame('Button', nil, popup, 'SecureActionButtonTemplate')
 	btn:SetAttribute('type', 'macro')
 	btn:SetAttribute('macrotext', macro)
 	btn:SetAllPoints(button)
@@ -1148,7 +1148,7 @@ function E:Contruct_StaticPopups()
 	E.StaticPopupFrames = {}
 
 	for index = 1, MAX_STATIC_POPUPS do
-		E.StaticPopupFrames[index] = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate, BackdropTemplate')
+		E.StaticPopupFrames[index] = CreateFrame('Frame', 'ElvUI_StaticPopup'..index, E.UIParent, 'StaticPopupTemplate')
 		E.StaticPopupFrames[index]:SetID(index)
 
 		--Fix Scripts
@@ -1161,7 +1161,7 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnEscapePressed', E.StaticPopup_EditBoxOnEscapePressed)
 		_G['ElvUI_StaticPopup'..index..'EditBox']:SetScript('OnTextChanged', E.StaticPopup_EditBoxOnTextChanged)
 
-		_G['ElvUI_StaticPopup'..index..'CheckButton'] = CreateFrame('CheckButton', 'ElvUI_StaticPopup'..index..'CheckButton', _G['ElvUI_StaticPopup'..index], 'UICheckButtonTemplate, BackdropTemplate')
+		_G['ElvUI_StaticPopup'..index..'CheckButton'] = CreateFrame('CheckButton', 'ElvUI_StaticPopup'..index..'CheckButton', _G['ElvUI_StaticPopup'..index], 'UICheckButtonTemplate')
 		_G['ElvUI_StaticPopup'..index..'CheckButton']:SetScript('OnClick', E.StaticPopup_CheckButtonOnClick)
 
 		--Skin
@@ -1193,8 +1193,8 @@ function E:Contruct_StaticPopups()
 		_G['ElvUI_StaticPopup'..index..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
 		_G['ElvUI_StaticPopup'..index..'ItemFrameNameFrame']:Kill()
 		_G['ElvUI_StaticPopup'..index..'ItemFrame']:GetNormalTexture():Kill()
-		--_G['ElvUI_StaticPopup'..index..'ItemFrame']:SetTemplate()
-		--_G['ElvUI_StaticPopup'..index..'ItemFrame']:StyleButton()
+		_G['ElvUI_StaticPopup'..index..'ItemFrame']:SetTemplate()
+		_G['ElvUI_StaticPopup'..index..'ItemFrame']:StyleButton()
 		_G['ElvUI_StaticPopup'..index..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
 		_G['ElvUI_StaticPopup'..index..'ItemFrameIconTexture']:SetInside()
 	end

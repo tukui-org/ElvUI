@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------
 -- Animation Functions
 ------------------------------------------------------------------------
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 local _G = _G
 local random, next, unpack, strsub = random, next, unpack, strsub
@@ -86,7 +86,7 @@ function E:SetUpAnimGroup(obj, Type, ...)
 		obj.elastic = _G.CreateAnimationGroup(obj)
 
 		for i = 1, 4 do
-			local anim  = obj.elastic:CreateAnimation(i < 3 and 'width' or 'height')
+			local anim = obj.elastic:CreateAnimation(i < 3 and 'width' or 'height')
 			anim:SetChange((i==1 and width*0.45) or (i==2 and width) or (i==3 and height*0.45) or height)
 			anim:SetEasing('inout-elastic')
 			anim:SetDuration(duration)
@@ -243,7 +243,7 @@ function E:UIFrameFade_OnUpdate(elapsed)
 				frame:SetAlpha(info.endAlpha)
 
 				-- If there is a fadeHoldTime then wait until its passed to continue on
-				if info.fadeHoldTime and info.fadeHoldTime > 0  then
+				if info.fadeHoldTime and info.fadeHoldTime > 0 then
 					info.fadeHoldTime = info.fadeHoldTime - elapsed
 				else
 					-- Complete the fade and call the finished function if there is one

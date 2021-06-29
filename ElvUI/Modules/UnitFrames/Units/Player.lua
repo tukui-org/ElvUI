@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 
 local _, ns = ...
@@ -59,7 +59,7 @@ function UF:Construct_PlayerFrame(frame)
 	frame.ResurrectIndicator = UF:Construct_ResurrectionIcon(frame)
 	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
 	frame.PartyIndicator = UF:Construct_PartyIndicator(frame)
-	frame.PvPText = UF:Construct_PvPIndicator(frame)
+	frame.PvPText = UF:Construct_PvPText(frame)
 	frame.AuraHighlight = UF:Construct_AuraHighlight(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
 	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
@@ -129,7 +129,7 @@ function UF:Update_PlayerFrame(frame, db)
 	UF:Configure_ClassBar(frame)
 	UF:Configure_HealthBar(frame)
 	UF:UpdateNameSettings(frame)
-	UF:Configure_PVPIndicator(frame)
+	UF:Configure_PVPText(frame)
 	UF:Configure_Power(frame)
 	UF:Configure_PowerPrediction(frame)
 	UF:Configure_Portrait(frame)

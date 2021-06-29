@@ -1,11 +1,11 @@
-## Interface: 90005
+## Interface: 90100
 ## Author: Elv, Simpy
-## Version: 12.24
+## Version: 12.25
 ## Title: |cff1784d1ElvUI|r
 ## Notes: User Interface replacement AddOn for World of Warcraft.
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: Blizzard_PetJournal, SharedMedia, Tukui, SunnArt, Gatherer, Masque
+## OptionalDeps: Blizzard_PetJournal, SharedMedia, Tukui, Masque
 ## X-oUF: ElvUF
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI_OptionsUI, ElvUI

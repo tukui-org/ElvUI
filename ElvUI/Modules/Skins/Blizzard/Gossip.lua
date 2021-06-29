@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -27,11 +27,11 @@ function S:GossipFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
 
 	_G.ItemTextFrame:StripTextures(true)
-	_G.ItemTextFrame:CreateBackdrop('Transparent')
+	_G.ItemTextFrame:SetTemplate('Transparent')
 
 	_G.ItemTextScrollFrame:StripTextures()
 
-	_G.GossipFrame:CreateBackdrop('Transparent')
+	_G.GossipFrame:SetTemplate('Transparent')
 	_G.GossipFrame.Background:Hide()
 	_G.GossipFramePortrait:Kill()
 
@@ -60,7 +60,7 @@ function S:GossipFrame()
 	S:HandlePortraitFrame(GossipFrame)
 
 	local GossipGreetingScrollFrame = _G.GossipGreetingScrollFrame
-	GossipGreetingScrollFrame:CreateBackdrop()
+	GossipGreetingScrollFrame:SetTemplate('Transparent')
 
 	if E.private.skins.parchmentRemoverEnable then
 		hooksecurefunc('GossipFrameUpdate', handleGossipText)
@@ -85,15 +85,15 @@ function S:GossipFrame()
 		end
 	end
 
-	local NPCFriendshipStatusBar = _G.NPCFriendshipStatusBar
-	NPCFriendshipStatusBar:StripTextures()
-	NPCFriendshipStatusBar:SetStatusBarTexture(E.media.normTex)
-	NPCFriendshipStatusBar:CreateBackdrop()
-	E:RegisterStatusBar(NPCFriendshipStatusBar)
+	local friendshipBar = _G.NPCFriendshipStatusBar
+	friendshipBar:StripTextures()
+	friendshipBar:SetStatusBarTexture(E.media.normTex)
+	friendshipBar:CreateBackdrop()
+	E:RegisterStatusBar(friendshipBar)
 
-	NPCFriendshipStatusBar.icon:ClearAllPoints()
-	NPCFriendshipStatusBar.icon:Point('RIGHT', NPCFriendshipStatusBar, 'LEFT', 0, -3)
-	S:HandleIcon(NPCFriendshipStatusBar.icon)
+	friendshipBar.icon:ClearAllPoints()
+	friendshipBar.icon:Point('RIGHT', friendshipBar, 'LEFT', 0, -3)
+	S:HandleIcon(friendshipBar.icon)
 end
 
 S:AddCallback('GossipFrame')

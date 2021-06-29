@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -58,18 +58,18 @@ local function selectedTextureSetShown(texture, shown) -- used sets list
 	local parent = texture:GetParent()
 	local icon = parent.icon or parent.Icon
 	if shown then
-		parent.backdrop:SetBackdropBorderColor(1, .8, .1)
+		parent:SetBackdropBorderColor(1, .8, .1)
 		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
 		local r, g, b = unpack(E.media.bordercolor)
-		parent.backdrop:SetBackdropBorderColor(r, g, b)
+		parent:SetBackdropBorderColor(r, g, b)
 		icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
 local function selectedTextureShow(texture) -- used for pets/mounts
 	local parent = texture:GetParent()
-	parent.backdrop:SetBackdropBorderColor(1, .8, .1)
+	parent:SetBackdropBorderColor(1, .8, .1)
 	parent.icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 end
 
@@ -77,7 +77,7 @@ local function selectedTextureHide(texture) -- used for pets/mounts
 	local parent = texture:GetParent()
 	if not parent.hovered then
 		local r, g, b = unpack(E.media.bordercolor)
-		parent.backdrop:SetBackdropBorderColor(r, g, b)
+		parent:SetBackdropBorderColor(r, g, b)
 		parent.icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 
@@ -89,7 +89,7 @@ end
 local function buttonOnEnter(button)
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 	local icon = button.icon or button.Icon
-	button.backdrop:SetBackdropBorderColor(r, g, b)
+	button:SetBackdropBorderColor(r, g, b)
 	icon.backdrop:SetBackdropBorderColor(r, g, b)
 	button.hovered = true
 end
@@ -97,11 +97,11 @@ end
 local function buttonOnLeave(button)
 	local icon = button.icon or button.Icon
 	if button.selected or (button.SelectedTexture and button.SelectedTexture:IsShown()) then
-		button.backdrop:SetBackdropBorderColor(1, .8, .1)
+		button:SetBackdropBorderColor(1, .8, .1)
 		icon.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
 		local r, g, b = unpack(E.media.bordercolor)
-		button.backdrop:SetBackdropBorderColor(r, g, b)
+		button:SetBackdropBorderColor(r, g, b)
 		icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 	button.hovered = nil
@@ -110,7 +110,7 @@ end
 local function JournalScrollButtons(frame)
 	for i, bu in ipairs(frame.buttons) do
 		bu:StripTextures()
-		bu:CreateBackdrop('Transparent', nil, nil, true, nil, nil, true, true)
+		bu:SetTemplate('Transparent', nil, nil, true)
 		bu:Size(210, 42)
 
 		local point, relativeTo, relativePoint, xOffset, yOffset = bu:GetPoint()
@@ -144,7 +144,6 @@ local function JournalScrollButtons(frame)
 		end
 
 		if frame:GetParent() == _G.WardrobeCollectionFrame.SetsCollectionFrame then
-			bu.setList = true
 			bu.Favorite:SetAtlas('PetJournal-FavoritesIcon', true)
 			bu.Favorite:Point('TOPLEFT', bu.Icon, 'TOPLEFT', -8, 8)
 
@@ -214,7 +213,7 @@ function S:Blizzard_Collections()
 	MountJournal.MountDisplay.ShadowOverlay:StripTextures()
 	MountJournal.MountCount:StripTextures()
 
-	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon)
+	S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon, true)
 	S:HandleCheckBox(MountJournal.MountDisplay.ModelScene.TogglePlayer)
 	MountJournal.MountDisplay.ModelScene.TogglePlayer:Size(22)
 
@@ -226,7 +225,7 @@ function S:Blizzard_Collections()
 
 	-- New Mount Equip. 8.2
 	MountJournal.BottomLeftInset:StripTextures()
-	MountJournal.BottomLeftInset:CreateBackdrop('Transparent')
+	MountJournal.BottomLeftInset:SetTemplate('Transparent')
 	MountJournal.BottomLeftInset.SlotButton:StripTextures()
 	S:HandleIcon(MountJournal.BottomLeftInset.SlotButton.ItemIcon)
 	S:HandleButton(MountJournal.BottomLeftInset.SlotButton)
@@ -280,15 +279,15 @@ function S:Blizzard_Collections()
 		local petButtonHealthFrame = _G['PetJournalLoadoutPet'..i..'HealthFrame']
 		local petButtonXPBar = _G['PetJournalLoadoutPet'..i..'XPBar']
 		petButton:StripTextures()
-		petButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true, true)
+		petButton:SetTemplate()
 		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
 
 		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
 		petButton.dragButton:SetFrameLevel(_G['PetJournalLoadoutPet'..i].dragButton:GetFrameLevel() + 1)
 
-		petButton.hover = true;
-		petButton.pushed = true;
-		petButton.checked = true;
+		petButton.hover = true
+		petButton.pushed = true
+		petButton.checked = true
 		S:HandleItemButton(petButton)
 		petButton.levelBG:SetAtlas('PetJournal-LevelBubble', true)
 
@@ -320,15 +319,15 @@ function S:Blizzard_Collections()
 	end
 
 	_G.PetJournalPetCard:StripTextures()
-	_G.PetJournalPetCard:CreateBackdrop('Transparent')
+	_G.PetJournalPetCard:SetTemplate('Transparent')
 	_G.PetJournalPetCardInset:StripTextures()
 	_G.PetJournalPetCardPetInfoQualityBorder:SetAlpha(0)
 
-	_G.PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 	_G.PetJournalPetCardPetInfo:CreateBackdrop()
 	_G.PetJournalPetCardPetInfo.favorite:SetParent(_G.PetJournalPetCardPetInfo.backdrop)
 	_G.PetJournalPetCardPetInfo.backdrop:SetOutside(_G.PetJournalPetCardPetInfoIcon)
 	_G.PetJournalPetCardPetInfoIcon:SetParent(_G.PetJournalPetCardPetInfo.backdrop)
+	_G.PetJournalPetCardPetInfoIcon:SetTexCoord(unpack(E.TexCoords))
 
 	if E.private.skins.blizzard.tooltip then
 		local tt = _G.PetJournalPrimaryAbilityTooltip
@@ -347,16 +346,15 @@ function S:Blizzard_Collections()
 		tt.BorderBottomRight:SetTexture()
 		tt.BorderBottomLeft:SetTexture()
 
-		tt:CreateBackdrop('Transparent')
+		tt:SetTemplate('Transparent')
 	end
 
 	for i=1, 6 do
 		local frame = _G['PetJournalPetCardSpell'..i]
 		frame:SetFrameLevel(frame:GetFrameLevel() + 2)
 		frame:DisableDrawLayer('BACKGROUND')
-		frame:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		frame:SetTemplate()
 		frame.icon:SetTexCoord(unpack(E.TexCoords))
-		frame.icon:SetInside(frame.backdrop)
 	end
 
 	_G.PetJournalPetCardHealthFrame.healthBar:StripTextures()
@@ -387,6 +385,7 @@ function S:Blizzard_Collections()
 	for i = 1, 18 do
 		local button = ToyBox.iconsFrame['spellButton'..i]
 		S:HandleItemButton(button, true)
+
 		button.iconTextureUncollected:SetTexCoord(unpack(E.TexCoords))
 		button.iconTextureUncollected:SetInside(button)
 		button.hover:SetAllPoints(button.iconTexture)
@@ -501,7 +500,7 @@ function S:Blizzard_Collections()
 				Model.Border:SetAlpha(0)
 				Model.TransmogStateTexture:SetAlpha(0)
 
-				local border = CreateFrame('Frame', nil, Model, 'BackdropTemplate')
+				local border = CreateFrame('Frame', nil, Model)
 				border:SetTemplate()
 				border:ClearAllPoints()
 				border:SetPoint('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
@@ -514,10 +513,13 @@ function S:Blizzard_Collections()
 
 				for i=1, Model:GetNumRegions() do
 					local region = select(i, Model:GetRegions())
-					if region:IsObjectType('Texture') and region:GetTexture() == 1116940 then -- transmogrify.blp
-						region:SetColorTexture(1, 1, 1, 0.3)
-						region:SetBlendMode('ADD')
-						region:SetAllPoints(Model)
+					if region:IsObjectType('Texture') then -- check for hover glow
+						local texture = region:GetTexture()
+						if texture == 1116940 or texture == 1569530 then -- transmogrify.blp (items:1116940 or sets:1569530)
+							region:SetColorTexture(1, 1, 1, 0.3)
+							region:SetBlendMode('ADD')
+							region:SetAllPoints(Model)
+						end
 					end
 				end
 
@@ -566,7 +568,7 @@ function S:Blizzard_Collections()
 
 	--Sets
 	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
-	SetsCollectionFrame:CreateBackdrop('Transparent')
+	SetsCollectionFrame:SetTemplate('Transparent')
 	SetsCollectionFrame.RightInset:StripTextures()
 	SetsCollectionFrame.LeftInset:StripTextures()
 	JournalScrollButtons(SetsCollectionFrame.ScrollFrame)
@@ -604,7 +606,7 @@ function S:Blizzard_Collections()
 
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures()
-	WardrobeOutfitFrame:CreateBackdrop('Transparent')
+	WardrobeOutfitFrame:SetTemplate('Transparent')
 	S:HandleButton(_G.WardrobeOutfitDropDown.SaveButton)
 	S:HandleDropDownBox(_G.WardrobeOutfitDropDown, 221)
 	_G.WardrobeOutfitDropDown:Height(34)
@@ -614,12 +616,13 @@ function S:Blizzard_Collections()
 	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
 	WardrobeTransmogFrame:StripTextures()
 
-	for i = 1, #WardrobeTransmogFrame.ModelScene.SlotButtons do
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:StripTextures()
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:SetFrameLevel(WardrobeTransmogFrame.ModelScene.SlotButtons[i]:GetFrameLevel() + 2)
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i]:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Border:Kill()
-		WardrobeTransmogFrame.ModelScene.SlotButtons[i].Icon:SetTexCoord(unpack(E.TexCoords))
+	for i = 1, #WardrobeTransmogFrame.SlotButtons do
+		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
+		slotButton:SetFrameLevel(slotButton:GetFrameLevel() + 2)
+		slotButton:StripTextures()
+		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		slotButton.Border:Kill()
+		slotButton.Icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
@@ -630,14 +633,14 @@ function S:Blizzard_Collections()
 
 	--Transmogrify NPC Sets tab
 	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
-	WardrobeCollectionFrame.SetsTransmogFrame:CreateBackdrop('Transparent')
+	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate('Transparent')
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
 	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
 
 	-- Outfit Edit Frame
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
 	WardrobeOutfitEditFrame:StripTextures()
-	WardrobeOutfitEditFrame:CreateBackdrop('Transparent')
+	WardrobeOutfitEditFrame:SetTemplate('Transparent')
 	WardrobeOutfitEditFrame.EditBox:StripTextures()
 	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
 	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)

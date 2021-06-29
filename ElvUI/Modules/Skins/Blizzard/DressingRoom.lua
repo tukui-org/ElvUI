@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -24,11 +24,11 @@ function S:DressUpFrame()
 	-- Wardrobe edit frame
 	local WardrobeOutfitFrame = _G.WardrobeOutfitFrame
 	WardrobeOutfitFrame:StripTextures(true)
-	WardrobeOutfitFrame:CreateBackdrop('Transparent')
+	WardrobeOutfitFrame:SetTemplate('Transparent')
 
 	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
 	WardrobeOutfitEditFrame:StripTextures(true)
-	WardrobeOutfitEditFrame:CreateBackdrop('Transparent')
+	WardrobeOutfitEditFrame:SetTemplate('Transparent')
 	WardrobeOutfitEditFrame.EditBox:StripTextures()
 	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
 	WardrobeOutfitEditFrame.EditBox.backdrop:Point('TOPLEFT', WardrobeOutfitEditFrame.EditBox, 'TOPLEFT', -5, -5)

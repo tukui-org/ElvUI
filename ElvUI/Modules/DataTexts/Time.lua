@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
@@ -146,10 +146,10 @@ end
 
 local krcntw = E.locale == 'koKR' or E.locale == 'zhCN' or E.locale == 'zhTW'
 local difficultyTag = { -- Raid Finder, Normal, Heroic, Mythic
-	(krcntw and _G.PLAYER_DIFFICULTY3) or utf8sub(_G.PLAYER_DIFFICULTY3, 1, 1), -- R
-	(krcntw and _G.PLAYER_DIFFICULTY1) or utf8sub(_G.PLAYER_DIFFICULTY1, 1, 1), -- N
-	(krcntw and _G.PLAYER_DIFFICULTY2) or utf8sub(_G.PLAYER_DIFFICULTY2, 1, 1), -- H
-	(krcntw and _G.PLAYER_DIFFICULTY6) or utf8sub(_G.PLAYER_DIFFICULTY6, 1, 1)  -- M
+	(krcntw and _G.PLAYER_DIFFICULTY3) or utf8sub(_G.PLAYER_DIFFICULTY3, 1, 1),	-- R
+	(krcntw and _G.PLAYER_DIFFICULTY1) or utf8sub(_G.PLAYER_DIFFICULTY1, 1, 1),	-- N
+	(krcntw and _G.PLAYER_DIFFICULTY2) or utf8sub(_G.PLAYER_DIFFICULTY2, 1, 1),	-- H
+	(krcntw and _G.PLAYER_DIFFICULTY6) or utf8sub(_G.PLAYER_DIFFICULTY6, 1, 1)	-- M
 }
 
 local function sortFunc(a,b) return a[1] < b[1] end
@@ -171,8 +171,8 @@ local function OnEnter()
 			-- Loop through the expansions to collect the textures
 			for i=1, numTiers do
 				EJ_SelectTier(i)
-				GetInstanceImages(1, false); -- Populate for dungeon icons
-				GetInstanceImages(1, true); -- Populate for raid icons
+				GetInstanceImages(1, false) -- Populate for dungeon icons
+				GetInstanceImages(1, true) -- Populate for raid icons
 			end
 
 			if collectIDs then

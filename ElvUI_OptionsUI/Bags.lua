@@ -1,4 +1,4 @@
-local E, _, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, _, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local C, L = unpack(select(2, ...))
 local B = E:GetModule('Bags')
 local ACH = E.Libs.ACH
@@ -11,6 +11,7 @@ local SetCVar = SetCVar
 local GetCVarBool = GetCVarBool
 local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight
 local GameTooltip = _G.GameTooltip
+local textAnchors = { BOTTOMRIGHT = 'BOTTOMRIGHT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT', TOPLEFT = 'TOPLEFT', BOTTOM = 'BOTTOM', TOP = 'TOP' }
 
 local Bags = ACH:Group(L["BAGSLOT"], nil, 2, 'tab', function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value end)
 E.Options.args.bags = Bags
@@ -22,7 +23,7 @@ Bags.args.cooldownShortcut = ACH:Execute(L["Cooldown Text"], nil, 3, function() 
 Bags.args.general = ACH:Group(L["General"], nil, 1, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateAll() end, function() return not E.Bags.Initialized end)
 Bags.args.general.args.strata = ACH:Select(L["Frame Strata"], nil, 1, { BACKGROUND = 'BACKGROUND', LOW = 'LOW', MEDIUM = 'MEDIUM', HIGH = 'HIGH' })
 Bags.args.general.args.currencyFormat = ACH:Select(L["Currency Format"], L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"], 2, { ICON = L["Icons Only"], ICON_TEXT = L["Icons and Text"], ICON_TEXT_ABBR = L["Icons and Text (Short)"] }, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateTokens() end)
-Bags.args.general.args.moneyFormat = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown at the top of the main bag."], 3, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"]..' 2' }, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateGoldText() end)
+Bags.args.general.args.moneyFormat = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown at the top of the main bag."], 3, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2" }, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateGoldText() end)
 Bags.args.general.args.moneyCoins = ACH:Toggle(L["Show Coins"], L["Use coin icons instead of colored text."], 4, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateGoldText() end)
 
 Bags.args.general.args.generalGroup = ACH:MultiSelect(L["General"], nil, 5, nil, nil, nil, function(_, key) return E.db.bags[key] end)
@@ -57,27 +58,33 @@ end
 Bags.args.general.args.countGroup = ACH:Group(L["Item Count"], nil, 6, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateCountDisplay() end)
 Bags.args.general.args.countGroup.inline = true
 Bags.args.general.args.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateCountDisplay() end)
-Bags.args.general.args.countGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 2)
-Bags.args.general.args.countGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
-Bags.args.general.args.countGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 4)
+Bags.args.general.args.countGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
+Bags.args.general.args.countGroup.args.fontGroup.inline = true
+Bags.args.general.args.countGroup.args.fontGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
+Bags.args.general.args.countGroup.args.fontGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 4)
+Bags.args.general.args.countGroup.args.fontGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 5)
+Bags.args.general.args.countGroup.args.positionGroup = ACH:Group(L["Position"], nil, 6)
+Bags.args.general.args.countGroup.args.positionGroup.inline = true
+Bags.args.general.args.countGroup.args.positionGroup.args.countPosition = ACH:Select(L["Position"], nil, 7, textAnchors)
+Bags.args.general.args.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
+Bags.args.general.args.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
 
 Bags.args.general.args.itemLevelGroup = ACH:Group(L["Item Level"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemLevelDisplay() end)
 Bags.args.general.args.itemLevelGroup.inline = true
 Bags.args.general.args.itemLevelGroup.args.itemLevel = ACH:Toggle(L["Display Item Level"], L["Displays item level on equippable items."], 1)
-Bags.args.general.args.itemLevelGroup.args.itemLevelThreshold = ACH:Range(L["Item Level Threshold"], L["The minimum item level required for it to be shown."], 2, { min = 1, max = 500, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
-Bags.args.general.args.itemLevelGroup.args.itemLevelCustomColorEnable = ACH:Toggle(L["Custom Color"], nil, 3, nil, nil, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
-Bags.args.general.args.itemLevelGroup.args.itemLevelCustomColor = ACH:Color(" ", nil, 4, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemLevelDisplay() end, nil, function() return not E.db.bags.itemLevel or not E.db.bags.itemLevelCustomColorEnable end)
-Bags.args.general.args.itemLevelGroup.args.itemLevelFont = ACH:SharedMediaFont(L["Font"], nil, 5, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
-Bags.args.general.args.itemLevelGroup.args.itemLevelFontSize = ACH:Range(L["Font Size"], nil, 6, C.Values.FontSize, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
-Bags.args.general.args.itemLevelGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 7, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
-
-Bags.args.general.args.itemInfoGroup = ACH:Group(L["Item Info"], nil, 8, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemInfoDisplay() end)
-Bags.args.general.args.itemInfoGroup.inline = true
-Bags.args.general.args.itemInfoGroup.args.itemInfo = ACH:Toggle(L["Display Item Info"], L["Displays item info on center of item."], 1)
-Bags.args.general.args.itemInfoGroup.args.itemInfoColor = ACH:Color(L["COLOR"], nil, 4, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemInfoDisplay() end, nil, function() return not E.db.bags.itemInfo end)
-Bags.args.general.args.itemInfoGroup.args.itemInfoFont = ACH:SharedMediaFont(L["Font"], nil, 5, nil, nil, nil, nil, function() return not E.db.bags.itemInfo end)
-Bags.args.general.args.itemInfoGroup.args.itemInfoFontSize = ACH:Range(L["Font Size"], nil, 6, C.Values.FontSize, nil, nil, nil, nil, function() return not E.db.bags.itemInfo end)
-Bags.args.general.args.itemInfoGroup.args.itemInfoFontOutline = ACH:FontFlags(L["Font Outline"], nil, 7, nil, nil, nil, nil, function() return not E.db.bags.itemInfo end)
+Bags.args.general.args.itemLevelGroup.args.itemLevelCustomColorEnable = ACH:Toggle(L["Custom Color"], nil, 2, nil, nil, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.itemLevelCustomColor = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemLevelDisplay() end, nil, function() return not E.db.bags.itemLevel or not E.db.bags.itemLevelCustomColorEnable end)
+Bags.args.general.args.itemLevelGroup.args.itemLevelThreshold = ACH:Range(L["Item Level Threshold"], L["The minimum item level required for it to be shown."], 4, { min = 1, max = 500, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 5, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.fontGroup.inline = true
+Bags.args.general.args.itemLevelGroup.args.fontGroup.args.itemLevelFontSize = ACH:Range(L["Font Size"], nil, 6, C.Values.FontSize, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.fontGroup.args.itemLevelFont = ACH:SharedMediaFont(L["Font"], nil, 7, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.fontGroup.args.itemLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 8, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.positionGroup = ACH:Group(L["Position"], nil, 9, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.positionGroup.inline = true
+Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelPosition = ACH:Select(L["Position"], nil, 10, textAnchors, nil, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelxOffset = ACH:Range(L["X-Offset"], nil, 11, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelyOffset = ACH:Range(L["Y-Offset"], nil, 12, { min = -45, max = 45, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 
 Bags.args.general.args.playerGroup = ACH:Group(L["Player"], nil, 8, nil, nil, nil, function() return not E.Bags.Initialized end)
 Bags.args.general.args.playerGroup.inline = true
@@ -146,8 +153,8 @@ Bags.args.bagBar.args.size = ACH:Range(L["Button Size"], L["Set the size of your
 Bags.args.bagBar.args.justBackpack = ACH:Toggle(L['Backpack Only'], nil, 6)
 Bags.args.bagBar.args.spacing = ACH:Range(L["Button Spacing"], L["The spacing between buttons."], 7, { min = -3, max = 20, step = 1 }, nil, nil, nil, nil, function() return E.db.bags.bagBar.justBackpack end)
 Bags.args.bagBar.args.backdropSpacing = ACH:Range(L["Backdrop Spacing"], L["The spacing between the backdrop and the buttons."], 8, { min = 0, max = 10, step = 1 }, nil, nil, nil, nil, function() return E.db.bags.bagBar.justBackpack end)
-Bags.args.bagBar.args.sortDirection = ACH:Select(L["Sort Direction"], L["The direction that the bag frames will grow from the anchor."], 9, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] }, nil, nil, nil, nil, nil, function() return E.db.bags.bagBar.justBackpack end)
-Bags.args.bagBar.args.growthDirection = ACH:Select(L["Bar Direction"], L["The direction that the bag frames be (Horizontal or Vertical)."], 10, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] }, nil, nil, nil, nil, nil, function() return E.db.bags.bagBar.justBackpack end)
+Bags.args.bagBar.args.sortDirection = ACH:Select(L["Sort Direction"], L["The direction that the bag frames will grow from the anchor."], 9, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
+Bags.args.bagBar.args.growthDirection = ACH:Select(L["Bar Direction"], L["The direction that the bag frames be (Horizontal or Vertical)."], 10, { VERTICAL = L["Vertical"], HORIZONTAL = L["Horizontal"] })
 Bags.args.bagBar.args.visibility = ACH:Input(L["Visibility State"], L["This works like a macro, you can run different situations to get the actionbar to show/hide differently.\n Example: '[combat] show;hide'"], 11, true, 'full', nil, function(_, value) E.db.bags.bagBar.visibility = value B:SizeAndPositionBagBar() end)
 
 Bags.args.vendorGrays = ACH:Group(L["Vendor Grays"], nil, 4, nil, function(info) return E.db.bags.vendorGrays[info[#info]] end, function(info, value) E.db.bags.vendorGrays[info[#info]] = value; B:UpdateSellFrameSettings() end)
@@ -168,4 +175,4 @@ Bags.args.bagSortingGroup.args.ignoredEntriesGlobal = ACH:MultiSelect(L["Ignored
 
 Bags.args.search_syntax = ACH:Group(L["Search Syntax"], nil, 6, nil, nil, nil, function() return not E.Bags.Initialized end)
 Bags.args.search_syntax.args.link = ACH:Input(L['More Info'], nil, 0, nil, 'full', function() return [[https://github.com/Jaliborc/LibItemSearch-1.2/wiki/Search-Syntax]] end)
-Bags.args.search_syntax.args.text = ACH:Description(function() return L["SEARCH_SYNTAX_DESC"]; end, 1, 'medium')
+Bags.args.search_syntax.args.text = ACH:Description(function() return L["SEARCH_SYNTAX_DESC"] end, 1, 'medium')

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -21,14 +21,12 @@ local function ReskinTalents(self)
 			frame.TierBorder:SetAlpha(0)
 			frame.Background:SetAlpha(0)
 
-			frame:CreateBackdrop('Transparent')
-			frame.backdrop:SetInside()
-			frame.backdrop:SetBackdropBorderColor(0, 1, 0)
+			frame:SetTemplate('Transparent')
+			frame:SetBackdropBorderColor(0, 1, 0)
 
-			frame.Highlight:SetColorTexture(1, 1, 1, .25)
-			frame.Highlight:SetInside(frame.backdrop)
 			S:HandleIcon(frame.Icon, true)
 			frame.Icon:Point('TOPLEFT', 7, -7)
+			frame.Highlight:SetColorTexture(1, 1, 1, .25)
 
 			HandleIconString(frame.InfoText)
 			hooksecurefunc(frame.InfoText, 'SetText', HandleIconString)
@@ -77,7 +75,7 @@ function S:Blizzard_CovenantSanctum()
 	end
 
 	local TalentList = frame.UpgradesTab.TalentsList
-	TalentList:CreateBackdrop('Transparent')
+	TalentList:SetTemplate('Transparent')
 	S:HandleButton(TalentList.UpgradeButton)
 	TalentList.UpgradeButton:SetFrameLevel(10)
 	TalentList.IntroBox.Background:Hide()
@@ -90,7 +88,7 @@ function S:Blizzard_CovenantSanctum()
 
 	frame:HookScript('OnShow', function()
 		if not frame.IsSkinned then
-			frame:CreateBackdrop('Transparent')
+			frame:SetTemplate('Transparent')
 			frame.NineSlice:SetAlpha(0)
 
 			frame.CloseButton.Border:SetAlpha(0)

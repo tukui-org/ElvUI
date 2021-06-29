@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
 local max = max
 local ipairs = ipairs
@@ -299,7 +299,7 @@ UF.ToggleResourceBar = ToggleResourceBar --Make available to combobar
 -- MONK, PALADIN, WARLOCK, MAGE, and COMBOS
 -------------------------------------------------------------
 function UF:Construct_ClassBar(frame)
-	local bars = CreateFrame('Frame', '$parent_ClassBar', frame, 'BackdropTemplate')
+	local bars = CreateFrame('Frame', '$parent_ClassBar', frame)
 	bars:CreateBackdrop(nil, nil, nil, nil, true)
 	bars:Hide()
 

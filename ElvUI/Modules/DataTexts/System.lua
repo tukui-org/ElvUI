@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local DT = E:GetModule('DataTexts')
 
 local collectgarbage = collectgarbage
@@ -195,9 +195,9 @@ local function OnEnter(_, slow)
 					local stripName = E:StripString(data.title)
 					if name and (strmatch(stripName, searchString) or data.name == addon) then
 						if data.name ~= addon and stripName ~= addon then
-							memoryUsage = memoryUsage + mem;
+							memoryUsage = memoryUsage + mem
 							if showByCPU and cpuProfiling then
-								cpuUsage = cpuUsage + cpu;
+								cpuUsage = cpuUsage + cpu
 							end
 							infoDisplay[k] = false
 						end
@@ -246,7 +246,8 @@ local function OnUpdate(self, elapsed)
 		wait = 1
 
 		local framerate = floor(GetFramerate())
-		local _, _, _, latency = GetNetStats()
+		local _, _, homePing, worldPing = GetNetStats()
+		local latency = E.global.datatexts.settings.System.latency == 'HOME' and homePing or worldPing
 
 		local fps = framerate >= 30 and 1 or (framerate >= 20 and framerate < 30) and 2 or (framerate >= 10 and framerate < 20) and 3 or 4
 		local ping = latency < 150 and 1 or (latency >= 150 and latency < 300) and 2 or (latency >= 300 and latency < 500) and 3 or 4

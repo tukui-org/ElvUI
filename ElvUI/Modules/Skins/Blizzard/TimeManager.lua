@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -29,7 +29,7 @@ function S:Blizzard_TimeManager()
 
 	local TimeManagerStopwatchCheck = _G.TimeManagerStopwatchCheck
 	_G.TimeManagerStopwatchFrame:StripTextures()
-	TimeManagerStopwatchCheck:CreateBackdrop()
+	TimeManagerStopwatchCheck:SetTemplate()
 	TimeManagerStopwatchCheck:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
 	TimeManagerStopwatchCheck:GetNormalTexture():SetInside()
 
@@ -51,11 +51,10 @@ function S:Blizzard_TimeManager()
 	--Play/Pause and Reset buttons
 	local StopwatchPlayPauseButton = _G.StopwatchPlayPauseButton
 	local StopwatchResetButton = _G.StopwatchResetButton
-	StopwatchPlayPauseButton:CreateBackdrop(nil, true)
+	StopwatchPlayPauseButton:SetTemplate(nil, true)
 	StopwatchPlayPauseButton:Size(12, 12)
 	StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)
 	StopwatchPlayPauseButton:SetHighlightTexture('')
-	StopwatchPlayPauseButton.backdrop:SetOutside(StopwatchPlayPauseButton, 2, 2)
 	StopwatchPlayPauseButton:HookScript('OnEnter', S.SetModifiedBackdrop)
 	StopwatchPlayPauseButton:HookScript('OnLeave', S.SetOriginalBackdrop)
 	StopwatchPlayPauseButton:Point('RIGHT', StopwatchResetButton, 'LEFT', -4, 0)

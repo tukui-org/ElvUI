@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
@@ -25,7 +25,7 @@ function S:Blizzard_IslandsQueueUI()
 	local selectorFrame = IslandsFrame.DifficultySelectorFrame
 	local queueButton = selectorFrame and selectorFrame.QueueButton
 	if queueButton  then
-		S:HandleButton(queueButton, nil, nil, nil, nil, nil, nil, nil, true)
+		S:HandleButton(queueButton)
 		queueButton.Flash:Kill()
 	end
 

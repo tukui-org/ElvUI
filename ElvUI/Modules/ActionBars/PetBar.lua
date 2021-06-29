@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
@@ -194,7 +194,7 @@ function AB:UpdatePetBindings()
 end
 
 function AB:CreateBarPet()
-	bar.backdrop = CreateFrame('Frame', nil, bar, 'BackdropTemplate')
+	bar.backdrop = CreateFrame('Frame', nil, bar)
 	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
 	bar.backdrop:SetFrameLevel(0)
 

@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -9,22 +9,18 @@ function S:MerchantFrame()
 
 	local MerchantFrame = _G.MerchantFrame
 	S:HandlePortraitFrame(MerchantFrame)
-
-	MerchantFrame.backdrop:Point('TOPLEFT', 6, 2)
-	MerchantFrame.backdrop:Point('BOTTOMRIGHT', 2, -1)
-
 	MerchantFrame:Width(360)
 
 	_G.MerchantBuyBackItem:StripTextures(true)
 	_G.MerchantBuyBackItem:CreateBackdrop('Transparent')
+	_G.MerchantBuyBackItem.backdrop:Point('TOPLEFT', -6, 6)
+	_G.MerchantBuyBackItem.backdrop:Point('BOTTOMRIGHT', 6, -6)
 
 	_G.MerchantExtraCurrencyInset:StripTextures()
 	_G.MerchantExtraCurrencyBg:StripTextures()
 
 	_G.MerchantMoneyBg:StripTextures()
 	_G.MerchantMoneyInset:StripTextures()
-	_G.MerchantBuyBackItem.backdrop:Point('TOPLEFT', -6, 6)
-	_G.MerchantBuyBackItem.backdrop:Point('BOTTOMRIGHT', 6, -6)
 
 	S:HandleDropDownBox(_G.MerchantFrameLootFilter)
 
@@ -43,11 +39,11 @@ function S:MerchantFrame()
 		local iconBorder = button.IconBorder
 		local item = _G['MerchantItem'..i]
 		item:StripTextures(true)
-		item:CreateBackdrop()
+		item:SetTemplate('Transparent')
 
 		button:StripTextures()
 		button:StyleButton(false)
-		button:CreateBackdrop(nil, true)
+		button:SetTemplate(nil, true)
 		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -4)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
@@ -64,7 +60,7 @@ function S:MerchantFrame()
 	-- Skin buyback item frame + icon
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton(false)
-	_G.MerchantBuyBackItemItemButton:CreateBackdrop(nil, true)
+	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
 
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()

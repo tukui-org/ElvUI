@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Bags')
 
 local _G = _G
@@ -9,17 +9,19 @@ local CreateFrame = CreateFrame
 local GetCVarBool = GetCVarBool
 local GetBagSlotFlag = GetBagSlotFlag
 local RegisterStateDriver = RegisterStateDriver
+local CalculateTotalNumberOfFreeBagSlots = CalculateTotalNumberOfFreeBagSlots
+
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local LE_BAG_FILTER_FLAG_EQUIPMENT = LE_BAG_FILTER_FLAG_EQUIPMENT
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 
 local function OnEnter()
-	if not E.db.bags.bagBar.mouseover then return; end
+	if not E.db.bags.bagBar.mouseover then return end
 	E:UIFrameFadeIn(B.BagBar, 0.2, B.BagBar:GetAlpha(), 1)
 end
 
 local function OnLeave()
-	if not E.db.bags.bagBar.mouseover then return; end
+	if not E.db.bags.bagBar.mouseover then return end
 	E:UIFrameFadeOut(B.BagBar, 0.2, B.BagBar:GetAlpha(), 0)
 end
 
@@ -28,7 +30,7 @@ function B:SkinBag(bag)
 	bag.oldTex = icon:GetTexture()
 
 	bag:StripTextures()
-	bag:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+	bag:SetTemplate()
 	bag:StyleButton(true)
 	bag.IconBorder:Kill()
 
@@ -64,7 +66,6 @@ function B:SizeAndPositionBagBar()
 		button:Size(bagBarSize)
 		button:ClearAllPoints()
 		button:SetShown(i == 1 and justBackpack or not justBackpack)
-		button.Count:SetShown(GetCVarBool('displayFreeBagSlots'))
 
 		if sortDirection == 'ASCENDING'then
 			if i == 1 then firstButton = button else lastButton = button end
@@ -106,13 +107,13 @@ function B:SizeAndPositionBagBar()
 				local r, g, b, a = unpack(B.AssignmentColors[j])
 
 				button.forcedBorderColors = {r, g, b, a}
-				button.backdrop:SetBackdropBorderColor(r, g, b, a)
+				button:SetBackdropBorderColor(r, g, b, a)
 				break -- this loop
 			else
 				button.ElvUIFilterIcon:SetShown(false)
 
 				button.forcedBorderColors = nil
-				button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
 	end
@@ -133,6 +134,12 @@ function B:SizeAndPositionBagBar()
 	end
 
 	B.BagBar.mover:SetSize(B.BagBar.backdrop:GetSize())
+	B:UpdateMainButtonCount()
+end
+
+function B:UpdateMainButtonCount()
+	B.BagBar.buttons[1].Count:SetShown(GetCVarBool('displayFreeBagSlots'))
+	B.BagBar.buttons[1].Count:SetText(CalculateTotalNumberOfFreeBagSlots())
 end
 
 function B:LoadBagBar()
@@ -190,5 +197,6 @@ function B:LoadBagBar()
 	E:CreateMover(B.BagBar, 'BagsMover', L["Bags"], nil, nil, nil, nil, nil, 'bags,general')
 	B.BagBar:SetPoint('BOTTOMLEFT', B.BagBar.mover)
 	B:RegisterEvent('BAG_SLOT_FLAGS_UPDATED', 'SizeAndPositionBagBar')
+	B:RegisterEvent('BAG_UPDATE_DELAYED', 'UpdateMainButtonCount')
 	B:SizeAndPositionBagBar()
 end

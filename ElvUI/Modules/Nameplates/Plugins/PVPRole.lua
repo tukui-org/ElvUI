@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local oUF = E.oUF
 
 local wipe = wipe
@@ -26,8 +26,8 @@ local tankSpecIDs = {
 	581,	--Demon Hunter Vengeance
 	104,	--Druid Guardian
 	268,	--Monk Brewmaster
-	73,     --Warrior Protection
-	250,    --Death Knight Blood
+	73,		--Warrior Protection
+	250,	--Death Knight Blood
 }
 
 local Healers, HealerSpecs = {}, {}
@@ -64,12 +64,12 @@ local function Event()
 					if HealerSpecs[talentSpec] then
 						Healers[name] = talentSpec
 					elseif Healers[name] then
-						Healers[name] = nil;
+						Healers[name] = nil
 					end
 					if TankSpecs[talentSpec] then
 						Tanks[name] = talentSpec
 					elseif Tanks[name] then
-						Tanks[name] = nil;
+						Tanks[name] = nil
 					end
 				end
 			end

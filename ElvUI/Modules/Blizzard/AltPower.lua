@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local B = E:GetModule('Blizzard')
 local LSM = E.Libs.LSM
 
@@ -111,8 +111,8 @@ function B:UpdateAltPowerBar()
 	_G.PlayerPowerBarAlt:UnregisterAllEvents()
 	_G.PlayerPowerBarAlt:Hide()
 
-	local barInfo = GetUnitPowerBarInfo('player');
-	local powerName, powerTooltip = GetUnitPowerBarStrings('player');
+	local barInfo = GetUnitPowerBarInfo('player')
+	local powerName, powerTooltip = GetUnitPowerBarStrings('player')
 	if barInfo then
 		local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX)
 		local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0

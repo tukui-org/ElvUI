@@ -1,5 +1,5 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local UF = E:GetModule('UnitFrames');
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local UF = E:GetModule('UnitFrames')
 
 local _, ns = ...
 local ElvUF = ns.oUF
@@ -10,7 +10,7 @@ local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local hooksecurefunc = hooksecurefunc
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
-local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
+local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 function UF:Construct_PowerBar(frame, bg, text, textPos)
 	local power = CreateFrame('StatusBar', '$parent_PowerBar', frame)
@@ -237,7 +237,7 @@ end
 function UF:GetDisplayPower()
 	local barInfo = GetUnitPowerBarInfo(self.__owner.unit)
 	if barInfo then
-		return ALTERNATE_POWER_INDEX, barInfo.minPower
+		return POWERTYPE_ALTERNATE, barInfo.minPower
 	end
 end
 
@@ -255,6 +255,8 @@ function UF:PostUpdatePowerColor()
 end
 
 local powerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
+local individualUnits = {player = true, target = true, targettarget = true, targettargettarget = true, focus = true, focustarget = true, pet = true, pettarget = true}
+
 function UF:PostUpdatePower(unit, cur, min, max)
 	local parent = self.origParent or self:GetParent()
 	if parent.isForced then
@@ -267,7 +269,7 @@ function UF:PostUpdatePower(unit, cur, min, max)
 	local db = parent.db and parent.db.power
 	if not db then return end
 
-	if (unit == 'player' or unit == 'target') and db.autoHide and parent.POWERBAR_DETACHED then
+	if individualUnits[unit] and db.autoHide and parent.POWERBAR_DETACHED then
 		local _, powerType = UnitPowerType(unit)
 		if (powerTypesFull[powerType] and cur == max) or cur == min then
 			self:Hide()

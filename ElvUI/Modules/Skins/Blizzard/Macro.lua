@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -17,7 +17,7 @@ function S:Blizzard_MacroUI()
 	_G.MacroFrameTextBackground:StripTextures()
 	_G.MacroFrameTextBackground:SetTemplate('Transparent')
 	_G.MacroButtonScrollFrame:StripTextures()
-	_G.MacroButtonScrollFrame:CreateBackdrop('Transparent')
+	_G.MacroButtonScrollFrame:SetTemplate('Transparent')
 
 	S:HandleScrollBar(_G.MacroButtonScrollFrameScrollBar)
 	S:HandleScrollBar(_G.MacroFrameScrollFrameScrollBar)
@@ -52,14 +52,11 @@ function S:Blizzard_MacroUI()
 	_G.MacroEditButton:ClearAllPoints()
 	_G.MacroEditButton:Point('BOTTOMLEFT', _G.MacroFrameSelectedMacroButton, 'BOTTOMRIGHT', 10, 0)
 
-	-- Regular scroll bar
-	S:HandleScrollBar(_G.MacroButtonScrollFrame)
-
 	-- Big icon
 	_G.MacroFrameSelectedMacroButton:StripTextures()
 	_G.MacroFrameSelectedMacroButton:StyleButton(true)
 	_G.MacroFrameSelectedMacroButton:GetNormalTexture():SetTexture()
-	_G.MacroFrameSelectedMacroButton:CreateBackdrop()
+	_G.MacroFrameSelectedMacroButton:SetTemplate()
 	_G.MacroFrameSelectedMacroButtonIcon:SetTexCoord(unpack(E.TexCoords))
 	_G.MacroFrameSelectedMacroButtonIcon:Point('TOPLEFT', 1, -1)
 	_G.MacroFrameSelectedMacroButtonIcon:Point('BOTTOMRIGHT', -1, 1)
@@ -72,7 +69,7 @@ function S:Blizzard_MacroUI()
 		if b then
 			b:StripTextures()
 			b:StyleButton(true)
-			b:CreateBackdrop('Transparent')
+			b:SetTemplate('Transparent')
 		end
 
 		if t then
@@ -83,8 +80,8 @@ function S:Blizzard_MacroUI()
 	end
 
 	--Icon selection frame
-	ShowUIPanel(MacroFrame); --Toggle frame to create necessary variables needed for popup frame
-	HideUIPanel(MacroFrame);
+	ShowUIPanel(MacroFrame) --Toggle frame to create necessary variables needed for popup frame
+	HideUIPanel(MacroFrame)
 	local MacroPopupFrame = _G.MacroPopupFrame
 	MacroPopupFrame:Show() --Toggle the frame in order to create the necessary button elements
 	MacroPopupFrame:Hide()

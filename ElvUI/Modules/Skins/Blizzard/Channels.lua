@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 
 local _G = _G
@@ -12,7 +12,7 @@ function S:Blizzard_Channels()
 
 	S:HandlePortraitFrame(ChannelFrame)
 	CreateChannelPopup:StripTextures()
-	CreateChannelPopup:CreateBackdrop('Transparent')
+	CreateChannelPopup:SetTemplate('Transparent')
 
 	S:HandleButton(ChannelFrame.NewButton)
 	S:HandleButton(ChannelFrame.SettingsButton)
@@ -32,13 +32,13 @@ function S:Blizzard_Channels()
 	S:HandleEditBox(CreateChannelPopup.Password)
 
 	_G.VoiceChatPromptActivateChannel:StripTextures()
-	_G.VoiceChatPromptActivateChannel:CreateBackdrop('Transparent')
+	_G.VoiceChatPromptActivateChannel:SetTemplate('Transparent')
 	S:HandleButton(_G.VoiceChatPromptActivateChannel.AcceptButton)
 	S:HandleCloseButton(_G.VoiceChatPromptActivateChannel.CloseButton)
 
 	-- Hide the Channel Header Textures
 	hooksecurefunc(_G.ChannelButtonHeaderMixin, 'Update', function(s)
-		s:CreateBackdrop('Transparent')
+		s:SetTemplate('Transparent')
 		s.NormalTexture:SetTexture()
 	end)
 end

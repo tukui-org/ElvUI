@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local S = E:GetModule('Skins')
 local LBG = E.Libs.ButtonGlow
 
@@ -44,14 +44,14 @@ function S:LootFrame()
 	LootHistoryFrame:StripTextures()
 	S:HandleCloseButton(LootHistoryFrame.CloseButton)
 	LootHistoryFrame:StripTextures()
-	LootHistoryFrame:CreateBackdrop('Transparent')
+	LootHistoryFrame:SetTemplate('Transparent')
 	LootHistoryFrame.ResizeButton:StripTextures()
 	LootHistoryFrame.ResizeButton.text = LootHistoryFrame.ResizeButton:CreateFontString(nil, 'OVERLAY')
 	LootHistoryFrame.ResizeButton.text:FontTemplate(nil, 16, 'OUTLINE')
 	LootHistoryFrame.ResizeButton.text:SetJustifyH('CENTER')
 	LootHistoryFrame.ResizeButton.text:Point('CENTER', LootHistoryFrame.ResizeButton)
 	LootHistoryFrame.ResizeButton.text:SetText('v v v v')
-	LootHistoryFrame.ResizeButton:CreateBackdrop()
+	LootHistoryFrame.ResizeButton:SetTemplate()
 	LootHistoryFrame.ResizeButton:Width(LootHistoryFrame:GetWidth())
 	LootHistoryFrame.ResizeButton:Height(19)
 	LootHistoryFrame.ResizeButton:ClearAllPoints()
@@ -64,7 +64,7 @@ function S:LootFrame()
 	-- Master Loot
 	local MasterLooterFrame = _G.MasterLooterFrame
 	MasterLooterFrame:StripTextures()
-	MasterLooterFrame:CreateBackdrop()
+	MasterLooterFrame:SetTemplate()
 
 	hooksecurefunc('MasterLooterFrame_Show', function()
 		local b = MasterLooterFrame.Item
@@ -73,12 +73,12 @@ function S:LootFrame()
 			local icon = i:GetTexture()
 			local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
 
-			b:StripTextures()
 			i:SetTexture(icon)
 			i:SetTexCoord(unpack(E.TexCoords))
-			b:CreateBackdrop()
-			b.backdrop:SetOutside(i)
-			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+
+			b:StripTextures()
+			b:SetTemplate()
+			b:SetBackdropBorderColor(c.r, c.g, c.b)
 		end
 
 		for i=1, MasterLooterFrame:GetNumChildren() do
@@ -100,26 +100,26 @@ function S:LootFrame()
 	-- Bonus Roll Frame
 	local BonusRollFrame = _G.BonusRollFrame
 	BonusRollFrame:StripTextures()
-	BonusRollFrame:CreateBackdrop('Transparent')
+	BonusRollFrame:SetTemplate('Transparent')
 
 	BonusRollFrame.SpecRing:SetTexture()
 	BonusRollFrame.CurrentCountFrame.Text:FontTemplate()
 
 	BonusRollFrame.PromptFrame.Icon:SetTexCoord(unpack(E.TexCoords))
-	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame('Frame', nil, BonusRollFrame.PromptFrame, 'BackdropTemplate')
+	BonusRollFrame.PromptFrame.IconBackdrop = CreateFrame('Frame', nil, BonusRollFrame.PromptFrame)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetFrameLevel(BonusRollFrame.PromptFrame.IconBackdrop:GetFrameLevel() - 1)
 	BonusRollFrame.PromptFrame.IconBackdrop:SetOutside(BonusRollFrame.PromptFrame.Icon)
-	BonusRollFrame.PromptFrame.IconBackdrop:CreateBackdrop()
+	BonusRollFrame.PromptFrame.IconBackdrop:SetTemplate()
 
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarTexture(E.media.normTex)
 	BonusRollFrame.PromptFrame.Timer:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
 
 	BonusRollFrame.BlackBackgroundHoist.Background:Hide()
-	BonusRollFrame.BlackBackgroundHoist.b = CreateFrame('Frame', nil, BonusRollFrame, 'BackdropTemplate')
+	BonusRollFrame.BlackBackgroundHoist.b = CreateFrame('Frame', nil, BonusRollFrame)
 	BonusRollFrame.BlackBackgroundHoist.b:SetTemplate()
 	BonusRollFrame.BlackBackgroundHoist.b:SetOutside(BonusRollFrame.PromptFrame.Timer)
 
-	BonusRollFrame.SpecIcon.b = CreateFrame('Frame', nil, BonusRollFrame, 'BackdropTemplate')
+	BonusRollFrame.SpecIcon.b = CreateFrame('Frame', nil, BonusRollFrame)
 	BonusRollFrame.SpecIcon.b:SetTemplate()
 	BonusRollFrame.SpecIcon.b:Point('BOTTOMRIGHT', BonusRollFrame, -2, 2)
 	BonusRollFrame.SpecIcon.b:Size(BonusRollFrame.SpecIcon:GetSize())
@@ -144,16 +144,16 @@ function S:LootFrame()
 
 	hooksecurefunc('BonusRollFrame_StartBonusRoll', function()
 		--keep the status bar a frame above but its increased 1 extra beacuse mera has a grid layer
-		local BonusRollFrameLevel = BonusRollFrame:GetFrameLevel();
-		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+2);
+		local BonusRollFrameLevel = BonusRollFrame:GetFrameLevel()
+		BonusRollFrame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+2)
 		if BonusRollFrame.BlackBackgroundHoist.b then
-			BonusRollFrame.BlackBackgroundHoist.b:SetFrameLevel(BonusRollFrameLevel+1);
+			BonusRollFrame.BlackBackgroundHoist.b:SetFrameLevel(BonusRollFrameLevel+1)
 		end
 
 		--set currency icons position at bottom right (or left of the spec icon, on the bottom right)
 		BonusRollFrame.CurrentCountFrame:ClearAllPoints()
 		if BonusRollFrame.SpecIcon.b then
-			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil);
+			BonusRollFrame.SpecIcon.b:SetShown(BonusRollFrame.SpecIcon:IsShown() and BonusRollFrame.SpecIcon:GetTexture() ~= nil)
 			if BonusRollFrame.SpecIcon.b:IsShown() then
 				BonusRollFrame.CurrentCountFrame:Point('RIGHT', BonusRollFrame.SpecIcon.b, 'LEFT', -2, -2)
 			else
@@ -176,7 +176,7 @@ function S:LootFrame()
 	_G.LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
 	for i=1, LootFrame:GetNumRegions() do
-		local region = select(i, LootFrame:GetRegions());
+		local region = select(i, LootFrame:GetRegions())
 		if region:IsObjectType('FontString') then
 			if region:GetText() == ITEMS then
 				LootFrame.Title = region
@@ -201,33 +201,33 @@ function S:LootFrame()
 	end
 
 	hooksecurefunc('LootFrame_UpdateButton', function(index)
-		local numLootItems = LootFrame.numLootItems;
+		local numLootItems = LootFrame.numLootItems
 		--Logic to determine how many items to show per page
-		local numLootToShow = _G.LOOTFRAME_NUMBUTTONS;
+		local numLootToShow = _G.LOOTFRAME_NUMBUTTONS
 		if LootFrame.AutoLootTable then
-			numLootItems = #LootFrame.AutoLootTable;
+			numLootItems = #LootFrame.AutoLootTable
 		end
 		if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
-			numLootToShow = numLootToShow - 1; -- make space for the page buttons
+			numLootToShow = numLootToShow - 1 -- make space for the page buttons
 		end
 
-		local button = _G['LootButton'..index];
-		local slot = (numLootToShow * (LootFrame.page - 1)) + index;
+		local button = _G['LootButton'..index]
+		local slot = (numLootToShow * (LootFrame.page - 1)) + index
 		if button and button:IsShown() then
-			local texture, _, isQuestItem, questId, isActive;
+			local texture, _, isQuestItem, questId, isActive
 			if LootFrame.AutoLootTable then
-				local entry = LootFrame.AutoLootTable[slot];
+				local entry = LootFrame.AutoLootTable[slot]
 				if entry.hide then
-					button:Hide();
-					return;
+					button:Hide()
+					return
 				else
-					texture = entry.texture;
-					isQuestItem = entry.isQuestItem;
-					questId = entry.questId;
-					isActive = entry.isActive;
+					texture = entry.texture
+					isQuestItem = entry.isQuestItem
+					questId = entry.questId
+					isActive = entry.isActive
 				end
 			else
-				texture, _, _, _, _, isQuestItem, questId, isActive = GetLootSlotInfo(slot);
+				texture, _, _, _, _, isQuestItem, questId, isActive = GetLootSlotInfo(slot)
 			end
 
 			if texture then

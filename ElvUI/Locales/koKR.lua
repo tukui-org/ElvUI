@@ -1,9 +1,6 @@
 -- Korean localization file for koKR.
-local E = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "koKR")
-
-local COLOR1 = '|cFF1784d1'
-local COLOR2 = '|cfd9b9b9b'
 
 L["BoP"] = "획귀"
 L["BoE"] = "착귀"
@@ -70,6 +67,7 @@ L["Blend Mode"] = true
 L["Blend"] = true
 L["Blizzard Widgets"] = true
 L["BNet Frame"] = "배틀넷 알림"
+L["Boss Banner"] = true
 L["Boss Button"] = "특수능력 버튼"
 L["Boss Frames"] = "보스 프레임"
 L["Building(s) Report:"] = "건축 보고서"
@@ -128,6 +126,7 @@ L["ElvUI Status"] = "ELVUI 상태창"
 L["Empty Slot"] = "빈 칸"
 L["Enable"] = "사용"
 L["Error resetting UnitFrame."] = "유닛프레임 초기화 오류"
+L["Event Log"] = true
 L["Experience Bar"] = "경험치 바"
 L["Experience"] = "경험치"
 L["Feet"] = "발"
@@ -158,7 +157,7 @@ L["Honor Bar"] = "명예바"
 L["Honor Remaining:"] = "남은 명예"
 L["Honor XP:"] = "명예 경험치"
 L["Horde: "] = "호드: "
-L["Hover your mouse over any |cFF1784d1action|r, |cFF1784d1micro|r, |cFF1784d1macro|r, or |cFF1784d1spellbook|r button to bind it. This also works for items in your |cFF1784d1bag|r. Press the |cfd9b9b9bESC|r key to |cfd9b9b9bclear|r the current bindings."] = true
+L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["HP"] = "주문력"
 L["HPS"] = "HPS"
 L["I Swear"] = "알겠습니다."
@@ -200,11 +199,12 @@ L["Layout"] = "레이아웃"
 L["Left Chat"] = "좌측 패널"
 L["Left Click:"] = "왼 클릭 :"
 L["Legs"] = "다리"
+L["Level"] = "레벨"
 L["Level Up Display / Boss Banner"] = "레벨업 표시 / 보스 배너"
 L["List of installations in queue:"] = "설치 대기열 목록"
 L["Lock"] = "잠금"
-L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', COLOR1)
-L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type */ec|r to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"):gsub('*', COLOR1)
+L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', E.InfoColor)
+L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type */ec|r to access the in-game configuration menu. If you are in need of technical support you can visit us at https://www.tukui.org or join our Discord: https://discord.gg/xFWcfgE"):gsub('*', E.InfoColor)
 L["Loot / Alert Frames"] = "획득/알림 창"
 L["Loot Frame"] = "전리품 프레임"
 L["Lord! It's a miracle! The download up and vanished like a fart in the wind! Try Again!"] = "데이터를 받는 중 혼선이 생겼습니다. 다시 시도해주세요."
@@ -287,7 +287,7 @@ L["Save"] = "저장"
 L["Saved Dungeon(s)"] = "귀속된 던전"
 L["Saved Raid(s)"] = "귀속된 던전"
 L["says"] = "일반"
-L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bar & Icons to use both aura bars and icons, set to icons only to only see icons."] = true
+L["Select the type of aura system you want to use with ElvUI's unitframes. Set to Aura Bars to use both aura bars and icons, set to Icons Only to only see icons."] = true
 L["Server: "] = "서버:"
 L["Session:"] = "현재 접속:"
 L["Setup Chat"] = "대화창 설치"
@@ -398,4 +398,4 @@ L["EHELP_COMMANDS"] = ([=[Here is a list of all important *ElvUI|r commands:
  */luaerror|r ^on|r or ^off|r  -  Disable all AddOns except ElvUI.
   NOTE: */luaerror|r ^off|r will re-enable the addons disabled from
   using */luaerror|r ^on|r within that session.
-]=]):gsub('*', COLOR1):gsub('%^', COLOR2)
+]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)

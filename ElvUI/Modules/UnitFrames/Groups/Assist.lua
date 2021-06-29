@@ -1,4 +1,4 @@
-local E, L, V, P, G = unpack(select(2, ...)); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 
 local _, ns = ...
@@ -8,7 +8,6 @@ assert(ElvUF, 'ElvUI was unable to locate oUF.')
 local _G = _G
 local max = max
 local CreateFrame = CreateFrame
-local IsAddOnLoaded = IsAddOnLoaded
 local InCombatLockdown = InCombatLockdown
 local RegisterAttributeDriver = RegisterAttributeDriver
 
@@ -129,7 +128,7 @@ function UF:Update_AssistFrames(frame, db)
 	UF:Configure_Cutaway(frame)
 
 	if not frame.isChild then
-		if not IsAddOnLoaded('Clique') then
+		if not E:IsAddOnEnabled('Clique') then
 			if db.middleClickFocus then
 				frame:SetAttribute('type3', 'focus')
 			elseif frame:GetAttribute('type3') == 'focus' then
