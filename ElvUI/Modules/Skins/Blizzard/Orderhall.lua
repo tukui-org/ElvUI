@@ -22,7 +22,6 @@ function S:Blizzard_OrderHallUI()
 	OrderHallCommandBar.WorldMapButton:Hide()
 
 	local OrderHallTalentFrame = _G.OrderHallTalentFrame
-
 	S:HandlePortraitFrame(OrderHallTalentFrame)
 	S:HandleButton(OrderHallTalentFrame.BackButton)
 	S:HandleIcon(OrderHallTalentFrame.Currency.Icon)
@@ -33,6 +32,7 @@ function S:Blizzard_OrderHallUI()
 		if frame.CloseButton.Border then frame.CloseButton.Border:SetAlpha(0) end
 		if frame.CurrencyBG then frame.CurrencyBG:SetAlpha(0) end
 		frame:StripTextures()
+		frame:SetTemplate()
 
 		for i = 1, frame:GetNumChildren() do
 			local bu = select(i, frame:GetChildren())
