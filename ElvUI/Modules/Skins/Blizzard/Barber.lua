@@ -26,30 +26,33 @@ function S:Blizzard_CharacterCustomize()
 	S:HandleButton(frame.SmallButtons.RotateRightButton, nil, nil, true)
 
 	hooksecurefunc(frame, 'SetSelectedCatgory', function(list)
-		for button in list.selectionPopoutPool:EnumerateActive() do
-			if not button.IsSkinned then
-				S:HandleNextPrevButton(button.DecrementButton)
-				S:HandleNextPrevButton(button.IncrementButton)
+		if list.selectionPopoutPool then
+			for button in list.selectionPopoutPool:EnumerateActive() do
+				if not button.IsSkinned then
+					S:HandleNextPrevButton(button.DecrementButton)
+					S:HandleNextPrevButton(button.IncrementButton)
 
-				local popoutButton = button.SelectionPopoutButton
-				popoutButton.HighlightTexture:SetAlpha(0)
-				popoutButton.NormalTexture:SetAlpha(0)
+					local popoutButton = button.SelectionPopoutButton
+					popoutButton.HighlightTexture:SetAlpha(0)
+					popoutButton.NormalTexture:SetAlpha(0)
 
-				popoutButton.Popout:StripTextures()
-				popoutButton.Popout:SetTemplate('Transparent')
+					popoutButton.Popout:StripTextures()
+					popoutButton.Popout:SetTemplate('Transparent')
 
-				S:HandleButton(popoutButton, nil, nil, nil, true)
-				popoutButton.backdrop:SetInside(nil, 4, 4)
+					S:HandleButton(popoutButton, nil, nil, nil, true)
+					popoutButton.backdrop:SetInside(nil, 4, 4)
 
-				button.IsSkinned = true
+					button.IsSkinned = true
+				end
 			end
 		end
 
-		local optionPool = list.pools:GetPool('CharCustomizeOptionCheckButtonTemplate')
-		for button in optionPool:EnumerateActive() do
-			if not button.IsSkinned then
-				S:HandleCheckBox(button.Button)
-				button.IsSkinned = true
+		local optionPool = list.pools and list.pools:GetPool('CharCustomizeOptionCheckButtonTemplate')
+		if optionPool then
+			for button in optionPool:EnumerateActive() do
+				if not button.isSkinned then
+					S:HandleCheckBox(button.Button)
+				end
 			end
 		end
 	end)
