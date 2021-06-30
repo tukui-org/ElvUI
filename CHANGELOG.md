@@ -1,7 +1,16 @@
-### Version 12.30 [ ETA: 🍨 ]
+### Version 12.31 [ ETA: 🍨 ]
 
 **Hotfixes:**  
 
+
+___
+### Version 12.30 [ June 30th 2021 ]
+
+**Hotfixes:**  
+Fixed Barber skin error.  
+Fixed Achievement skin error.  
+Fixed Orderhall Talent skin.  
+Fixed Player Choice skin while in tower (again).  
 
 ___
 ### Version 12.29 [ June 29th 2021 ]
