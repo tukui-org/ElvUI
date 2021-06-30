@@ -59,13 +59,17 @@ local function SetupOptions(frame)
 
 		for option in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
 			if parchmentRemover then
-				option.Header.Contents.Text:SetTextColor(1, .8, 0)
+				option.Header.Text:SetTextColor(1, .8, 0)
 				option.OptionText:SetTextColor(1, 1, 1)
 			end
 
 			if noParchment then
 				option.Background:SetAlpha(0)
 				option.Header.Ribbon:SetAlpha(0)
+			end
+
+			if option.Artwork then -- blizzard never sets a size
+				option.Artwork:Size(64) -- fix it for art replacements
 			end
 
 			SetupRewards(option.rewards)
