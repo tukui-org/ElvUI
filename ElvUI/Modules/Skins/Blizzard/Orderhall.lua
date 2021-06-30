@@ -28,25 +28,27 @@ function S:Blizzard_OrderHallUI()
 	OrderHallTalentFrame.OverlayElements:SetAlpha(0)
 
 	hooksecurefunc(OrderHallTalentFrame, 'RefreshAllData', function(frame)
-		-- We need to hide the objects again after an update is happen.
 		if frame.CloseButton.Border then frame.CloseButton.Border:SetAlpha(0) end
 		if frame.CurrencyBG then frame.CurrencyBG:SetAlpha(0) end
+
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 
-		for i = 1, frame:GetNumChildren() do
-			local bu = select(i, frame:GetChildren())
-			if bu and bu.talent then
-				bu.Border:SetAlpha(0)
-				bu.Icon:SetTexCoord(unpack(E.TexCoords))
-				bu.Highlight:SetColorTexture(1, 1, 1, .25)
+		if frame.buttonPool then
+			for bu in frame.buttonPool:EnumerateActive() do
+				if bu.talent then
+					bu:SetTemplate()
 
-				bu:SetTemplate()
+					bu.Border:SetAlpha(0)
+					bu.Highlight:SetColorTexture(1, 1, 1, .25)
+					bu.Icon:SetTexCoord(unpack(E.TexCoords))
+					bu.Icon:SetInside()
 
-				if bu.talent.selected then
-					bu:SetBackdropBorderColor(1, 1, 0)
-				else
-					bu:SetBackdropBorderColor(0, 0, 0)
+					if bu.talent.selected then
+						bu:SetBackdropBorderColor(1, 1, 0)
+					else
+						bu:SetBackdropBorderColor(0, 0, 0)
+					end
 				end
 			end
 		end
