@@ -23,7 +23,7 @@ function S:Blizzard_OrderHallUI()
 	local OrderHallTalentFrame = _G.OrderHallTalentFrame
 	S:HandlePortraitFrame(OrderHallTalentFrame)
 	S:HandleButton(OrderHallTalentFrame.BackButton)
-	S:HandleIcon(OrderHallTalentFrame.Currency.Icon)
+	S:HandleIcon(OrderHallTalentFrame.Currency.Icon, true)
 	OrderHallTalentFrame.OverlayElements:SetAlpha(0)
 
 	hooksecurefunc(OrderHallTalentFrame, 'RefreshAllData', function(frame)
