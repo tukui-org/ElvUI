@@ -59,7 +59,7 @@ local function SetupOptions(frame)
 
 		for option in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
 			if parchmentRemover then
-				option.Header.Contents.Text:SetTextColor(1, .8, 0)
+				option.Header.Text:SetTextColor(1, .8, 0)
 				option.OptionText:SetTextColor(1, 1, 1)
 			end
 
