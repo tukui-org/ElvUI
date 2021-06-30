@@ -1,4 +1,10 @@
-### Version 12.28 [ ETA: 🍨 ]
+### Version 12.29 [ ETA: 🍨 ]
+
+**Hotfixes:**  
+
+
+___
+### Version 12.28 [ June 29th 2021 ]
 
 **Hotfixes:**  
 Talent spec spell icons slightly larger.  
