@@ -32,7 +32,7 @@ function S:Blizzard_OrderHallUI()
 		if frame.CloseButton.Border then frame.CloseButton.Border:SetAlpha(0) end
 		if frame.CurrencyBG then frame.CurrencyBG:SetAlpha(0) end
 		frame:StripTextures()
-		frame:SetTemplate()
+		frame:SetTemplate('Transparent')
 
 		for i = 1, frame:GetNumChildren() do
 			local bu = select(i, frame:GetChildren())
