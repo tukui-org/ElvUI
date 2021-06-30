@@ -32,7 +32,6 @@ local function SkinAchievementAlert(frame)
 
 	-- Background
 	frame.Background:SetTexture()
-	frame.OldAchievement:Kill()
 	frame.glow:Kill()
 	frame.shine:Kill()
 	frame.GuildBanner:Kill()
