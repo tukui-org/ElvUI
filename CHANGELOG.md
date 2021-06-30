@@ -1,7 +1,9 @@
 ### Version 12.28 [ ETA: 🍨 ]
 
 **Hotfixes:**  
-
+Talent spec spell icons slightly larger.  
+Fixed bag skin (not the all in one bag).  
+Hide mythic score when its at zero.  
 
 ___
 ### Version 12.27 [ June 29th 2021 ]
