@@ -68,6 +68,10 @@ local function SetupOptions(frame)
 				option.Header.Ribbon:SetAlpha(0)
 			end
 
+			if option.Artwork then -- blizzard never sets a size
+				option.Artwork:Size(64) -- fix it for art replacements
+			end
+
 			SetupRewards(option.rewards)
 			SetupButtons(option.buttons)
 		end
