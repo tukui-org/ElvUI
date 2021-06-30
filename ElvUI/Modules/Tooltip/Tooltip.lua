@@ -281,7 +281,7 @@ function TT:SetUnitText(tt, unit)
 				local data = C_PlayerInfo_GetPlayerMythicPlusRatingSummary(unit)
 				local seasonScore = data and data.currentSeasonScore
 
-				if seasonScore then
+				if seasonScore and seasonScore > 0 then
 					local color = TT.db.dungeonScoreColor and C_ChallengeMode_GetDungeonScoreRarityColor(seasonScore)
 					GameTooltip:AddDoubleLine(L["Mythic+ Score:"], seasonScore, nil, nil, nil, color and color.r or 1, color and color.g or 1, color and color.b or 1)
 				end

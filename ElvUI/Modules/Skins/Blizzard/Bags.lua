@@ -121,7 +121,7 @@ end
 local function SkinBags()
 	for i = 1, NUM_CONTAINER_FRAMES, 1 do
 		local container = _G['ContainerFrame'..i]
-		if container and not container.backdrop then
+		if container and not container.template then
 			container:SetFrameStrata('HIGH')
 			container:StripTextures(true)
 			container:SetTemplate('Transparent')
