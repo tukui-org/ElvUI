@@ -1,7 +1,13 @@
-### Version 12.29 [ ETA: 🍨 ]
+### Version 12.30 [ ETA: 🍨 ]
 
 **Hotfixes:**  
 
+
+___
+### Version 12.29 [ June 29th 2021 ]
+
+**Hotfixes:**  
+Readded Item Info options for Bag slots.  
 
 ___
 ### Version 12.28 [ June 29th 2021 ]
