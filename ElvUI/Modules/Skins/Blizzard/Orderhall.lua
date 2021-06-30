@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -44,10 +43,12 @@ function S:Blizzard_OrderHallUI()
 					bu.Icon:SetTexCoord(unpack(E.TexCoords))
 					bu.Icon:SetInside()
 
-					if bu.talent.selected then
-						bu:SetBackdropBorderColor(1, 1, 0)
+					if bu.talent.isBeingResearched then
+						bu:SetBackdropBorderColor(0, 1, 0)
+					elseif bu.talent.researched or bu.talent.selected then
+						bu:SetBackdropBorderColor(1, 0.8, 0)
 					else
-						bu:SetBackdropBorderColor(0, 0, 0)
+						bu:SetBackdropBorderColor(unpack(E.media.bordercolor))
 					end
 				end
 			end
