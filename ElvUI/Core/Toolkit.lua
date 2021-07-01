@@ -48,6 +48,23 @@ local function DisablePixelSnap(frame)
 	end
 end
 
+local function BackdropFrameLevel(frame, level)
+	frame:SetFrameLevel(level)
+
+	if frame.oborder then frame.oborder:SetFrameLevel(level) end
+	if frame.iborder then frame.iborder:SetFrameLevel(level) end
+end
+
+local function BackdropFrameLower(backdrop, parent)
+	local level = parent:GetFrameLevel()
+	local minus = level and (level - 1)
+	if minus and (minus >= 0) then
+		BackdropFrameLevel(backdrop, minus)
+	else
+		BackdropFrameLevel(backdrop, 0)
+	end
+end
+
 local function GetTemplate(template, isUnitFrameElement)
 	backdropa, bordera = 1, 1
 
@@ -160,10 +177,12 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 				edgeSize = E:Scale(1)
 			}
 
+			local level = frame:GetFrameLevel()
 			if not frame.iborder then
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
+				border:SetFrameLevel(level)
 				border:SetInside(frame, 1, 1)
 				frame.iborder = border
 			end
@@ -172,6 +191,7 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
 				border:SetBackdrop(backdrop)
 				border:SetBackdropBorderColor(0, 0, 0, 1)
+				border:SetFrameLevel(level)
 				border:SetOutside(frame, 1, 1)
 				frame.oborder = border
 			end
@@ -217,18 +237,12 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 
 	if frameLevel then
 		if frameLevel == true then
-			backdrop:SetFrameLevel(parent:GetFrameLevel())
+			BackdropFrameLevel(backdrop, parent:GetFrameLevel())
 		else
-			backdrop:SetFrameLevel(frameLevel)
+			BackdropFrameLevel(backdrop, frameLevel)
 		end
 	else
-		local level = parent:GetFrameLevel()
-		local minus = level and (level - 1)
-		if minus and (minus >= 0) then
-			backdrop:SetFrameLevel(minus)
-		else
-			backdrop:SetFrameLevel(0)
-		end
+		BackdropFrameLower(backdrop, parent)
 	end
 end
 
