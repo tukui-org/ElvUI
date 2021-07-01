@@ -58,19 +58,21 @@ local function SetupOptions(frame)
 		local noParchment = not inTower and parchmentRemover
 
 		for option in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
+			local header = option.Header
+			local contents = header and header.Contents
+
 			if parchmentRemover then
-				option.Header.Text:SetTextColor(1, .8, 0)
-				option.OptionText:SetTextColor(1, 1, 1)
+				if contents and contents.Text then contents.Text:SetTextColor(1, .8, 0) end -- Normal Header Text
+				if header and header.Text then header.Text:SetTextColor(1, .8, 0) end -- Torghast Header Text
+				if option.OptionText then option.OptionText:SetTextColor(1, 1, 1) end -- description text
 			end
 
 			if noParchment then
-				option.Background:SetAlpha(0)
-				option.Header.Ribbon:SetAlpha(0)
+				if option.Background then option.Background:SetAlpha(0) end
+				if header and header.Ribbon then header.Ribbon:SetAlpha(0) end -- Normal only
 			end
 
-			if option.Artwork then -- blizzard never sets a size
-				option.Artwork:Size(64) -- fix it for art replacements
-			end
+			if option.Artwork then option.Artwork:Size(64) end -- blizzard never sets a size, so fix it for art replacements
 
 			SetupRewards(option.rewards)
 			SetupButtons(option.buttons)
