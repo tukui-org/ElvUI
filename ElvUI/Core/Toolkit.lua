@@ -48,11 +48,13 @@ local function DisablePixelSnap(frame)
 	end
 end
 
-local function BackdropFrameLevel(frame, level)
+local function BackdropFrameLevel(frame, level, skip)
 	frame:SetFrameLevel(level)
 
-	if frame.oborder then frame.oborder:SetFrameLevel(level) end
-	if frame.iborder then frame.iborder:SetFrameLevel(level) end
+	if not skip then
+		if frame.oborder then frame.oborder:SetFrameLevel(level) end
+		if frame.iborder then frame.iborder:SetFrameLevel(level) end
+	end
 end
 
 local function BackdropFrameLower(backdrop, parent)
@@ -237,7 +239,7 @@ local function CreateBackdrop(frame, template, glossTex, ignoreUpdates, forcePix
 
 	if frameLevel then
 		if frameLevel == true then
-			BackdropFrameLevel(backdrop, parent:GetFrameLevel())
+			BackdropFrameLevel(backdrop, parent:GetFrameLevel(), true)
 		else
 			BackdropFrameLevel(backdrop, frameLevel)
 		end
