@@ -475,13 +475,14 @@ function S:Blizzard_EncounterJournal()
 	S:HandleScrollBar(LootJournal.PowersFrame.ScrollBar)
 
 	local IconColor = E.QualityColors[ITEMQUALITY_LEGENDARY]
-	hooksecurefunc(LootJournal.PowersFrame, "RefreshListDisplay", function(buttons)
+	hooksecurefunc(LootJournal.PowersFrame, 'RefreshListDisplay', function(buttons)
 		if not buttons.elements then return end
 
 		for i = 1, buttons:GetNumElementFrames() do
 			local btn = buttons.elements[i]
 			if btn and not btn.IsSkinned then
 				btn.Background:SetAlpha(0)
+				btn.BackgroundOverlay:SetAlpha(0)
 				btn.CircleMask:Hide()
 				S:HandleIcon(btn.Icon, true)
 				btn.Icon.backdrop:SetBackdropBorderColor(IconColor.r, IconColor.g, IconColor.b)

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -22,31 +21,35 @@ function S:Blizzard_OrderHallUI()
 	OrderHallCommandBar.WorldMapButton:Hide()
 
 	local OrderHallTalentFrame = _G.OrderHallTalentFrame
-
 	S:HandlePortraitFrame(OrderHallTalentFrame)
 	S:HandleButton(OrderHallTalentFrame.BackButton)
-	S:HandleIcon(OrderHallTalentFrame.Currency.Icon)
+	S:HandleIcon(OrderHallTalentFrame.Currency.Icon, true)
 	OrderHallTalentFrame.OverlayElements:SetAlpha(0)
 
 	hooksecurefunc(OrderHallTalentFrame, 'RefreshAllData', function(frame)
-		-- We need to hide the objects again after an update is happen.
 		if frame.CloseButton.Border then frame.CloseButton.Border:SetAlpha(0) end
 		if frame.CurrencyBG then frame.CurrencyBG:SetAlpha(0) end
+
 		frame:StripTextures()
+		frame:SetTemplate('Transparent')
 
-		for i = 1, frame:GetNumChildren() do
-			local bu = select(i, frame:GetChildren())
-			if bu and bu.talent then
-				bu.Border:SetAlpha(0)
-				bu.Icon:SetTexCoord(unpack(E.TexCoords))
-				bu.Highlight:SetColorTexture(1, 1, 1, .25)
+		if frame.buttonPool then
+			for bu in frame.buttonPool:EnumerateActive() do
+				if bu.talent then
+					bu:SetTemplate()
 
-				bu:SetTemplate()
+					bu.Border:SetAlpha(0)
+					bu.Highlight:SetColorTexture(1, 1, 1, .25)
+					bu.Icon:SetTexCoord(unpack(E.TexCoords))
+					bu.Icon:SetInside()
 
-				if bu.talent.selected then
-					bu:SetBackdropBorderColor(1, 1, 0)
-				else
-					bu:SetBackdropBorderColor(0, 0, 0)
+					if bu.talent.isBeingResearched then
+						bu:SetBackdropBorderColor(0, 1, 0)
+					elseif bu.talent.researched or bu.talent.selected then
+						bu:SetBackdropBorderColor(1, 0.8, 0)
+					else
+						bu:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					end
 				end
 			end
 		end
