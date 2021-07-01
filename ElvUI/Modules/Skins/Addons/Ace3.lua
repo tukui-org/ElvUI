@@ -252,7 +252,6 @@ function S:Ace3_RegisterAsWidget(widget)
 	elseif TYPE == 'Button' or TYPE == 'Button-ElvUI' then
 		local frame = widget.frame
 		S:HandleButton(frame, true)
-		-- frame:SetInside()  --! Simpy, look at this for the issue with addons that use ace
 	elseif TYPE == 'Slider' or TYPE == 'Slider-ElvUI' then
 		local frame = widget.slider
 		local editbox = widget.editbox
