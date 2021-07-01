@@ -3,12 +3,11 @@ local M = E:GetModule('Misc')
 local CH = E:GetModule('Chat')
 local LSM = E.Libs.LSM
 
-local format, wipe, unpack, pairs = format, wipe, unpack, pairs
+local format, wipe, pairs = format, wipe, pairs
 local strmatch, strlower, gmatch, gsub = strmatch, strlower, gmatch, gsub
 
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
 local RemoveExtraSpaces = RemoveExtraSpaces
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
@@ -148,23 +147,21 @@ local function ChatBubble_OnUpdate(eventFrame, elapsed)
 	end
 end
 
-function M:ToggleChatBubbleScript()
-	local _, instanceType = GetInstanceInfo()
-	if instanceType == 'none' and E.private.general.chatBubbles ~= 'disabled' then
+function M:LoadChatBubbles()
+	yOffset = (E.private.general.chatBubbles == 'backdrop' and 2) or (E.private.general.chatBubbles == 'backdrop_noborder' and -2) or 0
+
+	M.BubbleFrame = CreateFrame('Frame')
+	M.BubbleFrame:RegisterEvent('CHAT_MSG_SAY')
+	M.BubbleFrame:RegisterEvent('CHAT_MSG_YELL')
+	M.BubbleFrame:RegisterEvent('CHAT_MSG_MONSTER_SAY')
+	M.BubbleFrame:RegisterEvent('CHAT_MSG_MONSTER_YELL')
+	M.BubbleFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+
+	if E.private.general.chatBubbles ~= 'disabled' then
 		M.BubbleFrame:SetScript('OnEvent', ChatBubble_OnEvent)
 		M.BubbleFrame:SetScript('OnUpdate', ChatBubble_OnUpdate)
 	else
 		M.BubbleFrame:SetScript('OnEvent', nil)
 		M.BubbleFrame:SetScript('OnUpdate', nil)
 	end
-end
-
-function M:LoadChatBubbles()
-	yOffset = (E.private.general.chatBubbles == 'backdrop' and 2) or (E.private.general.chatBubbles == 'backdrop_noborder' and -2) or 0
-	self.BubbleFrame = CreateFrame('Frame')
-	self.BubbleFrame:RegisterEvent('CHAT_MSG_SAY')
-	self.BubbleFrame:RegisterEvent('CHAT_MSG_YELL')
-	self.BubbleFrame:RegisterEvent('CHAT_MSG_MONSTER_SAY')
-	self.BubbleFrame:RegisterEvent('CHAT_MSG_MONSTER_YELL')
-	self.BubbleFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
