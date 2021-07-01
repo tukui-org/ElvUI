@@ -1,7 +1,16 @@
-### Version 12.31 [ ETA: 🍨 ]
+### Version 12.32 [ ETA: 🍨 ]
 
 **Hotfixes:**  
 
+
+___
+### Version 12.31 [ July 1st 2021 ]
+
+**Hotfixes:**  
+Fixed Player Choice skin error in tower (once more).  
+Fixed an issue with the Ace3 skin which caused some buttons to fill the screen.  
+Fixed an issue which caused some borders to overlap when not using pixel mode.  
+Allowed Chat Bubbles to be skinned in tower since they seem to not be allowed there.  
 
 ___
 ### Version 12.30 [ June 30th 2021 ]
