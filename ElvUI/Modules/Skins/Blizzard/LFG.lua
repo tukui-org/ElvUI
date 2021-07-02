@@ -574,6 +574,9 @@ function S:LookingForGroupFrames()
 		if not button.InviteButton.template then
 			S:HandleButton(button.InviteButton)
 		end
+		if not button.InviteButtonSmall.template then
+			S:HandleButton(button.InviteButtonSmall)
+		end
 	end)
 
 	hooksecurefunc('LFGListSearchEntry_Update', function(button)
