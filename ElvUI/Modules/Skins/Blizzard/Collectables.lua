@@ -630,6 +630,7 @@ function S:Blizzard_Collections()
 	S:HandleButton(WardrobeTransmogFrame.SpecButton)
 	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
 	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)
+	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
 
 	--Transmogrify NPC Sets tab
 	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
