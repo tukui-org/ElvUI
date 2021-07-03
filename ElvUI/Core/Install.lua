@@ -54,7 +54,7 @@ local ELV_TOONS = {
 function E:SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows()
 	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(_G.ChatFrame3)
+	FCF_UnDockFrame(_G.ChatFrame4)
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[name]
@@ -68,7 +68,7 @@ function E:SetupChat(noDisplayMsg)
 		if id == 1 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.LeftChatToggleButton, 'TOPLEFT', 1, 3)
-		elseif id == 3 then
+		elseif id == 4 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.RightChatDataPanel, 'TOPLEFT', 1, 3)
 		end
@@ -77,12 +77,9 @@ function E:SetupChat(noDisplayMsg)
 		FCF_StopDragging(frame)
 		FCF_SetChatWindowFontSize(nil, frame, 12)
 
-		-- rename windows general because moved to chat #3
-		if id == 1 then
-			FCF_SetWindowName(frame, GENERAL)
-		elseif id == 2 then
+		if id == 2 then
 			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif id == 3 then
+		elseif id == 4 then
 			FCF_SetWindowName(frame, LOOT..' / '..TRADE)
 		end
 	end
@@ -96,14 +93,14 @@ function E:SetupChat(noDisplayMsg)
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
 	chatGroup = { 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
-	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame3)
+	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame4)
 	for _, v in ipairs(chatGroup) do
-		ChatFrame_AddMessageGroup(_G.ChatFrame3, v)
+		ChatFrame_AddMessageGroup(_G.ChatFrame4, v)
 	end
 
 	ChatFrame_AddChannel(_G.ChatFrame1, GENERAL)
 	ChatFrame_RemoveChannel(_G.ChatFrame1, TRADE)
-	ChatFrame_AddChannel(_G.ChatFrame3, TRADE)
+	ChatFrame_AddChannel(_G.ChatFrame4, TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
 	chatGroup = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
