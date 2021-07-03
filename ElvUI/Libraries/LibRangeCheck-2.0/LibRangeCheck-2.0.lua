@@ -111,9 +111,10 @@ PetSpells["DEMONHUNTER"] = {}
 
 -- Druids
 FriendSpells["DRUID"] = {
-    774,  -- Rejuvenation (40 yards, level 10)
-    2782, -- Remove Corruption (40 yards, level 19)
-    8936, -- Regrowth (40 yards, level 5)
+    8936,  -- Regrowth (40 yards, level 3)
+    774,   -- Rejuvenation (Restoration) (40 yards, level 10)
+    2782,  -- Remove Corruption (Restoration) (40 yards, level 19)
+    88423, -- Natures Cure (Restoration) (40 yards, level 19)
 }
 HarmSpells["DRUID"] = {
     5176,  -- Wrath (40 yards)
@@ -124,7 +125,9 @@ HarmSpells["DRUID"] = {
     8921,  -- Moonfire (40 yards, level 2)
 }
 ResSpells["DRUID"] = {
-    50769, -- Revive (40 yards, level 14)
+    50769,  -- Revive (40 yards, level 14)
+    20484,  -- Rebirth (40 yards, level 29)
+    212040, -- Revitalize (100 yards, level 47)
 }
 PetSpells["DRUID"] = {}
 
@@ -140,7 +143,8 @@ PetSpells["HUNTER"] = {
 
 -- Mages
 FriendSpells["MAGE"] = {
-    130, -- Slow Fall (40 yards)
+    130, -- Slow Fall (40 yards, level 9)
+    475, -- Remove Curse (40 yards, level 28)
 }
 HarmSpells["MAGE"] = {
     44614, -- Flurry (40 yards)
@@ -166,13 +170,17 @@ HarmSpells["MONK"] = {
     117952, -- Crackling Jade Lightning (40 yards)
 }
 ResSpells["MONK"] = {
-    115178, -- Resuscitate (40 yards)
+    115178, -- Resuscitate (40 yards, level 13)
+    212051, -- Reawaken (100 yards, level 47)
 }
 PetSpells["MONK"] = {}
 
 -- Paladins
 FriendSpells["PALADIN"] = {
-    19750, -- Flash of Light (40 yards)
+    19750,  -- Flash of Light (40 yards, level 4)
+    85673,  -- Word of Glory (40 yards, level 7)
+    4987,   -- Cleanse (Holy) (40 yards, level 12)
+    213644, -- Cleanse Toxins (Protection/Retribution) (40 yards, level 12)
 }
 HarmSpells["PALADIN"] = {
     853,    -- Hammer of Justice (10 yards)
@@ -199,13 +207,15 @@ HarmSpells["PRIEST"] = {
     5019, -- Shoot (30 yards)
 }
 ResSpells["PRIEST"] = {
-    2006, -- Resurrection (40 yards)
+    2006,   -- Resurrection (40 yards, level 10)
+    212036, -- Mass Resurrection (100 yards, level 37)
 }
 PetSpells["PRIEST"] = {}
 
 -- Rogues
 FriendSpells["ROGUE"] = {
-    57934, -- Tricks of the Trade (100 yards)
+    36554, -- Shadowstep (25 yards, level 18)
+    57934, -- Tricks of the Trade (100 yards, level 48)
 }
 HarmSpells["ROGUE"] = {
     185565, -- Poisoned Knife (Assassination) (30 yards)
@@ -220,9 +230,9 @@ PetSpells["ROGUE"] = {}
 
 -- Shamans
 FriendSpells["SHAMAN"] = {
+    546,    -- Water Walking (30 yards)
     8004,   -- Healing Surge (Resto/Elemental) (40 yards)
     188070, -- Healing Surge (Enhancement) (40 yards)
-    546,    -- Water Walking (30 yards)
 }
 HarmSpells["SHAMAN"] = {
     370,    -- Purge (30 yards)
@@ -230,7 +240,8 @@ HarmSpells["SHAMAN"] = {
     73899,  -- Primal Strike (Melee Range)
 }
 ResSpells["SHAMAN"] = {
-    2008, -- Ancestral Spirit (40 yards)
+    2008,  -- Ancestral Spirit (40 yards, level 13)
+    212048, -- Ancestral Vision (100 yards)
 }
 PetSpells["SHAMAN"] = {}
 
