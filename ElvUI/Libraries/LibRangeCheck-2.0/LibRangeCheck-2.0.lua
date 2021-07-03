@@ -127,7 +127,7 @@ HarmSpells["DRUID"] = {
 ResSpells["DRUID"] = {
     50769,  -- Revive (40 yards, level 14)
     20484,  -- Rebirth (40 yards, level 29)
-    212040, -- Revitalize (100 yards, level 47)
+--  212040, -- Revitalize (100 yards, level 47)
 }
 PetSpells["DRUID"] = {}
 
@@ -171,7 +171,7 @@ HarmSpells["MONK"] = {
 }
 ResSpells["MONK"] = {
     115178, -- Resuscitate (40 yards, level 13)
-    212051, -- Reawaken (100 yards, level 47)
+--  212051, -- Reawaken (100 yards, level 47)
 }
 PetSpells["MONK"] = {}
 
@@ -208,7 +208,7 @@ HarmSpells["PRIEST"] = {
 }
 ResSpells["PRIEST"] = {
     2006,   -- Resurrection (40 yards, level 10)
-    212036, -- Mass Resurrection (100 yards, level 37)
+--  212036, -- Mass Resurrection (100 yards, level 37)
 }
 PetSpells["PRIEST"] = {}
 
@@ -240,8 +240,8 @@ HarmSpells["SHAMAN"] = {
     73899,  -- Primal Strike (Melee Range)
 }
 ResSpells["SHAMAN"] = {
-    2008,  -- Ancestral Spirit (40 yards, level 13)
-    212048, -- Ancestral Vision (100 yards)
+    2008,   -- Ancestral Spirit (40 yards, level 13)
+--  212048, -- Ancestral Vision (100 yards)
 }
 PetSpells["SHAMAN"] = {}
 
