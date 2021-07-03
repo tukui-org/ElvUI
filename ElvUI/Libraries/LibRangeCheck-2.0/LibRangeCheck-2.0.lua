@@ -59,8 +59,8 @@ local ItemRequestTimeout = 10.0
 -- interact distance based checks. ranges are based on my own measurements (thanks for all the folks who helped me with this)
 local DefaultInteractList = {
 --  [1] = 28, -- Compare Achievements
-    [2] = 8,  -- Trade
-    [3] = 7,  -- Duel
+--  [2] = 9,  -- Trade
+    [3] = 8,  -- Duel
     [4] = 28, -- Follow
 --  [5] = 7,  -- unknown
 }
@@ -68,13 +68,13 @@ local DefaultInteractList = {
 -- interact list overrides for races
 local InteractLists = {
     ["Tauren"] = {
+    --  [2] = 7,
         [3] = 6,
---        [2] = 7,
         [4] = 25,
     },
     ["Scourge"] = {
+    --  [2] = 8,
         [3] = 7,
---        [2] = 8,
         [4] = 27,
     },
 }
@@ -218,8 +218,8 @@ PetSpells["PRIEST"] = {}
 
 -- Rogues
 FriendSpells["ROGUE"] = {
-    921,   -- Pick Pocket (10 yards, level 24)
-    36554, -- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
+--  921,   -- Pick Pocket (10 yards, level 24)
+--  36554, -- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
 --  57934, -- Tricks of the Trade (100 yards, level 48) (Grouped)
 }
 HarmSpells["ROGUE"] = {
