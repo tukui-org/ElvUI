@@ -218,8 +218,8 @@ PetSpells["PRIEST"] = {}
 
 -- Rogues
 FriendSpells["ROGUE"] = {
---  921,   -- Pick Pocket (10 yards, level 24)
---  36554, -- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
+    921,   -- Pick Pocket (10 yards, level 24)
+    36554, -- Shadowstep (Assassination, Subtlety) (25 yards, level 18)
 --  57934, -- Tricks of the Trade (100 yards, level 48) (Grouped)
 }
 HarmSpells["ROGUE"] = {
