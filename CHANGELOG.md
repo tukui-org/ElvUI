@@ -1,7 +1,15 @@
-### Version 12.32 [ ETA: 🍨 ]
+### Version 12.33 [ ETA: 🍨 ]
 
 **Hotfixes:**  
 
+
+___
+### Version 12.32 [ July 3rd 2021 ]
+
+**Ok:**  
+Skinned a few unskinned things.  
+Added Korthia buff (Rift Veiled) to Whitelist.  
+Updated Range Check Library.  
 
 ___
 ### Version 12.31 [ July 1st 2021 ]
