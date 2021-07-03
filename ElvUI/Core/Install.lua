@@ -11,24 +11,28 @@ local pairs = pairs
 local ipairs = ipairs
 local tinsert = tinsert
 
-local CreateFrame = CreateFrame
 local SetCVar = SetCVar
-local PlaySound = PlaySound
 local ReloadUI = ReloadUI
+local PlaySound = PlaySound
+local CreateFrame = CreateFrame
 local UIFrameFadeOut = UIFrameFadeOut
-local ChatFrame_AddMessageGroup = ChatFrame_AddMessageGroup
-local ChatFrame_RemoveAllMessageGroups = ChatFrame_RemoveAllMessageGroups
-local ChatFrame_AddChannel = ChatFrame_AddChannel
-local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
 local ChangeChatColor = ChangeChatColor
-local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
-local FCF_ResetChatWindows = FCF_ResetChatWindows
-local FCF_UnDockFrame = FCF_UnDockFrame
-local FCF_OpenNewWindow = FCF_OpenNewWindow
-local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 local FCF_SetWindowName = FCF_SetWindowName
 local FCF_StopDragging = FCF_StopDragging
+local FCF_UnDockFrame = FCF_UnDockFrame
+local FCF_OpenNewWindow = FCF_OpenNewWindow
+local FCF_ResetChatWindows = FCF_ResetChatWindows
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
+local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
+local ChatFrame_AddChannel = ChatFrame_AddChannel
+local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
+local ChatFrame_AddMessageGroup = ChatFrame_AddMessageGroup
+local ChatFrame_RemoveAllMessageGroups = ChatFrame_RemoveAllMessageGroups
+local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
+local VoiceTranscriptionFrame_UpdateEditBox = VoiceTranscriptionFrame_UpdateEditBox
+local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateVisibility
+local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
+
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
@@ -71,6 +75,10 @@ function E:SetupChat(noDisplayMsg)
 		elseif id == 4 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.RightChatDataPanel, 'TOPLEFT', 1, 3)
+		elseif id == 3 then
+			VoiceTranscriptionFrame_UpdateVisibility(frame)
+			VoiceTranscriptionFrame_UpdateVoiceTab(frame)
+			VoiceTranscriptionFrame_UpdateEditBox(frame)
 		end
 
 		FCF_SavePositionAndDimensions(frame)
