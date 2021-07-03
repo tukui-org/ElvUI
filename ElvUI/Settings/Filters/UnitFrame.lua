@@ -1191,6 +1191,11 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 		[344739] = Defaults(), -- Spectral
 		[333227] = Defaults(), -- Undying Rage
 		[322773] = Defaults(), -- Blood Barrier
+	---------------------------------------------------------
+	----------------------- Open World ----------------------
+	---------------------------------------------------------
+	-- Korthia
+		[354840] = Defaults(), -- Rift Veiled
 	},
 }
 
