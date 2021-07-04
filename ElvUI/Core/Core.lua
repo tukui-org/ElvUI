@@ -273,6 +273,17 @@ function E:GetColorTable(data)
 	end
 end
 
+local function updateUFCastbarColors(groupName, colorOption)
+	local color = E.db.unitframe.units[groupName].castbar.customColor[colorOption]
+
+	if E:CheckClassColor(color.r, color.g, color.b) then
+		local classColor = E:ClassColor(E.myclass, true)
+		E.db.unitframe.units[groupName].castbar.customColor[colorOption].r = classColor.r
+		E.db.unitframe.units[groupName].castbar.customColor[colorOption].g = classColor.g
+		E.db.unitframe.units[groupName].castbar.customColor[colorOption].b = classColor.b
+	end
+end
+
 function E:UpdateMedia()
 	if not E.db.general or not E.private.general then return end --Prevent rare nil value errors
 
@@ -305,6 +316,15 @@ function E:UpdateMedia()
 		E.db.unitframe.colors.borderColor.b = classColor.b
 	end
 	E.media.unitframeBorderColor = {border.r, border.g, border.b}
+
+	--UnitFrame Castbar CustomColors
+	local groupName = {Player, Target, Focus, Pet, Party, Arena, Boss}
+	local colorOption = {color, colorNoInterrupt, colorInterrupted, colorBackdrop}
+	for _, unit in pairs(groupName) do
+		for _, option in pairs(colorOption) do
+			updateUFCastbarColors(unit, option)
+		end
+	end
 
 	--Backdrop Color
 	E.media.backdropcolor = E:SetColorTable(E.media.backdropcolor, E.db.general.backdropcolor)
