@@ -11,24 +11,28 @@ local pairs = pairs
 local ipairs = ipairs
 local tinsert = tinsert
 
-local CreateFrame = CreateFrame
 local SetCVar = SetCVar
-local PlaySound = PlaySound
 local ReloadUI = ReloadUI
+local PlaySound = PlaySound
+local CreateFrame = CreateFrame
 local UIFrameFadeOut = UIFrameFadeOut
-local ChatFrame_AddMessageGroup = ChatFrame_AddMessageGroup
-local ChatFrame_RemoveAllMessageGroups = ChatFrame_RemoveAllMessageGroups
-local ChatFrame_AddChannel = ChatFrame_AddChannel
-local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
 local ChangeChatColor = ChangeChatColor
-local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
-local FCF_ResetChatWindows = FCF_ResetChatWindows
-local FCF_UnDockFrame = FCF_UnDockFrame
-local FCF_OpenNewWindow = FCF_OpenNewWindow
-local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
 local FCF_SetWindowName = FCF_SetWindowName
 local FCF_StopDragging = FCF_StopDragging
+local FCF_UnDockFrame = FCF_UnDockFrame
+local FCF_OpenNewWindow = FCF_OpenNewWindow
+local FCF_ResetChatWindows = FCF_ResetChatWindows
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
+local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
+local ChatFrame_AddChannel = ChatFrame_AddChannel
+local ChatFrame_RemoveChannel = ChatFrame_RemoveChannel
+local ChatFrame_AddMessageGroup = ChatFrame_AddMessageGroup
+local ChatFrame_RemoveAllMessageGroups = ChatFrame_RemoveAllMessageGroups
+local ToggleChatColorNamesByClassGroup = ToggleChatColorNamesByClassGroup
+local VoiceTranscriptionFrame_UpdateEditBox = VoiceTranscriptionFrame_UpdateEditBox
+local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateVisibility
+local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
+
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local LOOT, GENERAL, TRADE = LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
@@ -54,7 +58,7 @@ local ELV_TOONS = {
 function E:SetupChat(noDisplayMsg)
 	FCF_ResetChatWindows()
 	FCF_OpenNewWindow(LOOT)
-	FCF_UnDockFrame(_G.ChatFrame3)
+	FCF_UnDockFrame(_G.ChatFrame4)
 
 	for _, name in ipairs(_G.CHAT_FRAMES) do
 		local frame = _G[name]
@@ -68,21 +72,22 @@ function E:SetupChat(noDisplayMsg)
 		if id == 1 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.LeftChatToggleButton, 'TOPLEFT', 1, 3)
-		elseif id == 3 then
+		elseif id == 4 then
 			frame:ClearAllPoints()
 			frame:Point('BOTTOMLEFT', _G.RightChatDataPanel, 'TOPLEFT', 1, 3)
+		elseif id == 3 then
+			VoiceTranscriptionFrame_UpdateVisibility(frame)
+			VoiceTranscriptionFrame_UpdateVoiceTab(frame)
+			VoiceTranscriptionFrame_UpdateEditBox(frame)
 		end
 
 		FCF_SavePositionAndDimensions(frame)
 		FCF_StopDragging(frame)
 		FCF_SetChatWindowFontSize(nil, frame, 12)
 
-		-- rename windows general because moved to chat #3
-		if id == 1 then
-			FCF_SetWindowName(frame, GENERAL)
-		elseif id == 2 then
+		if id == 2 then
 			FCF_SetWindowName(frame, GUILD_EVENT_LOG)
-		elseif id == 3 then
+		elseif id == 4 then
 			FCF_SetWindowName(frame, LOOT..' / '..TRADE)
 		end
 	end
@@ -96,14 +101,14 @@ function E:SetupChat(noDisplayMsg)
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1
 	chatGroup = { 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
-	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame3)
+	ChatFrame_RemoveAllMessageGroups(_G.ChatFrame4)
 	for _, v in ipairs(chatGroup) do
-		ChatFrame_AddMessageGroup(_G.ChatFrame3, v)
+		ChatFrame_AddMessageGroup(_G.ChatFrame4, v)
 	end
 
 	ChatFrame_AddChannel(_G.ChatFrame1, GENERAL)
 	ChatFrame_RemoveChannel(_G.ChatFrame1, TRADE)
-	ChatFrame_AddChannel(_G.ChatFrame3, TRADE)
+	ChatFrame_AddChannel(_G.ChatFrame4, TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
 	chatGroup = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }

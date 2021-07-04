@@ -1195,7 +1195,8 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 	----------------------- Open World ----------------------
 	---------------------------------------------------------
 	-- Korthia
-		[354840] = Defaults(), -- Rift Veiled
+		[354840] = Defaults(), -- Rift Veiled (Silent Soulstalker, Deadsoul Hatcher, Screaming Shade)
+		[355249] = Defaults(), -- Anima Gorged (Consumption)
 	},
 }
 
