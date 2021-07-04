@@ -1,7 +1,15 @@
-### Version 12.33 [ ETA: 🍨 ]
+### Version 12.34 [ ETA: 🍨 ]
 
-**Hotfixes:**  
+**Nice:**  
 
+
+___
+### Version 12.33 [ July 4th 2021 ]
+
+**Stuff:**  
+Chat Module now supports new Text To Speech options (Options > Install > Setup Chat, might be required, do this if you have issues).  
+Added Korthia buff (Anima Gorged) to Whitelist.  
+Fixed a couple issues with Trade Skill skin.  
 
 ___
 ### Version 12.32 [ July 3rd 2021 ]
