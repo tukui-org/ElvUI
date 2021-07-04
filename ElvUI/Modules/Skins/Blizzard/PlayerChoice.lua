@@ -72,7 +72,7 @@ local function SetupOptions(frame)
 				if header and header.Ribbon then header.Ribbon:SetAlpha(0) end -- Normal only
 			end
 
-			if option.Artwork then option.Artwork:Size(64) end -- blizzard never sets a size, so fix it for art replacements
+			if option.Artwork and inTower then option.Artwork:Size(64) end -- fix size from icon replacements in tower
 
 			SetupRewards(option.rewards)
 			SetupButtons(option.buttons)
