@@ -318,8 +318,8 @@ function E:UpdateMedia()
 	E.media.unitframeBorderColor = {border.r, border.g, border.b}
 
 	--UnitFrame Castbar CustomColors
-	local groupName = {Player, Target, Focus, Pet, Party, Arena, Boss}
-	local colorOption = {color, colorNoInterrupt, colorInterrupted, colorBackdrop}
+	local groupName = {'player', 'target', 'focus', 'pet', 'party', 'arena', 'boss'}
+	local colorOption = {'color', 'colorNoInterrupt', 'colorInterrupted', 'colorBackdrop'}
 	for _, unit in pairs(groupName) do
 		for _, option in pairs(colorOption) do
 			updateUFCastbarColors(unit, option)
