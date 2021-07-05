@@ -43,7 +43,7 @@ function LO:UpdateBottomPanel()
 	local db = E.db.general.bottomPanelSettings
 	local width = (db.width == 0 and E.realwidth) or db.width
 	LO.BottomPanel:Size(width + SPACING, db.height)
-	LO.BottomPanel:SetTemplate(db.transparent and 'Transparent' or 'Default')
+	LO.BottomPanel:SetTemplate(db.transparent and 'Transparent')
 end
 
 function LO:UpdateTopPanel()
@@ -54,7 +54,7 @@ function LO:UpdateTopPanel()
 	local db = E.db.general.topPanelSettings
 	local width = (db.width == 0 and E.realwidth) or db.width
 	LO.TopPanel:Size(width + SPACING, db.height)
-	LO.TopPanel:SetTemplate(db.transparent and 'Transparent' or 'Default')
+	LO.TopPanel:SetTemplate(db.transparent and 'Transparent')
 end
 
 local function finishFade(self)
