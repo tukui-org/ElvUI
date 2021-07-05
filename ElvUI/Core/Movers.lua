@@ -5,6 +5,7 @@ local _G = _G
 local type, unpack, pairs, error, ipairs = type, unpack, pairs, error, ipairs
 local format, split, find, strupper = format, strsplit, strfind, strupper
 
+local UIParent = UIParent
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
 local InCombatLockdown = InCombatLockdown
@@ -32,7 +33,7 @@ end
 
 local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
-	if not anchor then anchor = E.UIParent end
+	if not anchor then anchor = UIParent end
 
 	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, x and E:Round(x) or 0, y and E:Round(y) or 0)
 end
@@ -125,7 +126,7 @@ local function OnDragStop(self)
 
 	local x2, y2, p2 = E:CalculateMoverPoints(self)
 	self:ClearAllPoints()
-	self:SetPoint(p2, E.UIParent, p2, x2, y2)
+	self:SetPoint(p2, UIParent, p2, x2, y2)
 
 	E:SaveMoverPosition(self.name)
 
@@ -224,7 +225,7 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	if overlay == nil then overlay = true end
 
-	local f = CreateFrame('Button', name, E.UIParent)
+	local f = CreateFrame('Button', name, UIParent)
 	f:SetClampedToScreen(true)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:SetFrameLevel(parent:GetFrameLevel() + 1)
@@ -279,14 +280,14 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 end
 
 function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
-	local centerX, centerY = E.UIParent:GetCenter()
-	local width = E.UIParent:GetRight()
+	local centerX, centerY = UIParent:GetCenter()
+	local width = UIParent:GetRight()
 	local x, y = mover:GetCenter()
 
 	local point, nudgePoint, nudgeInversePoint = 'BOTTOM', 'BOTTOM', 'TOP'
 	if y >= centerY then -- TOP: 1080p = 540
 		point, nudgePoint, nudgeInversePoint = 'TOP', 'TOP', 'BOTTOM'
-		y = -(E.UIParent:GetTop() - mover:GetTop())
+		y = -(UIParent:GetTop() - mover:GetTop())
 	else
 		y = mover:GetBottom()
 	end
