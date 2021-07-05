@@ -216,22 +216,18 @@ function E:CheckClassColor(r, g, b)
 
 	for class in pairs(_G.RAID_CLASS_COLORS) do
 		if class ~= E.myclass then
-			local colorTable = E:ClassColor(class, true)
-			local red, green, blue = E:GrabColorPickerValues(colorTable.r, colorTable.g, colorTable.b)
+			local color = E:ClassColor(class, true)
+			local red, green, blue = E:GrabColorPickerValues(color.r, color.g, color.b)
 			if red == r and green == g and blue == b then
-				return true
+				return color
 			end
 		end
 	end
 end
 
 function E:UpdateClassColor(db)
-	if E:CheckClassColor(db.r, db.g, db.b) then
-		local class = E:ClassColor(E.myclass, true)
-		if class then
-			db.r, db.g, db.b = class.r, class.g, class.b
-		end
-	end
+	local class = E:CheckClassColor(db.r, db.g, db.b)
+	if class then db.r, db.g, db.b = class.r, class.g, class.b end
 
 	return db
 end
