@@ -3,8 +3,10 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local min, max, format = min, max, format
 
 local UIParent = UIParent
-local InCombatLockdown = InCombatLockdown
 local GetPhysicalScreenSize = GetPhysicalScreenSize
+local GetScreenHeight = GetScreenHeight
+local GetScreenWidth = GetScreenWidth
+local InCombatLockdown = InCombatLockdown
 
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
@@ -41,6 +43,7 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 	else -- E.Initialize
 		UIParent:SetScale(E.global.general.UIScale)
+		E.realwidth, E.realheight = GetScreenWidth(), GetScreenHeight()
 
 		local width, height = E.screenwidth, E.screenheight
 		E.eyefinity = E:IsEyefinity(width, height)
@@ -50,13 +53,11 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 		if testing then -- Resize E.UIParent if Eyefinity or UltraWide is on.
 			-- Eyefinity / UltraWide Test: Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
 			-- Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
-			local uiWidth, uiHeight = UIParent:GetSize()
-			width, height = uiWidth-250, uiHeight-250
+			width, height = E.realwidth-250, E.realheight-250
 		elseif newWidth then -- Center E.UIParent
-			local uiHeight = UIParent:GetHeight()
-			width, height = newWidth / (height / uiHeight), uiHeight
+			width, height = newWidth / (height / E.realheight), E.realheight
 		else
-			width, height = UIParent:GetSize()
+			width, height = E.realwidth, E.realheight
 		end
 
 		E.UIParent:SetSize(width, height)

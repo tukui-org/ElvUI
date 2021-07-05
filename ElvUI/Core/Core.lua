@@ -71,6 +71,7 @@ E.wowbuild = tonumber(E.wowbuild)
 E.isMacClient = IsMacClient()
 E.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 E.screenwidth, E.screenheight = GetPhysicalScreenSize()
+E.realwidth, E.realheight = GetScreenWidth(), GetScreenHeight()
 E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]] -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
@@ -158,7 +159,7 @@ E.GemTypeInfo = {
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', _G.UIParent)
 E.UIParent:SetFrameLevel(_G.UIParent:GetFrameLevel())
-E.UIParent:SetSize(_G.UIParent:GetSize())
+E.UIParent:SetSize(E.realwidth, E.realheight)
 E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
@@ -1400,8 +1401,8 @@ end
 
 function E:UpdateLayout(skipCallback)
 	Layout:ToggleChatPanels()
-	Layout:BottomPanelVisibility()
-	Layout:TopPanelVisibility()
+	Layout:UpdateBottomPanel()
+	Layout:UpdateTopPanel()
 	Layout:SetDataPanelStyle()
 
 	if not skipCallback then

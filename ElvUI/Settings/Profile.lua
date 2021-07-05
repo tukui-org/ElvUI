@@ -19,7 +19,17 @@ P.general = {
 	autoRoll = false,
 	autoAcceptInvite = false,
 	topPanel = false,
+	topPanelSettings = {
+		transparent = true,
+		height = 22,
+		width = 0
+	},
 	bottomPanel = true,
+	bottomPanelSettings = {
+		transparent = true,
+		height = 22,
+		width = 0
+	},
 	hideErrorFrame = true,
 	enhancedPvpMessages = true,
 	objectiveFrameHeight = 480,

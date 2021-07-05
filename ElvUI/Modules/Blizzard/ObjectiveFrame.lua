@@ -4,9 +4,7 @@ local B = E:GetModule('Blizzard')
 local _G = _G
 local min = min
 local CreateFrame = CreateFrame
-local GetScreenHeight = GetScreenHeight
 local GetInstanceInfo = GetInstanceInfo
-local GetScreenWidth = GetScreenWidth
 local hooksecurefunc = hooksecurefunc
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
@@ -14,7 +12,7 @@ local IsInJailersTower = IsInJailersTower
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
-	local screenHeight = GetScreenHeight()
+	local screenHeight = E.realheight
 	local gapFromTop = screenHeight - top
 	local maxHeight = screenHeight - gapFromTop
 	local objectiveFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
@@ -24,7 +22,7 @@ end
 
 local function IsFramePositionedLeft(frame)
 	local x = frame:GetCenter()
-	local screenWidth = GetScreenWidth()
+	local screenWidth = E.realwidth
 	local positionedLeft = false
 
 	if x and x < (screenWidth / 2) then
