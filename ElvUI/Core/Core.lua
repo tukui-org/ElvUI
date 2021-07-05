@@ -225,6 +225,17 @@ function E:CheckClassColor(r, g, b)
 	end
 end
 
+function E:UpdateClassColor(db)
+	if E:CheckClassColor(db.r, db.g, db.b) then
+		local class = E:ClassColor(E.myclass, true)
+		if class then
+			db.r, db.g, db.b = class.r, class.g, class.b
+		end
+	end
+
+	return db
+end
+
 function E:SetColorTable(t, data)
 	if not data.r or not data.g or not data.b then
 		error('SetColorTable: Could not unpack color values.')
@@ -273,17 +284,6 @@ function E:GetColorTable(data)
 	end
 end
 
-local function updateUFCastbarColors(groupName, colorOption)
-	local color = E.db.unitframe.units[groupName].castbar.customColor[colorOption]
-
-	if E:CheckClassColor(color.r, color.g, color.b) then
-		local classColor = E:ClassColor(E.myclass, true)
-		E.db.unitframe.units[groupName].castbar.customColor[colorOption].r = classColor.r
-		E.db.unitframe.units[groupName].castbar.customColor[colorOption].g = classColor.g
-		E.db.unitframe.units[groupName].castbar.customColor[colorOption].b = classColor.b
-	end
-end
-
 function E:UpdateMedia()
 	if not E.db.general or not E.private.general then return end --Prevent rare nil value errors
 
@@ -297,34 +297,12 @@ function E:UpdateMedia()
 	E.media.glossTex = LSM:Fetch('statusbar', E.private.general.glossTex)
 
 	--Border Color
-	local border = E.db.general.bordercolor
-	if E:CheckClassColor(border.r, border.g, border.b) then
-		local classColor = E:ClassColor(E.myclass, true)
-		E.db.general.bordercolor.r = classColor.r
-		E.db.general.bordercolor.g = classColor.g
-		E.db.general.bordercolor.b = classColor.b
-	end
-
+	local border = E:UpdateClassColor(E.db.general.bordercolor)
 	E.media.bordercolor = {border.r, border.g, border.b}
 
 	--UnitFrame Border Color
-	border = E.db.unitframe.colors.borderColor
-	if E:CheckClassColor(border.r, border.g, border.b) then
-		local classColor = E:ClassColor(E.myclass, true)
-		E.db.unitframe.colors.borderColor.r = classColor.r
-		E.db.unitframe.colors.borderColor.g = classColor.g
-		E.db.unitframe.colors.borderColor.b = classColor.b
-	end
-	E.media.unitframeBorderColor = {border.r, border.g, border.b}
-
-	--UnitFrame Castbar CustomColors
-	local groupName = {'player', 'target', 'focus', 'pet', 'party', 'arena', 'boss'}
-	local colorOption = {'color', 'colorNoInterrupt', 'colorInterrupted', 'colorBackdrop'}
-	for _, unit in pairs(groupName) do
-		for _, option in pairs(colorOption) do
-			updateUFCastbarColors(unit, option)
-		end
-	end
+	local ufBorder = E:UpdateClassColor(E.db.unitframe.colors.borderColor)
+	E.media.unitframeBorderColor = {ufBorder.r, ufBorder.g, ufBorder.b}
 
 	--Backdrop Color
 	E.media.backdropcolor = E:SetColorTable(E.media.backdropcolor, E.db.general.backdropcolor)
@@ -333,25 +311,12 @@ function E:UpdateMedia()
 	E.media.backdropfadecolor = E:SetColorTable(E.media.backdropfadecolor, E.db.general.backdropfadecolor)
 
 	--Value Color
-	local value = E.db.general.valuecolor
-	if E:CheckClassColor(value.r, value.g, value.b) then
-		value = E:ClassColor(E.myclass, true)
-		E.db.general.valuecolor.r = value.r
-		E.db.general.valuecolor.g = value.g
-		E.db.general.valuecolor.b = value.b
-	end
-
-	--Chat Tab Selector Color
-	local selectorColor = E.db.chat.tabSelectorColor
-	if E:CheckClassColor(selectorColor.r, selectorColor.g, selectorColor.b) then
-		selectorColor = E:ClassColor(E.myclass, true)
-		E.db.chat.tabSelectorColor.r = selectorColor.r
-		E.db.chat.tabSelectorColor.g = selectorColor.g
-		E.db.chat.tabSelectorColor.b = selectorColor.b
-	end
-
+	local value = E:UpdateClassColor(E.db.general.valuecolor)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 	E.media.rgbvaluecolor = {value.r, value.g, value.b}
+
+	--Chat Tab Selector Color
+	E:UpdateClassColor(E.db.chat.tabSelectorColor)
 
 	-- Chat Panel Background Texture
 	local LeftChatPanel, RightChatPanel = _G.LeftChatPanel, _G.RightChatPanel
