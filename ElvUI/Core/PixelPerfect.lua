@@ -38,14 +38,14 @@ end
 
 function E:UIScale(init) -- `init` will be the `event` if its triggered after combat
 	if init == true then -- E.OnInitialize
-		E.mult = (768 / E.screenheight) / E.global.general.UIScale
+		E.mult = (768 / E.physicalHeight) / E.global.general.UIScale
 	elseif InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
 	else -- E.Initialize
 		UIParent:SetScale(E.global.general.UIScale)
-		E.realwidth, E.realheight = GetScreenWidth(), GetScreenHeight()
+		E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 
-		local width, height = E.screenwidth, E.screenheight
+		local width, height = E.physicalWidth, E.physicalHeight
 		E.eyefinity = E:IsEyefinity(width, height)
 		E.ultrawide = E:IsUltrawide(width, height)
 
@@ -53,11 +53,11 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 		if testing then -- Resize E.UIParent if Eyefinity or UltraWide is on.
 			-- Eyefinity / UltraWide Test: Resize the E.UIParent to be smaller than it should be, all objects inside should relocate.
 			-- Dragging moveable frames outside the box and reloading the UI ensures that they are saving position correctly.
-			width, height = E.realwidth-250, E.realheight-250
+			width, height = E.screenWidth-250, E.screenHeight-250
 		elseif newWidth then -- Center E.UIParent
-			width, height = newWidth / (height / E.realheight), E.realheight
+			width, height = newWidth / (height / E.screenHeight), E.screenHeight
 		else
-			width, height = E.realwidth, E.realheight
+			width, height = E.screenWidth, E.screenHeight
 		end
 
 		E.UIParent:SetSize(width, height)
@@ -70,13 +70,13 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 end
 
 function E:PixelBestSize()
-	return max(0.4, min(1.15, 768 / E.screenheight))
+	return max(0.4, min(1.15, 768 / E.physicalHeight))
 end
 
 function E:PixelScaleChanged(event)
 	if event == 'UI_SCALE_CHANGED' then
-		E.screenwidth, E.screenheight = GetPhysicalScreenSize()
-		E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
+		E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
+		E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 	end
 
 	E:UIScale(true) -- Repopulate variables

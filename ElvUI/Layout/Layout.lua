@@ -41,7 +41,7 @@ function LO:UpdateBottomPanel()
 
 	local SPACING = E.Border * 2
 	local db = E.db.general.bottomPanelSettings
-	local width = (db.width == 0 and E.realwidth) or db.width
+	local width = (db.width == 0 and E.screenWidth) or db.width
 	LO.BottomPanel:Size(width + SPACING, db.height)
 	LO.BottomPanel:SetTemplate(db.transparent and 'Transparent')
 end
@@ -52,7 +52,7 @@ function LO:UpdateTopPanel()
 
 	local SPACING = E.Border * 2
 	local db = E.db.general.topPanelSettings
-	local width = (db.width == 0 and E.realwidth) or db.width
+	local width = (db.width == 0 and E.screenWidth) or db.width
 	LO.TopPanel:Size(width + SPACING, db.height)
 	LO.TopPanel:SetTemplate(db.transparent and 'Transparent')
 end

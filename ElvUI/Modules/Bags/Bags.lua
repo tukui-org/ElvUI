@@ -2074,7 +2074,7 @@ end
 
 function B:UpdateContainerFrameAnchors()
 	local xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column
-	local screenWidth = E.realwidth
+	local screenWidth = E.screenWidth
 	local containerScale = 1
 	local leftLimit = 0
 
@@ -2083,7 +2083,7 @@ function B:UpdateContainerFrameAnchors()
 	end
 
 	while containerScale > CONTAINER_SCALE do
-		screenHeight = E.realheight / containerScale
+		screenHeight = E.screenHeight / containerScale
 		-- Adjust the start anchor for bags depending on the multibars
 		xOffset = CONTAINER_OFFSET_X / containerScale
 		yOffset = CONTAINER_OFFSET_Y / containerScale
@@ -2116,7 +2116,7 @@ function B:UpdateContainerFrameAnchors()
 		containerScale = CONTAINER_SCALE
 	end
 
-	screenHeight = E.realheight / containerScale
+	screenHeight = E.screenHeight / containerScale
 	-- Adjust the start anchor for bags depending on the multibars
 	-- xOffset = CONTAINER_OFFSET_X / containerScale
 	yOffset = CONTAINER_OFFSET_Y / containerScale

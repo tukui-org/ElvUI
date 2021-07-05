@@ -12,7 +12,7 @@ local IsInJailersTower = IsInJailersTower
 
 function B:SetObjectiveFrameHeight()
 	local top = _G.ObjectiveTrackerFrame:GetTop() or 0
-	local screenHeight = E.realheight
+	local screenHeight = E.screenHeight
 	local gapFromTop = screenHeight - top
 	local maxHeight = screenHeight - gapFromTop
 	local objectiveFrameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
@@ -22,7 +22,7 @@ end
 
 local function IsFramePositionedLeft(frame)
 	local x = frame:GetCenter()
-	local screenWidth = E.realwidth
+	local screenWidth = E.screenWidth
 	local positionedLeft = false
 
 	if x and x < (screenWidth / 2) then

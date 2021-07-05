@@ -174,8 +174,8 @@ end
 
 function E:GetScreenQuadrant(frame)
 	local x, y = frame:GetCenter()
-	local screenWidth = E.realwidth
-	local screenHeight = E.realheight
+	local screenWidth = E.screenWidth
+	local screenHeight = E.screenHeight
 
 	if not (x and y) then
 		return 'UNKNOWN', frame:GetName()

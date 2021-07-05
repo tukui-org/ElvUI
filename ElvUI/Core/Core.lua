@@ -70,9 +70,9 @@ E.wowpatch, E.wowbuild = GetBuildInfo()
 E.wowbuild = tonumber(E.wowbuild)
 E.isMacClient = IsMacClient()
 E.IsRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-E.screenwidth, E.screenheight = GetPhysicalScreenSize()
-E.realwidth, E.realheight = GetScreenWidth(), GetScreenHeight()
-E.resolution = format('%dx%d', E.screenwidth, E.screenheight)
+E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
+E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
+E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]] -- not used by ElvUI yet, but plugins like BenikUI and MerathilisUI use it.
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
 E.UserList = {}
@@ -159,7 +159,7 @@ E.GemTypeInfo = {
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', _G.UIParent)
 E.UIParent:SetFrameLevel(_G.UIParent:GetFrameLevel())
-E.UIParent:SetSize(E.realwidth, E.realheight)
+E.UIParent:SetSize(E.screenWidth, E.screenHeight)
 E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
