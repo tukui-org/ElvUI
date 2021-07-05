@@ -296,24 +296,15 @@ function E:UpdateMedia()
 	E.media.normTex = LSM:Fetch('statusbar', E.private.general.normTex)
 	E.media.glossTex = LSM:Fetch('statusbar', E.private.general.glossTex)
 
-	--Border Color
-	local border = E:UpdateClassColor(E.db.general.bordercolor)
-	E.media.bordercolor = {border.r, border.g, border.b}
+	--Colors
+	E.media.bordercolor = E:SetColorTable(E.media.bordercolor, E:UpdateClassColor(E.db.general.bordercolor))
+	E.media.unitframeBorderColor = E:SetColorTable(E.media.unitframeBorderColor, E:UpdateClassColor(E.db.unitframe.colors.borderColor))
+	E.media.backdropcolor = E:SetColorTable(E.media.backdropcolor, E:UpdateClassColor(E.db.general.backdropcolor))
+	E.media.backdropfadecolor = E:SetColorTable(E.media.backdropfadecolor, E:UpdateClassColor(E.db.general.backdropfadecolor))
 
-	--UnitFrame Border Color
-	local ufBorder = E:UpdateClassColor(E.db.unitframe.colors.borderColor)
-	E.media.unitframeBorderColor = {ufBorder.r, ufBorder.g, ufBorder.b}
-
-	--Backdrop Color
-	E.media.backdropcolor = E:SetColorTable(E.media.backdropcolor, E.db.general.backdropcolor)
-
-	--Backdrop Fade Color
-	E.media.backdropfadecolor = E:SetColorTable(E.media.backdropfadecolor, E.db.general.backdropfadecolor)
-
-	--Value Color
 	local value = E:UpdateClassColor(E.db.general.valuecolor)
+	E.media.rgbvaluecolor = E:SetColorTable(E.media.rgbvaluecolor, value)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
-	E.media.rgbvaluecolor = {value.r, value.g, value.b}
 
 	--Chat Tab Selector Color
 	E:UpdateClassColor(E.db.chat.tabSelectorColor)
