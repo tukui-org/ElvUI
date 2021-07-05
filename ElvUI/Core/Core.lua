@@ -226,8 +226,8 @@ function E:CheckClassColor(r, g, b)
 end
 
 function E:UpdateClassColor(db)
-	local class = E:CheckClassColor(db.r, db.g, db.b)
-	if class then db.r, db.g, db.b = class.r, class.g, class.b end
+	local color = E:CheckClassColor(db.r, db.g, db.b)
+	if color then db.r, db.g, db.b = color.r, color.g, color.b end
 
 	return db
 end
