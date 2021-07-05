@@ -219,15 +219,19 @@ function E:CheckClassColor(r, g, b)
 			local color = E:ClassColor(class, true)
 			local red, green, blue = E:GrabColorPickerValues(color.r, color.g, color.b)
 			if red == r and green == g and blue == b then
-				return color
+				return true
 			end
 		end
 	end
 end
 
 function E:UpdateClassColor(db)
-	local color = E:CheckClassColor(db.r, db.g, db.b)
-	if color then db.r, db.g, db.b = color.r, color.g, color.b end
+	if E:CheckClassColor(db.r, db.g, db.b) then
+		local color = E:ClassColor(E.myclass, true)
+		if color then
+			db.r, db.g, db.b = color.r, color.g, color.b
+		end
+	end
 
 	return db
 end
