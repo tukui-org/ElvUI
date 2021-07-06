@@ -21,7 +21,7 @@ local function SkinRecipeList(self, _, tradeSkillInfo)
 		self.SubSkillRankBar.BorderRight:Hide()
 
 		if not self.SubSkillRankBar.backdrop then
-			self.SubSkillRankBar:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+			self.SubSkillRankBar:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 			self.SubSkillRankBar:SetStatusBarTexture(E.media.normTex)
 			E:RegisterStatusBar(self.SubSkillRankBar)
 		end
@@ -36,9 +36,11 @@ function S:Blizzard_TradeSkillUI()
 	S:HandlePortraitFrame(TradeSkillFrame)
 
 	TradeSkillFrame:Height(TradeSkillFrame:GetHeight() + 12)
+	TradeSkillFrame.RankFrame:SetFrameLevel(3)
 	TradeSkillFrame.RankFrame:StripTextures()
-	TradeSkillFrame.RankFrame:SetTemplate()
+	TradeSkillFrame.RankFrame:CreateBackdrop()
 	TradeSkillFrame.RankFrame:SetStatusBarTexture(E.media.normTex)
+	TradeSkillFrame.RankFrame:SetStatusBarColor(unpack(E.media.rgbvaluecolor))
 	TradeSkillFrame.RankFrame.RankText:FontTemplate()
 	E:RegisterStatusBar(TradeSkillFrame.RankFrame)
 	S:HandleButton(TradeSkillFrame.FilterButton)
@@ -188,7 +190,6 @@ function S:Blizzard_TradeSkillUI()
 	hooksecurefunc(_G.OptionalReagentListLineMixin, 'UpdateDisplay', function(frame)
 		frame.NameFrame:Kill()
 		frame:DisableDrawLayer('ARTWORK')
-		frame:SetTemplate()
 
 		S:HandleIcon(frame.Icon, true)
 		frame.Icon:Size(32, 32)
@@ -196,7 +197,6 @@ function S:Blizzard_TradeSkillUI()
 		frame.Icon:Point('TOPLEFT', frame, 'TOPLEFT', 3, -3)
 
 		if frame.Icon.backdrop then
-			frame.Icon.backdrop:SetAllPoints(frame.Icon)
 			S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
 		end
 	end)
