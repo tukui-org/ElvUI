@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local IsInJailersTower = IsInJailersTower
 
 local function SetupButtons(buttons)
 	if buttons and buttons.buttonPool then
@@ -50,12 +49,12 @@ local function SetupOptions(frame)
 		frame.CloseButton.Border:SetAlpha(0)
 	end
 
-	local inTower = IsInJailersTower()
-	frame:SetTemplate(inTower and 'NoBackdrop' or 'Transparent')
+	local kit = frame.uiTextureKit == 'jailerstower'
+	frame:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
 
 	if frame.optionFrameTemplate and frame.optionPools then
 		local parchmentRemover = E.private.skins.parchmentRemoverEnable
-		local noParchment = not inTower and parchmentRemover
+		local noParchment = not kit and parchmentRemover
 
 		for option in frame.optionPools:EnumerateActiveByTemplate(frame.optionFrameTemplate) do
 			local header = option.Header
@@ -72,7 +71,7 @@ local function SetupOptions(frame)
 				if header and header.Ribbon then header.Ribbon:SetAlpha(0) end -- Normal only
 			end
 
-			if option.Artwork and inTower then option.Artwork:Size(64) end -- fix size from icon replacements in tower
+			if option.Artwork and kit then option.Artwork:Size(64) end -- fix size from icon replacements in tower
 
 			SetupRewards(option.rewards)
 			SetupButtons(option.buttons)
