@@ -233,6 +233,8 @@ G.unitframe.aurafilters.TurtleBuffs = {
 		[116849] = Defaults(), -- Life Cocoon
 		[202162] = Defaults(), -- Guard
 		[215479] = Defaults(), -- Ironskin Brew
+		[353319] = Defaults(), -- Peaceweaver (PVP)
+		[353362] = Defaults(), -- Dematerialize (PVP)
 	-- Paladin
 		[642]    = Defaults(), -- Divine Shield
 		[498]    = Defaults(), -- Divine Protection
