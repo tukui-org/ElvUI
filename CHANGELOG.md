@@ -13,7 +13,7 @@ Added some options for the top and bottom cosmetic panels (under the new cosmeti
 Fixed Unitframe Custom Color options for Castbars not properly updating when switching between characters on same profile.  
 Fixed issue with Ultrawide / Eyefinity not letting you move frames to the left screen.  
 Fixed Spellbook error in combat (happened when leveling).  
-Added Mistweaver PVP Buffs to the Whitelist.  
+Added Mistweaver PVP Buffs (Peaceweaver and Dematerialize) to the Whitelist.  
 Fixed Player Choice skin in Mythic+  
 
 ___
