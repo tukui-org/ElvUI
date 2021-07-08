@@ -6,8 +6,7 @@ local ACH = E.Libs.ACH
 
 local _G = _G
 local format, gsub, ipairs, pairs, select, strmatch, strsplit = format, gsub, ipairs, pairs, select, strmatch, strsplit
-local tconcat, tinsert, tremove, type, wipe, tonumber = table.concat, tinsert, tremove, type, wipe, tonumber
-local GetScreenWidth = GetScreenWidth
+local tconcat, tinsert, tremove, type, wipe, ceil, tonumber = table.concat, tinsert, tremove, type, wipe, ceil, tonumber
 local GetNumClasses = GetNumClasses
 local GetClassInfo = GetClassInfo
 
@@ -722,7 +721,7 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				name = L["Width"],
 				type = 'range',
 				softMax = 600,
-				min = 50, max = GetScreenWidth(), step = 1,
+				min = 50, max = ceil(E.screenWidth), step = 1,
 			},
 			height = {
 				order = 4,

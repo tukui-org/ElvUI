@@ -23,32 +23,38 @@ function LO:Initialize()
 	LO:SetDataPanelStyle()
 
 	LO.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent)
-	LO.BottomPanel:SetTemplate('Transparent')
-	LO.BottomPanel:Point('BOTTOMLEFT', E.UIParent, 'BOTTOMLEFT', -1, -1)
-	LO.BottomPanel:Point('BOTTOMRIGHT', E.UIParent, 'BOTTOMRIGHT', 1, -1)
-	LO.BottomPanel:Height(BAR_HEIGHT)
 	LO.BottomPanel:SetScript('OnShow', Panel_OnShow)
 	E.FrameLocks.ElvUI_BottomPanel = true
 	Panel_OnShow(LO.BottomPanel)
-	LO:BottomPanelVisibility()
+	LO:UpdateBottomPanel()
 
 	LO.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent)
-	LO.TopPanel:SetTemplate('Transparent')
-	LO.TopPanel:Point('TOPLEFT', E.UIParent, 'TOPLEFT', -1, 1)
-	LO.TopPanel:Point('TOPRIGHT', E.UIParent, 'TOPRIGHT', 1, 1)
-	LO.TopPanel:Height(BAR_HEIGHT)
 	LO.TopPanel:SetScript('OnShow', Panel_OnShow)
 	Panel_OnShow(LO.TopPanel)
 	E.FrameLocks.ElvUI_TopPanel = true
-	LO:TopPanelVisibility()
+	LO:UpdateTopPanel()
 end
 
-function LO:BottomPanelVisibility()
+function LO:UpdateBottomPanel()
 	LO.BottomPanel:SetShown(E.db.general.bottomPanel)
+	LO.BottomPanel:Point('BOTTOM', 0, -E.Border)
+
+	local SPACING = E.Border * 2
+	local db = E.db.general.bottomPanelSettings
+	local width = (db.width == 0 and E.screenWidth) or db.width
+	LO.BottomPanel:Size(width + SPACING, db.height)
+	LO.BottomPanel:SetTemplate(db.transparent and 'Transparent')
 end
 
-function LO:TopPanelVisibility()
+function LO:UpdateTopPanel()
 	LO.TopPanel:SetShown(E.db.general.topPanel)
+	LO.TopPanel:Point('TOP', 0, E.Border)
+
+	local SPACING = E.Border * 2
+	local db = E.db.general.topPanelSettings
+	local width = (db.width == 0 and E.screenWidth) or db.width
+	LO.TopPanel:Size(width + SPACING, db.height)
+	LO.TopPanel:SetTemplate(db.transparent and 'Transparent')
 end
 
 local function finishFade(self)

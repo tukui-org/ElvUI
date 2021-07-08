@@ -6,7 +6,6 @@ local ACH = E.Libs.ACH
 local ceil = ceil
 local tonumber = tonumber
 local CopyTable = CopyTable
-local GetScreenWidth = GetScreenWidth
 
 local SharedOptions = {
 	enable = ACH:Toggle(L["Enable"], nil, 1),
@@ -25,8 +24,8 @@ SharedOptions.strataAndLevel.args.frameStrata = ACH:Select(L["Frame Strata"], ni
 SharedOptions.strataAndLevel.args.frameLevel = ACH:Range(L["Frame Level"], nil, 2, {min = 1, max = 128, step = 1})
 
 SharedOptions.sizeGroup.inline = true
-SharedOptions.sizeGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })
-SharedOptions.sizeGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = ceil(GetScreenWidth() or 800), step = 1 })
+SharedOptions.sizeGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 5, max = ceil(E.screenWidth), step = 1 })
+SharedOptions.sizeGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = ceil(E.screenWidth), step = 1 })
 SharedOptions.sizeGroup.args.orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the bar moves on gains/losses"], 3, { AUTOMATIC = L["Automatic"], HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
 SharedOptions.sizeGroup.args.reverseFill = ACH:Toggle(L["Reverse Fill Direction"], nil, 4)
 

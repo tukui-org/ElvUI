@@ -75,7 +75,8 @@ local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
 local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = Enum.PlayerMentorshipStatus.Newcomer
 
-local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') --some language have `:` on end
+local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE, '(|A.-|a).+', '%1') -- we only want the icon
+local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR, ':%s?$', '') -- some language have `:` on end
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local UNKNOWN = UNKNOWN
@@ -369,8 +370,8 @@ do --this can save some main file locals
 		['Tirain-Spirestone']	= TyroneBiggums,
 		['Sinth-Spirestone']	= TyroneBiggums,
 		['Tee-Spirestone']		= TyroneBiggums,
-		['TeePac-Area52']		= TyroneBiggums,
-		['TeeKettle-Area52']		= TyroneBiggums,
+		['Teepac-Area52']		= TyroneBiggums,
+		['Teekettle-Area52']		= TyroneBiggums,
 		-- Mis (NOTE: I will forever have the picture you accidently shared of the manikin wearing a strapon burned in my brain)
 		['Misdîrect-Spirestone']	= itsMis,
 		['Misoracle-Spirestone']	= itsMis,
@@ -1557,7 +1558,7 @@ local function GetPFlag(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, ar
 			return '|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t '
 		elseif specialFlag == 'GUIDE' then
 			if _G.ChatFrame_GetMentorChannelStatus(CHATCHANNELRULESET_MENTOR, C_ChatInfo_GetChannelRulesetForChannelID(zoneChannelID)) == CHATCHANNELRULESET_MENTOR then
-				return _G.NPEV2_CHAT_USER_TAG_GUIDE .. ' ' -- possibly unable to save global string with trailing whitespace...
+				return NPEV2_CHAT_USER_TAG_GUIDE
 			end
 		elseif specialFlag == 'NEWCOMER' then
 			if _G.ChatFrame_GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, C_ChatInfo_GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then

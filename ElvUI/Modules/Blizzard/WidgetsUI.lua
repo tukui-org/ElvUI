@@ -22,33 +22,6 @@ local function UpdateBarTexture(bar, atlas)
 	end
 end
 
-local function TopCenterPosition(self, _, b)
-	local holder = _G.TopCenterContainerHolder
-	if b and (b ~= holder) then
-		self:ClearAllPoints()
-		self:Point('CENTER', holder)
-		self:SetParent(holder)
-	end
-end
-
-local function BelowMinimapPosition(self, _, b)
-	local holder = _G.BelowMinimapContainerHolder
-	if b and (b ~= holder) then
-		self:ClearAllPoints()
-		self:Point('CENTER', holder)
-		self:SetParent(holder)
-	end
-end
-
-local function PowerWidgetPosition(self, _, b)
-	local holder = _G.PowerWidgetContainerHolder
-	if b and (b ~= holder) then
-		self:ClearAllPoints()
-		self:Point('CENTER', holder)
-		self:SetParent(holder)
-	end
-end
-
 function B:UIWidgetTemplateStatusBar()
 	local bar = self.Bar
 	local atlas = bar:GetStatusBarAtlas()
@@ -104,39 +77,34 @@ function B:UIWidgetTemplateCaptureBar(_, widgetContainer)
 	if skinFunc then skinFunc(self) end
 end
 
+local function UpdatePosition(frame, _, anchor)
+	local holder = frame.containerHolder
+	if holder and anchor and anchor ~= holder then
+		frame:ClearAllPoints()
+		frame:Point('CENTER', holder)
+		frame:SetParent(holder)
+	end
+end
+
+local function BuildHolder(holderName, moverName, localeName, container, point, relativeTo, relativePoint, x, y, width, height)
+	local holder = CreateFrame('Frame', holderName, E.UIParent)
+	holder:Point(point, relativeTo, relativePoint, x, y)
+	holder:Size(width, height)
+
+	E:CreateMover(holder, moverName, localeName, nil, nil, nil,'ALL,SOLO,WIDGETS')
+
+	container:ClearAllPoints()
+	container:Point('CENTER', holder)
+	container.containerHolder = holder
+
+	hooksecurefunc(container, 'SetPoint', UpdatePosition)
+end
+
 function B:Handle_UIWidgets()
-	local topCenterContainer = _G.UIWidgetTopCenterContainerFrame
-	local belowMiniMapcontainer = _G.UIWidgetBelowMinimapContainerFrame
-	local powerBarContainer = _G.UIWidgetPowerBarContainerFrame
-
-	local topCenterHolder = CreateFrame('Frame', 'TopCenterContainerHolder', E.UIParent)
-	topCenterHolder:Point('TOP', E.UIParent, 'TOP', 0, -30)
-	topCenterHolder:Size(10, 58)
-
-	local belowMiniMapHolder = CreateFrame('Frame', 'BelowMinimapContainerHolder', E.UIParent)
-	belowMiniMapHolder:Point('TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16)
-	belowMiniMapHolder:Size(128, 40)
-
-	local powerWidgetHolder = CreateFrame('Frame', 'PowerWidgetContainerHolder', E.UIParent)
-	powerWidgetHolder:Point('CENTER', E.UIParent, 'TOP', 0, -75)
-	powerWidgetHolder:Size(100, 20)
-
-	E:CreateMover(topCenterHolder, 'TopCenterContainerMover', L["TopWidget"], nil, nil, nil,'ALL,SOLO,WIDGETS')
-	E:CreateMover(belowMiniMapHolder, 'BelowMinimapContainerMover', L["BelowMinimapWidget"], nil, nil, nil,'ALL,SOLO,WIDGETS')
-	E:CreateMover(powerWidgetHolder, 'PowerBarContainerMover', L["PowerBarWidget"], nil, nil, nil,'ALL,SOLO,WIDGETS')
-
-	topCenterContainer:ClearAllPoints()
-	topCenterContainer:Point('CENTER', topCenterHolder)
-
-	belowMiniMapcontainer:ClearAllPoints()
-	belowMiniMapcontainer:Point('CENTER', belowMiniMapHolder)
-
-	powerBarContainer:ClearAllPoints()
-	powerBarContainer:Point('CENTER', powerWidgetHolder)
-
-	hooksecurefunc(topCenterContainer, 'SetPoint', TopCenterPosition)
-	hooksecurefunc(belowMiniMapcontainer, 'SetPoint', BelowMinimapPosition)
-	hooksecurefunc(powerBarContainer, 'SetPoint', PowerWidgetPosition)
+	BuildHolder('TopCenterContainerHolder', 'TopCenterContainerMover', L["TopCenterWidget"], _G.UIWidgetTopCenterContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -30, 10, 58)
+	BuildHolder('PowerBarContainerHolder', 'PowerBarContainerMover', L["PowerBarWidget"], _G.UIWidgetPowerBarContainerFrame, 'CENTER', E.UIParent, 'TOP', 0, -75, 100, 20)
+	BuildHolder('MawBuffsBelowMinimapHolder', 'MawBuffsBelowMinimapMover', L["MawBuffsWidget"], _G.MawBuffsBelowMinimapFrame, 'TOP', _G.Minimap, 'BOTTOM', 0, -25, 250, 50)
+	BuildHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', L["BelowMinimapWidget"], _G.UIWidgetBelowMinimapContainerFrame, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 128, 40)
 
 	-- Credits ShestakUI
 	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', B.UIWidgetTemplateStatusBar)
