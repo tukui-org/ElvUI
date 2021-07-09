@@ -41,7 +41,6 @@ local GetItemSpell = GetItemSpell
 local GetItemQualityColor = GetItemQualityColor
 local GetMoney = GetMoney
 local GetNumBankSlots = GetNumBankSlots
-local GetScreenWidth, GetScreenHeight = GetScreenWidth, GetScreenHeight
 local IsBagOpen, IsOptionFrameOpen = IsBagOpen, IsOptionFrameOpen
 local IsInventoryItemProfessionBag = IsInventoryItemProfessionBag
 local IsReagentBankUnlocked = IsReagentBankUnlocked
@@ -2075,7 +2074,7 @@ end
 
 function B:UpdateContainerFrameAnchors()
 	local xOffset, yOffset, screenHeight, freeScreenHeight, leftMostPoint, column
-	local screenWidth = GetScreenWidth()
+	local screenWidth = E.screenWidth
 	local containerScale = 1
 	local leftLimit = 0
 
@@ -2084,7 +2083,7 @@ function B:UpdateContainerFrameAnchors()
 	end
 
 	while containerScale > CONTAINER_SCALE do
-		screenHeight = GetScreenHeight() / containerScale
+		screenHeight = E.screenHeight / containerScale
 		-- Adjust the start anchor for bags depending on the multibars
 		xOffset = CONTAINER_OFFSET_X / containerScale
 		yOffset = CONTAINER_OFFSET_Y / containerScale
@@ -2117,7 +2116,7 @@ function B:UpdateContainerFrameAnchors()
 		containerScale = CONTAINER_SCALE
 	end
 
-	screenHeight = GetScreenHeight() / containerScale
+	screenHeight = E.screenHeight / containerScale
 	-- Adjust the start anchor for bags depending on the multibars
 	-- xOffset = CONTAINER_OFFSET_X / containerScale
 	yOffset = CONTAINER_OFFSET_Y / containerScale

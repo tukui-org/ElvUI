@@ -87,18 +87,17 @@ function S:SpellBookFrame()
 				E:Flash(button.SpellHighlightTexture, 1, true)
 			end
 
-			button:SetShown(button.SpellName:IsShown())
-
 			if E.private.skins.parchmentRemoverEnable then
 				button:SetHighlightTexture('')
+				button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
+				button.RequiredLevelString:SetTextColor(0.6, 0.6, 0.6)
+
 				local r = button.SpellName:GetTextColor()
 				if r < 0.8 then
 					button.SpellName:SetTextColor(0.6, 0.6, 0.6)
 				else
 					button.SpellName:SetTextColor(1, 1, 1)
 				end
-				button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
-				button.RequiredLevelString:SetTextColor(0.6, 0.6, 0.6)
 			end
 		end
 	end)

@@ -93,17 +93,8 @@ function UF:Configure_AuraBars(frame)
 			UF:Update_FontString(statusBar.nameText)
 		end
 
-		local colors = UF.db.colors.auraBarBuff
-		if E:CheckClassColor(colors.r, colors.g, colors.b) then
-			local classColor = E:ClassColor(E.myclass, true)
-			colors.r, colors.g, colors.b = classColor.r, classColor.g, classColor.b
-		end
-
-		colors = UF.db.colors.auraBarDebuff
-		if E:CheckClassColor(colors.r, colors.g, colors.b) then
-			local classColor = E:ClassColor(E.myclass, true)
-			colors.r, colors.g, colors.b = classColor.r, classColor.g, classColor.b
-		end
+		E:UpdateClassColor(UF.db.colors.auraBarBuff)
+		E:UpdateClassColor(UF.db.colors.auraBarDebuff)
 
 		if not auraBars.Holder then
 			local holder = CreateFrame('Frame', nil, auraBars)
