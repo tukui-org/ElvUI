@@ -723,6 +723,11 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	-- Shadowlands Season 1
 		[342494] = Defaults(), -- Belligerent Boast (Prideful)
 	-- Shadowlands Season 2
+		[356667] = Defaults(6), -- Biting Cold 1
+		[356666] = Defaults(6), -- Biting Cold 2
+		[355732] = Defaults(6), -- Melt Soul
+		[356925] = Defaults(6), -- Carnage
+		[358777] = Defaults(6), -- Bindings of Misery
 	----------------------------------------------------------
 	------------------ Shadowlands Dungeons ------------------
 	----------------------------------------------------------
