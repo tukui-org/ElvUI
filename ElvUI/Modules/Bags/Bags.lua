@@ -246,10 +246,8 @@ function B:SetSearch(query)
 				local success, result = pcall(method, Search, link, query)
 				if empty or (success and result) then
 					button.searchOverlay:Hide()
-					button:SetAlpha(1)
 				else
 					button.searchOverlay:Show()
-					button:SetAlpha(0.5)
 				end
 			end
 		end
@@ -261,10 +259,8 @@ function B:SetSearch(query)
 		local success, result = pcall(method, Search, link, query)
 		if empty or (success and result) then
 			button.searchOverlay:Hide()
-			button:SetAlpha(1)
 		else
 			button.searchOverlay:Show()
-			button:SetAlpha(0.5)
 		end
 	end
 end
@@ -293,10 +289,8 @@ function B:SetGuildBankSearch(query)
 				local success, result = pcall(method, Search, link, query)
 				if empty or (success and result) then
 					button.searchOverlay:Hide()
-					button:SetAlpha(1)
 				else
 					button.searchOverlay:Show()
-					button:SetAlpha(0.5)
 				end
 			end
 		end
