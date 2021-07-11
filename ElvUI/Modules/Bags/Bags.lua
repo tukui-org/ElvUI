@@ -33,6 +33,9 @@ local GetContainerItemLink = GetContainerItemLink
 local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
+local GetCurrentGuildBankTab = GetCurrentGuildBankTab
+local GetGuildBankItemLink = GetGuildBankItemLink
+local GetGuildBankTabInfo = GetGuildBankTabInfo
 local GetItemInfo = GetItemInfo
 local GetItemSpell = GetItemSpell
 local GetItemQualityColor = GetItemQualityColor
@@ -205,6 +208,7 @@ function B:UpdateSearch()
 	SEARCH_STRING = search
 
 	B:RefreshSearch()
+	B:SetGuildBankSearch(SEARCH_STRING)
 end
 
 function B:OpenEditbox()
@@ -266,6 +270,42 @@ function B:SetSearch(query)
 				SetItemButtonDesaturated(button, 1)
 				button.searchOverlay:Show()
 				button:SetAlpha(0.5)
+			end
+		end
+	end
+end
+
+function B:SetGuildBankSearch(query)
+	local empty = #(query:gsub(' ', '')) == 0
+	local method = Search.Matches
+	if Search.Filters.tipPhrases.keywords[query] then
+		method = Search.TooltipPhrase
+		query = Search.Filters.tipPhrases.keywords[query]
+	end
+
+	if _G.GuildBankFrame and _G.GuildBankFrame:IsShown() then
+		local tab = GetCurrentGuildBankTab()
+		local _, _, isViewable = GetGuildBankTabInfo(tab)
+
+		if isViewable then
+			for slotID = 1, _G.MAX_GUILDBANK_SLOTS_PER_TAB do
+				local link = GetGuildBankItemLink(tab, slotID)
+				--A column goes from 1-14, e.g. GuildBankColumn1Button14 (slotID 14) or GuildBankColumn2Button3 (slotID 17)
+				local col = ceil(slotID / 14)
+				local btn = (slotID % 14)
+				if col == 0 then col = 1 end
+				if btn == 0 then btn = 14 end
+				local button = _G['GuildBankColumn'..col..'Button'..btn]
+				local success, result = pcall(method, Search, link, query)
+				if empty or (success and result) then
+					SetItemButtonDesaturated(button, button.locked or button.junkDesaturate)
+					button.searchOverlay:Hide()
+					button:SetAlpha(1)
+				else
+					SetItemButtonDesaturated(button, 1)
+					button.searchOverlay:Show()
+					button:SetAlpha(0.5)
+				end
 			end
 		end
 	end
@@ -2000,6 +2040,26 @@ function B:PLAYERBANKBAGSLOTS_CHANGED()
 	B:Layout(true)
 end
 
+function B:GuildBankFrame_Update()
+	B:SetGuildBankSearch(SEARCH_STRING)
+end
+
+function B:GUILDBANKFRAME_OPENED(event)
+	local GuildItemSearchBox = _G.GuildItemSearchBox
+
+	if GuildItemSearchBox then
+		GuildItemSearchBox:SetScript('OnEscapePressed', B.ResetAndClear)
+		GuildItemSearchBox:SetScript('OnEnterPressed', function(sb) sb:ClearFocus() end)
+		GuildItemSearchBox:SetScript('OnEditFocusGained', GuildItemSearchBox.HighlightText)
+		GuildItemSearchBox:SetScript('OnTextChanged', B.UpdateSearch)
+		GuildItemSearchBox:SetScript('OnChar', B.UpdateSearch)
+	end
+
+	hooksecurefunc('GuildBankFrame_Update', B.GuildBankFrame_Update)
+
+	B:UnregisterEvent(event)
+end
+
 function B:PlayerEnteringWorld()
 	B:UpdateBagTypes()
 	B:Layout()
@@ -2349,6 +2409,7 @@ function B:Initialize()
 	B:DisableBlizzard()
 
 	B:RegisterEvent('PLAYER_ENTERING_WORLD')
+	B:RegisterEvent('GUILDBANKFRAME_OPENED')
 	B:RegisterEvent('PLAYERBANKBAGSLOTS_CHANGED')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
