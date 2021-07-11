@@ -294,23 +294,6 @@ function B:SetGuildBankSearch(query)
 				end
 			end
 		end
-
-		for i = 1, MAX_GUILDBANK_TABS do
-			local tabButton = _G["GuildBankTab"..i.."Button"];
-			local success, result
-			for slotID = 1, _G.MAX_GUILDBANK_SLOTS_PER_TAB do
-				local link = GetGuildBankItemLink(i, slotID)
-				success, result = pcall(method, Search, link, query)
-				if (success and result) then
-					break
-				end
-			end
-			if empty or (success and result) then
-				tabButton.searchOverlay:Hide()
-			else
-				tabButton.searchOverlay:Show()
-			end
-		end
 	end
 end
 
