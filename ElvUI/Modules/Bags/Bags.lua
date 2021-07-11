@@ -101,7 +101,7 @@ local SEARCH = SEARCH
 
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
--- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame, ElvUIReagentBankFrameItem1
+-- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame
 
 -- 8.3 this are now local in blizzard files. Copy & Pasted:
 local MAX_CONTAINER_ITEMS = 36
@@ -245,11 +245,9 @@ function B:SetSearch(query)
 				local button = bagFrame.Bags[bagID][slotID]
 				local success, result = pcall(method, Search, link, query)
 				if empty or (success and result) then
-					SetItemButtonDesaturated(button, button.locked or button.junkDesaturate)
 					button.searchOverlay:Hide()
 					button:SetAlpha(1)
 				else
-					SetItemButtonDesaturated(button, 1)
 					button.searchOverlay:Show()
 					button:SetAlpha(0.5)
 				end
@@ -257,20 +255,16 @@ function B:SetSearch(query)
 		end
 	end
 
-	if ElvUIReagentBankFrameItem1 then
-		for slotID = 1, B.REAGENTBANK_SIZE do
-			local _, _, _, _, _, _, link = GetContainerItemInfo(REAGENTBANK_CONTAINER, slotID)
-			local button = _G['ElvUIReagentBankFrameItem'..slotID]
-			local success, result = pcall(method, Search, link, query)
-			if empty or (success and result) then
-				SetItemButtonDesaturated(button, button.locked or button.junkDesaturate)
-				button.searchOverlay:Hide()
-				button:SetAlpha(1)
-			else
-				SetItemButtonDesaturated(button, 1)
-				button.searchOverlay:Show()
-				button:SetAlpha(0.5)
-			end
+	for slotID = 1, B.REAGENTBANK_SIZE do
+		local _, _, _, _, _, _, link = GetContainerItemInfo(REAGENTBANK_CONTAINER, slotID)
+		local button = _G['ElvUIReagentBankFrameItem'..slotID]
+		local success, result = pcall(method, Search, link, query)
+		if empty or (success and result) then
+			button.searchOverlay:Hide()
+			button:SetAlpha(1)
+		else
+			button.searchOverlay:Show()
+			button:SetAlpha(0.5)
 		end
 	end
 end
@@ -298,11 +292,9 @@ function B:SetGuildBankSearch(query)
 				local button = _G['GuildBankColumn'..col..'Button'..btn]
 				local success, result = pcall(method, Search, link, query)
 				if empty or (success and result) then
-					SetItemButtonDesaturated(button, button.locked or button.junkDesaturate)
 					button.searchOverlay:Hide()
 					button:SetAlpha(1)
 				else
-					SetItemButtonDesaturated(button, 1)
 					button.searchOverlay:Show()
 					button:SetAlpha(0.5)
 				end
@@ -717,7 +709,7 @@ function B:ResetSlotAlphaForBags(f)
 end
 
 function B:REAGENTBANK_PURCHASED()
-	ElvUIReagentBankFrame.cover:Hide()
+	B.BankFrame.reagentFrame.cover:Hide()
 end
 
 --Look at ContainerFrameFilterDropDown_Initialize in FrameXML/ContainerFrame.lua
