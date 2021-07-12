@@ -247,9 +247,15 @@ function NP:BossMods_EnableHostileNameplates()
 	allowHostile = true
 end
 
+function NP:DBM_SupportedNPMod()
+	return _G.DBM.Options.UseNameplateHandoff
+end
+
 function NP:BossMods_RegisterCallbacks()
 	local DBM = _G.DBM
-	if DBM and DBM.RegisterCallback then
+	if DBM and DBM.RegisterCallback and DBM.Nameplate then
+		DBM.Nameplate.SupportedNPMod = NP.DBM_SupportedNPMod
+
 		DBM:RegisterCallback('BossMod_ShowNameplateAura',NP.BossMods_ShowNameplateAura)
 		DBM:RegisterCallback('BossMod_HideNameplateAura',NP.BossMods_HideNameplateAura)
 		DBM:RegisterCallback('BossMod_EnableHostileNameplates',NP.BossMods_EnableHostileNameplates)
