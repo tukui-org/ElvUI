@@ -673,6 +673,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[306600] = Defaults(), -- Experience Eliminated (oor - 5m)
 		[348443] = Defaults(), -- Experience Eliminated
 		[206151] = Defaults(), -- Challenger's Burden
+		[322695] = Defaults(), -- Drained
 	},
 }
 
