@@ -14,10 +14,11 @@ local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetContainerItemID = GetContainerItemID
 local hooksecurefunc = hooksecurefunc
-local BACKPACK_TOOLTIP = BACKPACK_TOOLTIP
+
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS
 local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local QUESTS_LABEL = QUESTS_LABEL
+local BACKPACK_TOOLTIP = BACKPACK_TOOLTIP
 local TEXTURE_ITEM_QUEST_BORDER = TEXTURE_ITEM_QUEST_BORDER
 
 local function UpdateBorderColors(button)
@@ -36,44 +37,45 @@ local function BagButtonOnEnter(self)
 end
 
 local function SkinButton(button)
-	if not button.skinned then
-		for i=1, button:GetNumRegions() do
-			local region = select(i, button:GetRegions())
-			if region and region:IsObjectType('Texture') and region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay then
-				region:SetTexture()
-			end
+	if button.skinned then return end
+	button.skinned = true
+
+	for i=1, button:GetNumRegions() do
+		local region = select(i, button:GetRegions())
+		if region and region:IsObjectType('Texture') and region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay then
+			region:SetTexture()
 		end
+	end
 
-		button:SetTemplate()
-		button:StyleButton()
-		button.IconBorder:Kill()
+	button:SetTemplate()
+	button:StyleButton()
+	button.IconBorder:Kill()
 
-		local icon = button.icon
-		icon:SetInside()
-		icon:SetTexCoord(unpack(E.TexCoords))
+	local icon = button.icon
+	icon:SetInside()
+	icon:SetTexCoord(unpack(E.TexCoords))
 
-		button.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
+	button.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
 
-		if button.IconQuestTexture then
-			button.IconQuestTexture:SetTexCoord(unpack(E.TexCoords))
-			button.IconQuestTexture:SetInside(button)
-		end
+	if button.IconQuestTexture then
+		button.IconQuestTexture:SetTexCoord(unpack(E.TexCoords))
+		button.IconQuestTexture:SetInside(button)
+	end
 
-		if button.Cooldown then
-			E:RegisterCooldown(button.Cooldown)
-		end
+	if button.Cooldown then
+		E:RegisterCooldown(button.Cooldown)
+	end
 
-		button.skinned = true
-
-		-- bag keybind support from actionbar module
-		if E.private.actionbar.enable then
-			button:HookScript('OnEnter', BagButtonOnEnter)
-		end
+	-- bag keybind support from actionbar module
+	if E.private.actionbar.enable then
+		button:HookScript('OnEnter', BagButtonOnEnter)
 	end
 end
 
 local function SkinBagButtons(container, button)
-	SkinButton(button)
+	if not button.skinned then
+		SkinButton(button)
+	end
 
 	local bagID, slotID = container:GetID(), button:GetID()
 	local texture, _, _, _, _, _, itemLink = GetContainerItemInfo(bagID, slotID)
@@ -153,10 +155,24 @@ function S:ContainerFrame()
 	_G.BankSlotsFrame:StripTextures()
 	S:HandleTab(_G.BankFrameTab1)
 	S:HandleTab(_G.BankFrameTab2)
+	S:HandleEditBox(_G.BagItemSearchBox)
+	S:HandleEditBox(_G.BankItemSearchBox)
+
 	S:HandleButton(_G.ReagentBankFrame.DespositButton)
 	_G.ReagentBankFrame:HookScript('OnShow', function(b)
 		b:StripTextures()
 	end)
+
+	for _, icon in pairs({_G.BagItemAutoSortButton, _G.BankItemAutoSortButton}) do
+		icon:StripTextures()
+		icon:SetTemplate()
+		icon:StyleButton()
+
+		icon.Icon = icon:CreateTexture()
+		icon.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
+		icon.Icon:SetTexCoord(unpack(E.TexCoords))
+		icon.Icon:SetInside()
+	end
 
 	hooksecurefunc('ContainerFrame_Update', function(frame)
 		local frameName = frame:GetName()
@@ -183,6 +199,9 @@ function S:ContainerFrame()
 				BagIcon(frame, bagIconCache[name])
 			end
 		end
+
+		_G.BagItemAutoSortButton:ClearAllPoints()
+		_G.BagItemAutoSortButton:Point('LEFT', _G.BagItemSearchBox, 'RIGHT', 5, 3)
 	end)
 
 	local BankFrame = _G.BankFrame
@@ -209,7 +228,19 @@ function S:ContainerFrame()
 			BankFrame.isSkinned = true
 		end
 
-		SkinButton(button)
+		if _G.ReagentBankFrameItem1 and not BankFrame.backdrop4 then
+			BankFrame.backdrop4 = CreateFrame('Frame', nil, _G.ReagentBankFrame)
+			BankFrame.backdrop4:SetTemplate('Transparent')
+			BankFrame.backdrop4:Point('TOPLEFT', _G.ReagentBankFrameItem1, 'TOPLEFT', -6, 6)
+			BankFrame.backdrop4:Point('BOTTOMRIGHT', _G.ReagentBankFrameItem98, 'BOTTOMRIGHT', 6, -6)
+		end
+
+		if not button.skinned then
+			SkinButton(button)
+		end
+
+		_G.BankItemAutoSortButton:ClearAllPoints()
+		_G.BankItemAutoSortButton:Point('LEFT', _G.BankItemSearchBox, 'RIGHT', 5, 2)
 
 		if not button.levelAdjusted then
 			button:SetFrameLevel(button:GetFrameLevel() + 1)
@@ -245,19 +276,6 @@ function S:ContainerFrame()
 			UpdateBorderColors(button)
 		end
 	end)
-
-	S:HandleEditBox(_G.BagItemSearchBox)
-	S:HandleEditBox(_G.BankItemSearchBox)
-
-	for _, icon in pairs({_G.BagItemAutoSortButton, _G.BankItemAutoSortButton}) do
-		icon:StripTextures()
-		icon:SetTemplate()
-
-		icon.Icon = icon:CreateTexture()
-		icon.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
-		icon.Icon:SetTexCoord(unpack(E.TexCoords))
-		icon.Icon:SetInside()
-	end
 
 	local Bags = CreateFrame('Frame')
 	Bags:RegisterEvent('BAG_UPDATE')
