@@ -185,7 +185,6 @@ function S:ContainerFrame()
 		end
 	end)
 
-	--Bank
 	local BankFrame = _G.BankFrame
 	hooksecurefunc('BankFrameItemButton_Update', function(button)
 		if not BankFrame.isSkinned then
@@ -247,23 +246,18 @@ function S:ContainerFrame()
 		end
 	end)
 
-	local BagItemSearchBox = _G.BagItemSearchBox
-	S:HandleEditBox(BagItemSearchBox)
-	BagItemSearchBox:Height(BagItemSearchBox:GetHeight() - 5)
+	S:HandleEditBox(_G.BagItemSearchBox)
+	S:HandleEditBox(_G.BankItemSearchBox)
 
-	local BankItemSearchBox = _G.BankItemSearchBox
-	BankItemSearchBox:StripTextures()
-	BankItemSearchBox:CreateBackdrop()
-	BankItemSearchBox.backdrop:Point('TOPLEFT', 10, -1)
-	BankItemSearchBox.backdrop:Point('BOTTOMRIGHT', 4, 1)
+	for _, icon in pairs({_G.BagItemAutoSortButton, _G.BankItemAutoSortButton}) do
+		icon:StripTextures()
+		icon:SetTemplate()
 
-	local AutoSort = _G.BagItemAutoSortButton
-	AutoSort:StripTextures()
-	AutoSort:SetTemplate()
-	AutoSort.Icon = AutoSort:CreateTexture()
-	AutoSort.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
-	AutoSort.Icon:SetTexCoord(unpack(E.TexCoords))
-	AutoSort.Icon:SetInside()
+		icon.Icon = icon:CreateTexture()
+		icon.Icon:SetTexture([[Interface\ICONS\INV_Pet_Broom]])
+		icon.Icon:SetTexCoord(unpack(E.TexCoords))
+		icon.Icon:SetInside()
+	end
 
 	local Bags = CreateFrame('Frame')
 	Bags:RegisterEvent('BAG_UPDATE')
