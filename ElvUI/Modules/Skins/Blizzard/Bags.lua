@@ -3,7 +3,9 @@ local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, select = unpack, select
+local pairs = pairs
+local select = select
+local unpack = unpack
 
 local CreateFrame = CreateFrame
 local GetItemInfo = GetItemInfo
@@ -208,10 +210,14 @@ function S:ContainerFrame()
 	local ReagentBankFrame = _G.ReagentBankFrame
 	hooksecurefunc('BankFrameItemButton_Update', function(button)
 		if not BankFrame.isSkinned then
-			BankFrame:StripTextures(true)
-			BankFrame:SetTemplate('Transparent')
 			S:HandleButton(_G.BankFramePurchaseButton, true)
 			S:HandleCloseButton(_G.BankFrameCloseButton)
+
+			_G.BankFrameMoneyFrameInset:Kill()
+			_G.BankFrameMoneyFrameBorder:Kill()
+
+			BankFrame:StripTextures(true)
+			BankFrame:SetTemplate('Transparent')
 
 			BankFrame.backdrop2 = CreateFrame('Frame', nil, _G.BankSlotsFrame)
 			BankFrame.backdrop2:SetTemplate('Transparent')
@@ -222,9 +228,6 @@ function S:ContainerFrame()
 			BankFrame.backdrop3:SetTemplate('Transparent')
 			BankFrame.backdrop3:Point('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
 			BankFrame.backdrop3:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag7, 'BOTTOMRIGHT', 6, -6)
-
-			_G.BankFrameMoneyFrameInset:Kill()
-			_G.BankFrameMoneyFrameBorder:Kill()
 
 			BankFrame.isSkinned = true
 		end
