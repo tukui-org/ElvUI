@@ -19,7 +19,7 @@ local buttonPositions = {
 	BOTTOMRIGHT = L["Bottom Right"],
 }
 
-local buttonScale = { min = 0.5, max = 2, step = 0.05 }
+local buttonScale = { min = 0.5, max = 3, step = 0.05 }
 local buttonOffsets = { min = -60, max = 60, step = 1 }
 
 local Maps = ACH:Group(L["Maps"], nil, 2, 'tab')
