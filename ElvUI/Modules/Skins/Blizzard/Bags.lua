@@ -205,6 +205,7 @@ function S:ContainerFrame()
 	end)
 
 	local BankFrame = _G.BankFrame
+	local ReagentBankFrame = _G.ReagentBankFrame
 	hooksecurefunc('BankFrameItemButton_Update', function(button)
 		if not BankFrame.isSkinned then
 			BankFrame:StripTextures(true)
@@ -228,11 +229,11 @@ function S:ContainerFrame()
 			BankFrame.isSkinned = true
 		end
 
-		if _G.ReagentBankFrameItem1 and not BankFrame.backdrop4 then
-			BankFrame.backdrop4 = CreateFrame('Frame', nil, _G.ReagentBankFrame)
-			BankFrame.backdrop4:SetTemplate('Transparent')
-			BankFrame.backdrop4:Point('TOPLEFT', _G.ReagentBankFrameItem1, 'TOPLEFT', -6, 6)
-			BankFrame.backdrop4:Point('BOTTOMRIGHT', _G.ReagentBankFrameItem98, 'BOTTOMRIGHT', 6, -6)
+		if _G.ReagentBankFrameItem1 and not ReagentBankFrame.backdrop2 then
+			ReagentBankFrame.backdrop2 = CreateFrame('Frame', nil, ReagentBankFrame)
+			ReagentBankFrame.backdrop2:SetTemplate('Transparent')
+			ReagentBankFrame.backdrop2:Point('TOPLEFT', _G.ReagentBankFrameItem1, 'TOPLEFT', -6, 6)
+			ReagentBankFrame.backdrop2:Point('BOTTOMRIGHT', _G.ReagentBankFrameItem98, 'BOTTOMRIGHT', 6, -6)
 		end
 
 		if not button.skinned then
