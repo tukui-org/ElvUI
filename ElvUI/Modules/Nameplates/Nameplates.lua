@@ -305,8 +305,10 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
+	nameplate.BossMods = NP:Construct_BossMods(nameplate)
 
 	NP:Construct_Auras(nameplate)
+	NP:BossMods_RegisterCallbacks()
 	NP:StyleFilterEvents(nameplate) -- prepare the watcher
 
 	if E.myclass == 'DEATHKNIGHT' then
@@ -325,6 +327,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
+	NP:Update_BossMods(nameplate)
 
 	local db = NP:PlateDB(nameplate)
 	if db.nameOnly or not db.enable then
@@ -743,6 +746,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			end
 
 			NP:UpdatePlateBase(nameplate)
+			NP:BossMods_UpdateIcon(nameplate)
 
 			NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
 			NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
@@ -768,6 +772,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		if not nameplate.widgetsOnly then
+			NP:BossMods_UpdateIcon(nameplate, true)
+
 			NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
 			NP:StyleFilterClearVariables(nameplate)
 		elseif nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate

@@ -523,7 +523,17 @@ P.nameplates = {
 		friendly = false,
 		enemy = false,
 	},
-	plateSize ={
+	bossMods = {
+		enable = true,
+		anchorPoint = 'BOTTOM',
+		growthX = 'RIGHT',
+		growthY = 'DOWN',
+		size = 34,
+		spacing = 1,
+		yOffset = -5,
+		xOffset = 0
+	},
+	plateSize = {
 		personalWidth = 150,
 		personalHeight = 30,
 		friendlyWidth = 150,

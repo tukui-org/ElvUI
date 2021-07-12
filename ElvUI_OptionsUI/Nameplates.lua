@@ -5627,8 +5627,92 @@ E.Options.args.nameplate = {
 								}
 							}
 						},
+						bossMods = {
+							order = 55,
+							type = 'group',
+							childGroups = 'tab',
+							name = L["Boss Mod Auras"],
+							get = function(info)
+								return E.db.nameplates.bossMods[info[#info]]
+							end,
+							set = function(info, value)
+								E.db.nameplates.bossMods[info[#info]] = value
+								NP:ConfigureAll()
+							end,
+							args = {
+								enable = {
+									order = 1,
+									name = L["Enable"],
+									type = 'toggle'
+								},
+								size = {
+									order = 4,
+									name = L["Icon Size"],
+									type = 'range',
+									min = 6,
+									max = 60,
+									step = 1
+								},
+								spacing = {
+									order = 5,
+									name = L["Spacing"],
+									type = 'range',
+									min = 0,
+									max = 60,
+									step = 1
+								},
+								xOffset = {
+									order = 6,
+									name = L["X-Offset"],
+									type = 'range',
+									min = -100,
+									max = 100,
+									step = 1
+								},
+								yOffset = {
+									order = 7,
+									type = 'range',
+									name = L["Y-Offset"],
+									min = -100,
+									max = 100,
+									step = 1
+								},
+								anchorPoint = {
+									type = 'select',
+									order = 8,
+									name = L["Anchor Point"],
+									desc = L["What point to anchor to the frame you set to attach to."],
+									values = {
+										TOP = 'TOP',
+										BOTTOM = 'BOTTOM',
+										TOPLEFT = 'TOPLEFT',
+										BOTTOMLEFT = 'BOTTOMLEFT',
+										TOPRIGHT = 'TOPRIGHT',
+										BOTTOMRIGHT = 'BOTTOMRIGHT'
+									}
+								},
+								growthX = {
+									type = 'select',
+									order = 9,
+									name = L["Growth X-Direction"],
+									values = {
+										LEFT = L["Left"],
+										RIGHT = L["Right"]
+									}
+								},
+								growthY = {
+									type = 'select',
+									order = 10,
+									name = L["Growth Y-Direction"],
+									values = {
+										UP = L["Up"],
+										DOWN = L["Down"]
+									}
+								},
+							}
+						},
 						effectiveGroup = {
-							order = 51,
+							order = 60,
 							type = 'group',
 							childGroups = 'tab',
 							name = L["Effective Updates"],
@@ -5692,7 +5776,7 @@ E.Options.args.nameplate = {
 							},
 						},
 						clickThrough = {
-							order = 52,
+							order = 65,
 							type = 'group',
 							childGroups = 'tab',
 							name = L["Click Through"],
@@ -5730,7 +5814,7 @@ E.Options.args.nameplate = {
 							}
 						},
 						clickableRange = {
-							order = 53,
+							order = 70,
 							type = 'group',
 							childGroups = 'tab',
 							name = L["Clickable Size"],
@@ -5837,7 +5921,7 @@ E.Options.args.nameplate = {
 							}
 						},
 						cutaway = {
-							order = 54,
+							order = 75,
 							type = 'group',
 							childGroups = 'tab',
 							name = L["Cutaway Bars"],
@@ -5943,7 +6027,7 @@ E.Options.args.nameplate = {
 							}
 						},
 						threatGroup = {
-							order = 55,
+							order = 80,
 							type = 'group',
 							name = L["Threat"],
 							childGroups = 'tabs',
