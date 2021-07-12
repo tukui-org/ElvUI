@@ -1733,7 +1733,8 @@ function B:ConstructContainerButton(f, slotID, bagID)
 		slot.ScrapIcon:Hide()
 	end
 
-	slot.searchOverlay:SetAllPoints()
+	slot.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
+
 	slot.IconBorder:Kill()
 	slot.IconOverlay:SetInside()
 	slot.IconOverlay2:SetInside()
@@ -1805,7 +1806,7 @@ function B:ConstructReagentSlot(f, slotID)
 	slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
 	slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 
-	slot.searchOverlay:SetAllPoints()
+	slot.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
 
 	-- mimic ReagentBankItemButtonGenericTemplate
 	slot:RegisterForDrag('LeftButton')

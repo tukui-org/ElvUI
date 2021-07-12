@@ -39,7 +39,7 @@ local function SkinButton(button)
 	if not button.skinned then
 		for i=1, button:GetNumRegions() do
 			local region = select(i, button:GetRegions())
-			if region and region:IsObjectType('Texture') and region ~= button.searchOverlay and region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay then
+			if region and region:IsObjectType('Texture') and region ~= button.UpgradeIcon and region ~= button.ItemContextOverlay then
 				region:SetTexture()
 			end
 		end
@@ -52,8 +52,7 @@ local function SkinButton(button)
 		icon:SetInside()
 		icon:SetTexCoord(unpack(E.TexCoords))
 
-		button.searchOverlay:ClearAllPoints()
-		button.searchOverlay:SetAllPoints(icon)
+		button.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
 
 		if button.IconQuestTexture then
 			button.IconQuestTexture:SetTexCoord(unpack(E.TexCoords))
