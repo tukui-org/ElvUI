@@ -612,9 +612,7 @@ function B:SortingFadeBags(bagFrame, registerUpdate)
 	for _, bagID in ipairs(bagFrame.BagIDs) do
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local button = bagFrame.Bags[bagID][slotID]
-			SetItemButtonDesaturated(button, 1)
 			button.searchOverlay:Show()
-			button:SetAlpha(0.5)
 		end
 	end
 end
@@ -1924,9 +1922,9 @@ function B:ItemGlowOnFinished()
 	end
 end
 
-function B:ShowItemGlow(bag, slot)
-	if slot then
-		slot:SetAlpha(1)
+function B:ShowItemGlow(bag, newItemGlow)
+	if newItemGlow then
+		newItemGlow:SetAlpha(1)
 	end
 
 	if not bag.NewItemGlow:IsPlaying() then
@@ -1947,6 +1945,7 @@ end
 function B:SetupItemGlow(frame)
 	frame.NewItemGlow = _G.CreateAnimationGroup(frame)
 	frame.NewItemGlow:SetLooping(true)
+
 	frame.NewItemGlow.Fade = frame.NewItemGlow:CreateAnimation('fade')
 	frame.NewItemGlow.Fade:SetDuration(0.7)
 	frame.NewItemGlow.Fade:SetChange(0)
