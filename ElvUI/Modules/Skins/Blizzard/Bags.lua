@@ -194,12 +194,12 @@ function S:ContainerFrame()
 			S:HandleCloseButton(_G.BankFrameCloseButton)
 
 			BankFrame.backdrop2 = CreateFrame('Frame', nil, _G.BankSlotsFrame)
-			BankFrame.backdrop2:SetTemplate()
+			BankFrame.backdrop2:SetTemplate('Transparent')
 			BankFrame.backdrop2:Point('TOPLEFT', _G.BankFrameItem1, 'TOPLEFT', -6, 6)
 			BankFrame.backdrop2:Point('BOTTOMRIGHT', _G.BankFrameItem28, 'BOTTOMRIGHT', 6, -6)
 
 			BankFrame.backdrop3 = CreateFrame('Frame', nil, _G.BankSlotsFrame)
-			BankFrame.backdrop3:SetTemplate()
+			BankFrame.backdrop3:SetTemplate('Transparent')
 			BankFrame.backdrop3:Point('TOPLEFT', _G.BankSlotsFrame.Bag1, 'TOPLEFT', -6, 6)
 			BankFrame.backdrop3:Point('BOTTOMRIGHT', _G.BankSlotsFrame.Bag7, 'BOTTOMRIGHT', 6, -6)
 
