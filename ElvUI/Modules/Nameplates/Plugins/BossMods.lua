@@ -161,6 +161,8 @@ function NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate)
 	local plate = NP.PlateGUID[unitGUID]
 	if not plate then return end
 
+	-- print('AddIcon')
+
 	local button = NP:BossMods_GetIcon(plate, texture)
 	button.icon:SetDesaturated(desaturate)
 	button.icon:SetTexture(texture)
@@ -194,7 +196,17 @@ end
 function NP:BossMods_UpdateIcon(plate, removed)
 	local unitGUID = plate.unitGUID
 	local active = NP.BossMods_ActiveUnitGUID[unitGUID]
-	if not active then return end
+
+	if not active then
+		local element = plate.BossMods
+		if next(element.activeIcons) then
+			for texture in pairs(element.activeIcons) do
+				NP:BossMods_ClearIcon(plate, texture)
+			end
+		end
+
+		return
+	end
 
 	local enabled = allowHostile and allowAuras
 	for texture, info in pairs(active) do
@@ -218,13 +230,13 @@ function NP:BossMods_HideNameplateAura(_, isGUID, unit, texture)
 	NP:BossMods_RemoveIcon(unitGUID, texture, true)
 end
 
-function NP:BossMods_AddNameplateIcon(unitGUID, texture, duration, desaturate)
+function NP:BossMods_AddNameplateIcon(_, unitGUID, texture, duration, desaturate)
 	if not (allowHostile and allowAuras) then return end
 
 	NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate)
 end
 
-function NP:BossMods_RemoveNameplateIcon(unitGUID, texture)
+function NP:BossMods_RemoveNameplateIcon(_, unitGUID, texture)
 	NP:BossMods_RemoveIcon(unitGUID, texture, true)
 end
 
@@ -241,9 +253,11 @@ function NP:BossMods_DisableHostileNameplates()
 	wipe(NP.BossMods_ActiveUnitGUID)
 
 	allowHostile = false
+	-- print('disabled')
 end
 
 function NP:BossMods_EnableHostileNameplates()
+	-- print('enabled')
 	allowHostile = true
 end
 
@@ -254,6 +268,8 @@ end
 function NP:BossMods_RegisterCallbacks()
 	local DBM = _G.DBM
 	if DBM and DBM.RegisterCallback and DBM.Nameplate then
+		-- print('registered DBM')
+
 		DBM.Nameplate.SupportedNPMod = NP.DBM_SupportedNPMod
 
 		DBM:RegisterCallback('BossMod_ShowNameplateAura',NP.BossMods_ShowNameplateAura)
@@ -264,6 +280,8 @@ function NP:BossMods_RegisterCallbacks()
 
 	local BWL = _G.BigWigsLoader
 	if BWL and BWL.RegisterMessage then
+		-- print('registered BW')
+
 		BWL.RegisterMessage(NP,'BigWigs_AddNameplateIcon',NP.BossMods_AddNameplateIcon)
 		BWL.RegisterMessage(NP,'BigWigs_RemoveNameplateIcon',NP.BossMods_RemoveNameplateIcon)
 		BWL.RegisterMessage(NP,'BigWigs_EnableHostileNameplates',NP.BossMods_EnableHostileNameplates)
