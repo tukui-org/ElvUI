@@ -161,8 +161,6 @@ function NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate)
 	local plate = NP.PlateGUID[unitGUID]
 	if not plate then return end
 
-	-- print('AddIcon')
-
 	local button = NP:BossMods_GetIcon(plate, texture)
 	button.icon:SetDesaturated(desaturate)
 	button.icon:SetTexture(texture)
@@ -183,12 +181,12 @@ function NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate)
 	NP:BossMods_PositionIcons(plate.BossMods)
 end
 
-function NP:BossMods_RemoveIcon(unitGUID, texture, untrack)
-	local plate = NP.PlateGUID[unitGUID]
-	if plate then NP:BossMods_ClearIcon(plate, texture) end
+function NP:BossMods_RemoveIcon(unitGUID, texture)
+	NP:BossMods_TrackIcons(false, unitGUID, texture)
 
-	if untrack then
-		NP:BossMods_TrackIcons(false, unitGUID, texture)
+	local plate = NP.PlateGUID[unitGUID]
+	if plate then
+		NP:BossMods_ClearIcon(plate, texture)
 		NP:BossMods_PositionIcons(plate.BossMods)
 	end
 end
@@ -211,7 +209,7 @@ function NP:BossMods_UpdateIcon(plate, removed)
 	local enabled = allowHostile and allowAuras
 	for texture, info in pairs(active) do
 		if removed or not enabled then
-			NP:BossMods_RemoveIcon(unitGUID, texture)
+			NP:BossMods_ClearIcon(plate, texture)
 		elseif enabled then
 			NP:BossMods_AddIcon(unitGUID, texture, info.duration, info.desaturate, info.expiration)
 		end
@@ -227,7 +225,7 @@ end
 
 function NP:BossMods_HideNameplateAura(_, isGUID, unit, texture)
 	local unitGUID = (isGUID and unit) or UnitGUID(unit)
-	NP:BossMods_RemoveIcon(unitGUID, texture, true)
+	NP:BossMods_RemoveIcon(unitGUID, texture)
 end
 
 function NP:BossMods_AddNameplateIcon(_, unitGUID, texture, duration, desaturate)
@@ -237,27 +235,23 @@ function NP:BossMods_AddNameplateIcon(_, unitGUID, texture, duration, desaturate
 end
 
 function NP:BossMods_RemoveNameplateIcon(_, unitGUID, texture)
-	NP:BossMods_RemoveIcon(unitGUID, texture, true)
+	NP:BossMods_RemoveIcon(unitGUID, texture)
 end
 
 function NP:BossMods_DisableHostileNameplates()
 	for unitGUID, textures in pairs(NP.BossMods_ActiveUnitGUID) do
 		for texture in pairs(textures) do
 			local plate = NP.PlateGUID[unitGUID]
-			if plate then
-				NP:BossMods_ClearIcon(plate, texture)
-			end
+			if plate then NP:BossMods_ClearIcon(plate, texture) end
 		end
 	end
 
 	wipe(NP.BossMods_ActiveUnitGUID)
 
 	allowHostile = false
-	-- print('disabled')
 end
 
 function NP:BossMods_EnableHostileNameplates()
-	-- print('enabled')
 	allowHostile = true
 end
 
@@ -268,8 +262,6 @@ end
 function NP:BossMods_RegisterCallbacks()
 	local DBM = _G.DBM
 	if DBM and DBM.RegisterCallback and DBM.Nameplate then
-		-- print('registered DBM')
-
 		DBM.Nameplate.SupportedNPMod = NP.DBM_SupportedNPMod
 
 		DBM:RegisterCallback('BossMod_ShowNameplateAura',NP.BossMods_ShowNameplateAura)
@@ -280,8 +272,6 @@ function NP:BossMods_RegisterCallbacks()
 
 	local BWL = _G.BigWigsLoader
 	if BWL and BWL.RegisterMessage then
-		-- print('registered BW')
-
 		BWL.RegisterMessage(NP,'BigWigs_AddNameplateIcon',NP.BossMods_AddNameplateIcon)
 		BWL.RegisterMessage(NP,'BigWigs_RemoveNameplateIcon',NP.BossMods_RemoveNameplateIcon)
 		BWL.RegisterMessage(NP,'BigWigs_EnableHostileNameplates',NP.BossMods_EnableHostileNameplates)
