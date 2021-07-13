@@ -216,14 +216,14 @@ function NP:BossMods_UpdateIcon(plate, removed)
 	end
 end
 
-function NP:BossMods_ShowNameplateAura(_, isGUID, unit, texture, duration, desaturate)
+function NP:BossMods_ShowNameplateAura(isGUID, unit, texture, duration, desaturate)
 	if not (allowHostile and allowAuras) then return end
 
 	local unitGUID = (isGUID and unit) or UnitGUID(unit)
 	NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate)
 end
 
-function NP:BossMods_HideNameplateAura(_, isGUID, unit, texture)
+function NP:BossMods_HideNameplateAura(isGUID, unit, texture)
 	local unitGUID = (isGUID and unit) or UnitGUID(unit)
 	NP:BossMods_RemoveIcon(unitGUID, texture)
 end
