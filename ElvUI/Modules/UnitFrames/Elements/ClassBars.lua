@@ -445,6 +445,13 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.bg:SetTexture(E.media.blankTex)
 	additionalPower.bg.multiplier = 0.35
 
+	local clipFrame = CreateFrame('Frame', nil, additionalPower)
+	clipFrame:SetClipsChildren(true)
+	clipFrame:SetAllPoints()
+	clipFrame:EnableMouse(false)
+	clipFrame.__frame = frame
+	additionalPower.ClipFrame = clipFrame
+
 	additionalPower:SetScript('OnShow', ToggleResourceBar)
 	additionalPower:SetScript('OnHide', ToggleResourceBar)
 
