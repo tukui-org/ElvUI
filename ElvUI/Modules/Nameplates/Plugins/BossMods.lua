@@ -13,7 +13,7 @@ local CreateFrame = CreateFrame
 
 NP.BossMods_ActiveUnitGUID = {}
 
-local allowHostile, allowAuras = false -- true to test
+local allowHostile = false
 function NP:BossMods_CreateIcon(element)
 	element.index = not element.index and 1 or (element.index + 1)
 
@@ -189,7 +189,7 @@ function NP:BossMods_UpdateIcon(plate, removed)
 		return
 	end
 
-	local enabled = allowHostile and allowAuras
+	local enabled = allowHostile and NP.db.bossMods.enable
 	for texture, info in pairs(active) do
 		if removed or not enabled then
 			NP:BossMods_ClearIcon(plate, texture)
@@ -200,7 +200,7 @@ function NP:BossMods_UpdateIcon(plate, removed)
 end
 
 function NP:BossMods_ShowNameplateAura(isGUID, unit, texture, duration, desaturate)
-	if not (allowHostile and allowAuras) then return end
+	if not (allowHostile and NP.db.bossMods.enable) then return end
 
 	local unitGUID = (isGUID and unit) or UnitGUID(unit)
 	NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate)
@@ -212,7 +212,7 @@ function NP:BossMods_HideNameplateAura(isGUID, unit, texture)
 end
 
 function NP:BossMods_AddNameplateIcon(_, unitGUID, texture, duration, desaturate)
-	if not (allowHostile and allowAuras) then return end
+	if not (allowHostile and NP.db.bossMods.enable) then return end
 
 	NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate)
 end
@@ -264,16 +264,17 @@ end
 
 function NP:Update_BossMods(plate)
 	local db = NP.db.bossMods
-
-	allowAuras = db.enable
 	if not db.enable then return end
+
+	local anchor = db.anchorPoint
+	local inverse = E.InversePoints[anchor]
 
 	local element = plate.BossMods
 	element:ClearAllPoints()
-	element:SetPoint(E.InversePoints[db.anchorPoint] or 'TOPRIGHT', plate, db.anchorPoint or 'TOPRIGHT', db.xOffset, db.yOffset)
+	element:SetPoint(inverse or 'TOPRIGHT', plate, anchor or 'TOPRIGHT', db.xOffset, db.yOffset)
 	element:SetSize(plate.width or 150, db.size)
 
-	element.initialAnchor = E.InversePoints[db.anchorPoint]
+	element.initialAnchor = inverse
 	element.spacing = db.spacing
 	element.growthY = db.growthY
 	element.growthX = db.growthX
