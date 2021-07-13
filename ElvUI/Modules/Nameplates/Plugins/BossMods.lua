@@ -65,12 +65,13 @@ function NP:BossMods_PositionIcons(element)
 	local cols = floor(element:GetWidth() / size + 0.5)
 
 	local i, center = 1, anchor == 'TOP' or anchor == 'BOTTOM'
+	local centerAnchor = center and ((growthY == 1 and 'BOTTOM' or 'TOP')..(growthX == 1 and 'LEFT' or 'RIGHT'))
+	local point = centerAnchor or anchor
+
 	for _, button in pairs(element.activeIcons) do
 		local z = i - 1
 		local col = z % cols
 		local row = floor(z / cols)
-
-		local point = center and ((growthY == 1 and 'BOTTOM' or 'TOP')..(growthX == 1 and 'LEFT' or 'RIGHT')) or anchor
 
 		button:ClearAllPoints()
 		button:SetPoint(point, (center and holder) or element, point, col * size * growthX, row * size * growthY)
