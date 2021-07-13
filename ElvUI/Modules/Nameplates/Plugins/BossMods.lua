@@ -222,14 +222,16 @@ function NP:BossMods_RemoveNameplateIcon(_, unitGUID, texture)
 end
 
 function NP:BossMods_DisableHostileNameplates()
-	for unitGUID, textures in pairs(NP.BossMods_ActiveUnitGUID) do
-		for texture in pairs(textures) do
-			local plate = NP.PlateGUID[unitGUID]
-			if plate then NP:BossMods_ClearIcon(plate, texture) end
+	if next(NP.BossMods_ActiveUnitGUID) then
+		for unitGUID, textures in pairs(NP.BossMods_ActiveUnitGUID) do
+			for texture in pairs(textures) do
+				local plate = NP.PlateGUID[unitGUID]
+				if plate then NP:BossMods_ClearIcon(plate, texture) end
+			end
 		end
-	end
 
-	wipe(NP.BossMods_ActiveUnitGUID)
+		wipe(NP.BossMods_ActiveUnitGUID)
+	end
 
 	allowHostile = false
 end
