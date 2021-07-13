@@ -308,7 +308,6 @@ function NP:StylePlate(nameplate)
 	nameplate.BossMods = NP:Construct_BossMods(nameplate)
 
 	NP:Construct_Auras(nameplate)
-	NP:BossMods_RegisterCallbacks()
 	NP:StyleFilterEvents(nameplate) -- prepare the watcher
 
 	if E.myclass == 'DEATHKNIGHT' then
@@ -919,6 +918,7 @@ function NP:Initialize()
 	NP:RegisterEvent('GROUP_LEFT')
 	NP:RegisterEvent('PLAYER_LOGOUT')
 
+	NP:BossMods_RegisterCallbacks()
 	NP:StyleFilterInitialize()
 	NP:HideInterfaceOptions()
 	NP:GROUP_ROSTER_UPDATE()
