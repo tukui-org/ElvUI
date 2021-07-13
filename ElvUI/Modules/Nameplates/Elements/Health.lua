@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local ipairs = ipairs
@@ -67,17 +68,6 @@ function NP:Construct_Health(nameplate)
 	Health:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Health:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
-	local clipFrame = CreateFrame('Frame', nil, Health)
-	clipFrame:SetClipsChildren(true)
-	clipFrame:SetAllPoints()
-	clipFrame:EnableMouse(false)
-	Health.ClipFrame = clipFrame
-
-	--[[Health.bg = Health:CreateTexture(nil, 'BACKGROUND')
-	Health.bg:SetAllPoints()
-	Health.bg:SetTexture(E.media.blankTex)
-	Health.bg.multiplier = 0.2]]
-
 	NP.StatusBars[Health] = true
 
 	local statusBarTexture = Health:GetStatusBarTexture()
@@ -91,6 +81,8 @@ function NP:Construct_Health(nameplate)
 	Health.colorTapping = true
 	Health.colorSelection = true
 	Health.UpdateColor = NP.Health_UpdateColor
+
+	UF:Construct_ClipFrame(nameplate, Health)
 
 	return Health
 end

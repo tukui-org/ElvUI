@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local unpack = unpack
@@ -104,12 +105,6 @@ function NP:Construct_Power(nameplate)
 	Power:SetFrameLevel(5)
 	Power:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 
-	local clipFrame = CreateFrame('Frame', nil, Power)
-	clipFrame:SetClipsChildren(true)
-	clipFrame:SetAllPoints()
-	clipFrame:EnableMouse(false)
-	Power.ClipFrame = clipFrame
-
 	NP.StatusBars[Power] = true
 
 	Power.frequentUpdates = true
@@ -118,6 +113,8 @@ function NP:Construct_Power(nameplate)
 
 	Power.PostUpdate = NP.Power_PostUpdate
 	Power.UpdateColor = NP.Power_UpdateColor
+
+	UF:Construct_ClipFrame(nameplate, Power)
 
 	return Power
 end

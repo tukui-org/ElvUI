@@ -513,6 +513,17 @@ function UF:Configure_Fader(frame)
 	end
 end
 
+function UF:Construct_ClipFrame(frame, bar)
+	local clipFrame = CreateFrame('Frame', nil, bar)
+	clipFrame:SetClipsChildren(true)
+	clipFrame:SetAllPoints()
+	clipFrame:EnableMouse(false)
+	clipFrame.__frame = frame
+	bar.ClipFrame = clipFrame
+
+	return clipFrame
+end
+
 function UF:Configure_FontString(obj)
 	UF.fontstrings[obj] = true
 	obj:FontTemplate() --This is temporary.
