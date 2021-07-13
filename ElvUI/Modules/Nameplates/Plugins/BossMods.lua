@@ -13,23 +13,6 @@ local CreateFrame = CreateFrame
 
 NP.BossMods_ActiveUnitGUID = {}
 
---[=[
-	function NP:TestBossMods()
-		local target = UnitGUID('target')
-		if not target then return end
-
-		NP:BossMods_AddIcon(target, 537100, 10, false)
-		NP:BossMods_AddIcon(target, 656551, 200, false)
-	end
-	E:RegisterChatCommand('testbossmods', NP.TestBossMods)
-
-	/run ElvUI[1].NamePlates:BossMods_AddIcon(UnitGUID('target'), 537100, 10, false)
-	/run ElvUI[1].NamePlates:BossMods_AddIcon(UnitGUID('target'), 656551, 200, false)
-
-	/run ElvUI[1].NamePlates:BossMods_RemoveIcon(UnitGUID('target'), 537100, true)
-	/run ElvUI[1].NamePlates:BossMods_RemoveIcon(UnitGUID('target'), 656551, true)
-]=]
-
 local allowHostile, allowAuras = false -- true to test
 function NP:BossMods_CreateIcon(element)
 	element.index = not element.index and 1 or (element.index + 1)
