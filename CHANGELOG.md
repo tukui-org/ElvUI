@@ -1,7 +1,17 @@
 ### Version 12.35 [ ETA: 🍨 ]
 
-**Nice:**  
+**Fixate:**  
+Added Nameplate support to show DBM or BigWigs auras on nameplates, stuff like Fixate. Settings under (Nameplates > General > General > Boss Mod Auras).  
+Added support to Style Filters to trigger based on Boss Mod Auras.  
 
+**Nice:**  
+Added Season 2 Dungeon Affix Debuffs and Blacklisted Drained debuff.  
+Added Unit Class Color action to Style Filters.  
+Fixed Guild Bank search not fading the tabs.  
+Updated the shading on Bag items when you search.  
+Updated the normal Bags skin code a bit, also some of the bank too.  
+Fixed Power Prediction overflowing sometimes.  
+Increased range to scale Minimap icons more.  
 
 ___
 ### Version 12.34 [ July 8th 2021 ]
@@ -128,7 +138,7 @@ ___
 
 ### Version 12.21 [ March 9th 2021 ]
 
-**Added:**
+**Added:**  
 PowerBar widget now has a mover  
 Click-Through option for AuraBars  
 Mouseover and Alpha setting for Voice Chat Panel  
@@ -167,7 +177,7 @@ ___
 
 ### Version 12.19 [ February 2nd 2021 ]
 
-**Added:**
+**Added:**  
 Bag Item Info option to change Anima text style  
 Sort by Index option for Unitframes  
 Classpower Shortvalue Tags  
@@ -321,7 +331,7 @@ ___
 **Hotfix:**  
 Petbar wasn't appearing with the Backdrop option selected.  
 
-**Also:**
+**Also:**  
 Top Aura options were reworked and settings for them were reset.  
 Added Custom Font options for Unitframe Castbars (Thanks @Caedis).  
 
