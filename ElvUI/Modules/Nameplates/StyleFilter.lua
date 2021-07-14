@@ -460,39 +460,39 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		return -- We hide it. Lets not do other things (no point)
 	end
 	if HealthColor then
-		local hc = actions.color.healthColor
+		local hc = (actions.color.healthClass and frame.classColor) or actions.color.healthColor
 		c.HealthColor = hc -- used by Health_UpdateColor
 
-		frame.Health:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a)
-		frame.Cutaway.Health:SetVertexColor(hc.r * 1.5, hc.g * 1.5, hc.b * 1.5, hc.a)
+		frame.Health:SetStatusBarColor(hc.r, hc.g, hc.b, hc.a or 1)
+		frame.Cutaway.Health:SetVertexColor(hc.r * 1.5, hc.g * 1.5, hc.b * 1.5, hc.a or 1)
 	end
 	if PowerColor then
-		local pc = actions.color.powerColor
+		local pc = (actions.color.powerClass and frame.classColor) or actions.color.powerColor
 		c.PowerColor = true
 
-		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a)
-		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a)
+		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b, pc.a or 1)
+		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, pc.a or 1)
 	end
 	if Borders then
-		local bc = actions.color.borderColor
+		local bc = (actions.color.borderClass and frame.classColor) or actions.color.borderColor
 		c.Borders = true
 
-		mod:StyleFilterBorderLock(frame.Health.backdrop, bc.r, bc.g, bc.b, bc.a)
+		mod:StyleFilterBorderLock(frame.Health.backdrop, bc.r, bc.g, bc.b, bc.a or 1)
 
 		if frame.Power.backdrop and db.power.enable then
-			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a)
+			mod:StyleFilterBorderLock(frame.Power.backdrop, bc.r, bc.g, bc.b, bc.a or 1)
 		end
 	end
 	if HealthFlash then
-		local fc = actions.flash.color
+		local fc = (actions.flash.class and frame.classColor) or actions.flash.color
 		c.HealthFlash = true
 
 		if not HealthTexture then frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar)) end
 		frame.HealthFlashTexture:SetVertexColor(fc.r, fc.g, fc.b)
 
 		local anim = frame.HealthFlashTexture.anim or mod:StyleFilterSetupFlash(frame.HealthFlashTexture)
-		anim.fadein:SetToAlpha(fc.a)
-		anim.fadeout:SetFromAlpha(fc.a)
+		anim.fadein:SetToAlpha(fc.a or 1)
+		anim.fadeout:SetFromAlpha(fc.a or 1)
 
 		frame.HealthFlashTexture:Show()
 		E:Flash(frame.HealthFlashTexture, actions.flash.speed * 0.1, true)
@@ -570,7 +570,7 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 		end
 	end
 	if PowerColor then
-		local pc = E.db.unitframe.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
+		local pc = mod.db.colors.power[frame.Power.token] or _G.PowerBarColor[frame.Power.token] or FallbackColor
 		frame.Power:SetStatusBarColor(pc.r, pc.g, pc.b)
 		frame.Cutaway.Power:SetVertexColor(pc.r * 1.5, pc.g * 1.5, pc.b * 1.5, 1)
 	end

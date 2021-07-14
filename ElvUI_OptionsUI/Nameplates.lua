@@ -3020,16 +3020,21 @@ function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
-						spacer1 = ACH:Spacer(3, 'full'),
+						healthClass = {
+							type = 'toggle',
+							order = 3,
+							name = L["Unit Class Color"]
+						},
+						spacer1 = ACH:Spacer(4, 'full'),
 						power = {
 							name = L["Power"],
-							order = 4,
+							order = 10,
 							type = 'toggle'
 						},
 						powerColor = {
 							name = L["Power Color"],
 							type = 'color',
-							order = 5,
+							order = 11,
 							hasAlpha = true,
 							disabled = function()
 								return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.power
@@ -3044,16 +3049,21 @@ function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
-						spacer2 = ACH:Spacer(6, 'full'),
+						powerClass = {
+							type = 'toggle',
+							order = 12,
+							name = L["Unit Class Color"]
+						},
+						spacer2 = ACH:Spacer(13, 'full'),
 						border = {
 							name = L["Border"],
-							order = 7,
+							order = 20,
 							type = 'toggle'
 						},
 						borderColor = {
 							name = L["Border Color"],
 							type = 'color',
-							order = 8,
+							order = 21,
 							hasAlpha = true,
 							disabled = function()
 								return not E.global.nameplate.filters[selectedNameplateFilter].actions.color.border
@@ -3067,6 +3077,11 @@ function UpdateFilterGroup()
 								t.r, t.g, t.b, t.a = r, g, b, a
 								NP:ConfigureAll()
 							end
+						},
+						borderClass = {
+							type = 'toggle',
+							order = 22,
+							name = L["Unit Class Color"]
 						}
 					}
 				},
@@ -3124,8 +3139,38 @@ function UpdateFilterGroup()
 								NP:ConfigureAll()
 							end
 						},
-						speed = {
+						color = {
+							name = L["COLOR"],
+							type = 'color',
 							order = 2,
+							hasAlpha = true,
+							disabled = function()
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.hide
+							end,
+							get = function(info)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.flash.color
+								return t.r, t.g, t.b, t.a, 104 / 255, 138 / 255, 217 / 255, 1
+							end,
+							set = function(info, r, g, b, a)
+								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.flash.color
+								t.r, t.g, t.b, t.a = r, g, b, a
+								NP:ConfigureAll()
+							end
+						},
+						flashClass = {
+							type = 'toggle',
+							order = 3,
+							name = L["Unit Class Color"],
+							get = function(info)
+								return E.global.nameplate.filters[selectedNameplateFilter].actions.flash.class
+							end,
+							set = function(info, value)
+								E.global.nameplate.filters[selectedNameplateFilter].actions.flash.class = value
+								NP:ConfigureAll()
+							end
+						},
+						speed = {
+							order = 4,
 							type = 'range',
 							name = L["SPEED"],
 							disabled = function()
@@ -3141,24 +3186,6 @@ function UpdateFilterGroup()
 							min = 1,
 							max = 10,
 							step = 1
-						},
-						color = {
-							name = L["COLOR"],
-							type = 'color',
-							order = 3,
-							hasAlpha = true,
-							disabled = function()
-								return E.global.nameplate.filters[selectedNameplateFilter].actions.hide
-							end,
-							get = function(info)
-								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.flash.color
-								return t.r, t.g, t.b, t.a, 104 / 255, 138 / 255, 217 / 255, 1
-							end,
-							set = function(info, r, g, b, a)
-								local t = E.global.nameplate.filters[selectedNameplateFilter].actions.flash.color
-								t.r, t.g, t.b, t.a = r, g, b, a
-								NP:ConfigureAll()
-							end
 						}
 					}
 				},

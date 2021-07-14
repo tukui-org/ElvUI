@@ -686,6 +686,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 		nameplate.isFriend = UnitIsFriend('player', unit)
 		nameplate.isEnemy = UnitIsEnemy('player', unit)
+		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
@@ -716,6 +717,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.unitName = UnitName(unit)
 		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
+		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
 		if nameplate.unitGUID then
 			NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)
