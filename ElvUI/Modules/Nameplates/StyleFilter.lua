@@ -992,14 +992,12 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 
 		if m.hasAura or m.missingAura then
 			if (m.hasAura and icons) or (m.missingAura and not icons) then passed = true else return end
-		else
-			if icons and m.auras and next(m.auras) then
-				for texture, value in pairs(m.auras) do
-					if value then -- only if they are turned on
-						local active = element.activeIcons[texture]
-						if (not m.missingAuras and active) or (m.missingAuras and not active) then passed = true else return end
-						break -- we can execute this once on the first enabled option then kill the loop
-					end
+		elseif icons and m.auras and next(m.auras) then
+			for texture, value in pairs(m.auras) do
+				if value then -- only if they are turned on
+					local active = element.activeIcons[texture]
+					if (not m.missingAuras and active) or (m.missingAuras and not active) then passed = true else return end
+					break -- we can execute this once on the first enabled option then kill the loop
 				end
 			end
 		end
