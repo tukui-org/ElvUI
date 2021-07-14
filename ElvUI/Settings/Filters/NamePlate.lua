@@ -260,6 +260,12 @@ E.StyleFilterDefaults = {
 			minTimeLeft = 0,
 			maxTimeLeft = 0
 		},
+		bossMods = {
+			hasAura = false,
+			missingAura = false,
+			missingAuras = false,
+			auras = {}
+		},
 		isResting = false,
 		isPet = false,
 		isNotPet = false,

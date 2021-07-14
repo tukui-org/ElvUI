@@ -22,6 +22,7 @@ local GetPvpTalentInfoByID = GetPvpTalentInfoByID
 local GetRealZoneText = GetRealZoneText
 local GetSpecializationInfoForClassID = GetSpecializationInfoForClassID
 local GetSpellInfo = GetSpellInfo
+local GetSpellTexture = GetSpellTexture
 local GetTalentInfo = GetTalentInfo
 local SetCVar = SetCVar
 
@@ -475,25 +476,28 @@ local function UpdateStyleLists()
 			args = {}
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells) then
-			local spell, spellName, notDisabled
 			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.casting.spells) do
-				spell = name
-				if tonumber(spell) then
-					spellName = GetSpellInfo(spell)
-					notDisabled =
+				local spell, spellID = name, tonumber(name)
+				if spellID then
+					local spellName = GetSpellInfo(spellID)
+					local notDisabled =
 						(E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
-							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r', spellName, spell)
+							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r', spellName, spellID)
 						else
-							spell = format('%s (%d)', spellName, spell)
+							spell = format('%s (%d)', spellName, spellID)
 						end
 					end
 				end
+
+				local spellTexture = GetSpellTexture(spellID or spell)
+				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
 				E.Options.args.nameplate.args.filters.args.triggers.args.casting.args.spells.args[name] = {
 					name = spell,
+					desc = spellDescription,
 					type = 'toggle',
 					order = -1,
 					get = function(info)
@@ -521,25 +525,28 @@ local function UpdateStyleLists()
 			args = {}
 		}
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) then
-			local spell, spellName, notDisabled
 			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.cooldowns.names) do
-				spell = name
-				if tonumber(spell) then
-					spellName = GetSpellInfo(spell)
-					notDisabled =
+				local spell, spellID = name, tonumber(name)
+				if spellID then
+					local spellName = GetSpellInfo(spellID)
+					local notDisabled =
 						(E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
-							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r', spellName, spell)
+							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r', spellName, spellID)
 						else
-							spell = format('%s (%d)', spellName, spell)
+							spell = format('%s (%d)', spellName, spellID)
 						end
 					end
 				end
+
+				local spellTexture = GetSpellTexture(spellID or spell)
+				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
 				E.Options.args.nameplate.args.filters.args.triggers.args.cooldowns.args.names.args[name] = {
 					name = spell,
+					desc = spellDescription,
 					type = 'select',
 					values = {
 						DISABLED = _G.DISABLE,
@@ -574,23 +581,28 @@ local function UpdateStyleLists()
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) then
 			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.buffs.names) do
 				local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
-				if tonumber(spell) then
-					local spellName = GetSpellInfo(spell)
+				local spellID = tonumber(spell)
+				if spellID then
+					local spellName = GetSpellInfo(spellID)
 					local notDisabled =
 						(E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
-							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r', spellName, spell, (stacks ~= '' and ' x'..stacks) or '')
+							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r', spellName, spellID, (stacks ~= '' and ' x'..stacks) or '')
 						else
-							spell = format('%s (%d)', spellName, spell)
+							spell = format('%s (%d)', spellName, spellID)
 						end
 					end
 				end
+
+				local spellTexture = GetSpellTexture(spellID or spell)
+				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
 				E.Options.args.nameplate.args.filters.args.triggers.args.buffs.args.names.args[name] = {
 					textWidth = true,
 					name = spell,
+					desc = spellDescription,
 					type = 'toggle',
 					order = -1,
 					get = function(info)
@@ -620,23 +632,28 @@ local function UpdateStyleLists()
 		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) then
 			for name in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.debuffs.names) do
 				local spell, stacks = strmatch(name, NP.StyleFilterStackPattern)
-				if tonumber(spell) then
-					local spellName = GetSpellInfo(spell)
+				local spellID = tonumber(spell)
+				if spellID then
+					local spellName = GetSpellInfo(spellID)
 					local notDisabled =
 						(E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers and
 						E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
 					if spellName then
 						if notDisabled then
-							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r', spellName, spell, (stacks ~= '' and ' x'..stacks) or '')
+							spell = format('|cFFffff00%s|r |cFFffffff(%d)|r|cFF999999%s|r', spellName, spellID, (stacks ~= '' and ' x'..stacks) or '')
 						else
-							spell = format('%s (%d)', spellName, spell)
+							spell = format('%s (%d)', spellName, spellID)
 						end
 					end
 				end
+
+				local spellTexture = GetSpellTexture(spellID or spell)
+				local spellDescription = spellTexture and E:TextureString(spellTexture, ':32:32:0:0:32:32:4:28:4:28')
 				E.Options.args.nameplate.args.filters.args.triggers.args.debuffs.args.names.args[name] = {
 					textWidth = true,
 					name = spell,
+					desc = spellDescription,
 					type = 'toggle',
 					order = -1,
 					get = function(info)
@@ -652,9 +669,77 @@ local function UpdateStyleLists()
 			end
 		end
 	end
+
+	if E.global.nameplate.filters[selectedNameplateFilter]
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods then
+		E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras = {
+			order = 50,
+			type = 'group',
+			name = '',
+			inline = true,
+			args = {},
+			disabled = function()
+				return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+					E.db.nameplates.filters[selectedNameplateFilter].triggers and
+					E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or
+					E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.missingAura or
+					E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.hasAura or
+					not E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.enable
+			end
+		}
+		if next(E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras) then
+			for aura in pairs(E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras) do
+				E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.auras.args[aura] = {
+					name = aura,
+					desc = E:TextureString(aura, ':32:32:0:0:32:32:4:28:4:28'),
+					type = 'toggle',
+					order = -1,
+					get = function(info)
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers and
+							E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods and
+							E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras and
+							E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras[aura]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras[aura] = value
+						NP:ConfigureAll()
+					end
+				}
+			end
+		end
+	end
 end
 
-local function UpdateFilterGroup()
+local UpdateFilterGroup -- set below but we need this in UpdateBossModAuras
+local function UpdateBossModAuras()
+	if E.global.nameplate.filters[selectedNameplateFilter]
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers
+	and E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods
+	and next(NP.BossMods_TextureCache) then
+		for texture in pairs(NP.BossMods_TextureCache) do
+			E.Options.args.nameplate.args.filters.args.triggers.args.bossModAuras.args.seenList.args[texture] = {
+				name = texture,
+				desc = E:TextureString(texture, ':32:32:0:0:32:32:4:28:4:28'),
+				type = 'toggle',
+				order = -1,
+				get = function(info)
+					return E.global.nameplate.filters[selectedNameplateFilter].triggers and
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods and
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras and
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras[texture]
+				end,
+				set = function(info, value)
+					E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras[texture] = value
+					UpdateFilterGroup()
+					NP:ConfigureAll()
+				end
+			}
+		end
+	end
+end
+
+function UpdateFilterGroup()
 	local stackBuff, stackDebuff
 	if not selectedNameplateFilter or not E.global.nameplate.filters[selectedNameplateFilter] then
 		E.Options.args.nameplate.args.filters.args.header = nil
@@ -1960,9 +2045,135 @@ local function UpdateFilterGroup()
 						}
 					}
 				},
+				bossModAuras = {
+					name = L["Boss Mod Auras"],
+					order = 21,
+					type = 'group',
+					get = function(info)
+						UpdateBossModAuras() -- this is so we can get the seen textures without full update
+
+						return E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods and
+							E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods[info[#info]]
+					end,
+					set = function(info, value)
+						E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods[info[#info]] = value
+						NP:ConfigureAll()
+					end,
+					disabled = function()
+						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers and
+							E.db.nameplates.filters[selectedNameplateFilter].triggers.enable)
+					end,
+					args = {
+						enable = {
+							name = L["Enable"],
+							order = 0,
+							type = 'toggle'
+						},
+						hasAura = {
+							name = L["Has Aura"],
+							order = 1,
+							type = 'toggle',
+							disabled = function()
+								return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+									E.db.nameplates.filters[selectedNameplateFilter].triggers and
+									E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or
+									not E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.enable
+							end
+						},
+						missingAura = {
+							name = L["Missing Aura"],
+							order = 2,
+							type = 'toggle',
+							disabled = function()
+								return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+									E.db.nameplates.filters[selectedNameplateFilter].triggers and
+									E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or
+									not E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.enable
+							end
+						},
+						seenList = {
+							order = 3,
+							type = 'group',
+							name = L["Seen Textures"],
+							inline = true,
+							disabled = function()
+								return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+									E.db.nameplates.filters[selectedNameplateFilter].triggers and
+									E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or
+									E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.missingAura or
+									E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.hasAura or
+									not E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.enable
+							end,
+							args = {
+								desc = ACH:Description(L["This list will display any textures Boss Mods have sent to the Boss Mod Auras element during the current session."], 0, 'medium')
+							},
+						},
+						changeList = {
+							type = 'group',
+							inline = true,
+							name = L["Texture Matching"],
+							order = 5,
+							disabled = function()
+								return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
+									E.db.nameplates.filters[selectedNameplateFilter].triggers and
+									E.db.nameplates.filters[selectedNameplateFilter].triggers.enable) or
+									E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.missingAura or
+									E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.hasAura or
+									not E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.enable
+							end,
+							args = {
+								addAura = {
+									order = 1,
+									name = L["Add Texture"],
+									type = 'input',
+									get = function(info)
+										return ''
+									end,
+									set = function(info, value)
+										if strmatch(value, '^[%s%p]-$') then return end
+
+										local textureID = tonumber(value) or value
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras[textureID] = true
+										UpdateFilterGroup()
+										NP:ConfigureAll()
+									end
+								},
+								removeAura = {
+									order = 2,
+									name = L["Remove Texture"],
+									type = 'input',
+									get = function(info)
+										return ''
+									end,
+									set = function(info, value)
+										if strmatch(value, '^[%s%p]-$') then return end
+
+										local textureID = tonumber(value) or value
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods.auras[textureID] = nil
+										UpdateFilterGroup()
+										NP:ConfigureAll()
+									end
+								},
+								missingAuras = {
+									order = 3,
+									name = L["Missing Auras"],
+									type = 'toggle',
+									get = function(info)
+										return E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods[info[#info]]
+									end,
+									set = function(info, value)
+										E.global.nameplate.filters[selectedNameplateFilter].triggers.bossMods[info[#info]] = value
+										NP:ConfigureAll()
+									end
+								}
+							}
+						}
+					}
+				},
 				threat = {
 					name = L["Threat"],
-					order = 21,
+					order = 22,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2046,7 +2257,7 @@ local function UpdateFilterGroup()
 				},
 				nameplateType = {
 					name = L["Unit Type"],
-					order = 22,
+					order = 23,
 					type = 'group',
 					disabled = function()
 						return not (E.db.nameplates and E.db.nameplates.filters and E.db.nameplates.filters[selectedNameplateFilter] and
@@ -2117,7 +2328,7 @@ local function UpdateFilterGroup()
 				},
 				reactionType = {
 					name = L["Reaction Type"],
-					order = 23,
+					order = 24,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.reactionType and
@@ -2243,7 +2454,7 @@ local function UpdateFilterGroup()
 				},
 				creatureType = {
 					name = L["Creature Type"],
-					order = 24,
+					order = 25,
 					type = 'group',
 					get = function(info)
 						return E.global.nameplate.filters[selectedNameplateFilter].triggers.creatureType[info[#info]]
@@ -2280,7 +2491,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				instanceType = {
-					order = 25,
+					order = 26,
 					type = 'group',
 					name = L["Instance Type"],
 					get = function(info)
@@ -2353,7 +2564,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				location = {
-					order = 26,
+					order = 27,
 					type = 'group',
 					name = L["Location"],
 					get = function(info)
@@ -2627,7 +2838,7 @@ local function UpdateFilterGroup()
 					}
 				},
 				raidTarget = {
-					order = 27,
+					order = 28,
 					type = 'group',
 					name = L["BINDING_HEADER_RAID_TARGET"],
 					get = function(info)

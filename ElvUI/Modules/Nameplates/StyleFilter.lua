@@ -985,6 +985,26 @@ function mod:StyleFilterConditionCheck(frame, filter, trigger)
 		end
 	end
 
+	-- BossMod Auras
+	if frame.BossMods and trigger.bossMods and trigger.bossMods.enable then
+		local element, m = frame.BossMods, trigger.bossMods
+		local icons = next(element.activeIcons)
+
+		if m.hasAura or m.missingAura then
+			if (m.hasAura and icons) or (m.missingAura and not icons) then passed = true else return end
+		else
+			if icons and m.auras and next(m.auras) then
+				for texture, value in pairs(m.auras) do
+					if value then -- only if they are turned on
+						local active = element.activeIcons[texture]
+						if (not m.missingAuras and active) or (m.missingAuras and not active) then passed = true else return end
+						break -- we can execute this once on the first enabled option then kill the loop
+					end
+				end
+			end
+		end
+	end
+
 	-- Name or GUID
 	if trigger.names and next(trigger.names) then
 		for _, value in pairs(trigger.names) do
@@ -1159,6 +1179,7 @@ function mod:StyleFilterConfigure()
 
 				-- NOTE: 0 for fake events
 				events.FAKE_AuraWaitTimer = 0 -- for minTimeLeft and maxTimeLeft aura trigger
+				events.FAKE_BossModAuras = 0 -- support to trigger filters based on Boss Mod Auras
 				events.PLAYER_TARGET_CHANGED = 1
 				events.NAME_PLATE_UNIT_ADDED = 1
 				events.UNIT_FACTION = 1 -- frameType can change here

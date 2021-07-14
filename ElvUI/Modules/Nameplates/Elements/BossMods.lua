@@ -12,6 +12,7 @@ local UnitGUID = UnitGUID
 local CreateFrame = CreateFrame
 
 NP.BossMods_ActiveUnitGUID = {}
+NP.BossMods_TextureCache = {}
 
 local allowHostile = false
 function NP:BossMods_CreateIcon(element)
@@ -91,6 +92,8 @@ end
 
 function NP:BossMods_TrackIcons(track, unitGUID, texture, duration, desaturate, startTime)
 	if track then
+		NP.BossMods_TextureCache[texture] = true -- use this to easily populate boss mod style filters
+
 		if not NP.BossMods_ActiveUnitGUID[unitGUID] then
 			NP.BossMods_ActiveUnitGUID[unitGUID] = {}
 		end
@@ -124,14 +127,17 @@ function NP:BossMods_ClearIcons()
 	for unitGUID, textures in pairs(NP.BossMods_ActiveUnitGUID) do
 		for texture in pairs(textures) do
 			local plate = NP.PlateGUID[unitGUID]
-			if plate then NP:BossMods_ClearIcon(plate, texture) end
+			if plate then
+				NP:BossMods_ClearIcon(plate, texture)
+				NP:StyleFilterUpdate(plate, 'FAKE_BossModAuras')
+			end
 		end
 	end
 
 	wipe(NP.BossMods_ActiveUnitGUID)
 end
 
-function NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate)
+function NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate, skip)
 	local active = NP.BossMods_ActiveUnitGUID[unitGUID]
 	local activeTexture = active and active[texture]
 
@@ -165,6 +171,10 @@ function NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate)
 	end
 
 	NP:BossMods_PositionIcons(plate.BossMods)
+
+	if not skip then -- this will happen already during PostUpdateAllElements
+		NP:StyleFilterUpdate(plate, 'FAKE_BossModAuras')
+	end
 end
 
 function NP:BossMods_RemoveIcon(unitGUID, texture)
@@ -174,6 +184,7 @@ function NP:BossMods_RemoveIcon(unitGUID, texture)
 	if plate then
 		NP:BossMods_ClearIcon(plate, texture)
 		NP:BossMods_PositionIcons(plate.BossMods)
+		NP:StyleFilterUpdate(plate, 'FAKE_BossModAuras')
 	end
 end
 
@@ -208,7 +219,7 @@ function NP:BossMods_UpdateIcon(plate, removed)
 		if removed or not enabled then
 			NP:BossMods_ClearIcon(plate, texture)
 		elseif enabled then
-			NP:BossMods_AddIcon(unitGUID, texture, info.duration, info.desaturate, info.expiration)
+			NP:BossMods_AddIcon(unitGUID, texture, info.duration, info.desaturate, true)
 		end
 	end
 end
