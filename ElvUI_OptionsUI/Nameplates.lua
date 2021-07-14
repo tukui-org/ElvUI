@@ -11,6 +11,7 @@ local next, ipairs, tremove, tinsert, sort, tonumber, format = next, ipairs, tre
 
 local C_Map_GetMapInfo = C_Map.GetMapInfo
 local C_SpecializationInfo_GetPvpTalentSlotInfo = C_SpecializationInfo.GetPvpTalentSlotInfo
+local IsAddOnLoaded = IsAddOnLoaded
 local GetClassInfo = GetClassInfo
 local GetCVar = GetCVar
 local GetCVarBool = GetCVarBool
@@ -35,6 +36,11 @@ local positionValues = {
 	BOTTOMLEFT = 'BOTTOMLEFT',
 	BOTTOMRIGHT = 'BOTTOMRIGHT',
 }
+
+local function GetAddOnStatus(index, locale, name)
+	local status = IsAddOnLoaded(name) and format('|cff33ff33%s|r', L["Enabled"]) or format('|cffff3333%s|r', L["Disabled"])
+	return ACH:Description(format('%s: %s', locale, status), index, 'medium')
+end
 
 local carryFilterFrom, carryFilterTo
 local function filterMatch(s, v)
@@ -5878,74 +5884,95 @@ E.Options.args.nameplate = {
 								NP:ConfigureAll()
 							end,
 							args = {
+								supported = {
+									order = -1,
+									type = 'group',
+									name = L["Supported"],
+									inline = true,
+									args = {
+										dbm = GetAddOnStatus(1, 'Deadly Boss Mods', 'DBM-Core'),
+										bw = GetAddOnStatus(2, 'BigWigs', 'BigWigs')
+									},
+								},
 								enable = {
 									order = 1,
 									name = L["Enable"],
 									type = 'toggle'
 								},
-								size = {
-									order = 4,
-									name = L["Icon Size"],
-									type = 'range',
-									min = 6,
-									max = 60,
-									step = 1
-								},
-								spacing = {
-									order = 5,
-									name = L["Spacing"],
-									type = 'range',
-									min = 0,
-									max = 60,
-									step = 1
-								},
-								xOffset = {
-									order = 6,
-									name = L["X-Offset"],
-									type = 'range',
-									min = -100,
-									max = 100,
-									step = 1
-								},
-								yOffset = {
-									order = 7,
-									type = 'range',
-									name = L["Y-Offset"],
-									min = -100,
-									max = 100,
-									step = 1
-								},
-								anchorPoint = {
-									type = 'select',
-									order = 8,
-									name = L["Anchor Point"],
-									desc = L["What point to anchor to the frame you set to attach to."],
-									values = {
-										TOP = 'TOP',
-										BOTTOM = 'BOTTOM',
-										TOPLEFT = 'TOPLEFT',
-										BOTTOMLEFT = 'BOTTOMLEFT',
-										TOPRIGHT = 'TOPRIGHT',
-										BOTTOMRIGHT = 'BOTTOMRIGHT'
-									}
-								},
-								growthX = {
-									type = 'select',
-									order = 9,
-									name = L["Growth X-Direction"],
-									values = {
-										LEFT = L["Left"],
-										RIGHT = L["Right"]
-									}
-								},
-								growthY = {
-									type = 'select',
-									order = 10,
-									name = L["Growth Y-Direction"],
-									values = {
-										UP = L["Up"],
-										DOWN = L["Down"]
-									}
+								settings = {
+									order = 2,
+									type = 'group',
+									name = '',
+									inline = true,
+									disabled = function()
+										return not E.db.nameplates.bossMods.enable or not (IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core'))
+									end,
+									args = {
+										size = {
+											order = 4,
+											name = L["Icon Size"],
+											type = 'range',
+											min = 6,
+											max = 60,
+											step = 1
+										},
+										spacing = {
+											order = 5,
+											name = L["Spacing"],
+											type = 'range',
+											min = 0,
+											max = 60,
+											step = 1
+										},
+										xOffset = {
+											order = 6,
+											name = L["X-Offset"],
+											type = 'range',
+											min = -100,
+											max = 100,
+											step = 1
+										},
+										yOffset = {
+											order = 7,
+											type = 'range',
+											name = L["Y-Offset"],
+											min = -100,
+											max = 100,
+											step = 1
+										},
+										anchorPoint = {
+											type = 'select',
+											order = 8,
+											name = L["Anchor Point"],
+											desc = L["What point to anchor to the frame you set to attach to."],
+											values = {
+												TOP = 'TOP',
+												BOTTOM = 'BOTTOM',
+												TOPLEFT = 'TOPLEFT',
+												BOTTOMLEFT = 'BOTTOMLEFT',
+												TOPRIGHT = 'TOPRIGHT',
+												BOTTOMRIGHT = 'BOTTOMRIGHT'
+											}
+										},
+										growthX = {
+											type = 'select',
+											order = 9,
+											name = L["Growth X-Direction"],
+											values = {
+												LEFT = L["Left"],
+												RIGHT = L["Right"]
+											}
+										},
+										growthY = {
+											type = 'select',
+											order = 10,
+											name = L["Growth Y-Direction"],
+											values = {
+												UP = L["Up"],
+												DOWN = L["Down"]
+											}
+										},
+									},
 								},
 							}
 						},
