@@ -1169,10 +1169,10 @@ function mod:StyleFilterConfigure()
 	wipe(events)
 	wipe(list)
 
-	if E.db.nameplates and E.db.nameplates.filters then
+	if mod.db.filters then
 		for filterName, filter in pairs(E.global.nameplate.filters) do
 			local t = filter.triggers
-			if t and E.db.nameplates.filters[filterName] and E.db.nameplates.filters[filterName].triggers and E.db.nameplates.filters[filterName].triggers.enable then
+			if t and mod.db.filters[filterName] and mod.db.filters[filterName].triggers and mod.db.filters[filterName].triggers.enable then
 				tinsert(list, {filterName, t.priority or 1})
 
 				-- NOTE: 0 for fake events
