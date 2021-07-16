@@ -15,11 +15,12 @@ function NP:Construct_Auras(nameplate)
 	Buffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Buffs:SetFrameLevel(5)
 	Buffs:Size(300, 27)
-	Buffs.disableMouse = true
 	Buffs.size = 27
 	Buffs.num = 4
 	Buffs.spacing = E.Border * 2
 	Buffs.onlyShowPlayer = false
+	Buffs.disableMouse = true
+	Buffs.isNameplate = true
 	Buffs.initialAnchor = 'BOTTOMLEFT'
 	Buffs['growth-x'] = 'RIGHT'
 	Buffs['growth-y'] = 'UP'
@@ -30,11 +31,12 @@ function NP:Construct_Auras(nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
 	Debuffs:SetFrameLevel(5)
 	Debuffs:Size(300, 27)
-	Debuffs.disableMouse = true
 	Debuffs.size = 27
 	Debuffs.num = 4
 	Debuffs.spacing = E.Border * 2
 	Debuffs.onlyShowPlayer = false
+	Debuffs.disableMouse = true
+	Debuffs.isNameplate = true
 	Debuffs.initialAnchor = 'BOTTOMLEFT'
 	Debuffs['growth-x'] = 'RIGHT'
 	Debuffs['growth-y'] = 'UP'

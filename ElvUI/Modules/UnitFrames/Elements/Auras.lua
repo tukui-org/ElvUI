@@ -369,8 +369,7 @@ function UF:SortAuras()
 end
 
 function UF:PostUpdateAura(_, button)
-	local isNameplate = self.PostCreateIcon == NP.Construct_AuraIcon
-	local byType = (isNameplate and NP.db.colors.auraByType) or (not isNameplate and UF.db.colors.auraByType)
+	local byType = (self.isNameplate and NP.db.colors.auraByType) or (not self.isNameplate and UF.db.colors.auraByType)
 
 	if button.isDebuff then
 		if not button.isFriend and not button.isPlayer then --[[and (not E.isDebuffWhiteList[name])]]
@@ -394,7 +393,7 @@ function UF:PostUpdateAura(_, button)
 	elseif byType and button.isStealable and not button.isFriend then
 		button:SetBackdropBorderColor(.93, .91, .55)
 	else
-		button:SetBackdropBorderColor(unpack((isNameplate and E.media.bordercolor) or E.media.unitframeBorderColor))
+		button:SetBackdropBorderColor(unpack((self.isNameplate and E.media.bordercolor) or E.media.unitframeBorderColor))
 	end
 
 	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
