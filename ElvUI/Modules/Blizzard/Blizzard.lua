@@ -95,27 +95,6 @@ function B:Initialize()
 
 	--Add (+X%) to quest rewards experience text
 	B:SecureHook('QuestInfo_Display', 'QuestXPPercent')
-
-	-- MicroButton Talent Alert
-	local TalentMicroButtonAlert = _G.TalentMicroButtonAlert
-	if TalentMicroButtonAlert then -- why do we need to check this?
-		if E.global.general.showMissingTalentAlert then
-			TalentMicroButtonAlert:ClearAllPoints()
-			TalentMicroButtonAlert:Point('CENTER', E.UIParent, 'TOP', 0, -75)
-			TalentMicroButtonAlert:StripTextures()
-			TalentMicroButtonAlert.Arrow:Hide()
-			TalentMicroButtonAlert.Text:FontTemplate()
-			TalentMicroButtonAlert:CreateBackdrop('Transparent')
-			Skins:HandleCloseButton(TalentMicroButtonAlert.CloseButton)
-
-			TalentMicroButtonAlert.tex = TalentMicroButtonAlert:CreateTexture(nil, 'OVERLAY')
-			TalentMicroButtonAlert.tex:Point('RIGHT', -10, 0)
-			TalentMicroButtonAlert.tex:SetTexture([[Interface\DialogFrame\UI-Dialog-Icon-AlertNew]])
-			TalentMicroButtonAlert.tex:Size(32, 32)
-		else
-			TalentMicroButtonAlert:Kill() -- Kill it, because then the blizz default will show
-		end
-	end
 end
 
 E:RegisterModule(B:GetName())
