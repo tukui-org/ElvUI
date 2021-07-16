@@ -19,8 +19,8 @@ G.general = {
 		yOffset = 0
 	},
 	AceGUI = {
-		width = 960,
-		height = 755
+		width = 1024,
+		height = 768
 	},
 	disableTutorialButtons = true,
 	commandBarSetting = 'ENABLED_RESIZEPARENT'

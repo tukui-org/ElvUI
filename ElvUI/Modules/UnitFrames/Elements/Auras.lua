@@ -370,7 +370,7 @@ end
 
 function UF:PostUpdateAura(_, button)
 	local isNameplate = self.PostCreateIcon == NP.Construct_AuraIcon
-	local byType = (isNameplate and NP.db.colors.auraByType) or UF.db.colors.auraByType
+	local byType = (isNameplate and NP.db.colors.auraByType) or (not isNameplate and UF.db.colors.auraByType)
 
 	if button.isDebuff then
 		if not button.isFriend and not button.isPlayer then --[[and (not E.isDebuffWhiteList[name])]]
