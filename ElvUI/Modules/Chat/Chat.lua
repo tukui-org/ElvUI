@@ -3218,11 +3218,8 @@ end
 --Copied from FrameXML FloatingChatFrame.lua and modified to fix
 --not being able to close chats in combat since 8.2 or something. ~Simpy
 function CH:FCF_Close(fallback)
-    if fallback then self = fallback end
-	if not self or self == CH then -- also protect self as CH
-		self = _G.FCF_GetCurrentChatFrame()
-	end
-
+	if fallback then self = fallback end
+	if not self or self == CH then self = _G.FCF_GetCurrentChatFrame() end
 	if self == _G.DEFAULT_CHAT_FRAME then return end
 
 	_G.FCF_UnDockFrame(self)
@@ -3246,17 +3243,35 @@ function CH:FCF_Close(fallback)
 	_G.ChatFrame_RemoveAllChannels(self)
 	_G.ChatFrame_RemoveAllMessageGroups(self)
 	_G.ChatFrame_ReceiveAllPrivateMessages(self)
+
+	CH:PostChatClose(self) -- also call this since it won't call from blizzard in this case
+end
+
+--Same reason as CH.FCF_Close
+function CH:FCF_PopInWindow(fallback)
+	if fallback then self = fallback end
+	if not self or self == CH then self = _G.FCF_GetCurrentChatFrame() end
+	if self == _G.DEFAULT_CHAT_FRAME then return end
+
+	--Restore any chats this frame had to the DEFAULT_CHAT_FRAME
+	_G.FCF_RestoreChatsToFrame(_G.DEFAULT_CHAT_FRAME, self)
+	CH.FCF_Close(self) -- use ours to fix close chat bug
 end
 
 function CH:UIDropDownMenu_AddButton(info, level)
 	if info and info.text == _G.CLOSE_CHAT_WINDOW then
+
 		if not level then level = 1 end
 
 		local list = _G['DropDownList'..level]
 		local index = (list and list.numButtons) or 1
-
 		local button = _G[list:GetName()..'Button'..index]
-		button.func = CH.FCF_Close
+
+		if button.func == _G.FCF_PopInWindow then
+			button.func = CH.FCF_PopInWindow
+		elseif button.func == _G.FCF_Close then
+			button.func = CH.FCF_Close
+		end
 	end
 end
 
