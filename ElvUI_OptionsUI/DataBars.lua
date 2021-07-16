@@ -38,16 +38,11 @@ local DataBars = ACH:Group(L["DataBars"], nil, 2, 'tab', function(info) return E
 E.Options.args.databars = DataBars
 
 DataBars.args.intro = ACH:Description(L["Setup on-screen display of information bars."], 1)
-DataBars.args.spacer = ACH:Spacer(2)
+DataBars.args.transparent = ACH:Toggle(L["Transparent"], nil, 3)
+DataBars.args.customTexture = ACH:Toggle(L["Custom StatusBar"], nil, 4)
+DataBars.args.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 5, nil, nil, nil, function() return not E.db.databars.customTexture end)
 
-DataBars.args.general = ACH:Group(L["General"], nil, 3, nil, function(info) return E.db.databars[info[#info]] end, function(info, value) E.db.databars[info[#info]] = value DB:UpdateAll() end)
-DataBars.args.general.inline = true
-DataBars.args.general.args.transparent = ACH:Toggle(L["Transparent"], nil, 1)
-DataBars.args.general.args.customTexture = ACH:Toggle(L["Custom StatusBar"], nil, 2)
-DataBars.args.general.args.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 3, nil, nil, nil, function() return not E.db.databars.customTexture end)
-
-DataBars.args.colorGroup = ACH:Group(L["COLORS"], nil, 4, nil, function(info) local t = E.db.databars.colors[info[#info]] local d = P.databars.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end)
-DataBars.args.colorGroup.inline = true
+DataBars.args.colorGroup = ACH:Group(L["COLORS"], nil, -1, nil, function(info) local t = E.db.databars.colors[info[#info]] local d = P.databars.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end)
 DataBars.args.colorGroup.args.experience = ACH:Color(L["Experience"], nil, 1, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
 DataBars.args.colorGroup.args.rested = ACH:Color(L["Rested Experience"], nil, 2, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
 DataBars.args.colorGroup.args.quest = ACH:Color(L["Quest Experience"], nil, 3, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_QuestXP() end)
