@@ -3260,7 +3260,6 @@ end
 
 function CH:UIDropDownMenu_AddButton(info, level)
 	if info and info.text == _G.CLOSE_CHAT_WINDOW then
-
 		if not level then level = 1 end
 
 		local list = _G['DropDownList'..level]
