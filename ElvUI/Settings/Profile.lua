@@ -557,6 +557,7 @@ P.nameplates = {
 		ElvUI_Explosives = {triggers = {enable = true}},
 	},
 	colors = {
+		auraByType = true,
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
 		castColor = {r = 1, g = 0.81, b = 0},
 		tapped = {r = 0.6, g = 0.6, b = 0.6},

@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
+local NP = E:GetModule('NamePlates')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -368,14 +369,18 @@ function UF:SortAuras()
 end
 
 function UF:PostUpdateAura(_, button)
+	local isNameplate = self.PostCreateIcon == NP.Construct_AuraIcon
+	local byType = (isNameplate and NP.db.colors.auraByType) or UF.db.colors.auraByType
+
 	if button.isDebuff then
 		if not button.isFriend and not button.isPlayer then --[[and (not E.isDebuffWhiteList[name])]]
-			if UF.db.colors.auraByType then
+			if byType then
 				button:SetBackdropBorderColor(.9, .1, .1)
 			end
+
 			button.icon:SetDesaturated(button.canDesaturate)
 		else
-			if UF.db.colors.auraByType then
+			if byType then
 				if E.BadDispels[button.spellID] and button.dtype and E:IsDispellableByMe(button.dtype) then
 					button:SetBackdropBorderColor(.05, .85, .94)
 				else
@@ -383,14 +388,13 @@ function UF:PostUpdateAura(_, button)
 					button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
 				end
 			end
+
 			button.icon:SetDesaturated(false)
 		end
+	elseif byType and button.isStealable and not button.isFriend then
+		button:SetBackdropBorderColor(.93, .91, .55)
 	else
-		if UF.db.colors.auraByType and button.isStealable and not button.isFriend then
-			button:SetBackdropBorderColor(.93, .91, .55)
-		else
-			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
-		end
+		button:SetBackdropBorderColor(unpack((isNameplate and E.media.bordercolor) or E.media.unitframeBorderColor))
 	end
 
 	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then

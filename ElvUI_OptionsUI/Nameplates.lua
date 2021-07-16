@@ -6386,9 +6386,16 @@ E.Options.args.nameplate = {
 								glowColor = {
 									name = L["Target Indicator Color"],
 									type = 'color',
-									order = 5,
+									order = 1,
 									hasAlpha = true
-								}
+								},
+								auraByType = {
+									order = 2,
+									name = L["Color Auras By Type"],
+									type = 'toggle',
+									get = function(info) return E.db.nameplates.colors[info[#info]] end,
+									set = function(info, value) E.db.nameplates.colors[info[#info]] = value; NP:ConfigureAll() end,
+								},
 							}
 						},
 						threat = {
