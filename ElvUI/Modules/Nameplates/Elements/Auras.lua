@@ -94,6 +94,7 @@ function NP:Configure_Auras(nameplate, auras, db)
 		if button then
 			button.db = db
 			NP:UpdateAuraSettings(button)
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 
 		index = index + 1
