@@ -177,9 +177,9 @@ General.args.blizzUIImprovements.args.quest.inline = true
 General.args.blizzUIImprovements.args.quest.args.questRewardMostValueIcon = ACH:Toggle(L["Mark Quest Reward"], L["Marks the most valuable quest reward with a gold coin."], 1)
 General.args.blizzUIImprovements.args.quest.args.questXPPercent = ACH:Toggle(L["XP Quest Percent"], nil, 2)
 
-General.args.blizzUIImprovements.args.lootGroup = ACH:Group(L['Loot'], nil, 3, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+General.args.blizzUIImprovements.args.lootGroup = ACH:Group(L["Loot"], nil, 3, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.blizzUIImprovements.args.lootGroup.inline = true
-General.args.blizzUIImprovements.args.lootGroup.args.loot = ACH:Toggle(L['Loot'], L["Enable/Disable the loot frame."], 1)
+General.args.blizzUIImprovements.args.lootGroup.args.loot = ACH:Toggle(L["Loot"], L["Enable/Disable the loot frame."], 1)
 General.args.blizzUIImprovements.args.lootGroup.args.lootRoll = ACH:Toggle(L["Loot Roll"], L["Enable/Disable the loot roll frame."], 2)
 General.args.blizzUIImprovements.args.lootGroup.args.autoRoll = ACH:Toggle(L["Auto Greed/DE"], L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."], 3, nil, nil, nil, function() return not E.db.general.autoRoll end, function(_, value) E.db.general.autoRoll = value end, function() return not E.private.general.lootRoll end)
 
