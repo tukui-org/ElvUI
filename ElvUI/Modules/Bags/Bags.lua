@@ -576,7 +576,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 		slot.hasItem = 1
 	else
-		if E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown) then
+		if E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
 			E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
 
@@ -1044,7 +1044,7 @@ function B:UpdateReagentSlot(slotID)
 		end
 
 		E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
-	elseif E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown) then
+	elseif E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
 		E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 	end
 
