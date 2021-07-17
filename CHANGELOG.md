@@ -1,17 +1,29 @@
 ### Version 12.35 [ ETA: 🍨 ]
 
-**Fixate:**  
+**MegaShine:**  
 Added Nameplate support to show DBM or BigWigs auras on nameplates, stuff like Fixate. Settings under (Nameplates > General > General > Boss Mod Auras).  
 Added support to Style Filters to trigger based on Boss Mod Auras.  
 
-**Nice:**  
+**Shiny:**  
+Improved preformance of Bags module.  
 Added Season 2 Dungeon Affix Debuffs and Blacklisted Drained debuff.  
+Added Slider for Reputation Databar alpha when not using custom colors.  
 Added Unit Class Color action to Style Filters.  
+
+**Fixed:**  
 Fixed Guild Bank search not fading the tabs.  
+Fixed Power Prediction overflowing sometimes.  
+Fixed Chat Bubble borders when using no border on non-thin borders.  
+Fixed Chat window could not be closed in combat.  
+Fixed rare Mover error linked to numpad keys.  
+Fixed Blanchy mount display on Unit and Aura.  
+
+**Updated:**  
+Increased range to scale Minimap icons more.  
 Updated the shading on Bag items when you search.  
 Updated the normal Bags skin code a bit, also some of the bank too.  
-Fixed Power Prediction overflowing sometimes.  
-Increased range to scale Minimap icons more.  
+Nameplate Auras now has a "Color by Type" option which will remove the debuff type border color (stealable and bad dispels will still be shown).  
+
 
 ___
 ### Version 12.34 [ July 8th 2021 ]
