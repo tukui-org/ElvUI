@@ -1874,7 +1874,7 @@ function B:SetListeners(frame)
 	end
 end
 
-function B:ClearBagEvents(frame)
+function B:ClearListeners(frame)
 	frame:UnregisterEvent('BAG_UPDATE')
 	frame:UnregisterEvent('BAG_UPDATE_COOLDOWN')
 
