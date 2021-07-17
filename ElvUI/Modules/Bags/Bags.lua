@@ -18,7 +18,6 @@ local BankFrameItemButton_Update = BankFrameItemButton_Update
 local BankFrameItemButton_UpdateLocked = BankFrameItemButton_UpdateLocked
 local CloseBag, CloseBackpack, CloseBankFrame = CloseBag, CloseBackpack, CloseBankFrame
 local ContainerIDToInventoryID = ContainerIDToInventoryID
-local CooldownFrame_Set = CooldownFrame_Set
 local CreateFrame = CreateFrame
 local DepositReagentBank = DepositReagentBank
 local GameTooltip_Hide = GameTooltip_Hide

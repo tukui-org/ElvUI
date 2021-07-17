@@ -6,7 +6,6 @@ local unpack = unpack
 
 local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
-local CooldownFrame_Set = CooldownFrame_Set
 local MAX_TOTEMS = MAX_TOTEMS
 
 function TOTEMS:Update()
@@ -17,7 +16,7 @@ function TOTEMS:Update()
 		if button:IsShown() then
 			self.bar[i]:Show()
 			self.bar[i].iconTexture:SetTexture(icon)
-			CooldownFrame_Set(self.bar[i].cooldown, startTime, duration, 1)
+			self.bar[i].cooldown:SetCooldown(startTime, duration)
 
 			button:ClearAllPoints()
 			button:SetParent(self.bar[i].holder)
@@ -102,7 +101,9 @@ function TOTEMS:Initialize()
 		frame.cooldown = CreateFrame('Cooldown', frame:GetName()..'Cooldown', frame, 'CooldownFrameTemplate')
 		frame.cooldown:SetReverse(true)
 		frame.cooldown:SetInside()
+
 		E:RegisterCooldown(frame.cooldown)
+
 		self.bar[i] = frame
 	end
 
