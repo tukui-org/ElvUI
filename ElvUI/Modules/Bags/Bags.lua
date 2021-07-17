@@ -565,13 +565,21 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if texture then
 		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
 		slot.cooldown:SetCooldown(start, duration, enable)
+
 		if duration > 0 and enable == 0 then
 			SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4)
 		else
 			SetItemButtonTextureVertexColor(slot, 1, 1, 1)
 		end
+
+		E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+
 		slot.hasItem = 1
 	else
+		if E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown) then
+			E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+		end
+
 		slot.cooldown:Hide()
 		slot.hasItem = nil
 	end
@@ -617,17 +625,15 @@ function B:SortingFadeBags(bagFrame, registerUpdate)
 	end
 end
 
-function B:UpdateCooldowns(frame)
-	if not (frame and frame.BagIDs) then return end
+function B:UpdateCooldown(slot)
+	if not slot or not slot:IsVisible() then return end
 
-	for _, bagID in ipairs(frame.BagIDs) do
-		for slotID = 1, GetContainerNumSlots(bagID) do
-			if GetContainerItemInfo(bagID, slotID) then
-				local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-				CooldownFrame_Set(frame.Bags[bagID][slotID].cooldown, start, duration, enable)
-			end
-		end
-	end
+	local bagID, slotID = slot.bagID, slot.slotID
+	if not bagID or not slotID then return end
+
+	local cd = slot.cooldown or slot.Cooldown
+	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
+	cd:SetCooldown(start, duration, enable)
 end
 
 function B:UpdateAllSlots(frame)
@@ -999,6 +1005,7 @@ end
 
 function B:UpdateReagentSlot(slotID)
 	assert(slotID)
+
 	local bagID = REAGENTBANK_CONTAINER
 	local texture, count, locked = GetContainerItemInfo(bagID, slotID)
 	local link = GetContainerItemLink(bagID, slotID)
@@ -1013,15 +1020,6 @@ function B:UpdateReagentSlot(slotID)
 	SetItemButtonCount(slot, count)
 	SetItemButtonDesaturated(slot, slot.locked)
 
-	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
-	CooldownFrame_Set(slot.Cooldown, start, duration, enable)
-
-	if duration > 0 and enable == 0 then
-		SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4)
-	else
-		SetItemButtonTextureVertexColor(slot, 1, 1, 1)
-	end
-
 	local isQuestItem, questId, isActiveQuest = false, false, false
 	local forceColor, r, g, b, a = true
 
@@ -1035,6 +1033,19 @@ function B:UpdateReagentSlot(slotID)
 		if slot.rarity then
 			r, g, b = GetItemQualityColor(slot.rarity)
 		end
+
+		local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
+		CooldownFrame_Set(slot.Cooldown, start, duration, enable)
+
+		if duration > 0 and enable == 0 then
+			SetItemButtonTextureVertexColor(slot, 0.4, 0.4, 0.4)
+		else
+			SetItemButtonTextureVertexColor(slot, 1, 1, 1)
+		end
+
+		E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+	elseif E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown) then
+		E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 	end
 
 	if questId and not isActiveQuest then
@@ -1080,8 +1091,6 @@ function B:OnEvent(event, ...)
 
 		--Refresh search in case we moved items around
 		if B:IsSearching() then B:RefreshSearch() end
-	elseif event == 'BAG_UPDATE_COOLDOWN' then
-		B:UpdateCooldowns(self)
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
 		local slot = ...
 		local bagID = (slot <= NUM_BANKGENERIC_SLOTS) and -1 or (slot - NUM_BANKGENERIC_SLOTS)
@@ -1870,7 +1879,6 @@ end
 
 function B:SetListeners(frame)
 	frame:RegisterEvent('BAG_UPDATE')
-	frame:RegisterEvent('BAG_UPDATE_COOLDOWN')
 
 	for _, event in pairs(frame.events) do
 		frame:RegisterEvent(event)
@@ -1879,7 +1887,6 @@ end
 
 function B:ClearListeners(frame)
 	frame:UnregisterEvent('BAG_UPDATE')
-	frame:UnregisterEvent('BAG_UPDATE_COOLDOWN')
 
 	for _, event in pairs(frame.events) do
 		frame:UnregisterEvent(event)
