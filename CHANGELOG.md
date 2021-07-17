@@ -1,4 +1,10 @@
-### Version 12.35 [ ETA: 🍨 ]
+### Version 12.36 [ ETA: 🍨 ]
+
+**Shiny:**  
+
+
+___
+### Version 12.35 [ July 17th 2021 ]
 
 **MegaShine:**  
 Added Nameplate support to show DBM or BigWigs auras on nameplates, stuff like Fixate. Settings under (Nameplates > General > General > Boss Mod Auras).  
