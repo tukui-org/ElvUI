@@ -621,27 +621,27 @@ function B:SortingFadeBags(bagFrame, registerUpdate)
 end
 
 function B:HideCooldown(slot)
-	local cooldown = slot.cooldown or slot.Cooldown
-	cooldown.start = nil
-	cooldown.duration = nil
-	cooldown:Hide()
+	slot.Cooldown.start = nil
+	slot.Cooldown.duration = nil
+	slot.Cooldown:Hide()
 end
 
 function B:UpdateCooldown()
-	if not self or not self:IsVisible() then return end
+	local cd = self.Cooldown
+	local shown = cd:IsShown()
+	if shown and not self:IsVisible() then
+		B:HideCooldown(self)
+		return
+	end
 
-	local bagID, slotID = self.bagID, self.slotID
-	if not bagID or not slotID then return end
-
-	local start, duration, enabled = GetContainerItemCooldown(bagID, slotID)
+	local start, duration, enabled = GetContainerItemCooldown(self.bagID, self.slotID)
 	if duration > 0 and enabled == 0 then
 		SetItemButtonTextureVertexColor(self, 0.4, 0.4, 0.4)
 	else
 		SetItemButtonTextureVertexColor(self, 1, 1, 1)
 	end
 
-	local cd = self.cooldown or self.Cooldown
-	if enabled then
+	if duration > 0 and enabled == 1 then
 		local newStart, newDuration = not cd.start or cd.start ~= start, not cd.duration or cd.duration ~= duration
 		if newStart or newDuration then
 			cd:SetCooldown(start, duration)
@@ -649,11 +649,8 @@ function B:UpdateCooldown()
 			cd.start = start
 			cd.duration = duration
 		end
-	else
-		cd:Clear()
-
-		cd.start = nil
-		cd.duration = nil
+	elseif shown then
+		B:HideCooldown(self)
 	end
 end
 
@@ -1735,9 +1732,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.IconOverlay:SetInside()
 	slot.IconOverlay2:SetInside()
 
-	slot.cooldown = _G[slot:GetName()..'Cooldown']
-	slot.cooldown.CooldownOverride = 'bags'
-	E:RegisterCooldown(slot.cooldown)
+	slot.Cooldown = _G[slot:GetName()..'Cooldown']
+	slot.Cooldown.CooldownOverride = 'bags'
+	E:RegisterCooldown(slot.Cooldown)
 
 	slot.bagID = bagID
 	slot.slotID = slotID
