@@ -400,9 +400,7 @@ function B:NewItemGlowSlotSwitch(slot, show)
 			slot.newItemGlow:Hide()
 
 			-- also clear them on blizzard's side
-			if slot.bagID and slot.slotID then
-				C_NewItems_RemoveNewItem(slot.bagID, slot.slotID)
-			end
+			C_NewItems_RemoveNewItem(slot.bagID, slot.slotID)
 		end
 	end
 end
@@ -1688,6 +1686,9 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
 
+	slot.bagID = bagID
+	slot.slotID = slotID
+
 	if _G[slot:GetName()..'NewItemTexture'] then
 		_G[slot:GetName()..'NewItemTexture']:Hide()
 	end
@@ -1735,9 +1736,6 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot.Cooldown = _G[slot:GetName()..'Cooldown']
 	slot.Cooldown.CooldownOverride = 'bags'
 	E:RegisterCooldown(slot.Cooldown)
-
-	slot.bagID = bagID
-	slot.slotID = slotID
 
 	slot.icon:SetInside()
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
@@ -1788,6 +1786,9 @@ function B:ConstructReagentSlot(f, slotID)
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
+
+	slot.slotID = slotID
+	slot.bagID = REAGENTBANK_CONTAINER
 
 	slot.icon:SetTexCoord(unpack(E.TexCoords))
 	slot.icon:SetInside()
