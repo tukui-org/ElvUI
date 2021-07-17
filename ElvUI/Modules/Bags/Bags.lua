@@ -1309,8 +1309,8 @@ function B:ConstructContainerFrame(name, isBank)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:RegisterForClicks('AnyUp')
 	f:SetScript('OnEvent', B.OnEvent)
-	f:SetScript('OnShow', B.BagsOnShow)
-	f:SetScript('OnHide', B.BagsOnHide)
+	f:SetScript('OnShow', B.ContainerOnShow)
+	f:SetScript('OnHide', B.ContainerOnHide)
 	f:SetScript('OnDragStart', function(frame) if IsShiftKeyDown() then frame:StartMoving() end end)
 	f:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
 	f:SetScript('OnClick', function(frame) if IsControlKeyDown() then B.PostBagMove(frame.mover) end end)
@@ -1838,13 +1838,13 @@ function B:ToggleSortButtonState(isBank)
 	end
 end
 
-function B:BagsOnShow()
+function B:ContainerOnShow()
 	B:SetListeners(self)
 
 	B:RefreshSearch()
 end
 
-function B:BagsOnHide()
+function B:ContainerOnHide()
 	B:ClearListeners(self)
 
 	B:NewItemGlowBagClear(self)
