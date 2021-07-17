@@ -895,15 +895,15 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[350763] = Defaults(6), -- Annihilating Glare
 	-- The Nine
 		[350287] = Defaults(2), -- Song of Dissolution
-		[350542] = Defaults(3), -- Fragments of Destiny
+		[350542] = Defaults(6), -- Fragments of Destiny
 		[350202] = Defaults(3), -- Unending Strike
 		[350475] = Defaults(5), -- Pierce Soul
-		[350555] = Defaults(6), -- Shard of Destiny
-		[350109] = Defaults(6), -- Brynja's Mournful Dirge
+		[350555] = Defaults(3), -- Shard of Destiny
+		[350109] = Defaults(5), -- Brynja's Mournful Dirge
 		[350483] = Defaults(6), -- Link Essence
-		[350039] = Defaults(6), -- Arthura's Crushing Gaze
-		[350184] = Defaults(6), -- Daschla's Mighty Impact
-		[350374] = Defaults(6), -- Wings of Rage
+		[350039] = Defaults(5), -- Arthura's Crushing Gaze
+		[350184] = Defaults(5), -- Daschla's Mighty Impact
+		[350374] = Defaults(5), -- Wings of Rage
 	-- Remnant of Ner'zhul
 		[350073] = Defaults(2), -- Torment
 		[349890] = Defaults(5), -- Suffering
