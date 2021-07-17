@@ -812,7 +812,7 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[324381] = Defaults(), -- Chill Scythe
 		[320573] = Defaults(), -- Shadow Well
 		[333492] = Defaults(), -- Necrotic Ichor
-		[334748] = Defaults(), -- Drain FLuids
+		[334748] = Defaults(), -- Drain Fluids
 		[333489] = Defaults(), -- Necrotic Breath
 		[320717] = Defaults(), -- Blood Hunger
 	-- Theater of Pain
