@@ -625,13 +625,13 @@ function B:SortingFadeBags(bagFrame, registerUpdate)
 	end
 end
 
-function B:UpdateCooldown(slot)
-	if not slot or not slot:IsVisible() then return end
+function B:UpdateCooldown()
+	if not self or not self:IsVisible() then return end
 
-	local bagID, slotID = slot.bagID, slot.slotID
+	local bagID, slotID = self.bagID, self.slotID
 	if not bagID or not slotID then return end
 
-	local cd = slot.cooldown or slot.Cooldown
+	local cd = self.cooldown or self.Cooldown
 	local start, duration, enable = GetContainerItemCooldown(bagID, slotID)
 	cd:SetCooldown(start, duration, enable)
 end
