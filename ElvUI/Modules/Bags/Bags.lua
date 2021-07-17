@@ -562,17 +562,17 @@ function B:UpdateSlot(frame, bagID, slotID)
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
 
-	local hasCooldownEvent = E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot)
+	local cooldownEvent = E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot)
 	if texture then
 		B.UpdateCooldown(slot)
 
-		if not hasCooldownEvent then
+		if not cooldownEvent then
 			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
 
 		slot.hasItem = 1
 	else
-		if hasCooldownEvent then
+		if cooldownEvent then
 			E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 			B:HideCooldown(slot)
 		end
@@ -1045,7 +1045,7 @@ function B:UpdateReagentSlot(slotID)
 	local isQuestItem, questId, isActiveQuest = false, false, false
 	local forceColor, r, g, b, a = true
 
-	local hasCooldownEvent = E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot)
+	local cooldownEvent = E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot)
 	if link then
 		local name, _, rarity = GetItemInfo(link)
 		slot.name, slot.rarity = name, rarity
@@ -1059,10 +1059,10 @@ function B:UpdateReagentSlot(slotID)
 
 		B.UpdateCooldown(slot)
 
-		if not hasCooldownEvent then
+		if not cooldownEvent then
 			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
-	elseif hasCooldownEvent then
+	elseif cooldownEvent then
 		E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		B:HideCooldown(slot)
 	end
