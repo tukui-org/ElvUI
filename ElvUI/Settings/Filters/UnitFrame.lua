@@ -879,22 +879,20 @@ G.unitframe.aurafilters.RaidDebuffs = {
 	---------------- Sanctum of Domination -----------------
 	--------------------------------------------------------
 	-- The Tarragrue
-		[347283] = Defaults(), -- Predator's Howl
-		[347286] = Defaults(), -- Unshakeable Dread
-		[346986] = Defaults(), -- Crushed Armor
-		[347991] = Defaults(), -- Ten of Towers
-		[347269] = Defaults(), -- Chains of Eternity
-		[346985] = Defaults(), -- Overpower
-		[347274] = Defaults(), -- Annihilating Smash
+		[347283] = Defaults(5), -- Predator's Howl
+		[347286] = Defaults(5), -- Unshakeable Dread
+		[346986] = Defaults(3), -- Crushed Armor
+		[347269] = Defaults(6), -- Chains of Eternity
+		[346985] = Defaults(3), -- Overpower
 	-- Eye of the Jailer
-		[350606] = Defaults(), -- Hopeless Lethargy
-		[355240] = Defaults(), -- Scorn
-		[355245] = Defaults(), -- Ire
-		[349979] = Defaults(), -- Dragging Chains
-		[348074] = Defaults(), -- Assailing Lance
-		[351827] = Defaults(), -- Spreading Misery
-		[355143] = Defaults(), -- Deathlink
-		[350763] = Defaults(), -- Annihilating Glare
+		[350606] = Defaults(4), -- Hopeless Lethargy
+		[355240] = Defaults(5), -- Scorn
+		[355245] = Defaults(5), -- Ire
+		[349979] = Defaults(2), -- Dragging Chains
+		[348074] = Defaults(3), -- Assailing Lance
+		[351827] = Defaults(6), -- Spreading Misery
+		[355143] = Defaults(6), -- Deathlink
+		[350763] = Defaults(6), -- Annihilating Glare
 	-- The Nine
 		[350287] = Defaults(2), -- Song of Dissolution
 		[350542] = Defaults(3), -- Fragments of Destiny
