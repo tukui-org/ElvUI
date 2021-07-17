@@ -1841,7 +1841,10 @@ end
 function B:ContainerOnShow()
 	B:SetListeners(self)
 
-	B:RefreshSearch()
+	-- bags open with bank, so this will fire from bags
+	if not self.isBank then
+		B:RefreshSearch()
+	end
 end
 
 function B:ContainerOnHide()
