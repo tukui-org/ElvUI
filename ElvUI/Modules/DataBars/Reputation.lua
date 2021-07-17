@@ -54,9 +54,12 @@ function DB:ReputationBar_Update()
 	end
 
 	if not label then label = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN end
-	local color = (DB.db.colors.useCustomFactionColors or reaction == 9) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction] -- reaction 9 is Paragon
 
-	bar:SetStatusBarColor(color.r, color.g, color.b)
+	local customColors = DB.db.colors.useCustomFactionColors
+	local color = (customColors or reaction == 9) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction] -- reaction 9 is Paragon
+	local alpha = not customColors and DB.db.colors.reputationAlpha
+
+	bar:SetStatusBarColor(color.r, color.g, color.b, alpha or color.a or 1)
 	bar:SetMinMaxValues(minValue, maxValue)
 	bar:SetValue(curValue)
 

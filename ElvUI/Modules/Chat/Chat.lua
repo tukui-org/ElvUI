@@ -2348,27 +2348,18 @@ end
 function CH:PET_BATTLE_CLOSE()
 	if not CH.db.autoClosePetBattleLog then return end
 
-	-- closing a chat tab (or window) in combat = chat tab (or window) goofs..
-	-- might have something to do with HideUIPanel inside of FCF_Close
-	if InCombatLockdown() then
-		CH:RegisterEvent('PLAYER_REGEN_ENABLED', 'PET_BATTLE_CLOSE')
-		return
-	else -- we can take this off once it goes through once
-		CH:UnregisterEvent('PLAYER_REGEN_ENABLED')
-	end
-
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[frameName]
 		local tab = CH:GetTab(chat)
 		local text = tab and tab.Text:GetText()
 		if text and strmatch(text, DEFAULT_STRINGS.PET_BATTLE_COMBAT_LOG) then
-			_G.FCF_Close(chat)
+			CH.FCF_Close(chat)
 			break -- we found it, dont gotta keep lookin'
 		end
 	end
 end
 
-function CH:FCF_Close(chat)
+function CH:PostChatClose(chat)
 	-- clear these off when it's closed, used by FCFTab_UpdateColors
 	local tab = CH:GetTab(chat)
 	tab.whisperName = nil
@@ -3224,6 +3215,65 @@ function CH:ResetHistory()
 	ElvCharacterDB.ChatHistoryLog = {}
 end
 
+--Copied from FrameXML FloatingChatFrame.lua and modified to fix
+--not being able to close chats in combat since 8.2 or something. ~Simpy
+function CH:FCF_Close(fallback)
+	if fallback then self = fallback end
+	if not self or self == CH then self = _G.FCF_GetCurrentChatFrame() end
+	if self == _G.DEFAULT_CHAT_FRAME then return end
+
+	_G.FCF_UnDockFrame(self)
+	self:Hide() -- switch from HideUIPanel(frame) to frame:Hide()
+	CH:GetTab(self):Hide() -- use our get tab function instead
+
+	_G.FCF_FlagMinimizedPositionReset(self)
+
+	if self.minFrame and self.minFrame:IsShown() then
+		self.minFrame:Hide()
+	end
+
+	if self.isTemporary then
+		_G.FCFManager_UnregisterDedicatedFrame(self, self.chatType, self.chatTarget)
+
+		self.isRegistered = false
+		self.inUse = false
+	end
+
+	--Reset what this window receives.
+	_G.ChatFrame_RemoveAllChannels(self)
+	_G.ChatFrame_RemoveAllMessageGroups(self)
+	_G.ChatFrame_ReceiveAllPrivateMessages(self)
+
+	CH:PostChatClose(self) -- also call this since it won't call from blizzard in this case
+end
+
+--Same reason as CH.FCF_Close
+function CH:FCF_PopInWindow(fallback)
+	if fallback then self = fallback end
+	if not self or self == CH then self = _G.FCF_GetCurrentChatFrame() end
+	if self == _G.DEFAULT_CHAT_FRAME then return end
+
+	--Restore any chats this frame had to the DEFAULT_CHAT_FRAME
+	_G.FCF_RestoreChatsToFrame(_G.DEFAULT_CHAT_FRAME, self)
+	CH.FCF_Close(self) -- use ours to fix close chat bug
+end
+
+function CH:UIDropDownMenu_AddButton(info, level)
+	if info and info.text == _G.CLOSE_CHAT_WINDOW then
+		if not level then level = 1 end
+
+		local list = _G['DropDownList'..level]
+		local index = (list and list.numButtons) or 1
+		local button = _G[list:GetName()..'Button'..index]
+
+		if button.func == _G.FCF_PopInWindow then
+			button.func = CH.FCF_PopInWindow
+		elseif button.func == _G.FCF_Close then
+			button.func = CH.FCF_Close
+		end
+	end
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
@@ -3255,22 +3305,24 @@ function CH:Initialize()
 	CH:UpdateEditboxAnchors()
 	E:UpdatedCVar('chatStyle', CH.UpdateEditboxAnchors)
 
-	CH:SecureHook('GetPlayerInfoByGUID')
-	CH:SecureHook('ChatEdit_SetLastActiveWindow')
-	CH:SecureHook('ChatEdit_DeactivateChat')
 	CH:SecureHook('ChatEdit_ActivateChat')
+	CH:SecureHook('ChatEdit_DeactivateChat')
 	CH:SecureHook('ChatEdit_OnEnterPressed')
-	CH:SecureHook('FCFDock_UpdateTabs')
-	CH:SecureHook('FCF_Close')
-	CH:SecureHook('FCF_SetWindowAlpha')
+	CH:SecureHook('ChatEdit_SetLastActiveWindow')
 	CH:SecureHook('FCFTab_UpdateColors')
 	CH:SecureHook('FCFDock_SelectWindow')
-	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
-	CH:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
-	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
+	CH:SecureHook('FCFDock_UpdateTabs')
+	CH:SecureHook('FCF_SetWindowAlpha')
+	CH:SecureHook('FCF_Close', 'PostChatClose')
 	CH:SecureHook('FCF_DockFrame', 'SnappingChanged')
 	CH:SecureHook('FCF_ResetChatWindows', 'ClearSnapping')
+	CH:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
+	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
+	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
 	CH:SecureHook('RedockChatWindows', 'ClearSnapping')
+	CH:SecureHook('UIDropDownMenu_AddButton')
+	CH:SecureHook('GetPlayerInfoByGUID')
+
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')

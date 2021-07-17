@@ -142,22 +142,23 @@ P.databars = {
 	statusbar = 'ElvUI Norm',
 	customTexture = false,
 	colors = {
+		reputationAlpha = 1,
+		useCustomFactionColors = false,
 		experience = { r = 0, g = .4, b = 1, a = .8 },
 		rested = { r = 1, g = 0, b = 1, a = .4},
 		quest = { r = 0, g = 1, b = 0, a = .4},
 		honor = { r = .94, g = .45, b = .25, a = 1 },
 		azerite = { r = .901, g = .8, b = .601, a = 1 },
-		useCustomFactionColors = false,
 		factionColors = {
-			[1] = { r = .8, g = .3, b = .22 },
-			[2] = { r = .8, g = .3, b = .22 },
-			[3] = { r = .75, g = .27, b = 0 },
-			[4] = { r = .9, g = .7, b = 0 },
-			[5] = { r = 0, g = .6, b = .1 },
-			[6] = { r = 0, g = .6, b = .1 },
-			[7] = { r = 0, g = .6, b = .1 },
-			[8] = { r = 0, g = .6, b = .1 },
-			[9] = { r = 0, g = .6, b = .1 },
+			{ r = .8, g = .3, b = .22 }, -- 1
+			{ r = .8, g = .3, b = .22 }, -- 2
+			{ r = .75, g = .27, b = 0 }, -- 3
+			{ r = .9, g = .7, b = 0 },   -- 4
+			{ r = 0, g = .6, b = .1 },   -- 5
+			{ r = 0, g = .6, b = .1 },   -- 6
+			{ r = 0, g = .6, b = .1 },   -- 7
+			{ r = 0, g = .6, b = .1 },   -- 8
+			{ r = 0, g = .6, b = .1 },   -- 9
 		}
 	}
 }
@@ -523,7 +524,17 @@ P.nameplates = {
 		friendly = false,
 		enemy = false,
 	},
-	plateSize ={
+	bossMods = {
+		enable = true,
+		anchorPoint = 'BOTTOM',
+		growthX = 'RIGHT',
+		growthY = 'DOWN',
+		size = 34,
+		spacing = 1,
+		yOffset = -5,
+		xOffset = 0
+	},
+	plateSize = {
 		personalWidth = 150,
 		personalHeight = 30,
 		friendlyWidth = 150,
@@ -546,6 +557,7 @@ P.nameplates = {
 		ElvUI_Explosives = {triggers = {enable = true}},
 	},
 	colors = {
+		auraByType = true,
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
 		castColor = {r = 1, g = 0.81, b = 0},
 		tapped = {r = 0.6, g = 0.6, b = 0.6},

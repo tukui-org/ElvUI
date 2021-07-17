@@ -91,6 +91,7 @@ local targetList, TAPPED_COLOR, keybindFrame = {}, { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF0000'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFFFF00'..L["DND"]..'|r|cffFFFFFF]|r'
 local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
+local blanchyFix = '|n%s+|n' -- thanks blizz -x- lol
 
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
@@ -466,7 +467,6 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 
 	local isShiftKeyDown = IsShiftKeyDown()
 	local isControlKeyDown = IsControlKeyDown()
-	local color = TT:SetUnitText(tt, unit)
 	if TT.db.showMount and isPlayerUnit and unit ~= 'player' and not isShiftKeyDown then
 		for i = 1, 40 do
 			local name, _, _, _, _, _, _, _, _, id = UnitBuff(unit, i)
@@ -476,14 +476,15 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 				local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
 				tt:AddDoubleLine(format('%s:', _G.MOUNT), name, nil, nil, nil, 1, 1, 1)
 
-				if sourceText and isControlKeyDown then
-					local sourceModified = gsub(sourceText, '|n', '\10')
+				local mountText = isControlKeyDown and sourceText and gsub(sourceText, blanchyFix, '|n')
+				if mountText then
+					local sourceModified = gsub(mountText, '|n', '\10')
 					for x in gmatch(sourceModified, '[^\10]+\10?') do
 						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
 						if left and right then
 							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
 						else
-							tt:AddDoubleLine(_G.FROM, gsub(sourceText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+							tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
 						end
 					end
 				end
@@ -527,6 +528,7 @@ function TT:GameTooltip_OnTooltipSetUnit(tt)
 		end
 	end
 
+	local color = TT:SetUnitText(tt, unit)
 	if isShiftKeyDown and isPlayerUnit then
 		TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 	end
@@ -712,17 +714,22 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	local _, _, _, _, _, _, caster, _, _, id = UnitAura(unit, index, filter)
 
 	if id then
-		local sourceText
+		local mountText
 		if TT.MountIDs[id] then
-			_, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
-			tt:AddLine(' ')
-			tt:AddLine(sourceText, 1, 1, 1)
+			local _, _, sourceText = C_MountJournal_GetMountInfoExtraByID(TT.MountIDs[id])
+			mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
+
+			if mountText then
+				tt:AddLine(' ')
+				tt:AddLine(mountText, 1, 1, 1)
+			end
 		end
 
 		if TT:IsModKeyDown() then
-			if sourceText then
+			if mountText then
 				tt:AddLine(' ')
 			end
+
 			if caster then
 				local name = UnitName(caster)
 				local _, class = UnitClass(caster)

@@ -70,6 +70,8 @@ function S:Blizzard_GuildBankUI()
 		button:StyleButton(true)
 		button:SetTemplate(nil, true)
 
+		button.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
+
 		texture:SetInside()
 		texture:SetTexCoord(unpack(E.TexCoords))
 	end

@@ -448,6 +448,8 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower:SetScript('OnShow', ToggleResourceBar)
 	additionalPower:SetScript('OnHide', ToggleResourceBar)
 
+	UF:Construct_ClipFrame(frame, additionalPower)
+
 	return additionalPower
 end
 
