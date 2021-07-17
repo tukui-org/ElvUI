@@ -1309,7 +1309,8 @@ function B:ConstructContainerFrame(name, isBank)
 	f:RegisterForDrag('LeftButton', 'RightButton')
 	f:RegisterForClicks('AnyUp')
 	f:SetScript('OnEvent', B.OnEvent)
-	f:SetScript('OnShow', B.RefreshSearch)
+	f:SetScript('OnShow', B.BagsOnShow)
+	f:SetScript('OnHide', B.BagsOnHide)
 	f:SetScript('OnDragStart', function(frame) if IsShiftKeyDown() then frame:StartMoving() end end)
 	f:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
 	f:SetScript('OnClick', function(frame) if IsControlKeyDown() then B.PostBagMove(frame.mover) end end)
@@ -1456,10 +1457,6 @@ function B:ConstructContainerFrame(name, isBank)
 	if isBank then
 		f.fullBank = select(2, GetNumBankSlots())
 
-		for _, event in pairs(f.events) do
-			f:RegisterEvent(event)
-		end
-
 		f.reagentFrame = CreateFrame('Frame', 'ElvUIReagentBankFrame', f)
 		f.reagentFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
 		f.reagentFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
@@ -1591,18 +1588,6 @@ function B:ConstructContainerFrame(name, isBank)
 			end
 		end)
 
-		f:SetScript('OnShow', B.RefreshSearch)
-		f:SetScript('OnHide', function()
-			CloseBankFrame()
-
-			B:NewItemGlowBagClear(f)
-			B:HideItemGlow(f)
-
-			if B.db.clearSearchOnClose then
-				B:ResetAndClear()
-			end
-		end)
-
 		--Search
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', 0, E.Border * 2 + 2)
 	else
@@ -1666,20 +1651,6 @@ function B:ConstructContainerFrame(name, isBank)
 
 			f.currencyButton[i]:Hide()
 		end
-
-		f:SetScript('OnHide', function()
-			CloseBackpack()
-			for i = 1, NUM_BAG_FRAMES do
-				CloseBag(i)
-			end
-
-			B:NewItemGlowBagClear(f)
-			B:HideItemGlow(f)
-
-			if not _G.BankFrame:IsShown() and B.db.clearSearchOnClose then
-				B:ResetAndClear()
-			end
-		end)
 	end
 
 	tinsert(_G.UISpecialFrames, f:GetName()) --Keep an eye on this for taints..
@@ -1867,14 +1838,53 @@ function B:ToggleSortButtonState(isBank)
 	end
 end
 
+function B:BagsOnShow()
+	B:SetListeners(self)
+
+	B:RefreshSearch()
+end
+
+function B:BagsOnHide()
+	B:ClearListeners(self)
+
+	B:NewItemGlowBagClear(self)
+	B:HideItemGlow(self)
+
+	if self.isBank then
+		CloseBankFrame()
+	else
+		CloseBackpack()
+
+		for i = 1, NUM_BAG_FRAMES do
+			CloseBag(i)
+		end
+	end
+
+	if not _G.BankFrame:IsShown() and B.db.clearSearchOnClose then
+		B:ResetAndClear()
+	end
+end
+
+function B:SetListeners(frame)
+	frame:RegisterEvent('BAG_UPDATE')
+	frame:RegisterEvent('BAG_UPDATE_COOLDOWN')
+
+	for _, event in pairs(frame.events) do
+		frame:RegisterEvent(event)
+	end
+end
+
+function B:ClearBagEvents(frame)
+	frame:UnregisterEvent('BAG_UPDATE')
+	frame:UnregisterEvent('BAG_UPDATE_COOLDOWN')
+
+	for _, event in pairs(frame.events) do
+		frame:UnregisterEvent(event)
+	end
+end
+
 function B:OpenBags()
 	B.BagFrame:Show()
-
-	B.BagFrame:RegisterEvent('BAG_UPDATE')
-	B.BagFrame:RegisterEvent('BAG_UPDATE_COOLDOWN')
-	for _, event in pairs(B.BagFrame.events) do
-		B.BagFrame:RegisterEvent(event)
-	end
 
 	B:UpdateAllBagSlots()
 
@@ -1883,13 +1893,6 @@ end
 
 function B:CloseBags()
 	B.BagFrame:Hide()
-
-	B.BagFrame:UnregisterEvent('BAG_UPDATE')
-	B.BagFrame:UnregisterEvent('BAG_UPDATE_COOLDOWN')
-
-	for _, event in pairs(B.BagFrame.events) do
-		B.BagFrame:UnregisterEvent(event)
-	end
 
 	if B.BankFrame then
 		B.BankFrame:Hide()
@@ -1966,10 +1969,7 @@ function B:CloseAuction()
 end
 
 function B:OpenBank()
-	B.BankFrame:RegisterEvent('BAG_UPDATE')
-	B.BankFrame:RegisterEvent('BAG_UPDATE_COOLDOWN')
 	B.BankFrame:Show()
-
 	_G.BankFrame:Show()
 
 	--Allow opening reagent tab directly by holding Shift
