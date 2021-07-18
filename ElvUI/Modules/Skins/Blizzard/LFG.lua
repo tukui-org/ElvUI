@@ -708,7 +708,7 @@ function S:Blizzard_ChallengesUI()
 
 	hooksecurefunc('ChallengesFrame_Update', function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
-			if not frame.backdrop then
+			if not frame.template then
 				frame:GetRegions():SetAlpha(0)
 				frame:SetTemplate('Transparent')
 				S:HandleIcon(frame.Icon, true)
