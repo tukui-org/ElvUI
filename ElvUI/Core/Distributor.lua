@@ -261,7 +261,6 @@ local blacklistedKeys = {
 			eyefinity = true,
 			ultrawide = true,
 			disableTutorialButtons = true,
-			showMissingTalentAlert = true,
 			allowDistributor = true
 		},
 		chat = {

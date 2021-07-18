@@ -305,6 +305,7 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate.RaisedElement) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate.RaisedElement)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
+	nameplate.BossMods = NP:Construct_BossMods(nameplate)
 
 	NP:Construct_Auras(nameplate)
 	NP:StyleFilterEvents(nameplate) -- prepare the watcher
@@ -325,6 +326,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
+	NP:Update_BossMods(nameplate)
 
 	local db = NP:PlateDB(nameplate)
 	if db.nameOnly or not db.enable then
@@ -684,6 +686,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 		nameplate.isFriend = UnitIsFriend('player', unit)
 		nameplate.isEnemy = UnitIsEnemy('player', unit)
+		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
@@ -714,6 +717,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.unitName = UnitName(unit)
 		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
+		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
 		if nameplate.unitGUID then
 			NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)
@@ -743,6 +747,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 			end
 
 			NP:UpdatePlateBase(nameplate)
+			NP:BossMods_UpdateIcon(nameplate)
 
 			NP:StyleFilterEventWatch(nameplate) -- fire up the watcher
 			NP:StyleFilterSetVariables(nameplate) -- sets: isTarget, isTargetingMe, isFocused
@@ -768,6 +773,8 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		end
 
 		if not nameplate.widgetsOnly then
+			NP:BossMods_UpdateIcon(nameplate, true)
+
 			NP:StyleFilterEventWatch(nameplate, true) -- shut down the watcher
 			NP:StyleFilterClearVariables(nameplate)
 		elseif nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
@@ -913,6 +920,7 @@ function NP:Initialize()
 	NP:RegisterEvent('GROUP_LEFT')
 	NP:RegisterEvent('PLAYER_LOGOUT')
 
+	NP:BossMods_RegisterCallbacks()
 	NP:StyleFilterInitialize()
 	NP:HideInterfaceOptions()
 	NP:GROUP_ROSTER_UPDATE()

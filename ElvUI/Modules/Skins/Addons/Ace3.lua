@@ -386,12 +386,12 @@ function S:Ace3_RegisterAsContainer(widget)
 			S:HandleCloseButton(frame.obj.closebutton)
 		end
 
+
+		frame:SetTemplate('Transparent')
+
 		if TYPE == 'InlineGroup' then -- 'Window' is another type
-			frame:SetTemplate('Transparent')
 			frame.callbackBackdropColor = S.Ace3_BackdropColor
 			S.Ace3_BackdropColor(frame)
-		else
-			frame:SetTemplate('Transparent')
 		end
 
 		if widget.treeframe then
@@ -415,10 +415,16 @@ function S:Ace3_RegisterAsContainer(widget)
 			S:HandleScrollBar(widget.scrollbar)
 		end
 	elseif TYPE == 'SimpleGroup' then
-		local frame = widget.content:GetParent()
+		local content = widget.content
+
+		local frame = content:GetParent()
 		frame:SetTemplate('Transparent')
 		frame.callbackBackdropColor = S.Ace3_BackdropColor
 		S.Ace3_BackdropColor(frame)
+
+		content:ClearAllPoints()
+		content:SetPoint('TOPLEFT', 6, 2)
+		content:SetPoint('BOTTOMRIGHT', -6, 2)
 	end
 
 	if widget.sizer_se then

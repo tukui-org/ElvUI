@@ -29,10 +29,11 @@ E.Options.args.general = General
 General.args.general = ACH:Group(L["General"], nil, 1)
 General.args.general.args.loginmessage = ACH:Toggle(L["Login Message"], nil, 1)
 General.args.general.args.taintLog = ACH:Toggle(L["Log Taints"], L["Send ADDON_ACTION_BLOCKED errors to the Lua Error frame. These errors are less important in most cases and will not effect your game performance. Also a lot of these errors cannot be fixed. Please only report these errors if you notice a Defect in gameplay."], 2)
-General.args.general.args.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 3, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
+General.args.general.args.spacer1 = ACH:Spacer(3, 'full')
 General.args.general.args.locale = ACH:Select(L["LANGUAGE"], nil, 4, { deDE = 'Deutsch', enUS = 'English', esMX = 'Español', frFR = 'Français', ptBR = 'Português', ruRU = 'Русский', zhCN = '简体中文', zhTW = '正體中文', koKR = '한국어', itIT = 'Italiano' }, nil, nil, function() return E.global.general.locale end, function(_, value) E.global.general.locale = value E:StaticPopup_Show('CONFIG_RL') end)
 General.args.general.args.messageRedirect = ACH:Select(L["Chat Output"], L["This selects the Chat Frame to use as the output of ElvUI messages."], 5, function() return GetChatWindowInfo() end)
 General.args.general.args.numberPrefixStyle = ACH:Select(L["Unit Prefix Style"], L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."], 6, { TCHINESE = '萬, 億', CHINESE = '万, 亿', ENGLISH = 'K, M, B', GERMAN = 'Tsd, Mio, Mrd', KOREAN = '천, 만, 억', METRIC = 'k, M, G' }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
+General.args.general.args.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 7, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
 
 General.args.general.args.monitor = ACH:Group(L["Monitor"], nil, 50, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E:StaticPopup_Show('GLOBAL_RL') end)
 General.args.general.args.monitor.inline = true
@@ -163,7 +164,6 @@ General.args.blizzUIImprovements.args.general = ACH:Group(L["General"], nil, 1)
 General.args.blizzUIImprovements.args.general.inline = true
 General.args.blizzUIImprovements.args.general.args.hideErrorFrame = ACH:Toggle(L["Hide Error Text"], L["Hides the red error text at the top of the screen while in combat."], 1)
 General.args.blizzUIImprovements.args.general.args.enhancedPvpMessages = ACH:Toggle(L["Enhanced PVP Messages"], L["Display battleground messages in the middle of the screen."], 2)
-General.args.blizzUIImprovements.args.general.args.showMissingTalentAlert = ACH:Toggle(L["Missing Talent Alert"], L["Show an alert frame if you have unspend talent points."], 3, nil, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E:StaticPopup_Show('GLOBAL_RL') end)
 General.args.blizzUIImprovements.args.general.args.disableTutorialButtons = ACH:Toggle(L["Disable Tutorial Buttons"], L["Disables the tutorial button found on some frames."], 4, nil, nil, nil, function(info) return E.global.general[info[#info]] end, function(info, value) E.global.general[info[#info]] = value E:StaticPopup_Show('GLOBAL_RL') end)
 General.args.blizzUIImprovements.args.general.args.raidUtility = ACH:Toggle(L["RAID_CONTROL"], L["Enables the ElvUI Raid Control panel."], 5, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.blizzUIImprovements.args.general.args.voiceOverlay = ACH:Toggle(L["Voice Overlay"], L["Replace Blizzard's Voice Overlay."], 6, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E:StaticPopup_Show('PRIVATE_RL') end)
@@ -177,9 +177,9 @@ General.args.blizzUIImprovements.args.quest.inline = true
 General.args.blizzUIImprovements.args.quest.args.questRewardMostValueIcon = ACH:Toggle(L["Mark Quest Reward"], L["Marks the most valuable quest reward with a gold coin."], 1)
 General.args.blizzUIImprovements.args.quest.args.questXPPercent = ACH:Toggle(L["XP Quest Percent"], nil, 2)
 
-General.args.blizzUIImprovements.args.lootGroup = ACH:Group(L['Loot'], nil, 3, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
+General.args.blizzUIImprovements.args.lootGroup = ACH:Group(L["Loot"], nil, 3, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value; E:StaticPopup_Show('PRIVATE_RL') end)
 General.args.blizzUIImprovements.args.lootGroup.inline = true
-General.args.blizzUIImprovements.args.lootGroup.args.loot = ACH:Toggle(L['Loot'], L["Enable/Disable the loot frame."], 1)
+General.args.blizzUIImprovements.args.lootGroup.args.loot = ACH:Toggle(L["Loot"], L["Enable/Disable the loot frame."], 1)
 General.args.blizzUIImprovements.args.lootGroup.args.lootRoll = ACH:Toggle(L["Loot Roll"], L["Enable/Disable the loot roll frame."], 2)
 General.args.blizzUIImprovements.args.lootGroup.args.autoRoll = ACH:Toggle(L["Auto Greed/DE"], L["Automatically select greed or disenchant (when available) on green quality items. This will only work if you are the max level."], 3, nil, nil, nil, function() return not E.db.general.autoRoll end, function(_, value) E.db.general.autoRoll = value end, function() return not E.private.general.lootRoll end)
 

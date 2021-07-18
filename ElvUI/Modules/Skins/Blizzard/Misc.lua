@@ -108,10 +108,6 @@ function S:BlizzardMiscFrames()
 		_G.GameMenuFrame.Header:Point('TOP', _G.GameMenuFrame, 0, 7)
 	end
 
-	if E:IsAddOnEnabled('OptionHouse') then
-		S:HandleButton(_G.GameMenuButtonOptionHouse)
-	end
-
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
 	-- we can just hook onto this function so that we can get the correct `self`
 	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want

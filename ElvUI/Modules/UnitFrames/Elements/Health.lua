@@ -54,13 +54,8 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 	health.colorDisconnected = true
 	health:CreateBackdrop(nil, nil, nil, nil, true)
 
-	local clipFrame = CreateFrame('Frame', nil, health)
+	local clipFrame = UF:Construct_ClipFrame(frame, health)
 	clipFrame:SetScript('OnUpdate', UF.HealthClipFrame_OnUpdate)
-	clipFrame:SetClipsChildren(true)
-	clipFrame:SetAllPoints()
-	clipFrame:EnableMouse(false)
-	clipFrame.__frame = frame
-	health.ClipFrame = clipFrame
 
 	return health
 end

@@ -18,7 +18,6 @@ function UF:SetSize_PowerPrediction(frame)
 	local altBar = pred.altBar
 	if altBar then
 		local altWidth, altHeight = frame.AdditionalPower:GetSize()
-
 		if altBar:GetOrientation() == 'HORIZONTAL' then
 			altBar:Size(altWidth, 0)
 		else
@@ -32,9 +31,8 @@ function UF:PostUpdate_PowerPrediction()
 end
 
 function UF:Construct_PowerPrediction(frame)
-	local mainBar = CreateFrame('StatusBar', nil, frame.Power)
+	local mainBar = CreateFrame('StatusBar', nil, frame.Power.ClipFrame)
 	mainBar:SetStatusBarTexture(E.media.blankTex)
-	mainBar.parent = frame.Power
 	mainBar:Hide()
 
 	local prediction = {
@@ -44,7 +42,7 @@ function UF:Construct_PowerPrediction(frame)
 	}
 
 	if frame.AdditionalPower then
-		prediction.altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower)
+		prediction.altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower.ClipFrame)
 		prediction.altBar:SetStatusBarTexture(E.media.blankTex)
 		prediction.altBar:Hide()
 
