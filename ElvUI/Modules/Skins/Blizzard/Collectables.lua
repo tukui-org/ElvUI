@@ -623,6 +623,21 @@ function S:Blizzard_Collections()
 		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
 		slotButton.Border:Kill()
 		slotButton.Icon:SetTexCoord(unpack(E.TexCoords))
+		slotButton.Icon:SetInside(slotButton.backdrop)
+
+		local undo = slotButton.UndoButton
+		if undo then undo:SetHighlightTexture(nil) end
+
+		local pending = slotButton.PendingFrame
+		if pending then
+			if slotButton.transmogType == 1 then
+				pending.Glow:Size(48)
+				pending.Ants:Size(30)
+			else
+				pending.Glow:Size(74)
+				pending.Ants:Size(48)
+			end
+		end
 	end
 
 	WardrobeTransmogFrame.SpecButton:ClearAllPoints()
