@@ -712,6 +712,7 @@ function S:Blizzard_ChallengesUI()
 				frame:GetRegions():SetAlpha(0)
 				frame:SetTemplate('Transparent')
 				S:HandleIcon(frame.Icon, true)
+				frame.Icon:SetDrawLayer('ARTWORK')
 				frame.Icon:SetInside()
 			end
 		end
