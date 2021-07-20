@@ -1876,7 +1876,7 @@ end
 function B:ToggleSortButtonState(isBank)
 	local button = (isBank and B.BankFrame.sortButton) or B.BagFrame.sortButton
 
-	if (isBank and B.db.disableBankSort) or B.db.disableBagSort then
+	if (isBank and B.db.disableBankSort) or (not isBank and B.db.disableBagSort) then
 		button:Disable()
 	else
 		button:Enable()
