@@ -437,13 +437,12 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 end
 
 function B:UpdateSlot(frame, bagID, slotID)
-	if (frame.Bags[bagID] and frame.Bags[bagID].numSlots ~= GetContainerNumSlots(bagID)) or not frame.Bags[bagID] or not frame.Bags[bagID][slotID] then
-		return
-	end
+	local bag = frame.Bags[bagID]
+	local slot = bag and bag[slotID]
 
-	local slot = frame.Bags[bagID][slotID]
-	local bagType = frame.Bags[bagID].type
+	if not slot or (bag.numSlots ~= GetContainerNumSlots(bagID)) then return end
 
+	local bagType = bag.type
 	local assignedID = bagID
 	local assignedBag = frame.Bags[assignedID] and frame.Bags[assignedID].assigned
 	local assignedColor = B.db.showAssignedColor and B.AssignmentColors[assignedBag]
@@ -571,20 +570,16 @@ function B:UpdateSlot(frame, bagID, slotID)
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
 
-	local cooldownEvent = E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot)
 	if texture then
 		B.UpdateCooldown(slot)
 
-		if not cooldownEvent then
+		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
 			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
 
 		slot.hasItem = 1
 	else
-		if cooldownEvent then
-			E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
-			B:HideCooldown(slot)
-		end
+		B:HideCooldown(slot)
 
 		slot.hasItem = nil
 	end
@@ -630,10 +625,12 @@ function B:SortingFadeBags(bagFrame, registerUpdate)
 	end
 end
 
-function B:HideCooldown(slot)
-	slot.Cooldown.start = nil
-	slot.Cooldown.duration = nil
+function B:HideCooldown(slot, keep)
 	slot.Cooldown:Hide()
+
+	if not keep and E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
+		E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+	end
 end
 
 function B:UpdateCooldown()
@@ -652,15 +649,9 @@ function B:UpdateCooldown()
 	end
 
 	if duration > 0 and enabled == 1 then
-		local newStart, newDuration = not cd.start or cd.start ~= start, not cd.duration or cd.duration ~= duration
-		if newStart or newDuration then
-			cd:SetCooldown(start, duration)
-
-			cd.start = start
-			cd.duration = duration
-		end
+		cd:SetCooldown(start, duration)
 	elseif shown then
-		B:HideCooldown(self)
+		B:HideCooldown(self, true)
 	end
 end
 
@@ -1058,7 +1049,6 @@ function B:UpdateReagentSlot(slotID)
 	local isQuestItem, questId, isActiveQuest = false, false, false
 	local forceColor, r, g, b, a = true
 
-	local cooldownEvent = E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot)
 	if link then
 		local name, _, rarity = GetItemInfo(link)
 		slot.name, slot.rarity = name, rarity
@@ -1072,11 +1062,10 @@ function B:UpdateReagentSlot(slotID)
 
 		B.UpdateCooldown(slot)
 
-		if not cooldownEvent then
+		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
 			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
-	elseif cooldownEvent then
-		E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+	else
 		B:HideCooldown(slot)
 	end
 
