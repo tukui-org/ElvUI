@@ -174,9 +174,12 @@ function B:DisableBlizzard()
 	end
 end
 
-function B:SearchReset()
+function B:SearchReset(skip)
 	SEARCH_STRING = ''
-	B:RefreshSearch()
+
+	if skip then
+		B:RefreshSearch()
+	end
 end
 
 function B:IsSearching()
@@ -235,7 +238,45 @@ function B:ResetAndClear()
 		B.BankFrame.editBox:ClearFocus()
 	end
 
-	B:SearchReset()
+	-- pass bool to say whether it was from a script,
+	-- as this only needs to update from the scripts
+	B:SearchReset(self == B)
+end
+
+function B:SearchSlotUpdate(slot, link, locked)
+	B.SearchSlots[slot] = link
+
+	if slot.bagFrame.sortingSlots then return end -- dont update while sorting
+
+	if not locked and B:IsSearching() then
+		B:SearchSlot(slot)
+	else
+		slot.searchOverlay:Hide()
+	end
+end
+
+function B:SearchSlot(slot)
+	local link = B.SearchSlots[slot]
+	if not link then return end
+
+	local query = SEARCH_STRING
+	local method = Search.Matches
+	if Search.Filters.tipPhrases.keywords[query] then
+		method = Search.TooltipPhrase
+		query = Search.Filters.tipPhrases.keywords[query]
+	end
+
+	local empty = #(query:gsub(' ', '')) == 0
+	if empty then
+		slot.searchOverlay:Hide()
+	else
+		local success, result = pcall(method, Search, link, query)
+		if success and result then
+			slot.searchOverlay:Hide()
+		else
+			slot.searchOverlay:Show()
+		end
+	end
 end
 
 function B:SetSearch(query)
@@ -462,8 +503,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local forceColor, r, g, b, a = true, unpack(E.media.bordercolor)
 	local questId, isActiveQuest = false, false
 
-	B.SearchSlots[slot] = link
-	slot.searchOverlay:Hide()
+	B:SearchSlotUpdate(slot, link, locked)
 
 	if link then
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(link)
@@ -598,14 +638,13 @@ function B:RefreshSearch()
 	B:SetSearch(SEARCH_STRING)
 end
 
-function B:SortingFadeBags(bagFrame, registerUpdate)
+function B:SortingFadeBags(bagFrame, sortingSlots)
 	if not (bagFrame and bagFrame.BagIDs) then return end
-	bagFrame.registerUpdate = registerUpdate
+	bagFrame.sortingSlots = sortingSlots
 
 	for _, bagID in ipairs(bagFrame.BagIDs) do
 		for slotID = 1, GetContainerNumSlots(bagID) do
-			local button = bagFrame.Bags[bagID][slotID]
-			button.searchOverlay:Show()
+			bagFrame.Bags[bagID][slotID].searchOverlay:Show()
 		end
 	end
 end
@@ -654,11 +693,6 @@ function B:UpdateAllSlots(frame)
 	for _, bagID in ipairs(frame.BagIDs) do
 		local bag = frame.Bags[bagID]
 		if bag then B:UpdateBagSlots(frame, bagID) end
-	end
-
-	-- Refresh search in case we moved items around
-	if not frame.registerUpdate and B:IsSearching() then
-		B:RefreshSearch()
 	end
 end
 
@@ -1042,8 +1076,7 @@ function B:UpdateReagentSlot(slotID)
 	local isQuestItem, questId, isActiveQuest = false, false, false
 	local forceColor, r, g, b, a = true
 
-	B.SearchSlots[slot] = link
-	slot.searchOverlay:Hide()
+	B:SearchSlotUpdate(slot, link, locked)
 
 	if link then
 		local name, _, rarity = GetItemInfo(link)
@@ -1105,9 +1138,6 @@ function B:OnEvent(event, ...)
 		end
 
 		B:UpdateBagSlots(self, ...)
-
-		--Refresh search in case we moved items around
-		if B:IsSearching() then B:RefreshSearch() end
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
 		local slot = ...
 		local bagID = (slot <= NUM_BANKGENERIC_SLOTS) and -1 or (slot - NUM_BANKGENERIC_SLOTS)
@@ -1487,9 +1517,9 @@ function B:ConstructContainerFrame(name, isBank)
 		f.reagentFrame = CreateFrame('Frame', 'ElvUIReagentBankFrame', f)
 		f.reagentFrame:Point('TOP', f, 'TOP', 0, -f.topOffset)
 		f.reagentFrame:Point('BOTTOM', f, 'BOTTOM', 0, 8)
-		f.reagentFrame.slots = {}
 		f.reagentFrame:SetID(REAGENTBANK_CONTAINER)
 		f.reagentFrame:Hide()
+		f.reagentFrame.slots = {}
 
 		for i = 1, B.REAGENTBANK_SIZE do
 			f.reagentFrame.slots[i] = B:ConstructReagentSlot(f, i)
@@ -1552,7 +1582,7 @@ function B:ConstructContainerFrame(name, isBank)
 					SortBankBags()
 				else
 					f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
-					if not f.registerUpdate then B:SortingFadeBags(f, true) end
+					if not f.sortingSlots then B:SortingFadeBags(f, true) end
 					B:CommandDecorator(B.SortBags, 'bank')()
 				end
 			else
@@ -1631,7 +1661,7 @@ function B:ConstructContainerFrame(name, isBank)
 				SortBags()
 			else
 				f:UnregisterAllEvents() --Unregister to prevent unnecessary updates
-				if not f.registerUpdate then B:SortingFadeBags(f, true) end
+				if not f.sortingSlots then B:SortingFadeBags(f, true) end
 				B:CommandDecorator(B.SortBags, 'bags')()
 			end
 		end)
@@ -1693,6 +1723,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
 
+	slot.bagFrame = f
 	slot.bagID = bagID
 	slot.slotID = slotID
 
@@ -1795,6 +1826,7 @@ function B:ConstructReagentSlot(f, slotID)
 	slot:SetNormalTexture(nil)
 	slot.isReagent = true
 
+	slot.bagFrame = f
 	slot.slotID = slotID
 	slot.bagID = REAGENTBANK_CONTAINER
 
@@ -1873,11 +1905,6 @@ end
 
 function B:ContainerOnShow()
 	B:SetListeners(self)
-
-	-- bags open with bank, so this will fire from bags
-	if not self.isBank then
-		B:RefreshSearch()
-	end
 end
 
 function B:ContainerOnHide()

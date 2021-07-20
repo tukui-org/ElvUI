@@ -728,7 +728,7 @@ function B:RegisterUpdateDelayed()
 	local shouldUpdateFade
 
 	for _, bagFrame in pairs(B.BagFrames) do
-		if bagFrame.registerUpdate then
+		if bagFrame.sortingSlots then
 			B:UpdateAllSlots(bagFrame)
 
 			bagFrame:RegisterEvent('BAG_UPDATE')
@@ -738,7 +738,7 @@ function B:RegisterUpdateDelayed()
 				bagFrame:RegisterEvent(event)
 			end
 
-			bagFrame.registerUpdate = nil
+			bagFrame.sortingSlots = nil
 			shouldUpdateFade = true -- we should refresh the bag search after sorting
 		end
 	end
