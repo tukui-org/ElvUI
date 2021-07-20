@@ -628,6 +628,9 @@ end
 function B:HideCooldown(slot, keep)
 	slot.Cooldown:Hide()
 
+	slot.Cooldown.start = nil
+	slot.Cooldown.duration = nil
+
 	if not keep and E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
 		E:UnregisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 	end
@@ -647,7 +650,14 @@ function B:UpdateCooldown()
 	end
 
 	if duration > 0 and enabled == 1 then
-		self.Cooldown:SetCooldown(start, duration)
+		local cd = self.Cooldown
+		local newStart, newDuration = not cd.start or cd.start ~= start, not cd.duration or cd.duration ~= duration
+		if newStart or newDuration then
+			cd:SetCooldown(start, duration)
+
+			cd.start = start
+			cd.duration = duration
+		end
 	else
 		B:HideCooldown(self, true)
 	end
