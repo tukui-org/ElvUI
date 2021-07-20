@@ -634,9 +634,7 @@ function B:HideCooldown(slot, keep)
 end
 
 function B:UpdateCooldown()
-	local cd = self.Cooldown
-	local shown = cd:IsShown()
-	if shown and not self:IsVisible() then
+	if not self:IsVisible() then
 		B:HideCooldown(self)
 		return
 	end
@@ -649,8 +647,8 @@ function B:UpdateCooldown()
 	end
 
 	if duration > 0 and enabled == 1 then
-		cd:SetCooldown(start, duration)
-	elseif shown then
+		self.Cooldown:SetCooldown(start, duration)
+	else
 		B:HideCooldown(self, true)
 	end
 end
