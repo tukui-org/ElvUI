@@ -17,7 +17,7 @@ function B:Handle_BossBanner()
 	if not Holder then
 		Holder = CreateFrame('Frame', 'BossBannerHolder', E.UIParent)
 		Holder:Size(200, 20)
-		Holder:Point('TOP', E.UIParent, 'TOP', -1, -120)
+		Holder:Point('TOP', E.UIParent, 'TOP', 0, -125)
 	end
 
 	E:CreateMover(Holder, 'BossBannerMover', L["Boss Banner"])

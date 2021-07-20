@@ -14,7 +14,7 @@ local function CaptureUpdate()
 				captureBar:ClearAllPoints()
 
 				if i == 1 then
-					captureBar:Point('TOP', E.UIParent, 'TOP', 0, -170)
+					captureBar:Point('TOP', E.UIParent, 'TOP', 0, -150)
 				else
 					captureBar:Point('TOPLEFT', _G['WorldStateCaptureBar' .. i - 1], 'TOPLEFT', 0, -45)
 				end

@@ -17,7 +17,7 @@ function B:Handle_EventToast()
 	if not Holder then
 		Holder = CreateFrame('Frame', 'EventToastHolder', E.UIParent)
 		Holder:Size(200, 20)
-		Holder:Point('TOP', E.UIParent, 'TOP', -1, -300)
+		Holder:Point('TOP', E.UIParent, 'TOP', 0, -300)
 	end
 
 	E:CreateMover(Holder, 'EventToastMover', L["Event Toast"])
