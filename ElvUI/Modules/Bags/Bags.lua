@@ -121,6 +121,33 @@ local animaSpellID = {
 	[336456] = 250 -- Deposit Anima: Infuse 250 stored Anima into your covenant's Reservoir.
 }
 
+B.IsEquipmentSlot = {
+	INVTYPE_HEAD = true,
+	INVTYPE_NECK = true,
+	INVTYPE_SHOULDER = true,
+	INVTYPE_BODY = true,
+	INVTYPE_CHEST = true,
+	INVTYPE_WAIST = true,
+	INVTYPE_LEGS = true,
+	INVTYPE_FEET = true,
+	INVTYPE_WRIST = true,
+	INVTYPE_HAND = true,
+	INVTYPE_FINGER = true,
+	INVTYPE_TRINKET = true,
+	INVTYPE_WEAPON = true,
+	INVTYPE_SHIELD = true,
+	INVTYPE_RANGED = true,
+	INVTYPE_CLOAK = true,
+	INVTYPE_2HWEAPON = true,
+	INVTYPE_TABARD = true,
+	INVTYPE_ROBE = true,
+	INVTYPE_WEAPONMAINHAND = true,
+	INVTYPE_WEAPONOFFHAND = true,
+	INVTYPE_HOLDABLE = true,
+	INVTYPE_THROWN = true,
+	INVTYPE_RANGEDRIGHT = true,
+}
+
 local bagIDs = {0, 1, 2, 3, 4}
 local bankIDs = {-1, 5, 6, 7, 8, 9, 10, 11}
 local bankEvents = {'PLAYERREAGENTBANKSLOTS_CHANGED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKSLOTS_CHANGED'}
@@ -391,9 +418,11 @@ function B:UpdateItemUpgradeIcon(slot)
 	if itemIsUpgrade == nil then itemIsUpgrade = _G.IsContainerItemAnUpgrade(containerID, slotID) end
 
 	if itemIsUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
+		print(format('No Data For %s %s', containerID, slotID))
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', B.UpgradeCheck_OnUpdate)
 	else
+		print(format('Checking Equipment %s %s', containerID, slotID))
 		slot.UpgradeIcon:SetShown(itemIsUpgrade)
 		slot:SetScript('OnUpdate', nil)
 	end
@@ -462,11 +491,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local assignedColor = B.db.showAssignedColor and B.AssignmentColors[assignedBag]
 	slot:Show()
 
-	local link = GetContainerItemLink(bagID, slotID)
-	local texture, count, locked, rarity, readable, _, itemLink, _, noValue = GetContainerItemInfo(bagID, slotID)
+	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, rarity, locked, readable
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.junkDesaturate = slot.isJunk and B.db.junkDesaturate
+	slot.isEquipment = nil
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
@@ -480,22 +509,21 @@ function B:UpdateSlot(frame, bagID, slotID)
 	slot.centerText:SetText('')
 
 	local professionColors = B.ProfessionColors[bagType]
-	local showItemLevel = B.db.itemLevel and link and not professionColors
+	local showItemLevel = B.db.itemLevel and itemLink and not professionColors
 	local showBindType = B.db.showBindType and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON)
 	local forceColor, r, g, b, a = true, unpack(E.media.bordercolor)
 	local questId, isActiveQuest = false, false
 
-	B:SearchSlotUpdate(slot, link, locked)
+	B:SearchSlotUpdate(slot, itemLink, locked)
 
-	if link then
-		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(link)
-		slot.name = name
+	if itemLink then
+		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
+		slot.name, slot.itemID, slot.isEquipment = name, itemID, B.IsEquipmentSlot[itemEquipLoc]
 
 		if not slot.rarity then slot.rarity = itemRarity end
 		r, g, b = GetItemQualityColor(slot.rarity)
 
 		_, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-		slot.itemID = GetContainerItemID(bagID, slotID)
 
 		if showItemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
@@ -539,8 +567,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 			end
 		end
 
-		if C_Item_IsAnimaItemByID(link) and B.db.itemInfo then
-			local _, spellID = GetItemSpell(link)
+		if C_Item_IsAnimaItemByID(itemLink) and B.db.itemInfo then
+			local _, spellID = GetItemSpell(itemLink)
 			if animaSpellID[spellID] then
 				slot.centerText:SetText(animaSpellID[spellID] * count)
 			end
@@ -550,13 +578,13 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if slot.questIcon then slot.questIcon:SetShown(questId and not isActiveQuest) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
-	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
+	if slot.UpgradeIcon and slot.isEquipment then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
 	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
 	if questId then
 		r, g, b, a = unpack(B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem'])
-	elseif not link then
+	elseif not itemLink then
 		if B.db.specialtyColors and professionColors then
 			r, g, b, a = unpack(professionColors)
 		elseif assignedColor then
@@ -1042,8 +1070,7 @@ function B:UpdateReagentSlot(slotID)
 	assert(slotID)
 
 	local bagID = REAGENTBANK_CONTAINER
-	local texture, count, locked = GetContainerItemInfo(bagID, slotID)
-	local link = GetContainerItemLink(bagID, slotID)
+	local texture, count, locked, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
 	local slot = _G['ElvUIReagentBankFrameItem'..slotID]
 	if not slot then return end
 
@@ -1058,12 +1085,11 @@ function B:UpdateReagentSlot(slotID)
 	local isQuestItem, questId, isActiveQuest = false, false, false
 	local forceColor, r, g, b, a = true
 
-	B:SearchSlotUpdate(slot, link, locked)
+	B:SearchSlotUpdate(slot, itemLink, locked)
 
-	if link then
-		local name, _, rarity = GetItemInfo(link)
-		slot.name, slot.rarity = name, rarity
-		slot.itemID = GetContainerItemID(bagID, slotID)
+	if itemLink then
+		local name, _, rarity = GetItemInfo(itemLink)
+		slot.name, slot.rarity, slot.itemID = name, rarity, itemID
 
 		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 
@@ -1084,7 +1110,7 @@ function B:UpdateReagentSlot(slotID)
 		r, g, b, a = unpack(B.QuestColors.questStarter)
 	elseif questId or isQuestItem then
 		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif not link or B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
+	elseif not itemLink or B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
