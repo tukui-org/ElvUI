@@ -127,6 +127,7 @@ L["Empty Slot"] = true
 L["Enable"] = true
 L["Error resetting UnitFrame."] = true
 L["Event Log"] = true
+L["Event Toast Manager Frame"] = true
 L["Experience Bar"] = true
 L["Experience"] = true
 L["Feet"] = true
