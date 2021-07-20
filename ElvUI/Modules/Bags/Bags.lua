@@ -193,10 +193,8 @@ function B:UpdateSearch()
 	end
 
 	local search = self:GetText()
-	local empty = strmatch(search, '^%s+$')
-
 	if self.Instructions then
-		self.Instructions:SetShown(empty)
+		self.Instructions:SetShown(search == '')
 	end
 
 	local MIN_REPEAT_CHARACTERS = 3
