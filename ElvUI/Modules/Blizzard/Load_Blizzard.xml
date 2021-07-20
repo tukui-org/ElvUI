@@ -13,4 +13,5 @@
 	<Script file='TalkingHeadFrame.lua'/>
 	<Script file='BossBanner.lua'/>
 	<Script file='WidgetsUI.lua'/>
+	<Script file='EventToastManagerFrame.lua'/>
 </Ui>
