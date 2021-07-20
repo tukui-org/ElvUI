@@ -280,11 +280,7 @@ function B:SetSearch(query)
 			slot.searchOverlay:Hide()
 		else
 			local success, result = pcall(method, Search, link, query)
-			if success and result then
-				slot.searchOverlay:Hide()
-			else
-				slot.searchOverlay:Show()
-			end
+			slot.searchOverlay:SetShown(success and result)
 		end
 	end
 end
