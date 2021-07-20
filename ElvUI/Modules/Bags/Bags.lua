@@ -390,7 +390,7 @@ function B:IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, rari
 end
 
 function B:UpdateItemUpgradeIcon(slot)
-	if not B.db.upgradeIcon then
+	if not B.db.upgradeIcon or not slot.isEquipment then
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', nil)
 		return
@@ -561,7 +561,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if slot.questIcon then slot.questIcon:SetShown(questId and not isActiveQuest) end
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
 	if slot.ScrapIcon then B:UpdateItemScrapIcon(slot) end
-	if slot.UpgradeIcon and slot.isEquipment then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
+	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end --Check if item is an upgrade and show/hide upgrade icon accordingly
 
 	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
