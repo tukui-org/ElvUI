@@ -472,9 +472,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		r, g, b = GetItemQualityColor(slot.rarity)
 
 		_, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
-
-		local itemID = GetContainerItemID(bagID, slotID)
-		slot.itemID = itemID
+		slot.itemID = GetContainerItemID(bagID, slotID)
 
 		if showItemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
