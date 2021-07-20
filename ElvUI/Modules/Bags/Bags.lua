@@ -107,6 +107,7 @@ local VISIBLE_CONTAINER_SPACING = 3
 local CONTAINER_SCALE = 0.75
 
 local SEARCH_STRING = ''
+B.SearchSlots = {}
 B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 132745,		-- Interface/ICONS/INV_Chest_Plate10
 	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 134873,	-- Interface/ICONS/INV_Potion_93
@@ -193,7 +194,8 @@ function B:UpdateSearch()
 	if #search > MIN_REPEAT_CHARACTERS then
 		local repeatChar = true
 		for i = 1, MIN_REPEAT_CHARACTERS, 1 do
-			if sub(search,(0-i), (0-i)) ~= sub(search,(-1-i),(-1-i)) then
+			local x, y = 0-i, -1-i
+			if sub(search, x, x) ~= sub(search, y, y) then
 				repeatChar = false
 				break
 			end
@@ -237,42 +239,30 @@ function B:ResetAndClear()
 end
 
 function B:SetSearch(query)
-	local empty = #(query:gsub(' ', '')) == 0
 	local method = Search.Matches
 	if Search.Filters.tipPhrases.keywords[query] then
 		method = Search.TooltipPhrase
 		query = Search.Filters.tipPhrases.keywords[query]
 	end
 
-	for _, bagFrame in pairs(B.BagFrames) do
-		for _, bagID in ipairs(bagFrame.BagIDs) do
-			for slotID = 1, GetContainerNumSlots(bagID) do
-				local _, _, _, _, _, _, link = GetContainerItemInfo(bagID, slotID)
-				local button = bagFrame.Bags[bagID][slotID]
-				local success, result = pcall(method, Search, link, query)
-				if empty or (success and result) then
-					button.searchOverlay:Hide()
-				else
-					button.searchOverlay:Show()
-				end
-			end
-		end
-	end
-
-	for slotID = 1, B.REAGENTBANK_SIZE do
-		local _, _, _, _, _, _, link = GetContainerItemInfo(REAGENTBANK_CONTAINER, slotID)
-		local button = _G['ElvUIReagentBankFrameItem'..slotID]
-		local success, result = pcall(method, Search, link, query)
-		if empty or (success and result) then
-			button.searchOverlay:Hide()
+	local empty = #(query:gsub(' ', '')) == 0
+	for slot, link in pairs(B.SearchSlots) do
+		if empty then
+			slot.searchOverlay:Hide()
 		else
-			button.searchOverlay:Show()
+			local success, result = pcall(method, Search, link, query)
+			if success and result then
+				slot.searchOverlay:Hide()
+			else
+				slot.searchOverlay:Show()
+			end
 		end
 	end
 end
 
 function B:UpdateItemLevelDisplay()
 	if E.private.bags.enable ~= true then return end
+
 	for _, bagFrame in pairs(B.BagFrames) do
 		for _, bagID in ipairs(bagFrame.BagIDs) do
 			for slotID = 1, GetContainerNumSlots(bagID) do
@@ -324,7 +314,6 @@ function B:UpdateCountDisplay()
 		B:UpdateAllSlots(bagFrame)
 	end
 
-	--Reagent Bank
 	if B.BankFrame and B.BankFrame.reagentFrame then
 		for i = 1, B.REAGENTBANK_SIZE do
 			local slot = B.BankFrame.reagentFrame.slots[i]
@@ -416,13 +405,15 @@ function B:NewItemGlowSlotSwitch(slot, show)
 	end
 end
 
-function B:NewItemGlowBagClear(bagFrame)
+function B:BagFrameHidden(bagFrame)
 	if not (bagFrame and bagFrame.BagIDs) then return end
 
 	for _, bagID in ipairs(bagFrame.BagIDs) do
 		for slotID = 1, GetContainerNumSlots(bagID) do
-			if bagFrame.Bags[bagID][slotID] then
-				B:NewItemGlowSlotSwitch(bagFrame.Bags[bagID][slotID])
+			local slot = bagFrame.Bags[bagID][slotID]
+			if slot then
+				B.SearchSlots[slot] = nil
+				B:NewItemGlowSlotSwitch(slot)
 			end
 		end
 	end
@@ -446,14 +437,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local assignedID = bagID
 	local assignedBag = frame.Bags[assignedID] and frame.Bags[assignedID].assigned
 	local assignedColor = B.db.showAssignedColor and B.AssignmentColors[assignedBag]
-
-	local texture, count, locked, rarity, readable, _, itemLink, _, noValue = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.itemID, slot.rarity, slot.locked = nil, nil, rarity, locked
-
-	local link = GetContainerItemLink(bagID, slotID)
-
 	slot:Show()
 
+	local link = GetContainerItemLink(bagID, slotID)
+	local texture, count, locked, rarity, readable, _, itemLink, _, noValue = GetContainerItemInfo(bagID, slotID)
+	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, rarity, locked, readable
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.junkDesaturate = slot.isJunk and B.db.junkDesaturate
 
@@ -474,6 +462,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local forceColor, r, g, b, a = true, unpack(E.media.bordercolor)
 	local questId, isActiveQuest = false, false
 
+	B.SearchSlots[slot] = link
+
 	if link then
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(link)
 		slot.name = name
@@ -481,8 +471,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if not slot.rarity then slot.rarity = itemRarity end
 		r, g, b = GetItemQualityColor(slot.rarity)
 
-		slot.itemID = GetContainerItemID(bagID, slotID)
 		_, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
+
+		local itemID = GetContainerItemID(bagID, slotID)
+		slot.itemID = itemID
 
 		if showItemLevel then
 			local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, slot.rarity)
@@ -576,17 +568,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
 			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
 		end
-
-		slot.hasItem = 1
 	else
 		B:HideCooldown(slot)
-
-		slot.hasItem = nil
 	end
 
-	slot.readable = readable
-
-	if _G.GameTooltip:GetOwner() == slot and not slot.hasItem then
+	if not texture and _G.GameTooltip:GetOwner() == slot then
 		GameTooltip_Hide()
 	end
 end
@@ -1056,6 +1042,8 @@ function B:UpdateReagentSlot(slotID)
 
 	local isQuestItem, questId, isActiveQuest = false, false, false
 	local forceColor, r, g, b, a = true
+
+	B.SearchSlots[slot] = link
 
 	if link then
 		local name, _, rarity = GetItemInfo(link)
@@ -1802,10 +1790,10 @@ end
 function B:ConstructReagentSlot(f, slotID)
 	local slot = CreateFrame('ItemButton', 'ElvUIReagentBankFrameItem'..slotID, f.reagentFrame, 'BankItemButtonGenericTemplate')
 	slot:SetID(slotID)
-	slot.isReagent = true
 	slot:StyleButton()
 	slot:SetTemplate(B.db.transparent and 'Transparent', true)
 	slot:SetNormalTexture(nil)
+	slot.isReagent = true
 
 	slot.slotID = slotID
 	slot.bagID = REAGENTBANK_CONTAINER
@@ -1894,8 +1882,7 @@ end
 
 function B:ContainerOnHide()
 	B:ClearListeners(self)
-
-	B:NewItemGlowBagClear(self)
+	B:BagFrameHidden(self)
 	B:HideItemGlow(self)
 
 	if self.isBank then
@@ -2187,7 +2174,7 @@ function B:ProgressQuickVendor()
 	return stackPrice
 end
 
-function B:VendorGreys_OnUpdate(elapsed)
+function B:VendorGrays_OnUpdate(elapsed)
 	B.SellFrame.Info.ProgressTimer = B.SellFrame.Info.ProgressTimer - elapsed
 	if B.SellFrame.Info.ProgressTimer > 0 then return end
 	B.SellFrame.Info.ProgressTimer = B.SellFrame.Info.SellInterval
@@ -2244,7 +2231,7 @@ function B:CreateSellFrame()
 		itemList = {},
 	}
 
-	B.SellFrame:SetScript('OnUpdate', B.VendorGreys_OnUpdate)
+	B.SellFrame:SetScript('OnUpdate', B.VendorGrays_OnUpdate)
 	B.SellFrame:Hide()
 end
 
