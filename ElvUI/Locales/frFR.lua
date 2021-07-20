@@ -127,6 +127,7 @@ L["Empty Slot"] = "Emplacement vide"
 L["Enable"] = "Activer"
 L["Error resetting UnitFrame."] = "Erreur lors de la réinitialisation du Cadre de l'unité."
 L["Event Log"] = true
+L["Event Toast"] = true
 L["Experience Bar"] = "Barre d'expérience"
 L["Experience"] = "Expérience"
 L["Feet"] = "Pieds"

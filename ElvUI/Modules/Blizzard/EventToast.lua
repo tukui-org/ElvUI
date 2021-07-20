@@ -13,14 +13,14 @@ local function Reanchor(frame, _, anchor)
 	end
 end
 
-function B:Handle_EventToastManagerFrame()
+function B:Handle_EventToast()
 	if not Holder then
-		Holder = CreateFrame('Frame', 'EventToastManagerFrameHolder', E.UIParent)
+		Holder = CreateFrame('Frame', 'EventToastHolder', E.UIParent)
 		Holder:Size(200, 20)
-		Holder:Point('TOP', E.UIParent, 'TOP', 0, -120)
+		Holder:Point('TOP', E.UIParent, 'TOP', -1, -300)
 	end
 
-	E:CreateMover(Holder, 'EventToastManagerFrameMover', L["Event Toast Manager Frame"])
+	E:CreateMover(Holder, 'EventToastMover', L["Event Toast"])
 
 	_G.EventToastManagerFrame:ClearAllPoints()
 	_G.EventToastManagerFrame:Point('TOP', Holder)

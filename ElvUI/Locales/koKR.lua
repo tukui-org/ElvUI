@@ -127,6 +127,7 @@ L["Empty Slot"] = "빈 칸"
 L["Enable"] = "사용"
 L["Error resetting UnitFrame."] = "유닛프레임 초기화 오류"
 L["Event Log"] = true
+L["Event Toast"] = true
 L["Experience Bar"] = "경험치 바"
 L["Experience"] = "경험치"
 L["Feet"] = "발"

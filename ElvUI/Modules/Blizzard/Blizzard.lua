@@ -66,8 +66,8 @@ function B:Initialize()
 	B:PositionVehicleFrame()
 	B:PositionTalkingHead()
 	B:Handle_BossBanner()
+	B:Handle_EventToast()
 	B:Handle_UIWidgets()
-	B:Handle_EventToastManagerFrame()
 
 	if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
 		B:MoveObjectiveFrame()

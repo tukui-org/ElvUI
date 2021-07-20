@@ -127,6 +127,7 @@ L["Empty Slot"] = "空格"
 L["Enable"] = "啟用"
 L["Error resetting UnitFrame."] = "重置單位框架錯誤"
 L["Event Log"] = true
+L["Event Toast"] = true
 L["Experience Bar"] = "經驗條"
 L["Experience"] = "經驗/聲望條"
 L["Feet"] = "腳部"
