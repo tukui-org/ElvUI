@@ -8,7 +8,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
-local tinsert, tremove, wipe, tmaxn = tinsert, tremove, wipe, table.maxn
+local strmatch, tinsert, tremove, wipe, tmaxn = strmatch, tinsert, tremove, wipe, table.maxn
 local next, floor, format, sub = next, floor, format, strsub
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
@@ -187,9 +187,16 @@ function B:IsSearching()
 end
 
 function B:UpdateSearch()
+	if self.skipFirst then
+		self.skipFirst = nil
+		return
+	end
+
 	local search = self:GetText()
+	local empty = strmatch(search, '^%s+$')
+
 	if self.Instructions then
-		self.Instructions:SetShown(search == '')
+		self.Instructions:SetShown(empty)
 	end
 
 	local MIN_REPEAT_CHARACTERS = 3
@@ -222,13 +229,6 @@ function B:UpdateSearch()
 	B:RefreshSearch()
 end
 
-function B:OpenEditbox()
-	B.BagFrame.detail:Hide()
-	B.BagFrame.editBox:Show()
-	B.BagFrame.editBox:SetText('')
-	B.BagFrame.editBox:HighlightText()
-end
-
 function B:ResetAndClear()
 	B.BagFrame.editBox:SetText('')
 	B.BagFrame.editBox:ClearFocus()
@@ -259,15 +259,11 @@ function B:SearchSlot(slot)
 	local link = B.SearchSlots[slot]
 	if not link then return end
 
-	local query = SEARCH_STRING
-	local method = Search.Matches
-	if Search.Filters.tipPhrases.keywords[query] then
-		method = Search.TooltipPhrase
-		query = Search.Filters.tipPhrases.keywords[query]
-	end
+	local keyword = Search.Filters.tipPhrases.keywords[SEARCH_STRING]
+	local method = (keyword and Search.TooltipPhrase) or Search.Matches
+	local query = keyword or SEARCH_STRING
 
-	local empty = #(query:gsub(' ', '')) == 0
-	if empty then
+	if strmatch(query, '^%s+$') then
 		slot.searchOverlay:Hide()
 	else
 		local success, result = pcall(method, Search, link, query)
@@ -280,13 +276,11 @@ function B:SearchSlot(slot)
 end
 
 function B:SetSearch(query)
-	local method = Search.Matches
-	if Search.Filters.tipPhrases.keywords[query] then
-		method = Search.TooltipPhrase
-		query = Search.Filters.tipPhrases.keywords[query]
-	end
+	local keyword = Search.Filters.tipPhrases.keywords[query]
+	local method = (keyword and Search.TooltipPhrase) or Search.Matches
+	if keyword then query = keyword end
 
-	local empty = #(query:gsub(' ', '')) == 0
+	local empty = strmatch(query, '^%s+$')
 	for slot, link in pairs(B.SearchSlots) do
 		if empty then
 			slot.searchOverlay:Hide()
@@ -1508,8 +1502,9 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox:SetAutoFocus(false)
 	f.editBox:SetScript('OnEscapePressed', B.ResetAndClear)
 	f.editBox:SetScript('OnEditFocusGained', f.editBox.HighlightText)
-	f.editBox.clearButton:HookScript('OnClick', B.ResetAndClear)
 	f.editBox:HookScript('OnTextChanged', B.UpdateSearch)
+	f.editBox.clearButton:HookScript('OnClick', B.ResetAndClear)
+	f.editBox.skipFirst = true -- we need to skip the first set of '' from bank
 
 	if isBank then
 		f.fullBank = select(2, GetNumBankSlots())
