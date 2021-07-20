@@ -463,6 +463,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local questId, isActiveQuest = false, false
 
 	B.SearchSlots[slot] = link
+	slot.searchOverlay:Hide()
 
 	if link then
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(link)
@@ -1042,6 +1043,7 @@ function B:UpdateReagentSlot(slotID)
 	local forceColor, r, g, b, a = true
 
 	B.SearchSlots[slot] = link
+	slot.searchOverlay:Hide()
 
 	if link then
 		local name, _, rarity = GetItemInfo(link)
