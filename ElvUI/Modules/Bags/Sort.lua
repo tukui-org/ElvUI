@@ -729,17 +729,11 @@ function B:RegisterUpdateDelayed()
 
 	for _, bagFrame in pairs(B.BagFrames) do
 		if bagFrame.sortingSlots then
-			B:UpdateAllSlots(bagFrame)
-
-			bagFrame:RegisterEvent('BAG_UPDATE')
-			bagFrame:RegisterEvent('BAG_UPDATE_COOLDOWN')
-
-			for _, event in pairs(bagFrame.events) do
-				bagFrame:RegisterEvent(event)
-			end
-
-			bagFrame.sortingSlots = nil
+			bagFrame.sortingSlots = nil -- need this above update slots to clear the overlay
 			shouldUpdateFade = true -- we should refresh the bag search after sorting
+
+			B:UpdateAllSlots(bagFrame)
+			B:SetListeners(bagFrame)
 		end
 	end
 

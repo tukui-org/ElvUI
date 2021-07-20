@@ -242,7 +242,7 @@ function B:SearchSlotUpdate(slot, link, locked)
 
 	if slot.bagFrame.sortingSlots then return end -- dont update while sorting
 
-	if not locked and B:IsSearching() then
+	if link and not locked and B:IsSearching() then
 		B:SearchSlot(slot)
 	else
 		slot.searchOverlay:Hide()
