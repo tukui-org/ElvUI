@@ -396,7 +396,7 @@ function B:UpdateItemUpgradeIcon(slot)
 		return
 	end
 
-	local itemIsUpgrade, containerID, slotID = nil, slot:GetParent():GetID(), slot:GetID()
+	local itemIsUpgrade, containerID, slotID = nil, slot.bagID, slot.slotID
 
 	-- We need to use the Pawn function here to show actually the icon, as Blizzard API doesnt seem to work.
 	if _G.PawnIsContainerItemAnUpgrade then itemIsUpgrade = _G.PawnIsContainerItemAnUpgrade(containerID, slotID) end
@@ -430,7 +430,7 @@ function B:NewItemGlowSlotSwitch(slot, show)
 		if show then
 			slot.newItemGlow:Show()
 
-			local bank = slot:GetParent().isBank and B.BankFrame
+			local bank = slot.bagFrame.isBank and B.BankFrame
 			B:ShowItemGlow(bank or B.BagFrame, slot.newItemGlow)
 		else
 			slot.newItemGlow:Hide()
@@ -1441,8 +1441,7 @@ function B:ConstructContainerFrame(name, isBank)
 						B.AssignBagDropdown.holder = holder
 						_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
 					else
-						local id = holder:GetID()
-						PutItemInBag(id)
+						PutItemInBag(holder:GetID())
 					end
 				end)
 			end
@@ -1807,7 +1806,7 @@ function B:ConstructContainerButton(f, slotID, bagID)
 end
 
 function B:ReagentSplitStack(split)
-	SplitContainerItem(REAGENTBANK_CONTAINER, self:GetID(), split)
+	SplitContainerItem(REAGENTBANK_CONTAINER, self.slotID, split)
 end
 
 function B:ConstructReagentSlot(f, slotID)
