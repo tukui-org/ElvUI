@@ -130,11 +130,9 @@ function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and (arg == true) then
 		return B.BankFrame
 	elseif type(arg) == 'number' then
-		if B.BankFrame then
-			for _, bagID in ipairs(B.BankFrame.BagIDs) do
-				if bagID == arg then
-					return B.BankFrame
-				end
+		for _, bagID in ipairs(B.BankFrame.BagIDs) do
+			if bagID == arg then
+				return B.BankFrame
 			end
 		end
 	end
@@ -231,10 +229,8 @@ function B:ResetAndClear()
 	B.BagFrame.editBox:SetText('')
 	B.BagFrame.editBox:ClearFocus()
 
-	if B.BankFrame then
-		B.BankFrame.editBox:SetText('')
-		B.BankFrame.editBox:ClearFocus()
-	end
+	B.BankFrame.editBox:SetText('')
+	B.BankFrame.editBox:ClearFocus()
 
 	-- pass bool to say whether it was from a script,
 	-- as this only needs to update from the scripts
@@ -347,13 +343,11 @@ function B:UpdateCountDisplay()
 		B:UpdateAllSlots(bagFrame)
 	end
 
-	if B.BankFrame and B.BankFrame.reagentFrame then
-		for i = 1, B.REAGENTBANK_SIZE do
-			local slot = B.BankFrame.reagentFrame.slots[i]
-			if slot then
-				slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
-				B:UpdateReagentSlot(i)
-			end
+	for i = 1, B.REAGENTBANK_SIZE do
+		local slot = B.BankFrame.reagentFrame.slots[i]
+		if slot then
+			slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
+			B:UpdateReagentSlot(i)
 		end
 	end
 end
@@ -1880,18 +1874,11 @@ function B:ToggleBackpack()
 end
 
 function B:ToggleSortButtonState(isBank)
-	local button, disable
-	if isBank and B.BankFrame then
-		button = B.BankFrame.sortButton
-		disable = B.db.disableBankSort
-	elseif not isBank and B.BagFrame then
-		button = B.BagFrame.sortButton
-		disable = B.db.disableBagSort
-	end
+	local button = (isBank and B.BankFrame.sortButton) or B.BagFrame.sortButton
 
-	if button and disable then
+	if (isBank and B.db.disableBankSort) or B.db.disableBagSort then
 		button:Disable()
-	elseif button and not disable then
+	else
 		button:Enable()
 	end
 end
@@ -1952,10 +1939,7 @@ end
 
 function B:CloseBags()
 	B.BagFrame:Hide()
-
-	if B.BankFrame then
-		B.BankFrame:Hide()
-	end
+	B.BankFrame:Hide()
 
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
@@ -2156,17 +2140,9 @@ function B:PostBagMove()
 		self.POINT = ((x > (screenWidth/2)) and 'BOTTOMRIGHT' or 'BOTTOMLEFT')
 	end
 
-	local bagFrame
-	if self.name == 'ElvUIBankMover' then
-		bagFrame = B.BankFrame
-	else
-		bagFrame = B.BagFrame
-	end
-
-	if bagFrame then
-		bagFrame:ClearAllPoints()
-		bagFrame:Point(self.POINT, self)
-	end
+	local bagFrame = (self.name == 'ElvUIBankMover' and B.BankFrame) or B.BagFrame
+	bagFrame:ClearAllPoints()
+	bagFrame:Point(self.POINT, self)
 end
 
 function B:MERCHANT_CLOSED()
