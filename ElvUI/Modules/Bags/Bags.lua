@@ -490,7 +490,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	slot:Show()
 
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
-	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, nil, rarity, locked, readable
+	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
 	slot.junkDesaturate = slot.isJunk and B.db.junkDesaturate
 	slot.isEquipment = nil
@@ -516,7 +516,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	if itemLink then
 		local name, _, itemRarity, _, _, _, _, _, itemEquipLoc, _, _, itemClassID, itemSubClassID, bindType = GetItemInfo(itemLink)
-		slot.name, slot.itemID, slot.isEquipment = name, itemID, B.IsEquipmentSlot[itemEquipLoc]
+		slot.name, slot.isEquipment = name, B.IsEquipmentSlot[itemEquipLoc]
 
 		if not slot.rarity then slot.rarity = itemRarity end
 		r, g, b = GetItemQualityColor(slot.rarity)
@@ -1074,7 +1074,7 @@ function B:UpdateReagentSlot(slotID)
 
 	slot:Show()
 
-	slot.name, slot.itemID, slot.rarity, slot.locked = nil, nil, nil, locked
+	slot.name, slot.rarity, slot.itemID, slot.locked = nil, nil, itemID, locked
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
@@ -1087,7 +1087,7 @@ function B:UpdateReagentSlot(slotID)
 
 	if itemLink then
 		local name, _, rarity = GetItemInfo(itemLink)
-		slot.name, slot.rarity, slot.itemID = name, rarity, itemID
+		slot.name, slot.rarity = name, rarity
 
 		isQuestItem, questId, isActiveQuest = GetContainerItemQuestInfo(bagID, slotID)
 
