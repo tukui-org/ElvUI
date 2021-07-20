@@ -262,7 +262,7 @@ function B:SearchSlotUpdate(slot, link, locked)
 	if link and not locked and B:IsSearching() then
 		B:SearchSlot(slot)
 	else
-		slot.searchOverlay:Hide()
+		slot.searchOverlay:SetShown(false)
 	end
 end
 
@@ -275,7 +275,7 @@ function B:SearchSlot(slot)
 	local query = keyword or SEARCH_STRING
 
 	if strmatch(query, '^%s+$') then
-		slot.searchOverlay:Hide()
+		slot.searchOverlay:SetShown(false)
 	else
 		local success, result = pcall(method, Search, link, query)
 		slot.searchOverlay:SetShown(not (success and result))
@@ -290,7 +290,7 @@ function B:SetSearch(query)
 	local empty = strmatch(query, '^%s+$')
 	for slot, link in pairs(B.SearchSlots) do
 		if empty then
-			slot.searchOverlay:Hide()
+			slot.searchOverlay:SetShown(false)
 		else
 			local success, result = pcall(method, Search, link, query)
 			slot.searchOverlay:SetShown(not (success and result))
@@ -637,7 +637,7 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 
 	for _, bagID in ipairs(bagFrame.BagIDs) do
 		for slotID = 1, GetContainerNumSlots(bagID) do
-			bagFrame.Bags[bagID][slotID].searchOverlay:Show()
+			bagFrame.Bags[bagID][slotID].searchOverlay:SetShown(true)
 		end
 	end
 end
