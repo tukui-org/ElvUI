@@ -1905,10 +1905,11 @@ function B:ContainerOnHide()
 	B:BagFrameHidden(self)
 	B:HideItemGlow(self)
 
+	local bankSearching = B.BankFrame.editBox:GetText() ~= ''
 	if self.isBank then
 		CloseBankFrame()
 
-		if self.editBox:GetText() ~= '' then
+		if bankSearching then
 			self.editBox.skipUpdate = true -- skip the update from SetText in ResetAndClear
 			B:ResetAndClear()
 		end
@@ -1919,7 +1920,7 @@ function B:ContainerOnHide()
 			CloseBag(i)
 		end
 
-		if not _G.BankFrame:IsShown() and B.db.clearSearchOnClose then
+		if not bankSearching and B.db.clearSearchOnClose then
 			B:ResetAndClear()
 		end
 	end
