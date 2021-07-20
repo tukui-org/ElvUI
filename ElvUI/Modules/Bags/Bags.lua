@@ -223,7 +223,6 @@ function B:UpdateSearch()
 	end
 
 	local MIN_REPEAT_CHARACTERS = 3
-	local prevSearch = SEARCH_STRING
 	if #search > MIN_REPEAT_CHARACTERS then
 		local repeatChar = true
 		for i = 1, MIN_REPEAT_CHARACTERS, 1 do
@@ -238,13 +237,6 @@ function B:UpdateSearch()
 			B:ResetAndClear()
 			return
 		end
-	end
-
-	--Keep active search term when switching between bank and reagent bank
-	if search == SEARCH and prevSearch ~= '' then
-		search = prevSearch
-	elseif search == SEARCH then
-		search = ''
 	end
 
 	SEARCH_STRING = search
@@ -288,11 +280,7 @@ function B:SearchSlot(slot)
 		slot.searchOverlay:Hide()
 	else
 		local success, result = pcall(method, Search, link, query)
-		if success and result then
-			slot.searchOverlay:Hide()
-		else
-			slot.searchOverlay:Show()
-		end
+		slot.searchOverlay:SetShown(not (success and result))
 	end
 end
 
@@ -307,7 +295,7 @@ function B:SetSearch(query)
 			slot.searchOverlay:Hide()
 		else
 			local success, result = pcall(method, Search, link, query)
-			slot.searchOverlay:SetShown(success and result)
+			slot.searchOverlay:SetShown(not (success and result))
 		end
 	end
 end
@@ -1967,17 +1955,21 @@ end
 function B:ShowBankTab(f, showReagent)
 	if showReagent then
 		_G.BankFrame.selectedTab = 2
+
 		f.holderFrame:Hide()
 		f.reagentFrame:Show()
 		f.editBox:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 		f.bagText:SetText(L["Reagent Bank"])
 	else
 		_G.BankFrame.selectedTab = 1
+
 		f.reagentFrame:Hide()
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
 		f.bagText:SetText(L["Bank"])
 	end
+
+	f.editBox.skipUpdate = true -- skip search update when switching tabs
 end
 
 function B:ItemGlowOnFinished()
