@@ -418,11 +418,9 @@ function B:UpdateItemUpgradeIcon(slot)
 	if itemIsUpgrade == nil then itemIsUpgrade = _G.IsContainerItemAnUpgrade(containerID, slotID) end
 
 	if itemIsUpgrade == nil then -- nil means not all the data was available to determine if this is an upgrade.
-		print(format('No Data For %s %s', containerID, slotID))
 		slot.UpgradeIcon:SetShown(false)
 		slot:SetScript('OnUpdate', B.UpgradeCheck_OnUpdate)
 	else
-		print(format('Checking Equipment %s %s', containerID, slotID))
 		slot.UpgradeIcon:SetShown(itemIsUpgrade)
 		slot:SetScript('OnUpdate', nil)
 	end
