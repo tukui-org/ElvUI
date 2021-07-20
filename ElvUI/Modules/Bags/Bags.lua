@@ -95,11 +95,9 @@ local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
-local SEARCH = SEARCH
 
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame
 
--- 8.3 this are now local in blizzard files. Copy & Pasted:
 local MAX_CONTAINER_ITEMS = 36
 local CONTAINER_WIDTH = 192
 local CONTAINER_SPACING = 0
@@ -480,8 +478,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local texture, count, locked, rarity, readable, _, itemLink, _, noValue, itemID = GetContainerItemInfo(bagID, slotID)
 	slot.name, slot.itemID, slot.rarity, slot.locked, slot.readable = nil, itemID, rarity, locked, readable
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not noValue
-	slot.junkDesaturate = slot.isJunk and B.db.junkDesaturate
-	slot.isEquipment = nil
+	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
 
 	SetItemButtonTexture(slot, texture)
 	SetItemButtonCount(slot, count)
