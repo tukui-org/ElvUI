@@ -187,8 +187,8 @@ function B:IsSearching()
 end
 
 function B:UpdateSearch()
-	if self.skipFirst then
-		self.skipFirst = nil
+	if self.skipUpdate then
+		self.skipUpdate = nil
 		return
 	end
 
@@ -1502,7 +1502,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox:SetScript('OnEditFocusGained', f.editBox.HighlightText)
 	f.editBox:HookScript('OnTextChanged', B.UpdateSearch)
 	f.editBox.clearButton:HookScript('OnClick', B.ResetAndClear)
-	f.editBox.skipFirst = true -- we need to skip the first set of '' from bank
+	f.editBox.skipUpdate = true -- we need to skip the first set of '' from bank
 
 	if isBank then
 		f.fullBank = select(2, GetNumBankSlots())
@@ -1907,16 +1907,21 @@ function B:ContainerOnHide()
 
 	if self.isBank then
 		CloseBankFrame()
+
+		if self.editBox:GetText() ~= '' then
+			self.editBox.skipUpdate = true -- skip the update from SetText in ResetAndClear
+			B:ResetAndClear()
+		end
 	else
 		CloseBackpack()
 
 		for i = 1, NUM_BAG_FRAMES do
 			CloseBag(i)
 		end
-	end
 
-	if not _G.BankFrame:IsShown() and B.db.clearSearchOnClose then
-		B:ResetAndClear()
+		if not _G.BankFrame:IsShown() and B.db.clearSearchOnClose then
+			B:ResetAndClear()
+		end
 	end
 end
 
