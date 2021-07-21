@@ -1216,7 +1216,7 @@ B.PetGrays = {
 	[67410] = "Very Unlucky Rock",
 }
 
-function B:LoopGreys(getValue)
+function B:LoopGrays(getValue)
 	local value = 0
 
 	for bagID = 0, 4 do
@@ -1244,7 +1244,7 @@ function B:LoopGreys(getValue)
 end
 
 function B:GetGraysValue()
-	return B:LoopGreys(true)
+	return B:LoopGrays(true)
 end
 
 function B:VendorGrays(delete)
@@ -1255,7 +1255,7 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	B:LoopGreys()
+	B:LoopGrays()
 
 	local maxItems = tmaxn(B.SellFrame.Info.itemList)
 	if maxItems < 1 then return end
