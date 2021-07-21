@@ -86,28 +86,39 @@ local function UpdatePosition(frame, _, anchor)
 	end
 end
 
-local function BuildHolder(holderName, moverName, localeName, container, point, relativeTo, relativePoint, x, y, width, height)
-	local holder = CreateFrame('Frame', holderName, E.UIParent)
+function B:BuildWidgetHolder(holderName, moverName, localeName, container, point, relativeTo, relativePoint, x, y, width, height, config)
+	local holder = (holderName and CreateFrame('Frame', holderName, E.UIParent)) or container
+	if width and height then holder:Size(width, height) end
+
 	holder:Point(point, relativeTo, relativePoint, x, y)
-	holder:Size(width, height)
+	E:CreateMover(holder, moverName, localeName, nil, nil, nil, config)
 
-	E:CreateMover(holder, moverName, localeName, nil, nil, nil,'ALL,SOLO,WIDGETS')
-
+	container.containerHolder = (holderName and holder) or _G[moverName]
 	container:ClearAllPoints()
-	container:Point('CENTER', holder)
-	container.containerHolder = holder
+	container:Point('CENTER', container.containerHolder)
 
 	hooksecurefunc(container, 'SetPoint', UpdatePosition)
 end
 
-function B:Handle_UIWidgets()
-	BuildHolder('TopCenterContainerHolder', 'TopCenterContainerMover', L["TopCenterWidget"], _G.UIWidgetTopCenterContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -30, 50, 20)
-	BuildHolder('PowerBarContainerHolder', 'PowerBarContainerMover', L["PowerBarWidget"], _G.UIWidgetPowerBarContainerFrame, 'CENTER', E.UIParent, 'TOP', 0, -75, 100, 20)
-	BuildHolder('MawBuffsBelowMinimapHolder', 'MawBuffsBelowMinimapMover', L["MawBuffsWidget"], _G.MawBuffsBelowMinimapFrame, 'TOP', _G.Minimap, 'BOTTOM', 0, -25, 250, 50)
-	BuildHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', L["BelowMinimapWidget"], _G.UIWidgetBelowMinimapContainerFrame, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 128, 40)
+function B:UpdateDurabilityScale()
+	_G.DurabilityFrame:SetScale(E.db.general.durabilityScale or 1)
+end
 
-	BuildHolder('EventToastHolder', 'EventToastMover', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -300, 200, 20)
-	BuildHolder('BossBannerHolder', 'BossBannerMover', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20)
+function B:Handle_UIWidgets()
+	B:BuildWidgetHolder('TopCenterContainerHolder', 'TopCenterContainerMover', L["TopCenterWidget"], _G.UIWidgetTopCenterContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -30, 50, 20, 'ALL,SOLO,WIDGETS')
+	B:BuildWidgetHolder('PowerBarContainerHolder', 'PowerBarContainerMover', L["PowerBarWidget"], _G.UIWidgetPowerBarContainerFrame, 'CENTER', E.UIParent, 'TOP', 0, -75, 100, 20, 'ALL,SOLO,WIDGETS')
+	B:BuildWidgetHolder('MawBuffsBelowMinimapHolder', 'MawBuffsBelowMinimapMover', L["MawBuffsWidget"], _G.MawBuffsBelowMinimapFrame, 'TOP', _G.Minimap, 'BOTTOM', 0, -25, 250, 50, 'ALL,SOLO,WIDGETS')
+	B:BuildWidgetHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', L["BelowMinimapWidget"], _G.UIWidgetBelowMinimapContainerFrame, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 128, 40, 'ALL,SOLO,WIDGETS')
+
+	B:BuildWidgetHolder('EventToastHolder', 'EventToastMover', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -300, 200, 20, 'ALL,SOLO,WIDGETS')
+	B:BuildWidgetHolder('BossBannerHolder', 'BossBannerMover', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20, 'ALL,SOLO,WIDGETS')
+
+	B:BuildWidgetHolder(nil, 'GMMover', L["GM Ticket Frame"], _G.TicketStatusFrame, 'TOPLEFT', E.UIParent, 'TOPLEFT', 250, -5, nil, nil, 'ALL,GENERAL')
+
+	_G.DurabilityFrame:SetFrameStrata('HIGH')
+	local duraWidth, duraHeight = _G.DurabilityFrame:GetSize()
+	B:BuildWidgetHolder('DurabilityFrameHolder', 'DurabilityFrameMover', L["Durability Frame"], _G.DurabilityFrame, 'TOPRIGHT', E.UIParent, 'TOPRIGHT', -135, -300, duraWidth, duraHeight, 'ALL,GENERAL')
+	B:UpdateDurabilityScale()
 
 	-- Credits ShestakUI
 	hooksecurefunc(_G.UIWidgetTemplateStatusBarMixin, 'Setup', B.UIWidgetTemplateStatusBar)

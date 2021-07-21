@@ -5,8 +5,6 @@
 	<Script file='ObjectiveFrame.lua'/>
 	<Script file='Vehicle.lua'/>
 	<Script file='TimerTracker.lua'/>
-	<Script file='GM.lua'/>
-	<Script file='Durability.lua'/>
 	<Script file='CaptureBar.lua'/>
 	<Script file='AlertFrame.lua'/>
 	<Script file='AltPower.lua'/>

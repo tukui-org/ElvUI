@@ -60,13 +60,9 @@ function B:Initialize()
 	B:DisableNPE()
 	B:AlertMovers()
 	B:PositionCaptureBar()
-	B:PositionDurabilityFrame()
-	B:PositionGMFrames()
 	B:SkinBlizzTimers()
 	B:PositionVehicleFrame()
 	B:PositionTalkingHead()
-	B:Handle_BossBanner()
-	B:Handle_EventToast()
 	B:Handle_UIWidgets()
 
 	if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
