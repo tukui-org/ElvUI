@@ -1216,7 +1216,7 @@ B.PetGrays = {
 	[67410] = "Very Unlucky Rock",
 }
 
-function B:LoopGrays(getValue)
+function B:GetGrays(vendor)
 	local value = 0
 
 	for bagID = 0, 4 do
@@ -1228,12 +1228,10 @@ function B:LoopGrays(getValue)
 					local stackCount = count or 1
 					local stackPrice = itemPrice * stackCount
 
-					if getValue then
-						if stackPrice > 0 then
-							value = value + stackPrice
-						end
-					else
+					if vendor then
 						tinsert(B.SellFrame.Info.itemList, {bagID, slotID, itemLink, stackCount, stackPrice})
+					elseif stackPrice > 0 then
+						value = value + stackPrice
 					end
 				end
 			end
@@ -1244,7 +1242,7 @@ function B:LoopGrays(getValue)
 end
 
 function B:GetGraysValue()
-	return B:LoopGrays(true)
+	return B:GetGrays()
 end
 
 function B:VendorGrays(delete)
@@ -1255,7 +1253,7 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	B:LoopGrays()
+	B:GetGrays(true)
 
 	local maxItems = tmaxn(B.SellFrame.Info.itemList)
 	if maxItems < 1 then return end
