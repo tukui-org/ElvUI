@@ -21,9 +21,7 @@ local GetBagSlotFlag = GetBagSlotFlag
 local GetBankAutosortDisabled = GetBankAutosortDisabled
 local GetBankBagSlotFlag = GetBankBagSlotFlag
 local GetContainerItemCooldown = GetContainerItemCooldown
-local GetContainerItemID = GetContainerItemID
 local GetContainerItemInfo = GetContainerItemInfo
-local GetContainerItemLink = GetContainerItemLink
 local GetContainerItemQuestInfo = GetContainerItemQuestInfo
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerNumSlots = GetContainerNumSlots
@@ -1218,7 +1216,7 @@ B.PetGrays = {
 	[67410] = "Very Unlucky Rock",
 }
 
-function B:GetGraysValue()
+function B:LoopGreys(getValue)
 	local value = 0
 
 	for bagID = 0, 4 do
@@ -1229,8 +1227,13 @@ function B:GetGraysValue()
 				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
 					local stackCount = count or 1
 					local stackPrice = itemPrice * stackCount
-					if stackPrice > 0 then
-						value = value + stackPrice
+
+					if getValue then
+						if stackPrice > 0 then
+							value = value + stackPrice
+						end
+					else
+						tinsert(B.SellFrame.Info.itemList, {bagID, slotID, itemLink, stackCount, stackPrice})
 					end
 				end
 			end
@@ -1238,6 +1241,10 @@ function B:GetGraysValue()
 	end
 
 	return value
+end
+
+function B:GetGraysValue()
+	return B:LoopGreys(true)
 end
 
 function B:VendorGrays(delete)
@@ -1248,25 +1255,16 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	for bagID = 0, 4 do
-		for slotID = 1, GetContainerNumSlots(bagID) do
-			local _, _, _, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
-			if itemLink and not B.PetGrays[itemID] then
-				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemLink)
-				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
-					tinsert(B.SellFrame.Info.itemList, {bagID, slotID, itemPrice, itemLink, itemID})
-				end
-			end
-		end
-	end
+	B:LoopGreys()
 
-	if not B.SellFrame.Info.itemList or tmaxn(B.SellFrame.Info.itemList) < 1 then return end
+	local maxItems = tmaxn(B.SellFrame.Info.itemList)
+	if maxItems < 1 then return end
 
 	-- Resetting stuff
 	B.SellFrame.Info.delete = delete or false
 	B.SellFrame.Info.ProgressTimer = 0
 	B.SellFrame.Info.SellInterval = 0.2
-	B.SellFrame.Info.ProgressMax = tmaxn(B.SellFrame.Info.itemList)
+	B.SellFrame.Info.ProgressMax = maxItems
 	B.SellFrame.Info.goldGained = 0
 	B.SellFrame.Info.itemsSold = 0
 
@@ -1310,13 +1308,14 @@ function B:SetButtonTexture(button, texture)
 
 	local Normal, Pushed, Disabled = button:GetNormalTexture(), button:GetPushedTexture(), button:GetDisabledTexture()
 
-	Normal:SetTexCoord(unpack(E.TexCoords))
+	local left, right, top, bottom = unpack(E.TexCoords)
+	Normal:SetTexCoord(left, right, top, bottom)
 	Normal:SetInside()
 
-	Pushed:SetTexCoord(unpack(E.TexCoords))
+	Pushed:SetTexCoord(left, right, top, bottom)
 	Pushed:SetInside()
 
-	Disabled:SetTexCoord(unpack(E.TexCoords))
+	Disabled:SetTexCoord(left, right, top, bottom)
 	Disabled:SetInside()
 	Disabled:SetDesaturated(1)
 end
@@ -2164,15 +2163,12 @@ function B:ProgressQuickVendor()
 	local item = B.SellFrame.Info.itemList[1]
 	if not item then return nil, true end -- No more to sell
 
-	local bag, slot, itemPrice, link = unpack(item)
-	local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
-	local stackPrice = (itemPrice or 0) * stackCount
-
-	if B.db.vendorGrays.details and link then
-		E:Print(format('%s|cFF00DDDDx%d|r %s', link, stackCount, E:FormatMoney(stackPrice, B.db.moneyFormat, not B.db.moneyCoins)))
+	local bagID, slotID, itemLink, stackCount, stackPrice = unpack(item)
+	if B.db.vendorGrays.details and itemLink then
+		E:Print(format('%s|cFF00DDDDx%d|r %s', itemLink, stackCount, E:FormatMoney(stackPrice, B.db.moneyFormat, not B.db.moneyCoins)))
 	end
 
-	UseContainerItem(bag, slot)
+	UseContainerItem(bagID, slotID)
 	tremove(B.SellFrame.Info.itemList, 1)
 
 	return stackPrice
