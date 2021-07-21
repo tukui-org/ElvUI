@@ -94,9 +94,8 @@ function B:BuildWidgetHolder(holderName, moverName, localeName, container, point
 	E:CreateMover(holder, moverName, localeName, nil, nil, nil, config)
 
 	container.containerHolder = (holderName and holder) or _G[moverName]
-	container:ClearAllPoints()
-	container:Point('CENTER', container.containerHolder)
 
+	UpdatePosition(container, E.UIParent)
 	hooksecurefunc(container, 'SetPoint', UpdatePosition)
 end
 
@@ -110,7 +109,7 @@ function B:Handle_UIWidgets()
 	B:BuildWidgetHolder('MawBuffsBelowMinimapHolder', 'MawBuffsBelowMinimapMover', L["MawBuffsWidget"], _G.MawBuffsBelowMinimapFrame, 'TOP', _G.Minimap, 'BOTTOM', 0, -25, 250, 50, 'ALL,SOLO,WIDGETS')
 	B:BuildWidgetHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', L["BelowMinimapWidget"], _G.UIWidgetBelowMinimapContainerFrame, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 128, 40, 'ALL,SOLO,WIDGETS')
 
-	B:BuildWidgetHolder('EventToastHolder', 'EventToastMover', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -300, 200, 20, 'ALL,SOLO,WIDGETS')
+	B:BuildWidgetHolder('EventToastHolder', 'EventToastMover', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -150, 200, 20, 'ALL,SOLO,WIDGETS')
 	B:BuildWidgetHolder('BossBannerHolder', 'BossBannerMover', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20, 'ALL,SOLO,WIDGETS')
 
 	B:BuildWidgetHolder(nil, 'GMMover', L["GM Ticket Frame"], _G.TicketStatusFrame, 'TOPLEFT', E.UIParent, 'TOPLEFT', 250, -5, nil, nil, 'ALL,GENERAL')
