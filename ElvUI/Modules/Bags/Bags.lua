@@ -1248,16 +1248,13 @@ function B:VendorGrays(delete)
 		return
 	end
 
-	for bag = 0, 4, 1 do
-		for slot = 1, GetContainerNumSlots(bag), 1 do
-			local link = GetContainerItemLink(bag, slot)
-			if link then
-				local itemID = GetContainerItemID(bag, slot)
-				if not B.PetGrays[itemID] then
-					local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
-					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
-						tinsert(B.SellFrame.Info.itemList, {bag, slot, itemPrice, link, itemID})
-					end
+	for bagID = 0, 4 do
+		for slotID = 1, GetContainerNumSlots(bagID) do
+			local _, count, _, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
+			if itemLink and not B.PetGrays[itemID] then
+				local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
+				if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
+					tinsert(B.SellFrame.Info.itemList, {bag, slot, itemPrice, link, itemID})
 				end
 			end
 		end
