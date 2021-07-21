@@ -1221,15 +1221,14 @@ B.PetGrays = {
 function B:GetGraysValue()
 	local value = 0
 
-	for bag = 0, 4 do
-		for slot = 1, GetContainerNumSlots(bag) do
-			local link = GetContainerItemLink(bag, slot)
-			if link then
-				local itemID = GetContainerItemID(bag, slot)
+	for bagID = 0, 4 do
+		for slotID = 1, GetContainerNumSlots(bagID) do
+			local _, count, _, _, _, _, itemLink, _, _, itemID = GetContainerItemInfo(bagID, slotID)
+			if itemLink then
 				if not B.PetGrays[itemID] then
-					local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(link)
+					local _, _, rarity, _, _, itype, _, _, _, _, itemPrice = GetItemInfo(itemLink)
 					if rarity and rarity == 0 and (itype and itype ~= 'Quest') and (itemPrice and itemPrice > 0) then
-						local stackCount = select(2, GetContainerItemInfo(bag, slot)) or 1
+						local stackCount = count or 1
 						local stackPrice = itemPrice * stackCount
 						if stackPrice > 0 then
 							value = value + stackPrice
