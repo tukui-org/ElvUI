@@ -1128,19 +1128,15 @@ function B:OnEvent(event, ...)
 
 		B:UpdateBagSlots(self, ...)
 	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
-		local slot = ...
-		local bagID = (slot <= NUM_BANKGENERIC_SLOTS) and -1 or (slot - NUM_BANKGENERIC_SLOTS)
-		if bagID > -1 then
-			B:Layout(true)
-		else
-			B:UpdateBagSlots(self, -1)
-		end
+		local bankSlot = ...
+		local bagID = (bankSlot <= NUM_BANKGENERIC_SLOTS) and -1 or (bankSlot - NUM_BANKGENERIC_SLOTS)
+		B:UpdateBagSlots(self, bagID)
 	elseif event == 'PLAYERREAGENTBANKSLOTS_CHANGED' then
 		B:UpdateReagentSlot(...)
 	elseif (event == 'QUEST_ACCEPTED' or event == 'QUEST_REMOVED') and self:IsShown() then
 		B:UpdateAllSlots(self)
 	elseif (event == 'BANK_BAG_SLOT_FLAGS_UPDATED' or event == 'BAG_SLOT_FLAGS_UPDATED') then
-		B:Layout(self.isBank)
+		B:UpdateBagSlots(self, ...)
 	end
 end
 
