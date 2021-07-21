@@ -59,11 +59,11 @@ function B:Initialize()
 	B:DisableHelpTip()
 	B:DisableNPE()
 	B:AlertMovers()
-	B:PositionCaptureBar()
 	B:SkinBlizzTimers()
+	B:PositionCaptureBar()
 	B:PositionVehicleFrame()
 	B:PositionTalkingHead()
-	B:Handle_UIWidgets()
+	B:HandleWidgets()
 
 	if not (E:IsAddOnEnabled('DugisGuideViewerZ') or E:IsAddOnEnabled('!KalielsTracker')) then
 		B:MoveObjectiveFrame()

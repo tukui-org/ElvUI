@@ -103,7 +103,7 @@ function B:UpdateDurabilityScale()
 	_G.DurabilityFrame:SetScale(E.db.general.durabilityScale or 1)
 end
 
-function B:Handle_UIWidgets()
+function B:HandleWidgets()
 	B:BuildWidgetHolder('TopCenterContainerHolder', 'TopCenterContainerMover', L["TopCenterWidget"], _G.UIWidgetTopCenterContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -30, 125, 20, 'ALL,SOLO,WIDGETS')
 	B:BuildWidgetHolder('PowerBarContainerHolder', 'PowerBarContainerMover', L["PowerBarWidget"], _G.UIWidgetPowerBarContainerFrame, 'CENTER', E.UIParent, 'TOP', 0, -75, 100, 20, 'ALL,SOLO,WIDGETS')
 	B:BuildWidgetHolder('MawBuffsBelowMinimapHolder', 'MawBuffsBelowMinimapMover', L["MawBuffsWidget"], _G.MawBuffsBelowMinimapFrame, 'TOP', _G.Minimap, 'BOTTOM', 0, -25, 250, 50, 'ALL,SOLO,WIDGETS')
