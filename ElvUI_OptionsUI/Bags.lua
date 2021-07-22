@@ -55,8 +55,8 @@ Bags.args.general.args.generalGroup.set = function(_, key, value)
 	end
 end
 
-Bags.args.general.args.countGroup = ACH:Group(L["Item Count"], nil, 6, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateCountDisplay() end)
-Bags.args.general.args.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateCountDisplay() end)
+Bags.args.general.args.countGroup = ACH:Group(L["Item Count"], nil, 6, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemDisplay() end)
+Bags.args.general.args.countGroup.args.countFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemDisplay() end)
 Bags.args.general.args.countGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 2)
 Bags.args.general.args.countGroup.args.fontGroup.inline = true
 Bags.args.general.args.countGroup.args.fontGroup.args.countFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
@@ -68,20 +68,20 @@ Bags.args.general.args.countGroup.args.positionGroup.args.countPosition = ACH:Se
 Bags.args.general.args.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
 Bags.args.general.args.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
 
-Bags.args.general.args.itemInfoGroup = ACH:Group(L["Item Info"], nil, 8, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemInfoDisplay() end)
+Bags.args.general.args.itemInfoGroup = ACH:Group(L["Item Info"], nil, 8, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemDisplay() end)
 Bags.args.general.args.itemInfoGroup.args.itemInfo = ACH:Toggle(L["Display Item Info"], L["Displays item info on center of item."], 1)
-Bags.args.general.args.itemInfoGroup.args.itemInfoColor = ACH:Color(L["COLOR"], nil, 4, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemInfoDisplay() end, nil, function() return not E.db.bags.itemInfo end)
+Bags.args.general.args.itemInfoGroup.args.itemInfoColor = ACH:Color(L["COLOR"], nil, 4, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemDisplay() end, nil, function() return not E.db.bags.itemInfo end)
 Bags.args.general.args.itemInfoGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 5, nil, nil, nil, nil, function() return not E.db.bags.itemInfo end)
 Bags.args.general.args.itemInfoGroup.args.fontGroup.inline = true
 Bags.args.general.args.itemInfoGroup.args.fontGroup.args.itemInfoFont = ACH:SharedMediaFont(L["Font"], nil, 5)
 Bags.args.general.args.itemInfoGroup.args.fontGroup.args.itemInfoFontSize = ACH:Range(L["Font Size"], nil, 6, C.Values.FontSize)
 Bags.args.general.args.itemInfoGroup.args.fontGroup.args.itemInfoFontOutline = ACH:FontFlags(L["Font Outline"], nil, 7)
 
-Bags.args.general.args.itemLevelGroup = ACH:Group(L["Item Level"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemLevelDisplay() end)
+Bags.args.general.args.itemLevelGroup = ACH:Group(L["Item Level"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemDisplay() end)
 Bags.args.general.args.itemLevelGroup.args.itemLevel = ACH:Toggle(L["Display Item Level"], L["Displays item level on equippable items."], 1)
 Bags.args.general.args.itemLevelGroup.args.itemLevelCustomColorEnable = ACH:Toggle(L["Custom Color"], nil, 2, nil, nil, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
-Bags.args.general.args.itemLevelGroup.args.itemLevelCustomColor = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemLevelDisplay() end, nil, function() return not E.db.bags.itemLevel or not E.db.bags.itemLevelCustomColorEnable end)
-Bags.args.general.args.itemLevelGroup.args.itemLevelThreshold = ACH:Range(L["Item Level Threshold"], L["The minimum item level required for it to be shown."], 4, { min = 1, max = 500, step = 1 }, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
+Bags.args.general.args.itemLevelGroup.args.itemLevelCustomColor = ACH:Color(L["COLOR"], nil, 3, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemDisplay() end, nil, function() return not E.db.bags.itemLevel or not E.db.bags.itemLevelCustomColorEnable end)
+Bags.args.general.args.itemLevelGroup.args.itemLevelThreshold = ACH:Range(L["Item Level Threshold"], L["The minimum item level required for it to be shown."], 4, { min = 1, max = 500, step = 1 }, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateAllBagSlots() end, nil, function() return not E.db.bags.itemLevel end)
 Bags.args.general.args.itemLevelGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 5, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
 Bags.args.general.args.itemLevelGroup.args.fontGroup.inline = true
 Bags.args.general.args.itemLevelGroup.args.fontGroup.args.itemLevelFontSize = ACH:Range(L["Font Size"], nil, 6, C.Values.FontSize, nil, nil, nil, nil, function() return not E.db.bags.itemLevel end)
