@@ -17,6 +17,7 @@ local CreateFrame = CreateFrame
 local DepositReagentBank = DepositReagentBank
 local GameTooltip_Hide = GameTooltip_Hide
 local GetBackpackAutosortDisabled = GetBackpackAutosortDisabled
+local GetInventorySlotInfo = GetInventorySlotInfo
 local GetBagSlotFlag = GetBagSlotFlag
 local GetBankAutosortDisabled = GetBankAutosortDisabled
 local GetBankBagSlotFlag = GetBankBagSlotFlag
@@ -1355,11 +1356,10 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolderByBagID = {}
 
 	for i, bagID in next, f.BagIDs do
-		local bankID = bagID == -1 and 0 or (bagID - 4)
-		local bagName = isBank and format('ElvUIBankBag%d', bankID) or (bagID == 0 and 'ElvUIMainBagBackpack') or format('ElvUIMainBag%dSlot', bagID-1)
+		local bagNum = isBank and (bagID == -1 and 0 or (bagID - 4)) or bagID
 		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 and 'ItemAnimTemplate') or 'BagSlotButtonTemplate'
 
-		local holder = CreateFrame('ItemButton', bagName, f.ContainerHolder, inherit)
+		local holder = CreateFrame('ItemButton', format('ElvUI%sBag%d', isBank and 'Bank' or 'Main', bagNum), f.ContainerHolder, inherit)
 		f.ContainerHolderByBagID[bagID] = holder
 		f.ContainerHolder[i] = holder
 
@@ -1386,6 +1386,7 @@ function B:ConstructContainerFrame(name, isBank)
 		elseif bagID == 0 then -- Backpack needs different setup
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBackpack) end)
 		else
+			holder:SetID(GetInventorySlotInfo(format('Bag%dSlot', bagID-1)))
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetID()) end)
 		end
 
@@ -1395,7 +1396,7 @@ function B:ConstructContainerFrame(name, isBank)
 			holder:Point('LEFT', f.ContainerHolder[i - 1], 'RIGHT', E.Border * 2, 0)
 		end
 
-		local bag = CreateFrame('Frame', f:GetName()..'Bag'..(isBank and bankID or bagID), f.holderFrame)
+		local bag = CreateFrame('Frame', format('%sBag%s', name, bagNum), f.holderFrame)
 		bag.holder = holder
 		bag:SetID(bagID)
 
@@ -1637,7 +1638,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.currencyButton:Height(22)
 
 		for i = 1, MAX_WATCHED_TOKENS do
-			local currency = CreateFrame('Button', f:GetName()..'CurrencyButton'..i, f.currencyButton, 'BackpackTokenTemplate')
+			local currency = CreateFrame('Button', name..'CurrencyButton'..i, f.currencyButton, 'BackpackTokenTemplate')
 			currency:Size(16)
 			currency:SetTemplate()
 			currency:SetID(i)
@@ -1652,7 +1653,7 @@ function B:ConstructContainerFrame(name, isBank)
 		end
 	end
 
-	tinsert(_G.UISpecialFrames, f:GetName())
+	tinsert(_G.UISpecialFrames, name)
 	tinsert(B.BagFrames, f)
 
 	return f
