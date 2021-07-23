@@ -1438,7 +1438,7 @@ end
 function E:UpdateBags(skipCallback)
 	Bags:SizeAndPositionBagBar()
 	Bags:UpdateItemDisplay()
-	Bags:UpdateAll()
+	Bags:UpdateLayouts()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')

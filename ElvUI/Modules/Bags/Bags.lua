@@ -535,7 +535,8 @@ function B:UpdateSlot(frame, bagID, slotID)
 	end
 
 	if forceColor and B.db.colorBackdrop then
-		slot:SetBackdropColor(r, g, b, a)
+		local fadeAlpha = B.db.transparent and E.media.backdropfadecolor[4]
+		slot:SetBackdropColor(r, g, b, fadeAlpha or a or 1)
 	else
 		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 	end
@@ -1017,11 +1018,6 @@ function B:UpdateReagentSlot(slotID)
 	end
 end
 
-function B:UpdateAll()
-	B:Layout()
-	B:Layout(true)
-end
-
 function B:TotalSlotsChanged(bagFrame)
 	local total = 0
 	for _, bagID in ipairs(bagFrame.BagIDs) do
@@ -1034,6 +1030,11 @@ end
 function B:PLAYER_ENTERING_WORLD(event)
 	B:UnregisterEvent(event)
 	B:UpdateLayout(B.BagFrame)
+end
+
+function B:UpdateLayouts()
+	B:Layout()
+	B:Layout(true)
 end
 
 function B:UpdateLayout(frame)
