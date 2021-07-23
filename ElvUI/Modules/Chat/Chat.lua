@@ -331,6 +331,10 @@ do --this can save some main file locals
 		['Perìwìnkle-Cenarius']		= itsMel, -- Shaman
 		['Pìper-Cenarius']			= itsMel, -- Warlock
 		['Spãrkles-Cenarius']		= itsMel, -- Mage
+		['Mellybear-Cenarius']		= itsMel, -- Hunter
+		['Zuria-Cenarius']			= itsMel, -- DH
+		['Tinybubbles-Cenarius']	= itsMel, -- Monk
+		['Alykat-Cenarius']			= itsMel, -- [Horde] Druid
 		['Alybones-Cenarius']		= itsMel, -- [Horde] DK
 		['Alyfreeze-Cenarius']		= itsMel, -- [Horde] Mage
 		['Alykins-Cenarius']		= itsMel, -- [Horde] DH
