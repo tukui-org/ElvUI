@@ -1072,22 +1072,27 @@ function B:SetBagAssignments(holder, skip)
 	end
 end
 
-function B:DelayedContainer(bagFrame, bagID)
+function B:DelayedContainer(bagFrame, bagID, bagClosed)
 	local container = bagID and bagID ~= 0 and bagFrame.ContainerHolderByBagID[bagID]
-	if container then bagFrame.DelayedContainers[bagID] = container end
+	if container then
+		bagFrame.DelayedContainers[bagID] = container
+
+		if bagClosed then -- let it call layout
+			bagFrame.totalSlots = nil
+		end
+	end
 end
 
 function B:OnEvent(event, ...)
 	if event == 'PLAYERBANKSLOTS_CHANGED' then
-		local bankSlot = ...
-		local bagID = (bankSlot <= NUM_BANKGENERIC_SLOTS) and -1 or (bankSlot - NUM_BANKGENERIC_SLOTS)
-		B:UpdateBagSlots(self, bagID)
+		local bankID = ...
+		B:UpdateBagSlots(self, (bankID <= NUM_BANKGENERIC_SLOTS) and -1 or (bankID - NUM_BANKGENERIC_SLOTS))
 	elseif event == 'BAG_UPDATE' then
 		local bagID = ...
 		B:UpdateBagSlots(self, bagID)
 		B:DelayedContainer(self, bagID)
 	elseif event == 'BAG_CLOSED' then
-		B:DelayedContainer(self, ...)
+		B:DelayedContainer(self, ..., true)
 	elseif event == 'BAG_UPDATE_DELAYED' then
 		for bagID, container in next, self.DelayedContainers do
 			B:SetBagAssignments(container)
