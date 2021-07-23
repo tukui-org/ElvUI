@@ -1396,7 +1396,7 @@ function B:ConstructContainerFrame(name, isBank)
 			holder:Point('LEFT', f.ContainerHolder[i - 1], 'RIGHT', E.Border * 2, 0)
 		end
 
-		local bag = CreateFrame('Frame', format('%sBag%s', name, bagNum), f.holderFrame)
+		local bag = CreateFrame('Frame', format('%sBag%d', name, bagNum), f.holderFrame)
 		bag.holder = holder
 		bag:SetID(bagID)
 
@@ -1638,7 +1638,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.currencyButton:Height(22)
 
 		for i = 1, MAX_WATCHED_TOKENS do
-			local currency = CreateFrame('Button', name..'CurrencyButton'..i, f.currencyButton, 'BackpackTokenTemplate')
+			local currency = CreateFrame('Button', format('%sCurrencyButton%d', name, i), f.currencyButton, 'BackpackTokenTemplate')
 			currency:Size(16)
 			currency:SetTemplate()
 			currency:SetID(i)
