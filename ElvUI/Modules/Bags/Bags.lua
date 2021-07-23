@@ -1034,17 +1034,15 @@ function B:PLAYER_ENTERING_WORLD(event)
 end
 
 function B:SetAllBagAssignments(frame)
-	for index in next, frame.BagIDs do
-		if B:SetBagAssignments(frame.ContainerHolder[index+1]) then
+	for index in next, frame.BagIDs, 1 do
+		if B:SetBagAssignments(frame.ContainerHolder[index]) then
 			break
 		end
 	end
 end
 
 function B:SetBagAssignments(holder)
-	if not holder then
-		return true -- no more
-	end
+	if not holder then return true end
 
 	local frame, bag = holder.frame, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
