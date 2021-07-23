@@ -103,6 +103,7 @@ local CONTAINER_SCALE = 0.75
 
 local SEARCH_STRING = ''
 B.SearchSlots = {}
+B.QuestSlots = {}
 B.BAG_FILTER_ICONS = {
 	[_G.LE_BAG_FILTER_FLAG_EQUIPMENT] = 132745,		-- Interface/ICONS/INV_Chest_Plate10
 	[_G.LE_BAG_FILTER_FLAG_CONSUMABLES] = 134873,	-- Interface/ICONS/INV_Potion_93
@@ -513,6 +514,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	slot:UpdateItemContextMatching() -- Blizzards way to highlight scrapable items if the Scrapping Machine Frame is open.
 
+	if not frame.isBank then
+		B.QuestSlots[slot] = questId or nil
+	end
+
 	if questId then
 		r, g, b, a = unpack(B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem'])
 	elseif not itemLink then
@@ -629,7 +634,7 @@ function B:UpdateCooldown()
 end
 
 function B:UpdateAllSlots(frame)
-	if not (frame and frame.BagIDs) then return end
+	if not frame then return end
 
 	for _, bagID in ipairs(frame.BagIDs) do
 		local bag = frame.Bags[bagID]
@@ -1094,7 +1099,9 @@ function B:OnEvent(event, ...)
 	elseif event == 'PLAYERREAGENTBANKSLOTS_CHANGED' then
 		B:UpdateReagentSlot(...)
 	elseif (event == 'QUEST_ACCEPTED' or event == 'QUEST_REMOVED') and self:IsShown() then
-		B:UpdateAllSlots(self)
+		for slot in next, B.QuestSlots do
+			B:UpdateSlot(self, slot.bagID, slot.slotID)
+		end
 	elseif event == 'ITEM_LOCK_CHANGED' then
 		B:UpdateSlot(self, ...)
 	end
