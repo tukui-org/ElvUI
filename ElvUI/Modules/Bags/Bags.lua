@@ -1078,7 +1078,7 @@ function B:DelayedContainer(bagFrame, bagID, bagClosed)
 		bagFrame.DelayedContainers[bagID] = container
 
 		if bagClosed then -- let it call layout
-			bagFrame.totalSlots = nil
+			bagFrame.totalSlots = 0
 		end
 	end
 end
