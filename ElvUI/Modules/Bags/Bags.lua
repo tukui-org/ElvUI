@@ -1034,7 +1034,7 @@ function B:PLAYER_ENTERING_WORLD(event)
 end
 
 function B:SetAllBagAssignments(frame)
-	for index in next, frame.BagIDs, 1 do
+	for index in next, frame.BagIDs do
 		if B:SetBagAssignments(frame.ContainerHolder[index]) then
 			break
 		end
@@ -1340,7 +1340,8 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolder:Hide()
 
 	for i, bagID in next, f.BagIDs do
-		local bagName = isBank and format('ElvUIBankBag%d', bagID-4) or bagID == 0 and 'ElvUIMainBagBackpack' or format('ElvUIMainBag%dSlot', bagID-1)
+		local bankID = bagID - 4
+		local bagName = isBank and format('ElvUIBankBag%d', (bagID == -1 and 0 or bankID)) or bagID == 0 and 'ElvUIMainBagBackpack' or format('ElvUIMainBag%dSlot', bagID-1)
 		local inherit = isBank and 'BankItemButtonBagTemplate' or bagID == 0 and 'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 		local holder = CreateFrame('ItemButton', bagName, f.ContainerHolder, inherit)
@@ -1362,7 +1363,7 @@ function B:ConstructContainerFrame(name, isBank)
 		B:CreateFilterIcon(holder)
 
 		if isBank then
-			holder:SetID(bagID - 4)
+			holder:SetID(i == 1 and -1 or bankID)
 			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
 			holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetInventorySlot()) end)
