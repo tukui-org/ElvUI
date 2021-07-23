@@ -1436,11 +1436,9 @@ function E:UpdateTooltip()
 end
 
 function E:UpdateBags(skipCallback)
-	Bags:Layout()
-	Bags:Layout(true)
 	Bags:SizeAndPositionBagBar()
-	Bags:UpdateCountDisplay()
-	Bags:UpdateItemLevelDisplay()
+	Bags:UpdateItemDisplay()
+	Bags:UpdateAll()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
