@@ -151,7 +151,7 @@ local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'PLAYERREA
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 
 function B:GetContainerFrame(arg)
-	if type(arg) == 'boolean' and (arg == true) then
+	if arg == true then
 		return B.BankFrame
 	elseif type(arg) == 'number' then
 		for _, bagID in ipairs(B.BankFrame.BagIDs) do
