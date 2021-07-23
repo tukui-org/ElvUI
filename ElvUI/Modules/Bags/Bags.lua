@@ -147,7 +147,7 @@ B.IsEquipmentSlot = {
 
 local bagIDs = {0, 1, 2, 3, 4}
 local bankIDs = {-1, 5, 6, 7, 8, 9, 10, 11}
-local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'PLAYERREAGENTBANKSLOTS_CHANGED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKSLOTS_CHANGED'}
+local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'PLAYERREAGENTBANKSLOTS_CHANGED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKBAGSLOTS_CHANGED', 'PLAYERBANKSLOTS_CHANGED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 
 function B:GetContainerFrame(arg)
@@ -1072,9 +1072,14 @@ function B:SetBagAssignments(holder, skip)
 			BankFrameItemButton_Update(holder)
 		end
 
-		if (holder.index - 1) > GetNumBankSlots() then
+		local containerID = holder.index - 1
+		if containerID > GetNumBankSlots() then
 			SetItemButtonTextureVertexColor(holder, 1, .1, .1)
 			holder.tooltipText = _G.BANK_BAG_PURCHASE
+
+			if not frame.notPurchased[containerID] then
+				frame.notPurchased[containerID] = holder
+			end
 		else
 			SetItemButtonTextureVertexColor(holder, 1, 1, 1)
 			holder.tooltipText = ''
@@ -1094,7 +1099,13 @@ function B:DelayedContainer(bagFrame, bagID, bagClosed)
 end
 
 function B:OnEvent(event, ...)
-	if event == 'PLAYERBANKSLOTS_CHANGED' then
+	if event == 'PLAYERBANKBAGSLOTS_CHANGED' then
+		local id, holder = next(self.notPurchased)
+		if id then
+			B:SetBagAssignments(holder, true)
+			self.notPurchased[id] = nil
+		end
+	elseif event == 'PLAYERBANKSLOTS_CHANGED' then
 		local bankID = ...
 		B:UpdateBagSlots(self, (bankID <= NUM_BANKGENERIC_SLOTS) and -1 or (bankID - NUM_BANKGENERIC_SLOTS))
 	elseif event == 'BAG_UPDATE' then
@@ -1322,6 +1333,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.topOffset = 50
 	f.bottomOffset = (isBank and 8) or 28
 	f.BagIDs = (isBank and bankIDs) or bagIDs
+	f.notPurchased = {}
 	f.Bags = {}
 
 	local mover = (isBank and _G.ElvUIBankMover) or _G.ElvUIBagMover
