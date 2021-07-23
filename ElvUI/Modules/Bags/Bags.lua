@@ -74,7 +74,6 @@ local C_NewItems_RemoveNewItem = C_NewItems.RemoveNewItem
 
 local BAG_FILTER_ASSIGN_TO = BAG_FILTER_ASSIGN_TO
 local BAG_FILTER_CLEANUP = BAG_FILTER_CLEANUP
-local BAG_FILTER_ICONS = BAG_FILTER_ICONS
 local BAG_FILTER_IGNORE = BAG_FILTER_IGNORE
 local BAG_FILTER_LABELS = BAG_FILTER_LABELS
 local CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y = CONTAINER_OFFSET_X, CONTAINER_OFFSET_Y
@@ -146,8 +145,8 @@ B.IsEquipmentSlot = {
 
 local bagIDs = {0, 1, 2, 3, 4}
 local bankIDs = {-1, 5, 6, 7, 8, 9, 10, 11}
-local bankEvents = {'PLAYERREAGENTBANKSLOTS_CHANGED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKSLOTS_CHANGED'}
-local bagEvents = {'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
+local bankEvents = {'BAG_UPDATE', 'BAG_CLOSED', 'PLAYERREAGENTBANKSLOTS_CHANGED', 'BANK_BAG_SLOT_FLAGS_UPDATED', 'PLAYERBANKSLOTS_CHANGED'}
+local bagEvents = {'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 
 function B:GetContainerFrame(arg)
 	if type(arg) == 'boolean' and (arg == true) then
@@ -1018,22 +1017,21 @@ function B:UpdateAll()
 	B:Layout(true)
 end
 
-function B:BagsAdjusted(bagFrame)
+function B:TotalSlotsChanged(bagFrame)
+	local total = 0
 	for _, bagID in ipairs(bagFrame.BagIDs) do
-		local bag = bagFrame.Bags[bagID]
-		if bag.numSlots ~= GetContainerNumSlots(bagID) then
-			return true
-		end
+		total = total + GetContainerNumSlots(bagID)
 	end
+
+	return bagFrame.totalSlots ~= total
 end
 
 function B:PLAYER_ENTERING_WORLD(event)
 	B:UnregisterEvent(event)
-	B:SetAllBagAssignments(B.BagFrame)
-	B:Layout()
+	B:UpdateLayout(B.BagFrame)
 end
 
-function B:SetAllBagAssignments(frame)
+function B:UpdateLayout(frame)
 	for index in next, frame.BagIDs do
 		if B:SetBagAssignments(frame.ContainerHolder[index]) then
 			break
@@ -1049,6 +1047,10 @@ function B:SetBagAssignments(holder)
 
 	bag.type = select(2, GetContainerNumFreeSlots(holder.id))
 	bag.assigned = B:GetBagAssignedInfo(holder)
+
+	if B:TotalSlotsChanged(frame) then
+		B:Layout(frame.isBank)
+	end
 
 	if frame.isBank then
 		if holder.id ~= -1 then
@@ -1069,18 +1071,15 @@ function B:OnEvent(event, ...)
 	if event == 'PLAYERBANKSLOTS_CHANGED' then
 		local bankSlot = ...
 		local bagID = (bankSlot <= NUM_BANKGENERIC_SLOTS) and -1 or (bankSlot - NUM_BANKGENERIC_SLOTS)
-
-		if B:BagsAdjusted(self) then
-			B:Layout(true)
-		else
-			B:UpdateBagSlots(self, bagID)
-		end
+		B:SetBagAssignments(self.ContainerHolderByBagID[bagID])
+		B:UpdateBagSlots(self, bagID)
 	elseif event == 'BAG_UPDATE' then
-		if B:BagsAdjusted(self) then
-			B:Layout(self.isBank)
-		else
-			B:UpdateBagSlots(self, ...)
-		end
+		local bagID = ...
+		B:SetBagAssignments(self.ContainerHolderByBagID[bagID])
+		B:UpdateBagSlots(self, ...)
+	elseif event == 'BAG_CLOSED' then
+		local bagID = ...
+		B:SetBagAssignments(self.ContainerHolderByBagID[bagID])
 	elseif event == 'BANK_BAG_SLOT_FLAGS_UPDATED' or event == 'BAG_SLOT_FLAGS_UPDATED' then
 		local id = ...+1 -- yes
 		B:SetBagAssignments(self.ContainerHolder[id])
@@ -1338,13 +1337,15 @@ function B:ConstructContainerFrame(name, isBank)
 	f.ContainerHolder:Point('BOTTOMLEFT', f, 'TOPLEFT', 0, 1)
 	f.ContainerHolder:SetTemplate('Transparent')
 	f.ContainerHolder:Hide()
+	f.ContainerHolderByBagID = {}
 
 	for i, bagID in next, f.BagIDs do
 		local bankID = bagID - 4
-		local bagName = isBank and format('ElvUIBankBag%d', (bagID == -1 and 0 or bankID)) or bagID == 0 and 'ElvUIMainBagBackpack' or format('ElvUIMainBag%dSlot', bagID-1)
-		local inherit = isBank and 'BankItemButtonBagTemplate' or bagID == 0 and 'ItemAnimTemplate' or 'BagSlotButtonTemplate'
+		local bagName = isBank and format('ElvUIBankBag%d', (bagID == -1 and 0 or bankID)) or (bagID == 0 and 'ElvUIMainBagBackpack') or format('ElvUIMainBag%dSlot', bagID-1)
+		local inherit = isBank and 'BankItemButtonBagTemplate' or (bagID == 0 and 'ItemAnimTemplate') or 'BagSlotButtonTemplate'
 
 		local holder = CreateFrame('ItemButton', bagName, f.ContainerHolder, inherit)
+		f.ContainerHolderByBagID[bagID] = holder
 		f.ContainerHolder[i] = holder
 
 		holder:SetTemplate(B.db.transparent and 'Transparent', true)
@@ -1852,16 +1853,12 @@ function B:ContainerOnHide()
 end
 
 function B:SetListeners(frame)
-	frame:RegisterEvent('BAG_UPDATE')
-
 	for _, event in pairs(frame.events) do
 		frame:RegisterEvent(event)
 	end
 end
 
 function B:ClearListeners(frame)
-	frame:UnregisterEvent('BAG_UPDATE')
-
 	for _, event in pairs(frame.events) do
 		frame:UnregisterEvent(event)
 	end
@@ -1960,8 +1957,7 @@ function B:OpenBank()
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
 
-	B:SetAllBagAssignments(B.BankFrame)
-	B:Layout(true)
+	B:UpdateLayout(B.BankFrame)
 
 	B:OpenBags()
 end
@@ -2301,7 +2297,6 @@ function B:Initialize()
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateBagButtons')
 	B:RegisterEvent('PLAYER_REGEN_DISABLED', 'UpdateBagButtons')
-
 	B:RegisterEvent('AUCTION_HOUSE_SHOW', 'OpenAuction')
 	B:RegisterEvent('AUCTION_HOUSE_CLOSED', 'CloseAuction')
 	B:RegisterEvent('BANKFRAME_OPENED', 'OpenBank')
