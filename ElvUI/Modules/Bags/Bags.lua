@@ -1035,12 +1035,16 @@ end
 
 function B:SetAllBagAssignments(frame)
 	for index in next, frame.BagIDs do
-		B:SetBagAssignments(frame.ContainerHolder[index+1])
+		if B:SetBagAssignments(frame.ContainerHolder[index+1]) then
+			break
+		end
 	end
 end
 
 function B:SetBagAssignments(holder)
-	if not holder then return end
+	if not holder then
+		return true -- no more
+	end
 
 	local frame, bag = holder.frame, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
