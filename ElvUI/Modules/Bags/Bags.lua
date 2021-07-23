@@ -328,15 +328,6 @@ function B:UpdateItemDisplay()
 	end
 end
 
-function B:UpdateBagTypes(isBank)
-	local f = B:GetContainerFrame(isBank)
-	for _, bagID in ipairs(f.BagIDs) do
-		if f.Bags[bagID] then
-			f.Bags[bagID].type = select(2, GetContainerNumFreeSlots(bagID))
-		end
-	end
-end
-
 function B:UpdateAllBagSlots()
 	if E.private.bags.enable ~= true then return end
 
@@ -701,14 +692,7 @@ function B:AssignBagFlagMenu()
 						SetBagSlotFlag(holder.id, i, value)
 					end
 
-					if value then
-						holder.tempflag = i
-						holder.ElvUIFilterIcon:SetTexture(BAG_FILTER_ICONS[i])
-					else
-						holder.tempflag = -1
-					end
-
-					holder.ElvUIFilterIcon:SetShown(value)
+					holder.tempflag = (value and i) or -1
 				end
 
 				if holder.tempflag then
@@ -867,42 +851,19 @@ function B:Layout(isBank)
 		end
 	end
 
-	for i, bagID in ipairs(f.BagIDs) do
-		local assignedBag
+	for _, bagID in ipairs(f.BagIDs) do
 		if isSplit then
 			newBag = (bagID ~= -1 or bagID ~= 0) and B.db.split['bag'..bagID] or false
-		end
-
-		do --Bag Containers
-			local holder = f.ContainerHolder[i]
-			assignedBag = B:GetBagAssignedInfo(holder)
-			holder:SetSize(buttonSize, buttonSize)
-
-			if isBank then
-				if bagID ~= -1 then
-					BankFrameItemButton_Update(holder)
-				end
-
-				if (i - 1) > GetNumBankSlots() then
-					SetItemButtonTextureVertexColor(holder, 1, .1, .1)
-					holder.tooltipText = _G.BANK_BAG_PURCHASE
-				else
-					SetItemButtonTextureVertexColor(holder, 1, 1, 1)
-					holder.tooltipText = ''
-				end
-			end
 		end
 
 		--Bag Slots
 		local bag = f.Bags[bagID]
 		local numSlots = GetContainerNumSlots(bagID)
+		local hasSlots = numSlots > 0
 		bag.numSlots = numSlots
+		bag:SetShown(hasSlots)
 
-		if numSlots > 0 then
-			bag:Show()
-			bag.assigned = assignedBag
-			bag.type = select(2, GetContainerNumFreeSlots(bagID))
-
+		if hasSlots then
 			for slotID, slot in ipairs(bag) do
 				slot:SetShown(slotID <= numSlots)
 			end
@@ -954,8 +915,6 @@ function B:Layout(isBank)
 				lastButton = slot
 				numBagSlots = numBagSlots + 1
 			end
-		else
-			bag:Hide()
 		end
 	end
 
@@ -1059,27 +1018,77 @@ function B:UpdateAll()
 	B:Layout(true)
 end
 
-function B:OnEvent(event, ...)
-	if event == 'ITEM_LOCK_CHANGED' then
-		B:UpdateSlot(self, ...)
-	elseif event == 'BAG_UPDATE' or event == 'PLAYERBANKSLOTS_CHANGED' then
-		for _, bagID in ipairs(self.BagIDs) do
-			local numSlots = GetContainerNumSlots(bagID)
-			if (numSlots ~= self.Bags[bagID].numSlots) then
-				B:Layout(self.isBank)
-				return
-			end
+function B:BagsAdjusted(bagFrame)
+	for _, bagID in ipairs(bagFrame.BagIDs) do
+		local bag = bagFrame.Bags[bagID]
+		if bag.numSlots ~= GetContainerNumSlots(bagID) then
+			return true
+		end
+	end
+end
+
+function B:PLAYER_ENTERING_WORLD(event)
+	B:UnregisterEvent(event)
+	B:SetAllBagAssignments(B.BagFrame)
+	B:Layout()
+end
+
+function B:SetAllBagAssignments(frame)
+	for index in next, frame.BagIDs do
+		B:SetBagAssignments(frame.ContainerHolder[index+1])
+	end
+end
+
+function B:SetBagAssignments(holder)
+	if not holder then return end
+
+	local frame, bag = holder.frame, holder.bag
+	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
+
+	bag.type = select(2, GetContainerNumFreeSlots(holder.id))
+	bag.assigned = B:GetBagAssignedInfo(holder)
+
+	if frame.isBank then
+		if holder.id ~= -1 then
+			BankFrameItemButton_Update(holder)
 		end
 
-		local bagSlotID = ...
-		local bagID = (event == 'PLAYERBANKSLOTS_CHANGED' and ((bagSlotID <= NUM_BANKGENERIC_SLOTS) and -1 or (bagSlotID - NUM_BANKGENERIC_SLOTS))) or bagSlotID
-		B:UpdateBagSlots(self, bagID)
+		if (holder.index - 1) > GetNumBankSlots() then
+			SetItemButtonTextureVertexColor(holder, 1, .1, .1)
+			holder.tooltipText = _G.BANK_BAG_PURCHASE
+		else
+			SetItemButtonTextureVertexColor(holder, 1, 1, 1)
+			holder.tooltipText = ''
+		end
+	end
+end
+
+function B:OnEvent(event, ...)
+	if event == 'PLAYERBANKSLOTS_CHANGED' then
+		local bankSlot = ...
+		local bagID = (bankSlot <= NUM_BANKGENERIC_SLOTS) and -1 or (bankSlot - NUM_BANKGENERIC_SLOTS)
+
+		if B:BagsAdjusted(self) then
+			B:Layout(true)
+		else
+			B:UpdateBagSlots(self, bagID)
+		end
+	elseif event == 'BAG_UPDATE' then
+		if B:BagsAdjusted(self) then
+			B:Layout(self.isBank)
+		else
+			B:UpdateBagSlots(self, ...)
+		end
+	elseif event == 'BANK_BAG_SLOT_FLAGS_UPDATED' or event == 'BAG_SLOT_FLAGS_UPDATED' then
+		local id = ...+1 -- yes
+		B:SetBagAssignments(self.ContainerHolder[id])
+		B:UpdateBagSlots(self, self.BagIDs[id])
 	elseif event == 'PLAYERREAGENTBANKSLOTS_CHANGED' then
 		B:UpdateReagentSlot(...)
 	elseif (event == 'QUEST_ACCEPTED' or event == 'QUEST_REMOVED') and self:IsShown() then
 		B:UpdateAllSlots(self)
-	elseif (event == 'BANK_BAG_SLOT_FLAGS_UPDATED' or event == 'BAG_SLOT_FLAGS_UPDATED') then
-		B:UpdateBagSlots(self, ...)
+	elseif event == 'ITEM_LOCK_CHANGED' then
+		B:UpdateSlot(self, ...)
 	end
 end
 
@@ -1257,6 +1266,15 @@ function B:SetButtonTexture(button, texture)
 	Disabled:SetDesaturated(true)
 end
 
+function B:BagItemAction(button, holder, func, id)
+	if button == 'RightButton' and holder.id then
+		B.AssignBagDropdown.holder = holder
+		_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
+	else
+		func(id)
+	end
+end
+
 function B:ConstructContainerFrame(name, isBank)
 	local strata = B.db.strata or 'HIGH'
 
@@ -1330,51 +1348,26 @@ function B:ConstructContainerFrame(name, isBank)
 		holder:StyleButton()
 		holder:SetNormalTexture('')
 		holder:SetPushedTexture('')
+		holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
 		holder:HookScript('OnEnter', function(ch) B.SetSlotAlphaForBag(ch, f) end)
 		holder:HookScript('OnLeave', function(ch) B.ResetSlotAlphaForBags(ch, f) end)
-		holder.id = bagID
-		holder.icon:SetInside()
+
+		holder.icon:SetTexture('Interface/Buttons/Button-Backpack-Up')
 		holder.icon:SetTexCoord(unpack(E.TexCoords))
+		holder.icon:SetInside()
 		holder.IconBorder:Kill()
 
 		B:CreateFilterIcon(holder)
 
 		if isBank then
 			holder:SetID(bagID - 4)
-			holder.icon:SetTexture('Interface/Buttons/Button-Backpack-Up')
-			holder:SetScript('OnClick', function(_, button)
-				if button == 'RightButton' and holder.id then
-					B.AssignBagDropdown.holder = holder
-					_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
-				else
-					local inventoryID = holder:GetInventorySlot()
-					PutItemInBag(inventoryID) -- Put bag on empty slot, or drop item in this bag
-				end
-			end)
+			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
+			holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
+			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetInventorySlot()) end)
+		elseif bagID == 0 then -- Backpack needs different setup
+			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBackpack) end)
 		else
-			if bagID == 0 then --Backpack needs different setup
-				holder:RegisterForClicks('LeftButtonUp', 'RightButtonUp')
-				holder:SetScript('OnClick', function(_, button)
-					if button == 'RightButton' and holder.id then
-						B.AssignBagDropdown.holder = holder
-						_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
-					else
-						PutItemInBackpack()
-					end
-				end)
-
-				holder:SetScript('OnReceiveDrag', PutItemInBackpack)
-				holder.icon:SetTexture('Interface/Buttons/Button-Backpack-Up')
-			else
-				holder:SetScript('OnClick', function(_, button)
-					if button == 'RightButton' and holder.id then
-						B.AssignBagDropdown.holder = holder
-						_G.ToggleDropDownMenu(1, nil, B.AssignBagDropdown, 'cursor')
-					else
-						PutItemInBag(holder:GetID())
-					end
-				end)
-			end
+			holder:SetScript('OnClick', function(_, button) B:BagItemAction(button, holder, PutItemInBag, holder:GetID()) end)
 		end
 
 		if i == 1 then
@@ -1384,7 +1377,14 @@ function B:ConstructContainerFrame(name, isBank)
 		end
 
 		local bag = CreateFrame('Frame', f:GetName()..'Bag'..bagID, f.holderFrame)
+		bag.holder = holder
 		bag:SetID(bagID)
+
+		holder.id = bagID
+		holder.bag = bag
+		holder.frame = f
+		holder.index = i
+
 		f.Bags[bagID] = bag
 
 		for slotID = 1, MAX_CONTAINER_ITEMS do
@@ -1957,6 +1957,7 @@ function B:OpenBank()
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
 
+	B:SetAllBagAssignments(B.BankFrame)
 	B:Layout(true)
 
 	B:OpenBags()
@@ -1966,17 +1967,6 @@ function B:CloseBank()
 	_G.BankFrame:Hide()
 
 	B:CloseBags()
-end
-
-function B:PlayerEnteringWorld()
-	B:UpdateBagTypes()
-end
-
-function B:PLAYER_ENTERING_WORLD()
-	B:UpdateGoldText()
-
-	-- Update bag types for bagslot coloring
-	E:Delay(2, B.PlayerEnteringWorld)
 end
 
 function B:UpdateContainerFrameAnchors()
@@ -2213,8 +2203,8 @@ function B:Initialize()
 
 	--Bag Assignment Dropdown Menu (also used by BagBar)
 	B.AssignBagDropdown = CreateFrame('Frame', 'ElvUIAssignBagDropdown', E.UIParent, 'UIDropDownMenuTemplate')
-	B.AssignBagDropdown:SetID(1)
 	B.AssignBagDropdown:SetClampedToScreen(true)
+	B.AssignBagDropdown:SetID(1)
 	B.AssignBagDropdown:Hide()
 
 	_G.UIDropDownMenu_Initialize(B.AssignBagDropdown, B.AssignBagFlagMenu, 'MENU')
@@ -2291,8 +2281,6 @@ function B:Initialize()
 	B.BagFrame = B:ConstructContainerFrame('ElvUI_ContainerFrame')
 	B.BankFrame = B:ConstructContainerFrame('ElvUI_BankContainerFrame', true)
 
-	B:Layout()
-
 	--Hook onto Blizzard Functions
 	B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	B:SecureHook('OpenAllBags', 'OpenBags')
@@ -2302,6 +2290,7 @@ function B:Initialize()
 	B:SecureHook('ToggleBackpack')
 
 	B:DisableBlizzard()
+	B:UpdateGoldText()
 
 	B:RegisterEvent('PLAYER_ENTERING_WORLD')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
