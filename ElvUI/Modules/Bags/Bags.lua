@@ -540,7 +540,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
 
-	if not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON) then
+	if B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
@@ -1002,7 +1002,7 @@ function B:UpdateReagentSlot(slotID)
 		r, g, b, a = unpack(B.QuestColors.questStarter)
 	elseif questId or isQuestItem then
 		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON) then
+	elseif B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
