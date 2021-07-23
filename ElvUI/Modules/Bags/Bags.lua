@@ -329,12 +329,23 @@ function B:UpdateItemDisplay()
 	end
 end
 
+function B:UpdateAllSlots(frame)
+	if not frame then return end
+
+	for _, bagID in ipairs(frame.BagIDs) do
+		local bag = frame.Bags[bagID]
+		if bag then B:UpdateBagSlots(frame, bagID) end
+	end
+end
+
 function B:UpdateAllBagSlots()
 	if E.private.bags.enable ~= true then return end
 
 	for _, bagFrame in pairs(B.BagFrames) do
 		B:UpdateAllSlots(bagFrame)
 	end
+
+	B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
 end
 
 function B:IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, rarity)
@@ -632,15 +643,6 @@ function B:UpdateCooldown()
 		end
 	else
 		B:HideCooldown(self, true)
-	end
-end
-
-function B:UpdateAllSlots(frame)
-	if not frame then return end
-
-	for _, bagID in ipairs(frame.BagIDs) do
-		local bag = frame.Bags[bagID]
-		if bag then B:UpdateBagSlots(frame, bagID) end
 	end
 end
 
@@ -1000,13 +1002,20 @@ function B:UpdateReagentSlot(slotID)
 		r, g, b, a = unpack(B.QuestColors.questStarter)
 	elseif questId or isQuestItem then
 		r, g, b, a = unpack(B.QuestColors.questItem)
-	elseif not itemLink or B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON then
+	elseif not B.db.qualityColors or (B.db.qualityColors and slot.rarity and slot.rarity <= ITEMQUALITY_COMMON) then
 		r, g, b, a = unpack(E.media.bordercolor)
 		forceColor = nil
 	end
 
 	if slot.questIcon then
 		slot.questIcon:SetShown(questId and not isActiveQuest)
+	end
+
+	if forceColor and B.db.colorBackdrop then
+		local fadeAlpha = B.db.transparent and E.media.backdropfadecolor[4]
+		slot:SetBackdropColor(r, g, b, fadeAlpha or a or 1)
+	else
+		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 	end
 
 	slot.newItemGlow:SetVertexColor(r, g, b, a or 1)
