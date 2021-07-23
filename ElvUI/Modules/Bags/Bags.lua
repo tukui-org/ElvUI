@@ -1333,7 +1333,6 @@ function B:ConstructContainerFrame(name, isBank)
 	f.topOffset = 50
 	f.bottomOffset = (isBank and 8) or 28
 	f.BagIDs = (isBank and bankIDs) or bagIDs
-	f.notPurchased = {}
 	f.Bags = {}
 
 	local mover = (isBank and _G.ElvUIBankMover) or _G.ElvUIBagMover
@@ -1480,6 +1479,7 @@ function B:ConstructContainerFrame(name, isBank)
 	f.editBox.skipUpdate = true -- we need to skip the first set of '' from bank
 
 	if isBank then
+		f.notPurchased = {}
 		f.fullBank = select(2, GetNumBankSlots())
 
 		f.reagentFrame = CreateFrame('Frame', 'ElvUIReagentBankFrame', f)
