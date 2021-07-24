@@ -189,7 +189,6 @@ do --this can save some main file locals
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
-	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
 	local Deathly		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
 	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
