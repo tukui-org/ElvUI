@@ -189,7 +189,6 @@ do --this can save some main file locals
 	local Bathrobe		= E:TextureString(E.Media.ChatLogos.Bathrobe,x)
 	local Rainbow		= E:TextureString(E.Media.ChatLogos.Rainbow,x)
 	local Hibiscus		= E:TextureString(E.Media.ChatLogos.Hibiscus,x)
-	local Clover		= E:TextureString(E.Media.ChatLogos.Clover,x)
 	local GoldShield	= E:TextureString(E.Media.ChatLogos.GoldShield,x)
 	local Deathly		= E:TextureString(E.Media.ChatLogos.DeathlyHallows,x)
 	local Gem			= E:TextureString(E.Media.ChatLogos.Gem,x)
@@ -211,14 +210,14 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		--Simpys Valentine Vibes: Rose Pink, Soft Pink, Soft Cyan, Soft Violet, Soft Rose, Soft Yellow
-		local SimpyColors = function(t) return specialText(t, 1,.42,.78, 1,.56,.68, .66,.99,.98, .77,.52,1, 1,.48,.81, .98,.95,.68) end
+		--Simpys: Mindaro, Sea Green, Purple Plum, Paradise Pink, Orange Yellow
+		local SimpyColors = function(t) return specialText(t, 0.79,1.00,0.54, 0.00,0.72,0.44, 0.54,0.34,0.80, 0.93,0.27,0.43, 1.00,0.76,0.23) end
 		--Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		--Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
 		local MisColors = function(t) return specialText(t, 0.99,0.24,0.26, 0.99,0.59,0.28, 1.00,0.87,0.29, 0.42,0.99,0.39, 0.32,0.76,0.98, 0.63,0.36,0.98, 0.77,0.47,0.98, 0.99,0.50,0.75) end
-		--Light Spring: 50DAD3, 56E580, D8DA33, DFA455, EE8879, F972D1, B855DF, 50DAD3
-		local MelColors = function(t) return specialText(t, 0.31,0.85,0.82, 0.33,0.89,0.50, 0.84,0.85,0.20, 0.87,0.64,0.33, 0.93,0.53,0.47, 0.97,0.44,0.81, 0.72,0.33,0.87, 0.31,0.85,0.82) end
+		--Mels: Electric Blue, Purpureus, Blush, Bitter Sweet, Emerald
+		local MelColors = function(t) return specialText(t, 0.09,0.94,1.00, 0.60,0.34,0.63, 0.91,0.32,0.49, 0.95,0.42,0.32, 0.19,0.77,0.41) end
 		--Class: Normal to Negative (Orange->Blue, Red->Cyan, etc)
 		local NihiColors = function(class) local c = E:ClassColor(class,true); local n = E:InverseClassColor(class, true, true); local c1,c2,c3, n1,n2,n3 = c.r,c.g,c.b, n.r,n.g,n.b; return function(t) return specialText(t, c1,c2,c3, n1,n2,n3, c1,c2,c3, n1,n2,n3) end end
 
@@ -331,6 +330,10 @@ do --this can save some main file locals
 		['Perìwìnkle-Cenarius']		= itsMel, -- Shaman
 		['Pìper-Cenarius']			= itsMel, -- Warlock
 		['Spãrkles-Cenarius']		= itsMel, -- Mage
+		['Mellybear-Cenarius']		= itsMel, -- Hunter
+		['Zuria-Cenarius']			= itsMel, -- DH
+		['Tinybubbles-Cenarius']	= itsMel, -- Monk
+		['Alykat-Cenarius']			= itsMel, -- [Horde] Druid
 		['Alybones-Cenarius']		= itsMel, -- [Horde] DK
 		['Alyfreeze-Cenarius']		= itsMel, -- [Horde] Mage
 		['Alykins-Cenarius']		= itsMel, -- [Horde] DH
