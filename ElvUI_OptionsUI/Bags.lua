@@ -51,7 +51,7 @@ Bags.args.general.args.generalGroup.set = function(_, key, value)
 		B:SizeAndPositionBagBar()
 	elseif key == 'reverseLoot' then
 		SetInsertItemsLeftToRight(value)
-	elseif key == 'reverseSlots' or key == 'transparent' then
+	else
 		B:UpdateLayouts()
 		B:UpdateAllBagSlots()
 	end
