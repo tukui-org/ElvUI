@@ -330,11 +330,8 @@ function B:UpdateItemDisplay()
 end
 
 function B:UpdateAllSlots(frame)
-	if not frame then return end
-
 	for _, bagID in ipairs(frame.BagIDs) do
-		local bag = frame.Bags[bagID]
-		if bag then B:UpdateBagSlots(frame, bagID) end
+		B:UpdateBagSlots(frame, bagID)
 	end
 end
 
@@ -517,6 +514,14 @@ function B:UpdateSlot(frame, bagID, slotID)
 				slot.centerText:SetText(animaSpellID[spellID] * count)
 			end
 		end
+
+		B.UpdateCooldown(slot)
+
+		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
+			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
+		end
+	else
+		B:HideCooldown(slot)
 	end
 
 	if slot.questIcon then slot.questIcon:SetShown(questId and not isActiveQuest) end
@@ -558,16 +563,6 @@ function B:UpdateSlot(frame, bagID, slotID)
 
 	if B.db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
-	end
-
-	if texture then
-		B.UpdateCooldown(slot)
-
-		if not E:IsEventRegisteredForObject('BAG_UPDATE_COOLDOWN', slot) then
-			E:RegisterEventForObject('BAG_UPDATE_COOLDOWN', slot, B.UpdateCooldown)
-		end
-	else
-		B:HideCooldown(slot)
 	end
 
 	if not texture and _G.GameTooltip:GetOwner() == slot then
