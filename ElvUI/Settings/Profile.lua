@@ -558,6 +558,7 @@ P.nameplates = {
 	},
 	colors = {
 		auraByType = true,
+		auraByDispels = true,
 		glowColor = {r = 1, g = 1, b = 1, a = 1},
 		castColor = {r = 1, g = 0.81, b = 0},
 		tapped = {r = 0.6, g = 0.6, b = 0.6},
@@ -1465,6 +1466,7 @@ P.unitframe = {
 		healthMultiplier = 0,
 		auraBarByType = true,
 		auraByType = true,
+		auraByDispels = true,
 		auraBarTurtle = true,
 		auraBarTurtleColor = {r = 143/255, g = 101/255, b = 158/255},
 		transparentHealth = false,
