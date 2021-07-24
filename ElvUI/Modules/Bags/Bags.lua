@@ -773,9 +773,7 @@ function B:GetBagAssignedInfo(holder)
 		end
 	end
 
-	if B.db.showAssignedIcon then
-		holder.ElvUIFilterIcon:SetShown(active)
-	end
+	holder.ElvUIFilterIcon:SetShown(active and B.db.showAssignedIcon)
 
 	if not active then
 		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))

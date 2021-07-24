@@ -46,7 +46,7 @@ Bags.args.general.args.generalGroup.values = {
 Bags.args.general.args.generalGroup.set = function(_, key, value)
 	E.db.bags[key] = value
 	if key == 'showAssignedIcon' then
-		B:Layout()
+		B:UpdateLayout(B.BagFrame)
 		B:SizeAndPositionBagBar()
 	elseif key == 'reverseLoot' then
 		SetInsertItemsLeftToRight(value)
