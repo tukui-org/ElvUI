@@ -3461,9 +3461,14 @@ E.Options.args.unitframe = {
 					type = 'group',
 					name = L["Auras"],
 					args = {
+						auraByDispels = {
+							order = 1,
+							name = L["Borders By Dispel"],
+							type = 'toggle',
+						},
 						auraByType = {
-							order = 3,
-							name = L["By Type"],
+							order = 2,
+							name = L["Borders By Type"],
 							type = 'toggle',
 						},
 					},
