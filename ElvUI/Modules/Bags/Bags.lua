@@ -336,14 +336,16 @@ function B:UpdateAllSlots(frame)
 	end
 end
 
-function B:UpdateAllBagSlots()
+function B:UpdateAllBagSlots(skip)
 	if E.private.bags.enable ~= true then return end
 
 	for _, bagFrame in next, B.BagFrames do
 		B:UpdateAllSlots(bagFrame)
 	end
 
-	B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
+	if not skip then
+		B:UpdateBagSlots(nil, REAGENTBANK_CONTAINER)
+	end
 end
 
 function B:IsItemEligibleForItemLevelDisplay(classID, subClassID, equipLoc, rarity)
@@ -1899,7 +1901,7 @@ end
 function B:OpenBags()
 	B.BagFrame:Show()
 
-	B:UpdateAllBagSlots()
+	B:UpdateAllBagSlots(true)
 
 	TT:GameTooltip_SetDefaultAnchor(_G.GameTooltip)
 end
