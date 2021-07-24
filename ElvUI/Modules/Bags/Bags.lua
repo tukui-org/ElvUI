@@ -827,6 +827,7 @@ function B:Layout(isBank)
 	local numContainerRows, numBags, numBagSlots = 0, 0, 0
 	local bagSpacing = isBank and B.db.split.bankSpacing or B.db.split.bagSpacing
 	local isSplit = B.db.split[isBank and 'bank' or 'player']
+	local reverseSlots = B.db.reverseSlots
 
 	f.holderFrame:SetWidth(holderWidth)
 	if isBank then
@@ -883,28 +884,28 @@ function B:Layout(isBank)
 				end
 
 				if lastButton then
-					local anchorPoint, relativePoint = (B.db.reverseSlots and 'BOTTOM' or 'TOP'), (B.db.reverseSlots and 'TOP' or 'BOTTOM')
+					local anchorPoint, relativePoint = (reverseSlots and 'BOTTOM' or 'TOP'), (reverseSlots and 'TOP' or 'BOTTOM')
 					if isSplit and newBag and slotID == 1 then
-						slot:Point(anchorPoint, lastRowButton, relativePoint, 0, B.db.reverseSlots and (buttonSpacing + bagSpacing) or -(buttonSpacing + bagSpacing))
+						slot:Point(anchorPoint, lastRowButton, relativePoint, 0, reverseSlots and (buttonSpacing + bagSpacing) or -(buttonSpacing + bagSpacing))
 						lastRowButton = slot
 						numContainerRows = numContainerRows + 1
 						numBags = numBags + 1
 						numBagSlots = 0
 					elseif isSplit and numBagSlots % numContainerColumns == 0 then
-						slot:Point(anchorPoint, lastRowButton, relativePoint, 0, B.db.reverseSlots and buttonSpacing or -buttonSpacing)
+						slot:Point(anchorPoint, lastRowButton, relativePoint, 0, reverseSlots and buttonSpacing or -buttonSpacing)
 						lastRowButton = slot
 						numContainerRows = numContainerRows + 1
 					elseif (not isSplit) and (f.totalSlots - 1) % numContainerColumns == 0 then
-						slot:Point(anchorPoint, lastRowButton, relativePoint, 0, B.db.reverseSlots and buttonSpacing or -buttonSpacing)
+						slot:Point(anchorPoint, lastRowButton, relativePoint, 0, reverseSlots and buttonSpacing or -buttonSpacing)
 						lastRowButton = slot
 						numContainerRows = numContainerRows + 1
 					else
-						anchorPoint, relativePoint = (B.db.reverseSlots and 'RIGHT' or 'LEFT'), (B.db.reverseSlots and 'LEFT' or 'RIGHT')
-						slot:Point(anchorPoint, lastButton, relativePoint, B.db.reverseSlots and -buttonSpacing or buttonSpacing, 0)
+						anchorPoint, relativePoint = (reverseSlots and 'RIGHT' or 'LEFT'), (reverseSlots and 'LEFT' or 'RIGHT')
+						slot:Point(anchorPoint, lastButton, relativePoint, reverseSlots and -buttonSpacing or buttonSpacing, 0)
 					end
 				else
-					local anchorPoint = B.db.reverseSlots and 'BOTTOMRIGHT' or 'TOPLEFT'
-					slot:Point(anchorPoint, f.holderFrame, anchorPoint, 0, B.db.reverseSlots and f.bottomOffset - 8 or 0)
+					local anchorPoint = reverseSlots and 'BOTTOMRIGHT' or 'TOPLEFT'
+					slot:Point(anchorPoint, f.holderFrame, anchorPoint, 0, reverseSlots and f.bottomOffset - 8 or 0)
 					lastRowButton = slot
 					numContainerRows = numContainerRows + 1
 				end

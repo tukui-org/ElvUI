@@ -43,6 +43,12 @@ Bags.args.general.args.generalGroup.values = {
 	auctionToggle = L["Auction Toggle"],
 }
 
+local excludeUpdates = {
+	clearSearchOnClose = true,
+	useBlizzardCleanup = true,
+	auctionToggle = true
+}
+
 Bags.args.general.args.generalGroup.set = function(_, key, value)
 	E.db.bags[key] = value
 
@@ -51,7 +57,7 @@ Bags.args.general.args.generalGroup.set = function(_, key, value)
 		B:SizeAndPositionBagBar()
 	elseif key == 'reverseLoot' then
 		SetInsertItemsLeftToRight(value)
-	else
+	elseif not excludeUpdates[key] then
 		B:UpdateLayouts()
 		B:UpdateAllBagSlots()
 	end
