@@ -487,7 +487,10 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		local fc = (actions.flash.class and frame.classColor) or actions.flash.color
 		c.HealthFlash = true
 
-		if not HealthTexture then frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar)) end
+		if not HealthTexture then
+			frame.HealthFlashTexture:SetTexture(LSM:Fetch('statusbar', mod.db.statusbar))
+		end
+
 		frame.HealthFlashTexture:SetVertexColor(fc.r, fc.g, fc.b)
 
 		local anim = frame.HealthFlashTexture.anim or mod:StyleFilterSetupFlash(frame.HealthFlashTexture)
@@ -501,9 +504,11 @@ function mod:StyleFilterSetChanges(frame, actions, HealthColor, PowerColor, Bord
 		local tx = LSM:Fetch('statusbar', actions.texture.texture)
 		c.HealthTexture = true
 
-		frame.Highlight.texture:SetTexture(tx)
 		frame.Health:SetStatusBarTexture(tx)
-		if HealthFlash then frame.HealthFlashTexture:SetTexture(tx) end
+
+		if HealthFlash then
+			frame.HealthFlashTexture:SetTexture(tx)
+		end
 	end
 	if Scale then
 		c.Scale = true
@@ -587,7 +592,6 @@ function mod:StyleFilterClearChanges(frame, HealthColor, PowerColor, Borders, He
 	end
 	if HealthTexture then
 		local tx = LSM:Fetch('statusbar', mod.db.statusbar)
-		frame.Highlight.texture:SetTexture(tx)
 		frame.Health:SetStatusBarTexture(tx)
 	end
 	if Scale then

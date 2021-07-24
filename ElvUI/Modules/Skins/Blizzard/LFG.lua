@@ -127,9 +127,9 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFDQueueFramePartyBackfillBackfillButton)
 	S:HandleButton(_G.LFDQueueFramePartyBackfillNoBackfillButton)
 
-	_G.GroupFinderFrame.groupButton1.icon:SetTexture([[Interface\Icons\INV_Helmet_08]])
-	_G.GroupFinderFrame.groupButton2.icon:SetTexture([[Interface\LFGFrame\UI-LFR-PORTRAIT]])
-	_G.GroupFinderFrame.groupButton3.icon:SetTexture([[Interface\Icons\Icon_Scenarios]])
+	_G.GroupFinderFrame.groupButton1.icon:SetTexture(133076) -- interface/icons/inv_helmet_08.blp
+	_G.GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface/icons/inv_helmet_06.blp
+	_G.GroupFinderFrame.groupButton3.icon:SetTexture(464820) -- interface/icons/achievement_general_stayclassy.blp
 
 	S:HandleButton(_G.LFGDungeonReadyDialogEnterDungeonButton)
 	S:HandleButton(_G.LFGDungeonReadyDialogLeaveQueueButton)
@@ -708,10 +708,12 @@ function S:Blizzard_ChallengesUI()
 
 	hooksecurefunc('ChallengesFrame_Update', function(self)
 		for _, frame in ipairs(self.DungeonIcons) do
-			if not frame.backdrop then
+			if not frame.template then
 				frame:GetRegions():SetAlpha(0)
 				frame:SetTemplate('Transparent')
 				S:HandleIcon(frame.Icon, true)
+				frame.Icon:SetDrawLayer('ARTWORK')
+				frame.HighestLevel:SetDrawLayer('OVERLAY')
 				frame.Icon:SetInside()
 			end
 		end
