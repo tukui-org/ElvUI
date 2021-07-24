@@ -7,7 +7,7 @@ local Search = E.Libs.ItemSearch
 local LSM = E.Libs.LSM
 
 local _G = _G
-local type, ipairs, pairs, unpack, select, assert, pcall = type, ipairs, pairs, unpack, select, assert, pcall
+local type, ipairs, unpack, select, pcall = type, ipairs, unpack, select, pcall
 local strmatch, tinsert, tremove, wipe, tmaxn = strmatch, tinsert, tremove, wipe, table.maxn
 local next, floor, format, sub = next, floor, format, strsub
 
@@ -94,6 +94,8 @@ local NUM_LE_BAG_FILTER_FLAGS = NUM_LE_BAG_FILTER_FLAGS
 local REAGENTBANK_CONTAINER = REAGENTBANK_CONTAINER
 local REAGENTBANK_PURCHASE_TEXT = REAGENTBANK_PURCHASE_TEXT
 
+local GameTooltip = _G.GameTooltip
+
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover, ElvUIReagentBankFrame
 
 local MAX_CONTAINER_ITEMS = 36
@@ -165,7 +167,6 @@ function B:GetContainerFrame(arg)
 end
 
 function B:Tooltip_Show()
-	local GameTooltip = _G.GameTooltip
 	GameTooltip:SetOwner(self)
 	GameTooltip:ClearLines()
 	GameTooltip:AddLine(self.ttText)
@@ -338,7 +339,7 @@ end
 function B:UpdateAllBagSlots()
 	if E.private.bags.enable ~= true then return end
 
-	for _, bagFrame in pairs(B.BagFrames) do
+	for _, bagFrame in next, B.BagFrames do
 		B:UpdateAllSlots(bagFrame)
 	end
 
@@ -404,7 +405,7 @@ end
 function B:BagFrameHidden(bagFrame)
 	if not (bagFrame and bagFrame.BagIDs) then return end
 
-	for _, bagID in ipairs(bagFrame.BagIDs) do
+	for _, bagID in next, bagFrame.BagIDs do
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			local slot = bagFrame.Bags[bagID][slotID]
 			if slot then
@@ -596,7 +597,7 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	if not (bagFrame and bagFrame.BagIDs) then return end
 	bagFrame.sortingSlots = sortingSlots
 
-	for _, bagID in ipairs(bagFrame.BagIDs) do
+	for _, bagID in next, bagFrame.BagIDs do
 		for slotID = 1, GetContainerNumSlots(bagID) do
 			bagFrame.Bags[bagID][slotID].searchOverlay:SetShown(true)
 		end
@@ -642,20 +643,14 @@ function B:UpdateCooldown()
 end
 
 function B:SetSlotAlphaForBag(f)
-	for _, bagID in ipairs(f.BagIDs) do
-		local bag = f.Bags[bagID]
-		if bag then
-			bag:SetAlpha(bagID == self.id and 1 or .1)
-		end
+	for _, bagID in next, f.BagIDs do
+		f.Bags[bagID]:SetAlpha(bagID == self.id and 1 or .1)
 	end
 end
 
 function B:ResetSlotAlphaForBags(f)
-	for _, bagID in ipairs(f.BagIDs) do
-		local bag = f.Bags[bagID]
-		if bag then
-			bag:SetAlpha(1)
-		end
+	for _, bagID in next, f.BagIDs do
+		f.Bags[bagID]:SetAlpha(1)
 	end
 end
 
@@ -853,7 +848,7 @@ function B:Layout(isBank)
 		end
 	end
 
-	for _, bagID in ipairs(f.BagIDs) do
+	for _, bagID in next, f.BagIDs do
 		if isSplit then
 			newBag = (bagID ~= -1 or bagID ~= 0) and B.db.split['bag'..bagID] or false
 		end
@@ -1024,7 +1019,7 @@ end
 
 function B:TotalSlotsChanged(bagFrame)
 	local total = 0
-	for _, bagID in ipairs(bagFrame.BagIDs) do
+	for _, bagID in next, bagFrame.BagIDs do
 		total = total + GetContainerNumSlots(bagID)
 	end
 
@@ -1356,7 +1351,6 @@ function B:ConstructContainerFrame(name, isBank)
 	B:SetButtonTexture(f.helpButton, E.Media.Textures.Help)
 	f.helpButton:SetScript('OnLeave', GameTooltip_Hide)
 	f.helpButton:SetScript('OnEnter', function(frame)
-		local GameTooltip = _G.GameTooltip
 		GameTooltip:SetOwner(frame, 'ANCHOR_TOPLEFT', 0, 4)
 		GameTooltip:ClearLines()
 		GameTooltip:AddDoubleLine(L["Hold Shift + Drag:"], L["Temporary Move"], 1, 1, 1)
@@ -1891,13 +1885,13 @@ function B:ContainerOnHide()
 end
 
 function B:SetListeners(frame)
-	for _, event in pairs(frame.events) do
+	for _, event in next, frame.events do
 		frame:RegisterEvent(event)
 	end
 end
 
 function B:ClearListeners(frame)
-	for _, event in pairs(frame.events) do
+	for _, event in next, frame.events do
 		frame:UnregisterEvent(event)
 	end
 end
@@ -1959,7 +1953,7 @@ function B:HideItemGlow(bag)
 	if bag.NewItemGlow:IsPlaying() then
 		bag.NewItemGlow:Stop()
 
-		for _, itemGlow in pairs(bag.NewItemGlow.Fade.children) do
+		for _, itemGlow in next, bag.NewItemGlow.Fade.children do
 			itemGlow:SetAlpha(0)
 		end
 	end
