@@ -1,7 +1,20 @@
-### Version 12.36 [ ETA: 🍨 ]
+### Version 12.37 [ ETA: 🍨 ]
 
 **Shiny:**  
 
+
+___
+### Version 12.36 [ July 24th 2021 ]
+
+**Better:**  
+Bags :)  
+Blizzard Bags skin :)  
+
+**Good:**  
+Event Toast has a mover now, which is new Level Up display.  
+Style Filters were messing with Nameplate Highlight texture.  
+Mythic Challenge icon wont be so faded.  
+Group Finder had wrong Premade Groups icon.  
 
 ___
 ### Version 12.35 [ July 17th 2021 ]
