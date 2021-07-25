@@ -71,9 +71,10 @@ local CaptureBarSkins = {
 	[252] = EmberCourtCaptureBar
 }
 
-function B:UIWidgetTemplateCaptureBar(_, widgetContainer)
-	if not widgetContainer then return end
-	local skinFunc = CaptureBarSkins[widgetContainer.widgetSetID]
+function B:UIWidgetTemplateCaptureBar(_, widget)
+	if not widget then return end
+
+	local skinFunc = CaptureBarSkins[widget.widgetSetID]
 	if skinFunc then skinFunc(self) end
 end
 
