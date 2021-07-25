@@ -375,16 +375,14 @@ function UF:PostUpdateAura(_, button)
 	local r, g, b
 	if button.isDebuff then
 		if enemyNPC then
-			if db.byType then
+			if db.auraByType then
 				r, g, b = .9, .1, .1
 			end
-		elseif button.dtype then
-			if db.auraByDispels and E.BadDispels[button.spellID] and E:IsDispellableByMe(button.dtype) then
-				r, g, b = .05, .85, .94
-			elseif db.byType then
-				local color = _G.DebuffTypeColor[button.dtype] or _G.DebuffTypeColor.none
-				r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
-			end
+		elseif db.auraByDispels and button.dtype and E.BadDispels[button.spellID] and E:IsDispellableByMe(button.dtype) then
+			r, g, b = .05, .85, .94
+		elseif db.auraByType then
+			local color = _G.DebuffTypeColor[button.dtype] or _G.DebuffTypeColor.none
+			r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
 		end
 	elseif db.auraByDispels and button.isStealable and not button.isFriend then
 		r, g, b = .93, .91, .55
