@@ -79,10 +79,9 @@ end
 
 local function UpdatePosition(frame, _, anchor)
 	local holder = frame.containerHolder
-	if holder and anchor and anchor ~= holder then
+	if holder and anchor ~= holder then
 		frame:ClearAllPoints()
 		frame:Point('CENTER', holder)
-		frame:SetParent(holder)
 	end
 end
 
@@ -111,7 +110,6 @@ function B:HandleWidgets()
 
 	B:BuildWidgetHolder('EventToastHolder', 'EventToastMover', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -150, 200, 20, 'ALL,SOLO,WIDGETS')
 	B:BuildWidgetHolder('BossBannerHolder', 'BossBannerMover', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20, 'ALL,SOLO,WIDGETS')
-
 	B:BuildWidgetHolder(nil, 'GMMover', L["GM Ticket Frame"], _G.TicketStatusFrame, 'TOPLEFT', E.UIParent, 'TOPLEFT', 250, -5, nil, nil, 'ALL,GENERAL')
 
 	_G.DurabilityFrame:SetFrameStrata('HIGH')
