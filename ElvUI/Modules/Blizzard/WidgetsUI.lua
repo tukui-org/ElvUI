@@ -81,7 +81,7 @@ local function UpdatePosition(frame, _, anchor)
 	local holder = frame.containerHolder
 	if holder and anchor ~= holder then
 		frame:ClearAllPoints()
-		frame:Point(holder.point, holder)
+		frame:Point(frame.containerPoint, holder)
 	end
 end
 
@@ -93,7 +93,7 @@ function B:BuildWidgetHolder(holderName, moverName, moverPoint, localeName, cont
 	E:CreateMover(holder, moverName, localeName, nil, nil, nil, config)
 
 	container.containerHolder = (holderName and holder) or _G[moverName]
-	container.containerHolder.point = moverPoint
+	container.containerPoint = moverPoint
 
 	UpdatePosition(container, E.UIParent)
 	hooksecurefunc(container, 'SetPoint', UpdatePosition)
