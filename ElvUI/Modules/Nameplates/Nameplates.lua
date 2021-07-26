@@ -715,7 +715,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 		nameplate.unitGUID = UnitGUID(unit)
-		nameplate.unitName = UnitName(unit)
+		nameplate.unitName, nameplate.unitRealm = UnitName(unit)
 		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
 		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
