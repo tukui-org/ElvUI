@@ -306,8 +306,8 @@ local function SortAurasByName(a, b)
 	if a and b and a:GetParent().db then
 		if a:IsShown() and b:IsShown() then
 			local sortDirection = a:GetParent().db.sortDirection
-			local aName = a.spell or ''
-			local bName = b.spell or ''
+			local aName = a.name or ''
+			local bName = b.name or ''
 			if aName and bName then
 				if sortDirection == 'DESCENDING' then
 					return aName < bName
@@ -512,7 +512,6 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
 	button.texture = texture
 	button.spellID = spellID
 	button.owner = caster
-	button.spell = name
 	button.name = name
 	button.priority = 0
 
