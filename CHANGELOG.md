@@ -1,7 +1,7 @@
 ### Version 12.38 [ ETA: 🍨 ]
 
 **Shiny:**  
-
+Fixed Guild Control skin error  
 
 ___
 ### Version 12.37 [ July 25th 2021 ]
