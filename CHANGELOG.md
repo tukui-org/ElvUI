@@ -1,7 +1,15 @@
-### Version 12.37 [ ETA: 🍨 ]
+### Version 12.38 [ ETA: 🍨 ]
 
 **Shiny:**  
 
+
+___
+### Version 12.37 [ July 25th 2021 ]
+
+**Shiny:**  
+Added option to hide border colors for NP/UF Auras entirely (Borders by Type and Borders by Dispel)  
+Event Toast mover actually works (maybe, i think) :o  
+French Translation update (Thanks @xan2622)  
 
 ___
 ### Version 12.36 [ July 24th 2021 ]
