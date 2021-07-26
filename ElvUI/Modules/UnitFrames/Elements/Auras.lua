@@ -390,10 +390,10 @@ function UF:PostUpdateAura(_, button)
 			if db.auraByType then
 				r, g, b = .9, .1, .1
 			end
-		elseif db.auraByDispels and button.dtype and E.BadDispels[button.spellID] and E:IsDispellableByMe(button.dtype) then
+		elseif db.auraByDispels and button.debuffType and E.BadDispels[button.spellID] and E:IsDispellableByMe(button.debuffType) then
 			r, g, b = .05, .85, .94
 		elseif db.auraByType then
-			local color = _G.DebuffTypeColor[button.dtype] or _G.DebuffTypeColor.none
+			local color = _G.DebuffTypeColor[button.debuffType] or _G.DebuffTypeColor.none
 			r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
 		end
 	elseif db.auraByDispels and button.isStealable and not button.isFriend then
@@ -504,7 +504,7 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
 	button.unitIsCaster = unit and caster and UnitIsUnit(unit, caster)
 	button.canDispell = (self.type == 'buffs' and isStealable) or (self.type == 'debuffs' and debuffType and E:IsDispellableByMe(debuffType))
 	button.isStealable = isStealable
-	button.dtype = debuffType
+	button.debuffType = debuffType
 	button.duration = duration
 	button.expiration = expiration
 	button.noTime = duration == 0 and expiration == 0
