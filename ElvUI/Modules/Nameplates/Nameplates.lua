@@ -700,7 +700,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		if not unit then unit = nameplate.unit end
 
 		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
-		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.widgetsOnly = UnitNameplateShowsWidgetsOnly(unit)
 		nameplate.widgetSet = UnitWidgetSet(unit)
 		nameplate.classification = UnitClassification(unit)
@@ -716,6 +715,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 		nameplate.unitGUID = UnitGUID(unit)
 		nameplate.unitName, nameplate.unitRealm = UnitName(unit)
+		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
 		nameplate.npcID = nameplate.unitGUID and select(6, strsplit('-', nameplate.unitGUID))
 		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
