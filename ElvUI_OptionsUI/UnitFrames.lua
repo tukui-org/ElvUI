@@ -429,25 +429,26 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	local config = ACH:Group(auraType == 'buffs' and L["Buffs"] or L["Debuffs"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	config.args.perrow = ACH:Range(L["Per Row"], nil, 3, { min = 1, max = 20, step = 1 })
-	config.args.numrows = ACH:Range(L["Num Rows"], nil, 4, { min = 1, max = 10, step = 1 })
-	config.args.sizeOverride = ACH:Range(L["Size Override"], L["If not set to 0 then override the size of the aura icon to this."], 5, { min = 0, max = 60, step = 1 })
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, { min = -80, max = 80, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, { min = -80, max = 80, step = 1 })
-	config.args.spacing = ACH:Range(L["Spacing"], nil, 8, { min = -1, max = 20, step = 1 })
-	config.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 9, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, nil, function() local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition return (smartAuraPosition and (smartAuraPosition == 'BUFFS_ON_DEBUFFS' or smartAuraPosition == 'FLUID_BUFFS_ON_DEBUFFS')) end)
-	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 10, positionValues)
-	config.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 11)
-	config.args.sortMethod = ACH:Select( L["Sort By"], L["Method to sort by."], 12, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
-	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 13, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
+	config.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
+	config.args.perrow = ACH:Range(L["Per Row"], nil, 4, { min = 1, max = 20, step = 1 })
+	config.args.numrows = ACH:Range(L["Num Rows"], nil, 5, { min = 1, max = 10, step = 1 })
+	config.args.sizeOverride = ACH:Range(L["Size Override"], L["If not set to 0 then override the size of the aura icon to this."], 6, { min = 0, max = 60, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 7, { min = -80, max = 80, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 8, { min = -80, max = 80, step = 1 })
+	config.args.spacing = ACH:Range(L["Spacing"], nil, 9, { min = -1, max = 20, step = 1 })
+	config.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 10, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, nil, function() local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition return (smartAuraPosition and (smartAuraPosition == 'BUFFS_ON_DEBUFFS' or smartAuraPosition == 'FLUID_BUFFS_ON_DEBUFFS')) end)
+	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 11, positionValues)
+	config.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 12)
+	config.args.sortMethod = ACH:Select( L["Sort By"], L["Method to sort by."], 13, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
+	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 14, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 
-	config.args.stacks = ACH:Group(L["Stack Counter"], nil, 14, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+	config.args.stacks = ACH:Group(L["Stack Counter"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 	config.args.stacks.inline = true
 	config.args.stacks.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 	config.args.stacks.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 	config.args.stacks.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
 
-	config.args.duration = ACH:Group(L["Duration"], nil, 15, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
+	config.args.duration = ACH:Group(L["Duration"], nil, 25, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 	config.args.duration.inline = true
 	config.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end)
 	config.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, { TOP = 'TOP', LEFT = 'LEFT', BOTTOM = 'BOTTOM', CENTER = 'CENTER', TOPLEFT = 'TOPLEFT', BOTTOMLEFT = 'BOTTOMLEFT', TOPRIGHT = 'TOPRIGHT' })
@@ -577,7 +578,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 			local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
 			return (smartAuraPosition and (smartAuraPosition == 'DEBUFFS_ON_BUFFS' or smartAuraPosition == 'FLUID_DEBUFFS_ON_BUFFS'))
 		end
-		config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], nil, 2)
+		config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], nil, 3)
 	end
 
 	return config

@@ -22,11 +22,12 @@ function UF:Construct_Buffs(frame)
 	buffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
+	buffs.PreUpdate = self.PreUpdateAura
 	buffs.CustomFilter = self.AuraFilter
-	buffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
+	buffs.stacks = {}
 	buffs.type = 'buffs'
-	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	buffs:Width(100)
+	buffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
+	buffs:Width(100) --Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
 
 	return buffs
 end
@@ -37,11 +38,12 @@ function UF:Construct_Debuffs(frame)
 	debuffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
+	debuffs.PreUpdate = self.PreUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
+	debuffs.stacks = {}
 	debuffs.type = 'debuffs'
 	debuffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
-	--Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
-	debuffs:Width(100)
+	debuffs:Width(100) --Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
 
 	return debuffs
 end
@@ -368,6 +370,10 @@ function UF:SortAuras()
 	return 1, #self --from/to range needed for the :SetPosition call in oUF aura element. Without this aura icon position gets all whacky when not sorted by index
 end
 
+function UF:PreUpdateAura()
+	wipe(self.stacks)
+end
+
 function UF:PostUpdateAura(_, button)
 	local db = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local enemyNPC = not button.isFriend and not button.isPlayer
@@ -394,6 +400,7 @@ function UF:PostUpdateAura(_, button)
 
 	button:SetBackdropBorderColor(r, g, b)
 	button.icon:SetDesaturated(button.isDebuff and enemyNPC and button.canDesaturate)
+	button.matches = nil -- stackAuras
 
 	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		UF:UpdateAuraCooldownPosition(button)
@@ -477,7 +484,7 @@ function UF:CheckFilter(caster, spellName, spellID, canDispell, isFriend, isPlay
 	end
 end
 
-function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, _, isBossDebuff, casterIsPlayer, nameplateShowAll)
+function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration, expiration, caster, isStealable, nameplateShowSelf, spellID, _, isBossDebuff, casterIsPlayer, nameplateShowAll)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local db = button.db or self.db
@@ -496,11 +503,24 @@ function UF:AuraFilter(unit, button, name, _, count, debuffType, duration, expir
 	button.expiration = expiration
 	button.noTime = duration == 0 and expiration == 0
 	button.stackCount = count
-	button.name = name
+	button.texture = texture
 	button.spellID = spellID
 	button.owner = caster
 	button.spell = name
+	button.name = name
 	button.priority = 0
+
+	if db.stackAuras then
+		local stack = self.stacks[name]
+		if not stack then
+			self.stacks[name] = button
+		elseif stack.texture == texture then
+			stack.matches = (stack.matches or 1) + ((count and count > 0 and count) or 1)
+			stack.count:SetText(stack.matches)
+
+			return false
+		end
+	end
 
 	local noDuration = (not duration or duration == 0)
 	local allowDuration = noDuration or (duration and duration > 0 and (not db.maxDuration or db.maxDuration == 0 or duration <= db.maxDuration) and (not db.minDuration or db.minDuration == 0 or duration >= db.minDuration))

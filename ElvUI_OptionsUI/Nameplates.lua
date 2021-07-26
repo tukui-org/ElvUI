@@ -3981,14 +3981,20 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = 'toggle'
 					},
-					desaturate = {
+					stackAuras = {
 						type = 'toggle',
 						order = 2,
+						name = L["Stack Auras"],
+						desc = L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."],
+					},
+					desaturate = {
+						type = 'toggle',
+						order = 3,
 						name = L["Desaturate Icon"],
 						desc = L["Set auras that are not from you to desaturad."],
 					},
 					numAuras = {
-						order = 3,
+						order = 4,
 						name = L["# Displayed Auras"],
 						--desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = 'range',
@@ -3997,7 +4003,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					size = {
-						order = 4,
+						order = 5,
 						name = L["Icon Size"],
 						type = 'range',
 						min = 6,
@@ -4005,7 +4011,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					spacing = {
-						order = 5,
+						order = 6,
 						name = L["Spacing"],
 						type = 'range',
 						min = 0,
@@ -4013,7 +4019,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					xOffset = {
-						order = 6,
+						order = 7,
 						name = L["X-Offset"],
 						type = 'range',
 						min = -100,
@@ -4021,7 +4027,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					yOffset = {
-						order = 7,
+						order = 8,
 						type = 'range',
 						name = L["Y-Offset"],
 						min = -100,
@@ -4030,14 +4036,14 @@ local function GetUnitSettings(unit, name)
 					},
 					anchorPoint = {
 						type = 'select',
-						order = 8,
+						order = 9,
 						name = L["Anchor Point"],
 						desc = L["What point to anchor to the frame you set to attach to."],
 						values = positionValues
 					},
 					growthX = {
 						type = 'select',
-						order = 9,
+						order = 10,
 						name = L["Growth X-Direction"],
 						values = {
 							LEFT = L["Left"],
@@ -4046,7 +4052,7 @@ local function GetUnitSettings(unit, name)
 					},
 					growthY = {
 						type = 'select',
-						order = 10,
+						order = 11,
 						name = L["Growth Y-Direction"],
 						values = {
 							UP = L["Up"],
@@ -4055,7 +4061,7 @@ local function GetUnitSettings(unit, name)
 					},
 					stacks = {
 						type = 'group',
-						order = 11,
+						order = 15,
 						name = L["Stack Counter"],
 						inline = true,
 						get = function(info, value)
@@ -4108,7 +4114,7 @@ local function GetUnitSettings(unit, name)
 					},
 					duration = {
 						type = 'group',
-						order = 12,
+						order = 20,
 						name = L["Duration"],
 						inline = true,
 						get = function(info)
@@ -4147,7 +4153,7 @@ local function GetUnitSettings(unit, name)
 					},
 					filtersGroup = {
 						name = L["FILTERS"],
-						order = 13,
+						order = 25,
 						type = 'group',
 						inline = true,
 						get = function(info)
@@ -4296,14 +4302,20 @@ local function GetUnitSettings(unit, name)
 						name = L["Enable"],
 						type = 'toggle'
 					},
-					desaturate = {
+					stackAuras = {
 						type = 'toggle',
 						order = 2,
+						name = L["Stack Auras"],
+						desc = L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."],
+					},
+					desaturate = {
+						type = 'toggle',
+						order = 3,
 						name = L["Desaturate Icon"],
 						desc = L["Set auras that are not from you to desaturad."],
 					},
 					numAuras = {
-						order = 3,
+						order = 4,
 						name = L["# Displayed Auras"],
 						desc = L["Controls how many auras are displayed, this will also affect the size of the auras."],
 						type = 'range',
@@ -4312,7 +4324,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					size = {
-						order = 4,
+						order = 5,
 						name = L["Icon Size"],
 						type = 'range',
 						min = 6,
@@ -4320,7 +4332,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					spacing = {
-						order = 5,
+						order = 6,
 						name = L["Spacing"],
 						type = 'range',
 						min = 0,
@@ -4328,7 +4340,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					xOffset = {
-						order = 6,
+						order = 7,
 						name = L["X-Offset"],
 						type = 'range',
 						min = -100,
@@ -4336,7 +4348,7 @@ local function GetUnitSettings(unit, name)
 						step = 1
 					},
 					yOffset = {
-						order = 7,
+						order = 8,
 						type = 'range',
 						name = L["Y-Offset"],
 						min = -100,
@@ -4345,14 +4357,14 @@ local function GetUnitSettings(unit, name)
 					},
 					anchorPoint = {
 						type = 'select',
-						order = 8,
+						order = 9,
 						name = L["Anchor Point"],
 						desc = L["What point to anchor to the frame you set to attach to."],
 						values = positionValues
 					},
 					growthX = {
 						type = 'select',
-						order = 9,
+						order = 10,
 						name = L["Growth X-Direction"],
 						values = {
 							LEFT = L["Left"],
@@ -4361,7 +4373,7 @@ local function GetUnitSettings(unit, name)
 					},
 					growthY = {
 						type = 'select',
-						order = 10,
+						order = 11,
 						name = L["Growth Y-Direction"],
 						values = {
 							UP = L["Up"],
@@ -4370,7 +4382,7 @@ local function GetUnitSettings(unit, name)
 					},
 					stacks = {
 						type = 'group',
-						order = 11,
+						order = 15,
 						name = L["Stack Counter"],
 						inline = true,
 						get = function(info, value)
@@ -4423,7 +4435,7 @@ local function GetUnitSettings(unit, name)
 					},
 					duration = {
 						type = 'group',
-						order = 12,
+						order = 20,
 						name = L["Duration"],
 						inline = true,
 						get = function(info)
@@ -4462,7 +4474,7 @@ local function GetUnitSettings(unit, name)
 					},
 					filtersGroup = {
 						name = L["FILTERS"],
-						order = 13,
+						order = 25,
 						type = 'group',
 						get = function(info)
 							return E.db.nameplates.units[unit].debuffs[info[#info]]

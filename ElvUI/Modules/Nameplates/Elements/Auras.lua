@@ -26,6 +26,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs['growth-y'] = 'UP'
 	Buffs.type = 'buffs'
 	Buffs.forceShow = nameplate == _G.ElvNP_Test
+	Buffs.stacks = {}
 
 	local Debuffs = CreateFrame('Frame', frameName..'Debuffs', nameplate)
 	Debuffs:SetFrameStrata(nameplate:GetFrameStrata())
@@ -42,10 +43,14 @@ function NP:Construct_Auras(nameplate)
 	Debuffs['growth-y'] = 'UP'
 	Debuffs.type = 'debuffs'
 	Debuffs.forceShow = nameplate == _G.ElvNP_Test
+	Debuffs.stacks = {}
 
+	Buffs.PreUpdate = UF.PreUpdateAura
 	Buffs.PostCreateIcon = NP.Construct_AuraIcon
 	Buffs.PostUpdateIcon = UF.PostUpdateAura
 	Buffs.CustomFilter = UF.AuraFilter
+
+	Debuffs.PreUpdate = UF.PreUpdateAura
 	Debuffs.PostCreateIcon = NP.Construct_AuraIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateAura
 	Debuffs.CustomFilter = UF.AuraFilter
