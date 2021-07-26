@@ -4075,12 +4075,12 @@ local function GetUnitSettings(unit, name)
 							countFont = {
 								type = 'select',
 								dialogControl = 'LSM30_Font',
-								order = 12,
+								order = 1,
 								name = L["Font"],
 								values = _G.AceGUIWidgetLSMlists.font
 							},
 							countFontSize = {
-								order = 13,
+								order = 2,
 								name = L["FONT_SIZE"],
 								type = 'range',
 								min = 4,
@@ -4088,14 +4088,30 @@ local function GetUnitSettings(unit, name)
 								step = 1 -- max 20 cause otherwise it looks weird
 							},
 							countFontOutline = {
-								order = 14,
+								order = 3,
 								name = L["Font Outline"],
 								desc = L["Set the font outline."],
 								type = 'select',
 								values = C.Values.FontFlags
 							},
+							countXOffset = {
+								order = 4,
+								name = L["X-Offset"],
+								type = 'range',
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							countYOffset = {
+								order = 5,
+								type = 'range',
+								name = L["Y-Offset"],
+								min = -60,
+								max = 60,
+								step = 1
+							},
 							countPosition = {
-								order = 2,
+								order = 6,
 								name = L["Position"],
 								type = 'select',
 								values = {
@@ -4396,12 +4412,12 @@ local function GetUnitSettings(unit, name)
 							countFont = {
 								type = 'select',
 								dialogControl = 'LSM30_Font',
-								order = 12,
+								order = 1,
 								name = L["Font"],
 								values = _G.AceGUIWidgetLSMlists.font
 							},
 							countFontSize = {
-								order = 13,
+								order = 2,
 								name = L["FONT_SIZE"],
 								type = 'range',
 								min = 4,
@@ -4409,14 +4425,30 @@ local function GetUnitSettings(unit, name)
 								step = 1 -- max 20 cause otherwise it looks weird
 							},
 							countFontOutline = {
-								order = 14,
+								order = 3,
 								name = L["Font Outline"],
 								desc = L["Set the font outline."],
 								type = 'select',
 								values = C.Values.FontFlags
 							},
+							countXOffset = {
+								order = 4,
+								name = L["X-Offset"],
+								type = 'range',
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							countYOffset = {
+								order = 5,
+								type = 'range',
+								name = L["Y-Offset"],
+								min = -60,
+								max = 60,
+								step = 1
+							},
 							countPosition = {
-								order = 2,
+								order = 6,
 								name = L["Position"],
 								type = 'select',
 								values = {

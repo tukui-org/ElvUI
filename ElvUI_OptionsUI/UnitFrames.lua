@@ -447,6 +447,9 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.stacks.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 	config.args.stacks.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 	config.args.stacks.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 3)
+	config.args.stacks.args.countXOffset = ACH:Range(L["Y-Offset"], nil, 4, { min = -60, max = 60, step = 1 })
+	config.args.stacks.args.countYOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -60, max = 60, step = 1 })
+	config.args.stacks.args.countPosition = ACH:Select(L["Position"], nil, 6, { TOP = 'TOP', LEFT = 'LEFT', BOTTOM = 'BOTTOM', CENTER = 'CENTER', TOPLEFT = 'TOPLEFT', BOTTOMLEFT = 'BOTTOMLEFT', BOTTOMRIGHT = 'BOTTOMRIGHT', RIGHT = 'RIGHT', TOPRIGHT = 'TOPRIGHT' })
 
 	config.args.duration = ACH:Group(L["Duration"], nil, 25, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 	config.args.duration.inline = true

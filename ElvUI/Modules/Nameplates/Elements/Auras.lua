@@ -149,25 +149,20 @@ function NP:Update_Auras(nameplate)
 end
 
 function NP:UpdateAuraSettings(button)
-	if button.db then
-		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
+	local db = button.db
+	if db then
+		local point = db.countPosition or 'CENTER'
 		button.count:ClearAllPoints()
-
-		local point = (button.db and button.db.countPosition) or 'CENTER'
-		if point == 'CENTER' then
-			button.count:Point(point, 1, 0)
-		else
-			local bottom, right = point:find('BOTTOM'), point:find('RIGHT')
-			button.count:SetJustifyH(right and 'RIGHT' or 'LEFT')
-			button.count:Point(point, right and -1 or 1, bottom and 1 or -1)
-		end
+		button.count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
+		button.count:Point(point, db.countXOffset, db.countYOffset)
+		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
 
 	if button.icon then
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
 
-	button:Size((button.db and button.db.size) or 26)
+	button:Size((db and db.size) or 26)
 
 	button.needsUpdateCooldownPosition = true
 end

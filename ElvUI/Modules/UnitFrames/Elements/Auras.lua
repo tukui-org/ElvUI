@@ -97,9 +97,15 @@ function UF:Construct_AuraIcon(button)
 end
 
 function UF:UpdateAuraSettings(auras, button)
-	if button.db then
-		button.count:FontTemplate(LSM:Fetch('font', button.db.countFont), button.db.countFontSize, button.db.countFontOutline)
+	local db = button.db
+	if db then
+		local point = db.countPosition or 'CENTER'
+		button.count:ClearAllPoints()
+		button.count:SetJustifyH(point:find('RIGHT') and 'RIGHT' or 'LEFT')
+		button.count:Point(point, db.countXOffset, db.countYOffset)
+		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
+
 	if button.icon then
 		button.icon:SetTexCoord(unpack(E.TexCoords))
 	end
