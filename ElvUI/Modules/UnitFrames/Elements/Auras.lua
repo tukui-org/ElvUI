@@ -511,14 +511,15 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
 	button.stackCount = count
 	button.texture = texture
 	button.spellID = spellID
-	button.owner = caster
+	button.caster = caster
 	button.name = name
 	button.priority = 0
 
 	if db.stackAuras then
-		local stack = self.stacks[name]
+		local matching = format('%s:%s', caster, name)
+		local stack = self.stacks[matching]
 		if not stack then
-			self.stacks[name] = button
+			self.stacks[matching] = button
 		elseif stack.texture == texture then
 			stack.matches = (stack.matches or 1) + ((count and count > 0 and count) or 1)
 			stack.count:SetText(stack.matches)
