@@ -29,6 +29,7 @@ local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
+local UnitIsBattlePet = UnitIsBattlePet
 local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitReaction = UnitReaction
@@ -710,6 +711,7 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		nameplate.isEnemy = UnitIsEnemy('player', unit)
 		nameplate.isPlayer = UnitIsPlayer(unit)
 		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
+		nameplate.isBattlePet = UnitIsBattlePet(unit)
 		nameplate.faction = UnitFactionGroup(unit)
 		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
 		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
