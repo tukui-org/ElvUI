@@ -6448,6 +6448,9 @@ E.Options.args.nameplate = {
 			type = 'group',
 			order = 15,
 			name = L["COLORS"],
+			disabled = function()
+				return not E.NamePlates.Initialized
+			end,
 			args = {
 				general = {
 					order = 1,
@@ -6471,9 +6474,16 @@ E.Options.args.nameplate = {
 							order = 1,
 							hasAlpha = true
 						},
-						auraByType = {
+						auraByDispels = {
 							order = 2,
-							name = L["Color Auras By Type"],
+							name = L["Borders By Dispel"],
+							type = 'toggle',
+							get = function(info) return E.db.nameplates.colors[info[#info]] end,
+							set = function(info, value) E.db.nameplates.colors[info[#info]] = value; NP:ConfigureAll() end,
+						},
+						auraByType = {
+							order = 3,
+							name = L["Borders By Type"],
 							type = 'toggle',
 							get = function(info) return E.db.nameplates.colors[info[#info]] end,
 							set = function(info, value) E.db.nameplates.colors[info[#info]] = value; NP:ConfigureAll() end,

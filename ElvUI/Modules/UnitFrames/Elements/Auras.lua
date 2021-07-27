@@ -369,29 +369,31 @@ function UF:SortAuras()
 end
 
 function UF:PostUpdateAura(_, button)
+	local db = (self.isNameplate and NP.db.colors) or UF.db.colors
+	local enemyNPC = not button.isFriend and not button.isPlayer
+
+	local r, g, b
 	if button.isDebuff then
-		local byType = (self.isNameplate and NP.db.colors.auraByType) or (not self.isNameplate and UF.db.colors.auraByType)
-		if not button.isFriend and not button.isPlayer then
-			if byType then
-				button:SetBackdropBorderColor(.9, .1, .1)
+		if enemyNPC then
+			if db.auraByType then
+				r, g, b = .9, .1, .1
 			end
-
-			button.icon:SetDesaturated(button.canDesaturate)
-		else
-			if button.dtype and E.BadDispels[button.spellID] and E:IsDispellableByMe(button.dtype) then
-				button:SetBackdropBorderColor(.05, .85, .94)
-			elseif byType then
-				local color = (button.dtype and _G.DebuffTypeColor[button.dtype]) or _G.DebuffTypeColor.none
-				button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
-			end
-
-			button.icon:SetDesaturated(false)
+		elseif db.auraByDispels and button.dtype and E.BadDispels[button.spellID] and E:IsDispellableByMe(button.dtype) then
+			r, g, b = .05, .85, .94
+		elseif db.auraByType then
+			local color = _G.DebuffTypeColor[button.dtype] or _G.DebuffTypeColor.none
+			r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
 		end
-	elseif button.isStealable and not button.isFriend then
-		button:SetBackdropBorderColor(.93, .91, .55)
-	else
-		button:SetBackdropBorderColor(unpack((self.isNameplate and E.media.bordercolor) or E.media.unitframeBorderColor))
+	elseif db.auraByDispels and button.isStealable and not button.isFriend then
+		r, g, b = .93, .91, .55
 	end
+
+	if not r then
+		r, g, b = unpack((self.isNameplate and E.media.bordercolor) or E.media.unitframeBorderColor)
+	end
+
+	button:SetBackdropBorderColor(r, g, b)
+	button.icon:SetDesaturated(button.isDebuff and enemyNPC and button.canDesaturate)
 
 	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		UF:UpdateAuraCooldownPosition(button)
