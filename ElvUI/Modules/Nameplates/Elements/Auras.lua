@@ -52,7 +52,7 @@ function NP:Construct_Auras(nameplate)
 	Buffs.CustomFilter = UF.AuraFilter
 
 	Debuffs.PreUpdate = UF.PreUpdateAura
-	Buffs.PreSetPosition = UF.SortAuras
+	Debuffs.PreSetPosition = UF.SortAuras
 	Debuffs.SetPosition = UF.SetPosition
 	Debuffs.PostCreateIcon = NP.Construct_AuraIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateAura
