@@ -1,12 +1,13 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
+local AB = E:GetModule('ActionBars')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local format, ceil, huge = format, ceil, math.huge
-local sort, wipe, unpack, next = sort, wipe, unpack, next
-local tinsert, strfind, strsplit, strmatch = tinsert, strfind, strsplit, strmatch
+local format, huge, strlower = format, math.huge, strlower
+local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
+local sort, wipe, unpack, next, floor = sort, wipe, unpack, next, floor
 
 local CreateFrame = CreateFrame
 local IsShiftKeyDown = IsShiftKeyDown
@@ -16,18 +17,51 @@ local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
+UF.matchGrowthY = { TOP = 'TOP', BOTTOM = 'BOTTOM' }
+UF.matchGrowthX = { LEFT = 'LEFT', RIGHT = 'RIGHT' }
+
+UF.SmartPosition = {
+	BUFFS_ON_DEBUFFS = {
+		from = 'BUFFS', to = 'Debuffs',
+		warning = format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]),
+		func = function(db, buffs, debuffs)
+			db.buffs.attachTo = 'DEBUFFS'
+			buffs.attachTo = debuffs
+
+			buffs.PostUpdate = nil
+			debuffs.PostUpdate = UF.UpdateAuraSmartPoisition
+		end
+	},
+	DEBUFFS_ON_BUFFS = {
+		from = 'DEBUFFS', to = 'Buffs',
+		warning = format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]),
+		func = function(db, buffs, debuffs)
+			db.debuffs.attachTo = 'BUFFS'
+			debuffs.attachTo = buffs
+
+			debuffs.PostUpdate = nil
+			buffs.PostUpdate = UF.UpdateAuraSmartPoisition
+		end
+	}
+}
+
+UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.BUFFS_ON_DEBUFFS)
+UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
+
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
 	buffs.spacing = UF.SPACING
 	buffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
+	buffs.SetPosition = self.SetPosition
 	buffs.PreUpdate = self.PreUpdateAura
 	buffs.CustomFilter = self.AuraFilter
 	buffs.stacks = {}
 	buffs.type = 'buffs'
-	buffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
-	buffs:Width(100) --Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
+
+	buffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
+	buffs:SetSize(1, 1)
 
 	return buffs
 end
@@ -38,14 +72,82 @@ function UF:Construct_Debuffs(frame)
 	debuffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
+	debuffs.SetPosition = self.SetPosition
 	debuffs.PreUpdate = self.PreUpdateAura
 	debuffs.CustomFilter = self.AuraFilter
 	debuffs.stacks = {}
 	debuffs.type = 'debuffs'
-	debuffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10) --Make them appear above any text element
-	debuffs:Width(100) --Set initial width to prevent division by zero. This value doesn't matter, as it will be updated later
+
+	debuffs:SetFrameLevel(frame.RaisedElementParent:GetFrameLevel() + 10)
+	debuffs:SetSize(1, 1)
 
 	return debuffs
+end
+
+function UF:GetAuraRow(element, row, col, growthY, width, height, anchor)
+	if not element.rows then element.rows = {} end
+
+	local holder = element.rows[row]
+	if not holder then
+		holder = CreateFrame('Frame', '$parentRow'..row, element)
+		element.rows[row] = holder
+	end
+
+	if UF.matchGrowthX[anchor] then
+		element:Height(height)
+	else
+		element:Height((row + 1) * height)
+	end
+
+	holder:SetSize(col * width, height)
+	holder:ClearAllPoints()
+
+	local last = element.rows[row - 1]
+	if holder ~= last and last then
+		if growthY == 1 then
+			holder:SetPoint(anchor, last, E.InversePoints[anchor])
+		else
+			holder:SetPoint(E.InversePoints[anchor], last, anchor)
+		end
+	else
+		holder:SetPoint(anchor, element)
+	end
+
+	return holder
+end
+
+function UF:GetAuraPosition(element)
+	local spacing = element.spacing or 0
+	local anchor = element.initialAnchor or 'BOTTOMLEFT'
+	local growthX = (element.growthX == 'LEFT' and -1) or 1
+	local growthY = (element.growthY == 'DOWN' and -1) or 1
+	local width = (element.size or 16) + spacing
+	local height = (not element.height and width) or element.height + spacing
+	local cols = floor(element:GetWidth() / width + 0.5)
+
+	local center = anchor == 'TOP' or anchor == 'BOTTOM' or anchor == 'CENTER'
+	local point = center and ((growthY == 1 and 'BOTTOM' or 'TOP')..(growthX == 1 and 'LEFT' or 'RIGHT')) or anchor
+
+	return anchor, growthX, growthY, width, height, cols, point
+end
+
+function UF:SetAuraPosition(element, button, index, anchor, growthX, growthY, width, height, cols, point)
+	local z, col, row = index - 1, 0, 0
+	if cols > 0 then col, row = z % cols, floor(z / cols) end
+
+	local holder = UF:GetAuraRow(element, row, col + 1, growthY, width, height, anchor)
+	button:ClearAllPoints()
+	button:SetPoint(point, holder, point, col * width * growthX, growthY)
+end
+
+function UF:SetPosition(from, to)
+	local anchor, growthX, growthY, width, height, cols, point = UF:GetAuraPosition(self)
+	for index = from, to do
+		local button = self[index]
+		if not button then break end
+
+		UF:SetAuraPosition(self, button, index, anchor, growthX, growthY, width, height, cols, point)
+	end
 end
 
 function UF:Aura_OnClick()
@@ -93,10 +195,10 @@ function UF:Construct_AuraIcon(button)
 	local frame = auras:GetParent()
 	button.db = frame.db and frame.db[auras.type]
 
-	UF:UpdateAuraSettings(auras, button)
+	UF:UpdateAuraSettings(button)
 end
 
-function UF:UpdateAuraSettings(auras, button)
+function UF:UpdateAuraSettings(button)
 	local db = button.db
 	if db then
 		local point = db.countPosition or 'CENTER'
@@ -106,12 +208,7 @@ function UF:UpdateAuraSettings(auras, button)
 		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
 
-	if button.icon then
-		button.icon:SetTexCoord(unpack(E.TexCoords))
-	end
-
-	button:Size((auras and auras.size) or 30)
-
+	button.needsIconTrim = true
 	button.needsUpdateCooldownPosition = true
 end
 
@@ -151,65 +248,38 @@ function UF:Configure_AllAuras(frame)
 	UF:Configure_Auras(frame, 'Debuffs')
 end
 
-function UF:Configure_Auras(frame, which)
-	local db = frame.db
-	local auras = frame[which]
-	local auraType = which:lower()
-	local settings = db[auraType]
-	auras.db = settings
-
-	local position = db.smartAuraPosition
-	if position == 'BUFFS_ON_DEBUFFS' then
-		if db.debuffs.attachTo == 'BUFFS' then
-			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
-			db.debuffs.attachTo = 'FRAME'
-			frame.Debuffs.attachTo = frame
-			frame.Debuffs:ClearAllPoints()
-			frame.Debuffs:Point(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
-		end
-		db.buffs.attachTo = 'DEBUFFS'
-		frame.Buffs.attachTo = frame.Debuffs
-		frame.Buffs.PostUpdate = nil
-		frame.Debuffs.PostUpdate = UF.UpdateBuffsHeaderPosition
-	elseif position == 'DEBUFFS_ON_BUFFS' then
-		if db.buffs.attachTo == 'DEBUFFS' then
-			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
-			db.buffs.attachTo = 'FRAME'
-			frame.Buffs.attachTo = frame
-			frame.Buffs:ClearAllPoints()
-			frame.Buffs:Point(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
-		end
-		db.debuffs.attachTo = 'BUFFS'
-		frame.Debuffs.attachTo = frame.Buffs
-		frame.Buffs.PostUpdate = UF.UpdateDebuffsHeaderPosition
-		frame.Debuffs.PostUpdate = nil
-	elseif position == 'FLUID_BUFFS_ON_DEBUFFS' then
-		if db.debuffs.attachTo == 'BUFFS' then
-			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]))
-			db.debuffs.attachTo = 'FRAME'
-			frame.Debuffs.attachTo = frame
-			frame.Debuffs:ClearAllPoints()
-			frame.Debuffs:Point(frame.Debuffs.initialAnchor, frame.Debuffs.attachTo, frame.Debuffs.anchorPoint, frame.Debuffs.xOffset, frame.Debuffs.yOffset)
-		end
-		db.buffs.attachTo = 'DEBUFFS'
-		frame.Buffs.attachTo = frame.Debuffs
-		frame.Buffs.PostUpdate = UF.UpdateBuffsHeight
-		frame.Debuffs.PostUpdate = UF.UpdateBuffsPositionAndDebuffHeight
-	elseif position == 'FLUID_DEBUFFS_ON_BUFFS' then
-		if db.buffs.attachTo == 'DEBUFFS' then
-			E:Print(format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]))
-			db.buffs.attachTo = 'FRAME'
-			frame.Buffs.attachTo = frame
-			frame.Buffs:ClearAllPoints()
-			frame.Buffs:Point(frame.Buffs.initialAnchor, frame.Buffs.attachTo, frame.Buffs.anchorPoint, frame.Buffs.xOffset, frame.Buffs.yOffset)
-		end
-		db.debuffs.attachTo = 'BUFFS'
-		frame.Debuffs.attachTo = frame.Buffs
-		frame.Buffs.PostUpdate = UF.UpdateDebuffsPositionAndBuffHeight
-		frame.Debuffs.PostUpdate = UF.UpdateDebuffsHeight
+function UF:GetAuraElements(frame)
+	if frame.isNamePlate then
+		return frame.Buffs_, frame.Debuffs_
 	else
-		frame.Buffs.PostUpdate = nil
-		frame.Debuffs.PostUpdate = nil
+		return frame.Buffs, frame.Debuffs
+	end
+end
+
+function UF:SetSmartPosition(frame, db)
+	if frame.isNamePlate then db = NP:PlateDB(frame) end
+
+	local position, fluid = db.smartAuraPosition
+	local buffs, debuffs = UF:GetAuraElements(frame)
+	local info = UF.SmartPosition[position]
+	if info then
+		local TO = db[strlower(info.to)]
+		if TO.attachTo == info.from then
+			TO.attachTo = 'FRAME'
+
+			E:Print(info.warning)
+
+			local element = (info.to == 'Debuffs' and debuffs) or buffs
+			element.attachTo = frame
+			element:ClearAllPoints()
+			element:Point(element.initialAnchor, element.attachTo, element.anchorPoint, element.xOffset, element.yOffset)
+		end
+
+		fluid = info.fluid
+		info.func(db, buffs, debuffs, info.isFuild)
+	else
+		buffs.PostUpdate = nil
+		debuffs.PostUpdate = nil
 	end
 
 	if db.debuffs.attachTo == 'BUFFS' and db.buffs.attachTo == 'DEBUFFS' then
@@ -217,9 +287,18 @@ function UF:Configure_Auras(frame, which)
 		db.buffs.attachTo = 'FRAME'
 	end
 
-	local rows = settings.numrows
-	auras.spacing = settings.spacing
-	auras.attachTo = self:GetAuraAnchorFrame(frame, settings.attachTo)
+	return position, fluid
+end
+
+function UF:Configure_Auras(frame, which)
+	local db = frame.db
+	local auras = frame[which]
+	local auraType = which:lower()
+	local settings = db[auraType]
+	auras.db = settings
+
+	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo)
+	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
 
 	if settings.sizeOverride and settings.sizeOverride > 0 then
 		auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * auras.spacing))
@@ -238,14 +317,17 @@ function UF:Configure_Auras(frame, which)
 		auras:Width((frame.UNIT_WIDTH - UF.SPACING*2) - xOffset)
 	end
 
+	local rows = settings.numrows
+	auras.spacing = settings.spacing
 	auras.num = settings.perrow * rows
-	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or ((((auras:GetWidth() - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
+	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or ((((frame.UNIT_WIDTH - (auras.spacing*(auras.num/rows - 1))) / auras.num)) * rows)
+	auras.height = not settings.keepSizeRatio and settings.height
 	auras.forceShow = frame.forceShowAuras
 	auras.disableMouse = settings.clickThrough
 	auras.anchorPoint = settings.anchorPoint
 	auras.initialAnchor = E.InversePoints[auras.anchorPoint]
-	auras['growth-y'] = strfind(auras.anchorPoint, 'TOP') and 'UP' or 'DOWN'
-	auras['growth-x'] = auras.anchorPoint == 'LEFT' and 'LEFT' or auras.anchorPoint == 'RIGHT' and 'RIGHT' or (strfind(auras.anchorPoint, 'LEFT') and 'RIGHT' or 'LEFT')
+	auras.growthY = UF.matchGrowthY[auras.anchorPoint] or settings.growthY
+	auras.growthX = UF.matchGrowthX[auras.anchorPoint] or settings.growthX
 	auras.filterList = UF:ConvertFilters(auras, settings.priority)
 
 	local x, y
@@ -260,21 +342,20 @@ function UF:Configure_Auras(frame, which)
 	auras.xOffset = x + settings.xOffset + (settings.attachTo == 'FRAME' and frame.ORIENTATION ~= 'LEFT' and frame.POWERBAR_OFFSET or 0)
 	auras.yOffset = y + settings.yOffset
 
+	auras:ClearAllPoints()
+	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
+
 	local index = 1
 	while auras[index] do
 		local button = auras[index]
 		if button then
 			button.db = settings
-			UF:UpdateAuraSettings(auras, button)
+			UF:UpdateAuraSettings(button)
 			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
 		end
 
 		index = index + 1
 	end
-
-	auras:ClearAllPoints()
-	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
-	auras:Height(auras.size * rows)
 
 	if settings.enable then
 		auras:Show()
@@ -358,22 +439,20 @@ local function SortAurasByCaster(a, b)
 end
 
 function UF:SortAuras()
-	if not self.db then return end
-
-	--Sorting by Index is Default
-	if self.db.sortMethod == 'TIME_REMAINING' then
-		sort(self, SortAurasByTime)
-	elseif self.db.sortMethod == 'NAME' then
-		sort(self, SortAurasByName)
-	elseif self.db.sortMethod == 'DURATION' then
-		sort(self, SortAurasByDuration)
-	elseif self.db.sortMethod == 'PLAYER' then
-		sort(self, SortAurasByCaster)
+	local method = self.db and self.db.sortMethod
+	if method then
+		if method == 'TIME_REMAINING' then
+			sort(self, SortAurasByTime)
+		elseif method == 'NAME' then
+			sort(self, SortAurasByName)
+		elseif method == 'DURATION' then
+			sort(self, SortAurasByDuration)
+		elseif method == 'PLAYER' then
+			sort(self, SortAurasByCaster)
+		end
 	end
 
-	--Look into possibly applying filter priorities for auras here.
-
-	return 1, #self --from/to range needed for the :SetPosition call in oUF aura element. Without this aura icon position gets all whacky when not sorted by index
+	return 1, self.visibleAuras or self.visibleBuffs or self.visibleDebuffs
 end
 
 function UF:PreUpdateAura()
@@ -407,6 +486,11 @@ function UF:PostUpdateAura(_, button)
 	button:SetBackdropBorderColor(r, g, b)
 	button.icon:SetDesaturated(button.isDebuff and enemyNPC and button.canDesaturate)
 	button.matches = nil -- stackAuras
+
+	if button.needsIconTrim then
+		AB:TrimIcon(button)
+		button.needsIconTrim = nil
+	end
 
 	if button.needsUpdateCooldownPosition and (button.cd and button.cd.timer and button.cd.timer.text) then
 		UF:UpdateAuraCooldownPosition(button)
@@ -540,110 +624,27 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
 	end
 end
 
-function UF:UpdateBuffsHeaderPosition()
-	local parent = self:GetParent()
-	local buffs = parent.Buffs
-	local debuffs = parent.Debuffs
-	local numDebuffs = self.visibleDebuffs
-
-	if numDebuffs == 0 then
-		buffs:ClearAllPoints()
-		buffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
+function UF:GetSmartAuraElements(auras)
+	local Buffs, Debuffs = UF:GetAuraElements(auras:GetParent())
+	if auras == Buffs then
+		return Debuffs, Buffs, auras.visibleBuffs
 	else
-		buffs:ClearAllPoints()
-		buffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+		return Buffs, Debuffs, auras.visibleDebuffs
 	end
 end
 
-function UF:UpdateDebuffsHeaderPosition()
-	local parent = self:GetParent()
-	local debuffs = parent.Debuffs
-	local buffs = parent.Buffs
-	local numBuffs = self.visibleBuffs
+function UF:UpdateAuraSmartPoisition()
+	local element, other, visible = UF:GetSmartAuraElements(self)
 
-	if numBuffs == 0 then
-		debuffs:ClearAllPoints()
-		debuffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
+	if visible == 0 then
+		if self.smartFluid then
+			element:ClearAllPoints()
+			element:Point(other.initialAnchor, other.attachTo, other.anchorPoint, other.xOffset, other.yOffset)
+		else
+			other:Height(other.size)
+		end
 	else
-		debuffs:ClearAllPoints()
-		debuffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
-	end
-end
-
-function UF:UpdateBuffsPositionAndDebuffHeight()
-	local parent = self:GetParent()
-	local db = parent.db
-	local buffs = parent.Buffs
-	local debuffs = parent.Debuffs
-	local numDebuffs = self.visibleDebuffs
-
-	if numDebuffs == 0 then
-		buffs:ClearAllPoints()
-		buffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
-	else
-		buffs:ClearAllPoints()
-		buffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
-	end
-
-	if numDebuffs > 0 then
-		local numRows = ceil(numDebuffs/db.debuffs.perrow)
-		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
-	else
-		debuffs:Height(debuffs.size)
-	end
-end
-
-function UF:UpdateDebuffsPositionAndBuffHeight()
-	local parent = self:GetParent()
-	local db = parent.db
-	local debuffs = parent.Debuffs
-	local buffs = parent.Buffs
-	local numBuffs = self.visibleBuffs
-
-	if numBuffs == 0 then
-		debuffs:ClearAllPoints()
-		debuffs:Point(buffs.initialAnchor, buffs.attachTo, buffs.anchorPoint, buffs.xOffset, buffs.yOffset)
-	else
-		debuffs:ClearAllPoints()
-		debuffs:Point(debuffs.initialAnchor, debuffs.attachTo, debuffs.anchorPoint, debuffs.xOffset, debuffs.yOffset)
-	end
-
-	if numBuffs > 0 then
-		local numRows = ceil(numBuffs/db.buffs.perrow)
-		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
-	else
-		buffs:Height(buffs.size)
-	end
-end
-
-function UF:UpdateBuffsHeight()
-	local parent = self:GetParent()
-	local db = parent.db
-	local buffs = parent.Buffs
-	local numBuffs = self.visibleBuffs
-
-	if numBuffs > 0 then
-		local numRows = ceil(numBuffs/db.buffs.perrow)
-		buffs:Height(buffs.size * (numRows > db.buffs.numrows and db.buffs.numrows or numRows))
-	else
-		buffs:Height(buffs.size)
-		-- Any way to get rid of the last row as well?
-		-- Using buffs:Height(0) makes frames anchored to this one disappear
-	end
-end
-
-function UF:UpdateDebuffsHeight()
-	local parent = self:GetParent()
-	local db = parent.db
-	local debuffs = parent.Debuffs
-	local numDebuffs = self.visibleDebuffs
-
-	if numDebuffs > 0 then
-		local numRows = ceil(numDebuffs/db.debuffs.perrow)
-		debuffs:Height(debuffs.size * (numRows > db.debuffs.numrows and db.debuffs.numrows or numRows))
-	else
-		debuffs:Height(debuffs.size)
-		-- Any way to get rid of the last row as well?
-		-- Using debuffs:Height(0) makes frames anchored to this one disappear
+		element:ClearAllPoints()
+		element:Point(element.initialAnchor, element.attachTo, element.anchorPoint, element.xOffset, element.yOffset)
 	end
 end

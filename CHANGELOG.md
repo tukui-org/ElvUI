@@ -1,7 +1,12 @@
 ### Version 12.38 [ ETA: 🍨 ]
 
-**Shiny:**  
-Fixed Guild Control skin error  
+**Big Aura Update:**  
+UF/NP: Added Centered Support, Size Ratio, Stack Count offsets, Stackable Auras (Bolstering, Force of Nature, etc)  
+Unitframe: Added GrowthX and GrowthY settings and also improved Smart Aura Position  
+Nameplate: Added Rows, Attach To, and Smart Aura Position settings  
+
+**Fixed:**  
+Guild Control skin error  
 
 ___
 ### Version 12.37 [ July 25th 2021 ]

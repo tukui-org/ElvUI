@@ -363,6 +363,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 			--Target
 				E.db.unitframe.units.target.aurabar.height = 26
 				E.db.unitframe.units.target.buffs.anchorPoint = 'TOPLEFT'
+				E.db.unitframe.units.target.buffs.growthX = 'RIGHT'
 				E.db.unitframe.units.target.buffs.perrow = 7
 				E.db.unitframe.units.target.castbar.height = 40
 				E.db.unitframe.units.target.castbar.insideInfoPanel = false
@@ -382,7 +383,6 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.unitframe.units.target.power.attachTextTo = 'InfoPanel'
 				E.db.unitframe.units.target.power.height = 22
 			--TargetTarget
-				E.db.unitframe.units.targettarget.debuffs.anchorPoint = 'TOPRIGHT'
 				E.db.unitframe.units.targettarget.debuffs.enable = false
 				E.db.unitframe.units.targettarget.disableMouseoverGlow = true
 				E.db.unitframe.units.targettarget.power.enable = false
@@ -393,6 +393,8 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 				E.db.unitframe.units.targettarget.threatStyle = 'GLOW'
 				E.db.unitframe.units.targettarget.width = 270
 			--Focus
+				E.db.unitframe.units.focus.debuffs.anchorPoint = 'BOTTOMLEFT'
+				E.db.unitframe.units.focus.debuffs.growthX = 'RIGHT'
 				E.db.unitframe.units.focus.castbar.width = 270
 				E.db.unitframe.units.focus.width = 270
 			--Pet

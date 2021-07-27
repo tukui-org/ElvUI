@@ -1,10 +1,10 @@
 local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 
 local _G = _G
 local wipe = wipe
 local next = next
-local floor = floor
 local pairs = pairs
 local unpack = unpack
 local GetTime = GetTime
@@ -58,35 +58,16 @@ end
 function NP:BossMods_PositionIcons(element)
 	if not next(element.activeIcons) then return end
 
-	local holder = element.centerHolder
-	local anchor = element.initialAnchor
-	local size = element.size + element.spacing
-	local growthX = (element.growthX == 'LEFT' and -1) or 1
-	local growthY = (element.growthY == 'DOWN' and -1) or 1
-	local cols = floor(element:GetWidth() / size + 0.5)
-
-	local i, center = 1, anchor == 'TOP' or anchor == 'BOTTOM'
-	local centerAnchor = center and ((growthY == 1 and 'BOTTOM' or 'TOP')..(growthX == 1 and 'LEFT' or 'RIGHT'))
-	local point = centerAnchor or anchor
+	local index = 1
+	local anchor, growthX, growthY, width, height, cols, point = UF:GetAuraPosition(element)
 
 	for _, button in pairs(element.activeIcons) do
-		local z = i - 1
-		local col = z % cols
-		local row = floor(z / cols)
+		UF:SetAuraPosition(element, button, index, anchor, growthX, growthY, width, height, cols, point)
 
-		button:ClearAllPoints()
-		button:SetPoint(point, (center and holder) or element, point, col * size * growthX, row * size * growthY)
-		button:SetSize(element.size, element.size)
+		button:Size(width, height)
 		button:Show()
 
-		i = i + 1
-	end
-
-	if center then
-		local z = i - 1
-		holder:ClearAllPoints()
-		holder:SetPoint(anchor)
-		holder:SetSize((z < cols and z or cols) * size, element.size)
+		index = index + 1
 	end
 end
 
@@ -294,14 +275,14 @@ function NP:Update_BossMods(plate)
 
 	element.initialAnchor = inverse
 	element.spacing = db.spacing
-	element.growthY = db.growthY
-	element.growthX = db.growthX
-	element.size = db.size
+	element.growthY = UF.matchGrowthY[anchor] or db.growthY
+	element.growthX = UF.matchGrowthX[anchor] or db.growthX
+	element.size = db.size + (db.spacing or 0)
+	element.height = not db.keepSizeRatio and db.height
 end
 
 function NP:Construct_BossMods(nameplate)
 	local element = CreateFrame('Frame', '$parentBossMods', nameplate)
-	element.centerHolder = CreateFrame('Frame', '$parentCenterHolder', element)
 
 	element.activeIcons = {}
 	element.unusedIcons = {}

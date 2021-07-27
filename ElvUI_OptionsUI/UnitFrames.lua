@@ -14,15 +14,26 @@ local GetClassInfo = GetClassInfo
 -- GLOBALS: ElvUF_Target, ElvUF_TargetTarget, ElvUF_TargetTargetTarget, ElvUF_Focus, ElvUF_FocusTarget
 
 local positionValues = {
-	TOPLEFT = 'TOPLEFT',
-	LEFT = 'LEFT',
-	BOTTOMLEFT = 'BOTTOMLEFT',
-	RIGHT = 'RIGHT',
-	TOPRIGHT = 'TOPRIGHT',
-	BOTTOMRIGHT = 'BOTTOMRIGHT',
-	CENTER = 'CENTER',
 	TOP = 'TOP',
+	LEFT = 'LEFT',
+	RIGHT = 'RIGHT',
 	BOTTOM = 'BOTTOM',
+	CENTER = 'CENTER',
+	TOPLEFT = 'TOPLEFT',
+	TOPRIGHT = 'TOPRIGHT',
+	BOTTOMLEFT = 'BOTTOMLEFT',
+	BOTTOMRIGHT = 'BOTTOMRIGHT',
+}
+
+local positionAuraValues = {
+	TOP = 'TOP',
+	LEFT = 'LEFT',
+	RIGHT = 'RIGHT',
+	BOTTOM = 'BOTTOM',
+	TOPLEFT = 'TOPLEFT',
+	TOPRIGHT = 'TOPRIGHT',
+	BOTTOMLEFT = 'BOTTOMLEFT',
+	BOTTOMRIGHT = 'BOTTOMRIGHT',
 }
 
 local orientationValues = {
@@ -78,10 +89,10 @@ local growthDirectionValues = {
 
 local smartAuraPositionValues = {
 	DISABLED = L["DISABLE"],
-	BUFFS_ON_DEBUFFS = L["Position Buffs on Debuffs"],
-	DEBUFFS_ON_BUFFS = L["Position Debuffs on Buffs"],
-	FLUID_BUFFS_ON_DEBUFFS = L["Fluid Position Buffs on Debuffs"],
-	FLUID_DEBUFFS_ON_BUFFS = L["Fluid Position Debuffs on Buffs"],
+	BUFFS_ON_DEBUFFS = L["Buffs on Debuffs"],
+	DEBUFFS_ON_BUFFS = L["Debuffs on Buffs"],
+	FLUID_BUFFS_ON_DEBUFFS = L["Fluid Buffs on Debuffs"],
+	FLUID_DEBUFFS_ON_BUFFS = L["Fluid Debuffs on Buffs"],
 }
 
 local colorOverrideValues = {
@@ -430,17 +441,25 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
-	config.args.perrow = ACH:Range(L["Per Row"], nil, 4, { min = 1, max = 20, step = 1 })
-	config.args.numrows = ACH:Range(L["Num Rows"], nil, 5, { min = 1, max = 10, step = 1 })
-	config.args.sizeOverride = ACH:Range(L["Size Override"], L["If not set to 0 then override the size of the aura icon to this."], 6, { min = 0, max = 60, step = 1 })
-	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 7, { min = -80, max = 80, step = 1 })
-	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 8, { min = -80, max = 80, step = 1 })
-	config.args.spacing = ACH:Range(L["Spacing"], nil, 9, { min = -1, max = 20, step = 1 })
-	config.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 10, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil, nil, function() local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition return (smartAuraPosition and (smartAuraPosition == 'BUFFS_ON_DEBUFFS' or smartAuraPosition == 'FLUID_BUFFS_ON_DEBUFFS')) end)
-	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 11, positionValues)
-	config.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 12)
-	config.args.sortMethod = ACH:Select( L["Sort By"], L["Method to sort by."], 13, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
-	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 14, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
+	config.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
+	config.args.sizeOverride = ACH:Range(function() return E.db.unitframe.units[groupName][auraType].keepSizeRatio and L["Size Override"] or L["Icon Width"] end, function() return E.db.unitframe.units[groupName][auraType].keepSizeRatio and L["If not set to 0 then override the size of the aura icon to this."] end, 4, { min = 0, max = 80, step = 1 })
+	config.args.height = ACH:Range(L["Icon Height"], nil, 5, { min = 6, max = 80, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName][auraType].keepSizeRatio end)
+	config.args.perrow = ACH:Range(L["Per Row"], nil, 6, { min = 1, max = 30, step = 1 })
+	config.args.numrows = ACH:Range(L["Num Rows"], nil, 7, { min = 1, max = 10, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -100, max = 100, step = 1 })
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
+	config.args.spacing = ACH:Range(L["Spacing"], nil, 10, { min = -1, max = 20, step = 1 })
+	config.args.attachTo = ACH:Select(L["Attach To"], L["What to attach the anchor frame to."], 11, { FRAME = L["Frame"], DEBUFFS = L["Debuffs"], HEALTH = L["Health"], POWER = L["Power"] }, nil, nil, nil, nil,function()
+		local position = E.db.unitframe.units[groupName].smartAuraPosition
+		return position == 'BUFFS_ON_DEBUFFS' or position == 'FLUID_BUFFS_ON_DEBUFFS'
+	end)
+
+	config.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 12, positionAuraValues)
+	config.args.growthX = ACH:Select(L["Growth X-Direction"], nil, 13, { LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint; return point == 'LEFT' or point == 'RIGHT' end)
+	config.args.growthY = ACH:Select(L["Growth Y-Direction"], nil, 14, { UP = L["Up"], DOWN = L["Down"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint; return point == 'TOP' or point == 'BOTTOM' end)
+	config.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 15)
+	config.args.sortMethod = ACH:Select( L["Sort By"], L["Method to sort by."], 16, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["NAME"], INDEX = L["Index"], PLAYER = L["PLAYER"] })
+	config.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 17, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 
 	config.args.stacks = ACH:Group(L["Stack Counter"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value; updateFunc(UF, groupName, numUnits) end)
 	config.args.stacks.inline = true
@@ -576,12 +595,12 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	}
 
 	if auraType == 'debuffs' then
+		config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], nil, 3)
 		config.args.attachTo.values = { FRAME = L["Frame"], BUFFS = L["Buffs"], HEALTH = L["Health"], POWER = L["Power"] }
 		config.args.attachTo.disabled = function()
-			local smartAuraPosition = E.db.unitframe.units[groupName].smartAuraPosition
-			return (smartAuraPosition and (smartAuraPosition == 'DEBUFFS_ON_BUFFS' or smartAuraPosition == 'FLUID_DEBUFFS_ON_BUFFS'))
+			local position = E.db.unitframe.units[groupName].smartAuraPosition
+			return position == 'DEBUFFS_ON_BUFFS' or position == 'FLUID_DEBUFFS_ON_BUFFS'
 		end
-		config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], nil, 3)
 	end
 
 	return config

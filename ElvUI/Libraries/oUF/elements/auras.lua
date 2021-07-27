@@ -266,7 +266,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			if(button.count) then button.count:SetText(count > 1 and count) end
 
 			local size = element.size or 16
-			button:SetSize(size, size)
+			button:SetSize(size, element.height or size)
 
 			button:EnableMouse(not element.disableMouse)
 			button:SetID(index)
