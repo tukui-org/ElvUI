@@ -222,9 +222,7 @@ function S:Blizzard_GarrisonUI()
 
 	FollowerList:ClearAllPoints()
 	FollowerList:Point('BOTTOMLEFT', 24, 34)
-
-	local scrollFrame = FollowerList.listScroll
-	S:HandleScrollBar(scrollFrame.scrollBar)
+	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 
 	-- Capacitive display frame
 	local GarrisonCapacitiveDisplayFrame = _G.GarrisonCapacitiveDisplayFrame
@@ -281,6 +279,7 @@ function S:Blizzard_GarrisonUI()
 	-- Follower list
 	FollowerList = GarrisonMissionFrame.FollowerList
 	FollowerList:DisableDrawLayer('BORDER')
+	FollowerList:CreateBackdrop('Transparent')
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
@@ -355,10 +354,10 @@ function S:Blizzard_GarrisonUI()
 	-- Landing page: Report
 	Report = GarrisonLandingPage.Report -- reassigned
 	Report.List:StripTextures(true)
-	scrollFrame = Report.List.listScroll
-	S:HandleScrollBar(scrollFrame.scrollBar)
+	local reportScroll = Report.List.listScroll
+	S:HandleScrollBar(reportScroll.scrollBar)
 
-	local buttons = scrollFrame.buttons
+	local buttons = reportScroll.buttons
 	for i = 1, #buttons do
 		local button = buttons[i]
 		for _, reward in pairs(button.Rewards) do
@@ -391,11 +390,9 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.FollowerHeaderBar:Hide()
 	FollowerList.FollowerScrollFrame:Hide()
 	S:HandleEditBox(FollowerList.SearchBox)
-	scrollFrame = FollowerList.listScroll
-	S:HandleScrollBar(scrollFrame.scrollBar)
+	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
-
 	hooksecurefunc('GarrisonFollowerButton_AddAbility', function(s, index)
 		local ability = s.Abilities[index]
 		if not ability.styled then
@@ -415,14 +412,12 @@ function S:Blizzard_GarrisonUI()
 	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
 	ShipFollowerList.FollowerHeaderBar:Hide()
 	S:HandleEditBox(ShipFollowerList.SearchBox)
-	scrollFrame = ShipFollowerList.listScroll
-	S:HandleScrollBar(scrollFrame.scrollBar)
-	-- HandleShipFollowerPage(ShipFollowerList.followerTab)
+	S:HandleScrollBar(ShipFollowerList.listScroll.scrollBar)
 
 	-- ShipYard
 	local GarrisonShipyardFrame = _G.GarrisonShipyardFrame
-	GarrisonShipyardFrame:StripTextures(true)
 	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
+	GarrisonShipyardFrame:StripTextures(true)
 	GarrisonShipyardFrame:SetTemplate('Transparent')
 	GarrisonShipyardFrame.BorderFrame.GarrCorners:Hide()
 	S:HandleCloseButton(GarrisonShipyardFrame.BorderFrame.CloseButton2)
@@ -449,21 +444,19 @@ function S:Blizzard_GarrisonUI()
 
 	-- ShipYard: Follower List
 	FollowerList = GarrisonShipyardFrame.FollowerList
-	scrollFrame = FollowerList.listScroll
 	FollowerList:StripTextures()
-	S:HandleScrollBar(scrollFrame.scrollBar)
-	S:HandleEditBox(FollowerList.SearchBox)
+	FollowerList:CreateBackdrop('Transparent')
 	FollowerList.MaterialFrame:StripTextures()
 	FollowerList.MaterialFrame.Icon:SetAtlas('ShipMission_CurrencyIcon-Oil', false) --Re-add the material icon
-	-- HandleShipFollowerPage(FollowerList.followerTab)
+	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
+	S:HandleEditBox(FollowerList.SearchBox)
 
 	-- MissionFrame
 	local OrderHallMissionFrame = _G.OrderHallMissionFrame
-	OrderHallMissionFrame:StripTextures()
 	OrderHallMissionFrame.ClassHallIcon:Kill()
-	OrderHallMissionFrame:StripTextures()
 	OrderHallMissionFrame.GarrCorners:Hide()
-	OrderHallMissionFrame:SetTemplate('Transparent')
+	OrderHallMissionFrame:StripTextures()
+	OrderHallMissionFrame:CreateBackdrop('Transparent')
 	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
 
 	for i = 1, 3 do
@@ -475,8 +468,8 @@ function S:Blizzard_GarrisonUI()
 	FollowerList = OrderHallMissionFrame.FollowerList -- swap
 	FollowerTab = OrderHallMissionFrame.FollowerTab -- swap
 	Follower:StripTextures()
-	Follower:SetTemplate('Transparent')
 	FollowerList:StripTextures()
+	FollowerList:CreateBackdrop('Transparent')
 	FollowerList.MaterialFrame:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
@@ -530,8 +523,8 @@ function S:Blizzard_GarrisonUI()
 	MissionFrame.Bottom:Hide()
 	MissionFrame.Top:Hide()
 	MissionFrame.Right:Hide()
-
-	MissionFrame:SetTemplate('Transparent')
+	MissionFrame:CreateBackdrop('Transparent')
+	MissionFrame.FollowerList:CreateBackdrop('Transparent')
 
 	S:HandleCloseButton(MissionFrame.CloseButton)
 	S:HandleButton(MissionFrame.MissionComplete.NextMissionButton)
@@ -550,15 +543,14 @@ function S:Blizzard_GarrisonUI()
 	MissionTab.MissionPage.StartMissionButton.Flash:Kill()
 
 	-- Follower Tab
-	Follower = _G.BFAMissionFrameFollowers -- swap
 	local XPBar = MissionFrame.FollowerTab.XPBar
 	local Class = MissionFrame.FollowerTab.Class
+	Follower = _G.BFAMissionFrameFollowers -- swap
 	Follower:StripTextures()
-	Follower:SetTemplate('Transparent')
+	Follower.MaterialFrame:StripTextures()
 	S:HandleEditBox(Follower.SearchBox)
 	hooksecurefunc(Follower, 'ShowFollower', showFollower)
 	S:HandleScrollBar(_G.BFAMissionFrameFollowersListScrollFrameScrollBar)
-
 	S:HandleFollowerListOnUpdateData('BFAMissionFrameFollowers') -- The function needs to be updated for BFA
 
 	XPBar:StripTextures()
@@ -569,16 +561,7 @@ function S:Blizzard_GarrisonUI()
 
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame
-
-	if E.private.skins.parchmentRemoverEnable then
-		SkinMissionFrame(CovenantMissionFrame, true)
-
-		hooksecurefunc(CovenantMissionFrame, 'SetupTabs', function(frame)
-			frame.MapTab:SetShown(not frame.Tab2:IsShown())
-		end)
-	else
-		SkinMissionFrame(CovenantMissionFrame)
-	end
+	SkinMissionFrame(CovenantMissionFrame, E.private.skins.parchmentRemoverEnable)
 
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
 	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
@@ -598,7 +581,6 @@ function S:Blizzard_GarrisonUI()
 
 	hooksecurefunc(Follower, 'ShowFollower', showFollower)
 	Follower:StripTextures()
-	Follower:SetTemplate('Transparent')
 
 	FollowerTab:StripTextures()
 	FollowerTab.RaisedFrameEdges:SetAlpha(0)
@@ -710,16 +692,16 @@ function S:GarrisonTooltips()
 	end)
 
 	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetShipyardFollower', function(tooltipFrame)
-		-- Properties
 		if tooltipFrame.numPropertiesStyled == nil then
 			tooltipFrame.numPropertiesStyled = 1
 		end
+
 		local numPropertiesStyled = tooltipFrame.numPropertiesStyled
 		local properties = tooltipFrame.Properties
 		local property = properties[numPropertiesStyled]
 		while property do
-			local icon = property.Icon
-			icon:SetTexCoord(unpack(E.TexCoords))
+			property.Icon:SetTexCoord(unpack(E.TexCoords))
+
 			if not property.border then
 				property.border = CreateFrame('Frame', nil, property)
 				S:HandleIcon(property.Icon, property.border)
@@ -728,6 +710,7 @@ function S:GarrisonTooltips()
 			numPropertiesStyled = numPropertiesStyled + 1
 			property = properties[numPropertiesStyled]
 		end
+
 		tooltipFrame.numPropertiesStyled = numPropertiesStyled
 	end)
 
