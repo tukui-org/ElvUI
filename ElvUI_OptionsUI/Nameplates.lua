@@ -3881,7 +3881,39 @@ local function GetUnitSettings(unit, name)
 									REMAINING = L["Remaining"],
 									REMAININGMAX = L["Remaining / Max"]
 								}
-							}
+							},
+							timeXOffset = {
+								order = 6,
+								name = L["Time X-Offset"],
+								type = 'range',
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							timeYOffset = {
+								order = 7,
+								type = 'range',
+								name = L["Time Y-Offset"],
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							textXOffset = {
+								order = 8,
+								name = L["Text X-Offset"],
+								type = 'range',
+								min = -60,
+								max = 60,
+								step = 1
+							},
+							textYOffset = {
+								order = 9,
+								type = 'range',
+								name = L["Text Y-Offset"],
+								min = -60,
+								max = 60,
+								step = 1
+							},
 						}
 					},
 					iconGroup = {
