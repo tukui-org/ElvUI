@@ -48,7 +48,7 @@ UF.SmartPosition = {
 UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.BUFFS_ON_DEBUFFS)
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
-local SortAurasFuncs = {
+local SortAuraFuncs = {
 	TIME_REMAINING = function(a, b, dir)
 		local aTime = a.noTime and huge or a.expiration or -1
 		local bTime = b.noTime and huge or b.expiration or -1
@@ -319,7 +319,7 @@ function UF:Configure_Auras(frame, which)
 	auras.db = settings
 
 	-- not onUpdateFrequency ignores targettarget
-	auras.auraSort = SortAurasFuncs[not frame.onUpdateFrequency and settings.sortMethod]
+	auras.auraSort = SortAuraFuncs[not frame.onUpdateFrequency and settings.sortMethod]
 
 	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
@@ -388,7 +388,7 @@ function UF:Configure_Auras(frame, which)
 	end
 end
 
-function UF.SortAurasFunc(a, b)
+function UF.SortAuraFunc(a, b)
 	local frame = b and a and a:GetParent()
 	if frame and frame.db and a:IsShown() then
 		if not b:IsShown() then return true else
@@ -398,7 +398,7 @@ function UF.SortAurasFunc(a, b)
 end
 
 function UF:SortAuras()
-	if self.auraSort then sort(self, UF.SortAurasFunc) end
+	if self.auraSort then sort(self, UF.SortAuraFunc) end
 	return 1, self.visibleAuras or self.visibleBuffs or self.visibleDebuffs
 end
 
