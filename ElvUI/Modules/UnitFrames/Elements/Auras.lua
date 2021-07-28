@@ -547,7 +547,7 @@ function UF:AuraFilter(unit, button, name, texture, count, debuffType, duration,
 	button.priority = 0
 
 	if db.stackAuras then
-		local matching = caster and casterIsPlayer and format('%s:%s', caster, name) or name
+		local matching = caster and format('%s:%s', caster, name) or name
 		local stack = self.stacks[matching]
 		if not stack then
 			self.stacks[matching] = button
