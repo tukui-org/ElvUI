@@ -303,6 +303,7 @@ function S:Blizzard_GarrisonUI()
 	local GarrisonLandingPage = _G.GarrisonLandingPage
 	local Report = GarrisonLandingPage.Report
 	GarrisonLandingPage:SetTemplate('Transparent')
+	GarrisonLandingPage.Center:SetDrawLayer('BACKGROUND', -2) -- art piece is background -1
 	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
 	S:HandleTab(_G.GarrisonLandingPageTab1)
 	S:HandleTab(_G.GarrisonLandingPageTab2)
