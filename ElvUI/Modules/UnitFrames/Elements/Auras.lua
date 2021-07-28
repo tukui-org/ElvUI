@@ -48,10 +48,31 @@ UF.SmartPosition = {
 UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.BUFFS_ON_DEBUFFS)
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
+local SortAurasFuncs = {
+	TIME_REMAINING = function(a, b, dir)
+		local aTime = a.noTime and huge or a.expiration or -1
+		local bTime = b.noTime and huge or b.expiration or -1
+		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
+	end,
+	DURATION = function(a, b, dir)
+		local aTime = a.noTime and huge or a.duration or -1
+		local bTime = b.noTime and huge or b.duration or -1
+		if dir == 'DESCENDING' then return aTime < bTime else return aTime > bTime end
+	end,
+	NAME = function(a, b, dir)
+		local aName, bName = a.name or '', b.name or ''
+		if dir == 'DESCENDING' then return aName < bName else return aName > bName end
+	end,
+	PLAYER = function(a, b, dir)
+		local aPlayer, bPlayer = a.isPlayer or false, b.isPlayer or false
+		if dir == 'DESCENDING' then return (aPlayer and not bPlayer) else return (not aPlayer and bPlayer) end
+	end,
+}
+
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
 	buffs.spacing = UF.SPACING
-	buffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
+	buffs.PreSetPosition = self.SortAuras
 	buffs.PostCreateIcon = self.Construct_AuraIcon
 	buffs.PostUpdateIcon = self.PostUpdateAura
 	buffs.SetPosition = self.SetPosition
@@ -69,7 +90,7 @@ end
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
 	debuffs.spacing = UF.SPACING
-	debuffs.PreSetPosition = (not frame:GetScript('OnUpdate')) and self.SortAuras or nil
+	debuffs.PreSetPosition = self.SortAuras
 	debuffs.PostCreateIcon = self.Construct_AuraIcon
 	debuffs.PostUpdateIcon = self.PostUpdateAura
 	debuffs.SetPosition = self.SetPosition
@@ -297,6 +318,9 @@ function UF:Configure_Auras(frame, which)
 	local settings = db[auraType]
 	auras.db = settings
 
+	-- not onUpdateFrequency ignores targettarget
+	auras.auraSort = SortAurasFuncs[not frame.onUpdateFrequency and settings.sortMethod]
+
 	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
 
@@ -364,94 +388,17 @@ function UF:Configure_Auras(frame, which)
 	end
 end
 
-local function SortAurasByTime(a, b)
-	if a and b and a:GetParent().db then
-		if a:IsShown() and b:IsShown() then
-			local sortDirection = a:GetParent().db.sortDirection
-			local aTime = a.noTime and huge or a.expiration or -1
-			local bTime = b.noTime and huge or b.expiration or -1
-			if aTime and bTime then
-				if sortDirection == 'DESCENDING' then
-					return aTime < bTime
-				else
-					return aTime > bTime
-				end
-			end
-		elseif a:IsShown() then
-			return true
-		end
-	end
-end
-
-local function SortAurasByName(a, b)
-	if a and b and a:GetParent().db then
-		if a:IsShown() and b:IsShown() then
-			local sortDirection = a:GetParent().db.sortDirection
-			local aName = a.name or ''
-			local bName = b.name or ''
-			if aName and bName then
-				if sortDirection == 'DESCENDING' then
-					return aName < bName
-				else
-					return aName > bName
-				end
-			end
-		elseif a:IsShown() then
-			return true
-		end
-	end
-end
-
-local function SortAurasByDuration(a, b)
-	if a and b and a:GetParent().db then
-		if a:IsShown() and b:IsShown() then
-			local sortDirection = a:GetParent().db.sortDirection
-			local aTime = a.noTime and huge or a.duration or -1
-			local bTime = b.noTime and huge or b.duration or -1
-			if aTime and bTime then
-				if sortDirection == 'DESCENDING' then
-					return aTime < bTime
-				else
-					return aTime > bTime
-				end
-			end
-		elseif a:IsShown() then
-			return true
-		end
-	end
-end
-
-local function SortAurasByCaster(a, b)
-	if a and b and a:GetParent().db then
-		if a:IsShown() and b:IsShown() then
-			local sortDirection = a:GetParent().db.sortDirection
-			local aPlayer = a.isPlayer or false
-			local bPlayer = b.isPlayer or false
-			if sortDirection == 'DESCENDING' then
-				return (aPlayer and not bPlayer)
-			else
-				return (not aPlayer and bPlayer)
-			end
-		elseif a:IsShown() then
-			return true
+function UF.SortAurasFunc(a, b)
+	local frame = b and a and a:GetParent()
+	if frame and frame.db and a:IsShown() then
+		if not b:IsShown() then return true else
+			return frame.auraSort(a, b, frame.db.sortDirection)
 		end
 	end
 end
 
 function UF:SortAuras()
-	local method = self.db and self.db.sortMethod
-	if method then
-		if method == 'TIME_REMAINING' then
-			sort(self, SortAurasByTime)
-		elseif method == 'NAME' then
-			sort(self, SortAurasByName)
-		elseif method == 'DURATION' then
-			sort(self, SortAurasByDuration)
-		elseif method == 'PLAYER' then
-			sort(self, SortAurasByCaster)
-		end
-	end
-
+	if self.auraSort then sort(self, UF.SortAurasFunc) end
 	return 1, self.visibleAuras or self.visibleBuffs or self.visibleDebuffs
 end
 
