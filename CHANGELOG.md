@@ -7,6 +7,7 @@ Unitframe: Added GrowthX and GrowthY settings and also improved Smart Aura Posit
 
 **Fixed:**  
 Guild Control skin error  
+Orderhall and Garrison mission skin fixes
 
 ___
 ### Version 12.37 [ July 25th 2021 ]
