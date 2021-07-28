@@ -270,7 +270,7 @@ function S:Blizzard_GarrisonUI()
 	GarrisonMissionFrame.TitleText:Show()
 	GarrisonMissionFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(GarrisonMissionFrame.CloseButton, GarrisonMissionFrame.backdrop)
-	_G.GarrisonMissionFrameMissions:SetTemplate('Transparent')
+	_G.GarrisonMissionFrameMissions:CreateBackdrop('Transparent')
 
 	for i = 1,2 do
 		S:HandleTab(_G['GarrisonMissionFrameTab'..i])
@@ -518,7 +518,7 @@ function S:Blizzard_GarrisonUI()
 	local LegionMissions = _G.OrderHallMissionFrameMissions
 	S:HandleButton(LegionMissions.CombatAllyUI.InProgress.Unassign)
 	LegionMissions.MaterialFrame.BG:StripTextures()
-	LegionMissions:SetTemplate('Transparent')
+	LegionMissions:CreateBackdrop('Transparent')
 
 	-- BFA Mission
 	local MissionFrame = _G.BFAMissionFrame
@@ -540,7 +540,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleButton(BFAMissions.CompleteDialog.BorderFrame.ViewButton)
 	BFAMissions.MaterialFrame.BG:StripTextures()
 	BFAMissions:StripTextures()
-	BFAMissions:SetTemplate('Transparent')
+	BFAMissions:CreateBackdrop('Transparent')
 
 	-- Mission Tab
 	MissionTab = MissionFrame.MissionTab -- swap
@@ -572,7 +572,6 @@ function S:Blizzard_GarrisonUI()
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame
 	SkinMissionFrame(CovenantMissionFrame, E.private.skins.parchmentRemoverEnable)
-
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
 	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
 
