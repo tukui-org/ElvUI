@@ -20,6 +20,7 @@ function S:TradeFrame()
 	S:HandleEditBox(_G.TradePlayerInputMoneyFrameGold)
 	S:HandleEditBox(_G.TradePlayerInputMoneyFrameSilver)
 	S:HandleEditBox(_G.TradePlayerInputMoneyFrameCopper)
+
 	_G.TradeRecipientItemsInset:Kill()
 	_G.TradePlayerItemsInset:Kill()
 	_G.TradePlayerInputMoneyInset:Kill()
@@ -29,47 +30,50 @@ function S:TradeFrame()
 	_G.TradeRecipientMoneyBg:Kill()
 
 	for i = 1, _G.MAX_TRADE_ITEMS do
-		local player = _G['TradePlayerItem'..i]
-		local recipient = _G['TradeRecipientItem'..i]
-		local player_button = _G['TradePlayerItem'..i..'ItemButton']
-		local recipient_button = _G['TradeRecipientItem'..i..'ItemButton']
-		local player_button_icon = _G['TradePlayerItem'..i..'ItemButtonIconTexture']
-		local recipient_button_icon = _G['TradeRecipientItem'..i..'ItemButtonIconTexture']
+		local player = _G['TradePlayerItem'..i..'ItemButton']
+		local recipient = _G['TradeRecipientItem'..i..'ItemButton']
 
-		if player_button and recipient_button then
+		if player and recipient then
 			player:StripTextures()
 			recipient:StripTextures()
-			player_button:StripTextures()
-			recipient_button:StripTextures()
 
-			player_button_icon:SetInside(player_button)
-			player_button_icon:SetTexCoord(unpack(E.TexCoords))
-			player_button:SetTemplate(nil, true)
-			player_button:StyleButton()
-			player_button.IconBorder:Kill()
-			player_button:SetFrameLevel(player_button:GetFrameLevel() - 1)
+			_G['TradePlayerItem'..i]:StripTextures()
+			_G['TradeRecipientItem'..i]:StripTextures()
 
-			player_button.bg = CreateFrame('Frame', nil, player_button)
-			player_button.bg:SetTemplate()
-			player_button.bg:Point('TOPLEFT', player_button, 'TOPRIGHT', 4, 0)
-			player_button.bg:Point('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
-			player_button.bg:SetFrameLevel(player_button:GetFrameLevel() - 3)
+			local playerIcon = _G['TradePlayerItem'..i..'ItemButtonIconTexture']
+			if playerIcon then
+				playerIcon:SetInside(player)
+				playerIcon:SetTexCoord(unpack(E.TexCoords))
+			end
 
-			recipient_button_icon:SetInside(recipient_button)
-			recipient_button_icon:SetTexCoord(unpack(E.TexCoords))
-			recipient_button:SetTemplate(nil, true)
-			recipient_button:StyleButton()
-			recipient_button.IconBorder:Kill()
-			recipient_button:SetFrameLevel(recipient_button:GetFrameLevel() - 1)
+			local recipientIcon = _G['TradeRecipientItem'..i..'ItemButtonIconTexture']
+			if recipientIcon then
+				recipientIcon:SetInside(recipient)
+				recipientIcon:SetTexCoord(unpack(E.TexCoords))
+			end
 
-			recipient_button.bg = CreateFrame('Frame', nil, recipient_button)
-			recipient_button.bg:SetTemplate()
-			recipient_button.bg:Point('TOPLEFT', recipient_button, 'TOPRIGHT', 4, 0)
-			recipient_button.bg:Point('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
-			recipient_button.bg:SetFrameLevel(recipient_button:GetFrameLevel() - 3)
+			player:SetFrameLevel(player:GetFrameLevel() - 1)
+			player:SetTemplate(nil, true)
+			player:StyleButton()
 
-			S:HandleIconBorder(player_button.IconBorder)
-			S:HandleIconBorder(recipient_button.IconBorder)
+			player.bg = CreateFrame('Frame', nil, player)
+			player.bg:Point('TOPLEFT', player, 'TOPRIGHT', 4, 0)
+			player.bg:Point('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
+			player.bg:SetFrameLevel(player:GetFrameLevel() - 3)
+			player.bg:SetTemplate('Transparent')
+
+			recipient:SetFrameLevel(recipient:GetFrameLevel() - 1)
+			recipient:SetTemplate(nil, true)
+			recipient:StyleButton()
+
+			recipient.bg = CreateFrame('Frame', nil, recipient)
+			recipient.bg:Point('TOPLEFT', recipient, 'TOPRIGHT', 4, 0)
+			recipient.bg:Point('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
+			recipient.bg:SetFrameLevel(recipient:GetFrameLevel() - 3)
+			recipient.bg:SetTemplate('Transparent')
+
+			S:HandleIconBorder(player.IconBorder)
+			S:HandleIconBorder(recipient.IconBorder)
 		end
 	end
 
