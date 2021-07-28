@@ -844,6 +844,7 @@ function B:Layout(isBank)
 	if isBank and not f.fullBank then
 		f.fullBank = select(2, GetNumBankSlots())
 		f.purchaseBagButton:SetShown(not f.fullBank)
+
 		if _G.BankFrame.selectedTab == 1 then
 			f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
 		end
@@ -1529,8 +1530,6 @@ function B:ConstructContainerFrame(name, isBank)
 		f.reagentToggle:SetScript('OnClick', function()
 			PlaySound(841) --IG_CHARACTER_INFO_TAB
 			B:ShowBankTab(f, f.holderFrame:IsShown())
-			B:Layout(true)
-			f:Show()
 		end)
 
 		--Sort Button
@@ -1913,6 +1912,8 @@ function B:CloseBags()
 end
 
 function B:ShowBankTab(f, showReagent)
+	local previousTab = _G.BankFrame.selectedTab
+
 	if showReagent then
 		_G.BankFrame.selectedTab = 2
 
@@ -1927,6 +1928,12 @@ function B:ShowBankTab(f, showReagent)
 		f.holderFrame:Show()
 		f.editBox:Point('RIGHT', f.fullBank and f.bagsButton or f.purchaseBagButton, 'LEFT', -5, 0)
 		f.bagText:SetText(L["Bank"])
+	end
+
+	if previousTab ~= _G.BankFrame.selectedTab then
+		B:Layout(true)
+	else
+		B:UpdateLayout(f)
 	end
 
 	f.editBox.skipUpdate = true -- skip search update when switching tabs
@@ -1989,8 +1996,6 @@ function B:OpenBank()
 
 	--Allow opening reagent tab directly by holding Shift
 	B:ShowBankTab(B.BankFrame, IsShiftKeyDown())
-
-	B:UpdateLayout(B.BankFrame)
 
 	B:OpenBags()
 end
