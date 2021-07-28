@@ -108,6 +108,16 @@ local function ReskinMissionComplete(frame)
 	if missionComplete.FollowerBackground then missionComplete.FollowerBackground:Hide() end
 end
 
+local function SkinMissionItems(followerTab)
+	for _, item in pairs({followerTab.ItemWeapon, followerTab.ItemArmor}) do
+		if item then
+			local icon = item.Icon
+			item.Border:Hide()
+			S:HandleIcon(icon)
+		end
+	end
+end
+
 -- TO DO: Extend this function
 local function SkinMissionFrame(frame, strip)
 	if strip then
@@ -134,16 +144,9 @@ local function SkinMissionFrame(frame, strip)
 	end
 
 	ReskinMissionComplete(frame)
+	SkinMissionItems(frame.FollowerTab)
 
 	hooksecurefunc(frame.FollowerTab, 'UpdateCombatantStats', UpdateSpellAbilities)
-
-	for _, item in pairs({frame.FollowerTab.ItemWeapon, frame.FollowerTab.ItemArmor}) do
-		if item then
-			local icon = item.Icon
-			item.Border:Hide()
-			S:HandleIcon(icon)
-		end
-	end
 end
 
 -- Blizzard didn't set color for currency reward, incorrect color presents after scroll (Credits: siweia - NDui)
@@ -267,6 +270,7 @@ function S:Blizzard_GarrisonUI()
 	GarrisonMissionFrame.TitleText:Show()
 	GarrisonMissionFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(GarrisonMissionFrame.CloseButton, GarrisonMissionFrame.backdrop)
+	_G.GarrisonMissionFrameMissions:SetTemplate('Transparent')
 
 	for i = 1,2 do
 		S:HandleTab(_G['GarrisonMissionFrameTab'..i])
@@ -280,10 +284,15 @@ function S:Blizzard_GarrisonUI()
 	FollowerList = GarrisonMissionFrame.FollowerList
 	FollowerList:DisableDrawLayer('BORDER')
 	FollowerList:CreateBackdrop('Transparent')
-	FollowerList.MaterialFrame:StripTextures()
+	FollowerList.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
+
+	local FollowerTab = GarrisonMissionFrame.FollowerTab
+	FollowerTab:StripTextures()
+	FollowerTab:SetTemplate('Transparent')
+	SkinMissionItems(FollowerTab)
 
 	-- Mission list
 	local MissionTab = GarrisonMissionFrame.MissionTab
@@ -404,9 +413,7 @@ function S:Blizzard_GarrisonUI()
 	-- Garrison Portraits
 	S:HandleFollowerListOnUpdateData('GarrisonMissionFrameFollowers')
 	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to orderhall landing page
-
-	local FollowerTab = GarrisonLandingPage.FollowerTab
-	hooksecurefunc(FollowerTab, 'UpdateCombatantStats', UpdateSpellAbilities)
+	hooksecurefunc(GarrisonLandingPage.FollowerTab, 'UpdateCombatantStats', UpdateSpellAbilities)
 
 	-- Landing page: Fleet
 	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
@@ -446,8 +453,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList = GarrisonShipyardFrame.FollowerList
 	FollowerList:StripTextures()
 	FollowerList:CreateBackdrop('Transparent')
-	FollowerList.MaterialFrame:StripTextures()
-	FollowerList.MaterialFrame.Icon:SetAtlas('ShipMission_CurrencyIcon-Oil', false) --Re-add the material icon
+	FollowerList.MaterialFrame.BG:StripTextures()
 	S:HandleScrollBar(FollowerList.listScroll.scrollBar)
 	S:HandleEditBox(FollowerList.SearchBox)
 
@@ -467,18 +473,23 @@ function S:Blizzard_GarrisonUI()
 	local Follower = _G.OrderHallMissionFrameFollowers
 	FollowerList = OrderHallMissionFrame.FollowerList -- swap
 	FollowerTab = OrderHallMissionFrame.FollowerTab -- swap
+
 	Follower:StripTextures()
 	FollowerList:StripTextures()
 	FollowerList:CreateBackdrop('Transparent')
-	FollowerList.MaterialFrame:StripTextures()
+	FollowerList.MaterialFrame.BG:StripTextures()
+
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleScrollBar(OrderHallMissionFrame.FollowerList.listScroll.scrollBar)
 	hooksecurefunc(FollowerList, 'ShowFollower', showFollower)
-	FollowerTab:StripTextures()
+
 	FollowerTab.Class:Size(50, 43)
 	FollowerTab.XPBar:StripTextures()
 	FollowerTab.XPBar:SetStatusBarTexture(E.media.normTex)
 	FollowerTab.XPBar:SetTemplate()
+	FollowerTab:StripTextures()
+	FollowerTab:SetTemplate('Transparent')
+	SkinMissionItems(FollowerTab)
 
 	-- Orderhall Portraits
 	S:HandleFollowerListOnUpdateData('OrderHallMissionFrameFollowers')
@@ -496,7 +507,6 @@ function S:Blizzard_GarrisonUI()
 	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
 	MissionList:StripTextures()
 	MissionList.listScroll:StripTextures()
-	S:HandleButton(_G.OrderHallMissionFrameMissions.CombatAllyUI.InProgress.Unassign)
 	S:HandleCloseButton(MissionPage.CloseButton)
 	S:HandleCloseButton(ZoneSupportMissionPage.CloseButton)
 	S:HandleButton(MissionComplete.NextMissionButton)
@@ -505,35 +515,32 @@ function S:Blizzard_GarrisonUI()
 	S:HandleButton(ZoneSupportMissionPage.StartMissionButton)
 	ZoneSupportMissionPage.StartMissionButton.Flash:Kill()
 
+	local LegionMissions = _G.OrderHallMissionFrameMissions
+	S:HandleButton(LegionMissions.CombatAllyUI.InProgress.Unassign)
+	LegionMissions.MaterialFrame.BG:StripTextures()
+	LegionMissions:SetTemplate('Transparent')
+
 	-- BFA Mission
 	local MissionFrame = _G.BFAMissionFrame
-	MissionFrame.OverlayElements:Hide()
-	MissionFrame.TopBorder:Hide()
-	MissionFrame.TopLeftCorner:Hide()
-	MissionFrame.TopRightCorner:Hide()
-	MissionFrame.RightBorder:Hide()
-	MissionFrame.LeftBorder:Hide()
-	MissionFrame.BotLeftCorner:Hide()
-	MissionFrame.BotRightCorner:Hide()
-	MissionFrame.BottomBorder:Hide()
-	MissionFrame.GarrCorners:Hide()
-	MissionFrame.TitleScroll:Hide()
-	MissionFrame.BackgroundTile:Kill()
-	MissionFrame.Left:Hide()
-	MissionFrame.Bottom:Hide()
-	MissionFrame.Top:Hide()
-	MissionFrame.Right:Hide()
+	MissionFrame:StripTextures()
 	MissionFrame:CreateBackdrop('Transparent')
 	MissionFrame.FollowerList:CreateBackdrop('Transparent')
+	MissionFrame.OverlayElements:Hide()
+	MissionFrame.TitleScroll:Hide()
 
 	S:HandleCloseButton(MissionFrame.CloseButton)
 	S:HandleButton(MissionFrame.MissionComplete.NextMissionButton)
+
 	for i = 1, 3 do
 		S:HandleTab(_G['BFAMissionFrameTab'..i])
 	end
 
 	-- Missions
-	S:HandleButton(_G.BFAMissionFrameMissions.CompleteDialog.BorderFrame.ViewButton)
+	local BFAMissions = _G.BFAMissionFrameMissions
+	S:HandleButton(BFAMissions.CompleteDialog.BorderFrame.ViewButton)
+	BFAMissions.MaterialFrame.BG:StripTextures()
+	BFAMissions:StripTextures()
+	BFAMissions:SetTemplate('Transparent')
 
 	-- Mission Tab
 	MissionTab = MissionFrame.MissionTab -- swap
@@ -543,21 +550,24 @@ function S:Blizzard_GarrisonUI()
 	MissionTab.MissionPage.StartMissionButton.Flash:Kill()
 
 	-- Follower Tab
-	local XPBar = MissionFrame.FollowerTab.XPBar
-	local Class = MissionFrame.FollowerTab.Class
+	FollowerTab = MissionFrame.FollowerTab -- swap
+	FollowerTab:StripTextures()
+	FollowerTab:SetTemplate('Transparent')
+	FollowerTab.Class:Size(50, 43)
+	SkinMissionItems(FollowerTab)
+
 	Follower = _G.BFAMissionFrameFollowers -- swap
 	Follower:StripTextures()
-	Follower.MaterialFrame:StripTextures()
+	Follower.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(Follower.SearchBox)
 	hooksecurefunc(Follower, 'ShowFollower', showFollower)
 	S:HandleScrollBar(_G.BFAMissionFrameFollowersListScrollFrameScrollBar)
 	S:HandleFollowerListOnUpdateData('BFAMissionFrameFollowers') -- The function needs to be updated for BFA
 
+	local XPBar = FollowerTab.XPBar
 	XPBar:StripTextures()
 	XPBar:SetStatusBarTexture(E.media.normTex)
 	XPBar:CreateBackdrop()
-
-	Class:Size(50, 43)
 
 	-- Shadowlands Mission
 	local CovenantMissionFrame = _G.CovenantMissionFrame
@@ -583,8 +593,9 @@ function S:Blizzard_GarrisonUI()
 	Follower:StripTextures()
 
 	FollowerTab:StripTextures()
+	FollowerTab:SetTemplate('Transparent')
 	FollowerTab.RaisedFrameEdges:SetAlpha(0)
-	S:HandleIcon(CovenantMissionFrame.FollowerTab.HealFollowerFrame.CostFrame.CostIcon)
+	S:HandleIcon(FollowerTab.HealFollowerFrame.CostFrame.CostIcon)
 
 	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
 
