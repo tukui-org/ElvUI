@@ -2,8 +2,8 @@
 
 **Big Aura Update:**  
 UF/NP: Added Centered Support, Size Ratio, Stack Count offsets, Stackable Auras (Bolstering, Force of Nature, etc)  
+Nameplate: Added Rows, Attach To, Castbar Text and Time offsets, and Smart Aura Position settings  
 Unitframe: Added GrowthX and GrowthY settings and also improved Smart Aura Position  
-Nameplate: Added Rows, Attach To, and Smart Aura Position settings  
 
 **Fixed:**  
 Guild Control skin error  
