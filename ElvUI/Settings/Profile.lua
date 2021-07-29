@@ -1168,7 +1168,6 @@ local UF_Castbar = {
 		fontSize = 12,
 		fontStyle = 'OUTLINE'
 	},
-	barBackdrop = true,
 	displayTarget = false,
 	enable = true,
 	format = 'REMAINING',

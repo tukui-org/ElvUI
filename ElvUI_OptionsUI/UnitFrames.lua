@@ -741,11 +741,6 @@ local function GetOptionsTable_Castbar(hasTicks, updateFunc, groupName, numUnits
 				type = 'toggle',
 				name = L["Reverse"],
 			},
-			barBackdrop = {
-				order = 2,
-				type = 'toggle',
-				name = L["Bar Background"],
-			},
 			width = {
 				order = 3,
 				name = L["Width"],
