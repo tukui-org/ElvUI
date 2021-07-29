@@ -156,6 +156,8 @@ function UF:Configure_Castbar(frame)
 	castbar.Text:SetWidth(castbar.Text:GetStringWidth())
 	castbar.Time:SetWidth(castbar.Time:GetStringWidth())
 
+	castbar.bg:SetShown(db.barBackdrop)
+
 	--Icon
 	if db.icon then
 		castbar.Icon = castbar.ButtonIcon
