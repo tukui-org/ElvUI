@@ -75,6 +75,7 @@ function S:Blizzard_WeeklyRewards()
 
 		header:StripTextures()
 		header:SetTemplate('Transparent')
+		header:ClearAllPoints()
 		header:Point('TOP', 1, -42)
 	end
 
