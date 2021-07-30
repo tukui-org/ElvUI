@@ -56,14 +56,11 @@ function S:Blizzard_PVPUI()
 	PVPQueueFrame.CategoryButton3.Icon:SetTexture(464820) -- interface/icons/achievement_general_stayclassy.blp
 
 	local SeasonReward = PVPQueueFrame.HonorInset.RatedPanel.SeasonRewardFrame
+	SeasonReward:CreateBackdrop()
+	SeasonReward.Icon:SetInside(SeasonReward.backdrop)
+	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
 	SeasonReward.CircleMask:Hide()
 	SeasonReward.Ring:Hide()
-	SeasonReward.Icon:SetTexCoord(unpack(E.TexCoords))
-	local RewardFrameBorder = CreateFrame('Frame', nil, SeasonReward)
-	RewardFrameBorder:SetTemplate()
-	RewardFrameBorder:SetOutside(SeasonReward.Icon)
-	SeasonReward.Icon:SetParent(RewardFrameBorder)
-	SeasonReward.Icon:SetDrawLayer('OVERLAY')
 
 	-- Honor Frame
 	local HonorFrame = _G.HonorFrame
