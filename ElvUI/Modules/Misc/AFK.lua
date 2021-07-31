@@ -248,7 +248,7 @@ function AFK:Initialize()
 
 	AFK.AFKMode = CreateFrame('Frame', 'ElvUIAFKFrame')
 	AFK.AFKMode:SetFrameLevel(1)
-	AFK.AFKMode:SetScale(E.uiScale)
+	AFK.AFKMode:SetScale(E.uiscale)
 	AFK.AFKMode:SetAllPoints(_G.UIParent)
 	AFK.AFKMode:Hide()
 	AFK.AFKMode:EnableKeyboard(true)

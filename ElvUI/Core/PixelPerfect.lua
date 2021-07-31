@@ -44,7 +44,7 @@ function E:UIScale(init) -- `init` will be the `event` if its triggered after co
 	else -- E.Initialize
 		UIParent:SetScale(E.global.general.UIScale)
 
-		E.uiScale = UIParent:GetScale()
+		E.uiscale = UIParent:GetScale()
 		E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 
 		local width, height = E.physicalWidth, E.physicalHeight

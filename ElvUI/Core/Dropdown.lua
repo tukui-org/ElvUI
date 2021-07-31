@@ -78,7 +78,7 @@ function E:DropDown(list, frame, xOffset, yOffset)
 	local x, y = GetCursorPosition()
 
 	frame:ClearAllPoints()
-	frame:Point('TOPLEFT', _G.UIParent, 'BOTTOMLEFT', (x / E.uiScale) + xOffset, (y / E.uiScale) + yOffset)
+	frame:Point('TOPLEFT', _G.UIParent, 'BOTTOMLEFT', (x / E.uiscale) + xOffset, (y / E.uiscale) + yOffset)
 
 	ToggleFrame(frame)
 end
