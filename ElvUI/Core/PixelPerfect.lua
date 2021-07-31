@@ -39,7 +39,6 @@ end
 
 function E:UIScale(init) -- `init` will be the `event` if its triggered after combat
 	if init == true then -- E.OnInitialize
-		E.perfect = 768 / E.physicalHeight
 		E.mult = E.perfect / E.global.general.UIScale
 	elseif InCombatLockdown() then
 		E:RegisterEventForObject('PLAYER_REGEN_ENABLED', E.UIScale, E.UIScale)
@@ -81,6 +80,7 @@ function E:PixelScaleChanged(event)
 	if event == 'UI_SCALE_CHANGED' then
 		E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 		E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
+		E.perfect = 768 / E.physicalHeight
 	end
 
 	E:UIScale(true) -- Repopulate variables
