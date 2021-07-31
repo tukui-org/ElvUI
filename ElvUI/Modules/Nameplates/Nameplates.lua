@@ -273,6 +273,7 @@ function NP:PostUpdateAllElements(event)
 end
 
 function NP:StylePlate(nameplate)
+	nameplate:SetScale(E.mult)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
