@@ -247,13 +247,14 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
+	local mult = (nameplate == _G.ElvNP_Player or nameplate == _G.ElvNP_Test) and 1 or E.uiScale
 	if targetPlate and NP.targetPlate then
-		NP.targetPlate:SetScale(E.uiScale)
+		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
 	end
 
 	if not nameplate then return end
-	nameplate:SetScale(scale * E.uiScale)
+	nameplate:SetScale(scale * mult)
 
 	if targetPlate then
 		NP.targetPlate = nameplate
