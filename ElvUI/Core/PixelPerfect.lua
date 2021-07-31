@@ -3,11 +3,10 @@ local E, L, V, P, G = unpack(select(2, ...)) --Import: Engine, Locales, PrivateD
 local min, max, format = min, max, format
 
 local UIParent = UIParent
-local WorldFrame = WorldFrame
-local GetPhysicalScreenSize = GetPhysicalScreenSize
-local GetScreenHeight = GetScreenHeight
 local GetScreenWidth = GetScreenWidth
+local GetScreenHeight = GetScreenHeight
 local InCombatLockdown = InCombatLockdown
+local GetPhysicalScreenSize = GetPhysicalScreenSize
 
 function E:IsEyefinity(width, height)
 	if E.global.general.eyefinity and width >= 3840 then
