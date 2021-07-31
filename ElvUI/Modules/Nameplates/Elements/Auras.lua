@@ -64,7 +64,7 @@ end
 
 function NP:Construct_AuraIcon(button)
 	if not button then return end
-	button:SetTemplate(nil, nil, nil, nil, nil, true)
+	button:SetTemplate(nil, nil, nil, nil, nil, true, true)
 
 	button.cd:SetReverse(true)
 	button.cd:SetInside(button)

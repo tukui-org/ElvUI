@@ -21,7 +21,7 @@ local function SkinRecipeList(self, _, tradeSkillInfo)
 		self.SubSkillRankBar.BorderRight:Hide()
 
 		if not self.SubSkillRankBar.backdrop then
-			self.SubSkillRankBar:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+			self.SubSkillRankBar:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, true)
 			self.SubSkillRankBar:SetStatusBarTexture(E.media.normTex)
 			E:RegisterStatusBar(self.SubSkillRankBar)
 		end

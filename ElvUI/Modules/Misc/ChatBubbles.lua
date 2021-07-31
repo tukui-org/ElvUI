@@ -95,7 +95,7 @@ function M:SkinBubble(frame, holder)
 		holder:DisableDrawLayer('BORDER')
 	else
 		local noBorder = option == 'backdrop_noborder'
-		holder:SetTemplate('Transparent', nil, true, noBorder)
+		holder:SetTemplate('Transparent', nil, true, noBorder, nil, nil, true)
 		holder.Center:SetDrawLayer('BACKGROUND')
 
 		if noBorder then

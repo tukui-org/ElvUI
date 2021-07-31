@@ -23,7 +23,7 @@ local function skinAch(Achievement, BiggerIcon)
 	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
 
-	Achievement.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+	Achievement.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 	Achievement.icon:Size(BiggerIcon and 54 or 36, BiggerIcon and 54 or 36)
 	Achievement.icon:ClearAllPoints()
 	Achievement.icon:Point('TOPLEFT', 8, -8)

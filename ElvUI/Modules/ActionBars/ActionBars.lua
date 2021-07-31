@@ -358,7 +358,7 @@ function AB:CreateBar(id)
 	bar:Point(point, anchor, attachTo, x, y)
 	bar.id = id
 
-	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, 0)
+	bar:CreateBackdrop(AB.db.transparent and 'Transparent', nil, nil, nil, nil, nil, nil, nil, 0)
 
 	bar.buttons = {}
 	bar.bindButtons = defaults.bindButtons

@@ -541,7 +541,7 @@ function S:Blizzard_Collections()
 		if pending then
 			local Glowframe = pending.Glowframe
 			Glowframe:SetAtlas(nil)
-			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
+			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
 
 			if Glowframe.backdrop then
 				Glowframe.backdrop:SetPoint('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
@@ -620,7 +620,7 @@ function S:Blizzard_Collections()
 		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
 		slotButton:SetFrameLevel(slotButton:GetFrameLevel() + 2)
 		slotButton:StripTextures()
-		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, true)
+		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
 		slotButton.Border:Kill()
 		slotButton.Icon:SetTexCoord(unpack(E.TexCoords))
 		slotButton.Icon:SetInside(slotButton.backdrop)

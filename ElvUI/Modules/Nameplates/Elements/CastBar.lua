@@ -99,13 +99,13 @@ function NP:Construct_Castbar(nameplate)
 	local Castbar = CreateFrame('StatusBar', nameplate:GetName()..'Castbar', nameplate)
 	Castbar:SetFrameStrata(nameplate:GetFrameStrata())
 	Castbar:SetFrameLevel(5)
-	Castbar:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
+	Castbar:CreateBackdrop('Transparent', nil, nil, nil, nil, true, true)
 	Castbar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
 	NP.StatusBars[Castbar] = true
 
 	Castbar.Button = CreateFrame('Frame', nil, Castbar)
-	Castbar.Button:SetTemplate()
+	Castbar.Button:SetTemplate(nil, nil, nil, nil, nil, true, true)
 
 	Castbar.Icon = Castbar.Button:CreateTexture(nil, 'ARTWORK')
 	Castbar.Icon:SetTexCoord(unpack(E.TexCoords))

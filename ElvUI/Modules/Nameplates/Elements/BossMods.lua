@@ -20,7 +20,7 @@ function NP:BossMods_CreateIcon(element)
 
 	local button = CreateFrame('Button', element:GetName()..'Button'..element.index, element)
 	button:EnableMouse(false)
-	button:SetTemplate()
+	button:SetTemplate(nil, nil, nil, nil, nil, true, true)
 
 	local cooldown = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
 	cooldown:SetReverse(true)
